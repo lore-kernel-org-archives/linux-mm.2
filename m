@@ -4,91 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08D6FEF99D3
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 20:18:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9272EF99DF
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 21:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B22B6B0005; Fri, 13 Feb 2026 15:18:10 -0500 (EST)
+	id 828DA6B0005; Fri, 13 Feb 2026 16:37:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255C16B0088; Fri, 13 Feb 2026 15:18:10 -0500 (EST)
+	id 7D7276B0088; Fri, 13 Feb 2026 16:37:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B776B008A; Fri, 13 Feb 2026 15:18:10 -0500 (EST)
+	id 6E30D6B008A; Fri, 13 Feb 2026 16:37:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 04A4D6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:18:10 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83EF7140650
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 20:18:09 +0000 (UTC)
-X-FDA: 84440545098.16.0DDFA65
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9709840016
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 20:18:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s00Uy19n;
-	spf=pass (imf04.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771013887;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E3036B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 16:37:55 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF1CDC21C4
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 21:37:54 +0000 (UTC)
+X-FDA: 84440746068.11.1C790A0
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id ABCA3140004
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 21:37:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VYCrWSxU;
+	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771018672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=t4lr13SWVUmJntNWgeecv6SQklZnEIFrGA+t6jkxNn8=;
-	b=TE9GObtfOiAr4ShmdDXksIX0ygYYR/I2ezGJHjHxNSm8IVmxXrV4U/GZMnO412Rakw0TJM
-	h69YEgkFZzpGy6DkGZOujJFYsgLeKrCJkafiYnCBHDk8ZU71v/8OIEoX4eYzlwxx3XD8NB
-	q7DgKRnojcvhHGQMDLkIqTvKEFWsdtg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s00Uy19n;
-	spf=pass (imf04.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771013887; a=rsa-sha256;
-	cv=none;
-	b=Lcms+qr4n+lSvg0P2GE6NiJwbuJ3NMwt+aZcFyIMQZfzO4ND0VLvcxbO3KTMiVmhFvLwhL
-	vYAD+NvTnn9LqpISi8r7AwPdWRCryqZhl9upNrhHCsc+Sri5I7gOnH2IyildvS7UEUsH+u
-	ArFJph525ftVogt2u6tFTgJ0hOHV494=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 660364456D;
-	Fri, 13 Feb 2026 20:18:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DB6C116C6;
-	Fri, 13 Feb 2026 20:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771013886;
-	bh=4GCjESj7JoK5fBFoy3ylJnUVgB7t3oqyOrWWSK4SDwc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=s00Uy19nbU6KE4eIoJ+ZDKH9jzOQoKWQM2XB5Y+ogVytTDpB7ueJ1P5tF7z1Fck92
-	 49bThbDRK2HUIr2kkvNPCLSToKou0j+W59iGdKyHwfYnpDGgUSjxNDc413wZ2Ttie7
-	 A4qVWNBXnj473LtkZLANDo+YKp7y7r9M6TUx/tukr9hxdL/sfIAEiVHFdjX8MIip0x
-	 XWUohxjjFcnX8bgAaV2lwGE3cXHMImMF4oITjRNe8dfKyWLVF+kbmjgxmK6VjrlvEW
-	 xJYG3cV2MSI0XAr+ACSl0m9c5R0KyMMP3HUdbCOnEBr9H8f2cWaMjHInDZxHKUbdvJ
-	 UOwQmdCpjMeJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 481A83811A44;
-	Fri, 13 Feb 2026 20:18:01 +0000 (UTC)
-Subject: Re: [GIT PULL] hotfixes for 7.0-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260213071717.77ff0bf809865bfb7901453a@linux-foundation.org>
-References: <20260213071717.77ff0bf809865bfb7901453a@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260213071717.77ff0bf809865bfb7901453a@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-02-13-07-14
-X-PR-Tracked-Commit-Id: 61dc9f776705d6db6847c101b98fa4f0e9eb6fa3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 44331bd6a6107a33f8082521b227ffa4ec063a40
-Message-Id: <177101387975.2542361.12777525486322994831.pr-tracker-bot@kernel.org>
-Date: Fri, 13 Feb 2026 20:17:59 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, mm-commits@vger.kernel.org
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fbxxhj6uf3b4sp3cmorsmfk7u8gtgwyg
-X-Rspamd-Queue-Id: 9709840016
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tGNTntAipGaFdyX8UZHJ7UbS6vmkvLFLq8n4JuySALg=;
+	b=h6mcdzKfAa62SqNVX9WFySltrqUdqlryM7yP/3AfrA96oZyc39f1miXC0EeOrkM7MGoz2H
+	stCBj8m0j2fOpi6ZVtH7qu1Yo3EkcAuaQ9+4cQX+VQh4QuVZSRXaQfd8XI25XiqycnN2hb
+	X3mBR74ZjcokIsbkOAku27gCO8OAMiE=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VYCrWSxU;
+	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771018672; a=rsa-sha256;
+	cv=pass;
+	b=ZAoa2S5hsq3SJNWB3e4ScbxxdOLgBEqgUF7lQ6ABYrzo1lK0CHN7BdtOCWVnGsHVZ7r4Fq
+	pOJsu/gLC2j8c6zUow6fS3uFRkUbGS0PmFARYY0CJBL/QFoHRTiF6ZxXdRTqZeh74Qm5x8
+	20wrKbMVPvgEBiEN8Ho6SlgK9/YeKOE=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4362507f396so1307753f8f.0
+        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 13:37:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771018671; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gPagpXPTJHJORWJ8dYmzj1JHBz0Dvrd8gaEOf490daQr6Edezum9ebQygs4w0uDTx4
+         JQGdPjd4aVbga9/wpQRrr6RzWKIwNjKpPL43prIPhF5ZkFOq4N/QRzK+jSieBVOnN9GS
+         Le16YstZwZ1yab8dR7YJnY52Ih1krIX1OSSDOF5Bb1qLYl+hjKfiKHH7mTOtMki/apzk
+         jr5tbziX5Kqm4o2RGCqlIUpaLCfs1PN8jEgAxYNmUJbZYKTyBMiLkNswFlvPbYRECWtx
+         xA12repfeGQcpEvAoUiqUEK4G3fyNJlh1bq+293+ZBluRZlNfefPvmtHH5dOCYv1tI2O
+         fnvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tGNTntAipGaFdyX8UZHJ7UbS6vmkvLFLq8n4JuySALg=;
+        fh=EGent7ca/S7TvUbUdXBluMyg3NWjrmWSc0WKWZ7/1TM=;
+        b=QletYwkCpiSiR7eDRybi4D1XwDCJpm9gpF4YqxrEtSzQjNQffcTyqCj/d7NXkHumWH
+         HaJ3O4xobCJpynm9RiV2AWXIDWRHiKwwUx7QbvTxgckhIYOHTzai3Wlkmm+aviDiljgv
+         SLsz8MMFJNZKSr4xWHryVno4b/5OUMxtfMMfIuaWxhkd7Nh8/1bztn0LNO721KAFbXXf
+         XT1daKedowPWD64I3KqvwULp62+Po0eUXr0nNf+//K4VdCYCPXBbhD9+567pf87mFRrQ
+         HtLS35vUl5diWFzo/CwCYLSDsDmqaEzUIMlEuRb8lG0xKpSyriL7vT5xJ6Sn8ihmiGjL
+         mhew==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771018671; x=1771623471; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tGNTntAipGaFdyX8UZHJ7UbS6vmkvLFLq8n4JuySALg=;
+        b=VYCrWSxUFgOQnKcA9YHW8PYQ/IP+rhbFPw3FWXaXxdU68hTkBCgtBmbAp726PkMM1/
+         cVSUZuvFbKpmjUVSxYvYRa+d959ELclx5gN0GFVJcatPONpwNvduc64OaMkWhCqTcbG1
+         SkiEF8XK/iEoFmaV+nlDIGNkAxSkCjcnkhQTttlR03cH00TUkJL5XDFRJtxn34NDgJxu
+         Ylglo78RtopVRpK0uH3TlZvRxWzzBPqFtdQzSaTMHggxPJkPgWsaiJLashdfrLLWWD2H
+         CC4R98pSOzkx+XzPCsDLy6dnP3C1QP3CHB0zeRNpPx64d5l9faY2xfY534I3YLI7q+bb
+         BBmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771018671; x=1771623471;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tGNTntAipGaFdyX8UZHJ7UbS6vmkvLFLq8n4JuySALg=;
+        b=i8ufupua3zy2nvQVBSjOgo3ZKRN9VGTRQLmZAMGPm+8ytEtLXRqKYiynL2mOg0kHFM
+         jeJ+SgPqeq9SkEvUjJrwR1VKrLyolQyzKjTe00lluJkO2nAeWURwk22y7PRPm6zoFWzV
+         lAvgDMqiPfhGznbul3d9OGxtfuaC0PCJFTWZnbpetWrE7Pi0vkF+2X6NmZt0qyQM7tAe
+         jDby2S2O8DwNqoR9H3R+pKBBCvF/9d99c6Y4e/0JYywjKLeKv4Y1+fQuc0LsHu1b79SE
+         73ekWtoyczC31By2FJbOGXieMxw2Wgy7+7JJ7kcYJWdps+H4OgpiN5OzPmiQ7m8UPyML
+         Y3ww==
+X-Forwarded-Encrypted: i=1; AJvYcCU2PNuPYJIkF85wOOJHXb2wtZQrv0lc+hCg+qaOf4yian/m5oGwqw0z4r80hBKaf7Axhm4FyHWyZw==@kvack.org
+X-Gm-Message-State: AOJu0Yx2TtiLQQ2PxXP35D9gj+0OKODSXAbl/ynCs5hKlSjU8alkQGvR
+	Kv3CzQPR7z36UsgnAxAplNbEb/3CZiPUivG5LYNVNVN/OYnsiHoykeRF0S6SJLQInbnNrahNzA0
+	PXt3L+jKtaFwo8ZWngo7JOzkinLgj3Sw=
+X-Gm-Gg: AZuq6aJ2FxZVXn92aQWRcX3jceC7EGMhVrDZW1k+WVn1iK7vmID47JABScW25Ap9d5Z
+	oyHz6/O9kmHF3k8hZWMPi0XV7c8zP8a2NT1fE9nUsgYqW3RPeL+IytPrlWLQYndzNzHceKZC/26
+	yHtOgyQtKm1S0pGwYOwtZMna+DKL4/e6LhzejFZjOcegQ8nS/xQSoDroGOTvagQc8DYDWN1jQkS
+	GQIVdnkonNsksQCVx0XrHrmHdmuPCZ0Dqhb7DAFtIxveryq0GnuFlY7gMxmjeGJ64Ubk1M3WCpA
+	3LN1WvhBb4Sh06HlmvKQBjx93Hd5FcDdPYWiuamKyBtk1MIcUTiAYAX4dmFbFsMg46+Lq4HamV7
+	YDPwrhEZhdGla2z0Yuz87NMaimA==
+X-Received: by 2002:a05:6000:310d:b0:437:7589:100c with SMTP id
+ ffacd0b85a97d-4379793f40dmr6215492f8f.58.1771018670782; Fri, 13 Feb 2026
+ 13:37:50 -0800 (PST)
+MIME-Version: 1.0
+References: <aY3+Raf8eZqipCd6@e129823.arm.com> <CAADnVQ+D7v+sGFFyTfSxFSEEcnGV111NeSaVtASYHfP-mDnV4w@mail.gmail.com>
+ <aY4Vipl+4rGa+u6D@e129823.arm.com> <CAADnVQ+ad1Eu34hS21HNLgzA5eeFHMvQmoC33xKpP0z247MaHA@mail.gmail.com>
+ <aY74MqGV4A+kwsQM@e129823.arm.com>
+In-Reply-To: <aY74MqGV4A+kwsQM@e129823.arm.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 13 Feb 2026 13:37:39 -0800
+X-Gm-Features: AaiRm53dkt1PoQISalig28Fltlt3-YYJ6sDHOyTEu5Ru6hEECJfSFjcsAFUNZqA
+Message-ID: <CAADnVQKAv+MRNrK=2MmEFKcB0FkmtG2pchdp35xo1ya-ujqVHg@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] eBPF isolation with pkeys
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: lsf-pc <lsf-pc@lists.linux-foundation.org>, linux-mm <linux-mm@kvack.org>, 
+	bpf <bpf@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, david@kernel.org, 
+	ryan.roberts@arm.com, kevin.brodsky@arm.com, sebastian.osterlund@intel.com, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ABCA3140004
+X-Stat-Signature: tif8n5o8e5c5s41b14g94f17cbcx8rrx
 X-Rspam-User: 
-X-HE-Tag: 1771013887-538756
-X-HE-Meta: U2FsdGVkX18NP8+6qgAz/HKXBUoXyz2dArmZDXaTq93PUsjlV4ONy5c9gPELsIyYAbmA1MmiEXL93krTrdtQnYWq7YzwB9I12gBWK+c0vYqfnNz6PP0VqBBLRR48r//RZoFT1i8CdMZE5DyOoQvShoNhwzxXIWr9y4lTOFg6056H6d3C6JAkdKT7Nckn56QbUBDIo4/3ZoGxTqPKB/TZt6IEDr0TKMrfFuVeBl5jUyC5KqwC/RQYNkKW84umwkhDe60j0pXY+/KMRszOMyGQBKN8IYfuCYOz/TNnFgRLsiG5W6aaC28Y1GIkDrfEoVnSSAnulkuvyjCEdfBsKXIaCpUtVEdlzmy/qmmfnrK5hXyvlOSS9BFbFxX+hWwFGRUHa7nfTO7JjNNHapWL2OCTSBGiDn8m7q5UyCAEDuI7ywQHpTZq8nUW+VPisNwAt1qI5f9upDRTuYp+481zmiOtWFGBdzAdVIvYuJE3bJR4sgCXds6evJ7in7WMpOzaPXju+zH/3c7oWBny4V1C4yUTOyz18hc80aUjXoCd8qq7hX2in+egASkDGSVPB2Yp89MxyZ/VRHdEMJeHNqPXdnUnb+PJQ3bHCcDcrxE/cv7NDIy7o6MEgzzO3Ba+csNaZSPTeqOEyADYD87GcvAjCdMr7p85tRGjhZewpPDXS78W/YiVHAtsWtcp0j6K2bG+sXSlfvWXoKKBxqc5l8ALbosc0d11GvNBP+49VdJa8cqgWk3C2OUKizlKSuvJPQxQ+g6uN8fYgPAXUEeEccwIiw7nWJehemG204t5rK+aTnEUCZCDwNCkCY1DNrd/CyXOgJwY8u+iTravuJVMG/+efFVxwsvvLQrk3t9qMLl/21lnxNOJVLwZyjXx1ePHbvlKKj8q0zdD6QRt7m6FP6lVX5nz+cmEGs3+pWdnTpgklLMJWBjj4HQnSS2U0vb47sFtP4U/qrDPVQHm9+R4r1EZYEy
- EHiJjhuN
- 7OgdfczfNjZKAfR3Bjmsa7EsMx0l4b3cn/xtGFtnTxjMFunaUgYgpdHNFQ40Dek2qWT5VM5yUVs4o366muOvqhiEExm6RfIi5AcZQIBymuxDJo92pucWlh8EfGgAqfvB2hhb9ZDtgxrsEWTnsTaI5Mie6ouaRhad5XaN3w5ighYA0J4dZUFvgyOVEL6zNjPXpMEippMS9cesgLZ4ZG6MywNbuQWWHn6lVmfYZBSKpo8Wq+fGEhPZ5VJBMP3rJoyI2GRenLeVvvhOm5f5+CVjsYBzqlKQvLgSr5FC5e1yWWo9cgtPEHDqa0+Ubvr6xgyO5qDFDCJ0tLDr7kDKl1xOFlDt59fbuR++DSBhtRbwCe3CvUcEB+0i/bICponiYFedyEzDyrug3QTcmP24=
+X-HE-Tag: 1771018672-25912
+X-HE-Meta: U2FsdGVkX1+qkU7UmuEjlIJtwVgY+2S2e815QIeofCODs3upcmWKViktkK+qy3kXhJoG/HkZzF/4wU5lc/Aks+7CbMClUgGD6rhEO33wmbH7jutFWEKR6AdK60fQEJSe9aXBC5xJwtmvHhSCPOuUQyMnYHuTmiAHRgXNME7mzRqXMr0bekI4l6UJ+yFLNQ4yQn/D13FJisL/oe+MUUeJ2fHa6q3511XC8qrqCEhssen55+IutnEAlL3bZXjMiVbiuPLy66b7WSlcwq5lHiTZAZnDTH+F49W+RuaWEkUIsHV2/AvEy6a4pxZG/XBagdzHoXWyM8gUip/rpJP+AFaaiMSdNVF/0hGf/kfCJ42ZVipBu6vN9su0hzZQoe5+suZlhFqGiJH2Dp2YYRjQIRUxsFcNEe89HmbB8VJsrkLpPdpD7GszXOe7VtSYJ/QUQIySuXv9nyPPmE6RGu5aVY5mLaC9G68pxwim/2Ku9qS0/y9q/m7ClGfx112f+9xXVL0YmqazqUv1xQ6ruxMlbIebIbIqcr9K0Px9/tY4V642F5D68F+c0Ryo6iqX/r/hU0/UjW81WEBjz3N2CcswZkJ9Bcwjg5fhOsdy8wVuppSJWAuaAJwMbhqmKMVoQ+BavZZVWmvhD7FHL1D0xZcD3sy75Bo+0vqW8pzagycPDhwXqS4DleW2lGfhOVU++dZcjPvIP78kMpUssHnUFhAY8YSpZWdQhUIgmy6OpXxehrD9ZMUmQj3CtVE5tIDzeg47lHiFGvYBeicy1jUA3X6famPR8lYaR4DHimljzrzaWkGWUaE1SbzhALaZ651fUaQ+zwLMBpZ/HRdgN+4g9EaG4BrYnsiBXn9cnber86DFqkI3Ca37nankvG49kLV9y2kHr6TLW5f2JU4/0iCzIqnDavQbiYeZwSKwxfzQB48aIEuNIANibpa0VRcwipjUNZgdlShbWE9BJmxRNyEvKiFxsZN
+ U1SOMdSm
+ wS4ORZhI29vdoJAC6wkCMHrFBq0v9NnJuPyr+dqfHMnrok423FUIlUS1vuM3eEMgaPIBJssA7AIGTwFW6FZyzOrUAmEkAjWuLMcjyaOQp3+MWqFJo4yPNeQSnhbKUM2uMSntz1Rzg0tqOT9iZqIjMPqK41G0qt1V36/a9+J0vWTN1V55qDuJ5M0dXzHtm6roN40PmV6OwGe6CXJtAkohLr2I2wI05yCkl7m96H2pFRRFg/Odb5d8OBjXU1/KxpySPMX+Q6ShcUTP1RYnarIysDhvd/PWEIkCMLKhEy8DXrmEfGNKtd//haPOiNXLkWyOj4XjGknylLxPiu/FJxXrNPB364hQx19uYvhBsjIlIyGNeB5fKb/EwlD6ZiIEq+RjWRbApTSRLCUirjcEPeTzT2Ah/MpQahY2zL4Gul9TiGSaUwXYkdxZEys+OIafa2uk+uYNRhY2LNi7j5Caxj3bcYuOGgs7sitX8+e7vknkBWaZ5cFc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +144,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Fri, 13 Feb 2026 07:17:17 -0800:
+On Fri, Feb 13, 2026 at 2:10=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.com> w=
+rote:
+>
+> Hi Alexei,
+>
+> > On Thu, Feb 12, 2026 at 10:03=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.c=
+om> wrote:
+> > >
+> > > Hi Alexei,
+> > >
+> > > > On Thu, Feb 12, 2026 at 8:24=E2=80=AFAM Yeoreum Yun <yeoreum.yun@ar=
+m.com> wrote:
+> > > > >
+> > > > > Hi all,
+> > > > >
+> > > > > I would like to propose the topic of eBPF isolation with pkeys at=
+ the
+> > > > > upcoming LSF/MM/BPF summit.
+> > > > >
+> > > > >
+> > > > > Background
+> > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > >
+> > > > > Today, eBPF programs provide powerful capabilities to extend kern=
+el
+> > > > > functionality without requiring modifications to the kernel itsel=
+f.
+> > > > > These capabilities are largely enabled by the eBPF verifier, whic=
+h
+> > > > > enforces memory safety and other constraints to protect the kerne=
+l.
+> > > > >
+> > > > > However, vulnerabilities in the verifier have repeatedly demonstr=
+ated that
+> > > > > eBPF programs can also become a serious attack surface.  In sever=
+al cases,
+> > > > > flaws in verifier logic have allowed malicious eBPF programs to b=
+ypass
+> > > > > safety guarantees and compromise kernel security.
+> > > >
+> > > > eBPF was restricted to root for many years, so the above is simply =
+not true.
+> > > >
+> > > > > Representative CVEs include:
+> > > > >
+> > > > >      - CVE-2020-8835   [1]
+> > > > >      - CVE-2021-3490   [2]
+> > > > >      - CVE-2022-23222  [3]
+> > > > >      - CVE-2023-2163   [4]
+> > > >
+> > > > None of them are security issues. They're just bugs.
+> > > > Like all those found by syzbot.
+> > > >
+> > > > > An RFC series is planned for around Q2 2026, and the experimental
+> > > > > implementations for eBPF isolation with pkey and pkey-aware memor=
+y
+> > > > > allocators have already been completed internally.  Using these
+> > > > > implementations, we verified that eBPF programs running under iso=
+lation
+> > > > > successfully execute several sched_ext applications provided by
+> > > > > tools/sched_ext, as well as some bpf kselftest cases.
+> > > >
+> > > > The stated goal is wrong, hence not interested in patches
+> > > > or discussion at lsfmm.
+> > > >
+> > > > arm has a nice hw feature. Sure, but this is not a place to apply i=
+t.
+> > >
+> > > That is correct =E2=80=94 this is a verifier bug.
+> > > However, the concern is that such a bug can lead to a security incide=
+nt.
+> > > Not only root, but also users with CAP_BPF who are allowed to
+> > > load eBPF programs could potentially trigger additional security issu=
+es
+> > > through such bugs.
+> >
+> > Again. They are not security issues. cap_bpf is effectively root.
+> > Just like cap_perfmon in tracing space is a root.
+>
+> The argument is not about whether the verifier bug is a security issue
+> per se.  The point is that relying solely on privilege boundaries
+> (e.g., root-only loading) does not eliminate the impact of a verifier bug=
+.
+> Therefore, leveraging hardware isolation to further constrain
+> the blast radius is a defense-in-depth measure.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-02-13-07-14
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/44331bd6a6107a33f8082521b227ffa4ec063a40
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+I hate the reasoning that bpf somehow needs this hw feature.
+It's not. Look for other use cases for pkey.
 
