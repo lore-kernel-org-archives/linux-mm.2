@@ -4,101 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86D0AEDF170
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 284D1EDF172
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB0DE6B0005; Fri, 13 Feb 2026 10:07:33 -0500 (EST)
+	id 7111A6B0005; Fri, 13 Feb 2026 10:08:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A352A6B0088; Fri, 13 Feb 2026 10:07:33 -0500 (EST)
+	id 6F24F6B0088; Fri, 13 Feb 2026 10:08:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 941256B008A; Fri, 13 Feb 2026 10:07:33 -0500 (EST)
+	id 5E7E56B008A; Fri, 13 Feb 2026 10:08:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F1D6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:07:33 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D49EB593DB
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:07:32 +0000 (UTC)
-X-FDA: 84439762344.14.9D87FC9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0EFD712000B
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:07:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=itVjokIe;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E5C26B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:08:25 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04282B9D7E
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:08:24 +0000 (UTC)
+X-FDA: 84439764570.02.B3806E8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 063C81C000F
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:08:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Aol200H2;
+	spf=pass (imf20.hostedemail.com: domain of luyang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luyang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770995251;
+	s=arc-20220608; t=1770995303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uojxyVfGQerpVYTGu8/Z0EiuhJCcc/owTFnkbrjsF00=;
-	b=T4rnC0Xhp4BO/tWi3vf4AIFkRTgG0iTBxWF2jPAxIcVJiTHve63iwO6g2VJnKeEusxWH5G
-	ISN4impJ9YL4JQttt5D//MQb4x4n04jgMAcYrjYJwiVq9+lhQcuvAD88MJ5HI3ZGcVGckc
-	owSVznyhsR0/fc2gDK6L/sEb77//f68=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VdwntqRmfU5Q6bP8HbCiALvYsNAn6fL7y37a95bOK7c=;
+	b=Az7GR9s3uKH8ED9PSl0OlJjnHMDN1y+ngzt5kMgrSiVTyc9hGtMUSvV/WZdFn+mOS4SMqh
+	DM7g8Yn60wAz4NhKUmdO35/j00UM1rZdS7MVKrdG0Yn1gEYy66ZhqPxbKZxggCItVXPR4M
+	+z1WNUOT0/i5JLrPpigDcvyd9WrgZx4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=itVjokIe;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770995251; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Aol200H2;
+	spf=pass (imf20.hostedemail.com: domain of luyang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luyang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770995303; a=rsa-sha256;
 	cv=none;
-	b=iAdSIn1w9tLKLvKaf2/To2/g9EmzUKIIPW3GWeT0Ype2RMbS+OljEL2rzqQ8YPaUphLbCA
-	yHMDaMIpqRVQG8jzRj6up1wLy0G6+6QSm2HC2qDwf+bVXLD5yNORTUbM0rAMwqk9t18Ez+
-	Wr7pRkzV9wr91G1qBtT/XGJchE0stF0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E238244381;
-	Fri, 13 Feb 2026 15:07:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA76C116C6;
-	Fri, 13 Feb 2026 15:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770995249;
-	bh=AH0AJpT++zf8FgMVPuLv37uUnHoF9bm8SpIB5HE8mNs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itVjokIenZXRJlHUJ9HVaveBSwIkb31xiIs8APERZyDSEHQhhGOQH8+c6/PVrjt6w
-	 GWNdkc+S0nuG9Jk1RPABvFZLMXXXeizyhCQX+dAm1cAT6er0rW+doOgmeDuHt3pTzU
-	 EYZSmGpEi+DtVX29+iVJBTWxMt1b4FjdsloGU08icpY5RBh4HHGxzqgvBkxL//ww8/
-	 6bb9SScoffEzJquBntlPZNHCPA5iEO6gnRWNZLND3kd5CXnn3Yb78y1K4jp/IaZ1mL
-	 cs1GNkrljONHfMsOY8wCnKR3nBRsBvyVypQ+WpNEFpbS1tS12wy1VHMWf5ZemAIz/d
-	 tzR8dPeuoaqCQ==
-From: SeongJae Park <sj@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: SeongJae Park <sj@kernel.org>,
-	Qiliang Yuan <realwujing@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Fri, 13 Feb 2026 07:07:20 -0800
-Message-ID: <20260213150721.72997-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <c2388a14-9ef1-419b-b86a-56629708be15@suse.cz>
-References: 
+	b=qdMHNJkwwc2nyOVJVSdX70P6OTijw7+3bElpIuW3OqhT+Gb9FrFeaHiRM4l8tm9AsmcEPn
+	lsIR2NqG4YbLd+/W3kKEH/CBd/fLvdFE8UjeWWHj4HN8N31jYylArhquTl3Tx6YLdYsnxb
+	wnCJmSc8Byg8u8Nv6ikN6G2V2eAyuTo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770995302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=VdwntqRmfU5Q6bP8HbCiALvYsNAn6fL7y37a95bOK7c=;
+	b=Aol200H2C0qqM75uZ8k5jIchwYft80QZJmKvFHli1/gmQr0f+owHAtu87g6SVa8e/cP54M
+	9/uJC+ryRpOdUQAs/qwAXkYn6uDZElN9rMkz1rs2rDEOfG0q6Dm/SAx8Z3PI5xSDiiakAp
+	BVCJspoN87GvDkHv384hivANPLaAOzM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-6zxwxEVwNRqei7-brqVJcw-1; Fri,
+ 13 Feb 2026 10:08:19 -0500
+X-MC-Unique: 6zxwxEVwNRqei7-brqVJcw-1
+X-Mimecast-MFC-AGG-ID: 6zxwxEVwNRqei7-brqVJcw_1770995297
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E36701956050;
+	Fri, 13 Feb 2026 15:08:16 +0000 (UTC)
+Received: from localhost (unknown [10.22.89.46])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 97F9530001B9;
+	Fri, 13 Feb 2026 15:08:15 +0000 (UTC)
+Date: Fri, 13 Feb 2026 10:08:14 -0500
+From: Luke Yang <luyang@redhat.com>
+To: dev.jain@arm.com
+Cc: jhladky@redhat.com, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
+	willy@infradead.org, surenb@google.com, vbabka@suse.cz,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
+ PTE batching (cac1db8c3aad)
+Message-ID: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: uJ8wUq9dLex3wpHhM04h266Xi1tYpFX2jib6ANt6ugA_1770995297
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: dsrc6kjz9pic7zp1r3ubp8cspac1ifbu
+X-Rspamd-Queue-Id: 063C81C000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0EFD712000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: p4wp9fekhbesjtmbizwbrmjhh715nw3t
-X-HE-Tag: 1770995250-344556
-X-HE-Meta: U2FsdGVkX1/frjWROicEGpXaAUZKlal6pCThvfLBXk0f3nJcblNpmDpEYQculyr8Z28L9D10g0x8D6wkKihwuSLdurCJ/LmoM50VgEIR7ZggTP63ufSK/CGSSqbaJYYbCkyehs0XYqz3TXKQgOOnvwoDZc7MWUyrPJtyi3nV1HV3G3r3d0MnDoATQnX3QpD1mHQhmt+rtkRIsR8NgJDjAKdHtWJ9pH/oCcyhCkoPgBmt2zuTdTRWkcKbbJUCUDFz9uw29jWTMdleht4xT23HUTid3cmveQuFZ30fbYDznmjX+E+qFrhs1bfpHY3kbIyBVeJ1gXkx5hS6A10NCmajVx3lKfrYvkdhJwvzIRELKdxgJU454JG9qxIgnFYxNtQ+96BA3r0a0NWJ29BTN+FNyVaBccNHtQ5U6lham0IFQRmH1xjtdRzHjHxGxaJ0zcqQJ0g8Kvd5DadGwYmwHWupc17cCusSdjhZGi+ufdoiwjHopZxBi/v3c2Jd4BgAzSiuyHehbJ6P1NCcIJjKFo5tvz/saIK9v2d4pPPUq+R4OW9V+EaQivneT30oWDWnjmw4omqMMVIlmYr8TPrIz4PW09RRJjydvkPQlL/GK+sKVQ6kti8DCT2fwecgu7T7Yp84frOu94pp50hXUzwZ8Sfo1mERRDZlZDK3Fak2ElOREEKX6iastrYqUdaJCzG2aApEu0qO6O6YV7smRRcYxUWMJLTPLasn1R9c7IGpLsCRK5vQFUtMHu8KSTeiZeiB/8KVvph+BtvdW7hmmGsjQ4I4ft1dHeRSzW1hDmGIo98VgWfF96mBz9r9lSU1vr270DV80a4loeeZgUC+KqeEb40gu1l7D2aRQX87LqlA0iO6wEKm0tC70zwfLxStTMfu4zyae4cioOZklEoIsGBXEJD4czggTNZQFMC9yHpTOl5oSqWNH3N8oB14esrrZAHCnGbrNO2d1qenI9rBOdRKsKL
- +4x5Lpbi
- r+107f175AzOZApyfPMUPhv4ZYKrJfYEhLvtTgqBFDtNcIRVdVpfVlToijyZp9tH1E7FKxPVVh2LMxLdu4JAI/zS6C0HtER6ZxhlXrlMrMUOIWaYGo18sDGXG9N/OGJOkwVYTPLaXuZ3d+xqOGnjit0DGIMO7RO+JF71CxO9qKr2bdmTVcCGSWCb532DYvfHa1Rbq50PTShHk2w0BJ8NARDn/lHZ3aszQSiPyje3hsMmfWMSu+QyinrE6shoBCTLMiY0+
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770995302-484227
+X-HE-Meta: U2FsdGVkX1+5Mt+2GzLWuvPLEkUrWDBLQAK0lOlCkj61f+2K44xRfC/OWsnPA6hssoqE9qvslaMgheg++icbKuei16ML7WT0iK0hn8DHXgTPadD3XkZjj137/DJ87DkP7rVFQvhQndZbtO87pVoaTl3nYj5JS1vW2iue2b/oURar7VMRlMflLZ9XWcOwHVhKkWz90pInGg0Vs4X6LYVNQWEvGdm7zW1LNGeC07r5TfiqY0tA8pZ3feivycBsNXKJ6h21KJD7jEye/zZzV3qFPt9MueqyDvXOaoz4mXSUk+YBHAZy3JkO4DOjoa4oPpCNGFRfAVdB9wj+381TORilLHaPVzI9rXJSq970FkukCNiDQFgfHBT5SZJ9y+RfjKfeP/tzgQNhlqKfrnccT1RSo3qAAc5zWz19P5xhJf983VC/kvqia3ST6bxZUYEIvO84A1NKNxhTlneR25YyBYWWahVN51rAoQGW6Ds+m9MjMwzShPROqr/rgmmzBw5gS7nOKnMYpB5uVhfTEwS48FZ4o5VJu3TIa+LE/qefPtRQgCNMyHeUOqb9gSQNxcR9bQT2uPcfuTt6kwjFt5qRF/JIlrVKlpRGl6uImzDWeqexnqJAl9tb3+IHF05l0R7IszxOEath0Xe2t4qgTqH+D29qyKGItIBD/5qyd10Y3KrejpaRgcX9IFLQnBWt9apyXG+AXu3j7iO72KZjFowsAUz0J2K9bD4/IcWDo1eVDjqJj3/F02HX+zOvHsYKl8d/ySfx0faGLHzoidhRbWaqOI3OCbMkh/ImDVfkEFTTJ2k5ylHjhjVeDjlEl/2Xq5KWnO8evwqW0xlanGgIvl7ynuE1fsXSDvaIxz9N0LMApGlhm8KvAr1aSLWybwTyi909YAwVBZcufON53nTKEXBDCTYeYJwiwTWUMp0dCZ+ksk0SehfyqV+Y0sxjZsbVMy0hWa/0jbjzR+WjRj0LNyR2tK/
+ cVHH03NB
+ PFiujkbw/r11yEl60LBCpUi2ekKBLIVKrk59BUSytWqEtmCJhsNQYQRa5UWiw7P7f9Wlx4+RCU6d85V1/wb9p1WR0AoxvSTaWUoqur7NiczG1zdNhMleBVX4pMJFfG5GH+t2ZIvGCULNxQ1jZu6qp15rEqEPEMXUUZK1IoJrt8apzvpB5hTM7Xc/9LJ00i/nt8Qa5YXB2Pu8SqlkQxW0qn8fOOHKVUX0HnjlFOIyI+khoVfIjxChJG1Jc/V2pLfvzor0mW64h0RUQQr2MAfG5SFjh0rvNtl+gPvrKCCiOQBlgeKdJI9kDq+DE6PomlQ7iAZH/AN99DzXEDLMr2tSD9u6j9Y0osyKJILLH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,90 +102,283 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Feb 2026 09:46:14 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+Hello,
 
-> On 2/13/26 04:17, Qiliang Yuan wrote:
-> > Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-> > pressure as they cannot enter direct reclaim. This patch introduces a
-> > watermark boost mechanism to mitigate this issue.
-> > 
-> > When a GFP_ATOMIC request enters the slowpath, the preferred zone's
-> > watermark_boost is increased under zone->lock protection. This triggers
-> > kswapd to proactively reclaim memory, creating a safety buffer for
-> > future atomic allocations. A 1-second debounce timer prevents excessive
-> > boosts during traffic bursts.
-> > 
-> > This approach reuses existing watermark_boost infrastructure with
-> > minimal overhead and proper locking to ensure thread safety.
-[...]
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index c380f063e8b7..8af88584a8bd 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
-> >  static void __free_pages_ok(struct page *page, unsigned int order,
-> >  			    fpi_t fpi_flags);
-> >  
-> > +/*
-> > + * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
-> > + * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
-> > + * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
-> > + */
-> > +#define ATOMIC_BOOST_FACTOR 1
-> 
-> ... so now we #define 1 but it makes little sense without that hardcoded
-> 1000 below.
+we have bisected a significant mprotect() performance regression in
+6.17-rc1 to:
 
-I agree.  I think it could be easier to understand if we use 10000 as the
-denominator, consistent to other similar ones, like watermark_scale_factor.
-Or, defining as a constant local variable or hard-coded value before its real
-single use case might be easier to read, for below-mentioned reason.
+cac1db8c3aad ("mm: optimize mprotect() by PTE batching")
 
-> 
-> > +
-> >  /*
-> >   * results with 256, 32 in the lowmem_reserve sysctl:
-> >   *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
-> > @@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
-> >  static inline bool boost_watermark(struct zone *zone)
-> >  {
-> >  	unsigned long max_boost;
-> > +	unsigned long boost_amount;
-> > +
-> > +	lockdep_assert_held(&zone->lock);
-> >  
-> >  	if (!watermark_boost_factor)
-> >  		return false;
-> > @@ -2189,12 +2199,43 @@ static inline bool boost_watermark(struct zone *zone)
-> >  
-> >  	max_boost = max(pageblock_nr_pages, max_boost);
-> >  
-> > -	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
-> > -		max_boost);
-> > +	boost_amount = max(pageblock_nr_pages,
-> > +			   mult_frac(zone_managed_pages(zone), ATOMIC_BOOST_FACTOR, 1000));
-> 
-> I don't think mult_frac() was a great suggestion. We're talking about right
-> shifting by a constant 10. In the other cases of mult_frac() we use dynamic
-> values for x and n so it's justified. But this IMHO is unnecessary complication.
+The regression becomes clearly visible starting around 400 KiB region
+sizes and above. It is also still present in the latest 6.19 kernel.
 
-This file uses multi_frac() in two places with hard-coded denominator 10000.
-Hence I feel it is more consistent to use mutl_frac() with the same denominator
-(10000) and consistent naming.  In terms of overhead, I think the added
-overhead is negligible, since this is called only once per second.
+## Test description
 
-No strong opinion but just a trivial and personal taste, though.  Right
-shifting should also be good to me. :)
+The reproducer repeatedly toggles protection (PROT_NONE <->
+PROT_READ|PROT_WRITE) over a single mapped region in a tight loop. All
+pages change protection in each iteration.
 
-And now I find I was thinking the ATOMIC_BOOST_SHIFT coulb be better to be
-consistent with other similar code, because it is defined as a macro.  That is,
-I was assuming it would be used in multiple places and therefore better to be
-easily understood by readers.  Now I find it is actually being used only here.
-What about defining it as a constant local variable here, or just hard-coding?
+The benchmark sweeps region sizes from 4 KiB up to 40 GiB.
+
+We bisected between 6.16 and 6.17-rc1 and confirmed that reverting
+cac1db8c3aad on top of 6.17-rc1 largely restores the 6.16 performance
+characteristics.
+
+## perf observations
+
+In 6.17-rc1, commit_anon_folio_batch() becomes hot and accounts for a
+significant portion of cycles inside change_pte_range(). Instruction
+count in change_pte_range() increases noticeably in 6.17-rc1.
+commit_anon_folio_batch() was added as part of cac1db8c3aad.
+
+The regression is also present for the following servers: AMD EPYC 2 (Rome),
+AMD EPYC3 (Milan), AMD EPYC3 (Milanx), AMD EPYC4 (Zen4c Bergamo), Ampere Mt
+Snow Altra with KVM virt type (ARM Neoverse-N1) , Lenovo Thinkpad T460p (Intel
+Skylake 6820HQ).
+
+## Results (nsec per mprotect call) collected on AMD EPYC Zen3 (Milan)
+server.
+
+v6.16
+size_kib | nsec_per_call
+4        | 1713
+40       | 2071
+400      | 3453
+4000     | 18804
+40000    | 172613
+400000   | 1699301
+4000000  | 17021882
+40000000 | 169677478
+
+v6.17-rc1
+size_kib | nsec_per_call
+4        | 1775
+40       | 2362
+400      | 5993
+4000     | 44116
+40000    | 427731
+400000   | 4252714
+4000000  | 42512805
+40000000 | 424995500
+
+v6.17-rc1 with cac1db8c3aad reverted
+size_kib | nsec_per_call
+4        | 1750
+40       | 2126
+400      | 3800
+4000     | 22227
+40000    | 205446
+400000   | 2011634
+4000000  | 20144468
+40000000 | 200764472
+
+This workload appears to be the worst case for the new batching logic,
+where batching overhead dominates, and no amortization benefit is
+achieved.
+
+We will provide the following minimal reproducers:
+
+* mprot_tw4m_regsize_sweep_one_region.sh
+* mprot_tw4m_regsize.c
+
+Please let us know if additional data would be useful.
+
+Reported-by: Luke Yang luyang@redhat.com
+Reported-by: Jirka Hladky jhladky@redhat.com
+
+Thank you
+Luke
+
+Reproducer
+----------
 
 
-Thanks,
-SJ
+mprot_tw4m_regsize_sweep_one_region.sh
+--- cut here ---
+#!/bin/bash
+gcc -Wall -Wextra -O1 -o mprot_tw4m_regsize mprot_tw4m_regsize.c
+if ! [ -x "./mprot_tw4m_regsize" ]; then
+ echo "No ./mprot_tw4m_regsize binary, compilation failed?"
+ exit 1
+fi
 
-[...]
+DIR="$(date '+%Y-%b-%d_%Hh%Mm%Ss')_$(uname -r)"
+mkdir -p "$DIR"
+
+# Sweep region size from 4K to 4G (10x each step), 1 region.
+# Iterations decrease by 10x to keep runtime roughly constant.
+#   size_kib   iterations
+runs=(
+   "4          40000000"
+   "40         4000000"
+   "400        400000"
+   "4000       40000"
+   "40000      4000"
+   "400000     400"
+   "4000000    40"
+   "40000000   4"
+)
+
+for entry in "${runs[@]}"; do
+   read -r size_kib iters <<< "$entry"
+   logfile="$DIR/regsize_${size_kib}k.log"
+   echo "=== Region size: ${size_kib} KiB, iterations: ${iters} ==="
+   sync; sync
+   echo 3 > /proc/sys/vm/drop_caches
+   taskset -c 0 ./mprot_tw4m_regsize "$size_kib" 1 "$iters" 2>&1 | tee "$logfile"
+   echo ""
+done
+
+# Create CSV summary from log files
+csv="$DIR/summary.csv"
+echo "size_kib,runtime_sec,nsec_per_call" > "$csv"
+for entry in "${runs[@]}"; do
+   read -r size_kib _ <<< "$entry"
+   logfile="$DIR/regsize_${size_kib}k.log"
+   runtime=$(grep -oP 'Runtime: \K[0-9.]+' "$logfile")
+   nsec=$(grep -oP 'Avg: \K[0-9.]+(?= nsec/call)' "$logfile")
+   echo "${size_kib},${runtime},${nsec}" >> "$csv"
+done
+
+echo "Results saved in $DIR/"
+echo "CSV summary:"
+cat "$csv"
+--- cut here ---
+
+mprot_tw4m_regsize.c
+--- cut here ---
+/*
+* Reproduce libmicro mprot_tw4m benchmark - Time mprotect() with configurable region size
+* gcc -Wall -Wextra -O1 mprot_tw4m_regsize.c -o mprot_tw4m_regsize
+* DEBUG: gcc -Wall -Wextra -g -fsanitize=undefined -O1 mprot_tw4m_regsize.c -o mprot_tw4m_regsize
+* ./mprot_tw4m_regsize <region_size_kib> <region_count> <iterations>
+*/
+
+#include <sys/mman.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <string.h>
+#include <strings.h>
+#include <time.h>
+
+typedef volatile char vchar_t;
+
+static __inline__ u_int64_t start_clock();
+static __inline__ u_int64_t stop_clock();
+
+int main(int argc, char **argv)
+{
+   int i, j, ret;
+   long long k;
+
+   if (argc < 4) {
+       printf("USAGE: %s region_size_kib region_count iterations\n", argv[0]);
+       printf("Creates multiple regions and times mprotect() calls\n");
+       return 1;
+   }
+
+   long region_size = atol(argv[1]) * 1024L;
+   int region_count = atoi(argv[2]);
+   int iterations = atoi(argv[3]);
+
+   int pagesize = sysconf(_SC_PAGESIZE);
+
+   vchar_t **regions = malloc(region_count * sizeof(vchar_t*));
+   if (!regions) {
+       perror("malloc");
+       return 1;
+   }
+
+   for (i = 0; i < region_count; i++) {
+       regions[i] = (vchar_t *) mmap(NULL, region_size,
+                     PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0L);
+
+       if (regions[i] == MAP_FAILED) {
+           perror("mmap");
+           exit(1);
+       }
+
+       for (k = 0; k < region_size; k += pagesize) {
+           regions[i][k] = 1;
+       }
+   }
+
+   printf("Created %d regions of %ldKiB each. Starting %d mprotect operations per region...\n",
+          region_count, region_size / 1024, iterations);
+
+   struct timespec start_time, end_time;
+   clock_gettime(CLOCK_MONOTONIC, &start_time);
+   u_int64_t start_rdtsc = start_clock();
+
+   for (j = 0; j < iterations; j++) {
+       for (i = 0; i < region_count; i++) {
+           int prot;
+
+           if ((i + j) % 2 == 0) {
+               prot = PROT_NONE;
+           } else {
+               prot = PROT_READ | PROT_WRITE;
+           }
+
+           ret = mprotect((void *)regions[i], region_size, prot);
+           if (ret != 0) {
+               perror("mprotect");
+               printf("mprotect error at region %d, iteration %d\n", i, j);
+           }
+       }
+   }
+
+   u_int64_t stop_rdtsc = stop_clock();
+   clock_gettime(CLOCK_MONOTONIC, &end_time);
+   u_int64_t diff = stop_rdtsc - start_rdtsc;
+
+   long total_calls = (long)region_count * iterations;
+   double runtime_sec = (end_time.tv_sec - start_time.tv_sec) +
+                       (end_time.tv_nsec - start_time.tv_nsec) / 1000000000.0;
+
+   double nsec_per_call = (runtime_sec * 1e9) / total_calls;
+
+   printf("TSC for %ld mprotect calls on %d x %ldKiB regions: %ld K-cycles.  Avg: %g K-cycles/call\n",
+          total_calls,
+          region_count,
+          region_size / 1024,
+          diff/1000,
+          ((double)(diff)/(double)(total_calls))/1000.0);
+   printf("Runtime: %.6f seconds.  Avg: %.3f nsec/call\n", runtime_sec, nsec_per_call);
+
+   for (i = 0; i < region_count; i++) {
+       munmap((void *)regions[i], region_size);
+   }
+   free(regions);
+
+   return 0;
+}
+
+static __inline__ u_int64_t start_clock() {
+   // See: Intel Doc #324264, "How to Benchmark Code Execution Times on Intel...",
+   u_int32_t hi, lo;
+   __asm__ __volatile__ (
+       "CPUID\n\t"
+       "RDTSC\n\t"
+       "mov %%edx, %0\n\t"
+       "mov %%eax, %1\n\t": "=r" (hi), "=r" (lo)::
+       "%rax", "%rbx", "%rcx", "%rdx");
+   return ( (u_int64_t)lo) | ( ((u_int64_t)hi) << 32);
+}
+
+static __inline__ u_int64_t stop_clock() {
+   // See: Intel Doc #324264, "How to Benchmark Code Execution Times on Intel...",
+   u_int32_t hi, lo;
+   __asm__ __volatile__(
+       "RDTSCP\n\t"
+       "mov %%edx, %0\n\t"
+       "mov %%eax, %1\n\t"
+       "CPUID\n\t": "=r" (hi), "=r" (lo)::
+       "%rax", "%rbx", "%rcx", "%rdx");
+   return ( (u_int64_t)lo) | ( ((u_int64_t)hi) << 32);
+}
+--- cut here ---
+
 
