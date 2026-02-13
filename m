@@ -4,123 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEC0BEF48C2
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 03:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56546EF48CB
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 03:51:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF02B6B0005; Thu, 12 Feb 2026 22:18:10 -0500 (EST)
+	id 040076B0005; Thu, 12 Feb 2026 22:51:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9D656B0089; Thu, 12 Feb 2026 22:18:10 -0500 (EST)
+	id F04BE6B0089; Thu, 12 Feb 2026 22:51:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D80186B008A; Thu, 12 Feb 2026 22:18:10 -0500 (EST)
+	id DE68E6B008A; Thu, 12 Feb 2026 22:51:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6CAA6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 22:18:10 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 762011B3E97
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:18:10 +0000 (UTC)
-X-FDA: 84437974740.05.0A75489
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8FF0F1C000E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:18:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jBiA2ZC4;
-	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770952688;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C9A916B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 22:51:46 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 65A37587C4
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:51:46 +0000 (UTC)
+X-FDA: 84438059412.01.E553F9F
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 71F501C0006
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:51:44 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DwoGt+Cg;
+	spf=pass (imf18.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770954704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=uzinu5cvWSVigsPPlyALTMaWKR2jEut1B9F+0mvA3UE=;
-	b=6FaYIIdILCqoTQnnDNzlbgu4H9qkktglz/FsD9qYYF8M+DUjmAfMDOJeP7PsfnGqS06u7/
-	jmzdqEnaa2+KZe0M2crLthUfSG8hoqbwrcOip2I/ixC92mQ6FelTN00o6a5aMuQ/1S+67J
-	LNC59QxuUkFRCN7/TKmIXMsuJUFHLPo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jBiA2ZC4;
-	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770952688; a=rsa-sha256;
-	cv=none;
-	b=XtwxCLbya9OXMT8cpvdoO08ac6Ow7yH5f5ukqgZPACcAl/4JUh4NCFWLm5vGX+PeSa2HW9
-	BZRFyQRSbRp1+aW7Ejvi9x/YUVnrLHTVwspC/21yWB4BwXPIyJUFjvFCNiPflcztV4mEK1
-	vcEX/PebODmkdZP0yjI3YwvEmdNH3vo=
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-124899ee9d3so384888c88.0
-        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 19:18:08 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ur79wVvacYtOc72pTo+eN2J7QrUaGisXZvJ5nNflJAM=;
+	b=zPDtt2gPMwvEIMoCb/5GMd3covRuJVKrbj18j/+IYjERexSOPrFGMU/4KRP/+6rmcjoyj4
+	jf5dQQ4pxWOBE0lh8hf/gnheTxHZrCFq5a3tpzlEgmOwbugJLGBosiaxKCqQ7ZuApXS+za
+	fLfQ7GqqpoYx+DM0FZg+X3ZCuuihkyg=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DwoGt+Cg;
+	spf=pass (imf18.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770954704; a=rsa-sha256;
+	cv=pass;
+	b=4Z5MuhJVnHnOwDsgB9Y2TeXnF4GfmDxvIXcIqN6SO+nUHWiNQbUkw/JkUJ+ADcCloxeP2f
+	CqOkQ/jl9JbVQ+JNVT0hcVt5MYx7Jweamz8y9Tvk9q5oLO4VYR7BKFgNpWwZfYBCfXb7ZP
+	v4mSmHeASlaYR2q2xK9JIqWr5umW57k=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-506989e8516so4946421cf.0
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 19:51:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770954703; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K5tVFtIr6AoUafZAkzpanc7k7s8DtA2/7xPSTDCI3OgZlj+8Jf8cv2AA6nuvgSffyx
+         jreLYAkgebYpzWO+cb6IfkEddpiQJBbolBvIlARnCDkqmaSEaQFySMUCggfw9MKkZi7m
+         69mwu36LLqhSklvCRr2HiJpkaqkuH082vbr7lFNxlsAFJAvwrlwcNm+s5mN50F/wsaap
+         /fwA9Qf4EIy/U8jHMfujAwPBlzvMFRP0qyr/129Jnjaj8DfalloWe3BN2QqLKK6krgLR
+         I0Cr8GgPSKAaVnVL4WyxoRC3OzgjjJMnvaHcH2WlxQeyYquY4WIgVAuPdN/lGRzWDZ8l
+         08mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ur79wVvacYtOc72pTo+eN2J7QrUaGisXZvJ5nNflJAM=;
+        fh=ACfTRHleBqgLJ24pQy7UYWiyvRn3yyDhGYASp8cfj5U=;
+        b=TgD30/gY0UbE9S6wdmm39MQiNR1Vic75boUf9ESvA1w5r97Tj/c6u/fP32L1RRrfrE
+         bxA1Q0mEszQNXCmbQY/DT4wX9FCuIxDJDkjWEOpatnTemnmnNTCc3XMzwdaiQKb2JAHH
+         8Ft2c19b3DxEl5LQ2HxVKu+Li3N2amHYRPORIWzZWa8Djf5VU0XXBDc6Bgm0oShDJtmd
+         /AJ4dx3rQnJ/WYTei8rkT5YV7+gd5zfqakThh/vddJ2IZ6jbPlqJ8cA58b+4dol84WMx
+         RWFchGmGhMOokY8k+Zu/bVmSI5LQl3Qi4LeplF4Xcd+ds7mw0iJXP2OfPvGOIImEHbDG
+         077A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770952687; x=1771557487; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uzinu5cvWSVigsPPlyALTMaWKR2jEut1B9F+0mvA3UE=;
-        b=jBiA2ZC4EAfkQ2CwZXT9exVJoUm9sGbPvzfVxYMPt5hylZ6LbJEAykcpnGm6YEFVS0
-         AQyxO4CXXXCE7TGxIGnikvH5+dGdxmHNfD7YtTZfkwuGte8PL7RMn67SZR/PKcsiiU+z
-         cLKSHyDHxlPI3fpdtqCj/mkMZpppp/cbdBp3K4xuhjISMN/Bj8NmjiGHQNPdKDfYLnfz
-         RZNStm1p98lKlXfEiiRmbJF9wBtX3yZ9MjyLeF+W9LAwTDkoXc119Ug9CO/QBNsaUrjM
-         5bPYNlUZ0Xp2HtW3fevXKGbKqshnGbQV/xu7i3CiIITZXuHKZWELijd2WlDFGIlCGyPJ
-         woZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770952687; x=1771557487;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770954703; x=1771559503; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uzinu5cvWSVigsPPlyALTMaWKR2jEut1B9F+0mvA3UE=;
-        b=EskybhvdS0xJiFzRGHshL2q5C/loFzBqHWRu/EiN1cdzjePYW3C2AlLGa4o4FgGC7N
-         gntgXB7r8O4YGb5tgbdzq9vBdr3taiAWVWETlh0pIGPXJvwOcMrRuOXlU7W3S6tzPjq6
-         JUozs4wMT6EXOM18E59zvPsyq5qic74tMlGqc5UNNVzXTVEF9AqqBUejSzQbDeR1M+qR
-         JGILXW93D26F/7XodmgZbR74kr2Xk18MFmLLIsGZC6ZfupiFtVe+e+Bu8LE0Fvdgo4q1
-         AI7BE2W6/1OU2KboV8b9ApmGOpAbLluirc2xB4favGdT8RBWKxKuI8m8g4cUb3/+xD9H
-         9ClQ==
-X-Gm-Message-State: AOJu0YxEw9gRrrcyWa2xnwr3FyUXU/Wj0EZGhmauMvx5CQCD64cIkw7B
-	N1SgFuPC+wCcMobMFJhrQPftZl289MKGWV3AtANklbYnP0U3/HZXse0n
-X-Gm-Gg: AZuq6aJH5We2tSKxWZ3dS8aW/Lnjm1YSugttT9DNSErvGXMtASBTwNBe30p0sBdfCLU
-	qdEMU01K+sJvBBvOi6IykVRRlJJi8ZUNK2lXSkjVzyY810nHmZG8Z/Rv0nSR6lpWTWxIbTTonuU
-	9QMII0cWG0Idk7W5elWOFnD8tTLfILnJaRcHrYMp5TXbVoIPja3J2c2sScLK1iGcVST3ttEDhlN
-	RRNuepcWs6EnOE6jUIM8YWNa6dZRL4BhlgwMoavwnaSpItbK+qpNllS2G3nwsZ0I+aYFbkG+uPA
-	uEUL5fuIRjmryYw8NRAxQPcrfRAgfzUYStDIpxLz43dsVfnTLZpLksSmFNnsP0VZf94/5WuDAKZ
-	OlTval3OCjiVfpUGcPRUKSHl9QWnvA4/trIBXMBRv4696qlU6/2U9TgkgSK/cRoYd0CzJsyySnR
-	1ncLlxg38mQZzUHhCM+XjRj+WmEn0=
-X-Received: by 2002:a05:7022:51b:b0:119:e569:f86c with SMTP id a92af1059eb24-1273a909415mr204652c88.9.1770952687193;
-        Thu, 12 Feb 2026 19:18:07 -0800 (PST)
-Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1272a694059sm6802187c88.2.2026.02.12.19.18.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 19:18:06 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-Date: Fri, 13 Feb 2026 11:17:59 +0800
-Subject: [PATCH v9] mm/page_alloc: boost watermarks on atomic allocation
- failure
+        bh=ur79wVvacYtOc72pTo+eN2J7QrUaGisXZvJ5nNflJAM=;
+        b=DwoGt+CgGeFfmlQqlSycMahDh42ImcVR6Tqe7HfZOjQJDdzKXQCu/aOVd8UcMlisox
+         SG6qjVMul1XW/MSQN4M5L6a+5Sk8KG140DtgmJyzBAOdGpMvZbq9Idi0rgc+fbqJJlXY
+         lrOfOehQ1EOPIlc2W0vCfGq9EvrQulzoHQxckkF73wqVl0QqbFMu4FSXD0EiT/sZwtKi
+         M2idOh7wRWmrZYDNoinNfKJKhRJHLktlXoepAz5CERJ0rqnAHXyOpO3mbq63wN5hDSZd
+         Db6ZgFmEOYdmQs8btTRaOsXwNBiRxXLqj7x5zrJHcbn58xJDA5f5azXs7LviI+cp3sKC
+         hI2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770954703; x=1771559503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ur79wVvacYtOc72pTo+eN2J7QrUaGisXZvJ5nNflJAM=;
+        b=iuSK73ekAPt11FXh5djAfDx6g4JzzEXZP1ySkuSENBny5YiG3zHgplQRj5ZiGa/I2h
+         kaX5rb42/v+1PRBRC6coiOeJ5LtsQyT8I0BvjchlPI9+BrRnMvxzVEtHgM1wAaTsvokO
+         yawzSIEOVqH+dwlDl/05mdxV/nQby28hXfGGLXCrCRwlzIaBYJ7TmxxH/hm5Xyw7GcCa
+         yFo83RNHjUtbHFhpCVped/Tc17zqVcDq4WW+DTGyPDfbKzqm+sxU0IRDRDGmXYk7Vt7i
+         1WbHafARKpXARZWn4vSZ6gMkr1YYMPDJvLwQ3DzGLij9WRkP2Yg+9bvG27poNGgpmnG6
+         8/kw==
+X-Forwarded-Encrypted: i=1; AJvYcCXdxeduBd0SPV0DJyutNAkfbgaWEzC6gjK/xN5NfkRoxBh6S8YNG7FVmo+yy1bmqDGVOlE4JkvGcQ==@kvack.org
+X-Gm-Message-State: AOJu0YwQhO8Al26ojl8X71JQgbgzdNfQXnx5hajOax0o2HlbUdsMshL8
+	ZinTyOLQH0q2PyTFgIJcUQScJCx4Ct0PHdOxAcLPU8O1KxgiYqe6IEEF9kOHRLUem9Ux/tk3s9F
+	maGcTdZWf8iE1h+N1hPQjZhDRdzUwFGo=
+X-Gm-Gg: AZuq6aIrNlb4X6L5z88AsRILZdWfEhvMtigUnGi090LUKxThos0wbuPR8kd7AYm04El
+	0SkQLjskkfJFPSZxa7l5A3yhm4D8clusEyp/OHTsdkp40hbDXphHzQieAESvE/DyzuveKnGRQhu
+	mg+YLF3o+/KuTtxF3G59pHMayRrRajg01wNg+sm9oHmGGwQjZ4VVAFqNZ23osrllv2+YRfneh2H
+	WgfW/xhSZLhuVLFpe48dBBG9tOR1R/I3l8/vm1QhmUpHQa57QkRp8oaYSDRQ8c4S+AYVrEhKh1p
+	MTy3FQ==
+X-Received: by 2002:a05:622a:507:b0:505:e9fc:2f0d with SMTP id
+ d75a77b69052e-506a836fd23mr7042561cf.66.1770954703268; Thu, 12 Feb 2026
+ 19:51:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260213-wujing-mm-page_alloc-v8-v9-1-cd99f3a6cb70@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOaXjmkC/3WNwQqDMBBEf0X23C0xgjU99T9Eyhpj3GKMJK1tE
- f+9qfRamMsbmDcrRBPYRDhnKwSzcGQ/JVCHDPRAkzXIXWKQQpZCihKfjxtPFp3Dmay50jh6jUu
- FfZurk2pJl72BtJ6D6fm1m+sm8cDx7sN7P1qqb/tz5vKvMyXHjloqKqWE7oqLdcTjUXsHzbZtH
- 0Sfo/++AAAA
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Brendan Jackman <jackmanb@google.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
- Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Qiliang Yuan <realwujing@gmail.com>
-X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam11
-X-Stat-Signature: rab6djj3sj5go39ob4yycpbyzxg7r9ng
+References: <20260212021835.17755-1-npache@redhat.com> <20260212021835.17755-3-npache@redhat.com>
+In-Reply-To: <20260212021835.17755-3-npache@redhat.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 13 Feb 2026 11:51:32 +0800
+X-Gm-Features: AZwV_QjEFQ9Vkh76on9P-JoHsGsMdhw1n-e21JWVj-0EoHb0mB-c4qDN_bdcHT4
+Message-ID: <CAGsJ_4zyGq-Gg-fO059U98J+cAWFV2Tsq+Azra_hVJ3yvUV07w@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, 
+	cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com, 
+	joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
+	Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, 
+	mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, 
+	raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com, 
+	rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, 
+	surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de, 
+	usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 71F501C0006
+X-Stat-Signature: jyeopmuxhjp5kqmy7md98n7q3s3qro6g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8FF0F1C000E
-X-HE-Tag: 1770952688-487168
-X-HE-Meta: U2FsdGVkX1/TRsq7atOZwZkTcdSNE8Sg5a2QuW2XI2N5dzMvdeet2dkMSbU4ppkfhkVJK1ULOcRpxCZ910p8MuLLNfoj/3s4dfxnbsVg2C9f/Lgs5k/JVupeXLflkkdg7LCxbAyxEGnLVbr/H0P5DsvZwe5ckW5DhwGwd+kuPwb0kqe+vVzxaqwZmvD3geezCWW1GGVtZ0WX/yzqxSI5htLXW6BjRz2ldREZkQv02Sa1Oc1jq0jVc/xKEGPDsq1yDqhksAqCOWUedmIESWEFjXXIKmZElg9R7PrM0hcHTUwxFV7CLsct+DMDhz9bc8mKy7EIS8kQCXYNGTwLJWrTESwAAbFjg5jzNZA8CDqi6CYInFr0CHnFIvM8KZP93qNdqtfX+r8bO1uw3+nxL0YGWcdAJchcP2DtwtIKjNPtFvS5AOtuYiTN/jzZvyn6NCuPouigsDOaOQGMr0+JLEBQYiicR0sOBHWrDBYLEMA3TdNtp5+co8woF31/GFl6KE/Zsrv+XT8DhKeeFx8Mmt/kBsmqh+wJlONr/5KZe8Ff/Fw14wlHHFxH+32Q/STsFDIADNmlqFNxk2VjzE7d8vDDna9I0ZUU+Pdfu9dCn/BP2SSi2bFuQCO3ht7sv3N83/MYevN36puIL35OQluJj0quA/oYt4Kwz5QbGGIYW3IPTVeRdAEiyVDAJXxPhKdvqjPC2pfcSKLW6sM6N4q7IlC19Gr8pHkTTRf4sxoJ2ySp8cb3wHkDeRa5258wSq4X+0vT/jW/DutAhdC0Lu++2mwyh+OyKcxnN940L47r8SdLtMOsY3mBRxJNUh4dnLUMgejELb1ATTkZuH9237R/fr1OqB++7ZJlxDc51zfYdh3gfFfzJOgd9y73uNgx0yqvShdghM1wwsxTehz6u2QylsDm1SxWN5Oqs8DGWdFwvdkKgrU0IgBUrT3BcaauINKTo5X6ruQgU08JhBlKtVtKBSn
- UMxYTXkY
- V2/nhBVMVCeemv6IqHCf2hRHJbIlN3PFdht+e68t963YSkdOErV7hYk8r8L+whGlv6qZd6aKaRyQpk8fGrIBLH8HNEe/y/R5HB0yuaLZhvscD9ZJgI5TYVdjoIiqSK4QJ9pTn19BoNMkIIq5pUD+kbjuK3Pk9FUN4FIh2uTJrAqqUPAz08oWgbCeAKUufSeeS0yOri8dvzX0PFXo248H4lgFVktroc1NmoKQlj6Wco7/02qS+FFcN9lGHDsjqUGaTXSwVSwQbjdEhnPEhHFd2t73LJZ3LZXE/GZffo1w0pSvEFKxVJYT7frgwvrlosB54a9WDCv7+kyFy8ReQUdHW0X1t/0Jmg/d9+1ORNTJi+CpnVq2IJgp8SOQ3xVsBKUDHhRmwe7egt+icXWrX0oBREAw+wvBF2ddN3GuAhGmoIlctzkSgzzSxvCxvNDSC7yK1aArBYNxZlPPnPFngysIZmax6R2u9SlEK74bDES62AuoT0BI3OkN9dM0r7SBmofTdA1qkdFK+YbeqVKkBpib3dWVzA669jy6ATHMPJlx2Y1GQxsQ2AXAD8cPZlJlxj4X25co+jbuUq/RSgME=
+X-HE-Tag: 1770954704-519199
+X-HE-Meta: U2FsdGVkX1/ZnyrB0DO1momeQavByiMteJP2YawQotB/Zr5HjoypSmPP7kK+NfomvJuInL9Iq2IOAumnh5Ta5LH5EiSZ6iak9GUpGbNmdEMi1A5FB0UFtGeGGLs9s6eg8ekFCcr/SGcXSOR07y/6tUhXknEy3adRp0Cw1//qcSR1UKVIFJlZKah4qDnm9108sBbMB9SdEwVKlUpyfnhW8gfS44n1ouXx4halmAiSgoihehlVmSPBKgUNWxosFCwNoZuPMY0k9jEEz/Ho2WTjZTFiV3EYs2Ycmwn/G0W7oko4gx6m9HqdY3DLW/55WblrN/6I28ckel1BV03eOXEKUzvTkvDya/WYJbYqkb2v1BvVBygIn4TVEuUY12YahnfBNCgRff/LHk87kEIqwdaffrxwqCoUG6OAsoAF4sjWH69y2UkLb7wfPFiHUjdEwIt+66Dk0QJMd+P3h0OfQVbAxDROCgCwEnmUvWUHV/dDyWaoNbhd5Hp6vyvOsAwQebIs9Ggt5BRB+1JHRLfGE6hzCbGtIBSnCcgPZNE5F3DiO1Tz+e21tuAm1c5su49UMENxbs2lwB0Wk1mmhg4dbgt6fU9N6FuQ+mXoSJ/rxaT596/F4LAbdCIiFBEDL1bT6wPsHMAOYAs7KiBlb5/KQ3CDCPEJ4OkWmckTxKzHDhN8jPoN2g5mLf6M/W9bFe4xGvJf2baEYeqsBJXBkOXSrqwOs+sHqcAv4sVZM+t21zSBXNVq6xz1Mizbcoj21hcHYnhGGLshdJiBOAjKH3CYadcD18Qdl9ZtgGP0rQAObDfldhQqFRh2bbH8BE0TUzgEqsCOQ2MwVKeRaP9VKGeKD37F2TjkxIvc1lwmlf3RLFBPFAozCPTbbFWCYjRQL8c+nFZzEfq1VUGF+AIaIzF3I3Csi3Nlia0io1qoIBvCNpKFwk311DxFzQJGgvkvmQg1BuQblHGmgr6paqg8ZoEJZia
+ SiFbFc8p
+ JR0i5sFkUiA5DuENg2jQGtsg2IzSD7qKKoFsWMr/wTj3os0wkxXUn5r8rB5+ClWgCSMZsmbRIe+0sMEwqULGIElmovo3677iC486LW0BxUp8nAXSwrMUve0ubJJ+unVie54BFxUwY8DJEV2tyr3AeidINcwf78wqq6cKBIiXLCXO7cIgm7U989joirbhIPaJ5sSp6zEggMMTTJY3W7iHO96uUcmSjBv0b3YY370wMSKGPgXpDSQDi9nefPuQEPmMZZ4kEtDD82j0jZ6ybFuiTjPhTiCeM9Zo5naLzZnPc4ahXEavQXRjTvFirqVU00chxcTF4RxIAwByLW9d5b2Q5O9GKBVOKWOl52sE+DqwSTAx58D/s4ogo/hUPDkjLqC/8nCE6xV1N9KkaGp+iFDH6DUcqvSVLX17nxK8oej2r3n3DyAzu3B4/qFxNWbLdl7F+T/bQf1eYAZdyQjs+GYvxklD5xM7RHAR6Mwhgu3b+gKDo+LlnvhMSeflgpSKL7pYDUGCBOfVUxDPPNmH/gmAw+xcxdOTWPW8+LoXv9N11+v2eUHRJOOKLNTbFfSr70nSeS3IC4ETPa4yFXQ/+AOfDR4sgHgJUtjDdx97bFNPw9Q/E3uM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,178 +155,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-pressure as they cannot enter direct reclaim. This patch introduces a
-watermark boost mechanism to mitigate this issue.
+On Thu, Feb 12, 2026 at 10:19=E2=80=AFAM Nico Pache <npache@redhat.com> wro=
+te:
+>
+> In order to add mTHP support to khugepaged, we will often be checking if =
+a
+> given order is (or is not) a PMD order. Some places in the kernel already
+> use this check, so lets create a simple helper function to keep the code
+> clean and readable.
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
 
-When a GFP_ATOMIC request enters the slowpath, the preferred zone's
-watermark_boost is increased under zone->lock protection. This triggers
-kswapd to proactively reclaim memory, creating a safety buffer for
-future atomic allocations. A 1-second debounce timer prevents excessive
-boosts during traffic bursts.
+LGTM,
 
-This approach reuses existing watermark_boost infrastructure with
-minimal overhead and proper locking to ensure thread safety.
-
-Allocation failure logs:
-[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535649.655523] warn_alloc: 59 callbacks suppressed
-[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
----
-v9:
-- Use mult_frac() for boost calculation. (SJ)
-- Add !can_direct_reclaim check. (Vlastimil)
-- Code cleanup: naming, scope, and line limits. (SJ)
-- Update tags: Add Vlastimil's Acked-by.
-
-v8:
-- Use spin_lock_irqsave() to prevent inconsistent lock state.
-
-v7:
-- Use local variable for boost_amount.
-- Add zone->lock protection.
-- Add lockdep assertion.
-
-v6:
-- Use ATOMIC_BOOST_SCALE_SHIFT define.
-- Add documentation for 0.1% rationale.
-
-v5:
-- Use native boost_watermark().
-
-v4:
-- Add watermark_scale_boost and gradual decay.
-
-v3:
-- Per-zone debounce timer.
-
-v2:
-- Debounce logic and zone-proportional boosting.
-
-v1:
-- Initial version.
----
-Link to v8: https://lore.kernel.org/r/20260212-wujing-mm-page_alloc-v8-v8-1-daba38990cd3@gmail.com
----
- include/linux/mmzone.h |  1 +
- mm/page_alloc.c        | 49 +++++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 48 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 75ef7c9f9307..8e37e4e6765b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -882,6 +882,7 @@ struct zone {
- 	/* zone watermarks, access with *_wmark_pages(zone) macros */
- 	unsigned long _watermark[NR_WMARK];
- 	unsigned long watermark_boost;
-+	unsigned long last_boost_jiffies;
- 
- 	unsigned long nr_reserved_highatomic;
- 	unsigned long nr_free_highatomic;
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c380f063e8b7..8af88584a8bd 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
- static void __free_pages_ok(struct page *page, unsigned int order,
- 			    fpi_t fpi_flags);
- 
-+/*
-+ * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
-+ * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
-+ * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
-+ */
-+#define ATOMIC_BOOST_FACTOR 1
-+
- /*
-  * results with 256, 32 in the lowmem_reserve sysctl:
-  *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
-@@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
- static inline bool boost_watermark(struct zone *zone)
- {
- 	unsigned long max_boost;
-+	unsigned long boost_amount;
-+
-+	lockdep_assert_held(&zone->lock);
- 
- 	if (!watermark_boost_factor)
- 		return false;
-@@ -2189,12 +2199,43 @@ static inline bool boost_watermark(struct zone *zone)
- 
- 	max_boost = max(pageblock_nr_pages, max_boost);
- 
--	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
--		max_boost);
-+	boost_amount = max(pageblock_nr_pages,
-+			   mult_frac(zone_managed_pages(zone), ATOMIC_BOOST_FACTOR, 1000));
-+	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
-+				    max_boost);
- 
- 	return true;
- }
- 
-+static void boost_zone_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
-+{
-+	struct zoneref *z;
-+	struct zone *zone;
-+	unsigned long now = jiffies;
-+
-+	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
-+		/* Rate-limit boosts to once per second per zone */
-+		if (time_after(now, zone->last_boost_jiffies + HZ)) {
-+			unsigned long flags;
-+			bool should_wake;
-+
-+			zone->last_boost_jiffies = now;
-+
-+			/* Modify watermark under lock, wake kswapd outside */
-+			spin_lock_irqsave(&zone->lock, flags);
-+			should_wake = boost_watermark(zone);
-+			spin_unlock_irqrestore(&zone->lock, flags);
-+
-+			if (should_wake)
-+				wakeup_kswapd(zone, gfp_mask, 0,
-+					      ac->highest_zoneidx);
-+
-+			/* Boost only the preferred zone */
-+			break;
-+		}
-+	}
-+}
-+
- /*
-  * When we are falling back to another migratetype during allocation, should we
-  * try to claim an entire block to satisfy further allocations, instead of
-@@ -4742,6 +4783,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	if (page)
- 		goto got_pg;
- 
-+	/* Boost watermarks for atomic requests entering slowpath */
-+	if ((gfp_mask & GFP_ATOMIC) && order == 0 && !can_direct_reclaim)
-+		boost_zone_for_atomic(ac, gfp_mask);
-+
- 	/*
- 	 * For costly allocations, try direct compaction first, as it's likely
- 	 * that we have enough base pages and don't need to reclaim. For non-
-
----
-base-commit: b54345928fa1dbde534e32ecaa138678fd5d2135
-change-id: 20260206-wujing-mm-page_alloc-v8-fb1979bac6fe
-
-Best regards,
--- 
-Qiliang Yuan <realwujing@gmail.com>
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
