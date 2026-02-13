@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0F2EDF173
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:48:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1BA2EDF176
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C433A6B0088; Fri, 13 Feb 2026 10:48:45 -0500 (EST)
+	id 660016B008A; Fri, 13 Feb 2026 10:48:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BED066B008A; Fri, 13 Feb 2026 10:48:45 -0500 (EST)
+	id 654A66B008C; Fri, 13 Feb 2026 10:48:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF2EF6B008C; Fri, 13 Feb 2026 10:48:45 -0500 (EST)
+	id 50F856B0092; Fri, 13 Feb 2026 10:48:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A00706B0088
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:48:45 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E399591AB
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:48:45 +0000 (UTC)
-X-FDA: 84439866210.25.B359B3F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C9B6B008A
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:48:47 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D10921B4460
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:48:46 +0000 (UTC)
+X-FDA: 84439866252.16.B7ED7C2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 28874C000C
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:48:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9vTnF6F;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id C303810000D
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:48:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A5i2uuQp;
+	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770997723;
+	s=arc-20220608; t=1770997724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Vhc1GOZDAe3ZTuRUEnNWGeADhovRBQM7gF/TBlLDJA8=;
-	b=5wuIeKTgVSvw4gmfXBkTJEk9eTQ17YSgpI/gvf/CNh8cqWubJzAZxJWkE/Vd6FG7VSxlz2
-	iH08n77G4WYiQcxU5a6yT6HNst5UFAgPsiJi8uz+15KcrwOQnGa858b6FwjkkkNmwt4uCu
-	p1idl3QokK2DtBIibL3ApsQVm8IQyEw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5cIubqWXAWqWrjv70JhXlBfZF3xiSYZoyLcIcS9cAUM=;
+	b=MRBaZNbQdZ0iJ83bpthymK9ZwuuqxaR0Ceq3p4YRkkDuHm8PSTCK+2cZMJ+UYHPFIXFilg
+	5+Q+o25tnokMC+VM2QISBqML2JTN8ataA840T/YoeETMkb7RmBTR5+d6pZF/t6rxwFAox/
+	vpZF0zIEWL2w8Su0Or6IzUF2MGXR7cs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9vTnF6F;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A5i2uuQp;
+	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770997723; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770997724; a=rsa-sha256;
 	cv=none;
-	b=zba/jZMTG3jHMy3hl3J745vSOGmjTfchcFKJmNrVGePGdEGSbf716JtV17291m58G+t4TT
-	CimxmGGtbKwSf2KElIGi0Vlt38QPrXHV6TpuiEUciZlbXhawwLo4Vhf8BqzHtNolZBsY2i
-	K1/x6zGYbdxz0qkjnwCaybjaHOQ+C+A=
+	b=1WOm1oyPLVI3K5UN/m1GjnWrC+vDLStSIzZYoDqJ9p8tf5p/bFwQUpouxA7qpCOROkqXLL
+	y5opbdNBy9pksk+HRZNBXfudplgIP1WiYUS1Ab1JZ6vXgO/+yeaErIvrHnOZdzDn1xtmlE
+	wyjbCiM/OZOUrFVXotzO13f6auzKyrY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27500400A7;
-	Fri, 13 Feb 2026 15:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB05C19424;
-	Fri, 13 Feb 2026 15:48:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D32014453F;
+	Fri, 13 Feb 2026 15:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58029C16AAE;
+	Fri, 13 Feb 2026 15:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770997722;
-	bh=KwYTy/KER0mm+nMwgJa21Fhpvad7CAER+z8MsqYWKgs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=B9vTnF6FaSCyUscgOrG289uLgSL/FAJ5yiCLue58AxvbtjIbJ1rNZXPBy8q29UuwX
-	 TnXc4W6y23jKXAN6kHKo4s9y1FncZtY0wLyfN+GV7QpDHU7tUNBQLQ4/LiVOsKCCUO
-	 baEyhUCxhPgmqAMCnWs87x/dBbnj9Vmd1w6WChMz/2x0CfoKrwQhKyOJP3k9yDgrfS
-	 wvk7jaHs/fzPwGmOZNj8vLOzrBVHCaHbkX27Lxy66JvPutaOTVJRP6wZ6i/E2CTTpF
-	 p9YjNEFO/e9vuQ+nbqzPGA475H1LpHmjyW7Og7SoDa94qpb3qFzJOwZTXycuA37LGB
-	 T0WXFoq8rtveg==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E6FFAF4006A;
-	Fri, 13 Feb 2026 10:48:40 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 13 Feb 2026 10:48:40 -0500
-X-ME-Sender: <xms:2EePaVZ1HzW-6_WabKbFZ8XYv-QV44Rp0a0cUprXtSBpsT_xVmrX5Q>
-    <xme:2EePaUgLF8z4oU_w8785Qb-joNz68g12MJfLy-RTjaMynXTnMIjgwlInlmp9XwxFd
-    lqnrmaV6MMUKSOAkqlYrkd3AcHDjB1yv5F0Yiy9NTYg-ZMAArenQW8>
-X-ME-Received: <xmr:2EePaXeL6zl1gKjQMAPnPSkLGh0pLG7QdastRgrj7C-FF5RTx1H0cOiKR9-fjg>
+	s=k20201202; t=1770997723;
+	bh=PTJFDGkeSN26ugvAI4aRe+dHGTbs5yOXGvLemsc0sMk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A5i2uuQpF4s1RFOexFyOdlWT+dXE1qKCpXkjUA0xr/6UY1MoU+yVgL9QvHoHDM8IH
+	 rC431ghZqIHGKIL6pVXQ+0+4eQmd2glx1lLIlywGoD2re53AX+ch0/uyhKc2EIq8cf
+	 6SNYfTseYYlyvuflEn8V/8GJSV21MAskpD0706/8XWrDujqh6ISUuxFNC4HB+vPxmL
+	 eIxtXbi10RQLYhZBOS7c7uR4tW+2NPD5wU36IkEkyVpVUNJ51GTeqUeMrwnJePnZId
+	 d2zLfhxtUd6qY4o9kcgFL3UQEbttabvpBsumzZxNnE0vESnBZEuZdKh0g+gs21p00f
+	 HPFAulJJy8OvA==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 84B87F40069;
+	Fri, 13 Feb 2026 10:48:42 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Fri, 13 Feb 2026 10:48:42 -0500
+X-ME-Sender: <xms:2kePaWqFpbN29LIl7FP6YKDHBORsC6aKz4tHMK99Lt8a6F7Ifp29mg>
+    <xme:2kePaczbDUhypKCGMrRP9feRVW6Kuz6m_ZhplOXm2iRaIayUwPE0q2zr5c_ykeJV2
+    mA1mckTp1Q9UcMVG7xCn1iOh6m91Ssk46PoJsHfJDrT_mpze86dmjI>
+X-ME-Received: <xmr:2kePaavrCHPag5L-dfR_0UMCJj-KN-zv2neFD3aT1shwPafSHSj1YVbdjfMH3g>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdekieehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepfdfmihhrhihlucfu
-    hhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqeenuc
-    ggtffrrghtthgvrhhnpeetieekffduudfgheektddvgeetieefteefudefheekffeiteff
-    ffelieeiueevhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudei
-    udduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshh
-    huthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphho
-    uhhtpdhrtghpthhtoheprghruggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtgh
-    hlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgt
-    ohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvhgvrd
-    hhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehthhhomhgr
-    shdrlhgvnhgurggtkhihsegrmhgurdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrgh
-X-ME-Proxy: <xmx:2EePaTnKtV7zM8w4j6y1oqot6AhCwsNfCp6rOHdtBPgXMjSTRf7jVw>
-    <xmx:2EePacxxkv6diwEtz1mT9xxVOmBJ7skD3wwlfNaS3vBrou06s8bSOg>
-    <xmx:2EePaWxbFSz_t59i6ufq2nZX2Rn-s5QUlYcBFN_ftfMZ3AKzS-Z0Xw>
-    <xmx:2EePacX_tH2SUKoXCdxQuTOxF_eMqR9_PCNJvVE0DHmGXxXHGMq7yQ>
-    <xmx:2EePadQwItHf1mHrlooEFgoPBNkgOpzDx-BuZ3qwni-13pItpsjrTLTA>
+    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepfdfmihhrhihl
+    ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
+    enucggtffrrghtthgvrhhnpefhudejfedvgeekffefvdekheekkeeuveeftdelheegteel
+    gfefveevueekhfdtteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
+    udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
+    hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtoheprghruggssehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    htghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrght
+    rdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvh
+    gvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehthhho
+    mhgrshdrlhgvnhgurggtkhihsegrmhgurdgtohhmpdhrtghpthhtohepgiekieeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrgh
+X-ME-Proxy: <xmx:2kePaV14ltygcAKdm1e1YpJBJV3SBvdjryEHx_Ly7h2T4puje4izog>
+    <xmx:2kePaSDv4DSW6qXpLIs366VIKTgAw5Uauj3brHhUPo2iQRODkr84ag>
+    <xmx:2kePaTAwijGEDJJ7mRym84UrlopQ_3-TneWyZ9ls_JALYhLEIGPDDA>
+    <xmx:2kePaTmvS-THGJTVbPJSrT4dWmOQyLUDJ2vsgwmJMRSpY4fcyC4tiQ>
+    <xmx:2kePaTgd3TdN6tDELwo6EHKoRo7Q64H4mWOh5RUIWu7fX9FJW8Qg_5nW>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Feb 2026 10:48:40 -0500 (EST)
+ 13 Feb 2026 10:48:42 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Ard Biesheuvel <ardb@kernel.org>,
 	Thomas Gleixner <tglx@kernel.org>,
@@ -110,20 +110,22 @@ Cc: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Moritz Sanft <ms@edgeless.systems>,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 0/2] efi: Fix alignenment issues in unaccepted memory code
-Date: Fri, 13 Feb 2026 15:48:36 +0000
-Message-ID: <20260213154838.46567-1-kas@kernel.org>
+Subject: [PATCH 1/2] efi: Fix reservation of unaccepted memory table
+Date: Fri, 13 Feb 2026 15:48:37 +0000
+Message-ID: <20260213154838.46567-2-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260213154838.46567-1-kas@kernel.org>
+References: <20260213154838.46567-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: sz6fis7ybmuouwn46tuua4ahoaa6joym
-X-Rspamd-Queue-Id: 28874C000C
+X-Stat-Signature: 3h9pkf9mdrtck5x4su9kzz4mab4fm4pd
 X-Rspam-User: 
-X-HE-Tag: 1770997722-946602
-X-HE-Meta: U2FsdGVkX18FU28SZgmQb2SQSMO/MtFIGTjMWAEKNGmTHWS7i4qGJv9E9Qp6Kqk3JFOsrEApAo7SOwgisefPpTImX2qY5SIroAHfWpsjeeUGRur3v4sDop1yxfRhZz7zEIKRxCB+hkur901Fi8CIUgMkq8uR0vncfu3eLuFdf2ArpJbZEfWUC8lxa13FLVHuGeVjJZcNyR4xEpdpRT/JzxNSW+uAwh6kcyP+mXgT3k4uJ69w4zaBfqYl4eXNeDO8eXTsmXRuanyKug/OClEbM3+UUkIcNURruUX8B0ZSFpOtz7ChsV3GN9abu88a0b2FsCabv8KesyLqKTIs0xKQpDa45dT1unozvC8ODLuEurgMbXTkZk9yoDqV2YiMC94VUK8cb2LD4nxHqeS98ycuupojVYwfCv2Ys7EK9z4qsdTQWimWxFXxAW9+nWRRV6j20rjrjbyicxjWDWyzfDyWUdUJlZgFGqgOME5tm4LiIj3UFkUroeoC+4srMqKDFG98bO3OeWHlKp7MeiB+tKQwt7A6sg1VJ5Bi6k6nd9WBx5uvVyviUpvBjxRwZtmWJxaUfMawcTn98O9NjTrlnJfckArX82zRrwQy+4sN1odAYcAzuT5pUACL9kZc48DkMYGBq6DDTG98kKwO3xxatDPZC74Gr2DsDx+TTveA+c7roRXb63O+nno5ZEGJqjKqlcuGlFo4BCFr9NAh+9aQ/eV0KIUdEZcMpJ7DiWYlNSbEqFB+z76qmLy9r2CNrLUG5g4HgE5AVPEw+96S+4M8T2zzQT32kapab/ZLgTyNJSBmP3MUNtxu9ScxMYkQU2vAKGo/7rEIlzpBHpyaUzR/4OuK97UdSBDY8C6vA49UuxRH1R8gdgMN4AvXfHSsYeYnfUrohqQru+RUzxUz/po/Oympcw12baoEyQpImtAFenz6psSOQ9ej0AEdME2R7h+lhYL2qImUZFyRBJazH3M7QtY
- AUcELM13
- 4bvIPxiqvnioZp/GO/8Wtg6yr2d44ij3y7b3raly9UutYrCSPHV2xjYLppD17X9F8eWw6L6h3izdFC7RM1dncXC6/RwlkE4/ADT8DJrG7rBoZ6u51qsraelFwgdxaQVGO4ufm3ro48V6FwBW1gG6X8pjO9MSvCHDeqiNFl2TskBIneZoaabC1gP1cjnBAVzVQlxBj6fWaoWpYFOwSHR3gbogwS9PDmlcyRlLw9AnS82cdQ7E=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C303810000D
+X-HE-Tag: 1770997724-685483
+X-HE-Meta: U2FsdGVkX1+fKedAhzDtBFOkRAqNFF5NMLazIZ5cOEcEB1FGIJ++9p2g4pKNw46OcL0xU8cXfG74Ps9MgjVn4gjSHfzFqvfGhDdz6X1mAttNiM4SxQIEO7fuLfVL7iGzwfGovTdOT8Ft7ndULV0PWqksDFSabgFqGOHyop0VoxxZIznt839YKqj42k0KfA+BCVjyY9m5gyfn5DtzlVRKUAUYdOzwbjFTVd6gBN/8EfzZeiop+IwfDjUVQxYnSIHoXVKno1tH2yE0ND3B/8k1NcnmtT2IqaYyEBrFteO38mddOWRpIAulfyy3jHTtJYK2gMgeRquv0Oh07Hx2Y6pxzg9uVtFRHnSV/D/O2YhfEe4+NIvsGeeUrm2WyQwQLaDwOl03waJW0hXfK7XShsky+w2YYYSSoF+RpwB3hLjE7aSPS7rzzSY3iQzC35ubgLis+1WgU+KHUMtYNesO11ziVscqq87q5CbM05h2sZEYD0ZTyG2pR/gEu5IHh+w0n3YXdCT2KHebkROyIN+zY9PHziI63l8uOrWV3eUZUXXOQTeSi6sixh4osBw6omZxoBHUIdrRqmfbs3yoBOuRTIHWD/134nzCmEg1xgLB8j6mbI2QE1AK6bbtobg/b0ynlkw5kDvKFvSDnZPTEE7iqaG645HSw/q71H84+uRXpdhMMgcO7wd5ab+Fc4eYJR7TijRtxmznwJwe/keEEm3qvNBA4UcN23NtAaybF1k4B8PNL36VSr7mqCp7Ku7YrJb/Y/EADgqc0fLmt18SB/HgrroUYCX15byvB/8OgMf6gr8gFaOm+GBgQX7vUhI0ZAF68VIYAnxBnHjHKwY1bCb0ZNzYgbio3voAlaRakU+4NPMyJceam6yYOwQxAjDaF6QYLMYVPRv96IFSh4dhXPPIZyBrGHiSHxgZey0Car87GucKkLNJUVZ+ZqpfvzJUVQYQ/PMioZG0t2m5kMqgPRtNFIF
+ sUwEryKH
+ agGn+kjZWGLBTvD5gbbJCgdhvEtynb7VbRr7VNOz2tO5gWQIIGJnhGMAgs+PJ9ydPy234FkcOcUASu4aa6jJlDE6MZSpSbMUYQ8/y7Gx4FNw/RjmSii2SukxFQFLSw5OvXdrRsG7GNhF7Z4JXOI0Sxg9WUFArfl8VNJj++Pd3nBy3meBQOyDRzNViYdOHf5wqaL0DOhKsfcV1Mm1JKmTnydiyFeeCnYVzf8CITwv3QcNVYVvBm7/L5KFaFba/x4HfHr2P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,31 +134,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series addresses two issues related to unaligned physical addresses
-and sizes when handling EFI unaccepted memory. These issues were
-identified as potential sources of kernel panics in Intel TDX
-environments due to incomplete memory reservation or missing "guard page"
-extensions.
+The reserve_unaccepted() function incorrectly calculates the size of the
+memblock reservation for the unaccepted memory table. It aligns the
+size of the table, but fails to account for cases where the table's
+starting physical address (efi.unaccepted) is not page-aligned.
 
-The first patch fixes the reservation of the unaccepted memory table
-itself in efi_config_parse_tables(). It ensures the entire page range
-covering the table is reserved even if the table doesn't start on a
-page boundary.
+If the table starts at an offset within a page and its end crosses into
+a subsequent page that the aligned size does not cover, the end of the
+table will not be reserved. This can lead to the table being overwritten
+or inaccessible, causing a kernel panic in accept_memory().
 
-The second patch ensures that memory acceptance requests in
-accept_memory() and range_contains_unaccepted_memory() are page-aligned
-before performing the unit_size alignment check. This prevents skipping
-the necessary "guard page" extension for unaligned ranges, which is
-required to avoid crashes with load_unaligned_zeropad().
+This issue was observed when starting Intel TDX VMs with specific memory
+sizes (e.g., > 64GB).
 
-Kiryl Shutsemau (Meta) (2):
-  efi: Fix reservation of unaccepted memory table
-  efi: Align unaccepted memory range to page boundary
+Fix this by calculating the end address first (including the unaligned
+start) and then aligning it up, ensuring the entire range is covered
+by the reservation.
 
- drivers/firmware/efi/efi.c               |  8 ++++----
- drivers/firmware/efi/unaccepted_memory.c | 12 ++++++++++--
- 2 files changed, 14 insertions(+), 6 deletions(-)
+Fixes: 8dbe33956d96 ("efi/unaccepted: Make sure unaccepted table is mapped")
+Reported-by: Moritz Sanft <ms@edgeless.systems>
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ drivers/firmware/efi/efi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 111e87a618e5..56e9d73412fa 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -692,13 +692,13 @@ static __init int match_config_table(const efi_guid_t *guid,
+ 
+ static __init void reserve_unaccepted(struct efi_unaccepted_memory *unaccepted)
+ {
+-	phys_addr_t start, size;
++	phys_addr_t start, end;
+ 
+ 	start = PAGE_ALIGN_DOWN(efi.unaccepted);
+-	size = PAGE_ALIGN(sizeof(*unaccepted) + unaccepted->size);
++	end = PAGE_ALIGN(efi.unaccepted + sizeof(*unaccepted) + unaccepted->size);
+ 
+-	memblock_add(start, size);
+-	memblock_reserve(start, size);
++	memblock_add(start, end - start);
++	memblock_reserve(start, end - start);
+ }
+ 
+ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
 -- 
 2.51.2
+
 
