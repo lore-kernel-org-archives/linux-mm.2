@@ -4,276 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539EFEDF154
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 11:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7679DEDF156
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 11:57:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D40D6B0005; Fri, 13 Feb 2026 06:56:23 -0500 (EST)
+	id DEEA36B0005; Fri, 13 Feb 2026 06:57:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 781E26B0089; Fri, 13 Feb 2026 06:56:23 -0500 (EST)
+	id D993C6B0089; Fri, 13 Feb 2026 06:57:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E4516B008A; Fri, 13 Feb 2026 06:56:23 -0500 (EST)
+	id C716D6B008A; Fri, 13 Feb 2026 06:57:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A6446B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 06:56:23 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8444B905D
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:56:22 +0000 (UTC)
-X-FDA: 84439280604.13.568A384
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 553254000E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:56:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=o7RrBMPA;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=V+8AfOzm;
-	spf=pass (imf07.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770983779;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B42B06B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 06:57:48 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D09B1A050A
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:57:48 +0000 (UTC)
+X-FDA: 84439284216.25.1EB9E77
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C312B100003
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:57:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kVcpgfSz;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rJsZWzI6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uSsyqHOk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="1lzQ/3s9";
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770983866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g3NqcGnuZ5+6V9T6nBisgNGpikspmvyl/GUyx/oWqjs=;
-	b=Ov8TfPr/Leh6xT/rNES4ItNpxYhK/GY+/ONhe9Mk0+I6SoMkIGzFIoN2J2fRtYOMeTSQpS
-	LUE9yfpfnihnjXOG7S9VHdNvl7tg9cd/OAqVIMHjvNu/N4gZ4hWYSnJoZrUklfm0dEkoDe
-	OXWbBghphJuDDQYq4vXQOjf5JZYZT9Y=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=o7RrBMPA;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=V+8AfOzm;
-	spf=pass (imf07.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770983779; a=rsa-sha256;
-	cv=pass;
-	b=PLhXsP67FKUh/YR9QGH9CC4cqnX21hh6lfPF2OL5ynd7xxM3IustBXrrWGdnMipFDLbOuY
-	Yk799CalNB2VJvj0/PlHLfVufsUjbMW5qsA4fABOv1fFj7iZccB+xTZj1Sh4/xMFim0JKA
-	wyO6BVsecJOY/ksxmOlnhH8fZU03ZiU=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61D6B7Gm594184;
-	Fri, 13 Feb 2026 11:55:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=g3NqcGnuZ5+6V9T6nBisgNGpikspmvyl/GUyx/oWqjs=; b=
-	o7RrBMPAAWJLGZudHpig2d5DJPT/55f9VL4UgDDj6fKkxJMb8vUxXeJrW1Vs2vt6
-	pKskQfAiIJITGVGWouYoT9/3MX1biWBjBDLzVB8l47DoKSJqY6zq5xCpjE35Kcms
-	viKk8JGfpDG8yBw3rIy91NfUxtbwXP3mpoLpxFml4FeGk1nA0EZac1uQdhiY9WGl
-	eQ2Z/wzUO1XMas00VC36A7t7mNwRSm9A+5fQWPC3JOK6fcPSdr/VQdknsSOUm+JP
-	VQBEM3FcL1n+uLS953vHyQPIniLP8uGqSIbabxC9FNIievbyqW1nQNHUxqJGthBI
-	CSoWrT1WqAQOikpOdkjRDw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88qt530p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Feb 2026 11:55:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61D9mt0E030224;
-	Fri, 13 Feb 2026 11:55:53 GMT
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012018.outbound.protection.outlook.com [52.101.43.18])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c822c85tc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Feb 2026 11:55:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YjC+MqnCgxDOz3Ev03bTXslGVVg/DZaXzYiUq1snaIreZP2fc1XJ09CQF6e318jDYb69hzqYOleua/2jru11Ke2PEErOOhdRrpb8ZCmeRs+lSfNsZ4eaolrM0bOZcXutivbzFU+qsW8QeRRoxCstUS0165MwaEBGhTNYpiP7yOvPSbxtjsueXrbd7L2Nl+oPqBYZDHuc5lkV0AErxeFBJlgA0iyQxnqfTpUNh8QxDXYiqsEF9H1HT1UYYxpa1ClsdUHSJYUCUA4Zc0pVQucuqJcqjLB4bK/M2Y1Ge34pg/Ul3+A+lNagPtYme79zNvkuhFxq33uc10NLCsv54y5wow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g3NqcGnuZ5+6V9T6nBisgNGpikspmvyl/GUyx/oWqjs=;
- b=cL7DfMALd3EQMjc5998GMOUHOry7IcGdPruXlTjfJ+NX2ryJ8W3wVJv66pUZJcnmificj0k5UjIzCcYO1pVuXQnuig0yAX4XGGlYJRDf1Ped5xqBsNBQnQFA6GGAUEULm5Jv/DNQ5PerWAci5My/43nVNKykLo+J4bgr9aeMQzPu/3wRe7sjDaw6cAw/NFvWR+py7CqutYV3meaC2FwBDHcteSYfHhZOpnzVoOSJcsA/XDjC3T58TkbeKsjudl3j8wmdR9UGpLySi6PIgOe4THr2xsxmJNCdCIDE31D2LfNFPGQOBw6Q5Pd+08DQd0HH5yjuANHCMJSK/ZToHzO/5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g3NqcGnuZ5+6V9T6nBisgNGpikspmvyl/GUyx/oWqjs=;
- b=V+8AfOzmIrfmxuz1WpZSMbLVuT/YS3qnnngoDP5Eiqbbdg+DxdyikE+KyM69M759jmYavIyS6AlNk9hczqcX9vCKocHuRm8iGZ9A+WGJoqcW35eKWXjzNd9XweIoJcqqo5Yh2+ZUW6HgZ3am3GlzPh/IA4dHYSyqvTf3L/n7esM=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by MN6PR10MB7468.namprd10.prod.outlook.com (2603:10b6:208:47b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.14; Fri, 13 Feb
- 2026 11:55:49 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9611.008; Fri, 13 Feb 2026
- 11:55:49 +0000
-Date: Fri, 13 Feb 2026 20:55:39 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Michal Hocko <mhocko@kernel.org>, Hao Li <hao.li@linux.dev>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Puranjay Mohan <puranjay@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
-        Dave Chinner <david@fromorbit.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Muchun Song <muchun.song@linux.dev>, rcu@vger.kernel.org,
-        linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>
-Subject: Re: [RFC PATCH 7/7] mm/slab: make kfree_rcu_nolock() work with
- sheaves
-Message-ID: <aY8RO5vZeZQyRata@hyeyoo>
-References: <20260206093410.160622-1-harry.yoo@oracle.com>
- <20260206093410.160622-8-harry.yoo@oracle.com>
- <CAADnVQKRVD5ZSnEKbZZU7w86gHbGHUug2pvzpgZTngNS+fg4rw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAADnVQKRVD5ZSnEKbZZU7w86gHbGHUug2pvzpgZTngNS+fg4rw@mail.gmail.com>
-X-ClientProxiedBy: SE2P216CA0009.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:117::15) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GampDPnGWIaChU0udZ1qo56iYJM/N4DhLcbf1/WI91Q=;
+	b=C1581ew/yp+55L19laDgUbspn/ZGsl/pujlVOfoEbHxKZIMmxLc8vykWxvdMXm+Tvw64WY
+	Whv/2DeHX4igUWhP8YCzTJ/Hu0S2VtJ6lGGxH9q5h+In/1eHl988UIN7ILUg9sRNu/rr3Y
+	fkLJ/rxc0J0oRnlrzW7PZUvgWJW7E80=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kVcpgfSz;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rJsZWzI6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uSsyqHOk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="1lzQ/3s9";
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770983866; a=rsa-sha256;
+	cv=none;
+	b=1pBp4G/30Vo212qJFu3zhc2Lz0FGz1wyV5MH6GpTPmKcnSdrMgjUx1AvJnXFZusi7jaLJr
+	mMT9GrPpTB2EOwe/Zg2KGT46u6zQ9VK58DgkVIdkSasOilrFFSNAwcKcbju/s6HhPyTs7l
+	q89um9o9+lLE4v8TgDekTxIV1o9UCTs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F1C643E6FB;
+	Fri, 13 Feb 2026 11:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770983864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=GampDPnGWIaChU0udZ1qo56iYJM/N4DhLcbf1/WI91Q=;
+	b=kVcpgfSzBws0Ljsykusd0jSxectpdnS+WHT4Ft5RZuthBX9SHp7pQmDreXEVP7yoJMG/rE
+	ZsP/Smb1x4XeoELYe7h7eCm18OyOfnhil2SXQIUFBGSCK3WnpjhfSf/PpP1MO4Jm59+Ts6
+	c/iVfyWnJ2K1W4aO0V2Gh6Wl/K/0CEI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770983864;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=GampDPnGWIaChU0udZ1qo56iYJM/N4DhLcbf1/WI91Q=;
+	b=rJsZWzI6D+Xd61Iue2h2ark/b8w6+R8hUoI+NaIX9/RCW69fmEULGe8UFY/zYTRo8BlHPf
+	yuZ4/jgWUhLMtQCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770983863; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=GampDPnGWIaChU0udZ1qo56iYJM/N4DhLcbf1/WI91Q=;
+	b=uSsyqHOkxVKBYO0yPsTvxQXRohQrdlISA/pvVJiDxC3oBjYCtDDU4TFLenSGR8DSMFssQO
+	cQfxXFPqbMe/qG29+K0XvRsyQZPUU7nsM/iUHCYhEjkYDU4du+xF0ZUSbx4I8E8BlQrO5I
+	AAnikda6GxJDVrYVmqesOvl3lSyySr4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770983863;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=GampDPnGWIaChU0udZ1qo56iYJM/N4DhLcbf1/WI91Q=;
+	b=1lzQ/3s9qmz/OPg8CQ/qPvAfVWwjMqGH6qKbYYYRsFGLubwe19XM57le0j8Qohmcj6yePf
+	TueMjbO6idiSyIBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD7363EA64;
+	Fri, 13 Feb 2026 11:57:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sHbzMLcRj2kxFwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 13 Feb 2026 11:57:43 +0000
+Message-ID: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
+Date: Fri, 13 Feb 2026 12:57:43 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MN6PR10MB7468:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e89d7b7-cf87-48ba-99c4-08de6af6d3ff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?clJnVk1tN2JVbE5JN2lNdzlUK3Y1cW1zSVhleGg5SlhlNGI4WDkvTHRhVWdP?=
- =?utf-8?B?N3lTVjRFUWVMOHZnZmM0WXBTNFBkdWxHRzJzRDJRZHh4QWRxcnRsdlhRQUtW?=
- =?utf-8?B?MkdkaHlKYi9kNlRLMzI0V2lhU2oxOWp5ZjJrZlhKQ25jU0ExWWZPVDJ4am5a?=
- =?utf-8?B?cmVNTWN3a1RHWTFNdWVPMzI2UllsdmxaVVJJS2lXTW9VeXFRVkVNTTY4L05L?=
- =?utf-8?B?eG9JZ1U2NC9raXZJaGt4V0VQTENIUlZ6NENlWE80RThsaXFETlpWWERFdlZS?=
- =?utf-8?B?MVlpV0JNaFlkS1JaSzFVZkxxcC9lZ29VelNNZWlMTzNjVkFkdGovNGQrdnBY?=
- =?utf-8?B?TlZlbW1SeGV4NnZNNVgyWjdqTm8reWVYK0V6OEpwY1ExS3dBV1V4TUJuYXNm?=
- =?utf-8?B?NWlFbW4vUlJycDF1WUM4clp6Nk43dHJLL3gwU3UwSzNXaXFMck5xNFcyamZU?=
- =?utf-8?B?dVBNRFVXNGNYYis1TDBSRzU1R3RUYUVrL0lhMTI1TEwvWU9qMjZkZklMRGZu?=
- =?utf-8?B?TTEyaGZLOEpsMzRBZkNJM2U5aTg3ZnN0cjYrcWJxN0VLZE41R0lkK1I1Q3Er?=
- =?utf-8?B?ck5PODc3UWVMYnpGZ0hjc1E4YkdydmhZR09aTUFENFJxWUZqckxqbWhkMS9p?=
- =?utf-8?B?ZHV4K0g1M2NUaEJSV281MnVrdHhZdFZ4azdQcVU3WlRXNG5CMTBzdjBiQ0FY?=
- =?utf-8?B?SXNNK1JlVlVBeFhqeHRqak0zQ3hGcTdjTjloY3VxTnNuMERReGh3dHM3QXNI?=
- =?utf-8?B?eXQvb1NTT2JJUDhNMWlxZW5UZ01SRloySk5UaXRCUHpoY2k5UWVoSGtGQXJQ?=
- =?utf-8?B?dWpnNmNMT2h4V25Qam9UNko0dWJINW1NNXZCaFkvZEJuQ04vNEFTejJoU0xP?=
- =?utf-8?B?RUlsKzM5MUgxK3kzelZZMUI0UkdEV3pOUWJ0cjVUVVlsTnJHclZIWlpNcDFT?=
- =?utf-8?B?cXhEN0JWa0piVHFzek1CdDZFakpQY1RGTTdReWpmUjhUejNlVkRFWi8vd1c4?=
- =?utf-8?B?MXFrQWxzMUIwT29Lck5zMXlXV09aNFVNemY0RHpXbGQwdFRQOS9sWGx1Vzk2?=
- =?utf-8?B?RnY4b2IvZW5MZnppSWNlZDc1LzBFcGx6Y253Q0Nxc0hZM3VaOUNwZkp4QmZN?=
- =?utf-8?B?bEhSYXlpQzJzQjhISDlwVWxSMTVHUTM4MWpaNHRvSytlOENiVExDakFueklL?=
- =?utf-8?B?eFVKeDB0UFgxK1VjVkx0bFVud2J4bCt0cFlYdUR3alV3UkU5WXgvL1lpRmhI?=
- =?utf-8?B?QWhWSVpYU1NGVk1PRUVsSEo2UE16Q29oL1FaNzI2Wk5aUXpBdUdOdnZrK1pE?=
- =?utf-8?B?Q05CaTFlektHUmJoM3g4TWFSK1VqYzExUTZkWkZSK2srVGFkNGRGVlVnMXlH?=
- =?utf-8?B?TlBDcjM4bnlza284a08yZWFCY3RMNlVpL05BMHpwZXhRWFhXTFdJRTdWYUVm?=
- =?utf-8?B?SVliWHJXbkRqWGI3TUp1QjJzL0ZoOGRqSTczenQwU2preUN6djRMMUtyV3RF?=
- =?utf-8?B?UTl2R09TTzg1ZXNyM3NEQ1l6SnREUzRQS1RVdmtXemlQRkYwQmwxbU01S3Rw?=
- =?utf-8?B?eHpqTGIvZDlGRGs1MzN5UnhBK0lVK1dLUVZWbFZtS21rR0FhcnkvTnVyNDBK?=
- =?utf-8?B?RlQxY3pKcFlwWjZSeTRiNjhxKzl3UmlKb3hXZnpwWE5aNWw0ck9tclNJbTBQ?=
- =?utf-8?B?SlgvejZKZGVoRG5IcVJXZnJqWjJzbDJNaW5ycVV5T3F6clV2dmU3Z1NIcFZk?=
- =?utf-8?B?S1ZyT2srWjNEN2l2SXRpQlQ0KzhwWUU0OFJtcFdHbEhmN25Na3NqWkpDUHV0?=
- =?utf-8?B?UEpzamxxcnBPVENNRFkwejc1VUFmNVZxWlIzdVhVNS9tb241M2xTNmFReEhw?=
- =?utf-8?B?T3Q2RE1WSVJHREtseEFvUkZWUjhKaUN0R2oyaGc3dW5Ta0I2Y1NsaG1YMEpv?=
- =?utf-8?B?VzdxL21pOWhzNVVETGlHM0QydkNNUFlFaitwSnFWd0N6NVJ3S0dsNFpRd2FR?=
- =?utf-8?B?UklOUERWUmNxV29iS0x6N0RjN0JVSFY5Y01qdzN5cU9QMjYyVzhjWk00ZW8z?=
- =?utf-8?B?cjllMnpQOGp0LzVkZmliZGxqV3FOR0Q1TnZTQkxaVzRNbTZHeGhYZVRIeFAz?=
- =?utf-8?Q?4FRo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bTJ0djl5V05xVHQ0d1lEa2FHQUVRVWhPbDR3QnBEQWgxbEtyM3h3a1BJUG9H?=
- =?utf-8?B?Mk1SUHQxR1F4S0piODhKREIvSUpzd3MrNXRnc3cwOGxwLzhITjNDT2t0Um0w?=
- =?utf-8?B?TXVtMGFyQzZGQ1lTaXE0TjdodzY2OEd3eUtnd0thdExJTjNXOGp3c29ibVlp?=
- =?utf-8?B?a3VwMzBXeU9iRnlwQktzUEFWT2dEdlNJL2h6WTVHOXJxeUw3ZFQ0ZjQyVUI5?=
- =?utf-8?B?UStnUGxaWkt2anNsbHoyc201S0VFM2RoZWduMWJYbGtYOTFKOHNpYlg0b2dK?=
- =?utf-8?B?SzVFUXRRdXNxbmU4enRzMk5zbThVVU4zQWVzVU91RDRBUzhDZ3B5eENhb3pR?=
- =?utf-8?B?MUNjSHk0ekZPUytudzY2MFVtd0ptb0JNYUtkQ1llOEtZOWNwRlhkcVQvY0Np?=
- =?utf-8?B?OC8wWXZlZUhNaHBVelNUQkFmOW90RG9sbDdkTmJqbTc2OGNMNVFTMXkvNWVj?=
- =?utf-8?B?MXcwNGNrTnpDWkIvdytYdE9LdUcvK09GdnNSSWVPMTZlaTJWUUQrcDI3UXQv?=
- =?utf-8?B?TWRxUWt6ZE96SlgwT3Vlb3NzaWtFaUZ1Smlvdmt6aHlmTE04ZzZuZ3hyYXhO?=
- =?utf-8?B?c0RCbkVoaEJjQXEva1FLOUljNGZ3WFFwUlJPOHFGVWFNaENlSUtOYWJUeHFT?=
- =?utf-8?B?U0sxOXdETVFCbVQ1OExqNU9hMXpjRGJBeTVPbDVtNlRnNTlVaGRvUWxsOXgv?=
- =?utf-8?B?RnZvWmlzWmRYT0NMOTlTbEttcUF3RFp0QnR6bVpCc1RVdVJoUFo3MmpxUG9N?=
- =?utf-8?B?dE90YktmVml2Z0IzUVJLZkxoOGtReHFmVkRReHRCdUo3clRUVU8xTHR6VTcr?=
- =?utf-8?B?YkN5cGpwSVZkeEZtOUs0c0kxSStUcEYwWHN4d3kramh6TWtqN0k5ZElYM1Ix?=
- =?utf-8?B?UmJPU2RkTld6VnhNRVlIQWZ1U0dnSmRQRk1hQzlNd1NoRUh2Um9jVnZLWFVk?=
- =?utf-8?B?MC9OdnlINllyVDBCOFdSOUMwZzhnc2VaM2RUbSs4YUJKSU1KblNnU1dzN0tm?=
- =?utf-8?B?UDNnejVMSVFSSUEvOTlHdTdaNlVwZUlCRG12dURnZCtJN1hmVit5R1hPRTlt?=
- =?utf-8?B?eW13bllmMHBtWFJjVFpYcjk0eTJsUW4rYzM0MkZKS3hoK1dhTWtBT3JXRFAr?=
- =?utf-8?B?QS8xYXJhRkJsUkZtaUxRVndPVzFkNE1CUjFZVEI4Z3I0amNsSERWZVpUbU9G?=
- =?utf-8?B?WUxTdGlaQTkrYTFVbmt0V0o1emtnODNOaWlxNzBKUXBEakVsRG0zekQ5clhL?=
- =?utf-8?B?YmQ1VlhHdjkzdmhkTkRpOXQ1MG9kL2VzalZqU1BPSnhKNFZJeVdsNUJ2SE5P?=
- =?utf-8?B?WCsvb3g5cXFpYWtwTCtvcG10blBxZHNWTjdLUCtJL3Q3ZWsreWdVYW1vYm53?=
- =?utf-8?B?a2JjOTBic3h0UlZleDhEMDBGOVpMNW9BNFRHdlVrOFlXc3dZaXhsdlJLSlJm?=
- =?utf-8?B?WDZ3OTUzYlRMeFpBQUNIa1luWE1EV1Y5UXhEUkhtL0tNZWVEU3lDb2RLdFd0?=
- =?utf-8?B?RHZqamJLUkxCbjlDU3U1UHY2dHFiUnJSVkp4VGxSbkRBTmhNM1JYR1poNWk2?=
- =?utf-8?B?TDRGb3hqKzlpN0x6YWNBSWRONnd0dFJERlZPYnRiL09ZZnE4ZkZvRlVBUFkz?=
- =?utf-8?B?bUxwS3NOL05JaVNXaWF3d3VHTzJhMHhmS01mVEpsRjdlc0dTZE1oRFp3aUpr?=
- =?utf-8?B?c0s2MTNQNkdYZDBXZWNoZGI3MWIvV1N4QmxYZC9BTkhvQ252VXJWeVZ1ai9v?=
- =?utf-8?B?bmRQaHU4RzRnaTBxTXJ4cGoxanZQRC9RVDhYYkdHdm1ad3VCdWYwMU9GRnJG?=
- =?utf-8?B?TjJkWi9yT0ZHZmRyRk1kU0ljOUFXUTlaWnVjeUdRdVc3eHFXMHpmYmJUMTNV?=
- =?utf-8?B?c09KbnZFU3FaMDE3QW9HdTVSbEltcVU4MzF5SW91eDE5NzdJNE1Ua2o1SnpJ?=
- =?utf-8?B?WFJSMUpkTHlaczE3ejJqN0hOcDhNa0xkMzBNVTZsZWEyVGI4d0N4YWRCK0VJ?=
- =?utf-8?B?SnYvVldCUVBJZWNxU0NtYmlaNTgrYlpGelZaZDlFc1I1Tk94ME1rZ0RFZHlx?=
- =?utf-8?B?ZXMrcFUwSlUvMnRiWGVMaEdqc095VUFjbGtLaW9rN2toUUIzY3IxelhFRkVD?=
- =?utf-8?B?eXd0bDBwaExqTHlRWjJTa245OUd3MFdPZW5Xa2VtbHhoS01pQlRqNXNJM3ND?=
- =?utf-8?B?TjZQcmc0SWxCTWRSeTI4TkpMcEM1eWZMQkRSeXdzOGdVNVJvUHpUdDBBQk9s?=
- =?utf-8?B?SXg0NHpGcWRGQWtXbXBJQlluQllFY1hTSkVqd3pjaDh3akdVcWhubFZHS2Ry?=
- =?utf-8?B?UkZ2YUx2S2hlNGpzVkxUeGNEZmR4L2Jrb1JBUHdNOHdkd0Rja2liUT09?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	wZKd+ktHfqfcMIcegALntO/PK75tHpMxaiE8uJ2y7ik4O7nP+ixNcDF6Czl2dBMhnMhV58JxQ+5gmq/YTX/SrCQ1FzaTLTEREnJivLEnkW7HTfh+Ds8lglIm6sF/hc3HCK7jevdx0UaDnKDYRiN3EIcSZWFqLb7OaGqGGAk/arCIw6w9b9cZW4IlYNFVjTEpbKUtVaNqpNcl86AiK6UKugHRfb831HUN1YkRWrjmXBhFjU/18KKtjyz+W/ozQ/gP+xeR04RVvCL9PKysPPz7l43Fmj1lTNXoEfFsr6RAvBpd0G9oz+bc41lsYwJ+BRoq4ELwBibPUL2Dp0pGyJ/lcuoRK7pkhVQHJe0uJhJJwXiYunW85O1rrIA/EcJ8swf6u+eIki55UrXshpZtLgR/S7q9rAOfM0N8kzacoJQDKajNIT/+el0n21W0lp6My6sRziCJ2oWT5vDkde6gHz1CTlm5EmpRiM1qHzJEcwqVQh4GXTM6FDDpECKpBbSjMbhDyguecx+Sb6lAMMHjPN86nUs5UbjFbIfF6+/J2wh10Fj0LF0LPrlUp3CodSUB/Ncr1VzSboCd8VCWEKgte4BQ2BjYAab+jAGvFeHqBRsDbKg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e89d7b7-cf87-48ba-99c4-08de6af6d3ff
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 11:55:48.9340
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LXCSalOwjJI3t0hD84hKLiA2dZpZ+ATTU8ElQX2tBKfUk8rH8y0I8J0/ToOLar2G1BJMgkRqDAq8OdWq60QGZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB7468
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-13_02,2026-02-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
- mlxlogscore=880 malwarescore=0 phishscore=0 suspectscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2602130091
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEzMDA5MSBTYWx0ZWRfXxjlAXBLkcOlZ
- DjvT+wbe91AGUBUhJKGk7eUKyBt3vMng4uqnG7l4s69ezxAeOADsBiiNE5tnEloV7YoBqf2Syt6
- UbWUVOVSwjQ7K3pbiGr6DkWF9kDGB5TYAVqI4MirLAzFMgMnhdVZe0g/XVmNpxN5HD2Q18/Wo5n
- GEzD3wRwpbeEo3IzSY2LYlnIqK3BxVkpzjAg/tY0PNsrxUaZSMnhWlFkEpxl4x2x73oWPwoAhfB
- VXWTMgHkiIsm5lt+VbuNE/lIqlB9iKSjkIkORzia/xZNFwsePzqYPAkcuimNWfld6WrK72hZTKr
- Ewa24Z7xZbIYYxA3oABPzs10WcVqzN6Ll3EMm2MyYSH6n54ISvxV6kKXiZiWdH6kU3K2o2+QvGw
- zyE39FN2oQtDT4oix1cX17N7U06hXLUAtx2o8IsNOTinK35FR059wswuucalQRtpCLDQOC6ivbQ
- e4TTzmMxRvFmdltJe/w==
-X-Proofpoint-GUID: eIVOh0f7NxeWKdLU9Y2umUDuV_dJM08Q
-X-Authority-Analysis: v=2.4 cv=Mehhep/f c=1 sm=1 tr=0 ts=698f114a cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=yPCof4ZbAAAA:8
- a=ZjnedAPQjhg5HCaBv10A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: eIVOh0f7NxeWKdLU9Y2umUDuV_dJM08Q
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 553254000E
-X-Stat-Signature: ra484ego3d1hfweap5fzhgqyuhz8pg3x
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+Subject: [RFC] making nested spin_trylock() work on UP?
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Waiman Long <longman@redhat.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Matthew Wilcox <willy@infradead.org>, Steven Rostedt <rostedt@goodmis.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nduueeeme4rso8zfkpkiea4w4ypm7fp8
 X-Rspam-User: 
-X-HE-Tag: 1770983779-806232
-X-HE-Meta: U2FsdGVkX1+Qe+pAx8f9AmG5K5PHCsECzGZcFBw6tddftoNwOgeBxu+tTJcYXnBCL2lnN65Frx3VFsLinB6x6lnHp8eXktGf/AOtowUJKO6UGfLd7cSAYNiyIy9ov6/l9kHDFGtxXIOhqNi0+iQa5tWUjRFULWsd2eDh+vJCuI6bpSIMDCQITInAZWTLLY5VbIzkEOcwX6G5GNy/usNXqsgwoL2dxXnG/3QVHUkRV774Q9QkvS1iNBsVZBBYNJduq4YyF1g7MG7oHETCS4icp2O9ILE3yl0hno8kt6mRO//LFLkYBMe8U/PS3k4HrcDYS3LZ/UKFoHbi+Wk5diNDQkAaRGV3mWnfUcKpQ7kT/tIkbgOvZut5+oBuVsl0rH3navY7Vk9MaP7wAnoXdXMTBJDrAX6DrVLKA8KOkVGEswKZFZ/XbGlN+GFp2DOsnjQNw1aacaN7qwAuuWu07p9hJZL560iQ4ti9LZ3pYBe0SCNuKBGVCILQdd4u+tU4O/XSL3BvGL4ouTaN6ow3m0fT3LKbA2x+WtIyf7C9Ew3o2cz4WqFkVbK16GXW2c5kXaixUYX0tBydR4ZRm5eueW0RXZewcTWjwVrQo7JDZSc8Ab4sjR4aApWXtVnNhozgUeCO/A91stBO5ieWasfscPD14UtZS9cpcqEuu1RxhQ8VXw8VdYs656jgqF6of/YIqfoNvQzz2s/NyEfzandiILTInrptR4zS3gopM9ZRZxy53QjlRHmzDzS6WUpcgRaIJJ+GGPJIi0vwjn3y4BdTPAEOhWyx04GLF9SIlE8poR1Er0ZaLpb6jQvtgwHlRgsAeGwtxhQB1u6eB6yVs1DiSjZ93pl1rlQzqPT5m2Jc9HEt9liSYTJGhhoaY7NT8So4WmJDUocdGrunKOFM2OU7PQg+iBvdkScNoC0lNK113IU8WurqjqO/nVm5qZ45zWvjcmTPkSpxbOD9BWJ+iHGQEHq
- KUbbTZnW
- g0XBX6SvqZiOWFaMEVQ6nAD7P9zSku5Um7AyVWeLV7GWbmny8LCYTtVgA7wLlFfUmsPG15lv4b3sPIrqHD2nZAP+XdqvjilxFMFHlxv+0qBbPvLYQUosQ8H1xx6aOQCb+dxNSeGNG2DnUROUYw6tPWzdt25xzt6GfR2NIH6KKM2bcnFlVequWKWzXHjfmHOB5j4zkHY87YN7cHSJ2wh74mAdCS2/TTLVioYm5YOiG6SEEfHc01kq9HZx+TD5a3C+rXNIti117Z4QDSA6Er2vftGWTIfygWq0vBBNvW8FS48IV5h7xUPlJinEAJdOmH75vEaWavfcaL3eX7238rUdItUbqidSgrg5plU8sGFcBhbeEBLJLG9G5REqjN3OWCyl5wm5QmW3bMiz5ZoAHHwA1g+UpcIfOTB5DEh/dcGA1Yoe8JO5rUmb0jxBRpaiqhzTnQV/7QzPVbYoBPKGoO9ez9aByaCHlxtBi/GJjWV6fthKUDQYXXKArJLpWdDHNfcFFt3xCm/RUq8IehuFAdbqg0OzwUMLYyoFiXCtM/gWn8zy0ccb2UvuwsJBrbkIc/54jv9cs4tAi+H/nQfgRSpoXGWQhzzBNDyFaQ/kUsK8NYWA9+Ram9XYezJeWPcD+WXGYdLhLou4TyA65fVRFA0pQ/f2lPPWsQb++jMYzi6WLv3CAxvqX//iQHlOquvhElnpGYp6BDgf8lXDN4N4JipYk0sWIvx9umDg6XH95RZ8JK78mS8s6+MxPwt4zL3Zfth/Jx0uWZQRwCmLpV+JUSyOA/FzfoanT60Szq8NQ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C312B100003
+X-HE-Tag: 1770983865-569037
+X-HE-Meta: U2FsdGVkX18Xb4Md5tPTZ5Ii4w3e+3UobL1YAO5C4qGEzT+lBjokxbr39mfrPd/bW0bzbi0yE/ZbTnJwQCY1Sd+uEiAbWcaK5vJ0p2mJ/PQ+SQjYHwwRQbBOGBr0nUYVQ9uKQafWJI+1qPPOfJPt/718R1E11m9j/WT7G1jWk3wo2wCP+NoUyR7GjjpkP8qcG5BbjTfJXd+eaL2F7qkR9uEmPDjeK/fUUJLg1371Aw+GvmXnZOgkzEQwXa5VxI0Zo7Gvdjn36o5yME2lVWiQ4IHXJpzgX8wp7qnofZQBr7zGgFAQ710eGdnbcZ0i6hTO894wiqV/ki+MCUdbd0odXrlIbCSYY7O1pRt0vLlwGRkezTtiZDXowxV2oO64onXkVQHuinwGGU73AMVoCS1x4iSX2hgJbjygxWTM9TIODoidcnr6wJC9dwMmgUahLa+aOmrOCPm9cYmMJnFDQNRPoVeBgXw4SCwNUOCKCjTUnmuhU0Suczqup2iosoRQEZkVFpXDx6gsdzZPAwQ8p83F5RDATZnSx2OlKkx+F5cbU5Rx3ltCCT/pAtwarPf2G4umAEhEs+RDp69YVkFNJYWiXtM6LA8vITrfC3mqnUvhdA/DRgSdi9O6R2x+wXv+caV/wDX20hidcwp+/s0HXeQf8BfcB7fAo8HIGRrk+18cl+St/zWC1yOh+hWZVm1v4fzmNNda4L8p7sHb14DpBwM0Q9IcxOOF5aidm6ofM/3a+PyBUVX964TLa+Ul1sFdn9DnDoaOsq/fHQTfK2uG8WvR8RYQk3frILWhw5EFJdx0BOw9zMIVPUtthnwV3NG6J0KR/Ca419bhe/XJgp03FUY2uai1X77FePx5jg7Kaa+67VvsVhMOM1WiDmO6EjJXhbYvnkYVVpTW88CkZfvbbh729JmVEmWd75NA3kIKVyE6ST2QURtVqfPkDOlPt505tgb7E196rxaez3rNriHpTU7
+ Ewp0x+Ts
+ Tw2YukswtG1K5N+cqRu2E36fG3eJC2GKGJN5D6F89A4+6rdnR1Novls+D9swi82aGVvwh0g7MG4HOV3SI7hpZaEp5AgUu2QhsjLl6PvaRrNDaaTxnYHVszzyIA5AQ3a5dw+B+lPQy34IqRkmbBVTaQAkNU1L7Cxi54QLia4rKKFfD1OC5bailigBpMcSertlHXYWQ4vbkSw3JnrEWeO3nhK8fEEIyUvY5uk5VzzxVofWT02sk36K6SZcCsETfMP6sA6Or7m1EsQAPNICiLDD4knGandnYqg7naalNbS8NJumobU0F6SHv8v1AATJ1jM/ZnrNMIsjrCwHwOGGtSGEV0MvFAZCGw8Jbv2BYLHuC83HW6fNT9pPwbxem41HpbM72J/WzJMe8PIxdi8wLvibXCF3eSJnP8o7FMfH9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -282,28 +174,376 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 12, 2026 at 11:15:52AM -0800, Alexei Starovoitov wrote:
-> On Fri, Feb 6, 2026 at 1:35 AM Harry Yoo <harry.yoo@oracle.com> wrote:
-> >
-> >         } else {
-> > +               if (unlikely(!allow_spin)) {
-> > +                       /* call_rcu() does not support NMI context */
-> > +                       rcu_sheaf->size--;
-> > +                       local_unlock(&s->cpu_sheaves->lock);
-> > +                       goto fail;
-> 
-> As a first step it's ok, but we need to make call_rcu() work too.
+Hi,
 
-Yeah I was thinking it would be nice to have call_rcu_nolock()...
+this is not a real RFC PATCH, but more like discussion about possible
+direction. I wanted to have a patch at hand, but the layers of spinlock APIs
+are rather complex for me to untangle, so I'd rather know first if it's even
+worth trying.
 
-> Shouldn't be too hard. It protects itself with local_irq_save,
-> so if (irqs_disabled()) defer to irq_work and call_rcu there
-> or guard reentrance into __call_rcu_common() with per-cpu busy counter.
-> rcu_head can be reused to form list of objects to be processed in irq work.
+The page allocator has been using a locking scheme for its percpu page
+caches (pcp) for years now, based on spin_trylock() with no _irqsave() part.
+The point is that if we interrupt the locked section, we fail the trylock
+and just fallback to something that's more expensive, but it's rare so we
+don't need to pay the irqsave cost all the time in the fastpaths.
 
-I'll take a look at that, thanks!
+It's similar to but not exactly local_trylock_t (which is also newer anyway)
+because in some cases we do lock the pcp of a non-local cpu to flush it, in
+a way that's cheaper than IPI or queue_work_on().
 
+The complication of this scheme has been UP non-debug spinlock
+implementation which assumes spin_trylock() can't fail on UP and has no
+state to track it. It just doesn't anticipate this usage scenario. So to
+work around that we disable IRQs on UP, complicating the implementation.
+Also recently we found years old bug in the implementation - see
+038a102535eb ("mm/page_alloc: prevent pcp corruption with SMP=n").
+
+So my question is if we could have spinlock implementation supporting this
+nested spin_trylock() usage, or if the UP optimization is still considered
+too important to lose it. I was thinking:
+
+- remove the UP implementation completely - would it increase the overhead
+on SMP=n systems too much and do we still care?
+
+- make the non-debug implementation a bit like the debug one so we do have
+the 'locked' state (see include/linux/spinlock_up.h and lock->slock). This
+also adds some overhead but not as much as the full SMP implementation?
+
+Below is how this would simplify page_alloc.c.
+
+Thanks,
+Vlastimil
+
+From 7a0f233ec0ae46324b2db6a09944e93c7cb14459 Mon Sep 17 00:00:00 2001
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Fri, 13 Feb 2026 12:51:02 +0100
+Subject: [PATCH] mm/page_alloc: simplify as if UP spin_trylock() was reliable
+
+---
+ mm/page_alloc.c | 111 +++++++++++++-----------------------------------
+ 1 file changed, 30 insertions(+), 81 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d312ebaa1e77..f147126b6c06 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -95,23 +95,6 @@ typedef int __bitwise fpi_t;
+ static DEFINE_MUTEX(pcp_batch_high_lock);
+ #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
+ 
+-#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+-/*
+- * On SMP, spin_trylock is sufficient protection.
+- * On PREEMPT_RT, spin_trylock is equivalent on both SMP and UP.
+- * Pass flags to a no-op inline function to typecheck and silence the unused
+- * variable warning.
+- */
+-static inline void __pcp_trylock_noop(unsigned long *flags) { }
+-#define pcp_trylock_prepare(flags)	__pcp_trylock_noop(&(flags))
+-#define pcp_trylock_finish(flags)	__pcp_trylock_noop(&(flags))
+-#else
+-
+-/* UP spin_trylock always succeeds so disable IRQs to prevent re-entrancy. */
+-#define pcp_trylock_prepare(flags)	local_irq_save(flags)
+-#define pcp_trylock_finish(flags)	local_irq_restore(flags)
+-#endif
+-
+ /*
+  * Locking a pcp requires a PCP lookup followed by a spinlock. To avoid
+  * a migration causing the wrong PCP to be locked and remote memory being
+@@ -151,48 +134,22 @@ static inline void __pcp_trylock_noop(unsigned long *flags) { }
+ })
+ 
+ /* struct per_cpu_pages specific helpers. */
+-#define pcp_spin_trylock(ptr, UP_flags)					\
++#define pcp_spin_trylock(ptr)						\
+ ({									\
+ 	struct per_cpu_pages *__ret;					\
+-	pcp_trylock_prepare(UP_flags);					\
+ 	__ret = pcpu_spin_trylock(struct per_cpu_pages, lock, ptr);	\
+-	if (!__ret)							\
+-		pcp_trylock_finish(UP_flags);				\
+ 	__ret;								\
+ })
+ 
+-#define pcp_spin_unlock(ptr, UP_flags)					\
++#define pcp_spin_unlock(ptr)						\
+ ({									\
+ 	pcpu_spin_unlock(lock, ptr);					\
+-	pcp_trylock_finish(UP_flags);					\
+ })
+ 
+-/*
+- * With the UP spinlock implementation, when we spin_lock(&pcp->lock) (for i.e.
+- * a potentially remote cpu drain) and get interrupted by an operation that
+- * attempts pcp_spin_trylock(), we can't rely on the trylock failure due to UP
+- * spinlock assumptions making the trylock a no-op. So we have to turn that
+- * spin_lock() to a spin_lock_irqsave(). This works because on UP there are no
+- * remote cpu's so we can only be locking the only existing local one.
+- */
+-#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+-static inline void __flags_noop(unsigned long *flags) { }
+-#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
+-({							\
+-	 __flags_noop(&(flags));			\
+-	 spin_lock(&(ptr)->lock);			\
+-})
+-#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
+-({							\
+-	 spin_unlock(&(ptr)->lock);			\
+-	 __flags_noop(&(flags));			\
+-})
+-#else
+-#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
+-		spin_lock_irqsave(&(ptr)->lock, flags)
+-#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
+-		spin_unlock_irqrestore(&(ptr)->lock, flags)
+-#endif
++#define pcp_spin_lock_nopin(ptr)			\
++		spin_lock(&(ptr)->lock)
++#define pcp_spin_unlock_nopin(ptr)			\
++		spin_unlock(&(ptr)->lock)
+ 
+ #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
+ DEFINE_PER_CPU(int, numa_node);
+@@ -2583,7 +2540,6 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ {
+ 	int high_min, to_drain, to_drain_batched, batch;
+-	unsigned long UP_flags;
+ 	bool todo = false;
+ 
+ 	high_min = READ_ONCE(pcp->high_min);
+@@ -2603,9 +2559,9 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ 	to_drain = pcp->count - pcp->high;
+ 	while (to_drain > 0) {
+ 		to_drain_batched = min(to_drain, batch);
+-		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
++		pcp_spin_lock_nopin(pcp);
+ 		free_pcppages_bulk(zone, to_drain_batched, pcp, 0);
+-		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
++		pcp_spin_unlock_nopin(pcp);
+ 		todo = true;
+ 
+ 		to_drain -= to_drain_batched;
+@@ -2622,15 +2578,14 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+  */
+ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
+ {
+-	unsigned long UP_flags;
+ 	int to_drain, batch;
+ 
+ 	batch = READ_ONCE(pcp->batch);
+ 	to_drain = min(pcp->count, batch);
+ 	if (to_drain > 0) {
+-		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
++		pcp_spin_lock_nopin(pcp);
+ 		free_pcppages_bulk(zone, to_drain, pcp, 0);
+-		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
++		pcp_spin_unlock_nopin(pcp);
+ 	}
+ }
+ #endif
+@@ -2641,11 +2596,10 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
+ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ {
+ 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+-	unsigned long UP_flags;
+ 	int count;
+ 
+ 	do {
+-		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
++		pcp_spin_lock_nopin(pcp);
+ 		count = pcp->count;
+ 		if (count) {
+ 			int to_drain = min(count,
+@@ -2654,7 +2608,7 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ 			free_pcppages_bulk(zone, to_drain, pcp, 0);
+ 			count -= to_drain;
+ 		}
+-		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
++		pcp_spin_unlock_nopin(pcp);
+ 	} while (count);
+ }
+ 
+@@ -2853,7 +2807,7 @@ static int nr_pcp_high(struct per_cpu_pages *pcp, struct zone *zone,
+  */
+ static bool free_frozen_page_commit(struct zone *zone,
+ 		struct per_cpu_pages *pcp, struct page *page, int migratetype,
+-		unsigned int order, fpi_t fpi_flags, unsigned long *UP_flags)
++		unsigned int order, fpi_t fpi_flags)
+ {
+ 	int high, batch;
+ 	int to_free, to_free_batched;
+@@ -2913,9 +2867,9 @@ static bool free_frozen_page_commit(struct zone *zone,
+ 		if (to_free == 0 || pcp->count == 0)
+ 			break;
+ 
+-		pcp_spin_unlock(pcp, *UP_flags);
++		pcp_spin_unlock(pcp);
+ 
+-		pcp = pcp_spin_trylock(zone->per_cpu_pageset, *UP_flags);
++		pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 		if (!pcp) {
+ 			ret = false;
+ 			break;
+@@ -2927,7 +2881,7 @@ static bool free_frozen_page_commit(struct zone *zone,
+ 		 * returned in an unlocked state.
+ 		 */
+ 		if (smp_processor_id() != cpu) {
+-			pcp_spin_unlock(pcp, *UP_flags);
++			pcp_spin_unlock(pcp);
+ 			ret = false;
+ 			break;
+ 		}
+@@ -2959,7 +2913,6 @@ static bool free_frozen_page_commit(struct zone *zone,
+ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 				fpi_t fpi_flags)
+ {
+-	unsigned long UP_flags;
+ 	struct per_cpu_pages *pcp;
+ 	struct zone *zone;
+ 	unsigned long pfn = page_to_pfn(page);
+@@ -2995,12 +2948,12 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 		add_page_to_zone_llist(zone, page, order);
+ 		return;
+ 	}
+-	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
++	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 	if (pcp) {
+ 		if (!free_frozen_page_commit(zone, pcp, page, migratetype,
+-						order, fpi_flags, &UP_flags))
++						order, fpi_flags))
+ 			return;
+-		pcp_spin_unlock(pcp, UP_flags);
++		pcp_spin_unlock(pcp);
+ 	} else {
+ 		free_one_page(zone, page, pfn, order, fpi_flags);
+ 	}
+@@ -3021,7 +2974,6 @@ void free_frozen_pages_nolock(struct page *page, unsigned int order)
+  */
+ void free_unref_folios(struct folio_batch *folios)
+ {
+-	unsigned long UP_flags;
+ 	struct per_cpu_pages *pcp = NULL;
+ 	struct zone *locked_zone = NULL;
+ 	int i, j;
+@@ -3064,7 +3016,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 		if (zone != locked_zone ||
+ 		    is_migrate_isolate(migratetype)) {
+ 			if (pcp) {
+-				pcp_spin_unlock(pcp, UP_flags);
++				pcp_spin_unlock(pcp);
+ 				locked_zone = NULL;
+ 				pcp = NULL;
+ 			}
+@@ -3083,7 +3035,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 			 * trylock is necessary as folios may be getting freed
+ 			 * from IRQ or SoftIRQ context after an IO completion.
+ 			 */
+-			pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
++			pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 			if (unlikely(!pcp)) {
+ 				free_one_page(zone, &folio->page, pfn,
+ 					      order, FPI_NONE);
+@@ -3101,14 +3053,14 @@ void free_unref_folios(struct folio_batch *folios)
+ 
+ 		trace_mm_page_free_batched(&folio->page);
+ 		if (!free_frozen_page_commit(zone, pcp, &folio->page,
+-				migratetype, order, FPI_NONE, &UP_flags)) {
++				migratetype, order, FPI_NONE)) {
+ 			pcp = NULL;
+ 			locked_zone = NULL;
+ 		}
+ 	}
+ 
+ 	if (pcp)
+-		pcp_spin_unlock(pcp, UP_flags);
++		pcp_spin_unlock(pcp);
+ 	folio_batch_reinit(folios);
+ }
+ 
+@@ -3359,10 +3311,9 @@ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
+ 	struct per_cpu_pages *pcp;
+ 	struct list_head *list;
+ 	struct page *page;
+-	unsigned long UP_flags;
+ 
+ 	/* spin_trylock may fail due to a parallel drain or IRQ reentrancy. */
+-	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
++	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 	if (!pcp)
+ 		return NULL;
+ 
+@@ -3374,7 +3325,7 @@ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
+ 	pcp->free_count >>= 1;
+ 	list = &pcp->lists[order_to_pindex(migratetype, order)];
+ 	page = __rmqueue_pcplist(zone, order, migratetype, alloc_flags, pcp, list);
+-	pcp_spin_unlock(pcp, UP_flags);
++	pcp_spin_unlock(pcp);
+ 	if (page) {
+ 		__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
+ 		zone_statistics(preferred_zone, zone, 1);
+@@ -5062,7 +5013,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 			struct page **page_array)
+ {
+ 	struct page *page;
+-	unsigned long UP_flags;
+ 	struct zone *zone;
+ 	struct zoneref *z;
+ 	struct per_cpu_pages *pcp;
+@@ -5156,7 +5106,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		goto failed;
+ 
+ 	/* spin_trylock may fail due to a parallel drain or IRQ reentrancy. */
+-	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
++	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 	if (!pcp)
+ 		goto failed;
+ 
+@@ -5175,7 +5125,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		if (unlikely(!page)) {
+ 			/* Try and allocate at least one page */
+ 			if (!nr_account) {
+-				pcp_spin_unlock(pcp, UP_flags);
++				pcp_spin_unlock(pcp);
+ 				goto failed;
+ 			}
+ 			break;
+@@ -5187,7 +5137,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		page_array[nr_populated++] = page;
+ 	}
+ 
+-	pcp_spin_unlock(pcp, UP_flags);
++	pcp_spin_unlock(pcp);
+ 
+ 	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_account);
+ 	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_account);
+@@ -6144,7 +6094,6 @@ static void zone_pcp_update_cacheinfo(struct zone *zone, unsigned int cpu)
+ {
+ 	struct per_cpu_pages *pcp;
+ 	struct cpu_cacheinfo *cci;
+-	unsigned long UP_flags;
+ 
+ 	pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+ 	cci = get_cpu_cacheinfo(cpu);
+@@ -6155,12 +6104,12 @@ static void zone_pcp_update_cacheinfo(struct zone *zone, unsigned int cpu)
+ 	 * This can reduce zone lock contention without hurting
+ 	 * cache-hot pages sharing.
+ 	 */
+-	pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
++	pcp_spin_lock_nopin(pcp);
+ 	if ((cci->per_cpu_data_slice_size >> PAGE_SHIFT) > 3 * pcp->batch)
+ 		pcp->flags |= PCPF_FREE_HIGH_BATCH;
+ 	else
+ 		pcp->flags &= ~PCPF_FREE_HIGH_BATCH;
+-	pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
++	pcp_spin_unlock_nopin(pcp);
+ }
+ 
+ void setup_pcp_cacheinfo(unsigned int cpu)
 -- 
-Cheers,
-Harry / Hyeonggon
+2.53.0
+
+
 
