@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC7F4EF99E9
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 23:38:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC1C1EF99E2
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 23:45:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AF1D6B0005; Fri, 13 Feb 2026 18:38:11 -0500 (EST)
+	id E81696B0005; Fri, 13 Feb 2026 18:45:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 833346B0088; Fri, 13 Feb 2026 18:38:11 -0500 (EST)
+	id E2EA86B0088; Fri, 13 Feb 2026 18:45:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73E8E6B008A; Fri, 13 Feb 2026 18:38:11 -0500 (EST)
+	id D10BA6B008A; Fri, 13 Feb 2026 18:45:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 640576B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 18:38:11 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 057CD8C20E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 23:38:11 +0000 (UTC)
-X-FDA: 84441049182.22.1568B8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6339C140002
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 23:38:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ISOikdQ8;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C15476B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 18:45:50 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 604A0591EC
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 23:45:50 +0000 (UTC)
+X-FDA: 84441068460.04.1BE5412
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BD1CAC0002
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 23:45:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GZ6LJlyZ;
+	spf=pass (imf28.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771025889;
+	s=arc-20220608; t=1771026348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=55nhgH1HuuMa+Qr2Tmdur8B3SlOPrWQR3QC4xL6LTG0=;
-	b=aH5E67feKBYJhRYKYbykeGmEaT67KulpsJCn7i0P8xaDn1tCR9rudYOX/oGcACFggsdomN
-	xREaxp7rSgXQGbv4flnUPhqAvt15Jr0tgTuzVQLkZVdqm9Ge2h0ibKBk2cx4e44EFrF3/s
-	SNA1wV/eCPJ+MKEV6k4Oxci6eFz3mlA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oRnShWY8WBzenx6fyoVyl29INCccNk7PeszikWUZXlU=;
+	b=MSUY4KCIUhbslKSlMwIvxDlRhdwlG5nezdELx/sridzZmONK+7lhBr3H1fG3kdnstF9FPr
+	1nLpu16h1/hpuj3Wr1rSp9zZ0/uB7H/2uZTlimycqp9XelT+TJeBiNkGPz3jUUMZSvR1bz
+	HWsHkQsKwdCtisP77r8pSJZNuxB7o7I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ISOikdQ8;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GZ6LJlyZ;
+	spf=pass (imf28.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771025889; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771026348; a=rsa-sha256;
 	cv=none;
-	b=zNfF30JF5GxnScsjI5LnVUQLqoEpUYcoitsDIabSJEZ+0OWJeuN0KUnrZ5SBIUOyo51X3a
-	quMYn7Fo9alUMwg5GuldL14nMSg4RDV9n0dnYQ49wOOmNJbjADe70wJwvgcf0ZJRa8YjNM
-	E+TrFWFmz1xgNJDVuMKDg7b12IwJEI0=
+	b=3ZbwRcCZzSpGsODTdyvZO4YoiKD2fe1fTmO9UXZmh6fY6SxdobO7ktPdzvOX7Ch67geNTF
+	Q5/HC0X5b8NsuldSO4saSZHhu+4nFTMbsapfB+l6llaW4vQtzumpBDNIviFyklTfeMrnNs
+	qvoC0qyn07db+eD7p7Sj0sm0QKw9z5g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29646429CA
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 23:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4945C116C6;
-	Fri, 13 Feb 2026 23:38:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E8DC860054;
+	Fri, 13 Feb 2026 23:45:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9850FC116C6;
+	Fri, 13 Feb 2026 23:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771025888;
-	bh=CpF3TGy6lubjr9awkXLTeq4aj0LPX2b/2Yx/UJuhsK0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ISOikdQ88tJxqrgnLbczK8XQmzR26o/3NJwuu4TYd7el6YEkms5Q37nK7GFa4XwnM
-	 pTRiTR0lICJC53jgPf3sbADYS7uhiXze1pvgiuQT53DPA/t9DTVe+VJEteycEyqPNV
-	 d0NxMGPZfVdkUzpxlLBudqtdl8Bbj/jtu8Lin6thphs0uai3LTtymEafbbd8HvDdds
-	 DFkXg7tw8Zbqaplbrsn63mE5RrBt4JakLcpKzDbysq+M/wP0l9spXd/nQgCkHL3WsC
-	 0R5UY/BwSOdE6WK6FI1NgxP5EFcc+av5BM0X2TdhRftaCEdvKRxq3LDQfCuE0dXcSY
-	 OUTnI4umL6ZQA==
-From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-02-16
-Date: Fri, 13 Feb 2026 15:38:03 -0800
-Message-ID: <20260213233804.62895-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20201202; t=1771026347;
+	bh=EWfaKJCaJC2GErydog5q9S65WnGr3OmrX5J6uwCpiPk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GZ6LJlyZWLf4CDD5S/zkdrpwC2BXwCpeTxgo1tIB1sIcZco7UXK8Hdj4gaVXMxXwz
+	 IyqXcv7lo9oeR//v00ELuNg66qlpw9bzGf7XqxUsNZMUy2EUCuPJfnzRQ1UU8fcLlH
+	 XG3ptvUaXIezNwP1k8g2s9vlYWAy5TLqIVLvJpQllknBDZYAWaxwdcpzqzL9a8DSFM
+	 vnZGWriKQS6uWTi8U36rK9OmdRe3GVAcGatiya2g+PIQbWFkJZLl68iGfdtr/ckr+d
+	 tNCTSaRznDdLmk0AHz72k2L6ZggIyYEgpgkRpO+AMCQt8ZOgVU9i01qo8tS+bjd69S
+	 YnCUoqkY9aHvg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 852673811A44;
+	Fri, 13 Feb 2026 23:45:42 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ndephekwxkzxghpp7ruca7ijfstxk8xr
-X-Rspamd-Queue-Id: 6339C140002
+Subject: Re: [PATCH mm-hotfixes-stable] procfs: fix possible double mmput() in
+ do_procmap_query()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177102634133.2575868.4556838261873713161.git-patchwork-notify@kernel.org>
+Date: Fri, 13 Feb 2026 23:45:41 +0000
+References: <20260210192738.3041609-1-andrii@kernel.org>
+In-Reply-To: <20260210192738.3041609-1-andrii@kernel.org>
+To: Andrii Nakryiko <andrii@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, surenb@google.com,
+ shakeel.butt@linux.dev, ruikai@pwno.io, tglx@kernel.org,
+ syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com
+X-Stat-Signature: wq877ewapx8w6ojrbccqi4ofc3kajsgn
 X-Rspam-User: 
-X-HE-Tag: 1771025889-531274
-X-HE-Meta: U2FsdGVkX1/GJ91TPfmV4rzj5XuD0nYkpI3XsuC9+NRg8UaN+54j9mETplaipZYAp1AOr1CW0CBiaFyA37sEciGpOGJLx2oJC3eSFYNhE346CiPQtKI1cH1zGjaW30u9eEzXAr9lShj7G7AOIO7ffTlD/JT/umlQPlzvEEZwzFinvAWQDv+Np+REERaKegRQeS+aD96LOXOKMOmjrpvldrUXXWNixk3nfaT5+O1AFR3xHki2D7/qlQV4b1mSlh5QkqBEcLCVoetZlUtkdr8FiNsEi5MZq3cdKDn3Ama33I+Gq40T5oJm26Gwe/Vx9Y31NVwc5AaJlCGuPx3E8Ki3/I13ddF2HQEqu9EKmp4S0/cW/njemtbQHQ8qEK7LWyFJfCaOUe1eWVMb/loDnGH7PcAqkd6A/kge9C32WIEEim8OfClmWdHTHg0Ya0iC0fhirVhIDGHT6PQ+0lgGHuG5ic+7+ZAETX7EGDLmQmtYWZL2EOn0sqP9QLbff4A3KGHB1lsWkc7fzWdMERpCQrqIgP4aVmtFCqPxwL2ScGEEl3pWcNwtejbY50/mukdJT9epaGnRKA52zqqhL1+SjqYYHmI23OwDSqJ400iG0H10krKjh8iJVnqNC/xYeYawqwrvAXex0dyA+L3SBr+NmcJNmtdijf3eMfWYxu18WWxyZ/DmW47ruyLBk9/P8SrvH6Baelo/SG0z/Mh+2aPulzIH2BT8QeT43X8ycqJgKmk4XUmZUD9ABUFmzzonZjeHnGT1JDUzVILDNksmGeMIqIvPSKbnZeYO3vRDA3hq48wnLF6FuRjKqcBGxNkvg7wQB7AIgcuB5MFklSEhoM7QAXShGQDBCw2FMWzbNeIxiHDQqvrOQaQy1C7e2Vmz9Bw547zqysierhyuJa5JlrhGP0oE1mMzGhP+j14u29vul12CpkmcTqhJKT136txPJIcCQFltz56bnCAgdg+S5O1suzf
- /JaSnXl6
- p6gznTAmzL3UgIxws97uYMgjE3cVjARJTM/Tijfz9p4pNXQzvFECGXhqlbMhNx+59JjxitW9OhfmoPVliDUPQ9czC+mjNeGlV0HTbHjaT0K+hBvmd7p1ezhLcamytLuivn64RHxKTHNRggJkFQRdOINiOPPrCgWbMXOfqm2bjZ3u2UoJlIZSGcO8pYYM+cmVbfh+n38PqrLdXEuwQFBM9Y1iXKYw/HKQwwNE9nQBRdAni85iinqNf4D9qjRNF/VctDmISkydlnXjfSaygzdmnRrUgyJX95Vs3U7tuz6xnH+AXX4kGvhQTHqdMHkSsm+Dyynplx0nkpPYKfPqHzMzrIzuGWA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BD1CAC0002
+X-HE-Tag: 1771026348-44071
+X-HE-Meta: U2FsdGVkX1+VL5wNfRBOQultDbB0D2rUcmQh6RmCzuJG7cFOO9/0E4ShqDHG01DTTajEIU20uHgyvt/KnVruodKAYzMFBdTvUtqCLUWjy4UR6iXV3sCr1zlgBJnsRyFfCMgI/ZboPLywESklf8saHoLqvHbejoo51LdYb4JNap6wCuh62ViaqUVls/9+gHUpYjGERB+SPZqj4dRraykzzc+SOLpHrES3FpHcn54WZDtBb+aMgR1zJ4BG78TQD1QujN2JvMvlHuol5tII53yR6U3eF6XXdNEjquSa4LCny9GuyyDSANbjcWq7yhYC/eSLmYCC9JdfPLyeNrwTDo6bAZFiSprg1JGSwK+H+YRO9hYOUewAhKBj/rI5FkvIGrRDiycmwztsrb0xd3Bt4+JCeKaoN/maDDEveQv3cSRZy6CZMXPbLYFe7EVCFERKWU3EjMzrCZo/uVe+AM1/L40wXMSjjl5TOtZozibULtkQh0RlLuBxb13q29Xrs+zsiTvSqCCxjQRnRP5Zp7NxtK0GFwHBKY4ZDSha8YmVDSVEZU0Djo66eZ+ukev7k1NROyqaukqWb13QX3mHjkOlu3GuDgXGLLN/QSoBzs8ERVKDuBnpMaD2YlIZ2r5nPBc3LA/97dMP9wWbsjsrGVOhIx5gZfAl1eM87YHVYEB6Bp6pa8Z90QyLETeco0gjgYG5b8rJOxjS/tM0KcWpYcPRpR25+UO/0Q1WxtcJmEOlrSl3yK8b8ZUjNQEgvYqb6qL7XxDB+bZJDGNhn77wjFGQ9g540smO7zf2UIqZa5IuMFGmxoXBdy51DpYM3WUgWfXR/LjDHhht5AOZcas3+BZ++qVES/NGJREu9PhNp3INmfw8vp5NXXTQ7ejHfnna1U1TCDJRnb5z4O+p37XM4y25sctdBZQ88XXPzKAuKsYaSsuxqOmDuBK+OO7L2VwxRIo2PKejlx22CbStLpIgQkiI0wU
+ XVjoxArq
+ dAAQJRov557qGc4ETY+fBuAcqHqaaw57Mj/gdA4pNuNraFOXqerEXd3aFuC1NFE9/SoUltLEA4AcLZfiSI9Dz0hlD7c39+JVEgOL98uK9szPbSgNj1xHunSt7vNMZaTUEiSjc48LZ0vEMYryKizpCVI/V8OfFmrAiw4CKJ08Zi7qMDwzJY5uyhS7WPT815ejWUfCQNrK42qA8MJC/wBF+/apwVbQD36j0kAf6p7Ompcc8tGRB38hleTny1iVkZXouSRQFDCJ5nyJNtB3+HbIOjeGeVmuaIzlydyOfaBSd9LTPS68CchI/k9gXboRe3bvI0Q5c8HosNRJAh2Egz+10TjxP7No+TWjIxqFcn3EOJxtdnOH5eg9Qefa+hNbbmP7GPmS+BlXYIqdFIaVMf3E/Av5pLeVEk3vBtTG4BHI7V+G/HOLQJU1doxh5qHBCA3/TP/79Mr2P4ani4TBk6J6PGjH1M2zOZfQmjKhBWEVHBXSjS86f08KFOGbpNVEreXsu2rFYcZwclYa6/PxfpNW5Zcd2S95gT23qlRDr+4+nqDWJakOhrOIi6Bnt2rNwVOqm6j6D45zuBIoqGWCeKw2JfXVv1oNzCwFQOwv/vqX4Y4pU/GFZA6XPNE+iS1fosrGR6IZE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,41 +99,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hello:
+
+This patch was applied to bpf/bpf.git (master)
+by Andrew Morton <akpm@linux-foundation.org>:
+
+On Tue, 10 Feb 2026 11:27:38 -0800 you wrote:
+> When user provides incorrectly sized buffer for build ID for PROCMAP_QUERY we
+> return with -ENAMETOOLONG error. After recent changes this condition happens
+> later, after we unlocked mmap_lock/per-VMA lock and did mmput(), so original
+> goto out is now wrong and will double-mmput() mm_struct. Fix by jumping
+> further to clean up only vm_file and name_buf.
+> 
+> Fixes: b5cbacd7f86f ("procfs: avoid fetching build ID while holding VMA lock")
+> Reported-by: Ruikai Peng <ruikai@pwno.io>
+> Reported-by: Thomas Gleixner <tglx@kernel.org>
+> Reported-by: syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [mm-hotfixes-stable] procfs: fix possible double mmput() in do_procmap_query()
+    https://git.kernel.org/bpf/bpf/c/61dc9f776705
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2026-02-16.
-
-As usual, we have two time slots for meetings in the week.
-
-Next time slots including six virtual-only ones are as below.
-
-2026-02-16 (Mon) 18:00 PT (not yet reserved)
-2026-02-18 (Wed) 09:30 PT (not yet reserved)
-2026-03-02 (Mon) 18:00 PT (not yet reserved)
-2026-03-04 (Wed) 09:30 PT (not yet reserved)
-2026-03-16 (Mon) 18:00 PT (not yet reserved)
-2026-03-18 (Wed) 09:30 PT (not yet reserved)
-
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
-
-Please note that other time slots are also available on demands.
-
-Shared Calendar
----------------
-
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
-
-You can also get the past and upcoming schedules via
-https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
-
-
-Thanks,
-SJ
 
