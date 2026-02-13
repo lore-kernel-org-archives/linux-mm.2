@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4B3EF48CC
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 07:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF00EF48DC
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 07:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 280346B008A; Fri, 13 Feb 2026 02:24:10 -0500 (EST)
+	id D28336B008C; Fri, 13 Feb 2026 02:24:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22DF36B008C; Fri, 13 Feb 2026 02:24:10 -0500 (EST)
+	id CDFB16B0092; Fri, 13 Feb 2026 02:24:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 130A96B0092; Fri, 13 Feb 2026 02:24:10 -0500 (EST)
+	id BAB996B0093; Fri, 13 Feb 2026 02:24:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F37876B008A
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 02:24:09 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75334B8DE2
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:24:09 +0000 (UTC)
-X-FDA: 84438594618.25.F36AAF1
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C8994100003
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:24:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bLZRB+KC;
-	spf=pass (imf05.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A9BE36B008C
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 02:24:15 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A87E1C1C9
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:24:15 +0000 (UTC)
+X-FDA: 84438594870.02.4087C46
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7FB0A80005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:24:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bwmg6GyB;
+	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770967448;
+	s=arc-20220608; t=1770967453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VwNvFdIKZszOyx5SX4bymsUV474G0+X1JTSop6CJF0M=;
-	b=UCYRC+BOB4iAcz40wxPfQcgNPvRF59obrv6hMyTp3eiScQLneUJIO0wgmNAj+WOOReDxoV
-	j42ZL0sshhOOmP8NsaygeoKg3531l89UQ4v3olGtQTwQIS21ZOSWXbvO8oop35OUwEGcEC
-	vNEXMVhF4nUcBrJQYPpyMtDtW4/jf0U=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nAgB8oFd5RIbhmI0zJ6vnRRfguX9/AUjdmRvUVXFkXc=;
+	b=kmaOcJH5NMQSsCBzw2KFPgQOALExUw9zd1GqL3enivpMX51Y1yyRHqtTxUQWHVj9wkRjaC
+	u/CA2bCHSPd/jf7rWk5AKNVdQTcSSyyfUTr2+ibfKz7LlPve83qcslHpDOJeRecm97EwwM
+	TNPZ7OevoWqFAVz7A59urCY6UaB8bLY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bLZRB+KC;
-	spf=pass (imf05.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bwmg6GyB;
+	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770967448; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770967453; a=rsa-sha256;
 	cv=none;
-	b=thBenR31UAsU+fC8zBJjdEkf1ZPauAbM+UyiVZIn25nImsvD49hLD24T3HsGS+T/1zsfQ4
-	By9AUJBEOxA3OqrKXw0PlA1Zc6WY3XyppAeshwnDiY8OvurHITBOQh0Y4KO5MGcs+o0MoK
-	t4kNGoldZiR4z2O/LOmla8fC2nsE78A=
+	b=iFV4NGNG0Ha+UQGHeS7Y/Mc8P41Z4ZtjkYnauSmIrQI8p+qnG+4dxZof5QUi86+EJmkhtD
+	dNwzMojZ8L54jxwvsvCq8S7B9kzjvqO7C2GPQj3gdZxBHd+mWkwez4mUm91fk0niWKsMqf
+	HTUNx/SJJrF4RLTPEv7f22OukoefUXA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770967445;
+	t=1770967450;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VwNvFdIKZszOyx5SX4bymsUV474G0+X1JTSop6CJF0M=;
-	b=bLZRB+KCujV6r+3tDxD/hCqTqrXaKPY5gKNVJCgqvm9HEhbrD39q8vpE7E4wD5kgiOVmdu
-	eq3Sxy4rSM5H+g/vAMMjoAVUXltZTcZ7hYvyfJsPlHilNj02Y6e7JkSl0xQxzUDRmYi4BO
-	fKZGFZsoa+VTnuaiC587gmVcpj4IImo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nAgB8oFd5RIbhmI0zJ6vnRRfguX9/AUjdmRvUVXFkXc=;
+	b=Bwmg6GyBinlCH54henK1zV60MzTL0l3tu5CSTyFpVvZxpMIPuMmzpLyguS+1lZAgtfxThx
+	ZRYE8Z7/rCz3jQGeSoknWuAxJ+v/PGn0dILItTfznzId6qwBPYUZX05uQ5YyBcDaRfQ8Ss
+	HMBzLtIOGY20FvjryGC6Mjg6pUishBw=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -84,20 +86,22 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf-next v2 0/3] Fix test_cgroup_iter_memcg issues found during back-porting
-Date: Fri, 13 Feb 2026 15:23:38 +0800
-Message-ID: <cover.1770965805.git.zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v2 1/3] bpf: Use bpf_core_enum_value for stats in cgroup_iter_memcg
+Date: Fri, 13 Feb 2026 15:23:39 +0800
+Message-ID: <24ac7bab25d8d2a24a35ab87a5283263eb6a4575.1770965805.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1770965805.git.zhuhui@kylinos.cn>
+References: <cover.1770965805.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: wnfm3nmfgphh9amcs4m5k8n77o8s53qh
-X-Rspamd-Queue-Id: C8994100003
+X-Stat-Signature: qkjwznbtxhqoxwkoqfbaf6kscgsatic6
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770967447-75212
-X-HE-Meta: U2FsdGVkX196jtMlFXE8NID9BlcjhXFDtst0DX2w8Y1+LUekGhJV9pEfnyx0NeGFyFEXU59w9TLzU5BapxwALXdrFjF7JhgWkdVSbP+mAhKE8xNS7h0qwkyi6eLlC++fHIAEA38KUb5xJI0wrfW+lHNmgDRfZrYmYsRmX5TBo8UubuYXUNyHgbrqV97b1fj+Q6eeYROAY4SDXKIAD25ftN9NMTKWI+AGFatHsQEpHUNNFjmuL4OT+eNpy4ZWFKoq9HyZaMiImXZwvOUsNnl09ro86ou1sgfiSPY6aWD1in1lpc3ef4w7Djus2iNyCQdz2Z0NBG8juQH7hVeXlJjqquP/NE6bkmyCPRsI7Me89NGM0b3spAd/niTArsRBwvCTT3BgqrakbKS1Lpoe62nWZsn5gcCeR9Yek1iqQrJkj8ksGr78aQ1qkpwY0r1j9zOZGSBOlRBvNGtkw+KniQZSEPL0oKhp3Jp4KgJf46yO+Ix8F9fW3/vRZxCJW3dXrLsyVS0C14ukR9W8aVeuZ+tltAYNht44D0eRicP6f+tVfKpMMx3tiu6lI8qsAVVXN14F6YscJgu50eYzOUNg4RwGhvow6ytN1JJNhBC14zZTxU6hQswXCrxWtKdjp1WYYvZRMgzOqdotoPpX7NXH4T7bfs66IZCprcUHEfOrym4X0MENGYuZA7FBb4qZwiOXjtVMqmGfREGsaQbUMmWljMie/piccfEoCk+TV06OwbT0QhFN1m1Vi+ueY8H/EvjdEAKy4+ArEmbx6Anere32dHgV0KNe32w6JxVYWNmdJa+nZ12p0X1zIvSj4HBIDRBmHQx7C7XiLtRg+dkXLpow56L21DShbU8uOAjCcYGhAOzvCGDC/IWoxuOaeXRC+ZqbZgCKpBgpGdRuZ/xhazW/FhD51+lhskj9q4rAtDtY5RDSDWhxx3oEu+6S15ea+sPlpQctZmTmarRau9z1qGjlkG5
- QyILrxH1
- zh5ZHjZDEXDkgqC9QtCOG1tn8wmV6sXpG+0bev7c801oKIa+Tfl446xn3NZMP4F5udE8qUS/BexlsWC8xW6UBv3LiMDP4Y0aJmDb3j5qOChfADPdzKAN92JgL2DtzS7JyzVFoU1cz/zeyCLjxPxKVQ+TcxoAdnk4VIpjPn68LNwzPHxuTEZI73xmID9po0mmZDINBgLkvYV0oQKFLl9sYMJdu5CfsAJLckjkiG6mbtsNJy1VeyAYm8x7KzH+Lv5+vnv4fSAef29i5stRjq86Nf4leVQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7FB0A80005
+X-HE-Tag: 1770967453-313068
+X-HE-Meta: U2FsdGVkX19905mlF3KArn8HbnrTtVnREIg1hi+cFd3mrTPEr4cgJmfU4Bm25aQpy/hUjp+4AyU2UvP/jfZTgSUZcpZNxVisiOqLprPGfWMrrQoQohc2JfpoXZxS0OZJmBM2V/0kVUH4wOKJsHyWKSIHvY6Xqf6TZHFNJVj8r9QKgf4mkBdDwMrYmF2U1BliJc1KTXYQGpW6Nyb5gJeK4KYzTxGc69qtwlsXP5r1J16qKJx4wzHcbNtFJICCmag229hLr3eK0enXnqjoI+aqHtMW5BNuJufYzsfzCez1NxB/0bl+yQjcMR2ohqDgOGDgyClBVWgZSkMQTKUW/6AeesdqFhG1yvA3wG5El5RT/taSfeGUaZ2KRg5r5SpfrcfsbcSzQP3Fc1VtdQX0a0Xvck6YqJ0sY/Jh0g/qv0tecuTcpXOqBpQX0YqngoeW55vnr6tfFot8zXlfOseA9/a5QyvrkvrD4Cd8pu8HjWPlFapqvqNuoiSsPtBetc95CmdukmXkOdJObZipfI8yukT2Zc78QoZn0W7IhqwGYneA1FLZUsHkckRpb0/KJCvilXeWEIUnZGKx0LUjkJOmZHDqnBfpP5JnsAgDUfx9Z1WQWRqS3N+srl73ZZ96riZL8yMZCSUD+52W/POMcEWewxFvCiKmB91XDYddCN2wZaOe55qf6IPnkZlKzzRnIjpXTZw5VrGqAVOD1OzEc+V/YFCMMn5DBPANE0F1UCcnN9ErpsDZ5nAY0RFFgTj0UcAipxb+uXWr9jhEfcSMyxSCVswiP2kaeE/YqQRgqEP2ZDmy2bV5KsLtL6lySiaSH2O/YSyZkB/jU+qrj7Alde/KG3YvLJgBSxoPIvb1rnJfeM3l5xHUsb59wmUiJIUq7KciylUGaGLXK9rgIamuo2wzxyXrZ3v8GLJ+wA7pncAtLnomdK8AUbJjiwv55r2QfjyF6u0dJWaWrP3VeNZwz6AB5Uf
+ X65qJZoV
+ myOxQv7xMNS5QNkhJ0xbFzrrBY/xPzpR7S1UG7fRCwNaynRcsQ1IhfKBvihGXh8RAFWmRlx4Y689qDdggWJgi328jZPfCW94TNK/8N+MRq+jZcLNJe9HEc4NeoikfxPuNmPUgEcbB1S0o0DgbVhL7p2aXNZCv6HYnLlBmAB7ZLEq25yi+KUU6N6JLA5CWOWgJGa8gtUxWxtLh5ufySQhsfCnKY2fxH5/Vw2195v64kL2aMpHgPEBd8TXs/sXaEAHkHYUeZeTwnghd/APU1mxOT/i6nA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,33 +112,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-While back-porting "mm: bpf kfuncs to access memcg data", I
-encountered issues with test_cgroup_iter_memcg, specifically
-in test_kmem.
+Replace hardcoded enum values with bpf_core_enum_value() calls in
+cgroup_iter_memcg test to improve portability across different
+kernel versions.
 
-These patches are my fixes for the problems I encountered.
+The change adds runtime enum value resolution for:
+- node_stat_item: NR_ANON_MAPPED, NR_SHMEM, NR_FILE_PAGES,
+  NR_FILE_MAPPED
+- memcg_stat_item: MEMCG_KMEM
+- vm_event_item: PGFAULT
 
-Changelog:
-v2:
-According to the comments of JP Kobryn, added bpf_core_enum_value()
-usage in the BPF program to handle cross-kernel enum value differences
-at load-time instead of compile-time.
-Dropped the mm/memcontrol.c patch.
-Modified test_kmem handling: instead of skipping when nokmem is set,
-verify that kmem value is zero as expected.
-According to the comments of bot, fixed assertion message: changed
-"bpf_mem_cgroup_page_state" to "bpf_mem_cgroup_vm_events" for PGFAULT
-check.
+This ensures the BPF program can adapt to enum value changes
+between kernel versions, returning early if any enum value is
+unavailable (returns 0).
 
-Hui Zhu (3):
-  bpf: Use bpf_core_enum_value for stats in cgroup_iter_memcg
-  selftests/bpf: Check bpf_mem_cgroup_page_state return value
-  bpf: selftests: Skip kmem test when cgroup.memory=nokmem is set
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ .../selftests/bpf/progs/cgroup_iter_memcg.c   | 41 +++++++++++++++----
+ 1 file changed, 34 insertions(+), 7 deletions(-)
 
- .../bpf/prog_tests/cgroup_iter_memcg.c        | 42 +++++++++++++++++++
- .../selftests/bpf/progs/cgroup_iter_memcg.c   | 41 ++++++++++++++----
- 2 files changed, 76 insertions(+), 7 deletions(-)
-
+diff --git a/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
+index 59fb70a3cc50..b020951dd7e6 100644
+--- a/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
++++ b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
+@@ -15,6 +15,8 @@ int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
+ 	struct cgroup *cgrp = ctx->cgroup;
+ 	struct cgroup_subsys_state *css;
+ 	struct mem_cgroup *memcg;
++	int ret = 1;
++	int idx;
+ 
+ 	if (!cgrp)
+ 		return 1;
+@@ -26,14 +28,39 @@ int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
+ 
+ 	bpf_mem_cgroup_flush_stats(memcg);
+ 
+-	memcg_query.nr_anon_mapped = bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED);
+-	memcg_query.nr_shmem = bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
+-	memcg_query.nr_file_pages = bpf_mem_cgroup_page_state(memcg, NR_FILE_PAGES);
+-	memcg_query.nr_file_mapped = bpf_mem_cgroup_page_state(memcg, NR_FILE_MAPPED);
+-	memcg_query.memcg_kmem = bpf_mem_cgroup_page_state(memcg, MEMCG_KMEM);
+-	memcg_query.pgfault = bpf_mem_cgroup_vm_events(memcg, PGFAULT);
++	idx = bpf_core_enum_value(enum node_stat_item, NR_ANON_MAPPED);
++	if (idx == 0)
++		goto out;
++	memcg_query.nr_anon_mapped = bpf_mem_cgroup_page_state(memcg, idx);
+ 
++	idx = bpf_core_enum_value(enum node_stat_item, NR_SHMEM);
++	if (idx == 0)
++		goto out;
++	memcg_query.nr_shmem = bpf_mem_cgroup_page_state(memcg, idx);
++
++	idx = bpf_core_enum_value(enum node_stat_item, NR_FILE_PAGES);
++	if (idx == 0)
++		goto out;
++	memcg_query.nr_file_pages = bpf_mem_cgroup_page_state(memcg, idx);
++
++	idx = bpf_core_enum_value(enum node_stat_item, NR_FILE_MAPPED);
++	if (idx == 0)
++		goto out;
++	memcg_query.nr_file_mapped = bpf_mem_cgroup_page_state(memcg, idx);
++
++	idx = bpf_core_enum_value(enum memcg_stat_item, MEMCG_KMEM);
++	if (idx == 0)
++		goto out;
++	memcg_query.memcg_kmem = bpf_mem_cgroup_page_state(memcg, idx);
++
++	idx = bpf_core_enum_value(enum vm_event_item, PGFAULT);
++	if (idx == 0)
++		goto out;
++	memcg_query.pgfault = bpf_mem_cgroup_vm_events(memcg, idx);
++
++	ret = 0;
++out:
+ 	bpf_put_mem_cgroup(memcg);
+ 
+-	return 0;
++	return ret;
+ }
 -- 
 2.43.0
 
