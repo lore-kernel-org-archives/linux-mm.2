@@ -4,101 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3794DEDF168
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 14:26:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF43EDF16E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 14:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48AA06B0005; Fri, 13 Feb 2026 09:26:19 -0500 (EST)
+	id 1FE456B0005; Fri, 13 Feb 2026 09:33:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438946B0089; Fri, 13 Feb 2026 09:26:19 -0500 (EST)
+	id 1E00A6B008A; Fri, 13 Feb 2026 09:33:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 344B06B008A; Fri, 13 Feb 2026 09:26:19 -0500 (EST)
+	id 11FF06B0088; Fri, 13 Feb 2026 09:33:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18FA66B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:26:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 919D41B445C
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:26:18 +0000 (UTC)
-X-FDA: 84439658436.01.6E279DE
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EA2F7180017
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:26:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=j7PqD45M;
-	spf=none (imf24.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB87E6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:33:42 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C31213B2AF
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:33:42 +0000 (UTC)
+X-FDA: 84439677084.05.BBAEA06
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3207A180009
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:33:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf06.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770992776;
+	s=arc-20220608; t=1770993220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6WxTduzf2yw11XLl9LWryJtmFhCxf4ZXNOC5WaFzXNA=;
-	b=j7mRMKlK4LTk3twaNUuHyo4iY3tnjdEnFtcTV8m9Ir3dWbUk7HVxfMQVwIhBljnXt6BIZN
-	lkzHQe7EL9x7MuFYtUCJ+WiON8ktT48a0WC3hT+9uL+6OZgwDoKzU+gUOx9pjk0zin0IVy
-	wz05j5abhKqq1XnDWoCtmtHR/12gcus=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=j7PqD45M;
-	spf=none (imf24.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770992776; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=7zlauq2NXmYcYr161AptaUs9JIe11MydsXKwgR9OyVs=;
+	b=3phJ0287sucfDW/AZPTxEcBM/wPjM7xlWKHBGKZyw1vr40Nw/b86uc3GYEfJaovduntofy
+	5bBKuURUtZ7w2qPdARjxMbbC7gMUzUpjIpJcCIvdOXXIy0CHaePzs9QrXQXpSNQvHOsN1t
+	Tb+iMZWVj9vlR8jSVOcsOKg9lYasSmI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770993220; a=rsa-sha256;
 	cv=none;
-	b=Yv+A8joB8e3hGTHAi9OVJWPHqgxYgQqyyLezE0mBNdf49of0qJk6k7fWHkE2ZXava6HX6/
-	wZFmBSjjyyUrHYjpV6YD7j4EAUzpnGr9p/PH/at2/+m1u/6qgE/Aie0m7tLbfp2bzFfMl3
-	9sT2ySDV3MjnA71BrJrKcfww+6dXXL8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6WxTduzf2yw11XLl9LWryJtmFhCxf4ZXNOC5WaFzXNA=; b=j7PqD45M8mqtAPftgrs3JShGuZ
-	uZykIkreokT91r6p5826aiJL+XTjhPOWTjBAV1yMnJbfOu8q9sC0zRX4kLn4QcCsoFaNQtGZpzqgx
-	wDzrDys1LsY6Lz/omDFT2gpYBalS1drwT0CwiAc7glYzTWtUUmfKTHgm3dMkkMNa/p2Yme+n7yYXZ
-	i+h9oD/HNaw4tmwNt08weZpy3wcGofFYWnkOQbG9YzzGeHEJ1XG3likxYLsTCG8r73itxNBn526E/
-	97KvSHdcbFwOAen4ELbjM/38VS+uf/6eBQKFonJDkMzBE/DGkNKt/Y8ow3IleLuc/oP+3wGwmOQFw
-	V33S5qjw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqu7V-0000000CKkR-0wdV;
-	Fri, 13 Feb 2026 14:26:09 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 0BF0A300969; Fri, 13 Feb 2026 15:26:08 +0100 (CET)
-Date: Fri, 13 Feb 2026 15:26:08 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
-References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
- <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
- <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
- <2026021343-germicide-baritone-efe8@gregkh>
- <877bsgu7fb.fsf@kernel.org>
- <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
- <2026021313-embody-deprive-9da5@gregkh>
- <873434u3yq.fsf@kernel.org>
+	b=Hposb4gx0hHsDsetlgdammywAMRBgY4qqAGZWCMHQZuUscNUAj/+61YtvzvibzX/xu+xg1
+	baq7f2dwwb1i7Ezhi4kfUJK8rezAO9iujJAt9J7EJ5YefSxQa1es+aeuxwamnbeNHDXgAq
+	tngBKN0r6eaL8ECcaa+SA5wrp3IEl2w=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf06.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 13 Feb 2026 23:33:35 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Fri, 13 Feb 2026 23:33:35 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com,
+	taejoon.song@lge.com, austin.kim@lge.com
+Subject: Re: [RFC PATCH v2 v2 1/5] mm: swap: introduce swap tier
+ infrastructure
+Message-ID: <aY82PzT1GSfmznTv@yjaykim-PowerEdge-T330>
+References: <20260126065242.1221862-1-youngjun.park@lge.com>
+ <20260126065242.1221862-2-youngjun.park@lge.com>
+ <CACePvbVML6ZNJBWU9YSUCWwrbGd2eXMcsWxs6yFssfyBoEk5Uw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <873434u3yq.fsf@kernel.org>
-X-Stat-Signature: x173wr6rc6k97fz8edobd8mznw415p4b
-X-Rspamd-Queue-Id: EA2F7180017
+In-Reply-To: <CACePvbVML6ZNJBWU9YSUCWwrbGd2eXMcsWxs6yFssfyBoEk5Uw@mail.gmail.com>
+X-Rspamd-Queue-Id: 3207A180009
+X-Stat-Signature: 36o4ro3q5i1hb9eqw39hbjzmb96agzjj
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770992775-414387
-X-HE-Meta: U2FsdGVkX18YZRmi+t9edmoStQgTYrfTiapSId1Jsn+gfHs7HaAYCQWt+qDjTJ5O25R446KLUA1aeoDL4DVNdkmDseaLUkGaHg1uWYAs2B6fk8hD0KoQMgNbhzfxTokij+pyCqcfRlodyHbejb+sLhOtgl87cHfV6kaIuw898kyTWvCFU2Hpw+gIGlt4koZsAlwwUWBR1Nj291DgDbRhnlICd0Ntnu2oYZr5aIdCMXklIS8bFSUusP72fXeDb/GqlpowI6bR1fCgJJ9GG9Mehyzgh1v6sAx57DN92h7rhX+U6Yw1zEHoghhZFt9aVogFNEYibBKc+2ExZgB7ZYAeEyX53hp42OZ8IAxazDqfuFVwgrk4hm0eH4puNHT+XMEnPTZX8yCx0ejI+tjlFugDLZIQ57/79yEx/JYYtFBSECHSlT+lrHiN/Q0CtP31wU6m4etOocCpFBX/925etf68tNpCaBJIW27aP/GpejEqpPpEjk9Jsn+w+EB+UqDAb0X9xsyG39A/HWU2Kyrb0D7Vm8RW2/nXjJudjxgTF2AcOyur6xinLCnSlzABfv2Mf0G3KdkNLKXEMwHFK2+GPYmo+N8fb56R0ugNsYO0PQeXY6RT85Tp/iPSmRVLP8DlH9dNZf6Loq6fa6XwWwkVmKfp1u4h+1+Z5kOEUByxZLBIU7Vy0EOOtwjsWdy+50LBLkwUuJasBmMHvX1xS1w7antD12Z5br1PVtHEXtoU+BldCaZBLr7Xbukua5kgR1V2d2HkCoOM9KcVR4/jOS4eZt+oBSN8sAHJinAHMSL+mvnIT9IEo8ZgwkHhcHKceewaTB6EWUfH0eyrSBhAUO2It4vAqv8162HcUpAD3vjNbEp/HJC4GfhZoavJKXrZjYbOennubMXHA7+cw+6s9giyo4O7igHhaQPg+t/fo3m2pwgFPCc+nKSdI7ZA75AkcCJfIb9EDqHclBESGCDdKlrS6ng
- AdtIsE0h
- FoGnABQtgTgKY/+WJs4PizNCNN37YNG7cUZJf2/il01GSHOTysVYmunOtWkG8ZUcLDf0D1GG8R4T0OBP8dvRh9WwPxTK1H4YC1SaO5FB1Xe/HZ7CbRKivh+MGga6/eOzLGkFv7qwcqdLRdQefd9dUZyrQMBcb+bskNqNGKBIK3x4fEb9xnQiMWojXcchqXaC/g58iol7/pRmmUc+DNfWcVJw7D/cZwsBiy34WrzVI3/2OeHkIDEDnVH4s+RXEX6jhfCXbyoicpWUvYy8lRXdyUfti47iKupo766Oh
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770993218-865451
+X-HE-Meta: U2FsdGVkX19NAbvHF/s7b7gYTISo5y+yQnUqkzr6KSaXTaOV94scCG7c9WUsismdFJzhxDQkbJ6WS9Tz0FsRVfQ0+ILjXpfDgF+bHwX+mLWiZEkTGVXXpQSfzop2oAEjRt8iRWa97OspAMZKUCziwNC8SHsuNYBAAxa5soc2taofJ7+7L6BWoerG3gHSOcEu4rEc87f/1APoy/Aq2pauCAhEErpu7VbATVhGF69HnGlUhOVKvBA0WfjxuaInAN9RkWmLDL0rmjenotkbD5HL7bPsswty7Ng1lYjB4lDvMri7Rssi+bEc0ZKvGW1B7b6pRVfj1Ovwddr+pF7eislJv0J9I/Culy1+iz/JRE6J7NMqAH2avlp5m+U79BUUgRQrzD44JULOqqIbMfUWpEW4vr/fWx24rz0KtLGIiYmhfAShE6Mp+iwul1+8r03ujiWiVW650MC7aHdSxkEP09hRBayaP+SMl713Rx28xgfTBsGRaW4nmy4z8Fit/Fq8iVGHxoLk1uRXoZw7cm5WxZstLIsEjY2M3xfarshnmNZ6Xt8RJtfZeoHcMzaOAml6y8FK63JQcrXWD44v9bC7SRoTd3AhDFdosHKIFVebqWEmMC8TR4gkm5oC/mO70TVKsxUi4ZbcyU+EkQYKGhl2PkJ2o/KxC7mMqwsXCNQJLJuC9WNMrqkIJAzxQAX521lq9yaAD0rJ52vVpEunf9ra7+44TKOXFbRR8OypthY51BQeQh8WZtz1V9jS9ayAdTaFybhTnTpvTC0M72NHd0PcZQRnrtxbsyMMkgS1tzqhz/TS/3X0BZm0Az2xuLKwK/CvbNivsxkkcxArrMdmDvY6QECwoD86CS+zWSusPrInHKpNnR232G7IwEagHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,28 +90,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 03:13:01PM +0100, Andreas Hindborg wrote:
+On Thu, Feb 12, 2026 at 01:07:45AM -0800, Chris Li wrote:
+> > +}
+> > +
+> > +int swap_tiers_add(const char *name, int prio)
+> 
+> When we add, modify, remove a tier. The simple case is there is no
+> swap file under any tiers.
+> But if the modification causes some swap files to jump to different
+> tiers. That might be problematic.
 
-> C uses memcpy as seen in `bio_copy_data_iter` [1] and in the null_blk
-> driver [2].
+I missed one comment. 
 
-Right. And that is *fine*.
+The tier of existing swapfiles is immutable once assigned at swapon.
+I removed tier reference.
+Instead of reference counting, each operation validates the tier
+range at operation time to guarantee this invariant.
 
-> Rust has `core::ptr::copy` and `core::ptr::copy_nonoverlapping`. I was
-> informed these are not safe to use if source or destination may incur
-> data races, and that we need an operation that is volatile or byte-wise
-> atomic [3].
+- add:    Does not change existing swapfiles' tier. New tier may
+          split priority range, but existing assignments stay.
+- remove: Rejected with -EBUSY if any swapfile is attached.
+- modify: Rejected if the change would cause any swapfile to
+          move to a different tier.
 
-Safe how? It should just copy N bytes. Whatever it thinks those bytes
-are.
+So swapfiles never jump between tiers at runtime.
 
-Nothing can guard against concurrent modification. If there is, you get
-to keep the pieces. Pretending anything else is delusional.
-
-Suppose the memory was 'AAAA' and while you're reading it, it is written
-to be 'BBBB'. The resulting copy can be any combination of
-'[AB][AB][AB][AB]'. Not one of them is better than the other.
-
-No byte wise volatile barrier using nonsense is going to make this any
-better.
+Youngjun Park
 
