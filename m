@@ -4,134 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411FFEF5857
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 22:02:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CEC2EF584C
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 22:22:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F7C76B0005; Sat, 14 Feb 2026 17:02:36 -0500 (EST)
+	id 246056B0005; Sat, 14 Feb 2026 17:22:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A5446B0088; Sat, 14 Feb 2026 17:02:36 -0500 (EST)
+	id 1F42D6B0088; Sat, 14 Feb 2026 17:22:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0873F6B008A; Sat, 14 Feb 2026 17:02:36 -0500 (EST)
+	id 0F2F96B008A; Sat, 14 Feb 2026 17:22:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9EE56B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 17:02:35 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ECBB86B0005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 17:22:35 -0500 (EST)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B30813BEAA
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 22:02:35 +0000 (UTC)
-X-FDA: 84444437070.30.EFCF084
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6081FC000D
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 22:02:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mxeF8AnL;
-	spf=pass (imf22.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AF558C10D
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 22:22:35 +0000 (UTC)
+X-FDA: 84444487470.30.63175F6
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0111E20005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 22:22:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf03.hostedemail.com: domain of 3p_WQaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.72 as permitted sender) smtp.mailfrom=3p_WQaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771106553;
+	s=arc-20220608; t=1771107753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=paxX9wG390aNg5udrEFUWei2TAJHGt4ATBMIYJAPwO8=;
-	b=eVrnzsKDNS00AYws1qQZN3ohGRr2dSZaPVndpJNjI3g4e3hG36KsabhB9lpzRhTSEXSkiO
-	FyJTyRfWDDhpv0p4qHhLKnyINFPmwUN1Q07twepNFFonbuhUC6lRqixhC4ouRl+/B5Nque
-	o7KvEDSE3K1OuAdlxMmIslP7wrasZt8=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=HQvXiZ3bvjTqq9MfSaAXTHZyzhEp1Dv5jw/IRy11WWY=;
+	b=jUVPo36Oaa5mtKcsFBBfBqvC7R1wWJSlHpFeusX0LQcISo0LhKPgG9zKLqeUkszKuNa3QS
+	VwLNsGUA82e+7cYTbARb3AlK3YZTBfopGz4HMNGlyAOiiK3L5std2+k8DUnxQ0/6PpKWhI
+	5bh8ONmo2SYdiyDAGkOAwgRVsktwsPM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mxeF8AnL;
-	spf=pass (imf22.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771106553; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf03.hostedemail.com: domain of 3p_WQaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.72 as permitted sender) smtp.mailfrom=3p_WQaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771107753; a=rsa-sha256;
 	cv=none;
-	b=b649yuEmnw4OMywTudV2SlogtFABv38T0cqHUQf0qeuEtTPWP/BsDtNo8OZt4O1Q3AB5ZS
-	A34h6xq59VvZMFMXpmRUxNa+heEusO6cUT3vNqZig5JEWLtN2Q57y962a6gqc9OQY0pzH1
-	RJUcRvPIsWV5P0gtRVL6qDrF7RJwlSg=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4806cc07ce7so18460905e9.1
-        for <linux-mm@kvack.org>; Sat, 14 Feb 2026 14:02:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771106552; x=1771711352; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=paxX9wG390aNg5udrEFUWei2TAJHGt4ATBMIYJAPwO8=;
-        b=mxeF8AnLT9sHtLgk4mjhgp4VBkurTLoUTNe1FV9/a1y4PavtiFEsbgXQBkI7pfz+LH
-         sFH2nxngaZG6ObJgHQkvkSrkXQ6iNPSzdBUWEsQwJKoiIIk8K1MkTGV60nF07VqzripY
-         WYEHFfiYb/fKjRD8b2la4X18YGrsJu7V1un/Ln5tDyYh97zPg4P3+lS4gt6v5xfpOczP
-         vAdW6ilG8jeyiBKzKe4ctnYz7wOP+6P4NTJifE9SKXpGDUaX3hENM0ETkii+xuBxISkD
-         EisgfTT7Tst8I3+VqzYD8Jf2BS8JxK+MnDzYYz0tO8mltPagk2HCO2ezIk4DpMdLSKZZ
-         KRIw==
+	b=HuwmyxCNi5rcf+YM5uq1VTks59Ik/+hHOo1BKC25YS1UIgCu2PZ5C1sAcFWXlWBJAQDQ0v
+	hN6/2cDOjsx6DTvfXiRS89tauA+MTwA81xK+Jn0oexg/InDI4hk0+Ipndy1yFfXCr807Sp
+	HMgRUZI3BbF58qaA/8Z6+oJpFNThZTM=
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-409e0cc22c6so34271509fac.0
+        for <linux-mm@kvack.org>; Sat, 14 Feb 2026 14:22:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771106552; x=1771711352;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=paxX9wG390aNg5udrEFUWei2TAJHGt4ATBMIYJAPwO8=;
-        b=iO2OnMS4st311Lt0sFapHrKHCBV6+r1jaS3+2Q5/uWrf/uNe5BtHnFCsQeVI+EWFbW
-         /FqZWsTBEGvz8Ovx2tN3gCtgh5yr5KPyE5LiMXGLpN/eejGSW6T7t99Kb//AHE969k0u
-         KcwiIAtzsbSKVv7Al4Cw1qxP4wDRVekMA5pHNUxMEshw4eOjuD2T5E0BdNeUGNohhSx7
-         pcjbF/5eJlxqbnc+DaHKRg4QE5PSJc9jRffiVXUVsiorhQZ/zaXvwnte3lCudsYBhlhm
-         uZvXMGV+CdQn7TUoBdAAfHwmA2Q4ZkKCBDn6kLg+YsqzAUDhQigR8XoVeAHGWFmBesDF
-         wQ8w==
-X-Forwarded-Encrypted: i=1; AJvYcCW/yw7jWBTOoAVF3pLy+pmDIgHuZyjqdrH7ahKBnkbCtYCIrbE/uP1RsBaFLarRQJ3k8JSoxefq8w==@kvack.org
-X-Gm-Message-State: AOJu0YxbYH5c7QKngNQ3tmKdBaLwKaxUKVx2X5tJ7Zm02G8itFVODfiq
-	kjH2d8D6a2JuI/J1N6wtIUT6kDvFE+paYWlSSu/KKRjyYVEObD8Dxf7F
-X-Gm-Gg: AZuq6aJjvnQ262h9ah3GO8H2s6+fTi016gs4bHP7aowVQrB3J7O+jdA2BnotTRdokKz
-	Y7460xG2SLVAQpkLczxMwMMustCnJgX4RoKTw3Rn/IDnTx6WP+o5m+9VEsN4pP+hUU/hLCwJpK6
-	MHsWgWkr+pLxfzezJwkKYgD8mLeHoUpFaUY3M52pgcRzdkI5lyJ9gcV97TMhZwILyRuCSOn6id/
-	8ExukF7Y8AX3AlCEesGq0bz8IYYWOTVmpM8gizcoMi5oJ7lQ+Ulqkhlfu+Uqs/8PF17rzXKE6ld
-	/eGnp88uAUSvE8jwDI3q63F2N9l0jeZPTYrMjhIGmkuWFxk/Z7P7o1Caz/VgTH6O6pi89VujIOz
-	XKVHDy9u/4rn80sSljyLxwS7HV8VeLWOZ5UKYB92aXb4Es1km4eYJK/g5cab7Sas0vzXFdHINyF
-	pfhQuMcD7Ovy2lss73O21PdENj7J2S6ozkhkA=
-X-Received: by 2002:a05:600c:1381:b0:483:54cc:cd89 with SMTP id 5b1f17b1804b1-48373a1bbc4mr101089835e9.9.1771106551731;
-        Sat, 14 Feb 2026 14:02:31 -0800 (PST)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a34d66sm57123695e9.20.2026.02.14.14.02.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Feb 2026 14:02:31 -0800 (PST)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Date: Sat, 14 Feb 2026 19:02:19 -0300
-Message-ID: <aZDw6xI2izFDfuuu@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aYywl1hdBQP2_slo@tiehlicka>
-References: <20260206143430.021026873@redhat.com> <aYs6Ju2G4bm6_tl2@tiehlicka> <aYxviLoWsrLqDU7o@tpad> <aYywl1hdBQP2_slo@tiehlicka>
+        d=1e100.net; s=20230601; t=1771107752; x=1771712552;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HQvXiZ3bvjTqq9MfSaAXTHZyzhEp1Dv5jw/IRy11WWY=;
+        b=hmjcyV+xLXLaswFZwpKOpQj6w5GtrOIO5CwxrmPH6q9KmXZw6WxohHCpXje6O6Kxia
+         Z6JbWEBI3svBVFlDnEluii09M85HJyMqF35gSJFKt/7OSnJgDcu+kfxb4Z8lt5O8iEJS
+         n9K0ItpfIaX0GPbcdxtlPUacvl/jmwpGnocIsbnngLQP4di7WwDzZ2e7Atmq88q1gGAc
+         YQmUBVc3rCGQgaQlXnluBa0l0yiU6EsD1Bu5lBT6mZcFeSW6lbICtbC2J6eEugyIwETA
+         /Lq1rbJrar+uYxYAC6pjqTkKKtTNWvvHvAItdsyg5IB56eOxBPIfSw+ZiwKZsrc55cHb
+         uXrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUfU98t2JVIqFALTr0Cotm7T/qfwaiAMBJ7c+fNq6TOEOmOX0akUabbnmDFLmytZNkvxZ3w9IDcvw==@kvack.org
+X-Gm-Message-State: AOJu0Yz5y/RA1Qlkq0QxiZupYBh0fgNsKBuwrRAfTOOmniKCoqLjuUvn
+	0Kr97vnUn/CrK9vOxeHVgOOqPDESdqIH3COd/Kh6O2RqlN7IhbcH4UlTCeanOhNjc301D2X2/jp
+	Ow924osu7FjzWC4gto3xE1KpABQJsUUKidT76IMNn/Fzba1dzZ3mkKHBtHCc=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6081FC000D
-X-Stat-Signature: 38wfyghj7gapzzsxxq9r9r3os71t8z9k
+X-Received: by 2002:a05:6820:2283:b0:66a:e8cd:4954 with SMTP id
+ 006d021491bc7-6781fff0e52mr2384339eaf.7.1771107751898; Sat, 14 Feb 2026
+ 14:22:31 -0800 (PST)
+Date: Sat, 14 Feb 2026 14:22:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6990f5a7.050a0220.3a4a67.018e.GAE@google.com>
+Subject: [syzbot] [mm?] [block?] INFO: rcu detected stall in sendfile64
+From: syzbot <syzbot+8b65a69dedebce19fd11@syzkaller.appspotmail.com>
+To: brauner@kernel.org, jack@suse.cz, linux-block@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Stat-Signature: n9gppf9d5ko9nuxbo5wx3ptbbmg4jiit
 X-Rspam-User: 
-X-HE-Tag: 1771106553-454046
-X-HE-Meta: U2FsdGVkX18PiKtQqeYe1BMFzanidohHQ4Mq1Q9eMnwK6KMVKzcBbuE2aFqkgqAASCq3fo2M5Xt30xofVFCJXgjzfZ+sCoQWgzzuH01Kh/UhUv/VGHoFrXEIw7430sdLlbfOfffoj48f/lwM+JuKIOA3iS7YFrdBv9ssQNkayax1ZZoOHWzjPvFdASwrDnItFQmb+LMuQ5Fh6XEnwBEzS/PNLpCS3WpK0x0EsdhNSprmll9G1bYwDmKJqZs0eRPbj0A4DHs19jUmt2KmsD+coCMCNlMkHQHxtRhNNs9vt44vjP8vQi9Ctm0ulyfpp+q4J6zB6btYG5WfhtTW/fRKahJGoIWTz6MIlpetd0KRmhoh+AwAtcbrYvd6fApRTYyTIYR2DmpaYoIgx6oBhQFzUeG1MUsSvF4RuXHzoHqqlDXyWcaqi1JmYuh+nj2V/IGNwcWW7lCNKBlVi/RPH58YszFKqfMLFymcYVw/vxlqaSDPwoOLNjMQom88PXpu2I4k8y6qJvQclMHCJKjE47YurMFDoscmT5kHJNuon7pjoioOwnSY3KjwC6uhGDuoZ+n5KSBcqZxAkhCH4wsN6wg82WVKGwTrtw78B2s8v2tMJwTXtdqZ285GXe2er8DO2qNHRsW/0lPn+6XtF2Inqy+CEBdUrIRz7oWsauSHSDJcmaGf29AndJocZ78ieCRV1fcRa1toH94sf5k1+ZbFNC62CKM//GBk+nMhL7eAs/vC9jjFx31nRSerQEkW0k57I9ehPYnIynbKf9SORYu/LFrK3lprCvLR783eAQhA1OCWsoGrpRgaFWrWfrvXNnDDbzncsD996Hpfqihi6pgxCmB6VuWYqTGSmPg7y3tmnMdqTSCWLicos1hkZBBcp/EFgagx5yVeP+qsajbQfQ4W+C8fbOymxCkPY1oRwobE2p5qyDXtZUviuq/OIwMNzE3j4MXIDKoWvrfmiKLUEQjF7Rl
- EZErj08G
- R51ja065CZNiqWZPUTFUiR8rREkcyHKnwXh8oJYn7TAfHWfVwVSmRnzABVo7/DBEtnsgg2mR9RI2Y3eQzqs3mbAtp8tL/2c7dCqryIpk6LfcLOt2rnAeKy6BtPX4/4/kAigaZD5pNraZedC2j98QmYbPctyqGPU6uDJ1WOFC5xlW1ptnZtUSrscbYq6oMqs+7/U/A6NunYWj7Fj8QO90RB8mpOIMzlI7jDJpQ3G3mPE4RDwIcbFxyI07PC8I2zrwBmAgcXfQMaD/MCC2eZAfmVKayZepcFnVWU7shcg35bATsuOCMUZF8aKYDoENU3D2uqd3KGPaDs6TbvM5Sock7Kp/hMLRusqLrziy6GU761Z8AW6oP0AcUVcnohhwERo5EibNJBcyzSBC94eTMgW2DXLqav4i05W6bUvreY9V+mWTFYfMSYIm15p8ASo5c3ZjKL5hrtGn9iR7IdKbCK9J7QxMp7WBzwUuhNxjTL/xZA0N+AHADKmCxsk5844XyHEeP8w9eNtJeenGqf1HQT3NTGcJ+I9VzW9TOoQNs9v6K8pSl3Ar2L5aSia9oRDZGh7pn664W+GcUR7KzgYOaAMeVifUwwiqdryBkGqnEuZXiKm9XaP9ioemKDe+y9Yxa7sJwIZIoPLyZ3clZ3AEyAJswJN+i7wpw2TRlSd0r
+X-Rspamd-Queue-Id: 0111E20005
+X-HE-Tag: 1771107752-233742
+X-HE-Meta: U2FsdGVkX1/pvelq7RJ2SygcQ8xSZwTX3cIdT6tKzhZRzQWts2Kuq2mNR3XrsSebro3ZoWXWsa3UBUGcs2DT0euHUQftagHf1eMV2NHqZiOqFzA58mHiyh0yoeHsdW5Z2lEA5OspsoUBD+Pa88Cj5HzZFKI2F1Mba3cODuyLqT0br0VinzwF+gnRsN6Q/dcSvxlYnwGMnNI3jhx8KZecJQT8K23BvjxQchUXhZ6N3VFkcNPdZr4Q6xKlBd0rKEkpHQ9anDPA8kxGMx3J05h17u4Dx2TbA5Ys8tkntdGUOGT9Ni6Z9wOJihVEs8LouY23x9lJScd3YVlC9ALDDE6yhOHlM0MUEBiKMKmUw8DJg0OjT1XF8l3sanppCG7TCreGrgxAam6ogTNdU0uVeVJVaPyv1b0IGco7tSN993Tt6AsL47Pqodyb/Ef0yZ8ZJQyo0roTKfUq5SuCIsFmsxHb1D3ZjkW/K3cIOsFoWS12TgRXKUyA09LsbQFEM2VcmhjRnofzmaY7v93PhC37uI1TswDJkCJCrjhztrrXJXqMkXMA/Z2yj9cIPUf85u/P7lAoB4FGLPoLhd/d2906GrjhFaYfGmQsvPwFWkYPgz/MAPOZ96trJzLuy1r2lH39IikGlJ3D50rbdTHjp5xx5SYMbdek+B8ZOV0SoRFFaOsWy1Zqbnwx5bQHgYgZgVvZIG/j/fr/I5zGgO0DlcWMCMYM64nfV+NdUrgrj4p4xtKRF081Yi/gxjaiRzZ0e45/nKNy0/S6hceiMPWq8tbM0qQTRUVCk0Zrj44okET80Lj5qWcIz/LDbFCiGKOX4wAN6lSObo3uOI3Y+NSmHV/5fDTK09odKn7kfTKEfAoOfXLkL+QwbVTLOi+ZEquEIZedDZp/zzay8OHf3pjQSyPYmchnqzrAwDY2y3LJpc1uAdXp8GHL4gbE3GsHwy12SVtn+L49cJrrBGa7In6ZiUQZsLJ
+ jYoQMzEN
+ KP7GVGujmFtZh+iIWpF68IYzbvmY7fKYs1xU75Vw1PtfCl+7c2rRwiJFNwFUzNvN09rr6F2clJ7tkuU7GM9Xt6FsXoyQxDNDvX5U9qltZtla27Eo0aDISzPfGvteeyhod92gfjzcPac9CRRLbNjwKrM6h3ThzYcFRtSB8GlNzRCLilGM1bCwSWfG/xOtS7V9JNbQkXqumbfZJxRShuuYJzEWKVMxlNKr65sgdc1qSjTkfJYHK0GTmJj5BT7I3Yby8wfP5/v7tdPkh7amJcsJGewBLOffr5QihXzlhLuJBI4v2iziZJeoRgTsRE21JK6much+k82HUwnXgxOz40NWlUzK4GCAEiYiK9cTIER3J0lwbR4/7OctbzvaNbKxE1eXj2ZOY9nlY9cW/2XMJHquXNJQA+vbGrvNAXfDNIGgaeEJYJ6xEsQ2GbfV5CKNxn2m37jSrB0pId0Y78/nYEeRXzYOCUhsCNGKsBw5WVh1OzkkM9OJDXSRGe7YZOl1JXIsryzJuvKmUrAY83VitdyN7z7eoCIbv9oQAEsIGFqvhufkpcXJoFqIZVtFZUPgk2sE4m7TUhhJp36sY/bmI5VbmMxsP5h+H+vZiqYRLRUaX8n6spycB8cgtqHH6eY+QCzlmiLDHmhGuJPT5ElyN/kgR5vIrtWGkh2Z2cqdt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,78 +94,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
-> On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
-> > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
-> [...]
-> > > What about !PREEMPT_RT? We have people running isolated workloads and
-> > > these sorts of pcp disruptions are really unwelcome as well. They do not
-> > > have requirements as strong as RT workloads but the underlying
-> > > fundamental problem is the same. Frederic (now CCed) is working on
-> > > moving those pcp book keeping activities to be executed to the return to
-> > > the userspace which should be taking care of both RT and non-RT
-> > > configurations AFAICS.
-> > 
-> > Michal,
-> > 
-> > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
-> > boot option qpw=y/n, which controls whether the behaviour will be
-> > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
-> 
-> My bad. I've misread the config space of this.
-> 
-> > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
-> > (and remote work via work_queue) is used.
-> > 
-> > What "pcp book keeping activities" you refer to ? I don't see how
-> > moving certain activities that happen under SLUB or LRU spinlocks
-> > to happen before return to userspace changes things related 
-> > to avoidance of CPU interruption ?
-> 
-> Essentially delayed operations like pcp state flushing happens on return
-> to the userspace on isolated CPUs. No locking changes are required as
-> the work is still per-cpu.
-> 
-> In other words the approach Frederic is working on is to not change the
-> locking of pcp delayed work but instead move that work into well defined
-> place - i.e. return to the userspace.
-> 
-> Btw. have you measure the impact of preempt_disbale -> spinlock on hot
-> paths like SLUB sheeves?
+Hello,
 
-Hi Michal,
+syzbot found the following issue on:
 
-I have done some study on this (which I presented on Plumbers 2023):
-https://lpc.events/event/17/contributions/1484/ 
+HEAD commit:    e98f34af6116 Merge tag 'i2c-for-6.19-final' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14abe7fa580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e3161cabe5a361ff
+dashboard link: https://syzkaller.appspot.com/bug?extid=8b65a69dedebce19fd11
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-Since they are per-cpu spinlocks, and the remote operations are not that 
-frequent, as per design of the current approach, we are not supposed to see 
-contention (I was not able to detect contention even after stress testing 
-for weeks), nor relevant cacheline bouncing.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-That being said, for RT local_locks already get per-cpu spinlocks, so there 
-is only difference for !RT, which as you mention, does preemtp_disable():
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/495818579ef6/disk-e98f34af.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a07da13c17ca/vmlinux-e98f34af.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b38fd29e4a16/bzImage-e98f34af.xz
 
-The performance impact noticed was mostly about jumping around in 
-executable code, as inlining spinlocks (test #2 on presentation) took care 
-of most of the added extra cycles, adding about 4-14 extra cycles per 
-lock/unlock cycle. (tested on memcg with kmalloc test)
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8b65a69dedebce19fd11@syzkaller.appspotmail.com
 
-Yeah, as expected there is some extra cycles, as we are doing extra atomic 
-operations (even if in a local cacheline) in !RT case, but this could be 
-enabled only if the user thinks this is an ok cost for reducing 
-interruptions.
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P6857/1:b..l
+rcu: 	(detected by 0, t=10502 jiffies, g=14329, q=377 ncpus=2)
+task:syz.2.237       state:R  running task     stack:26360 pid:6857  tgid:6845  ppid:5832   task_flags:0x400140 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5260 [inline]
+ __schedule+0x1522/0x51d0 kernel/sched/core.c:6867
+ preempt_schedule_irq+0x4d/0xa0 kernel/sched/core.c:7194
+ irqentry_exit+0x597/0x620 kernel/entry/common.c:216
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0010:lock_is_held_type+0x106/0x150 kernel/locking/lockdep.c:5945
+Code: 18 00 00 b8 ff ff ff ff 65 0f c1 05 74 f3 5b 07 83 f8 01 75 25 9c 58 a9 00 02 00 00 75 39 41 f7 c4 00 02 00 00 74 01 fb 89 d8 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 a6 1e 79 f5 cc 90 0f 0b 90 48 c7
+RSP: 0018:ffffc900037df408 EFLAGS: 00000206
+RAX: 0000000000000001 RBX: 0000000000000001 RCX: 0000000000000046
+RDX: ffff88802afdbd00 RSI: ffffffff8df35112 RDI: ffffffff8c073b00
+RBP: 00000000ffffffff R08: ffffea0001dfa1c7 R09: 1ffffd40003bf438
+R10: dffffc0000000000 R11: fffff940003bf439 R12: 0000000000000246
+R13: ffff88802afdbd00 R14: ffffffff8e55a360 R15: 0000000000000000
+ xa_entry include/linux/xarray.h:1226 [inline]
+ xas_next include/linux/xarray.h:1912 [inline]
+ filemap_get_read_batch+0x642/0x970 mm/filemap.c:2457
+ filemap_get_pages+0x351/0x1ec0 mm/filemap.c:2680
+ filemap_splice_read+0x5cd/0xd10 mm/filemap.c:3079
+ do_splice_read fs/splice.c:982 [inline]
+ splice_direct_to_actor+0x478/0xc70 fs/splice.c:1086
+ do_splice_direct_actor fs/splice.c:1204 [inline]
+ do_splice_direct+0x195/0x290 fs/splice.c:1230
+ do_sendfile+0x535/0x7d0 fs/read_write.c:1370
+ __do_sys_sendfile64 fs/read_write.c:1425 [inline]
+ __se_sys_sendfile64+0xdf/0x1a0 fs/read_write.c:1417
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fd7a899aeb9
+RSP: 002b:00007fd7a9835028 EFLAGS: 00000246 ORIG_RAX: 0000000000000028
+RAX: ffffffffffffffda RBX: 00007fd7a8c16180 RCX: 00007fd7a899aeb9
+RDX: 0000200000000080 RSI: 0000000000000007 RDI: 0000000000000007
+RBP: 00007fd7a8a08c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 000000004d9b6eaf R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fd7a8c16218 R14: 00007fd7a8c16180 R15: 00007ffc22589c58
+ </TASK>
+rcu: rcu_preempt kthread starved for 10431 jiffies! g14329 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:R  running task     stack:28000 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5260 [inline]
+ __schedule+0x1522/0x51d0 kernel/sched/core.c:6867
+ __schedule_loop kernel/sched/core.c:6949 [inline]
+ schedule+0x164/0x360 kernel/sched/core.c:6964
+ schedule_timeout+0x158/0x2c0 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x312/0x1560 kernel/rcu/tree.c:2083
+ rcu_gp_kthread+0x9d/0x3b0 kernel/rcu/tree.c:2285
+ kthread+0x726/0x8b0 kernel/kthread.c:463
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+CPU: 0 UID: 0 PID: 6846 Comm: syz.0.238 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+RIP: 0010:csd_lock_wait kernel/smp.c:342 [inline]
+RIP: 0010:smp_call_function_many_cond+0xcea/0x1270 kernel/smp.c:877
+Code: 89 ee 83 e6 01 31 ff e8 c4 db 0b 00 41 83 e5 01 49 bd 00 00 00 00 00 fc ff df 75 07 e8 6f d7 0b 00 eb 38 f3 90 42 0f b6 04 2b <84> c0 75 11 41 f7 04 24 01 00 00 00 74 1e e8 53 d7 0b 00 eb e4 44
+RSP: 0018:ffffc900038cf4a0 EFLAGS: 00000293
+RAX: 0000000000000000 RBX: 1ffff110170e8129 RCX: ffff88801aba3d00
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc900038cf5c8 R08: ffff8880249a3047 R09: 1ffff11004934608
+R10: dffffc0000000000 R11: ffffffff81778480 R12: ffff8880b8740948
+R13: dffffc0000000000 R14: ffff8880b863bb00 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8881256f3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b30b06ff8 CR3: 0000000075c65000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ on_each_cpu_cond_mask+0x3f/0x80 kernel/smp.c:1043
+ __flush_tlb_multi arch/x86/include/asm/paravirt.h:91 [inline]
+ flush_tlb_multi arch/x86/mm/tlb.c:1382 [inline]
+ flush_tlb_mm_range+0x5c3/0x10c0 arch/x86/mm/tlb.c:1472
+ tlb_flush arch/x86/include/asm/tlb.h:23 [inline]
+ tlb_flush_mmu_tlbonly include/asm-generic/tlb.h:506 [inline]
+ zap_pte_range mm/memory.c:1885 [inline]
+ zap_pmd_range mm/memory.c:1950 [inline]
+ zap_pud_range mm/memory.c:1978 [inline]
+ zap_p4d_range mm/memory.c:1999 [inline]
+ unmap_page_range+0x3780/0x4030 mm/memory.c:2020
+ unmap_single_vma mm/memory.c:2062 [inline]
+ unmap_vmas+0x3c0/0x5c0 mm/memory.c:2104
+ exit_mmap+0x251/0xb30 mm/mmap.c:1277
+ __mmput+0x118/0x430 kernel/fork.c:1173
+ exit_mm+0x168/0x220 kernel/exit.c:581
+ do_exit+0x62e/0x2310 kernel/exit.c:959
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1112
+ __do_sys_exit_group kernel/exit.c:1123 [inline]
+ __se_sys_exit_group kernel/exit.c:1121 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1121
+ x64_sys_call+0x2210/0x2210 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f986059aeb9
+Code: Unable to access opcode bytes at 0x7f986059ae8f.
+RSP: 002b:00007ffd0f27cf08 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f986059aeb9
+RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 00007ffd0f27cf6c R08: 0000000000000000 R09: 00000000000927c0
+R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000023
+R13: 00000000000927c0 R14: 000000000003162f R15: 00007ffd0f27cfc0
+ </TASK>
 
-What do you think?
 
-Thanks!
-Leo 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-
-
-
+If you want to undo deduplication, reply with:
+#syz undup
 
