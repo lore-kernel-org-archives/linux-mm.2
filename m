@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A079EF99E1
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 06:29:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DD4EF99FF
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 06:30:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CF2A6B0005; Sat, 14 Feb 2026 01:29:01 -0500 (EST)
+	id AA3336B0088; Sat, 14 Feb 2026 01:30:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87D1D6B0088; Sat, 14 Feb 2026 01:29:01 -0500 (EST)
+	id A4D396B008A; Sat, 14 Feb 2026 01:30:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7887C6B008A; Sat, 14 Feb 2026 01:29:01 -0500 (EST)
+	id 94FEF6B008C; Sat, 14 Feb 2026 01:30:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 651426B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 01:29:01 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8444E6B0088
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 01:30:19 -0500 (EST)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 179A914078B
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 06:29:01 +0000 (UTC)
-X-FDA: 84442084482.23.8281F0B
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 69DE080006
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 06:28:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=t4UtV5oc;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771050539;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGw4Vu7tCiL3kLSWjSCIuIQilIgi0fpPvCGA80V/pdM=;
-	b=1QpKK6FnuW5+6G6+7SV7E4YGUTZQFIzWH7lLbKYeIDV+V8m1NeBDLILAXCQPof/9An8P+1
-	LinxDkykRlXLx+kcwCFKeHBFQmGJ8sLYdqlVPtCz2e+ASEaIhb9TCTxQVy9gVmMaxv0XLB
-	i9KS1OnP3YcHLZvd5MAlwUrIhVfHiO8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=t4UtV5oc;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771050539; a=rsa-sha256;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30F645ACC6
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 06:30:19 +0000 (UTC)
+X-FDA: 84442087758.23.2603F17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 103D1C0013
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 06:30:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JcX1SJd6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771050617; a=rsa-sha256;
 	cv=none;
-	b=STZuZ7gP07c8sm/0nlR49tfg4KwcgTh6Dr2aqUKrlgjEWNPOqrGX/fw3aD/Ny9TTQzoTpf
-	9toVHN+8nJ6/TaJk8WADXNNxIa+MlgilgeLDoxQe0JRT/mZ2zCCYaedLJW1Oe9DlsFapgx
-	A66vgrIZUaUKX4l+WFjeqGsgxFZ1HF8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wGw4Vu7tCiL3kLSWjSCIuIQilIgi0fpPvCGA80V/pdM=; b=t4UtV5ociA1M7EnjmH5YrnSsoX
-	/Y6jiY3A4S+rX0aR9XMr+JYQsGqW6tQSq1VJLqDrke70scuSZ1gmwn2VUvbwi/hZsrxe66R0vPz5i
-	ibY9rc78mKgwj/ClsebpT/b2hPJTTmXbqbNzlVUQXIOi8Cie7oLg1i+ikwd+2bXmwcqIkr6bOmshi
-	0M09tVy1j7bDQZcFBKJ28ozFHRJ4ZHVn9aROJqcb9ILJNcotbXeNVTA0cD6Nmu7wBe2ZlGvQPUl4x
-	jlLTWhr66rn2jdzM8VbvZ6fMUspdhdZ7+eu3xkpmDAHg7GffnGYbfzuR25dQOM6TySS2PXei/BV9b
-	XFKjHcew==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vr992-0000000GrgH-0q3m;
-	Sat, 14 Feb 2026 06:28:44 +0000
-Date: Sat, 14 Feb 2026 06:28:43 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	LKML <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Waiman Long <longman@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [RFC] making nested spin_trylock() work on UP?
-Message-ID: <aZAWGwZP_Z75YHKt@casper.infradead.org>
-References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 69DE080006
-X-Stat-Signature: ngd37b4pgnde9k6iyedb79zsxefshn8i
+	b=IuE9K5RuRDP3GV9U7PKH1Lchb0vntgjxJgAbZxJEk5TVY+jvPyXuHLDvVAgq6xWooGtuBw
+	wJDWPpEt4RTR4TOVZCFZWZqCbTR9o76qHpcGF4QmXLQdJiZvbt3KgKH8oy2JvVc9TgaD04
+	cjT6wEdZtAsg/GbpQhrxG9H6gjoBPAw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JcX1SJd6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771050617;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=lfR0unjZ8N9r9rINJr6Ti5BatzjL+jvRT24ms4mwf0k=;
+	b=o2LS4pZcigepLcZ8lsFY4b9CAnyLKWp5E+4JbpdAO4sOyCnLSKS0H+sQqDOOdH3INC/ouS
+	3BdXG2iIycUb2Mjzbq50X6GEnuP4FqXG3KTzYmARvc4EfXBs/2tf2zK/cuBJ9EF4g7pzZn
+	/kTJTlXp3dYdEvaePWLeX9Y6JlhXU9Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771050617; x=1802586617;
+  h=date:from:to:cc:subject:message-id;
+  bh=T/ftUp8knjm7J69TVB17Dj8uJCdl6TMjx2dr/PQ1PyQ=;
+  b=JcX1SJd6sM7+wmuaGrbXCw1BqD6YrNIwJTOrorUqzJEJukvUT1b8S5Vt
+   JSYxDGEmHDvDsdC6BDWYYHdgOhfeE84zpf8m89W/fgCu7umPElP0YnvuO
+   lzAuV0MU6tWYXDXkxA67UMGdMH9gWxavacvQtSOteTum1iW09M9vH0+pS
+   WQx+s1pIdJCS3rr+Lri0KCiI8KpLHhVAvYkSI6zQdGfII+eD6K6w1SLJy
+   vEC9KVXZ4c7hJg8hQnyA8d3fIkx2b584CRAmIoYCDaVlTqRHtb+M1DmEz
+   vOg3Pzn6huOywvgNzCc/Md9mlxs5D8qI9/GRYr7MEKl3/QLW/ZlAkbj+X
+   w==;
+X-CSE-ConnectionGUID: fucrb3nxSRy3zFi4Ira7Fw==
+X-CSE-MsgGUID: hCyaZq32SSG5VH41GnLMNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11700"; a="74825444"
+X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
+   d="scan'208";a="74825444"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2026 22:30:15 -0800
+X-CSE-ConnectionGUID: rgcOrSP2QlCqDHB3Xh09EQ==
+X-CSE-MsgGUID: UwaC/9cHSwuT8jlxG2zCpA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
+   d="scan'208";a="236106799"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 13 Feb 2026 22:30:12 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vr9AR-00000000wHY-0pH2;
+	Sat, 14 Feb 2026 06:30:11 +0000
+Date: Sat, 14 Feb 2026 14:29:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Alexander Potapenko <glider@google.com>
+Subject: [akpm-mm:mm-nonmm-unstable 30/30]
+ drivers/input/misc/pf1550-onkey.c:190:39: error: 'pf1550_onkey_pm_ops'
+ undeclared here (not in a function); did you mean 'pf1550_onkey_probe'?
+Message-ID: <202602141440.xObtAhOc-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1771050538-538370
-X-HE-Meta: U2FsdGVkX19SCybXUsZWKsMCoTFl3dhpLm9VADmxz4Ca9DWZV0/7ClAWgjVd4TAyA1b8YkGeKCsvrKHfcq0zpoHoCjEBqctRhkBLS/lQy7IqV//7XlBwbqIToPRdd89wI/p/bX84W3l8r6/P6jPN4Wux36ignD8rThj1Zg7o8SmHq24EmyjDt0V+8vLqC7BJH6cIJJ3DIH4WlK2SwRK/awqxKIGCOlfB76QgmlGexBh0ZQWj6aaycorIjHBnwrZQg+0OMWnU4oSqfEgyPISF1zYiN6MsVdFoie27dcsmvYj7HbnR/4+M2ihNZWKm3zOZNkutOtwnf6sdIb/WBDfwXGqiv56M5zQu8Uu8Zfk+dCoxbSLQVxwpFA+isDZ3riNIsnskbm8bSOeB8MjblBx9B1hYy7rYtBjH4L2ZhdfUn7sWbtI66S3EVyaoVfrC97KWMAfvmEaSyp3J0p6bZG6avAibRvh3S4UFY2SxgAWCSslxDNSvigI34UMeXN1RRnJyqusF/i1vN8XKuXhdWQp7TLeF0TakYJQJdW4xgsyfz0s/tQavwSGDSorFEu5k3MvPOnDYmOiuBBAD6w5U5+D3nHDw0aq52MJWsEqMH7fojSRWBxPSy+u93FCk4nC4w0i9OSniT9VfR+ElBKZPpORKBLtlPSNilePGQuxqjBLBXV4yeLMS0zCr1B9D2brR7S3YIfxvc10cP0/22JqoZiCb4T9pAyGUeqb63GdmI3o6R71G62okgm/bYlPBoLysWap5FQ//7i+Ry6ZmaYi5iLzYEEriY4wJMs5VFmyZsFm9g2JEtGdfis0cIPS/BRQJXwr8CXUppopfICxDD6+4Nb+dUJuyVJZDoUsYI2J0p4fCIMh7tFQOUHXGw0yCYqNm8ntUZvS0pUwhgFAfEjeD+d6M6BSCqzedYGjB2mxhMR//WkaPHfeBqqEbW8EboAfdioM/h01AiHmmuiJ7VGqKHVL
- KDkQgEGV
- j0UHKEFHORGFMaEYfS5Szo3u1PdDlqrUB/KQ+kO9dTSZyLis0X/G87SKUVw+RYTklAuntO9ncG52r628L0JsMM8asbhplXHfzgRob5PYXCSRXTgPFNpgGPOaRtF8JkLhT+JHdQFbKXHROjSVc/eygjkBFsK30oy+FjbNLD/9nG6QNAa17u86jDYUt7o8qt2JF95yce2PvCxWKwzbEGbI9LCTz91zj+EsMcYdDj/aXYrJLxXE/c8LTS65M3l24IKcr0faT8SDp1bvRWEgCcltpORgke6KhpFRPSJp/lAWTajmtZLfZKsr1VALloIQTdBiWKyOh/T4YUGEUmyAdHieViyZQ7JJ+azn15vMKGPQ/lrCO2d3zfEpgLcy0jN6X7co52My3
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 103D1C0013
+X-Stat-Signature: 7hkt5uo8axc347i5aegpjwmbpjfadm3z
+X-HE-Tag: 1771050616-15307
+X-HE-Meta: U2FsdGVkX18ZixzPxtb3U4Owz1IXwp0rMi9EN6lZO0lPVf5EqiQq5oE9kCpyB7nBs/UHjSaaX+jiOT5R+HFMoPrxenSLVH/yrVPVYiL4bxT0vjghqxdaUnInvhPnfGeC8/vdU49O1pTjyx+51FiFKe4ZH7DTUm1D2/ZhcilT3BN6ocP+tS8hnX3vM4Aco7AgoB6DAiHUsnVU9lul9j3+ahNlVyVreRM7waUvDPyMU5h8VrfOPIeBin2VuDAPu4TBW8wtXF9lpqJ3k0koACI+W8ztoy81wOnign6DrpNprGJF16/RieSfZEZfgqebqBj9ivhZzLEh8dZnXUn26sP1pEitcqN8gBGD5+ZSmcO961ApVuXP70ArQF6AGrvnTSBtWbzD9Yjn6lLT+DnhS/Mxe5EWKhp3HlyyilcpCdEj2u843K3YEVSPksQkgSRgfm/ARZy0va6hPNsgQxBT+Wieuf5wUWvNiiZCI3WRDBclHX8LSlQdSN2mp+1akCyd0OFhWR2pYWMFzgYsAb9GJGp1R0fFfPAs+to130HX9H+OX81czIfTO8tEpnoVamdxebOmD8oikHQtztoB3Fj71VbOISJNfyWw5OEDj/2WhgQA/vdSTz0O2OWfF2qbsvW3BDzxeLXoFtDUWLARSB4ScwfNvj8dkCaZpMUDSGUfX+cMjN5Yf0ntfwCQgxP+latxqskct3TIbROhOfvMqME3vr7yPmr6yd81Eg+6XxGH2eNfx8C8q6xiUJU4u/cVckFUr4dvTxS54s5yJm9MZUdDE0lEBoDvxgE02bYbOdX1sBB5WAmQ/obymMYLcdjEQcwuVCJFbp/9nUFV4c70XCY2GTSqKG66kPUD3r0voQjlEZy90m0wZcfMrF4O0QeqQPcQ+4URHYpWj5XZOzywRbQpYa+sL0ESXnaZRNsqiGa+nBneQ6uVRPtEaDg7vJEWm3K/uLKl0BmpyC8Pn9EwqExKA69
+ R87DIbWT
+ RuNv1DZgcwgE1d0XbNQXb6DFcZ3eZB0mIkWlPRY6+MGiyZqWQgvanqQy9vgg5huXl8AT7/PV3b/8eu6cSq2TDS/CyemgUC3GA+RXP5CFA9LzE3sezzuKET0TUO5xDpO4tZvDYKmqiz1WV/ShdBp7/th9qIuOcwturPxoOaGnA0/MuDVPg10ScTkxSWPSswypY69kf6OCmHN7jFeRvyHTpUbDZ8RkBFM7/IlM7ekEwkl2bOcg++tWr2VgsAWs89oOiejQIjCxiAeecvBInFJyuo50nML1DqDcfRl13RJjWen2piIBbx9Ng536J9OcGpORtbwigNah3LJyGbFCcJ/5DeUiM4zhKH1C+ZnkrzkcGoCu9RsyvC5gW4LYFhHVy5yBcRqRDv+WJS14rFkE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,60 +104,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 12:57:43PM +0100, Vlastimil Babka wrote:
-> The page allocator has been using a locking scheme for its percpu page
-> caches (pcp) for years now, based on spin_trylock() with no _irqsave() part.
-> The point is that if we interrupt the locked section, we fail the trylock
-> and just fallback to something that's more expensive, but it's rare so we
-> don't need to pay the irqsave cost all the time in the fastpaths.
-> 
-> It's similar to but not exactly local_trylock_t (which is also newer anyway)
-> because in some cases we do lock the pcp of a non-local cpu to flush it, in
-> a way that's cheaper than IPI or queue_work_on().
-> 
-> The complication of this scheme has been UP non-debug spinlock
-> implementation which assumes spin_trylock() can't fail on UP and has no
-> state to track it. It just doesn't anticipate this usage scenario. So to
-> work around that we disable IRQs on UP, complicating the implementation.
-> Also recently we found years old bug in the implementation - see
-> 038a102535eb ("mm/page_alloc: prevent pcp corruption with SMP=n").
-> 
-> So my question is if we could have spinlock implementation supporting this
-> nested spin_trylock() usage, or if the UP optimization is still considered
-> too important to lose it. I was thinking:
-> 
-> - remove the UP implementation completely - would it increase the overhead
-> on SMP=n systems too much and do we still care?
-> 
-> - make the non-debug implementation a bit like the debug one so we do have
-> the 'locked' state (see include/linux/spinlock_up.h and lock->slock). This
-> also adds some overhead but not as much as the full SMP implementation?
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   f88534a6e7afcfe6ad5f93b86f6e64d5d4d23709
+commit: f88534a6e7afcfe6ad5f93b86f6e64d5d4d23709 [30/30] drivers/input/misc/pf1550-onkey.c: fix build with CONFIG_PM_SLEEP=n
+config: arm-randconfig-001-20260214 (https://download.01.org/0day-ci/archive/20260214/202602141440.xObtAhOc-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260214/202602141440.xObtAhOc-lkp@intel.com/reproduce)
 
-What if we use an atomic_t on UP to simulate there being a spinlock,
-but only for pcp?  Your demo shows pcp_spin_trylock() continuing to
-exist, so how about doing something like:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602141440.xObtAhOc-lkp@intel.com/
 
-#ifdef CONFIG_SMP
-#define pcp_spin_trylock(ptr)						\
-({									\
-	struct per_cpu_pages *__ret;					\
-	__ret = pcpu_spin_trylock(struct per_cpu_pages, lock, ptr);	\
-	__ret;								\
-})
-#else
-static atomic_t pcp_UP_lock = ATOMIC_INIT(0);
-#define pcp_spin_trylock(ptr)						\
-({									\
-	struct per_cpu_pages *__ret = NULL;				\
-	if (atomic_try_cmpxchg(&pcp_UP_lock, 0, 1))			\
-		__ret = (void *)&pcp_UP_lock;				\
-	__ret;								\
-});
-#endif
+All error/warnings (new ones prefixed by >>):
 
-(obviously you need pcp_spin_lock/pcp_spin_unlock also defined)
+>> drivers/input/misc/pf1550-onkey.c:179:8: warning: extra tokens at end of #endif directive [-Wendif-labels]
+     179 | #endif CONFIG_PM_SLEEP
+         |        ^~~~~~~~~~~~~~~
+   In file included from include/linux/kernel.h:35,
+                    from include/linux/random.h:7,
+                    from include/linux/nodemask.h:94,
+                    from include/linux/numa.h:6,
+                    from include/linux/cpumask.h:15,
+                    from include/linux/smp.h:13,
+                    from include/linux/lockdep.h:14,
+                    from include/linux/spinlock.h:63,
+                    from include/linux/sched.h:37,
+                    from include/linux/ratelimit.h:6,
+                    from include/linux/dev_printk.h:16,
+                    from include/linux/device.h:15,
+                    from include/linux/input.h:19,
+                    from drivers/input/misc/pf1550-onkey.c:11:
+>> drivers/input/misc/pf1550-onkey.c:190:39: error: 'pf1550_onkey_pm_ops' undeclared here (not in a function); did you mean 'pf1550_onkey_probe'?
+     190 |                 .pm   = pm_sleep_ptr(&pf1550_onkey_pm_ops),
+         |                                       ^~~~~~~~~~~~~~~~~~~
+   include/linux/util_macros.h:136:44: note: in definition of macro 'PTR_IF'
+     136 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
+         |                                            ^~~
+   drivers/input/misc/pf1550-onkey.c:190:25: note: in expansion of macro 'pm_sleep_ptr'
+     190 |                 .pm   = pm_sleep_ptr(&pf1550_onkey_pm_ops),
+         |                         ^~~~~~~~~~~~
 
-That only costs us 4 extra bytes on UP, rather than 4 bytes per spinlock.
-And some people still use routers with tiny amounts of memory and a
-single CPU, or retrocomputers with single CPUs.
+
+vim +190 drivers/input/misc/pf1550-onkey.c
+
+9acb215cbebdce Samuel Kayode 2025-10-01  176  
+9acb215cbebdce Samuel Kayode 2025-10-01  177  static SIMPLE_DEV_PM_OPS(pf1550_onkey_pm_ops, pf1550_onkey_suspend,
+9acb215cbebdce Samuel Kayode 2025-10-01  178  			 pf1550_onkey_resume);
+f88534a6e7afcf Andrew Morton 2026-02-13 @179  #endif CONFIG_PM_SLEEP
+9acb215cbebdce Samuel Kayode 2025-10-01  180  
+9acb215cbebdce Samuel Kayode 2025-10-01  181  static const struct platform_device_id pf1550_onkey_id[] = {
+9acb215cbebdce Samuel Kayode 2025-10-01  182  	{ "pf1550-onkey", },
+9acb215cbebdce Samuel Kayode 2025-10-01  183  	{ /* sentinel */ }
+9acb215cbebdce Samuel Kayode 2025-10-01  184  };
+9acb215cbebdce Samuel Kayode 2025-10-01  185  MODULE_DEVICE_TABLE(platform, pf1550_onkey_id);
+9acb215cbebdce Samuel Kayode 2025-10-01  186  
+9acb215cbebdce Samuel Kayode 2025-10-01  187  static struct platform_driver pf1550_onkey_driver = {
+9acb215cbebdce Samuel Kayode 2025-10-01  188  	.driver = {
+9acb215cbebdce Samuel Kayode 2025-10-01  189  		.name = "pf1550-onkey",
+9acb215cbebdce Samuel Kayode 2025-10-01 @190  		.pm   = pm_sleep_ptr(&pf1550_onkey_pm_ops),
+9acb215cbebdce Samuel Kayode 2025-10-01  191  	},
+9acb215cbebdce Samuel Kayode 2025-10-01  192  	.probe = pf1550_onkey_probe,
+9acb215cbebdce Samuel Kayode 2025-10-01  193  	.id_table = pf1550_onkey_id,
+9acb215cbebdce Samuel Kayode 2025-10-01  194  };
+9acb215cbebdce Samuel Kayode 2025-10-01  195  module_platform_driver(pf1550_onkey_driver);
+9acb215cbebdce Samuel Kayode 2025-10-01  196  
+
+:::::: The code at line 190 was first introduced by commit
+:::::: 9acb215cbebdce721af2219e2859ad17342c9084 Input: pf1550 - add onkey support
+
+:::::: TO: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+:::::: CC: Lee Jones <lee@kernel.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
