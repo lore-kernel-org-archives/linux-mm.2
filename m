@@ -4,95 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E5FAEDF142
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 05:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0008EF99FF
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 06:08:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAD856B0005; Sat, 14 Feb 2026 00:55:58 -0500 (EST)
+	id EFA126B0005; Sat, 14 Feb 2026 01:08:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5B3D6B0088; Sat, 14 Feb 2026 00:55:58 -0500 (EST)
+	id E7D876B0088; Sat, 14 Feb 2026 01:08:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5D836B008A; Sat, 14 Feb 2026 00:55:58 -0500 (EST)
+	id D7C8F6B008A; Sat, 14 Feb 2026 01:08:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92B5A6B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:55:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F3AB140788
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 05:55:58 +0000 (UTC)
-X-FDA: 84442001196.06.20AD2FD
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ED6AAC000C
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 05:55:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AzAYTuja;
-	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C16046B0005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 01:08:02 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07F58C2610
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 06:08:02 +0000 (UTC)
+X-FDA: 84442031604.28.9F64B03
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9824D40009
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 06:07:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cdH8R86q;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771048556;
+	s=arc-20220608; t=1771049280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4p7/VLh1Ufevc16x7Gi0b+hrWBvqYZ5XQGRUCeLoNIk=;
-	b=WmalUcv3ugSejHQDy4zFIffw8IbI/fzbJey/hemCLX62/lRHUm+dCMcQr9dEKzEPwYELr6
-	aB66Q/Gf5uovt1y28cIjGJ+ZpRL3HRUfDnxADn71kLC3coa6FIAX+Me2o6OmStFYu3u2nk
-	zAx/kyNRsmVBPyZr/8+wKz3hVMi5jTc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=no0641VudVeXrRHzkRSWeF2KhikFrGdGXw+29YZaO/g=;
+	b=J7gwNo9ZkOGA6VE+TU/apQ+lYK+Uy3wzbpJ/kfpSv6y2APeC+mBPNv9Klc7rlUyVzQoCH+
+	9Hu/LkX4Ot80QihzKPcI8/nRiEt3W0K9Bq/Ufd4WorLEBBJlaYoh85b+IZJ1MhLDqAXP2w
+	UBQttgrIs3tVm5Na5l7lqaDb5no5+Lk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AzAYTuja;
-	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771048556; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cdH8R86q;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771049280; a=rsa-sha256;
 	cv=none;
-	b=0AnzMM830snPclzUjcJg8k3BtJpv6nRV3rlfO7AQ4IBZjikL4Z3/Uor85iV7AGoSD7eoDw
-	9LalkYEkkLacxnEujvRgZb2wx6YSZJum+oM1KgnrTG0wqr4sgyGvYx1E1Tak4b+ewQDrDH
-	4/fYzPb7686OkDZmzbx7tmxwFf5vP4U=
-X-Forwarded-Encrypted: i=1; AJvYcCUb+pBp2hgef1h7hv+6WgKDVXwmtTRzsBnlGRfKOz+41kPLnSozORIKFykRrvK56u2QofnhUNP31A==@kvack.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771048553;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4p7/VLh1Ufevc16x7Gi0b+hrWBvqYZ5XQGRUCeLoNIk=;
-	b=AzAYTujanog2Sg7wKYUkQO8jIU/bxsAEvk6Xw2ojqQlhbCyTiTUdVvRe0QRUHdM8MT/fp1
-	8EYySFDjX7vxvbZSAKl+zc1vshJHFYjk70s1CeVz5SGtTd+qKXHGKL17RLFC/Ahq5vAKzU
-	cxqHdFKNDVZtRzwderxUn0+V5IllvzI=
-X-Gm-Message-State: AOJu0YwEolVNDU1T6/SmA38Zej7LDVZl1IbfXoJpRngBWcPafrQpiyQd
-	hHH4rTk7d6KU6Xl9KJUT9HOhVFR7Ri48eXp3gQ114/UDivmxlBt+0ifVUPIqlnJ5Czll+3rf71s
-	aitcPKRHgE2FQG8mipRWN2fixrv9loRU=
-X-Received: by 2002:a05:6122:a06:b0:55b:d85:507a with SMTP id
- 71dfb90a1353d-5676a8af2fbmr1301332e0c.7.1771048549285; Fri, 13 Feb 2026
- 21:55:49 -0800 (PST)
+	b=k7hBfFmoMZLRmzYTcUFJwuQcAChi6/jjPmr2VI6rZoElvtH9YXFHdaJafMaaKRxEmQOSpW
+	vQpjFHPZXpbpCyM5dT0DqiVUsbUfe4mn/Qvcb3kNRBcHOnozJN3MWvbbzdQiwgHK5bIUyN
+	mAl/I4DRPV/NLsCFsMb/bFL8+mIg9is=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771049280; x=1802585280;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IGKa42nsywCL4/RfuIAFDvXFWWy+IVTktuQ3GFSXscM=;
+  b=cdH8R86qp5O6TrArccwA/YTqI88O86sgPqnIKeizOVDtOnjkTTAVE3zr
+   rBrgsT0O6gBM0UQrf63XZkx05F+7OlZmJJbUtolpy6NtgxAlCV2jhwysp
+   ESjABkE+EFomrkzWWWjSopDkZqhItP/mvi09ZuwFz78cjuPXAGnst/KV0
+   SidsNPINYr9d7kFamVulMSsHuGPEqx2sOdgVkvwtI5rFV/aNWgOG0pGha
+   lnA2BGlHgdehieJROxIRUlG56rqGxFSQCRGkNghXDF2nAsShdJusz0Wd6
+   Q1PpOv1w0tJSdqz5xcWRf1FENVB4XrB5WAZZzDLbLE2FbkznHzTgIUHlU
+   g==;
+X-CSE-ConnectionGUID: pwQMbKveTFG6ZTsaZidYdA==
+X-CSE-MsgGUID: aCbdNarjQsmee77aZyyDOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11700"; a="59796840"
+X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
+   d="scan'208";a="59796840"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2026 22:07:58 -0800
+X-CSE-ConnectionGUID: Uo1L4ofhRu+aVLwHTMgZSg==
+X-CSE-MsgGUID: 3CKVyPSYQiWJdsZnpk6QDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
+   d="scan'208";a="250776319"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5404a91d123) ([10.211.93.152])
+  by orviesa001.jf.intel.com with ESMTP; 13 Feb 2026 22:07:55 -0800
+Received: from kbuild by e5404a91d123 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vr8or-000000001mv-2JAh;
+	Sat, 14 Feb 2026 06:07:53 +0000
+Date: Sat, 14 Feb 2026 07:07:30 +0100
+From: kernel test robot <lkp@intel.com>
+To: "Bala-Vignesh-Reddy" <reddybalavignesh9979@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Wei Yang <richard.weiyang@gmail.com>
+Subject: 
+ =?us-ascii?Q?tools/testing/selftests/../../../tools/testing/selftests/kse?=
+ =?us-ascii?Q?lftest=5Fharness.h:107:40:?= warning: format '%llx' expects
+ argument of type 'long long unsigned int', but argument 6 has type '__u64'
+ {aka 'long unsigned int'}
+Message-ID: <202602140755.vIpuPels-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 MIME-Version: 1.0
-References: <20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com>
-In-Reply-To: <20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Date: Fri, 13 Feb 2026 21:55:38 -0800
-X-Gmail-Original-Message-ID: <CAGj-7pURg5F_2zMAWseutKTKoAdzn=8fsNSqUsoNCWyurbFyGw@mail.gmail.com>
-X-Gm-Features: AaiRm532OGRhhN1nv7-_o6WBJNYSsEZ__DUHnFfvG3RnhRwGE89mcxLD7x9Q6us
-Message-ID: <CAGj-7pURg5F_2zMAWseutKTKoAdzn=8fsNSqUsoNCWyurbFyGw@mail.gmail.com>
-Subject: Re: [PATCH] memcg: consolidate private id refcount get/put helpers
-To: Kairui Song <ryncsn@gmail.com>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: joorneteiwnhyy4ux6hw3i3t7chtnpa1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ED6AAC000C
-X-HE-Tag: 1771048555-259783
-X-HE-Meta: U2FsdGVkX1+E7v6mNZ8nrquYH0SOf2j/5R3M1EqqOpuMhtCnducOWEWeplmC0rdeDXJZ/jww4u6ZsO30Qzr4vnePJ1Wkk1MV4YtdhthFoymCstCRP9Yh6G6luJiKhtRiuKZyJfrgoLeotHWdWvbgmlQhH3B/gUKlZEn0mSmKXhbEFBm18Mbw9aSfTMQIiBU6xrXfZ3w4gtZHRyRWOQzGHADLeb9timf/GKXMF80PRtzSfIurG4P4T//rCmNp91VFDRK7hTWdi4jT1GElAC57jn9fCOiagr/bFoGAvT7oxtx5kX/nUk9Ex7uNKXXLBT3fu3SbYdPAaRmUw8Ifw1LT4XXC9DsN1K0Kuu2zbi9U92y3IxcCfA0YJZUu8g2VaTtzimrLm/u2CYUKtJalTy6SxGA5v4BiLNEdSMEM0ogLGAlha1EGrjsYyYMDkJjKGvTYIO4OPCthcNOx42fEvCHtU48FMXLsSfXD7otQZAzgPAV8xp8ctYcl5dCnadD5xEtDc8B9WN6+kCtBj/7K+invLlpkkvh7tnexLLsmIUScRA8ExB/N56TJX6G+l/eWlY8HKyMQZUIWgcBTE8GQxU3Jm1rRN4kqR1jdY6/xzN7hMNfyV7RTTTRJbUXMZ6QdtWAWvd9isQZHkIWKAAyX+GRJq/WnqptqMVMZgd72xKDHaJ/A1FHi9sZO+4qptRyBJbdRE/kn1Q3OoFIeo0GaEucLh+AJJM+aet4c3Zp3HLaiwZcsS0sUFYG3wxAMY0x0egB+DFOIzFA0/B0IoteqIOnA3OmmyVD8YMEwPmX1jPjrn1OIxGObrrr2LnFbFc63hhIXl8as7Cr8xvVLoBupjY05oI8pk2q/UFT8MYDQJ4qVnx+6Q8wxVUBhQiw/nTi2xJdNPZ+DaTAWWJCb2ibYSmqJZwdLMKr7SXxfADzoJIObmDbi1Tl+MMctDyisczJ6ShcdFU/yWgGg1rjYhCATF5+
- zdxFtmkQ
- +5AIsVmsJ1M3YzI+bpqZ+TiDShm3VWxz6X8IH6eTReeEogU6scWXH/+MMcn+fVEXABLzpqyQreFJMypTzmxnDON6QRmyd9URFwYuhwR460taDy6bRU0kAk2+Yr1pIoRLeoQ0h9R1CZdQkrRmjPId+eHoJZFhxR/1F3sSXG8JK5pEiQdwnynquEwQEa3EZ8/3FQMi/JvLDLE2RJ6gI3vJXsLKMCQ==
+X-Rspamd-Queue-Id: 9824D40009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ciqxwa9iimjuuw47xajozawk1x4unju7
+X-HE-Tag: 1771049279-280539
+X-HE-Meta: U2FsdGVkX19EvfutaK2GjjbPsCHL1cCm/0DCYi4dqZ3f6W2ABJqD/zGsh/C+UjXSBf3u136r2h0zOuayto+2MolvFf1Y0UmBzPvs3VvUYeN+XIxKbdZN2neOqf/CQV2uyxJ8hC9I9iyc6ZH2/Zbtb7ynf9Ack7bY/qKcIyEuCkqk9UVzyVcexFPZnCBIr2S4AjinyUkfdvVjAsffU2jVftqSAkkYM2RgHChXD540TCY77kGfoEREmHqhGzOcfjMhHSupjfX44TGJwOgA6o1JuoC4+KdlJJW7mft1UTCZduXGV5reJiqFsARe79Vch8W5RB2uT3UcqCg7miU/jQ4quyxJTJPttSYs16mrma21WHZGsQeiwXz/5DLmvu1NCpb1k1PwAyZoZuhdy6JaCbG34/9ZjbviX2RYahJGlMB0OtyHIdtSphiqMK3zLvG34Gqufj/5tYinPrWXiVitgA8ozMIt69h970Q1kb36Jo8X2kWV8hqsq4v2gr8FGpS3+REW8NQIjfp/b1SpLy1VlZwFHcm7JthlWT6U9kkFgZRWDDa9nUchm5nOhojN95LK3hMYd2vUuxlCEo8aZwfeWGXQOg1MrV4OP7aNBwyHhWx7YU+XwLluib4i0RbbEb5yLEb0CQxLah50O781vPDzLaOccy+pcVx0XQe5tc2oxtzGri9XYzZtcPy+N6iaG0FtVZxv7af8ONnfL9jJ5KzVOl4L+8Bok9MLUqBqr1zoWfkKQl4rBq+EdAf7kdgoYHEjTzNFspTWeV5WLkPSG3kvlh+JPTBoVm7kamYoG57MRQKei9SeflRcXoNNr5vZD21Xy6EgOJrzYkFmLYEcWGgLfaBfLXoX8QVK6GbOl3zPSW2li3468i7DBwWmr2a86V9PZRaEdeqkcSvFGQ6y+rZ795EahSC8THsLBoAdvqQ16Idl6ARaMU93H3NTy5OaJNO19blUaaGz6OuWh5lspu0433b
+ NjN8H5b1
+ 0GbA9fh1YNj7QJSjyOzrMQphnK+dQWSyUhOwZYHm6GGG+ZoS3fmr9533LBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,26 +112,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 2:03=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> We currently have two different sets of helpers for getting or putting
-> the private IDs' refcount for order 0 and large folios. This is
-> redundant. Just use one and always acquire the refcount of the swapout
-> folio size unless it's zero, and put the refcount using the folio size
-> if the charge failed, since the folio size can't change. Then there is
-> no need to update the refcount for tail pages.
->
-> Same for freeing, then only one pair of get/put helper is needed now.
->
-> The performance might be slightly better, too: both "inc unless zero"
-> and "add unless zero" use the same cmpxchg implementation. For large
-> folios, we saved an atomic operation. And for both order 0 and large
-> folios, we saved a branch.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git =
+master
+head:   770aaedb461a055f79b971d538678942b6607894
+commit: e6fbd1759c9ece5044d3470f30a5e2166dc9de89 selftests: complete kselft=
+est include centralization
+date:   3 months ago
+config: powerpc64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/=
+20260214/202602140755.vIpuPels-lkp@intel.com/config)
+compiler: powerpc64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archive=
+/20260214/202602140755.vIpuPels-lkp@intel.com/reproduce)
 
-Acked-by: Shakeel Butt <shakeel.butt@gmail.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new versio=
+n of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602140755.vIpuPels-lkp@i=
+ntel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from common.h:20,
+                    from audit_test.c:22:
+   audit_test.c: In function 'audit_layers':
+>> tools/testing/selftests/../../../tools/testing/selftests/kselftest_harne=
+ss.h:107:40: warning: format '%llx' expects argument of type 'long long uns=
+igned int', but argument 6 has type '__u64' {aka 'long unsigned int'} [-Wfo=
+rmat=3D]
+     107 |                 fprintf(TH_LOG_STREAM, "# %s:%d:%s:" fmt "\n", \
+         |                                        ^~~~~~~~~~~~~
+   tools/testing/selftests/../../../tools/testing/selftests/kselftest_harne=
+ss.h:102:17: note: in expansion of macro '__TH_LOG'
+     102 |                 __TH_LOG(fmt, ##__VA_ARGS__); \
+         |                 ^~~~~~~~
+   audit_test.c:152:25: note: in expansion of macro 'TH_LOG'
+     152 |                         TH_LOG("Failed to match domain %llx (#%d=
+)",
+         |                         ^~~~~~
+   /usr/lib/gcc-cross/powerpc64-linux-gnu/14/../../../../powerpc64-linux-gn=
+u/bin/ld: cannot find -lcap: No such file or directory
+   collect2: error: ld returned 1 exit status
+--
+   In file included from common.h:20,
+                    from net_test.c:24:
+   net_test.c: In function 'mini_network_access_rights':
+>> tools/testing/selftests/../../../tools/testing/selftests/kselftest_harne=
+ss.h:107:40: warning: format '%llx' expects argument of type 'long long uns=
+igned int', but argument 6 has type '__u64' {aka 'long unsigned int'} [-Wfo=
+rmat=3D]
+     107 |                 fprintf(TH_LOG_STREAM, "# %s:%d:%s:" fmt "\n", \
+         |                                        ^~~~~~~~~~~~~
+   tools/testing/selftests/../../../tools/testing/selftests/kselftest_harne=
+ss.h:102:17: note: in expansion of macro '__TH_LOG'
+     102 |                 __TH_LOG(fmt, ##__VA_ARGS__); \
+         |                 ^~~~~~~~
+   net_test.c:1332:25: note: in expansion of macro 'TH_LOG'
+    1332 |                         TH_LOG("Failed to add rule with access 0=
+x%llx: %s",
+         |                         ^~~~~~
+   /usr/lib/gcc-cross/powerpc64-linux-gnu/14/../../../../powerpc64-linux-gn=
+u/bin/ld: cannot find -lcap: No such file or directory
+   collect2: error: ld returned 1 exit status
+
+
+vim +107 tools/testing/selftests/../../../tools/testing/selftests/kselftest=
+_harness.h
+
+1256a525573120 tools/testing/selftests/kselftest_harness.h    Micka=C3=ABl =
+Sala=C3=BCn 2017-05-26  104 =20
+1256a525573120 tools/testing/selftests/kselftest_harness.h    Micka=C3=ABl =
+Sala=C3=BCn 2017-05-26  105  /* Unconditional logger for internal use. */
+1256a525573120 tools/testing/selftests/kselftest_harness.h    Micka=C3=ABl =
+Sala=C3=BCn 2017-05-26  106  #define __TH_LOG(fmt, ...) \
+e80068be21824e tools/testing/selftests/kselftest_harness.h    Kees Cook    =
+  2020-06-22 @107  		fprintf(TH_LOG_STREAM, "# %s:%d:%s:" fmt "\n", \
+1256a525573120 tools/testing/selftests/kselftest_harness.h    Micka=C3=ABl =
+Sala=C3=BCn 2017-05-26  108  			__FILE__, __LINE__, _metadata->name, ##__VA=
+_ARGS__)
+c99ee51a9d9716 tools/testing/selftests/seccomp/test_harness.h Kees Cook    =
+  2015-06-16  109 =20
+
+:::::: The code at line 107 was first introduced by commit
+:::::: e80068be21824e4d2726eeea41cac6178d212415 selftests/harness: Switch t=
+o TAP output
+
+:::::: TO: Kees Cook <keescook@chromium.org>
+:::::: CC: Shuah Khan <skhan@linuxfoundation.org>
+
+--=20
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
