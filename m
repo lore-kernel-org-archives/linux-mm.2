@@ -4,101 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1388EEF99EC
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 07:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B486EF99E1
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 07:25:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452366B0005; Sat, 14 Feb 2026 02:24:26 -0500 (EST)
+	id D396E6B0005; Sat, 14 Feb 2026 02:25:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FFBA6B0088; Sat, 14 Feb 2026 02:24:26 -0500 (EST)
+	id CFA636B0088; Sat, 14 Feb 2026 02:25:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30BEC6B008A; Sat, 14 Feb 2026 02:24:26 -0500 (EST)
+	id BFCB26B008A; Sat, 14 Feb 2026 02:25:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DE06B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 02:24:26 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0ED6C26AA
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 07:24:25 +0000 (UTC)
-X-FDA: 84442224090.13.1D2CB5D
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B8E8720003
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 07:24:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=i2yxNUai;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B26FA6B0005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 02:25:48 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C056BB2AC
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 07:25:48 +0000 (UTC)
+X-FDA: 84442227576.12.BE2FEC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1673540009
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 07:25:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lWmCGOCd;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771053864;
+	s=arc-20220608; t=1771053947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sLBetFBaYu2PeLbGVLo1UPd6kKPXLNuBM/BqMSFx1P0=;
-	b=OMNO0g0LCsAwx4iVVLABmO//f8eOkTT7fED7v95IqGaSdIxdt5hikSovpFiMrdJFYeRwyI
-	CsxTC5b1TgExlm2s7C35W2qHrCO8h5pDbBQrEY4lcUIgid9sbYHF5KPCQH6eORQKE+wYqC
-	+g+U2cOtN2fG9RlS43p4aggccsCfM7g=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/5PK4rkavh35ky1bcJgSCkfgDmd43mRfughXfesREJ0=;
+	b=Rbu0sx8DdtdlgUq+0CtMA8e2+xx/4kHHan/Ycwn0vUvuwe584au3njbLNlC7cMfJqO9aYw
+	xxMKQVU8V544EbBRwcBJdqBCmsc2ZSfcoTqvoZFnRQnanQnnNW2+QOTe03QncQ75g6Gfre
+	2GnYV5EJwDIDmyesjY5Wl40bS43QgDY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=i2yxNUai;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771053864; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lWmCGOCd;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771053947; a=rsa-sha256;
 	cv=none;
-	b=i0jt2BqRcHuY+NhyIP/Wu98JtkKvgw1+B72LXlhYJyRGvj7/6ep0dXUjpXZpuxu6IZHo3u
-	bhqH7KTqNrz14T+AArxSc1FOQKdqB6wUZAgKRxjZ4okSV8oGmD6Kq2PVLy5mpdyNxKedEg
-	jL0yrzfDWnuYMClmYlP3sk3MFfwHu4w=
-Message-ID: <74dfa08c-088d-474b-a56a-c55b6f1d2e32@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771053859;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sLBetFBaYu2PeLbGVLo1UPd6kKPXLNuBM/BqMSFx1P0=;
-	b=i2yxNUaiSSgBGp/PtcqcZYOilu3AwydVHA5Ap3PWi0LiC6IK37/YKBzGgUaxda26FOTPpo
-	YUZmjZJcjy7HdpJUh4unDETk0gLA6oWu/EHKPx1DhvjrPDtYL6N5ZUYvB5gLlklSgcL3UN
-	4nMJuv1z8QSDjapanllmC3ykH/Dbi48=
-Date: Sat, 14 Feb 2026 15:24:06 +0800
+	b=Ff+HjUzMQM9QqcbciEO7T6i4Mp6nEGv36IpHgZ9QmQ6/qn7DKbi40ufc/J+enJZ5Q+xJAl
+	yw3TSUSiBU0Mel7+jtdX9J/R0+fBmiyrRAF5Wd2AlUhVi/Kw2cQe0UmAiSAvu5jW8OQyQg
+	8i1sABF1O1ERbmNXFZNQlWXF6iAU2aE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EA76B40B34;
+	Sat, 14 Feb 2026 07:25:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F022C19421;
+	Sat, 14 Feb 2026 07:25:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771053945;
+	bh=tuqsMbh1p8jlfKMkzXBIIp942vE25ye6hfGa+4w7SX4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=lWmCGOCdrxZSKj9rtrInLm/7C6miTki3S9Hi61RUEOr5oTwlLnUh15GRlIcvi6gqS
+	 5rXu4XawTp/4PHetdyruZeXyfH2zzrvfINQyxVeub13yAveQwkZx0xOkFy7b0mXHBQ
+	 NfpS3BD3OWAabUplIYp2qFovficCj5dIj0xVzGgislxfqgleNQZ1Su0r0pbmmENslK
+	 tWFIhS0Ri7Bawb2dLaKHc/yx96U6UllkmVyJ7SXmr9c1OxHtATN8yfj2V21XeDGhWD
+	 3ufqHpxZMLXxKF+qy5JA4wrwtVUHZ0g+uf0vjrFx41QRXb0dji9nZy91g0utNQI0Yu
+	 ZdILbEEqrNDMw==
+Date: Sat, 14 Feb 2026 09:25:39 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kevin Lourenco <klourencodev@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shengming Hu <hu.shengming@zte.com.cn>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] memblock updates for v7.0-rc1
+Message-ID: <aZAjczlDqWkg2fpt@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
-Content-Language: en-US
-To: Nico Pache <npache@redhat.com>
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- linux-kernel@vger.kernel.org, baolin.wang@linux.alibaba.com,
- byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
- gourry@gourry.net, linux-mm@kvack.org, hannes@cmpxchg.org, hughd@google.com,
- jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260212021835.17755-1-npache@redhat.com>
- <20260212021835.17755-3-npache@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260212021835.17755-3-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: iozcwprcx5exc819wisbp7h5w6i4sd39
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam11
+X-Stat-Signature: d4ag46bhxfz4b6nkhzeuwinw3d89emgn
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B8E8720003
-X-HE-Tag: 1771053863-968979
-X-HE-Meta: U2FsdGVkX19DrckvI2C1PXGQsTGApLBDvY5GN26fVII/UpMAQXHdFWwUM6kz5cWvkrfGcp5a9ywQSn7+eZoE6wuB5+y1m3zbfjGQx4uWN6quyBP0LgEvM6H9iMU41WVI+Gr0I7X34kzmfBoW7Z+TQPCFmTUN7n4y/+/3wOtZso/frBtiOtm7rG54isXVaGwzkBCxLrMqi1j0hI79zUFvHNx8E3iuPrtfqNmbzMRgWo+RyRvoHB6mS+5OdzSynTSpY+i5TB0jYK1Eu7LnbeDdQ9hhvW/U0yUDG4ojWPOESDJvx/q6CwB2GDspoTjEWqCU2QSDcX5D8dhm2RbZG2cBiEnJnUwgpAcIrqvabwQjZ5RFBFWrIQg1Dx0cf8wvWkDZIhbfDo16/nUyvhjhlmiUey/8WtiA1pNkwY2CaOJm3zRCUnxXTkn8Bovl6G9508AI1HjTCBqJOokaQeW5m6q8giLdJpU3oYzAD7ug3WJy3/rj0rdcmU10ejI8qxfzXGksp/atQ0xl1Ph9I4HlCoKRhtyyC70cJXlGLa7GoDIxmsObWVvLvqgjiSuiQDrfrmFLRJIQES9Rl9a59FG37v4umN2AeiAuoX6EFbNpCg5tJ6ztxNpGYXvqhktBfrQwm6C2X7ZztiXj6P2xXAOcjHk4ahg7j4TxZ3fwnDmYNQBY1zWxFttv3FclRio1PEE7zIoCk6IsDpxm1eDIOzcr35OK3HE6ho4z7zhYirShZbNdH1OdbrHnRFp2X4MkV/kzqMdaFsg4dv3NasplqPTNAG7y3KXeSd+pNHQpjsi7P7duFlY1bPeID+cThKQaumMG1LEWu5YGV28DQPATK9HOkzuW2lPHOz6xKNiBqBu6vtTJf9u+FUK54+o/63XCrfXuh6uyjssHOyr0h2zdl9bmbOhbQvpmKc+1Ai7V0icXdzuv5oIj6xGaPczwIvlWIQU8NW+DjBqgr1eI0A4SluFEbB/
- 0ci3E1WV
- 7JRu/GdQe9Qsl7cEVVbMgYHBkgFcFVwke+1zicLo4a39A3VtkwAiwCG7j7p04xzRNFd12TmdKsKV72VwYiiH/XutDfQy/65GjpkJh/7v91LuikfIlqtLBz38XN4poLpZxHjoKuJokjYWuKEN9arOJb/AMi5zbjOONDXG0BujJrWkVeD9wKsbBhBTzQ2tUl6IUsnH7u4LZkHFSGeLeybTQyiLjOgPUYMl4HV17TBoSSbHBLGdrQAR8s9ig1xsdzHzgJuIE1wSLwgqQTsTXZmueKR+nPehPjNfKqG51N/F+Mob0RMugUf3SCaueIExPy2XvKjTzzXkqpVD2GnVcpx6BiFYtwBrX2NH0jMnmnXyKX0KsN0Bi6VT9URl0ElmYElijBrWcO6oioCyWyj+VFdrwHBdBWg==
+X-Rspamd-Queue-Id: 1673540009
+X-HE-Tag: 1771053946-77911
+X-HE-Meta: U2FsdGVkX1/lHuqKeuq+B1eO0z8zZ+qEJHxalURP6NcKHWORY0l9L2I8XG9SURFcrYJEWy7d7CoU6nESr+0hhYEZblUIWUvHXuku87WGx9ytTfqMTCKSqFdCbZbKmPBcHR8KE2Xhi2anmVzqvozIfzcdzh5MVVJC9I4nDg1ul9CuWn4jXHfYeXuiXFD2SHc5St3sfWaHxJS/qiSsQFoMNvJUM0xnIMzIF067w9cDZgU6UoQr4Yohh0rCsi089XTBQMk1aX7IQHnbuiFYjF5o+el8dtc8CHj+bwVVKofaAidFTnbi7AsjIoq3iYR3U2nPeQuDyZydLD7E5g/jpmureBnvH09BTzsPQf04oDLfnt0/QD5y3LdM4pmJzDVS4JZwDSHA/sQmA71E9ZO0mH0foqSbtQwPCkwhgoRmcKIhf0uWPx9v98O9LbNCM6/j5DlBR781MYS9v9+GaDFhAiybc2rxm7F+Eu5vtL6ilpo+l9qi2WHZVcvRPUmcWokdHhsA65U2EzQhiMufp9agxsRS2An7sRaR3F0XkXixXO35zIJjnZbyInJbVzF4FbupwEzrCcNpD52nSqFLlmwx3b7BWDZ1MhrDjh64qCSZldpRTeF4D3cQs79DEhmXtg4uC5p7kTI15kmEdh1LY+ki1ho3CVgtmA6co6P1CIHpHUsvCUWpPwXtBAHZgfS7796n6nkS8giogzysp/k/0/IrIEOvC/eRGJNn4v+BzYnsaRX2QrZjrb2DbKFTMowTQpJkobg4b4WTUNRxioz2R+I8Vhjv0oYPGsOp4IS4Ejc5Xn6Ce8cKTAHtfSBZfEmrCcMNJ86uicHSrUkVqKBxigWeF9y+Vqgw3RsrsooYDZIIEBSMvLoYxUc4Jpaf/nVs7uF8B1NFb74yhWvW357Z2NcLwLRDcsEP8gVo8Iayytx6GcqERaaPWpZEYenLsw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,22 +89,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Linus,
+
+The following changes since commit f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da:
+
+  Linux 6.19-rc3 (2025-12-28 13:24:26 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/memblock-v7.0-rc1
+
+for you to fetch changes up to f56ccc32468ee7885d3a9175e7d2cb608d301521:
+
+  mm/memtest: add underflow detection for size calculation (2026-01-09 11:53:51 +0200)
+
+----------------------------------------------------------------
+memblock: updates for 7.0-rc1
+
+* update tools/include/linux/mm.h to fix memblock tests compilation
+* drop redundant struct page* parameter from memblock_free_pages() and get
+  struct page from the pfn
+* add underflow detection for size calculation in memtest and warn about
+  underflow when VM_DEBUG is enabled
+
+----------------------------------------------------------------
+Kevin Lourenco (1):
+      mm/memtest: add underflow detection for size calculation
+
+Mike Rapoport (Microsoft) (1):
+      memblock test: include <linux/sizes.h> from tools mm.h stub
+
+Shengming Hu (1):
+      memblock: drop redundant 'struct page *' argument from memblock_free_pages()
+
+ mm/internal.h                     | 3 +--
+ mm/memblock.c                     | 4 ++--
+ mm/memtest.c                      | 2 ++
+ mm/mm_init.c                      | 5 +++--
+ tools/include/linux/mm.h          | 1 +
+ tools/testing/memblock/internal.h | 3 +--
+ 6 files changed, 10 insertions(+), 8 deletions(-)
 
 
-On 2026/2/12 10:18, Nico Pache wrote:
-> In order to add mTHP support to khugepaged, we will often be checking if a
-> given order is (or is not) a PMD order. Some places in the kernel already
-> use this check, so lets create a simple helper function to keep the code
-> clean and readable.
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> 
-> arches#    pick b3ace8be204f # mm/khugepaged: rename hpage_collapse_* to collapse_*
-> ---
-
-Looks good to me.
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+-- 
+Sincerely yours,
+Mike.
 
