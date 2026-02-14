@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 706ABEF99FF
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 09:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2486EF48C5
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 10:06:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEE756B0005; Sat, 14 Feb 2026 04:07:26 -0500 (EST)
+	id B679D6B0005; Sat, 14 Feb 2026 05:06:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9C6D6B0088; Sat, 14 Feb 2026 04:07:26 -0500 (EST)
+	id B15986B0088; Sat, 14 Feb 2026 05:06:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A8256B008A; Sat, 14 Feb 2026 04:07:26 -0500 (EST)
+	id A3F386B008A; Sat, 14 Feb 2026 05:06:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 851766B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 04:07:26 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F1511607E2
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 09:07:26 +0000 (UTC)
-X-FDA: 84442483692.17.34DC210
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B52BF180009
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 09:07:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZrmDbVge;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 93CCA6B0005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 05:06:14 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D89A1C981
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 10:06:13 +0000 (UTC)
+X-FDA: 84442631826.16.C639919
+Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B4FA84000E
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 10:06:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf07.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771060044;
+	s=arc-20220608; t=1771063570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=AeL4UlYZPBXI1WPQOMefYIQ0DKmtAyZQNlt2+pmKSsQ=;
-	b=xk2MURWdaXPPctfl8U64CzyH94/ODV5+B+29myhMeDWDgKnZC8M7ocyINXcQ5R6p2T6dAb
-	BYK/386qJiaxwptrI/FMqEd4pPOfynopieVFAzWHa5hQgUO1eDC0LORSoo/bUv/l+rnUQK
-	GHq1J7Bccylo6dtVLEZWQylgxt1KUOw=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=w3oVWRqVzXAGHBE7lTcq5FW0IOdli7QPuJQYM7Iob34=;
+	b=Dt7r136s8iXHsZ9I+P94yiefWtEE9AR3umu3y6cGdP/5BGCiCIprkWUwAj9K0jcqZXUH7G
+	wCvv8iG/UpxAK1cQ38TsVqyUzu9tNYmxI9N13RkwpfRj273dvb3SMjutTFANOlyFtyucYK
+	s4y3xhqhUksgPspzboACHOhOH1rTUAQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZrmDbVge;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771060044; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf07.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771063570; a=rsa-sha256;
 	cv=none;
-	b=dak+kx5Xp/W1nkToWUx0CMq55BGoNL81dY+0wJ93STp+m5RtLWOsqt245AgLbJawv5qf+1
-	S5AlkfCTpEZXaUbHa2eeaUFec+gcBMzyorN4kqTICnmneaLwPRPcpZ/cWUwWQdzeO07vRP
-	UpnV3SYwgWINiFoIqQEQe8nGwOVGrlY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771060043; x=1802596043;
-  h=date:from:to:cc:subject:message-id;
-  bh=xXNOWvfxhaPYQLE4IVNRYaK3Ajhx2kzeufpZ5U3T5Ds=;
-  b=ZrmDbVgeueHBKq0yYLtb/qVwOCoaAgZMrXMp/R1TzjW3R8A1GAeCipCl
-   DxgWZxJX99Prl9q8sc5L9iehM1ffHcKj+Jy3E8fEclzx2Mf706IOdPldC
-   E0Q+syh7f9TgdBSYJnQGMW8xyzw4pMl9tihJsy6E7FaGGuf+pOJOipgOd
-   i0bg476IL6NbLUO/mOjxTJNBp4nZQ/v5guSvyuaJiiiREFRTfXPs0vN0c
-   iUuKnlyDCFlqzVWVwXnZ7M9HEz6eEC8ktwxVRSHtOR+Wdtc733O7cra2V
-   u/k6R72u9961kEDd399sENe1tsqlwx4hRZjLt4Nv+01YYClfijNutlrbP
-   A==;
-X-CSE-ConnectionGUID: 9hCyHYZyShCfgZmCqzBKXQ==
-X-CSE-MsgGUID: TKrTOuuVROqpY3s2Tq5Fuw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11700"; a="72327908"
-X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
-   d="scan'208";a="72327908"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2026 01:07:22 -0800
-X-CSE-ConnectionGUID: zKTh15fASly88qy+jqlM/g==
-X-CSE-MsgGUID: PxpwHxhIR46uSVnAS079FQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
-   d="scan'208";a="213240142"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 14 Feb 2026 01:07:20 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vrBcT-00000000wPc-2Hts;
-	Sat, 14 Feb 2026 09:07:17 +0000
-Date: Sat, 14 Feb 2026 17:06:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Alexander Potapenko <glider@google.com>
-Subject: [akpm-mm:mm-nonmm-unstable 30/30]
- drivers/input/misc/pf1550-onkey.c:190:25: error: use of undeclared identifier
- 'pf1550_onkey_pm_ops'; did you mean 'pf1550_onkey_probe'?
-Message-ID: <202602141722.pvRjFCqC-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=3H+vMJguixzEbi42i7jRa7Gv7SMgcR/3NbkVSc16J6h7vES6NYn6DFyQ+0c0HFZPjHVQBW
+	ENDCWnz5B4O+jbfSOQmZc75rAhScZ8bQ9+i+ihhXykEaGoLWht2zpOunjm3/iB3ul5prcx
+	XV6ctyPY0YnqN2GCwus0QajtqcSzCIE=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4fCl2s3MZYzYtb07;
+	Sat, 14 Feb 2026 18:02:45 +0800 (CST)
+Received: from a010.hihonor.com (10.68.16.52) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Sat, 14 Feb
+ 2026 18:06:04 +0800
+Received: from w002.hihonor.com (10.68.28.120) by a010.hihonor.com
+ (10.68.16.52) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Sat, 14 Feb
+ 2026 18:06:04 +0800
+Received: from w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3]) by
+ w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3%14]) with mapi id
+ 15.02.2562.027; Sat, 14 Feb 2026 18:06:04 +0800
+From: wangzicheng <wangzicheng@honor.com>
+To: "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+CC: wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>, wangtao
+	<tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>, zhouxiaolong
+	<zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>
+Subject: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and
+ Challenges
+Thread-Topic: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and
+ Challenges
+Thread-Index: AdydmBxyZyfDdnnJTJ6R043ZWmrr6Q==
+Date: Sat, 14 Feb 2026 10:06:04 +0000
+Message-ID: <cb0c0a0bfc7247cf85858eecf0db6eca@honor.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.163.18.229]
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-Rspamd-Server: rspam11
-X-Stat-Signature: mqotj7x8n517aok6zo5za6mdwxgpfuxn
+X-Stat-Signature: tcuh8jt8yyrurjiecsst387f654rhcno
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B52BF180009
-X-HE-Tag: 1771060043-667415
-X-HE-Meta: U2FsdGVkX18JCkrHisN45T7CLqD7nGHNjIzHiPmiSz5jG5xLIeQcUkkaKalALgXfalRNlQiuuc4MsauU5+/Iij8d4BMzhbpDAKGiadlX1W9r05kztTM/C4yYrqniLC9iDbMil38TeIFgT5qRhG5xwYDEEK382rPPRpI/JHUW4WRyAFv6KhpMs875qZ4+aiRHGIQiMUW6647+rSJbEoFaMCuOTQuyQDH7JwW4tUO+vHiaU8JfvzXkuKsfC7UGs/f/T0UL0LuziQ/PGNn4zC/fi6MLIJzkFohXoamVTOv05Mf1MEwwi5k8R6zMh+af6kpLzm+LtHQZvxqjC3obGi06tk23YNWehVoZBZwdfO2btjDYVjAmsEa3OsMdQlNfpJSsTRaM9KiRZcbMO0k2kBez+X5h30tAq47bIEE0lQRbwmZ95L+5ayL02qIsap6jNsV8HbG8493b1qfDyE9RuDyqjkJeg/KrDiqLpw/1qXfwN3YX5BuXlDa1XMY7dFNI3WlwPf4Wf1autY8591iPbT7KxtWbf8XPTX3tTWPbEkjQPpIj6jq1QzuDMsNimDa9k71frouhtHL1mROzPSbj/PfFGAJwcAXGN0BeNfyGRtP4q4tVXrXHwW3ZUKRtlrMXss7W5rgluxsyW1gbsLHavdgbU/rD1xREOyT27VEsvYVqwyEFLoyL/FQapgQNUz8lC7Ol2c+7cHR84As5YvTHbeIVg+B05RYDVBvtcwmBRz9ts5nOj/7+OzsjHhupRi4omVPQyacWVEDP3PA7RsviYtFWuGQwHmDyz3drXmcmcM0tDc7uILFVR3q+tpdFGfPtuk3BFMW8uyrQjU6k+TzuwGgGZo5JHgb5AlACLSBC7F1hl+gpPqpd7Eupjqkkn6KX5so8k903XvdlnJd8rMjc6HUqSSlDXb13HFQoNe155Nd7LzxD585/EhdFCJIKU8q/Fn02IpEh+qpueW+NyCISWWe
- Pg5MNemp
- 9xf65obhUHKz1ikhSFCZbzmGiY+ka6TjBjRe0Fpx+0YuX1ocoU5pNX8b10aLlwHSPX9yv62eXUzGz1OPV9VEqi8AOl4L9cRQq24JE27PHfAYVxmTv3b/pbpTC6JCGnyphHbJ9SKC+o85YcveEslD/zsL5zWRpFNkqKN2EevZlprUItfKgucQwliBirLw07jBPnQZTlkB9XlKRVotsKKCIAAoN80ugv37GC1k/D8z7nb2ljGhXzCBT5orqrExP9fHeiP0rf3hiZJXoOX1c6pIHzXiVtkdalH+KGYqO7przux/JLpkXnIafaW6cUSuEQk+OlssSMXWn9+VXTkaFOUCuDJndCOvDW9+DVKQUHwsXfh8hIh2gOUnkt3VzY2CCTvX2PGYPVF32Iesjicc=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: B4FA84000E
+X-HE-Tag: 1771063569-757310
+X-HE-Meta: U2FsdGVkX19FXyBXfZXOmUd1ADXmnN/W1hR0b/WnlWonprCHG1CkQHmVRRjRmRBTqF9Tzkv1q7FaSgJuLsOqh6+g4H+WfGKE+hIwlBmAMyDh2LN5jYCyZKeVcY9+yokIIJN3JpkML1/W+AiJPdvDjwE2dyskz5CCv97e86PbRw6rj+l+qM17KwugvYxLLiN+Ws3FrfOdOlTrDF0elXSFwai4FQzlqcuwMCsPn2aGl/BCwzK68PwaZuUp8fu/ifiTPaOQfM9u49SE8zuqhDwqgG2jrFXeYMe6pO2knaiC6mS4Liio2Ea60NGNq2UHKbxOVaYRasDubovchpR0SuxG4JOJl1x0e0gHYVj9aapJwZmLPugnKUzka8aMMall+XLK2sw+nbMQbUxQyjSL2tjlDGtDm/WUggiR2DCACzm2F1ECGWAuat8vSfauWmL3IY+X9UkX94vveA9yEmSYLRTUxgdGduHph10t62Wa3b1GDG/5GW+S1C4kz0kEGuwL1S0Zl5AXkJKl39a5TY4RVFWmdH/QmjnJiF9OVVWIYdlyCjK/Lmxh9GAGoDfzm1GiFwakPn6PVsY0flx41OBrQdFiZSFSNyu1tJ9hhd/a9gtnWPTgRMx5twn3PFIjeHlPTAE5zUVuMWpDD/Y2FytEDwKRqv2OjntWZIkpAndwcQUrrZakcpUzgZxwxb3Zfc0niUE3W9rrio78rdcOVp+dqYv2WGoAlXw7MbR1LWLkhjCz1/0zED2U32Ymv1aZQB36K581/FvYMyijlj9iFkbE97VMKIkQTWwEhX7BQ5TtrbeQpmotxc8zSc8XBVSuOu73/O1TltK23Ot68CPjgEdv7GLmMJ6TVA+6najl8GWTL+dGxs9WcYxxuRq0+5MMlAWnH30tdA7O4DCGAF346VSMvuMbaAkJ3Py7UXMEw+n2QHg0xIMMNSne89SxVqoP+4N2DBB/gcHxAZkVJZAfl1wDLfU
+ yGtMfpMH
+ WoxZekJ/siEc42QANVGrqlWMcrH7RFMl91ZVtatZoI9Y7NvXaONkYk5J1PYRJ98zQUwzRy+vAoGkGZihijvWRx62k2MgLxp4NF2tz9vGQUueivm4crLCMoEo+5GRLw58Ckp0Qt0qtZyW1J+yo/JZ2/ghqE2OmNh21XCSL/2gDgHFFZz9mA3wEfFQ4Ul5iWbno7eeXqT8aaQCt8quRNBSdJEEmydhgYgC+ShQ6SQGAOgOqzRwxBOOnZwfgZwc6G8B/OBccPfsuqvN77Ni5nJfxxgY600fpR1vRvRNLZCF9I/WyUBSag2dlNGOjz7kALkYZLjOkfmX20v89Rr0IcQnZdlYBQWoZ8bAb8BE6aIpqEVxrCbFEzLJq8hks46pq/40Zks1R07x1xedjzR/tY402o6e8P/gGzWaSAAVwQTE5ShSQg/EzZck41Lwymy6w4908ChD+TG45sJUlx1CDh1eNys6KbbpI1WS+5xNK+S8h/wIytqn3aV9mYn2OJQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.347526, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,203 +99,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-head:   f88534a6e7afcfe6ad5f93b86f6e64d5d4d23709
-commit: f88534a6e7afcfe6ad5f93b86f6e64d5d4d23709 [30/30] drivers/input/misc/pf1550-onkey.c: fix build with CONFIG_PM_SLEEP=n
-config: i386-buildonly-randconfig-002-20260214 (https://download.01.org/0day-ci/archive/20260214/202602141722.pvRjFCqC-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260214/202602141722.pvRjFCqC-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602141722.pvRjFCqC-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/input/misc/pf1550-onkey.c:179:8: warning: extra tokens at end of #endif directive [-Wextra-tokens]
-     179 | #endif CONFIG_PM_SLEEP
-         |        ^
-         |        //
->> drivers/input/misc/pf1550-onkey.c:190:25: error: use of undeclared identifier 'pf1550_onkey_pm_ops'; did you mean 'pf1550_onkey_probe'?
-     190 |                 .pm   = pm_sleep_ptr(&pf1550_onkey_pm_ops),
-         |                                       ^~~~~~~~~~~~~~~~~~~
-         |                                       pf1550_onkey_probe
-   include/linux/pm.h:474:65: note: expanded from macro 'pm_sleep_ptr'
-     474 | #define pm_sleep_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM_SLEEP), (_ptr))
-         |                                                                 ^
-   include/linux/util_macros.h:136:38: note: expanded from macro 'PTR_IF'
-     136 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
-         |                                            ^
-   drivers/input/misc/pf1550-onkey.c:60:12: note: 'pf1550_onkey_probe' declared here
-      60 | static int pf1550_onkey_probe(struct platform_device *pdev)
-         |            ^
->> drivers/input/misc/pf1550-onkey.c:190:11: error: incompatible pointer types initializing 'const struct dev_pm_ops *' with an expression of type 'int (*)(struct platform_device *)' [-Werror,-Wincompatible-pointer-types]
-     190 |                 .pm   = pm_sleep_ptr(&pf1550_onkey_pm_ops),
-         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/pm.h:474:28: note: expanded from macro 'pm_sleep_ptr'
-     474 | #define pm_sleep_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM_SLEEP), (_ptr))
-         |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/util_macros.h:136:27: note: expanded from macro 'PTR_IF'
-     136 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
-         |                                 ^~~~~~~~~~~~~~~~~~~~~~~
-   1 warning and 2 errors generated.
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for NET_SELFTESTS
-   Depends on [n]: NET [=y] && PHYLIB [=y] && INET [=n]
-   Selected by [y]:
-   - AMD_XGBE [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_AMD [=y] && (OF_ADDRESS [=y] || ACPI [=y] || PCI [=y]) && HAS_IOMEM [=y] && (X86 [=y] || ARM64 || COMPILE_TEST [=y]) && PTP_1588_CLOCK_OPTIONAL [=y]
-
-
-vim +190 drivers/input/misc/pf1550-onkey.c
-
-9acb215cbebdce7 Samuel Kayode 2025-10-01   59  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  @60  static int pf1550_onkey_probe(struct platform_device *pdev)
-9acb215cbebdce7 Samuel Kayode 2025-10-01   61  {
-9acb215cbebdce7 Samuel Kayode 2025-10-01   62  	struct onkey_drv_data *onkey;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   63  	struct input_dev *input;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   64  	bool key_power = false;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   65  	int i, irq, error;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   66  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   67  	onkey = devm_kzalloc(&pdev->dev, sizeof(*onkey), GFP_KERNEL);
-9acb215cbebdce7 Samuel Kayode 2025-10-01   68  	if (!onkey)
-9acb215cbebdce7 Samuel Kayode 2025-10-01   69  		return -ENOMEM;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   70  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   71  	onkey->dev = &pdev->dev;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   72  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   73  	onkey->pf1550 = dev_get_drvdata(pdev->dev.parent);
-9acb215cbebdce7 Samuel Kayode 2025-10-01   74  	if (!onkey->pf1550->regmap)
-9acb215cbebdce7 Samuel Kayode 2025-10-01   75  		return dev_err_probe(&pdev->dev, -ENODEV,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   76  				     "failed to get regmap\n");
-9acb215cbebdce7 Samuel Kayode 2025-10-01   77  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   78  	onkey->wakeup = device_property_read_bool(pdev->dev.parent,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   79  						  "wakeup-source");
-9acb215cbebdce7 Samuel Kayode 2025-10-01   80  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   81  	if (device_property_read_bool(pdev->dev.parent,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   82  				      "nxp,disable-key-power")) {
-9acb215cbebdce7 Samuel Kayode 2025-10-01   83  		error = regmap_clear_bits(onkey->pf1550->regmap,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   84  					  PF1550_PMIC_REG_PWRCTRL1,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   85  					  PF1550_ONKEY_RST_EN);
-9acb215cbebdce7 Samuel Kayode 2025-10-01   86  		if (error)
-9acb215cbebdce7 Samuel Kayode 2025-10-01   87  			return dev_err_probe(&pdev->dev, error,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   88  					     "failed: disable turn system off");
-9acb215cbebdce7 Samuel Kayode 2025-10-01   89  	} else {
-9acb215cbebdce7 Samuel Kayode 2025-10-01   90  		key_power = true;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   91  	}
-9acb215cbebdce7 Samuel Kayode 2025-10-01   92  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   93  	input = devm_input_allocate_device(&pdev->dev);
-9acb215cbebdce7 Samuel Kayode 2025-10-01   94  	if (!input)
-9acb215cbebdce7 Samuel Kayode 2025-10-01   95  		return dev_err_probe(&pdev->dev, -ENOMEM,
-9acb215cbebdce7 Samuel Kayode 2025-10-01   96  				     "failed to allocate the input device\n");
-9acb215cbebdce7 Samuel Kayode 2025-10-01   97  
-9acb215cbebdce7 Samuel Kayode 2025-10-01   98  	input->name = pdev->name;
-9acb215cbebdce7 Samuel Kayode 2025-10-01   99  	input->phys = "pf1550-onkey/input0";
-9acb215cbebdce7 Samuel Kayode 2025-10-01  100  	input->id.bustype = BUS_HOST;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  101  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  102  	if (key_power)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  103  		input_set_capability(input, EV_KEY, KEY_POWER);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  104  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  105  	onkey->input = input;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  106  	platform_set_drvdata(pdev, onkey);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  107  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  108  	for (i = 0; i < PF1550_ONKEY_IRQ_NR; i++) {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  109  		irq = platform_get_irq(pdev, i);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  110  		if (irq < 0)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  111  			return irq;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  112  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  113  		error = devm_request_threaded_irq(&pdev->dev, irq, NULL,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  114  						  pf1550_onkey_irq_handler,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  115  						  IRQF_NO_SUSPEND,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  116  						  "pf1550-onkey", onkey);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  117  		if (error)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  118  			return dev_err_probe(&pdev->dev, error,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  119  					     "failed: irq request (IRQ: %d)\n",
-9acb215cbebdce7 Samuel Kayode 2025-10-01  120  					     i);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  121  	}
-9acb215cbebdce7 Samuel Kayode 2025-10-01  122  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  123  	error = input_register_device(input);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  124  	if (error)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  125  		return dev_err_probe(&pdev->dev, error,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  126  				     "failed to register input device\n");
-9acb215cbebdce7 Samuel Kayode 2025-10-01  127  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  128  	device_init_wakeup(&pdev->dev, onkey->wakeup);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  129  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  130  	return 0;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  131  }
-9acb215cbebdce7 Samuel Kayode 2025-10-01  132  
-f88534a6e7afcfe Andrew Morton 2026-02-13  133  #ifdef CONFIG_PM_SLEEP
-9acb215cbebdce7 Samuel Kayode 2025-10-01  134  static int pf1550_onkey_suspend(struct device *dev)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  135  {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  136  	struct platform_device *pdev = to_platform_device(dev);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  137  	struct onkey_drv_data *onkey = platform_get_drvdata(pdev);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  138  	int i, irq;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  139  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  140  	if (!device_may_wakeup(&pdev->dev))
-9acb215cbebdce7 Samuel Kayode 2025-10-01  141  		regmap_write(onkey->pf1550->regmap,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  142  			     PF1550_PMIC_REG_ONKEY_INT_MASK0,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  143  			     ONKEY_IRQ_PUSHI | ONKEY_IRQ_1SI | ONKEY_IRQ_2SI |
-9acb215cbebdce7 Samuel Kayode 2025-10-01  144  			     ONKEY_IRQ_3SI | ONKEY_IRQ_4SI | ONKEY_IRQ_8SI);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  145  	else
-9acb215cbebdce7 Samuel Kayode 2025-10-01  146  		for (i = 0; i < PF1550_ONKEY_IRQ_NR; i++) {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  147  			irq = platform_get_irq(pdev, i);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  148  			if (irq > 0)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  149  				enable_irq_wake(irq);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  150  		}
-9acb215cbebdce7 Samuel Kayode 2025-10-01  151  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  152  	return 0;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  153  }
-9acb215cbebdce7 Samuel Kayode 2025-10-01  154  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  155  static int pf1550_onkey_resume(struct device *dev)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  156  {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  157  	struct platform_device *pdev = to_platform_device(dev);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  158  	struct onkey_drv_data *onkey = platform_get_drvdata(pdev);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  159  	int i, irq;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  160  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  161  	if (!device_may_wakeup(&pdev->dev))
-9acb215cbebdce7 Samuel Kayode 2025-10-01  162  		regmap_write(onkey->pf1550->regmap,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  163  			     PF1550_PMIC_REG_ONKEY_INT_MASK0,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  164  			     ~((u8)(ONKEY_IRQ_PUSHI | ONKEY_IRQ_1SI |
-9acb215cbebdce7 Samuel Kayode 2025-10-01  165  			     ONKEY_IRQ_2SI | ONKEY_IRQ_3SI | ONKEY_IRQ_4SI |
-9acb215cbebdce7 Samuel Kayode 2025-10-01  166  			     ONKEY_IRQ_8SI)));
-9acb215cbebdce7 Samuel Kayode 2025-10-01  167  	else
-9acb215cbebdce7 Samuel Kayode 2025-10-01  168  		for (i = 0; i < PF1550_ONKEY_IRQ_NR; i++) {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  169  			irq = platform_get_irq(pdev, i);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  170  			if (irq > 0)
-9acb215cbebdce7 Samuel Kayode 2025-10-01  171  				disable_irq_wake(irq);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  172  		}
-9acb215cbebdce7 Samuel Kayode 2025-10-01  173  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  174  	return 0;
-9acb215cbebdce7 Samuel Kayode 2025-10-01  175  }
-9acb215cbebdce7 Samuel Kayode 2025-10-01  176  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  177  static SIMPLE_DEV_PM_OPS(pf1550_onkey_pm_ops, pf1550_onkey_suspend,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  178  			 pf1550_onkey_resume);
-f88534a6e7afcfe Andrew Morton 2026-02-13 @179  #endif CONFIG_PM_SLEEP
-9acb215cbebdce7 Samuel Kayode 2025-10-01  180  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  181  static const struct platform_device_id pf1550_onkey_id[] = {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  182  	{ "pf1550-onkey", },
-9acb215cbebdce7 Samuel Kayode 2025-10-01  183  	{ /* sentinel */ }
-9acb215cbebdce7 Samuel Kayode 2025-10-01  184  };
-9acb215cbebdce7 Samuel Kayode 2025-10-01  185  MODULE_DEVICE_TABLE(platform, pf1550_onkey_id);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  186  
-9acb215cbebdce7 Samuel Kayode 2025-10-01  187  static struct platform_driver pf1550_onkey_driver = {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  188  	.driver = {
-9acb215cbebdce7 Samuel Kayode 2025-10-01  189  		.name = "pf1550-onkey",
-9acb215cbebdce7 Samuel Kayode 2025-10-01 @190  		.pm   = pm_sleep_ptr(&pf1550_onkey_pm_ops),
-9acb215cbebdce7 Samuel Kayode 2025-10-01  191  	},
-9acb215cbebdce7 Samuel Kayode 2025-10-01  192  	.probe = pf1550_onkey_probe,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  193  	.id_table = pf1550_onkey_id,
-9acb215cbebdce7 Samuel Kayode 2025-10-01  194  };
-9acb215cbebdce7 Samuel Kayode 2025-10-01  195  module_platform_driver(pf1550_onkey_driver);
-9acb215cbebdce7 Samuel Kayode 2025-10-01  196  
-
-:::::: The code at line 190 was first introduced by commit
-:::::: 9acb215cbebdce721af2219e2859ad17342c9084 Input: pf1550 - add onkey support
-
-:::::: TO: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-:::::: CC: Lee Jones <lee@kernel.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+SGksDQoNCk1HTFJVIGhhcyBiZWVuIGF2YWlsYWJsZSBvbiBBbmRyb2lkIGZvciBhYm91dCBmb3Vy
+IHllYXJzLCBidXQgbWFueQ0KT0VNIHZlbmRvcnMgc3RpbGwgY2hvb3NlIG5vdCB0byBlbmFibGUg
+aXQgaW4gcHJvZHVjdGlvbi4NCkhPTk9SIGlzIGEgbWFqb3IgQW5kcm9pZCBPRU0gc2hpcHBpbmcg
+dGVucyBvZiBtaWxsaW9ucyBvZiBkZXZpY2VzDQpwZXIgeWVhciwgYW5kIHdlIHJ1biBNR0xSVSBv
+biBhbGwgb3VyIGRldmljZXMgYWNyb3NzIG11bHRpcGxlIGtlcm5lbA0KdmVyc2lvbnMgKDUuMTV+
+Ni4xMikgYW5kIFJBTSBjb25maWd1cmF0aW9ucyg0R34yNEcpLCBiYWNrZWQgYnkNCmxhcmdlLXNj
+YWxlIGJldGEgYW5kIGZpZWxkIGRhdGEuIEZyb20gdGhpcyBkZXBsb3ltZW50LCB3ZSBoYXZlIGlk
+ZW50aWZpZWQNCmZvdXIgY29uY3JldGUgaXNzdWVzIChRMahDUTQpIGFuZCBjdXJyZW50IHdvcmth
+cm91bmRzLCBhbmQgd291bGQgbGlrZSB0bw0Kd29yayB3aXRoIHRoZSBjb21tdW5pdHkgdG8gZGVz
+aWduIHVwc3RyZWFtIHNvbHV0aW9ucy4gDQpBbHNvIHdlIHdvdWxkIGxpa2UgdG8gZGlzY3VzcyBN
+R0xSVaGvcyBmdXR1cmUgZGlyZWN0aW9uIG9uIEFuZHJvaWQuDQoNCkJlbG93IGlzIGEgc2hvcnQg
+c3VtbWFyeSBvZiB3aGF0IHdlIHNlZS4NCg0KUTE6IGFub24vZmlsZSBpbWJhbGFuY2UgYW5kIGRy
+b3AgaW4gYXZhaWxhYmxlIG1lbW9yeQ0KQW5kcm9pZCBhcHBzIHdvcmtsb2FkIHNob3cgYSBwZXJz
+aXN0ZW50IGFub24vZmlsZSBnZW5lcmF0aW9uYWwNCmltYmFsYW5jZSB1bmRlciBNR0xSVToNCmFu
+b24gcGFnZXMgdGVuZCB0byBzdGF5IGluIHRoZSB5b3VuZ2VzdCAyIGdlbmVyYXRpb25zOw0KZmls
+ZSBwYWdlcyBhcmUgc3ByZWFkIGFjcm9zcyBtdWx0aXBsZSBnZW5lcmF0aW9ucyBhbmQgb3Zlci1y
+ZWNsYWltZWQuDQpUdW5pbmcgc3dhcHBpbmVzcyB0byAyMDAgYW5kIEFOT05fT05MWSBkb2VzIG5v
+dCBmdWxseSBmaXggdGhpcy4NCk9uIGEgMTZHIG1lZGlhIHdvcmtsb2FkIHdlIHNlZToNCk1HTFJV
+OiBNZW1BdmFpbGFibGUgodYgNjA2MCBNQg0KbGVnYWN5OiBNZW1BdmFpbGFibGUgodYgNjk4MiBN
+QiAoZGlmZmVycyBieSB+MUcpDQpUb2RheSB3ZSBtaXRpZ2F0ZSB0aGlzIHZpYSBleHBsaWNpdCBt
+ZW1jZyBhZ2luZyBpbiBBbmRyb2lkDQp1c2Vyc3BhY2UgWzFdLCB3aGljaCBpcyBhIHZlbmRvci1v
+bmx5IHdvcmthcm91bmQuDQoNClEyOiBIYXJkIHRvIGNvbnRyb2wgcmVjbGFpbSBhbW91bnQgYW5k
+IHN0b3BwaW5nIGNvbmRpdGlvbnMgKG1lbWNnKQ0KRm9yIG1lbWNnIHJlY2xhaW0gaXQgaXMgaGFy
+ZCB0byBzdG9wIG5lYXIgYSB0YXJnZXQgcmVjbGFpbSBhbW91bnQ6DQprc3dhcGQgY2FuIGNvbnRp
+bnVlIHJlY2xhaW1pbmcgZXZlbiBhZnRlciB3YXRlcm1hcmtzIGFyZSBtZXQNCihlLmcuIHRvIHNh
+dGlzZnkgaGlnaGVyLW9yZGVyIG9yIG1lbWNnIGFsbG9jYXRpb25zKTsNCnJlY2xhaW0gdmlhIHRy
+eV90b19mcmVlX21lbV9jZ3JvdXBfcGFnZXMoKSBsYWNrcyBjbGVhciBhYm9ydA0Kc2VtYW50aWNz
+IGFuZCBjYW4gb3ZlcnNob290IHRoZSBpbnRlbmRlZCByZWNsYWltIGFtb3VudC4NCldlIGN1cnJl
+bnRseSB1c2UgT0VNIGhvb2tzIFsyXSB0byBlYXJseS1leGl0IG9yIGJ5cGFzcyByZWNsYWltIHVu
+ZGVyDQpzb21lIGNvbmRpdGlvbnMNCg0KUTM6IEhpZ2ggcmVjbGFpbSBjb3N0IGFuZCBsb25nIHVu
+aW50ZXJydXB0aWJsZSBzbGVlcCBvbiBsb3dlci1lbmQNCmRldmljZXMNCk9uIGxvd2VyLWVuZCBk
+ZXZpY2VzLCByZWNsYWltIGNvc3QgYW5kIGxhdGVuY3kgYXJlIGhhcmRlciB0byBjb250cm9sOg0K
+dGhyb3R0bGVfZGlyZWN0X3JlY2xhaW0gY2FuIG1ha2UgdGFza3Mgd2FpdCBmb3Iga3N3YXBkIGlu
+c3RlYWQgb2YNCmRvaW5nIGRpcmVjdCByZWNsYWltOw0Kc29tZXRpbWVzIHRoZSB0YXJnZXQgZ2Vu
+ZXJhdGlvbnMgaW4gbWFueSBtZW1jZ3MgaGF2ZSB2ZXJ5IGZldyByZWNsYWltYWJsZQ0KcGFnZXMs
+IHNvIHRoZSBDUFUgc3BlbmRzIHRpbWUgc2Nhbm5pbmcgd2l0aCBsaXR0bGUgcHJvZ3Jlc3MuDQpX
+ZSBvYnNlcnZlIHRhc2tzIHN0YXlpbmcgaW4gdW5pbnRlcnJ1cHRpYmxlIHNsZWVwIGluIHRyeV90
+b19mcmVlX3BhZ2VzKCkNCldlIGhhdmVuJ3QgZmluZCBhbnkgcHJvcGVyIHdheXMgdG8gZml4IGl0
+Lg0KDQpRNDogTGFjayBvZiBnbG9iYWwgaG90L2NvbGQgKyBwcmlvcml0eSB2aWV3IHdpdGggcGVy
+LWFwcCBtZW1jZw0KQW5kcm9pZCB1c2VzIGEgcGVyLWFwcCBtZW1jZyBtb2RlbCBhbmQgZm9yZWdy
+b3VuZC9iYWNrZ3JvdW5kIGxldmVscw0KZm9yIHJlc291cmNlIGNvbnRyb2wuIHJvb3QgcmVjbGFp
+bSBsYWNrcyBhIGNyb3NzLW1lbWNnIGhvdC9jb2xkIGFuZA0KcHJpb3JpdHkgdmlldzsNCmZvcmVn
+cm91bmQgYXBwIGZpbGUgcGFnZXMgbWF5IGJlIHJlY2xhaW1lZCBhbmQgcmVsb2FkZWQgZnJlcXVl
+bnRseSwNCmNhdXNpbmcgdmlzaWJsZSBzdGFsbHM7DQpXZSBjdXJyZW50bHkgdXNlIGEgaG9vayBb
+M10gdG8gc2tpcCByZWNsYWltIGZvciBmb3JlZ3JvdW5kIGFwcHMuDQoNCkRpc2N1c3Npb24NCg0K
+LSBWZW5kb3Itb25seSB3b3JrYXJvdW5kcyCh+iBnZW5lcmljIG1lY2hhbmlzbXMgKFExqENRNCkN
+Ck91ciBjdXJyZW50IGZpeGVzICh1c2Vyc3BhY2UgbWVtY2cgYWdpbmcgWzFdLCBPRU0gcmVjbGFp
+bSBob29rcw0KWzIsM10pIGFyZSBBbmRyb2lkL3ZlbmRvci1vbmx5oap3aGF0IHBhcnRzIHNob3Vs
+ZCBiZSB0dXJuZWQgaW50bw0KZ2VuZXJpYyBNR0xSVS9rZXJuZWwgbWVjaGFuaXNtcyB2cy4ga2Vw
+dCBhcyBBbmRyb2lkIHBvbGljeT8NCldlIG5lZWQgZ3VpZGFuY2UgZnJvbSBjb21tdW5pdHkuDQoN
+Ci0gSG93IG11Y2ggY29udHJvbCBzaG91bGQgTUdMUlUgZXhwb3NlIHRvIEFuZHJvaWQ/IChRMahD
+UTMpDQpGb3IgUTEvUTIsIEFuZHJvaWQgaGFzIHN0cm9uZyBmZy9iZyBhbmQgcHJpb3JpdHkgc2Vt
+YW50aWNzIHRoYXQNCnRoZSBrZXJuZWwgZG9lcyBub3Qgc2VlLiBTaG91bGQgTUdMUlUgcHJvdmlk
+ZSBtb3JlIGV4cGxpY2l0IGNvbnRyb2wNCnBvaW50cyAoZS5nLiBhbm9uLXZzLWZpbGUgLyBnZW5l
+cmF0aW9uIHN0ZWVyaW5nLCANCiJ0YXJnZXQgYW1vdW50ICsgYWJvcnQgY29uZGl0aW9uIiBtZW1j
+ZyByZWNsYWltKSBzbyBBbmRyb2lkIGNhbg0Kc2FmZWx5IHRyYWRlIGNvbXBsZXhpdHkgYW5kIHJp
+c2sgZm9yIGJldHRlciBwZXJmb3JtYW5jZSBhbmQgYm91bmRlZA0KcmVjbGFpbSBsYXRlbmN5IChR
+Myk/DQoNCi0gTUdMUlUgZXZvbHV0aW9uIHdpdGhvdXQgbWVtY2cgTFJVOiBnbG9iYWwgaG90L2Nv
+bGQgJiBzY2FubmluZyAoUTQpDQpJZiBtZW1jZyBMUlUgd2lsbCBiZSByZW1vdmVkIFs0XSwgaG93
+IHNob3VsZCB3ZSBtYWludGFpbiBhIGNyb3NzLW1lbWNnDQpnbG9iYWwgaG90L2NvbGQgdmlldyBh
+bmQgcGVyLWFwcCBwcmlvcml0eSBvbiBBbmRyb2lkPw0KR2l2ZW4gdGhhdCBtdWNoIG9mIHRoZSBw
+b3dlciBiZW5lZml0IHNlZW1zIHRvIGNvbWUgZnJvbSBwYWdlLXRhYmxlDQpzY2FubmluZyB3aGls
+ZSBnZW5lcmF0aW9ucyBhcmUgY29tcGxleCwgaXMgaXQgcmVhc29uYWJsZSB0byBkZWNvdXBsZQ0K
+cGFnZS1zY2FubmluZyBmdW5jdGlvbmFsaXR5IGZyb20gTUdMUlUgYW5kIG1ha2UgaXQgYSBzZXBl
+cmF0ZSBrZXJuZWwNCmNvbmZpZ3VyYXRpb24uDQoNCldlIGFyZSBoYXBweSB0byBzaGFyZSBtb3Jl
+IGRldGFpbGVkIGRhdGEgYW5kIGV4cGVyaW1lbnRzIGFuZCB0byBoZWxwDQp3aXRoIFBvQ3MgYW5k
+IGxhcmdlLXNjYWxlIHZhbGlkYXRpb24gaWYgdGhlcmUgaXMgaW50ZXJlc3QgaW4NCnB1cnN1aW5n
+IHRoZXNlIGRpcmVjdGlvbnMuDQoNClJlZmVyZW5jZQ0KWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwu
+b3JnL2xpbnV4LW1tLzIwMjUxMTI4MDI1MzE1LjM1MjA2ODktMS13YW5nemljaGVuZ0Bob25vci5j
+b20vDQpbMl0gaHR0cHM6Ly9hbmRyb2lkLXJldmlldy5nb29nbGVzb3VyY2UuY29tL2Mva2VybmVs
+L2NvbW1vbi8rLzM4NjY1NTQNClszXSBodHRwczovL2FuZHJvaWQtcmV2aWV3Lmdvb2dsZXNvdXJj
+ZS5jb20vYy9rZXJuZWwvY29tbW9uLysvMzg3MDkyMA0KWzRdIGh0dHBzOi8vbHduLm5ldC9BcnRp
+Y2xlcy8xMDUxODgyLw0KDQotLQ0KQmVzdCwNClppY2hlbmcgV2FuZw0K
 
