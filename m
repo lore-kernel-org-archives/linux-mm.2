@@ -4,117 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5521BEF99E1
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 08:45:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B969EDF17F
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 08:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F89F6B0005; Sat, 14 Feb 2026 03:45:22 -0500 (EST)
+	id 79C5A6B0005; Sat, 14 Feb 2026 03:56:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A5DD6B0088; Sat, 14 Feb 2026 03:45:22 -0500 (EST)
+	id 74A206B0088; Sat, 14 Feb 2026 03:56:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87AE86B008A; Sat, 14 Feb 2026 03:45:22 -0500 (EST)
+	id 61ED66B008A; Sat, 14 Feb 2026 03:56:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B356B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 03:45:22 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE1C7BB2F9
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 08:45:21 +0000 (UTC)
-X-FDA: 84442428042.19.8388E48
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1CAE2C000D
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 08:45:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T5PTz797;
-	spf=pass (imf22.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AEE26B0005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 03:56:31 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C343E1A02A6
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 08:56:30 +0000 (UTC)
+X-FDA: 84442456140.17.E39176A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0CD99180006
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 08:56:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=L8cQ8Ft6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771059388; a=rsa-sha256;
+	cv=none;
+	b=N9uDrIlAuR1vpVA1BDQ5s/OhQGq47gOS81GdWh7OnfG8oc5vJNZSXMNbCNhFJm7mwmwa1m
+	yLGPQNOt0V6Az+SjU+Lq3Ra8+EqH9eQNCIZ3liZRqBe8Jj241YXCOfnf7DfHvSN8aCW0tz
+	Zh/FvHqCiPEToHhns8Ubi5dUk4L//mQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=L8cQ8Ft6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771058720;
+	s=arc-20220608; t=1771059388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xpX6w+exmbmzYP80YKKFeZCWbquQTKNkSqVY1a6AgyE=;
-	b=quiDgos/piblIP/UPQfzuBy/RFQLCsYxSDhpUEEr5BG4FAuY3f0gA5mMksNQ4ci8An5LT/
-	cnNEJZW3L5S0wUaZ04WuTnmpiVpbN84jQOhV2XDsQ4KTWWruc4nGynNYilhgVDErAhbWJY
-	SPz9m2vBDWghfanxotOCefZyVxWhaAg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T5PTz797;
-	spf=pass (imf22.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771058720; a=rsa-sha256;
-	cv=none;
-	b=6onO3hTN1HWqVn6F88jCx84IgOHZQ3kto7J9FEqgogleK4CEiH5zfVRxG0IwOJvFM/YQip
-	BDZRhZ2hOJm7yFAc/pY/gFQZ+MeD86PTX68v77hK4JMYUtljzttN6xVJuZg9P9xqmAYpAa
-	19rQE09iRNhkk9LEVdQBkymHYAf4nYE=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c61342a69b9so674079a12.0
-        for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771058719; x=1771663519; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xpX6w+exmbmzYP80YKKFeZCWbquQTKNkSqVY1a6AgyE=;
-        b=T5PTz797Ff23bPvJD+JS4OIe1HXKtywqpRonTc1eXJdr7Y6pfm3HQkRE5JjJCE0Q/x
-         o2um1E6glxf2+0udKEZ9jPNL71Xtndy/8yvuHophnerveN42Em5ZsBwOCIrB9sfCg/jN
-         WM14JfizahjqmFPuOO6Cu3JqPD6t7TCsM8GnJPQzQ4QlMP+0D38WLRZ5y1k5/hCBTM93
-         8VUx491xVRCS+wpSGva9M1cmNMTBUNKvCBWVJQmIQ6Mf5d35UL9t/X9uxx3MZ9m27om9
-         CqnutxSvjzq78+nX1wfDlqIICQ/j9EHtUsGgdaSWXfbfJL4egqiukGWYOLOxs/vT7hcg
-         h4xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771058719; x=1771663519;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xpX6w+exmbmzYP80YKKFeZCWbquQTKNkSqVY1a6AgyE=;
-        b=nLgID7z+XV6chfeh9wMUoQT0jzWrdRjNtCM20W5EK3qls7fGSakue3YqGCJFTmdooF
-         aZu2aX8nAx+YWVuGtEp87H8mznfkl9jVQaqgRK0wFryd61z/Hjl7b/jf6iWONI8MV0B1
-         4t31KoaVb3ly/YCE9BHNBw7Hn5ZjAXF38ZPEWACU+luhDOvcy3xOdRpXOre4Q0P4CjTc
-         4gwDWR4bKdgo2o2N+THElFpoIj9jZuvUXtNrm/oeeysxiObOeLqNmxot/rYCwiID2DUQ
-         VDXgcXuD9yak8nSH/gcY2YXX/ylBAZ5LT7zwKiaderJOmjjeUA7QNSFQTuX+4YZUy53O
-         dMlw==
-X-Forwarded-Encrypted: i=1; AJvYcCWm8zhDITnfDGPmRxJnBqNNI0ij6hmOCFdO7K2sbiulxMoBmVdLLHSeQGs3bo4NCTqz8jf99IFFQQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxvc2J2hEru76rW+5rHHB50O8ou3aX2msNB2A25FA1IUGsAAbeZ
-	0q6yFW0MtejJ9VPUE0FUN+clnvX2o5jkYDsbC0r+NqQZZVc9pGZ1f+Yx
-X-Gm-Gg: AZuq6aJ7wUNFnBUkIyp6chzzP4AotUi5rVcA/0I96Dl9INrI8IzZRgeP0LMQ+uX86E2
-	7iBaEHbTZB1sgrWMzDU4Wnxv2/UwOqe+QfM5d3R0Xgj58L6bjFNYW2vR38IqVzWk1CwLMNRfJ8u
-	mmwwGK5j2XotWFk0kfuOfNfej1JQ0ZVeGzIKGCgC0bbKGKEfOXzJ/A0rD7rwj6TO0AksgTc6CFU
-	Sin8pzMT48Czc0xK6NllFZzEGnmXajULU9In1Lf5mM2cCE4IvUDL4kpnfNtIv2QLJeomM1se33v
-	3eTMOWNFt6CdHaFheQnKKLsoiUyy64rIzkPIERTvUWAUMzZHIh+etxjtlXvPta4KsTbn1r5oXEu
-	IQ6uetrvFYP6Gd2aVn/AWIFpUwR2g3tyqIrlEjWkZNE4oVsXXz6yl4ey+Qr+xnk75FX7B1RIs3k
-	JEIPy3LpuAQmGMz/yWNIdx
-X-Received: by 2002:a17:90b:57ce:b0:356:22b5:704f with SMTP id 98e67ed59e1d1-35844a4f70emr2165244a91.15.1771058718880;
-        Sat, 14 Feb 2026 00:45:18 -0800 (PST)
-Received: from localhost ([240e:3a5:3184:2a50:fc86:2a4b:6ee6:4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-356a6a23e55sm3152463a91.0.2026.02.14.00.45.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Feb 2026 00:45:18 -0800 (PST)
-From: Wenchao Hao <haowenchao22@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Wenchao Hao <haowenchao22@gmail.com>
-Subject: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous pages
-Date: Sat, 14 Feb 2026 16:45:14 +0800
-Message-ID: <20260214084514.2842745-1-haowenchao22@gmail.com>
-X-Mailer: git-send-email 2.45.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kMICv4TW/Vn0XmVwnlVyL+Leis56gTmqBtftHS2J++o=;
+	b=4c90Bl1+ebMGvD6Vnc0E7n0XzttK3QeOcnwuplt3fKxIXIPJDyF7UyPh7YdFPygfjVxTfa
+	GN02lKeMeDSUs49AMf7oksiRA2+qRTEafs9ew36h9WSaJNbEL2TlHmL1FQ0lOfdJ4f1ny1
+	0FqHckBnosD+B/mhIzQdUj5XsyeypmI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771059388; x=1802595388;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FmU6sN6VTvK2lk9nkffJpXX9j+KGsN9TIxoBy1pLkF0=;
+  b=L8cQ8Ft6K+y7qFBR12j9KdwjXkhWq2erdfi5swSGA3HVUNJFbJywPH01
+   0qTvRRCodjNEgHHS1uM0D+Sw7YwlNrW/WIts80sLOTSTqYVGqdUDgHm+X
+   Aa7522T3t3nAZZhu8NTa+owBtT0W8r2d9J14jiRJDzvqO61EBX5WOTBGx
+   u+0RU+wxQQxpsyApVYOqocJYz0pSAchVul1SYC50Ln0kGz5X/k4RQcc3H
+   NFrJGT4qmM4lKL6Stb6xGUVmPPzEQ3C54WiKv1bsVwFBjEPk+HeJ7VaI4
+   LDtLgToHSvn3e//R/ddpC3Bh/cE4mlCmo1bphj7+PNW4XGN8u160BJfkZ
+   w==;
+X-CSE-ConnectionGUID: umLW3MvUSLmaDvQnurVNBg==
+X-CSE-MsgGUID: 3T0wzcSnT8GOFLVKZO4yzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11700"; a="71428990"
+X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
+   d="scan'208";a="71428990"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2026 00:56:26 -0800
+X-CSE-ConnectionGUID: N824LeOqToGHpVGW64sH6Q==
+X-CSE-MsgGUID: Qhwja1+kR8SCKwHr/L7Utg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,290,1763452800"; 
+   d="scan'208";a="218110063"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 14 Feb 2026 00:56:20 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vrBRp-00000000wPI-1UDK;
+	Sat, 14 Feb 2026 08:56:17 +0000
+Date: Sat, 14 Feb 2026 16:56:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Amit Sunil Dhamne via B4 Relay <devnull+amitsd.google.com@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	RD Babiera <rdbabiera@google.com>, Kyle Tso <kyletso@google.com>,
+	Amit Sunil Dhamne <amitsd@google.com>
+Subject: Re: [PATCH v6 5/6] power: supply: max77759: add charger driver
+Message-ID: <202602141606.igFDFWAJ-lkp@intel.com>
+References: <20260214-max77759-charger-v6-5-28c09bda74b4@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8pnz81d5ze335sy1pmww8nia4rbh49jw
-X-Rspamd-Queue-Id: 1CAE2C000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260214-max77759-charger-v6-5-28c09bda74b4@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771058719-706361
-X-HE-Meta: U2FsdGVkX1+3NTmb3gHP/FjnoLaKA6K7brUdy8Tm8HLGl6v3OS7hpYZlVz2Ov+uf/7DHQVPR9NcTQc+yNrgJ97x6HIpW9jsgmEOea8v0TkkY2u/mPy3qUZBZACdTC1w3oomTHKWSl//3xvrBMPmGYSuBjvKOdEJXiNDJEn4zg9CPpPmkHeN7qCvDtPGZ+PxgHYLsFNfN9XZVMrnzQr3uyivHa+3P8iAtR4+Rmq6zJgvBPCeIrNLjY6Umx5fozkpaQUjJrpncanQyyymOEPKzHQbcZwlACgOFQWkLgMFnYTohAE7cxbzfEB8r7863pFB4w3LHwnaDl5CJgkKbvtqXPlUdWCVdclCbl2MyRv51MynT/BEUUmeMxkEgqwrJab9axhnoTgCWpUofK/ZMkemG+hdGcpMxipJ+ukx2I0EEEnP3a35aBqjdFD+apy4h1Dh9o6xL5YqyJ8+qXgfhfWJPbtWcsDbN771fbNrPurQ9cBoVwCdHOHRMHRX7XA0T1+98TIZSaMjg0xYjHDvV4TlC4oBuAbUOkvi7LG8IMTa7w6uKcTxnkEE93swtqjxWaqxbon8ktu1K8d1hxq2Q7XOJ7jV/n4cLFUQ8jaMdF4W/W8bO1YZimNEDcXHqA/+73g42rlwwmPGfOHffZqxZHKXXEp9JKuGNbrJvoIsNHJnRMerIlw7MEYe3w9xXYNhXneSdpgh/NFXxeqJN3f+9m2BCPknoF2p2iHfJo54dKZmTmqCpiVXGt16wAHnu/5gmKcPeu/JUt3QdCLXuRQoGW3+GxSaYhDRomycd0pk7PW1PyRDCQWEPgpqIproHphRb7T2QdJ2uQqduo9MDmC5x8tcYm3kV9HVsvtpGWkuCqXMp4pyryVpJA9IMqubRhvg2BNwMIUNkgRd5P1cQk+ptaXufgnsXx6bjwWFxSZ3nzDn1Gdl+XcDXa9EWIbD19oltWj8Iy7umdmWg2RY94cPKBHh
- YssX7PJA
- TxlZqogCEL5dFCV1qAFaX/KCu/1PGrWERGAreRDkkPeLG82zIOo0VlwAL406+1v5FukFJnff9gqHCggnfkegFpqdi1rOscMdw6VeBRvh9iWku5DmxI2XBkWs1RdtUzCoP8/CBXVxC1N/RfyX0zLgmQYhZgWMj3NyYFMlELe2q8V+JvcZ8SgccLleFJ49JuMEyO+L2f2ir+DgN4QukMK6L4404Nj42+WgN8aBtO/RgB9Q61tVJmp2EIOHh7CCQqdebkVKEG0Ncq6D0/cDfoOnyVPyO+XimpDs6W+Kem8+Jvw5aJLBqegyeMcSBQJyLt9evT5mWoYwHZw7CKgXiTbl4GLBS7hpfJRxx0ctq5SRnfVO4kFzg/DdOjbgWATYirq/RF8kBpkug9hby9KXOoKpxX3KfTHh4PqCTtGP4XVr/+yTJcRBDuBxnklPcBKhTWMVpaJTleXI6pFmNEesSSkSKLeZPf18xFpQfgI9l+HC4oAb0eKU=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0CD99180006
+X-Stat-Signature: ux5btedidhzifia5rkoqr6mt49xawytx
+X-HE-Tag: 1771059387-14573
+X-HE-Meta: U2FsdGVkX1+aFrXU1LS1OCr+idWoz29VajKE18nSMzv+7nrqtGrr3Dr+BsL+VE/9go4K3ZLvKGq2E/6nWlbc7so3vpCO2TCbBQQdOLnf0lGoEayMwrdGswyL3edjaoXg/xw35rkfARknyy/OJqQbcHfZKbw496zy6VbBigJkDcLRSV/ASjdh/vAJ26MFIiJ4836D5B+oQFqQMwjHH4wBDgY3l5LlKpFKZnBTztsJe6wq3OefFRA0CSOTp4iIT9+sTO/3RsGqLNw6NghHAhYgo3lhnqKKS9DfsAF/0t00S9neyAootlj2s8JI6hp1w3fojz1ZozHbTyOSYfGuK5XVbafO3NU5legF6dJGdTWJy0GnD/sLWGlLkeHLDthZDJZJYt5Oao9cYwyVcbOycGKVWZPL19Hixa5Xu9Dlgsan0qwx9s6tNzl9OA9rmSB5jMYOg2MuUHjrjhTdZg8Abpu6AvnWJyxQNXpMhd5Ohe+BfAP1KcgUlR9SZdFjWtmtKIGtlIzkvatMwvtqEO5pSQ4HR0K9BCoXh0DMkHgHIrVNT1MGsVJEVIz/V/KKIQWoH5tLH91F92H+7Pw7ZH1cPx/lNPShIivLHNxomdlULuJP8eFHFLcEadMfnlFHC5sa5JY0384Ep5rXPjznTj6/5jWQS2cmxyzhtz7Q5O329mni2N6Waxt8d4RAyvEtXtQRlpnG2BHo5gvkTrp0vMc7MagtZqkmvMBDRZRB1mS2cXLW8lOBdIrgDVZ85peYpyq7IudZvxMU1eNs8o0fik3xZLe2HFk+qmSR53wwipmB7J+SXyzNgQw+m0rN22HP8gFciQE6RV4PGt4Tv2993fnSjOkNMG3ohL8vQ75ENwdPGv31MO5owUHs0d4PF8eix5xzh1N+w4C+00uKYfNvz7YRUpsdd0UaoMWAi0ZCcI8Glvv32VSQqrlA989KRTLamBGfcQ7c1s9U1L6F4vcDSbv852O
+ 5CBQB8nn
+ kZgDEyJ2VOOJsEiQaPikb7FO5ObZiRKXmQrInRK0Jcy3NRagksKwobHRf6W+HNfeNhUPai37n9xvjfhXdqIBATxUcVEm8OX8johngKQzlCcc+Jnvll36LRNPg/DN7xcg6Cb+h/Md3DNUTxFTD1PPfMetvuyHdlUvTajKJp7PzMMuAtQk3SOD2vLufrV0WvfQHKVIJ+TNmNczN2dZPMYKz31uj75t8EbfbZEKBzJHBu8/yUgPzVVx8abw551u9fBU3OyHYGXtPzVdPEwB8HWIL0pd2H0PVyn0QSBVEqAupjbjwDxIWNGdLDjs/JnzzoDQ/R5nhmUIRV28P0R4KNxRivJVOFATvfnGbwF2hoa5C4mIXrPSuyFB/RFES8B5oYrGxHzjZS/h0nUWBN8ybPV2Xr+HW4CVnUYz+R8dS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,81 +128,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add kernel command line option "count_zero_page" to track anonymous pages
-have been allocated and mapped to userspace but zero-filled.
+Hi Amit,
 
-This feature is mainly used to debug large folio mechanism, which
-pre-allocates and map more pages than actually needed, leading to memory
-waste from unaccessed pages.
+kernel test robot noticed the following build errors:
 
-Export the result in /proc/pid/smaps as "AnonZero" field.
+[auto build test ERROR on 8dfce8991b95d8625d0a1d2896e42f93b9d7f68d]
 
-Link: https://lore.kernel.org/linux-mm/20260210043456.2137482-1-haowenchao22@gmail.com/
-Signed-off-by: Wenchao Hao <haowenchao22@gmail.com>
----
- Documentation/filesystems/proc.rst |  5 +++++
- fs/proc/task_mmu.c                 | 10 ++++++++++
- 2 files changed, 15 insertions(+)
+url:    https://github.com/intel-lab-lkp/linux/commits/Amit-Sunil-Dhamne-via-B4-Relay/dt-bindings-mfd-maxim-max77759-reference-power-supply-schema-and-add-regulator-property/20260214-111637
+base:   8dfce8991b95d8625d0a1d2896e42f93b9d7f68d
+patch link:    https://lore.kernel.org/r/20260214-max77759-charger-v6-5-28c09bda74b4%40google.com
+patch subject: [PATCH v6 5/6] power: supply: max77759: add charger driver
+config: powerpc64-randconfig-001-20260214 (https://download.01.org/0day-ci/archive/20260214/202602141606.igFDFWAJ-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260214/202602141606.igFDFWAJ-lkp@intel.com/reproduce)
 
-diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-index b0c0d1b45b99..573c8b015e39 100644
---- a/Documentation/filesystems/proc.rst
-+++ b/Documentation/filesystems/proc.rst
-@@ -545,6 +545,11 @@ replaced by copy-on-write) part of the underlying shmem object out on swap.
- does not take into account swapped out page of underlying shmem objects.
- "Locked" indicates whether the mapping is locked in memory or not.
- 
-+"AnonZero" shows the size of anonymous pages that have never been accessed
-+after mapping, and it can reflect the memory waste caused by huge pages.
-+Implemented by scanning the size of zero-filled pages of the VMA. It
-+is default disabled, and enabled via cmdline param "count_zero_page=true".
-+
- "THPeligible" indicates whether the mapping is eligible for allocating
- naturally aligned THP pages of any currently enabled size. 1 if true, 0
- otherwise.
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index dd3b5cf9f0b7..c39ebd015724 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -880,6 +880,7 @@ struct mem_size_stats {
- 	u64 pss_dirty;
- 	u64 pss_locked;
- 	u64 swap_pss;
-+	u64 anon_zero;
- };
- 
- static void smaps_page_accumulate(struct mem_size_stats *mss,
-@@ -912,6 +913,10 @@ static void smaps_page_accumulate(struct mem_size_stats *mss,
- 	}
- }
- 
-+/* If scan and count zero-filled pages */
-+static bool count_zero_page;
-+core_param(count_zero_page, count_zero_page, bool, 0644);
-+
- static void smaps_account(struct mem_size_stats *mss, struct page *page,
- 		bool compound, bool young, bool dirty, bool locked,
- 		bool present)
-@@ -931,6 +936,9 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
- 		if (!folio_test_swapbacked(folio) && !dirty &&
- 		    !folio_test_dirty(folio))
- 			mss->lazyfree += size;
-+
-+		if (count_zero_page && pages_identical(page, ZERO_PAGE(0)))
-+			mss->anon_zero += PAGE_SIZE;
- 	}
- 
- 	if (folio_test_ksm(folio))
-@@ -1363,6 +1371,8 @@ static void __show_smap(struct seq_file *m, const struct mem_size_stats *mss,
- 					mss->swap_pss >> PSS_SHIFT);
- 	SEQ_PUT_DEC(" kB\nLocked:         ",
- 					mss->pss_locked >> PSS_SHIFT);
-+	if (count_zero_page)
-+		SEQ_PUT_DEC(" kB\nAnonZero:       ", mss->anon_zero);
- 	seq_puts(m, " kB\n");
- }
- 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602141606.igFDFWAJ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/power/supply/max77759_charger.c:623:4: error: cannot jump from this goto statement to its label
+     623 |                         goto err;
+         |                         ^
+   drivers/power/supply/max77759_charger.c:631:2: note: jump bypasses initialization of variable with __attribute__((cleanup))
+     631 |         guard(mutex)(&chg->retry_lock);
+         |         ^
+   include/linux/cleanup.h:414:15: note: expanded from macro 'guard'
+     414 |         CLASS(_name, __UNIQUE_ID(guard))
+         |                      ^
+   include/linux/compiler.h:168:2: note: expanded from macro '__UNIQUE_ID'
+     168 |         __PASTE(__UNIQUE_ID_,                                   \
+         |         ^
+   include/linux/compiler_types.h:16:23: note: expanded from macro '__PASTE'
+      16 | #define __PASTE(a, b) ___PASTE(a, b)
+         |                       ^
+   include/linux/compiler_types.h:15:24: note: expanded from macro '___PASTE'
+      15 | #define ___PASTE(a, b) a##b
+         |                        ^
+   <scratch space>:18:1: note: expanded from here
+      18 | __UNIQUE_ID_guard_461
+         | ^
+   drivers/power/supply/max77759_charger.c:615:3: error: cannot jump from this goto statement to its label
+     615 |                 goto err;
+         |                 ^
+   drivers/power/supply/max77759_charger.c:631:2: note: jump bypasses initialization of variable with __attribute__((cleanup))
+     631 |         guard(mutex)(&chg->retry_lock);
+         |         ^
+   include/linux/cleanup.h:414:15: note: expanded from macro 'guard'
+     414 |         CLASS(_name, __UNIQUE_ID(guard))
+         |                      ^
+   include/linux/compiler.h:168:2: note: expanded from macro '__UNIQUE_ID'
+     168 |         __PASTE(__UNIQUE_ID_,                                   \
+         |         ^
+   include/linux/compiler_types.h:16:23: note: expanded from macro '__PASTE'
+      16 | #define __PASTE(a, b) ___PASTE(a, b)
+         |                       ^
+   include/linux/compiler_types.h:15:24: note: expanded from macro '___PASTE'
+      15 | #define ___PASTE(a, b) a##b
+         |                        ^
+   <scratch space>:18:1: note: expanded from here
+      18 | __UNIQUE_ID_guard_461
+         | ^
+   drivers/power/supply/max77759_charger.c:606:3: error: cannot jump from this goto statement to its label
+     606 |                 goto err;
+         |                 ^
+   drivers/power/supply/max77759_charger.c:631:2: note: jump bypasses initialization of variable with __attribute__((cleanup))
+     631 |         guard(mutex)(&chg->retry_lock);
+         |         ^
+   include/linux/cleanup.h:414:15: note: expanded from macro 'guard'
+     414 |         CLASS(_name, __UNIQUE_ID(guard))
+         |                      ^
+   include/linux/compiler.h:168:2: note: expanded from macro '__UNIQUE_ID'
+     168 |         __PASTE(__UNIQUE_ID_,                                   \
+         |         ^
+   include/linux/compiler_types.h:16:23: note: expanded from macro '__PASTE'
+      16 | #define __PASTE(a, b) ___PASTE(a, b)
+         |                       ^
+   include/linux/compiler_types.h:15:24: note: expanded from macro '___PASTE'
+      15 | #define ___PASTE(a, b) a##b
+         |                        ^
+   <scratch space>:18:1: note: expanded from here
+      18 | __UNIQUE_ID_guard_461
+         | ^
+   3 errors generated.
+
+
+vim +623 drivers/power/supply/max77759_charger.c
+
+   591	
+   592	static void psy_work_item(struct work_struct *work)
+   593	{
+   594		struct max77759_charger *chg =
+   595			container_of(work, struct max77759_charger, psy_work.work);
+   596		union power_supply_propval current_limit, online;
+   597		int ret;
+   598	
+   599		ret = power_supply_get_property(chg->tcpm_psy,
+   600						POWER_SUPPLY_PROP_CURRENT_MAX,
+   601						&current_limit);
+   602		if (ret) {
+   603			dev_err(chg->dev,
+   604				"Failed to get CURRENT_MAX psy property, ret=%d",
+   605				ret);
+   606			goto err;
+   607		}
+   608	
+   609		ret = power_supply_get_property(chg->tcpm_psy, POWER_SUPPLY_PROP_ONLINE,
+   610						&online);
+   611		if (ret) {
+   612			dev_err(chg->dev,
+   613				"Failed to get ONLINE psy property, ret=%d",
+   614				ret);
+   615			goto err;
+   616		}
+   617	
+   618		if (online.intval && current_limit.intval) {
+   619			ret = set_input_current_limit(chg, current_limit.intval);
+   620			if (ret) {
+   621				dev_err(chg->dev,
+   622					"Unable to set current limit, ret=%d", ret);
+ > 623				goto err;
+   624			}
+   625	
+   626			charger_set_mode(chg, MAX77759_CHGR_MODE_CHG_BUCK_ON);
+   627		} else {
+   628			charger_set_mode(chg, MAX77759_CHGR_MODE_OFF);
+   629		}
+   630	
+   631		guard(mutex)(&chg->retry_lock);
+   632	
+   633		if (chg->psy_work_retry_cnt)
+   634			dev_dbg(chg->dev, "chg psy_work succeeded after %u tries",
+   635				chg->psy_work_retry_cnt);
+   636		chg->psy_work_retry_cnt = 0;
+   637		return;
+   638	
+   639	err:
+   640		charger_set_mode(chg, MAX77759_CHGR_MODE_OFF);
+   641		guard(mutex)(&chg->retry_lock);
+   642	
+   643		if (chg->psy_work_retry_cnt >= MAX_NUM_RETRIES) {
+   644			dev_err(chg->dev, "chg psy work failed, giving up");
+   645			return;
+   646		}
+   647	
+   648		++chg->psy_work_retry_cnt;
+   649		dev_dbg(chg->dev, "Retrying %u/%u chg psy_work",
+   650			chg->psy_work_retry_cnt, MAX_NUM_RETRIES);
+   651		schedule_delayed_work(&chg->psy_work,
+   652				      msecs_to_jiffies(PSY_WORK_RETRY_DELAY_MS));
+   653	}
+   654	
+
 -- 
-2.45.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
