@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FE8EF584B
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 17:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7939FEF5851
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 20:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 790346B0005; Sat, 14 Feb 2026 12:13:19 -0500 (EST)
+	id 411B76B0005; Sat, 14 Feb 2026 15:54:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 713E16B0088; Sat, 14 Feb 2026 12:13:19 -0500 (EST)
+	id 3C00A6B0088; Sat, 14 Feb 2026 15:54:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61FE06B008A; Sat, 14 Feb 2026 12:13:19 -0500 (EST)
+	id 2CBB36B008A; Sat, 14 Feb 2026 15:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F9D86B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 12:13:19 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 000121CAC1
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 17:13:18 +0000 (UTC)
-X-FDA: 84443708118.22.AE4AE0A
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 294E0C0011
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 17:13:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b="WRQO3e/a";
-	spf=pass (imf22.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C9716B0005
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 15:54:26 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 527EA5BB34
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 20:54:25 +0000 (UTC)
+X-FDA: 84444265290.18.CBCED85
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8FA28140007
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 20:54:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=or6xifzg;
+	spf=pass (imf23.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771089197;
+	s=arc-20220608; t=1771102463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hZico+0X7dDimHx4WVJUWac7oNWgOwG2Gus+OJXlHwM=;
-	b=oeeoanbVm3X7hsyijOTkejCSVb0dwYXyD91WdUsiblnPHzeJbA3QiKXCLUiAdtU3XxARc2
-	XLI5vKggB18H4TRIGw2kG3+wiRuRSV4yktfib79Q7YGy3Dhnffn7TVaYkJVCSbhg+LiiJn
-	PSEDn/aeiLTXC/Am5x80CyW2Uw2b73U=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=Nzu96FOFztTNQbjAIDlyKsQx3OEXhEiVsL4QSgyBQIM=;
+	b=Nq6fIDAywqcNlxXMHvafYjUZcgBbKPSzrm/+5I91GJSk7Lsfs8nvKpx4cbsRRri/KTykJP
+	YTFYXJy0hZvdG0cKeZF98t6SG4zMYikEpNgqLk/e1HgEmqVtJ0og6Nxi/w+ZBqYS2iKM63
+	iRff4VEN8mkyFqgihkx8k4r0SUNHaTg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b="WRQO3e/a";
-	spf=pass (imf22.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771089197; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=or6xifzg;
+	spf=pass (imf23.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771102463; a=rsa-sha256;
 	cv=none;
-	b=ZHkEbWkczKN85HNfC6ka8OWf0fJib0IRFNmOx9/qpz3r+OGdnY7Z3ZvQqUKVPB2Czgdw7Q
-	AsKc4JAZB6zRu2vCKYw7tUNX6l5mBFuZX0TXgPy2ACZbdtzyI69MZaXzZFik1eR1xxAaMi
-	VJriq/tQ/f3b1QvK2YeRjBjysUNWjYc=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 47D20411EC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1771089195; bh=hZico+0X7dDimHx4WVJUWac7oNWgOwG2Gus+OJXlHwM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WRQO3e/aJQAedd50jGeKaJJqBdfRZQdiSoHk/Ls5xUPz/WjIHMIs7jK3EBoNjhqeV
-	 +JuzvhfQr6qwEZ92WHFppXvufun/wSueLKqNRcXYhFVGweKjQDP+HgM2k9gb8JLG4I
-	 +vkE3NoOVPsDF29eCJD1q9g/P8kA2c23ta8PA9kisj6FvLlYq4AQDY1OawVirEHOQJ
-	 oXPjAd8WAlLqMFJnV73bWMy+f5HBy9s2/xbAuPHX+5+XwICyCDEm21fU9YfZJ2BvOn
-	 6iXnGxUMXs94Ihm1YvYLeo1tr0HxWkjiZnb0TvpuH4DHz0U6E8b0r/KhS17zTstNdz
-	 uxIAbBbDYTP8w==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 47D20411EC;
-	Sat, 14 Feb 2026 17:13:15 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Min-Hsun Chang <chmh0624@gmail.com>, akpm@linux-foundation.org
-Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Min-Hsun Chang <chmh0624@gmail.com>
-Subject: Re: [PATCH v2] Docs/mm: fix typos and grammar in page_tables.rst
-In-Reply-To: <20260209145603.96664-1-chmh0624@gmail.com>
-References: <20260209145603.96664-1-chmh0624@gmail.com>
-Date: Sat, 14 Feb 2026 10:13:14 -0700
-Message-ID: <87ecmnqmdx.fsf@trenco.lwn.net>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 294E0C0011
-X-Stat-Signature: dxhyrtgmaxbhaeqwufh9drn7mdtza9dz
+	b=jdFPepRRBUtSApqXijB46inS0V0hle3ieFP9LbxvRWcCB+b0syxdDMy0FfzQLYbOCAeRY6
+	Q2TLV9dT1KG7WkqyJ89eQqeneMTj350hfIuQJZA4sh3Pn2VXn7++4gRvgUBnvkrMyB6+D7
+	09CAgI9wCBXaCnuZBX64BZfeF9BGkvg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D16C56011F;
+	Sat, 14 Feb 2026 20:54:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B33C16AAE;
+	Sat, 14 Feb 2026 20:54:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771102462;
+	bh=RoCLiuS+JVGRFRrYPiAlm+L6vnivwJ1WF3MHR3xTjpQ=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=or6xifzgFqicDncZCjcZpqEgHgPa0ZtCCxwM/cBgC1Wu3Lz0qyZWnDM+HLZ/gs3a8
+	 mOHEvSg56DjC2z/jn4DKmiv+TlpOwudn7+fuqrWPu8rJCVbVQLgvFMyTrN4f/VKqi9
+	 WVSrfmLWZXmc2wlICyV7RNEAeyAtJq+WRGRbJSmxyVc3A1ogtd+N13Dh7PFoEq45q2
+	 KImm1viBqp/73OL0R59n1GEYYEjgqSYPi867FydC3RgD3bt8jhmDuedHE00PAECYbM
+	 g1JV9UvaEwVl44RonZjmAUW0TDO9bU5/CxtjW0YETlc4fcyP0ktRLvogQ2FXtovMI5
+	 YORzaTZ5b4MUw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B1F3393091E;
+	Sat, 14 Feb 2026 20:54:17 +0000 (UTC)
+Subject: Re: [GIT PULL] memblock updates for v7.0-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <aZAjczlDqWkg2fpt@kernel.org>
+References: <aZAjczlDqWkg2fpt@kernel.org>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <aZAjczlDqWkg2fpt@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/memblock-v7.0-rc1
+X-PR-Tracked-Commit-Id: f56ccc32468ee7885d3a9175e7d2cb608d301521
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 787fe1d43a21d688afac740f92485e9373d19f01
+Message-Id: <177110245574.2897141.12177000300175718851.pr-tracker-bot@kernel.org>
+Date: Sat, 14 Feb 2026 20:54:15 +0000
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Kevin Lourenco <klourencodev@gmail.com>, Mike Rapoport <rppt@kernel.org>, Shengming Hu <hu.shengming@zte.com.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 X-Rspam-User: 
-X-HE-Tag: 1771089196-155084
-X-HE-Meta: U2FsdGVkX1/v/h5e67ctcxoD79XEwPqC3kb7FJhHg3yixPfG3eptlkLTtfTwt6SuCMb0swQkl7JmjhfT5yIL2bVeSdtnpcPg2m+ALjPnrrz7t5QuocqLUbmPNMcyOkiPnhA4DUS84hqvEQsVRsFBcwUSuk4UaAx/7sRyEugh9eNQtBE7mRN+R9O8MzNW4MAPljGtdTeVLJyYFJo+DUJ6jyFbG1CZ/IT+lobCcbDfpPNeIbYqsipf21fo3hJEyg5U/HVZEIKlo88ui66XWqftBbfog6wovm/Ozr+8G4qMPSxmcvybgmMZjdLH+2lBQhIamdBSHCGzng0yJojgQH41yYWUqYzmtMSwMDwGHVxR10+MsjDh3Z47tgw6+zKAKFD5inDgRSd/O/fcXK61h6BMYlRbZefTNJIIi4nsSfCfrpJJlxtNspiKYiC0Bd4qgSzoUUYeZ8ZIy7nSyJaa70CEKSNij/hZGXu8cTkdB5ITX4o7tv2wsU4gctRj86MZl8hylk6mxkTDb9CY2mzo6GcGpauJVA7E15jGOVFTCSIBmxQ3m0k59BhWBhLHIiQKdLYzCYL7znacpp3yc5oRpxTeROu0F0IVZS443a0dLrO7+PmQA8sRXVUoXpPtgL/KB059FgHHrjae6sjT37ux/RABSfrL6Bm0xSdfXHA27hHHa4jhsDdwT+AtHlAlAqgIGtbtaLEqcFkpw0DYx28FQ8PJhUyGoghIVxzbx07YhiIxm4GcvIG+Lt79nJmhWOyObvHZqqe4iG7V1hWt11tYrc3+vMD+dH5WNY12oNqt+Rp7ZwpquBOtwDi9FPBOPkX/rF4HQihqyiDG4yMEijEIfjgO250V2bCiPgX7lxcFDj1pTCHCQIFvjdU20qma/ZldapAYywr7IhMqu1ruCimI1tp7VOS2mMQb1EaXakHgQsFQzYkYm5VcH0r9sCTKLqkQNXIgEldpYcKwc6hzqNYAood
- JDj9dTol
- TlWSoDt/ElNXNgRRcStOX+FVLPep6Rew0AZNuH5trR0f7AhKaJKzWbOU2ZtLYAk//nmRVckR+ds3H8AqL1cINcfqtUrMGfT2vnrTBkjJRMRkKLi3yGYhfGNvQBeaZJwcMSW2nJJpaNS2Wa7AMBqC4EFkToAtfsKNuMYHzpHzCf/OWrOg+tbckVmgg1euSAMNY/TCtWpug0p4kfazn7MkD/QuCWnSdtrk9DDO5is2CNw/eSiw7XMeP5n5KdcDNLgvAWwj0Mtqg11uEs8zop78BCngQzOvC5/MlPltDwfIxL+ou7OjnepIep66E0GFGjWgo9nlOh4LsEJ5wnNh+bPsG9naYUgflsqbJDHtU3YqxXwmapYo=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Queue-Id: 8FA28140007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ffse1gd65q6dqg6zk5118gu1mgusfegp
+X-HE-Tag: 1771102463-103428
+X-HE-Meta: U2FsdGVkX1+H5dPrgbP2PpVp3HO5dzESDEhjrc+BhkW+JrepGhfjBdSACiQS8BpGgFbuFL64K75z1YwctV3xvaJWHA/j0FNaY81tUKFKHHRIhDNUiNQw/2x6s50ipbHCKQUAYFeiWeezrk41nNCwzWfK4IQc51to2gK9n6tEw3HxTob4P1Pyj+j5FuAE/GTJSbbx9HUiJYP9ITWGbbX/yB0nKbFQytqc9LbS7siNwC+X38hQyiG0pV6M5h+1bTpqry3+3GCmgxX/uD1YcWNpse8hAxi6NZhe0TNXqB7ey3XK5pT98KD+Hbo5i226TLUL6lEN/a+YmAoSnED8EuPpEaDIK2JxVB/1i/0NbJ04YS2xHc9Z1/S9X5h/b4mMtT3dAzWYZOmuvDoqvRiydj9W7kP3wcImLu2oo29wG44EfpsqxSG29DCwcJRTvFHEw0FIoGSdfOkusfCUrY+pcyRbNc47GFw/8lLv8RlTXEPLH7jf84p4cvkdGPsD0h3mRVRq/9xNMxr/naW3h3E7V1mLCoMLCYBUoUL/L0afeqiatq6OQeWA0nQykcHymThjoVqbvAuw+nrxoPQtOEeHnUQCL2Sx53PYP1sshVR+O+kklbWJZeKDWjHMhkB1gFxdVz+51ADtbKFWEbVkZPTXvD++2MAO2CuTj0T7AF8qUWDynBxBOomA39qEJx4NOk4lzi86YRl9zFbHAzVBVIEK48SjkXio9m9HVYhQUjYMWUSHbip1ZHqgys7NfwTRYJV7rhY44BrSHe6XxFwXTD2MTYnv4lL2oSm3zY539joU5a7xKDq2Dy9q3CjbRNz4ZUxVyi8lrUEcT7vDXRDDN9Csf9KfHRPsg2TQKU0rf3z02Akqdffzq6hOieDgg1pLY1e/e2Iht4jLvkY8fT67Jm2C96SZ1grRvQmMGHQ5bR4/6w5d5YcYEhgbW3mEB5xkIYICqoBZMf4P6VWDgwRPBVUuIAn
+ 9k3GqdeU
+ beQpKydBQ1vBCVet1YUmePqjui8yJXubfdTnKMfnNobmBcCc52BzhHy8NVGh1F0RtyE+luk5ybEXHFZdmH8iqaCyEhKbxhR3MvMVEfNn6/q+U8LSNHuamAjzra9qDFcsmI8YVrGFpvbEvY2u96OzbHerXUNcsVfJ86jJDV0o+rIDLVhRgDXSQu9HOko+mjhWB07e6nCLOlbijB4zBSDFnooyoBR4P9mWuBItoF0fG6LKhfU4Zepmrwi/m+YGLaQFkVx4chSV/Tkeuhy8ZmiIYcBABEA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,22 +97,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Min-Hsun Chang <chmh0624@gmail.com> writes:
+The pull request you sent on Sat, 14 Feb 2026 09:25:39 +0200:
 
-> Correct several spelling and grammatical errors in the page tables
-> documentation. This includes:
-> - Fixing "a address" to "an address"
-> - Fixing "pfs" to "pfns"
-> - Correcting the possessive "Torvald's" to "Torvalds's"
-> - Fixing "instruction that want" to "instruction that wants"
-> - Fixing "code path" to "code paths"
->
-> Signed-off-by: Min-Hsun Chang <chmh0624@gmail.com>
-> ---
->  Documentation/mm/page_tables.rst | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/memblock-v7.0-rc1
 
-Applied, thanks.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/787fe1d43a21d688afac740f92485e9373d19f01
 
-jon
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
