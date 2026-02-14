@@ -4,195 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FDAAEF99E5
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 00:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECAD6EF99EA
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 00:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8582E6B0005; Fri, 13 Feb 2026 19:07:35 -0500 (EST)
+	id 2376A6B0005; Fri, 13 Feb 2026 19:15:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8364E6B0088; Fri, 13 Feb 2026 19:07:35 -0500 (EST)
+	id 1E4F76B0088; Fri, 13 Feb 2026 19:15:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72B536B008A; Fri, 13 Feb 2026 19:07:35 -0500 (EST)
+	id 0C7006B008A; Fri, 13 Feb 2026 19:15:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 611B86B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 19:07:35 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ACBA11A0702
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:07:34 +0000 (UTC)
-X-FDA: 84441123228.07.D508EE9
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020143.outbound.protection.outlook.com [52.101.196.143])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D6A3DA0008
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:07:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b="iUHxO/QB";
-	spf=pass (imf15.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.143 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771027652;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EF0346B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 19:15:49 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB4041406AF
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:15:49 +0000 (UTC)
+X-FDA: 84441144018.15.C353A36
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 04BA840010
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:15:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NeRiv9h7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771028148; a=rsa-sha256;
+	cv=none;
+	b=Nbbskqq1OuhSTTL1SrkqXz38SyUBqIxfnZEk9S7foooYhcGCerWQqoXYhQFBLUZGGogKjW
+	msyawgGFZt26K/8cFJu7fm8cjcQqy0xYQgUdrOPyk8DOmAPpCZDAUc3tRnYW1GX3nZmwq8
+	ufpSxla6uCShIEQWb7yZdRLZBI8nR5o=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NeRiv9h7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771028148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i+EaaBe4em+ML2s6CynuxwSevGbFApP3x9FcdvLdru8=;
-	b=04mVAZCKzRgh04EEo4uKKeaKQErYm6SyxnaO71jgMmsfcKuYDx03ShXAjLLxJe8R+yrcY0
-	RVyTTmil3FDRVnpfiwbxJ1m17h4QWCyuXa080F3UuoNllLukn5lIbjOsyORxqHrJRL9a5L
-	yZt5Jq5gxbH0xUM36WpYdRTgunW6CI8=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b="iUHxO/QB";
-	spf=pass (imf15.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.143 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771027652; a=rsa-sha256;
-	cv=pass;
-	b=kTesNItXnznvOjkgYt/AlQHdDc8MSyC3JclRyaLY9gWhnh3+/BeBnKUwGYyOA2MYUKHEpX
-	4DNUzAHyV5TD4fyL9b53Omd//wBgI/5wHTs9o69C5iZmL6vjipeUQjZ/Ghybd2pusrpUqm
-	64PJRll6Di3MPcS8dRsXgjPGTTV/pNA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qmj2SbL65mQIbIB8kiVXav+DQ0GJCPBgpy+yh4lQhovKFA82LOaw28H6LkKRPVQgaVSAETCmKWgGJplt16QSzro5YhG1ELCCs44lYk7coMXxiDTNfsrX10+/+zbpsFxf8AH3r/iu+D1f3BN89dcZoIjvqlYpOZZBS/YlfReyzW/D0+MJdzWHVCPtiGCo/Z0vpplmZGaITSh70xj2NdId4ZnO7RKMOiM+20E5dmOOkLAJ5Q5qF153BlQ3yqnHFkAje6tplZ43I8dUVm9lDj2W4Xg2F7GunKpkFYdNBzNM8IVRXGvnOejmqkZ9e5CSs33CG2PisDUAlWEx6rfq64K57w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i+EaaBe4em+ML2s6CynuxwSevGbFApP3x9FcdvLdru8=;
- b=rbONJC3A6OWEpeWPtHqL6C1fKK+iriVOcTiVdrlydFOnyMTqS1aNDs+3dmuIWoCl/kWyviBqSBLYCGvAp9BLJxPj111WNke0T8R1EK9MNLxs/A/ukKgGnXw2w1DpNDHr8ZM5BINEGBkAWXrNqqFMIRBFUdOrOxLEoyxtinLoP5Hdnft1AUHBpcGbPVwJqzDk8dTvo+emX995OKeuT0RK+9yMIt6NY9Jh+pVcf3i6d3UkzgL1YhTLnGNqGyqqKoJUrA7wwZwznL8JBbXfJnvcEjjkijD8WwIpOmcJCvvZ6ds+LlQ2vPVcfR1IWjJmEGO6gENhG73fc4psKSMzgvCdcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i+EaaBe4em+ML2s6CynuxwSevGbFApP3x9FcdvLdru8=;
- b=iUHxO/QBZ5D5uSTOVa9ztoeD9QWta+4xU9ZmUXgb1F3nAR7pceprsAFZ2LssAGo9wLn8G4fzDVnxhyXSKfmR91DnypKEmnpLYk4MUvZIpzp5B89opsN2qstPrky0uFbhbhvBgkFdON6Dt6+A0W1dN13KaX1pcV5Um+5mgyAlWnM=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB3083.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:184::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.14; Sat, 14 Feb
- 2026 00:07:28 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9611.013; Sat, 14 Feb 2026
- 00:07:28 +0000
-Date: Sat, 14 Feb 2026 00:07:27 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Andreas Hindborg
- <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <2026021311-shorten-veal-532c@gregkh>
-References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
- <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
- <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
- <2026021343-germicide-baritone-efe8@gregkh> <877bsgu7fb.fsf@kernel.org>
- <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
- <2026021313-embody-deprive-9da5@gregkh> <873434u3yq.fsf@kernel.org>
- <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
- <2026021311-shorten-veal-532c@gregkh>
-Message-ID: <abbb50aef531e9e72defac8b976c5ccf@garyguo.net>
-X-Sender: gary@garyguo.net
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0192.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a::36) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oJSrOsjXaV/MjMNYMY7kpWcAneJSnkLcnWKVI0es/80=;
+	b=uLso1c8dOUOWSaTt/GvWyCbHJ78EAmc8ezkTFlnh81BTyNsuf4ZliCGGsCbQtONs66cd+d
+	OxJCZJWrunCxWCc5lFI43uL+CDYsFnJqK1DgZnOaE9B71o4DtpKqUHJquLG7JvCmwWc7EE
+	Lo0kxCr0JQyHCeNA2cTx81Pd6A8TSXo=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8230f8f27cfso825955b3a.0
+        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 16:15:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771028147; x=1771632947; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oJSrOsjXaV/MjMNYMY7kpWcAneJSnkLcnWKVI0es/80=;
+        b=NeRiv9h7d7EEeOYgzKFsiMsgIFO48g3NjAgxK5eLmvDa/X3EWl7J/15mrujnfT1QaZ
+         cwoG1rIEqMDcZQEZFNrYIbWCENA7tUvAGPjEgl1gt6G4NlDMeiyGZBLzxPaFc0pqlFOg
+         SiVvyQkfB8Iwxwc5IjcZEVgM7/4QZ49llfygBTFPY6kQkBfbcr7xwavAMC8wECIdkNg4
+         u4thGCGjYV6WQ7Z9g+r1nLAewm9hyA2gSISLPyMMXY8fT67HQ1sqYKoBF2zLUh65LPnd
+         isxhSJmC1tijJY9aaJZlqNuUg5zoZIv/xM2xMAc2ojXh7LYFkzTKMxCK0gX0TAC0LZWW
+         7t8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771028147; x=1771632947;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oJSrOsjXaV/MjMNYMY7kpWcAneJSnkLcnWKVI0es/80=;
+        b=nQY1xcwezrTmz87OaxnNx84MQPteR2i/pHT6StXJJSA9kJET8A3JhbD58UpbtgyWYK
+         HdP/29QZs6XR5diCJLpMmtPDQQLE8ceH4n41Ur69k5lbPCeptbJjM4hTjO3K6n+kPdo+
+         G7oUTvcmgTkl3oPsWY9hF84m3GXfo2S5eiUrR37vPFE3m0kdvRjIdGrdzDqEosXttrBu
+         9RzgXsKrXauwRSpdebJwMxdZCyVpmdAZPd7NMvtSTPYTuvNq22mi2Q4xjwunB3h+qxtJ
+         UDHomvgH1ynYM51QeYXfDI9lWx6qD8M1+SCHNI94c43bvHxWpox5CMBXPWGIcED0FstH
+         O5dg==
+X-Gm-Message-State: AOJu0YzNMvPOXsnkg4klwpravUG9RiH7J2mDZ+0z0hl7RQB2up2DNHWR
+	mE/n7lA5lerx4Rj86Y8qJjWX1nCboh+xLlhKHoa01wP5Xf7q0zsiwRa1gCfoJw==
+X-Gm-Gg: AZuq6aKSYXeORPEpD6+66GEHk9aRUkaamKdiH41qidTEm4k47LHBieGu6bA8MI1QuRj
+	JkzMdeD8X4uzoc5iXVEJmd8j+rkH54qhZnBw1cO7NdM74w6q9aAPv34zIB6jVvVB9t1V4FNRzPY
+	F6CFAqrtZvZASYpMNTiyLIgKWaBlmpcUKkA98qUGolcFDpS8stDbQSyYroS6yQVvhAWepLRd0cF
+	BapGG+v5yA0jKgjZSTXlwobDVasMIUuSp7+UMAE9prXdl2KXZHVfHkTUDBN9hXzVRzjw49YBoW8
+	1jHIFbZxTCaIv1VLzwrlgJUNUqNIH1qof9+c4Uzs5HHuZFuV8v/2D+d+FzScBcYDuB3Jv3uh8oZ
+	hBsXh2JMUXAPSJvO7LPV7W5eHOME/b0eEFEUFb+JcZgeduf4dy7MyTdMeJ03OZdjtNPLYrG0Yf1
+	An53S1m2IJotCq8DAfvHEh4G22n8tExnboyeE8PsTHasgbP5aXDgiDYliR+7QwoCVyHZwrpd1Pw
+	7SS61kVhvX2dnlK
+X-Received: by 2002:a05:6300:408d:b0:38d:ec2d:80e5 with SMTP id adf61e73a8af0-3946c9220ddmr3409951637.45.1771028146749;
+        Fri, 13 Feb 2026 16:15:46 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:1ca3:229:a9f4:8c87])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e52fcfc08sm217762a12.1.2026.02.13.16.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Feb 2026 16:15:45 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	i@maskray.me,
+	shy828301@gmail.com,
+	ackerleytng@google.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
+Date: Sat, 14 Feb 2026 05:45:35 +0530
+Message-ID: <20260214001535.435626-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3083:EE_
-X-MS-Office365-Filtering-Correlation-Id: 345d16a7-4f1f-4522-ca8c-08de6b5d0a40
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+gjZmbuCUQUJkcXhg1p5jorql3NDJS3Fz0cjzCcXdulcIb5Uqowu5l+XFznk?=
- =?us-ascii?Q?0vtqMyFCqVE5SldyLxjNHWPHAWvLoNI82KyFQ0p5MRr+bY+/b+dzSuK48hp6?=
- =?us-ascii?Q?WnfdD/NEbc2A3pvGOFrW2yg7EuUrtbGajGOpVOlMG/8+va1WRPILzT5k/BBm?=
- =?us-ascii?Q?n+sPuE65x+7XzzuhABjvULsWSiu3hQa5KfHvQVEUhFmwnyIisZ4sAJ9AYI09?=
- =?us-ascii?Q?7Z/Yae4wB9o6wlEuw4rFJdZ/QgLF8tx1pKtJ9yCSyCSTm2tSubUN9c5cKQsa?=
- =?us-ascii?Q?ql6P/fkaU23l9k0A0FJE4JrOQxlxqPuCjyqh+MR0OevZgRxJz2dGyrT/uMSC?=
- =?us-ascii?Q?wB5X2Po98iqcNfGSP4E3fubrpc1v1S3sja2nD1rv5XYYSWmtoFlg7zblndUX?=
- =?us-ascii?Q?MjuRyYL15QxG1Y5w0VF13Gz5xjwcIYMBrG0KI7N60RPBfrtSVa2I8c9cXBTB?=
- =?us-ascii?Q?cnmg1Pi2UrU3v+wrcuh1wJJlQKqnYiPxL04gxSYo22agnG6RGuIpkeMth6bb?=
- =?us-ascii?Q?cA2oBFGqRksLwIae78HWfVAVJmsfCLBW8MBKPEdeQPn2cPwURknFTPr5xjBy?=
- =?us-ascii?Q?9CwlefNfLl2Xf3edB9B3l01JcheImwyj7JZx4LYH+5bWsI4a2WdbbevBFLiA?=
- =?us-ascii?Q?WX6qCY0pxWS4fCpaChS5SnB9XD22aijNZo7mPOcaWQ/iCWqNYdujaYixMKFL?=
- =?us-ascii?Q?OZUvJYmR4+dZ+lQTUTE8gfACM4njVSq/VJnqNzVYPNPbESqTvzL9PiQd6X66?=
- =?us-ascii?Q?fCgmYhobQK18D27ObGVIVOMfqGXd4MI2Wh4hCnfTRDy1YZzFRnNRydx9fOQc?=
- =?us-ascii?Q?X2ekmOrPT72Q/EKQBW/D5V5M5h5ebGRDZk+I0c3WfgI+P1Dxjx6G/zmx70LJ?=
- =?us-ascii?Q?k9F9NI5HdAsuqPu7i4J1YGPCgEpnLSlV0+ZO6iMnweZcyuw3rXoMwMfC0bjM?=
- =?us-ascii?Q?151ymy7uqy01ilIgXFSfr51JB3rOSFKIgWB/EHAtoPnP3A+DeoCaHkegYWtV?=
- =?us-ascii?Q?rR3b3EBf1h35wWPjLJQca5CNCdU2wCC8A4f12MbubdRq82uYepDcKevP8E3q?=
- =?us-ascii?Q?z90EYZVPOPVyI2LriAZXgBPLedvqkFEcCxyaGYYbvKeOOQXUuSehUuMBb0m1?=
- =?us-ascii?Q?mo3IMJ1aR9jnEzGlI1rZnKKdOXbyNHhJm7uuCTrJoVRimab8T5vvjrJHB2Hj?=
- =?us-ascii?Q?5Kmh4Jo0oTw9Kvd7AOixRchLWAlJypJqegV/e+Ct4mHXh/dhOXP/RW/P2MwD?=
- =?us-ascii?Q?fulihGXF1bK3Fma23S8yTGNH6IEEEY6/ATUVMsBzjVgywHCtzQi+3FPsTELW?=
- =?us-ascii?Q?s/bRAyur2xt6EaiSqICN/UvcCl/tEAtelM6IyDO2pbAtxgJNkNuP4yHiLXqQ?=
- =?us-ascii?Q?RAHScjCY5Dx6iXFsAlLbri5gVkyCXn1z55ZxMQFu6aO1w/i8w9g9HSyMVrsX?=
- =?us-ascii?Q?kMV/ypI80nHaHzslWnB1/DMRFpU0OtGHI43VgOhdxrT4p+sNqlHVHtzzHE5G?=
- =?us-ascii?Q?sO97YiiXJVeBCXvVco5FniMInNMBRcR8KMn/sXXrra3xgj7nUQ1QxwGpS/Mf?=
- =?us-ascii?Q?Yojskm05GwIjvO2GIcQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KWvW2XV+XJtz2VlFuDgzo/VYurnlLCy1OhoOHGpXD8M2xut+1cLWZ4FD6cPx?=
- =?us-ascii?Q?f5PljZavIW9g3w6AZbHqTXYejRZrA/Sq5qExdY0HDGGHqcFlM7fESSJ/Eeht?=
- =?us-ascii?Q?jFtmxTRYgmiSa5RgN2sWy+aa7tKA59ZjwTdtecW+0EI5adbTINmVKgegpw//?=
- =?us-ascii?Q?d6I7j959ohRQxNjQ5UeZTOvMaKKLhtQU5qr0lNDCThGE8B5QADLWdcg5JI0X?=
- =?us-ascii?Q?vil18AVu7jWMPZwxWbiYf8o/W8RCz5abfLXVYNDGdW8UA8o90Lqz7xa25DAg?=
- =?us-ascii?Q?7mQmEKDuRT9C0VIszoqId2Vb/HYvRQFusUhZoWPdGcmpYRMBLBmMRiYFenEU?=
- =?us-ascii?Q?+bg1or6ID7TKTMs3GsvAJM7KgS1SQ7ybQX8RfTDz7s5aPhODOJeEeMf9CdX1?=
- =?us-ascii?Q?c8U+AghU5HuXsx5fUcOvgVh8uTk5lkX6sRjJHK+uZJDHcjqD8qdaAFnT+oNg?=
- =?us-ascii?Q?tVkEC1fq2q1Hg44F5XrsuYad+deXwwBoA2HU7MyOSbFJpDn5PvmfvQMRIVLK?=
- =?us-ascii?Q?hQwbdWwW3HkOIHPaWR5a2UWVgDqm6ZX1kncyc/8zRNAV4azHztnHcVlSf6P/?=
- =?us-ascii?Q?PICdgbB6EZQg0+FqXKwZl/SiX5VPUhU7tasOlU8OAcodSW6wTuppF9nUaPVO?=
- =?us-ascii?Q?140rteO+rXOV0nTwCKphtHouMG/7gAaVYfSUJ+ffZf3Pz4AaHpKmRHX52KZl?=
- =?us-ascii?Q?qeCsKf7uswmBUw05dB4Sjx2ggy4PpfxXXfmrg3oZkDltZ7e6eKXBRZMC4cC2?=
- =?us-ascii?Q?hKzZWxvhtKCV0uE2u6aj+PUK7OlbUEBgnqp5LdQe887Ec3TG8AdELpi4JXU+?=
- =?us-ascii?Q?bdd9XYG7biCjSaLE9pUqaYhlP9SVpesqBzaWDS2lD/iam4b+7keQ9tp9kOpI?=
- =?us-ascii?Q?rMvGDDxCHl0Y6+CiGPCPSXNNA5CTSxLdPGCZqhu+3i4qk6r/fhX08QJ65UQ4?=
- =?us-ascii?Q?Q7GY+kAEPIRxbNETp23KDb42KvRE3T9e2gCO4U7qVJmhs0bIaqBlejFpsXrq?=
- =?us-ascii?Q?7SfVkuAxa7JLnyUaXKnlawBGAKOgmlNsYsWtCBTqee1uJ0HtGYasE4R05y7T?=
- =?us-ascii?Q?qAlJOPuij0FFZxrJbFofdDda1ivLPV5OkYKf7qWZQE9bcYz0ROqeFjrmrjAA?=
- =?us-ascii?Q?tiVs6qG312UNCjEYNX3gPVocsddqOXX+W0o+gPzwDJfa/xZvhB1mLe1pAUa8?=
- =?us-ascii?Q?mCSTbS7eC5ix1namBo/tMHC9NSdyjBeSPQcnh6ODLOT1bHKxSstyRNRsUm9m?=
- =?us-ascii?Q?rY9N15FFbDw9vwAbo8Q2Ha1XxR8n4tezglFrtRfhQzU4ys9SfNfaCKooed83?=
- =?us-ascii?Q?O6SYeL2g05YuNDtbuPbRLPg22y/2B/U37W5oRUWfr9xxbKWMtWpRW4SjTY38?=
- =?us-ascii?Q?1vAC6UFM9d+n336Et5PDHAuMYwDNrjAvX413gB1UAz8HDFYiaYDFI1Yy+mD9?=
- =?us-ascii?Q?o2VCsQzLLWDtlQyqN/5suC0fOKG+KVZXM/q31eUJwCpWUh4Vq9ID8Ll413Sv?=
- =?us-ascii?Q?L8MU1wwqSdNpUV8Ik7mi6rdGCT3V4DJKV4GJEQOV2H4ldiUaF7Jl4ksE9Z60?=
- =?us-ascii?Q?25Sb6L/PNvzKvU8fJHtfzP0n6dywT0K//8UO2m2z1y23b595s+P9SPXViBIq?=
- =?us-ascii?Q?iXuWYG4+syZvUIWR7DVz1IptaUXSG2gQ9kHZlWXJsVViOY9U64dMGB3XFYXn?=
- =?us-ascii?Q?B5qeGUe/fkZDZzZEOLAkMOPqis++o0lqkkBA1+wQ4ge8uec79GOvcArMy84K?=
- =?us-ascii?Q?omQi5iycww=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 345d16a7-4f1f-4522-ca8c-08de6b5d0a40
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2026 00:07:28.2551
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xRjD2pdzKxdG+VH2Voj7BumIatcixzt5E/3A7nQaiOTddoRlfV/tSI7gasynWKMR6JoK0xa+D593kIl18y0rYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3083
-X-Stat-Signature: rr9uxi51rzfx8ffxeg1jnkby6f7u8tgd
-X-Rspamd-Queue-Id: D6A3DA0008
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771027651-592694
-X-HE-Meta: U2FsdGVkX1/h3JlNAn2AhG/g6RaUmLhPx2ADA4Phn4M9GymNpGR1DZY3lf0v+5+431wBuas7A86UsDM5AqrKle77FSaDCUr8qGyYVpSEMY3lkw1NwCDfshbFw8/q5FnKk2AYs3lDzm9SkCGUXw6f/jX4JQB2RR8FlsbRgwlYjZpMTHRUz17KgJKJVGl3iO0vlw8K2f4y2UoQF+3cyx6DWVfp4a+FT4ESMMQNI186onpqAWbyHfMIc0dlPT8VOeWQZxaVas3M6P07RCEvrCux6t04sEqhIDz6Bf+vt0KdO2aiicLig8IQ+kk27H26EbpwUKdkjefOho2LDLTQOQmGJOo5T5YcPxYeolPzhDCY2UWnolr3KGW/u0ENXO1VSZAdAc6Pm1RoL5ADCEXHLxk8odgz5dQPL75zyq0xi3KJu6aXQW4mJ0ellcSKbi+0xPsppTJ6Bj49UTBgoU9kBlnSwP1pusT33HyFl5B3q8sWxiuL7K6dZlGp7q0id70c9rpRlp9izdzbFMVSXXp7sSoAUx7Dh6uaq1KFopCG4GT8LWayw6YZ2K5CPN6iSaHyKlqBIFAkw07XVpsusG++5VdHr4BZ3dMhPiyovJs7sgj/SBiXjcXZaGTEmi3lVHvTyiWkKT+PwrCKhCwdmMSO1W1VJOEXmbckrTXvF4dbcFnDDs7Vd30dPK+WCWfWC/fjAPmHo71TAawD8Vrwqfj61Ikg8kAjD9P4KXuNmn49c0WyJ/Od2bwA4aDXh8ZVaNnq3/FhkTs8oJITUTM1EdQixZhHtidjeX8R0sMtFsuF0wj20eQH28nsXKU9Zj5fz/tq1q481vxazZAHZvhfRwKiWBvOMfukhHJ5kgFrCsbbDzNoBVBqSaxhmfagLZvRuJxBWICjEH+Wz8NfPD+FrlJNSF1OF67R4oH+sMDdCBl4+1GprtqHOY/wkuGK8OeBPz+2tHHOxCyvZAnw2dxQBYWOsYm
- 0uCH0Cva
- nuzenuDn2bsB+Wc5zcgPfcu8a8l2x1bIQ+wCeG95RNTNX+i6CEYmcsdSc1DSjzGXivge9AMP8ChYTGta6nB9fYp9LxjZSfTikBlv0P2+VA3HEAvltpRmj2xeNPIgLlNIQC1Wu/xN+CrPEbUNdz0qRDr2IM2YDqMs7gkWw2KYrLzY+1eR94Amk4/cLVZWoNiTs0uyJvnkWFpM/GHDr2lKmUAlHRQKJeAq6o8Ifv0HtGD5cnchRdzrGasfy9JivySq7RxeSPqZQwXLkgLBjLK/4qVUfn2hZKUbplY489Z0P4EffNmJ2jFZcKf89L2bAmYC5W0eSM8Zb+bfLovadaww8Vllyo+xlthQkX4Sp41PSLjxzg7z/KVSAlqs9yhBIiMB551MZlYXTzaX0YGHzTTVWvHFJ7IML3jHbMlrgtUOFHrKJbgZ+AjTFbU1iXJguVvZ30BUVbFkAD/tM1HguabtS8RrlF6Riq1lv1ZMz
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 04BA840010
+X-Stat-Signature: 1w8gfdnq14nmqnh7arwo3dhayrfphsee
+X-HE-Tag: 1771028147-879537
+X-HE-Meta: U2FsdGVkX1+rd1Hqgw/N/NaVaskZYY+8+wV9p/8V4V3Jfgj+wyFoA1OAKspQO4cms6jGCSG/Hz7z/OdWgCajlweXuwSyaOZNe2NWe2P3ZDbc+msY8A6M0TtCEgsCPsal/3doYzYFnL3adRWuLBdgI4MVnLQVwCDIDEASpWfvrSmwfPyW4FtnkEtBKE5B3B9Z0wylLRzYvAZjHXz0nCRBXUFIQgXI+TusmDekxUjLPlKjRqZMYNyYPtCP9cnbt5eZanQzjezMqv5qbr4YTPnrAiH3Bs6VbK6KXxlcXiclgwQgbdAmNun1Y2OKZ13Gyj46PVzWgOUlFhONu02jidVn+YiDcnbQon6Fx9WJ0ABTgzXpSZ/uGER7jaMgcwtEZ5VSf6vtq6myR6eU+YqmBGMmOtig3aGF5moAlXWCO6wKZFzmuKLbqxmNepv1PNM6pdQW/KxrB6zulvLYZMJPI2YQ6auui5zMVp55RWUENQ/t3v3Anb1LeIdHQljRjonm/2tqRcEJzX9SxH06OJwGUmo4KwTmYkckz2f6eD9ALDNMrTvMHJ6o41utYVC85WYdmORvFtI7btDQM4Tgi4Axz9QC4AU1MusL/lCpFgh3KNTrD+H9OlTNlGT6uGbTnocQ8FuiquADfcC2xiPbl2cOENA6UV+DyJ3x8ZWdHN3x29fDitb2TmR9floksL4U3t3IMcEk9TOv091WvB/6cwWlw28GWoLBmd/kobJcL7IHGpBRtVstBzs3px9DnL/mRQ3I6nT3WoNR+8VLuSkQaMwmy56YPdkxYkqxHzNJgEt3kQ/PGzwF6RAYi5qaSneR8aKjj5Bk/gjoEUslsFb5SpfcY3UXHAOFSv3BXxQfuERMLUz5bvDJozEt3wJ/h1858fNdUeIicTc42xXlxjQqJGeRoeWfwMLkNSeBFcUUBYPj1o2AbQ02u1t4UZL/aw17kgnN1jxcHK2+E5Q6ndXykSz33pM
+ oce1IXDf
+ RO3BmEMaEgNDWyBtPG0qlnP/psH2pdBamSj2VumPiYydw3WBS3YSf+x1b41TtTgmn9s05e6OSE3QIfoWXrtEPV6J4u+LbCEvAQC3I30Oe3OwzDsiltCLQDH1Vf0i76YrxCidizRZcuWoo7DKBi4Q1AD4uXhkxeRiu2+vJOpEJbD5+WL8BC4M6yUwiC4BNAanvEaNGACkC1rJFvPq9DYB8ZfIXNXmyRHpyfzeq2DrV36PVWJyFkyvfar/L10tK8LJu2fOMovb6aIb+lAnSfBkhsUwLa9wfSrMMPh6qHZIuKyG3iB4ZiSH05dk7YFKfYFfB2TPx2MHXmn7eB38e8IJ9LT5kACrh1ZhjNB2FY2CRnZuP7/T9e6rl5rh8/IgaUQB0VW8zM1xHtMO6wTC0MhWX6KT9D0GzX721W4F9d5OYG3dg9GZ+TEpV+WzwdEiA8gOfF/olmsgOCZRuMPLguaK7q5GU59rQcyV3M59uEuO0I2BOGVDdC75WlRmbDgETM+Fb1mS+mTTS6/6PEKjAKaO8rch8a4h0xYS4VYJpE+0mTxxaDGSJMHM2EBt/x+7gPSqPMNMrPaEjGgtreq5RVGysMl4D8lRqduCZSD5d2urluASKo3/RqsleASKvIHsuijZTneEFcrOo5AXHQRpbB0+DPyD+wF0f9vuQ4atcmhEaUSoKnj9bkXTqT83F2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,60 +132,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-13 15:34, Greg KH wrote:
-> On Fri, Feb 13, 2026 at 03:26:08PM +0100, Peter Zijlstra wrote:
->> On Fri, Feb 13, 2026 at 03:13:01PM +0100, Andreas Hindborg wrote:
->> 
->> > C uses memcpy as seen in `bio_copy_data_iter` [1] and in the null_blk
->> > driver [2].
->> 
->> Right. And that is *fine*.
->> 
->> > Rust has `core::ptr::copy` and `core::ptr::copy_nonoverlapping`. I was
->> > informed these are not safe to use if source or destination may incur
->> > data races, and that we need an operation that is volatile or byte-wise
->> > atomic [3].
->> 
->> Safe how? It should just copy N bytes. Whatever it thinks those bytes
->> are.
->> 
->> Nothing can guard against concurrent modification. If there is, you get
->> to keep the pieces. Pretending anything else is delusional.
->> 
->> Suppose the memory was 'AAAA' and while you're reading it, it is written
->> to be 'BBBB'. The resulting copy can be any combination of
->> '[AB][AB][AB][AB]'. Not one of them is better than the other.
->> 
->> No byte wise volatile barrier using nonsense is going to make this any
->> better.
->> 
-> 
-> I'm with Peter, just call memcpy() like the C code does, and you will be
-> "fine" (with a note that "fine" better include checking the data really
-> is what you think it is if you are going to do anything based on it and
-> not just pass it off to the hardware.)
+file_thp_enabled() incorrectly allows THP for files on anonymous inodes
+(e.g. guest_memfd and secretmem). These files are created via
+alloc_file_pseudo(), which does not call get_write_access() and leaves
+inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
+true, they appear as read-only regular files when
+CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
+collapse.
 
-As Boqun already pointed out in other thread, this *is* the direction that we're
-heading for. We're not going to add a new implementation, just to add an API
-with documented semantics which is distinct from existing Rsut
-"copy_nonoverlapping", which in many cases is lowered to memcpy, but does not
-have the correct semantics, as it is a compiler builtin, so compiler can
-optimize on it and understand it as non-atomic non-volatile operation.
+Anonymous inodes can never pass the inode_is_open_for_write() check
+since their i_writecount is never incremented through the normal VFS
+open path. The right thing to do is to exclude them from THP eligibility
+altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
+filesystem files (e.g. shared libraries), not for pseudo-filesystem
+inodes.
 
-BTW, note that calling "memcpy" from C side doesn't actually have the right
-semantics, as C, unlike Rust where compiler builtins are explicit, recognize
-them by function names. So if you write "memcpy" without adding `-fno-builtin`
-(or `-fno-builtin-memcpy`) flag, it *is* recognized by compiler as a normal,
-non-atomic and non-volatile memcpy. The compiler is free to turn it to something
-that is not an actual function call to "memcpy". It happens that when doing BIO
-and copying a page, this is large enough that compilers always defer to actual
-"memcpy" implementation, but this is another case that "it works in practice".
+For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
+large folios in the page cache via the collapse path, but the
+guest_memfd fault handler does not support large folios. This triggers
+WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
 
-Best,
-Gary
+For secretmem, collapse_file() tries to copy page contents through the
+direct map, but secretmem pages are removed from the direct map. This
+can result in a kernel crash:
 
-> 
-> thanks,
-> 
-> greg k-h
+    BUG: unable to handle page fault for address: ffff88810284d000
+    RIP: 0010:memcpy_orig+0x16/0x130
+    Call Trace:
+     collapse_file
+     hpage_collapse_scan_file
+     madvise_collapse
+
+Secretmem is not affected by the crash on upstream as the memory failure
+recovery handles the failed copy gracefully, but it still triggers
+confusing false memory failure reports:
+
+    Memory failure: 0x106d96f: recovery action for clean unevictable
+    LRU page: Recovered
+
+Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
+anonymous inode files.
+
+Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
+Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
+Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+---
+v2:
+  - Use IS_ANON_FILE(inode) to deny THP for all anonymous inode files
+    instead of checking for specific subsystems (David Hildenbrand)
+  - Updated Fixes tag to 7fbb5e188248 which removed the VM_EXEC
+    requirement that accidentally protected secretmem
+  - Expanded commit message with implications for both guest_memfd
+    and secretmem
+---
+ mm/huge_memory.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 40cf59301c21..d3beddd8cc30 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -94,6 +94,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+ 
+ 	inode = file_inode(vma->vm_file);
+ 
++	if (IS_ANON_FILE(inode))
++		return false;
++
+ 	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+ }
+ 
+-- 
+2.43.0
+
 
