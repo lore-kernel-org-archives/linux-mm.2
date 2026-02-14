@@ -4,102 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53332EF99EA
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 00:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7681BEF99E5
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Feb 2026 01:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B6CB6B0005; Fri, 13 Feb 2026 19:57:07 -0500 (EST)
+	id C1C9D6B0005; Fri, 13 Feb 2026 20:00:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38E746B0088; Fri, 13 Feb 2026 19:57:07 -0500 (EST)
+	id BCA8C6B0088; Fri, 13 Feb 2026 20:00:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BAF16B008A; Fri, 13 Feb 2026 19:57:07 -0500 (EST)
+	id AD6B66B008A; Fri, 13 Feb 2026 20:00:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B6166B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 19:57:07 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 97E856B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 20:00:33 -0500 (EST)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51EB31607B8
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:57:06 +0000 (UTC)
-X-FDA: 84441248052.23.CD243C8
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 79B1F100003
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 00:57:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 40D891C8AF
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 01:00:33 +0000 (UTC)
+X-FDA: 84441256746.23.8E18C83
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 78762140007
+	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 01:00:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XfBZIJ9O;
+	spf=pass (imf09.hostedemail.com: domain of 3LcmPaQUKCFIy5FyB08805y.w86527EH-664Fuw4.8B0@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3LcmPaQUKCFIy5FyB08805y.w86527EH-664Fuw4.8B0@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771030624;
+	s=arc-20220608; t=1771030831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TzE2JrKPEpT8ZsMZk1kjQsBlsFrjgL0kTfQZoINMbMU=;
-	b=eTG8WeZCGrexzO+AGH3dBZwAF1cLFbKnRiESohRihvavOmy2F97HmtOTBveaWqvPeiJxs3
-	jiIQLPCpfZvZ9ktUKSyd6jv91nYoGEmi5nXtgKiPi6MVHRQAM0Ovu4/SXIw8H1Vuh+ZL+G
-	/BqALQbYUjCeQhryEoFGeSCFTiBvyb0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771030624; a=rsa-sha256;
-	cv=none;
-	b=uFgKEw72F5qAEkJt48jjSr2Npo9sUV7B17jJI0Uj9F2ohr2fdd7xnCskaCogjZfmX3BraX
-	AYRRAjBWtOg9z1B2HkReo8HDxCi7RVdFTSytlC9ijeEVsw5Oz0TJVfZ8spBsI3RwODndd3
-	gs2X6YjGFxzmcjBzcrrSrVisyl6l9kw=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=N52x8JQ9Owt92Dd5wyBCJma3b4DEePYMVk8MRoPWKBM=;
+	b=7vdfkwwcE/HdyrZTdvDpSIIGlVGv2xrJngL7084WRbL2X5Nr+MMtTAeJdiaYoNUvy11Fb2
+	U/REQhoDm1yMuvPMDPBrUVFOhqMoo2VANXuVwjtNgrgg6TlUdbWSGtG5GNhBtEbel5Knt5
+	6BI0M3f9OoWOxLE/Ggwfpttn0kyER/Q=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fCVwL041ZzKHLyB
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 08:56:18 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id E96204058A
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 08:56:55 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgB3I_RWyI9ppdNrHQ--.4951S2;
-	Sat, 14 Feb 2026 08:56:55 +0800 (CST)
-Message-ID: <f96cb0e5-da3d-422a-aa14-2a52f5f0aad9@huaweicloud.com>
-Date: Sat, 14 Feb 2026 08:56:54 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memcg: consolidate private id refcount get/put helpers
-To: Kairui Song <ryncsn@gmail.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- Kairui Song <kasong@tencent.com>
-References: <20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgB3I_RWyI9ppdNrHQ--.4951S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Gw1UtFWkWF15AryUXFWfuFg_yoW7urWDpF
-	sIkan0yayrJrW7GF1Ska429FyfZa18Xw45XFyxKw17Zrnxtw15XF17tr98XayUCF97trsx
-	Jan0yr1kGw4YyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
-	v3UUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: 79B1F100003
-X-Stat-Signature: ry99f3eczw7n48p8stq4nry6fzwkqm71
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XfBZIJ9O;
+	spf=pass (imf09.hostedemail.com: domain of 3LcmPaQUKCFIy5FyB08805y.w86527EH-664Fuw4.8B0@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3LcmPaQUKCFIy5FyB08805y.w86527EH-664Fuw4.8B0@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771030831; a=rsa-sha256;
+	cv=none;
+	b=cuCLWWM7KTGnLwgvuywK/WsL6xbCuChWl8Pg+8hhbE77OcWj9o4dh6daSQjPMPSIaE6LZI
+	1kiQM0oJeLzZmTUIdXi1yrSGJB97pWbtr6cmFt+/hgu0j8uvSPCFqkJ/ArNkSSj7LltEQU
+	B9P/JUcsmW6mmFjGW7wAGoQlFdZDPsw=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4832c4621c2so16183335e9.3
+        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 17:00:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771030830; x=1771635630; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=N52x8JQ9Owt92Dd5wyBCJma3b4DEePYMVk8MRoPWKBM=;
+        b=XfBZIJ9ORlUBqxgYKr/WHmMMoj2WKaOyBKLP2c2K0IWJpHaibdHtf7BOi4XXA+Fr21
+         h6ov5FH3WU/hh4ANRcxfUloEOy4OFI9CJEDzMgROsRUm0wjJ0cSP0ut3AlfzMr7BntiA
+         Vf6kBSKylFTR9SKG9fRJrOQ6P5ypqBJSLe+7qpj55Km+wXwGNM2qgS3T3+hMql633fLd
+         IpTCuCIhpMGdUwZvH8T6glEok4C5Xh0kCQ9T03KJ1QZCdJLhnj2Nkniv9JAnDTaK8tz5
+         u/Lh8ohw2WVY89qnbyFFQFTaydGYTCEt4/BT2hq4fpdtq4gY6Ha8enEy5wYmqP6jUpjD
+         pk4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771030830; x=1771635630;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N52x8JQ9Owt92Dd5wyBCJma3b4DEePYMVk8MRoPWKBM=;
+        b=so2Yzo9jILr95eBVYq7g0SN3WaSCixKMJKGSAkFOehWW9P6aKXP1M2ZJ68P2CIVXsa
+         uAn4N9bFOsP3E6ONOd6WwMyfWdNbG3z+c/M36Deslvp3Snp27zqd0bExig/JSVrm1zU6
+         cGycWYk8UUtVbp9PFHluWpjJylrSV/LSwi5z7mTPQX+R4ZEojXmU0bTbamBcG6LPlBmO
+         +DD1XPBh6Jqx7bLkjs6pyMWh+yJECmCwRZFDxTquW/30AORgwWd6HTBJ/ipoHoIAg4Vi
+         j5WTsmdosyx3X+ATEpYmEkBBBbsfm4yY72xCQXqPMoxKS8dlG4CR0jANBcdFFAEhrZYr
+         Telw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzO9UGq4VRrUtebRZKf8QuCk79it5F2ikXdeCDNU2iCD5R5rjuuUbmEVAkAufGMr3FXgrKm5qyNw==@kvack.org
+X-Gm-Message-State: AOJu0YyquxLQxAVjNP4Hbkv4p/ZkqC6ixzwavy6r3GV70oNcS4U+IK7a
+	WvL8LoP+tx9JqWPMz68JsafO33LnLLLEuu8d0n9RFVXmaWEFMtEOuqQCy4Sb9Ac+HsWIrVSY3yN
+	W0g==
+X-Received: from wmby28.prod.google.com ([2002:a05:600c:c05c:b0:480:3227:a124])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1c1c:b0:477:7b16:5fb1
+ with SMTP id 5b1f17b1804b1-483739ff8damr66109275e9.7.1771030829456; Fri, 13
+ Feb 2026 17:00:29 -0800 (PST)
+Date: Sat, 14 Feb 2026 01:57:51 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.335.g19a08e0c02-goog
+Message-ID: <20260214010013.3027519-1-elver@google.com>
+Subject: [PATCH] kho: validate order in deserialize_bitmap()
+From: Marco Elver <elver@google.com>
+To: elver@google.com
+Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 78762140007
+X-Stat-Signature: wyy7efxj9hscfr7og54eryjeceosjcig
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771030621-189814
-X-HE-Meta: U2FsdGVkX18A8w+M8FG3INf8x1SEJ3lCVSCK0WH9nAXmaf6b7+yHLKVjs3IYF1nHtA5yiG7gYYp/J685N/lvSeImUpj2JGei4rIpwGJSQI7uhbI01wRZWVlBWHcAz9BwlYACW4dBx7XkeRpxQyDB2ril/0hXJflFr5yyeRVYhZPIUbfpLyJGkFolErQqRlMOqu/aFjUD6U1gPh1LNY8JiSWypJPUUzhnKElxVBRA8tEZyMXKIEMNfOKDaDeH7vWtJ5oTidDznAXVRt9HC7OosoaosRVH24C/7etjLivPBUtKWF2oDuuRZlGgUM7PJo7aeRxAoU4xPW9yAhNkypve1XgnbXdCK2hnRmjGeufxycCeDekX1EhS78AIptVpw2OyTpAKPIsFzATLbWJ7LgGP4JzRakP7PVIZ+zKIsoAvsmVWTFlsMbJcN1p+b4EotovrzlJaqiYK59EBTNT5kpROpdr2fNaQTBNDFQP73ufzH93L4sCdCbmNqT+fgzzCilF0/xvul474A+2yG/8Hld/jT+5jwtsRNHEoeMsNzHuJf6LDS8p6pHfuhg/WTyQ0UivomBTkbrUH9BFVdyMRWPtynX17kK8gZ1ZgVT+AWzWydtenyOejY8QNOmSGWlVBwLtC7ad2YmC+H2SL07noK6aA00/1vhoGE5SGRq8fjkaLwWBC0ZiQxJ5hZrpAdS7vnajW2jkA0WV2b8XrIT/VEwGU07WVr0DO1X7757VDF1QEQFBTDRVTKdSkljgvMFpsCaTLMCgKvbxCfxRIKBij5aBOS9dE2adYgR5GophsyT4TrKhzEI8RltAIulVU+VnkvjqzIXOzVDhf0BR4YhjsNf3RrLAv+wJFdhFVihRcXjPzTiyoc4Uu6r3wq0C1vLZ7AdwDQLgiSO4ZL9jr7xXzr735vVVGrnvB+ijqMjbAYbIt3G0V762CnarLyCJYFRn4VZWNNxISCYu76gaqOSejKnJ
- RA+R8Xle
- AxadW3JBYErsFHuhahM9DO/5OOh1ts32i7qYVXZN5Xn+9A3xR7gI2EKYB9L/AHiJMrFIXOwAF30tmgD8FBCoeisivrRZPsJ/xtK7tIf7Me9FLHpLJrtbpRIgyTG8sGl9JEJiz1nhMr9hCpKG5osmVSEPujImdmnCMroGH
+X-HE-Tag: 1771030831-870212
+X-HE-Meta: U2FsdGVkX1+FXEa9e4h9L9I+ItznHyg/KorZ1nxOUkU+G2Xs6jHuiN7UORRd7A9dZ6eINUhQ0G+ovv9FTFHyFNHwVvXpe8YK+ZH/1Tj7HVKXyXTkvus45surxfdn4zSju3KMv3xUZK5iMPVmrfWB1POMsp3Vojsk00Cv8pp8i7bHVGFNaKHCKumzsMs3/3yy1vturYrc9KkAA4vq3rEODE7coIdH2TNO9m/bkcZtpBfQrGxc4y0M/duvqPM8dV9UMZUC9TTJp7FIZklGsU43BgzyCx6dnR1fZVKAanYeGaKXzZYk8SLgpW651YeYQfg+2UZ/MkE6KVMVVLF8nTjEip1dDr5fzIVC0N5QfLujoJQkc3buicA/AOc9JgOh4SBt/eOi8llJ5+f1kyqM/rOzl+2epgHPYgNFzORwJAoGEpXbksESb2BuOQKFgc3ww1FasU/OEMIaLFPeY/ihBEttuP8waZ/4VBGtSjNKez7NXt/Xgt87iBD+xlE5Vf8ESbF1rGPno3NJrTujvw8Szn4PgrvClJQU3vq83Tvv1PMqYfAwvVjLzXk9utI5N1KDhcsdY2UjcXzGQEqLDwdmxpNchv5sF7fQdYTlJAKB7w87QJ4/3rGj4fcB7C7b+Z6Yozspw/JQXNUYfdTFf8y4VcrhNOh0S9fVOFHnQIaaGkmhXSDW9yMyY9wR7JX075L445Uzi8o9Cdkts5vnOB4zr2Or4oBhBXKnEaiwAE72YHE4GPW/p3Zf+mW0P/77I3IwBl4mERtVrvJwklC8bbCgReb1phl65bpb5tm+dtDo2pigZaGy7bPHVMjcciJjKGdR+ye9BRl+T7+gkBzvOWiomxZeg2QdaqoB9qjR4xPAZjS0gJOrGqc1tQI60ozRI82t7GqusuRA3BGtzQxQfrvUG/L+RIVj6SKzzWX+GeTg0I0emiQ+D5VCrWLLPrNIn7BSA2cOEL/8sO4izkQr81Tp7ni
+ zRzXJi6s
+ knWCh73Bbm32KFECG3SVC2DM6U07FIwfPg4K6SCGNF1zzLo8Zuals7yivY7htEHNa4DU9hcVh+RSZuMZNJ5vkk9iE+1DzLIlZM4yA9Dgw0Fxv5j97+37ZadACut0h2MMnp59qi9wt0mx4ayQuLwtMVnzfRA+mUZtLD/Wytfyes3mHdVk08T27CYeQHt2pvjcUdXvOSkE99fF8AUl0pzxdVWxdWpXlL8IMKV1KgbcfuGMt1D6hozbkXG9/3tA2Q2n8zcin72Mx8sjeBzFdKdFn2OeSqKajkr+yKrtp8mc1pAs6xsOLUn8CQYIiMYDRkx+l+vEZ9uqmsUwtXjqrDsbv/Q53P9KuTmPPTtOoPVtwfZODRZiisC/MaIh+KZRFu1fRn6kRPJz4Z00WnX4uVGisX8fYhtQCAvTVnQHVXJL9hhvVbyrCnC87f3xY+gjUr74sUaps9bgdu1NFqhI2Q5Y49HrvAMwwYIY3iH3jtmsyolHWtCPKgj0Lm05B1c31M0Q8qXe40lFMKMAalbKkvKeDCpubH8wKSTtjYehlmS91t7Nov3qw88YcluGbf5iot33YXbuuK4IG8grWCMg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,151 +107,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The function deserialize_bitmap() calculates the reservation size using:
 
+    int sz = 1 << (order + PAGE_SHIFT);
 
-On 2026/2/13 18:03, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> We currently have two different sets of helpers for getting or putting
-> the private IDs' refcount for order 0 and large folios. This is
-> redundant. Just use one and always acquire the refcount of the swapout
-> folio size unless it's zero, and put the refcount using the folio size
-> if the charge failed, since the folio size can't change. Then there is
-> no need to update the refcount for tail pages.
-> 
-> Same for freeing, then only one pair of get/put helper is needed now.
-> 
-> The performance might be slightly better, too: both "inc unless zero"
-> and "add unless zero" use the same cmpxchg implementation. For large
-> folios, we saved an atomic operation. And for both order 0 and large
-> folios, we saved a branch.
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/memcontrol-v1.c |  5 +----
->  mm/memcontrol-v1.h |  4 ++--
->  mm/memcontrol.c    | 29 +++++++----------------------
->  3 files changed, 10 insertions(+), 28 deletions(-)
-> 
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index 0e3d972fad33..c28a060abc64 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -635,11 +635,8 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
->  	 * have an ID allocated to it anymore, charge the closest online
->  	 * ancestor for the swap instead and transfer the memory+swap charge.
->  	 */
-> -	swap_memcg = mem_cgroup_private_id_get_online(memcg);
->  	nr_entries = folio_nr_pages(folio);
-> -	/* Get references for the tail pages, too */
-> -	if (nr_entries > 1)
-> -		mem_cgroup_private_id_get_many(swap_memcg, nr_entries - 1);
-> +	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
->  	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
->  
->  	swap_cgroup_record(folio, mem_cgroup_private_id(swap_memcg), entry);
-> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> index 49933925b4ba..dbbd0e13d4ff 100644
-> --- a/mm/memcontrol-v1.h
-> +++ b/mm/memcontrol-v1.h
-> @@ -28,8 +28,8 @@ unsigned long memcg_events(struct mem_cgroup *memcg, int event);
->  unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
->  int memory_stat_show(struct seq_file *m, void *v);
->  
-> -void mem_cgroup_private_id_get_many(struct mem_cgroup *memcg, unsigned int n);
-> -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg);
-> +struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
-> +						    unsigned int n);
->  
->  /* Cgroup v1-specific declarations */
->  #ifdef CONFIG_MEMCG_V1
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 007413a53b45..4425ef51feae 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3564,13 +3564,7 @@ static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
->  	}
->  }
->  
-> -void __maybe_unused mem_cgroup_private_id_get_many(struct mem_cgroup *memcg,
-> -					   unsigned int n)
-> -{
-> -	refcount_add(n, &memcg->id.ref);
-> -}
-> -
-> -static void mem_cgroup_private_id_put_many(struct mem_cgroup *memcg, unsigned int n)
-> +static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
->  {
->  	if (refcount_sub_and_test(n, &memcg->id.ref)) {
->  		mem_cgroup_private_id_remove(memcg);
-> @@ -3580,14 +3574,9 @@ static void mem_cgroup_private_id_put_many(struct mem_cgroup *memcg, unsigned in
->  	}
->  }
->  
-> -static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg)
-> +struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
->  {
-> -	mem_cgroup_private_id_put_many(memcg, 1);
-> -}
-> -
-> -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg)
-> -{
-> -	while (!refcount_inc_not_zero(&memcg->id.ref)) {
-> +	while (!refcount_add_not_zero(n, &memcg->id.ref)) {
->  		/*
->  		 * The root cgroup cannot be destroyed, so it's refcount must
->  		 * always be >= 1.
-> @@ -3888,7 +3877,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
->  
->  	drain_all_stock(memcg);
->  
-> -	mem_cgroup_private_id_put(memcg);
-> +	mem_cgroup_private_id_put(memcg, 1);
->  }
->  
->  static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
-> @@ -5170,19 +5159,15 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, swp_entry_t entry)
->  		return 0;
->  	}
->  
-> -	memcg = mem_cgroup_private_id_get_online(memcg);
-> +	memcg = mem_cgroup_private_id_get_online(memcg, nr_pages);
->  
->  	if (!mem_cgroup_is_root(memcg) &&
->  	    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
->  		memcg_memory_event(memcg, MEMCG_SWAP_MAX);
->  		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
-> -		mem_cgroup_private_id_put(memcg);
-> +		mem_cgroup_private_id_put(memcg, nr_pages);
->  		return -ENOMEM;
->  	}
-> -
-> -	/* Get references for the tail pages, too */
-> -	if (nr_pages > 1)
-> -		mem_cgroup_private_id_get_many(memcg, nr_pages - 1);
->  	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
->  
->  	swap_cgroup_record(folio, mem_cgroup_private_id(memcg), entry);
-> @@ -5211,7 +5196,7 @@ void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pages)
->  				page_counter_uncharge(&memcg->swap, nr_pages);
->  		}
->  		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
-> -		mem_cgroup_private_id_put_many(memcg, nr_pages);
-> +		mem_cgroup_private_id_put(memcg, nr_pages);
->  	}
->  	rcu_read_unlock();
->  }
-> 
-> ---
-> base-commit: 9fff1ab283e0982c2b8e73f1d2246fd38caf40c8
-> change-id: 20260213-memcg-privid-6ba2773b5ca2
-> 
-> Best regards,
+If a corrupted KHO image provides an order >= 20 (on systems with 4KB
+pages), the shift amount becomes >= 32, which overflows the 32-bit
+integer. This results in a zero-size memory reservation.
 
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Furthermore, the physical address calculation:
 
+    phys_addr_t phys = elm->phys_start + (bit << (order + PAGE_SHIFT));
+
+can also overflow and wrap around if the order is large. This allows a
+corrupt KHO image to cause out-of-bounds updates to page->private of
+arbitrary physical pages during early boot.
+
+Fix this by adding a bounds check for the order field.
+
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Signed-off-by: Marco Elver <elver@google.com>
+---
+ kernel/liveupdate/kexec_handover.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index b851b09a8e99..ec353e4b68a6 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -463,6 +463,11 @@ static void __init deserialize_bitmap(unsigned int order,
+ 	struct kho_mem_phys_bits *bitmap = KHOSER_LOAD_PTR(elm->bitmap);
+ 	unsigned long bit;
+ 
++	if (order > MAX_PAGE_ORDER) {
++		pr_warn("invalid order %u for preserved bitmap\n", order);
++		return;
++	}
++
+ 	for_each_set_bit(bit, bitmap->preserve, PRESERVE_BITS) {
+ 		int sz = 1 << (order + PAGE_SHIFT);
+ 		phys_addr_t phys =
 -- 
-Best regards,
-Ridong
-
+2.53.0.335.g19a08e0c02-goog
 
