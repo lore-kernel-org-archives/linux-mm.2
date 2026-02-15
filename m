@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04A7E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:13:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B6CE63F2E
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:13:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 143A46B00FA; Sun, 15 Feb 2026 18:51:25 -0500 (EST)
+	id 1DC286B00DA; Sun, 15 Feb 2026 18:46:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 125726B00FD; Sun, 15 Feb 2026 18:51:25 -0500 (EST)
+	id 18EC46B00E0; Sun, 15 Feb 2026 18:46:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027DA6B00FE; Sun, 15 Feb 2026 18:51:24 -0500 (EST)
+	id 085346B00E4; Sun, 15 Feb 2026 18:46:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with SMTP id 6046F6B00FA
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:51:21 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D7D2E8C0C9
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:41 +0000 (UTC)
-X-FDA: 84448315602.07.174C150
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E716B00DA
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:46:12 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 466B48CAF0
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:48 +0000 (UTC)
+X-FDA: 84448325976.11.A8C15D1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 341D240005
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UiZ4uB0f;
-	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8ECCD40006
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hPpt3LKx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198900;
+	s=arc-20220608; t=1771199146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eg4q1TPk5K9uznG6tmQC7EnZ8lOPClMrJv2epqWHXVE=;
-	b=7pAg33Cd/fPRz/Vxnhw3hCF9ry8ix0Y7l0O9Vbha4D8EmFhNfhuoXNtKHAGOvc/OzzkA3U
-	yseBMbWxwZL1SIj2L0Ooel/rLuc13NdbHPjZoZZnOBkfLvi24P63LZoMancmQqHT7iAIHB
-	0K3r98+G/U5utfhq8sViRb7ur4uak0g=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UiZ4uB0f;
-	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198900; a=rsa-sha256;
+	bh=FlvdoEWJXz77fEQXg6ES1K70ThywIvl7DBe1m6TJhqo=;
+	b=fDlfcgsc0embwLnRve77k9VLCR7W2jHLq4JnYecFBLVHTXX47FHzVcaI1BLIp76apmG3eq
+	6ibuyBvPv7Zoc81nmwAhDGn0eS8znH9I+G/CcE+iOch4HOoXo/qW2Zp+rmSBG2lv3/Fyj9
+	RPMXYeL/A+vDr0EhW+k4wRs9yVmm9do=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199146; a=rsa-sha256;
 	cv=none;
-	b=AlfeXQ37V7a3lZANnIezRcMEi93s0MIQ1SmHlZhRqMKA9/QsyOx/hvTKlsFoKNkGU2IMll
-	NauPefYWV5+vv/+g3untvhLkenglEYgJm/MkY5rIEhvjaWymW5jLMLjDI7lY7G8C0Lovr8
-	arZ9Xoj6Ea2epJPXV0r35T/MDlTNifw=
+	b=XynCCic9LlR2x3vF5i/dwUQBKrN45uUoQjPOhkjEJMSXr+NyC4Q6h1Ec13X4sQLPfu41ye
+	ZbObKa23qxABJ+ufThEcGRLi/xX/pR8xISHOF1c537PJ/bLNQLQfW4QCFYrHCJkqOwBOiw
+	+VEMTQcPq8yyhMtl2kNz5e243iRFDuA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hPpt3LKx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C97BE6057A;
-	Sun, 15 Feb 2026 23:41:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAE9C19422;
-	Sun, 15 Feb 2026 23:41:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1351A6057A;
+	Sun, 15 Feb 2026 23:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9D6C4CEF7;
+	Sun, 15 Feb 2026 23:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198899;
-	bh=D7D66X+gJAFczQNNgh5CL7i3hR5Izk7o4xJkF6qeolE=;
+	s=k20201202; t=1771199145;
+	bh=SHQHcWrAr56kHNOm4L4h66Q7ENSNd//dP5BDvu4tb6M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=UiZ4uB0ftkvcfsuyCpp2BCvenjYi5DGaspOgGnronBlOVcBlhMu3VmURoNZfYtac6
-	 NiVhgllacLrufMvslVuIeJtia9BaGhvMckaBy1dQio2CVJkduOxjuE3e1T8E4Ta/f4
-	 TRfsHSjnMU/MEQSjnHOJcXq5084eZ3b0clE7i1+35RFxHF5uz9mIa048JqptbMPHw3
-	 4DT6C+6bjXQyEW30Mg5Lk+P+JPc652re0g//ypjmuHRJxOWNmXRHY8G8bHyGYyIWKB
-	 2fdGqxMMxiolOCw+saPhkpaQ6eNcXg6+S0l9fEc4uncVsDSxrdk8gX2gR/ndqswy5v
-	 7ez5UBte+KnjQ==
+	b=hPpt3LKx5ODgoYvnFGDMc14a3psBUBdm8tStjS5YgTVFEr+gtMc//bnKnabcdQdT7
+	 I/rS6+/EcCG5iTAq6a3lk6rDMPGzsyC3TYYaS3t9M259/FDw1QplubWXeerUvMD6iB
+	 LN6k+te+eC0yHj4VBoMBMMe6PaNnSxdaxBM+B5kfQyWawcr5LgZYkb3mDy5w8NOaGV
+	 3wTNcFGqxqwLhPg9ZriKTYgMaud9NlUCz3brhRzVgXWpRYBO5nYRKmwGXvxWSAw7e/
+	 IESujoisZqCNTtgdFy275L4lm7V5YNO6V+Rxs5YgWRrNr2S6AlI9Z7rG7FFLVOfEM8
+	 ArP9h9+gYnmSA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:16 +0100
-Subject: [PATCH 29/79] block: rust: add `TagSet` private data support
+Date: Mon, 16 Feb 2026 00:35:40 +0100
+Subject: [PATCH 53/79] block: rnull: add polled completion support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-29-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-53-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,31 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5916; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=D7D66X+gJAFczQNNgh5CL7i3hR5Izk7o4xJkF6qeolE=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklg2rFmUUi6LLaqQTrSP7Cjji5l3ptpVNJ3Mb
- 1LLO0X1treJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYNgAKCRDhuBo+eShj
- d2x7EACrjvttPgu6cF9IkrYrF2Y2L7/35Z6wNExRAfCWDx4SrpD3/6Yne063iZ3oG/ih3R0obID
- qfp4ntGFuP3Z6/XfIV63okRkoTxcAw35XZg+kZuTy82328/rRgWZZsLUhCzPaTc3x2hU/06mgy3
- 0qG/0aC23ua7hHWpnLQtJxqoAxLce8qX9KRb/3HrJtN74hV5ffluD6bcFTtBAkVMISJoXC+qefe
- 29TQuTOpRbj0vQHXKZsbTXkj0XVdWfHd1cAfzpNRyi3rGkw+VDLDxYV5uDU0oJ/klMZAPCyF4FI
- V2MBB9AWE8449Mkh5qbEfw8/A68+Xd3rZ6a93K74icb2QnYf4g+aJm0GKvhgEwOz+Qe6LsD6ABe
- u5OgzcAomqzjOxMvd/MgqoW1bxnnupdUfdTyzSzujUjBKC1HVuBcRdupuN6PpW2VU6Vpa1ugb5y
- +65lOvPVgjVw2c6hEsZkSR1FULHvkbC714OwvUfo55pQolUV8vSt7Kjzl/TssRlXu8Wjkx7fx9Q
- WcxvPxxaSwcPexeGtoCF7BZ7F5Nh4FXQKCaReDSddZ3ioQTU8DNkmoeDzQ6CCGzJEeAfIRuUU2s
- mUD/Je4nqrrTVdvYB99b35nU+EQ/zBlzGjPcU26fzDxbCf3ozbpC/FKrL/PZsRtK9WQlOV4AZKi
- 17jWogjukxsD0ZA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10872;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=SHQHcWrAr56kHNOm4L4h66Q7ENSNd//dP5BDvu4tb6M=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhLjsQPQorh27YF42h7pD7jlkOf1PFHTBR0u
+ 3TI7UoofBKJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYSwAKCRDhuBo+eShj
+ d/KSD/0Rq9t9OnKDySf4+B2ol8H/EOjSF++wjSDKMA6Gpxss08a0mQWIH/LyS47nXEwmBggaUy9
+ tu/RxjMv0xAtNqMH+77fDnl4wQ6Mz71L75tvo5/bdr+r0XqtDpMFSz9/ORtahkvxnUh/fvZaPFi
+ Kw9SMbHJLN7zdXYv3lmjmxORRblYVtx9wjy7fSkr1VIqgXlmF2PdImQjOj/3CiR1dvKRPrxBRTb
+ jg/e3bw0Bylhy3p9JdQDWy45aS+y2Efo87I0xdwGJFHq66oC0imdKawYcAKJWVxN5uLYRaa8yPY
+ DuKjEvfrHiFWnoVf/taQxtIOObpyTuEm9WFZQcc5ab/Bn6Y8c+E3cpmvHfNxZh8XRvElSrOs8gr
+ g+gCRZ5xRBC7ttW7aJ452Nasv/Jjj5nX4W0coMwiJHjCEPU1aBZ16/K6NM3xg30jvGxlwUKxPL5
+ sHAMc2ZuAWxKc98g3LwKspOP+ec5E+TCQAKUTawX0Hg91XkIiC3J7NrRmL1K9UTchJTepvhfY8X
+ IDu6hjqSwaf1UQDrbaP20U18GBNQQMuC1e8MyCBNhR88ge25oY3qeGV9Omdqw4COBKSMZtTmsZ4
+ gI6/xPGsy82TJ0P006FIq2h6Nf77XHBzaZ5tj1LD+KeI8k7C61GSP3d6nI8PPTXxRR7j9yb4mqG
+ S4rjwcR/abkmxyA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 5smgzutqecqxydtqmd4oy63h3oqc48py
+X-Rspamd-Queue-Id: 8ECCD40006
+X-Stat-Signature: jm6co1n37xiyrrqazafdtw5ax6jdqqzn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 341D240005
-X-HE-Tag: 1771198900-767659
-X-HE-Meta: U2FsdGVkX1/KP/6tUQM4SaFJy6NBTCuHSUyzrywRyk0r8TgH/wy9xPq0BDmR7wKRJNcvN5LtPSvEO6xc7d0VIy2UH9QqdwVjIbmQQu75sYi/tozes2Sgf0+xdu8vv8pxbwLleWhzhSwn66PuxE+f60+olmGHwhGR3QeSHyCfwjTnlO7nZiukIDLF1+qP3M5wqk3cxM35A4xvick0oXGfR8n7hICYwp4yW5RPg9MNPgcedmszclOEsPxW3kR04v07UZFrg754qwcSUKSWJOOzpHmJm6+SqfN/WSYjOCYdKl19JlNw+V5S7nYcyZ+fHo1nx/YK7oPkrjPpXThMC86UtALw/xXA6dfQCVPU7rN47zmF71HmnwNGILn0tc/27Ba9Pv7yvd/h6UIujdaoS0EL064JrfmjWBLzd6cswRAmMgwMvckBjrMZhJ3ZXtTi1Xq8nG2rffCywjUnn0P/NEobnNMAD5rB13uAyVzcr0Jo0OwN90enVw4CD+oPp1S0aJ3Y8nnrmr/AehiDP5OGPRDIloTlq9AaJfc73pCtc/YSWcQdcRAqu0NVl5jM2Nb8DOnqjh/bstbvJPoHbKaQbKHrRodpnzfe2iHBOlEoI1y7mgxO3mBZH/hrZVPn9TjwARMhigqSvJM/jqYM0vXco0bm+Jj4zcYReAGHC1lnhd6QwaScLu7sxrjTvOJ6jORWmw52FdpAXzkNVVRZb6DY67V4Q1uNEk+ZADD9wBWW/cahsawKFe1PhohnA4HcY6/fdXszLMNVmJ8JZaOh+kTsXgEh7GQa241WYanyLR8un3NcEAB44F8q7uU9eW8hqTNqssqFvD3ptuVjV2t9t3XqIVgjJTysWd8OC5IO8ebA3kW418FZvaLK9xW9TWMSbqJb6/O6wXdpDJNsw1I5CG1L4NtiBr/dC3gT92XNgyzvnyuwgYukpaCTsLY6AmnYFxvMZv7vjEv3zZiG2mSpvvbDrD9
- vQc8tSug
- C8umkOlRsJrDnAH0bjWNcsUEaDYq3TJo5xVWYG1sGhdgVmsxzFK9o5P1IpfNe/z3Rug2L8eQZWGczynm0lMMf+sNnrgCUfoANhf+AEYyE8nZ8Qy4qp0t9I/hrn54BlxE/djTaAccGFicRBCWqPUL7AGp+gcCX8vnuz9Mx+mHxKhL6HU0zbgf4sUUt1oIiNPKg09CKyN3OnPEQ2Bh/F1WXD9xAT2g5mOQPCUimaEW0QvYAxT6MNV3ac/in2bsEVHUpU5RCydx70/NsJ3jkZW3KbnI5P0ExVoLDb0Z6oExMIbJrB+1Ps/IM4SojFik8PAf98DPR
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1771199146-36304
+X-HE-Meta: U2FsdGVkX1+wUjuGcNUteYtJuhCVzN+drT4owZSwlJrzc9a5p9O4fwT1reA2qMpNSs3gXiMVQPeBnIgFoEX1UzG0a6nMFV/QRPPBRWxOFvCtSXLcYfGByEoPVDXHsidfimW/h1ZNIVJipPMLA18KE2tRYntKHG/2RUVhDUV2Q/cgK7Wx6n5KhAYDym9cl53QxdSJRbUTzzFO4wLwLanyT/BRk5FxyUWL3Cky7L5DScTPlEd2FwUcAFGKgIF3mN0LPnnjHG+5IiOKvK8ljkOTL+vwlP4W/wC5zU239Ytyn8Ir6TZJiz0JtpoxCvyRldRgKr110xcRejbuTncVqcQyCs9lQ35cAC8vL5lkakveY7HqGpat1+WySGj6QcKuZS6iexGcB7l9PLAwpcEOk/uKeuq26VM/IwmIGlCqth43WLvGOezsFd0ces1pMFb25JhtwBcXbJNlWN2MOrk5hzcKJcKj33NQ5mBhsu6MIEKLiQTvxPnC51nnTW1fplRBMspfiLas160sAgsJGCT4dSvr58HhyJmca8GeRNGEnapq9WdFy6sjIaz9rmP5D7/QD38E+q0Hjtpr3KzoBfFNyqjvUhu4sLRjJWT1VlNr/r6vIJ9WtBo/Bd82+RUimxAV6CM1PsxZ6FGl23JH4Vg2x2816nmdla01g7TlZG+2rLYFpPf2w9u5zX6xx+89MNojFlXIzGRb5zGHmZnH5oYPVGWELJ2cp1uTYoVXhaK2GYYDB4J0GyW14TtPUl/6bB4Om2AXhdU3IhcFxy6sMemUUeX84BoTDd9oCbKX2y2tZ1cdIZS7A2GS88dY+EgFoQdwzGbQBOLVjmWjx4eQ+R6GXLWKEkA4Jriw5Df4d4w6yLH6huR65nLxnlx7N7KgDf3rwXyGyW+K00nuV9eJX6BFPb5s/eMz9j8a/iSCzYurtVvo6GBk8BCUV15FF8ZrwX6kJh27H8vgwdSJrh28yIqBcxX
+ 4XjoHjyr
+ Jxg8c46khYYWN+VDt4pH3TJpA8r9BB9XAHcNwEvqsxlrnCaK6QiOLz4Ml/FyRovWw8cn/W9Jn9OeK3yizUCckCKMW4Xo4u+pykkPaP9LZwO4tQp5oNfiWHMM6x3kfFPFzj2uyok1k/ffPmSGMKLSmd1NAccNtqNmIksnTN388qf7V9VC54RWnP5jEXmrqMHDHk8VWcgx0EaoNi59ZntVAbX6SoDGYV3WgZyaaEwnYZ6dCQIrWW819B6m1UW/qeM391oSN2BebQCJaNQZ5BY4JLiMJuEinl6QtxpqyRZI7HZEGnY0JBoVEITXE+ddKRPe4WzWL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,145 +122,296 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-C block device drivers can attach private data to a `struct
-blk_mq_tag_set`. Add support for this feature for Rust block device
-drivers via the `Operations::TagSetData` associated type.
-
-The private data is passed to `TagSet::new` and is stored in the
-`driver_data` field of the underlying `struct blk_mq_tag_set`. It is
-released when the `TagSet` is dropped.
+Add support for polled I/O completion in rnull. This feature requires
+configuring poll queues via the `poll_queues` attribute.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/rnull.rs       |  3 ++-
- rust/kernel/block/mq.rs            |  6 ++++--
- rust/kernel/block/mq/operations.rs |  4 ++++
- rust/kernel/block/mq/tag_set.rs    | 25 ++++++++++++++++++++-----
- 4 files changed, 30 insertions(+), 8 deletions(-)
+ drivers/block/rnull/configfs.rs |  19 +++++-
+ drivers/block/rnull/rnull.rs    | 130 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 136 insertions(+), 13 deletions(-)
 
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 0873d696f80f6..e134e21a6b564 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -71,7 +71,7 @@ impl AttributeOperations<0> for Config {
+         writer.write_str(
+             "blocksize,size,rotational,irqmode,completion_nsec,memory_backed\
+              submit_queues,use_per_node_hctx,discard,blocking,shared_tags,\
+-             zoned,zone_size,zone_capacity\n",
++             zoned,zone_size,zone_capacity,poll_queues\n",
+         )?;
+         Ok(writer.bytes_written())
+     }
+@@ -117,6 +117,7 @@ fn make_group(
+                 zone_max_open: 24,
+                 zone_max_active: 25,
+                 zone_append_max_sectors: 26,
++                poll_queues: 27,
+             ],
+         };
+ 
+@@ -156,6 +157,7 @@ fn make_group(
+                     zone_max_open: 0,
+                     zone_max_active: 0,
+                     zone_append_max_sectors: u32::MAX,
++                    poll_queues: 0,
+                 }),
+             }),
+             core::iter::empty(),
+@@ -231,6 +233,7 @@ struct DeviceConfigInner {
+     zone_max_open: u32,
+     zone_max_active: u32,
+     zone_append_max_sectors: u32,
++    poll_queues: u32,
+ }
+ 
+ #[vtable]
+@@ -281,6 +284,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 zone_max_open: guard.zone_max_open,
+                 zone_max_active: guard.zone_max_active,
+                 zone_append_max_sectors: guard.zone_append_max_sectors,
++                poll_queues: guard.poll_queues,
+             })?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -510,3 +514,16 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ configfs_simple_field!(DeviceConfig, 24, zone_max_open, u32);
+ configfs_simple_field!(DeviceConfig, 25, zone_max_active, u32);
+ configfs_simple_field!(DeviceConfig, 26, zone_append_max_sectors, u32);
++configfs_simple_field!(
++    DeviceConfig,
++    27,
++    poll_queues,
++    u32,
++    check | value | {
++        if value > kernel::num_possible_cpus() {
++            Err(kernel::error::code::EINVAL)
++        } else {
++            Ok(())
++        }
++    }
++);
 diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 6691e5912c5c9..9e8d085924040 100644
+index 765bbc8101d10..92e75f15e02c6 100644
 --- a/drivers/block/rnull/rnull.rs
 +++ b/drivers/block/rnull/rnull.rs
-@@ -229,7 +229,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-         }
+@@ -33,6 +33,7 @@
+                 GenDisk,
+                 GenDiskRef, //
+             },
++            IoCompletionBatch,
+             Operations,
+             TagSet, //
+         },
+@@ -188,6 +189,10 @@
+             default: 0,
+             description: "Maximum size of a zone append command (in 512B sectors). Specify 0 for no zone append.",
+         },
++        poll_queues: u32 {
++            default: 0,
++            description: "Number of IOPOLL submission queues.",
++        },
+     },
+ }
  
-         let tagset = Arc::pin_init(
--            TagSet::new(submit_queues, 256, 1, home_node, flags),
-+            TagSet::new(submit_queues, (), 256, 1, home_node, flags),
-             GFP_KERNEL,
-         )?;
+@@ -244,6 +249,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     zone_max_open: *module_parameters::zone_max_open.value(),
+                     zone_max_active: *module_parameters::zone_max_active.value(),
+                     zone_append_max_sectors: *module_parameters::zone_append_max_sectors.value(),
++                    poll_queues: *module_parameters::poll_queues.value(),
+                 })?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+@@ -291,6 +297,7 @@ struct NullBlkOptions<'a> {
+     zone_max_active: u32,
+     #[cfg_attr(not(CONFIG_BLK_DEV_ZONED), expect(unused_variables))]
+     zone_append_max_sectors: u32,
++    poll_queues: u32,
+ }
  
-@@ -505,6 +505,7 @@ fn align_down<T>(value: T, to: T) -> T
+ static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
+@@ -348,6 +355,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+             zone_max_open,
+             zone_max_active,
+             zone_append_max_sectors,
++            poll_queues,
+         } = options;
+ 
+         let mut flags = mq::tag_set::Flags::default();
+@@ -369,7 +377,21 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+ 
+         let tagset_ctor = || -> Result<Arc<_>> {
+             Arc::pin_init(
+-                TagSet::new(submit_queues, (), hw_queue_depth, 1, home_node, flags),
++                TagSet::new(
++                    submit_queues + poll_queues,
++                    KBox::new(
++                        NullBlkTagsetData {
++                            queue_depth: hw_queue_depth,
++                            submit_queue_count: submit_queues,
++                            poll_queue_count: poll_queues,
++                        },
++                        GFP_KERNEL,
++                    )?,
++                    hw_queue_depth,
++                    if poll_queues == 0 { 1 } else { 3 },
++                    home_node,
++                    flags,
++                ),
+                 GFP_KERNEL,
+             )
+         };
+@@ -685,6 +707,7 @@ fn run(
+ 
+ struct HwQueueContext {
+     page: Option<KBox<disk_storage::NullBlockPage>>,
++    poll_queue: kernel::ringbuffer::RingBuffer<Owned<mq::Request<NullBlkDevice>>>,
+ }
+ 
+ #[pin_data]
+@@ -713,11 +736,17 @@ impl HasHrTimer<Self> for Pdu {
+     }
+ }
+ 
++struct NullBlkTagsetData {
++    queue_depth: u32,
++    submit_queue_count: u32,
++    poll_queue_count: u32,
++}
++
+ #[vtable]
  impl Operations for NullBlkDevice {
-     type QueueData = Pin<KBox<QueueData>>;
+     type QueueData = Arc<Self>;
      type RequestData = Pdu;
-+    type TagSetData = ();
+-    type TagSetData = ();
++    type TagSetData = KBox<NullBlkTagsetData>;
+     type HwData = Pin<KBox<SpinLock<HwQueueContext>>>;
  
      fn new_request_data() -> impl PinInit<Self::RequestData> {
-         pin_init!(Pdu {
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index d3957f2fb1a66..415be31e9a777 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -71,6 +71,7 @@
- //! impl Operations for MyBlkDevice {
- //!     type RequestData = ();
- //!     type QueueData = ();
-+//!     type TagSetData = ();
- //!
- //!     fn new_request_data(
- //!     ) -> impl PinInit<()> {
-@@ -94,8 +95,9 @@
- //!
- //! let tagset: Arc<TagSet<MyBlkDevice>> =
- //!     Arc::pin_init(
--//!         TagSet::new(1, 256, 1, bindings::NUMA_NO_NODE, mq::tag_set::Flags::default()),
--//!         GFP_KERNEL)?;
-+//!         TagSet::new(1, (), 256, 1, bindings::NUMA_NO_NODE, mq::tag_set::Flags::default()),
-+//!         GFP_KERNEL
-+//!     )?;
- //! let mut disk = gen_disk::GenDiskBuilder::new()
- //!     .capacity_sectors(4096)
- //!     .build(fmt!("myblk"), tagset, ())?;
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index cd37b939bbf30..9aab6240428cc 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -44,6 +44,10 @@ pub trait Operations: Sized {
-     /// the `GenDisk` associated with this `Operations` implementation.
-     type QueueData: ForeignOwnable;
+@@ -733,7 +762,7 @@ fn queue_rq(
+         this: ArcBorrow<'_, Self>,
+         rq: Owned<mq::IdleRequest<Self>>,
+         _is_last: bool,
+-        _is_poll: bool,
++        is_poll: bool,
+     ) -> BlkResult {
+         if this.bandwidth_limit != 0 {
+             if !this.bandwidth_timer.active() {
+@@ -770,13 +799,29 @@ fn queue_rq(
+         #[cfg(not(CONFIG_BLK_DEV_ZONED))]
+         this.handle_regular_command(&hw_data, &mut rq)?;
  
-+    /// Data associated with a `TagSet`. This is stored as a pointer in `struct
-+    /// blk_mq_tag_set`.
-+    type TagSetData: ForeignOwnable;
+-        match this.irq_mode {
+-            IRQMode::None => Self::end_request(rq),
+-            IRQMode::Soft => mq::Request::complete(rq.into()),
+-            IRQMode::Timer => {
+-                OwnableRefCounted::into_shared(rq)
+-                    .start(this.completion_time)
+-                    .dismiss();
++        if is_poll {
++            // NOTE: We lack the ability to insert `Owned<Request>` into a
++            // `kernel::list::List`, so we use a `RingBuffer` instead. The
++            // drawback of this is that we have to allocate the space for the
++            // ring buffer during drive initialization, and we have to hold the
++            // lock protecting the list until we have processed all the requests
++            // in the list. Change to a linked list when the kernel gets this
++            // ability.
 +
-     /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
-     fn new_request_data() -> impl PinInit<Self::RequestData>;
- 
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index e9b36d6329b9b..f18b51e5217fe 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -10,8 +10,8 @@
-     bindings,
-     block::mq::{operations::OperationsVTable, request::RequestDataWrapper, Operations},
-     error::{self, Result},
--    prelude::try_pin_init,
--    types::Opaque,
-+    try_pin_init,
-+    types::{ForeignOwnable, Opaque},
- };
- use core::{convert::TryInto, marker::PhantomData};
- use pin_init::{pin_data, pinned_drop, PinInit};
-@@ -39,6 +39,7 @@ impl<T: Operations> TagSet<T> {
-     /// Try to create a new tag set
-     pub fn new(
-         nr_hw_queues: u32,
-+        tagset_data: T::TagSetData,
-         num_tags: u32,
-         num_maps: u32,
-         numa_node: i32,
-@@ -58,7 +59,7 @@ pub fn new(
-                     queue_depth: num_tags,
-                     cmd_size,
-                     flags: flags.into_inner(),
--                    driver_data: core::ptr::null_mut::<crate::ffi::c_void>(),
-+                    driver_data: tagset_data.into_foreign(),
-                     nr_maps: num_maps,
-                     ..tag_set
-                 }
-@@ -71,7 +72,14 @@ pub fn new(
-                 // SAFETY: we do not move out of `tag_set`.
-                 let tag_set: &mut Opaque<_> = unsafe { Pin::get_unchecked_mut(tag_set) };
-                 // SAFETY: `tag_set` is a reference to an initialized `blk_mq_tag_set`.
--                error::to_result( unsafe { bindings::blk_mq_alloc_tag_set(tag_set.get())})
-+                let status = error::to_result(
-+                    unsafe { bindings::blk_mq_alloc_tag_set(tag_set.get())}
-+                );
-+                if status.is_err() {
-+                    // SAFETY: We created `driver_data` above with `into_foreign`
-+                    unsafe { T::TagSetData::from_foreign((*tag_set.get()).driver_data) };
++            // NOTE: We are processing requests during submit rather than during
++            // poll. This is different from C driver. C driver does processing
++            // during poll.
++
++            hw_data.lock().poll_queue.push_head(rq)?;
++        } else {
++            match this.irq_mode {
++                IRQMode::None => Self::end_request(rq),
++                IRQMode::Soft => mq::Request::complete(rq.into()),
++                IRQMode::Timer => {
++                    OwnableRefCounted::into_shared(rq)
++                        .start(this.completion_time)
++                        .dismiss();
 +                }
-+                status
-             }),
-             _p: PhantomData,
-         })
-@@ -87,7 +95,14 @@ pub(crate) fn raw_tag_set(&self) -> *mut bindings::blk_mq_tag_set {
- impl<T: Operations> PinnedDrop for TagSet<T> {
-     fn drop(self: Pin<&mut Self>) {
-         // SAFETY: By type invariant `inner` is valid and has been properly
--        // initialized during construction.
-+        // initialised during construction.
-+        let tagset_data = unsafe { (*self.inner.get()).driver_data };
+             }
+         }
+         Ok(())
+@@ -784,8 +829,39 @@ fn queue_rq(
+ 
+     fn commit_rqs(_hw_data: Pin<&SpinLock<HwQueueContext>>, _queue_data: ArcBorrow<'_, Self>) {}
+ 
+-    fn init_hctx(_tagset_data: (), _hctx_idx: u32) -> Result<Self::HwData> {
+-        KBox::pin_init(new_spinlock!(HwQueueContext { page: None }), GFP_KERNEL)
++    fn poll(
++        hw_data: Pin<&SpinLock<HwQueueContext>>,
++        _this: ArcBorrow<'_, Self>,
++        batch: &mut IoCompletionBatch<Self>,
++    ) -> Result<bool> {
++        let mut guard = hw_data.lock();
++        let mut completed = false;
 +
-+        // SAFETY: `inner` is valid and has been properly initialised during construction.
-         unsafe { bindings::blk_mq_free_tag_set(self.inner.get()) };
++        while let Some(rq) = guard.poll_queue.pop_tail() {
++            let status = rq.data_ref().error.load(ordering::Relaxed);
++            rq.data_ref().error.store(0, ordering::Relaxed);
 +
-+        // SAFETY: `tagset_data` was created by a call to
-+        // `ForeignOwnable::into_foreign` in `TagSet::try_new()`
-+        unsafe { T::TagSetData::from_foreign(tagset_data) };
++            // TODO: check error handling via status
++            if let Err(rq) = batch.add_request(rq, status != 0) {
++                Self::end_request(rq);
++            }
++
++            completed = true;
++        }
++
++        Ok(completed)
++    }
++
++    fn init_hctx(tagset_data: &NullBlkTagsetData, _hctx_idx: u32) -> Result<Self::HwData> {
++        KBox::pin_init(
++            new_spinlock!(HwQueueContext {
++                page: None,
++                poll_queue: kernel::ringbuffer::RingBuffer::new(
++                    tagset_data.queue_depth.try_into()?
++                )?,
++            }),
++            GFP_KERNEL,
++        )
      }
+ 
+     fn complete(rq: ARef<mq::Request<Self>>) {
+@@ -805,4 +881,34 @@ fn report_zones(
+     ) -> Result<u32> {
+         Self::report_zones_internal(disk, sector, nr_zones, callback)
+     }
++
++    fn map_queues(tag_set: Pin<&mut TagSet<Self>>) {
++        let mut submit_queue_count = tag_set.data().submit_queue_count;
++        let mut poll_queue_count = tag_set.data().poll_queue_count;
++
++        if tag_set.hw_queue_count() != submit_queue_count + poll_queue_count {
++            pr_warn!(
++                "tag set has unexpected hardware queue count: {}\n",
++                tag_set.hw_queue_count()
++            );
++            submit_queue_count = 1;
++            poll_queue_count = 0;
++        }
++
++        let mut offset = 0;
++        tag_set
++            .update_maps(|mut qmap| {
++                use mq::QueueType::*;
++                let queue_count = match qmap.kind() {
++                    Default => submit_queue_count,
++                    Read => 0,
++                    Poll => poll_queue_count,
++                };
++                qmap.set_queue_count(queue_count);
++                qmap.set_offset(offset);
++                offset += queue_count;
++                qmap.map_queues();
++            })
++            .unwrap()
++    }
  }
 
 -- 
