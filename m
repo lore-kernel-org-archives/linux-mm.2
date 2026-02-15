@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89628E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF5E7E63F2A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E2766B00A7; Sun, 15 Feb 2026 18:56:29 -0500 (EST)
+	id 5D4286B0105; Sun, 15 Feb 2026 18:52:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38CEC6B011F; Sun, 15 Feb 2026 18:56:29 -0500 (EST)
+	id 5BD056B010A; Sun, 15 Feb 2026 18:52:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 281626B0120; Sun, 15 Feb 2026 18:56:29 -0500 (EST)
+	id 4B5FA6B010B; Sun, 15 Feb 2026 18:52:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with SMTP id 3BDCE6B011F
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:56:24 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 771AB1A0B89
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:43 +0000 (UTC)
-X-FDA: 84448325766.13.60D5E5B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with SMTP id BCDAA6B0105
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:52:40 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15EB11B4E1D
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:32 +0000 (UTC)
+X-FDA: 84448315224.17.7B05CF3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 94D9B20002
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OWNqkVSp;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4593DA000B
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P6gN1JoY;
+	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199141;
+	s=arc-20220608; t=1771198890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cU9n8VtrKWF/Ned4VA7bLx59vaXoDeVVB97sLGd4KcE=;
-	b=cIJZxo7DClVmYA0shu6s15wFCOyA3Yiq8D/eocWB9Ctj4SYTLNQc8L12tP8CLTrPE5QX+b
-	f0tJoAC5lMWuBw2g/Glr8I2/sNljv6c/BiloKab8QvN+OO66CdgZtlXihLSIBMEIbsWLbu
-	mSkIf40jTY3GTyuZkYXAUTtFPRPZTFU=
+	bh=iBZ2Qzu1Hacu5K8IGyGQRIxOr9OdYL9YpAGjcKw828U=;
+	b=Nc93hoQqtGhMSjKJg3SmAipirnl/SYGWPhJOdLixChNXVtRDlePOVNn48bNFli8iECbYVV
+	rwQVKmuBvsYWxC3+PGJrMy/IPbyrhw798LFPW6skI1Is3rgqRU96eN//p7bN/bDI0kRdhp
+	5PwfwKPDKzxbbdSQ4RJdQte4wNeAhIk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OWNqkVSp;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P6gN1JoY;
+	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199141; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198890; a=rsa-sha256;
 	cv=none;
-	b=d/Mrn+Ypl1rFcjEvxRGRMFBKNmH0Xo8n5vllrm6hcDRZvPc3hqOyk6XwcBevjLkAPfEPEw
-	Lp5UIkRocVNSu0CBBww+N3kO/F+mB6Kdek5eBc/VHR3etk3hY/MY0uoeBfK6mjXEQl8ZzL
-	hSCSb3V9TvplFk5OxPPi7wDemQwjRiw=
+	b=jgwJt4LO2KRa44DI2IdGQwoWPvmXu8Y7IBhgNbi+1oK5IW9XZscB61VU6ECd9j353ngCHC
+	DX79fndje/I8307ik1zIEirAOAG10eBg5XGcBGVwOaUW+YAiBxo7iOlis7p25qKe/tAjIr
+	i4nV3z3GEct8Llmt+g4es/RF7ulg3t4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEEDC419FF;
-	Sun, 15 Feb 2026 23:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6497AC4CEF7;
-	Sun, 15 Feb 2026 23:45:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F69340741;
+	Sun, 15 Feb 2026 23:41:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F001DC4CEF7;
+	Sun, 15 Feb 2026 23:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199140;
-	bh=iHJebs10G3KEuSKPd64YYQzEozbVohCdh4WUvdT+gdA=;
+	s=k20201202; t=1771198889;
+	bh=vHPgpZo5uXgA8zL+qju/AiVs11m7b10tJPDeLW3U++M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OWNqkVSpuHPfeqJ1obG9KjUAge7I1l0KH3Bd4vcO7D26r2YjI5dQDpC664biAVsof
-	 LFGcoc+uoSB3f4UWDWN86wMaA+4RLjrMK04KxYVHi3HbR/g1M2+q6dJsxzwsAmUXf0
-	 MkdCMQfCPZCXbesYKg53FrD3gFepV53oCsnpLSVUlJj1CppafFHN3uj7GrdOBt7HWz
-	 gnz5pKgtMyrqfBnP12nE/1Iul/ci552vsJvYYQAyjIFfwPXI2JLXzPhnxLqcng+qQB
-	 mvptHf9cmJkdD+nYS69XoZtNMyqtb+EQ73fqh0HFSZdctdRHsTaTiX549NW1gItkDz
-	 A8JUVDBoPx4Rg==
+	b=P6gN1JoYAil+b2m0a49hptXFxRbU6gEBpaZDLQpGcmkMNRl+ts2wQ9IGltjdaNsE2
+	 iHtDP2IDj3SmgZ54TEEtWor4vbjebwuI/6hFw19GH6mKDkyZ5/MgUHV6fb4GGfNk0a
+	 xj/p1b2YXIqEcyrLvelc5oC9oRgPZ0LqRgbsXEi4sBF0DJGBovK/t4K8s573ejI5Yl
+	 BcQmzROO/AjjnmLo/yornM1A4/oLXUgDFODgqyKCOCTkPW6JlVFoWEiiKGUapcH0oY
+	 rpAnGQKoWtCLZMIMHJTEW7jK9xXoDyS/WNUfFbAo1Qy+oAlVBeNulHMiJKsExOCnIS
+	 uL0Uz256tvb6Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:51 +0100
-Subject: [PATCH 64/79] block: rust: add an abstraction for `struct rq_list`
+Date: Mon, 16 Feb 2026 00:35:54 +0100
+Subject: [PATCH 67/79] block: rust: remove the `is_poll` parameter from
+ `queue_rq`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-64-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-67-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6135; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=iHJebs10G3KEuSKPd64YYQzEozbVohCdh4WUvdT+gdA=;
- b=kA0DAAoB4bgaPnkoY3cByyZiAGmSWFWjeowTsFEiINSqulAD21O5tLcZBRTLEu7+cvl0taWOq
- YkCMwQAAQoAHRYhBBLB+UdWv3wqFdbAEuG4Gj55KGN3BQJpklhVAAoJEOG4Gj55KGN3uDQQAK5S
- TJnyt6251s9+e3u70mSgIM2EB4xbkhZPSh2nxTo3lEp8w82guHRW0t/howvgJ3nj9a6w4XCwEb+
- AV1gxbGx40380Hc0c3wU9N+z4qG5PXCNGGOHSd+OEnl5gVXZnZZtbbVSveZ79khqvzcTJ3gz7d0
- 7UIWol335/lElOkzzPm/gSQKxUSKOcIt2H+VozTRfqpok96aJx89/jI9g7tI4goDwEh00tbcchK
- PpHQ0APkpbh09Kb81cZ0I/SXBMWttrK3oF3P8eio0mjOLmq7Eh2Dhvs1kB1OZd3LbsUHXb0xDCa
- WJEanZ2sRkFI8QAVA5/6loJIUgo1joWAaMu2oUIbvIp5FAlKy2p/crJIYU+hdKE7pm8O+VNmqps
- rW7N1XxuiUFlFp2SQwlKbxmnshbAz7OvnLl1LvvYfdfv7BQMCIzjBRfdExGQl28u6kCiN2o8YDS
- dDkxJ+d/dydjryyzj7Mr444ULi3Cl73k+OAm09roYSf9gxMKYBkO2gExZsIg4B0WqdUA5GUkYXi
- cJn5wgLNpae6d8gxQ7y8KXFpa87YWXO2bxdWn3efgB/cERasAm6EG5izcBgz/WEFLSksxZJsS79
- 0TL1iD3sJOhx1/dvbZBCVV3oHa/xp6OnRG/JFWt31mFFA0+/9upKGkRAW0okHMgaq2tWDEcgTy1
- Cv3+C
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2486; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=vHPgpZo5uXgA8zL+qju/AiVs11m7b10tJPDeLW3U++M=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhY2K0RYlJtYPGe5XGp2aD/s5dSMAoJeH2Oq
+ zb/CAzQM5GJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYWAAKCRDhuBo+eShj
+ d04tD/97m54PJ4Emn0i+4TXowMxdpppLVqZy2LiOwftpAsi23l98iD5eWe6aKOpyCgEHEXyfl5g
+ Wq1XPUnTt8oQHgE4tpBPLAz8pzNke4DqN/w9WpvKODlITv3lJETQ3zHs4n91c3xL+ROO3F0W5OR
+ w4v1vVMgv8hBmLr/8I4xlPGkyDWtkgEDjOGfqpRRvZBz27n4zfgkdT5ZPhHpjr8R2BteEGWu7v9
+ R9iax5z1Wt+Sayzq7xXtL0uvd9Rs9Z5HW1nJpNllcV3yh36PdFibMYsi43OhC/kS8geCMoUY6m5
+ lYDSHBw06dwiSzX2ZqIluikI9wtwZficu8hOzUeX8BIgidJNVZCFIfsDsDpyJSEnIFJJR49FX9H
+ bBdURz9wVMzYy1AillTxxBKXbevqVQNEI1x+TzT9bEte0o1sLcriZZJVafiNVPGUoFXxAxcWQbJ
+ kwTJdtofcJM26rXiDwYwOio1SO/9gpryZjduJrumk4x5OiVIvO/NS1pFuGBRDyEf71kkpz0yo18
+ TUS3kp81o1NS4kZOad6+f83YVFW2gh5mZNfhbjWDin8MUToyhBJI483FD1Id4cNXA9pwr+HW0X7
+ Vs/2kVPNqx5hQkKx8DpD/90WbWKLxxAMtD0qnsB4mF7+s3zzBTrn+N7v5HNwGUCHpstS68xrxTN
+ cm8xLRqjLYfocmw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam12
-X-Stat-Signature: asa13aq8h9i3xkogh16sub4qd8ho6rrx
-X-Rspamd-Queue-Id: 94D9B20002
 X-Rspam-User: 
-X-HE-Tag: 1771199141-371182
-X-HE-Meta: U2FsdGVkX1+kYGaXDEOCnKiaxysAaRI6TgnGJQ8ZZLHphVA5x5SuDUpRvmC7TvcIK/scnlrHWehSWLjH+6roPEGpi0ASyNQooy1IZsIVcJ82KSdr1E28nYt43ww3duu+BwufwqwmGMzfUFBFfoziebm92g7STfm3mt2FuxF8OdLVidAJcNtAPfEUxk5o3OEOnN5pRId4yODQ3XiK8EIvMhyYNr52B49/dgave1oYQWxvtP9nmKVY4EU4KWPGBXPdc+JtQwRHgBdR/ytHtOx0bkzNsyBSE/L+Ay9G+OiDwYjcagS4Xcp6NRr35k5WazgoplLycXwQK2JKsqLc788BI7bvijZM041uotj/LwIOVKt05ZX1dbDmvGAkI2QOjsK1sdyVxDry6UYBSJh1nas1BOHbxedc4eGdAIhbpfKwbLawdiXyo3uoJkQvYnYlK+hC6sTjV7RI7oA1p16EKyr88jp/YTkCFNv4PxxdQRDWcg/zIb7YdrwoLenU7OOuxyJOs0ZS9XVG0xayQUmJpIbhE2QN9k8BuS84azaXN6NT6sjq04Ej2RH6RINCvLI1p+6eOuADELi7HoTkmaJiewZb+hAa/myERxSAp5E6RwX6LozZO4/CsohYh5iFulszHObwc97q59xMAgXQMf5QOVxk/EWR4F8xYMBtS6CYUk4JtalTOFI6mOm6p84LQIkgZAT9wBAJR7s0OwHvJpJprlGWhBLknCZkDq4dFAOvKs5qsFDxM+EafdM/Q/aYf+VZusfDyTRu9J4MCT4WDrbsW7vuYxmyGVT9WpzvUt53SN3oFGKJATkrTrIpvHYN2tu5iJnt7eVaNDnnHpyRcfA25i/Ax3jNP6ea6Mo7r6wrjy52fJOUmmQTnNc3yRQKMMcVufNiitv6gxm+4ZIF78TxbEk6gWD4HdPUg5q3uBrJ7Ua67CDvrMxOzXF3KCnfWWkhWJ3TY8Q+PmPaQCE8xhv86YV
- aF1Axhh8
- 9f7OKF8Jx/MQzQS3AdatRY2kixMzOmlqjhq193LUD3pE+nobnWhRd3btAc2yI7ghbTfuigDwwuBbuc29pGtn3qR8t/CIuvsNsjE28pNFT88fIIiZd48NtDO8+rP81GmreoMg3Yf9CKw0o24vL1y4T0Yx0EM5oLZsPPwMsAc68rR51JPSosLObmfJRmHPjoJv91/29Xi6/S7wr5k+OUQ1qVKTJo528mvhxQIaHq2bqvYNDxN3I+KN2gAtzcRvTggfrjs8GFRuSdLtRrT+qkQpGnPpcQ8P/22UwW7xxssT6z59A4D8E6mzSfvOxWnsMuN6uXybLuZ9Uq34cadzuQVkPRCTcMIJHa+S9qwnyk26dGptPyN4=
+X-Rspamd-Queue-Id: 4593DA000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7jzdrrhmj3caz85qe3aqsstny54spcxh
+X-HE-Tag: 1771198890-469525
+X-HE-Meta: U2FsdGVkX19z44Uqc4DLBHpALT2bhOJP8qDCHmd+HjIlPtydpZOMQ85VquZ+6dtj51szW65D118/CaytJ8C2sVoHRKeoJgYJy+paX6Z9EwWyPklcsQ32RZ1lJvh3QHXrOgX0O3O6JpB40QV2myJ8f6ASNW2o7NJ6ENNSzSfSA7Y5/AX5VtV88a9M2xgziIYaNK/a9KoTPMJD+GnJxjwMoUbxaBB1vXP/bxaG5ucu0UCn+QQmDqQ6P/IQWvxyl8AM0N4Go+KZNabglxIIM11m+peoF77qnZY3kSvHPjsqHR4rNQIYPvZvW5ZhG+Q2uk5Ztom7U905Z5Tbo9h/s6+/BsMBnzQ6G27jBHnuhUljZ6ZMv86XM/sXS43S0MSAwJnC4bVKwfdOzxQp/IiHn9/+ZqRy1EwgCOeHo4BXGr0f2Kt6oO8QY8agC/+jzIAU159reteC3h+Q1noC8ob4hoAB/Y3dAuTZNgHKu5sFuZIzKbE58YhpdbCoCqeonz0uLC+EiVYo3UUyGukAqEDMI9IPTA0lLvdrUNLmUyKuXw9RnLC6WFP/FmvejUu+3PUsDZSXAg+QnIfqvnSqcqYTI67lrzE8V2M0IofJu9/n50AZVUqDMGr+jb4PEKSRaY6SSjG434UbOBQNNHW0d4jRhtseuM7fGLDKfrsfYlEpZWO2nn7KN7q6WMPN9fhYbtYwVTf3+unZIHx7Ea9SiKJjvilbHCA/HyY693F1MHJ3CG8gDiKk3TjExwXv0SOTi3kpwVPXUNk2IyGbwpmQXKlGSaDVyZ5IbsdEk+zN35lJe6zskj5SuttoJwJqR9/aliQzb7MNGG7YNhZDifEl6a3RP4Ljs0dUioyV04jkq5awTeVtWOsazWG4G4WJhMd+AxvWrilHa3StmCrvrOvJhmpxSkj233ie7tYW5EMlkS7K4rSU2M81c6lgB7Wvbj748gQQJHJnSBRmDBiaLJNzX3Fx9tD
+ MqglrHn6
+ FzxiGdfTxi0PhSjpp4Qa39LzOcqpaC3cpNomk8HKbHk6YvVbH+z+9W/65F4eK5/jaLcJDmN+kx+KHtXo1FRg5AgkHHOeq3Ux+2suc6lytf3e5sqooL/d+KfOzk7YcrNxd/Em/3FMtQyL2UXf3fiOTTXmhNvH4zPTA9kwPNaIsVgpRePL6lU9FyZ/rgkiqBMyrTP5UIlpWZAZl4dLcvz6WHYIaoXrd9h6QUOwMcTxO8mOXEVKLarApZ3o5Zh6QGYXAJig7/yN2rgfJVeWVn9c/nS/KjxumOqE/kxsQLye+CFCHDtj77YUoYKPtvQKcZaCrSUv6D4bVU5o2nedYjG7oFU+SuTMxQrQxKPooBnkGSbHItVc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,194 +122,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the `RequestList` type as a safe wrapper around the C `struct
-rq_list`. This type provides methods to iterate over and manipulate
-lists of block requests, which is needed for implementing the
-`queue_rqs` callback.
-
-The abstraction includes methods for popping requests from the list,
-checking if the list is empty, and peeking at the head request.
+The information can now be obtained from `Request::is_poll`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/helpers/blk.c                   |  26 ++++++++
- rust/kernel/block/mq.rs              |   2 +
- rust/kernel/block/mq/request_list.rs | 113 +++++++++++++++++++++++++++++++++++
- 3 files changed, 141 insertions(+)
+ drivers/block/rnull/rnull.rs       | 1 -
+ rust/kernel/block/mq.rs            | 1 -
+ rust/kernel/block/mq/operations.rs | 7 -------
+ 3 files changed, 9 deletions(-)
 
-diff --git a/rust/helpers/blk.c b/rust/helpers/blk.c
-index 91b72131a04cd..0db567dfc5d53 100644
---- a/rust/helpers/blk.c
-+++ b/rust/helpers/blk.c
-@@ -27,3 +27,29 @@ bool rust_helper_blk_mq_add_to_batch(struct request *req,
- {
- 	return blk_mq_add_to_batch(req, iob, is_error, complete);
- }
-+
-+__rust_helper struct request *rust_helper_rq_list_pop(struct rq_list *rl)
-+{
-+	return rq_list_pop(rl);
-+}
-+
-+__rust_helper int rust_helper_rq_list_empty(const struct rq_list *rl)
-+{
-+	return rq_list_empty(rl);
-+}
-+
-+__rust_helper void rust_helper_rq_list_add_tail(struct rq_list *rl,
-+						struct request *rq)
-+{
-+	rq_list_add_tail(rl, rq);
-+}
-+
-+__rust_helper void rust_helper_rq_list_init(struct rq_list *rl)
-+{
-+	rq_list_init(rl);
-+}
-+
-+__rust_helper struct request *rust_helper_rq_list_peek(struct rq_list *rl)
-+{
-+	return rq_list_peek(rl);
-+}
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 592fbf5790fd2..db856f03b78cb 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -907,7 +907,6 @@ fn queue_rq(
+         this: ArcBorrow<'_, Self>,
+         rq: Owned<mq::IdleRequest<Self>>,
+         is_last: bool,
+-        _is_poll: bool,
+     ) -> BlkResult {
+         Ok(Self::queue_rq_internal(hw_data, this, rq, is_last)?)
+     }
 diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index b36112f7b22b9..786c32f2cb56c 100644
+index 786c32f2cb56c..02d75acfddb3b 100644
 --- a/rust/kernel/block/mq.rs
 +++ b/rust/kernel/block/mq.rs
-@@ -129,6 +129,7 @@
- pub mod gen_disk;
- mod operations;
- mod request;
-+mod request_list;
- mod request_queue;
- pub mod tag_set;
+@@ -90,7 +90,6 @@
+ //!         _queue_data: (),
+ //!         rq: Owned<IdleRequest<Self>>,
+ //!         _is_last: bool,
+-//!         is_poll: bool
+ //!     ) -> BlkResult {
+ //!         rq.start().end_ok();
+ //!         Ok(())
+diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+index e4de6db807e18..efead98767196 100644
+--- a/rust/kernel/block/mq/operations.rs
++++ b/rust/kernel/block/mq/operations.rs
+@@ -67,7 +67,6 @@ fn queue_rq(
+         queue_data: ForeignBorrowed<'_, Self::QueueData>,
+         rq: Owned<IdleRequest<Self>>,
+         is_last: bool,
+-        is_poll: bool,
+     ) -> BlkResult;
  
-@@ -141,6 +142,7 @@
- pub use request::IdleRequest;
- pub use request::Request;
- pub use request::RequestTimerHandle;
-+pub use request_list::RequestList;
- pub use request_queue::RequestQueue;
- pub use tag_set::QueueType;
- pub use tag_set::TagSet;
-diff --git a/rust/kernel/block/mq/request_list.rs b/rust/kernel/block/mq/request_list.rs
-new file mode 100644
-index 0000000000000..60284d9ef6c9c
---- /dev/null
-+++ b/rust/kernel/block/mq/request_list.rs
-@@ -0,0 +1,113 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use core::marker::PhantomData;
-+
-+use crate::{owned::Owned, types::Opaque};
-+
-+use super::{IdleRequest, Operations};
-+
-+/// A list of [`Request`].
-+///
-+/// # INVARIANTS
-+///
-+/// - `self.inner` is always a valid list, meaning the `next` and `prev`
-+///   pointers point to valid requests, or are both null.
-+/// - All requests in the list are valid for use as `IdleRequest<T>`.
-+#[repr(transparent)]
-+pub struct RequestList<T: Operations> {
-+    inner: Opaque<bindings::rq_list>,
-+    _p: PhantomData<T>,
-+}
-+
-+impl<T: Operations> RequestList<T> {
-+    /// Create a new [`RequestList`].
-+    pub fn new() -> Self {
-+        let this = Self {
-+            inner: Opaque::zeroed(),
-+            _p: PhantomData,
-+        };
-+
-+        // NOTE: We are actually good to go, but we call the C initializer for forward
-+        // compatibility.
-+        // SAFETY: `this.inner` is a valid allocation for use as `bindings::rq_list!.
-+        unsafe { bindings::rq_list_init(this.inner.get()) }
-+
-+        //INVARIANT: `self.inner` was initialized above and is empty.
-+        this
-+    }
-+
-+    /// Create a mutable reference to a [`RequestList`] from a raw pointer.
-+    ///
-+    /// # SAFETY
-+    /// - The list pointed to by `ptr` must satisfy the invariants of `Self`.
-+    /// - The list pointed to by `ptr` must remain valid for use as a mutable reference for the
-+    ///   duration of `'a`.
-+    pub unsafe fn from_raw<'a>(ptr: *mut bindings::rq_list) -> &'a mut Self {
-+        // SAFETY:
-+        // - RequestList is transparent.
-+        // - By function safety requirements, `ptr` is valid for us as a mutable reference.
-+        unsafe { &mut (*ptr.cast()) }
-+    }
-+
-+    /// Check if the list is empty.
-+    pub fn empty(&self) -> bool {
-+        // SAFETY: By type invariant, self.inner is valid.
-+        let ret = unsafe { bindings::rq_list_empty(self.inner.get()) };
-+        ret != 0
-+    }
-+
-+    /// Pop a request from the list.
-+    ///
-+    /// Returns [`None`] if the list is empty.
-+    pub fn pop(&mut self) -> Option<Owned<IdleRequest<T>>> {
-+        // SAFETY: By type invariant `self.inner` is a valid list.
-+        let ptr = unsafe { bindings::rq_list_pop(self.inner.get()) };
-+
-+        if !ptr.is_null() {
-+            // SAFETY: If `rq_list_pop` returns a non-null pointer, it points to a valid request. By
-+            // type invariant all requests in this list are valid for use as `IdleRequest`.
-+            Some(unsafe { IdleRequest::from_raw(ptr) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Push a request on the tail of the list.
-+    pub fn push_tail(&mut self, rq: Owned<IdleRequest<T>>) {
-+        let ptr = rq.as_raw();
-+        core::mem::forget(rq);
-+        // INVARIANT: rq is an `IdleRequest<T>`.
-+        // SAFETY: By type invariant, `self.inner` is a valid list.
-+        unsafe { bindings::rq_list_add_tail(self.inner.get(), ptr) };
-+    }
-+
-+    /// Peek at the head of the list.
-+    ///
-+    /// Returns a null pointer if the list is empty.
-+    pub fn peek_raw(&self) -> *mut bindings::request {
-+        // SAFETY: By type invariant, `self.inner` is a valid list.
-+        unsafe { bindings::rq_list_peek(self.inner.get()) }
-+    }
-+}
-+
-+impl<T: Operations> Default for RequestList<T> {
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
-+
-+impl<T: Operations> Drop for RequestList<T> {
-+    fn drop(&mut self) {
-+        while let Some(rq) = self.pop() {
-+            drop(rq)
-+        }
-+    }
-+}
-+
-+impl<T: Operations> Iterator for &mut RequestList<T> {
-+    type Item = Owned<IdleRequest<T>>;
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        self.pop()
-+    }
-+}
+     /// Called by the kernel to queue a list of requests with the driver.
+@@ -188,11 +187,6 @@ impl<T: Operations> OperationsVTable<T> {
+         // `into_foreign` in `Self::init_hctx_callback`.
+         let hw_data = unsafe { T::HwData::borrow((*hctx).driver_data) };
+ 
+-        let is_poll = u32::from(
+-            // SAFETY: `hctx` is valid as required by this function.
+-            unsafe { (*hctx).type_ },
+-        ) == bindings::hctx_type_HCTX_TYPE_POLL;
+-
+         // SAFETY: `hctx` is valid as required by this function.
+         let queue_data = unsafe { (*(*hctx).queue).queuedata };
+ 
+@@ -209,7 +203,6 @@ impl<T: Operations> OperationsVTable<T> {
+             // SAFETY: `bd` is valid as required by the safety requirement for
+             // this function.
+             unsafe { (*bd).last },
+-            is_poll,
+         );
+ 
+         if let Err(e) = ret {
 
 -- 
 2.51.2
