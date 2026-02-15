@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68ED9E63F21
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADD83E63F21
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:54:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8287C6B00B2; Sun, 15 Feb 2026 18:44:12 -0500 (EST)
+	id 288486B00D6; Sun, 15 Feb 2026 18:46:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F7196B00B4; Sun, 15 Feb 2026 18:44:12 -0500 (EST)
+	id 264CF6B00DD; Sun, 15 Feb 2026 18:46:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72E026B00B5; Sun, 15 Feb 2026 18:44:12 -0500 (EST)
+	id 11B586B00DE; Sun, 15 Feb 2026 18:46:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with SMTP id 7EAC46B00B2
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:44:03 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C3A413C070
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:50 +0000 (UTC)
-X-FDA: 84448321020.23.D06965C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 77B89A0008
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r0Xvw+Xb;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 034F96B00D6
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:46:13 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B37371CDB4
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:03 +0000 (UTC)
+X-FDA: 84448326606.03.C25CBAF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C0C0C140005
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XiiM5Ah7;
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199027;
+	s=arc-20220608; t=1771199161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+N1Oir3FGnxMi3gAqRew65oSUNzy5rdijzBk34/ieIA=;
-	b=07aYIk762G+zMUYSqbctSieasPtfNY4w1zTIBIxeRCY/DfnNDd8OKBHJ+BhTn2bMXOkfr4
-	cTtHCpaCOGR2gs885QC+2eJMBvHT9gLYJ5AC6Z4qAe2QyQoHy5zZpZ7sBkVRLPcShIukb4
-	/9kPTrML/4JClKPVvZTemekQt24B3DM=
+	bh=e0DebrfNfYRRspOOW4jgn8L+egW9zxvZN4hijU0qtdQ=;
+	b=JVK0bc9hQkCdsVPnhuwQ/ZHooFL7a5cb8QAld5Y+4PZNC0k3bKYaZR0CcC7mQFzJxRlv4T
+	N8KUNna31qEZcz/I41WHsEInaNkwcwySYIbbWFQ+brSGTBYIcsvcu4i1N9pJ8m2E+xsSNZ
+	le8WgKLAtk/rWAwDJrAi9E2S4Njouck=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r0Xvw+Xb;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XiiM5Ah7;
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199027; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199161; a=rsa-sha256;
 	cv=none;
-	b=KXKOPU7g1HYy7tgka8YxmpiamJ2XEA8of32pEs6PzqoUDipvEuZQGLKkEYKTrq+hVSUn3W
-	AzksYriVZ7cVMbkZUcyjisf0E+V0m+vag2mAUqOvsjkaZmhoSMbAvFfcddypJ/jL0B2l37
-	PfOoy/aFupQFLahIrREP5sKJ0fQNCbo=
+	b=quFJAvbSrS4EKr/MejISHuglh2Ug9RhCGKud2F15Pdxg4ZvY2VAdWRBWKn18h8ks3qma6Z
+	q9WpuYIM0l91IDO21E7Be1mSjEo6Gp3aRxoyvr59mZpCbG/lEtVwJ9dJYluGc8QVn3W/h2
+	14Kckk7Sqq4auxXYI2XoaApB/KsB9Uc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0DDAA6013E;
-	Sun, 15 Feb 2026 23:43:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD5BC4CEF7;
-	Sun, 15 Feb 2026 23:43:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E08FF42A02;
+	Sun, 15 Feb 2026 23:46:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CB6C4CEF7;
+	Sun, 15 Feb 2026 23:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199026;
-	bh=hyJWmGhHnYKgGumF3acRrYQ7yD9VZFPwyaRRW4uns7c=;
+	s=k20201202; t=1771199160;
+	bh=jZ608odEKTUNSFrE/SOnMnlQT6DB0sc7l5Lx9qmISMk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=r0Xvw+Xbl4WyoIV0Fgvc4CnezN4AquFYJprwOMMZ4tW2FWDP8IEMP5IspVkvapRKr
-	 eyQCXlRj9nuKYDdDqQr3EeH1EDajPMZ6uvg/8RHpfiYqBCE1AUpo51WkLT2mkQWzuf
-	 8yAVDEjVXa5fUyolR1WoGZg95YCrxgWlLbnDCaI5uWYLA9l/ss7OYNKWrCggl1Bfxh
-	 /2MC4rdaD8XO4sPI0pN414gUY+NUp0nhQwJPAaunICom5uRzXiXKtQa0eL2W0q5vxT
-	 kJ8UlGWZDBAMe6iz/mIQmb//20aycZ9d1XVZvHVp5sNncJqa79a4o8+O28Mk8KfS6M
-	 O2UdjgNGNAg5Q==
+	b=XiiM5Ah7X1e+o6XtV6o5U46+0qoO5UBHAvPqA6M9opCsoMYbca+mSnjPGI5UUMZcB
+	 fcGlayUQjIl1YBDKK+G2+jJN2cSR3z0h0KlEqXphZui08jmMn/6CNHtl5J/5UUEonC
+	 AP0vm7CFamxgQ/m63F8pnzQ6GBB/f4vhMLuHgGqjb4mwNEYEpAw5SD77h7Ihsr2rsF
+	 5jXy2Yu8W5PKJjqUNbiGuX9MvREIPFt3LLfP8TZqqOyY756I5j4TgsEs0PkFEjdP9g
+	 hwVDqNYVmmP7dpmAHf0hhFvirmBzf67K5gzMOPpd3ZYQumw3jncTu/l2qtgiJtPdYj
+	 BHow284+aMSHQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:04 +0100
-Subject: [PATCH 17/79] block: rnull: allow specifying the home numa node
+Date: Mon, 16 Feb 2026 00:34:55 +0100
+Subject: [PATCH 08/79] block: rnull: add timer completion mode
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-17-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-8-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4428; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=hyJWmGhHnYKgGumF3acRrYQ7yD9VZFPwyaRRW4uns7c=;
- b=kA0DAAoB4bgaPnkoY3cByyZiAGmSWCujcbaRtyQ+5c46GUtpYsZLNpV7VYMbAQXDEhY8owFWT
- okCMwQAAQoAHRYhBBLB+UdWv3wqFdbAEuG4Gj55KGN3BQJpklgrAAoJEOG4Gj55KGN3ydkQAInh
- m/4xDjaLWkap0qZVw4kdG+BQcpK/gQBOgCp5aQJ9g6jpMgw7xGymCSWaXegQ/45lRH69A69dmJ9
- YevW/afwAjaK0Gy8+719L2V0WxkeUUbqtPvQP0r6h+O7HwKOEXeBp4svcMpD78XGzcaixFcTM73
- +q3wrysM6xhIEIuFJxU4aPzz5XV6a0i4Am1u+LWbWUulfmD2VQzSH/qit7F7Al2Gh/xLWAaXsz7
- mbeJOcNYaEtkyMwGIuoAAwOjcikxVvUHrAGHDVKgXx1rY7xVSAsw+GdBe+/2qKgSKKxCmiLIVzM
- Qdj9jl32dxV7g7L+SGVXd/XxSziAAft+K4g/ZY9TIw1BGIl1SzTZH+oayKtrCtHyjV45KFZ+Mor
- 3A1YvvKSQtwicHPmGYKsNR3neTKoLgAR9O8uHmNol4224yieRMP7lc8HkY6MNV4zI7b/UonXR6b
- WkRDZQmScebq/brfppkcJXOKGDu9tAWj9yp7JNC3fBMGFA6WmSxIXN+cF7/Qur2tofw7IKbsWuz
- EscfebPY9qQ/gPiYBQ21h0h/Wn0Tks5pLQ9TGjlsne3xZW9didm3pGauc/h3TFaEmIsjObi5vBT
- hlLepzDjKUpTaBBiRvm5KUtk7hxb4iqtjjqxihxO7H94YIe8K90FeU4QFctgIu785HWqX6gRMky
- 2c514
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7586; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=jZ608odEKTUNSFrE/SOnMnlQT6DB0sc7l5Lx9qmISMk=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgj0Yu8uMU7TEqY3x4l6rKBJxrFk0MqHBWwe
+ o7L8Uuy2cWJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYIwAKCRDhuBo+eShj
+ d7JtD/49ta7KxNhGfU2B490AUk8e8AXtKTzvkoZnq2sUdzew7/4YETUXrT4HgmA6SCqMCSaQ4H+
+ 55/4mU4jRsiwTzwPsga1dVDIMa7C+MCkEZTDlOLXP2m66kfpaRkdXSkp0dYLyh4EDfK6d7kINCl
+ XPAPBtrruq6bFMqEI52dRmhZISzCDZw0ZSBM0SCneWoxYg155cjApTLUSJHVGFv/bVrLn/jC3Ar
+ OOvgErOMpzy9k6f76F/7QiisnQABLat+plLHeIlQ3v8KfS8hErej5W2XtCLXowv9Z+r9IMWghvJ
+ enfQQ5mfwS1UrCCz7WNbp7D6QFPqKdzZdhNnEoUuOipgC+QtYVtgEdsRQp4v6n3D5P1U1zkc3Lo
+ f4IA0vDg+GddKYKIWY6y20i0/VvrmeIVRbd874mcvI3PfbiLdO1NblXOVNoTwChs1AOfMOFDEGH
+ 7vZD0r3ErtgHVJ0hszcfD1wlIdbQb1ms8J292ZGsqsHdfF+hTtcrIInHuqw3R1TaWDB+NOqaygB
+ llsnTOLj45WFwHhuGZNKZfvLsHYkdP3ikxcxojLPNjebDl3d38v+Acwe47Mj1tpJqwuYcgXV/cp
+ On7C6vtYpqzO/BoztgKgse5Q9VQe1l7R7DYT/R7s5y3sZQIjOoJPZFZBKonL0F+37+MnaZrKnkA
+ RO3m9tVKOHxQ50g==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zfrfah7q7y4o4ajqxhw1dxacwdhxhor1
-X-Rspamd-Queue-Id: 77B89A0008
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C0C0C140005
+X-Stat-Signature: 36qxw9u1zhkfr9sws8td331xpuhzfiq5
 X-Rspam-User: 
-X-HE-Tag: 1771199027-21302
-X-HE-Meta: U2FsdGVkX1/eL3xsK5HY05aJq3sspikfQZ7AS19xgHGqG4eABVGN+orDhBFep6HMwTqYxbrvY6pnWi4zEfq08wEGrhPqfngetKodocZLloXCD6CaU3lt1iieDFsH9VKOSM2kaFC68J3g6M2vSb/JXIlXf6H14rJS5eK43sxZZOsAZvdi0wtFR9Onn1OTnDlmV/2RGgQtOivEOlPuQeShzv/wk3kCMLH3FNFYccUEBYs8e414oJ08CZPLZEYzYgK8UEe0XiHpAPoJMtfOkEmkuwYhuRQsL4rZU1CkoXHT2hPyNzkZ/Db/nUlh2wRBZj26yl/hPzo2RazKNu0EDx/sDn8SnaiIdQPEDTA3269jzi+jT/1XOCR3CAM4ImLk+i2aEo8Je1E3j63hQBFh/MEtszoayVNxyRKIUpNOI/897nAlZcn6W7swmNFRP0LmXe6t07nWIWwoi0V8KbXhIhs2ivm/b5Kbb3E6mD/HSRxI6xolIcwSgvltq0uRFtqeFDAwf3v9MQ7KUGFd9lXlW3P7jxSJLzeEnXfTsbdmX6kboIogbXIZ8TeofThdW0QGTFetio9ugPThfXWIr+Xr9JnMcTK2gI7BHYeXjB4CKu7yBl5qCq1jn6x1Kf7gpEnTDNXFNYBgiam40+X4ea5+eFZHQKVrl3n4T25y66wRKwYNVSDi0hySOXuWhMex3jqjA66sYyqwKuVOl9xFRIsLi9wo7PBckJTagN18fjj32zCyJhwmRI+dU5TqWkzFNFCbhrfDqaiDLOn1zqBWwbGNbIgBiYZL8I6jkH/4ZQGNQ9YhFhqxrp6Gq9X1NKByAbn+t8cS2hoL7usC+F2az6W9S8Ej2uieKzugnsgrJm2c5nTKXjtGb9QDhqyACnz2ptGQUPOdiTOL3GhOiTsV/TXxcjkiujP76dPyOy8rs4+AxlNk9fmDLD75S0/7fZ8v+uDtN/XipV9r8mboKoCx5CTUIG5
- aLkSOtiB
- xi7DqWuEnA6u1u9GR9BnQhgI5G/IKhS3FjUTrwnDtEySCwM2p7Alzd+9EgD2O8+7s8dwxehfp4zGiiH5+gDs7y9sD5mCJGKe9+d/Mu256ColxT2Qhnq4CNy5WPMC67LaGsQj+pcM/tgVhu9zrm5WEnvCvLQpGg+KA0GbBfmfJvr33tLZGWE7S/phWKLgf8c/4wQTt7a5L81bD1HIy2L6pT82EKZqworyYRsTPyD9MO2TjSiHG+hev9aIFCBYmC/2b9WLFGgcHttHWKvg2JHtEjLenTe5Zv821Ws2Wze7d1nBzDvtchW498BexBRDyFzzwtnti
+X-HE-Tag: 1771199161-23278
+X-HE-Meta: U2FsdGVkX1+WLeh1h499pK4rQYMnXlDvQXKnmaihxiLcANAHCvYcltB1HlgrjHGKUGUBaz6LqOkUEWYETL3GT6IYnOIm8jBSxHN3fiK9aLfbl3LN01e67YkDLgwzn5HWokL4qKPuuRE7be5sxgDVgvCDTmgRrBCOWbCLZLP8P5dliUcJQkXEDn25q3aLz/He8vB1R6klxI4sjxCTzyD63Swx3HgZJZ3JkjKSoLv9SlKGX6RS9jDp7MMVgmXaQ8PjuK+/SK7aRye9cX1CA71SVWJ+2OrzPLwLSvuyCIR7M5Q9bhafTwpyC5UY9giojEIcm1DMMsafQDgCy2jgj/lUNHRQB7yWfv4202hSGZyfu9Ouok7wAY/0z7KYwy6OUjAOld5ZDnqeyryXPaq+UU1NNSgDEVpAR+dnlWJVJgoOmEClqH+1DszB3WYe3RpYsg6f2a6ZeTF3cHJJkMWhGg3bp6Z94sjqr3xyPlCaOa0V4blJ924GW26l2v+gnecbmL3rlktyY63ByO/0WBaELKA9sEv2CVxONh3zyeSTz0xNTtYy6C+Peqk2zv0JP+QYENpGznkRDZCkXPH+jS6xsiTZ7Hpj9WQMpNIdR3gJOQrLEine1oE5ZCKYvnLlQxUq+eTHlErC5STdTGUxN4FR3Dqd7mYfWkzx4tW0SmgYoDhPRC39bBgxrwXDzGlgwszQzBYNHYTqaDjIyts4mbqxFKK0i40R89U+0ZEEYgv6QyHv76+NSvdP1REOPWzkvCCJTZb8b3NI6lIBR186JQkGal4Wzz1G2B30/IVxvHNxubfKMmzH+5W5AeKoGia33CUkXnqqJz+S71W6VutNzNNBYew79niBacuHPaoZMvgUi3OtWs1FPGD72iYSLxl6aOFoV3SPk8eB55OTv0iWqzb7ZjWQ4NbanHQ1IRF1/178gAKUehX7xs3Gdursv2bROsBizcQh8S9ogemHlcOrX1FMyfu
+ q9a5vKg4
+ /rZuy1HbyYlBGDn/Gr+vjO9gXnVb3SCtxmd9Ox4D7bC0/5F1V1nu9R8q6dKVSoxBMIRZtDp63V7wLaj2rF6aTCiPSxNo6HiWJOCAaRzN3ba8hhXx/lG6ont3Es7vjzVmjTepje8WWdGtYRXJftTI2ovA+wlmMLPZOiOhoyKGlvaU2IUEkIhnDN1qlN8eKb2SD7BUHC0FZd993PcjFtrjkN9ZqE8TnBCpvHc8/oCail9v2bK12l5EQlSzOi5ankXR19B8RMRHULUKKuIF4fZomVOX+RtFE/j2zihh9EaRkKNcCYzUAQ3q1s6IQpHgxwJ3/UQ33
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,144 +121,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a configfs attribute to specify the NUMA node for rnull tag set
-and CPU map allocations. This allows testing NUMA-aware block device
-behavior and optimizing memory placement for specific hardware
-configurations.
+Add a timer completion mode to `rnull`. This will complete requests after a
+specified time has elapsed. To use this mode of operation, set `irqmode` to
+`2` and write a timeout in nanoseconds to `completion_nsec`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs | 19 +++++++++++++++++++
- drivers/block/rnull/rnull.rs    | 18 ++++++++++++++++--
- 2 files changed, 35 insertions(+), 2 deletions(-)
+ drivers/block/rnull/configfs.rs | 13 +++++++--
+ drivers/block/rnull/rnull.rs    | 63 ++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 70 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index b05bfc23090c2..fe00617d2b679 100644
+index eafa71dfc40d3..7952f41f42bfd 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -5,6 +5,7 @@
-     THIS_MODULE, //
+@@ -26,7 +26,8 @@
+         kstrtobool_bytes,
+         CString, //
+     },
+-    sync::Mutex, //
++    sync::Mutex,
++    time, //
  };
- use kernel::{
-+    bindings,
-     block::mq::gen_disk::{
-         GenDisk,
-         GenDiskBuilder, //
-@@ -92,6 +93,7 @@ fn make_group(
-                 memory_backed: 6,
-                 submit_queues: 7,
-                 use_per_node_hctx: 8,
-+                home_node: 9,
+ use macros::{
+     configfs_simple_bool_field,
+@@ -58,7 +59,7 @@ impl AttributeOperations<0> for Config {
+ 
+     fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+         let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_str("blocksize,size,rotational,irqmode\n")?;
++        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec\n")?;
+         Ok(writer.bytes_written())
+     }
+ }
+@@ -81,6 +82,7 @@ fn make_group(
+                 rotational: 2,
+                 size: 3,
+                 irqmode: 4,
++                completion_nsec: 5,
              ],
          };
  
-@@ -111,6 +113,7 @@ fn make_group(
+@@ -96,6 +98,7 @@ fn make_group(
+                     disk: None,
+                     capacity_mib: 4096,
+                     irq_mode: IRQMode::None,
++                    completion_time: time::Delta::ZERO,
                      name: name.try_into()?,
-                     memory_backed: false,
-                     submit_queues: 1,
-+                    home_node: bindings::NUMA_NO_NODE,
                  }),
              }),
-             core::iter::empty(),
-@@ -167,6 +170,7 @@ struct DeviceConfigInner {
+@@ -108,6 +111,7 @@ fn make_group(
+ pub(crate) enum IRQMode {
+     None,
+     Soft,
++    Timer,
+ }
+ 
+ impl TryFrom<u8> for IRQMode {
+@@ -117,6 +121,7 @@ fn try_from(value: u8) -> Result<Self> {
+         match value {
+             0 => Ok(Self::None),
+             1 => Ok(Self::Soft),
++            2 => Ok(Self::Timer),
+             _ => Err(EINVAL),
+         }
+     }
+@@ -127,6 +132,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         match self {
+             Self::None => f.write_str("0")?,
+             Self::Soft => f.write_str("1")?,
++            Self::Timer => f.write_str("2")?,
+         }
+         Ok(())
+     }
+@@ -146,6 +152,7 @@ struct DeviceConfigInner {
+     rotational: bool,
+     capacity_mib: u64,
+     irq_mode: IRQMode,
++    completion_time: time::Delta,
      disk: Option<GenDisk<NullBlkDevice>>,
-     memory_backed: bool,
-     submit_queues: u32,
-+    home_node: i32,
+ }
+ 
+@@ -176,6 +183,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 guard.rotational,
+                 guard.capacity_mib,
+                 guard.irq_mode,
++                guard.completion_time,
+             )?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -191,6 +199,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ configfs_simple_bool_field!(DeviceConfig, 2, rotational);
+ configfs_simple_field!(DeviceConfig, 3, capacity_mib, u64);
+ configfs_simple_field!(DeviceConfig, 4, irq_mode, IRQMode);
++configfs_simple_field!(DeviceConfig, 5, completion_time, i64, into time::Delta::from_nanos);
+ 
+ impl core::str::FromStr for IRQMode {
+     type Err = Error;
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 065639fc4f941..55e56c39f1c2c 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -28,6 +28,15 @@
+         Arc,
+         Mutex, //
+     },
++    time::{
++        hrtimer::{
++            HrTimerCallback,
++            HrTimerCallbackContext,
++            HrTimerPointer,
++            HrTimerRestart, //
++        },
++        Delta,
++    },
+     types::{
+         OwnableRefCounted,
+         Owned, //
+@@ -61,7 +70,11 @@
+         },
+         irqmode: u8 {
+             default: 0,
+-            description:  "IRQ completion handler. 0-none, 1-softirq",
++            description:  "IRQ completion handler. 0-none, 1-softirq, 2-timer",
++        },
++        completion_nsec: u64 {
++            default: 10_000,
++            description:  "Time in ns to complete a request in hardware. Default: 10,000ns",
+         },
+     },
+ }
+@@ -81,6 +94,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         let mut disks = KVec::new();
+ 
+         let defer_init = move || -> Result<_, Error> {
++            let completion_time: i64 = (*module_parameters::completion_nsec.value()).try_into()?;
+             for i in 0..(*module_parameters::nr_devices.value()) {
+                 let name = CString::try_from_fmt(fmt!("rnullb{}", i))?;
+ 
+@@ -90,6 +104,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     *module_parameters::rotational.value() != 0,
+                     *module_parameters::gb.value() * 1024,
+                     (*module_parameters::irqmode.value()).try_into()?,
++                    Delta::from_nanos(completion_time),
+                 )?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+@@ -113,10 +128,17 @@ fn new(
+         rotational: bool,
+         capacity_mib: u64,
+         irq_mode: IRQMode,
++        completion_time: Delta,
+     ) -> Result<GenDisk<Self>> {
+         let tagset = Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
+ 
+-        let queue_data = Box::new(QueueData { irq_mode }, GFP_KERNEL)?;
++        let queue_data = Box::new(
++            QueueData {
++                irq_mode,
++                completion_time,
++            },
++            GFP_KERNEL,
++        )?;
+ 
+         gen_disk::GenDiskBuilder::new()
+             .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
+@@ -129,15 +151,43 @@ fn new(
+ 
+ struct QueueData {
+     irq_mode: IRQMode,
++    completion_time: Delta,
++}
++
++#[pin_data]
++struct Pdu {
++    #[pin]
++    timer: kernel::time::hrtimer::HrTimer<Self>,
++}
++
++impl HrTimerCallback for Pdu {
++    type Pointer<'a> = ARef<mq::Request<NullBlkDevice>>;
++
++    fn run(this: Self::Pointer<'_>, _context: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
++        OwnableRefCounted::try_from_shared(this)
++            .map_err(|_e| kernel::error::code::EIO)
++            .expect("Failed to complete request")
++            .end_ok();
++        HrTimerRestart::NoRestart
++    }
++}
++
++kernel::impl_has_hr_timer! {
++    impl HasHrTimer<Self> for Pdu {
++        mode: kernel::time::hrtimer::RelativeMode<kernel::time::Monotonic>,
++        field: self.timer,
++    }
  }
  
  #[vtable]
-@@ -199,6 +203,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 completion_time: guard.completion_time,
-                 memory_backed: guard.memory_backed,
-                 submit_queues: guard.submit_queues,
-+                home_node: guard.home_node,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -302,3 +307,17 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ impl Operations for NullBlkDevice {
+     type QueueData = KBox<QueueData>;
+-    type RequestData = ();
++    type RequestData = Pdu;
+ 
+     fn new_request_data() -> impl PinInit<Self::RequestData> {
+-        pin_init::zeroed::<Self::RequestData>()
++        pin_init!(Pdu {
++            timer <- kernel::time::hrtimer::HrTimer::new(),
++        })
+     }
+ 
+     #[inline(always)]
+@@ -145,6 +195,11 @@ fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool
+         match queue_data.irq_mode {
+             IRQMode::None => rq.end_ok(),
+             IRQMode::Soft => mq::Request::complete(rq.into()),
++            IRQMode::Timer => {
++                OwnableRefCounted::into_shared(rq)
++                    .start(queue_data.completion_time)
++                    .dismiss();
++            }
+         }
          Ok(())
-     })
- );
-+
-+configfs_simple_field!(
-+    DeviceConfig,
-+    9,
-+    home_node,
-+    i32,
-+    check | value | {
-+        if value == 0 || value >= kernel::num_online_nodes().try_into()? {
-+            Err(kernel::error::code::EINVAL)
-+        } else {
-+            Ok(())
-+        }
-+    }
-+);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 278f75d886fd9..fb3ce272d5bec 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -20,7 +20,10 @@
-             TagSet, //
-         },
-     },
--    error::Result,
-+    error::{
-+        code,
-+        Result, //
-+    },
-     new_mutex,
-     new_xarray,
-     page::SafePage,
-@@ -95,6 +98,10 @@
-             description:
-         "Use per-node allocation for hardware context queues, 0-false, 1-true. Default: 0-false",
-         },
-+        home_node: i32 {
-+            default: -1,
-+            description: "Home node for the device. Default: -1 (no node)",
-+        },
-     },
- }
- 
-@@ -131,6 +138,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     completion_time: Delta::from_nanos(completion_time),
-                     memory_backed: *module_parameters::memory_backed.value() != 0,
-                     submit_queues,
-+                    home_node: *module_parameters::home_node.value(),
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -154,6 +162,7 @@ struct NullBlkOptions<'a> {
-     completion_time: Delta,
-     memory_backed: bool,
-     submit_queues: u32,
-+    home_node: i32,
- }
- struct NullBlkDevice;
- 
-@@ -168,6 +177,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             completion_time,
-             memory_backed,
-             submit_queues,
-+            home_node,
-         } = options;
- 
-         let flags = if memory_backed {
-@@ -176,8 +186,12 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             mq::tag_set::Flags::default()
-         };
- 
-+        if home_node > kernel::num_online_nodes().try_into()? {
-+            return Err(code::EINVAL);
-+        }
-+
-         let tagset = Arc::pin_init(
--            TagSet::new(submit_queues, 256, 1, bindings::NUMA_NO_NODE, flags),
-+            TagSet::new(submit_queues, 256, 1, home_node, flags),
-             GFP_KERNEL,
-         )?;
- 
+     }
 
 -- 
 2.51.2
