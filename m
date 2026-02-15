@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C833AE63F1C
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DAFCE63F1C
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:42:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1553D6B0093; Sun, 15 Feb 2026 18:40:58 -0500 (EST)
+	id C12C16B009B; Sun, 15 Feb 2026 18:41:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 124FD6B0098; Sun, 15 Feb 2026 18:40:58 -0500 (EST)
+	id BE7AA6B009D; Sun, 15 Feb 2026 18:41:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026B06B0099; Sun, 15 Feb 2026 18:40:57 -0500 (EST)
+	id B09E66B009E; Sun, 15 Feb 2026 18:41:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D87186B0093
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:40:52 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38B2F160719
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:47 +0000 (UTC)
-X-FDA: 84448313334.23.BA4C72D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8A94218000C
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bxYPJCgE;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C8D3C6B009B
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:41:13 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4B901B4F34
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:11 +0000 (UTC)
+X-FDA: 84448314342.13.0EA9420
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 294AC140007
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aOYNkd/v";
+	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198845;
+	s=arc-20220608; t=1771198870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1P2llR/K69jVR8fsIU2PoAt9fPVBjct1oz+d35uMjTw=;
-	b=tPsG+aZUxQIc9ajduewkRigs8f1x5cDvYwzItEgORGzvHlHu+WlYMze9tQ3UIB9epQa2cC
-	nK8/E/U+zzjZ9E52V4NovrktQZmtjty5YFnTJ6w5cn0F9EZ8vZonryM9nwSZAIH3ZqB9ua
-	dxRDOb1Uc7jHSQTF6GljPImdCRA1/ug=
+	bh=G5S5vE1SITgcGVigQBSBpX1RdNBJ401wFI7K0GHjKTo=;
+	b=IpZlLnoVrROTTDe8UEpEtRQ9cbfYZpWt1QXCIcGNj6rmA0fQNqE32MU0Q/vrQoEZvvUBVN
+	KoEzOeOM42pblhOuEqaatTDvUXTWWOudoYn85tUKN2jjPSYq0PzWSyMFVOdfmCLF0D27w8
+	xnxpKsgjTX7M7N7vPhFhHH+Pf8jmpOU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bxYPJCgE;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aOYNkd/v";
+	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198845; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198870; a=rsa-sha256;
 	cv=none;
-	b=pm74YN4BrECcj7TEpu6w/QMzAecvPE6IMJA+RI40AiMQMPncjmuootF915SPGcs61PCDAY
-	klms+0QpFLMyCagiY5GTfzpjvi/jZlo7vOf0kPcnYpPfPnAK91Nzg1Bwt9EzBUJOSI3CVL
-	Z2AG2PI/BT1wmT9cHP7on5Z5yhYe0jA=
+	b=56exsEGhFuhupoW7yU9wmjnvpZtJUcj3gngt0GV+KSLmNUA1yQgbMTcSKRjqbx36INhjAT
+	uS3TymUP1YJ7uHv3x5o2olDq+g5vJjWERgY56rPPGa7MJyi7NJQnegQol6R7Cpq2ZLeTo4
+	ucti7pO0QrN2fFSrL0UTsifhv1DYNEU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C3ED843231;
-	Sun, 15 Feb 2026 23:40:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9EFC19422;
-	Sun, 15 Feb 2026 23:40:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A185F6057A;
+	Sun, 15 Feb 2026 23:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBE4C4CEF7;
+	Sun, 15 Feb 2026 23:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198844;
-	bh=PBK7Gy6yOqD93xMD0GKqkyb3it4yG8n9UJvvL1G85v8=;
+	s=k20201202; t=1771198869;
+	bh=tjrMyzA+BVtzT2Wqfa6F8miT38AdN9I/wjO3H7a9lZ0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=bxYPJCgEsjiQG6SWt0NwbCdeEoOChcdXDWKWzk9Mn2vlrkVXazcE5sp7XZlRI0B+b
-	 XFUCbLfrM1ezrptYH6/psaBuY5loKyUoDtPhVhEcZYwmwBOpDFBDM+2MRNidILppl+
-	 VC0fzKYIgwkljNSdqfAANE0yJ7gp21HICWx0CyJ935vdIsnaotWa7Y/QWoJRRAnNak
-	 MY1WeZB7BC106AvJ9+k+xdWrgLkY5n/SEpZP7eCkBgeLXoOk/6qabZpbbkVcJobqHe
-	 2OVFXI6fggXgf6r/bu5p0h0XvgE49CVjosL3Vk/zdP2SzGGKHeAE88IKaLo9Js5QFZ
-	 BOk3xbq/GpUtQ==
+	b=aOYNkd/vcvbDJk4lE3gOjsaVJabfRblsr07ATuTEdxfmrk67CBg7J5kysXiPjCtlR
+	 2zU9bETXF719U42grp0m7Op3NQLMvhUIekBy6Q/UNyUkAlIs52up01nsIUC3mLHddA
+	 upcNqOSeH4D/vgC3ZsOP6rus8KsAknJYAeNFj0gu0oRsqo8NdMfGogMJs2wCRdqpFE
+	 gzWlkn55XG3s2Zu3Q6Rgy5RXqZLJleL6lxTWbQ1pct/JtIteQwzVGW62QxUj+poYjA
+	 v8guegINKlV/ZYKXtiJDGbvuP+rfMsz5x4zIMnuhqYryNT6caDZF84IRzyORKSK3YD
+	 w/mFJr3ABStoQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:47 +0100
-Subject: [PATCH 60/79] block: fix arg type in `blk_mq_update_nr_hw_queues`
+Date: Mon, 16 Feb 2026 00:35:30 +0100
+Subject: [PATCH 43/79] block: rnull: add queue depth config option
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-60-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-43-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,29 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2537; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=PBK7Gy6yOqD93xMD0GKqkyb3it4yG8n9UJvvL1G85v8=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhRRzjj9sFhsnUHE/Tx66LCHKC5qeomJHUCk
- Y8jvU2yfAaJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYUQAKCRDhuBo+eShj
- d+GwEAC1KHf1/pmHLdJDHxI3cCCTlLqWwGumPnUyTFqd3m6XeHO7h86kF21vSosdJrHHb+XDNaz
- VTv4YxAvrpHaqaNHyZD4vArVYlOcsIJI5Hu284JnIPunXfuqMsSXAhbeDvJgSMxKktW5RlzCyOg
- yCnx2WhbeRjnv+hjKFH387A0ITVqtytkpT59eXNgagoyGLIa+k01l7K/1/S0+VZ3AM5cQ12qdMY
- skynG2WSw9hB+Kl+9yFm50dU7Kt/Ab4DtXV6mdjcCq4DkOwWiqJkYbMxu3/FaZrE/jCaBQ09ntV
- W4mSDcYWA55/eFd/dhWENhnOfGNaBsoRalvJswIVwvZheC1O1AqJeys/Q77bY8PEdaoZEZT7sfA
- YvVZP6KPs2F43KdFZuM/U4kylbcAlxalbKppHJ+srUQ2MJmk+9tr4Vdw/5H6kO5XZtBvx9cEQAT
- 96rGiwnga8pPV97JTptFnTZIZmMjUwYUJyZVj/qhZzVMGec6oQjmkKUScUuEOTYFhK5UN173Jn1
- msXa41+56KcRX/sDcAIXBzWbmukOeZcVCI+Oh30dbAo5YQYNVUBXSs2wTB+AHqFSFxUajjkDtdf
- M8fJcZDtfK2c51lYwwrmcyqSRPcuqhYSBF/CkbBh59EXiJr9vL++/DTL/9ffjf7ZxF3HFPzHP9P
- OQyxV8MpPWhLDmA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3790; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=tjrMyzA+BVtzT2Wqfa6F8miT38AdN9I/wjO3H7a9lZ0=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhCEp6FvtTf5ef2Ki4EejqZQMt6SGvhMnUs4
+ sC8C3M0ImaJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYQgAKCRDhuBo+eShj
+ d0lGEAClOQg1gPLy7HIVfKapYlBnLDghBIoEapbFs5J5AfZoMFvr3hvNmSvqrGJs7WY+HVl/jWN
+ JAOYy1vdMseKVPdasMgue8+QSbEwM2NF00TAVppVb1LyQvcLHbwDARHwq513LL6yKWLYJ1q9g/9
+ FYMVEN7axOaqI8F9+jfe8J6WJbJB/RQNEkv41poqsWK5L3bonD0W8iBl8TRB05w/r3SNo0wknhg
+ 15Kw2ZoeXbRLv7/nTSpMUvlGE6VwWpdfjNvP9AHG5YVEyLX3Y38yzh3zyR2FUF2JfCUzwJhGZSa
+ EAwd5V56rOJlRWxGAoXkYIpORkb0PZCdhPLnkpGJtH2MzsMpjoWlikvMVvEAjt+Ed8lVYpsV7fR
+ I/XY2M6/ZDosPtJhUseBVL3o4/+f/cz085lgiZcXEEt3r8o3RJdr4xXaIBSL6xXOT0UGaXDqgbE
+ m3ftZKy6mIPmK3tpDpWsbCMRC4BdQwacV5HrZ+cnIoNeTJ/c6+Ngoect1UuUl794SGLNmfhey4D
+ uVpY6bd0/iZitDW9KKO8deMVEMomcoI42B4jyn/Pok3Vl245uSL5Co0fglN36BjwSwzMfWfTjU8
+ ZxZuAB28ACB6PnK8rusQ9rG2vTuKWtnb1VAhJcbhLzN9l3MR17TxgtduA3LTS6CkPqcmcziWvth
+ Ky6Q4ks0SwaULHw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 294AC140007
+X-Stat-Signature: mfb8gtm5wpbtcj6zxi9yqxkya8orrj5b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A94218000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5rxn998f53eke9u44ytmd4jr14ogzi6z
-X-HE-Tag: 1771198845-740494
-X-HE-Meta: U2FsdGVkX18LgDMB/G3FyjkxYYVj45Cna++/GJCOi8MSFNkegVfx7ybq6i8y2mkvlVBs1rZYYxt3ilpamvKCGlS1EPJhyhhZ4IZvuSULJ17RtC02hg8jdK8zcytPWz8vkZdz1TBERPw9Wn75D5e+0fWCMZ5dvz5fuLJdVdvNtPtBzdymFXPf0CjqdqL8myp9zh3xUbb4FxBy/5jaK2iSiMx+CTVOyL8zXJ2kQci9bjdYpk/gslzEjDBYMt59xPTq/G3RDGcM9YDz1xUsUgekcwI+Ib/MY6VPZLQ3SxN78DEpNmr9+G08NT0gkuAif0TR3SOhRfxdoQj6CpEbdqd/F1EiDD5I6pGsUESfU5/Q/0vJfJgmU5MPndfD55FzEc4DsRGILBlXcLHaEZKChdJGMiVUg6Au/muvzFTXYzlDZ/iV7bHiX2Dip3TR3DbhFZv+0H1nOwiz5Cf/oy7hVnmIHcWRQpL6b1xPNTmGuPWIxdUh+gN8/OjppI4UzFojBrMwJvM3L0xf8hX4fQtCF8sIdIPLOIfp2YpGwsLMDsI+oypJIryVd0jytNEEz7/zE3ZMfx6YsHbsrejAVQhNRl8hIDG0o2MP91FwKzgzkW0ZdQyyfWXGko/y8btvvcZXaVgu7yorNX/GHIaubU2KTT1ZKiSBBPROQppkjKSVlnEEbWrrIAjqeO2ClDz+WgPbhkMSTNo/GgWCbiAlYDCRLVick92hecfU0tuONimhJs9LuFekPz5TWw+sWEylvjV5SUMmy79b2p6MOt+ObvC0GpKjC6L0H/JH6q3MZt7Y4LOiTC/UbbDJaC0yn2SoAHpPXDGVO39AdtRS6hD3Wmra633uMfodk0/agV1afWuCjYVHGLwegEkqKmuiUtCFZrzrd5eLJJniCAuZXfj0vaRnRnsdx9h0WBFCSG8zyDed8w08yoS+a0qwNuNKQdxXfKOgAJV8RAY+XnTb3+B3ljueW03
- dgUWgA77
- hNdPQS4dWz2QW8cYaauimIQq2xCZImJhrwIBQVnp+qVF2pss=
+X-HE-Tag: 1771198870-336984
+X-HE-Meta: U2FsdGVkX1/8l9cHEiCj5L1ZvgEWrEPYJ28/fmJTX1YGCJXvhlnNWfnph5nps8JlznhKBNckEO+TUixzYrytzktJXLVeoKczx8ENDl3t3kfKrNDdZdiKvnw7LMoYHtw61R7QpSjwLUqQqLSYULCFoi7GgWUWmfPctyoJdxj4vxVbvwYzP0nt3cuQoTRmzO/kvuq2KQCEirlDRGACSHAb1mU/NvGsHx2krH0pcb4bKE+6hj0W/HPfHujQ3eljzrHfKXJ8S4nSEE3HdnpB3SGZ35GyaGrSkdlxj9TExojQYDs44MXQ2dQ5cxAl4SQ7QlZcd4Ez71Lvoi8wPFOTd3aPxZ9gFQdjCXftptdkQUKFNV8w1y0iE9+k4nXf43L9DDhnmiPNZpUqJopunouhlG80CUSoW17l4ZyKzWScDKh4jT8tuxpBQfAIHr2rCKV1K2uUkIsYZ2njdW3cRCnPQZMc8oIwcy6YntgTRNZoMo8Rov9FnTccIOS/zzc6eI2DbDGGNiFDJKMT6aQCnpiB4odOCiBhSRGUNXp+AopFwkvvULwMshFGnUpu8iRcoYae+5cRW8PAH7fRCkwWRFGQWlFQKMtJ4m1HHvpqEsQULUJ//yA4mBqrYtQmJIxPB0eXUPcN/4jSPkQqnG19uIeKUz2UhVJ1qZGCJgJIdYqrqum5pFYjfS5erbGkoCSobN4VFjUP346MCVnu2j/CIIxcue7Vyq3Cs1csIOiYV12sN9YF6C5JsL5sLQDHpq9m+e9wUCgi6uJP2Dt/90kRP3eFwh7dm3VEPRybVNK8thQWeZH2lPYYkOGhIJD6b0ret+/U5aS1ytsi/5oEOx42KEguggaGFE7AA4/JfImbOoGj0uoeQcUXKxbeTuTHybwLB+BSyekpLG75BGCRH7Frn0nJOX0eCqrpIZgsnCwkX+PGe5j/tCHO7hEy6/9SGuNmllVDsO4u36NxcnhGqfoQ0ZKCA/Q
+ M7w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,75 +120,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The type of the argument `nr_hw_queues` in the function
-`blk_mq_update_nr_hw_queues` is a signed integer. This is wrong,
-considering the field `nr_hw_queues` of `struct blk_mq_tag_set` is
-unsigned. Thus, change the type of the parameter to unsigned.
-
-Cascade the change to downstream functions.
+Add a configfs attribute to configure the queue depth (number of tags)
+for the rnull block device.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- block/blk-mq.c         | 13 +++++++------
- include/linux/blk-mq.h |  2 +-
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/block/rnull/configfs.rs | 5 +++++
+ drivers/block/rnull/rnull.rs    | 9 ++++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index a29d8ac9d3e35..6a44ebb6aac43 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4779,10 +4779,10 @@ static void blk_mq_update_queue_map(struct blk_mq_tag_set *set)
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index d1a70fe030cb2..90f2ecb454285 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -108,6 +108,7 @@ fn make_group(
+                 mbps: 16,
+                 blocking: 17,
+                 shared_tags: 18,
++                hw_queue_depth: 19
+             ],
+         };
+ 
+@@ -142,6 +143,7 @@ fn make_group(
+                     mbps: 0,
+                     blocking: false,
+                     shared_tags: false,
++                    hw_queue_depth: 64,
+                 }),
+             }),
+             core::iter::empty(),
+@@ -209,6 +211,7 @@ struct DeviceConfigInner {
+     mbps: u32,
+     blocking: bool,
+     shared_tags: bool,
++    hw_queue_depth: u32,
  }
  
- static int blk_mq_realloc_tag_set_tags(struct blk_mq_tag_set *set,
--				       int new_nr_hw_queues)
-+				       unsigned int new_nr_hw_queues)
- {
- 	struct blk_mq_tags **new_tags;
--	int i;
-+	unsigned int i;
- 
- 	if (set->nr_hw_queues >= new_nr_hw_queues)
- 		goto done;
-@@ -5086,12 +5086,12 @@ static int blk_mq_elv_switch_none(struct request_queue *q,
+ #[vtable]
+@@ -251,6 +254,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 bandwidth_limit: u64::from(guard.mbps) * 2u64.pow(20),
+                 blocking: guard.blocking,
+                 shared_tags: guard.shared_tags,
++                hw_queue_depth: guard.hw_queue_depth,
+             })?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -472,3 +476,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ configfs_simple_field!(DeviceConfig, 16, mbps, u32);
+ configfs_simple_bool_field!(DeviceConfig, 17, blocking);
+ configfs_simple_bool_field!(DeviceConfig, 18, shared_tags);
++configfs_simple_field!(DeviceConfig, 19, hw_queue_depth, u32);
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 84e75a7042214..3fb19836ce6ff 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -149,6 +149,10 @@
+             default: 0,
+             description: "Share tag set between devices for blk-mq",
+         },
++        hw_queue_depth: u32 {
++            default: 64,
++            description:  "Queue depth for each hardware queue. Default: 64",
++        },
+     },
  }
  
- static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
--							int nr_hw_queues)
-+					 unsigned int nr_hw_queues)
- {
- 	struct request_queue *q;
--	int prev_nr_hw_queues = set->nr_hw_queues;
-+	unsigned int prev_nr_hw_queues = set->nr_hw_queues;
- 	unsigned int memflags;
--	int i;
-+	unsigned int i;
- 	struct xarray elv_tbl;
- 	bool queues_frozen = false;
- 
-@@ -5178,7 +5178,8 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 		__blk_mq_free_map_and_rqs(set, i);
+@@ -197,6 +201,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     bandwidth_limit: u64::from(*module_parameters::mbps.value()) * 2u64.pow(20),
+                     blocking: *module_parameters::blocking.value() != 0,
+                     shared_tags: *module_parameters::shared_tags.value() != 0,
++                    hw_queue_depth: *module_parameters::hw_queue_depth.value(),
+                 })?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+@@ -230,6 +235,7 @@ struct NullBlkOptions<'a> {
+     bandwidth_limit: u64,
+     blocking: bool,
+     shared_tags: bool,
++    hw_queue_depth: u32,
  }
  
--void blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set, int nr_hw_queues)
-+void blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
-+				unsigned int nr_hw_queues)
- {
- 	down_write(&set->update_nr_hwq_lock);
- 	mutex_lock(&set->tag_list_lock);
-diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-index cae9e857aea42..171521e716e49 100644
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -972,7 +972,7 @@ unsigned int blk_mq_num_online_queues(unsigned int max_queues);
- void blk_mq_map_queues(struct blk_mq_queue_map *qmap);
- void blk_mq_map_hw_queues(struct blk_mq_queue_map *qmap,
- 			  struct device *dev, unsigned int offset);
--void blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set, int nr_hw_queues);
-+void blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set, unsigned int nr_hw_queues);
+ static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
+@@ -276,6 +282,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+             bandwidth_limit,
+             blocking,
+             shared_tags,
++            hw_queue_depth,
+         } = options;
  
- void blk_mq_quiesce_queue_nowait(struct request_queue *q);
+         let mut flags = mq::tag_set::Flags::default();
+@@ -297,7 +304,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
  
+         let tagset_ctor = || -> Result<Arc<_>> {
+             Arc::pin_init(
+-                TagSet::new(submit_queues, (), 256, 1, home_node, flags),
++                TagSet::new(submit_queues, (), hw_queue_depth, 1, home_node, flags),
+                 GFP_KERNEL,
+             )
+         };
 
 -- 
 2.51.2
