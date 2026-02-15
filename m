@@ -4,111 +4,226 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 176D6EF5868
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 04:05:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845A7EF5868
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 06:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43DA06B0005; Sat, 14 Feb 2026 23:05:01 -0500 (EST)
+	id 5F5AA6B0005; Sun, 15 Feb 2026 01:45:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB846B0088; Sat, 14 Feb 2026 23:05:01 -0500 (EST)
+	id 5A2C46B0088; Sun, 15 Feb 2026 01:45:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EA5E6B008A; Sat, 14 Feb 2026 23:05:01 -0500 (EST)
+	id 42FDB6B008A; Sun, 15 Feb 2026 01:45:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 17CBE6B0005
-	for <linux-mm@kvack.org>; Sat, 14 Feb 2026 23:05:01 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E6221409D9
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 04:05:00 +0000 (UTC)
-X-FDA: 84445350360.05.55FA1F4
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D0A048000D
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 04:04:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RCRusBvB;
-	spf=pass (imf30.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3130C6B0005
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 01:45:51 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C7C9A1A0A60
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 06:45:50 +0000 (UTC)
+X-FDA: 84445755660.14.8E1A4F0
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6FAA5100003
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 06:45:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=kxYs6qEq;
+	spf=pass (imf14.hostedemail.com: domain of dirk.behme@gmx.de designates 212.227.17.22 as permitted sender) smtp.mailfrom=dirk.behme@gmx.de;
+	dmarc=pass (policy=quarantine) header.from=gmx.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771128298;
+	s=arc-20220608; t=1771137948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I/RhIvpEFLtPpCN6HI6eqnNvFV6app2Dc3NXesx03zw=;
-	b=vN2xF5jDOI+EhV+RNvje2hdPXgjIu+oJ7lqbc+v0omNGyh6G715uHbCJ4PtTtkYr+Rm3GC
-	/b2mN0R7BGwCi/LLNFPVA0w5v89+gU6/Yf/BNHdrHgFFkpJTqpnX7gcTVvDDAL99Ffvdz0
-	5W9jAX3KFHhAH4Fy/a87dsjG9XNowvA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AdcHYF4G/k6Zrjgfn4uMhaEygzOQ4eiFPqSXvL8Shyw=;
+	b=WEUB8eC7ApIbpMarLGMUdfEIsLp5MsEXW36wX7sj7EBG9bUlpPhzgtdf/fEtrzOq63vr+E
+	8vNlB7MnzOJdBltKuN7k4ppLbXbvOX/obWPZ4+QitYhxCtLrqWZIGWm2PrBlKUXwr1dZkq
+	1G095tyKesZVFRMtXmHNolci+0N+1Rs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RCRusBvB;
-	spf=pass (imf30.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771128298; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=kxYs6qEq;
+	spf=pass (imf14.hostedemail.com: domain of dirk.behme@gmx.de designates 212.227.17.22 as permitted sender) smtp.mailfrom=dirk.behme@gmx.de;
+	dmarc=pass (policy=quarantine) header.from=gmx.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771137948; a=rsa-sha256;
 	cv=none;
-	b=hHIY8aklRJ7SYsTSmEt69NXwvnMi1Tb91Nujof4goWItuOXKPrjKy+PrxK2NGl87FESjBF
-	6MvT4hXooS/vwAhDFNs2Jkpj+xnLMnmG4aYm+lWhJGiQhrSnjQayNvWKJe7vAxb9mNvmrb
-	pYfl0va7IkC6pFOavJYmQ63lI3Cd9j8=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aad8123335so60995ad.1
-        for <linux-mm@kvack.org>; Sat, 14 Feb 2026 20:04:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771128298; x=1771733098; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=I/RhIvpEFLtPpCN6HI6eqnNvFV6app2Dc3NXesx03zw=;
-        b=RCRusBvBrNuSt/16qK8ZkEdmR/FTg9L1sTIHggMh2iw95vS3W2Mq++lsFf3ZbPerti
-         upDIJiAweiok260tC3p+BMdmiv4/dHntTRCXTZ97XkQHiebYkPzriRskBjsHVXMF2UOU
-         dAZqGYnl601o98ZQlUr2rSyRTrT5mnisBPItEDJxKh5u1Cgr1VTENLduTBWLUddy3MUD
-         ZRDN4lq+U62vMmv5pyJyq3YahHDc6bzjwBYAJaVXptaI0aInjX9AvKngEhZESFxu/UIi
-         BHAT8Nt1b4IZTF4P1+mA1ldAMSh8g8uTaiEVmu5Nc5LuBMJzcX6GbI5OrD0ONtoq1FGy
-         Bx5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771128298; x=1771733098;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I/RhIvpEFLtPpCN6HI6eqnNvFV6app2Dc3NXesx03zw=;
-        b=sCaf3z7DEaSor+8G2ZbbtUr/6S0OPCBj3qW8uEKk880Wm0P9SxB0VChwUktjNy+Vvj
-         9UDw2aIsKsOUx5jU3BNi45SBNew7t5MJ1/GPndGqqf1Ma3lZgteQyT5Y28rQFkFGf7Ta
-         OwFMoaXm2olDRwTY+cxPGMFF9wJ2PpThh1Wo3TgSosRkFJH9xB1g9qa5kJC80WeFSurv
-         SbAc4MA02flfBCyTBOs/s3o7yfNdQSaevGNjeCSFh4+NoksFtPoeAP+830BUX56An1iK
-         rhBRdhpMth0d451ykMB+0OuDJE56pUXHTx4foTXSYNAJ+8ossBwC6wmuAPLkea5vfSIq
-         Cwow==
-X-Gm-Message-State: AOJu0YywYHeemCMmqipxcfNDIzUuxvKYUuOJqgB9ye/kPc+fpDuZgnks
-	0KKSUojkOM6j0nYokBdtEPfvIWUvJz2E+tvLMq/eHQnvoeod/rZ6QNmwgbBKfsg8Cg==
-X-Gm-Gg: AZuq6aIgj/xU2LTuZ5q3pKbWnkHQMM45M2j13C29D7F6TAt4cPHgLocV0tAb/XP3+2R
-	2N0ZsF9usPGu6TrEMHbeYA7XHwVAHg4eSX38GiTR3iUmWqHQF9esuteflUDmEIEKNn6OnGob2QY
-	jg6dUqdkzXzRBt7kmKRq48eBsgi8lLe8cmE6buVqy+QzqYHx7mstV5Qg6IOXIqpVkAt96eSB+SQ
-	CChVb2LbYWDWz9NYywH9R84JiCuFlZmnB9cTFrdY8p1Q9dUp+vYTRTyRx9EZBjbDwKJThTZE+D7
-	iBVkGVbVs411jN+CXWnHYRV8nue/7SshkDsiejwP9NApo4qElSDpvbRLyhXocA1FZnlnO8bc7CR
-	h+2U/thmGDanVtF6HtVLuN8b1gsUaUNpmByydT1sOBF2C3lESGB21XgJfDPLHzwr+7i2jnDj58U
-	aGf9s2WaNDNUIPPj0P8dSVMTT7cfFQhyJpGuAGXgpHpqowJ/Gq0uWPIi8JxuZuvuAd9leeRJMWu
-	WwvKQtKlsi52NEYfVR/3JtuYg9jce2Q12FhtNWUiqQOXIDQIFa7wg==
-X-Received: by 2002:a17:903:38c3:b0:2a0:89b0:71d6 with SMTP id d9443c01a7336-2ad1f0ca506mr943545ad.17.1771128296953;
-        Sat, 14 Feb 2026 20:04:56 -0800 (PST)
-Received: from [2a00:79e0:2eb0:8:97ad:c968:9be7:91a9] ([2a00:79e0:2eb0:8:97ad:c968:9be7:91a9])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e531e6c44sm3653865a12.17.2026.02.14.20.04.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Feb 2026 20:04:56 -0800 (PST)
-Date: Sat, 14 Feb 2026 20:04:55 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from February 12, 2026
-Message-ID: <5146e3b4-751f-ca6a-0bdd-7b1f4d425ff0@google.com>
+	b=Ot2dJ/SP1NRfwNi4YpPxnU+b+lp7Qbl+il8g3RYg0QH+7N58bCWO+2Sy3yOiMRVjKVIORY
+	II5AfBb+EtxbukE+olJJDDnAtq4ZVtZtP1sQaJNlCP3QCXUNuiDJkCFBa//yWF5l8udOw/
+	cqnNuW9lKaBcQ1bhzSdlzc8NKFWx/sU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1771137759; x=1771742559; i=dirk.behme@gmx.de;
+	bh=AdcHYF4G/k6Zrjgfn4uMhaEygzOQ4eiFPqSXvL8Shyw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=kxYs6qEqggL4ULenD08/H++rJS0Qa/he2vbgbQgsRcdvarSVx5NCEuvol5nZwqF1
+	 gMmKWgicGg4pKMqidqBV9UV9zpqaX4hWeJ/okoQKhAXHSFzRaNopdmIEt/7T5nsPf
+	 P6Zn6sCQjN5LXQ6Ki/BZY2JqtYZIIH4rDUFAQzWdw00Po45heUOMN1R7uaTRpt4KD
+	 LFsXG6c25x4RjQb8bDxc9Wj/uJv5oDgu42hMlr0sqZuP1sf1bjpK1eLbG5GsRhiLq
+	 rwbDKh3cMZ2k1p/mz3PK56xYvZyaEtSslfwY3WbwIdo0k1DijkkubS+3volbhR5Tk
+	 L6HHLjNGIwoifE21sw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.178.42] ([84.129.20.229]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MRmjq-1wKXx63E5K-00OJ5P; Sun, 15
+ Feb 2026 07:42:39 +0100
+Message-ID: <ab0b9f9c-3a05-42f3-b4a7-ddb6ab0d37a4@gmx.de>
+Date: Sun, 15 Feb 2026 07:42:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 31/42] dept: assign unique dept_key to each distinct
+ wait_for_completion() caller
+To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-32-byungchul@sk.com>
+Content-Language: de-AT-frami, en-US
+From: Dirk Behme <dirk.behme@gmx.de>
+In-Reply-To: <20251205071855.72743-32-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:aWhWMgelEECPmC8s4cDGobXX6S7QtiNME6Biy1AWp+3e//5sbQ5
+ y9wEC0GO6LExJy0TTxPgi7hn9knznFwU+a3hirtKlPOCAxJAmR+f4VZcqBi5p6St8Nc30fU
+ oiV/7SpKGjIQCoOsBc01ZMd0fVmfFXBllNez+QIS6oLVPBXw4NlthHwsLkGV+AXk0sSs7K4
+ GRT5XuyhIHBhQJdzZpoIw==
+UI-OutboundReport: notjunk:1;M01:P0:OmiIocz3wZw=;W0wkBau9AOTYHToDyhFSvTXvQnG
+ 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
+X-Rspamd-Server: rspam11
+X-Stat-Signature: mzoymjtbk4dofhpz1ibm51o4ir3txr1s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0A048000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ntepfnsipjdd3tchzz9empozpju79eng
-X-HE-Tag: 1771128298-498787
-X-HE-Meta: U2FsdGVkX18PvJXJRYNYCwbPMXZVHnJVqXN3Zz+094KbMgQveTWfpd2eTx6B+FotvBO4DLUDSSF901wjTy+54W0KfveduaMlNT9slRSklNYypChRj4fBG27SQ0cR7y/IZIguUAtqzdDMS3x55of9DCcCjhkP+jSavmJzPw5ZK1RQGlLfkpKkdoJjlDN5sXMp+qeUl/VXfG2xtbA8zD2XcuNiten3nZ6o3HF2DnImPkHeu4h0/+OFaIODkDYo3yg4LPKndF2lQtCYeKk3/4XKFPU2FFtHqDAPK/Mou9rHtDT/aXXwnxVABn++Y/ef7V4wrO07jjoas0MtIPfm/b217/BjEUtH9XZjqfQmjXVRzkD8jStP8V45U8xZXa728Qlkgy4Ga3MTp4/buqJhspp119cb9qTMOyxeHfPu9g9GWICs1kiieJrjwfh5PSGhzPqqq7zFPTXTI6LB5N4J3PT/JEmtM39uw7Kd0B344tWgWPg3FZa51whI1kbPYJSw+ngcdSmhoix+02UlvLOKGbfORu3SFJba6XrfuNLEPKMH3AlTuG0YFgwDGu+eto26Mf+Q5QqFnMQ0j57NtaB2Re9Cjeew5QeG8DERAwwgHVdxbJqQvyCTpN6UfwILJn3uUsSZn03oZQuHIPDZn+oj+eXQZ8YLN+jz90tWYb4a0w3RIfJu8UmSgmLyd2MWku5f3l3HFNnC4cddkz7iRBAl2IXHIbnEdsAOzk/Fto+fnNI68iG1HS+UWcbTy/cKXMnbBhQPe/mChBnPPQGtpU3WpkcCwj0wtAVKkPzcCg/dDj9eqDqGyfBVeBUgH/rv85nYkEjIBUyIIbI8u3Nbk1cxFSdlDFBz0BiiRdsjcmbzP5PzK1UaysE7EAoRujiU8V0HvzFppUFWgkt9rEqvZU+G+aIM1EzIYGjn8Y9rJEXRI8KdmuhkTIZ+0ZTB93JmZFDS84uzWhzzP2l0RaS4Vq3jK6z
- uAK9LAY1
- ItyMjQbtTZOVuVQeGRiiyAHrX9aAa4pyV/3omPusxQPO5Jde6lCFb71Lmq1V44UbyjFSxQ2l3Iqpk3xxTsaJXP6b44+IvaX41/7iYR/Ip/VNaSp1twIzqwJBXfK9B+kSBymjHwzVSWuu9RTRcxMLbkZoTPwyue2FEVrgNTvmgZj24POcKGC3DMdd+S7HaCfPg4vb+9L/jD++Y4MEhYVlEy/ASuNDXDfZ3ksI1bshJQq2hiCLUFTLdFlMQekbuydJw9v2Dz/dXTLjtTAPOkyVXjGdVwJ192FCADwyCmOSDm0wDqhiH5362afa6PWJgrLROsZe+44i4QE3TruTSP3DLhNqps6LAO+9gjDFl3cv8ErWI9Tw9SVGdFuFt7iWEmaon91zT+dOjMjdfFOiyEKIa42LFO9/hJ289TP4Q7gNRhjqiMzs=
+X-Rspamd-Queue-Id: 6FAA5100003
+X-HE-Tag: 1771137948-500851
+X-HE-Meta: U2FsdGVkX19HXMqh+RdGIBdvgZzyicMIG0/b7jCbGZlUf8SCkGJW6wGEpiTvAjo8ymI/Go89kfnXkmrXrCQuwxKJbDURb8fakVLL5w0V8aH/EdiKtsF41V1BZBgZ2S4x2ngrbXcvytRQCT/H1mj+zZEODWDe8T3SuILQEmOX0PzUgpE+hLwFZhENyNQ34Solc+AZTtZhYdEJlLugcAoOvlPZP3LtTI6u+NqbWuYTDazlxpEdP61VwDk/7CVJNDNKpZGdlH3CgTxvl5wFBamGbtW3ZhvAFB1LsQt5UXUFDjdLMJG6cSKlxgGdCj8wFU6d0xKEYTyAajYK/ChsH7iUb2r+qG/hiHc2zdkOeLyvnop1vLciR5yKjG/22oZQqBGoet+TaMlVI9qqdTX35iWRvGxMd69AUtTFKlESmLzv1kRMgXYraMOKcLhiZqNFqcl7K3krzOZHh7edudGjTtI84H+UW1NteRvJhok9TjnNok7gGNKvteOi7IgWs6ZawE3EBcDyWqz0PUcnWiBH1CwJDpxHfAtcyd1A4W06aJj1QykG6k+50MnWi6lGp3xKvcf9KslvEJzZd//LX04EnPXCZXJ/ox7W+g3rfxicXzKSP2e29tqhJR/iWKgYw/O+v8O/6NxEeBYAN+BJ3CjNGV0+CCiGFpcSzAum9Rgzy3HOyC62rupEV2DKjzj5+VlaZ4aeigJXgg2USfs6Fby4dAUrCJX76jaurcFeWLbaluhnfrykW3c89nGe2wtGigjaW1n3Q9YJ2CGNgqcapRiEKUBhGaNfUljOiqCI/6ZNZHGJ4vurlj7acqe3j8E+kPLgrP9TyM0UIREDRFjEhWT+NZkUP3Ij5jaUt2AvdXnk+jqqFvltlXeSxhhY1zIIALLMoVVXtaQmHudFsZYDXW2pOCDBCAdy6bw92Jdk2gPgAtz9HzJK2XhYuIqg75rXy4vtBAWuhdOmj2gsR2+/ULLiUD9
+ 3ETrV0cl
+ 42T84RZ9/3DaQLpBlw9XcQI+xZ6QRfvN/x68Eyj7WSL34OQnWE7hV9T0uivWC1Eip7BYiuDA7kPRaoY9yVXBfmyJFvaaTVurRrsN9uRvU17BBxaNzggCcz0FbddN4C2diCDLaApEQlfy0cIx5y0C47HtKlv/wZ78BAsEuWKYVr982qKUP9fchEZGFAakAyi3bLbD1iUtfEWssl2eWUDxDLWgC8mx10biX+MePUM7cx3lt9oc7nTqRrWITE94f6wodtZ9FeF2DEt0fdrg5Kd/7odLwq2Uf73HqNiD3dIY+p7yXYZ4cBXZlNPz/8ci82iz3whMIQ/3vw60otLmcFOceYh62iFcBFKEfT7H71QGbM/sv37ljIVZCzL7UJm9rkFdIuJq1olL5lc3PrkRQ2+XtVg4nlVaIrrVE+Uoe+DgBceENhkIt+j6sqIpw9X5P91vIt5Zvf3Qm0Lf6tPB+RCUSMx20hn5c3XugAYLfaUHDSd4BhdjhOcVMWlDzBG7BdrkW+Tuuy0+Dh2dQZKzspYaKMQbg0Nz2sctQ1xi6KOXsC5VBPUMqMiBRUo0kq8uFkD3SWDBZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,107 +232,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On 05.12.25 08:18, Byungchul Park wrote:
+> wait_for_completion() can be used at various points in the code and it's
+> very hard to distinguish wait_for_completion()s between different usages=
+.
+> Using a single dept_key for all the wait_for_completion()s could trigger
+> false positive reports.
+>=20
+> Assign unique dept_key to each distinct wait_for_completion() caller to
+> avoid false positive reports.
+>=20
+> While at it, add a rust helper for wait_for_completion() to avoid build
+> errors.
+>=20
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  include/linux/completion.h | 100 +++++++++++++++++++++++++++++++------
+>  kernel/sched/completion.c  |  60 +++++++++++-----------
+>  rust/helpers/completion.c  |   5 ++
+>  3 files changed, 120 insertions(+), 45 deletions(-)
+>=20
+...
+> diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+> index b2443262a2ae..5bae5e749def 100644
+> --- a/rust/helpers/completion.c
+> +++ b/rust/helpers/completion.c
+> @@ -6,3 +6,8 @@ void rust_helper_init_completion(struct completion *x)
+>  {
+>  	init_completion(x);
+>  }
+> +
+> +void rust_helper_wait_for_completion(struct completion *x)
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, February 12.  Thanks to everybody who was 
-involved!
+Please add `__rust_helper`:
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit=
+/rust/helpers/completion.c?h=3Dnext-20260213&id=3D1c7a6f48f7eeb3014584d2fc=
+55fc67f0cbaeef69
 
------>o-----
-Bharata updated on the status of v5 of his patch series from a couple 
-weeks ago with two modes of operation.  Based on discussion with people 
-are LPC, he proposed two mechanisms to track hotness that would have 
-vastly different memory footprint requirements, one as little as one byte 
-per page.  He posted benchmark numbers over a series of updates upstream.  
-He found a clear advantage of hot page promotion when top tier memory was 
-not saturated for both of these modes of operation.
+Best regards
 
-However, when there is top-tier memory pressure (when the benchmark 
-working set spills over into CXL memory), then we tend to demote and 
-promote simultaneously as expected.  Interestingly, he has not observed 
-promotion in these cases actually being helpful; in fact, in some cases it 
-actually turns out to hurt.  He asked for feedback on tunings for when the 
-demotion case can actually help this scenario.  Note in one of these 
-benchmarking scenarios, however, that the benchmark would perform random 
-access.
+Dirk
 
-Gregory suggested that we may want to track the number of demotions and 
-promotions; when the rate of demotions equals the rate of promotions then 
-we should reduce the number of promotions.  Bharata noted that there was 
-ratelimiting on promotions but not considering the current rate of 
-demotions.  In this case, Gregory said, we are seeing promotions drive 
-demotions and there will be an endless loop with these workload 
-characteristics that will impact performance.
-
-Gregory's idea was that if we promote 1,000 pages and then a few seconds 
-later we demote 1,000 pages, then this is an indication of churn.  If this 
-is consistent, we should back off.  In an ideal scenario, we would be 
-doing some proactive demotion from top tier so there is room to promote.  
-He wanted to see data on the rate of promotions and rate of demotions over 
-time for these bnechmarks.  This may reveal an indicator that we can use 
-as a heuristic for a back off mechanism.
-
-I asked if we need a back off mechanism or we actually need a fairness 
-mechanism, the worry was that we would find churn in promotion and 
-demotion, then back off, then start promoting and demoting again at the 
-same rate only to rinse and repeat.  Gregory noted that this will continue 
-to consume precious bandwidth on the device so any churn will naturally 
-impact the rest of the system.
-
-Wei Xu thought that this was more about the sorting of the cold memory: we 
-need to rank the page coldness across tiers because what we promoted may 
-not necessarily be hotter than what we promoted.  One possible approach is 
-to use a time dimension where we refuse to demote any memory that is not 
-cold enough (like MGLRU's min_ttl).  Gregory noted this is a function of 
-the call that we use to promote the memory which, today, is just a call to 
-migrate_pages(); we could pass gfp flags to specify what to do if the 
-promotion node is out of memory.  If we are calling direct reclaim, that's 
-probably an indication that we are not aging off inactive pages and we may 
-be forcing demotion of active pages.
-
-Bharata's current approach uses migrate_misplaced_folio() which 
-unfortuantely does not give a migration context but does wake up kswapd if 
-the top tier is near an oom condition.  There is no gfp flags being 
-passed, however.  We may want to extend the batch function to allow 
-passing its own allocation function; the current benchmarks would not be 
-calling into direct reclaim today.
-
-Wei noted that we do not have a mechanism today to be able to compare 
-relative coldness of memory to make promotion and demotion decisions.  He 
-suggested using a time dimension such that the page being demoted is 
-guaranteed to not have been accessed in the last interval whereas the page 
-being promoted *is* guaranteed to have been accessed in that interval.
-
------>o-----
-Next meeting will be on Thursday, February 26 at 8:30am PST (UTC-8),
-everybody is welcome: https://meet.google.com/jak-ytdx-hnm
-
-Topics for the next meeting:
-
- - any on-going work for CHMU and a generic hotness interface to leverage
-   it
- - RFC v5 of Bharata's patch series for pghot with two modes of operation
- - promotion and demotion thrashing detection and back-off mechanisms
- - LSF/MM/BPF 2026 topics to propose for discussion on hotness, promotion,
-   and memory tiering overall
- - Gregory's testing of reclaim fairness with Bharata's changes and first
-   posting for an RFC
- - discuss generalized subsystem for providing bandwidth information
-   independent of the underlying platform, ideally through resctrl,
-   otherwise utilizing bandwidth information will be challenging
-   + preferably this bandwidth monitoring is not per NUMA node but rather
-     slow and fast
- - determine minimal viable upstream opportunity to optimize for tiering
-   that is extensible for future use cases and optimizations
-   + extensible for multiple tiers
-   + must be possible to disable with no memory or performance overhead
- - update on non-temporal stores enlightenment for memory tiering
- - enlightening migrate_pages() for hardware assists and how this work
-   will be charged to userspace, including for memory compaction
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
 
