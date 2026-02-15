@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B791E63F1F
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 986CDE63F1F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D52006B0099; Sun, 15 Feb 2026 18:41:22 -0500 (EST)
+	id E78B16B00A0; Sun, 15 Feb 2026 18:41:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D26256B00A0; Sun, 15 Feb 2026 18:41:22 -0500 (EST)
+	id E66FB6B00A1; Sun, 15 Feb 2026 18:41:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C566C6B00A1; Sun, 15 Feb 2026 18:41:22 -0500 (EST)
+	id D37436B00A2; Sun, 15 Feb 2026 18:41:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 49A136B0099
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:41:13 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 56D858C0C9
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:52 +0000 (UTC)
-X-FDA: 84448313544.28.8522943
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A7484C0004
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OOJUz8jH;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EF736B00A0
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:41:24 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34A2B1B4E1D
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:07 +0000 (UTC)
+X-FDA: 84448314174.20.5AAC32F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 71427C0004
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ASr/6BUI";
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198850;
+	s=arc-20220608; t=1771198865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFVgpkRy+Tw8lxFCcMb2vttYhFR7XmqqG8IxbTcEF10=;
-	b=r8VRMfdZm/sz34aMzH+GYUX2ZCM3It1vVyaHl4Pfizl8q/XoeF/7HIbVdysjixsM9bcBeS
-	eHnUpmdifHWli+7Mu7QC/NynBaGquddm7nmDMbGSG03hLzVidQZZJHaqaWyJTCOqtNDsVN
-	wqXbVWu4qMhU7T5rNNDAf6nx6H/H67g=
+	bh=Ac5xhfdXxEqKNTSVUogE+vzTZ8xRgoSjrS4SztRM2yw=;
+	b=0ZsOYH5eR8UKdCbnjFafAsb+edpkz3nkNc9OWZHLh53CWtJHrpOeJFIdPDv9LuIiXFhJhd
+	2iP/p8OqRuLLh5/KsaG7A0qpwG/octCiSeZXjCXs5DPAUEcaDNpt7sabfCJ1QoZrntfGw6
+	38MxHxPR+l2aCQqt+c8c25gIWCpyz+Q=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OOJUz8jH;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ASr/6BUI";
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198850; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198865; a=rsa-sha256;
 	cv=none;
-	b=P/yCWSRJ4Ce+suP5oZeGPq/AC7xFanopmktqTpS40t73vXJf/w2JMhTtkA4L2Lral3kOLT
-	MyoiDSHAZC3MV2GQNy/CLksr2wDoK5SZ23M5Rl79sLnLAAZjg/vSIlddU/DgbrGE5nR8Z+
-	1Hdt2SnLkhoM8DouYfQVDERXYxqZZ2E=
+	b=Nz5NJw4ZB9U6oe28ei5AqBxa1AJ+UrwCJ8o3UIhFYYWjlSphbJBWHiKXtkGedHt9mj41oe
+	2/vBj3S4NVMLWAmc3pK5DhYhiO6MX8h11JNzoMeoVbVDjiKXtrPHZ0o84VCTCCPx4EASE3
+	lcBynsWTjMmvcy6f/XlJ12+nInX+LX0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D623F401E0;
-	Sun, 15 Feb 2026 23:40:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D25C4CEF7;
-	Sun, 15 Feb 2026 23:40:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A9CD56111B;
+	Sun, 15 Feb 2026 23:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB4BC4CEF7;
+	Sun, 15 Feb 2026 23:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198849;
-	bh=jDbHu1Zje3UqoEo8ZzyBlnA9FXargy0KlZo0vzXHkD8=;
+	s=k20201202; t=1771198864;
+	bh=fE067vjSsqKm/5ZnuiOwywsOnZPEYeb2N4KfqdpR9Ok=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OOJUz8jHaC7LP3EtCPD65pnV+OuuUHg0BfVaV60OFiuMPeM7rly6GhALuF7lje2WE
-	 iVrI4rr2Vz940v56ePbsz1FEK5OVUdh3FF9wwxV1wTkWj2NAygLoyr4CWMomQIjnMh
-	 Rj82CkavoBwm/WoQPLybya11197FGj4lR8QIRRtdma1KUCqceLm0vZ9dil4TWYorw1
-	 /yTkq7IdNoMo69hqDeiunR+YRM5gNd1MkqAfztRamRz/4iJcK3jF21ZmfTxqlmNckg
-	 H7tpk+5FJbpAKhphMWEOebbbGY5Hs0H6S/bhrHYtVfhHhyCnINeGvDral+4gSo49oY
-	 7uVPpXwDvEtaQ==
+	b=ASr/6BUIb1dhe/Hv43H9W3P2fLSyJ2WecFn2brWrZU9bV+4Y/c9SLb5RH90d23hXQ
+	 V9obpmrNw0+NsHX7KgioU5kOEkDfrhXDGXhbE1yrAgJH8kHidcsrxXcJksvVbiyB5R
+	 km7Y+gHPkn/RlWcbASf5sC5rmtlDld2AGB/bqfPja+2ogcMIjjfoYvJNRXo1UBC+zO
+	 O3KtHxa+/LmfjZRZp9iEcM/EgmNKbcma4wSzWo2gQclDFe48+Uf3O2pTEzZkxX8H4y
+	 Hu7Fse70rkUdKLl/u+vKf7+YZ0sjHVG8Ca+swkUBifzRJawkh68YgdoZphVASTJdln
+	 QYIutGe5cojVw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:36:01 +0100
-Subject: [PATCH 74/79] block: rust: add max_sectors option to
- `GenDiskBuilder`
+Date: Mon, 16 Feb 2026 00:35:11 +0100
+Subject: [PATCH 24/79] block: rust: add `BadBlocks` for bad block tracking
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-74-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-24-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -90,30 +89,31 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1622; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=jDbHu1Zje3UqoEo8ZzyBlnA9FXargy0KlZo0vzXHkD8=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklheeOWsZ5urW4C1UgIxuTPpIyyfBrdvCKsur
- KSUpEKcmhiJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYXgAKCRDhuBo+eShj
- dydFEAC1bjAjzG0WwgcS1zrXw0+2c39sfZ4Y4rB+xPXYebButMnzTSTL4dU+tGbyFFq5x4d0g90
- j3OCa2gMD8rbHleMZ9yo5J1XCRE/GWd5vhplDWCPHVOcLQaCFzwL4tw90z/FgQ5J0nswbXtg0Su
- NgHGvdb2an2pEy+z+tYNqQoP3cYGmGUyFXzXHI6iAERegmXrj959KcIKctyA14K2dAxK5EPi3IU
- FnFqin4bCemG/IK516tUXoZ9Z0N1tV/VzoLHVoc6Es9cEO16U7RzWjrdQPWTZGBo28n0upPGovT
- 42SPvlzRwb83Btcumna2P4wGLc6yAV7Mu+eafxLfUeZFadRKK3qD2J+06pjJsixpUeItZPiVETe
- U8it+EgneiTQVhq4WWit6YWSUYhrWZsN6ICUtfKwX0s2PYgjsHfTnBStUd6IteSPR4zi1jw0Z06
- W73zvD84pdQ6PxRJphLZm/5LopyrH7MzlvOrBIR+7uwtG80iX9aqC1SRJWy7kltk2HPD+caXBm2
- J4plRlTJtkk9avoDHBlpm7+7MiUkzz9RZJIXqVveyHqCJrY5tC4SMHSaX2+S9V5wnoh/c3684OB
- pQ1sRV/jGYFJ7K5I3ZWZzMeN9BPWcTmZkhbO3kYcsOB+Og/RxCRqAqmBlbziBl3ytAw0XluMvaK
- NLxY6LENQoYm94w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=30902;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=fE067vjSsqKm/5ZnuiOwywsOnZPEYeb2N4KfqdpR9Ok=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgxYc8/ZqV61hBgMOPCcBPgcAzG7DSwwYj3l
+ c9rmPFSNDWJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYMQAKCRDhuBo+eShj
+ dynvD/9PFnZxZLF8sY5UbTOM26XTHt0KcAqsG8fk9vUnoX46IY00Fvi44wO82s8Bwp2dmnWWFv8
+ qAC29G4Sb5OLmWXt6N5gUHnd/thptS4NUyHjuPgTX94lfY8Zxx32hoPOCqJ6JFE3w9uVJ3E4KZ6
+ Ojs4RNxnQAg+xIFZRyULkMet0V1/+7fWMvRYWDYEY0ULwjdCDZenjkLs+sm7T3NrFu7eqjU1JXx
+ sAgG5YzlwLoq7pnj36sMCZz9q6WWrVI6GiH+SIcW68IzR6i2PTAjH1SX1rRHpTy8u1lV1o06iMh
+ Zj9+h1GDh5ZvO3mzD44KcNkVBtrw9lwfVAEvzyT1tuPcbezwdRZ4FyYIAAfj0q1+jIHQf8s0E8S
+ lmgZxfXs+HiZNs3bEHvNUCjEbFVYdhwxkXcyJRwdMoC6DOgMqoXIOAf4OplZ2mnVFEcJCKcZWOF
+ 1ATwcL83+8MvTtFPrnxt03lw4DgnKCo4hOrvT0jtDN5/8KfSQuCSuRev6ELYHYMQ8/nnZiQPVmZ
+ aAcZMpfDXBwLoK09OFkn5clEoxRRQ/1ZADA+GiksUbwG3o5DmhBUZqmreAsezbA9ePURBqB5gu6
+ 1qTLzavU3CRY0UqYI1iS4cO+kQSfBmfJ/Be7IgCIVFSx1t1PdUw01Aw53FeZAMp1e5111IYIYI2
+ r9yg8nAJ0W2SwrA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A7484C0004
-X-Stat-Signature: 8rao5akhdakzxg8fxb6georj6uop1oz7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 71427C0004
+X-Stat-Signature: 77gay14pdqufgzwy8cmppeb94skw4pjc
 X-Rspam-User: 
-X-HE-Tag: 1771198850-90820
-X-HE-Meta: U2FsdGVkX18RzTzW4eiz/ZQyQ4pkazXlE1wIHnkH2VPpRcqHOJ+Se4bbeSJyjqviMK9Hqpsei/0EtBrAoSrOmUYGQZlSVavEmFjUl5ScX1hDzbXOgWn1/t7lzNCd93uu6b7822BzN39FDPYO2P7u4moY65ScxUe7l6QlLz0LOzzbAeNTbGLmajsT1GQ6x2S5Li1j9JNMaWoNQNg2mchQnEE/AMeNBbaCzpBKqW4mxneA6HEs7I2PtllVao6lDIzMs/mfgCv7HDag8O/tlpM1PY9pf1csOceAtyESAx3tehnlz4oEJwyPJy2Oek1CTJK2PPPK0Euzj6GO1EkGj25Hnf2VmdLXocDa570WzjgCQlancv5jBkbCFENi8bVXcnc5XdwszoYio+ZSSXmYZF1dTpm54QJVva+M/iZZMVOWSQvB7uLpklJD1ZKbN7dN1RZah6sgddGAEeMi6/68H+zcDztAczm4I9OLNJObHaA4fctEJTyp5cvIYnnuQWi3031/gwH6cRtMk6YkKReEUbfiRO6xb68N5yaSbWPeJe8it4ceclGToaB4aawq6a/DfO1k5z1XMIQ7VMkKSVXE1Lu+5bYvb0v2jQ3bRm0GA72FkZG/zxzBAl4PlppdSlceW6s4wVRDQh7oU/yY5hFRTHFS6uri2WS5XwIHg0dhXwA0/P2wC0WQTYIBHBqkdfj94YqGTQCvstltc7t6E5EdZY3wk5+G0GcUIa4GROLdOuV6S/Xkaj/kV0ktfkTSraAKWs6bmuiFvgWJbtQRB3twrT46TMAXlf0x8UuP3z5haByL7owo6HtO/oM17C5vhPmRQuJf/o38pxzCGwHqbBMvsIVTXDaN+Pc0AucM+LmK/eYQfmWCjEiw3HsRy35YjoV9uxHfB/dY69YwRvYHMMCq0y8ZH+IEqO/MDzmV0XX9cyEOixZBw9sbf+CoWabZKNuYV6R1UM7g6dP+v2RymGFT5hd
- N6UEiLjc
- FfgE7aRmUVXdhnkTiK6U0zyUdq/MartmqCKCPEjmd1NgUwEo=
+X-HE-Tag: 1771198865-725172
+X-HE-Meta: U2FsdGVkX1/3wFm4TDKjsXI7ALwkKxGuzUTIjFrauW/SqokuQBbBmjk97fP7z5SWZhROG6vngPHBHtkIK+jNyjFcVklStnMA6FHznhRNTTAPg31cg5/egCNWvcgZqgKCyYb91hyA13biH+7+MO3tABb0iu6jhYFu2FPdBprChVTHVzu9Ch6rTUnc5fUOxzvx5NDjCQm5ob1hHhUP9QtJR+y8xokqtdiCLOsSE3VTvnN1OkCxkwTzgdQIuAdqaVzEZo82ZAm32eqoFcyOjHtLRkASxWLNOCheYFewqTgbvKV1XgerUySNMj1wHDKPbgRMbSPVJhWLmUdgn7jSgU3Zzxp9w+Q4QrXTQxkJrxQ5Jm/EZlDvFupPQVmsSAJTjh7i43ZXNydnaWQ8EP4WpDsoPn66IpzqsRjb/OpUzIiWIrtCmUg6wNzPl6VtK7vpdnG2FvfI0o/1tIJUNakGKeqKYGhl0fGv2AgBiGWk0aqwvEc7PyzX1x0xSUPwUPvEJVHvpCs788W51ShveM6gGxGD5vOow0F7OOV5V4jUmL3NpAsixKEcNGv0CQMN5e6sRfwuUh9d2PQn1tIUwfCe+1nXIDmGbCCF40O0K0Iwtffe/WMCjHidAeMYNSkAs/7FurAu7E4rWFIsEclHvuHDp35wl8txte7FdPn0XRDGjro5AlzWIijyBGjEMRObIAH4iW3gSCJPsdD3G2fbzSKsRqQlgdNlOXLy2MFukY+JtinsbfzIPi1kl83yF7T22Bhc9b5RNFporZOMP67LG7T0bnoTBVrWabofEjl3SoBdb0/Xk6nfiu0ukfwGqUi0opPr35pwmVQZAYaE5vYM5yJJQm2MSaWXyZowivwcyYYyu4ZtZ1ZuES8DyNXfwSzfLzGLKoz867VIpyniII9gufybKHwOYWYRm/2BOEKVOaMT5JvHEwN+orG6Tpp/BvRjIz/OBhftJJfp0dcx6260DYPA/5T
+ 3NtPBdxD
+ lcGniVidoCgXEEJvN5WnCmsmqF+lImpz6LEecla6oidM3uYP78bTuPaRm1Jh68yXKeIcg6xTq9i70aEL2LZvANB1PCMIV3uDKO6WMToQ2FzMWnCvF/Grt9cVxK0Ob9hrd0vca2a0T2ATWFsOochwz9ifhAEVaZrD2ff14xjy1YxexKUMNBLl/PnPraIBBidRoA/30sSBPHj59z5hQbt6eGeXlFOG6zoSXa4uez0yt86N0+FUC9tDDOm1l+NweIWHxTNl9GQDypzn1xpXSKPPwWwC56fX1JqcseHxa5cM+BNG8+5iLzBfjBaDye0fiSIaf+goB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,54 +122,777 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allow drivers to set the maximum I/O size when building a `GenDisk`.
+Add a safe Rust wrapper around the Linux kernel's badblocks infrastructure
+to track and manage defective sectors on block devices. The BadBlocks type
+provides methods to:
+
+- Mark sectors as bad or good (set_bad/set_good)
+- Check if sector ranges contain bad blocks (check)
+- Automatically handle memory management with PinnedDrop
+
+The implementation includes comprehensive documentation with examples for
+block device drivers that need to avoid known bad sectors to maintain
+data integrity. Bad blocks information is used by device drivers,
+filesystem layers, and device management tools.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/gen_disk.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/block.rs            |   1 +
+ rust/kernel/block/badblocks.rs  | 721 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 723 insertions(+)
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index b5291bc3e051d..b428e3f4207f4 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -36,6 +36,7 @@ pub struct GenDiskBuilder<T> {
-     zone_append_max_sectors: u32,
-     write_cache: bool,
-     forced_unit_access: bool,
-+    max_sectors: u32,
-     _p: PhantomData<T>,
- }
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index e0ba5c712c560..76b58c3fd1ff1 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -36,6 +36,7 @@
+ #include <drm/drm_ioctl.h>
+ #include <kunit/test.h>
+ #include <linux/auxiliary_bus.h>
++#include <linux/badblocks.h>
+ #include <linux/bitmap.h>
+ #include <linux/blk-mq.h>
+ #include <linux/blk_types.h>
+diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
+index 17de727bc1047..19236ab95227b 100644
+--- a/rust/kernel/block.rs
++++ b/rust/kernel/block.rs
+@@ -2,6 +2,7 @@
  
-@@ -55,6 +56,7 @@ fn default() -> Self {
-             zone_append_max_sectors: 0,
-             write_cache: false,
-             forced_unit_access: false,
-+            max_sectors: 0,
-             _p: PhantomData,
-         }
-     }
-@@ -159,6 +161,12 @@ pub fn write_cache(mut self, enable: bool) -> Self {
-         self
-     }
+ //! Types for working with the block layer.
  
-+    /// Maximum size of a command in 512 byte sectors.
-+    pub fn max_sectors(mut self, sectors: u32) -> Self {
-+        self.max_sectors = sectors;
-+        self
++pub mod badblocks;
+ pub mod bio;
+ pub mod mq;
+ 
+diff --git a/rust/kernel/block/badblocks.rs b/rust/kernel/block/badblocks.rs
+new file mode 100644
+index 0000000000000..a5fe0fde2e755
+--- /dev/null
++++ b/rust/kernel/block/badblocks.rs
+@@ -0,0 +1,721 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Bad blocks tracking for block devices.
++//!
++//! This module provides a safe Rust wrapper around the badblocks
++//! infrastructure, which is used to track and manage bad sectors on block
++//! devices. Bad blocks are sectors that cannot reliably store data and should
++//! be avoided during I/O operations.
++
++use core::ops::{Range, RangeBounds};
++
++use crate::{
++    error::to_result,
++    page::PAGE_SIZE,
++    prelude::*,
++    sync::atomic::{ordering, Atomic},
++    types::Opaque,
++};
++use pin_init::{pin_data, PinInit};
++
++/// A bad blocks tracker for managing defective sectors on a block device.
++///
++/// `BadBlocks` provides functionality to mark sectors as bad and check if
++/// ranges contain bad blocks. This is useful for some classes of drivers to
++/// maintain data integrity by avoiding known bad sectors.
++///
++/// # Storage Format
++///
++/// Bad blocks are stored in a compact format where each 64-bit entry contains:
++/// - **Sector offset** (54 bits): Starting sector of the bad range
++/// - **Length** (9 bits): Number of sectors (1-512) in the bad range
++/// - **Acknowledged flag** (1 bit): Whether the bad blocks have been acknowledged
++///
++/// The bad blocks tracker uses exactly one page ([`PAGE_SIZE`]) of memory to store
++/// bad block entries. This allows tracking up to `PAGE_SIZE/8` bad block ranges
++/// (typically 512 ranges on systems with 4KB pages).
++///
++/// # Locking
++///
++/// Operations on the structure is internally synchronized by a seqlock.
++///
++/// # Examples
++///
++/// Basic usage:
++///
++/// ```rust
++/// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++/// # use kernel::prelude::*;
++///
++/// // Create a new bad blocks tracker
++/// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++///
++/// // Mark sectors 100-109 as bad (unacknowledged)
++/// bad_blocks.set_bad(100..110, false)?;
++///
++/// // Check if sector range 95-104 contains bad blocks
++/// match bad_blocks.check(95..105) {
++///     BlockStatus::None => pr_info!("No bad blocks found"),
++///     BlockStatus::Acknowledged(range) => pr_warn!("Acknowledged bad blocks: {:?}", range),
++///     BlockStatus::Unacknowledged(range) => pr_err!("Unacknowledged bad blocks: {:?}", range),
++/// }
++/// # Ok::<(), kernel::error::Error>(())
++/// ```
++/// # Invariants
++///
++/// - `self.blocks` is a valid `bindings::badblocks` struct.
++#[pin_data(PinnedDrop)]
++pub struct BadBlocks {
++    #[pin]
++    blocks: Opaque<bindings::badblocks>,
++}
++
++impl BadBlocks {
++    /// Creates a new bad blocks tracker.
++    ///
++    /// Initializes an empty bad blocks tracker that can manage defective sectors
++    /// on a block device. The tracker starts with no bad blocks recorded and
++    /// allocates a single page for storing bad block entries.
++    ///
++    /// # Returns
++    ///
++    /// Returns a [`PinInit`] that can be used to initialize a [`BadBlocks`] instance.
++    /// Initialization may fail with `ENOMEM` if memory allocation fails.
++    ///
++    /// # Examples
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// // Create and initialize a bad blocks tracker
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // The tracker is ready to use with no bad blocks initially
++    /// match bad_blocks.check(0..100) {
++    ///     BlockStatus::None => pr_info!("No bad blocks found initially"),
++    ///     _ => unreachable!(),
++    /// }
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn new(enable: bool) -> impl PinInit<Self, Error> {
++        // INVARIANT: We initialize `self.blocks` below. If initialization fails, an error is
++        // returned.
++        try_pin_init!(Self {
++            blocks <- Opaque::try_ffi_init(|slot| {
++                // SAFETY: `slot` is a valid pointer to uninitialized memory
++                // allocated by the Opaque type. `badblocks_init` is safe to
++                // call with uninitialized memory.
++                to_result(unsafe {bindings::badblocks_init(slot, if enable {1} else {0})})
++            }),
++        })
 +    }
 +
-     /// Build a new `GenDisk` and add it to the VFS.
-     pub fn build(
-         self,
-@@ -178,6 +186,7 @@ pub fn build(
-         lim.logical_block_size = self.logical_block_size;
-         lim.physical_block_size = self.physical_block_size;
-         lim.max_hw_discard_sectors = self.max_hw_discard_sectors;
-+        lim.max_sectors = self.max_sectors;
-         if self.rotational {
-             lim.features = Feature::Rotational.into();
-         }
++    fn shift_ref(&self) -> &Atomic<c_int> {
++        // SAFETY: By type invariant self.blocks is valid.
++        let ptr = unsafe { &raw const (*self.blocks.get()).shift };
++        // SAFETY: `shift` is only written by C code using atomic operations after initialization.
++        unsafe { Atomic::from_ptr(ptr.cast_mut().cast()) }
++    }
++
++    /// Enables the bad blocks tracker if it was previously disabled.
++    ///
++    /// Attempts to enable bad block tracking by transitioning the tracker from
++    /// a disabled state to an enabled state.
++    ///
++    /// # Behavior
++    ///
++    /// - If the tracker is disabled, it will be enabled.
++    /// - If the tracker is already enabled, this operation has no effect.
++    /// - The operation is atomic and thread-safe.
++    ///
++    /// # Usage
++    ///
++    /// Bad blocks trackers can be created in a disabled state and enabled later
++    /// when needed. This is useful for conditional bad block tracking or for
++    /// deferring activation until the device is fully initialized.
++    ///
++    /// # Examples
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::BadBlocks;
++    /// # use kernel::prelude::*;
++    ///
++    /// // Create a disabled bad blocks tracker
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(false), GFP_KERNEL)?;
++    /// assert!(!bad_blocks.enabled());
++    ///
++    /// // Enable it when needed
++    /// bad_blocks.enable();
++    /// assert!(bad_blocks.enabled());
++    ///
++    /// // Subsequent enable calls have no effect
++    /// bad_blocks.enable();
++    /// assert!(bad_blocks.enabled());
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn enable(&self) {
++        let _ = self.shift_ref().cmpxchg(-1, 0, ordering::Relaxed);
++    }
++
++    /// Checks whether the bad blocks tracker is currently enabled.
++    ///
++    /// Returns `true` if bad block tracking is active, `false` if it is disabled.
++    /// When disabled, the tracker will not perform bad block checks or operations.
++    ///
++    /// # Returns
++    ///
++    /// - `true` - Bad block tracking is enabled and operational
++    /// - `false` - Bad block tracking is disabled
++    ///
++    /// # Thread Safety
++    ///
++    /// This method is thread-safe and uses atomic operations to check the
++    /// tracker's state without requiring external synchronization.
++    ///
++    /// # Examples
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::BadBlocks;
++    /// # use kernel::prelude::*;
++    ///
++    /// // Create an enabled tracker
++    /// let enabled_tracker = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    /// assert!(enabled_tracker.enabled());
++    ///
++    /// // Create a disabled tracker
++    /// let disabled_tracker = KBox::pin_init(BadBlocks::new(false), GFP_KERNEL)?;
++    /// assert!(!disabled_tracker.enabled());
++    ///
++    /// // Enable and verify
++    /// disabled_tracker.enable();
++    /// assert!(disabled_tracker.enabled());
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn enabled(&self) -> bool {
++        self.shift_ref().load(ordering::Relaxed) >= 0
++    }
++
++    /// Marks a range of sectors as bad.
++    ///
++    /// Records a contiguous range of sectors as defective in the bad blocks tracker.
++    /// Bad sectors should be avoided during I/O operations to prevent data corruption.
++    /// The implementation may merge, split, or extend existing ranges as needed.
++    ///
++    /// # Parameters
++    ///
++    /// - `range` - The range of sectors to mark as bad. Each individual range is limited to 512
++    ///   sectors maximum by the underlying implementation.
++    /// - `acknowledged` - Whether the bad blocks have been acknowledged to be bad. Acknowledged bad
++    ///   blocks may be handled differently by some subsystems.
++    ///
++    /// # Acknowledgment Semantics
++    ///
++    /// - **Unacknowledged** (`acknowledged = false`): Newly discovered bad blocks that
++    ///   need attention. These are often treated as errors by upper layers.
++    /// - **Acknowledged** (`acknowledged = true`): Blocks that have been confirmed bad. These may
++    ///   be should be handled by remapping.
++    ///
++    /// # Range Management
++    ///
++    /// The implementation automatically:
++    /// - **Merges** adjacent or overlapping ranges with the same acknowledgment status
++    /// - **Splits** ranges when acknowledgment status differs
++    /// - **Extends** existing ranges when new bad blocks are adjacent
++    /// - **Limits** individual ranges to 512 sectors maximum (BB_MAX_LEN)
++    ///
++    /// Please see [C documentation] for details.
++    ///
++    /// # Performance
++    ///
++    /// Executes in O(n) time where n is number of entries in the bad block table.
++    ///
++    /// # Returns
++    ///
++    /// * `Ok(())` - Bad blocks were successfully recorded
++    /// * `Err(ENOMEM)` - Insufficient space in bad blocks table (table full)
++    ///
++    /// # Examples
++    ///
++    /// Basic usage:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Mark sectors 1000-1009 as bad (unacknowledged)
++    /// bad_blocks.set_bad(1000..1010, false)?;
++    ///
++    /// // Mark a single sector as bad and acknowledged
++    /// bad_blocks.set_bad(2000..2001, true)?;
++    ///
++    /// // Verify the bad blocks are recorded
++    /// assert!(matches!(bad_blocks.check(1000..1010), BlockStatus::Unacknowledged(_)));
++    /// assert!(matches!(bad_blocks.check(2000..2001), BlockStatus::Acknowledged(_)));
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// Range merging behavior:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Add adjacent ranges with same acknowledgment status
++    /// bad_blocks.set_bad(100..105, false)?;  // Sectors 100-104
++    /// bad_blocks.set_bad(105..108, false)?;  // Sectors 105-107
++    ///
++    /// // These will be merged into a single range 100-107
++    /// match bad_blocks.check(100..108) {
++    ///     BlockStatus::Unacknowledged(range) => {
++    ///         assert_eq!(range.start, 100);
++    ///         assert_eq!(range.end, 108);
++    ///     },
++    ///     _ => panic!("Expected unacknowledged bad blocks"),
++    /// }
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// Handling acknowledgment conflicts:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Mark range as unacknowledged
++    /// bad_blocks.set_bad(200..210, false)?;
++    ///
++    /// // Acknowledge part of the range (will split)
++    /// bad_blocks.set_bad(205..208, true)?;
++    ///
++    /// // Now we have: unack[200-204], ack[205-207], unack[208-209]
++    /// assert!(matches!(bad_blocks.check(200..205), BlockStatus::Unacknowledged(_)));
++    /// assert!(matches!(bad_blocks.check(205..208), BlockStatus::Acknowledged(_)));
++    /// assert!(matches!(bad_blocks.check(208..210), BlockStatus::Unacknowledged(_)));
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// [C documentation]: srctree/block/badblocks.c
++    pub fn set_bad(&self, range: impl RangeBounds<u64>, acknowledged: bool) -> Result {
++        let range = Self::range(range);
++
++        // SAFETY: By type invariant `self.blocks` is valid. The C function
++        // `badblocks_set` handles synchronization internally.
++        unsafe {
++            bindings::badblocks_set(
++                self.blocks.get(),
++                range.start,
++                range.end - range.start,
++                if acknowledged { 1 } else { 0 },
++            )
++        }
++        .then_some(())
++        .ok_or(ENOMEM)
++    }
++
++    /// Marks a range of sectors as good.
++    ///
++    /// Removes a contiguous range of sectors from the bad blocks tracker,
++    /// indicating that these sectors are now reliable for I/O operations.
++    /// This is typically used after bad sectors have been repaired, remapped,
++    /// or determined to be false positives.
++    ///
++    /// # Parameters
++    ///
++    /// - `range` - The range of sectors to mark as good.
++    ///
++    /// # Behavior
++    ///
++    /// The implementation handles various scenarios automatically:
++    /// - **Complete removal**: If the range exactly matches a bad block range, it's removed
++    ///   entirely.
++    /// - **Partial removal**: If the range partially overlaps, the bad block range is split or
++    ///   trimmed.
++    /// - **No effect**: If the range doesn't overlap any bad blocks, the operation succeeds without
++    ///   changes.
++    /// - **Range splitting**: If the cleared range is in the middle of a bad block range, it may
++    ///   split the range in two.
++    ///
++    /// # Performance
++    ///
++    /// Executes in O(n) time where n is the number of entries in the bad blocks table.
++    ///
++    /// # Returns
++    ///
++    /// * `Ok(())` - Sectors were successfully marked as good (or were already good)
++    /// * `Err(EINVAL)` - Operation failed (typically due to table constraints)
++    ///
++    /// # Examples
++    ///
++    /// Basic usage after repair:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Mark some sectors as bad initially
++    /// bad_blocks.set_bad(100..110, false)?;
++    /// assert!(matches!(bad_blocks.check(100..110), BlockStatus::Unacknowledged(_)));
++    ///
++    /// // After successful repair, mark them as good
++    /// bad_blocks.set_good(100..110)?;
++    /// assert!(matches!(bad_blocks.check(100..110), BlockStatus::None));
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// Partial clearing:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Mark a large range as bad
++    /// bad_blocks.set_bad(200..220, false)?;
++    ///
++    /// // Clear only the middle portion
++    /// bad_blocks.set_good(205..215)?; // Clear sectors 205-214
++    ///
++    /// // Now we have bad blocks at the edges: 200-204 and 215-219
++    /// assert!(matches!(bad_blocks.check(200..205), BlockStatus::Unacknowledged(_)));
++    /// assert!(matches!(bad_blocks.check(205..215), BlockStatus::None));
++    /// assert!(matches!(bad_blocks.check(215..220), BlockStatus::Unacknowledged(_)));
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// Safe clearing of potentially good sectors:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // It's safe to clear sectors that were never marked as bad
++    /// bad_blocks.set_good(1000..1100)?; // No-op, but succeeds
++    /// assert!(matches!(bad_blocks.check(1000..1100), BlockStatus::None));
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn set_good(&self, range: impl RangeBounds<u64>) -> Result {
++        let range = Self::range(range);
++        // SAFETY: By type invariant `self.blocks` is valid. The C function
++        // `badblocks_clear` handles synchronization internally.
++        unsafe {
++            bindings::badblocks_clear(self.blocks.get(), range.start, range.end - range.start)
++        }
++        .then_some(())
++        .ok_or(EINVAL)
++    }
++
++    // Transform a `RangeBounds` to start included end excluded range.
++    fn range(range: impl RangeBounds<u64>) -> Range<u64> {
++        let start = match range.start_bound() {
++            core::ops::Bound::Included(start) => *start,
++            core::ops::Bound::Excluded(start) => start + 1,
++            core::ops::Bound::Unbounded => u64::MIN,
++        };
++
++        let end = match range.end_bound() {
++            core::ops::Bound::Included(end) => end + 1,
++            core::ops::Bound::Excluded(end) => *end,
++            core::ops::Bound::Unbounded => u64::MAX,
++        };
++
++        start..end
++    }
++
++    /// Checks if a range of sectors contains any bad blocks.
++    ///
++    /// Examines the specified sector range to determine if it contains any sectors
++    /// that have been marked as bad. This is typically called before performing I/O
++    /// operations to avoid accessing defective sectors. The check uses seqlocks to
++    /// ensure consistent reads even under concurrent modifications.
++    ///
++    /// # Parameters
++    ///
++    /// - `range` - The range of sectors to check (supports any type implementing
++    ///   `RangeBounds<u64>`).
++    ///
++    /// # Returns
++    ///
++    /// Returns a [`BlockStatus`] indicating the state of the checked range:
++    ///
++    /// - `BlockStatus::None` - No bad blocks found in the specified range.
++    /// - `BlockStatus::Acknowledged(range)` - Contains acknowledged bad blocks.
++    /// - `BlockStatus::Unacknowledged(range)` - Contains unacknowledged bad blocks.
++    ///
++    /// The returned range indicates the **first bad block range** encountered that
++    /// overlaps with the checked area. If multiple separate bad ranges exist, only
++    /// the first is reported.
++    ///
++    /// # Performance
++    ///
++    /// The check operation uses binary search on the sorted bad blocks table,
++    /// providing O(log n) lookup time where n is the number of bad block ranges.
++    ///
++    /// # Examples
++    ///
++    /// Basic checking:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Initially no bad blocks
++    /// assert!(matches!(bad_blocks.check(0..1000), BlockStatus::None));
++    ///
++    /// // Mark some sectors as bad
++    /// bad_blocks.set_bad(100..110, false)?;
++    ///
++    /// // Check various ranges
++    /// match bad_blocks.check(90..120) {
++    ///     BlockStatus::Unacknowledged(range) => {
++    ///         assert_eq!(range.start, 100);
++    ///         assert_eq!(range.end, 110);
++    ///         pr_warn!("Found unacknowledged bad blocks: {}-{}", range.start, (range.end - 1));
++    ///     },
++    ///     _ => panic!("Expected bad blocks"),
++    /// }
++    ///
++    /// // Check range that doesn't overlap
++    /// assert!(matches!(bad_blocks.check(0..50), BlockStatus::None));
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// Handling different acknowledgment states:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    ///
++    /// // Add both acknowledged and unacknowledged bad blocks
++    /// bad_blocks.set_bad(100..105, true)?;   // Acknowledged
++    /// bad_blocks.set_bad(200..205, false)?;  // Unacknowledged
++    ///
++    /// match bad_blocks.check(95..105) {
++    ///     BlockStatus::Acknowledged(range) => {
++    ///         pr_info!("Acknowledged bad blocks found, can potentially remap: {:?}", range);
++    ///         // Continue with remapping logic
++    ///     },
++    ///     BlockStatus::Unacknowledged(range) => {
++    ///         pr_err!("Unacknowledged bad blocks found, requires attention: {:?}", range);
++    ///         // Handle as error condition
++    ///     },
++    ///     BlockStatus::None => {
++    ///         // Safe to proceed with I/O
++    ///     },
++    /// }
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    ///
++    /// Safe I/O operation pattern:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    /// # use core::ops::RangeBounds;
++    /// # fn perform_sector_read(range: impl RangeBounds<u64>) -> Result<()> { Ok(()) }
++    ///
++    /// fn safe_read_sectors(
++    ///     bad_blocks: &BadBlocks,
++    ///     range: impl RangeBounds<u64> + Clone
++    /// ) -> Result<()> {
++    ///     // Check for bad blocks before attempting I/O
++    ///     match bad_blocks.check(range.clone()) {
++    ///         BlockStatus::None => {
++    ///             // Safe to proceed with I/O operation - convert range to
++    ///             // start/count for legacy function.
++    ///             perform_sector_read(range)
++    ///         },
++    ///         BlockStatus::Acknowledged(range) => {
++    ///             pr_warn!("I/O intersects acknowledged bad blocks: {:?}", range);
++    ///             // Potentially remap or skip bad sectors
++    ///             Err(EIO)
++    ///         },
++    ///         BlockStatus::Unacknowledged(range) => {
++    ///             pr_err!("I/O intersects unacknowledged bad blocks: {:?}", range);
++    ///             // Treat as serious error
++    ///             Err(EIO)
++    ///         },
++    ///     }
++    /// }
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn check(&self, range: impl RangeBounds<u64>) -> BlockStatus {
++        let mut first_bad = 0;
++        let mut bad_count = 0;
++        let range = Self::range(range);
++
++        // SAFETY: By type invariant `self.blocks` is valid. `first_bad` and
++        // `bad_count` are valid mutable references The C function
++        // `badblocks_check` handles synchronization internally.
++        let ret = unsafe {
++            bindings::badblocks_check(
++                self.blocks.get(),
++                range.start,
++                range.end - range.start,
++                &mut first_bad,
++                &mut bad_count,
++            )
++        };
++
++        match ret {
++            0 => BlockStatus::None,
++            1 => BlockStatus::Acknowledged(first_bad..first_bad + bad_count),
++            -1 => BlockStatus::Unacknowledged(first_bad..first_bad + bad_count),
++            _ => {
++                debug_assert!(false, "Illegal return value from `badblocks_check`");
++                BlockStatus::None
++            }
++        }
++    }
++
++    /// Formats bad blocks information into a human-readable string.
++    ///
++    /// Exports the current bad blocks table to a text representation suitable
++    /// for display via sysfs. The output format shows each bad block range
++    /// with sector numbers and acknowledgment status.
++    ///
++    /// # Parameters
++    ///
++    /// - `page` - A page-sized buffer to write the formatted output into.
++    /// - `show_unacknowledged` - Whether to include unacknowledged bad blocks in output.
++    ///   - `true`: Shows both acknowledged and unacknowledged bad blocks
++    ///   - `false`: Shows only acknowledged bad blocks
++    ///
++    /// # Output Format
++    ///
++    /// The output consists of space-separated entries, each representing a bad block range:
++    /// - Format: `start_sector length [acknowledgment_status]`
++    /// - Acknowledged blocks: Just sector and length (e.g., "100 10")
++    /// - Unacknowledged blocks: Sector, length, and "u" suffix (e.g., "200 5 u")
++    ///
++    /// # Returns
++    ///
++    /// Returns the number of bytes written to the buffer, or a negative value on error.
++    /// The returned length can be used to extract the valid portion of the buffer.
++    ///
++    /// # Examples
++    ///
++    /// Basic usage:
++    ///
++    /// ```rust
++    /// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++    /// # use kernel::prelude::*;
++    /// # use kernel::page::PAGE_SIZE;
++    ///
++    /// let bad_blocks = KBox::pin_init(BadBlocks::new(true), GFP_KERNEL)?;
++    /// let mut page = [0u8; PAGE_SIZE];
++    ///
++    /// // Add some bad blocks
++    /// bad_blocks.set_bad(100..110, true)?;   // Acknowledged
++    /// bad_blocks.set_bad(200..205, false)?;   // Unacknowledged
++    ///
++    /// // Show all bad blocks (including unacknowledged)
++    /// let len = bad_blocks.show(&mut page, true);
++    /// if len > 0 {
++    ///     let output = core::str::from_utf8(&page[..len as usize]).unwrap_or("<invalid utf8>");
++    ///     pr_info!("Bad blocks: {}", output);
++    ///     // Output might be: "100 10 200 5 u"
++    /// }
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn show(&self, page: &mut [u8; PAGE_SIZE], show_unacknowledged: bool) -> isize {
++        // SAFETY: By type invariant `self.blocks` is valid. The C function
++        // `badblocks_show` handles synchronization internally.
++        // `page.as_mut_ptr()` returns a valid pointer to a PAGE_SIZE buffer.
++        // The C function will not write beyond the provided buffer size.
++        unsafe {
++            bindings::badblocks_show(
++                self.blocks.get(),
++                page.as_mut_ptr(),
++                if show_unacknowledged { 1 } else { 0 },
++            )
++        }
++    }
++}
++
++#[pinned_drop]
++impl PinnedDrop for BadBlocks {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY: We do not move out of `self` before it is dropped.
++        let this = unsafe { self.get_unchecked_mut() };
++        // SAFETY: By type invariant `this.blocks` is valid. `badblocks_exit` is
++        // safe to call during destruction and will properly clean up allocated
++        // resources.
++        unsafe { bindings::badblocks_exit(this.blocks.get()) };
++    }
++}
++
++// SAFETY: `BadBlocks` can be safely dropped from other threads.
++unsafe impl Send for BadBlocks {}
++
++// SAFETY: All `BadBlocks` methods use internal synchronization.
++unsafe impl Sync for BadBlocks {}
++
++/// Status of a sector range after checking for bad blocks.
++///
++/// This enum represents the result of checking a sector range against the bad blocks
++/// table. It distinguishes between ranges with no bad blocks, ranges with acknowledged
++/// bad blocks, and ranges with unacknowledged bad blocks.
++///
++/// # Examples
++///
++/// ```rust
++/// # use kernel::block::badblocks::{BadBlocks, BlockStatus};
++/// # use kernel::prelude::*;
++/// # use core::ops::{Range, RangeBounds};
++/// # fn perform_io(range: impl RangeBounds<u64>) -> Result<()> { Ok(()) }
++/// # fn remap_and_retry(io_range: impl RangeBounds<u64>, bad_range: Range<u64>)
++/// #     -> Result<()> { Ok(()) }
++///
++/// fn handle_io_request(bad_blocks: &BadBlocks, range: impl RangeBounds<u64> + Clone)
++///   -> Result<()>
++/// {
++///     match bad_blocks.check(range.clone()) {
++///         BlockStatus::None => {
++///             // Safe to proceed with I/O - convert range to start/count for legacy function
++///             perform_io(range)
++///         },
++///         BlockStatus::Acknowledged(bad_range) => {
++///             pr_warn!("I/O overlaps acknowledged bad blocks: {:?}", bad_range);
++///             // Attempt remapping or alternative strategy
++///             remap_and_retry(range, bad_range)
++///         },
++///         BlockStatus::Unacknowledged(bad_range) => {
++///             pr_err!("I/O overlaps unacknowledged bad blocks: {:?}", bad_range);
++///             // Treat as serious error
++///             Err(EIO)
++///         },
++///     }
++/// }
++/// # Ok::<(), kernel::error::Error>(())
++/// ```
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub enum BlockStatus {
++    /// No bad blocks found in the checked range.
++    None,
++    /// The range contains acknowledged bad blocks.
++    ///
++    /// The contained range represents the first bad block
++    /// range encountered.
++    Acknowledged(Range<u64>),
++    /// The range contains unacknowledged bad blocks that need attention.
++    ///
++    /// The contained range represents the boundaries of the first bad block
++    /// range encountered.
++    Unacknowledged(Range<u64>),
++}
 
 -- 
 2.51.2
