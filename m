@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18B7AE63F0B
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 19:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EDE6E63F0B
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 19:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7A4E6B0099; Sun, 15 Feb 2026 14:09:20 -0500 (EST)
+	id 44B296B009E; Sun, 15 Feb 2026 14:10:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B07056B009B; Sun, 15 Feb 2026 14:09:20 -0500 (EST)
+	id 403866B009F; Sun, 15 Feb 2026 14:10:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2BB36B009D; Sun, 15 Feb 2026 14:09:20 -0500 (EST)
+	id 2F8A66B00A0; Sun, 15 Feb 2026 14:10:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 793EA6B0099
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 14:09:20 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E5C81CD80
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 019176B009E
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 14:10:55 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2427D140329
 	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:00:49 +0000 (UTC)
-X-FDA: 84447607818.05.F613530
+X-FDA: 84447607818.23.6CBCA48
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 24A0B100005
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3462C1A0015
 	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:00:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LShGTUaK;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yy5R6kes;
+	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771182047;
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KYIC/qIlONGZYtOPMXl3t7HkwCD9MiX2OTNWNoz8qm8=;
-	b=OQB1f2MSASXTdh1SUfn2OuRQtN5ryxxST9oLdBcNPUqyHGivTV5cIQJai/Oqrb0Q4DjlgG
-	b8GV9wY21YbKuEv6RqcKfXTJRY25xoFaF1NjhIlB4jx9zWmBHtoZsxPTNZPMuRd3IDzlY8
-	cUTyNsZSdLwSB24+KPxRJZjJ7VKThvc=
+	bh=xY7G8R7+P+8unP3fUZq69jb8WWTsjZw+fymYMyJMCPA=;
+	b=XVXPlb3lqiNAEIfks8nGeFpDqafK/TwUPLA+HlldUJ8/C0xQVVFOqSTfvolx5H10DHdz6l
+	w/jEX7N+t6kSjQnQCswuK/C6fJ5KCIvIdlJQ3tplS3Y44PV+vOaygyipfc3AS6Bqgo3dBs
+	UXTC4y327bWDH3CD+O1DryAdLTDKHZ4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LShGTUaK;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yy5R6kes;
+	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771182047; a=rsa-sha256;
 	cv=none;
-	b=r3QlC2Y64th5t4eNgbM9L+N9jQWibJSRYb2I/7dFVwwEtEHagAurMKux/pbnRRmtKnn2fw
-	0ycecdoWD51yiXy4ti52Lyv56DgbmasKXEGklrxUU5hCW6sA8iuR0BvNmT15VsKXumLqe+
-	0tgmOECSGOUxzCjmafgVaXcClx3PcVw=
+	b=Rx36JbqJX/WEVcWejzR8aCig7GTr75qeZe/TNGlmNywBMuAbuJ4v8Ua6HALadWhMLeA6bH
+	DFwD1cmBEVTTAMvQokDZujNDFgcgYiUy5yfOzOGMKNuwnPABHG2n1FUaTOZEx9dB7AE27Z
+	lK9pbAGdzEwUVH3jbZvNdUqrhI9yGiM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6565660127;
+	by tor.source.kernel.org (Postfix) with ESMTP id 786C960140;
 	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0F206C19423;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1CC65C2BC9E;
 	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771182046;
-	bh=ijCT+Mg7d3790XUMIRWeaMLVEKai5+A/PxJRt61VFl4=;
+	bh=wTK7vBuck4Wc7Ro9R5Mj7NtxqG8AwnxBtxe5boxsbpg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LShGTUaKXyZSjrhS6kwYIBt9hwvtSZhKlGZ3HR5nedonqog3puYIOht/6vFCjqTal
-	 plQBeXpP/93WLZBN6lsrIvrqsqhSuqp6SQgf4qRj8bi2hf1RRyEmrT5iPAQMW0KGqv
-	 W32voWw9gmpyrIbRs62TdMAElqJ9DZa+0NLjrAw3cknSmdgbEQ/V4XgNUtfPK8Xwpz
-	 B4i72hk0ZKsxsuql1hIdGObH7NMvKG6VVoCLpujon5PodgwPCBZbLM6TN3DrG/zQgo
-	 oRd4N/sGgPQYeLP6fjRp6pbo4vp4ZKnPhvlZrTZrC7d9aieSMiTjd5hB7T3X4D+IEM
-	 6m3Xjc0Rplf5Q==
+	b=Yy5R6kesqXoXrKVqGCGp5zq3jrg/VndrjGUBKAr8JT4PCjKGWdbKMERn2zxgL2idJ
+	 yP1B81Yw5ciDuiv+2g/So47K/CKdDRWqf0ZGGFmXUEHXcrf+OzSb2gvAAt4TQeC4NP
+	 I/WbY9lXtMfGrnEYlVhcYoqECKhBxBh3IE6SDkk+BXvl2iCXIb4FawMc8kalGsddXD
+	 ClY3vsvesSt5C2yOpuhsxXlr8D55ngbl0X95ENihFBBDSHoBD9wJAqPE+W5sU0g3AE
+	 5l5LF3zTmR75OezDvm6ghrqACFv6PbduaalVm1nY+oGuOTVjmb2yQiq2AqxoBeUDFv
+	 RbnpOGQAryVqw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC6A4E63F0B;
-	Sun, 15 Feb 2026 19:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CCC9E63F0D;
+	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 16 Feb 2026 03:00:25 +0800
-Subject: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and
- writeout
+Date: Mon, 16 Feb 2026 03:00:26 +0800
+Subject: [PATCH v3 2/3] mm, swap: reduce indention for hibernate allocation
+ helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
+Message-Id: <20260216-hibernate-perf-v3-2-74e025091145@tencent.com>
 References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
 In-Reply-To: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
 To: linux-mm@kvack.org
@@ -84,28 +84,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
  Carsten Grohmann <mail@carstengrohmann.de>, 
  "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
  "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
- Carsten Grohmann <carstengrohmann@gmx.de>, Kairui Song <kasong@tencent.com>, 
- stable@vger.kernel.org
+ Carsten Grohmann <carstengrohmann@gmx.de>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771182044; l=2673;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771182044; l=2326;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=AP2Agry4RlYj89KzjPUleAMF+xnfApgEpjtkm4VqQJg=;
- b=oWPcjSUKtm8Q5thSWVCe+iAtBfoyhjpcOXkpVbNik48lhQotclHLHkRYpDUJ3lggMApH+ajKj
- ubJcoDilvf7DOAEJdCiVlTXLq6u98zsCp55n45Ahcmc5887iscwJsNb
+ bh=Er50BTm1CADsw8Sf6/HAwSuhm/4o2yVx7I3U3KWBPIc=;
+ b=6R485nSU2o2bmlUPNO4K/iY50QRPl1rzZbPFloZdqJyaeo0dg917Z8y+N6oHRTJOmKCc6S34d
+ Ve2gyLpXehHAoSL7/gdAVeYQ3DnjFmOPgzF2YvNccJWX9JFH6/o6w4w
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 24A0B100005
-X-Stat-Signature: fm64uycguooxd5esdxejr94nb5j4qahy
+X-Stat-Signature: 4ye8yi66wbaasbkfz4s8eis839qbg4zj
+X-Rspamd-Queue-Id: 3462C1A0015
 X-Rspam-User: 
-X-HE-Tag: 1771182047-923686
-X-HE-Meta: U2FsdGVkX1+NRPkRWvEu8DVOW3w7w/+cHSo/Q68yISS4RrI7+M4dvtzgUZkRzMoK2mCF2l0SUeAzRmJVioz1HJNaf2a8CsubKfqk14qlWHJEE5kxS0cVO7UliJFihnWEDMYEl8piHE66oV37Tpj2ILVPuyy+4Wv8DAqcGGcyl05kOwt7vL1O/Gj7TQW6l2WOCC+xWyoGjXCHG39OzRdfO5s1npWSpUSp2tzzF3YSZwYqduWllohWLYUus4QFwkbLKGDHolOeGsr5uMRF52PALKxxF9DAjfUbjzP8YLUKGVba2vDU6UsVxQT6r3L/BlI3fft5gSnya4Mi6rcotHHICZLdoQE1w4QiuHr3CwGb5CyOA2bnuGJivHdxJiTOOmmuYoxF6AsPUrnt3D7+FKomcx6lSomm3567bOUu4zcGIq/2mS/Gjy+Wmn9xM8Zmj+HuV8N6ZLn0e1+EnN/V4QIGwqVF31NBKf8PxUSrN1z6ttUwNu6Hv2BM64tAla9LL5F0V/T6pCmjE/RHpWkl6HsbSAdr9azow+nJgq4glWtSuHkzmMx015IsW8EI15OhzDDYOEIlEkNPHrH6quWLBEpiprvO4piZqr7LHutp6me5iCjtTavu/5kRcURVRuKXdiz62BeAiTv9nU3qWqWxi1nbhywlhHiqRMFAx//2BSyEIpBaGzyZ/gqWxadsFry1ZuE+AFrYTnkTan/RrLTAjKBTGDqCWxbgf2LJMY5AQ38gA0wUM/uSCkG7utE9bOU2ORgGKmu7hSjUDuiVqMZIN+c81yAcHJ1oXSQVQDxBrgsU+zmap8zUKB7DhzLzS4PbSmbizhF6Egx5xGNo6jmRIDIMi0xelx2guu17lQT07BvJXaapq2L/tXwlPwj6uRp1gZyM6D2wzhBj6LAUYQXztELFrOl5waX+3KvMbfVxOfmu+wAGspQKXZD7MN6HJvcLMJzjIL6kPwx8g17FfnXIJZj
- DQ58JHAa
- 1QYMOMHuWQDoRjkfwgrsMSFDAxxpjOKJSmAY4iHoEcRxvYPsJc6u6RYH/tcpz3pdx5NwV4h0GScDH9lHsKAh8nTU9eplvvsz4enO8Z5bYe9lg9TBGZjOA6otrol7vkqugRLvhHShusFXC6VENe/VWOpuk780F8gNKrdHHmBAL+oAWcxjSgelnbJpGwBHzdHikCkfo3aWWzguKfuz/Q2MVoPgnaOZAasgDbRic4JIlRWwDNFtjcvVFo9Xk17meoXCWZk1TJ8Q8Qk6Hbce+qGnO8WOWab9DjFOo6K4BhICliDZ6z0byDOHJCWVe5NiMll+7Ly05csZGa5Z04ObK3QepmIQMSTihqMEtjfz1ulGuII6UnNSMBIFMMCPzx3r7f2yZD3Jt/8/p0hfFX2ToXOBp0BFx0LqlGruITOy+Bm5MCRO9JdbljS+utLd1BrZ/tPJDgBcs333qZl1kJo4=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771182047-616122
+X-HE-Meta: U2FsdGVkX1/RNPQHwYoCpM2XCxDxJajQBIB4ePs4Tnkt1crP7i48mCcxmH2638nfkEaaHrxKZO+9OGIyS7FJvJWjYGCOJR00emINtNcomeYKIb1mfEzCjIKlmwS32MhaXWgnjgVSe63FK0LEDm1XntWv6k2g6GX3ungde2Djj+ryHnqia1fJwbDf2HBMefqLRo7SP39ePkExIJFDFa8QpawwiA7JWFVbVWEolUF22wJLdBDUgQ8tRP3Dts8LCPeFyCV6xkEdjZazu87mxGtlx4NXs7mkwEW/lSeagqReRdd9d54xvZan/est9lnoQP3wmykkAMwBIkMUZ1xDbDHRlnfoTtd7Auy6GSTux31CWbGUtx4TraTpt4cGD7qu4ie9q2WMHaWuEUb5E6/hU2jz9ViOdbJfl5WcL4LJRr7NBlOaLcM5YgKNQ3WS+ztdXW9wQyXNNF5gekwJ3aJ03XSNlgKhsjuutjut0A32rSzmCTTOOR7GAyvIHZoATYVSnBepiEMVirtcRoyn44yWLjnG8g6BuGlWrbqaTuM00YWbGe9/0IPvd9pqTpubqz+0d6fY7GhJQ6FGhlHaLE5bI60ttWMqLBkHNd3v3bIMKGD539/c8GrgRVOfHUkKMalXG2BNv5aUceCdc8ItOCogvjpErUshI2V76H+plu2POaq06JP7PYDCr73QNbssVN9I/5lPeGUTr5ZX+TJ7wbfj584FbZWguwR5GyE7WjoH1aQopaS52jt8tQAQhSCuNGcUrdDCGW/CmX51GoiAkncQgqhDEzkquk0uwwz/s65fmsPqhePtPYNn0FuPuE//SZYQK4Qsr0jVf7oAA+EsffEoWR0gXjLkkuIICcCU/Gg0tq/Avi2msn3jtzjmgBmUuubYHLRrBVZoFBC4gEU6r1tjBbPUmn1b93zI8WbEscm6HfT2SiMU984qzMZdKZaQH+frJVa163b5hW2OQakiJnCbSvS
+ fIAD4His
+ PaNLi9VUzpF28HsR583XaReCcqlVgVvN9f8LRPpLQ0y+qfky4gyBEg4XuXCJGQXFby9GoxgYEVi8kB2HPbBuAcgpchHlg2ArvCNRlyp/y1jVHaNjm9hzuLJrGpEd3H0HmCYaNUDtPLTf6asGUkbkkHe5oIUPlxWOzlf7uEZHSObLJnkPaspGVjc42RR5vff2htVGTtmV+Es2fKMIeUhfaAmMXwkVTfDdfjfGILHpI7WaRqzSP/cUhP5N4bJ7/ZlVPvbZHHble47oQQn/DIVpY0X4PJTDKecUJN4KPbxiatX+yxtT6zWrs0QbC/J+2waXXlSyiZg1DH6Oco9Ut30j0VzaswzDr28R1cJ8olIIsnV8QpHvccIMluQqKkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,71 +115,67 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-hibernation has been using the swap slot slow allocation path for
-simplification, which turns out might cause regression for some
-devices because the allocator now rotates clusters too often, leading to
-slower allocation and more random distribution of data.
+It doesn't have to check the device flag, as the allocator will also
+check the device flag and refuse to allocate if the device is not
+writable. This might cause a trivial waste of CPU cycles of hibernate
+allocation raced with swapoff, but that is very unlikely to happen.
+Removing the check on the common path should be more helpful.
 
-Fast allocation is not complex, so implement hibernation support as
-well.
-
-Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-performance is several times better [1]:
-6.19:               324 seconds
-After this series:  35 seconds
-
-Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
-Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
-Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org/
-Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
-Cc: stable@vger.kernel.org
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swapfile.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ mm/swapfile.c | 38 ++++++++++++++++++--------------------
+ 1 file changed, 18 insertions(+), 20 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c6863ff7152c..32e0e7545ab8 100644
+index 32e0e7545ab8..0d1b17c99221 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
- /* Allocate a slot for hibernation */
- swp_entry_t swap_alloc_hibernation_slot(int type)
- {
--	struct swap_info_struct *si = swap_type_to_info(type);
--	unsigned long offset;
-+	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
-+	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
-+	struct swap_cluster_info *ci;
- 	swp_entry_t entry = {0};
+@@ -1936,27 +1936,25 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
  
- 	if (!si)
-@@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+ 	/* This is called for allocating swap entry, not cache */
  	if (get_swap_device_info(si)) {
- 		if (si->flags & SWP_WRITEOK) {
- 			/*
--			 * Grab the local lock to be compliant
--			 * with swap table allocation.
-+			 * Try the local cluster first if it matches the device. If
-+			 * not, try grab a new cluster and override local cluster.
- 			 */
- 			local_lock(&percpu_swap_cluster.lock);
--			offset = cluster_alloc_swap_entry(si, NULL);
-+			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-+			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-+			if (pcp_si == si && pcp_offset) {
-+				ci = swap_cluster_lock(si, pcp_offset);
-+				if (cluster_is_usable(ci, 0))
-+					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-+				else
-+					swap_cluster_unlock(ci);
-+			}
-+			if (!offset)
-+				offset = cluster_alloc_swap_entry(si, NULL);
- 			local_unlock(&percpu_swap_cluster.lock);
- 			if (offset)
- 				entry = swp_entry(si->type, offset);
+-		if (si->flags & SWP_WRITEOK) {
+-			/*
+-			 * Try the local cluster first if it matches the device. If
+-			 * not, try grab a new cluster and override local cluster.
+-			 */
+-			local_lock(&percpu_swap_cluster.lock);
+-			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
+-			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
+-			if (pcp_si == si && pcp_offset) {
+-				ci = swap_cluster_lock(si, pcp_offset);
+-				if (cluster_is_usable(ci, 0))
+-					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
+-				else
+-					swap_cluster_unlock(ci);
+-			}
+-			if (!offset)
+-				offset = cluster_alloc_swap_entry(si, NULL);
+-			local_unlock(&percpu_swap_cluster.lock);
+-			if (offset)
+-				entry = swp_entry(si->type, offset);
++		/*
++		 * Try the local cluster first if it matches the device. If
++		 * not, try grab a new cluster and override local cluster.
++		 */
++		local_lock(&percpu_swap_cluster.lock);
++		pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
++		pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
++		if (pcp_si == si && pcp_offset) {
++			ci = swap_cluster_lock(si, pcp_offset);
++			if (cluster_is_usable(ci, 0))
++				offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
++			else
++				swap_cluster_unlock(ci);
+ 		}
++		if (!offset)
++			offset = cluster_alloc_swap_entry(si, NULL);
++		local_unlock(&percpu_swap_cluster.lock);
++		if (offset)
++			entry = swp_entry(si->type, offset);
+ 		put_swap_device(si);
+ 	}
+ fail:
 
 -- 
 2.52.0
