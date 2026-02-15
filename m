@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F58E63F2E
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0550CE63F25
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A0A66B00AE; Sun, 15 Feb 2026 18:43:14 -0500 (EST)
+	id 7AC606B00A2; Sun, 15 Feb 2026 18:50:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74F5F6B00B0; Sun, 15 Feb 2026 18:43:14 -0500 (EST)
+	id 7657E6B00EC; Sun, 15 Feb 2026 18:50:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 672956B00B1; Sun, 15 Feb 2026 18:43:14 -0500 (EST)
+	id 659B36B00F2; Sun, 15 Feb 2026 18:50:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8B46B00AE
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:43:05 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E0371B4E0E
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:04 +0000 (UTC)
-X-FDA: 84448319088.13.69079FE
+	by kanga.kvack.org (Postfix) with SMTP id 905276B00A2
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:49:46 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A992E1C1BF
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:09 +0000 (UTC)
+X-FDA: 84448319298.02.7E1FC09
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BA838180005
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tpakzWk4;
-	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id DA92818000A
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zx+uunxp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198982;
+	s=arc-20220608; t=1771198987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJj2L037iQtufxieUY8PbvgHzWgRsQA2X/h+3AZOBmo=;
-	b=Mr48M/Az3rKvxmomwrW8LBr3uh/BaAuONJNElW/pFfdJxZ+v39Zfq6PLrOO2+2fcDNPW42
-	GqwEpqTjpv/I2Ha08yhQteL/JN9azROqtqKHo8Dhb10UQw717nmcfgzdRL22NhBiZTSKgr
-	ms66/H+pdfex88h37qPYIXXM91MTjkM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tpakzWk4;
-	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198982; a=rsa-sha256;
+	bh=WSfDUbka6E6zhSqZCaOquEpMrLslEzav8NrlIsxGqiA=;
+	b=6YBFxE3S72oR+jpZzqPW/MmCChVyMm34ZXUY0m4y5ZiNn0upNISHz5pEOQT3YUKcJE7NeN
+	1Jw1NgD8PAt84IyUUBekGB8CmsgTTkirGXpiqks+wD/OQISGgg9g1hMi9nMG3tdYS7d35v
+	HLtXiywnvs1u0R5CsmS9+0Gx9y1fPcU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198987; a=rsa-sha256;
 	cv=none;
-	b=Xs3UXud7lGJuXeaNDP/7L2ygLp3PAfQrxwmvwCerlowWEhgpGvAi7O3RnCmrEW/qir9BuH
-	jDGzBg3tp6uUhM+hAY7VgrZ2rmYopLqosHBE0vf1bzrhoBdLq3y6BQf+3pEsBPMfFlEf9H
-	NlVbH+IqTT+a+X3diRLQghx7et1dRPY=
+	b=Blgu3/wzZ08SVoMwfOIpLrLYDcPb68lFTHkgfNBDHoxcwYhGg7dWvB81BYWS4t4UL4GVtC
+	a+uXO2YC9losfZlX2gpi5q7DWWCqCag6vatnyJY63J03bqx40E1/QaRskXH/4I99Vpd0E0
+	ntf9mpmvL6BkVpl9s0y6A92lSnMmbMk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zx+uunxp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 54AA76013E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 693FF6013E;
+	Sun, 15 Feb 2026 23:43:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33F4C4CEF7;
 	Sun, 15 Feb 2026 23:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74930C4CEF7;
-	Sun, 15 Feb 2026 23:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198982;
-	bh=fZvIGl58JonxCsHjE1MOz0gJuaXvox3LIYllPG0cQyo=;
+	s=k20201202; t=1771198987;
+	bh=g5LW6csT032CGxKoiloM9/8wSOoZndfzpAjeHZm9vX8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=tpakzWk4TWmcbuhpkBUEC9edsz+5JRgd1QpogL+InpyA0YDVT/qXAZTJK+BcS6IDm
-	 4eLxyaf8IQfkbJw7hCl0onMo+VNhknT6ZzMihDkhrt6S9VkdC2fwHD7T26sVa/Pv1b
-	 HXwx08mbXDAKhZGPMHdRmOohz8nZB7elUkYYF+Jc2uvEaVxcemosU6VoPBJr3XW/0K
-	 dslY/CbFU9/WJYgyDZiCGY5ckt3eIqVvkEQPB28TPuwZGNhXcPEdTOdeA/vWvNPDji
-	 4E59Cf0cRQ61S86hTjXM0monf/n3ZjwZVbeoqMoMjkBaV+RNbNZGHVy4G40q55Nhog
-	 76Fh5AJmXKyIQ==
+	b=Zx+uunxpUs5Oi9tE3v9dXqBlUuE1QYCwU1Ow40WRmAr9MQdSYJi2MpEhhs8tBWGtn
+	 0d9tK85IAOB7Z9s8gs1vLmIGSR+CYv8/a9Pk1VHTp7cMi0bUh3RMWHcBQotO6hQAd6
+	 4uRQEt6aqwvrVy75EXGa7oFP6GerMYfBVcTi11Hi+/z21i+wa+vPFKTv+lcUGOs/6B
+	 cHgO6GmWStx5QtAphWF8If9g6H4Fumk2nPf+Ldc3RNOE4mbLelFsIHimENQK9cud8A
+	 Tc7dt885RbQ+bZaBmQpbnQbWMBlLung72sy8F9AIGqDzASp+MIuph1eS7toRFCc7PY
+	 QdJM921qm4+eA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:08 +0100
-Subject: [PATCH 21/79] block: rust: add `NoDefaultScheduler` flag for
- `TagSet`
+Date: Mon, 16 Feb 2026 00:35:58 +0100
+Subject: [PATCH 71/79] block: rust: add `Request::requeue`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-21-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-71-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -90,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1048; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=fZvIGl58JonxCsHjE1MOz0gJuaXvox3LIYllPG0cQyo=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklguOLYxvU7ZbLaMRp9Hmd+T5HDAKD73QjHU9
- fYsKhE3Q8OJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYLgAKCRDhuBo+eShj
- d/JHD/0Qi2wOgU0MkzrqlvaS/lF0f0454+YaKacIDMS3nRLwpUa3xzj4xTQe2g3XcReJipitalT
- QVhPor15WdaNkr6AQcEeJs9Mml1rIsQFXWVK/KHwShX/ikW/jZiVME/UC2F1dWrL/P2IscSS8+r
- 6jfRd+XsFzduzj11vUU7XlPQDV7TXq+ZJ1if4wVpTLwvR9LyJHp+mHtx/4seUn3pj7/9BI0Obng
- C6PMUYI6JJNsbjcmjO2t7NbZwnlrXkyJxURPsW5B8uTNt/k56NhTKQS5cpjcMkkMozVX6zp8tt1
- xe3GhZW5IsdQAe5XIJ0NiaPs4cL5in6gEx0jefPwu4F9lw+do6qvu1qKqZ+sPofYcLSG+y/9VyW
- QuIYVyAkdmvKwdZj2bId5oa/Ae4QWnioW/oKZ+v0POvs6raOLo9c+F/DMOmYNtb59WaGcU8gFaV
- jZTvQmYfMaS9ZrdUXE0rINFy7S8FcwPa1kmsCTFLzC/C4KCdJ7N32/HKOWACKfY0HIDECz4IRbR
- oxlMt4WWgbLKN6chtkBvXUbxhBR/tBabfHH5NV0US/xMsYc+ODU9JHYiasnbiO3sdP5E6dpLesk
- batWietAxuT0bgcv6zPNYoKn1f4TKNp2BFJKohYo/pW+aLS6Cb8uUVL88jiaW/HQBf7EY6PokTs
- llKN6jpceUvDq8Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1419; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=g5LW6csT032CGxKoiloM9/8wSOoZndfzpAjeHZm9vX8=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhc/Y1g/b0vvwu95fBzmEX7w8cu76KNhIq5l
+ I+j3m5oTruJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYXAAKCRDhuBo+eShj
+ d8KzD/41eNC99szTK+r357aOuZhjbUWcBfaAU6NcRV3rPS7DxRpqHPHuQC4LrldgEw5s2KplPUc
+ qpB/YUxQFdtmK5WjxqzYnASzOhghp33LoecJM4JfsPhkQBI5V+Y2xu2C5yOrDvmpBTsijhB+Yf4
+ Dktc28xWY5XcaEIwAw+6UWicjNjUducMp3Pns+bIAQqxoYwRenWTqbL/CInb4Gelz7PQc5urccy
+ jDx3Nx3DtaD0cIqKKECShxBdkVE0YLz5kFTv9wm8VO/NbjPckXRQmfQ8+eAOzJMuUx9/YsBffAy
+ rSdbIo6bv7bO01LmxuKi5A7mffoN8lEbts4empUi+Om9PcAzyJEsk6t2d0s2d7SKHM2TvE/ETQR
+ 3jwSjztJ1uR0fOJXYKjciDBETZ1BlyZh1frvzBBQGsM2qHi/gvbr8LaDwL8bBubiEdi6VMiBG0+
+ 9hOX74LuVZ4xVRXfOpcW4MSyjwBgsW7dcae4G8nvUaTuSrKDX7rYWBIBSJOUqNBdvpfpbHyVdfB
+ M53RHvcf005IKbfO7vK2jK2TAq+S+RMsOrTw2guXnvHfEEzluOMI6nR/m3jGSIli6UqcvfyHbaO
+ 0bkPx31tNWCf59AgggQ0EvIhW7bTah8omTgcUWAodMRNJvct07//69Rj2BPjGGD+jEAi5JlISb0
+ l9TNEwJtVbfy1jg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Stat-Signature: q8dfnd6gej9z1gy47znmz54i4ugqd9ct
+X-Rspamd-Queue-Id: DA92818000A
+X-Stat-Signature: c8wkbeisa3cikx14br1s9zrw4j3wiwx7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BA838180005
-X-HE-Tag: 1771198982-549198
-X-HE-Meta: U2FsdGVkX19LkBqQhhQ+18i6/2Rm2heeaTuWEqDpQq3HvqODT1Da1ZNMjQobSupCWfEvgU+MmZD/lAjIEv082htOOG/GEDN1EIzW8WKHUGD/JvSTTFAeEclFvPkxqj0qNCqEq+hN/qVxJn14S5R1CK9CWX5/pMd7ESVOj9X/FHmLLXiHukda5/+dGPUvRXeNVf+zDt8aBIbZBXELy2sMvo32/gEwM2zPgX3jG2ylOKU5M4rIPCmarJTWdpYFWvviSfMRaH3nlt2f87ddu4+P3Lt5y3recn34UjfKaNcUISoGlCP2iQasVXlpOT+UCv2CvvylB0GbW0j/N9aAMKQt7MMeNrW/8jIVH7SpCpSblNknWCvjztMF64ga0a8+79oNsns/Ob0fijjFNJvP5n1uyS8AmXML91ea/OqVgzze1M2bTTgLU+jlVaUvDLO1Ngm/E9G/d3paW3VpYmq3ZkJm7LTB1EckWs/RmIZ5aGcTb36Wv30c4R0iJbXbvtZ6fn3zMYFLdoItdd/gQlWF/2D1lXnLpduhzxASvSP3NDcAPamNHDopb+qsrWorcuRJHQ0PuWuwBs3+CF35ufUebqRMHMTUocvO9gDntgxzAxbLZu6Wme3TAKVx+o0FDDLNcyNPD9v9eWrOpSItMH9ye1w9ZfNOkoJsFl8+eoV0qs43oOKLGTv/8pfOlEJt5ZeoS6IAK5Zul8I6p/R23Mw/FKBezFoz6F26lW51vXD5Os6Ys3tgyJ+D7F1rfF+sWwG3vxtuyV2qUcfmLLCxFcokBL+R+GVGG4rGvzu4fBxvFyaszzkqCj7oM8wFM/KubXzp+euYHrJaAXCjRGkr12xIfn2FMjyIgJTjpWBF1+LgUfhZo4TMiONXjM6trEsegncIKu08h+bQPOvYu6dThS75iMxdNw7t5R8mnsy45kbiskyCK2g4SdOz24t/NuVvV1e/FV3lwhNryNde+YeD5bAsU02
- BsEyiAsS
- vhDgjYDBTbzGOMVBPljut5SqyjsiLmjteu8z2P+iPwyeUSIt4VSfxfODYH0JJRamv6DJ/VTK6DwA9UySjJnjS2jw8EL9CJQgPfUr7B5JHP4IinOF5CPWEutvS8gqGfo5nt1dSKBZlufkTqK2nI3lYWSWgvfzBhbp9RWO33IcPaBcwe4Gf8an19NQ9nQtVblM/jl/KNOI0/G2/V87k5sCxQVvuMu0w783WTnDCy9CQS0iQwU6GLiijZ/0TCLTG+9NEqweQxfD8uOzMzxoz35J7T8Vn+j0t3caBIJn30AQlaAquVBbzDyFFfxYZTSPn15bufq/b
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1771198987-248636
+X-HE-Meta: U2FsdGVkX19CC/q6MlYyPS1Lw6XGjMtMYphbeQkMMq2W92Y5Py0yAkhxsLt02cspdFBisFVB6oCSZn8iIvOlGeFnqnBtngAEKfVYZWZJ+Yd3eT/o0HZlGG1zlyHfRZaXJs7sgPu2XYDfPuHFshYvVp5imQzT/n0qJSoM2vqSdwgyeNK0xK+xFFYHr6UM2rQfoJntHMDX2UAFs7NGzdRRqpep3HLio2N1IPNOzxN/jtAQgLMkYN0j+7ROHjQz/82/zZ6rCYkVPXAH589DXfxf6o0XolsyF7GhzXtI394oUOgIq6awx5GMEavAQhh3UdeqqjdWnyos2NMoDut+8/NBo9xfCjFrF6jJP7Bb1t5QEpv2IYb/oatpPtRDhTWV5ijosNah22OUKw+QRnWS+MnrA3jRf1BB9eRno4+CH2vV3HU+BpMcObPVQ+lt46kDuYKRCvJNjs2TiNxBO2k1iKeeVhTMkXon/0DIVrIDzwgBgCRtQql/22CUvQj6IhquJnsJj4+ntP6vtDvVLmDBDhfJCQnqCj2yXDyNY5wHQUbVUWPjKvFawh3A/xoJW7zCHg9IlbWWbOg4VayOpRe/uJLuwhKrQJSEuHtAYim5Siu5vIBMdLLe+bzrmeUX5ADu6hs41NcZiWnRXdwgP9xGjfi+4xv6UkoJZ7dKexJZi3/nzWyixtoCJMvkmhOgye6hdrut9PBrh3UbiDttTzGxpwyoq6ZrmzeU5l4bGbMnpYf36HI8rZmQ/7+qRKPXA+P6GmosUVltYZEZM00PZKQsQG0kQ//1EOZDHqy3ydrEIUUoXQTMtwPGGj9IjNwEO8JorjXP6a+/XH2RaBB+VlS99iG0het696JXjiiC00jolyxar4MmcUGqYOqWKrN4G3jqjVW87Q3GW+vArhPkhOX/VhQt846qM5YbV6dRdJTk1ZUhNo0y1hKYIhXM0TcMxpljWelSQlJRigcTHzT95ZJFZoN
+ xt5hC2LB
+ 8Ok0mtQN5qkXE8dymRsKgCdRK99Ao7cPWUGs/kQM5R9Mpf0W7jZsqgyyQUO6Wpx10jQQ/G59MqpuUAXZ2PbrUflxivxowH3zt4HJR4O5M81/FsTxE6tdrHWjZsxxst6zKdV7FJssEBCXiAiOAGut4S+cpGLn2K9LmMfSfNQxHaFp333+O/tz8Ty6RMAkGyS42VJl3GrZfvwTFpMSJJMYsGEs7yaVcsLOjhB9/6KMQIcd1J9bpZLQ2s7mKcYWcHKyEwlw1ZZ4XAFGnqEvyEYPUSEhEt3M7nxAncZQ7eD52/jwlIA1npwA41E7WbIiit0P4vG7M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,29 +121,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a flag that maps to the BLK_MQ_F_NO_SCHED_BY_DEFAULT. This flag selects
-the 'none' scheduler during queue registration in case of a single hwq or
-shared hwqs instead of 'mq-deadline'.
+Add a method on `Request` to requeue the request with the block layer.
+Drivers can use this method to send a request back to the block layer
+without processing the request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/tag_set/flags.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/kernel/block/mq/request.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/rust/kernel/block/mq/tag_set/flags.rs b/rust/kernel/block/mq/tag_set/flags.rs
-index 768db938b9a95..1fca4fcb4dd20 100644
---- a/rust/kernel/block/mq/tag_set/flags.rs
-+++ b/rust/kernel/block/mq/tag_set/flags.rs
-@@ -15,5 +15,9 @@ pub enum Flag {
-         /// processing IO. When this flag is not set, IO is processed in atomic
-         /// context. When this flag is set, IO is processed in process context.
-         Blocking = bindings::BLK_MQ_F_BLOCKING,
-+
-+        /// Select 'none' during queue registration in case of a single hwq or shared
-+        /// hwqs instead of 'mq-deadline'.
-+        NoDefaultScheduler = bindings::BLK_MQ_F_NO_SCHED_BY_DEFAULT,
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index e2fafe7737379..af10dcbd3ffd1 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -75,6 +75,18 @@ pub(crate) unsafe fn from_raw(ptr: *mut bindings::request) -> Owned<Self> {
+         // SAFETY: By function safety requirements, `ptr` is valid for use as an `IdleRequest`.
+         unsafe { Owned::from_raw(NonNull::<Self>::new_unchecked(ptr.cast())) }
      }
++
++    /// Requeue this request at the block layer.
++    ///
++    /// If `kick_requeue_list` is true, this method will schedule processing of
++    /// the requeue list on a workqueue.
++    pub fn requeue(self: Owned<Self>, kick_requeue_list: bool) {
++        let ptr = self.0 .0.get();
++        core::mem::forget(self);
++
++        // SAFETY: By type invariant, the wrapped request is valid.
++        unsafe { bindings::blk_mq_requeue_request(ptr, kick_requeue_list) };
++    }
  }
+ 
+ // SAFETY: The `release` implementation leaks the `IdleRequest`, which is a valid state for a
 
 -- 
 2.51.2
