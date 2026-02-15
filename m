@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BFAE63F1F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC3C6E63F22
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:50:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B00E6B00A5; Sun, 15 Feb 2026 19:40:44 -0500 (EST)
+	id 447FA6B011F; Sun, 15 Feb 2026 19:39:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266486B0130; Sun, 15 Feb 2026 19:40:44 -0500 (EST)
+	id 427D16B0130; Sun, 15 Feb 2026 19:39:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 159B46B013B; Sun, 15 Feb 2026 19:40:44 -0500 (EST)
+	id 311EA6B0134; Sun, 15 Feb 2026 19:39:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 397286B00A5
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:39:43 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DED7160719
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:04 +0000 (UTC)
-X-FDA: 84448321608.30.49BC39E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 91FF86B0130
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:39:55 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 307A4160B0B
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:44 +0000 (UTC)
+X-FDA: 84448320768.14.2C20CB5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7F1AA1C0006
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:02 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVqOk658;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199042; a=rsa-sha256;
-	cv=none;
-	b=6Zt9VYhZ0I5+rBemWfWcjZB10WWnSfHCkGRnWJCtPdqDIcd9e895cqFnZgXYKVEpfLoE4M
-	MXX6QUKreJVQfkEJkKbt97rfitmHoxDFzJk0W9bd20Bt7wP9FOQYkG+ntG4LoQjBopDwbY
-	zzahsIoEbFZItAwb965Rx/7eX69mXqs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVqOk658;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7E72E1C0004
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FbOWUKbm;
+	spf=pass (imf21.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199042;
+	s=arc-20220608; t=1771199022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4OzTdfQ0FxUb2r3rm+cv17Wk0uybmChuLn/2dbvRKG0=;
-	b=OZzOI+vajdPqgsL+SF89Uy9P0wsS4yE8lxZMIa8afOA0GMknRb1UJQlScfvxwxZHCVAuyp
-	mxHPpkHi2kTlVwPUgdrWxXgMfdnGayen4xV092JeWd0XgJcCUjmR1kgWKxWaZ1ItNh+n9H
-	E7P2JAr9TYwB9IeOz9UCEtnw841PDMQ=
+	bh=GeW8NIhSUCU+3aLaJoURpeGYOPaRY4AoO84muosun+U=;
+	b=x+FKpYTwp4h6fnG8JcRzcA0DEI+9rXU7bDnkiuCUKC7xLhgUjIqv3jAV/9HtCrSzPfUKr8
+	XpqXtcD9kzfswsyhAnNQqQ5RnCgdh1s2Tf3Q1JBpLMSrY6+8cqtMAZ+FuDZSl33g9vqton
+	FgFXZZnfxgvf/zJ9LHyxAkZGa9dqbKE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FbOWUKbm;
+	spf=pass (imf21.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199022; a=rsa-sha256;
+	cv=none;
+	b=1ARTaiSGaHUqCXPNogB3Vt5VOsSdGMS9qLhHtPraQ8PlO9ljqOlPkGXANgXwShtgAit5Vg
+	wPzvpuqZHnnQkWJ/HnzUFW3VpaakZXxpRNgb2hSAzjvJTsfRqlX9gVsLzrBSyQE1cZuSVZ
+	Dy5Y/1rXI+II9ebNKWTda+XLag8zzAY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7A9C6057A;
-	Sun, 15 Feb 2026 23:44:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E13C4CEF7;
-	Sun, 15 Feb 2026 23:43:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C4A56013E;
+	Sun, 15 Feb 2026 23:43:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77798C4CEF7;
+	Sun, 15 Feb 2026 23:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199041;
-	bh=3/is2sfDJmdRy9QPPG2gvTdPrheCZt7kkxfe/Rrhb04=;
+	s=k20201202; t=1771199021;
+	bh=/Kuy6Fsv3n8+vl73J+RNkL3tqtg0kG+WMvIfcKimuAY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=kVqOk658tO6pg8KYX7bNxxRB+cTHS2c50HdL/p1++R6v4GnH7HLRcxAuw8IA5riP7
-	 3Jt4IDICWjq7yzM4n5QjAQ8/ig/OqXNTTM3n6zQ52XFn73acEKir+D+ouQNgzERc44
-	 hVOEEdRJHUNE3P7LFU3s65wdgXswhaUvfHjfWnDpUAn6Le/wmlemPdd/nnmTq35F1E
-	 ngL8/34WOhSc91d6R/xOShCJl4l6B/bPuHYyjs/qwtS4s8NbMHmI9wNTIYZPQyL0FA
-	 TBQSbXL1sFUr2iAXfXoTHHxuhd044WD/AjNe8u0gs6QfQL1C1KR5W1W0ELiKWSUDaz
-	 CyuLRbD8VyITw==
+	b=FbOWUKbm4n/CXe3V1um1I3TjOg20nmVQfW2OtVaFFxdNQP6kQ5k2icORCLV9qSFr+
+	 yJiiKsSkDyEiyqCVq2kaGn/5bQTqiyXmkFnwID7eGTArXZjDUmy6eLzrqTgQ9v/lG1
+	 jZMc3W1bhGJosTvvYjhCHmIuoVx9vC4NnwNMNQu5ZyA/gDXXdGDn/4gnnsYqViu5xV
+	 FMcXIeVhnCNDSNNOi41Vih3UrSVlAWYdB6SYUJBcn0XHodtOxIkic31DHfbzH7Blwo
+	 AzMlXTinavW6AQNmNAtnunlhJBNafB6RZECUpmoLDCJj3wIxyzObvWNkXPdGvuci1d
+	 I1LDxAxNta1Qw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:36:06 +0100
-Subject: [PATCH 79/79] block: rnull: add zone offline and readonly configfs
- files
+Date: Mon, 16 Feb 2026 00:35:09 +0100
+Subject: [PATCH 22/79] block: rnull: add no_sched module parameter and
+ configfs attribute
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-79-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-22-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -90,31 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15509;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=3/is2sfDJmdRy9QPPG2gvTdPrheCZt7kkxfe/Rrhb04=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhjWcIdNupHJZ+Z1Iqa1OXKENuLiidyv1T3i
- 5O5U2MYdHyJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYYwAKCRDhuBo+eShj
- d8/3EACTdpRzmaQm8jpMo+udlUhbjmqYZQ1GbysxKSwhPMyLWPONRaDgmeKa2b3Rmbe0NV7Zo5Y
- rIwj38weF3m+Its2XgvUVrahJIiqFSk5NMNQ5HeI+0K+NAQKcKozx5TfEpepA5HdoeaGfJj8b+n
- JkMOaapjc3sNbmsXCjQPo2o2xg0NND5UUAxe0+z0OLn/Ye9inZkivJzED1jXQFs4c9Vkl47lRzo
- UTuKDsSk6spxKiGGbtP2JdlHXjRP8iShxxogibBxN3IWVkYmbyngRfTzgnok73Ozq59wTjYzE5S
- HsuPV36y7jZHTrwnsGiipOeQ0gF6r4E//T+uwJG2yMrszInghK6vLBdJK8TxhAdOwYdEnMdzeVN
- G/LxoYwndTaA4vOOMj8Rt6WWf1AGu3oV57dmJ56qet8F4ssTJnIira4KNF9WHsFYagJHmUzd5Oh
- RSUE1Rp/TBTf8aoBQF0i7uC52UL6SLWO3rPiVQGsidikcmpAHYYEAJSVa60nXzdkT8g8X5v0FWm
- ohKXpgLXGKlIdEgSnROrl/30yR+Gb0F8IO3ZIrmNkncT93pCGE4Cu6Lo6UhcQxzrs0ugJevxH02
- h7Qo6Le7yIoYIZLE0eldLg/PTtbB9il8DVQ5sVVDvI7EsI8f/hjx8XmZpUq/VA10kXbtI8Llr+i
- ZUv36CKP5YOWpDg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4831; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=/Kuy6Fsv3n8+vl73J+RNkL3tqtg0kG+WMvIfcKimuAY=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgv7mC1vFpEakQN4AFwbqnINSdbK/gHyJEkH
+ nv6vJSxCo+JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYLwAKCRDhuBo+eShj
+ d/ulD/0aSq4rGdIfmpcbHJkjMKGDZKFnDel5s8/iZYKX0kcfe5vL/96VBuvGiCoRVEkZ8B3AzCm
+ JXU5pZeuGOCOYguGpmNw3/Y9W8riH+nzEPUw/tRHjqozu8EruCznv7k8kS/trwHLeYy5WvRVxxL
+ 8G7TYYyWO3FqZaKQ0eqgvDnUGMIKHCQwnEvkH1/5Wd8wmFfACXM588wRW3G795keARNiosEC636
+ JepsEOmCU4dLOdjR/eOXrKvbtlNprOnX1J6YA1lWy9TMBHYA8cIvJ7m2LiwljAH+aU3epkpjIYD
+ sXaRS6UlLf8z4ukbBBiEYsFmozNvXeCIQfN9aY1+KHROa6TJInR3Uink/5BUZxuASBgcWZBfoeT
+ nRDUsg+8gX1JYv3dCe79oRV8gtmsRmOm+16DB0Wadp/1QNJhAOEtE82SP4vWiwgVXnBP4OZjG3Q
+ hzV8bYoCNVVKzJuLqmsyuDpBO5oyY3ddBqfWlmNpBdUhNJAJTPOo9DCZL6HTPAc0kUnynM7C0vt
+ 18V6eyeYOtNtBrMUqXNuN+hUZGAw10Ofal8hynsLJW+B877Z1Q8lIAHzPnvfFiw6nPSe3s9PDOO
+ Wp8cjGQqFBBaOrxxTJyTCDtC1FWxmTTyfW8IaKgkman2/gkTU7pxbl0pdZUzSCH4luV/GtBamh+
+ LyYJCEG4DysFIgQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dzcewy9jbic5fbsd1tkpduixc3krnpcw
+X-Rspamd-Queue-Id: 7E72E1C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7F1AA1C0006
-X-Stat-Signature: qod67r1hkxx5u6s1ejogowqq9muojs55
-X-HE-Tag: 1771199042-326142
-X-HE-Meta: U2FsdGVkX1+N0UVN83FLSZVxuC+9KUqTXPGGtKILJ91V/SFU+f9BqVGeXA7taKx7AXyfGskXYgBrAeOvljpHu2Tv5/jQs248osVQRy1gMex0puVKbcdO5gOyCXdB6+fgzuDiVa4rfuLJr2H4jDyo8tsqnUGTwqrAGodoNdvdRa2lbz1Mx4Cs0T5ORwgypvmCDPEv10Y4edVOCtxNPgx2a+GtL914ksrTuFvnQp6acFKnfQWVehFTre7yBa5Z4Q0uJsGfTI4NoollsFJvXi9GNgyjucdr7jiChVPF6eF63lYmvlMoT58FGlQOsZ4J1sgviIFiIXvNYuiLJNq2lPQwv/0LkuYJV0Lwkmb5pYu9S/ZJlf42b9mZXLUcgpYHoTRqkGGSS9E/khlOfWVeeqncZxitXKVmnmzESMJ2NrRsvKkEf7pvjDvYi5wg6gBjv72Ez4aoldddDyz4u60JYw4GvD8Aj8tSTP9nmA2Gq10n7QlidRFyiX1NV1PvJJTtTFMknipfEzDOPh2ci+i/FybZqYQOwswxHBnqeMBLzfAR/E6xrVJb98JHoGJ8Y7mqEMPHivuXB4qfO8wjA25u0e+9GTV8cZzyeZkZvLVP2FLq+AIcQ30bjHlp5JhGllRscCTJR9tYIHVu4wCUA7NQZQ+ZyBizPGe0kl7pQckOoOc5INgeG4iM1wFC8E0ezjxDZGS8UDdas7dA8kS2kSmSJQrdJsL9EwA4iN0kPXiMrPDbZcqWxq6C+w2457t46h5opiDJ3ajXZ+EfpydAQ2tNcq2XFkBNkMvPE///cE+jVoed44Ic3KcDKqYNnctnKYZSP6uszxa4CkdLzCai+oiaEOG9qeEtLw8iUl6Qrlyg9h3dggM0RIcH9QtPM26w1IRIOd+/LGpkOcFMm9DOXeG3OQxIn4zfqGic3TwNFHwXt4O3T4NW8vriL08Afbif1Nnp1BDi1B67y3GgNOlhhz+dwhS
- v5BFq+Kx
- 7yFKYf1gN4vLXRjNQDUXZkNpsO/YuzK2sYYN7m5N/hYUz4uXOXeF4iouHQMH8lzFCm7WyvnJI/cfbrOHHxZ1qL1/6feBk3Ivkg1H1EU8cp2audvTs0tMDbvSL+pIvdyUiw5d0GRuBIbrgeULlodeD2bRNiMHusCbS/iArC97B7UtEz8Ti6RxkvToxjoauG5f5UJjksM8jvmtBxyVdEkSpSfvXUTaOdbFd0wn8ZgfVnTa+LcEgIbS9Kq5Ss8DfdUN26FJ13Oc17k3AHQsaAQFcmUGKIRTmgYtCl8nvMxCNiPCYAl5ja92fjl7bNm2TI/ZS27k8
+X-HE-Tag: 1771199022-859846
+X-HE-Meta: U2FsdGVkX19XetFJwWMNg8Zks5iXTOpExzalGrqdqh6NYTBdoIL0/97QilwNLN00OgnTrKtyaKTdkBNPA1AI9YCsz4tgqkeuLh5yIsfYR/kMcXtEHQNyN63hkRjxLZCfCM6TnpKc4aEeR0amRdMBtBPa/aQPvbxuvsFEwEF42YRKteNPbhMwqau+wXGMsagSLwasU047rxK0hcu4fyp75/rcMUlQ1VqzXEvaD407Fl/cUEnXxcrFP2rSF7OAQtWVeFIEU3xTe4+f5eg8mDVxP2dl8oPyd3zha75armeufcp8WeB3gh5kNMWYO4zW1N1sCrn/6ooS14UMCtYJbOhuaOhZIka2lLm/IDgEDpU3bRqmDSWdKv6B9rXawIWF2/PszAYOy3LzIHk+bvH3RD1Zu9AFDZMQZ1ijlwTqid4jQpfHqlC8bJ/L7tuStAsT22dSa5GRhMbP8HmMQjLJ+a4NOcOPBKXG44XmlCxqwYj2fGM9wIQW3ZuOtxsnmHp9jw3wRX1578gGlGJbTyT1bdtXVH3NzWpj0V5RDQHgcjnoB4rp3lN42KgmdGmbBbscDJ9eARxPN7ccTiEyUv3S1XszVdbuOtqX7Em9qrJeIUbe8hfICgwlAOCuigllm22/pt1tQbieQEP8+soKbDxA49MWE4P0ahdZ0VPOm9sKLOfuG6XBkggzFxNwTtwK1HkKeP6gPv2Zt46osxoUJaLjsyNOs++txJBzd9drgmPzeg45tMPqHW38txN3mV+/mIesan5kKXghyyRjdtjyzUMHfPr84J5NeLwFtc8KeGBdy03+PeL6AP2P2OxNXxgc8vX9IkaIV3PLZ8Z9NwNbCqy9RSzvbU3/JhMFEEKAtvrBdg92LybOZiuiVOpHzo7zeVFdJDO0wKbOEAmB9apxrMvibtN/SQWj4X2ZCFXl6RpY7kN1EYnKQ5WltoFY8ySNobt0YgfaF67mcDEazPEiHBEonKw
+ R4QPrvUx
+ w/IZccZ3t7OWNEWR+ujKYNnV59w9V5jzhBDR4YwY6W9PInxv+HbB/0iIpRvU2ix86sMDARfy/NJcSpy2xALaZ1FA2Y5TtlOoBFB+QxES7LoYHYqZFdVHkkTVwinqM8yl3CMVpmSvgtNzPq4JY756QNwy2tUiywqg9hIEFYCoVLoue7iRCyzVsP0+b5s2YyDDgKpcULJpml8ha5VyHUBitBXkI/s1Sm8bR/XGQ50BETQPIwaFB92AH+vWx0Bku+I5xOyu3IO/c6OQVqrsXmWH3gDV5d3Clx9hnQNYHP8ixucapv1ETtsKwv+9w3KItLkFED6DzSOi3WhuMrR1zihOCQz5soRpEWSJc7Ms/L4+LGqMQkr0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,421 +122,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add configfs attributes for managing zone states in the rnull zoned
-block device emulation. The `zone_offline` and `zone_readonly`
-attributes allow setting specific zones to offline or read-only states,
-which is useful for testing how applications handle degraded zones.
+Add support for disabling the default IO scheduler by adding:
+- no_sched module parameter to control scheduler selection at device
+  creation.
+- no_sched configfs attribute (ID 11) for runtime configuration.
+- Use of NO_DEFAULT_SCHEDULER flag when no_sched is enabled.
+
+This allows bypassing the default 'mq-deadline' scheduler and using 'none'
+instead, which can improve performance for certain workloads. The flag
+selection logic is updated to use compound assignment operators for better
+readability.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs     | 80 +++++++++++++++++++++++++++++++++++
- drivers/block/rnull/disk_storage.rs | 59 +++++++++++++-------------
- drivers/block/rnull/rnull.rs        |  2 +-
- drivers/block/rnull/zoned.rs        | 83 ++++++++++++++++++++++++++-----------
- 4 files changed, 168 insertions(+), 56 deletions(-)
+ drivers/block/rnull/configfs.rs | 31 +++++++++++++++++++++++++++++++
+ drivers/block/rnull/rnull.rs    | 25 ++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 395da68d96dc6..1c0d95ded7e9f 100644
+index 4ec9be440105d..18e32a87673aa 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -125,6 +125,8 @@ fn make_group(
-                 max_sectors: 29,
-                 virt_boundary: 30,
-                 shared_tag_bitmap: 31,
-+                zone_offline: 32,
-+                zone_readonly: 33,
+@@ -95,6 +95,7 @@ fn make_group(
+                 use_per_node_hctx: 8,
+                 home_node: 9,
+                 discard: 10,
++                no_sched:11,
              ],
          };
  
-@@ -639,3 +641,81 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
- configfs_simple_bool_field!(DeviceConfig, 30, virt_boundary);
- configfs_simple_bool_field!(DeviceConfig, 31, shared_tag_bitmap);
-+
-+#[cfg(CONFIG_BLK_DEV_ZONED)]
-+fn set_zone_condition(
-+    this: &DeviceConfig,
-+    sector: u64,
-+    cb: impl FnOnce(
-+        &crate::zoned::ZoneOptions,
-+        &DiskStorage,
-+        &mut crate::zoned::ZoneDescriptor,
-+    ) -> Result,
-+) -> Result {
-+    use crate::zoned::ZoneType;
-+    let data_guard = this.data.lock();
-+    let null_disk = data_guard.disk.as_ref().ok_or(EBUSY)?.queue_data();
-+    let storage = &null_disk.storage;
-+    let zone_options = &null_disk.zoned;
-+    zone_options.enabled.then_some(()).ok_or(EINVAL)?;
-+    let mut zone = zone_options.zone(sector)?.lock();
-+
-+    if zone.kind == ZoneType::Conventional {
-+        return Err(EINVAL);
-+    }
-+
-+    cb(zone_options, storage, &mut zone)
-+}
-+
-+#[cfg(CONFIG_BLK_DEV_ZONED)]
-+configfs_attribute!(
-+    DeviceConfig,
-+    32,
-+    show: |_this, _page| Ok(0),
-+    store: |this,page| {
-+        let text = core::str::from_utf8(page)?.trim();
-+        let sector = text.parse().map_err(|_| EINVAL)?;
-+
-+        set_zone_condition(this, sector, |zone_options, storage, zone| {
-+            zone_options.offline_zone(storage, zone)
-+        })?;
-+        Ok(())
-+    },
-+);
-+
-+#[cfg(CONFIG_BLK_DEV_ZONED)]
-+configfs_attribute!(
-+    DeviceConfig,
-+    33,
-+    show: |_this, _page| Ok(0),
-+    store: |this,page| {
-+        let text = core::str::from_utf8(page)?.trim();
-+        let sector = text.parse().map_err(|_| EINVAL)?;
-+
-+        set_zone_condition(this, sector, |zone_options, storage, zone| {
-+            zone_options.read_only_zone(storage, zone)
-+        })?;
-+
-+        Ok(())
-+    },
-+);
-+
-+#[cfg(not(CONFIG_BLK_DEV_ZONED))]
-+configfs_attribute!(
-+    DeviceConfig,
-+    32,
-+    show: |this, page| {Ok(0)},
-+    store: |this,page| {
-+        Err(ENOTSUPP)
-+    },
-+);
-+
-+#[cfg(not(CONFIG_BLK_DEV_ZONED))]
-+configfs_attribute!(
-+    DeviceConfig,
-+    33,
-+    show: |this, page| {Ok(0)},
-+    store: |this,page| {
-+        Err(ENOTSUPP)
-+    },
-+);
-diff --git a/drivers/block/rnull/disk_storage.rs b/drivers/block/rnull/disk_storage.rs
-index d9f2703957fc0..802e9534ca2a5 100644
---- a/drivers/block/rnull/disk_storage.rs
-+++ b/drivers/block/rnull/disk_storage.rs
-@@ -65,27 +65,45 @@ pub(crate) fn lock(&self) -> SpinLockGuard<'_, Pin<KBox<TreeContainer>>> {
-         self.trees.lock()
-     }
- 
--    pub(crate) fn discard(
--        &self,
--        hw_data: &Pin<&SpinLock<HwQueueContext>>,
--        mut sector: u64,
--        sectors: u32,
--    ) {
--        let mut tree_guard = self.lock();
--        let mut hw_data_guard = hw_data.lock();
--
--        let mut access = self.access(&mut tree_guard, &mut hw_data_guard, None);
-+    pub(crate) fn discard(&self, mut sector: u64, sectors: u32) {
-+        let tree_guard = self.lock();
-+        let mut cache_guard = tree_guard.cache_tree.lock();
-+        let mut disk_guard = tree_guard.cache_tree.lock();
- 
-         let mut remaining_bytes = sectors_to_bytes(sectors);
- 
-         while remaining_bytes > 0 {
--            access.free_sector(sector);
-+            self.free_sector(&mut cache_guard, &mut disk_guard, sector);
-             let processed = remaining_bytes.min(self.block_size);
-             sector += Into::<u64>::into(bytes_to_sectors(processed));
-             remaining_bytes -= processed;
-         }
-     }
- 
-+    fn free_sector_tree(tree_access: &mut xarray::Guard<'_, TreeNode>, sector: u64) {
-+        let index = DiskStorageAccess::to_index(sector);
-+        if let Some(page) = tree_access.get_mut(index) {
-+            page.set_free(sector);
-+
-+            if page.is_empty() {
-+                tree_access.remove(index);
-+            }
-+        }
-+    }
-+
-+    pub(crate) fn free_sector<'a>(
-+        &self,
-+        cache_guard: &mut xarray::Guard<'a, TreeNode>,
-+        disk_guard: &mut xarray::Guard<'a, TreeNode>,
-+        sector: u64,
-+    ) {
-+        if self.cache_size > 0 {
-+            Self::free_sector_tree(cache_guard, sector);
-+        }
-+
-+        Self::free_sector_tree(disk_guard, sector);
-+    }
-+
-     pub(crate) fn flush(&self, hw_data: &Pin<&SpinLock<HwQueueContext>>) {
-         let mut tree_guard = self.lock();
-         let mut hw_data_guard = hw_data.lock();
-@@ -262,25 +280,6 @@ pub(crate) fn get_read_page(&self, sector: u64) -> Option<&NullBlockPage> {
-             self.disk_guard.get(index)
-         }
-     }
--
--    fn free_sector_tree(tree_access: &mut xarray::Guard<'_, TreeNode>, sector: u64) {
--        let index = Self::to_index(sector);
--        if let Some(page) = tree_access.get_mut(index) {
--            page.set_free(sector);
--
--            if page.is_empty() {
--                tree_access.remove(index);
--            }
--        }
--    }
--
--    pub(crate) fn free_sector(&mut self, sector: u64) {
--        if self.disk_storage.cache_size > 0 {
--            Self::free_sector_tree(&mut self.cache_guard, sector);
--        }
--
--        Self::free_sector_tree(&mut self.disk_guard, sector);
--    }
+@@ -116,6 +117,7 @@ fn make_group(
+                     submit_queues: 1,
+                     home_node: bindings::NUMA_NO_NODE,
+                     discard: false,
++                    no_sched: false,
+                 }),
+             }),
+             core::iter::empty(),
+@@ -174,6 +176,7 @@ struct DeviceConfigInner {
+     submit_queues: u32,
+     home_node: i32,
+     discard: bool,
++    no_sched: bool,
  }
  
- type Tree = XArray<TreeNode>;
+ #[vtable]
+@@ -208,6 +211,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 submit_queues: guard.submit_queues,
+                 home_node: guard.home_node,
+                 discard: guard.discard,
++                no_sched: guard.no_sched,
+             })?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -336,3 +340,30 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+         Ok(())
+     })
+ );
++
++#[vtable]
++impl configfs::AttributeOperations<11> for DeviceConfig {
++    type Data = DeviceConfig;
++
++    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        let mut writer = kernel::str::Formatter::new(page);
++
++        if this.data.lock().no_sched {
++            writer.write_str("1\n")?;
++        } else {
++            writer.write_str("0\n")?;
++        }
++
++        Ok(writer.bytes_written())
++    }
++
++    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
++        if this.data.lock().powered {
++            return Err(EBUSY);
++        }
++
++        this.data.lock().no_sched = kstrtobool_bytes(page)?;
++
++        Ok(())
++    }
++}
 diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 5bf965908ef63..91f8636d74cca 100644
+index d1fb5fbc0c0be..9a301b06fc5e0 100644
 --- a/drivers/block/rnull/rnull.rs
 +++ b/drivers/block/rnull/rnull.rs
-@@ -739,7 +739,7 @@ fn handle_regular_command(
- 
-         if self.memory_backed {
-             if rq.command() == mq::Command::Discard {
--                self.storage.discard(hw_data, rq.sector(), sectors);
-+                self.storage.discard(rq.sector(), sectors);
-             } else {
-                 self.transfer(hw_data, rq, rq.command(), sectors)?;
-             }
-diff --git a/drivers/block/rnull/zoned.rs b/drivers/block/rnull/zoned.rs
-index 0f15f4cc4e5c3..3b8ebf5449a8d 100644
---- a/drivers/block/rnull/zoned.rs
-+++ b/drivers/block/rnull/zoned.rs
-@@ -178,7 +178,7 @@ pub(crate) fn handle_zoned_command(
-         match rq.command() {
-             ZoneAppend | Write => self.zoned_write(hw_data, rq)?,
-             ZoneReset | ZoneResetAll | ZoneOpen | ZoneClose | ZoneFinish => {
--                self.zone_management(hw_data, rq)?
-+                self.zone_management(rq)?
-             }
-             _ => self.zoned_read(hw_data, rq)?,
-         }
-@@ -186,18 +186,14 @@ pub(crate) fn handle_zoned_command(
-         Ok(())
-     }
- 
--    fn zone_management(
--        &self,
--        hw_data: &Pin<&SpinLock<HwQueueContext>>,
--        rq: &mut Owned<mq::Request<Self>>,
--    ) -> Result {
-+    fn zone_management(&self, rq: &mut Owned<mq::Request<Self>>) -> Result {
-         if rq.command() == mq::Command::ZoneResetAll {
-             for zone in self.zoned.zones_iter() {
-                 let mut zone = zone.lock();
-                 use ZoneCondition::*;
-                 match zone.condition {
-                     Empty | ReadOnly | Offline => continue,
--                    _ => self.zoned.reset_zone(&self.storage, hw_data, &mut zone)?,
-+                    _ => self.zoned.reset_zone(&self.storage, &mut zone)?,
-                 }
-             }
- 
-@@ -213,10 +209,10 @@ fn zone_management(
- 
-         use mq::Command::*;
-         match rq.command() {
--            ZoneOpen => self.zoned.open_zone(&mut zone, rq.sector()),
-+            ZoneOpen => self.zoned.open_zone(&mut zone),
-             ZoneClose => self.zoned.close_zone(&mut zone),
--            ZoneReset => self.zoned.reset_zone(&self.storage, hw_data, &mut zone),
--            ZoneFinish => self.zoned.finish_zone(&mut zone, rq.sector()),
-+            ZoneReset => self.zoned.reset_zone(&self.storage, &mut zone),
-+            ZoneFinish => self.zoned.finish_zone(&mut zone),
-             _ => Err(EIO),
-         }
-     }
-@@ -282,7 +278,7 @@ fn zoned_write(
-             if self.zoned.use_accounting() {
-                 let mut accounting = self.zoned.accounting.lock();
-                 self.zoned
--                    .check_zone_resources(&mut accounting, &mut zone, rq.sector())?;
-+                    .check_zone_resources(&mut accounting, &mut zone)?;
- 
-                 if zone.condition == ZoneCondition::Closed {
-                     accounting.closed -= 1;
-@@ -365,7 +361,7 @@ fn zone_no(&self, sector: u64) -> usize {
-         (sector >> self.size_sectors.ilog2()) as usize
-     }
- 
--    fn zone(&self, sector: u64) -> Result<&Mutex<ZoneDescriptor>> {
-+    pub(crate) fn zone(&self, sector: u64) -> Result<&Mutex<ZoneDescriptor>> {
-         self.zones.get(self.zone_no(sector)).ok_or(EINVAL)
-     }
- 
-@@ -418,7 +414,7 @@ fn try_close_implicit_open_zone(&self, accounting: &mut ZoneAccounting, sector:
-         Err(EINVAL)
-     }
- 
--    fn open_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-+    fn open_zone(&self, zone: &mut ZoneDescriptor) -> Result {
-         if zone.kind == ZoneType::Conventional {
-             return Err(EINVAL);
-         }
-@@ -434,13 +430,13 @@ fn open_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-             let mut accounting = self.accounting.lock();
-             match zone.condition {
-                 Empty => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                 }
-                 ImplicitOpen => {
-                     accounting.implicit_open -= 1;
-                 }
-                 Closed => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                     accounting.closed -= 1;
-                 }
-                 _ => (),
-@@ -457,14 +453,13 @@ fn check_zone_resources(
-         &self,
-         accounting: &mut ZoneAccounting,
-         zone: &mut ZoneDescriptor,
--        sector: u64,
-     ) -> Result {
-         match zone.condition {
-             ZoneCondition::Empty => {
-                 self.check_active_zones(accounting)?;
--                self.check_open_zones(accounting, sector)
-+                self.check_open_zones(accounting, zone.start_sector)
-             }
--            ZoneCondition::Closed => self.check_open_zones(accounting, sector),
-+            ZoneCondition::Closed => self.check_open_zones(accounting, zone.start_sector),
-             _ => Err(EIO),
-         }
-     }
-@@ -533,7 +528,7 @@ fn close_zone(&self, zone: &mut ZoneDescriptor) -> Result {
-         Ok(())
-     }
- 
--    fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-+    fn finish_zone(&self, zone: &mut ZoneDescriptor) -> Result {
-         if zone.kind == ZoneType::Conventional {
-             return Err(EINVAL);
-         }
-@@ -545,12 +540,12 @@ fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-             match zone.condition {
-                 Full => return Ok(()),
-                 Empty => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                 }
-                 ImplicitOpen => accounting.implicit_open -= 1,
-                 ExplicitOpen => accounting.explicit_open -= 1,
-                 Closed => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                     accounting.closed -= 1;
-                 }
-                 _ => return Err(EIO),
-@@ -566,7 +561,6 @@ fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-     fn reset_zone(
-         &self,
-         storage: &crate::disk_storage::DiskStorage,
--        hw_data: &Pin<&SpinLock<HwQueueContext>>,
-         zone: &mut ZoneDescriptor,
-     ) -> Result {
-         if zone.kind == ZoneType::Conventional {
-@@ -589,16 +583,55 @@ fn reset_zone(
-         zone.condition = ZoneCondition::Empty;
-         zone.write_pointer = zone.start_sector;
- 
--        storage.discard(hw_data, zone.start_sector, zone.size_sectors);
-+        storage.discard(zone.start_sector, zone.size_sectors);
-+
-+        Ok(())
-+    }
-+
-+    fn set_zone_condition(
-+        &self,
-+        storage: &crate::disk_storage::DiskStorage,
-+        zone: &mut ZoneDescriptor,
-+        condition: ZoneCondition,
-+    ) -> Result {
-+        if zone.condition == condition {
-+            zone.condition = ZoneCondition::Empty;
-+            zone.write_pointer = zone.start_sector;
-+            storage.discard(zone.start_sector, zone.size_sectors);
-+        } else {
-+            if matches!(
-+                zone.condition,
-+                ZoneCondition::ReadOnly | ZoneCondition::Offline
-+            ) {
-+                self.finish_zone(zone)?;
-+            }
- 
-+            zone.condition = ZoneCondition::Offline;
-+            zone.write_pointer = u64::MAX;
-+        }
-         Ok(())
-     }
-+    pub(crate) fn offline_zone(
-+        &self,
-+        storage: &crate::disk_storage::DiskStorage,
-+        zone: &mut ZoneDescriptor,
-+    ) -> Result {
-+        self.set_zone_condition(storage, zone, ZoneCondition::Offline)
-+    }
-+
-+    pub(crate) fn read_only_zone(
-+        &self,
-+        storage: &crate::disk_storage::DiskStorage,
-+        zone: &mut ZoneDescriptor,
-+    ) -> Result {
-+        self.set_zone_condition(storage, zone, ZoneCondition::ReadOnly)
-+    }
+@@ -29,8 +29,8 @@
+     new_mutex,
+     new_xarray,
+     page::{
+-        SafePage, //
+-        PAGE_SIZE,
++        SafePage,
++        PAGE_SIZE, //
+     },
+     pr_info,
+     prelude::*,
+@@ -112,6 +112,10 @@
+             description:
+             "Support discard operations (requires memory-backed null_blk device). Default: false",
+         },
++        no_sched: u8 {
++            default: 0,
++            description: "No IO scheduler",
++        },
+     },
  }
  
- pub(crate) struct ZoneDescriptor {
-     start_sector: u64,
-     size_sectors: u32,
--    kind: ZoneType,
-+    pub(crate) kind: ZoneType,
-     capacity_sectors: u32,
-     write_pointer: u64,
-     condition: ZoneCondition,
-@@ -626,7 +659,7 @@ fn check_bounds_read(&self, sector: u64, sectors: u32) -> Result {
+@@ -150,6 +154,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     submit_queues,
+                     home_node: *module_parameters::home_node.value(),
+                     discard: *module_parameters::discard.value() != 0,
++                    no_sched: *module_parameters::no_sched.value() != 0,
+                 })?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+@@ -175,6 +180,7 @@ struct NullBlkOptions<'a> {
+     submit_queues: u32,
+     home_node: i32,
+     discard: bool,
++    no_sched: bool,
+ }
+ struct NullBlkDevice;
  
- #[derive(Copy, Clone, PartialEq, Eq, Debug)]
- #[repr(u32)]
--enum ZoneType {
-+pub(crate) enum ZoneType {
-     Conventional = bindings::blk_zone_type_BLK_ZONE_TYPE_CONVENTIONAL,
-     SequentialWriteRequired = bindings::blk_zone_type_BLK_ZONE_TYPE_SEQWRITE_REQ,
-     #[expect(dead_code)]
+@@ -191,13 +197,18 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
+             submit_queues,
+             home_node,
+             discard,
++            no_sched,
+         } = options;
+ 
+-        let flags = if memory_backed {
+-            mq::tag_set::Flag::Blocking.into()
+-        } else {
+-            mq::tag_set::Flags::default()
+-        };
++        let mut flags = mq::tag_set::Flags::default();
++
++        if memory_backed {
++            flags |= mq::tag_set::Flag::Blocking;
++        }
++
++        if no_sched {
++            flags |= mq::tag_set::Flag::NoDefaultScheduler;
++        }
+ 
+         if home_node > kernel::num_online_nodes().try_into()? {
+             return Err(code::EINVAL);
 
 -- 
 2.51.2
