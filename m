@@ -4,93 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7063DEF5868
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 07:29:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6576CEF586D
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 08:56:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6199C6B0005; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
+	id 2CF796B0005; Sun, 15 Feb 2026 03:56:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59D836B0088; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
+	id 27D096B0088; Sun, 15 Feb 2026 03:56:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49F366B008A; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
+	id 15F026B008A; Sun, 15 Feb 2026 03:56:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 377386B0005
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F32036B0005
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 03:56:40 -0500 (EST)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1335140A37
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 07:29:12 +0000 (UTC)
-X-FDA: 84445864944.08.5C13E52
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B7850180004
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 07:29:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZmYS8zv1;
-	spf=pass (imf24.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 79F8C8CA6F
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 08:56:40 +0000 (UTC)
+X-FDA: 84446085360.08.9D5853B
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5455840007
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 08:56:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=qffaANEn;
+	spf=pass (imf27.hostedemail.com: domain of carstengrohmann@gmx.de designates 212.227.17.20 as permitted sender) smtp.mailfrom=carstengrohmann@gmx.de;
+	dmarc=pass (policy=quarantine) header.from=gmx.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771140551;
+	s=arc-20220608; t=1771145798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GaUSkkuQJofxBHkox8rsl9hWWFEkHV2aAas3PKJ8HkM=;
-	b=YdBYk30CKLHg1q1/epJpDdRPBtOfKVGAEoWyYbMrETW5Kd6Hx19gCHiycT5r8y9L5JZ+dW
-	UmzaNueZlBk9IaiRO1j+boPkA8M1g/USCs5iydjHh5XORPr1RcFr0Aw/JfsgmDu6prbrjD
-	pWRGORBVb29l4028c2Skvv6Gjog/VOU=
+	bh=b5NI4vzKvemi7uGExDDi9A66Sh5Sy8fcwzGNLZ6Muk8=;
+	b=IXk1CYHkFjq1XVhVSX4iks/kUds3dnX1HzlTclX4h0ldLt+yhfp5BxQFhY4LxhiGuHPpFN
+	y2Q+X+76ghcHtVG6E5G1Sd0SYQaMmal3RxDFJ4V5ECGZu5BmwkjUjfjvDuchGUSE/Ddgfm
+	smtjX0gPHWG3k4xOQ/xwEbG76NWb1cg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZmYS8zv1;
-	spf=pass (imf24.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771140551; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=qffaANEn;
+	spf=pass (imf27.hostedemail.com: domain of carstengrohmann@gmx.de designates 212.227.17.20 as permitted sender) smtp.mailfrom=carstengrohmann@gmx.de;
+	dmarc=pass (policy=quarantine) header.from=gmx.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771145798; a=rsa-sha256;
 	cv=none;
-	b=bVbQy7YQ+pTE7PCCP6BkMSLP4TYWA61ZMquAaWgQFFWMvvBvF36oW53ZTUrLD9xBaSAouq
-	gE/fFQcspeokrX3UK/oArDOCVJbCMu0U1j02+401FGBPASWVlN5ei4Ukl08/5vq/m+OLnc
-	3h/jHxe4jHgGyLONjg8J/nzpTLkX0W8=
-Message-ID: <5e178b4e-a9e0-44dc-a18d-8c014365ee2f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771140548;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GaUSkkuQJofxBHkox8rsl9hWWFEkHV2aAas3PKJ8HkM=;
-	b=ZmYS8zv1jl3id/SALH3E1caXqMgXG64D/zHcfOV9yALlFnQAAOgXoaMYN8G6BVHTUFM0Wo
-	eCCHQTErQDaCeHlva3gg/Q2YRDwD8gj1ezn8i0MKmmJIqIOHiO0bB+9VWqySaMbghh0EDo
-	e98G07fXbtM3Un95sSEEVJ4DSdmCX/4=
-Date: Sun, 15 Feb 2026 15:28:39 +0800
+	b=H8J8tUSBCwVWRYgXvOj9jd4l7oAT01czEb8LSg+mWrCy90NsNVsyaTpQ1rkFG6xpaC463y
+	rw1OVUs297TJvNBWhkmP8luLtKFZYvIj3jhrbNhSJc+QG8oEfFTGOi7Mh8xXaG0NVqSc0H
+	gVVMDu1hNQPsQWvQBt9i41OCqUgVhLg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1771145787; x=1771750587; i=carstengrohmann@gmx.de;
+	bh=b5NI4vzKvemi7uGExDDi9A66Sh5Sy8fcwzGNLZ6Muk8=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Message-ID:In-Reply-To:
+	 References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=qffaANEnQVNCxo5a8sLfjurrCrFuHxjqXkMbm5DxfdiWcuG0gSYYcmxzz/k1m4Fm
+	 4agruU9bAjEY3T1/9OA7rQGrWgGnJC3FvT68LkE/dD+B/3NYxbAYW6cMlHDaLBZGN
+	 OZIlMB13PDWn3Rfc35h/ijc4vw0fqKxJBNo2pHpfbUoj1gaGfX1Kx+uHNqRfbg3bD
+	 8OSu4hdXV9zbqiynnCkPiCscwVIv7PMuOU/YOA+5I2TZRvitJ2bybHb2VACdRl2Wn
+	 RPYdME7obaQMihVw4tWt57BBzTCFn4Mfd1BiDjg91cL33nl/VP1ylLuVvw74l6GEH
+	 cWbTgbiVlJ+Kfn0I7w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [127.0.0.1] ([80.136.61.160]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MWAOQ-1wGP7h0UGY-00U3iN; Sun, 15
+ Feb 2026 09:56:27 +0100
+Date: Sun, 15 Feb 2026 09:56:25 +0100
+From: Carsten Grohmann <carstengrohmann@gmx.de>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, bugzilla-daemon@kernel.org,
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>, linux-mm@kvack.org
+Message-ID: <8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de>
+In-Reply-To: <f743bc48-b576-471a-b679-28a792822cd7@gmx.de>
+References: <bug-221055-27@https.bugzilla.kernel.org/> <20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org> <aYt4RwxqH1W_zHez@KASONG-MC4> <CAMgjq7By=prRMh2T=i-T2cV3fZX+oE+YM0H4zHMXwSscnhbZmg@mail.gmail.com> <f743bc48-b576-471a-b679-28a792822cd7@gmx.de>
+Subject: Re: [Bug 221055] New: Hibernate image write 10x slower since commit
+ 0ff67f990bd4 ("mm, swap: remove swap slot cache")
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 26/31] mm: vmscan: prepare for reparenting MGLRU folios
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1770279888.git.zhengqi.arch@bytedance.com>
- <2cea0e0cf208e46dc55f2baef8162bedba2db47e.1770279888.git.zhengqi.arch@bytedance.com>
- <aY2Tem0Fn6dIknXP@hyeyoo>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aY2Tem0Fn6dIknXP@hyeyoo>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: z3apyi1w6bxkqqkb9nnkk9daug5ywnx5
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de>
+X-Provags-ID: V03:K1:EJ8/HEb+jIL9AcOR0z/xLsuSx2lRvztUaYnSdE/gfxrp/amZcUB
+ wJzdT6LS+qHElNRoTPXJLSUKljumqxBdVziApyQi591A+XhyywUaSaeVXb/GpNlH3m/ARwH
+ VKIBjYK6ipfAd66dL1T0Rh/GsxGcwwR71JuN4c3+TnUxbriztBDu6ScljWNOg6Mqce2HBzP
+ sVR2aXEYvY68s7O0lFo1A==
+UI-OutboundReport: notjunk:1;M01:P0:3mWSmue9ICY=;qKJhrYMyiCoNPrdjPH6TpMIcXzP
+ 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
+X-Stat-Signature: a9xrzwus5c1rdrr54zkud5mkxmxb7np6
+X-Rspamd-Queue-Id: 5455840007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B7850180004
-X-HE-Tag: 1771140550-665983
-X-HE-Meta: U2FsdGVkX1+ikITX6ptODv6GRJvkpDcJG/ea6Pv0qrpA2REq+zhqLrUeAMskD8F2G4FXcgg7BIU7mmskt0MJYV/c17XNcETb0uI6Vb3gKe5jhziYG4gqpTdn4m/+i9YX7Y1H22YKBPaNsMbSqnfXXIBFU4KOsJtryxXuCYSefPqw16qpQLNM5EzsbYqeviwi+BVbHcnbxABKdt3W/PO1zyFh3GnmYP4KO8Sh6ONtohIFsJ/nXOIxd/UvcOilh+nKQOTokz7r5g+YNr/4OTawRzAv8aqdS5/XPviPnNT+zAotdg3TsYifhuvg7K2+M0L1LVmZ/d+FPBYWwT1sKU3RTh+WNZul3lw3IoimBPpjoXzGSbVdajeyxnSEXjQzfqvYpZyEPuWprp6YRVTG8q1L9kZRnqt9ZZ9pztgtbAh0YKOYUFBqEvfvjdme/IT65RWn2M+5laL11rfLfeG73B/C/K2x2jaKr5QsPMwKq8z2oY/D6f4dotIfRZVdmKiV8iBpTuSDV/jbNyr0kw5IFNjJMAmmXkMfl7qDHiUGDfgYAm0QGDxcboDRaJN9p+o4+blJTx9ahM1wFWPiQsEottM4QZ77fSpxulDVwXuZWnXukqYlNwrDbFI5bzOgv3cEWpnalhaI27oOmL8Ir7gB+Qf3s0NZqUZTetQRvh5nFlhRTumn+A3YP1H6L3ntNTSpkpNf06zWXdjImG9flzq4HcBoUGjYG6WaaiualuDYzWZIh4h11aVeXkeuW+VYsXMTYp1CuOBXRvzZRBFNZ4S9+vuYQIqTohgeOYPONSJuv3d5wZuaTIRYE2lbRh1RCjyELrhUHIALfTedPcpfke0UOZgKRlW/VJG4u9kwygU75JkIXi6fuegGawpzjXME0z/ZpxxfQXzr9bM/rQaJ7KJJ3iDtsBFoA+g5LLQkKndcFV624FQCzLIuPr/70ACaDHX0BDyhTxZGhpkP+EY6ecOYYtT
- NezLeCbi
- F+2cu7Usr2E41WWJvKxczdN2X8yeg7FVA3VGFrFGGCScAqIVReybwADW3I5BmNnAIx91vELjhCdTy2sZ5scgMf1q2rkdYxTcMPsccTVRM+mHS/n4ww3bKpqOFDFiu/ORKzGwE1vi5TcalrsW8DJ7OqTRrSRx/aTADugXZs8TK/88puTd3Df49UPvSu63vO3k86CVHeXY7J4rqUxDcOXmChpixyFLMHHNxpxNCpeqHfo5MGxQeb0DVtAEKA9XdJtE5Qqjb
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771145798-372334
+X-HE-Meta: U2FsdGVkX1/ziwAHqGYcM9PLoa6tVpyEY3l0x1S0L2qctK+7dssSLAICI+c0IdGLse1STw5ajvIA2JHOiOLzeZGWR8pPpLcQfstnsBrILnGH3uacs/wksEKeXoLb3rgPB3mQc2QqWXPxgZ/EvQAuvI23LxT5IqnL98pOqx1+dFOOHQltxDkY0dCKW2et5PN56Z0F79eEvNorUmS4XOEQEH9p5aHMufD3HfpnUjbaygfRd9OMb8rqVbOA41YPXyWxbKdBkUNrALBT9SHcZu0dVfu6NEBvH1gIJAsry2yHOB6TidkI3EUu974Ip7glRwDo/pD8GEWbSgph0mhnfmn5PuwsqqYObrOYJEvkPsgwhlYDwCODjab3Ch9RaijluEaADe+K00P05UR6zSbK5vpw357U+b/dKtPBAyJ2MBCDOWpzcwJjpAQZpHvVnQWhOxEcurOYHJ9Roa+KfXRQCWnyG8kPn/bwCtP5cAIS1gBejL2roXNkzz3WLwUW3MBR4phNuBpbhOJqPpdSS0hCle+4RhvIt5lJtzV24Qwr2M1A7asAyH0Q8I/kJ9Kt5pKxyDMGTS7HrP7SxpVlPvxqasaeWUWfE2vuQapDyuy2y5NulMD8mVX6CKCW5YH6zVweHIwqexIB08BciBjBJmFAmRJTBdNkSFMLpnATP/dAQ4OrnSAEWH/fvip96JVhm9DJ9Eec9L8BBy/poYznv5PvQ1o7Q+DDIJe+lvBoezj403winm7EXDAEZf0uCZlp5MlLODjZ9S2K1vbKB7N6O8YKA9e2AACzI0iUX4nKILHzYnjY0h0RF4IbGrbo2Qg1xxUr4ILaUTRtYYt1Mf0VPSaQsKk8Ss6Y/6Q63M/qGoz8Oc/BwbZZNetD0EEOBoBt8XqukVzLd/NJqLowjSyjQ+83auOjniimbwlPYNaGn4Qtxfki2o0rJeZQTzw/IFKT4Ta6v/58AqWYz4N9hUPWzpywcjn
+ WUUmrmwX
+ D9fBmu6OKdAVo5uMXisigpBezn76MEyvP/kjSJyXFvwooFbiiLO73SX47yxydxDKovcxu0/5rERkbvIit7LiNOfmdMqIaT9QfAaVHg07xzuCRncf0np2dnrPERX4u4WyRVea1bvP/1o4iqLPKN1ohIIex/fyTkHTLZINTjMvUt1beDA5Bnfoqor757kKbTgc7nypuxeiqnUXwXewtuSeRKsJZQ8ZVbF0OqbBw89NZAKpGEZ5mR4nx1juYCJ8dQsuwyD10Ks3CEmPjcPdJieAAv8vLLKGlon1g6J8Jz+p5/ZUX0TVvVwO6w0ZhwSkFsiDdhAgsDBj4yYGyD7hKn4JK21IbsXUIh7IvcWc7n0AGl7L2tPAqqwNDu8NAIG0YB/ER40eZHMZZ+lWJVnZFxqOg3m2CzFJmJKuVmJG09eYRKnn14yIUjOTbcP6PGEJwPaNYy7iv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,109 +175,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+12.02.2026 21:37:04 Carsten Grohmann <carstengrohmann@gmx.de>:
 
+> 12.02.2026 20:01:48 Kairui Song <ryncsn@gmail.com>:
+>
+>> And can anyone help verify this fix? I'll also try some other SSD=20
+>> later
+>> maybe that's only reproducible with SSD that have very poor 4K=20
+>> performance.
+> I'll try out your patch over the weekend.
 
-On 2/12/26 4:46 PM, Harry Yoo wrote:
-> On Thu, Feb 05, 2026 at 05:01:45PM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Similar to traditional LRU folios, in order to solve the dying memcg
->> problem, we also need to reparenting MGLRU folios to the parent memcg when
->> memcg offline.
->>
->> However, there are the following challenges:
->>
->> 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
->>     number of generations of the parent and child memcg may be different,
->>     so we cannot simply transfer MGLRU folios in the child memcg to the
->>     parent memcg as we did for traditional LRU folios.
->> 2. The generation information is stored in folio->flags, but we cannot
->>     traverse these folios while holding the lru lock, otherwise it may
->>     cause softlockup.
->> 3. In walk_update_folio(), the gen of folio and corresponding lru size
->>     may be updated, but the folio is not immediately moved to the
->>     corresponding lru list. Therefore, there may be folios of different
->>     generations on an LRU list.
->> 4. In lru_gen_del_folio(), the generation to which the folio belongs is
->>     found based on the generation information in folio->flags, and the
->>     corresponding LRU size will be updated. Therefore, we need to update
->>     the lru size correctly during reparenting, otherwise the lru size may
->>     be updated incorrectly in lru_gen_del_folio().
->>
->> Finally, this patch chose a compromise method, which is to splice the lru
->> list in the child memcg to the lru list of the same generation in the
->> parent memcg during reparenting. And in order to ensure that the parent
->> memcg has the same generation, we need to increase the generations in the
->> parent memcg to the MAX_NR_GENS before reparenting.
->>
->> Of course, the same generation has different meanings in the parent and
->> child memcg, this will cause confusion in the hot and cold information of
->> folios. But other than that, this method is simple enough, the lru size
->> is correct, and there is no need to consider some concurrency issues (such
->> as lru_gen_del_folio()).
->>
->> To prepare for the above work, this commit implements the specific
->> functions, which will be used during reparenting.
->>
->> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
->> Suggested-by: Imran Khan <imran.f.khan@oracle.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   include/linux/mmzone.h |  16 +++++
->>   mm/vmscan.c            | 154 +++++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 170 insertions(+)
->>
->> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->> index 3e51190a55e4c..0c18b17f0fe2e 100644
->> --- a/include/linux/mmzone.h
->> +++ b/include/linux/mmzone.h
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index e2d9ef9a5dedc..8c6f8f0df24b1 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> +void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent)
->> +{
->> +	int nid;
->> +
->> +	for_each_node(nid) {
->> +		struct lruvec *child_lruvec, *parent_lruvec;
->> +		int type, zid;
->> +		struct zone *zone;
->> +		enum lru_list lru;
->> +
->> +		child_lruvec = get_lruvec(memcg, nid);
->> +		parent_lruvec = get_lruvec(parent, nid);
->> +
->> +		for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1)
->> +			for (type = 0; type < ANON_AND_FILE; type++)
->> +				__lru_gen_reparent_memcg(child_lruvec, parent_lruvec, zid, type);
->> +
->> +		for_each_lru(lru) {
->> +			for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
->> +				unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
->> +
->> +				mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
-> 
-> This part looks fine, but I think the nr_pages parameter
-> in mem_cgroup_update_lru_size() should be long instead of int.
-> Could you please update the type as well?
+I tested your patch with the current HEAD from git.kernel.org. The first=20
+run is with your patch, the second without:
 
-Make sense, and I think it would be better to do this by sending
-a separate patch, will do that and add your Suggested-by.
+Date:=C2=A0=C2=A0=C2=A0=C2=A0 2026-02-15 08:29:33
+Commit:=C2=A0=C2=A0 770aaedb461a (Merge tag 'bootconfig-v7.0' of=20
+git://git.kernel.or)
+Kernel:=C2=A0=C2=A0 6.19.0-20260214-153617-09922-g770aaedb461a-dirty
+Duration: 35 Sekunden
+Result:=C2=A0=C2=A0 good
+----------------------------------------
+Date:=C2=A0=C2=A0=C2=A0=C2=A0 2026-02-15 09:01:25
+Commit:=C2=A0=C2=A0 770aaedb461a (Merge tag 'bootconfig-v7.0' of=20
+git://git.kernel.or)
+Kernel:=C2=A0=C2=A0 6.19.0-20260215-083120-09922-g770aaedb461a
+Duration: 324 Sekunden
+Result:=C2=A0=C2=A0 bad
 
-> 
-> Otherwise looks good to me,
-> Acked-by: Harry Yoo <harry.yoo@oracle.com>
+With your patch, hibernation is fast again. It solves the problem I=20
+reported.
 
-Thanks!
+Thank you very much for taking care of my annoying problem.
 
-> 
->> +			}
->> +		}
->> +	}
->> +}
->> +
->>   #endif /* CONFIG_MEMCG */
-> 
-
+Regards,
+Carsten
 
