@@ -4,137 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCABDE63F21
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89DA6E63F1C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D0E06B010E; Sun, 15 Feb 2026 19:16:29 -0500 (EST)
+	id 613276B00F3; Sun, 15 Feb 2026 19:21:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A8896B0130; Sun, 15 Feb 2026 19:16:29 -0500 (EST)
+	id 5FE976B0130; Sun, 15 Feb 2026 19:21:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D5A76B0131; Sun, 15 Feb 2026 19:16:29 -0500 (EST)
+	id 4FE006B0132; Sun, 15 Feb 2026 19:21:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 11A086B0130
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:16:11 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CFDA8C54D
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:21:04 +0000 (UTC)
-X-FDA: 84448263648.15.590CD11
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BA86B40003
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:21:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aBvPx9RN;
-	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771197662;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 522046B00F3
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:21:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D2898CCE6
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:59 +0000 (UTC)
+X-FDA: 84448323918.12.D269737
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 366AE1C000D
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lh34cizW;
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771199097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9dSti6qUG4k+SbmTKg26mkaMIh7kMD2KX/t/B9iBo5Y=;
-	b=ev7GcOzgF+7uJw+FgBFWmvGsVuQyrhT6mGGhVBp/UndV0wQHiboxiQJQPY7IDsEKEBMKyt
-	6wlp4USLK/3vKDkF2RYzj72Xb57DLaJaeJPDj65E96nVgnyFNIjNrQpCL7jC68yZy0f6ub
-	GSikysNPUq9OU9xsUDPJqspM1nzqsXY=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aBvPx9RN;
-	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771197662; a=rsa-sha256;
-	cv=pass;
-	b=LkfOJwL1E3R/0T5jHcEtIInr86Gql1v9+zGqLOWo0WIRY48g1KSiJmJNQQFlo5CsTNNd9C
-	+NNZl+uki/OUURof8r9WkEsp2hytZ4w+vMrRUjpNmETGomaLV3mUixI5uJJAMRfTdJQRqw
-	dTy9L9RJLwESIqg8Jw5zHi4+z6yHFb4=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-896f632d206so57306626d6.0
-        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 15:21:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771197662; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QK1KpBTqMvoqQg3fRpCMIHLkRVJ3eH4RDt+amuhHzvHQIo0RV6UNViwrHfWkryu1hX
-         SycTrM07rrj0FxqE348i1aAbwYoAbloELL0xoOAh4hwp5TZUpycuFsWe986xBt9bY5SF
-         agBVM8fU7GlsA/aU5zDP/8SNQ6vwRFxBe58vWhRLPe2NHLrOYDEK4ikxFjCTmH6FO3u0
-         NPr1+ortfrVZrvSPVrvrQGxLcjOGwFKZz60BJMkgsydUaSTwQZdtEvIlxetyJoOGBS1j
-         SM24MWuKxK0yQo7qSKZ+ZZk/E0AV9aAHXIiLPml8o4nc9bjZbnfEQySfOxP9hxmeVGe3
-         6x5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9dSti6qUG4k+SbmTKg26mkaMIh7kMD2KX/t/B9iBo5Y=;
-        fh=ax0SVDDNj9e0avQJCZXKE/RdhH5t7AkPo7KIZY3RsYk=;
-        b=eIWez9f7vBcl6+q0i0koLSfaClTCjOsGkmt/MIZ96TQOEU8upzcrv7wAxREWFhu2pE
-         AdKymhyXpMhqBCKlZI24mGwKepVTFUfSQQCmJ3ZLyMJ8DN/+ouNfOB/jbNpZa51kSahf
-         9oKYijneS9To3ermEm28RC/LaMXw3OEuIFJbQMukdnJZ+8YKm34dHkjbOL6mC9msskDq
-         /YUyc4ZOLYR4WfXDlZM6PQoHPFJdVTEZk1wtx1B/VEKAD+Hx5fVRrtVIfNqDPEDMDdY5
-         xYSpWA8XtWSv4Mq0iysl3EJ/0raO5zQZ9i2QVWaRRTFs9XIbDXvAKPTW4KMcsis+84LL
-         47Yw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771197662; x=1771802462; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9dSti6qUG4k+SbmTKg26mkaMIh7kMD2KX/t/B9iBo5Y=;
-        b=aBvPx9RNVolNfzkvLxZ3bVz2gBSE95Ni2A2oyDswCF/B17epv8N8eUEIcEQCcQIt4j
-         OX9JPM6HRZ2K2Sc0bOJPICOgidRqQQKmhIdiK3kLFsgE8muizEEcQ2IkBGk1zuv7eyCe
-         lT5edcgvK7c3xPRUfs8lSI/64etYASiZOfDxUQG6i93mu+rWFwGLlOdut++I2LZRYYp4
-         R6JlJA/cApw3k0hBsdujXuk+HBAkd87kDid1JgysjDeUIN/gtZmjUd8pulFBQHK5Phsq
-         LcClJRC4tyG6CNLSurnjqwvaqJyC9fL+IF7OjC4ThL2Iw1QnbVx9y3SJImtM++YRqI17
-         8cyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771197662; x=1771802462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9dSti6qUG4k+SbmTKg26mkaMIh7kMD2KX/t/B9iBo5Y=;
-        b=lwOcG153hmg/Z6l2jobE9f22hfjoFogH0JIKPX79rTviICBQa9M/qANakbMM3pxefg
-         keLGzmupSFrKBgXsqG5ZYa15Dk0VP2pXGQ/CKFX+cuVOjrIh6uLR1YE6pmj6vVm8bTNI
-         +oQAvn70BobUKOYPuGiYTd2DuuIYByVC9/5kSUucV4+xOjMr5wcBCZTyjg6utE7OaMM7
-         q5DdwFkrwHTf6O/gxCF4KWnpRQ/VASqv/2RL8UO+zGDUkYSlFdUQ1s+WSm+/ZqZlDcmM
-         EDNbzfh3xeAYnDKh+JaA50K7UDSzde5pmQiBVFZbUrdmTx5RSS8i374hoSQUEvV971E6
-         QpEg==
-X-Gm-Message-State: AOJu0Yypp+8zy0c63kDYafuPyL5SLX6gUvUikJhKsOAw04gLjK9NlzZr
-	7yE/ca5iSmvLAP0JtdegKu1L/Y1ManWkz/l4nk6Stk6B++nQyDvICtofIEP1zFlD6FTKXN7eKXM
-	8fVij6qg/F/2ptLzpsLSjhVBk/ixgChE=
-X-Gm-Gg: AZuq6aJekczNQiaPf0MybRKfufz8aFxwMpPvVBZemInk8kaKRGbM+UlEmh1GlZT/yeo
-	VRHugwbRZryCyp1k7fUN4Jtkv3SKV0zayWszZg4z7bH5+ThmK9ttKijstVHSEMybDyiStv//hx4
-	VGQ77u2UDm0wWYESYDDcb8ALHMwmg89QBuIGizpWdS6Hp3JuG3dSn8ClK/ahD3abwd3Jc43UOHh
-	FthgYjJaPiJq/TdSSaoGEWg+QLep3Z37RVvYGfH5gcIC1piMMvLY2mtpAN0HxQ8fgXJvjzhLywo
-	d5Lmwi0XeR+YQkJe
-X-Received: by 2002:ad4:5be4:0:b0:895:4d3f:b6c with SMTP id
- 6a1803df08f44-8973f2fbedemr106347506d6.17.1771197661590; Sun, 15 Feb 2026
- 15:21:01 -0800 (PST)
+	bh=fwwx8VITvgUpqFdEfgSQ7yt9qnUHpA8WP8xDKfU2jNw=;
+	b=cz0Gc5rWPe7yhiEPIpmh/+geG3Q9fZpCAs+DXkoWnJ2E8lK7GfYezh1KWzuRzZjzP7fum3
+	S6M2qHufMMUg0E98x55sB9r9sRc1tvlm1XhhzZRJOlltb4D4ainP2h0isZTmF5upweC3/P
+	vnnXDgYmf8ML2/MuVRcF5DP5egGAFDY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lh34cizW;
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199097; a=rsa-sha256;
+	cv=none;
+	b=HMC9TB+uTW3BJ3da7CJJJJqDHJ+lQ1Ng5KUBLNKhHclb9kZyEpx2Cg7oVtzzGoJZO0Bju2
+	kodQcbyh/yzjRJ2YGRq1wZge2Y44cnrIN6odnUOiWdkUAv+8trBv72w9b4HYran3U9tDhY
+	vqhyI5vpsSBuP8xB8kLVAmIKJA9Xefs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 578D843648;
+	Sun, 15 Feb 2026 23:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8BAC4CEF7;
+	Sun, 15 Feb 2026 23:44:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771199096;
+	bh=Px3eI2zDMAVJLYyUnOivw8WZDG9ekgsY8W3TNggTDzU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=Lh34cizW7d/gBLwSVeE4ys9vsfLxOpCx97lcyLN9wxX6puurpKIPB60ex0e5s2pek
+	 YjX/ebbARJzLTG04MyEdPzMVV8Tgdw/dwPJGNal7y41AdpZ3PKjDvhcvhYMpTW0jkd
+	 DNsXPxviMaBGEAsG/BzwPx7ZU5gUJR3UAZJxbJ9AW4wL4eL80+fsb0zBRIe6sprGiM
+	 xnOJvxKjn+0I1dbfo5ntcXOhQvoEJVqfjDFDMFMoa+mzPsu78A9Plf5iKkq/s6Wl5C
+	 sPHH3+IahusncPzCzzai6AmDK4+YLxoY0evmg5qON45mmAfw6IklPFobLgFDXdrtou
+	 JOvITASMzTdng==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 16 Feb 2026 00:34:59 +0100
+Subject: [PATCH 12/79] block: rust: add `TagSet` flags
 MIME-Version: 1.0
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com> <20260216-hibernate-perf-v3-2-74e025091145@tencent.com>
-In-Reply-To: <20260216-hibernate-perf-v3-2-74e025091145@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 16 Feb 2026 07:20:49 +0800
-X-Gm-Features: AaiRm51jPFCewXyj-msKubNXn_1t8hUGFcByOC4NgVnj27CFj7IIHpXYi_25B1Q
-Message-ID: <CAGsJ_4ynCA_w4Xcwu1k=2Hw3bMnURBxC2FeZEzN+uzBp+9YJcw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mm, swap: reduce indention for hibernate
- allocation helper
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, 
-	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BA86B40003
-X-Stat-Signature: zn3bfn5arc9pc8zmndd5qowsjfc6mbu8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-12-de9a7af4b469@kernel.org>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4410; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=Px3eI2zDMAVJLYyUnOivw8WZDG9ekgsY8W3TNggTDzU=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgmG/fV80AH9+jNFOPrjKBYXkqkQyBHVCZEq
+ oBbsCPTrhOJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYJgAKCRDhuBo+eShj
+ dy2UD/4oSy3vFK2Ftcro2uRPRmoKZLNWf32I0hhmtmP678KPwSICk/IrlxiYYhnymniK9BKQa5d
+ 5KcVEYOR1sET2O5Yl1YQ3LBgLxVdRTQck6w98SZBT5b14hXnnSDh7re/DfJMArLV+BYyzFYSdpu
+ bVk3syb0ZLc9gMOdL+rNBTIYRFI/7O/LRceo3pTAanFs33idABcN2sTUhQE80/hS8KPUX822thb
+ 9rws+ncn3h0w6/xkR0jpPS30yjl9Cx3cjezlE3esWeVTVL6edNP4U9ohZSgS6VgTbrLxUdpse3i
+ TOMvfF/K0ggKh1dZWgXkkGFTGUuTfCZUp4TY2HcLzJmZClMwf/zY6A1KwHRlkT/NaqhtZv2A1t0
+ fA6HP6ysJx5YDnRpAtBNk0x0W0FpJzAmO2Jcvz9vWqbbQhVITHwUt/ghW3H4h8izrNl3tK17zYu
+ LrEBWs0SgTmbXo1RLsY3+ylr9iT31SuEx1DcNL5ty/FR5C9Nq5kUkCvKkmnFxasoAJDtv7yd6n5
+ lyL0SHlB0pJ87F6LAfBz15p7x0EJCK6FAs3aVO4/6dcrLKlaFFrySaEcuOP9+GASye/21wQEbFY
+ EKKUhH2/Lxv/5WJI9obMOKll1+CvHy+r2jq+fweRjr+Vd1MEFg3gIEwGhenEY9K1ze9p2pLCVOZ
+ BLLMwQb1LMThPfw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Stat-Signature: 14gj7qbenfiqwhoukorxockiqipcrmic
+X-Rspamd-Queue-Id: 366AE1C000D
 X-Rspam-User: 
-X-HE-Tag: 1771197662-119466
-X-HE-Meta: U2FsdGVkX18s6UqqnixMmrcG/YLaaM3IVsAcReF+/ltLDtEVP+FSvIUzyLIfSPcDUkZvIBAR6bDxL6xOzYR5/e2/13jwxrL84vd70pj1EYoupqZ7+0jRhQ+FdtBvTYQuCQZfvqsmF9v4PpPChcHeGu3xBOTBC0d26NRQxlT6aQDyzi6+Zfc3OXNOaOIq7+YJpKwx5lNDaNXJz0YQYMefyoNN/+kdDctDoEjiumoreqwQzq3RFqDAt6pgB2Q+8fFz3KxqjiV/DFnqUyjTTLCnJ6Zjs0IC5h/+ezlBUo6CtCGebmqQjCU0C8KJbqLnBZ4Zt8Y+9M1ma6EIQuwDXrpo39LqIyEq1HK/EMwJSILTzBod1PqwaWxEaCKdVqNNVtbZP+DFEHJzCem4uAhA+rcllL0XpO98bcPETVqMBLtUgWT8x3oOy3lo4C1ybA/5YM5MKKhxZnFUcYx0/NMvHCiDmDz8e4L5Ha7bJTarYMQovGrCLaXi/PB1pjqtqw7cWF8nxopOjg8vTM2aBUtU5qIL+DCm2NzACE6PQjOtFzhaYxpNoYQQ2aSou4iW5+PYz8RsSnCkBtBCB7zjNSKM87tjGv2+wx+2czT9/iJdgX4MWwMGESkQd5wlh1LftHyiNRt19k9wouoRzRAgjQGsxK8fO06rzeYTxY9birbO16Vff1WIxAtmvjcraoU2S7GhvgMX5GVOFaqKKbneIzPIr3yDqlWCihmqf0m53jfhivZ7edJRaIPshLdATDJ9+F/ufkFm9Trsqk080oDUfFj9aRRgjnpKhpxgWPSeq6RTE8JgOIzPui8XQjI3abioqiL4gZ1oT+cKtfibx+qm8ObHyJ3rGEJ65rTEQaEjEZ9Oh8Wo9vr1gAmZW8dK6vUfZB5dlqSj7a6JtIEOevKueANlnziP2yFXxUHQkINjYvLcYYrGjgEX50RwKvFWKkB/zspkxa5ARPS+8NIXP3FDkcaZrxo
- cAkxrISa
- d4K+kh3QV0MrZf6B0p96+TVF3mvSbzJjwxNOExc/3tngVsB4Whav/p1KD3w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771199096-258892
+X-HE-Meta: U2FsdGVkX19e1Y8O7sOTXa/JSTEEVX60/AI7GTij2FRGzJpQm9Iib7e5/iagIqXY66oauoyMmWnYEhK9JcOUqH/6Sqa7+KuiSlxdkJl43YHVcoCkQU7JtIckNznyop/pPlagjR1v4G8CvJgPUJAGi7FmHR/wzObZ2Fnn7bZZofVu4+zncUHJ1/SbultgmcB90GMorkrQowqp1Swd+YHiy0vw8TlrhODp9eJ5s+UE3NH294xUeV4/dOr9VxC97jmbhmtXu76nbyZmnHMaqunHAXqLOWDwZjirus6kTR2dQq+PS0tQ5C3QzXpUjeLMyPfiMkUnQXgsoKR+FhfXOJ4xGowFZ84J6Qj9iiPQdvD0DS4hSfdqqEwK/aAblX9h5z4b/nFgNkMpWzbsd+ucXeaQyWhCN6WDt2m56ebkViBGBScrgh8uQkPpgvq1F4TIZ2F8FbsS+4x6qz70L35u2PjNowztwwTW6g2aDoIcJF3VF8ErZJi184EcUadBxuz1MSJZV+7e0sEOmA6Xjz6FBE+vlDQyD9Ve0juRVFITbmVtlORFaA4uRb2aRL56SMlqRxtiTknWomxhaQJYGi7G863/kL0pEQPNhu5h6Q/6MJmTWRK/vHU+EtCms7hRSM4+VS74US7kHyFxpPb6Wl2G+fEc8iMXzr8oexlbiwgfNOw50g1xqwvH/Nm+EBD3LV57/cQ+mGHsRgSiY6Kei4mQPWkQKo5JdOCAOtkap+e2dZL+4IqeHaJyaEBxRey+4KQbVxd+f3BO4pyiA1mj4gY8onuQBJdVq5bnCHQaiUmIHb290DAFB5/mTBLGWem3JrMTFg2+O4ozqfDkjE9Q9OPGsc7947WGFZC9cra+wZV/lyZL0IgETrVynu1Mkhm2im9zPXLlYYVxYRYH5/U3wpdG40P16vNgKRz7wA7jbf1kuyQqz/KwM7cpEM8cgL9DTQxLuXkx6oDAKpTFcShAmoJGMVx
+ U4JCAQJW
+ XkAu8uq0yQ9jNXE5QbN9wc6Kf9uhgUc8yw6sNGZ0C66S6nqICnex1H4vCACj0xCiv2soKCBikS3OBYBSM3vlbDzRQKVB7bsgts13H4c21VMmUkPAj2+Q+eAnXFfNNY/cydBFrhLV5oouMdor0K8xS9/MXd/FXPfREq5yXY4cdh/0icIv7Tipset0ybDT4HnrErQ30ZYGQQO6gOPDX2YFT85ZPVZpkWXrTJGB+bAOImqU7ABVdjyAZYtt9tKwq67n5IRd5D8KJmShIbyzFCE/VoFeNDVQ6nkZLaI1emTKTon1gwZJLlwXMhta7kgVJyblTOa4/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,95 +121,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 3:00=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> It doesn't have to check the device flag, as the allocator will also
-> check the device flag and refuse to allocate if the device is not
-> writable. This might cause a trivial waste of CPU cycles of hibernate
-> allocation raced with swapoff, but that is very unlikely to happen.
-> Removing the check on the common path should be more helpful.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/swapfile.c | 38 ++++++++++++++++++--------------------
->  1 file changed, 18 insertions(+), 20 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 32e0e7545ab8..0d1b17c99221 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1936,27 +1936,25 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
->
->         /* This is called for allocating swap entry, not cache */
->         if (get_swap_device_info(si)) {
+Add support for `TagSet` flags by introducing a `Flags` type and adding
+a flags parameter to `TagSet::new`. This allows configuring tagset
+behavior such as blocking vs non-blocking operation.
+
+The Flags type supports bitwise operations and provides values like
+`Blocking` for common use cases. The module documentation example is
+updated to demonstrate the new API.
+
+For now, only a single flag is added.
+
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ drivers/block/rnull/rnull.rs          |  5 ++++-
+ rust/kernel/block/mq.rs               |  6 +++---
+ rust/kernel/block/mq/tag_set.rs       |  7 ++++++-
+ rust/kernel/block/mq/tag_set/flags.rs | 19 +++++++++++++++++++
+ 4 files changed, 32 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 55e56c39f1c2c..33c1144550a0e 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -130,7 +130,10 @@ fn new(
+         irq_mode: IRQMode,
+         completion_time: Delta,
+     ) -> Result<GenDisk<Self>> {
+-        let tagset = Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
++        let tagset = Arc::pin_init(
++            TagSet::new(1, 256, 1, mq::tag_set::Flags::default()),
++            GFP_KERNEL,
++        )?;
+ 
+         let queue_data = Box::new(
+             QueueData {
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 884bf18abbba5..76e790cdb1f8f 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -57,7 +57,7 @@
+ //!
+ //! ```rust
+ //! use kernel::{
+-//!     block::mq::*,
++//!     block::mq::{self, *},
+ //!     new_mutex,
+ //!     prelude::*,
+ //!     sync::{aref::ARef, Arc, Mutex},
+@@ -92,7 +92,7 @@
+ //! }
+ //!
+ //! let tagset: Arc<TagSet<MyBlkDevice>> =
+-//!     Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
++//!     Arc::pin_init(TagSet::new(1, 256, 1, mq::tag_set::Flags::default()), GFP_KERNEL)?;
+ //! let mut disk = gen_disk::GenDiskBuilder::new()
+ //!     .capacity_sectors(4096)
+ //!     .build(fmt!("myblk"), tagset, ())?;
+@@ -103,7 +103,7 @@
+ pub mod gen_disk;
+ mod operations;
+ mod request;
+-mod tag_set;
++pub mod tag_set;
+ 
+ pub use operations::Operations;
+ pub use request::Request;
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index 46481754b1335..af214f7dd0c10 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -16,6 +16,10 @@
+ use core::{convert::TryInto, marker::PhantomData};
+ use pin_init::{pin_data, pinned_drop, PinInit};
+ 
++mod flags;
++pub use flags::Flag;
++pub use flags::Flags;
++
+ /// A wrapper for the C `struct blk_mq_tag_set`.
+ ///
+ /// `struct blk_mq_tag_set` contains a `struct list_head` and so must be pinned.
+@@ -37,6 +41,7 @@ pub fn new(
+         nr_hw_queues: u32,
+         num_tags: u32,
+         num_maps: u32,
++        flags: Flags,
+     ) -> impl PinInit<Self, error::Error> {
+         // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
+         // all are allowed to be 0.
+@@ -51,7 +56,7 @@ pub fn new(
+                     numa_node: bindings::NUMA_NO_NODE,
+                     queue_depth: num_tags,
+                     cmd_size,
+-                    flags: 0,
++                    flags: flags.into_inner(),
+                     driver_data: core::ptr::null_mut::<crate::ffi::c_void>(),
+                     nr_maps: num_maps,
+                     ..tag_set
+diff --git a/rust/kernel/block/mq/tag_set/flags.rs b/rust/kernel/block/mq/tag_set/flags.rs
+new file mode 100644
+index 0000000000000..768db938b9a95
+--- /dev/null
++++ b/rust/kernel/block/mq/tag_set/flags.rs
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use kernel::prelude::*;
++
++impl_flags! {
++
++    /// Flags to be used when creating [`super::TagSet`] objects.
++    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++    pub struct Flags(u32);
++
++    /// Allowed values for [`Flags`].
++    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++    pub enum Flag {
++        /// Indicate that the queues associated with this tag set might sleep when
++        /// processing IO. When this flag is not set, IO is processed in atomic
++        /// context. When this flag is set, IO is processed in process context.
++        Blocking = bindings::BLK_MQ_F_BLOCKING,
++    }
++}
+
+-- 
+2.51.2
 
 
-I guess we could further reduce indentation by doing:
-if (!get_swap_device_info(si))
-    goto fail;
-
-
-> -               if (si->flags & SWP_WRITEOK) {
-> -                       /*
-> -                        * Try the local cluster first if it matches the =
-device. If
-> -                        * not, try grab a new cluster and override local=
- cluster.
-> -                        */
-> -                       local_lock(&percpu_swap_cluster.lock);
-> -                       pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0=
-]);
-> -                       pcp_offset =3D this_cpu_read(percpu_swap_cluster.=
-offset[0]);
-> -                       if (pcp_si =3D=3D si && pcp_offset) {
-> -                               ci =3D swap_cluster_lock(si, pcp_offset);
-> -                               if (cluster_is_usable(ci, 0))
-> -                                       offset =3D alloc_swap_scan_cluste=
-r(si, ci, NULL, pcp_offset);
-> -                               else
-> -                                       swap_cluster_unlock(ci);
-> -                       }
-> -                       if (!offset)
-> -                               offset =3D cluster_alloc_swap_entry(si, N=
-ULL);
-> -                       local_unlock(&percpu_swap_cluster.lock);
-> -                       if (offset)
-> -                               entry =3D swp_entry(si->type, offset);
-> +               /*
-> +                * Try the local cluster first if it matches the device. =
-If
-> +                * not, try grab a new cluster and override local cluster=
-.
-> +                */
-> +               local_lock(&percpu_swap_cluster.lock);
-> +               pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0]);
-> +               pcp_offset =3D this_cpu_read(percpu_swap_cluster.offset[0=
-]);
-> +               if (pcp_si =3D=3D si && pcp_offset) {
-> +                       ci =3D swap_cluster_lock(si, pcp_offset);
-> +                       if (cluster_is_usable(ci, 0))
-> +                               offset =3D alloc_swap_scan_cluster(si, ci=
-, NULL, pcp_offset);
-> +                       else
-> +                               swap_cluster_unlock(ci);
->                 }
-> +               if (!offset)
-> +                       offset =3D cluster_alloc_swap_entry(si, NULL);
-> +               local_unlock(&percpu_swap_cluster.lock);
-> +               if (offset)
-> +                       entry =3D swp_entry(si->type, offset);
->                 put_swap_device(si);
->         }
->  fail:
->
-> --
-> 2.52.0
->
->
-
-Thanks
-Barry
 
