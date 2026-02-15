@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CAB2E63F1C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 01:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E53E63F1C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 01:02:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A43906B0111; Sun, 15 Feb 2026 20:00:52 -0500 (EST)
+	id 0C2426B00D7; Sun, 15 Feb 2026 18:46:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0D856B011C; Sun, 15 Feb 2026 20:00:52 -0500 (EST)
+	id 0803E6B00E0; Sun, 15 Feb 2026 18:46:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9108C6B013D; Sun, 15 Feb 2026 20:00:52 -0500 (EST)
+	id EE2756B00E2; Sun, 15 Feb 2026 18:46:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ADD16B0111
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:00:43 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BA52140B58
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:24 +0000 (UTC)
-X-FDA: 84448319928.20.B8152F6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A992A20007
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mn0Sci4k;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 383166B00D7
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:46:24 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A87D11CDA1
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:23 +0000 (UTC)
+X-FDA: 84448327446.13.0BAE241
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DBDB3C000A
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kjCDYQsR;
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199002;
+	s=arc-20220608; t=1771199182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HP5aRzEoyuN72rj0GVPgjCdfTlp5xsDwbqKA5gO0pM0=;
-	b=RviGOLb4mM5jMRggieEtlNFuPhyxs6jiQV4ZvqILqFhXc8A6be8e8V8L0DKbxq1fv18n+v
-	R0j5yEVQmbxGrtKikF8QnaTsPIjfLFT0b74UqpmEKByqcVzaqa2K3mIF6lVkgym3AvPIqW
-	JPTeT11glHNyZCr4GAKAiJGYN/6wD74=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199002; a=rsa-sha256;
-	cv=none;
-	b=W+pxXAqCPYwuSZGzeyBiyhPPpur1daUKdOixW20Hxu1tVz8aP+bNdhwlSWFeQzHHbHpjnH
-	deTdFPeWKYwQbeUnQH0S0GmlCmSDK1jnpMcyWnXJepUmNxHR6Uabb1Y6uZOWJhwffSyxYQ
-	+zM449q8XoeFaGuQCwtpFl27+OVpabo=
+	bh=GubGWexe98VLKWkuzrpnQwrAcjU6Xv7tmoXXxOPIYCo=;
+	b=OPbYWqD4iY9fTDaXXjOJaHmB4j6njS0G6ZvWPpMCCuM0v7ANcowu7w1VkSaSH/KOXqEeCb
+	yUDm9kutV0XQw80Oe2uKwI41dB+shkUXgr47+ENyUHQwCJK567hMtwxr9Qwzfts1UzZJga
+	gj3HP69GB5PuF7S0qG4SJXQ1hdwCKBw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mn0Sci4k;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kjCDYQsR;
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199182; a=rsa-sha256;
+	cv=none;
+	b=059u2g7HOiLhXdZAajz/oRdgVJoPSqjaYLanxVcjCf1mXqVYneFHczY3kOAZKjtdHMa1W+
+	VkkMZwhYTMUEue7lgJQvRhFMMyaaSTAra5skXAIItYNtur+3w8kdrraxo/OMK1hcKPIphu
+	OHf6sNSB3qyDrn/UY2mtCdOVNwgQlNA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37EB86013E;
-	Sun, 15 Feb 2026 23:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90CDC4CEF7;
-	Sun, 15 Feb 2026 23:43:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E8A641858;
+	Sun, 15 Feb 2026 23:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FD6C4CEF7;
+	Sun, 15 Feb 2026 23:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199001;
-	bh=u9tAIyBFICh0h8M21rtuVjobkuPmRcCa8Z1Q+dHSvbY=;
+	s=k20201202; t=1771199181;
+	bh=9wLxYaTCPfOG5uonTZ2h8ocU8FWs+hSDrEKcM2sv5z4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mn0Sci4kIejuXJiTiTwdIfMXc3NqoDFy3RaGKisDg44zwaa3hSX3aAZrmGMOb1eec
-	 7x+6SC3q5Z+9cLM/tkFHnalMzYwYLe78vwFaM0XEAnZ8+1lB9viOpgzktWVz+80QZT
-	 QSjgz6a5F8xIzO2TJLivOQ5kXo3xCpVQyZLa6f2X+coFC2pTG1ODGvT4GWK+/K94jm
-	 7ynXUlozo6wQAqE2IrfGh6EGsOkn0s0GY+hz9LRGPMxrlT0g5oNpLLgDmCImMpcnly
-	 IONfgmAV92usz5sE83QOlBGxkJo1gjwtb1SDOuheDJ6JlmZ5L6opBfWPB60UCYcCWV
-	 yH9X/rnEcjlJg==
+	b=kjCDYQsRlhCQN6obSBw1ii95Qd4xqZ2D3oZ1pMKrFWp3LbPJEa068zb6SNYsrLyzl
+	 RNtqfQABlx0D/geY5TXUSQ0unzKd7ZTFl8WrcQ6ptjFu3A7zKaqi2rHelGAxlnSd+D
+	 J3eLNHh7W6AAppxKG9zzibmJ3iLxifuLzA7d+yJ7P4tFY8tPnGTRQKZ30Y2RvuxtbT
+	 5aAU2fp1DgwaHG2wxFp/FdWtUMtAu/NBUq8CY2UY5lei5riX8DMBInCnZ5ry7D2sfd
+	 9iQrZXLs9GlIXjr3wAh1d/iIpmUWJ6nvaC/yLvGJXKLavrqTYsAvNxCt1mLq6iK4Sp
+	 nSEyBV6LaEO/g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:36:04 +0100
-Subject: [PATCH 77/79] block: rnull: add `virt_boundary` option
+Date: Mon, 16 Feb 2026 00:35:36 +0100
+Subject: [PATCH 49/79] block: rust: add `map_queues` support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-77-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-49-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4488; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=u9tAIyBFICh0h8M21rtuVjobkuPmRcCa8Z1Q+dHSvbY=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhhlk7rsPagv2Uwv84amFbhOdhB2bAscIG/l
- qV12jhD6D2JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYYQAKCRDhuBo+eShj
- d39FD/96ZYUm8hNRgfOmyMX5tCjDFNgsfNiS40He5tLPYN/6WQj6DrGgYwv+z1pGIP5EDiWlZ09
- laL9bCVVPzdOdm+xGHJM3oRPpcjUgp3vfQlfL1sMp1+gebfGvFcb1pRWX7kDloy/79czcjq8ZZZ
- Ew2ZOAAd4zYAA8N+l182+vgq8BWrVmS3t/zpZaIvqxD+TjtM1RhHdgQnlEbAEF0CWMBf9GE3mJ0
- v8H29/X1YY1Qx+tcEyZ6y0J2cIFtmGzkMTSOMZVs2edeuuBCFYlnHTNDNVqAXxp7iG7CdqFbtiY
- fxkRP8jEYWWY+GGJJm6Vx4Hsgbwph2axGY1gT+jwIj8zxjIUbteI3xdD8ODOACOLRQjnzF2NG0G
- nzRtBJa3Ioc1hCdZPK8Ji3+re+kKP1h0aQ9mArwvdEcp7gnkeUXwTn6fFd6DUE1CSDuKr2p82z2
- MHFJ3Bc/BSVGBr/tK/GTTEMg/60SSV0z4YUwBDJHFvJ2AkOblvrgm+xvS3mzdYKXrwfc/T29YyK
- 3TkuOp/0brAa6hgft36PbxJ0BU8NNFnhDc9FLu2y69Wubmb1BobDHlKRuxuL8+fbCePwd6eAAtp
- SCc2W5iseGlDBlHXIR9WqgzbOkp2HJCUcxX2S6O4WUSXTGW67mJKb56Ha8shPJq/utfHM3KDuH5
- CBlxRfFuSrMvDDg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3879; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=9wLxYaTCPfOG5uonTZ2h8ocU8FWs+hSDrEKcM2sv5z4=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhHteQM6fc3Iu+s7ErTmW5+zxHdbuM7v9MUt
+ WW0qbMjDayJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYRwAKCRDhuBo+eShj
+ d82UEADCFQq4xg0GLRoFbDArGbCjq1pYimjtXweH1jUHAlgJbGGDkikwcOVePhVAnaq0cdE5BuY
+ FST4N7wGwn5uDWVPQjXpCx3F0A00D312QyAmD8cvTc3vOP3J4jJptfyTx18my0TG3l/QpGh2k6+
+ VRnt/4++OOUgxoE8WyWXsHSiexrgbP5JGRTRiN48GSZzVsD+hMHSp/+pgp7Xcl0BR+8bGdFiCQm
+ LGiYwXAUL5k3Gqj/IYOdhE00o/x0U8DPQMfes514MGFteRl7clkgSvYEFKWth04xf/u7Ko2u7Ku
+ 9RZFRbrxsRa66tuTEpsFIA6IX/RwvMKZoXDegWKZ8M0TsY7LUUI2V7aNC7bnV2Xv0mertjEooNo
+ Ua16efkXqh+Tx/mi18AdzA0+qemfM30vBYaWJ9xQDcAbSVCfSq+gB9EFg/ft+MzN7AS9w2UdGdt
+ EJyQcDaAUyDI4zCU7pPSm/5GHu52+/vVcaHnTHT8vGfMk1tFZQ4t5d9DTiAS11OUgBMHJqhQEPX
+ F2LkCpJ5bsvfp0U5L+/nuiphEGkRmHRxMhE4MQ2vGaAWhI4jUEAeiJC76C5ficBetddzfL4fS+U
+ ZIk5m9JLWOTZyF3nP1DNE0C1fLiAMjBgV3OOwQg8Bp5j7v0btIbGpJUHAd4dzkHYMBmRMjTb/gX
+ QQhP/zLigZgzM0g==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: A992A20007
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DBDB3C000A
+X-Stat-Signature: pfjjeciz978to4tztue8dbfk78chzob4
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: iudeoxmqa4nran4squzt4qpbpaj7mb46
-X-HE-Tag: 1771199002-607823
-X-HE-Meta: U2FsdGVkX1+J+DDbSr024QfSFrYQ2hY2OU4L5WfKbikxHPXX7nKRtZNdx9mYaxtqWChpQlX4grOd3you3raWYGPiQVlPntusZ88SvBy6TcdF6FOcErAKEhbWbjp4gaM1C3xo4Llj+QLd2nZK+AWOO+/VlAyiberzqAwHc8xRvvnrjfpqZvZ8inevxoTgaywla0YCU1PZxEkmGfKzaw7d802AMOWqr1OSYRwhpo4kb5cGUOqtx1tzMcBFfStMeowK2nD4GqzS7jQg8FDfxKlmCgx7895t+2iazAb/4cnqX4DeChuKcIEqyFZ/wM9SpF7CquvmlhEzEwpnHBAeQ3ztW2nWOiLgqDoAj2I54xyGEC18rMpuvbx5LUOIDqc92izjcg1hNv+QgiCe9Wxsswu4WR2xxlKRxrAXkrOOrz7cRjF/ThymHJRwoRmakI4RM5nQ/fxlY7GQ4moqwroPnLSoltdw2lV++YPfEjfmd1K9nY685yvnEa2JwpiKYs/drrtiVz3jbzr44rLEExUkOhDAM3233LXDETlWAijj76XtbBjTS/fu4thW89zLdR5ZHjROEhugJuzEpT3IDNJo7SJpHAqfAK5nn3eV+opk/BwHz7wLugYiu4i4KYcQceQGKuWRyRJzFCIjxZuHjAMxbSMBQ6gnH2DCMvdx8BtJTBCBvozYaesbSmCxDZZCl86TXhZH/hOcUg9kKN65IrMm+CwkKE9p9rImA5lVhCdlcp/1miD9kTpnKXxLMe3SSLczlfH4JjxatcKcHdnfD3jM6oO1jc3BmHx4vLzbtiQ64WN7I03KoIT3lsICOZPo1PZoNAMB1Bk+5PQ1cEiTa4redpaYaLuGThZQbtGlzXM5oeJ3OXgrqm3RX1ZVuu1KP/zG8Iowp8QTtU43CsJPwGSBKVua3PfQnoV6/kXoAvnAjWHjxdgBvNrwYMejrXOT1j7MJuB1jv8PtagE/4mcT5FfVNf
- lBPzSmLd
- CdDGIMO8mzokeSqsr3uEkTZ0jqNAvKQES1Y1rQXhNwFfyoAKwOrl3tKFK+mf2xxe4vqHXW2ZGGfoOcaPjHu5QSGEUoKRxZ7MUVLJlgmhPzihhuZ0z+p7G4gCSIG1izEj7yJuEX3r5Vx2mxXHH9Nb47VHRjP2iJ4VVBTzGcexCV13+P4Wr4wnS1LVbobBELn9KPlKk+kLFKXbpZFMeEqOsJKqqVGndi2cig8Jl6BD/QZa9Rqkw6+1ZOS5cqBuUWeKLbz6Bc3gpyqISk0ehPxLoosGTE0iU3q6eq6JVfTcDltf7VCGFUajPCZE47eddKdXCr9tgTV5dOIl6qfCDqDKsUwlgvkc0/SSQOeuu5GnBvY+3y1I=
+X-HE-Tag: 1771199181-635426
+X-HE-Meta: U2FsdGVkX19xWOi0Lt6w+YqOxBK1om4BBM/B3u/g8Phm82TF3erG4OUBrG7kfB/JRw9MJxNNH2DhNQuaCHxi9uVohuxxfg7j7w8hC7gqignIWtSXfEHdtgXOyMhdzTh4enb487S9kM8bNMDUDntwW+fExTqMkBhHb8KnSd1j0XgyVy8boaORTaPxSneNzyl4A3aP5ojQGwlGeRKwi6pH9YPPUduKfoExZSSa7SsnGJGZV5UMS7AxoaUr65qxB25A1EyEDJVARjYbDhzhGn/BXseVTCI6Fl1pacSyOK4aDByU0MxxWsLZT6U2BIcLkhebQx0lTn6gjunsguGUoMfkxH9KsKUs6HQETNbBQ03Iq2mp1ZLEDPDpYS0Ma/z3TzQJrkj0avflz0QsdB0H8QV9ubiv8nLuzcKyq1Lbr/AIYNW/KDKRlEeel/mmDaKv2LK0GXsISzHkeg+eYivRhE0Ly0FHg6CQlYui1dVToEyOGbLYrj6m8XwOclBRGb74k7SQoLJY1qtVz3nJtYiBecrD0KbtnlK4sApV7lDvdqYjEwDLG/MUbqX0fT+JSlSRz7yZc+06ly1xn9HAQzzmLMfxLwMvUQDDFXiIRho1j5jdL91pGDShQt6t7HCgRhqhsS7ekuWFXdwKxcsQujU/eUuCQksJy4akCkf3gB7jFTFC4vVNdRPoeQ51vUq/qnvLQa0h6izomLisIiWy+S2RrhHRZa0N93K/F6cYxIwX9eY1m/dM5idtWTdietxhHf3yzLXHem379xkIJ+qFFjIksRR5A1bvNYHp52gi2FmnkDrIH/7qWb4DEGf8Lb7OqDiGP/XhVUDPVABOWbFB0iMoZC80PaqUd7+9XGhlaAVAag3az3lzOkwabbsYZLqkYLSPIm30ze7sSwN+5Fn2YpfEpbimGfgaU8gr/av5rAi12zgPwTJsEROOo26ZZNp0WT2nVwtOpDmKYBbPCpE4t7ZxaEf
+ ue9rr2ek
+ VeigV8C9qDONIALjZd1FlYcMKIyhgC3MrDJWVkv/GqceOQFRqNAmsO26LGxJTlC/Hf/BjO9XXjOqheMkhfW9B5OzmmJ9iETKAUMgONhsWEnjwnljnH/kuitkQNYgWT0bMTwcy+LHBIh/bdWIDxM6g/9S8Heg+oD6Qp90zW+umdEF44FAtaDQYoy5u6HtMZxHPPNH7aUArE1GgyolJbg8LJO/ytpJgmMG/6OlNJsVFAfIJ3qpQxIg+NDGQbUIEd4tQXAXH9kYuhigvajB4n11eS0N9OyG0NJ4ey5Z0TvNqmFsieDJilL2jXz5y6MONkdFetumOSuE9t2fQoIwXCIOSHI44CuGse+c4VVy+aSW77RrLb7CV2MNFOrb6K21+HmHLmVdSUSWTfsQIiT4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,127 +121,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a configfs attribute to configure the virtual memory boundary mask
-for the rnull block device. This allows testing how drivers and
-filesystems handle devices with specific alignment requirements.
+Add support for the `map_queues` callback to the Rust block layer
+bindings. This callback allows drivers to customize the mapping between
+CPUs and hardware queues.
+
+The callback receives a mutable reference to the `TagSet`, and drivers
+can use the `TagSet::update_maps` method to configure the mappings for
+each queue type.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |  5 +++++
- drivers/block/rnull/rnull.rs    | 17 ++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ rust/kernel/block/mq/operations.rs | 28 ++++++++++++++++++++++++++--
+ rust/kernel/block/mq/tag_set.rs    | 13 +++++++++++++
+ 2 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 9eaace8b4257e..8b9ad8a1a243b 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -123,6 +123,7 @@ fn make_group(
-                 poll_queues: 27,
-                 fua: 28,
-                 max_sectors: 29,
-+                virt_boundary: 30,
-             ],
-         };
- 
-@@ -210,6 +211,7 @@ fn make_group(
-                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                     init_hctx_inject,
-                     max_sectors: 0,
-+                    virt_boundary: false,
-                 }),
-             }),
-             default_groups,
-@@ -293,6 +295,7 @@ struct DeviceConfigInner {
-     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-     init_hctx_inject: Arc<FaultConfig>,
-     max_sectors: u32,
-+    virt_boundary: bool,
- }
- 
- #[vtable]
-@@ -351,6 +354,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                 timeout_inject: guard.timeout_inject.clone(),
-                 max_sectors: guard.max_sectors,
-+                virt_boundary: guard.virt_boundary,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -629,3 +633,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- }
- configfs_simple_bool_field!(DeviceConfig, 28, fua);
- configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
-+configfs_simple_bool_field!(DeviceConfig, 30, virt_boundary);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 495a810f4f4e1..dfdb56bd76f52 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -28,7 +28,10 @@
-             BadBlocks, //
-         },
-         bio::Segment,
--        error::{BlkError, BlkResult},
-+        error::{
-+            BlkError,
-+            BlkResult, //
-+        },
-         mq::{
-             self,
-             gen_disk::{
-@@ -53,6 +56,7 @@
-     impl_has_hr_timer,
-     new_mutex,
-     new_spinlock,
-+    page::PAGE_SIZE,
-     pr_info,
-     prelude::*,
-     revocable::Revocable,
-@@ -210,6 +214,10 @@
-             default: 0,
-             description: "Maximum size of a command (in 512B sectors)",
-         },
-+        virt_boundary: u8 {
-+            default: 0,
-+            description: "Set alignment requirement for IO buffers to be page size.",
-+        },
+diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+index 3f84ebadec86b..017fad010d174 100644
+--- a/rust/kernel/block/mq/operations.rs
++++ b/rust/kernel/block/mq/operations.rs
+@@ -8,7 +8,7 @@
+     bindings,
+     block::{
+         error::BlkResult,
+-        mq::{gen_disk::GenDiskRef, request::RequestDataWrapper, IdleRequest, Request},
++        mq::{gen_disk::GenDiskRef, request::RequestDataWrapper, IdleRequest, Request, TagSet},
      },
- }
- 
-@@ -287,6 +295,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                     timeout_inject: Arc::pin_init(FaultConfig::new(c"timeout_inject"), GFP_KERNEL)?,
-                     max_sectors: *module_parameters::max_sectors.value(),
-+                    virt_boundary: *module_parameters::virt_boundary.value() != 0,
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -342,6 +351,7 @@ struct NullBlkOptions<'a> {
-     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-     timeout_inject: Arc<FaultConfig>,
-     max_sectors: u32,
-+    virt_boundary: bool,
- }
- 
- static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
-@@ -414,6 +424,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-             timeout_inject,
-             max_sectors,
-+            virt_boundary,
-         } = options;
- 
-         let mut flags = mq::tag_set::Flags::default();
-@@ -512,6 +523,10 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             .forced_unit_access(forced_unit_access && storage.cache_enabled())
-             .max_sectors(max_sectors);
- 
-+        if virt_boundary {
-+            builder = builder.virt_boundary_mask(PAGE_SIZE - 1);
-+        }
+     error::{from_result, to_result, Result},
+     prelude::*,
+@@ -101,6 +101,11 @@ fn report_zones(
+     ) -> Result<u32> {
+         Err(ENOTSUPP)
+     }
 +
-         #[cfg(CONFIG_BLK_DEV_ZONED)]
-         {
-             builder = builder
++    /// Called by the kernel to map submission queues to CPU cores.
++    fn map_queues(_tag_set: &TagSet<Self>) {
++        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
++    }
+ }
+ 
+ /// A vtable for blk-mq to interact with a block device driver.
+@@ -394,6 +399,21 @@ impl<T: Operations> OperationsVTable<T> {
+         })
+     }
+ 
++    /// This function is called by the C kernel. A pointer to this function is
++    /// installed in the `blk_mq_ops` vtable for the driver.
++    ///
++    /// # Safety
++    ///
++    /// This function may only be called by blk-mq C infrastructure. `tag_set`
++    /// must be a pointer to a valid and initialized `TagSet<T>`. The pointee
++    /// must be valid for use as a reference at least the duration of this call.
++    unsafe extern "C" fn map_queues_callback(tag_set: *mut bindings::blk_mq_tag_set) {
++        // SAFETY: The safety requirements of this function satiesfies the
++        // requirements of `TagSet::from_ptr`.
++        let tag_set = unsafe { TagSet::from_ptr(tag_set) };
++        T::map_queues(tag_set);
++    }
++
+     const VTABLE: bindings::blk_mq_ops = bindings::blk_mq_ops {
+         queue_rq: Some(Self::queue_rq_callback),
+         queue_rqs: None,
+@@ -415,7 +435,11 @@ impl<T: Operations> OperationsVTable<T> {
+         exit_request: Some(Self::exit_request_callback),
+         cleanup_rq: None,
+         busy: None,
+-        map_queues: None,
++        map_queues: if T::HAS_MAP_QUEUES {
++            Some(Self::map_queues_callback)
++        } else {
++            None
++        },
+         #[cfg(CONFIG_BLK_DEBUG_FS)]
+         show_rq: None,
+     };
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index 600c9c6249123..330ff28c91507 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -89,6 +89,19 @@ pub fn new(
+     pub(crate) fn raw_tag_set(&self) -> *mut bindings::blk_mq_tag_set {
+         self.inner.get()
+     }
++
++    /// Create a `TagSet<T>` from a raw pointer.
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must be a pointer to a valid and initialized `TagSet<T>`. There
++    /// may be no other mutable references to the tag set. The pointee must be
++    /// live and valid at least for the duration of the returned lifetime `'a`.
++    pub(crate) unsafe fn from_ptr<'a>(ptr: *mut bindings::blk_mq_tag_set) -> &'a Self {
++        // SAFETY: By the safety requirements of this function, `ptr` is valid
++        // for use as a reference for the duration of `'a`.
++        unsafe { &*(ptr.cast::<Self>()) }
++    }
+ }
+ 
+ #[pinned_drop]
 
 -- 
 2.51.2
