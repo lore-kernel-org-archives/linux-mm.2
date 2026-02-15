@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36BE7E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:12:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C2F1E63F25
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6A2F6B00E9; Sun, 15 Feb 2026 18:47:09 -0500 (EST)
+	id BBB5E6B0104; Sun, 15 Feb 2026 18:52:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B26CE6B00EC; Sun, 15 Feb 2026 18:47:09 -0500 (EST)
+	id B65176B0105; Sun, 15 Feb 2026 18:52:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B656B00ED; Sun, 15 Feb 2026 18:47:09 -0500 (EST)
+	id A91D76B0107; Sun, 15 Feb 2026 18:52:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A2DE96B00E9
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:47:07 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 353E16B0104
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:52:36 -0500 (EST)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70FC31B4F53
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:58 +0000 (UTC)
-X-FDA: 84448328916.25.4270655
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43D4EC35B1
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:53 +0000 (UTC)
+X-FDA: 84448326186.25.BC9991B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B3AEDC0009
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmQjiPkM;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8B80D8000D
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jKuMyOSF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199216;
+	s=arc-20220608; t=1771199151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OA3X03lfYudr4bdXqz5vjTi3xJt2t+2l47X8R4c+gMo=;
-	b=Jfckdd1e0GNKNU3OjB7GP5AUwFW4wkVX8mXVUKFdQ6YSiXVFB2QXFgJYF+2vFE2NN6gTW0
-	R6Qb6aw/MdGtuCoTTuTyoejdBtFSk03ZNIMCEJPtj9llz21F1fS4r8QkEGXJgYwwpGxQIL
-	4rHwOuAmOkr7+24WlwJrfWHtnrGM+Jk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199216; a=rsa-sha256;
+	bh=Y1WFjMpMok/GlDAAFwHSMuvpxnXPXIB8AZFxuLG0QQo=;
+	b=ca5AdVOGbeIaS9viiWUZcCZpDWsPWXK98MT7VMpT5tHKmbWfOd2gI6pYfuNdAcxCk+mk7o
+	z65jRIugB5rzntoQervvtUP9FmmMacp8UAGa8+19d0HdZP6M2ymJ9eoq8HgeCn2e+l7g9u
+	4ooeC1PAHz79ycsyqe905gahkhTAi0E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199151; a=rsa-sha256;
 	cv=none;
-	b=ucQ1+wXlBNlYZvhlKNGN3Wda5+/juIw/KVvB7W5EH1flrNDaxjJWN7caoNwie8ikZ74fXI
-	f9UGKeM8AlgfCsTwzP1uqPRrdSXqmPCOG1vp2IUK4W8wqOpB/fa9hTJGp5u+vU10ciKacs
-	+lCg4pWhbReCAfpfYoASGvOmuIbJ4V4=
+	b=R/SCGuyh6OcgkhsOi8KELvBdOpaLKVvs8EfDdW/24xLRcoLMRiLOfujNdC4RLoRP/tGJrc
+	PfPEhUx9TO0A88XGrl3ovVpV89vf7AWwt5sQQNqdWx6uKBKWYcxa0NjgHsYnMrp0CtdtaF
+	7KTMTo0KUqljyyTlRET1bvd5Xh5JiBE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmQjiPkM;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jKuMyOSF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3AD856057A;
-	Sun, 15 Feb 2026 23:46:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CFFC4CEF7;
-	Sun, 15 Feb 2026 23:46:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 057AC6013E;
+	Sun, 15 Feb 2026 23:45:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6295DC4CEF7;
+	Sun, 15 Feb 2026 23:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199215;
-	bh=pHTvVkZRFYcjiaGREx9N7FRfc2mqdwNLh9peaN0Ub0Y=;
+	s=k20201202; t=1771199150;
+	bh=Cd90Kd9HZBS+t07qweteZVt5e7ejNNo7uFQ2B+yelCs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BmQjiPkMGbCMCCRWpIRKmUkMrdGCR9uHTSwgOcA660yGX9ktAN30df2PCPV3s1HZk
-	 6CEfKyzgEVdxnIQWZU2sAQGCS/S5FdfVQVx0cD/mKtl8lag7yrZ8mIUEs/tcjl+jas
-	 tssEjIRSACRWsCVEMNjHKPKw1d/9YnUX5GO5JjL7vJn6UA0FNu/5BO4te+G6TLLUiQ
-	 HzbZ8HZG8ZWn206d5cPypIxHAoQtaq4lhGaTNVkvT1CLAR88iFZsgYvzaUWz3IW4DZ
-	 ukKxIk36VgGppMIBD5qzeXu/6eheDOcZsDLM1PwpEyM2bT1EGdmd7VcKD5s0+Beoq5
-	 Pyi7Orb/Ucqhw==
+	b=jKuMyOSFwHX0iejhTs6DSzYtDAHi0TVVWOXrm312C8vhFHJSLdQ3Qle0ezUBJQsw/
+	 BSjBS9FT9sjz2iinpGKkXF+uXTaJcMDWxTE1PpXiRwy+F01l/qjyqwi8qoNi9kXhiv
+	 z2af+M/GRndl5ZsexUd9sVl++PujRwZvbxYVVw44vVapdsfjxyFKx50JAVRdT/X/ih
+	 ZF67rBtRb8vcjHOIa8k9Z7+IEvvKLtMWk/jUoRlMlgxs0DHOpCm2EbmQB/3oJ/Xav2
+	 64j1uyqB/P/qRkcufIMYcor/n3SQyW1s/JdFk8MwOP5FaY3Nq79eBCloOG5bQ0zP1N
+	 pdALkPc3DGxsw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:31 +0100
-Subject: [PATCH 44/79] block: rust: add an abstraction for
- `bindings::req_op`
+Date: Mon, 16 Feb 2026 00:35:42 +0100
+Subject: [PATCH 55/79] block: rust: add request flags abstraction
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-44-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-55-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -90,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6414; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=pHTvVkZRFYcjiaGREx9N7FRfc2mqdwNLh9peaN0Ub0Y=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhDEeCdW/yi4dywjzU/1Nk+MWm9S2xIIH2Cn
- V0G9M1w7xSJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYQwAKCRDhuBo+eShj
- d/D6D/44ecuU5yS9H5GCaAuZSVh+YOzWJCcgz/rVCkktg1rouPSSpD6CxPVUon461IFCjG00DLA
- G0FKsh7baTRApFzDessKhoxB+9+5mm5uoe3KDBZka+ZtKw6XmL13kwSE6QDe4izJo2fXWh8ZECc
- T88vr0uJG817P2hEkIKdE7sfywllU2Boyaxc256EgmJko0htOudxKOPi0nX2tGTWC2quFmMbBnj
- 5ZR4gxFx4OewOOIf2Iyt1vcRNuDuTTJRa38dGXbjwgF/KTExWRKIikmoN/0HKJgOYgsHtGvyCLS
- NrEInkyirWFL29VlZeTQAEcIuc5yYEBJwCaXeckvuyEk7pivpurH2atUKKpy1Qn/QshXpDuIBFA
- 5cNc6Vu2ZlFJrGZBXaOjXwcN8Ra7nLJ6wgs82RQJ3RQP+CjK7FjLMFXceHE4cgluDKQtECeD3pl
- raa/er7bmW6GL7Q5ZQurcZJ6sptVEQC4uq/pWVwnC/IwZfCLGTQjFmhyYBLaxNqrNUx3u40ll9v
- /8ylEGx1cgYdBcnRaZSV90oIGgrAB8nipQus1bMtJV2hsXIg9jnAEa9dTHZTXuqbK2Aqw/2SmS9
- cXooL5FmaBASTDq6ifdv1QwvzLB+mS6rmIPRbTiD7s0baqG2g9Xpk8t7etiq84wChnJIRI1LA76
- 32fIHtKfsDlyO5g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7161; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=Cd90Kd9HZBS+t07qweteZVt5e7ejNNo7uFQ2B+yelCs=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhN/gQhzHqP+13Aj/SzVGlQW5wV04BcO9cf5
+ o5yh0IrX8eJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYTQAKCRDhuBo+eShj
+ d17mD/9bbJUdmA/hnedCkeHucvwcMhmYMNx/PApRtG54XNFS/o5+Z4hGXSUFO8b2BSrr3Av7LoK
+ LrfBvkr3pORY0mA4uOssbPoIvhuyYniEuNyjdp7eaujRBCwz+4hA6a2pMu0lRxG3288s/7TnrK0
+ uM2oZsPIMyw+KIHeMmArlVqsHDo/WycktYLXetrMx9B9ZOgdNmfkOj5sxH2jWzXG1/P1Blxb5DQ
+ 38JvKPe5DiihDyGnTVtK2GYhUuD96kum8ZU4jsS9MYZCIC3N4PhwaaBbmFV/zFiL99/xJh1lqdj
+ QcHNVaiIhCoo071CMXZGCQqySMsiof0WmtZmybW+wS14ubNvIEWv6hkFep1+ji2iR6s0orB5egx
+ jjYO1ZM/K5EIoiN1YPkW4AtySA+kG2GnpuoUnaamv+lLEliQiUjmvRqQzsP1C37SiPiD7gldCVO
+ juSzBOu/wITj/idLDHbNv8IxdV1muTtWds7JzF4gOHBnGHm33L6rIVx/kMgPKhgzB5O8vn2cSIi
+ ABvkS4pBH7SQFR5Ckkl7pescdpJ9+CAcr1Ph/O829WEFjsi2F3DVkqfJZkTBMJnAGvX1v7bT1ip
+ M7ozfp78KMpSkVceNkwDEZOPxXJQLpvbKyqxtuUzxB5l17pLrV2y5dvpQtvFBGgZ1J5MgAIQP9U
+ N888I4Cln+wpFxg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: B3AEDC0009
-X-Stat-Signature: 9oy6nss8tqmhbgy7s67rxd9ukjhtbydw
+X-Rspamd-Queue-Id: 8B80D8000D
+X-Stat-Signature: frzcgpcypt3fy9hkxd5rer9sccahj9k9
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1771199216-481252
-X-HE-Meta: U2FsdGVkX19rAzVf3IMHU3ywqXirprVAR+I9X2tLlzmFXGov4gXLqbufp5r0GhtQsgSlRi69zoZVkAq7EQzpxmNU9mxyZJpTAF1c/L4CibxksuGvrg+MoANp52pi9WMOWm1y3mESNk4gG7j3Dj7/tbYUkJ/nnLQq7L6N6Ln6bDQq9oFGvChBrfDzuN1lMO6jMFncJ5UvsyFujikaWTt0BDE3HeNdAhpKyBBkrgKEc805yehZZ0A7KJ5rPey/3zxIQINZuUM4wsN7SBqxJfAkzVbtrR+fypnwDqtwICOp90lectl5/3ztHp+4kWORfl03NcslIRaxADBplYjPtwY+LdD/rF5KOWRm+ihFZHJ0QrzpfX/HHpEMxhBSIJGX5zq5Q55LbS1JWLkgXhMcoJNx3JvuzU57ekqCJ7SgPDj2j0gkKIHzR8oD5CfmKHBfYLJCSnEs3Ndafzgx0NBPrCkgM+xG2v0e/K8kKZci7PPQazaP19wrrXA+of1x8AkrWQNI4hUs4BGnxl39ymJPQfAiFDf50dyqMZ9KwMNBDsu3jENouG9XiEZh1xr+Nx8EUlFQiXz4YbmL7VQeBuWHiRJEcLVvRiDObTF/8mSncL2qw8dQZgD/I7Ap1ARISPumWEESk7bJbwtr9kRguz95m3Jtzv9rLwHmaGODheSO+tJofr3Vy9czQclHlM0vHmfFcPoOsmdf0KeNtTfTwb61P66dAI3gxIp6PuKbQBjvF8rL+zWxo+9UCoy7pVIZx5PHgUYCmuZNQLn5H5h/iqAANwtLZ1fDZmxqdDktLzVpXLq7rzGbFciOQM9q4kd6XvIohAcfAYU+mSfrh0JVEElIn8ke1y3RyoOus0GOGDAQ4Fs6d7jW/Znwt4N38lNNblyiO2xu4MjDV4U4ouzaDFpdn+iW28Eh+65wYxgTarnNqn7hbFN9232uIqsK2oLKFLP2p22LfBFMNqfMgu7tLVA8xQS
- 5/PJEuBT
- ONbP2cQkYC45XVfjZWi3qWAcGpTzkC+XEokC9Se5FArEjMAvcu5ARBh0j/9bq6fwda7/jxhtSI8kZ6V25/18YawtZ+s/UEJG4IpY9cw0jt8Arh3Cx03lQcgamxj87I7hxWYLtohoLSoKmNrpXkzCRqQUnqQ5lKPZTAWLNwiOt9P6eTjSx6OybNtF6w838zxMrK4dfwVsjTOidcdaLpSoaMUl94TXakwaiVjf60Ss6XPF96uDyHaPVf3rfRF5xETfUhRkCePQwdts8h1+pkdh07Sy3N3mj4uTHjMmmZW3L9zXWdwtxUWj6iBDxiA7t5N0cjTAmt28LiaVh4Z6a7rlkhmjSx6SanT74HL2aJ/tUEwKQqlA=
+X-HE-Tag: 1771199151-790227
+X-HE-Meta: U2FsdGVkX18+9jpgYifvmPDadqnt35Srm6SuBuR07XlUkp1iHfPB+9shRrdbHrOsG5xdEsvhj7znMaxTjnn3W9nikqkOgw5c1ATKtWZUhDIVQmHbGgMo12Gt2VPFh3t+XZpOm1D5dGOk0ItMD1wBdzG3l66N7boNs/jeX0WaJCH3o3YqMQvUNVn3Aaf0zd3AY5ScigXRuJTz/ld3w41AJr+6z7sHLBHqtW7D/TrPrh2aQHtf0rDdFRplhHx+c8qiy0hO7RiHS6a6mLGM/Nxbhz5rXmGe+/PYXXcMcBbD3h96vXXNXpX+I4oUkOwsnfMlKOErWrdRXG0JJe9PG0Hms3zMRjJP7s0TQg6Wy9wW6PLMSIrRKwKKGBYocBd5SG83pHn+/TzNFhAs67JAjlVyoH7UNiKOohLlc0f6TEDVYjUlfCYT6iXCeeja0aKdj/CgklWIebkgjUXRA732q1etVC7xT84D3Uu2pKNvdoPGKFuBh0xtfBu1p0y43tv4BaoB7u7ceieN1Eke0Jpk5fkp29qhS8Qrb8ccErJIoqJT9mwQ7UTHGGqaxm0IXEv3qhvrZS9kyLjaCf3ROIoVSSP6RlRmeYyMhfrs1A6uOtMtMQumwqzdpREcRRYRDVA0mFvvd7HWlCVQRm5nvCGcD5D9k1MBQVzYmz0t5FBzhSOpyukw6e4T2nVZCALDiqxD+ouxeMN+yjm/HTtyyFJWQE9ZNKMPz+lCShar8Bl2FriL+uEYWhqVM1InMc4Ou666Zv4hb6gRBeXYe0QXPR8LUJkbyvjrUu0vlm8ng/nat+gsJ6yenT8iE0BmkbQ3zI1dgrJEBvnk5eWlcHWeA95E6VM0HuXE6ialGjuzwnZ3Xpmns4ZimuInYmIkjQj6izZBaDoZj3fI3xteKMgIOB3Kj3JML1ROfeC5l1eRjffhHurdkxlR786rlkZ/7SkdQxb5MDFeXN52QcdCuTidDbYnvJb
+ 10iEJE+X
+ qyCGxT7xrW7ODRi9J+Dwje9qpskbStkp5cXLKK55XvbBmhmfzC3jkeKOAFmtjcuvW3kZ8nMtQopHBG5qHOASUYIbKCUPv42c1RfQRSyV+9cTQe1/jzC3LHb4jJ7u/oLVusxaMuR8R692E+x8MtPgx0gvuXW75DI2xVSRO1ddc3U1p5KpLDb3tkNJbeC7gWtgOgWgReUZlzbEBe6nzowJfNEsvUEA979h0Yb5SEO8JL/Kbt9WPLLRlewEcV6s9K3pBozqCSeZ/V/o5V3gUFLR/0JxILGzwtCgYmCo7EJFgjTcjXPDDuI+o5Y58Xqrz1umUwgFD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,161 +121,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the `Command` enum as a Rust abstraction for block request operation
-codes. The enum variants correspond to the C `REQ_OP_*` defines and
-include read, write, flush, discard, and zone management operations.
+Add the `Flag` enum and `Flags` type as Rust abstractions for the C
+`REQ_*` request flags. These flags modify how block I/O requests are
+processed, including sync behavior, priority hints, and integrity
+settings.
 
-Also add a `command()` method to `Request` to retrieve the operation
-code.
+Also add a `flags()` method to `Request` to retrieve the flags for a
+given request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/rnull.rs            |  6 +--
- rust/kernel/block/mq.rs                 |  1 +
- rust/kernel/block/mq/request.rs         | 11 +++++-
- rust/kernel/block/mq/request/command.rs | 65 +++++++++++++++++++++++++++++++++
- 4 files changed, 79 insertions(+), 4 deletions(-)
+ rust/bindings/bindings_helper.h      | 21 ++++++++++++
+ rust/kernel/block/mq.rs              |  2 ++
+ rust/kernel/block/mq/request.rs      |  9 ++++++
+ rust/kernel/block/mq/request/flag.rs | 62 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 3fb19836ce6ff..9383b82f9a736 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -508,10 +508,10 @@ fn transfer(
-                     .len()
-                     .min((end_sector - sector) as u32 >> SECTOR_SHIFT);
-                 match command {
--                    bindings::req_op_REQ_OP_WRITE => {
-+                    mq::Command::Write => {
-                         self.write(&mut tree_guard, &mut hw_data_guard, sector, segment)?
-                     }
--                    bindings::req_op_REQ_OP_READ => {
-+                    mq::Command::Read => {
-                         self.read(&mut tree_guard, &mut hw_data_guard, sector, segment)?
-                     }
-                     _ => (),
-@@ -703,7 +703,7 @@ fn queue_rq(
-         Self::handle_bad_blocks(this.deref(), &mut rq, &mut sectors)?;
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 05133a78ecf95..b8c2f3eadc730 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -134,6 +134,27 @@ const blk_status_t RUST_CONST_HELPER_BLK_STS_OFFLINE = BLK_STS_OFFLINE;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_DURATION_LIMIT = BLK_STS_DURATION_LIMIT;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_INVAL = BLK_STS_INVAL;
+ const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ZONED = BLK_FEAT_ZONED;
++const blk_opf_t RUST_CONST_HELPER_REQ_FAILFAST_DEV = REQ_FAILFAST_DEV;
++const blk_opf_t RUST_CONST_HELPER_REQ_FAILFAST_TRANSPORT = REQ_FAILFAST_TRANSPORT;
++const blk_opf_t RUST_CONST_HELPER_REQ_FAILFAST_DRIVER = REQ_FAILFAST_DRIVER;
++const blk_opf_t RUST_CONST_HELPER_REQ_SYNC = REQ_SYNC;
++const blk_opf_t RUST_CONST_HELPER_REQ_META = REQ_META;
++const blk_opf_t RUST_CONST_HELPER_REQ_PRIO = REQ_PRIO;
++const blk_opf_t RUST_CONST_HELPER_REQ_NOMERGE = REQ_NOMERGE;
++const blk_opf_t RUST_CONST_HELPER_REQ_IDLE = REQ_IDLE;
++const blk_opf_t RUST_CONST_HELPER_REQ_INTEGRITY = REQ_INTEGRITY;
++const blk_opf_t RUST_CONST_HELPER_REQ_FUA = REQ_FUA;
++const blk_opf_t RUST_CONST_HELPER_REQ_PREFLUSH = REQ_PREFLUSH;
++const blk_opf_t RUST_CONST_HELPER_REQ_RAHEAD = REQ_RAHEAD;
++const blk_opf_t RUST_CONST_HELPER_REQ_BACKGROUND = REQ_BACKGROUND;
++const blk_opf_t RUST_CONST_HELPER_REQ_NOWAIT = REQ_NOWAIT;
++const blk_opf_t RUST_CONST_HELPER_REQ_POLLED = REQ_POLLED;
++const blk_opf_t RUST_CONST_HELPER_REQ_ALLOC_CACHE = REQ_ALLOC_CACHE;
++const blk_opf_t RUST_CONST_HELPER_REQ_SWAP = REQ_SWAP;
++const blk_opf_t RUST_CONST_HELPER_REQ_DRV = REQ_DRV;
++const blk_opf_t RUST_CONST_HELPER_REQ_FS_PRIVATE = REQ_FS_PRIVATE;
++const blk_opf_t RUST_CONST_HELPER_REQ_ATOMIC = REQ_ATOMIC;
++const blk_opf_t RUST_CONST_HELPER_REQ_NOUNMAP = REQ_NOUNMAP;
+ const fop_flags_t RUST_CONST_HELPER_FOP_UNSIGNED_OFFSET = FOP_UNSIGNED_OFFSET;
  
-         if this.memory_backed {
--            if rq.command() == bindings::req_op_REQ_OP_DISCARD {
-+            if rq.command() == mq::Command::Discard {
-                 this.discard(&hw_data, rq.sector(), sectors)?;
-             } else {
-                 this.transfer(&hw_data, &mut rq, sectors)?;
+ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
 diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 02738f52389ba..057a5f366be3a 100644
+index 1d58eea971bd7..5a1c8e914bb9e 100644
 --- a/rust/kernel/block/mq.rs
 +++ b/rust/kernel/block/mq.rs
-@@ -131,6 +131,7 @@
- pub mod tag_set;
- 
+@@ -134,6 +134,8 @@
+ pub use operations::IoCompletionBatch;
  pub use operations::Operations;
-+pub use request::Command;
+ pub use request::Command;
++pub use request::Flag as RequestFlag;
++pub use request::Flags as RequestFlags;
  pub use request::IdleRequest;
  pub use request::Request;
  pub use request::RequestTimerHandle;
 diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index d6f3ffde1c5c4..4e47419776e0f 100644
+index b4f5a98a97b16..cebb30fe9b3bc 100644
 --- a/rust/kernel/block/mq/request.rs
 +++ b/rust/kernel/block/mq/request.rs
-@@ -23,6 +23,9 @@
- use crate::block::bio::Bio;
- use crate::block::bio::BioIterator;
+@@ -27,6 +27,9 @@
+ mod command;
+ pub use command::Command;
  
-+mod command;
-+pub use command::Command;
++mod flag;
++pub use flag::{Flag, Flags};
 +
  /// A [`Request`] that a driver has not yet begun to process.
  ///
  /// A driver can convert an `IdleRequest` to a [`Request`] by calling [`IdleRequest::start`].
-@@ -89,11 +92,17 @@ fn deref(&self) -> &Self::Target {
- 
- impl<T: Operations> RequestInner<T> {
-     /// Get the command identifier for the request
--    pub fn command(&self) -> u32 {
-+    fn command_raw(&self) -> u32 {
-         // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
-         unsafe { (*self.0.get()).cmd_flags & ((1 << bindings::REQ_OP_BITS) - 1) }
+@@ -104,6 +107,12 @@ pub fn command(&self) -> Command {
+         unsafe { Command::from_raw(self.command_raw()) }
      }
  
-+    /// Get the command of this request.
-+    pub fn command(&self) -> Command {
-+        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
-+        unsafe { Command::from_raw(self.command_raw()) }
++    pub fn flags(&self) -> Flags {
++        // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
++        let flags = unsafe { (*self.0.get()).cmd_flags & !((1 << bindings::REQ_OP_BITS) - 1) };
++        Flags::try_from(flags).expect("Request should have valid falgs")
 +    }
 +
      /// Get the target sector for the request.
      #[inline(always)]
      pub fn sector(&self) -> u64 {
-diff --git a/rust/kernel/block/mq/request/command.rs b/rust/kernel/block/mq/request/command.rs
+diff --git a/rust/kernel/block/mq/request/flag.rs b/rust/kernel/block/mq/request/flag.rs
 new file mode 100644
-index 0000000000000..70a8d67fa35c0
+index 0000000000000..47d25224a1ab4
 --- /dev/null
-+++ b/rust/kernel/block/mq/request/command.rs
-@@ -0,0 +1,65 @@
++++ b/rust/kernel/block/mq/request/flag.rs
+@@ -0,0 +1,62 @@
 +// SPDX-License-Identifier: GPL-2.0
++use kernel::prelude::*;
 +
-+/// Block I/O operation codes.
-+///
-+/// This is the Rust abstraction for the C [`enum req_op`].
-+///
-+/// Operations common to the bio and request structures. The kernel uses 8 bits
-+/// for encoding the operation, and the remaining 24 bits for flags.
-+///
-+/// The least significant bit of the operation number indicates the data
-+/// transfer direction:
-+///
-+/// - If the least significant bit is set, transfers are TO the device.
-+/// - If the least significant bit is not set, transfers are FROM the device.
-+///
-+/// If an operation does not transfer data, the least significant bit has no
-+/// meaning.
-+///
-+/// [`enum req_op`]: srctree/include/linux/blk_types.h
-+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+#[repr(u32)]
-+pub enum Command {
-+    /// Read sectors from the device.
-+    Read = bindings::req_op_REQ_OP_READ,
-+    /// Write sectors to the device.
-+    Write = bindings::req_op_REQ_OP_WRITE,
-+    /// Flush the volatile write cache.
-+    Flush = bindings::req_op_REQ_OP_FLUSH,
-+    /// Discard sectors.
-+    Discard = bindings::req_op_REQ_OP_DISCARD,
-+    /// Securely erase sectors.
-+    SecureErase = bindings::req_op_REQ_OP_SECURE_ERASE,
-+    /// Write data at the current zone write pointer.
-+    ZoneAppend = bindings::req_op_REQ_OP_ZONE_APPEND,
-+    /// Write zeroes. This allows to implement zeroing for devices that don't use either discard
-+    /// with a predictable zero pattern or WRITE SAME of zeroes.
-+    WriteZeroes = bindings::req_op_REQ_OP_WRITE_ZEROES,
-+    /// Open a zone.
-+    ZoneOpen = bindings::req_op_REQ_OP_ZONE_OPEN,
-+    /// Close a zone.
-+    ZoneClose = bindings::req_op_REQ_OP_ZONE_CLOSE,
-+    /// Transition a zone to full.
-+    ZoneFinish = bindings::req_op_REQ_OP_ZONE_FINISH,
-+    /// Reset a zone write pointer.
-+    ZoneReset = bindings::req_op_REQ_OP_ZONE_RESET,
-+    /// Reset all the zones present on the device.
-+    ZoneResetAll = bindings::req_op_REQ_OP_ZONE_RESET_ALL,
-+    /// Driver private request for data transfer to the driver.
-+    DriverIn = bindings::req_op_REQ_OP_DRV_IN,
-+    /// Driver private request for data transfer from the driver.
-+    DriverOut = bindings::req_op_REQ_OP_DRV_OUT,
-+}
++impl_flags! {
++    /// A set of request flags.
++    ///
++    /// This type wraps the C `REQ_*` flags and allows combining multiple flags
++    /// together. These flags modify how a block I/O request is processed.
++    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++    pub struct Flags(u32);
 +
-+impl Command {
-+    /// Creates a [`Command`] from a raw `u32` value.
++    /// Individual request flags for block I/O operations.
 +    ///
-+    /// # Safety
-+    ///
-+    /// The value must be a valid `req_op` operation code.
-+    pub unsafe fn from_raw(value: u32) -> Self {
-+        // SAFETY: The caller guarantees that the value is a valid operation
-+        // code.
-+        unsafe { core::mem::transmute(value) }
++    /// These flags correspond to the C `REQ_*` defines in `linux/blk_types.h`
++    /// and are used to modify the behavior of block I/O requests.
++    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++    pub enum Flag {
++        /// No driver retries on device errors.
++        FailfastDev = bindings::REQ_FAILFAST_DEV,
++        /// No driver retries on transport errors.
++        FailfastTransport = bindings::REQ_FAILFAST_TRANSPORT,
++        /// No driver retries on driver errors.
++        FailfastDriver = bindings::REQ_FAILFAST_DRIVER,
++        /// Request is synchronous (sync write or read).
++        Sync = bindings::REQ_SYNC,
++        /// Metadata I/O request.
++        Meta = bindings::REQ_META,
++        /// Boost priority in CFQ scheduler.
++        Priority = bindings::REQ_PRIO,
++        /// Don't merge this request with others.
++        NoMerge = bindings::REQ_NOMERGE,
++        /// Anticipate more I/O after this one.
++        Idle = bindings::REQ_IDLE,
++        /// I/O includes block integrity payload.
++        Integrity = bindings::REQ_INTEGRITY,
++        /// Forced unit access - data must be written to persistent storage
++        /// before command completion is signaled.
++        ForcedUnitAccess = bindings::REQ_FUA,
++        /// Request a cache flush before this operation.
++        Preflush = bindings::REQ_PREFLUSH,
++        /// Read ahead request, can fail anytime.
++        ReadAhead = bindings::REQ_RAHEAD,
++        /// Background I/O operation.
++        Background = bindings::REQ_BACKGROUND,
++        /// Don't wait if the request would block.
++        NoWait = bindings::REQ_NOWAIT,
++        /// Caller polls for completion using `bio_poll`.
++        Polled = bindings::REQ_POLLED,
++        /// Allocate I/O from cache if available.
++        AllocCache = bindings::REQ_ALLOC_CACHE,
++        /// Swap I/O operation.
++        Swap = bindings::REQ_SWAP,
++        /// Reserved for driver use.
++        Driver = bindings::REQ_DRV,
++        /// Reserved for file system (submitter) use.
++        FsPrivate = bindings::REQ_FS_PRIVATE,
++        /// Atomic write operation.
++        Atomic = bindings::REQ_ATOMIC,
++        /// Do not free blocks when zeroing (for write zeroes operations).
++        NoUnmap = bindings::REQ_NOUNMAP,
 +    }
 +}
 
