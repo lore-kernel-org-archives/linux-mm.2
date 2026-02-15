@@ -4,137 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B51AE63F12
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 20:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2E8E63F1D
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 22:33:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4942F6B00AC; Sun, 15 Feb 2026 15:44:56 -0500 (EST)
+	id 9AFA26B0005; Sun, 15 Feb 2026 17:33:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464AB6B00AD; Sun, 15 Feb 2026 15:44:56 -0500 (EST)
+	id 95B646B0088; Sun, 15 Feb 2026 17:33:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35DFA6B00AE; Sun, 15 Feb 2026 15:44:56 -0500 (EST)
+	id 80A106B0089; Sun, 15 Feb 2026 17:33:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D5F96B00AC
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 15:44:53 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D46D1B4DEE
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:43:54 +0000 (UTC)
-X-FDA: 84447867588.29.8F2E652
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 88FD91C000B
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:43:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gaAcgtDO;
-	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E2946B0005
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 17:33:34 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5419C21F6
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 22:33:23 +0000 (UTC)
+X-FDA: 84448143486.05.257372D
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E6B5C4000A
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 22:33:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HuRXyEMh;
+	spf=pass (imf04.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771188232;
+	s=arc-20220608; t=1771194802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-	b=p2a0/Ww/tTGMoeVKPoK4ljOmdN71msv1R1xwdWSAF/oGpbfXT/cKjfWm0BgEMl8CmOX9Sj
-	/IWC0VOG0mq3z6rtv/QF5NGPzqma2iBFAjxyIsZRQKYZuUQNsdO8sQSpNfHm/rl3ZjIOK3
-	igj4cQttiadSLVXp+rCANaUnU1kqllY=
+	bh=JZ7+qUdkTyM+y7B0PTABlfJWNoucM7Ep8elG9lwBdIM=;
+	b=QbBFkt+trFanaxW4Dz+TyRLJjn+/RncXBAcy52CyAkE6/90QiAKhBPujIWVftn3y0OgGaL
+	ECA3fwGIvMYidsYhVDX8OX0nTz4llA9pl3Kxm38K/uFvfTT1faXmmsuPRGb7Ic4Q/fcAtf
+	uYajXhpccBTfssUqHuW29S33WDVZunQ=
 ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gaAcgtDO;
-	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771188232; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HuRXyEMh;
+	spf=pass (imf04.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771194802; a=rsa-sha256;
 	cv=pass;
-	b=vTit2oB5saKyB8Bi8OZXV/hJv4+MBvZsha+lJuZFFuoxUsojHm8OdUBRQIis43QsMlaxS7
-	3s9sdUL7iIFW+dD+Oeeo+W/hzK+na+SCrGNLRI9aW4E2+tLM0AO4ZT5cIDG4/lXlsj4+EX
-	AfzXxImsQsjhFg55aVeG3G5tqdbtctg=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8cb5138df1aso120162885a.3
-        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 12:43:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771188232; cv=none;
+	b=f0ob+COO6R0FGYyULGwU3WaGKhjMlJd62VDHqPRB3zwl6hrdrxua76o9xnBPvbRA82qxdq
+	eguR4sAh4PI6eXG9J8x87p8sL5ceE87cM85fTcx/ImPKoTZjyswnElPYGktJIeyQAiIGLQ
+	EjHnu5T+SFZU3xSoreVjO63PUHZV8Ro=
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b866f98574so177044eec.0
+        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 14:33:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771194801; cv=none;
         d=google.com; s=arc-20240605;
-        b=NcuJ5Y4QD0zsfgU1DpFT2GPNluWjz1wuaqAbZJUZ/6Av4fMuTDqWm1CS2KYZtCc/k6
-         1IN1sczG2zQB9aHWKBANGhAhlV2zx2ftUMl6BDABq4utmOKWU4mjSY47wsacBes3xHH/
-         jHmhjA4plGEfkJw317mC5W38hLtVKiA89mOGFJM4EPg/hGKR65YjmUw68NdlkujjeG2N
-         K7sb2ZHRVzv7sPaSvgotm9wNvR8U0vJwCvTh9juytC31N5KlDBR1KA5/MZiVqYTcsjGu
-         +7eVZDcxRDhlv3oKvtMprL1CixFN11GEIlycr5KvsrZgV2yoApUSj66cqi+y+WVADLCD
-         tIag==
+        b=at3XW4FYh4DczUbi9S5f29wVoscIfSi5eeLqbRFZ2bJxRPnMfHqcOY6wD/JZgy4tV8
+         YAOWQZ6rYr7pprr47LNdoBuvWktk0U2LQGy4BujGj5UapMNM0NtW2w4T2W4+7uW0/EQ2
+         260Vmopw9L2A6gKEJgV9jEIoKlxpuyglBmXJaPENcQniCL1Igqmw12J8qq4k1kMxZzoe
+         ZOJorAZim8By8NkHg7jE6Se4oVlLOy9Bpy0NVcAm1IZS1Jd9p34YTM7EL/3Z9o06LTh4
+         NUU9wDETIxVKxTvsnIfEjdCi9DyGUBZHPF7DgTREBKV4xfrbNrkKW6S0zcdz1nR6h6fL
+         Ey1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-        fh=kRqncPBM301Bs9kf43Bf26ZLy0CpcKhlf1Z/seRyxLo=;
-        b=UeyuTiTUDQ7ygkPvtkCgCfsE5Yd5Y4LBXYgjScViTeuAFRKCWBOBbLVRvcOtIyLjQR
-         BW6B4aeXvbVSzwRryuSpPPG1RVbfxCgskNy3XEqqs2Oa7HlklB5L/LH8Tj2A+fGVEJuy
-         atzZZLgTK7qdAQME+ki4qHJXO7LD9f7HtATZZyFLYlYu49UlfK1bf2NCT0giaZ8uzxGi
-         edmDKcAbF0XzyZNvEoYmE5Bv8bVphWcZNV2w6526khliFhCzueh9VKYszHcn2y4b/DC6
-         e4X6nnzyM+XtpkzC0VPT/cv6w5qXOro9/3QCqla0wc12kHzWpbmMCbvvhoOLmkQAsMy5
-         V0qw==;
+        bh=JZ7+qUdkTyM+y7B0PTABlfJWNoucM7Ep8elG9lwBdIM=;
+        fh=Wdea8Y0K4Bufhrx2+yLq8hL5B6vNLvMLbWBRusjETdo=;
+        b=CH+NyEppTQDQPlRl+goy9AGw4u3x1ptpmORyLoj9yKyOU9l6HFHUyfgBJVANBIIoeN
+         alUeCs8rKZViX8aG9RVbBBjRU6wN1WOBsjjkZsXCcUX2L2vfnNjNvJul9Llfd5Br3ybE
+         42cx0xqhagyXehEEaqEwBQlLhlZSouLmAj2ihy4pTQ6UpF1fd89QgsKI9Ed9LXX2kysa
+         W4g6VLNnqB1DtbrFogBk0K2EMtEY+fkVMTn9yzO4g5iXTkMh9Sl8dKU4Wy7fcGBU1ZUb
+         /rDxcC/g2QqCV9YTOGR/HeY8I9Bc8EsX9ByXCUILi8OjhHOfAf5/xZ0W0inmFobocPtf
+         LnLA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771188232; x=1771793032; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771194801; x=1771799601; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-        b=gaAcgtDOuKQyy0CGepSPqVfek90lxAwbgfSvQY+0FF9BfsnjbOW9j9/rD79lNupA+m
-         3pyKBCiQTF7h/A6dwyzePlBY6OwldsyXnHQU1MuSsJGNzMolNV70fHti0Uckx4X/+ZZW
-         JxA3LiHPbE/Lc+0qbgsRGXvaT/sFvAQJry7y+a04zaws3vUX3CPlQwbLB0SRVTDOH8Tx
-         jd4fu2+VI0QL4a3+BWiW0BSnco9RpZl5/yCKSP9fiawynr44rvqBB245tXfVmQux7EZj
-         /AB78tAITOZZFvs8jk8lIaYyNrrQrEsIEt9WKXNPhYDOUkQNH+1oHK0AZzc0vbhvoTP2
-         VS6g==
+        bh=JZ7+qUdkTyM+y7B0PTABlfJWNoucM7Ep8elG9lwBdIM=;
+        b=HuRXyEMhAfb0uBZB1BjIQtAEuPj+g5eHvgti9Yc/vZVLrBssmX2pzQVbQI4YZULvQX
+         PSnEet5OjW5EzCdveZaYzcXMRhBEa3uk3kDISFFJSrt+gTQQA8S1u/HyZ4NzhAW2xF5f
+         wj7whp98E+QEQnwphmoOK4ZRVgQXlDuapgKNzn9n+7LR69vY9egstnZCNLKz6lxgTCgT
+         5b71qw/KZvnVxoLZevQVHCQ1xrW6EK953/TEXmOH+iRQ+/BWrLYCGk9lEgVvD1vVfaPE
+         Tqhfs52V0QEtzMw2eZtVKr5+uHeYAylubxWTmUXKuVIAjEp+Xjgl1Ye8OdohdVUI+x4s
+         ZsLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771188232; x=1771793032;
+        d=1e100.net; s=20230601; t=1771194801; x=1771799601;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-        b=N6jp48lWU7DnIORhkLNjzsVITq0V1X5dG8ec8IdA6j8rNMbk8AlGxeXeIo0CB1D8SU
-         Iwh8qctZp2UI4q2f5AtTUPp4D9SwczIqrOEW6vqJ4kXzzVmYo0q+rhOI73wwhHqff3TX
-         M6qpnBH5EFw3io6NzmRyQZOzcySMkahaWSJ/XGTo1sH1HxqazGkTXb/VdOQY242Vkiz8
-         3AOxSVjc69RCCtJtlHML4B16jZMRWWwolGd2o6PLz6qpOgyTx3w76Rr/wLFKH8H87tjN
-         qEE7Q/6fzDSGZE5HU0esefnCeXz3mPkpEvfNhHhICkzqfBpjTpGQ0o1Zu8TaSGBLoBnL
-         9GHQ==
-X-Gm-Message-State: AOJu0YwFKCcWiWvRV/KEQjjrBxZjoyMCNAxhxjHkgcM+tCr/i5WP4wLY
-	ZF7rkHQL3qBxaSCSd9jXiseyQxrbvvJafptY2h303KROtgd1n59vUbqjbIWadmKHF5+YiJZrmw4
-	BNzwd2JaBi2/ydDH6+yzEcAS5KtNeZ31eh1E6
-X-Gm-Gg: AZuq6aLECoxiyOEaMCHJuhxTxQu2vOLid0uigcVYAJuvM7K+Aeu9i3tCKCayDhyayha
-	dXA4fZ6whXppCYT+Mz785lB7kdn/31qrKO91NDGiFi5zYprDdj3VgbbJqAy/n/VeI9ZCfXxR9NH
-	B4o7moR+2r9TaIlN3WgmRj4PWQ2/XR+718kFnPR8uvOfAEvXMO6MVtzBWqR825ormhjdXtchY9n
-	64ChbkYyjq6kUUpCC6liZh4ZEhOt1BLHLNoAADmZRlwVefibpKgFrO/Hf5fk8KjVOjLHri1E1DV
-	iFIeeA==
-X-Received: by 2002:a05:622a:58c:b0:501:4ff5:ae3 with SMTP id
- d75a77b69052e-506b3ffff08mr84696281cf.42.1771188231378; Sun, 15 Feb 2026
- 12:43:51 -0800 (PST)
+        bh=JZ7+qUdkTyM+y7B0PTABlfJWNoucM7Ep8elG9lwBdIM=;
+        b=LDqFJOMNgN9lzLp3XSA6QQDILV+TiJqEI8gkeyAXEtpeaWXaJaOPmB0d2FeEzfDuY+
+         BFrx60hQYo6cjccXaAekp+OkQ+q/iFXByXIM3BqLLwuMbpqV0N6acQbtKRxYnBvMeaU/
+         jQ/QO+ZxMUSd+vUJtwj9ns26OaJttOKTqzq5enHZ+PxTon3peOScpTeQb31FWIPZhnSi
+         prtuux4Tt+7roLz39cD42HLLyvFthoK3ETCwdlORAPufnOojbYt8xT9ntRIZdOoZKGD9
+         PCxkR1M64Jyscs4ID8bDUhp9L3cDLDStpQhZHL99Cdlwp+jBMLRVLhaS8Cup71/bZ94f
+         6JwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/l8rY99RYsHc2ixvs+TakoKcV7DGUBW9JcDYZaigxO0PqfYoOXjDIJWaiNBoM+As/wTCj0xgbGA==@kvack.org
+X-Gm-Message-State: AOJu0YyIAJI/mH9ilz49Gwq2sD68WXJcQCJ9V3+4lnAQhygAEchitrKu
+	xhlFAlZErXHqo77LyH1qxhc5+YN8351OMC6Le/LaF/gXDrK52tW1JY8dZpH6hnZSAjk8vEMKIWP
+	gGb/vVhJurQ2LP2DjDTIJilZumEcuVGg=
+X-Gm-Gg: AZuq6aLcaE2cGxLDkW2LvgQHu2zO9JRGqYs6WHAxlrAKXBjFHtjJc4sLv7G5/y3+OmK
+	1LD68jMlL2xOtft3/f3ewHoQEa+WLRB+bQC1Vac8MTpe/eOEKrNtCBM0x/Ut/Gv+sa9ELmbSxQ2
+	SoJm8wizG+y9vM0hhol08oN9qWecpFl9lxW3/x6gE6eBNrq1KcgLSuGVjsmeqlpKX5Z+dFJ1Lqc
+	atFtHOwbFCr04YwsisMIKya6vV6qWkvQiWVMq93kekvN5HRYsaKrDDt8xxB8Qy+ncCE5n2p/Zc/
+	Tu0jn7WI3WLXOAvZQThNePHX9sMA561EXW68Zwsw4ea0i3GqB8v7J2dBkpbY3dHMw9dCYes7n8E
+	wLRezX+z+a7ubdGNmDJXMeMka
+X-Received: by 2002:a05:7300:ef82:b0:2ba:7013:2b94 with SMTP id
+ 5a478bee46e88-2baba0d9f2amr2278586eec.4.1771194800540; Sun, 15 Feb 2026
+ 14:33:20 -0800 (PST)
 MIME-Version: 1.0
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com> <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
-In-Reply-To: <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 16 Feb 2026 04:43:40 +0800
-X-Gm-Features: AaiRm52fgDtfNvU3kxKbZLjl0RB593izYUrm1DGrHb9hftHazRJhLykKi9hoAlw
-Message-ID: <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and writeout
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, 
-	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>, 
-	stable@vger.kernel.org
+References: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org> <20260215-page-additions-v1-2-4827790a9bc4@kernel.org>
+In-Reply-To: <20260215-page-additions-v1-2-4827790a9bc4@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Feb 2026 23:33:08 +0100
+X-Gm-Features: AaiRm52C4W01igr5c3XSj8GHXnZngfEE6Hme2FtEbEKQTchO0EV_WW3H4OO5KYo
+Message-ID: <CANiq72kovxkiF1Kj66yVyQYKx1OijjtTGB6UN5M35th57UFFeQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: page: add method to copy data between safe pages
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: e166onbexnqkxziu4hb7uuk6yg3py3f6
-X-Rspamd-Queue-Id: 88FD91C000B
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 1ymn9f8w9dh1x6c6sorx58x4kdkhobth
 X-Rspam-User: 
-X-HE-Tag: 1771188232-345635
-X-HE-Meta: U2FsdGVkX18O3Od4IcV75qpGaVUh2oK6ATFLXUz3YrlbNRnI2iUnTx+GM1tz/Vi7ybi5lVbN8LT9lfNb25e5Iin6cUklA5P9OycmVGq4M7DJl9bW8eEKZ54N2ZY23AIDon+GYh3lgUd9AdsztkpkKqA9UXfMJH0/pPZaYX8M3E7imwhnwAJ17DyinKh40O1oeWgy7o2eNkdzvn0bW/eOusuOCA3bpZy4elhAYR9YmkHhH8zpip4TPGzZnx25gT2vQc1ZGAfANZL93UpMHSs1A16qQIim7Amh3BmWqaFr0zjzfdL7krfnSMVRmdiNPKGnz57ZW8JkiEeCcaXNVqLMo4vfJB5qGFU94aO4J8WeiEGkfKhLuJJDdZ8IqXlG64BC9nwuBRht1VXCmBpt5kaVisJCEvFHJ0ezHjE1sNr+EjF/vOkTNjXNcbADmkJi2Mn2kHTkTIJmAbJc3t0Nj+jw5r+Pa/smIbV/3Jdx0BXy51FC9mZqvzm9YAODOpIa1M7cfo3MP8zT2ejICkTAKSSBvcaMO4pKcJ7kZsED6dx6e9gM7ecz65YWITco4BewPjc6IqaAIg/g8wpWMqsF3j4mIAKXdxv5mcl43L6Ypw0G8ZrLfyxI0N5bAbFteLinw7oupt+jYiD1YUzsJ/8dXFcqbPN6SO4A6OSW3RQ6adef6DEje4uA7rbRe3nHKwFCqLBy53gNfrm2gymI6ELIAWq+Ik5cg8Q0pqJXwtLcc0uudN/mGhcwyMbM0Qe/hBDlzVIDX4WUxeVMUmLak6za/2bLcxWPYG6fV4z/AiTUPqFx4F9fZpIEF1zqtH8f9Q69pa1b6DwBoeh/8lMF42MkycPhNhSe9ixPe6YxgTHpqmP+/LsqX104nz+rOWeaOEoM5nHRfuSo2XYAQMRNWawy3t9isDoQKiZN5FDnYZgLqrl13FCLYjpMEHfcWvJZhJB887zXDeJleaSUsnJJU5HenkU
- 90kkKv+y
- HlO9DPQRf5xPqdLa3mx22cb6ToHH/V4M0SoIl/4zd0isSbpcrC3vjNyzFdo2e9AuHkVXlbAGKD2OZR8YfqftO6aoX11BFYwTr08Hc5Ot0i52Bx2J4/xN6LgKaJ/fxo1DuVLgxe2/VCJurPoNplvjaKQJJ0AiAlRKWBXrC46fRI1CiM/6RBBORdH/o+VngKI8dNQE91yURnvtq27KeTsXZkhBGK7yhipoF9bX2iNs9uaMKeaTbSUEFZqA9Yrqe19pbAjZmxHwI4CEfXcwKa7J85j+3g8xu7QrlifFQ15qNFyLoE8vbF2gUARuAWq6f4Powil+aP2gSyrccCspo0XUQsAIh7eQOLvCz3J1vaDRKdgzWF9ewiQPO5YYsUhZW1xtfw7hU3o7h5XgHs8LGV92rfURIfeXqgohpfY1QCCMXn5su5MOhjzhfr40DWDfCjrKOxA7aNdyudSRUgc8J7Dq1VmQuSh1WpZCNkdCnPfMTipwumR4sWL/v7BPuvFJ0olG3wDi3
+X-Rspamd-Queue-Id: E6B5C4000A
+X-HE-Tag: 1771194801-827622
+X-HE-Meta: U2FsdGVkX18GzYWfVqgFxNrxBQ5JpXHh3hgnYOACKJZ0MnAE5Rz0nvAP5arzWF+jxTsCVmM1UQjw6IUrSsh8YR8nMl82Gu04utqAjp96TY0FaRu9nHHNGYehAN1BDjYxsfd0oDJLZxp3aliVQM+pvs9ABct9cuSf5sXcygaXjPlTNugUL09Zlc5826ymH97NPS0tbfHTNMjc8AystalG25+iLg0q4pbn4aDkff1qwYf2XCt0YqraCv2SLNSRRU1KcmdkqVBQ/3jZKiYFt1O4WouBx8SKBv7H1o+039OGuCxc7pkWjHLheqX8cVXMW++2pH+KZjvqbQOlM4Fzvnx2PGEKgD5mH3e0h8BdUdYWqe8PtaDJVBmniBPm3IaoKdD25ipxhWh8rbueA6dWDCeknQ7Yqd3lTqWNaa+G/6ODfl8NKh+UKGKi2JZ6SXtFLziLtf0kZ9QLs2gOaAZ88YlwvP4H1Y6TD01Gunty4maM4QPtWML/gge8JgHXwodHuMdKv8M/63HFqCQ1b18wCskVKELQmqdpMwfzsMgzFghpLdv5LHFB0ez3N+NrM9JVpad9bS/n8Mto/VvKWckkV2KhrY1SRMmMpADo8LNQVbNAvZSPwPxOjrc+I4gnkKOkozcDj5Dw0hRTbcbm33PtscA3V1piZy4UtkHW+UL6A9HtKSoXeIyISds+sO86VsiESakz8NDAt9pNyW8NPeQX9apTS/KIWRnRdcAJDWMh3VdSSC5CGnYTwafj/7QxnnF5YUEpIk7o5jbGhNh9DQsMKML+J86TCJIe6Uv/TJN9PvmzG2XeM4pFozIFST7y/y6xIuWCOOaJe9bZPyqH4BYzQYPXW8UOg6ou8+zA1EH4BoItZYY45S0O/8+gi8xrQC9A92yWy4rWAHAb/gijkRFuVraE/LkXP+r2t/KsQlqGIIzISGuUVH6NICBiXEKcuagqIUPKP/mUo8Osj44tEu9oSOH
+ Dk2RRMoj
+ 5+zeFu8mSlHwzDX1XCK/SW/W0yD5tESGK/9ddm6YKGmWixLNAyOz/k3NIl6ZWf9IM9/NjXVZK3/IpfuYfCE6PMA2Sc3EzvSFPOe6akPfAgSX376oaUi559vNhzs+V6FvYpAvLRXOyGIX2PX3MYtKC2bNBteq9HU6S0YJ0cvCiMU5iou56ZFT0/j517GfttBWoIaSBPF4y2uvK4SxtLjb3yY1dkNplMbJvElsiyAT938ktEROfm73ejXAxOl/WryM26FthTRSyVkLyTrDTtW+NU1ChF61Puv9C2jHIn443z/farLZ4+A1HJpQ0n9zuQxpOG0BeJZD76eNANmj6QALXW9cH3hbshTDKZtrkVciAC1fTl1/FQXI4YjNghb7jCAawOu7eNO1w4NrC17asQnJsRVJYLFiL1LmUkp1TtstaEDK+Ig2gVY4e9cJ59VKSGT83B5aNYsm03Xrx7lBpQFaY8L0DYGN6ARYBbmdzIYka9PmejOaBOKYWCL4rH4zTzgsXhv/oySw1rzei3U3xnJ1Zp2tMTxBVLsRwpFA+1nQFOeL26ZVn6VzcyPyszJw24ctqXURDySpy1ewRgl01qCxal4oc0M78wSwa7Zvt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,92 +145,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 3:00=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
+On Sun, Feb 15, 2026 at 9:04=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> From: Kairui Song <kasong@tencent.com>
->
-> Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-> hibernation has been using the swap slot slow allocation path for
-> simplification, which turns out might cause regression for some
-> devices because the allocator now rotates clusters too often, leading to
-> slower allocation and more random distribution of data.
->
-> Fast allocation is not complex, so implement hibernation support as
-> well.
->
-> Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-> performance is several times better [1]:
-> 6.19:               324 seconds
-> After this series:  35 seconds
->
-> Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
-> Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
-> Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bb=
-f49c22e@linux-foundation.org/
-> Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c1=
-8f@gmx.de/ [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/swapfile.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index c6863ff7152c..32e0e7545ab8 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int=
- nr)
->  /* Allocate a slot for hibernation */
->  swp_entry_t swap_alloc_hibernation_slot(int type)
->  {
-> -       struct swap_info_struct *si =3D swap_type_to_info(type);
-> -       unsigned long offset;
-> +       struct swap_info_struct *pcp_si, *si =3D swap_type_to_info(type);
-> +       unsigned long pcp_offset, offset =3D SWAP_ENTRY_INVALID;
-> +       struct swap_cluster_info *ci;
->         swp_entry_t entry =3D {0};
->
->         if (!si)
-> @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
->         if (get_swap_device_info(si)) {
->                 if (si->flags & SWP_WRITEOK) {
->                         /*
-> -                        * Grab the local lock to be compliant
-> -                        * with swap table allocation.
-> +                        * Try the local cluster first if it matches the =
-device. If
-> +                        * not, try grab a new cluster and override local=
- cluster.
->                          */
->                         local_lock(&percpu_swap_cluster.lock);
-> -                       offset =3D cluster_alloc_swap_entry(si, NULL);
-> +                       pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0=
-]);
-> +                       pcp_offset =3D this_cpu_read(percpu_swap_cluster.=
-offset[0]);
-> +                       if (pcp_si =3D=3D si && pcp_offset) {
-> +                               ci =3D swap_cluster_lock(si, pcp_offset);
-> +                               if (cluster_is_usable(ci, 0))
-> +                                       offset =3D alloc_swap_scan_cluste=
-r(si, ci, NULL, pcp_offset);
-> +                               else
-> +                                       swap_cluster_unlock(ci);
-> +                       }
-> +                       if (!offset)
+> +    /// Copies data from this page to another page at the specified offs=
+et.
+> +    ///
+> +    /// # Arguments
+> +    ///
+> +    /// - `dst` - The destination page to copy data to.
+> +    /// - `offset` - The byte offset within both pages where copying sta=
+rts.
+> +    /// - `len` - The number of bytes to copy.
 
-I assume you mean SWAP_ENTRY_INVALID? Would that be more readable?
+We generally try to avoid this kind of argument-by-argument docs
+unless they are really needed.
 
-> +                               offset =3D cluster_alloc_swap_entry(si, N=
-ULL);
->                         local_unlock(&percpu_swap_cluster.lock);
->                         if (offset)
->                                 entry =3D swp_entry(si->type, offset);
->
-> --
-> 2.52.0
+For instance, would this suffice?
 
-Thanks
-Barry
+  /// Copies `len` bytes from this page to another one at the
+specified byte offset.
+  ///
+  /// Copying starts within both pages at the same offset.
+
+> +    /// ```
+> +    /// # use kernel::page::SafePage;
+> +    /// # use kernel::alloc::flags::GFP_KERNEL;
+> +    /// let mut src_page =3D SafePage::alloc_page(GFP_KERNEL)?;
+> +    /// let mut dst_page =3D SafePage::alloc_page(GFP_KERNEL)?;
+> +    /// src_page.copy_to_page(dst_page.get_pin_mut(), 0, 1024)?;
+> +    /// # Ok::<(), kernel::error::Error>(())
+> +    /// ```
+
+Could we show some error cases?
+
+In addition, why could the test fail here? i.e. if you use `?` in the
+"main line", then it means this could fail for reasons outside the
+test. If it cannot, please assert it instead.
+
+Also, couldn't you assert that some bytes were copied as expected?
+Could you show an error case with e.g. an out of bounds case?
+
+> +            // - By type invariant and existence of shared reference, th=
+ere are no other writes to
+> +            //   `src` during this call.
+
+If you use the type invariant here that you promise not to break
+above, isn't it circular logic? Why someone couldn't have another
+`&self` and call this?
+
+Cheers,
+Miguel
 
