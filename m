@@ -4,107 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EDE6E63F0B
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 19:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 590F5E63F0B
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 19:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44B296B009E; Sun, 15 Feb 2026 14:10:56 -0500 (EST)
+	id 08A746B0098; Sun, 15 Feb 2026 14:32:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403866B009F; Sun, 15 Feb 2026 14:10:56 -0500 (EST)
+	id 038436B009B; Sun, 15 Feb 2026 14:32:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8A66B00A0; Sun, 15 Feb 2026 14:10:56 -0500 (EST)
+	id E7A666B009D; Sun, 15 Feb 2026 14:32:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 019176B009E
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 14:10:55 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2427D140329
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:00:49 +0000 (UTC)
-X-FDA: 84447607818.23.6CBCA48
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3462C1A0015
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:00:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yy5R6kes;
-	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CB36B6B0098
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 14:32:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6242B1B46B8
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 17:02:41 +0000 (UTC)
+X-FDA: 84447310122.04.214E995
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 923EF18000C
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 17:02:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="AHApYU/e";
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771182047;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771174959;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xY7G8R7+P+8unP3fUZq69jb8WWTsjZw+fymYMyJMCPA=;
-	b=XVXPlb3lqiNAEIfks8nGeFpDqafK/TwUPLA+HlldUJ8/C0xQVVFOqSTfvolx5H10DHdz6l
-	w/jEX7N+t6kSjQnQCswuK/C6fJ5KCIvIdlJQ3tplS3Y44PV+vOaygyipfc3AS6Bqgo3dBs
-	UXTC4y327bWDH3CD+O1DryAdLTDKHZ4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yy5R6kes;
-	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771182047; a=rsa-sha256;
+	bh=Vra/CfQE8iAuhhBGkxVjBmXdn5qs8b+8qH/FS8WdgG0=;
+	b=qjmfNlFKfApg1qotHgAO83w+sUFJw6READhPE4DKxRbr6LzkYx1NqaohTZjOk+7DA476u9
+	JuqvdY6e6N/Szew3jUvUnhlxQSHBrnsgXZ5ir5h6Io7yq68t+omeCR537An0CRt0KCLEXj
+	st/doxFWiH2FO2Im3mYWtye/8hB/rbQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771174959; a=rsa-sha256;
 	cv=none;
-	b=Rx36JbqJX/WEVcWejzR8aCig7GTr75qeZe/TNGlmNywBMuAbuJ4v8Ua6HALadWhMLeA6bH
-	DFwD1cmBEVTTAMvQokDZujNDFgcgYiUy5yfOzOGMKNuwnPABHG2n1FUaTOZEx9dB7AE27Z
-	lK9pbAGdzEwUVH3jbZvNdUqrhI9yGiM=
+	b=2bfKvpl/EFK6Q8PLrOFN4BeevajjtJlpYhbjevzIs6iaIbcrSvwWY5q5tmX+QbqR/Ydoyc
+	rMGKTotd3y8Ywm7SeONynUvGAo2OEOoqjuOQ89uDrRX+imR1A/HNmGxBuH0aUiA/qA7TLB
+	Z05s0IJnuwuj1P9pM1U1u8rt9a/A3S4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="AHApYU/e";
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 786C960140;
-	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1CC65C2BC9E;
-	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771182046;
-	bh=wTK7vBuck4Wc7Ro9R5Mj7NtxqG8AwnxBtxe5boxsbpg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Yy5R6kesqXoXrKVqGCGp5zq3jrg/VndrjGUBKAr8JT4PCjKGWdbKMERn2zxgL2idJ
-	 yP1B81Yw5ciDuiv+2g/So47K/CKdDRWqf0ZGGFmXUEHXcrf+OzSb2gvAAt4TQeC4NP
-	 I/WbY9lXtMfGrnEYlVhcYoqECKhBxBh3IE6SDkk+BXvl2iCXIb4FawMc8kalGsddXD
-	 ClY3vsvesSt5C2yOpuhsxXlr8D55ngbl0X95ENihFBBDSHoBD9wJAqPE+W5sU0g3AE
-	 5l5LF3zTmR75OezDvm6ghrqACFv6PbduaalVm1nY+oGuOTVjmb2yQiq2AqxoBeUDFv
-	 RbnpOGQAryVqw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CCC9E63F0D;
-	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 16 Feb 2026 03:00:26 +0800
-Subject: [PATCH v3 2/3] mm, swap: reduce indention for hibernate allocation
- helper
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	by sea.source.kernel.org (Postfix) with ESMTP id C358843A31;
+	Sun, 15 Feb 2026 17:02:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44765C4CEF7;
+	Sun, 15 Feb 2026 17:02:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771174957;
+	bh=OvAnKTaL14/r9aEBIEjJXyVSCbVNytTacNr8GtNUKxw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AHApYU/er0rxf4sTDinVRbaaVZC62BCDB9x/6yklj7sMiJwBFDl6F8Q2PeP0dIb6x
+	 wLAVfn+w6rAt7Xv9AtPkyavBWgoV6M1npK9nV/28uKwxaNOHZO1gg/wo82aR39kwVw
+	 NYYkxd+TwicNKrxAUuBH53+hyFP4xLhklJo6ugIQ=
+Date: Sun, 15 Feb 2026 09:02:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kasong@tencent.com
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
+ linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <bhe@redhat.com>, Barry Song <baohua@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>,
+ linux-kernel@vger.kernel.org, "open list:SUSPEND TO RAM"
+ <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] mm, swap: speed up hibernation allocation and
+ writeout
+Message-Id: <20260215090236.b546ef526b9bb6315f7884b8@linux-foundation.org>
+In-Reply-To: <20260215-hibernate-perf-v2-1-cf28c75b04b7@tencent.com>
+References: <20260215-hibernate-perf-v2-0-cf28c75b04b7@tencent.com>
+	<20260215-hibernate-perf-v2-1-cf28c75b04b7@tencent.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-hibernate-perf-v3-2-74e025091145@tencent.com>
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
-In-Reply-To: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
- Carsten Grohmann <mail@carstengrohmann.de>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
- "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
- Carsten Grohmann <carstengrohmann@gmx.de>, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771182044; l=2326;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=Er50BTm1CADsw8Sf6/HAwSuhm/4o2yVx7I3U3KWBPIc=;
- b=6R485nSU2o2bmlUPNO4K/iY50QRPl1rzZbPFloZdqJyaeo0dg917Z8y+N6oHRTJOmKCc6S34d
- Ve2gyLpXehHAoSL7/gdAVeYQ3DnjFmOPgzF2YvNccJWX9JFH6/o6w4w
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Stat-Signature: 4ye8yi66wbaasbkfz4s8eis839qbg4zj
-X-Rspamd-Queue-Id: 3462C1A0015
+X-Rspamd-Queue-Id: 923EF18000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771182047-616122
-X-HE-Meta: U2FsdGVkX1/RNPQHwYoCpM2XCxDxJajQBIB4ePs4Tnkt1crP7i48mCcxmH2638nfkEaaHrxKZO+9OGIyS7FJvJWjYGCOJR00emINtNcomeYKIb1mfEzCjIKlmwS32MhaXWgnjgVSe63FK0LEDm1XntWv6k2g6GX3ungde2Djj+ryHnqia1fJwbDf2HBMefqLRo7SP39ePkExIJFDFa8QpawwiA7JWFVbVWEolUF22wJLdBDUgQ8tRP3Dts8LCPeFyCV6xkEdjZazu87mxGtlx4NXs7mkwEW/lSeagqReRdd9d54xvZan/est9lnoQP3wmykkAMwBIkMUZ1xDbDHRlnfoTtd7Auy6GSTux31CWbGUtx4TraTpt4cGD7qu4ie9q2WMHaWuEUb5E6/hU2jz9ViOdbJfl5WcL4LJRr7NBlOaLcM5YgKNQ3WS+ztdXW9wQyXNNF5gekwJ3aJ03XSNlgKhsjuutjut0A32rSzmCTTOOR7GAyvIHZoATYVSnBepiEMVirtcRoyn44yWLjnG8g6BuGlWrbqaTuM00YWbGe9/0IPvd9pqTpubqz+0d6fY7GhJQ6FGhlHaLE5bI60ttWMqLBkHNd3v3bIMKGD539/c8GrgRVOfHUkKMalXG2BNv5aUceCdc8ItOCogvjpErUshI2V76H+plu2POaq06JP7PYDCr73QNbssVN9I/5lPeGUTr5ZX+TJ7wbfj584FbZWguwR5GyE7WjoH1aQopaS52jt8tQAQhSCuNGcUrdDCGW/CmX51GoiAkncQgqhDEzkquk0uwwz/s65fmsPqhePtPYNn0FuPuE//SZYQK4Qsr0jVf7oAA+EsffEoWR0gXjLkkuIICcCU/Gg0tq/Avi2msn3jtzjmgBmUuubYHLRrBVZoFBC4gEU6r1tjBbPUmn1b93zI8WbEscm6HfT2SiMU984qzMZdKZaQH+frJVa163b5hW2OQakiJnCbSvS
- fIAD4His
- PaNLi9VUzpF28HsR583XaReCcqlVgVvN9f8LRPpLQ0y+qfky4gyBEg4XuXCJGQXFby9GoxgYEVi8kB2HPbBuAcgpchHlg2ArvCNRlyp/y1jVHaNjm9hzuLJrGpEd3H0HmCYaNUDtPLTf6asGUkbkkHe5oIUPlxWOzlf7uEZHSObLJnkPaspGVjc42RR5vff2htVGTtmV+Es2fKMIeUhfaAmMXwkVTfDdfjfGILHpI7WaRqzSP/cUhP5N4bJ7/ZlVPvbZHHble47oQQn/DIVpY0X4PJTDKecUJN4KPbxiatX+yxtT6zWrs0QbC/J+2waXXlSyiZg1DH6Oco9Ut30j0VzaswzDr28R1cJ8olIIsnV8QpHvccIMluQqKkQ==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: hrhiomqz9m5e8zwp5wiu49es3ztbbwzk
+X-HE-Tag: 1771174959-869610
+X-HE-Meta: U2FsdGVkX18x0nlBuznJJ7VoHeyDNQr8ZyoopQoiKqcjs8vO9UvvjeGLmUvXKLm1IngW2b7RbH/beoJfm7arPB4bPEFRptz6+lZpBAo6FSGqD+Vja0v9BkVuNbl9f4Qhu66g76Hv4OPe7WPoKdPY67+ooaYZiZmMwBwuX/AXYCH7aNuv2inpGrtO2BVl9GkNrn5DUNVXa5QtN0ZTAwVrGwDSZ4/0PVB9HEsJzsqlaGQkzeeSQivRdDWcz4UzmyLyyTGPX8GYAhNolIvZAgunUWnjeM+ukL1UOFAwOp5JI/7ZkEIv1beYYSrQboXmbwOeoGkcz90TwB9cGt+wNckOEoUpVC+i1cKZzFaiOsE8e2wOVYGfKmhXYq5gVlvjGM5R8FRTTaGzLy8RP50Z2h2ISGKPd2Y8wSY9dagZiaUXODD1dbQ2KBjzQbMLHZ3ketJ2SsuUkQtbO0XdrhRZnej55bdOcpxHO5A9VuakN2q75YtTyrsrAiDsRE7qYdUcUjV96Q33m6mOXAEKlSVHwy27K2cKDuZ8P4zUp7itABJ6IJv40PObXhHZKlTcmNueRJsUZjREC9GaVaUpzAMnJNB0cRPPLdym2GiWMvG4m1KlN0h/nY2P/BCbcSVVk24Ff6nH/ktCHXU0pOz0wpxp08ZZX+uDsERgRHjBKJH/egxcpuw8iJxUr5XusNo5LazFfWfQqhRMRYI1Smf2L6WAjArFdjp+5up1TOfI8O8PRZxjUbDfmNU508vwdXi3wdXb9dUaijFD8DcZAhcxaTnO+RTnZTSAUC1LE+cr3bLO+0QQ+gB/GJU5qbuv9MUnqojYz4OdlkBotFS1DJ7HLLDTBFJdeOqvNQCLEg5QjO+SDNDV497SYAvyJUgkKnVeBaB8oxkqoO2d1ZsiTVCsCT4I7WHRml7sNYGHaDZMGS3e1KwO51uxjQ7DsEfg2pIvHz9oeX6dzj6uGKZ6hxsaOMFFtdF
+ PYABLWGZ
+ KiCTEBTq1GwjImitTp3ur3zS/CZHtLBfX6kQzd+j4iKcnkKgbT3LBGT9vNjJK/yjwtQ8igVZSCjjYKgeKVhakzwY4LmUheV4bWgUTvpnnZlTc9xeoTJ+dxe/dzYlHgppYR2CgNwfLFrsJMEZ7GW3cXxcfuHlQFMUYNt8NiBdXenvQo6DweFkDMWb9VvWtm2CiGBMzp2/JfC3hpQDoXI5iFwpvit0at3vSFeKQp0jskUgIWScg+BlsHsk+VTo7Jsy9ur3gLlsPKvRpHPepQcM5WO6pPxCsdugaAekojxnjruVxWAwSlUftP3SWMXh+d2ok06KrBuoOZTLl9Uuve9df7JvaK8PqzsQb0ygfra4zLzxDr+eJ5ijmpmVzEQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,72 +97,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Sun, 15 Feb 2026 19:15:05 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
 
-It doesn't have to check the device flag, as the allocator will also
-check the device flag and refuse to allocate if the device is not
-writable. This might cause a trivial waste of CPU cycles of hibernate
-allocation raced with swapoff, but that is very unlikely to happen.
-Removing the check on the common path should be more helpful.
+> Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+> hibernation has been using the swap slot slow allocation path for
+> simplification, which turns out might cause regression for some
+> devices because the allocator now rotates clusters too often, leading to
+> slower allocation and more random distribution of data.
+> 
+> Fast allocation is not complex, so implement hibernation support as
+> well.
+> 
+> And reduce the indent of the code too, while at it. It doesn't have to
+> check the device flag, as the allocator will also check the device flag
+> and refuse to allocate if the device is not writable.
+> 
+> Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+> performance is several times better [1]:
+> 6.19:               324 seconds
+> After this series:  35 seconds
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/swapfile.c | 38 ++++++++++++++++++--------------------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+10x is a lot, so I think we should offer this to -stable kernels.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 32e0e7545ab8..0d1b17c99221 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1936,27 +1936,25 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
- 
- 	/* This is called for allocating swap entry, not cache */
- 	if (get_swap_device_info(si)) {
--		if (si->flags & SWP_WRITEOK) {
--			/*
--			 * Try the local cluster first if it matches the device. If
--			 * not, try grab a new cluster and override local cluster.
--			 */
--			local_lock(&percpu_swap_cluster.lock);
--			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
--			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
--			if (pcp_si == si && pcp_offset) {
--				ci = swap_cluster_lock(si, pcp_offset);
--				if (cluster_is_usable(ci, 0))
--					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
--				else
--					swap_cluster_unlock(ci);
--			}
--			if (!offset)
--				offset = cluster_alloc_swap_entry(si, NULL);
--			local_unlock(&percpu_swap_cluster.lock);
--			if (offset)
--				entry = swp_entry(si->type, offset);
-+		/*
-+		 * Try the local cluster first if it matches the device. If
-+		 * not, try grab a new cluster and override local cluster.
-+		 */
-+		local_lock(&percpu_swap_cluster.lock);
-+		pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-+		pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-+		if (pcp_si == si && pcp_offset) {
-+			ci = swap_cluster_lock(si, pcp_offset);
-+			if (cluster_is_usable(ci, 0))
-+				offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-+			else
-+				swap_cluster_unlock(ci);
- 		}
-+		if (!offset)
-+			offset = cluster_alloc_swap_entry(si, NULL);
-+		local_unlock(&percpu_swap_cluster.lock);
-+		if (offset)
-+			entry = swp_entry(si->type, offset);
- 		put_swap_device(si);
- 	}
- fail:
+If you agree, could you please prepare a more backportable fix? 
+Something minimal, separated from the [2/2] cleanup and without the
+incidental whitespace alteration?
 
--- 
-2.52.0
-
-
+We can look at the indenting alteration and [2/2] after 7.0-rc1.
 
