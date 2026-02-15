@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAF79E63F1F
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D6EE63F1F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:58:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D9D26B00A6; Sun, 15 Feb 2026 18:42:27 -0500 (EST)
+	id 1E7966B0096; Sun, 15 Feb 2026 18:42:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0306B00A8; Sun, 15 Feb 2026 18:42:27 -0500 (EST)
+	id 17E506B00AE; Sun, 15 Feb 2026 18:42:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C7B06B00A9; Sun, 15 Feb 2026 18:42:27 -0500 (EST)
+	id 097C06B00AF; Sun, 15 Feb 2026 18:42:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3656B00A6
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:42:12 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BAC5B1B1A4B
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:11 +0000 (UTC)
-X-FDA: 84448316862.09.E53432D
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E77636B0096
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:40:56 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 776B8BCA63
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:42 +0000 (UTC)
+X-FDA: 84448313124.26.D81A5C6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C3183180006
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CU27ZXms;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9FA8A40010
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:40 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LcSSioyc;
+	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198929;
+	s=arc-20220608; t=1771198840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lfCWFz44Z29iUxzWfdc41d1nko7Rqw6DJ9fiCfqwBNQ=;
-	b=1S80wmbjLfd9HyimXN+WJsRJW54jFPElhbpiPy7cFzfxSpSiRL3bIi43JPVFA7dQIfQR8K
-	I1cAqtKxKNArwzmnm0T0rK7AdsZ7FAdF3ldAQtknBy8g6GGk3dQcjdAl7E5Ecqyl7trskL
-	O+WdaxxhAjGXNNfO2p4OvnxzRUeE0cA=
+	bh=oST2DRmUZlaxvoLF5U2BkRHkEHLO+Df5j4ljmYRrMwI=;
+	b=CEWcJdqd2uiUN4nd94YZxKCLta80HlVq5PsSqBM2l1vPsusq2eyhUkHdACUo1hurFnphWc
+	T4CwZ8Qaq3a1VihDBDeRmDGd/+H5FJvR5S5oQ1rBIZ/t40MFXz29O5Jx81RxhSF0T9dmJq
+	DhCtfgu8LQEi7cFfUcZk7vygADuz02w=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CU27ZXms;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LcSSioyc;
+	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198929; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198840; a=rsa-sha256;
 	cv=none;
-	b=LYue5NaCqM7MFGUm78GYE4jOnvMwJ3vvYXbF/2fr+XTIDEuaIS/eh0g8dh7OlwPMiQxES1
-	YDjk6QW2o26TF7gFmf6KntugmNCD2L8HFbbjW/rVv9ulf7ZwWMNCF7jt4jUrtdpSQmaPSW
-	IDmGb7Lj0YkkSacncWhQIquACDkAfY4=
+	b=mQUmueXuDbhwT3GGaxZFtFgRyKagwhlqtY7FoZvkUHw8o6YLI52wiUue6Qzb4yT8DMG3BI
+	iXnYFIRn7xVSwCGZmlq9Vhr7PzXyewxv3MM6XHB5BunUnjt9QAsrBEUccGe+LiRtPL6pPK
+	VtFn0ZOSNGYpcN3l2a09t5NOehaVq1I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D51DE402AD;
-	Sun, 15 Feb 2026 23:42:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D6AC19425;
-	Sun, 15 Feb 2026 23:42:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BB60244366;
+	Sun, 15 Feb 2026 23:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C190C4CEF7;
+	Sun, 15 Feb 2026 23:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198928;
-	bh=uYEwg9qVRQ0NhWZcmlYe0zv8laqBKSDqB2tGW/RMct8=;
+	s=k20201202; t=1771198839;
+	bh=O3C0OWPFlCYQRkqgbpxphoxzn0AXFyZkFVXVYjg1yE4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=CU27ZXms6kIrV7G19DfaAaAOwUelhCVipFwQDeCbX4VWn6wVJPDLJ3grDPzSnCtK+
-	 KiuMpnyzd8owICPC2W0nqFdb5DrMTnIxEomPXMeWMm3QGk8Qp3tZcdom0FXNbB1OF3
-	 xwp2ycZjZvwEnm0SbXFmmEx8fPkYkZN5dSSwlKMe1WpNA3bGiOWZ7mHerhivkeXudH
-	 otqNDMK90oSKhrl57Wv9F0Iq4PyNxVeEhkJujbCXcvaVMxk2fhM7WPYnmy0J2J2rSd
-	 omkM1H18JL/cwXlob4zMsBQ7RMTfe/1XOx5TpA5tlAHEbRBQbiQIXRYlM4rP29ymMY
-	 h+cIgNNxzckGQ==
+	b=LcSSioycaHq7sW6v7S8VaMxmPBnrA0XxM/+JfYOZzzNyMOKQ9iJnYTOaI0DgToSTp
+	 bB2PKE7e6AniGtKH1YCSTRffWWeIxzuD+r0kRNjm3NnH81MN88AskeW7Wrry71RgCl
+	 a3/M2ZTS8ZU/Q/c6edwuFMId2JfKy47xwf7GbEA8V+9ggW4LAExBmGR6o/VUhpP2j4
+	 ihEBh2jyeTbSuOGQn57iigRsghpmM3IlkCAURIzlifsiQ1C3xmUlJU5anvFFLuew+G
+	 xu6LFD4QMgW2hvZKcSv15Gqui7zG641/KK0tZGRFSeme74yzer7kJsvhKkFSTXcdad
+	 xtSoAtNYXDWpQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:45 +0100
-Subject: [PATCH 58/79] block: rust: add `Segment::copy_to_page_limit`
+Date: Mon, 16 Feb 2026 00:35:32 +0100
+Subject: [PATCH 45/79] block: rust: add a method to set the target sector
+ of a request
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-58-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-45-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2840; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=uYEwg9qVRQ0NhWZcmlYe0zv8laqBKSDqB2tGW/RMct8=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhPD1Vd13GaRkq5agX96n72Np4kCvlo5WLCD
- fk9Egr801WJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYTwAKCRDhuBo+eShj
- d7efD/wPEHMykdNbgIQEgFjD0g5u2LBnODSA52TqS+8dh9ONb7dkKxO6CM34Xdd5hZN9vKMUaJ5
- oyXEeVDHOLxk95g1hPvhVpYZ1QVVxOEySidpbAGXoIucHyW3bNa/75cg0df/ymrsxTT2vsZbVoh
- aWjyFDqwMSw0k6Dn0E1nMfxMPlP2IGXS/G8AxSz/Y/1NjDs/ln6V27Menk1/1K4/WfWpa2g6jtT
- i7LiKLwqGTtRBXq/9T4PO6TuRJedJ/2IAUxbftcIT0mUbMSxTM2rnJVl7s5NouEgt6D2YSdgKoV
- S2I0ax8k7WECCBLHwKmcmPI8WX9CqSjg0X5BLpIVT3c7KNLcrCk88REdnMIszn21mE34J1gVp21
- wujZR9oktHlgM7OSn/hcmXEmq7G05hqdOO5nyvDruUebu7pdNJfDrg0czUEbX9hOpJBHOInTLyI
- ysttQjhHvQkaNthtvcRF3/nI7va/qZfjWTcMZPnv8whDNEXUA+xip5OJ2v0stNbB1kGlkUeQuUx
- OcJI0uds2mDLTZpGXcOPYOCNutpX8eCzUMGFi9z3oTCF8QhQxfRs9QI9uV0ApIqO9FUsZIAdhG2
- Kmzp5QHauxc0nuXi7kddfnCSwPO9b2rR013RDTJA4cu92ljKeaL85sobd0WH5Dc2H0W0HHVTO1K
- fM4GmOTX+d+pGvQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1174; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=O3C0OWPFlCYQRkqgbpxphoxzn0AXFyZkFVXVYjg1yE4=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhEQwaxLvWD0eoBUNtZkrfvjdBAfQM5QFLvA
+ DPqydXXjkmJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYRAAKCRDhuBo+eShj
+ d7HpEACf0tE//nAl5WKx3CMVmGyPVZd06Zxo3HMqJo6lqiyYsbSiJtt9bGZZbPI6/H5CWRAt1m2
+ szk1Q1ELBF+ypVdLMydJS0WraFl5vKpHY+tWPvkQURN5QOLlSCi6g9kz+gfDgRoKx8a5CfcRAEk
+ uJFZuYIgnptGybIxMuQYiOwAxvwVFYPsI1zEQrvpNUhnq8DLGB6f6lvRE0s4/ZksCGPAxkRzQBy
+ wF1pdl7X2z63pgbZZHh1ngeHc6g+UEfl/dzY9mHeqzwkYUYlUnECxI2FIOrKAF8D7grLtfAL/lc
+ 6/hsl7UtTA1XOMdaHcnwVGjZjglQE7s0jCFbSsnYdJBn1ly3Z56xArWHvtVFcMasgoE7IKE0eOp
+ iHbf9JNaLaCOrrMGicyUsl1f2QZNfrctAe/1c+Iw9Hk08uNCkkkd7i4AGiA1uHX+s1gFKtkikJ0
+ DHGZVJNZPRHJxRgdVcqfD1jq69/c0R/o1RJhlyuytbRxGcb0ok82GDSGv1r415P48i9IJNuqV4Z
+ FeB9v1ChkeD6VgzxMWKi4xO+P5Tl7ivi9B/OrJHSPQu+Z3swBN9XdU4bZekYmvYojAZZ+uR8iPI
+ Tj//FhDuPVGWtrVxOG06uGngv2m1dzJF9k1FciK+tf73F9L2IirB2Z2060mIt2oBbGHVpg9T4Lt
+ EvIIMlfAMkM/cOA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C3183180006
-X-Stat-Signature: 5jtftuxanzmksienae3qwip8thy119pz
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ts35ygz6x5ejg9bhyeh161on866uzngu
+X-Rspamd-Queue-Id: 9FA8A40010
 X-Rspam-User: 
-X-HE-Tag: 1771198929-383910
-X-HE-Meta: U2FsdGVkX197vO7EehENeJ2fO2GBqmzJiN/CNWfBo0Rr5MA4G93wPQuWgzKO7GDjY1M+mtz27D3Mdo+G2upm/mDg8gijPH2IxttBraFS9dy7+xteikiyHgoDqew5zdYu4dYE9LAa0cYsSogo5lmJC9OFETFZdP0V39DjzRb1AF22VXMfUJIyDp8KDJzYlJeV8aXS1ik18trlnEVXCYSqF1hgksuoB+WL57ioFeAlZsKvsj0ZbDz0GhPrJvF4ZVGYZxhESKUiKsgQLk6uGzQUHsqvzpwHl8drMiTS8eNeSk/hagsjV9jEF7KLCB/4gP3dgEv88ms36jWNcn5elYwepfmvPbwPasBz349LLarXqimxgtuL8gIECyT/fG36U5cUKEu7J9bcJgywdN6KxTmg0icbFQFvqDJCAfIP4vTIcEUCFozq+KO7j2FWpKax8qaqPMX8FDs5CbLohhCEm0G9AfFXtESMjL+znsxs0Yr6oiXBZPTkuwsy0cRtt4svTYDu3TMI8KUYORiKoqHE0AFVLZsE7tAid9c+iI95OTNHrprZkeFgLEjXPV2mFeLl1sYs8Vn3mh9M4IzjjVXMJC0cS4ci6O58nfkRVSUDY+PFdb/fgmGChh3ZYlgQ5zccHeaz5zYW74NJMaJjf9yS6NPUomOMMsb1iJjbKgFFZfZLAoub4OnFFlAMvat/6AZBcTM5cFr1/1OmDQgM+7qeChaK6Fc+ZBLI3QJbdwAV/PPOZbvh2AE1Huf6aJHGkGwBPYcZidJXE4Q7PDmfwqxavghooZO+jrTlJCKBTWGJ/aCn2koFeDqoK/5M3gpLV5flWGMozc03XCUUM/2mRxOZ6FQ/5K2ev1yR911w9tuWxXA9sqUOqojISEq7/txVAKCj39mE3n8jS1MgyKMns43/4HcgoPQmyy4FIj6TeUDLkDpqLuMNRdjyaBupXsm6arFnoO5d3JKI/KJYpAMsII11X0Y
- BAe5x/m8
- r2mA1PB/aAlzK4k0Sd8Zskdlrkvnafdedz98qrISaaaOuPv+cLjr6Yc7unLG9Fa+geWCSEtJPaE7F2tseNhRct1s7pj6KMpng7cM6C/F0gG70TaWZOVWyWy9IE67jcNfAlQXcmeuRGPn6FWJIBJEskO7ZZ+T/HxGyZ8bG1Z87I3JYg6DUOckr2TNFUd/sojHU2RwT7cyMUt0pJUG7tbnIYDIRuI6mZuiQ/ccJtdDqjLgybMb4dYtDEIPEDd8KoaYeoHjWFwaHZF9wtQWuGbfl6jcmO+/+PQ/SSyU9kIY/iGG9Rb82VehLi/h6c/ff/VXasp2Kym3/Eyo3u/MhKJ6RFvS2wuJUKnYUF8/NjNLmDh6u68pRxbuBDjO757L0nIw7gezLTO77+RlCwS62JdLrXUtDuA==
+X-HE-Tag: 1771198840-194814
+X-HE-Meta: U2FsdGVkX19uSB47hPZioiESkMSw87ed+z4ax4GXEdUeJFGyYYKm0p2s5ZWN534o9FpRQo2zhSUtJqUt3fbeLR1lFsyDNJDpR49PkOgsw2Q/TfBec6wmQ/IQEhxsFk3+/LFuhpaeNs4df6I3Oz1Cm06vS3kLUD41ExfiZ8OXHLLsxOhWOX/kegukpl3dBnfEn1pzsFz65cVEs3+XJdbMlx020D9FXKkh/wSlRZPGXUN5TBLZ9rW5ArW+tyjafSTYUQNoQZHpO3qoIeULvy35BrSTOLegzsbZyZkIZWAbw4RvvzYkd01ENLhdp75Blea9l61L0q7mWPkZcypKW7jjrZxsbQxxPTfoS9fhf5bM046X6r+Y96Ft1QEGIJN5dHkIPRJSyzKuSjl6FayPR9wdYgblhzl5EM2XT+wPrstuWnYOYJZCk/MwuSONuKOxcX/KcOLzXTs1Mr3lrcKK2h6HBzX35lHtNU522cf+vRYB/rLCfppFW7D91R26QNYMVFfSeI0oky30J1ZxsErVM2KeGW/WdiOW1iIS5/mQFRRA5EC8fA3gLgy3WTTG1Y7I2twiVV4JlvSVaHktltLV/90Nxzs60lQChYLBLodHwTNCCX1pgBatx8pIHEWf4mGC4P1JSyhzAG+lec7JTdb93QvCq2lGVC5t+zGAryK1XSDInsPTi23pUOBa4NiuY3oa80PfBSQmL1GvBU3Ego2uHxCVVnbX/q4RsNg9weOpbJGTv0q111TLqru0l/AaUXSb9Vn9rTYdcDjXYWFBRuXf2f/AXcqxT12biIMJoWH9or1bcFk2IeKcO6KzGRP/5AUlm/yvkcD2HbRT1ohYQ36EZeeDCdsJouX1c/T+q3bNlMeBzCbpbE1OKKFnxO+c3CcS8NVGTa//wBRo3yvFmpaW3lSQBiyRR+oVSxwM/NIWfwPr/SLMAdGhR3p7xpQEpLKUcaNvav9M9oW1MbpolKlnBl4
+ 8y61zpfK
+ RU+DMw/g8LYCoZ6JMOniE83NzlJWABpCDI0n9wXfLeK8aRVimTE/08UZktw5MezWNJZRvgsaXaZg8fiKLg/1i95jXVqIubXOsG4WvDJ1bVhRi5teeJDdraPubNpCmuTOX9wQ3hUZ6QJYs44/a8WsNkkhipN8KDZl3MLXZj0oViFCtgQPJbUzyQ2rnkX/OnjhQuMx6/oCBlDPCKuhW63DswGVGqACYjIMC5hKimgdPRe+ojJW6OxPkbuwrATTz4GCzK5UGziGUJ9J4N2EFeaI+F3a0q+81jzDO/Tmrpgg7zvLHgbiEqxAIQ+l+BLm8bxVqpCp9Badecczn7VGaYnF4JMmpsQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,80 +122,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a method to `block::mq::bio::Segment` to copy a bounded amount of bytes
-to a page.
+Add a `block::mq::Request::set_sector` to allow setting the target sector
+of a request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/bio/vec.rs    | 27 ++++++++++++++++++++++++++-
- rust/kernel/block/mq/request.rs |  3 +--
- 2 files changed, 27 insertions(+), 3 deletions(-)
+ rust/kernel/block/mq/request.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/block/bio/vec.rs b/rust/kernel/block/bio/vec.rs
-index 20cea478050b9..ed1c1374c9c76 100644
---- a/rust/kernel/block/bio/vec.rs
-+++ b/rust/kernel/block/bio/vec.rs
-@@ -79,13 +79,38 @@ pub fn advance(&mut self, count: u32) -> Result {
-     /// Returns the number of bytes copied.
-     #[inline(always)]
-     pub fn copy_to_page(&mut self, dst_page: Pin<&mut SafePage>, dst_offset: usize) -> usize {
-+        self.copy_to_page_limit(dst_page, dst_offset, 0)
-+    }
-+
-+    /// Copy data of this segment into `dst_page`.
-+    ///
-+    /// Copies at most `limit` bytes of data from the current offset to the next page boundary. That
-+    /// is `PAGE_SIZE - (self.offeset() % PAGE_SIZE)` bytes of data. Data is placed at offset
-+    /// `self.offset()` in the target page. This call will advance offset and reduce length of
-+    /// `self`.
-+    ///
-+    /// If `limit` is zero it is ignored.
-+    ///
-+    /// Returns the number of bytes copied.
-+    #[inline(always)]
-+    pub fn copy_to_page_limit(
-+        &mut self,
-+        dst_page: Pin<&mut SafePage>,
-+        dst_offset: usize,
-+        limit: usize,
-+    ) -> usize {
-         // SAFETY: We are not moving out of `dst_page`.
-         let dst_page = unsafe { Pin::into_inner_unchecked(dst_page) };
-         let src_offset = self.offset() % PAGE_SIZE;
-         debug_assert!(dst_offset <= PAGE_SIZE);
--        let length = (PAGE_SIZE - src_offset)
-+        let mut length = (PAGE_SIZE - src_offset)
-             .min(self.len() as usize)
-             .min(PAGE_SIZE - dst_offset);
-+
-+        if limit > 0 {
-+            length = length.min(limit);
-+        }
-+
-         let page_idx = self.offset() / PAGE_SIZE;
- 
-         // SAFETY: self.bio_vec is valid and thus bv_page must be a valid
 diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index cebb30fe9b3bc..bc655d202ca01 100644
+index 4e47419776e0f..4e7adb10929f0 100644
 --- a/rust/kernel/block/mq/request.rs
 +++ b/rust/kernel/block/mq/request.rs
-@@ -7,7 +7,6 @@
+@@ -7,6 +7,7 @@
  use crate::{
      bindings,
      block::mq::Operations,
--    prelude::*,
++    prelude::*,
      sync::{
          aref::{ARef, RefCounted},
          atomic::ordering,
-@@ -18,7 +17,7 @@
-     },
-     types::{ForeignOwnable, Opaque, Ownable, OwnableRefCounted, Owned},
- };
--use core::{ffi::c_void, marker::PhantomData, ops::Deref, ptr::NonNull};
-+use core::{ffi::c_void, marker::PhantomData, ops::Deref, pin::Pin, ptr::NonNull};
+@@ -296,6 +297,13 @@ pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper<T> {
+     pub fn data_ref(&self) -> &T::RequestData {
+         &self.wrapper_ref().data
+     }
++
++    /// Set the target sector for the request.
++    #[inline(always)]
++    pub fn set_sector(self: Pin<&mut Self>, sector: u64) {
++        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
++        unsafe { (*self.0 .0.get()).__sector = sector }
++    }
+ }
  
- use super::RequestQueue;
- use crate::block::bio::Bio;
+ /// A wrapper around data stored in the private area of the C [`struct request`].
 
 -- 
 2.51.2
