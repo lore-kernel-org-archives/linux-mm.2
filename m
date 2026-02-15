@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5665E63F08
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB4A5E63F1C
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:41:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F9426B0089; Sun, 15 Feb 2026 18:21:02 -0500 (EST)
+	id CA05E6B0092; Sun, 15 Feb 2026 18:40:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A0556B008C; Sun, 15 Feb 2026 18:21:02 -0500 (EST)
+	id C4EB76B0093; Sun, 15 Feb 2026 18:40:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE0B26B0092; Sun, 15 Feb 2026 18:21:01 -0500 (EST)
+	id B23D46B0096; Sun, 15 Feb 2026 18:40:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3A4A6B0089
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:21:01 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C59CD1A0B69
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:14:14 +0000 (UTC)
-X-FDA: 84448246428.03.A2E4609
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 72BB620005
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:14:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Tq38ZBkw;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2B15E6B0092
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:40:42 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D819013BD7B
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:37 +0000 (UTC)
+X-FDA: 84448312914.21.67DCD0F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F3C5940005
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:40:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EIVtL4lw;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771197253;
+	s=arc-20220608; t=1771198836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Orx67w0OdZsiD/sxqMgXoLutvDapJy44psufStBNd34=;
-	b=3wKqiinVJm7fzLAE1QY4wX3+3HSu45Fo2mtBVREoGtFqI11r4pEUx8B1pYaoh/QRh2NcDV
-	g5oxpahoIcnIQMSCBDUu8xMnGUEQcfRKf3Q4eZjgvdXcJaCdn/xQskeK89NmyGfInA+lh5
-	IU4e2y95VG9iqUTM97nzL9PQDZYrbBw=
+	bh=hNtXznM1qYNqPpDqlBoLyw+ldHq+TFhLrhelIiTqSVA=;
+	b=JtZjdwdweqSn0+OZZE6jwm3ev/qKyOBa34Bw4GxYhPZ3ZoGUCUlkIkXPTyt6UlWJZ1g+kZ
+	c2TqwR6yufuphUvxKZq6Suiq+skkmWy9DoA1dryLZ1UIgecdp4GGe897B95vcJnUATOfdx
+	uX5OOjsHCYKG9eU5hx1NIRNFc1DMt5Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Tq38ZBkw;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771197253; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EIVtL4lw;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198836; a=rsa-sha256;
 	cv=none;
-	b=AQZRMpKzroG9eOvqnVsutZ7rYuL/BkrfSzjcBlBBp97PE3yAv3u5KVLLycaQc8rTX9yifn
-	OevCUfExYS1jkEtD9HYWi5lC6+Y6/Fyx2STuf1tu7IL0Gp2TY11Olr3JriFpihBF8dw6ww
-	ZcNYcRPWIC0v9vnSWVcwbba1XqvR4vA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Orx67w0OdZsiD/sxqMgXoLutvDapJy44psufStBNd34=; b=Tq38ZBkwHinLdgKHuJ2F6wb0Lw
-	nuKJ0utimPTEs5necEg4OiOp93omwKGRX71185wTqzVACW8X/Btm5RQFtI2l9t/0LXp/dZlyaIOLM
-	GehWSFz/SBsnkXJyZynrq8iJyDwnyPiZ75nYhPdeisBx/mBVpuALLKyyepWJzVzLGdsoKKXUpVTrP
-	UiG1h5BkIqArcpktGdrJGEQfcuC7wHIfdw2rR8FSTBse3ekOr3x0SqqKT2TOwpGA16cFQh9WQ4mcJ
-	1LELudn4ti3SdkfASP4GSMU16UMLBkxEsG2Ob5cpm0F+uWJ/zPQ4zd/VuW57a7wmiDUp7TXRaurH9
-	jJ6U3oAw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vrlJH-00000001duk-2IlM;
-	Sun, 15 Feb 2026 23:13:51 +0000
-Date: Sun, 15 Feb 2026 23:13:51 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	kernel-team@meta.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-Subject: Re: [PATCHv6 08/17] mm: Make page_zonenum() use head page
-Message-ID: <aZJTLwV2SaaKu1k_@casper.infradead.org>
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-9-kas@kernel.org>
+	b=wqZqIR2nyZkkmlOnF2DTGQYsWgCQ7jkIj2UDSCtUqQSZg713GHlvxNpPBmBuBNQsqFT8iH
+	5Gdh0SXrXE1/6pK5BAtzuw11/X19iRj0TDpSt8zusNoWb1lgs32v0EXAjGHfiU8OvGQf73
+	0uZZ6XuD04Uva1loX5pe1EVbluwAeoQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A9E6141B66;
+	Sun, 15 Feb 2026 23:40:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4950AC4CEF7;
+	Sun, 15 Feb 2026 23:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771198834;
+	bh=lhLM7VW+elgLHbwAaApu2uDju5ClodzV2lsUXSCKd6w=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=EIVtL4lw8JFCfYyLbkOkVEa7JXlNSdcyGo4qOyIIWOqr+nEHnuDiRWmxUe6wzDpdt
+	 isgZdMXuUFBbJIUNka6yubc0IlqQeppw0r5J7yihoL0PlRPF3nv1l0ZcM/RjqhXCnQ
+	 ZXSayfGGBCotK5nvCVqe7QpRipdTvgbA9iZlPNJlpTWsBUO8LhhVDFR8B1xyV9HWsO
+	 degsko85wF5DrlPMznLHzQHKJp7T67C/Lv0943THWRSn45NAVDXxlfNuP9LzNFreQ8
+	 +Vy6bec8YMLhqwhZBRcwIELNj+GoqC52kS9fMO8Nyk5zg9MMVo1UX8+DahqmUIXAz5
+	 Z1ehugPEPKz6A==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 16 Feb 2026 00:35:41 +0100
+Subject: [PATCH 54/79] block: rnull: add REQ_OP_FLUSH support
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260202155634.650837-9-kas@kernel.org>
-X-Stat-Signature: qkxs9m584hwp1qwoe1py13p5epuyozrt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-54-de9a7af4b469@kernel.org>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4765; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=lhLM7VW+elgLHbwAaApu2uDju5ClodzV2lsUXSCKd6w=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhM3Jq8YHxrfkqK/oCU6MjwIsMXoUhI4IkTK
+ +/jl05X3saJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYTAAKCRDhuBo+eShj
+ d8KjD/0QbfTC3g4Lbp6rrVquof9Xlz219bbRgWBbI0ddnxfwoBL0oYG9l+U7pgzMJwxChHNGUsW
+ yaXD7XeOVnRfKxNopjmfMpgY8dz4KBRFRPfAI1FOKkjg5Q7pAH68iGn3ytQrqpQ0vOy/qjO8hWX
+ SOdpbBoM5SkJQWgmbRC5eW99He2gVmaNawIruI/N7nMh+H/v7+nDHxodwp+6l16XQ8T4h8L8eoH
+ IsD89YfFpQavHXTBxUv+bhU5YKdy0HNGW8by7aRCmOhpvqP7ctHLNOLeEe8qCfkdEXg0DV/XDYj
+ WqUXjGKZ7ImjxPcNgg6RAYVNerGHKqNus6SnHMgZzSrFspg7SeWJ9M9/BXW5P29HFP+k/lPzTHg
+ J1PMbstlAaUcLEtJMqUkGpUCYYFkMgXeThO1GAnKHp5k+RAFZL6l99kAbEYLl0Cyp66FNYfJiN0
+ U3CzV14Qz1w1zRUoQKl6uMkCY+A0DIUDKOD7Whm/lR0Zw5xKKxFt+SazbuUIjCjMr4boyqklSy8
+ WN1vAeenCReskUvStsX6RSMCQEbP+SyNOphfLq15xvx25z1HfP72OFWohynS+RkoOwdhT/4nnse
+ Jb++s4gzj5w8zDYD4uZ486v3p7PLBAoL0/UgxZK2hDpXeRoSMrJzlbvs48ilKYWUSluC5HSjQdz
+ VoZHh/6GYoIaaWA==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Stat-Signature: 8kjn8qq6sfacs1bsn5ahfx38dtkrmr1k
+X-Rspamd-Queue-Id: F3C5940005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 72BB620005
-X-HE-Tag: 1771197252-258153
-X-HE-Meta: U2FsdGVkX19akJrtnumSWGTeQDHz+Tv8VsoEExKdzMGZK82kdPhlAjdm1HDLnleX2pUH3X/3DwdJ81rLAnTWGn4BQnWpWzLKiK6JMgdzLW2ssR6l2sRfQ0LDRX5pw9qb3QCu8gTGY9aeJjUKD+Y/BLYsdlMAHbTwvmp3fZgRFIuS+9Wv3fz2wpeaYmTeQEK0Cpd0W5noSzzj6OWWvwdzfb0wjhZFuUv4tftFL6gy064nfY9GHWXJ3E2a+LUdVVpUsku9Mq0ljhPEHyDJxUr2zaMRsA/Y/nR8mUKuW0Le0bS1QEMuTBrQYYKlkr8Xd7hrgvha6GzS0sGRA5+gvWaFf7tmXWJb/N3kM8jDKjwQQlIJGXGXzr+dIkBguX00R5Mc90gxo1JEvQUNgZgZ5r2WAvzwhmc+KbIkKpvzRW5bQx/fgCuH6vyd9lAuuWalweJ5Guj8WduIyaUVD2OV/mqFyFrTwYhioHjRyFCoozztqNPu7UQdBlDGR1szxZO/kDseu9JSf5d+Xr+hyMlRQD+//eM0dnqqVBVVvZNz0YFPHUJ+1UlKjO2grp2gy8Uv5uI3YA90fEh+FklLN2B8wDhCJ68iSV181+mDmYqJxRb7H5m2fsIc7fDBP9pQZMsJdp+wancto13+mYxBeDscOD3rgANg0cHXEVdp7vTV7SswPXO9ST4jkQ5uY/Zx/yvTz4k4MiqoVDHNIP/CHkdhRjjYkenHYxsbK44gtxpGnEbAoWgIYMnzu+fILjVckDVGJwwnQR6bKTcGbsHMUk43zw4sMWFdZZF9AjBdeP/Idw76cbTA+9u0ZLjkX8TKB8sp3I9Tvf+fBSLS6ZDL7z+PkcvFGV+O12zLcA6ihyk9P+3ZcvX85+uiPPO7bibwlOIUgG9eox4QSat2WAJKMBOUoPTa9L6nU+MWeC1OpKB5HMRnx0yBTmhChRkd0v3P98nhuB+g5wcJPe7nDBOqGmdQJOB
- wcFNBlaa
- CxTL+4XCVNWuhumN2kBEqh7h6myonepMaDAm1qxafmROSkxZhySqi2uhZERaRyJl2cM0zIRxuq7Dg7CL7WJ/bSy12TSlKZHl6PX9jriFp1TirE44y+W8UMu7Bz6E93GTGceLNlqaFHEQ8j+7+UkFwxdbAi32u7lePVIWt1GbQ6w5d+iWyxzB4pNMRpP8uwaMnaOsH3xOPkZxmQ4tkEh/ikwhY7aXNU23Ikdn/JOVjjtTHxJCNg86RmU+nqKfZZOU9dJLNDZqcj8Z4dtAn5TAWd7kGokAa9OUYbys0K7AeC72kqxw=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771198835-577749
+X-HE-Meta: U2FsdGVkX1/8fjTlnCkJ6krXsmV6Xv7zb5LKMrDRiGV3g07nt+gGeaZ7bCnnL6YrqK2gQZQKIAvokPfvJutfjt8X6LXmD0uPfg+dfEaumdMHnSQoVp49oyA+kFGmhqddnM3wEGxBRlYyNfdm46RsOqmwhZnU7Rhj4aGG+/wPPWN8b0lz9xSiLU5FntaaeKtXIoqq07/k+uRDdLYJ1d8cdk9CnsJ+JU7pVFrO4R3OxPPYXoqLeD1TNxhiY7ETiV+k0ir/28OoNn6B5+lSxsO5pETUPG3YxVtGmazKQX2riTNPYInAfa89zaRoLW3exg/eqg8aPTdcWOT+DFstLg80AuiEYqOczOyijMHAniN5nMAeIQp9CiUCZvi7OPu8C4HvpJbDTMb2PqxXLr9bir8K/kwl2UDckjtu3hbZpKoEYMtFFc+LvrvsipX9u0lH7mBf+sqz+F9rpCVrhh39XEFpRzSWI0b7qhX8R3gfAsnkcwZVeCpil5ojQu3uw5AiZRGheRtg6FZ/Pb32Fb4SteAEuaOtIyVQ/SwvCeveB7RzfC7WHr4PM+5uuUcYu9W+gf1uqxqMTTjCl6o5jScAu37+3tgJ+2FgpcrC0TbRx3B8t0DU18rJ9guFlYR9VCzxzrpIJo68yA7Ij0TydjCQV4Iq4a7fWm+N+QfXrat7U6KV/rubjpNGkk//M32w1ge/cfvcMDKTfF27zZsdFg1YPTG0DX4ITrE3ToNOReeMc0LJoq1nqSdyxoZWl7NY9T4s5yoNMRx/npQIyhEmFgvqe13XX4KvmTjnFJ4RthBS+ilWTsOhmctcq+bWzOZkXcEU/zA+OxupyyP9k+SVJCpnCuLdyt8LMRkcfOBUvm/N/UDoYCTo4iEEsIcFCt7eYHbeT99p6a50nJSpxy8JrBN3jyMA83THGxuXvqpFCT/S0aQRFLzl6lOOia4SZfFWohnVjlVAwP64rviu6mXZAr1dYqP
+ pQ8S9aQS
+ VZnbD2LVEj9Oq/J/e/PXEUzdQzV6Ef1fRssJ5c1KhGx4ZtMMCG96S1i12DAf9v8T+c2WYkOofgrnl8B5qjGDpaLjN78mNzwIQ7LsOvO+MxF2KUgalvlFhBdDHqrbrhaEsMiJn+lBMVGmgWyX660p64rUu5hjoBborFRhYmr38QaZtSRQTWwSXkHCW9nnPNh8xZf5K6k402sRh2qnA+HPIe5YihHtVq3o/awuhJ5hdC+G7A23mnboruiJHPv5KamjkZ01KvKyw7/mAQFP1+XIC7vwbN7L5RPj3tA8gjBlc+3mT46MS/b5kZVOMsTVv7YIhAykJay3yZXbP8LAaLWR+M15d0JM/VPcNJtDmckheyqMPlwc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,22 +121,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 02, 2026 at 03:56:24PM +0000, Kiryl Shutsemau wrote:
-> With the upcoming changes to HVO, a single page of tail struct pages
-> will be shared across all huge pages of the same order on a node. Since
-> huge pages on the same node may belong to different zones, the zone
-> information stored in shared tail page flags would be incorrect.
-> 
-> Always fetch zone information from the head page, which has unique and
-> correct zone flags for each compound page.
+Add support for handling flush requests in rnull. When memory backing
+and write cache are enabled, flush requests trigger a cache flush
+operation that writes all dirty cache pages to the backing store.
 
-You're right that different pages in the same folio can have different
-zone number.  But does it matter ... or to put it another way, why is
-returning the zone number of the head page the correct way to resolve
-this?
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ drivers/block/rnull/disk_storage.rs | 36 ++++++++++++++++++++++++++++--------
+ drivers/block/rnull/rnull.rs        | 31 ++++++++++++++++++++++---------
+ 2 files changed, 50 insertions(+), 17 deletions(-)
 
-Arguably, the caller is asking for the zone number of _this page_, and
-does not care about the zone number of the head page.  It would be good
-to have a short discussion of this in the commit message (but probably
-not worth putting this in a comment).
+diff --git a/drivers/block/rnull/disk_storage.rs b/drivers/block/rnull/disk_storage.rs
+index ce3e83671709a..a613ed5223ba7 100644
+--- a/drivers/block/rnull/disk_storage.rs
++++ b/drivers/block/rnull/disk_storage.rs
+@@ -85,6 +85,13 @@ pub(crate) fn discard(
+             remaining_bytes -= processed;
+         }
+     }
++
++    pub(crate) fn flush(&self, hw_data: &Pin<&SpinLock<HwQueueContext>>) -> Result {
++        let mut tree_guard = self.lock();
++        let mut hw_data_guard = hw_data.lock();
++        let mut access = self.access(&mut tree_guard, &mut hw_data_guard, None);
++        access.flush()
++    }
+ }
+ 
+ pub(crate) struct DiskStorageAccess<'a, 'b, 'c> {
+@@ -118,13 +125,16 @@ fn to_sector(index: usize) -> u64 {
+         (index << block::PAGE_SECTORS_SHIFT) as u64
+     }
+ 
+-    fn extract_cache_page(&mut self) -> Result<KBox<NullBlockPage>> {
+-        let cache_entry = self
+-            .cache_guard
+-            .find_next_entry_circular(
+-                self.disk_storage.next_flush_sector.load(ordering::Relaxed) as usize
+-            )
+-            .expect("Expected to find a page in the cache");
++    fn extract_cache_page(&mut self) -> Result<Option<KBox<NullBlockPage>>> {
++        let cache_entry = self.cache_guard.find_next_entry_circular(
++            self.disk_storage.next_flush_sector.load(ordering::Relaxed) as usize,
++        );
++
++        let cache_entry = if let Some(entry) = cache_entry {
++            entry
++        } else {
++            return Ok(None);
++        };
+ 
+         let index = cache_entry.index();
+ 
+@@ -168,7 +178,16 @@ fn extract_cache_page(&mut self) -> Result<KBox<NullBlockPage>> {
+             }
+         };
+ 
+-        Ok(page)
++        Ok(Some(page))
++    }
++
++    fn flush(&mut self) -> Result {
++        if self.disk_storage.cache_size > 0 {
++            while let Some(page) = self.extract_cache_page()? {
++                drop(page);
++            }
++        }
++        Ok(())
+     }
+ 
+     fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
+@@ -186,6 +205,7 @@ fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
+                     .expect("Expected to have a page available")
+             } else {
+                 self.extract_cache_page()?
++                    .expect("Expected to find a page in the cache")
+             };
+             Ok(self
+                 .cache_guard
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 92e75f15e02c6..4870aa3b7a53e 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -673,6 +673,18 @@ fn end_request(rq: Owned<mq::Request<Self>>) {
+             _ => rq.end(bindings::BLK_STS_IOERR),
+         }
+     }
++
++    fn complete_request(&self, rq: Owned<mq::Request<Self>>) {
++        match self.irq_mode {
++            IRQMode::None => Self::end_request(rq),
++            IRQMode::Soft => mq::Request::complete(rq.into()),
++            IRQMode::Timer => {
++                OwnableRefCounted::into_shared(rq)
++                    .start(self.completion_time)
++                    .dismiss();
++            }
++        }
++    }
+ }
+ 
+ impl_has_hr_timer! {
+@@ -789,6 +801,15 @@ fn queue_rq(
+ 
+         let mut rq = rq.start();
+ 
++        if rq.command() == mq::Command::Flush {
++            if this.memory_backed {
++                this.storage.flush(&hw_data)?;
++            }
++            this.complete_request(rq);
++
++            return Ok(());
++        }
++
+         #[cfg(CONFIG_BLK_DEV_ZONED)]
+         if this.zoned.enabled {
+             this.handle_zoned_command(&hw_data, &mut rq)?;
+@@ -814,15 +835,7 @@ fn queue_rq(
+ 
+             hw_data.lock().poll_queue.push_head(rq)?;
+         } else {
+-            match this.irq_mode {
+-                IRQMode::None => Self::end_request(rq),
+-                IRQMode::Soft => mq::Request::complete(rq.into()),
+-                IRQMode::Timer => {
+-                    OwnableRefCounted::into_shared(rq)
+-                        .start(this.completion_time)
+-                        .dismiss();
+-                }
+-            }
++            this.complete_request(rq);
+         }
+         Ok(())
+     }
+
+-- 
+2.51.2
+
+
 
