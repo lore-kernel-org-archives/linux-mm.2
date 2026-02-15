@@ -4,118 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4DCBE63F08
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 19:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A23E63F10
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 20:03:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C72E46B0005; Sun, 15 Feb 2026 14:42:16 -0500 (EST)
+	id 965C36B00A0; Sun, 15 Feb 2026 15:03:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4A7E6B009D; Sun, 15 Feb 2026 14:42:16 -0500 (EST)
+	id 8E8DE6B00A1; Sun, 15 Feb 2026 15:03:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4C776B009F; Sun, 15 Feb 2026 14:42:16 -0500 (EST)
+	id 7F42B6B00A2; Sun, 15 Feb 2026 15:03:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 994526B0005
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 14:42:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E4F91B4EE7
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:25:59 +0000 (UTC)
-X-FDA: 84447520038.22.B2D6EF3
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3675380008
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:25:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HcCK9SE5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 54CA46B00A0
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 15:03:58 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC534B7687
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:03:57 +0000 (UTC)
+X-FDA: 84447766914.27.758F266
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D065514000B
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:03:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K8q0AdeP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771185836; a=rsa-sha256;
+	cv=none;
+	b=cGEwYeRRq/oWOalZfxZVc9O2QF+f6FbE7iN7A/scEG75Hr1XtO/RO4vZg8cjja/rw5eaht
+	MlgzP0+w+gsR9GtOVfmfbrhkToaJzLj4Z/UxZJMp+ZisLxZ0jEA0Wu7Z8PDDa5iuMZdbz6
+	sHxIfT7kyxKWjZEBfw/NsTwEkVy/z30=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K8q0AdeP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771179957;
+	s=arc-20220608; t=1771185836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RoRxoyUYawYz0SvC4ZTIT9GVYnxJ51Bx8qMLynZ7mkY=;
-	b=H7BfUt8mlIeUGdM10Bdg58meHkgvhL09EsIMlDQ1EMvsQU9qzujGFNY8WKHlZzZ11yxI+L
-	67G+tULP+H5XsAWKqcHENiV7msa5nMt5EAQlJ+CThdDd11p8UWr7cB4LAvFjx5yIZGcmK4
-	bVN1ZgOpLTMOQ5EJEVz6XFfUuAiq5kI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771179957; a=rsa-sha256;
-	cv=none;
-	b=ZMp2uSdntB97BdigptwgHB3skYp5ocTn2Xd8qEjuGCRjtERw1sQNDiNITPRvJ7ew02N//N
-	hPz6FCx8GJtcWN6mnS0cZ9vpajdf2xqC6B0leyu8tXGDbeVVQqKw8T6Cmh7hEGPT45LBe4
-	4lonxREImvNACxu2X04jjOjwnAfijgc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HcCK9SE5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ad32708177so661215ad.1
-        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 10:25:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771179956; x=1771784756; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RoRxoyUYawYz0SvC4ZTIT9GVYnxJ51Bx8qMLynZ7mkY=;
-        b=HcCK9SE58rsESsJyYeOf1qs3zTTxQTrUIvOy6xU4KtML9eLcvhwMtKQ/es6oHj0VdC
-         wpjyH/mZsuXIuYVwfSOS4Uo+PYxCdyvlORIBEVCFt7sOE+qOaRsVJYo5f3RglcR3lUyN
-         RjoN9rdXh1lOH4UIGjUAUYBpzBj3w4D0imP1hSwT5aSnmz+xLDihz2BqG6jKHwu/xZM3
-         CcJuyo37/g74feB8Z90brBbbLtEmaJIIPVMUle5yYrlLqo898uiw1+6JlphZWq6pi+i/
-         LiRGlQzjxDB3RAF8tK71uT5GlDu5gGTrz9n27mWUvTKCFE42PfxjmegpCjoIm0Jtk7xo
-         qJwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771179956; x=1771784756;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RoRxoyUYawYz0SvC4ZTIT9GVYnxJ51Bx8qMLynZ7mkY=;
-        b=JUAudJKn9bJsUhbeM8hrmfG+AxkNAB/izqyf+tMMkUyhSLQSuXEI9/lH+4xkdpPhfO
-         MY8BqGVPyYfv6Yb9vrICL92OgCuNekNAVy5YA/fBDwXTWTFXubZk0+vbgR3gEQ6glo97
-         PNK14ZV5dk1NXkAxFFoRXydNcOYjKkdElvt4WpVpDCIZlgKoED1kshhd9bMudKLAbwP5
-         Jsd6sFqUHQzMjWWPpZkMjF9gJQMJAe8b6eHtSvgYrx8p+FmsUy/6E1A4U2qgCGwjPk2/
-         GIpjGAipbVTNPP2asJ3/DqUJiCWukOuTHQn26/XLGy1/5CXV4nqerCvQh0YwktTzxUn7
-         AQCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpOKkgCljzQVBRK5/tsnFVGhg9bQUwMXPOVTu3FPNvY8m1WP7UT4BmrHjj83mQx0ZrbPptRiAcMA==@kvack.org
-X-Gm-Message-State: AOJu0YyciQRcnjpysUx/CGUzQJQSxNdSunO36bE0PUMX9YudOd9YHT8g
-	U4YVht6fFZbbUlCitTVzyNJf8+iC6x/GYJJM19a+plFH6qlHFUBbJ3Tb
-X-Gm-Gg: AZuq6aLUO5SBLzbPBZy7Wna763ddef2SFgmma0omVuNO7OnCPjKUj4xkTGm3ULu7A9L
-	zIg4M8k0h46yIFg2rK0Uuhcg0tTiGrQiZ7XNJJmNAege/psw6gxzWMKbmYbhWC0ad8vsc6kolTJ
-	5N2fbdvpu9OXB7iWug9bMa4kPOlicoZ3yPi1ckhklXIFRJG17BwJVK8VfbqVxkiNYEGE7HUANMW
-	grxVf5lE/3Xf2/7B7bKYdTmjiBrdrbcvCXgt+tuT1Thd2vJG7P+NRmRiDhXe7o38WhMw3OQf6KI
-	LkNU+3WmmpLglTp1c58UbeUkR200RlMNJOiLVLMvTk9fAkUYpXQgg7T6p7yeAgVXOFnscgMBl7v
-	SPN7KgCy60Gi3iEG9nNXaDV3fshB1iPGL+JWnby088UyNBNX68X3KwxWnksPmnFnrpO45d0d5Pm
-	1lSQmCzlzp8TMnDjzgtqbyOs8mbJfha09CljcLzOuKLrj48UTZS8wDPbTdFA4=
-X-Received: by 2002:a17:903:3bad:b0:2a1:35df:2513 with SMTP id d9443c01a7336-2ab505555efmr82707105ad.17.1771179955980;
-        Sun, 15 Feb 2026 10:25:55 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35662f6bbe9sm17255584a91.12.2026.02.15.10.25.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Feb 2026 10:25:54 -0800 (PST)
-Date: Mon, 16 Feb 2026 02:25:48 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kasong@tencent.com, 
-	Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Carsten Grohmann <carstengrohmann@gmx.de>, linux-kernel@vger.kernel.org, 
-	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] mm, swap: speed up hibernation allocation and
- writeout
-Message-ID: <aZIMvN41isdR0JGK@KASONG-MC4>
-References: <20260215-hibernate-perf-v2-0-cf28c75b04b7@tencent.com>
- <20260215-hibernate-perf-v2-1-cf28c75b04b7@tencent.com>
- <20260215090236.b546ef526b9bb6315f7884b8@linux-foundation.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Wntg+o0ss5yE/MMQ9CftCE7vczYITvbfzWjqov/c+Rs=;
+	b=XZHfTasU98S+gS0Kw8un2WQ30Sd6rg/4PIiXlAPaj9fYqk01O0+eUDVoKVbqXkwDw4EIch
+	b7+e/TU7sU8fMHLJWf6NRqJlrI0/IEoFDY07TQlozafC0EjWhlptJPie1e+OrbFxUAWHqm
+	CktKvZqrm6hxAzMLs+uhYGp5503TluU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 98C5143AD3;
+	Sun, 15 Feb 2026 20:03:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F31C4CEF7;
+	Sun, 15 Feb 2026 20:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771185834;
+	bh=J3t/Dz+oED8t1uuEA1ZoRdXNWCBzjMMsc5X22A9qboM=;
+	h=From:Subject:Date:To:Cc:From;
+	b=K8q0AdePSZ0ZRnGYvwcPfgWhv+ETE7dpGUfjPae4FXj80cACogswmr7LupGSodPzy
+	 ACD5rSvn/6ySs3D9Yh/qTNxDlB9qO84Gtcr0yFzE1IZcOB7YPuLSSjqfzahBrw4D34
+	 xZszQCrAbRe7ntVA/SWunlPMSfzeYu/i9yWca5f88tYX6EXzZTAbns30pBz4XYAqXn
+	 1xbo3QioOIB3WvxjfdFkV5iXLcA1KhXTqEu7RUnQqXR0P81CBkkscxIJhM+W6//u7M
+	 v/B3/rlJaS9W2QFzg2gv0tBj3GnF/fDBe0FiGtjJnbvATJxwsMQ7+hTKoHZDwOeqRe
+	 6xjNqRnnujBuA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Subject: [PATCH 0/2] rust: pages that cannot be racy
+Date: Sun, 15 Feb 2026 21:03:29 +0100
+Message-Id: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260215090236.b546ef526b9bb6315f7884b8@linux-foundation.org>
-X-Rspamd-Queue-Id: 3675380008
-X-Stat-Signature: nwuu7zyfnyihkfftajqs7n6hfc5h3gc1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJImkmkC/02NOw7DIBBEr4K2DhFgQwRXiVxgWBIK/8C2Ilm+e
+ 1Zxk/KNZt4cULFkrODYAQX3XPM0Esgbg/D24wt5jsSghDJCSc1nT5mPMa/UrLwPjRGtQZtSBBr
+ NBVP+/ITP7uKCy0be9Qqh9xV5mIYhr47t5i4t/J85RldaNELzbczLhpyMXNkUonnoZNG6XbbQn
+ ecXe18HBbwAAAA=
+X-Change-ID: 20260215-page-additions-bc36046e9ffd
+To: Alice Ryhl <aliceryhl@google.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1592; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=J3t/Dz+oED8t1uuEA1ZoRdXNWCBzjMMsc5X22A9qboM=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpkiaTu168SUSLg+pWYFC54waDl4cp54u+mshlC
+ QrjDdTP9FSJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZImkwAKCRDhuBo+eShj
+ d+C3EACQBF0qgfiP2oREwlY7BugQ7tZqaslNUSoWwp1CyCFvXAV7pbejUVgl7PvL+C8uQ+sxtex
+ e8c9MQICKH47xTIE62zY5dRMgJeFTG2IdQQdhBVXOws9Hy3IbxejC6ePBt9oG+cwydMUiki5Xj9
+ SQl43WYdW0Nu9t/Rv5TFHT+0wnyTYUZiNWfs0F78NBsT7jNw52d24hpRWYpHPQ82HV0tFhBrU8l
+ iGuaKjt/IKuJvhmJYLX6GyoK+G80bYf14yf9JWrDERegsnoi5zek8GFVEvMQeK/MZFBJUh99quv
+ jlYKhB3eInjRcV0sJTzN8Wc61DCEFcbZEKKD+6972bU3hXJh6sb1gKluzRPCcTRqQeDobDgOJMq
+ b0txZu+XYTHiz6s3rwKs6QXqOko8hJN5T2wt43s7vW79BIzjzf++BFdvAV+8yw0m4WzRiNGfs4D
+ S6n70kdXAFsP6EzKzaezy6xftO1krGLlVtyIjAI8Q2HyrUV7KvRNjPm24sCwB4iiMDjA2h94eJ6
+ osk5lzMkrnPOSfdBkXkKCJut9aOEi++sIk4HEgxizHtNJ5os8KPmFn7rfObMhDsDtn6cnDBkkAs
+ cg7Mp98pH7Q2uNa5FogaYZS0lqvwSMZ9JGajDcntv0oAcq6VKfD74+WzB4/jnQjEOjV9hSK0xOa
+ rjcry05bh2GQGzg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771179957-895836
-X-HE-Meta: U2FsdGVkX19hviKlwjPYECnIdlL7gdc7U6E1PkhVwNAWXLxbkWAJxs3qAD4fmdTFGeoDv/XrHNxoQ4cbVDPjMT1fqs7b2uKSDu2Mglrmm89rWC0v/IB9i9RPE46DPe5V+ZRTwcLDCOBQgsMxE8JWt8Hhc75hgzku/DyC/8yml/k9KGcApXzhQyE5W5ArZBo1PnGIewU6QTR/rj/2VlojlSgUiqehSpJRLasC7aRk6jg9/0kftudSqlvzJNmcCOLH/A3JWRJEyUNfXDCNCfe+7nUGkj02TegUQT65T3EaiqGzwAyWMYCzlmodCQbNOfZTjJc2aerSIwzp8bU7oMqricIFbnC04ie2DjZO53SgpCOi+pzESmKG1jj0DBWYHRToFWs5tTAjnkt+WsVrkMUNdIB4OzjYld1gkPjMYwP3CQWMSdLKPT+K6kDTItM+k1FM8+utnizqpxvl60F0sXFnf2vEHxa6vAjjYb2gRGmOYkqunn3eXj1vplZ+oUPoohyahdTCwjPfLhBb3ztwG8ZQQdewb7HyAA14TidOKAxPYNqknMVdbtd43BLGk3Vr3FBAqwnoJtV2ufzT4abpRe4XcX6T4dZ70GBCu2JNvCgHeT8B4oooJpCIiUeeitKNYBSTCwpjkM6ut5vx0rWaxeabYySwPFEvWQDX612yO7lq3jdwdN6LItihZra8R8CzUe2GALzct9+UztXqt2XQNIGYcQb3WtY0AkQHLVnH+qXUL5BfMTOZVoJlu8D8dkHxLqFpcwqNwkknt10mLuCQtn1WUlmt4LfX/xanWDnxY0QoPkOjGmEsQdnz7K2IfWgmJ/Fp0VEutghLHUhNAx2oj9+JjKyp+8jBj588sbG9ifpvfteRrhyRH1JsOP3YFtsozFgm8gykWoT9e8vzSGA78xHGgyU4LQPjDbR1oFC2M4go+KcjeH2c+Ohd9OJC/GEJTExK/aWLMWBXlOn7Gc8mzT8
- kvnuhuNe
- 1dEKRFZyn4Ia5ggY6Cqm6+StC9hIffI7dSK4AnVVV8rrr3s3MwXTOvtGzywP0RfPUsLQ3nhJuLH8xARYuEFJP465dgaf4ULlS+ck8YOCNghfNh/EJxHAsWA5KIK4bBwyjfPYWp8odXFRqVesDIX9hilnlICt+Et9+5L8OeaYx8FhsGRaU5LmT1zV5iyOH/UHyT2QhuiKbD0qnFkJ7U5jbRW2jmEygbKj1ZWCghJWcUAL0JkyE1Thd4vdGMUNFH4ka0qZ5SteeW2WEDt44Q0SKCYjuEzn+ExLZSiql2RbIWBA6kEVVgOwujvuNH3JEyZLWY5NJEQ3g/0ybnQjIzDmIblM87h1S+x51ihTGdFmIu7ird7RzFFEDTPiS5h8yA9gmmvu8zmdTnHxyA2yxZIXCtQWlmGuwqAHytLvyRwxx8pDkSB9vgEXbwV1Ye0ee1s3PwkZkFAxQ0BPE+dM6dPx3g51t2SwFJ5/F3Wm1xEhJ5D9NDm4HWCOBg98QfgUx+Xuhp/XI2HqfSalMudiipwksnwogVliIOWIVVWe52KrAt2Cm1UU=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D065514000B
+X-Stat-Signature: jxdhsxgkyhq3detsoccei9cmzusi8wsc
+X-HE-Tag: 1771185835-944144
+X-HE-Meta: U2FsdGVkX18ZTWJ6Uo84Zcw3HX2XPTtdDrMzquIOJpyIHaHEPLZzkkZjq076TLgyoP88Gg30AmLjdstyOZABSEtT/kmckUNfGHcq+5HUiNJvGuTal4A7iri4E/WIYMxzpHoAKwPHAFdFwf9SRm+bLTn45ZuN2hsx8Dp/QRM8/yT4MoodGyu+PojuyU7XDMVIB+HSYg1RFgo76rAhfqs40IFosYZtIRclTEAAF4z1G3AKNd/MaVJUQELyZeASAuUAyILIcjI6IC72s9FWsbrtv2teNeOefblFT2So474GtUneoXvUU4uUmOQu+Tdb77j+m53rmKqCpY44BHHKu/rmfWF1+/6WX3N1gglNl8VjWFEDwgdiJjFlzEW/xsxy8d1Udx58Omp/IfEhenvPPv/9Brbs2kHb5Q5rpieg5HcjOhkFkwMTHZgfHhH6gboGyErztS++eB621UgU4uVb8AiYAiyIOL2ks9kiz4AR/6Txr1Gc1TPJvVcHABnKYeTUR8FtVBc7vAYETu2SX3mDcMofSosd3TPRk5yZ/JtHxI7rARJgTx4Ja9VCR0p1OmvW/FjxQ9nEUvtk7mz/wEeYcyvR4ewyQJKv1Xf15SQpRjFgdTftHUeobNui6K1Dub4Ct2jKmTDUlUlrg0FU1A/USucw3gWCd4ZmB2aKS6Jv4ayH7p8uxHUXb2igP69NR7c15gjaRBKSA39wE0a9vtZxgz4SyTe69U9jfU2eRr3CZ9J8oW9HwarDGeoYONXi+VQB6mpVjk9A9GGD3LL84RTvppg2Mm82NA2JmK1zpaUIjMtkhmqdZBSPXIHPV72XOCwqaSg9b8B+gymFWqA+m8ELiYEJ3DtKBHCOQSkp1/8c5i+atpAw9St6LSVZKyWFzCvxR8wfV8bT+oZJlsy3w02RrIOaK3O+XIm7GnFD8kl1sUnlyYLqO/XEm79MVe/nCrmNRRIclB9mnwcu1rMHpwtZAVN
+ 9HohkYvh
+ vLtNoAJdCTudJbNcDlQ8T0qjPUMrno4T5FS9huuIxMa3s6Vr7xx6zNhSpqwwz0mRDxs7YoxDkKXckLgf2oyDX+cnUdVq/ZEs+5uigIVj/6Bdn3I6aoS8rEZPIHN4yd5TIrhFXErdAjFEvDmxpXqW4G0Zykj7D02O8hJA1TTCWSuFIDWdrL8BFxCEVq3HkOzbFDloIrPg+PxIpyYgkKY4Sjq5SqMeOsXIZ1649StVDSqUZltJc0pD/1LtHtR27K+eBZp8ycqQtqN8Y6Bb6zZZLMiHS1w3hMdF5HUrlj9dssP4yxJnmwjkr2SVTsbtj9P5aDAnd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,40 +118,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 15, 2026 at 09:02:36AM +0800, Andrew Morton wrote:
-> On Sun, 15 Feb 2026 19:15:05 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
-> 
-> > Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-> > hibernation has been using the swap slot slow allocation path for
-> > simplification, which turns out might cause regression for some
-> > devices because the allocator now rotates clusters too often, leading to
-> > slower allocation and more random distribution of data.
-> > 
-> > Fast allocation is not complex, so implement hibernation support as
-> > well.
-> > 
-> > And reduce the indent of the code too, while at it. It doesn't have to
-> > check the device flag, as the allocator will also check the device flag
-> > and refuse to allocate if the device is not writable.
-> > 
-> > Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-> > performance is several times better [1]:
-> > 6.19:               324 seconds
-> > After this series:  35 seconds
-> 
-> 10x is a lot, so I think we should offer this to -stable kernels.
-> 
-> If you agree, could you please prepare a more backportable fix? 
-> Something minimal, separated from the [2/2] cleanup and without the
-> incidental whitespace alteration?
+Some drivers might want to use pages for data storage in the same way
+one would use an array of u8. The current page cannot be used for this
+purpose, as it provides no guarantees for how it is accessed.
 
-Hi Andrew,
+This series adds a newtype around `Page` with an additional invariant
+that the data of the page does not incur races. This makes it possible
+to treat the page as a regular array and even obtain a slice into the
+page.
 
-I think this is already very close to minimal. But I can send a v3 to
-split the indention change in a standalone patch, just to reduce the
-LOC changed for stable backport.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Andreas Hindborg (2):
+      rust: page: add `SafePage` for race-free page access
+      rust: page: add method to copy data between safe pages
 
-I'll also cc stable too. I think we only need to fix for 6.18 and
-6.19 right? They will still need manual conflict resolving even
-without the indention change. But I can help with that.
+ rust/kernel/page.rs | 102 ++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 95 insertions(+), 7 deletions(-)
+---
+base-commit: e9ec05addd1a067fc7cb218f20ecdc1b1b0898c0
+change-id: 20260215-page-additions-bc36046e9ffd
+prerequisite-change-id: 20250305-unique-ref-29fcd675f9e9:v14
+prerequisite-patch-id: cd414158ad8a77616cf5e20f01212929fe4a9b4d
+prerequisite-patch-id: ff052142fd3b16d7190b0ad2fb79cc39813e49fd
+prerequisite-patch-id: 4da98d17bef5f809a9caad013bab670f661c8d4e
+prerequisite-patch-id: a31185fe1abbf553377d6d695c5d206eebc84358
+prerequisite-patch-id: 8074279c3569e7997f7a993a8ecac7b977b4509a
+prerequisite-patch-id: 541dba7938ba874f8d17fee05a36b1cd9fa2c4d7
+prerequisite-patch-id: b7eb6740359975d4d781fbd4f684bc5a8ec277f1
+prerequisite-patch-id: d83fb5f310b84492bdf44eeec0f9d3d3146a73f5
+prerequisite-patch-id: 77308c47591e44920a3bc0279a4d9013035fcac3
+
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
 
