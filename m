@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C9F9E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:15:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89628E63F25
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:15:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7A06B00E5; Sun, 15 Feb 2026 18:53:22 -0500 (EST)
+	id 3E2766B00A7; Sun, 15 Feb 2026 18:56:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29B756B00F7; Sun, 15 Feb 2026 18:53:22 -0500 (EST)
+	id 38CEC6B011F; Sun, 15 Feb 2026 18:56:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 193D36B010A; Sun, 15 Feb 2026 18:53:22 -0500 (EST)
+	id 281626B0120; Sun, 15 Feb 2026 18:56:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF05E6B00E5
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:52:21 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3966D1B4F30
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:49 +0000 (UTC)
-X-FDA: 84448323498.27.94F311F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with SMTP id 3BDCE6B011F
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:56:24 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 771AB1A0B89
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:43 +0000 (UTC)
+X-FDA: 84448325766.13.60D5E5B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 68510180006
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Az8alV7B;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 94D9B20002
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:41 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OWNqkVSp;
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199087;
+	s=arc-20220608; t=1771199141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CwDx9Xp8qWu2Gf93I2GF4fRt5pKx2fknEsacoTBEo+U=;
-	b=fQm4XSAJsTixN5hjGh2zJwEJJyV4kziUxoKsoZPjpNtnXiUIMvO34aAhhwb/7AxKlu025w
-	xm1ImYCw/smzPAhGPMxanbnkY/pBL8VIscgX/RM30XEeOsHd37xSEdzgi/kV1v9YN0plN6
-	TmDXavOBNU/Fbl0M1GRgC+3LIfSiFck=
+	bh=cU9n8VtrKWF/Ned4VA7bLx59vaXoDeVVB97sLGd4KcE=;
+	b=cIJZxo7DClVmYA0shu6s15wFCOyA3Yiq8D/eocWB9Ctj4SYTLNQc8L12tP8CLTrPE5QX+b
+	f0tJoAC5lMWuBw2g/Glr8I2/sNljv6c/BiloKab8QvN+OO66CdgZtlXihLSIBMEIbsWLbu
+	mSkIf40jTY3GTyuZkYXAUTtFPRPZTFU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Az8alV7B;
-	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OWNqkVSp;
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199087; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199141; a=rsa-sha256;
 	cv=none;
-	b=vaRjphagH/YD6eu/qu1o8REmNwOThp82Eg+tq/miSE6sK7MRMtSEHcXQ41DfQGeEZG4Y9X
-	XzquRjltMibY0oDVFBJ95LJ82YE+OP0xgDSWq3w/I0ubmbHNb6FMmfEWSWsO9qbc+yCtcA
-	OjLgdICsq5wJQK2HNcCQbHaf8yDIC38=
+	b=d/Mrn+Ypl1rFcjEvxRGRMFBKNmH0Xo8n5vllrm6hcDRZvPc3hqOyk6XwcBevjLkAPfEPEw
+	Lp5UIkRocVNSu0CBBww+N3kO/F+mB6Kdek5eBc/VHR3etk3hY/MY0uoeBfK6mjXEQl8ZzL
+	hSCSb3V9TvplFk5OxPPi7wDemQwjRiw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99DEE40E4D;
-	Sun, 15 Feb 2026 23:44:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412F1C4CEF7;
-	Sun, 15 Feb 2026 23:44:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BEEDC419FF;
+	Sun, 15 Feb 2026 23:45:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6497AC4CEF7;
+	Sun, 15 Feb 2026 23:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199086;
-	bh=3rrDHSRDSri7M7s71IQjuy8vdWUBLRb6Dxl+38bP14w=;
+	s=k20201202; t=1771199140;
+	bh=iHJebs10G3KEuSKPd64YYQzEozbVohCdh4WUvdT+gdA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Az8alV7BraHRqfL7hqn1+NA0R7pNI58SQGJvj5divghBndBEdJ7+CWNP9YYTwuCvW
-	 xnR+vaaQmP1sIsn8x8tjLpNvnDCbh56EmdBr9xaqP1yY5IQoHoFDgDz3r5JQEyRcqZ
-	 XSeGPCJCBW3BEsaYvNBylzzVvEufatAxXeDpNIBCjdUounvU4KAEGOWq21FtrYyGqm
-	 p/N1/k0Us5fBVlmokfwPcvqXqLxdiA6eqDwKxVlT6SCwd6XmlW+4782dpmicVQ6lp/
-	 lbHcEgBGjOKlEpwOLg4XrnDQzzD+HSCKGcWy6uyuBekezyCnwiy5+VCdAFP7/5IsMZ
-	 OxCBFb8nOKloQ==
+	b=OWNqkVSpuHPfeqJ1obG9KjUAge7I1l0KH3Bd4vcO7D26r2YjI5dQDpC664biAVsof
+	 LFGcoc+uoSB3f4UWDWN86wMaA+4RLjrMK04KxYVHi3HbR/g1M2+q6dJsxzwsAmUXf0
+	 MkdCMQfCPZCXbesYKg53FrD3gFepV53oCsnpLSVUlJj1CppafFHN3uj7GrdOBt7HWz
+	 gnz5pKgtMyrqfBnP12nE/1Iul/ci552vsJvYYQAyjIFfwPXI2JLXzPhnxLqcng+qQB
+	 mvptHf9cmJkdD+nYS69XoZtNMyqtb+EQ73fqh0HFSZdctdRHsTaTiX549NW1gItkDz
+	 A8JUVDBoPx4Rg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:00 +0100
-Subject: [PATCH 13/79] block: rnull: add memory backing
+Date: Mon, 16 Feb 2026 00:35:51 +0100
+Subject: [PATCH 64/79] block: rust: add an abstraction for `struct rq_list`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-13-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-64-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9784; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=3rrDHSRDSri7M7s71IQjuy8vdWUBLRb6Dxl+38bP14w=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgnM2ycmnCqrRa591Gzsguln6y/lmOkye/8U
- u03WEeU+5iJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYJwAKCRDhuBo+eShj
- dzQDD/4+t9unn5Mhb8F+eGinmC5GX+e4Vgm8WLHicT77yJovXDieWRqEZcKzenYhQQpF44ENEuG
- 5RUNKWiHM3Ld1h8Xfhrhn6KEMyfdJXRwRMLVtxqF29PL7pFggp3FrR1o4YC9j1Ohl3XUXCCBUMQ
- KjoN8T4omTMpp7P24ryCxPy9xhOPpZhZIGlQXkhbhCsjefas33oC9eUHu0B8E/XKuW06dOZ4ir+
- nZW1q0FvtPphCJ02Bfham9zg2LyAz3SZCnSMUaKXForaWUtnF/JJBrVNnEPxvk7oylk7/5lXDgr
- wgjrZ9chQDAEujX8ngpxIyNdKJunI6tUkr6PBJIJxbAZsLoqBZ/Sbtxee1g9KGqw4idw/MKU6bs
- cbu/ZoAjf970wlAdt/zgJNu3VRKt0JWQ90UuiHNwZSUyNiVLieslklWD+cr6EPQJHFAqS06xvK8
- S46rxQHj7DXbSZbYaRBaBsTCcGssCHJDwJIFgAOLt5NLs4UzK7RfNCTjTqSGP+ZBowoG0qsLCQo
- L//dMYspPRPLKIrl1S51xt42j1hdnbd/hGbDWnltSU3K2DCbVyoL0oBbD323LGMJDe3mZQpMID0
- ND4pY6RuGedkc/qQkHVe58XTsPKi7+MNoTd2F+u3n83cy9hhPVuJxS6KpYJUHFiHl2Pe/Mdjw2d
- /aEyUyu1Iq58/AA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6135; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=iHJebs10G3KEuSKPd64YYQzEozbVohCdh4WUvdT+gdA=;
+ b=kA0DAAoB4bgaPnkoY3cByyZiAGmSWFWjeowTsFEiINSqulAD21O5tLcZBRTLEu7+cvl0taWOq
+ YkCMwQAAQoAHRYhBBLB+UdWv3wqFdbAEuG4Gj55KGN3BQJpklhVAAoJEOG4Gj55KGN3uDQQAK5S
+ TJnyt6251s9+e3u70mSgIM2EB4xbkhZPSh2nxTo3lEp8w82guHRW0t/howvgJ3nj9a6w4XCwEb+
+ AV1gxbGx40380Hc0c3wU9N+z4qG5PXCNGGOHSd+OEnl5gVXZnZZtbbVSveZ79khqvzcTJ3gz7d0
+ 7UIWol335/lElOkzzPm/gSQKxUSKOcIt2H+VozTRfqpok96aJx89/jI9g7tI4goDwEh00tbcchK
+ PpHQ0APkpbh09Kb81cZ0I/SXBMWttrK3oF3P8eio0mjOLmq7Eh2Dhvs1kB1OZd3LbsUHXb0xDCa
+ WJEanZ2sRkFI8QAVA5/6loJIUgo1joWAaMu2oUIbvIp5FAlKy2p/crJIYU+hdKE7pm8O+VNmqps
+ rW7N1XxuiUFlFp2SQwlKbxmnshbAz7OvnLl1LvvYfdfv7BQMCIzjBRfdExGQl28u6kCiN2o8YDS
+ dDkxJ+d/dydjryyzj7Mr444ULi3Cl73k+OAm09roYSf9gxMKYBkO2gExZsIg4B0WqdUA5GUkYXi
+ cJn5wgLNpae6d8gxQ7y8KXFpa87YWXO2bxdWn3efgB/cERasAm6EG5izcBgz/WEFLSksxZJsS79
+ 0TL1iD3sJOhx1/dvbZBCVV3oHa/xp6OnRG/JFWt31mFFA0+/9upKGkRAW0okHMgaq2tWDEcgTy1
+ Cv3+C
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Stat-Signature: j5rgmero6moindbt6wn8g9ft1xz5yeim
+X-Rspamd-Server: rspam12
+X-Stat-Signature: asa13aq8h9i3xkogh16sub4qd8ho6rrx
+X-Rspamd-Queue-Id: 94D9B20002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68510180006
-X-HE-Tag: 1771199087-203454
-X-HE-Meta: U2FsdGVkX19j3UFHiOioVmx8n2idJH6gxUcXm88orSpbtOXB7LGF2WCHdbyTF3U45w5EvlK2KBQ8mcUz3ltrJW603r56tOmomeMJXgJD8ymn5q/BCZs4yauZzBFkIZJeoIYRqgkbVlrxSOoseis+FI42h8SRBOkW63yT+MJRExBK3ufA0FPMIljafZ12bvtN9ITanHyz12p++1eG5ItdXBBL0+Qppyp9UOHIG/A42QamgRZg8zCMTGdyQug6FzcgTsOyMYCuA2PEnFkpW/GQkwKCGRhs+8XD4IfJUsdpFFWXtteS67MzusLGP79bP7bMBjiAerDa9T6zdkim0eQ3l/Ugxkr35eCJMJWreGDMVwXjJkHo7Jfvy7qCOAJyBafeeKmHmwmjnHvAB8xOXC2qBs9r5mqI1SbAcYmzEAeqxrhWMtMzWplZn63Xara5G+3+Q72R7XoH/PpGy65UQK23pmFTlp6R9wpP+FkN+It91rlBZ3WiKU2qu5Ye+aVZFAeziuLm2DHxf9v7ujZD8fe3SSNrjLPM2yQtJxpUMjomD5CeJxECilkfZTxeeN2pX2DaAX96u6J3MRDPiBKn57A8jTWBH5UzmEpURAH9n5L/w1tzg8KPxDS48oIgBaMA6z2YMmjh3+/BdVgL+pQ6PsoAna9MyKnr3IG5Ld5sIvCvqUuRjCiM3kpMzPVtt8TEHyO4AglINOFVxtFTv+p1ADe63P4c4MyZXqwBfOunPnJJ4IUEIaijnPZpfQUoRuawLI5k/gTkeVkAvmPditbiuwyoctr823hpNYDDeZVPBN4XTLjMiXDtVZeIFt/pTDazrRU7jG0yS8elDr6R2IxY1eBpixolneAjJdBIUzl+87/rz0j7IzWBEk6XfG+Pdw5uWVihiejbJLntL7LT3E/rsFw5wBKLwNWwuRgapqz6QuiGpafmEjy8h8+QCTkGoOXMejN60xMF9XSkmS7oswCSGDv
- Lhq3teT8
- AoEGxwI2qe77vjpPB7shxgecwywh3kuzv9q+FQWGMD72OvQJE4k10FnXN8S+xYNrOT3xF1rzlW3ARRazB/vYF36lFyFx7PrTa1d3N49xpBScBLEF/KmzaAX+MxOpW144cU8WWrruF53r+PKQpP9VUL1+f3I5hyfrgGIp1yNKtv9rqSlpioSCoBlfDvBMB00BsAsPg6PEuIbeGZ0sLCPjf8nD7pWdr0g798Z/a3wTRy1SoOmkjLG6MQmViBn1PUd0GYQpJa2QfA9SdkljghHKVUpr4O6JOcnIv++u/s4juzBc4dZrZPkW0uWCB4HAQEVNuAiiw
+X-HE-Tag: 1771199141-371182
+X-HE-Meta: U2FsdGVkX1+kYGaXDEOCnKiaxysAaRI6TgnGJQ8ZZLHphVA5x5SuDUpRvmC7TvcIK/scnlrHWehSWLjH+6roPEGpi0ASyNQooy1IZsIVcJ82KSdr1E28nYt43ww3duu+BwufwqwmGMzfUFBFfoziebm92g7STfm3mt2FuxF8OdLVidAJcNtAPfEUxk5o3OEOnN5pRId4yODQ3XiK8EIvMhyYNr52B49/dgave1oYQWxvtP9nmKVY4EU4KWPGBXPdc+JtQwRHgBdR/ytHtOx0bkzNsyBSE/L+Ay9G+OiDwYjcagS4Xcp6NRr35k5WazgoplLycXwQK2JKsqLc788BI7bvijZM041uotj/LwIOVKt05ZX1dbDmvGAkI2QOjsK1sdyVxDry6UYBSJh1nas1BOHbxedc4eGdAIhbpfKwbLawdiXyo3uoJkQvYnYlK+hC6sTjV7RI7oA1p16EKyr88jp/YTkCFNv4PxxdQRDWcg/zIb7YdrwoLenU7OOuxyJOs0ZS9XVG0xayQUmJpIbhE2QN9k8BuS84azaXN6NT6sjq04Ej2RH6RINCvLI1p+6eOuADELi7HoTkmaJiewZb+hAa/myERxSAp5E6RwX6LozZO4/CsohYh5iFulszHObwc97q59xMAgXQMf5QOVxk/EWR4F8xYMBtS6CYUk4JtalTOFI6mOm6p84LQIkgZAT9wBAJR7s0OwHvJpJprlGWhBLknCZkDq4dFAOvKs5qsFDxM+EafdM/Q/aYf+VZusfDyTRu9J4MCT4WDrbsW7vuYxmyGVT9WpzvUt53SN3oFGKJATkrTrIpvHYN2tu5iJnt7eVaNDnnHpyRcfA25i/Ax3jNP6ea6Mo7r6wrjy52fJOUmmQTnNc3yRQKMMcVufNiitv6gxm+4ZIF78TxbEk6gWD4HdPUg5q3uBrJ7Ua67CDvrMxOzXF3KCnfWWkhWJ3TY8Q+PmPaQCE8xhv86YV
+ aF1Axhh8
+ 9f7OKF8Jx/MQzQS3AdatRY2kixMzOmlqjhq193LUD3pE+nobnWhRd3btAc2yI7ghbTfuigDwwuBbuc29pGtn3qR8t/CIuvsNsjE28pNFT88fIIiZd48NtDO8+rP81GmreoMg3Yf9CKw0o24vL1y4T0Yx0EM5oLZsPPwMsAc68rR51JPSosLObmfJRmHPjoJv91/29Xi6/S7wr5k+OUQ1qVKTJo528mvhxQIaHq2bqvYNDxN3I+KN2gAtzcRvTggfrjs8GFRuSdLtRrT+qkQpGnPpcQ8P/22UwW7xxssT6z59A4D8E6mzSfvOxWnsMuN6uXybLuZ9Uq34cadzuQVkPRCTcMIJHa+S9qwnyk26dGptPyN4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,310 +121,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add memory backing to the rust null block driver. This implementation will
-always allocate a page on write, even though a page backing the written
-sector is already allocated, in which case the page will be released again.
-A later patch will fix this inefficiency.
+Add the `RequestList` type as a safe wrapper around the C `struct
+rq_list`. This type provides methods to iterate over and manipulate
+lists of block requests, which is needed for implementing the
+`queue_rqs` callback.
+
+The abstraction includes methods for popping requests from the list,
+checking if the list is empty, and peeking at the head request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |  37 +++++++++++-
- drivers/block/rnull/rnull.rs    | 125 ++++++++++++++++++++++++++++++++++------
- 2 files changed, 144 insertions(+), 18 deletions(-)
+ rust/helpers/blk.c                   |  26 ++++++++
+ rust/kernel/block/mq.rs              |   2 +
+ rust/kernel/block/mq/request_list.rs | 113 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 141 insertions(+)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 7952f41f42bfd..b5dc30c5d3e20 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -59,7 +59,7 @@ impl AttributeOperations<0> for Config {
- 
-     fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-         let mut writer = kernel::str::Formatter::new(page);
--        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec\n")?;
-+        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec,memory_backed\n")?;
-         Ok(writer.bytes_written())
-     }
- }
-@@ -83,6 +83,7 @@ fn make_group(
-                 size: 3,
-                 irqmode: 4,
-                 completion_nsec: 5,
-+                memory_backed: 6,
-             ],
-         };
- 
-@@ -100,6 +101,7 @@ fn make_group(
-                     irq_mode: IRQMode::None,
-                     completion_time: time::Delta::ZERO,
-                     name: name.try_into()?,
-+                    memory_backed: false,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -154,6 +156,7 @@ struct DeviceConfigInner {
-     irq_mode: IRQMode,
-     completion_time: time::Delta,
-     disk: Option<GenDisk<NullBlkDevice>>,
-+    memory_backed: bool,
- }
- 
- #[vtable]
-@@ -184,6 +187,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 guard.capacity_mib,
-                 guard.irq_mode,
-                 guard.completion_time,
-+                guard.memory_backed,
-             )?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -209,3 +213,34 @@ fn from_str(s: &str) -> Result<Self> {
-         value.try_into()
-     }
+diff --git a/rust/helpers/blk.c b/rust/helpers/blk.c
+index 91b72131a04cd..0db567dfc5d53 100644
+--- a/rust/helpers/blk.c
++++ b/rust/helpers/blk.c
+@@ -27,3 +27,29 @@ bool rust_helper_blk_mq_add_to_batch(struct request *req,
+ {
+ 	return blk_mq_add_to_batch(req, iob, is_error, complete);
  }
 +
-+#[vtable]
-+impl configfs::AttributeOperations<6> for DeviceConfig {
-+    type Data = DeviceConfig;
-+
-+    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+        let mut writer = kernel::str::Formatter::new(page);
-+
-+        if this.data.lock().memory_backed {
-+            writer.write_fmt(fmt!("1\n"))?;
-+        } else {
-+            writer.write_fmt(fmt!("0\n"))?;
-+        }
-+
-+        Ok(writer.bytes_written())
-+    }
-+
-+    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-+        if this.data.lock().powered {
-+            return Err(EBUSY);
-+        }
-+
-+        this.data.lock().memory_backed = core::str::from_utf8(page)?
-+            .trim()
-+            .parse::<u8>()
-+            .map_err(|_| kernel::error::code::EINVAL)?
-+            != 0;
-+
-+        Ok(())
-+    }
++__rust_helper struct request *rust_helper_rq_list_pop(struct rq_list *rl)
++{
++	return rq_list_pop(rl);
 +}
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 33c1144550a0e..a1156a368c467 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -6,8 +6,10 @@
++
++__rust_helper int rust_helper_rq_list_empty(const struct rq_list *rl)
++{
++	return rq_list_empty(rl);
++}
++
++__rust_helper void rust_helper_rq_list_add_tail(struct rq_list *rl,
++						struct request *rq)
++{
++	rq_list_add_tail(rl, rq);
++}
++
++__rust_helper void rust_helper_rq_list_init(struct rq_list *rl)
++{
++	rq_list_init(rl);
++}
++
++__rust_helper struct request *rust_helper_rq_list_peek(struct rq_list *rl)
++{
++	return rq_list_peek(rl);
++}
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index b36112f7b22b9..786c32f2cb56c 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -129,6 +129,7 @@
+ pub mod gen_disk;
+ mod operations;
+ mod request;
++mod request_list;
+ mod request_queue;
+ pub mod tag_set;
  
- use configfs::IRQMode;
- use kernel::{
-+    bindings,
-     block::{
-         self,
-+        bio::Segment,
-         mq::{
-             self,
-             gen_disk::{
-@@ -19,15 +21,12 @@
-         },
-     },
-     error::Result,
--    new_mutex,
-+    new_mutex, new_xarray,
-+    page::SafePage,
-     pr_info,
-     prelude::*,
-     str::CString,
--    sync::{
--        aref::ARef,
--        Arc,
--        Mutex, //
--    },
-+    sync::{aref::ARef, Arc, Mutex},
-     time::{
-         hrtimer::{
-             HrTimerCallback,
-@@ -40,7 +39,8 @@
-     types::{
-         OwnableRefCounted,
-         Owned, //
--    }, //
-+    },
-+    xarray::XArray,
- };
- use pin_init::PinInit;
- 
-@@ -76,6 +76,10 @@
-             default: 10_000,
-             description:  "Time in ns to complete a request in hardware. Default: 10,000ns",
-         },
-+        memory_backed: u8 {
-+            default: 0,
-+            description: "Create a memory-backed block device. 0-false, 1-true. Default: 0",
-+        },
-     },
- }
- 
-@@ -105,6 +109,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     *module_parameters::gb.value() * 1024,
-                     (*module_parameters::irqmode.value()).try_into()?,
-                     Delta::from_nanos(completion_time),
-+                    *module_parameters::memory_backed.value() != 0,
-                 )?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -129,17 +134,23 @@ fn new(
-         capacity_mib: u64,
-         irq_mode: IRQMode,
-         completion_time: Delta,
-+        memory_backed: bool,
-     ) -> Result<GenDisk<Self>> {
--        let tagset = Arc::pin_init(
--            TagSet::new(1, 256, 1, mq::tag_set::Flags::default()),
--            GFP_KERNEL,
--        )?;
-+        let flags = if memory_backed {
-+            mq::tag_set::Flag::Blocking.into()
-+        } else {
-+            mq::tag_set::Flags::default()
+@@ -141,6 +142,7 @@
+ pub use request::IdleRequest;
+ pub use request::Request;
+ pub use request::RequestTimerHandle;
++pub use request_list::RequestList;
+ pub use request_queue::RequestQueue;
+ pub use tag_set::QueueType;
+ pub use tag_set::TagSet;
+diff --git a/rust/kernel/block/mq/request_list.rs b/rust/kernel/block/mq/request_list.rs
+new file mode 100644
+index 0000000000000..60284d9ef6c9c
+--- /dev/null
++++ b/rust/kernel/block/mq/request_list.rs
+@@ -0,0 +1,113 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use core::marker::PhantomData;
++
++use crate::{owned::Owned, types::Opaque};
++
++use super::{IdleRequest, Operations};
++
++/// A list of [`Request`].
++///
++/// # INVARIANTS
++///
++/// - `self.inner` is always a valid list, meaning the `next` and `prev`
++///   pointers point to valid requests, or are both null.
++/// - All requests in the list are valid for use as `IdleRequest<T>`.
++#[repr(transparent)]
++pub struct RequestList<T: Operations> {
++    inner: Opaque<bindings::rq_list>,
++    _p: PhantomData<T>,
++}
++
++impl<T: Operations> RequestList<T> {
++    /// Create a new [`RequestList`].
++    pub fn new() -> Self {
++        let this = Self {
++            inner: Opaque::zeroed(),
++            _p: PhantomData,
 +        };
 +
-+        let tagset = Arc::pin_init(TagSet::new(1, 256, 1, flags), GFP_KERNEL)?;
- 
--        let queue_data = Box::new(
--            QueueData {
-+        let queue_data = Box::pin_init(
-+            pin_init!(QueueData {
-+                tree <- new_xarray!(kernel::xarray::AllocKind::Alloc),
-                 irq_mode,
-                 completion_time,
--            },
-+                memory_backed,
-+            }),
-             GFP_KERNEL,
-         )?;
- 
-@@ -150,11 +161,72 @@ fn new(
-             .rotational(rotational)
-             .build(fmt!("{}", name.to_str()?), tagset, queue_data)
-     }
++        // NOTE: We are actually good to go, but we call the C initializer for forward
++        // compatibility.
++        // SAFETY: `this.inner` is a valid allocation for use as `bindings::rq_list!.
++        unsafe { bindings::rq_list_init(this.inner.get()) }
 +
-+    #[inline(always)]
-+    fn write(tree: &Tree, mut sector: usize, mut segment: Segment<'_>) -> Result {
-+        while !segment.is_empty() {
-+            let page = SafePage::alloc_page(GFP_NOIO)?;
-+            let mut tree = tree.lock();
-+
-+            let page_idx = sector >> block::PAGE_SECTORS_SHIFT;
-+
-+            let page = if let Some(page) = tree.get_mut(page_idx) {
-+                page
-+            } else {
-+                tree.store(page_idx, page, GFP_NOIO)?;
-+                tree.get_mut(page_idx).unwrap()
-+            };
-+
-+            let page_offset = (sector & block::SECTOR_MASK as usize) << block::SECTOR_SHIFT;
-+            sector += segment.copy_to_page(page, page_offset) >> block::SECTOR_SHIFT;
-+        }
-+        Ok(())
++        //INVARIANT: `self.inner` was initialized above and is empty.
++        this
 +    }
 +
-+    #[inline(always)]
-+    fn read(tree: &Tree, mut sector: usize, mut segment: Segment<'_>) -> Result {
-+        let tree = tree.lock();
-+
-+        while !segment.is_empty() {
-+            let idx = sector >> block::PAGE_SECTORS_SHIFT;
-+
-+            if let Some(page) = tree.get(idx) {
-+                let page_offset = (sector & block::SECTOR_MASK as usize) << block::SECTOR_SHIFT;
-+                sector += segment.copy_from_page(page, page_offset) >> block::SECTOR_SHIFT;
-+            } else {
-+                sector += segment.zero_page() >> block::SECTOR_SHIFT;
-+            }
-+        }
-+
-+        Ok(())
++    /// Create a mutable reference to a [`RequestList`] from a raw pointer.
++    ///
++    /// # SAFETY
++    /// - The list pointed to by `ptr` must satisfy the invariants of `Self`.
++    /// - The list pointed to by `ptr` must remain valid for use as a mutable reference for the
++    ///   duration of `'a`.
++    pub unsafe fn from_raw<'a>(ptr: *mut bindings::rq_list) -> &'a mut Self {
++        // SAFETY:
++        // - RequestList is transparent.
++        // - By function safety requirements, `ptr` is valid for us as a mutable reference.
++        unsafe { &mut (*ptr.cast()) }
 +    }
 +
-+    #[inline(never)]
-+    fn transfer(
-+        command: bindings::req_op,
-+        tree: &Tree,
-+        sector: usize,
-+        segment: Segment<'_>,
-+    ) -> Result {
-+        match command {
-+            bindings::req_op_REQ_OP_WRITE => Self::write(tree, sector, segment)?,
-+            bindings::req_op_REQ_OP_READ => Self::read(tree, sector, segment)?,
-+            _ => (),
-+        }
-+        Ok(())
++    /// Check if the list is empty.
++    pub fn empty(&self) -> bool {
++        // SAFETY: By type invariant, self.inner is valid.
++        let ret = unsafe { bindings::rq_list_empty(self.inner.get()) };
++        ret != 0
 +    }
- }
- 
-+type TreeNode = Owned<SafePage>;
-+type Tree = XArray<TreeNode>;
 +
-+#[pin_data]
- struct QueueData {
-+    #[pin]
-+    tree: Tree,
-     irq_mode: IRQMode,
-     completion_time: Delta,
-+    memory_backed: bool,
- }
- 
- #[pin_data]
-@@ -184,7 +256,7 @@ impl HasHrTimer<Self> for Pdu {
- 
- #[vtable]
- impl Operations for NullBlkDevice {
--    type QueueData = KBox<QueueData>;
-+    type QueueData = Pin<KBox<QueueData>>;
-     type RequestData = Pdu;
- 
-     fn new_request_data() -> impl PinInit<Self::RequestData> {
-@@ -194,7 +266,26 @@ fn new_request_data() -> impl PinInit<Self::RequestData> {
-     }
- 
-     #[inline(always)]
--    fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
-+    fn queue_rq(
-+        queue_data: Pin<&QueueData>,
-+        mut rq: Owned<mq::Request<Self>>,
-+        _is_last: bool,
-+    ) -> Result {
-+        if queue_data.memory_backed {
-+            let tree = &queue_data.tree;
-+            let command = rq.command();
-+            let mut sector = rq.sector();
++    /// Pop a request from the list.
++    ///
++    /// Returns [`None`] if the list is empty.
++    pub fn pop(&mut self) -> Option<Owned<IdleRequest<T>>> {
++        // SAFETY: By type invariant `self.inner` is a valid list.
++        let ptr = unsafe { bindings::rq_list_pop(self.inner.get()) };
 +
-+            for bio in rq.bio_iter_mut() {
-+                let segment_iter = bio.segment_iter();
-+                for segment in segment_iter {
-+                    let length = segment.len();
-+                    Self::transfer(command, tree, sector, segment)?;
-+                    sector += length as usize >> block::SECTOR_SHIFT;
-+                }
-+            }
++        if !ptr.is_null() {
++            // SAFETY: If `rq_list_pop` returns a non-null pointer, it points to a valid request. By
++            // type invariant all requests in this list are valid for use as `IdleRequest`.
++            Some(unsafe { IdleRequest::from_raw(ptr) })
++        } else {
++            None
 +        }
++    }
 +
-         match queue_data.irq_mode {
-             IRQMode::None => rq.end_ok(),
-             IRQMode::Soft => mq::Request::complete(rq.into()),
-@@ -207,7 +298,7 @@ fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool
-         Ok(())
-     }
- 
--    fn commit_rqs(_queue_data: &QueueData) {}
-+    fn commit_rqs(_queue_data: Pin<&QueueData>) {}
- 
-     fn complete(rq: ARef<mq::Request<Self>>) {
-         OwnableRefCounted::try_from_shared(rq)
++    /// Push a request on the tail of the list.
++    pub fn push_tail(&mut self, rq: Owned<IdleRequest<T>>) {
++        let ptr = rq.as_raw();
++        core::mem::forget(rq);
++        // INVARIANT: rq is an `IdleRequest<T>`.
++        // SAFETY: By type invariant, `self.inner` is a valid list.
++        unsafe { bindings::rq_list_add_tail(self.inner.get(), ptr) };
++    }
++
++    /// Peek at the head of the list.
++    ///
++    /// Returns a null pointer if the list is empty.
++    pub fn peek_raw(&self) -> *mut bindings::request {
++        // SAFETY: By type invariant, `self.inner` is a valid list.
++        unsafe { bindings::rq_list_peek(self.inner.get()) }
++    }
++}
++
++impl<T: Operations> Default for RequestList<T> {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++impl<T: Operations> Drop for RequestList<T> {
++    fn drop(&mut self) {
++        while let Some(rq) = self.pop() {
++            drop(rq)
++        }
++    }
++}
++
++impl<T: Operations> Iterator for &mut RequestList<T> {
++    type Item = Owned<IdleRequest<T>>;
++
++    fn next(&mut self) -> Option<Self::Item> {
++        self.pop()
++    }
++}
 
 -- 
 2.51.2
