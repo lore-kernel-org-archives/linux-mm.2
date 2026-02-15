@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4B9E63F1F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BFAE63F1F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:50:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78EB86B0138; Sun, 15 Feb 2026 19:38:06 -0500 (EST)
+	id 2B00E6B00A5; Sun, 15 Feb 2026 19:40:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 762066B013B; Sun, 15 Feb 2026 19:38:06 -0500 (EST)
+	id 266486B0130; Sun, 15 Feb 2026 19:40:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 634AC6B013C; Sun, 15 Feb 2026 19:38:06 -0500 (EST)
+	id 159B46B013B; Sun, 15 Feb 2026 19:40:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with SMTP id 392B56B0138
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:37:47 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D6615BACA
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:46 +0000 (UTC)
-X-FDA: 84448318332.20.E7B1103
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 66C7018000D
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kXxMYA5k;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 397286B00A5
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:39:43 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DED7160719
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:04 +0000 (UTC)
+X-FDA: 84448321608.30.49BC39E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7F1AA1C0006
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVqOk658;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199042; a=rsa-sha256;
+	cv=none;
+	b=6Zt9VYhZ0I5+rBemWfWcjZB10WWnSfHCkGRnWJCtPdqDIcd9e895cqFnZgXYKVEpfLoE4M
+	MXX6QUKreJVQfkEJkKbt97rfitmHoxDFzJk0W9bd20Bt7wP9FOQYkG+ntG4LoQjBopDwbY
+	zzahsIoEbFZItAwb965Rx/7eX69mXqs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVqOk658;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198964;
+	s=arc-20220608; t=1771199042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C+/zJh2nIsCLU2FTJffcJQIiIzzSpQzgpV6yd9up7D4=;
-	b=PQAyqpnQpezI3wuymgb5prbX4Fu2Ii24pzoPOhjmRYAr4pFC2NVxPb2YbdDmSBJs2KhGtn
-	iyUgoGLyJA5zTpLeiUmpxte7stjVx+g8Jk/RKA4V3j1gFwVprrkfQVNTiLe+w2ftxlM9Vn
-	OL2MoJ+dpIgILmspyZfVzcBjLMHeBQE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kXxMYA5k;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198964; a=rsa-sha256;
-	cv=none;
-	b=TViQ7zXewjFZxD/mMOBpEyHi8iTUSNvnv4jxDmqQbZM3IM9yCue/q7RXDgmDaaXTCqgGdj
-	MFHM0Ini2GnRSFBQRXvui4N/LhyljH3dFfQdh1+ci8Pl1cTU0LIkuTYTmpgysfcBMBsjsq
-	H5hnxRUFxVpL0Q7uKteBRgqRPkwRDoY=
+	bh=4OzTdfQ0FxUb2r3rm+cv17Wk0uybmChuLn/2dbvRKG0=;
+	b=OZzOI+vajdPqgsL+SF89Uy9P0wsS4yE8lxZMIa8afOA0GMknRb1UJQlScfvxwxZHCVAuyp
+	mxHPpkHi2kTlVwPUgdrWxXgMfdnGayen4xV092JeWd0XgJcCUjmR1kgWKxWaZ1ItNh+n9H
+	E7P2JAr9TYwB9IeOz9UCEtnw841PDMQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9756C40196;
-	Sun, 15 Feb 2026 23:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E47C19422;
-	Sun, 15 Feb 2026 23:42:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7A9C6057A;
+	Sun, 15 Feb 2026 23:44:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E13C4CEF7;
+	Sun, 15 Feb 2026 23:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198963;
-	bh=HabGkFaZxpg0TMJ4bmudZjM7RGpHBrmdEEt4p/Jhb1o=;
+	s=k20201202; t=1771199041;
+	bh=3/is2sfDJmdRy9QPPG2gvTdPrheCZt7kkxfe/Rrhb04=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=kXxMYA5k9qgWa5ikrqf3E7noxTHmJP9lj9IGdrolkpPOiCVw8m6LM03P9KRstoyOG
-	 SBx3DNAwt64nWIRtYjejcLoEif6QdvvQ+JCkEMl43dd/jSkrS2EaDfGeiToiW7KiUP
-	 /c91dRdES0AtltjsdmESioZDNLCnBERqGERE0NESPSGq/fwZqUYAZaI9YdA523S9RL
-	 tRRUhkkiyz3OJB1dClxVmZv03z5Xb5k2u9vNPiZI0rusnYiPwQ3Hk3MiWNDel2DPzM
-	 Gpe7mZ+K+bffCphn5RAxasPhNGbBC2/8OzJqRN9Wcg+0pWzq3bAcu1m4VnNlgUGiMX
-	 ochoOXMZY/E0w==
+	b=kVqOk658tO6pg8KYX7bNxxRB+cTHS2c50HdL/p1++R6v4GnH7HLRcxAuw8IA5riP7
+	 3Jt4IDICWjq7yzM4n5QjAQ8/ig/OqXNTTM3n6zQ52XFn73acEKir+D+ouQNgzERc44
+	 hVOEEdRJHUNE3P7LFU3s65wdgXswhaUvfHjfWnDpUAn6Le/wmlemPdd/nnmTq35F1E
+	 ngL8/34WOhSc91d6R/xOShCJl4l6B/bPuHYyjs/qwtS4s8NbMHmI9wNTIYZPQyL0FA
+	 TBQSbXL1sFUr2iAXfXoTHHxuhd044WD/AjNe8u0gs6QfQL1C1KR5W1W0ELiKWSUDaz
+	 CyuLRbD8VyITw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:36:00 +0100
-Subject: [PATCH 73/79] block: rnull: add fault injection support
+Date: Mon, 16 Feb 2026 00:36:06 +0100
+Subject: [PATCH 79/79] block: rnull: add zone offline and readonly configfs
+ files
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-73-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-79-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,31 +90,31 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15513;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15509;
  i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=HabGkFaZxpg0TMJ4bmudZjM7RGpHBrmdEEt4p/Jhb1o=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklheNbL2fIfLyru1HT+aFI3GFoq8t4w60izcs
- N0qtuiwoviJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYXgAKCRDhuBo+eShj
- dyXYD/0TdBR75C0VGxkSg7cAr4tEIvCg9n37n7uhifxV9p7+QDFfZMT+MrJBAEuR9LwkVzR03aw
- JaqxDKLPERl6EwnX2EWG8L8OiqKCpWWW58LVgIEu/hl7RQncJKW+ZudBvN0N84x2RYXg75YlTns
- KsprP4FoPUpH2mhwuQtpGQGt8Pr5mSvbxDdLzzekp4g0BmFGDM9Gnkjmh4naEja1jkDDsRpUM8p
- //pCmqKU3O7LIVOet9NZqIdCzIxCgcUgw94P7Ovto3jNqoLleIUFGwAh+7PDDPo+xZzP7N/RGte
- 3d9NWFQgFe14NDSks2v1qD/qt3JW8yyK7DCK/tF01ynqy6wdU9k3GYFBZSr9+q/apCzfSM+QVGH
- 4d/MiCQa4160O/vWUBSM8O/OYPsrCvlx/qfereQiXKxahEmykl+mPJ9rATmyciWdBNxv8SvVdch
- K+yKxRQW4m79Sj5JKaoo+jgZ8bt37aQrW2UYhm1mspcL5c+9q/BuWfo1fHtQVG/GM23f9058/RJ
- Vat/WaWPbGR5VOyy9AakaKcvSXhHuPMO6Er9ecXXUD6xFGSc2H1KnsCIO/yHG5nEbgaWHogBJ0g
- w6Fjin7g0IGdK/1JQ1TFVs/RfWpcozd861+LSuEqw9vJ6GFKAPotmP/QC4xZnEkGqGRhZosM6gH
- atlS+mokMm4gDGw==
+ bh=3/is2sfDJmdRy9QPPG2gvTdPrheCZt7kkxfe/Rrhb04=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhjWcIdNupHJZ+Z1Iqa1OXKENuLiidyv1T3i
+ 5O5U2MYdHyJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYYwAKCRDhuBo+eShj
+ d8/3EACTdpRzmaQm8jpMo+udlUhbjmqYZQ1GbysxKSwhPMyLWPONRaDgmeKa2b3Rmbe0NV7Zo5Y
+ rIwj38weF3m+Its2XgvUVrahJIiqFSk5NMNQ5HeI+0K+NAQKcKozx5TfEpepA5HdoeaGfJj8b+n
+ JkMOaapjc3sNbmsXCjQPo2o2xg0NND5UUAxe0+z0OLn/Ye9inZkivJzED1jXQFs4c9Vkl47lRzo
+ UTuKDsSk6spxKiGGbtP2JdlHXjRP8iShxxogibBxN3IWVkYmbyngRfTzgnok73Ozq59wTjYzE5S
+ HsuPV36y7jZHTrwnsGiipOeQ0gF6r4E//T+uwJG2yMrszInghK6vLBdJK8TxhAdOwYdEnMdzeVN
+ G/LxoYwndTaA4vOOMj8Rt6WWf1AGu3oV57dmJ56qet8F4ssTJnIira4KNF9WHsFYagJHmUzd5Oh
+ RSUE1Rp/TBTf8aoBQF0i7uC52UL6SLWO3rPiVQGsidikcmpAHYYEAJSVa60nXzdkT8g8X5v0FWm
+ ohKXpgLXGKlIdEgSnROrl/30yR+Gb0F8IO3ZIrmNkncT93pCGE4Cu6Lo6UhcQxzrs0ugJevxH02
+ h7Qo6Le7yIoYIZLE0eldLg/PTtbB9il8DVQ5sVVDvI7EsI8f/hjx8XmZpUq/VA10kXbtI8Llr+i
+ ZUv36CKP5YOWpDg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 66C7018000D
-X-Stat-Signature: znaj4kgwzygaptf3q8hq1aqwqax4mjwi
 X-Rspam-User: 
-X-HE-Tag: 1771198964-547182
-X-HE-Meta: U2FsdGVkX1+hi4mAwRDCraZ5noIxvwmQcL9A5X1y/pJE60so0H3IY2D50mLeErBRv3zI/xPkYuklGJcoZwpoGLc+6Er63uQC/dPMBhPyqpg7O9x+8p7Fnd/YweW+BCurFuDhCLPzsKslkkXXtHu3u2kW88p9fBpNvIk7TSzORXYNRK/p49UKfhtf9Lxygwh/bITsBbwi5CF38a5I/20kRFfwAVBEshgfVontYfpSnMxt3p9BNLt8YItHkD4+u0KAFWd03/tYDp4QqsB9IQ0HgPDU5XMwbWLLqKBTZ7MmI1NqxxKkv5zQm5TfxaMrpFtjTTfD6ZeQRRMV1EcgNDk9IIGWBwmR8x8LGvMhZ8pL8CePg4ZDHve4oYmaZ1cCNKNtdvRxXNhYIbPw0HBhqfphqdCoXk40o1XgNIzWXPFxHBEhgX31Q7WjRgxziunZiDk85LxAtezs2YBJbty7bxv/tQGRFbD0FdftH2jZ5IuCh+pxOLLuBMOLP8lJMK34deAIrPDcrE0shVHD+ejxuNKE14KP7lXNN7NpRtLsjkXHKIg+BoNIljxJh0ee80qZ4APhUOCStR3jc28WUr93g4GAGuIzw7G4aHvB5h+2gq9jSC+no4MJV8o/K0f7rsICADNKs/vCcIuJhdE/qmGuDD+lpNqAM55oKcId+waBMMQrcHmXUn8WzAry5GaHOtasAIUm6OA9B5z5ye8aUTPPgxmoAMKjpbs+1k1uwQqGalE4hiKBAC4a6o31cRQunQXNwKAijI9aEyV0mZMV5OuctqrtaosI1SNi8jEkX4ZoW6/9vDNzKUQ82BiRePNo+QfrT3s1cXOS8LmEsttbDyPCA+2P76Dskh8r3/yqK0YrXhHgF1OA4/sMPMS1zU2RQpn4uNszFS/hGZmoogdGugj4Evg9Q3rshUdiJP+QuWwswpaeC6kDF72E+3nldEQ4dZKK0GxBmgkYOAJTrrAHY6Ay/hr
- JM49x/0S
- lNOwdVAr0Y5aPpSqnBaNWDHF/aeWcAm5WOb42OHF6Q6936pzsw/1y3uYlUv8QMAD16m9WG0km9uau4kRBnTq8JQiZjf0PR/xolATiKjF6E3F1tpDV2pmbD9I+fr2l5IS3YrODgeGnK0wvaE4O8pTRp07z+OrSQbVHskkxCujy4YjubU7CAaGIcbYQH/TPnJv0+fkk1N+L9TO8rq3vdh8iOlq/eY3BWPON/hT3ghlkEhpz/6Me8qi22kE7Tjca025+4R7cMgisG04iJlb5h6LRwZGAFPLXffCK7t6cvvsD3uMwxzAF37bd9nEvRF+ICXBRdvoy
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7F1AA1C0006
+X-Stat-Signature: qod67r1hkxx5u6s1ejogowqq9muojs55
+X-HE-Tag: 1771199042-326142
+X-HE-Meta: U2FsdGVkX1+N0UVN83FLSZVxuC+9KUqTXPGGtKILJ91V/SFU+f9BqVGeXA7taKx7AXyfGskXYgBrAeOvljpHu2Tv5/jQs248osVQRy1gMex0puVKbcdO5gOyCXdB6+fgzuDiVa4rfuLJr2H4jDyo8tsqnUGTwqrAGodoNdvdRa2lbz1Mx4Cs0T5ORwgypvmCDPEv10Y4edVOCtxNPgx2a+GtL914ksrTuFvnQp6acFKnfQWVehFTre7yBa5Z4Q0uJsGfTI4NoollsFJvXi9GNgyjucdr7jiChVPF6eF63lYmvlMoT58FGlQOsZ4J1sgviIFiIXvNYuiLJNq2lPQwv/0LkuYJV0Lwkmb5pYu9S/ZJlf42b9mZXLUcgpYHoTRqkGGSS9E/khlOfWVeeqncZxitXKVmnmzESMJ2NrRsvKkEf7pvjDvYi5wg6gBjv72Ez4aoldddDyz4u60JYw4GvD8Aj8tSTP9nmA2Gq10n7QlidRFyiX1NV1PvJJTtTFMknipfEzDOPh2ci+i/FybZqYQOwswxHBnqeMBLzfAR/E6xrVJb98JHoGJ8Y7mqEMPHivuXB4qfO8wjA25u0e+9GTV8cZzyeZkZvLVP2FLq+AIcQ30bjHlp5JhGllRscCTJR9tYIHVu4wCUA7NQZQ+ZyBizPGe0kl7pQckOoOc5INgeG4iM1wFC8E0ezjxDZGS8UDdas7dA8kS2kSmSJQrdJsL9EwA4iN0kPXiMrPDbZcqWxq6C+w2457t46h5opiDJ3ajXZ+EfpydAQ2tNcq2XFkBNkMvPE///cE+jVoed44Ic3KcDKqYNnctnKYZSP6uszxa4CkdLzCai+oiaEOG9qeEtLw8iUl6Qrlyg9h3dggM0RIcH9QtPM26w1IRIOd+/LGpkOcFMm9DOXeG3OQxIn4zfqGic3TwNFHwXt4O3T4NW8vriL08Afbif1Nnp1BDi1B67y3GgNOlhhz+dwhS
+ v5BFq+Kx
+ 7yFKYf1gN4vLXRjNQDUXZkNpsO/YuzK2sYYN7m5N/hYUz4uXOXeF4iouHQMH8lzFCm7WyvnJI/cfbrOHHxZ1qL1/6feBk3Ivkg1H1EU8cp2audvTs0tMDbvSL+pIvdyUiw5d0GRuBIbrgeULlodeD2bRNiMHusCbS/iArC97B7UtEz8Ti6RxkvToxjoauG5f5UJjksM8jvmtBxyVdEkSpSfvXUTaOdbFd0wn8ZgfVnTa+LcEgIbS9Kq5Ss8DfdUN26FJ13Oc17k3AHQsaAQFcmUGKIRTmgYtCl8nvMxCNiPCYAl5ja92fjl7bNm2TI/ZS27k8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,397 +123,421 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add fault injection support to rnull using the kernel fault injection
-infrastructure. When enabled via `CONFIG_FAULT_INJECTION`, users can
-inject failures into I/O requests through the standard fault injection
-debugfs interface.
-
-The fault injection point is exposed as a configfs default group,
-allowing per-device fault injection configuration.
+Add configfs attributes for managing zone states in the rnull zoned
+block device emulation. The `zone_offline` and `zone_readonly`
+attributes allow setting specific zones to offline or read-only states,
+which is useful for testing how applications handle degraded zones.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/Kconfig     |  11 ++++
- drivers/block/rnull/configfs.rs |  57 ++++++++++++++++++-
- drivers/block/rnull/rnull.rs    | 120 +++++++++++++++++++++++++++++++++++++---
- 3 files changed, 179 insertions(+), 9 deletions(-)
+ drivers/block/rnull/configfs.rs     | 80 +++++++++++++++++++++++++++++++++++
+ drivers/block/rnull/disk_storage.rs | 59 +++++++++++++-------------
+ drivers/block/rnull/rnull.rs        |  2 +-
+ drivers/block/rnull/zoned.rs        | 83 ++++++++++++++++++++++++++-----------
+ 4 files changed, 168 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/block/rnull/Kconfig b/drivers/block/rnull/Kconfig
-index 7bc5b376c128b..1ade5d8c17997 100644
---- a/drivers/block/rnull/Kconfig
-+++ b/drivers/block/rnull/Kconfig
-@@ -11,3 +11,14 @@ config BLK_DEV_RUST_NULL
- 	  devices that can be configured via various configuration options.
- 
- 	  If unsure, say N.
-+
-+config BLK_DEV_RUST_NULL_FAULT_INJECTION
-+	bool "Support fault injection for Rust Null test block driver"
-+	depends on BLK_DEV_RUST_NULL && FAULT_INJECTION_CONFIGFS
-+	help
-+	  Enable fault injection support for the Rust null block driver. This
-+	  allows injecting errors into block I/O operations for testing error
-+	  handling paths and verifying system resilience. Fault injection is
-+	  configured through configfs alongside the null block device settings.
-+
-+	  If unsure, say N.
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 424722f01ab8d..b449ac882d961 100644
+index 395da68d96dc6..1c0d95ded7e9f 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -46,6 +46,9 @@
- 
- mod macros;
- 
-+#[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+use kernel::fault_injection::FaultConfig;
-+
- pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
-     let item_type = configfs_attrs! {
-         container: configfs::Subsystem<Config>,
-@@ -122,10 +125,44 @@ fn make_group(
+@@ -125,6 +125,8 @@ fn make_group(
+                 max_sectors: 29,
+                 virt_boundary: 30,
+                 shared_tag_bitmap: 31,
++                zone_offline: 32,
++                zone_readonly: 33,
              ],
          };
  
-+        use kernel::configfs::CDefaultGroup;
+@@ -639,3 +641,81 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
+ configfs_simple_bool_field!(DeviceConfig, 30, virt_boundary);
+ configfs_simple_bool_field!(DeviceConfig, 31, shared_tag_bitmap);
 +
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        let mut default_groups: KVec<Arc<dyn CDefaultGroup>> = KVec::new();
++#[cfg(CONFIG_BLK_DEV_ZONED)]
++fn set_zone_condition(
++    this: &DeviceConfig,
++    sector: u64,
++    cb: impl FnOnce(
++        &crate::zoned::ZoneOptions,
++        &DiskStorage,
++        &mut crate::zoned::ZoneDescriptor,
++    ) -> Result,
++) -> Result {
++    use crate::zoned::ZoneType;
++    let data_guard = this.data.lock();
++    let null_disk = data_guard.disk.as_ref().ok_or(EBUSY)?.queue_data();
++    let storage = &null_disk.storage;
++    let zone_options = &null_disk.zoned;
++    zone_options.enabled.then_some(()).ok_or(EINVAL)?;
++    let mut zone = zone_options.zone(sector)?.lock();
 +
-+        #[cfg(not(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION))]
-+        let default_groups: KVec<Arc<dyn CDefaultGroup>> = KVec::new();
++    if zone.kind == ZoneType::Conventional {
++        return Err(EINVAL);
++    }
 +
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        let timeout_inject = Arc::pin_init(
-+            kernel::fault_injection::FaultConfig::new(c"timeout_inject"),
-+            GFP_KERNEL,
-+        )?;
++    cb(zone_options, storage, &mut zone)
++}
 +
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        let requeue_inject = Arc::pin_init(
-+            kernel::fault_injection::FaultConfig::new(c"requeue_inject"),
-+            GFP_KERNEL,
-+        )?;
++#[cfg(CONFIG_BLK_DEV_ZONED)]
++configfs_attribute!(
++    DeviceConfig,
++    32,
++    show: |_this, _page| Ok(0),
++    store: |this,page| {
++        let text = core::str::from_utf8(page)?.trim();
++        let sector = text.parse().map_err(|_| EINVAL)?;
 +
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        let init_hctx_inject = Arc::pin_init(
-+            kernel::fault_injection::FaultConfig::new(c"init_hctx_fault_inject"),
-+            GFP_KERNEL,
-+        )?;
++        set_zone_condition(this, sector, |zone_options, storage, zone| {
++            zone_options.offline_zone(storage, zone)
++        })?;
++        Ok(())
++    },
++);
 +
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        {
-+            default_groups.push(timeout_inject.clone(), GFP_KERNEL)?;
-+            default_groups.push(requeue_inject.clone(), GFP_KERNEL)?;
-+            default_groups.push(init_hctx_inject.clone(), GFP_KERNEL)?;
++#[cfg(CONFIG_BLK_DEV_ZONED)]
++configfs_attribute!(
++    DeviceConfig,
++    33,
++    show: |_this, _page| Ok(0),
++    store: |this,page| {
++        let text = core::str::from_utf8(page)?.trim();
++        let sector = text.parse().map_err(|_| EINVAL)?;
++
++        set_zone_condition(this, sector, |zone_options, storage, zone| {
++            zone_options.read_only_zone(storage, zone)
++        })?;
++
++        Ok(())
++    },
++);
++
++#[cfg(not(CONFIG_BLK_DEV_ZONED))]
++configfs_attribute!(
++    DeviceConfig,
++    32,
++    show: |this, page| {Ok(0)},
++    store: |this,page| {
++        Err(ENOTSUPP)
++    },
++);
++
++#[cfg(not(CONFIG_BLK_DEV_ZONED))]
++configfs_attribute!(
++    DeviceConfig,
++    33,
++    show: |this, page| {Ok(0)},
++    store: |this,page| {
++        Err(ENOTSUPP)
++    },
++);
+diff --git a/drivers/block/rnull/disk_storage.rs b/drivers/block/rnull/disk_storage.rs
+index d9f2703957fc0..802e9534ca2a5 100644
+--- a/drivers/block/rnull/disk_storage.rs
++++ b/drivers/block/rnull/disk_storage.rs
+@@ -65,27 +65,45 @@ pub(crate) fn lock(&self) -> SpinLockGuard<'_, Pin<KBox<TreeContainer>>> {
+         self.trees.lock()
+     }
+ 
+-    pub(crate) fn discard(
+-        &self,
+-        hw_data: &Pin<&SpinLock<HwQueueContext>>,
+-        mut sector: u64,
+-        sectors: u32,
+-    ) {
+-        let mut tree_guard = self.lock();
+-        let mut hw_data_guard = hw_data.lock();
+-
+-        let mut access = self.access(&mut tree_guard, &mut hw_data_guard, None);
++    pub(crate) fn discard(&self, mut sector: u64, sectors: u32) {
++        let tree_guard = self.lock();
++        let mut cache_guard = tree_guard.cache_tree.lock();
++        let mut disk_guard = tree_guard.cache_tree.lock();
+ 
+         let mut remaining_bytes = sectors_to_bytes(sectors);
+ 
+         while remaining_bytes > 0 {
+-            access.free_sector(sector);
++            self.free_sector(&mut cache_guard, &mut disk_guard, sector);
+             let processed = remaining_bytes.min(self.block_size);
+             sector += Into::<u64>::into(bytes_to_sectors(processed));
+             remaining_bytes -= processed;
+         }
+     }
+ 
++    fn free_sector_tree(tree_access: &mut xarray::Guard<'_, TreeNode>, sector: u64) {
++        let index = DiskStorageAccess::to_index(sector);
++        if let Some(page) = tree_access.get_mut(index) {
++            page.set_free(sector);
++
++            if page.is_empty() {
++                tree_access.remove(index);
++            }
++        }
++    }
++
++    pub(crate) fn free_sector<'a>(
++        &self,
++        cache_guard: &mut xarray::Guard<'a, TreeNode>,
++        disk_guard: &mut xarray::Guard<'a, TreeNode>,
++        sector: u64,
++    ) {
++        if self.cache_size > 0 {
++            Self::free_sector_tree(cache_guard, sector);
 +        }
 +
-         let block_size = 4096;
-         Ok(configfs::Group::new(
-             name.try_into()?,
-             item_type,
-+            // default_groups,
-             // TODO: cannot coerce new_mutex!() to impl PinInit<_, Error>, so put mutex inside
-             try_pin_init!(DeviceConfig {
-                 data <- new_mutex!(DeviceConfigInner {
-@@ -165,9 +202,15 @@ fn make_group(
-                     zone_max_active: 0,
-                     zone_append_max_sectors: u32::MAX,
-                     fua: true,
-+                    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                    timeout_inject,
-+                    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                    requeue_inject,
-+                    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                    init_hctx_inject,
-                 }),
-             }),
--            core::iter::empty(),
-+            default_groups,
-         ))
++        Self::free_sector_tree(disk_guard, sector);
++    }
++
+     pub(crate) fn flush(&self, hw_data: &Pin<&SpinLock<HwQueueContext>>) {
+         let mut tree_guard = self.lock();
+         let mut hw_data_guard = hw_data.lock();
+@@ -262,25 +280,6 @@ pub(crate) fn get_read_page(&self, sector: u64) -> Option<&NullBlockPage> {
+             self.disk_guard.get(index)
+         }
      }
- }
-@@ -241,6 +284,12 @@ struct DeviceConfigInner {
-     zone_max_active: u32,
-     zone_append_max_sectors: u32,
-     fua: bool,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    timeout_inject: Arc<FaultConfig>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    requeue_inject: Arc<FaultConfig>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    init_hctx_inject: Arc<FaultConfig>,
+-
+-    fn free_sector_tree(tree_access: &mut xarray::Guard<'_, TreeNode>, sector: u64) {
+-        let index = Self::to_index(sector);
+-        if let Some(page) = tree_access.get_mut(index) {
+-            page.set_free(sector);
+-
+-            if page.is_empty() {
+-                tree_access.remove(index);
+-            }
+-        }
+-    }
+-
+-    pub(crate) fn free_sector(&mut self, sector: u64) {
+-        if self.disk_storage.cache_size > 0 {
+-            Self::free_sector_tree(&mut self.cache_guard, sector);
+-        }
+-
+-        Self::free_sector_tree(&mut self.disk_guard, sector);
+-    }
  }
  
- #[vtable]
-@@ -292,6 +341,12 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 zone_max_active: guard.zone_max_active,
-                 zone_append_max_sectors: guard.zone_append_max_sectors,
-                 forced_unit_access: guard.fua,
-+                #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                requeue_inject: guard.requeue_inject.clone(),
-+                #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                init_hctx_inject: guard.init_hctx_inject.clone(),
-+                #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                timeout_inject: guard.timeout_inject.clone(),
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
+ type Tree = XArray<TreeNode>;
 diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index db856f03b78cb..b2b089a657f12 100644
+index 5bf965908ef63..91f8636d74cca 100644
 --- a/drivers/block/rnull/rnull.rs
 +++ b/drivers/block/rnull/rnull.rs
-@@ -40,6 +40,7 @@
-             IoCompletionBatch,
-             Operations,
-             RequestList,
-+            RequestTimeoutStatus,
-             TagSet, //
-         },
-         SECTOR_SHIFT,
-@@ -90,6 +91,9 @@
- use pin_init::PinInit;
- use util::*;
+@@ -739,7 +739,7 @@ fn handle_regular_command(
  
-+#[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+use kernel::fault_injection::FaultConfig;
-+
- module! {
-     type: NullBlkModule,
-     name: "rnull_mod",
-@@ -205,6 +209,8 @@
-     },
- }
- 
-+// TODO: Fault inject via params - requires module_params string support.
-+
- #[pin_data]
- struct NullBlkModule {
-     #[pin]
-@@ -267,6 +273,15 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     zone_max_active: *module_parameters::zone_max_active.value(),
-                     zone_append_max_sectors: *module_parameters::zone_append_max_sectors.value(),
-                     forced_unit_access: *module_parameters::fua.value() != 0,
-+                    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                    requeue_inject: Arc::pin_init(FaultConfig::new(c"requeue_inject"), GFP_KERNEL)?,
-+                    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                    init_hctx_inject: Arc::pin_init(
-+                        FaultConfig::new(c"init_hctx_fault_inject"),
-+                        GFP_KERNEL,
-+                    )?,
-+                    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                    timeout_inject: Arc::pin_init(FaultConfig::new(c"timeout_inject"), GFP_KERNEL)?,
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
+         if self.memory_backed {
+             if rq.command() == mq::Command::Discard {
+-                self.storage.discard(hw_data, rq.sector(), sectors);
++                self.storage.discard(rq.sector(), sectors);
+             } else {
+                 self.transfer(hw_data, rq, rq.command(), sectors)?;
              }
-@@ -315,6 +330,12 @@ struct NullBlkOptions<'a> {
-     #[cfg_attr(not(CONFIG_BLK_DEV_ZONED), expect(unused_variables))]
-     zone_append_max_sectors: u32,
-     forced_unit_access: bool,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    requeue_inject: Arc<FaultConfig>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    init_hctx_inject: Arc<FaultConfig>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    timeout_inject: Arc<FaultConfig>,
- }
- 
- static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
-@@ -339,6 +360,12 @@ struct NullBlkDevice {
-     #[cfg(CONFIG_BLK_DEV_ZONED)]
-     #[pin]
-     zoned: zoned::ZoneOptions,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    requeue_inject: Arc<FaultConfig>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    requeue_selector: kernel::sync::atomic::Atomic<u64>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    timeout_inject: Arc<FaultConfig>,
- }
- 
- impl NullBlkDevice {
-@@ -373,6 +400,13 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             zone_max_active,
-             zone_append_max_sectors,
-             forced_unit_access,
-+
-+            #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+            requeue_inject,
-+            #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+            init_hctx_inject,
-+            #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+            timeout_inject,
-         } = options;
- 
-         let mut flags = mq::tag_set::Flags::default();
-@@ -402,6 +436,8 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-                         NullBlkTagsetData {
-                             queue_depth: hw_queue_depth,
-                             queue_config,
-+                            #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                            init_hctx_inject,
-                         },
-                         GFP_KERNEL,
-                     )?,
-@@ -450,6 +486,12 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-                     zone_max_active,
-                     zone_append_max_sectors,
-                 })?,
-+                #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                requeue_inject,
-+                #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                requeue_selector: Atomic::new(0),
-+                #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+                timeout_inject,
-             }),
-             GFP_KERNEL,
-         )?;
-@@ -680,7 +722,9 @@ fn handle_bad_blocks(&self, rq: &mut Owned<mq::Request<Self>>, sectors: &mut u32
-                 badblocks::BlockStatus::None => {}
-                 badblocks::BlockStatus::Acknowledged(mut range)
-                 | badblocks::BlockStatus::Unacknowledged(mut range) => {
--                    rq.data_ref().error.store(1, ordering::Relaxed);
-+                    rq.data_ref()
-+                        .error
-+                        .store(block::error::code::BLK_STS_IOERR.into(), ordering::Relaxed);
- 
-                     if self.bad_blocks_once {
-                         self.bad_blocks.set_good(range.clone())?;
-@@ -705,6 +749,7 @@ fn end_request(rq: Owned<mq::Request<Self>>) {
-         let status = rq.data_ref().error.load(ordering::Relaxed);
-         rq.data_ref().error.store(0, ordering::Relaxed);
- 
-+        // TODO: Use correct error code
-         match status {
-             0 => rq.end_ok(),
-             _ => rq.end(bindings::BLK_STS_IOERR),
-@@ -730,6 +775,24 @@ fn queue_rq_internal(
-         rq: Owned<mq::IdleRequest<Self>>,
-         _is_last: bool,
-     ) -> Result<(), QueueRequestError> {
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        if rq.queue_data().requeue_inject.should_fail(1) {
-+            if rq
-+                .queue_data()
-+                .requeue_selector
-+                .fetch_add(1, ordering::Relaxed)
-+                & 1
-+                == 0
-+            {
-+                return Err(QueueRequestError {
-+                    request: rq,
-+                });
-+            } else {
-+                rq.requeue(true);
-+                return Ok(());
-+            }
-+        }
-+
-         if this.bandwidth_limit != 0 {
-             if !this.bandwidth_timer.active() {
-                 drop(this.bandwidth_timer_handle.lock().take());
-@@ -755,6 +818,12 @@ fn queue_rq_internal(
- 
-         let mut rq = rq.start();
- 
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        if rq.queue_data().timeout_inject.should_fail(1) {
-+            rq.data_ref().fake_timeout.store(1, ordering::Relaxed);
-+            return Ok(());
-+        }
-+
-         if rq.command() == mq::Command::Flush {
-             if this.memory_backed {
-                 this.storage.flush(&hw_data);
-@@ -778,12 +847,13 @@ fn queue_rq_internal(
-             Ok(())
-         })();
- 
--        if let Err(e) = status {
--            // Do not overwrite existing error. We do not care whether this write fails.
--            let _ = rq
--                .data_ref()
--                .error
--                .cmpxchg(0, e.to_errno(), ordering::Relaxed);
-+        if status.is_err() {
-+            // Do not overwrite existing error.
-+            let _ = rq.data_ref().error.cmpxchg(
-+                0,
-+                kernel::block::error::code::BLK_STS_IOERR.into(),
-+                ordering::Relaxed,
-+            );
+diff --git a/drivers/block/rnull/zoned.rs b/drivers/block/rnull/zoned.rs
+index 0f15f4cc4e5c3..3b8ebf5449a8d 100644
+--- a/drivers/block/rnull/zoned.rs
++++ b/drivers/block/rnull/zoned.rs
+@@ -178,7 +178,7 @@ pub(crate) fn handle_zoned_command(
+         match rq.command() {
+             ZoneAppend | Write => self.zoned_write(hw_data, rq)?,
+             ZoneReset | ZoneResetAll | ZoneOpen | ZoneClose | ZoneFinish => {
+-                self.zone_management(hw_data, rq)?
++                self.zone_management(rq)?
+             }
+             _ => self.zoned_read(hw_data, rq)?,
          }
- 
-         if rq.is_poll() {
-@@ -861,7 +931,8 @@ struct HwQueueContext {
- struct Pdu {
-     #[pin]
-     timer: HrTimer<Self>,
--    error: Atomic<i32>,
-+    error: Atomic<u32>,
-+    fake_timeout: Atomic<u32>,
- }
- 
- impl HrTimerCallback for Pdu {
-@@ -886,6 +957,8 @@ impl HasHrTimer<Self> for Pdu {
- struct NullBlkTagsetData {
-     queue_depth: u32,
-     queue_config: Arc<Mutex<QueueConfig>>,
-+    #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+    init_hctx_inject: Arc<FaultConfig>,
- }
- 
- #[vtable]
-@@ -899,6 +972,7 @@ fn new_request_data() -> impl PinInit<Self::RequestData> {
-         pin_init!(Pdu {
-             timer <- HrTimer::new(),
-             error: Atomic::new(0),
-+            fake_timeout: Atomic::new(0),
-         })
+@@ -186,18 +186,14 @@ pub(crate) fn handle_zoned_command(
+         Ok(())
      }
  
-@@ -953,6 +1027,11 @@ fn poll(
+-    fn zone_management(
+-        &self,
+-        hw_data: &Pin<&SpinLock<HwQueueContext>>,
+-        rq: &mut Owned<mq::Request<Self>>,
+-    ) -> Result {
++    fn zone_management(&self, rq: &mut Owned<mq::Request<Self>>) -> Result {
+         if rq.command() == mq::Command::ZoneResetAll {
+             for zone in self.zoned.zones_iter() {
+                 let mut zone = zone.lock();
+                 use ZoneCondition::*;
+                 match zone.condition {
+                     Empty | ReadOnly | Offline => continue,
+-                    _ => self.zoned.reset_zone(&self.storage, hw_data, &mut zone)?,
++                    _ => self.zoned.reset_zone(&self.storage, &mut zone)?,
+                 }
+             }
+ 
+@@ -213,10 +209,10 @@ fn zone_management(
+ 
+         use mq::Command::*;
+         match rq.command() {
+-            ZoneOpen => self.zoned.open_zone(&mut zone, rq.sector()),
++            ZoneOpen => self.zoned.open_zone(&mut zone),
+             ZoneClose => self.zoned.close_zone(&mut zone),
+-            ZoneReset => self.zoned.reset_zone(&self.storage, hw_data, &mut zone),
+-            ZoneFinish => self.zoned.finish_zone(&mut zone, rq.sector()),
++            ZoneReset => self.zoned.reset_zone(&self.storage, &mut zone),
++            ZoneFinish => self.zoned.finish_zone(&mut zone),
+             _ => Err(EIO),
+         }
+     }
+@@ -282,7 +278,7 @@ fn zoned_write(
+             if self.zoned.use_accounting() {
+                 let mut accounting = self.zoned.accounting.lock();
+                 self.zoned
+-                    .check_zone_resources(&mut accounting, &mut zone, rq.sector())?;
++                    .check_zone_resources(&mut accounting, &mut zone)?;
+ 
+                 if zone.condition == ZoneCondition::Closed {
+                     accounting.closed -= 1;
+@@ -365,7 +361,7 @@ fn zone_no(&self, sector: u64) -> usize {
+         (sector >> self.size_sectors.ilog2()) as usize
      }
  
-     fn init_hctx(tagset_data: &NullBlkTagsetData, _hctx_idx: u32) -> Result<Self::HwData> {
-+        #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-+        if tagset_data.init_hctx_inject.should_fail(1) {
-+            return Err(EFAULT);
-+        }
-+
-         KBox::pin_init(
-             new_spinlock!(HwQueueContext {
-                 page: None,
-@@ -1013,4 +1092,29 @@ fn map_queues(tag_set: Pin<&mut TagSet<Self>>) {
-             })
-             .unwrap()
+-    fn zone(&self, sector: u64) -> Result<&Mutex<ZoneDescriptor>> {
++    pub(crate) fn zone(&self, sector: u64) -> Result<&Mutex<ZoneDescriptor>> {
+         self.zones.get(self.zone_no(sector)).ok_or(EINVAL)
      }
+ 
+@@ -418,7 +414,7 @@ fn try_close_implicit_open_zone(&self, accounting: &mut ZoneAccounting, sector:
+         Err(EINVAL)
+     }
+ 
+-    fn open_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
++    fn open_zone(&self, zone: &mut ZoneDescriptor) -> Result {
+         if zone.kind == ZoneType::Conventional {
+             return Err(EINVAL);
+         }
+@@ -434,13 +430,13 @@ fn open_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
+             let mut accounting = self.accounting.lock();
+             match zone.condition {
+                 Empty => {
+-                    self.check_zone_resources(&mut accounting, zone, sector)?;
++                    self.check_zone_resources(&mut accounting, zone)?;
+                 }
+                 ImplicitOpen => {
+                     accounting.implicit_open -= 1;
+                 }
+                 Closed => {
+-                    self.check_zone_resources(&mut accounting, zone, sector)?;
++                    self.check_zone_resources(&mut accounting, zone)?;
+                     accounting.closed -= 1;
+                 }
+                 _ => (),
+@@ -457,14 +453,13 @@ fn check_zone_resources(
+         &self,
+         accounting: &mut ZoneAccounting,
+         zone: &mut ZoneDescriptor,
+-        sector: u64,
+     ) -> Result {
+         match zone.condition {
+             ZoneCondition::Empty => {
+                 self.check_active_zones(accounting)?;
+-                self.check_open_zones(accounting, sector)
++                self.check_open_zones(accounting, zone.start_sector)
+             }
+-            ZoneCondition::Closed => self.check_open_zones(accounting, sector),
++            ZoneCondition::Closed => self.check_open_zones(accounting, zone.start_sector),
+             _ => Err(EIO),
+         }
+     }
+@@ -533,7 +528,7 @@ fn close_zone(&self, zone: &mut ZoneDescriptor) -> Result {
+         Ok(())
+     }
+ 
+-    fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
++    fn finish_zone(&self, zone: &mut ZoneDescriptor) -> Result {
+         if zone.kind == ZoneType::Conventional {
+             return Err(EINVAL);
+         }
+@@ -545,12 +540,12 @@ fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
+             match zone.condition {
+                 Full => return Ok(()),
+                 Empty => {
+-                    self.check_zone_resources(&mut accounting, zone, sector)?;
++                    self.check_zone_resources(&mut accounting, zone)?;
+                 }
+                 ImplicitOpen => accounting.implicit_open -= 1,
+                 ExplicitOpen => accounting.explicit_open -= 1,
+                 Closed => {
+-                    self.check_zone_resources(&mut accounting, zone, sector)?;
++                    self.check_zone_resources(&mut accounting, zone)?;
+                     accounting.closed -= 1;
+                 }
+                 _ => return Err(EIO),
+@@ -566,7 +561,6 @@ fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
+     fn reset_zone(
+         &self,
+         storage: &crate::disk_storage::DiskStorage,
+-        hw_data: &Pin<&SpinLock<HwQueueContext>>,
+         zone: &mut ZoneDescriptor,
+     ) -> Result {
+         if zone.kind == ZoneType::Conventional {
+@@ -589,16 +583,55 @@ fn reset_zone(
+         zone.condition = ZoneCondition::Empty;
+         zone.write_pointer = zone.start_sector;
+ 
+-        storage.discard(hw_data, zone.start_sector, zone.size_sectors);
++        storage.discard(zone.start_sector, zone.size_sectors);
 +
-+    fn request_timeout(tag_set: &TagSet<Self>, qid: u32, tag: u32) -> RequestTimeoutStatus {
-+        if let Some(request) = tag_set.tag_to_rq(qid, tag) {
-+            pr_info!("Request timed out\n");
-+            // Only fail requests that are faking timeouts. Requests that time
-+            // out due to memory pressure will be completed normally.
-+            if request.data_ref().fake_timeout.load(ordering::Relaxed) != 0 {
-+                request.data_ref().error.store(
-+                    block::error::code::BLK_STS_TIMEOUT.into(),
-+                    ordering::Relaxed,
-+                );
-+                request.data_ref().fake_timeout.store(0, ordering::Relaxed);
++        Ok(())
++    }
 +
-+                if let Ok(request) = OwnableRefCounted::try_from_shared(request) {
-+                    Self::end_request(request);
-+                    return RequestTimeoutStatus::Completed;
-+                }
-+                // TODO: pr_warn_once!
-+                pr_warn!("Timed out request could not be completed\n");
-+            }
++    fn set_zone_condition(
++        &self,
++        storage: &crate::disk_storage::DiskStorage,
++        zone: &mut ZoneDescriptor,
++        condition: ZoneCondition,
++    ) -> Result {
++        if zone.condition == condition {
++            zone.condition = ZoneCondition::Empty;
++            zone.write_pointer = zone.start_sector;
++            storage.discard(zone.start_sector, zone.size_sectors);
 +        } else {
-+            pr_warn!("Timed out request referenced in timeout handler\n");
++            if matches!(
++                zone.condition,
++                ZoneCondition::ReadOnly | ZoneCondition::Offline
++            ) {
++                self.finish_zone(zone)?;
++            }
+ 
++            zone.condition = ZoneCondition::Offline;
++            zone.write_pointer = u64::MAX;
 +        }
-+        RequestTimeoutStatus::RetryLater
+         Ok(())
+     }
++    pub(crate) fn offline_zone(
++        &self,
++        storage: &crate::disk_storage::DiskStorage,
++        zone: &mut ZoneDescriptor,
++    ) -> Result {
++        self.set_zone_condition(storage, zone, ZoneCondition::Offline)
++    }
++
++    pub(crate) fn read_only_zone(
++        &self,
++        storage: &crate::disk_storage::DiskStorage,
++        zone: &mut ZoneDescriptor,
++    ) -> Result {
++        self.set_zone_condition(storage, zone, ZoneCondition::ReadOnly)
 +    }
  }
+ 
+ pub(crate) struct ZoneDescriptor {
+     start_sector: u64,
+     size_sectors: u32,
+-    kind: ZoneType,
++    pub(crate) kind: ZoneType,
+     capacity_sectors: u32,
+     write_pointer: u64,
+     condition: ZoneCondition,
+@@ -626,7 +659,7 @@ fn check_bounds_read(&self, sector: u64, sectors: u32) -> Result {
+ 
+ #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+ #[repr(u32)]
+-enum ZoneType {
++pub(crate) enum ZoneType {
+     Conventional = bindings::blk_zone_type_BLK_ZONE_TYPE_CONVENTIONAL,
+     SequentialWriteRequired = bindings::blk_zone_type_BLK_ZONE_TYPE_SEQWRITE_REQ,
+     #[expect(dead_code)]
 
 -- 
 2.51.2
