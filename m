@@ -4,190 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 795E2E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:20:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EED50E63F2A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AD346B00EF; Sun, 15 Feb 2026 23:16:26 -0500 (EST)
+	id 2D9086B00C2; Sun, 15 Feb 2026 23:34:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57A616B0139; Sun, 15 Feb 2026 23:16:26 -0500 (EST)
+	id 2BA0D6B00D5; Sun, 15 Feb 2026 23:34:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452226B0141; Sun, 15 Feb 2026 23:16:26 -0500 (EST)
+	id 191E36B00D7; Sun, 15 Feb 2026 23:34:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D8A396B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:16:25 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E14BA13C068
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 03:00:47 +0000 (UTC)
-X-FDA: 84448817334.25.6D0C112
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011046.outbound.protection.outlook.com [52.101.62.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AB2491C0014
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 03:00:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="F+IPj/NH";
-	spf=pass (imf18.hostedemail.com: domain of bharata@amd.com designates 52.101.62.46 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771210844;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D384A6B00C2
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:34:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9245C160B0F
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:43 +0000 (UTC)
+X-FDA: 84448328286.14.06E13EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B47D32000E
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QOAAWiOD;
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771199201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NRPTqqluY+a9gNTWvirgpbpxBILGqsJqtNuvTmdGV5U=;
-	b=mLE7h0+Q0u3Ogi9Jfy+xLMTxDqMThMzunQJya34y5nO95wFNL0c3HP3BBTYXjGBhV1sWlj
-	E/CPFakMwLLbCxDoraJSvXRMGkaItYTzlTO4VldwmnDuq8nUvwVJ3rhe9Q9Iy1WnL3tdDE
-	pp80MQV3QKv6L+BcxKlCL6HwdW9Ugrk=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="F+IPj/NH";
-	spf=pass (imf18.hostedemail.com: domain of bharata@amd.com designates 52.101.62.46 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771210844; a=rsa-sha256;
-	cv=pass;
-	b=rNbJPsWN0RU4Cqjz29a/nxB7iBeLHEwhTwjfeetWxncYy3xypW+nsnb3szaDdMi1VkAu/z
-	L1p4/vaZrT+6QPm5u/2Ls/mPWDNs0MxRETdgStGrbY8p7GWPjzPtQ1dyi6ECa7mjOdhKyR
-	jGRJJIZqlFXbKQ0nIIOHBTMIwKs6YWs=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W5wLzRHR3h30QJT57w/OlPKlS2y8IFRQh4eTIu41MMy00ZJkrnqEEMIfxnvJQ7myDsDWH8HYrsKMX13Gs3zLDw5TTuL7XJ5T5a1Tsq1XY8UJcVQB94pCcMfn6lfyJLlbf43FMwVoGyZXFHrJItye68PMroHV/PDbu+Cvu/oZVQYow8HGvT6/GO2y4y8t34Jzy1WHEIdodu7rVJP9gQVG/RxD09npsr6o6Pdt4Jfls4hSVSJuZjgqzJlQ+mDDCCGhE5y2iWNxevrhetN24T27aZhLRwq5E0orlH4NW8lKDo3yayB0fBlDbuFjkCjt42gwPecXrK83q2ds2yPdvnIYKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NRPTqqluY+a9gNTWvirgpbpxBILGqsJqtNuvTmdGV5U=;
- b=ElxtpAmHshDcxpJdk6kplhmZGXN4cu1FjjrO//yHwffr926jcxVcF6TGkB/7g99SK+0CuYHUhYQ06N8YipeLzyC575q3paosN3bQ3bnA1I+6cd1eFM059Jc3i3m+N7aYP4aTDCaF7O4LcVSzUQtREGPmW20GpB5V1SuHMDWAqbqZO0LRIWjoE0QREdTLSeDPzDUTdptFLmVAgtDerrxW72LLjk6yPfSEiip0VEydQK79xzPskakkz20sAY0yew26WsgxyVlQvmlHggbfMZVHJMXKFt3gxBcayeRfKds4X/5ymZdoai1YxTSIHvqi3oyKX6Z16KDLoFwuvnZVSiyrzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gourry.net smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NRPTqqluY+a9gNTWvirgpbpxBILGqsJqtNuvTmdGV5U=;
- b=F+IPj/NHbsGx4zRCdVdf2vjDHvpUTYWvxgcpHBtDek6ATo32c7hVpPJruUcPQHU73QJ8gOcI1H88qxFwZmEJ8kW7SGmjS4UpDp+eJUI0q5BQe+DOxV0fWLkm8nwSrTEMABHdh/gFsQH3EmDtLquIwc952zLhcvo7wtmRdYsiIVs=
-Received: from SJ0PR13CA0171.namprd13.prod.outlook.com (2603:10b6:a03:2c7::26)
- by SA0PR12MB7004.namprd12.prod.outlook.com (2603:10b6:806:2c0::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 03:00:41 +0000
-Received: from CO1PEPF000066EB.namprd05.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::59) by SJ0PR13CA0171.outlook.office365.com
- (2603:10b6:a03:2c7::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.13 via Frontend Transport; Mon,
- 16 Feb 2026 03:00:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CO1PEPF000066EB.mail.protection.outlook.com (10.167.249.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Mon, 16 Feb 2026 03:00:40 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 15 Feb
- 2026 21:00:30 -0600
-Received: from [10.252.192.21] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Sun, 15 Feb 2026 21:00:22 -0600
-Message-ID: <aeb717f7-60a0-4fe1-b34c-d4f8cea02f96@amd.com>
-Date: Mon, 16 Feb 2026 08:30:21 +0530
+	bh=M2e6c7ecbnZ9ov82cMPEezDr87Q6pBLCXji6N6Smioc=;
+	b=PiKJBwQfkRqj36pEWDpNOz6OjmA6f5aQ71rUoOd73/Yc3OPQ31ox6EGNnFjiQm0GrrHPKa
+	+XtHeUBZB1Jx48YEquX6m4ybMOYOUuXJ2XyWYm9oZmTsowL9qnFcep6ld8Cqzn0Qs0NOq/
+	hyQd05p7z3rCvQggLHZ9cAle24WG3PY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QOAAWiOD;
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199201; a=rsa-sha256;
+	cv=none;
+	b=RL2CFGsh4MGFGqEd6rt8BmHSkTc03T9xDnbmiNh8ZXCzfQ97dA1LJ/l5r6kjVFgoDWbMnY
+	GEf5rB27omwZsxKMonnW0NOVmsHp78rYkmcWCErO0DBsyaXLm9VJizFLdWV9d4PcW2R9XJ
+	sjPpT+OWCaSksEwBbj0J8ENtO9G7jaI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DBB0B408DE;
+	Sun, 15 Feb 2026 23:46:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7043DC4CEF7;
+	Sun, 15 Feb 2026 23:46:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771199200;
+	bh=V7NPmcHt489UPhx819RkTB11oJ7rpInWWLTHwSOdN0k=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=QOAAWiODki0/fVEd+vwj3qIdMPRlM/t1Wt0oN/BXImgWeFtx+e7pHGr/rrOldFWHW
+	 Qq5WsoutXlj/lz9xAQ8S/osGEmSW1h5JM4OWOtGphjFd6aBOsyBlDshTGy+PJ9a6NS
+	 sm9BwJt/4JxJD/aim4CEBeVdRT/IbTo5V4Oh3+iOen7SGETNd7v6e/icRmt+uNDqKt
+	 dQhKsEQ+QiMqvb6q07pVlYQFDwSx2B92Wcq1aV5DQiU3MMedDVkgfjtKTjn7b/7hKW
+	 j1fEcxeA1awXgYmE02RtIiYkeCzhdq1E/DBY3wtJ+WYVqFjNG1BzN724aDSYIjpz/B
+	 nXXddZuJ2B0/w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 16 Feb 2026 00:35:17 +0100
+Subject: [PATCH 30/79] block: rust: add `hctx` private data support
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 00/10] mm: Hot page tracking and promotion
- infrastructure
-To: Gregory Price <gourry@gourry.net>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
-	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@redhat.com>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
-	<balbirs@nvidia.com>, <alok.rathore@samsung.com>, <shivankg@amd.com>
-References: <20260129144043.231636-1-bharata@amd.com>
- <aY87i3dG5xmDpWkE@gourry-fedora-PF4VCD3F>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <aY87i3dG5xmDpWkE@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EB:EE_|SA0PR12MB7004:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab094f3e-6002-45a6-1427-08de6d079151
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|36860700013|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bkVCaUd3RmJ6WHJNYmRId0RlbWhncEdnTVlzSTZHUTM1cFpkanQ5MHBGNlps?=
- =?utf-8?B?cmRsWHNKdnlsODk3ajRUZ2Z0OEgrL1gwQVdtVERLMCtIeGtESEEwZkZOSHZQ?=
- =?utf-8?B?TkVPd1VvMkhlOTFKbFY0SEpQSW11eW9ZMzJXRkxnUlp1Q0hMcFhGN2VYRWpI?=
- =?utf-8?B?UXg0dmExUk0vQnBSNVN3K1ZBOGFGbkNabFUrVHVzZGJzZ3FHaXlXemluS1JF?=
- =?utf-8?B?VVdBU2lNT04yUFVjRzFWd3ZJTU92Wlh4cDVYZy9TZUtjTGVJLzk1WUlLbjBM?=
- =?utf-8?B?MTd5ZUVWNEdRRkRZd2RzblZra0pvTHJnR1BHZGdqMHlhVWRxaE1DYVB1RjNn?=
- =?utf-8?B?T1h5QWxDcDY5QWtwNkFJRWw4RnAvNks2S1EyRWZMRkphcXp3ZnZUdnNreGF6?=
- =?utf-8?B?MzdTcGVCb0NoRXBlaThyVmp3bWJDNzhZcTlvS2RGNTdKYkJhdkpyNWNQSDMw?=
- =?utf-8?B?dGI4aFFSTnd4ak9pcUp4VkpEWUtGbFozdW9ScVlhOFFTK1dTOTcvTVdDR3l6?=
- =?utf-8?B?eTVXK3JXemVSMTA1SDh5SHoxRytmT1NrVjAxUGUxZW14K2xvTWVqTlI3MVZp?=
- =?utf-8?B?MVNYTzAzTUNZODJhR3l6YzIzajN5TWtlYUl5azRnWHdEMnNycHJNTWlucytp?=
- =?utf-8?B?b3c1ME92WGp1Qy9zQTRTTlVOZEltTTB0L01FcVcvVjlLcG9YRllEczU0OVlx?=
- =?utf-8?B?UUxvOXVPYUkrUm12MGpyQVIyVkpOMjdIV3hOV05qaGdqZDhiSnd6N0Rjc2tC?=
- =?utf-8?B?OXA0bWp1dFVjbURYZVBxLzhpTzZtc0NnS2RJN2dYbGdjRVB0dDhUTXplKzlU?=
- =?utf-8?B?OEFsdkE3Z0ppQU1PMFZZb2Jzc1dvNnZZUXVHU0w4OE1PZFRpNCtaZm1zU2p0?=
- =?utf-8?B?V2pZeEtYSXdyRkFOekVsZHVBSmxwWlI2WUhsVE5ONTBsM294c3ZBKy83b2tL?=
- =?utf-8?B?U3NVZnVOZjNZNkZ0MzAwWUhBckRsSVg5blBZZGdnd2tvNjNTb0N6U1hoSHdj?=
- =?utf-8?B?R3BLQ3RHQlRDYmh1N1d5dGlJMFM2czJEL3NOZDA0Ym4rbk5EMUNBSi9CS0pl?=
- =?utf-8?B?MHBzcjYxaDl3eENtMGtaY0hKYTgvVlUyWUdQTjNzNGloUnI0d3BFdkE5RnUv?=
- =?utf-8?B?RTI4WmdkUStyajJhRXpYSnJYTFIrRVpGYm5LVzI5QTVqM00yTFdFYjR2RGp3?=
- =?utf-8?B?bXdENzJTZFV6TTlUYWNpM2dYQnN3ZmRKbTI1UG56U3I1RXpvTVZJTnpFZmVQ?=
- =?utf-8?B?dmp3Nm8vcmxaeGdhT0FGb0NJVDdyQXRPQno3WDFmejBmMmVLNUtOZkNUVHl0?=
- =?utf-8?B?Z29WdExPVlVCU0Q5Y0JjZ0w5QkpETGpVcVhXMmZmeHkvSW9pSmNlTng1MWxr?=
- =?utf-8?B?ZTdtL0tQdGlCdXhxNGZDWmFwQ1RmZElHWXQvbnJBbFZtSWtad3d5N3YreUxQ?=
- =?utf-8?B?MTEzWUxhNmNBeE0va3lmVWxOZzY1MzIrNkFRZm5MQnpuZjduNnNKY0pyKzVx?=
- =?utf-8?B?NDJnT2pyekNDOFNhVS9UUWZEWFhiSllyNER4REF1eERoZ1FmMEJlbnlmWDF1?=
- =?utf-8?B?bVhIWHFReXEwSjkrRnc1WnNOaHQwTUxydlFHWVlkK3FJMmpCQUc3ZndkY281?=
- =?utf-8?B?QVFmZ2VWYjZCTG10QldzamlzVllWaVdzTXVDNzVwdjR1L08rcTJrN0o1MzVJ?=
- =?utf-8?B?dG8vMm1LQ1BQcUpROGlxV05kUVN5WWZpZ1hYanN6L3BubVZIeHN2VEJWK3dF?=
- =?utf-8?B?ODEvWFY5M0lHbDFIK0hUWkIwL3ZvaFJkbTVWOFlVWi9ETnRzY2VhbFA3WXZu?=
- =?utf-8?B?ME5KU2kyUnk4cVBZczRGTnJZeVloRWdRQnRicWFuQnBSK1QrMXVmM3MrQjVL?=
- =?utf-8?B?aEpZZ3NJaGhZMVNzZHNuWDdmNkw4OUZkRW1yZEgxakIyN3JUV3NvTEtYZVl6?=
- =?utf-8?B?d0drdWVTbG5JL2lKS3BlYi9URFZ0azRiYmdrNDc5VVZ3Y3BCbEJYeE12cTgv?=
- =?utf-8?B?UzFMM1lLSDFNQkQ0WExDMjZ6SnNyN2pONzVROXJYZk83ZTBpYTZjODhralI5?=
- =?utf-8?B?czV0YXhmUnBaRHpOc28xQ2JWeVAyY2l3YkYyaml5YWNWeDFsb1dZdmZSZGlM?=
- =?utf-8?B?eUptR05sY1lmQ2k0dFJVZk95alhTTUxmY0VSYXJFQjRjRXhrYXVsTW04Wi82?=
- =?utf-8?B?THpmMEZncE55S0Z6Y1JydUlIUFdrNDFRTmp0NlV1eUhWa0VHZUkxc1l1c1lQ?=
- =?utf-8?B?cllGYnNPVTF6ZlZuMFNFUDQ0aWF3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(36860700013)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	EgmTQvaBwwnchpUQ6noxuKAomLXx/v7khTVNoPX4wSq7EsvZ/2IPPY0UboeIEifhIPlAQKXHvyo2uly+5eG7IwUrB86TZ9MSLBLAHwePv3Ur7cSAMIo6haDYHYBfDYeTXhCRg5DMB16unKBbwvVpbpDMdhzf5/WrTqXZqhBdFbK3A/mHchr6PRlP2P4bi0VS3GcwsPTakKp4HJojB3gx5fEJHNpBKewMivcL0pEnyDoXs1p8v4M/i0EL+MWIQZGvsmktn7rOV6dlsuEE3QHu5//eH/GHLabNjYV3XMJ/rrT2DqtlbcGjdgyw7wKBNcuXZFLX0O6YHt5Wv4+q0epVC3p3yt1Fdrr3X0GDwrnfkYzJAIbFp9OoWu4u9u9dru+xVie1XVS7n/PNZ3nilDOEplfztPQ7ls5ycY0Izk0Id/woAdhq/mKA0SM1uJWZka8o
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 03:00:40.2065
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab094f3e-6002-45a6-1427-08de6d079151
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EB.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7004
-X-Rspamd-Server: rspam11
-X-Stat-Signature: bwx6zxjuowt11f9dik5r14rukcuhgd9f
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-30-de9a7af4b469@kernel.org>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11810;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=V7NPmcHt489UPhx819RkTB11oJ7rpInWWLTHwSOdN0k=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklg2hepO/XMsV/RoMZ08ue9FZTE5Lj97prJGD
+ j8WSlxnqgOJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYNgAKCRDhuBo+eShj
+ d+EKD/9u8LB3MZ2sU5dzRt1fQ1mTyKDY3Y4tuS/8D47vQY5WL29VWojTttVXM62mDObm1xTLHde
+ 6y2lYsO4hRrH+mB2SJnSx4ygR13sIWFKhLjVtwB/Q6uOj/cS049/8c2wDvaIdj/rtvlttrDdKqL
+ HvAmiykeVZukA9xzP8OAY7bENI49gLT0u10mccqkfMahAqAqRsS6RMBGsTZ4Nk4boXYXIoe/JjA
+ 2ANAoJmns8NzTtiHJAUsXL/zAge5zAn9kaNfEhSXVAriMC+5Xiaq832sUWMPeGnu3QW24aBc4dk
+ BJ3fF10wT2+sC88QFzHc0aU5FaTDJONchPfXk2pVuglhVA3m5eF3cLHUSKXEdJraCvfRPxLFvS8
+ AhQ/4D14KsSIUITCXytGv2RQL9AM4D1DhO5/dgckrJPRA8gCTUhe2o7NtrJyt5DS2IEmyiJAq38
+ g4qycoOGZHQmxq2XCPzNDy++RkTIq3pJyOs7Odm65g2nrNPEO0OJJX6+11xOWSFDSEGkRNSqpcg
+ naKWE/RVHDizTPOU1na0zdD8W2isxPUiE0lJdT1Gs4cSCci1bZLZd8XJURL4NPc7RGy3akPG1aF
+ ulSl5POtOg9MQxfFF7qt/1QWFUJsE1P2gWtHiZ71LP8gpSw3vXsHTXdOtbv9wHNbymiikWE1i5U
+ wgVtNsa9xbE/Fsw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AB2491C0014
-X-HE-Tag: 1771210844-76063
-X-HE-Meta: U2FsdGVkX1+Bgj0lCo9co1dqAZKktE0Oea8UmQlsteG7xomnWkgsnJsIIOIuDbfJotk/Wx66QSKIYpQpMZcPv1LEzbNdmF8Yn9vZzbsn8qx+jcnnLzN1bxFC8bILNbPeRDnQfCLsfd1CQ65Pr0SOFYZn/WreqZX3VT+1KUi+1qkelUGMaVea6qbExCbH5K3mqsH+yM/WGwNwvl7IrTeDIw9IS38g7a9y3vmv0y20pwQ/hLtZJdDHLOovnXmQvZt/992Ic1mNndlNL1MPttFIFC84RqhS2spE9k8vayoDDMZ3yH4aH/r1ZfhX1CjGj708kcfSiyhSxefL5J+evSBTBxI5qzWPBFT+Db96piy/5nDenHMfF+TMqJ4Uy6z50LnHRT/tTL0ZhzSnSGdovm1JptfZvOlq4AkjFdZnLc7C4/uTQ/0Hhth8Armz/mAV8DeOibmjfimADJFfURkimRIcpShUQB7K2gH+B+6Mj+2LgSWh7KWtHQoBQhhdn8fBVz+1vr+8Q+qH8h9V30lBaYl8ms29B8FgI9zo8St1jPK/fQr+vRjDr3KqCcdDZsIf1HMQyx3nJZxFISg2m0KJx0ovn3vpQB5d+tfVc/TbDqx5J/uU+GJWcnpvuFe7NBIwDTgjxTL6rESq4bcMhJh9bRJsypF2zyYya8X+nuospxko+fIZkAVxOJtUiy9r9nd5O5e1WF0yGy/Bg7RduR8Vefb6jtvisQPBO/JzwkzXWqY/M3AOAOo2vAPChdgUHbSFcJGvljvHpbMpd4e9DcjoWBlMPhRNCi8/InFpAUwmVgzyxeTquPawKY6l5vS4K5lW+cheEYsKYDTxOYLofLYYA+3SUYmhiL17JkShqgavEr8p03Pp0TMrEF67Yv1hh8kjGu+q1Kqpciby3YdvYSwMOBCPGJ9EICnoW9ZRz4yuuZV9TwswaxFED47ctvgUQhnYmhpkEkXYjKrVXk2GoOD9BP1
- mitWkNxt
- 3+jQTMRplmRn4qvHXUJWiUF1s52QsqWd5ctIfcS21pupH28K8jmH1pp2wKcHDvADohVNbNvUXJ0EY9sDIOyMD71XaiTe6hXwQXC1w9SWDirwVDAoaf3KojFI1bcjq44/ccqYaPSCmZY6gTJtF2YVns3uv2ocEI3hfvsuLub0031oYoaBTNreSc60G7uww9IzTCOICR1CwRtyNPMuwbYsF5GR7fDo1JwhEyKz/HxBTVjvQBg84M9MRRMnjJcUYnb6A7BhoPsJp+AUlCRPZ5rCsriN2lu4iMAw3F89q4Su4lW+G8XUthDHqwU2DA2hZOdQjoPX1WOrSoangEV++hIkRtLYNMt7FqINNCbah6P6x+QEIW/6teAz4R2cqkaOW7BVINbkqZKY35T55kx7VQQLlOJ2i9FEv86iBkdtMhDhis0C831svEfh9BAYUTGAVFTAw5cyNzsxC7JPxpd4/E09v762Y/bX91mH1E2gyKCTRx4fnqlskCyya45UUdUI6wSrTk4Qo
+X-Rspamd-Queue-Id: B47D32000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 5agfp3jr87h94m7xigu65sst3hj4sxzd
+X-HE-Tag: 1771199201-723065
+X-HE-Meta: U2FsdGVkX192WUgD1DHdMO//EZdkQDuIuDTkii/LaWhoiGIONVZtwOzuOzWJWGjOMtBWrJaKzZbB9GrzpQsh+Vhmz6JEc5PUkkgYVU4HLui356t6ZwjEshu8PGpTiuglq0Fn2YT6NTJKxROFQ/mU1JJbhiiHYrv/uZkZiPafzG04BC3VSYjpLlI/mhtK59rxrtIWY9QlbR/PBQ+nuLyczzxcZ6kJZJVYylO3+O4Iv10Ljbd9WKzj75lx97h7Z4PTJQnt7DWBVdDCG750ZZhU3BIHm0oem+uCEBdwoonfh/fPYSnhbXt3ii1Hzom+w/f2ytSxAiR1nkutIWUJnKF6bmg1fWjiYO+w1DKsX81RBvCOuRE05eeRJQ+/r94BYaFYf91l3+YO5D7p9oA/1TdqeWsbmp3LCU93diE9akx5oEUTpGJkPtomFHp8sJDV5E5ZCnKb6aPYqurVhRXTayDHeWZ4HNWdZI5NUmF+vlwRwc2NYlyLX4b93MdvGuMYrqh0ufe/VUraPr3coqaWuXP5fXu29XPEpG08TRaPNoJ/An9J3K4VKTTm4LJr8mO0E5VbM2Ww8HReQ+ytZWujIwyplv7Zgeeh99FL2zhlEColxg5JOL/XQi9HuFyuc4F9Ux62aQOoL158fBNVmGnsnEZ1xsTKwn8gMDkHu7SFNwSQ9DKtwGm784jChd/m9SfFcrLaRHMSF4N17Dh44M7dz2LOGBJfUwrVK8aRSUXC1xEfru2tZqmcwA1CA04R42s0ei0Qg4OE0taOqO9514tk3d9qRGbanGGkOKaOLBaw0OVh56eRpuKpnHTx5pLChdLkw2WAqNYXOr+ahZBWuibDxpXFjASm0yd4ef/SY5hYcq7zYVKhRIlJEFN+EGqoNBvL6uyBr/61GG7tuAWXqWXYLFMy7xbPIXfzPaa/ZEgmlf3HEl6sG0QtD6YBHdBlc+Z0hokauPu05ol1qFpNw5ZKa7d
+ MBxj6Ypf
+ PjQv7T4HRm30oZTVMQ91ecwGMi3+CUGfgFoRNrV86yNHCkWcLE7DF7Ma1z7qkFZGjfcUdBjPDGjjDJUfPUa5s0GA4IH2Re3yrCiT//gFzWsYPYj9ZlXKVP+9o+5Ue2xumppHr0cOQphdebLRUEIK+sZSfu2hJjiXDLWgpUPpU4DnNJMD5iwL3jyVvrDFH/vVHex9ez4BQu4uniTdGAZ6cvPQFBsjlOn5djg4Uzi4zC3NJ1aJo/3XTRpSBK2ptOG4+YzG24PKPbbsV6Xi9/UTreiljk3RA7cQzh3z8HHbMDc/psKIaM03ljaBwqT0gYeL0HzOA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,31 +122,287 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+C block device drivers can attach private data to a hardware context
+(`struct blk_mq_hw_ctx`). Add support for this feature for Rust block
+device drivers via the `Operations::HwData` associated type.
+
+The private data is created in the `init_hctx` callback and stored in
+the `driver_data` field of `blk_mq_hw_ctx`. It is passed to `queue_rq`,
+`commit_rqs`, and `poll` callbacks, and is released in `exit_hctx`.
+
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ drivers/block/rnull/rnull.rs       |  8 +++-
+ rust/kernel/block/mq.rs            | 23 ++++++++++-
+ rust/kernel/block/mq/operations.rs | 85 +++++++++++++++++++++++++++++++-------
+ 3 files changed, 97 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 9e8d085924040..4e226186d2f36 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -506,6 +506,7 @@ impl Operations for NullBlkDevice {
+     type QueueData = Pin<KBox<QueueData>>;
+     type RequestData = Pdu;
+     type TagSetData = ();
++    type HwData = ();
+ 
+     fn new_request_data() -> impl PinInit<Self::RequestData> {
+         pin_init!(Pdu {
+@@ -516,6 +517,7 @@ fn new_request_data() -> impl PinInit<Self::RequestData> {
+ 
+     #[inline(always)]
+     fn queue_rq(
++        _hw_data: (),
+         queue_data: Pin<&QueueData>,
+         mut rq: Owned<mq::Request<Self>>,
+         _is_last: bool,
+@@ -546,7 +548,11 @@ fn queue_rq(
+         Ok(())
+     }
+ 
+-    fn commit_rqs(_queue_data: Pin<&QueueData>) {}
++    fn commit_rqs(_hw_data: (), _queue_data: Pin<&QueueData>) {}
++
++    fn init_hctx(_tagset_data: (), _hctx_idx: u32) -> Result {
++        Ok(())
++    }
+ 
+     fn complete(rq: ARef<mq::Request<Self>>) {
+         Self::end_request(
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 415be31e9a777..3eab3ca8f5480 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -17,6 +17,12 @@
+ //! - The [`GenDisk`] type that abstracts the C type `struct gendisk`.
+ //! - The [`Request`] type that abstracts the C type `struct request`.
+ //!
++//! Many of the C types that this module abstracts allow a driver to carry
++//! private data, either embedded in the struct directly, or as a C `void*`. In
++//! these abstractions, this data is typed. The types of the data is defined by
++//! associated types in `Operations`, see [`Operations::RequestData`] for an
++//! example.
++//!
+ //! The kernel will interface with the block device driver by calling the method
+ //! implementations of the `Operations` trait.
+ //!
+@@ -71,6 +77,7 @@
+ //! impl Operations for MyBlkDevice {
+ //!     type RequestData = ();
+ //!     type QueueData = ();
++//!     type HwData = ();
+ //!     type TagSetData = ();
+ //!
+ //!     fn new_request_data(
+@@ -78,12 +85,17 @@
+ //!         pin_init::zeroed::<()>()
+ //!     }
+ //!
+-//!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
++//!     fn queue_rq(
++//!         _hw_data: (),
++//!         _queue_data: (),
++//!         rq: Owned<Request<Self>>,
++//!         _is_last: bool
++//!     ) -> Result {
+ //!         rq.end_ok();
+ //!         Ok(())
+ //!     }
+ //!
+-//!     fn commit_rqs(_queue_data: ()) {}
++//!     fn commit_rqs(_hw_data: (), _queue_data: ()) {}
+ //!
+ //!     fn complete(rq: ARef<Request<Self>>) {
+ //!         OwnableRefCounted::try_from_shared(rq)
+@@ -91,6 +103,13 @@
+ //!             .expect("Fatal error - expected to be able to end request")
+ //!             .end_ok();
+ //!     }
++//!
++//!     fn init_hctx(
++//!         _tagset_data: (),
++//!         _hctx_idx: u32,
++//!     ) -> Result<Self::HwData> {
++//!         Ok(())
++//!     }
+ //! }
+ //!
+ //! let tagset: Arc<TagSet<MyBlkDevice>> =
+diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+index 9aab6240428cc..6641c340d87f4 100644
+--- a/rust/kernel/block/mq/operations.rs
++++ b/rust/kernel/block/mq/operations.rs
+@@ -44,6 +44,10 @@ pub trait Operations: Sized {
+     /// the `GenDisk` associated with this `Operations` implementation.
+     type QueueData: ForeignOwnable;
+ 
++    /// Data associated with a dispatch queue. This is stored as a pointer in
++    /// the C `struct blk_mq_hw_ctx` that represents a hardware queue.
++    type HwData: ForeignOwnable;
++
+     /// Data associated with a `TagSet`. This is stored as a pointer in `struct
+     /// blk_mq_tag_set`.
+     type TagSetData: ForeignOwnable;
+@@ -54,20 +58,30 @@ pub trait Operations: Sized {
+     /// Called by the kernel to queue a request with the driver. If `is_last` is
+     /// `false`, the driver is allowed to defer committing the request.
+     fn queue_rq(
++        hw_data: ForeignBorrowed<'_, Self::HwData>,
+         queue_data: ForeignBorrowed<'_, Self::QueueData>,
+         rq: Owned<Request<Self>>,
+         is_last: bool,
+     ) -> Result;
+ 
+     /// Called by the kernel to indicate that queued requests should be submitted.
+-    fn commit_rqs(queue_data: ForeignBorrowed<'_, Self::QueueData>);
++    fn commit_rqs(
++        hw_data: ForeignBorrowed<'_, Self::HwData>,
++        queue_data: ForeignBorrowed<'_, Self::QueueData>,
++    );
++
++    /// Called by the kernel to allocate and initialize a driver specific hardware context data.
++    fn init_hctx(
++        tagset_data: ForeignBorrowed<'_, Self::TagSetData>,
++        hctx_idx: u32,
++    ) -> Result<Self::HwData>;
+ 
+     /// Called by the kernel when the request is completed.
+     fn complete(rq: ARef<Request<Self>>);
+ 
+     /// Called by the kernel to poll the device for completed requests. Only
+     /// used for poll queues.
+-    fn poll() -> bool {
++    fn poll(_hw_data: ForeignBorrowed<'_, Self::HwData>) -> bool {
+         build_error!(crate::error::VTABLE_DEFAULT_ERROR)
+     }
+ }
+@@ -127,6 +141,11 @@ impl<T: Operations> OperationsVTable<T> {
+         let mut rq =
+             unsafe { Owned::from_raw(NonNull::<Request<T>>::new_unchecked((*bd).rq.cast())) };
+ 
++        // SAFETY: The safety requirement for this function ensure that `hctx`
++        // is valid and that `driver_data` was produced by a call to
++        // `into_foreign` in `Self::init_hctx_callback`.
++        let hw_data = unsafe { T::HwData::borrow((*hctx).driver_data) };
++
+         // SAFETY: `hctx` is valid as required by this function.
+         let queue_data = unsafe { (*(*hctx).queue).queuedata };
+ 
+@@ -140,6 +159,7 @@ impl<T: Operations> OperationsVTable<T> {
+         unsafe { rq.start_unchecked() };
+ 
+         let ret = T::queue_rq(
++            hw_data,
+             queue_data,
+             rq,
+             // SAFETY: `bd` is valid as required by the safety requirement for
+@@ -162,6 +182,10 @@ impl<T: Operations> OperationsVTable<T> {
+     /// This function may only be called by blk-mq C infrastructure. The caller
+     /// must ensure that `hctx` is valid.
+     unsafe extern "C" fn commit_rqs_callback(hctx: *mut bindings::blk_mq_hw_ctx) {
++        // SAFETY: `driver_data` was installed by us in `init_hctx_callback` as
++        // the result of a call to `into_foreign`.
++        let hw_data = unsafe { T::HwData::borrow((*hctx).driver_data) };
++
+         // SAFETY: `hctx` is valid as required by this function.
+         let queue_data = unsafe { (*(*hctx).queue).queuedata };
+ 
+@@ -170,7 +194,7 @@ impl<T: Operations> OperationsVTable<T> {
+         // `ForeignOwnable::from_foreign()` is only called when the tagset is
+         // dropped, which happens after we are dropped.
+         let queue_data = unsafe { T::QueueData::borrow(queue_data) };
+-        T::commit_rqs(queue_data)
++        T::commit_rqs(hw_data, queue_data)
+     }
+ 
+     /// This function is called by the C kernel. A pointer to this function is
+@@ -194,12 +218,18 @@ impl<T: Operations> OperationsVTable<T> {
+     ///
+     /// # Safety
+     ///
+-    /// This function may only be called by blk-mq C infrastructure.
++    /// This function may only be called by blk-mq C infrastructure. `hctx` must
++    /// be a pointer to a valid and aligned `struct blk_mq_hw_ctx` that was
++    /// previously initialized by a call to `init_hctx_callback`.
+     unsafe extern "C" fn poll_callback(
+-        _hctx: *mut bindings::blk_mq_hw_ctx,
++        hctx: *mut bindings::blk_mq_hw_ctx,
+         _iob: *mut bindings::io_comp_batch,
+     ) -> crate::ffi::c_int {
+-        T::poll().into()
++        // SAFETY: By function safety requirement, `hctx` was initialized by
++        // `init_hctx_callback` and thus `driver_data` came from a call to
++        // `into_foreign`.
++        let hw_data = unsafe { T::HwData::borrow((*hctx).driver_data) };
++        T::poll(hw_data).into()
+     }
+ 
+     /// This function is called by the C kernel. A pointer to this function is
+@@ -207,15 +237,29 @@ impl<T: Operations> OperationsVTable<T> {
+     ///
+     /// # Safety
+     ///
+-    /// This function may only be called by blk-mq C infrastructure. This
+-    /// function may only be called once before `exit_hctx_callback` is called
+-    /// for the same context.
++    /// This function may only be called by blk-mq C infrastructure.
++    /// `tagset_data` must be initialized by the initializer returned by
++    /// `TagSet::try_new` as part of tag set initialization. `hctx` must be a
++    /// pointer to a valid `blk_mq_hw_ctx` where the `driver_data` field was not
++    /// yet initialized. This function may only be called onece before
++    /// `exit_hctx_callback` is called for the same context.
+     unsafe extern "C" fn init_hctx_callback(
+-        _hctx: *mut bindings::blk_mq_hw_ctx,
+-        _tagset_data: *mut crate::ffi::c_void,
+-        _hctx_idx: crate::ffi::c_uint,
+-    ) -> crate::ffi::c_int {
+-        from_result(|| Ok(0))
++        hctx: *mut bindings::blk_mq_hw_ctx,
++        tagset_data: *mut core::ffi::c_void,
++        hctx_idx: crate::ffi::c_uint,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: By the safety requirements of this function,
++            // `tagset_data` came from a call to `into_foreign` when the
++            // `TagSet` was initialized.
++            let tagset_data = unsafe { T::TagSetData::borrow(tagset_data) };
++            let data = T::init_hctx(tagset_data, hctx_idx)?;
++
++            // SAFETY: by the safety requirments of this function, `hctx` is
++            // valid for write
++            unsafe { (*hctx).driver_data = data.into_foreign().cast() };
++            Ok(0)
++        })
+     }
+ 
+     /// This function is called by the C kernel. A pointer to this function is
+@@ -223,11 +267,20 @@ impl<T: Operations> OperationsVTable<T> {
+     ///
+     /// # Safety
+     ///
+-    /// This function may only be called by blk-mq C infrastructure.
++    /// This function may only be called by blk-mq C infrastructure. `hctx` must
++    /// be a valid pointer that was previously initialized by a call to
++    /// `init_hctx_callback`. This function may be called only once after
++    /// `init_hctx_callback` was called.
+     unsafe extern "C" fn exit_hctx_callback(
+-        _hctx: *mut bindings::blk_mq_hw_ctx,
++        hctx: *mut bindings::blk_mq_hw_ctx,
+         _hctx_idx: crate::ffi::c_uint,
+     ) {
++        // SAFETY: By the safety requirements of this function, `hctx` is valid for read.
++        let ptr = unsafe { (*hctx).driver_data };
++
++        // SAFETY: By the safety requirements of this function, `ptr` came from
++        // a call to `into_foreign` in `init_hctx_callback`
++        unsafe { T::HwData::from_foreign(ptr) };
+     }
+ 
+     /// This function is called by the C kernel. A pointer to this function is
+
+-- 
+2.51.2
 
 
-On 13-Feb-26 8:26 PM, Gregory Price wrote:
-> On Thu, Jan 29, 2026 at 08:10:33PM +0530, Bharata B Rao wrote:
->> Hi,
->>
->> This is v5 of pghot, a hot-page tracking and promotion subsystem.
->> The major change in v5 is reducing the default hotness record size
->> to 1 byte per PFN and adding an optional precision mode
->> (CONFIG_PGHOT_PRECISE) that uses 4 bytes per PFN.
->>
-> 
-> In the future can you add a 
-> 
-> base-commit:
-> 
-> for the series?  Make's it easier to automate pulling it in for testing
-> and backports etc.
-
-Good suggestion, will do thanks.
-
-BTW this series applies on f0b9d8eb98df.
-Latest github branch:
-https://github.com/AMDESE/linux-mm/tree/bharata/pghot-rfcv6-pre
-
-Regards,
-Bharata.
 
