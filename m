@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09F5E63F11
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 20:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A0BE63F10
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 20:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41E506B00A1; Sun, 15 Feb 2026 15:04:01 -0500 (EST)
+	id 611446B00A2; Sun, 15 Feb 2026 15:04:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8FE6B00A2; Sun, 15 Feb 2026 15:04:01 -0500 (EST)
+	id 5BB886B00A3; Sun, 15 Feb 2026 15:04:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E2F76B00A3; Sun, 15 Feb 2026 15:04:01 -0500 (EST)
+	id 4AA9C6B00A4; Sun, 15 Feb 2026 15:04:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ED3FC6B00A1
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 15:04:00 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 934F11A0B5B
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:04:00 +0000 (UTC)
-X-FDA: 84447767040.06.86772A6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E4AA6B00A2
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 15:04:05 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7DA1C1A0B08
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:04:04 +0000 (UTC)
+X-FDA: 84447767208.14.11DF3F6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B455F180008
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:03:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UJZxpCU8;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 966FF100009
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 20:04:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cMXvGZMq;
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771185838;
+	s=arc-20220608; t=1771185842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g3d0l2+NqeuRbpsH4DQN1UZrMKFmpjByL1bC0IzaIDU=;
-	b=Cs2DGf9CzW7BuCVfRuI+W2Oayh8IFzDnDJV5slBvgIhjC3VCUwCdr9DvaydRhjtPjEqCf/
-	2Qq8SUniEFmJ7431HBWS0N+b9Qoknlv3rmZ7AQHYAuCRwFDPe6y7NxD97wRR6p2XErEUk8
-	6EGnUT7QZfO5WH3E0wTVUXSJLMV/3Fw=
+	bh=5Bqu9m05sjzlpyJUJnyd2aqBdGOztVwRqnsP+JxmcVs=;
+	b=ZVZwxy/9W5v5lkMp+/HEicmyQizdgYcxIoDRgwgNZX7EFeihfEgEEv+1zqsOHvPRRutXmu
+	XTuOQJeyauGSzklRgyfiaVgJGG0b+UoRD+WjSFtuv8gwRUhj03gA4CLSCGDxISQBWzn6/X
+	Cs2W/qsvcXJnZfZPdnQvRNz4MtLN6oA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UJZxpCU8;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cMXvGZMq;
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771185838; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771185842; a=rsa-sha256;
 	cv=none;
-	b=oBd251AgOQK0vtEZAeiLC4y1W81CS+bcyWE8zb5Web45yEnqWCDgeXFLdHXUr0+pMHKMgd
-	Z472dzEwyKTwYKMU3Gul5q8vNKzZjKk93iJeawbRH3iKE8fKzCxIXQuDMMjiKri9iAA86r
-	vMKMsi07uhS5onFDmUjFt4ubDWYRXK0=
+	b=OfY2iwoJFACXeGhUiHQVXtI7riszDAY/2FsXRKU8khpmfeCua+0QF2PQd0jZKrLHCkrFCR
+	MY7+XgKf3JrKwzsYePBZnt9VsNYcG6EDv3vKPw45rTMvXc/k9u/TJ02HM7v9gWwb7Uoe2R
+	EiUP5VOl01EfvrkbY4DXIp98SyNo42s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E68314454B;
-	Sun, 15 Feb 2026 20:03:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E00AC4CEF7;
-	Sun, 15 Feb 2026 20:03:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AC44743AD3;
+	Sun, 15 Feb 2026 20:04:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADC8C4CEF7;
+	Sun, 15 Feb 2026 20:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771185837;
-	bh=16ErT7tLYfWISzpJ8b5qwJAb4ilevh+0/RrBfgm5lwk=;
+	s=k20201202; t=1771185841;
+	bh=keDSI8hUCY4PU4tsUid9Cm310OHD3rGoQ1qvgeBe3jw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=UJZxpCU874plNifAdpneFJpY9yx3zf5ItZ17fPfIhmJP+AaRU5qKxMDo8RIYv/wbe
-	 eY1kho6Vgic9sto7kbzCXRBBQ0N/h6rYLW0/SYC3sV6AP3qUoh19WQ7s6Y/PvF8U3p
-	 nHaQT5LVOG+qZhuHGVR8Kx1p2ohO7YQFNBPer4MrEwbVwYCU1/fGVV8rbK9uT6hnjs
-	 HhlLxaWJx3tD5LKYuNbeerw3a4QGHJLNI3o93kpI3H35XFVMNuZj4qlTb/a6fwhHHf
-	 bu2ldrKVYM5ZzW5354EVqhjcPez+/7IS7i5MxJ0OGYsObw3flHp3NEG2bXGJc8eKfT
-	 mKc3S3DUqItcg==
+	b=cMXvGZMqSbb3H1E1orqeKhIgGNemexD7tvGuuZGM6d+budX3QTZ/xHWrKHL+RicO1
+	 O/GZwyAX+T2YeaoB6D/AUd6p01xZvXX9algQaaDiTxsjN2BaWVEuD1Odh38HjZoOVw
+	 eZAsR+QTUxH7WTw6L+kfRg+LsCO+E0QBAqbt9Btu/ASWzi0iBHW5dHv2EVq1A1/FAh
+	 iP3e5TG54b4MULbXWpEqjP8P9zUjLmSLXoFqvjwkhleD3sJ0h8xzC07Iz6okFdGfjw
+	 oLPezNnaa2PQvDqRnMWNhuxtmzMtgAFnes/BBG/C6OwCmDjmxgNZKJGLeWfYIK9xPa
+	 4O1FM220wvstg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Sun, 15 Feb 2026 21:03:30 +0100
-Subject: [PATCH 1/2] rust: page: add `SafePage` for race-free page access
+Date: Sun, 15 Feb 2026 21:03:31 +0100
+Subject: [PATCH 2/2] rust: page: add method to copy data between safe pages
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260215-page-additions-v1-1-4827790a9bc4@kernel.org>
+Message-Id: <20260215-page-additions-v1-2-4827790a9bc4@kernel.org>
 References: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org>
 In-Reply-To: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, 
@@ -84,30 +84,30 @@ To: Alice Ryhl <aliceryhl@google.com>,
 Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4184; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=16ErT7tLYfWISzpJ8b5qwJAb4ilevh+0/RrBfgm5lwk=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpkiadRVY9lpm/5LZoWI728311H4v535vYULVUX
- UcUi+8W+tuJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZImnQAKCRDhuBo+eShj
- d2mED/9sVfNPy46IZ/jMpmYFSjo/ki9ckRVDjR7guwCQ/QRD6BQUhSpqDYxDryxI4ia/9Q7d2Kr
- RYS+gJFgpX+3/zYH97BBk5Tji+MY85/R0CdYsUGj0wG4yfTDY5+fYb2JZvmeYTpv1H5mxT7OgmL
- LTJAa3GHWSquacf2EyRQi6H0q9jO4ZcrMo59zqhUzScZ//CXuRQUibcNgnDuUplzrQ4sCeXJdpU
- afzCWzbNq//sJjQrijzPa5obnqvB4xhQ/hQRcrHPnCVjJi3sutlw5OJEbH74qRd3Ws9Kyf+wVSq
- nru8NP7U9yE9wgcj6gTjqzcM53Y7sr8F1p8XClcZ9pZh88sr4XfA4GrcMWgMNvn+f26ja8gHW1Y
- nDVRXK31h3RtrnEvXJQAwb59BXVHLKD0MZj0AGeotKLudo9TgIDgNqfCn1XKcmYkro654ZP4kCI
- Fx/6LeVsF9oamkZ85dvv16bAZl4SbVKEz8Z38ltereGxCUDyDcomSDIE4C0Bo6InH+ZXSPgqJIx
- 1+cvFKJdOJjQaeSflubAM+Gi4xdqmCMZGF9SxLE5ylFqfwYACzdT+eM4qmFeoFnSgrMg4+qzMe6
- HWrXHEc0cK27FiQchXUHXsnm4a/LLV25ee6iHkG50qBfufMApZSSxu6PyOPM8yze8l7w4NyRiQt
- RGy79GLA4Lawtfg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2629; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=keDSI8hUCY4PU4tsUid9Cm310OHD3rGoQ1qvgeBe3jw=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpkiaeYS+HXhpLqK9Z0/QglR/jmX30qpmQQfnyp
+ vTsEPxB4tmJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZImngAKCRDhuBo+eShj
+ d8HtD/9Gy/trD4chBL3hhYL8hoXvK2+y1y5jO15NehAmZ+QMXdKTXcrtBwBpZLK1Uu71LrEn6sw
+ iE0/RqKrzqpqgeVNLOw0JXsOvsZf/opVCS/eTeQguZtLnjhLahQuLHn80309GLeznizxoINX36Z
+ gjgKn6OAw5baj0c4zNNP7TR4SIxxDXv0xlOyThEhC7B7ZUPKuAe01KvcHd+nXWkZoWJB4V+GRuW
+ fd1Kpia6RPKfas9rC0WNGPJowp3dFDVHkCoIOcVgmBt1YiH0wt3yAiQl96p8ffjbhQPjlU9GUCG
+ R+NxYB7M5Flch05oZ30GPYKUQPTbHuW6QHcehx09ZGN1Nu+v7RDpdCEEXqly0jxNfKoAiZ1DQix
+ zJxGXGgU758LgUj2UsJ7Nbx/bdkqMqvKidRs2FofEg1EotVC6jRHw/+cfr5DeDOzK0fwrN4SpVL
+ BOR6Abn/ojSIktoitVLefg7AJjC/hxyrKlvgBm3gp+WPnFxznw1kgNLRnSr4RJHb9WES6TLcOiE
+ Sl9JG5v/pOSLI6UDrYGV9f0kct2QrZcjzxqvvjMuaCjgy5/mRs7u3AVQab31oanPen77jZIQqn+
+ n5O7cK6y5a77TtT/QxHKBEVmnwGIbt5he2YU82WgCxAuKx26StqhYeUyxcuXN+//f1mP0zpeBGI
+ DAchxpdo3t49o0A==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B455F180008
-X-Stat-Signature: 66egiratok4tx377rcouq6m8wmnfcqn8
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4dr6bsw7wd8z3ai3o1hj7aqsu8onhqin
+X-Rspamd-Queue-Id: 966FF100009
 X-Rspam-User: 
-X-HE-Tag: 1771185838-411407
-X-HE-Meta: U2FsdGVkX18RWaydbDYMgxOAHz5bRQDKu048BtR539NBwDVsjquaTlZ8DrHf+5jza6TQZfKrtJJ90PIMW9e8A8A5/HWV/xc86cmVDmk8LyF1f2TneIpKVKiYLEQws6VlbLDrsZpDbWFyoGFAz2pYcdb2o4H1ob+Wy354mWq9u0ivTA0OORnGRHSgooFc6JQnptLtze8oG9tG/LLg0J3lg+rE3TZKi2u35W9xXtKzIGs8Zfk2GuFigE2PQvFHFaCdYfpvYDGSeWBrtiQC0BtMws6cEC4FTI3P7OlwMD5/03kHkLAcWtNe+66eeYfmcEmOO6G8OVNqow9DUX69uD9lZ69jDLlOLOZJ2Ea/CEkcJsz3sJXB4s2fgBTL5nxROe66fcZPmvhKni44QR9Lpt5Dy5GaTei4bqjfvoQAITTvWAZCH2USYUBY6mPS7tYRcGI21rwiALzcly14JQwZIA+Y6BO/mtl5mFQttpbomwcZDvkb9Bk7HHLfaQwmYUAxKK2NWiV3gW+y3zBhVUi6dKQPaJvMilPCfmY5ztbLAX2yP/AlRMl4qTt7arHyf7PWSwL2+WrwgytWE9So3vC0Jp4i0LKPVNDGvdgmFtLqSkodtov4+Nn6HW3hNRdu2DErmmNatxGPlklgPpPFpSk2ShBlI+I/pNAsbLoqfq8Nc6us/zncX+pEl91yyfbZVXApZ4our5D1rKWMtUOolXzQYeuXGxah3j7amxf+pN+XIPDlBdMCnb0jTVB/tTGyk2t5vMJKXWND0mMfB0ZWL+ST7jvNUmfxUJf7eBAsxY0xtcQbMPYlDhcUNABGehNy1f/lEJjhPRGv9rTgqf8OmsegJiE8mDV/40BhlBb/1mgQkwxlMKXTE5wX/6jmjqd9yaaIl8HQwBFTc2cEgiUr2Rbu45IHMbMng0uFclEA9O5uPuHEHELG4Q29vT1GzY6rY6CdNnnz/1swEiFX0b8dMLFMmQc
- KBHIOtbO
- STbASNqF9v7tL1sf79FQA+S2CtNq25wGlYoFi05Z4ct84htgVIGvbiNTVU9dCgQVuGqyWTP564MsGHhlOqYbAGCY4By1p0K7S7F1aNj+G7w91mE3MrQzYTEnFpcCAY37ROxXelIdRZ8ErNWGVjZc7kJ46l0YO0wERP/+0T1u/y8gJ6IZ5RYeGUsmCLlrBHljG6ZkG4xG7afK5cKsKkMHdD57VDC3owYoXMUM/svtAzz+FZe2nBudhrIpYFw8JJIH3TbR+BzWrSYwk/n2mhZpekWKs2NFV9+1AokTEdsHSeJBNYPT0n7PmreJ7C8NNYZSDpBQN
+X-HE-Tag: 1771185842-792467
+X-HE-Meta: U2FsdGVkX19Aj1A8mNIcRsZ4E0DLLR/w+vpVe0zACF2dcqZPX+7MW3iwLCi9Bp9nnh1kh3whvs0To0DlHDBh28bX56iRh07KZaxGFhihSIwKesZ3gJJpbvPHkyR4dXfSLTDZb+/3m2FLgV2jGBEM3d846jjLUGEHH0Y6kmXPO/b8vs2bdgiDmVwkKSHzB73aWztCxrShZ83mINug72PndHY5rQ5LYWuKg+FRsXNnrKrNf1/jnkV4dqP0uYZAZNnJO+EI20y9uRVcbGmuelVfMgqXu8IW23vQVntd3br+VUd8XyHlK08KP5Wy1O5wGhvLPugbyZQwl8ozmPSVGwVe76lCHfA+oxphAxCVrN/JXzMcH1/rMsFfIRVW8hMefIlCTrm0HTfdXrfTxCu0lI8Xru/s7+1vMWWUzV+orZ7kDUDacZmVA5dus8XJcg5B2OuaJGLXdTSa4iESRbGONx/STb3ynLvd+kknpUW3lxY+hX8gkB96/dVEtHQvMGJCCehHL7rwgrB7Ge0Gn0zYViGvWLG5X4f0LdCArJ3cOokCPRwWoAp/QuhwvaMuCqOOy8tDlenmFG5dYZfguTXB7ia1IJK5PBIIZOl2wKuWJPhindoucQ1Zkz34MpYDlxm6KN60Co7pJ5TfOQwhFEQJuPVMK7RJTcb9pgLrUotmAjH10MalAe5RgPjSuSZ4SwZE10aGTrU5VITCO/LFVrnWFU7pndnvFDT+FdSKnafRibq3IqDW72SmPwMAk4NGF19+gtoleFZGeSSXs2I+FuxFo5ujyVNHW7XdT5wU7D30dkPrCDFKn1hZrrOtkwaLUc+lRTpDvYzi4MDw3ajUQnlHu3yFCxJU+QgIQXZ2Lv+ENESTRUouv/BSpKXaKpTy8qHt/ywByD3K33vLcxM2/inuPJ4pE48ZUzWrh+nABgPxW3d9xTyi7oOYsuRlqUSmBPXv/KyhrtG1Y1QEGgl7XY8eXiJ
+ G0A3n/eT
+ w2BowoIweAR3einNcHMawuotx8D2DMzYVK7q9m50L8CdMQIvohpKg5Dd+y8A8I/sWpPdEVb15eB+vOYBCDCul3aWs4dtGhK1YC7gPtJsqSgIjR1CpEJHy1Vz8nTjufO0Lksq3lQrq9xSYb3YVK5BIduxBeA1iAxUx6UPDzZkk2F2E/jvaWvUbMHi8vR00OlZBpPNGbooZTHTBFTGtoskfbpCOIHgawb4NXDh3W29lQd5ODMvi4lVZGQjNN6kFwpDOsITuSlbjAmZxaXIommx6ZlEKqrlvMh3dkF/TH0zkNz0QOVYaiUwZHpW+oQjZQG2+UU2c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,121 +116,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-`SafePage` wraps a regular page but adds an invariant that the page data
-area does not incur data races. This means `SafePage` cannot be mapped to
-user space or shared with devices, and it becomes simpler to directly
-reference the contents of the page.
+Add `SafePage::copy_to_page` to copy data from one page to another at a
+given offset. Because `SafePage` cannot be mapped to user space or shared
+with devices, there are no data races and the copy can be performed using
+the existing `with_pointer_into_page` and `write_raw` methods.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/page.rs | 69 +++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 62 insertions(+), 7 deletions(-)
+ rust/kernel/page.rs | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 803f3e3d76b22..af6d2ad408ed7 100644
+index af6d2ad408ed7..c780d10bcf909 100644
 --- a/rust/kernel/page.rs
 +++ b/rust/kernel/page.rs
-@@ -8,8 +8,10 @@
-         Flags, //
-     },
-     bindings,
--    error::code::*,
--    error::Result,
-+    error::{
-+        code::*,
-+        Result, //
-+    },
-     types::{
-         Opaque,
-         Ownable,
-@@ -20,7 +22,7 @@
- use core::{
+@@ -23,6 +23,7 @@
      marker::PhantomData,
      mem::ManuallyDrop,
--    ops::Deref,
-+    ops::{Deref, DerefMut},
+     ops::{Deref, DerefMut},
++    pin::Pin,
      ptr::{
          self,
          NonNull, //
-@@ -147,6 +149,13 @@ unsafe impl Send for Page {}
- unsafe impl Sync for Page {}
- 
- impl Page {
-+    fn alloc_page_raw(flags: Flags) -> Result<NonNull<bindings::page>, AllocError> {
-+        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-+        // is always safe to call this method.
-+        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
-+        NonNull::new(page).ok_or(AllocError)
-+    }
-+
-     /// Allocates a new page.
-     ///
-     /// # Examples
-@@ -170,10 +179,7 @@ impl Page {
-     /// ```
-     #[inline]
-     pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
--        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
--        // is always safe to call this method.
--        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
--        let page = NonNull::new(page).ok_or(AllocError)?;
-+        let page = Self::alloc_page_raw(flags)?;
-         // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
-         // allocated page. We transfer that ownership to the new `Owned<Page>` object.
-         // Since `Page` is transparent, we can cast the pointer directly.
-@@ -378,3 +384,52 @@ unsafe fn release(this: NonNull<Self>) {
-         unsafe { bindings::__free_pages(this.cast().as_ptr(), 0) };
+@@ -407,6 +408,38 @@ pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
+         // Since `Page` and `SafePage` is transparent, we can cast the pointer directly.
+         Ok(unsafe { Owned::from_raw(page.cast()) })
      }
++
++    /// Copies data from this page to another page at the specified offset.
++    ///
++    /// # Arguments
++    ///
++    /// - `dst` - The destination page to copy data to.
++    /// - `offset` - The byte offset within both pages where copying starts.
++    /// - `len` - The number of bytes to copy.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::page::SafePage;
++    /// # use kernel::alloc::flags::GFP_KERNEL;
++    /// let mut src_page = SafePage::alloc_page(GFP_KERNEL)?;
++    /// let mut dst_page = SafePage::alloc_page(GFP_KERNEL)?;
++    /// src_page.copy_to_page(dst_page.get_pin_mut(), 0, 1024)?;
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn copy_to_page(&self, dst: Pin<&mut Self>, offset: usize, len: usize) -> Result {
++        // INVARIANT: The following code makes sure to not cause data races.
++        self.with_pointer_into_page(offset, len, |src| {
++            // SAFETY:
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `src` is valid for `len` bytes.
++            // - By type invariant and existence of shared reference, there are no other writes to
++            //   `src` during this call.
++            // - By exclusive ownership of `dst`, there are no other writes to `dst` during this
++            //   call.
++            unsafe { dst.write_raw(src, offset, len) }
++        })
++    }
  }
-+
-+/// A page whose data area does not incur data races.
-+///
-+/// [`SafePage`] has the same usage constraints as other Rust types. Thus, it cannot be mapped to
-+/// user space or shared with devices. This makes it safe to reference the contents of the page
-+/// while the page is mapped in kernel space.
-+///
-+/// # Invariants
-+///
-+/// There are no data races for the contents of this page.
-+#[repr(transparent)]
-+pub struct SafePage(Page);
-+
-+impl SafePage {
-+    /// Allocate a new `SafePage`.
-+    pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
-+        let page = Page::alloc_page_raw(flags)?;
-+
-+        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
-+        // allocated page. We transfer that ownership to the new `Owned<Page>` object.
-+        // Since `Page` and `SafePage` is transparent, we can cast the pointer directly.
-+        Ok(unsafe { Owned::from_raw(page.cast()) })
-+    }
-+}
-+
-+// SAFETY: `Owned<SafePage>` objects returned by SafePage::alloc_page() follow the requirements of
-+// the Ownable abstraction.
-+unsafe impl Ownable for SafePage {
-+    #[inline]
-+    unsafe fn release(this: NonNull<Self>) {
-+        // SAFETY: By the type invariants, we have ownership of the page and can free it. Since
-+        // `SafePage` and `Page` are transparent, we can cast the raw pointer directly.
-+        unsafe { bindings::__free_pages(this.cast().as_ptr(), 0) };
-+    }
-+}
-+
-+impl Deref for SafePage {
-+    type Target = Page;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
-+impl DerefMut for SafePage {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.0
-+    }
-+}
+ 
+ // SAFETY: `Owned<SafePage>` objects returned by SafePage::alloc_page() follow the requirements of
 
 -- 
 2.51.2
