@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F94EF586B
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 06:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7063DEF5868
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 07:29:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 950A66B0088; Sun, 15 Feb 2026 01:47:31 -0500 (EST)
+	id 6199C6B0005; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FE626B008C; Sun, 15 Feb 2026 01:47:31 -0500 (EST)
+	id 59D836B0088; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82B1A6B0092; Sun, 15 Feb 2026 01:47:31 -0500 (EST)
+	id 49F366B008A; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7263E6B0088
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 01:47:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 377386B0005
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 02:29:13 -0500 (EST)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 212B713BF47
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 06:47:31 +0000 (UTC)
-X-FDA: 84445759902.08.6109761
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8EC9FC0002
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 06:47:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pd5ZgntW;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1335140A37
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 07:29:12 +0000 (UTC)
+X-FDA: 84445864944.08.5C13E52
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B7850180004
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 07:29:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZmYS8zv1;
+	spf=pass (imf24.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771138049;
+	s=arc-20220608; t=1771140551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2l7h6AZgsCQNAFoeKxysvqrlTHtQeTpw/FXQJGzkYTE=;
-	b=bdxfhxPKBfhIkKBgm1Ex3A2IB6dBlTspJY0tjMaWZGZigzHnj8zP+o81N8s4Vo3ByO9S06
-	0e0+JeYur79jXAsIrlMMXbUCS9rh3eies5azHp5ko3hNzZHVr+XZfdrwCHSRYNXiuIuszO
-	Oe6NPP7tSMqgYBr0D2qYUl3XhHqhwwo=
+	bh=GaUSkkuQJofxBHkox8rsl9hWWFEkHV2aAas3PKJ8HkM=;
+	b=YdBYk30CKLHg1q1/epJpDdRPBtOfKVGAEoWyYbMrETW5Kd6Hx19gCHiycT5r8y9L5JZ+dW
+	UmzaNueZlBk9IaiRO1j+boPkA8M1g/USCs5iydjHh5XORPr1RcFr0Aw/JfsgmDu6prbrjD
+	pWRGORBVb29l4028c2Skvv6Gjog/VOU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pd5ZgntW;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771138049; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZmYS8zv1;
+	spf=pass (imf24.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771140551; a=rsa-sha256;
 	cv=none;
-	b=4g/lDdHyXjms3cviIbfIvsm3O+oA0YZb6d+gb/lS5IEqPZRz5Ak4MeXjRbUQipqwbKDKic
-	brn4JTLkv4y2Sf5ed2lq5C4r6fYLgVF7Z2bPAJpOsZdP/k5bRgpeQJfkdEKopuilDJpyGr
-	iRBpkXoWz2UvFOXf8+nD/UE4aa1LKCY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB86D6001D;
-	Sun, 15 Feb 2026 06:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93C7C4CEF7;
-	Sun, 15 Feb 2026 06:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771138048;
-	bh=Li2C5wEg3QVoAnSKgUm9f8v7M+2VmXqH7O8tRmrVvtw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pd5ZgntW4T22oD9B6EVv91jD12lpMZXLWz+cL8hG1AwF19lPGgfkoXUoXbhlDIU27
-	 tAPOQpRHxN715E4CEr8c9gxYCJJ7FkcPZtB5byjVGSvmnBoO2hLDU97+48+eXWr/UF
-	 bdZ9KeBJxHaZ1GaOyMjUiM/qoOCuyu6cGjNdr+pvajgoJhIrXQknnRbsxpP+RAmvXi
-	 9ewgdGFvs/CKyDlHXHAWVR83pRwObf3SwpvOU8074MeIWxyKdC+OdvsXMDe6zEV+O8
-	 /0Xa+/cYWEsn8ihgTIVOR6/3RAMWVkEcUAqgbUhi6rpEym0K5O+vXmYu9EFOAWoOE/
-	 piw17Eq1Vwg7Q==
-Date: Sun, 15 Feb 2026 08:47:21 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com
-Subject: Re: [PATCH] kho: validate order in deserialize_bitmap()
-Message-ID: <aZFr-TvaWn-KbA1u@kernel.org>
-References: <20260214010013.3027519-1-elver@google.com>
+	b=bVbQy7YQ+pTE7PCCP6BkMSLP4TYWA61ZMquAaWgQFFWMvvBvF36oW53ZTUrLD9xBaSAouq
+	gE/fFQcspeokrX3UK/oArDOCVJbCMu0U1j02+401FGBPASWVlN5ei4Ukl08/5vq/m+OLnc
+	3h/jHxe4jHgGyLONjg8J/nzpTLkX0W8=
+Message-ID: <5e178b4e-a9e0-44dc-a18d-8c014365ee2f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771140548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GaUSkkuQJofxBHkox8rsl9hWWFEkHV2aAas3PKJ8HkM=;
+	b=ZmYS8zv1jl3id/SALH3E1caXqMgXG64D/zHcfOV9yALlFnQAAOgXoaMYN8G6BVHTUFM0Wo
+	eCCHQTErQDaCeHlva3gg/Q2YRDwD8gj1ezn8i0MKmmJIqIOHiO0bB+9VWqySaMbghh0EDo
+	e98G07fXbtM3Un95sSEEVJ4DSdmCX/4=
+Date: Sun, 15 Feb 2026 15:28:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260214010013.3027519-1-elver@google.com>
-X-Stat-Signature: 6m7ji887mgkxphqnfhamj67fn8ug157d
+Subject: Re: [PATCH v4 26/31] mm: vmscan: prepare for reparenting MGLRU folios
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, bhe@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1770279888.git.zhengqi.arch@bytedance.com>
+ <2cea0e0cf208e46dc55f2baef8162bedba2db47e.1770279888.git.zhengqi.arch@bytedance.com>
+ <aY2Tem0Fn6dIknXP@hyeyoo>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aY2Tem0Fn6dIknXP@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: z3apyi1w6bxkqqkb9nnkk9daug5ywnx5
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8EC9FC0002
-X-HE-Tag: 1771138049-508271
-X-HE-Meta: U2FsdGVkX19rwBes1GKz1Ah08BlvFzMCy1VY2g+xphOpeTNCCuiDnMjrKZEMKx/U1P8JGJuBd+qozU00ux/XO32agcrAknzFkTxPFkhKVen3ZlqmPBPKP0ABrPZd10PwpRa/Bcr7po/0LU8GlH2lxdiwRhtWRkONOZBFUt7KfrtFyUivwgVOUf6W1Z6uIfvEo+pkvr1Fo5qVjqjdYJUJe3K7gb3g302pz9nh2bvPHCNt5sUT0f/iAhW8cGiVEIoi5CMx500TmqWpt1HxG8+DHtJ3f47G4vvhj1wlDjhb665PTQQFnkvloj/7Oa9X4vOi+5jWY5HbssrVGS59Bg9bQvZoch/Xvi0oLEZ8/vOSDPwH8b1wUXTvkaKx+gwihhPYseZfrorDeT/Rlboxz/U3V1O6MiNEHwGGC36+CzZz7fWHXo3gjie2zqY+/z9aWMK6fUXnXVKzT+RIifTEC6QsDDm9pwM4Qzymwdu6O9ecObwKkUeNU2KZAwC6D59rtiB/aYAedhL83h3H9z7/ZjU6GxJUNkhe6U19wp/4p2m4Myh6dEZueu0SnIC1+CT8hqI6ywTjxlzeX5YqEae4Bbj4KTm40FjeQAk6hfmTUG4GnQDEB26g9YVVYyj8x5gqDlJ0FJTrE9rxNwc73NNjsg1Q/dP+hQjYBx+nl4LgCtnV/sV+EegSuqTeZZKLa4DzNBhTw/OVUM4d0I/0POM3JBce034FZMhBCoc2C45TRPVV08Pmd1gDPOLSUSKM2mAIao3OXWGSS8jJgiPB3Gxd37k4+HkqNPrCRee/fAMqx2TKEcPmR3Tv0o1SCnpxhe0r4a7Cam5qKK5PAeLs7F3NO0gGXEkWkgOjBaSzE1/FcQ7C6BjKz6O/r7eNQ4UsbPw/7ImJQIT0uh/+DrdMj5t9w15SNDTjoW8E0G8+sklbxPLywZF70l03HjuWpNUVOt24WECLvhj2dod8SoztCGdHOZ5
- hkhV3F+A
- 1n8R3wnNEDQCoe76S5QXTzOr///j+FJhHYNT1jGLn8gr0XiSfctvPT7uwcOs+V7kdQ6WzFdsqJGeK1aakNdXLOjPhUrRXdCR2iWq99Nw4IejvlgHsbd9tEg+l9iXzH9pRn9pkZ5aP8BqKJJJg0O408NQRa3UJvSVJtFks27Jm32gjYA3hBYc0vWDhqISCgOoNCHUm+WtE5BJDOCc1yxPzSOzcLynrujx9QY/xeYEmTRl9EinQqPPikJoJA/ZFPctVklGUUDP+LervEJhOOnncEbLr/q+VpkBNhG7i2z4IKWZSVAVdoyCZvSQ69cY9r4gOb9Ms
+X-Rspamd-Queue-Id: B7850180004
+X-HE-Tag: 1771140550-665983
+X-HE-Meta: U2FsdGVkX1+ikITX6ptODv6GRJvkpDcJG/ea6Pv0qrpA2REq+zhqLrUeAMskD8F2G4FXcgg7BIU7mmskt0MJYV/c17XNcETb0uI6Vb3gKe5jhziYG4gqpTdn4m/+i9YX7Y1H22YKBPaNsMbSqnfXXIBFU4KOsJtryxXuCYSefPqw16qpQLNM5EzsbYqeviwi+BVbHcnbxABKdt3W/PO1zyFh3GnmYP4KO8Sh6ONtohIFsJ/nXOIxd/UvcOilh+nKQOTokz7r5g+YNr/4OTawRzAv8aqdS5/XPviPnNT+zAotdg3TsYifhuvg7K2+M0L1LVmZ/d+FPBYWwT1sKU3RTh+WNZul3lw3IoimBPpjoXzGSbVdajeyxnSEXjQzfqvYpZyEPuWprp6YRVTG8q1L9kZRnqt9ZZ9pztgtbAh0YKOYUFBqEvfvjdme/IT65RWn2M+5laL11rfLfeG73B/C/K2x2jaKr5QsPMwKq8z2oY/D6f4dotIfRZVdmKiV8iBpTuSDV/jbNyr0kw5IFNjJMAmmXkMfl7qDHiUGDfgYAm0QGDxcboDRaJN9p+o4+blJTx9ahM1wFWPiQsEottM4QZ77fSpxulDVwXuZWnXukqYlNwrDbFI5bzOgv3cEWpnalhaI27oOmL8Ir7gB+Qf3s0NZqUZTetQRvh5nFlhRTumn+A3YP1H6L3ntNTSpkpNf06zWXdjImG9flzq4HcBoUGjYG6WaaiualuDYzWZIh4h11aVeXkeuW+VYsXMTYp1CuOBXRvzZRBFNZ4S9+vuYQIqTohgeOYPONSJuv3d5wZuaTIRYE2lbRh1RCjyELrhUHIALfTedPcpfke0UOZgKRlW/VJG4u9kwygU75JkIXi6fuegGawpzjXME0z/ZpxxfQXzr9bM/rQaJ7KJJ3iDtsBFoA+g5LLQkKndcFV624FQCzLIuPr/70ACaDHX0BDyhTxZGhpkP+EY6ecOYYtT
+ NezLeCbi
+ F+2cu7Usr2E41WWJvKxczdN2X8yeg7FVA3VGFrFGGCScAqIVReybwADW3I5BmNnAIx91vELjhCdTy2sZ5scgMf1q2rkdYxTcMPsccTVRM+mHS/n4ww3bKpqOFDFiu/ORKzGwE1vi5TcalrsW8DJ7OqTRrSRx/aTADugXZs8TK/88puTd3Df49UPvSu63vO3k86CVHeXY7J4rqUxDcOXmChpixyFLMHHNxpxNCpeqHfo5MGxQeb0DVtAEKA9XdJtE5Qqjb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,58 +99,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Marco,
 
-On Sat, Feb 14, 2026 at 01:57:51AM +0100, Marco Elver wrote:
-> The function deserialize_bitmap() calculates the reservation size using:
-> 
->     int sz = 1 << (order + PAGE_SHIFT);
-> 
-> If a corrupted KHO image provides an order >= 20 (on systems with 4KB
-> pages), the shift amount becomes >= 32, which overflows the 32-bit
-> integer. This results in a zero-size memory reservation.
-> 
-> Furthermore, the physical address calculation:
-> 
->     phys_addr_t phys = elm->phys_start + (bit << (order + PAGE_SHIFT));
-> 
-> can also overflow and wrap around if the order is large. This allows a
-> corrupt KHO image to cause out-of-bounds updates to page->private of
-> arbitrary physical pages during early boot.
-> 
-> Fix this by adding a bounds check for the order field.
-> 
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->  kernel/liveupdate/kexec_handover.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index b851b09a8e99..ec353e4b68a6 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -463,6 +463,11 @@ static void __init deserialize_bitmap(unsigned int order,
->  	struct kho_mem_phys_bits *bitmap = KHOSER_LOAD_PTR(elm->bitmap);
->  	unsigned long bit;
->  
-> +	if (order > MAX_PAGE_ORDER) {
 
-Preserved order can be larger than MAX_PAGE_ORDER. 
-Let's make 'sz' unsigned long and add checks that calculations won't
-overflow.
+On 2/12/26 4:46 PM, Harry Yoo wrote:
+> On Thu, Feb 05, 2026 at 05:01:45PM +0800, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Similar to traditional LRU folios, in order to solve the dying memcg
+>> problem, we also need to reparenting MGLRU folios to the parent memcg when
+>> memcg offline.
+>>
+>> However, there are the following challenges:
+>>
+>> 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
+>>     number of generations of the parent and child memcg may be different,
+>>     so we cannot simply transfer MGLRU folios in the child memcg to the
+>>     parent memcg as we did for traditional LRU folios.
+>> 2. The generation information is stored in folio->flags, but we cannot
+>>     traverse these folios while holding the lru lock, otherwise it may
+>>     cause softlockup.
+>> 3. In walk_update_folio(), the gen of folio and corresponding lru size
+>>     may be updated, but the folio is not immediately moved to the
+>>     corresponding lru list. Therefore, there may be folios of different
+>>     generations on an LRU list.
+>> 4. In lru_gen_del_folio(), the generation to which the folio belongs is
+>>     found based on the generation information in folio->flags, and the
+>>     corresponding LRU size will be updated. Therefore, we need to update
+>>     the lru size correctly during reparenting, otherwise the lru size may
+>>     be updated incorrectly in lru_gen_del_folio().
+>>
+>> Finally, this patch chose a compromise method, which is to splice the lru
+>> list in the child memcg to the lru list of the same generation in the
+>> parent memcg during reparenting. And in order to ensure that the parent
+>> memcg has the same generation, we need to increase the generations in the
+>> parent memcg to the MAX_NR_GENS before reparenting.
+>>
+>> Of course, the same generation has different meanings in the parent and
+>> child memcg, this will cause confusion in the hot and cold information of
+>> folios. But other than that, this method is simple enough, the lru size
+>> is correct, and there is no need to consider some concurrency issues (such
+>> as lru_gen_del_folio()).
+>>
+>> To prepare for the above work, this commit implements the specific
+>> functions, which will be used during reparenting.
+>>
+>> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+>> Suggested-by: Imran Khan <imran.f.khan@oracle.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   include/linux/mmzone.h |  16 +++++
+>>   mm/vmscan.c            | 154 +++++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 170 insertions(+)
+>>
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index 3e51190a55e4c..0c18b17f0fe2e 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index e2d9ef9a5dedc..8c6f8f0df24b1 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> +void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+>> +{
+>> +	int nid;
+>> +
+>> +	for_each_node(nid) {
+>> +		struct lruvec *child_lruvec, *parent_lruvec;
+>> +		int type, zid;
+>> +		struct zone *zone;
+>> +		enum lru_list lru;
+>> +
+>> +		child_lruvec = get_lruvec(memcg, nid);
+>> +		parent_lruvec = get_lruvec(parent, nid);
+>> +
+>> +		for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1)
+>> +			for (type = 0; type < ANON_AND_FILE; type++)
+>> +				__lru_gen_reparent_memcg(child_lruvec, parent_lruvec, zid, type);
+>> +
+>> +		for_each_lru(lru) {
+>> +			for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
+>> +				unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
+>> +
+>> +				mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
+> 
+> This part looks fine, but I think the nr_pages parameter
+> in mem_cgroup_update_lru_size() should be long instead of int.
+> Could you please update the type as well?
 
-> +		pr_warn("invalid order %u for preserved bitmap\n", order);
-> +		return;
-> +	}
-> +
->  	for_each_set_bit(bit, bitmap->preserve, PRESERVE_BITS) {
->  		int sz = 1 << (order + PAGE_SHIFT);
->  		phys_addr_t phys =
-> -- 
-> 2.53.0.335.g19a08e0c02-goog
+Make sense, and I think it would be better to do this by sending
+a separate patch, will do that and add your Suggested-by.
 
--- 
-Sincerely yours,
-Mike.
+> 
+> Otherwise looks good to me,
+> Acked-by: Harry Yoo <harry.yoo@oracle.com>
+
+Thanks!
+
+> 
+>> +			}
+>> +		}
+>> +	}
+>> +}
+>> +
+>>   #endif /* CONFIG_MEMCG */
+> 
+
 
