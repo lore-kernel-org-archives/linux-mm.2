@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89DA6E63F1C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C84C5E63F21
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:44:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 613276B00F3; Sun, 15 Feb 2026 19:21:23 -0500 (EST)
+	id 320FF6B012E; Sun, 15 Feb 2026 19:21:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FE976B0130; Sun, 15 Feb 2026 19:21:23 -0500 (EST)
+	id 2F7EC6B0130; Sun, 15 Feb 2026 19:21:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FE006B0132; Sun, 15 Feb 2026 19:21:23 -0500 (EST)
+	id 1D0BF6B0133; Sun, 15 Feb 2026 19:21:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 522046B00F3
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:21:14 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D2898CCE6
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:59 +0000 (UTC)
-X-FDA: 84448323918.12.D269737
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 366AE1C000D
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lh34cizW;
-	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB46B6B012E
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:21:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02C0FBC441
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:35 +0000 (UTC)
+X-FDA: 84448317912.03.18BD6B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5E36340004
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:34 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oQ0LJSHO;
+	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199097;
+	s=arc-20220608; t=1771198954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fwwx8VITvgUpqFdEfgSQ7yt9qnUHpA8WP8xDKfU2jNw=;
-	b=cz0Gc5rWPe7yhiEPIpmh/+geG3Q9fZpCAs+DXkoWnJ2E8lK7GfYezh1KWzuRzZjzP7fum3
-	S6M2qHufMMUg0E98x55sB9r9sRc1tvlm1XhhzZRJOlltb4D4ainP2h0isZTmF5upweC3/P
-	vnnXDgYmf8ML2/MuVRcF5DP5egGAFDY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lh34cizW;
-	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199097; a=rsa-sha256;
+	bh=jpGwB9LoHAL5apSmaJfoapTM4gTeV/7UBqdB16GJyeM=;
+	b=dqQ23RYUKkEwEbUmAMFr0v7KY1r34hDF5xnHzOAv3xFpbuawja9ElW8m2BzxnWL0n84Twp
+	LTgggWe4ILUfbo28pIH5A+/lRY++A0fKdfu0PDnJTX2VpRAc+ipDXvErSZlv/FK9gPlIVe
+	Wff0BfZIMqWbkI/V7o13oy4ElXuJikw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198954; a=rsa-sha256;
 	cv=none;
-	b=HMC9TB+uTW3BJ3da7CJJJJqDHJ+lQ1Ng5KUBLNKhHclb9kZyEpx2Cg7oVtzzGoJZO0Bju2
-	kodQcbyh/yzjRJ2YGRq1wZge2Y44cnrIN6odnUOiWdkUAv+8trBv72w9b4HYran3U9tDhY
-	vqhyI5vpsSBuP8xB8kLVAmIKJA9Xefs=
+	b=ZsHN8+BO0UoCDbAxyZXtBiN9oHrj8xuz3xILJkKX2aGyShK9oWAjyCOWk5jBXbscQWrosZ
+	nds+uyL5VkUsqCsEYoGzBpaUAt7LX0Qcbtx05u7b5zZszj3e3p+Ntnm4zG2jcQPvuAF3UL
+	GxEK3QPNUvlguLRAFgCe1YOa+kUKDvQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oQ0LJSHO;
+	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 578D843648;
-	Sun, 15 Feb 2026 23:44:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8BAC4CEF7;
-	Sun, 15 Feb 2026 23:44:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CC4266013F;
+	Sun, 15 Feb 2026 23:42:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBDCC19422;
+	Sun, 15 Feb 2026 23:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199096;
-	bh=Px3eI2zDMAVJLYyUnOivw8WZDG9ekgsY8W3TNggTDzU=;
+	s=k20201202; t=1771198953;
+	bh=ZBT3g2yxwr2ga5MlCDT4cJc5rd6AoVQ9CyP5UJLr7JY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Lh34cizW7d/gBLwSVeE4ys9vsfLxOpCx97lcyLN9wxX6puurpKIPB60ex0e5s2pek
-	 YjX/ebbARJzLTG04MyEdPzMVV8Tgdw/dwPJGNal7y41AdpZ3PKjDvhcvhYMpTW0jkd
-	 DNsXPxviMaBGEAsG/BzwPx7ZU5gUJR3UAZJxbJ9AW4wL4eL80+fsb0zBRIe6sprGiM
-	 xnOJvxKjn+0I1dbfo5ntcXOhQvoEJVqfjDFDMFMoa+mzPsu78A9Plf5iKkq/s6Wl5C
-	 sPHH3+IahusncPzCzzai6AmDK4+YLxoY0evmg5qON45mmAfw6IklPFobLgFDXdrtou
-	 JOvITASMzTdng==
+	b=oQ0LJSHOI5yscAmkUVG++3cAQSWRAceqv3D0uq2h4/A0ND+d+Vay35uo/6D8Nhd6t
+	 Kzr1zb85rkn8P/78LpvGZ59R4GfHdtt3COdBcJEYKIr7lRH4bRoIKWw+fymLavNP3q
+	 SBtVcCVRmM1yfS7oBEqzJe77DVBax4bkBD6j2pITc/rOXCSZ1qH1STZdMsBJNZV+OG
+	 yXnGajUfOZZ7QyYxYwN6FUzK9Vjj63nHRv3vcVqya/h5YfvC3g/PWL7l2ZdE2XLJwd
+	 h9KR3R+ehhy5DQU9iIce96EAr3JH88izhhVM63PLazxU4ndAAPzn3uOjCSAVGobvf2
+	 oevjZEmirz1wA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:34:59 +0100
-Subject: [PATCH 12/79] block: rust: add `TagSet` flags
+Date: Mon, 16 Feb 2026 00:34:50 +0100
+Subject: [PATCH 03/79] block: rnull: add macros to define configfs
+ attributes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-12-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-3-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +90,31 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4410; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=Px3eI2zDMAVJLYyUnOivw8WZDG9ekgsY8W3TNggTDzU=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgmG/fV80AH9+jNFOPrjKBYXkqkQyBHVCZEq
- oBbsCPTrhOJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYJgAKCRDhuBo+eShj
- dy2UD/4oSy3vFK2Ftcro2uRPRmoKZLNWf32I0hhmtmP678KPwSICk/IrlxiYYhnymniK9BKQa5d
- 5KcVEYOR1sET2O5Yl1YQ3LBgLxVdRTQck6w98SZBT5b14hXnnSDh7re/DfJMArLV+BYyzFYSdpu
- bVk3syb0ZLc9gMOdL+rNBTIYRFI/7O/LRceo3pTAanFs33idABcN2sTUhQE80/hS8KPUX822thb
- 9rws+ncn3h0w6/xkR0jpPS30yjl9Cx3cjezlE3esWeVTVL6edNP4U9ohZSgS6VgTbrLxUdpse3i
- TOMvfF/K0ggKh1dZWgXkkGFTGUuTfCZUp4TY2HcLzJmZClMwf/zY6A1KwHRlkT/NaqhtZv2A1t0
- fA6HP6ysJx5YDnRpAtBNk0x0W0FpJzAmO2Jcvz9vWqbbQhVITHwUt/ghW3H4h8izrNl3tK17zYu
- LrEBWs0SgTmbXo1RLsY3+ylr9iT31SuEx1DcNL5ty/FR5C9Nq5kUkCvKkmnFxasoAJDtv7yd6n5
- lyL0SHlB0pJ87F6LAfBz15p7x0EJCK6FAs3aVO4/6dcrLKlaFFrySaEcuOP9+GASye/21wQEbFY
- EKKUhH2/Lxv/5WJI9obMOKll1+CvHy+r2jq+fweRjr+Vd1MEFg3gIEwGhenEY9K1ze9p2pLCVOZ
- BLLMwQb1LMThPfw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10210;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=ZBT3g2yxwr2ga5MlCDT4cJc5rd6AoVQ9CyP5UJLr7JY=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgeSt5Gpp+/cjlALcsKqnCvx2CtOLaSgTmuZ
+ 5S1M+PAvxKJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYHgAKCRDhuBo+eShj
+ dxG0EACwY4lNl7HxgkSgg52iQKuudaW+KKtUEtLbOPnjN4vwDRaW5/rzgKREi8+8L4Hn5i/pRaE
+ aLRUmsG035uMlSrRwgqucvAmHDuETFlxewsvaN7bHlDpPIc69KG7I6dqME4ApI99615IFir39Il
+ US4j/8i7YXr6fLC7NRBJwm0YG31P22xqc/oHntGgoG8zFsyiUbOp3AnMBP/2ffB1zdwLTVDNDGp
+ zcFP3+yr7euceudcVIoeVJkw74154p/lEI8rerssardEivgs7WsVg5nDpvSJO3elWw2ZSyCP/u0
+ v/XB3MuW+tuiYWeJl4ZQdSwQecBB4T5lirjtCUR87ijjFr4U7gV+0uzyEf4htnzdnOY3LzVkxxX
+ +UDQYhjIA3VI5xFOLVe9lA9vmGmpgVXANMzhsaqH10mf4qx/EeqxFqFPDUskqY2caxftq7KxGQK
+ mvVrfajabD6Bsbpoe19hmDSh1GG5dQ0AZwVDTGVLQt5Yhgrx6jhCDqV8tfHRV88+vj6++g1QAOy
+ 5AGIXTLcyWlLBc57zWrNCWZKLv2ZFE1hewbPQQhGbMmvmBmzAtSA6EVXeBEtZrgKGzGNu73fCGb
+ /GXzLK6AF3F/BfkVnOcRSln/2rPEyETi0aqJoa8EPiCrGY7UEoJuwxs0SkRb93ZhKRRxCoqTEcJ
+ fIvQw9h7rLuyy/Q==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: 14gj7qbenfiqwhoukorxockiqipcrmic
-X-Rspamd-Queue-Id: 366AE1C000D
+X-Rspamd-Queue-Id: 5E36340004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771199096-258892
-X-HE-Meta: U2FsdGVkX19e1Y8O7sOTXa/JSTEEVX60/AI7GTij2FRGzJpQm9Iib7e5/iagIqXY66oauoyMmWnYEhK9JcOUqH/6Sqa7+KuiSlxdkJl43YHVcoCkQU7JtIckNznyop/pPlagjR1v4G8CvJgPUJAGi7FmHR/wzObZ2Fnn7bZZofVu4+zncUHJ1/SbultgmcB90GMorkrQowqp1Swd+YHiy0vw8TlrhODp9eJ5s+UE3NH294xUeV4/dOr9VxC97jmbhmtXu76nbyZmnHMaqunHAXqLOWDwZjirus6kTR2dQq+PS0tQ5C3QzXpUjeLMyPfiMkUnQXgsoKR+FhfXOJ4xGowFZ84J6Qj9iiPQdvD0DS4hSfdqqEwK/aAblX9h5z4b/nFgNkMpWzbsd+ucXeaQyWhCN6WDt2m56ebkViBGBScrgh8uQkPpgvq1F4TIZ2F8FbsS+4x6qz70L35u2PjNowztwwTW6g2aDoIcJF3VF8ErZJi184EcUadBxuz1MSJZV+7e0sEOmA6Xjz6FBE+vlDQyD9Ve0juRVFITbmVtlORFaA4uRb2aRL56SMlqRxtiTknWomxhaQJYGi7G863/kL0pEQPNhu5h6Q/6MJmTWRK/vHU+EtCms7hRSM4+VS74US7kHyFxpPb6Wl2G+fEc8iMXzr8oexlbiwgfNOw50g1xqwvH/Nm+EBD3LV57/cQ+mGHsRgSiY6Kei4mQPWkQKo5JdOCAOtkap+e2dZL+4IqeHaJyaEBxRey+4KQbVxd+f3BO4pyiA1mj4gY8onuQBJdVq5bnCHQaiUmIHb290DAFB5/mTBLGWem3JrMTFg2+O4ozqfDkjE9Q9OPGsc7947WGFZC9cra+wZV/lyZL0IgETrVynu1Mkhm2im9zPXLlYYVxYRYH5/U3wpdG40P16vNgKRz7wA7jbf1kuyQqz/KwM7cpEM8cgL9DTQxLuXkx6oDAKpTFcShAmoJGMVx
- U4JCAQJW
- XkAu8uq0yQ9jNXE5QbN9wc6Kf9uhgUc8yw6sNGZ0C66S6nqICnex1H4vCACj0xCiv2soKCBikS3OBYBSM3vlbDzRQKVB7bsgts13H4c21VMmUkPAj2+Q+eAnXFfNNY/cydBFrhLV5oouMdor0K8xS9/MXd/FXPfREq5yXY4cdh/0icIv7Tipset0ybDT4HnrErQ30ZYGQQO6gOPDX2YFT85ZPVZpkWXrTJGB+bAOImqU7ABVdjyAZYtt9tKwq67n5IRd5D8KJmShIbyzFCE/VoFeNDVQ6nkZLaI1emTKTon1gwZJLlwXMhta7kgVJyblTOa4/
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qy71pqogfru3gat1i7jq3xpbgdqi45fi
+X-HE-Tag: 1771198954-332389
+X-HE-Meta: U2FsdGVkX19xL/5y49Xb6p2haA5RARpvELaN58Ku13jOjgSZ6q31TrsSkapD8tYZ108doIysBzufzv1f4/UmAwfuDGxED9nESHOdXjtpIX58UNc4HBR938qZ054YXImUsXO4MrUxMjLVICaxSuXdWbFmztqtsARO6W8Sk4I4pGb+O3PpBBbBHmKVfydv5u8/9+DGAXjrTke1G/qSC9GtaOU+99LRe8i7sGGTuftUNolXF/uA/D5sVW7tU44VeuO9F3OFSJ1KbIfH5+3+iYYq2emONq7Utr7v+wsHaNf9FeiotxV1ZY4BpQ1eo4Xg7Q1R7x8Km0fY0JJNq7PHVNUnnt8lRPCA6GkLcTAbB8A3Zq2RqAwOsLPi4ZoHMo58AzOZ3JKpzf5t0Rzulrq6MhfQ1/33mTmu83yKBGcg0SnzIGvxsRlOnkMjR4Y9JYCkxo9T73tdK1HeRpazwSrUJmM6V5tMjHTwWqQ3QZJQbEv6YRdUeu0IfQT9/Euw5uDP6iZ8qR4g1RYtPDBLQDb21MLgX7ZsCWX0qOOpLIJgVxeAvK51XMAUzjf6/v7Vq8ajJEzmKu481JboEEthQIqtTBbTDYCpUQkc1Vg2c1ucCZRMWTCBktT35i9wxqDUiU1A0tX3tbKcMMj90iROAQL/dznBT30YJfHywE8iQLgyfcihlLArqUgt43gD4X/1fJIJnxwCH2Y0wTdrG8MFwkS/3ckex2DyEgFBceNW97rdCx0W1DaGWL08ip7h8zh0jTLhjHqN2lqTrC5FqpC940oATTvfHY8UfFIRUMPa0YusnuP/Pzx17vv0BvZzx0Wm0iQEYuDrPELrEVXsPvFTxi6rrpDqBotRJ9eeK9Ug3Mel4JVkxx00QFKZyjCqZGGTRicS+2wh0lTFZpn4QfVOWcKBhL+iT8NQAkRc7YaNbn+fLYJLD/0kHd9AB/RuSiM2ecmWc2xKayYF5/WN5l2HSzy5bcp
+ nU4SUVv0
+ l2aGJiZ2osu9H11G7f/oL5lJGd/DlacpcWJ6dQZDvjUM/JMQVGGY0m/I6U2ghNkRPrHfGaTsLcg6efmB0Biv10TUmiywIcldlgDwDkAnVnF9hR2BBjEdU0zgVmrJ/XtV7ZwFAgJsa1sihZovpAAASwug1ddFSilHyNHNns+YAo9dIYOj5htEIB35SNeKhzRv57MFyFLN0qcFieX2eLUZRRn/wkDSqCmpKGF/jtsXojH3XhQQ1+kFg/Mg3ZG+SOJk5QJybvuhziBh1UdRCqWLwE6wqWCuOB02EPMvnDH4OYaYCtoYbg+Ewx0yCJW/9HyD7qshw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,128 +123,314 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for `TagSet` flags by introducing a `Flags` type and adding
-a flags parameter to `TagSet::new`. This allows configuring tagset
-behavior such as blocking vs non-blocking operation.
+Defining configfs attributes in rust is a bit verbose at the moment. Add
+some macros to make the attribute definition less verbose.
 
-The Flags type supports bitwise operations and provides values like
-`Blocking` for common use cases. The module documentation example is
-updated to demonstrate the new API.
-
-For now, only a single flag is added.
+The configfs Rust abstractions should eventually provide procedural macros
+for this task. When we get more users of the configfs Rust abstractions, we
+shall consider this task.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/rnull.rs          |  5 ++++-
- rust/kernel/block/mq.rs               |  6 +++---
- rust/kernel/block/mq/tag_set.rs       |  7 ++++++-
- rust/kernel/block/mq/tag_set/flags.rs | 19 +++++++++++++++++++
- 4 files changed, 32 insertions(+), 5 deletions(-)
+ drivers/block/rnull/configfs.rs        | 134 +++++++++------------------------
+ drivers/block/rnull/configfs/macros.rs | 128 +++++++++++++++++++++++++++++++
+ 2 files changed, 164 insertions(+), 98 deletions(-)
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 55e56c39f1c2c..33c1144550a0e 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -130,7 +130,10 @@ fn new(
-         irq_mode: IRQMode,
-         completion_time: Delta,
-     ) -> Result<GenDisk<Self>> {
--        let tagset = Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
-+        let tagset = Arc::pin_init(
-+            TagSet::new(1, 256, 1, mq::tag_set::Flags::default()),
-+            GFP_KERNEL,
-+        )?;
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index ea38b27a9011c..eafa71dfc40d3 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -1,20 +1,41 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-         let queue_data = Box::new(
-             QueueData {
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 884bf18abbba5..76e790cdb1f8f 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -57,7 +57,7 @@
- //!
- //! ```rust
- //! use kernel::{
--//!     block::mq::*,
-+//!     block::mq::{self, *},
- //!     new_mutex,
- //!     prelude::*,
- //!     sync::{aref::ARef, Arc, Mutex},
-@@ -92,7 +92,7 @@
- //! }
- //!
- //! let tagset: Arc<TagSet<MyBlkDevice>> =
--//!     Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
-+//!     Arc::pin_init(TagSet::new(1, 256, 1, mq::tag_set::Flags::default()), GFP_KERNEL)?;
- //! let mut disk = gen_disk::GenDiskBuilder::new()
- //!     .capacity_sectors(4096)
- //!     .build(fmt!("myblk"), tagset, ())?;
-@@ -103,7 +103,7 @@
- pub mod gen_disk;
- mod operations;
- mod request;
--mod tag_set;
-+pub mod tag_set;
+-use super::{NullBlkDevice, THIS_MODULE};
++use super::{
++    NullBlkDevice,
++    THIS_MODULE, //
++};
+ use kernel::{
+-    block::mq::gen_disk::{GenDisk, GenDiskBuilder},
++    block::mq::gen_disk::{
++        GenDisk,
++        GenDiskBuilder, //
++    },
+     c_str,
+-    configfs::{self, AttributeOperations},
++    configfs::{
++        self,
++        AttributeOperations, //
++    },
+     configfs_attrs,
+-    fmt::{self, Write as _},
++    fmt::{
++        self,
++        Write as _, //
++    },
+     new_mutex,
+     page::PAGE_SIZE,
+     prelude::*,
+-    str::{kstrtobool_bytes, CString},
+-    sync::Mutex,
++    str::{
++        kstrtobool_bytes,
++        CString, //
++    },
++    sync::Mutex, //
++};
++use macros::{
++    configfs_simple_bool_field,
++    configfs_simple_field, //
+ };
+ use pin_init::PinInit;
  
- pub use operations::Operations;
- pub use request::Request;
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index 46481754b1335..af214f7dd0c10 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -16,6 +16,10 @@
- use core::{convert::TryInto, marker::PhantomData};
- use pin_init::{pin_data, pinned_drop, PinInit};
- 
-+mod flags;
-+pub use flags::Flag;
-+pub use flags::Flags;
++mod macros;
 +
- /// A wrapper for the C `struct blk_mq_tag_set`.
- ///
- /// `struct blk_mq_tag_set` contains a `struct list_head` and so must be pinned.
-@@ -37,6 +41,7 @@ pub fn new(
-         nr_hw_queues: u32,
-         num_tags: u32,
-         num_maps: u32,
-+        flags: Flags,
-     ) -> impl PinInit<Self, error::Error> {
-         // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
-         // all are allowed to be 0.
-@@ -51,7 +56,7 @@ pub fn new(
-                     numa_node: bindings::NUMA_NO_NODE,
-                     queue_depth: num_tags,
-                     cmd_size,
--                    flags: 0,
-+                    flags: flags.into_inner(),
-                     driver_data: core::ptr::null_mut::<crate::ffi::c_void>(),
-                     nr_maps: num_maps,
-                     ..tag_set
-diff --git a/rust/kernel/block/mq/tag_set/flags.rs b/rust/kernel/block/mq/tag_set/flags.rs
+ pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
+     let item_type = configfs_attrs! {
+         container: configfs::Subsystem<Config>,
+@@ -166,99 +187,16 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+     }
+ }
+ 
+-#[vtable]
+-impl configfs::AttributeOperations<1> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_fmt(fmt!("{}\n", this.data.lock().block_size))?;
+-        Ok(writer.bytes_written())
+-    }
+-
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
+-
+-        let text = core::str::from_utf8(page)?.trim();
+-        let value = text.parse::<u32>().map_err(|_| EINVAL)?;
+-
+-        GenDiskBuilder::validate_block_size(value)?;
+-        this.data.lock().block_size = value;
+-        Ok(())
+-    }
+-}
+-
+-#[vtable]
+-impl configfs::AttributeOperations<2> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-
+-        if this.data.lock().rotational {
+-            writer.write_str("1\n")?;
+-        } else {
+-            writer.write_str("0\n")?;
+-        }
+-
+-        Ok(writer.bytes_written())
+-    }
+-
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
+-
+-        this.data.lock().rotational = kstrtobool_bytes(page)?;
+-
+-        Ok(())
+-    }
+-}
+-
+-#[vtable]
+-impl configfs::AttributeOperations<3> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_fmt(fmt!("{}\n", this.data.lock().capacity_mib))?;
+-        Ok(writer.bytes_written())
+-    }
+-
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
+-
+-        let text = core::str::from_utf8(page)?.trim();
+-        let value = text.parse::<u64>().map_err(|_| EINVAL)?;
+-
+-        this.data.lock().capacity_mib = value;
+-        Ok(())
+-    }
+-}
+-
+-#[vtable]
+-impl configfs::AttributeOperations<4> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_fmt(fmt!("{}\n", this.data.lock().irq_mode))?;
+-        Ok(writer.bytes_written())
+-    }
++configfs_simple_field!(DeviceConfig, 1, block_size, u32, check GenDiskBuilder::validate_block_size);
++configfs_simple_bool_field!(DeviceConfig, 2, rotational);
++configfs_simple_field!(DeviceConfig, 3, capacity_mib, u64);
++configfs_simple_field!(DeviceConfig, 4, irq_mode, IRQMode);
+ 
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
++impl core::str::FromStr for IRQMode {
++    type Err = Error;
+ 
+-        let text = core::str::from_utf8(page)?.trim();
+-        let value = text.parse::<u8>().map_err(|_| EINVAL)?;
+-
+-        this.data.lock().irq_mode = IRQMode::try_from(value)?;
+-        Ok(())
++    fn from_str(s: &str) -> Result<Self> {
++        let value: u8 = s.parse().map_err(|_| EINVAL)?;
++        value.try_into()
+     }
+ }
+diff --git a/drivers/block/rnull/configfs/macros.rs b/drivers/block/rnull/configfs/macros.rs
 new file mode 100644
-index 0000000000000..768db938b9a95
+index 0000000000000..53ce9d5dbdc8a
 --- /dev/null
-+++ b/rust/kernel/block/mq/tag_set/flags.rs
-@@ -0,0 +1,19 @@
++++ b/drivers/block/rnull/configfs/macros.rs
+@@ -0,0 +1,128 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+use kernel::prelude::*;
++use super::DeviceConfig;
++use core::{fmt::Write, str::FromStr};
++use kernel::{page::PAGE_SIZE, prelude::*};
 +
-+impl_flags! {
-+
-+    /// Flags to be used when creating [`super::TagSet`] objects.
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-+    pub struct Flags(u32);
-+
-+    /// Allowed values for [`Flags`].
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub enum Flag {
-+        /// Indicate that the queues associated with this tag set might sleep when
-+        /// processing IO. When this flag is not set, IO is processed in atomic
-+        /// context. When this flag is set, IO is processed in process context.
-+        Blocking = bindings::BLK_MQ_F_BLOCKING,
-+    }
++pub(crate) fn show_field<T: fmt::Display>(value: T, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++    let mut writer = kernel::str::Formatter::new(page);
++    writer.write_fmt(fmt!("{}\n", value))?;
++    Ok(writer.bytes_written())
 +}
++
++pub(crate) fn store_with_power_check<F>(this: &DeviceConfig, page: &[u8], store_fn: F) -> Result
++where
++    F: FnOnce(&DeviceConfig, &[u8]) -> Result,
++{
++    if this.data.lock().powered {
++        return Err(EBUSY);
++    }
++    store_fn(this, page)
++}
++
++pub(crate) fn store_number_with_power_check<F, T>(
++    this: &DeviceConfig,
++    page: &[u8],
++    store_fn: F,
++) -> Result
++where
++    F: FnOnce(&DeviceConfig, T) -> Result,
++    T: FromStr,
++{
++    if this.data.lock().powered {
++        return Err(EBUSY);
++    }
++
++    let text = core::str::from_utf8(page)?.trim();
++    let value = text.parse::<T>().map_err(|_| EINVAL)?;
++
++    store_fn(this, value)
++}
++
++macro_rules! configfs_attribute {
++    (
++        $type:ty,
++        $id:literal,
++        show: |$show_this:ident, $show_page:ident| $show_block:expr,
++        store: |$store_this:ident, $store_page:ident| $store_block:expr
++        $(,)?
++    ) => {
++        #[vtable]
++        impl configfs::AttributeOperations<$id> for $type {
++            type Data = $type;
++
++            fn show($show_this: &$type, $show_page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++                $show_block
++            }
++
++            fn store($store_this: &$type, $store_page: &[u8]) -> Result {
++                $store_block
++            }
++        }
++    };
++}
++pub(crate) use configfs_attribute;
++
++// Specialized macro for simple boolean fields that just store kstrtobool_bytes result.
++macro_rules! configfs_simple_bool_field {
++    ($type:ty, $id:literal, $field:ident) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page|
++              crate::configfs::macros::store_with_power_check(this, page, |this, page| {
++                this.data.lock().$field = kstrtobool_bytes(page)?;
++                Ok(())
++            })
++        );
++    };
++}
++pub(crate) use configfs_simple_bool_field;
++
++// Specialized macro for simple numeric fields that just parse and assign
++macro_rules! configfs_simple_field {
++    // Simple direct assignment
++    ($type:ty, $id:literal, $field:ident, $field_type:ty) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page| crate::configfs::macros::store_number_with_power_check(
++                this,
++                page,
++                |this, value: $field_type| {
++                    this.data.lock().$field = value;
++                    Ok(())
++                }
++            )
++        );
++    };
++    // With infallible conversion expression (direct value)
++    ($type:ty, $id:literal, $field:ident, $field_type:ty, into $convert:expr) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page|
++                crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page| crate::configfs::macros::store_number_with_power_check(
++                this,
++                page,
++                |this, value: $field_type| {
++                    this.data.lock().$field = $convert(value);
++                    Ok(())
++                }
++            )
++        );
++    };
++    // With check, no conversion
++    ($type:ty, $id:literal, $field:ident, $field_type:ty, check $check:expr) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page| crate::configfs::macros::store_number_with_power_check(
++                this,
++                page,
++                |this, value: $field_type| {
++                    $check(value)?;
++                    this.data.lock().$field = value;
++                    Ok(())
++                }
++            )
++        );
++    };
++}
++pub(crate) use configfs_simple_field;
 
 -- 
 2.51.2
