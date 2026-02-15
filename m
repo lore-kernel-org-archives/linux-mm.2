@@ -4,85 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E36E63F1C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 01:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1345E63F21
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 01:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05F0B6B0098; Sun, 15 Feb 2026 18:45:28 -0500 (EST)
+	id 0BFF76B00B4; Sun, 15 Feb 2026 18:44:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 025BC6B00B6; Sun, 15 Feb 2026 18:45:27 -0500 (EST)
+	id 075E56B00B5; Sun, 15 Feb 2026 18:44:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E74E06B00CA; Sun, 15 Feb 2026 18:45:27 -0500 (EST)
+	id EC2056B00B6; Sun, 15 Feb 2026 18:44:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with SMTP id BD4C96B00B6
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:44:27 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 328F21CC6E
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:14 +0000 (UTC)
-X-FDA: 84448322028.05.AB36B42
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9A7F6B00B4
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:44:09 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2AB9A160B0F
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:09 +0000 (UTC)
+X-FDA: 84448321818.07.9DDD555
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8171B40006
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pE5IRuG7;
-	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 76C49C0006
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/cAr2ex";
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199052;
+	s=arc-20220608; t=1771199047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=/K4/2Azcpxr6viuEUmrGY4+ucNlqfeffseReVgnksIw=;
-	b=Imbf7ElNkQR+9Al8mEtNbDilxbNb6bmJCUojMKFJhguoXBHbq61RgGd9dccTAcjcAP4uvN
-	TwGoCubTNEXXivEx0CaOqilAaOe1d6iMjANdzNSRkkuR4sAdF+3g0hf7gxqoFLJ6fkoWAq
-	f2/oANKTXmL98XWAulbkv0EcDQSbXVM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=u/PpZFPvX9pq2JcVnHAu/upUbfRfnV0Ey0xp1nEf14M=;
+	b=yxOF7k43qpBWyXr/u6mv1sPVlxNbiv+vAVj0fNNBVO1ThzGYbXMnJNOZzUhsq12i4nwh1e
+	V5ujhWIS67IrBBkdgkbLys+0mVechhsu98ZXghet3OVHmTcmJS1860iz2gt7VfWnQHP4+G
+	kyrK/TgvK6r/+nOPPGVaneqBUuCi7lk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pE5IRuG7;
-	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/cAr2ex";
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199052; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199047; a=rsa-sha256;
 	cv=none;
-	b=gzwpJ/k11Og6stOTmKXvFHpAmkgbwbKhQ9259maLPjAIGAxWZ7ikZiOCyQr8U/d2Tj46G9
-	cMC5DCzTU6wk5lGtXjs4imTxKSUoLy+d0vYO557VN6YWLGMeh77Bn52Lo1pGKZDKrvvO4a
-	sC+WvKrXcPqjP/du2tztD4kQJpgLZPY=
+	b=CuXRD4JyoeKGfGXxJHUrLa7cM5oaZ6vopSNXoNHcB6rMH3PBwagGIDN60gNQf93DqAvaUk
+	Xhgp2ltwRL1Jdlmcx831TyEgQKRzvwyfzT6BahLs+ieGk9vcil0jn/XVM0SmCe4DBz8q0M
+	kUumlNmWiS7BgdtNvc60iBUsYnDCAs0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F17236013E;
-	Sun, 15 Feb 2026 23:44:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA46C4CEF7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BF6A6013E;
 	Sun, 15 Feb 2026 23:44:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35922C4CEF7;
+	Sun, 15 Feb 2026 23:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199051;
-	bh=8tUb4kuCfMG5UJ8wjZwbNrxjIDGhs1L62Et9fuNTLM4=;
-	h=From:Subject:Date:To:Cc:From;
-	b=pE5IRuG7fuyr56x9St/U6tAgXtbK273yuga3NbqjkmBkttrWiaVUSg4NL5NCZrCTm
-	 7SwZRe4k2G3LcA4PIozztxbboMs5ZXEA6i3EQ1qCO4hV+3W/nzJ9toFCbMDSoeIPcS
-	 XMSqV0Gcvjq9R4VxTtJyg8ueBVPA+mdbt3JJdHIEF1e8Pk0ocZQOSL6vonvE/qj+ca
-	 FdK6LQLE4XgyKeRATxxwEaTyyizAvFvrOu++mmPRG3F/t5MxgXNGCtBW+w63smOeJo
-	 OVqehvdqGZzuYDn1ajJeP5muoBjod3Qv6ksKLQ/rKmagEgVXbqHZajoqXHzYY6VnOW
-	 bJICknme/bsuQ==
+	s=k20201202; t=1771199046;
+	bh=HXXe3ZuaQh0jtawnDxB+W/Q37k4GGbJvn35e1qpXTRo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=X/cAr2exmax8lXA+n5QNdVX/hBbQVn347xBA5DUD43Ygvq790YZfIzSVNXjevosvy
+	 5nDZFrviyPAratHgQaIn4vCEBeWKTif9T6X2JcMKahVd2V18L54yXYi75oLxsbBSrP
+	 LRGnKMoLmYxBwkVqpgjtEcTNR3LKw6Es2bR7qZAnqxGpzW9s5H9nyAa1UH1xTjJ5NS
+	 tb0cBOcjqxT6P8OYpOxQk1Da1x/ZJMh5dvr1W9h6SQvnYIvwOiiUxG7eNB7hS/Fuh1
+	 m64m+TGAtJ70wBFw5h8TcbrjNqsai2TZkT0DoYP9dNZEF8RKP+1ilIakmZT3x2gU6r
+	 /KX+laZXIZQ3A==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH 00/79] block: rnull: complete the rust null block driver
-Date: Mon, 16 Feb 2026 00:34:47 +0100
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+Date: Mon, 16 Feb 2026 00:35:57 +0100
+Subject: [PATCH 70/79] block: rust: add `Request::queue_index`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABhYkmkC/4VU227cIBT8lZWfe1bcba+qKv9R5QHDwSGxwQVsJ
- Y3y72V3GzVqN67fAM+ZYWbs1yZj8pib0+G1Sbj57GOoC/rl0JgHHUYEb+u6YYQpwqiEFNZpgk0
- B7SEZCRmDhb4znKNRPbOqqdAlofPPl7Hf76/rhD/WOr1cN5tBZwQT59mX02FTx+u0M3bGnPWF9
- 3T4eqGl9WFMSnFkSjHaSqAwxZx9uHvCFHA6xjR+az5KPh0qUhJOJKzB/1gRqiJgvTNWtdL12J8
- 2Km5AKCMcnnVK+gUwlPRyvSAhjBNHWiFQnTb+L7CaQ9Q7cIrmyeIC1QOgxFFjVIfStpXztkoBD
- nUBbS0Mvsw6P8GsTYqgBBMDNZy2yE5bd4uXcgLL2bAtTrr4qR5FINI52UtJWss/0UtZB6NbIMT
- 6vhusoEi5JF13U+U5fAZ+XiZwkx4z+BAwgVG0b8XA2oG+4/7Or1pKFSGkJ/TIGOWX+Nz66Is+l
- jjHEJO/G2ftp2Ptw7fb1AIWHyBP3tTt4Atgh65XzpB26D8VLK/GVFt9qb3OMBiuiFDYO2d3UGZ
- Z4QGnBVMGUokGJlsmunYHUvyM4FKcIegQM3TKdQMlAwrN/gezOBUN1udlquWxLWHYtl1n2Z5Gf
- F5iKmBjLfi5b3guqVba9LzlVuwgP4T4xxnCBXHODFru+pl8GIfVuRp9baaUvRJau70bZiwQQ41
- t0j9fwLTcGS60lHaP5iGdjUmgTfFb9ZV2XFDqUKphL7YYnB9dBlMtdXqdCowprkvN3Q5EC6E41
- 2pnwO9fhU4GdIalJOAMB0Z6a5HuMac1F7gy+vCIptSmKeYo6eoXdXHn/u3tF0BNclNsBQAA
-X-Change-ID: 20260215-rnull-v6-19-rc5-send-98c33ec692d6
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-70-de9a7af4b469@kernel.org>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
  Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -99,31 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13667;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=8tUb4kuCfMG5UJ8wjZwbNrxjIDGhs1L62Et9fuNTLM4=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgcM01FLWjjGFqmeKP8M0ULEepsy9Wa8j2TD
- OzEuTce7tWJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYHAAKCRDhuBo+eShj
- d6XXD/0fwis7BeaPw8KWxiqLebdqxz8Mx2EiogPlf65i+JoRV5jc8zeZbIp++R1ZpjojvfQV7TD
- s6gsKQ4/69hufOMHeHe+1Fk2hxcl7lWlwi6TxM7wIjdOzTh7UJB1sZXd7RKFPGQpRXaGeFodsRr
- 9g4TlqHk60CugjpZtgSOwGcUxWwRR13lgjXC6nIqBcmH5c8+EoeA3RUOSrzbXSx11aBSEjaYU4z
- ZK/ADRGFnOAkNbPrA/rPSlQkIWcysObTkGaKrKG8krwuYeGlEw0m5Cxmv+ffUNdXE0fEyea0+MV
- EUTgi5Np0mx+1y2PB/0AphJswlO8IEiNno5WOlMHVJ5I+NfgBcO6Zj0m7jMa+45Dijw4ua9s4TG
- K8KJ12aapJLNG7L/O9mGEecPQMttcpBo8mxNQMA0F2dNhAydyIlBme+7uiu5UpB71W/RE5iGDIy
- 3TRI+nBwf/s1Qns28Smc35u2eZj6SQoXEPXceRyn4rGhKt8V8SCwkGGG5VQmmTSGkW12BgwDmdQ
- 2ZmG5KUkvmydLghMUteif/YdG5bi7QsRrxlDABItLRTHCwmMY9dGXYEC/Kd3wDaUphT5sT3VeqR
- jkSwUSlykr9WD4kwT1AIZx1y15cdhm8B4WF0oeiS0vhT3r7Z6JPR9RdZd2fLtw5XX4H1jcHRgrF
- M+fdfwvX/aWm8WA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1022; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=HXXe3ZuaQh0jtawnDxB+W/Q37k4GGbJvn35e1qpXTRo=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhbvCV/K7QHpAKO17p9tlhElvwrVj3iR8aTO
+ xSxbX9mMTyJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYWwAKCRDhuBo+eShj
+ d8suD/9uK5x4p4mZa2NHYzVIAjBzj2akl2B5TMECJhzE1rCk8/JBpPTetMD4LGk9ASmRi7Ss2yb
+ XVwBn/7/CqdmjvQvolnlPIgr6WxOJ3Ao5tMDZUSdOQd2g9qJVtCpNxVrZa0Xxp1jGhODM7/ONdm
+ Euyrcd5g5obOyGTHKfmDOq63E4X5xyMawHVsDq4Mg6tCvs/9vyMBLhICEGfGTQNYyu552AbxTGu
+ zWjDlXrTvEnUlU23A5VDDjhOZlbIsUq/jJZYdiO9cI98Ha4xxQm0TLZkkE4pZvi0KI0GvQGz0hL
+ F86Fwk6MT0uBkuhU9RaqP5mkugJPZuDgf0p54aCQvKEmzlZ3v9hQFW8H+Wv1HsueHaNxEYYU7Vm
+ 9Msejz9Ho1DIFwmNj3cSSAKVJGgGR4PDPtpTMaJEVcLoFnaISC0YLCpsZfOHLSNm7L9KS6JfNOF
+ TRFYI5QqRgZNmN8VNoE2xbBznLYLwkTkLgTDOyYIATbqwrPAgn6dPG3opCw5htI3mDmpKOo/Q+c
+ BL5GCwR13fQ0OhJEWc0S40MSWPRsWx11M9x4kGJ4UpYB7jFUIwFd+PjD7mGpiWlCGYZ8Ug/h0vQ
+ XLX0H4zdnBIvqDX2nXLCm/R35mAsWe1U858koRujJFRhUVLyceDIfutFKteIUwCR1YLtXqrQ7Qf
+ cFU/nem3vF4xiqw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Stat-Signature: bc5ar16e1xdfyjt6g3z9zjei6cxfxa4j
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 76C49C0006
+X-Stat-Signature: nn93y5a99j8c4o35dm5k3f13apugomya
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8171B40006
-X-HE-Tag: 1771199052-50250
-X-HE-Meta: U2FsdGVkX1+lbBnCaBdXklva0O/9jKX7YoVb+Ttpe8qeV2CUBs/iGlYnR3zg9TYfOkpF4TI4rpTohL3TbBLdzLcRMAWS1XvTMgyIqfd6bq9qouiVjiGZtdAGoQ1u+Yb//7EjozLv+42mmJmyvlYh8cX9+9R95VJs6svyzUPl9dLreILqnBiaGb56zh2TFIE+eGscDJBGQWimog+lvc+xTZ0s+HcqcDWs5mFr7YkWxRkusDjvsLjPDnZi9nUFcsn0vSPYi+LU2aUIhzFsbqeBsMuT/yt6ZYhuHNuzJSDb34BQJkGy5//1Unb30bQgO32b2LM5jZDvDFSO2Oy7El8xDjSg5GgwjipagV7VcfmF9BccPSIS8E8CYkAQpTJHQIVVKzGonJtn1oHU94g4YQGb/HETePxl2ZngG0/Hig0gUEcSZc82T5TkcQlbIuc/JrfhFq1+TnCyjM2aPZsrnfOCBfdxAo+exDIU7yLjecg3c3sf9L5OiQq2QmM4fmhe04oC4Bg/ohVV+1RiyfuPzmG13MRIAftZE3Yc6R4wnhJh6h0G2j6tcIPaB7+W+B7R9oKIajo49Rf7qjhdaQuTa3Vj6iqBK7Yc9x22ZjtAxWO/ETv9Pv/qxbavgAVpGngvgLD6jy5moQnHiq+b4YoNB+l6qjUFTMIEO1PMhCuUvidM+LmiJSsMSR6IB6pUVGCNkj29uiLV9BxEcxP7AHErjqNFZFrGsBQw4S/r9eI2JEEHzBQdR8cI1xLqdSxNKnmStr3qATAajUzPlJuH4r6t4cRD3fN4/B0ng2mSZZYpth4fU9BIBEpLQwy8thmaqDGQ+zKRaHK15H7WvcdGOANfks51K3UCrHOQY4/taRRQ1PFeaCzQNlnO04hO4wkfBsXJ8xZiGSBJd2JAL6zzUBwXc3O4mEaLDdcCbv4/p9YuhiIvtOHkb7H9e1NNntwmVefXlaZnr55QStuxLeMFG/YTHLr
- u0XkcHdq
- nGfe0ebCcl8JNm/mW9J5zcU/KFwNzQ0K9yRv6YzkiwhqzDBMxTUTk+XAdj73r7YApyIPnIYDQLIbXUXPiFQEZEQm+VJo82P0lUjQfpjCMZeFOiU6JtEEJ6flyuKfv5C2rKZqPHDY4Fj6C/Z7SHZg8ceQxy1E5exRY4UqySjj5XxpARqT3v1olkTSwPO+vzFQh4BTktmwhrWSj7O8nGyxLyo/abjM0ytRKscMqNyt8FCorh1T3oYJRKAgCNLsqNJkV20w2yk3QQ3zCePMDz9B45KWnIVH1HreB5MQTEpGn1mPC7mzoNhglMf9xVs9N51wzu4ya9j6HHbolIsc5PiGtuv+54Q==
+X-HE-Tag: 1771199047-526451
+X-HE-Meta: U2FsdGVkX1+7SG2cU1SHXNLv95o97QR+B6BG47VFrOJRKqEEQ9UUWT4ATUoX8EEKxpYhocIlNAkPMG/2281Nl4mV6oumm54JLzo9LSU4ynUGIA+SRIXzclcAFUgTwLlINcI8+uOYuOoejcheExgGFZyZICjI1l5d7rMSVNcZY/yG8gTPDOyEf9LVWLHaqrrA78dttAtQtdBf95BoLxyO/poFDk44IgZEpkDBS8OXJq6COYRZ6PDPCSi9vgXXJ66G4JVGm/3eyDE5Vqza/lgdIJInYo9F+HOrgetjYno7OW5W1o61pb9bLIuHI+eGupBRh/1aOoV/BNMV2Ug8sMh22/AN8kDnfhQsRkLZ1AiX2o9Yp9WayzqqjEjzmXSQM34kocBEkBB7WJEw/W48/PaTpmGWuYPxSGkaX+qNWO08+wK7Xad7jwC0QaT8jE1RN8YvgN0qvwq4TMVXICVHFWkQb8JP8NfHQNzw13G15gDXelOZn/PbWQ1zp3kq72XciD/Z3fUaOmpt7tgmcOfQWv1lw5HwtUSwkcDNp1/nq56if+qw/Ge5Z6a15eGMKe8uB6M2mkvB+UeX2KuMrl0JaO6eBilotn6M2bvBIxzvqpUcKYUY3/nYCDr6IuXy/iRh8efzo430ah0YQUzDIksSauzZaQYJfxhHb647G8UNpenHLSBdVB57/tUB8YwzHUmUJv46WWg3Iis9CYgaTekst5m4tO9ffu4Ouja6C0mM01TQMyrDGxKPdGXUU5aqBoOgGbGYvxc19RP0VxTCROral7ed4LrfeeE8QOl7pfnhBj9ZGXeuG+T+bmdlx9h5S+jJzcSdIgBU0NoN1ccy2gIKazc5e4TSGVXdV3K7+//rIEKSb8ZKZuIzzOS+STl0TbRjk2bDBqVzpiHWsfG0ChMXwOApQhwyHTtkgRfhGU2lMA/jf8pnxEGWsDLNQiyfKectZjm1pyRNimE4jPaqzjmscxx
+ abKqSijV
+ bCVd/nNcymUch1t71W+lPbZfGUq2HKnS8mWeJezN75rvMxn8Sj/PyLA6g7BXlNxF/rJQdK3ftMsjrXlczoGbx/PwsgsWyrVMQq1pOmL+RCpl5ELnmgWrNzX3JsENmTaro5jd6cGp1jSr7H1UtO1lAB3Rdnk5v4RhWhnZedAn7K+OY/y1P8snvqCKwRtquADk+M+G27fgjuQGspGK2Nf3OzaimBuwPnD3y+WMnU1oobbypYH16APtI0boCg+wrUFZhc0h/KRfmfa0JotlPDMvJuNmn3CRM5lj1WzQlcS+OxSDA1DQ1jcx54vZMRec05M73k3Hcf4hEWeOxZzoqoILI3Caq5PloBCL+XERWxmONg65Uj3hVAnNcjD94eA/3YeZif1gD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,245 +121,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series aims to bring the feature set of the Rust null block driver on
-par with that of the C null_blk driver.
-
-I intended to send these patches little by little as they became ready, but
-due to dependencies everywhere, that did not work out. This series still
-has quite a few dependencies, but they are all on the list. B4 should be able
-to track them. I also prepared a tree with all the dependencies and this
-series applied [1].
-
-I tried to test everything thoroughly, but there are quite a few moving
-parts. Tested-by tags and bug reports are highly appreciated.
-
-I was a bit in doubt about whether I should organize all the block layer patches
-first and then the driver patches later, or if I should move the Rust block
-layer patches close to their corresponding driver use. I chose the latter,
-because it is easier to connect a subsystem change with the corresponding
-driver use that way.
-
-Best regards,
-Andreas Hindborg
-
-[1] git https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git rnull-v6.19-rc5
+Add a method to query a request about the index for the hardware queue
+associated with the request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Andreas Hindborg (79):
-      block: rnull: adopt new formatting guidelines
-      block: rnull: add module parameters
-      block: rnull: add macros to define configfs attributes
-      block: rust: fix generation of bindings to `BLK_STS_.*`
-      block: rust: change `queue_rq` request type to `Owned`
-      block: rust: add `Request` private data support
-      block: rust: allow `hrtimer::Timer` in `RequestData`
-      block: rnull: add timer completion mode
-      block: rust: introduce `kernel::block::bio` module
-      block: rust: add `command` getter to `Request`
-      block: rust: mq: use GFP_KERNEL from prelude
-      block: rust: add `TagSet` flags
-      block: rnull: add memory backing
-      block: rnull: add submit queue count config option
-      block: rnull: add `use_per_node_hctx` config option
-      block: rust: allow specifying home node when constructing `TagSet`
-      block: rnull: allow specifying the home numa node
-      block: rust: add Request::sectors() method
-      block: rust: mq: add max_hw_discard_sectors support to GenDiskBuilder
-      block: rnull: add discard support
-      block: rust: add `NoDefaultScheduler` flag for `TagSet`
-      block: rnull: add no_sched module parameter and configfs attribute
-      block: rust: change sector type from usize to u64
-      block: rust: add `BadBlocks` for bad block tracking
-      block: rust: mq: add Request::end() method for custom status codes
-      block: rnull: add badblocks support
-      block: rnull: add badblocks_once support
-      block: rnull: add partial I/O support for bad blocks
-      block: rust: add `TagSet` private data support
-      block: rust: add `hctx` private data support
-      block: rnull: add volatile cache emulation
-      block: rust: implement `Sync` for `GenDisk`.
-      block: rust: add a back reference feature to `GenDisk`
-      block: rust: introduce an idle type state for `Request`
-      block: rust: add a request queue abstraction
-      block: rust: add a method to get the request queue for a request
-      block: rust: introduce `kernel::block::error`
-      block: rust: require `queue_rq` to return a `BlkResult`
-      block: rust: add `GenDisk::queue_data`
-      block: rnull: add bandwidth limiting
-      block: rnull: add blocking queue mode
-      block: rnull: add shared tags
-      block: rnull: add queue depth config option
-      block: rust: add an abstraction for `bindings::req_op`
-      block: rust: add a method to set the target sector of a request
-      block: rust: move gendisk vtable construction to separate function
-      block: rust: add zoned block device support
-      block: rnull: add zoned storage support
-      block: rust: add `map_queues` support
-      block: rust: add an abstraction for `struct blk_mq_queue_map`
-      block: rust: add polled completion support
-      block: rust: add accessors to `TagSet`
-      block: rnull: add polled completion support
-      block: rnull: add REQ_OP_FLUSH support
-      block: rust: add request flags abstraction
-      block: rust: add abstraction for block queue feature flags
-      block: rust: allow setting write cache and FUA flags for `GenDisk`
-      block: rust: add `Segment::copy_to_page_limit`
-      block: rnull: add fua support
-      block: fix arg type in `blk_mq_update_nr_hw_queues`
-      block: rust: add `GenDisk::tag_set`
-      block: rust: add `TagSet::update_hw_queue_count`
-      block: rnull: add an option to change the number of hardware queues
-      block: rust: add an abstraction for `struct rq_list`
-      block: rust: add `queue_rqs` vtable hook
-      block: rnull: support queue_rqs
-      block: rust: remove the `is_poll` parameter from `queue_rq`
-      block: rust: add a debug assert for refcounts
-      block: rust: add `TagSet::tag_to_rq`
-      block: rust: add `Request::queue_index`
-      block: rust: add `Request::requeue`
-      block: rust: add `request_timeout` hook
-      block: rnull: add fault injection support
-      block: rust: add max_sectors option to `GenDiskBuilder`
-      block: rnull: allow configuration of the maximum IO size
-      block: rust: add `virt_boundary_mask` option to `GenDiskBuilder`
-      block: rnull: add `virt_boundary` option
-      block: rnull: add `shared_tag_bitmap` config option
-      block: rnull: add zone offline and readonly configfs files
+ rust/kernel/block/mq/request.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- block/blk-mq.c                           |   13 +-
- drivers/block/rnull/Kconfig              |   11 +
- drivers/block/rnull/configfs.rs          |  561 +++++++++++++--
- drivers/block/rnull/configfs/macros.rs   |  128 ++++
- drivers/block/rnull/disk_storage.rs      |  303 ++++++++
- drivers/block/rnull/disk_storage/page.rs |   76 ++
- drivers/block/rnull/rnull.rs             | 1137 ++++++++++++++++++++++++++++--
- drivers/block/rnull/util.rs              |   65 ++
- drivers/block/rnull/zoned.rs             |  694 ++++++++++++++++++
- include/linux/blk-mq.h                   |    2 +-
- rust/bindgen_parameters                  |    3 +
- rust/bindings/bindings_helper.h          |   55 ++
- rust/helpers/blk.c                       |   47 ++
- rust/kernel/block.rs                     |   97 +++
- rust/kernel/block/badblocks.rs           |  721 +++++++++++++++++++
- rust/kernel/block/bio.rs                 |  143 ++++
- rust/kernel/block/bio/vec.rs             |  414 +++++++++++
- rust/kernel/block/mq.rs                  |   63 +-
- rust/kernel/block/mq/feature.rs          |   73 ++
- rust/kernel/block/mq/gen_disk.rs         |  293 ++++++--
- rust/kernel/block/mq/operations.rs       |  464 +++++++++++-
- rust/kernel/block/mq/request.rs          |  634 ++++++++++++++---
- rust/kernel/block/mq/request/command.rs  |   65 ++
- rust/kernel/block/mq/request/flag.rs     |   62 ++
- rust/kernel/block/mq/request_list.rs     |  113 +++
- rust/kernel/block/mq/request_queue.rs    |   57 ++
- rust/kernel/block/mq/tag_set.rs          |  254 ++++++-
- rust/kernel/block/mq/tag_set/flags.rs    |   27 +
- rust/kernel/error.rs                     |    3 +-
- rust/kernel/lib.rs                       |    2 +
- rust/kernel/page.rs                      |    2 +-
- rust/kernel/time/hrtimer.rs              |    5 +-
- 32 files changed, 6278 insertions(+), 309 deletions(-)
----
-base-commit: d0e305301e82474223bf26185e86e7dc2eb85350
-change-id: 20260215-rnull-v6-19-rc5-send-98c33ec692d6
-prerequisite-message-id: <20260111122554.2662175-1-lossin@kernel.org>
-prerequisite-patch-id: 7e37741a0938ad95a2db219937aa2ce746d3af37
-prerequisite-patch-id: f11cbc5fad12be51606cd87a58a0f57025d97a62
-prerequisite-patch-id: cf31a67c2cdaca2d6587a470509924b278bcb30c
-prerequisite-patch-id: 4192011922ae8e3a05d53e60cd91e3681bd19698
-prerequisite-patch-id: 59fad9919fed79eb8b0321ba12028952e10f706c
-prerequisite-patch-id: 172bee0aa19a19aaaa3872be19817c8024d586ff
-prerequisite-patch-id: d68edb5c60cdc3c857e0d5c4f758c2afb4c21369
-prerequisite-patch-id: 8b686b69aa0edba261ed5dd78457042d640134ba
-prerequisite-patch-id: cac7713b71455ec1f1ad98c89d5c3669103778f6
-prerequisite-patch-id: 536291f57f0e29b6eeb31529d00a06cc8fddf6fb
-prerequisite-patch-id: 9b53103d8d24e44c6c2057eeecbc5bf7c37ab7d9
-prerequisite-patch-id: f4cd560fbf982ac76595b8a66045db4a0221305c
-prerequisite-patch-id: 917d9f21fc9f3b741c5218f2d7eb428ae4824bb2
-prerequisite-patch-id: a1a2cd0f690ca9e596addaf6a766ff2300c1b479
-prerequisite-patch-id: 27e526c235aab930c18a300a8b0d611f06c23e9a
-prerequisite-change-id: 20250305-unique-ref-29fcd675f9e9:v14
-prerequisite-patch-id: cd414158ad8a77616cf5e20f01212929fe4a9b4d
-prerequisite-patch-id: ff052142fd3b16d7190b0ad2fb79cc39813e49fd
-prerequisite-patch-id: 4da98d17bef5f809a9caad013bab670f661c8d4e
-prerequisite-patch-id: a31185fe1abbf553377d6d695c5d206eebc84358
-prerequisite-patch-id: 8074279c3569e7997f7a993a8ecac7b977b4509a
-prerequisite-patch-id: 541dba7938ba874f8d17fee05a36b1cd9fa2c4d7
-prerequisite-patch-id: b7eb6740359975d4d781fbd4f684bc5a8ec277f1
-prerequisite-patch-id: d83fb5f310b84492bdf44eeec0f9d3d3146a73f5
-prerequisite-patch-id: 77308c47591e44920a3bc0279a4d9013035fcac3
-prerequisite-change-id: 20251203-xarray-entry-send-00230f0744e6:v3
-prerequisite-patch-id: 5d797523ed1bb94597570b6faa4cacea8d94b4f7
-prerequisite-patch-id: 912165c18fcbf3e95b1cfc904d7b9f3d5998df10
-prerequisite-patch-id: da53a023167d68b40a44a65477e56552427d2159
-prerequisite-patch-id: 012e65c80cf0d5316ecdcc7120b085b26d9744bd
-prerequisite-patch-id: 9afe8b888aeebb6c48af0ab61da629d38a6caf6c
-prerequisite-patch-id: afd36f629c086991533929384a98013957ac7bb8
-prerequisite-patch-id: 178fef5f81fae2f9ef42f9bada1f5e3317877562
-prerequisite-patch-id: 02b994ccdb101e499b86875edf8db4b1f0120c87
-prerequisite-patch-id: 10abad6caef816abc740a06dc93c761814140f1f
-prerequisite-patch-id: 422475ac1209fc9803d3f404253c543e34cf7250
-prerequisite-patch-id: 66ed5c6a31fe2d775b5bc70774e3148fa3d860e5
-prerequisite-patch-id: e60ef90661b76f4f477e9253d3eace29d2baced3
-prerequisite-change-id: 20260206-xarray-lockdep-fix-10f1cc68e5d7:v1
-prerequisite-patch-id: a9c6ddbfe6ac4b1e18bb6fc17cda7ea115ef863c
-prerequisite-change-id: 20250304-feat-add-bitmask-macro-6424b1c317e2:v8
-prerequisite-patch-id: 05dfcf648017dee65c356604e4f99959e76ff64d
-prerequisite-change-id: 20260130-page-volatile-io-05ff595507d3:v3
-prerequisite-patch-id: f8ee836e5d93eb5dab2850efcfb90466b1b36092
-prerequisite-change-id: 20260128-gfp-noio-fbd41e135088:v1
-prerequisite-patch-id: 734ceb7200843b2dd8d96bc5c465da1d7e095dde
-prerequisite-change-id: 20260212-impl-flags-inner-c61974b27b18:v1
-prerequisite-patch-id: edebc37750dccd8d19db0b8fbd5f69f9877675a2
-prerequisite-message-id: <20251216000901.221375-1-fujita.tomonori@gmail.com>
-prerequisite-patch-id: efa4bda7cbf96b462e2fc4ee64e2e59bbfd987fc
-prerequisite-patch-id: efa4bda7cbf96b462e2fc4ee64e2e59bbfd987fc
-prerequisite-change-id: 20260214-pin-slice-init-e8ef96fc07b9:v1
-prerequisite-patch-id: 9e379a7ad70a3d8d463598ac18888badad490fbd
-prerequisite-change-id: 20260215-page-additions-bc36046e9ffd:v1
-prerequisite-patch-id: cd414158ad8a77616cf5e20f01212929fe4a9b4d
-prerequisite-patch-id: ff052142fd3b16d7190b0ad2fb79cc39813e49fd
-prerequisite-patch-id: 4da98d17bef5f809a9caad013bab670f661c8d4e
-prerequisite-patch-id: a31185fe1abbf553377d6d695c5d206eebc84358
-prerequisite-patch-id: 8074279c3569e7997f7a993a8ecac7b977b4509a
-prerequisite-patch-id: 541dba7938ba874f8d17fee05a36b1cd9fa2c4d7
-prerequisite-patch-id: b7eb6740359975d4d781fbd4f684bc5a8ec277f1
-prerequisite-patch-id: d83fb5f310b84492bdf44eeec0f9d3d3146a73f5
-prerequisite-patch-id: 77308c47591e44920a3bc0279a4d9013035fcac3
-prerequisite-patch-id: 394eed28da13692ef8e9a3c6df5b9d5a88da2b25
-prerequisite-patch-id: 929ffa3147738613a25f319a19fa94c79228ddd3
-prerequisite-change-id: 20260215-cpu-helpers-08efb2572487:v1
-prerequisite-patch-id: fb5e44b1a2f6c1dafc302698c11eb58578fae354
-prerequisite-patch-id: a0817c213565d3e2091c151c386efe87c99bc10d
-prerequisite-change-id: 20260215-time-from-nanos-86f8b10be4a2:v1
-prerequisite-patch-id: 8e5e18575f4c753f0a04a2d6b145f451b0b04f70
-prerequisite-change-id: 20260215-time-delta-display-d702e7788d2d:v1
-prerequisite-patch-id: d7352e25e22a1ec8147c50c2623397e9536a2a16
-prerequisite-change-id: 20260215-export-do-unlocked-00a6ac9373d4:v1
-prerequisite-patch-id: af7e673634a9c9b96692fb1739c7d91402289bb2
-prerequisite-change-id: 20260215-impl-flags-additions-0340ffcba5b9:v1
-prerequisite-patch-id: df7e080424845e49a13d0fc3842d6a5d9994168f
-prerequisite-patch-id: edebc37750dccd8d19db0b8fbd5f69f9877675a2
-prerequisite-patch-id: 3a872dd9f9e689ee0b199d59231d4dccb3ed4e0e
-prerequisite-patch-id: 545f093139ddd2b81d6e4b0d9a34b449cd0dac5d
-prerequisite-change-id: 20260215-ringbuffer-42455964aaf2:v1
-prerequisite-patch-id: b83497d39605ac2eb4f58f60fe01d685b753f068
-prerequisite-change-id: 20260215-set-once-lazy-c73fc34a55d9:v1
-prerequisite-patch-id: 56b8aff3bed13e3dec3155da2d22bf82af7e15be
-prerequisite-change-id: 20260215-hrtimer-active-f183411fe56b:v1
-prerequisite-patch-id: 18a4cf0bf6b6df01b0c85626551781a1a99c18c1
-prerequisite-change-id: 20260215-configfs-c-default-groups-bdb0a44633a6:v1
-prerequisite-patch-id: 5c82dc0deb0768531d2cdb24ac5e92857c9e76a7
-prerequisite-change-id: 20260215-unique-arc-as-ptr-32eb209dde1b:v1
-prerequisite-patch-id: 556fbdb0805258a37eecc1da428abdf493346322
-prerequisite-change-id: 20260215-rust-fault-inject-bc62f1083502:v1
-prerequisite-patch-id: 5c82dc0deb0768531d2cdb24ac5e92857c9e76a7
-prerequisite-patch-id: 76ff44f1133e2b2cca23ae41c682155e6921e0b8
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index 9a05bce39c64b..e2fafe7737379 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -166,6 +166,13 @@ pub fn hw_data(&self) -> <T::HwData as ForeignOwnable>::Borrowed<'_> {
+         unsafe { T::HwData::borrow((*hctx).driver_data) }
+     }
+ 
++    /// Get the queue index for the hardware queue associated with this request.
++    pub fn queue_index(&self) -> u32 {
++        // SAFETY: The requests is guaranteed to be associated with a hardware
++        // context while we have access to it.
++        unsafe { (*self.hctx_raw()).queue_num }
++    }
++
+     pub fn is_poll(&self) -> bool {
+         let hctx = self.hctx_raw();
+ 
 
-Best regards,
 -- 
-Andreas Hindborg <a.hindborg@kernel.org>
+2.51.2
 
 
 
