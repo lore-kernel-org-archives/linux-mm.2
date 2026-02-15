@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C84C5E63F21
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:44:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8E13E63F21
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 00:49:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 320FF6B012E; Sun, 15 Feb 2026 19:21:37 -0500 (EST)
+	id 492966B00AB; Sun, 15 Feb 2026 19:35:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F7EC6B0130; Sun, 15 Feb 2026 19:21:37 -0500 (EST)
+	id 42FD46B0138; Sun, 15 Feb 2026 19:35:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D0BF6B0133; Sun, 15 Feb 2026 19:21:37 -0500 (EST)
+	id 365886B013A; Sun, 15 Feb 2026 19:35:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB46B6B012E
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:21:19 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02C0FBC441
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:35 +0000 (UTC)
-X-FDA: 84448317912.03.18BD6B2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5E36340004
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oQ0LJSHO;
-	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 76AFE6B00AB
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 19:35:45 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4330C1407A5
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:16 +0000 (UTC)
+X-FDA: 84448317072.06.212274E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 762A04000D
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oTB2Bv0h;
+	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198954;
+	s=arc-20220608; t=1771198934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jpGwB9LoHAL5apSmaJfoapTM4gTeV/7UBqdB16GJyeM=;
-	b=dqQ23RYUKkEwEbUmAMFr0v7KY1r34hDF5xnHzOAv3xFpbuawja9ElW8m2BzxnWL0n84Twp
-	LTgggWe4ILUfbo28pIH5A+/lRY++A0fKdfu0PDnJTX2VpRAc+ipDXvErSZlv/FK9gPlIVe
-	Wff0BfZIMqWbkI/V7o13oy4ElXuJikw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198954; a=rsa-sha256;
-	cv=none;
-	b=ZsHN8+BO0UoCDbAxyZXtBiN9oHrj8xuz3xILJkKX2aGyShK9oWAjyCOWk5jBXbscQWrosZ
-	nds+uyL5VkUsqCsEYoGzBpaUAt7LX0Qcbtx05u7b5zZszj3e3p+Ntnm4zG2jcQPvuAF3UL
-	GxEK3QPNUvlguLRAFgCe1YOa+kUKDvQ=
+	bh=dWIQ2b599zN4W7H4Uq6lj5blfckqKfOS1JZdFu1QTG8=;
+	b=cDp7p5vXBQuQAxCutFVyULn6o376U2RgKa+9x38rKYprTBpKo1y29SgH5q8CnKqZhSKr+E
+	9Vkroj3FeWRCKujUkHOsONBb/s6soRUrtlYg+Q7Cp2WLTaHKOcijAxl1BkmDEpqIP97ziP
+	Ke2yRMdYL8rzmKcX/QK8ca0lvwIqhIw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oQ0LJSHO;
-	spf=pass (imf11.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oTB2Bv0h;
+	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198934; a=rsa-sha256;
+	cv=none;
+	b=TrhmJIFfH4uOOXL2v+SGN1weLFf00/1BXMiKnsBC7eMwh77grCaG8baNgnT3icTSmapXN9
+	FfavI57lPV+qkysrgT35fnyUsOqc8eBcAlv14NG6Eg9iX/RJPGI7EmT6g0//N3gy6a6SYe
+	Si8opp4Fxm52PhZqEnUhU+3Nv2FQer8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC4266013F;
-	Sun, 15 Feb 2026 23:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBDCC19422;
-	Sun, 15 Feb 2026 23:42:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B22C2405A3;
+	Sun, 15 Feb 2026 23:42:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C44C4CEF7;
+	Sun, 15 Feb 2026 23:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198953;
-	bh=ZBT3g2yxwr2ga5MlCDT4cJc5rd6AoVQ9CyP5UJLr7JY=;
+	s=k20201202; t=1771198933;
+	bh=h7+bon01UENFNoUz8aPGZ7HCRgNi5L5RQlf/Y/C7XMA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=oQ0LJSHOI5yscAmkUVG++3cAQSWRAceqv3D0uq2h4/A0ND+d+Vay35uo/6D8Nhd6t
-	 Kzr1zb85rkn8P/78LpvGZ59R4GfHdtt3COdBcJEYKIr7lRH4bRoIKWw+fymLavNP3q
-	 SBtVcCVRmM1yfS7oBEqzJe77DVBax4bkBD6j2pITc/rOXCSZ1qH1STZdMsBJNZV+OG
-	 yXnGajUfOZZ7QyYxYwN6FUzK9Vjj63nHRv3vcVqya/h5YfvC3g/PWL7l2ZdE2XLJwd
-	 h9KR3R+ehhy5DQU9iIce96EAr3JH88izhhVM63PLazxU4ndAAPzn3uOjCSAVGobvf2
-	 oevjZEmirz1wA==
+	b=oTB2Bv0htB2pXAXWaZJsudOqYB2WyHJ74Zz2aeHIU3yDKemx2JWmtEf8wyTL84VPL
+	 dRyIkzzyIQsjYHgWBkoHd+YUny96mtkaUBkrhDyVio9zCC3+WSHffWQWsoh+MRjLR4
+	 bg3kzp8VNT1qSq6rw75xhyP7k88bU+LbVBNEW7s4bwqJHBotNK2ZiaYPz8yGfEmds9
+	 ZK8r9TrjOvywsNIBH6jnlG7LlQ0At0/TFSeIJpR0Nat1vbvJemEV4/tbyOKw7hfnQN
+	 aasdUQPnAkxUS3HqfhHpzAi3DeHoci8f1DnQyHxbxxSnFRtTkO2Kq/BWB8VuVHL3dK
+	 OrIlFBmjm6eSA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:34:50 +0100
-Subject: [PATCH 03/79] block: rnull: add macros to define configfs
- attributes
+Date: Mon, 16 Feb 2026 00:35:43 +0100
+Subject: [PATCH 56/79] block: rust: add abstraction for block queue feature
+ flags
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-3-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-56-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -90,31 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10210;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=ZBT3g2yxwr2ga5MlCDT4cJc5rd6AoVQ9CyP5UJLr7JY=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgeSt5Gpp+/cjlALcsKqnCvx2CtOLaSgTmuZ
- 5S1M+PAvxKJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYHgAKCRDhuBo+eShj
- dxG0EACwY4lNl7HxgkSgg52iQKuudaW+KKtUEtLbOPnjN4vwDRaW5/rzgKREi8+8L4Hn5i/pRaE
- aLRUmsG035uMlSrRwgqucvAmHDuETFlxewsvaN7bHlDpPIc69KG7I6dqME4ApI99615IFir39Il
- US4j/8i7YXr6fLC7NRBJwm0YG31P22xqc/oHntGgoG8zFsyiUbOp3AnMBP/2ffB1zdwLTVDNDGp
- zcFP3+yr7euceudcVIoeVJkw74154p/lEI8rerssardEivgs7WsVg5nDpvSJO3elWw2ZSyCP/u0
- v/XB3MuW+tuiYWeJl4ZQdSwQecBB4T5lirjtCUR87ijjFr4U7gV+0uzyEf4htnzdnOY3LzVkxxX
- +UDQYhjIA3VI5xFOLVe9lA9vmGmpgVXANMzhsaqH10mf4qx/EeqxFqFPDUskqY2caxftq7KxGQK
- mvVrfajabD6Bsbpoe19hmDSh1GG5dQ0AZwVDTGVLQt5Yhgrx6jhCDqV8tfHRV88+vj6++g1QAOy
- 5AGIXTLcyWlLBc57zWrNCWZKLv2ZFE1hewbPQQhGbMmvmBmzAtSA6EVXeBEtZrgKGzGNu73fCGb
- /GXzLK6AF3F/BfkVnOcRSln/2rPEyETi0aqJoa8EPiCrGY7UEoJuwxs0SkRb93ZhKRRxCoqTEcJ
- fIvQw9h7rLuyy/Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6502; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=h7+bon01UENFNoUz8aPGZ7HCRgNi5L5RQlf/Y/C7XMA=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhOREpIyxuvj/IBFaVKOjzP6Ic55E0Q/l0dW
+ MIwADOZnFeJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYTgAKCRDhuBo+eShj
+ d9hoEACpVmpgtnsKcpDvuhvuAPuxqSo5potehm+47IVnGk8liQen6kvUYVGj8MBJ92nUu9SvxuY
+ dtoaM8jPnSp4ocwYgA4nowinOfRuNy7oBVWt8HmD0WQtFC6AKb6bJZotCcb7PmpeJF0YPu6kyOI
+ WUC5JGi3URjTb1Qq7MbfGjXXvvHIqlZT+MuxDboD/0EBn5EJl+EjKjNVYVS9TeA2aq6Q/f03h7z
+ 3xP1Mjrbmj9sXhwYAy6T+wfbC2GrTbcjw/Hob5FFXb297vFUX7d++uNTazraLYmpfi99JcjltAi
+ 0wbe28Jp6hJE9zeqOlufQLn/x3MPMl8Kn+00raZObBz06TiRKXSgOj1Gt5Yri6PznQjjR+ITxXE
+ 3GQeznd6Xd/BLpDQSfNfR/RBxAAkoWf3jfpj4tblQFH3K84gvr7jxwWH2+/qEuXVqmLVgwR/+hB
+ DtwffWbgsHjVSLjItvZuQ3wkWAF1SqLhG+JOkgAU/tP+/uhNCVRLcccxnSsy6xhIlxVpisfG8HZ
+ 0n95Sh6IL2L43khIYnpYfNVuFkCnzD+7AYxe0SgMd9/eAytq1ETsaNMG+6WWQFAo6vqmvjrQ8JE
+ zCpkPZGushAyWA5FLbU0pLekebqK9U98u4uomQZtHfd73cUHlCwIf8lM+PtZTtmEZ9nRrXliYZs
+ yYj1lSCT2uPCd7w==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 5E36340004
+X-Stat-Signature: ztw6xjtdaz9ksuhcd63tdmiah4hc4c4i
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qy71pqogfru3gat1i7jq3xpbgdqi45fi
-X-HE-Tag: 1771198954-332389
-X-HE-Meta: U2FsdGVkX19xL/5y49Xb6p2haA5RARpvELaN58Ku13jOjgSZ6q31TrsSkapD8tYZ108doIysBzufzv1f4/UmAwfuDGxED9nESHOdXjtpIX58UNc4HBR938qZ054YXImUsXO4MrUxMjLVICaxSuXdWbFmztqtsARO6W8Sk4I4pGb+O3PpBBbBHmKVfydv5u8/9+DGAXjrTke1G/qSC9GtaOU+99LRe8i7sGGTuftUNolXF/uA/D5sVW7tU44VeuO9F3OFSJ1KbIfH5+3+iYYq2emONq7Utr7v+wsHaNf9FeiotxV1ZY4BpQ1eo4Xg7Q1R7x8Km0fY0JJNq7PHVNUnnt8lRPCA6GkLcTAbB8A3Zq2RqAwOsLPi4ZoHMo58AzOZ3JKpzf5t0Rzulrq6MhfQ1/33mTmu83yKBGcg0SnzIGvxsRlOnkMjR4Y9JYCkxo9T73tdK1HeRpazwSrUJmM6V5tMjHTwWqQ3QZJQbEv6YRdUeu0IfQT9/Euw5uDP6iZ8qR4g1RYtPDBLQDb21MLgX7ZsCWX0qOOpLIJgVxeAvK51XMAUzjf6/v7Vq8ajJEzmKu481JboEEthQIqtTBbTDYCpUQkc1Vg2c1ucCZRMWTCBktT35i9wxqDUiU1A0tX3tbKcMMj90iROAQL/dznBT30YJfHywE8iQLgyfcihlLArqUgt43gD4X/1fJIJnxwCH2Y0wTdrG8MFwkS/3ckex2DyEgFBceNW97rdCx0W1DaGWL08ip7h8zh0jTLhjHqN2lqTrC5FqpC940oATTvfHY8UfFIRUMPa0YusnuP/Pzx17vv0BvZzx0Wm0iQEYuDrPELrEVXsPvFTxi6rrpDqBotRJ9eeK9Ug3Mel4JVkxx00QFKZyjCqZGGTRicS+2wh0lTFZpn4QfVOWcKBhL+iT8NQAkRc7YaNbn+fLYJLD/0kHd9AB/RuSiM2ecmWc2xKayYF5/WN5l2HSzy5bcp
- nU4SUVv0
- l2aGJiZ2osu9H11G7f/oL5lJGd/DlacpcWJ6dQZDvjUM/JMQVGGY0m/I6U2ghNkRPrHfGaTsLcg6efmB0Biv10TUmiywIcldlgDwDkAnVnF9hR2BBjEdU0zgVmrJ/XtV7ZwFAgJsa1sihZovpAAASwug1ddFSilHyNHNns+YAo9dIYOj5htEIB35SNeKhzRv57MFyFLN0qcFieX2eLUZRRn/wkDSqCmpKGF/jtsXojH3XhQQ1+kFg/Mg3ZG+SOJk5QJybvuhziBh1UdRCqWLwE6wqWCuOB02EPMvnDH4OYaYCtoYbg+Ewx0yCJW/9HyD7qshw
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 762A04000D
+X-HE-Tag: 1771198934-448859
+X-HE-Meta: U2FsdGVkX199718xJ1TiBrhY/FdJN0WzV4sdXurY6A5fatOH3Pu93JsRflk5t+ggFrCV1WPradLJAjf4bo20f2UAlOISGkQ5VT6TosFAAIttm/nX0iutBi+qA6d85ijboQ1v3hAPX1Megb2evXoC5Nzf7SBZP2GPqK4o/2HAnGnQ7DssX3za7k+pWKZ9OtP7OfslT2MqlSBoOwm8rMi+eaW9n9h3O6lH8hadD+DH0CyXbF2uqOZdSTgPAWHnm8DL0UFqCsRdSWbrePS4gFLz+uXYDkp5r1BfCRI7fzV9VjU2pEtUL/oBj/5y+Soj9k5cOFPGjaaQ3ItfQPPJol/Q6K7bo6PxhInVlkV4SCuoxR2B0FbvtD+vPpUQ0qBZmwgwhUBwQYzqXVP/MDtWPsmIo5ZxNsRQDwq7SAO8TZt4jC4IVYi46EslidWTDcZG9zp1/Len8cAjxzItY2C5wgxJM7fopKTVss4hbQehGzY09DndqChmXEHBEhABDmIMWUp1Nyklz0QpVPCs3MyseGptJvzwO/9tbCpwO3KYg3TblvTdStOGiojMqVB+tPIk6nvgswcDqA3Wtz1x3p+qdcSSvUjP+bCT1QXvvOS1bqh8jyvJ8HY7ucC45gSf3ZTk3R6Zg6Dt3RDFlH1a2NOqqvjBMKE7mP3v3wfn2uFBUXkVVNRzYm6l8TxJPwrU1A6Gnndr4Z3P0AywREkMi2nFF8LA67dvIUE4mqazS7eZobazouqAe2uRVrmFkYDqiw9/aSVdBgjFeqIIbMpPc0DKEUc4I+WN9EiuCmGByoKJ2nAzicpcWya/UK5HEqyfD0Vv8iFjvT/rGrhWf0+D2kLZby9fve1ywc3i8gnNWlMvUd0l1s+AIPuTAukPYizIMDz7770JuuYDPV2D0ejQ7WzmEyaCXJAbSZxMeZwnE4PviusVLtuioH85Yiz2ZocK1q1neWnLcWTyp3CWa9Wa8kFla1J
+ S+ym+v01
+ mUUIhvI/z2yHziN9jHrS39pYTOWqQ92H4pg3/4yxab+7G1W7DxrgE9XuT5XPOBtU57Wn/XVSrJZQGtSC8GIxPNGfgmnCrxPNomadHhJV0G+/cMcunwKj9SCx+ZmIMibsxV+af8DGbNWeqmzVGL5BKoyEsFECFc/ym+eS7Tv5kpHt+1UjrzjdxGsRyxriQLwLGwktqOQMtoO/HPBmMRXY3mLVDwOx+V/VGt3hkctnEd2MBpMjpwqJsZMhXedqSY+eOvJIKuQdo8xWeO7rXMn9mdr8byOYbyhJMdbT2qw5KAT6DMuHTL30PVjoNyzONO9+UUjRD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,314 +122,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Defining configfs attributes in rust is a bit verbose at the moment. Add
-some macros to make the attribute definition less verbose.
-
-The configfs Rust abstractions should eventually provide procedural macros
-for this task. When we get more users of the configfs Rust abstractions, we
-shall consider this task.
+Add the `Feature` enum and `Features` type as Rust abstractions for the
+C `blk_features_t` bitfield. These types wrap the `BLK_FEAT_*` flags
+and allow drivers to describe block device capabilities such as write
+cache support, FUA, rotational media, and DAX.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs        | 134 +++++++++------------------------
- drivers/block/rnull/configfs/macros.rs | 128 +++++++++++++++++++++++++++++++
- 2 files changed, 164 insertions(+), 98 deletions(-)
+ rust/bindings/bindings_helper.h | 15 ++++++++-
+ rust/kernel/block/mq.rs         |  2 ++
+ rust/kernel/block/mq/feature.rs | 73 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index ea38b27a9011c..eafa71dfc40d3 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -1,20 +1,41 @@
- // SPDX-License-Identifier: GPL-2.0
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index b8c2f3eadc730..209c53443e9cb 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -113,7 +113,6 @@ const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
+ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
+ const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
+ const gfp_t RUST_CONST_HELPER___GFP_NOWARN = ___GFP_NOWARN;
+-const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_OK = BLK_STS_OK;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_NOTSUPP = BLK_STS_NOTSUPP;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_TIMEOUT = BLK_STS_TIMEOUT;
+@@ -133,7 +132,21 @@ const blk_status_t RUST_CONST_HELPER_BLK_STS_ZONE_ACTIVE_RESOURCE = BLK_STS_ZONE
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_OFFLINE = BLK_STS_OFFLINE;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_DURATION_LIMIT = BLK_STS_DURATION_LIMIT;
+ const blk_status_t RUST_CONST_HELPER_BLK_STS_INVAL = BLK_STS_INVAL;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_WRITE_CACHE = BLK_FEAT_WRITE_CACHE;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_FUA = BLK_FEAT_FUA;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ADD_RANDOM = BLK_FEAT_ADD_RANDOM;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_IO_STAT = BLK_FEAT_IO_STAT;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_STABLE_WRITES = BLK_FEAT_STABLE_WRITES;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_SYNCHRONOUS = BLK_FEAT_SYNCHRONOUS;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_NOWAIT = BLK_FEAT_NOWAIT;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_DAX = BLK_FEAT_DAX;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_POLL = BLK_FEAT_POLL;
+ const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ZONED = BLK_FEAT_ZONED;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_PCI_P2PDMA = BLK_FEAT_PCI_P2PDMA;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_SKIP_TAGSET_QUIESCE = BLK_FEAT_SKIP_TAGSET_QUIESCE;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_RAID_PARTIAL_STRIPES_EXPENSIVE = BLK_FEAT_RAID_PARTIAL_STRIPES_EXPENSIVE;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ATOMIC_WRITES = BLK_FEAT_ATOMIC_WRITES;
+ const blk_opf_t RUST_CONST_HELPER_REQ_FAILFAST_DEV = REQ_FAILFAST_DEV;
+ const blk_opf_t RUST_CONST_HELPER_REQ_FAILFAST_TRANSPORT = REQ_FAILFAST_TRANSPORT;
+ const blk_opf_t RUST_CONST_HELPER_REQ_FAILFAST_DRIVER = REQ_FAILFAST_DRIVER;
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 5a1c8e914bb9e..b36112f7b22b9 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -125,12 +125,14 @@
+ //! # Ok::<(), kernel::error::Error>(())
+ //! ```
  
--use super::{NullBlkDevice, THIS_MODULE};
-+use super::{
-+    NullBlkDevice,
-+    THIS_MODULE, //
-+};
- use kernel::{
--    block::mq::gen_disk::{GenDisk, GenDiskBuilder},
-+    block::mq::gen_disk::{
-+        GenDisk,
-+        GenDiskBuilder, //
-+    },
-     c_str,
--    configfs::{self, AttributeOperations},
-+    configfs::{
-+        self,
-+        AttributeOperations, //
-+    },
-     configfs_attrs,
--    fmt::{self, Write as _},
-+    fmt::{
-+        self,
-+        Write as _, //
-+    },
-     new_mutex,
-     page::PAGE_SIZE,
-     prelude::*,
--    str::{kstrtobool_bytes, CString},
--    sync::Mutex,
-+    str::{
-+        kstrtobool_bytes,
-+        CString, //
-+    },
-+    sync::Mutex, //
-+};
-+use macros::{
-+    configfs_simple_bool_field,
-+    configfs_simple_field, //
- };
- use pin_init::PinInit;
++mod feature;
+ pub mod gen_disk;
+ mod operations;
+ mod request;
+ mod request_queue;
+ pub mod tag_set;
  
-+mod macros;
-+
- pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
-     let item_type = configfs_attrs! {
-         container: configfs::Subsystem<Config>,
-@@ -166,99 +187,16 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-     }
- }
- 
--#[vtable]
--impl configfs::AttributeOperations<1> for DeviceConfig {
--    type Data = DeviceConfig;
--
--    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
--        let mut writer = kernel::str::Formatter::new(page);
--        writer.write_fmt(fmt!("{}\n", this.data.lock().block_size))?;
--        Ok(writer.bytes_written())
--    }
--
--    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
--
--        let text = core::str::from_utf8(page)?.trim();
--        let value = text.parse::<u32>().map_err(|_| EINVAL)?;
--
--        GenDiskBuilder::validate_block_size(value)?;
--        this.data.lock().block_size = value;
--        Ok(())
--    }
--}
--
--#[vtable]
--impl configfs::AttributeOperations<2> for DeviceConfig {
--    type Data = DeviceConfig;
--
--    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
--        let mut writer = kernel::str::Formatter::new(page);
--
--        if this.data.lock().rotational {
--            writer.write_str("1\n")?;
--        } else {
--            writer.write_str("0\n")?;
--        }
--
--        Ok(writer.bytes_written())
--    }
--
--    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
--
--        this.data.lock().rotational = kstrtobool_bytes(page)?;
--
--        Ok(())
--    }
--}
--
--#[vtable]
--impl configfs::AttributeOperations<3> for DeviceConfig {
--    type Data = DeviceConfig;
--
--    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
--        let mut writer = kernel::str::Formatter::new(page);
--        writer.write_fmt(fmt!("{}\n", this.data.lock().capacity_mib))?;
--        Ok(writer.bytes_written())
--    }
--
--    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
--
--        let text = core::str::from_utf8(page)?.trim();
--        let value = text.parse::<u64>().map_err(|_| EINVAL)?;
--
--        this.data.lock().capacity_mib = value;
--        Ok(())
--    }
--}
--
--#[vtable]
--impl configfs::AttributeOperations<4> for DeviceConfig {
--    type Data = DeviceConfig;
--
--    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
--        let mut writer = kernel::str::Formatter::new(page);
--        writer.write_fmt(fmt!("{}\n", this.data.lock().irq_mode))?;
--        Ok(writer.bytes_written())
--    }
-+configfs_simple_field!(DeviceConfig, 1, block_size, u32, check GenDiskBuilder::validate_block_size);
-+configfs_simple_bool_field!(DeviceConfig, 2, rotational);
-+configfs_simple_field!(DeviceConfig, 3, capacity_mib, u64);
-+configfs_simple_field!(DeviceConfig, 4, irq_mode, IRQMode);
- 
--    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
-+impl core::str::FromStr for IRQMode {
-+    type Err = Error;
- 
--        let text = core::str::from_utf8(page)?.trim();
--        let value = text.parse::<u8>().map_err(|_| EINVAL)?;
--
--        this.data.lock().irq_mode = IRQMode::try_from(value)?;
--        Ok(())
-+    fn from_str(s: &str) -> Result<Self> {
-+        let value: u8 = s.parse().map_err(|_| EINVAL)?;
-+        value.try_into()
-     }
- }
-diff --git a/drivers/block/rnull/configfs/macros.rs b/drivers/block/rnull/configfs/macros.rs
++pub use feature::{Feature, Features};
+ pub use operations::IoCompletionBatch;
+ pub use operations::Operations;
+ pub use request::Command;
+diff --git a/rust/kernel/block/mq/feature.rs b/rust/kernel/block/mq/feature.rs
 new file mode 100644
-index 0000000000000..53ce9d5dbdc8a
+index 0000000000000..6c9f098e10c55
 --- /dev/null
-+++ b/drivers/block/rnull/configfs/macros.rs
-@@ -0,0 +1,128 @@
++++ b/rust/kernel/block/mq/feature.rs
+@@ -0,0 +1,73 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+use super::DeviceConfig;
-+use core::{fmt::Write, str::FromStr};
-+use kernel::{page::PAGE_SIZE, prelude::*};
++//! Block device feature flags.
++//!
++//! This module provides Rust abstractions for the C `blk_features_t` type and
++//! the associated `BLK_FEAT_*` flags defined in `include/linux/blkdev.h`.
 +
-+pub(crate) fn show_field<T: fmt::Display>(value: T, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+    let mut writer = kernel::str::Formatter::new(page);
-+    writer.write_fmt(fmt!("{}\n", value))?;
-+    Ok(writer.bytes_written())
-+}
++use kernel::prelude::*;
 +
-+pub(crate) fn store_with_power_check<F>(this: &DeviceConfig, page: &[u8], store_fn: F) -> Result
-+where
-+    F: FnOnce(&DeviceConfig, &[u8]) -> Result,
-+{
-+    if this.data.lock().powered {
-+        return Err(EBUSY);
++impl_flags! {
++    /// A set of block device feature flags.
++    ///
++    /// This type wraps the C `blk_features_t` bitfield and represents a
++    /// combination of zero or more [`Feature`] flags. It is used to describe
++    /// the capabilities of a block device in [`struct queue_limits`].
++    ///
++    /// [`struct queue_limits`]: srctree/include/linux/blkdev.h
++    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++    pub struct Features(u32);
++
++    /// A block device feature flag.
++    ///
++    /// Each variant corresponds to a `BLK_FEAT_*` constant defined in
++    /// `include/linux/blkdev.h`. These flags describe individual capabilities
++    /// or properties of a block device.
++    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++    pub enum Feature {
++        /// Supports a volatile write cache.
++        WriteCache = bindings::BLK_FEAT_WRITE_CACHE,
++
++        /// Supports passing on the FUA bit.
++        ForcedUnitAccess = bindings::BLK_FEAT_FUA,
++
++        /// Rotational device (hard drive or floppy).
++        Rotational = bindings::BLK_FEAT_ROTATIONAL,
++
++        /// Contributes to the random number pool.
++        AddRandom = bindings::BLK_FEAT_ADD_RANDOM,
++
++        /// Enables disk/partitions I/O accounting.
++        IoStat = bindings::BLK_FEAT_IO_STAT,
++
++        /// Don't modify data until writeback is done.
++        StableWrites = bindings::BLK_FEAT_STABLE_WRITES,
++
++        /// Always completes in submit context.
++        Synchronous = bindings::BLK_FEAT_SYNCHRONOUS,
++
++        /// Supports REQ_NOWAIT.
++        Nowait = bindings::BLK_FEAT_NOWAIT,
++
++        /// Supports DAX.
++        Dax = bindings::BLK_FEAT_DAX,
++
++        /// Supports I/O polling.
++        Poll = bindings::BLK_FEAT_POLL,
++
++        /// Is a zoned device.
++        Zoned = bindings::BLK_FEAT_ZONED,
++
++        /// Supports PCI(e) p2p requests.
++        PciP2Pdma = bindings::BLK_FEAT_PCI_P2PDMA,
++
++        /// Skips this queue in `blk_mq_(un)quiesce_tagset`.
++        SkipTagsetQuiesce = bindings::BLK_FEAT_SKIP_TAGSET_QUIESCE,
++
++        /// Undocumented magic for bcache.
++        RaidPartialStripesExpensive = bindings::BLK_FEAT_RAID_PARTIAL_STRIPES_EXPENSIVE,
++
++        /// Atomic writes enabled.
++        AtomicWrites = bindings::BLK_FEAT_ATOMIC_WRITES,
 +    }
-+    store_fn(this, page)
 +}
-+
-+pub(crate) fn store_number_with_power_check<F, T>(
-+    this: &DeviceConfig,
-+    page: &[u8],
-+    store_fn: F,
-+) -> Result
-+where
-+    F: FnOnce(&DeviceConfig, T) -> Result,
-+    T: FromStr,
-+{
-+    if this.data.lock().powered {
-+        return Err(EBUSY);
-+    }
-+
-+    let text = core::str::from_utf8(page)?.trim();
-+    let value = text.parse::<T>().map_err(|_| EINVAL)?;
-+
-+    store_fn(this, value)
-+}
-+
-+macro_rules! configfs_attribute {
-+    (
-+        $type:ty,
-+        $id:literal,
-+        show: |$show_this:ident, $show_page:ident| $show_block:expr,
-+        store: |$store_this:ident, $store_page:ident| $store_block:expr
-+        $(,)?
-+    ) => {
-+        #[vtable]
-+        impl configfs::AttributeOperations<$id> for $type {
-+            type Data = $type;
-+
-+            fn show($show_this: &$type, $show_page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+                $show_block
-+            }
-+
-+            fn store($store_this: &$type, $store_page: &[u8]) -> Result {
-+                $store_block
-+            }
-+        }
-+    };
-+}
-+pub(crate) use configfs_attribute;
-+
-+// Specialized macro for simple boolean fields that just store kstrtobool_bytes result.
-+macro_rules! configfs_simple_bool_field {
-+    ($type:ty, $id:literal, $field:ident) => {
-+        crate::configfs::macros::configfs_attribute!($type, $id,
-+            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
-+            store: |this, page|
-+              crate::configfs::macros::store_with_power_check(this, page, |this, page| {
-+                this.data.lock().$field = kstrtobool_bytes(page)?;
-+                Ok(())
-+            })
-+        );
-+    };
-+}
-+pub(crate) use configfs_simple_bool_field;
-+
-+// Specialized macro for simple numeric fields that just parse and assign
-+macro_rules! configfs_simple_field {
-+    // Simple direct assignment
-+    ($type:ty, $id:literal, $field:ident, $field_type:ty) => {
-+        crate::configfs::macros::configfs_attribute!($type, $id,
-+            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
-+            store: |this, page| crate::configfs::macros::store_number_with_power_check(
-+                this,
-+                page,
-+                |this, value: $field_type| {
-+                    this.data.lock().$field = value;
-+                    Ok(())
-+                }
-+            )
-+        );
-+    };
-+    // With infallible conversion expression (direct value)
-+    ($type:ty, $id:literal, $field:ident, $field_type:ty, into $convert:expr) => {
-+        crate::configfs::macros::configfs_attribute!($type, $id,
-+            show: |this, page|
-+                crate::configfs::macros::show_field(this.data.lock().$field, page),
-+            store: |this, page| crate::configfs::macros::store_number_with_power_check(
-+                this,
-+                page,
-+                |this, value: $field_type| {
-+                    this.data.lock().$field = $convert(value);
-+                    Ok(())
-+                }
-+            )
-+        );
-+    };
-+    // With check, no conversion
-+    ($type:ty, $id:literal, $field:ident, $field_type:ty, check $check:expr) => {
-+        crate::configfs::macros::configfs_attribute!($type, $id,
-+            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
-+            store: |this, page| crate::configfs::macros::store_number_with_power_check(
-+                this,
-+                page,
-+                |this, value: $field_type| {
-+                    $check(value)?;
-+                    this.data.lock().$field = value;
-+                    Ok(())
-+                }
-+            )
-+        );
-+    };
-+}
-+pub(crate) use configfs_simple_field;
 
 -- 
 2.51.2
