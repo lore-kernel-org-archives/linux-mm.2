@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9777FE63F2A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29CA2E63F2D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:19:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1A16B0113; Sun, 15 Feb 2026 18:56:02 -0500 (EST)
+	id 071266B00B3; Sun, 15 Feb 2026 18:45:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09CCC6B0116; Sun, 15 Feb 2026 18:56:02 -0500 (EST)
+	id 02F036B00CA; Sun, 15 Feb 2026 18:45:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDFB86B0117; Sun, 15 Feb 2026 18:56:01 -0500 (EST)
+	id EB2036B00D2; Sun, 15 Feb 2026 18:45:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C9FA46B0113
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:56:01 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 584A08C004
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:47:08 +0000 (UTC)
-X-FDA: 84448329336.29.DDD4BAB
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ED616B00B3
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:45:14 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D27C5140B66
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:13 +0000 (UTC)
+X-FDA: 84448324506.22.93FBB88
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 892E71C0004
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:47:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NCQzTIxh;
-	spf=pass (imf21.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id E99D81A0002
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:45:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=soe8zXn6;
+	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199226;
+	s=arc-20220608; t=1771199112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFpa9LT7uQGt48YQCODKL4l8bcakMp1BJk0MM/lT3VQ=;
-	b=dsCREqE4X1pJl4SieiMy8Sc9BH0rIAb9ZLSLeCM66j1Uiwo0QoXlauG091f/09MScUyNyr
-	cRfeKjXhnS0Uc2ljVj6+1qWypM11DZ4X0R6T+wMlEUdW9yxIuSrDdl9+dBh2TPxnYVh5Xi
-	LVBcwOI2H5yBvXFVdRysOAJ8Duabmwk=
+	bh=bdhM42tY23lYgQKtp0DQ2W48VnmMI5VpzcYgQS46sfY=;
+	b=GKNzRmwag8eeHwQLFAd8UJupFcx2/9FjXLkjpTEPrhtLX52rD+8srGz16gkTqIaIKjx0wV
+	2df1JXT69SQPOd4jgdd1VfC2pj2Ug5PKYfoHa8DZCHrkGlw54nUkzklASOhZBKO7oV0Ms8
+	fyKrfy9BlAh44jprniUupE0+bEre7ZA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NCQzTIxh;
-	spf=pass (imf21.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=soe8zXn6;
+	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199226; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199112; a=rsa-sha256;
 	cv=none;
-	b=A/xXkYUivW5SGKUwckGBS5iAUB7MUZskI6eVBz44fUKLD4hlodb+8BJ2z9Bg/oY7bGRgwG
-	Y0GstgG5R8FzGY7IcFKaUARE8ibeAtbZytjAJWgkDYTURWZ/LVxwdDDh/OyV2wrTIwWKgo
-	ntJSJUYhylqCM3dGP3NcXLU19TQbNAE=
+	b=2D88uJWLZFzsqkgeKhYjw9jBcSOQbgTNhQ5p495jS8B0AdAb3SDFzueHfrEnlgt8/K9zjA
+	29waFPlmbJdppJsyJ9ZFFsvoSBot5WKQMEblylsi92ViTJeUVkA8OexPkTuCBWHOVB4QxZ
+	6SSfso+hQ2YqLJDUiDAzKRJGGQH6YVw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C31D742E48;
-	Sun, 15 Feb 2026 23:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CB2C4CEF7;
-	Sun, 15 Feb 2026 23:47:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3175D4163F;
+	Sun, 15 Feb 2026 23:45:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DB3C4CEF7;
+	Sun, 15 Feb 2026 23:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199225;
-	bh=LfEJY7xsVq6LTYvFdGhIx9M30ktfxy1WzlpEoNzCFmo=;
+	s=k20201202; t=1771199111;
+	bh=FcDAFyIoSJaDhVyJTabIlJqI1bmrr6zZRJxwKKNDg40=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NCQzTIxhjQC5qtGYKhlogOzFs6mSy7j5BfyQbmkW6bZ23Nm01v0Gx4eL2MqdT9mEJ
-	 QdzoM0JbRegOH/Ds6ZhUpdUVZB6AMdNKgtKyYw2hMZOszucxe/+tijwhOYT6gRi8rm
-	 fBpRc/9Lwy+glV/7XYJmQ2FfdzUqBsVUr3z1drCq+1QHZpRsFCJ+WUQ4BW+CZn4Z2C
-	 vmf3SHyaCJXEWX/5+1ECHdQFc9VwRi0Fju6XaW0JjQXYjxAW1KmkaiL/DmMOchtXU8
-	 zLufISjSFwQ54mlErZmQlKjOGyjxh+RISdZEs5tyglr1lkDFGqc3QM0ZfQ3pmPs1tu
-	 yFUSmC5OXS+LQ==
+	b=soe8zXn679EKVPAfQOboI9UKqjiwgKHFnpwMsPiql3Z0Cp4uolzIcGA63n0dWlUni
+	 v+qPLX6rDHuSPYzKLN3fyKIJ84tjBld/cc7zxKlQUZnBU1YaAWfU6xW21PSXjNEkWR
+	 PKyKHPwVvd3aL/KN+5GzarN2RqK8ZMDL9L/O7E/AJywo2HxXD4veGhulcUU7kSE7HQ
+	 Jj2dLopuXrIhd/VpyZSA3vPRx3z817oU/sYeLCUI4MNX1jZtVq5TU1FV1zTOmFPYUX
+	 EdF6XVVdzjSZ98ZZZvysqIfKodNx5FnnQ3YSREKCwLDg85oSBi9HbX8aViHSXnszbH
+	 IaTsNTXXn5TvA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:34:54 +0100
-Subject: [PATCH 07/79] block: rust: allow `hrtimer::Timer` in `RequestData`
+Date: Mon, 16 Feb 2026 00:35:05 +0100
+Subject: [PATCH 18/79] block: rust: add Request::sectors() method
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-7-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-18-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8261; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=LfEJY7xsVq6LTYvFdGhIx9M30ktfxy1WzlpEoNzCFmo=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgisv81RN4Rm6WZCUvmCKYbNqWj7DW/uhMxn
- ihoGWWE2gyJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYIgAKCRDhuBo+eShj
- d984D/9kempnq428rshpY56BpINqqSCTNKH2DMV2IZPnlP7E8eGvuqDq20+uXKTtiBOUU1UDJS9
- JsyksU6I4yySv9J8SCUa4V6Z3aEqSUwPDxhD//UgNKGzQ0nJ8Nhr7YjUaKg9nOMoe4wfYPhfoAH
- Y2/NRUUqy6aAlu1VgvQll0qkhpALuIbBF8agrW0CVP43NT1/X5hd840ZN9UbwEOnpjq6XntjVPG
- HXfqrq2dmYoSJtM8D4izvHgRbFw7AAcaf7ksJMkv7W3NcJ1i+5wVzXQbN8LSlLPPsK6p+scfu09
- OOO6mbSb7svIwlTd0j6kzyvcQQD1W+2D5mzqkcMvrl5SmMm5Bbb20sKohnYN3HnEiWB9liR5y0C
- lgrpPV817hFLl/xMt03VZktA/OfPo1ogf5NKKE9UsE70O19LTrC+6HGWrsV69NoTbiF1z/WVVI3
- A9jyXz1+RLxDfh7VuPW4PDb1c+/7qMOPklDfodVuMsi8UZCJjukk0Fsv7Kk21o89swP3EnJV3Gk
- twUkStoY4jMiJsePabJxYMkArymNF9Ua0rdt3ttxnpk681zxO/q1DvWpqvCRM+MKurGYa4vU3HK
- ILN/d57ssX56jNN6powR5bD20xHEC+C+GkWC+Cn86ABJhRTNq03AHi0RzFkChYFTQwqF95esHrQ
- Ab0LbB319eKwJlw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=982; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=FcDAFyIoSJaDhVyJTabIlJqI1bmrr6zZRJxwKKNDg40=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgsVbgdhxlxk0yDLpeTpv4EyLGu60tCgyVLJ
+ RCBjzOxsoaJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYLAAKCRDhuBo+eShj
+ d1DgD/9LxN6RNRd1ZiyiLppcowV7i8sFKLIcLYPN0DyIf83awn5nqKner8IfCM070jzWJD+F3ET
+ /AOVeXvIlsEuWxVewLuBSAOVLqSD79pFy2WwJHGIHxqDhnnI274ky8vEQ5PtuGDsdX+2luQPsB1
+ vlVkNT6W7n2PShGMSGwr79Zo/wOpki+BvZWcdSR8lCaZcx0NyRkfTXasZ+e92N+p4yAlKGBzU62
+ Od2r7Y5Cb9sEX6gL9LYCfryExzrBI0dthwX/SFDoginP1MTOv6l5kaVZprm8rAdZK8iILchC6kE
+ QuJQLLEQr57MHeJ7pya234ViDpfixkQxKx7TQOp3mF7EjuyrD8x0P7aUMZVraD4F9uKI37DgRr8
+ pqxz6cwV4s2QFOUj2+Ta1GhAXIJvFG7WbDrLLftihFJmFyqP8EsVODQHnRkEuLtsnMvo1B2qTRO
+ PXAlfOVUuLOyq2gWoUZIzIYmHy7x0hXnK3h7UFiWI+BqkOHk5LHzh9EHf/UVKGdOeA5k3pvkoNr
+ cPHV/K2fn9jhs7Co1fIZ5S3N/Z8/4UDU2gHnSR+Z8aWs6UbdQEwbpgja+WzVrNfWNRqKhc5XRD/
+ wsHSZPMm4RR0SQdt/bjiCyqE7epA/R2/icuO7IxzjriDu/XqtzVVojq9x/qe+m3sv3nTHrnmQga
+ BCRJn7OhpUjcHTQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: zcunbh5oczks7ga99pd1cre3g4qbgsiq
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rai11779amcfsnmsxouentza1cp5zwq6
+X-Rspamd-Queue-Id: E99D81A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 892E71C0004
-X-HE-Tag: 1771199226-536156
-X-HE-Meta: U2FsdGVkX19orlLwvHrYUacYv11nla8szQcqg5Bp06jPdR+rLPjVMzfDAPek3J23FwAkjjGGWE1v6Tz1Kfb5u0vlaLSdKN3N7BHYd3WOPfbC8YO55QIhxLjqf+9oHz6zZnzKAbAPG2G+q11VRM+xpogfgFSPkXPrHo0hlykCvcew381Z/rOH4R6wMU7mhTcwf/EV5gxAzM6q5fHhNIak16jDlDmcSLxH3gR+GYIOdEmZMnRrKzPPcyk23euseG1tUXeD4A7ASREEAWmIH/zBgJv0nSIGeiQUdhCz0PlUIRIUQhvLxCywL3MVu+pxGzz2WwqJiAmby6XbXiBui6jm6Pd/2xmnE2ZmqTtOu10BKmzrfahS4VbKglrmfevgehkGoMkivSjCTgK3+aHrMfObsFUJY5ha1ERuF1F6pmlwobGbzxPEtYNcFDavEjXpH3GuRvv5ZxO3RegjCN9AFiCvQKyqToiEeyk2df0AP83DdEE2I/kHCJHnjWQZ/4txRdWTPsGhwzzRfr6yi9zOqyu3o/xG/ZKj06/TSVPQePd7OAKig+onkMppUnWM70Y7S66vdbW8sTWlL7FTSN4Mia77I3VjUwDGd/ubuk6RGHfIGCfsdwVmvTPzsWs0PZdsPWvIisuJtfAtZRrTjiRbNYCp0CECkFa/RgJ3IK/9hzR8YHaad8/WO2th4BNDQC5MUEYirEYXW3FyeILU0guiOaDsJsUMj/ZDgKZ6gE9qlT1r58wrd5tf2qetLyZYYK2Yi1dS77FebVBoY0SPx3V7Xh3WF3mhlULij8HDNvUxUNCVGL+tHa0RRIO4w4kYr2DDuOLZZ3kMjyPeKXuQB7nJ2hcZpPZB8lEs5Z2Ez/XBg/2t3y522dR8EmtGlRwD6OGQEz4x+XIi6QNby1msuEmD431KXcLo1HZuiwUK3UObl1Q+yfTif5P4TQcQR2cCP/Hcn4XAnVMumThEzBlv6cbgvui
- PJdk3PEi
- Ckydi2l1/Fw4rWn5sJWGxAb39POhU6smQPtMb5b4+2ynHHibyZ987+t4e50QgNRiBnQOIqbPBjC7QJgXt6arO1aqqQCZU6hoNy/JzcUe60eCeKVpm2jjI+k3AqZISgBDNSlEY3WLGlfzTgPfgUShF+DK0zSybn9GWqufx+KD9p2/VUDlCiTAuBlMfynYsXoUDmymEYFCCRwqFNkhwYFhmtcQBJAlQchvClNorfBXgQgnB9bBU7C5mpz18wXvxS6pau34QC39+GPLRBPPFxmKutyy0o5jCXRLNTP0mOBE6FioR9UloBfWuvaCD3BLELGM3lCk5
+X-HE-Tag: 1771199111-304922
+X-HE-Meta: U2FsdGVkX1+dL78K3V2YGBjvvgrqgw3Q7b8ZnPQdBuGqHubLAzvt9Zf8pFy25ac9Ji1oLUIpOIPDaDVcoz8ESfz5MiNL2C+bS3ps4D8mcBz/eDM9W91e47WxOmBpy2WI6A/hRZNLGPLcMHIBpCl6JzxwgZW/y1a/YxCOScSwX755tygSeb/MpDUy89t63ltlGVRSAYjfEXAceVP8tQX/GyDreHFMeZo105AtHSiQeHTEn3xh8vu4aur8832u9GgtdJFtztD+++ov8MLojPmkGVC+e3skHCorEsjpHrb9RrATjiSwWE+qVnqwOK1IHcoBHJC0alG2eUeAVqoZQwg6ExNs9Cck46br7YIL7wXsvHHfNgjld/Dsv8f4YTh7Bc0Z309LY0T2qdSzRgMuO/iZEKUlEJApCD6bwqpcjY1RZteVCixhei1zYghDFLZIxZAxJLyzsRPqQIsYo2qNlK10U2xC1cblNk9qO9fvI9MTOv9pG0S3CnhaIyjOCglgwEf/fGsw5IXVEtXqy/kQwRUQRf3YPSMs4m3vsuafNiZluFLi7nuDxbNIxm3t/qc0g+OydW+i1kvF24ZDREeWElTuXngvf/lF76o6Tm2H1kYQJDn8FMkbZo2eJvxMcb3TZuPSFdkg1mlPLQ+SLxq3fNGMYPuJr07Owg6atatBDlo8VkyiPkNDOXxRfqgd6rOFuNN640nlgS5Mi7aMoRxl5UCm3BvjYVnB9O5PNCxcs0VZqM7MdnGt3kSo7l6MrnTAa6dt1Hlq20vU7279SoVUk1L4sdUu+76g7DMXD7POqI48MP2gEQqXgEP0t7rCP9rB+qAJGpHymRY7ZBfqetkpgFtkibPHwUIpgsrYP+zdMuLZvsAUyujOQyEhXlkoaRPc2B7TB0ky7qzoBj91HGa04LkkrhIFfxlJksd/aiI9iYeifWE/x/VxaeiBLyDvG6j09fjem0KsnLNb9YXV1a8zMPi
+ +0CLngMJ
+ lv+6iG0CyRKxIKVT6pK9jyJ1+M+23q8oGOSsKCc7Jyo+tvz3HBgiQg6VwHKV4ueoQGzr1BFogm/++km0xx2thh3XIeVd0aWiV5x/MjsMg5z2jWyW8EfFflOotRd93Qsi7y9MQ7uMjQjXZd6RLQaaHXayGo+ryEZJtKl6uiRED22cxr54aZ8/mZXOE5Ulnv5K9YZRCD7YGpJcEO2IRzaKKVGk0q2Ycce10RkNcvJDy1JucN7GgGEz09cFChKf/9Iytq+20NbcW1JNPn6w9Az8ly42iMzy/iCK1hn3Vdchexg7onMwuuQ7DbiNHPU8fj619Qx1H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,217 +121,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-`Request` is essentially a smart pointer that derefs to
-`Operations::RequestData`. To use an `HrTimer` in `Operations::RequestData`
-via the `Request` pointer, we must implement `HrTimerPointer` for
-`Request`.
-
-Thus, implement `HrTimerPointer` and friends for `ARef<Request>`.
-
-Publicly export `HrTimer::raw_cancel` and `HrTimer::into_c`.
+Add a new method to get the size of a request in number of sectors.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq.rs         |   1 +
- rust/kernel/block/mq/request.rs | 138 +++++++++++++++++++++++++++++++++++++++-
- rust/kernel/time/hrtimer.rs     |   5 +-
- 3 files changed, 141 insertions(+), 3 deletions(-)
+ rust/kernel/block/mq/request.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index a285b753ada88..cedaf85ba0b1d 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -108,4 +108,5 @@
- 
- pub use operations::Operations;
- pub use request::Request;
-+pub use request::RequestTimerHandle;
- pub use tag_set::TagSet;
 diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index 8a6c29ac627ee..f270060be27eb 100644
+index 0dd329ae93dfc..9d11ae5651983 100644
 --- a/rust/kernel/block/mq/request.rs
 +++ b/rust/kernel/block/mq/request.rs
-@@ -12,9 +12,12 @@
-         atomic::ordering,
-         Refcount,
-     },
-+    time::hrtimer::{
-+        HasHrTimer, HrTimer, HrTimerCallback, HrTimerHandle, HrTimerMode, HrTimerPointer,
-+    },
-     types::{Opaque, Ownable, OwnableRefCounted, Owned},
- };
--use core::{marker::PhantomData, ptr::NonNull};
-+use core::{ffi::c_void, marker::PhantomData, ptr::NonNull};
- 
- /// A wrapper around a blk-mq [`struct request`]. This represents an IO request.
- ///
-@@ -116,6 +119,11 @@ pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper<T> {
-         // valid as a shared reference.
-         unsafe { Self::wrapper_ptr(core::ptr::from_ref(self).cast_mut()).as_ref() }
+@@ -144,6 +144,13 @@ pub fn sector(&self) -> usize {
+         unsafe { (*self.0.get()).__sector as usize }
      }
-+
-+    /// Return a reference to the per-request data associated with this request.
-+    pub fn data_ref(&self) -> &T::RequestData {
-+        &self.wrapper_ref().data
-+    }
- }
  
- /// A wrapper around data stored in the private area of the C [`struct request`].
-@@ -300,3 +308,131 @@ fn into_shared(this: Owned<Self>) -> ARef<Self> {
-         unsafe { ARef::from_raw(Owned::into_raw(this)) }
-     }
- }
-+
-+/// A handle for a timer that is embedded in a [`Request`] private data area.
-+pub struct RequestTimerHandle<T>
-+where
-+    T: Operations,
-+    T::RequestData: HasHrTimer<T::RequestData>,
-+{
-+    inner: ARef<Request<T>>,
-+}
-+
-+// SAFETY: The drop implementation of `RequestTimerHandle` calls `cancel`, which cancels the timer
-+// if it is running. `drop` will block if the timer handler is running. This is ensured via a call
-+// to `HrTimer::raw_cancel` in the implementation of `cancel`.
-+unsafe impl<T> HrTimerHandle for RequestTimerHandle<T>
-+where
-+    T: Operations,
-+    T::RequestData: HasHrTimer<T::RequestData>,
-+{
-+    fn cancel(&mut self) -> bool {
-+        let request_data_ptr = &self.inner.wrapper_ref().data as *const T::RequestData;
-+
-+        // SAFETY: As we obtained `self_ptr` from a valid reference above, it
-+        // must point to a valid `U`.
-+        let timer_ptr = unsafe {
-+            <T::RequestData as HasHrTimer<T::RequestData>>::raw_get_timer(request_data_ptr)
-+        };
-+
-+        // SAFETY: As `timer_ptr` points into `U` and `U` is valid, `timer_ptr`
-+        // must point to a valid `HrTimer` instance.
-+        unsafe { HrTimer::<T::RequestData>::raw_cancel(timer_ptr) }
++    /// Get the size of the request in number of sectors.
++    #[inline(always)]
++    pub fn sectors(&self) -> usize {
++        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
++        (unsafe { (*self.0.get()).__data_len as usize }) >> crate::block::SECTOR_SHIFT
 +    }
-+}
 +
-+impl<T> RequestTimerHandle<T>
-+where
-+    T: Operations,
-+    T::RequestData: HasHrTimer<T::RequestData>,
-+{
-+    /// Drop the timer handle without cancelling the timer.
-+    ///
-+    /// This is safe because dropping the last [`ARef<Request>`] does not drop the [`Request`].
-+    pub fn dismiss(mut self) {
-+        let inner = core::ptr::from_mut(&mut self.inner);
-+
-+        // SAFETY: `inner` is valid for reads and writes, is properly aligned and nonnull. We have
-+        // exclusive access to `inner` and we do not access `inner` after this call.
-+        unsafe { core::ptr::drop_in_place(inner) };
-+        core::mem::forget(self);
-+    }
-+}
-+
-+impl<T> Drop for RequestTimerHandle<T>
-+where
-+    T: Operations,
-+    T::RequestData: HasHrTimer<T::RequestData>,
-+{
-+    fn drop(&mut self) {
-+        self.cancel();
-+    }
-+}
-+
-+impl<T> HrTimerPointer for ARef<Request<T>>
-+where
-+    T: Operations,
-+    T::RequestData: HasHrTimer<T::RequestData>,
-+    T::RequestData: Sync,
-+{
-+    type TimerMode = <T::RequestData as HasHrTimer<T::RequestData>>::TimerMode;
-+    type TimerHandle = RequestTimerHandle<T>;
-+
-+    fn start(self, expires: <Self::TimerMode as HrTimerMode>::Expires) -> RequestTimerHandle<T> {
-+        let pdu_ptr = self.data_ref() as *const T::RequestData;
-+
-+        // SAFETY: `pdu_pointer` is coerced from a live reference to a `T` and this points to a
-+        // valid `T`. The reference is valid until `T` is dropped, and the timer will be canceled
-+        // before this.
-+        unsafe { T::RequestData::start(pdu_ptr, expires) };
-+
-+        RequestTimerHandle { inner: self }
-+    }
-+}
-+
-+impl<T> kernel::time::hrtimer::RawHrTimerCallback for ARef<Request<T>>
-+where
-+    T: Operations,
-+    T::RequestData: HasHrTimer<T::RequestData>,
-+    T::RequestData: for<'a> HrTimerCallback<Pointer<'a> = ARef<Request<T>>>,
-+    T::RequestData: Sync,
-+{
-+    type CallbackTarget<'a> = Self;
-+
-+    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
-+        // `HrTimer` is `repr(transparent)`
-+        let timer_ptr = ptr.cast::<kernel::time::hrtimer::HrTimer<T::RequestData>>();
-+
-+        // SAFETY: By C API contract `ptr` is the pointer we passed when
-+        // enqueuing the timer, so it is a `HrTimer<T::RequestData>` embedded in a `T::RequestData`
-+        let request_data_ptr = unsafe { T::RequestData::timer_container_of(timer_ptr) };
-+
-+        let offset = core::mem::offset_of!(RequestDataWrapper<T>, data);
-+
-+        // SAFETY: This sub stays within the `bindings::request` allocation and does not wrap.
-+        let pdu_ptr = unsafe {
-+            request_data_ptr
-+                .cast::<u8>()
-+                .sub(offset)
-+                .cast::<RequestDataWrapper<T>>()
-+        };
-+
-+        // SAFETY: This request pointer was passed to us by the kernel in `init_request_callback`.
-+        let request_ptr = unsafe { bindings::blk_mq_rq_from_pdu(pdu_ptr.cast::<c_void>()) };
-+
-+        // SAFETY: By C API contract, we have ownership of the request.
-+        let request_ref = unsafe { &*(request_ptr as *const Request<T>) };
-+
-+        request_ref.inc_ref();
-+        // SAFETY: We just incremented the refcount above.
-+        let aref: ARef<Request<T>> = unsafe { ARef::from_raw(NonNull::from(request_ref)) };
-+
-+        // SAFETY:
-+        // - By C API contract `timer_ptr` is the pointer that we passed when queuing the timer, so
-+        //   it is a valid pointer to a `HrTimer<T>` embedded in a `T`.
-+        // - We are within `RawHrTimerCallback::run`
-+        let context = unsafe { kernel::time::hrtimer::HrTimerCallbackContext::from_raw(timer_ptr) };
-+
-+        T::RequestData::run(aref, context).into_c()
-+    }
-+}
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index b2272b059e504..0512a8dfee82a 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -160,7 +160,7 @@ unsafe fn raw_get(this: *const Self) -> *mut bindings::hrtimer {
-     /// # Safety
+     /// Return a pointer to the [`RequestDataWrapper`] stored in the private area
+     /// of the request structure.
      ///
-     /// `this` must point to a valid `Self`.
--    pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
-+    pub unsafe fn raw_cancel(this: *const Self) -> bool {
-         // SAFETY: `this` points to an allocation of at least `HrTimer` size.
-         let c_timer_ptr = unsafe { HrTimer::raw_get(this) };
- 
-@@ -514,7 +514,8 @@ pub enum HrTimerRestart {
- }
- 
- impl HrTimerRestart {
--    fn into_c(self) -> bindings::hrtimer_restart {
-+    /// Convert `self` into an integer for FFI use.
-+    pub fn into_c(self) -> bindings::hrtimer_restart {
-         self as bindings::hrtimer_restart
-     }
- }
 
 -- 
 2.51.2
