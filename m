@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35454E63F2A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD86E63F2A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:17:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFE486B00D9; Sun, 15 Feb 2026 18:53:16 -0500 (EST)
+	id DACB76B00B5; Sun, 15 Feb 2026 18:45:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1A46B00F7; Sun, 15 Feb 2026 18:53:16 -0500 (EST)
+	id D8E4F6B00CA; Sun, 15 Feb 2026 18:45:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD3D76B00DB; Sun, 15 Feb 2026 18:53:16 -0500 (EST)
+	id C843A6B00D0; Sun, 15 Feb 2026 18:45:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with SMTP id 320B06B010A
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:52:47 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4BF1D5B7E4
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:34 +0000 (UTC)
-X-FDA: 84448320348.05.A888C36
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E9ED6B00B5
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:44:22 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13D12C346D
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:19 +0000 (UTC)
+X-FDA: 84448322238.15.5D6C809
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8DF82100003
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:43:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=npESETd7;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 59809180006
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hVURXEpM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199012;
+	s=arc-20220608; t=1771199057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSa3Qp3h4GpfJssObyb+iXL632jeoKz03w86QUYkwNM=;
-	b=fRkHS83vDbjR/oHSdZAWiG387ETn9lmLeMnzO0tJAR2jIBZlRnuYF+085k05vWoZCwoDMm
-	K6HQJvLjMAY24D5ReU49q2I4nqG77qVbM21n7g13YYafTBkb+x5ccNT2d2DfIibI2MTF+e
-	3V/xBwEf/nRwBZAIRv90NBiGPPdjOAc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=npESETd7;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199012; a=rsa-sha256;
+	bh=qgc67zui6iwY6738HCCeY8wNZsf03NVd1InEV03rSd4=;
+	b=YQCz61WwDGTaSj6O/LA1LK/KItjDCKiSQB3+ZOyJAZtkC00yYWiktpvrZrzzKkHEsfrevh
+	BkmUdpzETRn2UAxp7p67uvqh0HzWEV8V/MAXQY7JvCOUX1efYgqMNuYHBjuve2c6r8xSES
+	orP4p1VBqP14ywqjcd1WVxzS7lwH0uk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199057; a=rsa-sha256;
 	cv=none;
-	b=furd0uP1D8bWadAgwUeFk9U0uCMljVrgCwdCZZYHwHgYxzA/bIKIdp7ewM8f5ktt3bgUNW
-	fphXuN0cA2QIqhVz9m+GATWTX+01VD3aHCX3aLSxLaPKw5dzTbnISNLfxAD0mh6fc+n3DJ
-	GK5Us6rRDQiKWmkrlcUwTjA+GcgYWPI=
+	b=XY3C1k751RiFFvMWWyxPyWseGutGzwza7hbmrTJZFgTOmxvf0XeBNWmpfjAHjva77yXawB
+	gZEGfc3NakIXFDpLnxJI15tkGLOPidcYxDC1CTKYs6OOqM7OeZDrkYEcq1e/aTffbjQ0Zv
+	CwuCG79v5Y0tumtc0UEd+4woaJdN4bo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hVURXEpM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB3606013F;
-	Sun, 15 Feb 2026 23:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64296C4CEF7;
-	Sun, 15 Feb 2026 23:43:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E301D6013E;
+	Sun, 15 Feb 2026 23:44:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E680C4CEF7;
+	Sun, 15 Feb 2026 23:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199011;
-	bh=jfRXWUNk+a84/VFBlikmsBdhxWC79AwOFf4nhCfPiOU=;
+	s=k20201202; t=1771199056;
+	bh=xsuee6tClF6ul/R2hOJJBKg96Kg6jLAUBRXV2md3X00=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=npESETd7O67DGpYTFb+rL0kbo7BEENUW+9w/BOwekeMkm/SeaN6IXItm7GNjmx7rU
-	 T+3+UMgYxtJ6Rc7gv2A+jVkgv6e6hrVbz+2aJIMwNokUqC9WoBl8QES1BFWRNYiZPe
-	 sCQ5QCeBYNoiq+3cgbcdrRkavuzL0Yg91OOukbFMeMV/r+0yGvOYYTCV4d32QRLqhg
-	 XlvU+Q/ghPOi5IHqTMauyeIjpD6gc39IC0A4SalYLvUKpoDxAshOY/pyVCiVYhLKWo
-	 xjV07/Ips5/X4yaVzMRaQ5AXPPClGjxRniU5UqIoU3HPwLow4i6Nvi97fuGNWgHVP3
-	 4VxaEdCNrJt7w==
+	b=hVURXEpMGTCXVTv4Qbca31zfmkrG1iMKdGHLBXWlmZn0eELWfU2kmGrJxfn7LmVs3
+	 dhJZGDMrOPlnWyoGb87RZapywHqdffeccBVFLRyjYT2OybgqJ5pKrPOCIKbp566yk2
+	 7XdTsdcCyJWN0BVB9KdLVAVjSTZyjIl8cFYUVKwtEwngqWYQrdgehuhgfUcYARzeuX
+	 azF40DpUsFPaDDLvntX8NfM9EHqHn2Y9+sA7We7+90WcaxBfriS7mawIdjp6sepSIk
+	 tF45wFln9tbI0fVOh9AGTrGRDlJbLPZp541Ymdbqi03FI7swQ1ZuCeaeWCj0DTOdSl
+	 cpV7xkZPj90bg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:46 +0100
-Subject: [PATCH 59/79] block: rnull: add fua support
+Date: Mon, 16 Feb 2026 00:35:56 +0100
+Subject: [PATCH 69/79] block: rust: add `TagSet::tag_to_rq`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-59-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-69-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9832; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=jfRXWUNk+a84/VFBlikmsBdhxWC79AwOFf4nhCfPiOU=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhQw8ujMRzJ2p7zri55eyF3Vun8A9xlTHqMH
- W4XsuY97jKJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYUAAKCRDhuBo+eShj
- dwRcD/96n9UXQln5dGJXotiIswWxCKKyjRXNXiBY86eVdj6gn4Xiy5I01AeeK36jbyoEBeL9QFN
- flAgUj2rf5gSBGnHBJQQ7J5hfKiTja+/SYdAmNHbBP8PRyPg9/ObY9yw6bNkWQGCKInATEZ65NW
- arfHYoM7gbAQ18Sf8nGSraizH2JsSShewdCNu/gcepSwAK9WdjfNx3WoIpRysBfFmkVFDZZzo+L
- 2ShgSOQcbYl8lrZSlLOyLD82C3YV87MRnmUJHYr3JYFLOkd34XJ3vWUlikUF8UnkbUR1040gaXR
- tkgKJFbJHn4h5Sp28jW4Ee7AD5Av6dkdpG3FuULVw7QzGlFbOVmyiTYM4zNStl931JtvlyxrWny
- eh0LFTcHlHuzmtcfzZ7Ii3XjbnJ00U0TBwilbM3bLQZUkS5K0WmPJ4cthZcnpPbZJXDOhePWXMz
- nX+R3tST92NvHt/AFcRLFWVjo0HXZYKhDMtDvPNVReDSEDLA6JivAlYbxeqWELq5xXocWusfDKt
- 6fLfNGWrW6IYdR6XHP1CXJ5G9z/0ubrFHudCn+i0+YOzLfOLcpE9c2AhpRlsEVXkKEJdyL1Bhq4
- D0JonGantAlFjNUmhkILwWwqz3cmiB/hp5YKE2FGwvMwrDOwA+OUNK8xWL7UPZ0AH9iv3TtUrVN
- saiqiguw56uGiwQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4873; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=xsuee6tClF6ul/R2hOJJBKg96Kg6jLAUBRXV2md3X00=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklha+tACecSgfGcA74oxyxwExIZbOFlH6RcN8
+ vImZ0IJU9WJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYWgAKCRDhuBo+eShj
+ d0inD/4kp0vvFFgboOoTGJtTryqDsVSVhkR4f4NyCAQSJe4Mv0PHDrewUkhuP7ETdRCQxOscW0p
+ 4bb/kt7j8g0NZ92mou8bo7g/hxtvcmOVweBwHlcuFJFsDAN4bSjtZyWsCLD9HB+7Q5RX7ULYHMG
+ 8oSrX89dqRNl3Lqg4HyVAbCASaeCkEsggONxCzQYGHxXKUCpJpPJhguYEFvqtasXM0WQvAEnd1y
+ AF2Z4+u3LNrFW0t6BiwSKEz4Jonru68Kh0/PnrGRfu1OIj/d5at0S6ITzVNyNi0i/eEYpw3W3rC
+ ePSEanV2UQCB7nQCiPlASeK4kdrKSsAF8ACEvO5KzIMLKSLBuAX30N925EkU9Dn5fVNtSbgtCHr
+ 8LTLhFp+kUDKn7J8kPbIiqesdRdONnb2n+cHp/fFLn/5sWUJMbSgLC4teV8eFiECYKyMCElw2wn
+ Fx03k/syqs9gj/z1XxuCOWxn6cqdgUoNPU0t1HSR1+VIUBC7ccTbSnRYTF7FC1v1WeAszR08AVc
+ JR3WcUk6WcunP7n9tFmA0uKDOU7POL53QK3WXt+i6ca68WOWRtQZco4AGPNdPoSoZORROiYbzd0
+ d9C/ihn4wMeheqaU7IMEEGycGw71PxbdX/wmWdZDmCbnQ7LYBXlU9D1BRYjbIOh1m0bZdbtbrst
+ +cDXK7WthYA8csA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6io4nutcdyf6wx3pk4j73xh66gzjssen
-X-Rspamd-Queue-Id: 8DF82100003
+X-Rspamd-Queue-Id: 59809180006
+X-Stat-Signature: csetjjqomni3dri538gtmm3nkcnsjufc
 X-Rspam-User: 
-X-HE-Tag: 1771199012-694629
-X-HE-Meta: U2FsdGVkX184UIu8U2txbaC8vWzXwPiETCiSgcxRXPfmKGYpptE9KXeCCLZRLDGUA1JAtOtThA0sW7R7t696wydqxCWhwFWwmm6TSc7BnIeXm3G+XjdubBZASqOJG0KiZB57gGv+KQ5lsYsg0N5Dw1Kapj4wCy80yTIAlXmOpyyHfIveO/XuUMu8rofGHnegAmIagpwwFBXSoUI2cXqBRgCVYDYWpTBayVJg6GVgcjVtFQolcdrNf6n9pwosGTcwx8tv8yTzuHoQLzNp4vd4QH2VlYw1zNcMjLesVlDZQCAfoax7FJAMj1fNpddWmWlX8jwJXe2IqxftcdxnHm/+fggvwL9LHMctbh3DdJdgjGrX84wkxG4OYTmiDBDjUr9eWlS0agCd/+J4+JTS9T59rFPSZ5+RAUVfuErNievTIRHyl1wtMeQYcSkCfe18YWu28i82wPbYwfgQJ3UjvWOvi9ewO1ea00siOgHHi1N0ldjkfQaBClje2d6tsbgjfox2bxp3gE+6buJ8TiJt3mgq7daqx0yjGZtnMDfKEmveQIyvYCIcMAuuSO0bGkngSV1evL9OEG4L3Y3S4smzh9xWciWjiCIDz6YyPRqsRrHyAF+fpqOdjSqQeu/rMFa5sC8uxn/Sw7QJxCD6sj7ZMTMimUE3TSWka0nY5fRMHveEDSd6ONMGS4mlt0OhJe+Up9yFU3cavsfEh0GXt+cHcfULzXvK/p7by0rx8jBMVKFiJf6wknEUyDfYL1aY/qL8sSuMejWIaF0xBNGnEl0FUOsXQ2ndo64IlKdOQ7YYgBlfyWEQipP9AMn9xqIwHjRnCxEpMUzOHEMkmnwZwy83VXPpf+lqpPmUxbXbwpKsQCJjIhWhfw2BepseITQzILceT/Pqny4qGlG8EnYxCB1Cg3/om4parZ2wQv666WNYYuTfOylpq9lUVWQeuG4ORQYNMe8rqBCl12sSj9wk0mB+lpi
- 4mjRKE2H
- M1rIaVuMM0jdtQM2yPLpCJSwvYX/MYLh4qQn2TWffclm5Yie5Aix55mL0J4x08FV/oJqdhLZXFDSYkd9hOyUwgfl7scXTR5NL0f+JaZcjYYuT464ZwptEJjkHyImaYJne36nQDf7G8bvv3OuKTdywplVOiAn/x6ssdkliBzGS2666nxuSKOcmIg+Z1SkAxs6lz3FYdEQme3rYfjgYZ1qQoiIAvbSUz1ION1P7azrve9Y1z5wN9ATQzkYmdbXrJ2ik+rgeiT1uFJK2RSTS/QWPCYX7gKYZwDVescCK3TX11Tncj3o+lBcjCCgXqoNCrdnqsKst
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1771199057-646366
+X-HE-Meta: U2FsdGVkX186RU14Y/ku9g0MIldLPBz/8ZcvRrKIwViXolLHKeCpSvu+he9njhd7Fc1bzYPkABNFeJiNoxg00N+3z9B37CI2celd0ZTLDGdxMNFMMXkWdxFQiB1j29QhdZQatq4s0MPN9fiJblpkFwMN+ulDRWZRhOrWtHC/mjpzYOdLvHGPq7u+XjEQTOnJmzCCTcuddfMMCQhDBCvZPy8OnWGLW0Fa+Tc9iaLREWD855XaDKzSaODeQqScVUWMcUNzFvYQXRlPcWqgLfd9IzuCvDlzR382p4YYUouxmEiKWpsJFTuMdhcVw+OV/mtqg7hHy4PxRX9EIhEfo55GyeJK3pj0eg+/6JDmTWvKrgR0He2l2YpAH9SJ87lQbqqwelij0dwlOvl20eXxyVKzXH27GBq+lW5u1pznskzfFjc9+WLfhNDnwhrLvQ4iuctTMvNzCEiYF1cOqW+MYSuk1zhxjm7Tz57VjIH6bOIuFP1L9LiAVXMe3fNSCpVvN8ZUBTmSFkkfCTwnSpnTtzXVj22tz/ehSW6U1KZHePHk8CuaNPhNxBLgMOH/N3KNYGviFRvYi42Go6GwhQyG+IZ5LCrRzcPFCTF61sUbbDZvmXospnqFHTP8lmxTgokzBZFmb8T6ve5o7hgaPBe49Uw3HcnUS7BfdpA69+qBzOeN3Y4NlbiwRn2ur4h1iTW1YqSV0A2fnX73AT7SwWd7GnBQ2GxaQEGcZe45FtUieTa7mGTc4OEoK7waQuXsoK57sovDzA+SpNLObuOGaVFJw7KuiXteOK4+holZ2EHZEeAdDeHZcfD2rq+anL4ZBnQYa5aMQCvOdTXV29DI9SZn0hpPXfWfearNBx79pNlGyyKjpX/AAxy58rUZNi2P8X0v5m5yF/Mr/WyOP3E0gM0T72ITlfyKiVDmHGcb0/j3tuNvJCyIVArj2VeJ008bsXc7pF6llPWuLyQzeXufsbt9CIO
+ LZcifbYX
+ T0hM1sKHghEbthwWsz2sQZpiyLnK36MR3EFiKpiVl1N+MEP7aoyjmud0K7Zp7BxnOEwyi2xJ6tskBQYYiQs0UwddxBhzG8IOcFlCEQE8M1gZkkIG+7AukbIm5hTFP9eS4PtpsCkUy/oocxan0WkBJ1FDYwaFUCe9rJseyrIOrTXKpJuhtYIPVh6Bxgxt0xz4FnQJEUlRwgaQe6YsxHpApyjb8pCRhIKwlccGSoGrH/cFlhPTeV+nGIcEhbhbAnswyiJuPbTVM4m5y2y6nL3/bjRCDNiQvBzobYNaGV+G522y1EGsxW6ozrvkU6gzxVawpr9isZwhNx0D4bxKzmEYzONzcZry8TYFX6vTcvsiFSxnIwHY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,255 +121,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add Forced Unit Access (FUA) support to rnull. When enabled via the `fua`
-configfs attribute, the driver advertises FUA capability and handles FUA
-requests by bypassing the volatile cache in the write path.
-
-FUA support requires memory backing and write cache to be enabled.
+Add a way for block device drivers to obtain a `Request` from a tag. This
+is backed by the C `blk_mq_tag_to_rq` but with added checks to ensure
+memory safety.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs          |  5 ++++
- drivers/block/rnull/disk_storage.rs      | 22 +++++++++++++---
- drivers/block/rnull/disk_storage/page.rs |  1 +
- drivers/block/rnull/rnull.rs             | 45 ++++++++++++++++++++++++--------
- 4 files changed, 58 insertions(+), 15 deletions(-)
+ rust/helpers/blk.c              |  6 ++++
+ rust/kernel/block/mq/tag_set.rs | 72 ++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 74 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index e134e21a6b564..816c057f130fc 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -118,6 +118,7 @@ fn make_group(
-                 zone_max_active: 25,
-                 zone_append_max_sectors: 26,
-                 poll_queues: 27,
-+                fua: 28,
-             ],
-         };
- 
-@@ -158,6 +159,7 @@ fn make_group(
-                     zone_max_active: 0,
-                     zone_append_max_sectors: u32::MAX,
-                     poll_queues: 0,
-+                    fua: true,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -234,6 +236,7 @@ struct DeviceConfigInner {
-     zone_max_active: u32,
-     zone_append_max_sectors: u32,
-     poll_queues: u32,
-+    fua: bool,
+diff --git a/rust/helpers/blk.c b/rust/helpers/blk.c
+index 0db567dfc5d53..bb77af6dca9c8 100644
+--- a/rust/helpers/blk.c
++++ b/rust/helpers/blk.c
+@@ -53,3 +53,9 @@ __rust_helper struct request *rust_helper_rq_list_peek(struct rq_list *rl)
+ {
+ 	return rq_list_peek(rl);
  }
- 
- #[vtable]
-@@ -285,6 +288,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 zone_max_active: guard.zone_max_active,
-                 zone_append_max_sectors: guard.zone_append_max_sectors,
-                 poll_queues: guard.poll_queues,
-+                forced_unit_access: guard.fua,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -527,3 +531,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-         }
-     }
- );
-+configfs_simple_bool_field!(DeviceConfig, 28, fua);
-diff --git a/drivers/block/rnull/disk_storage.rs b/drivers/block/rnull/disk_storage.rs
-index a613ed5223ba7..b2b5eaa783cdc 100644
---- a/drivers/block/rnull/disk_storage.rs
-+++ b/drivers/block/rnull/disk_storage.rs
-@@ -92,6 +92,10 @@ pub(crate) fn flush(&self, hw_data: &Pin<&SpinLock<HwQueueContext>>) -> Result {
-         let mut access = self.access(&mut tree_guard, &mut hw_data_guard, None);
-         access.flush()
-     }
 +
-+    pub(crate) fn cache_enabled(&self) -> bool {
-+        self.cache_size > 0
-+    }
- }
++__rust_helper struct request *
++rust_helper_blk_mq_tag_to_rq(struct blk_mq_tags *tags, unsigned int tag)
++{
++	return blk_mq_tag_to_rq(tags, tag);
++}
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index 47a162360e628..e7d7217da8922 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -5,12 +5,12 @@
+ //! C header: [`include/linux/blk-mq.h`](srctree/include/linux/blk-mq.h)
  
- pub(crate) struct DiskStorageAccess<'a, 'b, 'c> {
-@@ -190,7 +194,7 @@ fn flush(&mut self) -> Result {
-         Ok(())
-     }
- 
--    fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-+    fn get_or_alloc_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         let index = Self::to_index(sector);
- 
-         if self.cache_guard.contains_index(index) {
-@@ -215,6 +219,12 @@ fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         }
-     }
- 
-+    pub(crate) fn get_cache_page(&mut self, sector: u64) -> Option<&mut NullBlockPage> {
-+        let index = Self::to_index(sector);
-+
-+        self.cache_guard.get_mut(index)
-+    }
-+
-     fn get_disk_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         let index = Self::to_index(sector);
- 
-@@ -232,9 +242,13 @@ fn get_disk_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         Ok(page)
-     }
- 
--    pub(crate) fn get_write_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
--        let page = if self.disk_storage.cache_size > 0 {
--            self.get_cache_page(sector)?
-+    pub(crate) fn get_write_page(
-+        &mut self,
-+        sector: u64,
-+        bypass_cache: bool,
-+    ) -> Result<&mut NullBlockPage> {
-+        let page = if self.disk_storage.cache_size > 0 && !bypass_cache {
-+            self.get_or_alloc_cache_page(sector)?
-         } else {
-             self.get_disk_page(sector)?
-         };
-diff --git a/drivers/block/rnull/disk_storage/page.rs b/drivers/block/rnull/disk_storage/page.rs
-index a34fe0762724d..728073d5dd23d 100644
---- a/drivers/block/rnull/disk_storage/page.rs
-+++ b/drivers/block/rnull/disk_storage/page.rs
-@@ -14,6 +14,7 @@
-     uapi::PAGE_SECTORS, //
+ use crate::{
+-    bindings,
+     block::mq::{operations::OperationsVTable, request::RequestDataWrapper, Operations},
+     error::{self, Result},
+-    prelude::*,
+-    try_pin_init,
+-    types::{ForeignOwnable, Opaque},
++    pr_warn,
++    prelude::{ENOMEM, *},
++    sync::atomic::ordering,
++    types::{ARef, ForeignOwnable, Opaque},
  };
+ use core::{convert::TryInto, marker::PhantomData, pin::Pin};
+ use pin_init::{pin_data, pinned_drop, PinInit};
+@@ -19,6 +19,8 @@
+ pub use flags::Flag;
+ pub use flags::Flags;
  
-+// TODO: Use rust bitmap
- const _CHEKC_STATUS_WIDTH: () = build_assert!((PAGE_SIZE >> SECTOR_SHIFT) <= 64);
- 
- pub(crate) struct NullBlockPage {
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 4870aa3b7a53e..3b7edfe7efe44 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -193,6 +193,10 @@
-             default: 0,
-             description: "Number of IOPOLL submission queues.",
-         },
-+        fua: u8 {
-+            default: 1,
-+            description: "Enable/disable FUA support when cache_size is used. Default: 1 (true)",
-+        },
-     },
- }
- 
-@@ -250,6 +254,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     zone_max_active: *module_parameters::zone_max_active.value(),
-                     zone_append_max_sectors: *module_parameters::zone_append_max_sectors.value(),
-                     poll_queues: *module_parameters::poll_queues.value(),
-+                    forced_unit_access: *module_parameters::fua.value() != 0,
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -298,6 +303,7 @@ struct NullBlkOptions<'a> {
-     #[cfg_attr(not(CONFIG_BLK_DEV_ZONED), expect(unused_variables))]
-     zone_append_max_sectors: u32,
-     poll_queues: u32,
-+    forced_unit_access: bool,
- }
- 
- static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
-@@ -356,13 +362,11 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             zone_max_active,
-             zone_append_max_sectors,
-             poll_queues,
-+            forced_unit_access,
-         } = options;
- 
-         let mut flags = mq::tag_set::Flags::default();
- 
--        // TODO: lim.features |= BLK_FEAT_WRITE_CACHE;
--        // if (dev->fua)
--        // 	lim.features |= BLK_FEAT_FUA;
-         if blocking || memory_backed {
-             flags |= mq::tag_set::Flag::Blocking;
-         }
-@@ -404,9 +408,10 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
- 
-         let device_capacity_sectors = mib_to_sectors(device_capacity_mib);
- 
-+        let s = storage.clone();
-         let queue_data = Arc::try_pin_init(
-             try_pin_init!(Self {
--                storage,
-+                storage: s,
-                 irq_mode,
-                 completion_time,
-                 memory_backed,
-@@ -439,7 +444,9 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             .capacity_sectors(device_capacity_sectors)
-             .logical_block_size(block_size_bytes)?
-             .physical_block_size(block_size_bytes)?
--            .rotational(rotational);
-+            .rotational(rotational)
-+            .write_cache(storage.cache_enabled())
-+            .forced_unit_access(forced_unit_access && storage.cache_enabled());
- 
-         #[cfg(CONFIG_BLK_DEV_ZONED)]
-         {
-@@ -496,6 +503,7 @@ fn write<'a, 'b, 'c>(
-         hw_data_guard: &'b mut SpinLockGuard<'c, HwQueueContext>,
-         mut sector: u64,
-         mut segment: Segment<'_>,
-+        bypass_cache: bool,
-     ) -> Result {
-         let mut sheaf: Option<XArraySheaf<'_>> = None;
- 
-@@ -524,12 +532,21 @@ fn write<'a, 'b, 'c>(
- 
-             let mut access = self.storage.access(tree_guard, hw_data_guard, sheaf);
- 
--            let page = access.get_write_page(sector)?;
-+            if bypass_cache {
-+                if let Some(page) = access.get_cache_page(sector) {
-+                    page.set_free(sector);
-+                }
++use super::Request;
++
+ /// A wrapper for the C `struct blk_mq_tag_set`.
+ ///
+ /// `struct blk_mq_tag_set` contains a `struct list_head` and so must be pinned.
+@@ -166,6 +168,68 @@ pub fn data(&self) -> <T::TagSetData as ForeignOwnable>::Borrowed<'_> {
+         // converted back with `from_foreign` while `&self` is live.
+         unsafe { T::TagSetData::borrow(ptr) }
+     }
++
++    /// Obtain a shared reference to a request.
++    ///
++    /// This method will hang if the request is not owned by the driver, or if
++    /// the driver holds an [`Ownable<Request>`] reference to the request.
++    pub fn tag_to_rq(&self, qid: u32, tag: u32) -> Option<ARef<Request<T>>> {
++        if qid >= self.hw_queue_count() {
++            // TODO: Use pr_warn_once!
++            pr_warn!("Invalid queue id: {qid}\n");
++            return None;
++        }
++
++        // SAFETY: We checked that `qid` is within bounds.
++        let tags = unsafe { *(*self.inner.get()).tags.add(qid as usize) };
++
++        // SAFETY: We checked `qid` for overflow above, so `tags` is valid.
++        let rq_ptr = unsafe { bindings::blk_mq_tag_to_rq(tags, tag) };
++        if rq_ptr.is_null() {
++            None
++        } else {
++            // SAFETY: if `rq_ptr`is not null, it is a valid request pointer.
++            let refcount_ptr = unsafe {
++                RequestDataWrapper::refcount_ptr(
++                    Request::wrapper_ptr(rq_ptr.cast::<Request<T>>()).as_ptr(),
++                )
++            };
++
++            // SAFETY: The refcount was initialized in `init_request_callback` and is never
++            // referenced mutably.
++            let refcount_ref = unsafe { &*refcount_ptr };
++
++            let atomic_ref = refcount_ref.as_atomic();
++
++            // It is possible for an interrupt to arrive faster than the last
++            // change to the refcount, so retry if the refcount is not what we
++            // think it should be.
++            loop {
++                // Load acquire to sync with store release of `Owned<Request>`
++                // being destroyed (prevent mutable access overlapping shared
++                // access).
++                let prev = atomic_ref.load(ordering::Acquire);
++
++                if prev >= 1 {
++                    // Store relaxed as no other operations need to happen strictly
++                    // before or after the increment.
++                    match atomic_ref.cmpxchg(prev, prev + 1, ordering::Relaxed) {
++                        Ok(_) => break,
++                        // NOTE: We cannot use the load part of a failed cmpxchg as it is always
++                        // relaxed.
++                        Err(_) => continue,
++                    }
++                } else {
++                    // We are probably waiting to observe a refcount increment.
++                    core::hint::spin_loop();
++                    continue;
++                };
 +            }
 +
-+            let page = access.get_write_page(sector, bypass_cache)?;
-             page.set_occupied(sector);
-             let page_offset = (sector & u64::from(block::SECTOR_MASK)) << block::SECTOR_SHIFT;
++            // SAFETY: We checked above that `rq_ptr` is valid for use as an `ARef`.
++            Some(unsafe { Request::aref_from_raw(rq_ptr) })
++        }
++    }
+ }
  
--            sector += segment.copy_to_page(page.page_mut().get_pin_mut(), page_offset as usize)
--                as u64
-+            sector += segment.copy_to_page_limit(
-+                page.page_mut().get_pin_mut(),
-+                page_offset as usize,
-+                self.block_size_bytes.try_into()?,
-+            ) as u64
-                 >> block::SECTOR_SHIFT;
- 
-             sheaf = access.sheaf;
-@@ -588,6 +605,8 @@ fn transfer(
-         let mut hw_data_guard = hw_data.lock();
-         let mut tree_guard = self.storage.lock();
- 
-+        let skip_cache = rq.flags().contains(mq::RequestFlag::ForcedUnitAccess);
-+
-         for bio in rq.bio_iter_mut() {
-             let segment_iter = bio.segment_iter();
-             for segment in segment_iter {
-@@ -596,9 +615,13 @@ fn transfer(
-                     .len()
-                     .min((end_sector - sector) as u32 >> SECTOR_SHIFT);
-                 match command {
--                    mq::Command::Write => {
--                        self.write(&mut tree_guard, &mut hw_data_guard, sector, segment)?
--                    }
-+                    mq::Command::Write => self.write(
-+                        &mut tree_guard,
-+                        &mut hw_data_guard,
-+                        sector,
-+                        segment,
-+                        skip_cache,
-+                    )?,
-                     mq::Command::Read => {
-                         self.read(&mut tree_guard, &mut hw_data_guard, sector, segment)?
-                     }
+ #[pinned_drop]
 
 -- 
 2.51.2
