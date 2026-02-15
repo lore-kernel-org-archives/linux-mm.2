@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67366E63F2D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:10:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02715E63F25
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E41BF6B010F; Sun, 15 Feb 2026 18:57:17 -0500 (EST)
+	id EFE2E6B00E0; Sun, 15 Feb 2026 18:46:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E29786B011C; Sun, 15 Feb 2026 18:57:17 -0500 (EST)
+	id EB4AD6B00E5; Sun, 15 Feb 2026 18:46:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D59776B0123; Sun, 15 Feb 2026 18:57:17 -0500 (EST)
+	id DB7216B00E8; Sun, 15 Feb 2026 18:46:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CAB576B011C
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:56:16 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC462BA54C
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:13 +0000 (UTC)
-X-FDA: 84448327026.24.C6F1E8C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E5CC54000A
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cn925NUd;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 665BE6B00E0
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:46:49 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 745F05C50F
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:48 +0000 (UTC)
+X-FDA: 84448328496.03.71A4E1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C6067180009
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xex8n73Q;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199172;
+	s=arc-20220608; t=1771199206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PFoUshVV5PgxBr9gH69/fhJ7tjBJv/Jq4ZP1AY/KeSg=;
-	b=uuOVhLmWgz7t+TdLMISylWga9NoBvTjBUlfBRsIdwmTK2BAz/jTM47nOa60Pg+D2FZGaz5
-	86UOyOw1zeppW9QgiwJ9g6IM5hU0NSVSJs4LiFUEuyHsBUa+2mRjZc7scP3tgg3bFJ5x4L
-	7IZV8g0j+DgqLzg+q5pfCbHmAEpidls=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199172; a=rsa-sha256;
-	cv=none;
-	b=t/b9yXvAjkTd2Dha3bA6GnZMA26zZwDXqdWYWJOCbYGExcv6p9dZMiFZ4nOYwMoAhx+hfG
-	7hO6NSlOyvKlZEhQHAtisaLap7aTs8GZEdlbEy71v/NsTQkiWMNmDmAI9cX/sS071212Bb
-	qgU753hkdZ/w6kztcTb5Fi/Ugh9BIp4=
+	bh=PF28mz/EsjKVtQH72nbFcm0a4KvKu1gYkvLzsSRLOD4=;
+	b=FWq0JivVJJFVJZnDHPlfwEYtBL8dTlKYv6WPMJIp+mUJHD00zF8LNLrJiLiyBthRmNiPkm
+	O2PJfymv0ntT/yWg1WB/1OTXpXepslZPyI+S2/jKSvr7rqXSGd3GbZIAMVELavxZrN7BB9
+	qX6SUKOeuDOf63I7PGfKX/gckB2Ueio=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cn925NUd;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xex8n73Q;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199206; a=rsa-sha256;
+	cv=none;
+	b=zh5ae/hX7U7YtJSR0j8aWMzb9LDs7zORCJ4QnzAm5r//nJwJxONFq94Fy63zKTJZb9xxUI
+	MBXwVFETTsyCBKL2ADyZ5GT7OKIQIOVry3yFQ6jOy/J6pyKXmGc5CuH9zS8T5BIh0IfNyZ
+	5NEO7wn6bws3eEGn8dBLLCXUjJfQbYc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CE2943928;
-	Sun, 15 Feb 2026 23:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E806C4CEF7;
-	Sun, 15 Feb 2026 23:46:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5130B6013E;
+	Sun, 15 Feb 2026 23:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDD6C4CEF7;
+	Sun, 15 Feb 2026 23:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199170;
-	bh=09c7uzZkxTyVrHNvjFvmG71WyMeEUT6Jt3cM3tUyoBs=;
+	s=k20201202; t=1771199206;
+	bh=eohGXCOnx46jHczP9dAsSKL7WJgwmz4UPPhsJskp2tU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=cn925NUdJj4OBEmpfeVpbTqvDSZsJTqZer9GL5rgWPDKXUNrKh7N7CvEZ/8q7ZlB/
-	 JR6Ub+cilzPA0SEV5a66KNxM4O0/p4Il22WIzHeHBk7zGxciQfy3Z8sB8iVgBF2vXx
-	 ZbpfOUVueW4pb8ZnXQ4kk91lkCS5qV2wNGWQCOr1uL6xf6/SdglBx+UKcX8lr4kYZY
-	 sX0dY0R+f9p48b3UPwm9bD3Ed2cWgsK0BSQfpqcd52jnd7Mz06lcT7GAHEOmF3KRuq
-	 6JwAXz9P/u3kKRE0PAiNqbZhhUyrumt/IzZAimFLzxBHLnY5tsD4nCQciQchOdNp3u
-	 Jbs4h+OBc2xgQ==
+	b=Xex8n73Q8oXjVBQEhoMXO54rl2DX5CR0ALwLFLO6wSWHw9oa+AJtEpumCla9vvHTS
+	 cWky+W7GKoCkzcPnxUSUx4Ph6ZGIkmwxIFgqKANolRlRT1Luv49qRTNEXJFWCugtOx
+	 keUg99C7sSNkqH+E1HYB79RPxj8RLs8d6IMV9N2BZXfDeUfnpT7tdr/paRgsYBalj1
+	 VSEpSe67DAfItIHRJ0bDN6XoapdfEFibjCXHABNZ51/isypweM5hOwH7LI6ukQ7uHo
+	 Qj8l4UB0Wzv/l3+Kf5KEwd2inblhNXXpbr/rSD+NcdSV7QxIzPXz8SgjjWI24xaZ9a
+	 KHZjk743vIghw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:55 +0100
-Subject: [PATCH 68/79] block: rust: add a debug assert for refcounts
+Date: Mon, 16 Feb 2026 00:35:23 +0100
+Subject: [PATCH 36/79] block: rust: add a method to get the request queue
+ for a request
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-68-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-36-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1216; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=09c7uzZkxTyVrHNvjFvmG71WyMeEUT6Jt3cM3tUyoBs=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhZFlZdiDql4cqam8az2bqXKyXBUh/nt996f
- hHOmyZjco2JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYWQAKCRDhuBo+eShj
- d+g1D/9Tp63vqvjenlUu+5ZJU1lZ+9dfMcKfq9m3hw47N4hrC9Z4Q6onk654vGOU2FPLlpUNy8O
- KFHhFrvdjxRcIbLPUsQOFHJGFib9kBLRrM6/JaRWlH5iq6m5ETg0Q5R+WGViG44b169vc4/YW1N
- JzNKqKwWBx66ko26VSg8maFMMAErumOt7G10lKzpSzcp4cOGXui6ZkKmiQDqJrWSaZQKDbZg1yy
- 8bhhfuK5uo9d+cDLVDb5Ea1EcGG0W+wP+9g/YDAfR0qF4qjcwLPL9vChJRJXchgei9i5rx7gFth
- 2xSBY+ot3E1dHVntP9S+ghLoduNyau62Rd9Cc31zYM8heVQM3/HPOed2K4c+KF/TRpoKjvxgHFb
- YIPbvfyMA6a5YpVqIygvX8iSCGULk5WoA6CP1LzQE6zSK6zEhZPj0vc/zviKoEe8uxcHUScNFqc
- z+BsrGzv5O2m7ZbGzZgin6qvb5UV/3nqjB/EwntF6hW5J3xMTu6O0f0rw2PdEAVdCVjzYXBCFuj
- L3ExONihceAiCdO20rH5z/EFwxqcNDWF2fqaXXOR1SB2Z+ZWciJYmnJJV4zgMpJiFQPQKFGPQi4
- ICC96uXCC3tdqBoeeBBLLXLPkSwXL+phd4rQNh8+oV2xj7+yqiB/5R6yXRUf04+giFNXYDLK2j5
- jxL++PfGAvuA3vg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1245; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=eohGXCOnx46jHczP9dAsSKL7WJgwmz4UPPhsJskp2tU=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklg8dg/PhpsHgOFH3l0YMtC6LWUuqH43wi3Py
+ 0nPnS34BySJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYPAAKCRDhuBo+eShj
+ dznwD/sHTnyIp1mixWF4FtiLgwKs1LYUBAJTXKWLW8mnumj2jqbZtIVbjsea2ML8uKpUJ7IbxR5
+ uEhUV922BCO+J72fsH3SuhWkOsqk7VKvKO2jVlo6XgaDr4KPKkcyCoGMeGxGyRFc5NK0qBqXXNd
+ r++7HEvsG9RWayIwg911zold+v7hJBwXp+zxaYqKMHUlsrTCG3pwZdRNfgESwjZQbVq3quEBgNs
+ WNNnnNoqv9hIxgKG2wcF9Lx/6/OPIGG+hF/4r+jxNsLsmKbKPG/42YG9zKrPx0keXI+AGmLiDSi
+ o7rJSCdbQ8ClM99EgGiiqWzejr8vW2ZIV8qTUh2n7s59hSDakHsS//EgSvfHLVgD7XV2FIZTCJR
+ T7Kb9R+QxyWFoOV2QqEHmSnVcDN4sdlYIqIhl1ETDh8smFzqiw59dOs/tqTK/4LmEqSl6lN/Jr6
+ S5spzhexPyf9jct1+zxmYdbtTRmAulBiSLhKSe5HpZMwIJgF81wApWjWisB/bSfZkzuWQ11QDSp
+ myA+I+Uh8wnqQ7M/upI1KePq77rKS1xhYGcjus40ZpPcSl6C/o2V4Cn7UIrprwoQ1XuCf/8beoY
+ kexMxbatftJ8+d9HSAo6zePfqczhqFkQxRC91+69ObBzho5w91lgQaMh1TMPt5TgBPYqxee1Gc0
+ XbSMW0Ka3eI9ldA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: E5CC54000A
+X-Rspamd-Server: rspam11
+X-Stat-Signature: k9jiwhbo64c7suu7ja5xuahzxdw48xey
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: stu3kjugps54k1ukkckmemd6nznhmaez
-X-HE-Tag: 1771199171-832044
-X-HE-Meta: U2FsdGVkX19vPG0wMoTzKRNVdn7DkcTM/Gd6GHEBWHcTh9xp8w2bJAWyVRCcu4QmptMcsIPu60LT/iW3LDsSn83+VLg1+EEG75caZmA5uWyCQUw5aiVZE6yD//PWlYOohOlvSHfi1yyu6C8E0NmPV8RvDLwFj3c8oiV0oXcq7TRhe9nrJde4FCqbgbH+kCrL4eMYnfA3CtdHo7b2yIQSjNCSEI1/UU7GxZWLeSy3T3R5uhXXjbSQ8HmmIOCGyFXdZT4HBFUJecMsVZ76hj5TKEH0Lt4ES+tz1/nhjzEtJQEk53zqb3SCLzcYhPO9ScMaDTAnAnoAKIin2h5PQoeZVUJJDYAqYKkWU1QIvsvO63pQpCv9nJTQshOaCkcr9RZxTEQD8Ve/doqOX33ivDDazegMkwYUaIny8ph7Jue5IWup+5DZNHprSRCdsJWyeWVkWumYJzfjJ7RhIbH/fNyTqd/FLLN1eDlEEkWUBZops4CAdCUQa6/OmZLX5CG2RQWjotfaGoPM60gRuJC1pBa6L1kl+YoQZp3qbfTFPY2zO7Lh0IbmY7RutIScLNLcwIbVgnzSEhF8ldZbDzpwNzAnRnauis/RbVuQB0AKoa41rCTzCxpgiMxs36PnPLhCx5QlVjHBInA6oD1fIQROsENnz+f8hfB/UYChhJSyqjv3l3A0JpK5LOdNMFOH7t1QKZDBc7n5ElnD0rNszxjJRJ0/qZfiynd2ZUR2cgmEvsTsA81XwAjXkiyMWsn25oFzr6mhA2a1NpTyzSq11csumhZYhgHJ1ERChwMIg/5xt2LvUDWoPjkqO1DRiCCZ6GpYcW3kFipguypd5gULhqlI0Z/xCnci7TPuc3iJKmIM3KyjfB0wfwrUal9vNJrlc4qpotafK+M5kJt8BbIDiEUHlt93wIKKUjLboK+it/+NO3N1RcN80cQMXUAFtm8lZgFk+ZtdPcIr192E507fzSbHx8L
- wW50uEI4
- ipg6oTP8AirBOzW4Q6WfS1Olt9/BiWhE+h8TYLoI9LzoHsBV6LjJHnjIMrKi6SHtehRJmb5vtlXdABRK1e8sl92jtcDlw/5RKuvdn0k189q1GfL825Smx6u+hFT9dM9nRVFj16Xw2JauyGppQaWrv08VT9vK0Kl4S5nMNigaNFvEsPG3xes41aj6535wUgK+IGjK2e1IyavNHVI4TO0BI5tyBfV2ltuksgy5+lKt8erG9WUIJH3Wc1/zv2L3TrcLwz66m3OotQBybJrsWX3ITibQT39XuOX8R/1eXcIX53H9Up64V5r7NxbrQnNJ/m0+TmHlI
+X-Rspamd-Queue-Id: C6067180009
+X-HE-Tag: 1771199206-679695
+X-HE-Meta: U2FsdGVkX1980tcz7wdxF/HyP4HVaxEbEXL5iKYx7IjgYf3cEeoNFzv3KH1s4bo81qKGkbA3I4lxwt+108QdSO6VkzJtpyBQxPCrLNRkqFK7LwDHzq52iih7DgKqO6smWQZKA9fk6PMf33CS51MX7QyivcgJIr1kp4KDdvUdtfE6xmc4AZ+3Rr+Gucj697o+5QikZCKAKNxnrYj5pzZk6+u7DC0ERC1YDbKYn0xj1J1zkB3Djr51iahea4mhwC5YnKRq18HepDt8TC7xrVSgYJWsy29bZfe3a/2kuX36wCV+OoPaU/rdL87Q/1JPfdS3zgjl27m6nRDL784MYtg6Tq73rw1RKHldUBAotiAMJdnGrhV0usZB/WL3kA9RCq9TOJzxsFg2aNcz5x/1MDAU3D2nA1TkfD3DlXsAnFKw5hmCWe8VTjNhMDE4JbFRreyRMQEVDMOEN3inEY6rTgH5DhIQeaAd3xCgqefMGvUnWI/OnIi3Wf1wL0NPcTAee+h2OmnOvX6eyP8qQo2idITnD5wp2bWQWkqptxhdLzqclqK60tlU3r8ZOX7IeJbA0AzCFF9Bj/ocQzo1xB3i45r9ubAkkmo6bHfNwkZ0KDpoxcT0OAIqyv9SDMwCc/jEPFtQ22OTAuHV0ZLOZemeViwXgGbf9rKmdhjSntBOkAEmVtLUC2V873MM0GL9boXWz/xvYAJRFtSA7jsOqz7TnhfPdlg+NDBLsW4ta0Mf9IABip2dJA/tlkULt+E9F1/DUsI6iko+nP4n7xQcjAZQ8dTEK77NSsuoBz4HODncucvS28pimYTcPaRuCWqKH8a7r1kSX5ZlbuLM7m0mrV480/5+IHE3ZEJb/RpmAsscAR2fy5YJfszxv0pUHpcgblSmIYUhmSGb2AQ4oL185vIYVW5eorEEdDS4CyFGuiSo8jY8OIJjr1sZxTiYVinAJBCe38+YX0OHUijcw491209+v59
+ ONO3Bgob
+ VEoMztyVf1GwPD1XExSqlBrk+8/JYeLhOfibra7xTnQJDW7oXWpnLTA+ispSdLmS4XqM38cw+tBRbDQcidwNMkOOVE26rmQGgtS2eM9u5hhQ3xwCNVAJwMqrjuigkw1oUA9lE7HTEyvqy4wgY0DJ2o5O7r2XTlM5e/kJxjZyVoMZKouFjoDymWuVHCvanBupvlhyVX9hasrfROssrLkzuSgLsHnLXE2znQ8wpUrRa1yUTl7GBVJgHHkmpGNvcNPbxZiN8MZaBnIEjI1eun+QToglZShgOTSvje0AugK9PH3YRTZDjA+mf7CrAzesUA9Yt0oUNWxGjmmXJTn6MJtKKcYPUIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,37 +122,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a debug assertion in `ARef<Request>::dismiss` to verify that the
-request refcount is at least two when an `ARef<Request>` exists. This
-helps catch reference counting bugs during development.
+Add a method to `Request` for obtaining the associated `RequestQueue`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/request.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ rust/kernel/block/mq/request.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index e22af7ea77bbc..9a05bce39c64b 100644
+index f6addd20624a9..d6f3ffde1c5c4 100644
 --- a/rust/kernel/block/mq/request.rs
 +++ b/rust/kernel/block/mq/request.rs
-@@ -579,6 +579,17 @@ pub fn dismiss(mut self) {
-         // SAFETY: `inner` is valid for reads and writes, is properly aligned and nonnull. We have
-         // exclusive access to `inner` and we do not access `inner` after this call.
-         unsafe { core::ptr::drop_in_place(inner) };
-+
-+        debug_assert!(
-+            self.inner
-+                .wrapper_ref()
-+                .refcount()
-+                .as_atomic()
-+                .load(ordering::Relaxed)
-+                >= 2,
-+            "Request refcount must be at least two when an ARef<Request> exist"
-+        );
-+
-         core::mem::forget(self);
+@@ -19,6 +19,7 @@
+ };
+ use core::{ffi::c_void, marker::PhantomData, ops::Deref, ptr::NonNull};
+ 
++use super::RequestQueue;
+ use crate::block::bio::Bio;
+ use crate::block::bio::BioIterator;
+ 
+@@ -118,6 +119,12 @@ pub fn queue_data(&self) -> <T::QueueData as ForeignOwnable>::Borrowed<'_> {
+         // SAFETY: By type invariants of `Request`, `self.0` is a valid request.
+         unsafe { T::QueueData::borrow((*(*self.0.get()).q).queuedata) }
      }
++
++    /// Get the request queue associated with this request.
++    pub fn queue(&self) -> &RequestQueue<T> {
++        // SAFETY: By type invariant, self.0 is guaranteed to be valid.
++        unsafe { RequestQueue::from_raw((*self.0.get()).q) }
++    }
  }
+ 
+ /// A wrapper around a blk-mq [`struct request`]. This represents an IO request.
 
 -- 
 2.51.2
