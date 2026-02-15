@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7CE1E63F1C
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 01:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F7FDE63F0D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 02:01:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB3A76B00EB; Sun, 15 Feb 2026 18:47:10 -0500 (EST)
+	id 89D306B00E7; Sun, 15 Feb 2026 18:47:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98666B00EC; Sun, 15 Feb 2026 18:47:10 -0500 (EST)
+	id 867D26B00EA; Sun, 15 Feb 2026 18:47:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8DD96B00EE; Sun, 15 Feb 2026 18:47:10 -0500 (EST)
+	id 769FC6B00EF; Sun, 15 Feb 2026 18:47:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 920706B00EB
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:47:09 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FD848CBB0
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:47:03 +0000 (UTC)
-X-FDA: 84448329126.16.670CEB4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 88EE5A0009
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:47:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p6yFBLnh;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 18CE16B00E7
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:46:50 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 85B7F1CB87
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:33 +0000 (UTC)
+X-FDA: 84448327866.19.35FA1CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BDAD3C0007
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:46:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgADxpSr;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199221;
+	s=arc-20220608; t=1771199191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e7Xi/VBvzXpptpfFDpWRMt0NQNBzR99PzgIqGuomrjE=;
-	b=LirG0mLrh71wKmBa2IhEeVTSP96DGOU9gzqQQErFIF6Bb3ncmJcHzhh/XZ9gC0HcNX7Z8d
-	S01aoGKuUINaKTkBuprsjRTtsuZwt/wynrx9Ph3Kr+RauNjPtLpmQaO3LSN2LJ2grCGGj0
-	bOjA20RdgH0QdirxK458Ds2N4jLRNVs=
+	bh=BJhU3eFhlQZTpOH/Xxyp9EbBkRyjGFlUf0JPoyMHZ1U=;
+	b=qDjYR7kChoVdXCvSVG1KmG9sg/ZKrls9ii6WN7sgrX6bqGORTlUeEIA0l2r4tTNyXdcv91
+	UZG8bFTTzXGNDh+7DZpSoUIakXt/wI36pV4QwInguLivOc19qCWZtxjs+9UtWmjbhgDB7K
+	D9pYtCOStUMhbTKr7SarA57FeKcgQYM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p6yFBLnh;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgADxpSr;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199221; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199191; a=rsa-sha256;
 	cv=none;
-	b=FwDxqkmp5JorlYQqHB7eoPF29RvQqvTTH7tQH+tJRDTt0QoJo4H9kDjm12I/hvdEHwDGhM
-	fs20EAelwqRTYWsVbiAy1aAd99RsGk0Vaya8qnMw40gkKOjK144QTvaDS0MevSwWOvuZ52
-	MM0BeTUNxBB9CTARmexJTrO03e7xUlQ=
+	b=4BN+yNtIGqJOYKtleTZPEeZlMIINM3W24XPgD9ef3uxy76FCFJ4ZLzBUYEID+HnSDSY+Pg
+	vSKd8LrZfWzPEzGclcGVXmndjSAi9E9PSLsF15SYI9cdJlmB5wR0HtWVcFmxfwDB4bFMJg
+	upFpCL3WYTwjYIWYyGcHDcQwCoswsPY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 19AA561118;
-	Sun, 15 Feb 2026 23:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89508C4CEF7;
-	Sun, 15 Feb 2026 23:46:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 030064081C;
+	Sun, 15 Feb 2026 23:46:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADCEC4CEF7;
+	Sun, 15 Feb 2026 23:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199220;
-	bh=+9VoTKjKEOvBExxZyNph/soC3n95VmzkDwZhpUL6gGk=;
+	s=k20201202; t=1771199190;
+	bh=APKT03ZiQU135E3WUwHyPYiO1viCqNZ5coeNcIBfq84=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=p6yFBLnh1+UCZDBzNagelOCQiAZTy6t9bFvCt3DfPY2kQjp89cxxnx/WqzR7uPkja
-	 XtFGPzD709kaFS8rYUarJHVM5GG9Ji4D/BEmVk7PNzGqp6vPNfsy+s1KPD1tzNyA8/
-	 kUp2P3pl+lqLRVQCboXDNycR9wZdV5J7kDe9/J7Pzji3+YlPfufknDWmzv02HHD9Rb
-	 Oy6tumJ0FYF4Fy+rwaPqkV8EERwiTTka5MsM6Z2EXPPqyza5mQ+q53Nl+f4snLPddz
-	 vNh/wt5/YsJA2FppjhCbiJIX11xf2/8kjwATVyvsSIAj+i1PGPC8ofwodRrTys3fVZ
-	 v/AlL1tiw4nZw==
+	b=HgADxpSrEK++iloNXm0dnv+lPw8PVJH6rkUFydSeWsUY3/vjJ7KQzLcayU1lcgIjr
+	 Peoe0Ghk8slIlwenivzdI5Z6QI8vSefKN+hFcJP6jzjYtIgsAeOKMWu/0t+9ZJuQIj
+	 XCQLAuAavYqo3FyRh5jcob4tOdrSrvbSF4RENPBNaaDOMqUUeWvZ/0TKFKyIiU+pJD
+	 O18RmlfqA+4HUxYEuKNhnpZ5vDSHmiK0NsYqk6+hv+50SW70K+hNzCSrRxcq6JoaWT
+	 JSNm1Zrr9uRP9arGCa9VkHkv/EBo++kVwqlNVSww3kjVdNqTAqizOKVS8jGJQyiuBf
+	 3WUMyModOsOLg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:02 +0100
-Subject: [PATCH 15/79] block: rnull: add `use_per_node_hctx` config option
+Date: Mon, 16 Feb 2026 00:36:02 +0100
+Subject: [PATCH 75/79] block: rnull: allow configuration of the maximum IO
+ size
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-15-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-75-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4913; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=+9VoTKjKEOvBExxZyNph/soC3n95VmzkDwZhpUL6gGk=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgp/QnG7POfeQUiu6svmmlJXvglJFlTee9SK
- tUtnVeNTJqJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYKQAKCRDhuBo+eShj
- d/YcEADDBnyhEHkcnKjgjSOfCTFCpflKQjLLvFu6y+3h6U/AAMU78Ooa0UWjtF/iAX3ljz+Jw38
- +38ZE28EZIEB3oKXNFlW+Bu5c0Gl+sGHnDr9pWorObN7SOuzgXrqT20MVvUCfmBT7ZvhaSOJ1cU
- kdaZrlwcTmlB+TeD2Zf2MDIrdSgwoRdbRj7MjtFnWmmUEYeXBlAriFw9w6MTmNg5cuIu86YyV8G
- SMwkCgo8520RMC1HPaIMdnfafpsaSU+wwlOLWWmqRBGinA/yFpC64y0UjskOCk7PlsWYkKKrBXw
- N/sDKTZ8k9e1d/LTJctLsOKbdd3neRxwbJ+l+UNtu8qzgZhQR/CKepJxeHk5csYXyKosM7lZ8VL
- iBexxDt3LaW/TgzxQYlKqAR6cgVpDxCqLPGXN6N3lILjfobVN17IIIBMeS/dMaU9iIPUzRpE9c8
- xFVesd0gonPwZU+0MngZ71gXTW7zoeG9UsufKNxQRc8KqmHik976k+KwoPxL34GdAd3iOsLBtgB
- cBqPbCD77dmJumgXnYPM4PXREAE748c76L66EeBrq1bJ/cEfek3j0jT+dOVA8Iro47s2HwJm7NN
- YGi/5HKi90LE3zlnMj+ayAvpkvKnvl3sYgkmwFijBqbX0hz0Wfiwa/tJJ3EzCpbKl94uhHlcPY/
- HGlnL5hJHMYoRiw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3986; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=APKT03ZiQU135E3WUwHyPYiO1viCqNZ5coeNcIBfq84=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhfgXdxK7ttXIOY8hQZaSYd5Mu4euKOGaiXx
+ 5uLWTbYb22JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYXwAKCRDhuBo+eShj
+ d40HEACZ5T4gkVkYvJNBnOSrIznKGWvjkIyhCyZHxOH9+g7Y0MC6tHeoEYprX5ajdXLwiM57ykV
+ 20YFMSaXWARI/zRNd0iBhRfr2sLliHiEAjhALtiU/exWz84ntqj7x91LQfT68LO2ssjRBhvqW2O
+ DYM9rEfZqTmuCK1cBFkFWPAmcZ0xaZGncNLwz5sK5mgrlydVPiYj/rjQI70Jk/IozMq2lVnn8ol
+ mdx4uQnQ6SneDipQdYxwbHO5fULYmB6KzyVvu/7H5J+nKpwyvJZj6AoJ3XcnutJNMuIH9TwLrH9
+ DzM6h0CHQI0Oufl1qnf8mZ0cV/pnKKCPE6LftOZ1rAFQ6rvKJPVBOJWLxbJlIvlxqOERfHWyGdY
+ QV+1Bt75TnNe2nufG3fkconWds293dATdw0C625tXnqC7ybMqWuXCYY9v9aRm7GQ/r/814TuHGG
+ SljZZ1Dh2d+I3fl2I0exPjJAREe7FQ6nQVggS7sh7w94+g7oypSNUz/QNrm3VnCZE33gkE+/QM6
+ a6cDED5Iqkm8vHEkr0+kK9cmufDBHfU47j+XDBLPNTi5Ro7t0T5tlFbX6ee8+kGftqnU2/p5kN0
+ wmpNcSwKJ7vTiJICdhewvzxAlmuHHosKs18vhHQ0/PTGuknXPTOBLb1Ef7+fdJ7ZIsCadz1Ry0C
+ ilaIYwkI9anAQuQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam12
-X-Stat-Signature: df74wcqj8asygig4pkrz38tqikfjdoum
-X-Rspamd-Queue-Id: 88EE5A0009
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BDAD3C0007
+X-Stat-Signature: cchanzdk751kcz64icgnu3set6zbi56z
 X-Rspam-User: 
-X-HE-Tag: 1771199221-348276
-X-HE-Meta: U2FsdGVkX187F4yN2IWYYp0cuTXvvdq5jxcZNN8Omkf1tcY7hGbD7C6c/lWNm473aMQ552FLS8cXf8lIaoI8BqIop100Sr+6oMU6ChSsvxLM/g/85YcLZGINQQWPRXKUKKe3a6bxAb4x6YSJbLPz12eolWJAJqNxN9fqWeFcMACuJVq8vOPBZbwwHG4UMK6x8q4ewQX/tTa8DIAbxpwX/sIyWT+NK8uHDvGfOTNG+2dOG0YwlescTNm+7El1rubmTwyYn+fTnOySjdfR5BPWMkQnhjHLWQMCKKEB8o0N6blowY3x+tfwfE7ZwmWNSdLc113VebCXCfr5wWAP8aSHJMiq4zV9Vw0FpDjgNkYDoubmB+LwwmhAz9LQdwikYesPJkFhS479Au1lgmYUeb5kmZ5emXpVxbaYw99tzgZaiVsVlzYTIpsEZ3+YhyJio1EH6I/plHlAG2UdoSl0AnJ1V4E5dmwj4uF9RC93gbczzdrXABkR6WtV4iushzY9tcQWWljWsp/TmOcxCJM4sHyPEjqcPVzCGxveO2M/pWWqUViwi8APWMFZo17s3iUNTcXcdaKcpFmWH0ngf9zDiu1pvb1phj/rypS3loOp0MSE2Qx3gOsAZNnuEAcznoIX0wjGF8xb94Lek4fETtYwglK3eKxlXDQqyY/n/ZDndRS8K4YvqmQ5wNh03suMtIEa0Ga3ngIUoKhTOqu1llGCSPpAuwaNQuxKINhPiIFGfd/rVgkEynbApa0ryxm1Xqf8zBaw1ZZJD2kcsEuOCMHI7Mj94KjfavcxJqd4/DG2bDqTowCxtbRxLos5O3HxLAebMcW2yLWnKuFlWZhONkdiepaPsWjs+TYaAAHpfC087vtpNndwtEXW88B8z7rU44sSx1/0f68NWXgsoGIBe/btCzE2deOtKjqhBuqZ0COv/YpI4HwYY1Pyycr2xSMSI9f2zrOc8jQ6IxFoj623jFPEwGU
- Zf/t2q/W
- DRs6smdhiz1SXrGTmdFP98YKL78dZIJ3jb+9zQ1LEGJFzFhKqVovc7lUQR52eTk5KWGk19DBiKaipctoQWMWEfKD9NX9UHiWCsCYi2r0PKGP9/rGoxjAlewIb1/M+q6TSmhdZ3unOIxex1y6tWjyRELfvBpr4tioFRcPFrpFgC5cH2Q3qoGmcyxYT96sRad+1cXINGesR6yVxg88FKFom6EGatUtE/jwIQMrZPc7ZO2bF5Cwqj28JcUGnRPI5f9F3tEi75Rr6T1naJaNWdd7h5emJH6kjhM/DkML+ggC6PEIv5+8ZIMuktJYu9TOfsNDE0yYw09jm7ZjNnxbNztdSRvQ2HES3a+JxU7k0dN+RSiBGMGo=
+X-HE-Tag: 1771199191-682012
+X-HE-Meta: U2FsdGVkX1/e6sDON50OpF5lp41hd4nS9iXwjYoDTM+KWDh9LOxLA2cKdStqcDmCIgvgvw9jXzrY5tblIUES9PCDV3jq7OeOWzeo1sBm19GUd5tj1A+1k4WuyXx8c4ZZxY7v1Yt3j1NLZAlJ9q1qwHMw5kYk1ETIabPllliZpqfPu2DV5xLAVstkhmC6JYtAoqSl+hbW5bKs1DWPIIeC2Edqrc5Czh00bnMrcTUFzEoWJyfRMfjZkPrT+U8joop8+7MylJ/gDoqPxT5usL5QHXN4N3sKCSucwEuiQ8aeFuD8O/tA+fIEDLp9wymflQ46oBEVJ/tl9c9qli+TkMgoFGuGhY10rI4sBQ6OuSfgqSc5QHjTszedqLL3artcU1bjmy+zvKlfg8gg3G7qnBwWyoSM2rVsI4jYGcTmblL1ufXQqdlmF6gZM2WNyJb3CV0PN8vZ4MW9kemc9UYamItPdGNr3YymAtmB4VHhZJSOt1KtoEiR/bRtKbqiDNRzgjdpSRuL2Fnj9nGFcvsbZrydw3ofyp6aZMMYS4vbrQA4Rogp2JH/lnp/JBtpPsWkWDfHvpPhWaB4T5M7daHQrl+dEaNKL6uC5FjGcGIwf/Dy0Ss+v8aeOdZvu1jXlerO/iVT8gM+6UT5LqgoLr87il5B5aJ9486dsCmWQc28dDHSmp7EBZMS0Uue03v+b/JKdvUG8O2+7aOb0UIM/Rel4lihGzeDpb1nEyE0ybZNstJ6HylTV2p4ItGTAvb2lGUN+o8U/EtMy+EOkvv10gf6mrG6DpgktrgFdll1JQGLdfltkdJbJVUkJssJCQiSBUDqUlCW0UKKGfpODM5hRnhHTe4OYd4vPWg4ImueMIJ/gnjc9G6cbd8eZqp0eORpv9/c1ivoQcNd0nRH4nBmae4vVGU1IvrqbxlKFntd+YM+olyvT5EPnEhzsxecvVITn8OQlrC0689shgKkK6yy1eI/htq
+ 5H+tFMoD
+ vNl01c4MuYmkqBihNUmPDrhjsZooSYGyFBuQnj6UbUtVe3bydr45xmSqv2f0Q7LWWTXcPLEtcHr/voJ97Q0biUhZ9QLNt+NUNUi8yW3iKdErYwmp5SZvZrLgZKVQN3c44cYjHkOpB/BDCnkPf7aYxxgC0oHpB34u1oAPSuxrd7iyEcdj1KS0Z7X+gmd17WWlT9qeEGGt7YwjsOZCcqdkcHScFTBvmpJT085qdtKorEufLktY7im4n7muwgjwBwHguSWv/Abtlz2mSCUGH3LPlYUaurPOLPSjSqfxNK7UOEMuv5DuKmOwhaGHWUfL0O26DrrDW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,150 +122,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a configfs attribute to enable per-NUMA-node hardware contexts.
-When enabled, the driver creates one hardware queue per NUMA node
-instead of the default configuration.
+Add module parameter and configfs option for controlling the maximum size
+of an IO for the emulated block device.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs | 26 ++++++++++++++++++++++++--
- drivers/block/rnull/rnull.rs    | 28 ++++++++++++++++++++++------
- 2 files changed, 46 insertions(+), 8 deletions(-)
+ drivers/block/rnull/configfs.rs |  5 +++++
+ drivers/block/rnull/rnull.rs    | 10 +++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index fd3cbf7aa012e..b05bfc23090c2 100644
+index b449ac882d961..9eaace8b4257e 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -30,8 +30,11 @@
-     time, //
- };
- use macros::{
-+    configfs_attribute,
-     configfs_simple_bool_field,
--    configfs_simple_field, //
-+    configfs_simple_field,
-+    show_field,
-+    store_with_power_check, //
- };
- use pin_init::PinInit;
- 
-@@ -61,7 +64,7 @@ impl AttributeOperations<0> for Config {
-         let mut writer = kernel::str::Formatter::new(page);
-         writer.write_str(
-             "blocksize,size,rotational,irqmode,completion_nsec,memory_backed\
--             submit_queues\n",
-+             submit_queues,use_per_node_hctx\n",
-         )?;
-         Ok(writer.bytes_written())
-     }
-@@ -88,6 +91,7 @@ fn make_group(
-                 completion_nsec: 5,
-                 memory_backed: 6,
-                 submit_queues: 7,
-+                use_per_node_hctx: 8,
+@@ -122,6 +122,7 @@ fn make_group(
+                 zone_append_max_sectors: 26,
+                 poll_queues: 27,
+                 fua: 28,
++                max_sectors: 29,
              ],
          };
  
-@@ -280,3 +284,21 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-         Ok(())
-     }
+@@ -208,6 +209,7 @@ fn make_group(
+                     requeue_inject,
+                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
+                     init_hctx_inject,
++                    max_sectors: 0,
+                 }),
+             }),
+             default_groups,
+@@ -290,6 +292,7 @@ struct DeviceConfigInner {
+     requeue_inject: Arc<FaultConfig>,
+     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
+     init_hctx_inject: Arc<FaultConfig>,
++    max_sectors: u32,
  }
-+
-+configfs_attribute!(DeviceConfig, 8,
-+    show: |this, page| show_field(
-+        this.data.lock().submit_queues == kernel::num_online_nodes(), page
-+    ),
-+    store: |this, page| store_with_power_check(this, page, |this, page| {
-+        let value = core::str::from_utf8(page)?
-+            .trim()
-+            .parse::<u8>()
-+            .map_err(|_| kernel::error::code::EINVAL)?
-+            != 0;
-+
-+        if value {
-+            this.data.lock().submit_queues *= kernel::num_online_nodes();
-+        }
-+        Ok(())
-+    })
-+);
+ 
+ #[vtable]
+@@ -347,6 +350,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 init_hctx_inject: guard.init_hctx_inject.clone(),
+                 #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
+                 timeout_inject: guard.timeout_inject.clone(),
++                max_sectors: guard.max_sectors,
+             })?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -624,3 +628,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+     },
+ }
+ configfs_simple_bool_field!(DeviceConfig, 28, fua);
++configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
 diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 55ee5165b90b3..990dfcf95c9de 100644
+index b2b089a657f12..495a810f4f4e1 100644
 --- a/drivers/block/rnull/rnull.rs
 +++ b/drivers/block/rnull/rnull.rs
-@@ -21,12 +21,17 @@
-         },
-     },
-     error::Result,
--    new_mutex, new_xarray,
-+    new_mutex,
-+    new_xarray,
-     page::SafePage,
-     pr_info,
-     prelude::*,
-     str::CString,
--    sync::{aref::ARef, Arc, Mutex},
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        Mutex, //
-+    },
-     time::{
-         hrtimer::{
-             HrTimerCallback,
-@@ -40,7 +45,7 @@
-         OwnableRefCounted,
-         Owned, //
-     },
--    xarray::XArray,
-+    xarray::XArray, //
- };
- use pin_init::PinInit;
- 
-@@ -73,8 +78,9 @@
-             description:  "IRQ completion handler. 0-none, 1-softirq, 2-timer",
-         },
-         completion_nsec: u64 {
--            default: 10_000,
--            description:  "Time in ns to complete a request in hardware. Default: 10,000ns",
-+                default: 10_000,
-+                description:
-+            "Time in ns to complete a request in hardware. Default: 10,000ns",
-         },
-         memory_backed: u8 {
-             default: 0,
-@@ -84,6 +90,11 @@
+@@ -206,6 +206,10 @@
              default: 1,
-             description: "Number of submission queues",
+             description: "Enable/disable FUA support when cache_size is used. Default: 1 (true)",
          },
-+        use_per_node_hctx: u8 {
++        max_sectors: u32 {
 +            default: 0,
-+            description:
-+        "Use per-node allocation for hardware context queues, 0-false, 1-true. Default: 0-false",
++            description: "Maximum size of a command (in 512B sectors)",
 +        },
      },
  }
  
-@@ -106,6 +117,11 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-             for i in 0..(*module_parameters::nr_devices.value()) {
-                 let name = CString::try_from_fmt(fmt!("rnullb{}", i))?;
- 
-+                let submit_queues = if *module_parameters::use_per_node_hctx.value() != 0 {
-+                    kernel::num_online_nodes()
-+                } else {
-+                    *module_parameters::submit_queues.value()
-+                };
-                 let disk = NullBlkDevice::new(NullBlkOptions {
-                     name: &name,
-                     block_size: *module_parameters::bs.value(),
-@@ -114,7 +130,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     irq_mode: (*module_parameters::irqmode.value()).try_into()?,
-                     completion_time: Delta::from_nanos(completion_time),
-                     memory_backed: *module_parameters::memory_backed.value() != 0,
--                    submit_queues: *module_parameters::submit_queues.value(),
-+                    submit_queues,
+@@ -282,6 +286,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     )?,
+                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
+                     timeout_inject: Arc::pin_init(FaultConfig::new(c"timeout_inject"), GFP_KERNEL)?,
++                    max_sectors: *module_parameters::max_sectors.value(),
                  })?;
                  disks.push(disk, GFP_KERNEL)?;
              }
+@@ -336,6 +341,7 @@ struct NullBlkOptions<'a> {
+     init_hctx_inject: Arc<FaultConfig>,
+     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
+     timeout_inject: Arc<FaultConfig>,
++    max_sectors: u32,
+ }
+ 
+ static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
+@@ -407,6 +413,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+             init_hctx_inject,
+             #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
+             timeout_inject,
++            max_sectors,
+         } = options;
+ 
+         let mut flags = mq::tag_set::Flags::default();
+@@ -502,7 +509,8 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+             .physical_block_size(block_size_bytes)?
+             .rotational(rotational)
+             .write_cache(storage.cache_enabled())
+-            .forced_unit_access(forced_unit_access && storage.cache_enabled());
++            .forced_unit_access(forced_unit_access && storage.cache_enabled())
++            .max_sectors(max_sectors);
+ 
+         #[cfg(CONFIG_BLK_DEV_ZONED)]
+         {
 
 -- 
 2.51.2
