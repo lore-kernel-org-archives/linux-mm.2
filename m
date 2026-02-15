@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 806EEE63F08
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4CA3E63F08
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Feb 2026 23:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C831F6B00A1; Sun, 15 Feb 2026 18:41:43 -0500 (EST)
+	id 544416B009F; Sun, 15 Feb 2026 18:41:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C60F96B00A2; Sun, 15 Feb 2026 18:41:43 -0500 (EST)
+	id 4F7706B00A2; Sun, 15 Feb 2026 18:41:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D406B00A3; Sun, 15 Feb 2026 18:41:43 -0500 (EST)
+	id 3FD0C6B00A3; Sun, 15 Feb 2026 18:41:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6EE6B00A1
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:41:28 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA9F11C1BF
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:21 +0000 (UTC)
-X-FDA: 84448314762.05.6607CD1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 03EFF1A0002
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DSaFrKiF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED25E6B009F
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:41:34 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E64EB5BB9E
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:26 +0000 (UTC)
+X-FDA: 84448314972.04.A1F200B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 42BA120003
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:41:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="O5f/Fu5M";
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771198880;
+	s=arc-20220608; t=1771198885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q2u03CbdvrE+hunDelycDLrwC2ypDCwTBT1aPfftAh8=;
-	b=ix9xQcj4vTcfUU8r1s37olvqWceQe5NPYfqOuFMcYdRe//zpnPl7Mj79XnhmT13G29mdDI
-	/n5G8bywuZGTl0241QWGRly9X3/76SzRkXvgj5etyi9s/D7MdQ9+3CzYNX8rrr7jusrqrU
-	Lqtk3Gb0dlmr8URtxfWG4IN9f3IiEcw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198880; a=rsa-sha256;
-	cv=none;
-	b=knFuY0v3WJn64NMLM83mkvqnzTnmk7MDH2WJie4eRjWqjRXmAFCnRVS3fIUM6UubKm/fP6
-	Zwaw1MHMOzea/g3osNCMkiudyIUdH3x2lnRg9t7EgYosWy+Me5inuNc/nUjVtYtHcoqGNl
-	jRwUbP6MIDSYtr7jRvIX+75RNWCONzY=
+	bh=D+sEwSp9CVuz3AVWLgi6NQsnAF84yBLYnvSIEsGPJjg=;
+	b=ei7ayNsVU3rRL1rBgtsH2CI93ZALBONUg5TU6F+nrZcaKafJDaq3+K5/DKZXnsi1OzBzrZ
+	pow8iBUbMsB1pkNC5ZXnuj7yeyJ/BqQ6/VtMOFFByrRrY81LgCbTVx6Inpb27ywIwJSHf3
+	llh8xOTFnFKG2e3npiwMuDRNQbjN7MM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DSaFrKiF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="O5f/Fu5M";
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198885; a=rsa-sha256;
+	cv=none;
+	b=RTdYn04WkNxDF1zcR9CaRSnn9eom8ZBnxwYuqtpXcRjdFs4rQq1257ToPZv5Kez1l68TA0
+	KJGgF0UyytO+y0/nqDXRxtaFxYZFXQ5DLkW5JrCleBUX4rXZb1/vWSDaNgBQqfn4ffSmO/
+	3J/mf6KmVDxeEdH8jmx4RvNbPrW+m1o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8F10A61118;
+	by sea.source.kernel.org (Postfix) with ESMTP id 77E9340563;
+	Sun, 15 Feb 2026 23:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAC5C4AF09;
 	Sun, 15 Feb 2026 23:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAFAC4CEF7;
-	Sun, 15 Feb 2026 23:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771198879;
-	bh=ishZSvvB3Z9zb8FDhnjXHtGNUf+npQzs8cRfHAQ8f/g=;
+	s=k20201202; t=1771198884;
+	bh=t1ASQJfBzdDC92qEwscNrrmiCuGCWMUOPUsdRJYBsD8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DSaFrKiFGB6/amTCrWtVtDcKfgshDfMj5idpSAyBQc4yEmAPlpMjiRG9o7/hxoA+M
-	 WTCYeCZIM4P6YzdnFkyfKuLz3UPN9hqAqyYC+wcMYr9Yi0yYLgD0VPRqB+sx5aXIOs
-	 C/E6Z8NUcStd5iRUdv9VJcw+ehamkLxBVU38EOSl6xuW56SWqgD83VlJbd/YcFurEx
-	 7LYrG9sJkDwKUScLvbLY+nKP699y2FMURC1capUA2px4hyZG85LvIiqVOA6zvXv4f4
-	 D/DZ1hfai2J4PRkFEsULcN8QKKNp/+gCp27DCBc17FPEwYqWQ9Qsk8dnvf/tlTco8c
-	 DVe0LQHWytQlw==
+	b=O5f/Fu5Mr1MpI9+DceCrppsOt8psR2zmL7tDTzmcftdQ82droIygIw3qEVSdA89T6
+	 8QowxFsoEi6dOmlL43k5mzgEmmd8Td6sTcsrQSVYH2C3uq0SaFssB7lba16WPzLF9R
+	 pU07XUhSftlvfzcWiMqHD34xGm8E1vly+l9DpiO9bNtB0QaYbVYu/ErUJoFJWebREv
+	 yWsDQs5J5qHu/Q1WWAvW/xa6tHisRCxr4G0slgal/K5pN5nj/al/DmcUeWPAo2zizH
+	 dpiKXSVu7eN1l1MulH7Im2A30QmXaTcpa/lJZ0qJ70Kmj7IiVvy2QByMbp1eGyqkKt
+	 6FyckWmhmb0Sg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:26 +0100
-Subject: [PATCH 39/79] block: rust: add `GenDisk::queue_data`
+Date: Mon, 16 Feb 2026 00:34:57 +0100
+Subject: [PATCH 10/79] block: rust: add `command` getter to `Request`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-39-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-10-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +89,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1053; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ishZSvvB3Z9zb8FDhnjXHtGNUf+npQzs8cRfHAQ8f/g=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklg+2aHPwWeYSKM1xwW1IHpYHkn2PT29EkZ7q
- RTzFzyPMfuJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYPgAKCRDhuBo+eShj
- d8Z7D/9CVhX2J92c1AOi2x4M0wJNziPWeHyPAG1ev/9oJdujHCMyMp49WszuFgmYujNhRiF4/4c
- tAHeQSTiybLHs+yKXAnrC+KhwvhsCWCYtQBgBiHRQ3fZpNV9of/AN6cCx8Xzs2nnAvWfHnzjkJx
- QhMdRd0cykNNVSPrx1CrOqryOPKGdq1KDuacQhb3pKkaAW8sQoE2YZJMLPSftYv1lSm6BSEtBGW
- vQ4keKzdQ7e5ueIC7V+Ej2aIMn0UmLJ9nEt89YVSVESTsEjh1/5m2dBLns5sOpcwdaBBrzU4TEK
- ObvgiTy/7knmletLmc3TLdmFa+yzzwQCeG5sZNucLKSPB3QbxFGNMgfXkNvVpH6Vwy62TbQXewA
- HnyYyaTtno1Dfy0yiWJD6n4TvZEXo1F4ipk7n39r1Blt1O+yqe3Kw5Eo1UCmApquRGRGnqMhwah
- T165zGyKMU1sQDfDUqP9kOouPyBPxtr8izJ6IHmP4eV/4RWmv8qUtQbO5tsy+HpeITKktMtVVfo
- vf3U1q9tcqvCGojacdc30nqWkUqso9gnXRqEqX6FcufnzT/nSa3hAojU1ubkKDCZUFabyG9lPSM
- wGQd0G7QkYQm1rELpA12e1wh5z7GlXx8ePguS5fIAJObeSYnrn2k16JAXQDe7asZ8vwfM+UyBWg
- iQ/8jHAkGqbPItw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1169; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=t1ASQJfBzdDC92qEwscNrrmiCuGCWMUOPUsdRJYBsD8=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgkNOXP5tPUBMAf9BmZYuGDAbCtojzNtAios
+ +8laK9Y39mJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYJAAKCRDhuBo+eShj
+ d194D/4mIQB1EGLbNrOl+I/uS4wCtD6CzbRXmXcl5fFe92Xg2YsO6rekD3VJzEIABP7VCe7qKRP
+ wyC9KwDV8OaosaLR2awz+ORVTzJXWo82qjUiMIyAjXz8esf4P9iapP4hVXk9vY34LNXQGC87V0H
+ mDn2MaQcbXjd5riAooVucs9b2nJ9AFLI9Du4Mj1N23oKn8ghSYPkVz4/dibfpINwnuYqZimSlB/
+ 018p/1lX+xO/t1GESKTGSWUvBN+nImW651QYrVCOMXiKIQ7/I9SaMI08YLF3c92ex0FPsvRqUt7
+ aHsYLVPCTduOZXdOG+MEmi45DjRUH+0NuHjRY8CtxLRWVc5AxGPVaJD1QZMfkegYDG4EgIqN1lH
+ gd6HhCH64uOuuJnhY6tJpBZlVOiXP/wcUMu+Srf5DEqxl51YH5m33GeBoORPGQakjhCTge8iYlx
+ WF1R5hKUTYs1gQ3NpNRFMrsBQBj0e+eu805gzj+ZUBPQUe+SZ/oxrA15hLHeOm6yngwleIe0y4F
+ nl9AzTzV8Cw3cE6Ejx0m9WNZbxjxiCcKa5MaPzJchaymBQ4yvZS4fq8ylJ+YsRJPJcXoqorkiZv
+ xpFAzJPcHId1f0zPP6AwbMCWXuX3APyh8UTjsuCWMsHNGWxIH9Zbqy4NvlWnTZXsFoAY4toT5JJ
+ GfwScsfr1lGfJ8g==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 03EFF1A0002
-X-Stat-Signature: rk71kaottq731gnaesca8nhzkdnwweb1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771198879-865713
-X-HE-Meta: U2FsdGVkX19cxTa/1ylW0ykJmcd/rN1CU5NmABvf4YDWilk7vOAfr/10OrNkztbZxa8MTx/xdxDzct7caXTCwhkeAwnsxMuaOaukkR79MBy9wJtyc92S5fj2GlTkDQyTh+NuEm2QajbNt2ArijJh/mCBGG2KzkwYV9fDu81AxEjzF60f0syGuxJEJCLziXJkD7AxqkDqL6b8kfcRGrVoJKC7R+v7zf1/KPS9UHc86MhQ4MbHRXmYhkFze6AWYEnudNkjkU3UxesZGCYv/abwFxChtqpxpux8xdyv8IMTKkd9rX6kqaked2kk+FMdR7slP0cKUWQF+ogDEMabQ9bSb3UuoMznP+kXamqQPRx+A+3O99czI++T6hTD3j9INVfINygd1TvkzQYFwj/UGyIjYnx5jqi2T9eNWO61m4Zu9IqlqZqd4NE9bxZ7LOjpTnBp+yzO5hzo90T3BFrlCwyCb4M8CzrnwiqvytorC/kzqv5khHipIytsjGFgKVneRhbBPL1LH4MeLTMq8ZHjlWDhojUPaGO65jbTHQKHsSyqqLnYhmkJr4PkvcBM99DGJX837vsri48iVhOqA+FOK42d+NATe+qYJOCOlEvexqZuqXPAId5hWEFV2z8OheBnBHxlqQSuYQkpJ+busOUqTIg/NBoNbOu5WhXm6N9tCIBMArIXpPV/bb24H6KiFNxDsVvMkXLb/AV75g7Q5fbsftMnoRoHubv3rAxi5karTismlOPIJ/4kgKledOrzuUGaogIcfUAlm7Xh1ZVgfosUBVik6SVHjaOXQZwgCH38An2+tHWT8i+GUWD+ENmTiSqQubc5a4nDIHsjjUlqXvCa3cP0qLHnOgGaQuFsu3Qmfgzahrq5qU61YQ6N6vJC16ruS1GmWqI1r/HBKm/I2BbnU8A9/eDe4MPKwUHdOwvvUVJi1FMi+Mx6+BygM86p4nDdgN+cJ0oMonmyPGg1JVeRVlS
- 3fkMcLg0
- 5Gu/d41h6fqbvkruUUo2dTvFjKBHZvOy3W4MW+z0q4DuHdmelQ8kFo1kx0WNWtx7UqdWy8pnM69TLJumH57o3UAZDVVNo0wis3FJ3pTTWdx/XLI+RbbaLt1H77Le9/3OgViZ7QgJpzt+AqaHYVtMidTMBQ5G/7GLdVLrDW8K+jE05iFOAd+kcEI/BFBQiQ5iNZxSvrhM7akH0t1EPxqLnoayOVc4cJGCwJ22iLK+CGPBwxTosen5Knd4aiNWp8J7LTC3NEFWza6wJqq3DDvcwadmE3yuuSlbaiKBXFHwWWzWdiF5Dod1/NK+u68kxcX1YMtceANhU7gDIRAao4FWcaGPzw+tzBerCiAxzrzwTKkG9ptc=
+X-Rspamd-Queue-Id: 42BA120003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jy1khgdsubz9garbx51efq4n735erre4
+X-HE-Tag: 1771198885-842615
+X-HE-Meta: U2FsdGVkX1+IrSGIgrVRmsv0zH+GvFUqmM+cgziZYGhTGRUFQKreLhqUWdRKOYuYtDuslCRnq7lqQuY8f2k+Qt5uIx2E2XYpMU+UW7AbO7pr4mxjhmT6REG2/s6s+RylgyCPyvBFvFAa/yXnCrwBjejlsJwoRNH1mUyC5j+/nhCSSm8PJ+W36h1wxlj8OlJOA4f8GspLGte5AX3hbmA+sObrD3vshHl9iNgOFuYgddoY0JXVR125Iff0S9LBY0oqGROlzbdGpj7dY50RwMaS3RfR4oojp7e59JXrXiae22bnkvOplQHj9UL7+Dcc9jwAmd5ikKwL398QiNJIGPNKtWuZLOBwlYIwDZdSYKz6TsEamoIMG2rkyrB6ONPIYrG7iCDXsBV4s4x8TUBZ9yBiOH8XOXn/ltcz/YtQJhwtbMu/LeD6s+M7fq3VtGVlynGy46GBgqhqCPCxxVv9HuiSGlWGeVBJisSk9nlHnyjwnEcjW2pGOGvskF/YIOE8qawRhDLfbWiYcqMSZCc/zu6HaneV6oGqg/KXOMxPIjUnIO8CHvGpZb3rgm6q9ADCfTbs+frxwZ8ce+7KXJ43IuD+w3grIcTj498NRxXHNv1cJMPUxzRB6Xa2p9MuNe8sdmKJOActvUFxpsUJEGIAJ2oEzTvjKsSED5yFezjcu2gm861VCqj8tYC2YnuUPlmGFVTKTFAe5xvbxeB9EWlGrzctyU2VxM8pKg2u0fQl1GKfNuepmF/ifyCRl6y6jGSN1ekfoIHkWY6t1gUJEMEU+2zisTXVKRPo6g37b0GRXFw1sbCWq2nP7pRnk5ePlDMu1Oh5R6xCncZ34PT6LmreN89AXxSkGDG+drn2X1g+FYbQMypvu10mJkoz2Lcbf7wJ7AKK8iZ7hBHMHrdQgjT4/lUa1sOZvbtU3hZfEzR+QGSmbbOWnxtSoRqBLYHAyZmLyAvzsSLYp9PAlDb8KKEOUGs
+ paqGhwi7
+ IjeL0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,31 +121,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a method to borrow the private queue data of the queue a `GenDisk` is
-associated with.
+Add a method to extract the command operation code from a request. The
+command is obtained by masking the lower bits of `cmd_flags` as defined by
+`REQ_OP_BITS`. This allows Rust block drivers to determine the type of
+operation being requested.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/gen_disk.rs | 6 ++++++
+ rust/kernel/block/mq/request.rs | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 8a22767f1b916..fbda2f572e17f 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -246,6 +246,12 @@ pub fn queue(&self) -> &RequestQueue<T> {
-         // SAFETY: By type invariant, self is a valid gendisk.
-         unsafe { RequestQueue::from_raw((*self.gendisk).queue) }
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index b49197a0c66d7..0dd329ae93dfc 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -78,6 +78,12 @@ pub(crate) unsafe fn aref_from_raw(ptr: *mut bindings::request) -> ARef<Self> {
+         unsafe { ARef::from_raw(NonNull::new_unchecked(ptr.cast())) }
      }
-+
-+    /// Get the queue data associated with this [`GenDisk`].
-+    pub fn queue_data(&self) -> <T::QueueData as ForeignOwnable>::Borrowed<'_> {
-+        // SAFETY: By type invariant, self is a valid gendisk.
-+        unsafe { T::QueueData::borrow((*(*self.gendisk).queue).queuedata) }
-+    }
- }
  
- // SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `Arc` to a
++    /// Get the command identifier for the request
++    pub fn command(&self) -> u32 {
++        // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
++        unsafe { (*self.0.get()).cmd_flags & ((1 << bindings::REQ_OP_BITS) - 1) }
++    }
++
+     /// Complete the request by scheduling `Operations::complete` for
+     /// execution.
+     ///
 
 -- 
 2.51.2
