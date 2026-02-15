@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11EC1E63F2D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9899BE63F2D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 04:10:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8FED6B00CF; Sun, 15 Feb 2026 18:45:05 -0500 (EST)
+	id 0B29D6B00A8; Sun, 15 Feb 2026 18:46:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4D606B00D1; Sun, 15 Feb 2026 18:45:05 -0500 (EST)
+	id 07E9B6B00E5; Sun, 15 Feb 2026 18:46:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62FD6B00D2; Sun, 15 Feb 2026 18:45:05 -0500 (EST)
+	id EDFBE6B00E6; Sun, 15 Feb 2026 18:46:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with SMTP id A26696B00CF
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:44:56 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1E271CB87
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:28 +0000 (UTC)
-X-FDA: 84448322616.27.3EBC468
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with SMTP id 6D6F16B00A8
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 18:42:47 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 14A4D5C464
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:21 +0000 (UTC)
+X-FDA: 84448317282.20.BD36BDE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 385ED1A0002
-	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:44:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fi7zEjiX;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 69BE24000B
+	for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:42:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kcb1swnd;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771199067;
+	s=arc-20220608; t=1771198939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y45GimgSyFTS6/f6eiBkkwFW5m/0ur2n20OP8/SCkSg=;
-	b=Fcdr4cQeUagErqpvpVtYM/52rXkADjKsWgt9qxye642CoYy+7d2VlsFvbhzr9reS+csbCD
-	rY/CAfBLBZVY77iisoe3kzFo+zzczOARiXmMZXB9e1/r83vZOISYkHwmda+6RsPu8g5UVI
-	2k5IUElhMrGJDLNr7mHtA5uWHGh7rdM=
+	bh=JcXX3vUhEqQ5NrV/azgBnZlnM18XBuR+5hXlbNd7xU0=;
+	b=eXUMIgZHz+6CR+lzmUXT/5m9XTF8UzJr/rFhB3u8ZmiNLqrx04s4N+A0cjzz3uV1/xez4r
+	WQaUpS7BfKa5ivfyhCsuB1zoPzLIVUnx8TynrVmjpjldjbZ4nLVd5otHB3QJrnAGUqC9AO
+	e6D93+QoxUoCz1AuIOP4OlVYo1ll6bY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fi7zEjiX;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kcb1swnd;
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771199067; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771198939; a=rsa-sha256;
 	cv=none;
-	b=GnEDM+nikPhTn3/aPulKhR2hTLdY34aRCEFfReLk22SBkcCPj3YJQRhgjdhLk96IGJlnSp
-	0x4TFQ+ySI9Wzpu6H8LFFWXOhfaffogxrIFrwouwyZK+SIOaoILpkRa31LTOEds7NV7nHr
-	2icA1/1qe+S3WAvT4u4hQqNboOuESfE=
+	b=k1Y2I27cMv7vFUR43I16076KR37dl34E/iS7TwQiAWV7e+r5wKa+eOPCcHbixf+DNefdUw
+	J0T0W9ry7LcSqy2Q2YmdXPXj7YXkKPaWHjl2ZLQrvrf0LZ4ul/P3WBKgVwVq9iBZ627d/M
+	i199N02wU4dcF+uIoCefydpcLMetHic=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C56C26013E;
-	Sun, 15 Feb 2026 23:44:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31973C4CEF7;
-	Sun, 15 Feb 2026 23:44:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E130A61119;
+	Sun, 15 Feb 2026 23:42:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350C8C4CEF7;
+	Sun, 15 Feb 2026 23:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771199066;
-	bh=enMteMP5s8/CfnF3wWbknhPBzI+BpA10sTDrdile/IM=;
+	s=k20201202; t=1771198938;
+	bh=6LAOeUSwUtS+ZAfhWOk/dU6VGMrvdfMVJxYHu0ElVWg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Fi7zEjiXHEcQox5CSzxIu8gEQJNU3drOgLK/ZCUnUl8SRgsygu9o8tlBmDwqzN7tC
-	 WWOO4630doCXhemOiYg7oNF2HkVI51FL87JWKO0/H31u+sIF/7pkYT9R+tPZKZmm5C
-	 Gj188GWSPqXoNqPlP6pRJacUEs/A1Abnb22H7f2WhTwJuJTZBSTV4gg8d10aVwyGgS
-	 5hJGDBtIgGONZoc4kRRhR358KqdtkaJJYrQJ4zqSLOQ/nwHjSZ4BP5sB9aMPuBxI6N
-	 WFeTuesNYUcZcYZO+xnMw702tACBpSU8Y3UdOToaPeyG0lu9yyBnQDd6WT3WrPBxM6
-	 IVjBwkbpuJlDQ==
+	b=kcb1swndbwEz60aKfQ99++Rx9ZSn4aB6GXhSvIWTAtBLl+Gei2BTtnc0kzm3a7S0/
+	 ZEFK3Z/FEEJBNBU/1853eTcF1/WaLL5LIzC5aL/DY5xSwYWNBVPmfhSlCsa7L1g0EA
+	 s2M9buM51ruySlwcLy82Ty4vaqCXrRc2Xd165o0hXHjbsqBwLpRYRbo4NUcyAa+zTG
+	 IOrz5tLX6DqRxU90SXXemi3PAyj1TiSpW2Bc1cdQUy13U9B+Iooibo5xtPJGa/hlyx
+	 krgIJqFyXDL+10P2EqvACbuSXgjkgWocQEBfYfbfLy+N+Xny7G/B4I4dNE8+ax/k7t
+	 ZIJOiPjGtEneg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Feb 2026 00:35:29 +0100
-Subject: [PATCH 42/79] block: rnull: add shared tags
+Date: Mon, 16 Feb 2026 00:35:06 +0100
+Subject: [PATCH 19/79] block: rust: mq: add max_hw_discard_sectors support
+ to GenDiskBuilder
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-rnull-v6-19-rc5-send-v1-42-de9a7af4b469@kernel.org>
+Message-Id: <20260216-rnull-v6-19-rc5-send-v1-19-de9a7af4b469@kernel.org>
 References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 In-Reply-To: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -89,30 +90,30 @@ Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5495; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=enMteMP5s8/CfnF3wWbknhPBzI+BpA10sTDrdile/IM=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklhBL064yZgPJ9mugO4wJgGrxE2244ynwHMHH
- zlYceC/FKuJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYQQAKCRDhuBo+eShj
- d5nHD/0ZLzSQ6fLnmrRaqZcDtZxnXn5I8kL8xB9CSs7SomzddSxg5j8EqpW5yTSUgmISr2dFH51
- K6ol+CRJQU0TUhxt6cONjzsdJUQPm1Uj/U4+2yhSvj5qoA1uhrw68M49v+XQ70f3IAWj8jukCwc
- crCE8EZqgAd7BBtAxM8g/0yHpTnZdODTIsbEOS0r5oKT4dJ3wuPDWzTw/qk2BlYK/sccOj8wLFJ
- 7Ah1FukNn1a921F1Ol+GUn7ZoHWV4XNImSRK/vF79N02eP8VsqvoIRbXpDgM6wsSN/iDmsxCxB8
- oLltq6SzHTb7D2bGrgkKN4Vby9JxE8mEpmDrrRiumUJ9nXPBbAmhZdchS+vgrIWMWscFzeDjy0k
- MnG6aHC7k9+FXMShBK2L3F+Lt9HzGkiknV79V0yLZp25awM1pZFXk+pFHyyJL8iu+9DNMpjo4gP
- ksm1M+bZtwiaclKVUIGRMMsCUG0oemikiJIyW6jaNrHMqRHdlzvK0ofkWd1MShzrbTs/pvM1yUf
- DEAWbp7M+t41QAppAgnT98WO8RI2jz7XVS99IDcCZu1hPxINxl/j1kEFD1Rau6O99fRYb0QXWu2
- MQ3jxj/5M8PdkSBMdU71L+5fv7p/+FiNhlkwnYnd4Qw5UyiWgwPd86SS6X7nIgXWGJZDNqVWe30
- x1YFdvqTGyvgVzg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2183; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=6LAOeUSwUtS+ZAfhWOk/dU6VGMrvdfMVJxYHu0ElVWg=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpklgtNy3HVqeMKx/bZtfhBvhyhrqQKDLf+61b+
+ q5GOgtGnQCJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZJYLQAKCRDhuBo+eShj
+ d9IBEADCxuBV98p4EeEhXjdQG5XWMxSpvLsVbj3M0E2kKiIwcrxpa9AJxkVUursKhIi9rUDxdXd
+ NGWZ8HSlmyqls7Y3hpUwFYndcQuW4nxAIZWt42FirgHrX0NCX16lx5I5/+eo+IiCe4ccRoHMgEq
+ 01JXhX/piAGvhuN76Mw1mnLR5cum7zQp7ycaIRJ4K4/UMpTsEF3OfLWykGYO5K0WPyk+KEbqEm9
+ sgiwnrbXmxW/bSIdx/1FPpb3hBkpCM2zn63p7d5iA80VcNj7gIlcujiu0fHe1Y1ReypylwCgQzs
+ P1D7ypmft0pyj6sUvKE3DpC5IP5Mw4drtUI1vuNg3gA4679X3QodH4030qzOSKOZc365A865dmg
+ GfRFkfTBC+7EpHTNS5k5/Yxjv9Gm3kF86NLFSsIKsceTL94/dhP3rKEwbkzqG6HmyS7Bv/kF0RB
+ 5QkWfbIieVe+VA5YZz8BywbkcyjaDfWQG7QKSXjZywbVUM/iU6+1Mw/RCtFmSaB8sNcGTKLIQ+H
+ 9ECe9/cLh7S9dHdjxSGMNER1PxwGSyywJRieit8ZRWY1dplVI1K+zBzDgYH9mNOTOSODhSau8rs
+ gpAckvS/+VSaabzfijTBrBxcN45a6FbRcjIFeDm1mzmlEjyk1hONveYVeINnK3BBzTQXtb3VABW
+ l0QslnlC7NVHN2g==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: t5rjaxkgddjmsbn9mib9xg1fuyji9qo8
-X-Rspamd-Queue-Id: 385ED1A0002
+X-Stat-Signature: 33qd6c69fikq5673p5ckyenmhure76g9
+X-Rspamd-Queue-Id: 69BE24000B
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1771199067-378236
-X-HE-Meta: U2FsdGVkX1+R8BQCTScAiOuVUCNh4jPoX8KkV/WClBIKGZzs2uEkjCoGv1J7hxt99bFSYvLOamuS/UtuAKJz42KFvbhDQCYzlSQrm3hDAxYsLIhs9WsTp8G6DYU7aDNgm822yNxR1gZA4dm/60CU4t/bKi7Gyc0dv9/Lh3UnD/Z8n81p+g4Y8EtY10qOGCob7LEzMfj8Kfs3QarDimhcC4Q+jATAmDUWL2Y5x8eSVcPNAJWC5zJqQ63KIS6YPXnJMUn50ZzLoaJandrdaBmJ/TQp/gh90yOXRTu+DboQsnb6m1NuX1Ju2JYqYuOP+FytoGIxJR45+yZHCxgmkf40nbL7Ho6JfJNL6POePhUgCrFyMwenSIH0wRNU08W7NXcsv4iSWRKWR7EHvvGuLe6TiSTG/FS1rwuZpqZEFstRHydIBVSxAbB4sqr+V3zllD6/O3X3s7lQlhKn+IEv+OMzaDvOhqAi1mMEs6+BdnUF5Hq0YrHkHMa0Q5ACu4exDj9WBDn8ZfTr6QhBK0/Owc+p+58hX07NvCgq1sLA4RyAvrNJIl/A/oZhKC44vNRbVorBGA8/3tYzA0nS60+OGyOTE2QU5BR+Cukp+a6VFMX3UTpdzx+zwMpKjP5Ui53Gjnzcy6zQ+OIXRp+SnjQg6hFlxVC0iPnkwSZEvjlB97YxtaRo4yDEVt7q4SUjRwM9eQiC6EcDCsj+JxpkvlFb9IbcR8j7XgFVLoKLvwb1j433nDPJoHPkqRNWha4qXLrmKneW/a/Q0Iazt7lSt8P+j576QenjbtGRXIF199etVHTVltdHxKANlEtu8ShvIHWkloD7v1TQaA1l5vUFxYgWmbuaUB3ZSJrTAAwFQu1ISTGBrt0zN7lLp/Ibr3Zl0gHcm9JYUOF/aVQbYNWeRoi4lj1SECVsNV4NwvVcmCTiZnSI/FM3GzFA8Esw6vgw7NmX9sPJ9Zp1R1B4kmjrsaYQhw8
- xvcYp/vr
- Xg0b0vNCwUN5NwPTuuv45oeAwzBGTbOCxMkT7xp2VjNbfCAYivJDykMWel8mn9AA1l7sHurhTXn6h9O8y9MN/8dEaRLjPVddF9KbniAEb+KwZ+hw+3SvWTXSpkeHkb6Vtw0U95p3Y8UecRghq4YNCzSeqTud70JUv4SX1BXmv8XQ5ZHwDLrFq69ihIzj9Z29bLupyXUwd3YHmxE5CPQrF9rJou9k0HdZVeeycbFV7tT00hoktU8cCMQmSeOG2IqfTp/yEVCvtVVTbyOjWa4FiQGI77t7dWXBQD9g3Q+dijzyyoG9Z8zwnoFjX7LcfSDYyvcre
+X-HE-Tag: 1771198939-406625
+X-HE-Meta: U2FsdGVkX1+6r1d0diDkkURghkV/H4RGwSeBsJcjPZdsLvYj2prpT/A1Zy9Ps7917lZzYYXJPeYwRJgQE3AXbE1sowocdO/5EGDUtyuGqcyuqLpTzMiu9HszcBxAAj1WnFH0GT1Uq2Cq5F2q+EGOjpGtsOd6sEn6tGaY7qCDzYBhR3nLo0hd5tmWAXl4EyraOJy+6BOhmwjG7HWjBVHXNBtENVQFjThsjZJSQmUtempBKwChdaiQJA1kOwFtsTcQWg1Uy4/k6KUGdLs4uEoPWUf5TFtJvhx+DLWUtQO6RKQB8KT05DK0crIzylc2X3ph9ijZQjEAR8gbUnuSv+tU0Noiq3Np4IEJkDJoN5uh2iNeokgTmMucQjpJKulVCRZaYl/ryZ58aP/YpiMIs8URAai9FhFioEnck8NAJS2BvKE1owSsuHxuKeeCkvhK8LdZVYmXUQQVWIobdFyVlrZ72z7NxB7bUVsslWzEp4es1r+fBs6w97YhyGGI9liUis8CG7qWMQ88bqw644Sr+zNMOdsjFuvm2uXQDznfux7JXWJ6PMQrAqfEQhYt3dR4tbI+gSl8hNRdoHSZAT+yg3aOG3wcKHgzoFPRAvSmL1JK0/JmT/D+rDx53+rAPYBMt/4vwhwHgZnH+cJkS2u+FJDp6bo6WiPf5kRKd+76IS3IHnOHf0UzArilom+W3PJayhZqVc5bIAjUphX2DHZqbpOwfMuF4DUi1hCj3TqtdL0ubQNhJKAPGY+Qp9LW4yOx6eTpcJn5CBsZTPgi+zYZAmeskE/fBtiSmC9cMJQi7eMGOcxr66gAdQMXB3yvx9cvwGY1eSPHf9a9roOeB+APZDafIShmQbmRclMvVJEOA1DyrNjQK6zDJaE2L0QjunOYZZlmUGmQ2DGeOY1Ed6s/9OpzfcfOY7x9WJh7joJzVhGtRcheuFL6rGKdjEHJIyIffx17+uJ9ssVRQBoDkbW0DZx
+ vqrVge0/
+ Z2AYHtGDX09YuG7/8v5lVB1PaMPVYP1mmeKLmXqwWN6X/NqqxCYlLdzHlhg/ZAOWky8PeDBhYJw7O5LfE87ZDSmOZ/Jhvini7uiUFS9WPUINv5H3AXIfgRPcgGdA5TUOSMPkWai/P0mt7t52ql8MSjUMBNOyycvYSliHib0CbIkIiN0Dh5u1LFgCMRghUqA9oRR37Z6rT4lQvp5FXerBAchN35YbZgjwHd5ljqSqO0BuFSgzGZkZR8vuSs3CbFax5Hhq1Kq+aTZM9MsrjuRGJbOivWiAI47EGVy/AgrSMvJ4ZOpgjjDTHH80bGI9aG8O20DpC3yM1PjUfYlo+m4RRzM6j4AZoF5ndtQpSqnA9ZDO9oU4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,150 +122,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for sharing tags between multiple rnull devices. When
-enabled via the `shared_tags` configfs attribute, all devices in the
-group share a single tag set, reducing memory usage.
+Add support for configuring the maximum hardware discard sectors
+through GenDiskBuilder. This allows block devices to specify their
+discard/trim capabilities.
 
-This feature requires creating a shared `TagSet` that can be referenced
-by multiple devices.
+Setting this value to 0 (the default) indicates that discard is not
+supported by the device. Non-zero values specify the maximum number
+of sectors that can be discarded in a single operation.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |  7 ++++++-
- drivers/block/rnull/rnull.rs    | 25 +++++++++++++++++++++----
- rust/kernel/block/mq/tag_set.rs |  6 ++++++
- 3 files changed, 33 insertions(+), 5 deletions(-)
+ rust/kernel/block/mq/gen_disk.rs | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 640e3de230c0a..d1a70fe030cb2 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -70,7 +70,7 @@ impl AttributeOperations<0> for Config {
-         let mut writer = kernel::str::Formatter::new(page);
-         writer.write_str(
-             "blocksize,size,rotational,irqmode,completion_nsec,memory_backed\
--             submit_queues,use_per_node_hctx,discard,blocking\n",
-+             submit_queues,use_per_node_hctx,discard,blocking,shared_tags\n",
-         )?;
-         Ok(writer.bytes_written())
-     }
-@@ -107,6 +107,7 @@ fn make_group(
-                 cache_size_mib: 15,
-                 mbps: 16,
-                 blocking: 17,
-+                shared_tags: 18,
-             ],
-         };
- 
-@@ -140,6 +141,7 @@ fn make_group(
-                     cache_size_mib: 0,
-                     mbps: 0,
-                     blocking: false,
-+                    shared_tags: false,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -206,6 +208,7 @@ struct DeviceConfigInner {
-     disk_storage: Arc<DiskStorage>,
-     mbps: u32,
-     blocking: bool,
-+    shared_tags: bool,
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 1ce815c8cdab0..75968d6a57639 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -25,6 +25,7 @@ pub struct GenDiskBuilder {
+     logical_block_size: u32,
+     physical_block_size: u32,
+     capacity_sectors: u64,
++    max_hw_discard_sectors: u32,
  }
  
- #[vtable]
-@@ -247,6 +250,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 storage: guard.disk_storage.clone(),
-                 bandwidth_limit: u64::from(guard.mbps) * 2u64.pow(20),
-                 blocking: guard.blocking,
-+                shared_tags: guard.shared_tags,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -467,3 +471,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- 
- configfs_simple_field!(DeviceConfig, 16, mbps, u32);
- configfs_simple_bool_field!(DeviceConfig, 17, blocking);
-+configfs_simple_bool_field!(DeviceConfig, 18, shared_tags);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index cfc00c104d9ca..84e75a7042214 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -145,6 +145,10 @@
-             default: 0,
-             description: "Register as a blocking blk-mq driver device",
-         },
-+        shared_tags: u8 {
-+            default: 0,
-+            description: "Share tag set between devices for blk-mq",
-+        },
-     },
- }
- 
-@@ -192,6 +196,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     storage: Arc::pin_init(DiskStorage::new(0, block_size as usize), GFP_KERNEL)?,
-                     bandwidth_limit: u64::from(*module_parameters::mbps.value()) * 2u64.pow(20),
-                     blocking: *module_parameters::blocking.value() != 0,
-+                    shared_tags: *module_parameters::shared_tags.value() != 0,
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -224,8 +229,11 @@ struct NullBlkOptions<'a> {
-     storage: Arc<DiskStorage>,
-     bandwidth_limit: u64,
-     blocking: bool,
-+    shared_tags: bool,
- }
- 
-+static SHARED_TAG_SET: SetOnce<Arc<TagSet<NullBlkDevice>>> = SetOnce::new();
-+
- #[pin_data]
- struct NullBlkDevice {
-     storage: Arc<DiskStorage>,
-@@ -267,6 +275,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             storage,
-             bandwidth_limit,
-             blocking,
-+            shared_tags,
-         } = options;
- 
-         let mut flags = mq::tag_set::Flags::default();
-@@ -286,10 +295,18 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             return Err(code::EINVAL);
+ impl Default for GenDiskBuilder {
+@@ -34,6 +35,7 @@ fn default() -> Self {
+             logical_block_size: bindings::PAGE_SIZE as u32,
+             physical_block_size: bindings::PAGE_SIZE as u32,
+             capacity_sectors: 0,
++            max_hw_discard_sectors: 0,
          }
- 
--        let tagset = Arc::pin_init(
--            TagSet::new(submit_queues, (), 256, 1, home_node, flags),
--            GFP_KERNEL,
--        )?;
-+        let tagset_ctor = || -> Result<Arc<_>> {
-+            Arc::pin_init(
-+                TagSet::new(submit_queues, (), 256, 1, home_node, flags),
-+                GFP_KERNEL,
-+            )
-+        };
-+
-+        let tagset = if shared_tags {
-+            SHARED_TAG_SET.as_ref_or_populate_with(tagset_ctor)?.clone()
-+        } else {
-+            tagset_ctor()?
-+        };
- 
-         let queue_data = Arc::try_pin_init(
-             try_pin_init!(Self {
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index f18b51e5217fe..600c9c6249123 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -106,3 +106,9 @@ fn drop(self: Pin<&mut Self>) {
-         unsafe { T::TagSetData::from_foreign(tagset_data) };
      }
  }
+@@ -94,6 +96,16 @@ pub fn capacity_sectors(mut self, capacity: u64) -> Self {
+         self
+     }
+ 
++    /// Set the maximum amount of sectors the underlying hardware device can
++    /// discard/trim in a single operation.
++    ///
++    /// Setting 0 (default) here will cause the disk to report discard not
++    /// supported.
++    pub fn max_hw_discard_sectors(mut self, max_hw_discard_sectors: u32) -> Self {
++        self.max_hw_discard_sectors = max_hw_discard_sectors;
++        self
++    }
 +
-+// SAFETY: It is safe to transfer ownership of `TagSet` across thread boundaries.
-+unsafe impl<T: Operations> Sync for TagSet<T> {}
-+
-+// SAFETY: It is safe to share references to `TagSet` across thread boundaries.
-+unsafe impl<T: Operations> Send for TagSet<T> {}
+     /// Build a new `GenDisk` and add it to the VFS.
+     pub fn build<T: Operations>(
+         self,
+@@ -112,6 +124,7 @@ pub fn build<T: Operations>(
+ 
+         lim.logical_block_size = self.logical_block_size;
+         lim.physical_block_size = self.physical_block_size;
++        lim.max_hw_discard_sectors = self.max_hw_discard_sectors;
+         if self.rotational {
+             lim.features = bindings::BLK_FEAT_ROTATIONAL;
+         }
 
 -- 
 2.51.2
