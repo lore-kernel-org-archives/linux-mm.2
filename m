@@ -4,135 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2628BE81A3A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:55:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBC97E81A3D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:57:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 816176B0088; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
+	id 1F9B16B0088; Mon, 16 Feb 2026 10:57:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C3F36B0089; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
+	id 1A7AD6B0089; Mon, 16 Feb 2026 10:57:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698766B008A; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
+	id 089E26B008A; Mon, 16 Feb 2026 10:57:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 52F796B0088
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC58E5D642
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:55:45 +0000 (UTC)
-X-FDA: 84450770250.21.DACC824
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 28F2240003
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:55:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bLN5Tvhh;
-	spf=pass (imf27.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771257344;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E802B6B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:57:49 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A3FE1A0E14
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:57:49 +0000 (UTC)
+X-FDA: 84450775458.26.1222FD1
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AB61E140009
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:57:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm3 header.b="jNP6/UIn";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=BdzMv320;
+	spf=pass (imf26.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=andres@anarazel.de;
+	dmarc=pass (policy=none) header.from=anarazel.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771257467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
-	b=BFoRKILP4bl1cvFT4sKXddk8yms6AK8dLrQTCOnsBbEmBDfGnFRyBUJsTBfUjnXywsCPLf
-	6tyY39HBNj9Ca2MdQ4mLj0Y8fvvnsGGLAxc/9dJ7bWo4lB465HTCOxqcciXOq0miW2qnBP
-	dJ6IcEyNPkC6To0X8XcQ7KaF0LfEo5c=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bLN5Tvhh;
-	spf=pass (imf27.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771257344; a=rsa-sha256;
-	cv=pass;
-	b=faDcVUfUSXZOt3Yl9j0IrzIlG02y14jc1SumGDkgmisy2bHNQGWV4R8H+dAamsjGU2sJUN
-	Ykp8GuLz0/5K6dc+goFoIQQSKAbCP1zlfsyih40ICRYUVfjYy/Cpbaiti46L160lfqxhvb
-	J04ynay4PHNOUbTluVJmY11uFaIOf/s=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-794f701a3e6so27581617b3.2
-        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:55:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771257343; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RQYkbh+ZYYbnL7RV0Bi1KjJ1mtNZhSOqQqHdPbKKo6BZUK0TMKwHb+29BVTxXUv90t
-         9IYVTwFRMEDjmlg7+rjDwcrIlPNd5QSBActmTdg3rV0xS5nNfqCfyAbQz+sBwU8P4UEg
-         aDkEA0lt+bYXzI+Q4AJTwNugu41inKuJsGhCEUD3RGXY3v8Pcfu5KHVprhcydT7jOtQV
-         1FwAO3t2rPRIqeEs81jlv/HrxRUgsdGM4HDtFrqXdpSTorYv/1y3VPiXLOL+GLPBhqwg
-         kj8i72uU1b8gQ51kOeoiNRLH1GVynZmF3VvhTUpG5UP93fA5i5ZFzS20ow9wzFf8a5eV
-         gOag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
-        fh=vAlsdeQ0claFi8Luh6HhaV7kQqIadKQw6M100Do9cz8=;
-        b=fTojdhkMiVOffB0FeNk0AtcRXBudehtPcwq78Blq/pvmGuz0DiUfwZETyyEin5NAab
-         gsk5JW8GHTn+nNSqZ56GtwxLoEj+QZPMe25zWLKiKJCeKym+sbJdieqRD9WbL+obSyqG
-         TwySauah357X1GBEQER0/pYqUYo45xjssa0S9jUS0dqnarPy6awoaq7+xFjyjZSupBt7
-         UU4MK53vEuZqwV6mjhyqkDyDHNJq6iJW3Gmkpr7bdfbK8c09+nGmtcyB0gzsQG57DuXS
-         BgmqaNufKKX5TI3MrAw943CSS8t6L3hR1KaiTWRueUfikXrhhThGdKoR54fqzVyHUSBt
-         fiyw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771257343; x=1771862143; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
-        b=bLN5TvhhgM6SACzc9gsQI44OcxerVfr20YVle/ToV7MRR9j/HNCWTPTNCxpbq627dz
-         xzpzru8v8uVN4SmUWfoD9YPxs8edbYKzNI5AJOqyw6kX54MXDQ3yegVrhxDDJInlYm7O
-         qYQt2kWFN3KooLrwhGQQtG1x3BXq4NFFwW0WkDinpp6HWQmtClNxgl7C+k8FCjiIfYW/
-         dR1jZ4r7P032uZiCObsbX+ltQHo+8ol4n7LEn66gJz8nY/O7P8HAWLjG6KM3cKYY+Yuh
-         kbVXfAW6PWNpQoHZk5GocDcNMyn9/HjLpxhCTVrY4cxl2hT4RHbQAGUmF2eA0EkBdyfV
-         Va3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771257343; x=1771862143;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
-        b=ZRPPKay182Hu7rU36Ol+FdEZHICsWjE+Dd4Mpvkx3U/VRJ85FXrrcReqo66uRmKkp0
-         I5d493ZswZy4N9gfjY9/YVYbf4E2ErngLgyeiy6IKFCO0w5hflcFAQMvVVJv87WwYdqa
-         QaFxEsQb3OzvNk8NCuz/r33jvSfDn/7M6DMuzOio2+vw3aNseWnKY8XihmslXjJyPY+a
-         ByYAnDBo0+QVU/zX76JkVJxKKFVm3Lww6TZUNezb1wbCbM5emROjYXL5kqQXiBxWfx0I
-         HLYinlh9wURpY3ERA5+L5jBzOIBL8WfvZTO3vP6Hxrib3DuJ/qFkjMZLYCudgM6Kf+Xd
-         xFEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ7UfpXPr57GJuVHjuNFr/LS3Vq3Ltw/HKc9aAQT58uf1sx4k2upjDOJiaNsRtD6jKQpl4b1rZHA==@kvack.org
-X-Gm-Message-State: AOJu0YyHr7UYYNKDZxO+Gq5PzYnwpRe+ZJuuROVfKEiwwO33LcL/LRpd
-	5pu81cGo31wm56aGhDXquRVjj4bGEpoOITVmuhXEppJ37UhtxkUWRXe/OnejuwZAkrJOwNw65hj
-	BaoZ9Q9i3eEwTcjjDjG6j3VyoFkdu6W0=
-X-Gm-Gg: AZuq6aLEemHYP7174hi6MF081bdqSb8936mPDI/vvXRT900Su+pWRfA7+USJpLpXADS
-	me3oVGDGn/t/hvbtodM0+ncNEFur0dSGJfTojcQVI4CQUHQt7fLPIQAOnDlAmcWGGxkcwhmJGOL
-	QmyVCWbp2SK7DzA3w48axG6i5zwAZ30FFDk9tNz9/5b5aqFh1tgckMVImVkvagRL+54llYETA/n
-	XFNdgcm4OQogYmTFtVZdyZppGKpwrGjGJ7x2EXeo/u1q61V9JrZwGKEaKoymXk0No8i5c9YgvBE
-	zNgeLrgi
-X-Received: by 2002:a05:690c:2606:b0:795:15e8:8a08 with SMTP id
- 00721157ae682-797a0bf98c3mr85736567b3.16.1771257343063; Mon, 16 Feb 2026
- 07:55:43 -0800 (PST)
+	bh=8ny6L3zkCfX0j47xfHrpkoxrxspJzdvPThy0B9HOMh4=;
+	b=IPWXxjB/MFweHiB+lzJLcIU3D8zMCynBJn4JPiBXkZpBmK9ylieL66bXwLeXI3LHDatUAx
+	zZKpzGQMkqv29J7eXEHnRQR562MqtbC2Foi0J02qMYJkv7mlrf5VUxcA74/krp/I6VGCbG
+	inGz0axB186NPMVwUHxO8kfGRXfh2jw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm3 header.b="jNP6/UIn";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=BdzMv320;
+	spf=pass (imf26.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.159 as permitted sender) smtp.mailfrom=andres@anarazel.de;
+	dmarc=pass (policy=none) header.from=anarazel.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771257467; a=rsa-sha256;
+	cv=none;
+	b=T2qPMiLzgfrwer3R0I3POuAYBB7d8cWTD/tyr4qvz37vGIdC2q5SUPJyVYLuGro3d1Obom
+	P/yW7LLQ/HiSwuuAPGkdFp4UUj/0lEuUNH8x6Wg8rAg2B9FJkA9TOfsWrcSTjAgcbyGo8u
+	RZEJMq3Kn56G1jZiZlLRt8EPddUSAIs=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7253A7A017A;
+	Mon, 16 Feb 2026 10:57:46 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 16 Feb 2026 10:57:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1771257466; x=1771343866; bh=8ny6L3zkCf
+	X0j47xfHrpkoxrxspJzdvPThy0B9HOMh4=; b=jNP6/UIn5h67c4pHOIJt6WcBFQ
+	3Ez9eAHvBKjWUSGOP4z1rJU0bZDj72VpXbJqJ19zf6F/UO0VdFXizuY4co3ti2T9
+	CsDdHZr8YznwA16hnBSinl23TMH9oth63/L6WVm4PO1OiUzxakZ3Zb6ROdyb9yM7
+	4o1eD8VZ5vXcZEQDCUWD6TfPu0s0hDVlGOqQNUGy2KXipcxLg+01VwCbRRyAW2lm
+	lKlz41EngtphONWUuwGvlEj7Nset88WpvMccOofU9A06fy6roLH9czpXEHQYUhsW
+	ziKTnS9Z4Ifp8a2oT6BO2cscSBwXXhX6WzMfUE/+EEnKibNzNZruRgWAmebw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1771257466; x=1771343866; bh=8ny6L3zkCfX0j47xfHrpkoxrxspJzdvPThy
+	0B9HOMh4=; b=BdzMv320tFvUAITz5K7ZBbhslwF0II4hV0vFg0VgmUMLJrWN+a3
+	rC32xlNR88mYbvbOuelZmvsDlY42gj3KWMsSFSupy9iyiPvAzk+qEO6ma5kYQA+Z
+	gh+sC8QShDOhwn9kIMU29pnNE4TFZJlBezaImBVzhEXHmIULUlj5Hp565a0kcgDo
+	yrU/ZPgr/rgMwcotIMPOOsDhbs3OT6WYqN6KUqbAmSkjwhg2FiFFvbPIlImv8VPI
+	Ezi7dkiVb2sizvwRUTTRueZgZ/sdTHU6NOCxTeq/j0vpLZfubh3NJJMYGvYM0Gm9
+	axnEf2iw38s0sbV/vKASyWq+2Ja4ZrP+C6w==
+X-ME-Sender: <xms:eT6TaYhy7ZiIUMNV9o5zAxxBmLsgQ-F0vPzNVDppUIY-4mPVavQg0A>
+    <xme:eT6TaX9RQwxh4SJ0Z-Qh42ytjdQ5z27PsbfnK7H5uNwbGqR-bMc3_EiJRQ6FNJzs0
+    wigUHEjKXN69XL2mOVzIMZeT9A9G8eoDM5w7xYX1hqP7z2I8IRbCQ>
+X-ME-Received: <xmr:eT6TaVIf5ahnHo_4mr99E4_Qc3ozO5CRvGpwHgIp8cscheAJayHWW9Jukn5rm39hE2-qbg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudejvdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomheptehnughrvghs
+    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrfgrth
+    htvghrnhepheeiudduuedvleetjedujeffgeeiueevgeehjedtgeehueekledthfelhefh
+    geelnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvshesrghnrghrrgiivghlrdgu
+    vgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hrihhtvghshhdrlhhishhtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfihilhhlhies
+    ihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegujhifohhngheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepmhgtghhrohhfsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehprghnkhgrjhdrrh
+    grghhhrghvsehlihhnuhigrdguvghvpdhrtghpthhtohepohhjrghsfihinheslhhinhhu
+    gidrihgsmhdrtghomhdprhgtphhtthhopehlshhfqdhptgeslhhishhtshdrlhhinhhugi
+    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohephhgthheslhhsthdruggv
+X-ME-Proxy: <xmx:eT6TaQY6AOTmuO-eiDc2jyfM8Qa83v5y5WghAv_duMKrl_625G_eow>
+    <xmx:eT6TaQgNIRQ4QYpWgiLXRkrs7g6kWwRJytm6vJeR7oZUbk3d1nRzbA>
+    <xmx:eT6Tad6T-bM66v1fbCzXuMHeZUNnv_OpR1gFDTASS_eYK6jsRj3i2w>
+    <xmx:eT6TaQqyEeQ8IlZfnoHLXgIKu_lJdfCKwvXF6vyd9E2tiSn7YtxT1g>
+    <xmx:ej6Taf5s9cJOCvzk2wAxZZHwlzUlaswk1VbSZywx80cTTUpeVNnqhVE3>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Feb 2026 10:57:45 -0500 (EST)
+Date: Mon, 16 Feb 2026 10:57:44 -0500
+From: Andres Freund <andres@anarazel.de>
+To: Jan Kara <jack@suse.cz>
+Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>, 
+	Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
+	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, ritesh.list@gmail.com, 
+	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
+	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <fh3hxyhoezqzcsabqjr2glft2uvrx5bkyx6pejek3uskpm5ow4@zym4kmg5o2bm>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
 MIME-Version: 1.0
-References: <20260214084514.2842745-1-haowenchao22@gmail.com> <aZMoQw-86_FtUvLU@casper.infradead.org>
-In-Reply-To: <aZMoQw-86_FtUvLU@casper.infradead.org>
-From: Wenchao Hao <haowenchao22@gmail.com>
-Date: Mon, 16 Feb 2026 23:55:31 +0800
-X-Gm-Features: AaiRm51KD8ke76MeCQCtufCwLmalDJ2FNTUwXvE7u9dyzD1mLpvwzn203IhKnEc
-Message-ID: <CAOptpSMXu384dbhAeUhRVpaqG-zACfSn22dOpyhs1rD=v9+MOg@mail.gmail.com>
-Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous pages
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 28F2240003
-X-Stat-Signature: q6ygzqte88kq9twxun34rs5yg4xc1dr5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
+X-Stat-Signature: h4fczk3uo7atxqba41o4b58bedray9gu
+X-Rspamd-Queue-Id: AB61E140009
 X-Rspam-User: 
-X-HE-Tag: 1771257343-754983
-X-HE-Meta: U2FsdGVkX1+xyFqXwhkzXEUugy3cviayLmg7pjzyHmcejMTS1fmdtYwSulsPexxuiJbk8FeANRYR9NRB5+p0wiXb7FGL9SATMz2xlZvNwMG7zmggmDlGQ/W+a4Mof73uxJ1fmTm/acGJ+R2qFmTZVlWdKrIjpaKvSprYHWV677aGb5JjRUZs7TgxHMpElfIW+M+tCDIK7cYSA4U5FZDwJ3N0IgUFstTMLoQTdZbPUUsQBTtDtQoTMmctEgObKIU/odS+4pdh/RrUxonAQC/FbSNnyIVx5u6CnqVgGgihIYdqdlPrvRyDGqB9W6OVQg2aucZiXZs2INAEBbqTVc8/m7/lfDLXOQNH4yU1UCvgO6eZHgNhPXXJi/jNJSOPT+Dtwon5yY7ZOkDdSuGl25nlJUgCK8jY5igSxtNmfWBQMNe+m/ZnstW0o7pQnjN/LSml4TdjLNaGf8TwY3EPc6RWJ4CGrQ+F0plfqEmHD/JSGak8rU/b/Te0d8U/oDE8ny0F0NfhonnIGzl94oMt5NkaVJHqtuoBv40u1nUz0vAU2dG7B8VmH3cJms1ePLNa+YHEcuGO71tATyKq69VyB970Fjus0B3tDPL5zYwVvWCgXXbpWbX6Tizxl/ie2n5ZOUuH7zJLV0q5g5o9ErvmoLhxA5ftY7Hvua5eKfF3y3SZuf/no7TnD7bDG21+CndQj5wO2JxZWoFdLx07/l7shTOEyGSpR4uccOxuuulTpuT0vYVhvPKm41rK9xEAJa4dfsFwkHB8vRxNCh2V6xz3TbtmX6dv8m2Tr/TKTnAHg2lR6nMxNyigl0G2fAW2ZHaPSmAVHsx2mJ51ejYC6c96UJDMjsy3GsBmYu4FCDPfc8DTIAL9mN3xvGNhAb/6/FP0fUf3iXcRJHhje/8nQDiOcesZ9J+h+tlE8soFHgv0OQ3dQ4i0KkxISfU/fn8yhYvLNM77D9jtx2Nr1bKdUcTVu+0
- CSqMdb6J
- fjz+3yKEKduVbMFKugexB90lC3oFx5D3tjm23xfJf+rFHATAtL8beoQeLcQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771257467-440621
+X-HE-Meta: U2FsdGVkX1/uvVeAPSovC0UVVhQxTGAfp5Z4CDEQtsQ+TKpmbXGL1HUNVt9sgvLp3hos84mrpQ6ExEvL8kOrriLoyQeDKHQu5B9crgVvTUcdPV6lIVmgQPCOnjUHbQnzJ1yriSxboV4yhKGExusa3LEAHpF6StmNvbLcJJ/2tuaUjJkib6/LdokSstGkc7NlAJn5xTtqLuS8XRMZ6uQaNehXygLu811iStykJRA+1pWEqi9KTqV2sv69ed+PKUmzdclIfQotR9+R6beWNO/udIG+OV1T3Mzt9gEMWVQ4XHyKqOp+4i0sXx0GT0/78F88CHLh79Tgw5OFiALUkatj4POSeVs+hPqvD/IbRTPrdL8SyLfuFhwOjfsvW3PZqGfulxNxon44VJ92EH6650+k835qibjezLdhYm2751t+NSG1vMGfOHYa15uc0NFIQgffCwFjNwZ5ae3kNyOqb6tZdfNo2vuPno/4vUHs6vWpbe0aahuzGvrwJkBs+JHdLStNBj3otEdR8Y/xvAkSM45SRCD0Mnx4I4YiY+y7TwH96TMh7DVdsIRssBIc0gRgCI9n7GyIiPXzCPmoeJnN9vnBKogouMT5m4Q6NGs1CaSlyHmtVQIz/ebwh+8Vy4WpdL93d2e5b4LSP5Bk7Im1jDb6Xfzaw2TgbQ/snB2R+erJ0BrVnx1JM7IcrHNAJiu9u50pGaP7p2eeYetu8ScJZk1I9RYQ5hQ9/7OF4oVSLz7ZA7VtqaSv3wfMCyLN+oUYmlM6vHpMIkNEOaKsz2ynSaBV9EEHu0VrqFFw66kydAUUaVICRTVR5AOqGa6kS+5FpZt0zhh2MRNRxA3XnZxycjLCV/TNZz5/xGDkGvQcznjaTNZTYN79idHdU8wNsyIlqhVRMAEgbd7GVsLxdnd8rIF6ZL+fEPgBMIXroINOo9nZcPyZCeN6ILkMCbdWwz5uPJ4lbVjOOzggx4PVagq0TKf
+ 60GtKwEQ
+ Ty8H8DeLSvzbnhRT05i/8G7ho00GXpzu7JLkbACQoHkjNKJYYc0iLe6J3W07f3u8exw3DeK6FSZcnldXG8zJ9bBNL6flo0aUelz3cMSNVmW4OnNgHegiloHuKH2Yynn9B2txF9sNGE7PntoR0VL7VJE6kmYtBI8IxLzFZn/3ZVTZmN6DInY05yoIhVyAgKVBrR+PdVHyieItn5ben+/wM3odXGw3WnY4u3x7lcUaIKxlSRnL4mciapyYq3c2XPdYyyWn3Pw+4uckFogXNHex1k2oLanNvOKmFy3b2qkkKHxIbpl7K49ENomtal4qFoShhzIq3+fkmDw/HHPJfUO+y9cWZNjncJc7sGnKOk2GFoCa3g4OGkMLWbWdFm2QHXBXZNtAf5HOrhOF+jAqzkErDzld+UzlxvPRSHp2m4pf+8vZc8kAj4hlEP8zGFyOEI67y9/+eT1msBCrb4/s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,73 +139,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 10:23=E2=80=AFPM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Sat, Feb 14, 2026 at 04:45:14PM +0800, Wenchao Hao wrote:
-> > Add kernel command line option "count_zero_page" to track anonymous pag=
-es
-> > have been allocated and mapped to userspace but zero-filled.
+Hi,
+
+On 2026-02-16 12:38:59 +0100, Jan Kara wrote:
+> On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
+> > Another thing that came up is to consider using write through semantics
+> > for buffered atomic writes, where we are able to transition page to
+> > writeback state immediately after the write and avoid any other users to
+> > modify the data till writeback completes. This might affect performance
+> > since we won't be able to batch similar atomic IOs but maybe
+> > applications like postgres would not mind this too much. If we go with
+> > this approach, we will be able to avoid worrying too much about other
+> > users changing atomic data underneath us.
 > >
-> > This feature is mainly used to debug large folio mechanism, which
-> > pre-allocates and map more pages than actually needed, leading to memor=
-y
-> > waste from unaccessed pages.
+> > An argument against this however is that it is user's responsibility to
+> > not do non atomic IO over an atomic range and this shall be considered a
+> > userspace usage error. This is similar to how there are ways users can
+> > tear a dio if they perform overlapping writes. [1].
 >
-> Why are you trying to get this upstream when you admitted in an earlier
-> email this is just for your internal use?
+> Yes, I was wondering whether the write-through semantics would make sense
+> as well.
+
+As outlined in
+https://lore.kernel.org/all/zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s/
+that is something that would be useful for postgres even orthogonally to
+atomic writes.
+
+If this were the path to go with, I'd suggest adding an RWF_WRITETHROUGH and
+requiring it to be set when using RWF_ATOMIC on an buffered write. That way,
+if the kernel were to eventually support buffered atomic writes without
+immediate writeback, the semantics to userspace wouldn't suddenly change.
+
+
+> Intuitively it should make things simpler because you could
+> practially reuse the atomic DIO write path. Only that you'd first copy
+> data into the page cache and issue dio write from those folios. No need for
+> special tracking of which folios actually belong together in atomic write,
+> no need for cluttering standard folio writeback path, in case atomic write
+> cannot happen (e.g. because you cannot allocate appropriately aligned
+> blocks) you get the error back rightaway, ...
 >
+> Of course this all depends on whether such semantics would be actually
+> useful for users such as PostgreSQL.
 
-I see this as a debugging feature, not limited to internal use only.
+I think it would be useful for many workloads.
 
-Our real goal is to gain more precise visibility into how system memory is =
-used.
-A basic requirement is to measure the memory overhead caused by anonymous
-hugepages that have been pre-allocated but never accessed.
-With this information, we can implement various policies:
- - Allocate only 4K pages for applications that suffer severe memory waste =
-from
-   anonymous hugepages.
-- Evaluate per-process hugepage waste during low system load and proactivel=
-y
-   split hugepages accordingly.
+As noted in the linked message, there are some workloads where I am not sure
+how the gains/costs would balance out (with a small PG buffer pool in a write
+heavy workload, we'd loose the ability to have the kernel avoid redundant
+writes). It's possible that we could develop some heuristics to fall back to
+doing our own torn-page avoidance in such cases, although it's not immediately
+obvious to me what that heuristic would be.  It's also not that common a
+workload, it's *much* more common to have a read heavy workload that has to
+overflow in the kernel page cache, due to not being able to dedicate
+sufficient memory to postgres.
 
-So I believe this debugging feature still provides value when merged upstre=
-am.
-Currently, there is no effective way to account for memory waste from
-pre-allocated
-but unused anonymous hugepages, and this feature fills that gap. Or do you =
-have
-any suggestions about how to get this info?
+Greetings,
 
-> Why do you think that "unaccessed pages" are the only, or even the
-> largest source of extra memory consumption?  The vast majority of files
-> are never mmaped.
->
-
-In my view, memory waste from anonymous hugepages is less acceptable than t=
-hat
-from file pages.
-
-Although file pages may also be unmapped, a cache hit can still reduce
-I/O overhead.
-By contrast, pre-allocated anonymous hugepages that are never accessed repr=
-esent
-pure waste.
-
-Furthermore, the total number of unmapped file pages can already be
-estimated from
-/proc/meminfo, so we can already apply policies to control file page waste.
-
-From my research, many memory-sensitive environments already apply
-special policies
-for file pages=E2=80=94for example, the RFC patch from vivo that manages
-readahead file pages
-separately:
-https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.c=
-om/
-
-But file page waste is not the main point I want to focus on here.
-
-Thanks.
+Andres Freund
 
