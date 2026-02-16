@@ -4,150 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF887E81A3D
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:53:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2628BE81A3A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:55:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19F266B0005; Mon, 16 Feb 2026 10:53:39 -0500 (EST)
+	id 816176B0088; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 156CB6B0088; Mon, 16 Feb 2026 10:53:39 -0500 (EST)
+	id 7C3F36B0089; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04C026B0089; Mon, 16 Feb 2026 10:53:38 -0500 (EST)
+	id 698766B008A; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E52A46B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:53:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 730D58D2C1
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:53:38 +0000 (UTC)
-X-FDA: 84450764916.05.173FC01
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C56AF1C0010
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:53:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TatD1DQJ;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771257216;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52F796B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:55:46 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC58E5D642
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:55:45 +0000 (UTC)
+X-FDA: 84450770250.21.DACC824
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 28F2240003
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:55:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bLN5Tvhh;
+	spf=pass (imf27.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771257344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M3bkMbPVQZ0imzoqz791Opp6HhgWaEqfZv7eOVmBf9Y=;
-	b=WXW7k/Kh2JF9oMxE9R5/wtWwNHdvIMghOTUtwhu37N9DBOpgNITkFS/TljieKldIEj4U6A
-	lIMcyARLwzLpEcfnuDI7PAYZG6t4/mYu9bTbcl5OsPy+U5yBDeSR7jhJAezC+23TyTZUII
-	tj4rxt0SupDf/LLKrBD17wqiB9yits8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TatD1DQJ;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771257216; a=rsa-sha256;
-	cv=none;
-	b=m7jl0WnreLX7Bj/DRN9XJI40A5Eqa/5ORf82Se4Jeu12HzvIOFYrzANCKBuImle9c28tGE
-	LKLWVVt+VxnBKAVk0WNgd2FIEZTcX4ztOK4JjpxqEP8XeD5Q0rTn2QRtsqhCDp/9Gj9gA8
-	C9m0hSw9vQKDyoS1PPhosRl9TGOgJ1Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771257216; x=1802793216;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KeYACCgUQAQm/5RNYJtj6lgt52CuskhiILUqay0ToN0=;
-  b=TatD1DQJbj92wgY0YYPQsBeDpUgtlm9BPXA1NYICyJ/66z77VGc5AZl9
-   7C3MwW8EIUxep66q0iQvLvve5uz7M5/hpZfXDB11Qywnm2km3PKYQbzdI
-   1EBPHiC9AsI4NYSV1MVi6CIcKh7nZefTbtTDbhZ0FEFQgnP8qtgDJt4xX
-   dyd1P/YcPTZh8zRwldx4txiiF7yOxY1GibbyFwSYshBIRT3Hqx1rRmtce
-   u/OcDLaHWS7HFhJN3wJ2AbIIwMUc5F0QHkoaQ2y734nKT0ewH73Le3vzy
-   xIsV4TQ9RlHXWmM2INqzSCI3n7Sl1FG8HszrmSc/ZzF8bsEolB71E2nw3
-   A==;
-X-CSE-ConnectionGUID: P95pb6vfSkCdR7HemG6kfA==
-X-CSE-MsgGUID: 5jJ3lRhHSHyqisio55WGfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72434472"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="72434472"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 07:53:34 -0800
-X-CSE-ConnectionGUID: sTdObpXVTum2Mt/1uIDB5A==
-X-CSE-MsgGUID: Tf6TTdHwSRiELgLXug197Q==
-X-ExtLoop1: 1
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.109.103]) ([10.125.109.103])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 07:53:34 -0800
-Message-ID: <6a43f009-335f-44de-a48f-f48ee1e912d0@intel.com>
-Date: Mon, 16 Feb 2026 07:53:24 -0800
+	bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
+	b=BFoRKILP4bl1cvFT4sKXddk8yms6AK8dLrQTCOnsBbEmBDfGnFRyBUJsTBfUjnXywsCPLf
+	6tyY39HBNj9Ca2MdQ4mLj0Y8fvvnsGGLAxc/9dJ7bWo4lB465HTCOxqcciXOq0miW2qnBP
+	dJ6IcEyNPkC6To0X8XcQ7KaF0LfEo5c=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bLN5Tvhh;
+	spf=pass (imf27.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771257344; a=rsa-sha256;
+	cv=pass;
+	b=faDcVUfUSXZOt3Yl9j0IrzIlG02y14jc1SumGDkgmisy2bHNQGWV4R8H+dAamsjGU2sJUN
+	Ykp8GuLz0/5K6dc+goFoIQQSKAbCP1zlfsyih40ICRYUVfjYy/Cpbaiti46L160lfqxhvb
+	J04ynay4PHNOUbTluVJmY11uFaIOf/s=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-794f701a3e6so27581617b3.2
+        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:55:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771257343; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RQYkbh+ZYYbnL7RV0Bi1KjJ1mtNZhSOqQqHdPbKKo6BZUK0TMKwHb+29BVTxXUv90t
+         9IYVTwFRMEDjmlg7+rjDwcrIlPNd5QSBActmTdg3rV0xS5nNfqCfyAbQz+sBwU8P4UEg
+         aDkEA0lt+bYXzI+Q4AJTwNugu41inKuJsGhCEUD3RGXY3v8Pcfu5KHVprhcydT7jOtQV
+         1FwAO3t2rPRIqeEs81jlv/HrxRUgsdGM4HDtFrqXdpSTorYv/1y3VPiXLOL+GLPBhqwg
+         kj8i72uU1b8gQ51kOeoiNRLH1GVynZmF3VvhTUpG5UP93fA5i5ZFzS20ow9wzFf8a5eV
+         gOag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
+        fh=vAlsdeQ0claFi8Luh6HhaV7kQqIadKQw6M100Do9cz8=;
+        b=fTojdhkMiVOffB0FeNk0AtcRXBudehtPcwq78Blq/pvmGuz0DiUfwZETyyEin5NAab
+         gsk5JW8GHTn+nNSqZ56GtwxLoEj+QZPMe25zWLKiKJCeKym+sbJdieqRD9WbL+obSyqG
+         TwySauah357X1GBEQER0/pYqUYo45xjssa0S9jUS0dqnarPy6awoaq7+xFjyjZSupBt7
+         UU4MK53vEuZqwV6mjhyqkDyDHNJq6iJW3Gmkpr7bdfbK8c09+nGmtcyB0gzsQG57DuXS
+         BgmqaNufKKX5TI3MrAw943CSS8t6L3hR1KaiTWRueUfikXrhhThGdKoR54fqzVyHUSBt
+         fiyw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771257343; x=1771862143; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
+        b=bLN5TvhhgM6SACzc9gsQI44OcxerVfr20YVle/ToV7MRR9j/HNCWTPTNCxpbq627dz
+         xzpzru8v8uVN4SmUWfoD9YPxs8edbYKzNI5AJOqyw6kX54MXDQ3yegVrhxDDJInlYm7O
+         qYQt2kWFN3KooLrwhGQQtG1x3BXq4NFFwW0WkDinpp6HWQmtClNxgl7C+k8FCjiIfYW/
+         dR1jZ4r7P032uZiCObsbX+ltQHo+8ol4n7LEn66gJz8nY/O7P8HAWLjG6KM3cKYY+Yuh
+         kbVXfAW6PWNpQoHZk5GocDcNMyn9/HjLpxhCTVrY4cxl2hT4RHbQAGUmF2eA0EkBdyfV
+         Va3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771257343; x=1771862143;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bWvwt78j1MWWZWHT5xuvg+akNAgQWYTfkj3HpojwxkQ=;
+        b=ZRPPKay182Hu7rU36Ol+FdEZHICsWjE+Dd4Mpvkx3U/VRJ85FXrrcReqo66uRmKkp0
+         I5d493ZswZy4N9gfjY9/YVYbf4E2ErngLgyeiy6IKFCO0w5hflcFAQMvVVJv87WwYdqa
+         QaFxEsQb3OzvNk8NCuz/r33jvSfDn/7M6DMuzOio2+vw3aNseWnKY8XihmslXjJyPY+a
+         ByYAnDBo0+QVU/zX76JkVJxKKFVm3Lww6TZUNezb1wbCbM5emROjYXL5kqQXiBxWfx0I
+         HLYinlh9wURpY3ERA5+L5jBzOIBL8WfvZTO3vP6Hxrib3DuJ/qFkjMZLYCudgM6Kf+Xd
+         xFEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ7UfpXPr57GJuVHjuNFr/LS3Vq3Ltw/HKc9aAQT58uf1sx4k2upjDOJiaNsRtD6jKQpl4b1rZHA==@kvack.org
+X-Gm-Message-State: AOJu0YyHr7UYYNKDZxO+Gq5PzYnwpRe+ZJuuROVfKEiwwO33LcL/LRpd
+	5pu81cGo31wm56aGhDXquRVjj4bGEpoOITVmuhXEppJ37UhtxkUWRXe/OnejuwZAkrJOwNw65hj
+	BaoZ9Q9i3eEwTcjjDjG6j3VyoFkdu6W0=
+X-Gm-Gg: AZuq6aLEemHYP7174hi6MF081bdqSb8936mPDI/vvXRT900Su+pWRfA7+USJpLpXADS
+	me3oVGDGn/t/hvbtodM0+ncNEFur0dSGJfTojcQVI4CQUHQt7fLPIQAOnDlAmcWGGxkcwhmJGOL
+	QmyVCWbp2SK7DzA3w48axG6i5zwAZ30FFDk9tNz9/5b5aqFh1tgckMVImVkvagRL+54llYETA/n
+	XFNdgcm4OQogYmTFtVZdyZppGKpwrGjGJ7x2EXeo/u1q61V9JrZwGKEaKoymXk0No8i5c9YgvBE
+	zNgeLrgi
+X-Received: by 2002:a05:690c:2606:b0:795:15e8:8a08 with SMTP id
+ 00721157ae682-797a0bf98c3mr85736567b3.16.1771257343063; Mon, 16 Feb 2026
+ 07:55:43 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] efi: Fix reservation of unaccepted memory table
-To: Mike Rapoport <rppt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
- linux-efi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Moritz Sanft <ms@edgeless.systems>
-References: <20260213154838.46567-1-kas@kernel.org>
- <20260213154838.46567-2-kas@kernel.org>
- <b3b073e4-d51e-4fd7-ad7c-7465dab412b6@intel.com>
- <aY9Mf8oZODGiDoXp@thinkstation>
- <6d6dd421-774c-4f29-84d5-3e449240eb93@intel.com>
- <aY9c80nXefdXjGXh@thinkstation> <aZCaE04vDpf2hDEc@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aZCaE04vDpf2hDEc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: kjmimzeohy6gqffy13ez5o3o579dhexi
+References: <20260214084514.2842745-1-haowenchao22@gmail.com> <aZMoQw-86_FtUvLU@casper.infradead.org>
+In-Reply-To: <aZMoQw-86_FtUvLU@casper.infradead.org>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Mon, 16 Feb 2026 23:55:31 +0800
+X-Gm-Features: AaiRm51KD8ke76MeCQCtufCwLmalDJ2FNTUwXvE7u9dyzD1mLpvwzn203IhKnEc
+Message-ID: <CAOptpSMXu384dbhAeUhRVpaqG-zACfSn22dOpyhs1rD=v9+MOg@mail.gmail.com>
+Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous pages
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 28F2240003
+X-Stat-Signature: q6ygzqte88kq9twxun34rs5yg4xc1dr5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C56AF1C0010
-X-HE-Tag: 1771257215-880036
-X-HE-Meta: U2FsdGVkX1/PwGeUtEV7Yz9sWnzW7h1ko57H8QCPSsADBDIGHc0ZLnHVxFfCAV+dfa474eqvL9A+Au+cxdDZJtRq2fkrEDUxu7WlYiQgqFPlft4E7KSgIszOzefjEnqWtIkmetgA837ORkKodpTQccuPezZBB9JG3fi7RxB63C96HogbxIocyKZNNEBJuW1u1vHet0sMoU85E/M2IrLBjfKTh7cSvymzfkgs2wF2/uy68AaWRXaeA1iSeZCKYnFYt3sw8tmuT+6k5tC4s84vmZ1j6uwnffx1HqFPmv/v2GjuM8z2HWhwTcdzHFCLYw6gc4cREmGGl6OOEeeq7/mI6UC7RHltLjqU1O8UkBfqAKzWT/sli1dnRAbouBG8SqWtVPyWrgW96B4tQIVuEJNqggcHrLf+gnhbYUpLJ8PgcnrdhqDlcZrRxDaXQFekk0a+LBlFP8FCSQOiOG/DpSy2U9atImt4HonxnQ+20eLk1Ob2i7lljsrBfbDrnLp9eeVPiy3/MuY1V9PV0cEOtIzeA3QziXRrYXdhdAlXpUbidtX2rPRLtsb9sUhTwbyYiDTTROFItvPDhogcLNt2dHuuX0M/kbrD9Vybo+TVsJ9Miy650VaZewCtXxFa5O9USagGwuFm0UZ0G2eXJ7HF6ZC5MUiD6ERgT+r0+of08l12HrpMOU7kH6N8RjS5MA4EOfJeMUtG7lePAmqOPrlWc5/ecrBxFr3favycpMCR5Y1Ue26MfEMcfEWypkkjDRylQ5wCtmXxan4qCxIFwHBgc3PS6cnM5+P9Nxq0oqjZieGHe1YkZTfV9B/rhuh8lf1otx+a4BB10bhOj1adxVFeAXKM4Q1Fe17EhLTKQSRY9Scu9JZFAc6UZLSRSczG02gFFDTTLJWDsO9KgkMgPYscOrpZprHIN439Mx8ODeNPDRPm/HlY6SLUxbi0LEQXZQj515Qo9bAtkgcnJtMQ7X6lYFF
- TJ4nHBJP
- 3Frj7qy/GQrbpOWG/8GWVNdC8DEG81pmT8o1J8te0nJO68xZJkAxCdB6A5HkXNft1cs7sgxhd4x4nbTod1hKTF+bcm3z4ASjQMotyxKa4PrIbKb8U0agiEh43YiUi8Arf5PZ6fw1lQ9/JAzbL6hMvqZBtY5Egx6FqZpLR/WRuzwttrBlBitzUAA2ER+iL55Fmd6Wpd+36wBaAvEqCYj5VtgtQ1wFR3QvBmN5g
+X-HE-Tag: 1771257343-754983
+X-HE-Meta: U2FsdGVkX1+xyFqXwhkzXEUugy3cviayLmg7pjzyHmcejMTS1fmdtYwSulsPexxuiJbk8FeANRYR9NRB5+p0wiXb7FGL9SATMz2xlZvNwMG7zmggmDlGQ/W+a4Mof73uxJ1fmTm/acGJ+R2qFmTZVlWdKrIjpaKvSprYHWV677aGb5JjRUZs7TgxHMpElfIW+M+tCDIK7cYSA4U5FZDwJ3N0IgUFstTMLoQTdZbPUUsQBTtDtQoTMmctEgObKIU/odS+4pdh/RrUxonAQC/FbSNnyIVx5u6CnqVgGgihIYdqdlPrvRyDGqB9W6OVQg2aucZiXZs2INAEBbqTVc8/m7/lfDLXOQNH4yU1UCvgO6eZHgNhPXXJi/jNJSOPT+Dtwon5yY7ZOkDdSuGl25nlJUgCK8jY5igSxtNmfWBQMNe+m/ZnstW0o7pQnjN/LSml4TdjLNaGf8TwY3EPc6RWJ4CGrQ+F0plfqEmHD/JSGak8rU/b/Te0d8U/oDE8ny0F0NfhonnIGzl94oMt5NkaVJHqtuoBv40u1nUz0vAU2dG7B8VmH3cJms1ePLNa+YHEcuGO71tATyKq69VyB970Fjus0B3tDPL5zYwVvWCgXXbpWbX6Tizxl/ie2n5ZOUuH7zJLV0q5g5o9ErvmoLhxA5ftY7Hvua5eKfF3y3SZuf/no7TnD7bDG21+CndQj5wO2JxZWoFdLx07/l7shTOEyGSpR4uccOxuuulTpuT0vYVhvPKm41rK9xEAJa4dfsFwkHB8vRxNCh2V6xz3TbtmX6dv8m2Tr/TKTnAHg2lR6nMxNyigl0G2fAW2ZHaPSmAVHsx2mJ51ejYC6c96UJDMjsy3GsBmYu4FCDPfc8DTIAL9mN3xvGNhAb/6/FP0fUf3iXcRJHhje/8nQDiOcesZ9J+h+tlE8soFHgv0OQ3dQ4i0KkxISfU/fn8yhYvLNM77D9jtx2Nr1bKdUcTVu+0
+ CSqMdb6J
+ fjz+3yKEKduVbMFKugexB90lC3oFx5D3tjm23xfJf+rFHATAtL8beoQeLcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,43 +141,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/14/26 07:51, Mike Rapoport wrote:
-> Heh, it's x86's choice of memblock iterator that's rounding the ranges 😉
+On Mon, Feb 16, 2026 at 10:23=E2=80=AFPM Matthew Wilcox <willy@infradead.or=
+g> wrote:
+>
+> On Sat, Feb 14, 2026 at 04:45:14PM +0800, Wenchao Hao wrote:
+> > Add kernel command line option "count_zero_page" to track anonymous pag=
+es
+> > have been allocated and mapped to userspace but zero-filled.
+> >
+> > This feature is mainly used to debug large folio mechanism, which
+> > pre-allocates and map more pages than actually needed, leading to memor=
+y
+> > waste from unaccessed pages.
+>
+> Why are you trying to get this upstream when you admitted in an earlier
+> email this is just for your internal use?
+>
 
-Ahh, good point. I was just assuming that the memblock iteration _had_
-to be over PFNs. Silly me.
+I see this as a debugging feature, not limited to internal use only.
 
-> Maybe I miss some context, but my understanding is that for crash kernels
-> the unaccepted table is E820_TYPE_RESERVED and those are never added to
-> memblock.memory by e820 code, hence the call to memblock_add() in
-> reserve_unaccepted().
-> 
-> When x86 creates page tables, init_range_memory_mapping() walks
-> memblock.memory with for_each_mem_pfn_range() that rounds ranges that are
-> not page-aligned, which is normally fine, because it would mean that we
-> miss some partial pages that are divided between E820_RAM and
-> E820_SOMETHING_ELSE.
-> 
-> And Kiryl's intention to round up unaccepted to page boundary seems correct
-> to me.
+Our real goal is to gain more precise visibility into how system memory is =
+used.
+A basic requirement is to measure the memory overhead caused by anonymous
+hugepages that have been pre-allocated but never accessed.
+With this information, we can implement various policies:
+ - Allocate only 4K pages for applications that suffer severe memory waste =
+from
+   anonymous hugepages.
+- Evaluate per-process hugepage waste during low system load and proactivel=
+y
+   split hugepages accordingly.
 
-It fixes the bug for sure.
+So I believe this debugging feature still provides value when merged upstre=
+am.
+Currently, there is no effective way to account for memory waste from
+pre-allocated
+but unused anonymous hugepages, and this feature fills that gap. Or do you =
+have
+any suggestions about how to get this info?
 
-I'm more worried about the next feature, or the existing features that
-also only working because memory is page-aligned somewhere (even though
-it isn't guaranteed to remain that way).
+> Why do you think that "unaccessed pages" are the only, or even the
+> largest source of extra memory consumption?  The vast majority of files
+> are never mmaped.
+>
 
-There are two choices for fixing this: One, we do Kiryl's fix plus
-checks to ensure that all the memblocks that generate direct mappings
-(is it _just_ the "memory" type?) are padded out to page-aligned boundaries.
+In my view, memory waste from anonymous hugepages is less acceptable than t=
+hat
+from file pages.
 
-The other alternative is to do for_each_mem_range() and do the padding
-universally when creating the mappings. Maybe _also_ with warnings or
-maybe a pr_debug().
+Although file pages may also be unmapped, a cache hit can still reduce
+I/O overhead.
+By contrast, pre-allocated anonymous hugepages that are never accessed repr=
+esent
+pure waste.
 
-I do still think it's a little wonky for memblock_add()'s management of
-the "memory" type to allow unaligned arguments when that type is also
-used to create page-aligned mapping structures. Memblocks themselves
-obviously need to be byte-level, but I'm not sure it's the right thing
-for the "memory" type API.
+Furthermore, the total number of unmapped file pages can already be
+estimated from
+/proc/meminfo, so we can already apply policies to control file page waste.
+
+From my research, many memory-sensitive environments already apply
+special policies
+for file pages=E2=80=94for example, the RFC patch from vivo that manages
+readahead file pages
+separately:
+https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.c=
+om/
+
+But file page waste is not the main point I want to focus on here.
+
+Thanks.
 
