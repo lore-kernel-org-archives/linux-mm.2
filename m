@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15408E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 06:06:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26285E63F2D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 06:21:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BB976B0092; Mon, 16 Feb 2026 01:06:30 -0500 (EST)
+	id 3D4EE6B0005; Mon, 16 Feb 2026 01:21:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169A06B0093; Mon, 16 Feb 2026 01:06:30 -0500 (EST)
+	id 3ACC06B0088; Mon, 16 Feb 2026 01:21:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 040B86B0096; Mon, 16 Feb 2026 01:06:29 -0500 (EST)
+	id 2D9756B0089; Mon, 16 Feb 2026 01:21:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD3C6B0092
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 01:06:29 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 776E9140A23
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:06:19 +0000 (UTC)
-X-FDA: 84449284878.11.D0A8F1D
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A41B0140004
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:06:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="g/+KwNtV";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AD176B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 01:21:32 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2779C3CA5
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:21:21 +0000 (UTC)
+X-FDA: 84449322762.08.99B8D89
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BC40E40008
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:21:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WUgi46UG;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771221977;
+	s=arc-20220608; t=1771222879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+1+2hICCHy9jpCc/dQXjjfX/dwmXFH+Uwwb20tfSQEQ=;
-	b=KbFFA3IU9ZUCSbOkaZV0rlBG4r92ygMTmBkQJEYx+pf8FanLG2QX0x447tBqeSFO6+urBF
-	xO2VE7KUS/Z51mt495b3XyfyIgFT/tqMfZjfs8w20FD2u5QIe9fVogoM42rh+bWq1Yo0N9
-	LS4dxBQZno/2Q2Scy+Uxm6treemVqFE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771221977; a=rsa-sha256;
-	cv=none;
-	b=BGHyOt4rbJU/E5loDuXmdh93MWg4smjRqT6IMrS8zgkG/hn2duA1MsLOer9Z0Lw32e0Edm
-	kxKjPJ1/aq9ruXrIpAbaFir8zwXF8+0TamlQllF15gtqhFtuJUxIouHrELho2jTdbHPKoI
-	HvIca4icKuki56fdMAOezyPK8wNLW+U=
+	bh=+B3VYFqqOtn4OFDnrRnwc7y2rxPOL/UksRHhaZ3LZ4U=;
+	b=sLbHcHiVNjmp88U7L/u9J+lazgXHmxX9K908TFngmQduAequv4xYJbsACoTi5jBl8Gs63x
+	ELvEXPgVwank64QZNgyHt/roGTsJVawaC2HCs8xt124A5sTf+zVsD3oAhSlt8ZONpT7CNq
+	gz/FpCHNf/Egm4MwRTQDtbF5sDaklkQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="g/+KwNtV";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a91215c158so16237105ad.0
-        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 22:06:17 -0800 (PST)
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WUgi46UG;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771222879; a=rsa-sha256;
+	cv=none;
+	b=5QWfPICB5vRFZKOGWb7TrfxV0gvGNKyIHsbcswbBmymq5NjFLXi+gUNqgI34ZQ3Plpq36i
+	dMMtbRvm7yYKMQamdx9lMI80BTpNYj/TAiAInkRQrsukUZtFflPHO2XTYAEIjMi/I1YNy4
+	E1Tp9IqXlbsuXGionu8OEt4fpy7xkaw=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a77c1d5c3bso10312415ad.0
+        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 22:21:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771221976; x=1771826776; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+1+2hICCHy9jpCc/dQXjjfX/dwmXFH+Uwwb20tfSQEQ=;
-        b=g/+KwNtVqIGzwbEc6tpMCkHcId+SAttdQkgIVn/AujTDQcrbTUbWo3Icm0l18L4Vt3
-         YRbtyTLsUZrxhjjX/UViyAdMocXqDDrGYxj2V/e/ZBIgbpxvNyg3R6rzsMGY71Qr0kQa
-         nggqgsVm3QmivObeJzP3aKU9+1D9rlY0mvXUtvVOXOIpnkj6RqsmVo4S4dENGIQFg0qM
-         pLLk4t5z4ASKoE7RbgiuElFJnnv91gPQGhwXNTjoDeIcnul0wRh/zhG/F67d18obt6vT
-         JthjEOtM7pizdauOPziDtdX5NGtT4oBP+ck8si61ztGKd3w/IGZMahYPWE+zbiW7yB9f
-         aQEA==
+        d=gmail.com; s=20230601; t=1771222878; x=1771827678; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+B3VYFqqOtn4OFDnrRnwc7y2rxPOL/UksRHhaZ3LZ4U=;
+        b=WUgi46UGAMybu3fwugGEAKFMirARo3jNVQEkYhJNsFtXcKpwf+C2UqmknqYV10Yk9j
+         Q5VkVbVwTeN4HSm1PRG/OCX3/NacLHIjEusLrw5GPrb2UzCuFEXJi+71Qtaus9PTmuAR
+         HDkBR2z2GuOOtPUYwbhYh2ZVzfQN27DITezdFBnTkADNjQWb3GGQAy9royiX3PBjWrpv
+         FheYcubD06uxlaYbB8F0ceo3yMr2/kop8IlqJKKhGlrJYxHCzTSlSpGJkA09KC0SGGyb
+         sJQYQcF13foUik2C5imsLPEXlCCKFfPdtxVEr11ySzMizFAPx25dqlcGCC8qyBekQJq6
+         B81Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771221976; x=1771826776;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+1+2hICCHy9jpCc/dQXjjfX/dwmXFH+Uwwb20tfSQEQ=;
-        b=E4TLHmbBwfTYEQR0Y9hv0G4o5zu3PqX8WJy2Er2ZTCXbkPf0NNzfpCN5anlvHD+WzB
-         jGa+ce5h1oJ6P4BCPEP13tJgAiTczxhkUqM0KOAbtBcQrlE/ItilGtL0YILVXGi3oHeT
-         3cEHA179ICSRMmL7qIOMzhxEOQmunrHOSZ7rtWfEP6A03BOeBaqychNQdlbcjTE6IkS/
-         XUH3kTdjfnFcjnISuD2XaJZKOfSW2p4a3j4NukCq553U8qj78MOwcQc3wEvwIsbAooi4
-         sLteQOGiMKqc50sr/eNMkAZ7BqD2Xej5lNi9JHXJecjpbcB/RJxlXqVIGKl88J+vjsvj
-         L6zw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1pBG32p+zqPdvZiQO9uxK5lLSuRuEGahSDWIwqQO3pg1hXZpMzwEckDIRwnfsxoDyFDZ936KAwg==@kvack.org
-X-Gm-Message-State: AOJu0Yzbwk1yjlhTh5W9DTYe8Eg4w12MGXUu0yLJJDyDPV6i7KzgvxE1
-	prepDTDxAnXfSP/sgZgyi+UGrLohmxHeUT7ySd+B0kbHGxzEMdDqbTgb
-X-Gm-Gg: AZuq6aImuHtpYggLXzvYHSXeRkYcYhRPWxhlWRb7gc1FhVboyxOnPA98jZmRFVeqAQ2
-	vtiZ2YuhOBO7jNNhR1PDB0Eq8GWN+mbttcqZtQDTkV90qC6MhAQXo9Pi+aahL4bDJZU8npqgM8U
-	SZbo1K2LkW0RjabSwEEYQMv1BQHkInlgy/bVG8XXlSYaTDlKIL9P8ifTYpocnDy/bv2OBzyFT/P
-	Xac2BtS2BBB+9SLZtFwdwSFpa/MpgLlcAcAm2tWHfs7xSZtO9D+NwGOfEgwdA0Eae0fUUoqJesY
-	A+4s9e/OW97MwZAC3tEoR8PPmI6mA0NAyAcPukuu2+GY66iC4pHbwPobyfITGCbKyOk4sWpaLNI
-	ncJDjXqUOBz20e2IiJGblqoIM2XhKkcFOE5J2h3QBu3vFIEKR15C29WS6hG43YiRE1MMtiFJjP8
-	CB+0Bpzx8x5+jSUS3GQuoE7WEa1qcUy0r0Kc16o7Far1IXrFfJuiEv9BlrnQNHms3rdgTAlQ==
-X-Received: by 2002:a17:903:247:b0:2a9:634d:de98 with SMTP id d9443c01a7336-2ab5055e59dmr101213855ad.23.1771221976325;
-        Sun, 15 Feb 2026 22:06:16 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771222878; x=1771827678;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+B3VYFqqOtn4OFDnrRnwc7y2rxPOL/UksRHhaZ3LZ4U=;
+        b=hBfMPuh//maJeKn1SoXGAr889x/lsu1u6/IISvN5Pd4tEfhZGAWOmXnUjSKpVzF7Uv
+         GoKGrgk6W3hf+Tj4Ut5KIfspRzgc3ODuoKlmDgQUo89w7F0F97eWoQchVyzlJYoU2jf6
+         vCfanvCCwD4qCGMfF3hRh92rnpMhU8HBzjgYZuA2ET5mQMjLSXxV9hqNs0tCpNsH2GYa
+         9Wpgo9KmwUVjhVsv/IzVxrJkcAhaq28Td6bujVYWIdXQksZ3y+l6gQizh9wf20zMf1L2
+         ToxcYnLcxZyhaNCB1t9xNX04+0cTGgjgLt7RAPnsCOhXm2FQqZvkVRX1J04NmQCfj6BO
+         ZGQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW5k9c/xa2euD+MplzLQnZ9VkTPXX6YdNHS8kXLuODXOFV56Tmb1QeG2XRxVWxp/sMuLkvlhxdijQ==@kvack.org
+X-Gm-Message-State: AOJu0YyIqYI0rBYhgLoqn6BGnSmcxPq0i/HgPdLSULvO7jY/3wjyHHGN
+	Cm050M5/qs8RGwKW3gd46WvqbMlOtZX9ptXSuY3rrNpaVDJMjJQWE1Dm
+X-Gm-Gg: AZuq6aK5AtFk5Vw5mPTp8QaJ28T6MKZnKc2djOS8kn7yUWfz7bFDBsRfQSzaGRdez0R
+	PVqzGMat6ZwXyuYknBdw7LbhZ+fYS72rbsuF5P2pc/9FQHlpHbBN0k/7GD/fM6T0UUyQXFOiVey
+	gjDjJE/UUkdbT2IYwhAKZN/bIiu7cvFikwNpJ7ga5qS9xA+G+6o6eXqpmUCrD5n9uf/H25+RWOc
+	yhfTRCbbwhSMtSkc8SBv/sZyZ/7tSlaocQr6boqVgObEfk4adN353m/zcqOp9jTRPdP0N4Q0IS3
+	fpytMFHHNrgwQubraIygpeWKyLN64ibUKhptQpwsLXUZBbXJAS+Jqqcsy2/vjus32eNNIOPkXg+
+	aNxI7rymsQe64f7vC84A0nDeTCcq4UVaCNH+aT2qKBQJg/BrHPd+jl3J5aklmHPo5aF5PmmWjfe
+	AW6y0L2icpnj7jTNxoD/WOP94P2MRgc+Ng+fNwKubAETABccv0ipJqwQ3WZ8I=
+X-Received: by 2002:a17:903:298d:b0:296:2aed:4fab with SMTP id d9443c01a7336-2ab50519c2dmr97137435ad.23.1771222878384;
+        Sun, 15 Feb 2026 22:21:18 -0800 (PST)
 Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1aadd47csm57750265ad.65.2026.02.15.22.06.12
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1a9d5bbcsm60375565ad.56.2026.02.15.22.21.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Feb 2026 22:06:15 -0800 (PST)
-Date: Mon, 16 Feb 2026 14:06:09 +0800
+        Sun, 15 Feb 2026 22:21:17 -0800 (PST)
+Date: Mon, 16 Feb 2026 14:21:12 +0800
 From: Kairui Song <ryncsn@gmail.com>
 To: Barry Song <21cnbao@gmail.com>
 Cc: kasong@tencent.com, linux-mm@kvack.org, 
@@ -97,25 +99,26 @@ Cc: kasong@tencent.com, linux-mm@kvack.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
 	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
 	linux-kernel@vger.kernel.org, "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
-	Carsten Grohmann <carstengrohmann@gmx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and
- writeout
-Message-ID: <aZKzUoZLp_3lK1s2@KASONG-MC4>
+	Carsten Grohmann <carstengrohmann@gmx.de>
+Subject: Re: [PATCH v3 2/3] mm, swap: reduce indention for hibernate
+ allocation helper
+Message-ID: <aZK0B841VeaDQ5w4@KASONG-MC4>
 References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
- <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
- <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
+ <20260216-hibernate-perf-v3-2-74e025091145@tencent.com>
+ <CAGsJ_4ynCA_w4Xcwu1k=2Hw3bMnURBxC2FeZEzN+uzBp+9YJcw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
-X-Rspamd-Queue-Id: A41B0140004
-X-Stat-Signature: 5n4zu9yw5x95dweedirzxryew3pzwjni
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4ynCA_w4Xcwu1k=2Hw3bMnURBxC2FeZEzN+uzBp+9YJcw@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9hjn9ymroq7h4tmp7nw19rw5ejkc45yn
+X-Rspamd-Queue-Id: BC40E40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771221977-973571
-X-HE-Meta: U2FsdGVkX19M2rSlOzZ0FkHMYZmO2olYevqaaD5auB3YAkArckDcMqk9DdimUKGnTnMpRNn4lcYXAcCEA5oGUE+H+JadVNfecR08P2A9IfrttZ4TQPfYXCZHOXohc9+IH/LU1VfePhytWn1YP6ox7p+6Ea+9PSDdvKWzp6DT2wEpdzkewT8dSY+/nh5cLja8EWfB6LU2QSrbc/sqrnYyNj2S9Zh62N/kpXJuu4V3jBAj28a5G/KBNUkAaZ/FyLhaVa+wcRQpoaa6I4hhQEUaUYHZcWZCxcWs48uQV4KuO4M6BYw0YXJ3FXysqFUahbZC6ekmKmj8KbOJp3/UDx1CgHbaSaxX/U/zdnT+SqY0a0iUol2AwESshen34ZVpUnnHMQ4H/WZzZk1qsPnTFWV4Rgwyrd8r4Xp9wulHr4RSuilH4us3LnxHTh0hjYO3m/PksvyMOVM5KWlgZ96xcYBRZ0QOnNRjtjC8VUYVTj+01kWyxOzchyuAV8PhDwjRPnKefOO3rtCvZIh7r5qhoLi/qP+OTg31qM6z6fGvG8nwvC/2WK4qPWnRqQqgopISexF/BEFkpkJQhK2+IQ4QieMcprmQZIJb3kJa5bJI+cjFhgL3577MrOKRo5XloajWUslLo7c1H7nv4Ll3roirPDMQaM/FpMo7L3hWyX/7Y9jd/wcs9+1TN8tnBNC5nQ4+aHUik8EhdRW5Pjh1loDtCPTMpfI71OiO8n35iINYSeJh/8oG0Gl4wNvB3Xi+h/NJmry/OSkwV0+/zjM8jhGTsxy0GVpLkkMhTT0tnNYHwbPTVcwPLJZMbVsSmJ7h7TCWvxEYwD1roYfPLs70LC0Vh+aFMkLfZPbv3eJUA/Z3maicpxZyvT5y3zYE8Qc+7OfR+yVh+92M2Yyb6JSYvIzqlBnTcqtoKjQO4q97Fabfcja75kBrCAL3WO9J81XBHjUN5ukOAA8hZcJmWCTL7AXxtah
- /8UQOQJq
- HxexZgx27iAdjnHgZrjMQ7z5Jhejrc4fky5YUL0ox3e/e2Ni8i1bYe/VieVP8F+9mIeBrxmPyHkxSfmnzD6qrJ1pMLK0e7PtQxBb2EBWmOcidLQMEH2cGvncV0LvEA6bso1l0jqkRL5N0UMy+9nGjb4eklg9wptkFgI/mfRDUvbqMw0TuG6f/mJUt9YjD3MqUGvTQScbaZ/GlzB1MoefPAvuzm6mRhEGwDXxfCaVd/oQOBCk6F7QncE6XUwVlaBFb4o2ah7bo2ceGG5KjTKB/4IUQlGRCfTv43NuTHBMQW58zI51ONKIToxMlnyyRzjUWEqCDmt2hPioDzRapJooeQC9PJvyqyxLUhUzF+LSFy34AwGZSrvcuOhCwPR//Q/a2U+qXLkNA1EARKOdppvSE7JMfOOcMIOuPFwA7lNwW5jJjrg1zf9hbdgZN4w==
+X-HE-Tag: 1771222879-323468
+X-HE-Meta: U2FsdGVkX1/2ZshVUtPYefdLFzTztcPRdiM7GMFgYiPstizbE2raViBL+G/ccqQuUhyNj5tqlB3S00vCuZCUY3J5msJxIkihhUwuizmBnx1c21AEPMsppAqsYXGwvuOOksstyFBRnvrKjDh21rgTM0GoQC0xdl4LRQqS/Flvlrq2bSbjHwHnF4r0uMuqQFy6t+xBfUUL8QQDUhXqmyVIHKxxWhO3rbQ5x5vp6XtzPIv0Z53KWqThbdEbjwW9otdOC0oJ243BerlQ2xsiG6skEfg8NX2nAyntWC7lqL0DT7GU5a7dCDMegzau2q0M5l7/W2eVHNgeCu4G8nqwzTQlskp17cmzBU5GHG3RNRRj9hV9Rrdg6xV4bKpF0NIaXyMqJlZMqsCdBqPcli9UKy3NppqN0igQiiRF9829CrfkvseCLIRWZGyt8n7cBGAE8+91QgCqmeSvnn/9lwE7Z5vUNi5ltlFGKq/BdxBTJNWFkZKTrfi1+Ys+MBmD29wAgVV3/vrNI0Le4Z1+eQwlIDRIzNjR1AKJAu5YRvA00D2OrPOX3vsxzVhac5eMzlCMsp93EimA9xhH8BFSKq5bEM8Qo7AJRCpos2vGG/NBTUODsJCtkzBMfr/t95ttZxc3QEwTk1du6jZatMk41jsXIfMOwEIeRrVE+SAKRl/takIpXSu2Id6uY9D8GhgStxsyNtRo+j9H9GpHQT20SiFtYNouafWUsG2HWVZ2O+b6FnlVFRIjikC3BH0uBsFKBn24Aj1aAy41oxyuc9ew+KaJJBxXEDgXuv7kwxSjiDJnp9sbRGpucNFQVJZ/ZeRENVEtKCCcSkQTE4wpG5enUZbpTuKQWQ5B3HAlsLBY7CyZwC/gPQXeeJn8vYVP/gr/y2RFb/3oho3lVjNSSmn1BbVAbvCkPpykIC7Oo3IgpTlcNmPhhaYSxB1pa+e4IAm3hTelTY+ybdapSjGwLMcLMc5HJ/0
+ ASCzDLQE
+ Fp0KjRrFR+56NpyZDOArNiVbOzRhDW+BGkofYrR003kWOedWCtZfvFHCpYPzfoOTX8h/NkFiyfqNimAKpU8YcO5JAl0Skvl0kTVtGA40awOgFrsJo4h6dkEYIWJ0MxKTfxZVc47JTF1h/Uf2CUW+ptBtWbMCfoDIz8UFvGgMzuZXp+zeOqO7tioQ4+3sJ++ncBiuASs+IVhcqae4dAsyVCcR3qqOAMX4/vMmwQENzyMIDn0IpIBdA2ZD+KIfJ1+EOnOtuRazDk7Ci42HzvKmGA+Iae8Q3NcDn+NOeouevXw+l+Xe2D4Hlxs7BxEZNu3zol+vPo2bkkz3Oy3A7ScWQ0ziIFqGOZ2Ymb6/7CzMSk7rlEJhR3hCs6djuAHUSrG7iyXoiR6JThJFYRtYy6ze2JnfDng1RX7qOkRaf7anurcToLbtpJ/eeGin8YZTGgo4H8ooyjWB4/E3qivWJxCnv43+8Coly8vSG2VMi9gTgVvxEh8mF8MmX9IL61lhh89mMmZ60
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,35 +127,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 04:43:40AM +0800, Barry Song wrote:
-> > @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+On Mon, Feb 16, 2026 at 07:20:49AM +0800, Barry Song wrote:
+> On Mon, Feb 16, 2026 at 3:00 AM Kairui Song via B4 Relay
+> <devnull+kasong.tencent.com@kernel.org> wrote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > It doesn't have to check the device flag, as the allocator will also
+> > check the device flag and refuse to allocate if the device is not
+> > writable. This might cause a trivial waste of CPU cycles of hibernate
+> > allocation raced with swapoff, but that is very unlikely to happen.
+> > Removing the check on the common path should be more helpful.
+> >
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >  mm/swapfile.c | 38 ++++++++++++++++++--------------------
+> >  1 file changed, 18 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 32e0e7545ab8..0d1b17c99221 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1936,27 +1936,25 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+> >
+> >         /* This is called for allocating swap entry, not cache */
 > >         if (get_swap_device_info(si)) {
-> >                 if (si->flags & SWP_WRITEOK) {
-> >                         /*
-> > -                        * Grab the local lock to be compliant
-> > -                        * with swap table allocation.
-> > +                        * Try the local cluster first if it matches the device. If
-> > +                        * not, try grab a new cluster and override local cluster.
-> >                          */
-> >                         local_lock(&percpu_swap_cluster.lock);
-> > -                       offset = cluster_alloc_swap_entry(si, NULL);
-> > +                       pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-> > +                       pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-> > +                       if (pcp_si == si && pcp_offset) {
-> > +                               ci = swap_cluster_lock(si, pcp_offset);
-> > +                               if (cluster_is_usable(ci, 0))
-> > +                                       offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-> > +                               else
-> > +                                       swap_cluster_unlock(ci);
-> > +                       }
-> > +                       if (!offset)
 > 
-> I assume you mean SWAP_ENTRY_INVALID? Would that be more readable?
+> 
+> I guess we could further reduce indentation by doing:
+> if (!get_swap_device_info(si))
+>     goto fail;
+> 
 
-Yes, it's very common in swapfile.c to check !offset since
-SWAP_ENTRY_INVALID is zero. But I agree checking SWAP_ENTRY_INVALID
-is more readable and maintainable, I'll change to SWAP_ENTRY_INVALID,
-also use this macro more in further codes.
+Agree, I think we can make it even simpler by having:
 
-Thanks!
+/* Return empty entry if device is not usable (swapoff or full) */
+if (!si || !get_swap_device_info(si))
+	return entry;
+
+Then the `fail` label is also gone.
+
+I'll post a v4 later today combined with your another suggestion. Thanks!
 
