@@ -4,94 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E33E83823
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 19:00:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F40FE83828
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 19:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F38406B008A; Mon, 16 Feb 2026 14:00:06 -0500 (EST)
+	id 1CF056B0088; Mon, 16 Feb 2026 14:24:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF5C86B0092; Mon, 16 Feb 2026 14:00:06 -0500 (EST)
+	id 1A5FC6B0089; Mon, 16 Feb 2026 14:24:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E01A76B008A; Mon, 16 Feb 2026 14:00:06 -0500 (EST)
+	id 0A8DE6B008A; Mon, 16 Feb 2026 14:24:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC5746B008A
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 14:00:06 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83C13140F26
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 19:00:06 +0000 (UTC)
-X-FDA: 84451234812.27.1F240F7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EA532140004
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 19:00:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WB0rrATC;
-	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771268404;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EB5076B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 14:24:17 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E7CD13BAAF
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 19:24:17 +0000 (UTC)
+X-FDA: 84451295754.26.EC49771
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6ECAB12000D
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 19:24:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LnGvGyao;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771269855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wnvj/HkYJBtIyNZW9YmFC2m8Xgq/jLT4NAZgHs+lqUw=;
-	b=UdAeuJJ7RDQWx5kVW7QFWUQDrPGSPkW1DZJSFWbozlaSd8AMb/RtXxMMlh9DEZPscBBCh5
-	VpDx2xC5IeTFHjjCyXfFxDKPs4X+hx33l9cT/4wioyuUQA3frtdQdX3jZEKgwVtTGA32ia
-	SmqkwCqRYPmH+kb88JOd0RpcfHFjwLM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WB0rrATC;
-	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771268404; a=rsa-sha256;
-	cv=none;
-	b=sERIJ/F378YH5ST5dj0ygQBsuBVp+BxjwlqmB07ZK410RrHeP8JeRiA0x5jm8K4TSYPW3G
-	E9tHNkyW5Ag6MotZTUaA5Sjn1SNTmLFxzZJmiAG895gEbFnPrcQ1kjrMujEZnDFPkrWYfG
-	3SUxP7hVywdLcYG5SqNnbeylBMIS+Co=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 78B7E60145;
-	Mon, 16 Feb 2026 19:00:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C246C2BC86;
-	Mon, 16 Feb 2026 19:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771268404;
-	bh=rDOaaAXfsrj1RbVbSoaAqlUcovoTYZIHYJI6Tev+jiM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WB0rrATCc8Fbi5vyGG8WQkNokaNW1LgErS/3q32Ighfuf0ahEGDeJY9f6O/Se2cuo
-	 CTXwAVY4Vkd/yhyQ2LEo6iz/dKeafOBFuVBLApOwWRxwHSl33QfG4qtG4p5X8Lnddp
-	 FAUbjSrRxJYtpGjrWOqXZY4PgvloHvg2jOJi7QmIDacsAbydDVEzAnXxchRaIKA+ic
-	 AcU+782hhuzKCsU8YUzWUFxtx+nhsTeRVpsk02QNYKk824asOqIshbCZzjqs453VAg
-	 QzObg1aBpfVZZ5ma2OyOlf0j1dj+bJXM07jn1t/05mbhcQBsJlcOwK/jen7HfOkUgk
-	 w0Az9nnUvBxmQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mm: memfd_luo: preserve file seals
-Date: Mon, 16 Feb 2026 19:59:33 +0100
-Message-ID: <20260216185946.1215770-3-pratyush@kernel.org>
-X-Mailer: git-send-email 2.53.0.335.g19a08e0c02-goog
-In-Reply-To: <20260216185946.1215770-1-pratyush@kernel.org>
-References: <20260216185946.1215770-1-pratyush@kernel.org>
+	bh=Rz7mQp8ex2cSaZFr8FlTwlodXakULcF4/KmW1plCXjo=;
+	b=YgzwO9LY+IlTvd8Qy9i6/9sbtmiP3VnJRcZzkCTmXde81e8iCdjZM61/ekMh/9iH2juJcE
+	qAdr2JWZQBOQr+6+Pz4HthQaIhjyc0YE0InMhaza8giSqvQB0WoLU5v7Qyy2FN1MoIWOp5
+	Gof9UVOieGru5wNmHFdxEKEME6DcmxA=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LnGvGyao;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771269855; a=rsa-sha256;
+	cv=pass;
+	b=UQqAXl6Oeflw7xN+/MbNbGR+S4FEqVAYtatMX6Axd6UpD2SsGdHXrLzVwnf6y3nXulq7oA
+	FHNNNXiQ+ZUz3W8p55VkdrksrwkDTcaJpFMLkx91Bmmdy3c+4WtPdHru8Uc2niMLTarhzH
+	sOm4oq8uNbvLSE9XKaGeqfGbk5qsg/E=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5033b64256dso1023931cf.0
+        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:24:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771269854; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UaEeWGlCULtpguse2mgNiPNudF4LKjruObwmKd8R2Swp9yRUMprsDfp1d6oqbmfGD9
+         Vl8gbBZ7mIQgTuqRldol9qctOo/QXVyP6D1YcwhBxjrnM0LEgX/6kaBe0EmiHFZJ/L3H
+         oWgdD3s7KPSTGdXzFg0klmWmfE3GGrxn6yQhnHqbO7DuUw20Kbds1qL7Yp28NtYgWumm
+         KcKyzYTcf44ie4jLAeYI39bjnduRmbpGzhfXYpbTMof2CSLKv6V1cShkpoWPe2bWNHMu
+         2P3y39Lx6D3psTQYUpjj7JJKuwdzsGy94rA9KeakWlxgLdtPY9yiXaQb/7GR4tJ4Vd/+
+         gCMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Rz7mQp8ex2cSaZFr8FlTwlodXakULcF4/KmW1plCXjo=;
+        fh=NXQAqJjbfFNsXTl/4a3k3kCbIUHPNrn1FKS1+l26Sa4=;
+        b=WC1A1OspeJLeFMBsaaspOLdZV/WjptDlo2K3QBTNvC0SFYieTHwmvP8jhYAIcW+yqQ
+         vyOsOaXoKy93ljKfX4Fnh4NE55jvvpJ9BQMn1j94jo+DFbf6uYkX92B8EosqkaHpb7xw
+         Keed0NT7EbWW2OuUR9Whbou3uPNN/W07+lb3AL7V+9JkSKhQRQtYJ2c0Sxo9Bt1Hf0Cj
+         KbQj6ZGmQnp8tPyXY+doD4i4fXVDKSAHEjqQnVNDc0BCIuav1OGwfipX9iynh3NBkcin
+         gd9nJmwzvOQ8QsJCeQpEm77PPEn6CtLvIUZ7c+W+tuMr2SFCm/p2jVfljSNjGZIiCkkP
+         dctA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771269854; x=1771874654; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rz7mQp8ex2cSaZFr8FlTwlodXakULcF4/KmW1plCXjo=;
+        b=LnGvGyaoPcSOAMbtvt65y7o6Q0K3KWd+T4CK2VW0uT0top6io1FATCkauN3ma/ZLEZ
+         o4IhPbgBG1gVhYewc+4+Tf46a8lXWzxFC2jAeiTku8W1WTdeyEYjcTWmT3TxQMMmJsG/
+         ZTF8buqyxzc0u1FYOGY41K8M79PtJwGun6ihWX4KErAIWOM9f2HlDVk2XsA0Vpos2CdU
+         ykfQpeftm9MyiZvCjtg9GERjbLq240xdV0bcSA1P4TvJfqNLekAeWKMJAQWmI8EuCsum
+         /IsY3B/35WzKoxKB3mbG/o4XBaLpYh1qx6DgxSNrVyOR3lHjrcxRmTN7o26VoNNBGn9Z
+         OCfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771269854; x=1771874654;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Rz7mQp8ex2cSaZFr8FlTwlodXakULcF4/KmW1plCXjo=;
+        b=P2XW4a8reCVaVNEeJABoTpmzGFDGSKUlrSLMSt59zJyc6gZGnudoRfwpVVMjS00jec
+         aN8/7FXR9eoswCimCre04BqrsU7EGYcD2J69NY53FvcShE+2Z4J5T+b2McxeaFkPMBI0
+         iHZWXtkltj6wRXYzk7Wt/f/XnIAYoqT4XNLt4wm+bvttiGmBDBaTtCbahSRkHDRm8emK
+         GuTkQYnaf3oXlOJCPci+ne4x8aqPxe9sxOi+5PgVdnCPlbiaT1nwaShL5aQXCbDeemu5
+         /fvdNynBlK0vEZFquYS8q7adCUj7AXYhnLDV3sl6zcA4CKz9/Qnx5ONaJdsujj4el8Cr
+         3W0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWpRoxrMDRyX2Vz9ysJRh5DJ9RqPX+ZNZO0GY78gJi3cBq+6AFLPu19YHYQtlACmufPfvnEsMVKLA==@kvack.org
+X-Gm-Message-State: AOJu0YwYWTjdOVQUt4SKtPPn/nS5fZMyjd2Nby4ztMF50sXYQClL7cQa
+	Y/d9iKOqHabTQcf0T6mTxPaXxmwT4l0dJUnCau+AI1q/unx2+IU6fuhsXQI8vO45MF1UW7Denu/
+	tOEkMjT7fJsV+PTFERwjFmarR0DMfzNWDYKkC8fu7
+X-Gm-Gg: AZuq6aLovCBJOY7Or799GQuc9dM6OwVPuqt9md7vkBt1aWUmejwpI9QvkSCP/nzkP1R
+	gUoCcZIYE2xVhmpVuSAeedEX/WbFkjRljcHUBVbZhzNG4mRVmicHqBgkNekigQB4oknT/ze/ouQ
+	7RRvo3BC6GygznndOsk7ZJchpe/EkCXvbh/NmYe5An1F3lUcwOJ4HXYHz3bDL7bPnaZjF8kC3kz
+	ryBs4zq5wiJGbcqRR6xXXPdxxNWVsYI/PXZpDcUywrgQr8ru8haMeZhjRjANyy5/IrxL19otRzP
+	8y8WuY3pn/fnjeq+PFkSNgC0h1+GlgYwPFI=
+X-Received: by 2002:a05:622a:8c15:b0:4ed:ff79:e679 with SMTP id
+ d75a77b69052e-506cdb80f2fmr9503821cf.19.1771269854100; Mon, 16 Feb 2026
+ 11:24:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: acjpor7wkm4tugkfrjidtd47dpr7bh11
-X-Rspamd-Queue-Id: EA532140004
+References: <20260216121751.2378374-1-arnd@kernel.org> <15272AAE-6C14-4A80-AF70-4A46D1047B61@nvidia.com>
+In-Reply-To: <15272AAE-6C14-4A80-AF70-4A46D1047B61@nvidia.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 16 Feb 2026 19:24:03 +0000
+X-Gm-Features: AaiRm53h5sGEBeQUyfgg8Ll2rURgEV3bOB95Z7JNPTwawirSgjFHLij38fBcZp0
+Message-ID: <CAJuCfpE=79uHrqKn4vmQ09TuR1uZBxpDck9WXXoG6OK6a0pZ=A@mail.gmail.com>
+Subject: Re: [PATCH] mm: change vma_alloc_folio_noprof() macro to inline function
+To: Zi Yan <ziy@nvidia.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Arnd Bergmann <arnd@arndb.de>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kefeng Wang <wangkefeng.wang@huawei.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6yr49b7ogseyn4rya4h8c9uqau6939p9
+X-Rspamd-Queue-Id: 6ECAB12000D
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1771268404-729410
-X-HE-Meta: U2FsdGVkX19hNlYiQ+IZv2kjOt1TDzefAtvzQ8Eevmv+v9TSHlHkiW22EsfQvgNvNwFiRsi38KmPmuM+IpbCbzF6W3M4Xe6EFDCwRB3MCzFNEFHBmnlAgBKnmb2TMo16uzCoWWZGIkPM/6a9dkrd2Q1kkjTbgRe0QvjojvSnfpDBHvb12eqYyYN0kEfNiem5HzHAliVHqTxOuVxn5XXQ8lVeGQJBs81noIhnmzZybelK1PzofQ+wSkpU7sB7Q6kHaAjcvphEe474nizgPDlcbzu6eOSfinoeWOvaTuM9RPjw5VKgRHdxHWkurzB1Rx5lG9pHJxoJgIeMweptyGpQ3NwOl/li5CNKkRxH/Qlc+LCNJsZqSDl6PM8MIP8zV817FszqHJSATNcd1587hAvdWY8Rqf2RCfQszqAwBkkIFhOK1XOqUZ1BSPHjDe2R1iI8xJfXrJJ+tvH5J5ae4pTNtbQvCysLcjAwy+OCgFFOc2TJzCfG1OXDHmvDPo8C5lzApxu28Pwo0k5SH7RVdr4yYW4UUXSqXfZR+te2iagoI5kvomgcSZJzrqO39HhES/MOCeaYl3K4RSpzpdaV/IXJ0FyfYoxAtCRf9Q7KvEK7NSfrA0MPySsrrmz6vb+REWEvW+JfvRWS5yxj3I9vzirmVrAuOq7991GIWZN4O4VPnYxuwr6+5wkHweklc83UVDgqExQqTLe3Vu4wVe/tFOH1a9IifDHfI9OVTgEXyt6dryqdFo+tvLYDN7h6i9GWqpRsH+Cq1c30PUzROoxhnrkWkbR5Xgfw5YMb9b/S7cnyebxXFdqs8o6jf4wjfCelZxtwGAwGuV+Oe0WKQsCbCQxC2vmgpvECUKdOIVjBcmtN6FDgKz2uglcQ/0X4WCYFmYy1xKzTGoigS0Omp1AN23TfchRqARPMVQp/b8NZuGHLZgmS16uZ5aAItUjoPio1CBJbsKjgEKxxkT8SljbjXU6
- P3CnwxQi
- /CVaC3Cdv2SWGZ8ijATH5I6ggtE1SdKM7sgqvMowyDoi0KQ6xnhGcfk+6GYozg9lXXE1CkUS8tDsWDuPDlX3PKMpcpCBALuUNgsIXal6Pqea/5Bc/AeSKZJWUJY3D4nNK5//GF0bhcQER6lBlz9ZHgJ8fvfLZrKjV4eJxRzWE7FHYuqeDCQLgnKtY4Saa2f27iZ+gvUd43tUXBcaKM61tjY22itpwgXisylmfki4Udu2s+IhI+246Gsas1lithk28D9V/8L9zWYxk6zrkuV83CdALAw==
+X-HE-Tag: 1771269855-444829
+X-HE-Meta: U2FsdGVkX19DFSXOWn9ZpXHZ8tMX4PsU+uY5akz6MXfr+UBl1LYNjPwYfvUvPAc0Bimm/U/oQh0O+vRyrRCZKV0WzLmC72Ycl1CnHzDkpYf/3Lblw+7jgjxH+CLhUIZ33StvKXqraLBKwS0sLEjpi4Q03BHEGtNoU1CWwjs9mfRyGizI8ocMwxaHPIa4Kii7KrOVwiBlp2seKpTRY0EsHmpkVq6SuoVDC+cZ5Goa7QgE50cnFuggTGDOCQs6PUsGIWnsmQZe/8JES3uzU//IiIxFcyH2pOI6XrN1NR5aI/vCAFopMzUi5sXaHXDEE+vG12ljtPyQFp0uRtk5atfIvYij7Xpc9M3IdqYdIj+pItQ46Tuat5YhI7r94AbTIYUMcHkHtu+3Nd8ewCfyChQIbrctoHBnzwgZobEYXrVexh6Ok1tg/0k0ITl3LtCneWOZTQPtt3sPi4IfVGIV1Q494cREc/UOxz5RJkYOgK+OIK7yxQtZaumSnZIpIt47oNUQWLwoZ9ayIujrW1yrH5ESVrO+ppwsCNAagPJELlrdtjLFpY4hWdcwgXjBcr2lcSrtn7lx0zu6ub2nQvBsokmcoNy54CGEHgq+ngxA1XE+JA2MmoE16MZ2XAl+i4f/cKkCyxjgZNZf7qxLKVzOtjlyIKLoumIAEUGmVExVAj6Ko0tAYCqtFSSXAemxSn7V+jtK4j4NjiLw4V1d8rzztXbbjrYQbvph5wcaN7lRYaUQYAZX4tdcptD3prJsg9bu7+0m8uUFbhRsAkqFT49yNUfPpBlyVe62qSPBviFvtbN8CZquzg3TKkldBTtnHzNboVKeBB49jnUXkrPh77IZabvh59Fn4cmvvAO0euSx15V/FDT0/GQTGBAp3VxXloG0z3TpLvOvy1lPzlMIDQsk4wfgpvtw64kIHIjQ1TkoaU+/NYSXq2BHU3CRIAcEl+ZwGJ5GRCfQS7EciMdD7UoWVVv
+ PNoMA+Dx
+ qI3hRLIot8atORNvFncBmGJmGBxMLbAzk6MiJbR3nfC7o8L9Z0IkjdinCQQQcNMjJYP7UI7h4JJOKVTxd+VnNtFfwvDC0tKGzNwd4MHPuM1adWSWO6VZPGugN7Ak4GLjTMK0WyJnOkOLm1W3MihbE1ObvE40Vl0O3woKs8VGcIKhOnGyjp/vckibxliTNO8aBY5IxUlQC1aoYh3E+/eboSVnAlzhhTDvMroLDfhAnXiDf2K+70RD4mrVmNS4QCgqYUw8BTO44bK+od6qX6VqSqqGsVej6/3FVyW8vz86B/hEGlIh2hW0sb4G0AGd8OOwrj0R/bC/KHjMfRo+Vg+aM5GwS4CCHEr0FxUSmXO47+csOImGiCi3QaAlLIfWPB4eHIgFMoxI8jOs+RDGFx0dETDJYd0WIsXMbuUgY6ouE7lqAyXiAAvvKI27MUOc5YR9htXNZTjBiIX6IGIy6ZJTJeJoxEOfWWsUS34yoBskNqYdRGMmkiVDxy3BlX4O/S9gpb2KP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,165 +144,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Mon, Feb 16, 2026 at 4:58=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 16 Feb 2026, at 7:17, Arnd Bergmann wrote:
+>
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > In a few rare configurations with extra warnings eanbled, the new
+>
+> s/eanbled/enabled
+>
+> > drm_pagemap_migrate_populate_ram_pfn() calls vma_alloc_folio_noprof()
+> > but that does not use all the arguments, leading to a harmless warning:
+> >
+> > drivers/gpu/drm/drm_pagemap.c: In function 'drm_pagemap_migrate_populat=
+e_ram_pfn':
+> > drivers/gpu/drm/drm_pagemap.c:701:63: error: parameter 'addr' set but n=
+ot used [-Werror=3Dunused-but-set-parameter=3D]
+> >   701 |                                                 unsigned long a=
+ddr)
+> >       |                                                 ~~~~~~~~~~~~~~^=
+~~~
+> >
+>
+> But addr is used at line 739 or line 741:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/=
+drivers/gpu/drm/drm_pagemap.c#n739
+>
+> I wonder why compiler reported the error.
+>
+> > Replace the macro with an inline function so the compiler can see
+> > how the argument would be used, but is still able to optimize out
+> > the assignments.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  include/linux/gfp.h | 7 +++++--
+> >  1 file changed, 5 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> > index 6ecf6dda93e0..23240208a91f 100644
+> > --- a/include/linux/gfp.h
+> > +++ b/include/linux/gfp.h
+> > @@ -335,8 +335,11 @@ static inline struct folio *folio_alloc_mpol_nopro=
+f(gfp_t gfp, unsigned int orde
+> >  {
+> >       return folio_alloc_noprof(gfp, order);
+> >  }
+> > -#define vma_alloc_folio_noprof(gfp, order, vma, addr)                \
+> > -     folio_alloc_noprof(gfp, order)
+> > +static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int orde=
+r,
+> > +             struct vm_area_struct *vma, unsigned long addr)
+> > +{
+> > +     return folio_alloc_noprof(gfp, order);
+> > +}
+> >  #endif
+> >
+> >  #define alloc_pages(...)                     alloc_hooks(alloc_pages_n=
+oprof(__VA_ARGS__))
+> > --
+> > 2.39.5
+>
+> The changes look good to me.
+>
+> Acked-by: Zi Yan <ziy@nvidia.com>
 
-File seals are used on memfd for making shared memory communication with
-untrusted peers safer and simpler. Seals provide a guarantee that
-certain operations won't be allowed on the file such as writes or
-truncations. Maintaining these guarantees across a live update will help
-keeping such use cases secure.
+LGTM. _noprof() functions don't need to be macros.
 
-These guarantees will also be needed for IOMMUFD preservation with LUO.
-Normally when IOMMUFD maps a memfd, it pins all its pages to make sure
-any truncation operations on the memfd don't lead to IOMMUFD using freed
-memory. This doesn't work with LUO since the preserved memfd might have
-completely different pages after a live update, and mapping them back to
-the IOMMUFD will cause all sorts of problems. Using and preserving the
-seals allows IOMMUFD preservation logic to trust the memfd.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Since the uABI defines seals as an int, preserve them by introducing a
-new u32 field. There are currently only 6 possible seals, so the extra
-bits are unused and provide room for future expansion. Since the seals
-are uABI, it is safe to use them directly in the ABI. While at it, also
-add a u32 flags field. It makes sure the struct is nicely aligned, and
-can be used later to support things like MFD_CLOEXEC.
 
-Since the serialization structure is changed, bump the version number to
-"memfd-v2".
-
-It is important to note that the memfd-v2 version only supports seals
-that existed when this version was defined. This set is defined by
-MEMFD_LUO_ALL_SEALS. Any new seal might bring a completely different
-semantic with it and the parser for memfd-v2 cannot be expected to deal
-with that. If there are any future seals added, they will need another
-version bump.
-
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- include/linux/kho/abi/memfd.h | 18 +++++++++++++++++-
- mm/memfd_luo.c                | 35 +++++++++++++++++++++++++++++++++--
- 2 files changed, 50 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-index 68cb6303b846..08b10fea2afc 100644
---- a/include/linux/kho/abi/memfd.h
-+++ b/include/linux/kho/abi/memfd.h
-@@ -56,10 +56,24 @@ struct memfd_luo_folio_ser {
- 	u64 index;
- } __packed;
- 
-+/*
-+ * The set of seals this version supports preserving. If support for any new
-+ * seals is needed, add it here and bump version.
-+ */
-+#define MEMFD_LUO_ALL_SEALS (F_SEAL_SEAL | \
-+			     F_SEAL_SHRINK | \
-+			     F_SEAL_GROW | \
-+			     F_SEAL_WRITE | \
-+			     F_SEAL_FUTURE_WRITE | \
-+			     F_SEAL_EXEC)
-+
- /**
-  * struct memfd_luo_ser - Main serialization structure for a memfd.
-  * @pos:       The file's current position (f_pos).
-  * @size:      The total size of the file in bytes (i_size).
-+ * @seals:     The seals present on the memfd. The seals are uABI so it is safe
-+ *             to directly use them in the ABI.
-+ * @flags:     Flags for the file. Unused flag bits must be set to 0.
-  * @nr_folios: Number of folios in the folios array.
-  * @folios:    KHO vmalloc descriptor pointing to the array of
-  *             struct memfd_luo_folio_ser.
-@@ -67,11 +81,13 @@ struct memfd_luo_folio_ser {
- struct memfd_luo_ser {
- 	u64 pos;
- 	u64 size;
-+	u32 seals;
-+	u32 flags;
- 	u64 nr_folios;
- 	struct kho_vmalloc folios;
- } __packed;
- 
- /* The compatibility string for memfd file handler */
--#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v1"
-+#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
- 
- #endif /* _LINUX_KHO_ABI_MEMFD_H */
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index a34fccc23b6a..1089dbcf5ca6 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -79,6 +79,8 @@
- #include <linux/shmem_fs.h>
- #include <linux/vmalloc.h>
- #include <linux/memfd.h>
-+#include <uapi/linux/memfd.h>
-+
- #include "internal.h"
- 
- static int memfd_luo_preserve_folios(struct file *file,
-@@ -222,7 +224,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	struct memfd_luo_folio_ser *folios_ser;
- 	struct memfd_luo_ser *ser;
- 	u64 nr_folios;
--	int err = 0;
-+	int err = 0, seals;
- 
- 	inode_lock(inode);
- 	shmem_freeze(inode, true);
-@@ -234,8 +236,21 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 		goto err_unlock;
- 	}
- 
-+	seals = memfd_get_seals(args->file);
-+	if (seals < 0) {
-+		err = seals;
-+		goto err_free_ser;
-+	}
-+
-+	/* Make sure the file only has the seals supported by this version. */
-+	if (seals & ~MEMFD_LUO_ALL_SEALS) {
-+		err = -EOPNOTSUPP;
-+		goto err_free_ser;
-+	}
-+
- 	ser->pos = args->file->f_pos;
- 	ser->size = i_size_read(inode);
-+	ser->seals = seals;
- 
- 	err = memfd_luo_preserve_folios(args->file, &ser->folios,
- 					&folios_ser, &nr_folios);
-@@ -444,13 +459,29 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	if (!ser)
- 		return -EINVAL;
- 
--	file = memfd_alloc_file("", 0);
-+	/* Make sure the file only has seals supported by this version. */
-+	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-+		err = -EOPNOTSUPP;
-+		goto free_ser;
-+	}
-+
-+	/*
-+	 * The seals are preserved. Allow sealing here so they can be added
-+	 * later.
-+	 */
-+	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
- 	if (IS_ERR(file)) {
- 		pr_err("failed to setup file: %pe\n", file);
- 		err = PTR_ERR(file);
- 		goto free_ser;
- 	}
- 
-+	err = memfd_add_seals(file, ser->seals);
-+	if (err) {
-+		pr_err("failed to add seals: %pe\n", ERR_PTR(err));
-+		goto put_file;
-+	}
-+
- 	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
- 	file->f_inode->i_size = ser->size;
- 
--- 
-2.53.0.335.g19a08e0c02-goog
-
+>
+> --
+> Best Regards,
+> Yan, Zi
 
