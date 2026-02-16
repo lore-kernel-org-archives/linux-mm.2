@@ -4,85 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24AE4E7BDA1
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70CDBE7BDA3
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:45:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 517C76B0088; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
+	id 903356B0005; Mon, 16 Feb 2026 06:45:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1816B0089; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
+	id 87F2A6B0088; Mon, 16 Feb 2026 06:45:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C4026B008A; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
+	id 760F96B0089; Mon, 16 Feb 2026 06:45:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 285AC6B0088
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B652C5CDA4
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:52 +0000 (UTC)
-X-FDA: 84450125424.14.685860B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E68BC40002
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EC2B6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:45:21 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DEEEA5A95F
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:45:20 +0000 (UTC)
+X-FDA: 84450139200.03.2A5EE9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0717B180006
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:45:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KYu9EeDp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771242319; a=rsa-sha256;
+	cv=none;
+	b=yaBge+0AnVqvlPg4BAfYGFbV/Wo4tP085hgfaZ6JZQiKsf74lWUmVN9rg7rJTJCmUeabP/
+	G8TqND4MpJW4usQU/9CtfVJRhOMhHg/rlpcAEzRlZp2NJK8q4M9YnW1wnBSk9PAq6kndpq
+	VIFGXDtCyw5EAV9FGB7nGlnNsJ4RIYM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KYu9EeDp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771241991;
+	s=arc-20220608; t=1771242319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nar597bGzXCnn4gRsFxaCdpoqPt7HhkceVvoLTezTTE=;
-	b=IJ1dc1lcKmS16asibnr6k+6Uf/P4mndhOrBtPlFHeL/mFkiLHt7dcpLJ41saW4UfFilxRQ
-	yRt87GMCyLeG7G8QExyRVfnF5f779pyI068YhkCcOzxqT8T7gNiaqsdagj69yxtauzMIEI
-	RRtmGOm7R+tPhdtDy77fqyILk68Ga+U=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771241991; a=rsa-sha256;
-	cv=none;
-	b=lKIVPaferFBKwm1EE7nhyXACfjX0KNN/GzlDvosUCeig15gN+YqprMDEprYWcTcgWIYFOj
-	tOvpdAK7vzajZnbIqonjschgAedpHH78imuLY6o1ViNMxTazsszVDfTLfT3NqbLX+DX7VE
-	Fn2USVX5BSrvcPIFTqEo0kvdEcr6ocE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BB82150C;
-	Mon, 16 Feb 2026 03:39:43 -0800 (PST)
-Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E0DE83F632;
-	Mon, 16 Feb 2026 03:39:47 -0800 (PST)
-Date: Mon, 16 Feb 2026 11:39:45 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Yang Shi <shy828301@gmail.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, lsf-pc@lists.linux-foundation.org,
-	Linux MM <linux-mm@kvack.org>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>, dennis@kernel.org,
-	Tejun Heo <tj@kernel.org>, urezki@gmail.com,
-	Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64
- (and potentially other architectures)
-Message-ID: <aZMCAWiA7XHYLIE1@arm.com>
-References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
- <5a648f49-97b1-4195-a825-47f3261225eb@arm.com>
- <CAHbLzkqRjuWg7ybdkuv5xdoPz7z_q2n+0Eh0pRNoVxq-WskRvA@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R9B6zUAwXDXNbc8BSp99Va8OwvZpoVOSEJppeCrIMfU=;
+	b=pHX9BiCYakmgyvdxIoUJF4S0eeIfq/gLcGgt/2ZRKGAGWrCWqDqM56GyvCQ7ZGvuRZZ8m6
+	hBAjd4z/b7z7mbCeT1QELi3jy0pEt0IMpYyfVpdgiVg6IxL2qpY2okQvaZeVqbRZc0hmXy
+	vxz41wTaPLsOpPQjIn+jbsZAn0hC1Nk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E6C6F42A41;
+	Mon, 16 Feb 2026 11:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493BBC116C6;
+	Mon, 16 Feb 2026 11:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771242317;
+	bh=EPqVfuAV2TiFTEwxuoK78ELzQNyTw9nseMJpCxo6KT4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KYu9EeDpOXCjM7rhlOUAhIivYJ7jNVcrASe1KrczrsfhGfvsjdqSYfqjovteoW21W
+	 PNf3kAVonmkH0hWJpYxOhx0/ckxeq52xh4Q8H6UaAF5XjtqkoEhHhc7gBZaec2WSzO
+	 y/nq+FIIph473hcMvGqSaeCGyrxF0for5OvTEDyQPwg/t8+i0dFgV5kAkgHmVUCi2G
+	 tgF727MnENs+7XTA3sANgD4SnGjqDqRq6qMMGt/nAylakonJu1ouLI0Ur9o6wooWte
+	 pptXb5Ca/dnfpOWDM6NFeqyzc5Xzql7ufFddOcp4mivUQq1SJ8mVlUJN/xrakh2C4M
+	 OU1A3BwPw0Kjg==
+Message-ID: <ddb0d3f8-a617-49a2-8fb1-e6293f376030@kernel.org>
+Date: Mon, 16 Feb 2026 12:45:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHbLzkqRjuWg7ybdkuv5xdoPz7z_q2n+0Eh0pRNoVxq-WskRvA@mail.gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E68BC40002
-X-Stat-Signature: q7q6rchbgb5te95cq4n3f7k89xzg5x5j
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
+ pages
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Wenchao Hao <haowenchao22@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260214084514.2842745-1-haowenchao22@gmail.com>
+ <aZMAVF1S1kP5Gny_@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aZMAVF1S1kP5Gny_@thinkstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1771241990-265161
-X-HE-Meta: U2FsdGVkX1+ga7snQxY75q/hW4PXoiCwgTIXKDoTVjmNbWsZpwvzV78SaqI/lapu8/7NI5lEKeJTmMMOR15C3OABQQw7joz3aAdjlY73lYb1+piBjtiAjY9mQNlYG3Mv59CfUcrYuBT3y98pbeO+SUHxzTSLNwUpgH8cAflOXOxhJSWBQ1GRU6944cp3uw5lF1bfKkAJGEqKaRRh90xQi/5rWacwlUU+5K2l15PTpOvzLQxJRmY5PkgXXoeTqJv6xbf5DffL0cK+tBcwHPftGSY/IFfBtwugl4sxSiuLY9VLCITbNqRwPucsEZkmwf3seRdIAYicKpx/IIH+HVNWIRHXD8hSufmS/FMGUB0Dx1RFuIsu2FBPUiuudCTrkuqLMNurHFIQnmMXawqQXRsC6gP2DodIMioZe3vmOtIZaT+OL5YT53WEpxA6SlOxeP5ZfYOE/PFjFHhrMr+csTEoPOQUJRvCXgEJIS3xw90XW9gSi6bxHC0GTRKLfa7ALt6f9fWWxzxBOFjAePsbhEkKDOipgzhE/zo7ucMkWEq/yHFeEBCL+1AMetAtZVjkwYtopwp+a4zWNlIOZFWQ+v2ZwXgEnI1Rzs8G+ezyCHIcceWMOlMRjMLAg0HWQxz84Ntn3YO9u6YrH+Jax0NXbd8UV1mNlO1CT/XIaJIEVOYsumjHPjgnqBqD24xdaw5C4uytULHmlrzaabB6I6Pu0lJXmJdnjdvE1tQoeQOthTvqY0vNcf6+7BSopjEpBalIrXEFA+j6DXB8q8O71/ocwqkztE/RJeglR21zD485cACV9HneovGpmXjkbTO8AU96Y9sO/59OlqnfuzVUj8NkCbh3H8RxARB/74HGmwlENp7w2shMi/NfZnwYgi8C2Uo2nLxNDR0IB2tLQ4iDiVzhqyAO6lasBHP3uTRUBFMs3+Gkqq9RI8XD0eCtbP+ADD16BGM28QcAbJZcSrMe7uNwPDR
- l/3lVWHH
- 3gHnTHVUHYuP/jy2Qpa0cONnYRmB+ObaihYnesdn9rcoDFBhAyGGrhsrr8dA7SIgfE2t5wsRPsGM/rc/suGZvF/GRC5So6iw/q6FiF5jmQ9qqPDTUmfIya+LPtUvFLWGxL7gPhDIXSK1g4kQZvtH5Yk0SFbWKdk3/H0m+PcqFS7A6RUtnmIZdDNZ3FuHNfjB77QCcjFcN90SdLdekIqs/WiYMcJFkbj4DJ3EcmCc51bswHtga0mbAQiJF0SeUGUDsDgYh7MTz5j6VQZY=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0717B180006
+X-Stat-Signature: u4cjbg9b7gfzqf4uhon3wmnmnkeozux8
+X-HE-Tag: 1771242318-29105
+X-HE-Meta: U2FsdGVkX19s2Y9nP0dYo27gCQWLnsJ3c+ESSIHxDCYPn5SwCJ1vAQlhc3CgK+66GxC35R/bbwJJ9CTKoyTgCUu8fPCyszHuMqzPtnIzmo7cGj2nvLElvviMgJRpFhAKOuGr8fuAH28xJM7I//d+Qmu72TH3O2YpfON3SkD+rjKW310mPZxOemY9lEIxBGNpcQSnbWgxk2kCjgHmLkk3ne9ERH9z3QeGhSVmAqZDI44ARDVOxHjK2zRlPX53jPS5H5bkpOPM6BE31+kQKYDROokv5wf3NhjCaY9F9vwIXtTV0222ZcmYRaLxagWTa49ctBuEMl9+xQsWyGSfgDMQTvSbFayt4os1ujK9veE5qz3JrhMyl4Ut7cQ0uW/E0TnlfDuh3hLvREDohOYXcEjIcJXGwd6sykw8ZS7gDQFr7b0j9P9RDm7Ho7ukUhgbZCib9ndP+NFY0dIQfxUDYwuo10cA5kWoLzwIfbpfEYf7sOkRNB6FGIU3wWqY52zV5Z4vGngQ6reAAlHuekL0GfJ5w36YAf/fkK/76+eFfBkcor/bc5YTQVSqQQCcYNGNpZCj8liQf7czREmMmT6rei3QZOnwNPDv3pZ1Lr/+XjAy3eoloLFEwYxy72DFhBtoBKVgi9nA5qZVdp1iOeclHrnta7wwPDHDr6yWe+2jJNYq/Q49KFSTQo3kSIzeBbg7I34TQy8B5HRGJsxI9NA6XrnyQvj7o7lx2ZKYaKmksOXt8VO+XHovg9sqzQFm0/c4ue0aVfahbvqXkoob5RarQ0spFcMSIURVTb0yrJRHgr4PATHk5zNy+YCtp1zOUd4KL51bj8JsI6lJO6Ztv7Apet/UZk/HJtqQZMqza2C0lXAKNzPPL95Q6f2CRT6LuNFL5PqJZmFD8u7Sk9UIKQDuNrm9nyEvNeAZ2ziLol/SeaXcNjI6X5X99GTphAZNUs/Hgj6UiAE/w/vqMuYK81rhOyH
+ HmfkeSwv
+ /72zvQW01YaA/AfofFXuZoFWJ2avtFy+K0cwQuzLTFFyS1g8CPpwgitWKkSU9QqI2orFUMZzQ5mVb8FkMafCn/oXkv36bxmlAMNSoPWVwo6UCSw3f28sW7VYNsOKMkhqosOxUvmm5f892wOjlNFX5SyqUnTRncnstu2WP6DwX/xlvA5m82SpFT9SC3Znr95uwcjNZ7WmzbT2ewz9HxciZGaXuXg2s5d5fNRDlYG5eZ9fsppqaM5A2V7EAf98J1Z8G2Fuu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,37 +145,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 10:42:21AM -0800, Yang Shi wrote:
-> On Thu, Feb 12, 2026 at 10:42 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
-> > On 11/02/2026 23:14, Yang Shi wrote:
-> > > So, the code flow should just become:
-> > > INC VIRTUAL_BASE + percpu_variable_offset
-> > >
-> > > In order to do that we need to have the same virtual address mapped
-> > > differently for each processor. This means we need different page
-> > > tables for each processor. These page tables
-> > > can map almost all of the address space in the same way. The only area
-> > > that will be special is the area starting at VIRTUAL_BASE.
-> >
-> > This is an interesting idea. I'm keen to be involved in discussions.
-> >
-> > My immediate concern is that this would not be compatible with FEAT_TTCNP, which
-> > allows multiple PEs (ARM speak for CPU) to share a TLB - e.g. for SMT. I'm not
-> > sure if that would be the end of the world; the perf numbers below are
-> > compelling. I'll defer to others' opions on that.
+On 2/16/26 12:34, Kiryl Shutsemau wrote:
+> On Sat, Feb 14, 2026 at 04:45:14PM +0800, Wenchao Hao wrote:
+>> Add kernel command line option "count_zero_page" to track anonymous pages
+>> have been allocated and mapped to userspace but zero-filled.
+>>
+>> This feature is mainly used to debug large folio mechanism, which
+>> pre-allocates and map more pages than actually needed, leading to memory
+>> waste from unaccessed pages.
+>>
+>> Export the result in /proc/pid/smaps as "AnonZero" field.
 > 
-> Thank you for involving the discussion. The concern is definitely
-> valid. The shared TLB sounds like a microarchitecture feature or
-> design choice. AmpereOne supports CNP, but doesn't share TLB. As long
-> as it doesn't generate TLB conflict abort, shared TLB should be fine,
-> but may suffer from frequent TLB invalidation. Anyway I think it
-> should be solvable. We can make percpu page table opt-in if the
-> machines can handle TLB conflict, just like what we did for
-> bbml2_noabort.
+> I expect it to slowdown /proc/pid/smaps read substantially. I don't
+> think this line in smaps worth it.
+> 
 
-It's not about TLB conflicts but rather using the wrong translation for
-a per-CPU variable with CnP.
+That's why it's enabled through a command line parameter.
 
 -- 
-Catalin
+Cheers,
+
+David
 
