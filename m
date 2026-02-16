@@ -4,78 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7ECE7BDAC
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F50E7BDAC
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:32:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 040376B0005; Mon, 16 Feb 2026 08:32:22 -0500 (EST)
+	id 637546B0088; Mon, 16 Feb 2026 08:32:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2FFE6B0088; Mon, 16 Feb 2026 08:32:21 -0500 (EST)
+	id 5E1016B0089; Mon, 16 Feb 2026 08:32:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E11F16B0089; Mon, 16 Feb 2026 08:32:21 -0500 (EST)
+	id 4E4606B008A; Mon, 16 Feb 2026 08:32:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CB23D6B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:32:21 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 664221A0DE3
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:32:21 +0000 (UTC)
-X-FDA: 84450408882.05.6B9B0E9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 388066B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:32:25 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF36C8D207
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:32:24 +0000 (UTC)
+X-FDA: 84450409008.19.DAEAFF8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 774A8C0013
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:32:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnzGrS+E;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id D346640006
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:32:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpeBzW5m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771248743; a=rsa-sha256;
+	cv=none;
+	b=OwW0vyruERUGWHKSu2NNHCZnEv+s9oFG8BO6KOda2lEAFDezj+9ymvvtx5mCq/6kmzJKQS
+	aZGEK1CD6FYvDnHvjJ/4ti+iB8qaViJONP1zhwVwghENfu/qtMj0txus/oeyLcHdIFZPDO
+	3dAYhgivKUcnV2LBHEVC/6U4QGsmrjM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpeBzW5m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771248739;
+	s=arc-20220608; t=1771248743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=j7Em2LDZ8N8JiQzHQJHo1lDgXGPhiorUn1dbvzzh0ic=;
-	b=KPqcgEfuh98iWVQrgv1gIMQ04RrrMYDHozTyssAir//eMG78SHWzkbS+hTBgM1Ng4Z4g64
-	hbKPpJADY9RkH2F6zqdnXitAzFCfba6ANid0WRP5orF+ZLLZECUgPEMgpr+Qm8PISZ55t5
-	EqaEC42sFyPBF0U4MGpCEca6Z7INy7I=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnzGrS+E;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771248739; a=rsa-sha256;
-	cv=none;
-	b=EsdbVx7cygmxdHLFKFose7Etlyp6NcVMmVUNq4UsXEdotCVrkPWisSydHgMspR/4GmAXjb
-	8MOS464Q+32NzY4IUpnQ22N6jqDU3nSx4Rzrl2RfOfih8s3QaFrIw/fKPUzQevOuWsTezQ
-	z0/cjG5vm1XP6vEHOB0+gYoMKGWQ1j8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qxzbVmYrDkR1e5Q+0qWRbD8LkULMRf7nSR+57RKMwuA=;
+	b=GS4tcQfhKAXSuPZYgj7usTxS4BAY6m674F/RvHnzRnOyg25lh5iR5LBX6fCloN8bb+ZDLO
+	mesESZqEizXkMbr+GJ8ZAmEQRRyEy1bUoenlkOUKoN8o4B014QZoDxFucrEWvxo3C9+Gi8
+	MIzSGj8sBg1yzOq03PZ8urYwvydiR8c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88FA14186E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1328E438F8;
+	Mon, 16 Feb 2026 13:32:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1D2C19423;
 	Mon, 16 Feb 2026 13:32:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44616C116C6;
-	Mon, 16 Feb 2026 13:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771248738;
-	bh=IBfriahGCrZbgG2xPZaipNIY6Lm5nqv5xPLiQPNO0VU=;
-	h=From:Subject:Date:To:Cc:From;
-	b=qnzGrS+EGxMXTIwtFfpkP2HXkzwc0TfKfB9GHqoclOOIDAme6AsyKLaqS9E7Jtqka
-	 f6gnJXGflC/unzfnHNAHt2Vulcy4z61/ZFYwFdYdczlZvsSOBRrCEqVSmspPphRoy9
-	 yF/sMzGeB6kWmJQXp7H8Vfa6w3Ei0rX3UQoNp5nEhXqWE8kqSsdG9CGlh/rf44hjpQ
-	 qP8XHTBhvyl+B9EyyHTPIEJK1w1vFuPw2o+gJTKkgLGJxb2LXI925d1+SS5jjjloEx
-	 h3NPtd108rWtrY+y0O1A62vdnRHBtjd1Uq8x+m72u2vhcRoOSyKbRyAclc0UGzxxQR
-	 2G1SZh+oI4yYA==
+	s=k20201202; t=1771248741;
+	bh=GQODvPKfpe1TuAASNlfZOpKx+opiPpT2Vm9Zk2O6rrw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=LpeBzW5mKUxVFtLej99Vdf/DLsg/Lz5wVffdIB06ucKJPM75RkE2zw6eu2gjLAXY2
+	 el/H2qkyx1qaloadnIfPom8wn/ga6OBtW96Kv80BBigoWZAesiZnp3CaXK5yO1AZdU
+	 OPX9Xd/XtjLC1QmeBSXIZmPE9mhstsztwVmmhHQGEoFGOQ0V9kguWN4aILDUDeOb88
+	 EkJJN7eIrl4ryh405XEph+QaqlOLsNFbrzrvZN28wgbc2mL43EzhIvvPbiC75ijZbf
+	 h6at3a+Jt1uSrnUQFUHnP/J3xlPzVLSj0LZrGXC4SfyZ1+k0pOlk2cvdjPTR0Ms4dg
+	 X9H6BjBtmKm2w==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 00/14] xattr: rework simple xattrs and support user.*
- xattrs on sockets
-Date: Mon, 16 Feb 2026 14:31:56 +0100
-Message-Id: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
+Date: Mon, 16 Feb 2026 14:31:57 +0100
+Subject: [PATCH 01/14] xattr: add rcu_head and rhash_head to struct
+ simple_xattr
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEwck2kC/x3MTQ6CMBBA4auYWVvTvyngVYyLdphKQwTTNkpCu
- LvV5bd4b4fCOXGB62mHzO9U0ro0qPMJaPLLg0Uam0FL7aRWSnzWPIvN15pFWWnmKqjHaEcT+t5
- 20LpX5pi2//N2bw6+sAjZLzT9Tk9fKudLp8kMKLUdPSFrhco4CjF2g7GIUTp00gTp4Di+DYKIv
- aUAAAA=
-X-Change-ID: 20260211-work-xattr-socket-c85f4d3b8847
+Message-Id: <20260216-work-xattr-socket-v1-1-c2efa4f74cb7@kernel.org>
+References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
+In-Reply-To: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Jeff Layton <jlayton@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
  Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
@@ -85,20 +83,22 @@ Cc: Jeff Layton <jlayton@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
  Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, 
  netdev@vger.kernel.org, Christian Brauner <brauner@kernel.org>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4849; i=brauner@kernel.org;
- h=from:subject:message-id; bh=IBfriahGCrZbgG2xPZaipNIY6Lm5nqv5xPLiQPNO0VU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWROlolVf2J3f36a8ze/m4FeS2S03091//pKONFFL3V/7
- o5raQlvO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTAC4SwcjQ9CDunvilFdtFXp3J
- 3LXpydXa0ve8ct39mhkmOxclbDypyfDfS1fQoKkiscXO6LCGhUnA9Rs1i74dSH5eat2qI1/z/yk
- nAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2838; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=GQODvPKfpe1TuAASNlfZOpKx+opiPpT2Vm9Zk2O6rrw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWROlomTaIl83Gt+OeTiNWF1CbMFL08cD3PetfQlJ0PZx
+ WbTawUuHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMxPMrwz1Ci5rhPAFOf3LKl
+ 78uOf5myJuvMsYUScicmG/244j11URIjw3++OjWV4xdd132cI+jgbPpzp/iMCku2ZWmmKV6996u
+ YWQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 774A8C0013
-X-Stat-Signature: qqt59kgcqmtfenca9a9uecuq4dn6wc8o
 X-Rspam-User: 
-X-HE-Tag: 1771248739-936381
-X-HE-Meta: U2FsdGVkX19UjY14Jwe+WJz4ypu70+4BCP9P3Un2iD74MptUfIj4kra6CQcGY5Z+0L8zDtZ4JA/gINrEqkruqdipctmWJx2cmOIZM81BzE/y/Ni28sd8b2L9pqyYrYxDmWZLQ6O+HUfMpRvIXPjVaE/SrMw35kwEb8bvaV/MkoyIRTP8taiJ6tCN5FzsP+ptJSd4bwik65f61YLjybf/5QohZIDUhofT9emZnATDoIJczYTdyTj8WtHbj+ob5t8AllOxHgipZb6Je3x4K4Y6mYpxl97qlrTPGVGhQPnSsbUl8vGYj2X9RyfDyinFkXOOi5UvX8ezqdIZtvFrDIegFZLDc/LJWeqmY+iM7cFDELYPuVa+EktM6IlCHJBW6gPM4Pr7c7CyC959UBlKCu2z7JWFzp9RZDO2O4IQKPxSWW4zPz1DgrvHmxcC7sffKwO+rIgKS7yfjRwn/0uU4r6AVUc1PWfQQVdQs7XKFQmzW8BCi5eCwD42A9uhljGMqmL1XGmkTYPCRAgqn86Q+TNYLe3GWq2vze69eZQJ5kaZSmrAN5KXm5fy+lq9bm+Kf7KKrwvmbl+EJMOBd9dqBul7CL54rwFyCNUukTsqG3a4n/hd7ZcNHGumc5KSyAimmymUBuzRAhEG3qbLbBqsn8cQiqEcGQj9OiYfzxVMFSeYsQJVhzAtCAMyjHa1LRzR0F8vB3UByrT/QcYBvbM20d8XN+E67+zQ6+PhRs+07fwneLkgKTuY0XNjPUBC8YoG0KP3RxlnUnchOz3AZh5g1D4iVYai9VbJL3BScUD6vByy8BI1QN7J8eIGez9umwAzSgORFZW6SPv85L7gbGWWCJUACSuZXhZThCvpyf1bjvPM8Gath2claUlP7k2Ra503zEO4sNHOIalBAvzXjKMgjAT8bQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D346640006
+X-Stat-Signature: n1ho3fei4gi7rztshpu6ojm7kek3dgow
+X-HE-Tag: 1771248742-170728
+X-HE-Meta: U2FsdGVkX1/WAsYKOpFBunNuB2lPLxLM689DFkOztGQuMxVKR5nZyNeDzJgasEYKO+CEP4yLWN7t0rHGq/JQO3A9MGrdEzYiii1VRRcOvQC9UQGwarPvGOBbMmg5Ocz1mSukeriW4vapMmrZchx6uff0UDITsuYA8/dymCAdXJ7dVn4aMTtIPyuxDUTe1l++tb31IaPIbOskJWWO1z55a9RSFEsdEX4atASKyIGvR+OFeIV1XwbaAM4kn9PDQVdXQTc4viI7tFTCd6snISS5zcDPEsE392CoVuwFHKTUjDylYbMomWsNwAda0VYoKQ/EvOWO9FZq3D9WTQiLgRPk/LjbkrzqYJkGZxOYnxHd6plsApLFkEB4YA6R6gGH8cHBdBV+/1Bipa4+GRvFi09LnMCB+CUN1Jaa1mR7B7ghLnUQvhqDlLUfs+BeyfU9pv7lr8nvIz+HJhWNlK7U2c9aprLnC5TNl+ze/bCraaEYiceJDwS3gcGXfugQnPECtIYiUBgD9oQz+Tfbf/4gATxLUCqsNooRL/FQEmibkAMY0cY/8Trx2M/yxB7k+EVbojvgqVHk4hBwOMkKYuXxn2T2vUMBQUsTEw7vpKVDSD7esF9Hga0zjuAKW6HD36hN1TNf+qPNc4NMWjUzAk0rBeeW0VOXJQtu7fHJBW4NcJyKo+aMHlRgo+DU9GTAiB8FF7IRDapg8xrYGEDQ6+6bWfTOxgpJOUrHXUdZPDF3UZX8ro78gExgYBEogy93N0fVPSBl59NNTFPhupvMm8t2/EjT737r/QEkzayZgzT245fAGJVfnTKJVc4ODMMX8dlCTV99fVpCupPyB0UBqytoodx679MW6T+xzQN+hkYy92+2U/7nzo3dgWkURt/smxtx1QNtXTnunQ37sC4tCR8VK0q+xuxphgYN3Gg/6G+376yKGb6OLZJbSan6t0RU11lPq8YeSOnplv8fl2yt3I68eC8
+ tcjGC5TK
+ ewps9Ux06g1CSeThFf753nknwE92slSa3XGQF8rSjAbwSbHyN3aypdeFLcD9qS8z19wFl8TkkG4bFMV/Hv14YKw7u3jnkQc1KPFdYwsRYqEYQYXpvnZyz9gPM3HKuJJL4JHevKlXhUR7QPLbqE5bdr+Gyk7MDimDN2UF0pHCaNw11Wx/Wif6aQ8jcbJWzdPSg0C/O4iGxqyCkR1lupOi9T8kcceg3RDxu0d7ONI7oLYGDuIxrlpATuonR0ccji2LlxhCYdbdaka21iNQDBcxvI/jMHDRdke+HCXGsO0oTtzkOhCFgTepu332css5vJWqRBa2YEJwPu41kyopvia2l3N+DLFR76Q0SzDvW8Vbf3MklVC8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,96 +107,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey,
+In preparation for converting simple_xattrs from rbtree to rhashtable,
+add rhash_head and rcu_head members to struct simple_xattr. The
+rhashtable implementation will use rhash_head for hash table linkage
+and RCU-based lockless reads, requiring that replaced or removed xattr
+entries be freed via call_rcu() rather than immediately.
 
-This reworks the simple_xattr infrastructure and adds support for
-user.* extended attributes on sockets.
+Add simple_xattr_free_rcu() which schedules RCU-deferred freeing of an
+xattr entry.  This will be used by callers of simple_xattr_set() once
+they switch to the rhashtable-based xattr store.
 
-The simple_xattr subsystem currently uses an rbtree protected by a
-reader-writer spinlock. This series replaces the rbtree with an
-rhashtable giving O(1) average-case lookup with RCU-based lockless
-reads. This sped up concurrent access patterns on tmpfs quite a bit and
-it's an overall easy enough conversion to do and gets rid or rwlock_t.
-
-The conversion is done incrementally: a new rhashtable path is added
-alongside the existing rbtree, consumers are migrated one at a time
-(shmem, kernfs, pidfs), and then the rbtree code is removed. All three
-consumers switch from embedded structs to pointer-based lazy allocation
-so the rhashtable overhead is only paid for inodes that actually use
-xattrs.
-
-With this infrastructure in place the series adds support for user.*
-xattrs on sockets. Path-based AF_UNIX sockets inherit xattr support
-from the underlying filesystem (e.g. tmpfs) but sockets in sockfs -
-that is everything created via socket() including abstract namespace
-AF_UNIX sockets - had no xattr support at all.
-
-The xattr_permission() checks are reworked to allow user.* xattrs on
-S_IFSOCK inodes. Sockfs sockets get per-inode limits of 128 xattrs and
-128KB total value size matching the limits already in use for kernfs.
-
-The practical motivation comes from several directions. systemd and
-GNOME are expanding their use of Varlink as an IPC mechanism. For D-Bus
-there are tools like dbus-monitor that can observe IPC traffic across
-the system but this only works because D-Bus has a central broker. For
-Varlink there is no broker and there is currently no way to identify
-which sockets speak Varlink. With user.* xattrs on sockets a service
-can label its socket with the IPC protocol it speaks (e.g.,
-user.varlink=1) and an eBPF program can then selectively capture
-traffic on those sockets. Enumerating bound sockets via netlink combined
-with these xattr labels gives a way to discover all Varlink IPC
-entrypoints for debugging and introspection.
-
-Similarly, systemd-journald wants to use xattrs on the /dev/log socket
-for protocol negotiation to indicate whether RFC 5424 structured syslog
-is supported or whether only the legacy RFC 3164 format should be used.
-
-In containers these labels are particularly useful as high-privilege or
-more complicated solutions for socket identification aren't available.
-
-The series comes with comprehensive selftests covering path-based
-AF_UNIX sockets, sockfs socket operations, per-inode limit enforcement,
-and xattr operations across multiple address families (AF_INET,
-AF_INET6, AF_NETLINK, AF_PACKET).
-
-Christian
+No functional changes.
 
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
-Christian Brauner (14):
-      xattr: add rcu_head and rhash_head to struct simple_xattr
-      xattr: add rhashtable-based simple_xattr infrastructure
-      shmem: adapt to rhashtable-based simple_xattrs with lazy allocation
-      kernfs: adapt to rhashtable-based simple_xattrs with lazy allocation
-      pidfs: adapt to rhashtable-based simple_xattrs
-      xattr: remove rbtree-based simple_xattr infrastructure
-      xattr: add xattr_permission_error()
-      xattr: switch xattr_permission() to switch statement
-      xattr: move user limits for xattrs to generic infra
-      xattr,net: support limited amount of extended attributes on sockfs sockets
-      xattr: support extended attributes on sockets
-      selftests/xattr: path-based AF_UNIX socket xattr tests
-      selftests/xattr: sockfs socket xattr tests
-      selftests/xattr: test xattrs on various socket families
+ fs/xattr.c            | 23 +++++++++++++++++++++++
+ include/linux/xattr.h |  4 ++++
+ 2 files changed, 27 insertions(+)
 
- fs/kernfs/dir.c                                    |  15 +-
- fs/kernfs/inode.c                                  |  99 +----
- fs/kernfs/kernfs-internal.h                        |   5 +-
- fs/pidfs.c                                         |  65 +--
- fs/xattr.c                                         | 423 +++++++++++++------
- include/linux/kernfs.h                             |   2 -
- include/linux/shmem_fs.h                           |   2 +-
- include/linux/xattr.h                              |  47 ++-
- mm/shmem.c                                         |  46 +-
- net/socket.c                                       | 119 ++++--
- .../testing/selftests/filesystems/xattr/.gitignore |   3 +
- tools/testing/selftests/filesystems/xattr/Makefile |   6 +
- .../filesystems/xattr/xattr_socket_test.c          | 470 +++++++++++++++++++++
- .../filesystems/xattr/xattr_socket_types_test.c    | 177 ++++++++
- .../filesystems/xattr/xattr_sockfs_test.c          | 363 ++++++++++++++++
- 15 files changed, 1547 insertions(+), 295 deletions(-)
----
-base-commit: 72c395024dac5e215136cbff793455f065603b06
-change-id: 20260211-work-xattr-socket-c85f4d3b8847
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 3e49e612e1ba..9cbb1917bcb2 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -1197,6 +1197,29 @@ void simple_xattr_free(struct simple_xattr *xattr)
+ 	kvfree(xattr);
+ }
+ 
++static void simple_xattr_rcu_free(struct rcu_head *head)
++{
++	struct simple_xattr *xattr;
++
++	xattr = container_of(head, struct simple_xattr, rcu);
++	simple_xattr_free(xattr);
++}
++
++/**
++ * simple_xattr_free_rcu - free an xattr object after an RCU grace period
++ * @xattr: the xattr object
++ *
++ * Schedule RCU-deferred freeing of an xattr entry. This is used by
++ * rhashtable-based callers of simple_xattr_set() that replace or remove
++ * an existing entry while concurrent RCU readers may still be accessing
++ * it.
++ */
++void simple_xattr_free_rcu(struct simple_xattr *xattr)
++{
++	if (xattr)
++		call_rcu(&xattr->rcu, simple_xattr_rcu_free);
++}
++
+ /**
+  * simple_xattr_alloc - allocate new xattr object
+  * @value: value of the xattr object
+diff --git a/include/linux/xattr.h b/include/linux/xattr.h
+index 64e9afe7d647..1328f2bfd2ce 100644
+--- a/include/linux/xattr.h
++++ b/include/linux/xattr.h
+@@ -16,6 +16,7 @@
+ #include <linux/types.h>
+ #include <linux/spinlock.h>
+ #include <linux/mm.h>
++#include <linux/rhashtable-types.h>
+ #include <linux/user_namespace.h>
+ #include <uapi/linux/xattr.h>
+ 
+@@ -112,6 +113,8 @@ struct simple_xattrs {
+ 
+ struct simple_xattr {
+ 	struct rb_node rb_node;
++	struct rhash_head hash_node;
++	struct rcu_head rcu;
+ 	char *name;
+ 	size_t size;
+ 	char value[];
+@@ -122,6 +125,7 @@ void simple_xattrs_free(struct simple_xattrs *xattrs, size_t *freed_space);
+ size_t simple_xattr_space(const char *name, size_t size);
+ struct simple_xattr *simple_xattr_alloc(const void *value, size_t size);
+ void simple_xattr_free(struct simple_xattr *xattr);
++void simple_xattr_free_rcu(struct simple_xattr *xattr);
+ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
+ 		     void *buffer, size_t size);
+ struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
+
+-- 
+2.47.3
 
 
