@@ -4,140 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0696FE81A38
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:18:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BB30E81A3A
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:18:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67CA26B0089; Mon, 16 Feb 2026 10:18:26 -0500 (EST)
+	id 98E726B008A; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 634456B008A; Mon, 16 Feb 2026 10:18:26 -0500 (EST)
+	id 93CAF6B008C; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5369D6B008C; Mon, 16 Feb 2026 10:18:26 -0500 (EST)
+	id 7E74F6B0092; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D00C6B0089
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:18:26 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C98FC13C2F0
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:18:25 +0000 (UTC)
-X-FDA: 84450676170.25.318495C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 15C321C000E
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:18:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t0Us5cZw;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771255104;
+	by kanga.kvack.org (Postfix) with ESMTP id 6628E6B008A
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30E4313C2EE
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:18:47 +0000 (UTC)
+X-FDA: 84450677094.13.3E95AE2
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn19011090.outbound.protection.outlook.com [52.103.23.90])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 30E38140005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:18:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=hotmail.com header.s=selector1 header.b=bCP2571U;
+	dmarc=pass (policy=none) header.from=hotmail.com;
+	spf=pass (imf26.hostedemail.com: domain of raul_pazemecxas@hotmail.com designates 52.103.23.90 as permitted sender) smtp.mailfrom=raul_pazemecxas@hotmail.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771255124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QhUXvoITQKnsnKWuOfTJ0XwZaycyXn7DWq6mlZt8uzw=;
-	b=qO+Izxec7gOYZeTO+iYfsn7xczu0rfRK8LsItBOxLGkMqkNcQvYVMj7t6pt63I8KQ0mS9Y
-	UgzHcPZ7wiQagwj0WwmUdoaMAyj61QpmxqNd2PN7iUpjhw0K4Ht8HxubDvbcRb9NWnB5nY
-	Nq4/QFUeLFAyxHvwTqQyfqG+1+OKsww=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t0Us5cZw;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771255104; a=rsa-sha256;
-	cv=none;
-	b=KV6PbBxAd0EbLyXhlELI6Do65G118id2D3uwXMdT2k3xMWscR/kRwp7RXM7P9MJ/I2ZUwu
-	DloEkwNW4IblA2F86nIhXWJjGVz8zOmnWgUkvPIL/2tUkpXBL1uVQG40o5mZ8ynAS/TFZq
-	2G9PUaBIRkixz6UQmuPrbb0RNYAb6Hs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64EB76012B;
-	Mon, 16 Feb 2026 15:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7413DC116C6;
-	Mon, 16 Feb 2026 15:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771255103;
-	bh=nuOCQrbydX5nDHo4AVpIsAFOyphGR2XiFnc7P7fdV4Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t0Us5cZwUWMi6E3Ndvl33Y2COhgA2rBaEKXqrmtu2154fq32IfduuJ84dUpPAuRSh
-	 AL9MtokRSDEK4HIf41OIvv87gIJtZ15mpUHu1rMGWpcI/H1a0R7CimkOkKfqqrvgb7
-	 JcBje/bs3/QEI/LpqK+I6kyqYA3tlw0adK4+dEbZ53GsPqzGCQkf1Ez0poRKC6uCp4
-	 YUOTDGfiDRyBVNO/OyjXdiWzBNuGTctC6qehl5Yv+8zSTipayTfiz9T4IxnKC6fhqx
-	 UyylDmndFVAyHrX8T4rC0swNQilwPmzTshD7DBDICqQ9jp+EZvyVquoGzxwPx95Ib+
-	 8YhbUipdTdMDg==
-Message-ID: <324f3216-3643-43cd-8620-9253c831be87@kernel.org>
-Date: Mon, 16 Feb 2026 16:18:18 +0100
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=O1EkhvVQuK+5xNczz3cGLQUQvdFumtlz2yhZ1FY00n0=;
+	b=NfzCVuPEv5n/dR0YQ8k7q7pdiENjotPgKcS1S5/us2A4mCHzH3GSpSAMi2Gyj+rSWhRUBr
+	EHntiZuMTNku8TMHfkVtg0YI6FA1bSWrB+CqL1TBYarHXNF2AWvBbxLw/WutC4bAJ+9qVy
+	a+iouiougTeITykbQasLrG/vq7vZ5yA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771255124; a=rsa-sha256;
+	cv=pass;
+	b=uOIX2mgiS7uEbBnkzodFVhaYC366LTfHbEigaD7xqt7HUdu89L4Mwq1nzviBNASyEBKXiS
+	A9a75AQWx5drvGmuHINj9bNHan9CUrB4Mn0xNyTUDrl2vDvEGLHcrOVokON4Q4CmAiKm1R
+	WOpJ0QDD3MB0wXNss11zjM/fGvYk1ns=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=hotmail.com header.s=selector1 header.b=bCP2571U;
+	dmarc=pass (policy=none) header.from=hotmail.com;
+	spf=pass (imf26.hostedemail.com: domain of raul_pazemecxas@hotmail.com designates 52.103.23.90 as permitted sender) smtp.mailfrom=raul_pazemecxas@hotmail.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AtX8z1UUyrPFuoREPLUZLUX0SFS9NlGG7zji7+4cUftxmT/AkD3AEVoAj4zQ13iUsA3hRH/kKOGeKD7iYZgz8voquNcjIAuH3ZuuTwTNuec4Epy3rKM/7sPLoxkUypPLLXI+MYYuTcxIaYN2Izhe2xFtzMQOl2mJQhkTSRNunZiku84l3oMf+IhRUocv2ZqH+aa+Z9QeU4r48WtW/GzBbY3ysxcFwcjx5SURF+1MBdpXeenNSmAbr+OJVXcYKJxstM36ZOjnaS3MD1SApAjj5u5VyuCTQI1mG2++RDhuhiRVajJ5KzYXnuC1fYOARUyDIwpZdZ2kGe7EN12xXKC6Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O1EkhvVQuK+5xNczz3cGLQUQvdFumtlz2yhZ1FY00n0=;
+ b=LNdnTiynqSsjy/Flu0pJZwfclXV59c0NYM1qCnGh+54eeYsn3XiBFY4Co6xyzLfW1Dac4wPJlfzY+zZpwt5GlEGHP4UirlpZFUUWoJ1lBVkjjxo9Y4AfJbh8EPm4pv8hy1qk6AjeulJtQr9fK6StClfAQUN0r69RKzwFn8rrPzR9xRTufhp5XOYgnMDfRxRQYm+icMYhUwkJ1X/dv8axXKG48BeIAM8D4bXIKvFfNlSf8JuNzYgJNa38AU2lYOJ1UhSW0DakORD9tMJfLfP01zhUaHdnLTkHc/JHT50VLE64pxasWtGCLnU418Y1HG8pNvlF+VLH/Pn0F2mJh7q4Jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O1EkhvVQuK+5xNczz3cGLQUQvdFumtlz2yhZ1FY00n0=;
+ b=bCP2571U4guTCPEIoVMPGJima9yHWmhAQxQpWqho7BzaOEs1XXRWu3bYsz2ldGXRKKfDV3xu76wzPkAh+rhHsP8YHxPqvl+ggh08YTyO6fAPrRJJEZR5ZM2cpRpSb7yk35KGot5H5b6o1M5kxRCnv2Ootpmr1LrZgl04zT1mJcLEX7XJ9tnLqGfz8CI7DdyiGPSoHzcyGzO9w7McE8v/gtjVDIdz76qLUde+cL5kiysP1VTle0ZL+CRaIKpTeOrBtrBEie/agvIViD988XOg8YCnqZJx+ok5EDxeoIeMxcmsv6kKfEgIDyVkD00xwdl29uHU/stETamboBFduRjPlQ==
+Received: from CPUPR80MB8171.lamprd80.prod.outlook.com (2603:10d6:103:2c6::9)
+ by CPWPR80MB7169.lamprd80.prod.outlook.com (2603:10d6:103:205::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
+ 2026 15:18:40 +0000
+Received: from CPUPR80MB8171.lamprd80.prod.outlook.com
+ ([fe80::18b5:f8c:1f:ef82]) by CPUPR80MB8171.lamprd80.prod.outlook.com
+ ([fe80::18b5:f8c:1f:ef82%6]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
+ 15:18:40 +0000
+From: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
+To: "sj@kernel.org" <sj@kernel.org>
+CC: "damon@lists.linux.dev" <damon@lists.linux.dev>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "security@kernel.org" <security@kernel.org>
+Subject: [BUG] mm/damon/core: dangling walk_control pointer in damos_walk() on
+ inactive context
+Thread-Topic: [BUG] mm/damon/core: dangling walk_control pointer in
+ damos_walk() on inactive context
+Thread-Index: AQHcn1XCaBDjR1AYvUKJXLQu2W9RNA==
+Date: Mon, 16 Feb 2026 15:18:39 +0000
+Message-ID:
+ <CPUPR80MB817114F8F409F0293D3799C1956CA@CPUPR80MB8171.lamprd80.prod.outlook.com>
+Accept-Language: pt-BR, en-US
+Content-Language: pt-BR
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CPUPR80MB8171:EE_|CPWPR80MB7169:EE_
+x-ms-office365-filtering-correlation-id: d4affd79-99d1-4be5-ad31-08de6d6eaa08
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|39105399006|20031999003|5062599005|15080799012|19110799012|15030799006|461199028|31061999003|41001999006|8062599012|8060799015|40105399003|35041999009|3412199025|440099028|102099032|26104999006;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?n4MLueIo32uSHz24EEwt1bQym2QXQSgfs9aSChci21a8PTRDqQZBqANxAs?=
+ =?iso-8859-1?Q?ycwsYcQoj9QVRDDRiA8HLHirsnUU55RdhcCVJM52aZKegdxGxaJWY6clxX?=
+ =?iso-8859-1?Q?eXqaKHkGiERKx4WwPAmR3+eAg8vKUKnu5eVnImuV+EIjNjQRUHS238YmHl?=
+ =?iso-8859-1?Q?8NRPSu12KINmpNupLWbRc28rQsM8ff2ze+LmDFRpGdsEfBKCpajQuqVxfk?=
+ =?iso-8859-1?Q?59O3V5G4VqqlEtMH2lxI6xx5vrPNVltfU/oEO64sG7d893ZQ7OY2Dev4vZ?=
+ =?iso-8859-1?Q?PD1HZybQEF/E0z92WNKLI4meTFHf9WpVMhpj4Mhyod/x+Dzh7t58CJhY7P?=
+ =?iso-8859-1?Q?zENt9PmVaMTO2b7H/pUMMnGlGf57lF9wnyHr4GYAVzQeHjqYNcBKK1dYes?=
+ =?iso-8859-1?Q?4bGoSUzaAn7GEATt870TgymWDSofJPmcay+mP1ARaNLI6d8gIZ2h6BxY5b?=
+ =?iso-8859-1?Q?yvdJ7cTDX1vHk6mKPPKAfbLO1udOuv/7/RUyS16nFcAq8CrfCFrRECGlMc?=
+ =?iso-8859-1?Q?PlwM8p6zGsenZANAXjuY19ExcOFE557NKSw2JRKRm3YkK1N8a6tuDvIqfR?=
+ =?iso-8859-1?Q?cYvCXihuJPgjVJzCSaUwyCR6LVJ25gDzK0/0yhE9Qoola0BRkqhPdn0Id6?=
+ =?iso-8859-1?Q?gAzelUKf7fiDplUdCf2q65uBK2wZ5m+gNsDR9klhZw5KfHXR+fKl98wgPQ?=
+ =?iso-8859-1?Q?6FbTHwvKhhA2oBySnQ6juuQTo04YxgBiDygLmI0e4+l6afcAftNx8f7rsA?=
+ =?iso-8859-1?Q?qXvdl00ILUZm3pxdB8gxpWuaBfBulVcJwfGSAEj4ufNCCs2uH3cSbv5TK/?=
+ =?iso-8859-1?Q?5HgrMu8AkrhymfAthGEmyoDduGhxD3R5bUEa6JqMPq9ze7Hsmx7rC1VzdC?=
+ =?iso-8859-1?Q?xGXzn+ecJkZg22JxHJGYq7n7F35pNkTc39VpkiRIlJDq7a8FA3Nw8+X106?=
+ =?iso-8859-1?Q?evSLWk8MzpmWb7WnydKmSqdrWlNaPZJPNPZidg3XZMDNJlxpRRtNFYJrmw?=
+ =?iso-8859-1?Q?+bqu2QbN+0mssdVg2nfn3IhBXkA1ZmRKp8HdYdeDJs7yH1MOI7nOct4gmY?=
+ =?iso-8859-1?Q?UI28KdthLbjgmTcBIL9rt9cF7NWNnFUZd1rL2235TXnw6qOjd9Bub0xkfw?=
+ =?iso-8859-1?Q?IcXCHqdSIeOYa9lAr9QQaJrFXawgmemHnVn7T9Qok8PYHz2arhIxmfh6Fu?=
+ =?iso-8859-1?Q?2Ttjg7NdKjd6lIpC8jccX3plTA5AVYMg1ohQXb3gsEu327/o1akYi+1rnx?=
+ =?iso-8859-1?Q?RL/roSXbPzM1gUEdt6rXgcn/NZknY996rggmF7yyXB4d7D1AY3YpvlqBcm?=
+ =?iso-8859-1?Q?DTRb8DiqLXJHBOp4wIeNpH6LWc14OZDsdMJ+AYasP9val98zVPzSOk0PCs?=
+ =?iso-8859-1?Q?ucRjAZBk102NXkyWDS+nCD6h+8lmo6+7sX7Xmg6nZ0/71z6PQdfm8b0w3Y?=
+ =?iso-8859-1?Q?1aBhU26IzfK7RFwS?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?bVBdeV2spexE1gPH1TX6Ca3ETX1+VA+woQ6LqdhZumJ7YN3+3yHR07omab?=
+ =?iso-8859-1?Q?EGkONOXSKqFIFbGh6fBUvcMkJTqGA/g0J8msshlI3+wb4TEBADWLEXJc5E?=
+ =?iso-8859-1?Q?bEYZWW3/J7TJNPzZbwtpKhZ/jOFp0GM0C/ZegoHBpdY8Pp2OlOU967LmpJ?=
+ =?iso-8859-1?Q?289uJ25zIMJt2LaHMPnmK0buHu/gtvcTOeiXceQC8nWf2XwoteYr/1OEvG?=
+ =?iso-8859-1?Q?SMNX8Z0w5QRaSAS7KslpUQExCRvXsqeGoPTMYQO8mxzuNyxy2bwIRoQNPV?=
+ =?iso-8859-1?Q?lNBbjCEX6Nl1OZzpbXbXL93OSgY4llqoKjVrU3wgxHoV1h4Qr5wnPjmv9C?=
+ =?iso-8859-1?Q?llMwu+sBoCfhVzCMIBFASFCG95AWCV2zq3/WBIic8FTAxvPJRjrE4La/wI?=
+ =?iso-8859-1?Q?O4MHJtsqzlQdGupRh+37CvI99u3ZFRbyMVVtHRe5r2bQyDZBSkCdaC+Z4k?=
+ =?iso-8859-1?Q?91SrEgtS2ccR31N0bnGXc0EPDZaBnRxG0LtD9DAFxQsGoQL4OthkT21pty?=
+ =?iso-8859-1?Q?++S8Iz12lkJOjfGHdjZnhCiT6jDYV4W3O9kj8+ZHFDFDXAbJEjsJ/mjlgW?=
+ =?iso-8859-1?Q?btbSZKMhSRSZ3DGvnkCXLK5Kr0IpbeQW/JSyAerjg8e4FBQN90+BBWF3NA?=
+ =?iso-8859-1?Q?BaDH/6nf+FVZ8iN5G2iurTLTUtaE1NbyX3jNRa63ErrlcChy0YRRAwcbau?=
+ =?iso-8859-1?Q?GDXZjDv1w+NHZ3ccwQVIJEb6mi9WIxsMQ1xTz+8P7tj8LWUMR2D2vSUJef?=
+ =?iso-8859-1?Q?k3uZbWnHP5W3ENHXnJMxxVnEzJJZjAm2ssRcSKzNjOVzFF8YKTNi90K86R?=
+ =?iso-8859-1?Q?gZzlwtfDNzTU2UmPjUX/0DBSdl52sudputajHKswmBj0Lj9jmtH3wmyzVx?=
+ =?iso-8859-1?Q?d/a60t+0b7voigeCWNbSw5/7XFu8Tmz1l7GZ4JDe9JKMRZIgzHCujE6KWf?=
+ =?iso-8859-1?Q?KIp8+Piq/P+khSGrZFYQQRzLFa2l/zOt30odJKpDtGd4/TgJGRGOCBa+fo?=
+ =?iso-8859-1?Q?Fygpe7ImzJUTs1SBoSuhhhH1jB39FrglH8sam9V82arEw8bqnxd2T2znsB?=
+ =?iso-8859-1?Q?F7KjoKN/VqgHTxYHgUgqgq4LGdUf61rDEaiX6BN7Z7lFxCGTOx9fZv5FKw?=
+ =?iso-8859-1?Q?IcMlIfHyzwDgI3odc+HN0p5afVns8BioYN4rF/2zyYdv3baLBhcDjp6/sg?=
+ =?iso-8859-1?Q?+R1p5wD3qhJ8/nht6vjFrUZPUhVAh/SHm+aH4pjKXmnQ6L6yyxOo1SLqoc?=
+ =?iso-8859-1?Q?cd7wT0M5nDqrV9p3d9GUPnNnTL6spsWpS0s9knrXAfPWnRc1P33fiCUSM5?=
+ =?iso-8859-1?Q?B0rcQcOhBUv0VK+Y0bd49p0nEGT5+KRR57NCYfOClQBHQJ2VyhDLZ2xq/f?=
+ =?iso-8859-1?Q?+AQVz4ekCqdjHZALkEcuB0OYELIoNkJ0cJEL6YfhI6L3NlYqwCnN0foVn9?=
+ =?iso-8859-1?Q?G/7Mf4C2Z2dHqwhl6uTkl7vCVCKQt4GE3tchavDOrDA8ibKzCUh+zH7vj+?=
+ =?iso-8859-1?Q?WOc1axHrZPWylkNYOEEjYD?=
+Content-Type: multipart/alternative;
+	boundary="_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
- pages
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260214084514.2842745-1-haowenchao22@gmail.com>
- <db1fa367-0fd1-48a1-a58c-73e72cfbdc05@kernel.org>
- <CAOptpSMCDnnZFSiMrGwA4Kc5Zu=4-6giVbbzMa5UEEE2QzvtoA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAOptpSMCDnnZFSiMrGwA4Kc5Zu=4-6giVbbzMa5UEEE2QzvtoA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 15C321C000E
-X-Stat-Signature: 95g6njzgkfkjiopps6ct9nxakr8hzqwa
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-8eed7.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CPUPR80MB8171.lamprd80.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4affd79-99d1-4be5-ad31-08de6d6eaa08
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2026 15:18:39.9427
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CPWPR80MB7169
+X-Rspamd-Queue-Id: 30E38140005
+X-Stat-Signature: wf1j3ghf8qmep9uki7f8eyk5e65zm491
 X-Rspam-User: 
-X-HE-Tag: 1771255103-579171
-X-HE-Meta: U2FsdGVkX19Kfk7/00XXiWIGA7fmGrVuXQdcwW6SkH1kkrfg26NWoXqxgaVgGs9xheAvxDSaDfYPfduBG4jkhhGUJqvjReyimpB0oMt9dHjQoUbaVQWVnaP3k+Cl81r/n4GXe1kMMxeJB+Z4y9g3O4YX4WNMXAC8vjvPMOKn70G+1Xj0Hk2hDyAcEix3DrqCtqAr+q1VvjS/aeXpyJlb4QxPOiYHppQOGyrHZxrgQVCIr49yo+YkHYnicdDrYvaJCou9VHT8iIR8JmlCoQHFHgl8XECHDW1RezKfcXmhTt3iuz9QJsAtoJc4gY1Nxg7t77mr63YZ0qYLIz3mTwd2fZ9Mh2X/tDh7qouS2YxbvbJsOWk+Fl5OJ7c0jTDvWvKj8QiOBXVEVaj2ZkFa9c86pa18T903FsU1sfhwYlExfjEVvGr6DaZj5GTgpwS/Hgwe4UuER+VaPCNQzTEzP8nojrSZUIwdzgIgL23o1q1yqEnkllXShdYGGSRF2K4wUtPbGqLoVIGugxdUo60Gq7t0WPGkp4jcowYfVSFoGfQ8h6kH5O4Qalt0yn8MF03Hj/GTXuCub4sCI263jj56xmGWfPOppHOAZfUtwanDNRpj1AeMRFnDC6xRSf9KmLXKgsKzymhd1sVBRco8WCN+bFqQyLlYcRSRsm9tPDoQdkVhKiGmB2sY/PGylF3KtrpcAqbClOD9E5fet/BGjuv2peaQ7EIq3i7kXkgT7HvQvcQfVOe8yKODrYuQmDv6HdT5u5jc6Fv0TB3g1x1hGMv5ZUYbFHuBRd3EjoOlHa38PP4TCqkWqQy5hywuZenP9XVvNI+/PJ/wZYervJ3vekLfl6k2vHau1xeBJcWIs4Oj5Jd1JHrEXO68r8pxX+ywu3xOAhd3GGhDPbYJOZpguy3kuAHr0S7EX1gc3ORRo9u7H6bu6POpSvUotfgGC1XSzBfzxopj5gyZ+pnie1qgXIuwFaK
- +Is3kRVT
- aU1cOMraN7se5G55WXzDSe17vkNS6tHqzkonjR22xslAEOXWSGvu8mmawyb/tY/VpziEuX7Z73BJc7QmaUjrobkK0kNDQzUk1MycRXtr5iLpaY/qwYJlUhf/cv3vCM5epwsbwZyg3UYERW+Qhyk0e0w2WyKFyEJBPtY/Q6gfFWcI3EO0yWLhQgK2tBp0WPBMmDnToMkHIkbD7jhBbwEEI6Gsyl0ZKjISxn0qZnfZMNFnxhYVuV/pB2CYNL2hxzd44e+xvVRhKP51A/BM4tFz6pmS+0km7MYGqiJyEppKlUk7JqyDOrgdoNMBVaJJ52UijMhaeQa9FxDhXHhg=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1771255123-452133
+X-HE-Meta: U2FsdGVkX1847XO1JIwVA/TqATLArFEKuOiJypLlx4Vv8u8GPGdC4ksoeRNmemLx3HTDkGraJwN8e49ilmRXkKFIzbqsvb1kLgvLER7Wd34+2VRVAbms40y3jX0nojHzOh+AgsYpIFtc+tVDaQAgGbvOPreBKXrqMS8K35YIZgvmKG3RtJlAngb0bCh+1dge4uEoz814QOcUhBocFRNNDQ70MgeA6cW50tbYizs6HcY2sz2pR7nirhpSP1tvHNCdIgFi+6KyFgHSnfNO0X+UVyAVxwSW/HlrXq9BFbL7IrZ1Gsx076N6yjVzwFkGI/JU7sv+tSB8ae4KwGgRYJ83vk8F6zuLDeMtPEYWAy5DlQUkjZ8U9tIZc+z9CU+ZYxvWMOxRqhOQ2qoN9+3YpHg7Fk/DPdxqo5t53XTw0BHxxWhhnotIizFvmAUFzsoWg5RWdzrA56rrudutTOCfAUtFRjw4WgD311rJyOdGvYQduXoubEoY/a35C0iK5sEKR8Tl1dcmxQZxXxOAhciRpYa0SMZFy27pUDJ/G9/8J79SK00nPxa7/ww7J52eOP/mZBWZhLoLxvRFSgMvEbUDEkHE38pE/Zwugng+hssoQi55p65AKI7g+Kwp5SpJEllA+UwwZ6d8ihrZDGKnfKgB6eWMqOz4bgLaUlpe3eqdYWQK/w035oexJ4wDOoNq/uJKFRzUdLjxjabOYvWbKcAvxFN73BTHDVnfGTIV7NGCMHOSJl4on1Pd7aUaUBrpx3xZsH7dLfAMIxdQxqG/uBS4ErfdktdTerb921iqeB9qdbpYcQWZKvNf+qVFXe82NEaY5ZJDjBSE5Wb1vRTO5wWrcisVz45kDlNxBmfl68ZGhJEyWru7bgeahdOhe35VWzlqDz3U1AcGfGV9jNU4H16pRFUmWxrmIYtzNXyFnCMORHb4o2/Ay20ifUuNDxKPBqcVbOLoffX1rRTF+bK6DKLS+vH
+ COIqkdu8
+ 31SrSKNALnc0SPuUjAYybrg+KqPJYFsmclXFn3bM743YmE9cx5s5wNdxV02W4Yu9CYRu3OmCLSs0woWN1v18AhOk9f7NBZ1MJuDmL2Z9whOD5UIyHgQ0r8v28tg5HX2w9NziOA+sNZsWKcjAbDsRnta/4+cil/Ossknp5MCiQqfXcTaz3KKsOZLls4AZza1JY9i/aLBfyVPg+8vL4WezYLEKr3jZ7uGCWpsoz1PXaMr5maDwy1R04/18G+dN2bDem2kwSA+n6/zEm0zOQEI0U+1u/NL37O6F1Z76pDA5FSlVery7icZRCrsi1eTlXc2LGExYePYUyNcy2iZdOHbKhIeKUml72TLVpKXETJLX84xwLvFya9ePFZLSALSglo18iRJ8FSKYZJlXNu0/Bu1kMZSegmXjIlM0v6kH+OTcv0wAlHZLWp7RC1MseBy2+vhCWGuHw1n1JaCnNI8xRiq83EOBzHqRqgVZZkb7K5DrtzK8hxg2W7FX+8iAEkW7Z0EBcmO0GORZGGTd5x2pKA15a294Pi2W//1yEt65Tf2yVadnmbP2US5xDezK8N5UI0eJb+OQLn1Mzay8gHhG6TNSWiH8Nr/bCguhAOiMKn6sD0zoVxIOECzQQkwRVIjQbord+q1vYxbeGA+Xb2JQJNCICj0kCd7ErMc9OMbGU/1nwECRtNDVWofA7hJIZ+aYJsPKtXzzo
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000669, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,93 +180,441 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/16/26 16:10, Wenchao Hao wrote:
-> On Mon, Feb 16, 2026 at 8:15 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 2/14/26 09:45, Wenchao Hao wrote:
->>> Add kernel command line option "count_zero_page" to track anonymous pages
->>> have been allocated and mapped to userspace but zero-filled.
->>
->> "count_zero_page" is rather sub-optimal parameter name. "anonzero_in_smaps" or sth like that?
->>
-> Your naming suggestion is indeed better than mine. If this patch is still needed
-> for further development, I will modify it according to your advice.
-> 
->> Still wondering if there could be a better way to enable this dynamically.
->>
->> In particular, not using a core parameter.
->>
->> If you use a module parameter, you can just set on the cmdline
->>
->>          proc.anonzero_in_smaps=1
->>
->> And dynamically set/observe it in
->>
->>          /sys/module/proc/parameters/anonzero_in_smaps
->>
-> Regarding the use of module parameters versus core_param, I think
-> either approach is ok.
-> Currently, the core_param I'm using also supports two modification methods:
-> 
-> 1. Command line parameter: count_zero_page=Y
-> 2. After system boot, view or modify it via
-> /sys/module/kernel/parameters/count_zero_page
-> 
-> It is true that this modification would be more appropriately placed
-> in the proc module,
-> which aligns with your earlier suggestion.
-> 
-> If there is a possibility of further iteration on this change, I will
-> move it to the proc module instead
-> of using a core_param
-> 
->>>
->>> This feature is mainly used to debug large folio mechanism, which
->>> pre-allocates and map more pages than actually needed, leading to memory
->>> waste from unaccessed pages.
->>>
->>> Export the result in /proc/pid/smaps as "AnonZero" field.
->>>
->>> Link: https://lore.kernel.org/linux-mm/20260210043456.2137482-1-haowenchao22@gmail.com/
->>> Signed-off-by: Wenchao Hao <haowenchao22@gmail.com>
->>> ---
->>>    Documentation/filesystems/proc.rst |  5 +++++
->>>    fs/proc/task_mmu.c                 | 10 ++++++++++
->>>    2 files changed, 15 insertions(+)
->>>
->>> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
->>> index b0c0d1b45b99..573c8b015e39 100644
->>> --- a/Documentation/filesystems/proc.rst
->>> +++ b/Documentation/filesystems/proc.rst
->>> @@ -545,6 +545,11 @@ replaced by copy-on-write) part of the underlying shmem object out on swap.
->>>    does not take into account swapped out page of underlying shmem objects.
->>>    "Locked" indicates whether the mapping is locked in memory or not.
->>>
->>> +"AnonZero" shows the size of anonymous pages that have never been accessed
->>> +after mapping, and it can reflect the memory waste caused by huge pages.
->>
->> That's not correct. They could be read/written, but with zeroes.
->>
->>> +Implemented by scanning the size of zero-filled pages of the VMA. It
->>> +is default disabled, and enabled via cmdline param "count_zero_page=true".
->>
->> Probably best to keep it simpler:
->>
->> "AnonZero" shows the size of anonymous pages that contain zeroes. Zero-filled
->> pages can indicate memory waste caused by memory-overallocation with (m)THPs.
->> Availability is controlled through XYZ.
->>
-> As with your earlier suggestion, if this change is to be iterated on
-> further, I will update it according
-> to your suggestion.
+--_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Let's wait first for other opinions. Willy doesn't seem to like it if 
-there is no use case besides for limited experiments where you could 
-just use the OOT patch, possibly.
+I found a bug in damos_walk() that leaves a dangling walk_control
+pointer when called on an inactive context. The pattern is
+structurally identical to the bug fixed in commit f9132fbc2e83
+("mm/damon/core: remove call_control in inactive contexts") for
+damon_call().
 
--- 
-Cheers,
+## Description
 
-David
+damos_walk() sets ctx->walk_control to point to a caller-provided
+stack-allocated control structure (core.c line 1560), then checks
+if the DAMON context is running (line 1562). If the context is
+inactive, it returns -EINVAL (line 1563) WITHOUT clearing
+ctx->walk_control back to NULL.
+
+This leaves a dangling pointer. Subsequent damos_walk() calls see
+the non-NULL stale pointer and return -EBUSY, permanently locking
+the DAMOS tried_regions interface.
+
+## Affected versions
+
+Introduced in: commit bf0eaba0ff9c ("mm/damon/core: implement damos_walk()"=
+)
+First affected release: v6.14-rc1
+Affected stable releases: v6.14, v6.15, v6.16, v6.17, v6.18, v6.19
+Tested on: 6.19.0 (commit ca4ee40bf13d, QEMU/KVM x86_64)
+Current mainline: UNFIXED
+
+## Reproduction (confirmed on 6.19.0, CONFIG_DAMON=3Dy CONFIG_DAMON_SYSFS=
+=3Dy)
+
+  DAMON=3D/sys/kernel/mm/damon/admin/kdamonds
+
+  # Setup context with scheme
+  echo 1 > $DAMON/nr_kdamonds
+  echo 1 > $DAMON/0/contexts/nr_contexts
+  echo vaddr > $DAMON/0/contexts/0/operations
+  echo 1 > $DAMON/0/contexts/0/targets/nr_targets
+  echo $$ > $DAMON/0/contexts/0/targets/0/pid_target
+  echo 1 > $DAMON/0/contexts/0/schemes/nr_schemes
+  echo stat > $DAMON/0/contexts/0/schemes/0/action
+
+  # Start then stop (ctx stays allocated per sysfs design)
+  echo on > $DAMON/0/state
+  sleep 1
+  echo off > $DAMON/0/state
+  sleep 1
+
+  # Trigger bug: damos_walk() on inactive context
+  echo "update_schemes_tried_regions" > $DAMON/0/state
+  # Returns -EINVAL, walk_control left dangling
+
+  # Confirm: second call gets -EBUSY (dangling pointer !=3D NULL)
+  echo "update_schemes_tried_regions" > $DAMON/0/state
+  # Returns -EBUSY -- interface permanently locked
+
+## Tested output
+
+  First call:  -EINVAL (Invalid argument)
+  Second call: -EBUSY (Device or resource busy) <-- BUG confirmed
+
+## Root cause
+
+Commit bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
+introduced this function without cleanup on the -EINVAL error path.
+
+The sibling function damon_call() had the exact same bug and was
+fixed in f9132fbc2e83 by adding damon_call_handle_inactive_ctx()
+which removes the control object when the context is inactive.
+damos_walk() has no equivalent cleanup.
+
+## Impact
+
+1. PERMANENT LOCKUP DOS: After on->off->update_schemes_tried_regions,
+   all future tried_regions queries return -EBUSY forever until
+   the DAMON context is destroyed.
+
+2. DANGLING POINTER: ctx->walk_control points to freed stack memory.
+   The struct damos_walk_control contains a function pointer
+   (walk_fn). If any DAMON API consumer reuses the same ctx after
+   damos_walk() returns -EINVAL and kdamond is restarted, it would
+   dereference the dangling pointer in damos_walk_call_walk()
+   (which calls control->walk_fn) or damos_walk_cancel().
+
+Reported-by: Raul Pazem=E9cxas <raul_pazemecxas@hotmail.com>
+
+Best regards,
+Raul
+
+--_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);">
+<span class=3D"elementToProof">I found a bug in damos_walk() that leaves a =
+dangling walk_control</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">pointer when called on an inactive context. =
+The pattern is</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">structurally identical to the bug fixed in c=
+ommit f9132fbc2e83</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">(&quot;mm/damon/core: remove call_control in=
+ inactive contexts&quot;) for</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">damon_call().</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">## Description</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">damos_walk() sets ctx-&gt;walk_control to po=
+int to a caller-provided</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">stack-allocated control structure (core.c li=
+ne 1560), then checks</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">if the DAMON context is running (line 1562).=
+ If the context is</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">inactive, it returns -EINVAL (line 1563) WIT=
+HOUT clearing</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">ctx-&gt;walk_control back to NULL.</span></d=
+iv>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">This leaves a dangling pointer. Subsequent d=
+amos_walk() calls see</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">the non-NULL stale pointer and return -EBUSY=
+, permanently locking</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">the DAMOS tried_regions interface.</span></d=
+iv>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">## Affected versions</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Introduced in: commit bf0eaba0ff9c (&quot;mm=
+/damon/core: implement damos_walk()&quot;)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">First affected release: v6.14-rc1</span></di=
+v>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Affected stable releases: v6.14, v6.15, v6.1=
+6, v6.17, v6.18, v6.19</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Tested on: 6.19.0 (commit ca4ee40bf13d, QEMU=
+/KVM x86_64)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Current mainline: UNFIXED</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">## Reproduction (confirmed on 6.19.0, CONFIG=
+_DAMON=3Dy CONFIG_DAMON_SYSFS=3Dy)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; DAMON=3D/sys/kernel/mm/damon/admin/kd=
+amonds</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; # Setup context with scheme</span></d=
+iv>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/nr_kdamonds</span>=
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/0/contexts/nr_cont=
+exts</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo vaddr &gt; $DAMON/0/contexts/0/o=
+perations</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/0/contexts/0/targe=
+ts/nr_targets</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo $$ &gt; $DAMON/0/contexts/0/targ=
+ets/0/pid_target</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/0/contexts/0/schem=
+es/nr_schemes</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo stat &gt; $DAMON/0/contexts/0/sc=
+hemes/0/action</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; # Start then stop (ctx stays allocate=
+d per sysfs design)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo on &gt; $DAMON/0/state</span></d=
+iv>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; sleep 1</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo off &gt; $DAMON/0/state</span></=
+div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; sleep 1</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; # Trigger bug: damos_walk() on inacti=
+ve context</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo &quot;update_schemes_tried_regio=
+ns&quot; &gt; $DAMON/0/state</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; # Returns -EINVAL, walk_control left =
+dangling</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; # Confirm: second call gets -EBUSY (d=
+angling pointer !=3D NULL)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; echo &quot;update_schemes_tried_regio=
+ns&quot; &gt; $DAMON/0/state</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; # Returns -EBUSY -- interface permane=
+ntly locked</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">## Tested output</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; First call: &nbsp;-EINVAL (Invalid ar=
+gument)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; Second call: -EBUSY (Device or resour=
+ce busy) &lt;-- BUG confirmed</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">## Root cause</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Commit bf0eaba0ff9c (&quot;mm/damon/core: im=
+plement damos_walk()&quot;)</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">introduced this function without cleanup on =
+the -EINVAL error path.</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">The sibling function damon_call() had the ex=
+act same bug and was</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">fixed in f9132fbc2e83 by adding damon_call_h=
+andle_inactive_ctx()</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">which removes the control object when the co=
+ntext is inactive.</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">damos_walk() has no equivalent cleanup.</spa=
+n></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">## Impact</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">1. PERMANENT LOCKUP DOS: After on-&gt;off-&g=
+t;update_schemes_tried_regions,</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;all future tried_regions querie=
+s return -EBUSY forever until</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;the DAMON context is destroyed.=
+</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">2. DANGLING POINTER: ctx-&gt;walk_control po=
+ints to freed stack memory.</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;The struct damos_walk_control c=
+ontains a function pointer</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;(walk_fn). If any DAMON API con=
+sumer reuses the same ctx after</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;damos_walk() returns -EINVAL an=
+d kdamond is restarted, it would</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;dereference the dangling pointe=
+r in damos_walk_call_walk()</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">&nbsp; &nbsp;(which calls control-&gt;walk_f=
+n) or damos_walk_cancel().</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Reported-by: Raul Pazem=E9cxas &lt;raul_paze=
+mecxas@hotmail.com&gt;</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Best regards,</span></div>
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+<span class=3D"elementToProof">Raul</span></div>
+</body>
+</html>
+
+--_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_--
 
