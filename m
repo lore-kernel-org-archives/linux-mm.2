@@ -4,86 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F679E7BDBB
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:22:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7ECE7BDAC
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBEAB6B0005; Mon, 16 Feb 2026 08:22:36 -0500 (EST)
+	id 040376B0005; Mon, 16 Feb 2026 08:32:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6CE66B0088; Mon, 16 Feb 2026 08:22:36 -0500 (EST)
+	id F2FFE6B0088; Mon, 16 Feb 2026 08:32:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4E596B0089; Mon, 16 Feb 2026 08:22:36 -0500 (EST)
+	id E11F16B0089; Mon, 16 Feb 2026 08:32:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA1F6B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:22:36 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C77D13C2B1
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:22:36 +0000 (UTC)
-X-FDA: 84450384312.08.9BFED4C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CB23D6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:32:21 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 664221A0DE3
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:32:21 +0000 (UTC)
+X-FDA: 84450408882.05.6B9B0E9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8ADB6120006
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:22:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VJM0lDVf;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 774A8C0013
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:32:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnzGrS+E;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771248154;
+	s=arc-20220608; t=1771248739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZYJbwBIdDwtgtaZgS2ZKH1lz4ET7s3CtdJa2nf3VVrE=;
-	b=FWOYE3RAVgMurfzv77ZnSPCfs2LT8YpGou03940hZP4+3obDiYL9LX5HSn2YQu7sarkVAJ
-	1ael7t2pkpGoBPVk+LkUxdZDYPW9DYA41qtT2ftUkxzIjMDWhw2W7wHNeyVuzSv2QnA+d8
-	gOExW4YDaTw+cjIrYnNsy9xXeYyR6YI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=j7Em2LDZ8N8JiQzHQJHo1lDgXGPhiorUn1dbvzzh0ic=;
+	b=KPqcgEfuh98iWVQrgv1gIMQ04RrrMYDHozTyssAir//eMG78SHWzkbS+hTBgM1Ng4Z4g64
+	hbKPpJADY9RkH2F6zqdnXitAzFCfba6ANid0WRP5orF+ZLLZECUgPEMgpr+Qm8PISZ55t5
+	EqaEC42sFyPBF0U4MGpCEca6Z7INy7I=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VJM0lDVf;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnzGrS+E;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771248154; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771248739; a=rsa-sha256;
 	cv=none;
-	b=TYMXnaXAUpG5V2PzE0HHrnPoa2a/16kw/xidJoccWmVnrBfA6WREvIQoqyaE4MIEKM395D
-	WRHZsskUmFXFsuwATqOwbLYtxB3ROR+mctb/HC6grrkJYw273bc57EUkmmTqa0N4ZX7hEn
-	IEwcB0mLkruBKQ9EEAdZaohqwHRLJbc=
+	b=EsdbVx7cygmxdHLFKFose7Etlyp6NcVMmVUNq4UsXEdotCVrkPWisSydHgMspR/4GmAXjb
+	8MOS464Q+32NzY4IUpnQ22N6jqDU3nSx4Rzrl2RfOfih8s3QaFrIw/fKPUzQevOuWsTezQ
+	z0/cjG5vm1XP6vEHOB0+gYoMKGWQ1j8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4EA8B41B36;
-	Mon, 16 Feb 2026 13:22:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1585DC116C6;
-	Mon, 16 Feb 2026 13:22:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 88FA14186E;
+	Mon, 16 Feb 2026 13:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44616C116C6;
+	Mon, 16 Feb 2026 13:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771248153;
-	bh=5JDSWbQYXsrP/Ta9EcOGFW4rHI86oaq113jhO8KP0PI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VJM0lDVfUGOZQ+cvlCXgzRsjTdZnj1CoJbkO6LdTRrMHAInX25baCL5CwR57B7kL+
-	 LrOI/2DLwK1Rr9ZoPA7/rYFMpY/sZjwTaZ1dwGflvPQg3grdH4LocHaZ2tO6WHdvnU
-	 3owLqb4X/3VfDiia2mTvHJAf5EJCN97By4FHgXo3IGjcg5+b4qxWga6Mv5yMhKlNH8
-	 46FPXKL9Y5L1oMm78LBVcjdpkIEm8QvkwXomNtUUh4WJOQI1UkpfRsw2qM5F4NuN02
-	 ywxdHCp1nRptiYSszinDltj9I0SRggR+buS4MpQBbJRfsTgXhx6XqYgZIhal1IzycG
-	 AJyfBk4997OZw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2] liveupdate: luo_file: remember retrieve() status
-Date: Mon, 16 Feb 2026 14:22:19 +0100
-Message-ID: <20260216132221.987987-1-pratyush@kernel.org>
-X-Mailer: git-send-email 2.53.0.335.g19a08e0c02-goog
+	s=k20201202; t=1771248738;
+	bh=IBfriahGCrZbgG2xPZaipNIY6Lm5nqv5xPLiQPNO0VU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=qnzGrS+EGxMXTIwtFfpkP2HXkzwc0TfKfB9GHqoclOOIDAme6AsyKLaqS9E7Jtqka
+	 f6gnJXGflC/unzfnHNAHt2Vulcy4z61/ZFYwFdYdczlZvsSOBRrCEqVSmspPphRoy9
+	 yF/sMzGeB6kWmJQXp7H8Vfa6w3Ei0rX3UQoNp5nEhXqWE8kqSsdG9CGlh/rf44hjpQ
+	 qP8XHTBhvyl+B9EyyHTPIEJK1w1vFuPw2o+gJTKkgLGJxb2LXI925d1+SS5jjjloEx
+	 h3NPtd108rWtrY+y0O1A62vdnRHBtjd1Uq8x+m72u2vhcRoOSyKbRyAclc0UGzxxQR
+	 2G1SZh+oI4yYA==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 00/14] xattr: rework simple xattrs and support user.*
+ xattrs on sockets
+Date: Mon, 16 Feb 2026 14:31:56 +0100
+Message-Id: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hw1smo4a13o9iw9md1zadr7fh971mp4m
-X-Rspamd-Queue-Id: 8ADB6120006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEwck2kC/x3MTQ6CMBBA4auYWVvTvyngVYyLdphKQwTTNkpCu
+ LvV5bd4b4fCOXGB62mHzO9U0ro0qPMJaPLLg0Uam0FL7aRWSnzWPIvN15pFWWnmKqjHaEcT+t5
+ 20LpX5pi2//N2bw6+sAjZLzT9Tk9fKudLp8kMKLUdPSFrhco4CjF2g7GIUTp00gTp4Di+DYKIv
+ aUAAAA=
+X-Change-ID: 20260211-work-xattr-socket-c85f4d3b8847
+To: linux-fsdevel@vger.kernel.org
+Cc: Jeff Layton <jlayton@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
+ linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, 
+ netdev@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4849; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=IBfriahGCrZbgG2xPZaipNIY6Lm5nqv5xPLiQPNO0VU=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWROlolVf2J3f36a8ze/m4FeS2S03091//pKONFFL3V/7
+ o5raQlvO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTAC4SwcjQ9CDunvilFdtFXp3J
+ 3LXpydXa0ve8ct39mhkmOxclbDypyfDfS1fQoKkiscXO6LCGhUnA9Rs1i74dSH5eat2qI1/z/yk
+ nAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 774A8C0013
+X-Stat-Signature: qqt59kgcqmtfenca9a9uecuq4dn6wc8o
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771248154-673341
-X-HE-Meta: U2FsdGVkX19YEk2/CdQkbSKY+8lG5SkCRqqlYnJxurAD0i6StSKE+xXjwUulj5zWa0d5yHlV5a9LnciQM+DS3pX+32KZtmuBLYdhaqWW3uG1bfBgBlK7tR8gwoAoiKlF02dBhfUqEoygnCpUaQC2oNgw2+jhl73XsoddLTaBoQewAvG5u9j8CA58y3UcJxRgufuxnRzIQ75uc8pESh6z4Auor4DKhi+P/6xWOExhDieFqrm6bumY6TKSRCEIvJmblKL9DNpGzhyNXN4CeoE2TVWQzxLRPn9t/wNdSPGcta+7gPrDV3J5gf6PG9iz9Zg/EgZ4Wxs+dtrXcf0sSTXBtc921NCqz5lBBIyM6irK+UbsRDh2uPWmvSilVUsOf0ky58EoTys1ciDlqUw2xY96LE3wdrFkC1T9XwiYg4fbIhzaYbElHvqI/VLy22ESpUJZvWNhH7T/Q9jKp7KLyJqvstPD7Y08xvVO2um2vC2qajnd9Fbf3xm6ZRd7lKnKmguNQr0CsTxcefHVhvB0VQHzjWSMnFTEYhRICMsuUTo66m0Gmj+b2MS20Cw5ZI03l/MALDHW6USMzzBUUcqs85bqJIMeZCNa3ll/2RHYCuaK4a1gAUYRf/10PQ++i2yW3d2iLuvT+8JfFrvNw2A4UnjWGxtPtDYQJKmLqLycfHXth6QsmESMiFpl/Gk16FpRFjaFjqJH8OaWOKcTRdhWDswtE7btHqsdrYqTLuyxkBgKzvlabXzkgrtklvKN9B22nVqad4PTZ/zmqx+xygZzNrWrb4Ld2dg30cwVuuyk46477QF0tfYqPuXcCbXjKv0hIW8vuYeTjV+jAR6sGWPdHVaPSYQ8NJ/LMN/5qow9OUTF6QmRNibzpVgFCcFKaA0eVcnVYtM1vGZ7POT30SdMoYesGhCFJsBKfRTZtvtbbGPbG46NvADrnlPxUWkUlbY+75d1nG3KoMNlUGm4nRjTcHR
- MaKJY9f0
- EyjJesVVpwdAPTYIobIQzTWQHnheP2BlT8sIsNZ+7mIQeyIe4M23GtGqM6EuPpXO1u5ST/M14iHof9oCDr1c/JC/FIUNOGJQbPtY0aiz66UBKbL5gsvQ8JAj5z3QN/ZuFeuds0XQaNyno13NSZndmnGsRaR/4Te4Rk177eVYfqOuNSBIZAcpICtS2mMgUWl51YtDraGAmxIDoOqMs0qeuCenAG8DGzaoPOsWMpLGWyCVNjsU=
+X-HE-Tag: 1771248739-936381
+X-HE-Meta: U2FsdGVkX19UjY14Jwe+WJz4ypu70+4BCP9P3Un2iD74MptUfIj4kra6CQcGY5Z+0L8zDtZ4JA/gINrEqkruqdipctmWJx2cmOIZM81BzE/y/Ni28sd8b2L9pqyYrYxDmWZLQ6O+HUfMpRvIXPjVaE/SrMw35kwEb8bvaV/MkoyIRTP8taiJ6tCN5FzsP+ptJSd4bwik65f61YLjybf/5QohZIDUhofT9emZnATDoIJczYTdyTj8WtHbj+ob5t8AllOxHgipZb6Je3x4K4Y6mYpxl97qlrTPGVGhQPnSsbUl8vGYj2X9RyfDyinFkXOOi5UvX8ezqdIZtvFrDIegFZLDc/LJWeqmY+iM7cFDELYPuVa+EktM6IlCHJBW6gPM4Pr7c7CyC959UBlKCu2z7JWFzp9RZDO2O4IQKPxSWW4zPz1DgrvHmxcC7sffKwO+rIgKS7yfjRwn/0uU4r6AVUc1PWfQQVdQs7XKFQmzW8BCi5eCwD42A9uhljGMqmL1XGmkTYPCRAgqn86Q+TNYLe3GWq2vze69eZQJ5kaZSmrAN5KXm5fy+lq9bm+Kf7KKrwvmbl+EJMOBd9dqBul7CL54rwFyCNUukTsqG3a4n/hd7ZcNHGumc5KSyAimmymUBuzRAhEG3qbLbBqsn8cQiqEcGQj9OiYfzxVMFSeYsQJVhzAtCAMyjHa1LRzR0F8vB3UByrT/QcYBvbM20d8XN+E67+zQ6+PhRs+07fwneLkgKTuY0XNjPUBC8YoG0KP3RxlnUnchOz3AZh5g1D4iVYai9VbJL3BScUD6vByy8BI1QN7J8eIGez9umwAzSgORFZW6SPv85L7gbGWWCJUACSuZXhZThCvpyf1bjvPM8Gath2claUlP7k2Ra503zEO4sNHOIalBAvzXjKMgjAT8bQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,225 +107,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+Hey,
 
-LUO keeps track of successful retrieve attempts on a LUO file. It does
-so to avoid multiple retrievals of the same file. Multiple retrievals
-cause problems because once the file is retrieved, the serialized data
-structures are likely freed and the file is likely in a very different
-state from what the code expects.
+This reworks the simple_xattr infrastructure and adds support for
+user.* extended attributes on sockets.
 
-The retrieve boolean in struct luo_file keeps track of this, and is
-passed to the finish callback so it knows what work was already done and
-what it has left to do.
+The simple_xattr subsystem currently uses an rbtree protected by a
+reader-writer spinlock. This series replaces the rbtree with an
+rhashtable giving O(1) average-case lookup with RCU-based lockless
+reads. This sped up concurrent access patterns on tmpfs quite a bit and
+it's an overall easy enough conversion to do and gets rid or rwlock_t.
 
-All this works well when retrieve succeeds. When it fails,
-luo_retrieve_file() returns the error immediately, without ever storing
-anywhere that a retrieve was attempted or what its error code was. This
-results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
-but nothing prevents it from trying this again.
+The conversion is done incrementally: a new rhashtable path is added
+alongside the existing rbtree, consumers are migrated one at a time
+(shmem, kernfs, pidfs), and then the rbtree code is removed. All three
+consumers switch from embedded structs to pointer-based lazy allocation
+so the rhashtable overhead is only paid for inodes that actually use
+xattrs.
 
-The retry is problematic for much of the same reasons listed above. The
-file is likely in a very different state than what the retrieve logic
-normally expects, and it might even have freed some serialization data
-structures. Attempting to access them or free them again is going to
-break things.
+With this infrastructure in place the series adds support for user.*
+xattrs on sockets. Path-based AF_UNIX sockets inherit xattr support
+from the underlying filesystem (e.g. tmpfs) but sockets in sockfs -
+that is everything created via socket() including abstract namespace
+AF_UNIX sockets - had no xattr support at all.
 
-For example, if memfd managed to restore 8 of its 10 folios, but fails
-on the 9th, a subsequent retrieve attempt will try to call
-kho_restore_folio() on the first folio again, and that will fail with a
-warning since it is an invalid operation.
+The xattr_permission() checks are reworked to allow user.* xattrs on
+S_IFSOCK inodes. Sockfs sockets get per-inode limits of 128 xattrs and
+128KB total value size matching the limits already in use for kernfs.
 
-Apart from the retry, finish() also breaks. Since on failure the
-retrieved bool in luo_file is never touched, the finish() call on
-session close will tell the file handler that retrieve was never
-attempted, and it will try to access or free the data structures that
-might not exist, much in the same way as the retry attempt.
+The practical motivation comes from several directions. systemd and
+GNOME are expanding their use of Varlink as an IPC mechanism. For D-Bus
+there are tools like dbus-monitor that can observe IPC traffic across
+the system but this only works because D-Bus has a central broker. For
+Varlink there is no broker and there is currently no way to identify
+which sockets speak Varlink. With user.* xattrs on sockets a service
+can label its socket with the IPC protocol it speaks (e.g.,
+user.varlink=1) and an eBPF program can then selectively capture
+traffic on those sockets. Enumerating bound sockets via netlink combined
+with these xattr labels gives a way to discover all Varlink IPC
+entrypoints for debugging and introspection.
 
-There is no sane way of attempting the retrieve again. Remember the
-error retrieve returned and directly return it on a retry. Also pass
-this status code to finish() so it can make the right decision on the
-work it needs to do.
+Similarly, systemd-journald wants to use xattrs on the /dev/log socket
+for protocol negotiation to indicate whether RFC 5424 structured syslog
+is supported or whether only the legacy RFC 3164 format should be used.
 
-This is done by changing the bool to an integer. A value of 0 means
-retrieve was never attempted, a positive value means it succeeded, and a
-negative value means it failed and the error code is the value.
+In containers these labels are particularly useful as high-privilege or
+more complicated solutions for socket identification aren't available.
 
-Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+The series comes with comprehensive selftests covering path-based
+AF_UNIX sockets, sockfs socket operations, per-inode limit enforcement,
+and xattr operations across multiple address families (AF_INET,
+AF_INET6, AF_NETLINK, AF_PACKET).
+
+Christian
+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
+Christian Brauner (14):
+      xattr: add rcu_head and rhash_head to struct simple_xattr
+      xattr: add rhashtable-based simple_xattr infrastructure
+      shmem: adapt to rhashtable-based simple_xattrs with lazy allocation
+      kernfs: adapt to rhashtable-based simple_xattrs with lazy allocation
+      pidfs: adapt to rhashtable-based simple_xattrs
+      xattr: remove rbtree-based simple_xattr infrastructure
+      xattr: add xattr_permission_error()
+      xattr: switch xattr_permission() to switch statement
+      xattr: move user limits for xattrs to generic infra
+      xattr,net: support limited amount of extended attributes on sockfs sockets
+      xattr: support extended attributes on sockets
+      selftests/xattr: path-based AF_UNIX socket xattr tests
+      selftests/xattr: sockfs socket xattr tests
+      selftests/xattr: test xattrs on various socket families
 
-Notes:
-    Changes in v2:
-    
-    - s/retrieve_sts/retrieve_status/g
-    
-    - Update name in liveupdate_file_op_args docstring.
-    
-    - Re-order retrieve_status checks in luo_retrieve_file().
-    
-    - Do not explicitly initialize retrieve_status since we kzalloc() both
-      luo_file and liveupdate_file_op_args.
-    
-    - Apply commit message fixups suggested by Mike.
-
- include/linux/liveupdate.h   |  9 +++++---
- kernel/liveupdate/luo_file.c | 41 ++++++++++++++++++++++--------------
- mm/memfd_luo.c               |  7 +++++-
- 3 files changed, 37 insertions(+), 20 deletions(-)
-
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index fe82a6c3005f..dd11fdc76a5f 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -23,8 +23,11 @@ struct file;
- /**
-  * struct liveupdate_file_op_args - Arguments for file operation callbacks.
-  * @handler:          The file handler being called.
-- * @retrieved:        The retrieve status for the 'can_finish / finish'
-- *                    operation.
-+ * @retrieve_status:  The retrieve status for the 'can_finish / finish'
-+ *                    operation. A value of 0 means the retrieve has not been
-+ *                    attempted, a positive value means the retrieve was
-+ *                    successful, and a negative value means the retrieve failed,
-+ *                    and the value is the error code of the call.
-  * @file:             The file object. For retrieve: [OUT] The callback sets
-  *                    this to the new file. For other ops: [IN] The caller sets
-  *                    this to the file being operated on.
-@@ -40,7 +43,7 @@ struct file;
-  */
- struct liveupdate_file_op_args {
- 	struct liveupdate_file_handler *handler;
--	bool retrieved;
-+	int retrieve_status;
- 	struct file *file;
- 	u64 serialized_data;
- 	void *private_data;
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index 4c7df52a6507..a64ae611cb30 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -134,9 +134,12 @@ static LIST_HEAD(luo_file_handler_list);
-  *                 state that is not preserved. Set by the handler's .preserve()
-  *                 callback, and must be freed in the handler's .unpreserve()
-  *                 callback.
-- * @retrieved:     A flag indicating whether a user/kernel in the new kernel has
-+ * @retrieve_status: Status code indicating whether a user/kernel in the new kernel has
-  *                 successfully called retrieve() on this file. This prevents
-- *                 multiple retrieval attempts.
-+ *                 multiple retrieval attempts. A value of 0 means a retrieve()
-+ *                 has not been attempted, a positive value means the retrieve()
-+ *                 was successful, and a negative value means the retrieve()
-+ *                 failed, and the value is the error code of the call.
-  * @mutex:         A mutex that protects the fields of this specific instance
-  *                 (e.g., @retrieved, @file), ensuring that operations like
-  *                 retrieving or finishing a file are atomic.
-@@ -161,7 +164,7 @@ struct luo_file {
- 	struct file *file;
- 	u64 serialized_data;
- 	void *private_data;
--	bool retrieved;
-+	int retrieve_status;
- 	struct mutex mutex;
- 	struct list_head list;
- 	u64 token;
-@@ -298,7 +301,6 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 	luo_file->file = file;
- 	luo_file->fh = fh;
- 	luo_file->token = token;
--	luo_file->retrieved = false;
- 	mutex_init(&luo_file->mutex);
- 
- 	args.handler = fh;
-@@ -577,7 +579,12 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
- 		return -ENOENT;
- 
- 	guard(mutex)(&luo_file->mutex);
--	if (luo_file->retrieved) {
-+	if (luo_file->retrieve_status < 0) {
-+		/* Retrieve was attempted and it failed. Return the error code. */
-+		return luo_file->retrieve_status;
-+	}
-+
-+	if (luo_file->retrieve_status > 0) {
- 		/*
- 		 * Someone is asking for this file again, so get a reference
- 		 * for them.
-@@ -590,16 +597,19 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
- 	args.handler = luo_file->fh;
- 	args.serialized_data = luo_file->serialized_data;
- 	err = luo_file->fh->ops->retrieve(&args);
--	if (!err) {
--		luo_file->file = args.file;
--
--		/* Get reference so we can keep this file in LUO until finish */
--		get_file(luo_file->file);
--		*filep = luo_file->file;
--		luo_file->retrieved = true;
-+	if (err) {
-+		/* Keep the error code for later use. */
-+		luo_file->retrieve_status = err;
-+		return err;
- 	}
- 
--	return err;
-+	luo_file->file = args.file;
-+	/* Get reference so we can keep this file in LUO until finish */
-+	get_file(luo_file->file);
-+	*filep = luo_file->file;
-+	luo_file->retrieve_status = 1;
-+
-+	return 0;
- }
- 
- static int luo_file_can_finish_one(struct luo_file_set *file_set,
-@@ -615,7 +625,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
- 		args.handler = luo_file->fh;
- 		args.file = luo_file->file;
- 		args.serialized_data = luo_file->serialized_data;
--		args.retrieved = luo_file->retrieved;
-+		args.retrieve_status = luo_file->retrieve_status;
- 		can_finish = luo_file->fh->ops->can_finish(&args);
- 	}
- 
-@@ -632,7 +642,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
- 	args.handler = luo_file->fh;
- 	args.file = luo_file->file;
- 	args.serialized_data = luo_file->serialized_data;
--	args.retrieved = luo_file->retrieved;
-+	args.retrieve_status = luo_file->retrieve_status;
- 
- 	luo_file->fh->ops->finish(&args);
- 	luo_flb_file_finish(luo_file->fh);
-@@ -788,7 +798,6 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 		luo_file->file = NULL;
- 		luo_file->serialized_data = file_ser[i].data;
- 		luo_file->token = file_ser[i].token;
--		luo_file->retrieved = false;
- 		mutex_init(&luo_file->mutex);
- 		list_add_tail(&luo_file->list, &file_set->files_list);
- 	}
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index a34fccc23b6a..785f26aa58c0 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -326,7 +326,12 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	struct memfd_luo_folio_ser *folios_ser;
- 	struct memfd_luo_ser *ser;
- 
--	if (args->retrieved)
-+	/*
-+	 * If retrieve was successful, nothing to do. If it failed, retrieve()
-+	 * already cleaned up everything it could. So nothing to do there
-+	 * either. Only need to clean up when retrieve was not called.
-+	 */
-+	if (args->retrieve_status)
- 		return;
- 
- 	ser = phys_to_virt(args->serialized_data);
-
-base-commit: 6c8dd4f02805de481c200636e567a871f25399a2
--- 
-2.53.0.335.g19a08e0c02-goog
+ fs/kernfs/dir.c                                    |  15 +-
+ fs/kernfs/inode.c                                  |  99 +----
+ fs/kernfs/kernfs-internal.h                        |   5 +-
+ fs/pidfs.c                                         |  65 +--
+ fs/xattr.c                                         | 423 +++++++++++++------
+ include/linux/kernfs.h                             |   2 -
+ include/linux/shmem_fs.h                           |   2 +-
+ include/linux/xattr.h                              |  47 ++-
+ mm/shmem.c                                         |  46 +-
+ net/socket.c                                       | 119 ++++--
+ .../testing/selftests/filesystems/xattr/.gitignore |   3 +
+ tools/testing/selftests/filesystems/xattr/Makefile |   6 +
+ .../filesystems/xattr/xattr_socket_test.c          | 470 +++++++++++++++++++++
+ .../filesystems/xattr/xattr_socket_types_test.c    | 177 ++++++++
+ .../filesystems/xattr/xattr_sockfs_test.c          | 363 ++++++++++++++++
+ 15 files changed, 1547 insertions(+), 295 deletions(-)
+---
+base-commit: 72c395024dac5e215136cbff793455f065603b06
+change-id: 20260211-work-xattr-socket-c85f4d3b8847
 
 
