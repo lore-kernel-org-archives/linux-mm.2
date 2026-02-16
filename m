@@ -4,129 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87FB2E83822
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 18:30:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 649E0E83821
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 18:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83EB56B0088; Mon, 16 Feb 2026 13:30:23 -0500 (EST)
+	id 31A4D6B0088; Mon, 16 Feb 2026 13:57:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EC976B0089; Mon, 16 Feb 2026 13:30:23 -0500 (EST)
+	id 2C8656B0089; Mon, 16 Feb 2026 13:57:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E4626B008A; Mon, 16 Feb 2026 13:30:23 -0500 (EST)
+	id 1A9B06B008A; Mon, 16 Feb 2026 13:57:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 561956B0088
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:30:23 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D39F213C3C1
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 18:30:22 +0000 (UTC)
-X-FDA: 84451159884.29.DC953FE
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CDFAD40015
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 18:30:20 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DigLDENK;
-	spf=pass (imf12.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 062576B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:57:52 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 685BEC428A
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 18:57:51 +0000 (UTC)
+X-FDA: 84451229142.30.CD341B8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C4C02160002
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 18:57:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rW8J7eWF;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771266620;
+	s=arc-20220608; t=1771268269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EkJWUx4iz20mHMlM7dqbfruMTcGOgRj83PoFq0CJCIQ=;
-	b=DtMoxR7h2/AtLz1izPokcOFCHRaiYj81a8ZjApcwmF+xxP81fNSEsznXTaoP2yhXfAjpgD
-	GT7cZdkUGcXfA2bvLLZwIrmDUQflj+SBmXWzvXyFcJKy+oYga6bBwfuhaocEwl6kYTP9OM
-	CMlSvhDyyGKAFjwDCrmZObxW14OW0w0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DigLDENK;
-	spf=pass (imf12.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771266620; a=rsa-sha256;
+	bh=UYJ+oXnvu6tJyXsLMjUOW8mQfyvATea4vw2Nrcc5YlE=;
+	b=zTytCyBAdvzS22LeGg08dDYMBUH7ysPZelnyjVTR4F9EYlxjxsrQadttR0kSvoRKQjLtNf
+	qC/t6xBVR05fho9TTcZdQPzWEeaDXBw7jxyZcqxDgN63tM7M7a7c8W7ueJkSONTQCBqzqm
+	/jiOYL1Xu9Rv34Glk3KGLy1e555pKes=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771268269; a=rsa-sha256;
 	cv=none;
-	b=AO+LX7/9vsUkgze4Ys/LKYYZ0q3W3SSOnGL3MHzbFp2TyFe9/fq7/DOfcpvw/TNlIR3lc5
-	YUcLYvn1Kav9jZfUWSf1MwDBz/PnE1BFguYjQ60HlcJL043GWNEQ51PXlgz2nI1sEGz0Ob
-	puOPn4LJjcDllKMZffFBYXeUouh1wEg=
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-124a635476fso3846494c88.0
-        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:30:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771266619; x=1771871419; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EkJWUx4iz20mHMlM7dqbfruMTcGOgRj83PoFq0CJCIQ=;
-        b=DigLDENK7sWWtK2E70ep1krQKWNN5BnkQ2etRn3ZApWdKkk4cpYgZOLH8HBc1WLJjQ
-         5YktQO/aFou6e+KczI21JSkq/TKqW6r9IlYuvTMjAlI9aEM5eyNZpyMcNuhCaL6+mPVS
-         KFbCb4Se/FcRI206D4uBLq9hQzKGagdf2iOYLAtRZEnECkpOL1znMgmnFfaDc5KtfiVV
-         24Ljwt36qd2bwfoVsSgoI+ZAtM/hMef9d7+9gDIHZsgvs1i0rkL+P/909UNu5ZZXU7Cn
-         Hyz7ZWpWiuF8ocCTty3t1hWOJGQU2xnWUggEkNQD5NATrs21Q9OwsL6sIfzM8GJytmxB
-         xG6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771266619; x=1771871419;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EkJWUx4iz20mHMlM7dqbfruMTcGOgRj83PoFq0CJCIQ=;
-        b=ugZIoBsKk5kUcGKyKlycw+K1XF69ahgmpRFcYB5Gr83CpbfR3KJFcK+r5x38yuo4wb
-         fsZXxuEf2yIHq6JQwO/+GfhlhIUt0KsHJv1ASUc0GR16UR3sKD4cXVjgBUP3p64dimAh
-         KxgPVuo44sasQeuJbsC2tuEQHQe6bQ9NrIIcqX219mWY36lIE2/Q4ye6FQZynvxAXXTd
-         R4ArH0aVBifGBe3oCHoFIVcfm2fEiP5yGy9kRD0NPM2EzOULpRWNtx2YLljgqAEDwUqJ
-         QM8I43QAJgLGb2NqnRr0DQp/Bu7+iv+C/Sz8uv/nQPRJkiJIeyQCLPrPvQglhr1enoSl
-         O/vw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGFIE0Upk7n1X1ysM6RFGlDylzeT2XbHXRWJvhkFnmuFdpG9cZU8HOXDQ7bA7tS8U9eXtB5sFrsg==@kvack.org
-X-Gm-Message-State: AOJu0Yz46WdOpsVjgx/23eUN9PR/db/ikyVVadA6iL7GF2HPICTyXng+
-	M8TSBgY7tXiog8Uuiggfnr7IDAAMHiIIaDYHD7UPvvDvBkYiMwf/DbL9
-X-Gm-Gg: AZuq6aJdJYydqg4orJ9azWjLeYFsic2b7kS3fkB7FZxcpnbLNHAfs5HPbY+jEOuTWCx
-	nWCFdLBsZWfnnJPokWZATBWhOzzRJUlHp9v6hrNiuCeMst1eV78+cecyOdoqIggciK/5wNYdjxJ
-	yK/BgL5pK8/hVfn1guTP9S545XaurIjd758BelvMIqxtWRlm/NBHIEYYuTeTz+hyCB9sFGX6sz0
-	cyh1Lg94kkIyOZoslLor8oZYXword9cJSHmt0CPFM612DbpdNIJzlqQ8M1vuGveFh8/KmHF2mLy
-	lnpnVgp/THV/QcX2l9yqg5AqM8SSa6j8rTM5GT34Epp5JmKo8dTU1tDuEjk9kvOLo4h4pMTPguC
-	87Ee8jdCnSEjYnfpeMckt/cNWu/4gVL1WxO8VONWLcNLOD8WYa35UlDsFgGxvkwKiHAR+laRSlr
-	CdJVDf6yzYZjDiOzbyuwZHjWaUMu9+Oi+T
-X-Received: by 2002:a05:7022:692:b0:11b:a36d:a7f7 with SMTP id a92af1059eb24-1273add4230mr3788461c88.16.1771266619112;
-        Mon, 16 Feb 2026 10:30:19 -0800 (PST)
-Received: from [192.168.4.196] ([73.222.117.172])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742cc83e6sm11517513c88.15.2026.02.16.10.30.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Feb 2026 10:30:18 -0800 (PST)
-Message-ID: <ac9ccc1c-acb1-4439-8db2-eafe757c4f9e@gmail.com>
-Date: Mon, 16 Feb 2026 10:30:17 -0800
+	b=F8RE/eAtBI41zXvw4P+lNpWzSPqkrSRA60/3NR7Ak/RiYEVqUtzh0JAG/k0LEoN9k6L2Ia
+	yAEtcKrECCsKNZ5FQxVdRJFAFXYEJkU7cIHpD1wqdmzGCwNaH9tpGxS7EILnpyIfFBvmTD
+	RfrCC5bpSvlGBPUX+k/HmxCMPw1Ch8k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rW8J7eWF;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E9BFB6013F;
+	Mon, 16 Feb 2026 18:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6EBC116C6;
+	Mon, 16 Feb 2026 18:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771268268;
+	bh=lQ2xyyBLXyHLyreiYyKcm6LlV+Vy+ZHITtyVg+hPIgg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rW8J7eWFtzv1ZCG2v/ALJTmtLtZEVya180Dgfva2dYVX3PjHEjHg71QpvT8BVRtF4
+	 hyHW6tcINHuH7LFFbmSsPp5RmBp4V6+hTf/qK3akLn4aazKKh/g+I2pbRmmuV8ioJJ
+	 x4dbgreuc2NcmjhQ1m7zkZhrJzz3p1wT1ow61OeEv+eHY/WIIHvmvVSriRWobFUzt1
+	 XwXv2x/Zb6NHY5EjArVB+AdRKjxz2XxNyorXMQKnB4pcjrY7eguoxVraM1PCRFOKB+
+	 r+1Bt5AQ5dXf6oWtxNPgYH9kmT2nFH+E7WZDxbPzWn0a35zVmAE7K80g/X4BkshOJM
+	 zSDV3W7k1Unqg==
+From: SeongJae Park <sj@kernel.org>
+To: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	"security@kernel.org" <security@kernel.org>,
+	"damon@lists.linux.dev" <damon@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] mm/damon/core: dangling walk_control pointer in damos_walk() on inactive context
+Date: Mon, 16 Feb 2026 10:57:40 -0800
+Message-ID: <20260216185741.74145-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To:  <CPUPR80MB81718B12798BCF9959535B05956CA@CPUPR80MB8171.lamprd80.prod.outlook.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v2 1/3] bpf: Use bpf_core_enum_value for stats in
- cgroup_iter_memcg
-To: Hui Zhu <hui.zhu@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Hui Zhu <zhuhui@kylinos.cn>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <cover.1770965805.git.zhuhui@kylinos.cn>
- <24ac7bab25d8d2a24a35ab87a5283263eb6a4575.1770965805.git.zhuhui@kylinos.cn>
-Content-Language: en-US
-From: "JP Kobryn (Meta)" <inwardvessel@gmail.com>
-In-Reply-To: <24ac7bab25d8d2a24a35ab87a5283263eb6a4575.1770965805.git.zhuhui@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8m5jaf488k9sxfz96g4irn37mchabqax
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C4C02160002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CDFAD40015
-X-HE-Tag: 1771266620-701909
-X-HE-Meta: U2FsdGVkX193Fsmckujp/9Chf1/6RO2lY0WqEyLkdYxL8My8Q6iT3Ond77SrgrYGM55+mvRllYgJCbmp7rkKVxqcuXW7a+O+sBpR6VmctJvgU5uwC2MvH48+Udg/x2ltIytTaCeuBcX37hdOsx3CHzNmeRmVmzL7LUgl1qlXIo6c9FD+Ym1u/KIm8a6scGrKPs4Cfb8fpRJ+ggCXdjhbOlbCFG4IQBqlx2J0FXkDHXnhbK7UnFLTxNBkQWivE8YgOcKZ/bkKxtxqjJUMaycrAJe1DTIR/+xrSD2C0RKjZChyccXcMWMCFsCB6nvedxNno1wlPGTp1y52TblMDLP09hRsiXqeFIntdnN2sZuZPaZgBKtNLrtCXTSVoQFJIDUB1Xi2bFAnI86Bbl20HLvAlp3czIDKt6bR2OwTQpv8aik1OZwiDmVcvhnJgXD3Q/25JTjxWbjMyjv8zW192jk970XHLqTdHjQI/EFbhSU8JveXG2avd2CR384juj8KkWoIp/7+Ghi7lSO680CwqLEtdLXtUbJTME9HTjz/DxOIXIEUqFwynBDTfeXpWCA2WJbaOY1aU/8I66p6C4VmG26/kLsWGhEXboZSzlpfOl3j6SlYqtULD2yNKgG0gJwkQ8ZTe4jbe6KjjLSy8r5WDLUmiwQ5Y2qHkAlI9m9On2iIGUQA5uU6EphkCqtphfM6uaiR+C1gcT2zxx2GziBDyj8SqM3k0V7UaeBPQ6by62LMthreHo1c8H3XU79JxrN7B24mSSDRmbF5k4INtBJhvb4z9wQMVycHNY0FJFs/HVIkE2HV/Xk2MivJmFXQgHB3smJtZ0lyOB3n9LZ2Kd2WJJtX4lvcm6HEVNg4UsRucbZiX/2h8AUsqp8R9nOtMY77kXA0DbDjfJTTCNnidYgDC0Hr2NSbtxCKJ/f54+qtN3x/nKRvE312Upp+f71uWK/NjhbgpLx/ijNyim/kQec8XCs
- oUfe4+d+
- h2tMVOu3VY+n4fq9lJpB2jwQKuU6dfVEc8MsU+1WTLrzlQAmxYJdCb0nnwOYWcz17dMpe7ZAHFoYvV96BwoP6ewl/jDWr+pH6+ipAYILx5iQWQ2qJyiXAUaL8zSf+DU02S7auizsftdZmF+RldYjL8gJe3xw9EUfRIeNABwGXrZhxpQMuS2K5WtQwcjeQygI3+wG0sGDy3lDUWhoiJ197MFf5dsm6FhbQLeZoAlR/cvQSTnhhnKzdBZD9l+mpILbdvkbcKvOJtq71XQTHuJnSuVMcdizU2lcAq7DEFf4iMoKpszjfmcJ+kDMb0r8etT7i/dUhhO9KJ/NoPNIZ3hLu3AJUb7Kozye42nFfTB1Dh46DsqTvLZgIIkEk4h96kboxWPqcfCNI/jsVn9jiOliys2FjmMsuEHkdbKFU8mTGD80DhYhkrkRyy2uTjLuDUDDB1qrlqDH3da2WUSVOiVDNIXUlW7DGTZZlpnySpUDq0utJ6Il6xK+VZTOkq1l5GCnx42gZgRGKH6muVz8xZRBa26mn10oBVHZAFmMUEeEV2Bk3CIfsjb+/50s5AA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: mniuqq3swrzx9qy6egahsgrinw9s86cp
+X-HE-Tag: 1771268269-679952
+X-HE-Meta: U2FsdGVkX1+bK6fb8aKph/6aL1lNIdBVEjtqIJuBiUcNGlTy9fOUL0O+42D1e8cuQbTF0XBQdaTlSYdX/rcz16N4SGyk8y6y8CtV6JGn8tgx1TrLUci5CJUqad8s9oQo7lFl1Utik0FF3Hjl9rOMw+w4ADRQCAyOjDTKaHq+t+Mg6jTElNMEKvPrGy/oUgglS5L5jsNFz9cZa8TZnUyC3/ql0PiD1dG3KY69GvRKzxVM0WXji10Yd+ISMCvD9/YioYpTHd0D17eY/71ibOFSQm9h/R+aJ/Y5TO1uXH0DIAIULZpiPcbhMwlUae52piK7N49Xte6Vft0/YsncdK+GCth0gsapdahWopTzOwdShWl9iG8ZnVEnQFhaZgElZlzLR/aqAOx5pGrD5Ux7vQzudF+FiOuYhdRd+uHNsmF+AMVGJd+iXR4ZyQJASq7/pnodvZV//AKeJ5Jpp3seIYx9RaLEDogH/nRN7s2ay/ZQ71kvHoLhDr53OpHggDs2DjL/oyPg3qmKfuGhYeTWMIeERI8q72GAMYZbEPJatCpCNTKFrEx5/1GCAWsdDlkaQbgUAAY1V039bHAoa2iy9mekU9Ya4dG3PthOSEXTxFjPDMjUW4070rrv8tddzeGFxu4tDyKqVpKq5Pg4UvPausx5RUYwStQv7hlJbKN6WiaEXrlbI9dhFct90LNQuCYHuLMU1LwqL4QGCfotW7SN+bPRsWjWAzyvsdSYYiGedJZ4sG8oedJOt9Pncc9w/qmVSaQHHuiFOV+5aZPoL+g/WylIqB/NVupiY9TALNTo9AXdoC8s0LRcjRb/rLr7d4Xtjw9y9vL2dsCIiTU/EvS58F3l9IiqZsEF7MUSkrohw6UwE3T6MIMnQR4ECVmo+qpazoasaPjHVjx1jHRXqM96ARebbFaqDlrnUhwDjAMHokjL9VtxCqeXNxfc3pMQVlQBgJjkkYdsb/tPPKcBfEJNUKp
+ Q1Dl0W5y
+ AS7/w7Vf0SjEvOkt2u+fuIqdRzE3xu1DUqSCnBCoa183istj+4wL3Ks7QjFAAcQt9JpkeuEYdSBgHuvoGdyOjyVeZL/SZYWkgJOO4KlyBpZJuVhGfmGdeuVAYvv2YV+pfvoyyZppfFGUp94t4MDdUQzd/3iLItk1z0L/BP0ZKnfzmwEsYcvUiCBBKT/adzJak/tuZx9j0ExepcHS02kUgF/69sXH8pHphLZGEiLFKInUPPJe1pVokHzRyiQ/KqOEcL9s+/L2bATGU9H7P8kYbch4fHi5WCZMhRM7rDO99rP1nyuCKf0HrkZwECydRiI+lreM8a67NoNNKlNT/2jUXenVzRYnTrbjlwRXfoxH5aSGJ8Br53TBZVhfmvVAAt1iDbCwoqXvT3c1ZUzv24Yz2MSLUMKNG7xczHXWs0Il7IjhY+2s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,88 +97,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 11:23 PM, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+
+Hello Raul,
+
+On Mon, 16 Feb 2026 16:26:22 +0000 Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com> wrote:
+
+> From 7d82f231f99949d041045789d3ed912ad7e25546 Mon Sep 17 00:00:00 2001
+> From: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
+> Date: Mon, 16 Feb 2026 13:06:04 -0300
+> Subject: [PATCH] mm/damon/core: clear walk_control on inactive context in
+>  damos_walk()
+
+Seems you copy-pasted this patch on your email body.  It is more usual to send
+the patch as a complete new mail thread, using 'git send-email'.  Please
+consider doing so if you send a patch again, next time.
+
 > 
-> Replace hardcoded enum values with bpf_core_enum_value() calls in
-> cgroup_iter_memcg test to improve portability across different
-> kernel versions.
+> damos_walk() sets ctx->walk_control to the caller-provided control
+> structure before checking whether the context is running. If the context
+> is inactive (damon_is_running() returns false), the function returns
+> -EINVAL without clearing ctx->walk_control. This leaves a dangling
+> pointer to a stack-allocated structure that will be freed when the
+> caller returns.
+
+Nice catch!
+
 > 
-> The change adds runtime enum value resolution for:
-> - node_stat_item: NR_ANON_MAPPED, NR_SHMEM, NR_FILE_PAGES,
->    NR_FILE_MAPPED
-> - memcg_stat_item: MEMCG_KMEM
-> - vm_event_item: PGFAULT
+> This is structurally identical to the bug fixed in commit f9132fbc2e83
+> ("mm/damon/core: remove call_control in inactive contexts") for
+> damon_call(), which had the same pattern of linking a control object
+> and returning an error without unlinking it.
+
+Correct.  Nonetheless, the user impact is prettry trivial compared to the
+damon_call() bug.  Let me explain why I think so below.
+
 > 
-> This ensures the BPF program can adapt to enum value changes
-> between kernel versions, returning early if any enum value is
-> unavailable (returns 0).
+> The dangling walk_control pointer can cause:
+> 1. Use-after-free if the context is later started and kdamond
+>    dereferences ctx->walk_control (e.g., in damos_walk_cancel()
+>    which writes to control->canceled and calls complete())
+
+But, there is no such use case to my understanding.  DAMON sysfs interface is
+the only damos_walk() user.  And when a user asks it to turn DAMON on with a
+context that was used before and now stopped, it does not use the damon_ctx
+object that was used before.  Instead, it deallocates the damon_ctx object that
+was used before, allocates a new damon_ctx object, and use the new one.  The
+new one doesn't have the stale pointer, so no real issue happens.  Please let
+me know if I'm missing something.
+
+So this is a good theory for potential future bugs.  Nonetheless, this is not
+what can happen right now in the real world.  I agree the pointer is better to
+be cleared as this patch suggests, to reduce such potential future risks.
+
+> 2. Permanent -EBUSY from subsequent damos_walk() calls, since the
+>    stale pointer is non-NULL
+
+This is the real bug.  Returning -EBUSY while DAMON is turned off may confuse
+users.  Nonetheless, this happens only while the DAMON context is turned off.
+If you starts it again, DAMON sysfs interface starts it with newly allocated
+internal damon_ctx object as I mentioned above.  The new object doesn't have
+the stale pointer, so works normally.
+
+For example, after the reproducer steps in your bug report [1], you can show
+below:
+
+    # echo on > $DAMON/0/state
+    # echo "update_schemes_tried_regions" > $DAMON/0/state
+    # echo $?
+    # 0
+
+Again, I think this is a real bug that could make users be confused, and
+therefore better to be fixed.  Nonetheless, calling damos_walk() against
+stopped DAMON context seems not a common use case.  So I think the real impact
+is trivial.
+
 > 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> Fix this by clearing ctx->walk_control under walk_control_lock before
+> returning -EINVAL, mirroring the fix pattern from f9132fbc2e83.
+
+Sounds reasonable.
+
+> 
+> Reported-by: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
+
+Closes: https://lore.kernel.org/CPUPR80MB8171025468965E583EF2490F956CA@CPUPR80MB8171.lamprd80.prod.outlook.com
+
+> Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
 > ---
->   .../selftests/bpf/progs/cgroup_iter_memcg.c   | 41 +++++++++++++++----
->   1 file changed, 34 insertions(+), 7 deletions(-)
+>  mm/damon/core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
-> index 59fb70a3cc50..b020951dd7e6 100644
-> --- a/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
-> +++ b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
-> @@ -15,6 +15,8 @@ int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
->   	struct cgroup *cgrp = ctx->cgroup;
->   	struct cgroup_subsys_state *css;
->   	struct mem_cgroup *memcg;
-> +	int ret = 1;
-> +	int idx;
->   
->   	if (!cgrp)
->   		return 1;
-> @@ -26,14 +28,39 @@ int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
->   
->   	bpf_mem_cgroup_flush_stats(memcg);
->   
-> -	memcg_query.nr_anon_mapped = bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED);
-> -	memcg_query.nr_shmem = bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
-> -	memcg_query.nr_file_pages = bpf_mem_cgroup_page_state(memcg, NR_FILE_PAGES);
-> -	memcg_query.nr_file_mapped = bpf_mem_cgroup_page_state(memcg, NR_FILE_MAPPED);
-> -	memcg_query.memcg_kmem = bpf_mem_cgroup_page_state(memcg, MEMCG_KMEM);
-> -	memcg_query.pgfault = bpf_mem_cgroup_vm_events(memcg, PGFAULT);
-> +	idx = bpf_core_enum_value(enum node_stat_item, NR_ANON_MAPPED);
-> +	if (idx == 0)
-> +		goto out;
-> +	memcg_query.nr_anon_mapped = bpf_mem_cgroup_page_state(memcg, idx);
->   
-> +	idx = bpf_core_enum_value(enum node_stat_item, NR_SHMEM);
-> +	if (idx == 0)
-> +		goto out;
-> +	memcg_query.nr_shmem = bpf_mem_cgroup_page_state(memcg, idx);
-> +
-> +	idx = bpf_core_enum_value(enum node_stat_item, NR_FILE_PAGES);
-> +	if (idx == 0)
-> +		goto out;
-> +	memcg_query.nr_file_pages = bpf_mem_cgroup_page_state(memcg, idx);
-> +
-> +	idx = bpf_core_enum_value(enum node_stat_item, NR_FILE_MAPPED);
-> +	if (idx == 0)
-> +		goto out;
-> +	memcg_query.nr_file_mapped = bpf_mem_cgroup_page_state(memcg, idx);
-> +
-> +	idx = bpf_core_enum_value(enum memcg_stat_item, MEMCG_KMEM);
-> +	if (idx == 0)
-> +		goto out;
-> +	memcg_query.memcg_kmem = bpf_mem_cgroup_page_state(memcg, idx);
-> +
-> +	idx = bpf_core_enum_value(enum vm_event_item, PGFAULT);
-> +	if (idx == 0)
-> +		goto out;
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 5e2724a4f..fb00879af 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1559,8 +1559,13 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
+>       }
+>       ctx->walk_control = control;
+>       mutex_unlock(&ctx->walk_control_lock);
+> -     if (!damon_is_running(ctx))
+> +     if (!damon_is_running(ctx)) {
+> +           mutex_lock(&ctx->walk_control_lock);
+> +           if (ctx->walk_control == control)
+> +                 ctx->walk_control = NULL;
+> +           mutex_unlock(&ctx->walk_control_lock);
+>             return -EINVAL;
+> +     }
+>       wait_for_completion(&control->completion);
+>       if (control->canceled)
+>             return -ECANCELED;
+> -- 
+> 2.51.2
 
-This is getting messy. Most of these values should be on any system
-regardless of boot-params. I was expecting you would make the call
-inline.
+I also found 'git am' of this patch is not cleanly working on mm-new.  Please
+consider using mm-new as the baseline [2] next time.
 
-Let's simplify this whole series. This selftest only needs to exercise
-bpf_mem_cgroup_page_state() and bpf_mem_cgroup_vm_events(). I think we
-can remove the kmem subtest altogether and still have the coverage we
-need. You could then call bpf_core_enum_value() inline as an argument to
-the kfuncs above and not need to check if they exist (just let them give
-you the host-specific co-re value).
+To ensure this is not forgotten and merged into the mainline, I added this
+patch to my tree, after manually rebasing on mm-new, adding a note about the
+user impact, and adding the above tags that I offered.  Unless I find something
+on this patch needs to be changed, and you mind, I will post it again after the
+current merge window, to make sure it goes to the mainline.  So no additional
+work from your side is required.
+
+Nonetheless, if you prefer to make a new revision of this patch and repost on
+your own, please do so.
+
+[1] https://lore.kernel.org/CPUPR80MB8171025468965E583EF2490F956CA@CPUPR80MB8171.lamprd80.prod.outlook.com
+[2] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/sj/damon-hack.git/tree/patches/next/mm-damon-core-clear-walk_control-on-inactive-context.patch?id=398e6f536b37de82f789d74ea93815dfcb129d99
+
+
+Thanks,
+SJ
+
+[...]
 
