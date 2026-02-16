@@ -4,167 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1B5BE81A44
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 16:50:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5976E81A44
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 16:54:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E6E76B0088; Mon, 16 Feb 2026 11:50:58 -0500 (EST)
+	id 178FF6B0088; Mon, 16 Feb 2026 11:54:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18E6A6B0089; Mon, 16 Feb 2026 11:50:58 -0500 (EST)
+	id 0FCE76B0089; Mon, 16 Feb 2026 11:54:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 037E26B008A; Mon, 16 Feb 2026 11:50:57 -0500 (EST)
+	id F21086B008A; Mon, 16 Feb 2026 11:54:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E05B46B0088
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:50:57 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D9271B558D
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:50:57 +0000 (UTC)
-X-FDA: 84450909354.09.917D1E1
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4F7CF14000D
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:50:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E2vmDcAU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SLai065L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E2vmDcAU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SLai065L;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id D95C56B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:54:11 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1E8F5D5E8
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:54:11 +0000 (UTC)
+X-FDA: 84450917502.14.D3E440C
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7F91B18000E
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:54:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=gLh+ibj2;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="l KisXEY";
+	spf=pass (imf24.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771260655;
+	s=arc-20220608; t=1771260849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TKrAisxLufljEbCPcuYkp4gIN68IUdPRAOJEf+VlEiE=;
-	b=YjhZePCoZTwombX9tlcfSTao4vFomPjcHwRLfz1WPNKKtoAY9JIeYRdSLNjqCLLLBkZjR6
-	KxHkkfHJGFVkO+8I4r3neClHZRVHsaZ/aD3v3rimMavrzaWKJCrZaWOmxvo9ArdM3H7+LM
-	IkeWy7qYQZTNQn0tAIOxd4pNKQw4woo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771260655; a=rsa-sha256;
-	cv=none;
-	b=C8aYjCrfYfzvSXGzIYkqQM/BW1a/NIDNQXhXnkxserxqthAGE1EWinByp0USN2YuefUBF1
-	xNDWzIyPdLRIG+G60bWuQnWTN+cGgt5Z5aetyoCK9mguSwKaJMRY19AtogU7vPHpP3Kbfx
-	QTVRpTdYmOhqS9dmKedRjoPO9iMV/gA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lgcVi/rFDf4TxsQzdelMFD7oqZc+4jLKnia57UoynYg=;
+	b=lpYgAl7PcngA1PEKSZqLhrsSCFC/RUZMxkY1afo0fTrKdPXM8H9HrpEun9QG+/4Z55ibg2
+	6gH86nLZvw/mOcYcC2LI6o/VQRGkeiYjWRlOsHhIO1XAtFtDao5thTwquVgCKIsG+Gl6x6
+	T2EM3SFmeFDY1Qlbq4MI7btfzQFTuM8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E2vmDcAU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SLai065L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E2vmDcAU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SLai065L;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A742F5BCF0;
-	Mon, 16 Feb 2026 16:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771260653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=TKrAisxLufljEbCPcuYkp4gIN68IUdPRAOJEf+VlEiE=;
-	b=E2vmDcAU0GW9xPHgIg4qxOjazqwQV8IjNwffzhsq6zTKtESM6i10QZvYc2GZeSM9ycOoO/
-	ny9GKnvVXg9K0lFhWEkRwRANZXUV+RGW4MOExcqoe8wQidlFqpaEfIJh8b4RZ0srEMTjvZ
-	WWngoGaBu1tsWAzYYkVVR13iSeltgS0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771260653;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=TKrAisxLufljEbCPcuYkp4gIN68IUdPRAOJEf+VlEiE=;
-	b=SLai065L0glksYkNmArXR10XzvsG9B/IDCEnZBlTiBW3Zn3YMyLeGJeteFSiFUv69Crw0r
-	6nyeTZqvUUIXbpCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771260653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=TKrAisxLufljEbCPcuYkp4gIN68IUdPRAOJEf+VlEiE=;
-	b=E2vmDcAU0GW9xPHgIg4qxOjazqwQV8IjNwffzhsq6zTKtESM6i10QZvYc2GZeSM9ycOoO/
-	ny9GKnvVXg9K0lFhWEkRwRANZXUV+RGW4MOExcqoe8wQidlFqpaEfIJh8b4RZ0srEMTjvZ
-	WWngoGaBu1tsWAzYYkVVR13iSeltgS0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771260653;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=TKrAisxLufljEbCPcuYkp4gIN68IUdPRAOJEf+VlEiE=;
-	b=SLai065L0glksYkNmArXR10XzvsG9B/IDCEnZBlTiBW3Zn3YMyLeGJeteFSiFUv69Crw0r
-	6nyeTZqvUUIXbpCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 703583EA62;
-	Mon, 16 Feb 2026 16:50:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2RblGu1Kk2lVPQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 16 Feb 2026 16:50:53 +0000
-Message-ID: <0c8f9910-1b4f-4a8c-846e-397f328662ae@suse.cz>
-Date: Mon, 16 Feb 2026 17:50:51 +0100
+	imf24.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b=gLh+ibj2;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="l KisXEY";
+	spf=pass (imf24.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771260849; a=rsa-sha256;
+	cv=none;
+	b=sDZ7NCtTVFjhQrojQkxH50BQJlJ4yaPACT2Kj8ycsEUbOFKH9ZiOepfh3GhYq4ms67dr0Q
+	iC0vWDpkNcBZ0XeP+Nq16Ejfr2gac57zz02Yg1QVS67+FUui9N7IsAT109xmiSzE11hIxX
+	Gbm7w8eIycpgNPSYqGDLc+Uc88aWb5g=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id D7B4E1301155;
+	Mon, 16 Feb 2026 11:54:07 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 16 Feb 2026 11:54:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1771260847; x=1771268047; bh=lgcVi/rFDf4TxsQzdelMFD7oqZc+4jLK
+	nia57UoynYg=; b=gLh+ibj2a/9XhKLVwXuz0MYjgX1nwswsHVM0iGyARSCdYavE
+	ehBnyPJPx72THvXREempnZYxbPx/xyu+tP+1hXHqGJWvkA2ebJVRpQETf3X9T5He
+	YP41xSRq9ZekvhGOqXEdYbTLdeBFNFWg3qeKsWPfKvYafqe2J2RKKN4SR5ENM4Ls
+	SW1KVXcNIp7AsZ/Ic0gw9KmGLFlxtUd59S6pPJcJVPSSUkG4xFoDuCE1z5hB/36Z
+	3K6R/E9H6NczxIkeqQw6YXUaV5uODmEODhpFTZaH1jyBhfSefm2q1pCPtxcuChTl
+	B6cH1vFvi/vbaxrPyqieOy0dxornv7TQ0GiKbg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771260847; x=
+	1771268047; bh=lgcVi/rFDf4TxsQzdelMFD7oqZc+4jLKnia57UoynYg=; b=l
+	KisXEYnSRuXGKov/hsqgcdwWXakp1g+cq1/Pr/hiGMPZ88l7Sz7rEUL4jxuSu+8f
+	PfnfVqs4mrguzhTFjKPRolIfvzQSaw5Ge2/Z2TZTTb2bjH8UryIBPLPk4N/RfmG6
+	yzm7pacBmUXgJd6pqYisl+ehDmW3TQBSI7F8m/1mOOHvat1VahckduLeKzI3U5vz
+	DrXAfT+I1HQCwd5hqyqOk0U35b3sFBsOOtxtKagx9KNSCm01gCIA+TFZRNZu7Wkt
+	gv0HQzSCWYOmUXUH5i1YNgjZwNrqODAfquOqWX7D+bUuIzoqMD/LKYr0a79d/C+c
+	e40rTf35EaVYvE4LyucMA==
+X-ME-Sender: <xms:r0uTaU_8YM0z2UYGIuxW1AKxeXnjEE4xR-vGBwCQIzv-maF7DHrw4Q>
+    <xme:r0uTaeAYoE2nqTuvRGmWNLHoqklu9ce47sNEqHFbSexYAe_SnxKRdTHcOmxt0TZwe
+    6jrVGcoMRo5KMolGPMV-_YTlmtXmOmbKChHgs4b6XdfYphb0koYRGS9>
+X-ME-Received: <xmr:r0uTaerbMq1lqvUaABkHeJ-Rh5Rm2EzURooqBC8gY8PIvOB91kI06DYegDHK-A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudejgedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenuc
+    ggtffrrghtthgvrhhnpeeltdefvedvteeuuefhvdeutdetheefueethefgheegteeihfev
+    jefgvddujeeileenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohep
+    vddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhrghofigvnhgthhgrohdvvd
+    esghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtg
+    hpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghp
+    thhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhope
+    hvsggrsghkrgesshhushgvrdgtiidprhgtphhtthhopehrphhptheskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhope
+    hmhhhotghkohesshhushgvrdgtohhm
+X-ME-Proxy: <xmx:r0uTaXKGr8J6RD6Ue4xmAItbdq6nMjuJA2fJ70FuJv1nvxAkQGDafw>
+    <xmx:r0uTaQJIxKq8xlQJEWVeqvXW4qh1mjSj4i4LNON-AwN1Hvkl5KXypw>
+    <xmx:r0uTaQk8iUe8h6MQ9jVrLnERgZGbTd8P4TM_NOMhITNAIF4iUrRldg>
+    <xmx:r0uTaWLpaLySDWmo00_LfTZt3sNy1rBfjxQeuDdnSxMoLdwZeTxvXA>
+    <xmx:r0uTaeWM8nQLpXkQFNwyQMiY2avbSopPfogOhlrPrsWuOKHABgkfElUa>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Feb 2026 11:54:06 -0500 (EST)
+Date: Mon, 16 Feb 2026 16:54:05 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
+ pages
+Message-ID: <aZNJZTiRt_vm7oKq@thinkstation>
+References: <20260214084514.2842745-1-haowenchao22@gmail.com>
+ <aZMAVF1S1kP5Gny_@thinkstation>
+ <ddb0d3f8-a617-49a2-8fb1-e6293f376030@kernel.org>
+ <aZMEvl7WUKyxmgIh@thinkstation>
+ <CAOptpSNMx7moZnLP1Q9xX_6zw2xJL4OV4N=f8rzyZBLuTMEJnQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [GIT PULL] slab updates for 7.0 part 2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
- Christoph Lameter <cl@gentwo.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, Hao Li <hao.li@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4F7CF14000D
-X-Stat-Signature: 4merq64au1df9ipqt35xfa1hq1zium1p
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOptpSNMx7moZnLP1Q9xX_6zw2xJL4OV4N=f8rzyZBLuTMEJnQ@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7F91B18000E
+X-Stat-Signature: 1p4xuthkznyor6r6xr85dozdiudd9qai
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771260655-662202
-X-HE-Meta: U2FsdGVkX190dNFekFIEtY25ooDb332WnM9r8OUkZNblLXA6WqY82HuBCQypgFI7NPRzzTbuQlsYU/AToT/OBqhwapgwoZeYBSbgY2gVVk+9FihfTPocoalfYILh4RpgJob5Uong3Lnw6O5LODgrUoZ4ERsAYEgmhOuM2SLiG/PyegmileYCsq6Q30+cevSt2HdVCxhYuPVVvvxaKemcR1mOFe+YwWkpJHOmvZHjHVg4aSuCJDq3Y8s9ZXkuxOKKTcJ7cJUi7IT5pbeO+xLAcc49S7dvaR3rIEvsED1mILAlPFZwt7N16MoKUyyLwmOWTMSRs/lZyny3gwrog1Kp7s8PF8f1gFovrO34ESQ6pBYMw79RIXo6atYDG340fwp42vVVjTwksVtphitEGbcUzXOfON5XturpRHQwH1gKu7ZkkfbMvJZhmORQjspFCR1eun54BhBe8YPXo8eseIig4bxqo6MP4JGtgTiP+OTAzzAqq1JCErDxPV0bPgZu1Hpr3kKDcHAk76Nt12v0Rdw4TOzH3b6ltubDWuWyOa2OBmqwZph3fGdpWpDfOzjYrz5DoJfEkJmw2M3YMgZYSC0X0ed76qg/vBQjOJ730D6LMt2dg0Cc23e1uEpMynMm7SNUodZezcdBB9Rj2NK3x2Hxl4oa1siZbB/V/yRM6SXG+DdyfyOy9btEHcAoQjAx5OviRj8VFnEufdz/lt4ea9BvVnjnorzQ37IckKCNUVIZtMdsPuyTtt8LAiwx96HYtU8Wv7bdRp4T04+jG2bZVKG/iP503Z2EK4W/cmZ+sfNeQqmMPfGfBEA7vUsJuGySR7skiEZpoAyVeyEIfV93UL10+fzILroEgw2pMgLfzaLCmXsm2triFmtuD0eWSliHSgh41ffQ7VGzDmaw/3Gs9O9MiO0N6LlW5AOpPO0qY2OqezCFddi68jpOBd24ys2pDj/vDPFNdhGjhsdDuXxoZAv
- 8TJSDW3r
- Hpz7x
+X-HE-Tag: 1771260849-589014
+X-HE-Meta: U2FsdGVkX1/IK0jI8VBqgQGab1TKUrlPgtaXpimTDYi0W8V4NBjQOwgflWN6Y9ohADzJk3Yu2oXMMVzjOlLqGGE1G3+NFSDIXn/uldpaeiJK7Z2unhCdT06W2JSXduMThiOLm+AfhLy4rC36wf1Anj7d7pWcWJVqUDHaEE3IZi2qqSzTTR88BN6P0S5LRov6mtaH1/FSK0XqEJA8ZCpmSbgxF6Iv3NiCYWTIr/FnOG7Y7xVyejjVyMJ6ow4FdMvPA30bcLcl6EswCr88F1hrCvbMvxcld4zmHeaM4CtvmGwxiLKNLWHTT5/dqUCGt2i++3eD7VCTR0qxIaZDxB2H5sZh7qxUbwowL6DuYJnu+8plWhVqAIaoxpqVNoaREz0gMHkX4J3OmtQMvE21fA/U0hay4LOeGlb8nw4+I5hlrHV7dyk3NjTyqPtDNF0wVfGaRmNeNBYHkM/F1bOKJohiTflQvyz0Pzbfq7G4d/CxXSnHEOouLK90XS83ayt6Hj5xGNGjjSUDJgGjo/4itobFovTnTcXb/kJoYLKzMIvB6ryJ/kP7Iw7n7B6KsOklRUM2nlYFy1ctb3gLQCGIe+uB01DzGqH6chsGwVYDDtT+03AQ3W+QDeOQiW90CbNwyv9Ult7uLaegR7nrufgbkESjcPdemHb5Qt23hg1tY9z1920MqFOccaLVMUwNkWgBS13wNZ0ByAMjCCKs/OEta4ZbpxgqoRQVsoU/6Yt6JKcHdxKQibiW6nsTNEP+RfNLy21maRo52r0DsQrjzYmqTi9jrVFHSURPc4hfWZ9i1UQH9G98HTE7Pp/tc7eN6RkK0t8AwzZxq3VWWQkvORlQZJTbPwRZa0+O8U7LCxqUR2hou6ore5hWerKBd6WQQPj6XjQNIgpxVWoMuYyILMKC78LnriSBF6T4Er1eNkAiI5MoDt7Zw1qGA+9tth6h5NCIOQpVzWmtG2m7f45//ntYOtU
+ 2XgcxiEV
+ bWJPuSLrAWuNLUYJ1jxNU4lbAowfz3P4Qypjagph2mG3RZ09hTu6qKN+qHSOYus+fvHnBJK0uWQo1ae5yr/j5GCQUJHp8dS+ku6FkMzIfYbfcbCFCAmVgmS6imTkIgKKHrdiZrI6CnlQS8Wj7vleM8JSoj+mnCo904agY3UrA/+TPx0+2Z6DOrq7j+BV3JIghfwugDx8s28MCazSWkLm6257RTJzweiKQ5OghD+ASX2SS5o4yalhIsRtI2+n0LuonWymPSmofcNVydKjej2uuCBXnIroCmjsKRhyZW54VNzfkYvv+nwwnNcrDzzCUpHP8iRPfbgbLlZVOgX+q40lL5QLCudjgop8dn4qZ9RiwCkonS/lekdfM+GjbFi4qW6wk6ZWDgkIo2zRxh2zKwQgWH7Z506BbTV2lFtVXJ3+2WmNJVN3cxPWM0aL3XxhbeB4mBN351qPMHLsh3SV5iHpo4l/DaA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -173,59 +145,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Mon, Feb 16, 2026 at 11:59:50PM +0800, Wenchao Hao wrote:
+> On Mon, Feb 16, 2026 at 7:58 PM Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> >
+> > On Mon, Feb 16, 2026 at 12:45:13PM +0100, David Hildenbrand (Arm) wrote:
+> > > On 2/16/26 12:34, Kiryl Shutsemau wrote:
+> > > > On Sat, Feb 14, 2026 at 04:45:14PM +0800, Wenchao Hao wrote:
+> > > > > Add kernel command line option "count_zero_page" to track anonymous pages
+> > > > > have been allocated and mapped to userspace but zero-filled.
+> > > > >
+> > > > > This feature is mainly used to debug large folio mechanism, which
+> > > > > pre-allocates and map more pages than actually needed, leading to memory
+> > > > > waste from unaccessed pages.
+> > > > >
+> > > > > Export the result in /proc/pid/smaps as "AnonZero" field.
+> > > >
+> > > > I expect it to slowdown /proc/pid/smaps read substantially. I don't
+> > > > think this line in smaps worth it.
+> > > >
+> > >
+> > > That's why it's enabled through a command line parameter.
+> >
+> > One users want the stat and all users on the machine pay the price?
+> > That's a poor trade off.
+> >
+> > In general, smaps scales poorly. It collects a lot of stats and most of
+> > them are ignored by user. We need something like statx(2) where user can
+> > declare what he is interested in, so kernel won't waste cycles.
+> >
+> 
+> I initially considered two approaches:
+> 
+> First, exposing the needed information via smaps. This does incur some
+> performance cost but is the simplest to implement. The new feature can be
+> dynamically toggled via a command-line parameter. When disabled, the
+> overhead is negligible—only a minor if check, which is insignificant compared
+> to the full smaps cost.
+> 
+> Second, adding a new system call or extending madvise with a new command
+> like MADV_GET_ZEROANON. Userspace tools can then use it to measure
+> memory waste from zero-filled anonymous huge pages.
+> 
+> This is slightly more complex but minimizes system impact: environments that
+> don’t care about zero-filled anonymous pages pay zero overhead when the
+> command is not used.
+> 
+> The exact implementation approach can be discussed after we confirm whether
+> the upstream kernel needs this debugging feature.
 
-please pull the latest slab updates from:
+What I would like to see in the kernel is a syscall that return the
+memory stats in binary form. Something like
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-part2
+size_t memstat(int pidfd, struct memstat memstatbuf[], size_t n,
+		unsigned long flags, unsigned long start, unsigned long end);
 
-There are two stable fixes for kmalloc_nolock() corner cases. The other two
-patches are lifting a significant limitation of kmalloc_nolock() so that
-kfree_rcu() can be used with it, and will allow bpf to start using this [1].
+The syscall will fill up to n memstatbufs, one per-VMA. What exactly
+filled there defined by flags. The return value is how many memstatbuf
+is populated. The caller can call it multiple times to walk address
+space it is interested in.
 
-However they only went to -next a week ago so I want to be clear about it,
-as I know it should have been there earlier for a non-strictly-fix changes.
+We also can have a flag that mirrors smaps_rollup behaviour and collect
+all the data into a single memstatbuf.
 
-[1] https://lore.kernel.org/all/CAADnVQ%2Bq3QPqNdV3MuysQJQgxSS4g6CV%2BVzN2%3DUqCPHw7xq%3DSQ@mail.gmail.com/
+Internally, the kernel can use the infrastructure built for this syscall
+to provide /proc/<PID>/{maps,smaps,smaps_rollup}. This way we will not
+duplicate the code.
 
-Thanks,
-Vlastimil
-
-======================================
-
-- Two stable fixes for kmalloc_nolock() usage from NMI context (Harry Yoo)
-
-- Allow kmalloc_nolock() allocations to be freed with kfree() and thus
-  also kfree_rcu() and simplify slabobj_ext handling - we no longer need to
-  track how it was allocated to use the matching freeing function (Harry
-  Yoo)
-
-----------------------------------------------------------------
-The following changes since commit 815c8e35511d0b9a214e9f644983fe477af9d5cb:
-
-  Merge branch 'slab/for-7.0/sheaves' into slab/for-next (2026-02-10 09:10:00 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-part2
-
-for you to fetch changes up to 27125df9a5d3b4cfd03bce3a8ec405a368cc9aae:
-
-  mm/slab: drop the OBJEXTS_NOSPIN_ALLOC flag from enum objext_flags (2026-02-10 11:39:30 +0100)
-
-----------------------------------------------------------------
-slab updates for 7.0 part2
-
-----------------------------------------------------------------
-Harry Yoo (4):
-      mm/slab: do not access current->mems_allowed_seq if !allow_spin
-      mm/slab: use prandom if !allow_spin
-      mm/slab: allow freeing kmalloc_nolock()'d objects using kfree[_rcu]()
-      mm/slab: drop the OBJEXTS_NOSPIN_ALLOC flag from enum objext_flags
-
- include/linux/memcontrol.h |  3 +-
- include/linux/rcupdate.h   |  4 +--
- mm/kmemleak.c              | 22 ++++++-------
- mm/slub.c                  | 80 ++++++++++++++++++++++++++++++++++++----------
- 4 files changed, 76 insertions(+), 33 deletions(-)
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
