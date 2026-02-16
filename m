@@ -4,175 +4,278 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BB30E81A3A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 472D1E81A36
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:21:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98E726B008A; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
+	id 9785B6B0089; Mon, 16 Feb 2026 10:21:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93CAF6B008C; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
+	id 8FCD06B008A; Mon, 16 Feb 2026 10:21:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E74F6B0092; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
+	id 77C166B008C; Mon, 16 Feb 2026 10:21:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6628E6B008A
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:18:47 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30E4313C2EE
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:18:47 +0000 (UTC)
-X-FDA: 84450677094.13.3E95AE2
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn19011090.outbound.protection.outlook.com [52.103.23.90])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 30E38140005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:18:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=hotmail.com header.s=selector1 header.b=bCP2571U;
-	dmarc=pass (policy=none) header.from=hotmail.com;
-	spf=pass (imf26.hostedemail.com: domain of raul_pazemecxas@hotmail.com designates 52.103.23.90 as permitted sender) smtp.mailfrom=raul_pazemecxas@hotmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 606626B0089
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:21:09 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECE068D105
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:21:08 +0000 (UTC)
+X-FDA: 84450683016.06.E13BFBF
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 802E740016
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:21:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=NLhrQkGW;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=EHV8k+du;
+	spf=pass (imf07.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771255124;
+	s=arc-20220608; t=1771255265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=O1EkhvVQuK+5xNczz3cGLQUQvdFumtlz2yhZ1FY00n0=;
-	b=NfzCVuPEv5n/dR0YQ8k7q7pdiENjotPgKcS1S5/us2A4mCHzH3GSpSAMi2Gyj+rSWhRUBr
-	EHntiZuMTNku8TMHfkVtg0YI6FA1bSWrB+CqL1TBYarHXNF2AWvBbxLw/WutC4bAJ+9qVy
-	a+iouiougTeITykbQasLrG/vq7vZ5yA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771255124; a=rsa-sha256;
-	cv=pass;
-	b=uOIX2mgiS7uEbBnkzodFVhaYC366LTfHbEigaD7xqt7HUdu89L4Mwq1nzviBNASyEBKXiS
-	A9a75AQWx5drvGmuHINj9bNHan9CUrB4Mn0xNyTUDrl2vDvEGLHcrOVokON4Q4CmAiKm1R
-	WOpJ0QDD3MB0wXNss11zjM/fGvYk1ns=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2A4ZBTPywd5tP+DbRmrl2Ek10KXvfpMhjo3+uPLz32M=;
+	b=nHjTM1gOKgX47re2uJ+5Khi59zlky7OYJu4od3o0cpuLR+oTkE5SnDVd0mzGjhljiR+mGF
+	CoPdF4IObxH8Pgg5RhHvZ7O1L6tX8d8/RA3qEKUc1dVrwIAdehpgpzHY+d3LSNGRiQ6ASp
+	9lJHzHDUu9aOTTW57tcIR2j00LU275Q=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=hotmail.com header.s=selector1 header.b=bCP2571U;
-	dmarc=pass (policy=none) header.from=hotmail.com;
-	spf=pass (imf26.hostedemail.com: domain of raul_pazemecxas@hotmail.com designates 52.103.23.90 as permitted sender) smtp.mailfrom=raul_pazemecxas@hotmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=NLhrQkGW;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=EHV8k+du;
+	spf=pass (imf07.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771255265; a=rsa-sha256;
+	cv=pass;
+	b=0vzpRm2HNJhWOPpcBYfiyovQm8eLdAGp9zVG18aZlnbbfoXkhIHWdFdD+pJJ3b7LbwXkr2
+	LWhSJqgEGA0yNIw04NaPYtpDRJ0IvtrDywohIUCRkc2zotmn40zjNj0wznozs9kMHc7Owx
+	AKl8F0J3mIQ5jGCkzf0MgOyIlHMJ5vs=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61GET6IC638622;
+	Mon, 16 Feb 2026 15:20:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=2A4ZBTPywd5tP+DbRmrl2Ek10KXvfpMhjo3+uPLz32M=; b=
+	NLhrQkGWmV1e/NN9fJhNZEfpMOAIfOgGWJUrDNJo8VGMynqPYfgcoK2YrkbR0/q7
+	TpMF7JY3zpr6p0vkSk+qkDfDxsGRCvG37XnnGFnEqUIFfvkau+WHHS3P+sHpPZBV
+	RhWLEH+wiMkdAzNUVIyCnE/R5wWnBfO4632j1lZfKtWmvisvg6DKFPnNLXuymDj5
+	Q4kvWY8gzez3nct5JoOMpEW8baITKbKFyMWfhU1CeD56bwL8EHDt7eYDVjzZUpQQ
+	X7YApD2he2AxmtClB1cpiE1N75kwX7NJm0o7bWgvVXWwZqIhxlwCbBS6fFRqVwzn
+	eHWi3y1/nivgYBzTEvCYHg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4caj6ma7t1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Feb 2026 15:20:41 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61GD8gVG033555;
+	Mon, 16 Feb 2026 15:20:40 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012069.outbound.protection.outlook.com [40.107.200.69])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cafgcg5yg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Feb 2026 15:20:40 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AtX8z1UUyrPFuoREPLUZLUX0SFS9NlGG7zji7+4cUftxmT/AkD3AEVoAj4zQ13iUsA3hRH/kKOGeKD7iYZgz8voquNcjIAuH3ZuuTwTNuec4Epy3rKM/7sPLoxkUypPLLXI+MYYuTcxIaYN2Izhe2xFtzMQOl2mJQhkTSRNunZiku84l3oMf+IhRUocv2ZqH+aa+Z9QeU4r48WtW/GzBbY3ysxcFwcjx5SURF+1MBdpXeenNSmAbr+OJVXcYKJxstM36ZOjnaS3MD1SApAjj5u5VyuCTQI1mG2++RDhuhiRVajJ5KzYXnuC1fYOARUyDIwpZdZ2kGe7EN12xXKC6Gg==
+ b=E50ohLkXjL8whciCDYFMSNIJjESGj2wkUkn4tWgdXl5p3bAdnyMZHvtqXmvA5BPUnGcJrfZyS3V649L+EacJFWiL7VHxYaGOno30NLUh6n1q4ToTJgLtn3yo//dz/rmgr/CdF2Bw8k3PaF6MNufsVHvO1ABv5c/R6OEOJtPebtx2/B+kH5So+vIvA3E9nF5+Kg/BLBxRS9h/1shh9s+PnwrdKgibqSZKiurCAbqJEJxFggokLIx8LU59uOJkIm7ePKK22f/i4YFMJXyldfRTh5WOTkJqyEzT8s/M/FpvfeE5mQcRfcAGGJWF9RrrkpnhCFEYDfFRa5x+/Hs6c0zzcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O1EkhvVQuK+5xNczz3cGLQUQvdFumtlz2yhZ1FY00n0=;
- b=LNdnTiynqSsjy/Flu0pJZwfclXV59c0NYM1qCnGh+54eeYsn3XiBFY4Co6xyzLfW1Dac4wPJlfzY+zZpwt5GlEGHP4UirlpZFUUWoJ1lBVkjjxo9Y4AfJbh8EPm4pv8hy1qk6AjeulJtQr9fK6StClfAQUN0r69RKzwFn8rrPzR9xRTufhp5XOYgnMDfRxRQYm+icMYhUwkJ1X/dv8axXKG48BeIAM8D4bXIKvFfNlSf8JuNzYgJNa38AU2lYOJ1UhSW0DakORD9tMJfLfP01zhUaHdnLTkHc/JHT50VLE64pxasWtGCLnU418Y1HG8pNvlF+VLH/Pn0F2mJh7q4Jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
+ bh=2A4ZBTPywd5tP+DbRmrl2Ek10KXvfpMhjo3+uPLz32M=;
+ b=bK7kYFXH1kilFtW2ZplWhlaR95AxQoYSjJuhX1Tsfgs/XGC1y+AaNYX/oYZIrJevvpj1gZvnjh3fRY3gdT1D29t4SbcFZ8rpkXYqlKJAz5wPPymFTZSeByxVFwhDzd1D+NH5ee0F1gGeld4Ws/bfdYCvYuVtQsrrNU/oEOHcWQgprtn1buxhZj+D8ld8c5BLm7NlOqJgCaa+3qZB4RIC05bsC2G+YX5xo7IdvpP5BWfL7gQ0c7139Fey6DiA2IvDQElpUdYYuZenV4ApoikWLEhRBp8R3dGFPUG0XL6ZepL2KcfoZzycB6r76D8Hqa7/PRLUaeTDKrBTRKpSd+y+4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O1EkhvVQuK+5xNczz3cGLQUQvdFumtlz2yhZ1FY00n0=;
- b=bCP2571U4guTCPEIoVMPGJima9yHWmhAQxQpWqho7BzaOEs1XXRWu3bYsz2ldGXRKKfDV3xu76wzPkAh+rhHsP8YHxPqvl+ggh08YTyO6fAPrRJJEZR5ZM2cpRpSb7yk35KGot5H5b6o1M5kxRCnv2Ootpmr1LrZgl04zT1mJcLEX7XJ9tnLqGfz8CI7DdyiGPSoHzcyGzO9w7McE8v/gtjVDIdz76qLUde+cL5kiysP1VTle0ZL+CRaIKpTeOrBtrBEie/agvIViD988XOg8YCnqZJx+ok5EDxeoIeMxcmsv6kKfEgIDyVkD00xwdl29uHU/stETamboBFduRjPlQ==
-Received: from CPUPR80MB8171.lamprd80.prod.outlook.com (2603:10d6:103:2c6::9)
- by CPWPR80MB7169.lamprd80.prod.outlook.com (2603:10d6:103:205::9) with
+ bh=2A4ZBTPywd5tP+DbRmrl2Ek10KXvfpMhjo3+uPLz32M=;
+ b=EHV8k+ducnR0eLk0slREk8cDQOVRHQ4ls6Jbqf1R/w5JV3lXyBNlNwlegBm/DRAOgASZd3WprnT8cgguaft+tnHnqCDIn0NSKMUgHGPHYAwTL9HxjlSdXwAwL51uW9/zXzJXs+vGdh59eAeuuHKjyQOjdA6FteJX6tBwqLn2eiM=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SJ0PR10MB4782.namprd10.prod.outlook.com (2603:10b6:a03:2dc::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 15:18:40 +0000
-Received: from CPUPR80MB8171.lamprd80.prod.outlook.com
- ([fe80::18b5:f8c:1f:ef82]) by CPUPR80MB8171.lamprd80.prod.outlook.com
- ([fe80::18b5:f8c:1f:ef82%6]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
- 15:18:40 +0000
-From: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
-To: "sj@kernel.org" <sj@kernel.org>
-CC: "damon@lists.linux.dev" <damon@lists.linux.dev>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "security@kernel.org" <security@kernel.org>
-Subject: [BUG] mm/damon/core: dangling walk_control pointer in damos_walk() on
- inactive context
-Thread-Topic: [BUG] mm/damon/core: dangling walk_control pointer in
- damos_walk() on inactive context
-Thread-Index: AQHcn1XCaBDjR1AYvUKJXLQu2W9RNA==
-Date: Mon, 16 Feb 2026 15:18:39 +0000
-Message-ID:
- <CPUPR80MB817114F8F409F0293D3799C1956CA@CPUPR80MB8171.lamprd80.prod.outlook.com>
-Accept-Language: pt-BR, en-US
-Content-Language: pt-BR
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CPUPR80MB8171:EE_|CPWPR80MB7169:EE_
-x-ms-office365-filtering-correlation-id: d4affd79-99d1-4be5-ad31-08de6d6eaa08
-x-microsoft-antispam:
- BCL:0;ARA:14566002|39105399006|20031999003|5062599005|15080799012|19110799012|15030799006|461199028|31061999003|41001999006|8062599012|8060799015|40105399003|35041999009|3412199025|440099028|102099032|26104999006;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?n4MLueIo32uSHz24EEwt1bQym2QXQSgfs9aSChci21a8PTRDqQZBqANxAs?=
- =?iso-8859-1?Q?ycwsYcQoj9QVRDDRiA8HLHirsnUU55RdhcCVJM52aZKegdxGxaJWY6clxX?=
- =?iso-8859-1?Q?eXqaKHkGiERKx4WwPAmR3+eAg8vKUKnu5eVnImuV+EIjNjQRUHS238YmHl?=
- =?iso-8859-1?Q?8NRPSu12KINmpNupLWbRc28rQsM8ff2ze+LmDFRpGdsEfBKCpajQuqVxfk?=
- =?iso-8859-1?Q?59O3V5G4VqqlEtMH2lxI6xx5vrPNVltfU/oEO64sG7d893ZQ7OY2Dev4vZ?=
- =?iso-8859-1?Q?PD1HZybQEF/E0z92WNKLI4meTFHf9WpVMhpj4Mhyod/x+Dzh7t58CJhY7P?=
- =?iso-8859-1?Q?zENt9PmVaMTO2b7H/pUMMnGlGf57lF9wnyHr4GYAVzQeHjqYNcBKK1dYes?=
- =?iso-8859-1?Q?4bGoSUzaAn7GEATt870TgymWDSofJPmcay+mP1ARaNLI6d8gIZ2h6BxY5b?=
- =?iso-8859-1?Q?yvdJ7cTDX1vHk6mKPPKAfbLO1udOuv/7/RUyS16nFcAq8CrfCFrRECGlMc?=
- =?iso-8859-1?Q?PlwM8p6zGsenZANAXjuY19ExcOFE557NKSw2JRKRm3YkK1N8a6tuDvIqfR?=
- =?iso-8859-1?Q?cYvCXihuJPgjVJzCSaUwyCR6LVJ25gDzK0/0yhE9Qoola0BRkqhPdn0Id6?=
- =?iso-8859-1?Q?gAzelUKf7fiDplUdCf2q65uBK2wZ5m+gNsDR9klhZw5KfHXR+fKl98wgPQ?=
- =?iso-8859-1?Q?6FbTHwvKhhA2oBySnQ6juuQTo04YxgBiDygLmI0e4+l6afcAftNx8f7rsA?=
- =?iso-8859-1?Q?qXvdl00ILUZm3pxdB8gxpWuaBfBulVcJwfGSAEj4ufNCCs2uH3cSbv5TK/?=
- =?iso-8859-1?Q?5HgrMu8AkrhymfAthGEmyoDduGhxD3R5bUEa6JqMPq9ze7Hsmx7rC1VzdC?=
- =?iso-8859-1?Q?xGXzn+ecJkZg22JxHJGYq7n7F35pNkTc39VpkiRIlJDq7a8FA3Nw8+X106?=
- =?iso-8859-1?Q?evSLWk8MzpmWb7WnydKmSqdrWlNaPZJPNPZidg3XZMDNJlxpRRtNFYJrmw?=
- =?iso-8859-1?Q?+bqu2QbN+0mssdVg2nfn3IhBXkA1ZmRKp8HdYdeDJs7yH1MOI7nOct4gmY?=
- =?iso-8859-1?Q?UI28KdthLbjgmTcBIL9rt9cF7NWNnFUZd1rL2235TXnw6qOjd9Bub0xkfw?=
- =?iso-8859-1?Q?IcXCHqdSIeOYa9lAr9QQaJrFXawgmemHnVn7T9Qok8PYHz2arhIxmfh6Fu?=
- =?iso-8859-1?Q?2Ttjg7NdKjd6lIpC8jccX3plTA5AVYMg1ohQXb3gsEu327/o1akYi+1rnx?=
- =?iso-8859-1?Q?RL/roSXbPzM1gUEdt6rXgcn/NZknY996rggmF7yyXB4d7D1AY3YpvlqBcm?=
- =?iso-8859-1?Q?DTRb8DiqLXJHBOp4wIeNpH6LWc14OZDsdMJ+AYasP9val98zVPzSOk0PCs?=
- =?iso-8859-1?Q?ucRjAZBk102NXkyWDS+nCD6h+8lmo6+7sX7Xmg6nZ0/71z6PQdfm8b0w3Y?=
- =?iso-8859-1?Q?1aBhU26IzfK7RFwS?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?bVBdeV2spexE1gPH1TX6Ca3ETX1+VA+woQ6LqdhZumJ7YN3+3yHR07omab?=
- =?iso-8859-1?Q?EGkONOXSKqFIFbGh6fBUvcMkJTqGA/g0J8msshlI3+wb4TEBADWLEXJc5E?=
- =?iso-8859-1?Q?bEYZWW3/J7TJNPzZbwtpKhZ/jOFp0GM0C/ZegoHBpdY8Pp2OlOU967LmpJ?=
- =?iso-8859-1?Q?289uJ25zIMJt2LaHMPnmK0buHu/gtvcTOeiXceQC8nWf2XwoteYr/1OEvG?=
- =?iso-8859-1?Q?SMNX8Z0w5QRaSAS7KslpUQExCRvXsqeGoPTMYQO8mxzuNyxy2bwIRoQNPV?=
- =?iso-8859-1?Q?lNBbjCEX6Nl1OZzpbXbXL93OSgY4llqoKjVrU3wgxHoV1h4Qr5wnPjmv9C?=
- =?iso-8859-1?Q?llMwu+sBoCfhVzCMIBFASFCG95AWCV2zq3/WBIic8FTAxvPJRjrE4La/wI?=
- =?iso-8859-1?Q?O4MHJtsqzlQdGupRh+37CvI99u3ZFRbyMVVtHRe5r2bQyDZBSkCdaC+Z4k?=
- =?iso-8859-1?Q?91SrEgtS2ccR31N0bnGXc0EPDZaBnRxG0LtD9DAFxQsGoQL4OthkT21pty?=
- =?iso-8859-1?Q?++S8Iz12lkJOjfGHdjZnhCiT6jDYV4W3O9kj8+ZHFDFDXAbJEjsJ/mjlgW?=
- =?iso-8859-1?Q?btbSZKMhSRSZ3DGvnkCXLK5Kr0IpbeQW/JSyAerjg8e4FBQN90+BBWF3NA?=
- =?iso-8859-1?Q?BaDH/6nf+FVZ8iN5G2iurTLTUtaE1NbyX3jNRa63ErrlcChy0YRRAwcbau?=
- =?iso-8859-1?Q?GDXZjDv1w+NHZ3ccwQVIJEb6mi9WIxsMQ1xTz+8P7tj8LWUMR2D2vSUJef?=
- =?iso-8859-1?Q?k3uZbWnHP5W3ENHXnJMxxVnEzJJZjAm2ssRcSKzNjOVzFF8YKTNi90K86R?=
- =?iso-8859-1?Q?gZzlwtfDNzTU2UmPjUX/0DBSdl52sudputajHKswmBj0Lj9jmtH3wmyzVx?=
- =?iso-8859-1?Q?d/a60t+0b7voigeCWNbSw5/7XFu8Tmz1l7GZ4JDe9JKMRZIgzHCujE6KWf?=
- =?iso-8859-1?Q?KIp8+Piq/P+khSGrZFYQQRzLFa2l/zOt30odJKpDtGd4/TgJGRGOCBa+fo?=
- =?iso-8859-1?Q?Fygpe7ImzJUTs1SBoSuhhhH1jB39FrglH8sam9V82arEw8bqnxd2T2znsB?=
- =?iso-8859-1?Q?F7KjoKN/VqgHTxYHgUgqgq4LGdUf61rDEaiX6BN7Z7lFxCGTOx9fZv5FKw?=
- =?iso-8859-1?Q?IcMlIfHyzwDgI3odc+HN0p5afVns8BioYN4rF/2zyYdv3baLBhcDjp6/sg?=
- =?iso-8859-1?Q?+R1p5wD3qhJ8/nht6vjFrUZPUhVAh/SHm+aH4pjKXmnQ6L6yyxOo1SLqoc?=
- =?iso-8859-1?Q?cd7wT0M5nDqrV9p3d9GUPnNnTL6spsWpS0s9knrXAfPWnRc1P33fiCUSM5?=
- =?iso-8859-1?Q?B0rcQcOhBUv0VK+Y0bd49p0nEGT5+KRR57NCYfOClQBHQJ2VyhDLZ2xq/f?=
- =?iso-8859-1?Q?+AQVz4ekCqdjHZALkEcuB0OYELIoNkJ0cJEL6YfhI6L3NlYqwCnN0foVn9?=
- =?iso-8859-1?Q?G/7Mf4C2Z2dHqwhl6uTkl7vCVCKQt4GE3tchavDOrDA8ibKzCUh+zH7vj+?=
- =?iso-8859-1?Q?WOc1axHrZPWylkNYOEEjYD?=
-Content-Type: multipart/alternative;
-	boundary="_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_"
+ 2026 15:20:33 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9587.017; Mon, 16 Feb 2026
+ 15:20:33 +0000
+Date: Mon, 16 Feb 2026 15:20:31 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+        baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+        ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+        lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+        rostedt@goodmis.org, mhiramat@kernel.org,
+        mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+        joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+        gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+        jannh@google.com, pfalcato@suse.de, jackmanb@google.com,
+        hannes@cmpxchg.org, willy@infradead.org, peterx@redhat.com,
+        wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+        sunnanyong@huawei.com, vishal.moola@gmail.com,
+        thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+        kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+        anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+        will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+        cl@gentwo.org, jglisse@google.com, zokeefe@google.com,
+        rientjes@google.com, rdunlap@infradead.org, hughd@google.com,
+        richard.weiyang@gmail.com
+Subject: Re: [PATCH mm-unstable v14 08/16] khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+Message-ID: <1e7f2456-79db-4096-8bbd-aafd9acd8e0a@lucifer.local>
+References: <20260122192841.128719-1-npache@redhat.com>
+ <20260122192841.128719-9-npache@redhat.com>
+ <599ebe0a-086a-4701-b797-dcd801ad02fb@lucifer.local>
+ <CAA1CXcCCbiV9j+_SVNJrkfVRqKPXjGg+Lt3YnyNUhDHWkRjHGQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAA1CXcCCbiV9j+_SVNJrkfVRqKPXjGg+Lt3YnyNUhDHWkRjHGQ@mail.gmail.com>
+X-ClientProxiedBy: CPCP307CA0005.DNKP307.PROD.OUTLOOK.COM (2603:10a6:380::14)
+ To DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-8eed7.templateTenant
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB4782:EE_
+X-MS-Office365-Filtering-Correlation-Id: f34b2a41-1b77-4d27-3dc4-08de6d6eed4a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TjlGSDdMK3BydTE2M3FOOVV4U1Jwd2YzMllOd00rK0NQclN5RnFkaWFYVUh2?=
+ =?utf-8?B?T21RYkJmZ1o3dWU2SFhEcDlzNSsxSUs4S2pjZ04rSGFkZFdKUWRJeXlLWXJh?=
+ =?utf-8?B?dlRDaDJtbW9zS0FNWlppM01lYktic0pXRThIWmUzOFF2OW9wS0YzV2xHR0V1?=
+ =?utf-8?B?UytmQTRHdTBvenkyMzMreGhUQW5kK1luUTRERUZwV3dvYjQzZXJtRTMxVE1D?=
+ =?utf-8?B?elh5TXhwQ1ZmakdwYkpkUjlUdUZLTHl2TzQxaHFPZWZDWHRteWt1K3lyRU5u?=
+ =?utf-8?B?aWZTaCtrZmhsZXQ1Y3R6Q0grRlRuMzlweWMxeFV0aVVGRmtLSFlPTis2aER3?=
+ =?utf-8?B?NU0yUTltZUlta2c3SlU0ZjJaM1JGUG5mYmZvWlEzUmphbVBtRlpmSjExRjI5?=
+ =?utf-8?B?YU9aMXUwSHpPRmM2NCtnWFVZclRlaUJIUEFzci9vWm1qeUtZZ3hLWE1IdUVu?=
+ =?utf-8?B?WnJMbVlIbWZFWnRqQVB3cDdTbnMrQmxnQVhsTFNjbjhXTW43RTZ6NWhPekJk?=
+ =?utf-8?B?MzdrOVFqUFpUbkU2MDRBQ3I1UXBtUlRVMHlQSXppQUdraWlRa0huNlRWMzZC?=
+ =?utf-8?B?M0J1TkRnS3dhS1g1QnUxY1JLcXdLVlR5dmZEUU05VmNta214UEpUK3NTamxh?=
+ =?utf-8?B?WndLOEIxYnpqS0VpQkRNaW5jKytNell3OXpoWjF1WXA4NzBXT1F2NzE4SVJq?=
+ =?utf-8?B?alFjZmp2THVBcm5vdXBnb0lqOERabTFIc2RiZms2dUJXaW9rUWhaTytXU1I2?=
+ =?utf-8?B?Q0xDU2pRTkFNaGdtT1MzSVB6Tk9kY3pReEJJbXlLbDUyT1JRT2U2TW9idFhx?=
+ =?utf-8?B?Z0IrRzMydENKeU5NekRjTkZKZWxUQ2JiNkg5V1ZUY3R0N2xkbUU0YlZOM1gy?=
+ =?utf-8?B?YWMvL3hHSGszVmdjM1ZFUUdLOXBaVDJPbVZQL2p6aTBwMGhuRWREVWxlNDBB?=
+ =?utf-8?B?ZU50OEJTMUpEaEVJbjVaQlVnV1E4aVNCaFZTbUZWaU9RY25mRCtJMkZoWFB6?=
+ =?utf-8?B?SVNqZHFvSzBvNFh5V3gzcXNVR1Rxd3A3S20rQm1pNHhkVXlGTGhqeGlBQzNI?=
+ =?utf-8?B?RjY5SWJpYXZRRDdYMTV6OHBOTjdIZS9VT1pWb296N3V1KzBnWHdzT2lBS0ZI?=
+ =?utf-8?B?UkZZdWxZWUlhK2g1L0pOS1kyckVCc0U0aUxvZ1BpSDV0Q0NlQjF5MzRPT1lv?=
+ =?utf-8?B?cm9zcld0RnZDQzN5dDlJMXF3Tm5ScWpJV2p2SFFNMVpERHVhVnlUMkdvTkNI?=
+ =?utf-8?B?MCs0N0VtZ2QzcVdrQUZOZmRtTGpVQTRwdE15TzRpdnEwZ2h6RkYxbk0za0Zi?=
+ =?utf-8?B?K0FNZUdaSG5QbCtqdnMydTM0bnFwZ05zaGdKc29mRmtDR2FOUGU1dXlScWgv?=
+ =?utf-8?B?MXVkUnJMTnJoaEphZDd5dCtDandSTHhscFdZanl6dWxxK2ZzSjZiYXF5KzJS?=
+ =?utf-8?B?ZHNCcFh6TjFBSXFYZDNkRllCN1czOWJZYncwOHZ3b1RldjZxZGYvdkJqQzVv?=
+ =?utf-8?B?Zzh0RnhRU3c0UWdBbkpVZkYxTXk4U1ByTEZrb0JCMXpEaWJLbU5RNUlMQWZl?=
+ =?utf-8?B?cTgxcEdhdFVmMDBBM1ZmUDZHVDhQYnQvYUx4R0FVWi9Ha3Q1Y1IyU0lTUk9E?=
+ =?utf-8?B?ZlFYNmNnNmszZnRXRlIzMUVxVmZOOFVIdVZCMjZqTmZ2WWVnY1hPYkJ3SzVo?=
+ =?utf-8?B?VlV0WGRObFB0RzJNTi91OW9sZWMvVzBOQjRqM1YrdU1xOUdpcEtsZ0piWWRw?=
+ =?utf-8?B?L0QvaG9VdWo1anRKK2ZKSHFwb0REelo5aDRjK2ZsZmE3bjRVbllpNFRFSHVD?=
+ =?utf-8?B?YVZLRkJvUmlzVW9VWWxVdlZzbTdpazlNeWUrRy9DYWNzUWE3WXF6K2o5ZWND?=
+ =?utf-8?B?Y3NsYndMbUlXK2RqRnJwMWUzNkhtd29hazlVK05sOFlpWDBtc0hGUm9vazFu?=
+ =?utf-8?B?eFV4Ulc4N1d4blVZblRhS2FlTTBjSXNKdzUzaEk2ejlaeXk0djN2YmVvMWc1?=
+ =?utf-8?B?UzNJeFppZk1uU0dEeWxEMnpIMThaZm4ybExESnpocFlTYlV5ZUNPKytJcG45?=
+ =?utf-8?B?SFFpTmpUZkRmOHRKbzF2SHlISThYaGZyR3hRNENvdmdoV0VUSVNHVWtjN2Vt?=
+ =?utf-8?Q?tglo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ejB5NVlpaCtvUjBZTU5KNHNud1VGeHNMSUJCMjJvVmNNRjhKVXBDVTJENmM0?=
+ =?utf-8?B?OUgzOS9DTFEzTDdEN2MvS3lKT09GcWpEQVVRYkJFZFA1M3A5QStCZDNhbzA5?=
+ =?utf-8?B?MHllK096YXZWVzg0MWt2bmNxaTRKS25NQjFXelFUYjJZZmN0Nm1rZEZXSmow?=
+ =?utf-8?B?QmtMSmlZMTViVHlqTjdzcUgzTEJXWWtjbHc4KzFJQXp0TlhlWXpwSkY5R0x0?=
+ =?utf-8?B?MmdOSElTNXNPamMvdllxaXN2Sm9jalFaRVIwVkFqSG9MeU5FdThuQ0VmWTQv?=
+ =?utf-8?B?eVZTdUhrWUU0Uy9JRmJqcTZMbkVhVlVuYy9aV3JRTGdUQVZzNXpmdlFLaGV6?=
+ =?utf-8?B?YkZsVUVSWWtpRzVUS0gxV0pWVGowS21zeCtCZmNMblhJcHNQS2p4WGRlSFRQ?=
+ =?utf-8?B?Mk1DbTUwQXoyZlVrOVVtbks1SHdTajdmbm1PRkJieSt0MmVYRDZqbnEyN0Rj?=
+ =?utf-8?B?UFFvaXJYTHVIeG1wTlNFMXhzSXhRSmoySjJDTzhteFlOTUFqcWRkcGdWV1pO?=
+ =?utf-8?B?dit2Y0dUdm5tcmJnc0Y2UXNHdlBzVDU4MWdsRTFxVXBOUTNMaVV3aGREWnBT?=
+ =?utf-8?B?RkUvRnMxTFU2elp0TXN4NzNvNUJNSll3WlhWeHM0TTZyS1BTRU9PK05DTGxF?=
+ =?utf-8?B?cUxwUlA4NEgxMmdDWTQxWnBmVGlja3E0NDdtSVNYNC9XblUveUkyZEtWU0Jj?=
+ =?utf-8?B?MWthNmV2Q1lkWjJPTUJCSXduQ0RmNkhzb0ZMZSs0b01JSUxNWEc5RUpsM3B4?=
+ =?utf-8?B?SHBUTFUwK2h0ZFVCMi9ISXB4aGNmTjZ4Sko0VmdpcXcybWNOVDRoaWRqMGxN?=
+ =?utf-8?B?WmhuNmFabTU3U1Z4SXhFeWlaUFN6MEY5MHFzdmNyK09iNWQvaXBvelFzRjRp?=
+ =?utf-8?B?ZkMrbFcrY1llK2NVRmhvRGMyNmc1WkIrU3JaZk1XL0lSMHlsRGQrWFluOE4z?=
+ =?utf-8?B?SFlGQm5kNjk3NXMrYWVqS3UvN0tmMmhOYVZHQk91SUJBQUN3WkVucFBERnR5?=
+ =?utf-8?B?TEY3ZEZ5US9CYUNQeDJHMzQvRU1xMnd6Nm01aEpYaGU3dHJsMy9vanliSTNI?=
+ =?utf-8?B?Z0FYWHpIY244UDRZSUExb1RLNnZHNkt3Zlg1Uzl1enB2VUVNZWxQUjlZTkhu?=
+ =?utf-8?B?YWQ5UldNUER5bGdHaTZGVG1rdzBHdk1vLytud2UyRlR3WS8yekt2WDBCNmJI?=
+ =?utf-8?B?dlZrc3E4VUxmSEtET05YTWRsUUVFbWkwem8yL084N2p0TmNMWEdkUEZ6a25h?=
+ =?utf-8?B?ZWZrZHlHNEZSYXlZOGp5eFVZME00QnY0Zjdwem9IRUZxSUNidjVDM3ZuNThm?=
+ =?utf-8?B?cmQ1QVpvUmVuc1NXRDRseDEzeExwNTBjOEp5WkEza1dEVVhzdDlmbkZqa3Yz?=
+ =?utf-8?B?SXlPRThsR3BNUUszV3dhckpXWERQckFDbDVhTVA2dC9kekcxZHltL3g4Yk1Q?=
+ =?utf-8?B?QmtlRkZTRUFhTFgxeWFvN1RrdWd3NnNVV0gyYTQrTnFjUjhHZ1RXV0FmY2sr?=
+ =?utf-8?B?SW9TamttdS9jYWNvTFpUWXNvcEZrQWd5UVdPQkVIZkYvdHBzUHYwRnFQSzA0?=
+ =?utf-8?B?Y3NVWmdSNE5zamtYTERLeFgzMEU2c2ZXcm45TWxjUEVlTGV5Q0I4N05JVUsy?=
+ =?utf-8?B?Uzc2ZStKRmZQVzJBVXlvV25tZ3JxWXNUditjWWRTKzRHVjViYXdhdkhjNmIw?=
+ =?utf-8?B?ZkxUS3RyODlzdjlzNk93UUNWNnlzczV2TUhzZEkyMWQwTVRzQlZqancxVCts?=
+ =?utf-8?B?ZG10S3lNV21hSXkvNkhhQndsMGNPaE43bVAxaGNrY294SG5TKzhoZFpETmlh?=
+ =?utf-8?B?YVRRdHJNVUh5M0VyUzhFenlzZXRHd3VLbVY0NmFNMm03UlpIR1ZwZDNiTE50?=
+ =?utf-8?B?U1J2ZWZJd0ZQUGZFd3BrQytPRXcvNnhndHF4MVJmcDlYWTVLRnRKL0tKMWpm?=
+ =?utf-8?B?UFNOLzM5N1hCWm9PclRBcCswQ2NUMnlIK3ZQQUdZa21nZjM1NVN4MTJZczBu?=
+ =?utf-8?B?cVJTRHZoamI0eUpsUDM0c0NqNnU3TzJyMUJQdGdxRFBsblZ4aUErZ0c0Tzlp?=
+ =?utf-8?B?Z2tweGZQM3BldHp4aW5QT1pnMWwzL3A0THRpNTViYW91UTJraVJNSlVwcE5j?=
+ =?utf-8?B?VUZDa2RrU3Y2UlJqRVZZdW9VcUt2VWd0bTBsbmpKckY0WFVrS2xTWkp1U3BV?=
+ =?utf-8?B?akVKV2sxUmQ2UDFuWWMzankyTnBWSXZvSG5kRkFndHBpR3lyNlFvenErcUkz?=
+ =?utf-8?B?WmhWL2dic0VpMUF4ZkZFRzk0bjBoc090MExGdDZjQXdEaXBSQmo1OEQ0VGxo?=
+ =?utf-8?B?QXNaeFRpRzVUV1NLVjhRVWFpclpHVEN6Q1RUVmVmU3VVYzM0bThWaEJJeGUv?=
+ =?utf-8?Q?mFKxGSFBlKBUd3G0=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	aSuOQnOZ75kKwD9BizQUXEPsx72u4gd6R8btCsNj6eURkH1MK7Sk13Bxujc6zKlDYUe57lhVcz4L6xKeVh2tamPAy7XzMq1SKINZT9AF125ogfkSvdBpZXI/pO9RNoWzSce2UdqeC/9C+VTPda3oK/cpz8HaEOpzR2pJEddkBjsuFxqmnIkjc6+aJhix2R57MN4SnO7JRVsCQTNvLVw2Kgr4BBS6tniRtT4ueCq0ZfdtboEnCuxvB4m63iAPIfLGT6i8SJsL+ym0K9pQwTv46xZMXte+TAjfQltwju0shbr1nyeM7IKoUROR5tJVsCF41qn95/frDL59IGPgcGDgfNDJWdicL4oawqfLHqUk59gMmzEpVtyAfBIk2tqFMsySDR62TTfhOML5sBQ1BH1tpo2965HaEupi/1WB2dFv2jC1nL3ycWGHcfhpH0PIpXE4svgwVedSTV/ybmujnM2It5NvDTq+gKif+bK0or1eqvpsRBk/Q//K14ttKvuSv3Ct7Z/rHSsJqw9OqBFihowRijZoxxQjpMRHdbT0Ky+SwkoGi9kGzXY8N9l233UmpHJWlcqG05IdLtw9+x7hWZktSepp9e070K2H4ph61uZAFxE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f34b2a41-1b77-4d27-3dc4-08de6d6eed4a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CPUPR80MB8171.lamprd80.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4affd79-99d1-4be5-ad31-08de6d6eaa08
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2026 15:18:39.9427
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 15:20:33.1077
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CPWPR80MB7169
-X-Rspamd-Queue-Id: 30E38140005
-X-Stat-Signature: wf1j3ghf8qmep9uki7f8eyk5e65zm491
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Wx7nbhfTOOyk5YrhjVGoCj60/sgE0HXtYvjHV/n+OE4/M7rRdrXbtNNSFmYZ4iqCjHMkVhZAZj5jNbVnZ/45fHHHbUJVaZ2vo2NovsLIwcE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4782
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-16_04,2026-02-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2601150000 definitions=main-2602160130
+X-Proofpoint-GUID: XIuZJv5VnLQkvSeBw0ySgVLhJx7ooD1q
+X-Proofpoint-ORIG-GUID: XIuZJv5VnLQkvSeBw0ySgVLhJx7ooD1q
+X-Authority-Analysis: v=2.4 cv=JO82csKb c=1 sm=1 tr=0 ts=699335c9 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=yPCof4ZbAAAA:8
+ a=SRrdq9N9AAAA:8 a=20KFwNOVAAAA:8 a=S7gJEkJEHN-xwhIT7fUA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:13801
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE2MDEzMCBTYWx0ZWRfXzHU0zXymLZ9d
+ O6hHeVi+/o1+z2XT1HpxEJe+QTA9QrIpbc2PSDTSf6i8w+BFOOYFWDwiCXFfhrDUcxKHkzlfmPC
+ /EVpR4NShhYuixXNA9oaKjVcKBUbbRLi8Kj8SAWdifOx8Lk6FkDDAL/6hBKoBEv5ZVRBSIGyg3A
+ +8km/2OilXdUujenRjoJx5L7MyVlTAQ70cGRfN5phd3Fk87Gh5voVzoYs3Mvhqois0QPgEv98oh
+ qwJtTEH4T+5RFlUKb0xqheyOBYvpe459b0AXhc8FwUnzIk66nkHSe+tsM2SvHL1pzzZLm13wXlU
+ /Q5UmNdrQKfm4XyDjh8h6mKxpNxO+g8YiPfCoPWwfQrLoVkVLM25T/MVdLeY+2DKBICU3qCdm02
+ q/fkWnCk5wXSNNLFPYgkP6phs30rCooGD37zKyk/egyFC/xlckvHEtiGZlLo2yy5KnLEQUqKkAd
+ RPsUOkC6ZjgnxRHsqtZzsNs6Crqo0zL+boAiHK2M=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 802E740016
+X-Stat-Signature: hh5anbggx8s4wmyq8eu7yeoep6utmwr4
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771255123-452133
-X-HE-Meta: U2FsdGVkX1847XO1JIwVA/TqATLArFEKuOiJypLlx4Vv8u8GPGdC4ksoeRNmemLx3HTDkGraJwN8e49ilmRXkKFIzbqsvb1kLgvLER7Wd34+2VRVAbms40y3jX0nojHzOh+AgsYpIFtc+tVDaQAgGbvOPreBKXrqMS8K35YIZgvmKG3RtJlAngb0bCh+1dge4uEoz814QOcUhBocFRNNDQ70MgeA6cW50tbYizs6HcY2sz2pR7nirhpSP1tvHNCdIgFi+6KyFgHSnfNO0X+UVyAVxwSW/HlrXq9BFbL7IrZ1Gsx076N6yjVzwFkGI/JU7sv+tSB8ae4KwGgRYJ83vk8F6zuLDeMtPEYWAy5DlQUkjZ8U9tIZc+z9CU+ZYxvWMOxRqhOQ2qoN9+3YpHg7Fk/DPdxqo5t53XTw0BHxxWhhnotIizFvmAUFzsoWg5RWdzrA56rrudutTOCfAUtFRjw4WgD311rJyOdGvYQduXoubEoY/a35C0iK5sEKR8Tl1dcmxQZxXxOAhciRpYa0SMZFy27pUDJ/G9/8J79SK00nPxa7/ww7J52eOP/mZBWZhLoLxvRFSgMvEbUDEkHE38pE/Zwugng+hssoQi55p65AKI7g+Kwp5SpJEllA+UwwZ6d8ihrZDGKnfKgB6eWMqOz4bgLaUlpe3eqdYWQK/w035oexJ4wDOoNq/uJKFRzUdLjxjabOYvWbKcAvxFN73BTHDVnfGTIV7NGCMHOSJl4on1Pd7aUaUBrpx3xZsH7dLfAMIxdQxqG/uBS4ErfdktdTerb921iqeB9qdbpYcQWZKvNf+qVFXe82NEaY5ZJDjBSE5Wb1vRTO5wWrcisVz45kDlNxBmfl68ZGhJEyWru7bgeahdOhe35VWzlqDz3U1AcGfGV9jNU4H16pRFUmWxrmIYtzNXyFnCMORHb4o2/Ay20ifUuNDxKPBqcVbOLoffX1rRTF+bK6DKLS+vH
- COIqkdu8
- 31SrSKNALnc0SPuUjAYybrg+KqPJYFsmclXFn3bM743YmE9cx5s5wNdxV02W4Yu9CYRu3OmCLSs0woWN1v18AhOk9f7NBZ1MJuDmL2Z9whOD5UIyHgQ0r8v28tg5HX2w9NziOA+sNZsWKcjAbDsRnta/4+cil/Ossknp5MCiQqfXcTaz3KKsOZLls4AZza1JY9i/aLBfyVPg+8vL4WezYLEKr3jZ7uGCWpsoz1PXaMr5maDwy1R04/18G+dN2bDem2kwSA+n6/zEm0zOQEI0U+1u/NL37O6F1Z76pDA5FSlVery7icZRCrsi1eTlXc2LGExYePYUyNcy2iZdOHbKhIeKUml72TLVpKXETJLX84xwLvFya9ePFZLSALSglo18iRJ8FSKYZJlXNu0/Bu1kMZSegmXjIlM0v6kH+OTcv0wAlHZLWp7RC1MseBy2+vhCWGuHw1n1JaCnNI8xRiq83EOBzHqRqgVZZkb7K5DrtzK8hxg2W7FX+8iAEkW7Z0EBcmO0GORZGGTd5x2pKA15a294Pi2W//1yEt65Tf2yVadnmbP2US5xDezK8N5UI0eJb+OQLn1Mzay8gHhG6TNSWiH8Nr/bCguhAOiMKn6sD0zoVxIOECzQQkwRVIjQbord+q1vYxbeGA+Xb2JQJNCICj0kCd7ErMc9OMbGU/1nwECRtNDVWofA7hJIZ+aYJsPKtXzzo
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000669, version=1.2.4
+X-HE-Tag: 1771255265-928081
+X-HE-Meta: U2FsdGVkX185eiQnvK4a8bi1BIdhBIjpD37BCPCaoSR8kK2dnHmmqHsyKNB1c7NIvjLIz6dAeo6wKXkfiErwX0rQQetgdlIDZ/+Lp9/OuupFVV/QP39arYKJszb5XHkh+RF37Br+MwSvwhAfReZjzW7dkPXb+QND/r8b0hr3mNTqIgfWAdAvT+6Gn/ff9EWESIrxrTf2Lc3po9pZhG8D8Y0ikvrdZCm23GJge3k303Lwjz/U5vX4Lk8cptcgDGMUwyg2ttFmEuoC60BAIJMeEgjTS1AYkcARmT+EjxLHn4gqy2qzUER5k5I2t9JpPIiNnz0qGWi3n5NWk6ziNIveWPCNRihmx+N9eeC58dKtSxhtM3xxV8XZDMQ10Lfyqmm4SugEIh33TffBMXQwi9PhHhI2J6XOL6MYPjUB4CQko/y1GAvfK4DyrE2pawMh1YVuytIFVPVLJhqwueM9OuhFHTQ6A6I5MH6AByKfs7KPGMLiZjl/+nJbMqqqKozNCySgNPMq0EKHuRfYmx01jfVHZ8F4f+vYtv4Q/NmuR9/HlBDzhcPaQg6EoTiUNcw6rIRlL8+AypNfbz17SDH9nGf2vfBjfl3Muoy7U/7+Xy4uz7o5YCmz44/t3CdPh6yV9h9R3N9fi9xv/EjlnmNkhS6WINTQU0Spxp9amOi6HnGLQ8el5+8iyWlt8f94imcJXbMT2O32dNecCDNU8cRUXHc5m1ddPZnexzHqGC61SKPbxhI8BRHDwgi6L0MdROl8jxukLxbwqAfw0Nc1jGRzoRYxPS1bfb9IcXml9pmDMmjvedMvWyCOn7o7yCNZpTspOa0GU97MMY/n79/PYEOcKNksl8bvlS9SNkst/TW0Ns6upCb6K0xqVdVUrjxvP6cHkF1gRnj7ima7yxiFyNsE6nTmn3U2cB5nwZwzAj3+w85LNwVtDRXJMsaC300l301wnoiRsxxt7naKv2i6qU6+pEE
+ GM/+RkeT
+ bIy00UREWougmCsOmaCSY1tj8tmuzTIYa6cGoNyIai0QAp2soo8rmJGkJjTdCmLVk1apTvrs+8hTC3PlagP4bEtDhE6C8EOe9/e1Xujhcob3IEdFniUlyDfd43V5sKHVndj352wYMRaNMy81QnFZKLHwyEOiNbfjLkYNn
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,441 +283,337 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Feb 04, 2026 at 03:00:57PM -0700, Nico Pache wrote:
+> On Tue, Feb 3, 2026 at 6:13 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+> >
+> > On Thu, Jan 22, 2026 at 12:28:33PM -0700, Nico Pache wrote:
+> > > Pass an order and offset to collapse_huge_page to support collapsing anon
+> > > memory to arbitrary orders within a PMD. order indicates what mTHP size we
+> > > are attempting to collapse to, and offset indicates were in the PMD to
+> > > start the collapse attempt.
+> > >
+> > > For non-PMD collapse we must leave the anon VMA write locked until after
+> > > we collapse the mTHP-- in the PMD case all the pages are isolated, but in
+> > > the mTHP case this is not true, and we must keep the lock to prevent
+> > > changes to the VMA from occurring.
+> > >
+> > > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > > Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > > Signed-off-by: Nico Pache <npache@redhat.com>
+> > > ---
+> > >  mm/khugepaged.c | 111 +++++++++++++++++++++++++++++++-----------------
+> > >  1 file changed, 71 insertions(+), 40 deletions(-)
+> > >
+> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > index 9b7e05827749..76cb17243793 100644
+> > > --- a/mm/khugepaged.c
+> > > +++ b/mm/khugepaged.c
+> > > @@ -1151,44 +1151,54 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+> > >       return SCAN_SUCCEED;
+> > >  }
+> > >
+> > > -static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
+> > > -             int referenced, int unmapped, struct collapse_control *cc)
+> > > +static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
+> > > +             int referenced, int unmapped, struct collapse_control *cc,
+> > > +             bool *mmap_locked, unsigned int order)
+> > >  {
+> > >       LIST_HEAD(compound_pagelist);
+> > >       pmd_t *pmd, _pmd;
+> > > -     pte_t *pte;
+> > > +     pte_t *pte = NULL;
+> > >       pgtable_t pgtable;
+> > >       struct folio *folio;
+> > >       spinlock_t *pmd_ptl, *pte_ptl;
+> > >       enum scan_result result = SCAN_FAIL;
+> > >       struct vm_area_struct *vma;
+> > >       struct mmu_notifier_range range;
+> > > +     bool anon_vma_locked = false;
+> > > +     const unsigned long nr_pages = 1UL << order;
+> > > +     const unsigned long pmd_address = start_addr & HPAGE_PMD_MASK;
+> > >
+> > > -     VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+> > > +     VM_WARN_ON_ONCE(pmd_address & ~HPAGE_PMD_MASK);
+> > >
+> > >       /*
+> > >        * Before allocating the hugepage, release the mmap_lock read lock.
+> > >        * The allocation can take potentially a long time if it involves
+> > >        * sync compaction, and we do not need to hold the mmap_lock during
+> > >        * that. We will recheck the vma after taking it again in write mode.
+> > > +      * If collapsing mTHPs we may have already released the read_lock.
+> > >        */
+> > > -     mmap_read_unlock(mm);
+> > > +     if (*mmap_locked) {
+> > > +             mmap_read_unlock(mm);
+> > > +             *mmap_locked = false;
+> > > +     }
+> > >
+> > > -     result = alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
+> > > +     result = alloc_charge_folio(&folio, mm, cc, order);
+> > >       if (result != SCAN_SUCCEED)
+> > >               goto out_nolock;
+> > >
+> > >       mmap_read_lock(mm);
+> > > -     result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+> > > -                                      HPAGE_PMD_ORDER);
+> > > +     *mmap_locked = true;
+> > > +     result = hugepage_vma_revalidate(mm, pmd_address, true, &vma, cc, order);
+> >
+> > Why would we use the PMD address here rather than the actual start address?
+>
+> The revalidation relies on the pmd_addr not the start_addr. It (only)
+> uses this to make sure the VMA is still at least PMD sized, and it
+> uses the order to validate that the target order is allowed. I left a
+> small comment about this in the revalidate function.
 
-I found a bug in damos_walk() that leaves a dangling walk_control
-pointer when called on an inactive context. The pattern is
-structurally identical to the bug fixed in commit f9132fbc2e83
-("mm/damon/core: remove call_control in inactive contexts") for
-damon_call().
+Yeah having these different addresses is a bit icky, easy to make mistakes here.
 
-## Description
+Oh how we need to refactor all of these...
 
-damos_walk() sets ctx->walk_control to point to a caller-provided
-stack-allocated control structure (core.c line 1560), then checks
-if the DAMON context is running (line 1562). If the context is
-inactive, it returns -EINVAL (line 1563) WITHOUT clearing
-ctx->walk_control back to NULL.
+>
+> >
+> > Also please add /*expect_anon=*/ before the 'true' because it's hard to
+> > understand what that references.
+>
+> ack
+>
+> >
+> > >       if (result != SCAN_SUCCEED) {
+> > >               mmap_read_unlock(mm);
+> > > +             *mmap_locked = false;
+> > >               goto out_nolock;
+> > >       }
+> > >
+> > > -     result = find_pmd_or_thp_or_none(mm, address, &pmd);
+> > > +     result = find_pmd_or_thp_or_none(mm, pmd_address, &pmd);
+> > >       if (result != SCAN_SUCCEED) {
+> > >               mmap_read_unlock(mm);
+> > > +             *mmap_locked = false;
+> > >               goto out_nolock;
+> > >       }
+> > >
+> > > @@ -1198,13 +1208,16 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > >                * released when it fails. So we jump out_nolock directly in
+> > >                * that case.  Continuing to collapse causes inconsistency.
+> > >                */
+> > > -             result = __collapse_huge_page_swapin(mm, vma, address, pmd,
+> > > -                                                  referenced, HPAGE_PMD_ORDER);
+> > > -             if (result != SCAN_SUCCEED)
+> > > +             result = __collapse_huge_page_swapin(mm, vma, start_addr, pmd,
+> > > +                                                  referenced, order);
+> > > +             if (result != SCAN_SUCCEED) {
+> > > +                     *mmap_locked = false;
+> > >                       goto out_nolock;
+> > > +             }
+> > >       }
+> > >
+> > >       mmap_read_unlock(mm);
+> > > +     *mmap_locked = false;
+> > >       /*
+> > >        * Prevent all access to pagetables with the exception of
+> > >        * gup_fast later handled by the ptep_clear_flush and the VM
+> > > @@ -1214,20 +1227,20 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > >        * mmap_lock.
+> > >        */
+> > >       mmap_write_lock(mm);
+> > > -     result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
+> > > -                                      HPAGE_PMD_ORDER);
+> > > +     result = hugepage_vma_revalidate(mm, pmd_address, true, &vma, cc, order);
+> > >       if (result != SCAN_SUCCEED)
+> > >               goto out_up_write;
+> > >       /* check if the pmd is still valid */
+> > >       vma_start_write(vma);
+> > > -     result = check_pmd_still_valid(mm, address, pmd);
+> > > +     result = check_pmd_still_valid(mm, pmd_address, pmd);
+> > >       if (result != SCAN_SUCCEED)
+> > >               goto out_up_write;
+> > >
+> > >       anon_vma_lock_write(vma->anon_vma);
+> > > +     anon_vma_locked = true;
+> > >
+> > > -     mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
+> > > -                             address + HPAGE_PMD_SIZE);
+> > > +     mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, start_addr,
+> > > +                             start_addr + (PAGE_SIZE << order));
+> > >       mmu_notifier_invalidate_range_start(&range);
+> > >
+> > >       pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
+> > > @@ -1239,24 +1252,21 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > >        * Parallel GUP-fast is fine since GUP-fast will back off when
+> > >        * it detects PMD is changed.
+> > >        */
+> > > -     _pmd = pmdp_collapse_flush(vma, address, pmd);
+> > > +     _pmd = pmdp_collapse_flush(vma, pmd_address, pmd);
+> > >       spin_unlock(pmd_ptl);
+> > >       mmu_notifier_invalidate_range_end(&range);
+> > >       tlb_remove_table_sync_one();
+> > >
+> > > -     pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+> > > +     pte = pte_offset_map_lock(mm, &_pmd, start_addr, &pte_ptl);
+> > >       if (pte) {
+> > > -             result = __collapse_huge_page_isolate(vma, address, pte, cc,
+> > > -                                                   HPAGE_PMD_ORDER,
+> > > -                                                   &compound_pagelist);
+> > > +             result = __collapse_huge_page_isolate(vma, start_addr, pte, cc,
+> > > +                                                   order, &compound_pagelist);
+> > >               spin_unlock(pte_ptl);
+> > >       } else {
+> > >               result = SCAN_NO_PTE_TABLE;
+> > >       }
+> > >
+> > >       if (unlikely(result != SCAN_SUCCEED)) {
+> > > -             if (pte)
+> > > -                     pte_unmap(pte);
+> > >               spin_lock(pmd_ptl);
+> > >               BUG_ON(!pmd_none(*pmd));
+> > >               /*
+> > > @@ -1266,21 +1276,21 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > >                */
+> > >               pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> > >               spin_unlock(pmd_ptl);
+> > > -             anon_vma_unlock_write(vma->anon_vma);
+> > >               goto out_up_write;
+> > >       }
+> > >
+> > >       /*
+> > > -      * All pages are isolated and locked so anon_vma rmap
+> > > -      * can't run anymore.
+> > > +      * For PMD collapse all pages are isolated and locked so anon_vma
+> > > +      * rmap can't run anymore. For mTHP collapse we must hold the lock
+> > >        */
+> > > -     anon_vma_unlock_write(vma->anon_vma);
+> > > +     if (is_pmd_order(order)) {
+> > > +             anon_vma_unlock_write(vma->anon_vma);
+> > > +             anon_vma_locked = false;
+> > > +     }
+> > >
+> > >       result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+> > > -                                        vma, address, pte_ptl,
+> > > -                                        HPAGE_PMD_ORDER,
+> > > -                                        &compound_pagelist);
+> > > -     pte_unmap(pte);
+> > > +                                        vma, start_addr, pte_ptl,
+> > > +                                        order, &compound_pagelist);
+> > >       if (unlikely(result != SCAN_SUCCEED))
+> > >               goto out_up_write;
+> > >
+> > > @@ -1290,20 +1300,42 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > >        * write.
+> > >        */
+> > >       __folio_mark_uptodate(folio);
+> > > -     pgtable = pmd_pgtable(_pmd);
+> > > +     if (is_pmd_order(order)) { /* PMD collapse */
+> > > +             pgtable = pmd_pgtable(_pmd);
+> > >
+> > > -     spin_lock(pmd_ptl);
+> > > -     BUG_ON(!pmd_none(*pmd));
+> > > -     pgtable_trans_huge_deposit(mm, pmd, pgtable);
+> > > -     map_anon_folio_pmd_nopf(folio, pmd, vma, address);
+> > > +             spin_lock(pmd_ptl);
+> > > +             WARN_ON_ONCE(!pmd_none(*pmd));
+> > > +             pgtable_trans_huge_deposit(mm, pmd, pgtable);
+> > > +             map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_address);
+> > > +     } else { /* mTHP collapse */
+> > > +             pte_t mthp_pte = mk_pte(folio_page(folio, 0), vma->vm_page_prot);
+> > > +
+> > > +             mthp_pte = maybe_mkwrite(pte_mkdirty(mthp_pte), vma);
+> > > +             spin_lock(pmd_ptl);
+> > > +             WARN_ON_ONCE(!pmd_none(*pmd));
+> > > +             folio_ref_add(folio, nr_pages - 1);
+> > > +             folio_add_new_anon_rmap(folio, vma, start_addr, RMAP_EXCLUSIVE);
+> > > +             folio_add_lru_vma(folio, vma);
+> > > +             set_ptes(vma->vm_mm, start_addr, pte, mthp_pte, nr_pages);
+> > > +             update_mmu_cache_range(NULL, vma, start_addr, pte, nr_pages);
+> > > +
+> > > +             smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
+> > > +             pmd_populate(mm, pmd, pmd_pgtable(_pmd));
+> >
+> > I seriously hate this being open-coded, can we separate it out into another
+> > function?
+>
+> Yeah I think we've discussed this before. I started to generalize
+> this, and apply it to other parts of the kernel that maintain a
+> similar pattern, but each potential user of the helper was slightly
+> different in its approach and I was unable to find a quick solution to
+> make it apply to all. I think it will require a lot more thought to
+> cleanly refactor this. I figured I could leave this to the later
+> cleanup work, or I could just create a static function just for
+> khugepaged for now?
 
-This leaves a dangling pointer. Subsequent damos_walk() calls see
-the non-NULL stale pointer and return -EBUSY, permanently locking
-the DAMOS tried_regions interface.
+Yeah let's at least separate it out for this logic anyway.
 
-## Affected versions
+Really we should have done the refactoring in advance of these changes, but that
+ship has sailed :)
 
-Introduced in: commit bf0eaba0ff9c ("mm/damon/core: implement damos_walk()"=
-)
-First affected release: v6.14-rc1
-Affected stable releases: v6.14, v6.15, v6.16, v6.17, v6.18, v6.19
-Tested on: 6.19.0 (commit ca4ee40bf13d, QEMU/KVM x86_64)
-Current mainline: UNFIXED
+>
+> >
+> > > +     }
+> > >       spin_unlock(pmd_ptl);
+> > >
+> > >       folio = NULL;
+> > >
+> > >       result = SCAN_SUCCEED;
+> > >  out_up_write:
+> > > +     if (anon_vma_locked)
+> > > +             anon_vma_unlock_write(vma->anon_vma);
+> >
+> > Thanks it's much better tracking this specifically.
+> >
+> > The whole damn thing needs refactoring (by this I mean - khugepaged and really
+> > THP in general to be clear :) but it's not your fault.
+>
+> Yeah it has not been the prettiest code to try and understand/work on!
 
-## Reproduction (confirmed on 6.19.0, CONFIG_DAMON=3Dy CONFIG_DAMON_SYSFS=
-=3Dy)
+:)
 
-  DAMON=3D/sys/kernel/mm/damon/admin/kdamonds
+>
+> >
+> > Could I ask though whether you might help out with some cleanups after this
+> > lands :)
+> >
+> > I feel like we all need to do our bit to pay down some technical debt!
+>
+>
+> Yes ofc! I had already planned on doing so. I have some in mind, and I
+> believe others have already tackled some. After this land, let's
+> discuss further plans (discussion thread or THP meeting).
 
-  # Setup context with scheme
-  echo 1 > $DAMON/nr_kdamonds
-  echo 1 > $DAMON/0/contexts/nr_contexts
-  echo vaddr > $DAMON/0/contexts/0/operations
-  echo 1 > $DAMON/0/contexts/0/targets/nr_targets
-  echo $$ > $DAMON/0/contexts/0/targets/0/pid_target
-  echo 1 > $DAMON/0/contexts/0/schemes/nr_schemes
-  echo stat > $DAMON/0/contexts/0/schemes/0/action
+Yeah, I'll get that TODO list discussed in meeting shared soon...
 
-  # Start then stop (ctx stays allocated per sysfs design)
-  echo on > $DAMON/0/state
-  sleep 1
-  echo off > $DAMON/0/state
-  sleep 1
+>
+> Cheers,
+> -- Nico
+>
+> >
+> > > +     if (pte)
+> > > +             pte_unmap(pte);
+> > >       mmap_write_unlock(mm);
+> > > +     *mmap_locked = false;
+> > >  out_nolock:
+> > > +     WARN_ON_ONCE(*mmap_locked);
+> > >       if (folio)
+> > >               folio_put(folio);
+> > >       trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result);
+> > > @@ -1471,9 +1503,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+> > >       pte_unmap_unlock(pte, ptl);
+> > >       if (result == SCAN_SUCCEED) {
+> > >               result = collapse_huge_page(mm, start_addr, referenced,
+> > > -                                         unmapped, cc);
+> > > -             /* collapse_huge_page will return with the mmap_lock released */
+> > > -             *mmap_locked = false;
+> > > +                                         unmapped, cc, mmap_locked,
+> > > +                                         HPAGE_PMD_ORDER);
+> > >       }
+> > >  out:
+> > >       trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
+> > > --
+> > > 2.52.0
+> > >
+> >
+> > Cheers, Lorenzo
+> >
+>
 
-  # Trigger bug: damos_walk() on inactive context
-  echo "update_schemes_tried_regions" > $DAMON/0/state
-  # Returns -EINVAL, walk_control left dangling
-
-  # Confirm: second call gets -EBUSY (dangling pointer !=3D NULL)
-  echo "update_schemes_tried_regions" > $DAMON/0/state
-  # Returns -EBUSY -- interface permanently locked
-
-## Tested output
-
-  First call:  -EINVAL (Invalid argument)
-  Second call: -EBUSY (Device or resource busy) <-- BUG confirmed
-
-## Root cause
-
-Commit bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-introduced this function without cleanup on the -EINVAL error path.
-
-The sibling function damon_call() had the exact same bug and was
-fixed in f9132fbc2e83 by adding damon_call_handle_inactive_ctx()
-which removes the control object when the context is inactive.
-damos_walk() has no equivalent cleanup.
-
-## Impact
-
-1. PERMANENT LOCKUP DOS: After on->off->update_schemes_tried_regions,
-   all future tried_regions queries return -EBUSY forever until
-   the DAMON context is destroyed.
-
-2. DANGLING POINTER: ctx->walk_control points to freed stack memory.
-   The struct damos_walk_control contains a function pointer
-   (walk_fn). If any DAMON API consumer reuses the same ctx after
-   damos_walk() returns -EINVAL and kdamond is restarted, it would
-   dereference the dangling pointer in damos_walk_call_walk()
-   (which calls control->walk_fn) or damos_walk_cancel().
-
-Reported-by: Raul Pazem=E9cxas <raul_pazemecxas@hotmail.com>
-
-Best regards,
-Raul
-
---_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);">
-<span class=3D"elementToProof">I found a bug in damos_walk() that leaves a =
-dangling walk_control</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">pointer when called on an inactive context. =
-The pattern is</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">structurally identical to the bug fixed in c=
-ommit f9132fbc2e83</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">(&quot;mm/damon/core: remove call_control in=
- inactive contexts&quot;) for</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">damon_call().</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">## Description</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">damos_walk() sets ctx-&gt;walk_control to po=
-int to a caller-provided</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">stack-allocated control structure (core.c li=
-ne 1560), then checks</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">if the DAMON context is running (line 1562).=
- If the context is</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">inactive, it returns -EINVAL (line 1563) WIT=
-HOUT clearing</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">ctx-&gt;walk_control back to NULL.</span></d=
-iv>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">This leaves a dangling pointer. Subsequent d=
-amos_walk() calls see</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">the non-NULL stale pointer and return -EBUSY=
-, permanently locking</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">the DAMOS tried_regions interface.</span></d=
-iv>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">## Affected versions</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Introduced in: commit bf0eaba0ff9c (&quot;mm=
-/damon/core: implement damos_walk()&quot;)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">First affected release: v6.14-rc1</span></di=
-v>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Affected stable releases: v6.14, v6.15, v6.1=
-6, v6.17, v6.18, v6.19</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Tested on: 6.19.0 (commit ca4ee40bf13d, QEMU=
-/KVM x86_64)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Current mainline: UNFIXED</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">## Reproduction (confirmed on 6.19.0, CONFIG=
-_DAMON=3Dy CONFIG_DAMON_SYSFS=3Dy)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; DAMON=3D/sys/kernel/mm/damon/admin/kd=
-amonds</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; # Setup context with scheme</span></d=
-iv>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/nr_kdamonds</span>=
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/0/contexts/nr_cont=
-exts</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo vaddr &gt; $DAMON/0/contexts/0/o=
-perations</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/0/contexts/0/targe=
-ts/nr_targets</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo $$ &gt; $DAMON/0/contexts/0/targ=
-ets/0/pid_target</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo 1 &gt; $DAMON/0/contexts/0/schem=
-es/nr_schemes</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo stat &gt; $DAMON/0/contexts/0/sc=
-hemes/0/action</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; # Start then stop (ctx stays allocate=
-d per sysfs design)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo on &gt; $DAMON/0/state</span></d=
-iv>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; sleep 1</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo off &gt; $DAMON/0/state</span></=
-div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; sleep 1</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; # Trigger bug: damos_walk() on inacti=
-ve context</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo &quot;update_schemes_tried_regio=
-ns&quot; &gt; $DAMON/0/state</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; # Returns -EINVAL, walk_control left =
-dangling</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; # Confirm: second call gets -EBUSY (d=
-angling pointer !=3D NULL)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; echo &quot;update_schemes_tried_regio=
-ns&quot; &gt; $DAMON/0/state</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; # Returns -EBUSY -- interface permane=
-ntly locked</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">## Tested output</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; First call: &nbsp;-EINVAL (Invalid ar=
-gument)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; Second call: -EBUSY (Device or resour=
-ce busy) &lt;-- BUG confirmed</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">## Root cause</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Commit bf0eaba0ff9c (&quot;mm/damon/core: im=
-plement damos_walk()&quot;)</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">introduced this function without cleanup on =
-the -EINVAL error path.</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">The sibling function damon_call() had the ex=
-act same bug and was</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">fixed in f9132fbc2e83 by adding damon_call_h=
-andle_inactive_ctx()</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">which removes the control object when the co=
-ntext is inactive.</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">damos_walk() has no equivalent cleanup.</spa=
-n></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">## Impact</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">1. PERMANENT LOCKUP DOS: After on-&gt;off-&g=
-t;update_schemes_tried_regions,</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;all future tried_regions querie=
-s return -EBUSY forever until</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;the DAMON context is destroyed.=
-</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">2. DANGLING POINTER: ctx-&gt;walk_control po=
-ints to freed stack memory.</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;The struct damos_walk_control c=
-ontains a function pointer</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;(walk_fn). If any DAMON API con=
-sumer reuses the same ctx after</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;damos_walk() returns -EINVAL an=
-d kdamond is restarted, it would</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;dereference the dangling pointe=
-r in damos_walk_call_walk()</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">&nbsp; &nbsp;(which calls control-&gt;walk_f=
-n) or damos_walk_cancel().</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Reported-by: Raul Pazem=E9cxas &lt;raul_paze=
-mecxas@hotmail.com&gt;</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Best regards,</span></div>
-<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
- color: rgb(0, 0, 0);" class=3D"elementToProof">
-<span class=3D"elementToProof">Raul</span></div>
-</body>
-</html>
-
---_000_CPUPR80MB817114F8F409F0293D3799C1956CACPUPR80MB8171lamp_--
+Cheers, Lorenzo
 
