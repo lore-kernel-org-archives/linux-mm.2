@@ -4,80 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93C6EE81A3A
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374A8E81A3B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 15:33:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F278D6B0088; Mon, 16 Feb 2026 10:29:27 -0500 (EST)
+	id 915106B0005; Mon, 16 Feb 2026 10:33:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED12F6B0089; Mon, 16 Feb 2026 10:29:27 -0500 (EST)
+	id 8C3986B0089; Mon, 16 Feb 2026 10:33:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E14CC6B008A; Mon, 16 Feb 2026 10:29:27 -0500 (EST)
+	id 7A4856B008A; Mon, 16 Feb 2026 10:33:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD64C6B0088
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:29:27 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B6CA1D047
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:29:27 +0000 (UTC)
-X-FDA: 84450703974.09.FF26499
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 63A882000C
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:29:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 65D046B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:33:21 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 316E41A0E47
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:33:21 +0000 (UTC)
+X-FDA: 84450713802.18.82FB32E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 27EF880003
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:33:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tiHc5c5U;
+	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771255765;
+	s=arc-20220608; t=1771255999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QyU/1yqbDTt+Tsm+4EXpZVbrSAOuHNabjPfri/+S+fY=;
-	b=jfaGuWqmK9SeXrSWM75bXQZS12KZLCSGG3bH1tdPigdNnVd6DP03kpMNs2kjyY/LzvtOIA
-	9vaYQ2gaalUZ95wx4mZS0rzrAHNFP+5r8XrQvsmR7j3dlYgRz5XDcOeo9vKxZONUD5QGJd
-	Gds3lCpznBV0yTzNyLZKAXSKV+35XRU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771255766; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DhBp4IB0DC7b+knYSxdPVW3d2+tIm/+0Qq5oq8wnDcI=;
+	b=fFG8xXN+01NJR++GqiXDE5/LfeOZAdGJHA2DQtmy6rZyEOK8FQg2PnFY0lZILenmo+2ZXt
+	W2T9ay7brgc97+uC3umTDE0D+RiPJjlTbj7n7lwvfzqiScz6rCy3ZhUOmnR9jjhi54Msrd
+	4pVy2Gc37VfBv+EbEH3to+dsAz/5NII=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771255999; a=rsa-sha256;
 	cv=none;
-	b=pNsPe1qwpR5nkrGO7wCK+AXozXb5+S1yGqkBpXnqS6NFHSuuLCrE8IxdeJFF6oam+Q7fF8
-	Umiurs1FBP9AvJrpEzm80Qpyhi/h+5NR7PjsfXwmgpTJrJMVb5DuMD34KodTyUg0k7i1Bg
-	/PQS2zIu/wdfIiL9EnfNJqcVbiGEzIE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C379C1576;
-	Mon, 16 Feb 2026 07:29:17 -0800 (PST)
-Received: from [10.163.134.253] (unknown [10.163.134.253])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D34753F632;
-	Mon, 16 Feb 2026 07:29:20 -0800 (PST)
-Message-ID: <89606308-3c03-4dcf-a89d-479258b710e4@arm.com>
-Date: Mon, 16 Feb 2026 20:59:17 +0530
+	b=sx3PsgJblZuEoqxZdOskTSCGZxVTA4xa7mQTRXI53lSq/1D7uuorySzR0XwV8THwv6CgFp
+	jquFGnii60muRZQPCuELiqUXWptLy02LzJoj8/Mugj0P6tW2YZFdhtvwHLJgVR2QGGcHvh
+	scU7V3rm5CEe4l2Q14REaUQO6qnoRro=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tiHc5c5U;
+	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EFF4B4444A
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:33:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA4FC2BC86;
+	Mon, 16 Feb 2026 15:33:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771255997;
+	bh=B/smNXNw4Eq3KyVVAhvZJb6xNJh9+uHMcx2/WDqg4cU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tiHc5c5UzYvP4Afd3mNQvDVeGkRHIRwpNvmVOits7L0jLKOGrN8EBwCK9j4kzpusL
+	 G9UDAkoiCs6xQMp09NU6Fks7ZW5w9wSmYYDleIM4H28GQwPCYCQZjs5IYI030NgPRn
+	 XMXwg5Kqn5pHMZK613d9xelr7fz1Jbl0vAbrgvt9jysDChCtyVvvloytszftUWdUyg
+	 bGtw4eYyeNuhZrV0Zi/yqqs696IF+84SqelEz/Edt4oWIMraMRS4/EmLfr8XI+qeZG
+	 MBYWIfv5MxIbQfgpV+zOBuIc30BJ4RgxEoLRu/twqsC+a/95nlqQLblgfzXVmu+sYP
+	 m2k8oqDWh27tg==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 976E5F4006A;
+	Mon, 16 Feb 2026 10:33:16 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Mon, 16 Feb 2026 10:33:16 -0500
+X-ME-Sender: <xms:vDiTacDSAOIBjjq_ukEMG__0o6a66lzpJD8v61xqxu17uQq7GCjcZA>
+    <xme:vDiTaQJDe9Z26vK3U6F42wm3anYYwUQwZptbMHgJ_7Y8yC2jHfvLuj8La44MPnVts
+    1IAG8ghrmpz7OH_rfxJa2cIIhakAIgfJ13bx6C8R71C-jTN1uPdIdr9>
+X-ME-Received: <xmr:vDiTaTo5SfnyISE-jaO-yLWPCQJirTd5fPIvp-0jdmQyXdrckrlJaSs5nxdxhA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudejvdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehthhhomhgrshdrlhgvnhgurggtkhihsegrmhgurdgtohhmpdhrtghpthhtoheprg
+    hruggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsg
+    hpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhu
+    gidrihhnthgvlhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehlihhnuhigqdgvfhhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
+X-ME-Proxy: <xmx:vDiTaZMgIcEVnBpvG7yVREE8T4oE-WKD7zo-QhzrhSobf_ljajXhvg>
+    <xmx:vDiTaQON3U3yuVrmO1ymreGtfhECvGTJvAHk0ICMAN309MZKfB9eWA>
+    <xmx:vDiTab2vGs-FRXwAt0FeUFFufILsPjU-s4nzWnS2Pdq5-sVvqcb4bw>
+    <xmx:vDiTaU2yqGh7bfH3c79I7qxpvI93z6rHtARiS2qmmno87060RqlDcg>
+    <xmx:vDiTaazoo1EY_uuNPJwnKTniiHC3EncdC3ckKtec1TMiCRjmj_VwqL2k>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Feb 2026 10:33:16 -0500 (EST)
+Date: Mon, 16 Feb 2026 15:33:15 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Moritz Sanft <ms@edgeless.systems>
+Subject: Re: [PATCH 2/2] efi: Align unaccepted memory range to page boundary
+Message-ID: <aZM4fYf1bam_mo9V@thinkstation>
+References: <20260213154838.46567-1-kas@kernel.org>
+ <20260213154838.46567-3-kas@kernel.org>
+ <86c040be-e91a-4d1d-a365-a3bf3772374f@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: remove HAVE_CMPXCHG_LOCAL
-To: Will Deacon <will@kernel.org>, Jisheng Zhang <jszhang@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Dennis Zhou
- <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, maz@kernel.org
-References: <20260215033944.16374-1-jszhang@kernel.org>
- <aZL46z1UZkQlF3Dd@willie-the-truck>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aZL46z1UZkQlF3Dd@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 63A882000C
-X-Stat-Signature: d1xsiic194dbf4cijf3cworr4ihrn4eq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86c040be-e91a-4d1d-a365-a3bf3772374f@amd.com>
+X-Rspamd-Queue-Id: 27EF880003
 X-Rspam-User: 
-X-HE-Tag: 1771255765-552933
-X-HE-Meta: U2FsdGVkX1/fAqwlVY3+LwpvIUDl6bUAyC/oXV6fxEIJ2IZD3Lm3myLcojoSNNH0gYiya3I3IP053OddN9ywgZ76xzzgks9O9aFr5U/Cs21FblZH9dK4jM3RG2EpK9zqHzu2TN6o9qVmb+e8K63x5BFTy3prLkCfVTu9jCsJznbRMybd6CZCWCVfv5CBbV4+/paUo43VwElR1SdKNDa3YcvtgiGDF2XkKhJ3DyBX13pctPdzeQIPY86gqir75fgizS8Fx5v1nghPhU49pxglX6b1Zk6WSiSmyHTUGxYAQ9oQJEkSmCFUkuNVbtVog8xZSSSlqXRnmtf2JBMx/h3d9VaXMgFEs0afd63boHSAFLYgBr7jg2THIQ/gAcAz/j4LTkHl6NnVSeYGi0GhM2A6UK63cDcAm8+n99vRo3bv64Z0EfgZrU2OZzfS5W8fj/FalrZN2/Qd39gkVQTlqrUg08W1ft89SfnQyqEd0EnvIrmu68wFdMtE6eKOkzAS5aQ42wT5R7OvPmgyEbOyZtsDEsPp4ikyr5VY1lU8Pxrc1yTNdmiVdTWu953dPaGLyzgDwpmhMUO6pW9dgmYV7cIH/VY7qRZNjMPNLVDsTrouPP5nQfDVa6qMZyIxfxZnbamaLkM9R8iJJoxQNO6Y1nwqPosq1mjgEPrRPckJBcivNcCCWVQz6DeYtml1C5xc9M8n6Ux3+753cWglsiMnpoc2jsa3wlvSA1GAZ05TcxhQ7wNbxl1hqwJhBFZOqlp8DdGcovxUNw10mQqza/RRDaAN1JBV0Ut4AWaCTQW3tOVFjHGg9+bPxoc8cw+PCqlWkP8yVQRVHyTuKLp83YgPONyaBgRVf8xCBsN2oUMI/nzUjk3PprswEBaAY4aNhIuPNpnic1FE3puNpe8=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: acsy96y3e6kkc4uytkp8a8upfdygwpjp
+X-HE-Tag: 1771255998-265910
+X-HE-Meta: U2FsdGVkX1/wi5N7t0g7Bk4KrazGxEzTFvEXPETkc72SqY4nBbDUSfMr9/GtsZfpCMyS+xfQMBpg/EE7a3r38wlAOipJ4jcwhXzWDT2hn/gaNmx3UPFdUAbA6kBX3ECQyiXm1/Sb5jw4K/9Qnw9SMvc9FklHJm/qx3Ovle9ro1zgWCNHnAwxvboidyKqGy6INQrYb6cBRg3Uk63iUtqMKNwPPr6RqyWBMwHAi9ZST6fdEvbpo9T/2mL7Do0LrTM0Gflx0hATq3J/YDGvZizBa5QeDDsytmodxaBpR32/mIfsBvd599g3l14dnFXIgxxXUq9yoySHGdWpBiJXSN6lGrVmzbISHMsgI3d8LmkIxtUB8e7Bub0rO7ivstdQCGQNQUJ+vst7Efgh5z4svNO0jY21FHyzsosF9SDjrZMEqsg4kmKSKyP6SUOfEWMpgYAK1bWjYO+G0gRdw+dJM5t8TsZW7V3j4WhyOSZoIcL2Ic9Riu3FSnyfWY27+stpiKZDEIF+54l5Vt5m7RNRGexVmgnuGD7dILMYT1sankhhdROW0N1RyLLQ83SwP075QFOO1q+d/8hy9AeaU14gyw2jKT5eHwP3aRa0KKXX534lGXopzGAgCFgZvRAS4c5xybTuo0QsY3UnmIFm0RFh0GRgsMzrA7jt0Qb1/Be/e/YggbyJx7UYeiNRSKgMB1bGC2nySHB9W8piN0I+s7wHs5ToHI3ntji1eiRkN5GVPeuK2EJ7gYCfR68vBfmefFYHIPm8ZSGnhUHyHitj9AXq3S2YOxaR210OUDA8TWD09fXUQUDdc69pLLnuApJsi24Hn8WqL/W5Qek7YTtcwwuc5bDYR09A9fiHoeRXjnMvHN1/yMqEdgDipcdfMj21MFoLqD441U1/h681WfnVnVwclOGZKjAenyWERhn2tRw+YUVnzFMV6d9SfT/HZ9zJLDkansrjl1wax3H4tHU4AHWy3xR
+ HYJCn8CC
+ nb5UACcW+RnCDFW4H8l17TlpFxfGvjoLvvR8jt2R1VtdBRgiWTlRQhP61b9XHtjvB3mIS2TWe50mMEAlsjL1+Cyhqm8RsCXStiEx4+wVBwcojH/sQHCJxr58bxRCzRFi+/WEjjL6RwffqngTU1DwzFpyZpa1FFYCFo3TV8nbveXM8gUTcxxt0B7TE9G3ogEcZXI0e0V/Vg1tR0cVMKhE1JFXb9Y3v8pwyOHgxjCF77rwty3sPkoA0sgE4GetEjq6se3A5WC9JxPVfW9xwHLFr0SFSI5MWQV7EBpdmSB7QVBS3C//vsrK2r9LYZvQjfHV8L8Z7DqMY8Tc0CKxOdi1/QHykXhVeBehDC0NGE6fN1XcL1cjn6GP9uFYfYw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,102 +129,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Feb 16, 2026 at 08:51:17AM -0600, Tom Lendacky wrote:
+> On 2/13/26 09:48, Kiryl Shutsemau (Meta) wrote:
+> > The accept_memory() and range_contains_unaccepted_memory() functions
+> > employ a "guard page" logic to prevent crashes with load_unaligned_zeropad().
+> > This logic extends the range to be accepted (or checked) by one unit_size
+> > if the end of the range is aligned to a unit_size boundary.
+> > 
+> > However, if the caller passes a range that is not page-aligned, the
+> > 'end' of the range might not be numerically aligned to unit_size, even
+> > if it covers the last page of a unit. This causes the "if (!(end % unit_size))"
+> > check to fail, skipping the necessary extension and leaving the next
+> > unit unaccepted, which can lead to a kernel panic when accessed by
+> > load_unaligned_zeropad().
+> > 
+> > Align the start address down and the size up to the nearest page
+> > boundary before performing the unit_size alignment check. This ensures
+> > that the guard unit is correctly added when the range effectively ends
+> > on a unit boundary.
+> > 
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > ---
+> >  drivers/firmware/efi/unaccepted_memory.c | 12 ++++++++++--
+> >  1 file changed, 10 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+> > index c2c067eff634..9ddf3dedd514 100644
+> > --- a/drivers/firmware/efi/unaccepted_memory.c
+> > +++ b/drivers/firmware/efi/unaccepted_memory.c
+> > @@ -35,14 +35,18 @@ void accept_memory(phys_addr_t start, unsigned long size)
+> >  	struct efi_unaccepted_memory *unaccepted;
+> >  	unsigned long range_start, range_end;
+> >  	struct accept_range range, *entry;
+> > -	phys_addr_t end = start + size;
+> >  	unsigned long flags;
+> > +	phys_addr_t end;
+> >  	u64 unit_size;
+> >  
+> >  	unaccepted = efi_get_unaccepted_table();
+> >  	if (!unaccepted)
+> >  		return;
+> >  
+> > +	start = PAGE_ALIGN_DOWN(start);
+> > +	size = PAGE_ALIGN(size);
+> > +	end = start + size;
+> 
+> Should this really be:
+> 
+> 	end = PAGE_ALIGN(start + size);
+> 	start = PAGE_ALIGN_DOWN(start);
+> 
+> ?
 
-On 16/02/26 4:30 pm, Will Deacon wrote:
-> On Sun, Feb 15, 2026 at 11:39:44AM +0800, Jisheng Zhang wrote:
->> It turns out the generic disable/enable irq this_cpu_cmpxchg
->> implementation is faster than LL/SC or lse implementation. Remove
->> HAVE_CMPXCHG_LOCAL for better performance on arm64.
->>
->> Tested on Quad 1.9GHZ CA55 platform:
->> average mod_node_page_state() cost decreases from 167ns to 103ns
->> the spawn (30 duration) benchmark in unixbench is improved
->> from 147494 lps to 150561 lps, improved by 2.1%
->>
->> Tested on Quad 2.1GHZ CA73 platform:
->> average mod_node_page_state() cost decreases from 113ns to 85ns
->> the spawn (30 duration) benchmark in unixbench is improved
->> from 209844 lps to 212581 lps, improved by 1.3%
->>
->> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
->> ---
->>  arch/arm64/Kconfig              |  1 -
->>  arch/arm64/include/asm/percpu.h | 24 ------------------------
->>  2 files changed, 25 deletions(-)
-> That is _entirely_ dependent on the system, so this isn't the right
-> approach. I also don't think it's something we particularly want to
-> micro-optimise to accomodate systems that suck at atomics.
+Doh! Yes, you are right.
 
-Hi Will,
-
-As I mention in the other email, the suspect is not the atomics, but
-preempt_disable(). On Apple M3, the regression reported in [1] resolves
-by removing preempt_disable/enable in _pcp_protect_return. To prove
-this another way, I disabled CONFIG_ARM64_HAS_LSE_ATOMICS and the
-regression worsened, indicating that at least on Apple M3 the
-atomics are faster.
-
-It may help to confirm this hypothesis on other hardware - perhaps
-Jisheng can test with this change on his hardware and confirm
-whether he gets the same performance improvement.
-
-By coincidence, Yang Shi has been discussing the this_cpu_* overhead
-at [2].
-
-[1] https://lore.kernel.org/all/1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com/
-[2] https://lore.kernel.org/all/CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com/
-
->
-> Will
->
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index 38dba5f7e4d2..5e7e2e65d5a5 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -205,7 +205,6 @@ config ARM64
->>  	select HAVE_EBPF_JIT
->>  	select HAVE_C_RECORDMCOUNT
->>  	select HAVE_CMPXCHG_DOUBLE
->> -	select HAVE_CMPXCHG_LOCAL
->>  	select HAVE_CONTEXT_TRACKING_USER
->>  	select HAVE_DEBUG_KMEMLEAK
->>  	select HAVE_DMA_CONTIGUOUS
->> diff --git a/arch/arm64/include/asm/percpu.h b/arch/arm64/include/asm/percpu.h
->> index b57b2bb00967..70ffe566cb4b 100644
->> --- a/arch/arm64/include/asm/percpu.h
->> +++ b/arch/arm64/include/asm/percpu.h
->> @@ -232,30 +232,6 @@ PERCPU_RET_OP(add, add, ldadd)
->>  #define this_cpu_xchg_8(pcp, val)	\
->>  	_pcp_protect_return(xchg_relaxed, pcp, val)
->>  
->> -#define this_cpu_cmpxchg_1(pcp, o, n)	\
->> -	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->> -#define this_cpu_cmpxchg_2(pcp, o, n)	\
->> -	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->> -#define this_cpu_cmpxchg_4(pcp, o, n)	\
->> -	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->> -#define this_cpu_cmpxchg_8(pcp, o, n)	\
->> -	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->> -
->> -#define this_cpu_cmpxchg64(pcp, o, n)	this_cpu_cmpxchg_8(pcp, o, n)
->> -
->> -#define this_cpu_cmpxchg128(pcp, o, n)					\
->> -({									\
->> -	typedef typeof(pcp) pcp_op_T__;					\
->> -	u128 old__, new__, ret__;					\
->> -	pcp_op_T__ *ptr__;						\
->> -	old__ = o;							\
->> -	new__ = n;							\
->> -	preempt_disable_notrace();					\
->> -	ptr__ = raw_cpu_ptr(&(pcp));					\
->> -	ret__ = cmpxchg128_local((void *)ptr__, old__, new__);		\
->> -	preempt_enable_notrace();					\
->> -	ret__;								\
->> -})
->>  
->>  #ifdef __KVM_NVHE_HYPERVISOR__
->>  extern unsigned long __hyp_per_cpu_offset(unsigned int cpu);
->> -- 
->> 2.51.0
->>
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
