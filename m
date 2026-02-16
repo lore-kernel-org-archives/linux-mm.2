@@ -4,104 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51EB1EF48C9
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 08:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63704E63F3F
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 09:07:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55D0B6B0005; Mon, 16 Feb 2026 03:52:06 -0500 (EST)
+	id 82AB16B0005; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E0E16B0088; Mon, 16 Feb 2026 03:52:06 -0500 (EST)
+	id 7D89D6B0088; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EC5E6B0089; Mon, 16 Feb 2026 03:52:06 -0500 (EST)
+	id 690306B0089; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CDDA6B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 03:52:06 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAF65140BEC
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:52:05 +0000 (UTC)
-X-FDA: 84449702610.27.0FC7392
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 154E4C0007
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:52:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LQxRIMef;
-	spf=pass (imf28.hostedemail.com: domain of 3stqSaQkKCAchspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3stqSaQkKCAchspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 544F26B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDA7C160C4D
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 09:07:09 +0000 (UTC)
+X-FDA: 84449740578.18.87D1E4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3CD7CA0009
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 09:07:08 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FYvIch1U;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771231924;
+	s=arc-20220608; t=1771232828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjj5IXbObxNi606Z5qjJ0Qk+HGDfGi8eP2D19UZKb1Y=;
-	b=DXONK09FsF66cy257v0VFm7g5rr3QvQGhHWX9Su4CIUKXTBnHfliwpn3VFK3akOezSzX2c
-	cTrxY9bzwwhlpV6njE0KX1G3aVgmSrDakCvUPKRZmSmHCHvOkJUXrvmrA8oHc16a246bHl
-	U0P//88xdYwogbsx7ozqXtuxl/FSZSg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771231924; a=rsa-sha256;
-	cv=none;
-	b=YQssJ0+cQJZD/oS2sE3kq4oPt6LuhrB+xH5PnlgQFTH/EoWzmVFVGRjp6BE6SSBFz5cgF5
-	K+kieCoutCzWBlN7qFTtw70BZEZpu6ogxnTXjsZFzdUVqPH9F+yYGMQMKRyK2Wy7Vdq7fJ
-	EzCjOFUP0/jpekPtWBDZkXT/BpZi8/g=
+	bh=aaVHGjBQIzbqiGUfwMg52jVCGhg1VKrTcd8VIAf0FsQ=;
+	b=LJ/p9wYad80qxIopRxsriqDuwtF7se92cMXG7MHwj+QI7iJ9FrOb6TOtkpw47yHTf+4Dkl
+	7UQ9ZjEoKLAyL7uO4QvIyC4K4vp3sZaIUEtpzIG/9LufB7b2fsqpQRn+tcHGmemv3hDpfx
+	aVla6cnj+S+lRlRNSxthu8M/RldajqM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LQxRIMef;
-	spf=pass (imf28.hostedemail.com: domain of 3stqSaQkKCAchspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3stqSaQkKCAchspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4376ec2b1cfso2055372f8f.0
-        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 00:52:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771231922; x=1771836722; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kjj5IXbObxNi606Z5qjJ0Qk+HGDfGi8eP2D19UZKb1Y=;
-        b=LQxRIMefCZaS4WeGt3WRfo1bzCTWFV9hqVt5M+yx73gj+bnwzfS12WECbrBqgIds/I
-         mrYLc3r4Qhxzk7EaLEwfyb9OoZitm0c7KQ9anjVD+18tfMZmfNl0Qf/xeQsGN77LuBUL
-         X6L3uyIFXb+d9XR1k/+WdeXBbGvoEciaXXlAXV8lcg/HXxsG97vd324MK7m9UpIhm9WB
-         mpizQ/8jXZ8396TfBgxEawbwlHVR4OkJOg2yMxS2JHSRv+LVSqEp4069OOs535pPk2B9
-         na2jviPh9BVx84uoXUjjBPlaiJs4BAPTZVoxB7uXVkAOpNwJSweP/v6b1D0O5lm0HsT1
-         ibBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771231922; x=1771836722;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kjj5IXbObxNi606Z5qjJ0Qk+HGDfGi8eP2D19UZKb1Y=;
-        b=ZUWrAmi281+oyysitwlVk8EYshuA7rCU+8flMeipHF73Vk3A2qrNFIx4Jo6dJ7jWkj
-         jVmVMu7RCUPgIJV/MgemU2h5vCNUYaKIiPXEk2DdDgZeLkm7Jqh4nHX2sfKawAWQosPt
-         P55ZU9PCDC+6m2VeynjuVeDZ4s68hw8t77AFoflZHIWgb37EefSorFBautnHMCfV+rb6
-         ZP2MZOmGLzZXFwtr6emmgoEJiZ60QXkaTokYcEUZcDTPwflNxFzrLVXLSU8C35Fr4Vle
-         H16aLPV9pTDBPpw6Hv2kujnW1fK9G1E5j1uXtlnpKlQYsxnFNBR/bW1JYiGuaa6O/Amr
-         8Rag==
-X-Forwarded-Encrypted: i=1; AJvYcCV8iipIZHci7oeItf0OC8R3sQMazEgvIcriR70b5wQb7Gwcliu7AEovhFfXy5fg89nk2EUscWAx2A==@kvack.org
-X-Gm-Message-State: AOJu0Yycwz3eHSl0TbuIsk3paBBIpCPhP6SVks//e6qwnUyo7igaUyGO
-	IqXW+QUPDUjBY/0pEVGWeyPE9AohzApHunD+w0QYcIPK8ngSbHKl+rH5m7ehjqmMeCQQIkY5JR/
-	4YtB2j/f4LXl3IbuAXw==
-X-Received: from wrvf7.prod.google.com ([2002:a5d:5687:0:b0:436:d0e7:35fd])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:240e:b0:437:6906:8235 with SMTP id ffacd0b85a97d-4379db2576fmr11778027f8f.3.1771231922263;
- Mon, 16 Feb 2026 00:52:02 -0800 (PST)
-Date: Mon, 16 Feb 2026 08:52:01 +0000
-In-Reply-To: <20260215-page-additions-v1-1-4827790a9bc4@kernel.org>
-Mime-Version: 1.0
-References: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org> <20260215-page-additions-v1-1-4827790a9bc4@kernel.org>
-Message-ID: <aZLasQroRyhfiplu@google.com>
-Subject: Re: [PATCH 1/2] rust: page: add `SafePage` for race-free page access
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 154E4C0007
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FYvIch1U;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771232828; a=rsa-sha256;
+	cv=none;
+	b=oHd33Z349idooY6qgMrNacCTQjY9DsZrkrBf2A9Zni8HZ7gsp3QATAbWlfdUpBe95Zha+E
+	eaYNdA6cnA+BuR6sledxSBZ3rI0J4yO3dDQ5FSMtSQ62euqu5Rdt51QLpkJZlYx9OulpLM
+	YcOTe473pOegGDfTwSeN+xH9Cj7WqvQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B6DB600BB;
+	Mon, 16 Feb 2026 09:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C93C116C6;
+	Mon, 16 Feb 2026 09:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771232827;
+	bh=Pn8iMDIZmzFd3kkBcfiQHX1j0BjcMGClm/3MIGwtj78=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FYvIch1U38DwPufVNrBLBAbn0caX9A0u2fc1XTx+8xS4GM6lbSoz0aK6WztCOQhgu
+	 Vx0h8p4NW70I4RYvdbzNN3WeCbH2veDYorXEU+XuRnOO2bBGmDyuj0HdvJ0UO9NapA
+	 WMmllVlT3Sps3rZOVIgM21JGVU3rPlmkTd/PrNsaqsDBCNcKojNsZ8ARxqvwtAxRsI
+	 TgoqrGz+UUyTZMy5qOlBHvr/5o0DCg0PWIfE7yqHUeBhz0YnA2tbX9c9NMxbQZ18nI
+	 H0ZFyO/ROTLHJ/Eh3O1IjbDs9b2IQPw4FXOY0/N4Vsc9RofntPgvkSjl5odPTVBJV7
+	 RbqdaQo9YbeBw==
+Message-ID: <ec4a9a1e-8c08-4879-a787-3b9e0bc38160@kernel.org>
+Date: Mon, 16 Feb 2026 10:06:57 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv6 08/17] mm: Make page_zonenum() use head page
+To: Matthew Wilcox <willy@infradead.org>, Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260202155634.650837-1-kas@kernel.org>
+ <20260202155634.650837-9-kas@kernel.org>
+ <aZJTLwV2SaaKu1k_@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aZJTLwV2SaaKu1k_@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3CD7CA0009
+X-Stat-Signature: qw91x9xxw4ekgyrzr3k6bzb8qdpdqrdz
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: d1gn83geykf6oreg3jsd1ff4n7o1gztp
-X-HE-Tag: 1771231923-818464
-X-HE-Meta: U2FsdGVkX18NtijIYbH5P4qMsjNTOKGQak0l/L+47cj4Uq08ItNjutrWNYqRglWigSj0bWeyCOiQpbjVwOM/6ktLqwHETBD28DqK7TRFFhnR98W6lphVwIECMcgRGX3ztuj4hgRAEuVOjef+ew6zUaB0UzmmJfLp1GtoF/4/3R19Rrt1b0mcZ1Rwj5aMh0244W/yVRpb+O7XhbUK8rLNTLMVg1C6I2TnviQZbYh7du+ZbceVQGWakkKLJuZUMtDailT+IvifBc1TJJiHXRTLqx5UwZOXLLHnR8m8NjIiFlt5ZTo8ly9F2r1LzU+cWdflHxUo0wnpFHwKP5ICcdI8EIXiZQwQRHG1maiqcLIEg3IxXcYORbqwsVax78iAStC1yy76WJEF0uvhrImyMTPhaACeDufH5kTlzvnJn6HKCUK+vi5bNJAvqRbw9jcJiSTFyvKiaMU9lObZNVgjNl2GMdRaqbOZEFanOdP5XdS0hV7/ASRFKpbI9SlFkTsgkBBzGWdEzV80nJ2hmlBIymKxhPUyUj7w35KS6Ambh2MrTph6lcBxZBe0HTnF9edfC4P7H7uDnUU6NMMyXp7QSKHaCuUR/JqzO5c7oR3G/sNlJVknV5k8twukM3jU6mXviVREpaoOmJuP7s2HuT+geHMf4IgTxP3+cBu7sLUVX4BoKqW78I5QN+JhGPa/iPMt10FYs3Fk+4Jy4FNOSWA9gEslVuxPTPlaXi7gYhkXO3UGcevOUZGebLZD3rwMdVRmJhqj3lUcugJ1jK8Iwld0cJoZi0zStCnx+mtHNsLe9uF8HC9wdOmA8oRoJXEzUhFeNPlX6LfBQl9kxtdanCN0tJxCO1F7Jow3gyG+Bik1nJP/ewuOfgZboLtIt6N3twXKATRaIFPy4wXAKXOipYmW/X61s4gTgrFguEAYaxhgOrn3dMXbYkmfrSiqqp1hZQbbfa2f+FDibkOtjN6nf19AvEh
- Pa5karcm
- +YknHJSpqvgC3l47g0kstvhmESsG9OAWWwQyzOSCITmfaKKDwexjRPPAtHTqk31q6QGPUW85UiCy7HaPp2/opH5CrN8kjzImcQpxbEs5sT8i+8DKR3t3X4QRFjcX2CFl5oVUru9UE1bqBEA7M87skRW8+zq+QlWIHDlYyYLsVYa0/nHy20R0QzXGhiIc07GPt/LmkWtk3h7R5epyg00LwXm8ihB5biNXSLOvQSiTiAUzHGUanrWbUV3jLoBdI3JXW68RAR9WJNbDuvbAgqOBgwEKuwdG2OgZ3VS08OTFWKL9AY7IHXsXJMughS6DBcdVUet/IWHgihIOE/ZRKUtNAPxqOlkCDpA7AQ+aGdYl84Ym0i/6URtun8oMK1O/+X6kv1Pwt
+X-HE-Tag: 1771232828-830414
+X-HE-Meta: U2FsdGVkX18LxP3wnjQsFmSQAGpkBSVch46BZ2EaNDeOa0pXIGGbOdEf+NoaulWK21nTJLUWYhWbZ3lRAbqp7/sHw0y7091C5XwKzv7BGe6vHuReAmpe+aARZ4fOlH7um82ZgzxLuYv2E4yAxJeeZRApczXSH6obKARC7OnJ2KFX+SipoOpEYcb7QGmcCvKDZ7qWgAZWQXEAeHlbkCrrjgDZeON/PhHTElaMp9nQoHLbl6TntSKRLIZieUsxBo4YfuOi/bW6BaZs6/uPHoeJbm35wO3sK+iA2auHHCtq/2e3UBf+AC3RllkhF/grQxdJs9Jd/W36IjulIAZW8D2PIuPJXNowd9ozSUAd9VDmLzQ9EZwvRuTuDsag6debsYxpF8CVVpIAP2Qgd/R25nnZGv9nZIa/8bHndvpWlbCcdnU9fM0YnalICUjfe+W07jVSVNf39FRcN576Y4cwWmUZx9w2nEHMpP0Kq8+5ctkLgWgMI6uM8dQGSGRlaKdppsAN5+xzx9UyddT/BsM+eLrCEXxANNitccf2kxC7FGueEhrG332sqK5R/LTpn6JZAPBBxV0D23d8fmQGQQ1bWijcVscNMUEBPYLU//5RrkaLFcrflUmUDRGT4fXdx5wHFbtvU1GfJNOErrxaw3m7w1oG6jw7L8D6ND134+j+RbNOaKsp5FqoEPe2kvivY+a1jc+NVXX3UBMKjfdtQ5X8fwSJK3+bSZ2KpYWFmEj3atG9g0bFR7/1pu1BL/EBR7fgJgycV8LXu/xHJZJE/i0yiKo9Ei92+mZr1Yp4ST2MI0m5X7yJkCwq9NUzhTCFi5ItV8OY7YetVqG11su33VPfvthCp5xzTp7IjYuNg/bs5cOLAnspNzcqu+CYOGXOPJR9446sHZsFEvCgLnBW0V9bWiDhloBYuODU4GejtaM0tlOLDUA2ajdNgxLWcQnxSDyI8rqthkIdz04fOuwda1K8M/b
+ UYWWJf7M
+ TnZMk5VJw09YTpRlmYgVJnWaIqOo/LWMtzUozmJIt/qDGhdTvxzks8ROb+fozmir/eEyn1+T2lWeicN3Xezmm0m4Uqh/DwDdsXfS6gkKksXKJBNvmkGmU7cdU7+HfcRrj6wa5Eq9Fnia37JgcS4v5SIxpmKkDP8flpjhydXJwpyfxFC+qXCBc5jQnRBJoXmuquaWxRCwL7gZq4z16amtm41puf1gcTj7rpMUq4UMcaSFPIs5MDiExLA//31IEHKOjjO5RI7U4evxuvi8cGOywT+HhGZGtCHUZ2G7hQzcr5sfdHyPRU4Gt4maf3g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,37 +151,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 15, 2026 at 09:03:30PM +0100, Andreas Hindborg wrote:
-> `SafePage` wraps a regular page but adds an invariant that the page data
-> area does not incur data races. This means `SafePage` cannot be mapped to
-> user space or shared with devices, and it becomes simpler to directly
-> reference the contents of the page.
+On 2/16/26 00:13, Matthew Wilcox wrote:
+> On Mon, Feb 02, 2026 at 03:56:24PM +0000, Kiryl Shutsemau wrote:
+>> With the upcoming changes to HVO, a single page of tail struct pages
+>> will be shared across all huge pages of the same order on a node. Since
+>> huge pages on the same node may belong to different zones, the zone
+>> information stored in shared tail page flags would be incorrect.
+>>
+>> Always fetch zone information from the head page, which has unique and
+>> correct zone flags for each compound page.
 > 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> You're right that different pages in the same folio can have different
+> zone number.  But does it matter ... or to put it another way, why is
+> returning the zone number of the head page the correct way to resolve
+> this?
 
->  impl Page {
-> +    fn alloc_page_raw(flags: Flags) -> Result<NonNull<bindings::page>, AllocError> {
-> +        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-> +        // is always safe to call this method.
-> +        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
-> +        NonNull::new(page).ok_or(AllocError)
-> +    }
+How can a folio cross zones?
 
-Could potentially just implement Page::alloc_page() in terms of
-SafePage::alloc_page()
+Runtime allocated hugetlb folios from the CMA/buddy (alloc_contig_range) 
+definitely fall into a single zone.
 
-> +/// A page whose data area does not incur data races.
-> +///
-> +/// [`SafePage`] has the same usage constraints as other Rust types. Thus, it cannot be mapped to
-> +/// user space or shared with devices. This makes it safe to reference the contents of the page
-> +/// while the page is mapped in kernel space.
-> +///
-> +/// # Invariants
-> +///
-> +/// There are no data races for the contents of this page.
+So is it about ones allocated early during boot, where, by chance, we 
+manage to cross ZONE_NORMAL + ZONE_MOVABLE etc?
 
-This isn't really a great invariant. You could say something more direct
-such as "has exclusive access to the contents of the page".
+I thought that it's also not allowed there, and I wonder whether we 
+should disallow it if it's possible.
 
-Alice
+> 
+> Arguably, the caller is asking for the zone number of _this page_, and
+> does not care about the zone number of the head page.  It would be good
+> to have a short discussion of this in the commit message (but probably
+> not worth putting this in a comment).
+
+Agreed, in particular, if there would be a functional change. So far I 
+assumed there would be no such change.
+
+Things like shrink_zone_span() really need to know the zone of that 
+page, not the one of the head; unless both fall into the same zone.
+
+-- 
+Cheers,
+
+David
 
