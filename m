@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D60E7BDB4
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4316FE7BDAC
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:33:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EF7D6B00A8; Mon, 16 Feb 2026 08:33:06 -0500 (EST)
+	id A10836B0005; Mon, 16 Feb 2026 08:33:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A7D16B00AA; Mon, 16 Feb 2026 08:33:06 -0500 (EST)
+	id 9C8526B00AA; Mon, 16 Feb 2026 08:33:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BC506B00AB; Mon, 16 Feb 2026 08:33:06 -0500 (EST)
+	id 8B2BF6B00AC; Mon, 16 Feb 2026 08:33:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1224C6B00A8
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:33:06 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D7BE13C2B4
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:33:05 +0000 (UTC)
-X-FDA: 84450410730.28.7C1C258
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 70CDA6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:33:09 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2BE7A8D1F9
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:33:09 +0000 (UTC)
+X-FDA: 84450410898.10.1B03847
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A3AE714000C
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:33:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YBTOjDn2;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E5EA40008
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:33:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fV3IfwRb;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771248783;
+	s=arc-20220608; t=1771248787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AbZW6/m1vdVVk2KGUN6YQ/bqDAuWg/PRdpTU31+rPZ8=;
-	b=6Fyve8pR0v4bMh/mjk5DlhsEIAA+KaDH4aJI0w5fhVpfJR6BgI5zETv3qtWRNr3jLVt9bZ
-	EwoUwThiH+GsoE0i8XATiHYVx03ZEo3QRIum8joKEeyGDBoZcdOObleVdj0SlaeiTQOih8
-	OgAghk/eEvyB1hyXm4rM4iYD9e6RBEw=
+	bh=qXXzIop3txZRgd52kTespu7XyOHu3Aiq/YFFWfh1tEM=;
+	b=3YeGWo5lBhs5mowU8LCqSRbwEQJmhE+RMR+3ZPP0TW68p6J/XEOaJKSBE7SCxsYFgh8AUM
+	Ppp0O3aSyxBRU3GuFBlOm2dpTWlfqvb32WHX7mvE0FAHi5gHhHSwwQoN9XYlRBy1JBZA4D
+	ML59piwJPY2eYdZW4jGiNodZSGg0P9I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YBTOjDn2;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fV3IfwRb;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771248783; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771248787; a=rsa-sha256;
 	cv=none;
-	b=fqsld3834jb4C1NvnXXjP5TaIgNMMHE/dHPxP98kR3sg39AF2f52PnEqQEjI9vmNGC9A3W
-	dJ46ALuGBwcfpvRnw+j6w7y+KF6uvtK3pPdC6KoMwHieBhEdcjgCyT8n/sgV/q9mPl7ESw
-	yC271iGH83kRMqCxUvlWfzRrUxdiyD0=
+	b=yBn1GGi6EB05waT+1Bjhlita9M5JGqeGrFpajH47s1eGdXv4YQDuL8JugcSsG2vlwjfY1o
+	KQrRTYbT6p1sqb8/CiWd5B4kLIT/Fgq7eWGdnnBBa+7oejPXianR/iRI1PId7pKSpP4Ru3
+	VQGQnSIL4Z5P2SLm/iC74CuGZuu7Wvc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22326600B0;
+	by tor.source.kernel.org (Postfix) with ESMTP id C06A5600B0;
+	Mon, 16 Feb 2026 13:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3F0C19424;
 	Mon, 16 Feb 2026 13:33:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2665C19424;
-	Mon, 16 Feb 2026 13:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771248782;
-	bh=attc5XwzII0O55hshNdwieE9+UGv31LLE3x0ZMxZ0sg=;
+	s=k20201202; t=1771248786;
+	bh=nPMJv52b+iIBwowiKMG1azbuD44a7hHTFx5KxGAnUcM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YBTOjDn21sBBW/YsxL8mwueUP2kHkVGWc4DCx9NVGJ8F7EZiCr+1Bfl+ElOJNhZjp
-	 j7vRSgIbZc4/CMAR+kST4GNnLNHVlQ/dY+4l1LbQDWFBogKhX7IhvgjyVc47o8vEDL
-	 WSxmIPn0TA+bqg3zXOyWt4kwO5asjKt+O/BbykvpE3vybbxThDH0pciMmD7KnwMsws
-	 3iqSzXVZnqskyWFs2RzNPxjUWCkkRGZ7kb8BNrPqMDKUmrWbNR6c2BnTBxps5lgvTV
-	 kCPy7MBtiIU9j11HUmxlPNu81l+xB/2vTxP35VDFU6DfH016/Rgl3G3CyU0Md5ZN5z
-	 aXEb3aZhhWeGQ==
+	b=fV3IfwRb6d1jbCeVxB6PkY4ivmmysujLKj5ZaqrrLALmNYk69zYkUmiEfRnRa/mId
+	 3j7LS24QsNw/0iJw00yIbgRDay6BnIDtm1hDog0u59LIepmOpHXIOHgd0hwgJdmuBI
+	 Gwv3jGYuusBrG09DxkEP5aGHuPIPubuExRnHGNBJmMmMSAOOBoqwPwguqTuDyCyOEP
+	 JA6Uwh2JGG+M1W0htA8dJuD14svtgiVc3eisNOWTOlzMzO2DY5EXyC+E8aqi3APCdh
+	 MoBRaQKtGlVLJe89KgL6zvGkdqu1ATNCTkjNN4/Hnq1sO5m+xjOE26iyIRRMeL27hQ
+	 uGqoXobd83WiA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 16 Feb 2026 14:32:08 +0100
-Subject: [PATCH 12/14] selftests/xattr: path-based AF_UNIX socket xattr
- tests
+Date: Mon, 16 Feb 2026 14:32:09 +0100
+Subject: [PATCH 13/14] selftests/xattr: sockfs socket xattr tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-work-xattr-socket-v1-12-c2efa4f74cb7@kernel.org>
+Message-Id: <20260216-work-xattr-socket-v1-13-c2efa4f74cb7@kernel.org>
 References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
 In-Reply-To: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -83,22 +82,22 @@ Cc: Jeff Layton <jlayton@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
  Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, 
  netdev@vger.kernel.org, Christian Brauner <brauner@kernel.org>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14115; i=brauner@kernel.org;
- h=from:subject:message-id; bh=attc5XwzII0O55hshNdwieE9+UGv31LLE3x0ZMxZ0sg=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWROlolbPeHC9KnFa1/Ktj9/ZHsl6qOFcuR+y9nrCiL4e
- 70mnT7d1lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRNVkM/4Pr43eFLesvNPax
- EZrzcmJyVP9FjlBvpS2mmx6lzzHW/8nwv0z3JNOijkdqd2/NOy2vGut8jE/vz3Oe58u2fZsiK/j
- OiR8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11906; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=nPMJv52b+iIBwowiKMG1azbuD44a7hHTFx5KxGAnUcM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWROlom79bXAWlx6913rXc5Xu2ODZtUmyDdtfFe12Nyea
+ fLD3tl7O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACby/hYjwxf7EEm9LVJ/X35n
+ +L9P7uvcI5Hr5L4l5erenHumOF7/Wy7D/6CpC/VyEy2+NSqndjE+2zFVbP+pSWsMF1joT48oKyi
+ L4QEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A3AE714000C
-X-Stat-Signature: ut7t7omioeecgod6h4bep45amcoqz7ak
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5E5EA40008
+X-Stat-Signature: 8naodu1cgkpeusrw5cuarjfhjmhwjr7d
 X-Rspam-User: 
-X-HE-Tag: 1771248783-938360
-X-HE-Meta: U2FsdGVkX1/UCHgkh0SaIKpAw49O0siamGEKiHXMCOaQRDrXGqCDqEXGuBEwnOpPy0CR22VLv5XT1WgNvFI9u9CHfzxzuh+Y3wuE6uyGoCzfMuJ4xnMBh0t3wM1MbWMKzSu7OYePgsVCMEn8m+vcmvuOhFq3HEdvLiNXNS4WcoYe3Mfhwpn1tTHIXa7Bvc3o56DBM2fLnuJopyR1hDs9I7DYLRsNU/l3DJULy+wttUyeBFHFQvCRF+LwInoyLapUa7L/TDlMw31ty5JC0xfDtFa33jLyRwTvCLis875a2AshWuvNmXpXaarWx12Hiz/I4s1S08oX+8IqDpVI//xggWBI12BaxzwR2altHE8ZB5Y4RJhJZSUiEoRMEkzKbGVvrdz48IQlHapvdsYFOreFOuzJnwUqqxodkVHdatZbfUFFBdgOTKiND3EjQ5o49JVIDrW2tN97Qo02FgWK5F/HgU0dfu4rmrbU/6xmC6bGugJG/gm4H8ZcL1K2AQECNHHQDxNNHVJLeOIE9JsutPvE1SefnDH+hUoYPBQKsu+xKEEikvBgxOurxhUNwyJyR7X0Jv30EA2gX2fwKdbngZnbaLqR+QxbcaipU/yDMbApOY8Es/kqZY+TJb+tJiCrkMNSn3V/LUdhX1nKENoPw+lqBWrAI9oTj39yQx7GBmx5laWvQ+sS1+yi8D03Aa5/k2k7Q+MXZIPCEF4xdO4oC5luWPrIkpi85SBsXJoiCunDzqqfQO3UOOjiJ73cs3xttruf593cFnzedMvDdRq81usn3kWt3xeyD5fqe0oQkZJdxS3f0lfGidWWb8MZszHtZRLaF4d2d4HYLI/fPcpxdf0May89l930vpx6HNFl5PpYIbd5uuwdTCEMJPzE1sCFWVoTFkMTSjDDXe/fdhymM5ezPo7V8aEbK39HcKQlCirrv+U0MrqkM5hqcESXUkNF5Rd2R3rLaA0Qt6ekGVi5OFO
- pv6wv3qh
- 9m/oCMB7g6qFyFEdwZL7H62jBN19LWwjVvkO7zbNT9ZS6h2vMaJw31UK9bqFWwuuFy4MZAu5nUgrtePGCymZBDc5xDLLyj8Q9Fj77o/MjePqrao+o6C1RGhUxHwtnYVpiUm1AuBAKUc89hQjvHI52nzfVB/mUfmZ8ravBZOowHrp+/2ewb2fDESRxOwMlmp7ZSzYG8DvyBTF7YVSCchG60AkIC4fvZzZxrwumIe4UftLvbLOU9Kc/DJFer+tc2bdNZvV+jkXL4vEQ5Q3EZvGg1fN9s9zkmbLa1CDL0NHcyVCYGVo=
+X-HE-Tag: 1771248787-443278
+X-HE-Meta: U2FsdGVkX19ixUhQEcyL2H95TnESuJ1/fJnDd18KZyH2Qzur3TjPslvuB/5GEl+hGjgGrj5s2yYGj5VvXpg9SQNIhE4RqZLvyzZz9qYbV95nEhIgQ9K7juo8JzXzSFZaMyrTzdJabreaU3EfR6//e4DuAn9PUGRrnZzZxN3n2KCrKXn3SLWy6IBUnKyzk3iYQVb/kk9n6dyxDu6zBQQPNWTL7U+YqU94mbz1tEEjoCr6/Xo5NCV+tzQ9kLeE8vQrzY/b2RugQYY9hytQt3N0SEBwZ4k9dUzat5gy2q478SdTALvUgfCtHDF5tQ/J+j/BpIFs0zAk/Yu0/RvedyU76U8htPyXaE+i9xreEnfx5D8UiBWNcqzyaHC7rNjMSVKGMoKs9UYuA0fV+Mj9rgJKYSSzQicRjKZyLHhxeYqXiyv7URX5a/FhTSPgBCn3mjKW+ZX0RzXLXJ+nNMR9uq1jhrxOIAqJDFJXhZ1a0XWlkjNqnnMmgTJLOCa0/x5cIBunKrxXP6Bc85o5GioTEl4tIgTfGqiabKfvm7wU+Brw0IH3iTqC/4zZFr9hKmtRFJZpKkCx+LeJm7lAPaEsQbkLZg3UAKwwVjgbxTElpvTtTSdZMnETFwehR0plmYwNqZ5YxQYNMx93oqTqh2GlmF+sBAjnWgHNgpMhyjUj0jo72RMIf3aa2+3pdVJBYUlXIrACEfQsG91C5Vv6TZFalvufdhyVJu2JF1dnugAskk9zJ777EfXLAiqCJtZRTvrf+jKKoSi1tKH7WugDpuIPKAyXEsuZuliCUjwxADGAP4yMPDPXo//1AlNxSvCVS63ABlJYl9kYC7J4pr/hUBJ0fpJjducN/vIBc/w2m6IpFpb3dDIWxgA4shPjbLmCa8Ak1r+Ei4w7xe3JLomv0PxAEeZG21kEqAegP5qV8g5IpAsgxyh74qHfAhYxuLwOXVd1b6OOSlcgWey6655h3+GI3Vz
+ lILFHEmY
+ ljy2v/BuRsadu6gS0LCIzp5C8TfwwqjKCZIW0dJsdiEbVlMRdTyET3ZcSfJ4HCLLbljqn9BSiNF/kJJQQwjBm5gapI06f8AOJ39vMOOe/na+nB72x44atNiQ5HplFOIBGiq4LgORgSc4rmQvwgSzGm6p2tuoZlJwwDgCf3Pjx1fAAaxYHOW+IzsURrNFagsCJ1t0vleYCgLNu3G0SDFdQlR4EqODnwKpq7voFAFSGEYBO0VJyVgWYUYtsEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,70 +106,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Test user.* extended attribute operations on path-based Unix domain
-sockets (SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET). Path-based sockets
-are bound to a filesystem path and their inodes live on the underlying
-filesystem (e.g. tmpfs).
+Test user.* extended attribute operations on sockfs sockets. Sockets
+created via socket() have their inodes in sockfs, which now supports
+user.* xattrs with per-inode limits.
 
-Covers set/get/list/remove, persistence, XATTR_CREATE/XATTR_REPLACE
-flags, empty values, size queries, buffer-too-small errors, O_PATH fd
-operations, and trusted.* xattr handling.
+Tests fsetxattr/fgetxattr/flistxattr/fremovexattr operations including
+set/get, listing (verifies system.sockprotoname presence), remove,
+update, XATTR_CREATE/XATTR_REPLACE flags, empty values, size queries,
+and buffer-too-small errors.
+
+Also tests per-inode limit enforcement: maximum 128 xattrs, maximum
+128KB total value size, limit recovery after removal, and independent
+limits across different sockets.
 
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
  .../testing/selftests/filesystems/xattr/.gitignore |   1 +
- tools/testing/selftests/filesystems/xattr/Makefile |   6 +
- .../filesystems/xattr/xattr_socket_test.c          | 470 +++++++++++++++++++++
- 3 files changed, 477 insertions(+)
+ tools/testing/selftests/filesystems/xattr/Makefile |   2 +-
+ .../filesystems/xattr/xattr_sockfs_test.c          | 363 +++++++++++++++++++++
+ 3 files changed, 365 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/filesystems/xattr/.gitignore b/tools/testing/selftests/filesystems/xattr/.gitignore
-new file mode 100644
-index 000000000000..5fd015d2257a
---- /dev/null
+index 5fd015d2257a..00a59c89efab 100644
+--- a/tools/testing/selftests/filesystems/xattr/.gitignore
 +++ b/tools/testing/selftests/filesystems/xattr/.gitignore
-@@ -0,0 +1 @@
-+xattr_socket_test
+@@ -1 +1,2 @@
+ xattr_socket_test
++xattr_sockfs_test
 diff --git a/tools/testing/selftests/filesystems/xattr/Makefile b/tools/testing/selftests/filesystems/xattr/Makefile
-new file mode 100644
-index 000000000000..e3d8dca80faa
---- /dev/null
+index e3d8dca80faa..2cd722dba47b 100644
+--- a/tools/testing/selftests/filesystems/xattr/Makefile
 +++ b/tools/testing/selftests/filesystems/xattr/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+CFLAGS += $(KHDR_INCLUDES)
-+TEST_GEN_PROGS := xattr_socket_test
-+
-+include ../../lib.mk
-diff --git a/tools/testing/selftests/filesystems/xattr/xattr_socket_test.c b/tools/testing/selftests/filesystems/xattr/xattr_socket_test.c
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ CFLAGS += $(KHDR_INCLUDES)
+-TEST_GEN_PROGS := xattr_socket_test
++TEST_GEN_PROGS := xattr_socket_test xattr_sockfs_test
+ 
+ include ../../lib.mk
+diff --git a/tools/testing/selftests/filesystems/xattr/xattr_sockfs_test.c b/tools/testing/selftests/filesystems/xattr/xattr_sockfs_test.c
 new file mode 100644
-index 000000000000..fac0a4c6bc05
+index 000000000000..b4824b01a86d
 --- /dev/null
-+++ b/tools/testing/selftests/filesystems/xattr/xattr_socket_test.c
-@@ -0,0 +1,470 @@
++++ b/tools/testing/selftests/filesystems/xattr/xattr_sockfs_test.c
+@@ -0,0 +1,363 @@
 +// SPDX-License-Identifier: GPL-2.0
 +// Copyright (c) 2026 Christian Brauner <brauner@kernel.org>
 +/*
-+ * Test extended attributes on path-based Unix domain sockets.
++ * Test extended attributes on sockfs sockets.
 + *
-+ * Path-based Unix domain sockets are bound to a filesystem path and their
-+ * inodes live on the underlying filesystem (e.g. tmpfs). These tests verify
-+ * that user.* and trusted.* xattr operations work correctly on them using
-+ * path-based syscalls (setxattr, getxattr, etc.).
-+ *
-+ * Covers SOCK_STREAM, SOCK_DGRAM, and SOCK_SEQPACKET socket types.
++ * Sockets created via socket() have their inodes in sockfs, which supports
++ * user.* xattrs with per-inode limits: up to 128 xattrs and 128KB total
++ * value size. These tests verify xattr operations via fsetxattr/fgetxattr/
++ * flistxattr/fremovexattr on the socket fd, as well as limit enforcement.
 + */
 +
 +#define _GNU_SOURCE
 +#include <errno.h>
-+#include <limits.h>
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
 +#include <sys/socket.h>
-+#include <sys/stat.h>
 +#include <sys/types.h>
-+#include <sys/un.h>
 +#include <sys/xattr.h>
 +#include <unistd.h>
 +
@@ -180,441 +178,339 @@ index 000000000000..fac0a4c6bc05
 +#define TEST_XATTR_VALUE	"testvalue"
 +#define TEST_XATTR_VALUE2	"newvalue"
 +
++/* Per-inode limits for user.* xattrs on sockfs (from include/linux/xattr.h) */
++#define SIMPLE_XATTR_MAX_NR	128
++#define SIMPLE_XATTR_MAX_SIZE	(128 << 10)	/* 128 KB */
++
++#ifndef XATTR_SIZE_MAX
++#define XATTR_SIZE_MAX 65536
++#endif
++
 +/*
-+ * Fixture for path-based Unix domain socket tests.
-+ * Creates a SOCK_STREAM socket bound to a path in /tmp (typically tmpfs).
++ * Fixture for sockfs socket xattr tests.
++ * Creates an AF_UNIX socket (lives in sockfs, not bound to any path).
 + */
-+FIXTURE(xattr_socket)
++FIXTURE(xattr_sockfs)
 +{
-+	char socket_path[PATH_MAX];
 +	int sockfd;
 +};
 +
-+FIXTURE_VARIANT(xattr_socket)
++FIXTURE_SETUP(xattr_sockfs)
 +{
-+	int sock_type;
-+	const char *name;
-+};
-+
-+FIXTURE_VARIANT_ADD(xattr_socket, stream) {
-+	.sock_type = SOCK_STREAM,
-+	.name = "stream",
-+};
-+
-+FIXTURE_VARIANT_ADD(xattr_socket, dgram) {
-+	.sock_type = SOCK_DGRAM,
-+	.name = "dgram",
-+};
-+
-+FIXTURE_VARIANT_ADD(xattr_socket, seqpacket) {
-+	.sock_type = SOCK_SEQPACKET,
-+	.name = "seqpacket",
-+};
-+
-+FIXTURE_SETUP(xattr_socket)
-+{
-+	struct sockaddr_un addr;
-+	int ret;
-+
-+	self->sockfd = -1;
-+
-+	snprintf(self->socket_path, sizeof(self->socket_path),
-+		 "/tmp/xattr_socket_test_%s.%d", variant->name, getpid());
-+	unlink(self->socket_path);
-+
-+	self->sockfd = socket(AF_UNIX, variant->sock_type, 0);
++	self->sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
 +	ASSERT_GE(self->sockfd, 0) {
 +		TH_LOG("Failed to create socket: %s", strerror(errno));
 +	}
-+
-+	memset(&addr, 0, sizeof(addr));
-+	addr.sun_family = AF_UNIX;
-+	strncpy(addr.sun_path, self->socket_path, sizeof(addr.sun_path) - 1);
-+
-+	ret = bind(self->sockfd, (struct sockaddr *)&addr, sizeof(addr));
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("Failed to bind socket to %s: %s",
-+		       self->socket_path, strerror(errno));
-+	}
 +}
 +
-+FIXTURE_TEARDOWN(xattr_socket)
++FIXTURE_TEARDOWN(xattr_sockfs)
 +{
 +	if (self->sockfd >= 0)
 +		close(self->sockfd);
-+	unlink(self->socket_path);
 +}
 +
-+TEST_F(xattr_socket, set_user_xattr)
-+{
-+	int ret;
-+
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr failed: %s (errno=%d)", strerror(errno), errno);
-+	}
-+}
-+
-+TEST_F(xattr_socket, get_user_xattr)
++TEST_F(xattr_sockfs, set_get_user_xattr)
 +{
 +	char buf[256];
 +	ssize_t ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
 +	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr failed: %s", strerror(errno));
++		TH_LOG("fsetxattr failed: %s", strerror(errno));
 +	}
 +
 +	memset(buf, 0, sizeof(buf));
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, buf, sizeof(buf));
 +	ASSERT_EQ(ret, (ssize_t)strlen(TEST_XATTR_VALUE)) {
-+		TH_LOG("getxattr returned %zd, expected %zu: %s",
-+		       ret, strlen(TEST_XATTR_VALUE), strerror(errno));
++		TH_LOG("fgetxattr returned %zd: %s", ret, strerror(errno));
 +	}
 +	ASSERT_STREQ(buf, TEST_XATTR_VALUE);
-+}
-+
-+TEST_F(xattr_socket, list_user_xattr)
-+{
-+	char list[1024];
-+	ssize_t ret;
-+	bool found = false;
-+	char *ptr;
-+
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr failed: %s", strerror(errno));
-+	}
-+
-+	memset(list, 0, sizeof(list));
-+	ret = listxattr(self->socket_path, list, sizeof(list));
-+	ASSERT_GT(ret, 0) {
-+		TH_LOG("listxattr failed: %s", strerror(errno));
-+	}
-+
-+	for (ptr = list; ptr < list + ret; ptr += strlen(ptr) + 1) {
-+		if (strcmp(ptr, TEST_XATTR_NAME) == 0) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	ASSERT_TRUE(found) {
-+		TH_LOG("xattr %s not found in list", TEST_XATTR_NAME);
-+	}
-+}
-+
-+TEST_F(xattr_socket, remove_user_xattr)
-+{
-+	char buf[256];
-+	ssize_t ret;
-+
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr failed: %s", strerror(errno));
-+	}
-+
-+	ret = removexattr(self->socket_path, TEST_XATTR_NAME);
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("removexattr failed: %s", strerror(errno));
-+	}
-+
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(errno, ENODATA) {
-+		TH_LOG("Expected ENODATA, got %s", strerror(errno));
-+	}
 +}
 +
 +/*
-+ * Test that xattrs persist across socket close and reopen.
-+ * The xattr is on the filesystem inode, not the socket fd.
++ * Test listing xattrs on a sockfs socket.
++ * Should include user.* xattrs and system.sockprotoname.
 + */
-+TEST_F(xattr_socket, xattr_persistence)
++TEST_F(xattr_sockfs, list_user_xattr)
 +{
-+	char buf[256];
++	char list[4096];
 +	ssize_t ret;
++	char *ptr;
++	bool found_user = false;
++	bool found_proto = false;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
 +	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr failed: %s", strerror(errno));
++		TH_LOG("fsetxattr failed: %s", strerror(errno));
 +	}
 +
-+	close(self->sockfd);
-+	self->sockfd = -1;
-+
-+	memset(buf, 0, sizeof(buf));
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
-+	ASSERT_EQ(ret, (ssize_t)strlen(TEST_XATTR_VALUE)) {
-+		TH_LOG("getxattr after close failed: %s", strerror(errno));
++	memset(list, 0, sizeof(list));
++	ret = flistxattr(self->sockfd, list, sizeof(list));
++	ASSERT_GT(ret, 0) {
++		TH_LOG("flistxattr failed: %s", strerror(errno));
 +	}
-+	ASSERT_STREQ(buf, TEST_XATTR_VALUE);
++
++	for (ptr = list; ptr < list + ret; ptr += strlen(ptr) + 1) {
++		if (strcmp(ptr, TEST_XATTR_NAME) == 0)
++			found_user = true;
++		if (strcmp(ptr, "system.sockprotoname") == 0)
++			found_proto = true;
++	}
++	ASSERT_TRUE(found_user) {
++		TH_LOG("user xattr not found in list");
++	}
++	ASSERT_TRUE(found_proto) {
++		TH_LOG("system.sockprotoname not found in list");
++	}
 +}
 +
-+TEST_F(xattr_socket, update_user_xattr)
++TEST_F(xattr_sockfs, remove_user_xattr)
 +{
 +	char buf[256];
 +	ssize_t ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
 +	ASSERT_EQ(ret, 0);
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE2, strlen(TEST_XATTR_VALUE2), 0);
++	ret = fremovexattr(self->sockfd, TEST_XATTR_NAME);
++	ASSERT_EQ(ret, 0) {
++		TH_LOG("fremovexattr failed: %s", strerror(errno));
++	}
++
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, buf, sizeof(buf));
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ENODATA);
++}
++
++TEST_F(xattr_sockfs, update_user_xattr)
++{
++	char buf[256];
++	ssize_t ret;
++
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ASSERT_EQ(ret, 0);
++
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE2, strlen(TEST_XATTR_VALUE2), 0);
 +	ASSERT_EQ(ret, 0);
 +
 +	memset(buf, 0, sizeof(buf));
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, buf, sizeof(buf));
 +	ASSERT_EQ(ret, (ssize_t)strlen(TEST_XATTR_VALUE2));
 +	ASSERT_STREQ(buf, TEST_XATTR_VALUE2);
 +}
 +
-+TEST_F(xattr_socket, xattr_create_flag)
++TEST_F(xattr_sockfs, xattr_create_flag)
 +{
 +	int ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
 +	ASSERT_EQ(ret, 0);
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE2, strlen(TEST_XATTR_VALUE2), XATTR_CREATE);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE2, strlen(TEST_XATTR_VALUE2),
++			XATTR_CREATE);
 +	ASSERT_EQ(ret, -1);
 +	ASSERT_EQ(errno, EEXIST);
 +}
 +
-+TEST_F(xattr_socket, xattr_replace_flag)
++TEST_F(xattr_sockfs, xattr_replace_flag)
 +{
 +	int ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), XATTR_REPLACE);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE),
++			XATTR_REPLACE);
 +	ASSERT_EQ(ret, -1);
 +	ASSERT_EQ(errno, ENODATA);
 +}
 +
-+TEST_F(xattr_socket, multiple_xattrs)
-+{
-+	char buf[256];
-+	ssize_t ret;
-+	int i;
-+	char name[64], value[64];
-+	const int num_xattrs = 5;
-+
-+	for (i = 0; i < num_xattrs; i++) {
-+		snprintf(name, sizeof(name), "user.test%d", i);
-+		snprintf(value, sizeof(value), "value%d", i);
-+		ret = setxattr(self->socket_path, name, value, strlen(value), 0);
-+		ASSERT_EQ(ret, 0) {
-+			TH_LOG("setxattr %s failed: %s", name, strerror(errno));
-+		}
-+	}
-+
-+	for (i = 0; i < num_xattrs; i++) {
-+		snprintf(name, sizeof(name), "user.test%d", i);
-+		snprintf(value, sizeof(value), "value%d", i);
-+		memset(buf, 0, sizeof(buf));
-+		ret = getxattr(self->socket_path, name, buf, sizeof(buf));
-+		ASSERT_EQ(ret, (ssize_t)strlen(value));
-+		ASSERT_STREQ(buf, value);
-+	}
-+}
-+
-+TEST_F(xattr_socket, xattr_empty_value)
++TEST_F(xattr_sockfs, get_nonexistent)
 +{
 +	char buf[256];
 +	ssize_t ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME, "", 0, 0);
-+	ASSERT_EQ(ret, 0);
-+
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
-+	ASSERT_EQ(ret, 0);
++	ret = fgetxattr(self->sockfd, "user.nonexistent", buf, sizeof(buf));
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ENODATA);
 +}
 +
-+TEST_F(xattr_socket, xattr_get_size)
++TEST_F(xattr_sockfs, empty_value)
 +{
 +	ssize_t ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME, "", 0, 0);
 +	ASSERT_EQ(ret, 0);
 +
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, NULL, 0);
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, NULL, 0);
++	ASSERT_EQ(ret, 0);
++}
++
++TEST_F(xattr_sockfs, get_size)
++{
++	ssize_t ret;
++
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ASSERT_EQ(ret, 0);
++
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, NULL, 0);
 +	ASSERT_EQ(ret, (ssize_t)strlen(TEST_XATTR_VALUE));
 +}
 +
-+TEST_F(xattr_socket, xattr_buffer_too_small)
++TEST_F(xattr_sockfs, buffer_too_small)
 +{
 +	char buf[2];
 +	ssize_t ret;
 +
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
 +	ASSERT_EQ(ret, 0);
 +
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, buf, sizeof(buf));
 +	ASSERT_EQ(ret, -1);
 +	ASSERT_EQ(errno, ERANGE);
 +}
 +
-+TEST_F(xattr_socket, xattr_nonexistent)
++/*
++ * Test maximum number of user.* xattrs per socket.
++ * The kernel enforces SIMPLE_XATTR_MAX_NR (128), so the 129th should
++ * fail with ENOSPC.
++ */
++TEST_F(xattr_sockfs, max_nr_xattrs)
 +{
-+	char buf[256];
-+	ssize_t ret;
++	char name[32];
++	int i, ret;
 +
-+	ret = getxattr(self->socket_path, "user.nonexistent", buf, sizeof(buf));
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(errno, ENODATA);
-+}
-+
-+TEST_F(xattr_socket, remove_nonexistent_xattr)
-+{
-+	int ret;
-+
-+	ret = removexattr(self->socket_path, "user.nonexistent");
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(errno, ENODATA);
-+}
-+
-+TEST_F(xattr_socket, large_xattr_value)
-+{
-+	char large_value[4096];
-+	char read_buf[4096];
-+	ssize_t ret;
-+
-+	memset(large_value, 'A', sizeof(large_value));
-+
-+	ret = setxattr(self->socket_path, TEST_XATTR_NAME,
-+		       large_value, sizeof(large_value), 0);
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr with large value failed: %s", strerror(errno));
++	for (i = 0; i < SIMPLE_XATTR_MAX_NR; i++) {
++		snprintf(name, sizeof(name), "user.test%03d", i);
++		ret = fsetxattr(self->sockfd, name, "v", 1, 0);
++		ASSERT_EQ(ret, 0) {
++			TH_LOG("fsetxattr %s failed at i=%d: %s",
++			       name, i, strerror(errno));
++		}
 +	}
 +
-+	memset(read_buf, 0, sizeof(read_buf));
-+	ret = getxattr(self->socket_path, TEST_XATTR_NAME,
-+		       read_buf, sizeof(read_buf));
-+	ASSERT_EQ(ret, (ssize_t)sizeof(large_value));
-+	ASSERT_EQ(memcmp(large_value, read_buf, sizeof(large_value)), 0);
++	ret = fsetxattr(self->sockfd, "user.overflow", "v", 1, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ENOSPC) {
++		TH_LOG("Expected ENOSPC for xattr %d, got %s",
++		       SIMPLE_XATTR_MAX_NR + 1, strerror(errno));
++	}
 +}
 +
 +/*
-+ * Test lsetxattr/lgetxattr (don't follow symlinks).
-+ * Socket files aren't symlinks, so this should work the same.
++ * Test maximum total value size for user.* xattrs.
++ * The kernel enforces SIMPLE_XATTR_MAX_SIZE (128KB). Individual xattr
++ * values are limited to XATTR_SIZE_MAX (64KB) by the VFS, so we need
++ * at least two xattrs to hit the total limit.
 + */
-+TEST_F(xattr_socket, lsetxattr_lgetxattr)
++TEST_F(xattr_sockfs, max_xattr_size)
 +{
-+	char buf[256];
-+	ssize_t ret;
++	char *value;
++	int ret;
 +
-+	ret = lsetxattr(self->socket_path, TEST_XATTR_NAME,
-+			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	value = malloc(XATTR_SIZE_MAX);
++	ASSERT_NE(value, NULL);
++	memset(value, 'A', XATTR_SIZE_MAX);
++
++	/* First 64KB xattr - total = 64KB */
++	ret = fsetxattr(self->sockfd, "user.big1", value, XATTR_SIZE_MAX, 0);
 +	ASSERT_EQ(ret, 0) {
-+		TH_LOG("lsetxattr failed: %s", strerror(errno));
++		TH_LOG("first large xattr failed: %s", strerror(errno));
 +	}
 +
++	/* Second 64KB xattr - total = 128KB (exactly at limit) */
++	ret = fsetxattr(self->sockfd, "user.big2", value, XATTR_SIZE_MAX, 0);
++	free(value);
++	ASSERT_EQ(ret, 0) {
++		TH_LOG("second large xattr failed: %s", strerror(errno));
++	}
++
++	/* Third xattr with 1 byte - total > 128KB, should fail */
++	ret = fsetxattr(self->sockfd, "user.big3", "v", 1, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ENOSPC) {
++		TH_LOG("Expected ENOSPC when exceeding size limit, got %s",
++		       strerror(errno));
++	}
++}
++
++/*
++ * Test that removing an xattr frees limit space, allowing re-addition.
++ */
++TEST_F(xattr_sockfs, limit_remove_readd)
++{
++	char name[32];
++	int i, ret;
++
++	/* Fill up to the maximum count */
++	for (i = 0; i < SIMPLE_XATTR_MAX_NR; i++) {
++		snprintf(name, sizeof(name), "user.test%03d", i);
++		ret = fsetxattr(self->sockfd, name, "v", 1, 0);
++		ASSERT_EQ(ret, 0);
++	}
++
++	/* Verify we're at the limit */
++	ret = fsetxattr(self->sockfd, "user.overflow", "v", 1, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ENOSPC);
++
++	/* Remove one xattr */
++	ret = fremovexattr(self->sockfd, "user.test000");
++	ASSERT_EQ(ret, 0);
++
++	/* Now we should be able to add one more */
++	ret = fsetxattr(self->sockfd, "user.newattr", "v", 1, 0);
++	ASSERT_EQ(ret, 0) {
++		TH_LOG("re-add after remove failed: %s", strerror(errno));
++	}
++}
++
++/*
++ * Test that two different sockets have independent xattr limits.
++ */
++TEST_F(xattr_sockfs, limits_per_inode)
++{
++	char buf[256];
++	int sock2;
++	ssize_t ret;
++
++	sock2 = socket(AF_UNIX, SOCK_STREAM, 0);
++	ASSERT_GE(sock2, 0);
++
++	/* Set xattr on first socket */
++	ret = fsetxattr(self->sockfd, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
++	ASSERT_EQ(ret, 0);
++
++	/* First socket's xattr should not be visible on second socket */
++	ret = fgetxattr(sock2, TEST_XATTR_NAME, NULL, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ENODATA);
++
++	/* Second socket should independently accept xattrs */
++	ret = fsetxattr(sock2, TEST_XATTR_NAME,
++			TEST_XATTR_VALUE2, strlen(TEST_XATTR_VALUE2), 0);
++	ASSERT_EQ(ret, 0);
++
++	/* Verify each socket has its own value */
 +	memset(buf, 0, sizeof(buf));
-+	ret = lgetxattr(self->socket_path, TEST_XATTR_NAME, buf, sizeof(buf));
++	ret = fgetxattr(self->sockfd, TEST_XATTR_NAME, buf, sizeof(buf));
 +	ASSERT_EQ(ret, (ssize_t)strlen(TEST_XATTR_VALUE));
 +	ASSERT_STREQ(buf, TEST_XATTR_VALUE);
-+}
-+
-+/*
-+ * Fixture for trusted.* xattr tests.
-+ * These require CAP_SYS_ADMIN.
-+ */
-+FIXTURE(xattr_socket_trusted)
-+{
-+	char socket_path[PATH_MAX];
-+	int sockfd;
-+};
-+
-+FIXTURE_VARIANT(xattr_socket_trusted)
-+{
-+	int sock_type;
-+	const char *name;
-+};
-+
-+FIXTURE_VARIANT_ADD(xattr_socket_trusted, stream) {
-+	.sock_type = SOCK_STREAM,
-+	.name = "stream",
-+};
-+
-+FIXTURE_VARIANT_ADD(xattr_socket_trusted, dgram) {
-+	.sock_type = SOCK_DGRAM,
-+	.name = "dgram",
-+};
-+
-+FIXTURE_VARIANT_ADD(xattr_socket_trusted, seqpacket) {
-+	.sock_type = SOCK_SEQPACKET,
-+	.name = "seqpacket",
-+};
-+
-+FIXTURE_SETUP(xattr_socket_trusted)
-+{
-+	struct sockaddr_un addr;
-+	int ret;
-+
-+	self->sockfd = -1;
-+
-+	snprintf(self->socket_path, sizeof(self->socket_path),
-+		 "/tmp/xattr_socket_trusted_%s.%d", variant->name, getpid());
-+	unlink(self->socket_path);
-+
-+	self->sockfd = socket(AF_UNIX, variant->sock_type, 0);
-+	ASSERT_GE(self->sockfd, 0);
-+
-+	memset(&addr, 0, sizeof(addr));
-+	addr.sun_family = AF_UNIX;
-+	strncpy(addr.sun_path, self->socket_path, sizeof(addr.sun_path) - 1);
-+
-+	ret = bind(self->sockfd, (struct sockaddr *)&addr, sizeof(addr));
-+	ASSERT_EQ(ret, 0);
-+}
-+
-+FIXTURE_TEARDOWN(xattr_socket_trusted)
-+{
-+	if (self->sockfd >= 0)
-+		close(self->sockfd);
-+	unlink(self->socket_path);
-+}
-+
-+TEST_F(xattr_socket_trusted, set_trusted_xattr)
-+{
-+	char buf[256];
-+	ssize_t len;
-+	int ret;
-+
-+	ret = setxattr(self->socket_path, "trusted.testattr",
-+		       TEST_XATTR_VALUE, strlen(TEST_XATTR_VALUE), 0);
-+	if (ret == -1 && errno == EPERM)
-+		SKIP(return, "Need CAP_SYS_ADMIN for trusted.* xattrs");
-+	ASSERT_EQ(ret, 0) {
-+		TH_LOG("setxattr trusted.testattr failed: %s", strerror(errno));
-+	}
 +
 +	memset(buf, 0, sizeof(buf));
-+	len = getxattr(self->socket_path, "trusted.testattr",
-+		       buf, sizeof(buf));
-+	ASSERT_EQ(len, (ssize_t)strlen(TEST_XATTR_VALUE));
-+	ASSERT_STREQ(buf, TEST_XATTR_VALUE);
-+}
++	ret = fgetxattr(sock2, TEST_XATTR_NAME, buf, sizeof(buf));
++	ASSERT_EQ(ret, (ssize_t)strlen(TEST_XATTR_VALUE2));
++	ASSERT_STREQ(buf, TEST_XATTR_VALUE2);
 +
-+TEST_F(xattr_socket_trusted, get_trusted_xattr_unprivileged)
-+{
-+	char buf[256];
-+	ssize_t ret;
-+
-+	ret = getxattr(self->socket_path, "trusted.testattr", buf, sizeof(buf));
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_TRUE(errno == ENODATA || errno == EPERM) {
-+		TH_LOG("Expected ENODATA or EPERM, got %s", strerror(errno));
-+	}
++	close(sock2);
 +}
 +
 +TEST_HARNESS_MAIN
