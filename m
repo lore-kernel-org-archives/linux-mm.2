@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63704E63F3F
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 09:07:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 427C1E63F3D
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 09:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82AB16B0005; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
+	id 48D706B0005; Mon, 16 Feb 2026 04:25:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D89D6B0088; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
+	id 43B4F6B0088; Mon, 16 Feb 2026 04:25:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 690306B0089; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
+	id 31CD76B0089; Mon, 16 Feb 2026 04:25:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 544F26B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 04:07:10 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDA7C160C4D
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 09:07:09 +0000 (UTC)
-X-FDA: 84449740578.18.87D1E4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3CD7CA0009
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 09:07:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FYvIch1U;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C1086B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 04:25:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB0E3C3B26
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 09:24:59 +0000 (UTC)
+X-FDA: 84449785518.20.CF025A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CF2E2C000C
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 09:24:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cbRO1+70;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771232828;
+	s=arc-20220608; t=1771233898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aaVHGjBQIzbqiGUfwMg52jVCGhg1VKrTcd8VIAf0FsQ=;
-	b=LJ/p9wYad80qxIopRxsriqDuwtF7se92cMXG7MHwj+QI7iJ9FrOb6TOtkpw47yHTf+4Dkl
-	7UQ9ZjEoKLAyL7uO4QvIyC4K4vp3sZaIUEtpzIG/9LufB7b2fsqpQRn+tcHGmemv3hDpfx
-	aVla6cnj+S+lRlRNSxthu8M/RldajqM=
+	bh=z3rewJUrjVjiv6IqbudwtJLVi5IYtcklBiEI7JpnC0s=;
+	b=YRM+TGeX4bcCpNf/CzGm11icLaUpgoGXlBXb+o6Gq0gdXXA+zz85qcQB1wybeUNVvSt+4V
+	jzba/fw4S4KdYgScM2SJgJRppi/xkm/fH8g0TNSlgqlubTgqy93SZSefNm69SVbk2RKmzX
+	hPzbS+MT9RcAP/8I9iWW6mXcg1Xi2bQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FYvIch1U;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cbRO1+70;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771232828; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771233898; a=rsa-sha256;
 	cv=none;
-	b=oHd33Z349idooY6qgMrNacCTQjY9DsZrkrBf2A9Zni8HZ7gsp3QATAbWlfdUpBe95Zha+E
-	eaYNdA6cnA+BuR6sledxSBZ3rI0J4yO3dDQ5FSMtSQ62euqu5Rdt51QLpkJZlYx9OulpLM
-	YcOTe473pOegGDfTwSeN+xH9Cj7WqvQ=
+	b=q3hKfSS6b0jRsg99tULzeFHlotK93UdWr3PCT0X8ySWDajMxUIlIVhk891/BZ4G5dHXJ6o
+	+DGqi1vmEDepetEHsxmPv8PaQiU7KPP42YCIEwrOXMmGRQ1F+VTZnDuvl0H/LB84fLqd1K
+	FQru3OZhn5HuM+OGB5uOBt4bXAcjkuQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B6DB600BB;
-	Mon, 16 Feb 2026 09:07:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C93C116C6;
-	Mon, 16 Feb 2026 09:07:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CDDB743E1A;
+	Mon, 16 Feb 2026 09:24:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A990C116C6;
+	Mon, 16 Feb 2026 09:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771232827;
-	bh=Pn8iMDIZmzFd3kkBcfiQHX1j0BjcMGClm/3MIGwtj78=;
+	s=k20201202; t=1771233896;
+	bh=OR2VlSMVusMINq3vcBxMFK8Q/cZKx7EE1BOEdHfWSVc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FYvIch1U38DwPufVNrBLBAbn0caX9A0u2fc1XTx+8xS4GM6lbSoz0aK6WztCOQhgu
-	 Vx0h8p4NW70I4RYvdbzNN3WeCbH2veDYorXEU+XuRnOO2bBGmDyuj0HdvJ0UO9NapA
-	 WMmllVlT3Sps3rZOVIgM21JGVU3rPlmkTd/PrNsaqsDBCNcKojNsZ8ARxqvwtAxRsI
-	 TgoqrGz+UUyTZMy5qOlBHvr/5o0DCg0PWIfE7yqHUeBhz0YnA2tbX9c9NMxbQZ18nI
-	 H0ZFyO/ROTLHJ/Eh3O1IjbDs9b2IQPw4FXOY0/N4Vsc9RofntPgvkSjl5odPTVBJV7
-	 RbqdaQo9YbeBw==
-Message-ID: <ec4a9a1e-8c08-4879-a787-3b9e0bc38160@kernel.org>
-Date: Mon, 16 Feb 2026 10:06:57 +0100
+	b=cbRO1+70oWXH/C99sJCpa45wqu0YDJge1ODTJGcfhNN37WUNRjQAkwfNJms/pxt4a
+	 4SYqV6HR6durRaV0LwCV7oXw8xOdkOihG2qUVmUUGhqQ4wZEIiMSjk91T/hGafljB9
+	 vUnd56CmpXxNZC0B+PJpC+w+bC7Vp43N1tlJm9/kIC/jU8VYpp082cnntQoF1Wc6qU
+	 1DcLjupiBrvqgY4FPLdZ/EuHjtGjwVEg1y6aRB8ImJxTVMQVgm9cIZvsTgHq+I33MX
+	 Nk2vYnMFbzOeMutD2wA6arpIpIfirD15dJyOUdf4r+13nFCB/KQorFDhhUz7BTJbKn
+	 jg0O/tTuAqXYw==
+Message-ID: <5dc7d3a2-a358-481d-9352-d8356d3343c2@kernel.org>
+Date: Mon, 16 Feb 2026 10:24:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 08/17] mm: Make page_zonenum() use head page
-To: Matthew Wilcox <willy@infradead.org>, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
+To: Lance Yang <lance.yang@linux.dev>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-9-kas@kernel.org>
- <aZJTLwV2SaaKu1k_@casper.infradead.org>
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260211031512.261127-1-senozhatsky@chromium.org>
+ <104bc764-5a20-4ac2-95a8-b31f41255766@kernel.org>
+ <jftqdosilzfkd4ku6pjuevkvuwmhlqtua62jwsmmgdfcseitb4@gopt2xzqhyrk>
+ <3571cf8b-9fb3-41b2-a402-a8537ee2c399@kernel.org>
+ <r6m6vdhbqada6i3gugtnj3lytjrkyiretihwebwci423vwslcr@ysrgdqvvno6b>
+ <16ce9ce2-8081-482c-a6ea-0932ebd081f1@kernel.org>
+ <56345542-544a-48e4-b127-49a850deee9b@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aZJTLwV2SaaKu1k_@casper.infradead.org>
+In-Reply-To: <56345542-544a-48e4-b127-49a850deee9b@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3CD7CA0009
-X-Stat-Signature: qw91x9xxw4ekgyrzr3k6bzb8qdpdqrdz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF2E2C000C
+X-Stat-Signature: 8u9ahisoc63ec3a74cs64agzm74oue5s
 X-Rspam-User: 
-X-HE-Tag: 1771232828-830414
-X-HE-Meta: U2FsdGVkX18LxP3wnjQsFmSQAGpkBSVch46BZ2EaNDeOa0pXIGGbOdEf+NoaulWK21nTJLUWYhWbZ3lRAbqp7/sHw0y7091C5XwKzv7BGe6vHuReAmpe+aARZ4fOlH7um82ZgzxLuYv2E4yAxJeeZRApczXSH6obKARC7OnJ2KFX+SipoOpEYcb7QGmcCvKDZ7qWgAZWQXEAeHlbkCrrjgDZeON/PhHTElaMp9nQoHLbl6TntSKRLIZieUsxBo4YfuOi/bW6BaZs6/uPHoeJbm35wO3sK+iA2auHHCtq/2e3UBf+AC3RllkhF/grQxdJs9Jd/W36IjulIAZW8D2PIuPJXNowd9ozSUAd9VDmLzQ9EZwvRuTuDsag6debsYxpF8CVVpIAP2Qgd/R25nnZGv9nZIa/8bHndvpWlbCcdnU9fM0YnalICUjfe+W07jVSVNf39FRcN576Y4cwWmUZx9w2nEHMpP0Kq8+5ctkLgWgMI6uM8dQGSGRlaKdppsAN5+xzx9UyddT/BsM+eLrCEXxANNitccf2kxC7FGueEhrG332sqK5R/LTpn6JZAPBBxV0D23d8fmQGQQ1bWijcVscNMUEBPYLU//5RrkaLFcrflUmUDRGT4fXdx5wHFbtvU1GfJNOErrxaw3m7w1oG6jw7L8D6ND134+j+RbNOaKsp5FqoEPe2kvivY+a1jc+NVXX3UBMKjfdtQ5X8fwSJK3+bSZ2KpYWFmEj3atG9g0bFR7/1pu1BL/EBR7fgJgycV8LXu/xHJZJE/i0yiKo9Ei92+mZr1Yp4ST2MI0m5X7yJkCwq9NUzhTCFi5ItV8OY7YetVqG11su33VPfvthCp5xzTp7IjYuNg/bs5cOLAnspNzcqu+CYOGXOPJR9446sHZsFEvCgLnBW0V9bWiDhloBYuODU4GejtaM0tlOLDUA2ajdNgxLWcQnxSDyI8rqthkIdz04fOuwda1K8M/b
- UYWWJf7M
- TnZMk5VJw09YTpRlmYgVJnWaIqOo/LWMtzUozmJIt/qDGhdTvxzks8ROb+fozmir/eEyn1+T2lWeicN3Xezmm0m4Uqh/DwDdsXfS6gkKksXKJBNvmkGmU7cdU7+HfcRrj6wa5Eq9Fnia37JgcS4v5SIxpmKkDP8flpjhydXJwpyfxFC+qXCBc5jQnRBJoXmuquaWxRCwL7gZq4z16amtm41puf1gcTj7rpMUq4UMcaSFPIs5MDiExLA//31IEHKOjjO5RI7U4evxuvi8cGOywT+HhGZGtCHUZ2G7hQzcr5sfdHyPRU4Gt4maf3g==
+X-HE-Tag: 1771233897-303934
+X-HE-Meta: U2FsdGVkX19jdOUDmnN7TMdo7XK6YPAdIEFj100HFp3myFwHwAdGnJvF03259CPdJprSLoaw1mTf3RnmGzRYQEuAiaedkkSMFoU9cGThZY9c71IaDFx2EzhNdIjl9PhbLfto/2A4Ogx+zqZmLKeag4fMVcA+/quqO7dREXaSlikXN2eIJTDsATX5dm52ml5r7iEZQHHrzv5UmeRT2Xy30ABYdjI0cTbTS4yMIjkITbc0swWrb+0u2uIFQ5wfk8jJuyRMKlqEJSVjL0MTtFpWxEjsrm/yMbEUWx28YSwOTRZpeosj6lmX+oWZFc7Yv1AlIOYdBHt+2+RPhKI8jM+1SB+k5OH/vrZofKt9PlvSyXxPmpLU4S58JmItKTSXuo865uZ3+zyRKdAjV/aCYH2X+HoUzxpnfOpa7njd8t6tpTulLYNhogGCZX7z+TdgbE9dig1dOXV2GZWlS1zymwFWxryF23IoTzQ5fQAz1tzXNe4LQ40L5t/eBYQKGY8icsAjJmUGY6A4KOQXThWj+m2w3NTnmmVhi6KcsLs22e7v0sPX3D1YdxW/sfjgAz75m7Pwy/cMozT7gey/BIjKTWrX0ut3X07Ed5rVnnzVXV+/CRrWDKXXffhhmm6tm8HziizrAfAo2TVNRBuoyO2sT4ar0vDX21LlHfQXkSjxC4zg7xSF3A+V8eJNKjmEV61ZqvwbYaDuZVcAn6BS6ftS44TVdBcMrdVrEL3K8ye1FExrO/kmvH98TPA6yWp/7+K1L+oOwQgsPDKEcaSpoSCqOlUuBgu1BUyP/kR4knUoDc1opgAdzfQUDQCBkidDUPmDBpgzSfKArFXGNjjD8nRD9WeN+50oLioTDjFg3bZTrEZ4AG85HbxHhXoqUX75hUT9mhI1ARnux16wOhmELQ56zohb6BJWhN2I+Rz9X2FgfxJWAnuEnW8NVB07y8BBWRnsmOwS9iNDqHlPa/Ofog39MTY
+ lxTtlrVp
+ Jka3NZNGO34U/uYxhZVw+0u5zht+ysVvaraaqAOw+kcKjo/+NMcZ1yrtRxfl2W0qoei/xfCemG0DoP9/WiVQNqYt3TEfFmSIZ+KdQLIbXssEu2pAT9qhEwqwVtrbyRJQkUw/ShEInAPgshrNwk8oEcAzRXfFiaB5XZwwg8LvXb4ltyT/+iWXV4/qLjEgDUdtrMyxg+0767cCdF1HXrWiSBCIUsnNWfKmW9DRYnt1rrwdh7p89ZRavel8+5bK3im0RUDtOY27nhZQ4SQgAkWlx2wIZ///io40n0lSl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,43 +150,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/16/26 00:13, Matthew Wilcox wrote:
-> On Mon, Feb 02, 2026 at 03:56:24PM +0000, Kiryl Shutsemau wrote:
->> With the upcoming changes to HVO, a single page of tail struct pages
->> will be shared across all huge pages of the same order on a node. Since
->> huge pages on the same node may belong to different zones, the zone
->> information stored in shared tail page flags would be incorrect.
+On 2/14/26 07:35, Lance Yang wrote:
+> 
+> 
+> On 2026/2/12 17:10, David Hildenbrand (Arm) wrote:
+>> On 2/12/26 10:05, Sergey Senozhatsky wrote:
+>>> [..]
+>>>
+>>> Interesting, so 1dfb059b9438633 and 878aee7d6b5504e fixed real
+>>> problems "khugepaged can sometimes cause suspend to fail", but
+>>> I don't see what exactly b39ca208403c8f2 fixed.  Sounds more
+>>> like an "optimization"?
 >>
->> Always fetch zone information from the head page, which has unique and
->> correct zone flags for each compound page.
+>> Yes, a cleanup. I wonder if it caused harm.
+>>
+>>>
+>>>
+>>> I only have bug reports at hands, I don't have a repro.  Can the fact
+>>> that swap reads require S/W decompression (zram) add enough latency?
+>>
+>> I guess so. 20 seconds is still a lot.
+>>
+>>>
+>>>
+>>> Let me check.
+>>>
+>>> cat /sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan
+>>> 4096
+>>>
+>>> Hmm, doesn't sound too high.  Let me look more.
+>>
+>> Yeah, that's not a lot of pages to scan. It's the default (8 * 
+>> HPAGE_PMD_NR)
 > 
-> You're right that different pages in the same folio can have different
-> zone number.  But does it matter ... or to put it another way, why is
-> returning the zone number of the head page the correct way to resolve
-> this?
+> Right. 4096 pages is not much to scan :)
+> 
+> This patch lets khugepaged be frozen between VMAs.
+> 
+> But if khugepaged is already collapsing when freeze starts, there
+> are two places without freeze checks that could take a bit long:
+> 
+> - __collapse_huge_page_swapin() loops 512 pages, calls do_swap_page()
+>    for each swap entry.
+> 
+> - collapse_file() loops 512 pages, calls shmem_get_folio(). If pages
+>    are swapped out, shmem_swapin_folio() is called.
+> 
+> Each swap-in can block for I/O. With multiple pages swapped out, the
+> cumulative time adds up.
 
-How can a folio cross zones?
+But 20 seconds to swap in 4096 pages (16 MiB)?
 
-Runtime allocated hugetlb folios from the CMA/buddy (alloc_contig_range) 
-definitely fall into a single zone.
-
-So is it about ones allocated early during boot, where, by chance, we 
-manage to cross ZONE_NORMAL + ZONE_MOVABLE etc?
-
-I thought that it's also not allowed there, and I wonder whether we 
-should disallow it if it's possible.
+Okay, on arm64 with 64k it would be a lot more (8 * 512 MiB == 4 GiB).
+With With 16k we're at 8 * 32MiB = 256 MiB.
 
 > 
-> Arguably, the caller is asking for the zone number of _this page_, and
-> does not care about the zone number of the head page.  It would be good
-> to have a short discussion of this in the commit message (but probably
-> not worth putting this in a comment).
+> Maybe we also need check points inside these loops to bail out early?
 
-Agreed, in particular, if there would be a functional change. So far I 
-assumed there would be no such change.
+I'd only do that if we have evidence that it's actually helpful.
 
-Things like shrink_zone_span() really need to know the zone of that 
-page, not the one of the head; unless both fall into the same zone.
+@Sergey, with which base page size are you running (4k vs. 16k vs 64k)? 
+I assume your report is on aarch64, correct?
 
 -- 
 Cheers,
