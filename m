@@ -4,141 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8D62E7BDA9
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 12:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8658EE7BDB8
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 13:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1024B6B0005; Mon, 16 Feb 2026 07:19:59 -0500 (EST)
+	id 740486B0005; Mon, 16 Feb 2026 08:18:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0796B0088; Mon, 16 Feb 2026 07:19:59 -0500 (EST)
+	id 6EE136B0088; Mon, 16 Feb 2026 08:18:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF1196B0089; Mon, 16 Feb 2026 07:19:58 -0500 (EST)
+	id 5EC686B0089; Mon, 16 Feb 2026 08:18:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D90E66B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:19:58 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7BD3A8D189
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:19:58 +0000 (UTC)
-X-FDA: 84450226476.04.1AC534D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9B772120005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:19:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gsm5+VCO;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46B796B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:18:19 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C75168CE8A
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:18:18 +0000 (UTC)
+X-FDA: 84450373476.26.70A7F98
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CB20F1C000A
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 13:18:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p48jLXCy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771244396;
+	s=arc-20220608; t=1771247897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C6AEU+v0T8MvjqBnSx8bR+vM3oyOGX/TtVHCxXOCIP0=;
-	b=lXfZ+lKYEiOrJwjgxZLWJp68mfRS0AqQFLLQgHiD5dZwogoO48xFu8wx61WQkyDNAwDR1X
-	29Yzkm47dMiL2UC19umKaPVbkc5F3So0HAjNov4n1DtUA7+mXqZCRtQHyPrxSNUDmCcAgY
-	cGMkLL0/Wk1383Jto99xDfYrYlyC3IE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gsm5+VCO;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771244396; a=rsa-sha256;
+	bh=V05ejPvopLo9DRbeUi1eZlG4ZZP00I4HL4AVm44w2ig=;
+	b=oIO6rGN/2ze2ftGLd97qjv+w/auKqHHAgFRG7M1PZX6LV4PDlhv6+Dfbdu5ZMJkbppL1U0
+	gsjgYyHV4iuuTgFr+Fuy18ziyme8U7bCNqJd1XDebThx/mqR2wBXFkwcnzwgkloZ5B+aWn
+	g8ltUDy9hV2EshO8HunIKZXbJjTQz9k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771247897; a=rsa-sha256;
 	cv=none;
-	b=bPH79CMZWu3WsLwdi+PRX40JA+oPnp0zuFeZribJkLohcM/XEdSmClT5knCtmpGoNWPIAQ
-	ggHXSJpLqpEMUWM1ezsJNf+9txnfaSUFubqca4DZ0znEkYBEUFIVDkX/D3XMq/2g6hydKr
-	4KdJYYZjkFyMCNILupJjncvtbga3EfY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D79543DED;
-	Mon, 16 Feb 2026 12:19:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02F7C116C6;
-	Mon, 16 Feb 2026 12:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771244395;
-	bh=8zgg3lww3h4FXpNYmWVoogp07XH/3lQ9RKFAHKyRcbA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gsm5+VCOWZGMFdm5BdJCcdrUKpgNO7MvNQ1AS4QqsOXn1HMEhgO8DwhacdnvLdafT
-	 o9SLiU1D6pyKuSou7hx4coCGgTbsLMNwy2GE0CnH/eMjIHpFkF3K/dmfDbhsaZfx9n
-	 UGU+pB/lAy+2KccOBQXLJB9mDzTGd1cJFga0UliV+bytqb3ilZ2ySBfnOFOaGWa7jd
-	 VoG9VKyuJe+PbDfAXXa6TUUhGoPz5aiTb1OsyU4mpu8NiPFv1x9ZjdSmOEv1jo2J0B
-	 Zqdjxole6N/FTHqD+6iafyBKRj0VBIwmiQrvwkXRyMNZ2h7hSnsXT/RjSmvGgddlYs
-	 zkLXWnjuX61iw==
-Message-ID: <8eee83b1-b59c-459d-a34c-63794ed68c03@kernel.org>
-Date: Mon, 16 Feb 2026 13:19:50 +0100
+	b=po32qkqh+FWbGiPuh4HxZcCQyAyQOekbWHLvBrTKxaDD34aCZkb803ScHTngW7L+E2vuXX
+	fjCzMI7Z92shCYRIVOJbkDNJGvFx7XkNLTomKFTnm7bsR0oingJVkqLDvVl1YZdsABJOh2
+	0F7NaI2GZLeu4/eKEYUlN23Pjez8Ezs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p48jLXCy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev
+Message-ID: <c29d36eb-0706-4f3c-aaed-de7d9ef74bed@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771247894;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V05ejPvopLo9DRbeUi1eZlG4ZZP00I4HL4AVm44w2ig=;
+	b=p48jLXCyB4VQIxa8U3Gdq7k8wKO8XyymBq6W8BKSRkDN7UxEod2Qo9XWM6In41SsmVr+1X
+	6bxBpYh3sSb2Zy2qbVUyeFagIxBxAeBh7JjAaEUhiDSJL47UcvZlEFoNMF1POC5KagDyAC
+	gKbYB0/kLVuZKWkLCLWUh1bnjRK+ODA=
+Date: Mon, 16 Feb 2026 14:18:10 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
- pages
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Wenchao Hao <haowenchao22@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260214084514.2842745-1-haowenchao22@gmail.com>
- <aZMAVF1S1kP5Gny_@thinkstation>
- <ddb0d3f8-a617-49a2-8fb1-e6293f376030@kernel.org>
- <aZMEvl7WUKyxmgIh@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+To: Jan Kara <jack@suse.cz>, Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
+ Andres Freund <andres@anarazel.de>, djwong@kernel.org,
+ john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
+ ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>,
+ dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>,
+ gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com,
+ vi.shah@samsung.com
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aZMEvl7WUKyxmgIh@thinkstation>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Pankaj Raghav <pankaj.raghav@linux.dev>
+In-Reply-To: <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9B772120005
-X-Stat-Signature: 4kst11wsw8dst5ezk8af89hxf8k5b1ab
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: CB20F1C000A
+X-Stat-Signature: 4e6jdspbi7pwrnyigpes5d9id3hm33jr
 X-Rspam-User: 
-X-HE-Tag: 1771244396-170822
-X-HE-Meta: U2FsdGVkX1/Pr1L9hJV2+ss4j7gQoWhvzLLUHKDAVHluAjEx093W4+npdJLvLKhD/qnPwBRugpKriebJykPUBzFEAcLa+iqNp4OKktBJf6KPNfuVj+YDEKGnZY2bDea2vn2bd8LjDnMocTNlZUw9BpU5QBSI2+5vp1u9QW6nxNTKW2xx0XOV1Fm+z1yB3YZ8NJtwha1tBMDUql6eUVYLmYFZksHq/WyVmwhBNO4m4Pp2JXnEKJkwGboKgJuy5pHVcAj/hXfIoW2SdKlnsLLTbUhqqvpjbhBsXounec/TWPinGwN97N+v6JLdrdpPegyivKkW7IaxBY0mldxuj+h2QV+C7yCoV5RZoI8lZxi4qWnyZVqKlENe42KUKOxLgaNrCser8SZJcXHNLZ1xU0j/BikFJzkquyRL7pzXEbIS/1pEsxoZpFlpotRPeYzIyupZUd7qiJgl3f4c3qrYzvzgVX9ZUVAbh1T3uar1IokcKWUayoR/CqKWN6jL/7BKIorlCmJfVdDKBj5Mejrmv5kzuLXlkyIxKXIohOptv9XRJ5CuH+noXq6L8pw+k0dYVS/33y/QwxTz6mptXyWGCZuwAOcgmjQxj6ebGlKPxroIy5sZfY1Ur3i7NTe9S3KFUY9/IxYAmRsqvw1Ngs4cEpuznrvPeBejMn/FrKdDh0jnA0iDyuusHYaJrrwjis8dSNWUOrPzFKAVW2E6/NiaPITpc/claZVuYQNAnmazcVHFQKLUot9SKr86iAZ7t/DFMdk9IOtVv6Adi54BsNeQepqrMbw12yBnGb079lqkOMLt51Pv4bA+xwy75YgcOkeoUkNAMtrz2tC/nhNdDhbZtRLtpoALL/+oamdqUshqdZx6E6cftZcDG9iM2qkdzwlVOb8cEhTcZ8DUa2plLHVh+gv7WDkBsHoqdLo3tcZd9+aQly9oRY6q4+nE3w8ibid2z2ZfSgK/LCweV6E7BoEf8ve
- No0gfK7x
- duhh4wpdeQp8LxARN+qDx68gtoSaD66PnxUie5UZkg/HfIUaoCVwUcRsWREh6tLtt5SgWKKRDV7z+pI70qX8CkEikZxhOQAyeREoaEC0Q92d7sWUoMF5TkYr8Uk4NZC0VqT9OF40Xr3xI8WUtgttnMMUUgz5d6QYyrz2C2hy61JEWN5tlfv0WBOutDukIezd1lsOnEtBACirfWhieHeqwUIXMhn89KK4or0zW9vVwJ9YaJijNAwpiwVt2kNS9AO9/xf+y
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1771247896-670208
+X-HE-Meta: U2FsdGVkX1+g9SAhL+8gW9o4pyAFdPoNMSXwZh9qreAv+efM4cubpxpMuyHt9UsCxt3f4Shl8TJiRnOkkGgQgUVqQnzPFDEcSyk58E1SfVOJ7kfD/hRSvRDu8eBB8eMSUuEBOjBeFboCTtbI+Boy/+L4pevw76g/QXkbiUxDAQ2UNKTZurv2x8CAe0uI3bq5SzLPzuMb3d7FCzTRGJFjA9NYLYGRTiRWkL1QunIDxk/N0w4T5lu496ztTl9HvTG6eg1wMlWHAHFQGomlDGcXfOtMHmxBbkKXLtdnbcFoyw2Z87bYUsFGsi8St0q9IVhnEPeH7dnaY/mAzsORdh88zo+4l2G+6/JFZxJ7OnqF/V58MuEVYdVSRpL9S4mvpd24lxOEHCIYOxQN08V0Ez+KjLA0aJ9r+dV1m3CkRMPAiwODvtxR+5QVYC0ujQFqPHcailm+TgPAReYGtu8DV90UAT/yAjvkYAZUin1dGYoC3dAoGNy4aqtTnG8lkXlSpVP2Nhf0FW9AeygL/cPktj68mg44OHX3qcKRi3BgqbAykOtqEHYlTKG/xxXbpk+aD64iL+pquISVK04W7BUY1yGatxHFIIMzHfaJ7j0u74xZ2nnDZyN0aIuANt8786BmW7MUFowJpnRnF0/Sh5Ypgrj2q9xNSywbSSr6FFSrYSP2TkynCgUWdrDYTTKk8vUelQmWvzAntqG5kyUjvhqlPLzu7Qn1/4zI1fxaVmXp9jfVSNJ02lvPwdcES59ca48pAXF0vhd1GOiXyYN56j8qj8GPKgCIYF+xQ1UZ6nOwxhLI4UL+8OkBrmNACAgKdZygSB3xaojCcQck4Xl8vhkFboqlgpsFnizGaCDvBejS8Wj4qSskw35WrqWa2fbqOXR+fNMcNu0/Tfii0hGx7A2LRSAcVrzXU4O90wkRoEzzSXmJE7XY69bs6Bj+ZiD9XFCvupNC5IRcy3AiywmN9C/bqjC
+ Dbd4fWUK
+ hFSbspm2eheYkSeqmtw60sJcXTP51fD2pMJUrNAhlXhdFnQAm7PJqBuf+H2q5v3iU+L4g8KePZWZJ+TRcPN5egMbDAlraf2zNacWO9czUSsXRZ1DHyaV408qOHvfVdB7cioy09N/7mi4Z6I7AO6XxdcpByKwhyB9/a/Wf9tpjd40SsVRg3RSHgF2mzk/NmPNVskYD/SHmmIk5lEHm3EEVi+Uz6dK9GqgLGf6eDFDBMU8IegDqlvoPK2EcrM5SGLAooDz1ObaNXREJ7VU61D2iRm5KuGBgVMXjIvqpqdm3QJjsXc0LW2uczoykbTuDytx3iI/YiKazoL433O/y/g8h453K8udZ8+2jyK/ISur+yw6usRQKjOCwdOMPZxMZYHL0CqIC4xey9zggnZKPX4h2isUmpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,45 +98,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/16/26 12:58, Kiryl Shutsemau wrote:
-> On Mon, Feb 16, 2026 at 12:45:13PM +0100, David Hildenbrand (Arm) wrote:
->> On 2/16/26 12:34, Kiryl Shutsemau wrote:
->>>
->>> I expect it to slowdown /proc/pid/smaps read substantially. I don't
->>> think this line in smaps worth it.
->>>
+
+
+On 2/16/2026 12:38 PM, Jan Kara wrote:
+> Hi!
+> 
+> On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
+>> Another thing that came up is to consider using write through semantics
+>> for buffered atomic writes, where we are able to transition page to
+>> writeback state immediately after the write and avoid any other users to
+>> modify the data till writeback completes. This might affect performance
+>> since we won't be able to batch similar atomic IOs but maybe
+>> applications like postgres would not mind this too much. If we go with
+>> this approach, we will be able to avoid worrying too much about other
+>> users changing atomic data underneath us.
 >>
->> That's why it's enabled through a command line parameter.
+>> An argument against this however is that it is user's responsibility to
+>> not do non atomic IO over an atomic range and this shall be considered a
+>> userspace usage error. This is similar to how there are ways users can
+>> tear a dio if they perform overlapping writes. [1].
 > 
-> One users want the stat and all users on the machine pay the price?
-> That's a poor trade off.
+> Yes, I was wondering whether the write-through semantics would make sense
+> as well. Intuitively it should make things simpler because you could
+> practially reuse the atomic DIO write path. Only that you'd first copy
+> data into the page cache and issue dio write from those folios. No need for
+> special tracking of which folios actually belong together in atomic write,
+> no need for cluttering standard folio writeback path, in case atomic write
+> cannot happen (e.g. because you cannot allocate appropriately aligned
+> blocks) you get the error back rightaway, ...
 > 
+> Of course this all depends on whether such semantics would be actually
+> useful for users such as PostgreSQL.
 
-It's a debug mechanism as stated in the patch description.
+One issue might be the performance, especially if the atomic max unit is in the 
+smaller end such as 16k or 32k (which is fairly common). But it will avoid the 
+overlapping writes issue and can easily leverage the direct IO path.
 
-Similar to CONFIG_DEBUG_VM slowing your machine down.
+But one thing that postgres really cares about is the integrity of a database 
+block. So if there is an IO that is a multiple of an atomic write unit (one 
+atomic unit encapsulates the whole DB page), it is not a problem if tearing 
+happens on the atomic boundaries. This fits very well with what NVMe calls 
+Multiple Atomicity Mode (MAM) [1].
 
-> In general, smaps scales poorly. It collects a lot of stats and most of
-> them are ignored by user. We need something like statx(2) where user can
-> declare what he is interested in, so kernel won't waste cycles.
-> 
-> Kernel cmdline parameter is the wrong place to declare what stats you
-> want to see.
+We don't have any semantics for MaM at the moment but that could increase the 
+performance as we can do larger IOs but still get the atomic guarantees certain 
+applications care about.
 
-If you have a good idea, please shoot. I proposed using module parameter 
-that
-can get toggled more easily by the admin that debugs something.
 
-It's a good question of someone would want to use this mechanism not 
-just for debugging. Then, indeed, a more selective (per-process) toggle 
-could be warranted. But likely the scanning would in any case be too 
-expensive for any non-debug case.
+[1] 
+https://nvmexpress.org/wp-content/uploads/NVM-Express-NVM-Command-Set-Specification-Revision-1.1-2024.08.05-Ratified.pdf 
 
-So let's not over-engineer a debug mechanism if this is intended to stay 
-a debug mechanism.
-
--- 
-Cheers,
-
-David
 
