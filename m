@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A299E83830
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 20:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46A92E83835
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 21:06:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 302CA6B0088; Mon, 16 Feb 2026 15:38:40 -0500 (EST)
+	id 53F566B0088; Mon, 16 Feb 2026 16:06:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AD216B0089; Mon, 16 Feb 2026 15:38:40 -0500 (EST)
+	id 50A296B0089; Mon, 16 Feb 2026 16:06:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 187116B008A; Mon, 16 Feb 2026 15:38:40 -0500 (EST)
+	id 40D026B008A; Mon, 16 Feb 2026 16:06:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F1BB56B0088
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 15:38:39 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 662958CFFF
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 20:38:39 +0000 (UTC)
-X-FDA: 84451483158.08.5672D68
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 778BA80007
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 20:38:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=apeK2QOt;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2769C6B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:06:51 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1533C41C8
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:06:50 +0000 (UTC)
+X-FDA: 84451554180.04.EE987FB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 20ED840013
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:06:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kpnhcbom;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771274317;
+	s=arc-20220608; t=1771276009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=TojxoJmNhyjU53IbkwPrjBwXeygl21fLvoJT/Zzat5g=;
-	b=CjdtFNduxR1POCCjj8lDeaMOKDr4uiprTetxCU0CCQ6o97LD+PWOSoZosdIb+LPed4ePhh
-	shUnX4QxFnrmBVaM3ybL7ZW9gQaz06zFu72LgJLWhkTCqUwd6Qush7KuGap51cuodfgunP
-	pDV/meqpz1VkLx7MQ6R7sSQcq9UMlZ8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771274317; a=rsa-sha256;
-	cv=none;
-	b=vB7JokwNAYKxq99SPIHe7TcVMFRbSbvxrI4V0qGBXZEmJ7Jk2xvuvaxEDB64yowhwtuVzk
-	MW8XUw3a00n8oNUom3fJUsBgdDVeGBZ9hdwdACwxJru6u7I2sjIYKgBDiI9GlasDJQLHFX
-	cMy3IA+cAKti09Sxjk5UhkW/eNu92O8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=WkSVYigH09cL3jipx4bmEeLH3+RWwip//Y7161Ufmso=;
+	b=Gce0RYyCl0vLA/lgcXCDSG0Pu0fCNSDt7+o//Uz89BAYdB385Gm9JHfCcByHmmSJSQIw5l
+	q23NmLSzmGPWjNQ209Jcbl1hPbYcmhynQiCts9vcgdXAMep9kAktVexC0dPYkrYvmGQvEV
+	y+G48Bdvt14aPHr2DIf0iyAL1bB8Rbg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=apeK2QOt;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771274316; x=1802810316;
-  h=date:from:to:cc:subject:message-id;
-  bh=K+r1yX2mtL2JeTD33rvmC2Bma1Q69iZQhwAXDSfGFLQ=;
-  b=apeK2QOty3aCCpYIyhmlkLo77cpdvzgajwezrE6mDpSzn2yxAe0R9uR/
-   oewfAhdWM1VhR6vrV0mNjYm71oNZRhADjSiafFiJZu3898CELVjY8DOfS
-   izHrcWrPkizK7A/1F59UkcDQtR6JdnKvieT04SQ99WPdHt5FXiVQpOXPT
-   xZVxSiNe/YX7A7OBEdL4Q+WzQCIVOpGzUABAhPVMAZeY8QJ1R9gZBB+yl
-   hTPfSL3inORt20vJNN3smmyRcONK+4sNWQmGkfix7cR5FQZrjOcjfUQGa
-   4DPCz9dHy/OFIH45LyQanjn95wPGACXsa2rrqtjUiClESaGl+5UwXuyGX
-   A==;
-X-CSE-ConnectionGUID: S3QNHmYhQcC8UP3eX9CYHA==
-X-CSE-MsgGUID: 4Otf0XOGRl2xUC3IBJmfYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83079012"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="83079012"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 12:38:34 -0800
-X-CSE-ConnectionGUID: LHhPrfsnSK641ZXhCaEDmQ==
-X-CSE-MsgGUID: f3dc1gkIQzeIVBRPMKXseA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="217844711"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 16 Feb 2026 12:38:30 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vs5MT-000000010GY-3URm;
-	Mon, 16 Feb 2026 20:38:29 +0000
-Date: Tue, 17 Feb 2026 04:38:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Dan Williams <dan.j.williams@intel.com>
-Subject: fs/dax.c:1885:21: sparse: sparse: incorrect type in
- assignment (different base types)
-Message-ID: <202602170406.kegA2Rkg-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 778BA80007
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kpnhcbom;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771276009; a=rsa-sha256;
+	cv=none;
+	b=naS0MJIPd6MWIvhgjjVG0EnhCHhl1X6gb3GagSx6HMVM3HdlDnlGoMzUDNml+MCv5jIn/E
+	7TFCSwIjku/QX2pD6y1TfohVo6TjeAHg98wcA32Ix1TxYlJnp+9G0tRoCidOb1aplFGzZe
+	1+e6/75WLa0cnHpoBwCJnPp4B0pGbeo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7AFED60133
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:06:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B9CC116C6;
+	Mon, 16 Feb 2026 21:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771276008;
+	bh=NG+dm0s43ukyI2Anb776ST2gZS5qq0/DGcoJ9RFJq84=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kpnhcbomUE/SnBdEgIq4mosGBFBn1Fi7UNxbdwVlPhJzZXc2hhLfK8x5PN6q0LweZ
+	 2JTk1QRGYPxC+FhtQY+T5vW058BM3fngT3rh/1OBkc3CLaii/6RyC/YJfMFYpnRDx1
+	 dGyCfrVS0+U6qfg04eZX7vS0ZdodsTBtzmJ9blP56pQbxMrPPqSVqiMDUJvY3j27w+
+	 WR7Dcu3rGfS7VP9p60D2v54yPY1I1BWQU7n0MSP5XNJEVRMOMPnslUwD7B3ZD/ZTq/
+	 hrAqlnftNmY4URIJWc/m6djJPwONal4ni2PMw2QUf2RvDgoeqTk9l2EjF951gSPCAH
+	 uMz564vwy707Q==
+From: SeongJae Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Yearly Retrospect (2024)
+Date: Mon, 16 Feb 2026 13:06:24 -0800
+Message-ID: <20260216210625.68098-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 20ED840013
+X-Stat-Signature: gj5dxc1yyk6j1wey4n1eg3wj5uoe4e4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: brhwgo97itcrieyi4o99gscfpf9pkj6e
-X-HE-Tag: 1771274316-736468
-X-HE-Meta: U2FsdGVkX1/zF0EVk3UUlhYH/+9ehuppX5wVBt8QA5oc9D+ptmcEMEh4BxtBFzBj08ggW2+hMW3/BPY0/nWo/dmyYM/S2+deJo+SS5H14SMYZXSRKDCSZcstscwNRDPEhM5joTkI1oRDXZM3gKdN0v8bY4/VlziCKDhb1OcytWWsp24Y9AnHuHNj/b8pSUil4JgG73Ei6BPdl7olVQlC6CFMYP1yOJO4Uq1NEeAMftd2Q8ob1Tjy1c1D5n63HF/x3voWIxFe0pFb2W56WgDDWCbS5qsfaoj588Rd97aT74K8kh6zNT2PlTb4cuLbuC1tGfVkjNWMikC7wLjUNVluRPyde1ct6LA1X64YeCiAxnuPyxH/4wOUxreaYRpRjvpDe0ZJoWHYsHIkxd9DdS/3xRjvXp3YqbKfcAPfVjT9/+7h51PNkWRKWu7h1XQABzmdcAY7ouFqjxi1czMte7oe89IR0PAG5YGnEEEwTAVryiNIEo6aukpYzgmedTmZDpLZYz4PeQsYTTYOGtxCtDAhC1bvGd7N0t1JF2QH3fzoPPNiT+KOzr750PTR5tPymfRaSurGb/YLUtolSzGJkLgOs5Cma8aPxLXRZpxVveH6gY0ZfiK6r4CONCRKoUSeMZhcYLzORfpSWu9r/RJDGkYFsSmbbi3TwNt+9dsjC57Ot6HX4IinTaKFAQ0dDy8TDko9lkHVKiGOlWai4pSUGSbYRbyQF18DsguuPK6IIrg9vmOb9n9tpoT6EXddCul15oyeArOg8JGt/R/Go+8/qayxlpQXdWOAzc1kEq83xJVA01zoFwUiD2ROpx4/JJPG9DNNMbO+XhAOtKw8U/nqTuXL7g==
+X-HE-Tag: 1771276008-79646
+X-HE-Meta: U2FsdGVkX19HksFyhjeANRpINQwL/pCVvuUXIpGkG7wNEkoxMtslf1fH2Vv4ejJltmAz+AAOboaY2CrKKUCBXmn8GDpPhJb3FyPnSZxua05IrRzNbq7FpfKCfV+S3jMIJ2n1J9tcNqj6QG60LvQjUz4VFCcII1G2dB2Ft4JvvPQ/NwEmhLw0A64P5plJwEfEY6vCwswnRRu5C7uawmGpi/9aiTLLnfpQdSr1L7yvlwCmDiOyj6uaO3HOjKGBkpNnkZMwkcsUr3X8T/nfErXA6snjbD3o4sahk4ohZNwntEjv5UCfJySacSPd2pNA+7A1rWcrmIrdu5svqjWYzqCholTSZIT8/CCQHI1X45ohrvpZOgtU24oMV0CwFlfeU4t9cGKbRolW+B5L9S2BOq0+szuO3KfxAM2m54g4HqAq5UxYIt/vMEeZwx5u9kfM9zvrKCOepxfDKaJGkWP8zinTGTt9v0KVtqjWmSvVeOOQOEgPh3D1Y4BdK0uUQzPi/8KY4JvsWv0KdP0eMkcvucjpzEESTh5Hm348DGzcXf0zzMy+r0+Dp2vl7ZyYItLWoqvIR/+wz/VCzFTAzxBuNcTLIAYJ8DJGVobx88D9oUPNvXmnOR2aQSAsg+EZtwqKTkx/Ebu067XG3blIxOn9cgQYgbAHCHdkRab377DHuxLErad7ODZ5FeA/h2VaITE1nX4uR4CUKzIBNJO7Ql8nVtCIC6tiUo3vMqjkXuiJs6H8irYtBmamej1XKO177ldagJod3Z+ha7c0e/oxzzUTN+kPAdf5JbkIrhnsXA58KQ/hpL8SBnCJYaMrIV255Ovviac6L1X6OkUA6kTG/t8hW/eTWaFtYuEbbhngVvxa0u5yWH3wExkLLO93a2wVuyXffQo3qFrxSOCSowbbAVqLxoKG4NaNsA7q0vDamLn8ZxPQ5Zvjaka8cbSOA5BmcCSZ0dK8sVVgAUcpVMuCzKJ/RdS
+ xKZllOkc
+ bi0DIYLWatFKCtE35r3ZL7zmkk6Ia4Q+sWCiR+P/X5tiYjWU/rm5MRd/MnScRl1CTbDDAe/mQrGXXq6yhZcFgNB8pwubITqOYeaZH02nEcencuorDbuYZZ8d+erb2MGHsBF2/uH5SKcy447b4OkIUVrDWBtsi6dg88zNVvIb7997xvcKO/MEMNs6ErZr6tDoDih7oEJo3R+XgT+Zl9XFgR1E/BwWyH8BE9yiF00kZB3XQGM5A+KnVWI7KeIdxtFowoa0mB1Oxod7d4NklZ3KXkyN95su2LwkbDIF+6ESO6VIttbE9ax3MHgV4l8Uwsp9c06QDy5Ct6lO8ftOmH4cHTE5d9f9Wn3yVEgsKo1xyY9YfmtMH9SsFjdzgbOXwyfWuOSIvzY7lv9RIl4FsD76ZmdmE8Zx6nt2qqL5F5t3EU0g0+hVP4mwpfd/Pse20iesPmfnvZdz/r6LSFJGQcOrk5AXSXhFGyPCjC6RSF+mkVCsg7R3Jr3YnKgQbt42QuO/RRK1CjtrdQBE6CNYN8tRvVWKTMSLf4fd0bvlZKZqFs9ex9ITxwodCgqjb2K02tdBzP6G1QO9OCLdM2clt7WVe1fZfEGTvyx50Pq6FG/0noTuEmkaRksGrK4PhhRtIhkDH/YMqtFfYsINnSyrbW6BIV3roblsRDYthr4J4vc40S3khs3x0+QPtArg4p8cq2u/kz/NE7DtnXC33wkmc/HPFqFUNiSg9qNdJvGiN9YLOtZrBGoDXUxvDlUY3l7LMZ8RQiwv3h/XwC5W+Wa4egxURazV/AE7p4Hg+9x41x4GM7jpOGT81rEIM7zWwbmVkstqbO8n1cDMmL5RbflTjeMKwhMCIrEnAjETbEvoUYZKIK1xO1Z3Q3MCMUDD0JGkUBTj9xlIdpemW7MugMitrK/LSUR8kwoBVBUHRwwNKmSQ7BSd1rGBOSAk9qdGokAIYiHwF1hGvyVQEYq+ckqHy7EDjq2oPmiZC
+ w/yxFzMM
+ 1LOVYcNUB1/7trqx1C0HPg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,218 +92,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   0f2acd3148e0ef42bdacbd477f90e8533f96b2ac
-commit: 38607c62b34b46317c46d5baf1df03ac6e48a1c6 fs/dax: properly refcount fs dax pages
-date:   11 months ago
-config: arm64-randconfig-r121-20260216 (https://download.01.org/0day-ci/archive/20260217/202602170406.kegA2Rkg-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602170406.kegA2Rkg-lkp@intel.com/reproduce)
+After DAMON has upstreamed in 2021, I shared yearly retrospects for 2022 [1]
+and 2023 [2].  And somehow I forgot to do that for 2024 and 2025.  Let me share
+the retrospect of 2024, before my memory goes away.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602170406.kegA2Rkg-lkp@intel.com/
+Summary
+=======
 
-sparse warnings: (new ones prefixed by >>)
-   fs/dax.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/fs_dax.h):
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   include/trace/events/fs_dax.h:153:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
-   include/trace/events/fs_dax.h:153:1: sparse:     expected unsigned long mask
-   include/trace/events/fs_dax.h:153:1: sparse:     got restricted vm_fault_t
-   fs/dax.c:727:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
-   fs/dax.c:727:39: sparse:     expected unsigned long v
-   fs/dax.c:727:39: sparse:     got restricted vm_fault_t
-   fs/dax.c:729:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
-   fs/dax.c:729:39: sparse:     expected unsigned long v
-   fs/dax.c:729:39: sparse:     got restricted vm_fault_t
-   fs/dax.c:733:31: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
-   fs/dax.c:733:31: sparse:     expected unsigned long v
-   fs/dax.c:733:31: sparse:     got restricted vm_fault_t
-   fs/dax.c:1376:41: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
-   fs/dax.c:1376:41: sparse:     expected int result
-   fs/dax.c:1376:41: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
->> fs/dax.c:1885:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
-   fs/dax.c:1885:21: sparse:     expected int ret
-   fs/dax.c:1885:21: sparse:     got restricted vm_fault_t
-   fs/dax.c:1888:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
-   fs/dax.c:1888:21: sparse:     expected int ret
-   fs/dax.c:1888:21: sparse:     got restricted vm_fault_t
->> fs/dax.c:1891:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted vm_fault_t @@     got int ret @@
-   fs/dax.c:1891:16: sparse:     expected restricted vm_fault_t
-   fs/dax.c:1891:16: sparse:     got int ret
-   fs/dax.c:1909:46: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [usertype] ret @@
-   fs/dax.c:1909:46: sparse:     expected int result
-   fs/dax.c:1909:46: sparse:     got restricted vm_fault_t [usertype] ret
-   fs/dax.c:1925:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
-   fs/dax.c:1925:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
-   fs/dax.c:1925:21: sparse:     got unsigned long
-   fs/dax.c:1966:51: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
-   fs/dax.c:1966:51: sparse:     expected int result
-   fs/dax.c:1966:51: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
-   fs/dax.c:2046:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
-   fs/dax.c:2046:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
-   fs/dax.c:2046:21: sparse:     got unsigned long
-   fs/dax.c:2080:62: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
-   fs/dax.c:2080:62: sparse:     expected int result
-   fs/dax.c:2080:62: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
-   fs/dax.c:2142:55: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t @@
-   fs/dax.c:2142:55: sparse:     expected int result
-   fs/dax.c:2142:55: sparse:     got restricted vm_fault_t
-   fs/dax.c:2160:58: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
-   fs/dax.c:2160:58: sparse:     expected int result
-   fs/dax.c:2160:58: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
-   fs/dax.c:279:13: sparse: sparse: context imbalance in 'wait_entry_unlocked' - unexpected unlock
-   fs/dax.c:508:49: sparse: sparse: context imbalance in 'dax_lock_folio' - different lock contexts for basic block
-   fs/dax.c:575:17: sparse: sparse: context imbalance in 'dax_lock_mapping_entry' - different lock contexts for basic block
-   fs/dax.c:1148:9: sparse: sparse: context imbalance in 'dax_writeback_one' - unexpected unlock
+2024 was a year that DAMON has been more publicly and widely adopted.  AWS
+published their usage of DAMON as a VLDB paper.  SK hynix developed and
+upstreamed DAMON features for memory tiering.  Debian kernel team has enabled
+DAMON build config on their kernels.  Citations of DAMON papers have also
+increased from 10 in 2023 to 17 in 2024.
 
-vim +1885 fs/dax.c
+DAMON's status and future plans have presented and discussed on multiple
+conferences, including OSSummit NA, LSF/MM/BPF, OSSummit EU, and LPC.
 
-  1826	
-  1827	/**
-  1828	 * dax_fault_iter - Common actor to handle pfn insertion in PTE/PMD fault.
-  1829	 * @vmf:	vm fault instance
-  1830	 * @iter:	iomap iter
-  1831	 * @pfnp:	pfn to be returned
-  1832	 * @xas:	the dax mapping tree of a file
-  1833	 * @entry:	an unlocked dax entry to be inserted
-  1834	 * @pmd:	distinguish whether it is a pmd fault
-  1835	 */
-  1836	static vm_fault_t dax_fault_iter(struct vm_fault *vmf,
-  1837			const struct iomap_iter *iter, pfn_t *pfnp,
-  1838			struct xa_state *xas, void **entry, bool pmd)
-  1839	{
-  1840		const struct iomap *iomap = &iter->iomap;
-  1841		const struct iomap *srcmap = iomap_iter_srcmap(iter);
-  1842		size_t size = pmd ? PMD_SIZE : PAGE_SIZE;
-  1843		loff_t pos = (loff_t)xas->xa_index << PAGE_SHIFT;
-  1844		bool write = iter->flags & IOMAP_WRITE;
-  1845		unsigned long entry_flags = pmd ? DAX_PMD : 0;
-  1846		struct folio *folio;
-  1847		int ret, err = 0;
-  1848		pfn_t pfn;
-  1849		void *kaddr;
-  1850	
-  1851		if (!pmd && vmf->cow_page)
-  1852			return dax_fault_cow_page(vmf, iter);
-  1853	
-  1854		/* if we are reading UNWRITTEN and HOLE, return a hole. */
-  1855		if (!write &&
-  1856		    (iomap->type == IOMAP_UNWRITTEN || iomap->type == IOMAP_HOLE)) {
-  1857			if (!pmd)
-  1858				return dax_load_hole(xas, vmf, iter, entry);
-  1859			return dax_pmd_load_hole(xas, vmf, iter, entry);
-  1860		}
-  1861	
-  1862		if (iomap->type != IOMAP_MAPPED && !(iomap->flags & IOMAP_F_SHARED)) {
-  1863			WARN_ON_ONCE(1);
-  1864			return pmd ? VM_FAULT_FALLBACK : VM_FAULT_SIGBUS;
-  1865		}
-  1866	
-  1867		err = dax_iomap_direct_access(iomap, pos, size, &kaddr, &pfn);
-  1868		if (err)
-  1869			return pmd ? VM_FAULT_FALLBACK : dax_fault_return(err);
-  1870	
-  1871		*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, entry_flags);
-  1872	
-  1873		if (write && iomap->flags & IOMAP_F_SHARED) {
-  1874			err = dax_iomap_copy_around(pos, size, size, srcmap, kaddr);
-  1875			if (err)
-  1876				return dax_fault_return(err);
-  1877		}
-  1878	
-  1879		folio = dax_to_folio(*entry);
-  1880		if (dax_fault_is_synchronous(iter, vmf->vma))
-  1881			return dax_fault_synchronous_pfnp(pfnp, pfn);
-  1882	
-  1883		folio_ref_inc(folio);
-  1884		if (pmd)
-> 1885			ret = vmf_insert_folio_pmd(vmf, pfn_folio(pfn_t_to_pfn(pfn)),
-  1886						write);
-  1887		else
-  1888			ret = vmf_insert_page_mkwrite(vmf, pfn_t_to_page(pfn), write);
-  1889		folio_put(folio);
-  1890	
-> 1891		return ret;
-  1892	}
-  1893	
+Number of development participants and commits have reduced compared to 2023,
+though.  Hopefully that reflects how DAMON continues being stabilized.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Events
+======
+
+In January, Linux 6.8-rc1 has released, with feedback-driven DAMOS
+aggressiveness auto-tuning [3] feature.  The feature allows users simply feed
+DAMOS rewards for current aggressiveness, and DAMOS can automatically tune the
+aggressiveness to convince the user.
+
+In March, Linux 6.9-rc1 has released, with DAMOS aggressiveness self-tuning [4]
+feature.  It makes the aggressiveness auto-tuning can work itself, without
+user's feedback.
+
+In April, DAMON was presented [4] at OSSummit North America.  The presentation
+was focusing on the feedback-driven DAMOS auto/self-tuning.
+
+In May, DAMON updates and future plans were discussed [5] at LSF/MM/BPF.  The
+plan was including DAMON-based memory tiering and holistic access-aware memory
+autoscaling for cloud providers.
+
+In July, Linux 6.11-rc1 has released, with DAMON changes [6] for CXL memory
+tiering.  The change is developed by SK hynix for their heterogeneous memory
+software development kit.
+
+In July, AWS published a paper [7] introducing their DAMON usage as a part of
+it, at VLDB.  The paper introduces AWS Aurora Serverless V2, which uses DAMON
+as its core part of memory auto-scaling.  Specifically, they use DAMON for
+proactively reclaiming cold pages inside guests.
+
+In August, DAMON project repositories on GitHub has moved [8] from awslabs
+organization to damonitor organization.
+
+In September, DAMON use cases were presented [9] at OSSummit EU.  The talk was
+mainly covering DAMON usages from AWS and SK hynix.  Honggyu Kim, an SK hynix
+engineer who developed DAMON-based memory tiering, has shared their use case on
+the talk.
+
+In September, DAMON long term development plan was presented [10] at LPC Kernel
+Memory Management Micro-conference.  The plan was about how DAMON will be
+flexible but also just works.
+
+In September, Debian enabled [11] DAMON build configuration on their kernels.
+
+In December, DAMON monitoring intervals tuning guide has published [12].  The
+guide includes the monitoring and tuning results on real world server
+workloads.
+
+Features
+========
+
+In 2024, a few new DAMON features have landed on the mainline.  Among those,
+below two features are noticeable to  me.
+
+DAMOS aggressiveness auto-tuning feature have landed in two parts.  The first
+part [3] on v6.8, and the second part [4] on v6.9.  This feature makes access
+aware system operations nearly self-driving.
+
+DAMON changes for CXL memory tiering has developed by SK hynix and landed [6]
+on v6.11.  The feature allows users to setup DAMOS for migrating hot and cold
+pages for appropriate tiers.
+
+Statistics
+==========
+
+In 2024, 20 people made 157 commits for DAMON on the mainline.  I got the
+numbers with name of the contributors using my script [13] as below.
+
+    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
+            --since 2024-01-01 --until 2024-12-31 --linux_subsystems DAMON
+    1. SeongJae Park <sj@kernel.org>: 133 commits
+    2. Zheng Yejian <zhengyejian@huaweicloud.com>: 2 commits
+    3. Anna-Maria Behnsen <anna-maria@linutronix.de>: 2 commits
+    4. Honggyu Kim <honggyu.kim@sk.com>: 2 commits
+    5. Hyeongtak Ji <hyeongtak.ji@sk.com>: 2 commits
+    6. Barry Song <v-songbaohua@oppo.com>: 2 commits
+    7. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
+    8. Maximilian Heyne <mheyne@amazon.de>: 1 commits
+    9. Andrew Paniakin <apanyaki@amazon.com>: 1 commits
+    10. James Houghton <jthoughton@google.com>: 1 commits
+    11. Ba Jing <bajing@cmss.chinamobile.com>: 1 commits
+    12. Leo Stone <leocstone@gmail.com>: 1 commits
+    13. Jinjie Ruan <ruanjinjie@huawei.com>: 1 commits
+    14. Diederik de Haas <didi.debian@cknow.org>: 1 commits
+    15. Liam R. Howlett <Liam.Howlett@oracle.com>: 1 commits
+    16. Peng Hao <flyingpeng@tencent.com>: 1 commits
+    17. Christophe Leroy <christophe.leroy@csgroup.eu>: 1 commits
+    18. Alex Rusuf <yorha.op@gmail.com>: 1 commits
+    19. Javier Carrasco <javier.carrasco.cruz@gmail.com>: 1 commits
+    20. Vincenzo Mezzela <vincenzo.mezzela@gmail.com>: 1 commits
+    # 20 authors, 157 commits in total
+
+Huge appreciation to all the developers.  It was a grateful year to work with
+you.
+
+The last line of the output for 2023 was like below:
+
+    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
+            --since 2023-01-01 --until 2023-12-31 --linux_subsystems DAMON
+    [...]
+    # 25 authors, 180 commits in total
+
+So, both the number of developers (25 -> 20) and commits (180 -> 157) have
+reduced.  Hopefully this means that DAMON is becoming more stabilized and
+reliable.
+
+DAMON User-space Tool
+---------------------
+
+DAMON user-space tool is also an important part of DAMON project.  In 2024,
+eight people made 1,031 commits for DAMON user-space tool.  The list of the
+developers are as below:
+
+    $ ./lazybox/version_control/authors.py ./damo --skip_merge_commits \
+            --since 2024-01-01 --until 2024-12-31
+    1. SeongJae Park <sj@kernel.org>: 753 commits
+    2. SeongJae Park <sj38.park@gmail.com>: 264 commits
+    3. Mithun Veluri <velurimithun38@gmail.com>: 4 commits
+    4. Honggyu Kim <honggyu.kim@sk.com>: 3 commits
+    5. m8 <umusasadik@gmail.com>: 2 commits
+    6. Yunjeong Mun <yunjeong.mun@sk.com>: 2 commits
+    7. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
+    8. Alex Rusuf <yorha.op@gmail.com>: 1 commits
+    9. Piyush Thange <pthange19@gmail.com>: 1 commits
+    # 9 authors, 1031 commits in total
+
+Note that I was counted twice due to different email address usages.
+
+The tool's output for 2023 was like below:
+
+    $ ./lazybox/version_control/authors.py ./damo --skip_merge_commits \
+            --since 2023-01-01 --until 2023-12-31
+    1. SeongJae Park <sj38.park@gmail.com>: 1793 commits
+    2. SeongJae Park <sj@kernel.org>: 58 commits
+    3. Honggyu Kim <honggyu.kp@gmail.com>: 8 commits
+    4. sjpark <sjpark@amazon.com>: 5 commits
+    5. Michel Alexandre Salim <salimma@fedoraproject.org>: 4 commits
+    6. SeongJae Park <sjpark@amazon.com>: 3 commits
+    7. Honggyu Kim <honggyu.kim@sk.com>: 2 commits
+    8. Andrew Paniakin <apanyaki@amazon.com>: 1 commits
+    9. fdu <1050329+fdu@users.noreply.github.com>: 1 commits
+    10. Puranjay Mohan <pjy@amazon.com>: 1 commits
+    11. Puranjay Mohan <pjy@amazon.de>: 1 commits
+    # 11 authors, 1877 commits in total
+
+Note that I was counted four times, and Puranjay was counted twice.  So, seven
+people made 1,877 commits for DAMON user-space tool in 2023.  The number of
+contributors have increased, while the number of total commits have quite
+reduced.  The reduction of the commits was mainly from my side.  I was making
+~1,800 commits in 2023, but only ~1,000 commits in 2024.  I actually feel DAMON
+user-space tool is being more stabilized.  I also spent quite amount of my time
+that I used to use for DAMON user-space tool for another tool, hkml [16].
+
+Paper Citations
+---------------
+
+Yet another interesting statistics about the number of DAMON paper citations.
+I published two academic papers introducing DAMON in 2019 [14] and 2022 [15].
+
+The number of citations for the two papers have quite increased, as below.
+
+2019-published paper: 6 (2023) -> 10 (2024)
+2022-published paper: 4 (2023) -> 7  (2024)
+
+Conclusion
+==========
+
+So, 2024 was a year DAMON has more publicly and widely adopted, and extended
+itself for more use cases.
+
+References
+==========
+
+[1] 2022 retrospect: https://lore.kernel.org/20221229171209.162356-1-sj@kernel.org/
+[2] 2023 retrospect: https://lore.kernel.org/20231231222250.140364-1-sj@kernel.org/
+[3] DAMOS auto-tune: https://git.kernel.org/torvalds/c/9294a037c01564786
+[4] DAMOS self-tune: https://git.kernel.org/torvalds/c/78f2f60377ee43b7f
+[5] OSSummit NA talk: https://ossna2024.sched.com/event/1aBOg
+[6] DAMOS memory-tiering: https://git.kernel.org/torvalds/c/a00ce85af2a1be49
+[7] VLDB AWS paper: https://www.amazon.science/publications/resource-management-in-aurora-serverless
+[8] awslabs to damonitor GitHub repos move: https://lore.kernel.org/all/20240813232158.83903-1-sj@kernel.org/
+[9] OSSummit EU talk: https://osseu2024.sched.com/event/1ej2S
+[10] LPC talk: https://lpc.events/event/18/contributions/1768/
+[11] Debian DAMON enablement: https://salsa.debian.org/kernel-team/linux/-/merge_requests/1172
+[12] DAMON tuning guide: https://lore.kernel.org/all/20241202175459.2005526-1-sj@kernel.org/
+[13] https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
+[14] 2019 DAMON paper: https://dl.acm.org/doi/abs/10.1145/3366626.3368125
+[15] 2022 DAMON paper: https://dl.acm.org/doi/abs/10.1145/3502181.3531466
+[16] hkml: https://github.com/sjp38/hackermail
 
