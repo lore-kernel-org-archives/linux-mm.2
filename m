@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3785E7BD85
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 10:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03161E7BD85
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 10:12:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32F246B0005; Mon, 16 Feb 2026 05:06:08 -0500 (EST)
+	id 1F5946B0005; Mon, 16 Feb 2026 05:12:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D3066B0088; Mon, 16 Feb 2026 05:06:08 -0500 (EST)
+	id 1A0356B0088; Mon, 16 Feb 2026 05:12:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BE066B0089; Mon, 16 Feb 2026 05:06:08 -0500 (EST)
+	id 0AFB46B0089; Mon, 16 Feb 2026 05:12:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 056706B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 05:06:08 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B79213C1C5
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:06:07 +0000 (UTC)
-X-FDA: 84449889174.19.9DE8E4D
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BE96318000E
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:06:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=jU5GlL5V;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ECA806B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 05:12:17 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84689C3B77
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:12:17 +0000 (UTC)
+X-FDA: 84449904714.25.A93870F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 982DE2000D
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:12:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771236365;
+	s=arc-20220608; t=1771236735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lA3OEEP90dY108YV/hs7UutfJeQZLnf5b9cwdqh33lU=;
-	b=p6TnfaAAxrRU6Ej9FmpVDckW77FgXDHUIVGmq+SUVn4zn2We+B90g8Nj7rmLITma7AT6qD
-	DYGmIy6yPqkcLkHS5yJofMkQc+g8hW1EHaAeh4yWindJtNpQHzHwV4BtxjKmlAEX3Sqlt1
-	MsJChYu8hjI7PX+3svqS4ZPdjtzeWCk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ot/kmpbQEe/4R34Hfvq4D4SoLQY3Z82yHBqbFKTfrjQ=;
+	b=5YR+Jph6VA9ZQIiSAcjmpC9Rn1tk5Hmi3uN+Lwf+86wra342PQId3Vh6h5uuByylIrH+Rk
+	8HcnPd40h3Of88jkzPRBP5tRgz88zk89trvEhzaKeTk6/gwllxeysBf6HY9tMVDZea9ESS
+	6vuN/xV6E30yn9fp2wKQG7iuSys7e6U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=jU5GlL5V;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771236365; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771236735; a=rsa-sha256;
 	cv=none;
-	b=W0TRI1CUQRUZq8FCgMsk55692IBLXHYeVfO0kfd6ea0m/6BlO4W/xi/PSa0qaisJgL2tVf
-	5xGvWnRWUxe+WleSHT29rt8kNpwIjoL/zHmrHDG6VdTllV9dXtpf4721INNSJgEow7X87J
-	EFxg9qSp2oLVXVwKhGQ5aRMcu+9VvCQ=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8217f2ad01eso2466894b3a.2
-        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 02:06:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1771236364; x=1771841164; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lA3OEEP90dY108YV/hs7UutfJeQZLnf5b9cwdqh33lU=;
-        b=jU5GlL5VHPbZZFB4ZpIs2W08Hv998nrEarL950Av82wR935XivCXASoOgm4PPgZD0k
-         vJSa5AdbhNKF71fti1PA/GDyPfHdizwn8n0hVYZK3BwkteJzoY7lbMXSNYyfSzu3n+TR
-         NVce0Zm8B55GqbYFrYTCNWuz4NRRSOqnvUl8s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771236364; x=1771841164;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lA3OEEP90dY108YV/hs7UutfJeQZLnf5b9cwdqh33lU=;
-        b=txlCl0BiulEMzb8Y4qzfXvdyCya1uxu5SgTMjPxAa8wCTprWC8xn097R1qe2R709eB
-         Brgtavv9YdYNlyzoqMSlMvKFTVSAkgmWstzldk+0w4jaUrv/dsx/zCq66WV0pONvz/g0
-         82LILb6pdVLz/tsHVbobXfRsTRv7BL/i7c7MDHgAR/I6U4Z+tiX9qQCZj3VHiZz9apvp
-         yPnwTwEDU0OFbiNKB67XJu4JxN9Y45W+JHbrXuosxPYn7cYts6KNqo/hEcAqJgu9PEAj
-         6nGepXStCtyaWlOVyZaVot3Dz2IS2qykUgAX0c5VrzljtMNK3fKeohyO70T134lDRo9i
-         BlkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgw7Re5qV8ABE561Ssc01p1bZrpbsb8+iQQojWmng7OuX+SfuQfn/Bq3EPy646LOzsnMubvKi1rA==@kvack.org
-X-Gm-Message-State: AOJu0YwWcDVozPpeS6rkDcDQsECIGNS9GF0vUlZB5G4YMH3+stc4ojCD
-	y6okw24bu8c7xJeruWc4zt7YbQoqP5WnRm9C2OHT74moHjCQUBF162wrlKX7XLQhHQ==
-X-Gm-Gg: AZuq6aIgBY4+lzpkNN9kIKUSvqbt8+ANMc5zTGO3YmVS30EI4mNCYsGfg2VCXfRXzr8
-	zln1u27OVmxbw2FSGbGzNMMI9eQSsTEedVxsanvhC45WGZ5/mpaqnyaVH0lbIHHtoCNSCPPxi3l
-	t3iY9DjcPrQdhms6mtq9jbOIMlAzhv6v15bBK5kQMvADCCh4/fFJJ6aWauJ3k1P65IqLHE7+qLR
-	gwkxsGT7gji/RtcQs4hRq4lROL4SyEJn37NticqGPeI0MPijsi0i82lS5WSeTXeYEmJbIAbmAPy
-	epGrJhH3ieDzDKqJ3QoJ2G3sWOuLELP4zfOoumW1O9nu+SvGMCuX2HXcShKs7/FVEszmmL9zJI1
-	pRHdy3qcDwtNyHf8DAD2HBjMVhvmX8otirt0MjOXAk5KrwJ6D10IlvkTN1VU7myxxgYff3O2UIO
-	JpAlKC/fOtlj/2Hz40ey/DnsdDK1yuZSAyRHsKS9HViya3YuvB9EK01HUhcSNSUwo=
-X-Received: by 2002:a05:6a00:a205:b0:81e:e5e9:9aa7 with SMTP id d2e1a72fcca58-824c612c419mr9427274b3a.52.1771236364426;
-        Mon, 16 Feb 2026 02:06:04 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:16a9:1c52:52a1:18af])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-824c6a409e6sm9933774b3a.18.2026.02.16.02.06.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Feb 2026 02:06:03 -0800 (PST)
-Date: Mon, 16 Feb 2026 19:05:59 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
-Message-ID: <pwsx46mfwebugunergbaqxmm4fuoacnndjvexi7ukoyznxuy7x@ml4tjdxgf4ac>
-References: <20260211031512.261127-1-senozhatsky@chromium.org>
- <104bc764-5a20-4ac2-95a8-b31f41255766@kernel.org>
- <jftqdosilzfkd4ku6pjuevkvuwmhlqtua62jwsmmgdfcseitb4@gopt2xzqhyrk>
- <3571cf8b-9fb3-41b2-a402-a8537ee2c399@kernel.org>
- <r6m6vdhbqada6i3gugtnj3lytjrkyiretihwebwci423vwslcr@ysrgdqvvno6b>
- <16ce9ce2-8081-482c-a6ea-0932ebd081f1@kernel.org>
- <56345542-544a-48e4-b127-49a850deee9b@linux.dev>
- <5dc7d3a2-a358-481d-9352-d8356d3343c2@kernel.org>
- <jfj7y2xpqqnpzvttyd7uotavxk2geabdqbwwsdr3akmcz2cioh@5h7nelhexzyf>
+	b=fCslaDd163nuxIYsqWkF2zcjCXyTsyHExHVnB/hxRGSBiN7SSI/lTS3Ig4+bKsDupqc3y4
+	wPnC262+QCIDeaCES8pu+X67gOtzfNZTu5RzJNKrM6CYQEfllgV5xmxpZsyTk9uQnxnLRh
+	Smq09PuCCvbqNRxYxZOSi4ef1UK2Xrg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2BF1150C;
+	Mon, 16 Feb 2026 02:12:07 -0800 (PST)
+Received: from [10.164.19.71] (unknown [10.164.19.71])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3452D3F73F;
+	Mon, 16 Feb 2026 02:12:10 -0800 (PST)
+Message-ID: <71fbee21-f1b4-4202-a790-5076850d8d00@arm.com>
+Date: Mon, 16 Feb 2026 15:42:08 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jfj7y2xpqqnpzvttyd7uotavxk2geabdqbwwsdr3akmcz2cioh@5h7nelhexzyf>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BE96318000E
-X-Stat-Signature: nhu9cib9g119gomfpr1opf7ibka78ius
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
+ PTE batching (cac1db8c3aad)
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: Luke Yang <luyang@redhat.com>, jhladky@redhat.com,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, willy@infradead.org,
+ vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+ <c450ee86-4c34-449d-b144-6b4dcb996998@kernel.org>
+ <dhoz2eeqdx44sf2epeorxs67v5zohutgxniourumsouz22qbl7@gijuj43edjb4>
+ <CAJuCfpHJyHH4=kcQcc_RUPhmLBN8HckoDW0DHiUe+FdQ+tr2NA@mail.gmail.com>
+ <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: abw9817cn7tomdk3hfdnuepw5sgc6uud
+X-Rspamd-Queue-Id: 982DE2000D
 X-Rspam-User: 
-X-HE-Tag: 1771236365-21811
-X-HE-Meta: U2FsdGVkX1+g6367cxEPbKn1aRkuyI9Op3DYoSuvfGRjXBO60VDNoRJvQG57asg1MFqX+QhWUxl96icT3zMYPhu+3d0YxDw7fDziVEcvJH3mp8FUU6W5d/NdQB0fYjN9A7lcafGU/02BGWwcYgbjptxT5rgBcWsU+D7EjecdB8jFFnXxedXcLB55uBDty2srqplktaa5fBd05aQC6B2CMy1ZLsxvohaRqcgWc9eaayGYmUN+0b1IBNnXdhwl5mR24fCZiYeS44VGZpsrmbJUybtvaBB0rwaNQ31o6rRdc750jqcwe0/G7m6XteeNOkUivbnZDhBg6UNLbOSrA5cOCz5ZznSKeBemh6RxTGpvdIfPw1ZoPDYzIgh6qSKdLjV0Nfrqnp4dU9lQm0bjNHhG9QbVXWK8T27ycGv/1rCZrL8sSmLnh6Q3FfmX9qGUY0zxbbJhhf/792H4KOCfFDecLBe9dHqHDenqnNH7PcGQDulOv1YXE0bephxZ7Xd24LdttNaagoCGF0N9/UkqFUCErZ+1h2JCMA34nwUzCEURxobiKBOrq05woeW5sw16bmbiamllj09/6MmokKUw/ZKOumqdlUMiJcz3T1zuX+rE6sf/UByyNmo1ogu24CrCIcBJxOkApicDkKtDJQTxX2Ym9RA7M8DC3zFZ3oj0/IWpwiNsKyDxdN3h4l+gSaJgWHl+MWe54LKQr4Gvqs0f2JU9hi9aBa84f7gL8d08YsPApTJs0AZwi2DL5QMCCJ1Cnr5Tk2MbIlWDS6uBm7s7eBCiWlVEh1VrdLzVBIS/lb83eYWMSzLXBDuYRNFtybmS7+aEE350TlvVZayrizpqxPrjiXs1riKI9HWRqk94XE/YYxCxnHsA3Ol5vnIr+kE9QhxXcxL4ZmH8DldTkrUCkD6FhwVDnBHefw8BMn85bVYczvQXNPDIYKVHSe4FicHuWPMhSv63PlF8UU50MR6GuaS
- wXrlf7TP
- ccAmnPaWLXYz5WvhV2jmmuyxMULtPwGAVeSVuhulUkSgAje8Tpfiw7TLEBs9jA3K0Jnp+jTCEMNerNMKYByGm5EZWOjbfsQyB2JNyqj9Am9JoKqqpDf6SGQJIfE3UNUmeKra9v4WtHEGUNbrbP/nNwZ4LiDf8wtrPgVFXEetY8C3GKQp/SmbqJ7yibq2SlAARbvekC2vKKbBoTfvRLybHD30/IN7oljs8puFbXB4Z5HdpF8x+CsPGICbclYjjCAapNdzb+sFeEujxTrDAr5kEJAarXY97CNk3Qnym6bmxP5TOjTEk64ObJcPHcG/sC0ORz+OsqFug74e62a8+/8r97KICYBi5v+0Nf2x1cF7MXDQ0RzU=
+X-HE-Tag: 1771236735-725712
+X-HE-Meta: U2FsdGVkX1+Ciupml7yYpaPA7qCBh2owkMGUa0IplQsreVq+1cY5PAWx6at4PjyGt0mszAx1CkKZvJZ8QcIbjb5WK7AnK0K6N/G41QfeduceTgxVqQHjljahOB8OiqzKRPie90H8lUhv96RnPwVFeo9Stn9vcThH48srkwJ0erykVudOQ7tHjpljt2bs2GW9FoTUZUNc3wLdnDyZOaFiLAP+0s998i9eB23N0TQHFbqidPwIWf6+MTj/vzyj9d2tiI6lFYQtF2nr4ErYqqsVi0keq2ruFADdv6HYn2uVptL/L4fwxoUEpavC6QlUR+Xd/WUI2Ft+3peJP942WoXP9dm4ir2qZHzcW884FKbxV+qiigqShrpBucd1/ge62O+7Rexh2W8pZ3MhcifLlkDT0HJqsy5h9tlG7FuZClT6Xh4+8lEGhahPcOo1xN/2gaEg9zY1Sx4FSNq4axVgV+AAkFt+FtKxRlmbg+lLEXj+xHNgJi0Lbz+bj4YOe60tRqvBPjKzywYbPykeSjC4Jc5HID5Xha0k+DEs94hoSzjKP8fGTOT9A+B9SF25R6kkIRo6TAzBzV2s6I+FKiIF3KZQbRNssCRxfH/s/EDHAfUcZpU2TF5WAo2jkPrF9khP22+Lbf2nWMdqinxA4L2aZy3//l5TkrsoYU3nJUACmNfjR4teVmjEHQub6tgBRGFxzBPNk5x4VL7s4SzrW74/c724StOIJkhxajEeMsLNClxmgeFbXGI/GQRBej+DmiiTRR2EP9563/B4FSnNONrbXTzcbW8unkPxVg5rq+8rhV6v4T2I71s9IsCmFd9Nq+9QKFMJG5tsJydMIS/wlq3JxdDID5dzhAeynwHQS6oPfyWiRGIFYcCXbhpCe+eBb5MWik5azJ3JOosTnVrsSheSTGaikr3CfrMkPEUb8I4Y/cCRUf33/rFy2c684LlKM4TAokh+pgyQFJqyiKgQHwIFXUG
+ lrRdiVfp
+ H5eJKERoJh2CbSm4FXuO5nlsInEubBYfJ6MTvmmpMNFe9BCHkmxdiglWZ84a18PgWWQEtCkiLN6O40sJTK/ouKU2nxHUFeA4M1q0iKXWcG/3v7mlEyWIC2wshiu2fXecPNHyh4tw339P96HRhlLyEs/yncDKgltnU4yGBjnWmLbYnKPHlIIA37BcPt06D82cIWRJs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,17 +92,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/02/16 18:50), Sergey Senozhatsky wrote:
-> On (26/02/16 10:24), David Hildenbrand (Arm) wrote:
-> > > Maybe we also need check points inside these loops to bail out early?
-> > 
-> > I'd only do that if we have evidence that it's actually helpful.
-> > 
-> > @Sergey, with which base page size are you running (4k vs. 16k vs 64k)? I
-> > assume your report is on aarch64, correct?
-> 
-> I had reports from a 2 CPU Intel n50 device, with 4096 PAGE_SIZE.
-> I'm trying to repro on that device now (by running suspend/resume
-		      ^^^ on a similar device, not exactly the same.
-So I guess I wouldn't rule out the possibility of a h/w issue.
+
+On 13/02/26 10:56 pm, David Hildenbrand (Arm) wrote:
+> On 2/13/26 18:16, Suren Baghdasaryan wrote:
+>> On Fri, Feb 13, 2026 at 4:24 PM Pedro Falcato <pfalcato@suse.de> wrote:
+>>>
+>>> On Fri, Feb 13, 2026 at 04:47:29PM +0100, David Hildenbrand (Arm) wrote:
+>>>>
+>>>> Hi!
+>>>>
+>>>>
+>>>> Micro-benchmark results are nice. But what is the real word impact?
+>>>> IOW, why
+>>>> should we care?
+>>>
+>>> Well, mprotect is widely used in thread spawning, code JITting,
+>>> and even process startup. And we don't want to pay for a feature we can't
+>>> even use (on x86).
+>>
+>> I agree. When I straced Android's zygote a while ago, mprotect() came
+>> up #30 in the list of most frequently used syscalls and one of the
+>> most used mm-related syscalls due to its use during process creation.
+>> However, I don't know how often it's used on VMAs of size >=400KiB.
+>
+> See my point? :) If this is apparently so widespread then finding a real
+> reproducer is likely not a problem. Otherwise it's just speculation.
+>
+> It would also be interesting to know whether the reproducer ran with any
+> sort of mTHP enabled or not. 
+
+Yes. Luke, can you experiment with the following microbenchmark:
+
+https://pastebin.com/3hNtYirT
+
+and see if there is an optimization for pte-mapped 2M folios, before and
+after the commit?
+
+(set transparent_hugepages/enabled=always, hugepages-2048Kb/enabled=always)
+
+
+>
+>>
+>>>
+>>> In any case, I think I see the problem. Namely, that we now need to call
+>>> vm_normal_folio() for every single PTE (this seems similar to the mremap
+>>> problem caught in 0b5be138ce00f421bd7cc5a226061bd62c4ab850). I'll try to
+>>> draft up a patch over the weekend if I can.
+>
+> I think we excessively discussed that during review and fixups of the
+> commit in question. You might want to dig through that because I could
+> have sworn we might already have discussed how to optimize this. 
+
+I have written a patch to call vm_normal_folio only when required, and use
+pte_batch_hint
+
+instead of vm_normal_folio + folio_pte_batch. The results, testing with 
+
+https://pastebin.com/3hNtYirT on Apple M3:
+
+without-thp (small 4K folio case): patched beats vanilla by 6.89% (patched
+avoids vm_normal_folio overhead)
+
+64k-thp: no diff
+
+pte-mapped-2M thp: vanilla beats patched by 10.71% (vanilla batches over
+2M, patched batches over 64K)
+
+
+Interestingly, I don't see an obvious reason why the last case should have
+a win.
+
+Batching over 16 ptes or 512 ptes in this code path, AFAIU is *not* going
+to batch
+
+over TLB flushes, atomic ops etc (the tlb_flush_pte_range in
+prot_commit_flush_ptes
+
+is an mmu-gather extension and not a TLB flush). So, the fact that similar
+operations
+
+are now getting batched should imply better memory access locality, fewer
+function
+
+calls etc.
+
+
+>
+> When going from none -> writable we always did a vm_normal_folio() with
+> anonymous folios. For the other direction not.
+>
 
