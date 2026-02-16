@@ -4,121 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B839E63F33
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 07:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E50F7E63F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 08:26:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54CE46B0005; Mon, 16 Feb 2026 02:54:15 -0500 (EST)
+	id 1155B6B0005; Mon, 16 Feb 2026 03:26:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524356B0088; Mon, 16 Feb 2026 02:54:15 -0500 (EST)
+	id 099236B0088; Mon, 16 Feb 2026 03:26:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45B336B0089; Mon, 16 Feb 2026 02:54:15 -0500 (EST)
+	id EC30E6B0089; Mon, 16 Feb 2026 03:26:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30DA56B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 02:54:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C50031CE3C
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:54:04 +0000 (UTC)
-X-FDA: 84449556408.29.37E345A
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E87A7C0007
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:54:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aSKhHbnt;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D610B6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 03:26:08 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4214ABD274
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:26:08 +0000 (UTC)
+X-FDA: 84449637216.28.F409505
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7FEA9100002
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 08:26:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=e+ZEMHa+;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771228443;
+	s=arc-20220608; t=1771230366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I14tbVEH2syUi6Y61oy9PC2wsHETyhymJpQijnsyHLU=;
-	b=yloLh+6y2DK9UsCzNhZTkzDYWfFZ4y7d+756Ci16DwTG2qELjNYBVMOosbR5o1sQfDxjhJ
-	Ip3Ptq1blA7tu71C4HXcr1lQFgqP04gIKyJqdtmiih2vSKuIzEAyF0Upz7fG+e52h1Deux
-	DUJvhVwPoGkoX9Oq93fheF1rThRjH94=
+	bh=Xb3Y5mpUx/KX/i4KodCYFSkUEnbxPYW1NpgmoLibx/U=;
+	b=F1G4MvkYBy1krw6l/l79Ve8nxx5ffF7DTORJ+FXClWGW2X5ELd1lLbphsDQLMglHDvsjaT
+	1IvyYt3boooZ0phLvSVzFrZ3FXIOquIESMbbWkJ1qNSNjEV5WiqcKBzLyPSUtLHULkUG+8
+	1BMS4qPdA+4mSAxajatYHou90hebGuI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aSKhHbnt;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771228443; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=e+ZEMHa+;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771230366; a=rsa-sha256;
 	cv=none;
-	b=ZtIHj4O8b6XmpRz8d6urT465JySQ2bD1wIsamR2zNvAh7M/o/3+2LTboHAEPjdXtlpriZc
-	TxcIWncIAn1T6lPUj5u/5Ju2Rj/Q0fGB2SlowwiTgvgY8LYsO+SIIYdPfxZ06qbfcjF8kD
-	Y1LBVJb0Go0eN3OZg4JOZxUJ3mPeBa4=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ad22a5e245so7354765ad.2
-        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:54:02 -0800 (PST)
+	b=XvadAPL3qXD5QQ0GbbK5as+3++/Jkmel7cmXaqbRFXCIW4JP1m1wFwne6st6koGESpVJjX
+	WC+yrnSrdg+LXVGgA340z4ZtyROAWhedwlSgBvgu6hV8skIs1EgWj0xGwwZgNXzW+2NRaF
+	E/d57RDrx95nspufEACJNXDhJxohzS4=
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-48371bb515eso31691855e9.1
+        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 00:26:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771228442; x=1771833242; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=I14tbVEH2syUi6Y61oy9PC2wsHETyhymJpQijnsyHLU=;
-        b=aSKhHbnt1ZYfTsEWGJPXnkfNyzxjRdtIMSRO8zG4pA1kO4GTLZ+B0JqPJoIsqrrx/H
-         NCYWLgPzxtyqyIUl47mxGGwQNCmJtVM2In3tT1T2HSRp5PVYKQbeq4WuyJAV3LJ7k8nF
-         uHROihKVZnAg6FJNUxur2aE9IHo7IDUIxqCB877l7XNJc6M2qPsicKH9pvvYVPbQLBDW
-         hntbSYWYHyosSErLuFVqLXXTrPI3vLwcp8bzwNwAxLFs3R0UCaOGBmzlrKDeFyEnc37v
-         4UBOKir0G4JuAFZDjeKXSyMYu2U7O8P9jxOpCfDUTwZ8eqCHZHVIdcvycRPLjsmlho7f
-         88vQ==
+        d=suse.com; s=google; t=1771230365; x=1771835165; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xb3Y5mpUx/KX/i4KodCYFSkUEnbxPYW1NpgmoLibx/U=;
+        b=e+ZEMHa+Zxn8w3fRixuVOCt8/40DMky7ZBZN0vQg4c1ckW2v8xvQ74jiQMkTs8s/iw
+         sJyuz1JFw0rDxqUuExj5PY6TpEq/pVomyqaHB0ze69lZvCU0qHzPQR+1tw7q4eYe+oh8
+         a3pKce/fIr/nFJLu/XzabUmSQjTHFu5PqqxATQ5kyIpL/sDdfVaVJR/uJ2uhMN0hpn3w
+         PfDmDf85g0lo3gxz/qvIxJSj2ERwGHNP1p4UdPUs710PXJzxZ9+Bnc00PNfX4F9BrUTR
+         doMRWgPk0LKu4Cb7EmDJVzp6NhWU4FUTmwi/nE8jPgXABFQtFViJtDiaf9CNDUtkaQ4W
+         jk0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771228442; x=1771833242;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I14tbVEH2syUi6Y61oy9PC2wsHETyhymJpQijnsyHLU=;
-        b=YTffkmsfXl95ZsFCkl/KzDPWsEDs0reR6iY3FVCzB9g49w7Dcwp5Jk5bTLwKkOkZin
-         +yN3IPaCUm5UuLbhKz4hAxDjtH9xnqKfaIUmzZULPlPOQHEEUg5ZknmzG6m8FHICHJke
-         xXbMNUGFSZwS6/MlpI6gyvZoo9k9SfJEyTaPCQVADYkZh1tJ2lB21BPCMoLtjFJYtXKx
-         i2gWq4QHSCP1z61KM3pOmHNVSUvkk35TT71/BFpr4N2hE/GAx3PyRHOTYHnYGR5FMy0T
-         h3y3wBXiPx7yuWoTCqg6aq1MChH9V0zdeCYYv1xbKqTpajPWekDL1cmwiOv5oQTXfY/j
-         mcIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZdw8RSqJb6C31+9PQtSw6rYiyuLVitl+S7noQs2ZJ/hUCa48S44p/zlWTAUX7tPga0Ig+MWRkCQ==@kvack.org
-X-Gm-Message-State: AOJu0YzvSFvS+Y0VbmsBLvQqAr/q1hOoL+0+cOCpWx3FEdkX3YslDnas
-	ctj9DEOLcwrF6HpRWdKszJTb/2r/zq0/7iNvborwRJLS8Y8CVg4mi1RD
-X-Gm-Gg: AZuq6aJLnccCBo5IKiVSwPuDXoXDRi72dyviXTDeksRDAJviQ+ju0ER7Bqutexat2PS
-	UJeylNANW5uSXJTjTYv95tSfllM1g/V+KkQcPM8ZOCMQm/lhWi5CCrGws3chXpMdmbF/JKJZn3o
-	n9nPE7GkKsizpUA2XExke9wbZq8XJ94qDM3V23B0udIHgNwwznmDhSO+8GNXRVinBuCWn1REFEh
-	ABAx4MBSPtrRCOOOuRK+C9yjkuWo3KeiqLNjujK6TkaWIifqjOrfkZkLiYFUr5pFtF8LCpqvc/B
-	aOI/R3UZoSD0/41w1wPU6qYXm3O7S52Nowv219Mt7MpwLC/A0XNNAiGUGx1lfg4J1PI64K0cNLw
-	CdTqWtLP4+DgHTZFcb3M/NJZZmQk9CFilHUBo92eg3cBgyHSYY88NdD89LxV7ENPUcJFmHx6YPp
-	IrIZ1Gtr+6p1pE7DSL1bGb9o4hMPL7uWhMYwvcttsgI9zhrO/Ia4txFx6JDclU0MxjPdFRUw==
-X-Received: by 2002:a17:902:f788:b0:2a5:8c1c:744f with SMTP id d9443c01a7336-2ab505a3194mr114280125ad.40.1771228441729;
-        Sun, 15 Feb 2026 23:54:01 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1aafb972sm58148685ad.88.2026.02.15.23.53.58
+        d=1e100.net; s=20230601; t=1771230365; x=1771835165;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xb3Y5mpUx/KX/i4KodCYFSkUEnbxPYW1NpgmoLibx/U=;
+        b=tdIOco7myMAY5317ZFSjBuOs3qhjJ07Q9w1S0iJPG6omYWfUcjsLzCNcUreXDcWH+V
+         tJUCCXP+YrxDAQ5zJEpWEQeVDCAHGA9BW990ZheaJZjDmj2/Oqxml6kjkXlNo4Sc9mKR
+         03MXMEj1j3Pcm4DaTkbjL43doWjF5Xaq2+kECbAP8BQhgVDvu9GW7mctxkcwO+LinJ0N
+         Qjn1u4GCPF8uhnTcjLWGmF4JY5K8phVc56c+GFgRZ4y+bFCRw8EsEtaALgm/PyhYCOb4
+         3f40eB5VANagu188sk9tOEA7D7wY+0RBWchg+hbkqvXpWBvL55mNQi/cDYt6wKw2M/uh
+         SBOg==
+X-Gm-Message-State: AOJu0YzzCjGQXzd2NeCnMhnICR9udJ+SJeo+msZnhyrY15F/vo6t7ZI3
+	6zYmbmeR/VNbimS75aY4gDAX6H8/v8ceB1Vi3RqFH2RK0REkuoCOkT8bvxpB+Mnzapo=
+X-Gm-Gg: AZuq6aKNwGFFwZx7ALi+7xVGI7FEMhtjImhkkrlu4jb1JY/8ITeMz/yw4buC7D94u4V
+	AB+zqlAmZFXDazQ24KN/D5X18QsalDo5KbvVD87DfoEDJmajukm9szbSbjW/OsSfj6t7yooJVbM
+	525r0sM6wkHylXEJY3XM4Os29sx6fktcXrPdDXPqkcypXBwFNXHE40lIzVOSRbTlBo0ky4fScIk
+	Hz3VqsI7/rBInZzSbnQPwvALfacThSKIzJ2rhC2S/z1NdVbmnizOrnywbOC6f6FirlHCRAutJX/
+	GO9GXrKB2W81Adfg7ceMloaeGrqhhl3GlrVckVoNZpXjo1R5mBw4ByNPGVUuHRBARfzyPJPEJqc
+	0c1Hj7oPeosD/yk0OWya6Y/DwJpaKTE3PlNWNY1VnDSUYxk4gdjjZewv5lcOOtpmFYbLiG0ahd7
+	JJ0YLwYYcS3J9O/lQyfpcDov9KVymtMmT/3rrN
+X-Received: by 2002:a05:600c:c170:b0:480:4a90:1afe with SMTP id 5b1f17b1804b1-48373a78d47mr149302415e9.34.1771230364694;
+        Mon, 16 Feb 2026 00:26:04 -0800 (PST)
+Received: from localhost (109-81-87-131.rct.o2.cz. [109.81.87.131])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a337dfsm81435315e9.19.2026.02.16.00.26.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Feb 2026 23:54:01 -0800 (PST)
-Date: Mon, 16 Feb 2026 15:53:56 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
-	Carsten Grohmann <carstengrohmann@gmx.de>
-Subject: Re: [PATCH v3 3/3] mm, swap: merge common convention and simplify
- allocation helper
-Message-ID: <aZLLaEXeVVB9277S@KASONG-MC4>
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
- <20260216-hibernate-perf-v3-3-74e025091145@tencent.com>
- <CAGsJ_4xpoC78KhYj_b18aVzjGcFGfXnpt7uLGvg7w1B4Y5cc2g@mail.gmail.com>
+        Mon, 16 Feb 2026 00:26:04 -0800 (PST)
+Date: Mon, 16 Feb 2026 09:26:03 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: JP Kobryn <inwardvessel@gmail.com>
+Cc: linux-mm@kvack.org, apopple@nvidia.com, akpm@linux-foundation.org,
+	axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org,
+	david@kernel.org, eperezma@redhat.com, gourry@gourry.net,
+	jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
+	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com,
+	rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
+	rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	surenb@google.com, virtualization@lists.linux.dev, vbabka@suse.cz,
+	weixugc@google.com, xuanzhuo@linux.alibaba.com,
+	ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
+Message-ID: <aZLUm95Y-dKkdBWI@tiehlicka>
+References: <20260212045109.255391-1-inwardvessel@gmail.com>
+ <20260212045109.255391-2-inwardvessel@gmail.com>
+ <aY2BcIHIARSwwQpo@tiehlicka>
+ <eca7a8f9-173d-4cb0-93b3-df082b8d0c08@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4xpoC78KhYj_b18aVzjGcFGfXnpt7uLGvg7w1B4Y5cc2g@mail.gmail.com>
+In-Reply-To: <eca7a8f9-173d-4cb0-93b3-df082b8d0c08@gmail.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: j3dy74ehto74h56q51ojciahta1e36da
+X-Rspamd-Queue-Id: 7FEA9100002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E87A7C0007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mhh5opqx5kq8ft7b9parbc6i3dh3ty7k
-X-HE-Tag: 1771228442-560009
-X-HE-Meta: U2FsdGVkX18XMKEIgrIQbHax+kK8YDNCsXTc+qZ8fQtxqhwvDK4WfutDtRKH8ddZjordKDAk45TwaI0xO+zJBo3MmvHHq3tMHvucMVoF3jqd6zrjxxW61XV3MvltKU2GYnIe3xQzBgU6G14SKHPdObw63ccyz4QGgltJBFjU1xCIyqeBpPmftL5Eg6nMvDNAghSRi/hBFYdBbYCu5eUrZfBzeKUTKKX3BY2VnCdM0nuVwlIRM8Hk6P+fyhT/U/NYiBYpGOWcVAHaH1EvVpDUqTNUW8sVbFh0ieYaPCtICQpy7UmSzt2ncgH9I7pQ+xQfkn2332xLe+R70rKDRMLJvUKC8oAZE2/yaJ7Jkmy4TSISQHA4nE3JS9oRWCsp+FAO7cJ+FqOYYq3c9uVwSHaZsiyISQBTmrd0OjiHOI7wt+K5oPwV2DQy3d4s6et1ZO6xJ/NvFHWm8xBlxFmLNUUmiOk7KdxkRO9Vw4CgCSPsMmdTdQCh0aZrZkPNin3lyWF3I4WEh0kKlXrEF8EDu4BEFYD+MTqbwY/LG1UoKiDm8NediZi14ulKDHtawwubTsHUeRf2mZqeqAgtXUaW72LAoLRHb/YzxP27U6DDyWXLX8tB24miO7iJAZf0vnOKwu/QgvR3Rak7hLDJher6ERwVy/IDzNglDyxhpNT0HB+HqwFkF7S7YGUaWZdhdS9T5RgJeL9n5yxKmogzkj5yYM5GbINChyq/CPTgl+chxcOYi4UIcU8FPykbmwh0ns5joayX7Jt/n8pwPe6PN1NYl5uyTJZD0aoeuwecsRiu9Ci/BiTjOC2YcDDTHWK14MeBQQtVJwHhBNIcJH5R3lZ/AjyLMP6VhTVCUlg36wtYyNIwrS8P0GMS0OKJiQ9JQYluy1Vi95T1hROQ3TD1HC0jclIQCYGqpR+I9VrEH//aHFJZJqesMlKR2XNvwfF/oftde9RLfvRN0y9otVfnb2P9rKv
- WxgymAsE
- jiBo4FDlnmBchi7XixcsxCcGFN/GNQYFjkb47FjkrEQUxpIFGK3gEr8Kb5ANWLMWURrtOyd1NkvfraQFbcnVwYeLyX2Mm2dHCBKnAOb8lGQfcK752jyH3udW/srRN0spARYu+lY0tM/K21FBCZ47cFXQ70Q8M3B/ShOdKzk58sbhKU43IFzyRJGD1VxUDubQuJPGM02mN6Muw7W0BTrNdoXkm4+Lx5KQGG/LiFQBFVNLjvOnIfSbXyxJ7sS8nKAIUOHTGkDIq8c9U2GV4K+XdK6bhWjIFyP9gOVXCdWSyzKNms8Fd2dYfwygdW50n1KfJaOI826NJEaFtE4VAdGnUg7TVYjikFIJwY48ioucmKHaBCY1VjoxkdFhsXS1lZQiRHQyU5eJTVjrfCySuwQGHYa3A7ajMZ5P/j9dDlS6l65M57RHNNPSroYX4V7mmAbclDpPf+/S0VFemTR9p+J5W5jPrve0DsCcjgN2507Njp03bkEbDvmYJjNqCJy7r7K07pmil
+X-HE-Tag: 1771230366-620222
+X-HE-Meta: U2FsdGVkX19GamPaKuMqCpw5EUy9AJtqMG+kEplOJ9WsCjIoCdfK/kzlqESMHXSO93JN1Uyn0zn5yJNeuR+YB0lGhq+xhXpdWzh7E0zVmY56qGw+M94DOHDvhUKFaFsUcGs8FywWXTFvfGgm3RGXxpSIWJCmUoixcSKlqIwsov7eTi7dlaJw6JM2ksPlTmhXOE+2ZG9nQdmPMNjU3n/I+knO30rEAwUkEgLNPGeuXjmd0gbayTsc1funZX2jVLfEEMDIALcGLyjYHNkM87CVqGJ0gJoEhwf9XcR+Wxc+p+ZwJFhuwc/+OPo7AVd9FaSSSq0DR9Q81eMqfa9Ya7FXs/tkJrmmdHPnZEj3zPlJQ2ngZgYNNC0ZU0XCAl2cvXvOWwNpQDgw0Dlw8nuC5CJQVn2ifzb6oUCnJa3I1LXcucgIVAaf1jorwodHHstyKFXn4P+05BOV/LZ+SXn2kbB6/g/zyPDY+u6TxdeYCGAXdVrXDqlXEbrqH9D6mrfYJWy7VsQPUtY/3RgrHKRuqFtnhRPscYWSnKa/OXYSewEYNMNsBgZdu90kN/3S4FXA7t2SClnI/eTGnhw6nnwXSJZ52VtyGnyn5ZzLVg8pFXdjOujujBaM04AETBpRb6bIfm/GLsHnP0hYQZiy3AZSucqinm8pU50iniV7pXU9sYObAAJ0o46UeHL46L7EdjUTCp2APoofb5fGL305sUPDAIJObsPADd3ZlNtn85+6ZOS7F2+ilt385Uc/JEJi+3h+pxjBYhITYIgpzRWY9vrSBLvmQrdMOS+21EqqUulHMBd2m4zaXil5W1oKHhfyCfDNzJwuZ3RLH1axvqEuCnDZEtBxM9pEhCoqe72ds0qMvm6g5yQQ1FRVDNsw83Opykt1kDw0w0toFXr/KblK4korhTkf8z8lGTNeeSON27LnQRyjjYCOvCmXDCbF652K+daTecvYdq98eWh/AKo7v92z+3+
+ BZUuY3uH
+ 33NEOoNsDpzEC4v20tg3lfrRS8nK3qWSNpjQcCuCnUfDXoEkafyrjKY/cBIYacXFG5BBSBMC3Fz0jMo/Y3atIgqFlIBJShJKEoTH7IsDANTAZ1gZCWBXuRzq7zMmqRlcTs64s
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,49 +129,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 03:34:54PM +0800, Barry Song wrote:
-> On Mon, Feb 16, 2026 at 3:00 AM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Almost all callers of the cluster scan helper require the: lock -> check
-> > usefulness/emptiness check -> allocate -> unlock routine. So merge them
-> > into the same helper to simplify the code.
+On Thu 12-02-26 13:22:56, JP Kobryn wrote:
+> On 2/11/26 11:29 PM, Michal Hocko wrote:
+> > On Wed 11-02-26 20:51:08, JP Kobryn wrote:
+> > > It would be useful to see a breakdown of allocations to understand which
+> > > NUMA policies are driving them. For example, when investigating memory
+> > > pressure, having policy-specific counts could show that allocations were
+> > > bound to the affected node (via MPOL_BIND).
+> > > 
+> > > Add per-policy page allocation counters as new node stat items. These
+> > > counters can provide correlation between a mempolicy and pressure on a
+> > > given node.
+> > 
+> > Could you be more specific how exactly do you plan to use those
+> > counters?
 > 
-> Previously, when !cluster_is_usable(ci, order), we only called
-> swap_cluster_unlock(). Now we do more work in this path:
-> 
-> 
-> out:
->         relocate_cluster(si, ci);
->         swap_cluster_unlock(ci);
->         if (si->flags & SWP_SOLIDSTATE) {
->                 this_cpu_write(percpu_swap_cluster.offset[order], next);
->                 this_cpu_write(percpu_swap_cluster.si[order], si);
->         } else {
->                 si->global_cluster->next[order] = next;
->         }
->         return found;
-> 
-> I assume this is what you want to do as well, but can we add
-> some explanation here?
+> Yes. Patch 2 allows us to find which nodes are undergoing reclaim. Once
+> we identify the affected node(s), the new mpol counters (this patch)
+> allow us correlate the pressure to the mempolicy driving it.
 
-Yes, that's fine. alloc_swap_scan_cluster is suppose to update the
-percpu offset cache so if the cluster is not usable, writing
-SWAP_ENTRY_INVALID to invalidate the cache might even be helpful
-for future scan. At lease not harmful, I'll add some explanation,
-comments.
+I would appreciate somehow more specificity. You are adding counters
+that are not really easy to drop once they are in. Sure we have
+precedence of dropping some counters in the past so this is not as hard
+as usual userspace APIs but still...
 
-> 
-> Also, it would be better to add a comment that
-> alloc_swap_scan_cluster() expects ci->lock to be held on
-> entry and releases ci->lock before returning.
-
-Thanks for the suggestion, I even thought about renaming the helper
-to indicate it will try update the percpu offset and release the lock.
-But didn't have a better idea to naming and we also have
-alloc_swap_scan_list, leave the name untouched seems more consistent.
-
-I'll just add some comment then.
+How exactly do you tolerate mempolicy allocations to specific nodes?
+While MPOL_MBIND is quite straightforward others are less so.
+-- 
+Michal Hocko
+SUSE Labs
 
