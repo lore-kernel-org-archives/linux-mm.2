@@ -4,180 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C5AE7BD87
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 10:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4A2DE7BD8B
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 10:37:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F5546B0005; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
+	id 06B2D6B0005; Mon, 16 Feb 2026 05:37:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A7386B0088; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
+	id 017116B0088; Mon, 16 Feb 2026 05:37:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 888AA6B0089; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
+	id E5C326B0089; Mon, 16 Feb 2026 05:37:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7144B6B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1124BD86E
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:32:35 +0000 (UTC)
-X-FDA: 84449955870.26.2FF5B5A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8010E140003
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:32:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zspg3pA0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ea5l7vLg;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0kBFRR9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F44EHw5F;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771237953;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D4B7C6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 05:37:26 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7798DBD587
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:37:26 +0000 (UTC)
+X-FDA: 84449968092.20.E1F1BCB
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8834312000A
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:37:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BYspH9Ou;
+	spf=pass (imf29.hostedemail.com: domain of glider@google.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771238244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
-	b=ILihIfsz+FIjbz0qNJaAesq6CATLXW8rI/UOr5d5HYvt5LX9lBhpRCrxV3TJyAQoXB5tnB
-	91P5ZlYjFXXHgXANUUxMsHIhJ9c4q4DTn84IyVkvIZCl5D0qyxx7cKrYWYX58OUvHzKxI6
-	wVJdWsD344OpP2Kcl692akX3+KtJOYQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zspg3pA0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ea5l7vLg;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0kBFRR9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F44EHw5F;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771237953; a=rsa-sha256;
-	cv=none;
-	b=onMjjpWlekynMeNI13MbDja3d/HEFiX++9pz6L5p14GnrO/GPhvWK6eB4UUFNf996kCjmM
-	r37Whb9PYqeLbs0BE09dAUrSjjGZZ0LQ33oeiBAOr5Z43QDQEE5ZR5YfFyOmJN3ujqazHq
-	xn/t9zRLUz8NdPNmJZpRPHiUebAkP8U=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AE00A5BCE3;
-	Mon, 16 Feb 2026 10:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771237951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
-	b=zspg3pA01Tm44EfpVjMr7nytFxCjxI2dsEr2lJPSDKcjgvwzZc6CUJlGJNc6exgD+H5z0Z
-	LjDwTBqsja6rIDDI22DQyoxfYJb0r9GFeWg2ZffHssfZXJ+XFn78AKWql90stLQbMn5iEw
-	wwbHL8fsHFfHkKPvk+pvVzhvWPO8rJI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771237951;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
-	b=ea5l7vLgdW07n2kq/s/zLUHe02dOyIeqRXqAP1hGk7TnslV39PI+xQwZ/8ec1QqbsTbFr0
-	+EIWf7TKDrkOGeAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771237950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
-	b=T0kBFRR94a1y7KpGOH1on0ZbvDhVU+SsiLEUJdQjv3i0qhVjZeQilH/QMc/H2PxJ0RHxIg
-	XhCK34LoobWSoNT3buySSZXPDM0UJO0+fYJyQisvv7kSPf/Cz+kL4CaGjCbH79kiuq1sQb
-	62N9f2b9UxbHlfwRPjmBXGpEFQ0AY/o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771237950;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
-	b=F44EHw5FWqBetdHu7VKINkiqP8h/Uc/pHG/o2Pa9M8cvPsZCWINAfEmbaqB63e06daZcs2
-	bxTHO06l7i5nJWAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 187A93EA66;
-	Mon, 16 Feb 2026 10:32:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CbVxAD7ykmmyOwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 16 Feb 2026 10:32:29 +0000
-Message-ID: <104b642d-483c-48a7-89da-209f3bcd2319@suse.cz>
-Date: Mon, 16 Feb 2026 11:32:29 +0100
+	bh=VYirSAqhPiJDPw8kC9Ddqr2HbcCD2h97c7AnE13xFds=;
+	b=ArrQKFYn4BIbYIq0u0J54tV6dSADVfZrhyANtIfll1ccyxFDZCCdYBZXmdp3TLVFox2gIU
+	Dt3OxhErB5sGZbQL7vio3oJhfdnPFzhwdPfaZ1z3/Q1Z0Aayx0SbfPwxh39UoKA/Zm9E0q
+	C91iXy1LyxWnc5qD7HbDi2zovIrTeis=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BYspH9Ou;
+	spf=pass (imf29.hostedemail.com: domain of glider@google.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771238244; a=rsa-sha256;
+	cv=pass;
+	b=iSjFXtLwsvkVVHzaBi6dvOD1w4ANQRUxmeF732GGQ38PTSzZ9f/XS138Rv8pVNt1gVHEkS
+	TCkqcXvCpdGOxiiVCOYp4d4YUXRGbxNAuA0TR/UzQu051ngNwl8nJ6KKbx6w5MlsDUUvdm
+	pHHHK04aVdB54n8cz2CBQ8HFwT9RgK0=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-896fa834290so36198166d6.1
+        for <linux-mm@kvack.org>; Mon, 16 Feb 2026 02:37:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771238244; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Pq9YYQoL3wIao25nSK/akqBUzRSP15FoO7dFrReh7v5u6s93ymY5laNO45MgSSGCrC
+         mBAa1YGMCaydMn0v3qK5Zpzudoz/prNh8QDd76eESAobQsyIIM3NSn7PRX4a0mtMPPBF
+         YmT1qHkge16D4aYsykPrD5BArqKJz8BxN11agb0BteHhjDYecZkrXZnt3jeFW2Twa+0G
+         IP6ZRfUUgGs9lP7SShkh9uf3QgkmKx1DaiS3wtpHFmbabdTDl99grvWrEU+RQu8p/brl
+         N2dAS9wPZy8bC63VW7qDI2UC4gRCVai6VPie+84xr3Ch+9SAD/coCYcmxLUX4pk19MvG
+         WSEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VYirSAqhPiJDPw8kC9Ddqr2HbcCD2h97c7AnE13xFds=;
+        fh=hhd0I6XJ1GSwECoRmV3y/oprXQsTWBOpmWhHIovp74o=;
+        b=aYq2TkppIRcaSTuu+oGBpBfrsNffBuUXX+2jj64TN+mkMsaBcIWYPod1jDHF7iJ5Lq
+         MYfV0ahFjQHP84XuTreegxg4ivxniuskvULsW1xWlcH2TCD9XHAuW8ln4/1B1fGXMUtl
+         EGyG5RI1uMNKCXFv3Iyw0SMqAJbcEaisI/NwSDcw4A6g9OUuNZQksi/LmtTnuD1YWDJ+
+         yfilMszIXFfbrcqQWxoIcX3QuVzr2Ipe44WaTWnxGg1tI40Mu++fbPPhLshEyehNP5S+
+         QGailEqn1W8Ew1Km3XFRtpWhSrLI6UU3iaBFzKigs7Ey+BnWMe8+EXfYsnJUZMOaUPB7
+         XyBQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771238244; x=1771843044; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VYirSAqhPiJDPw8kC9Ddqr2HbcCD2h97c7AnE13xFds=;
+        b=BYspH9OuZCgixf9F1jwAUyfaDtdGFATblBh4f05q6+QbEzl67RGyAeljuyhaz3y1jG
+         nzOG9HnQ5K7XyS51SforFCz0VXQV3SdSMEMLqVSexFMGDAzNAX48+H+98RCzGc/mg43G
+         iemAg2KjgmXmeR3sMi89nEaJPLv/cztjxYLo4/AUVgyugK3Iw/79xZXd+sVrZX1zaknP
+         z7pgJXHfJAUqYTVHnsPrvIvhYZv0jg1krMbfl4CDNLCWRIFYLk5ALHuTPhxKx38VV1Jm
+         XGxZPmCat73cwGpdKBZkW8JPdv7v3Hi6faT9jiyOMkoOJySzwKTdPhuWx2Rcml0TpmtO
+         3yBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771238244; x=1771843044;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VYirSAqhPiJDPw8kC9Ddqr2HbcCD2h97c7AnE13xFds=;
+        b=iIshDOHNUqcrEmHpWC1hSD/xIgWa2X3v0s6Zi/Y+6mBHf/geN2Z56MEiS1VTCd9l2C
+         7gzNlwC/HE2yhCE7v6da5LMOnajN/gZ2S/ZWMbkAsBbvU+TbM2D83BYPuFOU2hawXtaT
+         7Cdm/Tc+8Ig1pMGAtJq6+rYqfXcQVgmmoJ2XZZSeGRCRaMEllXwilsI0fJPDSV3JENF8
+         yr4gBoKNITjEq2a+5amzsHTGGwfCKc/gFkFClFp/XHxeKe365CIaQmDUCCeI6PCW3qvY
+         kdII5UZFA+c9I+gcjARDOTHSaal0t+crY/Ob9aEJuIpIdbP4m+KgJpQFcVHp8MjpCI38
+         dH9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVckWG7Wm051Er65Zv59wUFqLb7P/Bu+OpT+n58TLoB5woqgrP705QrtseAuC0CFK0yAa01rklatQ==@kvack.org
+X-Gm-Message-State: AOJu0YxOHKDymMrqOIew1rwHTwbQURJiNCM+k0p2/fLHptSmC3M4nfC3
+	N5uFwCy8kteaSJA74FfTQSuqdnlU3Wa5yPM7zBj4AsXXq4Z3tg4bS4oDd2D6cvsTJyOpT0D7jtF
+	/230qfaLPNkABKvqR5h8uRywAuQiGq+eo2ZXtAm2W
+X-Gm-Gg: AZuq6aJUqzMOua6SGAN+5TYQukwXe4AwaUoWO3/rtNepH/9iDY9s8vyKc0mHbkxcHwo
+	/a8CrQh06WO4RIOcWrAGhZgLtehdDnKGo8BTg+oQA/qDo5xCZVZApgRc7ANyJJdhbrw225wy++v
+	tx9F9RT41cBwQRJe99gmHclOxMEVBG2XhGEc783vB4A2M7VJ2aQL8B1L/ZV/LwenQiYC4CHOUNW
+	TV0bLKwKSaoe9OJHX+59KT/caN6mttuZ4o/mY9OEPyCWoQQ3mnxu6Inhn7SDrEqlTLBRAoDKHs9
+	t8+5zAaIhngsB/FtW3bZz0rkCf/QSmRGsG060g==
+X-Received: by 2002:a05:6214:410d:b0:894:7ddf:d4af with SMTP id
+ 6a1803df08f44-8973f267814mr114601366d6.6.1771238243191; Mon, 16 Feb 2026
+ 02:37:23 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] making nested spin_trylock() work on UP?
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- LKML <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, Waiman Long <longman@redhat.com>,
- Mel Gorman <mgorman@techsingularity.net>,
- Steven Rostedt <rostedt@goodmis.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
- <aZAWGwZP_Z75YHKt@casper.infradead.org>
- <CAHk-=wg9F6iW8wuH8bCDFRJyFCdtin5bXJW5v4WjNyynD7eoCA@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAHk-=wg9F6iW8wuH8bCDFRJyFCdtin5bXJW5v4WjNyynD7eoCA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Stat-Signature: g44iz8g4u1kfeha5kaypq5mizdwutks4
+References: <ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
+ <aYJBBs17B-SQXFqq@kernel.org> <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
+ <aYL3zxuTLT8N7C8-@kernel.org> <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
+ <aYXDeN0WGQG8-cxe@kernel.org>
+In-Reply-To: <aYXDeN0WGQG8-cxe@kernel.org>
+From: Alexander Potapenko <glider@google.com>
+Date: Mon, 16 Feb 2026 11:36:46 +0100
+X-Gm-Features: AaiRm53lx_IG236LrxT5wObHUzkZBCI1ibMnFCDqX286kMnVPASCSHp6Gpu46Sc
+Message-ID: <CAG_fn=UZ8DX41YCZNo2PtqZbgwXHp_Bi8nZqe+t7SOMeTvmzMw@mail.gmail.com>
+Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct page
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>, linux-mm@kvack.org, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dunjdughnzy6m59ojqosgru9u79aiu1f
+X-Rspamd-Queue-Id: 8834312000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8010E140003
-X-HE-Tag: 1771237953-580949
-X-HE-Meta: U2FsdGVkX19cevquKKBn2uNHhiWZSRhWUzXzPpTHd+7qxahCj0qrz2LgyK8Gv1q62X+PcLa6LK6H5ROmRImXe3jG9UdeAVDXhRBWPqqbs6qyIqWREsd9r+b0ojhE9Wh9Dup+Giw6MHUYEt59b7fUzvkmiZLx0bHgGdJ6mSZzOZ7SPmQpXwoUpuovwE0odQhW0jjsQvGTFKmY8a0hScI3CziUD2pQ+2e03TsH1BWOlBsjRqvzfYgiORiXGA4zvoEcJxMvCJ3lbjkAA9uoNoZB7tPcRGgWfgzrS5wtqp3rbk+BB/5UJFd8Zim8OZU4KVkLu34aLik0loCxWvVz0oSbuTAxkMirHI1Od2S/xoglJ6/VhNN+j4ucGk04cBdyh3Yphe8YDWtKkjcMFLw4tMGf0NgSimEZheGQA5u8xQevZ0URjiH4j2/5irgnyfH8K8flpRQaDDrcjj4YhmUGchj4tSeqtUt5ilC/K/QvttfztWzXzLygtHMZDCKSh+m7R4lJl85OlFXiRBElj/d6+0O7XY2MMm6diqjy/G64zFgWpAcIl41OHLDzqfexqlNsIW2+03GzcWcp+lm0uI3WLBlT6sYv8mgGQ+nhJN8CynlWyq5uHgddMlknr2OXF4NbjR3WxStkNnca3Dm6hBrV52UyRcoiKx/v5X0MHg4ct+OYTwpmdccgpa3yXhLbcfQhupk+5bEqFyOIyQtzzsZSlm7vvLSvv9Un1N2DcoZDkqw7W1lrFoY3fDFgRgIKR4G5vZPWNaB8ItFkA1bqEjOIXl80QUmSSYwKFld/gsgYVzdggaWFw6iJZ3mrAW4aqj+CXlp3/GJ7G2PNAKLfx7xKJr1sX+ZlX5wgOc7x/yUCYwpDNn4L5NEfpDfFOGU3ivoA3l/AYVwK4Pk/ON0Hdorxn0Q73cbdW7nxwtnxZE2WEFHC5zF4iba0zDLhcqEHwrxP2ziI/Lts00FiNukpqc0F5TV
- oYH4wYIN
- smE0t4gs4h2qft6VazPDvXJjX4nBnafP6G/DSbaC4r9Dh5LUrjT37c6GGTnc8rIXQ2qdThJo/O819naSnrWOP0OMcuPrc9EPWRBly
+X-HE-Tag: 1771238244-294253
+X-HE-Meta: U2FsdGVkX1+HnTE3zMyY+mldNOuBTUlDAyPaRRHqC1Sbd1tjwveW8wzBjs19qvxkpCm3vaJ3+bNo3Oigfrf/RQXAle+wHD97cs6/i93BthJuAYFMuq42PJZ+jQazD4lhcUIctzqpxNRJd2pFZ4XxbM5mIhbUOwxgVdumNxxUDP/DtbSaQeKsbMayGByDNvzEr1CORA6NFKN+locmC0EDd2vOas3H6toJcwGFrD4b+pozByvTU0d9rHKJbyVKlt4HiMC7Q3UsPtVvnsu1wZZ+tMH+WzZIxZ+bhg8PF+v68AM+/UqJgSQ3ik5pAZ0q19x6hLK4kc8RO+z7m7+3Hyc4zrsFge9I4OcefheoWo4Pa8PoXlAr/Zkm9oF0hW9r4NXxFtv2nTDsfUgn8a3hEmWL/Qzoeyj7eFV3ipGyhZtwnditZE1opdJBGbmtmPfmBZM9fuif4B7eYIzvf317feB0fD9ENukpN1gmBQ3xsMp6tO1ows7Q+iXCf1QRjoZQGx8d0jqDI83bcTrEWoJlgCq7TJWfP+sIrbg9lV0HbdFMat1I/MBR/HBTEZUt10cCY70wuQlqE6ye3PS68iaKV9JZmcVvlG3HxhzwU2GJOJ+zIbOd4nn5Bu5I9MF+NTo0SCNGOj5uvGc1dlO+n9u/gTY9catnaiKKidkj8VukIoAvrGsC2cui0NhvCd/La3BkCppfa4YkKoz/t78oTkaWu02gnD/TJO6Q36+Q/8xbId7/c6qs+Jn7z7YYIOq2z49J5u140uVjrU3X1+RuuzPPUrqVumA0OCBjyCBjc8WpYGaxMNg7d7u5sGq5VPKtg2a6V301JI+fo5RuNPe7MGC52bPixzdIc1UnXEQiRsXM8xQdSl9Mb/o2kRT8/Da9W8z7jad9uoTIfhgIAUNv+DFM6LDj1LxPrzRjQU5ZDfAPGdq1JVXwAxgxWShKesi0WDMyc7z2JO3DaciJBekrio+OXVG
+ yC7VgcOA
+ aSa2/7oaFkaec9sdeTH1l3zpTv7eFkVTDopiEPwy1iVrxhxoteERLxNkghLD2vnlUKt9dJ7LTiB3cq3hEZCxUN7ZTBzD9ispGoRtHXv7qa5lgWLxdMX8xRfEw8XyCBv4mFpTQdt13yseX4XABWQJw53ljVe/c3vZVvRiVgSC+1ETznkSiXYjOddkyIZIMuJ8jM4xcepShi/0pSG31C2oTMiZVquiVCwuVZ1o+g8nng60JfODaRglhm+XMo+bN4dOtPXU8asnUyOIgkKtuLbMBNNyxb2eZTCqa6IdOFAJeO360Veku5gMu61PI1z0LNjKzOd/KhAjY/LmXlPVcU8RFsEfnUw1qaFiDNSYqn2fcxskaV7Cn3vZ1ImS/Xp1HXwwnnwWQ+pIVvB6+76o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,40 +142,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/14/26 17:32, Linus Torvalds wrote:
-> On Fri, 13 Feb 2026 at 22:29, Matthew Wilcox <willy@infradead.org> wrote:
->>
->> What if we use an atomic_t on UP to simulate there being a spinlock,
->> but only for pcp?
-> 
-> Yes. Please just wrap this - very unusual - use case with a special
-> wrapper that can then be entirely different for UP and SMP, and use
-> something like the suggested "pcp_lock" that becomes a spinlock on
-> smp, and just a tracking variable on UP.
-> 
-> And I don't think it needs to even be marked as 'atomic_t' on UP - the
-> value is going to be idempotent even when modified from interrupts
-> (because it will just be modified back), so no need for any special
-> logic, I think. The generic 'atomic_t' ops on UP disable interrupts,
-> which is horrendous.
+On Fri, Feb 6, 2026 at 11:33=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> (added KMSAN folks)
+>
+> On Wed, Feb 04, 2026 at 08:02:13PM +1100, Benjamin Herrenschmidt wrote:
+> > On Wed, 2026-02-04 at 09:39 +0200, Mike Rapoport wrote:
+> > > > I might be missing something but I don't see what would restrict
+> > > > this
+> > > > to the early pre-initialized struct pages other than that
+> > > > early_page_initialised() test, so we can't rely on anything in
+> > > > struct
+> > > > page inside memblock_free_pages().
+> > >
+> > > Right, we can't rely on PG_Reserved being cleared for uninitialized
+> > > pages :/
+> > >
+> > > But I overlooked an easier and actually reliable way: use
+> > > free_reserved_area() instead of memblock_free_late().
+> >
+> > You mean replace all callers of memblock_free_late() and kill it ?
+>
+> That would be great, but with all the subtle differences you note below
+> it's for the future :)
+>
+> > Or make memblock_free_late() use free_reserved_area() instead of
+> > memblock_free_pages() ? :-)
+>
+> Yes, I think either calling free_reserved_page() in the loop in
+> memblock_free_late() or replacing the entire loop with free_reserved_area=
+().
+>
+> > The former misses:
+> >  - totalram_pages_inc() and kmemleak_free_part_phys() in
+> > memblock_free_late()
+> >
+> > They also both miss as far as I can tell:
+> >
+> >       if (!kmsan_memblock_free_pages(page, order)) {
+> >               /* KMSAN will take care of these pages. */
+> >               return;
+> >       }
+> >
+> > But I don't know if that matters, I don't know anything about kmsan :-)
+>
+> AFAIU, here kmsan allocates metadata for each page freed to buddy, but it
+> handles reserved memory differently anyway, so it shouldn't be a problem.
 
-I think we could be using local_trylock_t, which does exactly this without
-atomic_t.
+I am a bit late here, sorry.
 
-However David had an even better suggestion (in a chat) that the pcp cache
-is unnecessary on UP for scalability anyway, so we can just have the trylock
-wrapper do nothing and fail unconditionally with SMP=n, and then all the
-cleanups I wanted are immediately possible and we'll even save some memory
-that would be cached unnecessarily on those small systems (and some code
-will be eliminated as dead). So I'll be going with that.
-
-> Changing spinlocks globally on UP to be something they haven't been
-> before does not sound like a good idea, particularly since no actual
-> developer uses UP any more (and  honestly, UP is dead outside of very
-> low-end platforms or legacy like 68k).
-
-Ack, thanks.
-
->             Linus
-
+Yes, kmsan_init_shadow() iterates over the reserved ranges (which I
+believe happens before memblock_free_late(), right?) and reserves the
+metadata pages for them. So freeing these ranges we won't need to call
+kmsan_memblock_free_pages().
 
