@@ -4,185 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37B4E7BD95
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34B80E7BD91
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:30:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5C9C6B0005; Mon, 16 Feb 2026 06:20:11 -0500 (EST)
+	id 4EF146B0005; Mon, 16 Feb 2026 06:30:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0A8B6B0088; Mon, 16 Feb 2026 06:20:11 -0500 (EST)
+	id 4C7A56B0088; Mon, 16 Feb 2026 06:30:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADE7B6B0089; Mon, 16 Feb 2026 06:20:11 -0500 (EST)
+	id 3FE136B0089; Mon, 16 Feb 2026 06:30:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 986A46B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:20:11 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 184E41A0D89
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:20:11 +0000 (UTC)
-X-FDA: 84450075822.30.5C4B183
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B293340005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:20:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1h2bkYjg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Wh+Z0PPm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1h2bkYjg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Wh+Z0PPm;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE886B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:30:27 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D03E2160C7D
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:30:26 +0000 (UTC)
+X-FDA: 84450101652.10.7EFEC53
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D2D772000D
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:30:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QWiceWhk;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771240809;
+	s=arc-20220608; t=1771241424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PkBeeZVr8B29Z/3z8eE/N0ouHBNVef5cV12hX5biciA=;
-	b=6zHsAeT7a2xWmskC9noR30yDlV4qwvzRrzdCe4sZWb94gqeSQFFbJAnHuT8NQfX+OxtKxA
-	PeP1XKlGETsWELTSbslFIuyZoqrBH2J4wTqjV9V+rz3GK9s+2J80i6oo5JM11SuQpHrkjb
-	4r9GUa5DyirAqMCFzh/T3Ik31vRjmlM=
+	bh=4ksD6pVfcnC/aM9tuqF9KyWpzF/TzEHbqPcpybabuMU=;
+	b=55/rCEeHIcKRrC66g4o3QJ1WxT+UALqiPUsIVFMrBfMOhfce9IP8Va7DCilkAiLwnNxCCx
+	HVAmsvwe7I/KtzADt0SxNj6zbc5b/L589HzCa1VgSGI70eSVtFFPWNJ3EeGM+GVNxszskZ
+	qu6wg+Fd5p5zw8OuaqTIBMc4m2I7IzM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1h2bkYjg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Wh+Z0PPm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1h2bkYjg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Wh+Z0PPm;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771240809; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QWiceWhk;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771241424; a=rsa-sha256;
 	cv=none;
-	b=SfOpCuBdlCZD5OQaZCkmLcQpViHLJURgTgIpWFuFuyq4QHccHztU8I8pxPYWpfQCER+1Eq
-	eDJNlKijcIFMYz0xp3mGLDO3T6XW2xXQ5Kvyf4SWr7x1PSnWb0Gi12dz9OXRqQjtOrr9SV
-	uPRAyiBPHVmB3DAswf5e0/xyyLsuisY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0EF343E6D7;
-	Mon, 16 Feb 2026 11:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771240807; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PkBeeZVr8B29Z/3z8eE/N0ouHBNVef5cV12hX5biciA=;
-	b=1h2bkYjgZEmnbCrgsRupqQRL98BilkGpRMnV5wPXrt/v/a82Tb9wwCynD91kBzalpn96LT
-	Z1KrYRTpzNo84mt8Hsmnz9LtMc0Yk/gFmJKdvozpFwkODJIH7y58W3d4+uYvzrE9ZwZUHl
-	KzxVYOEv43HwZV0UF2tr5LzU87U5PgY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771240807;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PkBeeZVr8B29Z/3z8eE/N0ouHBNVef5cV12hX5biciA=;
-	b=Wh+Z0PPmdugjtjUNhnfSOFAC3CEvCAdAen3J6baKl5jqFKpV46OTsM489HD1MbFADRsqJ+
-	lvpajPoNGiiDfnBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771240807; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PkBeeZVr8B29Z/3z8eE/N0ouHBNVef5cV12hX5biciA=;
-	b=1h2bkYjgZEmnbCrgsRupqQRL98BilkGpRMnV5wPXrt/v/a82Tb9wwCynD91kBzalpn96LT
-	Z1KrYRTpzNo84mt8Hsmnz9LtMc0Yk/gFmJKdvozpFwkODJIH7y58W3d4+uYvzrE9ZwZUHl
-	KzxVYOEv43HwZV0UF2tr5LzU87U5PgY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771240807;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PkBeeZVr8B29Z/3z8eE/N0ouHBNVef5cV12hX5biciA=;
-	b=Wh+Z0PPmdugjtjUNhnfSOFAC3CEvCAdAen3J6baKl5jqFKpV46OTsM489HD1MbFADRsqJ+
-	lvpajPoNGiiDfnBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A0ED3EA62;
-	Mon, 16 Feb 2026 11:20:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6UJ7HGb9kmnSbAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 16 Feb 2026 11:20:06 +0000
-Message-ID: <ac1d589c-a02f-421e-a432-9d65f3e2ce99@suse.cz>
-Date: Mon, 16 Feb 2026 12:20:04 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	b=6LXJYTwklePEVA2gzfD7etzn2oP/nlLFXOTowkG2S81C9DwCBzgPccGSbr3zMabSa6YfLq
+	E3yBbfuT4Juz8bQmjN75Snjt4F4gKvoQAXbwQAYUYm5yEVRvUonmrlFbtmik4W1WAwVEac
+	/8kX3igZAW8Vf5Hh72+MjEG6Yx7KejI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1ACE8600C4;
+	Mon, 16 Feb 2026 11:30:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A66FC19423;
+	Mon, 16 Feb 2026 11:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771241423;
+	bh=KFgAyA/laS4/MU7pCChfZBh0Hjfg1QRQ88qFNdP1x20=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QWiceWhkirDnroa2amGc7Yzcuqe5G8ZzuTAhP4Vi2rX9YaCZJRFkQEv1BUtrcTxme
+	 CoTj9P4GePUXa+2Wik7u0Wa9Lh6eiWEnP85WL5vkfkwuTCedCzTsZIF7r86yv3rmN8
+	 EB3pDibfGA3+kpFRt/kznLXW1GxPgr9DifC2KrGsvT6tFlNTTQA5FjR+5Fu0n4QbjA
+	 oZuG7n1Usbb9IuvLtGMS7n7BRFUGm4ngi6H4saX9JqxL4vwB6mZIK7FcyjoXUhHmT4
+	 ES6C+lZbk7cW84yPq72i7mDl9/00ThL3LQotaKdFI0i4HvL+d1sbmmGneJO0Ny4gR/
+	 cLQC7uOK+Iz6Q==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 18EFFF4006D;
+	Mon, 16 Feb 2026 06:30:22 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 16 Feb 2026 06:30:22 -0500
+X-ME-Sender: <xms:zv-SafP6SdpwtyKrIy61_w1L6KRCDqa3wojRXdKE-WnfoRqegezjLg>
+    <xme:zv-SaTo5THFs5nSUYFTs8rKGfx5IX0WsRqgOhoR-nGDQS3gxV9h-ysxYRQmfQbZRU
+    rbR0SvvqJ50mFzQq0muRybdErIXOO4O9sBw69GMNxjx7zvk7ro2CZw>
+X-ME-Received: <xmr:zv-SaVNZz4F9fftM3y5usJj4f403Eg3OPTylNcGpQErHuIZy8W7ryInBHKOaaw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudeijeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepheegpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehvsggrsghkrgesshhushgvrdgtiidprhgtphhtthhopegurghvihgusehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhn
+    rdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhngheslhhinhhugidruggvvhdprh
+    gtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuhhs
+    rghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhhvughlsehgoh
+    hoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhr
+    tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:zv-SaXy3RYYkVrgjT2ePItIoI7nROGRlXkxJI-DmcNGsMg3Ks4NSYw>
+    <xmx:zv-SaW0PCwprxWMPv1amXkIEXGoFlPtc4-K63ZVJwbuAOtiDic-kqg>
+    <xmx:zv-SaeTXFVwr2DgeActR2sgR2pncUgpqpAePUJrhigvtC8oLr0r4pw>
+    <xmx:zv-SafeawC4-UkIKrewg6FMu9XD5_XA_EuL2IW4uShBV2qn_vICcnQ>
+    <xmx:zv-SaSvdYc1ErSSH4ujiq4HdlsAPlErFh89bDsMP690zvTe17atmywkM>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Feb 2026 06:30:20 -0500 (EST)
+Date: Mon, 16 Feb 2026 11:30:13 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 Subject: Re: [PATCHv6 08/17] mm: Make page_zonenum() use head page
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+Message-ID: <aZL-7mpPT_S3Paon@thinkstation>
 References: <20260202155634.650837-1-kas@kernel.org>
  <20260202155634.650837-9-kas@kernel.org>
- <aZJTLwV2SaaKu1k_@casper.infradead.org>
- <ec4a9a1e-8c08-4879-a787-3b9e0bc38160@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <ec4a9a1e-8c08-4879-a787-3b9e0bc38160@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B293340005
-X-Stat-Signature: jezzj1bebf8j1o1yft8xm4gk6bnd473i
+ <e5831f0b-88c5-4a20-82b3-6e5952388132@kernel.org>
+ <aYnJCnE5vooLROnu@thinkstation>
+ <6afd7334-82e8-4f87-8ed3-6448e89328c2@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6afd7334-82e8-4f87-8ed3-6448e89328c2@suse.cz>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: zytsafyk7ce88dai369xger8dc6kx98d
+X-Rspamd-Queue-Id: D2D772000D
 X-Rspam-User: 
-X-HE-Tag: 1771240808-423
-X-HE-Meta: U2FsdGVkX1+iKHVshg31SfA7AtlMahCxat39V+Ldwi6fX18KSS4NZn5XDGE+jAKFGEyFfbrCQnfqD5nErBRqe8KwWtD/PWwhi3KWWhQ5olxTh0nZSb0XllOnC+O7nJaIs5VGTAdvL3yfkrXfw36mZgaen8QQvnVtehPdDCIs7Md6gQdt89iR68x/HLoqVMq5MCJLaMpfygxDY4RwZh/UPlJWJAf8ldy5f5wCvTOq9G8vub9CaPG2H1JJ5fTuGrM8z01ITSykvOXFU0rPgJIeSKCkoiYc3YwyBOmz2yNZjwgaIKMj0fZYa0eJfC35T3c+rnGhXniZCUJa/Vm44mNXj0jJV3H1Qc8Bp41MwzXpSw+6Id+PG9/2e6WA2Sx9kxwFjeTVDZyiifbWuz7nB2H+8KvMpJDe+I0A/mRwETeW00xvPm+qsV8znIU7DLPXaE0CDPXC+WnEbDvjhT1uINQ5iuEobQ92ZYm1MkDHnJ3T7rjE0HhYBD7sorbVP4q45mWLu7O42soLRJc6z/+Yn3eK/tnvUUCxUhjcPXGRt9OmL89QHqoFRMdFIl5Sk8b3Xu58FFXaaIzPsUhwjTZxcJawiMAyDuImrMOgvsjM+AAcSYNIOt8VEsNfWmiCbzEoy7qFT1i531+obj5oKcISgjej63LZrF/CorbtAvcvjOgWxJbGtF9UYk/ahHNTgsS/DHhzPsI38KIC7tGHulQOcS0/QeXrl63nykvS0TP2lbNAIYx5rz5HCSN3udsStJN2Hd1qcznWKgco96iZwFtHWssYDjn2klajDbnP0ZvbMnm1ojsNJfCpO6AJ/Q0X5aFmGc/YYkEpa2gchaR9QzADE/jGOikHdobepwP7fbZWyARgJp20r2vquK2Fp0bzQ9diSsw8KXLXyz70Xl+pu6yapGZL9Ia10lKt/cis8H9NnHIij+QEN+HCKVDBBUPgpKcKNw7OcSmxUtOMI1638lABHoN
- c0MnDuBd
- K0GZzR7mTcP/XUYRt3r5vU54aUJdOqWTFR9eo0Caklz/ouNh/9GAv1aMnJg2WQ7tRE6Hd5fKwGGzyIVxixDgR+Yuq2tnxkgGppxsQkDI8VObvhdMlxRYJd+aonlM23hS2vVGXQO+iezXgBA/A8vgqKZcmUhKIHGOOJe6PtpitQfarhACeh+qr5gf00S08or7clHDAI1t/A24II9k1OhKk5bkapPsKX6KKwR+8y6uduQ2I5SR85fcC+elKN4TUh1EwsaGa8GluIXhpaFBBv3iDJ8xQ6++hNiBA1uSyNsiOBBOX2Mks/5vY+q3dsxcSDk0uIUkgC1FS3iVN9T4=
+X-HE-Tag: 1771241424-945483
+X-HE-Meta: U2FsdGVkX1/sjyIY0eDDjgnGyL17DAAZ3TF9Tkh49ockrlEM2ntDjKGJkdpWBtNV26bDlsF/mRLv4/xH0T8x0DEeFzC03HLDdKH80chCQ/XfM6KPXPfaRFp+cv6fvW8Y+E57HLjMh2dJ6JIZGr9kHkM6SyJi6XJEMfZgP1N1Zw4GtAVXJBn6m/sCnLtLVrjre06oEPSeCgw2bS9BdpGwoj4z2cGRM0SMMMfJ79+3OIu5kJHe8s4qp20pxWp8947wx5x9b+LjkkfPgWlC4vUlmHgbbQarnoE/+FrzJFVrEfcDZ7X3/PwJtHIjztdoDrSJJXTuBzsUc7sBaOeygxUWEJ6mTNYDmEYxCesGx9+yusf3ti+XpoznJPD1dPVuRfJpK0V4J78mhxJiM1l0n71jTe8SD7pv6h+mF/qrxBQC8l4Ury6zCeCZAC2/JvQNk2kZmQ8U1sXy7cXneIoPFGP1YvmxeVdBoWVbDINZv1OxCt3zagFxj8lYUw2GGte895HMyyFf50aL5rQlUikCvz3mV+V5PAuaoZAQ13247NVD5+e1pcaEupczk+jtFW5bOFrUcNeEaG+CBznRmZFmpMOJUkg0KcD8nhAfBFX+Ug3f8rr+XRqOUmP3ISOltRJnkVx+5B4g9fm3nxs3erdSXJyrdLF7EeWAEeC6O38q/lgDIF2sBplwXNNPcbhn+8dMxmuURWm+AIYyuc/D5Sd8UY+pxZ52oyFvy5eue65XlpwK9dbLkxkL5bBNU0C0pgqKvmkQ+0cY7yl+rHtS7Z2CIssDyJ5is8oAX6bC7/TXB4j23eGGCTb0sKBxS/+Z+iAJIMV1lReAOCgVOF+CzwN/fdE++h8FWph4kVC3jx8cWE7/4xX8hrNLkuO573S0cheMCQjsQi4oKore/+KqoUjOo5WT7i6q8vhY1M0IPnqSB/MIiFTwwo4p80xP1wQJno8IwkEwJrCbbJ9sPtQtA8DmGF/
+ 99aBxqgT
+ SEVRwkd+qcpvbe7W5TFvk+7idDgkfiIIhcdzeGaGJ9sQg8pth0/f7rKh8nFfKCoisg6PIBfavj1b6zMDaBGHA3/F5nY4iXqR66xrJ3ENwuTF+V9+BGRuor+NKdfN10fKlXdppUl9+3IUojYZdVfAJQ2zziGVe0lEh5VHvTGEcasvDpP8tZbxT3qstCa9/rSZ1VOC2Q0lQnZ8xHgYFWO0U9bzpt4VsnQXhsI2uq6vCmmNoc0APH0TIPAL6JlQIZhEycy07mkUz8Mj2GBl0FdemzP4Pyv+0N7vgbkDOUUHPXHgg267cXR99oxOWxhVGGtVu95uEOgDY9PVq2GvFSfPMXesUcNr3SsVD+8jsabyiNEyTvdKZ9H7cBZF57g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,49 +139,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/16/26 10:06, David Hildenbrand (Arm) wrote:
-> On 2/16/26 00:13, Matthew Wilcox wrote:
->> On Mon, Feb 02, 2026 at 03:56:24PM +0000, Kiryl Shutsemau wrote:
->>> With the upcoming changes to HVO, a single page of tail struct pages
->>> will be shared across all huge pages of the same order on a node. Since
->>> huge pages on the same node may belong to different zones, the zone
->>> information stored in shared tail page flags would be incorrect.
->>>
->>> Always fetch zone information from the head page, which has unique and
->>> correct zone flags for each compound page.
->> 
->> You're right that different pages in the same folio can have different
->> zone number.  But does it matter ... or to put it another way, why is
->> returning the zone number of the head page the correct way to resolve
->> this?
+On Tue, Feb 10, 2026 at 04:57:55PM +0100, Vlastimil Babka wrote:
+> On 2/9/26 12:52, Kiryl Shutsemau wrote:
+> > On Thu, Feb 05, 2026 at 02:10:40PM +0100, David Hildenbrand (Arm) wrote:
+> >> On 2/2/26 16:56, Kiryl Shutsemau wrote:
+> >> > With the upcoming changes to HVO, a single page of tail struct pages
+> >> > will be shared across all huge pages of the same order on a node. Since
+> >> > huge pages on the same node may belong to different zones, the zone
+> >> > information stored in shared tail page flags would be incorrect.
+> >> > 
+> >> > Always fetch zone information from the head page, which has unique and
+> >> > correct zone flags for each compound page.
+> >> > 
+> >> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> >> > Acked-by: Zi Yan <ziy@nvidia.com>
+> >> > ---
+> >> >   include/linux/mmzone.h | 1 +
+> >> >   1 file changed, 1 insertion(+)
+> >> > 
+> >> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> >> > index be8ce40b5638..192143b5cdc0 100644
+> >> > --- a/include/linux/mmzone.h
+> >> > +++ b/include/linux/mmzone.h
+> >> > @@ -1219,6 +1219,7 @@ static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
+> >> >   static inline enum zone_type page_zonenum(const struct page *page)
+> >> >   {
+> >> > +	page = compound_head(page);
+> >> >   	return memdesc_zonenum(page->flags);
+> >> 
+> >> We end up calling page_zonenum() without holding a reference.
+> >> 
+> >> Given that _compound_head() does a READ_ONCE(), this should work even if we
+> >> see concurrent page freeing etc.
+> >> 
+> >> However, this change implies that we now perform a compound page lookup for
+> >> every PageHighMem() [meh], page_zone() [quite some users in the buddy,
+> >> including for pageblock access and page freeing].
+> >> 
+> >> That's a nasty compromise for making HVO better? :)
+> >> 
+> >> We should likely limit that special casing to kernels that really rquire it
+> >> (HVO).
+> > 
+> > I will add compound_info_has_mask() check.
 > 
-> How can a folio cross zones?
-> 
-> Runtime allocated hugetlb folios from the CMA/buddy (alloc_contig_range) 
-> definitely fall into a single zone.
-> 
-> So is it about ones allocated early during boot, where, by chance, we 
-> manage to cross ZONE_NORMAL + ZONE_MOVABLE etc?
-> 
-> I thought that it's also not allowed there, and I wonder whether we 
-> should disallow it if it's possible.
+> Not thrilled by this indeed. Would it be a problem to have the shared tail
+> pages per node+zone instead of just per node?
 
-I would be surprised if things didn't break horribly if we allowed crossing
-zones in a single folio. I'd rather not allow it.
+I thought it would be overkill. It likely is going to be unused for most
+nodes. But sure, move it to per-zone.
 
-(And I still don't like how this patch solves the issue)
-
->> 
->> Arguably, the caller is asking for the zone number of _this page_, and
->> does not care about the zone number of the head page.  It would be good
->> to have a short discussion of this in the commit message (but probably
->> not worth putting this in a comment).
-> 
-> Agreed, in particular, if there would be a functional change. So far I 
-> assumed there would be no such change.
-> 
-> Things like shrink_zone_span() really need to know the zone of that 
-> page, not the one of the head; unless both fall into the same zone.
-> 
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
