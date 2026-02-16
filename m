@@ -4,88 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A59A4E63F25
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 06:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 537F2E63F33
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 07:35:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEBE16B0005; Mon, 16 Feb 2026 01:51:28 -0500 (EST)
+	id 903B06B0005; Mon, 16 Feb 2026 02:35:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99826B0088; Mon, 16 Feb 2026 01:51:28 -0500 (EST)
+	id 881276B0088; Mon, 16 Feb 2026 02:35:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CF536B0089; Mon, 16 Feb 2026 01:51:28 -0500 (EST)
+	id 762706B0089; Mon, 16 Feb 2026 02:35:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 872366B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 01:51:28 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 601A26B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 02:35:18 -0500 (EST)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FFF38CFB7
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:51:18 +0000 (UTC)
-X-FDA: 84449398236.05.01E5A06
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 89B4A40011
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:51:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771224676;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21E0B1CF10
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:35:08 +0000 (UTC)
+X-FDA: 84449508696.05.F651A36
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 481BAA0009
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:35:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IJFyYv8C;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771227306; a=rsa-sha256;
+	cv=pass;
+	b=Jk5zaGDc+q23bKJ30EqtMDVZ+4RsTwjFWU6TAj1ZLEVwxjhWsOC8WEMBj5bS9c6hXlkgfC
+	lPPHCzWX3DO7m1XqOqpYgV3ty23Al7jcDjY8XSWlAzog7dPd/ACbQ7322mqmPU+lda2rdR
+	Tru4gmgs+og4cLGx9oexIdL46GNME7A=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IJFyYv8C;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771227306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aIs8pJL4x6XAqd44msezyFMEPN6O6znft+SKKIMC6TA=;
-	b=xZiMfU0786uchyg+zBsP9tqdrW+6QnnUMvoGNjTWjE4PBpeevK1nrkZ8CL4irOiyp/Ntav
-	NTuKiRwP1MDIJF2EcKNlmb0bExbn3fwtyAAc41SSbhZ7Oi6zZv89ZU23xv/jfwxW4n4Taf
-	k8hZHGTPEmzsMnIeBIN/r3gS9KRWEgo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771224676; a=rsa-sha256;
-	cv=none;
-	b=NfX2qb7qBB/uT3ELwE72NjHHe1EdW5nVWKK+P0ZSf2Xiyqwg1G/0pVHMjkwfj1/SHTZTyg
-	55i6crRnPLA7oHLt9QWePpB1IqXsOVwo34EwH98bm6HmIHLWuQveI/646agSWUTcwfH1CA
-	LFg36/iboT6oiqMzpnhAM/4tfd80uZo=
-Received: from [IPv6:::1] (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 61G6p8tN341965;
-	Mon, 16 Feb 2026 00:51:09 -0600
-Message-ID: <78df00a4967f48a41659a5225a09b99c4b1cebb3.camel@kernel.crashing.org>
-Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
- page
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>,
-        Marco Elver
-	 <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
-Date: Mon, 16 Feb 2026 17:51:08 +1100
-In-Reply-To: <9a46df616e371e1680637a41ba2757b7cecf55f6.camel@kernel.crashing.org>
-References: 
-	<ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
-	 <aYJBBs17B-SQXFqq@kernel.org>
-	 <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
-	 <aYL3zxuTLT8N7C8-@kernel.org>
-	 <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
-	 <aYXDeN0WGQG8-cxe@kernel.org>
-	 <bf0231accb89709968efb4d8e1be9970aeb716f8.camel@kernel.crashing.org>
-	 <e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org>
-	 <5a44609fe992624573a3ca0a293888bd623e2a06.camel@kernel.crashing.org>
-	 <0344bfbeb017cafc0f7bd4433eeacd9bc802d9c9.camel@kernel.crashing.org>
-	 <aYtBctm4TlHGnzXV@kernel.org>
-	 <684d84272e7dcd2ead0770843a7e0afc625c87c9.camel@kernel.crashing.org>
-	 <9a46df616e371e1680637a41ba2757b7cecf55f6.camel@kernel.crashing.org>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=024esMGlkL0Bwiyo9ctvcoR2iC+oqeDjq2y9rJqpeMg=;
+	b=avYcgi9ieXu4svZ2YHzbVlGVn2FnQ1PiEf39taWqt1FLG7I8AOpmaysvTK/TAqRH1M0qTU
+	hOa15FygOIMNj6PsdogNXb1FVAWM+y3bAxBjpmnSe9C7gsdvYIHXqOfNqcfm6RWz9VZriL
+	SaM3iBpjPN+HJKT6MnJCfhPxqRJgIWE=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-503bf474fdfso28140611cf.1
+        for <linux-mm@kvack.org>; Sun, 15 Feb 2026 23:35:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771227305; cv=none;
+        d=google.com; s=arc-20240605;
+        b=irf1KesqvPg40L7/lm2YJo2ninc6TOi+Y8YIhnxHjnhwDW3ZpclJA8e5t/j1pJYL/j
+         dKNh6UHwqfYYAGzxqs7ATAWREaAjn4c8IUK+32qpSihwVpQ7D+415ayE3f5o2b1RQbu0
+         F9Ciw1VU0DxAwiDoEZdj16Aj/IvNpxgk9xOe4bpQhoaQ7OHHl4i/MPX6sYU07F+KnucT
+         wWzRa59zC1FB3nClnFImSRbqRd+8XVfyISmTqa7dzKVOm0lVXDsogHv2B3gn3RHXRI37
+         09Jyh2zeDR6bzc1PeM5PvTuTpz3Gg4OcJ0cV8xvFj5+4T+yMxAy+/2O1VhJDGjmMbJLd
+         X4FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=024esMGlkL0Bwiyo9ctvcoR2iC+oqeDjq2y9rJqpeMg=;
+        fh=ax0SVDDNj9e0avQJCZXKE/RdhH5t7AkPo7KIZY3RsYk=;
+        b=gGlnHI2koxqtdY1eOjh93sFn5VGzM9aSfGhd4xLr1VVdwXY7ZgBhcG2bHhzdFMjPOw
+         Px/yJVIr2H20BGHJCfzZkXckdWNwRyTXH5XgpOk2JQafC0DETKNHeWweBMcq9WZHxtzF
+         CBpVCq4SZhUMJcblz711DltAZUyNz1zh10o3CaJnbs1lQLGLTfvonwbunF80jGPXkOQQ
+         ZHdjZWazug83+uAscKsdhH2kclzsg0hCUHo5YzuK+RtV9/eUp2lwCicOSBiGVvROToDc
+         6ieCCZK1O9R9Sj3Oonk3ZGvvn4jjzJj0bHzZpTz1MGskySYzeJ9ipf17IsJ9V/bzAiW1
+         ZRhQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771227305; x=1771832105; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=024esMGlkL0Bwiyo9ctvcoR2iC+oqeDjq2y9rJqpeMg=;
+        b=IJFyYv8CqQk/ZwXT7Oi5c2pMQqRcKkrOJpdq5Y1mDzToG8+RzB0G1qrKCo/KAYoJJg
+         5K8UjC8ummmP0MRGho75L3CB0sZrbL8i6btC0LbI6IM9wFW5JBCN8cFJiGYWxTNhClHx
+         1VoiweXy+YaApItcB+kXIfwgRrDkyGb6JYUmW6/2l2o2mLwFmzFuNg1Joa7ttLjaE6HG
+         gOeXGWDeGRQ9GQvhnaBA/gpSze9cbopdkfodb5BHoyoHMEUTwUHFt5BWTnagQNzayGHF
+         A/X9Y7ndaTFJJ7j0oM7q45chabh7RnGg8j7GtNNcBl0gDWVJTcdETqyb3lccA0dvlEqR
+         8iiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771227305; x=1771832105;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=024esMGlkL0Bwiyo9ctvcoR2iC+oqeDjq2y9rJqpeMg=;
+        b=IfCGVojhP1tJ/Wy3ckys1t06X0K26kqNOwD6arr2Ba8t33WKCnXa3JtEXqCdgSEhG4
+         RDE2LT0bljQW+/pDC1veUyS4/3tT9HKgLpF0zLr2EmX2YdgyxxuCBzvvQ8aHn2W4CYW5
+         ekh7ghLCRBBTh1/JV+Lo3AmR3nFzbiz80UeIeLAY6ouhqz+bKE2oeSW/36VyEoqU9XyP
+         0dVzro991FB19Dh52Z5Pdpsj//o3ED0CkrE5qphuvp0I9vkY8FyvjZmhTiCslozb5aqk
+         MQ2Y6Y3XnYFakZTgydHr4Xm/W0Wgmq+LykFygNbx7X4M/pzB83VmncNIbaNQqynPW57r
+         PxFQ==
+X-Gm-Message-State: AOJu0Yz7FRtY8mBo75MJbqBsjUBNKR2ajW0NsJgpne4OT9i8ZwXsBvv/
+	DORGSHKo1DXsZJUioAo4cpGeiXyfgl6mH10C2scmbsCvel0Pgyoy3SwJk4SKkiYnReu/U0kJGHU
+	YPTENEglaQQaqAoa5PCh+N0f2/eK29Xk=
+X-Gm-Gg: AZuq6aKE6e5w62aIy558zKaq+J2PF9BggXmF4tpW8OBzs30we1oM32z1RWj6qjmlg5P
+	KwLbjmndWkYJvHUCTzjLQfkMb4jTbJ0Aso9OxmiMxnFVSH5xX5HIjLVOoExO7lBI0IucvuXAyTQ
+	GH3hjYCfyBYWSqlco8y7BVM+FW07Abw4WcBs+yX3Ldh1Z6WOkkN/w7Lmfxp30MXYZ4Ke1cuuhNq
+	0NW6AnXWBgidMKtvhTHPb9YnNUUPVKeX0Ty0ldcYNOt/iR67btsf5zkRRBq1lpNaiYghwTgxGXi
+	Jwzc7g==
+X-Received: by 2002:ac8:5a82:0:b0:4ff:b1eb:2d03 with SMTP id
+ d75a77b69052e-506a6b46d4bmr131456111cf.72.1771227304980; Sun, 15 Feb 2026
+ 23:35:04 -0800 (PST)
+MIME-Version: 1.0
+References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com> <20260216-hibernate-perf-v3-3-74e025091145@tencent.com>
+In-Reply-To: <20260216-hibernate-perf-v3-3-74e025091145@tencent.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 16 Feb 2026 15:34:54 +0800
+X-Gm-Features: AaiRm539nHIx117-7otZWRWfhYh23TG2xx8FFgV-CfFgMKEERzUaheINn2QkqoY
+Message-ID: <CAGsJ_4xpoC78KhYj_b18aVzjGcFGfXnpt7uLGvg7w1B4Y5cc2g@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] mm, swap: merge common convention and simplify
+ allocation helper
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, 
+	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
-MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89B4A40011
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3hywfrgs6hg83mufbj5nneesqn7ymk3r
-X-HE-Tag: 1771224676-244955
-X-HE-Meta: U2FsdGVkX1+j6tXG14bEvRJlzmj/JPJj+1NHvsSlK3c7u5v8+jQUblgRK6/o/GKpElFaYeZZNUphWIlNMgp4uRAG0PF2v38d8OD2NVfW3mnl7f2fduotvhqfJnlrG2npanGx7E05NAUTmYMzWaefHa/nmLHEkl+UPCD0uZWjcgVnyMblgoMv+pHgLSmrHrkFph1MZJixJb7di9YrlUrckn6ZFLoXfXk+zzelqf2Z+O+zKCitOKvaahwc4HtJLiPh6xz6l1/6hNQxkDu1RAqhO5cuEw1Cdmq0bpoR3ubVlWQaOePuxuImFAn1aosp1c5S2nppdRfmmUm2JbX0rosRZnOLva3dv4BAUsh5h/ERb1FEgZAPDJ280eEt5tQa3AR1xGTUbKHqV0i5GFubjh9YNgY64TdN/WHe2K51V/n2bRLFkFJbmYOS0jpTwR3oo/9LFIlUazUjnjvWjpZA2uhF+b/d/1L6ld393hHJGjnIb0iqORNKNn8nvMMxrpKMRdMxpfrJmNg4N3yRzhA3/xR8IbOCoX/hyAYLUUgUjzt6dtec6T5c3l0+f69G1qR/A6dXyMssTIMf2qh79439Ml+xLLMYtlw4JIs/6MxtqJWSIWWVi7B+8v9icTQrlPAVvO6yJyhQE909oCJojC7yVva8ohabmliNY/5rhAbcCEOZf55GQVSaCVBS0NiNsKEPO5oXdEiCO3w0NWJI64VDEw9CjwbIWE68D38bbehimp4pIyX8iwfOU/HjIV9Rh8gey/sMGgf0eINTwazKpi7F5J7hcGLqI0FfcOgWitqgzXxjbPQWhC0OGXdqEsJ4fmlXt4nZ360gQLIpwBx7VND23wcvlE9OmWhRCwaK+QIUhHfYcxBdgrmjTsmUFJy5YtKA8MZlxir4+U3o9zN6m5ZRxs9RzxR65SY1hWA7wXOHFaRIx+OwecEwORStGNw/zPLANEQuatwHXWL93NyetsqjMiN
- PSBWGm0V
- /7r0cXQ4/dwQWuQfieCbspx9OD5yT7xLgdZQANe7xLQ7nIPDGUMd2mLHlBTY4DcDU65yCRLRRzIgy0LomrvYXH30FUyo9YR7Wpvm3HaUwh8vuoIqPMmPZIyWrjc6OIqBv2sCGnKBT7tQaaUQ=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 481BAA0009
+X-Stat-Signature: o47484wha3xbpksp3cqfqjdw1xgzniib
+X-HE-Tag: 1771227306-134759
+X-HE-Meta: U2FsdGVkX1+xcJF8t43zVwzTySUf+38aRs273C/TN9q20VaWLz94Kl4V+FBw9rfC++gD3qN14Swei6+aPGQPFPqIX9dhN7VJ/+jlAHereQb0v6x+gYmv8jhO8BFEE1eeLlSYZbZKQQSv+r0eSIKb1ceEaIQPx/VqU9I8UVqDzSH9bpNJaYFivmhFZdJvEnBc35noyD08iu/6trW5pZwxVsxJ/lSTzn8K3usMEZ/GD/aXHSxwcnlp/erL7U+wohClU915qjVynEdlravVy00wbZ6OBoQXiBrxyFoK/yA9+4Ukv1/q6mfEdhF799xD88alu6cQLGKwHLe+9YoVfD0b46DYmIyFvmtKtRUsnPhWuE60y7j/Ido0chQND/caGA5W6x89qAS/52T+ETW6LFB6J2Y5SyyHw+y0XZyeXIedj47uLvVHUPzTFGsbZ/4oQ+r3hupVxSA9XG6MBoSRiYyvXEV5bHv7DhXN4SPoxRWqnBWFxmvqo8WpYwkOMxEZ84nfloamOuTEO0hyoz3Esub1c3Uo2/vWa1P/17cZoSm8yXwBdCf1ksQsCLVBIIjpWuzSMx68O8h07+fBoKvrj5A0eObXvDkt8hoSS3zFsg7417A8wvHvsFYw/w7v7Wrz7Q+jwLiMfz07difZ33RptDCByl/KvJbKFZ0Xk6zw5myFPxQE/svIxYO0Tm7WSme369BNSdb5uFyc/BFj7sVc5ZtXooq1bejWXglZx44uvC9sZRDJrlB+mVPgAuMC7r+ZWT77sTpzof2rep/WSaCwgG+u84xFIzsxK/wfgIo+dDsXvBqvl1J94TOMfICapRbQTF3wJWnhHRDpagcAbmbe4beTZ/f8oK/zyPWLcDWlSvqKuRs2uM9z/gXucj5klpNpcM9RCM5LE44otl5PShVdtIvm+nbtdHdCEpUgG/rIwLBa4xicyeVcwAelBIH11HJ9oFg/jyXNR9cs+8rqaXnH3l2
+ iqcC4s/G
+ pEby4ddhqIbdfxAC1MKTzZn98v5Mj0H6f0GZILjc7oj0eK13232EGilEIBC6mSuYCT9bldwagfCuRfvMvLFeNghuTTcO9LyEmWnEVM9SNYpf14ojyKtXMnT6AgfIiNTnWJwvolUIM0/V7mLFSVAYBCk/COJJyTrhzl9iLC0JUy+I4gi/e3tivSV7PMZG2WHTISUF4fZ9paJR+EweTfa7mkRcafRxJ9mgsUZmG+HWnLbFXwEN+Xru5Zx+d0O57kqkGuJ2Ypblh8PXmj47ef7JbqJNtcwalWlEczxxRT4byQqu1co1yzxhJIVR2zCReGTA05uf94Iae9CSDf/pTu4LiNkrRoavt7JqySbnSpMUAAE0mAHTcV9Cl+1jfXmkPFifZQkt4KzwVw4KaDr4lIk6GYJktah0xVhvy5v1bDSc46NknuvwWlfr1g0pOkLOHciwerhDh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,20 +143,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-02-16 at 16:34 +1100, Benjamin Herrenschmidt wrote:
->=20
-> Here's a log on a t3 instance with you patch plus some printk's of
-> mine showing the EFI memory reserves and with memblock debug.
+On Mon, Feb 16, 2026 at 3:00=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Almost all callers of the cluster scan helper require the: lock -> check
+> usefulness/emptiness check -> allocate -> unlock routine. So merge them
+> into the same helper to simplify the code.
 
-Happens also on a qemu VM with 1GB of RAM, so .. :-) There's about 25MB
-of RAM lost to UEFI on this with whatever version of qemu I was playing
-with that the patch recovers.
+Previously, when !cluster_is_usable(ci, order), we only called
+swap_cluster_unlock(). Now we do more work in this path:
 
-It doesn't matter which "method" of freeing the page, the original one
-or your free_reserved_page().
 
-I'll switch to upstream to avoid confusion and test it all again.
+out:
+        relocate_cluster(si, ci);
+        swap_cluster_unlock(ci);
+        if (si->flags & SWP_SOLIDSTATE) {
+                this_cpu_write(percpu_swap_cluster.offset[order], next);
+                this_cpu_write(percpu_swap_cluster.si[order], si);
+        } else {
+                si->global_cluster->next[order] =3D next;
+        }
+        return found;
 
-Cheers,
-Ben.
+I assume this is what you want to do as well, but can we add
+some explanation here?
+
+Also, it would be better to add a comment that
+alloc_swap_scan_cluster() expects ci->lock to be held on
+entry and releases ci->lock before returning.
+
+
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swapfile.c | 30 ++++++++----------------------
+>  1 file changed, 8 insertions(+), 22 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 0d1b17c99221..68dbbbd0dd24 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -923,11 +923,14 @@ static unsigned int alloc_swap_scan_cluster(struct =
+swap_info_struct *si,
+>         bool need_reclaim, ret, usable;
+>
+>         lockdep_assert_held(&ci->lock);
+> -       VM_WARN_ON(!cluster_is_usable(ci, order));
+>
+> -       if (end < nr_pages || ci->count + nr_pages > SWAPFILE_CLUSTER)
+> +       if (!cluster_is_usable(ci, order) || end < nr_pages ||
+> +           ci->count + nr_pages > SWAPFILE_CLUSTER)
+>                 goto out;
+>
+> +       if (cluster_is_empty(ci))
+> +               offset =3D cluster_offset(si, ci);
+> +
+>         for (end -=3D nr_pages; offset <=3D end; offset +=3D nr_pages) {
+>                 need_reclaim =3D false;
+>                 if (!cluster_scan_range(si, ci, offset, nr_pages, &need_r=
+eclaim))
+> @@ -1060,14 +1063,7 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si,
+>                         goto new_cluster;
+>
+>                 ci =3D swap_cluster_lock(si, offset);
+> -               /* Cluster could have been used by another order */
+> -               if (cluster_is_usable(ci, order)) {
+> -                       if (cluster_is_empty(ci))
+> -                               offset =3D cluster_offset(si, ci);
+> -                       found =3D alloc_swap_scan_cluster(si, ci, folio, =
+offset);
+> -               } else {
+> -                       swap_cluster_unlock(ci);
+> -               }
+> +               found =3D alloc_swap_scan_cluster(si, ci, folio, offset);
+>                 if (found)
+>                         goto done;
+>         }
+> @@ -1332,14 +1328,7 @@ static bool swap_alloc_fast(struct folio *folio)
+>                 return false;
+>
+>         ci =3D swap_cluster_lock(si, offset);
+> -       if (cluster_is_usable(ci, order)) {
+> -               if (cluster_is_empty(ci))
+> -                       offset =3D cluster_offset(si, ci);
+> -               alloc_swap_scan_cluster(si, ci, folio, offset);
+> -       } else {
+> -               swap_cluster_unlock(ci);
+> -       }
+> -
+> +       alloc_swap_scan_cluster(si, ci, folio, offset);
+>         put_swap_device(si);
+>         return folio_test_swapcache(folio);
+>  }
+> @@ -1945,10 +1934,7 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+>                 pcp_offset =3D this_cpu_read(percpu_swap_cluster.offset[0=
+]);
+>                 if (pcp_si =3D=3D si && pcp_offset) {
+>                         ci =3D swap_cluster_lock(si, pcp_offset);
+> -                       if (cluster_is_usable(ci, 0))
+> -                               offset =3D alloc_swap_scan_cluster(si, ci=
+, NULL, pcp_offset);
+> -                       else
+> -                               swap_cluster_unlock(ci);
+> +                       offset =3D alloc_swap_scan_cluster(si, ci, NULL, =
+pcp_offset);
+>                 }
+>                 if (!offset)
+>                         offset =3D cluster_alloc_swap_entry(si, NULL);
+>
+> --
+> 2.52.0
+>
+>
+
+Thanks
+Barry
 
