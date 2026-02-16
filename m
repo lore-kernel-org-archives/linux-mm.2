@@ -4,86 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03161E7BD85
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 10:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C5AE7BD87
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 10:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F5946B0005; Mon, 16 Feb 2026 05:12:18 -0500 (EST)
+	id 9F5546B0005; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A0356B0088; Mon, 16 Feb 2026 05:12:18 -0500 (EST)
+	id 9A7386B0088; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AFB46B0089; Mon, 16 Feb 2026 05:12:18 -0500 (EST)
+	id 888AA6B0089; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ECA806B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 05:12:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84689C3B77
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:12:17 +0000 (UTC)
-X-FDA: 84449904714.25.A93870F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 982DE2000D
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:12:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7144B6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 05:32:36 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1124BD86E
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:32:35 +0000 (UTC)
+X-FDA: 84449955870.26.2FF5B5A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8010E140003
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 10:32:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zspg3pA0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ea5l7vLg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0kBFRR9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F44EHw5F;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771236735;
+	s=arc-20220608; t=1771237953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ot/kmpbQEe/4R34Hfvq4D4SoLQY3Z82yHBqbFKTfrjQ=;
-	b=5YR+Jph6VA9ZQIiSAcjmpC9Rn1tk5Hmi3uN+Lwf+86wra342PQId3Vh6h5uuByylIrH+Rk
-	8HcnPd40h3Of88jkzPRBP5tRgz88zk89trvEhzaKeTk6/gwllxeysBf6HY9tMVDZea9ESS
-	6vuN/xV6E30yn9fp2wKQG7iuSys7e6U=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
+	b=ILihIfsz+FIjbz0qNJaAesq6CATLXW8rI/UOr5d5HYvt5LX9lBhpRCrxV3TJyAQoXB5tnB
+	91P5ZlYjFXXHgXANUUxMsHIhJ9c4q4DTn84IyVkvIZCl5D0qyxx7cKrYWYX58OUvHzKxI6
+	wVJdWsD344OpP2Kcl692akX3+KtJOYQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771236735; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zspg3pA0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ea5l7vLg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0kBFRR9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F44EHw5F;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771237953; a=rsa-sha256;
 	cv=none;
-	b=fCslaDd163nuxIYsqWkF2zcjCXyTsyHExHVnB/hxRGSBiN7SSI/lTS3Ig4+bKsDupqc3y4
-	wPnC262+QCIDeaCES8pu+X67gOtzfNZTu5RzJNKrM6CYQEfllgV5xmxpZsyTk9uQnxnLRh
-	Smq09PuCCvbqNRxYxZOSi4ef1UK2Xrg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2BF1150C;
-	Mon, 16 Feb 2026 02:12:07 -0800 (PST)
-Received: from [10.164.19.71] (unknown [10.164.19.71])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3452D3F73F;
-	Mon, 16 Feb 2026 02:12:10 -0800 (PST)
-Message-ID: <71fbee21-f1b4-4202-a790-5076850d8d00@arm.com>
-Date: Mon, 16 Feb 2026 15:42:08 +0530
+	b=onMjjpWlekynMeNI13MbDja3d/HEFiX++9pz6L5p14GnrO/GPhvWK6eB4UUFNf996kCjmM
+	r37Whb9PYqeLbs0BE09dAUrSjjGZZ0LQ33oeiBAOr5Z43QDQEE5ZR5YfFyOmJN3ujqazHq
+	xn/t9zRLUz8NdPNmJZpRPHiUebAkP8U=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AE00A5BCE3;
+	Mon, 16 Feb 2026 10:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771237951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
+	b=zspg3pA01Tm44EfpVjMr7nytFxCjxI2dsEr2lJPSDKcjgvwzZc6CUJlGJNc6exgD+H5z0Z
+	LjDwTBqsja6rIDDI22DQyoxfYJb0r9GFeWg2ZffHssfZXJ+XFn78AKWql90stLQbMn5iEw
+	wwbHL8fsHFfHkKPvk+pvVzhvWPO8rJI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771237951;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
+	b=ea5l7vLgdW07n2kq/s/zLUHe02dOyIeqRXqAP1hGk7TnslV39PI+xQwZ/8ec1QqbsTbFr0
+	+EIWf7TKDrkOGeAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771237950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
+	b=T0kBFRR94a1y7KpGOH1on0ZbvDhVU+SsiLEUJdQjv3i0qhVjZeQilH/QMc/H2PxJ0RHxIg
+	XhCK34LoobWSoNT3buySSZXPDM0UJO0+fYJyQisvv7kSPf/Cz+kL4CaGjCbH79kiuq1sQb
+	62N9f2b9UxbHlfwRPjmBXGpEFQ0AY/o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771237950;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=F3PpA0oF9S1G7sG1bCXz1zk+1D4bCWgjrlu1+Gv+8FM=;
+	b=F44EHw5FWqBetdHu7VKINkiqP8h/Uc/pHG/o2Pa9M8cvPsZCWINAfEmbaqB63e06daZcs2
+	bxTHO06l7i5nJWAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 187A93EA66;
+	Mon, 16 Feb 2026 10:32:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CbVxAD7ykmmyOwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 16 Feb 2026 10:32:29 +0000
+Message-ID: <104b642d-483c-48a7-89da-209f3bcd2319@suse.cz>
+Date: Mon, 16 Feb 2026 11:32:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
- PTE batching (cac1db8c3aad)
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Pedro Falcato <pfalcato@suse.de>
-Cc: Luke Yang <luyang@redhat.com>, jhladky@redhat.com,
- akpm@linux-foundation.org, Liam.Howlett@oracle.com, willy@infradead.org,
- vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
- <c450ee86-4c34-449d-b144-6b4dcb996998@kernel.org>
- <dhoz2eeqdx44sf2epeorxs67v5zohutgxniourumsouz22qbl7@gijuj43edjb4>
- <CAJuCfpHJyHH4=kcQcc_RUPhmLBN8HckoDW0DHiUe+FdQ+tr2NA@mail.gmail.com>
- <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
+Subject: Re: [RFC] making nested spin_trylock() work on UP?
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ LKML <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, Waiman Long <longman@redhat.com>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
+ <aZAWGwZP_Z75YHKt@casper.infradead.org>
+ <CAHk-=wg9F6iW8wuH8bCDFRJyFCdtin5bXJW5v4WjNyynD7eoCA@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <CAHk-=wg9F6iW8wuH8bCDFRJyFCdtin5bXJW5v4WjNyynD7eoCA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: abw9817cn7tomdk3hfdnuepw5sgc6uud
-X-Rspamd-Queue-Id: 982DE2000D
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
+X-Stat-Signature: g44iz8g4u1kfeha5kaypq5mizdwutks4
 X-Rspam-User: 
-X-HE-Tag: 1771236735-725712
-X-HE-Meta: U2FsdGVkX1+Ciupml7yYpaPA7qCBh2owkMGUa0IplQsreVq+1cY5PAWx6at4PjyGt0mszAx1CkKZvJZ8QcIbjb5WK7AnK0K6N/G41QfeduceTgxVqQHjljahOB8OiqzKRPie90H8lUhv96RnPwVFeo9Stn9vcThH48srkwJ0erykVudOQ7tHjpljt2bs2GW9FoTUZUNc3wLdnDyZOaFiLAP+0s998i9eB23N0TQHFbqidPwIWf6+MTj/vzyj9d2tiI6lFYQtF2nr4ErYqqsVi0keq2ruFADdv6HYn2uVptL/L4fwxoUEpavC6QlUR+Xd/WUI2Ft+3peJP942WoXP9dm4ir2qZHzcW884FKbxV+qiigqShrpBucd1/ge62O+7Rexh2W8pZ3MhcifLlkDT0HJqsy5h9tlG7FuZClT6Xh4+8lEGhahPcOo1xN/2gaEg9zY1Sx4FSNq4axVgV+AAkFt+FtKxRlmbg+lLEXj+xHNgJi0Lbz+bj4YOe60tRqvBPjKzywYbPykeSjC4Jc5HID5Xha0k+DEs94hoSzjKP8fGTOT9A+B9SF25R6kkIRo6TAzBzV2s6I+FKiIF3KZQbRNssCRxfH/s/EDHAfUcZpU2TF5WAo2jkPrF9khP22+Lbf2nWMdqinxA4L2aZy3//l5TkrsoYU3nJUACmNfjR4teVmjEHQub6tgBRGFxzBPNk5x4VL7s4SzrW74/c724StOIJkhxajEeMsLNClxmgeFbXGI/GQRBej+DmiiTRR2EP9563/B4FSnNONrbXTzcbW8unkPxVg5rq+8rhV6v4T2I71s9IsCmFd9Nq+9QKFMJG5tsJydMIS/wlq3JxdDID5dzhAeynwHQS6oPfyWiRGIFYcCXbhpCe+eBb5MWik5azJ3JOosTnVrsSheSTGaikr3CfrMkPEUb8I4Y/cCRUf33/rFy2c684LlKM4TAokh+pgyQFJqyiKgQHwIFXUG
- lrRdiVfp
- H5eJKERoJh2CbSm4FXuO5nlsInEubBYfJ6MTvmmpMNFe9BCHkmxdiglWZ84a18PgWWQEtCkiLN6O40sJTK/ouKU2nxHUFeA4M1q0iKXWcG/3v7mlEyWIC2wshiu2fXecPNHyh4tw339P96HRhlLyEs/yncDKgltnU4yGBjnWmLbYnKPHlIIA37BcPt06D82cIWRJs
+X-Rspamd-Queue-Id: 8010E140003
+X-HE-Tag: 1771237953-580949
+X-HE-Meta: U2FsdGVkX19cevquKKBn2uNHhiWZSRhWUzXzPpTHd+7qxahCj0qrz2LgyK8Gv1q62X+PcLa6LK6H5ROmRImXe3jG9UdeAVDXhRBWPqqbs6qyIqWREsd9r+b0ojhE9Wh9Dup+Giw6MHUYEt59b7fUzvkmiZLx0bHgGdJ6mSZzOZ7SPmQpXwoUpuovwE0odQhW0jjsQvGTFKmY8a0hScI3CziUD2pQ+2e03TsH1BWOlBsjRqvzfYgiORiXGA4zvoEcJxMvCJ3lbjkAA9uoNoZB7tPcRGgWfgzrS5wtqp3rbk+BB/5UJFd8Zim8OZU4KVkLu34aLik0loCxWvVz0oSbuTAxkMirHI1Od2S/xoglJ6/VhNN+j4ucGk04cBdyh3Yphe8YDWtKkjcMFLw4tMGf0NgSimEZheGQA5u8xQevZ0URjiH4j2/5irgnyfH8K8flpRQaDDrcjj4YhmUGchj4tSeqtUt5ilC/K/QvttfztWzXzLygtHMZDCKSh+m7R4lJl85OlFXiRBElj/d6+0O7XY2MMm6diqjy/G64zFgWpAcIl41OHLDzqfexqlNsIW2+03GzcWcp+lm0uI3WLBlT6sYv8mgGQ+nhJN8CynlWyq5uHgddMlknr2OXF4NbjR3WxStkNnca3Dm6hBrV52UyRcoiKx/v5X0MHg4ct+OYTwpmdccgpa3yXhLbcfQhupk+5bEqFyOIyQtzzsZSlm7vvLSvv9Un1N2DcoZDkqw7W1lrFoY3fDFgRgIKR4G5vZPWNaB8ItFkA1bqEjOIXl80QUmSSYwKFld/gsgYVzdggaWFw6iJZ3mrAW4aqj+CXlp3/GJ7G2PNAKLfx7xKJr1sX+ZlX5wgOc7x/yUCYwpDNn4L5NEfpDfFOGU3ivoA3l/AYVwK4Pk/ON0Hdorxn0Q73cbdW7nxwtnxZE2WEFHC5zF4iba0zDLhcqEHwrxP2ziI/Lts00FiNukpqc0F5TV
+ oYH4wYIN
+ smE0t4gs4h2qft6VazPDvXJjX4nBnafP6G/DSbaC4r9Dh5LUrjT37c6GGTnc8rIXQ2qdThJo/O819naSnrWOP0OMcuPrc9EPWRBly
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,93 +186,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 13/02/26 10:56 pm, David Hildenbrand (Arm) wrote:
-> On 2/13/26 18:16, Suren Baghdasaryan wrote:
->> On Fri, Feb 13, 2026 at 4:24 PM Pedro Falcato <pfalcato@suse.de> wrote:
->>>
->>> On Fri, Feb 13, 2026 at 04:47:29PM +0100, David Hildenbrand (Arm) wrote:
->>>>
->>>> Hi!
->>>>
->>>>
->>>> Micro-benchmark results are nice. But what is the real word impact?
->>>> IOW, why
->>>> should we care?
->>>
->>> Well, mprotect is widely used in thread spawning, code JITting,
->>> and even process startup. And we don't want to pay for a feature we can't
->>> even use (on x86).
+On 2/14/26 17:32, Linus Torvalds wrote:
+> On Fri, 13 Feb 2026 at 22:29, Matthew Wilcox <willy@infradead.org> wrote:
 >>
->> I agree. When I straced Android's zygote a while ago, mprotect() came
->> up #30 in the list of most frequently used syscalls and one of the
->> most used mm-related syscalls due to its use during process creation.
->> However, I don't know how often it's used on VMAs of size >=400KiB.
->
-> See my point? :) If this is apparently so widespread then finding a real
-> reproducer is likely not a problem. Otherwise it's just speculation.
->
-> It would also be interesting to know whether the reproducer ran with any
-> sort of mTHP enabled or not. 
+>> What if we use an atomic_t on UP to simulate there being a spinlock,
+>> but only for pcp?
+> 
+> Yes. Please just wrap this - very unusual - use case with a special
+> wrapper that can then be entirely different for UP and SMP, and use
+> something like the suggested "pcp_lock" that becomes a spinlock on
+> smp, and just a tracking variable on UP.
+> 
+> And I don't think it needs to even be marked as 'atomic_t' on UP - the
+> value is going to be idempotent even when modified from interrupts
+> (because it will just be modified back), so no need for any special
+> logic, I think. The generic 'atomic_t' ops on UP disable interrupts,
+> which is horrendous.
 
-Yes. Luke, can you experiment with the following microbenchmark:
+I think we could be using local_trylock_t, which does exactly this without
+atomic_t.
 
-https://pastebin.com/3hNtYirT
+However David had an even better suggestion (in a chat) that the pcp cache
+is unnecessary on UP for scalability anyway, so we can just have the trylock
+wrapper do nothing and fail unconditionally with SMP=n, and then all the
+cleanups I wanted are immediately possible and we'll even save some memory
+that would be cached unnecessarily on those small systems (and some code
+will be eliminated as dead). So I'll be going with that.
 
-and see if there is an optimization for pte-mapped 2M folios, before and
-after the commit?
+> Changing spinlocks globally on UP to be something they haven't been
+> before does not sound like a good idea, particularly since no actual
+> developer uses UP any more (and  honestly, UP is dead outside of very
+> low-end platforms or legacy like 68k).
 
-(set transparent_hugepages/enabled=always, hugepages-2048Kb/enabled=always)
+Ack, thanks.
 
+>             Linus
 
->
->>
->>>
->>> In any case, I think I see the problem. Namely, that we now need to call
->>> vm_normal_folio() for every single PTE (this seems similar to the mremap
->>> problem caught in 0b5be138ce00f421bd7cc5a226061bd62c4ab850). I'll try to
->>> draft up a patch over the weekend if I can.
->
-> I think we excessively discussed that during review and fixups of the
-> commit in question. You might want to dig through that because I could
-> have sworn we might already have discussed how to optimize this. 
-
-I have written a patch to call vm_normal_folio only when required, and use
-pte_batch_hint
-
-instead of vm_normal_folio + folio_pte_batch. The results, testing with 
-
-https://pastebin.com/3hNtYirT on Apple M3:
-
-without-thp (small 4K folio case): patched beats vanilla by 6.89% (patched
-avoids vm_normal_folio overhead)
-
-64k-thp: no diff
-
-pte-mapped-2M thp: vanilla beats patched by 10.71% (vanilla batches over
-2M, patched batches over 64K)
-
-
-Interestingly, I don't see an obvious reason why the last case should have
-a win.
-
-Batching over 16 ptes or 512 ptes in this code path, AFAIU is *not* going
-to batch
-
-over TLB flushes, atomic ops etc (the tlb_flush_pte_range in
-prot_commit_flush_ptes
-
-is an mmu-gather extension and not a TLB flush). So, the fact that similar
-operations
-
-are now getting batched should imply better memory access locality, fewer
-function
-
-calls etc.
-
-
->
-> When going from none -> writable we always did a vm_normal_folio() with
-> anonymous folios. For the other direction not.
->
 
