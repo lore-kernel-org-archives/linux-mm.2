@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5BD4E83837
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 21:44:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06EDDE83837
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 21:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E67676B0089; Mon, 16 Feb 2026 16:44:12 -0500 (EST)
+	id 52D056B0088; Mon, 16 Feb 2026 16:47:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3856B008A; Mon, 16 Feb 2026 16:44:12 -0500 (EST)
+	id 4F2746B008A; Mon, 16 Feb 2026 16:47:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5C46B008C; Mon, 16 Feb 2026 16:44:12 -0500 (EST)
+	id 4078E6B008C; Mon, 16 Feb 2026 16:47:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4AA6B0089
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:44:12 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 416AE1A0F6B
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:44:12 +0000 (UTC)
-X-FDA: 84451648344.25.6A86DAE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9C99B120009
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:44:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wb1aDObO;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B6306B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 16:47:19 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F2F98C278E
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:47:18 +0000 (UTC)
+X-FDA: 84451656156.07.972998A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5362980006
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 21:47:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eh1tidSW;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771278250;
+	s=arc-20220608; t=1771278437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DlPMKKjiLj9yl5VsXusoKiLd9Ewnw+32pLa8zO0dG+U=;
-	b=m39x4vfhmngVByuOmL8L5eyGiUemAquCg4tPUiF/0RDUyYkwkgt/MO9+s+d/LDnEeHT7AE
-	HX0AXDGnlZR7cPBeqGVhxsGBxIqUilDyLGSd6Kt/Fx0hMRaNDe6SUmgIb1Vd4q0jLUYwdz
-	bliEBQ1j89q5m/BmSD4vgU2FWOQBWfo=
+	bh=IulNIc5BbIpAc0RBykx7SWopbGOosUsWDXnb3povie4=;
+	b=o4vZkXGYmwJ+uU12LjCwUl3V//PbiB4V/zTZ6M1+9AczWRJjjaHARO9hiAkQRQqiY9k9+p
+	hquttnWijW75Kou8cJ3Esm80z/wT4vHOucJy6JjUwxdc77INz8Gqfm0WAfk83xZcHf1XjB
+	5TBTRlvCzY0hcChfOT7PdITNs49llqc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wb1aDObO;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771278250; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eh1tidSW;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771278437; a=rsa-sha256;
 	cv=none;
-	b=4BFUBUD04izHvI9fqIMPfOfwsWSbzHXRpGkgjCxUeg2cLIZqt9e2MPGE872K7HjcVgdsLJ
-	pPFdW2IUYnaEngdro+mwvTmsojAkNI5TrwA7ViiCaPv9al6Ptik+z54ZVmqOL4LbqMTZ3J
-	/k+tGbHrp0lSo+VczNU3rT8glXjISSA=
+	b=8kLXJKxfVhp7OpYGvJMD0s0yZQ6I0tspFeSt9dNsDyXClVlFTkDNhVQv2hlFYXeR2V/Cxo
+	caHoNt2Bz9LRpwdr2cWoDLtmKqQC4S1hI/w5YXbxrnllKAbqXdKWvmqPRlfJD3RAneivfU
+	CcZThhtVSlpLhm0/vHEVjPSuKtlMgX8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0973360008;
-	Mon, 16 Feb 2026 21:44:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82656C116C6;
-	Mon, 16 Feb 2026 21:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771278249;
-	bh=VAzTqo4vbXr8m49U0BBWa9rngxeDz0Euqj4DoptU4AI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=wb1aDObOR6kZtDVklaYqXKOyTC68B6P70UEyjS6i9y3eIK3GQ7aMVowE0aDVZ3SoV
-	 PUhkBB1jy46mv6fOpH1GEsu/8F3Ejs0RerUQYnScDkpyIF8tO5Byj2rTTgVyXt+paO
-	 zbDz1VRsZ07ajfOkozUx1EDnfLEH7+Z7drW7vJo8=
-Date: Mon, 16 Feb 2026 13:44:08 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport
- <rppt@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] liveupdate: luo_file: remember retrieve() status
-Message-Id: <20260216134408.12dc6f88f7139054f9e34637@linux-foundation.org>
-In-Reply-To: <20260216132221.987987-1-pratyush@kernel.org>
-References: <20260216132221.987987-1-pratyush@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9C99B120009
-X-Stat-Signature: ccpeu6irbogpkycpb63acsqcrfneefyi
+	by sea.source.kernel.org (Postfix) with ESMTP id 2932F406E6;
+	Mon, 16 Feb 2026 21:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA453C19424;
+	Mon, 16 Feb 2026 21:47:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771278436;
+	bh=wZmeRByRpbHTNtIWpUSkmnwjt2QkNJEcQc0HK71ZMGY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eh1tidSWKRQ7DZ3Gm42b0ZHMJhwgc7bYz/NsatZTnTqrxD9b5ofGy3OhEpQIjFK8O
+	 /Vy9sKP7AC7Dm9CzbVNaCijAELYpJjMoUqxIbk0JLrEcWrzx9i2PbXAimFAfRkhQrX
+	 vnaLUKmw3+I7mvDpA2McDtxrCEexhK384eX+aB8XUfImN6+xMOPCFgMGrUdUb3IP2z
+	 mv7cxFt6T4fK2UTskhF293WHpFHW7W46ZLd1ULz/7L/WdOMJk4Dvjep3tOxBxAT+pD
+	 bh0uUyiDZV+oNnz3LjZ0YhIwUGxeztnvXmOUo8lVrSNGcd5Q5a65155yoKCfig1BhB
+	 lmiJgXKRH3UIA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	"security@kernel.org" <security@kernel.org>,
+	"damon@lists.linux.dev" <damon@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] mm/damon/core: dangling walk_control pointer in damos_walk() on inactive context
+Date: Mon, 16 Feb 2026 13:47:12 -0800
+Message-ID: <20260216214712.68725-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260216185741.74145-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1771278250-932050
-X-HE-Meta: U2FsdGVkX19KYNjUUHFB9GElyVOLxLHPTZJhR8uv+B0rp797fPAT6D4Ua4Guwrov1kAZxuBTSnSMtR15rGC4Rrn0ik5Lvm8PznIJPfqyrgl/RMvQ9w/TF3bXuByMW/xyoQug5g39YM1LRxU8fuduLhH+kgXzbJMzLiLrWuzxAITSYEgcHcPz86cZCwxOvPuvNfha/jRpX+x0mWeg9KpVOHMEjXVn3oudgUY4lXFEkszpVrGwZJNKJuQHTIxCFimeNp767ZGQU2Tr5YrZk0YHpbukfe86Mc7rM+N1hdJRJ8PhFGbWHg8jnMPW+NbySYrv9B5tzwiS8oWNjKRH44UnZHnYCimCfgxxYk+9UuPr5h41mrrgBWsyqQTzmMn7XO12Pxabt/lwTeBWmov8qRfYhF4zDSplBiJUuxxyJwmrudjtQoWPTYLxkRx/Cy7HRiUhR0KR3H7KhnWRA1pEtKieugEd+rSC5cYmClpH+mSDpEqX/l6Keohxl3JFmPl0cX+hEMT+eZ4YWtF8D25S69tqhw4xpTJ5r3i0wXJvZBgPlb63Q5171EbhUAjRvkLkeQkudCRwwkRW4Nk1knfFkmOo+YJQMsQPx+PcAo+2dJpgwJhk7Ryz1XF9iJ/bsMHPWZAE0gFwTewKHbjD6S54GasT8Jc6gl82a5KebZEvW2vZqs2y/fLWbPCWqIR2sVkfRRezKtBsmtiUTsAbf5wtXxXzZzeierUNxDrBgF+PJyPmf0Rvmrgsuj6XFwRux7CIH3YkjQoku75yfThRVhqNEvMQttaJR0ZWcZlGmuk45e2fFaQS22GYhyf5i32bPBS9cmJy7s0KAO10FjRv5VF0S8l393fhoUnFJRoHsliAK8vmHMK2Bm3/zZpCjBr/5mj7UaCqSBouHnhU0eovEphzeW+axl4WlfYC4OSat2Jx4+OarbeZN2DUmzoC6nnI3PeLtG056LOsRFVHo34AIgzcdUk
- XpcZeenq
- VZvsXF/As1wSntJU+wkCwc+tKXWxsXue/u9w4yQAI9hSHgWUE+NLDpuzPeL58KgU/jU4Dl5Eafplp5NDMdEC31j0b2QN11/2FyaQeWCocEE+Xml8T5cfgF5o1e0GsSAFwJBkt7r2x1kfdRbUIsUAcenRkUY/f+KyaBjiWKeTWpARb55pfREP5LIIHwIzldhDyBX0k9D2Iv6V6aYBfi71pY4R7WDUV5QaAQ1RCUyHKyL/rYFZWHIuNMJpghJoZjGdkLBhOljNvTYg6sPfI7wPd4I0tv5j/wl9N8l1UntOzeYH3RSufqdQxdZHTpm2aMdsrx2rb
+X-Rspamd-Queue-Id: 5362980006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 5o1cbqehi3mzu963byy5gwcdzxkambrx
+X-HE-Tag: 1771278437-568667
+X-HE-Meta: U2FsdGVkX19kXNE3b1Q9R/XYTsfP/eOuajO0AUMIZKvMA4InefO48GB5d1J1GTSkdmT7fANcbdz2qhzPRZrM97HrqQ2TD/YvBaCP8tZdUyJyB50T9Nnmbm2aQoTVeLT4t6jZgtOtBYzfR3NvQ9ZdUeo3g0SKw8oogiwvlFqvmMY+cg0M2jYtUdvPx6UjLP2b0nR4qi8kcE09gokawuKEqesv8g/X69QACXTWvCAXxB9J7EyzuSaO8IxcEaBCU8ZQTLQMIvAwWPLAS3iCPB2DPSYRhmBusS5vZ1sgBSqIGGBaQRkO76cOeFAqbMJjZ8nYu2ysk3DuI9QDoPoEe2PBKVjQDuT7zXkCje3k9kJ6iAal/iMlAfWAHmAOWusL5pWKepuWbsaHuQxVWU+dqnHQEyjqzQaQEOAaRZ82ZtsBHVp1g6BeOFGaybdaIDdnwsZAtHftSEGooRW1iC/aVMo3H6SVWVuxS1PSfjGu2WGanJr27jfK2e55nCnABDhTOGTSFGMxxd0fBSA7T4LNrQ7hj9d4OFBURlpIGkzhCRTsnPf23WwTSZRZCJvMo4DAvnykIylQrbg2c2bgzEGcBTnT1r+MKYGgtXH079yBI7EvO/QlCNcCirQy/7EVc/RoW0jOBhbt9uTBVtgurKuCiu98LTSKK/gjAS+gXp0PyXwaA1VKn8P7c3o3DmYMoXEwOYvlt1X12z8xTMmgJWnuUQjXp+O2rD5SNV4S7M7gjjw+sl1ZSJuC7IDMPg2/QcTXTQ+vnSXwY4LZFcKDJMGOQR0duhd/WVW9+LvRwE3zP757mOSspNh6eE8DPb1t+vf6aYdX7q857C3Ckdz9DQShtH7Yygt1t+6BDAoP4lhvrtaQvjoQTS4dxiNJTWjbIcbn/nEw7AkqvnNzm+NCqsE1BHRSWZfW6IoWnteXgY/4oyLPSvYkEd6nSNoWjMRBV+d2hFHmnp+5Vz4VkvTu8ISZM9D
+ ZmFYfgW4
+ gukgaqbX+8zd+G89BtApH6LS968+Hh1WASTvKDooR1If1TvHztwAVSFSoFG9ILEfKy93rvbU6Ju4C7iIvQKnqO8Up9ixgBxCqxEPsamHJm46TwMwAzO22Ui8Jb/vo7B0QvvfGEKdX6/8QMPRnEWSNJ/AQ3SqZPKqTAFqRoB2uQeE242H/UUMxOtgDhZFcwx6KjJoge19DlYxFnPZ44CQzi3eT9UsoNWg1jq+ryZiXtChGM2PulmcEaMdmTNItmbmnKUvNQoPwDTyiCecnCv2+hh82xMHT0nhGHZrmqFqzEGGG4tKyDDkwc9ngGlJqftyMsm1Csc3/irJWfEPlPlYdNzZFAsDkyzt2fX7MeG9+4nziR50=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,55 +95,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 16 Feb 2026 14:22:19 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
+On Mon, 16 Feb 2026 10:57:40 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> LUO keeps track of successful retrieve attempts on a LUO file. It does
-> so to avoid multiple retrievals of the same file. Multiple retrievals
-> cause problems because once the file is retrieved, the serialized data
-> structures are likely freed and the file is likely in a very different
-> state from what the code expects.
+> Hello Raul,
+[...]
 > 
-> The retrieve boolean in struct luo_file keeps track of this, and is
-> passed to the finish callback so it knows what work was already done and
-> what it has left to do.
+> I also found 'git am' of this patch is not cleanly working on mm-new.  Please
+> consider using mm-new as the baseline [2] next time.
 > 
-> All this works well when retrieve succeeds. When it fails,
-> luo_retrieve_file() returns the error immediately, without ever storing
-> anywhere that a retrieve was attempted or what its error code was. This
-> results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
-> but nothing prevents it from trying this again.
-> 
-> The retry is problematic for much of the same reasons listed above. The
-> file is likely in a very different state than what the retrieve logic
-> normally expects, and it might even have freed some serialization data
-> structures. Attempting to access them or free them again is going to
-> break things.
-> 
-> For example, if memfd managed to restore 8 of its 10 folios, but fails
-> on the 9th, a subsequent retrieve attempt will try to call
-> kho_restore_folio() on the first folio again, and that will fail with a
-> warning since it is an invalid operation.
-> 
-> Apart from the retry, finish() also breaks. Since on failure the
-> retrieved bool in luo_file is never touched, the finish() call on
-> session close will tell the file handler that retrieve was never
-> attempted, and it will try to access or free the data structures that
-> might not exist, much in the same way as the retry attempt.
-> 
-> There is no sane way of attempting the retrieve again. Remember the
-> error retrieve returned and directly return it on a retry. Also pass
-> this status code to finish() so it can make the right decision on the
-> work it needs to do.
-> 
-> This is done by changing the bool to an integer. A value of 0 means
-> retrieve was never attempted, a positive value means it succeeded, and a
-> negative value means it failed and the error code is the value.
-> 
-> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+> To ensure this is not forgotten and merged into the mainline, I added this
+> patch to my tree,
 
-Should we backport this into 6.19.1?
+I forgot adding a link to it, sorry.  It is [3] on my original mail.
+
+> after manually rebasing on mm-new, adding a note about the
+> user impact, and adding the above tags that I offered.  Unless I find something
+> on this patch needs to be changed, and you mind, I will post it again after the
+> current merge window, to make sure it goes to the mainline.  So no additional
+> work from your side is required.
+> 
+> Nonetheless, if you prefer to make a new revision of this patch and repost on
+> your own, please do so.
+> 
+> [1] https://lore.kernel.org/CPUPR80MB8171025468965E583EF2490F956CA@CPUPR80MB8171.lamprd80.prod.outlook.com
+> [2] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+> [3] https://git.kernel.org/pub/scm/linux/kernel/git/sj/damon-hack.git/tree/patches/next/mm-damon-core-clear-walk_control-on-inactive-context.patch?id=398e6f536b37de82f789d74ea93815dfcb129d99
+
+^^^ This one.
 
 
+Thanks,
+SJ
+
+[...]
 
