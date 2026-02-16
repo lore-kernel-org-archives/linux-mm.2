@@ -4,132 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E906E7BDA1
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:34:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B364E7BD91
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 771436B0005; Mon, 16 Feb 2026 06:34:42 -0500 (EST)
+	id 53BEA6B0005; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71EE86B0088; Mon, 16 Feb 2026 06:34:42 -0500 (EST)
+	id 4E9376B0088; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62ABC6B0089; Mon, 16 Feb 2026 06:34:42 -0500 (EST)
+	id 3E7E36B0089; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 50E216B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:34:42 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27558BDEE6
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:34:42 +0000 (UTC)
-X-FDA: 84450112404.23.9D29356
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1330440015
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:34:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 297736B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E0E513C194
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:10 +0000 (UTC)
+X-FDA: 84450123660.25.06AAF64
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1B54C4000B
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:07 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="I O+f4JR";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=rvjtXAI7;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771241680;
+	s=arc-20220608; t=1771241948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z/44F5g7jPHoL3CaGxYN0FVETrlse7APjvGYt7mfjgQ=;
-	b=Io6Bx3KZcWFdlMAtWIjYlD7P8ls97UahQJS8kfZB7Qu3CbkLjeh4NAJy9tcatqryRL0HAP
-	R+VPUDRQdSvm4oL7B3RDP11VIdDpnxUe3z8iSOo2u5PrK83hUoskLXYNiDRuU0EPV2TLJk
-	/5gqjsq5Ah92litPD2mmTOsm/m+CjGc=
+	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
+	b=Do68PZM45PfRC3bazLycRE2EIiF842KL1JNvOkcoEcoLg1ClqGTt5W449669+LmTJCQg/h
+	d5hwEbi5xP8mbBoKhmBlWfiKBau9+O6oxrVZ9wr8Gi962ezXwzht3p/UBX6dmzMzEO7wt4
+	yTq3NzchE5OcNNagrMyeau4mviGkbEI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771241948; a=rsa-sha256;
+	cv=none;
+	b=FVRZ1zO6W7xruuYK/mGY0vXnFAE0IlZiz3TDK9IgpIgO7ho5ZbKDgdDLdK9USebpbyjaPX
+	LgXzuhjHtqQbMtnkpH+C6u5QxbxUr+ss7dyNtqAKX5DLK82BWiigCAXjlEuMt8fMjDKmix
+	bo506JqKnS2KTKAvlNB2ei7O1a51BCc=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="I O+f4JR";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=rvjtXAI7;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771241680; a=rsa-sha256;
-	cv=none;
-	b=hLguWr6iK59eCGf4FUOiG4Slh5Jh39uqD0nTyhnjAKucwLCg3HuIyOFGQtoVTZo0PHf/yZ
-	rsRgVWtBul3xpDBtYV2jhgHnGLagK4iYjSbqvy+F4zHjJw9YKkF/BMFIp+YG3Ggh7Zw2TL
-	wYiIAu5OZXE9JHnls44/Dzo07eMaTnw=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 814A61300D47;
-	Mon, 16 Feb 2026 06:34:38 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 16 Feb 2026 06:34:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1771241678; x=
-	1771248878; bh=Z/44F5g7jPHoL3CaGxYN0FVETrlse7APjvGYt7mfjgQ=; b=I
-	O+f4JRfJq8NTsHdTvzrCpZfpB8D42zJfi5Bz9lRt3Swa+2LQjMIWEAPNabX9P/sq
-	D60bAm9dssTXXmLmZVLzadJDx+3rNzDPUPXE3qFvxJsbwb8f/ClYpbsS68xtsPm0
-	0fVsvEqhiSPjVSu19eky8EcRDKjCPe3QFXSkMHoPOWPHYJlcB/mURQXGsE3IKZCb
-	uok+Yw2PG9m8GRIBoUdhGk0ivPMGcljH/yMQNrVq0DRw8idU2395Q3VBOa0pZ1fn
-	0uO5xmbHm8/zn+NQK0WvDBBHYsx4i5wr0Tw4HhRihMKTwnedWFO4YsW4WQBHKyQ5
-	hxcnVezTcAqjJ0LF2mPXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1771241678; x=1771248878; bh=Z/44F5g7jPHoL3CaGxYN0FVETrlse7APjvG
-	Yt7mfjgQ=; b=rvjtXAI75i+J4WNsGFBYenrpr07UW7dVws1Unk/4buJ93hJpRxf
-	htIWpbKV5+JcfCNX/9oy6mT1KbWmOKntALKMEs5dSMJVryqzje/Ge2qu95Sug6mj
-	lwhzPNVH0pl5y4xpZqSbRvVyFp35zMJUcchevgrJm8fPV0hHmFzJFTlPDO3Ly1FT
-	A8MntdTIxPVfl6VkuxavY4nkhHX8xH7RYCQG/wMHndq920PL8cT3eUeAZA8JiSmc
-	veGay6ys0lg2wFFwhEAFuENq+lVUGzdWozt32CG8IVBnJlA8XrVMm9/HgxfCPeev
-	mt9s2ZQQUFF3ZTKgfHrxLQhG2JTXSCu3EKg==
-X-ME-Sender: <xms:zQCTaYwP-rnFnNq3Evewxyu-SIKFpkEnV06F3miPLNgyjHW8T8qIWw>
-    <xme:zQCTadkXUjRGykCUF5FFEcXWG6uF7I3xzpejNFLyuIC_vyPD68bZoI1z5cygufU6R
-    OpnXpDcmSaEdMsbvc5Gopo15ewrm3hrBWXa_sYIe0e9X57BrGBMFNA>
-X-ME-Received: <xmr:zQCTae8hnM2uNXZ5BaLs8P5natNMPiaURN_iwyT2EOrg_pnK9_wpaWPSrVqlvg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudeijeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
-    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhgrohifvghntghhrghovddvse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurght
-    ihhonhdrohhrghdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgtphht
-    thhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepvh
-    gsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepmh
-    hhohgtkhhosehsuhhsvgdrtghomh
-X-ME-Proxy: <xmx:zQCTaZPUBgcNh9YNmVBFleBeZYYMAcI4XnHyPB3-JCcN83CqZusy5Q>
-    <xmx:zQCTaQ8yjtghycgZSQb827hKTOhvIn_wjgQbc_UWx9nSshEv7aA6Sw>
-    <xmx:zQCTaZKRxTgDLQbmJ2n-_62oWDbCYdbCetlIb0gLR2YfDSWsLtjkCQ>
-    <xmx:zQCTabdqPlAlkOpXzTjmN-Xwq8GeTHytmiG50CghgH6XdYWWmZBqLw>
-    <xmx:zgCTaW51A7zKw5acSIOnAbl-9bKYhD5jKgjh4qkDOXcTkSs6Mvl_4Zsy>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Feb 2026 06:34:35 -0500 (EST)
-Date: Mon, 16 Feb 2026 11:34:30 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
- pages
-Message-ID: <aZMAVF1S1kP5Gny_@thinkstation>
-References: <20260214084514.2842745-1-haowenchao22@gmail.com>
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5335A5BCFF;
+	Mon, 16 Feb 2026 11:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771241946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
+	b=p3JyA8bhdFyL0ld1P4fNn1Yxp5LdNpmiePmfuryjOTXjs4oG5Fea2Hh/W3IQd4aAqE9ayu
+	ZST1PeI61pQYkbuqAVRLluJwsDwVtJA/+LhPU96uQ/YW0t+siQ8WuD1J+u8GNjwx9lUJ8t
+	+Mg1n/h+US/VYCIJJtenyOXn7suQsRQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771241946;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
+	b=Kkqgt47f3D2hLb+DbYsty7+TKZ782vebLzWVOZFX+iakm22PNqoIcQ1lHzRH1rpoInDryC
+	9LJSVBf/Oj5WH1Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771241946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
+	b=p3JyA8bhdFyL0ld1P4fNn1Yxp5LdNpmiePmfuryjOTXjs4oG5Fea2Hh/W3IQd4aAqE9ayu
+	ZST1PeI61pQYkbuqAVRLluJwsDwVtJA/+LhPU96uQ/YW0t+siQ8WuD1J+u8GNjwx9lUJ8t
+	+Mg1n/h+US/VYCIJJtenyOXn7suQsRQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771241946;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
+	b=Kkqgt47f3D2hLb+DbYsty7+TKZ782vebLzWVOZFX+iakm22PNqoIcQ1lHzRH1rpoInDryC
+	9LJSVBf/Oj5WH1Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B98A3EA62;
+	Mon, 16 Feb 2026 11:39:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hj/sAtoBk2nxfgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 16 Feb 2026 11:39:06 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id D646FA0AA5; Mon, 16 Feb 2026 12:38:59 +0100 (CET)
+Date: Mon, 16 Feb 2026 12:38:59 +0100
+From: Jan Kara <jack@suse.cz>
+To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, 
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
+	Andres Freund <andres@anarazel.de>, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
+	hch@lst.de, ritesh.list@gmail.com, jack@suse.cz, 
+	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
+	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260214084514.2842745-1-haowenchao22@gmail.com>
-X-Stat-Signature: 3ysewoc76y6mw4iztffsqy4ex9u1fb8o
+In-Reply-To: <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+X-Rspamd-Queue-Id: 1B54C4000B
+X-Stat-Signature: cekhjrh1zuoqhfn375usjwbt5hy9ma5i
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1330440015
-X-HE-Tag: 1771241679-424009
-X-HE-Meta: U2FsdGVkX18AwWB88/BreDKQRItj5z1gUxtVQK0dutU+xoSmw8zvvDxfC4zTiQ1PoS75QzdYppcEDyKWnXuMUnlaWzKVwbp1aTU6Rx7qk/ovLSgRY9juM6MeWDfux9vP5VH9dASCxLp+foR/Ik7/J+7vUIuglE2kVtPbom90gv9c58ScxUTo4JuYso8x788UxfWUnWcpJMLCB6GQRv/fMNG6jSLziB+bmUpcBN1fY8Qw2Grn5/dRyTjTjz46i5AuLArFYOZAtX/p9T3Lhb4gxqmmWXBadTRyR7KcXznKrJJukwpSsFHAyG10QD1OzOB7Agq3EZtd+rvwjC0Up8Q/l3mV1yLshnMIPsscE1J0WcyB9jkUGeK7sTv1HIdZP1V2SFlRS20zczePoKyeYymdPlWkXdiYeLeJNT7h2uWD6fIOyUDI6kJgIhmDozSouQj8LQC5mEIgSYFhZjjJMChezMXM3wuMcvwCk1NahjbPZCqyL4u2B1aq9y7y6jBOItmI6+vLnK+6JRxTskk1FW0fDb1ZW5tL1+WuVDcAN3oKoMOyDwP/0AoZre0wCrEOgseZQkmwYC/kRLB03ap/FHUVU6JIoWon/TcdRs06Z1toL2SCZgL6vDvpdgHjbvwptXIVOVYdly+nKpXnu7+5tpD8HgKXf3gERve6c7do++0/qWEqnt/3T3ohXoFapIDOjfjbcBvrpqPFpWsTyiJP1nkB/H5vsYgNcsV6RN9olbaSCoRTVZBB9iUTTqHZigxD2yc/Ijj16yJnoldPFRl2uwzm9n2pF4CiffkVk84aarwhJi8DQk6irBIRSHfs6LHPRx8RLsWQ6ag5vve5GyIqyPdXNcRoAalxEfFuCxyrNRc+gZhC9IM6XsBJUj0Xa3J173ckXcV5/LlcWttHsC4rUTT/a//NW79k4X1hBY9exxc+mAKIbBXkxwiEO5oJaZc2Oy3x7F2V7Bnxy64tzknLIqH
- TOB0M1S2
- ZTiNJYCWlj9Kr18g/Tp5fznXjBKR3dRH1RXjL/xirTa80H1ZbDcmketdhC72KeJnQlOijVdGuGron7HYJI32lFCKgPsYexUEaaUOj536bQPDwCgGHZPscR5/jI3bv0xbWF01n0Z9n3znK5Nrhoh7BRZ2kJllB3j7CurijEuPhQwDCoP32TVuYR3yBNIUYmbJHnVw2+q9F2VV5GBU48ddN0PlItzq/WdkKBh2Y5GmrSwavp7XNRxBJyPucAbre1w4rpy5oDnsEyRXNVMsMyLV0t+kKLjADoQvLA84YSxxC7lGM7v+kGfzRHATfKwACcuR240RFB8CFSEGD+9bRK1o6nnocAeZ8+9MYJXy+lG7YssUGDxEBdhUU7OM8BGli7UTmLElNLW6Qv85ji3fT33Ld6Z+sQxsAKcyn2zDvLQ2+yapymzjOvgSRG184kdGbVVYCPUhG
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1771241947-291121
+X-HE-Meta: U2FsdGVkX1+7dQ/39o95IknFTl6/zt4yv+uhVodnQHTnjh66YRL0hCQD5KFxg6kEG0BdmWf4o2xR76oZuM1mXWJreTFQdHqYghzaWf3D9fOxgWOInRtTSRhcoU3dDVx/jmpTDF+1PDCcpoBrSfn4waxX/F7QzpJV69NEisy5krE4ebN4AEJAHSCFnpOv/kFYVznXTSuBRKOc2bwxQuizc5dmOeEAJhlA9RqXLLBztRGk/rhKG1bvtpRZobb/axCyUYpzIgfVX4fobelaMMY5NANyetjVvMpItWXidJfevPrJTZCZqJ+yHYYKZu3ZbcTezzgzWTFJkC4bKDuBTo9/2Sx9SHLhJrkFUfQ2DLUDR3ugiUf2DuxtsIoeQxGrjBxwwoE+pEZm9rbrC+iTgFF8f64AeJGWDq+Rpr7dKxCQZEQmnA7w1KXK32IH3eQmbjVnxWtijpGRD+OqDT60dNWkM7SVg48/7ZDNI5XWkwLGKPeD7PKG9UXbCCsdsTMyA1yOohiy1tplpP/jXsKbnWceMmbHzfUYpDngZpeU27OAndiRbiso5+cyz95dB1F26TQyGG3tOKIkecScmGRzgsXtEaJUmRnuvHd4vCn4DnW70hKdi9tDc3fgbIwsUOwYTpzfp0qvc1bOiaVYTJup49t57460YjJeffnHwbe+9qPuVvJGgwLMh+Vtp00h1k1YsD1hTn70JB34J7PHd1bj5drPfb9/OdonsWYB1s+AhbOkI6HB+jQlHz0of+ExJpNkaz9Wj2XGONBV7p/pqtAmdlbBKFyvdQZSF+xZ3yga2VWKxHjFtaUEr6J372CtggyiCKjjFXm5w5pQ9br1UeoCCv2cKq5wHmON1KuDcPvbJRYSIjakQyPDA+J4LpVd9/jRHR06/WSxDFtD3Mn5DHEW4xdHy49PLa6tasxR2wP6sFVhSxDFdr4pb86WqRj4TZMvMTvedK33bWi9vIY7eN4dIHe
+ FXyLXyRv
+ ilguWrq0jd2hFLl81/sVgf/yi2KzU/s9MQKmroipK9xQwf7q6DfWGD8h2/8R+nor9wklMT7q+ggIdRoZ0ZsdOsEnVcK3b/PCiUECYJj4nOJGJcwkWwNwarp3imC1eSHC/2zkYK8boDK/McLFWI9BsRdhyFbLsDPciPBofxDZbyd/GeNm4gS2kecpfdAsO//RYhCOq9P+8zMCkmdIA2sjIivAe5fwmj3/uBMAwcgWxTX6YQUR+tyO22Niv1IaqOixT7063Bqqh/msQGLHTbPi65X/Bh3FIXWbIbdqdaiAUTdvmNViHELu07jPFgxSxDIShun05dqvuKI7j8Qkd/BA60tv70q2A3vB2aGnhMBlRhMa5Yk3TFZN8VtBl9pfM1GyjB0A0qmw2r67ICy5m8HpNLu5xSlbYplXRMcj0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,19 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Feb 14, 2026 at 04:45:14PM +0800, Wenchao Hao wrote:
-> Add kernel command line option "count_zero_page" to track anonymous pages
-> have been allocated and mapped to userspace but zero-filled.
-> 
-> This feature is mainly used to debug large folio mechanism, which
-> pre-allocates and map more pages than actually needed, leading to memory
-> waste from unaccessed pages.
-> 
-> Export the result in /proc/pid/smaps as "AnonZero" field.
+Hi!
 
-I expect it to slowdown /proc/pid/smaps read substantially. I don't
-think this line in smaps worth it.
+On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
+> Another thing that came up is to consider using write through semantics 
+> for buffered atomic writes, where we are able to transition page to
+> writeback state immediately after the write and avoid any other users to
+> modify the data till writeback completes. This might affect performance
+> since we won't be able to batch similar atomic IOs but maybe
+> applications like postgres would not mind this too much. If we go with
+> this approach, we will be able to avoid worrying too much about other
+> users changing atomic data underneath us. 
+> 
+> An argument against this however is that it is user's responsibility to
+> not do non atomic IO over an atomic range and this shall be considered a
+> userspace usage error. This is similar to how there are ways users can
+> tear a dio if they perform overlapping writes. [1]. 
 
+Yes, I was wondering whether the write-through semantics would make sense
+as well. Intuitively it should make things simpler because you could
+practially reuse the atomic DIO write path. Only that you'd first copy
+data into the page cache and issue dio write from those folios. No need for
+special tracking of which folios actually belong together in atomic write,
+no need for cluttering standard folio writeback path, in case atomic write
+cannot happen (e.g. because you cannot allocate appropriately aligned
+blocks) you get the error back rightaway, ...
+
+Of course this all depends on whether such semantics would be actually
+useful for users such as PostgreSQL.
+
+								Honza
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
