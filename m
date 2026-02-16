@@ -4,134 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30A39E7BDA7
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:58:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 216AAE7BDA8
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 12:15:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62C496B0005; Mon, 16 Feb 2026 06:58:54 -0500 (EST)
+	id 3CED26B0005; Mon, 16 Feb 2026 07:15:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D9AE6B0088; Mon, 16 Feb 2026 06:58:54 -0500 (EST)
+	id 3A6BD6B0088; Mon, 16 Feb 2026 07:15:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB676B0089; Mon, 16 Feb 2026 06:58:54 -0500 (EST)
+	id 27B736B0089; Mon, 16 Feb 2026 07:15:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 35D7C6B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:58:54 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FBEF6B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:15:51 -0500 (EST)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCE0E5D00A
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:58:53 +0000 (UTC)
-X-FDA: 84450173346.09.2B93928
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D559B180010
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:58:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="R Wlwbz6";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=eXfAqcJv;
-	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B461D160D47
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:15:50 +0000 (UTC)
+X-FDA: 84450216060.09.F9652A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0E353180016
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:15:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AVXrh8Bj;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771243131;
+	s=arc-20220608; t=1771244149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Txb1GlfaNj6QsBkGXL0Y8LX/T2eZ3egoSe8EqeDF3Kw=;
-	b=6qlAZAtpbAOC5/xwwrzoV8ROT5RTm56lNsnQQaA6D4QLrlCatHjdBq1o37QzedvV2F5eVq
-	mZAbob18vhCWVlZo9tC5vvP3CIuLkif8rdyhJbACkS8gjSbPX1XrFVqTyyrLp2k74AwXvY
-	QxRDsUD+3z1+/VoFoRyRKGipgEfKooY=
+	bh=SdYpqeQXImu32z4zZ0GX0vrUoE01wz/xIHP7g6aO/xg=;
+	b=ZLo9h/r4KHfxWoGhW/b4+HGHbXBDvXxSM1Ga4l7bhtsfLpePpD+eHeM+m1eYA/HlUKoXQ7
+	een0mVkyqz2dZdfp8SfQS4m5Gm/Txy8coTfjarEDOzinkFZJaOWx3Z9pp0NZyjAEU34NEv
+	hPl29lwJ9HXgf2+tlwEpcG7xj5G61BQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="R Wlwbz6";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=eXfAqcJv;
-	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771243131; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AVXrh8Bj;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771244149; a=rsa-sha256;
 	cv=none;
-	b=6Bm+aIVHtwOZ4hQp10sn4wD3y1IdEqM53ZNrIs9CAvnYA+OQ8aLSe1RaL0Nmojbp0SugoJ
-	hmSo53ecG/CyTFXKolm3ldlKyHjLaLS0NQ0Vcanqh6gSPx8JLrmYbBGJpkkAmJnAE63JFR
-	lAMHWVUiNVMIVs9gicMRqu/ROyh3CCE=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 5B6331300FB5;
-	Mon, 16 Feb 2026 06:58:50 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 16 Feb 2026 06:58:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1771243130; x=
-	1771250330; bh=Txb1GlfaNj6QsBkGXL0Y8LX/T2eZ3egoSe8EqeDF3Kw=; b=R
-	Wlwbz6Q5IXK7qBQ3q0uMQFp+RRNtCL9XxXVLL4kRsNl49e3B/58+p/cTIFYu+A90
-	sEzjim3C7EvJewipYCGqeINLRR3hg65jCFxZHU1/3OrPlNTG5G2FVhmoj/FDco3g
-	bFP9k04Js0dMWAgUPqV+Cb+60CzgAvSYhtjWu68Hz1nJ3t+gwcCaWr9lBV0U93QD
-	G/6Gd8ZguxguxonJvklK1kZMHhylmtlrGpQvb8Z7gEASzgeZtePmk5ui0Xfxqtv4
-	2EEcmbYwNRm5UJNXca1jwv9O4XOOkk/hmU420xvIrMA54L8iF4Yk9Ps/OVM1lyiH
-	5gYgTAtTjq2DLP3sO0FNg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1771243130; x=1771250330; bh=Txb1GlfaNj6QsBkGXL0Y8LX/T2eZ3egoSe8
-	EqeDF3Kw=; b=eXfAqcJv2jMzeyA+pUwXx6/kyaCkwJmH5aqap0KrfTwpB/wZ4rN
-	4Fm39bR4GjYG1UtdiYeVx0RTkwAALGgJtWOSWqY5tRiOXw7sGW6wRGBVo8AphS47
-	Re6Lm2hCR/AJXkwOx/swSR4PVBOLV+hCrYsQRECS5xMOVAQZxEr48k4Ih7Cw2JLh
-	8gi/gHYlVId0Nq7KNxsmoAmDK72mJDm3jEqxegleUUbdFxt6O39XBfk9l8gJV0aA
-	Vpl+pf5EBXyDQ+oNhCe24pNyy+4JfqFVgvv+MWYLbG4zgNwAgYcR0GvALNZP/D50
-	DVhZF/ob3hDf3rYqSsHf09StfNV0D0aoJ5g==
-X-ME-Sender: <xms:eQaTaVv5D8gzRkLxymvr8DybLARyMSvzBtimi9zI8Lg46DBaihVGqg>
-    <xme:eQaTaUny5-1Gr2KeFPbuzXhh8qK9wPO5d-aCm4glyScU7EX9JJN_hOxNRJVVOmisx
-    lrfTZVwySjrekSyq0RrsAYIK-LZm33H_B3LuRCd1VtAHe3dJ6DytMHD>
-X-ME-Received: <xmr:eQaTaeVmdwPSpuDP_KgSOiFBrvpFWv_NA6HWw9ZGuAeEfy9Qt7VdrUY7cCo05w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudeikeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
-    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohephhgrohifvghntghhrghovddvsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtph
-    htthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgtphht
-    thhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepvh
-    gsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepmh
-    hhohgtkhhosehsuhhsvgdrtghomh
-X-ME-Proxy: <xmx:eQaTafkqindjml57pRzcx-lrEjSyqEvRcY526Xyblks3LhKNlV3L2A>
-    <xmx:eQaTaTTJaK-14ZTbel3tlSBCPavTnDw48qY7X1RT6XLJxAcFxJdWTA>
-    <xmx:eQaTabGmED2b5KfgsC7bH5V7OiucZAS3Pb4du7uKQ5dwn0lyHELAFA>
-    <xmx:eQaTaVhWPjVlqrvmvYWjbI4a5fRxsOUUchRdk-FFKRBg1sH0nzHtOw>
-    <xmx:egaTaQXSDrQ5dFtaN23rpncsxNALDkL1YTF9u1wvQo_piyZxOzrDov64>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Feb 2026 06:58:47 -0500 (EST)
-Date: Mon, 16 Feb 2026 11:58:42 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wenchao Hao <haowenchao22@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	b=5STAmfbOVGMH+XvNGFB8yPMyU91D6jZrdIXD2VFT8BW1rpdZj3tsNf2JRfK1tnolHJyQsH
+	J1x9WvnWOj2z18ufYA1SdGA02kWnUBVR8bgdrJ0pYdAlFiTEr2kA5KFln6+b+lM6PQa83/
+	oii5hr34cVQVfqat2Xgn8lH6VOuVg8c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 695176012B;
+	Mon, 16 Feb 2026 12:15:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96160C19423;
+	Mon, 16 Feb 2026 12:15:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771244148;
+	bh=yVXbmrozFUX7lxzw8jVfric8iiV/l74dHezhvXM0gRY=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=AVXrh8BjTet237u9QvLtZKUMdQywnXodPYrNYJHMOvqIp8MvMHfnX3yh1Ss00Jka2
+	 tHje6vzf9uu1aGurYdlX0NDkh5ooifFxOZFjreBPiplMSWImSxV0T69nX/FXgmva5M
+	 EYYET4JF1tZVWOZ3MANeLlUZ+SZd8wmk0byEkO1GgO5PSD6HY84j78C8aXtkjZoLNj
+	 zOg8SbK7r5sb9Llwaww3xS88RwCuD8cWCehRR15b4f/+31UhDGgbt8R6octtYObmHP
+	 fVTYLKlcaDgAQHUKROovHHfDm/H4sLYrvgZum5Ad03ATRfs8vagQDwODPp4s+Nvz4n
+	 ltZBXb7nZsceg==
+Message-ID: <db1fa367-0fd1-48a1-a58c-73e72cfbdc05@kernel.org>
+Date: Mon, 16 Feb 2026 13:15:43 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
  pages
-Message-ID: <aZMEvl7WUKyxmgIh@thinkstation>
+To: Wenchao Hao <haowenchao22@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260214084514.2842745-1-haowenchao22@gmail.com>
- <aZMAVF1S1kP5Gny_@thinkstation>
- <ddb0d3f8-a617-49a2-8fb1-e6293f376030@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ddb0d3f8-a617-49a2-8fb1-e6293f376030@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260214084514.2842745-1-haowenchao22@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 34p7bj7k7wg694pqgheuwzuqzd5bzkbo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D559B180010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rm6srrhnjsr7cm9ru3u5nwj493kkuddc
-X-HE-Tag: 1771243131-386374
-X-HE-Meta: U2FsdGVkX1/9UDQ+wakJaQn3TKQgtW2odZBIDCHhRbU4DOpMhMt7tbHh4hvLfGHKO1u8DpAzJr9U09XpGuPpLQJJJQtcjC0rrcsGPfuyTB9RnZIBMBS1/4vL2zPpuEMEcq6LF5uF6GEFOyTdRtdFUBteMvZxS9AfED2eg5mBBcNwhikUmgO/LNilZxpeudWTCPERB9LHnF/wiYyLfzNgd+oqb6In4OApS2BcqJnbE2A2AKqNJPOB51cPSKokKsxNBkHa4FTManAu8ZzuWzAdLIUGCMvvA9uYnxjMH/6/M9fjfXshuoOmTVYPZXty3w2jYoNgDD3V3Qkiznq6FkxLdR5t8GAcw3kvrsGpfLodgQ/Axz7rpRzYV0pjkhKTL6TFZ6c9LFrylW+YD2ZVxlQNmDiwwMNx4PVhhur44vvkjp0glmIceqAit+sjx3XKenIZfGPxXbXzxaj00Yc90yaqXMETu6MQAoGi7rlOeftgeBzZuL7kvzxhz6Lw0uyDyWl2IxDAkKY3LT9IHbEjrHOuQ1DIWbFWaBXOBM6qR5hjCCcHHoG3f41SXhIL6HM+bUxuOfNy6lj/OJVMBWshcStXpDj5TK6NqmlsWMR96wvOFjMm4EK/D+iQ5QOz2NFlQnreUc7Ey1zUZm/6T3w/kQTNVCc4RDvz53qOiWXcWiwF64jQTYAGHZnAb+H+D4nJ1c+NBvO2Cg8eVffK6ogKXtQuM0d8smRJYpPcYPNkfcU69lffVNoM/mvlOgNuMKlToNGeVKhvoVQTnZNahe8P0HEEza/xEJsObitpLskWrSrfTqkSEYqdZtSNL/t3PwQ9dEP1p76dRS5IA07fG0jO2f3yCCKa2NJt0GlATPUDqCPtiP8N+13M9wbb9Qqs+AaFm12sJPMPOZ1EQeUH3krQEEi5ULLk5jXFHqRRHo7pVSb9VYWp6gV7bIXRwXYpzYiD2l5J+OioJNdrFh5meTTnB/L
- L1pFAp0f
- W2ELBwVoXifpXvYMo8PDQWEiPJrUogIfDWBm0TBuBu7gx8VYD78dqRpTXOdkaNLq74QsigXEEjzHpKWSjbkTIhCZKoFjOYsJDoxJC+ImmeVLmuYYinp7tT4lHJfkMRkwO3QHSlb3AMFTQt2tvXrWqFnN3Qigrv7LXvRqNT836/O0Aa0S2S4/RpmjsXwpBBuFJX2jAyO75CfM43Y+x9k21+l9m7KdHVf/Mp8HZpwr6RHy1gbhaMgEwrnZAAK/hwO5daE4Fmm9o3Yq7sb2FZeOxmAYeAy+cYbfyao0Z4jewGfh4Z5IIo2unXWxuIV0TE7w7yHFiGYbLO6epe8hNZ432vS7as7GS7+oDNj0HPWcFQZt4h6AWgXBWUrc3kU7czHOXkxs+mvzWuYT375RI/ArzkUITbLlwuSQPOYVyt4OUY30s57U3z7MqAwEhqrOR2mllUDkp
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0E353180016
+X-HE-Tag: 1771244148-318453
+X-HE-Meta: U2FsdGVkX18CFOgGXYO4bAy8A0V837UoOsMeYFNX2gGxIoxTuvKcdacKQ7JGb7l8M/3JeO+PaX8nKwi882kZVePaFPZX/L2HOQgtU9t04JOunZ/ApXhvJyXd7WTl4Xqmybqmg2zS/ATPtUo1nx1gMkawj+DlNFHeG+41G/Y7PyJ1lqoXvnyPNB39fe7ejrec36uTYPf29jgrmK50Ubm8NzcJ5b93pOF2+We5YjXfauRusNve9jKCsqvMnfLvDpwlhQJ7HVbhtsNYhognBnpmtFa1VKipW1nBjcs+T60KpwCjz/SCI5nLvxKoMIhhymYiAm1A8UIN1ifZ5LZEBp/frmR7zfHYNIaRGOjtaPA3SlxyOe2tuspJtygsFbr1BnqglYcausX4ydIWWshbsttK8JykeIrlATeFbbsVMjBiuBLBRVUvfipJhYLvZy4sgbaQfDZl9uk2KLj2ZvTDSWfv/W9Wz6f9TN6vEVpTyPu9vTRkjcY9LigRnAeWujXGLcvivWl2Nq2PdcuRyZ0xV7iwqIePjD4bblGe9qM3L2kSMnfuHgEvNPvmupKwor6YjcPxD6uqboroVP64z10Fuo+nUj81KJsYG3mz380k+H9jq3rETTt4M7ThUKSVF7MY4GApc4LgvkQKS6kvz5ezxawHs2Fx5SULwDnFxUKDaw/i+rQA6whuDZBGFqzQ/SnBIO9YnaGk2lgtkf8JOjBixZCGs4kImHIF78NaqgkOOsVo/M0AprilQqG75LkbAjfip3O75fAkvQ1WMt3a1/PTPAg0g4c+5eLqNLFy55ynBM6gcUg4XAGFACOOv1rMaHV9omhRRbv0CuOWSxJi4Fnb3Zx0CN9SQoWzL1pJxJ4hYHOBkI5qQ2k71yBAutzBXLFhZZaLb0md24ERfiOpzOgvCe4YErAQn3pawEvbv8GRO6f5N2PXQhOsNIovVWhhR7bcGGDQwS2NkpF4uFQBv03SsCX
+ oSzNpI44
+ j6zLGWXBFIMgcccCXF7/ftf7fKETiNo5nwFPazXRoWktEQmsvCtrBFDKhfAAkG4xBsCPB2sHG5ZNW67gqtMTGuVwkcuARbLY8BC3bmSqc3WgRU4l2pvkM+Ate+kFuA9rhYMo+HyvWROiAvap1KZXMrD+7K/l+4ljvSG651JA9Ri3K15yNhw5jZtsS2T05w8wLEhgBFOEeDLTGveNdQN4v4pPUtw+gBXWSirxZE/aiBf0SwboXiL0bBSwFA5swMVF04fg6K47f2hIp7YEKdMNWajCTqbshmvt08TAxcOzKXT1bWMo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,34 +143,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:45:13PM +0100, David Hildenbrand (Arm) wrote:
-> On 2/16/26 12:34, Kiryl Shutsemau wrote:
-> > On Sat, Feb 14, 2026 at 04:45:14PM +0800, Wenchao Hao wrote:
-> > > Add kernel command line option "count_zero_page" to track anonymous pages
-> > > have been allocated and mapped to userspace but zero-filled.
-> > > 
-> > > This feature is mainly used to debug large folio mechanism, which
-> > > pre-allocates and map more pages than actually needed, leading to memory
-> > > waste from unaccessed pages.
-> > > 
-> > > Export the result in /proc/pid/smaps as "AnonZero" field.
-> > 
-> > I expect it to slowdown /proc/pid/smaps read substantially. I don't
-> > think this line in smaps worth it.
-> > 
+On 2/14/26 09:45, Wenchao Hao wrote:
+> Add kernel command line option "count_zero_page" to track anonymous pages
+> have been allocated and mapped to userspace but zero-filled.
+
+"count_zero_page" is rather sub-optimal parameter name. "anonzero_in_smaps" or sth like that?
+
+Still wondering if there could be a better way to enable this dynamically.
+
+In particular, not using a core parameter.
+
+If you use a module parameter, you can just set on the cmdline
+
+	proc.anonzero_in_smaps=1
+
+And dynamically set/observe it in
+
+	/sys/module/proc/parameters/anonzero_in_smaps
+
+
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index d7d52e259055..0301b9cd28f8 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -34,6 +34,10 @@
+  
+  #define SEQ_PUT_DEC(str, val) \
+                 seq_put_decimal_ull_width(m, str, (val) << (PAGE_SHIFT-10), 8)
++
++static bool anonzero_in_smaps;
++module_param(anonzero_in_smaps, bool, 0644);
++
+  void task_mem(struct seq_file *m, struct mm_struct *mm)
+  {
+         unsigned long text, lib, swap, anon, file, shmem;
+
+
 > 
-> That's why it's enabled through a command line parameter.
+> This feature is mainly used to debug large folio mechanism, which
+> pre-allocates and map more pages than actually needed, leading to memory
+> waste from unaccessed pages.
+> 
+> Export the result in /proc/pid/smaps as "AnonZero" field.
+> 
+> Link: https://lore.kernel.org/linux-mm/20260210043456.2137482-1-haowenchao22@gmail.com/
+> Signed-off-by: Wenchao Hao <haowenchao22@gmail.com>
+> ---
+>   Documentation/filesystems/proc.rst |  5 +++++
+>   fs/proc/task_mmu.c                 | 10 ++++++++++
+>   2 files changed, 15 insertions(+)
+> 
+> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> index b0c0d1b45b99..573c8b015e39 100644
+> --- a/Documentation/filesystems/proc.rst
+> +++ b/Documentation/filesystems/proc.rst
+> @@ -545,6 +545,11 @@ replaced by copy-on-write) part of the underlying shmem object out on swap.
+>   does not take into account swapped out page of underlying shmem objects.
+>   "Locked" indicates whether the mapping is locked in memory or not.
+>   
+> +"AnonZero" shows the size of anonymous pages that have never been accessed
+> +after mapping, and it can reflect the memory waste caused by huge pages.
 
-One users want the stat and all users on the machine pay the price?
-That's a poor trade off.
+That's not correct. They could be read/written, but with zeroes.
 
-In general, smaps scales poorly. It collects a lot of stats and most of
-them are ignored by user. We need something like statx(2) where user can
-declare what he is interested in, so kernel won't waste cycles.
+> +Implemented by scanning the size of zero-filled pages of the VMA. It
+> +is default disabled, and enabled via cmdline param "count_zero_page=true".
 
-Kernel cmdline parameter is the wrong place to declare what stats you
-want to see.
+Probably best to keep it simpler:
+
+"AnonZero" shows the size of anonymous pages that contain zeroes. Zero-filled
+pages can indicate memory waste caused by memory-overallocation with (m)THPs.
+Availability is controlled through XYZ.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
