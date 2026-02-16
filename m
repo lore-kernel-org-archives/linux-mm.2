@@ -4,98 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 968BDE7BDA8
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 12:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8D62E7BDA9
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 12:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F235E6B0005; Mon, 16 Feb 2026 07:18:00 -0500 (EST)
+	id 1024B6B0005; Mon, 16 Feb 2026 07:19:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECFCB6B0088; Mon, 16 Feb 2026 07:18:00 -0500 (EST)
+	id 0B0796B0088; Mon, 16 Feb 2026 07:19:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDB5C6B0089; Mon, 16 Feb 2026 07:18:00 -0500 (EST)
+	id EF1196B0089; Mon, 16 Feb 2026 07:19:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C77136B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:18:00 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 534CC140D7A
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:18:00 +0000 (UTC)
-X-FDA: 84450221520.23.B1B8D3B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D90E66B0005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 07:19:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7BD3A8D189
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:19:58 +0000 (UTC)
+X-FDA: 84450226476.04.1AC534D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BD2F41C0004
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:17:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OSemA52u;
-	spf=pass (imf21.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9B772120005
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 12:19:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gsm5+VCO;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771244278;
+	s=arc-20220608; t=1771244396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=OWX72pi3lXEUfagrehkEBiry/odtJdRTv9MQDTjMkPY=;
-	b=R2MferokE0sYzse1+4HZBuq9qjULna6G1x23mpQ1dMy51fxx7bDb3Haxfx53kg5Dcx5Nb3
-	Aj36HCcE7Zf4nMnkPBuW2fNOQ4jXdZDY2agRAbQF2Q9ot1F/kPcrg4uaUnNVF0fP3A3fbJ
-	hjgJJQUYqxVRLDIR1TFrCrnLUkgpyjI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C6AEU+v0T8MvjqBnSx8bR+vM3oyOGX/TtVHCxXOCIP0=;
+	b=lXfZ+lKYEiOrJwjgxZLWJp68mfRS0AqQFLLQgHiD5dZwogoO48xFu8wx61WQkyDNAwDR1X
+	29Yzkm47dMiL2UC19umKaPVbkc5F3So0HAjNov4n1DtUA7+mXqZCRtQHyPrxSNUDmCcAgY
+	cGMkLL0/Wk1383Jto99xDfYrYlyC3IE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OSemA52u;
-	spf=pass (imf21.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gsm5+VCO;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771244278; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771244396; a=rsa-sha256;
 	cv=none;
-	b=au4IAjAJ5BM7fpB6Z4gntWsCBRZK9tSXd2VcugqeRTfe2LstcUiDLYLHL36nID3XoJyU7q
-	aU97gsoLZbGRZUf6Mx8Jf3l1M5TBetweMFZya6gq6Z1W8w9pVvXPfS28CBipZhTDD5hak1
-	T6Y/NK65UWlIXN4GLCNRw4NyJzijXT4=
+	b=bPH79CMZWu3WsLwdi+PRX40JA+oPnp0zuFeZribJkLohcM/XEdSmClT5knCtmpGoNWPIAQ
+	ggHXSJpLqpEMUWM1ezsJNf+9txnfaSUFubqca4DZ0znEkYBEUFIVDkX/D3XMq/2g6hydKr
+	4KdJYYZjkFyMCNILupJjncvtbga3EfY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3ABF4068E;
-	Mon, 16 Feb 2026 12:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B5FC116C6;
-	Mon, 16 Feb 2026 12:17:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D79543DED;
+	Mon, 16 Feb 2026 12:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02F7C116C6;
+	Mon, 16 Feb 2026 12:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771244277;
-	bh=+E6U2vTcOf3pypRLjDQO5XE3le0jSDZ9Tr+xW7xT/qs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OSemA52uqh7Iq40ggCxCqiZhqXfsFVOrcIFgd3Rw9ZQKl4k/4P8jivjHrf8kiQx0P
-	 +L9P90YFZd5MtgNUuSeK0TziUg3SYsaI9woWafyC8Ka/5vyLV8QGCRWKQYnwEVxLw3
-	 2lImbBHvCcBHQKOXQBBck9rjS1q+3lb4UTrC/52T41Chhm2WX985CP46tIgyd7j+g/
-	 m7+QYfnwx3+8xCg5TNk4sjaZlGiuN8iUkxo3510NPN7sZmLsg8HUn2LagwHn3lA8mL
-	 XGRZxDbZSAu71SIUZNRRdhAQ/HjTSGuS/VkIaLgArsxOnymk6pBPfF6/arGonSOweA
-	 yqyQ6rnNdvR1g==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: change vma_alloc_folio_noprof() macro to inline function
-Date: Mon, 16 Feb 2026 13:17:44 +0100
-Message-Id: <20260216121751.2378374-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=k20201202; t=1771244395;
+	bh=8zgg3lww3h4FXpNYmWVoogp07XH/3lQ9RKFAHKyRcbA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gsm5+VCOWZGMFdm5BdJCcdrUKpgNO7MvNQ1AS4QqsOXn1HMEhgO8DwhacdnvLdafT
+	 o9SLiU1D6pyKuSou7hx4coCGgTbsLMNwy2GE0CnH/eMjIHpFkF3K/dmfDbhsaZfx9n
+	 UGU+pB/lAy+2KccOBQXLJB9mDzTGd1cJFga0UliV+bytqb3ilZ2ySBfnOFOaGWa7jd
+	 VoG9VKyuJe+PbDfAXXa6TUUhGoPz5aiTb1OsyU4mpu8NiPFv1x9ZjdSmOEv1jo2J0B
+	 Zqdjxole6N/FTHqD+6iafyBKRj0VBIwmiQrvwkXRyMNZ2h7hSnsXT/RjSmvGgddlYs
+	 zkLXWnjuX61iw==
+Message-ID: <8eee83b1-b59c-459d-a34c-63794ed68c03@kernel.org>
+Date: Mon, 16 Feb 2026 13:19:50 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BD2F41C0004
-X-Stat-Signature: e344hnh4xd4btzbddoir3ir7t7mhzqdu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
+ pages
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Wenchao Hao <haowenchao22@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260214084514.2842745-1-haowenchao22@gmail.com>
+ <aZMAVF1S1kP5Gny_@thinkstation>
+ <ddb0d3f8-a617-49a2-8fb1-e6293f376030@kernel.org>
+ <aZMEvl7WUKyxmgIh@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aZMEvl7WUKyxmgIh@thinkstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9B772120005
+X-Stat-Signature: 4kst11wsw8dst5ezk8af89hxf8k5b1ab
 X-Rspam-User: 
-X-HE-Tag: 1771244278-658413
-X-HE-Meta: U2FsdGVkX1+PXrwg0/H4ZJK83iAbUJfccMsqrbcuItiBa8KdGofufmR+GX5FWoABKVQ0+BZuG4pMo0xhq3e7xpq4F37mqE+840Qz1uZ11b6mxT+Bfl+auduV+SMwN15rUnJuOM+djsbmEZE6ZfNUQvY7Gs07qREmZ2c+Z1NDsiO56JfID74dHsacisfgEPir9LTD1rEFS3sj3m/3n8S2lMWBlBmZ6FY044uPZmRbYTxMzLiI5jf9xj3YyA/UzprJCLaU9yM7rG46xoro1FzT59SdJ3FA2pybe2sfyaOu/eWGi7uBSi+UcYe/b4hR/oMvGD7dtBHAMuhfYzXRj9YVpDLDzCMS3CDkDr7jrXeQV7NEF79YjWOtrFlDT7IIeNSuziOw7yl0+JA7Qt9lXSQ8Jb0zazpw0Xmx7a0KGSgEHk40DndyWDvLxag1+paCdsbkghbl1aYu7t9UhvAEVq3Lyaxbn1Ob5QnEhgSV7O7so7f0jBi1f5cD5Pi/00XsWVzLRlVODn9zqwDPlRXeA1rF/ebu2a1vb4RPfWP1KXl4tYSapAseWvxSV6uibCVVdRy831EMIurx5bbxnYeIAL+aXUtJDQF8y3EGOxcsVqV7jlYDFMiw4X76Ca1IeJecMpBOi8vB4io1Z1u4LfXazU6vv2haNw+Tbkhek4TmSFHony7BYz5r5E15+5QIn6CQB7H7Ol3gezwiqUNoSQsI3vFZIKkZrLutHYZiTW/a/GccvO2Dei+Vdnloex1HvjwLgXNk8wTeQr14eP5f4Fh58E23NnbGNTXl518UBPhvMF3kcACV1x00PaZi2nM0YHtWKziVn+tvdEJQiR9m/UHIZnuP5qJ7mDA1OWwNFLB4OZzbR9z2TyqjrBKhUaapGK9s0E5Fjjpoh2K922x7BQs48zI0jDTQiMK4Aqjx8lPnszNL12CT140t3Bv6N+wKDDFkcRI1ZuqlEzEgh639p1b2MZW
- NtTC3V4F
- cpUPjNzQ9AkVohbD8wybZKQcNasLPLhFm5ijXV3U/sTpRO38hO55McQ9rAwZzxPpsdroofhZhWqi+VJa/yAaRxeWRyj4ZOgROLKERDbpzba/XqTncvOVXBsXiCAM8NQO4B36uffcDEVbtZyeXjJBGTvllqHwn11le6EXCamUNOdwwMlaumTiKiUTKdk/56HQw9cjSZfTWOX1XP8ZPULZG26Acx+DopYWRfkJJn1NUaJoszDqd6EqK3G0AFZzxMqP4i9mCXNc+RQGSXedbc3v2lyPyOrIjLGYbcHJOyYrhAYGdXzwjyxy1B6rALLcikesekiv3C0RDVqdt7dI=
+X-HE-Tag: 1771244396-170822
+X-HE-Meta: U2FsdGVkX1/Pr1L9hJV2+ss4j7gQoWhvzLLUHKDAVHluAjEx093W4+npdJLvLKhD/qnPwBRugpKriebJykPUBzFEAcLa+iqNp4OKktBJf6KPNfuVj+YDEKGnZY2bDea2vn2bd8LjDnMocTNlZUw9BpU5QBSI2+5vp1u9QW6nxNTKW2xx0XOV1Fm+z1yB3YZ8NJtwha1tBMDUql6eUVYLmYFZksHq/WyVmwhBNO4m4Pp2JXnEKJkwGboKgJuy5pHVcAj/hXfIoW2SdKlnsLLTbUhqqvpjbhBsXounec/TWPinGwN97N+v6JLdrdpPegyivKkW7IaxBY0mldxuj+h2QV+C7yCoV5RZoI8lZxi4qWnyZVqKlENe42KUKOxLgaNrCser8SZJcXHNLZ1xU0j/BikFJzkquyRL7pzXEbIS/1pEsxoZpFlpotRPeYzIyupZUd7qiJgl3f4c3qrYzvzgVX9ZUVAbh1T3uar1IokcKWUayoR/CqKWN6jL/7BKIorlCmJfVdDKBj5Mejrmv5kzuLXlkyIxKXIohOptv9XRJ5CuH+noXq6L8pw+k0dYVS/33y/QwxTz6mptXyWGCZuwAOcgmjQxj6ebGlKPxroIy5sZfY1Ur3i7NTe9S3KFUY9/IxYAmRsqvw1Ngs4cEpuznrvPeBejMn/FrKdDh0jnA0iDyuusHYaJrrwjis8dSNWUOrPzFKAVW2E6/NiaPITpc/claZVuYQNAnmazcVHFQKLUot9SKr86iAZ7t/DFMdk9IOtVv6Adi54BsNeQepqrMbw12yBnGb079lqkOMLt51Pv4bA+xwy75YgcOkeoUkNAMtrz2tC/nhNdDhbZtRLtpoALL/+oamdqUshqdZx6E6cftZcDG9iM2qkdzwlVOb8cEhTcZ8DUa2plLHVh+gv7WDkBsHoqdLo3tcZd9+aQly9oRY6q4+nE3w8ibid2z2ZfSgK/LCweV6E7BoEf8ve
+ No0gfK7x
+ duhh4wpdeQp8LxARN+qDx68gtoSaD66PnxUie5UZkg/HfIUaoCVwUcRsWREh6tLtt5SgWKKRDV7z+pI70qX8CkEikZxhOQAyeREoaEC0Q92d7sWUoMF5TkYr8Uk4NZC0VqT9OF40Xr3xI8WUtgttnMMUUgz5d6QYyrz2C2hy61JEWN5tlfv0WBOutDukIezd1lsOnEtBACirfWhieHeqwUIXMhn89KK4or0zW9vVwJ9YaJijNAwpiwVt2kNS9AO9/xf+y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,45 +147,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 2/16/26 12:58, Kiryl Shutsemau wrote:
+> On Mon, Feb 16, 2026 at 12:45:13PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/16/26 12:34, Kiryl Shutsemau wrote:
+>>>
+>>> I expect it to slowdown /proc/pid/smaps read substantially. I don't
+>>> think this line in smaps worth it.
+>>>
+>>
+>> That's why it's enabled through a command line parameter.
+> 
+> One users want the stat and all users on the machine pay the price?
+> That's a poor trade off.
+> 
 
-In a few rare configurations with extra warnings eanbled, the new
-drm_pagemap_migrate_populate_ram_pfn() calls vma_alloc_folio_noprof()
-but that does not use all the arguments, leading to a harmless warning:
+It's a debug mechanism as stated in the patch description.
 
-drivers/gpu/drm/drm_pagemap.c: In function 'drm_pagemap_migrate_populate_ram_pfn':
-drivers/gpu/drm/drm_pagemap.c:701:63: error: parameter 'addr' set but not used [-Werror=unused-but-set-parameter=]
-  701 |                                                 unsigned long addr)
-      |                                                 ~~~~~~~~~~~~~~^~~~
+Similar to CONFIG_DEBUG_VM slowing your machine down.
 
-Replace the macro with an inline function so the compiler can see
-how the argument would be used, but is still able to optimize out
-the assignments.
+> In general, smaps scales poorly. It collects a lot of stats and most of
+> them are ignored by user. We need something like statx(2) where user can
+> declare what he is interested in, so kernel won't waste cycles.
+> 
+> Kernel cmdline parameter is the wrong place to declare what stats you
+> want to see.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- include/linux/gfp.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+If you have a good idea, please shoot. I proposed using module parameter 
+that
+can get toggled more easily by the admin that debugs something.
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 6ecf6dda93e0..23240208a91f 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -335,8 +335,11 @@ static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int orde
- {
- 	return folio_alloc_noprof(gfp, order);
- }
--#define vma_alloc_folio_noprof(gfp, order, vma, addr)		\
--	folio_alloc_noprof(gfp, order)
-+static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-+		struct vm_area_struct *vma, unsigned long addr)
-+{
-+	return folio_alloc_noprof(gfp, order);
-+}
- #endif
- 
- #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
+It's a good question of someone would want to use this mechanism not 
+just for debugging. Then, indeed, a more selective (per-process) toggle 
+could be warranted. But likely the scanning would in any case be too 
+expensive for any non-debug case.
+
+So let's not over-engineer a debug mechanism if this is intended to stay 
+a debug mechanism.
+
 -- 
-2.39.5
+Cheers,
 
+David
 
