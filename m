@@ -4,131 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B364E7BD91
-	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24AE4E7BDA1
+	for <linux-mm@archiver.kernel.org>; Mon, 16 Feb 2026 11:39:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53BEA6B0005; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
+	id 517C76B0088; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E9376B0088; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
+	id 4C1816B0089; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E7E36B0089; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
+	id 3C4026B008A; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 297736B0005
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:39:11 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E0E513C194
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:10 +0000 (UTC)
-X-FDA: 84450123660.25.06AAF64
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1B54C4000B
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 285AC6B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 06:39:53 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B652C5CDA4
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:52 +0000 (UTC)
+X-FDA: 84450125424.14.685860B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E68BC40002
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 11:39:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771241948;
+	s=arc-20220608; t=1771241991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
-	b=Do68PZM45PfRC3bazLycRE2EIiF842KL1JNvOkcoEcoLg1ClqGTt5W449669+LmTJCQg/h
-	d5hwEbi5xP8mbBoKhmBlWfiKBau9+O6oxrVZ9wr8Gi962ezXwzht3p/UBX6dmzMzEO7wt4
-	yTq3NzchE5OcNNagrMyeau4mviGkbEI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771241948; a=rsa-sha256;
-	cv=none;
-	b=FVRZ1zO6W7xruuYK/mGY0vXnFAE0IlZiz3TDK9IgpIgO7ho5ZbKDgdDLdK9USebpbyjaPX
-	LgXzuhjHtqQbMtnkpH+C6u5QxbxUr+ss7dyNtqAKX5DLK82BWiigCAXjlEuMt8fMjDKmix
-	bo506JqKnS2KTKAvlNB2ei7O1a51BCc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nar597bGzXCnn4gRsFxaCdpoqPt7HhkceVvoLTezTTE=;
+	b=IJ1dc1lcKmS16asibnr6k+6Uf/P4mndhOrBtPlFHeL/mFkiLHt7dcpLJ41saW4UfFilxRQ
+	yRt87GMCyLeG7G8QExyRVfnF5f779pyI068YhkCcOzxqT8T7gNiaqsdagj69yxtauzMIEI
+	RRtmGOm7R+tPhdtDy77fqyILk68Ga+U=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p3JyA8bh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kkqgt47f;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5335A5BCFF;
-	Mon, 16 Feb 2026 11:39:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771241946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
-	b=p3JyA8bhdFyL0ld1P4fNn1Yxp5LdNpmiePmfuryjOTXjs4oG5Fea2Hh/W3IQd4aAqE9ayu
-	ZST1PeI61pQYkbuqAVRLluJwsDwVtJA/+LhPU96uQ/YW0t+siQ8WuD1J+u8GNjwx9lUJ8t
-	+Mg1n/h+US/VYCIJJtenyOXn7suQsRQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771241946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
-	b=Kkqgt47f3D2hLb+DbYsty7+TKZ782vebLzWVOZFX+iakm22PNqoIcQ1lHzRH1rpoInDryC
-	9LJSVBf/Oj5WH1Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771241946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
-	b=p3JyA8bhdFyL0ld1P4fNn1Yxp5LdNpmiePmfuryjOTXjs4oG5Fea2Hh/W3IQd4aAqE9ayu
-	ZST1PeI61pQYkbuqAVRLluJwsDwVtJA/+LhPU96uQ/YW0t+siQ8WuD1J+u8GNjwx9lUJ8t
-	+Mg1n/h+US/VYCIJJtenyOXn7suQsRQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771241946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QbjZPXjREGbAx7ntC8vD9Ig1U2Ql4S/pSKRXVeCyDvA=;
-	b=Kkqgt47f3D2hLb+DbYsty7+TKZ782vebLzWVOZFX+iakm22PNqoIcQ1lHzRH1rpoInDryC
-	9LJSVBf/Oj5WH1Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B98A3EA62;
-	Mon, 16 Feb 2026 11:39:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hj/sAtoBk2nxfgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 16 Feb 2026 11:39:06 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D646FA0AA5; Mon, 16 Feb 2026 12:38:59 +0100 (CET)
-Date: Mon, 16 Feb 2026 12:38:59 +0100
-From: Jan Kara <jack@suse.cz>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
-	Andres Freund <andres@anarazel.de>, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
-	hch@lst.de, ritesh.list@gmail.com, jack@suse.cz, 
-	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
-	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771241991; a=rsa-sha256;
+	cv=none;
+	b=lKIVPaferFBKwm1EE7nhyXACfjX0KNN/GzlDvosUCeig15gN+YqprMDEprYWcTcgWIYFOj
+	tOvpdAK7vzajZnbIqonjschgAedpHH78imuLY6o1ViNMxTazsszVDfTLfT3NqbLX+DX7VE
+	Fn2USVX5BSrvcPIFTqEo0kvdEcr6ocE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BB82150C;
+	Mon, 16 Feb 2026 03:39:43 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E0DE83F632;
+	Mon, 16 Feb 2026 03:39:47 -0800 (PST)
+Date: Mon, 16 Feb 2026 11:39:45 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Yang Shi <shy828301@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, lsf-pc@lists.linux-foundation.org,
+	Linux MM <linux-mm@kvack.org>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>, dennis@kernel.org,
+	Tejun Heo <tj@kernel.org>, urezki@gmail.com,
+	Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64
+ (and potentially other architectures)
+Message-ID: <aZMCAWiA7XHYLIE1@arm.com>
+References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
+ <5a648f49-97b1-4195-a825-47f3261225eb@arm.com>
+ <CAHbLzkqRjuWg7ybdkuv5xdoPz7z_q2n+0Eh0pRNoVxq-WskRvA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-X-Rspamd-Queue-Id: 1B54C4000B
-X-Stat-Signature: cekhjrh1zuoqhfn375usjwbt5hy9ma5i
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHbLzkqRjuWg7ybdkuv5xdoPz7z_q2n+0Eh0pRNoVxq-WskRvA@mail.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E68BC40002
+X-Stat-Signature: q7q6rchbgb5te95cq4n3f7k89xzg5x5j
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771241947-291121
-X-HE-Meta: U2FsdGVkX1+7dQ/39o95IknFTl6/zt4yv+uhVodnQHTnjh66YRL0hCQD5KFxg6kEG0BdmWf4o2xR76oZuM1mXWJreTFQdHqYghzaWf3D9fOxgWOInRtTSRhcoU3dDVx/jmpTDF+1PDCcpoBrSfn4waxX/F7QzpJV69NEisy5krE4ebN4AEJAHSCFnpOv/kFYVznXTSuBRKOc2bwxQuizc5dmOeEAJhlA9RqXLLBztRGk/rhKG1bvtpRZobb/axCyUYpzIgfVX4fobelaMMY5NANyetjVvMpItWXidJfevPrJTZCZqJ+yHYYKZu3ZbcTezzgzWTFJkC4bKDuBTo9/2Sx9SHLhJrkFUfQ2DLUDR3ugiUf2DuxtsIoeQxGrjBxwwoE+pEZm9rbrC+iTgFF8f64AeJGWDq+Rpr7dKxCQZEQmnA7w1KXK32IH3eQmbjVnxWtijpGRD+OqDT60dNWkM7SVg48/7ZDNI5XWkwLGKPeD7PKG9UXbCCsdsTMyA1yOohiy1tplpP/jXsKbnWceMmbHzfUYpDngZpeU27OAndiRbiso5+cyz95dB1F26TQyGG3tOKIkecScmGRzgsXtEaJUmRnuvHd4vCn4DnW70hKdi9tDc3fgbIwsUOwYTpzfp0qvc1bOiaVYTJup49t57460YjJeffnHwbe+9qPuVvJGgwLMh+Vtp00h1k1YsD1hTn70JB34J7PHd1bj5drPfb9/OdonsWYB1s+AhbOkI6HB+jQlHz0of+ExJpNkaz9Wj2XGONBV7p/pqtAmdlbBKFyvdQZSF+xZ3yga2VWKxHjFtaUEr6J372CtggyiCKjjFXm5w5pQ9br1UeoCCv2cKq5wHmON1KuDcPvbJRYSIjakQyPDA+J4LpVd9/jRHR06/WSxDFtD3Mn5DHEW4xdHy49PLa6tasxR2wP6sFVhSxDFdr4pb86WqRj4TZMvMTvedK33bWi9vIY7eN4dIHe
- FXyLXyRv
- ilguWrq0jd2hFLl81/sVgf/yi2KzU/s9MQKmroipK9xQwf7q6DfWGD8h2/8R+nor9wklMT7q+ggIdRoZ0ZsdOsEnVcK3b/PCiUECYJj4nOJGJcwkWwNwarp3imC1eSHC/2zkYK8boDK/McLFWI9BsRdhyFbLsDPciPBofxDZbyd/GeNm4gS2kecpfdAsO//RYhCOq9P+8zMCkmdIA2sjIivAe5fwmj3/uBMAwcgWxTX6YQUR+tyO22Niv1IaqOixT7063Bqqh/msQGLHTbPi65X/Bh3FIXWbIbdqdaiAUTdvmNViHELu07jPFgxSxDIShun05dqvuKI7j8Qkd/BA60tv70q2A3vB2aGnhMBlRhMa5Yk3TFZN8VtBl9pfM1GyjB0A0qmw2r67ICy5m8HpNLu5xSlbYplXRMcj0
+X-HE-Tag: 1771241990-265161
+X-HE-Meta: U2FsdGVkX1+ga7snQxY75q/hW4PXoiCwgTIXKDoTVjmNbWsZpwvzV78SaqI/lapu8/7NI5lEKeJTmMMOR15C3OABQQw7joz3aAdjlY73lYb1+piBjtiAjY9mQNlYG3Mv59CfUcrYuBT3y98pbeO+SUHxzTSLNwUpgH8cAflOXOxhJSWBQ1GRU6944cp3uw5lF1bfKkAJGEqKaRRh90xQi/5rWacwlUU+5K2l15PTpOvzLQxJRmY5PkgXXoeTqJv6xbf5DffL0cK+tBcwHPftGSY/IFfBtwugl4sxSiuLY9VLCITbNqRwPucsEZkmwf3seRdIAYicKpx/IIH+HVNWIRHXD8hSufmS/FMGUB0Dx1RFuIsu2FBPUiuudCTrkuqLMNurHFIQnmMXawqQXRsC6gP2DodIMioZe3vmOtIZaT+OL5YT53WEpxA6SlOxeP5ZfYOE/PFjFHhrMr+csTEoPOQUJRvCXgEJIS3xw90XW9gSi6bxHC0GTRKLfa7ALt6f9fWWxzxBOFjAePsbhEkKDOipgzhE/zo7ucMkWEq/yHFeEBCL+1AMetAtZVjkwYtopwp+a4zWNlIOZFWQ+v2ZwXgEnI1Rzs8G+ezyCHIcceWMOlMRjMLAg0HWQxz84Ntn3YO9u6YrH+Jax0NXbd8UV1mNlO1CT/XIaJIEVOYsumjHPjgnqBqD24xdaw5C4uytULHmlrzaabB6I6Pu0lJXmJdnjdvE1tQoeQOthTvqY0vNcf6+7BSopjEpBalIrXEFA+j6DXB8q8O71/ocwqkztE/RJeglR21zD485cACV9HneovGpmXjkbTO8AU96Y9sO/59OlqnfuzVUj8NkCbh3H8RxARB/74HGmwlENp7w2shMi/NfZnwYgi8C2Uo2nLxNDR0IB2tLQ4iDiVzhqyAO6lasBHP3uTRUBFMs3+Gkqq9RI8XD0eCtbP+ADD16BGM28QcAbJZcSrMe7uNwPDR
+ l/3lVWHH
+ 3gHnTHVUHYuP/jy2Qpa0cONnYRmB+ObaihYnesdn9rcoDFBhAyGGrhsrr8dA7SIgfE2t5wsRPsGM/rc/suGZvF/GRC5So6iw/q6FiF5jmQ9qqPDTUmfIya+LPtUvFLWGxL7gPhDIXSK1g4kQZvtH5Yk0SFbWKdk3/H0m+PcqFS7A6RUtnmIZdDNZ3FuHNfjB77QCcjFcN90SdLdekIqs/WiYMcJFkbj4DJ3EcmCc51bswHtga0mbAQiJF0SeUGUDsDgYh7MTz5j6VQZY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,37 +91,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
-
-On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
-> Another thing that came up is to consider using write through semantics 
-> for buffered atomic writes, where we are able to transition page to
-> writeback state immediately after the write and avoid any other users to
-> modify the data till writeback completes. This might affect performance
-> since we won't be able to batch similar atomic IOs but maybe
-> applications like postgres would not mind this too much. If we go with
-> this approach, we will be able to avoid worrying too much about other
-> users changing atomic data underneath us. 
+On Fri, Feb 13, 2026 at 10:42:21AM -0800, Yang Shi wrote:
+> On Thu, Feb 12, 2026 at 10:42 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
+> > On 11/02/2026 23:14, Yang Shi wrote:
+> > > So, the code flow should just become:
+> > > INC VIRTUAL_BASE + percpu_variable_offset
+> > >
+> > > In order to do that we need to have the same virtual address mapped
+> > > differently for each processor. This means we need different page
+> > > tables for each processor. These page tables
+> > > can map almost all of the address space in the same way. The only area
+> > > that will be special is the area starting at VIRTUAL_BASE.
+> >
+> > This is an interesting idea. I'm keen to be involved in discussions.
+> >
+> > My immediate concern is that this would not be compatible with FEAT_TTCNP, which
+> > allows multiple PEs (ARM speak for CPU) to share a TLB - e.g. for SMT. I'm not
+> > sure if that would be the end of the world; the perf numbers below are
+> > compelling. I'll defer to others' opions on that.
 > 
-> An argument against this however is that it is user's responsibility to
-> not do non atomic IO over an atomic range and this shall be considered a
-> userspace usage error. This is similar to how there are ways users can
-> tear a dio if they perform overlapping writes. [1]. 
+> Thank you for involving the discussion. The concern is definitely
+> valid. The shared TLB sounds like a microarchitecture feature or
+> design choice. AmpereOne supports CNP, but doesn't share TLB. As long
+> as it doesn't generate TLB conflict abort, shared TLB should be fine,
+> but may suffer from frequent TLB invalidation. Anyway I think it
+> should be solvable. We can make percpu page table opt-in if the
+> machines can handle TLB conflict, just like what we did for
+> bbml2_noabort.
 
-Yes, I was wondering whether the write-through semantics would make sense
-as well. Intuitively it should make things simpler because you could
-practially reuse the atomic DIO write path. Only that you'd first copy
-data into the page cache and issue dio write from those folios. No need for
-special tracking of which folios actually belong together in atomic write,
-no need for cluttering standard folio writeback path, in case atomic write
-cannot happen (e.g. because you cannot allocate appropriately aligned
-blocks) you get the error back rightaway, ...
+It's not about TLB conflicts but rather using the wrong translation for
+a per-CPU variable with CnP.
 
-Of course this all depends on whether such semantics would be actually
-useful for users such as PostgreSQL.
-
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Catalin
 
