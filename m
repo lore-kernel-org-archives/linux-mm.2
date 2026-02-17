@@ -4,107 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6306E909BA
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF70DE909C3
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:22:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04C006B0089; Tue, 17 Feb 2026 10:15:36 -0500 (EST)
+	id 0894E6B0005; Tue, 17 Feb 2026 10:22:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F39AB6B008A; Tue, 17 Feb 2026 10:15:35 -0500 (EST)
+	id 037326B0089; Tue, 17 Feb 2026 10:22:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3B2D6B008C; Tue, 17 Feb 2026 10:15:35 -0500 (EST)
+	id E64B86B008A; Tue, 17 Feb 2026 10:22:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CE4E26B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:15:35 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96516C10B6
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:15:35 +0000 (UTC)
-X-FDA: 84454297830.23.DC39282
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 75997140008
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:15:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qRK9Hocl;
-	spf=pass (imf23.hostedemail.com: domain of 3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771341332;
+	by kanga.kvack.org (Postfix) with ESMTP id D325D6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:22:34 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DE8F1C17D
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:22:34 +0000 (UTC)
+X-FDA: 84454315428.07.C981128
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8B81A180012
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:22:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YcfYbsF5;
+	spf=pass (imf24.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771341752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HPh5d8pZ0/N2pmYYWL0hS3cj+T7x1Qno8FKMpGo1Eao=;
-	b=0wSDGHd2yD5FUovHcbhiEaRbRKoOaYhCdcAjtwjfOWgBzjOGmyMnZDSkKFBYadi7yyRsZ2
-	NLVY9ueyv6jLKcOzCGeNNePEi055hcLtrxl768gfckU7ze+nPEyO9EKD81ThuXSlvEUWyZ
-	M9TkC2L0jbhXVTPAeFBt69ftMHp6+xU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qRK9Hocl;
-	spf=pass (imf23.hostedemail.com: domain of 3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771341332; a=rsa-sha256;
-	cv=none;
-	b=2f0pn5LSfBYFBxhcODGArErskHuGuBeb5/MJ0GJG0EeCYKpPEU5mgk6O/S35sRS7BM2FAv
-	PCPl2TxQ5c4qWbXsbTUG7JRPUXzwpnVyxboIiIs/hi92gE4Ec21mJEQc6eyzbzLe97bZVq
-	802du+iaPMaeC0MbjaqWYMZzL0HE0zA=
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6e78c4aa50so955829a12.0
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:15:32 -0800 (PST)
+	bh=nukXF9Xg4mYCFlks9WtY3qEg0ubGFjMU5OSmWanzog4=;
+	b=Du/D9kCzAKwhHNs13ss+ocgOSEdZvCxhNrNv8s14E9cADF9QWlZDVJyD6A0FE6yQKj39vQ
+	KPd+ldbnWefp87UxHvUZlDixn6OAN5M4G7pYnUqT6Bt0HZ/SKRa2e7WdBCVhCnqpFOwaSS
+	v9uPjdlC7PP3cRbhian8IqlJ+wSRVCQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771341752; a=rsa-sha256;
+	cv=pass;
+	b=sFO1Vlbw7kAb4OsV2oEoyjHndOGXxGcBD4mKsmui6xor/yXAM1TTnXVc7DJS5bhwFKat1r
+	y7xGZuCk6Ndm3DeEWgnF07zLSAZz6LL6AS7OZ8wiZagCLnO7OMAVbrhzvdmx14qM6Y9amt
+	2r9Lyh4LozVBD9HUiLD+sGrsdtXcyII=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YcfYbsF5;
+	spf=pass (imf24.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64aea64bf15so3794852d50.2
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:22:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771341751; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Es52NWgHKAQRiNGCoBex6paTYlsumoX/ppkLZgViYkb2OKWRItlbEjFc9cF7XC0XQi
+         55Ws9hZEpcMICffCcVj1sMqeBivEET5iguvkA8sNgswZnYb7xlkmlANN+WriLBSxFiLb
+         X6jXVjwlpz91MsZkrhtTGb0F8JysJh7PVp1pH2a/qb+rsvMqxsTUwAZC0lb2RL46BsHC
+         k0iNxNSNchLMniFXY+Q3mkTbyCUyrB5ksHtLkpIaZmp+PeeaJZ1TfR5bIYSydV150rvc
+         vZteZLh//38NmPb84lnpB10a8z+F4nNE57ptCOq7wiBG66twyo1Y35T2duxFLF184flC
+         oMYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nukXF9Xg4mYCFlks9WtY3qEg0ubGFjMU5OSmWanzog4=;
+        fh=qT6Bkw6Rd5Xd9Ghb+A3m7ZqHQ83Z5rr21KIaDL1BkIg=;
+        b=b5mcgwpBvRv8VoSVyZWuEPeoFljWu1BLvjuTE/MjP46Y/+XlYDkFbPvH6YDwd92Svo
+         zSSqCkMSfmU5zceeL5wwRksLH9giZ1ylpB30J+dv+7yI+lriIVsiu0w79hSSDEiL0K41
+         cfchnNn3sBzFMqoP4vZFMDWQePPM3l7fJgPocNJj/L5+3lxIcfre7J0uIb+mtFfdq6ja
+         F3szAigHI3STD09chDoa+gf0zBhmwWSdTGILx9l8ece1Rf1/NJByRqyCHypexsZztaIA
+         tbIHJ6Vo7grJgxdAlsrRAW9Ob272tACXUHL8tHMaa9OalKFqxkZ/nwG8vTlxbJBb/1Po
+         PJBQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771341331; x=1771946131; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HPh5d8pZ0/N2pmYYWL0hS3cj+T7x1Qno8FKMpGo1Eao=;
-        b=qRK9HoclYLt3t6/ulLLYqHJbyF0/qEjhYiQjziSgixyIj0qTGZSGF8esDYPauIqmWS
-         SDIVp1D6Ri7g1X+fQGuF9JfkKN/LCg8W3AbzXx2CPmaa2+NquxS+agLOFgEIDcTl5KlK
-         b2XDhE3CNByKXL7GHg1z+H8koWGeV2Luw+XLYjN9jZ/UD1GKSfXYLG5Yl66grnRkwfEa
-         uuhBk6N9onAO0V/+D9FqKQP5EwsD+vTlAlpJE0aqpTzG/9znoh4vLpEifP/k1bBplRu9
-         QYe2KfhcLGc5q956Wr7kryRYJjXQZWetnfOOuO8FBQvymfXPmpuq4Tz59ZnvGbmqdqZv
-         4VmA==
+        d=gmail.com; s=20230601; t=1771341751; x=1771946551; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nukXF9Xg4mYCFlks9WtY3qEg0ubGFjMU5OSmWanzog4=;
+        b=YcfYbsF5JKu5chQdsZooFeh4EZ62GFmbqLR4p2aba/lKTYzUGohL9imBAaxaMb5aia
+         K62GKkzfOE4xu9wAv8ZrCQm7jNhkmfjxbmNYSm3ohBufMDyEYok5P4bEyHM/risCfX8z
+         yF+rdhdDDJw8hOW0vmTtoj8TWH1hxy5u/goerGc5KfWq8YsbwbpHE00igPplEJABSIg0
+         4kUaajlKqpI6XfSAArVpxaKLdLcdF0pxfs4J+7VH5KLi68ElCKC8N+EF44XdslkVu+Ff
+         Ol1nGkKOv7vUlP2HUXhXAk0Ra2GZ58zGA5/E+eHo0Qu9DJPhBp+suBQ/FRiuGSQPDlVt
+         C+Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771341331; x=1771946131;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HPh5d8pZ0/N2pmYYWL0hS3cj+T7x1Qno8FKMpGo1Eao=;
-        b=tms7xoz+BCbxqX8M2/Pa8cXbZ7HD99H/SON5F7RNo9K4yFh1FdVjIDpqrdspxYdfYU
-         JxnnlXlLFDGtq0mRjOmMJFLHh7AC5Su4UkTOqs7x0sDcOVD8ZaiqXm/IELgFTY8sYcMT
-         r86baNZPfkDrEzioXcmwGRLnyCem0g9SnB+cZ3kF/vlJYzf5DFqPhhDChvRX6MiCkUyj
-         qGLiXcnh0OsxnO+Pi6lOkfQ/dC4/RfAAHpYZZLTDe9BoX/EXe1wQvQ2mzMmPYT7gZM+T
-         3wBZEqYa1iqVigo88bTIj30UbLPIYjhpNQQ8jivUMN1lYFuOFBBA9U4WnE20P6s4lnr1
-         t5QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7dy8hp8XFRB4mzYHCsLmfgCG82QFKch4Vd1Ymq84INabaTbiqu8H9rfkaSDpbjfpDI9/RqG3OWA==@kvack.org
-X-Gm-Message-State: AOJu0YytaCvBQW5bKR2htq4mE1DSSKhBxglpL/kFDtOkImvaw4jIjv6A
-	ktLPCT0hoLfheNJo+PHKizZebEuf9iHhZ76yl3DJ/OcYGPOPfPBsaLT0bqrM2jsXhq7bwbloxBp
-	cZHAHBg==
-X-Received: from pgbcv6.prod.google.com ([2002:a05:6a02:4206:b0:c6e:2a5a:51cb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e347:b0:35f:b243:46cb
- with SMTP id adf61e73a8af0-3946c6df211mr12345864637.12.1771341330830; Tue, 17
- Feb 2026 07:15:30 -0800 (PST)
-Date: Tue, 17 Feb 2026 07:15:27 -0800
-In-Reply-To: <20260217014402.2554832-1-ackerleytng@google.com>
-Mime-Version: 1.0
-References: <20260214001535.435626-1-kartikey406@gmail.com> <20260217014402.2554832-1-ackerleytng@google.com>
-Message-ID: <aZSGD-EGSR3Z5Qyi@google.com>
-Subject: Re: [PATCH] KVM: selftests: Test MADV_COLLAPSE on GUEST_MEMFD
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: kartikey406@gmail.com, pbonzini@redhat.com, shuah@kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, vannapurve@google.com, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, 
-	i@maskray.me, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, shy828301@gmail.com, stable@vger.kernel.org, 
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ziy@nvidia.com
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam05
+        d=1e100.net; s=20230601; t=1771341751; x=1771946551;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nukXF9Xg4mYCFlks9WtY3qEg0ubGFjMU5OSmWanzog4=;
+        b=udvkXp9m7pX84Znb4IPVhBlYw3rq3DBRHaxuA+TmaYZ78SusBrtu6Tiued1dCAn+uL
+         HRelAv2NskY5udmWaoA+YsRCg7OECzwg9NVzQXM5dzkRHtf8JWizt+FXXCLOeBtnDfar
+         jxtGqZEdqBhflmZkw0MtErDSri0ax+XPuYYNxFkSiA4JCmlS9mINJzxT9yRHivdfPOtx
+         P9XWk2DdEZNkJed8DTrzKha+EVbuCDeBaSAIyRhPNGtRxzKcGfSsGTTIrJxuz6oEQLng
+         NwCa/PklPJjp5bDBok6um4RxCHtiQPJqZP9jhVVE/agHmcN0+0wU2BxATZgUVJkVpb36
+         qtKw==
+X-Forwarded-Encrypted: i=1; AJvYcCV89A6wyErk5wlcxeZ7JuqTSszjiuPo1OTgVR4UvJr8bymQ1kSV0rzvbHvzYu2s0y+4TWzAla+DHg==@kvack.org
+X-Gm-Message-State: AOJu0YzXbDnHoAc3COt5upo2ANUT/SOjJ+ELZZD1bcbCO37yvzBLhowU
+	TWzXqHdNVslef9Lz7J+554qJqzsk6pCOQTGGt0uAdtqD1YEcloqbFcyMjuIw7fgGJzi27I1cVvw
+	q0PqGBZOoFFXCmk0eBwOBsuCbh+jDGwY=
+X-Gm-Gg: AZuq6aJhVoF553j3zyNhjstbBSHu+5Mv3OOqYZdu+Ifap6E+BoVwYFmZTx1+489PTJx
+	QVL5ja1m7h7Bhd13vbj7nX8GHRa3Yp4gyXEtlfjBvlso2tcQn4ETJ+btwhseMBVuwOPPX3SSSmO
+	gxowKZOoOhpysFWSJjWVN22TYF3Q9tCtmbmPPzuwOY59yZoGxIyM0DE6dTARI+RZ2IHB64MWowv
+	Y+FeVi3rztjHwCHO45IJHHFOU87hqHQFPFe5nTaRRAGg1OvrP2hKQXHLjLPCIMKdT6/oGz1dlxy
+	0NsrIncDSO38DjZzEiI=
+X-Received: by 2002:a05:690c:398:b0:794:d388:6145 with SMTP id
+ 00721157ae682-797a0cab64bmr232116807b3.41.1771341751329; Tue, 17 Feb 2026
+ 07:22:31 -0800 (PST)
+MIME-Version: 1.0
+References: <20260214084514.2842745-1-haowenchao22@gmail.com>
+In-Reply-To: <20260214084514.2842745-1-haowenchao22@gmail.com>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Tue, 17 Feb 2026 23:22:20 +0800
+X-Gm-Features: AaiRm51UrRdXonh8mo_NHAl3qg9sqKL1Lf2RIBWfYZeAC77X0oR_CweZDnevJwM
+Message-ID: <CAOptpSP1zx1akeGkZEuPBx1Fk8uz8rs4_m5c55GwPUROmCGxKg@mail.gmail.com>
+Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous pages
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 75997140008
-X-Stat-Signature: 68wdbhddibs6zjuxxq8xy4wcsg8ukr9n
-X-HE-Tag: 1771341332-974998
-X-HE-Meta: U2FsdGVkX18twUmz2uDiR0fLAlNXHGjHHmVjgo8you0WI3Zmvrzg74ia+BT7mWV4ULjB4xI5zEBLGO5DjxaaieYYPFAivUC6uHbFx0oG33wRkcm/4y+tOb11gM6mEhtc5kcUB/6HCI0LjuymJ9cIShGgXDXvHU4Xn8EpyIEGeTGox/W8VnbmqtVPz3pFmj2iADZB6CbKANh9kj8yh19cgjLVLnZfoAFgbok2woug7HWQhkUiLXAGy3jsnkIEFIXMKEvT5m81x0m7cxgCJ6aYe2NE5lyndot//YncIH47ynxVAuL6X3ANkTD4rre4rymGM0T/09AEoCvAWGp8vIqm2z4JKx45GaE8AkvKCQbn0//wZTSf0EDSrnwY7Vla2YBp2STy0QtmOCcutvl/IXFk5B+htJpq0BWakxePEk5OzzjVgw67Yy0sWMAkIwAnn6SWoIO/+LCcPPI3Aflqm65UkUZwU6iB0CVwPy3cT8E3RG+jLHniveXkIpV2EyZckCuMcglNM6Qj/lIVt0xTBg60o/V4shNQE8Osh4eAmrxQusw9tQ5C8Ume02HoSGcPqAJIljj1uKimkgxKiPQzbHFKGtrMvMUPcQuHFrk6xSasFCM1egzAKjMRwW4z463cR+s/EG8/BC8sJelkyJ9Nfd9Ib5mGbRAaglgixoZdiRC6uDCrBSuNfpZwM+PON7WYb1PAd90UqgZh9/cqERGb62xUCX3CMw97eT0Tj3HxLReaT47cglEnE/q+CzLpcdV8L13VKE1IZEoIBfrizb43yAM/9duT1lblAIVX3P3LsYk0EHH7Z8fp1YpDkFx4XV02Fh/Cht7Eiifv/stC/b/tjYu1SIG+CHmrWTJrwhWGmPFsdzRT9xur7Kh0OyAJrJdlghgUTyUi7zGVRGYOBQrd14QdpQ+y1qd1pyQVJnHQ3Pj5Ggm+IXNW4zu+HqJlC4C9x9aijOUXf6gZWjHHkh4QriB
- XedYvguw
- dQzv3Al1YC+TPTxbGvnbUV+MOamRScgfTKy51JfWkDSFeQ0PJJ7paEQJWVV8arHcDamqOC0HX/X4tcfytRrJ8q3S4shm1JDOMZ/HltcY40faWome2m/ByoBMVhwDMZ7HVy7KtTEnUve+mijqhd/pChISlPKuW9dljaNq0+xQVm15diwhjujsDJL0K7aidrVsJTr2q+Kp32P7H1CrciPAg+H9+5hEUpbPB08FCT/cTv6hox1E+wz1gRbSv+eGO6MwrKgL1ks8dulCWwxDEuy5sIZ/mB9p8BD52q195/+YF3/GnqNLgdCEJ85dkYzDD3OIIEPlGNlkwlfYlnBpe4IHjPMYObUt+VdaJfeY2rzZ65TzhX10dKBe3e3aFIJDM3O+Z5PXNpVZ1DR9O/CjPl5qiLifQTw9p9wFDgG9+xP66n7VT1tbU9B70UJV/Su4rP9zPJfZ3vNbX1X00fTTjtfi+WCLlHPx3H8brIrzOa00yhXj76SqyAmG7q+/NQgozrIK/TjzHRRXNVNhzFrhXGpwWewzPJlGM8oExKin+vNKVN3w/xsodohvLqlO4utxR0XDv2p2rLn0z92W8pGz9ug2hsnI2abrtfpasmAA+XTb1WycsQW9zp8FPx4CKaB/66NNOBi6yjVBdqgMSdJ1F3YhleBgsVmOYHrxAo3y4nkN4vxu1GaiSVrZM6G1YRCy/cAZr15Gq7bRU8Y5Gk0mmgIm8OGQcaRqBVflRQDneCsFbbhhaZz2d/v2On1fmUt7jkwVV8PehouF0GTc6hNg4BaUYlLcCHkBIyfj0Z4Lwudv/RpUkdR+swzq4QP4vS+I3TNCwQFNy
+X-Stat-Signature: 16bwffs1nhtij5qhxen354ux978axt5j
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8B81A180012
+X-HE-Tag: 1771341752-970931
+X-HE-Meta: U2FsdGVkX1/no4aTKnnNKxm0BTy/+4JDkGDNfoO8RcsYteycT0xSlwyN3dQLljgZRgxEZZn0yWFBaJH3R5Rv+N4rVvYw3UTKKuUR1zTDEeTGnmoE69rCCNXAkxJ4lPYgKf5Ao8gWkkvmpimF1k00vOtqtQ+oehDYEsl+WoZyd8/F6ukxmxMwjRotOGxzpE2qEXF54OVVmpvylB4O7NfTovRJgYGvHdUctiF2xhkF0gyZds3GMnfVcCgw2oCtCMBGESeroTf9OE+yYdrRVb1pREc0kgT14VgDj2CJiCKgkChQA7ZQ6yQA39xFNQisOqDKtMJdxv7QJ8CObTEqBeW4/Xd+c7XLzbbT1VbdfALVXjYwSET7QFsx2CT2mRMBiDOqZiuRPGProFs/kPPxwn0NH6l6Tp7dZ9GEs0/P7y/4FVFWZaqt3MbTPebVzrK5gPrHQ3Y5kyx2tTzH/bEu1Yt018a0e5OfNcYA/VIMrB31PIQ0OUI1HpeG36ArQhv/+1zYzeNLUIORRNDAYxH12AgqAcwf/WPmbQNntYmIL0f7dWRO2/hjQvRh9/xjlp2IWEHrNiprbhmZdqgYiiTfqvlsrvkwC0QFlcEKzj1Sk01de4bE6hEFGsgDN7+mFzZHKzLw/ZcSGK8rB84vQUBZpD1ln+LGZflbO11hqzY0UmpSKDi1Ps/etAR9Z0ez9ynchdJxXEY8mphOjlO1Ck7Rt1kWeuXNOp/psu5cHpbsDceUlsFgFV3+8LjB0jqeJaxxMHupzJS1FfPwxs0tAfJ82tNCN02x+83LrP0B7WuQpxL3iNJEUEvHdSedGMm18V8eQcmV4GI6NnTOKNNoexDAXq55dBwhjOn9TFIWhkHxtIj5YpvJx0Rn1w44LLgR8hr7fi13rR1gXJBA5GdNAg/OW15KOUHnT60g0lBcqfPpJ/ZaGylNp9Sk90rX8QKNTlKwzVb5oEo+wdysIQySiPn5Yfx
+ ohhoEg7Y
+ JZrjj/aJP6A+s7wfnQZJBeESUc+CFDCKqeIGqB5pYosM7JlelC6nGoXB+x62ZSSLmIR1mSqe/ZcuSjDjtRoNnCdFIp57KI4KATrd6vymxQ1hPEWeVyUK/lasyTmWkkdEMrpQcMWBAxYWWrUU98O1LNXdCRngKiswsoIWbm6/gbPi6mw2/Icn3VJzG4GrerxMRXyFWephL9N+IJ/Xc6lmCqvh2sL41AjAGj+n5vtgHYNrYz4l8iKhykYmRzKGXpKISl5s7ZJNQNGwPd78WBWw3padvG1ICLe7m+cZzag0OHeYi+Nmm8SAFov3PwvE1XVtXNWWACsjEERDayIMuATiMdns+4Y2HrFL2Ch7SaDwxWC6qwJD8YyqSBkaeKjO3jBqfx7h4rDR6PpF59Z0JFIgU57MSMy5TOsLCVW+j9Ju1+H9t4MMd6M9I+ni6c2g4dmzUPr1T
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,155 +140,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026, Ackerley Tng wrote:
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-> index 618c937f3c90f..d16341a4a315d 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -171,6 +171,77 @@ static void test_numa_allocation(int fd, size_t total_size)
->  	kvm_munmap(mem, total_size);
->  }
->  
-> +static size_t getpmdsize(void)
+On Sat, Feb 14, 2026 at 4:45=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.com=
+> wrote:
+>
+> Add kernel command line option "count_zero_page" to track anonymous pages
+> have been allocated and mapped to userspace but zero-filled.
+>
+> This feature is mainly used to debug large folio mechanism, which
+> pre-allocates and map more pages than actually needed, leading to memory
+> waste from unaccessed pages.
+>
+> Export the result in /proc/pid/smaps as "AnonZero" field.
+>
+> Link: https://lore.kernel.org/linux-mm/20260210043456.2137482-1-haowencha=
+o22@gmail.com/
 
-This absolutely belongs in library/utility code.
+Sorry for the late reply. We are now on Chinese New Year holiday, so...
 
-> +{
-> +	const char *path = "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size";
-> +	static size_t pmd_size = -1;
-> +	FILE *fp;
-> +
-> +	if (pmd_size != -1)
-> +		return pmd_size;
-> +
-> +	fp = fopen(path, "r");
-> +	TEST_ASSERT(fp, "Couldn't open %s to read PMD size.", path);
+The original goal of this patch is to measure memory waste from anonymous
+THPs - pages pre-allocated on fault but never accessed.
 
-This will likely assert on a kernel without THP support.
+On memory-sensitive devices like mobile phones, this helps us make better
+decisions about when and how to enable THP. I think this is useful for
+guiding THP policies, even as a debugging feature.
 
-> +	TEST_ASSERT_EQ(fscanf(fp, "%lu", &pmd_size), 1);
-> +
-> +	TEST_ASSERT_EQ(fclose(fp), 0);
+Let me summarize the discussion so far:
+- Matthew Wilcox questioned the value and raised concerns fork but haven't
+  exec path
+- Michal Hocko criticized the inefficiency of scanning zero-filled pages.
+- Kiryl Shutsemau prefers a system-call-based interface.
+- David Hildenbrand acknowledged the value and suggested implementation
+  improvements.
+Please correct me if I missed or misrepresented anything.
 
-Please try to extend tools/testing/selftests/kvm/include/kvm_syscalls.h.
+I suggest we first agree whether this functionality is useful for upstream,
+before discussing implementation details.
 
-> +
-> +	return pmd_size;
-> +}
-> +
-> +static void test_collapse(struct kvm_vm *vm, uint64_t flags)
-> +{
-> +	const size_t pmd_size = getpmdsize();
-> +	char *mem;
-> +	off_t i;
-> +	int fd;
-> +
-> +	fd = vm_create_guest_memfd(vm, pmd_size * 2,
-> +				   GUEST_MEMFD_FLAG_MMAP |
-> +				   GUEST_MEMFD_FLAG_INIT_SHARED);
-> +
-> +	/*
-> +	 * Use aligned address so that MADV_COLLAPSE will not be
-> +	 * filtered out early in the collapsing routine.
+Reasons why this should go upstream from me:
 
-Please elaborate, the value below is way more magical than just being aligned.
+- Anonymous THP can introduce real memory waste, but we currently have no
+  good way to measure it.
+- With accurate metrics, we can make better THP policy: disable for
+  low-utilization cases, or early-unmap to relieve memory pressure and so
+  on. This is especially valuable for mobile/embedded devices.
 
-> +	 */
-> +#define ALIGNED_ADDRESS ((void *)0x4000000000UL)
+Possible implementations:
 
-Use a "const void *" instead of #define inside a function.  And use one of the
-appropriate size macros, e.g.
+1. A new smaps counter (default-off) to count zero-filled pages.
+2. A new madvise command like MADV_GET_ZEROPAGE
+3. A dedicated system call
 
-	const void *ALIGNED_ADDRESS = (void *)(SZ_1G * <some magic value>);
+I welcome feedback on whether this is useful, and any better approaches.
 
-But why hardcode a virtual address in the first place?  If you a specific
-alignment, just allocate enough virtual memory to be able to meet those alignment
-requirements.
-
-> +	mem = mmap(ALIGNED_ADDRESS, pmd_size, PROT_READ | PROT_WRITE,
-> +		   MAP_FIXED | MAP_SHARED, fd, 0);
-> +	TEST_ASSERT_EQ(mem, ALIGNED_ADDRESS);
-> +
-> +	/*
-> +	 * Use reads to populate page table to avoid setting dirty
-> +	 * flag on page.
-> +	 */
-> +	for (i = 0; i < pmd_size; i += getpagesize())
-> +		READ_ONCE(mem[i]);
-> +
-> +	/*
-> +	 * Advising the use of huge pages in guest_memfd should be
-> +	 * fine...
-> +	 */
-> +	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_HUGEPAGE), 0);
-> +
-> +	/*
-> +	 * ... but collapsing folios must not be supported to avoid
-> +	 * mapping beyond shared ranges into host userspace page
-> +	 * tables.
-> +	 */
-> +	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -1);
-> +	TEST_ASSERT_EQ(errno, EINVAL);
-> +
-> +	/*
-> +	 * Removing from host page tables and re-faulting should be
-> +	 * fine; should not end up faulting in a collapsed/huge folio.
-> +	 */
-> +	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_DONTNEED), 0);
-> +	READ_ONCE(mem[0]);
-> +
-> +	kvm_munmap(mem, pmd_size);
-> +	kvm_close(fd);
-> +}
-> +
->  static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
->  {
->  	const char val = 0xaa;
-> @@ -370,6 +441,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
->  			gmem_test(mmap_supported, vm, flags);
->  			gmem_test(fault_overflow, vm, flags);
->  			gmem_test(numa_allocation, vm, flags);
-> +			test_collapse(vm, flags);
-
-Why diverge from everything else?  Yeah, the size is different, but that's easy
-enough to handle.  And presumably the THP query needs to be able to fail gracefully,
-so something like this?
-
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 618c937f3c90..e942adae1f59 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -350,14 +350,28 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
-        }
- }
- 
--#define gmem_test(__test, __vm, __flags)                               \
-+#define __gmem_test(__test, __vm, __flags, __size)                     \
- do {                                                                   \
--       int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);   \
-+       int fd = vm_create_guest_memfd(__vm, __size, __flags);          \
-                                                                        \
--       test_##__test(fd, page_size * 4);                               \
-+       test_##__test(fd, __size);                                      \
-        close(fd);                                                      \
- } while (0)
- 
-+#define gmem_test(__test, __vm, __flags)                               \
-+       __gmem_test(__test, __vm, __flags, page_size * 4)
-+
-+#define gmem_test_huge_pmd(__test, __vm, __flags)                      \
-+do {                                                                   \
-+       size_t pmd_size = kvm_get_thp_pmd_size();                       \
-+                                                                       \
-+       if (!pmd_size)                                                  \
-+               break;                                                  \
-+                                                                       \
-+       __gmem_test(__test, __vm, __flags, pmd_size * 2);               \
-+} while (0)
-+
-+
- static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- {
-        test_create_guest_memfd_multiple(vm);
-
+Thank you.
 
