@@ -4,111 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C74DE6816B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 11:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC8FE68172
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:03:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 756206B0005; Tue, 17 Feb 2026 06:51:25 -0500 (EST)
+	id A2F646B0005; Tue, 17 Feb 2026 07:03:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 703516B0089; Tue, 17 Feb 2026 06:51:25 -0500 (EST)
+	id 9C6526B0089; Tue, 17 Feb 2026 07:03:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 602EF6B008A; Tue, 17 Feb 2026 06:51:25 -0500 (EST)
+	id 8D56C6B008A; Tue, 17 Feb 2026 07:03:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D72C6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 06:51:25 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6DD11B2E5B
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:51:24 +0000 (UTC)
-X-FDA: 84453783288.23.3FB976B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 776496B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:03:05 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F166A1BE7D
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:03:04 +0000 (UTC)
+X-FDA: 84453812688.06.ECEEAB1
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E5587140004
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:51:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oahT2L8x;
-	spf=pass (imf26.hostedemail.com: domain of 3OFaUaQkKCIknyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3OFaUaQkKCIknyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1B7EB40002
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:03:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0GiHci2b;
+	spf=pass (imf01.hostedemail.com: domain of 39ViUaQkKCEwozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=39ViUaQkKCEwozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771329083;
+	s=arc-20220608; t=1771329783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BJZSAw1OS3HkHNvztNaVejaKs19d/dpxzj4ZsznN3tA=;
-	b=PTpOW4oErP1UCBWfneevh30Gf1lD86ni2hioGGq/cGAzwrYAdOWVcFXlgWHdywwWmp1Upd
-	JHcUj/9t0SiUGf63NM5cz2gtSkp+IgKZTpCTD7vMkUCwC6EA9qS7t7cd/qhIXZMThmaIfX
-	paZbwZBDZFB+LCvzqHnFwLZ0CONFHEE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771329083; a=rsa-sha256;
-	cv=none;
-	b=NwR5FiBsgXbsZ8HIDeYz8sXnoB7hr3pXs/o0+9JZh5B/UT2aGF2yskKUmOaeYP0XH3wUSB
-	bvQJ30htePhX1X9LOnW73uwO9PVaTmq7KMbKiiXKQUOR1Isp5LkkJfNYCy0sK1k72vKQ7e
-	OkTLMSA7SpgPs9X2GaE7ktq0dOn4mIU=
+	bh=cSYPA86nwp+xl2HbEhm6RzJ3nbGdQs2CfGN2qiozLlw=;
+	b=G8u4ddq9b+nRNXQILExyhiz7ooYFC90fq1gu76UCbettecLI9etFeuH9PH/G0sXiUP0DSc
+	9fE0YhslFZNe4diEH0gTipCuW/+ka1K88YZNPJdJv8H9l3R6e0Mq2Eg+PqPSHUbrerWT62
+	chN4IKGYVgJCg2+QuVgcCMn8SDZBhLQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oahT2L8x;
-	spf=pass (imf26.hostedemail.com: domain of 3OFaUaQkKCIknyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3OFaUaQkKCIknyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0GiHci2b;
+	spf=pass (imf01.hostedemail.com: domain of 39ViUaQkKCEwozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=39ViUaQkKCEwozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836fbfa35cso25297985e9.1
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 03:51:22 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771329783; a=rsa-sha256;
+	cv=none;
+	b=7pA0liU3lK7YKDbXo1RPHrNMGGEV+psDyKTa7Hk9VdRGpgeGzv8hLoKOFUjngPezie6HcA
+	oxhuwokCBoP/P5z29Ch6hgHKh2iaXvPAbgg5y1IQ4Qs+WdWiiTWwW7L37lwGXK8Ly9C20Y
+	fcxBzGo1Dn3xeR12+HKKllF40zfeR6Y=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836fbfa35cso25382825e9.1
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 04:03:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771329081; x=1771933881; darn=kvack.org;
+        d=google.com; s=20230601; t=1771329781; x=1771934581; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJZSAw1OS3HkHNvztNaVejaKs19d/dpxzj4ZsznN3tA=;
-        b=oahT2L8xKyL+o6tAfRYXvbFoOfa70PUMXy4Ffb8xbai+KWtgWH7R3oY1+7dBeJPvtK
-         VFLfZJfbRQt+R66b+ZOtYOYI7JGRjYrFbaeoFoPPzOHg99Qnlm7npUGf47/YFxA/PIX2
-         Wo2+Zc0tPsmyx74+0MovtepxukwH+Ubb7TwqLhf2n6F7ocy3B3JKuziAkm0hNSAzMNY7
-         2/8dvcETF/Kvn4E/c2ra3Qi4I9GVqdrgZOyJ2pXy3f/1JcpRAWVaVBD43V0K0z5EZjNo
-         QP8j1g/oINkOyavDcWFSckdl2sQarkGbojkJnKEC8uTp9kcb4ijMCywKUOxxfejg7pW5
-         YWzA==
+        bh=cSYPA86nwp+xl2HbEhm6RzJ3nbGdQs2CfGN2qiozLlw=;
+        b=0GiHci2bn7VznSWtfjcOCMnbD2vpXqj6QsSnCVQni6uhzLRDPABIeWE8QB/vjbtveW
+         QJMBI+BRzq4DrMr/1jKSjzvRDJlt7b24QcFvLgHt0In+Q43QlL+4v5Qbvgk2UDquMeKF
+         IBDQMg2wL6GeQjt1coCMAlZBwUDuhG8U40DZKywKXC5x+gLm2wc7tGhV/Wl1QamXB4vZ
+         Ca8vpU9cuJp/C78nZO1HM4QV7HDlUcK7x3O764fR7+Scrxt95YEf4GtFjrc2lfcqpIpP
+         CRQRAX1qWRtm9o4UWn4nWlw6Ql5vpC/pB8q2PvQOspXIJdrj1vh6T7BuqG2ZH0/vvDNx
+         0cig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771329081; x=1771933881;
+        d=1e100.net; s=20230601; t=1771329781; x=1771934581;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJZSAw1OS3HkHNvztNaVejaKs19d/dpxzj4ZsznN3tA=;
-        b=e6iJwRfrR58sHL2R4LBLoo/2omnsgdpk11rTpl6aSgpxewQg8ZnBVtWHRds7DR1frI
-         EauLRwjPnd3MVHThvXs2gLzEGHsn8VcZyEeVZt2CxrZIJ8E2dkOc9OoHBElkx/eMlo3H
-         jbHUSrnj0qlmeEVZd4kATufO6RXBiBrhIZjiK8yPQLyV7QjaD71x7VFq6jX4EkxachDo
-         aMxIyjMOQpvZwf8xatEXcBdhEf0YqetsrIFj4oqVEGmHLS1M3kafrZ+gmk6P/lGmcI3/
-         pmPj81KkGwgMw30x8jlGu0iWCyBiQZz5VhUMT1FyOLQ7dlJxIw4CJzhgdTnTdu0exNLj
-         +chg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5+bTE5ZyumHuByrdam0xz8VYX/KRXxWbfDqUJtyGc9qKH6NGkIbaIlXlhAbVe58kxVm+rDv7m9g==@kvack.org
-X-Gm-Message-State: AOJu0Yx30tx4lZQ0M/OydUjhISDSsvRzIkw7jgYK1JDpBKpgTFLiQDP5
-	Vs7dZRQbOZtJz64IOBlv4DXEq9dIQoDX4AKbrr4IsQqomftM9jkgSaxC2XtAO6TQ2+lcLmtiU8c
-	+eyEJd+QCb/tuoey7Sw==
-X-Received: from wmte24.prod.google.com ([2002:a05:600c:8b38:b0:480:6c54:bb0a])
+        bh=cSYPA86nwp+xl2HbEhm6RzJ3nbGdQs2CfGN2qiozLlw=;
+        b=LOxc6vDjkIoX5NnuqCsBACtQNkgYplloRt3bnOauCWxUBqCRjlYpX6ClINmB1f1B6l
+         PL2RHPqVtf2RbytO7riqLZnW6fDNffPcUXhkW5DdNXiu/n3Levuwen2fucnv7R42kdMj
+         /s74Nloa0HKkcTSB+VIkzuJeXySWL3wSUBp9bw70c6yppQ93FFreJUK9q+KKvHExOKjh
+         /cXVjw1Mds5pAHlwpOV1OI9D8b+XN1pygsqsbT/CffUXuUQ8xLj00nBFOnbRWju9Oxq1
+         2fldQ98h0o1/onQmyzFuaG2dUvNlFC0S2lawy3tkwA6P2c4pb/kuS+OHu1h1/eOSx1Ju
+         5h8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWOzn+i5kQuWKxe79pRve0AsFzmKlcPORnu9+CplnowPqnVyVb9644UHDdamlEXZUUtmIGx95KnjA==@kvack.org
+X-Gm-Message-State: AOJu0YyeEaJu81RzpM3z0+4rvewagunbMj6pBkL/cRVHLz8iCfTPwX0z
+	Zq0CzTKf7Gbhgcrct4qGQF9H0XzPwuEkixnmiabtb5ZQunOOHOVRSPzg1vU/fMw3v4XdzSWRgka
+	2xl/p+qErvFQUogdIUw==
+X-Received: from wmdd14.prod.google.com ([2002:a05:600c:a20e:b0:477:5a4b:d57f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4688:b0:483:703e:4ad5 with SMTP id 5b1f17b1804b1-48373a37af9mr213342565e9.22.1771329080922;
- Tue, 17 Feb 2026 03:51:20 -0800 (PST)
-Date: Tue, 17 Feb 2026 11:51:20 +0000
-In-Reply-To: <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+ 2002:a05:600c:3e8e:b0:483:6f82:9719 with SMTP id 5b1f17b1804b1-483739fc775mr180697485e9.2.1771329781211;
+ Tue, 17 Feb 2026 04:03:01 -0800 (PST)
+Date: Tue, 17 Feb 2026 12:03:00 +0000
+In-Reply-To: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
 Mime-Version: 1.0
-References: <aY9HD7nH5A-DtgmR@tardis.local> <2026021326-stark-coastline-c5bc@gregkh>
- <aY9PBfx3RRV7rXZ5@tardis.local> <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com> <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com> <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com> <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
-Message-ID: <aZRWOIPThLfIZ1Ph@google.com>
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+Message-ID: <aZRY9HthKwVJrAf1@google.com>
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
 From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ew6qtso1ndoqmrz36z4qkk47qhi8f1us
-X-Rspamd-Queue-Id: E5587140004
 X-Rspam-User: 
-X-HE-Tag: 1771329082-151113
-X-HE-Meta: U2FsdGVkX19jMEt+Jr7f3tJSgzW6Tjwb4SifbJpibXocOZAUuhVnPG82gFcZ8vLP9VNFz0jQXwPmL0Gvzl0NqQXLCYD/8j7Scjfywe3NVGB1BJeCt/O8FxP357MV/2Km43V9Z/njyz9qeSef45dNsMOZyAK2p1Jn3ERY3SUPQ/7gp65h6kVbs5sPp0XOz4Xlc6jR+T3SfTjypS6bsSMTNmr1OlDEbBvXRKI5idI7fz+vvULuAXopBKNPBo/R2JdakC3AxIT7oBE+0tXlG5Dv/b9VZ9ElMnn0Qvxm8fsMk2LmbHmCC/r7yW2n7DYHcq2bDwN5MX/oNQ8auUHEiR1f1M3eeat1UV4KYQ0s033JtCtounIVPvLbxebAbr4vpm1SOKlHKDX1u4pcy66P1t30c87qb7FMMqjzfAw+SnBMKSxogCGlBOxedGJFCet5DCZgQLnOY8ZduigHEQ53EQMYdOWCc8V4kH01HoRcVZt5ukuhyUhIA5qh6b+GeTx5LQiBS+ahd4kQw+DEzG1jPzugE9ExSjbcp0NCoTSEN5ic2f8+tqBW+qbfXqNoKw2w1lnppxUEwUCyLxORPTJaILFnnR8lwZFgkjyEE4tn464bW+NYoRby0fGTgmNCbVerwUv5Bg5hpEfh67fjFBbk8hMi1KdFSwQwtEULYiJuQClwzxHwc8nVEFEqpBaFSdnuTUrIKjoygrOaZondCQ6IZTVY4Squol1gHsOUiMexeohFUkULuZP9P5YosvoamDe5/9DrSGlkYocueD0rbB3Wy2ttgg+GSejEWCNfXuheS/fQKWhu9PwP4Gkw7xT21XFLHhB9tOY2okD+RVsHaqPXJs92/nM+gpLTYMpANFE5M9S69UD0CUttqPfNn0fXnG1f16cqZhY7XewjkkBurTtQVN/2JjVnGeVPs6QflTymrPMfHUMvlRfN0pEWLuX3h1uOz7GSCxwjCYMOujeEFgGnHmK
- +CpjdTgd
- TKtt/z4+hJ9oybCCHpJQ505GufonDGJR+R/XHOiQ3ryKszlaGGyiAT8C+4jlNuw1C8/6NhNx7ay8SJJipoof7XEDQ3zG8cuSL00p/KMPQm4QD2nVQrth+VgCthEqevDRpgDOGR4fuvnN5P+BFQ8fvSY59aX+jFd1yXlOvWE1WYc4fm3W7t6nPUcGa9+z0CaRXnERKiwf/0yc4FZ8ZJocDvGF0x8e/+g8M4Uy7nt9gzHVgivjcXz7cgZTaarOFWCv0SWvaEEKXMSeNKluPhigUbSUYuaauVId1IsqgAax2tGlTzuQIky0zTmKxaIY3XmIsY3XZ+9ihhON45pHlqj7CLTddjPPzAptOTS0J15GLSkd/GeExzyIxFivDbPbKikSyZ/9CGQaoF7zgYYq6rtr1s/sfmzDvZWQCWfM0eXNmThXfQz2BQLrZtHZymzgYQiF9Xw6Djhw5EwB/zZ0UZpjF6MemDeGQKyeHU+LnfL8Y076uksoth1vv4a9IdkEYNELPnLKkjhML+oG4bq35fRwZ8M/KqYIEMZRWZpDlCjTrv25ciOIHuZ9gQqPncpBeZdHRcqJ2UScYLS61fbh2Yu7LwgPb+UTTi+c5VqXFFbOcrllqBRUgcNfoply1PGxOhWwA1kPxEMIridD9/RInNYNgXinstSPs2D7rOuqmQCdNhmRoMwk9oF8C6MGNaA==
+X-Rspamd-Queue-Id: 1B7EB40002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: oyfxs6j435mopne4gu89qxthycnijd1j
+X-HE-Tag: 1771329782-384463
+X-HE-Meta: U2FsdGVkX1+Ub7Q+pR9CiutB6NLQGug9+48FHgG9zBlhmdjIFJ35KGSVM6AHgPVVRV9J2uSxgL8so+nHDoMQ+kczwTwLWYjZbFRyyamHgDjGX9EeSXppcJjYsiP1PwiJN+TI71toxj3UMds1aX83LcUqv9HD7SqhcTh2qbAw/NLrHuwO9StjlyNdt5flyJr7V4WQMDYya27YqZzV/e4QxaXw1OHBXb42XNVF6FmKljWVlunRCkILlfognDHJSfnbMAIoYpQVyrz4APLvlQWg6IJKo5lBWO7nazEvkZT0o+i3B0j9qXQyfVlvdJh1AORb3ZEZNhCFt9cIfVpNfQW4HMQz6Ymv0vzHCflDD1mlVEHS0oiG/kEL7aU14Gvwv15AlSKZ04ZG02oroS+oxAqZmWumekOvT8vxWDbux/m8hI2BxzaXgjaIxxrWSOLWULsVjFeGR8XypNf1ACMhefArl/Xd7FtoH+OXsAa6pmAlEqfylAVPI8FqAtaeLx2xbYZbd8POEw8eYnfMTAfWHPS/ADxmBaXOisIdwR3y2OG48ChBdY/u7xrDFeeux8dZzEIn+K0lche0IMhZlnnjEuTJuoV7oBv66LtTRQ/zLTukMwA7rBtuhSNw+RJQg2a6Pj7IqXD/LZY4Wmyz4qfJIjKQMEPd/pKb4iiqsbZMXuzR7fdM4Sbx72SeJV3L29U/jUarsNoVMmGXw17V46v/hSTuwxXi2P+kwL31B3ZG4ezKH68lt/IcicJ7i3RfSZhbdSPqvWN464SaXqEqEveW5FySANmL/nKWAKan9dbwBOVcnVOB4nq1PmESYnadg8Uj3znGLQ9ivpIDjT1V/iavHKf+AcIq8wnYykUWwJ1YzPj3HiAL9AGXyeFjd7tnTJIZ6D4FrCVjchJcTf2WjUKocxe2IcnHdYYXbQIFdauqteqT76Reqzad7KQLwGn4rBWvnhb3rndif3jinLyaKbHzLzp
+ 8Eh7pIS+
+ QcvHp28YoU3x/boAGZu5e9fBKa6YqTc3K5jooYDrxx4IHHzJvx10LLZIcleQPFPTVKNwmqSwq8Z2ZmQ97q5JXzp16fyycYi6QGAFIQKh3Cy2zniKCtMUUKp2KaFtIRZQlLOm60/RDAC96uaXRfEF97cLvaJh8i6KzBsNH/9vuDl704cwjIyVMG3+YMeLA5vZcynw+MECN4g1hPA1IB7VzfsS9vaRzy0i1MnlYTo0pYNTmb5L7eCPuqF9cXQvw/BiYgkVanFdt/SWB/XnAtpNzF6hIuW9zPpO5ZQtZblvifTRctDVUm2Iz+GmqujNuhfHg5jIB39B6ooG+/chAUHgk7DO1nK6sTXxqv8BFrs2qlCE1DE/cRTTz2xSV3lgBa4496vVIs7RQfdwsZCOzT0sNuaTii6MHiB3wuub30TU9rq4Yd7zUSNWVwQO5RCR7oSYJGtdotMbqR38CaOe5ZeW7lDiOrndyaF2XZVlka6xW26Qwl5rbITqKBSh+PTiNK9j75gKVFwsRQZ5AFwPuDevVZmcFB5IJAg7FUC6Xw2IcXsIrUhsEIQOuadLLLW6P0VHLGTz1r/CfSM81KsqJBg5kJuTTS7h+HmrUY3yD4lhStgpVrMfLsTyrzWsO3FyKnvo+3Zd+oYN1KBjyHiF+dUo/7adn6vhW4rnZMNRiLz3IH6Gm7lHv8LfGtzSPjq2leggnSNCTud6KRNkz6a4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,128 +111,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 12:09:11PM +0100, Peter Zijlstra wrote:
-> On Tue, Feb 17, 2026 at 10:47:03AM +0000, Alice Ryhl wrote:
-> > > > 	// OK!
-> > > > 	unsigned long *a, b;
-> > > > 	b = READ_ONCE(a);
-> > > > 	if is_valid(b) {
-> > > > 	    // do stuff
-> > > > 	}
-> > > > 
-> > > > Now consider the following code:
-> > > > 
-> > > > 	// Is this ok?
-> > > > 	unsigned long *a, b;
-> > > > 	memcpy(a, &b, sizeof(unsigned long));
-> > > > 	if is_valid(b) {
-> > > > 	    // do stuff
-> > > > 	}
-> > > 
-> > > Why the hell would you want to write that? But sure. I think similar but
-> > > less weird example would be with structures, where value copies end up
-> > > being similar to memcpy.
-> > 
-> > I mean sure, let's say that it was a structure or whatever instead of a
-> > long. The point is that the general pattern of memcpy, then checking the
-> > bytes you copied, then use the bytes you copied, is potentially
-> > susceptible to this exacty optimization.
+On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> When copying data from buffers that are mapped to user space, it is
+> impossible to guarantee absence of concurrent memory operations on those
+> buffers. Copying data to/from `Page` from/to these buffers would be
+> undefined behavior if no special considerations are made.
 > 
-> > > And in that case, you can still use volatile and compiler must not do
-> > > silly.
-> > 
-> > What you mean by "volatile" here is the same as what this patch means
-> > when it says "per-byte atomic". If you agree that a "volatile memcpy"
-> > would be a good idea to use in this scenario, then it sounds like you
-> > agree with the patch except for its naming / terminology.
+> Add methods on `Page` to read and write the contents using byte-wise atomic
+> operations.
 > 
->   struct foo {
->     int a, b;
->   };
+> Also improve clarity by specifying additional requirements on
+> `read_raw`/`write_raw` methods regarding concurrent operations on involved
+> buffers.
 > 
->   struct foo *ptr, val;
-> 
->   val = *(volatile struct foo *)ptr;
-> 
-> why would we need a an explicit new memcpy for this?
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-In my experience with dealing with `struct page` that is mapped into a
-vma, you need memcpy because the struct might be split across two
-different pages in the vma. The pages are adjacent in userspace's
-address space, but not necessarily adjacent from the kernel's POV.
+> +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
+> +///
+> +/// This copy operation is volatile.
+> +///
+> +/// # Safety
+> +///
+> +/// Callers must ensure that:
+> +///
+> +/// - `src` is valid for reads for `len` bytes for the duration of the call.
+> +/// - `dst` is valid for writes for `len` bytes for the duration of the call.
+> +/// - For the duration of the call, other accesses to the areas described by `src`, `dst` and `len`,
+> +///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
+> +///   function. Note that if all other accesses are atomic, then this safety requirement is
+> +///   trivially fulfilled.
+> +///
+> +/// [`LKMM`]: srctree/tools/memory-model
+> +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
+> +    // SAFETY: By the safety requirements of this function, the following operation will not:
+> +    //  - Trap.
+> +    //  - Invalidate any reference invariants.
+> +    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
+> +    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
+> +    //    atomic semantics.
+> +    unsafe {
+> +        bindings::memcpy(
+> +            dst.cast::<kernel::ffi::c_void>(),
+> +            src.cast::<kernel::ffi::c_void>(),
+> +            len,
 
-So you might end up with something that looks like this:
+Are we sure that LLVM will not say "memcpy is a special function name, I
+know what it means" and optimize this like a non-atomic memcpy?
 
-struct foo val;
-void *ptr1 = kmap_local_page(p1);
-void *ptr2 = kmap_local_page(p2);
-memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
-memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
-kunmap_local(ptr2);
-kunmap_local(ptr1);
+I think we should consider using the
 
-if (is_valid(&val)) {
-    // use val
-}
+	std::intrinsics::volatile_copy_nonoverlapping_memory
 
-This exact thing happens in Binder. It has to be a memcpy.
-
-> > > So I'm still not exactly sure why this is a problem all of a sudden?
-> > 
-> > I mean, this is for `struct page` specifically. If you have the struct
-> > page for a page that might also be mapped into a userspace vma, then the
-> > way to perform a "copy_from_user" operation is to:
-> > 
-> > 1. kmap_local_page()
-> > 2. memcpy()
-> > 3. kunmap_local()
-> > 
-> > Correct me if I'm wrong, but my understanding is that on 64-bit systems,
-> > kmap/kunmap are usually complete no-ops since you have enough address
-> > space to simply map all pages into the kernel's address space. Not even
-> > a barrier - just a `static inline` with an empty body.
-> 
-> That is all correct -- however that cannot be all you do.
-> 
-> Any shared memory will involved memory barriers of a sort. You cannot
-> just memcpy() and think you're done.
-> 
-> So yeah, on x86_64 those 1,2,3 are insufficient to inhibit the re-load,
-> but nobody should ever just do 1,2,3 and think job-done. There must
-> always be more.
-> 
-> If it is a ring-buffer like thing, you get:
-> 
->          *   if (LOAD ->data_tail) {            LOAD ->data_head
->          *                      (A)             smp_rmb()       (C)
->          *      STORE $data                     LOAD $data
->          *      smp_wmb()       (B)             smp_mb()        (D)
->          *      STORE ->data_head               STORE ->data_tail
->          *   }
-> 
-> if it is a seqlock like thing you get that.
-> 
-> If it is DMA, you need dma fences.
-> 
-> And the moment you use any of that, the re-load goes out the window.
-
-I don't know how Andreas is using this, but the usage pattern I'm
-familiar with for `struct page` from my work on Binder is this one:
-
-1. memcpy into the page
-2. return from ioctl
-3. userspace reads from vma
-
-or
-
-1. userspace writes to vma
-2. call ioctl
-3. kernel reads from page
-
-which needs no barriers whatsoever. There is nothing to prevent this
-kind of optimization in this kind of code, so an evil userspace could
-trigger TOCTOU bugs in the kernel that are not present in the source
-code if the code was optimized like I described.
+intrinsic until Rust stabilizes a built-in atomic per-byte memcpy. Yes I
+know the intrinsic is unstable, but we should at least ask the Rust
+folks about it. They are plausibly ok with this particular usage.
 
 Alice
 
