@@ -4,86 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121C8E68169
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:38:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3F2AE6816A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:47:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FA6D6B0005; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
+	id E80636B0005; Tue, 17 Feb 2026 05:47:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BA9C6B0089; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
+	id E2E2A6B0089; Tue, 17 Feb 2026 05:47:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DDFB6B008A; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
+	id D39AF6B008A; Tue, 17 Feb 2026 05:47:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B1F76B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA8155E282
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:38:37 +0000 (UTC)
-X-FDA: 84453599874.25.EF97827
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4E6D9A0009
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:38:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=etlqVu25;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C02DC6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:47:08 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4122913AE88
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:47:08 +0000 (UTC)
+X-FDA: 84453621336.19.CB39E6C
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 67E1340008
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:47:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QB1jRoMg;
+	spf=pass (imf04.hostedemail.com: domain of 3KEeUaQkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3KEeUaQkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771324716;
+	s=arc-20220608; t=1771325226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mnf+wPLbEF1lHCNDnDZBiFjIcPRcx+LUUY9aUKEUsG8=;
-	b=yiU65H7hIH28szlsvGpA/XefLtQAMExwE74eBOLtSGdif51+YpEpNaib28ESkqoYa4stNx
-	wfxHzPANlvuye7jkqZC1oGJmSAesbpLbFdcLYyHbiVokEb3rZ8GStWY/iEryQTEqmDo/5a
-	Kd0thjf+1Kbn1RnWLf106IJB2Z2mlIU=
+	bh=r0hJHRJh2R9794qv5CCWWuTbVzrBfeQJNewapWgpa6c=;
+	b=ICkJOt8Vp4vaqRn/FbOZAe9e8NnWfa48YSMBVm67Wi5+RE8kUZ6SknbR5M4rErKnQNyMNT
+	A9dTuIA7T035NqAI3by7m8vbWYGqmDXNZzPrKIVBERbOq0LoznHczrJQIK1vsJQayQwzSe
+	X+nr4YQWhKdYHxSMdFpLGnU+RhBvNco=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=etlqVu25;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771324716; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QB1jRoMg;
+	spf=pass (imf04.hostedemail.com: domain of 3KEeUaQkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3KEeUaQkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771325226; a=rsa-sha256;
 	cv=none;
-	b=vIdpaWbvtzRyGQWUcdbR8icDBbZQ2C0Lk8Nu39V4Vjsqrw9gbI06QR1cnxH6uPkbfFxpa5
-	lV4hX7zvJpFW0y00glrTn+2R+jeRWAut/ndHLvpNd2Esz0dutQ2kf0gmkwzs4D7TQvKFc0
-	+pV+dTRwGgjXYtE1uub3dxANZZSo10w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 602B043874;
-	Tue, 17 Feb 2026 10:38:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219F4C4CEF7;
-	Tue, 17 Feb 2026 10:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771324715;
-	bh=b2lTnIYAJLe4yjFgG5uGsPClpzLp2piqy3H57BEyaeg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=etlqVu25p6py4s3tgHqvehmXJbfHWLUXTQWu0l9id4rxKG/XT4IgBB9XOKGaR1a54
-	 +tisrA7K1cEDtHb2Ed8tS2hq0v8BWH+13+povr+tFlJk11W4GcP9DLIZlS6eKDz1in
-	 8Erai/K06fq2WP1QyEX/gvPbC8F4EMkpz7IUzEdkOTTEnE6tbjPeU6jN54kY0h3gh/
-	 269C8HU/qj1EhQxyhu0aii4c9vMjmsiBwX1aRaaz47KVSqyXDoX/na7vzHNMJQ2T7E
-	 sEGttv7qmqoNfflsNpxZMkGZF5+O7nVfl81Q1opdCBKGTrK5lHKXCnklWKytGDKH4e
-	 +1WPBbVupE0oQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v2] liveupdate: luo_file: remember retrieve() status
-In-Reply-To: <20260216134408.12dc6f88f7139054f9e34637@linux-foundation.org>
-	(Andrew Morton's message of "Mon, 16 Feb 2026 13:44:08 -0800")
-References: <20260216132221.987987-1-pratyush@kernel.org>
-	<20260216134408.12dc6f88f7139054f9e34637@linux-foundation.org>
-Date: Tue, 17 Feb 2026 11:38:32 +0100
-Message-ID: <2vxz342zzmc7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam11
-X-Stat-Signature: oormc4ku16oc5di4b8a9ppqpfkuow7t1
+	b=plytlRMeXEnaz9Buj4b2vLpI/EsQEfcjPevjLKIOJVM3Oca5qvJ74urlBr/Y3uKyX1FuVR
+	jB5POmfjq0RhtmRnliiVsiGjHrT4Ml1iK+lUJFjxVjw+0i+QNlimAq/j9LSDl3CQ3Q4YYY
+	WTIxbAPfXeO5+tppNEz9a/5Oj4NtBg4=
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-65c1c72ecffso1654878a12.3
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 02:47:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771325225; x=1771930025; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r0hJHRJh2R9794qv5CCWWuTbVzrBfeQJNewapWgpa6c=;
+        b=QB1jRoMgyaetL+xz2qdMA0sn98I4KOtlzeuYzdhznz+488rmhNdCQANDl9jyaRUJSU
+         hURk68ZmC6q7tVxWST79jq7VPAU3kOze5EN5OkXeMuuv2PPhJI0OVH0oE45REv3BgwmC
+         Y50iY2D4qvKozk8N6Kaa3P0ytQGl86PXOkmg83fFpHyJjdEWuGisiWT/A9ucsUkPQMb7
+         vtZcgCyYKH6PXgAOuhJbqjixD65CKL1EzErDNU9OJZ9SnsvxOSBW9kQjcLlnOtv+9vxu
+         KFjmyPFB3VmlP/fRPVYO24gddpFsUDSZA2aZZEfN9XTtcnOqKNBga7UcsfWNiG5lBoNt
+         jKuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771325225; x=1771930025;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r0hJHRJh2R9794qv5CCWWuTbVzrBfeQJNewapWgpa6c=;
+        b=YnafUgLongTzjBxbI6fwDeoPi/I6TkdcY1JgfM7LSaZIoRJAzPVQPJr3XgZgJsvAtj
+         LfHKRejKQQttlSaTGtPAnqVRUoTIYHJI2xzwJQ5mkx/PxTTi5i/XSYcESecbGEjbGObr
+         Tf0HqBcH/QwkD+eilShDe6DpRbli5sXUBACVkqs9JSmIXeFdPy9pLEhZ6CIEvDFVEz2C
+         qYJHa9FlYloL3XzMKwKolfKl382jBVSPgM8KjhgTSO9QAlMDs+XEHEp3iK+zZwaLOVNA
+         x94oCTFDzAMx5dzvmtohLUr0236Na9swoEq3RGzJSDPu4Ht/ZY8jITJNf7pr5OVof638
+         jd2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXHFMT8lgaPRd+CqdCfZ09Pt3T2+2YGIY2pJL6ZJZjZq0NI3Ow8OkYMWQoicYW+Q5HWklLNkznzFQ==@kvack.org
+X-Gm-Message-State: AOJu0YyIOrrnVuvC2mOwoohW525R6zLK1Pbzh26Mou3tcw2TuhNDNQAG
+	6qnOzSlGy4Uv97ORTsY/8OQ9Tt8U7Q7UOJ9HUt0Q3drJfZfQWq8bZBFL0QPtwjb3D6KeA0zefoi
+	KIGBVRZ8Y/J4OdAiy6Q==
+X-Received: from edqz17.prod.google.com ([2002:aa7:d411:0:b0:65a:44ae:faa8])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2549:b0:65a:3f4b:947b with SMTP id 4fb4d7f45d1cf-65bb112f4fcmr6725247a12.15.1771325224379;
+ Tue, 17 Feb 2026 02:47:04 -0800 (PST)
+Date: Tue, 17 Feb 2026 10:47:03 +0000
+In-Reply-To: <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+Mime-Version: 1.0
+References: <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+ <2026021311-shorten-veal-532c@gregkh> <aY9HD7nH5A-DtgmR@tardis.local>
+ <2026021326-stark-coastline-c5bc@gregkh> <aY9PBfx3RRV7rXZ5@tardis.local>
+ <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+ <aZQ19FEeGgigdwz9@google.com> <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com> <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+Message-ID: <aZRHJ7pSzOHruPA2@google.com>
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+From: Alice Ryhl <aliceryhl@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: 84i59cj6inmfuffcaxaet7eoa7a9hqzm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E6D9A0009
-X-HE-Tag: 1771324716-663029
-X-HE-Meta: U2FsdGVkX1+7TUqctWCA4OeM7an/KVwpw5f+W25UUS2p3CQFEYDLsnVxr4vZ9IiUnqgzf2J2u77Z8MPpIa7Z8FPi628xfdnVymi9EfRRRyOeXxRLewjZvEqv+CPFPRtgXY1k9kCqE005k1+akSqWGJ9OzWA9i5wQZzMw1rIrntolj/67iz2RYE6Hqez4bMdb2iFRIilCVocEQX/NZ8y7aVFLEMO/Uh+AUbzbfQ5F1jsbPEIHYCaqWGRFvPNCurBipdykhffaeAp0OMLUbDRwreM/XSc/OZB7V5yWDIDgFnrqUreNhZof2wzKKKQ5DSKisihKAr1S/OPBz7saOsg3CWsCkWV9w6izP7ehtk5jQ2uROCINivNXdZ2RxvrWxQP2Wv3n/WfVpBzz+LNvwMDTWuI3rGqj6M+/VxHhOKPfU13Y3ik1moyp6DAEYapx8GETWojTTC1QIWJbFo2bpjJouozDikoRRy0LpD2JVcj1SVA9uxUNOa5jTNMRIkQm80DZRbzB5FyXdXkNluq2L6yFGE3NzD/ehrD/OZHJ5WHe0xFnKDSkzEndMmB4U2XHQMTpPlC19FNJhS4j0xYTEGeOI/DcC/7UB4H4X+JvlxSpPZk+NIYpbCnEEBl4h2f/MYdKDOvuEDkpsuGjMvTZLTWb2QrXVZgwqPsV0lillGo7/TyeqqmGqqBdeyHcjrnxRwYi7OZLzmKXl2Kybti5X1q/lALVthA23NRHX0Gmv3jZCblFinlQd+bHl2A4TaNFytJKZx4jZY8M/HhORgfsCMnWRJRMEmDSFbVtftctfHYrF6kF6Mqhw9hsYYA8dGSmAMnHcB0vuVYxThLUpRdZTpscZZ2clnSjaEGX4wFNkO5aH13i2VhrkSgMLN+K0UtHQHPxzvwPjV9FbDOG3oxINiT6AiK98aPdPWgjaBA8wBjoUMZ92pj81zeKlsemUL+QBGml
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 67E1340008
+X-HE-Tag: 1771325226-476279
+X-HE-Meta: U2FsdGVkX1+mtaNiPh9V+Auvq5yOH68i8UxIEIJdjoA/GX9wMpNRxZYvosSm+03yj3Qa8tMQBtzmI0BkHAjdngUswrj9k1Ab5GdVvphzmRVNQhH3AkqP+7Hw3zxA4GHFJKiEiGrkBSW4ge7ALm8zBG49nq7mfbPTBmtHLoaTKhA+6ymQhRXEztenNIltZJSs1LwkCIch3TFFtfyVFKNUvMMkjVVzJ4tSctyPg/fMu+1ZVkf6lWlVYhprwHBVMGFXdoFlVmWitZRL2LTGUpg9zVKEOKJDxainsS5YFmO+HIcBZ8k+4WxZKlWdOCvOnA3WWQllTq5PDeYWdivAw3Clq4tU3sDdwuTfDKAwHB1Q1Ili1e1ILOH71+97eyFSye8eRo0lVmhSUPm9qaWM2suZ2wI+7LuKt76H5EkjaBcK9UIU4ORB87a4UF0/hj54QAwt7FktTgq/CWwpPlQN+MOa+gd+3mdz5epLIH+GaeM3TI06LgoaZo1pxeCTe+tS+9qn2jXN9zyPOlXGNrDvcgLa4fXfTRs8A/ROEAuU2FPUr4okA2Oy8AAPBFxfES27ZcQ0X+r6T7eGK6sr4YdX22r6qox5kDkb7xwYXaXy7Ek5DwOG/pCBcnQ30x3RpJEDys+bkWoSeCPGYM9oSZJQZBAk5mLftDgW9NTtfxbQeo7nEn9SlQwc4LvvaRYr3xVhjz/q3PmPiYKDWDip2D8xNNJxg60wDHkBnxtTyl+6XiAuFVeg7CrCLPjMzY0I2aiot7VUd5BUkReNRPp1d15dZyB7BKJIhZm0mB0N34dY6SFhHMbirtlbmzS6420ZtXyxAU68QJ7oRd1+mUlzU70LikKMaA4YRPkZtgZfTQHenGptimdI0lnjP+FV8NwRswC8qNzOrBlxWQRoq3nTAxBOMdXG5tb7Fz4JqYAnAB7oNMf/a4QFInP8tzga786TBSUXCZfmpOLEY2Mkph2haHFvp7r
+ sTC6zyCr
+ Ob0q8fgjvKjtvqca2qo6nFQVyVuP1qE+F1zMNMm87VQzNJpVeCAlLDzLdJPRvqPuacMW7BYMWp2XW+UR3lz8YGK9hNizBBgYrOj+uGH2hyfRxXw+PVphoUR6fPx7i+GsQ89OXUyEw572d6EkhblGZt5HTLQNidK1LfoTjVrPBR+pCNjwIdAd2HQDwIdDfaF4+85RImaWXODr6TwfiJmXAp45USJzzCtzoeltAqpCziPi8MGdA8AVdJR6wCdzjL66n56lwRV1y2XJc6K8BHvYYTFQHboetFtXCH1v3S6pKfk0csVr5sK8oMdb3bPXaHUCiorHdWFhUh2X3rLizadNckrjTBOr45e/Oy24qZPWejeRWDJdGEZUpoBS8Bt/4OJzbd5aoEUwlXL+b8EbF4LgWyclgexptok9bJf+WpT73GT5qWk6dgOcs8oYJ7eqPOArDVJ08dybY9bQ5sExBb2Fa6fjeqC/m+txNrgKMgoxHCfaBl4P0cVSQUFn33Yh9AIDOlr28dwha2wenfz90koIz9WSn04Ijelmmw8RWkfDsruHiv9ZIfFPDQ+zB2vVpM0LTHpt114T73JsVhDCBVTrEqegXMrys1OINgTlTjuyhaA+a60AFQcdW4Iaa1Z+kLKEAX3wvybRffoxaMMtGowTOtCOw8gocEVin1SbiaKXq+RnIgxkLPaLLR3/O4MdgenjBa5G85Su30jdIg1o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,66 +118,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16 2026, Andrew Morton wrote:
+On Tue, Feb 17, 2026 at 11:25:57AM +0100, Peter Zijlstra wrote:
+> On Tue, Feb 17, 2026 at 10:01:56AM +0000, Alice Ryhl wrote:
+> > On Tue, Feb 17, 2026 at 10:45:15AM +0100, Peter Zijlstra wrote:
+> > > On Tue, Feb 17, 2026 at 09:33:40AM +0000, Alice Ryhl wrote:
+> > > > On Tue, Feb 17, 2026 at 10:13:48AM +0100, Peter Zijlstra wrote:
+> > > > > On Fri, Feb 13, 2026 at 08:19:17AM -0800, Boqun Feng wrote:
+> > > > > > Well, in standard C, technically memcpy() has the same problem as Rust's
+> > > > > > `core::ptr::copy()` and `core::ptr::copy_nonoverlapping()`, i.e. they
+> > > > > > are vulnerable to data races. Our in-kernel memcpy() on the other hand
+> > > > > > doesn't have this problem. Why? Because it's volatile byte-wise atomic
+> > > > > > per the implementation.
+> > > > > 
+> > > > > Look at arch/x86/lib/memcpy_64.S, plenty of movq variants there. Not
+> > > > > byte-wise.
+> > > > 
+> > > > movq is a valid implementation of 8 byte-wise copies.
+> > > > 
+> > > > > Also, not a single atomic operation in sight.
+> > > > 
+> > > > Relaxed atomics are just mov ops.
+> > > 
+> > > They are not atomics at all.
+> > 
+> > Atomic loads and stores are just mov ops, right? Sure, RMW operations do
+> > more complex stuff, but I'm pretty sure that relaxed atomic loads/stores
+> > generally are compiled as mov ops.
+> 
+> Yeah, because they're not in fact atomic. I have, on various occasions,
+> told people to not use atomic_t if all they end up doing is atomic_set()
+> and atomic_read(). They're just loads and stores, nothing atomic about
+> them.
+> 
+> They are just there to complete the interactions with the actual RmW
+> operations.
+> 
+> > > Somewhere along the line 'atomic' seems to have lost any and all meaning
+> > > :-(
+> > > 
+> > > It must be this C committee and their weasel speak for fear of reality
+> > > that has infected everyone or somesuch.
+> > > 
+> > > Anyway, all you really want is a normal memcpy and somehow Rust cannot
+> > > provide? WTF?!
+> > 
+> > Forget about Rust for a moment.
+> > 
+> > Consider this code:
+> > 
+> > 	// Is this ok?
+> > 	unsigned long *a, b;
+> > 	b = *a;
+> > 	if is_valid(b) {
+> > 	    // do stuff
+> > 	}
+> 
+> Syntax error on is_valid(), need opening ( after if.
 
-> On Mon, 16 Feb 2026 14:22:19 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
->
->> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> 
->> LUO keeps track of successful retrieve attempts on a LUO file. It does
->> so to avoid multiple retrievals of the same file. Multiple retrievals
->> cause problems because once the file is retrieved, the serialized data
->> structures are likely freed and the file is likely in a very different
->> state from what the code expects.
->> 
->> The retrieve boolean in struct luo_file keeps track of this, and is
->> passed to the finish callback so it knows what work was already done and
->> what it has left to do.
->> 
->> All this works well when retrieve succeeds. When it fails,
->> luo_retrieve_file() returns the error immediately, without ever storing
->> anywhere that a retrieve was attempted or what its error code was. This
->> results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
->> but nothing prevents it from trying this again.
->> 
->> The retry is problematic for much of the same reasons listed above. The
->> file is likely in a very different state than what the retrieve logic
->> normally expects, and it might even have freed some serialization data
->> structures. Attempting to access them or free them again is going to
->> break things.
->> 
->> For example, if memfd managed to restore 8 of its 10 folios, but fails
->> on the 9th, a subsequent retrieve attempt will try to call
->> kho_restore_folio() on the first folio again, and that will fail with a
->> warning since it is an invalid operation.
->> 
->> Apart from the retry, finish() also breaks. Since on failure the
->> retrieved bool in luo_file is never touched, the finish() call on
->> session close will tell the file handler that retrieve was never
->> attempted, and it will try to access or free the data structures that
->> might not exist, much in the same way as the retry attempt.
->> 
->> There is no sane way of attempting the retrieve again. Remember the
->> error retrieve returned and directly return it on a retry. Also pass
->> this status code to finish() so it can make the right decision on the
->> work it needs to do.
->> 
->> This is done by changing the bool to an integer. A value of 0 means
->> retrieve was never attempted, a positive value means it succeeded, and a
->> negative value means it failed and the error code is the value.
->> 
->> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
->
-> Should we backport this into 6.19.1?
+Oops, too much Rust for me :)
 
-Yes.
+> > I can easily imagine that LLVM might optimize this into:
+> > 
+> > 	// Uh oh!
+> > 	unsigned long *a, b;
+> > 	b = *a;
+> > 	if is_valid(*a) {  // <- this was "optimized"
+> > 	    // do stuff
+> > 	}
+> 
+> Well, compiler would not do anything, since it wouldn't compile :-) But
+> sure, that is valid transform.
+> 
+> > the argument being that you used an ordinary load of `a`, so it can be
+> > assumed that there are no concurrent writes, so both reads are
+> > guaranteed to return the same value.
+> > 
+> > So if `a` might be concurrently modified, then we are unhappy.
+> > 
+> > Of course, if *a is replaced with an atomic load such as READ_ONCE(a) an
+> > optimization would no longer occur.
+> 
+> Stop using atomic for this. Is not atomic.
+> 
+> Key here is volatile, that indicates value can change outside of scope
+> and thus re-load is not valid. And I know C language people hates
+> volatile, but there it is.
 
-I keep forgetting that a Fixes tag alone isn't enough for stable
-backports and I should add Cc: stable@vger.kernel.org too.
+Well, don't complain to me about this. I sent a patch to add READ_ONCE()/
+WRITE_ONCE() impls for Rust and was told to just use atomics instead,
+see: https://lwn.net/Articles/1053142/
 
-Please add it to the patch.
+> > 	// OK!
+> > 	unsigned long *a, b;
+> > 	b = READ_ONCE(a);
+> > 	if is_valid(b) {
+> > 	    // do stuff
+> > 	}
+> > 
+> > Now consider the following code:
+> > 
+> > 	// Is this ok?
+> > 	unsigned long *a, b;
+> > 	memcpy(a, &b, sizeof(unsigned long));
+> > 	if is_valid(b) {
+> > 	    // do stuff
+> > 	}
+> 
+> Why the hell would you want to write that? But sure. I think similar but
+> less weird example would be with structures, where value copies end up
+> being similar to memcpy.
 
--- 
-Regards,
-Pratyush Yadav
+I mean sure, let's say that it was a structure or whatever instead of a
+long. The point is that the general pattern of memcpy, then checking the
+bytes you copied, then use the bytes you copied, is potentially
+susceptible to this exacty optimization.
+
+> And in that case, you can still use volatile and compiler must not do
+> silly.
+
+What you mean by "volatile" here is the same as what this patch means
+when it says "per-byte atomic". If you agree that a "volatile memcpy"
+would be a good idea to use in this scenario, then it sounds like you
+agree with the patch except for its naming / terminology.
+
+> > If LLVM understands the memcpy in the same way as how it understands
+> > 
+> > 	b = *a; // same as memcpy, right?
+> > 
+> > then by above discussion, the memcpy is not enough either. And Rust
+> > documents that it may treat copy_nonoverlapping() in exactly that way,
+> > which is why we want a memcpy where reading the values more than once is
+> > not a permitted optimization. In most discussions of that topic, that's
+> > called a per-byte atomic memcpy.
+> > 
+> > Does this optimization happen in the real world? I have no clue. I'd
+> > rather not find out.
+> 
+> OK, but none of this has anything to do with atomic or byte-wise.
+> 
+> The whole byte-wise thing turns out to be about not allowing
+> out-of-thin-air. Nothing should ever allow that.
+
+It's not just about out-of-thin-air, it's also the kind of optimization
+I mentioned.
+
+> Anyway, normal userspace copies don't suffer this because accessing
+> userspace has enough magical crap around it to inhibit this optimization
+> in any case.
+> 
+> If its a shared mapping/DMA, you'd typically end up with barriers
+> anyway, and those have a memory clobber on them which tell the compiler
+> reloads aren't good.
+> 
+> So I'm still not exactly sure why this is a problem all of a sudden?
+
+I mean, this is for `struct page` specifically. If you have the struct
+page for a page that might also be mapped into a userspace vma, then the
+way to perform a "copy_from_user" operation is to:
+
+1. kmap_local_page()
+2. memcpy()
+3. kunmap_local()
+
+Correct me if I'm wrong, but my understanding is that on 64-bit systems,
+kmap/kunmap are usually complete no-ops since you have enough address
+space to simply map all pages into the kernel's address space. Not even
+a barrier - just a `static inline` with an empty body.
+
+Alice
 
