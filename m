@@ -4,139 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE5CE9A047
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2928CE9A03E
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:15:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62F186B00A4; Tue, 17 Feb 2026 15:13:13 -0500 (EST)
+	id 8A8F36B00A5; Tue, 17 Feb 2026 15:15:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 606BF6B00A5; Tue, 17 Feb 2026 15:13:13 -0500 (EST)
+	id 8688D6B00A7; Tue, 17 Feb 2026 15:15:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 512AB6B00A6; Tue, 17 Feb 2026 15:13:13 -0500 (EST)
+	id 795156B00A8; Tue, 17 Feb 2026 15:15:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CFE76B00A4
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:13:13 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD1568B364
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:13:12 +0000 (UTC)
-X-FDA: 84455047824.29.59317A5
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AA9D8180015
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:13:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rLfUQ2FL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771359190; a=rsa-sha256;
-	cv=pass;
-	b=bh+BFQfizxk3o5DYjox1xEKrFPwuxi6CKnaqhJ7BZWfvCH+5qJEL0YTwaVlNixW8+r+HVY
-	VMzYmgQkzBJ09gGxoTlboLSmobgB9ebeqfRSPTENXrweCicO68RpB4fj7qE2cwAuJDJj1F
-	WdDL8YQ1+JzqSKej5mWHr7MkOCwmoRU=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rLfUQ2FL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 643F06B00A5
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:15:09 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02686B81B8
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:15:08 +0000 (UTC)
+X-FDA: 84455052738.16.41F745A
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EE6F140002
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:15:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="d66ki/bc";
+	spf=pass (imf17.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771359190;
+	s=arc-20220608; t=1771359307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CvSItU0sreEL4B15MgR7qAnJZMB2EOXjlw60m4SYry4=;
-	b=DeltBbZIhzv3DQPBEI3JXLa9gk/KTT8Kw5b++DKePCsF4kbjupJNfEv5OeFs9Zo3taUtUr
-	uRlwHZpT/PxlHqvFEizu+B1J8WVxJnBG9l2Km8saRtI86WLVT4lwJLOtIDDIC8qdHYB7Jk
-	PuD1ThiDGufmYJm2bxv9oBMD6LF/PT0=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48068127f00so49097325e9.3
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:13:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771359189; cv=none;
+	bh=dAYO4SE+uXRQFqS02L09YZE3aUET5DXvetwhztMDmzU=;
+	b=vsDbwa71jzfqZ3zmzTmjOMV8TYVJA+5bbgh4orDMt+JlHk12WXtruLtPmnuZTq+YzePLIG
+	XKu3jd/je2kyqB4pCZ7owMAyxPKTcu60PIL9Gb9Q52H1FNQLPZ0ODMyCfukJgOhNBhSP0r
+	HflrPa+bjZHgSkKiE6QSOfUU3u61JKQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771359307; a=rsa-sha256;
+	cv=pass;
+	b=H4S7JEXpGMD8iogexaoX6UHE6fU8/MDsZC3mO8JmQGAon5o2P6AlsWvUeEwSWMEg45avrK
+	O0UvcJbE34ECHsb2ZXY+SBay9+Xm3Fuw9FRrn9GtW97yrEpRKGOSQWIUjBT5moEZSyfYNk
+	sZ/Ue/8roaycVhXnq9l3SlrahFT4CVo=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="d66ki/bc";
+	spf=pass (imf17.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba7eb6022eso194513eec.1
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:15:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771359306; cv=none;
         d=google.com; s=arc-20240605;
-        b=dqwvV4TzN7a0M1LaB991fP6CrnoaKPNvbrsoSRtlXNVypnFBSNbhDhUyclNe1+QuMM
-         pjXLQRQ0qtpuNxAWexEYMso23yhs3/TR81/ypoEfPaofj5DVemr2EdOV34OjzcQ2DZnQ
-         WxIVLMM/FA3U+bbNUt74WGZusjGc3r0ya9YohknO6Eaj0icvbRXBNzC3Tvc9x8L6RWL0
-         EMVKyPfO/wGw215OjgnlqD7t+ONFVXdZzqPQE+CA5rCjolcM2GyLUVMPrNfONvZGLjwf
-         ttR2t+Cp4UrSFOrZvnLnvFPySZXfv9bhzUy7FuKoWTtBTTvn5JHt7InJYdHzFgaY/Z6k
-         koCw==
+        b=W2IX4RwLQ9Vp7EuDlYFv+nWJhraQBOOndZaUwyGQTu8X5qFoClzAzpevYI3iIhDYXD
+         sGKvNsezRPggpCBNuuWW7jtRyxYZ4lSllwGSJdzvffP+kQytqAOl+uZfeaQcflILveiY
+         IYHoWxYRkGs+2D7YOb8b0Dc7xGdHXFxyLvIRqMVwmNoD/xddeLx4Hi+qJVDLqaGwauey
+         0CPqs5Kt/ojulpLrVXX9/3FT7JDAejUGAYzhdCESO5sWHB4MTFnqOpmzmudshg88Xe4h
+         OQjp2XuwBmDZqjg1tBjT6dTr/uAAgWFFH7eWCwDFh2CLMOeVf7NDoPOL0G/Du2MXmGUU
+         iTTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=CvSItU0sreEL4B15MgR7qAnJZMB2EOXjlw60m4SYry4=;
-        fh=a3M8pJynZ1L+f3S6fExDGTAj97QYsqgWYRiZ75GSrNk=;
-        b=A1sEgsZJKGPRR9c1hlgKX+Uupmiut0/8CpevebKTqzHNjxWx5uLkoAD4TVvCBF2/aj
-         9foms7O2dzn925aMgLv2Vucokb4Gt81aoMewAmPFGZZ4bYekHIaidzAQebxssp0nxc1M
-         bCXQ/38ZKrAq1oGgr4y0ioFIMVxuL5d5xcSggECOV/WQe4uZxOv7MbDZNXeWrT/1otgi
-         CxmROZFqxEuRJNOjNnP2cBIzO8+SHjXynjl5p7NC8h+drPjoIUMXSUXoLo8crEqRHw3W
-         RoKs6Zlzt5L89V6u/zqIqZhebmpX17UMXHQ1AGb/APn0BhJPr6aQd7e4hh+X8vkHiwdd
-         +YjQ==;
+        bh=dAYO4SE+uXRQFqS02L09YZE3aUET5DXvetwhztMDmzU=;
+        fh=d16yPFYJd5+mSCzgOlwBY6YSi/nqXUEf8Awv+L2Yvt4=;
+        b=fK61BBgJhf58AVFqLzlVY0H+KCI33alKi6S9IuxZtOaq+PKM7/BbTCf/9hkG+iKACH
+         7np1JA3TIQRT72eftb3cwuTsukRvqfJVPtcc1TV2Pn3+SYWwIpReiDHcMRSyxoBlDbBE
+         gsmvE4ae5qlGo30gWJGIYZxqkpJReEBsQl+C01m/ZlnpFc4CIUnqBJXD5CIhdBY4aI0J
+         j25GjDomTtVSnnecphphOcDA2HdGws77QIbOa+lSZV3iTLVHxjEuP5Mq2nsXS1PH5DZy
+         8nW4KzDAxeLKMAnls47gyP+uHMSbd4y3Q29luFqnxH163V9VuJhTKNS9DEXQVjwPxyl7
+         yKog==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771359189; x=1771963989; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771359306; x=1771964106; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CvSItU0sreEL4B15MgR7qAnJZMB2EOXjlw60m4SYry4=;
-        b=rLfUQ2FLX/4J+Hz1Hmvm51sboohrOGfvbHptpNH7TjT4AFsMS7+OJEFT0le157G+2Y
-         zmwAMMFc9L6k7hqfVRCAb3vbgrIhaqPylp71YFUAxi4lF3anf9z6zLkrTHQMUNtrf5xg
-         b32SPDOmvQTggj3sRYKfg9YYgAd0cMollyK9Jo+TeuLQt3sFheqPUmAhdydaOgZ7YMWM
-         vBCSCAI7XNAS/Lomgl8nQRgUfFhjAd2xc52/QamVf0XHyEJzCb/5P8mNZ8misXwKabFX
-         aQGmArUt81iIW65J9fKJsvJ3h0anRss/TcMVVCgxg9NdtOsoquO9FokLEtwmH9YEV7zn
-         lpYQ==
+        bh=dAYO4SE+uXRQFqS02L09YZE3aUET5DXvetwhztMDmzU=;
+        b=d66ki/bcxu7Kshx11PFNgPkcbQZXIIZRPBz1VU5UjiXkidlYI5qlTUAQPxwqaQexOJ
+         PrUmxgIie7dVxTuIK/iT+VxZj5oMfE2kCGuaqfWFu0l+5rPq/yFZywX3PvuhBamYCZlN
+         Z6dfRQMy/wRsPUsExZA3pxzdtva76BvE9uR6h19EmxrRvMGW3ziILs1X55qZB9ob00mR
+         oY13+J43kjvthngxU/yEU32klA0T2uRcosUkvu64VLiSmBcpn3QmHJoH1Z4btDMW1BfI
+         RdtmdGiRJG3CCylKkqka8MWJrQizIU2ZLQhvqJ6r+5ceUULYIazD2OxrOaVh/tAByu14
+         qWRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771359189; x=1771963989;
+        d=1e100.net; s=20230601; t=1771359306; x=1771964106;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=CvSItU0sreEL4B15MgR7qAnJZMB2EOXjlw60m4SYry4=;
-        b=eQtlux6BLNBtQU4ZoEH9vXNrsmV8+AC+y88yM2FVzIBaPCWbagNL4SSwJWMnUFYggG
-         9iX2IZ5Fa6UFNfS7nGqP/6acrNiB5iXZFwoY/YKGQVB04sp8ARojTkw6NjatSEEzoHy/
-         /b/tvVtf0sVjqUT5S34ov3rsOZ5kIqL7nrpbtAyBjHArGVJHwa56pk6x4glxbL1aCd2/
-         qJmKDobPj3FHrUcK9Eenw2qpJzHtDUbBSYtLzq1vfMzOsb326TLB6e8gfM6J2MQjzYU9
-         Mt5ArTkUIPLsJGcvksGh4xBZUihFD04rFMauvgQ01RCZGOOI9VKGSNI8xASzN50kVlR5
-         SBzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyrZTu8DNroWUJdgGwEKJMYI61kHLiAlNuLjY82etshaj4VMO5vUP6sKc0SsEHTDm7l8k5FQQiWg==@kvack.org
-X-Gm-Message-State: AOJu0YzpSW2+jYnCAZmAlYVKahsKAQqtf1PulK8w1wiQVvWi6x79wHui
-	NfBXUEEj+LrPy46Ai6gZRmnU9PneOj8MOXUCwfYxeshhSfoRvXvWF0uT7PeSCfREytKVHJq8YJx
-	OLshv3bSUgrlldAHeFDPW6imAmcVVQQFMsGnmgRLL
-X-Gm-Gg: AZuq6aJ6lip3EgDA56/ATc/+BS/XZ1RB5BXkepnekYi7Gn3vr6eccIG0gKO5bgHEajZ
-	bMYHcpXfiwMHDIMA5n3te3FrCsWJ5M3PyLBAy3X2fYUO3dqBp1Ax49j3Pg3PNyn6+kuGPVCFt0Q
-	0Uxh+WEcSssM6AkHQD1Pt2F3P18/YUoGcVekOCCzucxRsgXFUgibqOpXzQKuPH/Ceio+D5CdN5g
-	htnUM06Bp/sGVDvC4NfMXsB8u08sVfnKb/qxf036kYUi1t2aBDxyI3hyUZciAobqO2ALHFn/KsK
-	CZs5Omc9YMilc+ju7CXBIij4Q80rE87R1CmgHaYRCpv2WwZV
-X-Received: by 2002:a05:600c:3496:b0:477:fcb:2256 with SMTP id
- 5b1f17b1804b1-48373a5ba90mr257612055e9.17.1771359188669; Tue, 17 Feb 2026
- 12:13:08 -0800 (PST)
+        bh=dAYO4SE+uXRQFqS02L09YZE3aUET5DXvetwhztMDmzU=;
+        b=AkBzSG2RSLQYJtkJRA9DqCdk+NIw52HtbHddeme3DK6453WipeUaKIaS63lPPrHnww
+         1UMNI0TLxgq5KiYSl49INgTTNR9QnlSQNKDcKst/MmAHrPmcEzSub+Mkz3xHGJHvQRQx
+         bJodrV7nGWTR/jwff3aSoiPBqyuCAGoDgtgFt5DeS7uRv4pmZvbZZ4PwKmTgHe4Px+JJ
+         pLy0BKI8losBo1MiHCJJ4IMKbNqNb5ET90d2e1ss60AGlRg5SUevmCh1aa2O5s2japUw
+         M6KVGyJvgih/EiqFPt4LpfuFyFuk5KsG3/p2DDgCmaermQoFQ21hA8wOHL/UjL//onFg
+         VFCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwr53TLnNahLzdg0IhDpYZNFX6xwhi1pztrOvA1SUgraJ5R5XovB+KR7QS60r1iabOhQdoKPucDQ==@kvack.org
+X-Gm-Message-State: AOJu0YwPp4H7mTFXkPoiCYCZuUZ+HxDFrLnePK3EpSeugFeJVRultZue
+	R9UqJo0/6PS/HxkEH8lTa/gZJpR0NuwqBh9xOzb6jhrmZQx4ivWPHQcYxHxRnJkOud5qBmDjlcw
+	Oo0qFfyRYnUVYx1m2Sys83dsAh4oUSZ4=
+X-Gm-Gg: AZuq6aIa0cUJcl4QNNJMf9BjtHsVvXFvOPV2/9Ru5fjupqys7YHRxKAQSDIrJyHFqIq
+	rLjp/J9OMGkXLZaGMw09syf4Q04hhCNBamNdeqh7QtPsMfpqWNSN6v9+dt7TJ50MwP6pQdf+4k3
+	RfccZ0rwNVmqPAVFRvWcgc4U5R60yC5+YL9VRyC0YMoWwsYHBNSANFubvHwFgBeJy/w+m5J3PJJ
+	Y4j3+vncw68aEFuJKmoeRZoxLvKzD8gzlMS4sSC2d9IlXypLSulciv2dEdfFKs/3jfNdtCwcPx6
+	eH2UmYgBT9I9xIKqDuvlUX+ApSEbzP2UF1wJhw23TqskWbwk3rpJJRX4NlOqYVVe5jx3NrX+3Ab
+	hfeesUax5urA+UMbybTAKfHXz
+X-Received: by 2002:a05:7300:3b04:b0:2ba:673b:e328 with SMTP id
+ 5a478bee46e88-2baba13781amr3352534eec.9.1771359305469; Tue, 17 Feb 2026
+ 12:15:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
- <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com> <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
-In-Reply-To: <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 17 Feb 2026 21:12:56 +0100
-X-Gm-Features: AaiRm53IBeHjKaJgOILHNfxfP3AsdI88i44Wfx6908SXCYMlXXgAxRb7b8ZWSRs
-Message-ID: <CAH5fLgj2+XUzsuAnvwL=dc=5yOZvXCapBWRbFGwJAX2v5Wk4dw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Jann Horn <jannh@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <aZRncP-sKLLS2K1U@macos> <ix0mR76G9a_ieuQUUkkfHMJIviAsrFaO859172fuFx9Goj7QdIfz1jtnv3ptubGEC7uEFCvVfEoWxcisUnTi1g==@protonmail.internalid>
+ <aZR-ItMBkiqyBdKd@casper.infradead.org> <87bjhncl7j.fsf@kernel.org>
+In-Reply-To: <87bjhncl7j.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 17 Feb 2026 21:14:52 +0100
+X-Gm-Features: AaiRm52VYhrU4cs6R8w700gaQvNkNfHgVUmjPtJwdjGBU7D0DnMLnJVDQ4-mO04
+Message-ID: <CANiq72nTOpGw6JhrMLK47+7TCJjrLRdNebctrmj5xO6yqAqSuQ@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Evaluating Rust for XArray
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Daniel Gomez <da.gomez@kernel.org>, linux-mm@kvack.org, 
+	lsf-pc@lists.linux-foundation.org, Alice Ryhl <aliceryhl@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Daniel Gomez <da.gomez@samsung.com>, gost.dev@samsung.com, 
+	Greg KH <gregkh@linuxfoundation.org>, Julia Lawall <julia.lawall@inria.fr>, 
+	Kairui Song <kasong@tencent.com>, Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AA9D8180015
-X-Stat-Signature: d8nup11uqudmk31gra3qbmr5gcozh4k8
-X-HE-Tag: 1771359190-527577
-X-HE-Meta: U2FsdGVkX1/8TEuDYnSqy9jko3OFS/CYCFqOfnexwV6Gr+OB7R4tWA4fWSrBCbTb2HLIKteyLFkJziNz6pYcQ0ZGpz3XMwkQ7sVq0N41fTo1Tfg5PR6bQZSXi5QSXGnTIMXOlAsuD1xbW2BXwCabrjm4lVr9C4t6rySD7y9ULk1c8ZMmSysChtwMaXTi6UCyQTn38XEjx13HTQ2pNc+7CxhgkcKYRotMOzjkcaeQSa8dIutdx4Vz/DE8hz9kKIorhi8jpf1le6PyfWuOgj9uu+qIHXAjECYD9jQjtiecCkM0wehWLQYamvbU42C1HPq255lLu2eygEGu+HUd522/6vkBc0ybg1RgUMHh9a6FU/jhIw5UVBEWlMdtl+qA5/lHiDAQg8+hMwZtVVE/0Vb6kzBREcUUUiRAOv6ohLUgLyrbst9sKATKLgEWT2Ko50aGR7TkdTlMrUl0OfzwCha8FU8GwN4qBVkSmgemQyatWJ71T5bVllawFQOvsrxXMrnQtfKdQXaRCCMtaM/1MdB/FeAZGJthikg/aXFdHtWsl9xeMXuLiGtwQ9XcYyMxpbMBm3qVam2fylPgFP24t7vR0hlO4aw6leG/C7AE6TJJBBhKpf/8RY3nsCuB3qdRyQ3bu1jPjS5sr73nfy2PnL4Z7x2OACGuTQEW00StsaIzpYXTmFDP1pf0dDRzsYkNNfif2fQZhX4oSf58TICSVLRvj6riPhgBBpfid70aVcZwd0pIUiWKOMIslRs9LUz0AacUMLwNt/ZQLvB7E+y0LOpQXf0GNruZkQn2W7qh06oEgDorF9rLZ4mSw3xogAX+8V+Rk8r0I0tx9ycRNVQ/lXbDU9y3gD0+XObLd+vtgrssiuVExzm44/fb1VjKjHLShVZuve2exslEBe5Jr6QqVTnqUX23m8su5JthbyoVUJqsHlfdZkelQK/XzLiUHzMA+u5FOdurpbA7+YrhbUT338t
- v8LlRGvo
- hHrmTWCI1EhplHuqQTX4kQaJDThY1zpwyeYT4ZvtCZlxV2xgVJnriR5f0g9TWzSlR7iqRfcJ52O3z2jocRjQPYyG3Y4sLPo59HQnINQ+Zqz6JpNI7HLF05J6mvhYEhGJkONEYkoAOAv8Vy4wFjgkPQ0fTE3T6go8XZItOiRgDt1ocegNAZ67lhAe8u3bi+pvcqY4ZLBHTPsjqhRwA/H0CuOYA0vT5BZPz0XEC2h6L6/3BFqQjUYDvelg2rTv4+WbTnV64r+jIqqazwa4NDjtxWWGGcElK5vOuUiHqD5h/so62zvlNEUFbZVkMmeg4DyQFOtIHtQRZSgCcMBU=
+X-Stat-Signature: bjbc3rezkgpsedtfxkwq4oodoctqaobu
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EE6F140002
+X-HE-Tag: 1771359306-210455
+X-HE-Meta: U2FsdGVkX182YGERZ/hU5nU2Vx8a5iIggQXIbj7GRWpRnUOE5OM+SOKFffr/vm5tITm58uI9nIVr0+/q81SyP4t4vF5VvMwN1LoNWUMBFBUMqkuMTKXs2N7S1tu8jnK3Krvqsr5aD3ZshTN05NrmTfcrBgVJ2ajrLX7V8C0ZO6+/lVdGmHQ9bzYVFKYob0mjHM4wiWAmX3KtarGkI53cBVs9o7HUR0U7R/SwOZS3lIgDzbpMxHzAR94YYGJXewxVA7Oh6EwZZ8OWR2k7vpYcmG7s1ra1w04zbh+2XHHmnHho9Hjg4I54Sb3Sx8T3F/lhym+L6NyHj1UxK5evh9nnT0BQxsEziDn1/nltEWfmyyquESOcRzxxdDuXDBcBC35Dz219IvnQaSFNIZyrWKdyOe54XJ2OGzRIj/+MQ2u5vlQKcIJ/if7e3ciEbnBom+3FBm4i8vrrAAGrhTWlgSO8yFEBlLS6GKYsKLyDNKMQIJ0gNDeD5dRXEaCRgfgUzMi6sYgU4wa8BX3x3pxl/5+zzKuoRwkOE4/y4/JSUr7HcCw+/iKmQ9Bzx9CC0Ah4g7P5F3IWaG/ITsv+LGITS274kwXh6LLq4b9NiKEcaYvSaZZNsjO7ZmjoiqRH2PDUf/PEvCe0vWTuA8we11UXmBHFKjnit9bNx0i8oiznnKLlizHReJtu5meIvQQy33dBzJ6qR3e+6LDN4hHEYF1VK8dCnZSPTl/3Q2XlH34mA652TUihKqZlcM7gipeSts5Or9MoxhcgwV0z0QZTJm8zrlAAie8l9ifNo4uJe9Ki3VaFwUySV2qJRkoCzCtdQs1fK+2iOPHF7LJR67PMnb3+7BwcuJPnp3bdxUiw7pIBrvS9QWTk8HLzQ3aNuBbAdBgNhN/iQwERgAUaq8YB2vlcKR5aJomY5poESqKB8QCGhhIb4DDgGOfJIhouoHcINvuYCiHwU3jKE/gdhQxPA3iwNeF
+ 7BMoLuBs
+ xyGEDQ1HsmhSnvJnCDq/bjjZs6oI2UGQvgzLrHQWbr3ZuIahjiHFc/5c56ZeaOLPDAe9iq4lVD2ctnbgXHGpkaHEWMezOACCL4D03TAjGjBra1HBzyej4DKkWlIlFH+Gnv9YuXwZ1y0ZhqNy5kpWEYvqhz/oKoKnQFRyZElKU6AUZAcU/KmOacnOTIKxz1kY41q7lcxcTBEk5vNdEZjHcRn30H0Ueom/9I2mq2sH98jxVx3tYef8Jpl/B66nVWR/Z4yh5sMn02gryucgwfy3pu1sGubwh9Z/5e9G/h+XWqU75ZDiRjEBkKl0KKXqAnE0iqY3MaTCiLpOmvs0EgHxyIsB+vEH6rJFQdHp2j2EkDKOrVbO/ygqIgtDZ4AWcIlUxVLlr03DFuY269vz6OJiGbU1al4RqO/GmFqPzoamu7jvp8wn0Rg74dR93kXI2WJFwVSYzRMFsseEbZOhNe9WakqrNkYoZV4hLkZ2Ylp+BgKVJqpmKU2iiga1kOZPQC0vpaE7l/KndMMe1Mr6S/h8XzmNaMWIodDp041WUzGR1ixMOOijSJWHysUGSH1Y+/pFweOnBLbyvFAvGPuwLmUAm/36x4+5HRGypLWkI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,91 +145,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 4:13=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Tue, Feb 17, 2026 at 6:51=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> On Tue Feb 17, 2026 at 3:22 PM CET, Alice Ryhl wrote:
-> > When installing missing pages (or zapping them), Rust Binder will look
-> > up the vma in the mm by address, and then call vm_insert_page (or
-> > zap_page_range_single). However, if the vma is closed and replaced with
-> > a different vma at the same address, this can lead to Rust Binder
-> > installing pages into the wrong vma.
-> >
-> > By installing the page into a writable vma, it becomes possible to writ=
-e
-> > to your own binder pages, which are normally read-only. Although you're
-> > not supposed to be able to write to those pages, the intent behind the
-> > design of Rust Binder is that even if you get that ability, it should n=
-ot
-> > lead to anything bad. Unfortunately, due to another bug, that is not th=
-e
-> > case.
-> >
-> > To fix this, I will store a pointer in vm_private_data and check that
-> > the vma returned by vma_lookup() has the right vm_ops and
-> > vm_private_data before trying to use the vma. This should ensure that
-> > Rust Binder will refuse to interact with any other VMA. I will follow u=
-p
-> > this patch with more vma abstractions to avoid this unsafe access to
-> > vm_ops and vm_private_data, but for now I'd like to start with the
-> > simplest possible fix.
->
-> I suggest to use imperative mood instead.
+> We can, and should, start evaluating if we
+> can deploy Rust in this area now. We might find that we are lacking
+> something from the Rust language to do what we want. We can work with
+> the Rust developers to make sure that the Rust language gets all the
+> bells and whistles that it needs, to support the use cases we have for
+> the Linux kernel.
 
-How do you propose to reword "I will follow up this patch with"?
+To clarify for others that may not have the context...
 
-> > C Binder performs the same check in a slightly different way: it
-> > provides a vm_ops->close that sets a boolean to true, then checks that
-> > boolean after calling vma_lookup(), but I think this is more fragile
-> > than the solution in this patch. (We probably still want to do both, bu=
-t
-> > I'll add the vm_ops->close callback with the follow-up vma API changes.=
-)
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> > Reported-by: Jann Horn <jannh@google.com>
->
-> If you have a link, please add Closes: after Reported-by:.
+We are already working with upstream Rust (and have been for years
+now) on improving the Rust language for the Linux kernel. We have
+regular meetings with them every two weeks, and have a shared roadmap.
 
-There is no publicly accessible link.
+To give a sense of the collaboration status, some major language
+features are getting developed with/for/by the Linux kernel and the
+kernel is even built in their pre-merge CI.
 
-> > +    let vm_ops =3D unsafe { (*vma.as_ptr()).vm_ops };
-> > +    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
-> > +        return None;
-> > +    }
-> > +
-> > +    // SAFETY: Reading the vm_private_data pointer of a binder-owned v=
-ma is safe.
-> > +    let vm_private_data =3D unsafe { (*vma.as_ptr()).vm_private_data }=
-;
-> > +    if !ptr::eq(vm_private_data, owner.cast()) {
-> > +        return None;
-> > +    }
-> > +
-> > +    vma.as_mixedmap_vma()
-> > +}
-> > +
-> >  struct Inner {
-> >      /// Array of pages.
-> >      ///
-> > @@ -308,6 +329,16 @@ pub(crate) fn register_with_vma(&self, vma: &virt:=
-:VmaNew) -> Result<usize> {
-> >          inner.size =3D num_pages;
-> >          inner.vma_addr =3D vma.start();
-> >
-> > +        // This pointer is only used for comparison - it's not derefer=
-enced.
-> > +        //
-> > +        // SAFETY: We own the vma, and we don't use any methods on Vma=
-New that rely on
-> > +        // `vm_private_data`.
-> > +        unsafe { (*vma.as_ptr()).vm_private_data =3D self as *const Se=
-lf as *mut c_void };
->
-> Maybe use from_ref(self).cast_mut().cast::<c_void>() instead?
+In terms of discovering features needed, I don't think there will be
+big surprises there, given all the work done so far. But if the plan
+is to expose a C API, then we may actually find we want new things
+from the C language instead! :)
 
-Honestly I think this one is easier to read as-is.
+Technically, adding Rust "core" code can be done today, whether for
+Rust callers only (which as Tamir says is where a lot of advantages
+really show) or for C callers too (where a "native Rust"
+implementation can be simpler than dealing with "abstractions" of C
+APIs).
 
-Alice
+So it is all a matter of maintainers being OK with the costs. To me,
+this is similar to the "Rust reference drivers" proposal, but for
+currently non-configurable parts of the kernel:
+
+    https://rust-for-linux.com/rust-reference-drivers
+
+Cheers,
+Miguel
 
