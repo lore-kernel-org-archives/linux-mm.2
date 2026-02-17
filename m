@@ -4,129 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E44E9A023
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 17:32:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFABE9A025
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 17:43:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3BA66B0088; Tue, 17 Feb 2026 12:32:29 -0500 (EST)
+	id 5446C6B0088; Tue, 17 Feb 2026 12:43:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E25BD6B0089; Tue, 17 Feb 2026 12:32:29 -0500 (EST)
+	id 51B396B0089; Tue, 17 Feb 2026 12:43:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D287C6B008A; Tue, 17 Feb 2026 12:32:29 -0500 (EST)
+	id 448366B008A; Tue, 17 Feb 2026 12:43:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B7E6B0088
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:32:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5264014022E
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 17:32:29 +0000 (UTC)
-X-FDA: 84454642818.08.E463E7B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5EB66100011
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 17:32:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cKsgWeNG;
-	spf=pass (imf14.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771349547; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3299F6B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:43:51 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEC031A0286
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 17:43:50 +0000 (UTC)
+X-FDA: 84454671420.04.BC6BB88
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D810B2000E
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 17:43:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gbx+l4v3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of luyang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771350229; a=rsa-sha256;
 	cv=none;
-	b=l9Eb1l6yWYldr7EOHy4QL0caLx1jcNwAZGcY5d7sZuhLeXaq1vAsGGYV5ly+zCXLvl+G+P
-	ITeXwREpWOcXgrcrmoDmaP3TogY32rqoBzP0PcVMMGOJwPxKB9nqZ4aCIknk8Rl8F30BEW
-	wHbfq6ncklQDkD/MafZb/er6MrUWVd4=
+	b=HKmRK0D88Z4q5iqkFKgfVMMdKFPAmA6zgrNgwCJpwf1RlBN2Bp86X4UXm15WVVnHA3B7Vp
+	cQ5DG+QI5eW6J6eBmIP3kGbpgFtIfGvTgXAkY4HO3EC9gEcuELs9IuLA1dOrfzgGJN0usu
+	lT8rB9owD/KOzqiXxEPw/SDQFP75MC0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cKsgWeNG;
-	spf=pass (imf14.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gbx+l4v3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of luyang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771349547;
+	s=arc-20220608; t=1771350229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3E5JYQ6mI7CWn4zDhzLhDe5994vI+/Py3jXfrDPLtno=;
-	b=aM5nafnILgS2cdiISPFc7qSalFJ46HFdQVpTGrkN/5O/aTn68wbMV4uTpzXuH1ITBv7E6U
-	bpGtX9+2w9RqRWRUlyuc3nZYKHPW8RVm5o0pnATkGy5iGfRDwh8sA8UvLDy0yAU41dSY0r
-	SKr8l5Co+EOYjuTyR+nkTN24SplpaPs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B351460053;
-	Tue, 17 Feb 2026 17:32:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D95C19421;
-	Tue, 17 Feb 2026 17:32:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771349546;
-	bh=7ufRdIJ+xM8yNQqtxvRZquQZfSq7MslrO2i2CMxqlQ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cKsgWeNGApcX5qS4qzqG5IsIHWTq0HmxRlKSob2x0tm6sqKXGi9d+unZPM8ZDe1gH
-	 18ZPjpHfzgBxBeayCiI0Kpqx0MfDkSlXqmwKlXP17Nb+PkjX4XZ3Q4EpaCW32EWZQS
-	 21LMN5fb+P8cKRw7AzFsQl+pJuSZeHdT5B0SpgrgD9SRMGl9/iOck2s4K6NrLKbzxB
-	 4ZDvyS5TY0j53h/LEc/bguRaChUBTQZQBMOLCOVMgw2wDLQorQHVVXHSsmQxxpqjLz
-	 +Lb6R21yXC5o2+o4Vhjjx8XGdwkZI7hoaTowp0QMz8lAkSH8U81YfnJ7ygkqWUIIs6
-	 gVqav9Gc65r6w==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 102B1F40068;
-	Tue, 17 Feb 2026 12:32:25 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 17 Feb 2026 12:32:25 -0500
-X-ME-Sender: <xms:KaaUaftM7y0kQk5RLmXKqUpZ9ugJVadwA2UwwFHP0efGBEm5i5XGRg>
-    <xme:KaaUacYHtngNJkjwDnCK6rjM1nGokudKlqoYcD-w2Pq2_fL5elqfAVHCpwhqhFu9B
-    MOU9WeyJmclB9pNP1su3SAt_eMbhTk_NvCaTowz1S6XRmARn3_arg>
-X-ME-Received: <xmr:KaaUaY7P5pH3JIgbKXpHdh8Ja2fnrACEp0MsOdhdOxlF5Pyiaht0otEsfH9BF2Ni4LBEZd5TV8lyn-aCxsBd9Z47Phc5BPVo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtfeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghl
-    ihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorh
-    hgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghs
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrg
-    gtlhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrh
-    ihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohht
-    ohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:KaaUaUnMTRuzjUnA6JP_I7-7Ywen6IEGrC7hACEPZc8qV4TATaD_pQ>
-    <xmx:KaaUaeFDtTNbsqxIfcyDIJR2UsYq99v0qgdoqtNelO5JSf6L6GtnsQ>
-    <xmx:KaaUaYGovi0OVa7M1OrOeK7gmr1h25eT5XAUFnDerdIMm_bIfOOR3Q>
-    <xmx:KaaUaW3EHEUL6BSRc8LGgL7nvqK94NJRnXg-bgFGcLX8gxH__o4tOQ>
-    <xmx:KaaUaacnUELcKbO7DHlOk0k9LxAAP4wHyz18D-2w6evyiKudh9BTth4h>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Feb 2026 12:32:24 -0500 (EST)
-Date: Tue, 17 Feb 2026 09:32:23 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <aZSmJ-1xSnqE9aqI@tardis.local>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <aZRY9HthKwVJrAf1@google.com>
+	bh=poXugDg94mqOoGIdahpQoY5scXHKHEeEHQyw1IJe2XU=;
+	b=YdvymGRIdQANeiVVJYhGnJRR/CNYSCUeh7kbGkRJ17zYH3TGZrSBlArhJ0e+n4cH0nFIwN
+	+A816pYXwZLeK2oPObqmMvLO/LTR1Mhc7kzo1+5TU1zjFGDtjeUpK6lygM3Rog2piurIyz
+	tuQZ9fXV0MEcIOV49WGwUGJXMyn5xpU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771350227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=poXugDg94mqOoGIdahpQoY5scXHKHEeEHQyw1IJe2XU=;
+	b=gbx+l4v3/k067tEheilCMxzpZ4VEktfT+r8y+y3m8oLQ3H612hdWTcUqnuRQjPBLKYXU5v
+	3tvMramGbh3OubpyoXmi+VQMMEnR063/+1n73T9NugWCzXGOI3UCCghmD/lwvjLWJRIPZn
+	yfcIJYa9W9L7UbURY4iHOZ2VHnvZn2w=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-222-fNBTH5yiOvG_a6W2VSiR1g-1; Tue,
+ 17 Feb 2026 12:43:43 -0500
+X-MC-Unique: fNBTH5yiOvG_a6W2VSiR1g-1
+X-Mimecast-MFC-AGG-ID: fNBTH5yiOvG_a6W2VSiR1g_1771350221
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E02519560B2;
+	Tue, 17 Feb 2026 17:43:40 +0000 (UTC)
+Received: from localhost (unknown [10.22.89.47])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B598130001A5;
+	Tue, 17 Feb 2026 17:43:39 +0000 (UTC)
+Date: Tue, 17 Feb 2026 12:43:38 -0500
+From: Luke Yang <luyang@redhat.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: pfalcato@suse.de, david@kernel.org, surenb@google.com,
+	jhladky@redhat.com, akpm@linux-foundation.org,
+	Liam.Howlett@oracle.com, willy@infradead.org, vbabka@suse.cz,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions
+ since PTE batching (cac1db8c3aad)
+Message-ID: <aZSoyjQHvVWFBZdZ@luyang-thinkpadp1gen7.toromso.csb>
+References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+ <c450ee86-4c34-449d-b144-6b4dcb996998@kernel.org>
+ <dhoz2eeqdx44sf2epeorxs67v5zohutgxniourumsouz22qbl7@gijuj43edjb4>
+ <CAJuCfpHJyHH4=kcQcc_RUPhmLBN8HckoDW0DHiUe+FdQ+tr2NA@mail.gmail.com>
+ <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
+ <71fbee21-f1b4-4202-a790-5076850d8d00@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <71fbee21-f1b4-4202-a790-5076850d8d00@arm.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: iL5T87aW5TT769B17YJ6B1Hguz-z6Mht-PPF0Mh1vuw_1771350221
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aZRY9HthKwVJrAf1@google.com>
-X-Rspamd-Queue-Id: 5EB66100011
-X-Stat-Signature: heuygfqgy6q5ymuh816yaw59hrz3q33e
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1okw3k1xzdqnowtgpkq4krdeajgp7fe7
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771349547-538031
-X-HE-Meta: U2FsdGVkX1+0dRyarwzOH6ibWKR6hfkJGlAsDEq9AjzDwWIXnZSId8uXVztaOFf4UpyBbI55b4agUN0ApYULVCp2tiE3GaluUEU0DJN4TxCJpEXO1MoEWGdx5AlTa5N0z06UBVk6gQlH9/ZnmGBWIDtBYkGcJ0UaTkXCJthe02okmOh9Jk1gBD6IveFEI+hml/mOE0awIFWxYV7xcxiLd3fCmreTy9cujsaJ2i2dkSxBB+tiF/k0/qhKVJOkS0Un0+nw3xWXrELKWqHeABnR9aDXHRISxs0RfAf7o7PkSPeI/5Jr5kttOQgwB8JRxyTbhd3NsAfKuocJHxJhkTmOrrx6p2XoIcBjSVU5fuvz5WBqOSAmrm9tDTVzSZu7zT+HYTq0n0j0RwHb/EkvF4mf0+Zt4UeRhvIZQC7ZvMtD2JSl7OH0/ZZG0EHFeb3cIeR3QOYRXnqsmAAJSjjWzM84gtEqYUnH2CdGUQ/C1vrEuhYV30pp93AZkhvQwYa1J3dTWW7OX/FE9MVOKgHcGO3FuOLJ7VOWxOCNmpq6ay/I4gt3R3aiCCC/FXvilB3lrw3XFI2n2Go9JoMbY0pWA2jBgXtNlnIyfR2LERjeVzwAbvDWjuF80OMUuRrOFGNM+12l0Xfu3zu9TRTbZyMoAl43vAgQ3AvysUzhuWLxICXNZYoL+B9HfpLuP97mz1klnxqk39S3bT/em0Mvkw3Nn0tKEK6TzqG1QCDJJIOiY+0yDbkJJAv+gnCZpgW5s9FIoKECgFNC9BJQned7EhYBkGiTNBGgDBcQuV95Q72RZAZspfk+jDJ1COKm4Y2ofL6GzRV9tkLuXOF1G34gxpL/tDcYByCEHF4loQObNrXWr2t6h59chu9RmNoParxwIEFJIIeQ4Mqr8zaUVoS6ahpEcRbV9wGQxLhgngYBMBGnC0wlQ9/0x1k3pknj5JvJutvrxaFnn9jqoZfv8PfV8VLn01W
- LZyzpGiz
- lWArc0Tm2+RKjPNN1E/ZGk+o2uP0yuTyZqOBd0WgN/8xphiTbufJHrLRFwsvQzX7053BzIYUrCt89RC04aGqZT8pbVKPezz0QGm/bdkBNSpYaL7yosYNiPTgOdbTbx/3TWJL5suA34mqmKvNhL6XfvYsYwexZA/0q0RLAvf/hHvIFfpjHQq6XONkCdR5Cvpgqbcbn4GYGwPsOmumctLTMy9Las2O2nFKwxe4VBM8YzfwDxJaFcxy5J3PY9gbx+6q1Z64BQjHYgKvQLyRrQCtPxY5xEPsAz+pmOYAFezFyTCNwvzKA1aU0iPOZGAoFYaruxfThBz+AfJhjv10=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D810B2000E
+X-HE-Tag: 1771350228-824888
+X-HE-Meta: U2FsdGVkX1+7cvQxVld327ceBNJF0ypYcbXMvqAYNUXg0fWUVNteoQFSQyFXGf49NSJy8wxfNUemnoHvk1ZRqRhh6lOlpYamm8IwwMgkocPy/l4KaKPwIj1Bd9PY/wCsDF93HoT8sPV0UpvIDoeHlcaE5WxIb7n4L1YhYBpH4oGI9KtFjjz/N3i6EoCcGyKwi3nyJqY+LAns15kp7Qa+rbilTcg9FTwU5a1AF5+HqlduF0eJSRNMG0BW4N+KuWZ5+x322vI1lQCuWe0wPKxH/F7aC17TH7RvLZ5o1oU05Ggn0BOjFkCEBs2HAfvguDBZUTD4U0Op7LxaKziMvbeVy0JalWE1yk6AB2PJnNGUFQubalMBSpHuIHRt8qfxwCG5s1aZsb2/6DGGXR5lIRPdX3MRyj0eA71C47FbJWGVE/uoyW6hg0Xza5n5GoqdHAUbwT+NG15csyhIKX5z4OYU94IjYUwiBgrOT5dtNdMVj0P0DPvTm3UkdaFr7qvbp9fa9MPJX3tuA5HxnXDaQ4Jd/C8tnO2dTuP/vV2BX6uwwO+rSrZZVZQUi7SGL37LdJ9VRnTf7vIvo0RNpo1wfVLRHzx71eqlNt8QQKjcmUZHKKVrDY9Gssc5dC9htqZRadC5wy6YEcpmNRh5WJcPX5vf8gIS1fJUDgoeYnxmQh4dmHJTJEtweF7/9O9xvJ4hnCd+EDx12m9Un4yXGaIY18LFZeCChpUCrtYsyjCY218oH+vXxh0XnTqkBOs85MUEGl8Ph0gY2oYvqY3AUQ3Ko3uYWhpZg8I5OqeNxoUURNsPlaGllKlDgXNnwqtAX92XUb1e7Wy7tbxKpAqJrPcSKtVyi5HCAJSVDx6XxOLJng/vlm35spDxqEEFj26be8qzTIpIlRIErZstnPxWqVS8F7LJUIN0QvwOWPizuoz2DKoMRuKqh14V8LK2SXaVCjejPSic47lQ8ltkAwkLF6TiXPm
+ MC94JTyk
+ VqtLY0IBuPnaZa5L+f9aYlteGjXYYz72PuZSEvgiWI4QJ5XcpbtEEMbumWStCrMD6drjNJ7t/dDexDzqq3ljm7z4aCgB9VctGPjXhQhn3L6p8Ws/twDXTahhbnd0mMa784opY82yU0GqRSTLQZ3MGcFB3pKyuUkzAeMjE36mRVcAS4r2X3bJnLJFQTlBtMhYIV0JRd9GulENdRmVO25yiane3zOWhtef9Qx+mKg5MDKOHAgwJvddJjRT9kr6OgGr5irA2/0za/tDlfESoyJPkw/xspl6U1X1SqukBMaod/oBhnFoP4V9Xux4uu2GzotOd20KTKOuLR+WPvOa0Au0g9H6LznAbL0tHRM1URmDMxKWOybf3KHXNJxDBLQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,68 +115,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 12:03:00PM +0000, Alice Ryhl wrote:
-> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
-> > When copying data from buffers that are mapped to user space, it is
-> > impossible to guarantee absence of concurrent memory operations on those
-> > buffers. Copying data to/from `Page` from/to these buffers would be
-> > undefined behavior if no special considerations are made.
-> > 
-> > Add methods on `Page` to read and write the contents using byte-wise atomic
-> > operations.
-> > 
-> > Also improve clarity by specifying additional requirements on
-> > `read_raw`/`write_raw` methods regarding concurrent operations on involved
-> > buffers.
-> > 
-> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Mon, Feb 16, 2026 at 03:42:08PM +0530, Dev Jain wrote:
 > 
-> > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-> > +///
-> > +/// This copy operation is volatile.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Callers must ensure that:
-> > +///
-> > +/// - `src` is valid for reads for `len` bytes for the duration of the call.
-> > +/// - `dst` is valid for writes for `len` bytes for the duration of the call.
-> > +/// - For the duration of the call, other accesses to the areas described by `src`, `dst` and `len`,
-> > +///   must not cause data races (defined by [`LKMM`]) against atomic operations executed by this
-> > +///   function. Note that if all other accesses are atomic, then this safety requirement is
-> > +///   trivially fulfilled.
-> > +///
-> > +/// [`LKMM`]: srctree/tools/memory-model
-> > +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
-> > +    // SAFETY: By the safety requirements of this function, the following operation will not:
-> > +    //  - Trap.
-> > +    //  - Invalidate any reference invariants.
-> > +    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
-> > +    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
-> > +    //    atomic semantics.
-> > +    unsafe {
-> > +        bindings::memcpy(
-> > +            dst.cast::<kernel::ffi::c_void>(),
-> > +            src.cast::<kernel::ffi::c_void>(),
-> > +            len,
+> On 13/02/26 10:56 pm, David Hildenbrand (Arm) wrote:
+> > On 2/13/26 18:16, Suren Baghdasaryan wrote:
+> >> On Fri, Feb 13, 2026 at 4:24 PM Pedro Falcato <pfalcato@suse.de> wrote:
+> >>>
+> >>> On Fri, Feb 13, 2026 at 04:47:29PM +0100, David Hildenbrand (Arm) wrote:
+> >>>>
+> >>>> Hi!
+> >>>>
+> >>>>
+> >>>> Micro-benchmark results are nice. But what is the real word impact?
+> >>>> IOW, why
+> >>>> should we care?
+> >>>
+> >>> Well, mprotect is widely used in thread spawning, code JITting,
+> >>> and even process startup. And we don't want to pay for a feature we can't
+> >>> even use (on x86).
+> >>
+> >> I agree. When I straced Android's zygote a while ago, mprotect() came
+> >> up #30 in the list of most frequently used syscalls and one of the
+> >> most used mm-related syscalls due to its use during process creation.
+> >> However, I don't know how often it's used on VMAs of size >=400KiB.
+> >
+> > See my point? :) If this is apparently so widespread then finding a real
+> > reproducer is likely not a problem. Otherwise it's just speculation.
+> >
+> > It would also be interesting to know whether the reproducer ran with any
+> > sort of mTHP enabled or not. 
 > 
-> Are we sure that LLVM will not say "memcpy is a special function name, I
-> know what it means" and optimize this like a non-atomic memcpy?
+> Yes. Luke, can you experiment with the following microbenchmark:
 > 
-> I think we should consider using the
+> https://pastebin.com/3hNtYirT
 > 
-> 	std::intrinsics::volatile_copy_nonoverlapping_memory
+> and see if there is an optimization for pte-mapped 2M folios, before and
+> after the commit?
 > 
+> (set transparent_hugepages/enabled=always, hugepages-2048Kb/enabled=always)
 
-But two racing volatile_copy_nonoverlapping_memory()s are still data
-race hence UB, no?
+----------
+amd-epyc2-rome
 
-Regards,
-Boqun
+# before commit
+$ uname -r
+6.16.0-65.eln150.x86_64
+# after commit
+$ uname -r
+6.17.0-0.rc1.17.eln150.x86_64
 
-> intrinsic until Rust stabilizes a built-in atomic per-byte memcpy. Yes I
-> know the intrinsic is unstable, but we should at least ask the Rust
-> folks about it. They are plausibly ok with this particular usage.
-> 
-> Alice
+$ cat /sys/kernel/mm/transparent_hugepage/enabled
+[always] madvise never
+
+$ cat /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
+[always] inherit madvise never
+
+Before commit: Total = 6895988972
+After commit: Total = 2303697782
+Percentage change: -66.6%
+
+----------
+amd-epyc3-milanx
+
+# before commit
+$ uname -r
+6.16.0-65.eln150.x86_64
+# after commit
+$ uname -r
+6.17.0-0.rc1.17.eln150.x86_64
+
+$ cat /sys/kernel/mm/transparent_hugepage/enabled
+[always] madvise never
+
+$ cat /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
+[always] inherit madvise never
+
+Before commit: Total = 4006750392
+After commit: Total = 1497733191
+Percentage change: -62.6%
+----------
+
+Luke
+
 
