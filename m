@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B240E909BD
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:00:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9F8E909AE
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:13:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2EF96B0005; Tue, 17 Feb 2026 10:00:30 -0500 (EST)
+	id CA2996B0005; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDC996B0089; Tue, 17 Feb 2026 10:00:30 -0500 (EST)
+	id C50AF6B0089; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBE576B008A; Tue, 17 Feb 2026 10:00:30 -0500 (EST)
+	id B7D4B6B008A; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7C3B6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:00:30 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CAF71B3E66
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:00:30 +0000 (UTC)
-X-FDA: 84454259820.25.094E8EA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A68576B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33B9414020A
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:13:17 +0000 (UTC)
+X-FDA: 84454292034.24.DE37C21
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6681E100005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:00:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khSwFnha;
-	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 34E8D120009
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:13:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VnqbbF+9;
+	spf=pass (imf29.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771340428;
+	s=arc-20220608; t=1771341195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dpJaCG6rgR+dtwhMZIdMvWIEcTcpriQt0GeVUMEmuns=;
-	b=VvyjTBQEs5lIOsn/3/lJzIp0adh/yL0N38Q9I+UBp5g9lYYXDUppbUqYhbHTRQ4WblrzkH
-	bmwsPKBC/B9BTKm99E/dem6rZpcOs5TyCx2RDgRdLhMA4eyK3JSY5WHdzX4PCUMetD12vD
-	7Raukui0lKicJzU0X0dUpajYmnYVuIY=
+	bh=vq2VYtNt9BHHejz5SzYiF9BUmPa65oXSMfvKZWwDMwY=;
+	b=je0zmjV0fSf4Sb9BjbVC+vLzvTrI1dLW9xu/PBT2LNOquORDaOrVHmj1Nwm3z0USw61Ctl
+	CS64cEx99fRiHRGl/6QOLnEWkSlpcxRecDPNY1JgjhdbrGgtNWUhmWp87j6eCTwJyYWfEw
+	e+mCmp5LQ68DktnZDXCFkd3KI5acbTU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=khSwFnha;
-	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VnqbbF+9;
+	spf=pass (imf29.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771340428; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771341195; a=rsa-sha256;
 	cv=none;
-	b=1H6o+JMYbcv6+dzEmP+SP3U0ZYtLOx3k7o8pwMrkoKeRjA0JBK6ZlFaoQi2bm5MkmIRZf3
-	748Bg44bSNZeKucDLIopuAuZnmP69iyOyEqmXCuXK0s3boJcmsRXA5fnK/qba9DBWmfm1M
-	w0NgWy+0NvdzuC7PScdT7FKJg9RbFOY=
+	b=APiQo7SBLio6HCsfyHoBv5E5CrpXyjO83zfQLPen9IpFOA3sBvXKNaJc92Tbgo1Gr4GWdB
+	yxyM+ILWIb9oQFw50doFOJ626bOGjjzf4P7JYmqLphqBJqt41j6+/XJlAFzUs3hhOJGhO2
+	GAfSui8y+QJLoXvshsMnKaEAjGfvOCY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92A1560128;
-	Tue, 17 Feb 2026 15:00:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F859C4CEF7;
-	Tue, 17 Feb 2026 15:00:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E05B60128;
+	Tue, 17 Feb 2026 15:13:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28159C4CEF7;
+	Tue, 17 Feb 2026 15:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771340427;
-	bh=mYlEGTrnI5a+ac/YZf3DtKWdXwxsXj53TyqIoLRWIzo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=khSwFnhaKqZ5o63eBjO0BzLXJRawh6pmStxVUPeTAIXZZlhUpuP+8YcjmjMN29hPl
-	 Yl7K5CpRYSFIKjMqvNFAcQcLM3JtyH3v47JGgKix7BLh+AweL9xdx8A7YfagpEWPcy
-	 WPZ8gldWsd1HAUchXt4wKOvRtrVLQWTuES1Friu7VhYqjPclFcwkCSCTF4ferGwzdl
-	 y/On8mjRubMqmu5d9CDhKQOYznD33kNE/LYRTBUF9GANF2jwzhhXaqd5DB7fsREcCQ
-	 fKFSsLE0u6XfBm+URlTQtKijNecsKbEBg6Ncw3myuhC3nkzklTRSO9p2lfVYcYaFXT
-	 rj4ICINQ3lyBw==
-Date: Tue, 17 Feb 2026 15:00:22 +0000
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>, Jisheng Zhang <jszhang@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, maz@kernel.org
-Subject: Re: [PATCH] arm64: remove HAVE_CMPXCHG_LOCAL
-Message-ID: <aZSChrCVnoWSe7h0@willie-the-truck>
-References: <20260215033944.16374-1-jszhang@kernel.org>
- <aZL46z1UZkQlF3Dd@willie-the-truck>
- <89606308-3c03-4dcf-a89d-479258b710e4@arm.com>
- <aZRyzy0SJ8uF3K2J@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZRyzy0SJ8uF3K2J@arm.com>
-X-Stat-Signature: 6ztpras3ou6wo1wwzczma1itry4ddta6
+	s=k20201202; t=1771341194;
+	bh=q4lpe0QHbE4GGbcGYoiqsGdbAX3UVPzDsH/s+Fwz5I4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=VnqbbF+9M1KozvnJynWTRyiwnmd/bz3qGOF+wNTRpsj/o6hVklSmzdEwa+L5Gq0SL
+	 VMauwQDNwgydoo5TUdMDL+5/ENQvyE6lwgJKcQrW3Tpr7PpBQaYrc8NAPdh+Uw8Sxq
+	 quzTc9Z83wPZVS0BQSCIOiYX0vdT2vaEO88/9weIzA3Qm70l6OcVE3BtI+HldcrbHm
+	 qAxZUU8xowd9rWZe4oaaJ3RDzctOWV1r8QNXafUrW9yNSKOULwgLs3RQRNJf4kZwwN
+	 7RqvjVOXbBuYrSgjDyNsT89aig5ykpzYwPyx/DTj/G/4FRHgl4ftx0NdZRBxwX58ow
+	 7xd2KJRVaaYyQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Feb 2026 16:13:09 +0100
+Message-Id: <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
+ <cmllamas@google.com>, "Jann Horn" <jannh@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>,
+ <stable@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
+References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
+ <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
+In-Reply-To: <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
+X-Stat-Signature: etkbm6r7np3zzkzwtwa319tdmmpiu5ai
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6681E100005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771340428-373149
-X-HE-Meta: U2FsdGVkX19V6F3uOtcjr/Ifd7RCeaPSsCeB3evYNUPVxcErU3w8Ctgz7Mu+6iMyOKTFTkcU/yXcQaFfehwpop1lz9WQ9wEc6zHnZciu4JifkCKxs7Ykmfyy+dljQ04uDV78FVdF8shVAP5r+jSVUM/B2VAkdqz4sUSRpRx0PqL8K3NgN6f6DFBcJR4LjNNfiQwtchLqTR4G+wviqKBVVo8CBzOBN2Qu2rZF7kQtXx2+ZLsbFsphILIhSgC0W4Hsf5pecLmEqLtzq+EKB5aGO+wiRfaoOYcjk0QCTMrV4vquX24zmzdxbQ4DzrBTDbdCSYo/2y1wvfcrNl4SooY8fzSfffnxxFv65rTxCECEpn7o7r1eaFtQiBeFBg6nUnoDEF0ZgisbtuUEOw33lPjj1UGxIZ+Xxfc2Hd/yhGFw+ZqjANIJSES4zZv6xHiULGdQjvLuw1/H7rdTrQKtykPSyUuME/ItWn8kqwtn9Zw2FgDBxhHAFgVh5130lFInJWJozadN6U+7EWC5N0vm0E4oqOHXEjNGvPvamgQksOVy8wjf1SDEcd9NS6G744vzOtDwV8S/7PsfFCObgSIvlrCYSGjoUJK980EBqU7jJKqXe1NA1qaF08pKR8jS193HrjkwIbhYTJWvwts6ULfX1+gZsqRLUsdJwPT6ieqTvlRqvvTg6LeuDXVANiobyQL8MyftUo3K4KVebgqMvTW4TqgBeg8DJU1sRoe7+oVBIn+Y+HdrURenAzMbsc2Wl7j6gWWCGPmsfMXSzf1hGstYsBfOv8o/eNnUcVI7jU1vQdOdOCs/95YaBfw8oGpPu00rG1U+wsZhcEVvUx8wsIGDNQKe0K0bua7Z+TLL6tIvRRuO1GNgVAjjO2JQefupL2p18LmLEETkVoBt2JDeilwmqlgeRpDCZ1TEu0OBTwGe5xt65b3ALxn2qdN1EYg4xzWdrBDNsai4aPPCptNtlstAx+U
- 7I0qUgkS
- pWmz8MkISoXk6OmMdyVFo4mGQicLUbHcoFn23QA34tBJ5d1b/bVPSTrwPg8fs4lK0RD5JkzIIcZAUwmTvEBoj+SGTeiXsbOltk5TPNQnaEiufdLjDuVIEUVpHC4uJw2iesKSnICJ4uzwn4VO0iIWZM/Q3jzNHejVD4PuKo6XBB64y9SctgoWSg0DgPypLLjPxZelSzHsC6/dLUHykfUZQjRjeWLO2gmHtMJ7EeckHurAdIoD9xFPTX52li90X12AXFUKKZhR6NRMfUeuvrMkzy2CfxVv0YMjcsPR3BDvjW+K9hnF41T55do4FKJ7PyKTxlBc1
+X-Rspamd-Queue-Id: 34E8D120009
+X-HE-Tag: 1771341195-58325
+X-HE-Meta: U2FsdGVkX19ghtyr0u3GT4fDXzweqscC/+aI2FEix60eKgsQdhZyj45LqhGAZNtoL4Sgq8vboZnoIxA4KHOxxfXsZPKACYs6RYDb5OoJnZ6vpRoJSzkpBh/EjI03xBAb1aVR2O6Dm2uOI44c+8VtpaMP+y+JW+/C0G0gDUYW2m/36gBVmenyFDkx/10FU1Qo473Khe7O1Dj2Y/ZMTZPcx1kLGF1EtXoKDe8i4eHQrnnK247x2Cs26vinmfjQ12KMBFfOQsoJXCQT2gzXGc8cPZw3lkDV0Ty0GpAyPDeJxUNXIyEDlhZssJ48XGXa/GEkgPTZC63rZ1LUANPn00Bsvdup1q3PmElJqOPdQnmsvfwvJlBoo6zFefz2G4z134uiH6iMLvrp588Xk4Qa3iP9XxXlalolAsHSZL7X0NIzViD56O65pOYzC802RCn3PS0CVaSisNyfgypg5VO2eSjEkZpTwpWjSR3pUL2IkWck0+9MvGB1fM/l/MoTVNVTX4wCKFwOI2+QjZKcqt55TIn/jl4k8KnS2q/be+i0rT2Nx37jX01XCcbZXG7APfbXOOPFK9bzPMTDw8qYAWzEmMOpooUENJiqWyUfDcRks+/XQWJkKJe29wPXV2TOjcr66LuhU/jXOr2p+19UdJmcKklLgTRcBUKjZxA23LHIq/MSgAqm6VWiPManx7/iRnWlB5cbA176xELp59gOV4t/J52f6Ijlexitlg7pjP8jYOrd9c3reP7Lsyz5KwSf1ddx1knfcub5UL8TD4t1+sn/7lROJedAMubL/+d0cxCF5jnmu5F7GBpPU7ZHIogYxYsMCEKbxaSs9wGw9w7utOagez3aYPlCrvNFfILkAo8rt3VTx04GqJ24wh0tbI4l+iK2Z80yUgYg7Mg3JMncirqRuUJ/+HHjNRS3B29u48QRYXDjzDXKl0p+qMNxgpkEaSvF+DRpFDuNQpbuULCsf/Y/IgQ
+ b6MPQrks
+ nsWMyxmIotxjEbWE/e7K0r0zewRPWiKdTuvZYkYnY1nVwbMXKWZxQboSfgThea7gWIYqu1XcWL1+Xp6m+ggwRxk9x3obFFPJ3Ln/F9th75nWB7xxQ8EIVmNheWKXDIPKvNfyrfgZcg55T56IleKhL0Hv3Ns+I4bMWxK8+iOKu27lIvCsuhezcpSpoqfXdqUWUetO2Vc9ppnL8YYS77WgYbf790zuuGcM6T5yeWriew1VPZKOqgLVbG5SeLL9uCtL0Z+kSllEXnsMTKtwvPA/MDRnQtJ/mTLKIUGWXKGDprmr2FMzR5thNnTjleiFRdVoLCP4ICu/1jqCsonXwWT6f5jVboH9Gl5pw7lNn3sDHiElOpZ3mmtmX3vR/9Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,48 +101,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 01:53:19PM +0000, Catalin Marinas wrote:
-> On Mon, Feb 16, 2026 at 08:59:17PM +0530, Dev Jain wrote:
-> > On 16/02/26 4:30 pm, Will Deacon wrote:
-> > > On Sun, Feb 15, 2026 at 11:39:44AM +0800, Jisheng Zhang wrote:
-> > >> It turns out the generic disable/enable irq this_cpu_cmpxchg
-> > >> implementation is faster than LL/SC or lse implementation. Remove
-> > >> HAVE_CMPXCHG_LOCAL for better performance on arm64.
-> > >>
-> > >> Tested on Quad 1.9GHZ CA55 platform:
-> > >> average mod_node_page_state() cost decreases from 167ns to 103ns
-> > >> the spawn (30 duration) benchmark in unixbench is improved
-> > >> from 147494 lps to 150561 lps, improved by 2.1%
-> > >>
-> > >> Tested on Quad 2.1GHZ CA73 platform:
-> > >> average mod_node_page_state() cost decreases from 113ns to 85ns
-> > >> the spawn (30 duration) benchmark in unixbench is improved
-> > >> from 209844 lps to 212581 lps, improved by 1.3%
-> > >>
-> > >> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-> > >> ---
-> > >>  arch/arm64/Kconfig              |  1 -
-> > >>  arch/arm64/include/asm/percpu.h | 24 ------------------------
-> > >>  2 files changed, 25 deletions(-)
-> > > That is _entirely_ dependent on the system, so this isn't the right
-> > > approach. I also don't think it's something we particularly want to
-> > > micro-optimise to accomodate systems that suck at atomics.
-> > 
-> > Hi Will,
-> > 
-> > As I mention in the other email, the suspect is not the atomics, but
-> > preempt_disable(). On Apple M3, the regression reported in [1] resolves
-> > by removing preempt_disable/enable in _pcp_protect_return. To prove
-> > this another way, I disabled CONFIG_ARM64_HAS_LSE_ATOMICS and the
-> > regression worsened, indicating that at least on Apple M3 the
-> > atomics are faster.
-> 
-> Then why don't we replace the preempt disabling with local_irq_save()
-> in the arm64 code and still use the LSE atomics?
+On Tue Feb 17, 2026 at 3:22 PM CET, Alice Ryhl wrote:
+> When installing missing pages (or zapping them), Rust Binder will look
+> up the vma in the mm by address, and then call vm_insert_page (or
+> zap_page_range_single). However, if the vma is closed and replaced with
+> a different vma at the same address, this can lead to Rust Binder
+> installing pages into the wrong vma.
+>
+> By installing the page into a writable vma, it becomes possible to write
+> to your own binder pages, which are normally read-only. Although you're
+> not supposed to be able to write to those pages, the intent behind the
+> design of Rust Binder is that even if you get that ability, it should not
+> lead to anything bad. Unfortunately, due to another bug, that is not the
+> case.
+>
+> To fix this, I will store a pointer in vm_private_data and check that
+> the vma returned by vma_lookup() has the right vm_ops and
+> vm_private_data before trying to use the vma. This should ensure that
+> Rust Binder will refuse to interact with any other VMA. I will follow up
+> this patch with more vma abstractions to avoid this unsafe access to
+> vm_ops and vm_private_data, but for now I'd like to start with the
+> simplest possible fix.
 
-Even better, work on making preempt_disable() faster as it's used in many
-other places. Of course, if people want to hack the .config, they could
-also change the preemption mode...
+I suggest to use imperative mood instead.
 
-Will
+> C Binder performs the same check in a slightly different way: it
+> provides a vm_ops->close that sets a boolean to true, then checks that
+> boolean after calling vma_lookup(), but I think this is more fragile
+> than the solution in this patch. (We probably still want to do both, but
+> I'll add the vm_ops->close callback with the follow-up vma API changes.)
+>
+> Cc: stable@vger.kernel.org
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Reported-by: Jann Horn <jannh@google.com>
+
+If you have a link, please add Closes: after Reported-by:.
+
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---=
+------
+>  1 file changed, 58 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
+r/page_range.rs
+> index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..90bab18961443c6e59699cb73=
+45e41e0db80f0dd 100644
+> --- a/drivers/android/binder/page_range.rs
+> +++ b/drivers/android/binder/page_range.rs
+> @@ -142,6 +142,27 @@ pub(crate) struct ShrinkablePageRange {
+>      _pin: PhantomPinned,
+>  }
+> =20
+> +// We do not define any ops. For now, used only to check identity of vma=
+s.
+> +static BINDER_VM_OPS: bindings::vm_operations_struct =3D pin_init::zeroe=
+d();
+> +
+> +// To ensure that we do not accidentally install pages into or zap pages=
+ from the wrong vma, we
+> +// check its vm_ops and private data before using it.
+> +fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> O=
+ption<&virt::VmaMixedMap> {
+> +    // SAFETY: Just reading the vm_ops pointer of any active vma is safe=
+.
+
+Here and in a few other places, missing markdown.
+
+> +    let vm_ops =3D unsafe { (*vma.as_ptr()).vm_ops };
+> +    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
+> +        return None;
+> +    }
+> +
+> +    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma=
+ is safe.
+> +    let vm_private_data =3D unsafe { (*vma.as_ptr()).vm_private_data };
+> +    if !ptr::eq(vm_private_data, owner.cast()) {
+> +        return None;
+> +    }
+> +
+> +    vma.as_mixedmap_vma()
+> +}
+> +
+>  struct Inner {
+>      /// Array of pages.
+>      ///
+> @@ -308,6 +329,16 @@ pub(crate) fn register_with_vma(&self, vma: &virt::V=
+maNew) -> Result<usize> {
+>          inner.size =3D num_pages;
+>          inner.vma_addr =3D vma.start();
+> =20
+> +        // This pointer is only used for comparison - it's not dereferen=
+ced.
+> +        //
+> +        // SAFETY: We own the vma, and we don't use any methods on VmaNe=
+w that rely on
+> +        // `vm_private_data`.
+> +        unsafe { (*vma.as_ptr()).vm_private_data =3D self as *const Self=
+ as *mut c_void };
+
+Maybe use from_ref(self).cast_mut().cast::<c_void>() instead?
+
+Please don't consider any of those NITs a blocker. :)
 
