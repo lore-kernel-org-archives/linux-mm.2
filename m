@@ -4,97 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 660E8E68165
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C0CE68165
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFBC26B0089; Tue, 17 Feb 2026 05:47:12 -0500 (EST)
+	id 27FD76B0005; Tue, 17 Feb 2026 05:50:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA6A96B008A; Tue, 17 Feb 2026 05:47:12 -0500 (EST)
+	id 2030E6B008C; Tue, 17 Feb 2026 05:50:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD36F6B008C; Tue, 17 Feb 2026 05:47:12 -0500 (EST)
+	id 0DBF36B0092; Tue, 17 Feb 2026 05:50:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 992336B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:47:12 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64A2116115E
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:47:12 +0000 (UTC)
-X-FDA: 84453621504.04.882FBBF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED2766B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:50:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 96A7C5E35C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:50:18 +0000 (UTC)
+X-FDA: 84453629316.07.B3F0B2F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A659020003
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:47:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dimWAFdB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9088A1A000F
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:50:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NpbmehtU;
+	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771325230;
+	s=arc-20220608; t=1771325416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LIvsYuanJaSVU2XTXC/sl38d6ZMzJT2xIHg603sBEjg=;
-	b=1h3QtzmTmJ8zSb4E6rP/+LbeD0WJw3glYGlgtgHmtiVUmRKsPy/46yE0AQaoTTfbDLppDJ
-	UAOjVSV0Ox293/JoKnaIjQbGxRjPzc4R4GIwKQoJpik63Is3PjIPXZVh81TX29qnjRpKaw
-	13z3lsSUobLDzqMtIp8iO7lxMwb8pmc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771325230; a=rsa-sha256;
-	cv=none;
-	b=HiqgR4frNInTcUpImAPjMWAX5iFBN7ujFGbPpXPNdO0eT+aF5ShnzYNduO0FfmzKE5AWRH
-	3zbBLi4xMzp7ucCi2w3B9s0BivqyJiJEKGPpP+c0lOc5dKEQFcNFvQTiCT/6kcd81c/sve
-	uUSWx4W4dpCO1RB+/jl/7CKowFshrTc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vMrXt5ITW6vFN90V899hDJkDN8ZnK3IxgY+KaapmyOE=;
+	b=HFYrBzQHwUT4Lwf8lhBpV4h2I1PLRZfEDrYsRnv1BLceWpPvfROoQaPUpFe+BPSqjtThD5
+	afG6VLSubk1fKKzB3440c9hmfRIy8IkKzW3AjU1qUewixBqNH9pSJc7B5U0FtXZtt3EJ8g
+	gGEroJ35A9OQ8KlqpdgTfwZEMpasb7Q=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dimWAFdB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NpbmehtU;
+	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771325416; a=rsa-sha256;
+	cv=none;
+	b=I1Z5VnHhBKnW8X1VGetEmIm2TttEdnP0S8TjOBiIvweDG1sYKgFZ5raTSj0XBpY8PdoYCb
+	dzgGoclpNKjmMhraXXh+8BRN6qywHTPOQJxLudNTKxmcP/zTo1HWHHmg6EIi0jy9DYa6dm
+	zbQosZOnBSE4Vlu0hBm627oQZ18FF9o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF61243F0B;
-	Tue, 17 Feb 2026 10:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5625FC19424;
-	Tue, 17 Feb 2026 10:47:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9431943F96;
+	Tue, 17 Feb 2026 10:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD78C4AF0B;
+	Tue, 17 Feb 2026 10:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771325229;
-	bh=jPZESxhIMXs/RxY/w6cYQfCTnb8bodLYmLkbO3et7W0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dimWAFdBKNvwkZuk4l6uQCDToprbLgD1Ycq78ddUZJl80GGBJoBzVrUjCo6ukvHRk
-	 aij42gIV0NWIMSdKs1Qws2vaOLIUEaecJ9IgY9EPXU1FLP/lgbLJQ8fgTd9KGaoKnm
-	 wcnKwOssT3xhkmlBen4u7mZOzMuiB+rQ8aWqp6wnsUDLMcnQyMUfiJH2LKP8+tuDTB
-	 KjKd+5PqJcC7E+9kDsWCcYXAmdlU9ylwUDr0STTwKC15+OKJOZp9scfvPyZTKnJaOM
-	 OH07t0mVlOa8ESEVQuJYboD8cCIZrJbKh78MiYc/8h8hgONVMk0dZsrQyJWaPQ0m1e
-	 vz9MT0zILOjaw==
-Date: Tue, 17 Feb 2026 10:47:03 +0000
-From: Will Deacon <will@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <aZRHJ22UtG1YeBMj@willie-the-truck>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <aY9i8rbvnxdOA9DV@tardis.local>
- <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
- <102c86dd6fb1a907b7138a437dee00dc@garyguo.net>
+	s=k20201202; t=1771325415;
+	bh=RrFGvE/E+r3nDli9pSyZ0W1is+dG3zskCpfHLCnPiFY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NpbmehtUS5Mxrwk9DiPWIknJsvzZZAo5fmW5FHMYYLh4vbrfLiu2x98/no38fJlME
+	 LczK7X/9Yn+H7YvHhJkYkPdC7Tjx5/Rd5bA6Kr7Px96cGil+5IVL+pkMMwmHGcF6+M
+	 E46HNoLkPiyAIs9Uy3sdXiUj+0P7l3zDsFGuBrjEVO4xrOoMVHdtTjLephqGVv1h+M
+	 28nM0dQeHRsJrzSOM0e2c4RoDV2eoEuM3xyfBBEQDzeke6rOwpPbbHnDvH2JyaaWer
+	 /fulF9N3lQv/Abg84pdseMqxoWMiab0xH76aBrWRKGuz3d+dKTuWHNM1dkB1J1XGDN
+	 d3Ut+oiZ6IDVQ==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id F1996F4006A;
+	Tue, 17 Feb 2026 05:50:13 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 17 Feb 2026 05:50:13 -0500
+X-ME-Sender: <xms:5UeUaQjfLHGWfnMCzLadRcl7NV6Lgh2VQG4R2MraIMnx6pdRcws2wA>
+    <xme:5UeUaVtyhhmvUshU5ZeHgez7QJqf_hbml6T7NUKuqm3bZVqZRCiqXxYyLOoGWV6pq
+    yjeRDAlidgTMiXOb2BMZJ97iM9Pe61Yq5UZWGBR3iDceCoDi8Nerbs>
+X-ME-Received: <xmr:5UeUab9VznicnhaiR2CDxh5TMnkKzn1pSduDkc3vRFw9eMtphToAuIfDeQvR6w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudelheeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepfdfmihhrhihlucfu
+    hhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqeenuc
+    ggtffrrghtthgvrhhnpeetieekffduudfgheektddvgeetieefteefudefheekffeiteff
+    ffelieeiueevhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudei
+    udduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshh
+    huthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphho
+    uhhtpdhrtghpthhtoheprghruggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtgh
+    hlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgt
+    ohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvhgvrd
+    hhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehthhhomhgr
+    shdrlhgvnhgurggtkhihsegrmhgurdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrgh
+X-ME-Proxy: <xmx:5UeUabYPvhx6m3e7QpQGHKeG-2Zo7ILfFuifgy0PNHx7bc8ZUVqQMA>
+    <xmx:5UeUaRqCSRY-oYkoR1w3ScSdzVxW6yTt71RAkNrmaHUicw9eVW6_pw>
+    <xmx:5UeUaY0IqDT33IclvFQiSBKLpZgs6k86D1xRhkSPybANyKggwigJrw>
+    <xmx:5UeUaRnaoKqbzD5t46BTcOVYQz2zGUJy01zmaTugMEJ9ILF1AlcjhQ>
+    <xmx:5UeUacaRmYXL-qGnbWneWlL7Ro6UxG2SMzA2vJOWubUW4SpUvNj2CFIW>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 05:50:13 -0500 (EST)
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Cc: x86@kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Moritz Sanft <ms@edgeless.systems>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [PATCHv2 0/2] efi: Fix alignenment issues in unaccepted memory code
+Date: Tue, 17 Feb 2026 10:49:55 +0000
+Message-ID: <20260217104957.249340-1-kas@kernel.org>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <102c86dd6fb1a907b7138a437dee00dc@garyguo.net>
-X-Rspamd-Queue-Id: A659020003
-X-Stat-Signature: bj3t7panpxsrzwmsn58e4dp8aqnhg4pc
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1by3tqiszokga8yudfm9qqc14t9ug3nd
+X-Rspamd-Queue-Id: 9088A1A000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1771325230-658626
-X-HE-Meta: U2FsdGVkX18LG/tcXM1DWMc7pADQFR7xC7uUAyRQo0VKqUZ7MKdcZTVT1ZetuItajgqohAZK6WVmIy5BshsDTvHQHm4pea8KtWI6fll8IBRyOvlVXMxT37aoctNuL3SWgynLndQnRzSK6d8PAV3pJJ8uJd4OWGN0LPztIQA2mE3Qvaig2/ODjoCwTIqiFITfo29bxpvtrIbKQk5TMrJlZCmzsPot7SHnROQyHy6lS+f537j84ebkITwzP1QVGJRc7tUmTeMX+r20qs4cU2Dr5+FDlx5o5I90gKd6CL5HVkSpTVIiMELCMtfHJ5TF2GEm3/Amrj/kZRyz/EDMNBVzawag2hZ4ItblJFHoO8nWzvWHMTfcpylsKLlObOtaj7k6txMfqVjcOa5nlj2HHwGEjKZeHS7xDNYehu9lKReqvgHy8DQj4Wb12nJDtQsu+O5+B+L/zNsGMXfcnL2Wm/w0qaIbK2LEYiUsdZDrT603qpM2HWIjlrEsNVbrRO8/GOdyqhpptyd+6I/IQxJGs/cZjvAqsMeOGWGQwg51F+Eo9DNa14YIrMYFMEMJaga42m2OM+kB5xj6FsHZi3x1eFSndjWohT66TVoiNCzPSGn5Qi5EJh87Ll0Ba8qP8BXGACG/BELaoCO6UIUH4Rl85KHmaYzFepDpi/lQ/5wDQY6xZzDgE+IuFb7LmS6JKqQiwzXa/VivDi2R3wgR77EASfdB6l2+/YD6DtmeYO9C+78syL+A8hobfP9+SviXKty5uOM3gjlj4eLOvUT+5tNx3kxRed6Y0fdALp3PzNYbP388vDa0Z6R+5KO/DuDqpfauG8pMyTwOJvAkY1KlX/yjXckWr7g9Oss/CU2Th4QSz0Hay4wIGdKbILZmwuRNHm52M8jqe2yUQmt77qh6vbjvSHZ8uv+cYevGm3fX7HgrcP5jbbWFwvPK5YVRxWqTE4/MjRNvxWWgdiFZCA7uHfygNa4
- iOhLRj85
- fKX0YIwPGHMzeKOH7cSjiaOGecdOfxkBFc6dL4WGnlJumxxUiCxO5TPbGh1FZhOU5EfFPzrJue1WcN2lFUOBjBRX4jqfX8jKEMKxlXZ3SJf/cvl8dSJg1vV8EuaoO3si0tnzsYFTWqZUIaAQoyxcDGZg+99uqlfF6OpetYtn/AEPraY4Y2yPgyloPrPKirN4f5fXojJKxMf0k9g7tNCxQ7+nGKXjxyOxk1frMqIH/exxW/OaEg8HVZqlzDQPhpEjitkE7h9bHanvHN9GttMv0aok3m7WZj3b6OSZrlydO3jEaMIyI9MFh5YzCc6S45zm0KEL/
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771325416-904251
+X-HE-Meta: U2FsdGVkX1/qcL5XRQBdqoG6iKQKRnASAwcRBUIUU2yj3God17erWpqmPsqh9Dyu5ETrkZ2ew/FIRFxmlV0MghZ6FHiErjOiu/x24SNlfosW9uSD14N5o4He+wMc/gV48GbWbnSFlirUgeuW/jdBuTc/VBkexXXGGw5SNuRcz/1RY5cjadTIbKkGufwh659t/FvMPX4boke8Gjuw2rTQUaMbPF4MSlbhR1sIveOfeddI8+TufJjvXGssx8RVDi9yfN2TcHLJWHNJ6VvBJx40n3EskdESCkYvGrGw716FpU8xowWlkOqqM05tYullJ89zxULztnVkT+eGoK4fLRUAlyhthT2esCNC6CgSXQoQPRHJ+oXqprjEHuAHaTJotGvn6FR6U7rsN8Mw+L9Lv2eb9kR4Sg9gmqQhZa+6pqjz/eRK85mengPaJOSFsOEx4j8uUOUwGbslDjmAbThTsfytKUhry2WZrRtkL0Ysf706/qHJ9r8m87RvdOvzbwUGrLKUJVsOGNghmutBI2OMNsVvm00BQ/NwPR3gqMSzb9gpBb/SCRNjyaCDLM/hlG+Mz8W/RylwFV3QNKY59j4jEjnjjlh5ZbODiHKVe05FiAKnDlVzV5ibBMfcBcoZGYP1mTAsL8bBZ2Th74L4qAfj3tYGb+mBoh7lhszenqYNiT4rdaPtAznAGVSdZIdu7RUu4RapkqpoiYgZLVPo4/ffLfoCnysjO1GcVovgWrFsbqR+3f9ZP6rcQCHiGsEbkwd5MFDUMk88CTQtG8/dd5OoDvKNmtczWJStKowCM2vtdaIukyFEE4+3mAKjfT3zW+6f0K7RLREBv2TYFriJdvE2L3pPT6JWYOZliZP4JoFAm2BupOUDF5GhvRqt86EVPEjmhymNVtkhc/r8CKpnM9nDQsiqgooKBURVTDjKG0KwVXZbs2Reh47S0qIel1m5gUnob0b3oXCt8+TPQV1pyyXq+nS
+ WGCr2UBx
+ RHyX81W8WY2/qkmgJ4zwc0vhvko17CVIFmQa6ChccD27Hn+PvQAVsc3I+7A7HYhaBnY4xoRLW4DlIjegNwAtMkEJ/m2MSByQ5WZLpisZnbwkv9QX9bRKH+z/enJxrRurXaaFl9jPX96Kt6AyBh9QGQIFlW0KCZTLGXycBG+Gu+4Mo9SlHcFQg1jvTKqAmp7IDXDzNgp8MOXLl5mcG6PqeX/XKvdy2njKhvy9IXxBoXVSlMU8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,57 +133,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 09:42:37AM +0000, Gary Guo wrote:
-> On 2026-02-17 08:55, Peter Zijlstra wrote:
-> > On Fri, Feb 13, 2026 at 09:44:18AM -0800, Boqun Feng wrote:
-> >> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
-> >> [...]
-> >> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> >> > index 4aebeacb961a2..8ab20126a88cf 100644
-> >> > --- a/rust/kernel/sync/atomic.rs
-> >> > +++ b/rust/kernel/sync/atomic.rs
-> >> > @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
-> >> >          unsafe { from_repr(ret) }
-> >> >      }
-> >> >  }
-> >> > +
-> >> > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-> >> > +///
-> >> 
-> >> Given Greg and Peter's feedback, I think it's better to call out why we
-> >> need `atomic_per_byte_memcpy()` and why we use bindings::memcpy() to
-> >> implement it. How about a paragraph as follow:
-> >> 
-> >> /// This is the concurrent-safe version of `core::ptr::copy()` (the
-> >> /// counterpart of standard C's `memcpy()`). Because of the atomicity at
-> >> /// byte level, when racing with another concurrent atomic access (or
-> >> /// a normal read races with an atomic read) or an external access (from
-> >> /// DMA or userspace), the behavior of this function is defined:
-> >> /// copying memory at the (at least) byte granularity.
-> >> ///
-> >> /// Implementation note: it's currently implemented by kernel's
-> >> /// `memcpy()`, because kernel's `memcpy()` is implemented in a way that
-> >> /// byte-wise atomic memory load/store instructions are used.
-> >> 
-> >> And probably we make it a separate patch for this
-> >> atomic_per_byte_memcpy().
-> >> 
-> >> Thoughts?
-> > 
-> > Its still not making sense; an no kernel memcpy() does not necessarily
-> > use byte wise copy. And please stop talking about 'atomic' here. There
-> > are no atomic ops used (and atomic ops will fundamentally not help).
-> 
-> Byte-wise atomicity means that the guaranteed atomicity is per-byte, not that
-> the copying is per byte. The copying size and order can be arbitrary.
+This series addresses two issues related to unaligned physical addresses
+and sizes when handling EFI unaccepted memory. These issues were
+identified as potential sources of kernel panics in Intel TDX
+environments due to incomplete memory reservation or missing "guard page"
+extensions.
 
-Curious, but how would you implement a memcpy that _isn't_ "atomic" by
-that definition? Are you worried about accessing bytes multiple times,
-or losing dependency ordering, or something else?
+The first patch fixes the reservation of the unaccepted memory table
+itself in efi_config_parse_tables(). It ensures the entire page range
+covering the table is reserved even if the table doesn't start on a
+page boundary.
 
-This all feels like playing tricks to placate the type system for
-something that isn't actually a problem in practice. But I think I'm
-probably at least as confused as Peter :)
+The second patch ensures that memory acceptance requests in
+accept_memory() and range_contains_unaccepted_memory() are page-aligned
+before performing the unit_size alignment check. This prevents skipping
+the necessary "guard page" extension for unaligned ranges, which is
+required to avoid crashes with load_unaligned_zeropad().
 
-Will
+v2:
+ - Fix 'end' calculation in the second patch (Tom)
+
+Kiryl Shutsemau (Meta) (2):
+  efi: Fix reservation of unaccepted memory table
+  efi: Align unaccepted memory range to page boundary
+
+ drivers/firmware/efi/efi.c               |  8 ++++----
+ drivers/firmware/efi/unaccepted_memory.c | 10 ++++++++--
+ 2 files changed, 12 insertions(+), 6 deletions(-)
+
+-- 
+2.51.2
+
 
