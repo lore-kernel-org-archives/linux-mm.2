@@ -4,104 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 572F4E909CF
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B66DE909CF
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:10:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 543A86B0005; Tue, 17 Feb 2026 11:05:02 -0500 (EST)
+	id 4254E6B0093; Tue, 17 Feb 2026 11:10:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5119A6B0089; Tue, 17 Feb 2026 11:05:02 -0500 (EST)
+	id 3BAC96B008C; Tue, 17 Feb 2026 11:10:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41A836B008A; Tue, 17 Feb 2026 11:05:02 -0500 (EST)
+	id 292F86B0093; Tue, 17 Feb 2026 11:10:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CB446B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:05:02 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2BEEC1297
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:05:01 +0000 (UTC)
-X-FDA: 84454422402.14.0B0EF16
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 587CA1A0012
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:04:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=R8wMBAJp;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771344300; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 0E9706B008C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:10:19 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4F4016014C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:10:18 +0000 (UTC)
+X-FDA: 84454435716.08.133A3D8
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf22.hostedemail.com (Postfix) with ESMTP id F2D34C0013
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:10:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=uiYw6nyk;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771344617; a=rsa-sha256;
 	cv=none;
-	b=MS7mYT6siSG/X5OcICQP3RsIA6AYzxg0TsKGaL+2P8oh0cCLCKd4IbWWTF/rrIWg2je3CL
-	iTzJhzX60OhYRNa4Wdscba4iX1JIT1lrsVlS1gHdvlEe9fc3YyS63GRlkGMzl2nCK4rnek
-	ULgSsh0ZhQIFBZFHvf5X/zudi2O9/L4=
+	b=2KKjDgIzsukKXC9w59Dr4izjcYQMGfc0tTOokrmZZTLEOH01S6/lKuLPX4nfwftbJO9Wc4
+	gT9BRHSfnUDrKq8feZRY9j3zAfN4tTZgWOvOWEu32FLug3YyX5V4EW0ix3KAFxZXS8RhaS
+	TTfeY95QssrjoNr5TziEad1/iAIPA+U=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=R8wMBAJp;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=uiYw6nyk;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771344300;
+	s=arc-20220608; t=1771344617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+IdFW9z5sPzmCexebRSE2HsXqwv2gmAkUgD70T1ufAA=;
-	b=qTV1n0IYXIMgv0Yv2qIDYTPz3Dj8CxSD9p3vETbovLKCsslQkfniyUT64x3ftfX1gkbyai
-	LbWqn0glYrJp52Q3LBgIvfb2A78V6fJCitG7sfXpAuVGbJAVeBcm7P8UpuoZ1zK+q6vir1
-	KojGedNAOKyEX9wHXLe4U2GoJPr0ZpE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+IdFW9z5sPzmCexebRSE2HsXqwv2gmAkUgD70T1ufAA=; b=R8wMBAJpLxB+84Dkt3GVtwn69Y
-	OqOrWj8eJgW66DOV8ZsribtgtEX4Z9nCXd2RuWctYDZr8VLW8ObtNy0og4dQ4/1/lKBaUyjpt6R7o
-	OpXLYUcmTn/2oF8l7pwVkEoZnOg4IRrh7P8OidYRoWLvHiYAQXpZ4VPF3nwBC3CGT5lTgRzYXuZfP
-	bBGLUVUS8gxFUFUGBgUUWoE9uGomFvVPuDlSvWgxBBWzeWiyiuILJQNsJqRQc3/YeEgZAlAnynA23
-	eBpKjmEgWe5l+3ClIBIKjd4mG/C6AUxY472ogaxeB9PNR36sAt0bnu9WFyCqio+U6VWpmffM24QVF
-	pUoy1c7w==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsNZF-0000000G8nI-1cec;
-	Tue, 17 Feb 2026 16:04:53 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F2A4D300CDE; Tue, 17 Feb 2026 17:04:51 +0100 (CET)
-Date: Tue, 17 Feb 2026 17:04:51 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7oSA143xwhlpR+YOhY78eAKWPWQQBvPwfH3/iKdQHP0=;
+	b=3IGnO+3UN3ZFvkafNkt5VuHtUbMwZlMN9yqEsl0d9zcm689yfXoqcscdpzOALN8kn4OviZ
+	4p9izWY+f5Qhp/pLjtTbNNQv9EfRtF80q6ss8v6l9NrX2LpondMAjFNqdrE1xHdEmCS6W8
+	GdCLpkG6kXsxzsOLJy26uDBQCkVaHK8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1771344616;
+	bh=7oSA143xwhlpR+YOhY78eAKWPWQQBvPwfH3/iKdQHP0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uiYw6nykBEOTbBd3NOKpiB9QphOhW+vwiQiTPXqz4H8uGpnsbjc+Fq0w8CK2gpp+w
+	 GZvzUdguuC4ODm1aNGDOjtOes6HF7kk+Pbus/xn2lJHwHXjCibwYJaXU9w/7/BmXed
+	 5KxiI0Z6Pu/eByLlsFeEaOZZAHGAnKGyI0ZAs4VxDPKzydNJyb9aiOR6pftCCZD8tY
+	 qv6l7x0uo70/Eh+AB0p8AOjxIxZyBFDhm8NdZ+mclPMp40JETVmaUF5HI8ZnkbP3of
+	 3ZacZfK1ILpW8adMk6795otJmIk5CmdSSEPF0MOAjAnNydDAE25J+dKkIxwwj5eouP
+	 5NgWTC5HqaQ4w==
+Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:1cd8:5cbf:5001:d5b1])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4fFl3X13D5zFT9;
+	Tue, 17 Feb 2026 11:10:16 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260217160451.GA2995752@noisy.programming.kicks-ass.net>
-References: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <kkmXYWYC07oImDD0FJFVCCWl45alQdraRLHoLr7zowZfE0tMz0MmPIpuyEYQRSLjBQqrp_Ch0iR2Rix_g49lNg==@protonmail.internalid>
- <aZRWOIPThLfIZ1Ph@google.com>
- <87ecmjcw2v.fsf@kernel.org>
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [PATCH v17 0/3] Improve proc RSS accuracy
+Date: Tue, 17 Feb 2026 11:10:03 -0500
+Message-Id: <20260217161006.1105611-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ecmjcw2v.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 587CA1A0012
-X-Stat-Signature: 5nny9nixkymsneozitkaspdxpo4s4etd
-X-HE-Tag: 1771344299-532974
-X-HE-Meta: U2FsdGVkX18YphfB996GtapkVDVcwrnwu3Kf8DITnxtC+gTh75cV9Gbigd3pEk9A3heIvX/Z6AzDzL+s1oUy/24SPgtRYH4b9ne30fNHzWo8krKD8tMQVs+221lwnBKKBIga1UafalzozZ/NWE6ZUl2ogI6b1XAYpTUcJm0aeWUINn/u7kR/xKOdzjI6Znk5IjAuUoJmNKlq6fTtggHHdIovGTvgsU43B5tn7Bdyv4NxOfNX4mMGaVqMgmGYPq+4/0XKiCufRpWH+AqGnibkOSgDcxFh/j56axHGr84Z/OBD7LUj6fAkpQGDXN2bIrEV1mzwARFeu8ZEc4xq898R4lNDHxarNs9v00tIDRLtaX9Zc7UvaaDyDZUJo4ZHHUzJcg3o34jrEN+YXhF4UdZ015GriAiX8CcYvNFkuxKiNdcUWcETXJ8YSp3+qr0Y3BeW64vBwO4fuUh7WgdKn8STkoSwG2laxDNRDO/6oJ2TPmFuTuU/wbJoSKybe6qMoWrO6ADnZ1B/GqRZbGhuHgSVj2NWQmCbWyIjNipxDWV45q8aR6mfngib9YVrble27sKOCB/o9ZHgzdRN321koccamD3IEq01sC/sZWjk9BgoRkBuc+DNsnTgPoVPY/d8sEuVIeVVPLmSbGO3zHwDCtPkodO6HOHRomjZcZ+L8NpnRjOMwqu8tuaKvOvGHvloPQzRYcj2q9knuEiaLb9bIhB0Bk3moGY+3EJuRbdt62uRqx2z/gXvOvU+k8DKYY509nNJkFp/oqs2Pnrmiu0XLp34QtTEKcMpmGyrAKvN/cmaKPeDeUxp3uD+q+RyDUAvItClsNNQLvdGFwLM7RsLHI1Z6wCSobfiqShCtkwHEo5JfbrwfB3mlxknJ4rIJrz0v79XywbqVSrUxLO3+6tjkpCNjuOkxb6NF6idFUuKQNUV9mgdPqa9jKC4f8wyb/WWbfK1EKx9IQxut0z7BfTk5zg
- 7pm9Kh3H
- 2QTHkIYsJIsHgGo7zq37zCzt9QCA7hPMGuQMm4cr1F5bvr3tgCTq+6QFlY7Sjy+CJcbOi485E75kg5s2CwdLI7l48AivTixO2TKLflL0Lz37bKseWcRJHxfbl1uYOtXzlX9AK7XMJ7WNcXkJRDDKZNDyBsCUUXoNdLV08AVTFJM9mzgGgS5vTIYEoZh5VKTD1XaVFBLEShrzkggXEK8XPYuguV1GOgeKHCqqI7l94bhKkAy2GPDNIystuhJXCjSZmGt5YrwOVU1Y+IRljc9Q8p6KBI3knBqs4anQk
+X-Rspamd-Queue-Id: F2D34C0013
+X-Stat-Signature: 9yojzytqondazy8hk14dchxsipk9iccy
+X-HE-Tag: 1771344616-213444
+X-HE-Meta: U2FsdGVkX1/GO9e5g4BZ8uuI8J+F07RrQFjnc7FKoQAmj2oEov8Oa3EhB56DpyHgTzXm5M1DDhKsacBVfzLDRzU37pyHaVcCpf4bW+LBxtYTNageQUKnVRCf+Sjjm184zZTzIu17+Wbz2BPGhRZNHhnzuDXdzvSBBv9lajZ4VruQwqakhegJcHSYOxpPpXSRcnDAOwViwcYrH/k5xZ2YSW8sypzVsmoueAQQkVfzDhvrZnLSx1Ed2hWpqUU/Nhf1jFGDZ/8nyTfQF8+w7YWSThGBna+g45qNmbfZGBM94nZzjucqADMExoMNQ6CwdaAlvsHKr4dJJf4Uj8Y5gHQ7Nkfm1b5wyIrFk9RIp2kbPsV+BruzdqOMqmDNkb6+AjEOP82qiD241xK+pc3IrGBjbX24VpyR4AQBNIdFj9KMIL0ofuzSalIiv+NWWImETx+/dy3HnbiBQY/JDAkYfAeAFyiYXbpXWo/Ztgl9HW0LwJquWiwOrgQO+NbiJvfeAD8VfaHHGaYQCJZrc0jHRgaGRh6fLu++D/48BzsHTXv2Hg7Nbf0LOwZ6HbrNisl1bqPNAJuJpR5g3e57iznKjWRnoaP/bn0hMeRyn9mPHiBtoEhIPJ9jGHTwnyoE4/Lbw7McZJeCEMZs79kO3L0idpJscAtrXMXLkGyF+bd+0OY20N4xP+KzSrJlqfAdtS4JQsYxng4i7Y8zSYJZ6FDXWtlPdcsRVn0V6xNRRLSvfL9jIeegNENNYLIf7EMYmw25SeIeM9kPql7PjiwovG5xtu3AQuw2KgrlKVHSTG69B1+ElloWyD6qaN16isYlbCAIa0ZogkwHoyTl2+O1HxV0znKmDpN3f0sAC+T/aM2fV/ScQf9W0wpy03kc1PxzsJ89VjzA2jkM/MTv8UN7ruoRfnkLWhbtCZJHCUTZ1Abx9mzopuWfygCkytgjvVwbVg7Y6hSSU6h64hYWR8b1ruYaCy+
+ xYEZa2Fd
+ MxeBbqxw4ybtZUo6nGXi06kecXo6qrXLiDLmTetf72p08EuuMkA2iap0ZT85xYbMpC5ko5iRquoGlvbwuFp1HLZ612bsE3me6hZPt5xQeXt/JwvW8xFeX4vr3H7kPQWD8wit9rTz5l9oGZXjV1bggfOP2wxASbSDJqdEPayd9fvJW7g5ZYKtXKyeGCpJ0o58fg6r+vXsN6kStgysx2PCfd7xXktm/82DMsDqW+XZjR686U8nQ0hoCXLTgrrlzYNXy3iaO5NU4I9Cdiq7+cOKVEi/IS718a6eIGcKdY+2dce3u7nN7pVkWZlg1lxMx71I3cMk+onS/JZrOUWu9h6xEsgm5+2oLnxB5bySTaKyaAJe3rkKXAxtjVdoPEWF6/cFDeYj2H1dZTJa1txc66lIY9ub5yZ7qoxp+ftGUIWzlgQRsIz4kBMaDGzZi7nIQiKXvhJKGdGXlCmwfhz51LDHQ8L56vv/SEXg1ue4LNzKe7QcPAAdiIjUspeZ4L5HsJNHX8+b+tClUp5zwjMtbd5pjXPElmNn362qU4mM40/iUYIRMvNeO8mVuJqA4dtwsPiOR0RVCV6EYnBkiFO4/VQVcYqegbBkJXUKwEYhY1wA1d9LTreUSQs9DRbSbdJGEXPRBFvuCcDXwa2IIAnLCNa7Q52fJa3ZQ2aT/fPqbKshRmvL3b6zcsPt97ARwHsnXwV6yD5fT+pJDiDSbDov0ZyFX4uFGbhHskP0PFyTdKGmrnQdwjhANETNATic/5GSFh2gYMi7c1sUDxjMLoUbNVgqYH4HF/Xx/kVA2yQWXf8FsGuBHOwIoQ+oEXrneeG5qlhePV/tvy3pqGYqWN6lvR5u8e7vBoADjB7A0G/OSkSXLeLGDd+6VDok0qx8B5FU6BcvusziM4I8gzlvMJGpC+h0UX3HbnDIORz1zAp/DPa6mWx2sy8f4FiFaT+Rgo9gX4PNtiJ35osFcyxjcX9cxoNcPArE626im
+ tPk0ZNpf
+ x59I+UxOgD6vIN7WPkCBKaW7pKz2xjAyCsYnAgdfALL5HUvSZRyaFYbP6JFyb13UI+mUQHoHkFydlgLHf2Lnz97X+cCcErXiihvXndTRGwc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,59 +121,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 02:56:40PM +0100, Andreas Hindborg wrote:
+This series introduces the hierarchical tree counter (hpcc) to increase
+accuracy of approximated RSS counters exposed through proc interfaces.
 
-> I'm processing disk IO in the Rust null block driver. The pages backing
-> the IO requests may be simultaneously mapped to user space, so there is
-> no way to guarantee that there is no concurrent memory operation to/from
-> the memory area. User space programs can do whatever.
-> 
-> I don't have any control flow depending on the data I copy. I just store
-> it somewhere and return it if a read IO for the same sector arrive.
+With a test program hopping across CPUs doing frequent mmap/munmap
+operations, the upstream implementation approximation reaches a 1GB
+delta from the precise value after a few minutes, compared to a 80MB
+delta with the hierarchical counter. The hierarchical counter provides a
+guaranteed maximum approximation inaccuracy of 192MB on that hardware
+topology.
 
-Right, so IIRC the old DIO code used to have this problem. We'd end up
-writing whatever random state to disk if you did DIO of an mmap().
+This series is based on
+commit 0f2acd3148e0 Merge tag 'm68knommu-for-v7.0' of git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu
 
-And if IIRC the current state of things is better in that we ensure the
-mapping becomes RO and we have writes fault and wait until the writeback
-is complete, ensuring things are somewhat more consistent.
+The main changes since v16:
+- Dropped OOM killer 2-pass task selection algorithm.
+- Introduce Kunit tests.
+- Only perform atomic increments of intermediate tree nodes when
+  bits which are significant for carry propagation are being changed.
 
-But you'd better ask Jens or someone that has looked at the various IO
-paths in the past 10 years or so :-)
+Andrew, this is meant to target 7.1 after the 7.0 merge window closes.
 
-> Let me add a bit of context as to why I sent this patch. I am not an
-> expert on the finer details of this subject, so I rely on available
-> expertise in our community. It is my understanding that copying the
-> memory in the situation outlined above, without special consideration
-> (in Rust) would be undefined behavior. Such are the rules of the
-> language. Of course I don't want undefined behavior in the Rust null
-> block driver. When asked how to solve this, the experts suggested
-> defining this byte-wise atomic memory copy function, A function that
-> would have well defined behavior in this particular situation.
+Thanks,
 
-Yeah, so being a C programmer, stepping in UB and tearing up the spec is
-what you do on the daily. Its called reality :-)
+Mathieu
 
-In reality it is *really* hard to have memcpy() not be sane. And if the
-Rust spec doesn't outlaw out-of-thin-air, then the Rust spec is wrong.
-It really is that simple.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
 
-> That seems like a reasonable course of action to me. I don't understand
-> why this is such a big deal, and I don't understand the need to use
-> aggressive language and swearing.
+Mathieu Desnoyers (3):
+  lib: Introduce hierarchical per-cpu counters
+  lib: Test hierarchical per-cpu counters
+  mm: Improve RSS counter approximation accuracy for proc interfaces
 
-Feh, there hardly was any o that :-) Call it cultural differences and
-show how inclusive you are by being open to how other people have
-different norms, whahaha :-)
+ .../core-api/percpu-counter-tree.rst          |  75 ++
+ include/linux/mm.h                            |  19 +-
+ include/linux/mm_types.h                      |  54 +-
+ include/linux/percpu_counter_tree.h           | 367 ++++++++++
+ include/trace/events/kmem.h                   |   2 +-
+ init/main.c                                   |   2 +
+ kernel/fork.c                                 |  22 +-
+ lib/Kconfig                                   |  12 +
+ lib/Makefile                                  |   1 +
+ lib/percpu_counter_tree.c                     | 690 ++++++++++++++++++
+ lib/tests/Makefile                            |   2 +
+ lib/tests/percpu_counter_tree_kunit.c         | 351 +++++++++
+ 12 files changed, 1567 insertions(+), 30 deletions(-)
+ create mode 100644 Documentation/core-api/percpu-counter-tree.rst
+ create mode 100644 include/linux/percpu_counter_tree.h
+ create mode 100644 lib/percpu_counter_tree.c
+ create mode 100644 lib/tests/percpu_counter_tree_kunit.c
 
-I've heard it said that in Scottish 'fucking' is the mere announcement
-of a noun.
-
-> I would suggest that if we are failing to understand each other, or if
-> we are miscommunicating, let's be curious instead of angry. It get's us
-> to where we want to be, way faster. And it is a much more pleasant
-> journey.
-
-/me mumbles something and quickly drops the mic before the PC police get
-here...
+-- 
+2.39.5
 
