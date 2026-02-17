@@ -4,136 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30440E909D4
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56754E909D3
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:32:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A7DA6B0005; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
+	id 76DDD6B0088; Tue, 17 Feb 2026 11:32:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655296B0089; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
+	id 71BFC6B0089; Tue, 17 Feb 2026 11:32:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 536796B008A; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
+	id 61A486B008A; Tue, 17 Feb 2026 11:32:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EFD36B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4BC7B6E9F
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:21:24 +0000 (UTC)
-X-FDA: 84454463688.25.BDF720A
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 02397C0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:21:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b=uQNjVCQC;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="VCu+80/E";
-	spf=pass (imf22.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.155 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771345283; a=rsa-sha256;
-	cv=none;
-	b=RT6ctWPYXkf4Lg9WS9VfAhbJBPsYAZeL8YHbOYjHnmgUPqFOlEnyv1JEV2GRQbUZCqHKPy
-	6dlNLYSFTmKzKb8XP6FlmHOii0OCPc5cN3KNwOhel7ukZUatAU4rVYAgujNOCTs05q9sR/
-	xAZCQUjYWe45U0Yuf7QxMiZ64oMB8kA=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b=uQNjVCQC;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="VCu+80/E";
-	spf=pass (imf22.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.155 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C9F56B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:32:57 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1B595754A
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:32:56 +0000 (UTC)
+X-FDA: 84454492752.29.24232FC
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2B941100003
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:32:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XEGTHLy1;
+	spf=pass (imf14.hostedemail.com: domain of 3NZiUaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3NZiUaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771345283;
+	s=arc-20220608; t=1771345975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TLUeZ5F3tOY10JNA2p1BHXejENCtAykcv1Gn+DC81rE=;
-	b=oP54+YFDJfSNt4XmtiJ5OnJlYE+2rWbLLsiI6iQFvR7ObbffTY5l5w0sZ5KyMbdJewXkXt
-	nwhhzslwVEwP8z3gpM6OnzDZo9p0jY6FDgQZ7belQCEGndaih3MfV8neEks51lTvKSvfuS
-	0cygxn+Hvqavgl9kJsEpmNRnM23Wo44=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A1AED7A02EA;
-	Tue, 17 Feb 2026 11:21:21 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 17 Feb 2026 11:21:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1771345281; x=1771431681; bh=TLUeZ5F3tO
-	Y10JNA2p1BHXejENCtAykcv1Gn+DC81rE=; b=uQNjVCQC9X9F5StIFcthQyB+/2
-	0eLnxGZfhCH22vl+jMjYUp+yjLLa3COMMLt2aQCP8csfgCPyg2kSOt0wSX/7Uadh
-	61+WPDqgA+18YDsiDzkzgzaQsk7WlH8BKPWHTHDPtxd+YEUn7hwBm6O+stecCQon
-	HALw0hlm9qmTQ4BhZvk9z2QXc2Kz1FqNNt1MI1CYjuXpymM8LrlysNqFbQNyQOYs
-	jFJ/5v9PasfB4Z1FnU/T6dnzrm0VwsfVrO8wuI1Xx2Rdzk3b3Bj9iZhzBPNNP02O
-	noXNSIZ43/umgD8Nzp+4rwYKgWCKd4XiONkCdeNmO6k2RGxK7IRMy7KKY7QA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1771345281; x=1771431681; bh=TLUeZ5F3tOY10JNA2p1BHXejENCtAykcv1G
-	n+DC81rE=; b=VCu+80/EZiJyJBT9tjjOEtM6yFvMLCGv9EW1vd+W5dEciLbG6rP
-	FfYTqCh8ditwkjQYLl1vUlRnvBXtAizzDw5eMX+l6gLtEDgL9Xj5/hL/NS5UM1r4
-	rGa5gSTwuBA0DRycbwbwtEstGp88Po/0Jci3/vVwXaONvQAcPOtPD1QnPp3dfq18
-	mojecoiiSWARNGKhdu5xsSykKn5ms/n78+7RylDa+NMMZe1hIZo8pz12YRTaM4nJ
-	+KuTm2GstXT/M6pUMHOTrVS2V1KteDxT+RgBU3wnSGF/QBIEHnwSFgTmqkXI+nPT
-	mhkpjDUcQp8IMGDJ+IZf7CRPFOXB1eednXw==
-X-ME-Sender: <xms:gJWUaU8Ze8qUPt8xOQsz0Q9zLsszNKxxsnotLXScA29zgvvlBWSq-w>
-    <xme:gJWUaToe3rphCXJLI3ZSfnYOHuxhHkjN1IAVByYkHeAxusxFhUEpQVYSQH-4N_TDv
-    E9hKLXYMHJwI6xr47S3Jx9TORONtZsyEQg7h8Hp-lUbiPbdPmxA5A>
-X-ME-Received: <xmr:gJWUafFMIvuHzz0E_aBccRd0yN-PPtysbCneUsPSY41WBNHFfizOIdKChobyeB2Y-RQJjQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtvdefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomheptehnughrvghs
-    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrfgrth
-    htvghrnhepfeffgfelvdffgedtveelgfdtgefghfdvkefggeetieevjeekteduleevjefh
-    ueegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hnughrvghssegrnhgrrhgriigvlhdruggvpdhnsggprhgtphhtthhopeduledpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtoheprhhithgvshhhrdhlihhsthesghhmrghilhdrtg
-    homhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthht
-    ohepughjfihonhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmtghgrhhofheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
-    pdhrtghpthhtohepphgrnhhkrghjrdhrrghghhgrvheslhhinhhugidruggvvhdprhgtph
-    htthhopehojhgrshifihhnsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheplhhs
-    fhdqphgtsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtph
-    htthhopehhtghhsehlshhtrdguvg
-X-ME-Proxy: <xmx:gJWUabmAnc-nIab0cp41AGUcRtQbP9_DCdFRKe_ySSkDIlyHWIr-DA>
-    <xmx:gJWUaT_5oBp-1kCztHEfPRFd63ae6VEh3RqwH_ZjhRni7fmstEVSaw>
-    <xmx:gJWUaUmRXtuzaj5Xo1WrTZjrcFY063eBpLHPxbZI_8ppooOk5dMnaQ>
-    <xmx:gJWUaZm6Y84tWpETdgRGoX3r_vktvIvun1TJF7p66ovN3nU1NOqZpQ>
-    <xmx:gZWUaVl15IfgmJQLO3oi-CdzG1EnzgkN23ZUr7-KzMej6UbqkYLnnVrH>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Feb 2026 11:21:20 -0500 (EST)
-Date: Tue, 17 Feb 2026 11:21:20 -0500
-From: Andres Freund <andres@anarazel.de>
-To: Pankaj Raghav <pankaj.raghav@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, Ojaswin Mujoo <ojaswin@linux.ibm.com>, 
-	linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	lsf-pc@lists.linux-foundation.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
-	hch@lst.de, ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>, 
-	dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, 
-	tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
-Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <ignmsoluhway2yllepl2djcjjaukjijq3ejrlf4uuvh57ru7ur@njkzymuvzfqf>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
- <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
- <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
- <4627056f-2ab9-4ff1-bca0-5d80f8f0bbab@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4627056f-2ab9-4ff1-bca0-5d80f8f0bbab@linux.dev>
-X-Rspamd-Queue-Id: 02397C0005
-X-Stat-Signature: 8wcbuzz54c7984tje4uiz4qwpxrhfrq9
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bJd/jsI1Ahr6ZvCTFiQFd3QULQDNn4kGH1XUoRnqvFw=;
+	b=q1GIWsgP9btUFtRT578qKtpnts4myCyTW05dnbp9oR5TndrxuMjqm57oB0/GnGCmCBEF4Y
+	Yuox1Ek/AC2wkkn5n5X+IuXtpF7qZ0zReoyUPItIAo6dnFMjr4mmm3QuuxEXQEfYIXosQE
+	MTmHX7wjO8xSvBQ0KHm8G+E/ZwYuWgM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XEGTHLy1;
+	spf=pass (imf14.hostedemail.com: domain of 3NZiUaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3NZiUaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771345975; a=rsa-sha256;
+	cv=none;
+	b=s/E6S1MVZahHTA8gKGH9pFNWMu9gg+UA4abmSczRpoKHPY3jh3T6KkFJwfclGOd67qjD5u
+	hB0YqmRpfhJnjvtTWkqQ8esmdQoux84JF5vyjGUcdTe5stTBNhFJnR67ZJuQ1vGiAZw0CU
+	YWIsUExBD6qrlV+hy3TuZV9hHcyfMz0=
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-126e8ee6227so7849389c88.0
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:32:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771345974; x=1771950774; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bJd/jsI1Ahr6ZvCTFiQFd3QULQDNn4kGH1XUoRnqvFw=;
+        b=XEGTHLy1WtVh33MPw07XYqLL0M/pnzSlqCA6udmZ2WOePdwf95tcCP3jQGJFhm7VKP
+         uxyOZ+ZOrWW5nreS+rUQsfsHf9IUSNKFM2LM8qsj3vva/OjI/gv7QrHCLHGlSTLDrUQ2
+         gHeLemFtHs0Y6Hv0Zuo/C2uE81qPK8QLrEMmiXOD2D53ppfOfYDeZoZ+jrIiru6ILrv6
+         hlagm7Lib69rVW+Sown1dQhZ95gr9YVYCXyfA2XNAZTQGXOt0Fx7DmGaxr6X/F0wYqE+
+         zP1WFxTCQMUNN5Y3oxMlpp4FbgzP6tC7f9nQ/bq7m5JEyRTn1DM3gZSoHu0e8C4sNLPh
+         qqFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771345974; x=1771950774;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bJd/jsI1Ahr6ZvCTFiQFd3QULQDNn4kGH1XUoRnqvFw=;
+        b=N1DB7WL5VitAWObP964BM5bB5vb2iMaotTasBVkROCjUOUq0kApwVuei4xTH9Ij+EW
+         HQ2YQEsYhv0KkYs3DsJhXGlrPWZuX17l95OpmB47vRpdWqhXJReXlBSnXGpPNle0FL3O
+         ku6Rm8xjwA3Zg3mQ5gNiD09K6GFqp7Gvk8mdAl5XyCId1MxWJkcfnToBRHplv2wcNmEh
+         bYjKcoUZ2NDOqGsNgHJPB0I8IOB39WUo2D56YAaV5HX+1msT5XH5qO2NKz/fhB96UiaZ
+         jyz/CMxollzOj9g19xNe5Z2KEIztXZFEm+mn3ZW+DMY77Y6kvLAKcID4buNnjlmZ/+RR
+         4VuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUYTPhDiqlAOd1KDGSoQK+NELbnBNAYSnYaw6mcFJ9dWCmTVj59FtVYnuyxTTpQRNa+6AMEEsdRQ==@kvack.org
+X-Gm-Message-State: AOJu0YxdtBbT5TnfThLMrcmnsJ6AnpSpj4sr982AoI6yuqHzwDhWMhaw
+	LG+LxjGfOT/TZ+ME0a371c8kWn+vPKY+TFaw7NlDHRU4tElVPy5Dw33rF5f9CSawoyMjvp8uZzP
+	RgO/zyA==
+X-Received: from dlbur9.prod.google.com ([2002:a05:7022:ea49:b0:127:e77:9377])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6b9f:b0:123:3488:899c
+ with SMTP id a92af1059eb24-1273ae56e4dmr5617423c88.40.1771345973444; Tue, 17
+ Feb 2026 08:32:53 -0800 (PST)
+Date: Tue, 17 Feb 2026 08:32:47 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
+Message-ID: <20260217163250.2326001-1-surenb@google.com>
+Subject: [PATCH v2 0/3] Use killable vma write locking in most places
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2B941100003
+X-Stat-Signature: ddwsu3qdo1cgroreeqow18k9ankuaamm
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771345282-299264
-X-HE-Meta: U2FsdGVkX1/eUPoeMySVthPwg7T+IGmeVINImMK+WNAKHsmbh3b/CCoFm++4AwCjFYOmfLa32D+hogSflJ+hAQ+8Yw9JaR6/dzGsGJVY+giAjTWsvWBs2enH8QyTktnrcs2wzHYZXjzVwSvTRmwjxPs1NR9XJqDMLhoJ8lJLuMkmYQl2dHmQ38/O/UYRISpisqx5sgyZuzfTzFZmi8nxPN748qo4Sp2AUiyIkLhFyUP6H+wNXpopKM6y51huVUi7i8t2XgBucPkrMve8lsQRyu0lmAOhQOynOoQBmyuzRivZhgkfM9VFh1fii2dkt2sZqoFddMxbE55qvC5NscqOpFPmFFSMpFyFL6UdcQHJZevTdDaMXJ7SZ6XzZVk5017gVKhz53C3ElMAVzXaeSir2jbhRsi05aNns/MHuh9FrKg/aCoAkhvboInT4bqPeswU++4qMkfcnT5szPSxco4oXkS93XA+h2xvcXwZF5pX2HWFyNuc0FVGOspAspSlsjw4GYivx8JX5OaQbbkYzxfoZr245WEv/aX12QAaNf7jFqd1kaUpxal9dX9Djp6LpFpe8PqKFvnyd5yiUG/Ur4VIr1G1KATxYNYAQn1T8lex/M+0XzgCQub7rgEh+g/1mw1LaHmxUEYUbScsI3Ol4eyhF8ilBexzWO+YYhBp3rtl07nwLeeNv9lsPbDyY6MHYQJsafQBNACIvL72AwdPnsXClnnhEEUTR//5bGTfyJK0qSPHs3mQop2iW3ZPRNKFDvpyc+jh10/qQSEdf49+k3/TSzxuBLy37oTw4WYZVqjVZk0rLE1YQG4LsgjR2JrKGlHT+5aHc0/qu/TAUBEC/+sbh+rzR7UfgHr/5VpBPNjQA9Ox+YZ/iiAA6HHbfUvvKl1IZ46pmB2XGmubiUCoT1it62SHj3W0Ya/pcP3wblHCobUKMN3cr26LIZ7quGUGE9XcRboNO6C3e4KDzmgZPSr
- zwgnwCig
- CaLBOMEpZWVNQGV23esB9TEEYNP9lBVDa/NZoN0qNFEjZ0nB0jcTDUtAk+UAVmRvPCoiyGNgkl9e0dfva6I5dgChrDv6iiQrRa6NVcsswO66mP/SooW01KVCvlCCP0fHrfG8Rnc3ANd1csEfyP1lEyYy8VNqVw1g7SRV40Lbui1W4I/jBli/+FCFJ4iJCbiDjpZ4y3P4VFnb+k7tK7LM36TZpW2uXxGrAm53rgSwXQRUqf6dAjIcV4Ylm3wT3R0tz6lj/Ylg9JAqk5nlRD7GLbrJhKAXrvgensRgg3tsKrjdrvOBIu61BMEDoFZLqQSAJ50cax+KCXJF6PyoZAlZ6w/LoDiYtOnRE9WnaYzK5HLPaEYqU/Eex1cDmTnMhM0PO1uLW8QvcpT1xD9duid6guQq+GseTb0UJIDsRAB0Wf1ir3K0PZ1HNQchzDA==
+X-HE-Tag: 1771345974-266477
+X-HE-Meta: U2FsdGVkX1/kcIARx7IzBSxdN5kHVkD2CGgMKcdzKZT420RKEKG4oLBMll4ya2c7V0fHieGvbTA6h6Bou0tNFk6StdM40SOloj9Sl9tyRpaj7txKyMeUt2/EhchqdC5/ebRFBLXySqWtIwK+23u2B1f1X2c92FfSgtJPt05OMc3exGCcKipQ3qqCTkKEui5JtJjeP9JgZu/WNBviYGzwF9H5tn1kRw52KtuuND7IOfz1SPKXakTDFI0nHrM+4HOxUdqiT8CTSv8YBTRY4XVkYHemhFgz3/+l4tT0lyqC+y5ZL7cq8vzD0L44tDbdxBZQtloaZ7AEDgEu3rUTaxVmMRmDvIY+3p9Eoz8Oaj/+M0U3RDHCLmc5tFk65t7EX9cp8Glynx2o8IKGhUN51AtIy4Nnz0t/D7x3a4sAJlUidUzeKGJk0y1laV9rJ+57EM0A8fyvKmouLS35pcGVv3SvgvS+2E7aAiIzExokqfXaQv33NSTT+yGG6K12SGl+8loT0BPGTifqJtrxj/iP9GaWEjq62mHaV/JueWGJg9SiQk7zUxKZHUy1PwLddFtPbjknQWurCDkaOay+sjOQBWgIYCjE1DVH7ihx2Jp23y2UMbN63m1WdwjrUvRjJvQmLGK9mEK914++fj3PibjAnmqn2B/3WXRT0APluyt60h3Xpem6MRKXk7LdkHqxv+YkBn7AxedqDF3zqjvu8FuyzPyjZq0vdF2/pxjZYWg5aDjFKZS0xn5tx/hx5OgzNmKrEsltvWazJxNZNLUUdDGT6DTEffaqp78zqijIVZRO1BKGKG8KbbUYp9rLhe03CeOHcw79w/Qf5vMARuWmaQEahQUECBX1bRENEPhPuHA0V0TQXbIfai/5R3lm0PXLdPUOMzfMUxRMpRiiy9VevxNPM8aji3JLV/Oc4VRnbZU1krxnqGXzYVSv3a10WbCwZFuDzpTbtvfcMEQNGd80a75umF8
+ SNa/syMw
+ Mo27+LDFWRPH65S8QxOPfiZgl0U/MHjA0IPayc3WDguXWGx2VZpGsaOX9XOtPp/CIRP0EtfAKHd/e3HABOzAnaUE8UtG2Q32fr/xpRvbVhyP7a23+kYOYNJtLH+CQ11OePOrKcbXa+/QFQbSLriT/1VGbJbypdMo9qC4arG6ytWW1qr70dxBsybDdELJYvCLX1dhEQRpJbNPwcqIUr+n7ZlrVA6+gHaH2H0vrdPkfcCbpvvCVHTLzSgEA7fDGWFTszvrXmyhFPUkqXNkkzyHu3zFjxCbdP4H4KHY5WHDQyRtiG2TKC4Si0LDuB6BBSslo/4nGV01LJhrI7nTuPcM105rqag298XP+tUQWZmyMezjflplR82GGW1azJD++PXSrCSfNT4em9C+EX37C+c1lgurjaMFArdFaDJm8XMOzcxuWre1yLddSpMaQTDXLdwPRaKohSxicpvZrLjAmv2/HXfWxyn4W/Pp0UUQL+78RT5qVFhF4hsKZxAFahZxX+ig+d5+IYo5cm/njowSJuNOQdsA9W5KKgmh7mBYcO5Kp+7aUJ7A0z6mjIjIzaIz6aatDtARvGvP+Igs77LUFgNjPFkie8YPRIHxG4tvtavRkT7VsOJKx/iYvY5r7m7xD3cK0WVerSd9PM5KiojFrTdPiHPXiZ1KhFmt/O2T3ENL7cs8Wkoa2OeIqM8mU8l/T/HxN31SwimOQAW9p2U7lqr202O2U6Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,42 +116,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Now that we have vma_start_write_killable() we can replace most of the
+vma_start_write() calls with it, improving reaction time to the kill
+signal.
 
-On 2026-02-17 13:42:35 +0100, Pankaj Raghav wrote:
-> On 2/17/2026 1:06 PM, Jan Kara wrote:
-> > On Mon 16-02-26 10:45:40, Andres Freund wrote:
-> > > (*) As it turns out, it often seems to improves write throughput as well, if
-> > > writeback is triggered by memory pressure instead of SYNC_FILE_RANGE_WRITE,
-> > > linux seems to often trigger a lot more small random IO.
-> > > 
-> > > > So immediately writing them might be ok as long as we don't remove those
-> > > > pages from the page cache like we do in RWF_UNCACHED.
-> > > 
-> > > Yes, it might.  I actually often have wished for something like a
-> > > RWF_WRITEBACK flag...
-> > 
-> > I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
-> > 
-> 
-> One naive question: semantically what will be the difference between
-> RWF_DSYNC and RWF_WRITETHROUGH? So RWF_DSYNC will be the sync version and
-> RWF_WRITETHOUGH will be an async version where we kick off writeback
-> immediately in the background and return?
+There are several places which are left untouched by this patchset:
 
-Besides sync vs async:
+1. free_pgtables() because function should free page tables even if a
+fatal signal is pending.
 
-If the device has a volatile write cache, RWF_DSYNC will trigger flushes for
-the entire write cache or do FUA writes for just the RWF_DSYNC write. Which
-wouldn't be needed for RWF_WRITETHROUGH, right?
+2. userfaultd code, where some paths calling vma_start_write() can
+handle EINTR and some can't without a deeper code refactoring.
 
-I don't know if there will be devices that have a volatile write cache with
-atomicity support for > 4kB, so maybe that's a distinction that's irrelevant
-in practice for Postgres.  But for 4kB writes, the difference in throughput
-and individual IO latency you get from many SSDs between using FUA writes /
-cache flushes and not doing so are enormous.
+3. vm_flags_{set|mod|clear} require refactoring that involves moving
+vma_start_write() out of these functions and replacing it with
+vma_assert_write_locked(), then callers of these functions should
+lock the vma themselves using vma_start_write_killable() whenever
+possible.
 
-Greetings,
+A cleanup patch is added in the beginning to make later changes more
+readable. The second patch contains most of the changes and the last
+patch contains the changes associated with process_vma_walk_lock()
+error handling.
 
-Andres Freund
+Changes since v1 [1]:
+- Moved vma_start_write_killable() inside set_mempolicy_home_node()
+to be done before mpol_dup(new), per Jann Horn
+- Added error propagation for the missing PGWALK_WRLOCK users and
+split it into a separate patch, per Jann Horn
+- Moved vma_start_write_killable() inside __split_vma() to be done
+before new->vm_ops->open(), per Jann Horn
+- Added a separate patch to change flow control in vma_expand(),
+per Jann Horn
+- Brought back signal_pending() in mm_take_all_locks, per Jann Horn
+- Moved vma_start_write_killable() inside __mmap_new_vma() to be done
+before __mmap_new_file_vma(), per Jann Horn
+- Added Reviewed-by for powerpc, per Ritesh Harjani
+- Added s390 reviewers and the list due to changes in the last patch
+
+[1] https://lore.kernel.org/all/20260209220849.2126486-1-surenb@google.com/
+
+Suren Baghdasaryan (3):
+  mm/vma: cleanup error handling path in vma_expand()
+  mm: replace vma_start_write() with vma_start_write_killable()
+  mm: use vma_start_write_killable() in process_vma_walk_lock()
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+ arch/s390/kvm/kvm-s390.c           |   5 +-
+ arch/s390/mm/gmap.c                |  13 +++-
+ fs/proc/task_mmu.c                 |   7 +-
+ include/linux/mempolicy.h          |   5 +-
+ mm/khugepaged.c                    |   5 +-
+ mm/madvise.c                       |   4 +-
+ mm/memory.c                        |   2 +
+ mm/mempolicy.c                     |  23 +++++--
+ mm/mlock.c                         |  20 ++++--
+ mm/mprotect.c                      |   4 +-
+ mm/mremap.c                        |   4 +-
+ mm/pagewalk.c                      |  20 ++++--
+ mm/vma.c                           | 105 ++++++++++++++++++++---------
+ mm/vma_exec.c                      |   6 +-
+ 15 files changed, 164 insertions(+), 64 deletions(-)
+
+
+base-commit: b08472d036a36893ecf68296d87beb58d21f4357
+-- 
+2.53.0.273.g2a3d683680-goog
+
 
