@@ -4,105 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7532AE909C4
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:50:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30053E909C7
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:51:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3FE86B0005; Tue, 17 Feb 2026 10:50:43 -0500 (EST)
+	id 936996B008A; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1DD76B008A; Tue, 17 Feb 2026 10:50:43 -0500 (EST)
+	id 8F76E6B008C; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C40A96B008C; Tue, 17 Feb 2026 10:50:43 -0500 (EST)
+	id 837666B0092; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AFBAF6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:50:43 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 546308AA92
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:50:43 +0000 (UTC)
-X-FDA: 84454386366.29.174AE45
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 88F27180014
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:50:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ql2CJqSU;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf16.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771343441; a=rsa-sha256;
-	cv=none;
-	b=LNBcy03eLOihLTmF+evc2gn4IPWCUhdBFC4ibXU6NvmHJoZzm40RpaadPYJyldtJKsBcOe
-	Kc9Nzr2BrKdJ1CP7L+MNdUJyE21vF1Zca5YbWXqBBDMa+rZARXYAXLV/5IfpUpBRof/e9U
-	LqJNuxS9Jplknrh9V6UZO3oDfMLCR3g=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ql2CJqSU;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf16.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA566B008A
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 120A71B3F9C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:51:17 +0000 (UTC)
+X-FDA: 84454387794.22.09F0528
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F29411C000A
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:51:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771343441;
+	s=arc-20220608; t=1771343475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rQDqCdZpJsTt3Mav7l+A0YJOBunkeNsBUDQhyvkmVgE=;
-	b=aBrwok1Gia0UWgirlN1CXcooYt7AAeGyIqm3aXL8OxhbNaLLpjqbm5caC1y5IUPbtciNPN
-	xJ3Y4LXQlVXPuzyDCM8RlUVW4P6Xz4bdXTPDSziEOmqSzLlrijSNUCrL0ugmPHNNp0gC/3
-	/vm660rQ2K7HA+Wrfq2WttSEZIckBLc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rQDqCdZpJsTt3Mav7l+A0YJOBunkeNsBUDQhyvkmVgE=; b=Ql2CJqSU5Yjr83Q8ykEBCYZQjd
-	uabSdSC89l8T97xXW/UI4nH4U/1l0Z+uX3AhLNvg2MOoYSDqy/SLvqLyipthOi6sOOOLO+39LLDUJ
-	frJeGRFJOr2Ht55ZEH67hiHtrfGK6BLTNvb90WQc7ELhtFiBK3YCuJZCRBaF0FkaqHKDUIWFkur4o
-	jC+T9zGhFDx/1Bo9V9sqcbtnzzmIXxZIwWWvmzbsIKt8/NwfEkbbMsEBrI9eS4T0sql1Csp4ktAiu
-	LUist8KrrZ5ScXX8Q/almp/7p5jiYP+qwvECOuyYVAyO4z1YkZKawH51TtZ4naiq2naQTcWiEJj3K
-	R4hzrviA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsNLQ-00000004cf9-1Iof;
-	Tue, 17 Feb 2026 15:50:36 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id D7283300CDE; Tue, 17 Feb 2026 16:50:35 +0100 (CET)
-Date: Tue, 17 Feb 2026 16:50:35 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260217155035.GZ2995752@noisy.programming.kicks-ass.net>
-References: <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com>
- <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
- <20260217130024.GP1395416@noisy.programming.kicks-ass.net>
- <DGHADGXGWS45.1A6EHNMKM4SRH@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=111An18P5NPZp2WnP5EsC/86se1pm0vl8ebi8m+L0Is=;
+	b=I5xNgvTFcD+JvSQ2oJPQQCuHphqTTNbr81Gojy95WTtxtuTLTs2tLWY/FFOlOxpHnYHvox
+	5zyPQ7Q+RjhhH36aH/cN+v6g5MiJA5CEsV9ScceMLJPpKm914/fWfcE5xssqHGAjvMMB3n
+	aLlerPTyTGMo7wlOukQ/I8Vu+8jrmik=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771343475; a=rsa-sha256;
+	cv=none;
+	b=ZzxbPEZblN3rPdwTPa3jDtUc6XBnCX85uGk7SWqVaWNncAOxElLoE1BAFKOZO6bRcrm9Co
+	tRYLL1hFQYdoD3eZk8Lyn40QZXxDyOBrZeka2SPfQOY/zXbr938u/i5O81gY/zGjGsAJ0l
+	6LmVnnAUdPTXGU7MNVTOi3rMPUa4FRg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 712C61477;
+	Tue, 17 Feb 2026 07:51:04 -0800 (PST)
+Received: from [10.1.30.186] (XHFQ2J9959.cambridge.arm.com [10.1.30.186])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACF763F632;
+	Tue, 17 Feb 2026 07:51:07 -0800 (PST)
+Message-ID: <0a772015-f9ea-4c7b-a42f-393a2f591f98@arm.com>
+Date: Tue, 17 Feb 2026 15:51:05 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DGHADGXGWS45.1A6EHNMKM4SRH@kernel.org>
-X-Stat-Signature: m9gdc8o7af5yb1zgzi5uox9zk9t6b49g
+User-Agent: Mozilla Thunderbird
+Subject: Re: [LSF/MM/BPF TOPIC] Per-process page size
+Content-Language: en-GB
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Dev Jain <dev.jain@arm.com>
+Cc: lsf-pc@lists.linux-foundation.org, catalin.marinas@arm.com,
+ will@kernel.org, ardb@kernel.org, hughd@google.com,
+ baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260217145026.3880286-1-dev.jain@arm.com>
+ <aZSHvt9Trlq7k7aH@casper.infradead.org>
+ <2e68ef61-dcf2-46b2-913f-14980a104faf@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <2e68ef61-dcf2-46b2-913f-14980a104faf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: cw4sf5owxe3oskgqe4ex4nd6bqrzbkob
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 88F27180014
-X-HE-Tag: 1771343441-953874
-X-HE-Meta: U2FsdGVkX19avJHHaSuTplaFjSNjOH7BWTIWfkduoXqfcVuovJdynqv3ir/4ycdhB5jsTCmIB3hg96URIXcaho6JqqZy66/DTBxJWnSNE7KWyj1nbWSFnqOh3eyGdFifsk0+wyhSrSjNCtnohE9LDG4cGSOFllkyP07nDgJb4ZdwSjZiHDkBvMjpl1oSpCEOBQFpVhQlqnUOlzcZb44YCfSjwIIUFUqyrUMxCcf5XwSqzV9P37Imby5gLhFIaSMysatfPwXWOAlagghYfbNx5m+CdYFF6ceWpj2VQ4rwY/NWdDGkJVKvA2njMYwq6YLpp++nxSgPmEFLbVyzDsM/ordsxc/Slir6hM5T8NpTtK1/lbgaUEbYi1lmRhDpqEn8zN3HhcwD53SDQjE1O0YD6y1B8Gv6D4d+o9miGSWjUPsbtiGnDZ3wNCrSAiqFVmAeukH8FILc9IouIBcN2UUuFSuh/FtCByt4FHaqiQ7xwZwcXM9B06Nhu1Nx1j+/BHTlTkjV9LytmXsC5K5akfYVehiJYLY5NHhQjeqWZ/NW/cMXIOVCNgPfJw95acQYwrgglO9hXa2iF2D09hFZa/x3YrOwYfr6ydVhbVUcC+J3dIbUqgiz/rkWwS7gZkLcqhuNd6kGG0KbPP8e+LiIJDw9Pqm2Wt8uqYrJQXwaPrKQUNhiHsWe/BNGYV1x/M2B+5vKTvFJp+pcQ5FoyKK8GZCa5R/NMmmLL45bnpiQBQxmUcBtvYqzn3c+7kZEpFc8QYEnkxK9P/H/pL41Po1mer0028ZPAlrWjV2LaJufDmm9VolwVlrPCms1GdigsCgGAggPC1SQMpM1e5BabHCUOCDd91AtYF1r9qlJn+1TYiaFNuOdUJjhTSV2vn7QMGB22+XTboTsYKkmXzB0GycgcA/cIhOHTZKfZQeDxorfDj1Z3ukjYPWeigq8DsIf6SHQLu1LiUH87x5cNRzVsKog7RI
- 21T7EQ1j
- U6JqMMKVs1KWd2WKWLCslDZ2Arv9jF43H60ocTCV8ZLBfOJ/QYC2YExF+1RTdB3zAQ5SHgeP2K3ajJ2w9KlNAwWBHrIJIGmJ+frYga63auE4w/E62w1VhXBzn7SBGtYsa25j9LiGPTBcT7oMb5JaizhHVss36aOxWW8Ys82LB3LQ0yDD5WromnAs/EMjQtTdbgnyLdT8dqN21Rrwr5LXsPnquSSm5IykqC3qojHV8jP3lBN4mMAqLLWc6LpIF7D4htYzTbJd1wLEhNlHijIp4Fn8iv9D3KDnuxDMzt39jrAm4UMsrhNMJOwtPlQ==
+X-Rspamd-Queue-Id: F29411C000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771343471-818801
+X-HE-Meta: U2FsdGVkX1+CSkp1D787ytJi0s0RtSTlIC7FAvYSusuDu3AqRp24x9sNBBaY2EDIXcDm37frfmUqvgvulzNXZx4SR/SvWU2Xanbk/Q6kCY+zhig2JqDNA47+YYudlM6376ehOMaVu1faE0jhoQfDLpGxGm+cc3QVvV7LgnsDK42rWqoZuNX06WAksNE5kEZZqO1H4tX/+vHj90hv2tTsAOQ+bJ9O1PiuDzLCVeiL+K/tgAEHRISa33MxH1P2WPnBIuMChhpNixWQr/cUzBK6KtERyKGNkv7o+3+6vb45SJW2E+9rYbIwTKBCRC1zzrm9+3weTwfze2jUE0gCA4oRfgCxyQ1Wi4cpn41JRuN1AGk61wb0uQ3of/16tQpJFVbR9MX/ngjRIeIoOyjyEcINL5sXaEbFDlyg58gvMd9tuj7NtMc8r4MqDjjOTTekyw4hraMQWvHsXbBv2cjJlcREaL6/kfPhCMVBSUefW62EQ14qJpEDvAg9nyl7nNwhQBNcv4HubNxcybI+h47JLJn8OSHr+rfGAg7T9TY1e6qMumo0Ngx5GuEq0nrqp+IOr3Zb71rR5lXbRuPkTw8oKwpGE+CI/xvEIq2o3ahznOKlNk5NnBY2DixxNEEtThUVxlorIOjdivgCTLuCuENgremoQJNyVXL43k9M4CCl/l2B+96vFqaQcYYF2PY/+3kaYaj6cdE7Cezybnr3fG4hA1ZNEnZ3trhqX/cC07zHPE53IOQNdyT7UyQoo1N+99SvWcInBALRvNvz+EwAQZ8qffXptn+lniPNs2oANuVsNHu3eRH/dOZKVaPYvIyCsLaJPXyqU4fI9ePExOv/C+V6gXt05ErocJDkzQao/toNZgGgyPfG/HM9EeXHakATbKJ1caDHx6h2xYiTHOzMm+LIGUAF+bU8VmovxCzZ/S+CIQXj/c6NyIk1OYVpVTBLG8RbdCINzfENXMsVhFdByLiDQe0
+ FNirItcF
+ phbXmuxtx5uZa4Hqr4x+S8VXyJJ40gPqPkP8nfMV37twbWW9T5+8lSiG8pzV/BOHhU7y9dcZc7PfkXBMKQWLqPVESvfLJeCFccvnqhbzbzXNLCmbAmV5/E8WbCVttOfKb/rz353G8lFQ+CuQj8NzXm3xPBUDj03/JfnCGJQTy2tWOGRo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,23 +92,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 02:54:30PM +0100, Danilo Krummrich wrote:
-> On Tue Feb 17, 2026 at 2:00 PM CET, Peter Zijlstra wrote:
-> > Anyway, I don't think something like the below is an unreasonable patch.
-> >
-> > It ensures all accesses to the ptr obtained from kmap_local_*() and
-> > released by kunmap_local() stays inside those two.
+On 17/02/2026 15:30, David Hildenbrand (Arm) wrote:
+> On 2/17/26 16:22, Matthew Wilcox wrote:
+>> On Tue, Feb 17, 2026 at 08:20:26PM +0530, Dev Jain wrote:
+>>> 2. Generic Linux MM enlightenment
+>>> ---------------------------------
+>>> We enlighten the Linux MM code to always hand out memory in the granularity
+>>
+>> Please don't use the term "enlighten".  Tht's used to describe something
+>> something or other with hypervisors.  Come up with a new term or use one
+>> that already exists.
+>>
+>>> File memory
+>>> -----------
+>>> For a growing list of compliant file systems, large folios can already be
+>>> stored in the page cache. There is even a mechanism, introduced to support
+>>> filesystems with block sizes larger than the system page size, to set a
+>>> hard-minimum size for folios on a per-address-space basis. This mechanism
+>>> will be reused and extended to service the per-process page size requirements.
+>>>
+>>> One key reason that the 64K kernel currently consumes considerably more memory
+>>> than the 4K kernel is that Linux systems often have lots of small
+>>> configuration files which each require a page in the page cache. But these
+>>> small files are (likely) only used by certain processes. So, we prefer to
+>>> continue to cache those using a 4K page.
+>>> Therefore, if a process with a larger page size maps a file whose pagecache
+>>> contains smaller folios, we drop them and re-read the range with a folio
+>>> order at least that of the process order.
+>>
+>> That's going to be messy.  I don't have a good idea for solving this
+>> problem, but the page cache really isn't set up to change minimum folio
+>> order while the inode is in use.
+
+Dev has a prototype up and running, but based on your comments, I'm guessing
+there is some horrible race that hasn't hit yet. Would be good to debug the gap
+in understanding at some point!
+
 > 
-> I'd argue that not ensuring this is a feature, as I don't see why we would want
-> to ensure this if !CONFIG_HIGHMEM.
+> In a private conversation I also raised that some situations might make it
+> impossible/hard to drop+re-read.
+> 
+> One example I cam up with if a folio is simply long-term R/O pinned. But I am
+> also not quite sure how mlock might interfere here.
+> 
+> So yes, I think the page cache is likely the one of the most problematic/messy
+> thing to handle.
+> 
 
-Because of the principle of least surprise. For the HIGHMEM case 'ptr'
-only lives between kmap and kunmap and any access must necessarily be
-confined in between those. Having the code behave differently for
-!HIGHMEM is surprising.
+I guess we could side step the problem for now, by initially requiring that the
+minimum folio size always be the maximum supported process page size. That would
+allow us to get something up and running at least. But then we lose the memory
+saving benefits.
 
-> I think this is not about not escaping a critical scope, but about ensuring to
-> read exactly once.
+Of course, I'm conveniently ignoring that not all filesystems support large
+folios, but perhaps we could do a generic fallback adapter with a bounce buffer
+for that case?
 
-It ends up being the same thing.
 
