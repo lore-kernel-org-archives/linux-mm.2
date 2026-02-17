@@ -4,139 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1CBE9A030
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 18:08:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEEAEE9A02D
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 18:19:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F31D86B0089; Tue, 17 Feb 2026 13:08:11 -0500 (EST)
+	id C50D56B0088; Tue, 17 Feb 2026 13:19:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F09806B008C; Tue, 17 Feb 2026 13:08:11 -0500 (EST)
+	id BFF276B0089; Tue, 17 Feb 2026 13:19:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E08F56B0095; Tue, 17 Feb 2026 13:08:11 -0500 (EST)
+	id AE0B76B008A; Tue, 17 Feb 2026 13:19:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF24C6B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:08:11 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 806E71C163
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:08:11 +0000 (UTC)
-X-FDA: 84454732782.27.84FC4F9
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 21AC32000F
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:08:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YxYtXcYk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pzmoYeS5;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YxYtXcYk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pzmoYeS5;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771351689; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BBC76B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:19:14 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17AFAC1427
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:19:14 +0000 (UTC)
+X-FDA: 84454760628.14.4F4B35E
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2D1E6100009
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:19:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BzPMEpUF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771352352; a=rsa-sha256;
 	cv=none;
-	b=L9441dUgjnpV3wg165eS7m/4ispbf+3hnUNHyD/9nhcZWnzfihPS4RSfuj+BjLwRlPpmJK
-	dP0DzfLfr0CaN17OTb9nur64fUzKPC/BF6QTOIbYEk4Luha5/0vzfK1F8992kKibtLvcru
-	931i3IByWZEg4ueBNm6KP6q+7nBKiLM=
+	b=zmD3rmlyOLAWhuyTe7TxEGElioDx46faNbjNHOTBMPExrhpYn89PBMHwI3xNacruhlGMy1
+	JVU2o+IAjzU28sCBITWhmmibdWWNLFBzH7QX235Q7EWIXFT2z1fDT4vk8zbAdGAZGzctjd
+	46c7QfQgPzWffCjX32D4zuVTfVyGY8A=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YxYtXcYk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pzmoYeS5;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YxYtXcYk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pzmoYeS5;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BzPMEpUF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771351689;
+	s=arc-20220608; t=1771352352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QMRBRqEy5Lt71d0fi6QbtK9GcOPq3qLGoaGEImEdO7Y=;
-	b=AyWuDOM3E2AtSBBpNC3Go0DuuNd9plSdNWfjoDQEplG4GkmsH2ipmRAJUxpa0kag4h93bp
-	0LamyknLdzIvY2FVtNwpgyfyj0ioK43fg29QRVQipnOwz+3R7MtmCXwHy0H+qonDN7W5du
-	5xt5RuGbKLuOaKMMPSj2Emfp81IhNl0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5525B5BCC4;
-	Tue, 17 Feb 2026 18:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771351687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMRBRqEy5Lt71d0fi6QbtK9GcOPq3qLGoaGEImEdO7Y=;
-	b=YxYtXcYkJWDtvuaFj0p3ijzqB+XZhjdeAeC4SGGkWhswNKWv028vPwrcGZF623yiHeU9zc
-	xLd1PcsxcHSPq9WLB+0pOson3OtIws5TvdrzVAr2zn8gw+IgXzf4Oc3YrQm1B8R7J5Az37
-	KX0CRgWQrdWz/prYy9BMY5wD7OgaXkg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771351687;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMRBRqEy5Lt71d0fi6QbtK9GcOPq3qLGoaGEImEdO7Y=;
-	b=pzmoYeS5kJ5i988mFmNJmrBvVx727S9NK/PP1BFDrlkikkYRDKnsobZpv6RuKn12iepnls
-	MBKSSLK/uyzqGMAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771351687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMRBRqEy5Lt71d0fi6QbtK9GcOPq3qLGoaGEImEdO7Y=;
-	b=YxYtXcYkJWDtvuaFj0p3ijzqB+XZhjdeAeC4SGGkWhswNKWv028vPwrcGZF623yiHeU9zc
-	xLd1PcsxcHSPq9WLB+0pOson3OtIws5TvdrzVAr2zn8gw+IgXzf4Oc3YrQm1B8R7J5Az37
-	KX0CRgWQrdWz/prYy9BMY5wD7OgaXkg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771351687;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMRBRqEy5Lt71d0fi6QbtK9GcOPq3qLGoaGEImEdO7Y=;
-	b=pzmoYeS5kJ5i988mFmNJmrBvVx727S9NK/PP1BFDrlkikkYRDKnsobZpv6RuKn12iepnls
-	MBKSSLK/uyzqGMAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C7B93EA65;
-	Tue, 17 Feb 2026 18:08:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EGLpGoaulGlzQwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 17 Feb 2026 18:08:06 +0000
-Date: Tue, 17 Feb 2026 18:08:04 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Luke Yang <luyang@redhat.com>
-Cc: Dev Jain <dev.jain@arm.com>, david@kernel.org, surenb@google.com, 
-	jhladky@redhat.com, akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
-	willy@infradead.org, vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions
- since PTE batching (cac1db8c3aad)
-Message-ID: <nfrvygkft42c35ymgupwggrc2hrbatxaa6cn3hjxffrvhaprqg@wjg4ye4uv5go>
-References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
- <c450ee86-4c34-449d-b144-6b4dcb996998@kernel.org>
- <dhoz2eeqdx44sf2epeorxs67v5zohutgxniourumsouz22qbl7@gijuj43edjb4>
- <CAJuCfpHJyHH4=kcQcc_RUPhmLBN8HckoDW0DHiUe+FdQ+tr2NA@mail.gmail.com>
- <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
- <71fbee21-f1b4-4202-a790-5076850d8d00@arm.com>
- <aZSoyjQHvVWFBZdZ@luyang-thinkpadp1gen7.toromso.csb>
+	bh=Dh1AV8MM7TPE9F/5A0BmsGHV5nOWLB3oW6lLOMLZNVw=;
+	b=GVZCFsLGUoZVXYG/qdfdVL/XfgRBb+E4qsSihDIuTaPWCGe/kWSd+f15fTjNQecwlOIL4G
+	eigcEhG3ReyDMKRmbc9XFWZ4jH1gGeuZhQnlQol25dGVGeFW3CwhpRlW1gbG9rW+YghkAi
+	ClicUVKOtrvg7zfnpTAcVIWU4RE3kZM=
+Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-124899ee9d3so76493c88.0
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:19:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771352351; x=1771957151; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Dh1AV8MM7TPE9F/5A0BmsGHV5nOWLB3oW6lLOMLZNVw=;
+        b=BzPMEpUFI4SImytXgPf0P5FCXxsrzzqtvcPsTejDKe0cm37vAjNZXULQw3xLipapBY
+         Dei4UiM1GDvKMmtf9OWFMOZOIuZoSPAz1x3ImFNt6K0yaEziY+u79zL0akFYdmUEEZnB
+         9Uh3ML/uAz5iXBMLdWd8H81n9Vvsm9MoYn7dp5OiTZNao1gUWFXoWaq8A4PKigk9iWPb
+         D7iwJS/fDNIl0mAxIhx6Rn4PjqpvUh1wC4cwPrqdXLVBvJ72Qp2YDicrOQGh4fmC5QCQ
+         mqUh6iBIyuD8ZY4pv5r3voa+9nF/4/Yr3TV2gonzAtBuwKyn0a/GXsbysoe9tif8frK8
+         Oi6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771352351; x=1771957151;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Dh1AV8MM7TPE9F/5A0BmsGHV5nOWLB3oW6lLOMLZNVw=;
+        b=dWU58vEbeIMsXHmiu9Fs18cgWTnZjyi/T4P7zg26Xm6h7WUrYxzcpMVkqUyHqFUoeN
+         2ZuGH2kxWn7qdjMYZtCTxEp9CAKwa1+4/kGu09ym1GdeI9NSJznVku3zyh4KxF1mhGsp
+         Xfs7JSIQvNrFJHn3jNOOYQB48B0Zgz1Q9PH6l9dhk/ycWH9PK1iUQDqX9Qp73qKL8or5
+         TD5vjTxVD+yXqxAfKnvTrD1SZuitoOkzzhVyyhzNm+j5ZfmQhnZcga+GjZEtnT9FR5GP
+         QHYzyFuAIXuXn9WRi07PwJn1Iti8jjE1rKb/FUmLBz2LtXUrdW1M1i2jty+vQM+TZrkf
+         RI2g==
+X-Gm-Message-State: AOJu0YyWJZjiQNEU0YkbX6fxXH2crUGq3XM6AfrBZ1cgvCUl0zLkZJce
+	opVDPtRo24TuoDzxwY6bW84SPwu02zxxGDH+O2SKM9YsIOKM0PbsTgN/
+X-Gm-Gg: AZuq6aKlbmeSkzrsHV9LT7kOJXP2R7GPhwE8KHZKYguz+KhYMg18vn1qJvTFdhZoGh+
+	VMGaAyaBSM/0M/wEIq49Xm3bMzwgMZhWZmp8VMkBxHRgWfu4olFYZzJyCOT/mAZnokIPtjJ+uzz
+	VnK1vSOhqTWqJ6kJ2YxGYRkOd7fLzikopXfK/hTtQesb0NoiJG/DMJoWMezhQrl2vUwCOyVY7vt
+	YfDQgPg3nxeOgjxXfchaFAxalUeEP32N3At31FUxN61NMMK+pET34e5UwTLY++aO+MdwEQ/lu7u
+	qillWnVnyazIYSMpC9afL9/Szse5mrYX2DPcbYk4gzlRToxKQpLC+AalvmFZnArqq9hXpWX2xFf
+	tkHjzdTeNPLkt5IxyynC7mA3if3MyOrjRQkAe8vGRUm9zO8Ag5h68bQ0tog0DrEGaIx0R30AAve
+	4joVk3eXccem4yn/UuucAXNAVn1Kjx1Yqr
+X-Received: by 2002:a05:7022:6709:b0:11a:fb0a:ceca with SMTP id a92af1059eb24-12741015280mr5221990c88.16.1771352350552;
+        Tue, 17 Feb 2026 10:19:10 -0800 (PST)
+Received: from [192.168.4.196] ([73.222.117.172])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c64282sm19689943c88.5.2026.02.17.10.19.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Feb 2026 10:19:10 -0800 (PST)
+Message-ID: <c71f5dc7-d337-4510-96c4-38a83fca29ef@gmail.com>
+Date: Tue, 17 Feb 2026 10:19:08 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aZSoyjQHvVWFBZdZ@luyang-thinkpadp1gen7.toromso.csb>
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
+To: Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, apopple@nvidia.com, akpm@linux-foundation.org,
+ axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org,
+ david@kernel.org, eperezma@redhat.com, gourry@gourry.net,
+ jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
+ Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com,
+ rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
+ rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ surenb@google.com, virtualization@lists.linux.dev, vbabka@suse.cz,
+ weixugc@google.com, xuanzhuo@linux.alibaba.com,
+ ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
+ kernel-team@meta.com
+References: <20260212045109.255391-1-inwardvessel@gmail.com>
+ <20260212045109.255391-2-inwardvessel@gmail.com> <aY2BcIHIARSwwQpo@tiehlicka>
+ <eca7a8f9-173d-4cb0-93b3-df082b8d0c08@gmail.com> <aZLUm95Y-dKkdBWI@tiehlicka>
+ <3fe7c5dd-b184-4421-a21c-bafce6aa7b09@gmail.com> <aZOHIQj3pJ-9dW_0@tiehlicka>
+ <9ae80317-f005-474c-9da1-95462138f3c6@gmail.com> <aZRg_ZSDkbGWv7Vq@tiehlicka>
+Content-Language: en-US
+From: "JP Kobryn (Meta)" <inwardvessel@gmail.com>
+In-Reply-To: <aZRg_ZSDkbGWv7Vq@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 21AC32000F
-X-Stat-Signature: s3p3hpnrwwytfd6exsb83y4ktsjzto1u
-X-HE-Tag: 1771351688-816534
-X-HE-Meta: U2FsdGVkX18Zx5ecnPR16I0+kxytFkVhi5QiJxMCdJhLytdSKqCAg2GDRT2sqsTfg0o0H5Aje4jiIztDNoCGUFg9cucClyA0uIYsuQMRyYF55Zvx6GTl5iVQqMbow1TM499cnEzNNewXKJKkLZBHv7e0+KKCXLAJX2oSExNUMYU/zJtZ+OS5bxbUA7o5K2Pa6rXnRBbuiSlPYTsPHIpXJrdJNKPgpt858kecVK1rCVy+fjsJ0Ys5StlMBg1ysJs4LCwE/PdTyudsqRy0NY5vvsJn8Oc8GVbGkdM/ZgC+xOJLfBexfJic5IXh92usu89FsvcX0LhbZbKVoDlTqrVELweEfFad0xQHwnc/2Z237a5nxtLEPCtVMRoZCgHiMnK23ZIha6yjzTEg+XZxe4cgIeueVMbgKgNukq9ZrqDBaWfXTpUMJfEYi2KBopA9ip0F1Pkll+dGEKyVXYi4y40aYJOjHqrTBwARL4nzQalipq+ixV6ZoWkPS5fLKEq9U11iCO9jzbH15Updvdn1TWPmNgwnPNk4kMnQg33XPtmIkywV7fSW8+27loqtJMlcNz1clnFfmQrUi8uLwsx13/FP+Z3Ou0q7PDjlstttBxP4CSKiLyU9fD2tgO2pdF0O8sEZJWtY8VFMIdpGq0muL32Hc8sHhwl7JyirMHzdNxRMCdOymUOub73tU45R4S8ycIK1v6/pMA8eyVHwMlcha5vlRkn+Vf4NldISvg4aEC6Ao9Z9FSzWuTeCkCiUs+4w99znVfGecrqD7Ca5Ul+tRLyXv0beCUqow4b78YvK1stTKsvZlZdmE8wlT3X3HSAiPHiOgUNlcGZwxukTPm+iUx7LTxe7pC3KfA8hy3uwY23OVNvJOjrg8DMqSIDOOKzckG+RdG9iCWQgMGFRZC569gS9p44nFEawELRaBFW+dFtiB75H9h8zkzlGN7jzOMJaMF/kFY/7E6dANtoISQCF6tc
- BPytQJVH
- 3y/1O7yzn0IUrV1ev2tEKkbYnvKE0BeqFTtTzqn5WPWA3N8XuFdKxYOu1U/+g++mqgpSPFq88NpPPxFjyCGhH7XZg9AySTxCPLMZvfpLGdYn74m1ogoBU9fZnF4VAQwC607qZeCFku4YnpoOsi/SGkFA3Y1thSRQ5bseAyCwKL3VlOClRCoyrccYa+tiR+em+/dXClRNZtZBoykWn758SvKcKbiuRdEMnpHX38Wuwjr3ztJgYCK7SrJpmpFtC7OqeWdk/VfEgNp2Jf7zbNtKVFWH/+vupmp/9y5/IjIaT6Cm05GecUwAN4/PWZ6pyyHk2+z16ydiC873bPNzOLWls8ZSeKkUhE4+5g90NoBOc+i//bibqkX7/yI7hyw==
+X-Rspamd-Queue-Id: 2D1E6100009
+X-Stat-Signature: tn7jatifddgwqzsbr8jcdxiwcthhtjdn
+X-HE-Tag: 1771352351-270065
+X-HE-Meta: U2FsdGVkX1+/1l4y1MOCrG/ykOTeheBWsFjpnK8eKHmv5Cm/H0Nko3/7l28ADJcZWBT8B6+M7QDTX4gmVBIV1x6vVt5AHvWB6wZ3mnBbHCZf/hnJB0kYbtPjnxVxXk+n1/XmC2JbvyVO62zaLV8Jq+RcJbfV6f3SaK5vvsX7DOEGKZyAHSycsH+dDoq28fcKX0knz7VFUnZ+kI95ffP7bp/NPujhElflrTI+hkq3fd97db33HuEfJWCE4qYfDlRdeclDv54noMQ1lkGJ7pzNu+HZU7/OA2fvXklVAxQIxDX8XB6PAjfW6TgmXg6B1U8epG+8folhdGWrlUSchmve/XDjARcYkaHsY3b/XX/fOOJZy3MUshRCcSWSwFaNC1Wv5KqxtT14Jc52kOofcF4EQuHtBY+hhRxy4JI/ttSuf5r7tCXNRKhvIbz5YMIOBccIaZZPvA86r3birJ7wouYCNRVZpCp+L18uC5DzWjt/hEVqHo2MZ/1UgPD/Lgg66P3jm34ER/fFw6GXc+x+M8dkEhxKIGtVM2o8riUqls8XeFgXKPTcnXszTlnYRUMsb7QG882oOVhvg7n3D/9kROR3eEkKWIDxrrF31Flx9xviT8GicmaCLBr5U9rgyfG07mz5HlBBpWx3WQo+x4BV1yGjGmDmneKPjChM9waWT14U6MrQb66eFeL7UIHAmbY3AGiy1jDDBcfilIrRKgSw7axtqKhZb1Zc14FDGSYDVyZqH/AtFdZD1oIfOhfffR3I6s60XEYxXZVhx6A6amhrbiqBcIwTvbTt0m6CAEnbXEHpiPQ7E/MptEkttg0IMgmLkcJOSu86oj2jHAtIybaGelWEK/vO23Y1cq7mSuEdetCojnzUpQBvFIczN3nEA1h3pePVypC6nDQlHvqqJDrYTqr1GFSHmhUApJkxcHe2LH1NhTcDQ55XFnWz5ZQxJpjnOpF49PSyjUJBACAut5dkaEy
+ vc3Tphip
+ GQ1r27RiB3ckSs3UJr390FpnsNGc88r2mlZuIFoePDMObai7eiIj2rwfpYAXfPUrsyjqViolZl1arMiqfLlTSu68hPjinIrTPxnbZjNGL+ZmxqGPnK+JD2+UxPHLSmV7M+n5CWSsIHA10QHt1BagYQemeB1nNeIqYL597RujAB/rdXiQofHG3TnWxqgZmk5wXWwxFjoYP7lSsFyNM8IsfcGZbGFDXI5EVzZH9KBVuLXxdYU21CrhA4lmqBIJn2d6H036S+uJniY50Zt/93Zfa5Pofsi3HwTxtIkEM7RqgPVECcawp/5lqT0+h0WonwgA6I0mQidRpGgyxwuxwN/2nzduVSDimYpouJjKSSz2eEiQ3QsJZ8qgSmJioFV87G1fdHDfP+0TpVAFfIGjJtF1XyJrHl1Z3+8wyWSSfCRfBg6q73WPBHPdLq3DS1skx28BPR2hDKz2atSYUJcMpeTMqbPPNxwWgmz6Qwqn56Vrt0UQ5wzFZ3Oc8k1OjjKsAKx/ImduZGYHy1F4N6qdPWKCdq+qmt+b+YnR0q6XSCJUelVcGBhFHCVkyZKBtSObXLLfmajut1CBNd7TqzAwopnrIVVDHrQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,57 +135,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 12:43:38PM -0500, Luke Yang wrote:
-> On Mon, Feb 16, 2026 at 03:42:08PM +0530, Dev Jain wrote:
-> > 
-> > On 13/02/26 10:56 pm, David Hildenbrand (Arm) wrote:
-> > > On 2/13/26 18:16, Suren Baghdasaryan wrote:
-> > >> On Fri, Feb 13, 2026 at 4:24 PM Pedro Falcato <pfalcato@suse.de> wrote:
-> > >>>
-> > >>> On Fri, Feb 13, 2026 at 04:47:29PM +0100, David Hildenbrand (Arm) wrote:
-> > >>>>
-> > >>>> Hi!
-> > >>>>
-> > >>>>
-> > >>>> Micro-benchmark results are nice. But what is the real word impact?
-> > >>>> IOW, why
-> > >>>> should we care?
-> > >>>
-> > >>> Well, mprotect is widely used in thread spawning, code JITting,
-> > >>> and even process startup. And we don't want to pay for a feature we can't
-> > >>> even use (on x86).
-> > >>
-> > >> I agree. When I straced Android's zygote a while ago, mprotect() came
-> > >> up #30 in the list of most frequently used syscalls and one of the
-> > >> most used mm-related syscalls due to its use during process creation.
-> > >> However, I don't know how often it's used on VMAs of size >=400KiB.
-> > >
-> > > See my point? :) If this is apparently so widespread then finding a real
-> > > reproducer is likely not a problem. Otherwise it's just speculation.
-> > >
-> > > It would also be interesting to know whether the reproducer ran with any
-> > > sort of mTHP enabled or not. 
-> > 
-> > Yes. Luke, can you experiment with the following microbenchmark:
-> > 
-> > https://pastebin.com/3hNtYirT
-> > 
-> > and see if there is an optimization for pte-mapped 2M folios, before and
-> > after the commit?
-> > 
-> > (set transparent_hugepages/enabled=always, hugepages-2048Kb/enabled=always)
+On 2/17/26 4:37 AM, Michal Hocko wrote:
+> On Mon 16-02-26 23:48:42, JP Kobryn (Meta) wrote:
+>> On 2/16/26 1:07 PM, Michal Hocko wrote:
+> [...]
+>>> [*] btw. I believe you misaccount MPOL_LOCAL because you attribute the
+>>> target node even when the allocation is from a remote node from the
+>>> "local" POV.
+>>
+>> It's a good point. The accounting as a result of fallback cases
+>> shouldn't detract from an investigation though. We're interested in the
+>> node(s) under pressure so the relatively few fallback allocations would
+>> land on nodes that are not under pressure and could be viewed as
+>> acceptable noise.
 > 
+> This is really confusing. You simply have no means to tell the
+> difference between the requested node and the real node used so you
+> cannot really say whether the memory pressure is because of fallbacks or
+> your mempolicy configurations. That means that you cannot tell the
+> difference between the source of the pressure and victim of that
+> pressure.
 
-Since you're testing stuff, could you please test the changes in:
-https://github.com/heatd/linux/tree/mprotect-opt ?
-
-Not posting them yet since merge window, etc. Plus I think there's some
-further optimization work we can pull off.
-
-With the benchmark in https://gist.github.com/heatd/25eb2edb601719d22bfb514bcf06a132
-(compiled with g++ -O2 file.cpp -lbenchmark, needs google/benchmark) I've measured
-about an 18% speedup between original vs with patches.
-
--- 
-Pedro
+What if I excluded the fallback cases? I could get the actual node from
+the allocated page and compare against the requested node or node mask.
 
