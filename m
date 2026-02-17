@@ -4,142 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF02E9A03E
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53052E9A03B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:25:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F312A6B00A0; Tue, 17 Feb 2026 15:25:02 -0500 (EST)
+	id 81DBA6B00A2; Tue, 17 Feb 2026 15:25:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDE2B6B00A2; Tue, 17 Feb 2026 15:25:02 -0500 (EST)
+	id 7F5786B00A4; Tue, 17 Feb 2026 15:25:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE18B6B00A3; Tue, 17 Feb 2026 15:25:02 -0500 (EST)
+	id 6F7E56B00A5; Tue, 17 Feb 2026 15:25:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB3246B00A0
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:25:02 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C5DDC0D9C
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:25:02 +0000 (UTC)
-X-FDA: 84455077644.17.2122530
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 828541C0008
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:25:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MxeBpIhS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771359900; a=rsa-sha256;
-	cv=pass;
-	b=P0Ux3fYpXvuxg26NybYVERmTF2CUevtydOYS2IcXRi8yxERO+GyAgxioElU/Grqg4n4m6V
-	lqCCuHLI8rYy8MnbbMp9Q4rD+/18ZpNUQ7Qwixpt6zUctOKvu+zqalACQ/pTxFj0jgI7EX
-	3b7pAtXMDUoNvSOrjohvrOqaRF4R7k0=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MxeBpIhS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C79A6B00A2
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:25:47 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2C54C0D9C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:25:46 +0000 (UTC)
+X-FDA: 84455079492.10.AF9DDB3
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9BB37C0002
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:25:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gDLDFRFs;
+	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771359900;
+	s=arc-20220608; t=1771359944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rDDEWsw4CKwwqmAURAFC3flEZcqum1GMx4CN2UKN8vA=;
-	b=uzLZCUby3HaaNjQmAy3zS41AYDNXyTlFV5+S/Xib4lGKdhit2Ch8wA3quOWWpc1c3INEMR
-	G2qFeGZfwUc1VupitS2TaWJAINWV0mPkghYWyMDtg3knVQ4vsUQeXs6XvdZ5LGG8K1f+aP
-	7S7xObttshdTUC2Ahxitu9RK0M+1W/o=
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1275750cfadso66055c88.1
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:25:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771359899; cv=none;
+	bh=GtDUesrtBPEYQJ391tb6gvhG3srtiHA9wFHnN9DgsNU=;
+	b=37BaGt/KM1DQjiXvBI86YqmudkBzeju2myFMd07DkJY4D7uDJLcarU2NOTP6k5AWrrDOQ0
+	RszAVcp0NrxGPwyw4k/LmiEl9j7yZWt1+bd31oKr1KAo1/66UlJA4M7M0ZrVfPP2vJZdDK
+	wyORrwpCKB1MA/74J4ojTQTJOBI9Lkk=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gDLDFRFs;
+	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771359944; a=rsa-sha256;
+	cv=pass;
+	b=8HgcOYz2xoQI8yDg4vG5zxQeXdLZ+ZRjX+S/M2sx6jf7rks0/DNI3cpNTNh4SkkG7oIzuk
+	fBGEYaquHWyGHVCTaE6syN++/LvRgMpFjiM+dD7zNNctDlRWtBtdNlQUHO+NekOByAcB6Q
+	W59PjZyO7BMmmeY0biKdXxpWJaQsOo0=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso401a12.1
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:25:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771359943; cv=none;
         d=google.com; s=arc-20240605;
-        b=Wo2+TYaOBbIGOpE2lgmzHCu8Knag2qXcDuvaOz7w5dw7YB8KacmNMbmLr6Sp7n/DCe
-         Egi46IPZ6rUTTI1WVQr95l0Vk4+VVOpbaHJJnNIHSh5Rd33bVlfD7zZ07WwnDMec1jov
-         gjF+NRXn9uimeoT+3xJyWFm2Kq6BYOiKf4s9/xfEWHNJWwr+jCkoKSmAdD6cMFcVj2jo
-         20dW+H4uU13McugCskbS4TMd91hN5fTRtlAstO4X/OzmTUn+OrZVKjklorvbwPekrATl
-         4yctIJYbebMhqA6v57g4TgB1CC45Rx8imG3acRaZFHgq3O7UwMUWgA1L8DxHNwimccWc
-         7USQ==
+        b=OLaO/qw8Xx5cv4nuCwoL8KKtvivcCUV7D8tad6YhZqbPqMTnXNO2Q+CEc7dox5fPsE
+         ioEMPUEXpoGFGNyUMAeMBwWU7O+Orp7BO9HSMZrP+Q/ifNWaAWMzIzRxh7PdaF/fGUjo
+         Pt4rUornb8tTBiJ6KQeUf0K5kqG9wECvBosWSo9Vh5jiLJdIGc+u/y33R+BxTz7Cx3Ou
+         +S+earPdq1O3Zscbriqew3PO2Ud04rA4osQOjWZRmzGYzLgxgqyADQlL+7P9dM1Xlc3l
+         TSEjiicN9gTM5V2FEa1Wsl6AwZtVPPDb0JSsPTujoztLM/UR1+039iggg61bX18Lqpss
+         AGpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=rDDEWsw4CKwwqmAURAFC3flEZcqum1GMx4CN2UKN8vA=;
-        fh=30J+V0WbLfavmgAWuOzy+5QH7tHqM5qrnc5V3XS+0mA=;
-        b=Xm5zp64eSzCLVqQJxuefDaGEBhS8wglgpKm0/b+R6biNZFNXQU9GsWJReR3T2nqAul
-         yxFBLKLXEdHdaMalk4Hl495WfNeCgiYCC+jKoB8VPYXtJnIJrSiVd5xKoIeGSidIRd+G
-         u//EENa54oAKYbrLhY/etem81ZM8VZaKEHz2m8ndwcR3q0MrLNUReAjvXHRuELfqOjDX
-         ogc+j2Fj5Xikvy4pQPns19/P4NdeS1YJ5TJpc+5ntlbn0ztLKbwBS6LVKAyGuT8D7kWV
-         VTNtcQ/gMuTsZ5xM5DRneQhgK7gRJU0tZ/bPM7uTapd6DUoqawZ+FDMXoKnLfyLVj9Yx
-         bfeg==;
+        bh=GtDUesrtBPEYQJ391tb6gvhG3srtiHA9wFHnN9DgsNU=;
+        fh=7BhaulyZuXEXWZTfI0+IlVHOG+pzFkaw/zwhAI5zANQ=;
+        b=ZhogHefPwzFK8ZorXTnBwVmqKND1iYp7ocgLDkUA0rdz/hQIG6u0HcR7HB03ZtN66B
+         X37fct5YNUFg5LgUg0kE+aupPgaQgP2QzoCe+cNABktTxCpyjkco4Bs47Z2uxISthqGB
+         ew5nC3olO6XjAmyPitn9yDtqTNPLSZwWpHCRkUEkrWsErP2Llm2LtAp7PxngjwteoRZS
+         LZbCgpyqU+fOVVaWE7dXubHcIhqvHgzkuqiMjH3BhE/K2S9YCfQoajtcTUBk9xahE7Ww
+         VCR9isOQMgVxXcJik/fb6T0yb0y2XoUGQflw3AtubF1OaWxTDUYwLfB25rl9cjvx76EY
+         iTmQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771359899; x=1771964699; darn=kvack.org;
+        d=google.com; s=20230601; t=1771359943; x=1771964743; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rDDEWsw4CKwwqmAURAFC3flEZcqum1GMx4CN2UKN8vA=;
-        b=MxeBpIhS97IxvAefnLlwVpGutw9h60ttIVYAP/iILhtE2t1VYgVu69mcWLZjAV/fMc
-         fzyny3AFhQoad8qErzcJxncrUJLqu8SystjluDlKrRl0CB77EF+cXaLK3EYaRl/b9ZUI
-         ALEzKUw5LDmu67HiQ2btnUO3hF2XSIVrP0x2uu+pRlFYA1SZ6aSc5oPzeFmOOBn6SvLo
-         F0FJ5QzJ6InC+CixbBpBnCfyU3wDOkWggK4GtYtDRN5c8J/Ef7GUBGovhSMdCO9UHetB
-         0dfZkj7fWA/yG4K4GX5hBaAZ5SpymW+SxVvXDriBbsePTMSdeUkOEtPXdlSYnsLK3RjU
-         VNng==
+        bh=GtDUesrtBPEYQJ391tb6gvhG3srtiHA9wFHnN9DgsNU=;
+        b=gDLDFRFs08guWgEwpTwwLRd4vUwp2wDaTvpmSlTI15K0Xmd78EbPHjg3SPbYjJWwQd
+         ukywjv31MQcSslej0JmlSEkmSM15whgF4qXwhMycBf9Fjkid7GDF5UiPbUKOnmLDdLtv
+         6smBhvjlAkD6eTya6COLaIkpWuYxaFJ3WnxKEwFSRmA69DzCx54YdOwHUPoveccISxxw
+         LFU3MjaHPauyohed9rOHoKFwQh3bJostbkP+QQcWomRjqn8UGecqlvgVlWV0UMCNhBXG
+         avYYAp838IscLJsUPD8IYgSCIkPtjZLLuoAjKBIAleEhKq6kgXUgf+8PBfrCGHJvvcl5
+         5h5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771359899; x=1771964699;
+        d=1e100.net; s=20230601; t=1771359943; x=1771964743;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rDDEWsw4CKwwqmAURAFC3flEZcqum1GMx4CN2UKN8vA=;
-        b=vQVFhaO4T7Trd69b5Wl4lrzs6Cn8/8E+i/Q1oXssTsX2JAarpwbgO/JNHVhcHVAxE2
-         +rW/zWuhrzIiQ8rcZvmBjSa2DjiH8PH0Lw0ml94sFvdeChV3n9pETUeYV5M98BKQKFib
-         Kflu7A4Pnk5iZYa2GVc/N+385wAIaSlD4+m9Vd0tTfpoA0OqMY69myYGhqhyxrut3yxu
-         YZucUL+qpqRWdLK84REfAu+HJn0cTmbMGd3i8/Ehgx+mKGWmbwP4+N0tlXZGbzj9dbnd
-         hP4qfvsef4GqUDg8fhaavuxepBFKz9a5AnBWnVoX/wUDPLBMq7rB6y2IYY/Y0FzInWLn
-         sSGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvcIimI0RoDJ2BPtTvsGfy13An7xnoNEbxZEfv4357cTxfe7/XtkBoQ5cdqbvipAdNQo5m+D1WRw==@kvack.org
-X-Gm-Message-State: AOJu0YwRIIwC2KrOfqksrUkNblNtlT+C9W7a4FrJDr85Tt+OGAzyxAWB
-	NZI1sWnLwcn9pgdRZAEWX0wKcZjz1KSLYpD2z3by+lb4d8BStNgEqX687o2a6rEd/lwghuEK1B9
-	LmeIv+SWKKhapHFfaOFR4fm5UAXrb0S4=
-X-Gm-Gg: AZuq6aIqlVJTvOwf25LyTroi577BxU1cWqC//TFH3v7Uch4SUHNmg9xveJe7fCc+yu4
-	WlOwHv5HuFXQtzmImuJ4u85AMsyUeudGR1Jh509KRT4uN56BZfGCvDLWoJ9SgcaG7wO7Ptm+cw5
-	NOs8KPnBe8YdwR5ojx+zk3mOKD036iL9jyQw3bN7iU54bDCLXWSlVsgi8XDhPIvlK5xMZFlsOm0
-	u+p2BLW5sBLBTPpOh8eBvMp5CLl3XctOGZ7/hb7hhyOfVJaQne9xwdWshQ6lUXWhdKDXYRkAiBI
-	6g5PKwtdv14D0E+R3ctjX0xBhMBhbv8i/kmXPsZ2wlLorjXz8ibIHMtEgkmTdnv7cTESZyrdO8k
-	TBu6oQg71LDBMjWBnIce0Emke
-X-Received: by 2002:a05:7300:fd18:b0:2b8:207d:6a7b with SMTP id
- 5a478bee46e88-2baba0117b6mr2978273eec.2.1771359899022; Tue, 17 Feb 2026
- 12:24:59 -0800 (PST)
+        bh=GtDUesrtBPEYQJ391tb6gvhG3srtiHA9wFHnN9DgsNU=;
+        b=dkuBGfR6CReZLsE5z8E5L8bo8pCyb2amMc4yIYuqyv7iYsYtiJwepockjh1g25a52p
+         8qcQBMUsKEHBcALVccB1nwYWbN1SEp3pTmFM5G7IqY2TqC+zK6BntsrTgPzaN5ce9j/p
+         ZuQvexWF3Thd4d3X5tTZdecmiw9h6tgxqhx3xEkXAJmNBNj/znZA3CO24HtUYx7Eq8/5
+         GiF4A04XfkeNxiqklz2BGBIUrMI+F8a8FkJQ5dExfyMkYD7LcnK6B8HZ1l/IO/UXqne8
+         c/bQBAGLjUl+oLhPHz/KLHllBOwaOnIjTb4slydHPKy/LpFpTa+Pf89mH5h4EQLhT1aO
+         p/Og==
+X-Forwarded-Encrypted: i=1; AJvYcCVo0FEsZEEiH/D0Hi961MYeKZsPNQFm197hxNzXsdcyh3vAXFxdCg8WZKSbJw//XrpDiRsNzcqjRQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxrsgujytl9M+5Ig4IzJ2ZMeNUMvn/EBAHLicXRxFeanLOO6hyS
+	pGpzfagvc2J3sv1bCX+IdHjDhBOlFSu5fxh5jV5bH/fZA9G355y4KUnaS5N2wgF6hi4pkFHq+O1
+	Suyw72mcYEm8mOoHGcN4GBS0nx2u28SjuyysQtNt2
+X-Gm-Gg: AZuq6aKTbEInD5b1BL8uxZ8WwnyEaAQ5HuKwGkoczL/as5UdsWEYu5SgP+jUTP7lhO+
+	0P6wZtab6MPA8Qr9qH3qTRboa690XoaC8Q6E3A4n6/T+SQ+b4fs9+TLhxIyvdv0Yq0LqR1uF8oX
+	LXXA6lpiptF+njbyCXzXHC+yhLnpwdKus7EMRLUi3Glu+00tlxcK/IMPq/GrKhFAW8Q1tNFBSOg
+	6Ypnm+s5nwgjeSxqWOKUVWBbTmLr5qiZdoH+6TShEU5ZhNpE+mNm1IybowsnX36d7uYsUXCqMBy
+	sUL5zdv2w+YQe+1rquSwlhv53XH2OXZcm+I77Q==
+X-Received: by 2002:aa7:d783:0:b0:649:8aa1:e524 with SMTP id
+ 4fb4d7f45d1cf-65c14a4eca3mr72486a12.11.1771359942517; Tue, 17 Feb 2026
+ 12:25:42 -0800 (PST)
 MIME-Version: 1.0
 References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
- <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com> <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
- <CAH5fLgj2+XUzsuAnvwL=dc=5yOZvXCapBWRbFGwJAX2v5Wk4dw@mail.gmail.com>
-In-Reply-To: <CAH5fLgj2+XUzsuAnvwL=dc=5yOZvXCapBWRbFGwJAX2v5Wk4dw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Feb 2026 21:24:46 +0100
-X-Gm-Features: AaiRm53pWPPTZa9dK4uHNNQw0RmQntvFMMvdgsDwpfgj0y84MDt3F3iy0Ue6yrI
-Message-ID: <CANiq72mw7PSEcRLPXWz3UdsE7pY9EdYZNYSEewertFx-WzKusQ@mail.gmail.com>
+ <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com> <CAG48ez2mUQ-D3jpPbvdZzcOz16LMXRnzcudOZsfdoftBF5yvPA@mail.gmail.com>
+ <CAH5fLghCCAvOi+xRtPnD4ToQmyignjkn-PJ6xG6Y1DAUHgBKVA@mail.gmail.com>
+In-Reply-To: <CAH5fLghCCAvOi+xRtPnD4ToQmyignjkn-PJ6xG6Y1DAUHgBKVA@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 17 Feb 2026 21:25:05 +0100
+X-Gm-Features: AaiRm51ZqfX4kH-xRbv10dGnYSdGZ5HZG-5FCY7NO40gcIrlsCslxHPpR6pvA5c
+Message-ID: <CAG48ez1vuJMmVyFw9BLePaMskOJ0ig3LwZw5FL34RFAjqyOW5w@mail.gmail.com>
 Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
-To: Alice Ryhl <aliceryhl@google.com>, Tamir Duberstein <tamird@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Carlos Llamas <cmllamas@google.com>, Jann Horn <jannh@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 828541C0008
-X-Stat-Signature: 9wjyb3ssqa1gbfdsx9e4ra7d3f97o1bo
-X-HE-Tag: 1771359900-284911
-X-HE-Meta: U2FsdGVkX18wstRRi3gJRDEJL7m6Hakll4YAQEtKL5BEF6OKHsTBtRCbd5uD7dEyUpleDXCKn944G9Gtc4LMK4shbvFhx8+wMzEjWYG8H9cMv8ZRQjeTzV5CasHxq1j5Ei6P+Nu7spDzfVbHmJOWaikWs+PziGsvbyxLQfz9Ukiq78vYvV0t+E3/Vnf5tQUwv5B9njK5j+OdDbj4ZKK5WJ4pBK1KfsnIJs6VD00tGlEncbDnDPK6T2bizbbf8ECPPRs7MF5FsCybI0pXBEmy6RLWC3m7xIOIlb6gkOfPbCnOjR+EW49ZVxCGMja+claaUn5oi2ylGO7o9D2znBWXvyB8nlGGxAMDBL5YRQajs1DYtqwvwi3KD2Djw3NKMr4x054pf7evyYnB6IwxHTWEolPVgZZt8ldGfm2AEUe/sqyEejz8+rgewSS5CmxlwajDuv+/82pYaqym+HtuHkoAUMFJUnkk0XBmOxJCQjfOSzVci8AefYVb8fnhc9FxWPqWoudakSiYxlferb7EU39lHPPow19zqGNf5mfQ1cBwWGsyqJnG/6tHsAzh9GerwATPoscCFBq/OrvXJiUU+kh1QX2xh5noW8Nrc7MtSI2+TqRo3xiwR1Mdo0W0lWPx3ljr1nUTK2SkFtNsIt3MHCHpnKdoGJ8rrXA+noB4q8cPwLtLNSpuSP+RlHKX4ohJlDDtjOMu7huUmZXBgddc3LJbbr4SwiUgzf7n4arQ7aEkIHKTA4KUYxLjYF6ismgVxOctUYKmEZ8BBZqaiEvqwOVXqpJRWEAJPNp4YZ8zQ7+52bLeWgsAKJALWbERZKm6M0hOFviP8/SNNuPmY5VZAhRSBk1PV5/3ZbMS2CqJqqBDkiFIXCDxG+7Vj4F7avldmWaw1bjJNvEpt9kKDyNMX0xRa5rSoGqBJu5SmnzECjrgp2/iNl831HMaxjLmRk0JzBs3OQmxYhtaInZ/+pHcDRT
- SIcnRqOx
- lqKXX7YRc2rvTIbA/sLGd78Zl1slpWxxCoalK4PIezeVaqG9e3WpMBluJ14Ylr1ayJn8frhXB2tVT08nJpsOdBzHKC3geRlFsn2yqc7txeGIpdnFzdmO89Tcu7dcqAqDk+FUmQjSkW3tp7294NAxvI2Vf0RS9+jUAXXiou8SJdMG2QByHIUOJOU0SH0zegwQyUoSK/8Kmq0Td0clKo2zP8yiI1fHUbU9/te1FWyBUrMfkB8MhFDfSJbsBXvuS8fXZidMKv3Vrs16hTO/KoZl6PYQaSOgmg65obfo8DLdgrR0naO68KPbApHpxu7IDuZ2hHKI/Bgg+rghbsXgaJ6oME309TWfxevSxqEK266MpkCIyFlP4XqYLE7jMGkUYqvPSEN5AhnFIHHwuuUmib0/cBxXGjxiXyy1mtN2qNyBwMV+rfd/w1ZbgPXLbFxso28n59tcTGtxqzCsgwVj1Ff6VvUgUOWDumVU7/cPX09I0hO6HaoO02hVytmuPaw==
+X-Rspamd-Queue-Id: 9BB37C0002
+X-Stat-Signature: 1ajejb61ifp7pwrhkrx5zyqy1r7pf5it
+X-HE-Tag: 1771359944-406306
+X-HE-Meta: U2FsdGVkX1/4IPpRww0UHSPZA/9K618hhr3oBfJGlN7ChYwJ4JpATp+hI+KhLCgHSlptJGNnpxykD6UPjv+VMqXgqcDjryoLMzTWhFoFEidayCrg5ZKnhnyAvaP+LNtc0YFqNN60ZzDqz1nzkCDsho6o7ZV4ndqWjKJRNN39KLTz6xJNs0rpAjRTqo1rj4MId0Ep80yvOID2DJcNeaMcvTUOo1Zor4Ee7mPAxwX9bEvrFIazrnrLGAx/RB27rJ9Y7K6zYQlAe61aQHdfzcdfSqvy4pmV0ldjlfedtiI0CxtIwa+2oCzrqSPzqKZZXJnqI+CtIr8a91KifcJj71SKv5rmDEcFR5Pm3cAcq+MSVpDn38PKtwddrwLI7/exUYthotahw9R/nAnjWo2TICrNhXlqIIeDYldg/Gm9umGwaFIB6qHihNU/P55yQBpWwOtHufhqyNUw6/KXY09dnWrVQNJVHTim5s6o5SUPhuGMgyntKebLjJhV/YSiFl4IBEbRfJlU2cqgSkSTmhmFRHncB+eLOQK2JwybGGUii2N+JO6dHhla5pjmuvHFIAkYsi7AfyhSoINbgVXPJpO/yoEApYb1vne9AR2xTYbLomQ/+ZdRMKalcQK0iYF7T9X40xNdqU3dmy0Xhu/b9RSBowT36IRjeeaXM8r3Q6K066t7K6Q1ml9MnqGP1AbZGsU4Z1Gkui2wo/EM28A8ST5WEhJKwpYeSE1tFpBapparuVU85s/SuNlgOdXPlVfH3jhWyM4uJ7FRRt889UkSTfVuorb9rTnYPy+0ir7Q8f2usO69m9LEDqwrm7xZafbnjuGL7kaaDM3I8Psftn1emYUHGwvjRu4s8lQ4UMEfiP4NHEPOyWgAimsauXvC9VhqOO9BIhMVacz6KaLmgY1uYKsxSmACVMIf/SblNblI311F4AJM6b7BBalqV1m/b1VNzgWmq5N3AwRQqIhkv706BAx60U1
+ sEbddQcs
+ LZW31oWSdUnkIVFSsN6vGZpDQP/FslvEHkPgFk67nI3IG5heA032RSFxa2DCBkrFeSceXCe3E/00aFubNqY91GW87vWHaL5MwC+RIltGUKhK9BmVYyXxUFlY1Kr5aM4oBNKX1J8IAm0wJdfrOg1r0qjjm87tTUR32DBmEvGBraFzxqwiAQ9fzkB9CQsy6N/B6u8+R6JD5JTCjxlZTajcSlRPMHL6SDScLTnl5ro5oPuNi0bMMo0w2IVuzaZjABxPz36jjY9ebvlfRrcym8gCjU5JAzSASgmsIWAsKY/B/Jun83Vui6RRZEt9Q4Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,20 +147,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 9:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+On Tue, Feb 17, 2026 at 9:15=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
 rote:
+> On Tue, Feb 17, 2026 at 5:55=E2=80=AFPM Jann Horn <jannh@google.com> wrot=
+e:
+> > On Tue, Feb 17, 2026 at 3:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.co=
+m> wrote:
+> > > When installing missing pages (or zapping them), Rust Binder will loo=
+k
+> > > up the vma in the mm by address, and then call vm_insert_page (or
+> > > zap_page_range_single). However, if the vma is closed and replaced wi=
+th
+> > > a different vma at the same address, this can lead to Rust Binder
+> > > installing pages into the wrong vma.
+> > >
+> > > By installing the page into a writable vma, it becomes possible to wr=
+ite
+> > > to your own binder pages, which are normally read-only. Although you'=
+re
+> > > not supposed to be able to write to those pages, the intent behind th=
+e
+> > > design of Rust Binder is that even if you get that ability, it should=
+ not
+> > > lead to anything bad. Unfortunately, due to another bug, that is not =
+the
+> > > case.
+> > >
+> > > To fix this, I will store a pointer in vm_private_data and check that
+> > > the vma returned by vma_lookup() has the right vm_ops and
+> > > vm_private_data before trying to use the vma. This should ensure that
+> > > Rust Binder will refuse to interact with any other VMA. I will follow=
+ up
+> > > this patch with more vma abstractions to avoid this unsafe access to
+> > > vm_ops and vm_private_data, but for now I'd like to start with the
+> > > simplest possible fix.
+> >
+> > This sounds good to me.
+> > (Userspace could still trick Rust Binder into accessing the VMA at the
+> > wrong offset, but nothing will go wrong in that case.)
 >
-> How do you propose to reword "I will follow up this patch with"?
+> Vma is tricky stuff.
 
-What I would have written is perhaps something like:
+Well, they try to give userspace a lot of flexibility, and then things
+like the rmap are supposed to abstract away this complexity so that
+normal drivers don't have to deal with this complexity...
 
-  "The plan is to introduce more vma abstractions to ..., but for now
-let's start with ..."
+> I think if I add the vm_ops->close callback this one isn't possible anymo=
+re?
 
-> Honestly I think this one is easier to read as-is.
-
-Cc'ing Tamir for that -- he may be interested.
-
-Cheers,
-Miguel
+Yeah. (Or you could explicitly check that vma_pgoff_offset(vma,
+virtual_address) returns the expected index. But either way, from a
+security perspective it shouldn't really matter.)
 
