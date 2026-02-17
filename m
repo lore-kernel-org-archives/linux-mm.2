@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5714E6816B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FCE1E68172
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28FB16B0005; Tue, 17 Feb 2026 07:09:30 -0500 (EST)
+	id CEAB96B0089; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 213366B0089; Tue, 17 Feb 2026 07:09:30 -0500 (EST)
+	id C95546B008A; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1204B6B008A; Tue, 17 Feb 2026 07:09:30 -0500 (EST)
+	id BC2AE6B008C; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F1B1F6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:09:29 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99208C0317
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:09:29 +0000 (UTC)
-X-FDA: 84453828858.16.295DCE6
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A8D68180004
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:09:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MPK6KMf3;
-	spf=none (imf16.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id AB5066B0089
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CC80140145
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:09:54 +0000 (UTC)
+X-FDA: 84453829908.21.E7363DF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A862BC000D
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:09:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4u74F0P;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771330168;
+	s=arc-20220608; t=1771330192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jvEel49cPhINkQJB/RYDPEN8+H/iihzi1tok5yGSLhs=;
-	b=naa3BI7dtJo0B7jQz7xVl7Ejde57sl/tfm2FrTKflAs9kmnHkxT3gTBmY39rZsBb4FiL4g
-	ftTHTFWLX4at3PyyZsKgqizfgMV9wDT/9NTotLHLs62ORv3nmGOlpSqWVyzu1px+EwQlLa
-	Ww3dArUtDazTM+fbSl5pGbThZdxK518=
+	bh=2os0qpogUwB/586XJ8r+5Xq6E3I48Z5gBFg3QuVGWis=;
+	b=L1ireOOf/HmkFShtK/EbudOvGLznIEZ9fBIv4+fSKVGES2gpF4ApVLQ1OkYEcShdyfnL7U
+	oaY9sr/jS083p4V/uCNH6PLNzrMXrs6ngUpKMl9orwyfMO6BJV0ozpjVZLgwkIZ4c+rfMN
+	l4xE+qfJYKkp4KWbeoQXTXZdUhSBwB0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MPK6KMf3;
-	spf=none (imf16.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771330168; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4u74F0P;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771330192; a=rsa-sha256;
 	cv=none;
-	b=64waTfOrMDzTM5c4vJAe5ezlxCmdhKoad8uRUBOMOYKGxzkqEDoggg+i5tFRFcpc3/exfA
-	SsZLq7YChVOP/EQO3yeIat2yuU0dVipSDfYHkEPGHjFL92XsPAY/6QqWzDbeUDiwB7F02n
-	xIIAQz8HH7F38R7POv0OXR7Q56hzffQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jvEel49cPhINkQJB/RYDPEN8+H/iihzi1tok5yGSLhs=; b=MPK6KMf36rUidU04wIkIULJNkg
-	wqfIh9NiF7oktdP1GXOI/kSLqJYeeTM8tAdPyi71S6scD5YbFxDGnqgRgsG8FCrKCC8poe38JdCv2
-	wMGitaH2wkK4d27o7e6W1eQExGw86oRXWFavKBmnDwM95FGy/nHOw+C2hTJlmjSLUdammh7BoPVFm
-	6PK87giPV/6yXnfLE9uLoKD8QLJCPy7wpHp0Ff8qpBG9I9/+5VQP3rnTD5a2+jKsqSTnXR4YWLONE
-	tjLSEQ9xEohl721UoPz6qpFS5wh5lmnUr81+KfMv3thlMGdIloPTd3g6n/QyuDU0cbLA3aucMRTA7
-	rLSvBBSw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsJtJ-00000004OTv-2d0U;
-	Tue, 17 Feb 2026 12:09:21 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 77B5A300CDE; Tue, 17 Feb 2026 13:09:20 +0100 (CET)
-Date: Tue, 17 Feb 2026 13:09:20 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
-References: <2026021326-stark-coastline-c5bc@gregkh>
- <aY9PBfx3RRV7rXZ5@tardis.local>
- <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com>
+	b=Wm9BhsU+w+tiyrhsS5F6B1PHw4vxjROZPq3NWyUPVholMeE+UAHamjSZqZI+4FspjJA/VT
+	LCNOEQAk0DUPa7uQ8q+bPSBWNFR/Q/0DX8kwlsPTLpAPliQ2F6F0I1O8bj3zTEWgGaOlvy
+	ZuwgtL2vABZIJg7c0jWGgP6YpoTvApM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1293061334;
+	Tue, 17 Feb 2026 12:09:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4440C19424;
+	Tue, 17 Feb 2026 12:09:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771330191;
+	bh=+dDmsgNTxJ4xXTywjhKRtMBQjRXfDi/GXnhG2R1uzpk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p4u74F0P/z9HalXrm+ZixCxZNji6V6YooDDD5uK35jvkP46JJtGnvBx4yaiI6EHMk
+	 md3+r4ms/xzWet1PaiK6q991NEZYvXNaBfObeUDUwPfFu3Lsda2xnpwOp1pUthOIKd
+	 9OLHmc60NI36GALylCAAaXFHhYdbI07CrlLwVeSGM56eSNDPPawPkoNqHEaWk7qL4W
+	 +/xyEviB4zlY16qq1mWwYnFoo2aFY5mIoiCcjHoGamILeQXpfwoEL+waJRQKUBlls+
+	 fR6ORgECOWZxyAa5dM0CC8h7WErlFPiHmZS59GHgz75MGoXJFq6kpPGg3ZpC807dks
+	 l1bTGgNJjKbmg==
+Date: Tue, 17 Feb 2026 14:09:44 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
+	linux-efi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Moritz Sanft <ms@edgeless.systems>
+Subject: Re: [PATCHv2 0/2] efi: Fix alignenment issues in unaccepted memory
+ code
+Message-ID: <aZRaiCidlfNtPG17@kernel.org>
+References: <20260217104957.249340-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZRWOIPThLfIZ1Ph@google.com>
+In-Reply-To: <20260217104957.249340-1-kas@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A8D68180004
-X-Stat-Signature: 5ngpt4rhpsojmapme897z9nrfuu46bsq
-X-HE-Tag: 1771330167-236327
-X-HE-Meta: U2FsdGVkX19iPzVt+VAL9h3GpDmb5fwthgZRvsR9rAxS53zDmoUd0XYVB8zxJlDT7nKtHuzkvKQGSb3kCncLMayBjtXpVw5jWzrLa58T3bCYihFYslp7a7hohnG/ZocWLctLRIwuDLt+KpFnE9JJd9ihHUlUplqGkkoHqGbSkq1iYhE/I3ViQKM83CHWpFqiLMAAoCn4d0vBBINwWU7VZZ/FWTmZMDVZNyiJUAcdxxz7UtuYpt/08/4QBDTy/8Er1XvDXmXLErj0jQVRlaYJAVZU4JABP6l4Y7KkAj+j2FditasFEUkDbymleZoIJn4ye9BNRQ7M6tFvsfcvjmxu0TSY7yIl68lbjeoFDAwAa2uw29FrW79X39cbqJP5MA5UROhY4VPd8Geox2nXeUT/TGTe9TyibDRRdeAImysLwHfBv6UlQt9YSsGpKJdnOqodOZck5U9lmbBbke9ERO6lq9Kwl07HjfkXZk/ew8PfJMNY+dYkZhGeZRkPehKZvrin9hCZd9//8A59DbI8snKdHCKR995yj57QqtqVTQI6bHPdGI2S4RuHDC0oWszol/KUNWmAiN+yxJedAERz1Mkp3ZEWDputV55Br9iTjEoVfACyxPL1tPDH0f1tPqKm8mlz5mcLjoIHbPjQMAuzrEW/1YSrLqrgukxA0+7M/mYDm+4gmN7zqU+yrHfRrGJKM13RgwZgCSjd2UE2IB25OmRIzNLsorOOtgdV3ZDAUG9rqhW8gKv0mIOL+7vNttXiYA+SbKrAM6NT46LRgly4oycw9LaFHvPY0Uvj77F6jD8TG5CXyEsCNVOP+RjhYmfsIvYUY6/sHrntuxCNj8Y0mPfMjhY76C92fh3Qt6l3aJ7j05qdDLPPI696MdcDWxwtOjFOfDhSH4E1wkKRs+dsFc1n7i7hSr9HPxwLcfid1a31lXJfuDjUdHmFPfdAB1vC05Po+G6wuKau4hypMIzw1ek
- ByKd1Nos
- y6aIENDpgjHq0BCx6o7lIKJ52/vc9KZ/1wFDF7TR1C1jY1UjAwh1WuK9D8NtDxyWkE4v/GVARrwUYJXpJHAsarPFIVWik7Z+gEe9EY2eOcnwzoOf905IwrxqPyuMQJBMGK8LzTBUVswRgP6McgcbGu2xolrxZeywNwyz/S01WKHVn0u216NDkx+VRTAdcrkqeRTmru6GlYGW1ManYPm0jfYc5ZJllkYcBZmmWU8VCaL34EAHxC7yXsuv92u0xQSlIE/E2hydX38KcNM5n1+ML/GzK1tDQWj036OPf
+X-Rspamd-Queue-Id: A862BC000D
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5eft1m7xrqic76pgummdqjcacf9uw1o3
+X-HE-Tag: 1771330192-611936
+X-HE-Meta: U2FsdGVkX18hcTZ4ORjYzjkBtA0j5dB7RHS2CpWpjNlKjsln5q+YFB0bDDjC+wg6h/8pEgcQFHuLfap4Erk7a0bckT1624cdOjYt6IFFhUgcOL76iei/3tA3aoFHXkgtg2z2sRV1AXSEd/e7dEBLbOCt8Vz1S92/ey/XdZy19AHVdbGVncn1dndBLM5sbcUEbZ+A3QJgZif2PLcUr51LPOCuyIAUE42YAz6nLCEU+DYu4etGIqdcSxQs5Eqv7N3DskyJZ2tDr+Iq3sImn3/BpuWqRzcyxq868S9Rysuo9ipWZw9GSD3FkDkWkBk2WwWya4f9vmbVD7IYjiP+O8/zZC7K+9On9ZhEJM8xLUhEkcc7zHCjNlvcvoDzA0lzpdyhypxb152zSo8XbyXVq7uKobkH0+ezV2sqVxjMqH/p9GTDns1+sWz/3lL91X1SZpNFRT5ZWKltpl02ynoDmi9dCWiFOIDiTtxuS57D9Owxa8P4ItIWsklbIveCRVQ4z7ysudk6EgFV6rFYH7L7D42vIFoODgudirZCJkiryc91NqB5hC+BXlKYrhVY6LfQmOaplu0iaw5eTe6yZonDe2ESaoyzrvW/0J/3myxWTPrztm7CwY9V3PcvVbY0C7bNFVWUcOJgWCbNwph32Yug3Z8IbtsP+sYhKRUWymNgnDiKbLsNwRCli2lBOYbyPGRs48mPb1X+C/IJe726lemjz1C5Gk1mNyTcSi/JocJagSF0ueGBEF1kGhzaEe8FP4JJBRqwtJovP/YBN0YO9hvq8KkhZXQiWfY+i0LR8XBw+sOdZfAmBDRPj7eriY5N7lsE0E+5e92hLzjuBIO0pxjyAdnBOS/SHNm6KwHgeUGFpcH4FvmjONSFUBmFrY9vaOtH2qCj8GFostEBMc82pkgbFVOvHsZ7hvog5kcuuj/S87zUE3u8wJOZKdzKJV60sTBk5eJx2FNtKip5cvLZxxZHxCu
+ DWhEr/7d
+ Bige6xc0jO3nTyOxP1Qf6xEgCgtjT9KcjPkuroA3GvVInvRJB7C3OGvZFSGJl0sShVOJ8rF8+eFeqmQpMxtt5g+IV9ckLbqm8gunY5uf/E83DlroFtn48bRgIjRk08/7adt98oXicNsl8zVutmc+jWrt5xxpzIa1yF0B8qiSYb0iTeP67bLF+BbJo2tbsc96OUTPcB9hFuv/hVUn492o+5wogeBuLkcR051cu9h9aRE2KHdYTF7dce5euGbhag/mmjhx0FAO/sSsfx3S7+YKWOgU5UQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,52 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 11:51:20AM +0000, Alice Ryhl wrote:
-
-> In my experience with dealing with `struct page` that is mapped into a
-> vma, you need memcpy because the struct might be split across two
-> different pages in the vma. The pages are adjacent in userspace's
-> address space, but not necessarily adjacent from the kernel's POV.
+On Tue, Feb 17, 2026 at 10:49:55AM +0000, Kiryl Shutsemau (Meta) wrote:
+> This series addresses two issues related to unaligned physical addresses
+> and sizes when handling EFI unaccepted memory. These issues were
+> identified as potential sources of kernel panics in Intel TDX
+> environments due to incomplete memory reservation or missing "guard page"
+> extensions.
 > 
-> So you might end up with something that looks like this:
+> The first patch fixes the reservation of the unaccepted memory table
+> itself in efi_config_parse_tables(). It ensures the entire page range
+> covering the table is reserved even if the table doesn't start on a
+> page boundary.
 > 
-> struct foo val;
-> void *ptr1 = kmap_local_page(p1);
-> void *ptr2 = kmap_local_page(p2);
-> memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
-> memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
-> kunmap_local(ptr2);
-> kunmap_local(ptr1);
-
-  barrier();
-
-> if (is_valid(&val)) {
->     // use val
-> }
+> The second patch ensures that memory acceptance requests in
+> accept_memory() and range_contains_unaccepted_memory() are page-aligned
+> before performing the unit_size alignment check. This prevents skipping
+> the necessary "guard page" extension for unaligned ranges, which is
+> required to avoid crashes with load_unaligned_zeropad().
 > 
-> This exact thing happens in Binder. It has to be a memcpy.
-
-Sure, but then stick that one barrier() in and you're good.
-
-
-> I don't know how Andreas is using this, but the usage pattern I'm
-> familiar with for `struct page` from my work on Binder is this one:
+> v2:
+>  - Fix 'end' calculation in the second patch (Tom)
 > 
-> 1. memcpy into the page
-> 2. return from ioctl
-> 3. userspace reads from vma
-> 
-> or
-> 
-> 1. userspace writes to vma
-> 2. call ioctl
-> 3. kernel reads from page
-> 
-> which needs no barriers whatsoever. There is nothing to prevent this
-> kind of optimization in this kind of code, so an evil userspace could
-> trigger TOCTOU bugs in the kernel that are not present in the source
-> code if the code was optimized like I described.
+> Kiryl Shutsemau (Meta) (2):
+>   efi: Fix reservation of unaccepted memory table
+>   efi: Align unaccepted memory range to page boundary
 
-Then stick in barrier().
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+ 
+>  drivers/firmware/efi/efi.c               |  8 ++++----
+>  drivers/firmware/efi/unaccepted_memory.c | 10 ++++++++--
+>  2 files changed, 12 insertions(+), 6 deletions(-)
+> 
+> -- 
+> 2.51.2
+> 
 
+-- 
+Sincerely yours,
+Mike.
 
