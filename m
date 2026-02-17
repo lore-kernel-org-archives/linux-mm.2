@@ -4,126 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 827D6E68165
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D4FE6816B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 11:27:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FC3A6B0005; Tue, 17 Feb 2026 05:58:28 -0500 (EST)
+	id EE26A6B0005; Tue, 17 Feb 2026 06:27:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A7196B0089; Tue, 17 Feb 2026 05:58:28 -0500 (EST)
+	id E90376B0089; Tue, 17 Feb 2026 06:27:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89C2F6B008A; Tue, 17 Feb 2026 05:58:28 -0500 (EST)
+	id D8EC56B008A; Tue, 17 Feb 2026 06:27:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7682C6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:58:28 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B076140539
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:58:28 +0000 (UTC)
-X-FDA: 84453649896.05.BD8CFD2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 193DB1C0010
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:58:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=McbP35il;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C28EC6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 06:27:58 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B4148DA63
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:27:58 +0000 (UTC)
+X-FDA: 84453724236.12.891056A
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D8DEF160006
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:27:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eWgr0jx9;
+	spf=none (imf08.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771325906;
+	s=arc-20220608; t=1771327676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=536n0c0WK8TV8n3NhJfUfMEKwFXDhSVo71dVdQ8dKkM=;
-	b=rHVGqJ3j/1eSHDODsA+USkqC8hRjntbKts/WiI22/5CsFvJEvx4eI5UNTvDQDUl51H/t/4
-	sl4d61U/cXmNyAIrZZeimuFc8XrP1Exgyr7j3IZNE9DCUJVNKQ3iBiS9W/vsqqJSjvjdqD
-	jg/0LHw+XLyc05zyrzaqptKM+TUr7Hc=
+	bh=stb0z7knForfhqJYkYuHTJ6w3kMgucRX9hnQ4DntjkI=;
+	b=zyC1xNNqzt8+9miTp1cxeszX4HYYUO7ReAwWDmCbCOxir7c6qdBv1Tvjlos4Wa3x3o6bcf
+	jAYc+qibRRKF2SoWze7Eoe01gdGF+8DzWAMPMV961Db5L3YlcY1Iq01LB+UcyS1JkrmgdL
+	8kuVvwbM+sha57HcmAQQDg2DLT1i6/c=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=McbP35il;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771325906; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eWgr0jx9;
+	spf=none (imf08.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771327676; a=rsa-sha256;
 	cv=none;
-	b=rmbCp5tf4wLhPetTmh+u7HST5fBAE+5pUxvjHFY+VKuLT16R+f33MbnjXNgpjQqDx2gDl9
-	AiNN6oDYKag8rBCL3RJ6KQ8ahgyETc/TF9ywGIFgY30K/B/vwWV00oeNbhkx/gjkr5YC0r
-	lvkINVIurgf2UOHv7ahb9ekw2I73mKY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B4D760128;
-	Tue, 17 Feb 2026 10:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEE3C4CEF7;
-	Tue, 17 Feb 2026 10:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771325905;
-	bh=ryxJBBu02okjtlGFLoujN0OXwkvCKzYbVblj4RXti9c=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=McbP35ilSo+pn6ro/ZqNpGKA3cA3yoFeWTpIYszQyGdBr58cUt9eVIjWk5WQLQwGq
-	 PAMj39TKpLk6Ie1hojO/hNMZSEQJIvazyxMZmBeXRR96qSDDiW3wXvnEKs88X4TcdK
-	 pu9+amh1Zu0HkJVrsVBxfujooMGZ0it/hFdelBOM7i1HDL7YcM6cq7iBOm10Mcao5q
-	 3GzS/H3Zd0lRrIWjenrjq4yiDVAtldEWxsPsFAvoRTUpIExNeH027vCL+dGI+kIq4d
-	 Tm9ozyfQl+dMKyQxyinfAtbwRxmo59eRz2/NTifaw/Ic4olEKxQuc/OzLZDrYRxT5H
-	 aazG13EqmleBQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7B5BCF4006A;
-	Tue, 17 Feb 2026 05:58:23 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Tue, 17 Feb 2026 05:58:23 -0500
-X-ME-Sender: <xms:z0mUaTx8RQ093bum1HHtbue6fuBlrCWKODCeN5bPEyLPVmhDwwyHtQ>
-    <xme:z0mUaWGhEn8O4WE0Z2PnRMvJJyfhNCdD6VVhQuyJRBQRyLb1imYvpqnebUkxhIlPs
-    xNbNjFxbgb3H86EHUJzuFEZMWkNXctbAKEANNC5JHw0uRwtIE5Hd8c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudelheekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepthhhohhmrghsrdhlvghnug
-    grtghkhiesrghmugdrtghomhdprhgtphhtthhopehmshesvggughgvlhgvshhsrdhshihs
-    thgvmhhspdhrtghpthhtohepkhgrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprh
-    hpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnhes
-    lhhinhhugidrihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:z0mUaXuQoKtBWIPfbLc8JNg_ziG9IGFD3TnvomCiCbY_wBSPnZ_xWQ>
-    <xmx:z0mUae2E-oLPhhy3l-GkLawjqRJIFreZOjovOz6xAW-QQAVU3WCq6g>
-    <xmx:z0mUaXCog2WQPeEL6xcsnVd9C3kvvY6Ghggh0Jwo9Fc0X-W25Nu_6Q>
-    <xmx:z0mUaUD3EE-U2diFt7CEbtMGqP1D1vv52vgE-sneYLZn_B5LhdXEvQ>
-    <xmx:z0mUaQnRRvCWaFUp19H8OzJHnVJMhXIW6TOfmqkW0BfZ9ZutmK0cM1br>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5C4B5700065; Tue, 17 Feb 2026 05:58:23 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	b=eePMNj8ko5Vjtj2dXoBUYxBFF3Ze1NmN1Ppm+EW0xjjEf6odAVAlc5Es9hb/3B3Bd1CKx1
+	HKH7nMfgougKk+HO+22rx/aEidxaTNznSAXcOR5yFVGHmxWJ2is0EAIL7uqZyTfmzd7p8g
+	0PUCnmaoET0E5Tf/zoyrI1gREDmSg2w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=stb0z7knForfhqJYkYuHTJ6w3kMgucRX9hnQ4DntjkI=; b=eWgr0jx95zdtgddw/APUJ2QAvn
+	3M7U1Z4NmdgpLCD8admb1ymds/+cFBkUjg0lH1PRJq3NvfT5Gflve7TyOktCfkZ1JYap3Q9sKMFWY
+	R78ugf2T929QxlR7hLomjGQk7i1MZH3fR5PQB94Ur93i0hsvPRSH7H+CQiVjinLHfuLaljW6Ld6+j
+	H52D05iQzGtQsEfK3cG0fWD+H25qyma62GuWpV36ryh5N1nvyoQY5HLZvjRwM0TieBbNm+RZG6WvW
+	ZEqy5xDZRWJHov7eO1Y0IsCmNaM78YALUmNtSW9JtB5qA41dJ/QEe4+R7kkdCI6RP16x/0V0ZYi1W
+	e+LbKFEA==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsJF8-00000004Li2-0mRV;
+	Tue, 17 Feb 2026 11:27:50 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 00EF3300CDE; Tue, 17 Feb 2026 12:09:11 +0100 (CET)
+Date: Tue, 17 Feb 2026 12:09:11 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+References: <2026021311-shorten-veal-532c@gregkh>
+ <aY9HD7nH5A-DtgmR@tardis.local>
+ <2026021326-stark-coastline-c5bc@gregkh>
+ <aY9PBfx3RRV7rXZ5@tardis.local>
+ <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+ <aZQ19FEeGgigdwz9@google.com>
+ <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com>
+ <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+ <aZRHJ7pSzOHruPA2@google.com>
 MIME-Version: 1.0
-X-ThreadId: AvPcN72_GPoV
-Date: Tue, 17 Feb 2026 11:58:03 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Tom Lendacky" <thomas.lendacky@amd.com>
-Cc: x86@kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, "Moritz Sanft" <ms@edgeless.systems>,
- "Mike Rapoport" <rppt@kernel.org>
-Message-Id: <42bdc4c5-9d9f-49e4-8bee-75633c987500@app.fastmail.com>
-In-Reply-To: <20260217104957.249340-1-kas@kernel.org>
-References: <20260217104957.249340-1-kas@kernel.org>
-Subject: Re: [PATCHv2 0/2] efi: Fix alignenment issues in unaccepted memory code
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b3kt8mmyaygrk44m5y8ewxdkfe63zfbr
-X-Rspamd-Queue-Id: 193DB1C0010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZRHJ7pSzOHruPA2@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771325905-633967
-X-HE-Meta: U2FsdGVkX1958E+1goKoWPjDEY9i/wx/Fh++2QceOrrMLhah2E8Cn7gLV5YQGMtZcZlBy+DFwT8ayiMjLMPzgAEb31o23X1He9lwNPYS7ccn6Lubvl/Dly3ckGJJULzZUVahfqgsLTL5pQ5x87C3A6DxDcyai2sdu4ABIQ/fbe6zsqak2oNkMhZcjK50ihV6SilaY15BQ2WO0MesEE+rxQ7kzlmh85lOO9O8+Bik1FRxEbqWd0m+zrOXCBR8btpJGltxuLcj3YApp+ZKL4NgHsgUIXWaJlIWPF7rCkxZgKPv7NXqYNpUyEpY88EgLjeigrZhoyiugrgXAK3LefDlyZptQRB+EpWZk243Hn17tiMlwBwQLGdV0t+1HjxR1jaQ8ygOKgSmLikKMo9jFv9Orem/NWNnLKi2oYPhLCsCUvBWTRGuwGI1DR5SBRFpnEQZo9FomiwHIEMwqUMaEiW6G6BPchpbMixaqVjW+tyj8usjfo2MfD8VrXJArazV7TizLZdtIGQAaTFDi3tIaNP6VfaaSNnwHSXPHvrIFgzlXeGB0ZNEKIdG09wXUwiyl81j/jNNvGliGIsZNqspKUeUj15OzBE1EG8pxRHqc3YTxLp+yGhso+AabclUoyWR9A2hTjDL0P6rR7NgFzN0UqSdUc12jfOFSufMvtIw5UrjAJiLbT2E2rL5pFUQZmBhT8GkaTJePnpxksOfzDRSFoCDgOlpjalhwIXrQfZJtNIwE1b1BU2SKy+zi8RL7a3txSTi/m+iIdY8YqFC+mFd0X468pnsHTUIRmmvxyckejP01caj5ZpZvrQx0r8xhJlhVDQd3X8z+k7fhw2U9FHApJB7BDFTxKUPFmbk55gdA8cCP8X1ztpOXmnldJ6pMEK0Kl5FqLLHTmbLTlmQ63OsIhEhHGEIHlQ+x5qSgfJ4eBLTRHXO3tB4moZiJz4qBo0u9GwbnYp4RiQ7mHhOEvk07ew
- /c/vKcw2
- hKmWTSx6iI6bpHAkbj5XdqKJ7F9IW/QBj/X16HSakL9UiaSQumuqhNH4fHzjWgzqXNm5WwdngvoUMfGcAefEEby1Sw603IoQ76f8yac7Ieb6i5zhGblUBkeGxpnDIB5S40HXJJYUqyCM9lYHNW75vtXeL140AuH2a00Rbvll4+Cd3LEV2YzISSiDYdcNA9+7RucuF
+X-Rspamd-Queue-Id: D8DEF160006
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5acbqpszt5sep5nqqfun6ikx6uikig3p
+X-HE-Tag: 1771327675-296983
+X-HE-Meta: U2FsdGVkX1/IZvm3knUKqr51WJoCAQIArgRX1qRHBiSYTjHtlJQUJSc2krXl9P73rNamO8Jx9vNvhAtUTVFdsH9fzFfgSqVHGVrCguaSiSCpotnmFTMO7RQxR5jmt3r8GdyVpXuqtWWIfu6Fr0zqeoMeTiL8cxu/JHNjBqSeofaaNkNrwSadnjRQwQHkk50KE+1lstLUQv7QV6mXDBbejVzzDazJZfDgUNvEKaUo6tFgIfnXQhNVIDQO2a/cLJVsYfxqsej7O7zRCB+xqgghDM6oEmvOz0aUD9rH2ZpGDhag56E7sac54X2Kui+5ZY7wVMia4+ufbg2ZEQgSIRB86VPmaBx3+Tp01APkk9X6euYKqi1AqgZxPvZ9bpP27Vda26+HPBV/6eTsc+UUmkEBTWXsSayfACQPB6SvvcD8NECAJSfCs4Q/UxJ5o0k7i4T/MnIPdMrr5SJA/2Wqv2hspbktds24Zt7gmJ0+Z9rNK5xdzThAWxAV8ZUhMRXf8qerHzqkM0O4CAAFo6bl/ZVSmmczh22qOrDx/hx5hr5zxabFFmNOAVCiY6ZJAfUnEINu+8STVfdCwZAbA4zmha6Lg7i+oDEkx1tpYfsWfO/Hrt3a5ZsThfnlvsKyKoE0XM2x+BdyqgG94nl14UXQHEsHl7qAv1UMPnDO6mcX+dWyXXUlwzsiNtgPHr0XH0HYpYL/sYCNA5bBft1YfIlDP/box50C1S0xFOfWoiwKeCqf5bkhhMhOlthyihCr/d5OpJ8IEg79rS4+mPCfAHcga+YD/5nXfM2+HvODJYvBNSKRoq6zB3DrXjgsu5vvBEZrWXcApg2CIFwC0Xs4zmkwMYw1zPFsqS2EjTdn9ZaEMGn9bRK6Rmjs1OvRhx74lqSuWPbUyny67Rl03c2VBr5iWPQoiuJS+SeVU1yjd3ZkX/Zd7JUyJNpD9WyvUTKMtkZPO784DvWPMuSwHwWSjTVmuZJ
+ eIBKgX5u
+ mYVuiWCDnTbraEOZWuB2uC5XcGV0cWwUZ1g5qgMfGcOFtEnxdeQa1nE5nubLQoAhSDeHfwoaA9/cS+Q+Xll6VjVCo+oAMee34+jq7bzHtqi+y3bDdTF8ajm/0LGE5PEHlbrDyGUrvTe4FczVoilhyPX9wuB5Xbph147RBM71e1a85u/c9yLkpq0gP66nJ92E4vi6GIG6PySzJZVT0IhZY6a1N7NBoLDeQYK4TCDNXbP5c/BKdGAKiFsfRVItcaT0cq7H+gkjAlA1L5MvVIYdTj/WJdwzCHHyOe+I5C4jTChfb/aCWX+jit9n33Pem+JgdVcxHguPpFWBDy/o5qHMSpMVMWtmHXp+cVNWyv1cPRmD1hRt7aZXuWCtXqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,37 +110,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Feb 17, 2026 at 10:47:03AM +0000, Alice Ryhl wrote:
 
+> > Stop using atomic for this. Is not atomic.
+> > 
+> > Key here is volatile, that indicates value can change outside of scope
+> > and thus re-load is not valid. And I know C language people hates
+> > volatile, but there it is.
+> 
+> Well, don't complain to me about this. I sent a patch to add READ_ONCE()/
+> WRITE_ONCE() impls for Rust and was told to just use atomics instead,
+> see: https://lwn.net/Articles/1053142/
 
-On Tue, 17 Feb 2026, at 11:49, Kiryl Shutsemau (Meta) wrote:
-> This series addresses two issues related to unaligned physical addresses
-> and sizes when handling EFI unaccepted memory. These issues were
-> identified as potential sources of kernel panics in Intel TDX
-> environments due to incomplete memory reservation or missing "guard page"
-> extensions.
->
-> The first patch fixes the reservation of the unaccepted memory table
-> itself in efi_config_parse_tables(). It ensures the entire page range
-> covering the table is reserved even if the table doesn't start on a
-> page boundary.
->
-> The second patch ensures that memory acceptance requests in
-> accept_memory() and range_contains_unaccepted_memory() are page-aligned
-> before performing the unit_size alignment check. This prevents skipping
-> the necessary "guard page" extension for unaligned ranges, which is
-> required to avoid crashes with load_unaligned_zeropad().
->
-> v2:
->  - Fix 'end' calculation in the second patch (Tom)
->
-> Kiryl Shutsemau (Meta) (2):
->   efi: Fix reservation of unaccepted memory table
->   efi: Align unaccepted memory range to page boundary
->
->  drivers/firmware/efi/efi.c               |  8 ++++----
->  drivers/firmware/efi/unaccepted_memory.c | 10 ++++++++--
->  2 files changed, 12 insertions(+), 6 deletions(-)
->
+*groan*
 
-This looks fine to me. If other folks are happy too, I'll queue it up and get it to Linus by the end of the week.
+> > > 	// OK!
+> > > 	unsigned long *a, b;
+> > > 	b = READ_ONCE(a);
+> > > 	if is_valid(b) {
+> > > 	    // do stuff
+> > > 	}
+> > > 
+> > > Now consider the following code:
+> > > 
+> > > 	// Is this ok?
+> > > 	unsigned long *a, b;
+> > > 	memcpy(a, &b, sizeof(unsigned long));
+> > > 	if is_valid(b) {
+> > > 	    // do stuff
+> > > 	}
+> > 
+> > Why the hell would you want to write that? But sure. I think similar but
+> > less weird example would be with structures, where value copies end up
+> > being similar to memcpy.
+> 
+> I mean sure, let's say that it was a structure or whatever instead of a
+> long. The point is that the general pattern of memcpy, then checking the
+> bytes you copied, then use the bytes you copied, is potentially
+> susceptible to this exacty optimization.
+
+> > And in that case, you can still use volatile and compiler must not do
+> > silly.
+> 
+> What you mean by "volatile" here is the same as what this patch means
+> when it says "per-byte atomic". If you agree that a "volatile memcpy"
+> would be a good idea to use in this scenario, then it sounds like you
+> agree with the patch except for its naming / terminology.
+
+  struct foo {
+    int a, b;
+  };
+
+  struct foo *ptr, val;
+
+  val = *(volatile struct foo *)ptr;
+
+why would we need a an explicit new memcpy for this?
+
+> > So I'm still not exactly sure why this is a problem all of a sudden?
+> 
+> I mean, this is for `struct page` specifically. If you have the struct
+> page for a page that might also be mapped into a userspace vma, then the
+> way to perform a "copy_from_user" operation is to:
+> 
+> 1. kmap_local_page()
+> 2. memcpy()
+> 3. kunmap_local()
+> 
+> Correct me if I'm wrong, but my understanding is that on 64-bit systems,
+> kmap/kunmap are usually complete no-ops since you have enough address
+> space to simply map all pages into the kernel's address space. Not even
+> a barrier - just a `static inline` with an empty body.
+
+That is all correct -- however that cannot be all you do.
+
+Any shared memory will involved memory barriers of a sort. You cannot
+just memcpy() and think you're done.
+
+So yeah, on x86_64 those 1,2,3 are insufficient to inhibit the re-load,
+but nobody should ever just do 1,2,3 and think job-done. There must
+always be more.
+
+If it is a ring-buffer like thing, you get:
+
+         *   if (LOAD ->data_tail) {            LOAD ->data_head
+         *                      (A)             smp_rmb()       (C)
+         *      STORE $data                     LOAD $data
+         *      smp_wmb()       (B)             smp_mb()        (D)
+         *      STORE ->data_head               STORE ->data_tail
+         *   }
+
+if it is a seqlock like thing you get that.
+
+If it is DMA, you need dma fences.
+
+And the moment you use any of that, the re-load goes out the window.
+
 
