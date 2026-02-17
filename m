@@ -4,86 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30053E909C7
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:51:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E37EE909C4
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936996B008A; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
+	id 57FD46B0005; Tue, 17 Feb 2026 10:52:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F76E6B008C; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
+	id 56B386B008A; Tue, 17 Feb 2026 10:52:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 837666B0092; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
+	id 481466B008C; Tue, 17 Feb 2026 10:52:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CA566B008A
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:51:17 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 120A71B3F9C
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:51:17 +0000 (UTC)
-X-FDA: 84454387794.22.09F0528
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F29411C000A
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:51:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 341916B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:52:53 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1972C0A20
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:52:52 +0000 (UTC)
+X-FDA: 84454391784.20.37746DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A62BE18000A
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:52:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r0VjQkx+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771343570; a=rsa-sha256;
+	cv=none;
+	b=3+6k3gr2/KvkYzcSg0txHUwEByAWNyYFBBsTT0o2ZSx64ZILKSOIL8InZqrMss5PR4ph04
+	yxpOZtjOvjV48xvVA1r/IpUHnFFEWImiPn6c3dxmS7ZJYjuw+ZkVkNuc/OXERqCA7ql+Ca
+	XVfAYVdzLBhoiuII73GLNnpjPzTkVPs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r0VjQkx+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771343475;
+	s=arc-20220608; t=1771343570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=111An18P5NPZp2WnP5EsC/86se1pm0vl8ebi8m+L0Is=;
-	b=I5xNgvTFcD+JvSQ2oJPQQCuHphqTTNbr81Gojy95WTtxtuTLTs2tLWY/FFOlOxpHnYHvox
-	5zyPQ7Q+RjhhH36aH/cN+v6g5MiJA5CEsV9ScceMLJPpKm914/fWfcE5xssqHGAjvMMB3n
-	aLlerPTyTGMo7wlOukQ/I8Vu+8jrmik=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771343475; a=rsa-sha256;
-	cv=none;
-	b=ZzxbPEZblN3rPdwTPa3jDtUc6XBnCX85uGk7SWqVaWNncAOxElLoE1BAFKOZO6bRcrm9Co
-	tRYLL1hFQYdoD3eZk8Lyn40QZXxDyOBrZeka2SPfQOY/zXbr938u/i5O81gY/zGjGsAJ0l
-	6LmVnnAUdPTXGU7MNVTOi3rMPUa4FRg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 712C61477;
-	Tue, 17 Feb 2026 07:51:04 -0800 (PST)
-Received: from [10.1.30.186] (XHFQ2J9959.cambridge.arm.com [10.1.30.186])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACF763F632;
-	Tue, 17 Feb 2026 07:51:07 -0800 (PST)
-Message-ID: <0a772015-f9ea-4c7b-a42f-393a2f591f98@arm.com>
-Date: Tue, 17 Feb 2026 15:51:05 +0000
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t76YqfYRyx6GasNeY3VH5yWNqOosR3W2kuC8IfexPlg=;
+	b=Qk9sahXy417iFplFFUMbq/O2ehbo2O0YJDnMZbOUHUredC0NsHomfOqyuml6unfoNARUOm
+	+DUjluKCnoDCn4qzb84YBvCKes2HAzbEOt7exNHfYcKqcb8htjvlDcrpUgiU0vGv21ZEh/
+	jg34ZJSwOJv3rHFSZEznMXOoO8ENwUc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AFF724419D;
+	Tue, 17 Feb 2026 15:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFDAC4AF09;
+	Tue, 17 Feb 2026 15:52:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771343569;
+	bh=iH/4jHxpjwqHTjjSxGybSY4T89B5U0JcMMqKVFpsIQU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r0VjQkx+YtBh718FGVCIvmHajV3QqwqmxutrHa8URvIIJYXXzOARhBZOM5wYiMV4U
+	 Se1U4Q9SAaTf1hNbeZJusReqCqtJNT8tLZIR/d12a6k5Ow6IaAK9Tx717eaZTfDNb2
+	 nLcqE2qX8d7i8xHW+bg37e5BH3/RQ9fiiv3T7GGto4QGTvGyV/v4Q4X7J7IRLLgS7S
+	 48uSq6rl5oi75jX2Yzj9TkUHMedwwv5HE5BNC1ZXBzj+igNeEdrxlbUMkJtmN8OBhb
+	 KWdXPe7HMSgZXI8ZIPYfyhJKkaSX1fBxCF4s6cEMaK6BI7HUxeZXJSQnGffttCL7xG
+	 c/dAaaW5cq0XQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B30B1F40068;
+	Tue, 17 Feb 2026 10:52:47 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 17 Feb 2026 10:52:47 -0500
+X-ME-Sender: <xms:z46UaSa3J1PtIw2u2CAFksYpd-_Z9Nvs5vHZhZO-cOKx9pDW4AvrCg>
+    <xme:z46UaZXeM336IGk1VclWOpxlfqQyi3mslj5o4OzqbMy3UmLflh70D0bN-8cmMg92d
+    JDyq2MrQmlrK6nxH4V4LlTOguGglUmphH3eiaQu0usK-4MWSraieg>
+X-ME-Received: <xmr:z46UaRhaYlSJU0o35n-HZ9xIiq-pV3T3oMmep3JZzje5DVC94DR4kn9i3GcvtxcGPYWYWmC810gOEFJuwnrb6dtueD5SrZum>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtudejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgv
+    thgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlih
+    hnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhg
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhu
+    nhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguh
+    hordhnvght
+X-ME-Proxy: <xmx:z46Uacn1lz5fFWzE84s4OvIHicypsayeQfHr78MXXNVb8aLLgljGmA>
+    <xmx:z46UaSyatSXICv964C9m0j7jKwUAR9PxuBYt3nYUNBdAq8pbTtot3A>
+    <xmx:z46Uaft-VTEsj482c8TWntCQF3MpMIWxyFc-H8CMNYeFaSnRxWFnPA>
+    <xmx:z46UafvKlq8fdPv3Eu-_slZfO-M0NCbYOjA3AOaCeU3Hq0I9nCyxuQ>
+    <xmx:z46UaVnjVCHLt58ViBBiImupwLKlh8d0Vw5o4BsKgZyyGhcTk1DKbd5R>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 10:52:47 -0500 (EST)
+Date: Tue, 17 Feb 2026 07:52:46 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <aZSOzjdntYOB-DxZ@tardis.local>
+References: <877bsgu7fb.fsf@kernel.org>
+ <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
+ <2026021313-embody-deprive-9da5@gregkh>
+ <873434u3yq.fsf@kernel.org>
+ <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+ <2026021311-shorten-veal-532c@gregkh>
+ <aY9HD7nH5A-DtgmR@tardis.local>
+ <2026021326-stark-coastline-c5bc@gregkh>
+ <aY9PBfx3RRV7rXZ5@tardis.local>
+ <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Per-process page size
-Content-Language: en-GB
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Dev Jain <dev.jain@arm.com>
-Cc: lsf-pc@lists.linux-foundation.org, catalin.marinas@arm.com,
- will@kernel.org, ardb@kernel.org, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260217145026.3880286-1-dev.jain@arm.com>
- <aZSHvt9Trlq7k7aH@casper.infradead.org>
- <2e68ef61-dcf2-46b2-913f-14980a104faf@kernel.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <2e68ef61-dcf2-46b2-913f-14980a104faf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cw4sf5owxe3oskgqe4ex4nd6bqrzbkob
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+X-Stat-Signature: iqr4qb1cpw31785dthfmpfm6d5f3mrx8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F29411C000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771343471-818801
-X-HE-Meta: U2FsdGVkX1+CSkp1D787ytJi0s0RtSTlIC7FAvYSusuDu3AqRp24x9sNBBaY2EDIXcDm37frfmUqvgvulzNXZx4SR/SvWU2Xanbk/Q6kCY+zhig2JqDNA47+YYudlM6376ehOMaVu1faE0jhoQfDLpGxGm+cc3QVvV7LgnsDK42rWqoZuNX06WAksNE5kEZZqO1H4tX/+vHj90hv2tTsAOQ+bJ9O1PiuDzLCVeiL+K/tgAEHRISa33MxH1P2WPnBIuMChhpNixWQr/cUzBK6KtERyKGNkv7o+3+6vb45SJW2E+9rYbIwTKBCRC1zzrm9+3weTwfze2jUE0gCA4oRfgCxyQ1Wi4cpn41JRuN1AGk61wb0uQ3of/16tQpJFVbR9MX/ngjRIeIoOyjyEcINL5sXaEbFDlyg58gvMd9tuj7NtMc8r4MqDjjOTTekyw4hraMQWvHsXbBv2cjJlcREaL6/kfPhCMVBSUefW62EQ14qJpEDvAg9nyl7nNwhQBNcv4HubNxcybI+h47JLJn8OSHr+rfGAg7T9TY1e6qMumo0Ngx5GuEq0nrqp+IOr3Zb71rR5lXbRuPkTw8oKwpGE+CI/xvEIq2o3ahznOKlNk5NnBY2DixxNEEtThUVxlorIOjdivgCTLuCuENgremoQJNyVXL43k9M4CCl/l2B+96vFqaQcYYF2PY/+3kaYaj6cdE7Cezybnr3fG4hA1ZNEnZ3trhqX/cC07zHPE53IOQNdyT7UyQoo1N+99SvWcInBALRvNvz+EwAQZ8qffXptn+lniPNs2oANuVsNHu3eRH/dOZKVaPYvIyCsLaJPXyqU4fI9ePExOv/C+V6gXt05ErocJDkzQao/toNZgGgyPfG/HM9EeXHakATbKJ1caDHx6h2xYiTHOzMm+LIGUAF+bU8VmovxCzZ/S+CIQXj/c6NyIk1OYVpVTBLG8RbdCINzfENXMsVhFdByLiDQe0
- FNirItcF
- phbXmuxtx5uZa4Hqr4x+S8VXyJJ40gPqPkP8nfMV37twbWW9T5+8lSiG8pzV/BOHhU7y9dcZc7PfkXBMKQWLqPVESvfLJeCFccvnqhbzbzXNLCmbAmV5/E8WbCVttOfKb/rz353G8lFQ+CuQj8NzXm3xPBUDj03/JfnCGJQTy2tWOGRo=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A62BE18000A
+X-HE-Tag: 1771343570-807462
+X-HE-Meta: U2FsdGVkX18gzHX5vTTzWKgZ/sQffBO25k+uxHkFjdkFyQuAHIHAQvgcgr8FSX+44OKu+nOXM1mhOmcIu40/5+EhrGJ7HP3m9DbiQ3IhdJ7JX2ynn3ywPKPj9ZJbrwzhzaKCTMZFPLGzESf4sr2eoXp6WQDX1oBO50vd+uqGXf2JaIXt8uj2xQmgz2fBXt+3VK6CRY5Vniw2yzQvB+ffJQ3elQ8wHtKbLb8s7R3itOpESrxmt9MCvs7zV3KXkNqRtMGP0ssxQnu4+M2OHEowQ0k+f772aWuajqg2dOjH4cVSOC79wxEWQiUXo7PKsaxDRK2+Ubja+P+AItlG6LNrZ4hyhoHvppyurq1HHH8yBNzvytCe8z4qUkWa6fzsT+EOJeM4o3L+9Wg3CdO0FWObIDT0EKS3f3stsWuhOtbzGHTSU8EbKxxpifSDb6Gj0l5vB18s3CCDOUF4EVw2od3WUlOQlY4ao9bC6jFmu+TTTNO/AvQhhzESV3tYyCik+x71W3cuHBEsouB/z/Etz0aI+UlmQiK4Bcz22xVJLCdw40isd+v7T2oLhZmWBYseZxDCd6GeruEjNBCngoe038GW+AAdqemotVT5BytV11S+9O3a0/jQOyqyxqM4RyBNmxso114Qc+6lUCuYCjxyHyH+SnPxU88M8ufmpOCZxHFvkHl+mfWyMqKwTbPttYM3OKfsyyEEixWLWEUi3U9TNE372MqNpO5triu87Nt4U6+PIgKalTI7N2ZvzKU8cSPn+udicPCO+ikyzlpl3597YzhJ8brh6YfEkc/gVogRAX7OxDpvGwo20sgN+mtEl/Taudqjmq6og3lzKRZyNMY82S1UAW289G9NH6kJF5YfG4A0JRJld9sg4IeC4OsLHpJwKL6LKJ/qMPyppbPjCpnILSmjbjBARcjhN4n5wsqXU8QW+bWTx4HfL8mF0Lfua1o1SXVFiDVWb0x2Sd613hoaNev
+ lVX+GeUe
+ RckJRxvPWmZA6dHvE8btvDygYiQSyxcPy6Cc/nzryYOrpvDnYUginDcgFs6hb6ZO2u3bvXq1aNC4bN5ybdhAum1F9sjPkQsBeZnO9EkZRF8Q7kBc1cp1ow/FL7O1pV1TxbL+KOgaZd/RByLx97/+HwKuKoJBF6HgCMXU6/+HpXVAd9zUUqnHDab6gcNusvmFTRjkMRuWnWpYOBMgnCxFjauzcbT8suJhvCUCa74l/9ewC5d2QmTxHgHJQq7zHHu0oSfsP5hCifhiq4sP0BTNwwjXD61M3wgStz63x7Qk7UF4jISCusxlVYv2g0g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,60 +145,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/02/2026 15:30, David Hildenbrand (Arm) wrote:
-> On 2/17/26 16:22, Matthew Wilcox wrote:
->> On Tue, Feb 17, 2026 at 08:20:26PM +0530, Dev Jain wrote:
->>> 2. Generic Linux MM enlightenment
->>> ---------------------------------
->>> We enlighten the Linux MM code to always hand out memory in the granularity
->>
->> Please don't use the term "enlighten".  Tht's used to describe something
->> something or other with hypervisors.  Come up with a new term or use one
->> that already exists.
->>
->>> File memory
->>> -----------
->>> For a growing list of compliant file systems, large folios can already be
->>> stored in the page cache. There is even a mechanism, introduced to support
->>> filesystems with block sizes larger than the system page size, to set a
->>> hard-minimum size for folios on a per-address-space basis. This mechanism
->>> will be reused and extended to service the per-process page size requirements.
->>>
->>> One key reason that the 64K kernel currently consumes considerably more memory
->>> than the 4K kernel is that Linux systems often have lots of small
->>> configuration files which each require a page in the page cache. But these
->>> small files are (likely) only used by certain processes. So, we prefer to
->>> continue to cache those using a 4K page.
->>> Therefore, if a process with a larger page size maps a file whose pagecache
->>> contains smaller folios, we drop them and re-read the range with a folio
->>> order at least that of the process order.
->>
->> That's going to be messy.  I don't have a good idea for solving this
->> problem, but the page cache really isn't set up to change minimum folio
->> order while the inode is in use.
-
-Dev has a prototype up and running, but based on your comments, I'm guessing
-there is some horrible race that hasn't hit yet. Would be good to debug the gap
-in understanding at some point!
-
+On Tue, Feb 17, 2026 at 10:13:48AM +0100, Peter Zijlstra wrote:
+> On Fri, Feb 13, 2026 at 08:19:17AM -0800, Boqun Feng wrote:
+> > Well, in standard C, technically memcpy() has the same problem as Rust's
+> > `core::ptr::copy()` and `core::ptr::copy_nonoverlapping()`, i.e. they
+> > are vulnerable to data races. Our in-kernel memcpy() on the other hand
+> > doesn't have this problem. Why? Because it's volatile byte-wise atomic
+> > per the implementation.
 > 
-> In a private conversation I also raised that some situations might make it
-> impossible/hard to drop+re-read.
-> 
-> One example I cam up with if a folio is simply long-term R/O pinned. But I am
-> also not quite sure how mlock might interfere here.
-> 
-> So yes, I think the page cache is likely the one of the most problematic/messy
-> thing to handle.
+> Look at arch/x86/lib/memcpy_64.S, plenty of movq variants there. Not
+> byte-wise. Also, not a single atomic operation in sight.
 > 
 
-I guess we could side step the problem for now, by initially requiring that the
-minimum folio size always be the maximum supported process page size. That would
-allow us to get something up and running at least. But then we lose the memory
-saving benefits.
+Sigh, byte-wise means you at least need to byte-wise atomic, if movq is
+atomic at 32bit or 64 bit level in x86, then it's fine implementation
+for byte wise. Or you are saying on x86 it can tear at byte level?
 
-Of course, I'm conveniently ignoring that not all filesystems support large
-folios, but perhaps we could do a generic fallback adapter with a bounce buffer
-for that case?
-
+Regards,
+Boqun
 
