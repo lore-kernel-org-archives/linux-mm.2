@@ -4,74 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13462E68144
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 08:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E54C8E68143
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 08:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35B296B0005; Tue, 17 Feb 2026 03:28:28 -0500 (EST)
+	id A744B6B0005; Tue, 17 Feb 2026 03:55:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD826B0089; Tue, 17 Feb 2026 03:28:28 -0500 (EST)
+	id A4A5F6B0089; Tue, 17 Feb 2026 03:55:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E93E6B008A; Tue, 17 Feb 2026 03:28:28 -0500 (EST)
+	id 949456B008A; Tue, 17 Feb 2026 03:55:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D65C6B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 03:28:28 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7DADC4865
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:28:27 +0000 (UTC)
-X-FDA: 84453271854.13.BDE487D
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E02711C000F
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:28:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7C7BF6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 03:55:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E6945E200
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:55:51 +0000 (UTC)
+X-FDA: 84453340902.21.7A29701
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 51C794000A
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:55:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HKohuVAw;
+	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771316906;
+	s=arc-20220608; t=1771318549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/awg13Cq2cMwEq4JvU7bDTsdttanDdzWNRndJsAPxS0=;
-	b=wT9yXBkrYIhUawR9xGHnf91CZ3D5ZXS0ILyrbCtCDVjILdLL5/1PvoCiunSLSAyMTV0zHK
-	nmQLMVG9PS5GTJIpmVBUjjiW9p8FLrf8z6YSIi8vqslUvqI3pbJjRavHPBQut3Xghoj1+M
-	0wOmFBgfnamuXpLR9AX1yqUh4mTO6RI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s2+3Zb5XQH5ae/EQUG7mNscXyFKybqQMMxQyoHn58Ik=;
+	b=O5/meC+W3rNXGNA3rF1SDPzXCbfrYa6bohyo2kvAzWkJuh8en4SNYks+O97yxa3XOIvRCP
+	vBYavX6xqRWY7NB8mvB9h2fEjXbLa+jZtr3+J6UllsYfzOmHqCKpDmyj0MijuYhIfC748q
+	Mfitndtw7vJDTVEvtvMCzaFRVIuymAM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771316906; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HKohuVAw;
+	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771318549; a=rsa-sha256;
 	cv=none;
-	b=3eOJ8+pIoPnATtPZvh5gObgSyJZDLq3/pUp56WtjFdAgyjBFglXjex0BfzvWmzXxj6rFqB
-	pacYyxXLR8gS8+T2xAVEpSEyP6HVDGkaMb/6m2SJEl2MgL39CYHmwWBjj/BfZ6A9F03w1r
-	R+hmKkAGukhBJliMspXZo8ttK2F28Hk=
-Received: from [IPv6:::1] (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 61H8SCAm412409;
-	Tue, 17 Feb 2026 02:28:13 -0600
-Message-ID: <bbffd0db46460cebd604f5c1e6668984fd4cc435.camel@kernel.crashing.org>
-Subject: [PATCH v2] mm: Fix memblock_free_late() when using deferred struct
- page
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: linux-mm@kvack.org
-Cc: Mike Rapoport <rppt@kernel.org>
-Date: Tue, 17 Feb 2026 19:28:12 +1100
-In-Reply-To: <ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
-References: 
-	<ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	b=qt8Wx+wH43L0oV4xfqbPowh5559kbbxGbKiuAyp1nYVocAyq62Ehz3qV0wZJKG9jnE83mP
+	fidiUCnjrsF0zynPNHXiFybzlmloHTIE7AZKvBiEp8SuQZmN/7hbYDOSpyj2EB3OgBaZPc
+	9oyFY97XJelUD08Vmj+8LnMT4IXwh8c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=s2+3Zb5XQH5ae/EQUG7mNscXyFKybqQMMxQyoHn58Ik=; b=HKohuVAwwQEKJz7VTHhgEQD02z
+	yDbz69X6P+iqHiN0CJ66dtLQ3ddF3XjqDOBd900Humu8XQN5rlR1hcyTeDl+ybdaIUEcG9LPrulZG
+	Nds6OtqTXqXV1rTdF2cxQiQXKeFHaUg2Bjtlz7X7c5jphT5F9sHkJAG4lWLEZXY1LyEl/NQKMt1Aw
+	uqS1hwO/l/1v7Op1TAKyumf1SuQEXPT6CCNEl2f7PlZC9hl/vW6B1bQDUW+dqIfO/nAotr2DZjtR4
+	5eShrDtkjku9LtugQCs7gp3u5fQIodW4geQKK/ZNa3OvfBmRFUIaiRdTlLOua9N5ysHZCJB9iYADE
+	2nkGqA/g==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsGru-0000000FcUe-3wth;
+	Tue, 17 Feb 2026 08:55:43 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BC83C300CDE; Tue, 17 Feb 2026 09:55:41 +0100 (CET)
+Date: Tue, 17 Feb 2026 09:55:41 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aY9i8rbvnxdOA9DV@tardis.local>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E02711C000F
-X-Stat-Signature: o59rczxtzkjf158t4p1tz6hris3x834q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aY9i8rbvnxdOA9DV@tardis.local>
 X-Rspam-User: 
-X-HE-Tag: 1771316905-614192
-X-HE-Meta: U2FsdGVkX1/dEM7UOSwWPhEZG8gFpFaEIXugpLW3/m5S8ZWk1qTONvYmycn7ZoNi/JmxkYQn0ueaqtJL6S+kTjsTAN9vIti0RtxNYjA95GrtAikgIJQo9gbBlDj4v9uV5yFlgUNnvQAgTg3h2WyN2V8f18im+LZWkHkAspvlB8ucXH5jgfdRwYJmAATNiapFOSJDvdicqjrd2NqyidglagMu9iEvrHgUHXIAGH1BGk3wuFo5Dm6lbbIoRqRqQ1uhrSksMkwE45oFiITG/lwp6TDJUTWX7G0Zm3EM3GBuicPXEsiSEWGolxzxvZNmQoDD+zWacDiPHvIwPp6Hg5CpaJOZj+Dv0Bo0Wewv638w6g1rZCqthCXsIK2Llys21qFCPzL8Rpjs5Wqmsh+SXMfe8kWUX0iqCAEO/cy0luuHfu+mthFbu61m0G6YU7bNdp4YaPIfBvy1P7wjHghAbsQtdJvWXv/w6rXcfrKJDhKdVgS39+uvTIBKqBBYBzbtOZeQsPYTc4BButqhddf+nqT+nwOhkFb3JIGXvIDIJ1E3WSAFPl8tZ1m5aXeHxPPgtrj3km9LFv26jxMnPcly1djz7Fz8T6BgIHmbQXJu24E/g06Lmb1jqGxuGX9Q/+nxP6BTE4/c8n1yYSOYgNy4l+TtLfgtIt/bk6Af0ShNldYsBDVxfXYuLQ0nybJNxmtbtPRZOEZNgYdylCt5nl9v8UG/1EMswNswR9CPilBtjeGlcA+lsjpPtPWvs51ic8PWYF9keOjsYOiTccDjPs34GtDnwz0VsHIJZyuXJyGbGvJ/oXbAtfdu13qcUCqKq+3Qjj7NblOSCPmKg6o42n0UbXWqdKduCcqFRfE9fXk5AfLg4G6nhKoAl0enXjq1+P+DxcqtByybkgiNparCM/oQydUR2XrFGmC69uQZeKiZ29x7U+8n8l1FRdZC7HiBRGsZO6Ba5R8HX8qPys3/tjpY9Gu
- YYre/EL2
- 6PmRuXE54TOqk0ESMffri5xrvCfNaEqkdpVk/RThNi/L78owbLnHEw6TOuzQcuZgqpMxt5+bc3tGm8WZd6CE4cFDJPMGfVpuaN+jV8K7rj6MQUdtUwQN9BZ8G7l9dcmsZ77blEaATRemHxGr2ci2y6gsEc4lEHjyufaO6VaSIRKTwSxA=
+X-Rspamd-Queue-Id: 51C794000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: guygnrtjrjo7jkiieww76ga7sochq3g7
+X-HE-Tag: 1771318548-338805
+X-HE-Meta: U2FsdGVkX1/O+lUSxlnas552qxk3fkTsYJWdFG4KV2Ng9MDck6dT+uPQGEqEyaFoSzSWcRK5Kt0+9kwqENKpTWDNJAAiqDq7V1CJdA4Y951Wb0TPYMPZj67IwnXKpH6bbyADmciara5lgOvsKERG9BwhlmzyKGsl1ddiAjFOgRGM9VZvYoWrb6r6xIrekDbabazw7oV2r3pZ4NsbmgXtjb+5fVV26Y3ddQtEb/FcgNAYbccjyzn9BlSCWtSmvsTAOo3Y9ieiFoRFAldiBu+8wuyDA/t2vU6SldubpulQdzQcrGT+6MYPDpaH8lonsaJ0ehB2rTTxxR6WvADvjc+gPmI0qR9s/Ep3pfpmAk7oQ7BcIxVc3Cc3oJKz/dm9qLQ+CpvtnHFq9NrLaE7nDWBTaA13cP7bdKQQLfwxBXlR+z3w0TuiwXXRxBWoGy0S8RPnrrbOZRihLc8BIeycyxKRp6cyM5afgfgH/q4P4eSgIf5PsyyepKljAmQYHyyL+K3z7MUWEIZWEkYHeWWKTM/xTDvqa64WyiEcnZSsBbBgcBsVqehe9VW1nnTzEAeAvoScuE0GhHj6IHN17b1RgyuwNKmazZ5se8S7eg8csFSWxiNmtHLeFwOewk6HAq2RTR+vkI8kqYdYIpqEjb61KhZSX/siCbSaGS3ZD4nh2Pgii5BmLEfRzMGuOCTILENUG+EZBAg0nB2youEXzcZhJO6+7RY9JoZ4vPTMK8B4iGHS6qHWuTfkgTAUY/K49RLmRo043+UmGVtZHYDBwxdDkOmnIliL8XF8NVlXtdg2vgDt9Xft4tS2x2JSYv/VvAJCgJvmhIm0G+MB2fo0N0xtKFk85n1uIpRTh3dMPZU8EhO5Etacg8/Of1zpQNtpUBNXtr9jPCuc+QlygBj1GR4ZCSnbdctc89Sp/hsx6C50q3Ik6KIkG7mNh5ai9wa2KC9BzHcR0F51lS/ML1Cya13tY/v
+ hLwQIkVR
+ 1uCoFL16YbliQXgQad7w8Wu+RvVlfAMLaD70w+HgZ7bhJKLjQo+yDJgF5RRcXK6/FVoPE81K3XzaDpQ/V/wvCRfZE7IA51w4m5a8U14WDQzU3BjilBmioM2y6DgVDLB6W2+uE5O3hifa43Vby/IFKNFeFZqa0/Uc5W4NJq/35PwgdsmaMn23xudgdcdPJ2/TGelXEOgZ2VXLsBys+n+fVxbOI0HnFxPmq43ANepAOZvqehMUymG77EYugy/I0IBfGj+vL7hRY145QhJgFrT7GzYHlpO70r1i+mLhr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -80,71 +102,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We have two issues:
+On Fri, Feb 13, 2026 at 09:44:18AM -0800, Boqun Feng wrote:
+> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> [...]
+> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> > index 4aebeacb961a2..8ab20126a88cf 100644
+> > --- a/rust/kernel/sync/atomic.rs
+> > +++ b/rust/kernel/sync/atomic.rs
+> > @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+> >          unsafe { from_repr(ret) }
+> >      }
+> >  }
+> > +
+> > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
+> > +///
+> 
+> Given Greg and Peter's feedback, I think it's better to call out why we
+> need `atomic_per_byte_memcpy()` and why we use bindings::memcpy() to
+> implement it. How about a paragraph as follow:
+> 
+> /// This is the concurrent-safe version of `core::ptr::copy()` (the
+> /// counterpart of standard C's `memcpy()`). Because of the atomicity at
+> /// byte level, when racing with another concurrent atomic access (or
+> /// a normal read races with an atomic read) or an external access (from
+> /// DMA or userspace), the behavior of this function is defined:
+> /// copying memory at the (at least) byte granularity.
+> ///
+> /// Implementation note: it's currently implemented by kernel's
+> /// `memcpy()`, because kernel's `memcpy()` is implemented in a way that
+> /// byte-wise atomic memory load/store instructions are used.
+> 
+> And probably we make it a separate patch for this
+> atomic_per_byte_memcpy().
+> 
+> Thoughts?
 
-- One is we don't check for pfn_valid(). If this is called for
-a page corresponding to a big enough memory hole that we don't have
-allocated a corresponding sparsemem section for it, it will crash.
+Its still not making sense; an no kernel memcpy() does not necessarily
+use byte wise copy. And please stop talking about 'atomic' here. There
+are no atomic ops used (and atomic ops will fundamentally not help).
 
-- Then, when using deferred struct page init, we can end up not
-freeing the pages at all. This happens routinely with some of the
-UEFI Boot Services memory, as soon as they fall above the threshold
-of pages whose initialization is deferred.
+Seriously, none of this makes *ANY* sense.
 
-We can very easily hit the !early_page_initialised() test in
-memblock_free_pages() since the deferred initializer hasn't even
-started yet. As a result we drop the pages on the floor.
+Yes we have racing copies. And yes that is 'tricky'. But there is no
+magic fix. Nor does it matter.
 
-Now, memblock_free_late() should only ever be called for pages that
-are reserved, and thus for which the struct page has already been
-initialized by memmap_init_reserved_pages().... as long as we check
-for pfn_valid() as a big enough hole might cause entire sections of
-the mem_map to not be allocated at all.
+You copy 'n' bytes (in any way you like, preferably the fastest, that's
+all that really matters), and then you get to go validate that the
+content makes sense, like always when you get something from userspace.
+Must not trust userspace.
 
-So it should be safe to just free them normally and ignore the deferred
-initializer, which will skip over them as it skips over anything still
-in the memblock reserved list.
-
-This helps recover something like 140MB of RAM on EC2 t3a.nano instances
-who only have 512MB to begin with (as to why UEFI uses that much, that's
-a question for another day).
-
-Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
----
-
-v2. Reworked a bit to add the pfn_valid() check, remove the bogus memblock
-access in debug mode, and add a test of PageReserved() for sanity.
-
-We could separately do a patch forcing UEFI Boot Services into
-memblock.memory but so far I haven't hit a case where that is necessary.
-
- mm/memblock.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 905d06b16348a..71eb25b68851e 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1770,9 +1770,14 @@ void __init memblock_free_late(phys_addr_t base, phy=
-s_addr_t size)
- 	cursor =3D PFN_UP(base);
- 	end =3D PFN_DOWN(base + size);
-=20
-+	/* Only free pages that were reserved */
- 	for (; cursor < end; cursor++) {
--		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
--		totalram_pages_inc();
-+		struct page *p;
-+		if (!pfn_valid(cursor))
-+			continue;
-+		p =3D pfn_to_page(cursor);
-+		if (!WARN_ON(!PageReserved(p)))
-+			free_reserved_page(pfn_to_page(cursor));
- 	}
- }
-=20
---=20
-2.43.0
+So even if there was no concurrency, and your copy is 'perfect' you
+*STILL* must not trust it. So the presence of concurrency matters not.
+It is just another way userspace can serve you bad values, nothing more,
+nothing less.
 
 
 
