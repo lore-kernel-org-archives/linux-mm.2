@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6810E6817B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E20EE6817A
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD2976B0005; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
+	id 58CE76B0005; Tue, 17 Feb 2026 07:32:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D566D6B0089; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
+	id 53AF66B0089; Tue, 17 Feb 2026 07:32:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62186B008A; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
+	id 41C326B008A; Tue, 17 Feb 2026 07:32:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B12B06B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 355A9C032C
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:18:47 +0000 (UTC)
-X-FDA: 84453852294.19.978FEBD
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 610B71C0008
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:18:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="FZkc/6GH";
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EE1A6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:32:22 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C134DC047F
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:32:21 +0000 (UTC)
+X-FDA: 84453886482.20.203371E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 146BC180008
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:32:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TTDJuh7S;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771331540; a=rsa-sha256;
+	cv=none;
+	b=33JoNvhub+TFOYrwBbborIDGWMzSo8W9kXhQX+imSs+3sKvdKlj7oa+fxGJ080aks6L2sO
+	brztUOz3VoAS1SKTld+JoV8pxZPHjaBSh777MUyvexpEn9U3JeSC0aZp2rjo/5eMSuZWDY
+	DeXNnJpwVPr48WeXPMSAyRzh8uIQbfc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TTDJuh7S;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771330725;
+	s=arc-20220608; t=1771331540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WW3aylxN+UKG1rxk+Fl+cCO/RKI4Ii/abuk6emVJ3BE=;
-	b=ilmJ0yPTUAvZco04ctHwZAFzbWZXe2ICBVpqrtuzwwLHkgv1usB6D7VbzvptRT45X05SUb
-	YE95rkSbFl5GGBaqYDyR0kUfM2loj0BXCT4Wwy9gTU3wAqSxE+m9xOSB0GZx8zWy2eSs0E
-	HzhDHO71ltwUQuzgov/THJrQoA7qoVE=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="FZkc/6GH";
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771330725; a=rsa-sha256;
-	cv=none;
-	b=zyL5ytmSMqSrIQTkJRoNrVhpN5g8xN/H2MpWUqYqSrOhTTRWCfJm3TTYU9i9tXoW0DW5DM
-	Z0pLyAt/6tNOqz4EpwweGLkzdjwSs9dKTG48PflW5gFTu0YOgAvcN8j8YcmY91bgOd/HPU
-	46aX5Se6L4CBBoxJ1v36OlgCC0f67E4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771330724; x=1802866724;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gxv6GPfvEdt3I88BAhetX4DcIa295ymdfyKLNpySCfo=;
-  b=FZkc/6GHDcMfj5yIFITrpOAWDSo9Wg7VeqeHCIVeu5S7eWnLy1RHRTQW
-   VdV/PWMT4erIsVJFBIlLQA+Oz05tUHunEvthLZ9dee6V6sm0mCNYPLgyk
-   KY6MZ13ZqliJMyQ3KVWkdAMh0pRV80ddKPK/OmZFtlCPsksxTOfKA7OE5
-   nCWMj0isT63vYK+C86wH7sFdKd1emuxmnLPxpYdga0QIw3YH5TyN5MJ+X
-   he0w+9RUo24tN4S08NiLcN0fEix0eediLQFcBgeSUHespfGr6vCCP9dQw
-   N4nmuwpA4jz+/WJTAuAbQs7Pkri8J0yVxLOkrn2tWr1uAIBf4orobxs/w
-   w==;
-X-CSE-ConnectionGUID: /nakB6yNRLiGQPwLLVFPMg==
-X-CSE-MsgGUID: kfsXZoSUQRCvkfP/soSjew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72108205"
-X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="72108205"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 04:18:43 -0800
-X-CSE-ConnectionGUID: 5+Zoq9ohSqijtT9PXHlpFA==
-X-CSE-MsgGUID: NyOLsov8S4adFFzo9eyCoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="213127162"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 17 Feb 2026 04:18:39 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vsK2G-000000010vk-3Fth;
-	Tue, 17 Feb 2026 12:18:36 +0000
-Date: Tue, 17 Feb 2026 20:18:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Youngjun Park <youngjun.park@lge.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	gunho.lee@lge.com, taejoon.song@lge.com, austin.kim@lge.com,
-	youngjun.park@lge.com
-Subject: Re: [PATCH v4 3/4] mm: memcontrol: add interfaces for swap tier
- selection
-Message-ID: <202602172046.jWVum2TN-lkp@intel.com>
-References: <20260217000950.4015880-4-youngjun.park@lge.com>
+	bh=+Guu0uFD9Md+Bi3xyfaSrzF4zB8sTGwzhlngvFhKj0U=;
+	b=ChgtdWOxhPFd8OuyZaCp+3Hb93SFM4qbNY4o91rxQ/AtlzyTqCDxmUeriljKYH+I1ZC2YO
+	X7svbOJkfhf9Jn1RiU2zqKUFpp3Evj+JSIrlU0Ex7SQ0WBepj29c6HDdoZgNIgq+1+0Oj7
+	HTPLTZPz+4W67y5NA/NsSxtEFf7M8M4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EFF3143A31;
+	Tue, 17 Feb 2026 12:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABA4C4CEF7;
+	Tue, 17 Feb 2026 12:32:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771331538;
+	bh=XGKe3xLrxqa5O0/AFKQ14Hu+QmnUvBgtNHw4QV4Hjlc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TTDJuh7Sb+ZtqW2IgnyFhLS7QGys6WVvniSspDeA3mYBkgDeiPnjy86qWqzuBsPj7
+	 PrA83Jgo4Vx6yJqWMu8t4esI9xG68K4yu7OASXK2tdMZIFlibbN+6iTQPsLpZjV93g
+	 kx5e1Ds8Z3rBI9BlL9IW8iAqO2KcFx9IU3bhG6pAbsBlLuFiQ8yEKOkXJ+Ae6vs7Ig
+	 h6Z4EmX7WMeqOA9VkLJouFkvc4JZ/6fH7L/yebxKQB7zSPIBRlWfqj7HEHHQExlXIr
+	 t0Z5FsHFgmkvs2mXngpidJWyQyxpN8+UCmgCkykena5Wa6Nl5qFq8N4HEWIiah0YjP
+	 M1eC36XJFpTww==
+Date: Tue, 17 Feb 2026 14:32:13 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm: Fix memblock_free_late() when using deferred
+ struct page
+Message-ID: <aZRfzbSLGCkxx8fC@kernel.org>
+References: <ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
+ <bbffd0db46460cebd604f5c1e6668984fd4cc435.camel@kernel.crashing.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260217000950.4015880-4-youngjun.park@lge.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 610B71C0008
-X-Stat-Signature: act94z3jkjzaiisoz94p8qjif4ooahaj
+In-Reply-To: <bbffd0db46460cebd604f5c1e6668984fd4cc435.camel@kernel.crashing.org>
 X-Rspam-User: 
-X-HE-Tag: 1771330724-447404
-X-HE-Meta: U2FsdGVkX19OPEZyPGBYpyhsUq6m0SQlVly7+cxsx/BHhvmKcr40G5qwBaTcba6Vt/gfTdX/xNjo0LNa8i267szIA+l5pueWNibpYzYN9j7kMSADnc5memcx0DhfBa6DZC9NL+cghkPD/grEdwtlaa5XiBa4GoMOuLvp8jOURccLA/ikkarfViMzWtkgvlRgwr30vcfEeZuYlss7rZSVK5BbttpdIRpzpZVtA3+XwDNFfABlFSt9YfVzhZ+4dC73KZq7VpvkSfosbKC/1BxtL6cAP/teYyvk6VR8P7wYXF3O5yTU3zJj+LRY7jgYj+nzhDK5gYVdMxtJAWduv4DpMyF88lulbcM5qP4YsT2Oa7C5WYj0Iu/BMNtB5Ip9/p+9zA1d9gKJZI7Z1lYvXMI9GnHLDVlNos3hDmSVbxn14vmMlmgQX16LHNZqUBBtblTno4JWLTWZa838eubcgoxpXktm4Iz+L5u8Y7sCR6aKo6W9XB4Q3nZPvzjsw9Z4SeNEaTN65tEBQI9N+83Mzji4TrlfgWGM4T86jk7ecH8Wu1D757gyVia5cieC0BJWRe/0giOO0P8tp8yOX0u/r3Nnn0ChZSbbhyEfz3VcB+BKduRgUPrkTjGBxkRoK9WX7uakQHWOYoS5WAdaOQw7l1mwIQGKGN0Sj0vlTreWs2xjgDIoRraeDvKHpHOhua2PsIfpzTWOifLlRX/tOhvNIeKuX4bL8xHIIWC+5PUY/fru7wLKsTJtQBrTMJbQ80oGh08CEnCxFFsB2R8cLVKw9AUhz9PbDt5khYxuZNIZUpvAL5bV/xT9k/HBA0egLx9OikBaSYuJHJtiFG1zrmnOmY4hRHQqspBEi0zz0wCSUSsUCc0aiUXf7UjAZTgpXz04XHlLKQ+ONYgqzw0cMN0Stmx6cWR88mUCqEFx+CsE2Q7Ot5EN2srh4ONCMrov/wMaf8/UMldUw8Opx9nQlgUA5He
- Lj+gaffw
- dyUKdaxQpK2tw3j+BK3dGIF7dnXXgXv1dPUrtvaoEUhVCNxTNv98ZAH3p1+aHCLBXZBGJhDRVCaoIkRc4AtQvHsWGtuqnvNJb15Zdd3Z9vW3ISyrKO4UYUr00vsBmz1a2ivPVlB5/xEV3kIg9CrUvb7G1b3HsAEl42KgjxRDq0qeajeJNGFJryzjNf17SvBLF0+NAaGtXHbWta3I8SZnPvfyqaBds+Oh+gJDTmrsfH1sRRdb83Ku6M3X/ERn8Nlzrbd01kTNphthMQoBBep3dolQOFbcJjmZKzeDCKA+HDFO4StZD81W/q74sk7U93OrHoioILs1zOBXv2EHBRVRazuspDzU00FmBiI8I
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 146BC180008
+X-Stat-Signature: zk7r7xdjx1ugqxqb84asin1xwmmhk8pk
+X-HE-Tag: 1771331539-190525
+X-HE-Meta: U2FsdGVkX1/yx/Ecvj/TSeZ5L8e5Cm7BzZEuPsdncg8eURR7y5Mr3JxpESz7Pkfj+uEBImym5aPk86KZj1Nmh8owbavIw3Be3sPNx23N0Ba/5gyCr2Y0e22h6qoHJk5ahKpWbvUXDDTWIGQfuDM9MJ0mfb4hmd3kyZDxqiqBoBbaxbt0DIf3DxMLVpK9VGQy7ERW2hDQrgzUyrA6xmxm3RZ+nYKfWO4SA426UvYR+f6QBcB/ZMl+bSUxXqDfsImgggUoeBIvXxSNDrJ9+f2TFcsIOf4qQ4UD45ab8d3msQDhgnJRadQ8YA3taqVt9cJyW/gCIxvUoNq0ELNzSex11bIiOPAkmnP5jcTm6faQVec6O+l92i29EE5nRUX0Ju7GpfjXw9jO4BCdqK4/bfMzSCY6R9kkLKTsUrL5OZeAk3UdqRYPW1K2mk642vwSDKE+rxcjJsbR58jk3excexMUiX62i4CzJrZq8c0ivwcLbTTlvLNBN8Nq5gD9vqGHLwAUBEtsP2yKkdl11cM0yneLfFwWplTz9rVv7kYpUGY6lcd27mZBzjQn2HsmOH4EIozYxbWN/2nTJgeEpOUICvkxN2Df/Z54/EfGo3byzc1n+nXlcxmP8WtC9W0viWB1TuVBip6oWM9Swdv6Ek5/oONygzemZdAm+kGL9JkglY+BD335p2fGVW4j6THpPozRY8Tycrbq8PONLaXnaTAOQOPJfvoT17H3aMmENUPkZhpLqBi9sths+45QrusOq805KeX0UgKpxDYAgeBiG2lEv00xetCR+ZqFEk50wFvst4Fe27kGqq9nG1Gn7/fc+iGW8WD9YRseTmEzPqHALIsmE4LNir9CJicjHqfyBcqKu2BEg0eQ+CJev1R6NIptbFwejti176G09bPEIBRF/883fErohs6WxAR/naaVKjIK9VJEzJthhTdITOI6KeNY7wz4qvPTez013xzOXCui3Nm2LL1
+ DqOmbgGj
+ 5iuUvqx+bhVG0MBUeDp4O6hfEemk1LCegwAwNLG1MyHq2mg3AFHMAKjAd7yQujXCK1WAC5qctjxYAsScYYRjQlUozwQPk6C2h9e+QmNBgn9ga1bT3y3uF3ToGuhqinS/tE5lNoIov/qtARTfKv9IMoPevsS9pYfqw/oxsITAT1F800j/DSM7KHXbFYSzPZsgqUqkQaUA7OkDFCP0exqIWx00ZlD9zB+eXoxk0vA2UIS/aqfHf2FHRlv2y8wjRff4jGS5uvQqlTwjO9rxh1332LKE5ziCtmnEJoa3pmAJgl3doGiTWG3pyrsUi515YUC9TTv9o6Uj/rbaN77UooOvFQw5GcDyhL0cN6M4G
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,55 +92,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youngjun,
+On Tue, Feb 17, 2026 at 07:28:12PM +1100, Benjamin Herrenschmidt wrote:
+> We have two issues:
+> 
+> - One is we don't check for pfn_valid(). If this is called for
+> a page corresponding to a big enough memory hole that we don't have
+> allocated a corresponding sparsemem section for it, it will crash.
+> 
+> - Then, when using deferred struct page init, we can end up not
+> freeing the pages at all. This happens routinely with some of the
+> UEFI Boot Services memory, as soon as they fall above the threshold
+> of pages whose initialization is deferred.
+> 
+> We can very easily hit the !early_page_initialised() test in
+> memblock_free_pages() since the deferred initializer hasn't even
+> started yet. As a result we drop the pages on the floor.
+> 
+> Now, memblock_free_late() should only ever be called for pages that
+> are reserved, and thus for which the struct page has already been
+> initialized by memmap_init_reserved_pages().... as long as we check
+> for pfn_valid() as a big enough hole might cause entire sections of
+> the mem_map to not be allocated at all.
+> 
+> So it should be safe to just free them normally and ignore the deferred
+> initializer, which will skip over them as it skips over anything still
+> in the memblock reserved list.
+> 
+> This helps recover something like 140MB of RAM on EC2 t3a.nano instances
+> who only have 512MB to begin with (as to why UEFI uses that much, that's
+> a question for another day).
+> 
+> Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> ---
+> 
+> v2. Reworked a bit to add the pfn_valid() check, remove the bogus memblock
+> access in debug mode, and add a test of PageReserved() for sanity.
+> 
+> We could separately do a patch forcing UEFI Boot Services into
+> memblock.memory but so far I haven't hit a case where that is necessary.
+> 
+>  mm/memblock.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 905d06b16348a..71eb25b68851e 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -1770,9 +1770,14 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+>  	cursor = PFN_UP(base);
+>  	end = PFN_DOWN(base + size);
+>  
+> +	/* Only free pages that were reserved */
+>  	for (; cursor < end; cursor++) {
+> -		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
+> -		totalram_pages_inc();
+> +		struct page *p;
+> +		if (!pfn_valid(cursor))
+> +			continue;
+> +		p = pfn_to_page(cursor);
+> +		if (!WARN_ON(!PageReserved(p)))
 
-kernel test robot noticed the following build errors:
+Took me a second with the double negation. I like
 
-[auto build test ERROR on 776250964cbaa49ebe6b8bb2870765cc89cece59]
+	if (WARN_ON(!PageReserved(p)))
+		continue;
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260217-121406
-base:   776250964cbaa49ebe6b8bb2870765cc89cece59
-patch link:    https://lore.kernel.org/r/20260217000950.4015880-4-youngjun.park%40lge.com
-patch subject: [PATCH v4 3/4] mm: memcontrol: add interfaces for swap tier selection
-config: powerpc64-randconfig-001-20260217 (https://download.01.org/0day-ci/archive/20260217/202602172046.jWVum2TN-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602172046.jWVum2TN-lkp@intel.com/reproduce)
+more.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602172046.jWVum2TN-lkp@intel.com/
+> +			free_reserved_page(pfn_to_page(cursor));
 
-All errors (new ones prefixed by >>):
+We already have page here, no need to pfn_to_page() again  :)
 
-   mm/swap_tier.c: In function 'swap_tier_memcg_propagate':
->> mm/swap_tier.c:342:8: error: dereferencing pointer to incomplete type 'struct mem_cgroup'
-      child->tier_mask |= mask;
-           ^~
+I can fix those up when applying.
 
-
-vim +342 mm/swap_tier.c
-
-   330	
-   331	/*
-   332	 * When a tier is removed, set its bit in every memcg's tier_mask and
-   333	 * tier_effective_mask. This prevents stale tier indices from being
-   334	 * silently filtered out if the same index is reused later.
-   335	 */
-   336	static void swap_tier_memcg_propagate(int mask)
-   337	{
-   338		struct mem_cgroup *child;
-   339	
-   340		rcu_read_lock();
-   341		for_each_mem_cgroup_tree(child, root_mem_cgroup) {
- > 342			child->tier_mask |= mask;
-   343			child->tier_effective_mask |= mask;
-   344		}
-   345		rcu_read_unlock();
-   346	}
-   347	
+>  	}
+>  }
+>  
+> -- 
+> 2.43.0
+> 
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sincerely yours,
+Mike.
 
