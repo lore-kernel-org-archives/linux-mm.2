@@ -4,138 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3DD2E6816E
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:37:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121C8E68169
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 10:38:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C61FF6B0005; Tue, 17 Feb 2026 05:37:37 -0500 (EST)
+	id 6FA6D6B0005; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE5DA6B0089; Tue, 17 Feb 2026 05:37:37 -0500 (EST)
+	id 6BA9C6B0089; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC6DC6B008A; Tue, 17 Feb 2026 05:37:37 -0500 (EST)
+	id 5DDFB6B008A; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 968756B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:37:37 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3682EBE85E
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:37:36 +0000 (UTC)
-X-FDA: 84453597312.19.E65EC41
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CCDC4140007
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:37:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=Yf2v6w7g;
-	spf=pass (imf09.hostedemail.com: domain of haris.iqbal@ionos.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=haris.iqbal@ionos.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771324654;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B1F76B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:38:38 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA8155E282
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:38:37 +0000 (UTC)
+X-FDA: 84453599874.25.EF97827
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4E6D9A0009
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:38:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=etlqVu25;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771324716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZMo/PtOIzSJeD+bvKh62aH9xtqgsP4XaPk4C2v4d9E=;
-	b=4iv8FfYy2ANJa2tsnKalKkcG+L8oAe8MxI9kTU1Vh0MrESY4Gg2OMSscCK8xuXIgtSzi0m
-	c76nFQrWmOuF12I0fIl5ZL/mSsJDQVv7l2amB4QLkluVChB+cmBy9LF0wzBRMgwvyMDrCB
-	4X48PHhjze6DTKyuXXR+xD274HMmQs4=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=Yf2v6w7g;
-	spf=pass (imf09.hostedemail.com: domain of haris.iqbal@ionos.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=haris.iqbal@ionos.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771324654; a=rsa-sha256;
-	cv=pass;
-	b=1GadLJ8gEDAj4BtzUzxZ2kypscpQ5iYISP7i7bsEiB3z1VGR5pzbQBK3DFlEr74CP0s3+0
-	VwzsdnmKn7QBFYtBefGSjT9ay9L58YXJwzGgLly09FDIgtMSfmjL3p6lu+qraXfwqJrEbu
-	sHJFGcMNFIHFkwlZr0Fq0ZoCvsxfdjQ=
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3870c7479c6so25852951fa.3
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 02:37:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771324652; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BYO7D/62quLGgVSNZ73syuBPWjAK3OSI/r2wiXYhFbfzgFshkcX1xPKef5yazD1HpX
-         V0vKmcedUEC6GxCXqk565J8owazdGVeDNG3ZrfqTbKQiddTLRkJTrLzf8h0ZE1Rb3rDZ
-         njvpkM0obEKszgNuWxWuCtVVRsA5khtS+N5ONLRLJkEwD1zMEEK3UIUbPRJe3ge9JlIM
-         cwp+DxcmgKHtzk3H22CtsmPK/vxzKLrWFaLpHaXMTggaohOdlXMUvt6T0mW19f4wvu5S
-         S/jPk0uSDlRpeC8DR2U22KmuINr05xeZhuHCMXnPLs37d6OVh5M5vCIdYiQ5szfIs+ox
-         ATLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NZMo/PtOIzSJeD+bvKh62aH9xtqgsP4XaPk4C2v4d9E=;
-        fh=M6k8ZyxUGYQegvBzdkdwt6QWsUsZ3sxgpwlAXrOvG+c=;
-        b=eVxtjznML8+7KZ53/wza23aMn+UZBPou3pWeMm4tJusOh2MJX/jMw8VBdi0ye0mYCa
-         OR0BtQoTkLov4wKOvlMzQJ4zGmF7mna2mikN9ylMkMmBYhnWpFuMYV+UYU8i+qo9jmy+
-         m/yk9g7y+U0lL9iPYYRYG4sjpKvbusIXMJ58olTzd7A4xQBxkx5OMBLjq8xUupO2D18z
-         K/Qwlt8jo1ZC49boaZTGAcrFcHI4Ae2j+emKJZcUoz8qo4lreZ36lNq2P3/2yt+5zLLV
-         Pz1tYj2kn5dQk2YaeACRLSI5IQ81CiwwePe49+RB22FJg2n9TKlQPXY83PLqid5Hrv1P
-         CGHA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1771324652; x=1771929452; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NZMo/PtOIzSJeD+bvKh62aH9xtqgsP4XaPk4C2v4d9E=;
-        b=Yf2v6w7g02JNGDlF/WmbSHfuPXF/rdxoBTkxW1D2Msb6RnlXA4JcUua7rrKPxqUydW
-         bOG+R6q7U6h+KcqQAai8zml2jq3fpa7HTz6dbTzsAevlpwm82s9uYT6HN2evGLwJi0Qo
-         1jgQaMhVffJC7DccLPUn6GO35iRtRDYkFYtiXSzjeZqCX1V7v+Vt6G+n6lMUqzvV/r1o
-         TYN0hSa+dOSmsPi6ClGjTtt2TB+ahAdEUIbbGWF4+WZISnLL9WxgxBaVWENKlpGjP+/h
-         K7PdxTuDAfHIncNzr15ZFDCs8A8Fe7y2ccluMj6ZldW8fJR98CXVUs7PZbbUx1DpKJTy
-         OckA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771324652; x=1771929452;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NZMo/PtOIzSJeD+bvKh62aH9xtqgsP4XaPk4C2v4d9E=;
-        b=FB1xBo4QCPltKwYL+94zTcjbfArBdsgxZQxcwEKZNM4o3afeMRVfuiM+38J/gyDsUV
-         KFlv6TOEdwnlestIayfehlMk6wY/23SYSUicmdBh6Ns7HyD+zcaiokf0zNyqxlEk07p3
-         ZFwXHyPaIaCp2REQmxHOubm0fWA9G7wPDXb2wddE6BNUav6x80p98PpoyQqbgD3gJbJb
-         FpftcKZloMu3dA4hH2O4lQXCEjtaiWiVQtcM4A5seHunaqxrijMNGIgeT60XC3dUZHXi
-         MuxC1TsG+6aL4shQBa1XZPHPlNa2dpuV85Uq1D1L4R0oyQW849u5iGSdPcOnmLOlfCdT
-         9EFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVU7clNNntgOmUMCC53oWyInoaWsaQ0d6VP+597m5sccbWodIO2K62V0gYX3N+WGbH+lzBswmjAqA==@kvack.org
-X-Gm-Message-State: AOJu0YzkdT4HEF9F3RmcD2PwsveyMze/9YzfgF1FK1bwxg8yWCYgVTBB
-	W/rGpGEPcUvWDQAt5aiZSt1yx6/AxwEQC/6IRJTylFwJYfM3pIRPUd0238sQsgSx2UIfjCk3rOC
-	A4vpuUbrWo5vLsMzUo/KlBXx9BsBSJCK2uHZEoufO3Q==
-X-Gm-Gg: AZuq6aK25jvOxb5NFwIAQwSF/XYQqCKuCGt0WrZ3w73CLYht5+/4uSGAgUmwVk2MdBn
-	6LDAQO5xay5V1D/ZGLFZBonkHeaykgZCHrZwliU1j2SDDmmkZHcm2zi6lOg6uGH/Ja+ShuTKMNf
-	xCHeTadkM32nO08ff8eSNSkoFrwca1EYqmtECR+Yf6IjcHIhLWmXHitKbFjxfSRJXTyAcIeb6OK
-	mTXDq8F4apWJysQc57zGQINecG4OV/TReEABQ31Q/7GcxcAYhea99wTE+6mhitHVr6r2v4/0QJv
-	ubwdryV8vX5SXnooaoQP/gH1mxt9h/LK+fpZxUIhhtuYV/WJzmY3V2S+V0SyNUPu7fZP
-X-Received: by 2002:a05:651c:1ca:b0:386:ec21:c87f with SMTP id
- 38308e7fff4ca-3881b99cc9cmr30135731fa.42.1771324651832; Tue, 17 Feb 2026
- 02:37:31 -0800 (PST)
+	bh=mnf+wPLbEF1lHCNDnDZBiFjIcPRcx+LUUY9aUKEUsG8=;
+	b=yiU65H7hIH28szlsvGpA/XefLtQAMExwE74eBOLtSGdif51+YpEpNaib28ESkqoYa4stNx
+	wfxHzPANlvuye7jkqZC1oGJmSAesbpLbFdcLYyHbiVokEb3rZ8GStWY/iEryQTEqmDo/5a
+	Kd0thjf+1Kbn1RnWLf106IJB2Z2mlIU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=etlqVu25;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771324716; a=rsa-sha256;
+	cv=none;
+	b=vIdpaWbvtzRyGQWUcdbR8icDBbZQ2C0Lk8Nu39V4Vjsqrw9gbI06QR1cnxH6uPkbfFxpa5
+	lV4hX7zvJpFW0y00glrTn+2R+jeRWAut/ndHLvpNd2Esz0dutQ2kf0gmkwzs4D7TQvKFc0
+	+pV+dTRwGgjXYtE1uub3dxANZZSo10w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 602B043874;
+	Tue, 17 Feb 2026 10:38:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219F4C4CEF7;
+	Tue, 17 Feb 2026 10:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771324715;
+	bh=b2lTnIYAJLe4yjFgG5uGsPClpzLp2piqy3H57BEyaeg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=etlqVu25p6py4s3tgHqvehmXJbfHWLUXTQWu0l9id4rxKG/XT4IgBB9XOKGaR1a54
+	 +tisrA7K1cEDtHb2Ed8tS2hq0v8BWH+13+povr+tFlJk11W4GcP9DLIZlS6eKDz1in
+	 8Erai/K06fq2WP1QyEX/gvPbC8F4EMkpz7IUzEdkOTTEnE6tbjPeU6jN54kY0h3gh/
+	 269C8HU/qj1EhQxyhu0aii4c9vMjmsiBwX1aRaaz47KVSqyXDoX/na7vzHNMJQ2T7E
+	 sEGttv7qmqoNfflsNpxZMkGZF5+O7nVfl81Q1opdCBKGTrK5lHKXCnklWKytGDKH4e
+	 +1WPBbVupE0oQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH v2] liveupdate: luo_file: remember retrieve() status
+In-Reply-To: <20260216134408.12dc6f88f7139054f9e34637@linux-foundation.org>
+	(Andrew Morton's message of "Mon, 16 Feb 2026 13:44:08 -0800")
+References: <20260216132221.987987-1-pratyush@kernel.org>
+	<20260216134408.12dc6f88f7139054f9e34637@linux-foundation.org>
+Date: Tue, 17 Feb 2026 11:38:32 +0100
+Message-ID: <2vxz342zzmc7.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner> <20260119-bagger-desaster-e11c27458c49@brauner>
- <20260129-beidseitig-unwohl-9ae543e9f9f5@brauner> <20260216-ruhelosigkeit-umlegen-548e2a107686@brauner>
-In-Reply-To: <20260216-ruhelosigkeit-umlegen-548e2a107686@brauner>
-From: Haris Iqbal <haris.iqbal@ionos.com>
-Date: Tue, 17 Feb 2026 11:37:19 +0100
-X-Gm-Features: AaiRm52ye33PKO28CcExseV6coNOG-rZ2nBeMP78z80h8Dwp-N455yQLK7UlhmY
-Message-ID: <CAJpMwyg-3-Z=ZDC60Vn0s-8Z78VOPKYmvX9s=Nnvcoao4T5zbg@mail.gmail.com>
-Subject: Re: LSF/MM/BPF: 2026: Call for Proposals
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-ide@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-nvme@lists.infradead.org, 
-	bpf@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
-	linux-kernel@vger.kernel.org, lwn@lwn.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CCDC4140007
-X-Stat-Signature: s451xwb6rzmbo3b1ibr379cuez6iah4s
+Content-Type: text/plain
+X-Rspamd-Server: rspam11
+X-Stat-Signature: oormc4ku16oc5di4b8a9ppqpfkuow7t1
 X-Rspam-User: 
-X-HE-Tag: 1771324653-5471
-X-HE-Meta: U2FsdGVkX1+BeIrH2hrsoEtKtZmzcpv+ADPjns+GFVGUhj5THmN5uFAn3BgvLZdfOCZ5ok4+isysp1UrEy5jMWthTv1fAlVksxLKPevIYBpzBtQ4boRkOhK+cO9dPRsoO7jPsRLhFBsQTpP5eImHE9ayThfYJSRx9OPjrB20pnSF4QukMnUQQQn2q3sr00RstQCrO50EAaK/Qjo5Da1afvYDEr6JWctmZcR8KHlvz9p21JByPxOUltBoRhd/5G8QW9AIRnyLZOWNOgenyWxPF1cFoCZCEYMixJ5Le5Ej9cuCCOJ1NAcPRXwzLxOSry0LAvlpGZMakRJXBZz/ko1Kc8a4WPo9rX44H+ht/gpj21NHB4EOrsOjA9jppOXkCtquJzCr6zzyzi5exNB+JIty6atGKjF6mVhJa7MsUEoEpaNkCxycjx/Dd33faREJF9ckdWW6DuEaL5dPYx3aXcjMieQyueDqn1w9k6aDMuXlCEisgr2QqhD5eukZpTqAEeD89kZ9uMgGzazB3OJtT4xWW20P5l8n8z0BJxlN9fiw4nb0gd5kTLT7RjwROYrbXGAun4OfzUlFNpZHm5k5lW+6kAkhWp9o8TLmU/EMT9rcfRaRXJYuMlpHJMdJQ81PVIRZxo2AtZFdcqSijss0PAc27et2BwTkPKeaPmNQEGvhsGgcRmusXHKiATl4hzXvm1d0yNqZU3Ln8FxK49u3+64MmsIoPIM/NICvKyopBVG0vVtsszYEklDLLcbrYMfFb/mHTrQXgQqmxCkpvofO1QnnSSFyVM8hyDDsrueMIs/5Zdb3AWX2ctzr5T6dcJ0MuK6PO1rcoJFHJOXV1kL5sbklOmfNTYhfYTtSi5pGaoWQKN7ijGpc1RjsHzghtEaPYbVwo7G4aSKWlze0y9uT4WhrBegoITLnfRZQQVLtHO4RprILm6qo0bMEKgnmYtIrudnA1cG0e+p6T33Y8ElNoaX
- N8uniJtK
- CgWdujKyag8HhEo1zP1qX0oqsfe8MdiyegtRIO8b3rEYHP+xwblmgRXB+hR4QE2t44DAghEeujN9It+6Pe47pGUVPQ2ziRgq5cV4HZhngC+7NjFomzHJltAAvXyK9fFhHD5VRP61/+Gpskw7aMnfFGHTKy74v9vKD7kCdiBHMbQGsyZvtgD6OKFyKUw1ZaftB/h9vTtHz4iFG+aBWrJegISQ1EWGj21RH5k11Cx5rxoKnivumhElBVP4fkjRzlfSEJnCyuc3ndim4KhTzFkmg7uM6Ag==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Queue-Id: 4E6D9A0009
+X-HE-Tag: 1771324716-663029
+X-HE-Meta: U2FsdGVkX1+7TUqctWCA4OeM7an/KVwpw5f+W25UUS2p3CQFEYDLsnVxr4vZ9IiUnqgzf2J2u77Z8MPpIa7Z8FPi628xfdnVymi9EfRRRyOeXxRLewjZvEqv+CPFPRtgXY1k9kCqE005k1+akSqWGJ9OzWA9i5wQZzMw1rIrntolj/67iz2RYE6Hqez4bMdb2iFRIilCVocEQX/NZ8y7aVFLEMO/Uh+AUbzbfQ5F1jsbPEIHYCaqWGRFvPNCurBipdykhffaeAp0OMLUbDRwreM/XSc/OZB7V5yWDIDgFnrqUreNhZof2wzKKKQ5DSKisihKAr1S/OPBz7saOsg3CWsCkWV9w6izP7ehtk5jQ2uROCINivNXdZ2RxvrWxQP2Wv3n/WfVpBzz+LNvwMDTWuI3rGqj6M+/VxHhOKPfU13Y3ik1moyp6DAEYapx8GETWojTTC1QIWJbFo2bpjJouozDikoRRy0LpD2JVcj1SVA9uxUNOa5jTNMRIkQm80DZRbzB5FyXdXkNluq2L6yFGE3NzD/ehrD/OZHJ5WHe0xFnKDSkzEndMmB4U2XHQMTpPlC19FNJhS4j0xYTEGeOI/DcC/7UB4H4X+JvlxSpPZk+NIYpbCnEEBl4h2f/MYdKDOvuEDkpsuGjMvTZLTWb2QrXVZgwqPsV0lillGo7/TyeqqmGqqBdeyHcjrnxRwYi7OZLzmKXl2Kybti5X1q/lALVthA23NRHX0Gmv3jZCblFinlQd+bHl2A4TaNFytJKZx4jZY8M/HhORgfsCMnWRJRMEmDSFbVtftctfHYrF6kF6Mqhw9hsYYA8dGSmAMnHcB0vuVYxThLUpRdZTpscZZ2clnSjaEGX4wFNkO5aH13i2VhrkSgMLN+K0UtHQHPxzvwPjV9FbDOG3oxINiT6AiK98aPdPWgjaBA8wBjoUMZ92pj81zeKlsemUL+QBGml
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,43 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 3:28=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
->
-> On Thu, Jan 29, 2026 at 05:13:52PM +0100, Christian Brauner wrote:
-> > On Mon, Jan 19, 2026 at 03:26:39PM +0100, Christian Brauner wrote:
-> > > > (1) Fill out the following Google form to request attendance and
-> > > >     suggest any topics for discussion:
-> > > >
-> > > >           https://forms.gle/hUgiEksr8CA1migCA
-> > > >
-> > > >     If advance notice is required for visa applications, please poi=
-nt
-> > > >     that out in your proposal or request to attend, and submit the =
-topic
-> > > >     as soon as possible.
->
-> This is (likely) the final reminder to put in your invitation request!
-> The invitation request form closes this Friday, 20th February.
+On Mon, Feb 16 2026, Andrew Morton wrote:
 
-Hello,
+> On Mon, 16 Feb 2026 14:22:19 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
+>
+>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>> 
+>> LUO keeps track of successful retrieve attempts on a LUO file. It does
+>> so to avoid multiple retrievals of the same file. Multiple retrievals
+>> cause problems because once the file is retrieved, the serialized data
+>> structures are likely freed and the file is likely in a very different
+>> state from what the code expects.
+>> 
+>> The retrieve boolean in struct luo_file keeps track of this, and is
+>> passed to the finish callback so it knows what work was already done and
+>> what it has left to do.
+>> 
+>> All this works well when retrieve succeeds. When it fails,
+>> luo_retrieve_file() returns the error immediately, without ever storing
+>> anywhere that a retrieve was attempted or what its error code was. This
+>> results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
+>> but nothing prevents it from trying this again.
+>> 
+>> The retry is problematic for much of the same reasons listed above. The
+>> file is likely in a very different state than what the retrieve logic
+>> normally expects, and it might even have freed some serialization data
+>> structures. Attempting to access them or free them again is going to
+>> break things.
+>> 
+>> For example, if memfd managed to restore 8 of its 10 folios, but fails
+>> on the 9th, a subsequent retrieve attempt will try to call
+>> kho_restore_folio() on the first folio again, and that will fail with a
+>> warning since it is an invalid operation.
+>> 
+>> Apart from the retry, finish() also breaks. Since on failure the
+>> retrieved bool in luo_file is never touched, the finish() call on
+>> session close will tell the file handler that retrieve was never
+>> attempted, and it will try to access or free the data structures that
+>> might not exist, much in the same way as the retry attempt.
+>> 
+>> There is no sane way of attempting the retrieve again. Remember the
+>> error retrieve returned and directly return it on a retry. Also pass
+>> this status code to finish() so it can make the right decision on the
+>> work it needs to do.
+>> 
+>> This is done by changing the bool to an integer. A value of 0 means
+>> retrieve was never attempted, a positive value means it succeeded, and a
+>> negative value means it failed and the error code is the value.
+>> 
+>> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+>
+> Should we backport this into 6.19.1?
 
-What is the announcement date for accepted topics and invitations?
+Yes.
 
->
-> Fever has struck me down so all you get is a bad limerick:
->
-> There's a conference called LSFMM,
-> Where maintainers debate and condemn,
-> They argue till dawn
-> What's merged or withdrawn,
-> Then next year do it over again!
->
-> Don't forget to pester^wask^wremind your respective organizations to
-> sponsor LSF/MM/BPF 2026! If it helps, you can tell them that we're
-> considering renaming it LSF/MM/BPF/AI.
->
-> Thanks!
-> Christian
->
+I keep forgetting that a Fixes tag alone isn't enough for stable
+backports and I should add Cc: stable@vger.kernel.org too.
+
+Please add it to the patch.
+
+-- 
+Regards,
+Pratyush Yadav
 
