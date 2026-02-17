@@ -4,90 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FCE1E68172
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6810E6817B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:18:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEAB96B0089; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
+	id DD2976B0005; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C95546B008A; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
+	id D566D6B0089; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2AE6B008C; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
+	id C62186B008A; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5066B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:09:54 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CC80140145
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:09:54 +0000 (UTC)
-X-FDA: 84453829908.21.E7363DF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A862BC000D
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:09:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4u74F0P;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B12B06B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:18:47 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 355A9C032C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:18:47 +0000 (UTC)
+X-FDA: 84453852294.19.978FEBD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 610B71C0008
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:18:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="FZkc/6GH";
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771330192;
+	s=arc-20220608; t=1771330725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2os0qpogUwB/586XJ8r+5Xq6E3I48Z5gBFg3QuVGWis=;
-	b=L1ireOOf/HmkFShtK/EbudOvGLznIEZ9fBIv4+fSKVGES2gpF4ApVLQ1OkYEcShdyfnL7U
-	oaY9sr/jS083p4V/uCNH6PLNzrMXrs6ngUpKMl9orwyfMO6BJV0ozpjVZLgwkIZ4c+rfMN
-	l4xE+qfJYKkp4KWbeoQXTXZdUhSBwB0=
+	bh=WW3aylxN+UKG1rxk+Fl+cCO/RKI4Ii/abuk6emVJ3BE=;
+	b=ilmJ0yPTUAvZco04ctHwZAFzbWZXe2ICBVpqrtuzwwLHkgv1usB6D7VbzvptRT45X05SUb
+	YE95rkSbFl5GGBaqYDyR0kUfM2loj0BXCT4Wwy9gTU3wAqSxE+m9xOSB0GZx8zWy2eSs0E
+	HzhDHO71ltwUQuzgov/THJrQoA7qoVE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4u74F0P;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771330192; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="FZkc/6GH";
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771330725; a=rsa-sha256;
 	cv=none;
-	b=Wm9BhsU+w+tiyrhsS5F6B1PHw4vxjROZPq3NWyUPVholMeE+UAHamjSZqZI+4FspjJA/VT
-	LCNOEQAk0DUPa7uQ8q+bPSBWNFR/Q/0DX8kwlsPTLpAPliQ2F6F0I1O8bj3zTEWgGaOlvy
-	ZuwgtL2vABZIJg7c0jWGgP6YpoTvApM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1293061334;
-	Tue, 17 Feb 2026 12:09:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4440C19424;
-	Tue, 17 Feb 2026 12:09:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771330191;
-	bh=+dDmsgNTxJ4xXTywjhKRtMBQjRXfDi/GXnhG2R1uzpk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p4u74F0P/z9HalXrm+ZixCxZNji6V6YooDDD5uK35jvkP46JJtGnvBx4yaiI6EHMk
-	 md3+r4ms/xzWet1PaiK6q991NEZYvXNaBfObeUDUwPfFu3Lsda2xnpwOp1pUthOIKd
-	 9OLHmc60NI36GALylCAAaXFHhYdbI07CrlLwVeSGM56eSNDPPawPkoNqHEaWk7qL4W
-	 +/xyEviB4zlY16qq1mWwYnFoo2aFY5mIoiCcjHoGamILeQXpfwoEL+waJRQKUBlls+
-	 fR6ORgECOWZxyAa5dM0CC8h7WErlFPiHmZS59GHgz75MGoXJFq6kpPGg3ZpC807dks
-	 l1bTGgNJjKbmg==
-Date: Tue, 17 Feb 2026 14:09:44 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
-	linux-efi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Moritz Sanft <ms@edgeless.systems>
-Subject: Re: [PATCHv2 0/2] efi: Fix alignenment issues in unaccepted memory
- code
-Message-ID: <aZRaiCidlfNtPG17@kernel.org>
-References: <20260217104957.249340-1-kas@kernel.org>
+	b=zyL5ytmSMqSrIQTkJRoNrVhpN5g8xN/H2MpWUqYqSrOhTTRWCfJm3TTYU9i9tXoW0DW5DM
+	Z0pLyAt/6tNOqz4EpwweGLkzdjwSs9dKTG48PflW5gFTu0YOgAvcN8j8YcmY91bgOd/HPU
+	46aX5Se6L4CBBoxJ1v36OlgCC0f67E4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771330724; x=1802866724;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gxv6GPfvEdt3I88BAhetX4DcIa295ymdfyKLNpySCfo=;
+  b=FZkc/6GHDcMfj5yIFITrpOAWDSo9Wg7VeqeHCIVeu5S7eWnLy1RHRTQW
+   VdV/PWMT4erIsVJFBIlLQA+Oz05tUHunEvthLZ9dee6V6sm0mCNYPLgyk
+   KY6MZ13ZqliJMyQ3KVWkdAMh0pRV80ddKPK/OmZFtlCPsksxTOfKA7OE5
+   nCWMj0isT63vYK+C86wH7sFdKd1emuxmnLPxpYdga0QIw3YH5TyN5MJ+X
+   he0w+9RUo24tN4S08NiLcN0fEix0eediLQFcBgeSUHespfGr6vCCP9dQw
+   N4nmuwpA4jz+/WJTAuAbQs7Pkri8J0yVxLOkrn2tWr1uAIBf4orobxs/w
+   w==;
+X-CSE-ConnectionGUID: /nakB6yNRLiGQPwLLVFPMg==
+X-CSE-MsgGUID: kfsXZoSUQRCvkfP/soSjew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72108205"
+X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
+   d="scan'208";a="72108205"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 04:18:43 -0800
+X-CSE-ConnectionGUID: 5+Zoq9ohSqijtT9PXHlpFA==
+X-CSE-MsgGUID: NyOLsov8S4adFFzo9eyCoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
+   d="scan'208";a="213127162"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 17 Feb 2026 04:18:39 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vsK2G-000000010vk-3Fth;
+	Tue, 17 Feb 2026 12:18:36 +0000
+Date: Tue, 17 Feb 2026 20:18:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Youngjun Park <youngjun.park@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	gunho.lee@lge.com, taejoon.song@lge.com, austin.kim@lge.com,
+	youngjun.park@lge.com
+Subject: Re: [PATCH v4 3/4] mm: memcontrol: add interfaces for swap tier
+ selection
+Message-ID: <202602172046.jWVum2TN-lkp@intel.com>
+References: <20260217000950.4015880-4-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260217104957.249340-1-kas@kernel.org>
+In-Reply-To: <20260217000950.4015880-4-youngjun.park@lge.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 610B71C0008
+X-Stat-Signature: act94z3jkjzaiisoz94p8qjif4ooahaj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A862BC000D
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 5eft1m7xrqic76pgummdqjcacf9uw1o3
-X-HE-Tag: 1771330192-611936
-X-HE-Meta: U2FsdGVkX18hcTZ4ORjYzjkBtA0j5dB7RHS2CpWpjNlKjsln5q+YFB0bDDjC+wg6h/8pEgcQFHuLfap4Erk7a0bckT1624cdOjYt6IFFhUgcOL76iei/3tA3aoFHXkgtg2z2sRV1AXSEd/e7dEBLbOCt8Vz1S92/ey/XdZy19AHVdbGVncn1dndBLM5sbcUEbZ+A3QJgZif2PLcUr51LPOCuyIAUE42YAz6nLCEU+DYu4etGIqdcSxQs5Eqv7N3DskyJZ2tDr+Iq3sImn3/BpuWqRzcyxq868S9Rysuo9ipWZw9GSD3FkDkWkBk2WwWya4f9vmbVD7IYjiP+O8/zZC7K+9On9ZhEJM8xLUhEkcc7zHCjNlvcvoDzA0lzpdyhypxb152zSo8XbyXVq7uKobkH0+ezV2sqVxjMqH/p9GTDns1+sWz/3lL91X1SZpNFRT5ZWKltpl02ynoDmi9dCWiFOIDiTtxuS57D9Owxa8P4ItIWsklbIveCRVQ4z7ysudk6EgFV6rFYH7L7D42vIFoODgudirZCJkiryc91NqB5hC+BXlKYrhVY6LfQmOaplu0iaw5eTe6yZonDe2ESaoyzrvW/0J/3myxWTPrztm7CwY9V3PcvVbY0C7bNFVWUcOJgWCbNwph32Yug3Z8IbtsP+sYhKRUWymNgnDiKbLsNwRCli2lBOYbyPGRs48mPb1X+C/IJe726lemjz1C5Gk1mNyTcSi/JocJagSF0ueGBEF1kGhzaEe8FP4JJBRqwtJovP/YBN0YO9hvq8KkhZXQiWfY+i0LR8XBw+sOdZfAmBDRPj7eriY5N7lsE0E+5e92hLzjuBIO0pxjyAdnBOS/SHNm6KwHgeUGFpcH4FvmjONSFUBmFrY9vaOtH2qCj8GFostEBMc82pkgbFVOvHsZ7hvog5kcuuj/S87zUE3u8wJOZKdzKJV60sTBk5eJx2FNtKip5cvLZxxZHxCu
- DWhEr/7d
- Bige6xc0jO3nTyOxP1Qf6xEgCgtjT9KcjPkuroA3GvVInvRJB7C3OGvZFSGJl0sShVOJ8rF8+eFeqmQpMxtt5g+IV9ckLbqm8gunY5uf/E83DlroFtn48bRgIjRk08/7adt98oXicNsl8zVutmc+jWrt5xxpzIa1yF0B8qiSYb0iTeP67bLF+BbJo2tbsc96OUTPcB9hFuv/hVUn492o+5wogeBuLkcR051cu9h9aRE2KHdYTF7dce5euGbhag/mmjhx0FAO/sSsfx3S7+YKWOgU5UQ==
+X-HE-Tag: 1771330724-447404
+X-HE-Meta: U2FsdGVkX19OPEZyPGBYpyhsUq6m0SQlVly7+cxsx/BHhvmKcr40G5qwBaTcba6Vt/gfTdX/xNjo0LNa8i267szIA+l5pueWNibpYzYN9j7kMSADnc5memcx0DhfBa6DZC9NL+cghkPD/grEdwtlaa5XiBa4GoMOuLvp8jOURccLA/ikkarfViMzWtkgvlRgwr30vcfEeZuYlss7rZSVK5BbttpdIRpzpZVtA3+XwDNFfABlFSt9YfVzhZ+4dC73KZq7VpvkSfosbKC/1BxtL6cAP/teYyvk6VR8P7wYXF3O5yTU3zJj+LRY7jgYj+nzhDK5gYVdMxtJAWduv4DpMyF88lulbcM5qP4YsT2Oa7C5WYj0Iu/BMNtB5Ip9/p+9zA1d9gKJZI7Z1lYvXMI9GnHLDVlNos3hDmSVbxn14vmMlmgQX16LHNZqUBBtblTno4JWLTWZa838eubcgoxpXktm4Iz+L5u8Y7sCR6aKo6W9XB4Q3nZPvzjsw9Z4SeNEaTN65tEBQI9N+83Mzji4TrlfgWGM4T86jk7ecH8Wu1D757gyVia5cieC0BJWRe/0giOO0P8tp8yOX0u/r3Nnn0ChZSbbhyEfz3VcB+BKduRgUPrkTjGBxkRoK9WX7uakQHWOYoS5WAdaOQw7l1mwIQGKGN0Sj0vlTreWs2xjgDIoRraeDvKHpHOhua2PsIfpzTWOifLlRX/tOhvNIeKuX4bL8xHIIWC+5PUY/fru7wLKsTJtQBrTMJbQ80oGh08CEnCxFFsB2R8cLVKw9AUhz9PbDt5khYxuZNIZUpvAL5bV/xT9k/HBA0egLx9OikBaSYuJHJtiFG1zrmnOmY4hRHQqspBEi0zz0wCSUSsUCc0aiUXf7UjAZTgpXz04XHlLKQ+ONYgqzw0cMN0Stmx6cWR88mUCqEFx+CsE2Q7Ot5EN2srh4ONCMrov/wMaf8/UMldUw8Opx9nQlgUA5He
+ Lj+gaffw
+ dyUKdaxQpK2tw3j+BK3dGIF7dnXXgXv1dPUrtvaoEUhVCNxTNv98ZAH3p1+aHCLBXZBGJhDRVCaoIkRc4AtQvHsWGtuqnvNJb15Zdd3Z9vW3ISyrKO4UYUr00vsBmz1a2ivPVlB5/xEV3kIg9CrUvb7G1b3HsAEl42KgjxRDq0qeajeJNGFJryzjNf17SvBLF0+NAaGtXHbWta3I8SZnPvfyqaBds+Oh+gJDTmrsfH1sRRdb83Ku6M3X/ERn8Nlzrbd01kTNphthMQoBBep3dolQOFbcJjmZKzeDCKA+HDFO4StZD81W/q74sk7U93OrHoioILs1zOBXv2EHBRVRazuspDzU00FmBiI8I
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,42 +121,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 10:49:55AM +0000, Kiryl Shutsemau (Meta) wrote:
-> This series addresses two issues related to unaligned physical addresses
-> and sizes when handling EFI unaccepted memory. These issues were
-> identified as potential sources of kernel panics in Intel TDX
-> environments due to incomplete memory reservation or missing "guard page"
-> extensions.
-> 
-> The first patch fixes the reservation of the unaccepted memory table
-> itself in efi_config_parse_tables(). It ensures the entire page range
-> covering the table is reserved even if the table doesn't start on a
-> page boundary.
-> 
-> The second patch ensures that memory acceptance requests in
-> accept_memory() and range_contains_unaccepted_memory() are page-aligned
-> before performing the unit_size alignment check. This prevents skipping
-> the necessary "guard page" extension for unaligned ranges, which is
-> required to avoid crashes with load_unaligned_zeropad().
-> 
-> v2:
->  - Fix 'end' calculation in the second patch (Tom)
-> 
-> Kiryl Shutsemau (Meta) (2):
->   efi: Fix reservation of unaccepted memory table
->   efi: Align unaccepted memory range to page boundary
+Hi Youngjun,
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
- 
->  drivers/firmware/efi/efi.c               |  8 ++++----
->  drivers/firmware/efi/unaccepted_memory.c | 10 ++++++++--
->  2 files changed, 12 insertions(+), 6 deletions(-)
-> 
-> -- 
-> 2.51.2
-> 
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 776250964cbaa49ebe6b8bb2870765cc89cece59]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260217-121406
+base:   776250964cbaa49ebe6b8bb2870765cc89cece59
+patch link:    https://lore.kernel.org/r/20260217000950.4015880-4-youngjun.park%40lge.com
+patch subject: [PATCH v4 3/4] mm: memcontrol: add interfaces for swap tier selection
+config: powerpc64-randconfig-001-20260217 (https://download.01.org/0day-ci/archive/20260217/202602172046.jWVum2TN-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602172046.jWVum2TN-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602172046.jWVum2TN-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/swap_tier.c: In function 'swap_tier_memcg_propagate':
+>> mm/swap_tier.c:342:8: error: dereferencing pointer to incomplete type 'struct mem_cgroup'
+      child->tier_mask |= mask;
+           ^~
+
+
+vim +342 mm/swap_tier.c
+
+   330	
+   331	/*
+   332	 * When a tier is removed, set its bit in every memcg's tier_mask and
+   333	 * tier_effective_mask. This prevents stale tier indices from being
+   334	 * silently filtered out if the same index is reused later.
+   335	 */
+   336	static void swap_tier_memcg_propagate(int mask)
+   337	{
+   338		struct mem_cgroup *child;
+   339	
+   340		rcu_read_lock();
+   341		for_each_mem_cgroup_tree(child, root_mem_cgroup) {
+ > 342			child->tier_mask |= mask;
+   343			child->tier_effective_mask |= mask;
+   344		}
+   345		rcu_read_unlock();
+   346	}
+   347	
 
 -- 
-Sincerely yours,
-Mike.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
