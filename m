@@ -4,86 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C7DE6816B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA56DE6816B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 12:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F7826B0089; Tue, 17 Feb 2026 07:03:46 -0500 (EST)
+	id 12F106B0005; Tue, 17 Feb 2026 07:06:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8E76B008A; Tue, 17 Feb 2026 07:03:46 -0500 (EST)
+	id 0DD616B0089; Tue, 17 Feb 2026 07:06:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E5156B008C; Tue, 17 Feb 2026 07:03:46 -0500 (EST)
+	id F010B6B008A; Tue, 17 Feb 2026 07:06:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CA826B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:03:46 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A8673C0114
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:03:45 +0000 (UTC)
-X-FDA: 84453814410.10.23655C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1F6E0180013
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:03:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U5rhgHvV;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D98A16B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:06:08 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A90C160145
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:06:08 +0000 (UTC)
+X-FDA: 84453820416.22.FC38BB9
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3A20D1C0013
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:06:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tj4JYsK0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=etN8cHi2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tj4JYsK0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=etN8cHi2;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771329966; a=rsa-sha256;
+	cv=none;
+	b=56GussR0Z2jSANiTabQaW8IRv+8mszcXSbPVXSJ1dyYR4eVK+XbTIoNobeyuzaaNw+P6Pz
+	h88CcCvngTsiox0nNC+fmOA5mLAu15vys8h9DkEcWA4IDyN2mvzrS8mAUMHbodVcW1nRq1
+	tJB8S7PByuGfKVgjb9SRhqS5Tet6HJY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tj4JYsK0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=etN8cHi2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tj4JYsK0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=etN8cHi2;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771329824;
+	s=arc-20220608; t=1771329966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bg91WDwmMBn7nlvyy0y8F2E7WNno/rtdlWvCXPMXZXQ=;
-	b=HzXi/b/4m93YbnpY2RFljUT4lMopHw5ZZib3mNr9Vzr7AtPEym8pyzc2fGE5tIz36xdgqb
-	wjxOD4rFR9L1OqbyApdDcJHdOs6/BmaOsltVi6QJZZJzrNavLHkT4KRNDDoqSaCoWaZGrA
-	BGetoRZPEHZFv66YYC5UT/mMK/sjqN8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771329824; a=rsa-sha256;
-	cv=none;
-	b=rqaMV4D8PIBq1q9kVV4HwmyxuAo6xNpAU1nfelCmmPNd8hy/Ksujan0rjTHArksDlpnGrk
-	gxZ/npw8VWJPL4jcGYyRayTyQRIr8Sy2v8DQG5+BZ3fvwYbcIre2LX/h6+CidU4/jl/LgM
-	fVueFAeg7kgUvxxaaxYUN0s5gTy8ITI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U5rhgHvV;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A8FD61334;
-	Tue, 17 Feb 2026 12:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAFBC4CEF7;
-	Tue, 17 Feb 2026 12:03:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771329823;
-	bh=fzN3neEFA+PXd8L13+T1DVvmzIb2m3kw4M+dUTcpoLk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U5rhgHvVT3q7m+VcF1PQdOMoxiu6QUt51IUUHc/EQf/CMvvXn2K5BxSRW3hLtL5UI
-	 xl40VZE+oE9qbztcfhRcA1NckyiibWXeEuBZatDelP9fFc+b0fYfc5ax3KnHSziV3k
-	 sbcaUOW2RWGSy9Q2cSyjEY0b9pTrk0eyqNPDd+yC8ILEBArH62kBAplaUDD8lWMMsF
-	 hLVtOBhk/j6mon1grTSz79QXRtI6Z9huqhcq5dKJyBmLtv9Z1xDdqd0TofmgBHS855
-	 hwghkvFn+dbLA70cwWVQywY0ZKLJhNDt5hjw+im2eJHry28/2kQPEwe0VEd+Mcbn6I
-	 owbeL8MLtJ/yQ==
-Date: Tue, 17 Feb 2026 14:03:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] liveupdate: luo_file: remember retrieve() status
-Message-ID: <aZRZGSLvK4XIIhNk@kernel.org>
-References: <20260216132221.987987-1-pratyush@kernel.org>
+	bh=RxkqPNgkdCosp0/W0/1gwJfHUSCYabVKYzC0gST4xVs=;
+	b=jlNDKSYe+LDPdPPMpuYQPMQeuvl9ByNT6PSXRc6vIZhmHveAWQOFYshGQR5x2oGx3cxbjf
+	lsteEfeCiiHuosjwUlECkfd0+IP7rf2PVn6dkO7mp+qH0fIKh/hnumHIytE1lbmDJ6HOuO
+	Bib2NgHfeG+lC0beKRTyfFyDWJFWn7U=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 699583E6E3;
+	Tue, 17 Feb 2026 12:06:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771329964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxkqPNgkdCosp0/W0/1gwJfHUSCYabVKYzC0gST4xVs=;
+	b=Tj4JYsK0howQT9SoGnbXDmFratK/bokiECr7iooUakYXlGgRQwNzuv0YraZX61LfeqVKGF
+	Dp+wWZ3u0etC1Fxkl5SuIjWnSH8aE2FGrAbtBjTBPacIMvpkPtdwhu0RwvZC46FToQpUhI
+	ctwdVA3XIN/DkqcKNmznF+i7pkvla5o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771329964;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxkqPNgkdCosp0/W0/1gwJfHUSCYabVKYzC0gST4xVs=;
+	b=etN8cHi2zKQJDOMOzLxSV1Q5EuWC25+n+s47IHcmvF0HtHA8i1MbBaQ+DTKCtL+uoDd80f
+	bKJwWS8rN1RtF6Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771329964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxkqPNgkdCosp0/W0/1gwJfHUSCYabVKYzC0gST4xVs=;
+	b=Tj4JYsK0howQT9SoGnbXDmFratK/bokiECr7iooUakYXlGgRQwNzuv0YraZX61LfeqVKGF
+	Dp+wWZ3u0etC1Fxkl5SuIjWnSH8aE2FGrAbtBjTBPacIMvpkPtdwhu0RwvZC46FToQpUhI
+	ctwdVA3XIN/DkqcKNmznF+i7pkvla5o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771329964;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxkqPNgkdCosp0/W0/1gwJfHUSCYabVKYzC0gST4xVs=;
+	b=etN8cHi2zKQJDOMOzLxSV1Q5EuWC25+n+s47IHcmvF0HtHA8i1MbBaQ+DTKCtL+uoDd80f
+	bKJwWS8rN1RtF6Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 50B283EA65;
+	Tue, 17 Feb 2026 12:06:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gPKoE6xZlGmPTwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 17 Feb 2026 12:06:04 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 0F5C3A08CF; Tue, 17 Feb 2026 13:06:04 +0100 (CET)
+Date: Tue, 17 Feb 2026 13:06:04 +0100
+From: Jan Kara <jack@suse.cz>
+To: Andres Freund <andres@anarazel.de>
+Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, 
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
+	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, ritesh.list@gmail.com, 
+	jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, 
+	Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, 
+	vi.shah@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
+ <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216132221.987987-1-pratyush@kernel.org>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: nqsehs63kbz65d1f8g4yno9teqmpux43
-X-Rspamd-Queue-Id: 1F6E0180013
+In-Reply-To: <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1771329823-944637
-X-HE-Meta: U2FsdGVkX19r0h9JSLt0XG+Vha3bAF0nkW9aawC1FbFmfbB+EiPMrXdvqU/CqmDh2MuBgXSe8yliG8p9O28/RR/dhIVQNEMdJ98Ai0iwjy4b9Jt4hnYO98uc45QwirCBHzn4aOG84fnVekxOf0f2grrwjoJbJAlivpziPyQb+5uP9UN+3YHX2Lxc7rKwMZwDZrlqmRHuz4YelKa/vQfG6z7uLBXCAsw183uoHE5FWiucW3IhOlpUCW4CxkQTY6nJ8Q3Swl3WCRphgCUYM8K2e9GSdwhX0PS+wBfLJWQYbJHLfp/+rs3TuZ7Y/q2r/ZDCwjv/A8IprlnpJH7V5p/n/osOb8kAthSWgzaaNmT9exccVrGaLncn6JsDTw6tlXSdmhpMWeB90VmfaXEbNyyQ/6fQIhaEv8XQwm9qC94wmq3vVm39fjhv8zXLHyI6nyqRMqmG2D1Vqg5qLcgmd/gVBxGOkv6CzipubpJU/eZFr4KRTKzQmXzbFGn7b5r6tV3VbnXO03NLhb+YsYjjqVLvbdblyJhhb8lS8pSMTOa59ybr5lwMsELSFFWK+XQCF5gp+dExiYFTDeiroOgseiKWTU3p15efs0aohK3zniuPmtqSO7x0SfSzyC416J5Gg33CCTC2gGY2wPG1t/zJNOkS1hsO4Zmw05UVMKnhhY17ZyhezMwBOEwo4dx6xoObvC/xF86HOdvSV6N4RIjJRU/S7UXYejRpuSUFCFkGAiCrVz9ygSoWFaFciQt6weKgZbPJrNCbepknbRiPdHKUHj8yYtLA17Jr5JGhoSRj3YYJr1HpiU7kwHSmlUyNYTNUrxD6WytXtf2jo9VrhZ3dlqXM634KTfXmyDMhrKltRQq6bETnOlI2Dj0ivwfhZwufRk/vfVGrXgPfYhnSLOXy/tFMPTeXGIjQ84qBM90wJ9eVeoJqyseUUTnUj4IWbMXRs16OvDqUmYyG6TOvYa7TaEZ
- 61KRzUmY
- 8HtoyHKfZtLGT2lyoQcxBagaZj3wre38YCDbM7aMzRjLLOXNOlOq5KXo0/16asuaJuNmPR5k4FrLedJI6j2ZhApL6f6aJnFJHLnacUADGVf6qaihwaAmNYH5FK9+qbBGo0XkGuhquSihiq6GoDfk/00PYy7HA3wbI34HqV46QkPJVrq52ikX8jcgdm5qEZQ2PUUzmbBaNVukzk43phs1n/hgxfhqYiHDyh04qtQhWFo/u9e4Zzbu363o40DnOpsGcFLB8799XdCVEXg6JsF0BoghCGa2pZ0mWAsTv09r82C8rsxAUBujLCt7hDMiuCjRkg9At
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3A20D1C0013
+X-Stat-Signature: srffptq93us7s1kszu3gqmsdr6aojfuf
+X-HE-Tag: 1771329965-988291
+X-HE-Meta: U2FsdGVkX19zn80ZhdksYfFJBzdsNiArd6n03XOsrbyj3aD0AL1uLdPgAQ/oEFuad8I8H3Ggws8Ygx+9ZC2zWwOupNKZC9++R4W/PUGlDeY2Z78zXFLqWNRCjWg5XhNA1TBMq8worxqj2grcy3b1dqSFpUmIea2OheJKb0mX2j50s8v8XbcMZghRLFDHypN484mInqabIm8dglGvpoyn+AYWKST7G3ItdqbSZlWYFDO5ZSoxV94Nc0PeWtb+kEk7y/V5HwtaWqK2ZZv8tHmilvOo8DbMP//LeSO++vT4nbCLndsFKfMeina74ct8Uc9qmstbjD3FLmahlK3uxtuqQwQgPi7hprEeys7+MLT3DOj6ZQt66mUe60U1zLtuQ3di+P/phxcluV76NEHVBmnQQ+akkC9UpHbAwV46+iplWY+jietd7UGEwYCfrV5OkKnxg8kUwkOn7/QWR+gusHhN+Ks5XoW2/6gaOafqu5r5NaaWhUHjzaFT6TB4xsUUp5CHKnY0F/i1Bud6k3nO7su1kezWbIR1EpwhaMxPNl7WaOnWYi7z6lmPEQQQsJ/Oo2c0OVsralNM3NKSYyxFPGDuqYcqJX2HJMVvsns38EkOCy01e7UHHHtdiotY6BIYXr3h+p15/fo5UWCmevy1G9u2iZWJirOkVgLFrW8sdtPqS3ktY7b+69WA5f9bq8C8jxMEa+XYVQwKytNvBNJiaCebjS7Ph29hEVcirTuTG/C3kh0AX9FGOb4nvD/uE65YHqY7khXB0rYdQWyJaR29RxYKzBlqo7tn72Fxaeu1PCbx+k6AyIMjhZTs9DJ50UgPUCXqRAm+rmjpUHD/8XM4/R35USI7ACZtvwNi68raI0NNDShAiDxKYr8Ib40L7xAbU4mjQl08j2VHHa3A8L4i1JVKuppYd8kCUILC0zxFKDFQDoo4plU3pZCAn2zirku1WVnOK9GJ5JVRsyoKUyNfGeT
+ kRTnFL3o
+ 5AmDdVfq0CNSGhlnOy9KIQ0uFI9Ue/V0n4AIbyLpv1dBdzP1uv6C3hs130kf2V8FiuZQgC3mm837q0VVJ+7C3s3id64b1E7/G41KaNz9yF8Jj2tU8uVYIJYM2plqyeKIEhSb17I+dNYBd4FkSs/uv1P/skl4AHYN52hczc0QD6msB7IPY+qoFkZQstXbRuACrLyO11dXxOJGumUqT3g7+0tnLgvFlh/m6Sus0IyCplteAVWHCjaz9ZjQLP2ic2pWjYBn7oHl6J9WaKo+G1tszB5EnAM7VagX7WYXgDNsx7p6byxPooltnMOXCZ3NfjuBcK0tkKFj2O4JirJk33Moj06VHcFHW0b6+B8URvXxeqBptCODr1oRy3xAFLPufavFIG5GuGirE1LoTFbDzQJsPQTOGdV1m3iVEypXw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,57 +141,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 02:22:19PM +0100, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Mon 16-02-26 10:45:40, Andres Freund wrote:
+> > Hmm, IIUC, postgres will write their dirty buffer cache by combining
+> > multiple DB pages based on `io_combine_limit` (typically 128kb).
 > 
-> LUO keeps track of successful retrieve attempts on a LUO file. It does
-> so to avoid multiple retrievals of the same file. Multiple retrievals
-> cause problems because once the file is retrieved, the serialized data
-> structures are likely freed and the file is likely in a very different
-> state from what the code expects.
+> We will try to do that, but it's obviously far from always possible, in some
+> workloads [parts of ]the data in the buffer pool rarely will be dirtied in
+> consecutive blocks.
 > 
-> The retrieve boolean in struct luo_file keeps track of this, and is
-> passed to the finish callback so it knows what work was already done and
-> what it has left to do.
+> FWIW, postgres already tries to force some just-written pages into
+> writeback. For sources of writes that can be plentiful and are done in the
+> background, we default to issuing sync_file_range(SYNC_FILE_RANGE_WRITE),
+> after 256kB-512kB of writes, as otherwise foreground latency can be
+> significantly impacted by the kernel deciding to suddenly write back (due to
+> dirty_writeback_centisecs, dirty_background_bytes, ...) and because otherwise
+> the fsyncs at the end of a checkpoint can be unpredictably slow.  For
+> foreground writes we do not default to that, as there are users that won't
+> (because they don't know, because they overcommit hardware, ...) size
+> postgres' buffer pool to be big enough and thus will often re-dirty pages that
+> have already recently been written out to the operating systems.  But for many
+> workloads it's recommened that users turn on
+> sync_file_range(SYNC_FILE_RANGE_WRITE) for foreground writes as well (*).
 > 
-> All this works well when retrieve succeeds. When it fails,
-> luo_retrieve_file() returns the error immediately, without ever storing
-> anywhere that a retrieve was attempted or what its error code was. This
-> results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
-> but nothing prevents it from trying this again.
-> 
-> The retry is problematic for much of the same reasons listed above. The
-> file is likely in a very different state than what the retrieve logic
-> normally expects, and it might even have freed some serialization data
-> structures. Attempting to access them or free them again is going to
-> break things.
-> 
-> For example, if memfd managed to restore 8 of its 10 folios, but fails
-> on the 9th, a subsequent retrieve attempt will try to call
-> kho_restore_folio() on the first folio again, and that will fail with a
-> warning since it is an invalid operation.
-> 
-> Apart from the retry, finish() also breaks. Since on failure the
-> retrieved bool in luo_file is never touched, the finish() call on
-> session close will tell the file handler that retrieve was never
-> attempted, and it will try to access or free the data structures that
-> might not exist, much in the same way as the retry attempt.
-> 
-> There is no sane way of attempting the retrieve again. Remember the
-> error retrieve returned and directly return it on a retry. Also pass
-> this status code to finish() so it can make the right decision on the
-> work it needs to do.
-> 
-> This is done by changing the bool to an integer. A value of 0 means
-> retrieve was never attempted, a positive value means it succeeded, and a
-> negative value means it failed and the error code is the value.
-> 
-> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> So for many workloads it'd be fine to just always start writeback for atomic
+> writes immediately. It's possible, but I am not at all sure, that for most of
+> the other workloads, the gains from atomic writes will outstrip the cost of
+> more frequently writing data back.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+OK, good. Then I think it's worth a try.
 
+> (*) As it turns out, it often seems to improves write throughput as well, if
+> writeback is triggered by memory pressure instead of SYNC_FILE_RANGE_WRITE,
+> linux seems to often trigger a lot more small random IO.
+> 
+> > So immediately writing them might be ok as long as we don't remove those
+> > pages from the page cache like we do in RWF_UNCACHED.
+> 
+> Yes, it might.  I actually often have wished for something like a
+> RWF_WRITEBACK flag...
+
+I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
+
+> > > An argument against this however is that it is user's responsibility to
+> > > not do non atomic IO over an atomic range and this shall be considered a
+> > > userspace usage error. This is similar to how there are ways users can
+> > > tear a dio if they perform overlapping writes. [1].
+> 
+> Hm, the scope of the prohibition here is not clear to me. Would it just
+> be forbidden to do:
+> 
+> P1: start pwritev(fd, [blocks 1-10], RWF_ATOMIC)
+> P2: pwrite(fd, [any block in 1-10]), non-atomically
+> P1: complete pwritev(fd, ...)
+> 
+> or is it also forbidden to do:
+> 
+> P1: pwritev(fd, [blocks 1-10], RWF_ATOMIC) start & completes
+> Kernel: starts writeback but doesn't complete it
+> P1: pwrite(fd, [any block in 1-10]), non-atomically
+> Kernel: completes writeback
+> 
+> The former is not at all an issue for postgres' use case, the pages in
+> our buffer pool that are undergoing IO are locked, preventing additional
+> IO (be it reads or writes) to those blocks.
+> 
+> The latter would be a problem, since userspace wouldn't even know that
+> here is still "atomic writeback" going on, afaict the only way we could
+> avoid it would be to issue an f[data]sync(), which likely would be
+> prohibitively expensive.
+
+It somewhat depends on what outcome you expect in terms of crash safety :)
+Unless we are careful, the RWF_ATOMIC write in your latter example can end
+up writing some bits of the data from the second write because the second
+write may be copying data to the pages as we issue DMA from them to the
+device. I expect this isn't really acceptable because if you crash before
+the second write fully makes it to the disk, you will have inconsistent
+data. So what we can offer is to enable "stable pages" feature for the
+filesystem (support for buffered atomic writes would be conditioned by
+that) - that will block the second write until the IO is done so torn
+writes cannot happen. If quick overwrites are rare, this should be a fine
+option. If they are frequent, we'd need to come up with some bounce
+buffering but things get ugly quickly there.
+
+								Honza
 -- 
-Sincerely yours,
-Mike.
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
