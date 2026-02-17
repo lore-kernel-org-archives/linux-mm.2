@@ -4,91 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24236E9A03B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 19:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29D79E9A038
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:03:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 843AB6B008A; Tue, 17 Feb 2026 14:58:50 -0500 (EST)
+	id 8BD486B0089; Tue, 17 Feb 2026 15:03:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 821FF6B008C; Tue, 17 Feb 2026 14:58:50 -0500 (EST)
+	id 86B266B008C; Tue, 17 Feb 2026 15:03:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74F596B0092; Tue, 17 Feb 2026 14:58:50 -0500 (EST)
+	id 718EB6B0092; Tue, 17 Feb 2026 15:03:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 591736B008A
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 14:58:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8520140336
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 19:58:49 +0000 (UTC)
-X-FDA: 84455011578.10.CD55AE1
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 403B2100003
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 19:58:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=qhDBichY;
-	spf=pass (imf14.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771358328;
+	by kanga.kvack.org (Postfix) with ESMTP id 5BF416B0089
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:03:41 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2132C13A6FE
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:03:41 +0000 (UTC)
+X-FDA: 84455023842.19.BF0B750
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3D426C0003
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:03:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SrKf0EAa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771358619; a=rsa-sha256;
+	cv=pass;
+	b=Avy73zzq2ZM8GGFv813cUsxMFT19lQa7bHgTkazJUZ75+jNRvN75kroEV5C2y3ANVTO5wG
+	B5cn/1wcELg2MxqHRV+9Npq0H6z/w+ic14vX8wE5aJBj2AMHvFpHF86SvkIIgIbt91m+tv
+	nMeBfQYkpnPAEPvYsLAbvHUkAtsdGrg=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SrKf0EAa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771358619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wdGM+3FwIaQuf6hPkPkSLAphz0/4CuAqXxirGxGLDPc=;
-	b=gmaYXxPeP6fKESNfdQ6zF+ryoLphdO42DTLhUVg5+0XF2/J8CTxdzQGy0rLQEw+Q2kp/2g
-	CTORUqCdnduGzmVnNegsDKFsT3iMyM5dsSTWjx01r+N45Jp2OJafRcPBC9EZjKTA0utqUw
-	/tYDgUiBlTknYfOXmNulmkYo3ASs1iA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=qhDBichY;
-	spf=pass (imf14.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771358328; a=rsa-sha256;
-	cv=none;
-	b=HzzLnWPko+wqBmeZnd6Buf/KSbpO8CZL6CDAi+1oirMHLxmeJilEjd04Q3OvHChfAiVqDO
-	mIHlU2jRj9L5AlgZQRtv64dmg+6Tv+3c7tFKuQ9QOwIk0EOzy1x4Vq/fywzZbqKuqk03LU
-	pLg80EC7anJEazBmtMQjNC2yfABxnng=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=wdGM+3FwIaQuf6hPkPkSLAphz0/4CuAqXxirGxGLDPc=; b=qhDBichYhwo1xrMfx+LlNeZNyu
-	WN8w/c3qh4fwEJKdklUDc1KbQfGhsgjhLc2KevtcSpIK0blzrNwyScHCDSE7HyRKFfY70pbhKP3C2
-	SP2fvYGqrUGf0PDBmjQKgXATF0iC0tZ0e93dux7tD5mbqbKzvPgs3sLJwlhExukH/DDu+/eg5rFSc
-	6JsIfLwOzQUA+OA1XPVUZug0sdo6mA/poMIi1+omJRHDySExtCM+CoSiIc44/UNldBTWo8NDFQL6e
-	YClBqAMT344tFwoMdQd4UfhnljM897Ebi5wiZV/SocsSCq9PNIpksSYDFFg106A/Endm/gpwEhCPD
-	TutEO5Qg==;
-Received: from [177.45.213.208] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1vsRDa-001nLM-80; Tue, 17 Feb 2026 20:58:46 +0100
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-dev@igalia.com,
-	kernel@gpiccoli.net,
-	gpiccoli@igalia.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 2/2] mm/memblock: Add reserve_mem debugfs info
-Date: Tue, 17 Feb 2026 16:45:07 -0300
-Message-ID: <20260217195816.861684-3-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260217195816.861684-1-gpiccoli@igalia.com>
-References: <20260217195816.861684-1-gpiccoli@igalia.com>
+	bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+	b=7LIYpl+KkpEH/E+Rp+bPpFzm9d4xzEIAS8ugwMGAoEmXGLsnF0aZ8SqJsS3utxYN+/Wsp5
+	rk90rS7IStL7Ufr0TcrXsGiHMRhh/5LEbHhMehva0WbDvUCvMx1KONnpYwtZELlzYO1Orn
+	GEHtg2sxTcOh/P8hCdnYDjS2nUZE6Ow=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4837634de51so15879365e9.1
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:03:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771358617; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HZbEos8dmm1eeRXk8znws107uyVv4pclvfUXvekp0dJUFKgppS1PL+cNVEzI1DuUhc
+         Wdn1i0590Dqj6oYXnM24W873LYCVRwP6dc1lgBIBmXdJtF8L5l7XBbmEmcOziBOeVv8t
+         4CCR+VddCwegxoTdlbIMFUVtE7PZBVAqa8XRPQmWzedjf5/u4JAgjJQaIMzls+mVg1wc
+         DwAX0qljOemMnVGMoOZuupXei2LKxninCYjtkvps5LGrce94lYS2Pxiz6EMguCLFXBtg
+         5r1fGGthMev4Et32wrSa+A3lFZmb9Watc1ULio3lbIE/f6joX42YbO0m3j6x3akRU4KD
+         JBGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+        fh=nbaAnUOjvGeJJOYpcHtGc3409l2e1o2Yu17KnwYtmaM=;
+        b=HoIx6QdesrJOxvPJSXbqbnoKhuzqpXON+URHxCfoGeJ/dtYNBchEIbIKR2TeQOcPcN
+         1nquJzTLNkBRCNzqKIlmY2ul8DBPK6UEXcCMCQaPBwQQWc78fFhRqshQElF9D/Lw84CF
+         vIJP4AX7sfXRxHzPwIzipvhlSjniSDoPq8xrbxU+VlFB0MEnj8Gu0Zlvz/Opz/NXAJcO
+         KjTcUsqKUyV+YE3qpNkq0BFTqL49sdlpxG30hwu6MoNZgHPjprqqzBjDtHQXB/y0mGuD
+         N50tMms/vf8q5sarE8wqZ0KxG5SxGw6oWgcgrwLS3XWoxWXn+n7Ps1m629YyNEuRWQlE
+         aMqA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771358617; x=1771963417; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+        b=SrKf0EAacjkUy5GYFIz9HfbziVgVvQuaC6tUOQTlVEQs481a97sETJWl3R0esdnso4
+         yQjanf6o+Cb8mhKtRxK5fCVA+5NsvTpJqHCrwLmdv6qStin2WSIpnLso1wz13fai1aVM
+         unKmQ46aYDSdfUh2i4q48wenMzulH7Tb70eRB92r/N3QHm3dO7jYspaNDTNgrMUEiKCN
+         alGqfyd6UeoDrorqJfs7hTlGyjIh0TQVTww6swqoKM9S9OsAR03V3tZUg5zeNgE5wVbA
+         3gF0ttO5SzlkP45eWNKomM/g8qCpUyD8qQOgb3YAAUnpROzI7FVofAv3Y7G+L3KfzLic
+         pcsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771358617; x=1771963417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+        b=Ogs5inI0dEQ62hwfAIP9iVj4lmqUsYdmQFAiYkg4HhL5rZRvZxovyoDiRM4zp+H0QA
+         uPi7F5JZACLspAlKcBleGcSi4Y/+s68NBqkZyzkfeg++NANFQs52trtYqwkV6tJrwe3D
+         toocWNSP9hiEOEyekQv7H3iAsMjGSxifR0WgYO8JApF9W/ejidezc4yc7HqZcejyxxDE
+         AR+sOI6jhygsUd6l/xm65G3IjJtttktsJnapsCLxGCRLjt/19hXY0naxXBoKd+Y4zoCo
+         Oq1SCKiituP3tGBbxgjZ65eE/Il1nTc1W8TvlJBn4MRGDUAwvcAtWflBDEqy3E6j5FK9
+         PjCw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpNpyigahfZKcHIJ9XqSwyvfZob03uZpGgvUXWuGNvfISZB+XIF11JVJmseIZNSu4GQBP3vzspUA==@kvack.org
+X-Gm-Message-State: AOJu0YyflyYuvjhrELUeWf40zdByMKpD0u8mlJuWMD5kguYsJTL4yCqU
+	A7memsxPJr6JOBzCJuzhGRpL61sAcC5lgClQhwD0eEduOhYDRTqwuoRN9+nYLAfiTW48T2LXFYH
+	ZFVJOKugP7Aui8ezRYKC8p2zlTzx7cegCmvfnMW/k
+X-Gm-Gg: AZuq6aKOTdanQIJv4ygiI07JdabmKc9qfz9vMbmdeHIYRdr2s2mYYM3Qpbs6j9xBEcH
+	AkbazrpyYhzvFgPPqqY+MjQzi2Zh4eIAZLDJ4FHm/UcQy1uapl+0gZqwLFHYPI9qW6qNKL7VKuI
+	vhKE2ewfLwjWL0Ufi64JG/gcSZy8eT2qfDLCQ1AhzDy/wXecZCyx5njDxvh6NXUtGm5SjQYffLI
+	FCGen8wpNbqAIKgPBVCrF/yGds1OHLLirFG3515FMi8Svy7nWeXL9JzQLKy8JJJBjrz93e4FwNJ
+	UIoZn/eYNStPrIZjVAAJ7xpYPOkO/mYfMAZcdw==
+X-Received: by 2002:a05:600c:4fcf:b0:483:6f82:9723 with SMTP id
+ 5b1f17b1804b1-48371043085mr263576225e9.4.1771358617090; Tue, 17 Feb 2026
+ 12:03:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kfe659w1swtgi86cmqhomq1onpa1uz36
+References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
+ <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com> <CAG48ez2O=_Hd7EjjLSAh36xtOMyX5MZ47xodWkU3FyEar63TnQ@mail.gmail.com>
+In-Reply-To: <CAG48ez2O=_Hd7EjjLSAh36xtOMyX5MZ47xodWkU3FyEar63TnQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 17 Feb 2026 21:03:25 +0100
+X-Gm-Features: AaiRm53OywEZ-9snmQAwJUPw_yVph9JnQVbkwj0vQh6FVln0Kgy98BO_f8V9K3Q
+Message-ID: <CAH5fLgiM3+2URibfBNQr5X80bKvZnwA_tBjHpE-d_FHye7w1ug@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust_binder: avoid reading the written value in
+ offsets array
+To: Jann Horn <jannh@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 403B2100003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771358327-143089
-X-HE-Meta: U2FsdGVkX18tv5rCj/lwQT8zOfQ52uM8e3ScKteEDQhKzVxIrmJ9NJ4OYO1gTGwddEu8nNnJTE2G9IINkeKM/tTS69AqMOhURPo63Ugtk01kTEbvXYs+nakGDNZ1EvIjvWEyLx7kZMWbC/8LIjgYXNf2Ahkie8NvYg98WenIbANOksMQscaTiz8ztW725MniMe1i7KurhWOVUrUlFTEXlPPaNcIdh6yNGUYvySuvn1Q561g0FMpa+fT43Zwb83Zjru6JHUiotVL8YRmmS5fbg+hBW3i2G9VpTBQL+s8PLQ5txkP9ic79JwW+464LSuFfH3m5OmiUIpDCYLMPQTDaUg6+yQNE7XjDSy2KJcp8V5axOkDY82LnaC6LFCpSxQuTVFJ2DgqJ5haoMI1P/+PkOL5w0REy2QymJQP1kwX1n8OI42hPP8sc/sBxQmmjdPXb3HIqP5XS8iD/HXczYVewNHPLtRrcE0cUsoT7H8xy6+jctgpH3TWJ/vS6+kwsc12r80jSG2vUlE3B4jn+RjOhZtqlXlIBq15C1UXI/fei9gARwa3Up6IIXyuTj3N0epQFJ1X3pxefhaVv3ZVeqjGzbNpNC4gKrgGKN8UGKuUry2pJ8Yfx8fJohFQnHLDtub7mW0kaCN17iDwTcHkaubrCTMGkP7C3yOtoKsNCzVh9rmcS3cPrZuI8nL4BvHuCRgUp3C55NgBDSIEWESWr3y2+5Y265TZLwtiK7Ioeg/eTfh0s9lik7CHEP3WKXbNXrxCJdeqTbmp/Q8hWUXMCNw+OoEgHEi8jdpl8IpYJ0c5AFDG3q5RHq+twoPUAVAvEw7J4514f7DAcotVxC/pUrZJm5aQtKoGadPOu+O/Szx8HhXBRJt5ePKlx8Qe0oEIvq5Wp3EZ+F4SMpLuNKrNsSzNwS93b/sztwhorRUjMAG0plNdmEuRtzVylsgnDTJWXP0AHb0dVccRyWsCp54hXcAe
- 1U6g3wS2
- cKNb77eXn9Vi9zzi4pzFbGQAQVNNdUWGWPEo/dVTrF7zEZAEuAjrVDxmuTk1UwvXocamJB7ZjEzqwbhuGp1VjsyQmZvMXBmZzp9ggiDPGiP3jzeNfyI2j4bZHKOPs3m0bHa8NvFvh2wh8gxbXNuc80PaUukTkjVQn3ipWV7pWARovvGmVkLoQL1nyfhBjia46vC9g7sZb4nBhOpejALeU7mOLBVOe/10ICoRZkqDjxf8Vie2iYMITQl15p2RopPx4A3uz/K9/dp7tEhVcSqIk0pBch78Ecy5AGabBHms45nNp6Zf+Zx3GeKKiwy6QKj0xfSqMDttWnVOAI6BufvVk/K6JkkTMTVJFH8+6LEQsMl8nx0OjFk/xha90Zd8uxgVbmuCbm3RQFYZRej9WWy4best1bZI4a8jt39Vsout2kT+eW9BoIG3QWGNhfKjF020fKoc0vXAa3L911GM=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3D426C0003
+X-Stat-Signature: mocxkyeg4uh4fs614z5zeem16eoakasb
+X-HE-Tag: 1771358618-209409
+X-HE-Meta: U2FsdGVkX1/Y8of7Lb0DDwKOraO++wzNSUQdCmxmfvT/W2BM239uys0Nfya/CD73vGT/dKetx8F7BWdfm1UoMsdw8D5Tv9Ps9hWsolr4ejsDunFIYJnwcQf5rTrTDwxsnv2S3kh+UapvM/s2m8D6D+DhA1b8O77AC0vSCQYAgPjZLrF32luFfi70x8KULPg9nKyi0fk9GNvCag7s6Cw8/Bi8ULrzF0viI0VIoEAQErHDs+emxNbXcwJa09HVHu6ch1zvxDDX9o8/tGQJ5SLPHUBERMBthAKZMBmp1/B4t8VYVx3GowkfyjJ4FcfOK4+w7Hf03Klx/YZHPdHC5YDLE3GfpCNrrzBToJ9CN7X9OpIrJH1I+On8jtQ3nxZSCLKY/t+cJoKkkKoCIua6Cg0QoBMO3zI4YAH9wy9jZnleaD2gjEb+8Py0oRoZlsdUD7Y1l4lIk5odup6zaLwgU9oUyD8dy+jOi3efvH4LHms6IvEuPy77DagbVxLklCYjmxfh94TyX2/72YBMvFucNhfkuit5ymVCOTYLV0nCzg58/BMUd+lK3jmNX1VnJMNtwr2zxXapN/pOpVB66EfChE7rX9HtgNZc/0T/wdFFXF7i3MKBucxt2XKig5gK9NR4kz9GnT/m9kIYfGc8fw9HdDzMan9/fqRspv/z2wzsVV1NIz1j7jx8gC/jf/na2Ff8sA+6xo2Lpd4wf1xx+CuI9zsXvX5v93sVOr5qRYcyaOvSFnDrAM83RLJ1NnG/8PMnhhYZtcgqRpIsH7D/fQ4V4PWUv32ntH5lz9E11/7YsyaIV8qRriwLAsKmKybDWYFbgdDYxftHnWyYVSD2t+ToBAYhl/CWQir6CyWKVMOoUEfkkIPAJLhOnMxJVodv4UoebltrI2rFysjIVOacHUCKs0N0b/n51D5pyxKRnYyHCzUN05vuntR5SzjFH10RFM85i+cWhiLHmSUdMQRmMEv6RNP
+ heTzC1rO
+ F/51mca96R1gYlZLZQ9Za9yuaes459XJlXrLY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,115 +147,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When using the "reserve_mem" parameter, users aim at having an
-area that (hopefully) persists across boots, so pstore infrastructure
-(like ramoops module) can make use of that to save oops/ftrace logs,
-for example.
+On Tue, Feb 17, 2026 at 5:35=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+>
+> On Tue, Feb 17, 2026 at 3:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> > When sending a transaction, its offsets array is first copied into the
+> > target proc's vma, and then the values are read back from there. This i=
+s
+> > normally fine because the vma is a read-only mapping, so the target
+> > process cannot change the value under us.
+> >
+> > However, if the target process somehow gains the ability to write to it=
+s
+> > own vma, it could change the offset before it's read back, causing the
+> > kernel to misinterpret what the sender meant. If the sender happens to
+> > send a payload with a specific shape, this could in the worst case lead
+> > to the receiver being able to privilege escalate into the sender.
+> >
+> > The intent is that gaining the ability to change the read-only vma of
+> > your own process should not be exploitable, so remove this TOCTOU read
+> > even though it's unexploitable without another Binder bug.
+>
+> With this, the only remaining read from the ShrinkablePageRange is in
+> AllocationView::cleanup_object(), correct? If I understand correctly,
+> that is fine because it can only drop references on handles (which
+> userspace could equivalently do via BC_RELEASE/BC_DECREFS) and on
+> binders (which would probably also have its influence limited to the
+> process)?
 
-There is no easy way to determine if this kernel parameter is properly
-set though; the kernel doesn't show information about this memory in
-memblock debugfs, neither in /proc/iomem (like unused memory "set" using
-"mem=") nor in the kernel log (like the "crashkernel" parameter does).
+Yeah, that's the idea.
 
-Add here a new file under memblock debugfs showing properly set memory
-reservations, with name, address and size as passed to "reserve_mem".
-
-Notice this addition makes the memblock folder *always available* under
-debugfs, regardless of ARCH_KEEP_MEMBLOCK and even if there is no
-"reserve_mem=" setting in the command-line.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
----
- mm/memblock.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
-
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 2d2646f7a120..58439de0a59b 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -18,6 +18,10 @@
- #include <linux/memblock.h>
- #include <linux/mutex.h>
- 
-+#ifdef CONFIG_DEBUG_FS
-+#include <linux/string_helpers.h>
-+#endif
-+
- #ifdef CONFIG_KEXEC_HANDOVER
- #include <linux/libfdt.h>
- #include <linux/kexec_handover.h>
-@@ -2711,7 +2715,7 @@ static int __init reserve_mem(char *p)
- }
- __setup("reserve_mem=", reserve_mem);
- 
--#if defined(CONFIG_DEBUG_FS) && defined(CONFIG_ARCH_KEEP_MEMBLOCK)
-+#ifdef CONFIG_DEBUG_FS
- static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_HOTPLUG)] = "HOTPLUG",
- 	[ilog2(MEMBLOCK_MIRROR)] = "MIRROR",
-@@ -2722,7 +2726,8 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
- };
- 
--static int memblock_debug_show(struct seq_file *m, void *private)
-+#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
-+static void memblock_debugfs_files(struct seq_file *m)
- {
- 	struct memblock_type *type = m->private;
- 	struct memblock_region *reg;
-@@ -2754,6 +2759,30 @@ static int memblock_debug_show(struct seq_file *m, void *private)
- 			seq_printf(m, "%s\n", "NONE");
- 		}
- 	}
-+}
-+#else
-+static void memblock_debugfs_files(struct seq_file *m) {}
-+#endif /* CONFIG_ARCH_KEEP_MEMBLOCK */
-+
-+static int memblock_debug_show(struct seq_file *m, void *private)
-+{
-+	if (m->private == &reserved_mem_table[0]) {
-+		struct reserve_mem_table *map;
-+		char txtsz[16];
-+
-+		for (int i = 0; i < reserved_mem_count; i++) {
-+			map = &reserved_mem_table[i];
-+			if (!map->size)
-+				continue;
-+
-+			memset(txtsz, 0, 16);
-+			string_get_size((u64)(map->size), 1, STRING_UNITS_2, txtsz, 16);
-+			seq_printf(m, "%s\t\t%pa\t(%s)\n",
-+				map->name, &map->start, txtsz);
-+		}
-+	} else
-+		memblock_debugfs_files(m);
-+
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(memblock_debug);
-@@ -2762,6 +2791,9 @@ static int __init memblock_init_debugfs(void)
- {
- 	struct dentry *root = debugfs_create_dir("memblock", NULL);
- 
-+	debugfs_create_file("reserve_mem_param", 0444, root,
-+			    &reserved_mem_table[0], &memblock_debug_fops);
-+#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
- 	debugfs_create_file("memory", 0444, root,
- 			    &memblock.memory, &memblock_debug_fops);
- 	debugfs_create_file("reserved", 0444, root,
-@@ -2771,6 +2803,7 @@ static int __init memblock_init_debugfs(void)
- 			    &memblock_debug_fops);
- #endif
- 
-+#endif /* CONFIG_ARCH_KEEP_MEMBLOCK */
- 	return 0;
- }
- __initcall(memblock_init_debugfs);
--- 
-2.50.1
-
+Alice
 
