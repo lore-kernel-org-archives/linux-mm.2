@@ -4,139 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 918C5E909DC
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A3FE909DF
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 17:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFAE86B0088; Tue, 17 Feb 2026 11:55:28 -0500 (EST)
+	id 9138D6B0088; Tue, 17 Feb 2026 12:10:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA82F6B0089; Tue, 17 Feb 2026 11:55:28 -0500 (EST)
+	id 8C1796B0089; Tue, 17 Feb 2026 12:10:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7FFF6B008A; Tue, 17 Feb 2026 11:55:28 -0500 (EST)
+	id 7B6656B008A; Tue, 17 Feb 2026 12:10:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 935A96B0088
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:55:28 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 48DB81A0269
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:55:28 +0000 (UTC)
-X-FDA: 84454549536.17.2299475
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 32EA3180010
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:55:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dJQ4aXWD;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of jannh@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771347326;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 698086B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 12:10:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D6E51A02C5
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 17:10:48 +0000 (UTC)
+X-FDA: 84454588176.16.CCED381
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 03010160002
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 17:10:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PIsJ85L/";
+	spf=pass (imf08.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771348246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJ2rqxYuKMwKtIc1bHNkX7YmlF2LDfgfhBLsz256tX0=;
-	b=qEfDMt01BPQ6jYp1fjqAaQ2mhRk1vSZa4X04UTTdJH4C27jlsQlKNtL5s4vngQU0YvjVm5
-	Ja2vOp6e6g9sGyj+6axz4aRnLKtPgHwf83fvXgkPnXXcY2MdF1ys71lmLwedDzR3gcgkkZ
-	zjdmuMKeN/TLNDUkjldVoNOfUIW3nBI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771347326; a=rsa-sha256;
-	cv=pass;
-	b=U6fQoBCLH/wu2i+WvjREtQD/uqS10BQ9Qg1er2vXu3Axv+iUGdiYxYiAbHM7rEGlUOG5Gf
-	BS/UetAdsLRxqKEB0CB/XOi2afrTjCBHEX1PUjyxunDxkRKx1Ret6/g++LCJrujg/Qmdi9
-	II2wyqM4miO2RVTP2+7a3Ohj9l3y9lY=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dJQ4aXWD;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of jannh@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso23014a12.1
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:55:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771347325; cv=none;
-        d=google.com; s=arc-20240605;
-        b=H817O8QhULmXMIWsaOzGkqm0dMEH4lR2N8epZReagLXDVjYCVNnppeD6e+EdFXizwC
-         xqT/0zbY8lhjMx4ZFlo4+ch4awL9FRB2MXz4W/4xRk8XtCv4pd8OeJGHxiWaUEnyKq5o
-         sK/dWa44Xb0T7sK0D4VJpXvsvXmDi2ZvV2fjZMDfbGYRpJoN8DERDOIxcF/isGmoL8Au
-         m4u+/q8zPuTXNL+C1P4eEBRJWNmntFjNiCnRYJyd5LvnIGPPS6ZmIieJ4G9l1DysaFPJ
-         M8e2IAB0dRAPn6UCNwkBRz3+8rEkItCeYERg3wgq9fpMlJCET2Xlp1o19RQG0B2Qdf/+
-         3Gcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sJ2rqxYuKMwKtIc1bHNkX7YmlF2LDfgfhBLsz256tX0=;
-        fh=SHIyg8qRD+aINmyNEL0+1oMl/RsynzIeoQXs8z1tXfw=;
-        b=Yr097edUES+GajAVWQVCtIv50SAYrJGD5xm8WtaqYloQoYzEPuRw/RjyYlMR8Ai4cj
-         9cIqA2ztEmZNL75TRY0dITHg8qyz3XCL6xUbpbVE67SeDj3mET9BvU7csL3nnzNS7qP3
-         yZmLehIXlPyywtUg8YEFxjuoqAwJNzM1bNOD07dPy5+Mp2ycE+s3zlgvGfMa5OWFXADs
-         y4SFT6kpdANZ8v8NRSpFgVqGwHr/3A+qbguoXq9V8XoPbGnvN2cZsqW3NLwoDPtOjipC
-         1wI+E0kspqgmvA9KyHFcAI9Q6Emj+wwBJ6IID7U/TybBnrxy6yk6gyTJTVH66nvDhgEK
-         AxrA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771347325; x=1771952125; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sJ2rqxYuKMwKtIc1bHNkX7YmlF2LDfgfhBLsz256tX0=;
-        b=dJQ4aXWD5o9iWR0zW4eJc1yooXxrpNLHXsELPhAIkbCU6g5w0xjEYiJk/Y+6xbOcid
-         eXQBhcYg7vL8Bk6btY6bsTHOT6TP4EmPp3Wa0cYQkmjNyTK0l/zlqabGXz3d6HlpMHsG
-         hEqVN85kRZAfF9QUC9BElr6Sd3BqsiQwWPyWY3+aoyWhNONi2HhNeyj3zMGwHxFWkYDA
-         9D0ZKu0ASNIAP8eO3CZ/O58cfHUvmS5xINZVYWgo9pSAqdIhQXzzg5is1zlnmTfJOg3i
-         g2XRWklWpBhDNxG5NhhuMBvSwMiQgWwRjdIaVSRJFZxNcHo99nMN8tLkfIyi3RpeXC3I
-         VU6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771347325; x=1771952125;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sJ2rqxYuKMwKtIc1bHNkX7YmlF2LDfgfhBLsz256tX0=;
-        b=QqXJcdh/fv0NfyUZ0TLnUh3L1K9ZZnbVwNC40RVMDvWSjdRNVsncQbqmqzC1eG+LYa
-         pyRtkvacaSUJHGJrCKc/2XqBMOi+4MARGDEBj2elwZkRtoVf0mgwuITCF0pKZAwLcVBl
-         OF99NHzHDRgHPXq9Jgr98GHKJ+FKACHl59R+g00n45scyujwUEZLYDVUkuFnAmmO+TZ0
-         h/WCpklUgnRbrrQGE6TULb9PIczvAUws3OyjayjmPwjmgLkw7ZFKN9Wdenbbd8R6ZR0X
-         kRu2GyGpFNxi6YBl4V0fKjVvzX7DdeCf4KAYJWDgalS9Nx0yTfPqPpZRDSl7i5HSnsIN
-         Ng6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU6PTLyjgyK5mOYzkzEA7b4AoH34IkDO84OSbi/YbhEinGUJzx38owt62KdcK4dP2jKp1y2SH36Kw==@kvack.org
-X-Gm-Message-State: AOJu0YzErgYybDH59GgKX40Fnp96qajq/TW1TLNLVcVDHSupVAQFE+Te
-	rZSW0PlMlEdrciv65rOokfd7OHcq8gycXEw6507yRuDwaBbrkK0gA93CVD+qmexETEP0CDkWNaN
-	wf5tU+E6wJiSk5ekXU6x4X+FFr0i+2o63ZUJB0JFZ
-X-Gm-Gg: AZuq6aK+Vrr4mhATIKprdqhA13z88wvWFRWhiE/RGsqP87evHx9idqCf9XO2564miM3
-	qaO8c+JmqkFx00rV8T+FtLI5mvyPb7cITas6fW2ShS/LtkLY4viT5pKpgFSMcG58SiXpwbQ2uZF
-	fvAoBgSCjAF/uaHcN4AkxWimC4h9e/CcRidWDe9xKPUff8SxvQPFZhtb9fcYNRUS5zOwwwnhEN3
-	K7wx2fIgAEY9T6jBQALceotB2Kf0ZD4fzkxwRMi6h+a+jaQlqnfIG/gYDyjFUBmaPWLnlfDbPNj
-	/ZlVqzVJVOXgoD7HLzRX7jd8/UezH9Mmh7JVuQ==
-X-Received: by 2002:a05:6402:b18:b0:658:1d3:33c3 with SMTP id
- 4fb4d7f45d1cf-65c14a4fe33mr56118a12.8.1771347324036; Tue, 17 Feb 2026
- 08:55:24 -0800 (PST)
+	bh=rCOCRQbDJsC6xNV9XXJ0oHJuRNatHA+oUOcfnlzUhgY=;
+	b=P8EONQhnj2+RPa2e1EU8/GWnaH6X8zLZOrwT/YmdyjBLvk1mu7E2d3BWdo7Eyats0YhDW7
+	DAB0rZdghOdfqaWDnw6U+mh28wAFRlbBe8CnM2h+ummdLk+8JYOZU6s+csLfQw4+gwSs+p
+	cBIY4KbolPE3x7R7u9qWCEj69eEWklQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PIsJ85L/";
+	spf=pass (imf08.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771348246; a=rsa-sha256;
+	cv=none;
+	b=MpD6xU84TAFmwGLgFnZ9CjoZ/BT7MI0mF/WrXOEqEPLW5LpbLd1gTAEzEj/chZfgd0u6pb
+	veMSRBZR5+8LZKdighpZQCEnHWcq52pKqnPPdTsjucT5PxZbQNrkR3pu4DcafdGB3b4H30
+	ogZnFIHMlzrnBqBFmX8+WDTPeHnvunY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5206860053;
+	Tue, 17 Feb 2026 17:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C37C19421;
+	Tue, 17 Feb 2026 17:10:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771348245;
+	bh=hn8f2VPe13u0Qw57SnqTcYuvXQRECKkPuiiq0cXvlY0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PIsJ85L/5KL75nrc2etlzYUb1bmmIvPowNmehrkM2ZdwrysO5LHhH2+tsaK8KWOFr
+	 8wI2EilYnvyiLz1KDZPfgm3xuzkw9PUT99cu82WVUr02FlXCAuj058BTfghbk3s27U
+	 zcFW6LTjDNfQRWIvOX/KQdaaF7bGaP7pGVhcbkj2Yw+7hnz9gSqgL142Nw9bFDhhaB
+	 OcaToutV11e4dDFvhAoBpaMA96YiXPyX8wULm7nTkygj/yVbggRgvTgPtAVHP3rVTu
+	 2qFRlO0vc9xN7skNaJXe05xDT7MORcFnDeb/Wrc7hCUOvubrFkeePPVb/xFpX522PA
+	 DpHCwE/HHuDXA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CAA78F40068;
+	Tue, 17 Feb 2026 12:10:43 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 17 Feb 2026 12:10:43 -0500
+X-ME-Sender: <xms:E6GUaQwE0UxHITFNrJWToppchBvFFbDP7muRCrba3E6H8Y8kS14PAA>
+    <xme:E6GUaQNA9urkljEsxNaLKqBYjd6b1gXvKmVYgY7pnLqHK4BG5KjWCWDpKWghSUiFN
+    z0MMGp9iUdum_0387sHoKzF_SNfy4KfsncfqZcJcpz50FehU-Ai9w>
+X-ME-Received: <xmr:E6GUaYePAaiMKzJaY37ySeNqNnKskRYhFYGNSJQM7Xcf6XAe9bPcIhMwS10gjkTvdJxAT4eViTqj48AMLW84Gk0Tgg5eIVFJ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtfedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
+    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
+    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfihi
+    lhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnh
+    gvthdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphht
+    thhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlih
+    gtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshht
+    ohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirghmrdhhohiflhgvth
+    htsehorhgrtghlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:E6GUaU4_t3SW360-BXEJVynNndz6LjeLkttnD9l_K-Fjk2Rw9HP6vg>
+    <xmx:E6GUaQK7jWHqI-ap2s60d3zcP7jIm92Na4HI4MGTZM-yHs_KXjgoDg>
+    <xmx:E6GUaY4HXZ7qfCLaQTKaBXZcjwMwynAdQVg8sZJcqh4UhfdQUCnAeA>
+    <xmx:E6GUafbq7GcDT4jklfpnUj6eCE-eIxk_QpVvJgi0CHC6_sl6eH0jtg>
+    <xmx:E6GUafyl22vRbhyP1u4n47wktRj4eEtqZlHAddjF5OQlE5qYWGBc4qKR>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 12:10:42 -0500 (EST)
+Date: Tue, 17 Feb 2026 09:10:42 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Peter Zijlstra <peterz@infradead.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <aZShEW2b9-71r18I@tardis.local>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aY9i8rbvnxdOA9DV@tardis.local>
+ <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
+ <102c86dd6fb1a907b7138a437dee00dc@garyguo.net>
+ <aZRHJ22UtG1YeBMj@willie-the-truck>
 MIME-Version: 1.0
-References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com> <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
-In-Reply-To: <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 17 Feb 2026 17:54:46 +0100
-X-Gm-Features: AaiRm53xdNxP3D4hVKWPqXGAMAozDOb21HTNRGps1S3nOEwdUFrseEV130fDG9Y
-Message-ID: <CAG48ez2mUQ-D3jpPbvdZzcOz16LMXRnzcudOZsfdoftBF5yvPA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Stat-Signature: xtgfkgk6ergbipt3ex9qj6f4j4ptrzip
-X-Rspamd-Queue-Id: 32EA3180010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZRHJ22UtG1YeBMj@willie-the-truck>
+X-Stat-Signature: di5f7gf7khue6wrz6ixprnnkjhxqf19r
 X-Rspam-User: 
-X-HE-Tag: 1771347325-185934
-X-HE-Meta: U2FsdGVkX19fTyGsUuNuW9CfBfhMluyonhNCis3Uz3P/U84E16oN9gCphfjuTQF1oASUOuFRt0pzm8I3Z2t2FyU5UmZHI8Lu30HvaLIvSJCUE3z5GJdW6DuFVr+5wMutgNd2lWgWLX9n7IYQsbc2BRv3m82ll0F6yWlXl3aiXoo6JKM2ySpGb80joqoZMy9BV8UaPEy8ouZ5YQej02qhP0aU1D06FXXxU1HkU6dp0FtIjv7B7Woylprm3zKnOuV2GW2kaBfE4Xs3BsXvahXppjal5zY5gop9bv3HWBCUqaqsN71V6GdE2ycZq8G8D9n1OpVxIK0C70swo0mpD567R3PhxCv+9dWStaJneC8dSoF++MlE48p9/4ef39RodEBvrPH3yIUttpq2oGvCbhmm6dvv3kQI9mDgzKW+dBSdiBtbh0vjXtg3uC5BPndr1lWKMHCEJCaZUh5Shcg0wSIjRZpY6U+Hilcs7RwF5dmF4N0jHxufRTge9FrZJD3avcpYqeg1UmoiEoabeQVx3ZygW1F4/UjtpYDzNwkMiiJynuaFM8jBu3L0VdNC3pp3WbEetFKQLSusINWynXHi8m7cvysB/Ul3sO9cshlOinWtrYrq/3ID1hlhKXctvtMuRrq4Xe5nYqQ2PnDfKZ1L3Mouz4HOqRvRt+xtZZtA7WlzoJmGbu+tI2yq6HaSF8gKpBFeEICuxqlAN0luiJHyd9RGPMbm6rAchFnqZ292U5xvUqd5iBZFqovzoV8qOWXMS5Js/FXTudGhg0fdUYvhkvzzHnuQIcEFc33Rr6+jSMuQk++FOqPj8Yd/3s86seH1B1N8zxQ3V/XMaJCub7WhgddmBchUe8rSYvm/v50uY9GpgtolbjQDrnrHvDflH3D6j4f03McGsSSGYeH45l6g+rGA9RlNtD7XqYopL4wwi6Ksk4XPzzaikGOApPT04nRb/bvtKYQT0GjVTvSHqy3nkPB
- /gD8o1SV
- J96FRTB4O2uzNggi3YjFuVUcXORu7QWwY6r+dgz+btPjLJ5i3BFjxzpYZKcoGIZCsd2RNKFC+BOHhS2edbm+yf06SJ1f89FNgPT7BVr28/DvqVmETeI1KtN5V/N1qQO2ciQQmMHSCouUmEBT2ABWE55CvqeWCkT0ZetyqN15A3cyVoIxMUaz7J0cj6JZ/VW2vE8Un0P/zzQPtI5/eXa7bZrqB+5T57De3oWU5pbrGDdccrzM5ICmu1mJuIA5ua1XF81gFixowLmfU/Jvqu4r4oSax3fThZbh2M14yn4yxS9jkDQSA1akJu+iWLyjHurig/+0w4E999dHOKbA=
+X-Rspamd-Queue-Id: 03010160002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771348245-141676
+X-HE-Meta: U2FsdGVkX18XrakekmYc96pOO9szjhgdgUG2lIVSoSXUHIyt/K3OcO85actHTa+ZYWQDHyq08+eaLV8Sk0FWkQs9Wp8U3uLyReuFIIMoyKbvFBHM/vWpPkp0ru8TeLMGOROU9erEVTy8tF5eIcN0utvgqONid901WMfE0a9QyDRPA8BC5txQPXHZG1Th9i4B2bnKqoYD4f6/4ya1BuYKuhHtRpZPnnmhBWn2vrS+TQBZtndzZW6TcoDPUl4ngeH9R3CdHeW2nILhvxQeR5m4O1okxKEXadwdmSLw7CYUYHO2yT4Ym7oK7lpkG8075ignEfxyc0xaeCBcKi6DpfrHHaXg6RwbWGOQdZ9EGbFm6eHJzIalus+1DwPIt9OzlLeZCwmvtj4d3zFvf6/ElKd3q04U4fpuMvc5kkWEQ4FPytDKOlH8z969iOCa5N01Yt8qjLoIZVLfoxugY8g357eC+XdUf7MlvviU7ngBFP/3DVoCG7gVsjH2xIHlgw/WynBEDI8RgktawucZdLzPOJ8430F0wWAvhP2uy7IkIMMqCRPhbkzJeOn4YmifpRvaUQ6yVpycD9IUiUb2j7MOHr6yIQLCdY8l13hwGcJuhBBaWYd0OhmebQ25d3aetriU8w8RWbzVJWYNzi4WC7GoKqDVvCHtkV1dCstIK5zQ5h3XBKgKFfRF/Ng20ACD7sHA0LbeVqMA/Ee0h29Bp8Mihc36OjIYHswojxDeLSyLOBkVZv3vvlfTfyb1pkd9JzQtlhoN7irXuzuzZlu+s+r3BS16U3scUZWW82WbTkfWAgNVPWds6e1U+CBgGtN/GBMwlRQCFJCFQam5tkaatoMS6lMlpOAQNynlgPuFtQXz6LVS9GoEtGyeyTas/1SnvYlzRCZ9fSmDIzkiIRydiVXvCJcYLm+BxIGn4mGGO/YXLaD+AA8dHmGuqyTu6V0gURPlDslH84ZTYRvbvoqK7xUHbP2
+ ha2OdS7Y
+ VX1M4G8X2u/emEchZWo8ljAFdk8xouQtVtNYesR4ok+wIrSQxReTbe3co2TSR3zzwETy1qsRJuW6mDEM/mteWx062bU/esaGmUCUlFlY13ZKoaaT/qJLf75qWTs2VJzRAcmmd6RdkDZ+bF1bdLB8h8guwBX0UnC+ebOfRYd1qZyF4zlcKdKqy1yDlRYsgjq7s1hmtO8chxgk40i5bGERW8VzMjMSFq1j2S8tEXWweyZFKFgYkOFtauDcTliv9P31Ki1o1qW1PbA1MVpxdCUF/8cW2/EzvnNXPhditbmY7iexKp+1arwM05DoxPA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,88 +138,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 3:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> When installing missing pages (or zapping them), Rust Binder will look
-> up the vma in the mm by address, and then call vm_insert_page (or
-> zap_page_range_single). However, if the vma is closed and replaced with
-> a different vma at the same address, this can lead to Rust Binder
-> installing pages into the wrong vma.
->
-> By installing the page into a writable vma, it becomes possible to write
-> to your own binder pages, which are normally read-only. Although you're
-> not supposed to be able to write to those pages, the intent behind the
-> design of Rust Binder is that even if you get that ability, it should not
-> lead to anything bad. Unfortunately, due to another bug, that is not the
-> case.
->
-> To fix this, I will store a pointer in vm_private_data and check that
-> the vma returned by vma_lookup() has the right vm_ops and
-> vm_private_data before trying to use the vma. This should ensure that
-> Rust Binder will refuse to interact with any other VMA. I will follow up
-> this patch with more vma abstractions to avoid this unsafe access to
-> vm_ops and vm_private_data, but for now I'd like to start with the
-> simplest possible fix.
+On Tue, Feb 17, 2026 at 10:47:03AM +0000, Will Deacon wrote:
+> On Tue, Feb 17, 2026 at 09:42:37AM +0000, Gary Guo wrote:
+> > On 2026-02-17 08:55, Peter Zijlstra wrote:
+> > > On Fri, Feb 13, 2026 at 09:44:18AM -0800, Boqun Feng wrote:
+> > >> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> > >> [...]
+> > >> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> > >> > index 4aebeacb961a2..8ab20126a88cf 100644
+> > >> > --- a/rust/kernel/sync/atomic.rs
+> > >> > +++ b/rust/kernel/sync/atomic.rs
+> > >> > @@ -560,3 +560,35 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+> > >> >          unsafe { from_repr(ret) }
+> > >> >      }
+> > >> >  }
+> > >> > +
+> > >> > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
+> > >> > +///
+> > >> 
+> > >> Given Greg and Peter's feedback, I think it's better to call out why we
+> > >> need `atomic_per_byte_memcpy()` and why we use bindings::memcpy() to
+> > >> implement it. How about a paragraph as follow:
+> > >> 
+> > >> /// This is the concurrent-safe version of `core::ptr::copy()` (the
+> > >> /// counterpart of standard C's `memcpy()`). Because of the atomicity at
+> > >> /// byte level, when racing with another concurrent atomic access (or
+> > >> /// a normal read races with an atomic read) or an external access (from
+> > >> /// DMA or userspace), the behavior of this function is defined:
+> > >> /// copying memory at the (at least) byte granularity.
+> > >> ///
+> > >> /// Implementation note: it's currently implemented by kernel's
+> > >> /// `memcpy()`, because kernel's `memcpy()` is implemented in a way that
+> > >> /// byte-wise atomic memory load/store instructions are used.
+> > >> 
+> > >> And probably we make it a separate patch for this
+> > >> atomic_per_byte_memcpy().
+> > >> 
+> > >> Thoughts?
+> > > 
+> > > Its still not making sense; an no kernel memcpy() does not necessarily
+> > > use byte wise copy. And please stop talking about 'atomic' here. There
+> > > are no atomic ops used (and atomic ops will fundamentally not help).
+> > 
+> > Byte-wise atomicity means that the guaranteed atomicity is per-byte, not that
+> > the copying is per byte. The copying size and order can be arbitrary.
+> 
+> Curious, but how would you implement a memcpy that _isn't_ "atomic" by
+> that definition? Are you worried about accessing bytes multiple times,
+> or losing dependency ordering, or something else?
+> 
 
-This sounds good to me.
-(Userspace could still trick Rust Binder into accessing the VMA at the
-wrong offset, but nothing will go wrong in that case.)
+We are worried about two racing memcpy()s end up being data race and
+that's undefined behavior. And "atomic" is the key word in C (and Rust)
+to "lift" normal accesses to non-data-race, for example:
 
-> C Binder performs the same check in a slightly different way: it
-> provides a vm_ops->close that sets a boolean to true, then checks that
-> boolean after calling vma_lookup(), but I think this is more fragile
-> than the solution in this patch. (We probably still want to do both, but
-> I'll add the vm_ops->close callback with the follow-up vma API changes.)
->
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+	thread 1		thread 2
+	--------		--------
+    	*a = 1;			r1 = *a;
 
-Reviewed-by: Jann Horn <jannh@google.com>
+is data race, and 
 
-> ---
->  drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---=
-------
->  1 file changed, 58 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
-r/page_range.rs
-> index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..90bab18961443c6e59699cb73=
-45e41e0db80f0dd 100644
-> --- a/drivers/android/binder/page_range.rs
-> +++ b/drivers/android/binder/page_range.rs
-> @@ -142,6 +142,27 @@ pub(crate) struct ShrinkablePageRange {
->      _pin: PhantomPinned,
->  }
->
-> +// We do not define any ops. For now, used only to check identity of vma=
-s.
-> +static BINDER_VM_OPS: bindings::vm_operations_struct =3D pin_init::zeroe=
-d();
-> +
-> +// To ensure that we do not accidentally install pages into or zap pages=
- from the wrong vma, we
-> +// check its vm_ops and private data before using it.
-> +fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> O=
-ption<&virt::VmaMixedMap> {
-> +    // SAFETY: Just reading the vm_ops pointer of any active vma is safe=
-.
-> +    let vm_ops =3D unsafe { (*vma.as_ptr()).vm_ops };
-> +    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
-> +        return None;
-> +    }
-> +
-> +    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma=
- is safe.
-> +    let vm_private_data =3D unsafe { (*vma.as_ptr()).vm_private_data };
-> +    if !ptr::eq(vm_private_data, owner.cast()) {
-> +        return None;
-> +    }
+	thread 1		thread 2
+	--------		--------
+    	atomic_store(a,1);	r1 = atomic_load(a);
 
-(And the ShrinkablePageRange is only dropped when the Process is
-dropped, which only happens once the file's ->release handler is
-invoked, which means the ShrinkablePageRange outlives any VMA
-associated with it, so there can't be any false positives due to
-pointer reuse here.)
+is not.
+
+In memcpy() case, since we don't need the whole copy to be a single
+atomic operation, so as long as the atomicity is guaranteed at byte
+level (larger is fine because 2byte atomic is still byte atomic), it
+should be sufficient as a concurrent-safe memcpy().
+
+So either we want to live in a world where
+
+"concurrent normal accesses with at least one being write are data race
+therefore UBs, use the corresponding atomic API in this case and handle
+the data carefully with concurrent accesses in mind".
+
+or we want to live in a world where
+
+"concurrent normal accesses with at least one being write are data race
+therefore UBs, but there are 17 and more API which are technically UBs,
+but they are not considered as UBs in kernel, use them"
+
+To me, having a atomic_bytewise_memcpy() at least clear things out about
+what is actually needed (at the very minimal) to have a concurrent-safe
+memcpy(). Moving forward, since the concept has been already somehow
+proposed to C/C++, it's likely to be standardized (we can push it from
+the kernel end as well) so we don't need to implement a concurrent-safe
+memcpy() for all architectures on our own.
+
+Hope this makes some sense ;-)
+
+Regards,
+Boqun
+
+> This all feels like playing tricks to placate the type system for
+> something that isn't actually a problem in practice. But I think I'm
+> probably at least as confused as Peter :)
+> 
+
+> Will
 
