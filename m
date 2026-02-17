@@ -4,140 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7754E9A031
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 18:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2BE6E9A031
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 18:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FF8E6B0088; Tue, 17 Feb 2026 13:36:35 -0500 (EST)
+	id 3726D6B0088; Tue, 17 Feb 2026 13:38:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AD3F6B0089; Tue, 17 Feb 2026 13:36:35 -0500 (EST)
+	id 31FF96B0089; Tue, 17 Feb 2026 13:38:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AF866B008A; Tue, 17 Feb 2026 13:36:35 -0500 (EST)
+	id 1F8016B008A; Tue, 17 Feb 2026 13:38:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0492E6B0088
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:36:35 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9851A8ADE8
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:36:34 +0000 (UTC)
-X-FDA: 84454804308.06.7C36939
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 57410C0007
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:36:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jivbenFJ;
-	spf=pass (imf28.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771353392;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BA196B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:38:17 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ABE1AB7C09
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:38:16 +0000 (UTC)
+X-FDA: 84454808592.23.5480262
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 93576160004
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 18:38:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fif4pXJN;
+	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771353494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yKajDEOKb2YbRCBKt7UgZWxuta6aP/Ox0M0jTvkoeMk=;
-	b=3O4Nf4ig4VZSIjUIxiYO/M7YRlKxRJmuly2AIwhJBymEXHB1HNpZZpQpRri8gGvTDdH1bd
-	NaZ5jBcTX/L+tYO+eKRnnBplDD0Ak0abfHfurXrbwa7Qtn0vmlGD3jRb1tbaEjhn5f47h5
-	4xL4xU5k0hy63DLMpas3TCP6AYt/cZQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jivbenFJ;
-	spf=pass (imf28.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771353392; a=rsa-sha256;
-	cv=none;
-	b=3oAhLJJ+cZEApiZq0CDovPlfcwOO9s3WJ8cJvCBi2IaApj1OvGEF1eZmIM8boecJL+t7T6
-	x8V85RGEqVgFMJMKYlJDBNALKLWG7qM9MBpPpz6Oqcg3Wq96B3C4KXuTLumPa5T887bbt6
-	5OzdCIHNevEIBiFIKjxkZ6aybAJVv50=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HBfUgj1201555;
-	Tue, 17 Feb 2026 18:36:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=yKajDEOKb2YbRCBKt7UgZWxuta6aP/
-	Ox0M0jTvkoeMk=; b=jivbenFJB5+ir4PKC0a6OR/5c/D3rdoY6bxeXB/2Wnk8M+
-	EfooQST/RbjvaTvqlcspoKrwffOVx091kRFdaJxOkWFNQ37WcjGlPLfLXvE553Q4
-	l1/OSX6A9zVk8Bfc/SC7/vauxbSxMP6kfrJ5RM7l6GrjXcYpmq+276gOUuH1e4Nn
-	jeizff8WGTjdVDMNPDb4ONX1iEv5BFhjylaRpmYx/g4Et0wKYxFJ/d6FozJBFWAW
-	ja0u+TmQnFcrprogw0kPUVDQ6Y88qKuO0j/O8TrheGFvEzCqP45c+4U4jsPpOapQ
-	gimlESwNqmSGA0nRC46SNBdDP/r09JyMzG1+vECQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjcsbw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 18:36:23 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HFnIOT024414;
-	Tue, 17 Feb 2026 18:36:23 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb454642-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 18:36:22 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HIaLaS53674384
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Feb 2026 18:36:21 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 574E620043;
-	Tue, 17 Feb 2026 18:36:21 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E834A20040;
-	Tue, 17 Feb 2026 18:36:16 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.222.71])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 17 Feb 2026 18:36:16 +0000 (GMT)
-Date: Wed, 18 Feb 2026 00:06:14 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Pankaj Raghav <pankaj.raghav@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, linux-xfs@vger.kernel.org, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
-        Andres Freund <andres@anarazel.de>, djwong@kernel.org,
-        john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
-        ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>,
-        dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>,
-        gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com,
-        vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <aZS1HreP3ZTbfJVJ@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
- <c29d36eb-0706-4f3c-aaed-de7d9ef74bed@linux.dev>
+	bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+	b=qrLp8bT7X2eJz6vDHkzs2505oAbnBhPsG1d4mRGuhFnTrvaCasOURk6fC0PDqnj8L7buYX
+	dW4hZaUe2C55GOH/fu+H8iokCR+U5Bh59AaqlwTUyT0fwktkp1RAeMQ8e13+7mCwaeAcjn
+	Y+U5oyt3ospm64KiK2GF5famDt01vI4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771353494; a=rsa-sha256;
+	cv=pass;
+	b=I5wkc+nfbzcFc6gCaFXINV5KCIKYywxq/EQ0SP5z2vy4BgIlEd2Ms6wFxKPHRHT15Uqiik
+	RegkEvyJlt8qkR2IspF79wR2I2PsXIql8WOxzWYKcixyqDadEfaQxi0ENEdgg4L6ECppAu
+	L7OKmC+jBeXj3kQe0JQ/fLsGlAh0PJA=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fif4pXJN;
+	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b884d5c787bso605147166b.0
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:38:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771353493; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GSq21fdXKb+FfNSuOv50AkJry2h8WyIEiLsTrlCF4tCk2QDT2kjsfh9CF9zGwyvOsK
+         072/+/pBJLXe8dw9cIR1l2pPOXmQuhv85UkWBjKAbhqq/WEyBX1VPxSICv5p/lGH6h0+
+         TP4iOUEVbOM0TFui8U8b+jURQ9qgq0K8F+LOv7BInDbymfcHgKcsS90Hjx+yBj7FNRUv
+         JaSL5MgYIc6b+UVm6OIbQkyjKGUhI7fGlKyMxDZfbp9v2CCXc+IFx/vErWkuWSp2oIrs
+         TAnLVwUUSg2sXdCHV1G+uIvscyCYSZkp8BgKS8ca/VpzOa2VtmluWW0DVPHK/epQpi2j
+         KDHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+        fh=OEFU7DDsVCzw3FBPLAaqLodugVU0YUb9xzO+F+ymxxs=;
+        b=g632iTqr7ys4MN0DlUGg0cIBNIVFrKLUJoS+itFETuvC9una3NNzfATP7z8JUCeSeI
+         CgiLc/HcwKvUfE36YnQ+5LByLQ8GipAszbUm1myxnTwGF4erqKGfFyEbw/RPlQZD49qF
+         9yuZ77j6Qvk5ykyf27zyF8YbvJ8Gjjj36t4u9jLsr6F8uSfIIBhM5xxePy9sVZigKv3T
+         YH29B86+n4RhS8313urzFmP+Z+9hzVxVkKzaefm3Kzdym7hZB0G+sSsTwOzejnG+a6ww
+         h595zh+30IWhwuDVceBjyHqhN6IbJ/jrSlKFU0r7brVIvllkXiBrpXgiIsbKosI6mhcu
+         SDmw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771353493; x=1771958293; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+        b=Fif4pXJNQYUNMzJJlYiy4jO+/wHl+xVxX/bQ58Mcm7IPX+HeaOFFWNBsF+E+8SQ0IA
+         yBhodtUkkCtrT55IVWl3+I6Gq/Bkl0sr3bPJj9zo1cfeFMfKl1yENRTjb//Sm3xiyBGy
+         09CIcmfPe8DoeXF9WvBYMSoYBZh6nIwdXZv2LHZhKJh2zKkVfLiGyTXVoiSYcoYDhAUH
+         N/lFDmKFTPMpSRs8MDljFVCYtn6h9A2M04dyerqbRFomLz0NndFNWNdPGsk1L1Q4gIRx
+         v8yG58WOgVDwVXYG+R83fU2Gy53FJxR8m0QqSUVAOA5jHxpuDMSumBC2KT4c7HRBPlTX
+         mhWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771353493; x=1771958293;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+        b=Sjt28CX2r+4YAGvWfZ8lB4DomIb9h8ZegwK0eKv+cYGGj/QPXA901hK6/FK7vIPaba
+         XuBwx9uMZFMwfCRPlHCAE01FOlTlX5aI0OGu/Wx9urbJcYQRq6EjVzYYUA+hFpnYwl/J
+         7ZLiiv0He0S5QL/7DeDG3tDFHUaVHimznTq1XCD74BrV61agxiiW8Y3cmdD+6jV+8VZt
+         jVmC4mNyftOcjNqrs/8goxdLBJrn0lt6XdsVuKW3GGV2MZGmiDhwkp6FjOlaFzq5TXYa
+         qfweHYkf8vZV6sZyM4+mMBAUX1zyMGTQyZCQxrU0k6Gtf+aXaduDGUKg9mED7WG5k3Ao
+         KmSg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6KJANlMSP+nBAESeiXPR8/uZJiFAaND5byqy7W4zt+jjoPm+A19UDYHTX6d2po8ou657uPyymSw==@kvack.org
+X-Gm-Message-State: AOJu0YyzZFox2WtxxDwXzeNX0IFtuSD8Jptasqf+xmlYWrgKpN/poPmp
+	sfb6RYQ525J1Z4MyAgwZZHHKc7RtKNKGwczCQXhtmiq4n5Ca++Ahml/lFp+jGPcAPnreHwb7yU6
+	DZRrf4UnKVhwiKq2Zs0qaXDoMkWMv3EU=
+X-Gm-Gg: AZuq6aIcdkhTvx51FdP2avwL8DLseCmMNoJ5X9E/O66BbBv35Ngl2e2wql1biBQ0Bv7
+	1IARbXGA7sJcqiyuW3rHc2qLNTgrQrUnwFh5hsv4et/N2yT1JiNZ66657wIdtzBkFhKhZDr9hP3
+	EzNZwdbvvi0xun5OnxZ1PBn788gEX4cm/dhuGqaNX+e75e+GJA+0cPHoDtpMn+ec0V46DmStIwl
+	6pJCxdGXIpCJ8jyb0JFXvGoeyxdwEBr1RUjQZXhJwReS18qXDnLkSRjGq8ZZjpjLo4Tx8CC1PXE
+	/WHdB/SMCViNInVcGcinH9cq28W1K4hA60YQ9RRX
+X-Received: by 2002:a17:907:3d0b:b0:b7d:1cbb:5deb with SMTP id
+ a640c23a62f3a-b8fc3b5abf0mr768614566b.27.1771353492689; Tue, 17 Feb 2026
+ 10:38:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c29d36eb-0706-4f3c-aaed-de7d9ef74bed@linux.dev>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: VqZQkfvPpD088y7s_ZIuXzDZ85l1fGd_
-X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=6994b528 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=pNaSbsGRAAAA:8
- a=_-3aNh2cLU6TeR9iss4A:9 a=CjuIK1q_8ugA:10 a=cz0TccRYsqG1oLvFGeGV:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE0OCBTYWx0ZWRfX54UuNLAijDPA
- frC4GZlaugcZmhlaUh7PoMQytLIux8dJsBoQQwJ8ABImLjIIR2tCOCZGs4amQEVk53E7y3ZWCJG
- SwpZ/CJfXQYlFI3kS8R6a4KrvXyaK6auyHKCkLZxjV5I/G7iYObcAXn23NINKL9PKSqXoj+Pn7B
- NlyRRr50wFri48nk+WZRGYnmSgCcmctsEM3nQH9o62CGlzoLlIWgWbcBOXRsdMPLBlX/+wUhakC
- 7rtaQEZNnMbgaSeHcK14v6Vv3TNj20sr9FCT83RSS5thbB5grbecuSsqHwf0r3MqFw7Md0AVs9T
- 3xT7JXTu2Rv7XX82VSWCTwp2hS9Ll1w8yA5g0ydf2Zp6QGWPqvHnNZDZKHWq5gdzXc9wdshWik4
- NfMb8fISeEVpnyFHv0NSeF3WD/vxY1RzDlreEpRkhlVzHPtZG8OHTClFlomRt6HBqZaDHABu2tW
- ANvTybK5GXxCSbABj0Q==
-X-Proofpoint-GUID: EAXju9l5Vdzng-kr7mVrOXvFL9mVXBcs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-17_03,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602170148
-X-Stat-Signature: dr5r69fmubixr5pwhdx46fz8zgegb9oh
+References: <20260216-hibernate-perf-v4-0-1ba9f0bf1ec9@tencent.com>
+ <20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com> <20260216134222.5ec936d6503e72348227c58d@linux-foundation.org>
+In-Reply-To: <20260216134222.5ec936d6503e72348227c58d@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 18 Feb 2026 02:37:36 +0800
+X-Gm-Features: AaiRm51x0f9h4WRnSrAyvxbfHlB_6iU_mFxctjVNumteF3OZtK_Fw9fGifvYBbo
+Message-ID: <CAMgjq7BGAk45oYCcZymNUcRWU-T5k4AdzgAhk6mr+xPJyD3-uQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] mm, swap: speed up hibernation allocation and writeout
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, 
+	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57410C0007
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771353392-422676
-X-HE-Meta: U2FsdGVkX195V4d3lirA3IQHtxsveMusFWfKCgYyJDnxidtKWwLgOuzKSGyDs8pCm18dxAXp2T2vEWazE6kOe+GMBSsf404vFfdPmyIxLVu/G16rRCcJL7/2s694lEQHWE0g7CVQOSrOA5YPI+V+NUOBOGxXiR0FlPTKBjDjHUG5CFiVFgXzM70pQfo/AkGqCCtYHLbhAgo/b2vjLm4lNwTMANDO9iWlBKZLaTmpGT91V7CHKjWiT/Osc2sOMPfblgVmMqY0lP/loqqCqAtu6NSUKcjiDpeMGg+CJlLYoBwsvG8ElmB+XRfmcm3I4bxAxv/Ruzsb1AFkv6IIGqyWuDLa2NmlSUJ8Hjd8bG0XaLaAr22oJtA54pIzmav+EspslPYHC5gaPMo9G1J23znCT6Mo4zl+ZFPHDJkcRKtbKHAQN/+feU3YlazmEpbP/4qZSudefpFzYqIlJLyuRrYKFY52XTBVPusGB0Dv2G5YfRj0T5yvrDxDzP+Vfpvz1/wUwfFtT7djlIMg4mqsKq7Fm/CAd18/sLRkbpxOn7y46Yu9q9cJPLBbNutW9IXt7IjmXAlYhmc24MlhESzWn7Cqwey/j+SjthXxNh000+0vayJmQIIJx+GwPuyPPPdn80Wc11eD/8m7whPGuXSJ4dDmsuBkUP8trrTrLfklK/Qo489AXs+yHJa9DBMm1lGW1pQ09G3EzIwlcWRoEGn8w8IPOS42BXIHyZtl4abPvYF+f8qK2pWEcnzGLQi7Gua2NbL38Tj9Y0ya6f+Fz0MxiNn9Vsm69oeMmzmtlkd+kzEW/HJUI/tv2si9bBzWQppnFVUNd/Dati2siTFgUZuC0ZZJt5c0EwDYJg8D8WLUv5rzg81XHiwvTyUyXm7zsn6cO0jKXQliggTtTqonTLbMsbzO+oziDHGcaTC/z7XU6S6RvLgLd/5QtgyEuA5pzVaUczh+JBw1rOR7LaAE2nCXhQL
- pdf6rSQ3
- xoaLltVrTerI4w1wKdpZMVWlt5JkS8nNNHq+62ajzM4tbMPfE5bdYiLT7sUjKId4EzXnh0rA6YEEZfK6Wk0ngTJDspwAL0pbXKZl414zvcxnimCo+vHEIFXbuLOC4EE1iffZa0F7Pr76qY26s1vzhBIS4qULen7Hecbui02lD+QC5KWhhCylbaWKQeoEfVUMqN5i4FPXiaqOk1Zp7kyaXKG45griSLfi17TiM6k5KIFt7BawjNuxZfXdpY8HmxYWZkmm14CtOU2YXaFeWOxVsNhUs9C7+zIv9ccGJIsHvK3eycyPUwkrzweOkqOe1f3jtgqjvcmWAH5DXEU9pDqwxEkx9fByTdMf6bxNNFun48fivce9CroHVgMPgTsFNlJzPbU6LeCV89gDjruBkArdlD0dvuHJ4IFP9wE0WXNYaJWpPEKmMVzGq8JCUfUZ7AsV5JhEFMGiXZD7cbDTUvddrnvBU2EWDy0pKbLb/vU7X4xTla2wl5lFjLmwDxRss5AvhygVCxRSfgsZH6BA=
+X-Stat-Signature: inb41ysemn8teffatjiaopfa5mrztde1
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 93576160004
+X-HE-Tag: 1771353494-791137
+X-HE-Meta: U2FsdGVkX1/g1WwBUdVP05SEHcaK/9wVVeMQPw/IedqajdDuMD/J/L0KmOfU3m2bwMBSFecZ5ZObPTS3GSYaQ3EeYHFdV6UTCkXMTgYn2OtZjku0NmyIECPsI9jJuc5DwWbUZg9JgW0p2NAjW0C+/6FBG66eA5zD+e5cHcLYNDKrwF0IXXOSE8iDZO2bGl/XI6v22hwFj/gO4WNsLquBy30VAnJAYE134TJVDmmUlzPJ7b5v8JIUwx6hVfo6sjejrTURjnXJtUO3r67SBzaM+EUe/vNvk3UvFSmGV7xyG4GizWkYAVqkP4nQP8G1nZSbWyuwwR9+AYRSMuV+GVKDrarrGocC8bwfcJ+UHDyj6KVvh6lygBi3Bi3seIw3h3IwJTOeN2ep3/fGYbg32JWp9v5eywinl3NNC6xq332bbX+yC5L41fMHdSdgVcqjiTlTt6q6O2+si0m0vn0crJZle7YPW743h3xyvlVXQ3wLCUAhAfHnRv6Jaz4DOo3c6/0ACJUEantNjIOChKIVvsZT/oGIOqmmEDCuIxxyunXQ0WV8Emt2NODw0qHNp1SSfPTfwU0yjww7pT8ea8B5tJ8njctDl9KcUpP+CFwhpo8pxP/AUeKL0qcHkMG0qVHynFbeHL+HdKeWqnImk1fOOiNnEPaJd1lG0SihOQilOo2zI5p1E/AWebJ2B5GbtiKR55vs3DZcuxTPTcGKQAl+3OvSVZI0yIyUZ3RniNJ2ij9IHr36rQE9/zsYZR6mJcmhDcRbg95mbyD+rLqoSiAcDL9uduiw/H++XyygU5tPFxo75SUl/MKUBZol1SwQy4gF6Ur21OgNfzqMuaoqWY86cvQwvIgRjn49QHYnkQVZ5R04o37VdLml6iZdQvVHarG939DtrT7nHzsobvbD5+Lf++sAO39+sEpCEx/6VUS29N7CqGq7LOD3LLDNg6smtiGpGdIsMSx+HX4BJ5zPat0YqED
+ JGGYLiQI
+ xyH4AcrNB0lLz221yfrgCf6ioGAIgUcdqStQbATCgz98HvfEZSbEqkumpgbUkI3UcNwgL/mIyZTRN7BqzKd6BWZVCqQA/iCo5ETZ0PR6+nfsC/w/2hie1sxZwGpnOoW7KhzL4OIoi2UKgVnZjE9GibZWRVDguyni8bifc4XyXtg3d954cTBrcsPv8+sAW31P3441TfXY4NzNKAGFpv3yZkBo2mOhCuvME71KBdgf0Sha7VfvXo0/qDDiqr4z2OdUfZPR1FuzQlHAW20qzC06v3GIy86DPLN7Ksn6kEQyvRcXrH4nGdpnNSrmZhKmWuNs7Bzbei3fAl2/Cw6AyIO0V8RjDd+2zQohGPEIhmo0uLmimP/prqRoi+xEvBEDmWtYYrACsr6GoYuvCbPeUUsKxea0J+c10434k5KFqCE/FlV7k4ySaM7dvPjPSenChVOBaq1ntm4W6kaCyCmKIJ6w6zP9nOG5ymDCPTtKflc2DtlJqOsLZhyq3mu8sO9SqZ4SUipJVRd0P47AhfmtbmWYgfGTZhCGvtWI7+iNh/lrj8DQ3uBquIuGQtRYm5z2rT6+V2P9ExfqjMMb5uJ0bxQa98Gf5EHJga40dlO1/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,65 +145,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 02:18:10PM +0100, Pankaj Raghav wrote:
-> 
-> 
-> On 2/16/2026 12:38 PM, Jan Kara wrote:
-> > Hi!
-> > 
-> > On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
-> > > Another thing that came up is to consider using write through semantics
-> > > for buffered atomic writes, where we are able to transition page to
-> > > writeback state immediately after the write and avoid any other users to
-> > > modify the data till writeback completes. This might affect performance
-> > > since we won't be able to batch similar atomic IOs but maybe
-> > > applications like postgres would not mind this too much. If we go with
-> > > this approach, we will be able to avoid worrying too much about other
-> > > users changing atomic data underneath us.
-> > > 
-> > > An argument against this however is that it is user's responsibility to
-> > > not do non atomic IO over an atomic range and this shall be considered a
-> > > userspace usage error. This is similar to how there are ways users can
-> > > tear a dio if they perform overlapping writes. [1].
-> > 
-> > Yes, I was wondering whether the write-through semantics would make sense
-> > as well. Intuitively it should make things simpler because you could
-> > practially reuse the atomic DIO write path. Only that you'd first copy
-> > data into the page cache and issue dio write from those folios. No need for
-> > special tracking of which folios actually belong together in atomic write,
-> > no need for cluttering standard folio writeback path, in case atomic write
-> > cannot happen (e.g. because you cannot allocate appropriately aligned
-> > blocks) you get the error back rightaway, ...
-> > 
-> > Of course this all depends on whether such semantics would be actually
-> > useful for users such as PostgreSQL.
-> 
-> One issue might be the performance, especially if the atomic max unit is in
-> the smaller end such as 16k or 32k (which is fairly common). But it will
-> avoid the overlapping writes issue and can easily leverage the direct IO
-> path.
-> 
-> But one thing that postgres really cares about is the integrity of a
-> database block. So if there is an IO that is a multiple of an atomic write
-> unit (one atomic unit encapsulates the whole DB page), it is not a problem
-> if tearing happens on the atomic boundaries. This fits very well with what
-> NVMe calls Multiple Atomicity Mode (MAM) [1].
-> 
-> We don't have any semantics for MaM at the moment but that could increase
-> the performance as we can do larger IOs but still get the atomic guarantees
-> certain applications care about.
+On Tue, Feb 17, 2026 at 5:42=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 16 Feb 2026 22:58:02 +0800 Kairui Song via B4 Relay <devnull+kaso=
+ng.tencent.com@kernel.org> wrote:
+>
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+> > hibernation has been using the swap slot slow allocation path for
+> > simplification, which turns out might cause regression for some
+> > devices because the allocator now rotates clusters too often, leading t=
+o
+> > slower allocation and more random distribution of data.
+> >
+> > Fast allocation is not complex, so implement hibernation support as
+> > well.
+> >
+> > Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+> > performance is several times better [1]:
+> > 6.19:               324 seconds
+> > After this series:  35 seconds
+>
+> Thanks.
+>
+> I'll merge only [1/3] at this time, into mm-unstable at this time (I'll
+> move it to mm-unstable after resyncing mm.git with upstream).
+>
+> We don't want the other two patches present during testing of this
+> backportable fix because doing so partially invalidates that testing -
+> [2/3] and[3/3] might accidentally fix issues which [1/3] added.  It happe=
+ns,
+> occasionally.
 
-Interesting, I think very very early dio implementations did use
-something of this sort where (awu_max = 4k) an atomic write of 16k would
-result in 4 x 4k atomic writes. 
+Sounds good to me. I'll send the cleanup separately sometime later again.
 
-I don't remember why it was shot down though :D
+>
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, i=
+nt nr)
+> >  /* Allocate a slot for hibernation */
+> >  swp_entry_t swap_alloc_hibernation_slot(int type)
+> >  {
+> > -     struct swap_info_struct *si =3D swap_type_to_info(type);
+> > -     unsigned long offset;
+> > +     struct swap_info_struct *pcp_si, *si =3D swap_type_to_info(type);
+> > +     unsigned long pcp_offset, offset =3D SWAP_ENTRY_INVALID;
+> > +     struct swap_cluster_info *ci;
+> >       swp_entry_t entry =3D {0};
+> >
+> >       if (!si)
+> > @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int typ=
+e)
+> >       if (get_swap_device_info(si)) {
+> >               if (si->flags & SWP_WRITEOK) {
+> >                       /*
+> > -                      * Grab the local lock to be compliant
+> > -                      * with swap table allocation.
+> > +                      * Try the local cluster first if it matches the =
+device. If
+> > +                      * not, try grab a new cluster and override local=
+ cluster.
+> >                        */
+>
+> nanonit, worrying about 80-cols is rather old fashioned but there's no
+> reason to overflow 80 in a block comment!
 
-Regards,
-ojaswin
-
-> 
-> 
-> [1] https://nvmexpress.org/wp-content/uploads/NVM-Express-NVM-Command-Set-Specification-Revision-1.1-2024.08.05-Ratified.pdf
-> 
+I'll be more careful about this, thanks.
 
