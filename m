@@ -4,146 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76093E9A03E
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 21:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC14E9A03B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 21:04:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DBBC6B0089; Tue, 17 Feb 2026 16:03:05 -0500 (EST)
+	id 1CE126B0089; Tue, 17 Feb 2026 16:04:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A66D6B008A; Tue, 17 Feb 2026 16:03:05 -0500 (EST)
+	id 16BBF6B008A; Tue, 17 Feb 2026 16:04:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674286B008C; Tue, 17 Feb 2026 16:03:05 -0500 (EST)
+	id 078A16B008C; Tue, 17 Feb 2026 16:04:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 52DC06B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:03:05 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E76E2C18C9
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:03:04 +0000 (UTC)
-X-FDA: 84455173488.01.98A8CA3
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0A0471C0012
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:03:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=QCYNV9md;
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771362182; a=rsa-sha256;
-	cv=pass;
-	b=ctU4zyawcOtywybma903/s9xf2ssZXh8Rv+46C5Kl5EMbhzW65hvmGpwENS1RaNZgh/oC/
-	azlthA9zC8vKta1MgRlq/PkRFcxeIN35lJlPfcBXwvkcUJE7UrIK3Q0FzmbQYjRYX75NRY
-	MRPuZEWePDdpGIAlO+I6r6n1yqILUhk=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=QCYNV9md;
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771362182;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E9F9E6B0089
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:04:44 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95D641B45E9
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:04:44 +0000 (UTC)
+X-FDA: 84455177688.18.C0712BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A16AE40002
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:04:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N39gBlZp;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771362282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-	b=JYcGNwHbJ4ocKYP+BJ198Blfw1/kKV9UR5HN1+wlpBuoTSRzMN3VqkgoPovdg8PgIsvZc9
-	3keu4RYe1u9EQhKpD/LFXzhdXyl+tgwx5PEovZld6VI1UIplqnw1nbqG5oaGTXjItllm1l
-	wJtDvD3lDMNY9qQlqScGZ5t7mI6OENA=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-505d3baf1a7so33061cf.1
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:03:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771362181; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QQ0Plq61uOxxjLFK/LpOuuI2zBNMZ1//34C8U03zH/Wo23gM8cEAfelu+86lLk55yM
-         522zGfW38cz3V2cUcrpekyyiQlaKLEtwwrZI3tYqKIxQG/upOJWuKE/Mdj4AA0dWalA6
-         O0zA1yrr2SxvlBrvrIffHClCAvsWX4SeC5NFJJZF7NGkeVdzkz5jKw2LCBxsiylqazZL
-         3kmQdT2DLCBgUZDzKupFcQ31xvDrOaAx1J8mW0WkZKD4j2RaLGNLQPjC+edEkq1lz0TK
-         gkCqdkuL4naIWqFJxKfVqSfl+nlCWekqsPO8/JIW8YeNAyU/miZ5l2Fv1Kv/N4a6WDLr
-         Fp0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-        fh=QK/JBaRwhqj/Di0XZv8PR3REnZ9EGa6LvK3rS8QtKrs=;
-        b=cpCrRCuk/WzO04cvzL/RNevH5mehKRsHn0YnCof5As3Kk+yxVoRW721r+DJx+EHQ66
-         rlMZrPPyREH8KOkNNinQvP9J8iwHC6/84YEBMSmKbP4e8Jev37pvzI1/8wfnyHWDBCOO
-         AMQ4qlyk6NEEt+zeM6yv9rjX9+QjTXgsJfnUUXtdQN3vzGQV6U6NEDVb95JkY9lvpwGO
-         PusncHQYOGdja5LRWpXvIeMiVfaxVzJ0DN0pyHmGdYOON4dbODmmBHZZan5ouZMTr1xP
-         WKWGAZkBfAeyTfKOzrXTcDTdJaNiGYgQStZH9rsCAtfn0AG+Vu5kNEqs5caoKPEBYsY5
-         h1qQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771362181; x=1771966981; darn=kvack.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-        b=QCYNV9mdap3FZltWDNUr5XtTPL35dripJEBgBpoJNdEqhZnONmfp++5vp2CHc2YehH
-         o2tcv+eWefEsO7rwD8JqhPexISgHEAaVn3VVWw3K0bignjbORaBPsUoVvttJ5xKOLptP
-         O5pf5+QjA2H2zfVnn8zWyiG7ilOQlfbsL2qyxwu5gX+W0e4iZfEwIbZSNfJqXPfdoMOe
-         Hex2nMHCeI9I668cNKFqAH70jZ7Bq/JL4+t16BRkvceKX2jXFC3VAPdtpfB33LaVP+jq
-         FU1cnwjYV7INzBa1oVKnGlJK59Iqm0+D5P+1mrx8uczlYPuj1IxwsT3whm/lPnnjV9Ve
-         DjOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771362181; x=1771966981;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qg7unfpae37+olsmr8ztHQ2bOQfrmh4+RuxK8GGnbgk=;
-        b=F3FbmyEjSyowVfUN3bAbt4728GSDq5dLDikWkdY0xkddFUsqxQ6/7S2WHu7hHofoPH
-         I+MzKzyCxfR4ivYy1KypzkKuMwIVBOP/DJrKmeEa9hGCBBd+4AHHIH5D7u56uDza0TEg
-         ypqFIxiXHr2c62hfnkiP1Pgc3y2oy3ZelHBaD/Mgxa81RFhBpZLjIA+WjR0Ro2SVzg7O
-         Q1LW7rTu0/u3y6ZePf0ORKDA38pCKP7lH4OOWdQZTK3VkCqPcqY6wSK599Wx5+6SVBF3
-         OcpOnxSmhfa5AG9XoGbFwTMCwnz/sxquU3ubX3Aa6eREOzn6cyGrqePeB73Sh9x7fjV4
-         8CHw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4nBE0n1tqwSCN0lIoqDO62xMZvpHSY+eSoiNrY42EsdyIje6PPISdDXGwwJvasILDLJSY29LcIA==@kvack.org
-X-Gm-Message-State: AOJu0YxytBdsSxim5fOSnFWuTPIqcX7DWaemc4hkqWPCsAS9qVMdvW6Z
-	DaMLO57ODeNbMrj+Dn8iyvabvuXkd4hiynnuOoXTRR3QDx+j510L4lziPaQyhJLJuytSkRY9a4+
-	ImYbd5+9CWE8MSmAZb0UdqEZcfttJnTt6uWiOC7O1
-X-Gm-Gg: AZuq6aLIjmLvJytF0EEW6NOrSblY5yzjxcNZTyGnHohfcP5FSFg9BbFlvsLsVeHqRVa
-	srwtzABLlpNYGUkUIgGtouYjQr1OWtd7VSmzOmKc9UNT4i+aklHx3FYeEUQa42+pRpkHD1Nd9w9
-	vrt7y0Geagi0JQjN7XifeMvXfah85BRoe/vLxz4kY+6ur69JPe7hNoYxCOw0qZ/rEZ62w9m6HOa
-	7WgsGUx1178A3nX8nnJ2qapiXg0NQ+DVYX2Zpedecs94wT6+8piovRUYs4UR/PcdcoOH6UbbUj9
-	lromuBFBayfZArnRsYSA2eSrvN6v98v3Rc26Dw==
-X-Received: by 2002:a05:622a:8c15:b0:4ed:ff79:e679 with SMTP id
- d75a77b69052e-506cdb80f2fmr23179661cf.19.1771362180478; Tue, 17 Feb 2026
- 13:03:00 -0800 (PST)
+	bh=rXP9Cd+6vi6yUZNRPpTobHBeWoNCjtANA+MdXi1cdiY=;
+	b=XJeJP52kE8DPLHaRaTQfwwCLXTT/QQLggiBlym5exf7Z9ZKRoxXbxZ1KYakGmg+YjGqioa
+	/35raZsNqArPWj3FoCncxI8564gnKJR77johDeamIxbT56sr1k6laN5dLCyMgWuXlXASn5
+	yDoTaeMeHgAFMUcZXzJjFkROEq5mMJo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N39gBlZp;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771362282; a=rsa-sha256;
+	cv=none;
+	b=HwmPrBc7aRdJ4alnxUniw12Bf0bD/qTLnzHWS+x6WNI2APMrTWLItvz06hdQpSgHWgJNAI
+	BWT8ixbwhgW0xchYxC8oiEBDQHoYAF0LpK36oTSG8O/hsNMStDll0By3EeAt1nXxMOjgGP
+	1uf4YnmY/q9s9HS68Inc/B9wMM0Q384=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A206542A22;
+	Tue, 17 Feb 2026 21:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD8AC4CEF7;
+	Tue, 17 Feb 2026 21:04:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771362281;
+	bh=0IGrsALVOasfOEjCAr9RVEVjJsnB1TJkFz2czaNIFZk=;
+	h=Date:From:To:References:Cc:Subject:In-Reply-To:From;
+	b=N39gBlZp8G7QwzHgp2lBy7tB/3hXBuKoUC9oUniAtB/hq9DOo37ureWaHJgBwe/on
+	 jzOYx24Wr6hHs8j7ex5wJeb4XgZwBy7hLH79GJcCcPi6My8Tjvl1UeOlbFZ+fa0kG2
+	 d6xjxGG1iAaHxURXpH3qaKKzTlA51C+mfFbM3DXReaxOTTZK7M60X7QJPGRppLaSmh
+	 BS9Dz+oMRjWoGSk4Lv5tEAAt2vOf6MUBTOwMRK727nZhAGVC5gNfLESJBb5EieYSsG
+	 kMWXONb1Gnz6IIP75Kq+FLJ+xNvTCa7mOU94RAwMMTc8v5kdxWY7svtIz1JV2WukIS
+	 UI6GwYMMRv4VQ==
+Message-ID: <fe6afcc3-7539-4650-863b-04d971e89cfb@kernel.org>
+Date: Tue, 17 Feb 2026 22:04:38 +0100
 MIME-Version: 1.0
-References: <20260217163250.2326001-1-surenb@google.com> <20260217163250.2326001-3-surenb@google.com>
- <dtdfrko7uqif6flc4mefnlar7wnmrbyswfu7bvb2ar24gkeejo@ypzhmyklbeh7>
-In-Reply-To: <dtdfrko7uqif6flc4mefnlar7wnmrbyswfu7bvb2ar24gkeejo@ypzhmyklbeh7>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 17 Feb 2026 13:02:48 -0800
-X-Gm-Features: AaiRm52hFtG7L6yJLkbXYH1SBTkTSuw2iS_25yQRkmcsbZ2JjkS2e-zgf6Q_wu8
-Message-ID: <CAJuCfpGViU4dDaLtPR8U0C+=FXO=1TuU-hT3fypNQO3LGOjbcA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm: replace vma_start_write() with vma_start_write_killable()
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0A0471C0012
-X-Stat-Signature: m9rbfb9eqrbh5hnpqctbnjzb5pizdfpi
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: lsf-pc@lists.linux-foundation.org
+References: <c3bb0140-942d-49d2-bdc3-210b55435356@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Cc: linux-mm@kvack.org
+Subject: [LSF/MM/BPF TOPIC] Towards removing CONFIG_PAGE_MAPCOUNT
+In-Reply-To: <c3bb0140-942d-49d2-bdc3-210b55435356@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771362181-426962
-X-HE-Meta: U2FsdGVkX19C4cxMtEkZGcFuIO2IAMtb5fUYaTdeABGeuQLSGuxmEDTEhgvo4YRgi7eyZZXc+MpdKNNg5nHZ3ceo7NgLOyhGtAXjram1MzY6e46hbGHY7b6i9F0qb1Xg24Hbk6sfNtQWRTCmqdSdlRM+PngPWfnVhIznKooR6LwrG0Y9U3Ak3Xg5N2xBEDrmq/XcNZ40xSXFDstz5JKsjfRCgpQSIe0+Mtopw1ghPIVUNSAnRidVtkaDQJvSCa5+Sn6fG7Mqbypt53lQkyR8zx3UJGxgF+tJs5182xZAalcFuxF7wZyjbjOjJbB3Cgmj64jWYzuBHLu0VW4vIlOcqrCv63OI+uXvI1Riu7+9dsPkcTdthI383ukzArXYQH73RS9UwssW86aTEubPAISHzI3oF5wA7y/iI4aTSfOjGHQ7/Nh94IbcIRSli4+Izvnyro9jYw3J/8CKh2ODRnO8w9xtvM63NaNlnJJBmXLDWNpx0icXQw+CipsvQEjab9kiNvxWXPz2MS4kB4adKIVFrlbYQ8l9NHSXWdAGC7/dYnvbqqR92f94PSEBVTzb3WElvDSRemsqVi+tiiIote+5oLYe8p7XHYjYyU5RSN3wxhE26D7dLOFVoqrRoKHy8+V7cw8Vh6XeVArUCPPrToI1GPJ+/e8BQ6VNBd4AXIes/kMjRcnCf+fjtQh6+klvsBMxylTGiDXkBhTOfdXW0bIZZ6dLL3ziXXdoH7e8/GuRxNyxne5gaL6vt3u92rYyjlq5dbzu0xCydr6q1bVyyiBFgUvG2L31yBB/cTRRFJstdbTPEq5Is2g/u8VsRXToM8hQHcKerrNYzm6kAgrPFhR4xb5d/HkDmxRcXUbCT0NQ3lfYht3y0vlx2pDWcx7F+9K2jT911uWouLGZ+kWVGv59MW4CmETQEoJUkMpASK+dNPFf47bNe53fkQwCV6pbn5AsL6UoZwnioBG0qaxQa2x
- CQaOXsY5
- MPtnBS4M/s9e3QrV4skNHCBeDVXBw6sSOZZUMVz6qR2ARIwIzoL3f39ja7wDY/9ghxRNBDHyjarYWrPcW605KJ6ijXXXfo0ijFzBcmMUlBpH/Zjvdu+vyPc03+VbYffu8jNa0Co2wOy1ZbT7fOk8WHhKNknBx1Vl52Dej+mW4HSOvVn5zRvj1RZFMG8nggwx4Qk15xEESasZ4k4SbHp5rqZbEdiebYuNveV56g/3M9WhEmXR/UWms5PVugb16DbZns/kFnfY/2YTIktT+UdegKVOiTCQzL32RJpTjOcyIIKJ2yM/RIWM7I4LSPtvQkYFrwXdMmpUHqbSahUTfKvclR32lY3tT2x7uxCaWwMVvBZTnXkkHxGm7dDpO5S0pXqgNHse9Hq2KbMAP7cIwnNnhurcAIdOgdRXIGDIjU4UxMLgzybnQp0I+p/BArwgergUW2oWbIiC2zSx7oB3ZTftaIQovNatImDyY88pCnvs8xz0HAWA=
+X-Rspamd-Queue-Id: A16AE40002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wfehrq8e9gt9rsc8uxe6nycjihicfbni
+X-HE-Tag: 1771362282-102186
+X-HE-Meta: U2FsdGVkX1/mfN+d0yW5IEGd7C+mRgDq5qYhTRsANeamE+RHiIUBSe2T5JL5eaYXGioYODeiOqaesfr+sS862KcfadREw6kbGUFU104UXUIgZmlplpdnBBmEqMM+uWfNP7Eakk0GBqu/0dMQ1sC8QGgy23V+A5aT9BSDHcS9hryd4Ac8CZqLxzXe89dI8+f0DOhAC/Z1Dd5ymTjgZLh5mi9a8HnngflobPo5jVOEzl0ihqGlebXTJNR+mM789D152xzR5tObuLRvwiVHHEhhvGmeavsuOMCLobYUFD9OMI2bK/ieQX/GFsGKNO50nd5rFD110zOR9WyCY6A4Gl3CF40z6l5lOeHcULESaIB4cyPL4lVQpE+omAZQg9EShjWDezChgVVgBAxuc2PH+Ic0cqN7QTmEM6Uk2dec9zR58gVOe9MuCd2dQEcxnrlQuhr6aA6bilqTph6VU/DR80dVPzEkY7KIsrzjfTUHQliGTRJCpmEez6r3EPrA9oWtEAEx7MmyuPUQ0BFPeqq+reLv3tDTNtm37GpyCVzZ425fDtxbV2LkFtqYwhr2RqOGhNaWe1gk3r6PsIpUat4EhCS1DSGi9BeiBn4bw1k/296Kli6jRHFQmf8QE4iCy7WaAUmNIGpXhY0ynQsnhPqZel/8d4dpyUoYxuq1UVNuPpeE1Z1fgP2RHf581L0USSZ32dxpcl6UxcEL0MieyWObd59kv/iJ8VINRk0TG745UpVwv82qREWHeUpWdrfDL0hIcwJHwUSJtRJUwLyI6POVQ7o7AUZ/+/xPoQqMoim/4wbKVocoDPaeqaoCS2i3uLOOiZ41ycqXNyxWqOnnDTyueIUtosFeTcvP40taNO1OJRep7hbmnFtg1I9frDjnT1vYhU3zhGN5KtMlav539/Bwu/z8GXcKwQWVzm0YEGWUAJt/+AQA/zXigLMvDR3joIpDiAIYkwi7CVTwi+sjHpMIw0K
+ V0tOkEVD
+ iTrGeqmNUeDs1DAd9578LbVdsrVcXosyR556/g9LZjwU0IUOqwEHu6Lb0CM3ItiEqs1YwftCe1jF8QDCpTCp8jtfptxq5nMhtXNL/PfQQfHCN21VEWkhOcVoUVqrhyvDk0mMeojZnbHvePWm7A8IbI64igC45QNzlGMhM1Tij/ZIwLUJlPqX/MbF7fHNF8xiWMHvNDLYyN9wSfZ4qEAquBe9hTzwruyC4Vp0FZlprZLlaqaPkslZab9NpueRVmbdb4So8b/ytQRqx6Vvh9VhMGnSLNegRwi6iomXjWL/oIKrOhMiYCvRlKRTl9RP0Oyza7bIVUq7AuIprB679SsVoOjSxtRoc2jOhPPVgCFAk1YylNPs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,208 +137,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 11:19=E2=80=AFAM Liam R. Howlett
-<Liam.Howlett@oracle.com> wrote:
->
-> * Suren Baghdasaryan <surenb@google.com> [260217 11:33]:
-> > Now that we have vma_start_write_killable() we can replace most of the
-> > vma_start_write() calls with it, improving reaction time to the kill
-> > signal.
-> >
-> > There are several places which are left untouched by this patch:
-> >
-> > 1. free_pgtables() because function should free page tables even if a
-> > fatal signal is pending.
-> >
-> > 2. process_vma_walk_lock(), which requires changes in its callers and
-> > will be handled in the next patch.
-> >
-> > 3. userfaultd code, where some paths calling vma_start_write() can
-> > handle EINTR and some can't without a deeper code refactoring.
-> >
-> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
-> > vma_start_write() out of these functions and replacing it with
-> > vma_assert_write_locked(), then callers of these functions should
-> > lock the vma themselves using vma_start_write_killable() whenever
-> > possible.
-> >
-> > Suggested-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
-> > ---
-> >  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
-> >  include/linux/mempolicy.h          |  5 +-
-> >  mm/khugepaged.c                    |  5 +-
-> >  mm/madvise.c                       |  4 +-
-> >  mm/memory.c                        |  2 +
-> >  mm/mempolicy.c                     | 23 ++++++--
-> >  mm/mlock.c                         | 20 +++++--
-> >  mm/mprotect.c                      |  4 +-
-> >  mm/mremap.c                        |  4 +-
-> >  mm/vma.c                           | 93 +++++++++++++++++++++---------
-> >  mm/vma_exec.c                      |  6 +-
-> >  11 files changed, 123 insertions(+), 48 deletions(-)
-> >
->
-> ...
->
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
->
-> ...
->
-> >
-> >  static const struct mempolicy_operations mpol_ops[MPOL_MAX] =3D {
-> > @@ -1785,9 +1793,15 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigne=
-d long, start, unsigned long, le
-> >               return -EINVAL;
-> >       if (end =3D=3D start)
-> >               return 0;
-> > -     mmap_write_lock(mm);
-> > +     if (mmap_write_lock_killable(mm))
-> > +             return -EINTR;
-> >       prev =3D vma_prev(&vmi);
-> >       for_each_vma_range(vmi, vma, end) {
-> > +             if (vma_start_write_killable(vma)) {
-> > +                     err =3D -EINTR;
-> > +                     break;
-> > +             }
-> > +
-> >               /*
-> >                * If any vma in the range got policy other than MPOL_BIN=
-D
-> >                * or MPOL_PREFERRED_MANY we return error. We don't reset
-> > @@ -1808,7 +1822,6 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned=
- long, start, unsigned long, le
-> >                       break;
-> >               }
-> >
-> > -             vma_start_write(vma);
->
-> Moving this vma_start_write() up means we will lock all vmas in the
-> range regardless of if they are going to change.  Was that your
-> intention?
+Hi,
 
-No, I missed that this would result in unnecessary locks.
+although I like mapcounts very much, I'd rather prefer to not have 
+mapcount work on my todo list.
 
->
-> It might be better to move the locking to later in the loop, prior to
-> the mpol_dup(), but after skipping other vmas?
+We now have CONFIG_NO_PAGE_MAPCOUNT in the kernel that doesn't touch any 
+mapcount values of tail pages, which is great. But we still have 
+CONFIG_PAGE_MAPCOUNT around, being used as default.
 
-Yes, that's the right place for it. Will move.
 
->
-> >               new->home_node =3D home_node;
-> >               err =3D mbind_range(&vmi, vma, &prev, start, end, new);
->
-> ...
->
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index bb4d0326fecb..1d21351282cf 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
->
-> ...
->
-> > @@ -2532,6 +2556,11 @@ static int __mmap_new_vma(struct mmap_state *map=
-, struct vm_area_struct **vmap)
-> >               goto free_vma;
-> >       }
-> >
-> > +     /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> > +     error =3D vma_start_write_killable(vma);
-> > +     if (error)
-> > +             goto free_iter_vma;
-> > +
-> >       if (map->file)
-> >               error =3D __mmap_new_file_vma(map, vma);
-> >       else if (map->vm_flags & VM_SHARED)
-> > @@ -2552,8 +2581,6 @@ static int __mmap_new_vma(struct mmap_state *map,=
- struct vm_area_struct **vmap)
-> >       WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
-> >  #endif
-> >
-> > -     /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> > -     vma_start_write(vma);
-> >       vma_iter_store_new(vmi, vma);
-> >       map->mm->map_count++;
-> >       vma_link_file(vma, map->hold_file_rmap_lock);
->
-> This is a bit of a nit on the placement..
->
-> Prior to this change, the write lock on the vma was taken next to where
-> it was inserted in the tree.  Now the lock is taken between vma iterator
-> preallocations and part of the vma setup.
->
-> Would it make sense to put it closer to the vma allocation itself?  I
-> think all that's needed to be set is the mm struct for the locking to
-> work?
+To make my dream come true, some things I have in mind are still 
+pending. In particular, I want to:
 
-I guess locking the vma before vma_iter_prealloc() would save us
-unnecessary alloc/free in case of a pending fatal signal. I'll move
-the lock right after vm_area_alloc() so that the entire vma setup is
-done on a locked vma.
+(a) Support mapping of folios > PMD through PMDs.
 
->
->
-> ...
->
-> > @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma, un=
-signed long address)
->
-> Good luck testing this one.
+(b) Get rid of CONFIG_PAGE_MAPCOUNT to stop messing with
+     page->_mapcount on tail pages and to cleanup the rmap code.
 
-Yeah... Any suggestions for tests I should use?
+(c) Better detect partially-mapped anon folios with
+     CONFIG_NO_PAGE_MAPCOUNT.
 
->
-> >       struct mm_struct *mm =3D vma->vm_mm;
-> >       struct vm_area_struct *next;
-> >       unsigned long gap_addr;
-> > -     int error =3D 0;
-> > +     int error;
-> >       VMA_ITERATOR(vmi, mm, vma->vm_start);
-> >
-> >       if (!(vma->vm_flags & VM_GROWSUP))
-> > @@ -3126,12 +3157,14 @@ int expand_upwards(struct vm_area_struct *vma, =
-unsigned long address)
-> >
-> >       /* We must make sure the anon_vma is allocated. */
-> >       if (unlikely(anon_vma_prepare(vma))) {
-> > -             vma_iter_free(&vmi);
-> > -             return -ENOMEM;
-> > +             error =3D -ENOMEM;
-> > +             goto free;
-> >       }
-> >
-> >       /* Lock the VMA before expanding to prevent concurrent page fault=
-s */
-> > -     vma_start_write(vma);
-> > +     error =3D vma_start_write_killable(vma);
-> > +     if (error)
-> > +             goto free;
-> >       /* We update the anon VMA tree. */
-> >       anon_vma_lock_write(vma->anon_vma);
-> >
-> > @@ -3160,6 +3193,7 @@ int expand_upwards(struct vm_area_struct *vma, un=
-signed long address)
-> >               }
-> >       }
-> >       anon_vma_unlock_write(vma->anon_vma);
-> > +free:
-> >       vma_iter_free(&vmi);
-> >       validate_mm(mm);
-> >       return error;
->
-> Looks okay.
++ some other small things.
 
-Thanks for the review, Liam! I'll wait a couple of days and post the
-v3 with fixes.
 
->
-> ...
->
->
->
+I discussed some of these challenges at LSF/MM 2024 [1], before we had 
+CONFIG_NO_PAGE_MAPCOUNT. No we have it and we can discuss the next steps.
+
+
+Sorting out (a) is fairly easy once we removed CONFIG_PAGE_MAPCOUNT: 
+we'll primarily have to split folio->_entire_mapcount into 
+folio->_pmd_mapcount and folio->_pud_mapcount.
+
+Sorting out (b) requires switching to CONFIG_NO_PAGE_MAPCOUNT first, 
+which will imply some imprecision with large folios to:
+
+(1) Process memory stats: Pss + Uss accounting like "Pss" and "Shared_"
+     vs "Private_" in /proc/$PID/smaps and /proc/$PID/smaps_rollup
+
+(2) PM_MMAP_EXCLUSIVE flag in /proc/$PID/pagemap
+
+(3) System memory stats: "mapped" memory like "AnonPages", "Mapped"
+     and "Shmem" in /proc/meminfo
+
+And some other smaller things. While I think that all changes here 
+should be fine, I want to be a bit careful and have a discussion on how 
+to tackle it without realizing in a couple of releases that some use 
+cases still require CONFIG_PAGE_MAPCOUNT.
+
+Sorting out (c) is a harder nut to crack, and I wonder to which degree 
+we care and whether I am being too careful. I have some ideas that I 
+want to discuss. One idea is to just remove the deferred split lists and 
+let memory reclaim deal with that: but that one might be discussed in 
+another session I'll propose around the deferred split lists.
+
+
+[1] https://lwn.net/Articles/1013649/
+
+-- 
+Cheers,
+
+David
 
