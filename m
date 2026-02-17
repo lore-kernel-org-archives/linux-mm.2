@@ -4,104 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACB83E909CF
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15EB2E909D3
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:13:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 170576B0099; Tue, 17 Feb 2026 11:10:57 -0500 (EST)
+	id 724566B0093; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11E3C6B009B; Tue, 17 Feb 2026 11:10:57 -0500 (EST)
+	id 6D18B6B009B; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04ABD6B009D; Tue, 17 Feb 2026 11:10:56 -0500 (EST)
+	id 5D0B56B009E; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E70E56B0099
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:10:56 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A078A8AB41
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:10:56 +0000 (UTC)
-X-FDA: 84454437312.07.DA9815D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B43C42001C
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:10:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+6X96Up;
-	spf=pass (imf13.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 499E86B0093
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC16C1A0272
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:13:12 +0000 (UTC)
+X-FDA: 84454443024.30.55AD067
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DFA3BC0008
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:13:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm3 header.b=VwKBeGvw;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gbej3kK+;
+	spf=pass (imf28.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.151 as permitted sender) smtp.mailfrom=andres@anarazel.de;
+	dmarc=pass (policy=none) header.from=anarazel.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771344654;
+	s=arc-20220608; t=1771344791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MXhxVIHeRx0BZp2W6p41DrKtgS4f5F5WFmdV2+prA3I=;
-	b=OdxKNwGG83jv1BNp7L5JrHOcNSfukWVOPw6XJZU5vAHlpz2AsjxTOTBEA46tRsm9xpZI0Y
-	dcHhH43waMWLzTOlYWL4ovWxSMpUyt7fE/rpqzO8E97D8AfDyGiWRrb8OkP5aGpYcnqnHn
-	EzyPKiGYE7ln3axbeo3kCzX7gn8ijFU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+6X96Up;
-	spf=pass (imf13.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771344654; a=rsa-sha256;
+	bh=m85nxpM60MhQS/QITwd1hHeXdBL8OWiwGVCZ0ecbrpo=;
+	b=sNhM9IH2TiU2scdJxbx9I8KmjXNh8daWKnzylAtn/ECZn+kAlUhYldumVy7/DYsYevTDVm
+	zcS/wxQE9yRhYTUYQlTaBnt96v0Uq/yaXe9K9AQ83D9y1FLYQ6Jx1C49gQNhTrEpHivTme
+	nOT9iM1MHehRZ30Icygp8Aw7hqXQ0RI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771344791; a=rsa-sha256;
 	cv=none;
-	b=A/q/dqzpTPi4yetuhTc4iQE1xDoL/g6lFhpMJXGPcbTKh7hEnIlexYaW0Fx8kNUMjt39tp
-	iD6h/yljBXhB/oJw02R14lUAAggqLNXwyh8rbXMOcJqJ2pIHUITXsvSxHX0i6ujlo3MkB5
-	mAPeKgZ6ayWIrWzVivopx2TM4yTJTWY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 83019441EF;
-	Tue, 17 Feb 2026 16:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B95C4CEF7;
-	Tue, 17 Feb 2026 16:10:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771344653;
-	bh=MXhxVIHeRx0BZp2W6p41DrKtgS4f5F5WFmdV2+prA3I=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=X+6X96UpPdp4cqp7E/C4NBggV15ypDFjwEo3EL4AaUkDLTTFQrFbAgYYCZpDv8r+H
-	 NR3w8etIdXG9TyuAGAG67a/FT02+v3Q3381wGlkvjOuCjmeDwyGFYzcle1us+DxOmS
-	 r3pzKu4oOjfNCEi6otQCyIMBt9kiO74sr1iLhc5TeJ8ZAeSDdjJ9cZ8Xt1Vi24HI+R
-	 dzPec5h4QNx5gt9lN0CDPA0DdDQXDpX3gezcH4vspUWHQjAADc0DZ298oD1aJaM+SE
-	 fvZ+jtvH7PZtQMXb1Z/BBYj1QlVTP1e3DwNqPRYuuXMlXZ56c1WJU1YYogjLZ5lDH1
-	 B+Rz05pOLZh3w==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Feb 2026 17:10:48 +0100
-Message-Id: <DGHD9TK32CZT.1PGFE238T1YY7@kernel.org>
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Boqun Feng" <boqun@kernel.org>,
- "Greg KH" <gregkh@linuxfoundation.org>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Will Deacon" <will@kernel.org>, "Mark Rutland"
- <mark.rutland@arm.com>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Peter Zijlstra" <peterz@infradead.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <aZQ19FEeGgigdwz9@google.com>
- <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com>
- <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com>
- <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com>
- <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
- <20260217130024.GP1395416@noisy.programming.kicks-ass.net>
- <DGHADGXGWS45.1A6EHNMKM4SRH@kernel.org>
- <20260217155035.GZ2995752@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260217155035.GZ2995752@noisy.programming.kicks-ass.net>
-X-Rspamd-Server: rspam05
+	b=cGSWfahiAzSQxNbs8ubLN+HM91ffBu1jUXok3VbiN3NsNVX+QlZaYFjOrI59fxeJJw3Dmh
+	nPz4ZBV4mlFyQqkuLrduXgduLcYvSrp4YaQAm+Pc8oWnW03tzIev+O46qmqJCpSh8J5MZu
+	r4BXmFvTyhnyb7x6Ju3rgLI0YxF9S/U=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm3 header.b=VwKBeGvw;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gbej3kK+;
+	spf=pass (imf28.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.151 as permitted sender) smtp.mailfrom=andres@anarazel.de;
+	dmarc=pass (policy=none) header.from=anarazel.de
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 61F311D003E3;
+	Tue, 17 Feb 2026 11:13:09 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 17 Feb 2026 11:13:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1771344789; x=1771431189; bh=m85nxpM60M
+	hQS/QITwd1hHeXdBL8OWiwGVCZ0ecbrpo=; b=VwKBeGvwQ3zDU0ibAFyO0/1cVw
+	HFZe9mheim8Mv8ZI9ZOUbMM9FieNgJ4RUERoQu10Q7QM3iiYpROGu4Z8SEdmWo/c
+	VuJYFDSn7QOjleDXAxrPwHn0jttbvS+XBclsb3bReFaLtQwKpfx5dmXPmV3DPoxI
+	B3LtKhK7DOr36nyadFu/s4l3kTq0vS+r683i8YqhzDT23uX1UNFOkrVgOVmOhICJ
+	XubtoZGX2Y37vgC+I3d7LungGCYPED3FatswxLNQ8n5pipaJI2StCiGcBty86r2d
+	SRd/G4Hq+wkW0efCojbH72SxJnoaBwZPxou7Hwr66SjCVw6GWnGr6dL3wemg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1771344789; x=1771431189; bh=m85nxpM60MhQS/QITwd1hHeXdBL8OWiwGVC
+	Z0ecbrpo=; b=gbej3kK+pS+/gY1RSixWXdD8sBg2pz/RNdJcMbwAL3n2wFBQ37o
+	ocQcq2L2sA/ltEUfH3WUXHiQmbcqI4B6W64WqyoVlhfNj0KjdJnPtFIuSTKTSnru
+	7ITiNRABCOsw1scccvelmIYUakBLvoSgYo/cmGjeRX8SHdimtdPyv7SOhE2GADVI
+	l3VUIh9Y2uBueeFJEwrIkw4Lk8ecM2tnJo+wMmCuMLrHLTnJApUwJEbbvkfl5ue/
+	ebYKpOqJrAF7LgbZZgSLwHT+q8PszmIDLWu2B5R0nkBBEulpz4cjJggAUtsuiGEs
+	2NiXF9VdqXL9NAcEdnmouqxFOpRqn+4Q9Tg==
+X-ME-Sender: <xms:lJOUaf1OyopObblOQKBQKTId9x19m80HnGdbqwam4_t7u3QDny_wog>
+    <xme:lJOUaVBNOidFA4M3-2R4vd3gEL4DfkhcVaVg6ebqsPxC8sgugdSA7LMf5TEliXns5
+    AtPrb-M237IXwq494TSq2kl_oZMrPoLAv5vA3ND82ZDdmfqgb-dfA>
+X-ME-Received: <xmr:lJOUaU8d-GxjEU_eSqep762oF0AhKRd79NlMQPnJi_0QnIQnVnneL5gy8wGW35IPPyhLVw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtvdduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomheptehnughrvghs
+    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrfgrth
+    htvghrnhepfeffgfelvdffgedtveelgfdtgefghfdvkefggeetieevjeekteduleevjefh
+    ueegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hnughrvghssegrnhgrrhgriigvlhdruggvpdhnsggprhgtphhtthhopeduledpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtoheprhhithgvshhhrdhlihhsthesghhmrghilhdrtg
+    homhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthht
+    ohepughjfihonhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmtghgrhhofheskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
+    pdhrtghpthhtohepphgrnhhkrghjrdhrrghghhgrvheslhhinhhugidruggvvhdprhgtph
+    htthhopehojhgrshifihhnsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheplhhs
+    fhdqphgtsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtph
+    htthhopehhtghhsehlshhtrdguvg
+X-ME-Proxy: <xmx:lJOUab-sg_v_9Nwe-Hj7FocWNEnVkceFy4ptsFWcNKhvxSpmpfyb8w>
+    <xmx:lJOUac0bt2Cgs4FmxNFKdYE1vN3KpUbluYCbYu5EpjYDO67Bo5ovVg>
+    <xmx:lJOUab_bvpQs7FYgPKyECcCh-p3X0YgndY4nGJSM0o5tFCGKCwkX4A>
+    <xmx:lJOUaddyETi61lDR0KY7lrcR58ho5aM3CpT3Zagy7fV_hrA9nPN8IA>
+    <xmx:lZOUaWySsAvELHojLCN5Yj4ha_-StpXVUfGtGFMXkLCzbgSCQgg-klvq>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Feb 2026 11:13:08 -0500 (EST)
+Date: Tue, 17 Feb 2026 11:13:07 -0500
+From: Andres Freund <andres@anarazel.de>
+To: Jan Kara <jack@suse.cz>
+Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, 
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
+	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, ritesh.list@gmail.com, 
+	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
+	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <2planlrvjqicgpparsdhxipfdoawtzq3tedql72hoff4pdet6t@btxbx6cpoyc6>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
+ <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
+ <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ge9h5a381kw33wjscuszbjgjgr9st86b
+X-Rspamd-Queue-Id: DFA3BC0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B43C42001C
-X-Stat-Signature: 4b571buy63378a85ifgtfuem6ug5yc6g
-X-HE-Tag: 1771344654-724316
-X-HE-Meta: U2FsdGVkX19cOZRl+cvHPqtqBOSPlZfxvQbxSOPDrCIovc9b1KLh0bYJ/sTPVbZUx6AvQwd6gSQp+2NG0LQjnSLTxblRbjqAwpv7ahpU0KRhGgO/ruEzql1WlARBxgwgXObwllhoIqrA4orvHKDcA6tvDe9TZq+BJI9lM3MlDGaDYNP+5QVQHQpJmsIQgMNXbste9ctYq87YTlw407E37rHxRc6/0JJrWO94eW9GzwEGGfNvc/DLlsgumJR7d35eeyqzLk05oaiHD1sZk2G2Ez7A4PEYiE1MH+7pDKM1YtD4OTvnYCKgBJLPMqc0sJfwHwQXaQ17sdxaoIY6Ek7WXD0VBm/eWjdRH4LCBAqph2qnGtUoQibGH7zcTTxCf140/vnoT8NBPv/CddqskerrHXvbkdohPlH/uJkCXtBZ79WGYMKfse2T6E3h4gs1/XrQDF5HNBTWPAxwQhuZbvRkKykcNeGyLAumVJ4hvuY8ouw3LnsPOm6k+sdAUMSsyUavyKy+1CpZkYOw4ZII18A5xpKkILjsXoVkJ3uXVezpqbEFfFOKVzxcWOo0i+ml1RpuKLGE4qT4bJ3nmUkksGpfWv8CZUiXzjNvP4TeeXaxbYVNhHJq3suSsbLfONuWHZX10Mqh+qdE9YKijuRLEWU7OfuADj59jle93nG1+sPWvP8AeQZekRIWdiE01gErtl/NrqCmJnMzbQJkZN0sb9xpbwE1nANPt+8KlivbCA5RqxFrVfDIC+h4eDGT80Fz4h1oEl4yYHc6B3TJaknu22MhfqEnF+lsSSQPqTfljH7nYwlIJ+s6DMV6US93kZx5G+EPiV8hbgMBtB1LjQYzXeba+XDOLsB3sSXzPEvJtdqaqy4nc2NVy3Ih/F2xMtukbuopOEgMY//Z8KVuEbQO5ADBAYSt0zLetuzesKQ1d4fKr4HuyDnc12Wjlb412MHhrKySZyQ6hKK3GHDzkOtVta5
- bgWOxn2r
- 3/XVjsAys5n+b6iaetsw2fZnaAMCd41MW8l0H7IF3fNOMbk6DYWT8tq3A9Q0w93B3TTgcOPMALcZRbXp80BIP+1FsFbGGQfIOrj/GDRiHCa7KoV2THN87lzyfH/A6YNCIa9mbT/2R2i9lUA/AMX/F7Alb5h73cakRfvx783lyiPLLYEUXr0eu95bOYsGegxpDd5W5XuEuypoKxFdFr/DMr7isEaB50/GJ1xQmA6WphI2WoJKxHsQRB9/VhpR+9V3bHwPwL8jkmR+xdDHoXBw8t7hdCTUweiIDa3FMSaBLalZxzCnaEuGctH8+V3k9Ivs8wnid
+X-HE-Tag: 1771344790-336526
+X-HE-Meta: U2FsdGVkX1/xNxEIpd8k3wiA01fS8xSpEGn/+YmMQReVligTGR+kbDG5ubzkrqxn7t7q84PQS7ofOG3ZYhgSGWHdartQsJl69fkPHUwrPVmuXqj8OTuDozjkFQ+b4wk5yPa2xXg3LKLq+86AtBFLMOIfoUB43egyA4OsdLDT96T2/yqzt9Uo0Hllw7tJnHygVVtbdGT5EOmP+mf12sOGLqUltcKmloGlvPkXx62Ji+PHzQU8mpjQHAu2evPrPC+61mft5xcarkhjfMJt3HyzBtviXVLK47Ghuqgyb9kaA+zHc3NqCHP0mZEaBfjwaJ+WXOAYXtvXROHF5axoIu9iszb33JA7sLBKTHnuT305fcgiR1pg8JpWc7Cpao+BuYAK704rew28nkei8YK854kt9J9oSLAUHc94D0hklV/4fX3uvsPkR2uQ0PegBgBSxmuRmLzK/1dcYqOvZOk2wLJ/4eM4zFO1IRleoyJshwmrNZjKcIhW0mieJwI/7EPAx7mMyzo3gGN9kQwm/0QMSmDsrl4taHJFTgBiTdZ/lrPb9kdq+yayCo0Ijvg/3G2fBUJl9LjmE2hTh1DfNu7qe7coHP/7Q+Fo2rM/NNoJZ7303wtX/GYshWiZEgGGNoPX2X9ppodpTFdl9wU31eyf10jHmvHvkJA1YbVRN8DAUHBORRf1AWRAJTUkJAAyN588vfmybQYjbiyXSjzG8bWcPMuQPIpGiyMfWKM+a0g3RjLHg1b6GOhxyZsMur4goXgJ86dssZ0nRQ4UcDg0z8fdmlvw9oJ5J3iKQ3u5T6c/sWPN+CxLwRnQEuHhgTRBbo4t2Er1pGP8tk5n0bhwLj3C4V9nauS3r/zvORH/efIw2uvFOmgeQLDS0P137FMpq/cw38/9nM46ppRjt1N6te3PwVPd5+74umNvytdmDtmmYiihrNni5RuHnv84oLDyyUYI/7kCa12/cMWM/5SmoYp+sVI
+ 2oUFh2N3
+ gE8IrlJzcj2x38tZWPfv8KwJ5QhwFjxfDg/x4d5BPnhaQ7tKwxxtbwSxNRaHDkSVekVtEb7kQfPjtsZqrywYPKYp17Ggn9rZMU2Cunba2pFXxRWbNzkZ3LV0NShau12ip1yQEWq+cTzoFQGIFAGK8qUMc4qROWcMGCEtSRw36V1CXDcKbPJIPiiKl4yXKMPTHJVU/uN/7yXxcWL2wBhFboNCQWGt4MufY8GAup212rQ4TIxN2k+iUII2CFNiancODjYalw3XPDYKDYbsToevs5fwAmkKbYiKQKzwvz3lw7NXct4c+wtfu5dQxp6kGxIqQAOVSieuBUv4X/rzn0yQ1Oa4Q9VbAzb6SBEtCoqV7j1VSI2AepgORzBNRCLcb+R9hwZ41KQyopYKKF3rMKlrKrtLJCXqT9pFI1eHSHjuDRrswHp28LPcQvNKUCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,48 +141,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Feb 17, 2026 at 4:50 PM CET, Peter Zijlstra wrote:
-> On Tue, Feb 17, 2026 at 02:54:30PM +0100, Danilo Krummrich wrote:
->> On Tue Feb 17, 2026 at 2:00 PM CET, Peter Zijlstra wrote:
->> > Anyway, I don't think something like the below is an unreasonable patc=
-h.
->> >
->> > It ensures all accesses to the ptr obtained from kmap_local_*() and
->> > released by kunmap_local() stays inside those two.
->>=20
->> I'd argue that not ensuring this is a feature, as I don't see why we wou=
-ld want
->> to ensure this if !CONFIG_HIGHMEM.
+Hi,
+
+On 2026-02-17 13:06:04 +0100, Jan Kara wrote:
+> On Mon 16-02-26 10:45:40, Andres Freund wrote:
+> > (*) As it turns out, it often seems to improves write throughput as well, if
+> > writeback is triggered by memory pressure instead of SYNC_FILE_RANGE_WRITE,
+> > linux seems to often trigger a lot more small random IO.
+> >
+> > > So immediately writing them might be ok as long as we don't remove those
+> > > pages from the page cache like we do in RWF_UNCACHED.
+> >
+> > Yes, it might.  I actually often have wished for something like a
+> > RWF_WRITEBACK flag...
 >
-> Because of the principle of least surprise. For the HIGHMEM case 'ptr'
-> only lives between kmap and kunmap and any access must necessarily be
-> confined in between those. Having the code behave differently for
-> !HIGHMEM is surprising.
+> I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
 
-Well, I'd argue that those are two different things.
+Heh, that makes sense. I think that's what I actually was thinking of.
 
-I agree that correct code does only ever access the pointer between kmap an=
-d
-kunmap (and in Rust we could even enforce this at compile time through the =
-type
-system).
 
-But the memory barrier is not required, i.e. if the compiler reorders thing=
-s if
-!CONFIG_HIGHMEM, that's fine.
-
-I think it would be wrong if users would - for their code - rely on
-"kunmap_local() already issues a memory barrier for me". It's an implementa=
-tion
-detail that depends on CONFIG_HIGHMEM, not an API guarantee.
-
->> I think this is not about not escaping a critical scope, but about ensur=
-ing to
->> read exactly once.
+> > > > An argument against this however is that it is user's responsibility to
+> > > > not do non atomic IO over an atomic range and this shall be considered a
+> > > > userspace usage error. This is similar to how there are ways users can
+> > > > tear a dio if they perform overlapping writes. [1].
+> >
+> > Hm, the scope of the prohibition here is not clear to me. Would it just
+> > be forbidden to do:
+> >
+> > P1: start pwritev(fd, [blocks 1-10], RWF_ATOMIC)
+> > P2: pwrite(fd, [any block in 1-10]), non-atomically
+> > P1: complete pwritev(fd, ...)
+> >
+> > or is it also forbidden to do:
+> >
+> > P1: pwritev(fd, [blocks 1-10], RWF_ATOMIC) start & completes
+> > Kernel: starts writeback but doesn't complete it
+> > P1: pwrite(fd, [any block in 1-10]), non-atomically
+> > Kernel: completes writeback
+> >
+> > The former is not at all an issue for postgres' use case, the pages in
+> > our buffer pool that are undergoing IO are locked, preventing additional
+> > IO (be it reads or writes) to those blocks.
+> >
+> > The latter would be a problem, since userspace wouldn't even know that
+> > here is still "atomic writeback" going on, afaict the only way we could
+> > avoid it would be to issue an f[data]sync(), which likely would be
+> > prohibitively expensive.
 >
-> It ends up being the same thing.
+> It somewhat depends on what outcome you expect in terms of crash safety :)
+> Unless we are careful, the RWF_ATOMIC write in your latter example can end
+> up writing some bits of the data from the second write because the second
+> write may be copying data to the pages as we issue DMA from them to the
+> device.
 
-Reading a value multiple times within a certain scope and reading it exactl=
-y
-once is a difference, no?
+Hm. It's somewhat painful to not know when we can write in what mode again -
+with DIO that's not an issue. I guess we could use
+sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) if we really needed to know?
+Although the semantics of the SFR flags aren't particularly clear, so maybe
+not?
+
+
+> I expect this isn't really acceptable because if you crash before
+> the second write fully makes it to the disk, you will have inconsistent
+> data.
+
+The scenarios that I can think that would lead us to doing something like
+this, are when we are overwriting data without regard for the prior contents,
+e.g:
+
+An already partially filled page is filled with more rows, we write that page
+out, then all the rows are deleted, and we re-fill the page with new content
+from scratch. Write it out again.  With our existing logic we treat the second
+write differently, because the entire contents of the page will be in the
+journal, as there is no prior content that we care about.
+
+A second scenario in which we might not use RWF_ATOMIC, if we carry today's
+logic forward, is if a newly created relation is bulk loaded in the same
+transaction that created the relation. If a crash were to happen while that
+bulk load is ongoing, we don't care about the contents of the file(s), as it
+will never be visible to anyone after crash recovery.  In this case we won't
+have prio RWF_ATOMIC writes - but we could have the opposite, i.e. an
+RWF_ATOMIC write while there already is non-RWF_ATOMIC dirty data in the page
+cache. Would that be an issue?
+
+
+It's possible we should just always use RWF_ATOMIC, even in the cases where
+it's not needed from our side, to avoid potential performance penalties and
+"undefined behaviour".  I guess that will really depend on the performance
+penalty that RWF_ATOMIC will carry and whether multiple-atomicity-mode will
+eventually be supported (as doing small writes during bulk loading is quite
+expensive).
+
+
+Greetings,
+
+Andres Freund
 
