@@ -4,111 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5B89E68171
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 13:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630E1E909A5
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 13:53:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E028E6B0005; Tue, 17 Feb 2026 08:09:44 -0500 (EST)
+	id 335436B0005; Tue, 17 Feb 2026 08:53:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCCEC6B0089; Tue, 17 Feb 2026 08:09:44 -0500 (EST)
+	id 2E26F6B0089; Tue, 17 Feb 2026 08:53:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD8A56B008A; Tue, 17 Feb 2026 08:09:44 -0500 (EST)
+	id 20F006B008A; Tue, 17 Feb 2026 08:53:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B97A66B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:09:44 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0BD6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:53:29 -0500 (EST)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45334C0632
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:09:44 +0000 (UTC)
-X-FDA: 84453980688.15.B7D8FBF
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 766CDC0012
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:09:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=PpJOZ6BR;
-	spf=pass (imf22.hostedemail.com: domain of 3lGiUaQkKCAslwtnp29swrzzrwp.nzxwty58-xxv6lnv.z2r@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3lGiUaQkKCAslwtnp29swrzzrwp.nzxwty58-xxv6lnv.z2r@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BC5B14011C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:53:28 +0000 (UTC)
+X-FDA: 84454090896.15.45245D5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 330AA100015
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 13:53:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771333782;
+	s=arc-20220608; t=1771336406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bk/cFXLoYLqrj4sg1yVxZO5NjYHyns1konO/B0ZPP6Y=;
-	b=YGnxhw4/DpT74mIsUwvll5XPjFFfNdoPBO6qtA7Mi87s5udmwy8udDO4awBG3bz4G+Vr8r
-	eEoflfvZf6+IApR/UFhjlX+vo/wG8XoALN7j2MUWmKNz5T289cdyjNBfknx/ipQgW6/pPn
-	nBZIr6IW6/gORwkd+pQnEaGv/i//uAI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=EPdQK8aFVRc+xMp3PHP6ybCoxuLM+Y94zWWJfZrxaZ0=;
+	b=f6B6jaGq3upkiwasU7pR1K8TUKn4d1DHaAUOL5GZQe2amxldpui8u+7Pz1wUjZ76i/Xrj/
+	qWKgef5j3gIuIvQ9NTlaFWi4g0k3uRkaapKXVPrMLckyAz0on14qdPbgBJBQ7ewnU/0O70
+	apLfBjAgAXSxWXZL324AZbUdgcLKjbY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=PpJOZ6BR;
-	spf=pass (imf22.hostedemail.com: domain of 3lGiUaQkKCAslwtnp29swrzzrwp.nzxwty58-xxv6lnv.z2r@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3lGiUaQkKCAslwtnp29swrzzrwp.nzxwty58-xxv6lnv.z2r@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771333782; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771336406; a=rsa-sha256;
 	cv=none;
-	b=yOdZmHukTyQNhtqqP0mHFsj+gVxXPVySWHZ27plPUk1s5/hj1R8KCx9rm726qekLXUMpdc
-	VPyp4F6rcbleKFmdJKepAJz16kxJZhslQEy/8kpscPB3SGsenytIfAEWt5v8iN9ha792pm
-	VTF86DqVeGMYx+9Vfmo8wYr3rqEv2/I=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43771113b3bso3264845f8f.0
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 05:09:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771333781; x=1771938581; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bk/cFXLoYLqrj4sg1yVxZO5NjYHyns1konO/B0ZPP6Y=;
-        b=PpJOZ6BRUsM96xtnFcqfPaEMSXLLD1q18fH/ZeydN41BKsFSl3MqUJ+6weOprS9QvJ
-         ZlAi6deyWIBH72ImglaRXs4rdh02u0DXeSMbn0y8c+DpPAb2BO8SoVEkjiZZ8qhA+Jus
-         QLVVIne4vyKrXNVjyYeIkqGANKpPsEYIqzMcUJk/15Rd9OLsUp44V5R+yRT6Pvf7aKzl
-         aDtIMInzZG4Vqktv1FfevS49Bd4Zdb0JccY0hGij6O9KjUebdNpY3Cj4xdPvzX6W/nkw
-         1oXgAnkPJ7p9j7xLO5ssKiuJl+nWtgoz2TlEQhkhWJahI3p7m2XhtnsVjZLhF+NuPIba
-         cS9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771333781; x=1771938581;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bk/cFXLoYLqrj4sg1yVxZO5NjYHyns1konO/B0ZPP6Y=;
-        b=wbbAO7WuQxQqBJHefKrLKhiSeJT2m1yMIzkdYdH8kWm2PyYWjB3GEOt+H7HBoF0JTo
-         5jbi9euPljrqP2NLiQfBNYiFqc4+lDeRShFxmtEhsXWR/64GnDgNlqGeEXqfv40Dr8Du
-         KMxlXW/E419QJH40FxBFxEZQX1nQVhxCtI3QqPDsSwJtyE52N3Gae2weLKxPKCUacUOh
-         4/HSS+N6d3zZ93kSL0V+PV56D7cIHwdQ8xHyk1QcK1t7bRdCNhQKdWU5rm50VPkEE+89
-         lBtlucaY/UvT5JX4NhLAvHNkXke4uDuh9XRzCUq4CqHm/4zR+RnKr5dXtyUWDkjrAayE
-         J1WA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6WUofcajSTpS3bjizEWO1eTjmfdP2nKfa4JL55B1A6fjHD8dfNBXBmZoLKxMPaFBmG1U5RAt89A==@kvack.org
-X-Gm-Message-State: AOJu0YyhB7tuFCcP1EzzQ+7GF71NmXB74/j9npgGOv7nLiJskGMhMHYB
-	ca9GUCnQq6xztRMM9+bJ/z5nz+CFY30ThCwMjt7wZOyDXRp7IsExoZpkpmqCIf/dYk9a6RgI3kv
-	LPJOQa+TcoHRuBqXtMg==
-X-Received: from wrwj6.prod.google.com ([2002:a5d:5646:0:b0:436:284a:139b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4305:b0:431:8f8:7f1e with SMTP id ffacd0b85a97d-43797918f32mr27847831f8f.48.1771333780501;
- Tue, 17 Feb 2026 05:09:40 -0800 (PST)
-Date: Tue, 17 Feb 2026 13:09:39 +0000
-In-Reply-To: <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
-Mime-Version: 1.0
-References: <aY9PBfx3RRV7rXZ5@tardis.local> <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
- <aZQ19FEeGgigdwz9@google.com> <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
- <aZQ8lJJ-U_8j03Z4@google.com> <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
- <aZRHJ7pSzOHruPA2@google.com> <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
- <aZRWOIPThLfIZ1Ph@google.com> <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
-Message-ID: <aZRokyTqsd_RwdkK@google.com>
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam05
+	b=Eov8tsxge7sY5r831i9PlJyR+6PpFhvwe3y0UcELJpq26je0t4ufendbCQzpwCYOcegM2k
+	LXasbJN2lWJ+s0FQ4/4Iy7wlK6MPTAocVt4xFTDBzzNnfAokzxs4XQCElg5TvBxmFG2/VO
+	Pz9lMsYY1QkL7wkxerl2KTYrdeK1iMI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 823D51477;
+	Tue, 17 Feb 2026 05:53:18 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E642F3F632;
+	Tue, 17 Feb 2026 05:53:22 -0800 (PST)
+Date: Tue, 17 Feb 2026 13:53:19 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Will Deacon <will@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, maz@kernel.org
+Subject: Re: [PATCH] arm64: remove HAVE_CMPXCHG_LOCAL
+Message-ID: <aZRyzy0SJ8uF3K2J@arm.com>
+References: <20260215033944.16374-1-jszhang@kernel.org>
+ <aZL46z1UZkQlF3Dd@willie-the-truck>
+ <89606308-3c03-4dcf-a89d-479258b710e4@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <89606308-3c03-4dcf-a89d-479258b710e4@arm.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 330AA100015
+X-Stat-Signature: bdr1g4de96e5axz8487jnsun4px1iryr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 766CDC0012
-X-Stat-Signature: bs9ijjd85r3fddi63jt69q184uhmpotz
-X-HE-Tag: 1771333782-560225
-X-HE-Meta: U2FsdGVkX18ltmrTVk+ct8l8HVZEZODR4PMSD2OaptM472dfpDVB+XlfY/OCJMW9aRqnwcq2baiO93t5DGQKrUErAo53y3G/6OV8rL6/Xq5B7qYAcJ8sWLoWijixHqMx+arKi5+AEg3YP0S5WJMmIFdyYfGPU/Le/03K6ACYu7mzbAyp4Jd+u0Q/N8uVSscIB+omxfBYEpRw429MYZKXrAY7zjU8OvfG6E9Lfpn77c+Lgj8xUspsou0VNx8qhCrNSNpdbwCBFTeOCHjsRcGcmyTjxL7n1Pf4nNezBnoLmeRXJfeZW4loSvQ7UuU9y05PFraZF6hFWOZc/Z6/Ac3nBEzq7xWfLSxsLdns+A1HjIYl3p97ndjBRWcIw9oB0ubO5V42ay+cXM1dTLVWEmi4gTK1GpBLZ5IXCxvwL2Jp9ZEUuNJCtzHy8ysO6oRpp09skGkZC4ikOswYcqGOK/6SUj8s1vKMqWoMX+fk0dyu/FQJMLb3uQnWKGmWDZw2q2m4rdpkCXyUZX5QWZuKfMFdWf2l54i7lL8wYnhk0WLlJdwzLqGtHbaCetbBSxbLriyUCXMb/m+jSrmvSc0oy1uTpFJvfkHg82MQAZgFbBiopYq3/Q8F79IKTy5lL2ofWqcZMTEGdIj0t3NkJt9VOxYbeuuaOZgRPCbZCRp75SsK8N2+0frht3hmVDB0AO4g9SCJzUmZhvMY+TqTER7x6MrqJZfKQ4uaXAwSlNOAHfr7Vfgu4ZKaTreCvZ4pUBW3cGhqZnxH9HUuBiWMQAn/xSwZZ3WRG+Gt+Sz+0AGbpZ4GI8OqbSp0jU/5SSYONUn+6tu0tjAz5sXrM7+Uf5HNUGC0UVrJSw17rucLjNqEF2DuhbsjJdXbmYgnckWebQQqRd+eOmgOq+xpuWvD/x8ftwl1CTmfKxrTRVSXSv4kgDECWfZS6zQU+OD5fAqnwLHikli3e+o8QUSDjti848gHFrb
- uXVtQeC8
- OJ/UC1CioW/IGKm6ycHcSs7iO6LcDwoqC/baSojiY1TQywUfjnKtHJBFu84nQxyqGjwzUrnd37z4FVoDifGOTulsdtz4jEutRY+unCzJXuVkoDYdnzXFTwz6AaiHHGuDGVg8FLATotVF3U0ioM/GhzZhwndegPi2HpBzTTm0Ml3J/WiQHyrGGMLnMNX3Y/v6jnY6DOafVsTyJRLTBEXiKC99vqC3Xa25mm8ofL+4SroCf+xtyX1k5JDN5bo4yaVpKKDd0KuCwChjg++8qfEttYWXozlfpVYgukz9nQOXv7RkNjPu6DJVdpDxlpuDnNliSn/rAysq101EJ3HMb6k+Q/ROIPfDPS4wiNVE9NoeluNh7pje0a9nzyNNwjx1WB+MRi14FLc/zObjRpH1QyoCnXGozQdglTqlVHYWcUAUt3bLzfHTdzP4a3TPpGxzNcTsBB6Zlx1pahCMhzcPqFf2mxmvgBC6PJ60UxarnYY0tJqhpvBsQD/dFujYN+aRqtrPYP0eViozn7b6BdnxYKmC1dRKhfMpggndUXslVpQ6MyBFJ42UJyq9l10S+zEzjWQHN/mbHEcBONI2ntR2TOVOrKapUkkshCmEVZ75/71iMPNl6qxCQczQ9p6mrlfdfm/6hce0iacTkiW8S5wDtp9zRFkHKEXOvU96Ola8zlRkqoF12T/WqGBaN1DE+MQ==
+X-HE-Tag: 1771336405-698913
+X-HE-Meta: U2FsdGVkX1+VOxVl6Jj/M02u9GllDyzp2MS+ds++PHPgqU2GILiXW2RLbudCAx5dEXw0Bzzb7Cl8tQerTrkjgq1mvTKiNaeLojDaCw3pC+NI8RAY1hhF+hDBR2jYZoLKhiLNdJD74J5HSlsR8zSrLDeWSpvQ6phz/j11LJ8+EQPzcc+XkhyExdPrv/TwSG5PvLlZttGlse5wdGxU5EEcbrMarWoM7T5/c5yfx2yoLCisBKI7rJ3R2kOxVrjI0u7wUnzxEbpkbMJa/0ylWlwuUNsnoAyX8hZ4OApswM6w/BhEyd2LoZKfEOXoVNrEh2HVfBkvYCkutkK+I+E6X+Psw5SMfdWHCeO6UzVxg0x/gbslS9SrqhS9SVYVdqe6FTKMLSmx6AnPIVJPGJtBTF4glAGWDLoUcotVoK4cqEzonk+kFhLA2QB86vIl44avtF1bxi3CYMdrzvF2suyTaQGFYmdVdx9XlRg1U2KEW8nAnZ/Tfaae08kAr3FM7Dl+TPd77zjDxQkwn2FlWFC0KSaJPewj2FoF1KOnsVXqCjXSMp5Hzmgm7TNrvHpfP7lDMximDiVCC5MmjPmAA8ZB5oFwCjB5Szw//7EWya4fZpczFeIWPm5kYT+Wfjaaibw6k1ZsTuzTO1mWuHfNtEpC7+Es3EsYm5ZN1hJsfIHOUbUPVAI2Hc7TdnQzHAxQIeDOJzp4mytNeo4+AOex6ytHKGpmZFi/PGwNwUObEk+0iwRv6ndx8bbBxj8Y+SFrJlBBt+J+AWHphfoe3unjGETVYerqSHH6AOwc1bkc7wVdbfccZ5qID7VoJgEFkA66DzCFyW6luZkMj7TvSP+s1XEEOPIcHlq4QCruSPuXmAB/bl3AG8leb7B3y5wu/uDnVCCObWmrFW78icp7hjXtfULKXYodErfCQK1IVtTqV28K5xCU4ZrUGYFcKrlKcLimbUAYIEQEz9Ww8KBHAgbYjAR9BCQ
+ /Vut8uU0
+ zBq91/A4xaC226dDlnb1CgnGKR+ut4WTQP7PrJDigT0wn1Dyb7IbG2gfTRSZofYZWsSniz2xZxtwM7CGnPDnLjHEjM4C89JkQeZE6OiZ0LLxBnQFLZLy2Ie1mmA6N3ZmVtO1AOc5XK8vMsdOjKd8C5p6VOyoiQmt8wvuh1bjSeAH7IWAaR1J+mk2lkhaFze6NnPrXwfv+V0n+pTihbhc7UJsxUQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,80 +87,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 01:09:20PM +0100, Peter Zijlstra wrote:
-> On Tue, Feb 17, 2026 at 11:51:20AM +0000, Alice Ryhl wrote:
+On Mon, Feb 16, 2026 at 08:59:17PM +0530, Dev Jain wrote:
+> On 16/02/26 4:30 pm, Will Deacon wrote:
+> > On Sun, Feb 15, 2026 at 11:39:44AM +0800, Jisheng Zhang wrote:
+> >> It turns out the generic disable/enable irq this_cpu_cmpxchg
+> >> implementation is faster than LL/SC or lse implementation. Remove
+> >> HAVE_CMPXCHG_LOCAL for better performance on arm64.
+> >>
+> >> Tested on Quad 1.9GHZ CA55 platform:
+> >> average mod_node_page_state() cost decreases from 167ns to 103ns
+> >> the spawn (30 duration) benchmark in unixbench is improved
+> >> from 147494 lps to 150561 lps, improved by 2.1%
+> >>
+> >> Tested on Quad 2.1GHZ CA73 platform:
+> >> average mod_node_page_state() cost decreases from 113ns to 85ns
+> >> the spawn (30 duration) benchmark in unixbench is improved
+> >> from 209844 lps to 212581 lps, improved by 1.3%
+> >>
+> >> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> >> ---
+> >>  arch/arm64/Kconfig              |  1 -
+> >>  arch/arm64/include/asm/percpu.h | 24 ------------------------
+> >>  2 files changed, 25 deletions(-)
+> > That is _entirely_ dependent on the system, so this isn't the right
+> > approach. I also don't think it's something we particularly want to
+> > micro-optimise to accomodate systems that suck at atomics.
 > 
-> > In my experience with dealing with `struct page` that is mapped into a
-> > vma, you need memcpy because the struct might be split across two
-> > different pages in the vma. The pages are adjacent in userspace's
-> > address space, but not necessarily adjacent from the kernel's POV.
-> > 
-> > So you might end up with something that looks like this:
-> > 
-> > struct foo val;
-> > void *ptr1 = kmap_local_page(p1);
-> > void *ptr2 = kmap_local_page(p2);
-> > memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
-> > memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
-> > kunmap_local(ptr2);
-> > kunmap_local(ptr1);
+> Hi Will,
 > 
->   barrier();
-> 
-> > if (is_valid(&val)) {
-> >     // use val
-> > }
-> > 
-> > This exact thing happens in Binder. It has to be a memcpy.
-> 
-> Sure, but then stick that one barrier() in and you're good.
+> As I mention in the other email, the suspect is not the atomics, but
+> preempt_disable(). On Apple M3, the regression reported in [1] resolves
+> by removing preempt_disable/enable in _pcp_protect_return. To prove
+> this another way, I disabled CONFIG_ARM64_HAS_LSE_ATOMICS and the
+> regression worsened, indicating that at least on Apple M3 the
+> atomics are faster.
 
-Are we really good? Consider this code:
+Then why don't we replace the preempt disabling with local_irq_save()
+in the arm64 code and still use the LSE atomics?
 
-	bool is_valid(struct foo *val)
-	{
-		// for the sake of example
-		return val->my_field != 0;
-	}
+IIUC (lots of macro indirection), the generic cmpxchg is not atomic, so
+another CPU is allowed to mess this up if it accesses current CPU's
+variable via per_cpu_ptr().
 
-	struct foo val;
-
-	void *ptr = kmap_local_page(p1);
-	memcpy(ptr, val, sizeof(struct foo));
-	kunmap_local(p);
-	barrier();
-	if (is_valid(&val)) {
-	    // use val
-	}
-
-optimize it into this first:
-
-	struct foo val;
-	int my_field_copy;
-
-	void *ptr = kmap_local_page(p1);
-	memcpy(ptr, val, sizeof(struct foo));
-	my_field_copy = val->my_field;
-	kunmap_local(p);
-	barrier();
-	if (my_field_copy != 0) {
-	    // use val
-	}
-
-then optimize it into:
-
-	struct foo val;
-	int my_field_copy;
-
-	void *ptr = kmap_local_page(p1);
-	memcpy(ptr, val, sizeof(struct foo));
-	my_field_copy = ((struct foo *) ptr)->my_field;
-	kunmap_local(p);
-	barrier();
-	if (my_field_copy != 0) {
-	    // use val
-	}
-
-oops!
-
+-- 
+Catalin
 
