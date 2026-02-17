@@ -4,105 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EED1E68149
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 09:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA3A7E68152
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 09:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED2D16B0089; Tue, 17 Feb 2026 04:17:30 -0500 (EST)
+	id 264E56B0005; Tue, 17 Feb 2026 04:23:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E80786B008A; Tue, 17 Feb 2026 04:17:30 -0500 (EST)
+	id 208FB6B0089; Tue, 17 Feb 2026 04:23:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D82D16B008C; Tue, 17 Feb 2026 04:17:30 -0500 (EST)
+	id 09FA36B008C; Tue, 17 Feb 2026 04:23:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C30B06B0089
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 04:17:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66917C4458
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 09:17:30 +0000 (UTC)
-X-FDA: 84453395460.24.AD38EB3
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B336816000D
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 09:17:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=QZlDrP5Y;
-	spf=none (imf08.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771319848;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E6A2C6B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 04:23:51 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96B7B1D4C7
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 09:23:51 +0000 (UTC)
+X-FDA: 84453411462.28.F3335B2
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9BB6740008
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 09:23:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EB5u2tob;
+	spf=pass (imf04.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771320229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NMcaCvJ+VsP6giBf7ZN1YSDtg3HQ/fOah5gzjE9s5r8=;
-	b=vvh9YIZNhM8BIoDQ9o1eKNv9rXLebV9HK662Ko241wt1UK+HJqoF1Doq0792yUrBhHsORT
-	dL/ILWOIlGtQecZPfwdOp2Qo3oH1Eg2VGm6Kq0t9c8fhH+zNKihbpYkDRDCZWmOgdA6PNU
-	Ok6bqLynDLvfk7EyySqZbwylOqmMs+8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=QZlDrP5Y;
-	spf=none (imf08.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771319848; a=rsa-sha256;
-	cv=none;
-	b=dYAwe7SgNt1AIPcCV3RyBvQ9AFY0YWi/dWoe0/8obFxdln7rdKuH4I/vDIcqzEweU7Jnz+
-	Wcd+cE7u4H3YYZwVvR3jm/1sJuIWHaFOjSKMludBU6DP0t0SJkLs7oFNgyirX2/JjMtFiQ
-	ccpvr2E0EnvBQgEeRK+4wiP+VB2XqYU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NMcaCvJ+VsP6giBf7ZN1YSDtg3HQ/fOah5gzjE9s5r8=; b=QZlDrP5Y0JpwgCqf29i4FnN/Nu
-	Iko1dF7HxW+ARiccGLYmXJN4amHanoHJai1FlCcBNgV8bZyS1klk8UZ+N8f5TBumj2ZEsJTPZd0Wi
-	jtfcFU1AnXOOo1bGYjaIDGWRAsa0RmO7y2FY1qvHeMk4W33YFQLt8/S6O4aeApNth5zqEj6QjFVmu
-	EVe90V71dcXClO75FXC4DyHGhKSFwS3oTLcn1jBvGZmEF/RnPKrC5UqVejsEDxJkW6C1UasvQxvuP
-	o+zZTCYXTAnga9lWEf6E9rrJZaXTLL4C6d2P2BG+m3dNUqUm1Zb+L96JExEZd1OuCJM4UJAAd70eR
-	ZLFszwEg==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsHCu-0000000Fe2o-2CHV;
-	Tue, 17 Feb 2026 09:17:24 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id CA152300CDE; Tue, 17 Feb 2026 10:17:23 +0100 (CET)
-Date: Tue, 17 Feb 2026 10:17:23 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260217091723.GU1395266@noisy.programming.kicks-ass.net>
-References: <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
- <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
- <2026021343-germicide-baritone-efe8@gregkh>
- <877bsgu7fb.fsf@kernel.org>
- <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
- <2026021313-embody-deprive-9da5@gregkh>
- <873434u3yq.fsf@kernel.org>
- <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
- <2026021311-shorten-veal-532c@gregkh>
- <aY9HD7nH5A-DtgmR@tardis.local>
+	bh=y1CU8SyBn1xLiMljauNRp4/xP/fPOy3c++Qg9ZktGhw=;
+	b=GJ/pzMuHIi6wktm6sE93AEPWmpRHLXkDJ7Ky2ukn3Gx9GegVhyyDXJF4hHEd9saV3p71Dd
+	bI9IOKssP8lQbScw8e32vFc6t2Za8DCROc1ZE14n6aNeWlXDJU33du6tsorY/t63Ufx+7t
+	pV7+rpBZBgOlnrbzEqMc/MCYWzs+T2E=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EB5u2tob;
+	spf=pass (imf04.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771320229; a=rsa-sha256;
+	cv=pass;
+	b=fxdN5bkuDZD4FS8fhN5PksmdspMuHigxFBlOQMHqf3/PSP7uLgq6LbHuGUXD4dFLDt+7AW
+	U+zfFidd/E0CnvLGY1Ja3ECoi5K2fMTY7HiHrjdTfmIKOZYSXMmhRiwwU8HF/sQs+kWVLH
+	kBSDYyqh0YHUfKDZcDIzT1E/Ja1jEYQ=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b883787268fso485328566b.3
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 01:23:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771320228; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hN90jSQqBAwY+FczJc7woG1LqpTSNN/SUUrZaurPXKR33CgcMaD5CWy9/Ex2JV51Am
+         hZ5IIUTrXI90CRC9lQynnF3oRzIge6p4mVP22IjF09V/OCiyi1nVBn94jDT6/thS+rxd
+         iTEDSZxEoEzFBBnb4sl7Pqvy8tsV0CpvDHEPXCAMvkgj0zVBLUAjkLPrUM/aW9lL8qN9
+         FbTPXO5bqA1nVPYiD/CTet5vaisSv0gVPFae5z6M7EmXRsgK2NWCX44UB/zADHki43Uc
+         ZehgJS/VMfKb76GFZNnwDd8ULWPqJVNslVwqjQQ9czAKvKn2PJX4sZqMEAiQzODxQB2J
+         7yyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=y1CU8SyBn1xLiMljauNRp4/xP/fPOy3c++Qg9ZktGhw=;
+        fh=1PlsE218GfScyZuGsdGNbu/KkIJdMWRbFkcAMlaKfSA=;
+        b=iUJYAouYrTr8vfrLWeJcEDpWUA9Ul55Bf148xDSRiaiHplCsdNzZEZLSqi5R4hB6fq
+         Un9AbYMdHINbO0cUIiwrQHdgpo1zi7ENQx6mGxtrb89B/O0Tc6GljyQsBbrrTUCE2mMS
+         YUudekY6pEfDMhIAD+lhXej2uXZ25ygT4Q8lQ/OgX64k3QNhHnwEjL19IIqeyxJh6Mq/
+         t3z1bbT5PNkFD1ID4TSklJbaS4uFCx2nZXOERSp2bUUCxigORHQqq/trjplqxEh8izZM
+         7kfqm3XCaHU4XOK7QPNLlsIP1FhUWhD6O7tDD30C9WYW1f0CYaYxe1YDwrNW8SD/Q5N6
+         /dXQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771320228; x=1771925028; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y1CU8SyBn1xLiMljauNRp4/xP/fPOy3c++Qg9ZktGhw=;
+        b=EB5u2tob3dXaqu9QmvurDPtK4K0FIoHasIxDi18qqWH79kqbIghdc89OQ0/Z8Ap82q
+         7e3L8tbbV29DjwF9sf3X2sIhAJWd7G4EkQP3c1klxowfRqWIIdRTKas20somHQmnOnta
+         oaTPUa+Y+A1p9v/fAhTQ8YGNtvX0fogpDKOhwxa9Zcg1yMes48vOI8ifSDV7XWfCT2rl
+         ce0ldEZIc6pnM7HsJWM+AKoR7t2whKdVadAkO3ZMhXy3WbMVMVzn4tMu8oAFdsLLv+9G
+         mgsS/mzeztLhhehX4V3EN9KNeUANojQzOfsfmFe4lbhbD9hjZeX0se/5hr8XmO0hzLvy
+         knwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771320228; x=1771925028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y1CU8SyBn1xLiMljauNRp4/xP/fPOy3c++Qg9ZktGhw=;
+        b=uQrhxYDb7d3r5Onx00LQKdhE9W89ZM/0hmG8eLoO0VOZdQsUmerdKrjBGf4r/GH+G/
+         3Fl9SKIGrFrkOum7hdOoytIcGad1vjMzBzfxDG/jqCkV3yub3eU/d9EX8UtTKpD2mKX4
+         9qiyfN2TRvr/AjEv5dYMbzZIle3CdceEJ2yD2VSM87lAeYDr/YmQ/upK3kFkQ7v2+mkf
+         gnMV+fJvum24C+Gc8UFsWUBFMwh3KPY0XMSkvhWN7gvLFtLzRlzwsGYrAICkVOU+KlTF
+         m/XF99UnMl0Uzg6Gq2+l8tK/8DoDNTCgCGmSOF1N6iYq+W8WzGzs0+gNpn0oiWsG2XXo
+         IXcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWGl6XChM5oGbiZ9O3fpKfcP0NXYfbDg7Pv++ADVlHOYQS89WSnWBsM0BtP+bstNUaFX4Pah8mMvQ==@kvack.org
+X-Gm-Message-State: AOJu0YyfRZ999HfqI/Y7R4f6F0tvQczNLBbs84KTxdSKyg3VZzI4/1d0
+	+KRFI1q5QEGKuDzzv7Qc29SvvRvBA1i4Hc1b0lxHuWpBPpFjZo0agtMyyWgaYjji02Zkto6RtIo
+	S4QWzWEnEqFxSpgX6YEFRxE/b5AEFUt8=
+X-Gm-Gg: AZuq6aI4ZGxp3/JPMpYQAYSnYlMT3E1mcGcsNOjt3t2IXKKP+GssZzxEGWQq7S3l1rK
+	OgOoFE0gpSFck6MNWAeXMVAjeLkSnJdopVG2XXVTg8gZi8I34ZIxujLG1aMsupWm8jd6VOy8t9u
+	a9TI7aBz+8sY58tEynmyK8o02nv/+y3+BW9Uf5z695o5T82EglYWg6MynmlJNrvd4qyMQrRhq+v
+	gTZQ9ARyEsHwFDo1KelUTBQ9TUoqYQno5S7Lya9WRtZG6zObNuNQceIkKgR2frpjQuOgES+BEEC
+	sO4stSTA
+X-Received: by 2002:a17:907:e101:b0:b8f:e438:75ba with SMTP id
+ a640c23a62f3a-b8fe4388da9mr248776166b.29.1771320227576; Tue, 17 Feb 2026
+ 01:23:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aY9HD7nH5A-DtgmR@tardis.local>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev> <20260217055103.GA6174@lst.de>
+In-Reply-To: <20260217055103.GA6174@lst.de>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Tue, 17 Feb 2026 10:23:36 +0100
+X-Gm-Features: AaiRm52xz8EBc9OEZec10DoizsQ3eTTptMfYZb6-P8BJzMypru0h1TRDSfoM_ik
+Message-ID: <CAOQ4uxgdWvJPAi6QMWQjWJ2TnjO=JP84WCgQ+ShM3GiikF=bSw@mail.gmail.com>
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+To: Christoph Hellwig <hch@lst.de>
+Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
+	Andres Freund <andres@anarazel.de>, djwong@kernel.org, john.g.garry@oracle.com, 
+	willy@infradead.org, ritesh.list@gmail.com, jack@suse.cz, 
+	ojaswin@linux.ibm.com, Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, 
+	Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, tytso@mit.edu, 
+	p.raghav@samsung.com, vi.shah@samsung.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B336816000D
+X-Rspamd-Queue-Id: 9BB6740008
 X-Rspamd-Server: rspam07
-X-Stat-Signature: b3k3w65fbn1j5pnuytynowu53ndsjgks
-X-HE-Tag: 1771319848-372593
-X-HE-Meta: U2FsdGVkX1+6TQKR2Gue2qKAKvK4vvr07fndYKHUhmaFbMHRhuJQaWT0Q5/JapVYgvFaYTkl99eJ8bFw0xKsKlNxRuRkWRAGmevU8NW2WknS9PZUd1YsDY8ykLP8R21OW16fnIwg8G7iWYAI+EHyv11oAJ8G6acFjUu+ddPPLmlcQIu8yq2hgaIIvhg//xJw0IimwOF+f8yAD0QL5KV0M5yqQu+aHqAVSs5ZC54i53cU4gVFDC9dNlJHDDaw8y8Xcb2UF/UHKz3QVQn8dQ/hO8y/O617+hMEGkSQGC4F1FNoSac0yq8UbaXKwsPMAFkFLrIE75YKWipLwJ7LdywrwhYHGYzOkJZX8jTsHzsNXlhX3/tJNkcgLmIxCgdwSBc7PrtEY/5baV5OmNnW2jNnMwRLrvKuRKd7vGdNMHiTfIM7oDEEfN+qdpz5HJStVdlcQ5hYY9Tc/3TR/9qouhZRC/8Ambtk+1+WDQVXkoYsuEV7qtK3Ox2JaCzozPb83zzv8sIDWXj1eHAghD55JMYF5VQmPPhyv8kf+3LtuT2t6YHWJ5ngt78jRS3LnCPo2JB5El7MzsoRphMufrWdTtKJ59Ur78i/anweeXAoHPXgrY5z9BoQV53wdTwv/eHaCEGuVj7/yFdVb9j6T9w2Gw+9z80HXlGd+qHluA22O6HnmPffORQ1nd8RYWXqhmwJYjX6Icu3R18UX1Nx56VdsSEQZP3M2aMwJuh5eQM1oiyGWz0/wbUGwCDWTe35D1a5K99hffDkvTluu99RirNV8m2qnmIlsOT9GzMIsYW6bTUZzf01PR2nEtJej//rTB/cFQEZubX5rt9JGlVitjD6YqF5o3hEipogineYB4w2gj99Q4yP3Fvpq9xoP3ZNt9RzH7GXbSR4AbPCtfKKqbzHerVjnDIt2LHPKjZx/nrtN7fbTXVXn2GijivvrLw8HgzLvZ67BR+Z/qd543bWd+1GT+G
- 5jN4GhE7
- dFn5rhRcWbbrBInLnXHZVtQTT0aFgm5rBhXTDVJ4W7HtKDpS9y3WcapO8EPClYbsDhHLHtN88iNh65MmpHmqlRsxtr+bizO1vNVrFxAmAAjDDQndX24adR5EA+Tn/IBCQWpF/a0Pp6V3zFgPKwTyBe+HCucp4Z10ZHeMT7iKcxESlAqTYo40nRhItWY6SPbjsjX37yM7dp4eZiDRCA8uV8L61yBuTAmxnJNjmU1vGU1IyLe3XJ490xKSq1iIuirbuChMC87Cf2+BW9vBpocbseOrsxktvesl3ub/3M+JJDWjhULsrxzH0Jd+lI5iuzn4OIhCpgDQlG0V/kDqq3+/Grn9svA==
+X-Stat-Signature: kefzmu77339mn7sf33uhwdkzbpyngs14
+X-HE-Tag: 1771320229-862206
+X-HE-Meta: U2FsdGVkX19oqzk04092ugJUp9/wRqHuSRGVleIjYQIcDvhNTbnvannCmKp+ZMx0JwSFusYd3B31PnPIHGfZxSdtzU7tbF2Ao9jJt2148z4h4TlDPeOFGW4YFuBLAav26+I05CnC0DvXPF+VTZWpQC6zMxu5ChuZejMrjJWMA2YQw8jhLouIk4ty0+ZOfoSg1+cA7NNjYflc/kioYqDb5izjWiRu7Cw1Zs1MOl6VohB8+dRh+ykAPX8Uo9h0jj/8q86RXYrqeui0gXCyfsVYygsVTwyXT9SlZAT/SOS2gk514QHnLBy8bXK1VL+clUR87UCx0wWCPzKZ/4R74yJt22KaM85UzNtERrOWGpCtrBJuAdRq5kp/sEKDHMMvenuEqDMNvko3rwe6GI1+v95DwZnp/eOo0j4kXPSNeQxEQM+hzX6zqMZ+y9VoF0tzray74uBmaekgEgq/SpWDrJfUe4jLAUOJ4LkGvhJXIJ9fzctGgfjiAYfXP0ZWuLnWxKWUWQxMfFzzXjP+ssUMLmv6Mn1gVQOmPcxvXHZUI3VSKr6uwQSSJRe49/MoXhvUXk3uvuRvQZMlbQXkMVkhmABPU5nHOeLeVCNymcZ2sjrqNmJieWRqggibMmLkDuQe1QUBuLYFljnz20RrXKStm2GDmkYbBolnBZjrwgyG1sQbvW3e2WnjZB8jD/SEj7xzlqONq6ruUqBhlvuvV/OGnaEPqjKqaWi7LlZjSeho6O9Lgfk9tLmqu8pm/nvwogZodWDUb7BMSP8AykbxMdRlCbvWxNM0yNsRf/X+Hm4tazyqL6Rwfj3kVxc2iqsR3PdFIDusDnePuck4iMFIOQfFMWV00bu4hN6sPTmSozpmpPFNX14fNK7dHXGd5eRVaDPWrl42stzc38sG79pP7bUNymwURZyYSb8VuhXcNevPeD9DxjXs8bWKaLlFDYcErBV9asFlv0afCg+BKgBm27KzXYm
+ u0Tp1oN0
+ snlMLfQ6r/I/4Ek8sbVEq2odOsGLFCsSdszECaMzxghM0QM9sFbtEbghzbT+HpOAxeKH5hKxWzbbhwT6jP5dOcdOAI+fQkelBFINOPAViAxUyp7b72AcMkD3qwfd8UFs3D0pPhgDOSdsDDWCEOxAZA7KF2DU8thrtYfD45ABjkMeivVZxDGb2ImfLMA1VrcmdWAo+Sm7vSN/a3ndm8ig+ZCjv6BSJ/xwUEm+QLLi13Tmfhi5+1NzCJrZBK0u+vgnfYrhZEeV9rlZm/JbiofL2x3/HeXTi3X7DLnvrESn9WpHgahKZwoewMuoPjbeWwVF9NdUFVDpgQUbXJdE5Eac9FNw3qKZax3eKi7R/kgx8Y3m5EDQts8ChGz4BjSRfZBDyqNZn1/gS0flbigpEg86gBsu9OostMJjiZExYocwUpKXmJ3bWjx5SuM1DtnXoSMGVoormt778AngTIle+v2beoL7fsQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,22 +144,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 07:45:19AM -0800, Boqun Feng wrote:
+On Tue, Feb 17, 2026 at 8:00=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrot=
+e:
+>
+> I think a better session would be how we can help postgres to move
+> off buffered I/O instead of adding more special cases for them.
 
-> > > Suppose the memory was 'AAAA' and while you're reading it, it is written
-> > > to be 'BBBB'. The resulting copy can be any combination of
-> > > '[AB][AB][AB][AB]'. Not one of them is better than the other.
-> > > 
-> 
-> The idea is if using Rust's own `core::ptr::copy()` or
-> `core::ptr::copy_nonoverlapping()`, you may get `CCCC`, because they are
-> not semantically guaranteed atomic per byte (i.e. tearing can happen at
-> bit level, because they are not designed for using in case of data
-> races, and there is no defined asm implementation of them, compilers can
-> do anything).
+Respectfully, I disagree that DIO is the only possible solution.
+Direct I/O is a legit solution for databases and so is buffered I/O
+each with their own caveats.
 
-How the heck would they do out-of-thin-air? Any memcpy() implementation
-that can cause that is insane and broken.
+Specifically, when two subsystems (kernel vfs and db) each require a huge
+amount of cache memory for best performance, setting them up to play nicely
+together to utilize system memory in an optimal way is a huge pain.
 
-Compilers are broken crap if they do this.
+Thanks,
+Amir.
 
