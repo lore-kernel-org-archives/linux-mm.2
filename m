@@ -4,89 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2F7E83848
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 00:10:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1293BE83848
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 00:54:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEFF96B009B; Mon, 16 Feb 2026 19:10:12 -0500 (EST)
+	id 43C7C6B0088; Mon, 16 Feb 2026 19:54:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B591E6B009D; Mon, 16 Feb 2026 19:10:12 -0500 (EST)
+	id 3EA986B0089; Mon, 16 Feb 2026 19:54:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAA006B009E; Mon, 16 Feb 2026 19:10:12 -0500 (EST)
+	id 2F5D96B008A; Mon, 16 Feb 2026 19:54:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 96C3E6B009B
-	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 19:10:12 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D2EBC459A
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 00:10:12 +0000 (UTC)
-X-FDA: 84452016264.10.7622243
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2DBDEC0004
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 00:10:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf22.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id 15D976B0088
+	for <linux-mm@kvack.org>; Mon, 16 Feb 2026 19:54:42 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ADEFB8D6C3
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 00:54:41 +0000 (UTC)
+X-FDA: 84452128362.30.60821DD
+Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E936720002
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 00:54:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771287010;
+	s=arc-20220608; t=1771289679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JLskrKjmdRSrwnqIimlJNbTWkxF136UsVe3efIf8kmg=;
-	b=5GjsDhRy9UgRfobyT98F5cjFB+mR0cdn3l12uML+ED8HKjLB2eNMCzsOJZmCeXwdH2anMx
-	/ZB/P+BdtEZIKJCFndr8HC4Wha86TziZWzxCIwiNut9n/vsR6jMXg8bqCILlnrcYGNe1Os
-	lyW+3eliu12e1m8BTx9KS/1LSegMuLI=
+	bh=8gt7mGOsmVAUXAUfvQ6eM3oIjCKbVocfi1DznNmhoXI=;
+	b=198I0E4hv+dcA/eJFITxO6W6YpHLdAcXHS3q+Uk0/UrxEAT4fLkuOKeRIjMW0dA5GrcezR
+	wsuoFdLBLTP4P04q28CIzKHvJgxlEhewNcLKSvwq1rS50H7RgwXLQe72lYaJQsRLfgWZH2
+	dTr2u6JJXkVN9ykrRvdUctq25Zr+7sk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf22.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771287010; a=rsa-sha256;
+	imf03.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771289679; a=rsa-sha256;
 	cv=none;
-	b=vR/+CTiHcHpW9/3m6rTcvByblXTsX19zyJIoOa63WnneMe4WEK1mZLuQPNXyMPl9Sr+cdw
-	34KckxCEa8U6gQieCjtE+smWqje8aJ8gTVwDyQsGydsN8YZGBCx/tarxSSlY2ec+0NcusV
-	NmolwfYLTuNbZk9FRFJKgBFc43u2MSg=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 17 Feb 2026 09:10:07 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>,
-	linux-mm@kvack.org,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	gunho.lee@lge.com,
-	taejoon.song@lge.com,
-	austin.kim@lge.com,
-	youngjun.park@lge.com
-Subject: [PATCH v4 4/4] mm: swap: filter swap allocation by memcg tier mask
-Date: Tue, 17 Feb 2026 09:09:50 +0900
-Message-Id: <20260217000950.4015880-5-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260217000950.4015880-1-youngjun.park@lge.com>
-References: <20260217000950.4015880-1-youngjun.park@lge.com>
+	b=HXmTenRTnSdWi57PVx9SNYxQErO4gY61vsRMmhzRxknnwEsibZxYHDzXBw9k7LFuc19+Lx
+	QndepRH2O2Hg1KwEmIYMgD93EMmOrA8FHMfQPv1WnUHQCLDuhVg3d2qZGcveE0eutvqeY4
+	mrsi4D3H456sO7qBKxeI8gln+qaYkgQ=
+Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 523EA1B5894;
+	Tue, 17 Feb 2026 00:54:38 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf15.hostedemail.com (Postfix) with ESMTPA id 268B818;
+	Tue, 17 Feb 2026 00:54:35 +0000 (UTC)
+Date: Mon, 16 Feb 2026 19:54:34 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Thomas Ballasi <tballasi@linux.microsoft.com>,
+ akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org,
+ hannes@cmpxchg.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, mhiramat@kernel.org, mhocko@kernel.org,
+ shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com,
+ zhengqi.arch@bytedance.com
+Subject: Re: [PATCH v6 1/3] tracing: Add __event_in_*irq() helpers
+Message-ID: <20260216195434.7a8ae4b5@fedora>
+In-Reply-To: <20260216161323.4098568-1-usama.arif@linux.dev>
+References: <20260213181537.54350-2-tballasi@linux.microsoft.com>
+	<20260216161323.4098568-1-usama.arif@linux.dev>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xzprwoiqwzbhenjxrmis6xyn7buhwodj
-X-Rspamd-Queue-Id: 2DBDEC0004
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/BundDqrqHqq8/xV/gBGT0C+oZI00kiHQ=
+X-HE-Meta: U2FsdGVkX1+/rLmJ3XWTiP/Yk6N42IvEIOK+SpVQcyahCo44khKDjZnOUm+bmy6xN7U1xuYaoCMHdcFaiqIUmeDl5jf4mz5Kh0jh9q9BXOk19YUF/Up1AumPf9WJcNQSvy8I2darMzrhhA2UMLvnIfbMepCKO48a2wQNjCLx8OOqWclEunmrDspukGYqAsIxvoFLAbH7Ppz8EI1UjvfghEu7HCyv5YDOIT5Ibvd5E5J/vga+8q++otBXCQ0c/rQ2A8eOO0OtLHbaUfXXgoX1mXR5qtr21Cwt3+Myu7iA10COf17Z2Zp65DhLQ93OV3rS
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E936720002
+X-Stat-Signature: 1spxtzgcibu7me6hqu3u4krygznkqqc6
+X-HE-Tag-Orig: 1771289675-796754
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771287009-412135
-X-HE-Meta: U2FsdGVkX1+QxL0oysY3oCiakKp0RpwxkhE/5wKz6F+9uYslVUPSZZ+ujE2fFuAH7UY52uLOddIfDRf11dhvJQ9AMcDdXNrPQPTo4MCceyDp1SAYQ9RTbgFwUKbh5qzSDNmas8xj4FOPfFACX31MYMZza1y3oNw1pDJ4voHRsSTqxlEo9pVf9/Pnb/bJECeFjItlUxssYf2leeyjGsj/D68tJUsSZ55HSbrQ8RJVNHi7j1HkuATyhq566Jig2nMjn6CJG8iEJxJ41EWT3iLLqyr1DTKEbEydQnERzsOe5Kdvr/EdkDWMUYbDO5aZEk41451fMV+3VdfaFq/ri6Ly68sd/PWEZpz8SzhUDIgcUnCTVbnduc1zk2PkOuD+WqW5yjAgJd/OxI5/xGNIP4iAO5hl0aENJPNInzJH+59dtARMf0sTzPDXJk5cZrH+rLPMLd5g6Bv96h7Nge+rV5EKJpTqVkUXYwQJLgi9TDkZqUOp9TMvPyaWLNtRF75f+gt80RD98RIe5Vc+avYZIhKDyj7d9flj4Sl53TJnasl/2j4SNt59m0CjGJMNEv59YJji74JhNKOvlJfPa9q46fMrm0wSZys1PeidwyzZ4RUnWQ7bjOd3OH8880XS4mTONqknsiuf7H6UvC0fZI6CVF7+1QYjpLkrF4CTyiQNp+Z0nv3Y65oZaC1HV+tB7na1h2vHRCY7Y+a5vmfGVvFF8bl0u7W2q6HqloU80UPF7SGmfN86TQK7YdsvMzXC5xdomOHviGYiJ/ply5TU7x6uzXUGpXlTRrBv9zFZeAfr+TzF2L+CnjB2/q8xdA22Uax6wCWRQfzdjzueeVDTnrYsMPWvr/aykfbNdKUq9bXIlPwDY8WJ7DVT2sBJH95te/aB5mGllAHtyv2khCRJ+T4OqU1ia42ha/MZBY5s3bmn3LCyREUk5Hz1r3/t4HKpeMbosLIo9JvcLwLRdctPv4yyGnA
- ljNdyTh7
- k2lQs0kMKa8H22fDA64FpQd5Gw2Wi3ctHL11PaQ6jCp3MYw0QM7JD3AsJff2x2hvIr36vMHV7S/U+45goUFkQfr2jziSM3TBymCTjecvkn+8WS5WdJRZv8qo03mmgtBmGX34NwhOJYpGaRrGAEsVCvRFU+oCCcandQrkJ
+X-HE-Tag: 1771289679-661413
+X-HE-Meta: U2FsdGVkX18aSYkVRZlcMr/0PZrQSwYUyjpxTlwYcFuupj64V1xt/zv2x6lznijrtocbzAUDSOfXRLlyEwjxG399Cq0KKAgvbjxiVZU/BxvA2hEgx8uCU3kMiA5MyW4v4o2UjJRoMZrqtljq8SoEwzuIpslS6x0JF6QJEsxoy9xJqF6bjZuxfxqLeKKCeVtgDwn1BWGuP3TkkTw7+2XnN0JBS6pa282qbWtImH02dcrwYsMuQqdmkyMRMo0vSF2ox7c9jSW8W/gLp08pxHV6JncoKn9r2kyfM4+0GMyHJyy5vda8Ag1lplkFGQ/uC8Z6+GW5c4JlkY1kr+r3yE1w4DsYAjS6Kq2JPUUTUu7f1s5P3+aCSYV46dQekKBvvkPNgX43dnKPNP+MzQ8I3t3DZkL5oCjFK1wuvsie8bw9ThMYMgPamWgd45fVPz/bSSvOMWUMRXqBdtwhdmLW1frlmpntRDuuCNJS6x22waoVDvowNqYoZ5fM0UVRrDtIc3MkDkhnVqQ3Amov15yFmccmYCEC/5mylniLpSjrz8AUaz3UE11HVgEd1XxDXMrpAw3CuBxDS6riCt5YyaputSqwJqwSMMTEeVeDIk5DQHRFoCM8+vPDBBWRx3GirLINHiPIY6pdczvc0LJLFkMR2nLC+Pnw0WR0axxUQGhxNxfsle1HrgDn8EaP2HVpla1l2BuDvyQo/DyL9X7ubNcdOkJaWNPVC0OMi7cJwLCJb0grgwJhRbeCqiH7hLQh0BhjbvWKkC+BFs1UmIpztd+Amlf6hhdNa87luLnq/CUx5jVnYc3dOhbD6gzV6L1zEfOfasuviOQC7ZMdTjMS77eVUfYkaO6ld0RD605WpEEbRF10u0uYloUVvkSVExKkRlR4mXqyVuxvD7R9F+/kYG0OJRTkvsSkx9WtFg/JC2b5SW+6NVEuHENxeDzScLX1PYF8cF9+BXICjblo82QUIOukd45
+ RqdSLX2Q
+ nGjtJ9k7t4WhQxTHZ57129JX3gw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,79 +88,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Apply memcg tier effective mask during swap slot allocation to
-enforce per-cgroup swap tier restrictions.
+On Mon, 16 Feb 2026 08:13:21 -0800
+Usama Arif <usama.arif@linux.dev> wrote:
 
-In the fast path, check the percpu cached swap_info's tier_mask
-against the folio's effective mask. If it does not match, fall
-through to the slow path. In the slow path, skip swap devices
-whose tier_mask is not covered by the folio's effective mask.
+> >   TP_printk("val=%d %s", __entry->val, __entry_in_irq() ? "(in-irq)" : "")  
+> 
+> Should this read __event_in_irq() and not __entry_in_irq()?
 
-This works correctly when there is only one non-rotational
-device in the system and no devices share the same priority.
-However, there are known limitations:
+Yeah. That's when you should have done "cut-and-paste" but instead just
+typed it in by memory :-p
 
- - When multiple non-rotational devices exist, percpu swap
-   caches from different memcg contexts may reference
-   mismatched tiers, causing unnecessary fast path misses.
-
- - When multiple non-rotational devices are assigned to
-   different tiers and same-priority devices exist among
-   them, cluster-based rotation may not work correctly.
-
-These edge cases do not affect the primary use case of
-directing swap traffic per cgroup. Further optimization is
-planned for future work.
-
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swapfile.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2f956b6a5edc..aff5e8407691 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1321,15 +1321,22 @@ static bool swap_alloc_fast(struct folio *folio)
- 	struct swap_cluster_info *ci;
- 	struct swap_info_struct *si;
- 	unsigned int offset;
-+	int mask = folio_tier_effective_mask(folio);
- 
- 	/*
- 	 * Once allocated, swap_info_struct will never be completely freed,
- 	 * so checking it's liveness by get_swap_device_info is enough.
- 	 */
- 	si = this_cpu_read(percpu_swap_cluster.si[order]);
-+	if (!si || !swap_tiers_mask_test(si->tier_mask, mask) ||
-+		!get_swap_device_info(si))
-+		return false;
-+
- 	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
--	if (!si || !offset || !get_swap_device_info(si))
-+	if (!offset) {
-+		put_swap_device(si);
- 		return false;
-+	}
- 
- 	ci = swap_cluster_lock(si, offset);
- 	if (cluster_is_usable(ci, order)) {
-@@ -1348,10 +1355,14 @@ static bool swap_alloc_fast(struct folio *folio)
- static void swap_alloc_slow(struct folio *folio)
- {
- 	struct swap_info_struct *si, *next;
-+	int mask = folio_tier_effective_mask(folio);
- 
- 	spin_lock(&swap_avail_lock);
- start_over:
- 	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-+		if (!swap_tiers_mask_test(si->tier_mask, mask))
-+			continue;
-+
- 		/* Rotate the device and switch to a new cluster */
- 		plist_requeue(&si->avail_list, &swap_avail_head);
- 		spin_unlock(&swap_avail_lock);
--- 
-2.34.1
-
+-- Steve
 
