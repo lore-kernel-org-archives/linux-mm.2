@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15EB2E909D3
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30440E909D4
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:21:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724566B0093; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
+	id 6A7DA6B0005; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D18B6B009B; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
+	id 655296B0089; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0B56B009E; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
+	id 536796B008A; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 499E86B0093
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:13:13 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC16C1A0272
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:13:12 +0000 (UTC)
-X-FDA: 84454443024.30.55AD067
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DFA3BC0008
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:13:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b=VwKBeGvw;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gbej3kK+;
-	spf=pass (imf28.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.151 as permitted sender) smtp.mailfrom=andres@anarazel.de;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EFD36B0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:21:25 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4BC7B6E9F
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:21:24 +0000 (UTC)
+X-FDA: 84454463688.25.BDF720A
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 02397C0005
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:21:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm3 header.b=uQNjVCQC;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="VCu+80/E";
+	spf=pass (imf22.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.155 as permitted sender) smtp.mailfrom=andres@anarazel.de;
+	dmarc=pass (policy=none) header.from=anarazel.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771345283; a=rsa-sha256;
+	cv=none;
+	b=RT6ctWPYXkf4Lg9WS9VfAhbJBPsYAZeL8YHbOYjHnmgUPqFOlEnyv1JEV2GRQbUZCqHKPy
+	6dlNLYSFTmKzKb8XP6FlmHOii0OCPc5cN3KNwOhel7ukZUatAU4rVYAgujNOCTs05q9sR/
+	xAZCQUjYWe45U0Yuf7QxMiZ64oMB8kA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm3 header.b=uQNjVCQC;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="VCu+80/E";
+	spf=pass (imf22.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.155 as permitted sender) smtp.mailfrom=andres@anarazel.de;
 	dmarc=pass (policy=none) header.from=anarazel.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771344791;
+	s=arc-20220608; t=1771345283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m85nxpM60MhQS/QITwd1hHeXdBL8OWiwGVCZ0ecbrpo=;
-	b=sNhM9IH2TiU2scdJxbx9I8KmjXNh8daWKnzylAtn/ECZn+kAlUhYldumVy7/DYsYevTDVm
-	zcS/wxQE9yRhYTUYQlTaBnt96v0Uq/yaXe9K9AQ83D9y1FLYQ6Jx1C49gQNhTrEpHivTme
-	nOT9iM1MHehRZ30Icygp8Aw7hqXQ0RI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771344791; a=rsa-sha256;
-	cv=none;
-	b=cGSWfahiAzSQxNbs8ubLN+HM91ffBu1jUXok3VbiN3NsNVX+QlZaYFjOrI59fxeJJw3Dmh
-	nPz4ZBV4mlFyQqkuLrduXgduLcYvSrp4YaQAm+Pc8oWnW03tzIev+O46qmqJCpSh8J5MZu
-	r4BXmFvTyhnyb7x6Ju3rgLI0YxF9S/U=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b=VwKBeGvw;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gbej3kK+;
-	spf=pass (imf28.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.151 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 61F311D003E3;
-	Tue, 17 Feb 2026 11:13:09 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 17 Feb 2026 11:13:10 -0500
+	bh=TLUeZ5F3tOY10JNA2p1BHXejENCtAykcv1Gn+DC81rE=;
+	b=oP54+YFDJfSNt4XmtiJ5OnJlYE+2rWbLLsiI6iQFvR7ObbffTY5l5w0sZ5KyMbdJewXkXt
+	nwhhzslwVEwP8z3gpM6OnzDZo9p0jY6FDgQZ7belQCEGndaih3MfV8neEks51lTvKSvfuS
+	0cygxn+Hvqavgl9kJsEpmNRnM23Wo44=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A1AED7A02EA;
+	Tue, 17 Feb 2026 11:21:21 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 17 Feb 2026 11:21:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
 	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1771344789; x=1771431189; bh=m85nxpM60M
-	hQS/QITwd1hHeXdBL8OWiwGVCZ0ecbrpo=; b=VwKBeGvwQ3zDU0ibAFyO0/1cVw
-	HFZe9mheim8Mv8ZI9ZOUbMM9FieNgJ4RUERoQu10Q7QM3iiYpROGu4Z8SEdmWo/c
-	VuJYFDSn7QOjleDXAxrPwHn0jttbvS+XBclsb3bReFaLtQwKpfx5dmXPmV3DPoxI
-	B3LtKhK7DOr36nyadFu/s4l3kTq0vS+r683i8YqhzDT23uX1UNFOkrVgOVmOhICJ
-	XubtoZGX2Y37vgC+I3d7LungGCYPED3FatswxLNQ8n5pipaJI2StCiGcBty86r2d
-	SRd/G4Hq+wkW0efCojbH72SxJnoaBwZPxou7Hwr66SjCVw6GWnGr6dL3wemg==
+	:subject:to:to; s=fm3; t=1771345281; x=1771431681; bh=TLUeZ5F3tO
+	Y10JNA2p1BHXejENCtAykcv1Gn+DC81rE=; b=uQNjVCQC9X9F5StIFcthQyB+/2
+	0eLnxGZfhCH22vl+jMjYUp+yjLLa3COMMLt2aQCP8csfgCPyg2kSOt0wSX/7Uadh
+	61+WPDqgA+18YDsiDzkzgzaQsk7WlH8BKPWHTHDPtxd+YEUn7hwBm6O+stecCQon
+	HALw0hlm9qmTQ4BhZvk9z2QXc2Kz1FqNNt1MI1CYjuXpymM8LrlysNqFbQNyQOYs
+	jFJ/5v9PasfB4Z1FnU/T6dnzrm0VwsfVrO8wuI1Xx2Rdzk3b3Bj9iZhzBPNNP02O
+	noXNSIZ43/umgD8Nzp+4rwYKgWCKd4XiONkCdeNmO6k2RGxK7IRMy7KKY7QA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1771344789; x=1771431189; bh=m85nxpM60MhQS/QITwd1hHeXdBL8OWiwGVC
-	Z0ecbrpo=; b=gbej3kK+pS+/gY1RSixWXdD8sBg2pz/RNdJcMbwAL3n2wFBQ37o
-	ocQcq2L2sA/ltEUfH3WUXHiQmbcqI4B6W64WqyoVlhfNj0KjdJnPtFIuSTKTSnru
-	7ITiNRABCOsw1scccvelmIYUakBLvoSgYo/cmGjeRX8SHdimtdPyv7SOhE2GADVI
-	l3VUIh9Y2uBueeFJEwrIkw4Lk8ecM2tnJo+wMmCuMLrHLTnJApUwJEbbvkfl5ue/
-	ebYKpOqJrAF7LgbZZgSLwHT+q8PszmIDLWu2B5R0nkBBEulpz4cjJggAUtsuiGEs
-	2NiXF9VdqXL9NAcEdnmouqxFOpRqn+4Q9Tg==
-X-ME-Sender: <xms:lJOUaf1OyopObblOQKBQKTId9x19m80HnGdbqwam4_t7u3QDny_wog>
-    <xme:lJOUaVBNOidFA4M3-2R4vd3gEL4DfkhcVaVg6ebqsPxC8sgugdSA7LMf5TEliXns5
-    AtPrb-M237IXwq494TSq2kl_oZMrPoLAv5vA3ND82ZDdmfqgb-dfA>
-X-ME-Received: <xmr:lJOUaU8d-GxjEU_eSqep762oF0AhKRd79NlMQPnJi_0QnIQnVnneL5gy8wGW35IPPyhLVw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtvdduucetufdoteggodetrf
+	1771345281; x=1771431681; bh=TLUeZ5F3tOY10JNA2p1BHXejENCtAykcv1G
+	n+DC81rE=; b=VCu+80/EZiJyJBT9tjjOEtM6yFvMLCGv9EW1vd+W5dEciLbG6rP
+	FfYTqCh8ditwkjQYLl1vUlRnvBXtAizzDw5eMX+l6gLtEDgL9Xj5/hL/NS5UM1r4
+	rGa5gSTwuBA0DRycbwbwtEstGp88Po/0Jci3/vVwXaONvQAcPOtPD1QnPp3dfq18
+	mojecoiiSWARNGKhdu5xsSykKn5ms/n78+7RylDa+NMMZe1hIZo8pz12YRTaM4nJ
+	+KuTm2GstXT/M6pUMHOTrVS2V1KteDxT+RgBU3wnSGF/QBIEHnwSFgTmqkXI+nPT
+	mhkpjDUcQp8IMGDJ+IZf7CRPFOXB1eednXw==
+X-ME-Sender: <xms:gJWUaU8Ze8qUPt8xOQsz0Q9zLsszNKxxsnotLXScA29zgvvlBWSq-w>
+    <xme:gJWUaToe3rphCXJLI3ZSfnYOHuxhHkjN1IAVByYkHeAxusxFhUEpQVYSQH-4N_TDv
+    E9hKLXYMHJwI6xr47S3Jx9TORONtZsyEQg7h8Hp-lUbiPbdPmxA5A>
+X-ME-Received: <xmr:gJWUafFMIvuHzz0E_aBccRd0yN-PPtysbCneUsPSY41WBNHFfizOIdKChobyeB2Y-RQJjQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtvdefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomheptehnughrvghs
@@ -97,42 +97,43 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtvdduucetufdote
     htthhopehojhgrshifihhnsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheplhhs
     fhdqphgtsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtph
     htthhopehhtghhsehlshhtrdguvg
-X-ME-Proxy: <xmx:lJOUab-sg_v_9Nwe-Hj7FocWNEnVkceFy4ptsFWcNKhvxSpmpfyb8w>
-    <xmx:lJOUac0bt2Cgs4FmxNFKdYE1vN3KpUbluYCbYu5EpjYDO67Bo5ovVg>
-    <xmx:lJOUab_bvpQs7FYgPKyECcCh-p3X0YgndY4nGJSM0o5tFCGKCwkX4A>
-    <xmx:lJOUaddyETi61lDR0KY7lrcR58ho5aM3CpT3Zagy7fV_hrA9nPN8IA>
-    <xmx:lZOUaWySsAvELHojLCN5Yj4ha_-StpXVUfGtGFMXkLCzbgSCQgg-klvq>
+X-ME-Proxy: <xmx:gJWUabmAnc-nIab0cp41AGUcRtQbP9_DCdFRKe_ySSkDIlyHWIr-DA>
+    <xmx:gJWUaT_5oBp-1kCztHEfPRFd63ae6VEh3RqwH_ZjhRni7fmstEVSaw>
+    <xmx:gJWUaUmRXtuzaj5Xo1WrTZjrcFY063eBpLHPxbZI_8ppooOk5dMnaQ>
+    <xmx:gJWUaZm6Y84tWpETdgRGoX3r_vktvIvun1TJF7p66ovN3nU1NOqZpQ>
+    <xmx:gZWUaVl15IfgmJQLO3oi-CdzG1EnzgkN23ZUr7-KzMej6UbqkYLnnVrH>
 Feedback-ID: id4a34324:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Feb 2026 11:13:08 -0500 (EST)
-Date: Tue, 17 Feb 2026 11:13:07 -0500
+ 17 Feb 2026 11:21:20 -0500 (EST)
+Date: Tue, 17 Feb 2026 11:21:20 -0500
 From: Andres Freund <andres@anarazel.de>
-To: Jan Kara <jack@suse.cz>
-Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, 
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
-	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, ritesh.list@gmail.com, 
-	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
-	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+To: Pankaj Raghav <pankaj.raghav@linux.dev>
+Cc: Jan Kara <jack@suse.cz>, Ojaswin Mujoo <ojaswin@linux.ibm.com>, 
+	linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	lsf-pc@lists.linux-foundation.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
+	hch@lst.de, ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>, 
+	dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, 
+	tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
 Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <2planlrvjqicgpparsdhxipfdoawtzq3tedql72hoff4pdet6t@btxbx6cpoyc6>
+Message-ID: <ignmsoluhway2yllepl2djcjjaukjijq3ejrlf4uuvh57ru7ur@njkzymuvzfqf>
 References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
  <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
  <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
  <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
  <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+ <4627056f-2ab9-4ff1-bca0-5d80f8f0bbab@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ge9h5a381kw33wjscuszbjgjgr9st86b
-X-Rspamd-Queue-Id: DFA3BC0008
+In-Reply-To: <4627056f-2ab9-4ff1-bca0-5d80f8f0bbab@linux.dev>
+X-Rspamd-Queue-Id: 02397C0005
+X-Stat-Signature: 8wcbuzz54c7984tje4uiz4qwpxrhfrq9
 X-Rspam-User: 
-X-HE-Tag: 1771344790-336526
-X-HE-Meta: U2FsdGVkX1/xNxEIpd8k3wiA01fS8xSpEGn/+YmMQReVligTGR+kbDG5ubzkrqxn7t7q84PQS7ofOG3ZYhgSGWHdartQsJl69fkPHUwrPVmuXqj8OTuDozjkFQ+b4wk5yPa2xXg3LKLq+86AtBFLMOIfoUB43egyA4OsdLDT96T2/yqzt9Uo0Hllw7tJnHygVVtbdGT5EOmP+mf12sOGLqUltcKmloGlvPkXx62Ji+PHzQU8mpjQHAu2evPrPC+61mft5xcarkhjfMJt3HyzBtviXVLK47Ghuqgyb9kaA+zHc3NqCHP0mZEaBfjwaJ+WXOAYXtvXROHF5axoIu9iszb33JA7sLBKTHnuT305fcgiR1pg8JpWc7Cpao+BuYAK704rew28nkei8YK854kt9J9oSLAUHc94D0hklV/4fX3uvsPkR2uQ0PegBgBSxmuRmLzK/1dcYqOvZOk2wLJ/4eM4zFO1IRleoyJshwmrNZjKcIhW0mieJwI/7EPAx7mMyzo3gGN9kQwm/0QMSmDsrl4taHJFTgBiTdZ/lrPb9kdq+yayCo0Ijvg/3G2fBUJl9LjmE2hTh1DfNu7qe7coHP/7Q+Fo2rM/NNoJZ7303wtX/GYshWiZEgGGNoPX2X9ppodpTFdl9wU31eyf10jHmvHvkJA1YbVRN8DAUHBORRf1AWRAJTUkJAAyN588vfmybQYjbiyXSjzG8bWcPMuQPIpGiyMfWKM+a0g3RjLHg1b6GOhxyZsMur4goXgJ86dssZ0nRQ4UcDg0z8fdmlvw9oJ5J3iKQ3u5T6c/sWPN+CxLwRnQEuHhgTRBbo4t2Er1pGP8tk5n0bhwLj3C4V9nauS3r/zvORH/efIw2uvFOmgeQLDS0P137FMpq/cw38/9nM46ppRjt1N6te3PwVPd5+74umNvytdmDtmmYiihrNni5RuHnv84oLDyyUYI/7kCa12/cMWM/5SmoYp+sVI
- 2oUFh2N3
- gE8IrlJzcj2x38tZWPfv8KwJ5QhwFjxfDg/x4d5BPnhaQ7tKwxxtbwSxNRaHDkSVekVtEb7kQfPjtsZqrywYPKYp17Ggn9rZMU2Cunba2pFXxRWbNzkZ3LV0NShau12ip1yQEWq+cTzoFQGIFAGK8qUMc4qROWcMGCEtSRw36V1CXDcKbPJIPiiKl4yXKMPTHJVU/uN/7yXxcWL2wBhFboNCQWGt4MufY8GAup212rQ4TIxN2k+iUII2CFNiancODjYalw3XPDYKDYbsToevs5fwAmkKbYiKQKzwvz3lw7NXct4c+wtfu5dQxp6kGxIqQAOVSieuBUv4X/rzn0yQ1Oa4Q9VbAzb6SBEtCoqV7j1VSI2AepgORzBNRCLcb+R9hwZ41KQyopYKKF3rMKlrKrtLJCXqT9pFI1eHSHjuDRrswHp28LPcQvNKUCg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771345282-299264
+X-HE-Meta: U2FsdGVkX1/eUPoeMySVthPwg7T+IGmeVINImMK+WNAKHsmbh3b/CCoFm++4AwCjFYOmfLa32D+hogSflJ+hAQ+8Yw9JaR6/dzGsGJVY+giAjTWsvWBs2enH8QyTktnrcs2wzHYZXjzVwSvTRmwjxPs1NR9XJqDMLhoJ8lJLuMkmYQl2dHmQ38/O/UYRISpisqx5sgyZuzfTzFZmi8nxPN748qo4Sp2AUiyIkLhFyUP6H+wNXpopKM6y51huVUi7i8t2XgBucPkrMve8lsQRyu0lmAOhQOynOoQBmyuzRivZhgkfM9VFh1fii2dkt2sZqoFddMxbE55qvC5NscqOpFPmFFSMpFyFL6UdcQHJZevTdDaMXJ7SZ6XzZVk5017gVKhz53C3ElMAVzXaeSir2jbhRsi05aNns/MHuh9FrKg/aCoAkhvboInT4bqPeswU++4qMkfcnT5szPSxco4oXkS93XA+h2xvcXwZF5pX2HWFyNuc0FVGOspAspSlsjw4GYivx8JX5OaQbbkYzxfoZr245WEv/aX12QAaNf7jFqd1kaUpxal9dX9Djp6LpFpe8PqKFvnyd5yiUG/Ur4VIr1G1KATxYNYAQn1T8lex/M+0XzgCQub7rgEh+g/1mw1LaHmxUEYUbScsI3Ol4eyhF8ilBexzWO+YYhBp3rtl07nwLeeNv9lsPbDyY6MHYQJsafQBNACIvL72AwdPnsXClnnhEEUTR//5bGTfyJK0qSPHs3mQop2iW3ZPRNKFDvpyc+jh10/qQSEdf49+k3/TSzxuBLy37oTw4WYZVqjVZk0rLE1YQG4LsgjR2JrKGlHT+5aHc0/qu/TAUBEC/+sbh+rzR7UfgHr/5VpBPNjQA9Ox+YZ/iiAA6HHbfUvvKl1IZ46pmB2XGmubiUCoT1it62SHj3W0Ya/pcP3wblHCobUKMN3cr26LIZ7quGUGE9XcRboNO6C3e4KDzmgZPSr
+ zwgnwCig
+ CaLBOMEpZWVNQGV23esB9TEEYNP9lBVDa/NZoN0qNFEjZ0nB0jcTDUtAk+UAVmRvPCoiyGNgkl9e0dfva6I5dgChrDv6iiQrRa6NVcsswO66mP/SooW01KVCvlCCP0fHrfG8Rnc3ANd1csEfyP1lEyYy8VNqVw1g7SRV40Lbui1W4I/jBli/+FCFJ4iJCbiDjpZ4y3P4VFnb+k7tK7LM36TZpW2uXxGrAm53rgSwXQRUqf6dAjIcV4Ylm3wT3R0tz6lj/Ylg9JAqk5nlRD7GLbrJhKAXrvgensRgg3tsKrjdrvOBIu61BMEDoFZLqQSAJ50cax+KCXJF6PyoZAlZ6w/LoDiYtOnRE9WnaYzK5HLPaEYqU/Eex1cDmTnMhM0PO1uLW8QvcpT1xD9duid6guQq+GseTb0UJIDsRAB0Wf1ir3K0PZ1HNQchzDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,95 +144,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
-On 2026-02-17 13:06:04 +0100, Jan Kara wrote:
-> On Mon 16-02-26 10:45:40, Andres Freund wrote:
-> > (*) As it turns out, it often seems to improves write throughput as well, if
-> > writeback is triggered by memory pressure instead of SYNC_FILE_RANGE_WRITE,
-> > linux seems to often trigger a lot more small random IO.
-> >
-> > > So immediately writing them might be ok as long as we don't remove those
-> > > pages from the page cache like we do in RWF_UNCACHED.
-> >
-> > Yes, it might.  I actually often have wished for something like a
-> > RWF_WRITEBACK flag...
->
-> I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
+On 2026-02-17 13:42:35 +0100, Pankaj Raghav wrote:
+> On 2/17/2026 1:06 PM, Jan Kara wrote:
+> > On Mon 16-02-26 10:45:40, Andres Freund wrote:
+> > > (*) As it turns out, it often seems to improves write throughput as well, if
+> > > writeback is triggered by memory pressure instead of SYNC_FILE_RANGE_WRITE,
+> > > linux seems to often trigger a lot more small random IO.
+> > > 
+> > > > So immediately writing them might be ok as long as we don't remove those
+> > > > pages from the page cache like we do in RWF_UNCACHED.
+> > > 
+> > > Yes, it might.  I actually often have wished for something like a
+> > > RWF_WRITEBACK flag...
+> > 
+> > I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
+> > 
+> 
+> One naive question: semantically what will be the difference between
+> RWF_DSYNC and RWF_WRITETHROUGH? So RWF_DSYNC will be the sync version and
+> RWF_WRITETHOUGH will be an async version where we kick off writeback
+> immediately in the background and return?
 
-Heh, that makes sense. I think that's what I actually was thinking of.
+Besides sync vs async:
 
+If the device has a volatile write cache, RWF_DSYNC will trigger flushes for
+the entire write cache or do FUA writes for just the RWF_DSYNC write. Which
+wouldn't be needed for RWF_WRITETHROUGH, right?
 
-> > > > An argument against this however is that it is user's responsibility to
-> > > > not do non atomic IO over an atomic range and this shall be considered a
-> > > > userspace usage error. This is similar to how there are ways users can
-> > > > tear a dio if they perform overlapping writes. [1].
-> >
-> > Hm, the scope of the prohibition here is not clear to me. Would it just
-> > be forbidden to do:
-> >
-> > P1: start pwritev(fd, [blocks 1-10], RWF_ATOMIC)
-> > P2: pwrite(fd, [any block in 1-10]), non-atomically
-> > P1: complete pwritev(fd, ...)
-> >
-> > or is it also forbidden to do:
-> >
-> > P1: pwritev(fd, [blocks 1-10], RWF_ATOMIC) start & completes
-> > Kernel: starts writeback but doesn't complete it
-> > P1: pwrite(fd, [any block in 1-10]), non-atomically
-> > Kernel: completes writeback
-> >
-> > The former is not at all an issue for postgres' use case, the pages in
-> > our buffer pool that are undergoing IO are locked, preventing additional
-> > IO (be it reads or writes) to those blocks.
-> >
-> > The latter would be a problem, since userspace wouldn't even know that
-> > here is still "atomic writeback" going on, afaict the only way we could
-> > avoid it would be to issue an f[data]sync(), which likely would be
-> > prohibitively expensive.
->
-> It somewhat depends on what outcome you expect in terms of crash safety :)
-> Unless we are careful, the RWF_ATOMIC write in your latter example can end
-> up writing some bits of the data from the second write because the second
-> write may be copying data to the pages as we issue DMA from them to the
-> device.
-
-Hm. It's somewhat painful to not know when we can write in what mode again -
-with DIO that's not an issue. I guess we could use
-sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) if we really needed to know?
-Although the semantics of the SFR flags aren't particularly clear, so maybe
-not?
-
-
-> I expect this isn't really acceptable because if you crash before
-> the second write fully makes it to the disk, you will have inconsistent
-> data.
-
-The scenarios that I can think that would lead us to doing something like
-this, are when we are overwriting data without regard for the prior contents,
-e.g:
-
-An already partially filled page is filled with more rows, we write that page
-out, then all the rows are deleted, and we re-fill the page with new content
-from scratch. Write it out again.  With our existing logic we treat the second
-write differently, because the entire contents of the page will be in the
-journal, as there is no prior content that we care about.
-
-A second scenario in which we might not use RWF_ATOMIC, if we carry today's
-logic forward, is if a newly created relation is bulk loaded in the same
-transaction that created the relation. If a crash were to happen while that
-bulk load is ongoing, we don't care about the contents of the file(s), as it
-will never be visible to anyone after crash recovery.  In this case we won't
-have prio RWF_ATOMIC writes - but we could have the opposite, i.e. an
-RWF_ATOMIC write while there already is non-RWF_ATOMIC dirty data in the page
-cache. Would that be an issue?
-
-
-It's possible we should just always use RWF_ATOMIC, even in the cases where
-it's not needed from our side, to avoid potential performance penalties and
-"undefined behaviour".  I guess that will really depend on the performance
-penalty that RWF_ATOMIC will carry and whether multiple-atomicity-mode will
-eventually be supported (as doing small writes during bulk loading is quite
-expensive).
-
+I don't know if there will be devices that have a volatile write cache with
+atomicity support for > 4kB, so maybe that's a distinction that's irrelevant
+in practice for Postgres.  But for 4kB writes, the difference in throughput
+and individual IO latency you get from many SSDs between using FUA writes /
+cache flushes and not doing so are enormous.
 
 Greetings,
 
