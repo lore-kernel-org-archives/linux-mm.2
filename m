@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F029E909A6
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 14:22:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8028CE909A4
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 14:22:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 789636B0005; Tue, 17 Feb 2026 09:22:55 -0500 (EST)
+	id C1D476B0089; Tue, 17 Feb 2026 09:22:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 737546B0089; Tue, 17 Feb 2026 09:22:55 -0500 (EST)
+	id BD5686B008A; Tue, 17 Feb 2026 09:22:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60F5C6B008A; Tue, 17 Feb 2026 09:22:55 -0500 (EST)
+	id AB70B6B008C; Tue, 17 Feb 2026 09:22:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD666B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 09:22:55 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D20C4B5B7E
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 14:22:54 +0000 (UTC)
-X-FDA: 84454165068.27.10B6E80
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F217D180019
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 14:22:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nhOaqmqD;
-	spf=pass (imf24.hostedemail.com: domain of 3unmUaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3unmUaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 98CAE6B0089
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 09:22:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D234D55CDF
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 14:22:55 +0000 (UTC)
+X-FDA: 84454165110.14.49026C0
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 141B9C000C
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 14:22:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=284Riu4m;
+	spf=pass (imf28.hostedemail.com: domain of 3vHmUaQkKCFUx85z1EL483BB381.zB985AHK-997Ixz7.BE3@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3vHmUaQkKCFUx85z1EL483BB381.zB985AHK-997Ixz7.BE3@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771338173;
+	s=arc-20220608; t=1771338174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9toli3up5J45j2dd4uhudMM/Hy4EA7BHUmvoc7k8+8Y=;
-	b=tgYYrlMmJyfW5qDXOtBwavZbrsdH74T30qkNCOdA70P0wLccZZiV/U/c8XUacbdXsoQ/oL
-	ECIqWjoFXa/lYm49qk6O6WwIglBOhcF5St0a8FAhtb2XfL1zzyC9OpNEYorEvsdUegBvm2
-	dIdwzuAT5fupxpBgQU5ndJC7RJ8GHwk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nhOaqmqD;
-	spf=pass (imf24.hostedemail.com: domain of 3unmUaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3unmUaQkKCFMv63xzCJ2619916z.x97638FI-775Gvx5.9C1@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771338173; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=82Js1rcnoAKTgbxsBEWU8ya5WrRt0JL+YHVGM9jGo+A=;
+	b=2O0XCdgQva7Ax0IoqR93n1MoHzzam4/RbrfzuPTdt6VkYTF3PBbMaxxRPHwtXA5vE/wJ1o
+	vW3AGit/UWg+7hmsAsHOplvua22HrFHTDUZPVjv3UfjNqEDp0iyMWjklu9gNET80qfDKP+
+	mlNqEVqCtxxrFb8AKWVDfJ2m7HuncME=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771338174; a=rsa-sha256;
 	cv=none;
-	b=sXMBThNWKMa6npgodk7DsybvekxjRo70ByU4WWdG0K7kiXhz4NgHoTyHXslbRei90mEh8D
-	7sZHlpEkMkXvD7jJt24UPw6TGJ/5mmW9cpEFw3GqqqaAOMSSagVmQ8t+Cb+6JvgCQG5M1F
-	DV4dSismhw987eoxr5OGh6wNLFtC/YE=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4830e7c6131so43246625e9.2
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 06:22:52 -0800 (PST)
+	b=3SKadqZygk9PK7tzCTPI40gy6P2Du92ZVlr8VXcN2ice/Ga4bETfJxw5ItBOevPzoMSSoM
+	f0ex6IO6kpK2/9Dy16c2dMc2eVzQJ7DkkUgCASV6S35WZfrQ/1ZheC5ntDR1zTL9D4reG4
+	ymy0PrIYvDEu+2CNTW3Zm41JchUXQx8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=284Riu4m;
+	spf=pass (imf28.hostedemail.com: domain of 3vHmUaQkKCFUx85z1EL483BB381.zB985AHK-997Ixz7.BE3@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3vHmUaQkKCFUx85z1EL483BB381.zB985AHK-997Ixz7.BE3@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-482d8e6e13aso29807835e9.3
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 06:22:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771338171; x=1771942971; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9toli3up5J45j2dd4uhudMM/Hy4EA7BHUmvoc7k8+8Y=;
-        b=nhOaqmqDvLX2T8Kp8WABfbvU9qe1d7fqoAS4XiHFK+d6i+TrmHTSuu96GkdTbW6aPP
-         gWAwOB+CpR6vf29tsNMMgpuJwVK0rC7t+Y5lYFL/mL0pZ9pJ6oZyCWe4k0xTi+9MphLa
-         /5QsUPlWzGVnja5t3CMJj07X2Vdh97iq47wDTPIfk0xiu3IlUbNBtofIG0uRhlaEWHaK
-         HQ4AUoDEgYx8TcQkLAdNLakNUlSFN7X0amBiARXV6Qr9lEXOGMZibvdDci7bRTJUnlAJ
-         i7YWkw0weOI2uQFRBPiCUD7czpsi14R4KnO9fEbSFRL9cATB5QM4Vh/R6P1auJjizoUD
-         39Mg==
+        d=google.com; s=20230601; t=1771338173; x=1771942973; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=82Js1rcnoAKTgbxsBEWU8ya5WrRt0JL+YHVGM9jGo+A=;
+        b=284Riu4m56xRhFJkXlSBgkce3O9FzoaWWOrJ+eqgt7lnwbt/BhKthE7q4yKP2jh2ZL
+         DpE8FfN4D2YUiZBPig+aTgxLfecUduOFlJ5+ncUw/0rq1XNdIA4MjBmxhCnyr0lpTpGM
+         /2aH7a2XCVMyCMO3TzmMkR1LIXZ+h2xjhRzxKPrsqp5Wr1D+AxRBLwyASR2TuGUtnHMx
+         A2zo5GfNLy/yhQ9N9+9tYiR9DnsdXLMHccJL5//48Dq7zarEi2BXyqIBE7BTw1l0VNAB
+         zsxyh02WB7DDvU9ItCo/EHDjBKrnyebxCWphGim5xNz8gpJBdAt5pBbg1rbCxtMWS+08
+         mykQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771338171; x=1771942971;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9toli3up5J45j2dd4uhudMM/Hy4EA7BHUmvoc7k8+8Y=;
-        b=AY+lOVrYLBp94laye7yGHvwFlw29idARa0LBEgi/wnDxol4WQc9NW93zeC8zYIOxVa
-         OSrdR05dpNxEDfLFEYtvj0A15ORzNsOHQWFrq13acDax6GHrsfLE478h1mEzaF59h9Hw
-         rCCSkpKwHC//4nggFPKDe0FrIT9Finqr4AEcwsl4Iie4EtHM8D0TayOvUWhC8afCz2kS
-         bsKBDnU/cLl3q5FwQx+0kvXyk5MhtXge3cXb1/2FTxyqW8InygYynrFbNnn1d/fIHvX2
-         QlPLSaew/kjoBeOhp5Sf+uOV3rZFbdQ3UB3K188wbNeLLL027y4Lxf7OBfv/uPLD9JmA
-         8kOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeyKrBqX3XvlTje1QGCPZ+w3kMTYC+js7lWAla2uf/8q6lTYZmjnYxrZu+U8I9DeA6E4fncXnyIw==@kvack.org
-X-Gm-Message-State: AOJu0YxsEwuhMWPNRcY+Y57b/uiForuqV+gITGRLROz/zqumPXts7uhx
-	a3EDz/ds3NFsplbm6MzDc8ef4q/s3dNdhK3s541oveWjf+lVr3dOrG1gZ1yiGV3RaHIlLFUwLas
-	leOKeceb2AMCdFOu5IA==
-X-Received: from wmhp19.prod.google.com ([2002:a05:600c:4193:b0:47e:e414:b8fa])
+        d=1e100.net; s=20230601; t=1771338173; x=1771942973;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=82Js1rcnoAKTgbxsBEWU8ya5WrRt0JL+YHVGM9jGo+A=;
+        b=eOgrGGiqDvi8NjNGjRI42dhuO0mvEgTSBoxH3M7JxThVySW2yMtbm5R37th/HkRt0Y
+         cCA5bd8H3R2jZqHhUUDsZqCFfY+frdReHBcmGHpIoESg4eP0pAu5k73MTJEmMdsdOK8Y
+         mlBFL+ruEIrwJ8QClQ0v0AtrXuuaq/cnpujTX+F4YkF47oSSdAQPdwzUf59YNMmSY0Cl
+         fLeaXiGHvj67WSyvA/mfD4vvA5+Tid0iunTEuUS8TpvMRVg4l1QewNAcF2s7TdUl651e
+         k9fHPbBqet8JFpk4gWRdmUyyR6c1hal5veD3jEB3S9C8d2/D+uEbWMDOgZCQnsnR8XGT
+         wDGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNbWB+3kICGlSgEMthtx2NH5Y+Zon0jimWFOGJ7SGl1N31P5s2LlB1V6WQ3Ve8oE9AZVfm/6v9bQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz1FHUurs7sgMCH+wO8dT2cjanKkg07t0+mX81MRDCyzMRT8j1f
+	QAypyZe7lngrw0LM37ud2DsKwfqplEmuThszL/WP8HQkcsnRtuAdIBwlr4aWLr9ERe9D/TeFzhH
+	1teexC3f6vgQ9VUbpqQ==
+X-Received: from wmpz8.prod.google.com ([2002:a05:600c:a08:b0:483:248b:3e95])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c25:b0:47d:3ead:7440 with SMTP id 5b1f17b1804b1-48379c14606mr166623145e9.32.1771338170924;
- Tue, 17 Feb 2026 06:22:50 -0800 (PST)
-Date: Tue, 17 Feb 2026 14:22:37 +0000
+ 2002:a05:600c:6096:b0:483:612d:7a9a with SMTP id 5b1f17b1804b1-483737b89a4mr196316545e9.0.1771338172603;
+ Tue, 17 Feb 2026 06:22:52 -0800 (PST)
+Date: Tue, 17 Feb 2026 14:22:38 +0000
+In-Reply-To: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAK15lGkC/x3MTQqAIBBA4avIrBtICfu5SrSwacohslCIILx70
- vJbvPdC4iicYFAvRL4lyRkKdKWAvAsboyzFYGpja6NbnCUsHPE+HJJn2nG2K7nGcN9ZgpJdkVd 5/uU45fwBLWfJ0WIAAAA=
-X-Change-Id: 20260217-binder-vma-check-b6fca42e986c
+References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=785; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Uxj6c/az0LdP8dZc8T2qUy7YzybZMS/bT4hkQ1PgX0M=;
- b=kA0DAAoBBFi+7ljGOUYByyZiAGmUebChDZjcwqWd8ZRbjOtAua4kbQQ1RMjHoMr3X+QKWSs7w
- IkCMwQAAQoAHRYhBIOSopRNZAcK8Ui9sgRYvu5YxjlGBQJplHmwAAoJEARYvu5YxjlGryIP/320
- NWn4fxONCqcMTOqDq7viBcZ3G6cxX5lNXZSB9kDxtKeq7LDW4cLWm9VX6fr1A56iPtfHeln2qUw
- pGXpgDCEASmiabi+l3mJ6/IK1BXXtjwvoOrtmestBi8xAHM/iHsbuLYMedwUJNoMt+PgfXy5mFU
- /epRzgdGg771b5ltgKB2pablfJ+KX4qP7bYGrVfBzBq6hC2ngTCndBsvlE8pDKnSimggXz80Vzk
- Ukm2TczsIRVTYjAOdOhlcSJgdH4WKBwZgp59FVHfQqcEqFS41t8+ESMTuCM60Ct4vgfLXebEzRc
- Zi9iZK/pDfTxfTaPHvR4ubu1GhP+RQ0bsJ+lA0zm5DSoWHJqY8rM+j140oTdjG3wIJN6aSdNJNo
- Qrf8h8aVTIA/WoP6UH/J1e8Hwgcm5lUCLvikrcxPNMOnm1C33GWY7YulmlHNkB91OOPT9l2RilC
- +lm+PPMBXh6baCKzAePnHDwoz6vVdAwrNW/koNi0ar3PmB+FMWcL/tWtiM7svIlCZHp4ttGGmfa
- PXMGPYPXwKIR9UXSg57HSKuSK/QTHGqaPQjRzPCH0L+3Hi6aXnWkFAINwen5CdEdoLAKI1G1f5U
- fg1F23FGI67l3+WChvssHlymiiakrGek7YMGUvW3VokUGzsn2gfQjMU76NnEYD0A2LfWM4HfgD1 6+PNs
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6670; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=nQm0AngjwMT2UjJFuUZvKHEzTseqZByPMN8Hgm6xrz0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplHm5X0xpCMTJgViI69+ZHnDddFhIjmNIbX3+H
+ 22nzhl4nK+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZR5uQAKCRAEWL7uWMY5
+ RvfVEACevIXSL/nDzA5yoF/95U0BuALOFRvt2mjZyyKCqmRHKG9aBPN8m+1nL/RiNvc5mBC/Zwk
+ Zey/Sl5m6/sD4ByVyYcIK3WFhrQ4qJ56vGXB6kTaEDjvJcrC97c2IQz2CaQoFXaafhth3ZPUhWC
+ kRbmr1DB/5f/owITX8pEibPhT9k0seZ5ehsQOhleqwoX2d49V8q5LisgL6pzxJVAgItj53wcUJa
+ jEk8+qm9TXYV7lHzkrpUE1PfjjCfTatfBHtupQMxsje6oxHcwnxWG7M4C3YbMAQC28s+j5nepA8
+ HIkErf5ecF2gZ2W20F0um9mOe4jlhoOrWn2EmvoV9SfR0xU+7wdq9D61ZpaZN5lPtkaSZXmc0rQ
+ ifxWJLTPlfL9eETm8SnFGqZf5OAJN+OX/KXsvbOIImLEJk6PlUwgu5p6RoN9LtfPnMZFwKw77Y/
+ ZacwJnRlncRWqto1hLWU+D92I/Klj1QdyQfRI6YPAlnF02qMf/oSIFMA4kJSvuQJvYGpKoRDgIx
+ oUFK2uhuuCY5lMhrOK0EuQrHjtSOKOcrS2swG1FsaWVPRzaGEMhn1OdU2+D/jJEBqo0JDW324tb
+ 1ypvZ/ou6BQrVGMUsgzjHiPjbe65SCrn9sn74AUW458o3QesKzrTDY7ftjtdZdnx5OW+b0Cfx3e R1fE2AJ/jGgNmcw==
 X-Mailer: b4 0.14.2
-Message-ID: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
-Subject: [PATCH 0/2] Fix VMA confusion in Rust Binder
+Message-ID: <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
+Subject: [PATCH 1/2] rust_binder: check ownership before using vma
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Jann Horn <jannh@google.com>
@@ -112,14 +112,14 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
 	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: kidejmw59xy84yp84zyan1f7gysjnoj5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F217D180019
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771338172-377660
-X-HE-Meta: U2FsdGVkX1/J7mwHdG64UmHabXlPCsrOOuQw/AMKxzqNCPJHwbkLxxXENNyVY49y53t1UIZ8svoSG3soCnuC5JbbAIH+0xcDe+2BorfzG5k4ZrmRyi6R8YPZ1V30kDtn0hDpk2uoI1T3yFl2OVJ+MKWeWMVPpGC02R7pg6kvG2ZEusb74Vy4934XN2BfRZNs3m1eflXnJLnDZUODak8Oczp92h/0D7t1dwm4SuJLNX0J+A9ejTUlMXcz352HzLCTkU3cq34VClRpkwLZ7v/pxsNzlx25GvtVii4kOIghrbnZ+Vb2YQZM7+dpzKlmcfa0zVljv4fws+dSaDI3OOgxXZeZXs6SO/RxUDY4WDyv7RwKvsN+PF+O/t045QUW8WtPo+Yg1mzMzlPxZJ+0vhyggRjqzi3O37UNJ7rJZbmwBIe+FZ2oHU4o3D4PzRsDWtbCN2/VbEZMnktHfZotrg7sxVOxK/q+dy2uI7ZB5LJivJrMQmUWaq5HlgWY86KwSSfsnyKAZ1P/DaaGEesnPD75Ove5WsBUQPNXvjYafUxdtD5DeIbMWzqs0CCHYSvDD4lSurNNdzarc47DHhV59UiKw9zByjqhQno4VbuUySAZqW4vB1ckcEF62xPv6PGs6pmqnqZl9J/MexBWcIsq/MUEtdGC7f0QRVFF+WV3j5UUaErSpp32AgtuVzGCQJxxPLrhgiuTosiNI/VbafhS6voiXe3x1PTb3p95Not7hXmfPtrBed3vTV1hA12/88LsvP0JEC1lrnRfF25Cn5hFoK8HSGsL7tcXualBExQ9j8GBu+xegCLRxVL1S5iWZ0pyjD6yl/ANgOMu+3Rs3C9h7KqQTZrw1Nl2dOJEIjWPMtI3zGnFHMXrCLgUtxH/ySvdgXfxSuglPsU4RLifysoxdhAxP8qNUQobYRgaXxO3+HYOmw4yrtNmGVChYD5+gVhCFfr8YyfMDXeME28FDL4tNOp
- 2EoQvrsO
- FLFd4/TVUCgkdFdE0HW64nOCds0B4MRWEhIahdbNCvr61NkoeW0eyJMeHG7++1g0wyJRwIuLt7zO6IlU0n9YGJRxdBIsr/ZZ7ZXs30m5JtEHUjnJyrcN/rdwSZwHPRnXsNawMdCgaRfzHZQGcg8PlnmgrBivqyZ3MAdBUFxkM3SGNLBT+7oC6AdgtvWC53exqWnYThXw414in6eYqr6J6pFsOT9tMB5J8KtIaAF2GQtttT8BBEueMBfJjO0aWRD1FPlcLdHnErBbqB169ViE7iE3DBWDfC3fxNiecRlwbiYIq3ptC0QifJEWs9n9sgIyHuz33CdoE9Sdz402TE0fOASHdwbnRg1AnFYoZeYD+tE813sQhAHCJkFcRYvvSD2M3Tkh3N9bHd/0NQ5MELeJuq8nS3JAq0u+hW2NsZ1CGcahhQFwLGuh7g2Jw+3TJtNdOOraffRD3kMpI0jGvoTesM9EZ8uXHVMYLMsZ2KHBgcNqMBrjPFkeC8yI/hbkbDWNlUogCaJTgeu42Ce9cCHWt3SmlQqfXj3OX1Peueerr/SLN2rfk35wR36sjm38H8lnikM5h7Oc7MAu3JnaTxZEz+mR+QWFfHGpowanAfQJNujHk8P+tWHX5HX/NSENk5NfW+WD7c3/9SK18VuiUHc7UVCUQzeUn+91hz4GVv+wtrZVlQFk=
+X-Stat-Signature: 9ii8j8ep5kw1cg4mqu34tih1yx9u37yg
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 141B9C000C
+X-HE-Tag: 1771338173-924221
+X-HE-Meta: U2FsdGVkX1+sP+bqTYfaDXL70ykXX6bBI/vw2gTgZrow+frBAHnBGcJpwSpcm2ccOchLdlJNosxCkwYEhqSvAaCdiPGX8mqMZ1S0KL+MUjYDJcYtQJozs1bZYqQu9jRGXNKzv11UmjPgccEuBHrAykUEXcanoJyt0ywIgqtGPmKXfrAGf2OVQl0EvnzN4/ZrW6JrCf5nsKXXu2X2C/nlOetmNT3qhsbngvv+nbvnxOJ2T79c/1wjqz42izN2vPpMg5ioHLaWyyOrrKQui+/9deT66Z2C+Vs0itMkrXo+w8e9WPv/p0+cnZOh4OrIoeevcjKFxMnIr2C1iURDEl2+9yeDLne5ElxeDzcmWeFWy0KZhmqnFETLO3Dw3wfb+8zwZU4YzO0uN42TX9Y6tX+geYuewjTkbxa3R5iu2/DNwTtnoxezCuPg7bK17AjUxco+BNi01aqDzHzuKHCTbagmr4KyraDj+Qo3Q0RAtqU1oj6S4fatR3kEircTASPyTU4WCo6esMByGpS+90QQvQnDPxV6xBITRAVCRJrNw8KdRfpNo8R+ugwNbU37R4JjadFAF+JZaTV/vQVH9yRg6kvTwqC+qsjA4sRgbjJ9VXN+66iR6IqrVun0EMJV8fjVa7+xeinb73AZw+PwCMBdqxmabjCFPA7ZXS9my0LYLsbCiVlJ7QuMH4VoOyPsNKLiJOviqTtHPN+xKGIWbn3jqWgXD5wc3hikLm/L6Mgh2n52Kx8qiCAZFLrslsYaUKeTRPXMfvVPpl2/Ag1NZM81lXrjXgCaAySD5+Jb8aFa6BwIzsXDg7cNJOeuzbr5nKhLfB4g5yxLb6Sq5XK5mrMZljp6Pj3p/tHrpPi/0FO0Wu+msmPVATKBPhSwpy15oLgpvLDCoQQwWMfhHQutiPaffW+UeNlJQrN6gjMwa7vByGgpl72vXTmcYIOjnyryaI6Tm6tDaXcGH7vNl0pu5f3SpA5
+ kdq6Q3/k
+ BvW5KatcCFjaeodoeGQN0Y5yj1CuVSIS30MAyAMwJAxJ/5PtKq9CJqxytHNC6wpP63bUNRnwug72yMEUtJs3DP2IoFfTM7ViSRj8Tt9yRLn6DhumYkukyfD6Q1rjzBxbpnTDcYCo1wSTUchjEYkibDjHLj092htrnrDmTCH0lv31LzWMvRkk4SXc6JeER661672V1NhNgMHgFlPas9pBa+KHxmKf67U4np89xC4+VTbHEJHNK0HgXITWMX9OqmoqkIqYdJEYRKjOKRzFHELpMx/MjXZiRjIKIBmetCUH9MhCIFTAfgVq1o6Ih7KD+iesNh/o+OH4AvdRv4X4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,27 +128,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series contains two bugfixes for Rust Binder. I'd like to follow
-them up with better solutions by changing the VMA api, but as an
-immediate fix this should work.
+When installing missing pages (or zapping them), Rust Binder will look
+up the vma in the mm by address, and then call vm_insert_page (or
+zap_page_range_single). However, if the vma is closed and replaced with
+a different vma at the same address, this can lead to Rust Binder
+installing pages into the wrong vma.
 
-See the first commit for an explanation of the actual bug.
+By installing the page into a writable vma, it becomes possible to write
+to your own binder pages, which are normally read-only. Although you're
+not supposed to be able to write to those pages, the intent behind the
+design of Rust Binder is that even if you get that ability, it should not
+lead to anything bad. Unfortunately, due to another bug, that is not the
+case.
 
+To fix this, I will store a pointer in vm_private_data and check that
+the vma returned by vma_lookup() has the right vm_ops and
+vm_private_data before trying to use the vma. This should ensure that
+Rust Binder will refuse to interact with any other VMA. I will follow up
+this patch with more vma abstractions to avoid this unsafe access to
+vm_ops and vm_private_data, but for now I'd like to start with the
+simplest possible fix.
+
+C Binder performs the same check in a slightly different way: it
+provides a vm_ops->close that sets a boolean to true, then checks that
+boolean after calling vma_lookup(), but I think this is more fragile
+than the solution in this patch. (We probably still want to do both, but
+I'll add the vm_ops->close callback with the follow-up vma API changes.)
+
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Reported-by: Jann Horn <jannh@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (2):
-      rust_binder: check ownership before using vma
-      rust_binder: avoid reading the written value in offsets array
-
  drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---------
- drivers/android/binder/thread.rs     | 17 +++-----
- 2 files changed, 64 insertions(+), 31 deletions(-)
----
-base-commit: 0f2acd3148e0ef42bdacbd477f90e8533f96b2ac
-change-id: 20260217-binder-vma-check-b6fca42e986c
+ 1 file changed, 58 insertions(+), 20 deletions(-)
 
-Best regards,
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..90bab18961443c6e59699cb7345e41e0db80f0dd 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -142,6 +142,27 @@ pub(crate) struct ShrinkablePageRange {
+     _pin: PhantomPinned,
+ }
+ 
++// We do not define any ops. For now, used only to check identity of vmas.
++static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
++
++// To ensure that we do not accidentally install pages into or zap pages from the wrong vma, we
++// check its vm_ops and private data before using it.
++fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> Option<&virt::VmaMixedMap> {
++    // SAFETY: Just reading the vm_ops pointer of any active vma is safe.
++    let vm_ops = unsafe { (*vma.as_ptr()).vm_ops };
++    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
++        return None;
++    }
++
++    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma is safe.
++    let vm_private_data = unsafe { (*vma.as_ptr()).vm_private_data };
++    if !ptr::eq(vm_private_data, owner.cast()) {
++        return None;
++    }
++
++    vma.as_mixedmap_vma()
++}
++
+ struct Inner {
+     /// Array of pages.
+     ///
+@@ -308,6 +329,16 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+         inner.size = num_pages;
+         inner.vma_addr = vma.start();
+ 
++        // This pointer is only used for comparison - it's not dereferenced.
++        //
++        // SAFETY: We own the vma, and we don't use any methods on VmaNew that rely on
++        // `vm_private_data`.
++        unsafe { (*vma.as_ptr()).vm_private_data = self as *const Self as *mut c_void };
++
++        // SAFETY: We own the vma, and we don't use any methods on VmaNew that rely on
++        // `vm_ops`.
++        unsafe { (*vma.as_ptr()).vm_ops = &BINDER_VM_OPS };
++
+         Ok(num_pages)
+     }
+ 
+@@ -399,22 +430,24 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
+         //
+         // Using `mmput_async` avoids this, because then the `mm` cleanup is instead queued to a
+         // workqueue.
+-        MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
+-            .mmap_read_lock()
+-            .vma_lookup(vma_addr)
+-            .ok_or(ESRCH)?
+-            .as_mixedmap_vma()
+-            .ok_or(ESRCH)?
+-            .vm_insert_page(user_page_addr, &new_page)
+-            .inspect_err(|err| {
+-                pr_warn!(
+-                    "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
+-                    user_page_addr,
+-                    vma_addr,
+-                    i,
+-                    err
+-                )
+-            })?;
++        check_vma(
++            MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
++                .mmap_read_lock()
++                .vma_lookup(vma_addr)
++                .ok_or(ESRCH)?,
++            self,
++        )
++        .ok_or(ESRCH)?
++        .vm_insert_page(user_page_addr, &new_page)
++        .inspect_err(|err| {
++            pr_warn!(
++                "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
++                user_page_addr,
++                vma_addr,
++                i,
++                err
++            )
++        })?;
+ 
+         let inner = self.lock.lock();
+ 
+@@ -667,12 +700,15 @@ fn drop(self: Pin<&mut Self>) {
+     let mmap_read;
+     let mm_mutex;
+     let vma_addr;
++    let range_ptr;
+ 
+     {
+         // CAST: The `list_head` field is first in `PageInfo`.
+         let info = item as *mut PageInfo;
+         // SAFETY: The `range` field of `PageInfo` is immutable.
+-        let range = unsafe { &*((*info).range) };
++        range_ptr = unsafe { (*info).range };
++        // SAFETY: The `range` outlives its `PageInfo` values.
++        let range = unsafe { &*range_ptr };
+ 
+         mm = match range.mm.mmget_not_zero() {
+             Some(mm) => MmWithUser::into_mmput_async(mm),
+@@ -717,9 +753,11 @@ fn drop(self: Pin<&mut Self>) {
+     // SAFETY: The lru lock is locked when this method is called.
+     unsafe { bindings::spin_unlock(&raw mut (*lru).lock) };
+ 
+-    if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+-        let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+-        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
++    if let Some(unchecked_vma) = mmap_read.vma_lookup(vma_addr) {
++        if let Some(vma) = check_vma(unchecked_vma, range_ptr) {
++            let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
++            vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
++        }
+     }
+ 
+     drop(mmap_read);
+
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.53.0.273.g2a3d683680-goog
 
 
