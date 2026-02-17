@@ -4,40 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E91AE9A03E
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD09E9A046
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 20:07:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EF846B00A1; Tue, 17 Feb 2026 15:06:56 -0500 (EST)
+	id 22F186B0095; Tue, 17 Feb 2026 15:06:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 025656B0095; Tue, 17 Feb 2026 15:06:55 -0500 (EST)
+	id 0ECB46B009F; Tue, 17 Feb 2026 15:06:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA2C36B0099; Tue, 17 Feb 2026 15:06:55 -0500 (EST)
+	id DAA8C6B00A0; Tue, 17 Feb 2026 15:06:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 732A56B009D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FE0A6B0095
 	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:06:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1C5571B4529
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C11C160323
 	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:06:55 +0000 (UTC)
-X-FDA: 84455031990.30.8762E24
+X-FDA: 84455031990.06.9790FC7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 088AA1C0013
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:06:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CS1J3qO0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771358813; a=rsa-sha256;
-	cv=none;
-	b=x9DcCk+GkIV5LmRcfXINOw8Tao8SMJO1APGVxh/omrgMLkkc9pGzA4JIZPuqqFleljktKV
-	oH5lqvFxh9X3c84PWUld0LpoVMbn03trR1AefsU8gWDqfiIB3OXBYYekl4LGmHCpZGXsY/
-	BjU40lYwjgggw+V/CsqJaiG1x7aKa5U=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CS1J3qO0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6746DC000E
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:06:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uf+6IuFp;
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771358813;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -45,35 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aA0m661VkCskBwUBoH6JQLcI4yRP8UW6rjgkuLSb/W0=;
-	b=4vd+f5HkJpCM0CXN9WSo0GLSCGn1HLCsccuZ28KbCz9KEO3OxEw/1d8NT3xYdlbpYVu+1M
-	gSFp3ADLt6BGp5+3K/oScNRF4gRW3fxIZHMgZqu7DBzk80R88BTi+Hi8U5EuPeVGmMs2YE
-	UDdJGgSdA1Z5KhkXLVn6KGomXRkMl54=
+	bh=UVVaxFeCEXdusQ44RxyVZKDIk3A6JQjpN0A+3oZBhdA=;
+	b=6yhczq+P0rLnli/0X7f7dcIMbIFDZVlEEsfjNSyqwZT6reJGqT7eyDkg4G7Mur23z0FmlR
+	7PEsNgAY9P+wlDjH0j7bzUdBE/J6RW59B6C35vPPXtK3rhHrYqlmJL+5yqJ/4KuAy+CvUX
+	dcK5NK8f02tNGT8iAw23LTZz1RBIWRo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uf+6IuFp;
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771358813; a=rsa-sha256;
+	cv=none;
+	b=sFAAMsBfgKv6YnwzTsvNEI6jio5a+n6aiCy6wNEbElIVIfJ/b+rNQoTSw02mcg9VMIml4d
+	whm/YzbtoEDJMt/WiNCfKz5Os9xnmFZA6XOa7LnBwf3japX1NIlXYfCXGBdUdc2ZRQ2Btw
+	AeGeJEBgsp4UI0jVg2jR6imM6HT+m6Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC08E44570;
-	Tue, 17 Feb 2026 20:06:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 91414C19421;
-	Tue, 17 Feb 2026 20:06:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 07DFF4457A;
+	Tue, 17 Feb 2026 20:06:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D58BDC19421;
+	Tue, 17 Feb 2026 20:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771358809;
-	bh=bRCmnJbeggUZ91UjveLB02es9HZ0T/a5dTIwJjGY6v8=;
+	bh=lkvo+r1Vv+yQtg/HXKc6w9CnaZkujAHTcZpC1b096Ck=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CS1J3qO0oP+QoHWETy+CXdOFfQK8ASdqXpu0z2U8t8QUw9iHL0BLf9j+BA621agEM
-	 oPP5GEvSoBn9ukXjr8Vm7LcSj+KcBEjhwru3KTzp0dqeKgpffiQu1fJpWWKkdz9FwE
-	 gCqyHZwUV/GlHNt1gJn1eOlB+beP65oCMeFHcfAo0oZVIbgfVsYoOpHvP/6b0NtXpj
-	 nZOXt7IVUyb2M0shJML/x9Un67380KvOHVgxHvvvEGQxq44R4b/pqTPD6YQgIwmaj4
-	 /qxKMNodCprIWI1e1LhkWF9zIC6yTz3SHCAE3LNOujoq4w0vRfZ7lVksHCpqsTX67u
-	 S1MFY3NLmtiNA==
+	b=uf+6IuFpHtJne94zrrs2xlJWs3MSS3E/gZ4EdCiQEqtvleG8W0EmB+L31ASBC1YIQ
+	 A7E/dpoQprqvm10lCSpXYMaaW30OEFfWk6eg1VUTyjvMdLVQ/JOudC4Rd3rWasIFrb
+	 IuWUm+BtkuH2MhCQocLtqb1iKzbg1bcZK4DiG0lKQMpfgGn3SlUiMa7bm+j0iJCY+Q
+	 J64VFOc2RBjMUnEgekJUCoyLZZBqxM/Y8t4gGT5GehAAPrFCdDmUM9yeX9mvCZqC4V
+	 3zceMK6Br7PqU45q7vfobL4afDDI36/oL6RN/OZI8qTuvLsGqmUhUmlkxICDa/hhux
+	 IMRK/yaEZp8hQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A0EDE9A03F;
-	Tue, 17 Feb 2026 20:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7519E9A03E;
+	Tue, 17 Feb 2026 20:06:48 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Wed, 18 Feb 2026 04:06:36 +0800
-Subject: [PATCH v3 11/12] mm, swap: simplify checking if a folio is swapped
+Date: Wed, 18 Feb 2026 04:06:26 +0800
+Subject: [PATCH v3 01/12] mm, swap: protect si->swap_file properly and use
+ as a mount indicator
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260218-swap-table-p3-v3-11-f4e34be021a7@tencent.com>
+Message-Id: <20260218-swap-table-p3-v3-1-f4e34be021a7@tencent.com>
 References: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com>
 In-Reply-To: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com>
 To: linux-mm@kvack.org
@@ -85,25 +86,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771358806; l=7000;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771358806; l=5423;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=RmCYZA5fOPzN8Ok6mc+EihDY+qlYT4Nzp3aMmwNhDA8=;
- b=up3YTmSAV9fsExsL7mQJThV10LYZGkNQazOsqxJmgM05t1yZjP5R3KKgz/Mnn0sC0K+68bFMk
- EgllSQjSXwTCyY/g/F6d4V1i41f5KvPore41jSZwnrGbSgEKZti4JUl
+ bh=OErUm6YzDXG8MUnIOgrfhhtTdULgZJzpg5xc2rcjJG4=;
+ b=KefXHGVHQAdLFCFWu9nqJfG3nJH7rws2nW9hIB7xb9Nm1CovW7LHFC1ilWbZagYgRGOgXBJ9F
+ i0WZsakiuEACJSPGsYv8bIL3j90aQTgfDsJQPU/voTO/wk/Fe3jfE8U
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: i1arysb78ixktgtjo8aypoi5ockgt8gs
+X-Stat-Signature: 7ndgye6yf74uajtk3oekd9ifzccshzu7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 088AA1C0013
-X-HE-Tag: 1771358812-644604
-X-HE-Meta: U2FsdGVkX199caJTP3nI5+FaTis4utiakCLzgLWS1SblbsRYkbjFY+BHL1uSe9cb7YO2el+A+AckWFUXiEsjW6XeU3e3MvTt7JU+klerTLd3e5Lzc8/NrqtrawsXeum2nxXSaTo+XZbYoZODwAKfb1QdsE8WNPlkhW3gPuyOgTKkbyLYZs8cgYDGcrrIKHEbiA6i1EWTqdUZ6u8gV/gSU+7FKmJUDc+9kjcrVv9iPWinIFb0axeX4pOU9flVTI5GzMxYzOK09+ats1w8R/W73/96wodTYLvylwSXpWCoZ64vBJAq6IDmnvkZqJhgPl256Ml3mV3qi8KADdnezw/WbvKkz/whtQiBI6LZWOxCO97PBRtwal635kSL6VxMcQ99b3NsbwO+ms+eTljtfrtZExSlgo5ueOjNoMYAA1MCCka29k93Bhb48IoBdaseNAv6sY3NvgMHPmAS7SxNW9s/or+UJH51m+8bllp0/1tgc5/J4qZLDhn4nROKRsZ9xRqUtnpIjErhC2dnCV9KqZr2diOYpC7jrkG7oD/Etr/PY5P2+tslbaorTJj+lGHXONPHQmvv7TQHkOsBYnO0BridWLNeHtSL78nZFLWYWiA81BPhEsEeuiJxCfs9WrPwhIqzGuY3EsMA5fn8d9Zbh3UvbJN7XT8he7QSPBsbli82bN18ZmkOW0cthwEVX5k/OlyM5ZDqY9MomHmn2sSGMH9xZ74/j3BcGKhElNqHy+zX1GyTE/VRfX7jLkYuxovPqpEnepDA9revi7jYyuTh2CQ7AbCMyY2p1WSxZNc0RB0gJe8Ro9rpCZg2w2qBU2aWNmhXG0PkopTctc0zFANfxJWamPG2ENA/nTRhOl88guK03omIPz/rA7QPVzx3vctsP9HGTAQ3SKTR+DqjNZvL3uvZDQzyNCeXQ6NWuPiOY1W6g41GWSSsUSNiS4flSMn7vbQrbrSRG5qhaHmXNJb/kCE
- sztJv9bZ
- 2Mdaxtvz7dbNOkbWXhwKqpEN4fSAg7+BKxmULuOSCz6IIYoumUtTIJDaOjB81dCQmBKL8zbzpIqRpQVGAf2YYRD8QTkMGa7t7V53FkIEG+8KrHRjwLnKb+teT588f9j24r0x37qlAsVlFjgQql9YZd51LJ1+zlYveOgoYYXT4pwA9q2hd77SuIl8uMoOZR8vVbLJIz6WoFNM+LCOybp9SofYhXsiIfi4Wswpesl3wEUQmbeDwRaxnQuoCg8me5YCi9Twidje+9oPNb3r1fE3G7lVwklvYb6MEMmZKuxgAmjDa5MbOYJpYhF2V4SiROv4khuGX6saw+sBWwefAQqETdgFufaNk7P0PRRP5w+KidqPHg0isN/gmGAEd2g==
+X-Rspamd-Queue-Id: 6746DC000E
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771358813-661233
+X-HE-Meta: U2FsdGVkX1/ngE4d6AbTs2plPVzMhAocR1sip8axijO8Vdk/bdX1QLzkUUo3RzjKd8CbtoRMwLGJw+0d0lp+PNnmyOyMJv+5XYNTNwVsSbbIm76EEqe5C4nIkylqsmete6naPQ67nxoPUTTiXJup6OpIArcKskZG/nrKlto5v/X178iLkEl6NTqvGPJYaGBb42fVvM1AHbZBSk84qkoq0K4RtkCcNVkJma1JEiH+gXl/q8Ez995Y8bcqepEz40fwLgT4QXMbiJzwlTtBkGMdYfviMLRJFmFlpGa0IX11hoGolS5YU2/2TcjycYVb2NPfoYHgBykKwyW/muDeFs9VHY3PrOFZXfERcxkx5QOkXPyqUHBrV8NLQtsJrYAEXhw7rTUfI0MQZA9RO3UMKIWpZgPLwngxGMUOER9Hj17USP2HL+xSqC/dK3XVqtRsYJrWZ03rsWzQG6daShE/hpceDDMA0WBGsyMoX3w5B3JHBi5oKGuLfY+p2BO4XDGcSQisLkWNL5GYVk4ofBks4UHrP1DFtguentDmN7ZByVq73VBrm1sZbauvNLIUWIP3JTfrhIp518ASsF+TaSEU6nR5sElOXvAYjcVoIY41BA6GW4OF823X5fOIeI7b/OJ0WbaCfMY1w+R4HeCp2o6uvCB8BYrVZw5y7BTMVhRozZXl44JkHMJ9TNOJlSBEFIXuEFrEc+x1MOhLH7is8A/14ww5qmkjapo4JmUl10hepJ5Kps4XAPr7cNPMTLU85pP40fg9MiuYyKz3+mzsaz3fNXHRz7ZILejw9CsNJF7M+wZm0D03dGEmlqFnyaix1hqH37BMkl1bzE3+wXsxkn7BkFak/Wg60PImpfyQZBpR1wmY/Frbzq14JvkLX3KDSNRjeTwRiJupyXz28foNH1M7zKaOxz0/Dr1RgxKB1y6RR/5CWXq5bm+vDAaeswz3+ZIjoKDXg0x6gn1rt8Zk9bT6j5d
+ rNjy13ev
+ WUOqO708kDGE8nMAYekWOFBk/OI/Di975digGkJBKYiYoD5AIv8kpEm33OdeIAK5Br2D7aImiDQ9nhUCl7K+YWG+DI94eS6JWhJ69e1s5hVa8WLO3KY4MdVOpn9NZW+aA3iMV0UvdOX+/+segcxpmQ2eN6Pu2yZViJb8RTzWki1fcf+vdjdRAq5PSlpH1bnRqxDAhoB5Xu5HNv+S7cbOytfSGxAXFgV/16Y97958rYVxcWo6w09/JQQxA5giuMzGLMpc8bVg/mKfsgxkrxs03xALgpO+Bw7rvr6OCEbLEEJFRuzj5TWLGIEdJJUTFMQMmK5St1nuwQxkAPFC2jB5LamEMzhP4Uk8U/fPFyIUZdNia67Lmj5XFlogfqlK0IPu9CWNoVMe1opB04HW9apRs1LY5v/Zmf8HaIAFt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,187 +115,150 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Clean up and simplify how we check if a folio is swapped. The helper
-already requires the folio to be in swap cache and locked. That's enough
-to pin the swap cluster from being freed, so there is no need to lock
-anything else to avoid UAF.
+/proc/swaps uses si->swap_map as the indicator to check if the swap
+device is mounted. swap_map will be removed soon, so change it to use
+si->swap_file instead because:
 
-And besides, we have cleaned up and defined the swap operation to be
-mostly folio based, and now the only place a folio will have any of its
-swap slots' count increased from 0 to 1 is folio_dup_swap, which also
-requires the folio lock. So as we are holding the folio lock here, a
-folio can't change its swap status from not swapped (all swap slots have
-a count of 0) to swapped (any slot has a swap count larger than 0).
+- si->swap_file is exactly the only dynamic content that /proc/swaps is
+  interested in. Previously, it was checking si->swap_map just to ensure
+  si->swap_file is available. si->swap_map is set under mutex
+  protection, and after si->swap_file is set, so having si->swap_map set
+  guarantees si->swap_file is set.
 
-So there won't be any false negatives of this helper if we simply depend
-on the folio lock to stabilize the cluster.
+- Checking si->flags doesn't work here. SWP_WRITEOK is cleared during
+  swapoff, but /proc/swaps is supposed to show the device under swapoff
+  too to report the swapoff progress. And SWP_USED is set even if the
+  device hasn't been properly set up.
 
-We are only using this helper to determine if we can and should release
-the swap cache. So false positives are completely harmless, and also
-already exist before. Depending on the timing, previously, it's also
-possible that a racing thread releases the swap count right after
-releasing the ci lock and before this helper returns. In any case, the
-worst that could happen is we leave a clean swap cache. It will still be
-reclaimed when under pressure just fine.
+We can have another flag, but the easier way is to just check
+si->swap_file directly. So protect si->swap_file setting with mutext,
+and set si->swap_file only when the swap device is truly enabled.
 
-So, in conclusion, we can simplify and make the check much simpler and
-lockless. Also, rename it to folio_maybe_swapped to reflect the design.
+/proc/swaps only interested in si->swap_file and a few static data
+reading. Only si->swap_file needs protection. Reading other static
+fields is always fine.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swap.h     |  5 ++--
- mm/swapfile.c | 82 ++++++++++++++++++++++++++++++++---------------------------
- 2 files changed, 48 insertions(+), 39 deletions(-)
+ mm/swapfile.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/mm/swap.h b/mm/swap.h
-index cc410b94e91a..9728e6a944b2 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -195,12 +195,13 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
-  *
-  * folio_alloc_swap(): the entry point for a folio to be swapped
-  * out. It allocates swap slots and pins the slots with swap cache.
-- * The slots start with a swap count of zero.
-+ * The slots start with a swap count of zero. The slots are pinned
-+ * by swap cache reference which doesn't contribute to swap count.
-  *
-  * folio_dup_swap(): increases the swap count of a folio, usually
-  * during it gets unmapped and a swap entry is installed to replace
-  * it (e.g., swap entry in page table). A swap slot with swap
-- * count == 0 should only be increasd by this helper.
-+ * count == 0 can only be increased by this helper.
-  *
-  * folio_put_swap(): does the opposite thing of folio_dup_swap().
-  */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index df2b88c6c67b..dab5e726855b 100644
+index 32e0e7545ab8..25dfe992538d 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -1743,7 +1743,11 @@ int folio_alloc_swap(struct folio *folio)
-  * @subpage: if not NULL, only increase the swap count of this subpage.
-  *
-  * Typically called when the folio is unmapped and have its swap entry to
-- * take its palce.
-+ * take its place: Swap entries allocated to a folio has count == 0 and pinned
-+ * by swap cache. The swap cache pin doesn't increase the swap count. This
-+ * helper sets the initial count == 1 and increases the count as the folio is
-+ * unmapped and swap entries referencing the slots are generated to replace
-+ * the folio.
-  *
-  * Context: Caller must ensure the folio is locked and in the swap cache.
-  * NOTE: The caller also has to ensure there is no raced call to
-@@ -1942,49 +1946,44 @@ int swp_swapcount(swp_entry_t entry)
- 	return count < 0 ? 0 : count;
- }
+@@ -110,6 +110,7 @@ struct swap_info_struct *swap_info[MAX_SWAPFILES];
  
--static bool swap_page_trans_huge_swapped(struct swap_info_struct *si,
--					 swp_entry_t entry, int order)
-+/*
-+ * folio_maybe_swapped - Test if a folio covers any swap slot with count > 0.
-+ *
-+ * Check if a folio is swapped. Holding the folio lock ensures the folio won't
-+ * go from not-swapped to swapped because the initial swap count increment can
-+ * only be done by folio_dup_swap, which also locks the folio. But a concurrent
-+ * decrease of swap count is possible through swap_put_entries_direct, so this
-+ * may return a false positive.
-+ *
-+ * Context: Caller must ensure the folio is locked and in the swap cache.
-+ */
-+static bool folio_maybe_swapped(struct folio *folio)
- {
-+	swp_entry_t entry = folio->swap;
- 	struct swap_cluster_info *ci;
--	unsigned int nr_pages = 1 << order;
--	unsigned long roffset = swp_offset(entry);
--	unsigned long offset = round_down(roffset, nr_pages);
--	unsigned int ci_off;
--	int i;
-+	unsigned int ci_off, ci_end;
- 	bool ret = false;
+ static struct kmem_cache *swap_table_cachep;
  
--	ci = swap_cluster_lock(si, offset);
--	if (nr_pages == 1) {
--		ci_off = roffset % SWAPFILE_CLUSTER;
--		if (swp_tb_get_count(__swap_table_get(ci, ci_off)))
--			ret = true;
--		goto unlock_out;
--	}
--	for (i = 0; i < nr_pages; i++) {
--		ci_off = (offset + i) % SWAPFILE_CLUSTER;
--		if (swp_tb_get_count(__swap_table_get(ci, ci_off))) {
--			ret = true;
--			break;
--		}
--	}
--unlock_out:
--	swap_cluster_unlock(ci);
--	return ret;
--}
--
--static bool folio_swapped(struct folio *folio)
--{
--	swp_entry_t entry = folio->swap;
--	struct swap_info_struct *si;
--
- 	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
- 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
++/* Protects si->swap_file for /proc/swaps usage */
+ static DEFINE_MUTEX(swapon_mutex);
  
--	si = __swap_entry_to_info(entry);
--	if (!IS_ENABLED(CONFIG_THP_SWAP) || likely(!folio_test_large(folio)))
--		return swap_entry_swapped(si, entry);
-+	ci = __swap_entry_to_cluster(entry);
-+	ci_off = swp_cluster_offset(entry);
-+	ci_end = ci_off + folio_nr_pages(folio);
-+	/*
-+	 * Extra locking not needed, folio lock ensures its swap entries
-+	 * won't be released, the backing data won't be gone either.
-+	 */
-+	rcu_read_lock();
-+	do {
-+		if (__swp_tb_get_count(__swap_table_get(ci, ci_off))) {
-+			ret = true;
-+			break;
-+		}
-+	} while (++ci_off < ci_end);
-+	rcu_read_unlock();
- 
--	return swap_page_trans_huge_swapped(si, entry, folio_order(folio));
-+	return ret;
- }
- 
- static bool folio_swapcache_freeable(struct folio *folio)
-@@ -2030,7 +2029,7 @@ bool folio_free_swap(struct folio *folio)
- {
- 	if (!folio_swapcache_freeable(folio))
- 		return false;
--	if (folio_swapped(folio))
-+	if (folio_maybe_swapped(folio))
- 		return false;
- 
- 	swap_cache_del_folio(folio);
-@@ -3719,6 +3718,8 @@ void si_swapinfo(struct sysinfo *val)
-  *
-  * Context: Caller must ensure there is no race condition on the reference
-  * owner. e.g., locking the PTL of a PTE containing the entry being increased.
-+ * Also the swap entry must have a count >= 1. Otherwise folio_dup_swap should
-+ * be used.
+ static DECLARE_WAIT_QUEUE_HEAD(proc_poll_wait);
+@@ -2532,7 +2533,8 @@ static void drain_mmlist(void)
+ /*
+  * Free all of a swapdev's extent information
   */
- int swap_dup_entry_direct(swp_entry_t entry)
+-static void destroy_swap_extents(struct swap_info_struct *sis)
++static void destroy_swap_extents(struct swap_info_struct *sis,
++				 struct file *swap_file)
  {
-@@ -3730,6 +3731,13 @@ int swap_dup_entry_direct(swp_entry_t entry)
- 		return -EINVAL;
+ 	while (!RB_EMPTY_ROOT(&sis->swap_extent_root)) {
+ 		struct rb_node *rb = sis->swap_extent_root.rb_node;
+@@ -2543,7 +2545,6 @@ static void destroy_swap_extents(struct swap_info_struct *sis)
  	}
  
-+	/*
-+	 * The caller must be increasing the swap count from a direct
-+	 * reference of the swap slot (e.g. a swap entry in page table).
-+	 * So the swap count must be >= 1.
-+	 */
-+	VM_WARN_ON_ONCE(!swap_entry_swapped(si, entry));
-+
- 	return swap_dup_entries_cluster(si, swp_offset(entry), 1);
- }
+ 	if (sis->flags & SWP_ACTIVATED) {
+-		struct file *swap_file = sis->swap_file;
+ 		struct address_space *mapping = swap_file->f_mapping;
  
+ 		sis->flags &= ~SWP_ACTIVATED;
+@@ -2626,9 +2627,9 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
+  * Typically it is in the 1-4 megabyte range.  So we can have hundreds of
+  * extents in the rbtree. - akpm.
+  */
+-static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
++static int setup_swap_extents(struct swap_info_struct *sis,
++			      struct file *swap_file, sector_t *span)
+ {
+-	struct file *swap_file = sis->swap_file;
+ 	struct address_space *mapping = swap_file->f_mapping;
+ 	struct inode *inode = mapping->host;
+ 	int ret;
+@@ -2646,7 +2647,7 @@ static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
+ 		sis->flags |= SWP_ACTIVATED;
+ 		if ((sis->flags & SWP_FS_OPS) &&
+ 		    sio_pool_init() != 0) {
+-			destroy_swap_extents(sis);
++			destroy_swap_extents(sis, swap_file);
+ 			return -ENOMEM;
+ 		}
+ 		return ret;
+@@ -2862,7 +2863,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	flush_work(&p->reclaim_work);
+ 	flush_percpu_swap_cluster(p);
+ 
+-	destroy_swap_extents(p);
++	destroy_swap_extents(p, p->swap_file);
+ 	if (p->flags & SWP_CONTINUED)
+ 		free_swap_count_continuations(p);
+ 
+@@ -2952,7 +2953,7 @@ static void *swap_start(struct seq_file *swap, loff_t *pos)
+ 		return SEQ_START_TOKEN;
+ 
+ 	for (type = 0; (si = swap_type_to_info(type)); type++) {
+-		if (!(si->flags & SWP_USED) || !si->swap_map)
++		if (!(si->swap_file))
+ 			continue;
+ 		if (!--l)
+ 			return si;
+@@ -2973,7 +2974,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
+ 
+ 	++(*pos);
+ 	for (; (si = swap_type_to_info(type)); type++) {
+-		if (!(si->flags & SWP_USED) || !si->swap_map)
++		if (!(si->swap_file))
+ 			continue;
+ 		return si;
+ 	}
+@@ -3390,7 +3391,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto bad_swap;
+ 	}
+ 
+-	si->swap_file = swap_file;
+ 	mapping = swap_file->f_mapping;
+ 	dentry = swap_file->f_path.dentry;
+ 	inode = mapping->host;
+@@ -3440,7 +3440,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 
+ 	si->max = maxpages;
+ 	si->pages = maxpages - 1;
+-	nr_extents = setup_swap_extents(si, &span);
++	nr_extents = setup_swap_extents(si, swap_file, &span);
+ 	if (nr_extents < 0) {
+ 		error = nr_extents;
+ 		goto bad_swap_unlock_inode;
+@@ -3549,6 +3549,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	prio = DEF_SWAP_PRIO;
+ 	if (swap_flags & SWAP_FLAG_PREFER)
+ 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
++
++	si->swap_file = swap_file;
+ 	enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
+ 
+ 	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+@@ -3573,10 +3575,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	kfree(si->global_cluster);
+ 	si->global_cluster = NULL;
+ 	inode = NULL;
+-	destroy_swap_extents(si);
++	destroy_swap_extents(si, swap_file);
+ 	swap_cgroup_swapoff(si->type);
+ 	spin_lock(&swap_lock);
+-	si->swap_file = NULL;
+ 	si->flags = 0;
+ 	spin_unlock(&swap_lock);
+ 	vfree(swap_map);
 
 -- 
 2.52.0
