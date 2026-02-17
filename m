@@ -4,140 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59836E909D8
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A942E909DC
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 16:48:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9497A6B0092; Tue, 17 Feb 2026 11:35:49 -0500 (EST)
+	id 427706B0088; Tue, 17 Feb 2026 11:48:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 921576B0096; Tue, 17 Feb 2026 11:35:49 -0500 (EST)
+	id 3FF056B0089; Tue, 17 Feb 2026 11:48:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8089E6B0098; Tue, 17 Feb 2026 11:35:49 -0500 (EST)
+	id 334FB6B008A; Tue, 17 Feb 2026 11:48:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A37B6B0092
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:35:49 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D0D01B42E4
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:35:49 +0000 (UTC)
-X-FDA: 84454500018.25.CBDA8EA
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2552A40010
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:35:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kNQP/hWL";
-	spf=pass (imf12.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771346147; a=rsa-sha256;
-	cv=pass;
-	b=4F+LDDvyjPnBx8x0QLvC3WZPopI2JecXQ3Z1N0lsj0jpzz3WXlSF2Y33yH+dbT/0dNyyi2
-	TTC0ammphBhs1NDwxk725OL+PFZnsQNrVKL/mN026KXjIei5HQI8aJ3l/+mlrZoFsQMnB8
-	dR2T7kHxyOJpvsvueH9TlNqNAzwdNgU=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kNQP/hWL";
-	spf=pass (imf12.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771346147;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ACAC6B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 11:48:58 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A798957C03
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:48:57 +0000 (UTC)
+X-FDA: 84454533114.22.A3813EC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D38DF1A000F
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:48:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771346936; a=rsa-sha256;
+	cv=none;
+	b=HDYu5ge+3yqK68G/Rni5Y5jRpfZCdFDbl8dEE4HS2xdZ31P6Fe8LnDCJ57hNizTTGaMsF5
+	YjWNKiVT7DedWTlR/aOKLlCp3A0JGvQG4YCT8jdPiBmmeyZE1JgmF3kJ7qOTMKl61xztk7
+	KCwy+XEQur5fIE/P5xb4yAik7yGsKkE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771346936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-	b=vHMom6zdNis7Ir6hMPNf4k3wgtd9WfWwzNKSACmT8VUeXRIDMnGS6dAHBDrSh5X6pTQ1EU
-	8FZlYOqvXb2OXlaKo1fMteIg9AY7RRHoIDprIYo+Bi+djyLNNNSdj5n8OXqIGJNG7BDCat
-	RclNSp0mzU6t94xdW12Xzg7H3oBUXrw=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65a38c42037so22688a12.0
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 08:35:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771346145; cv=none;
-        d=google.com; s=arc-20240605;
-        b=crwiyKNjiWHHW5ada0y1mmVvNmpXcrVl7MY/aCIJ+ms65JFa8Q3of6iC4zZChDFbBs
-         k8Y/vgEtlPRhoT4vvDHbnN611BU3ydYM9UOpxdSNz8SJD3Lk8fQYL7ViIeUmH0lK2fwk
-         nEkGApD92h7NAhNCgqVKuPr8pm5+o0SE9DRlzDdOuQ/VqiAcW3jjv6A3LRjchHI9x001
-         868qxHtEGizn/H99APnqYtxiYKziQ+0nuEqbTpCQVa8+/gWaORxJZ5tRJR2i7yhizNEa
-         hipdGj5xEdeWnQQJeLs1kMpVKvE6HJG9yTzxgTarM7KnVlG5skKrkx55tvL6IFBopKmB
-         9UAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-        fh=GPuG1wrZAPhvMXKDX5eAoj6ntyG5tTzhCxyW9ATvVc4=;
-        b=L+5YGbtLmfzIs6FVDOVmc13NHw04PvxpNVrrVmFOpwmV23M1Muzhf/ElCZgWlc3lCz
-         Qk56lzTBXq2vVixg0dn3FPnIIiw1YdGFhtEC/kVM4muz4OxV9lkN+bxHTXEdiyNSGC/6
-         2APEUqkSfFZ38p85r2unnU2q4iU3QHoPIqTIYOOP8jMlxvqQC2l0wUlBqhd8OOR8B7Un
-         5obhIMuzsJiyKm4MAMX4xxoewYcB+IaEoiLN6axlhSgfWIOnGdE6lj1SqxaW8iSAtH0C
-         06IFHkSqQ39zxYX7hSKgEj46cALWwM/9UK72lKg6CDOmITRb8CS4Dm85d0iAS+NTHXjU
-         nIgQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771346145; x=1771950945; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-        b=kNQP/hWLSKh0GzeVf5O54ZlzLIfTzckjss8tJtgt2BQkr9I4dPWtyh0a2SWo+P6ZWN
-         H69KaprCG3QaxFXBszmmBl5DXBfDI7v33yITGeySBUA+2ctqik7o+4tmLrjWR3WdISxA
-         U9NlY/0RYRkGky0jLabdXKiuxNC2lwfJjGsGBKTL6/qKtaKjo68pA5t4C58fzKIMjh3M
-         6PTisD4K5hfpfb1lbgOPnSRC4xTAvqciRc8E2Xr/bhfZat/Ls8+/Rjjb5yj6ZveUj1o1
-         DCJ6BjeEWghsPiHgoSXXDtt5eiz77nJo0Nw7R4pCWZN7aRCls0gKcZcgcNaJR4CehUQP
-         WV4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771346145; x=1771950945;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-        b=Cymow7a+NmXclw2ry3mlO/SSC+8LX5HFxXY9gRwWiIy/Nungx0yQRam7mOtQrwLI9j
-         jZEPh/9ENC80R1srzY7EaSoA5ahYW4NPjdM+gVxo9eDeJaWDQYImqshTTIEV099ADcRH
-         FQ0m5Z8KHo6xbTsh8aY8nJGoc+BFkeRWLUnTB9gNQY3sHKGwam854u3zQz5zI7/b5ZZl
-         gkdvjrUsV8L+moVbe8r7D1y7jJu3j6fSrpgVrrkMLXorLuRGSnMGNumMii9CVBFgbCJU
-         hWlMLyl5Ylee92D2CnAdm/XSGVYw6qkJYoFbtkIkzgR+lfeMjqIRRK3oS0PnpxtgAME3
-         4DzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVBJJ6LiP9zrZih+cW2jMH7hnTjZsHru/dvLrIOCkK6J9bqkvx710OU5aEpObXe1BJYDq+Kc+rfkA==@kvack.org
-X-Gm-Message-State: AOJu0YzdF3Ajjgf/qktmnXSe+ZEC/SIqoyrnv+7ksXtfaXDbd3YTmKyi
-	E1YMo1ocDdJBZxU+huFieXw0gzL00jo8hMlbkWxn1dIpXdM+dXf/E1CyQXCKYlPSGxHs3qYYKXs
-	JpkQgkZrxok6ykWR5AwRDacwOIo6gDoLCTqwMCTF6
-X-Gm-Gg: AZuq6aJpw1qdcYouj8+cozKABtkwIJlC7THFQUrEnl8Wo60e7IP3nJfQ9nyYaXAF5hG
-	zPWbe0/GcPfws7U1h9j9C4+vt/UML9o9Q3K8JCRxXdtn9v+0vRfZiTyUcaBGwWFBlVBtzMmMgpA
-	VhYXD1R2lqX+mZmrNZFcPJHtPnNMBHoU61D00lLV4/39fHWdyBgXifoS9JUsnNJBJMhMTYM6XXv
-	DYK/eW9nfzar0H9c43a4QH3qmjTt1s5U2ZbbIa4PcZoA8HmeSuKR7oVSsQ1/Rhr12Ap6RvzbYVW
-	IhwOJIQQ5wX0rNBwi5g+pSPnXgHKHpXQ3iwKibVxqQxBPmxF
-X-Received: by 2002:aa7:d454:0:b0:658:eee:f21a with SMTP id
- 4fb4d7f45d1cf-65c149a703dmr56554a12.10.1771346145107; Tue, 17 Feb 2026
- 08:35:45 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vZr4yoO4SgYfJQgJVvoR2/M6Z9qi/RI9xdeWmpjpuAE=;
+	b=SoK97E8yAPwyU80BYt9ZjvGXgq7ev/JVvnxBvyxc2/7mEh7NvlF2ZHg/gHrabby4ovw4pi
+	6LBx/WHjbVz0dsue6QIZ+hcFeVmTvfeospDWOJghvEjVMBuCOClL7VlISWnKjzBVv4njD9
+	PiCvj2HU+ZWfzCDkdKKuXyK5V7QmU6w=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F4101477;
+	Tue, 17 Feb 2026 08:48:48 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C339F3F62B;
+	Tue, 17 Feb 2026 08:48:52 -0800 (PST)
+Date: Tue, 17 Feb 2026 16:48:49 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Will Deacon <will@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, Jisheng Zhang <jszhang@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, maz@kernel.org
+Subject: Re: [PATCH] arm64: remove HAVE_CMPXCHG_LOCAL
+Message-ID: <aZSb8VbCC471Cw1X@arm.com>
+References: <20260215033944.16374-1-jszhang@kernel.org>
+ <aZL46z1UZkQlF3Dd@willie-the-truck>
+ <89606308-3c03-4dcf-a89d-479258b710e4@arm.com>
+ <aZRyzy0SJ8uF3K2J@arm.com>
+ <aZSChrCVnoWSe7h0@willie-the-truck>
 MIME-Version: 1.0
-References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com> <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com>
-In-Reply-To: <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 17 Feb 2026 17:35:08 +0100
-X-Gm-Features: AaiRm52oKTHP34zclQj7ezY1ha5t7IvLtrRKqEuUAhNd2ttiDd3hEDLvSQutZtc
-Message-ID: <CAG48ez2O=_Hd7EjjLSAh36xtOMyX5MZ47xodWkU3FyEar63TnQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust_binder: avoid reading the written value in
- offsets array
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2552A40010
-X-Stat-Signature: qyamzxoz83itpywtbtu6rhxj1dayaffe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZSChrCVnoWSe7h0@willie-the-truck>
+X-Rspamd-Queue-Id: D38DF1A000F
+X-Stat-Signature: 9qadq9t3dufap466ees5pifp4kkj5thf
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1771346146-515857
-X-HE-Meta: U2FsdGVkX1+PD72xSuM6lndJ8bsFCcfoJEtOT6EGb6A+vmP3EfUp2aMKP+o9SixuJOJEhbO1W0Ene8rm+OzsaHpyFX8r0Oxl7i8E5SsgGfnd7FVl9Eabc2MoIUx8s/g6rnfB7b3Io9m5o5hfQfjXRXi6S9gyTjn0f+fO95n7XrF2LNVv2YFwFAp81leOFT5x7Uvv0xk0ljc9kFK3tGBan1WrUSFwuH9hY0dI5FEdiFhxzl7iPrL5xf9EXF21vX9Ypm+iiP994FkYGUTb8Q1AtZ/hH3kmlAGs0hDw3qxWnmZtyY2LRzo29DWAohsgzVKodAnYUViLmW6ovbqeoZ2aQHfNAJHivI77SBBBOM8Pox76c3LUj4WPjqyTvUmcyaaZEpbfqByYp43bc/rzz5z6GRcrsPraPD8COX3TM2X+oln0ZEJBnwEAqKHlnu/5+gB2CKNXzQGRwfR5fTxJBPZ3HToGGfDvqulVp3kwDliE8NFiYEOvf7iDW6apAc5qQnke9IiCi1JgaiLd9Su3TB7Bq/hdyewEcsyJdMVCgfBJKAzGi970tZkDBkfYX6D3nKSLpQlWSyTIFyX3i4rIIYnP/PmysEzIvqujMp4a6J1+JFh79g3OKu9P6hYdRk0gm9/UHTsw6r6eMMvb0cLUYI9FBfMvaBmecAV9Xw2ps9p6c0G6lY+c4HkTo4I95GeO2sH2XD8foX5Xa18VD3tnGVY+d/KhbZuIAlRWpZV9PntpoO5sxOo+YuqrIN7/JRpkl2P+kBvWg2HuNnul3qTc7alchyZmZOa4n4H0E+GeiTseVGk+JbF+od41pn4IDPDEqA9ESUAOWbDZnnewf4DwHqwFmfQ90g+hvk20SXYBnFwjU0PsXYY2Rg2Chd4/AGhiP5YLPZml4bLSt6aifPEReVlxh4YKaU+bhZp1Wo6UzZDfwjRypMaSbFA6XSZCuGQ5vbhlCrGVXnw0UqAAglWLMpL
- Ie7cyPBx
- m6m5A3mhZ7TqxgOeEicYfUGMufXW3DAv697HLXvaVvZr62XtfA8EXihiMm7G6xHsNJ9/8hDRXkWi1HO7OId+dkeD2ANsxUhtk0ICs4Jn384zw241UusUc2s5AC6VXRvCj2DOFpiMZr5BhsADT8pWiuje/achNTktGWjpEN1sjshOA3vwWRFM/RdoVrr90RoVSo3UIVHXc5glo2r2cDJdu5Gf6KgHNkVilObHN0tiJppC7DGjHCcrfdfha3qDMeI2mlLgLe/fzBm6EAEZdrrsBr1rYGI4TNjixmXVziXUCja7eTtJB0nWg0e+bKxbrO1kYGlSGakMlsZGxhdY=
+X-HE-Tag: 1771346935-902140
+X-HE-Meta: U2FsdGVkX1/JoRrrJFj0Bd/8PBVWiKNT9gPJqGqevB1MaYyc5Nhfl/5cGtbYl9RmSTVzM6GG9byY3hP6G786Y67S4qXb4QwZVIYR+otKKZhpL2MUs/2T8Cs6uVCxOFTvysSdep1UhYZ1b5ZgvOUIZexVGH9X7B77LNH3cB5eng7SzIHLH5r9g6p83ONbQAJRY5z/skBhwAmfyIM59dQ5+9bcutMEfzk9vaSEOjiB0GEladUKo5ypErCxQVYpE2+Zi77gD7VpXnp/KJy2PycjvXlqUckdwiUsUOVZVI47Hf40DcKCapR6fpsU2WMpHVjyR+6adcVlRvKkRy/whFnK8EzDco6KaKKWbaLnxpmC+wj+gksE5o8h6DGRVBjez6AiM7KS2HArWNBV8xb/SXH9JSB3lE/C6EJanDXPh/oF0I3UUg6365XDEvjnId1DcRA9FZ3tyDV3fgwJAuGpBIn+b0VrgE2PaQA3w5erXbCRMoKTRJBl8Fo+juyH8tbXDXIvBHQkCGIXLPlrWy8WkC2WhObUR3iJBtXq9x6w6hvVam0MNOazVYDIPAm0SVpoH2N56lUtAdwH+/0FUJuCkdyV1JD2LFJezUqu0AREjSMta726pWxr3m6HpMS9n3NRhMpY9C3bKn+A2evuXOMXveg2UdYBom+X2fOKYgWKbgKo6POCJ29x3zH0+L5qQhzWC/NzWVG6Ym5Mz+DjR37Pmwcpmkf468qR9O8/f3kM6A61XNy9ccLqJt0UxiWIocjmE8lZK1MfOPb5KSny9SxFIRCNSqpnC3JN39+5IiapWuNH1kMMBHbJeel8DlybxYQp6pcgHJ2uhKDfT/FFTNz2FhY0a9Jdhe1nXSUGxE2rtCfA69kVja7ro1ksUEzALlmZ2I8L9ofyKZRfmAbCVMfZCUhL2DMos3WQrtfH98P6buSUVUtiJ+kGeWLkaB29dJwnHEYQLC4qBFcb5zjl9z1olS9
+ NAupzaHx
+ b0AFlxPlAMThuA6GOqyBu2rIC2b7FyZTBFEBb8dtC3SFpjtONBU23ZTfvSrrBpFsJwAXHANzZH1BrSzFGEO2uaUL04ICAuSMiV2Z+hjZ5aU62sZUntUG30gat1j+bSpImhUC30UO7QA56fyYLvwF+cN5tIlbz0PZhTim0c/fCYCfMocK9LTb+QzBdZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,34 +89,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 3:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> When sending a transaction, its offsets array is first copied into the
-> target proc's vma, and then the values are read back from there. This is
-> normally fine because the vma is a read-only mapping, so the target
-> process cannot change the value under us.
->
-> However, if the target process somehow gains the ability to write to its
-> own vma, it could change the offset before it's read back, causing the
-> kernel to misinterpret what the sender meant. If the sender happens to
-> send a payload with a specific shape, this could in the worst case lead
-> to the receiver being able to privilege escalate into the sender.
->
-> The intent is that gaining the ability to change the read-only vma of
-> your own process should not be exploitable, so remove this TOCTOU read
-> even though it's unexploitable without another Binder bug.
+On Tue, Feb 17, 2026 at 03:00:22PM +0000, Will Deacon wrote:
+> On Tue, Feb 17, 2026 at 01:53:19PM +0000, Catalin Marinas wrote:
+> > On Mon, Feb 16, 2026 at 08:59:17PM +0530, Dev Jain wrote:
+> > > On 16/02/26 4:30 pm, Will Deacon wrote:
+> > > > On Sun, Feb 15, 2026 at 11:39:44AM +0800, Jisheng Zhang wrote:
+> > > >> It turns out the generic disable/enable irq this_cpu_cmpxchg
+> > > >> implementation is faster than LL/SC or lse implementation. Remove
+> > > >> HAVE_CMPXCHG_LOCAL for better performance on arm64.
+> > > >>
+> > > >> Tested on Quad 1.9GHZ CA55 platform:
+> > > >> average mod_node_page_state() cost decreases from 167ns to 103ns
+> > > >> the spawn (30 duration) benchmark in unixbench is improved
+> > > >> from 147494 lps to 150561 lps, improved by 2.1%
+> > > >>
+> > > >> Tested on Quad 2.1GHZ CA73 platform:
+> > > >> average mod_node_page_state() cost decreases from 113ns to 85ns
+> > > >> the spawn (30 duration) benchmark in unixbench is improved
+> > > >> from 209844 lps to 212581 lps, improved by 1.3%
+[...]
+> > > > That is _entirely_ dependent on the system, so this isn't the right
+> > > > approach. I also don't think it's something we particularly want to
+> > > > micro-optimise to accomodate systems that suck at atomics.
+> > > 
+> > > As I mention in the other email, the suspect is not the atomics, but
+> > > preempt_disable(). On Apple M3, the regression reported in [1] resolves
+> > > by removing preempt_disable/enable in _pcp_protect_return. To prove
+> > > this another way, I disabled CONFIG_ARM64_HAS_LSE_ATOMICS and the
+> > > regression worsened, indicating that at least on Apple M3 the
+> > > atomics are faster.
+> > 
+> > Then why don't we replace the preempt disabling with local_irq_save()
+> > in the arm64 code and still use the LSE atomics?
+> 
+> Even better, work on making preempt_disable() faster as it's used in many
+> other places.
 
-With this, the only remaining read from the ShrinkablePageRange is in
-AllocationView::cleanup_object(), correct? If I understand correctly,
-that is fine because it can only drop references on handles (which
-userspace could equivalently do via BC_RELEASE/BC_DECREFS) and on
-binders (which would probably also have its influence limited to the
-process)?
+Yes, that would be good. It's the preempt_enable_notrace() path that
+ends up calling preempt_schedule_notrace() -> __schedule() pretty much
+unconditionally. Not sure what would go wrong but some simple change
+like this (can be done at a higher in the preempt macros to even avoid
+getting here):
 
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 854984967fe2..d9a5d6438303 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7119,7 +7119,7 @@ asmlinkage __visible void __sched notrace preempt_schedule_notrace(void)
+ 	if (likely(!preemptible()))
+ 		return;
+ 
+-	do {
++	while (need_resched()) {
+ 		/*
+ 		 * Because the function tracer can trace preempt_count_sub()
+ 		 * and it also uses preempt_enable/disable_notrace(), if
+@@ -7146,7 +7146,7 @@ asmlinkage __visible void __sched notrace preempt_schedule_notrace(void)
+ 
+ 		preempt_latency_stop(1);
+ 		preempt_enable_no_resched_notrace();
+-	} while (need_resched());
++	}
+ }
+ EXPORT_SYMBOL_GPL(preempt_schedule_notrace);
+ 
 
-Reviewed-by: Jann Horn <jannh@google.com>
+Of course, changing the preemption model solves this by making the
+macros no-ops but I assume people want to keep preemption on.
+
+-- 
+Catalin
 
