@@ -4,95 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9F8E909AE
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6306E909BA
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:15:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA2996B0005; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
+	id 04C006B0089; Tue, 17 Feb 2026 10:15:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C50AF6B0089; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
+	id F39AB6B008A; Tue, 17 Feb 2026 10:15:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7D4B6B008A; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
+	id E3B2D6B008C; Tue, 17 Feb 2026 10:15:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A68576B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:13:17 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33B9414020A
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:13:17 +0000 (UTC)
-X-FDA: 84454292034.24.DE37C21
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 34E8D120009
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:13:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VnqbbF+9;
-	spf=pass (imf29.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4E26B0089
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:15:35 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96516C10B6
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:15:35 +0000 (UTC)
+X-FDA: 84454297830.23.DC39282
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 75997140008
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:15:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qRK9Hocl;
+	spf=pass (imf23.hostedemail.com: domain of 3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771341195;
+	s=arc-20220608; t=1771341332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vq2VYtNt9BHHejz5SzYiF9BUmPa65oXSMfvKZWwDMwY=;
-	b=je0zmjV0fSf4Sb9BjbVC+vLzvTrI1dLW9xu/PBT2LNOquORDaOrVHmj1Nwm3z0USw61Ctl
-	CS64cEx99fRiHRGl/6QOLnEWkSlpcxRecDPNY1JgjhdbrGgtNWUhmWp87j6eCTwJyYWfEw
-	e+mCmp5LQ68DktnZDXCFkd3KI5acbTU=
+	bh=HPh5d8pZ0/N2pmYYWL0hS3cj+T7x1Qno8FKMpGo1Eao=;
+	b=0wSDGHd2yD5FUovHcbhiEaRbRKoOaYhCdcAjtwjfOWgBzjOGmyMnZDSkKFBYadi7yyRsZ2
+	NLVY9ueyv6jLKcOzCGeNNePEi055hcLtrxl768gfckU7ze+nPEyO9EKD81ThuXSlvEUWyZ
+	M9TkC2L0jbhXVTPAeFBt69ftMHp6+xU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VnqbbF+9;
-	spf=pass (imf29.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771341195; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qRK9Hocl;
+	spf=pass (imf23.hostedemail.com: domain of 3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3EoaUaQYKCMM1njwslpxxpun.lxvurw36-vvt4jlt.x0p@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771341332; a=rsa-sha256;
 	cv=none;
-	b=APiQo7SBLio6HCsfyHoBv5E5CrpXyjO83zfQLPen9IpFOA3sBvXKNaJc92Tbgo1Gr4GWdB
-	yxyM+ILWIb9oQFw50doFOJ626bOGjjzf4P7JYmqLphqBJqt41j6+/XJlAFzUs3hhOJGhO2
-	GAfSui8y+QJLoXvshsMnKaEAjGfvOCY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9E05B60128;
-	Tue, 17 Feb 2026 15:13:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28159C4CEF7;
-	Tue, 17 Feb 2026 15:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771341194;
-	bh=q4lpe0QHbE4GGbcGYoiqsGdbAX3UVPzDsH/s+Fwz5I4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=VnqbbF+9M1KozvnJynWTRyiwnmd/bz3qGOF+wNTRpsj/o6hVklSmzdEwa+L5Gq0SL
-	 VMauwQDNwgydoo5TUdMDL+5/ENQvyE6lwgJKcQrW3Tpr7PpBQaYrc8NAPdh+Uw8Sxq
-	 quzTc9Z83wPZVS0BQSCIOiYX0vdT2vaEO88/9weIzA3Qm70l6OcVE3BtI+HldcrbHm
-	 qAxZUU8xowd9rWZe4oaaJ3RDzctOWV1r8QNXafUrW9yNSKOULwgLs3RQRNJf4kZwwN
-	 7RqvjVOXbBuYrSgjDyNsT89aig5ykpzYwPyx/DTj/G/4FRHgl4ftx0NdZRBxwX58ow
-	 7xd2KJRVaaYyQ==
+	b=2f0pn5LSfBYFBxhcODGArErskHuGuBeb5/MJ0GJG0EeCYKpPEU5mgk6O/S35sRS7BM2FAv
+	PCPl2TxQ5c4qWbXsbTUG7JRPUXzwpnVyxboIiIs/hi92gE4Ec21mJEQc6eyzbzLe97bZVq
+	802du+iaPMaeC0MbjaqWYMZzL0HE0zA=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6e78c4aa50so955829a12.0
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 07:15:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771341331; x=1771946131; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HPh5d8pZ0/N2pmYYWL0hS3cj+T7x1Qno8FKMpGo1Eao=;
+        b=qRK9HoclYLt3t6/ulLLYqHJbyF0/qEjhYiQjziSgixyIj0qTGZSGF8esDYPauIqmWS
+         SDIVp1D6Ri7g1X+fQGuF9JfkKN/LCg8W3AbzXx2CPmaa2+NquxS+agLOFgEIDcTl5KlK
+         b2XDhE3CNByKXL7GHg1z+H8koWGeV2Luw+XLYjN9jZ/UD1GKSfXYLG5Yl66grnRkwfEa
+         uuhBk6N9onAO0V/+D9FqKQP5EwsD+vTlAlpJE0aqpTzG/9znoh4vLpEifP/k1bBplRu9
+         QYe2KfhcLGc5q956Wr7kryRYJjXQZWetnfOOuO8FBQvymfXPmpuq4Tz59ZnvGbmqdqZv
+         4VmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771341331; x=1771946131;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HPh5d8pZ0/N2pmYYWL0hS3cj+T7x1Qno8FKMpGo1Eao=;
+        b=tms7xoz+BCbxqX8M2/Pa8cXbZ7HD99H/SON5F7RNo9K4yFh1FdVjIDpqrdspxYdfYU
+         JxnnlXlLFDGtq0mRjOmMJFLHh7AC5Su4UkTOqs7x0sDcOVD8ZaiqXm/IELgFTY8sYcMT
+         r86baNZPfkDrEzioXcmwGRLnyCem0g9SnB+cZ3kF/vlJYzf5DFqPhhDChvRX6MiCkUyj
+         qGLiXcnh0OsxnO+Pi6lOkfQ/dC4/RfAAHpYZZLTDe9BoX/EXe1wQvQ2mzMmPYT7gZM+T
+         3wBZEqYa1iqVigo88bTIj30UbLPIYjhpNQQ8jivUMN1lYFuOFBBA9U4WnE20P6s4lnr1
+         t5QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7dy8hp8XFRB4mzYHCsLmfgCG82QFKch4Vd1Ymq84INabaTbiqu8H9rfkaSDpbjfpDI9/RqG3OWA==@kvack.org
+X-Gm-Message-State: AOJu0YytaCvBQW5bKR2htq4mE1DSSKhBxglpL/kFDtOkImvaw4jIjv6A
+	ktLPCT0hoLfheNJo+PHKizZebEuf9iHhZ76yl3DJ/OcYGPOPfPBsaLT0bqrM2jsXhq7bwbloxBp
+	cZHAHBg==
+X-Received: from pgbcv6.prod.google.com ([2002:a05:6a02:4206:b0:c6e:2a5a:51cb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e347:b0:35f:b243:46cb
+ with SMTP id adf61e73a8af0-3946c6df211mr12345864637.12.1771341330830; Tue, 17
+ Feb 2026 07:15:30 -0800 (PST)
+Date: Tue, 17 Feb 2026 07:15:27 -0800
+In-Reply-To: <20260217014402.2554832-1-ackerleytng@google.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Feb 2026 16:13:09 +0100
-Message-Id: <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
- <cmllamas@google.com>, "Jann Horn" <jannh@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>,
- <stable@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
-References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
- <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
-In-Reply-To: <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
-X-Stat-Signature: etkbm6r7np3zzkzwtwa319tdmmpiu5ai
-X-Rspamd-Server: rspam11
+References: <20260214001535.435626-1-kartikey406@gmail.com> <20260217014402.2554832-1-ackerleytng@google.com>
+Message-ID: <aZSGD-EGSR3Z5Qyi@google.com>
+Subject: Re: [PATCH] KVM: selftests: Test MADV_COLLAPSE on GUEST_MEMFD
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: kartikey406@gmail.com, pbonzini@redhat.com, shuah@kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, vannapurve@google.com, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, 
+	i@maskray.me, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, shy828301@gmail.com, stable@vger.kernel.org, 
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ziy@nvidia.com
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34E8D120009
-X-HE-Tag: 1771341195-58325
-X-HE-Meta: U2FsdGVkX19ghtyr0u3GT4fDXzweqscC/+aI2FEix60eKgsQdhZyj45LqhGAZNtoL4Sgq8vboZnoIxA4KHOxxfXsZPKACYs6RYDb5OoJnZ6vpRoJSzkpBh/EjI03xBAb1aVR2O6Dm2uOI44c+8VtpaMP+y+JW+/C0G0gDUYW2m/36gBVmenyFDkx/10FU1Qo473Khe7O1Dj2Y/ZMTZPcx1kLGF1EtXoKDe8i4eHQrnnK247x2Cs26vinmfjQ12KMBFfOQsoJXCQT2gzXGc8cPZw3lkDV0Ty0GpAyPDeJxUNXIyEDlhZssJ48XGXa/GEkgPTZC63rZ1LUANPn00Bsvdup1q3PmElJqOPdQnmsvfwvJlBoo6zFefz2G4z134uiH6iMLvrp588Xk4Qa3iP9XxXlalolAsHSZL7X0NIzViD56O65pOYzC802RCn3PS0CVaSisNyfgypg5VO2eSjEkZpTwpWjSR3pUL2IkWck0+9MvGB1fM/l/MoTVNVTX4wCKFwOI2+QjZKcqt55TIn/jl4k8KnS2q/be+i0rT2Nx37jX01XCcbZXG7APfbXOOPFK9bzPMTDw8qYAWzEmMOpooUENJiqWyUfDcRks+/XQWJkKJe29wPXV2TOjcr66LuhU/jXOr2p+19UdJmcKklLgTRcBUKjZxA23LHIq/MSgAqm6VWiPManx7/iRnWlB5cbA176xELp59gOV4t/J52f6Ijlexitlg7pjP8jYOrd9c3reP7Lsyz5KwSf1ddx1knfcub5UL8TD4t1+sn/7lROJedAMubL/+d0cxCF5jnmu5F7GBpPU7ZHIogYxYsMCEKbxaSs9wGw9w7utOagez3aYPlCrvNFfILkAo8rt3VTx04GqJ24wh0tbI4l+iK2Z80yUgYg7Mg3JMncirqRuUJ/+HHjNRS3B29u48QRYXDjzDXKl0p+qMNxgpkEaSvF+DRpFDuNQpbuULCsf/Y/IgQ
- b6MPQrks
- nsWMyxmIotxjEbWE/e7K0r0zewRPWiKdTuvZYkYnY1nVwbMXKWZxQboSfgThea7gWIYqu1XcWL1+Xp6m+ggwRxk9x3obFFPJ3Ln/F9th75nWB7xxQ8EIVmNheWKXDIPKvNfyrfgZcg55T56IleKhL0Hv3Ns+I4bMWxK8+iOKu27lIvCsuhezcpSpoqfXdqUWUetO2Vc9ppnL8YYS77WgYbf790zuuGcM6T5yeWriew1VPZKOqgLVbG5SeLL9uCtL0Z+kSllEXnsMTKtwvPA/MDRnQtJ/mTLKIUGWXKGDprmr2FMzR5thNnTjleiFRdVoLCP4ICu/1jqCsonXwWT6f5jVboH9Gl5pw7lNn3sDHiElOpZ3mmtmX3vR/9Q==
+X-Rspamd-Queue-Id: 75997140008
+X-Stat-Signature: 68wdbhddibs6zjuxxq8xy4wcsg8ukr9n
+X-HE-Tag: 1771341332-974998
+X-HE-Meta: U2FsdGVkX18twUmz2uDiR0fLAlNXHGjHHmVjgo8you0WI3Zmvrzg74ia+BT7mWV4ULjB4xI5zEBLGO5DjxaaieYYPFAivUC6uHbFx0oG33wRkcm/4y+tOb11gM6mEhtc5kcUB/6HCI0LjuymJ9cIShGgXDXvHU4Xn8EpyIEGeTGox/W8VnbmqtVPz3pFmj2iADZB6CbKANh9kj8yh19cgjLVLnZfoAFgbok2woug7HWQhkUiLXAGy3jsnkIEFIXMKEvT5m81x0m7cxgCJ6aYe2NE5lyndot//YncIH47ynxVAuL6X3ANkTD4rre4rymGM0T/09AEoCvAWGp8vIqm2z4JKx45GaE8AkvKCQbn0//wZTSf0EDSrnwY7Vla2YBp2STy0QtmOCcutvl/IXFk5B+htJpq0BWakxePEk5OzzjVgw67Yy0sWMAkIwAnn6SWoIO/+LCcPPI3Aflqm65UkUZwU6iB0CVwPy3cT8E3RG+jLHniveXkIpV2EyZckCuMcglNM6Qj/lIVt0xTBg60o/V4shNQE8Osh4eAmrxQusw9tQ5C8Ume02HoSGcPqAJIljj1uKimkgxKiPQzbHFKGtrMvMUPcQuHFrk6xSasFCM1egzAKjMRwW4z463cR+s/EG8/BC8sJelkyJ9Nfd9Ib5mGbRAaglgixoZdiRC6uDCrBSuNfpZwM+PON7WYb1PAd90UqgZh9/cqERGb62xUCX3CMw97eT0Tj3HxLReaT47cglEnE/q+CzLpcdV8L13VKE1IZEoIBfrizb43yAM/9duT1lblAIVX3P3LsYk0EHH7Z8fp1YpDkFx4XV02Fh/Cht7Eiifv/stC/b/tjYu1SIG+CHmrWTJrwhWGmPFsdzRT9xur7Kh0OyAJrJdlghgUTyUi7zGVRGYOBQrd14QdpQ+y1qd1pyQVJnHQ3Pj5Ggm+IXNW4zu+HqJlC4C9x9aijOUXf6gZWjHHkh4QriB
+ XedYvguw
+ dQzv3Al1YC+TPTxbGvnbUV+MOamRScgfTKy51JfWkDSFeQ0PJJ7paEQJWVV8arHcDamqOC0HX/X4tcfytRrJ8q3S4shm1JDOMZ/HltcY40faWome2m/ByoBMVhwDMZ7HVy7KtTEnUve+mijqhd/pChISlPKuW9dljaNq0+xQVm15diwhjujsDJL0K7aidrVsJTr2q+Kp32P7H1CrciPAg+H9+5hEUpbPB08FCT/cTv6hox1E+wz1gRbSv+eGO6MwrKgL1ks8dulCWwxDEuy5sIZ/mB9p8BD52q195/+YF3/GnqNLgdCEJ85dkYzDD3OIIEPlGNlkwlfYlnBpe4IHjPMYObUt+VdaJfeY2rzZ65TzhX10dKBe3e3aFIJDM3O+Z5PXNpVZ1DR9O/CjPl5qiLifQTw9p9wFDgG9+xP66n7VT1tbU9B70UJV/Su4rP9zPJfZ3vNbX1X00fTTjtfi+WCLlHPx3H8brIrzOa00yhXj76SqyAmG7q+/NQgozrIK/TjzHRRXNVNhzFrhXGpwWewzPJlGM8oExKin+vNKVN3w/xsodohvLqlO4utxR0XDv2p2rLn0z92W8pGz9ug2hsnI2abrtfpasmAA+XTb1WycsQW9zp8FPx4CKaB/66NNOBi6yjVBdqgMSdJ1F3YhleBgsVmOYHrxAo3y4nkN4vxu1GaiSVrZM6G1YRCy/cAZr15Gq7bRU8Y5Gk0mmgIm8OGQcaRqBVflRQDneCsFbbhhaZz2d/v2On1fmUt7jkwVV8PehouF0GTc6hNg4BaUYlLcCHkBIyfj0Z4Lwudv/RpUkdR+swzq4QP4vS+I3TNCwQFNy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,106 +113,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Feb 17, 2026 at 3:22 PM CET, Alice Ryhl wrote:
-> When installing missing pages (or zapping them), Rust Binder will look
-> up the vma in the mm by address, and then call vm_insert_page (or
-> zap_page_range_single). However, if the vma is closed and replaced with
-> a different vma at the same address, this can lead to Rust Binder
-> installing pages into the wrong vma.
->
-> By installing the page into a writable vma, it becomes possible to write
-> to your own binder pages, which are normally read-only. Although you're
-> not supposed to be able to write to those pages, the intent behind the
-> design of Rust Binder is that even if you get that ability, it should not
-> lead to anything bad. Unfortunately, due to another bug, that is not the
-> case.
->
-> To fix this, I will store a pointer in vm_private_data and check that
-> the vma returned by vma_lookup() has the right vm_ops and
-> vm_private_data before trying to use the vma. This should ensure that
-> Rust Binder will refuse to interact with any other VMA. I will follow up
-> this patch with more vma abstractions to avoid this unsafe access to
-> vm_ops and vm_private_data, but for now I'd like to start with the
-> simplest possible fix.
-
-I suggest to use imperative mood instead.
-
-> C Binder performs the same check in a slightly different way: it
-> provides a vm_ops->close that sets a boolean to true, then checks that
-> boolean after calling vma_lookup(), but I think this is more fragile
-> than the solution in this patch. (We probably still want to do both, but
-> I'll add the vm_ops->close callback with the follow-up vma API changes.)
->
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Jann Horn <jannh@google.com>
-
-If you have a link, please add Closes: after Reported-by:.
-
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---=
-------
->  1 file changed, 58 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
-r/page_range.rs
-> index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..90bab18961443c6e59699cb73=
-45e41e0db80f0dd 100644
-> --- a/drivers/android/binder/page_range.rs
-> +++ b/drivers/android/binder/page_range.rs
-> @@ -142,6 +142,27 @@ pub(crate) struct ShrinkablePageRange {
->      _pin: PhantomPinned,
+On Tue, Feb 17, 2026, Ackerley Tng wrote:
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+> index 618c937f3c90f..d16341a4a315d 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -171,6 +171,77 @@ static void test_numa_allocation(int fd, size_t total_size)
+>  	kvm_munmap(mem, total_size);
 >  }
-> =20
-> +// We do not define any ops. For now, used only to check identity of vma=
-s.
-> +static BINDER_VM_OPS: bindings::vm_operations_struct =3D pin_init::zeroe=
-d();
-> +
-> +// To ensure that we do not accidentally install pages into or zap pages=
- from the wrong vma, we
-> +// check its vm_ops and private data before using it.
-> +fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> O=
-ption<&virt::VmaMixedMap> {
-> +    // SAFETY: Just reading the vm_ops pointer of any active vma is safe=
-.
+>  
+> +static size_t getpmdsize(void)
 
-Here and in a few other places, missing markdown.
+This absolutely belongs in library/utility code.
 
-> +    let vm_ops =3D unsafe { (*vma.as_ptr()).vm_ops };
-> +    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
-> +        return None;
-> +    }
+> +{
+> +	const char *path = "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size";
+> +	static size_t pmd_size = -1;
+> +	FILE *fp;
 > +
-> +    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma=
- is safe.
-> +    let vm_private_data =3D unsafe { (*vma.as_ptr()).vm_private_data };
-> +    if !ptr::eq(vm_private_data, owner.cast()) {
-> +        return None;
-> +    }
+> +	if (pmd_size != -1)
+> +		return pmd_size;
 > +
-> +    vma.as_mixedmap_vma()
+> +	fp = fopen(path, "r");
+> +	TEST_ASSERT(fp, "Couldn't open %s to read PMD size.", path);
+
+This will likely assert on a kernel without THP support.
+
+> +	TEST_ASSERT_EQ(fscanf(fp, "%lu", &pmd_size), 1);
+> +
+> +	TEST_ASSERT_EQ(fclose(fp), 0);
+
+Please try to extend tools/testing/selftests/kvm/include/kvm_syscalls.h.
+
+> +
+> +	return pmd_size;
 > +}
 > +
->  struct Inner {
->      /// Array of pages.
->      ///
-> @@ -308,6 +329,16 @@ pub(crate) fn register_with_vma(&self, vma: &virt::V=
-maNew) -> Result<usize> {
->          inner.size =3D num_pages;
->          inner.vma_addr =3D vma.start();
-> =20
-> +        // This pointer is only used for comparison - it's not dereferen=
-ced.
-> +        //
-> +        // SAFETY: We own the vma, and we don't use any methods on VmaNe=
-w that rely on
-> +        // `vm_private_data`.
-> +        unsafe { (*vma.as_ptr()).vm_private_data =3D self as *const Self=
- as *mut c_void };
+> +static void test_collapse(struct kvm_vm *vm, uint64_t flags)
+> +{
+> +	const size_t pmd_size = getpmdsize();
+> +	char *mem;
+> +	off_t i;
+> +	int fd;
+> +
+> +	fd = vm_create_guest_memfd(vm, pmd_size * 2,
+> +				   GUEST_MEMFD_FLAG_MMAP |
+> +				   GUEST_MEMFD_FLAG_INIT_SHARED);
+> +
+> +	/*
+> +	 * Use aligned address so that MADV_COLLAPSE will not be
+> +	 * filtered out early in the collapsing routine.
 
-Maybe use from_ref(self).cast_mut().cast::<c_void>() instead?
+Please elaborate, the value below is way more magical than just being aligned.
 
-Please don't consider any of those NITs a blocker. :)
+> +	 */
+> +#define ALIGNED_ADDRESS ((void *)0x4000000000UL)
+
+Use a "const void *" instead of #define inside a function.  And use one of the
+appropriate size macros, e.g.
+
+	const void *ALIGNED_ADDRESS = (void *)(SZ_1G * <some magic value>);
+
+But why hardcode a virtual address in the first place?  If you a specific
+alignment, just allocate enough virtual memory to be able to meet those alignment
+requirements.
+
+> +	mem = mmap(ALIGNED_ADDRESS, pmd_size, PROT_READ | PROT_WRITE,
+> +		   MAP_FIXED | MAP_SHARED, fd, 0);
+> +	TEST_ASSERT_EQ(mem, ALIGNED_ADDRESS);
+> +
+> +	/*
+> +	 * Use reads to populate page table to avoid setting dirty
+> +	 * flag on page.
+> +	 */
+> +	for (i = 0; i < pmd_size; i += getpagesize())
+> +		READ_ONCE(mem[i]);
+> +
+> +	/*
+> +	 * Advising the use of huge pages in guest_memfd should be
+> +	 * fine...
+> +	 */
+> +	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_HUGEPAGE), 0);
+> +
+> +	/*
+> +	 * ... but collapsing folios must not be supported to avoid
+> +	 * mapping beyond shared ranges into host userspace page
+> +	 * tables.
+> +	 */
+> +	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -1);
+> +	TEST_ASSERT_EQ(errno, EINVAL);
+> +
+> +	/*
+> +	 * Removing from host page tables and re-faulting should be
+> +	 * fine; should not end up faulting in a collapsed/huge folio.
+> +	 */
+> +	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_DONTNEED), 0);
+> +	READ_ONCE(mem[0]);
+> +
+> +	kvm_munmap(mem, pmd_size);
+> +	kvm_close(fd);
+> +}
+> +
+>  static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
+>  {
+>  	const char val = 0xaa;
+> @@ -370,6 +441,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+>  			gmem_test(mmap_supported, vm, flags);
+>  			gmem_test(fault_overflow, vm, flags);
+>  			gmem_test(numa_allocation, vm, flags);
+> +			test_collapse(vm, flags);
+
+Why diverge from everything else?  Yeah, the size is different, but that's easy
+enough to handle.  And presumably the THP query needs to be able to fail gracefully,
+so something like this?
+
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 618c937f3c90..e942adae1f59 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -350,14 +350,28 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+        }
+ }
+ 
+-#define gmem_test(__test, __vm, __flags)                               \
++#define __gmem_test(__test, __vm, __flags, __size)                     \
+ do {                                                                   \
+-       int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);   \
++       int fd = vm_create_guest_memfd(__vm, __size, __flags);          \
+                                                                        \
+-       test_##__test(fd, page_size * 4);                               \
++       test_##__test(fd, __size);                                      \
+        close(fd);                                                      \
+ } while (0)
+ 
++#define gmem_test(__test, __vm, __flags)                               \
++       __gmem_test(__test, __vm, __flags, page_size * 4)
++
++#define gmem_test_huge_pmd(__test, __vm, __flags)                      \
++do {                                                                   \
++       size_t pmd_size = kvm_get_thp_pmd_size();                       \
++                                                                       \
++       if (!pmd_size)                                                  \
++               break;                                                  \
++                                                                       \
++       __gmem_test(__test, __vm, __flags, pmd_size * 2);               \
++} while (0)
++
++
+ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+ {
+        test_create_guest_memfd_multiple(vm);
+
 
