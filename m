@@ -4,119 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEDCE9A03B
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 21:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDC1AE9A03B
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 21:18:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90B0C6B0088; Tue, 17 Feb 2026 16:14:42 -0500 (EST)
+	id 522BC6B0088; Tue, 17 Feb 2026 16:18:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88E616B0089; Tue, 17 Feb 2026 16:14:42 -0500 (EST)
+	id 4CFE96B0089; Tue, 17 Feb 2026 16:18:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79A926B008A; Tue, 17 Feb 2026 16:14:42 -0500 (EST)
+	id 3CE9F6B008A; Tue, 17 Feb 2026 16:18:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 60BEB6B0088
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:14:42 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED3B3C1893
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:14:40 +0000 (UTC)
-X-FDA: 84455202720.01.255C08B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 52B6140006
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:14:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qME5lVPC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of patchwork-bot+f2fs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+f2fs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771362879; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 222E56B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 16:18:16 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA884C140E
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:18:15 +0000 (UTC)
+X-FDA: 84455211750.27.03F4610
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F421640012
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:18:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ndVZ1RoZ;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771363093; a=rsa-sha256;
 	cv=none;
-	b=xnbW3TGex1DjrEJ7OWSsjabxcakF4JTzC51s3kp1Du3V/RyK6eaoeR6Bc+KSmleRuvlMFg
-	8CTZ42+gzfgPY0dbxrbXZ0Y0bGDlPtdzTli6wNiFAkbrU1wcDN0toumzbD/ae5YGLxoJef
-	9zy775Hd/pWrF8ZZE/FOXTF7YB+m5QE=
+	b=21nsOl+SsH1g/mh0C+E+fkNJFB/AtpONSUI/dqruAE8NWt/vT8iMRN+MCLtPNIFZ+Ek+Oz
+	UmumrJygySc5jYoTUoh5kgyfa1tDhqOBqTN2aRVdaB1HHFJJInmJjFOf0xRrwhY63avWyY
+	TuTMssp0jhqt+2x0En7g7IFNuId8dG8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qME5lVPC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of patchwork-bot+f2fs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+f2fs@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ndVZ1RoZ;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771362879;
+	s=arc-20220608; t=1771363093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/QAFZrzsR3b01tUvyixH463bVn8gaQeXSmMleluN4G8=;
-	b=zaN6CrY13L66qASh/xA3t9qJC+kbFpQLvdDDn11+DQie9JAzVSYXW8SW68lm1rPluPVZvP
-	wM1+9Pj9gwWPHOQAiCjo9HYneRxK+j1PPMtMARFSaAzJlqha6axumB2QRhROVJmNV6YQ4T
-	dgsgL0DvI4yS0lfpSfadA0DE1kXdbs8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5CA3D60128;
-	Tue, 17 Feb 2026 21:14:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05413C19421;
-	Tue, 17 Feb 2026 21:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771362878;
-	bh=SWr3Pg6zIeu2S3Z6UDsk8BzZU6tf527GPJ41POMlghM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qME5lVPCgbs75GtVkYDVSedStUuy5Pu7iKCY4IKu3xqN3EcQE+Oh5yA77hoZy7VyU
-	 +0wZZYMpZQVXM9oVuFBmRCNz9ULENuT2B5em0ouDg88Yb0OXaPujVB/GBPkgNNMpHr
-	 EhgPO+uLpu1WI515RTCnoSYcSuoUoWHPdRcl280BUTS4HjHiimnSyoFiD+9+NmEu7s
-	 4m0WVXB/a1C6i48qotqtPrvf49sFdMixg5MNCldkNycO7JhTW+IJtnP0WEfZw+8dYi
-	 1uYBY6iDz7huxRyc2w6LATusfRgMkVW0RAKYcp9Uufer3E7jADONKO2Apo8cM0wFiU
-	 pB1OIFY+N5Jzg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B1123806667;
-	Tue, 17 Feb 2026 21:14:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	bh=RJTSefH9+HDoEEKJ3Ozl2JI+wX+wVLO2Ke3/Gt8RtiU=;
+	b=eGM06HsHkuaKSHS840S13VlihvRkvh74YV07IdMpzaMy12V6d/HryzTsBmHLeb28HAsQgb
+	Ls9eONvdQEfaHfhN6pxMo2sVB4a2Kki93KLcqiFTr5wd/feuqytM+bq1K4WXwXPZec8l9a
+	wE16u1p5QtWq4A17pNFzDrUJRyylhbc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771363092; x=1802899092;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZohkSzNrI1aHnsD72W2wMAvwZYjTdr/MX/TjDGlyz/M=;
+  b=ndVZ1RoZ+p6uiFscfj3tsX+jgLjYOOz2zthYMdMTmm4O34quUqMdrGd+
+   0i0fseDFWTbb4p25Yt70iJk3+p+Uy9MYsO/1dh4sRwm8yOrPz/twfcxfU
+   ugP+iuJRYCeRz3CSsZFKe/7d47uC6W1/0Anponhrg+nO6JENF62bkeqRw
+   a5etoX6lUB8rfwuGjdZngsbjXRgoGUjm9sZSwEuU3pHTYDCreNirc5Qo3
+   0uvPa8xQoPIqpKIpCOPkAnCSPVgqYnLxc3p1L7IoR/1Mk+dKLlrtODc8h
+   km8s+BS0xYVrc4XeSYF4HcqfUnb3qniUv44G3Wzr/PffbH/k+h6aEywJa
+   Q==;
+X-CSE-ConnectionGUID: 1VsItxWyTMS4qF6/H/NJjg==
+X-CSE-MsgGUID: zCdKFLZeTmuYYPnerH0HLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="97903378"
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="97903378"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 13:18:11 -0800
+X-CSE-ConnectionGUID: yxqFdQuKSOeef8cfUtANyA==
+X-CSE-MsgGUID: gkj+1tp8SEGb/vuS/jObQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="251696798"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5404a91d123) ([10.211.93.152])
+  by orviesa001.jf.intel.com with ESMTP; 17 Feb 2026 13:18:07 -0800
+Received: from kbuild by e5404a91d123 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vsSSK-000000003Ir-3iLC;
+	Tue, 17 Feb 2026 21:18:04 +0000
+Date: Tue, 17 Feb 2026 22:17:06 +0100
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Carlos Llamas <cmllamas@google.com>, Jann Horn <jannh@google.com>
+Cc: oe-kbuild-all@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org, Alice Ryhl <aliceryhl@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust_binder: avoid reading the written value in
+ offsets array
+Message-ID: <202602172222.mGDpJK77-lkp@intel.com>
+References: <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH 00/24] vfs: require filesystems to explicitly
- opt-in to lease support
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <177136286957.643511.1991968143318289235.git-patchwork-notify@kernel.org>
-Date: Tue, 17 Feb 2026 21:14:29 +0000
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-In-Reply-To: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: luisbg@kernel.org, salah.triki@gmail.com, nico@fluxnic.net,
- hch@infradead.org, jack@suse.cz, al@alarsen.net, viro@zeniv.linux.org.uk,
- brauner@kernel.org, dsterba@suse.com, clm@fb.com, xiang@kernel.org,
- chao@kernel.org, zbestahu@gmail.com, jefflexu@linux.alibaba.com,
- dhavale@google.com, lihongbo22@huawei.com, guochunhai@vivo.com,
- jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca, jaegeuk@kernel.org,
- hirofumi@mail.parknet.co.jp, dwmw2@infradead.org, richard@nod.at,
- shaggy@kernel.org, konishi.ryusuke@gmail.com, slava@dubeyko.com,
- almaz.alexandrovich@paragon-software.com, mark@fasheh.com,
- jlbec@evilplan.org, joseph.qi@linux.alibaba.com, hubcap@omnibond.com,
- martin@omnibond.com, miklos@szeredi.hu, amir73il@gmail.com,
- phillip@squashfs.org.uk, cem@kernel.org, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com,
- chuck.lever@oracle.com, alex.aring@gmail.com, agruenba@redhat.com,
- corbet@lwn.net, willy@infradead.org, ericvh@kernel.org, lucho@ionkov.net,
- asmadeus@codewreck.org, linux_oss@crudebyte.com, xiubli@redhat.com,
- idryomov@gmail.com, trondmy@kernel.org, anna@kernel.org, sfrench@samba.org,
- pc@manguebit.org, ronniesahlberg@gmail.com, sprasad@microsoft.com,
- tom@talpey.com, bharathsm@microsoft.com, hansg@kernel.org,
- jfs-discussion@lists.sourceforge.net, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, gfs2@lists.linux.dev, linux-mm@kvack.org,
- linux-mtd@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-nilfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
- ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, v9fs@lists.linux.dev,
- samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, ntfs3@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-btrfs@vger.kernel.org
-X-Stat-Signature: x7btmbs8dwi4mssois8ankwo33jk8rfg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com>
+X-Rspamd-Queue-Id: F421640012
+X-Stat-Signature: 1aomuj3u3yjwdrqpq38fy3t1hx979rme
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 52B6140006
-X-HE-Tag: 1771362879-620103
-X-HE-Meta: U2FsdGVkX1+nBfSMUMW1zZH3wmGwzJBnLk5F2M3kKaFqFYgqkPELJ3wzRySNHYuUcvMPmiggguZR/Te2YvAUD5HOpmJktNrx20YvUOWwhPVe89Qc5EjwPDYOAei8zQ/3w1AqD5lTEb1sl6vZftVaWD1bb2OOHqeWiVjC/RmPwNQsLRR/Hs5ELJYKN3XuP2HjzCDtGMIOX9saIioTRXtEfwtSFv9TvuAbdTmbxmRhZL5rNFQKRbw0DxIHxeGcpPbR7UWBh3jxUA+3zK0KD/+8pXmor9NZYxTeN+spbMH2meeU9rzJtqDpxMFKWTYoVgCg33vjkS9EC9JN7Oyvrw/v9lks1Iu4GSzukM+o5onlTJ1M06sVFHwxaztFL+XEPCQS76YYTtcv8wbKWTezjbqQg1Z+P0d62bcpnFwTebo97GqMZVVKoO27rLh1vc8YZeMm+bOyHgENis+/Zv8aFqaNDbJLkuiqek128XtMMp0objKgJ5IaRBFdWxyNLPxnNibl62DWZs8yvDVJcGy6xR8h8j1RfFvZh+AiTbZcfcKdm6S+8SZr6F63CKP0SKGf4h+GwD5JHQvHRWeCABgw8ogyODQrkYnrkwwvMg+tbUr4erlfmXJBnxLbizXzrySutr8s1/EvcvUzcGMtdIQtuWg+EadUQ6EuRejJb88vzxk8jsu3Ps0zTNx5UKqBRo66xfV+UgaWXsAnxMJfT6oTuTfqUBMYPYDJ4I/Jck4mpmgPoNR+v5Ebt0TxP8Gjjkrl1JPJ5G/C+9beAFs1IxTj7x0jPwJ3QvBOhEk34qCFedErWim0MOgd+rBSN5jy/RNPz8zC/XQJpxdGe2qRgk7p0EzWIHraHb+myEE9+H3fXhGdZMHffRPh22ih1gEeV9fSD9L0Vxf80mm5LbLT1VnNFydy6vggnf3ONUC3n3g/SNgDdIq0sonhk+sEO7FWXoCR2Q5IhAaTjf/G+I3bLi3zyP1
- MS8vHMeI
- ooQII3dbayAe9fIKi3wroBFbw3Up2jflWjS/+NJsw3O1Y+Xr0v/dZULnlPaRGbOgzQABYm5SFU09jWOMLHEKbFsZIhF1tMfKA2+6/LEVRT6hTcNvKalGi3LQ40rY71HEfKOXOWpgKDuXpuGzEjGuRcl2i7pnD6jC8uD14RKZ0rltaD/rb3J5n6aSamzFvjKxQssnXSITGX9dZEz6fQoYScREcwwQduiJwHyDpANLKnAPfN79UBpPjEAOK/fxa2ugbNJWNMS6cgBkaX/eD4aPxAXRS8RRITfnwLo2xxxhl8pEtwb+JyVDMSUTNB5qe1KF0cWCOrA12t4QK1/X1s9qm8CTVCK7j1XOQX+ZZztPvRn7O9OHoObXcca2iOPAnG8l2IiNDTDGXVPhuqlPg9gSvpDOXjgkzzOybiQPlruG9Py5wijSYSk5n75eP2g==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771363092-275312
+X-HE-Meta: U2FsdGVkX198RbGY2nX5/6eFnLyTFVKtBnZfdOaKiENgvCYKfDGG4XloiuIEkpNwAgkDQKMLwOrSuo9W+lnzwZzvs4rUGDKy9t64e2sXY2OVjl5Ex7Gy9P9WR7+ogkkxNa24qViTZuPyiJJNe+WfoPBruqi3cox1iiZ1ZO7sbpLXEdRaDWvglH+EoQWV6FvVH6e++vlZKEb6dLCDiH/8eah/1VXf8+pdTEH+VQjV6+lHUyjAHFY76Ibxy9cCI6XpI5DQbme0oobvI/pySzAujw86VXCpEB3DkCkzvfsr3MUQs+zhcFdoBo4vCQ7nrz7CRs4yngvStcHNGBvM2xhbJoC/g5H4p2SE3qE2+SGDoJY0yNAkHnj1Zi+a2wm4QFOvzjBu5wfW0I+FaNtSXrLVHyDWwI27dliqCK9ZKyCwgddyhRPo91shKRBeexkWBSDUJOdgKu8jEYj9boueB9F6B8tZFHYAtmwmfvIgEQ/CgWpsdYm+4A72W18KrP4ZK/DiQiispoflFGl09npIWoOJnRxYui9dWnDFNQ2tz1PrDvHmLdYmRqIF2rswvVdig/j+EcLmn2QhFNAnyag+5Bmv0Ssqx6Z1Vm9Bt6oKkXMclMvLQQ51cmQkA/HIv7/xcnmBXTdA/jfOE3TnD3AGmJr/e62aywnabtueApk8ofD0cDzTHNZ+VcugzIvPkYRnqbatlUpG2Sc8Dc9uVXCD3FLXTdl7Ri0uBCqz7WfoD3iUBou5ml04dBjBWJ17ElbOydQ9HL4ZICtS6riOr1F4CMv3RLFqMThOFDsQarwQHZRK2M/vsi09nopX4ge2oHta+6aNHQqc7jeNMIjCGLs2la8nlcdiqcPmhkL5+GTW29Po4cZ8XapWk+8/w+GZgoaH9YnojnVFCO9BNayUUaUy5uWnYarhn/lOZxXhTUtDZ7Gbkzu0ZLSuSQmB18jkoRTkgFRHYv711JvY7DSSoqKN1PC
+ 1epb7A6E
+ 8YI7T2iX5HvonuR0V0K4Lbu1iU6h0b+1VKzxlGVgd8rqNCopkLcuaMZfuwJR/QFiKJInRaTzW2QzPjivuvByQkct1XofUhikuLlEikiJclY59STTrH2W6AOEEDeIRN4OrjavN1rghdUwBu6DYL6CqlfWeojOq/HyZzU5EdgkCUh0KYSUJaZsnheN2w0U2m7zK+wVObpcLNnkWsteZ4eF9S0sjxXRwfdoKKpq7lyaPU8nYjZdIWChNvfCtsZI6E65XLKDi8JOO7BXERnkhvl0NNk3w0pzf1XhLFH9RtZfEfCza+GjWr3qDSb+TrTlQhZG9vxfCazfkYkb5HH3sSLmcrA6+giDgjXMfj8Yfk7M636yaEpzEAyqbXY+zDRZjQalYNBlMxnryQZpLtq2hax/BgfOUtw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,78 +120,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
+Hi Alice,
 
-This series was applied to jaegeuk/f2fs.git (dev)
-by Christian Brauner <brauner@kernel.org>:
+kernel test robot noticed the following build errors:
 
-On Thu, 08 Jan 2026 12:12:55 -0500 you wrote:
-> Yesterday, I sent patches to fix how directory delegation support is
-> handled on filesystems where the should be disabled [1]. That set is
-> appropriate for v6.19. For v7.0, I want to make lease support be more
-> opt-in, rather than opt-out:
-> 
-> For historical reasons, when ->setlease() file_operation is set to NULL,
-> the default is to use the kernel-internal lease implementation. This
-> means that if you want to disable them, you need to explicitly set the
-> ->setlease() file_operation to simple_nosetlease() or the equivalent.
-> 
-> [...]
+[auto build test ERROR on 0f2acd3148e0ef42bdacbd477f90e8533f96b2ac]
 
-Here is the summary with links:
-  - [f2fs-dev,01/24] fs: add setlease to generic_ro_fops and read-only filesystem directory operations
-    https://git.kernel.org/jaegeuk/f2fs/c/ca4388bf1d9e
-  - [f2fs-dev,02/24] affs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/663cdef61a27
-  - [f2fs-dev,03/24] btrfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f9688474e413
-  - [f2fs-dev,04/24] erofs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f8902d3df893
-  - [f2fs-dev,05/24] ext2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/ccdc2e0569f5
-  - [f2fs-dev,06/24] ext4: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/20747a2a29c6
-  - [f2fs-dev,07/24] exfat: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/b8ca02667552
-  - [f2fs-dev,08/24] f2fs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/9e2ac6ddb397
-  - [f2fs-dev,09/24] fat: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/a9acc8422ffb
-  - [f2fs-dev,10/24] gfs2: add a setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/3b514c333390
-  - [f2fs-dev,11/24] jffs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/c275e6e7c085
-  - [f2fs-dev,12/24] jfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/7dd596bb35e5
-  - [f2fs-dev,13/24] nilfs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f46bb13dc5d9
-  - [f2fs-dev,14/24] ntfs3: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/6aaa1d6337b5
-  - [f2fs-dev,15/24] ocfs2: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f15d3150279d
-  - [f2fs-dev,16/24] orangefs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/136b43aa4b16
-  - [f2fs-dev,17/24] overlayfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/94a3f60af5dc
-  - [f2fs-dev,18/24] squashfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/dfd8676efe43
-  - [f2fs-dev,19/24] tmpfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/f5a3446be277
-  - [f2fs-dev,20/24] udf: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/dbe8d57d1483
-  - [f2fs-dev,21/24] ufs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/545b4144d804
-  - [f2fs-dev,22/24] xfs: add setlease file operation
-    https://git.kernel.org/jaegeuk/f2fs/c/6163b5da2f5e
-  - [f2fs-dev,23/24] filelock: default to returning -EINVAL when ->setlease operation is NULL
-    https://git.kernel.org/jaegeuk/f2fs/c/2b10994be716
-  - [f2fs-dev,24/24] fs: remove simple_nosetlease()
-    https://git.kernel.org/jaegeuk/f2fs/c/51e49111c00b
+url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust_binder-check-ownership-before-using-vma/20260217-222439
+base:   0f2acd3148e0ef42bdacbd477f90e8533f96b2ac
+patch link:    https://lore.kernel.org/r/20260217-binder-vma-check-v1-2-1a2b37f7b762%40google.com
+patch subject: [PATCH 2/2] rust_binder: avoid reading the written value in offsets array
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260217/202602172222.mGDpJK77-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602172222.mGDpJK77-lkp@intel.com/reproduce)
 
-You are awesome, thank you!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602172222.mGDpJK77-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in drivers/android/binder/thread.rs:1018:
+            if offsets_size > 0 {
+                let mut offsets_reader =
+                    UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
+   -                .reader();
+   +                    .reader();
+    
+                let offsets_start = aligned_data_size;
+                let offsets_end = aligned_data_size + offsets_size;
+>> Diff in drivers/android/binder/thread.rs:1018:
+            if offsets_size > 0 {
+                let mut offsets_reader =
+                    UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
+   -                .reader();
+   +                    .reader();
+    
+                let offsets_start = aligned_data_size;
+                let offsets_end = aligned_data_size + offsets_size;
+   make[2]: *** [Makefile:1903: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
