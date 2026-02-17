@@ -4,138 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C01FE909C4
-	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B45BE909AE
+	for <linux-mm@archiver.kernel.org>; Tue, 17 Feb 2026 15:48:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 744526B0005; Tue, 17 Feb 2026 10:47:15 -0500 (EST)
+	id 0AD3D6B0089; Tue, 17 Feb 2026 10:48:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F1C56B0089; Tue, 17 Feb 2026 10:47:15 -0500 (EST)
+	id 098C46B008A; Tue, 17 Feb 2026 10:48:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F42E6B008A; Tue, 17 Feb 2026 10:47:15 -0500 (EST)
+	id EDD3E6B008C; Tue, 17 Feb 2026 10:48:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EC716B0005
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:47:15 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C0CA57559
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:47:14 +0000 (UTC)
-X-FDA: 84454377588.02.159F5A4
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2E786C0006
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:47:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b=Mn8APs0x;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="E h20fcj";
-	spf=pass (imf28.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.154 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
+	by kanga.kvack.org (Postfix) with ESMTP id DBF916B0089
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 10:48:09 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0003B6D26
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:48:09 +0000 (UTC)
+X-FDA: 84454379898.15.03BA490
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 639DC140011
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 15:48:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WLDa+1rH;
+	spf=none (imf09.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771343232;
+	s=arc-20220608; t=1771343288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSOHZKYixCwKfgxL+toMTrJrfTKK7cDvAJRVjTf9RM0=;
-	b=GpKu9P/a4QcK+srUt4bIuNBboDdAK6fQaEtZGcvvUbLq8JFg5B37jIMtBXLfNyxCZjbOUN
-	T0AkKXlHb5YfVGU7cegMXcCfOLlEAgNU1ohwDV7ge56uzRF6OfLAK6N4uOruBG05sy3RIS
-	fG3nrIb9ufmxmwSLhPwNvWI9cfPFklk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b=Mn8APs0x;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="E h20fcj";
-	spf=pass (imf28.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.154 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771343232; a=rsa-sha256;
+	bh=dHYH87P+PfmJ9W0AOfrm++kpPQ5b8kEilmzfcpLvcPo=;
+	b=OgnS+NtO32/RL0CKpbQeeTM9zPk4b/f8OiN+oqYzZa8Vr6Mrk5gw0/rwi8id6nUAMyIsW6
+	R3k6TwxSDBZn0t/PVp4oAKNT/HQBIpFywxZTv3TwS10GDvSydfmO4rL7VJ82t1stBDM3yV
+	9Da0E2JTTjdAteOa04dH41ZYNVBMcE4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771343288; a=rsa-sha256;
 	cv=none;
-	b=vFV/sQGNGoGgeHLRkar0R7lnLgtx+MVgeyWj6IDzuOD5VgcJ6RKNePzQy8J4wxe02obDqN
-	nUh+i97h9rnECopyhEEEPPrnuf2lkcMLprabZTtJFtUD074BIfSCBpMNcoM2I/Kd7mSFqc
-	8BPrLcOfTdy8Z3HRFKZYzZmrZelhgMk=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7E88A7A0108;
-	Tue, 17 Feb 2026 10:47:10 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 17 Feb 2026 10:47:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1771343230;
-	 x=1771429630; bh=eSOHZKYixCwKfgxL+toMTrJrfTKK7cDvAJRVjTf9RM0=; b=
-	Mn8APs0x7sHctVRPN8/7iUwyhAmujqeUbTrvmNm6j+FOlZQSs+/73bLRa6geXjbz
-	099935qUbifVqUCIxuqwEMwd4cRdQBDF5RJVHCRoL2LYmyra1T04cYK0jGCjB4Ww
-	aiosmjsmjhVh5zi9HXP2X2nH+CWmUQFezSawr47QivjSVR03asypxVydDCSzJEip
-	1l1nb50Qzvj5XRwtUlZeTxJv7Krl+5fts26S77m+ildbnGuxudoXIuYg0DBXcd/N
-	QWQHG3qmhAwZ2rogEfeBYAz1VvqL9we1C+ioIx65wRGnjXK48GeoAufxMfERQmPa
-	e87uHR7i06X8tgJbELLHyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771343230; x=
-	1771429630; bh=eSOHZKYixCwKfgxL+toMTrJrfTKK7cDvAJRVjTf9RM0=; b=E
-	h20fcjUeQD5VDaOOummopqzrHBZf0r3+6stdjYoCheS8QRvS9yb/OGU1xwhJRLaB
-	HzuxZsLMWkhcdJuX2AAhxP2m9oGf8VPs4dlhELOxNlwXhxCpEO5IPUxY6Qq5SYCY
-	QRPqP8tJPkDWOu5I+33J+MPRYpccOZElANHNqzGX8IH+h/dmcdsdTu5pBTTK9DNj
-	/Z8ujUYiP35PUcT0J8r6UEQWsvVRMtz7B6lMQR8+Zb7iGA/1KLWCvjGOe1JC/bee
-	rrCQVrghgs4vWEjFQscYYybLZyqGT07MyGI/2rQwh9mgANE8qVn8r7LdDMjrpGwm
-	AnaanyrFKK0z2w4/Yoi/A==
-X-ME-Sender: <xms:fI2UadxdXWxOkJBqkCf3w_2xjNSc95X5l6befkBvbTGYGq9ya6YceA>
-    <xme:fI2UaZLt5zDl_7wWXcGZeRnoWgoze8gE_tmakKEUWp14tpfP5GopDHfId27gpLCzX
-    Xb-7PAwxLS2J8nGPfjZDSbXqGYYVhJ-224WBUiVnYsbpks79NTsTw>
-X-ME-Received: <xmr:fI2UaS063dnAzv8VHGf0UxFZLuYO9TsPYnhFGbMQ31mNL3wUi2pxw_KaQml3ieMaA-nHEw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvddtudeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkefstddttdejnecuhfhrohhmpeetnhgurhgv
-    shcuhfhrvghunhguuceorghnughrvghssegrnhgrrhgriigvlhdruggvqeenucggtffrrg
-    htthgvrhhnpedtleelvdfgjedvffeiueekfeeuleffhfegfffhgfffkeevueehieehhfei
-    gffhvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grnhgurhgvshesrghnrghrrgiivghlrdguvgdpnhgspghrtghpthhtohepvddtpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrmhhirhejfehilhesghhmrghilhdrtghomh
-    dprhgtphhtthhopehrihhtvghshhdrlhhishhtsehgmhgrihhlrdgtohhmpdhrtghpthht
-    ohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegujhifohhngh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgtghhrohhfsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhope
-    hprghnkhgrjhdrrhgrghhhrghvsehlihhnuhigrdguvghvpdhrtghpthhtohepohhjrghs
-    fihinheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehlshhfqdhptgeslhhish
-    htshdrlhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
-X-ME-Proxy: <xmx:fI2UaTcdZYB-mpJIJd5jldcTdiY-2Twjhj8aAHGKT7qzEf-NoLUuiA>
-    <xmx:fI2UaW6TbJ9w1l0L50LmdJioh38TY-CiCK6iJHnQdsCrnRppAzeIew>
-    <xmx:fI2UaW8wc3tfyzNhknY6_3BJhGTQY-0VBQWWApz6h7_O9W-g0AbiLw>
-    <xmx:fI2UadJ6rf-vJ4UZNx7yLVwQXr04L3BfQ7RjiQ30ZLTfPrBi0OhJFQ>
-    <xmx:fo2UaSfK4T3HvYEQLinaS7lvlUdt-dAbbSUTo1wOW05RdrqEQEj_EDV5>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Feb 2026 10:47:07 -0500 (EST)
-Date: Tue, 17 Feb 2026 10:47:07 -0500
-From: Andres Freund <andres@anarazel.de>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>, 
-	Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
-	john.g.garry@oracle.com, willy@infradead.org, ritesh.list@gmail.com, jack@suse.cz, 
-	ojaswin@linux.ibm.com, Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, 
-	Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, 
-	vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <ndwqem2mzymo6j3zw3mmxk2vh4mnun2fb2s5vrh4nthatlze3u@qjemcazy4agv>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <20260217055103.GA6174@lst.de>
- <CAOQ4uxgdWvJPAi6QMWQjWJ2TnjO=JP84WCgQ+ShM3GiikF=bSw@mail.gmail.com>
+	b=7tjVxhByOUicRdhchQ4T83lHhAP3za/USM0KUC+MPRuUU/0cBNFFEoZ/MRLoCbmWgV+knz
+	jM/HdzZlSoNJhsebKb6DgNBB1ckj137ZCiCpDA2gQMgtdwNC3iFFsUa3VFST5uYrs9k6Bn
+	8aOLQMGx5u1j7qdqMkEA3iapHl95B1k=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WLDa+1rH;
+	spf=none (imf09.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dHYH87P+PfmJ9W0AOfrm++kpPQ5b8kEilmzfcpLvcPo=; b=WLDa+1rHjaSpGUe58q+VPZtPRa
+	c2V1E3q0mG1Yp/Rv5t/0FB+N7ZlmnR+gk/eYxrzLGW4HMoB4OzRjuti9QshUH+JY6/B+BZ0x4R9Ct
+	srdHexh7JnidKmu42uckLVWj/QIIwe/BayGb/Vro5ikoe3VWXgtB02C1mpQ/7DOdzXIeJ/zPzJl95
+	DQKBo5bE8ace0kZDQH0mSFH+LGMBnVo1sV5+IF5L75x506ifJSOdwVTEsp/pIV/s4iLF9wmjwyEBh
+	0i3Bt3mP3teVIiEL73SoWH5wwc2gFx9hmDz1uekfrOsP1oJmfZxDpXSjCwzOxOL6EQuf4zzM5UvuY
+	RcgdhaQw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsNIv-00000004cPF-327V;
+	Tue, 17 Feb 2026 15:48:01 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 6413130315A; Tue, 17 Feb 2026 16:48:00 +0100 (CET)
+Date: Tue, 17 Feb 2026 16:48:00 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260217154800.GY2995752@noisy.programming.kicks-ass.net>
+References: <20260217091348.GT1395266@noisy.programming.kicks-ass.net>
+ <aZQ19FEeGgigdwz9@google.com>
+ <20260217094515.GV1395266@noisy.programming.kicks-ass.net>
+ <aZQ8lJJ-U_8j03Z4@google.com>
+ <20260217102557.GX1395266@noisy.programming.kicks-ass.net>
+ <aZRHJ7pSzOHruPA2@google.com>
+ <20260217110911.GY1395266@noisy.programming.kicks-ass.net>
+ <aZRWOIPThLfIZ1Ph@google.com>
+ <20260217120920.GZ1395266@noisy.programming.kicks-ass.net>
+ <aZRokyTqsd_RwdkK@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxgdWvJPAi6QMWQjWJ2TnjO=JP84WCgQ+ShM3GiikF=bSw@mail.gmail.com>
+In-Reply-To: <aZRokyTqsd_RwdkK@google.com>
+X-Rspamd-Queue-Id: 639DC140011
+X-Stat-Signature: hm8hxxtrmsbzhos36trfw537qwecsoqq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E786C0006
-X-Rspamd-Server: rspam02
-X-Stat-Signature: qghstzhzzwsjm475j3grfywmwfuatkrn
-X-HE-Tag: 1771343231-227085
-X-HE-Meta: U2FsdGVkX1/5NrSoHP3X13clouEr1CznJ2i2bEgIKeLuurod2G80Z9V1qSUdsZ8LgbtymQL/eMMl7A9RccrvpyQ4mwnvJrdRlzDkJq8XnslCpJHf6znNVrf2rQkNBye4esPu/dQ/3togC2gSD4kMYfl9sdifKgs0bEyJChIFveK2OlxOc3qgwmcYtFf9oQeLAupsC8CRKSJeuR3/n/B3zJnJ+MY4Y6DJJ707Yc/oPCMG03s1Cg3LaSQ4q5VRyIbJR8uoaze7abSyu8oZZJjMR8kbK3xVapLSxir5vGAnPRXyxbtEOv2duwveOAU+LtYONEaHM2K3T/gtKNR3WuhtkD4GOmEBNoQejedvFcdXyOCP8YtDRBBAf/yhC4lxEfXVhuslnfrMBgsTIb6tfVgePjHnZHAFmgCcoKs/msb+T+8Yt4u43xbMAANImyes5Ii7FKTtq/GmwHqSrywF/IdvUc2Se48cwmXelenuDi+LYG6FG2Y52hBiEOqJGKacaJq5bp9RZ+rUCM/9lTm/j9bxjqpEw7Kal890522QnMBoDJaA18jk1HMu6hJAqv63I81RkRSVIrV9T4J1yV7K+GvVla698Wl02U4CG4UcRqguQuN1J2ExzhX6M/Gdvp/hpMsRJ9hoXQ8R8ZVTBPhJ0kRRe7WSRhVVCBzH1hNoDRPZ016jXJi5BMmEpKYoT73njbMFAC6M3RdSI+kIHAP8qPho/aItk0k3S83Xdj4wDUw9ARpPi3nwGDb5Y/ZryvzyAtUXSCJtfgEdd2gqkb36ZSw8BV8JYqFKRy7qPeixGCLVLbkhvPP2Gvo/BF8h/g+YNGyTyN5sIaU0P7P9T6b5Te0zMspmrxglmfptQqp3Qw6cJ5r1ykBHv9sXcAwNArLKQ2c+q06lp+VxwVMERHqz42nL2TzrgTXXLSEC/iX1bFKFBwGMirhDFhi8q2uJeedzk90RZF/XtuH+Rbz5x7HvTak
- yn0ekFIy
- ZQJ3wFf2OiBW3kwuWcfkyzP35peRlMcMPAyhtlYmXjLhuVpMw4CmBmfOgzoj2sg4I4j06lrdYT/VmS+LwgFGIYeOJUcdWL3/14IyyWtUev5tMIcVEHnvId2PdMDgzgmt8fdQMBZo1rL0/uT+E6RrCGcSajHdMMTMco3R6YDe4T+5WBjHt52PXhLCPsCFDbqCFXtbF9v90uGCzakohHxXKuYrC0kJfSTF3gxOMwujcOPl6ReE50UIzGZLkzYFhhrf11hNzWzP60Xj/FWhTmuHFYu/xNSvDCJ3OpLJnMm938bNLn+xUZOxu28fkLr+M8pohUIYzE4sj9wHM+OLbxPImRo+jdY93E2KlqnXx/CvsOrcRHHGgHTSWIzCbxzUSiZkQjzP+ChuKVNHaTNzYpsElqHWAtT4jnEasv+uxZHWM5ZSRZw1tUc9vyGIsA5Bg/JxWFM8OCG/n/1vSqsc=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771343287-329022
+X-HE-Meta: U2FsdGVkX1+YSmV7lv2vQUQ6uXZpMKaFYxic9qtBiVjukeyqc8IyoQvnBfmz6heKioat3i2JiFE0e0kA2YXU+jSKd/kqVaoxvFT/1DLhEnYlou4znzH2hwmBFCRN1PMifUG1Q5T6f+tMTSWHvpdeutK1rjK50kzoq10Wg83mjhV65WJ4rzimRsjM2gwK43+Ek4Vj6lR+nhQZOEaBVMT4SSvc41IBgFHDlFj4sI0zIXc1ul47vyw1B0uxqzFmcGNbRSOm03B9qv3vRRscy/t25ju8ORXOCKf3g9EMuHQtALe+OaJ3+A0msY2vDR7MGlKVit4brrTp8hWeloOOIGl3307Q2thnT+Kw6dEZ+K/tOAYt3l1L5j37ra9h3+6yNDgKWcg0d2pJX3bUWe4LnJMeEpvtUPUv9bFiuOTKb3pLX5+G745ujk/eSpavMbLgjMSd6JUfVZqQnywARR1J9IprM0Wr5PRRqGgr1WYbnk34W9Lyx39uQ0t0qH9nMJcK16jBqjjDxoIKgYrquG/4bvD2jpbJArjYCljBb3HBcUgbMcPwXyEPca/ERsyg6F+dp+ujgtYYJbcxvgJhJIeDAEVFz3Q5gA1YvjCI0qepYWMRrmdqCdeSDdAjZjDPj6ZcClFQluPJO/ozcxlG6w+MpSGINgarUVBk8syWacdsS+cEtPYjHByhgfV5qI9ERNOljGoVLyzEHKFnU4by2xhIuM768ntDnXBj9UzddgQ9XC+xanYr9uOGvM8/AtOaDYuRNDsU2/qrklFoYdY0zq6SVAQUISYPj0ClPNN55DiOFTsIzmapDKirsOxV4Kz30zB3z2lBzuDaOX6flvB1hGNBDYPU3ie9+bm9+TRACaKjYvmvrYUyWSAD931MOKHfnNkuE/aeB25T8jyfyU29tNdmLHQ1TqjIeZUIGB3I4v192trj3CD3GhysaNdfyKOlxCotpHyb7yyKKX69PXOeXnWBFQS
+ Yoipmkl5
+ UFpO7Sx4sgp7fTpqrDI/hk8vqwhMxdrzMY4t1LXqCAIOCDxAkeGI6pootYFzuzheEkDJhQ2ymg2Ptc5lhyTg3bph1m1eLjWa5mqxhpgFg5TQvv62m/oILR/BQ7Du56zQfqGY48x0EqxLg48VQCSDfpBjTebalmoXjUSfPDE3VNC4EzQtnjJ8SfMWUN2JTX/EdIm/8Nz+s55lH2O65fX3w+NiTq4Z+XvW1whVDV3QKsgeFDu6W2a38ioDvhBZ0KPbNo7x1dsCUMLoKrFVI4bSOiOcwtEoMjp/6lgLD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,61 +110,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, Feb 17, 2026 at 01:09:39PM +0000, Alice Ryhl wrote:
+> On Tue, Feb 17, 2026 at 01:09:20PM +0100, Peter Zijlstra wrote:
+> > On Tue, Feb 17, 2026 at 11:51:20AM +0000, Alice Ryhl wrote:
+> > 
+> > > In my experience with dealing with `struct page` that is mapped into a
+> > > vma, you need memcpy because the struct might be split across two
+> > > different pages in the vma. The pages are adjacent in userspace's
+> > > address space, but not necessarily adjacent from the kernel's POV.
+> > > 
+> > > So you might end up with something that looks like this:
+> > > 
+> > > struct foo val;
+> > > void *ptr1 = kmap_local_page(p1);
+> > > void *ptr2 = kmap_local_page(p2);
+> > > memcpy(ptr1 + offset, val, PAGE_SIZE - offset);
+> > > memcpy(ptr2, val + offset, sizeof(struct foo) - (PAGE_SIZE - offset));
+> > > kunmap_local(ptr2);
+> > > kunmap_local(ptr1);
+> > 
+> >   barrier();
+> > 
+> > > if (is_valid(&val)) {
+> > >     // use val
+> > > }
+> > > 
+> > > This exact thing happens in Binder. It has to be a memcpy.
+> > 
+> > Sure, but then stick that one barrier() in and you're good.
+> 
+> Are we really good? Consider this code:
+> 
+> 	bool is_valid(struct foo *val)
+> 	{
+> 		// for the sake of example
+> 		return val->my_field != 0;
+> 	}
+> 
+> 	struct foo val;
+> 
+> 	void *ptr = kmap_local_page(p1);
+> 	memcpy(ptr, val, sizeof(struct foo));
+> 	kunmap_local(p);
+> 	barrier();
+> 	if (is_valid(&val)) {
+> 	    // use val
+> 	}
+> 
+> optimize it into this first:
+> 
+> 	struct foo val;
+> 	int my_field_copy;
+> 
+> 	void *ptr = kmap_local_page(p1);
+> 	memcpy(ptr, val, sizeof(struct foo));
+> 	my_field_copy = val->my_field;
+> 	kunmap_local(p);
+> 	barrier();
+> 	if (my_field_copy != 0) {
+> 	    // use val
+> 	}
+> 
+> then optimize it into:
+> 
+> 	struct foo val;
+> 	int my_field_copy;
+> 
+> 	void *ptr = kmap_local_page(p1);
+> 	memcpy(ptr, val, sizeof(struct foo));
+> 	my_field_copy = ((struct foo *) ptr)->my_field;
+> 	kunmap_local(p);
+> 	barrier();
+> 	if (my_field_copy != 0) {
+> 	    // use val
+> 	}
 
-On 2026-02-17 10:23:36 +0100, Amir Goldstein wrote:
-> On Tue, Feb 17, 2026 at 8:00 AM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > I think a better session would be how we can help postgres to move
-> > off buffered I/O instead of adding more special cases for them.
+I don;t think this is allowed. You're lifting the load over the
+barrier(), that is invalid.
 
-FWIW, we are adding support for DIO (it's been added, but performance isn't
-competitive for most workloads in the released versions yet, work to address
-those issues is in progress).
+So the initial version is:
 
-But it's only really be viable for larger setups, not for e.g.:
-- smaller, unattended setups
-- uses of postgres as part of a larger application on one server with hard to
-  predict memory usage of different components
-- intentionally overcommitted shared hosting type scenarios
+	ptr = kmap_local_page()
+	memcpy(ptr, val, sizeof(val))
+	kunmap_local(ptr);
 
-Even once a well configured postgres using DIO beats postgres not using DIO,
-I'll bet that well over 50% of users won't be able to use DIO.
+	barrier()
 
+	if (val.field)
+	  // do stuff
 
-There are some kernel issues that make it harder than necessary to use DIO,
-btw:
-
-Most prominently: With DIO concurrently extending multiple files leads to
-quite terrible fragmentation, at least with XFS. Forcing us to
-over-aggressively use fallocate(), truncating later if it turns out we need
-less space. The fallocate in turn triggers slowness in the write paths, as
-writing to uninitialized extents is a metadata operation.  It'd be great if
-the allocation behaviour with concurrent file extension could be improved and
-if we could have a fallocate mode that forces extents to be initialized.
-
-A secondary issue is that with the buffer pool sizes necessary for DIO use on
-bigger systems, creating the anonymous memory mapping becomes painfully slow
-if we use MAP_POPULATE - which we kinda need to do, as otherwise performance
-is very inconsistent initially (often iomap -> gup -> handle_mm_fault ->
-folio_zero_user uses the majority of the CPU). We've been experimenting with
-not using MAP_POPULATE and using multiple threads to populate the mapping in
-parallel, but that feels not like something that userspace ought to have to
-do.  It's easier to work around for us that the uninitialized extent
-conversion issue, but it still is something we IMO shouldn't have to do.
+So the 'val.field' load is after the barrier(); and it must stay there,
+because the barrier() just told the compiler that all of memory changed
+-- this is what barrier() does.
 
 
-> Respectfully, I disagree that DIO is the only possible solution.
-> Direct I/O is a legit solution for databases and so is buffered I/O
-> each with their own caveats.
-
-> Specifically, when two subsystems (kernel vfs and db) each require a huge
-> amount of cache memory for best performance, setting them up to play nicely
-> together to utilize system memory in an optimal way is a huge pain.
-
-Yep.
-
-Greetings,
-
-Andres Freund
 
