@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F84E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 05:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 310B1E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 05:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B55C86B0088; Wed, 18 Feb 2026 00:46:38 -0500 (EST)
+	id 3F91E6B0088; Wed, 18 Feb 2026 00:56:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD8EC6B0089; Wed, 18 Feb 2026 00:46:38 -0500 (EST)
+	id 3A6CB6B0089; Wed, 18 Feb 2026 00:56:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BABD6B008A; Wed, 18 Feb 2026 00:46:38 -0500 (EST)
+	id 2B31E6B008A; Wed, 18 Feb 2026 00:56:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 85DC56B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:46:38 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 282B51C35B
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 05:46:38 +0000 (UTC)
-X-FDA: 84456492876.19.EB61C63
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 39F284000C
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 05:46:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=bZAUdPAW;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 151586B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:56:46 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8410613ADFD
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 05:56:45 +0000 (UTC)
+X-FDA: 84456518370.25.FB9A32B
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 951E440004
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 05:56:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=LC8beNr4;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771393596;
+	s=arc-20220608; t=1771394202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NrIgBUHCt5CwI7FAQlrmHz7F+fF5gar5WUaO3VV0dmI=;
-	b=NqXeFW65XTpuTCNh6nQfujdfsvH8hHbCkxngnPDw0zexdzROEYjLI0rV0nLtAqGRhV2ZZB
-	woNBXYC55F82PoIAh8z3jBuJwSftao3bL6JlQp7hHGuXnnrQSmRiK8wdB9WT/JOe7u8906
-	Kg8ej0wbzjHUEeI6y2sF1BeHz4wXis8=
+	bh=dIoM8nBn4QNw8zgwn+yhPSEBk9RvVOffdbuB/k6eMvk=;
+	b=eEbU+95PsYIIInFIvb4zx4bH+F9SsybM0aULaC1xJbIRTu5bZAL3yuGMpSVsgvx0RELDj+
+	d1zvT6Cl8pvmbcgt+rkUv7mV/IvRlq43ZemAn0syF9aJKh7JQjUSLHt+D6FHBteONlMMEo
+	6H2bz7ry4Q0OAFOekhA3i7HS4o0qdXI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=bZAUdPAW;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=LC8beNr4;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771393596; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771394202; a=rsa-sha256;
 	cv=none;
-	b=32lhdL/cU5km8eTmkeI6HsZYsetKrfejt5wWgQHxOEPvzJpDULoRwd78wEq6JT/MU+xmuk
-	CUvot3hht7N77bk/IqyvQ1YslEhLqHAO7t1veURkfHnjXvFxs3hTPp7Zurx1zaIdrzW48N
-	ZK/apAAZF5GB1JXSZEiPLUJCkOrqeZs=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-824a6f2d816so2361527b3a.3
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:46:35 -0800 (PST)
+	b=uQYJMGp0gbTsGuib2MWlVsaSZOKEhL9H9Z++3d3JZQ0MSEzZskYbKb/avMAKPF4iAmwQ+F
+	gBDo6gtNxmzxaHy8oYnY3nPOLDc26UCVJs9NQj7IIGIThJ738yJWmKcMI/uACRdhCGiRmr
+	ImrElW4DSbYdAKtr34YN1vsZuzgggd4=
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c06cb8004e8so1904395a12.0
+        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 21:56:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1771393595; x=1771998395; darn=kvack.org;
+        d=chromium.org; s=google; t=1771394201; x=1771999001; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NrIgBUHCt5CwI7FAQlrmHz7F+fF5gar5WUaO3VV0dmI=;
-        b=bZAUdPAWV2eQP+BVCo55rmFvDSgg2XD3rGhx5uvw0N3FCXyP55k522Twv64mZW8t6o
-         7arGK6nnnOzqb0//1N1wLOUdOuFxCTyt7s1PTeUX3j9xpGm4U0NoDGUyP2GMP6kNU2jl
-         tjsa0TYUf04+KcFLFuHCRW4wjmADPbcCWFx9s=
+        bh=dIoM8nBn4QNw8zgwn+yhPSEBk9RvVOffdbuB/k6eMvk=;
+        b=LC8beNr46C6g9iogiTs9b4QF2OwfdWHGGv1T30pU2iL8liNt4y8pVNZJv9W/+vNSyr
+         CcFIq3abGDyQZs6A9bJjD2ohvpwQrEbN4FoGumy8XhwfwWMooYtvPqFKtC1X8ww2T7WC
+         My+xgCm8qZbh9BBtTbIZm42nqAazcuhS1p7k8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771393595; x=1771998395;
+        d=1e100.net; s=20230601; t=1771394201; x=1771999001;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NrIgBUHCt5CwI7FAQlrmHz7F+fF5gar5WUaO3VV0dmI=;
-        b=SQIUQ3l5OLN4WnPOhMZPRSb4op4X8EB3NuONAHSynohnwMmiIc+UsLCLGYYQfkdWeI
-         09RjJ2J0io8/0w50i9L28e/m286dIRTcGp0GY0XY2vfao7PQKxcpR0dDQipgIj6UvHFm
-         NvFRWxitHO6zY+54l87m7qbPg3F2Aq3AroS2rpMKNzICGdUU4V8hE+ukJrGjfocqU7iq
-         peaIcLyKkyHR5o3Cuclsvbn3sAb6ZLpc9xKX1SZfDxXKreA3GmLOWsEOvqZUNmXXVszq
-         Bjg0LhdvLHfQliXiVNfYS1Iq+pur/q4eU5Ptf0c+Zp9cpRfLtkt83QDJ4ebCZWJnKNJV
-         PCdw==
-X-Forwarded-Encrypted: i=1; AJvYcCXNXxsQmOXbLewuQ6yZp/+EdulQnhwI94sMwBRtM2oibYKRSW8Xkpj/CyxSWXYDElk9fC/Anr3kcA==@kvack.org
-X-Gm-Message-State: AOJu0Yx95A3SujBlMofhh/iK7vns8nrg6nhow+Vd1d2Mp0fXib/fnk8L
-	5wiLP4yf0GRS2SK+GY6UCcWmG8uoMx7QaNhhDZ1SekcMcR4DLtSV5MQFdXM6riNhrQ==
-X-Gm-Gg: AZuq6aIXlF9/okRtWfRFpR3tvjvtNHlAlpxJD6hKX4j96UvOefiaxUq5Te5SnZOFtyr
-	y/iXb0hfL6hUKOXrKT/zU0Zv0O/Jd2t7AyI41IImZFpHWgIcR7GTKsFg/dwZgdMgvFPYA5bGv7M
-	fUYnv/fBfiLZDj1TDIuDlw39jeScXlkusaZhqLReHoWnhm2uKgDAS2XHL2dE+2Z6tUBaDcmBs+j
-	+SpbPBnaQZB2/W7txaXvw+iQJ0QJEZKUCv5wXCfpxVxQWwFoz/emXrWbAEgloc2rzxJ1GrQCGwL
-	vCfL6Qq4zCtd09iXmRkaxcKSwkAf7Mck8osHgozUvoQ+nqAZ6Bo/NZ2Xf4bWVVhYqCiCuyF4+ww
-	ZDt8R7Z96Z6CaEhp+1kjCbhFl1YxyUVuEaQhAsxzOXvYgdBJ/j0HHbqjzsjs9qmp+802CLpD02G
-	UXCzKpqQGSyOLFgDY+bFhI/0ynnNw0HeE7bPvdCPsPBUL/Dq/LqFWX0A5onvKtbyijfo0W3nEdj
-	g==
-X-Received: by 2002:a05:6a21:1391:b0:32d:a91a:7713 with SMTP id adf61e73a8af0-394fc2e2cfcmr703976637.40.1771393595014;
-        Tue, 17 Feb 2026 21:46:35 -0800 (PST)
+        bh=dIoM8nBn4QNw8zgwn+yhPSEBk9RvVOffdbuB/k6eMvk=;
+        b=pVM9CR0Y26nKB1ffPuRhJGcqNJv4RKdxbRG6aoCvVjup5Yf3mArvxFWoOHtQrLwjLt
+         d5c7wpMu5+cCm1cL8M1uzqYgev4OZJMQ2cqOc3NqSEwIvfwmx9kbrb80UwsZjhmDCJ9C
+         h4X/3darSZvS2pavKR3xH0T0qcNtBOidCtJxe9CGPM+k1RXL7BHz0GcD9396qF1znP+T
+         BNL72RCdkvMo/ZvteTC8YahTmUw+xABTG5qWDbVHxLwuj5m7eME9QoWLZyAkHLMyM/8R
+         H5FXPcp2zborhSQmIzj04hTRCo2m3QYSaRlBulzdfIa1MrzOELUMNgmga00D/VGlobni
+         3gDg==
+X-Forwarded-Encrypted: i=1; AJvYcCUS1fAH606RU6Kff5EctKEtSnD5b+kE41Qji4lwQ2TEONClopWeVrDL2MlQJMnV4Pzni/1Ht8VJsQ==@kvack.org
+X-Gm-Message-State: AOJu0YycQQoMViTSHRIaHwMt4Rh2NVe6MiAhU2ZD6QbVOvQypMmM8I4j
+	5VLQSlPlwXAy05er7ZIY6CPA2jSjCUq74/r/HTYPhs1uitSBlLxXYxYlP9TeGR9XUA==
+X-Gm-Gg: AZuq6aJmV379hZZ3z4oKWF5D2f1ehbJDGOrcLFK+gV6z1/HaMcoiRfOynLZyMVYHtKc
+	IV4y37MvZvGug5uAQglL8dl16Xp5tEGfYRsXCKFtqipzK1Jeo7TMyyNOOyue1yp5ojdh2NRPizV
+	/oQnL/ZoIMOu0zXzpXBD86MB6UcGOLPRhWI/hB712KVozwi9JyBSukc7HnduunZiDlGWFv93pYT
+	c6GomKoZg4k/LXFCfAN+sF5Fti8MpZXws9QDuRSI0zTthiLCrjtPVmGaoOtKVPSODwluUtb6Ia+
+	oq1w82Q//+7/e5dHQPFpIYm78VTOVAdDpOQhANgbl64X3syyySFS/Fj+lCoWqjfVQIY/dPBl7/m
+	5GIhbuQLeYCyWpdRJ/fJFjO28MgLZwx1KVVU3ko925duLe+g8WPspyEvZayPZJvwTu/J044ll6u
+	TJkpIulL29gMpdFksqvEzn2Arggd8ZhJ4r3LjaUTFgzXtMcoSpP0vydlDQgvaHsHE=
+X-Received: by 2002:a17:902:f54a:b0:2aa:e6fa:2f74 with SMTP id d9443c01a7336-2ab50521f02mr154035795ad.2.1771394201381;
+        Tue, 17 Feb 2026 21:56:41 -0800 (PST)
 Received: from google.com ([2a00:79e0:2031:6:7f05:129a:91dd:6ce6])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35887a3e929sm396640a91.13.2026.02.17.21.46.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1a738220sm121498535ad.37.2026.02.17.21.56.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 21:46:34 -0800 (PST)
-Date: Wed, 18 Feb 2026 14:46:30 +0900
+        Tue, 17 Feb 2026 21:56:40 -0800 (PST)
+Date: Wed, 18 Feb 2026 14:56:37 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Michael Fara <admin@windowsforum.com>
-Cc: senozhatsky@chromium.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, mjfara@gmail.com, 
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Michael Fara <mjfara@gmail.com>, senozhatsky@chromium.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
 	Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>
 Subject: Re: [PATCH] mm/zsmalloc: fix NULL pointer dereference in
  get_next_zpdesc
-Message-ID: <pkyw3y4yd5a22hr643mf66zsfo5slmmsgzov6a673ag3gbfcfa@bz2vx4h5mw4x>
-References: <20260209193708.69454-1-mjfara@gmail.com>
+Message-ID: <kqx5soah7aalionfss6kwht76xbp4ajwwyxawixkolmumj4m3i@cgdoxu25wp63>
+References: <20260209193257.60393-1-mjfara@gmail.com>
+ <20260209225018.1541260-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260209193708.69454-1-mjfara@gmail.com>
-X-Rspamd-Server: rspam05
+In-Reply-To: <20260209225018.1541260-1-joshua.hahnjy@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39F284000C
-X-Stat-Signature: dr7obnxwiwhjduntceagm1raahsmdt4i
-X-HE-Tag: 1771393596-701298
-X-HE-Meta: U2FsdGVkX1/ACxUkAxy+pw1ZyMcmF9LavXJTMu0/Onj2ZjT2CMYZuYy3McJuZdzY1vqpSicm3aaP79GGcoaoiXqV7oUF0c7H/2sqtbsqgio7rM/KuOACDMcSNpIDEpL3+m3Nqb2tvzK2l/h9gnW+dYQgupk06mum7fmSgdhWSIoaOUk0cEmAjg3wVwHdTSLXb45VbPnTM134xyP4d3UtqcQdfr3CoZ5m6S+RH415rbu5CWQGx8ZzRI6EA2GKaOK+nVBOcr7Ks0cFDc8kotKv0Xcje6iuouOygwQlzhKix66CcM4b64tfJ5cx7I1M2pu2y7W4LVS+EUDjqMo8EHGcAdl8jUJwW0OE0zlUGtVIwSVIh1EEEeVW3of2FjHsjXq9Aj1sISGcwyVhI+m5kxzFqTmHQ6K8gsRzcoZVJ1TVe9O7SB5E21dKsfvSWShj7A7IK8xFhz5dixzJ8ctsBfZSUmcdcAQ7Gx6TZ9F7WT10GCqY340WEqVsZdehsO1pJqpnsZffSc88K6RgSQu5fLxKuMwtSE3iUSPyRlPjAG9bB0x27YxCYzatZGRqw2mW0/78C/LoIxzN1TVUAd9vA7Nb8XJvsWT3wqkp2DeLETUqtSkwbXVjdHQOBL902YPuy/ml5HI+TAXY5cMHU0jjVcTDoK+L3W1TjRRt61s2e1kiOAwBJ0Ob7OsJrvzWK2LZbeeaVXEF1xcQuKyd8TE/i1o456fKB9MNKyctMsZHiiAEocDErC2n+k5RAgcsomPSd45lOFLqcftBGYiskQ0iad6XC6QgRBU5rXk7CC+iL439GQzEJzFnX1JNWi5zwTzcG8UGB1qFyYInzf12VFIgMcjaRART5rb1yO62VLnw+3GcBdRcHE6IhKtRQj0hwq2wp9/D8bBkm25lUK2RWZcGeyo7rWyfACqrYHkiR49f/xGQ5/hlbI575NqGI887MR5Gw91bdMXZJgwM+xzF8lvPWJU
- hgtoBP7R
- HB24+Mfjd/9zuABIfGHdrcqK7suVIVUesmdPvs+luq/PquifDnAIg3/2/ImLnTk9kzLEX/qpGciMRcgMoTE1sUeUgecWzN0YASFObiLAR2Z9Eva9OQbmjKsAchhPZwB8IomXLb2RWwpAG0M9LeLN5fcp7oEfmukWJK2v1jA14MLQuT4wJpCsmU3xMF2PgBOGYMpu4zJwgDm3kaJrjzqYXGBgNA1+sQTiLge/43KjxErTklFLN5Li2GHb6FpbTKkpzss9LGd6FtnyP+wIfAFiYep7/vgpKybOubz6+BZgU2RFDwt8Wz1TnsHdldozd+Eh+mMyL13c4njjnJC2b5Z3oYbyujarPPYczB9YbY0jhKXZxOZ0ldTyjDYNNMDf4HsMglEt+HRwbZAwFsG6ZQyANNoVFJXo0/ga4QX2O78aAB8UubxbjLBnAQsNP3bnA4m5Ub0ttGarCkdbeJQM=
+X-Rspamd-Queue-Id: 951E440004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 1ngh1zusmmtgqoib93ockooz8biiwjnf
+X-HE-Tag: 1771394202-396425
+X-HE-Meta: U2FsdGVkX1/pan7phspHXh7DnVB4/8dvVyqzi3JNL8TNBEx0xwi1g76ERxSf9NesywlRlFGZPshRYyohttzvHArELc7YhiVtbjj60IEUozKzF02nFo7hJnoLSQhoTyrdZVIzrh81LquJi0yujor+XqRRpVENtlY+qN0LmBRJ44WB3XTGBL8znTmS4jUMz89xSIwqLZNT0z5IR27drG+4Na6u78jDK2EKcAOZJbPvDhd0etjJyUaizy2Gih90BKhfeRQSktp4e18+U4GBOPV5TgrNt15ca2qMhqNQRTxxh7B5nAzQ5okr5SMHlyJTn8c0/+9C0ATb/SYvXI0EtPH/f9dyBeI+mJA5psWE1gQCtOPEvgUzhIjYUsj7n/r4X84sW7RW/lan0mk5FQ9OV0kUgmotef5wLBZT2Pqysjsvy/lJJf0KlKEEFzvScv8tEs/bUl4Mm8gCsUBBes2UZtqunBW26rRTweILZpjbYuL28huFfNFnApt5mTMVsn123yDDeLjoAR8v4CJdEbag06D6JGSLaS8qeTPmftJ5ZqFqd+zKVkLOVRc1M+pCIKlQRbLbd3gNNMbAKEamqnvIerwAC20Sop17gN20/NuU7X9T23MMfxQNVOPsEPUo1+xXenTShLv6VyW1YE698XsAkWYEjQyHXJCttsxjffRpOgmuucCYQRhAr/QxPvyFMH7HbrhmRWoXlrk4iYJG3XIykQJIre1fI6dmi2fscgSpPzWBK8HS0T6mMP83zdEHX2I2Z1mjCChdpZvkA6uv6ecU2+XL4VYLQhLNcIzTzcUdQmnc/rCmwoLvop7Ur4yZ+MRIjCVMaolp1SiBJKYu+9LbNPvb8j4K4Rn90UEJc0nmFZc1LyyAmDFuAJWlwcLk87omg8TUCTRgmlY23KwmvxYGDHIG0qUoO4ysturpAhwvnWQ7GIH+E1DuEyjnzlBp5fc5EoTdvv1hV7+AK/2uJ1UnWO+
+ SB90YIzi
+ RMWKHclYaVV5R1PKGQTFL/yKoyC/7xpE0ujcWhXobi2/OWHSG4RXUgfI/XBupTf7QMTWTtFnxsTa8PnKSEnpOqGDft1dn5v1MwumcRrrKHx+k3vuw84r4SAz6+IznhA3qME6sYclxZV8Cbbk0FOqDcQ72zxkn6e1Tffitcc36JOEC3tCze0DFfWbVn06JQ1MwGkESY/ygwCWRE2pWB+TDnXpgzr0QyTxz7ZGXNjeOhg7uHm2z6AQ50BSgHWetFyv+jFzbFJqjiKNg1k2hMeAWdNbEybVRXcT1xLpB9l4/BKM8+ZJzHiskwDO4Ar3zSBH0P4Gd2cIuWD8cAUE/EV/qpb0viZhicEPS7HMe9wHmJ26qkXWe2i2wjyd5XSvQXhQ+rsUndtA/5RC4wxZ9H7OpeZ89bcTVZXc5A1EbInU6u0fMgjnBJmhOS9A6iJpmyX23xG3V9tFK4JI7afskAtzdYBZrOorC6emN8xogXF1cV5t4BCAJteH9AFbZXQtuLoGGBchbDdHGLx4+lRlewodI2hM3nQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,61 +120,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/02/09 19:37), Michael Fara wrote:
-[..]
-> The sequence is:
->   1. Compaction calls zs_page_isolate() on a zpdesc, then drops its
->      page lock.
->   2. Concurrently, async_free_zspage() or free_zspage() destroys the
->      zspage, calling reset_zpdesc() which sets zpdesc->zspage = NULL.
->   3. A subsequent zs_free() path calls trylock_zspage(), which iterates
->      zpdescs via get_next_zpdesc(). get_zspage() dereferences the now-
->      NULL backpointer, causing:
-> 
->        BUG: kernel NULL pointer dereference, address: 0000000000000000
->        RIP: 0010:free_zspage+0x26/0x100
->        Call Trace:
->         zs_free+0xf4/0x110
->         zswap_entry_free+0x7e/0x160
-> 
-> The migration side already has a NULL guard (zs_page_migrate line 1675:
-> "if (!zpdesc->zspage) return 0;"), but get_next_zpdesc() lacks the same
-> protection.
-> 
-> Fix this by reading zpdesc->zspage directly in get_next_zpdesc()
-> instead of going through get_zspage(), and returning NULL when the
-> backpointer is NULL. This stops iteration safely — the caller treats
-> it as the end of the page chain.
-> 
-> Signed-off-by: Michael Fara <mjfara@gmail.com>
-> ---
->  mm/zsmalloc.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -735,7 +735,19 @@ static struct zspage *get_zspage(struct zpdesc *zpdesc)
-> 
->  static struct zpdesc *get_next_zpdesc(struct zpdesc *zpdesc)
->  {
-> -	struct zspage *zspage = get_zspage(zpdesc);
-> +	struct zspage *zspage = zpdesc->zspage;
-> +
-> +	/*
-> +	 * If the backpointer is NULL, this zpdesc was already freed via
-> +	 * reset_zpdesc() by a racing async_free_zspage() while isolated
-> +	 * for compaction. See the TODO comment in zs_page_migrate().
-> +	 */
-> +	if (unlikely(!zspage)) {
-> +		WARN_ON_ONCE(1);
-> +		return NULL;
-> +	}
+* Recovered from SPAM folder *
 
-I need to look closer, but the quick glance suggests that this is a
-problematic approach.  We can't just return NULL from get_next_zpdesc()
-because this can potentially cause issues in the callers.  E.g.
-trylock_zspage() will treat NULL as the end of the page chain and
-return success, which is clearly wrong.  We also have a bunch of
-other callers that never expect NULL from get_next_zpdesc().
+On (26/02/09 14:50), Joshua Hahn wrote:
+> On Mon,  9 Feb 2026 19:32:57 +0000 Michael Fara <mjfara@gmail.com> wrote:
+> 
+> Hello Michael,
+> 
+> I hope you are doing well! Thank you for the patch. I'm not entirely sure if
+> the race condition that you note here is correct, and also if this is the
+> right fix.
+
+Thanks for taking a look!
+
+> > get_next_zpdesc() calls get_zspage() which unconditionally dereferences
+> > zpdesc->zspage without a NULL check. This causes a kernel oops when
+> > zpdesc->zspage has been set to NULL by reset_zpdesc() during a race
+> > between zspage destruction and page compaction/migration.
+> > 
+> > The race window is documented in a TODO comment in zs_page_migrate():
+> > 
+> >     "nothing prevents a zspage from getting destroyed while it is
+> >     isolated for migration, as the page lock is temporarily dropped
+> >     after zs_page_isolate() succeeded"
+> 
+> I'm taking a look at zsmalloc these days, and I was confused by this comment
+> and remember looking into what was going on here as well : -) My thoughts
+> were that it should be safe in every other case, though.
+> 
+> > The sequence is:
+> >   1. Compaction calls zs_page_isolate() on a zpdesc, then drops its
+> >      page lock.
+> >   2. Concurrently, async_free_zspage() or free_zspage() destroys the
+> >      zspage, calling reset_zpdesc() which sets zpdesc->zspage = NULL.
+> 
+> async_free_zspage isolates the zspage first by taking the class lock and
+> then splicing the zspage out. free_zspage is always called with the
+> class lock held, and it likewise removes itself from the fullness list.
+> 
+> zs_free -> free_zspage -> trylock_zspage holds the class->lock
+> In zs_page_migrate, we call replace_sub_page to remove the zpdesc from the
+> chain before calling reset_zpdesc, so I don't think there would be a race there
+> either.
+
+Right, am having same thoughts.  I need to look closer, but sort
+of expect that class->lock should have kept us safe here.
+
+> >   3. A subsequent zs_free() path calls trylock_zspage(), which iterates
+> >      zpdescs via get_next_zpdesc(). get_zspage() dereferences the now-
+> >      NULL backpointer, causing:
+> 
+> So I don't see how a subsequent zs_free could race with reset_zpdesc on
+> the same zpdesc, maybe I'm missing something? : -)
+> 
+> >        BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >        RIP: 0010:free_zspage+0x26/0x100
+> >        Call Trace:
+> >         zs_free+0xf4/0x110
+> >         zswap_entry_free+0x7e/0x160
+> 
+> Is this from a real crash? A more detailed crash dump would be helpful to
+> see what else was happening on the other threads!
+> 
+> > The migration side already has a NULL guard (zs_page_migrate line 1675:
+> > "if (!zpdesc->zspage) return 0;"), but get_next_zpdesc() lacks the same
+> > protection.
+> > 
+> > Fix this by reading zpdesc->zspage directly in get_next_zpdesc()
+> > instead of going through get_zspage(), and returning NULL when the
+> > backpointer is NULL. This stops iteration safely — the caller treats
+> > it as the end of the page chain.
+> 
+> If we return NULL early, what happens to the remaining zpdescs in the
+> zspage? In trylock_zspage for instance, we might exit early and think we
+> successfully locked all zpdescs, when that isn't the case. It would eventually
+> lead to a VM_BUG_ON_PAGE when trying to free the zspage later anyways.
+
+Agreed.
 
