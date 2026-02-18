@@ -4,147 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2987BE9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 23:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB1BEE9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 23:42:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF5296B0088; Wed, 18 Feb 2026 18:40:38 -0500 (EST)
+	id 443956B0088; Wed, 18 Feb 2026 18:42:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECD186B0089; Wed, 18 Feb 2026 18:40:38 -0500 (EST)
+	id 3EE0A6B0089; Wed, 18 Feb 2026 18:42:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA5116B008A; Wed, 18 Feb 2026 18:40:38 -0500 (EST)
+	id 2FD9A6B008A; Wed, 18 Feb 2026 18:42:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C619C6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:40:38 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F6EE8B3D8
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:40:38 +0000 (UTC)
-X-FDA: 84459199356.25.F7B797E
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 81BC6C000B
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:40:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jn91rUha;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771458036;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D3DC6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:42:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3ED51B4855
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:42:17 +0000 (UTC)
+X-FDA: 84459203514.21.E964F80
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E905C1A0011
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:42:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V482Ob1R;
+	spf=pass (imf19.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771458136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-	b=v1yH/c9afZJBdg6ovK415876XQNyy+8vzXj+WIqhSQ2yb0M5aZ3Ul0PKgXEiJT05zZLfYa
-	QjmGuW7H+Ry3Q12bHeWeQ5J8mB630p+i7Pw5YzBTt43yu+Kvtq4MQPoayq9mMbgdHTTstG
-	YdidtmhvJC9fqI2M5wYCJDcS+feVtko=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jn91rUha;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771458036; a=rsa-sha256;
-	cv=pass;
-	b=hNA7P8VyIZ1XhshB85mUvmH+4csAh2nic2KpnzETODoyVsDZ82gu0txI22TPqYyu5O2SNA
-	C/VBefCl/QClw/Rr/rY+OiuqiNuiGfJb1l33oRje2/56Kpp/wA/sIA/Rl9xZhGzCswlNTD
-	BS/c1nZ0uaiG8xRBUogV7V/cOMuUcYo=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5033b64256dso200331cf.0
-        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:40:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771458035; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hNXEUjU8v5spO8XNWDk4UttNprH7/2qs9Ui6v3lsL4NN5H7+WuDHPEi1yK+pXK8tDK
-         KnFGlgns7zo8iQiw1etW71njzUMZ/zCspS7rxiHYz0r4qxBMKosmmDF7V3dSNpNQH7x3
-         6q8bAyDT2Of3fnP1eA8cJAvcMI6Ae+QPl3jtDPvii+b7qc8NYQ7dKAEZyERL/RvUSQ8c
-         SH9R3dMeIocsN3pI3cOUm9tHw9xHFRjwHQnO7NUjto5KM8Yz2GtTpgFZD+dTFCikQEqK
-         XL/FLuRx+DpJlYUm0ROJNjzGehzhUWrCy/Sf6CkmOOKzfdXTHZVXqB7XMctXiyxRyJTK
-         d9Iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-        fh=McHcuTt6i9dZSL9nR0viKEm/VP8TbSvrpr8kNRLs5GM=;
-        b=S7LRVI9QdEngVNObdtV2aN+mshgHPotxhc9fn/Xfa0d8+R4Wk+lR7iPS9G8rufeaKb
-         D1EGm8baF2/0Dr4+LUUquEWc2yUENE0Afyxh97h1xX+dZMAtQVnAFL+L4q4UFqcHVm9E
-         FlL2PV3cgrEc41alUi8epqfpA8rSHvElC+tGPMK8SPDzEhgMYTFndRZXyxK0tTC4M7NA
-         VrWR+Vt3c4wo+ESB1/OfKv/fPvMWk8U1vdGqWSFqqNAS7TSNSe6iU6UNHgGUOhGTSmOx
-         3B0KtghmDsxSeQc9i92PLJEX5QP/r+F8ehH6/eX/TIhz0e2z5WBUlg8TXR8TquJaqksP
-         8HcA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771458035; x=1772062835; darn=kvack.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-        b=jn91rUhazqAU7yghkQ5XFinnFJaSOgSohIjtKwAU0A5ZcKRUwAcJT8AjtiU7SicrvB
-         Ibti2dJxBIr1tYrOHreWhkFQJBnLtKvQX0HWRMj3P1x5o+46dVjSFepjoD75QhP87QI2
-         cTSMdtnMvdwcTCaz1enWBGDt90+4m1eIonVhDr85X140vUTa3QIggYrrIexyj406F9J7
-         vBwr/PRK+WX1f7WxATRJ8AxPPrqLBpWoY/tWv+8PKNQJn5ix1R70mhL/fMaBp83nI90F
-         Ya/TdA5zUkvmTuOovN8X5n89d+HQrThwQmhtBhvbkb0pjUVtwRLsM0s4zft//CUIo6hP
-         sJng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771458035; x=1772062835;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xjxPiN30X7H58ROVHwhzf4/X04sTDdl8fl/0yuhsL/4=;
-        b=GxPvtuG6Koft+mIn9rgT8ZhwtUATI4EDRcQ9hE+tIk0K7lAKnR32idABgxGEGB5Ocw
-         Tc2HkjEwjETNybfu97bxzMMg21Osuh86QW93pFuY5lm/SjPpPW7ipc+E73sW+bjq3/LL
-         oCna29/+Lfke/mlMsuCN2+IWKnTqMG4Yz90oUm4sNUOjcukqQCPGjOq/tp9M3Y61+MkU
-         9kvNxgJH42PtlJ9D5WglS78GrvH/DNfpJf/+ER6Ye0E2vwrWRZh9KL9VvlVTO6xruHp3
-         qgbE3ZM/Ce4LHVE6Ich1WenBjVTB7C8IKxdy1XCtHx6eWesIzMfM615FxIE9X8bA+aeN
-         /jRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMZtP4VCpiwEtQ9ob1CAHXrVJZ3r/4Pshqu8JWnxT55cU8gPTgALd+g/Kk4VK7QFEmRWpjk5/E6A==@kvack.org
-X-Gm-Message-State: AOJu0Yy5vVeOiQe9Aa4pCkaHMDR45oPSeKrtHwNj+ug0uEIaqSfVIwKS
-	EVYKFl5vBuaj4sbMVjgSModI8Szc3RZ/tH0gqM5lvlrlhr2dFBqe3K6NVaX6pCSSon/x/VWmtqm
-	s/2M+8rZVp1rpGEdJcKdbg8Lz91JIeKaYhXkw1o2r
-X-Gm-Gg: AZuq6aJsCAeQczMF8lX2NT4s0cN5g5AKWxutXV36xkdcgcQAu3Vp242RyUNDxmwrIb1
-	UyEGhNGE1IpBOWBJsTu6HRb/G0qh5VAt2wvBScnp95qfPXvW+/7Nm1NtxsmMencYpFzCdni9xXu
-	G5bpxc8mn3CvrajLMC5FORmX9mZ4K65VAKAJjJdL464m2d7NzeKV2vf8Z0Uzka6OtB5nrJfzLR0
-	BWY+AvZ5HVUFfYItUVzq4qoWW+uu8hzFFmq15FABgIgDrBelfKruGj3fJc5hdAZq0f4y/WVnqOp
-	HcnVJg==
-X-Received: by 2002:a05:622a:1a8d:b0:506:1f23:e22c with SMTP id
- d75a77b69052e-506f1dbd1b1mr2143471cf.6.1771458034886; Wed, 18 Feb 2026
- 15:40:34 -0800 (PST)
+	bh=OxPlQeRdMk8JOjh70O/8u5ycTadfbZDnhc7IuD/dB+I=;
+	b=RNPBbCWIY37xN1zniGiCrnSdd6+SE/dh0PfrEyLFeqD4ymReO006TVow28+0Tx9fy7Hr3N
+	ss8DhDSDodKFcEnjiqF1/2z6QpoAbtgs8F/VexlMRptXhI5JtWkk1M6gFm2XQpCSsSt/5h
+	OGLVDurm9XY0NQ/Lc7OYkTPQDXzVrVU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V482Ob1R;
+	spf=pass (imf19.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771458136; a=rsa-sha256;
+	cv=none;
+	b=r2wxR55YwY/BIHE/6vq2GU78AmwOecOX2/qgGoS66s7U8+pJfFBdv7JEAq3Il0ctvBAXk9
+	CkSeHzF0nI6L6LxspsvvQgsBfaCICrxIZCpjDnUpcqd/Oh7AJOC7Zkuv+4lQDKvhmOBIJa
+	cNUk+A8MWZNWw+UfXlY7qL3eFtVUCbw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BC108404F0;
+	Wed, 18 Feb 2026 23:42:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BAFC116D0;
+	Wed, 18 Feb 2026 23:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771458134;
+	bh=wCbI6wj7oxCUGmf8RRxMZeFQ8W8q98rrl9MHtnRP6jI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V482Ob1RXXUzn81PwKknfj7zFSM//p1O8HjqzzfwWdYy1c36IW7SYGt4KfeDAHGtG
+	 iKZ+UaU1YzcsbouN6WtYesHztcMAxrjzxHH8+Ld7a0l9Qvq9M1JaXFzmR/Aem9NJfB
+	 fNMli9L16D8GygPMO77W3Un9Kd93UzFoP7I2e+4B7r1JGCNuE/7CFpIASwzB0Y7TqF
+	 dUEvqViPc39jgHBIDtaxVVXXSCZRcbXp6L82sRgzRfMjSwycsGRFj8p1QPEhY0J2aA
+	 TKoPoxozyRhyjSityUtYqM8fbMy9QyobU01DTGOh61T5J4JbgQEtQKjpssD2kaMAOX
+	 4dY6Jl5xEvcNw==
+Date: Thu, 19 Feb 2026 10:42:00 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andres Freund <andres@anarazel.de>,
+	Pankaj Raghav <pankaj.raghav@linux.dev>, Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	lsf-pc@lists.linux-foundation.org, djwong@kernel.org,
+	john.g.garry@oracle.com, willy@infradead.org, ritesh.list@gmail.com,
+	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com,
+	Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com,
+	tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <aZZOSFdL_L_EoU34@dread>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
+ <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
+ <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+ <4627056f-2ab9-4ff1-bca0-5d80f8f0bbab@linux.dev>
+ <ignmsoluhway2yllepl2djcjjaukjijq3ejrlf4uuvh57ru7ur@njkzymuvzfqf>
+ <aZUQKx_C3-qyU4PJ@dread>
+ <20260218064739.GA8881@lst.de>
 MIME-Version: 1.0
-References: <20260217163250.2326001-1-surenb@google.com> <20260217163250.2326001-3-surenb@google.com>
- <dtdfrko7uqif6flc4mefnlar7wnmrbyswfu7bvb2ar24gkeejo@ypzhmyklbeh7>
- <CAJuCfpGViU4dDaLtPR8U0C+=FXO=1TuU-hT3fypNQO3LGOjbcA@mail.gmail.com> <lfnqadtmpkxjhsne3nto6bpourjv3nxw26y2a5kovump3beld7@c2pdvgxxj3ar>
-In-Reply-To: <lfnqadtmpkxjhsne3nto6bpourjv3nxw26y2a5kovump3beld7@c2pdvgxxj3ar>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 18 Feb 2026 15:40:23 -0800
-X-Gm-Features: AaiRm53lCb3-A9mP4T-Ip4RZ_UT27OIlQVbKAc0RvblZzhy-3EiGT7cqg8sX1Wc
-Message-ID: <CAJuCfpFr-MvDAo5wur0gGX-AMCd2kP=pBYOemwAP=G3UUVP4vQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm: replace vma_start_write() with vma_start_write_killable()
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260218064739.GA8881@lst.de>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 81BC6C000B
-X-Stat-Signature: pja8ca4istrk857zikd6aia6bw7rkk6n
+X-Rspamd-Queue-Id: E905C1A0011
+X-Stat-Signature: k99e6pu1m1jbt4dkg977eew9ewdeztfr
 X-Rspam-User: 
-X-HE-Tag: 1771458036-558701
-X-HE-Meta: U2FsdGVkX1++V0COVCnxF4vIIVhhYeKREqK/PWAS6I7WjLTh+PKp50kxNSKq2ASroDAQgpyEkzvv/cxcSbMIDwz2etZ81CMOZA/UBgsMB9pDWv5AVxrO4/SBVk4sW40w3896OTYoTYpVprlEjMqblF5Zp7RpguyPmG6yiWdxcG58y85NV18U8N0VOZ96w2r1PeVe4OK6vqmz1La50CR88uo8641w3OCa21QPboVJNoy8Tfx/7PSlug24c/vWdHujqOrWBBd7OjXrQVNt6wXb2+e08Jafo3OoDHqWeBxUajd95R2M1iMXCnkUiuRbclat9BRMwGvLZJghx3iV2im5O1Cw60N8dIYpDgWzWqxRaU2BN+f2MUFkZGB81JDipY8NgqJ+3V8MBF/NrFWj66rWQffuJweNyCklNJGxIVv6BtYwwvpqodjoPZEXGp8x2hSMiSjnU8LTNGmOl3uQQ7OOSqd3ETeKnxwPzxaFgnfhEHTgomr3eqvzxc90DHZu3oHjTIcXvS6Npm+KR0PwRkS3RH1i5Pgx8aLPfrW49PYfV8DEaJxOCxlm2hXJ2iS0uFlz1Px5S15Zhh5Q0hnQv8jFxghrgjdzSAeW2jNOjVV48Gco9r4mHmSaL8omrQSrvnvqvqphATBoB6VeeyaU0XKh7jfyX/D3QqlLYJzJDUrFhawHuEa7G2b8yz/7rFnzfsLSpNmYTO61bu0ENAi/tJbZEui4KpjqDfnEoSrQ8ydbNBKnenESNlBmNkZhLOIg0RG9GphfAPssejwlZbKxSj0YGKlk237+AH8ennwWQUwOFmsaWe77erV5fIAs/hxVW7hbspnNZCVRyJH8odxl7l2V1RoxbHqrwEcCl7X6etiDsjXC+8vrtZmPdiW+urit+K4XlAP7BT6J0idHn2j3DHRX2PLe1mybvZT5v7etEtdjoo0Gpg+wxWZkKvxnXlv86+II21pxJuz+Y6FMsXdib7l
- p+WoYHxn
- 1mVJ6bjSw8y0Wq5efeTEl2LGER0+S0lNmHU3Q6A4AwBjuEKe46LKUBVhwBm4Xo5qs+k7fOxrjwN3ZStXw3gIs9Ff0+QT+szcZyaQGT0EEXwSVYpTVbyU4OTr48cfC7xibh5iJNy4wNnjegN2BIaE6IP4ICg/xqoAeRGqyv3rNlHVpOYoykKuKCbBXebtbm4rjaHROb47DHeTjpQrdNmooGlaRg7xx7quR0InfjN3mMS5s/6T4tml6zdZiFFIrKnKIdTgHNbQsG5duizKO45rI8GUTG2174awMj8ie79lJVy657MEnPpNeLYvPZP0NGuFf5itZEnhxeKppjUE8+iMZ1jKLQcgSb4YHO4JYMH5pXZZaixZcTfx26iQbx7OWBWCJ70hEG3dmgBGVb3fgI5ukAvl6HrGVXIGigMU3aavTydbGMLcgQ+lAOjCyZzVsyvRfPO0Psb4dhkeXM4Y+i32VhpxiqzIlKimSGgriwNxo0U9UxRAimg0jrB/JeuT4dOA2cy7VqrvoL9p7I8E/sj3drqe40g==
+X-HE-Tag: 1771458135-636899
+X-HE-Meta: U2FsdGVkX1+J0ig/0OrPAPhzP25+I358qEaaoJkPAMgqJVnOSR0UL/mmubX/jUgW3+1qQAIxI4/TqJcJE5eTipD8eYFcQsgkC4w4EsHfOTHfXIg0tMpY9/zt9lGMk1RBzBIEQ8+A1iYKqM/ZTjD9sXT9KeQ3PBH+o100uKh4PIeb9snUx1108Zu9/akmto8upknIOyG2ICvDnIdDDIVcg8qb0F8XEN9+ktCD8T13ZdeTeYuvqcSBX++zPbc/M9fzlL9GwiujNmepjMKzz5njqDOgpmCGfOK6t3coal4eZ7dUMJYR3TDIlg/yD5M9jhSjKSJVXpqkOntDBbsKPdvaEYDBe5o1DCeEC6msmyrXmx1nZdcQCfYFsRS8+3c1Jw1oiIXWW8Yh0rRmlMItz0VwXtvtibUxQkff8nk3ejazIH+tPBiuinO3cI0zzLWJTCYIuz3OHjlrp9SQdt0H3k92cqzSQcL4IQVSCAwDkDgL+4bxUYqeNcJT1cqm2lS4YBUdoNBvSdg1fVYWE8xKmfExJKIlIPjFcyHTcUILULcPK8rR7i7emNreX12N7muR+iyOWt5+NX/21GmharIdtNKlcDzUGiSxxNKrHwESyaA04Xu1yco3qMiYd6h0s3YKBUpnb+gORBrrBRBSAw3xBC7nTYO9DBLXwz4ECC6qjoOElqFiVaZicbCZ9NqYcxR6ayCv7JkWsJ9Mv6UQNPGrhswq2OaV62iZawmH77KCvIq7ramE8FiGVg0xQVy/lPDdEejcP/MEG/vh/rkRKxiI9yCeZfumKx1W6EzpxT3/oO5zj9NOcvSqzRHsSeatY9GaCcZDofiFrLnxF8xaOOr+z2tFPG+gsQkOlYdUoO0G6Bj+J2V6Hu6LCWGOBZolRcvq15xmo2sr0wOKe2Y7+R9V4eJskJ6lgP14EbJAVXcODTz3d5EYZ7KXzvrFkwvrow6emlOmmIRXxhyFeqJhRHozJMc
+ myypbTno
+ jnXQdEuwn6/z4DrP6xV3D7hYtxDiGCY03eX9WyG5bym5IDSGz3soIH9eZEpYxcPYSNCQ3VRk0dRgDXS/Tr17K5f/9lI1oBI5yYo9VCw1kwwS87751mGCdzYIZDJakn6CfdiTrC6lE/NJV5aH5PjlFvoYY6Reg2C2bz+E0t2EhPFuvApz0NE9sfN7qkGYG/XtBr9J8Lkgbw/2+jwtjH9sFpbZZRr883d6up7dhRNEVx8QpyYARbRDXdOZJUnK7fGB4KQ3uUIFeMUhAfQJOyhYsqrsP+owOW53zQagceiHMH4vO/ZuswGvnR/t+NzZz4x6ynJMmnVmfqjnMtqjm945NFPCNMIOGzdarHIRk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,93 +106,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 8:46=E2=80=AFAM Liam R. Howlett <Liam.Howlett@oracl=
-e.com> wrote:
->
-> * Suren Baghdasaryan <surenb@google.com> [260217 16:03]:
-> > On Tue, Feb 17, 2026 at 11:19=E2=80=AFAM Liam R. Howlett
-> > <Liam.Howlett@oracle.com> wrote:
-> > >
-> > > * Suren Baghdasaryan <surenb@google.com> [260217 11:33]:
-> > > > Now that we have vma_start_write_killable() we can replace most of =
-the
-> > > > vma_start_write() calls with it, improving reaction time to the kil=
-l
-> > > > signal.
-> > > >
-> > > > There are several places which are left untouched by this patch:
-> > > >
-> > > > 1. free_pgtables() because function should free page tables even if=
- a
-> > > > fatal signal is pending.
-> > > >
-> > > > 2. process_vma_walk_lock(), which requires changes in its callers a=
-nd
-> > > > will be handled in the next patch.
-> > > >
-> > > > 3. userfaultd code, where some paths calling vma_start_write() can
-> > > > handle EINTR and some can't without a deeper code refactoring.
-> > > >
-> > > > 4. vm_flags_{set|mod|clear} require refactoring that involves movin=
-g
-> > > > vma_start_write() out of these functions and replacing it with
-> > > > vma_assert_write_locked(), then callers of these functions should
-> > > > lock the vma themselves using vma_start_write_killable() whenever
-> > > > possible.
-> > > >
-> > > > Suggested-by: Matthew Wilcox <willy@infradead.org>
-> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
-> > > > ---
-> > > >  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
-> > > >  include/linux/mempolicy.h          |  5 +-
-> > > >  mm/khugepaged.c                    |  5 +-
-> > > >  mm/madvise.c                       |  4 +-
-> > > >  mm/memory.c                        |  2 +
-> > > >  mm/mempolicy.c                     | 23 ++++++--
-> > > >  mm/mlock.c                         | 20 +++++--
-> > > >  mm/mprotect.c                      |  4 +-
-> > > >  mm/mremap.c                        |  4 +-
-> > > >  mm/vma.c                           | 93 +++++++++++++++++++++-----=
-----
-> > > >  mm/vma_exec.c                      |  6 +-
-> > > >  11 files changed, 123 insertions(+), 48 deletions(-)
-> > > >
->
-> ...
->
-> > >
-> > >
-> > > ...
-> > >
-> > > > @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma=
-, unsigned long address)
-> > >
-> > > Good luck testing this one.
-> >
-> > Yeah... Any suggestions for tests I should use?
->
-> I think you have to either isolate it or boot parisc.
->
-> To boot parisc, you can use the debian hppa image [1].  The file is a
-> zip file which can be decompressed to a qcow2, initrd, and kernel.  You
-> can boot with qemu-system-hppa (debian has this in qemu-system-misc
-> package), there is a readme that has a boot line as well.
->
-> Building can be done using the cross-compiler tools for hppa [2] and the
-> make command with CROSS_COMPILE=3D<path>/bin/hppa64-linux-
+On Wed, Feb 18, 2026 at 07:47:39AM +0100, Christoph Hellwig wrote:
+> On Wed, Feb 18, 2026 at 12:04:43PM +1100, Dave Chinner wrote:
+> > > > > I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
+> > > > > 
+> > > > 
+> > > > One naive question: semantically what will be the difference between
+> > > > RWF_DSYNC and RWF_WRITETHROUGH?
+> > 
+> > None, except that RWF_DSYNC provides data integrity guarantees.
+> 
+> Which boils down to RWF_DSYNC still writing out the inode and flushing
+> the cache.
+> 
+> > > Which
+> > > wouldn't be needed for RWF_WRITETHROUGH, right?
+> > 
+> > Correct, there shouldn't be any data integrity guarantees associated
+> > with plain RWF_WRITETHROUGH.
+> 
+> Which makes me curious if the plain RWF_WRITETHROUGH would be all
+> that useful.
 
-Ah, I thought you were referring to the difficulty of finding specific
-tests to verify this change but these instructions are helpful too.
-Thanks!
+For modern SSDs, I think the answer is yes.
 
+e.g. when you are doing lots of small writes to many files from many
+threads, it bottlenecks on single threaded writeback. All of the IO
+is submitted by background writeback which runs out of CPU fairly
+quickly. We end up dirty throttling and topping out at ~100k random
+4kB buffered writes IOPS regardless of how much submitter
+concurrency we have.
 
->
-> Cheers,
-> Liam
->
-> [1]. https://people.debian.org/~gio/dqib/
-> [2]. https://cdn.kernel.org/pub/tools/crosstool/files/bin/x86_64/15.2.0/
->
->
+If we switch that to RWF_WRITETHROUGH, we now have N submitting
+threads that can all work in parallel, we get pretty much zero dirty
+folio backlog (so no dirty throttling and more consistent IO
+latency) and throughput can scales much higher because we have IO
+submitter concurrency to spread the CPU load around.
+
+I did a fsmark test of a write-though hack a couple of years back,
+creating and writing 4kB data files concurrently in a directory per
+thread.  With vanilla writeback, it topped out at about 80k 4kB file
+creates/s from 4 threads and only wnet slower the more I increased
+the userspace create concurrency.
+
+Using writethrough submission, it topped out at about 400k 4kB file
+creates/s from 32 threads and was largely limited in the fsmark
+tasks by the CPU overhead for file creation, user data copying and
+data extent space allocation.
+
+I also did a multi-file, multi-process random 4kB write test with
+fio, using files much larger than memory and long runtimes. Once the
+normal background write path started dirty throttling, it ran at
+about 100k 4kB write IOPS, again limited by the single threaded writeback
+flusher using all it's CPU time for allocating blocks during
+writeback.
+
+Using writethrough, I saw about 900k IOPS being sustained right from
+the start, largely limited by a combination of CPU usage and IO
+latency in the fio task context. In comparison, the same workload
+with DIO ran to the storage capability of 1.6M IOPS because it had
+significantly lower CPU usage and IO latency.
+
+I also did some kernel compile tests with writethrough for all
+buffered write IO. On fast storage there was neglible
+difference in performance between vanilla buffered writes and
+submitter driver blocking write-through. This result made me
+question the need for caching on modern SSDs at all :)
+
+-Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
 
