@@ -4,101 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22411E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 01:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82AAEE9A047
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 01:05:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 361296B0088; Tue, 17 Feb 2026 20:00:14 -0500 (EST)
+	id C9DBD6B0088; Tue, 17 Feb 2026 20:05:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F196B0089; Tue, 17 Feb 2026 20:00:14 -0500 (EST)
+	id C1AED6B0089; Tue, 17 Feb 2026 20:05:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20DF06B008A; Tue, 17 Feb 2026 20:00:14 -0500 (EST)
+	id B1D306B008A; Tue, 17 Feb 2026 20:05:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A39E6B0088
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:00:14 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86FD356D10
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 01:00:13 +0000 (UTC)
-X-FDA: 84455771106.21.ECF1BD8
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3206B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 20:05:05 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C56813AB70
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 01:05:05 +0000 (UTC)
+X-FDA: 84455783370.18.7642F36
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EB1B5A000B
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 01:00:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XljOV0aE;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id CEC5918000C
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 01:05:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GjahZ+Tn;
+	spf=pass (imf24.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771376412; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771376703; a=rsa-sha256;
 	cv=none;
-	b=FZcOI/U2NmVlQ57MnbpEgjYQe4GPHRatRwmLF3B29RvlOfZJHegUVZbQAKDgjQ9oBDQOfX
-	ODE23YNJwmKFN5djtrRVd8T3SoTqnW8D+w79KR82swh0J2rUZdH+My0IvAu5fy3woDXrWS
-	Ih/3GdMqu1NFLPR6pEDAI81m7v4LMFw=
+	b=LJxhMCiRGT77uOuF9zi1kPwtnmwz6Y+LokriImzkPbde9JH0XNXyDtH5Y05FlFym83gvpA
+	ii1UJJmphRRKrW35Vc6DvTPfQf6R3/XTvA0muuS8U44tLrE3JMm756+VLMRAE38MF7LLVj
+	2xAKM3XT6NO0mUvQAE8enXovdkeQU38=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XljOV0aE;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GjahZ+Tn;
+	spf=pass (imf24.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771376412;
+	s=arc-20220608; t=1771376703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vwGD4+uHKmhmP60jIBykMErKbt4OCcQQaCtSSC1/n3s=;
-	b=liGggC+WR3fjgaUzwV/IPl8KQoguiEpY0f/vtoJwUQoy24YoMiragKUFjFg2lFXbq59ANt
-	ENFDLzlxMAMTU8UgT09HCdKMzvsE2VioLv5Oyy5GEjmLZXeady4BAEYYc5y1ZMN+bkhbA8
-	ojwiNaqZRyRWbWf8siRIr867Kl0738Y=
+	bh=dgSadJwRIIjm9QTK1gWkTg32HpRgLg2cZ04Hlj4E20Q=;
+	b=xDyMgI1AUMtcLa+P/vfBj7vZnXyDo0gUNwL8XlIyYZRwGFhiG/OvWtjhUbhoUf+k6hN0vS
+	iycyBzyJ32/HCYb0GyzuXODvFiuLaVACUWKLlI5ZMzcsmZDWUghE1vIe4VmkCQz4tm2N9b
+	6BkbERXmmzwzuNtR0VxOJDPg0csbK8s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51F46600AE;
-	Wed, 18 Feb 2026 01:00:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE11BC4CEF7;
-	Wed, 18 Feb 2026 01:00:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1EEB9600AE;
+	Wed, 18 Feb 2026 01:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40116C4CEF7;
+	Wed, 18 Feb 2026 01:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771376411;
-	bh=Zi/hbrzAQ6HD/Ca/Z25uQVxrxlf0y9pGLZODPBxVeV4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XljOV0aE04c1d17L8gouamIzQUOv4O9rADZJwPc2FGF3d/Gj7epRYdtPSB/0GlwAE
-	 UTXLQpAUFSOEeaos7fYLhARK42ZQq4tZ9rkG1VZyQusapyhjGcEVngQFgiUbqTBJDq
-	 FdQ3Ka3hRl3Yg1q/BeNR4PSndOXFRUsNLtc/Oondetrvkk7vBsXhEkPvW7cHEFrJC4
-	 adoMUL/m19u4Ldg3++TgIKNWYauUo5bGh3DJmjuBoIlUrZASYqQxrSIw+8dnacEy/+
-	 E1leP4jjCRMqak+DN/XbfxY3J6A3Do5miMrpKxBeyKo/zofI44tNW7os7b16Ugi2Bw
-	 d4UxZoPvveZKA==
-From: SeongJae Park <sj@kernel.org>
-To: Qiliang Yuan <realwujing@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Tue, 17 Feb 2026 16:59:46 -0800
-Message-ID: <20260218005947.2979-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260214-wujing-mm-page_alloc-v8-v10-1-bdfea431fd97@gmail.com>
-References: 
+	s=k20201202; t=1771376702;
+	bh=IsqEVzhEg6qsCM/MHOX/MCUhJ03tO51uDgjhXK3ZRNo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GjahZ+Tnj34RwerIUXUtIfq0dwbgYjpFesDdYoaXSQI9Yterjvxz1XuvI6BibwGjh
+	 CZXMYjLYEMq1nPyoDDsC4Q0KZb3as1Da5/zYPKkZnIvrkZocbRhUqoEiBAkCnu8oWb
+	 5SlgwDP2/9ywE5jjLaCX8Vl+OP0LasrdlsSRwYyYhHm7pW2tVZ6a3R/a8ksafmbxLg
+	 jMy3THFxzS2u53AyYI8/Jpn5CBaMJEOjEiMLl1QxaoCF0UdEA+zEnDSkHJcPmnq7cH
+	 oo6gyji/OGtE3g4CW3KNETatLFWwLbNB55tJv1RIx3uGUraIr+MVJ+QLWojBsyR3Ua
+	 arIF2J1zJUGkw==
+Date: Wed, 18 Feb 2026 12:04:43 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: Andres Freund <andres@anarazel.de>
+Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	lsf-pc@lists.linux-foundation.org, djwong@kernel.org,
+	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
+	ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>,
+	dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>,
+	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com,
+	vi.shah@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <aZUQKx_C3-qyU4PJ@dread>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
+ <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
+ <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+ <4627056f-2ab9-4ff1-bca0-5d80f8f0bbab@linux.dev>
+ <ignmsoluhway2yllepl2djcjjaukjijq3ejrlf4uuvh57ru7ur@njkzymuvzfqf>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB1B5A000B
-X-Stat-Signature: u57eoi6ftax8irkt61fusu3f7bm4o3yb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ignmsoluhway2yllepl2djcjjaukjijq3ejrlf4uuvh57ru7ur@njkzymuvzfqf>
+X-Rspamd-Queue-Id: CEC5918000C
+X-Stat-Signature: 51ombu4za89niu4rfgdrypb55yy1gpum
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1771376411-311335
-X-HE-Meta: U2FsdGVkX1+0jfCjW8Wxn8qYqvinDD3Gvlw563wh1lB59SnWAezjpfWXCTQxEYaBmTrxA+uaRZwP+ggKr91IJ8IF4DXcIOIXL247N8NH8gUVuD79qawh9TRZwU7L/GAdVf8U34XGEa5L3csxSCHS2zxaiX7ykScQwvrGrJq+BT1NOkbdCzvGPddn6I452sByieN9gFm7iwrLcbgUjYr0TlA58bNl8LUSgUSU4RutcizPt4LmY37zzrj7Q5CCfcFv1y6sHh7kJC29FGnrkWBR7z+j5d+qRkMJ98aHhDJl2AVF6TPf4CZor9KsfajmV6H2lMG5iUfNN6UiGSMa31nhiVFjcgZApvqOlHwNmlNeqmlKLSEWzbFdBQXdkuFQItdsQUcwUcgq6Ksx+Ay0T6ATNkHplFS1GpyEIjWgByqZt5TTaq3DLce7h5HiZf61wYtcb/vhnbi34UoCeaz2aD8t6KfWXTCcMEMAnoEkehEvwQEuGZiR0x73Y3oD+Ikf6obvoyLT8QddktxfFgwAjUD+ifLMen497cYFTgNvACiZxVlCSxsAGNhbH1eT07181reqfExFy0xtEdPZispBparGGKAJ4TgX0jrHPJ0Wp9ORm3MWR2ITt7na8OlPfutzloIjy0FCtGRZfPq+mbeCK3GJP7ByoK+IrkXuFOu/rI/EfE6N6LJBPRLQbfIyvedThd+TJG79jVN8hZa1It4WLh+c62hyBxHfo9jDUN5b8VElWjaV3KxCpEZCbT9gIqZtEUuTE/s+Stefz9KLEqbOY8F1y3kBPUmdQtCeX7i4NmLQmywfvA9fuhHL8s11b91INeMuU0LDdLezYhnH7NFuF+zCjmVM1PwHFNBK+UbbmAU1Mod41vLWPX9ZA7/4zuY8bE2oOlmsUvatVw0WM4LVlhCKwCp7vsPYeeVcZZtT8HMFssTOIkY3vSrKjRHPjLzCd1myBf7W0JG4BHORH4ID2Wh
- t/ddMhDm
- aNbqw5v2oqBSFi93jqLAFFdkOdgqZxxKze//OxteO6UET8+K1BOLA2YBNSNJAo3iSrh6f3/QKoPepoOpvRhbNR26OvdF1c0Ombj3JbYT9Wq9coERXUaeIu1398YyhUP4fPQur+cUO3Uaw1VsEHEdOUTnpFqx7JDvfvCJmdFl1/HBypD0EBqyNusxZz9g5wmptz+s382xNSmMTWILLdxf7IlvdxjyoXHPlD89k1VTtfWFHdfK22lgPueCKk5HQnvFgjpI3KxMWqP4qLjuTsD7vlg1rVD9dcx876BY0VK2R+92Dxp8=
+X-HE-Tag: 1771376703-870841
+X-HE-Meta: U2FsdGVkX1+CwtI/3Ra/Byx+WPjP/cAcjfhBTlIxfTvOnj8HB8zLzxuf04rk2cT8BliiQLAGvmDIYx8BzxHR3WrqFsOr/7e92MdrQqeKQ+hMYf8h4hSSo6IAjeCdoo1QpUXlj2YkfbMw1EU9oAUDa3aRh+Nd3fQ9KMZ/dKSKvCNPlf8d33MQDdF/a02q3mVYw2YvXbyw6OWVyKvKI+8Oh04sV0tNEoNxY40uFSYP8x+clTLTHtVP1djHtcF+qr206SyqLh38gdlGrybS4MWFYAHP7oP0eaXHKI4VywdS1QSaqpwwHTEUg3UAaW4EdzirS8jOEOe2pzyq5TfI5f9nzWc8h7G7RRtCTg6026OA/8fsiNXteJV6xDnTnURiYRJGD89YBTNjyJ2BpWiLYMA4xdDalG6kND5TQ++e82D5qwot0/6szxBlsmrmJm6BcyrqHxPJU5bCjinhdD0leSA+XdUs92DINTEn5zr8PKh6UE9KzcjiybYPpCrMwcMNlwDW6cu3Rqq969qV4bMt4Ar/YvgpaOBaZ1tn2RFjOvmt/6Tkp0gE7LdPR/NUQHmDsksXlCZz38eOJmAUG25z1VrTx3/DvH3b7uEXicm0tE/F6RC79DERfGQ3l/M2GqoSkgpdM/wlgKYOieOdTo/TCstwl4rPqiEydThT6QnC1RLbMfH1EyAuIcJxVmSvrJ/wlrIY/K2TfZlierIM3oky5tRlDkj+YDyqthPAoAYczhMjzDW1h7K4U6Yi0dONYq7VXhLcV6nWCrC0lbTdExaS5H/OFY31Q+SOtB0eefeLtb3ay+2Zm5yDH9kp61Wq85ZHj9EH+rrswffGxpRjzQHzVvMHKsyHN83w79WMYqVigveM7ZlSd5E37CoYEYlpqim4B2QVuFriwgdDSuTtUIEdDQAMnGd6Bxi+yNGAOBiRs+37ZJHwadb9gHHg6GSO063erB4CCZeamGKm7vnS6W5Supa
+ GFkUA4We
+ dM/1bxk3CElMu+cGW2cgtxJpCGddYhDAtty2+pmYhyA04P/0vhtT51dzgrFjewknHcl5i/CFChLGSZnwkCRpcxlHYAYSn80sGmmgz9VrU/MMWLPq3Qc+lA1jpRjdwcKKl62CdsJ8fpD6c5+teRITYobQGpRgcurLnOws5J/a/xNZE00U7FjUHl7HLXZeESEdHfGhYkxFbkEmVdO65EmRpVbNEGZQ0w0fD1oEnqZCWoz9EBaG8THJrC2VBBkOGsE7RlXeBXwM6O8mUl3NoMHAjm87hrlgBz8W7rwhvSGmuvf8oqfH2vCFB9dhq86Or1J7PQHV43QFQJOzfZ24SGfrQ4kgfHA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,48 +104,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 14 Feb 2026 23:13:50 +0800 Qiliang Yuan <realwujing@gmail.com> wrote:
-
-> Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-> pressure as they cannot enter direct reclaim.
+On Tue, Feb 17, 2026 at 11:21:20AM -0500, Andres Freund wrote:
+> Hi,
 > 
-> Handle these failures by introducing a watermark boost mechanism for
-> atomic requests. Refactor boost_watermark() using an internal helper to
-> support both fragmentation and atomic paths. Apply zone-proportional
-> boosts (~0.1% of managed pages) for atomic allocations, while
-> decoupling it from watermark_boost_factor.
-> 
-> Implement boost_zones_for_atomic() to iterate through and boost all
-> eligible zones in the zonelist, respecting nodemasks. Use a per-zone
-> 1-second debounce timer via last_boost_jiffies to prevent excessive
-> boosting. Protect modifications with zone->lock and verify with
-> lockdep. Integrate the mechanism into the page allocation slowpath
-> specifically for order-0 GFP_ATOMIC requests.
-> 
-> This approach reuses existing infrastructure and ensures emergency
-> reserves even if fragmentation boosting is disabled.
-> 
-> Allocation failure logs:
-> [38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-> [38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-> [38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-> [38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-> [38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535649.655523] warn_alloc: 59 callbacks suppressed
-> [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-> [38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
-> 
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+> On 2026-02-17 13:42:35 +0100, Pankaj Raghav wrote:
+> > On 2/17/2026 1:06 PM, Jan Kara wrote:
+> > > On Mon 16-02-26 10:45:40, Andres Freund wrote:
+> > > > (*) As it turns out, it often seems to improves write throughput as well, if
+> > > > writeback is triggered by memory pressure instead of SYNC_FILE_RANGE_WRITE,
+> > > > linux seems to often trigger a lot more small random IO.
+> > > > 
+> > > > > So immediately writing them might be ok as long as we don't remove those
+> > > > > pages from the page cache like we do in RWF_UNCACHED.
+> > > > 
+> > > > Yes, it might.  I actually often have wished for something like a
+> > > > RWF_WRITEBACK flag...
+> > > 
+> > > I'd call it RWF_WRITETHROUGH but otherwise it makes sense.
+> > > 
+> > 
+> > One naive question: semantically what will be the difference between
+> > RWF_DSYNC and RWF_WRITETHROUGH?
 
-Acked-by: SeongJae Park <sj@kernel.org>
+None, except that RWF_DSYNC provides data integrity guarantees.
 
+> > So RWF_DSYNC will be the sync version and
+> > RWF_WRITETHOUGH will be an async version where we kick off writeback
+> > immediately in the background and return?
 
-Thanks,
-SJ
+No.
 
-[...]
+Write-through implies synchronous IO. i.e. that IO errors are
+reported immediately to the caller, not reported on the next
+operation on the file.
+
+O_DSYNC integrity writes are, by definition, write-through
+(synchronous) because they have to report physical IO completion
+status to the caller. This is kinda how "synchronous" got associated
+with data integrity in the first place.
+
+DIO writes are also write-through - there is nowhere to store an IO
+error for later reporting, so they must be executed synchronously to
+be able to report IO errors to the caller.
+
+Hence write-through generally implies synchronous IO, but it does
+not imply any data integrity guarantees are provided for the IO.
+
+If you want async RWF_WRITETHROUGH semantics, then the IO needs to
+be issued through an async IO submission interface (i.e. AIO or
+io_uring). In that case, the error status will be reported through
+the AIO completion, just like for DIO writes.
+
+IOWs, RWF_WRITETHROUGH should result in buffered writes displaying
+identical IO semantics to DIO writes. In doing this, we then we only
+need one IO path implementation per filesystem for all writethrough
+IO (buffered or direct) and the only thing that differs is the folios
+we attach to the bios.
+
+> Besides sync vs async:
+> 
+> If the device has a volatile write cache, RWF_DSYNC will trigger flushes for
+> the entire write cache or do FUA writes for just the RWF_DSYNC write.
+
+Yes, that is exactly how the iomap DIO write path optimises
+RWF_DSYNC writes. It's much harder to do this for buffered IO using
+the generic buffered writeback paths and buffered writes never use
+FUA writes.
+
+i.e., using the iomap DIO path for RWF_WRITETHROUGH | RWF_DSYNC
+would bring these significant performance optimisations to buffered
+writes as well...
+
+> Which
+> wouldn't be needed for RWF_WRITETHROUGH, right?
+
+Correct, there shouldn't be any data integrity guarantees associated
+with plain RWF_WRITETHROUGH.
+
+-Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
 
