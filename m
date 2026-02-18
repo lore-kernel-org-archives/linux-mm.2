@@ -4,93 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E81CE9A03E
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 09:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D972E9A03E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 10:07:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B50A6B0088; Wed, 18 Feb 2026 04:56:51 -0500 (EST)
+	id 935186B0088; Wed, 18 Feb 2026 05:07:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4626C6B0089; Wed, 18 Feb 2026 04:56:51 -0500 (EST)
+	id 8E28A6B0089; Wed, 18 Feb 2026 05:07:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36EAE6B008A; Wed, 18 Feb 2026 04:56:51 -0500 (EST)
+	id 7907D6B008A; Wed, 18 Feb 2026 05:07:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 218096B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 04:56:51 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4520160500
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:56:50 +0000 (UTC)
-X-FDA: 84457123380.08.73600DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 010F780009
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:56:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fgQ128kW;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 638C96B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 05:07:03 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03BBF1404A4
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 10:07:02 +0000 (UTC)
+X-FDA: 84457149126.11.390E5E6
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 96F3940007
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 10:07:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zLpgTwql;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PFVAEm0s;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="taonA/ZO";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i9QQVC+g;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771408609;
+	s=arc-20220608; t=1771409221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qV122xeRA8ORVd49r6sP+klEaOhurM7yPuWmxhD8R8M=;
-	b=OVAGdTl2UzFQ7hXQ5XPmNrq/yzdnYdEBsCDJGR427UTnOyuP1YuX9xDHE3VS7vgl6o8cSZ
-	QlFhR71waL2rE+y/ytve5/3pTRz5ycbMRz6iwo+A2+LQqrfPjy2c698WqH8z0w8cKl5Wh0
-	JoXtiURydy11ugiEqgHwuwE2YryYAvE=
+	bh=cfj3Algp/3uWm0tjDhm6GerGMKHAxtnoYTIF3HPKZFE=;
+	b=Vskva+E+i0Qb25872lbl2KDf2kOXSOjLo/nvxqqOhS1u4upBlTDMfIS14QdnnHBq4vCbx2
+	4TEYyXZR4W1a5dbMsZMw8WoWXG1g3ua+YYmccJZgLi0EOaRgcMNAvfZc73MgZ4x2JGnaoG
+	0IsLoe5j4dgNctZY2DRomKWdyn/EsMM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fgQ128kW;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771408609; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zLpgTwql;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PFVAEm0s;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="taonA/ZO";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i9QQVC+g;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771409221; a=rsa-sha256;
 	cv=none;
-	b=3VoQNcRgo1vlsJtTW38JTHD68iWZy+me+yPb9/SJTwXXQn1vyLD/+opPbba53lvvqFOARD
-	rfHjzw3cj5gDxTZbr/u3H3Sj8MY38UpMIhU6D0AYk40LitraHD1JKeKYflefeo8VeEjiYc
-	M+pYgr8P91bURT/Jkxty5NRtEZsQCfA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1687D416D5;
-	Wed, 18 Feb 2026 09:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62380C19421;
-	Wed, 18 Feb 2026 09:56:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771408608;
-	bh=2M/oHwf738t/3QfICnitZIlKcPZTFwrhHKLEPVnncmI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fgQ128kWu65YDpWegMGfZb53YMJOn37hIRSVFfGx+pX+XzlqcyAlnYaoU4+6+1DmR
-	 RORpysuoN+2jc/iElKEHzTyrk0kzgPds9IeF8VxQJ+oNH9GOwItJ1Z3Oxdd7tUBcVN
-	 gc5Nrt9uyY/DSO/rlnEeiwkHWl3ev1N5AM2HgxyK3ZUZYnYyxqmq25m1NcF14MNeOg
-	 cCpyzWOtZJzVvtGzG8/VOLvy1VOmg3CHRMe8f06ebQMRHR55fCCvgN/TodM6lois0T
-	 F2PEVMj7VwCi7XlgOy78HPknik2Fxg643Q0kw2U9PSjATb6snf0OTVTdqf2Er++Lkg
-	 qhpQKFaFxakhg==
-Date: Wed, 18 Feb 2026 10:56:42 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Haris Iqbal <haris.iqbal@ionos.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, bpf@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
-	linux-kernel@vger.kernel.org, lwn@lwn.net
-Subject: Re: LSF/MM/BPF: 2026: Call for Proposals
-Message-ID: <20260218-haben-protokollieren-d4b5d2a1f8c9@brauner>
-References: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner>
- <20260119-bagger-desaster-e11c27458c49@brauner>
- <20260129-beidseitig-unwohl-9ae543e9f9f5@brauner>
- <20260216-ruhelosigkeit-umlegen-548e2a107686@brauner>
- <CAJpMwyg-3-Z=ZDC60Vn0s-8Z78VOPKYmvX9s=Nnvcoao4T5zbg@mail.gmail.com>
+	b=1b7g2lX8NETBFYwOcQlvyhhY+rPICqmmaaNek+ll0GTotBZClzjFhkF18wO5IgGCluWH5C
+	U7zHZbst+61rzZXroba3d4eSdzwyIErLoab6+FYxBRAbFW0QsJt8TDMBpppj12juu32zmB
+	Pqw3ntcAkWmoRAJCT8WtMee9eO/UR/Q=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DCF545BCC8;
+	Wed, 18 Feb 2026 10:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771409219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cfj3Algp/3uWm0tjDhm6GerGMKHAxtnoYTIF3HPKZFE=;
+	b=zLpgTwql4UyYZ9oC+ju5hwR9h3b3SQSGUrymNxyc+fw0sAR1IegVTrN4hxWH8K1nAGWQud
+	3zV53zHSAoPIqzkvIEySQEAd/10rz0ZNYqjFxo6vWUOwJSUxmuYPW7NRp1d4ndY98MbA/1
+	IiPY/svAWt/wakDMxcmOp9uNgWLtndc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771409219;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cfj3Algp/3uWm0tjDhm6GerGMKHAxtnoYTIF3HPKZFE=;
+	b=PFVAEm0svVAT1dB8hgoEnUreNxMr/Twsxi2jn+dVC7FTEuHKWN+dJIjuB1Gw1piNPfDxgU
+	ufm2XWBUV+b7RyDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771409218; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cfj3Algp/3uWm0tjDhm6GerGMKHAxtnoYTIF3HPKZFE=;
+	b=taonA/ZO1pYwcUQXx4vtBgf9N/7MtF7wfcRTE3tjSzWQNGJAohVlLwT6FofhM101yWqLaE
+	vLCV7AHsmRaxqX/RAY0uuKYAfXETMkxXOQyxFmo+BKdU4aVEu6cQur9YRDo6+7oCE9NCsX
+	e9bR+IM4HAj2NTaBtqmatQJc1TAgjks=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771409218;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cfj3Algp/3uWm0tjDhm6GerGMKHAxtnoYTIF3HPKZFE=;
+	b=i9QQVC+gIKPpTInoSXEnwpYWaKKFnwObV0JWExLJNzLH+Wi6sWm7DZpgOOQsXwIUlrmWBL
+	sR1UtXlx1W+LK6Bw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CAAF3EA65;
+	Wed, 18 Feb 2026 10:06:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id I+GyA0KPlWmUDgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 18 Feb 2026 10:06:58 +0000
+Date: Wed, 18 Feb 2026 10:06:56 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Luke Yang <luyang@redhat.com>, david@kernel.org, surenb@google.com, 
+	jhladky@redhat.com, akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
+	willy@infradead.org, vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions
+ since PTE batching (cac1db8c3aad)
+Message-ID: <5dso4ctke4baz7hky62zyfdzyg27tcikdbg5ecnrqmnluvmxzo@sciiqgatpqqv>
+References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+ <c450ee86-4c34-449d-b144-6b4dcb996998@kernel.org>
+ <dhoz2eeqdx44sf2epeorxs67v5zohutgxniourumsouz22qbl7@gijuj43edjb4>
+ <CAJuCfpHJyHH4=kcQcc_RUPhmLBN8HckoDW0DHiUe+FdQ+tr2NA@mail.gmail.com>
+ <764792ea-6029-41d8-b079-5297ca62505a@kernel.org>
+ <71fbee21-f1b4-4202-a790-5076850d8d00@arm.com>
+ <aZSoyjQHvVWFBZdZ@luyang-thinkpadp1gen7.toromso.csb>
+ <nfrvygkft42c35ymgupwggrc2hrbatxaa6cn3hjxffrvhaprqg@wjg4ye4uv5go>
+ <8315cbde-389c-40c5-ac72-92074625489a@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJpMwyg-3-Z=ZDC60Vn0s-8Z78VOPKYmvX9s=Nnvcoao4T5zbg@mail.gmail.com>
-X-Stat-Signature: dotcmrm8tbergq74sigy7mx8hejetc1k
-X-Rspamd-Server: rspam11
+In-Reply-To: <8315cbde-389c-40c5-ac72-92074625489a@arm.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 010F780009
-X-HE-Tag: 1771408608-489779
-X-HE-Meta: U2FsdGVkX1+UnNIN847kPRKmLIuweBCSNPtF9IXFmnXYryFUOvuks0pQAbKD262BVVxHjPljpZvMwSZdXtDGEERfqQ05fp1+j+w8eWOp+J27BgD/HGqe9VpqOw88eiH6rRmenL8QEbVGkq2oizyQwSCI1OHwWd/hhTJP6q5zGT3CjwQ2z5FsiwpkK/1kAlHn3J2fm09BDNZR3NkLHU6PooLdeQMf4jaQOpg782be8xNmCbgFQU65CM8hCwCcIPbGckdPLtZPiLpT63CyxpHSIFc88fyIk/0s1PqEX2xieH6+l9alXQUnnoaPplBrQjNpt71sXJGx/t6XfX6Lrp4b0IVs5IjxXNMBBSCSQDlZqSityNVuwdhsJjO9ldEtBXJIk9k6qD+XhAkinXYaKbNVnd1nvx+7xZPQiI/X7quzS+ZOcZst3gDBsWvtPXpokpx5eWgViK7SIMq/UQnuQsRAAI/siDRezC2OP9VsOLJ42wQGSDJ/DfmNVv8tzT7U44kR6zQat7wWde8uAc71kv1Yq4mjTM/IOqrTNZo9Cvr9WfMJdzZu4Qra7q5H42mMadYAfhe95lhtzzJuZRuHYmL9I0v9mxFCgi8hwdjijzTYrS670A0cJEa/9xgF2jUJI1fztdusOuuUM6US1GvsQurDSrMWe5Rs5Fq5ToGk2FwXpnB5/UKA0HfEpd7LdseKFTFywT8iCgVHBOT1bNKK3E8WIpFVpxooB5imBUAaOzBaDBsJYPnQa7xKeIUX1y9kUYrFM1olBjkcmhlz4plIBqyE57AhEsp8KXLm7TsvETucRbPixn8RdXEAis+vmouhgnvPdVIIBN/XCKlGPTtYw+QFsIaDZ/k1glWdNoASfRK5si6Ynmjsszb9HngDoQk3+ZP4g/uvl7fADY+Jcl5axWFXHREoZrjfyfzeXniuPDa46HHJWROHOPwlS59FrXHTepDxBIEzUpHVeslOt3VRcy4
- 8hGOdyhj
- M9uCWFJ662yNU0b88WKB4k4lXaf8feFEIOGSct+590mu57nThfO1QPeQ6LmFDQ7Hmk+jzitdInGHWnV5YJymKl0k97WwCQJxLlOZ9WQyRAnMkT0rZDFRqOLn1STvyUKi1eFS5HZphCFIqcVARCOtdCUEEyJztMHCdt2XW7RXW0Bt5jIKT+XL2zGZzJgt/Fp540BTZZf3VHJgiaJIrftCZA7HXgXEqa+Aj9pQkVm9kxyoPqIE3cF76TWSg/TWBxKugj63ZCBKiwZosgbK+40idDsFdIUjNiQ9/yZkrYZU3/zsEJojDFTf3GGuCRW8RxbU3QyAlMpBuexQEvUSHJCrCDgsMGvQ0pAA7/YTsdm4en1uYWlAS0yAoyQtBzg==
+X-Rspamd-Queue-Id: 96F3940007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wptnauougujewcwi1k5itgs7wnb931qm
+X-HE-Tag: 1771409220-611573
+X-HE-Meta: U2FsdGVkX18xG8M+oWSSM2Zy7yFsCnIBy0LelFtUhhvTfYKU/hF2jNDj2xklFuc7wCraDB+4k+ECSweas7eKVVgzFMicoSVGeBoN+EkjWHRNEXYjEdlc9Vmvet6bbKC+pv6dxtyzQf2mHmoLLmFEx82ZCjjNWvXdtmzTzHe030QelgsjthqelbcNrSXUJxHSbLu/+rC2Uvw1bP28sAxFK174+aPRTEIub3RlsoY+5+Xv8y86DVMeOZ9Pl3o1TQPrg64L+lvNPDzrVfhsSgE1F+20zC4JDYbyD3hD/MMAcj2nff9CTam1IAmnD2zKvxImK+HM0cYAZltPPkH1Mbx32hUIO+urwspUVHvxJIUmokpxWq/yit2D64q1j0dvFFR7JZts3wpFLCx9TcWnF3oypg4Ct7HyphK7ryZJdwYmzB88vzwG+D/cIOHa+mfVVmjyU/HwsTWFBbgobxx16bLWhUO+QFvybzAb2yYd+0LW+Z3p/mSxsyFJvl9MQvhuHo0MfS3L+x9/mBQDijh44cK2BlV3uR812GCPOzL9LHzUZAs1XGjtcMWwbemahCkSJXx50Kn2Ceq2i5CVOPLMD/LpnWXcBqtwd84lNCj8GlXcrqs3kbN8F/e/M/EMKRyIyogU1dUH6+XoiM/LEU3CCiseGhmHpD8rqxjqOgBFfORhI94UixrYeWnaaVnE7Sb3zJhiWin1nRwqJ+4utpKVmDWTYJBIkZ/ZykJe3DGRwOTG30b6ymHpddAQzPN5hgaMvuQS3BnWpvNVixojW0saEGLAsBmi5Rimek5UfYUH8cs98BzjEnCozNKy1vYMMUjZn+4gw5L7eSX/+aD8s27mKpozBkVQYNogOgqA5xcwkJ+McgjedhTkvs9TiPjPENl71W2Vr06lED3CY0r4dtI49+AbCXXS+t00c/TMz3MQmayXczuLXOJlS1x2HM9xatD0xLtGwv/T9AmjFASKDsBkQJg
+ CfLraMGb
+ 253DCqErCBdpW2NfeEumGCnjXDI3BHIJb7jOplwt3WLgMi8JO2R/68QPqiQetJXIabHijTV8tJoD/npG3loaawT69QZs4b/Lrdc8A1W5rIAxTKB/HTwteljkD/I7Orh6Yg3lNmE/r+PcG6FB5DDCDDSqm2kF18YeAQQuZk78tqwyn9NznsFjT1fWMOFP9D3vqPzU4lbXGjJVT1g9HTwrCrl2fUk7jTJymcrQkqf+f6FgVCEWCo8OqfRDoF+kkEW61BLJf4E2HnpTXW5mhZbWdZxYI2AOwh/8ydjcnGAmPRWl6/HVdpYl3eFzJgAvzkdPRNilb++Fn68KycG3dxtNN6IRotSh6e+NLlCW/4z9Z1ioBtUhyHFjmyHj1qA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,27 +146,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 11:37:19AM +0100, Haris Iqbal wrote:
-> On Mon, Feb 16, 2026 at 3:28 PM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > On Thu, Jan 29, 2026 at 05:13:52PM +0100, Christian Brauner wrote:
-> > > On Mon, Jan 19, 2026 at 03:26:39PM +0100, Christian Brauner wrote:
-> > > > > (1) Fill out the following Google form to request attendance and
-> > > > >     suggest any topics for discussion:
-> > > > >
-> > > > >           https://forms.gle/hUgiEksr8CA1migCA
-> > > > >
-> > > > >     If advance notice is required for visa applications, please point
-> > > > >     that out in your proposal or request to attend, and submit the topic
-> > > > >     as soon as possible.
-> >
-> > This is (likely) the final reminder to put in your invitation request!
-> > The invitation request form closes this Friday, 20th February.
+On Wed, Feb 18, 2026 at 10:31:19AM +0530, Dev Jain wrote:
 > 
-> Hello,
+> On 17/02/26 11:38 pm, Pedro Falcato wrote:
+> > On Tue, Feb 17, 2026 at 12:43:38PM -0500, Luke Yang wrote:
+> >> On Mon, Feb 16, 2026 at 03:42:08PM +0530, Dev Jain wrote:
+> >>> On 13/02/26 10:56 pm, David Hildenbrand (Arm) wrote:
+> >>>> On 2/13/26 18:16, Suren Baghdasaryan wrote:
+> >>>>> On Fri, Feb 13, 2026 at 4:24 PM Pedro Falcato <pfalcato@suse.de> wrote:
+> >>>>>> On Fri, Feb 13, 2026 at 04:47:29PM +0100, David Hildenbrand (Arm) wrote:
+> >>>>>>> Hi!
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> Micro-benchmark results are nice. But what is the real word impact?
+> >>>>>>> IOW, why
+> >>>>>>> should we care?
+> >>>>>> Well, mprotect is widely used in thread spawning, code JITting,
+> >>>>>> and even process startup. And we don't want to pay for a feature we can't
+> >>>>>> even use (on x86).
+> >>>>> I agree. When I straced Android's zygote a while ago, mprotect() came
+> >>>>> up #30 in the list of most frequently used syscalls and one of the
+> >>>>> most used mm-related syscalls due to its use during process creation.
+> >>>>> However, I don't know how often it's used on VMAs of size >=400KiB.
+> >>>> See my point? :) If this is apparently so widespread then finding a real
+> >>>> reproducer is likely not a problem. Otherwise it's just speculation.
+> >>>>
+> >>>> It would also be interesting to know whether the reproducer ran with any
+> >>>> sort of mTHP enabled or not. 
+> >>> Yes. Luke, can you experiment with the following microbenchmark:
+> >>>
+> >>> https://pastebin.com/3hNtYirT
+> >>>
+> >>> and see if there is an optimization for pte-mapped 2M folios, before and
+> >>> after the commit?
+> >>>
+> >>> (set transparent_hugepages/enabled=always, hugepages-2048Kb/enabled=always)
+> > Since you're testing stuff, could you please test the changes in:
+> > https://github.com/heatd/linux/tree/mprotect-opt ?
+> >
+> > Not posting them yet since merge window, etc. Plus I think there's some
+> > further optimization work we can pull off.
+> >
+> > With the benchmark in https://gist.github.com/heatd/25eb2edb601719d22bfb514bcf06a132
+> > (compiled with g++ -O2 file.cpp -lbenchmark, needs google/benchmark) I've measured
+> > about an 18% speedup between original vs with patches.
 > 
-> What is the announcement date for accepted topics and invitations?
+> Thanks for working on this. Some comments -
+> 
+> 1. Rejecting batching with pte_batch_hint() means that we also don't batch 16K and 32K large
+> folios on arm64, since the cont bit is on starting only at 64K. Not sure how imp this is.
 
-We will very likely aim to get the initial batch of invitations out the
-middle or end of February.
+I don't understand what you mean. Is ARM64 doing large folio optimization,
+even when there's no special MMU support for it (the aforementioned 16K and
+32K cases)? If so, perhaps it's time for a ARCH_SUPPORTS_PTE_BATCHING flag.
+Though if you could provide numbers in that case it would be much appreciated.
+
+> 2. Did you measure if there is an optimization due to just the first commit ("prefetch the next pte")?
+
+Yes, I could measure a sizeable improvement (perhaps some 5%). I tested on
+zen5 (which is a pretty beefy uarch) and the loop is so full of ~~crap~~
+features that the prefetcher seems to be doing a poor job, at least per my
+results.
+
+> I actually had prefetch in mind - is it possible to do some kind of prefetch(pfn_to_page(pte_pfn(pte)))
+> to optimize the call to vm_normal_folio()?
+
+Certainly possible, but I suspect it doesn't make too much sense. You want to
+avoid bringing in the cacheline if possible. In the pte's case, I know we're
+probably going to look at it and modify it, and if I'm wrong it's just one
+cacheline we misprefetched (though I had some parallel convos and it might
+be that we need a branch there to avoid prefetching out of the PTE table).
+We would like to avoid bringing in the folio cacheline at all, even if we
+don't stall through some fancy prefetching or sheer CPU magic.
+
+-- 
+Pedro
 
