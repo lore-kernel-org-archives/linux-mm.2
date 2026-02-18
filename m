@@ -4,90 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15EBCE9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B59DE9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FEDA6B0088; Wed, 18 Feb 2026 07:26:54 -0500 (EST)
+	id AEBA26B0088; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6824B6B0089; Wed, 18 Feb 2026 07:26:54 -0500 (EST)
+	id A99956B0089; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58DE86B008A; Wed, 18 Feb 2026 07:26:54 -0500 (EST)
+	id 9CF6A6B008A; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 44C9B6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:26:54 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E6ABC85957
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:26:53 +0000 (UTC)
-X-FDA: 84457501506.08.D818A9B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BE505140009
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:26:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B20B6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DBEB414011F
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:33:51 +0000 (UTC)
+X-FDA: 84457519062.16.18B4FE4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3F99320007
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:33:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dW/i8orC";
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771417612;
+	s=arc-20220608; t=1771418030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1xkDr3hOc8tIX8rhb1B90insc8AsQBPXnJpIU64iv3Y=;
-	b=iR0AZW7fSkMtlKlWhB2oSqXpIbmW2zaprF4NxVdDfKYqrYKvTi3BsaRhXGQmrN2f+tnu8C
-	9OZ8l4+BUDOiQzo/COXFbXDWOS4xZ1+ljbSHxYxVERprfJzfAKVKYoV3aO1Gx4oIOp8nK9
-	K3QWn7FDMC57WTvM2diWPvvGl/HT4Kk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tPRTH5D/YtLHQRbJV//XCuFvKTE73aRX+m2Us19zizE=;
+	b=rpacVhphbmTHq4QI9czpPjvDeLM828RH34bgCRE1EOJs6vK3DfHaFbgLYnAZUq7MGvV9Fg
+	jMAKEO5IUFBDeWy3Ck+FHRVEUFTbePKMKkCDhKWvrjeNlVWeX/xaEksUY9IEJUQhKZWRQo
+	q8+S5q8fTXqmK/JAvzI3pqDnC89Wi1E=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771417612; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dW/i8orC";
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771418030; a=rsa-sha256;
 	cv=none;
-	b=XHst7RJsMESxKuAY7WXHsCzIQQA+BnUDveILNxmnKsZJ58lcJUTc6JyC+641AElPA7fWJ/
-	MgE1VXIb2c6p3j+5pk+5xJ+k54XscdOV3LlaEIJZjPljbk8fF19n9SYHkkoQ8iZEr2y305
-	cEL2BVMcxzaCw1IFBuKjqy3BiL83rtM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52C9C339;
-	Wed, 18 Feb 2026 04:26:44 -0800 (PST)
-Received: from [10.164.19.71] (unknown [10.164.19.71])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3F31D3F62B;
-	Wed, 18 Feb 2026 04:26:45 -0800 (PST)
-Message-ID: <e6333bbf-3a94-42eb-ab42-3f9255e1e51a@arm.com>
-Date: Wed, 18 Feb 2026 17:56:42 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large
- folios
-To: Barry Song <21cnbao@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	b=brROBUDJ2aRsSU7gyj0evbosvY2Ttfc3RfUO9f/eUkui+Xcl+HD4m+bJIxknlLc8YkIuu5
+	7JvZtxM3RzohrqSDC6Tsn8cAT319Q30SjiRwsD1+/TJ5/WZbt/f56GhbZWk5P+wVgE65Lf
+	1Tw/Oc23TlbS2nvXQmfhmGJNAyfvXv8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 15C99441FE;
+	Wed, 18 Feb 2026 12:33:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB5EC19421;
+	Wed, 18 Feb 2026 12:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771418028;
+	bh=tPRTH5D/YtLHQRbJV//XCuFvKTE73aRX+m2Us19zizE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dW/i8orC81AsU4bNVV5MeaYMzqX8sW/RQ/Nd21nyFtqx5GQzupMt6/ibvEQFTk3Wt
+	 54LQ42QAS6mkEkVk703xT3dWEhgEoHbXxC8WLzlbdAWzrPkkMfmZwLeuKt/4sTfisb
+	 XrSOAVwW7qXnHEf5z8uKTkAIXEd30JCoPOWdU2iqBqAmKbf42j8le2TUbY0/HJyNrf
+	 Lsk9iRVf/smIFK4rYZMiueOBzaVCP8f747vbYXBQo8doBajY9Ai/yClmRzQRkURRqB
+	 t1Junhh1cQZMLlpORdxKmAVABQUpRqzm5oaTCGyePlbefCupbmrn7C+zJHEoWbe4l8
+	 kF7ugQHz6fh2g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl
+ <aliceryhl@google.com>
+Cc: Benno Lossin <lossin@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam
+ R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
- <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
- <46d0b6bf-db7e-418f-a497-983db4d4d786@kernel.org>
- <ddedb72a-d24f-48bc-88b2-f6f99f3d45ad@linux.alibaba.com>
- <CAGsJ_4xqtksoCwjLp-7Kvg5=LyqH+=aGWDWi8jRp8J0c-QiSwA@mail.gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <CAGsJ_4xqtksoCwjLp-7Kvg5=LyqH+=aGWDWi8jRp8J0c-QiSwA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+In-Reply-To: <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <CANiq72=5r2miRm6GWszb2gDNi4k5-RZUzvdOdFQ3yyndvmHbAA@mail.gmail.com>
+ <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
+ <M50jfg_TPSF2G6kHFKHc8zxjC5DT3HtgXhWFeXdZxPwnsMnjr-B9ieBi-pZAXpPcInhZ21cxtYYvSciNJRS3Vw==@protonmail.internalid>
+ <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
+Date: Wed, 18 Feb 2026 13:33:37 +0100
+Message-ID: <87seayb59a.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BE505140009
-X-Stat-Signature: toq7hygm7cx1apoq18hbba9dfxay9dwu
-X-HE-Tag: 1771417611-259940
-X-HE-Meta: U2FsdGVkX1+5CeQBxp5LHRZA3Fh5Tg4yYIh4/4U+VXZGXFJdFFaQGeA02875BGHUvjUJLtjfD/WdoPToPtxMFKDl2tVzJRMi+OcsUDm/2xVO91Dd8NhTuLCrypq1EkMAMk07IKmON7mBwgM3K2EVQKvYzIJS1DqS+TkmhUZyRbKMqPdM9mxiMaX4BETgXJHx7g1t4baTxk6rFTueFOxF11LlR3QZHFbApLBCKTgRdJPcD8kBxEU5ibPXellzKY6Ver2nCpKRcWAOwYvUP9p26WMygVtLGV3xFDRrlrbLvz19WVJP/nFNmSfCZKeKtSMBhrB2+4ts5m9Ybhw73XLE2q4ehjD8KqtBrSF0J2I/RYPtTLewXkMV8JrXuUfMBPe9530eh59DvY72/acldQXpibvz+zDFAYIAGDJmcXKG1zs1HABfHs3JIupU/AxJ3Wl01FY4/pWiitBoup4vQi9G4AS3ycb3LSgzPKEJRF078X3kejQFakvKFsi1KqM9LAozt3BdTBjGim1NP/lMO8Nmu34AEFnesi2VOqTGtsx9mQ/NSfJsN1uE7IgEixoeNuLs01yA5OloI8kGLU+lKcbpBYAsjgOdkswsXimzohk+FkBVGJA8VZmpoiAQPHacqwM2BSycgzK3+RTj/Me0KghHRa9EddL4hHPyzD39Oa6hWK/MzBgosvFKkl7fqKFm08cfZmVqbX40YbqAd+mswiJ7tkVHboLfQsFwWwm8Vi22CxXciMVXd+TKemG3yG4HrhvQx5OtSOvqt+FIBsTXJBuesxw8nq21q415I0Q2yCYzK0Qz5lwcWGB2Q5qQdbDpXL4UIwYllg8nBAL4Ovrbq+Zcre8YS8/4q7Hw+3boXCM7PfvhP/EVQeLwa1G28oE559PFPZye/ePajBs/ERXURJOYJGztamH3adyK4fEuWCpFjB2ScDXwG+DDmg1p5etPrCOGtgYh+lG/fOKuConrtsk
- K3PPVpQF
- jXA3wSHhF5diMUt1z3Pp43jXXq3WFSt2ID9HbdR5Ocmky1/nCgVDw0onK9uZS+BePruBCAliJKoK1kuGCgiSn6wdZ9+xJi/P9214xmLJAsKprkp2yuL9k7O70UISzz3EjNd04bOZdkPaa6edAQHDihxDBR/CRi43TcxJpvtiZv5gH3pxG8IqRmEOkcMx6GG1+yFNQ
+X-Rspamd-Queue-Id: 3F99320007
+X-Stat-Signature: 9eop8f9r4mhkq99shjfog78n7h9636eb
+X-HE-Tag: 1771418030-280436
+X-HE-Meta: U2FsdGVkX1+RxNkwK/pes9vP9LrtgJUJ+dG3NIoHV3U5P1GmnL2QB8Y9onavkdh+opiFvy/z+4ozm8+Zmw2QI412Bxjcg3VXIgmQ8PIkSUlPITXpziWLYiw7jYtEkCI2HSyGTe39bQvNSl2FRGkJly2uf3i/tQtVUY97ITzzTygUrCXzu2p5rQ9w37DKABSiftqZFOTTzyF9PHiLO7dHHWMeeNfOPR2TZCf4Krbrvl79tYa11zsfx999l1+DgKa38I4A3cz+feNRqs9fAn53namOh1pf1wXw6sD/QlCAf7y3R4sjJ1WxHMSLkoktYsoD9/utHgg5iDo8joHuu3EGCiadI7cuaQ6utQbUyTXeUzXmPB5CO++48Aas5psNYxa7G+Z3a6ZreZejDubaL97m2OnSVR58MvQNEsCQNYdJkdf/VB11KCQy1x70I7DA/r7hYx31TzKZDXby1mZYa8zLyGb4xQeEzinwzBw84IvqVzGEnlHNfgQ3FEAx8uXZyYBLw8xxAOg0JLQCOfTZ25qwdn5k8YyxDTBOVFXnV+SOK6UWybxVu1oIJA2Cnc4rkFNYoTKJ15a9OivRoLgkjA4RXl+S3sAA0+CKXvWb2gLcx8Kq9peXCuHxqc5K/spctQImJaetdJijnXmifxSHIteB5HDOOwyovva2ko7RXo+eIeQh1nMua++CoZLcmnDWAqEGOMF/wY+RKIabeC9FZfnMUKMMsV/KWEOZ7VqAIFNrjQeJgFCR7/Ney5VV0/biMzaslxqj51fCXSdaRu68ViNHdW0++6iQc+FzBGc1ctjh5F1djqlvNqMsaOCuAlPbD3e1Uisu6880Cw8jqmltr5lfDXHyRKPEnfUUoECQfH9YjA6pHMFI//xIqk9I/v1h3NKzlmZqvYFnvF3NzuxGfMe/vHM+6LaHLyDtoMfGRSqNSgQpImyjgjA8kjPkJDqDOQ9mdQ1i901eppDDzvh6gBI
+ 2aTOGiz/
+ cZBpndWwoTeG0fFaTRksyrYIFrB6/yJz8wPEFqKIAAru2MAB913h42wH0axKbU86PR1rBfnHlkM9z509msnmU/ct1Pl/vR8Xf5ANsYRT+EjWu/kko+Qd+QkIJF5LKSGcRIVGPtFpoOUEdYiwV/MOY30lFGikekeR7PNCWKj8z0G7liavNRzy+SkcV9FGwn12gr1JUVaVt8ymAdhQBvX12QxJ/M6+oSsKiPWF1rJUxHrtkeO3MzkReXYxUiVWX0RzWZQ0tSB73JzsLdQINoLL93OCtH8ujBV6FdIf5yBmtuupvD3QHKbECx1nzI2BLQIBCOwEtDDh+849WpDU2kiCXZHZ1CjOqWLZy3fx04E0lpWsRsqy0VAA4S0awvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,47 +105,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-On 13/02/26 10:49 am, Barry Song wrote:
-> On Mon, Feb 9, 2026 at 5:43 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
-> [...]
->>>> ---
->>>>   mm/rmap.c | 7 ++++---
->>>>   1 file changed, 4 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>> index 985ab0b085ba..e1d16003c514 100644
->>>> --- a/mm/rmap.c
->>>> +++ b/mm/rmap.c
->>>> @@ -1863,9 +1863,10 @@ static inline unsigned int
->>>> folio_unmap_pte_batch(struct folio *folio,
->>>>       end_addr = pmd_addr_end(addr, vma->vm_end);
->>>>       max_nr = (end_addr - addr) >> PAGE_SHIFT;
->>>> -    /* We only support lazyfree batching for now ... */
->>>> -    if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
->>>> +    /* We only support lazyfree or file folios batching for now ... */
->>>> +    if (folio_test_anon(folio) && folio_test_swapbacked(folio))
->>>>           return 1;
->>> Right, the anon folio handling would require a bit more work in the
->>>
->>>
->>>      } else if (folio_test_anon(folio)) {
->>>
->>> branch.
->>>
->>> Do you intend to tackle that one as well?
->>  >> I'll reply to the fixup.
+> On Wed, Feb 18, 2026 at 1:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
 >>
->> I'm not sure whether Barry has time to continue this work. If he does
->> not, I can take over. Barry?
-> I expect to have some availability after April 1st.
-> In the meantime, please feel free to send along any patches
-> if you and Dev would like to move forward before then :-)
+>> That's right, valid for reads implies that it's okay to read it.
+>
+> Great, thanks for confirming.
 
-On it :)
+Cool, will adjust in next version.
 
 >
-> Best regards
-> Barry
+>> valid for atomic reads?
+>
+> That is the one he suggested, so it is likely to be a good one if two
+> people thought about it :)
+
+Great, I like it.
+
+This document should be in tree. It's not, is it?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
+
+
 
