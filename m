@@ -4,100 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B59DE9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB99AE9A047
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:47:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEBA26B0088; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
+	id 1EEAD6B0088; Wed, 18 Feb 2026 07:47:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99956B0089; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
+	id 19CA86B0089; Wed, 18 Feb 2026 07:47:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CF6A6B008A; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
+	id 09B236B008A; Wed, 18 Feb 2026 07:47:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B20B6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:33:52 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DBEB414011F
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:33:51 +0000 (UTC)
-X-FDA: 84457519062.16.18B4FE4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3F99320007
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:33:50 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dW/i8orC";
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E460C6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:47:01 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 811A556064
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:47:01 +0000 (UTC)
+X-FDA: 84457552242.14.3E86C14
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9134B10000F
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:46:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771418820; a=rsa-sha256;
+	cv=none;
+	b=DK+5Zk7p3jF9bGhw3XaWWE21FhyXpSyTkO3tF8D4qtoMVXmX0NQeKNUo8VwA7bSJ/j8Ohg
+	/jV+rqKtcJlUqC+VG8zwKfqofUQG7W9vN4YDjCjwZcC84bUVe5SMsL2Cy+ffYimEfSMJWy
+	STpMmVp3U2ehpHN1cdjdqymhCDR7aU0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771418030;
+	s=arc-20220608; t=1771418820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tPRTH5D/YtLHQRbJV//XCuFvKTE73aRX+m2Us19zizE=;
-	b=rpacVhphbmTHq4QI9czpPjvDeLM828RH34bgCRE1EOJs6vK3DfHaFbgLYnAZUq7MGvV9Fg
-	jMAKEO5IUFBDeWy3Ck+FHRVEUFTbePKMKkCDhKWvrjeNlVWeX/xaEksUY9IEJUQhKZWRQo
-	q8+S5q8fTXqmK/JAvzI3pqDnC89Wi1E=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dW/i8orC";
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771418030; a=rsa-sha256;
-	cv=none;
-	b=brROBUDJ2aRsSU7gyj0evbosvY2Ttfc3RfUO9f/eUkui+Xcl+HD4m+bJIxknlLc8YkIuu5
-	7JvZtxM3RzohrqSDC6Tsn8cAT319Q30SjiRwsD1+/TJ5/WZbt/f56GhbZWk5P+wVgE65Lf
-	1Tw/Oc23TlbS2nvXQmfhmGJNAyfvXv8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15C99441FE;
-	Wed, 18 Feb 2026 12:33:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB5EC19421;
-	Wed, 18 Feb 2026 12:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771418028;
-	bh=tPRTH5D/YtLHQRbJV//XCuFvKTE73aRX+m2Us19zizE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dW/i8orC81AsU4bNVV5MeaYMzqX8sW/RQ/Nd21nyFtqx5GQzupMt6/ibvEQFTk3Wt
-	 54LQ42QAS6mkEkVk703xT3dWEhgEoHbXxC8WLzlbdAWzrPkkMfmZwLeuKt/4sTfisb
-	 XrSOAVwW7qXnHEf5z8uKTkAIXEd30JCoPOWdU2iqBqAmKbf42j8le2TUbY0/HJyNrf
-	 Lsk9iRVf/smIFK4rYZMiueOBzaVCP8f747vbYXBQo8doBajY9Ai/yClmRzQRkURRqB
-	 t1Junhh1cQZMLlpORdxKmAVABQUpRqzm5oaTCGyePlbefCupbmrn7C+zJHEoWbe4l8
-	 kF7ugQHz6fh2g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl
- <aliceryhl@google.com>
-Cc: Benno Lossin <lossin@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam
- R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <CANiq72=5r2miRm6GWszb2gDNi4k5-RZUzvdOdFQ3yyndvmHbAA@mail.gmail.com>
- <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
- <M50jfg_TPSF2G6kHFKHc8zxjC5DT3HtgXhWFeXdZxPwnsMnjr-B9ieBi-pZAXpPcInhZ21cxtYYvSciNJRS3Vw==@protonmail.internalid>
- <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
-Date: Wed, 18 Feb 2026 13:33:37 +0100
-Message-ID: <87seayb59a.fsf@kernel.org>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=bLOcpWT2jrT+LQSjzvFcP7qwYcuPTu2AgkLo1vdkh2A=;
+	b=3IAw/FJxZ7O4e0o+/rUxy+4/lLYAKyj1bSTIHC6kqMq3JVWDimS+EiCxem7R853XkmFI3M
+	zsdL3YqD1bA8ey//wHusz1DzytovOx2lzxGGFkEETO8qApHNnxN4LFyzfEWZ8wzLlD8/xS
+	dQkLIRymjh30xbbTYhfZKwJ56LrBfto=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 18 Feb 2026 21:46:54 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 18 Feb 2026 21:46:54 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: lsf-pc@lists.linux-foundation.org
+Cc: linux-mm@kvack.org, youngjun.park@lge.com, chrisl@kernel.org
+Subject: [LSF/MM/BPF TOPIC] Flash Friendly Swap
+Message-ID: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: k8iu96f9ujfy7iny3qso7n4iumzrn85s
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3F99320007
-X-Stat-Signature: 9eop8f9r4mhkq99shjfog78n7h9636eb
-X-HE-Tag: 1771418030-280436
-X-HE-Meta: U2FsdGVkX1+RxNkwK/pes9vP9LrtgJUJ+dG3NIoHV3U5P1GmnL2QB8Y9onavkdh+opiFvy/z+4ozm8+Zmw2QI412Bxjcg3VXIgmQ8PIkSUlPITXpziWLYiw7jYtEkCI2HSyGTe39bQvNSl2FRGkJly2uf3i/tQtVUY97ITzzTygUrCXzu2p5rQ9w37DKABSiftqZFOTTzyF9PHiLO7dHHWMeeNfOPR2TZCf4Krbrvl79tYa11zsfx999l1+DgKa38I4A3cz+feNRqs9fAn53namOh1pf1wXw6sD/QlCAf7y3R4sjJ1WxHMSLkoktYsoD9/utHgg5iDo8joHuu3EGCiadI7cuaQ6utQbUyTXeUzXmPB5CO++48Aas5psNYxa7G+Z3a6ZreZejDubaL97m2OnSVR58MvQNEsCQNYdJkdf/VB11KCQy1x70I7DA/r7hYx31TzKZDXby1mZYa8zLyGb4xQeEzinwzBw84IvqVzGEnlHNfgQ3FEAx8uXZyYBLw8xxAOg0JLQCOfTZ25qwdn5k8YyxDTBOVFXnV+SOK6UWybxVu1oIJA2Cnc4rkFNYoTKJ15a9OivRoLgkjA4RXl+S3sAA0+CKXvWb2gLcx8Kq9peXCuHxqc5K/spctQImJaetdJijnXmifxSHIteB5HDOOwyovva2ko7RXo+eIeQh1nMua++CoZLcmnDWAqEGOMF/wY+RKIabeC9FZfnMUKMMsV/KWEOZ7VqAIFNrjQeJgFCR7/Ney5VV0/biMzaslxqj51fCXSdaRu68ViNHdW0++6iQc+FzBGc1ctjh5F1djqlvNqMsaOCuAlPbD3e1Uisu6880Cw8jqmltr5lfDXHyRKPEnfUUoECQfH9YjA6pHMFI//xIqk9I/v1h3NKzlmZqvYFnvF3NzuxGfMe/vHM+6LaHLyDtoMfGRSqNSgQpImyjgjA8kjPkJDqDOQ9mdQ1i901eppDDzvh6gBI
- 2aTOGiz/
- cZBpndWwoTeG0fFaTRksyrYIFrB6/yJz8wPEFqKIAAru2MAB913h42wH0axKbU86PR1rBfnHlkM9z509msnmU/ct1Pl/vR8Xf5ANsYRT+EjWu/kko+Qd+QkIJF5LKSGcRIVGPtFpoOUEdYiwV/MOY30lFGikekeR7PNCWKj8z0G7liavNRzy+SkcV9FGwn12gr1JUVaVt8ymAdhQBvX12QxJ/M6+oSsKiPWF1rJUxHrtkeO3MzkReXYxUiVWX0RzWZQ0tSB73JzsLdQINoLL93OCtH8ujBV6FdIf5yBmtuupvD3QHKbECx1nzI2BLQIBCOwEtDDh+849WpDU2kiCXZHZ1CjOqWLZy3fx04E0lpWsRsqy0VAA4S0awvw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9134B10000F
+X-HE-Tag: 1771418818-26335
+X-HE-Meta: U2FsdGVkX1/4Uau+6VjRaAUDbpIr5vtCEVqfAjffIF6dCefAZhUzR02DgzNFIfxWeKMl1mxMEAZM4URWv4h6k0kA7aQE8UXsAs9U6xurUHjuX4kRr2ExauBE9wdrVjZD2pdMvkBNLiPgLDRI875rQwnAXovvF5cWGQTlKjiU59aFbhLlEG2RXFKoEmVYQrTUjmXXd2+K4ZADvr6lY5+ArMgzw7WLYcCWKeeScXspEly+KkXIoQkL73zsNUQvLPlgD2Jf2z7Z4Hn5v7HDv91jghfhliJl8ck9Uy811sw5KKiYnlZBQhLwjgWEE0Psg7i6bU1TZ3T2brnebi24wsWYxqQ3kuf2bIvu68CbWIwYtc/jVhrE6RppCIN9OkCaz1X3hjKGRh2YK5rp7JDV5RUC5cDepP8TOypD4lSwe5oXJXGizFh4RVPm2CXV0GLyqjaME6bIaSWmi9dcJ4iO4upcyhu83WNxArbyUM2zjIyPi61Gb085j7hoUzm3MiVgioBvTjpYIJNvugVSOkK/nVTS/yikCbw3nlbIr+JAz9Ac3JPPBYw2agtHiRHK2EINoy7iYKkfqXKPd9agzRClxJWKVoVftuOTJ/+IwIlzYaID46sI5Qal2TaUQNbJCm7+MOnHEcJke7E97mvhzbYq4D/9tBhzRwnHzypiXeZx8z1u53ErkzPseJZZKxppb1TRxFYuuOcBXccOY6KZZUVprGQ7sftG01ggrXV8Eq3K8HotwPuZ5RZxGtSINF3Prl71+UEBcveWteSSzYWs8OKFzNyH2m5cxPRk5I8TCYbY93iu74Dm7KP9LzWe/HB/K/C123YIx82UtunD6OPRCdEiixDQLXkRDbgCUa5t0nbLrRGAVOMX1MYCx4k0KQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.027055, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,33 +74,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+Hello,
 
-> On Wed, Feb 18, 2026 at 1:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
->>
->> That's right, valid for reads implies that it's okay to read it.
->
-> Great, thanks for confirming.
+I would like to propose a session on NAND flash friendly swap layout.
+Similar to how F2FS is designed as a flash friendly file system, the
+goal is to make the swap subsystem write data to NAND flash devices
+in a way that causes less wear.
 
-Cool, will adjust in next version.
+We have been working on this problem in production embedded systems
+and have built an out-of-tree solution with RAM buffering, sequential
+writeback, and deduplication. I would like to discuss the upstream
+path for these capabilities.
 
->
->> valid for atomic reads?
->
-> That is the one he suggested, so it is likely to be a good one if two
-> people thought about it :)
+Background & Motivation:
 
-Great, I like it.
+We ship embedded products built on eMMC-based NAND flash and have been
+dealing with memory pressure that demands aggressive swapping for years.
+The limited P/E cycle endurance of NAND flash makes naive swap usage a
+reliability risk -- swap I/O is random, small, and frequent, which is
+the worst-case pattern for write amplification. Even with an FTL in the
+eMMC controller, random writes from the swap layer still cause
+additional WAF through internal garbage collection. Buffering and
+reordering writes into sequential streams can complement the FTL and
+reduce WAF.
 
-This document should be in tree. It's not, is it?
+Our team has published prior work on this problem[1], covering
+techniques such as compression, RAM buffering with sequential writeback,
+and flash-aware block management. Based on that work, we built an
+internal solution and are now looking at how to bring these capabilities
+upstream.
 
+Current Implementation:
 
-Best regards,
-Andreas Hindborg
+The current implementation is a standalone block device driver between
+the swap layer and flash storage:
 
+ 1. RAM swap buffer: A kernel thread accumulates swap-out pages and
+    flushes them to flash as sequential I/O at controlled intervals.
 
+ 2. Management layer: Mapping between swap slots and physical flash
+    locations, with wear-aware allocation and writeback scheduling.
 
+ 3. Deduplication: Content-hash-based dedup before writing to flash --
+    swap workloads often contain many zero-filled or duplicate pages.
 
+This works, but as a standalone block device it sits outside mainline
+infrastructure. I am seeking feedback on how to upstream this.
 
+Discussion:
+
+I would like to discuss the following topics:
+
+- Flash friendly swap I/O:
+
+  For flash-backed swap, writing sequentially and respecting erase
+  block boundaries can reduce WAF. What could the swap subsystem do
+  to better support flash devices?
+
+- Deduplication in the swap layer:
+
+  Swap workloads often contain many zero-filled or duplicate pages.
+  Should dedup be a swap-layer feature rather than reimplemented
+  per-backend?
+
+- Extending zram/zswap writeback with flash awareness:
+
+  zram supports a backing device (CONFIG_ZRAM_WRITEBACK) for writing
+  idle/incompressible pages to persistent storage, and zswap sits in
+  front of swap devices with its own writeback path. Could these be
+  extended with sequential writeback batching, deduplication, and
+  flash-aware allocation? Our implementation buffers swap-out pages
+  in RAM before flushing to flash -- this is conceptually similar to
+  zswap + writeback, but we found the current writeback path
+  insufficient for our needs because it still issues per-page random
+  writes without awareness of flash erase block boundaries. I would
+  like to discuss what gaps remain and whether extending zswap/zram
+  writeback is the right upstream path.
+
+- Swap abstraction layer:
+
+  Recent discussions on reworking the swap subsystem[2][3] aim to
+  decouple the swap core from its tight binding to swap offsets and
+  block devices. If such a layer materializes, it could provide
+  extension points for pluggable swap backends with device-specific
+  write strategies. I would like to hear the community's view on
+  whether this direction could also serve flash friendly swap needs.
+
+Comments or suggestions are welcome.
+
+[1] https://ieeexplore.ieee.org/document/8662047
+[2] https://lwn.net/Articles/932077/
+[3] https://lwn.net/Articles/974587/
 
