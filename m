@@ -4,142 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53E40E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FA20E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 918816B0088; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
+	id 4055D6B0088; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C68C6B0089; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
+	id 3B2E36B0089; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BB486B008A; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
+	id 2BF236B008A; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 690496B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E2B41B3D24
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:54:47 +0000 (UTC)
-X-FDA: 84457571814.19.EECB51B
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C224BA000D
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:54:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=EWdE9Pc+;
-	spf=pass (imf25.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 15AEA6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B08D01BF3F
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:03 +0000 (UTC)
+X-FDA: 84457600206.14.7DEDCAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0A2271A000D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZRQj+0Z+;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771419284;
+	s=arc-20220608; t=1771419962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BlA1AbMzOeTmhaj5e99ZkJ4aaV0Ydzpz7qXESwhzBw0=;
-	b=s+JMh7j04TX5wLGTfaGBMv6wh+tn/jhJ183idC55Nws1K1VZhSLpM+MiiZhV+AEWAG4tUJ
-	pLKiRCstNA6H/NvB5LLiDQgVUHF2FKw0q9N7Ol7sxNiBcW3Ye5XwVLa9TkNzfAGG46JoL8
-	WC0lGzy3ieNrmNUcIwEqoQmoK8GHljQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419284; a=rsa-sha256;
+	bh=sKcP9AezkYw4kw3AK8H8w2C/M1HfkGLDhA7lSmm4qFo=;
+	b=q+37V5qmcE3mYpT00DWTVV5nKpuBZNrXkfsl+QsAokFNCRlr1UI5q14AsC6a06gi3HQGyd
+	0fIg3h9GTbAJFimTFqG2W3Q181csRxPiHHEe/Pbkbs+X9O3YahyHwo2eV2kdzHA5/iJaJd
+	6QVJeCjOOoUdU9bh19Q/hc9AqLu9/7k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419962; a=rsa-sha256;
 	cv=none;
-	b=cuSIMKW4Qy1BMzeKZCQ2pOM/zkIiWVOkN8G7on0BstZU3A7w7NP40fqNEw7YqJRD7c4bXP
-	/omhVMZIxan9oWDwqtF9dOqQxgQBNUiVlqFdb3IIBxxGeB8Z8EcdI2l3zBTB2uTM0iRZL2
-	T85t2p2sL7e8d33smh7YIRXB9z90p1I=
+	b=pZCysKIFkhr6XVV+BCp3umGI+dqCh4nGVzf1fOwxpvtVz4gFgQ1s0WzNha3jiws3YC+mx7
+	v/e7R9LPoZ5RFvm4kbO0PpCbqHNOPuGCdxzgiQP4CTy9ADZ6bY0v56yAuPtpGGMntIl3Qg
+	uOAC/rpG9HT4WnVAv2xvoGrgl4XyRY0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=EWdE9Pc+;
-	spf=pass (imf25.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61I9KWwC3661553;
-	Wed, 18 Feb 2026 12:54:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=BlA1AbMzOeTmhaj5e99ZkJ4aaV0Ydz
-	pz7qXESwhzBw0=; b=EWdE9Pc+rdxxTC8NAoOgznIV/LjA1IVskBFKXQuVm26iIA
-	IHPQ/mZhu82rmbL+PHKciaRpKm2FC20POFYFYT/pCwJ4V7U+qmTBOzPn5LwKwyAK
-	nLdlgu264oeKZ7dbqjjG7snnTXAM4Wnz7L8guKvTQvP2elc34nPaRb72ffZtk1/e
-	VusELSQfV23whrJXiGBjhzaxjzy7+zKb0h5QPe3ivi4DIfDQGAQVp1jky5TrccsT
-	eu4wuYPkzjxcq6Hkdr1aPRIi/XfWoyTxA+1/pruuQarggSnOMgy/w4SnNnNqhxnc
-	SCI861u8a1CwDBde0udKshfqUaiWEX847yo5oweQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjg4tq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Feb 2026 12:54:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61I8e4Zu001419;
-	Wed, 18 Feb 2026 12:54:34 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb2bftac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Feb 2026 12:54:34 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61ICsWv553674438
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Feb 2026 12:54:32 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E7CA20040;
-	Wed, 18 Feb 2026 12:54:32 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD1A720043;
-	Wed, 18 Feb 2026 12:54:27 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.27.220])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 18 Feb 2026 12:54:27 +0000 (GMT)
-Date: Wed, 18 Feb 2026 18:24:25 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Dave Chinner <dgc@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Pankaj Raghav <pankaj.raghav@linux.dev>,
-        linux-xfs@vger.kernel.org, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
-        Andres Freund <andres@anarazel.de>, djwong@kernel.org,
-        john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
-        ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>,
-        dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>,
-        gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com,
-        vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <aZW2geKlQESzxXzV@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
- <aZS18m1eIxjDmyBa@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <aZUHHvNl6cQr-uwd@dread>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZRQj+0Z+;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19004405A9;
+	Wed, 18 Feb 2026 13:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F54C19421;
+	Wed, 18 Feb 2026 13:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771419960;
+	bh=wdJZZIzpHkDq9CqfLAQjA1xz1Y1X7C30wWjsc3kJBLw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZRQj+0Z+xmjQDy7Gh1FpYKpwRI5gTMmaLTgEUNpjiE4drKJA1sUVKEgZiIheDcNfY
+	 rlZ8Rjn32bl+hR2oRNX2+FdmMJKBDFVjTBBzYnX5wO91q3cHZPvWvEAweJ8SWQtJlr
+	 Bs3krNJd/1KYRXoyDY5/bBCmBdOwBYLk7B310IBpcK06yAnFAHI8mTsjCYCZ3x/+eD
+	 HR0JgBwOpINJkPwRHftweSKDvpiqEPntdZEyGL5cQceQMCIGs3MYbqdRBL/AbK62bM
+	 s2MTUySTsZbAKNuTJh7GQ9OrtWkjaQnsEkkQH+sMO5PrKr3dWoE2HcyoE4Zv5BSlYr
+	 5IORZp81aGVCA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: stable@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jann Horn <jannh@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	James Houghton <jthoughton@google.com>
+Subject: [PATCH 5.10.y 0/7] mm/hugetlb: fixes for PMD table sharing (incl. using mmu_gather)
+Date: Wed, 18 Feb 2026 14:05:45 +0100
+Message-ID: <20260218130552.55727-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026012610-absolve-ducktail-3c64@gregkh>
+References: <2026012610-absolve-ducktail-3c64@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZUHHvNl6cQr-uwd@dread>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: -fnHeqLWXVntKC1VPi5-hEcRrUMZ1eZU
-X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=6995b68b cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=NEAV23lmAAAA:8
- a=VwQbUJbxAAAA:8 a=mABpun1c11mrw8mCog8A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDExMCBTYWx0ZWRfXzmhqwlV11zuf
- HnmAQnAhefdBCrARMdXeJQSd44KB601SjyK/JR0C6gSI9FuU434jMjIZRB9peArV6ksn6dB2Tsi
- +CKCwHjSLZHhmIeidEXc/OuKSEdQiwBeO3dceRy2JWC1wkS4RfklibBsSwHV0g4sP0Go5+lUnrI
- J8w9YDYeei1TO3C51EgMJUXHPoieEjezgBQW7Px/RyxlZlURBGKTsRI709hFtHi9uXlgScWuCOI
- 2/+K1Da1QZIKtGU3FvITkQnLC1t7+zZH1tKAWTueD49VcleXglUDjhdvTdqLsxUchkMMoZfwHSY
- GTubwyHEfgWFZFR8jvUMmNph8Hqkv1r7evKqLlI+yTQoFimn0cTTwquPKo0dNZMvUUiRwMz8yR7
- XKHguLAmceAQC1oPsMPCjwDrrjCEi2SSYMojmBcD7OMyTXGmo403Qrfp8IUIC9WfdGFDEIA72Dp
- e9tPMACa/OGWvsZOx6Q==
-X-Proofpoint-GUID: VKj-YQ9wKR8GjOpfDRXrT459fMxy1rGC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-18_02,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180110
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ry14io17596qj7d9ofzoeq1nmp1mqb9r
-X-Rspamd-Queue-Id: C224BA000D
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1771419284-499007
-X-HE-Meta: U2FsdGVkX1+DKO7EZWU8wtTsCnDcoHsFPyxFkxliXoBFyO7jxOtSy0+p8095MPpJZM6DgdSbAqt+46nvyXmhj9rsxHQgc9wjc1EQj7aKp6ED6QYeIIXLWZ6voWOSw2FtLbkXKmiM5H/g3Rhd2XD0LdeoP3FnBFeTb+6IDnOQgrNeoXu/lgXfC7rTrXmjPIL4A1RSrJ1PjRi0FYOjc483SauhQjmZZg81O9u8ZGCv6MP7D8oSlIFyCyDvBdtgfgIlIKypnmwr8IUH/aBClYVW9bFeT3WeE009xxeAWkBTIGN7cV9QFTf0INmJP9UWJNxC/oAdbfvtsy5q5Zec8bDquHOvt3lzQdshaWGUqowF38hYxmIJpA4+8EvpjB6MgXn5V1nE6XphlXmZp9IPuLdJLj1vIdh4K9h6aZdIKB0O5bvYHYcY1+5NGMdSd2Z/nCazSqpDA51OBppl6hPUTyHDAll2D99lh3BwYYQ4gN8H0XwZ5KseKoCuLcdc3tsCzY6NfN1AozZ5lihjTH1U4K/FKVD2it+sAKc500u6k1NBDSblDGysu4vfE0xQOjoEneliU6rViaW+PrJDrdO13vuz4aOzz5z90pznGVxo3QwB3nHPenrul5K32+C4Fnr7LhdoJOiEVIaYXOUEAGEvvVele0DCqlwu6MXaeLMVAi9aI06WkFt2iSXO/JWTmM+d6AdcD/vHSvXN5KqSFrEmdste6Y71STgdYU1E+lUIVh983S0WdIt2LrtMOrfVlOvUmVV44z2n+pTOYja8F7FBy5I0+LL5YEkHfownOQBIlcI5ddLvfASWmlBvHrx1O4+LTIdgG7ixvhlXJSwSE5MwrcbN/2yoEf5D+IkVPvoFl9fC2BChAzvqfmHSIIciWZQkBwO9Re6D6hTsXQ5sQWCehcB1MlmkI9w4omD59w7ByvA/IBODkzXkYSHr8sHSqFxP0R2gIhx659PbJkb+MnvzNP3
- Hna8yAzo
- s4XTb4Ol63OjVBDnIpBVljPjIgWUOCPfxK6aE+rAtGVexGMGCtSsfqLrRf7WDPtj39j5/Pywh1ybZhTXFnxYktb35VfNM/4yb9338VxDdDs/DArb/AgGwAg5t38ToYpMpYwyzxtLEKb54/YgNw0o9yn33lwegCNd55VB5TUTyYxelBInthkPYECabuF075O9364AhmGT3pdd0oqV1gAb4UpIsUlXQZTkdwGYnCmvHdX+b6C6jfkD2Ei59toWWnHui88jhu4QLCE1KqV6H1muv1X3XYwPLAq7GPkU09O2aDS5LOIg4wvKOhp8hCjSNO9+IIAPT2BdxpRVB6e5yPY0/GxyKNOBCTeRHH3PBrIsjMkrSugDQS4lBXUOZV2Hh5Z2EZOaZ3jWi4NZf5X0Xxx29sq3/WvDHq4giPjFbe8JRhbkCv7nDpym8DNXjVQ==
+X-Stat-Signature: cc3jgs9w7guo41ncrsjpdzyp58cfraax
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0A2271A000D
+X-HE-Tag: 1771419961-668789
+X-HE-Meta: U2FsdGVkX1/fTsedt3W8uXOpLsKjMM1KVQm0YLx4Z8YS7c5Xawkchncq1ovKKtYlZibgi69h3EHSQvqgml/ng7ZEG19DrH6QKK0L8maf3G7PzyIxuS/UDFAVwGRrzJMw66XJ/0o1GqqOtHFIZgTsuk1W/COyUmmP4aWT7E33CEIec2lMRg/kGDT7M06OA9jh9V6/S1ny2fHPqXHgzP9QunHdZCxnazhvTvxxts9VNc8OxmCFM9ZOU7FiHjBynRCFmTsFTKmC7657pghg9nka4SxzZ7Ob4b1P7tyDah9gCmrdDMH9kHv5/heHxeujIMg3sg/PH4WK9N5oVnctBwHO8YQJYdScnJMmW0fq1xPy17uDx+sv6DZUygyA7rc8WnB/wGXqdLHEyOpzCA5RegiFiHqX9KGAbsaBhKyOX2j7uFmvBME4l+/Wk9GlSIBs8E7IqynWBtGzalqE6UAVhembYEpeU5BnmWeJt60KDmrhPTLgynVO9MWzEOfoI8nuxSqXfvLV1zcJim0N2gtl5Zscu6u2qKum7ovdH9ThEVE2P3pKqUGiQTUSn8BmkO/YSHG3Yehm+Om1aa6PLskuK5lFBAA4q6NCtEu+VZ9qhnW/yIPZj7fhK6aOxYFZ53hS1oZEf0u0f/75VtcFoxDvQ1mmEmF2/js9TowFMhfiitak1N/iwcb++ZjqZiVFd6pTdsqcKFJhRZ0qvxzr2gvotu4jTGBU32iIzQYgRJNACYlH0msb9c8Q6IEHuGDdP1xt9tkIi0+khODScLVOFzoBdSRrdEcnhgHB2ElTl+EUxWtU/PXFgxc/PK2Q+iCxCf8VKphqBRrkQGSeIYf5FbPGf8RTDXXKN+Cs+LFemiM/pylaApVOfeCUjq2zzFRY3DnOX2+x1gEFHd7db2VE9A21RDRpUEqRvqZZquhiHOC1HOLIda7jjbGWCUP1U8AoZ57iFJpWgR81kjLhNiYL8UqlmNo
+ RdmSMhDJ
+ NEn+FLd9COTKb3REiDMpLDQc4PPzkFYnnByQqsAjWYEyCUUqmrilL+GLj8JAH4tOn1hVYTLQ8oBJY34qyxPxqsdHCVWBx81V3OSE45yqJb8low2XY7fkGeEdFIlBJgQldufyXpFEpm+tvLFH9jhI3GJ55Gg/Bij9umOZU2Nv9Hc5Lq4bg5QwjXGtNHcMggWUGlpd7E+68+p1BHIfGh+ThqzysnM69XSyMx++K08Pf8qMmLIVsyVsZeNUJSyfp4AKC4PmYnDqne7bVCC+mFDDKbDd/t+cgUVOYDrnEcD8aedU37oqDgoRU11+Qw3ziCqNK3dBsommyJHc6G0xr/jbLOgvsvu2PnjC03EPLhGH//lkk9pgR4F3L7y9sd3BMlsxnPppVjR7xQf3/BiPZSdleK7iE8JRx5vHbJ+6zIKAsRm9kzslj4GriU44Auy5qVw5MSUVEJNRrZ+cGDAXVyzbtS7bNm7nIuO54absGGyOQN6qpbng=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,105 +103,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 11:26:06AM +1100, Dave Chinner wrote:
-> On Wed, Feb 18, 2026 at 12:09:46AM +0530, Ojaswin Mujoo wrote:
-> > On Mon, Feb 16, 2026 at 12:38:59PM +0100, Jan Kara wrote:
-> > > Hi!
-> > > 
-> > > On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
-> > > > Another thing that came up is to consider using write through semantics 
-> > > > for buffered atomic writes, where we are able to transition page to
-> > > > writeback state immediately after the write and avoid any other users to
-> > > > modify the data till writeback completes. This might affect performance
-> > > > since we won't be able to batch similar atomic IOs but maybe
-> > > > applications like postgres would not mind this too much. If we go with
-> > > > this approach, we will be able to avoid worrying too much about other
-> > > > users changing atomic data underneath us. 
-> > > > 
-> > > > An argument against this however is that it is user's responsibility to
-> > > > not do non atomic IO over an atomic range and this shall be considered a
-> > > > userspace usage error. This is similar to how there are ways users can
-> > > > tear a dio if they perform overlapping writes. [1]. 
-> > > 
-> > > Yes, I was wondering whether the write-through semantics would make sense
-> > > as well. Intuitively it should make things simpler because you could
-> > > practially reuse the atomic DIO write path. Only that you'd first copy
-> > > data into the page cache and issue dio write from those folios. No need for
-> > > special tracking of which folios actually belong together in atomic write,
-> > > no need for cluttering standard folio writeback path, in case atomic write
-> > > cannot happen (e.g. because you cannot allocate appropriately aligned
-> > > blocks) you get the error back rightaway, ...
-> > 
-> > This is an interesting idea Jan and also saves a lot of tracking of
-> > atomic extents etc.
-> 
-> ISTR mentioning that we should be doing exactly this (grab page
-> cache pages, fill them and submit them through the DIO path) for
-> O_DSYNC buffered writethrough IO a long time again. The context was
-> optimising buffered O_DSYNC to use the FUA optimisations in the
-> iomap DIO write path.
-> 
-> I suggested it again when discussing how RWF_DONTCACHE should be
-> implemented, because the async DIO write completion path invalidates
-> the page cache over the IO range. i.e. it would avoid the need to
-> use folio flags to track pages that needed invalidation at IO
-> completion...
-> 
-> I have a vague recollection of mentioning this early in the buffered
-> RWF_ATOMIC discussions, too, though that may have just been the
-> voices in my head.
+Backport of [1] for 5.10. Backport notes are in the individual patches.
 
-Hi Dave,
+I found one bug in a previous backport, fix in patch #1.
 
-Yes we did discuss this [1] :)
+I'm also including a cleanup/fix from Miaohe that makes backporting at
+least a bit easier, followed by the fix from Jane.
 
-We also discussed the alternative of using the COW fork path for atomic
-writes [2]. Since at that point I was not completely sure if the
-writethrough would become too restrictive of an approach, I was working
-on a COW fork implementation.
+Tested on x86-64 with the original reproducer.
 
-However, from the discussion here as well as Andres' comments, it seems
-like write through might not be too bad for postgres.
+[1] https://lore.kernel.org/linux-mm/20251223214037.580860-1-david@kernel.org/
 
-> 
-> Regardless, we are here again with proposals for RWF_ATOMIC and
-> RWF_WRITETHROUGH and a suggestion that maybe we should vector
-> buffered writethrough via the DIO path.....
-> 
-> Perhaps it's time to do this?
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: James Houghton <jthoughton@google.com>
 
-I agree that it makes more sense to do writethrough if we want to have
-the strict old-or-new semantics (as opposed to just untorn IO
-semantics). I'll work on a POC for this approach of doing atomic writes,
-I'll mostly try to base it off your suggestions in [1].
+David Hildenbrand (Arm) (1):
+  mm/hugetlb: fix skipping of unsharing of pmd page tables
 
-FWIW, I do have a somewhat working (although untested and possible
-broken in some places) POC for performing atomic writes via XFS COW fork
-based on suggestions from Dave [2]. Even though we want to explore the
-writethrough approach, I'd just share it here incase anyone is
-interested in how the design is looking like:
+David Hildenbrand (Red Hat) (4):
+  mm/hugetlb: fix hugetlb_pmd_shared()
+  mm/hugetlb: fix two comments related to huge_pmd_unshare()
+  mm/rmap: fix two comments related to huge_pmd_unshare()
+  mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
+    using mmu_gather
 
-https://github.com/OjaswinM/linux/commits/iomap-buffered-atomic-rfc2.3/
+Jane Chu (1):
+  mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
 
-(If anyone prefers for me to send this as a patchset on mailing list, let
-me know)
+Miaohe Lin (1):
+  mm/hugetlb: make detecting shared pte more reliable
 
-Regards,
-ojaswin
+ include/asm-generic/tlb.h |  77 +++++++++++++++++++-
+ include/linux/hugetlb.h   |  17 +++--
+ include/linux/mm_types.h  |   2 +
+ mm/hugetlb.c              | 143 ++++++++++++++++++++------------------
+ mm/mmu_gather.c           |  36 ++++++++++
+ mm/rmap.c                 |  20 +++---
+ 6 files changed, 208 insertions(+), 87 deletions(-)
 
-[1] https://lore.kernel.org/linux-fsdevel/aRmHRk7FGD4nCT0s@dread.disaster.area/
-[2] https://lore.kernel.org/linux-fsdevel/aRuKz4F3xATf8IUp@dread.disaster.area/
+-- 
+2.43.0
 
-> 
-> FWIW, the other thing that write-through via the DIO path enables is
-> true async O_DSYNC buffered IO. Right now O_DSYNC buffered writes
-> block waiting on IO completion through generic_sync_write() ->
-> vfs_fsync_range(), even when issued through AIO paths.  Vectoring it
-> through the DIO path avoids the blocking fsync path in IO submission
-> as it runs in the async DIO completion path if it is needed....
-> 
-> -Dave.
-> -- 
-> Dave Chinner
-> dgc@kernel.org
 
