@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41BBDE9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 21:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B113E9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 21:26:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1796B0088; Wed, 18 Feb 2026 16:04:29 -0500 (EST)
+	id BD7AD6B0088; Wed, 18 Feb 2026 16:26:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09C996B0089; Wed, 18 Feb 2026 16:04:29 -0500 (EST)
+	id B858F6B0089; Wed, 18 Feb 2026 16:26:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE4466B008A; Wed, 18 Feb 2026 16:04:28 -0500 (EST)
+	id A91826B008A; Wed, 18 Feb 2026 16:26:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA5006B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 16:04:28 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 859A51602A0
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 21:04:28 +0000 (UTC)
-X-FDA: 84458805816.14.F2F61A2
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 67AF61C0018
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 21:04:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b="Bh/39XMQ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=plf5A42Q;
-	spf=pass (imf20.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.149 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 923996B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 16:26:00 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27536C17D9
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 21:26:00 +0000 (UTC)
+X-FDA: 84458860080.05.185F473
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 12DCA8000D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 21:25:57 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n1x2hzsx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771449958; a=rsa-sha256;
+	cv=none;
+	b=tZ0RvSFFknW4vwL0E9FuzRChK6ZguiH0BgABaTZNyKc0FeL69ZxvpNFunF7P+QRz/6Z+ym
+	mBpWDrKKApLhOdvkDOSCoNquXhj7bgbw1CwmDNWTTfSXitPb3GgxAc6SWW82cKI7JFP3B6
+	tD/lNELjrg4okS9anarCPwvRDaG86vg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n1x2hzsx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771448666;
+	s=arc-20220608; t=1771449958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=79/kJXt6NEqGLpu83/22II9pOyL9CJZBDcnxuiTjByE=;
-	b=3QOc22VZsSEqcIBYbqiIaHjc0IFZf2noxtqaI2xgWO5F0fvzbws/fSOyPHBApasZJWhFHM
-	diRnmD0DmYCw3EbkIMRi9OIougblPN3vrV7XWcuLOKNQ9fk9NJbELc0YS/i2fp2826eXCr
-	pZU4N5Xvlj/bJQ1eoeGOt2Jv3Z0X4mw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm3 header.b="Bh/39XMQ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=plf5A42Q;
-	spf=pass (imf20.hostedemail.com: domain of andres@anarazel.de designates 202.12.124.149 as permitted sender) smtp.mailfrom=andres@anarazel.de;
-	dmarc=pass (policy=none) header.from=anarazel.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771448666; a=rsa-sha256;
-	cv=none;
-	b=AQWGdf+G5jTvN0buPZT5Nh3BMnJ6sMxOMYXPcjZG3PxCE6XCJ3SfErPDHZjptgFhD4ALjw
-	SsrtQjgXMVfF+I9LfakVehHftZyoPOxNmae8KgeOu73/kAlKVAy+JwxjhrkhftkPGLixps
-	LVKr4nK4wD/14c/d5N6lU3xYdtkwTxA=
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.stl.internal (Postfix) with ESMTP id A844D1D0009F;
-	Wed, 18 Feb 2026 16:04:24 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Wed, 18 Feb 2026 16:04:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1771448664; x=1771535064; bh=79/kJXt6NE
-	qGLpu83/22II9pOyL9CJZBDcnxuiTjByE=; b=Bh/39XMQnn30o0s4flayPigsyj
-	iLSxJdJxnt6/OODgLrfYAwvsthfWVN2ZOXNvgyDVSojr+mdYCSWiPNqvusO/gdzo
-	mZi8PK7rtcRUiwDiFNO1/EE7Hc1H3RlYEOA2qwNlAtI3Us3/Tx7IPSrZWEeqoe2Q
-	J4IxytiWUqW12hyDSwUbqYMPUkiRblqQN8oXKHA9RTSDi70NMyWSjTzoset4usrl
-	kqlSMlrC762jp16JSib047e0xN2pnHd74QyGofVXuYIemOrKRQYxJYCjsnBS3woR
-	6g0nIwHjv6W4dqfWOydiby7HNp0VPFLdHXAf+X1JuT7OoILI/YVsYNBGhH7A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1771448664; x=1771535064; bh=79/kJXt6NEqGLpu83/22II9pOyL9CJZBDcn
-	xuiTjByE=; b=plf5A42Q+m2vLEDVo+GEDFNfNo6E6+Kl88RUWt1TW+yNjqFpFhq
-	gVKwHjP7+u7UT3QocF0auccylkpWDVBRxsNPXuDR21sEz9ZPXKytOzZjxM0cTD94
-	P80ZRl6lXdMy3qopRIBEg23FwwugIBxc76xaIdbfx1dV2Vvby0htIK4Le5QpoKse
-	+O3bPhTOiP/oJLjoEjRV2cTNNbTU1tetxgoO/DVoezX/0cAMbvM+DU+/h6kvUT3r
-	hvtrc9GYtNws2N1rUfjnNztclxf8UiUrJZyehzPiHzTLiKObVRgSBTAhp9AJOTxo
-	D3An0tniQvkFjfNwc/23grTv1DcMEqWsnkA==
-X-ME-Sender: <xms:VymWaSrIzlXjCsnAYGCr6xdql40_0LTWNqWB6zX29PQhU9nFGKQqug>
-    <xme:VymWaXlTfFj0KZGeV51jL5MXBHrcX8spy7EBb9yo8qxBYpV2BmfCUjJ4uwnnza98G
-    cnR6iMmXjjsb6iy6Vy4QrJz5V8WHncpvO2h4UTPQaO_tttzrXgJJYU>
-X-ME-Received: <xmr:VymWacSSafM0PsnWDUm7AgS2Msq20DMBattPcZ0xsxwdl4ZQo7y-FymK3Cmi_dTfK8xDvA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdefieejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomheptehnughrvghs
-    ucfhrhgvuhhnugcuoegrnhgurhgvshesrghnrghrrgiivghlrdguvgeqnecuggftrfgrth
-    htvghrnhepfeffgfelvdffgedtveelgfdtgefghfdvkefggeetieevjeekteduleevjefh
-    ueegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hnughrvghssegrnhgrrhgriigvlhdruggvpdhnsggprhgtphhtthhopeduledpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtoheprhhithgvshhhrdhlihhsthesghhmrghilhdrtg
-    homhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthht
-    ohepughjfihonhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmtghgrhhofheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
-    pdhrtghpthhtohepphgrnhhkrghjrdhrrghghhgrvheslhhinhhugidruggvvhdprhgtph
-    htthhopehojhgrshifihhnsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheplhhs
-    fhdqphgtsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtph
-    htthhopehhtghhsehlshhtrdguvg
-X-ME-Proxy: <xmx:VymWaZDNNedCP64l0E46dD9lLg36JpqYO1KPIWLHsYjbPIdv7y8wBg>
-    <xmx:VymWacratkOjQM04gQdZl7bQRkeBFvXaU9-a_pdTCR0cXQhb_NnDQQ>
-    <xmx:VymWaXh7dngNuF9kHXhZqnN1wxk8YQCeueKRXygZR8STS22FLxsaCw>
-    <xmx:VymWaZyqTNM_2DYBW_uaObIxNOusgXnfMG2JPmTodyw7HkpAbGlJvg>
-    <xmx:WCmWabh5bbTPfYVpP0IyJzPD9TpaBT-GGaehkCixY6X7M7HwcpitLldk>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Feb 2026 16:04:23 -0500 (EST)
-Date: Wed, 18 Feb 2026 16:04:22 -0500
-From: Andres Freund <andres@anarazel.de>
-To: Jan Kara <jack@suse.cz>
-Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, 
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
-	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, ritesh.list@gmail.com, 
-	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
-	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
-Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <vr6xl5ntbgh3ou6uahu425xknlseclqj5aweb2ntvyedrgree6@uwbqiqamzec6>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
- <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
- <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
- <2planlrvjqicgpparsdhxipfdoawtzq3tedql72hoff4pdet6t@btxbx6cpoyc6>
- <umq2nlgxqp4xbrp23zjiajwd6ombed4dfwbajuh35xd4vphyee@26g2y6a4rdnu>
+	bh=wo6vv3zwAb49jabaYEhJvfqzD+EG3AeCMF5nyF6m1Uo=;
+	b=TGH+VYC+IyD7LVQogrg46kpHJG7OMEdXOD/WZJpLsRlKkvkEyX3wb9ItA9hLKjp+tb7kV+
+	g8pGpngaUr55nAzpWNBlWiU5+nhqYCn5i9aPBDGqUpRkDrzxxwH/Bd1nVwHLp6YrYYrxI/
+	ys/KuKHCg59eb/E9VdcM4XpzZejG1Ok=
+Date: Wed, 18 Feb 2026 13:25:44 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771449955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wo6vv3zwAb49jabaYEhJvfqzD+EG3AeCMF5nyF6m1Uo=;
+	b=n1x2hzsxevl2KlW0/u2V4Vyr/ZSO5Xh+P9TXfWKLEIalUF12vlcIdJ8A5qhfR4EXzkOPNc
+	tA8qejHL3g3QvA2gIMr6KY/kDgpRKkTCAAG7m+6aiqlp3hyLgb8cRmYYEXY3+leRbLTv7i
+	xA43Ain+4HSrKFlMxM5ocAXx9hoOfKQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Carlos Maiolino <cem@kernel.org>, 
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Ritesh Harjani <riteshh@linux.ibm.com>, ojaswin@linux.ibm.com, Muchun Song <muchun.song@linux.dev>, 
+	Cgroups <cgroups@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>
+Subject: Re: [next-20260216]NULL pointer dereference in drain_obj_stock()
+ (RCU free path)
+Message-ID: <aZYuJiEvMR9wC66k@linux.dev>
+References: <ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com>
+ <aZReMzl-S9KM_snh@nidhogg.toxiclabs.cc>
+ <b4288fae-f805-42ff-a823-f6b66748ecfe@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <umq2nlgxqp4xbrp23zjiajwd6ombed4dfwbajuh35xd4vphyee@26g2y6a4rdnu>
-X-Rspamd-Server: rspam05
+In-Reply-To: <b4288fae-f805-42ff-a823-f6b66748ecfe@suse.cz>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: yshn7ywm3oggcod78r6u6f5gtow6yn87
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67AF61C0018
-X-Stat-Signature: 3wdihokf6nxd8ihht1qpdiqjmmc8gsqn
-X-HE-Tag: 1771448666-986219
-X-HE-Meta: U2FsdGVkX1/8eOEVEhQbmvONwpRV9lmOM+pqBrnFqCegQHq0QbrEyl15KKtxiKvMp38iP6+ep6o1F8GvkD4RcPiylui4Xm1r3KFxE8Ku6MYm5RS+CgUgT6lIWgJH0nUPVvxoCD8t+UN3xPzz3j0/cr8F5lxNqVO2PF1zFEHVMzNtKNaQ9az2ZslGdfJWkVjs6lYs/TRGDv9+7rkmfHfbJ3vl/3ZwqabuGcFf7LUpYWe9enFogXSm3lwRSqzCXWNRUOtLJkCYa/UGoqsAUYStBaHkVx0wZRzNVpjRMB4PgDsDT+1isbYPL+4hcmfklRs6CJD4mScDordkX0f42Dh+Gyx+ycKLRr5v0nRNCxdU/RiPMjNJ9T8EE7/d67U4rYYr4RDNcPkf3UvT0N5Df45+CCrloUPGu6wBs+aA5CG4gWTPaNbsjlsUc2h5jenQgn4J85AMURkvKOYMeCHRqYr3TrJWzWXUq1mv2WIDLmGfT0s94uDU7FpR6Y8EbhGhXgAc+/L5DYvcCLW+2pfycn7mFchmOLMshdFXe5g0bNuq2MwpPsdGEed2NcYkQXOa4Rjx+jrrfQsKxc6v1J1z/CzmCZT/yd23wn3WkOK82fx3pXv5WWa8CL7SRSGzeQkKPXkYpOv3MOvqh3KH1ogC0WV18/fslVvJJ3DJoaLYVWNSbmS7P/9wEIOskUCEEX/7TG1YSmW3mDq+NxOkJX/mSAYg4l8LEId4wTMoWIQwt+kZXJfeTBG5p06/FEmVZMeRc2QO9hNWTFuxzFDzpC3hbEObjY7YDM5QghpeakxutPwKkjZv8m871tkvbyKmIoqoVwd5uVuN3xWcTfQYp2C6PX3C/apcur3Nw6kfd8aSvvdZhpQjGVtEEIrXlVvfITe0UcvNdQ2LcPfOgTWhqGC2R/zFaAjL5i+sqmlxvU4Pj9G6TMtWISlh9FPih+VLA1Pxod9hIkD3kP3I5zQj3TdiBgJ
- mR0v2w8t
- H2NdXrjO1LLepUzH258/FDhDg+6cRKQpIlj/g2LiPhCUCuG+BHrLhi1JmIGPzPJ2C79sbJNwYWi2Ro1kbdsngDyYqxQ+LK0fcltkgaZ7iuyBCERyzF6Aee+vyDlU+MpgK2vvYV1HVOLZOkjAyMPHBiq3C7d8ooMTUCqOjB+OnXBJu04hOiFpwNv7crS93RWLBdOzfKeti/DPnVz3fFasy92Jk/t6FPvr2tu9XTWyybpR6DEOx01JNcT0i1YSfbUOi40Qb0Sg//SUCR2MlPafLyg3FgmOfoJFpf2s7ubczmuRKsmqCYN42osWNRHhqpAIO6SPV5kvftibNcyITmfzPufItVbQIfgoqXThwS4TH3bw+dv6elZm5GiyrENwzokNZ51pU+dNgrs1FEpCUT3DLnG0fAgH1dbTXp9NQyN0pDLsT/x03G2+j37BdFA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 12DCA8000D
+X-HE-Tag: 1771449957-984085
+X-HE-Meta: U2FsdGVkX1/KZekF42Da0KD/EsX3Np5Pg7y9OpsosjlTdL7c1bVEb9kePzvJi/t1uR3TvlUgu/O9sDwaAXHJsJJS0+ZAyhdidmhm8XuHtmQzYJQkiZfHgTZLCnVOz0FiXPWVDdGgB0TGZmTjfwBT74KAlCCYSxSKLXL7ikO69e7PLPYjHa+iGnn0rNGr/k3OK56Gc1sY4zGJtos/4nbTlL/L7WVd7I5u2GQDzN1TM50lgiuaISCDeaMwMQsZYLnql/gLMhztTlUpbZVOlBDzvQAIosW0jP17bjofqZqn8YbeeGLewYuOLDFA13Jp/q5yoytkjSW3ii0CHjjkeWi3U1gixvVKMqDxQ5tCCJc02YFRLJ8cjQEmXknf8P/nPSlCB7wiK/llj4zyI1BWa4Lp75yZ8a8B6g/MfI726FrkqriEihKcuTt+b/0LhOD55mwxZ5kgZPJIwKvXaN/MXiOhqr1/OQAD61hlLiMidSZfWAAmCr0bbgmdNjyN0W2bpHq5tfjvlM8QROJydJPFjWv09uyg9CztRu4In+q1ZPqx3ZC8dH6cueVPuhNkfVoV0KRXG3onn60dM3npLAqsUOpcr6clTI19y+6dpG+aRrctRcTQvJ2tM9JBf6oVUSztWTV4NdohNbaPD0vAHMRyt3tH+rvwCUaACEQuFJIktEPXbD+PjkOV4N8oPdPBx4AZOWBci2WgbQ95ZMRyiDQw0TZQ7td1kw0c2vQcjp4DnJaeJnTNcXZjXbsBVXFv4AqT2Y6C6Nt37BRkvhBc8vLvbESeuJxIqfZX8nYD0DxD4YZ48HvbR/bhkwfmK2moIMNKwZTSoqKOxzeKbUsdGfwuY0XpWO4bmK7aKgIDB6PSm7mxNvYMH5FzlPoelhde3dLdq8bz88GaHnXrGXu5bLiY9TszJ3VE9oKn1el4NTzPxrvZzoE1wkA8f22srEuyOCYbZOw9IPvUim65oYJ+Q4o5ro+
+ KFgkWmC3
+ QuSh0x4mpBBEi4Him7+qgzxXnmyfcqiq2xAhHWM5CGt8Ol3Pn4E0UzAkCXsxFRibYcRfqTYnCs0V3k/IklJ1mG0z4hVwA9TISanFHaIfajneZKWt4/qW1reoLL0FeAAzHwMJ1Q18YPhivimIxiVE5yrMp3yYWpXDgQdlZN+Mc2KYE2yBoi6W3TN4ZsVkyrV264HSaq28IHifYTUAlHHIiLQdKrId+fhSd51H5oXulQZTkKVNp/FfMoK9Hb2t64971r8CqefM82ocAgOSPyNBVzSNGHbmb0vhk6QC12iMQdJbzuM4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,37 +96,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On 2026-02-18 18:37:45 +0100, Jan Kara wrote:
-> On Tue 17-02-26 11:13:07, Andres Freund wrote:
-> > Hm. It's somewhat painful to not know when we can write in what mode again -
-> > with DIO that's not an issue. I guess we could use
-> > sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) if we really needed to know?
-> > Although the semantics of the SFR flags aren't particularly clear, so maybe
-> > not?
+On Wed, Feb 18, 2026 at 12:36:06PM +0100, Vlastimil Babka wrote:
+> On 2/17/26 13:40, Carlos Maiolino wrote:
+> > On Tue, Feb 17, 2026 at 04:59:12PM +0530, Venkat Rao Bagalkote wrote:
+> >> Greetings!!!
+> >> 
+> >> I am observing below OOPs, while running xfstests generic/428 test case. But
+> >> I am not able to reproduce this consistently.
+> >> 
+> >> 
+> >> Platform: IBM Power11 (pSeries LPAR), Radix MMU, LE, 64K pages
+> >> Kernel: 6.19.0-next-20260216
+> >> Tests: generic/428
+> >> 
+> >> local.config >>>
+> >> [xfs_4k]
+> >> export RECREATE_TEST_DEV=true
+> >> export TEST_DEV=/dev/loop0
+> >> export TEST_DIR=/mnt/test
+> >> export SCRATCH_DEV=/dev/loop1
+> >> export SCRATCH_MNT=/mnt/scratch
+> >> export MKFS_OPTIONS="-b size=4096"
+> >> export FSTYP=xfs
+> >> export MOUNT_OPTIONS=""-
+> >> 
+> >> 
+> >> 
+> >> Attached is .config file used.
+> >> 
+> >> 
+> >> Traces:
+> >> 
+> > 
+> > /me fixing trace's indentation
 > 
-> If you used RWF_WRITETHROUGH for your writes (so you are sure IO has
-> already started) then sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) would
-> indeed be a safe way of waiting for that IO to complete (or just wait for
-> the write(2) syscall itself to complete if we make RWF_WRITETHROUGH wait
-> for IO completion as Dave suggests - but I guess writes may happen from
-> multiple threads so that may be not very convenient and sync_file_range(2)
-> might be actually easier).
+> CCing memcg and slab folks.
+> Would be nice to figure out where in drain_obj_stock things got wrong. Any
+> change for e.g. ./scripts/faddr2line ?
+> 
+> I wonder if we have either some bogus objext pointer, or maybe the
+> rcu_free_sheaf() context is new (or previously rare) for memcg and we have
+> some locking issues being exposed in refill/drain.
+> 
 
-For us a synchronously blocking RWF_WRITETHROUGH would actually be easier, I
-think.
+Yes output of ./scripts/faddr2line would be really helpful. I can't think of
+anything that might go wrong in refill/drain.
 
-The issue with writes from multiple threads actually goes the other way for us
-- without knowing when the IO actually completes, our buffer pool's state
-cannot reflect whether there is ongoing IO for a buffer or not. So we would
-always have to do sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) before doing
-further IO.
-
-Not knowing how many writes are actually outstanding also makes it harder for
-us to avoid overwhelming the storage (triggering e.g. poor commit latency).
-
-Greetings,
-
-Andres Freund
 
