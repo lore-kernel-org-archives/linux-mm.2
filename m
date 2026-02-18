@@ -4,96 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC76AE9A04B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 19:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D2EE9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 20:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74D516B0088; Wed, 18 Feb 2026 14:53:24 -0500 (EST)
+	id 97FF26B0088; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FB076B0089; Wed, 18 Feb 2026 14:53:24 -0500 (EST)
+	id 92D886B0089; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FD1D6B008A; Wed, 18 Feb 2026 14:53:24 -0500 (EST)
+	id 80F956B008A; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1306B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 14:53:24 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A5A46B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ABBFB1402B0
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 19:53:23 +0000 (UTC)
-X-FDA: 84458626686.06.61D1A20
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A522920005
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 19:53:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="V/H6/jAe";
-	spf=pass (imf13.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BDC708AF2B
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 20:23:05 +0000 (UTC)
+X-FDA: 84458701530.06.2466FCF
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 66B27140012
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 20:23:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=jhZQuTZW;
+	spf=pass (imf23.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771444402;
+	s=arc-20220608; t=1771446183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SdnOU1vGQA1zKpk8kTMZsw9c7ygfqJl1OhsRupZBpf4=;
-	b=Ju+bsqahzx2y5fCguhoCvJezG4bS8q5hbBV+ojzGKsb4SspxhL+hTi5dpIcGxvdRfNywC8
-	o88KFuiB6l/BKGPqBxi1BVX6mFVZ2QXdeZaYv7861Q/83dHZaxmdWCTUxEi1TSNFsgvj+S
-	JWw7bq1V5y6eDrhrBi9bw1kmZOD5Pho=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="V/H6/jAe";
-	spf=pass (imf13.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771444402; a=rsa-sha256;
+	bh=E+i1/faGO1lFhzHanw7UXC5RtBSvvF1mijuShk8gkfI=;
+	b=t/JvgqtZh1JF/U5TQu4VP1qy7Wu3L++SJJBhEtrczfLByGtXKnUBCrSwAEOGrNc2UCxELo
+	IR9+OVaQZDY4/qkHOvaErnNlgJ5Uuh+FgH2a/Os27/s8LEXR0ZM3YkMCOAzvGJ2AC6CnjT
+	IGjn965GWzrVv6mDa/3bKppLVx5M1FY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771446183; a=rsa-sha256;
 	cv=none;
-	b=aNgK1v1QNi2R8zNmM3UohINpKiay1nqkArC9A9gmYa7UASrGsW+FCqby/0yz+5iBHAu44K
-	KqWOnN/b+d32BcNcOwwal/A2Tk5XTZ9qs/SlI5F5GMKRYpdXKiPgRaDhiSTezAL5RDYyF9
-	Sfr+mm6eEDNJy0F3fZUAGfJJYFJjkoc=
-Message-ID: <2397f4cd-367b-421c-b4f0-9c023f6cd546@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771444398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SdnOU1vGQA1zKpk8kTMZsw9c7ygfqJl1OhsRupZBpf4=;
-	b=V/H6/jAeNBwT5tg4U5BLn/eRMm0dPifz25S3hPq141ITU5c0PWXjdPTF9DGOYil3JLG5j+
-	Zg9OGti2fviCFqs+oDIJ0JIwa/ctAUUTxVZyVwbNDChuLvtnfkczZH1sVIHbZIdXvkl8y9
-	O45YbBEP+0PZLGANix+9dkY2yESN61w=
-Date: Wed, 18 Feb 2026 11:53:09 -0800
+	b=Yb78A7T0fhqB3R2glsQm5/CTEOTM2uaSVh08+/c6HFuBdTsd0XdqCaoQnpBy8ktFzbC5YI
+	nBuhK0Br6HHsQ3uUnuxONvPFxlWfvSOpYiaVD8h6EfOgtgtOSCsQ4l1WXxlUl62HqgGpA3
+	LCrw7O33vXBh+ImdGTd2qmPI/CZ2+uU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=jhZQuTZW;
+	spf=pass (imf23.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61IEAEB41410265;
+	Wed, 18 Feb 2026 20:22:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=E+i1/faGO1lFhzHanw7UXC5RtBSvvF
+	1mijuShk8gkfI=; b=jhZQuTZWDC526OZq7bI3InheN/0s1ee1iDdXS7sBdxxWVT
+	0vxcEQ+6dr5E3yVw0MQ9DgMKFl6Ww7fr4IPPYiDrkdIqrla7V/eiKL5bfjrHfBOD
+	PfPhfTQCzlu1zVfjT5ayvpHPxFcZOiz5JmS+skR1x+SzOvXd7QDC7lmHtn5LKvKD
+	U/WNr+5N6QGJpXkYdyMkr6bQAaBUJe1blNUVbKOucrvqMgyM605aPwxmf4q5BldT
+	hW0Cg+LfXMUWCgcF3D0nlRzzAeueE/FUkgCi5YnUgx0LJFbQjydT/L9nsXOEotWT
+	/bFDlafoTxNKko6P9mkKS6ZUaM3sv+qc0gSFq3WQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj4khwth-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Feb 2026 20:22:52 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61IH03pO012024;
+	Wed, 18 Feb 2026 20:22:51 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb271eu6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Feb 2026 20:22:51 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61IKMnkv35914068
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Feb 2026 20:22:49 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C5332005A;
+	Wed, 18 Feb 2026 20:22:49 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 196BD2004F;
+	Wed, 18 Feb 2026 20:22:45 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.25.124])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 18 Feb 2026 20:22:44 +0000 (GMT)
+Date: Thu, 19 Feb 2026 01:52:42 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Jan Kara <jack@suse.cz>
+Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        lsf-pc@lists.linux-foundation.org, Andres Freund <andres@anarazel.de>,
+        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
+        hch@lst.de, ritesh.list@gmail.com,
+        Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com,
+        Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com,
+        tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <aZYfkuueWpMxEiHl@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
+ <aZSjUWBkUFeJNEL6@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <bf6eek2jagskkgu3isixqjjg3ftrkp5juf6lge3rjjutzzhbdd@vkliyqpsmrry>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm: move pgscan and pgsteal to node stats
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
- mst@redhat.com, mhocko@suse.com, vbabka@suse.cz
-Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
- byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
- eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
- hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, rppt@kernel.org, muchun.song@linux.dev,
- zhengqi.arch@bytedance.com, rakie.kim@sk.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, surenb@google.com, virtualization@lists.linux.dev,
- weixugc@google.com, xuanzhuo@linux.alibaba.com,
- ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
- kernel-team@meta.com
-References: <20260218032941.225439-1-jp.kobryn@linux.dev>
- <10434f89-fe2a-4cfc-9b29-1cd2ed2bbb7e@kernel.org>
- <fbcd6770-f555-443c-b5f2-fe5e73722118@linux.dev>
-Content-Language: en-US
-In-Reply-To: <fbcd6770-f555-443c-b5f2-fe5e73722118@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: pp949ricaxoyubzs59hyajsqktd8o69n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf6eek2jagskkgu3isixqjjg3ftrkp5juf6lge3rjjutzzhbdd@vkliyqpsmrry>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDE3MiBTYWx0ZWRfX9FLEzf7jtPZJ
+ gxRIrZ/x2mb/H3n910wOIdSzPtIrGUlfYxuofg56lSK0ItA0AyNFv8Kzn3TXJzZIrATwkusRCcG
+ 0Xu9sAKUIAo4niQIgJvB/rhGZ5z2sx70baKRjeCDv8ftTvGZth3eNx29448fjestSwgOHQpMKSz
+ 4EN8nz/qwWeVBGNI4PdG1jb8D4u50HpSPy6rPZvZ8AjixQDFsf+vXCnV9zBe9im2jSNVZLEeZ8D
+ 65VdPgdMP4yUsBDEWzmUtzHEAMdbrtHHG7x7WA8P0WNP3A6cKPh338RkH2592PRkf7PYbrixmft
+ 5xkKlIwNzF2cRpAscDzy90MLh+/F0Pgwb7rOsLImee/n4n/AUqN7bUtfV2wYRxp0FNR13VG8TnR
+ zDFTGH23MCWaerUBCCb2lX9bse28g1p3GVo1g0wE8xxC91oeWvkMkSPe+E80ZmuKjhmmm53rCep
+ /HZoD0qSHwr9ojMEJbA==
+X-Proofpoint-ORIG-GUID: Wn6Xsq6wTeBZ9-DdGXuQDbfw6exEBFXj
+X-Proofpoint-GUID: K4HPm-rnhFQtBUYE8FvRoE8HPd9myNYa
+X-Authority-Analysis: v=2.4 cv=M7hA6iws c=1 sm=1 tr=0 ts=69961f9c cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=iox4zFpeAAAA:8
+ a=NybPXLiR-Eq3wr7rucQA:9 a=CjuIK1q_8ugA:10 a=WzC6qhA0u3u7Ye7llzcV:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-18_04,2026-02-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015 phishscore=0
+ impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180172
+X-Rspamd-Server: rspam09
+X-Stat-Signature: bg9eoqdcsoirfywetso6tj4y491nw6pr
+X-Rspamd-Queue-Id: 66B27140012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A522920005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771444401-898519
-X-HE-Meta: U2FsdGVkX1+m4CyPDxcY0jDYASog4ViCbbnkFy2UWCZl/NvVv8GrcpSjKdHXDbIXUTPL+pco5bg1DEdafs6B7mrxe5wNYwLFjy6Vy/XuwS0G5W6Pc3GgLZ/ShoRiKUeSWQL8PtKRDsk2DMQmxJFiMPiFmNeafM2pzUzMZd8eDetPbf+AtrRSf9jhRLuXmfesgTZVudQc/m4VS4jFZ097hzlEHR2vJIDwTlZ1XP1L1r7RucsY0jy2eERrYe6hRw7+maxVK8YXEEowzybJKSiq2b3LNO/LcktaTy66eC6hFpJ0ZcZamUoPqN3YDsoSGcRj9f/iv+cGDyPXw6D0Y5x6QOcuLZaMlx9lCmTrivscrH3nWF8LQCAjtaHjJltVoU0Lt3eg67SUC8UfenMOjFrVNWe6SfBm1w8uCXkExmvfAzzznyt3WJjcExaDO5VCuWijC4kPVGlwFEkZ5V3/WHe78qH89BLSieVBhJm+PRY+HzQTlfNXYahVZL4iy0aym9eImXGGYd8rfjkL2bwtNSeVl/utkIoBzux9SY3DVI4TyfbXo1KIn3633OBaqsIlxNWP6vsF5AEcC4NFkXNB0Vv4tSEMq5ZO1xBigCEOTuhMaKZXssW2/P5ZNlRe499jOZRz8PANyz0TcGWxDRMlEVjv3E9qdHIR23ZNs97qJkzBoBTi8l0QY3WOrbn7QFMsM6/sj1jlXiljF95mg758ebhQ6xHSsHfuUqr+bi1MCEABMKyh+b/9yI7bxMhBVBlezyg+e/GtOIlTnAEWxyChVve3fItcl7UcsDhMlaD8id3QihhGG/KdEmZtdh3BdIFlpONpa+nIrMAhHG2T3xW+5fhyZ0q4xE/rwMRgwvdClcaxBQQaiMePWYJeKxXOjRtzaqOSTIX/IEeyytL84n6DYui9b9bhgG5UP+EtZZbNAmt1KD8S1IR8GvDzaTiC4RAhAYXqr+Td7moBmO0ILeO/JUv
- ycyXjEjD
- CBbhDLHkU1H6InWeHqsysNZED9MVlebQ4kqRBk3jvqiwAoAwU4gNSekZepUe1dhtHMn2NxnoVzcZDDinaGaHqEQvOD78SMIsEiO/MKsSaLoDZPOc059oZyEgfwNa2y61LCUJvpwvItJ1FT6OSkEnvfYOW3xxEayfG5iLjgWvcT6ziuNu4DYDXOERHC7H3MfZp1sImz/HZeIndgMlTQZPpMW3ZCx1oP+q9C9d0QA8pYDTze0au4IwIfd+ISQrojfnYYMP3QVmRtEZBUjbFwMtqW182bw==
+X-HE-Tag: 1771446183-434280
+X-HE-Meta: U2FsdGVkX1/L1mr6qxvXyziKCmhX2xLKbHFCrqyKBDcxmdtUf9sEHzzFHDbUh5fQAY0ircSsYGTiiVkMCfiY/A5ejSzO4DwrId+b5KkInZ55PmZX2EbOKlzKTVH9GohEFA1vjAwZTB/jj6AXmbuDThFxma6/ZnnxsTU5cSUEl50EBxEfpDeCQCOgJkmtHBHpVjW5yZ00y7IozQWQ/uwDM0PHCm7B8TXgzTEVb+VqlAuwt8xrO6oUnkwo0l2+felz0aAAEhSZOsA0n8KIWMJu/Udlw39bfvG+iDuO8glQ93CS6uEtMc37a18pwiOFdUsGMWh4721m8+/I7eYiKGuYpkXEJ79wpZaZnMiJ+D3rhy8ATl98rH6mSs4LTW1Xr9qqY92SoJMK33zDLa3AGkYoQ9R8lZvPOrhpFyJy54AehM7BnUZCxdZlLOCyPtN+YxATDhTIKz0wTIgdEi9NS0FVAaug4P7LbaqNeIPRtavfw7st9Xh962fspTt98vvCzJAw5OwLUeOboEk9eFnOA7ZRwW0okopCRW2GaQDpUsmHAYMrB4AeMIlBzUVAWN0nzBylm+hjauQA/ST1D+2F2OKCVOQnP6Ff4w4/OaKUEd/Sc876aJrMUHjcR9uou2dXjX1uBxifHEhwjntqHrE1PVLpXenG64VJLRTRP8RAvxT+9ElFSsNv0mfP0+aOsxQf5Hi5N+JmIdrbRV+hLDcIM/8FOAlz+g4yVf8Mtr4snssVgXR8Y1zNcPbFcxYR6Rc02q/2EzXxXoF+qW+z+UBKuzFHfKBEIZQVs9Fdu/1zbPurHReTvQZ9KwQQcaJ7Pb0zbjiF8NmLMYFxL3TFDR160qgESRpWnwVzo0t7k88nUsp9DacmtwNKTtNb53WiOh2oFcK73+8x/Khzt5BYHGAF6lAuTddtoZginMicZhml8L1xg2PXTHPVDS14AoIQ/kXZ+EzQxq+fj5DmxJV+qSjmWBe
+ xzjVaD8+
+ 9C7b4owsP2cR+Pk+XjaUL81iqNQNcgXZ/P3rgC89llkbpdudW0Vdp3nsHBI50y7Wcc4HbG/5xT8J99hDctT5nxtyLw7/FTDMPSUkNOYEmvXlPStt4lTnGS5K/NcH+XVt41PzwQyMxJY8i8VCTY50TdPyKg2FdlhIDDM9bO8nkdp5LTqXY3hAxIKnAwe/Qeb4L8ksSAay239jBD6R66m7gzD8gyx7HyCMOzHLcF3FyCI99xBkGoC+rHeZMD37fyd26dDu0nmYiMhkinHP0LHQtGH3o+5lwnH68MiT8oIP1PMB2DFhua4HfyiC0N10Ce1mMTApNWxxoJ9+uG6aap9NbCJl34vszyAk4jSFghEzA3uwUT1U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,51 +147,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/18/26 10:02 AM, JP Kobryn (Meta) wrote:
-> On 2/18/26 12:54 AM, Vlastimil Babka (SUSE) wrote:
->> On 2/18/26 04:29, JP Kobryn (Meta) wrote:
->>> From: JP Kobryn <jp.kobryn@linux.dev>
->>>
->>> There are situations where reclaim kicks in on a system with free 
->>> memory.
->>> One possible cause is a NUMA imbalance scenario where one or more 
->>> nodes are
->>> under pressure. It would help if we could easily identify such nodes.
->>>
->>> Move the pgscan and pgsteal counters from vm_event_item to 
->>> node_stat_item
->>> to provide per-node reclaim visibility. With these counters as node 
->>> stats,
->>> the values are now displayed in the per-node section of /proc/zoneinfo,
->>> which allows for quick identification of the affected nodes.
->>>
->>> /proc/vmstat continues to report the same counters, aggregated across 
->>> all
->>> nodes. But the ordering of these items within the readout changes as 
->>> they
->>> move from the vm events section to the node stats section.
->>>
->>> Memcg accounting of these counters is preserved. The relocated counters
->>> remain visible in memory.stat alongside the existing aggregate pgscan 
->>> and
->>> pgsteal counters.
->>>
->>> However, this change affects how the global counters are accumulated.
->>> Previously, the global event count update was gated on ! 
->>> cgroup_reclaim(),
->>> excluding memcg-based reclaim from /proc/vmstat. Now that
->>> mod_lruvec_state() is being used to update the counters, the global
->>> counters will include all reclaim. This is consistent with how pgdemote
->>> counters are already tracked.
->>
->> Hm so that leaves PGREFILL (scanned in the active list) the odd one out,
->> right? Not being per-node and gated on !cgroup_reclaim() for global 
->> stats.
->> Should we change it too for full consistency?
+On Wed, Feb 18, 2026 at 06:42:05PM +0100, Jan Kara wrote:
+> On Tue 17-02-26 22:50:17, Ojaswin Mujoo wrote:
+> > On Mon, Feb 16, 2026 at 10:52:35AM +0100, Pankaj Raghav wrote:
+> > > Hmm, IIUC, postgres will write their dirty buffer cache by combining multiple DB
+> > > pages based on `io_combine_limit` (typically 128kb). So immediately writing them
+> > > might be ok as long as we don't remove those pages from the page cache like we do in
+> > > RWF_UNCACHED.
+> > 
+> > Yep, and Ive not looked at the code path much but I think if we really
+> > care about the user not changing the data b/w write and writeback then
+> > we will probably need to start the writeback while holding the folio
+> > lock, which is currently not done in RWF_UNCACHED.
 > 
-> I'm fine with adding coverage for the active list side as well. For
-> completeness, I could also include PGDEACTIVATE.
+> That isn't enough. submit_bio() returning isn't enough to guaranteed DMA
+> to the device has happened. And until it happens, modifying the pagecache
+> page means modifying the data the disk will get. The best is probably to
+> transition pages to writeback state and deal with it as with any other
+> requirement for stable pages.
 
-Actually, I see PGDEACTIVATE is not gated so I'll leave that one out.
-I'll send v3 and include PGREFILL.
+Yes true, looking at the code, it does seem like we would also need to
+depend on the stable page mechanism to ensure nobody changes the buffers
+till the IO has actually finished.
+
+I think the right way to go would be to first start with an
+implementation of RWF_WRITETHOUGH and then utilize that and stable pages
+to enable RWF_ATOMIC for buffered IO.
+
+Regards,
+ojaswin
+
+> 
+> 								Honza
+> -- 
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
