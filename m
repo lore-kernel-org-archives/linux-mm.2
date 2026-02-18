@@ -4,95 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B228E9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 18:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09CFDE9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 18:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C4E16B0088; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
+	id BA72C6B0088; Wed, 18 Feb 2026 13:42:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E016B0089; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
+	id B2AD66B0089; Wed, 18 Feb 2026 13:42:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 729CC6B008A; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
+	id A37F46B008A; Wed, 18 Feb 2026 13:42:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BE186B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E1DBCC163D
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:02:34 +0000 (UTC)
-X-FDA: 84458347428.30.C2622B0
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6568F40016
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:02:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pIrisjkg;
-	spf=pass (imf04.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AF346B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:42:26 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5E861C1D7
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:42:25 +0000 (UTC)
+X-FDA: 84458447850.08.7D29014
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 12AE6140004
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:42:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=blFrZgRP;
+	spf=pass (imf09.hostedemail.com: domain of audra@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771437753;
+	s=arc-20220608; t=1771440144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cx1YFMXeXn8Jw1SsA/vK5p52GVwbuIAqyFb1QuBwKqE=;
-	b=WCr3WtuBLRMaCTKw1oL/Y0i9iJLNiB6hTqvypraJMXvkLRIWMVzcjqB2Vm5DE2tXjxe/ya
-	XxURbKD0Bguk1keskIOelQmknPN0EPp5A2g8Kn/PFX0Mxtlw4ktmBHe0BMdUyGidjnyQr8
-	PZCS/ZbuY8+/qkV0n1ZOj2Mf/rMokgc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771437753; a=rsa-sha256;
-	cv=none;
-	b=FbR46LhyDra9BrqK8ECOg1oE5lKwqLW1+KJMh4r65ucGY7ISvTiUAFB6OhTHErNivPcwEr
-	a71G1ColtWTz3ZOeEgmhcGd1T/PPa/UPQ7rJ0NcMpCG90XWuokxo7Iwi9NGO1mCmxYLHKe
-	V1NjxG1zt+ik9xv/C4cBMOkGXwDm9Ag=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=frAMfRqoE2ZGmeGzlkELRXqzdLMkM54op2gu3LYMHtI=;
+	b=c0uy2o68izZRR16HGb2IG0LBwFTXXaq4RnPxb+qD8S96NbcX1hY7R61xRNNeUbdnwDXRtj
+	IPvP0wvkt6PfLNI+9PyAEpjfXVipgx6N/VIsJKYQrV5u9HfhfY4erDRUIe1ZPbLat0wGQb
+	/LgAs4ZNq+musErl8Q20tK2YHWwDk6g=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pIrisjkg;
-	spf=pass (imf04.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <fbcd6770-f555-443c-b5f2-fe5e73722118@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771437748;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=blFrZgRP;
+	spf=pass (imf09.hostedemail.com: domain of audra@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771440144; a=rsa-sha256;
+	cv=none;
+	b=O/l7E72igy/4PTNwKWV/6UON8In/PTTM1xC2QA2GwLZYBY32Tqn4riD8KyxWvLavE5HWmL
+	5EMjoxs1aYouWLIh//SalZvdlXUhiIfk6Nr99bet4XUlW2m+XiACWWBquVbFnEH/6EQ+wi
+	w9r5T9BEyUDZvd6lJmaJJqlN4EVsoQw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771440143;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cx1YFMXeXn8Jw1SsA/vK5p52GVwbuIAqyFb1QuBwKqE=;
-	b=pIrisjkgRvEhyzm7mm89uxk+UXLZ3lxBEZan3dCK+yy0F568+BiAbZu8NBsKky8pzCkCCT
-	uUW9PM9BMQvrw7vEkEVZlCqeTiQ4DXVLb5kwHS4v2KGbO/FRZ97l15af7lOF568zsJcNJd
-	ZDigBiY/QGr91OsSfQbgpnzWCW/+E/c=
-Date: Wed, 18 Feb 2026 10:02:15 -0800
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=frAMfRqoE2ZGmeGzlkELRXqzdLMkM54op2gu3LYMHtI=;
+	b=blFrZgRPHUypdNBTbq0rHd/fC5tK0piBKhblmRAHqHFEGzWQxi/cBl+fPt4oik7w6EF1zC
+	Qri0ylTdi7cXE/qkMLmKHO8MZVE6lQTmRSx6wt4q9WIOT88VAhnUZmYUoUY3Ifbhgovf/E
+	IRA/fkM2RjYiKcsTyxEw+NUWE8L9InI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-c-abKhYvNRmNVmLPT-aNBg-1; Wed,
+ 18 Feb 2026 13:42:16 -0500
+X-MC-Unique: c-abKhYvNRmNVmLPT-aNBg-1
+X-Mimecast-MFC-AGG-ID: c-abKhYvNRmNVmLPT-aNBg_1771440135
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C47241800465;
+	Wed, 18 Feb 2026 18:42:14 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.81.6])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D0DDC30001BF;
+	Wed, 18 Feb 2026 18:42:12 +0000 (UTC)
+From: Audra Mitchell <audra@redhat.com>
+To: linux-kselftest@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
+Date: Wed, 18 Feb 2026 13:42:10 -0500
+Message-ID: <20260218184210.206466-1-audra@redhat.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm: move pgscan and pgsteal to node stats
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
- mst@redhat.com, mhocko@suse.com, vbabka@suse.cz
-Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
- byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
- eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
- hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, rppt@kernel.org, muchun.song@linux.dev,
- zhengqi.arch@bytedance.com, rakie.kim@sk.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, surenb@google.com, virtualization@lists.linux.dev,
- weixugc@google.com, xuanzhuo@linux.alibaba.com,
- ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
- kernel-team@meta.com
-References: <20260218032941.225439-1-jp.kobryn@linux.dev>
- <10434f89-fe2a-4cfc-9b29-1cd2ed2bbb7e@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <10434f89-fe2a-4cfc-9b29-1cd2ed2bbb7e@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6568F40016
-X-Stat-Signature: tkrzyujt9seazfkcoskk766zcte65wgg
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: 8m4wZ56EfqAtFeYhpzLFERpubdMr-2U4njtEUOSXtGE_1771440135
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 12AE6140004
+X-Stat-Signature: 6cwqen3ts7kr9qwh7x68bm51xyoexyux
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771437751-704584
-X-HE-Meta: U2FsdGVkX1/RCjjBRB6xMQipUrBaQCh3AkM/asihWOMMcinnvYlKET5/Gldh/2iQe8U6+6MPpfoVR79g24FH5DGyA4BjKqX0si6MQDIU/esfrRyqCB8HHFUECFH0mcQWDhtR3YEbyDV/WOCnRyaobGBhhId2ehdU2FAigIWtrLO7GjaAGoD23PrM/Ej5nxUWaGfDtIIdgQCQb5IWs3imeEoHbltEuX1lu+L0wGEOWZRx7NT15zdD+9RFF9rGHrpuIMsp8bhAz0Y6G6oJAVt9fSTeMgMD83Kih+ZJ+UCC9TqPSpTaf/nWgTUHzy93HNNNDHjE2DMLZugPKRmeX70vGNQO/uBiNIPgSM8THsShIgzq0ygNfrODa/bBgR4lIKcQKN4TimLpJ9pc7BBw+QMkSI+49sMmy+bsUO3Gw5ePtLsL6iUag2/sgmKRJ1yy3Os7lcBtWr7q0yP6OiCe27NNaNfe2e5niEdp2HKbB9CgTPrT3UM+MWKbv23mUy0JYB9GOtIOeyqAYmRGsQm5X7vuXQ3LaI+k7/eCFlRVB7C/q7mdWgeiqIfqkftbNS5D0KGTT187QnJXNJTPgnU9kv2Jz9mBieASMVirzqcV4/Gur3OwNJsZhCy+ox7qPotDpliC5oqjqT1fvRHFhF7BII1YOKpksRBvb0Ds/APmJxOs3qLhH8E4wcQoLY76ZqhmTy6DQaM2JmqRyKhDQD5r74aL0OTjEMi5EawRCIeCEWmESU8KSlzdyTaILtjrkDdqayZoQA2XNqNq+yM+NWr7miRU7Wj3GlL+ousHBynqAfqqxQO9+OBPxAEhq3pCzZokeWcJwOWljKyI2LKgT2U4mPYzlnTXEEBgQY+mauqC/x8XIUrvGTN//7YuKsQF6Sd/2VIp6NbM+VODQRsR1O9RIm62zWW7tm1N0HL5WSMf4Ptdb2e8Bq7CQ9OcIjeza3g0/G+C0rkcwePzg1t+hHBCjWW
- 1nmtj01R
- ptMuGl18GaVZgzBOhyDMZvWvd515jOYvQ5VFNmws0vEG3R4HBdj0UIiKkhM+nQr7avAt2Sqbd8n2hEJPZIuTEuTAsqAyLYhb1wDNEvi9WgcvbCoalhCK2AhxTClMgxWT78IVXH/279FIAkGbtukC8Hpvo6Q08tP1VvVjMGKZf8zz3fiMrtpB4pjGkV7m6yXomL71nPkRPfRXOMIplznX3WxNW45hXokWF7X+X8vja/2exELy3UxodUl4tGKGx+uSAUDrfAcyzIh2AqRd7PwlBPspFtg==
+X-HE-Tag: 1771440143-127634
+X-HE-Meta: U2FsdGVkX181ju5gh76CYj7J6Kz+OScJE/3Es6TPWasV01RwA/lhnGBYsml2LEfW9HMHeRi4V74homSv5zEwm5m924lx86kGrNvmI5p4f6gi85Kh+v78VWx3Rr4gp8MsE9Zouq2Om7Qxc6EOIUe2ZD5zgpx6nnCnGLcLqj2eJ5cbiUaFh1IqyfXdCV40CawDH1db/GHXEnRIiRBKPlMAW0PLw5h4fdfRxHiCAFIUYSG847AwlfXUmqpMjc7mc3Mv4Lmx7PLE5MRCX9FSm/kfJ79vqW5+iHRzPuoIy+m/lfiWMzMjtSs2BekLN4452oXqDcNX4LxYFTDFK0G2NxCdvhhr4IdDVCDaPs3OnRMP56eFOCMsNd8r3SWKHiPQ5vkEUO5/Ymsk+5HPkWqU2hbDYQmnELDbg2fZLoGS3hwrMFmcZLkvnunxWlLxlIlUt7wsPdApgrZs91qjf8tf8yMIk01Mf8byFxPAgOTVYid2jUafQdnXoGnHFn/3/EnWSk+pLUe8LXXXLgdC8nUOP+ofZGpt+4kMwuNpDDEb4Zzcsn7edawXIoggSvzGGM8SENT3maKmY9EBkWqPv/nh7T2wYmBxD425d3atsTF8ueHEM12v9L5UM7W1fbIu53nz/VKx9qimyAMXoro38Ie+WOdBuox6GUi6rfWP3RO7YVOK4RhSrPuzex0W7ZKpsryPW7GVTitaHOPoro/7dwhmV3l0lj/X/DrIs7Au8ZrMnPduI2Cz6IZR2nBslcUxU1zy3oqVJjcBd5fpRnjYKaM87GY2Mz7bmuN2zTri+aZCx1DCUgxJ+fE4w81JKTFe33cHmKOo+lVP518kn9QFEEF9AbKgLcK9y72LwA3+TXoF03GX23IgMePaw+5D4mDscfrglZqOAX4crxJx8ibLOA1ZhHMT0Mtfjc3fmQ17UY/VkagcKEBKH+7F5W80IhAgqK2dnvAdy8KLHh1csx7uuBi+Lph
+ XEYHvbZT
+ gV3RHGg9KE7coPSAnPCL+wCBW5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,38 +111,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/18/26 12:54 AM, Vlastimil Babka (SUSE) wrote:
-> On 2/18/26 04:29, JP Kobryn (Meta) wrote:
->> From: JP Kobryn <jp.kobryn@linux.dev>
->>
->> There are situations where reclaim kicks in on a system with free memory.
->> One possible cause is a NUMA imbalance scenario where one or more nodes are
->> under pressure. It would help if we could easily identify such nodes.
->>
->> Move the pgscan and pgsteal counters from vm_event_item to node_stat_item
->> to provide per-node reclaim visibility. With these counters as node stats,
->> the values are now displayed in the per-node section of /proc/zoneinfo,
->> which allows for quick identification of the affected nodes.
->>
->> /proc/vmstat continues to report the same counters, aggregated across all
->> nodes. But the ordering of these items within the readout changes as they
->> move from the vm events section to the node stats section.
->>
->> Memcg accounting of these counters is preserved. The relocated counters
->> remain visible in memory.stat alongside the existing aggregate pgscan and
->> pgsteal counters.
->>
->> However, this change affects how the global counters are accumulated.
->> Previously, the global event count update was gated on !cgroup_reclaim(),
->> excluding memcg-based reclaim from /proc/vmstat. Now that
->> mod_lruvec_state() is being used to update the counters, the global
->> counters will include all reclaim. This is consistent with how pgdemote
->> counters are already tracked.
-> 
-> Hm so that leaves PGREFILL (scanned in the active list) the odd one out,
-> right? Not being per-node and gated on !cgroup_reclaim() for global stats.
-> Should we change it too for full consistency?
+On architectures with separate user address space, such as s390 or
+those without an MMU, the call to __access_ok will return true.
+The soft-dirty test attempts to check if the PAGEMAP_SCAN feature
+is supported by providing an invalid address and expecting
+__access_ok to return false, thus throwing an EFAULT error on return.
+Because of this assumption, this check will always fail for the
+architectures aforementioned. Update the supported check to handle
+the return being zero for these types of cases.
 
-I'm fine with adding coverage for the active list side as well. For
-completeness, I could also include PGDEACTIVATE.
+Signed-off-by: Audra Mitchell <audra@redhat.com>
+---
+ tools/testing/selftests/mm/vm_util.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index d954bf91afd5..3bb7d322101c 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -77,10 +77,8 @@ static bool pagemap_scan_supported(int fd, char *start)
+ 
+ 	/* Provide an invalid address in order to trigger EFAULT. */
+ 	ret = __pagemap_scan_get_categories(fd, start, (struct page_region *) ~0UL);
+-	if (ret == 0)
+-		ksft_exit_fail_msg("PAGEMAP_SCAN succeeded unexpectedly\n");
+ 
+-	supported = errno == EFAULT;
++	supported = (ret == 0) || (errno == EFAULT);
+ 
+ 	return supported;
+ }
+-- 
+2.52.0
+
 
