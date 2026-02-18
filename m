@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80FAEE9A047
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:47:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DD82E9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 14:42:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C90B6B0088; Wed, 18 Feb 2026 08:47:09 -0500 (EST)
+	id EB0A96B008A; Wed, 18 Feb 2026 09:42:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64CB76B0089; Wed, 18 Feb 2026 08:47:09 -0500 (EST)
+	id E63976B0089; Wed, 18 Feb 2026 09:42:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F306B008A; Wed, 18 Feb 2026 08:47:09 -0500 (EST)
+	id D608D6B008A; Wed, 18 Feb 2026 09:42:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 429846B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:47:09 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E741F1C072
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:47:08 +0000 (UTC)
-X-FDA: 84457703736.04.1EA4871
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 286741C0012
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:47:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c9oHy2ne;
-	spf=pass (imf18.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id C15506B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:42:31 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BCD7885B8
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 14:42:31 +0000 (UTC)
+X-FDA: 84457843302.27.A0E1689
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A24AB1C000F
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 14:42:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOuraL88;
+	spf=pass (imf21.hostedemail.com: domain of lossin@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=lossin@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771422427;
+	s=arc-20220608; t=1771425749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g7xLnbWUtNkSyUhaZry6Tmd7Wk+eR8gm83r0+hOi7tE=;
-	b=YtvLMdlafCvvjhNFkoEs7dx8tlXdy6JDmyoklGFMNy5yIqLPPjUJvaBI5Z81e09TJRzD1t
-	0Tuhz2NbuDGorQVJt3EYYujUFXXzRowluKRv3FJ2HQ2c50N7yhzGcOJBpXQpFkWyvA4pz/
-	IsJgEm08mJBQwby0aB3LnSl2m1W19hQ=
+	bh=PZoN6rgqXFANwvlFQuV5YKsznFFpjqxGG6yysl7W1Mg=;
+	b=4zTHJ0adU3eBvvodZJXr13GKFCW/KHiMGdFqKwK5O39efHNAEoxB5265MF0xoHYNv45VNh
+	EE+NUOqI5vZsdruuopzQW9KmWKXz7lBx9wie1u0YU2U+xIK5oiUOqSuwD1p2noDr4m9rii
+	AkHrjQjCCFN+CjHZkdFwz/E7/ydi0/A=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c9oHy2ne;
-	spf=pass (imf18.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOuraL88;
+	spf=pass (imf21.hostedemail.com: domain of lossin@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=lossin@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771422427; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771425749; a=rsa-sha256;
 	cv=none;
-	b=GUoBf/hmVQVWQytAPkLQRZIL2Ds+yhLv8hkBoQ15dY2h8k9ImScVEx4vgWZ0ToO4nkYlma
-	GnZl2k4eqLveiStoZHIUrJDar/QyxPjoRMy/PTw4MfJBHmbAXbvOHfJG1gqcfQaUJXYFwY
-	GNEr6SgfTqBT9Fwye3T6Zdk5gDsHAsM=
+	b=y2Gl3SwVMd3Sd2Uq2fw3b7FNFUk7Vmqj3dVg/Iy8gQGBjCwBAaeSrNJ4iUnXUqVbXjQanE
+	nbFiNas/u2/sogfZRZ/RkHch2x1duDRrSApSjc4m/KXz0JANYBR+RZXFNpHxdm80RRVu1b
+	1DDVtLbmebS0JbxUhUtV31hLXYkxNV4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F097943B9E;
-	Wed, 18 Feb 2026 13:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985C9C19425;
-	Wed, 18 Feb 2026 13:47:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E697C600AE;
+	Wed, 18 Feb 2026 14:42:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538D6C116D0;
+	Wed, 18 Feb 2026 14:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771422425;
-	bh=g7xLnbWUtNkSyUhaZry6Tmd7Wk+eR8gm83r0+hOi7tE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=c9oHy2neizExuvudX1M7U/XiymsKKkRPxTyGQH1tkHRWaUAOr7Qk+TBq4VUY2UOqc
-	 O2VQA+6znhq+PGkCC8cBTQBwvxu27JzqESUXCOOYy8DJZ+GO4ox3e95HPDoNcRx1Tt
-	 ZUpU5E21uFN069r2rGSKYE0pC3TGD0V8c2n4wWqiX4dRSfCQZKF7fYyY0WDt2YOlht
-	 GWjU+o3BOjBHOXIHwdKW7EYYhk0RaRW47OnYIYuGASBV3Rcify/Mqs38SSYGa9IBEF
-	 et5sP/x6FgfdFaROF47WjkZmqWDUSkIWzlqEUNRVrjJyyJ5fbymPOs37r0Wbej4ics
-	 4eMt/011vFtYQ==
+	s=k20201202; t=1771425748;
+	bh=6GPMVdt+2peIzfNOCgaGLfLM2Thd6H8NgtP6G0RDwEg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WOuraL88EbRfrvLI1WBAyqV6X1XC3KTqovM1+IdLWw5Rcd/bInss17hx4iZLH8YzR
+	 PdtMHLan4I9P7JhvOvEhDqv4mVBgfhaKg7Ceh2KaQMs7BSfXxt8Z2FRvdznrzwDxA2
+	 nVoZSFzVtHd7J82khdVqpnmsHzKxOMM7z0g70b2hAhRwuUTvd3ej5omsZ3zXcphzSQ
+	 o1Au9Ip8mxgLVlblTAo647x7SRcp6PtkoGiEcT4HysQW2j53ecV4CBhVWivu8KMv5+
+	 Z8BE+o/9fHcQVjyBT1C8n9li8Oyl4qZhAQQT8ukbxUuY9qbcOlx+TfH2VvJL3LXh+Z
+	 EqqCOHsOty3bA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Feb 2026 14:47:00 +0100
-Message-Id: <DGI4U9PY3B8F.37E697MM1LQF2@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
- <cmllamas@google.com>, "Jann Horn" <jannh@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>,
- <stable@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
- <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
-In-Reply-To: <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
-X-Rspamd-Server: rspam05
+Date: Wed, 18 Feb 2026 15:42:23 +0100
+Message-Id: <DGI60O54OUA2.3ULIYWOL6YO5Q@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ <linux-mm@kvack.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+X-Mailer: aerc 0.21.0
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <CANiq72=5r2miRm6GWszb2gDNi4k5-RZUzvdOdFQ3yyndvmHbAA@mail.gmail.com>
+ <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
+In-Reply-To: <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
+X-Stat-Signature: c4brqadadgbhd41xq13qic1z53upq176
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 286741C0012
-X-Stat-Signature: hr49dpdro9yacqx93f71zx9emibw5gfj
-X-HE-Tag: 1771422426-599435
-X-HE-Meta: U2FsdGVkX18yo0yIUWlMQcgb1PBkTgvPE3ngdptz5cI3lfueX1VGCqQoaHgvfSm3Xj3lSD7MDosCccdRGu+s8OwYS8PDEB+E1q6ZdJDa/MX20xxE2rBA4f2/78av/ZsZbvDqpzNhVek3kdvsAaUgY0zWLYsZW/urBB5RSmE0thwwxPP+9Ou3gRYV53osExOg74A7w8300mirl6GFh/WrcKR6RAgcOeDHuaN1zNBQG3o0CbDJ5AhMSDjVfrFV4DVjilG6uoFD33AQXBANDkhrj/Y7cetc514u9qdrSTLOWNpI3uKjAXdSqRhslE3sWdXRZ3nWpkB729NExuoGYDQQnfohmXLw2rbbk3y94Sq+V0LHv5GxULFxKnwwOTAsUcUMExsxxgRJRYxY5LwBIpQ9DxCAGRoHLs1nvtt6fywPn3pzkDmKfDm+RTU/endTQTl7TkyA5CekM/9SMfXjHGj4sTuAG0ysPDATRoIAReHqn9VF1iWYrRwdgntt7VatBBB4CODSPaqqglRaKO3lTXo+yvMbB9szc/qTjCF7EF7+WqmUY0qxDwL8rzyJVFxtjrnJzLWaAv74DApYzipXLUCdZRTGwC1w61DiTX4TEvJNiJrAPyfPwifeFa7MT8ilj4KX5jrPNMFNs/Pzz3Bwm01RuF/xmCrbVYFxtsLHB4lZeNIo2Zz/AxNZgB/OxCjkljdbEIWYM4OZkUlfXi2aehvsbZ1UhNnw9S7H24Xwv5HiYh0iDCPifz0mrBF//df3irmtDj6PTek7PFRj+9KkH1hTK9sXz80BIPLYf5Kpz7rJKeo2WIir7bu6kJAOWWWU2zXm7TCC6Wu0YlBrKdRSRrBLNI2X7nfP52IhAztOC5enlh23+PW6b2fDUegKVrUOS5iUAO23kg0n3Y+uRn56YFHynNoI4SGdXliWNa1QY5EJYeB8wcLcxy/NgkkjJ9z+M7o/FrGrCMJYXbhXhmTdvMR
- tyUOGDxy
- Q2AzsB7ptNxeF2MoQc+RinnSo71qriZ0TakbAn0L3D3JfzMrqieBIydMrsARgDeWaUvF219GBWY6/EfIGL9tZ2OucSzz7P1LdpKc0Z10EA5eGjIdd/LxETCzj73HaFeM0ISclMsufmBpeDCj0bMlj2BS0oB4elEZyY8jymyGwXag/h/M/IFebqNNut27dn2NSB73kLE7VWsyNlCStBj341JG0PVbOWG27e3v+0tv7NJpauJDnZH/7jmsd0jRLmI2JKpIthtc9L0R51ulI6m8bsPxkO9PvyX/scvHQQ0j3HOzkN3PUEMC0qdQ6dj8ZC3k4iJMo7E/ui89/8HfjPEPf8/kb5lfg3qAfk2pv/MkeJ2y8SlMCafJSfOIQGQ==
+X-Rspamd-Queue-Id: A24AB1C000F
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771425749-499481
+X-HE-Meta: U2FsdGVkX1+yZvD5bZmTy9Ae5Bk7huX7ahCW8ITYQlay9dF50eOL3ItCoOFExgiUrQtMMzsGVTmpkNGnaw20utHZyWIdBV7V3D3YUSvBcMQFLHzKTjQxMEzzDv777a9Ev6kRbh5VDzia0/aaAQsHoPCFBiNiXJAhpJy1basbHkbtFk1FWA1KBnY3V9Yb4JJ65U9Z2/3xyJ+Ftm96VwQwpSlqOyku7/26XMYejG8d8n6DwCWu8j585prTO76yIMseIoAQ8dOA0lgilxqP2g7oKkBr2H4K9eC9bq6Er+L0tutaOXPO8GwVWw+1GLB0bSjo54iRiOWc2QBzfERtn4lDbRK912e3RbmPAhZTO+mE2T1Cog2QLKCvGCE6y9wV5eLoG1Z6Jq21BpJMzxr+1rZYnbIFOnWXkapvhEcGmiNIADeh5Z6YFXNMxLeXPZiBbA4jsbck3pBklEnyOjhXVYrLkTQfXkAZcAsRfrbpluaC/3ed0LSSV65U3Svpvje57kYlVZ+EzWXzOhPADvSXTm0aQYL6OF56QFfp+iXfkYVjq3hKEgz5C9bWvULrLQq2AkowArpcl5D/vX6z996fbdji0SluJi+P/07bdo3jBWznjmcU3OFPgpfTKF5N4ShzJiwcLhOr85UbLRSyJE6gwZIVkk/9ThI+UddszCPSFJ/lRmIFrSKryZnDvLmZDsYpXOowivcspF3UD1e78BVvFqUzxLnyuzOzDX7iMdK3Pg8DZJoum0iIKRwYtfU8mrx8Ugoq9QzMKQLHEwwArL4tDq5aPZ9H+RoGRzAjtrC1smtIVWCwINkz6BsGkj6w+1Gh7Eh7+OiQBuNkxkAgvfkuuMs0tUB7y+glGmJaNnDc3tZ9+j27pnX1zuI1npFOQuJozykBWFOg8oO4wgE1wY0us0MR8oA4GFT1vqvwZ87pUZIA/aKkPYMMBLaHXtQ85Nfw/Pn0WpaiMVegsyK0HMs5Cv+
+ bFNmj1H9
+ X5zWhf70MtZmLIhUbvWSh8VB4p2oZxmXEWkh9SFU7+zAXuZLqDodX7mG95bwy0OIE4zmiZe87u1oTSi7gzrN7M+UZU6kuAR9TRk6Iij6JLhB/IGprXL+lt1ILKaguh+WgNaH+EkfikVZbTVaNkPJ3mBTt1JdjVOaDTdALMII2aEKB6rXCI5A4vT+j1miJDh+3Qcx4023qM1L/XmPnfFRrXfl7RDpCUWElBeG6dM5sqQJElkiQZZt4sBYvmbG5Q7GzheTvFV6uGqfcNBJpA+QxHvrIZaEBnPhxqV647OsV+Q8mkCPlZtnc75M07wwQnE56MyidWMd3PP31IZj95luYKdpLvQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,47 +103,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Feb 18, 2026 at 12:53 PM CET, Alice Ryhl wrote:
-> When installing missing pages (or zapping them), Rust Binder will look
-> up the vma in the mm by address, and then call vm_insert_page (or
-> zap_page_range_single). However, if the vma is closed and replaced with
-> a different vma at the same address, this can lead to Rust Binder
-> installing pages into the wrong vma.
+On Wed Feb 18, 2026 at 1:00 PM CET, Alice Ryhl wrote:
+> On Wed, Feb 18, 2026 at 12:57=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+>> > +    /// - For the duration of the call, other accesses to the areas d=
+escribed by `src` and `len`,
+>> > +    ///   must not cause data races (defined by [`LKMM`]) against ato=
+mic operations executed by this
+>> > +    ///   function. Note that if all other accesses are atomic, then =
+this safety requirement is
+>> > +    ///   trivially fulfilled.
+>>
+>> And, for this one, Benno said perhaps we should introduce a shorthand.
 >
-> By installing the page into a writable vma, it becomes possible to write
-> to your own binder pages, which are normally read-only. Although you're
-> not supposed to be able to write to those pages, the intent behind the
-> design of Rust Binder is that even if you get that ability, it should not
-> lead to anything bad. Unfortunately, due to another bug, that is not the
-> case.
->
-> To fix this, store a pointer in vm_private_data and check that the vma
-> returned by vma_lookup() has the right vm_ops and vm_private_data before
-> trying to use the vma. This should ensure that Rust Binder will refuse
-> to interact with any other VMA. The plan is to introduce more vma
-> abstractions to avoid this unsafe access to vm_ops and vm_private_data,
-> but for now let's start with the simplest possible fix.
->
-> C Binder performs the same check in a slightly different way: it
-> provides a vm_ops->close that sets a boolean to true, then checks that
-> boolean after calling vma_lookup(), but this is more fragile
-> than the solution in this patch. (We probably still want to do both, but
-> the vm_ops->close callback will be added later as part of the follow-up
-> vma API changes.)
->
-> It's still possible to remap the vma so that pages appear in the right
-> vma, but at the wrong offset, but this is a separate issue and will be
-> fixed when Rust Binder gets a vm_ops->close callback.
->
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Jann Horn <jannh@google.com>
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> valid for atomic reads?
 
-FWIW, in terms of my drive-by feedback from v1,
+Yes, in particular it should be folded in with the "valid for reads"
+above, since that would otherwise be conflicting.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-
-(I'd offer an RB, but I did not dig deep enough into binder to justify it.)
+Cheers,
+Benno
 
