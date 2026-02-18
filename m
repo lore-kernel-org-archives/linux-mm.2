@@ -4,170 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C13E9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 15:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A395AE9A047
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 15:13:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B6A56B0088; Wed, 18 Feb 2026 10:08:33 -0500 (EST)
+	id D397B6B0089; Wed, 18 Feb 2026 10:13:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 239FD6B0089; Wed, 18 Feb 2026 10:08:33 -0500 (EST)
+	id CFA1E6B008A; Wed, 18 Feb 2026 10:13:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F20A6B008A; Wed, 18 Feb 2026 10:08:33 -0500 (EST)
+	id BFC3B6B008C; Wed, 18 Feb 2026 10:13:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEB5C6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 10:08:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7443AC095D
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:08:32 +0000 (UTC)
-X-FDA: 84457908864.09.07A02E4
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0D3BE80012
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:08:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=gldyKQL6;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=gldyKQL6;
-	spf=pass (imf02.hostedemail.com: domain of petr.pavlu@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id ABBAF6B0089
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 10:13:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 496D51B4315
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:13:35 +0000 (UTC)
+X-FDA: 84457921590.11.55CB028
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 845E040006
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:13:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LUMjABu6;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3G9eVaQkKCHQSdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3G9eVaQkKCHQSdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771427613; a=rsa-sha256;
+	cv=none;
+	b=zvb7BZ0kAYwZgOGTr8PvVonshpxlmNkmqPeW5SH4MWUZQV9znwnqWtojCMZVvhB86G1vEX
+	GliwOrtCsgkUurSuS7+1rZzI1q1yqy/Q/dJ/Qh/nwvNr010dH2UvzphOMic6ntAUlOw4+W
+	h6EaoiD7IEH2EbNjOTOZNit8tJhnopo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LUMjABu6;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3G9eVaQkKCHQSdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3G9eVaQkKCHQSdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771427310;
+	s=arc-20220608; t=1771427613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5lyt323+HbZYpoX64Rl3vcxfunKzUx7dWbFHruMcR5o=;
-	b=JJk3JKyyxEEzsLtMy8ZUbEgrSmu+5No4GZK2NqmUbgwgRy7okJeoVVo1iGZpsrZ6jxEQnB
-	8Uo8hlgckGfpzmgV7Ohfw3oMqxZjSA06fA4xjrQfxYtlZqAJF5RN7CqPMSz/1QM8bOMaVP
-	d1rU+B3LKNXh5LqLn0bkMjI4mnS7IYY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771427310; a=rsa-sha256;
-	cv=none;
-	b=1BujZSF+RLWEf0McVtwYVWbcpsAO6BgeR+cho79sXbW+axhDrJmKI4w+Th1Uo92pinBsZZ
-	RorvVdYi4pPRBdEyfjzpDJT7dl/43KpSxFsRc19ZAcjrukmTLAKMaPYniT/DZ/A5Syvu6C
-	RbE+SLMnAks2jKztuUsnGuK3LhajL4g=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=gldyKQL6;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=gldyKQL6;
-	spf=pass (imf02.hostedemail.com: domain of petr.pavlu@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3458E5BD1E;
-	Wed, 18 Feb 2026 15:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1771427308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5lyt323+HbZYpoX64Rl3vcxfunKzUx7dWbFHruMcR5o=;
-	b=gldyKQL6ACDQdncmwMAad+Z99WShbTJgDNbsPhcbC0DQiA3KedeIyVic93hD8vv78dtV5k
-	mpXWOEOKQDyHkeA1GRi52v9RwnG2zVxhkBv7o7JMU+8dwRIwmS7XltK2XFgm+L7TqcdAoi
-	1nUoIbVbEo1ghf+4y8+Ad7p6+tMf3RI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1771427308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5lyt323+HbZYpoX64Rl3vcxfunKzUx7dWbFHruMcR5o=;
-	b=gldyKQL6ACDQdncmwMAad+Z99WShbTJgDNbsPhcbC0DQiA3KedeIyVic93hD8vv78dtV5k
-	mpXWOEOKQDyHkeA1GRi52v9RwnG2zVxhkBv7o7JMU+8dwRIwmS7XltK2XFgm+L7TqcdAoi
-	1nUoIbVbEo1ghf+4y8+Ad7p6+tMf3RI=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B3DA3EA65;
-	Wed, 18 Feb 2026 15:08:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4AnNIevVlWkRRwAAD6G6ig
-	(envelope-from <petr.pavlu@suse.com>); Wed, 18 Feb 2026 15:08:27 +0000
-Message-ID: <7765df86-b08a-4f70-900d-4b4d85c07d49@suse.com>
-Date: Wed, 18 Feb 2026 16:08:19 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 34/42] dept: add module support for struct
- dept_event_site and dept_event_site_dep
-To: Byungchul Park <byungchul@sk.com>
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
- chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
- max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, da.gomez@kernel.org,
- samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
- neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, josh@joshtriplett.org,
- urezki@gmail.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
- anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
- kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
- ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
- baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-35-byungchul@sk.com>
- <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
- <20260213055006.GA55430@system.software.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260213055006.GA55430@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=D1/Ls7LwysFMM1ACNCIQCse+fYSn6YnlDM357NSCbtY=;
+	b=f2pMY/f1yEjq1jhgeNWlikjJwWfMKj+qbMM5TVaHhKq/mJ4VSboui8t5M1CeKFc/MCmJhR
+	U+NMHLA/+J27nn5LjplziKl6mBRli2gJKmIRiLGe/SKy2HYMpB3KrIMhgZLvCEg1PkY55m
+	vmudJdrUPzjtNxJm6CDjboo3Cq0u8Gw=
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b8f10615953so470660366b.2
+        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:13:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771427612; x=1772032412; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=D1/Ls7LwysFMM1ACNCIQCse+fYSn6YnlDM357NSCbtY=;
+        b=LUMjABu6iY2fkVRGVEY7QOmMYw2yDRo0DfJKMD2bK4SlZcIYsi14qC5KkHQc9O+kUs
+         m76bg48D/pMOvxyqWiqd7yqrnuW4Min5tjveISFZBge/A63yJ1m9oB5BPvymFWV02pDA
+         l2SLnsdH1OV9SF6+XK6M397wfNxQOAkzDXSg+GsrYUW792Ly0ZkWxoDBst4E9FD3NFi8
+         tDnUgJVQ+SNCgqZGdEQ+Wse/yMax7hCVwCgHdCNgOJqdj46ZVSQooshLhjoFXtTIYbnE
+         UcbUdXYW6fOn2jJqNCradpOXUcLd1RWsFipdYbR3ymZoCHoHZsLIZVAwunlnkbr/5pmh
+         pJvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771427612; x=1772032412;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D1/Ls7LwysFMM1ACNCIQCse+fYSn6YnlDM357NSCbtY=;
+        b=iCkEAK0cmuwzdHnkiPzIAqzm4I2a6GQON2IMdBgX7RVTZXMxw8p0zIAlnMuSOALSxR
+         2JB7Sj+PDSA76ZjR+JVt4V0fgMi+jnvN0KijPTc3vn4O70qDoW+i2y5QchtKkK0Nc88N
+         Zam/8yBg77FdMg7GMe534EP10ZZhhlfBnCi041VSWMNisSPjo8lUj6128g1N+1CBdkRv
+         I/C/w04LKl/tCF1MSoq9wTeRVyKEW5nLmAdW8Q2FcCtlvfy7ilCWliYfbs27Uzi2mQ/d
+         D0t24Tkj/tCSwK+rgtNriG9Yrv+aen6Lup5UgdMb9BKFys28fN8ejgxQw17crF2lSQ9N
+         G5SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOq2E1xCN/YWpZ4FxkvJQnxu0qVXloeXFQfoWQ084OvzWx9XvAPVfmMh6dUn+yIo/j98tv8bX1iw==@kvack.org
+X-Gm-Message-State: AOJu0YyeOD2rMFdK6cY+A/mkP27fsBiz+ujvofWBAL5oj///xJ1gHmAp
+	WKC9mSbGdzcJXFOKGJIkX4LrFQ3WGt8E7poxlFmet6zbfhejP1BBSNzAmLcGwmHjDVSLX0qgsd5
+	VvI1aurmU/8diG5RAiQ==
+X-Received: from ejcr2.prod.google.com ([2002:a17:906:2802:b0:b88:4b98:9b5])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:a49:b0:b8f:7014:8437 with SMTP id a640c23a62f3a-b8fb4193791mr846036466b.2.1771427611551;
+ Wed, 18 Feb 2026 07:13:31 -0800 (PST)
+Date: Wed, 18 Feb 2026 15:13:23 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABPXlWkC/23MQQ6CMBCF4as0s7YRqhTpVQyL0o4yMQWcFmJCu
+ LtVFm5c/i953woRmTCCESswLhRpHHKUBwGut8MdJfncoAqlC1XWsqPBI8slWMlulqibxld1paw
+ /QT5NjDd6fcFruzfjc85u2scfa8Q/1PXoHrLTN2fPCpuLdmZRH7mzEaUbQ6BkxDzFxGjDMdiYk KHdtjclkO0hywAAAA==
+X-Change-Id: 20260217-binder-vma-rcu-e699d5752ad3
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2675; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=84Ip3tw5AbdKr5Kyt979OjbY4zlojv3t7VOkkXCJsi8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpldcWKLJgmMWFi2DkcATTG2dyWp/K26cydARhq
+ CloiIJ/C0GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZXXFgAKCRAEWL7uWMY5
+ RnjED/4k82Ivr29rMWQ77Z8WP7YeiFsjTEkeoP2bk8cr0uF6Of/W9lSj2QtQGXskyQB521HIxgd
+ nWfplqXli9EtKksgcLh046LavJWk7BoXwy3Hh4J7hw181wQpG6sRKOKQFzdbAdQcqhlzpGGA+Q7
+ lFIJ/4eGqX9A7aWQBodTREnOqNQvmQ/oCFCgsPVjnW0OkiuQQH46pR1KPCfH7GnjTTfjvUmV+nn
+ GU/keDlCm891o4WsLg528CprWGmO72vq8MEjzZVrO1iE/bqra6QbHW5Q4DJyPrl0LkfXyXX+Bwv
+ ZiKDTTc5oCNsSskyxe55FPlxUCiOV6ZjdSJf7TGL8vOmimEvS4jNpE/Oi82cCMGLG+RUBwUY2I0
+ LIadEqhc3H6wdMq4fuEXuf545CwLzqGQ0OKz0mxMr0l7+fakls9dBw0iGMxd7FESouU1e9Sis4l
+ npfYT9QFQgIta/Jxz0nn4IXxeRf73U6dpHYtWZLoJ2QGZJ+JWTG/AoA2q+fHXVH3KaUmg0rPc9f
+ 07+ewFAE7izMtFVK7sepppAH/SNsP3EEtsxl5eJsrOwF4m6ji9eAU0Pw7pnUzJBgheVcljWJAEY
+ 9+xQoWJgE+YoPvTlZFB+JvRHIMN23K7uWBG9YrBZLfVrezbtN57bxO1DjuehmokeRBoeRAgG28t bH7Mq26FTP/92HQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20260218-binder-vma-rcu-v1-1-8bd45b2b1183@google.com>
+Subject: [PATCH] rust_binder: use lock_vma_under_rcu() in use_page_slow()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: 5ug5zhfaa7iuwju3djwkx83qkd4p5emb
 X-Rspam-User: 
-X-Stat-Signature: x7z4b4focw67q59a3hegyzrcttabkp9i
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0D3BE80012
-X-HE-Tag: 1771427309-793222
-X-HE-Meta: U2FsdGVkX1+nanBfS66Kul82r0HBkwG6EN84344aUvZw9mmI23EaDrAibeJOQlnE5FeEszBGOQccSacgRG7GWu3wViuDE+ET/s3F5CPvmNOzMfdfOebeLL3ioQPiY9stgNpAdTNlF4qZN3X1obtpESz1lr+WwZ4w7VfeldT/xeYopYGlgCTNAS6ABZ+OIjCs00/8qqGxtoC+c6p3IeaS6oRFOEX9iFPZs6lNsfc5cOc/vvAKeDp+3NJ7+xzpm7/7oaRrUzK+FUYtZIYCDnkWRZjdOQs3NBEiWybeCda3IR/xzGy+rUJJbh5cN9IbLAL62WeAdpUQtxmLKuYMIzNowVSTM/+GVMU2DxJxfa3GPkiLKoUX6ET3c60tzM/Ps55Hz/eJYrch8qCLKMM7Soh2D8lw5UGRXQhnkbdWmc8TjYes18dG7UmyReH/onRaQtJCN5NgDYaM8MYEyhODFDXObpm3k3yid7KYMW2vqkPdgNMAkYhzsZhSPa/UjuOddRzYd26HLJdWuPZiLdnybfsFMysVAh+XftyQNVbU14+MxVWsJa9MO9gIpQHsrtyMR58RHxkiQ9FN7hwLWLYKm4HRFXnD8OqhnSdz6eQSAyOPSfOlZGIJx4sKjuhLnfJyBMbM87qGgHeR3ng9trBSePsGp41KTWVObvDkXAiZp6ptJUq0jmA2VNM1nOCbwxm+Go3Z1TGOGVqNDLhTyHFjFGC+eM2waC2wR5K7dno2TpezU7Sv287x8TxmhbjmluIkucScF5r7efF1QHrOlOqmis2pOrZKYdm4lKyE6jJS9n5LBO/2Eh3EP9GOGODLPg6acAIVin809BdriOmjjM0pyNDXIfaFo9s7N+8EtSRtauaWmOEn4AAokdQCQZ48IAa22oABmBOCzBqmxV9dyQHG0zprFTkpnrhkfGKpKZ8IveDnutYKkmaQisD4vHLY3CO82HmRoLPnvh08OZ9NWENOsdH
- rxRfCCUw
- A/rU4gZTF6OE/zWzl5Xg/EEezWppwPOWWBhxkkpZAZbvA8Uef+ydAYEgqOyvR9jBhL75jP0N7LOOnMIMCXE1QD2K43f0N50sagDQX7cIMwEF59uzGT1sTtslqcHFwM7359A4tUqQ/Xpv7xZPsgyYdyhqYD7wH1FSgVWT3oaJadB7J0rCsE13TrV09aitVvMgXyy2WnCf+9TZDAYG7cwBtwYkAL9Wgw6s8vVAwDticDdx2BM4LCnygwMrSe2A9dLaPle0iMH22Y4tDk0rSn5ARDlJ/SECHIU8EeSFv9i1XKDpdKuvTmEQz0RZIuxeEwb3JGfgk9DyDImbLKlCpsolOq6xn7044mhDVFDIbTdNSqIPerHiiDGOZyp/jGbvbZ9mz9FLgok3LxXqYGtLhHhczTOYuJTQVv4h9nY12o9urFc6vdOpjGFghYC0g9ECrh+zAxfQliRsasdbFYXnm8sLBbvZgXg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 845E040006
+X-HE-Tag: 1771427613-781950
+X-HE-Meta: U2FsdGVkX1/cI4eghO7xsG/a73eI/YgW1HOp78N/I9TvR7kMu2sqBGNIJBsxeS4NnYKFKiTIcsrW2Na/CHJqxz7Y37ALzXOQZLv9dqwNY2wlm8e0IFsckilmOVK5G8b8Om394l+gjVBeCpqsn2JqA3PlteD/PDNGRnB9URf94LKNpzBHFLfz9Zb/pJq4BUHaITvP64zPwfgzDEmEVVPO/SYXNBZ84KCIwLIA7HaHbVJ8i9TSCFkYaTeJSAYTFLAtGKctnzYx3LcYvmqt/0ZHC9ocxIpIeT8RPTRgsqXlFSNkPqB8FlrPeFHbaN5zHQt2+aGTgaav52LzIZaGMWvi0PFZWZ/AeF/55Q5yU8qaJVhOgQqVyuHQzGNLOEtqXiJjw0+FhfJkxZiu+itR+An7OnPUgSPJx7SFhG0ApbE491iuAVg1YABsGpdOP+tVd+opErsva2gxW3TCH2G0ys8oWl5jrJUSrCufxpcU62x/izUFdxWt6tPg23P7y/j9DavYilWBK9GXkWmsidLUO52P+Dokdw51v03YrBiNizCWgsjjT0TwP75x1csGKOyW2a0heMmQfrUteCF8z8W8LCgnQSh2y9hL9eF7u3/SnEzp/o1k5L5dnJPb7vTOl0Rm21gXFV3NKDcwI5F0wPkNMtTny3dyQAJryjqNTOp0gZ1Hix3vxTL6tuXzSa0X8skqKQ36hTmFeo0cL3maY4jh/cSJjGkQ83OXBdh81XMHlEfbLLW8iF2rW+t7+6R5ByyWiviAdtex2HtSkrYC5hISPs8MV2Hv2gDuZs78LunQ/j7QkNFWN4D7dBOSiW8rQDR9U7SfwG1nCHXcIEJVmAdwSDOoas51TpyALoXSg2b1tnu3ZSkpyr1O7IkGc2m2BsS335kSu6D840SGMOCPRWlXi6M2gsah6JAThgyqnPGstnWqRRiFjPVFcEZpt6AQFDKLDcTiQUvdKV9CxBMRx1EXSff
+ xqJWJeet
+ quWoodLOglQ6W5tXo87LYM/RXZYWJGfik1sEluIKfsJQ3Ffrj7JJhJq5e+xU78WPHh73q1sPooYhWLxASceQiUjR6t8w1etfVE4N/rWGN8l/CV43xlElKQ0eo+/vri1guNY5mfMAUl/E1r6A7O6Gw+nwbTn0dhY/8oFsWdHDR/jqgaWJZzXq5ZohpRkfNDxHcRX0L20JTBsS0B0RYnCzBetHXWmudZbm8vZBEgAl/uscb49eUehQ9sQFobEd+hCLJ8VCLwE7NqXIEPY/uWIXeBiwGMIx1WWbKAmXs/yYRvnyx6rzKHN2mYRmVK4s/EyGmA0jiEkdn3FIsgMarO/FSPmnqX8mhRWS9D8vu5Y6dPLfkw3hDnBYjBZh3wac3dGNZ/xbrosH8Z6aJ8PQbMo+SUksF9yYnF75aHtPe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,178 +128,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/13/26 6:50 AM, Byungchul Park wrote:
-> On Wed, Jan 07, 2026 at 01:19:00PM +0100, Petr Pavlu wrote:
->> On 12/5/25 8:18 AM, Byungchul Park wrote:
->>> struct dept_event_site and struct dept_event_site_dep have been
->>> introduced to track dependencies between multi event sites for a single
->>> wait, that will be loaded to data segment.  Plus, a custom section,
->>> '.dept.event_sites', also has been introduced to keep pointers to the
->>> objects to make sure all the event sites defined exist in code.
->>>
->>> dept should work with the section and segment of module.  Add the
->>> support to handle the section and segment properly whenever modules are
->>> loaded and unloaded.
->>>
->>> Signed-off-by: Byungchul Park <byungchul@sk.com>
->>
->> Below are a few comments from the module loader perspective.
-> 
-> Sorry about the late reply.  I've been going through some major life
-> changes lately. :(
-> 
-> Thank you sooooo~ much for your helpful feedback.  I will leave my
-> opinion below.
-> 
-[...]
->>> diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
->>> index b14400c4f83b..07d883579269 100644
->>> --- a/kernel/dependency/dept.c
->>> +++ b/kernel/dependency/dept.c
->>> @@ -984,6 +984,9 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
->>>   * event sites.
->>>   */
->>>
->>> +static LIST_HEAD(dept_event_sites);
->>> +static LIST_HEAD(dept_event_site_deps);
->>> +
->>>  /*
->>>   * Print all events in the circle.
->>>   */
->>> @@ -2043,6 +2046,33 @@ static void del_dep_rcu(struct rcu_head *rh)
->>>       preempt_enable();
->>>  }
->>>
->>> +/*
->>> + * NOTE: Must be called with dept_lock held.
->>> + */
->>> +static void disconnect_event_site_dep(struct dept_event_site_dep *esd)
->>> +{
->>> +     list_del_rcu(&esd->dep_node);
->>> +     list_del_rcu(&esd->dep_rev_node);
->>> +}
->>> +
->>> +/*
->>> + * NOTE: Must be called with dept_lock held.
->>> + */
->>> +static void disconnect_event_site(struct dept_event_site *es)
->>> +{
->>> +     struct dept_event_site_dep *esd, *next_esd;
->>> +
->>> +     list_for_each_entry_safe(esd, next_esd, &es->dep_head, dep_node) {
->>> +             list_del_rcu(&esd->dep_node);
->>> +             list_del_rcu(&esd->dep_rev_node);
->>> +     }
->>> +
->>> +     list_for_each_entry_safe(esd, next_esd, &es->dep_rev_head, dep_rev_node) {
->>> +             list_del_rcu(&esd->dep_node);
->>> +             list_del_rcu(&esd->dep_rev_node);
->>> +     }
->>> +}
->>> +
->>>  /*
->>>   * NOTE: Must be called with dept_lock held.
->>>   */
->>> @@ -2384,6 +2414,8 @@ void dept_free_range(void *start, unsigned int sz)
->>>  {
->>>       struct dept_task *dt = dept_task();
->>>       struct dept_class *c, *n;
->>> +     struct dept_event_site_dep *esd, *next_esd;
->>> +     struct dept_event_site *es, *next_es;
->>>       unsigned long flags;
->>>
->>>       if (unlikely(!dept_working()))
->>> @@ -2405,6 +2437,24 @@ void dept_free_range(void *start, unsigned int sz)
->>>       while (unlikely(!dept_lock()))
->>>               cpu_relax();
->>>
->>> +     list_for_each_entry_safe(esd, next_esd, &dept_event_site_deps, all_node) {
->>> +             if (!within((void *)esd, start, sz))
->>> +                     continue;
->>> +
->>> +             disconnect_event_site_dep(esd);
->>> +             list_del(&esd->all_node);
->>> +     }
->>> +
->>> +     list_for_each_entry_safe(es, next_es, &dept_event_sites, all_node) {
->>> +             if (!within((void *)es, start, sz) &&
->>> +                 !within(es->name, start, sz) &&
->>> +                 !within(es->func_name, start, sz))
->>> +                     continue;
->>> +
->>> +             disconnect_event_site(es);
->>> +             list_del(&es->all_node);
->>> +     }
->>> +
->>>       list_for_each_entry_safe(c, n, &dept_classes, all_node) {
->>>               if (!within((void *)c->key, start, sz) &&
->>>                   !within(c->name, start, sz))
->>> @@ -3337,6 +3387,7 @@ void __dept_recover_event(struct dept_event_site_dep *esd,
->>>
->>>       list_add(&esd->dep_node, &es->dep_head);
->>>       list_add(&esd->dep_rev_node, &rs->dep_rev_head);
->>> +     list_add(&esd->all_node, &dept_event_site_deps);
->>>       check_recover_dl_bfs(esd);
->>>  unlock:
->>>       dept_unlock();
->>> @@ -3347,6 +3398,23 @@ EXPORT_SYMBOL_GPL(__dept_recover_event);
->>>
->>>  #define B2KB(B) ((B) / 1024)
->>>
->>> +void dept_mark_event_site_used(void *start, void *end)
->>
->> Nit: I suggest that dept_mark_event_site_used() take pointers to
->> dept_event_site_init, which would catch the type mismatch with
-> 
-> IMO, this is the easiest way to get all the pointers from start to the
-> end, or I can't get the number of the pointers.  It's similar to the
-> initcalls section for device drivers.
+There's no reason to lock the whole mm when we are doing operations on
+the vma if we can help it, so to reduce contention, use the
+lock_vma_under_rcu() abstraction.
 
-This was a minor suggestion.. The idea is to simply change the function
-signature to:
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Depends on:
+https://lore.kernel.org/all/20260218-binder-vma-check-v2-0-60f9d695a990@google.com/
+---
+ drivers/android/binder/page_range.rs | 37 ++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-void dept_mark_event_site_used(struct dept_event_site_init **start,
-			       struct dept_event_site_init **end))
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index 67aae783e8b8b7cf60ecf7e711d5f6f6f5d1dbe3..9dfc154e5dd4e889c4f3aa89e5edb89434113e1a 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -435,24 +435,25 @@ unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
+         //
+         // Using `mmput_async` avoids this, because then the `mm` cleanup is instead queued to a
+         // workqueue.
+-        check_vma(
+-            MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?)
+-                .mmap_read_lock()
+-                .vma_lookup(vma_addr)
+-                .ok_or(ESRCH)?,
+-            self,
+-        )
+-        .ok_or(ESRCH)?
+-        .vm_insert_page(user_page_addr, &new_page)
+-        .inspect_err(|err| {
+-            pr_warn!(
+-                "Failed to vm_insert_page({}): vma_addr:{} i:{} err:{:?}",
+-                user_page_addr,
+-                vma_addr,
+-                i,
+-                err
+-            )
+-        })?;
++        let mm = MmWithUser::into_mmput_async(self.mm.mmget_not_zero().ok_or(ESRCH)?);
++        {
++            let vma_read;
++            let mmap_read;
++            let vma = if let Some(ret) = mm.lock_vma_under_rcu(vma_addr) {
++                vma_read = ret;
++                check_vma(&vma_read, self)
++            } else {
++                mmap_read = mm.mmap_read_lock();
++                mmap_read
++                    .vma_lookup(vma_addr)
++                    .and_then(|vma| check_vma(vma, self))
++            };
++
++            match vma {
++                Some(vma) => vma.vm_insert_page(user_page_addr, &new_page)?,
++                None => return Err(ESRCH),
++            }
++        }
+ 
+         let inner = self.lock.lock();
+ 
 
-This way, the compiler can provide proper type checking to ensure that
-correct pointers are passed to dept_mark_event_site_used(). It would
-catch the type mismatch with module::dept_event_sites.
+---
+base-commit: 2961f841b025fb234860bac26dfb7fa7cb0fb122
+change-id: 20260217-binder-vma-rcu-e699d5752ad3
+prerequisite-change-id: 20260217-binder-vma-check-b6fca42e986c:v2
+prerequisite-patch-id: 4ca86894150aa7ee26c04440100cb71ce599ce80
+prerequisite-patch-id: beb72c0aa2ce3d495dd69817507ae6885e5ae1e6
 
-> 
->> module::dept_event_sites.
->>
->>> +{
->>> +     struct dept_event_site_init **evtinitpp;
->>> +
->>> +     for (evtinitpp = (struct dept_event_site_init **)start;
->>> +          evtinitpp < (struct dept_event_site_init **)end;
->>> +          evtinitpp++) {
->>> +             (*evtinitpp)->evt_site->used = true;
->>> +             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
->>> +             list_add(&(*evtinitpp)->evt_site->all_node, &dept_event_sites);
->>> +
->>> +             pr_info("dept_event_site %s@%s is initialized.\n",
->>> +                             (*evtinitpp)->evt_site->name,
->>> +                             (*evtinitpp)->evt_site->func_name);
->>> +     }
->>> +}
->>> +
->>>  extern char __dept_event_sites_start[], __dept_event_sites_end[];
->>
->> Related to the above, __dept_event_sites_start and
->> __dept_event_sites_end can already be properly typed here.
-> 
-> How can I get the number of the pointers?
-
-Similarly here, changing the code to:
-
-extern struct dept_event_site_init *__dept_event_sites_start[], *__dept_event_sites_end[];
-
-It is the same for the initcalls you mentioned. The declarations of
-their start/end symbols are also already properly typed as
-initcall_entry_t[] in include/linux/init.h.
-
+Best regards,
 -- 
-Thanks,
-Petr
+Alice Ryhl <aliceryhl@google.com>
+
 
