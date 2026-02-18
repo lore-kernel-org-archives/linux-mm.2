@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF615E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 09:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD05E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 09:29:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 100776B0088; Wed, 18 Feb 2026 04:18:54 -0500 (EST)
+	id 9456D6B0088; Wed, 18 Feb 2026 04:29:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8226B0099; Wed, 18 Feb 2026 04:18:54 -0500 (EST)
+	id 8F2896B0089; Wed, 18 Feb 2026 04:29:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3A4E6B009B; Wed, 18 Feb 2026 04:18:53 -0500 (EST)
+	id 7FEE16B008A; Wed, 18 Feb 2026 04:29:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD1036B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 04:18:53 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 985155739A
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:18:53 +0000 (UTC)
-X-FDA: 84457027746.07.9B5C435
+	by kanga.kvack.org (Postfix) with ESMTP id 68F1A6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 04:29:23 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1591CB9710
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:29:23 +0000 (UTC)
+X-FDA: 84457054206.19.1170E03
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1173340002
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:18:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6F5CF1A000F
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:29:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771406961; a=rsa-sha256;
+	cv=none;
+	b=iM5EOQeHzB2YIpmlI+Ni2n0plc8xXVC63ELIsIM2LbWq0Gn0LwZOdcROBnNOgjukthauhu
+	O71Msl8wwftIWcGvqgJRidwWIr1reu/YD9h6fb/0V9AM96lVxWuynpCctKeUYjoClwTSdC
+	pzR6raIJJn1vKJF3PBUUmPPttSDaMak=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771406332;
+	s=arc-20220608; t=1771406961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G5PhA/jFK6VAst8fcBhxrpBgSelFc5ok/C3TwYrpw1o=;
-	b=QaAxOesXHTcrjNYR4IBV67tW14UydQL43A2OhxcwkPyRJT+QdnAkM8+H3n2oOeYOL09vAj
-	MV9A40/xLB8/UOMt/9ozDeBlSUBY5UkXxbjTCQD4R4r1yceehHbBTD2GDKealUMhJ7Ll1u
-	m0wu4sCODLxk6hYxayzEG4Vo6TjUz/I=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771406332; a=rsa-sha256;
-	cv=none;
-	b=Vnxnzktm9xtgrmK6hVLj1SXLuWuAGfnm86kuDL0YXJk4xZ7L14TH06b7NYhC8APoNi0G+S
-	J4BAznzDlW4rxQpY4ilE5lTiSbf8zEDLjiJDvX082pJ/9avqkoj8qp15Cv9k4a9pVG3PXu
-	j0cBny/kumqBlbbkENsQ+XA328cgRdk=
+	bh=qn7eNXksb+tXbYJau2jP0gtFK32RD1iKf8zKULsX7mw=;
+	b=V34yseUU5UOaqsSICH/1RIGXjDZpo124Y72EPL3eAZDnKh1204AQUYXerVv0SnkoJg3gds
+	c9bGLLl6h093BcIjfPKHXlFsClH2HTsIfFLizUu/COoLHCyndfVSZXGyF9pAYzXg8YoWgo
+	JFdtHX6VNMZfTvP5XmOyVbJuzo+Dbns=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7FA61477;
-	Wed, 18 Feb 2026 01:18:44 -0800 (PST)
-Received: from [10.57.81.199] (unknown [10.57.81.199])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B3D73F7F5;
-	Wed, 18 Feb 2026 01:18:49 -0800 (PST)
-Message-ID: <401402d3-fcda-456a-8fb4-800eb918dbc7@arm.com>
-Date: Wed, 18 Feb 2026 09:18:47 +0000
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 102A41477;
+	Wed, 18 Feb 2026 01:29:14 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF0D63F7F5;
+	Wed, 18 Feb 2026 01:29:18 -0800 (PST)
+Date: Wed, 18 Feb 2026 09:29:15 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Jisheng Zhang <jszhang@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, maz@kernel.org
+Subject: Re: [PATCH] arm64: remove HAVE_CMPXCHG_LOCAL
+Message-ID: <aZWGa149nbQ_Nc_o@arm.com>
+References: <20260215033944.16374-1-jszhang@kernel.org>
+ <aZL46z1UZkQlF3Dd@willie-the-truck>
+ <89606308-3c03-4dcf-a89d-479258b710e4@arm.com>
+ <aZRyzy0SJ8uF3K2J@arm.com>
+ <aZSChrCVnoWSe7h0@willie-the-truck>
+ <aZSb8VbCC471Cw1X@arm.com>
+ <a537c546-2fbf-4509-b668-33851e0d44d5@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64
- (and potentially other architectures)
-Content-Language: en-GB
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
- Catalin Marinas <catalin.marinas@arm.com>
-Cc: Yang Shi <shy828301@gmail.com>, lsf-pc@lists.linux-foundation.org,
- Linux MM <linux-mm@kvack.org>, dennis@kernel.org, Tejun Heo <tj@kernel.org>,
- urezki@gmail.com, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>
-References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
- <5a648f49-97b1-4195-a825-47f3261225eb@arm.com>
- <CAHbLzkqRjuWg7ybdkuv5xdoPz7z_q2n+0Eh0pRNoVxq-WskRvA@mail.gmail.com>
- <aZMCAWiA7XHYLIE1@arm.com> <c095a354-5b71-76f5-d7be-536216bf7321@gentwo.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <c095a354-5b71-76f5-d7be-536216bf7321@gentwo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a537c546-2fbf-4509-b668-33851e0d44d5@amd.com>
+X-Stat-Signature: btaexwfzxdw3hfqtj7x8wxzjkejts3ow
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1173340002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: pmp4j7eor9o1dxwepd8k5jmzy3eo1kdw
-X-HE-Tag: 1771406331-209216
-X-HE-Meta: U2FsdGVkX1+b0UnGZmjCpwpXrWaTaVd9tGpglyC+P0LrQlz8tOy3FtgpNu85PMiPvmKkLrpWkB3tB0pbcR1PcQivc4lGclyaLORR5zJ2TJK5qpyk3v8iyeS1s1TDYHL9jdgbMC65tcguthQ+InO+xqJX7qm/KXsZ9cq3wDfUovmer0ilqbEA5MGssjs31njWPrDKPUw2YY7uSGZ2UZ24PPk16pGdIS3sf9ftqOYMSMOesXkAC9SOGgayfzTfaroY47bVBPs4/Xu6rjM0KGMEslhAhQPAG60TTm0z+Y22Ptp7v5GmQ9TejYqnZoS6o+5tkIdM5vdLW9oYy9umBn4GOa/1pFB+g5lgfbKigXvkAFjui9TTWAiCLp9iLlYBseRVuNWsg/hWDmSD4/qeCyI64GcTxvS9UY59BxaQT69Qhc4n3OknF1Qtl+ns13AW/qZTHIYLM6rqDNPiXqijsP0yfGA8+0ZktytpZ7gO2hwkETMuB8LNJMgmKI1P9XQad8mnr2Qkbm1aaaFY8uz/FIhik1RTSAx7r94sBi95zTf6N0TZ8xBeLnXNAxjUIaaBb+hfaaJcrH7qjf3JTH8XmWkSqBZB63iZoQyLa9oUJw/3qXwp7T7S3Gt0zmmADDZLecchdcVgvD+BnktYBtXp7RQ/26naaIiw73AIfDAjLeGsqT0d26oxTRCuQPYGPddAMcRmdQYcxR4VS5HD1IdQDSKKG77gXcL6QVbUTZYZ6toDGm8DWJCIt5iycm2T72EAEaiJDJE4rLeX5BDmVNc9AGvkR5M6HrVToB+46GzO27nlVF4obhCc0HF6c9Gdx188+M6C6ofX9mFEfMfSr3e/pTtdmpQ4/P5GekeVg5gKtcGqRU5rzp1Xa15DLgGrIoZVRq+bLwgMO9DuFeAiVlHHr3PVq9DSwh2XFuCgjUjG4zV8VIM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6F5CF1A000F
+X-HE-Tag: 1771406961-648024
+X-HE-Meta: U2FsdGVkX18FTY705ej1vs8GWLgpJkjNTaFX4efC4kbnUo+HvLevr7TJgfoR8A1uzbJuBwmoKFi3fNbHQM43gclCmTQ6dr1qBdIO+BHNktxcjKhOKY2wiaeTQfbf3hAvwPLGYyRTszhFlHlKyvZRSdYYdnNIOKoaGGkAOo5lrDWk/YSe1eqsxZJzeWSjFbV+chZLWqWU/6UQrSNyrpo5+9MnIEnJ+soQOck4A5xjZjsEBf097s6Wx8wKkX1cT8apkZAL0WW4SMfoCgdnR7X7QhGITbZJbPhx9wPIUH0cUGYIFu+nEVRqLSa+L5PpzroDyTpLVXSYeuGYra4LWgdK4zA5GPuxEBJNin03Gypx+plsOpZvB6mEsO1HQMsoDeVpKtC+NctY7AZwnQqjk6ZEtENBcOfVZccevN45VDvRZXWGbdRwcUbTTJV/GCMdSw1teumY5jVp2wIQiKtxOWQbVlObNFGEuICu8Nyu8qTQ5jNVw18wQqMCz3tKuGZb54Cj/Cee8OzmQicapBSEQjhzEjyVZs9j0Z1XNjLV/7grL3x0CFqh1TJnMPBslfysEZgGn7WcgjLIlgSkDWATxmRlL+4PqgY60nlghyZdvFm+sZRb/NF74YgI8/3n5MKtsXkJHWroD6ty+yehD9/ob93iTpem2iNoxfsxfv2K5ZUiAc9IznLoRWBSFlSO/6uv6WPTcznwEWt8hCKI2HM/Cu4HJjSn4iK8UNITlxwITQ/HJDIirjvrKoJ/AIQLFRNKCcQ0fJTkeou6YIksg0MwvCCbRf2s+Vki7H3AXDPv3+cwDz7ceDYTjHvPtMITpHTRwaP3m3S5ZQ0mlBeYqiUI5l+SBApo9efRq2fkCR/umOc7fRi3h8mXFt+dv8q17qRot6st1iGnloGho1OvR6bRUr2g7tUEyrkCh0njnUnJsmlcg2u++EgWfeOb4EYXvbHUW5oF/AroKGKCDafbkPK9Io0
+ rnhzzVqC
+ CPu+GwKWhjJgUSgTydXjd6i/RrC07x///F7WZk74K2sSKSeZekidFC6gSqvFf8bO0MQYhk585+AUG6EQk17NbKHswVNsUXHZXN0evBKx0fvM3TzUefSln93IcZGBAar0Cp3w2nVXtlzpTXehBjpU0jNmWlLc7FfIbgc/y560ZTNR+8PooZSjD/aJK9PTiTlR5PPSdLdBBGeR+O6hLVenhi43ZgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,42 +91,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/02/2026 17:28, Christoph Lameter (Ampere) wrote:
-> On Mon, 16 Feb 2026, Catalin Marinas wrote:
+Hi Prateek,
+
+On Wed, Feb 18, 2026 at 09:31:19AM +0530, K Prateek Nayak wrote:
+> On 2/17/2026 10:18 PM, Catalin Marinas wrote:
+> > Yes, that would be good. It's the preempt_enable_notrace() path that
+> > ends up calling preempt_schedule_notrace() -> __schedule() pretty much
+> > unconditionally.
 > 
->> It's not about TLB conflicts but rather using the wrong translation for
->> a per-CPU variable with CnP.
+> What do you mean by unconditionally? We always check
+> __preempt_count_dec_and_test() before calling into __schedule().
 > 
-> These conflicts could only come about if each PE would not be able to have
-> its own page table but share page tables between processors.
+> On x86, We use MSB of preempt_count to indicate a resched and
+> set_preempt_need_resched() would just clear this MSB.
 > 
-> That is not the case from what I can tell. The ARM64 code does not
-> support a shared page table and if I remember right Windows actually requires a per
-> processor page table.
+> If the preempt_count() turns 0, we immediately go into schedule
+> or  or the next preempt_enable() -> __preempt_count_dec_and_test()
+> would see the entire preempt_count being clear and will call into
+> schedule.
+> 
+> The arm64 implementation seems to be doing something similar too
+> with a separate "ti->preempt.need_resched" bit which is part of
+> the "ti->preempt_count"'s union so it isn't really unconditional.
 
-Each PE is able to be configured to use it's own page table, I'm not denying
-that. It is definitely possible to implement what you are proposing.
+Ah, yes, you are right. I got the polarity of need_resched in
+thread_info wrong (we should have named it no_need_to_resched).
 
-However, there is a feature called FEAT_TTCNP, which allows SW to hint to the PE
-that the entries in it's pgtable are the same as entries in another PE's
-pgtable. If the hint (bit 0 in TTBR1) is applied for multiple PEs, then those
-PEs are permitted to share a TLB.
+So in the common case, the overhead is caused by the additional
+pointer chase and preempt_count update, on top of the cpu offset read.
+Not sure we can squeeze any more cycles out of these without some
+large overhaul like:
 
-Today, if the kernel is compiled with CNP support and the CPU supports it, then
-the bit is set.
+https://git.kernel.org/mark/c/84ee5f23f93d4a650e828f831da9ed29c54623c5
 
-AIUI, there are a number of CPUs out there that can share TLB to some extent and
-do take advantage of this feature.
+or Yang's per-CPU page tables. Well, there are more ideas like in-kernel
+restartable sequences but they move the overhead elsewhere.
 
-Your proposed per-CPU pgtable would be incompatible with CNP because if PE0 and
-PE1 share a TLB, PE1 would end up miss-translating a per-CPU VA to PE0's copy if
-PE0 previously accessed it and caused the (shared) TLB entry to be created.
+Thanks.
 
-So I believe there will be a performance cost for some CPUs if we take your
-proposed approach and disable CNP. We would need to evaluate that cost and
-decide which of the 2 mutually exclusive features provides the most value.
-
-Thanks,
-Ryan
-
+-- 
+Catalin
 
