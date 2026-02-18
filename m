@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A7DE9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE34E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C77A16B0092; Wed, 18 Feb 2026 08:06:20 -0500 (EST)
+	id 2CAD66B0093; Wed, 18 Feb 2026 08:06:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C223A6B0093; Wed, 18 Feb 2026 08:06:20 -0500 (EST)
+	id 28B9B6B0095; Wed, 18 Feb 2026 08:06:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3BB66B0095; Wed, 18 Feb 2026 08:06:20 -0500 (EST)
+	id 1639B6B0096; Wed, 18 Feb 2026 08:06:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A30426B0092
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:20 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40869140178
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:20 +0000 (UTC)
-X-FDA: 84457600920.07.1FED557
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 042776B0093
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:25 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCBEDB5E4D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:24 +0000 (UTC)
+X-FDA: 84457601088.02.BF5FD74
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AC54F160007
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m97p7nOa;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 217CCA0006
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cELbw2+W;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771419978;
+	s=arc-20220608; t=1771419983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vPo+Be+veFC5KPTLspdZTZ5tCKA/X8GRwXN+qCObjJQ=;
-	b=a/b3VVO0jZDJCHwv0CzxjfV6wjGdg+vxGDctiuG9ee2W2R1xbE0xMrT5fQmRump/jXjj4I
-	TVwl0Yg9bHnBpdJC9x+P+D3U67gh9S9RoheU+zOSjKRem7dxjxsw4sKf0lZcBBKx5tj3Wp
-	OvOGdP8X3e47u7QQHg/YagoFkcfaCQg=
+	bh=r77hyfItmVAocfwmynd+ENBJK9aci9jOptcl2HKubb0=;
+	b=J+HFZrSEnGqHMIpZOVRps10k0JN/1DLG6E5WjG0350/wd2zTXVt1/1Hd1/lnkwuYwRVRix
+	LQlYu1EK/mSFHl62dXnvL1G6t9DmTrIjt1EWEzr2FXSeTk7VZXtGUBE4PPI07WQQrw96zX
+	bS7GnCTZihBF8QpKICDTNU2AXYJJ4aU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m97p7nOa;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cELbw2+W;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419978; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419983; a=rsa-sha256;
 	cv=none;
-	b=aGE8M18cwwubGjsDYgD+rP0ck8qqKbSeUHnBENS02e4EJlrq91HkhonpiJ/YXhu2hJYeZO
-	7mxstfKBfI9ldEg0Xy2TLFHBPToWCy53SEbxhP/ySzXmaa3tU8KJj/c7BItg2XMy0Sysjs
-	+LF26nox3euH8Yp6bb2bz6mHmd56IX0=
+	b=hsV+hJ4DXHmOh1zD3Ng7S3bOvKSuKhKKgLRHZSQoC9wvBnh5nJoAmj6ksdW+Db8AecePMP
+	wPHSwxAHDLFMjCA3GkmpjV2S9ZErD2lMNlbIOliYZ//sgidmLrmfRHuSWBHwyCvp5e/cey
+	3qEUK+ck6Lq04sre4t7lJeaDt35NPk8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2BCBD6132F;
+	by tor.source.kernel.org (Postfix) with ESMTP id A9EF561858;
+	Wed, 18 Feb 2026 13:06:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67778C19424;
 	Wed, 18 Feb 2026 13:06:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3730FC19425;
-	Wed, 18 Feb 2026 13:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771419977;
-	bh=3UR3t12nE06/3+BICKDW7qlGeal7dZwuKx3i2LXcI6Q=;
+	s=k20201202; t=1771419982;
+	bh=XFxLmYJpOQUoGc/jsLto3GXjYYXTDz8YQNFIGhVm3k4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m97p7nOa4g/xsSww4ztleeUUfP0xoVMiDxpuIpsRdIxsZQVXeH6SafI4ggN8Ut3UE
-	 V9qxQkYxadQx7jLe/bvKCMJaEYspRP43szn4B9MD/ODIgEeplm35Jjb4q9wccVHsb/
-	 1Dd0bjp8bwRXPYEII+Ulcydb/fJQ+NzMYlF40KgFvz24cwJidnXfmvLJ48Ml4qoAom
-	 lST7uoqOqwYvhSyOUhz6G1v2sb7teLO1dCVyFnPXqOPRWlGQYbFiw2VY30DBNH9G+c
-	 PhfeLwn5xmSwbutRwhLTfCfrH2ZOhifLUiax08h68KCSU7lFmMnXudfkArIAUcagY8
-	 NggmtlIkQzX9g==
+	b=cELbw2+WihSjaMuD2Xr+N5BGaoURaaKZCyZBt71eWg/syY7Gs2leHEOlYvAxlTtDx
+	 qsIMU9DeQtMQh4qDdmK7lr2R2zVmj7NXgNjeh8chO6W1NGFiu3DI4vVT2ns+rfcIbc
+	 8Qsomh5LvToy201PuudKb2Lz+vdnICDLFhIGTfDXL3g2vrWEUe2GcsjDDcEw09F6zv
+	 tBgyB3fvR/dn7u9SxFor9FPx5nWpj7LCJyhXEbqSVycdM1XCakt+0nVtIPEY9YNzPA
+	 k+XIMRIqhAz1in8UfSY4D9sZXdlkd1mQTEa9QT+UgD1doekdPPv0kz6HJtFNUBDcuD
+	 5ZOEJfzobEK1g==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -79,24 +79,25 @@ Cc: linux-mm@kvack.org,
 	Lance Yang <lance.yang@linux.dev>,
 	Miaohe Lin <linmiaohe@huawei.com>,
 	James Houghton <jthoughton@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 5.10.y 4/7] mm/hugetlb: fix hugetlb_pmd_shared()
-Date: Wed, 18 Feb 2026 14:05:49 +0100
-Message-ID: <20260218130552.55727-5-david@kernel.org>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Uschakow, Stanislav" <suschako@amazon.de>
+Subject: [PATCH 5.10.y 5/7] mm/hugetlb: fix two comments related to huge_pmd_unshare()
+Date: Wed, 18 Feb 2026 14:05:50 +0100
+Message-ID: <20260218130552.55727-6-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260218130552.55727-1-david@kernel.org>
 References: <2026012610-absolve-ducktail-3c64@gregkh>
  <20260218130552.55727-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sqeex5ns9hsywniru4s43iqj1siefi8a
+X-Stat-Signature: a18pduukzrfpft9431im7y3okgyxasqd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC54F160007
+X-Rspamd-Queue-Id: 217CCA0006
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1771419978-388373
-X-HE-Meta: U2FsdGVkX1/VEQuDxi2Uzq0MSXmaZAs9PzqtnGPUvtZytLZwQCnABq3bDKS2J4ii5UYtMNs1ajsnpjcejCKTXhihXUIoazu0vmioHfGmz01kaIb5OSl3VsdQ6TfFpzDOhHPVYSzIHXh8/bgNpqGp4Nd8dnwgw4NoOnc8ZIwnVb0DKUCzLvdsUrZcgEZ2z/jb2NF2hTiWHDoLYHMcsZm52eeY1UU+TDu5dxnyFoBWnfQjcJ5sIvYsikqF+hwI5rMUdco8tMzQxpeHgrLwBAlYIcbw39F0wIxHQb1WhL+7exeBR3IE5MA0Gx/DO6jEEQAoYrWfLUzzsC6Krrj8MrXKMo8kLRzJdMJNrvwnuiFaR9w0lgVY3JnxHvHihxbzDOxB/wfm0b00/68yYAeUCCUJuRnDJ3h4RSa5EibKwT/IRcabTu6n/xub/+LQ5XIml0U3QX9FTLqd5wGrz3IDj8Dk9eY/srVav4WbjQQzO3VnhErM8My1sgUgQUlfvS5i+L3OPTzQ0OAotwqHnwvM+i6UnlAqB6dlKMLlR9OVv2sLVRAwV8Ju47poD0/O05As53ax2yNQ38ocCNYiyebIVXyy40uHOEP4G34h5Fp76MnFn4zL+XP5KC3oY23HEQNYUVPVTeqTWAZqF4OlEtgJXsfGD8XxVJiKMXXcTbRfK/DSWLOalpGB6I7WOaDmkAdy/Pmh0QM7F7O+tWpd57ZGgoIsQdtJEoPoFKXNTqkqFfCtUBpQw8LhF3GTM1saJZrH2Fy+/2UvooZNwhHl3BdnFJYVXY/PxJ4Nmq8iguKapkbYv4AOWkguqDZ5E7HWQTV2mtJHNkDJK32DkuDa6fE8hZSBn+YsLiKFPeubycVckteilbNFG6/qBAfXq1VOhfPC0jsJzw/1zOzKcmXWLltLDxVnVDUGQ04tZNUn/jYA+AjXv/0DPMAxSua+NxvrkTHgh384pR85Vw4sTEh0rNh+05u
- 9aB2ePCc
- YOaH48OM34inMW0aqQEiSncG432DZ9ev/Awy+O/ny1sogw5chdxUS9Aq9NUinckrDPZ3RDmHtBDCag3uX6nSAFFte90CFR4JLaqbnrYGw35dNMYbvLqr4YSF2YagBwQbfH5Yv3HpCAJe6sgv8iTUanE9KkmlMQAAF+CsLQ2aD8B8orRMSoNqZzqzpPUL5fBcA7bnaOj0e6xQeTcw3emke9p8bNonLH8dmHRPkdh4VtYWdzPLbSD4PfYhwRuGMWIB9m396C9Pdf/Qej5UgH0KCa+KomJ2qouBA6Do4FG1ZIQaLtRpdUKwCRGbS/pWrB2TcNPVqfTd83kOH5fabJMokEeIiFhangSQpldbM8VZAhnmFvvAfKKheBI2LqNbkB+Enjm5ve32VPFRlRW3oPFx7ZbD108tkYwpwid4izIIOMNjdDoConmuTOrpKUTbN2jRq1XDIQIdFBZ9QzQWgWwWv8X+d0A==
+X-HE-Tag: 1771419982-114068
+X-HE-Meta: U2FsdGVkX19UP6Ko9BcR8rd7mCjVzDZAsV8nBmqNRvPZB64QjYlMg9ZBNAdRNkJkLQuKUgxrK4MeqNiKtrj0euoQ3/qFJJIIwrCQ7AUt+cV/cAHZIOSHY2TukuHsaVGBzTbm6XwsEicHWyhL2QQ/83C3OEr+/f4s70zfePkYvEswVHIS5QkBdFnkcmk9kOayiMlQw1VzfMrr8muszmsp5l/ZwKi55Wej4YgRZfyv9Q8Ck0iIWFsBQIRttgcZwDP3QORCAfZiLqobrKWhc/Z0yN+cYI0Vec5GjTDgJp9gmsTJz1Y2SdBfYa0LLalnM2/mC4oQfcQ+yvJFllnMw7eRNDMibV8v7Zpu9eBhpJlMWRNOWQ6zV6V35rBqNSDEec1A3RPAkPFtAsiJmvcTR4nlHiIuR2od+mDgoTCa2l1KjuKRBfKiBNu9/VRx+gnaVAs/DAhDNFq+iadxJ+W/wQajFJavxkPtvsZ7fJdSMVepEHoELfy9XswtWWwFHdK7UN0PI0ntKhiUcGt4fkDKSmd51M5J+j03KKaQis3XICda7VUPs0zEPG4nRe542IGzeH0xmWEB0ZnB/rx4hjWbMOc1Sqm9e7lWfEE3sfzHPCfHesl5CAkrUZ9FxnkGVDriBDCntAXUZRdpiDkwJL9hlyHB81+2TudXxQ76t0a22GEM8EoRCXs/sDKah1fSQBtUoS0jue6pCyUGRDShVabG3sTmXTe3I2Uzajg8W4OJmwhRjl33r5SXOIN+DInvwQ/YEbqcEEUS8LD5oK5B9smd6VHlQlZzgY/y4t2iKnKIWBivIG3khvKsSJNWLQ6J2a8lnhkn8FXUAH4oPVW7RvlmGS1r20tE1gPurG7zm2suCmwC0m0X5woFsGHb10oy+3+b7w4sDP0sCQNPmxM01LmXPgV3dv3kP8u/CcuSrpIDw5BgJFG+Sype1+OZh6ix9WjkozCD69ZP7x1Cq7pQP/NaXe+
+ j6iYiCX/
+ If1Y5ez5rbUU47M3Y+4z+og8nBg5cBjY5QgmAcmuCBa/y6N9URZsCeVwQaREey3PbwzXf6lQX+RTR+oWi28y1OaIhE8dx0q1STBYUUhpfzDCwqB91isWD5cLamD9Ed9M4fpsewEsnwLnSnA4lXjwjMnzJNqpfKRwEDpc83RJMneHGkoabwb8xfrRZIXtsr+AqDoI2rUdquO/Bcyja5LG6nyeWCxkXxSLgVqGmOtMbSkRjNFRw3SQPr/gsFyvlH3rhU0hNIxmIyPf23kU+KuA0E5ke6NB+8UPlBNoyOa+7CFug+CW9QCs3WmMvAE1hjZql2kXbXIny1dzeX0RF9uGfWbGnEJI8vZI6h2ywnpN0zl+1oX6025oJmRn4EmSbTgUchdcDfhvueK/4+ckPuYUGoBcAFLNpZLCdfGPmW8G9W8yKx/f8tsF2SZDhO8clgMtaqUFrOMXVtDTQr83+eMEhE1Z7Ig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,90 +108,86 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 
-Patch series "mm/hugetlb: fixes for PMD table sharing (incl.  using
-mmu_gather)", v3.
+Ever since we stopped using the page count to detect shared PMD page
+tables, these comments are outdated.
 
-One functional fix, one performance regression fix, and two related
-comment fixes.
+The only reason we have to flush the TLB early is because once we drop the
+i_mmap_rwsem, the previously shared page table could get freed (to then
+get reallocated and used for other purpose).  So we really have to flush
+the TLB before that could happen.
 
-I cleaned up my prototype I recently shared [1] for the performance fix,
-deferring most of the cleanups I had in the prototype to a later point.
-While doing that I identified the other things.
+So let's simplify the comments a bit.
 
-The goal of this patch set is to be backported to stable trees "fairly"
-easily. At least patch #1 and #4.
+The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
+part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
+correctly after huge_pmd_unshare") was confusing: sure it is recorded in
+the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
+So let's drop that comment while at it as well.
 
-Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
-Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
-Patch #4 is a fix for the reported performance regression due to excessive
-IPI broadcasts during fork()+exit().
+We'll centralize these comments in a single helper as we rework the code
+next.
 
-The last patch is all about TLB flushes, IPIs and mmu_gather.
-Read: complicated
-
-There are plenty of cleanups in the future to be had + one reasonable
-optimization on x86. But that's all out of scope for this series.
-
-Runtime tested, with a focus on fixing the performance regression using
-the original reproducer [2] on x86.
-
-This patch (of 4):
-
-We switched from (wrongly) using the page count to an independent shared
-count.  Now, shared page tables have a refcount of 1 (excluding
-speculative references) and instead use ptdesc->pt_share_count to identify
-sharing.
-
-We didn't convert hugetlb_pmd_shared(), so right now, we would never
-detect a shared PMD table as such, because sharing/unsharing no longer
-touches the refcount of a PMD table.
-
-Page migration, like mbind() or migrate_pages() would allow for migrating
-folios mapped into such shared PMD tables, even though the folios are not
-exclusive.  In smaps we would account them as "private" although they are
-"shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
-pagemap interface.
-
-Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
-
-Link: https://lkml.kernel.org/r/20251223214037.580860-1-david@kernel.org
-Link: https://lkml.kernel.org/r/20251223214037.580860-2-david@kernel.org
-Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [1]
-Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [2]
+Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
 Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Reviewed-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Tested-by: Laurence Oberman <loberman@redhat.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Uschakow, Stanislav" <suschako@amazon.de>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit ca1a47cd3f5f4c46ca188b1c9a27af87d1ab2216)
-[ David: We don't have ptdesc and the wrappers, so work directly on
-  page->pt_share_count. ]
+(cherry picked from commit 3937027caecb4f8251e82dd857ba1d749bb5a428)
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/hugetlb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/hugetlb.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 1c03935aa3d1..0d3fece27031 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -955,7 +955,7 @@ static inline __init void hugetlb_cma_check(void)
- #ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
- static inline bool hugetlb_pmd_shared(pte_t *pte)
- {
--	return page_count(virt_to_page(pte)) > 1;
-+	return atomic_read(&virt_to_page(pte)->pt_share_count);
- }
- #else
- static inline bool hugetlb_pmd_shared(pte_t *pte)
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 8fa34032bc17..33302279ab5f 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4027,17 +4027,10 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	tlb_end_vma(tlb, vma);
+ 
+ 	/*
+-	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
+-	 * could defer the flush until now, since by holding i_mmap_rwsem we
+-	 * guaranteed that the last refernece would not be dropped. But we must
+-	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
+-	 * dropped and the last reference to the shared PMDs page might be
+-	 * dropped as well.
+-	 *
+-	 * In theory we could defer the freeing of the PMD pages as well, but
+-	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
+-	 * detect sharing, so we cannot defer the release of the page either.
+-	 * Instead, do flush now.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
+ 	 */
+ 	if (force_flush)
+ 		tlb_flush_mmu_tlbonly(tlb);
+@@ -5113,11 +5106,10 @@ unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
+ 		cond_resched();
+ 	}
+ 	/*
+-	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+-	 * may have cleared our pud entry and done put_page on the page table:
+-	 * once we release i_mmap_rwsem, another task can do the final put_page
+-	 * and that page table be reused and filled with junk.  If we actually
+-	 * did unshare a page of pmds, flush the range corresponding to the pud.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
+ 	 */
+ 	if (shared_pmd)
+ 		flush_hugetlb_tlb_range(vma, range.start, range.end);
 -- 
 2.43.0
 
