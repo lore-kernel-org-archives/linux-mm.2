@@ -4,135 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A2F8E9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 17:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2D3E9A047
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 17:37:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABA296B008C; Wed, 18 Feb 2026 12:15:10 -0500 (EST)
+	id 97DF46B0088; Wed, 18 Feb 2026 12:37:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A30F26B0092; Wed, 18 Feb 2026 12:15:10 -0500 (EST)
+	id 955DA6B0089; Wed, 18 Feb 2026 12:37:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 889A46B0093; Wed, 18 Feb 2026 12:15:10 -0500 (EST)
+	id 854A36B008A; Wed, 18 Feb 2026 12:37:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 700D46B008C
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:15:10 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 355981A025C
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 17:15:10 +0000 (UTC)
-X-FDA: 84458227980.11.DE435B5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DECBAC000F
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 17:15:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fzbSjLq4;
-	spf=pass (imf10.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DFE96B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:37:54 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 141881A0168
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 17:37:54 +0000 (UTC)
+X-FDA: 84458285268.13.DB9C4CB
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BF73714000A
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 17:37:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=chjdh5XH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8FLJRHIA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LpDGGDTw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zBV5uAub;
+	spf=pass (imf23.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771434907;
+	s=arc-20220608; t=1771436272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWROfJdWhlgxA5rcp8Pj9VJ7m2fa4/nREAlFrPf4oa8=;
-	b=gAab+Gr5ERdumkyE714Ph483ZbtV1dpvWzMBl8nHXGy6PZCDeLgmobgqaZeRqObJ3zgoJR
-	bkhp6aGtJmWPSdA75be3YVoQTMstwAQc48UwWVuEWhy04Q4eKhlvdgp5eUJfubR17sYP6Q
-	Uy3Uwus9hBl8SKybgo846R5sNWC9sQY=
+	bh=KiZMR2ATXrpcVfWnnpGxqgw91jILZgAAnYQZEzfr0rU=;
+	b=zlxQq454srQE9NLwyUm9+m6UqsKFyzkCjjvLv6MTcluuRdtaYJkW38pbKfXdDM8EJy6zoC
+	gS61fJADOqLPW2QRXLZzd+MHBj2PKWEv7QDs0lJp6UCW0y7eVdXuJlG8ncUI5ClkSvhyH4
+	jmyF/Oc+2XLT5biTXI6qUH5jfpkK9ao=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fzbSjLq4;
-	spf=pass (imf10.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771434907; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=chjdh5XH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8FLJRHIA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LpDGGDTw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zBV5uAub;
+	spf=pass (imf23.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771436272; a=rsa-sha256;
 	cv=none;
-	b=4GjcIOX1LsYUIvlKVAlRQx5C0rQ1tNOcexsvCUDa1PSGvN7IKtYksctuFNh5kVCEwseuGk
-	9SFV7wG7ANUWpKtmWeL2PuDYhOuJzxi+tWL9Tzao0lFPVJWhK2+UyW70c9ivnIpkb8+YqN
-	ydfG5TQmnD4lmYzUjvdhgWLC5K/YYnA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771434907;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	b=Ixcw92dM6PCskswhkJUrca3bqXpOnYp9zyw9afs8QrOODKl1vNoUuFCv0sacaYNkbbjTck
+	UhxK17dT+1DUwyDfGIdbAvinI+n9xiMSk5ntnUlaar8hw0xbCFOXj6oTEpLS3dINsq8lN/
+	3SItT8RWWiF0xRylFw+D2jmJ3fLo+60=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DAF533E6D4;
+	Wed, 18 Feb 2026 17:37:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771436270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RWROfJdWhlgxA5rcp8Pj9VJ7m2fa4/nREAlFrPf4oa8=;
-	b=fzbSjLq4lXnacQ+1YA/iPnHiyi7FSx11zMdLy5NgMBB8pv0bYGUvxtupzrDdXT8Eifwn2G
-	xF1+MYpGRBLoqpLapqNuhOV/3XtCvxQCZW5fUflPDgsV4tr8GrV23qLlRFMbpiFdKXVVaw
-	T//WJG7nnYG5O+LZxw62AYbH0EXT42I=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-wwi2qfVPNNiKhl8m_OoNsA-1; Wed, 18 Feb 2026 12:15:05 -0500
-X-MC-Unique: wwi2qfVPNNiKhl8m_OoNsA-1
-X-Mimecast-MFC-AGG-ID: wwi2qfVPNNiKhl8m_OoNsA_1771434905
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-896f4dcef67so2034006d6.2
-        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:15:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771434904; x=1772039704;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RWROfJdWhlgxA5rcp8Pj9VJ7m2fa4/nREAlFrPf4oa8=;
-        b=mQ1tvJyKRXfEu8nLO234eqsqZBovj6mcqXBl+4kdT8Qio8g6JKhv71vTjdd4xLhpty
-         a6j9TAzP8Ps9A8gvJXF++J+MyT6i+n1B6rugGtdXrYTWdmwb7Ws5qUzdsSCZKL7CQAIU
-         FFMA/EcK65mrytamBR4E3XIAm3slk9oWACso6n/QI6ozaUgG4Ka/ogZVrj+LINHKM2qP
-         HqC+D2eF8tJSh2IczcIZlDlvIIlHG+0EH2ZvAh85ejscDD5kEFLZV7YPrYri7NjOCX12
-         a2vOFJPPv7RkunPzWt/rC0h8tubSrZkwRxzE9fJHUfciQnCR8QdfUbDmW/ueGdIYgD3U
-         8Kfg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9qAOgMUG3NsuzzDAn75GAGRLUk0xogmk7EDdLwyqG0JTtkaasPJ4Y67krL731cPhxuhfmnZ7FfQ==@kvack.org
-X-Gm-Message-State: AOJu0YzfgUkXKyzPDUsAOal4TOxCkYKutu/qiP2pR8/tXlSq/Aj1LYvv
-	jjADX2aXdzX1ZXP/OgNucXX1ocl8OLENeLnPG3kRrtVRd5v3RYFXCqom4iIDOLosZNMsbcA8O0g
-	VTBrqxRAmJOU/qp2zf/6wfhiV2/agVx1WcTYUMSq/Nj3qc2EoTk0PhZhAjyb3
-X-Gm-Gg: AZuq6aJ3g28wIu9FWrpZ7DZvwrfOlUpu1dT+KgxDz+Cr+wKeLg54j6JY+4FU87692k8
-	L/DChlI/o7eh4U0X0yYJohOjweesGcA6tgwQYWcnWenEX/pBSfKfWmb8gkyCLkUe8ryqa1PbFag
-	KgZFTgqAbuvOevYMkAPJNUcIClsMlVM1fdYY8Wn1n0o1/Nd8egDUHzEFdYr/c/Zu21mvCy6465P
-	VQp+KeYjsKEwmTzJ7IF0X09tPhDYxLtechxs+wCG1gESV9d0aTgWlU9UCUkwgkpBIOCxevl8NR/
-	DsKC1WqqQQiGwqbmL8704n2nO92K0tuBI0oNcRulCYxwN/AkydUpaDN/CZCrhUQDQ1iDx4+0DsI
-	HE492hf2lz922/xx3e8jdUX5VRu+2xqPzPiX1qf6W4EdTEPjqB/UL8kFki3xk54g=
-X-Received: by 2002:a05:6214:5194:b0:895:d652:e3a5 with SMTP id 6a1803df08f44-89957fd539fmr37373496d6.23.1771434904520;
-        Wed, 18 Feb 2026 09:15:04 -0800 (PST)
-X-Received: by 2002:a05:6214:5194:b0:895:d652:e3a5 with SMTP id 6a1803df08f44-89957fd539fmr37372786d6.23.1771434904004;
-        Wed, 18 Feb 2026 09:15:04 -0800 (PST)
-Received: from localhost (pool-100-17-19-56.bstnma.fios.verizon.net. [100.17.19.56])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cc7f82csm195307856d6.4.2026.02.18.09.15.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 09:15:02 -0800 (PST)
-From: Eric Chanudet <echanude@redhat.com>
-Date: Wed, 18 Feb 2026 12:14:12 -0500
-Subject: [PATCH v2 3/3] dma-buf: heaps: cma: charge each cma heap's dmem
+	bh=KiZMR2ATXrpcVfWnnpGxqgw91jILZgAAnYQZEzfr0rU=;
+	b=chjdh5XHQ+spZBLzRoayZvH6v3WCn9Eh7IwU1q7gx5e2Ktw0hr9RCIvNZDkdRD01Tg12z1
+	z5ACcsrgXLSZnOVdiEYiwoY1NaUMAUuG2CUTxuC42+WFxXtadrNkb0w1PAbJnfKbvsYnju
+	lU115Yrm+Syi3d5vKeOjFJXTsemsKhc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771436270;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KiZMR2ATXrpcVfWnnpGxqgw91jILZgAAnYQZEzfr0rU=;
+	b=8FLJRHIAucgH0EEOwmbJ+dxSNSPw1CIvtLVWU9j+/afBiV/Duq/SRGWidsB582/a9fZkgB
+	6UjbSABipwpw34Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771436269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KiZMR2ATXrpcVfWnnpGxqgw91jILZgAAnYQZEzfr0rU=;
+	b=LpDGGDTwuOY9t6+AZxVmD5Mj+fPPuD/AFbECH5A9xW/tCjPbDDtnhWeQNBdHdL0CbuaPWY
+	pteqfXfNJ7rXCIdglDBGZk/jba07QkBygebUoZcq/6ZogWMi3xTV81a+ypv+eWv5713m+y
+	McJNc/rPVvvMDN3L6Db8XfKf4WFrd5M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771436269;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KiZMR2ATXrpcVfWnnpGxqgw91jILZgAAnYQZEzfr0rU=;
+	b=zBV5uAubWbzcySDYHmKue/ElL13lBzL4CztINAngAwBuduN9S4FoRYJqsydV74Njz4a+Yd
+	md66EnPx1s8caKBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C2F3F3EA65;
+	Wed, 18 Feb 2026 17:37:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pL+RL+34lWnXaAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 18 Feb 2026 17:37:49 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6AE5FA08CF; Wed, 18 Feb 2026 18:37:45 +0100 (CET)
+Date: Wed, 18 Feb 2026 18:37:45 +0100
+From: Jan Kara <jack@suse.cz>
+To: Andres Freund <andres@anarazel.de>
+Cc: Jan Kara <jack@suse.cz>, Pankaj Raghav <pankaj.raghav@linux.dev>, 
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, 
+	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, ritesh.list@gmail.com, 
+	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
+	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <umq2nlgxqp4xbrp23zjiajwd6ombed4dfwbajuh35xd4vphyee@26g2y6a4rdnu>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
+ <zzvybbfy6bcxnkt4cfzruhdyy6jsvnuvtjkebdeqwkm6nfpgij@dlps7ucza22s>
+ <wkczfczlmstoywbmgfrxzm6ko4frjsu65kvpwquzu7obrjcd3f@6gs5nsfivc6v>
+ <2planlrvjqicgpparsdhxipfdoawtzq3tedql72hoff4pdet6t@btxbx6cpoyc6>
 MIME-Version: 1.0
-Message-Id: <20260218-dmabuf-heap-cma-dmem-v2-3-b249886fb7b2@redhat.com>
-References: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
-In-Reply-To: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
-To: Sumit Semwal <sumit.semwal@linaro.org>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
- "T.J. Mercier" <tjmercier@google.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
- Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
- linux-mm@kvack.org, Eric Chanudet <echanude@redhat.com>
-X-Mailer: b4 0.14.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pvFpFSwD3gDNc1lsGrXo5yb8fyw3zjSxmFHBFVGmxck_1771434905
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2planlrvjqicgpparsdhxipfdoawtzq3tedql72hoff4pdet6t@btxbx6cpoyc6>
+X-Stat-Signature: ccxneshsamprb9s7w6aqno1gcjpencca
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DECBAC000F
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hrtwk1z568sizatyz4qkt561bd34gka8
-X-HE-Tag: 1771434907-557513
-X-HE-Meta: U2FsdGVkX1+oToG8180+iSNNh0fmnWz2/1h7B1BRI6g8fErKi57IBOy6gKPDvthAkcbOvZ/fdVqwyFLjRMLYbv+SngAMaiEV1JW2dM/jGOwg/eHvNAoNYv9gVTo3FqkkmKNAze0DBQrnhbHGIkJPSZUJ1/Ndm2z7+ST1ZhvNBn3KtErT8/GPLaKoP7bH1R4hh4kygdHf7lKPZSadhmNigIydonD+o1HRLYnyfFm/RCsEBzBPXBI5jbIKbi/8eJW6P6/DmtCdCyoSOYBJNjQZ9etWy7Y69xmEkc2d7VzitSdMXDHGJMjYIr1qW1xPejYAxEqDib4w6clvBP54gdIGIydAGlVatGZFSHDEpW3YZl7zm3FxvIkHZcjLxttm1hmChtK/o7/xrd60O59PyoIzOqg7Gr3vircaubJmSCdDhXwKctY6Ez3ziOUYecABbXM560KynzdX1OCs1u566pzqH3MRpWlKZxA5Ft3rKoo01tNCEiD2Eh5mVoVZJBcyuXMnC0HIKvrSWYP6BD0iRnK7t/0RylTippEUsexXn9rFBg0mlzhqShh0g9+I0m/kcLpyX1wBaJOQVhM9RukrGBKIayjlrxoV8rUXxtowRAoVgg8cu3iCLfYygVL8SO8w0rK+pWuWOyeEFOLtpc0p8xjTbd3xbFTYJkaj+Tg0Bf4QwwrPnoG965pQ3J2zs87VkejcSl4O0LZwZiseCkU42LTQPfVqHbd2dCC1aZI9VmDeM9taJRJKZeCXm78E62MPiwv34II34qblZaC8koXNjuF4QLWfa88qH8hVEm9cD14flZQ1EHW298F4g1Oib+JHrXiYfbdWmwj2BueKgSfDImE8yECj4UdxgU6kY4s9xgoXY3JeLQiebQ+EMa+V4GJGA/5wAMlbYn7I5SA49vKOIpjGPKFmub6EzP/dmxgtO6AkaUr2UlACSaIgV5yX4Sp2iIylgoJMGo3da4nzb+8FOxk
- TrzVA6N0
- fn692h2RU+NrAFGYTLK8zIVHNLP7Jz+m0FagzElBvQESZ55xqCu9qPZ9jWZ5pHHuOTzPUKO9r2lPYpNEb1JIVNbf/WOuZONqrwZjKLDFzSe/65aHJ0a/VVPGemGGQHVIdRzgNBK75tQWR4lDBipiyZJmuSKQyUKuXUyVKTbPhwHqqmVgbKTh2vcHpOmrsphUxoMQKoj3Q8cZQTRDhgrgrMUBwF8Hwo9m58Ntziavquwjxg7xLC4332lQFulh4u0aFyxZJvU/wNC8j3TkEHrJKK3vniQDXI4qWF6eOdW0GshHy9sIlcarC9sMx5QgSkQDpxJ+oumHAoficRpFp/K5l5HPS/CPEQoDwMpjLgpDF3+XAtUl9GnWbrRtrl9sO6qHkpFFo0ZSoVzKeayYYrCZh4hUz+QoX3MmnqXRfCH8N6vyS4l3G9SLQvuG9D11kPPEteLFTvccCJTTSEHlvTTqaCb0oV5DJXiTNXcwgdL/U/edTn6OsGcxVQFqBIQ==
+X-Rspamd-Queue-Id: BF73714000A
+X-HE-Tag: 1771436271-404905
+X-HE-Meta: U2FsdGVkX19oic1fLEdcTxi5lqc3fXs4PyeWUNcNgml4sUsomJCJniuvrB/DtOoIwt8CdJS9Z0vzAaVfFxNhHUC5pgEm5wrNRNYehWe9pGOyCzOGARmOjRBhra3rPOMSyQIikFLICwtmBrBX6U7vgUkk6W3OhLL02dQHPiz5yQPX6XhEbYkC5o0LB62HAD1GiU9oDmbDffqT5bRdknThGceVt2VSRK+ge4vUSqweWLodIvdbthmT/G77cWNNKsMoaVMmN13daUgbFe40zMogCCHaR0Yqxu2t818jiWEMrp4F9oz3SQYWNsu2BoX+5Md6/7pTPtCXLcZG10yzzl15Cv27fdFPoMM/Fv90eWKYm8p2Qoa+FX4wkJieYDXaOJAe7UXK2l9Vwkgqx78IHGvGjhSiOTBOV1PuYWFqAKujKxSyurlGKNTUZNmCzKqQRQCvsDr/UHwFRt6Ourbre4kYfP1fKEIE4iEjJjT1J1fVuH/Sck05/ACFsW4kCK7FU3NAZbb15HXmn6PUEdXQu42aw675wrE1vbTYFfEKfl+tYiliSLk4IqCClCNSM5TEmGRbeHi9bBEpIo1ghcYGGPgL3ZREL7BkhkA/V2lu66pouJdDqjflvBmakDsJANf+5yV8P7l7MWxBwEImR8Wlu+1I7Y7BeoKyCXUTSy/6uZJajNwTr4xmp2wakoCymzpDsGbh7rL30qdUNvWZMzTN6rrWldtqVfAssb/Tb5R/7topqsFaQVKy7RpdAnREDNi8bBeKGCha0x4Pn02IhQvPEHB5PjFQawtwBZorU2xlIuyUnmLCccbsWbr8plvCosjfS1tbqtIfLZyTtzb0MmP4rjFOT3MYXizmSJ0lmcIoB3i6z8x7zFNL8ls5EXDm/RnQgeWCDilRFG5nGWOc7sCOqRHzkGpFnYsXuOG0nNT4olDFpRnMvQW1GrpnoPS5gGmvNy8FvHksjrv8r6y0cQ+vNYT
+ R6hkPL7o
+ xjvq+TZUL3zgynUoW6u70rXBeNHHn63lQoEofAJe2FPyIBHwj+q3BAlKrr7TZa2U3QQxgDHIz0IYxhOR2Ed78f1PjgD4HQIVTa5c4xb1LrJfvEYKeLaaE75v2KH5HfXHn83b513XUc8fVvpt0fKQZ8DtB13NnEvJxstWrWPYtpGXT4s6/sS+Glrv84xzqjNqgx7WOXvk7L8MaqXepg8UxeFvOYAzn6RCJCLj4DKnTfwykwjmtAkNIxBom+JGgi2+lg+qRejnbxqvQcwQLNa2hWkqwkyGGhArBmTsoKelEX3jRFYRAQ/aTDaSfvVZm6mbouYqBwkS/FJab8uhcEGev90oIyMMOUizTRsSatkPCFTtfcNVw7JW/tnECAtZ08k8UAKSswYyD5a+PK15NCYNjBgUncbrME3xMG4Zg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,73 +141,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The cma dma-buf heaps let userspace allocate buffers in CMA regions
-without enforcing limits. Since each cma region registers in dmem,
-charge against it when allocating a buffer in a cma heap.
+On Tue 17-02-26 11:13:07, Andres Freund wrote:
+> > > P1: pwritev(fd, [blocks 1-10], RWF_ATOMIC) start & completes
+> > > Kernel: starts writeback but doesn't complete it
+> > > P1: pwrite(fd, [any block in 1-10]), non-atomically
+> > > Kernel: completes writeback
+> > >
+> > > The former is not at all an issue for postgres' use case, the pages in
+> > > our buffer pool that are undergoing IO are locked, preventing additional
+> > > IO (be it reads or writes) to those blocks.
+> > >
+> > > The latter would be a problem, since userspace wouldn't even know that
+> > > here is still "atomic writeback" going on, afaict the only way we could
+> > > avoid it would be to issue an f[data]sync(), which likely would be
+> > > prohibitively expensive.
+> >
+> > It somewhat depends on what outcome you expect in terms of crash safety :)
+> > Unless we are careful, the RWF_ATOMIC write in your latter example can end
+> > up writing some bits of the data from the second write because the second
+> > write may be copying data to the pages as we issue DMA from them to the
+> > device.
+> 
+> Hm. It's somewhat painful to not know when we can write in what mode again -
+> with DIO that's not an issue. I guess we could use
+> sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) if we really needed to know?
+> Although the semantics of the SFR flags aren't particularly clear, so maybe
+> not?
 
-Signed-off-by: Eric Chanudet <echanude@redhat.com>
----
- drivers/dma-buf/heaps/cma_heap.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+If you used RWF_WRITETHROUGH for your writes (so you are sure IO has
+already started) then sync_file_range(SYNC_FILE_RANGE_WAIT_BEFORE) would
+indeed be a safe way of waiting for that IO to complete (or just wait for
+the write(2) syscall itself to complete if we make RWF_WRITETHROUGH wait
+for IO completion as Dave suggests - but I guess writes may happen from
+multiple threads so that may be not very convenient and sync_file_range(2)
+might be actually easier).
 
-diff --git a/drivers/dma-buf/heaps/cma_heap.c b/drivers/dma-buf/heaps/cma_heap.c
-index 49cc45fb42dd7200c3c14384bcfdbe85323454b1..bbd4f9495808da19256d97bd6a4dca3e1b0a30a0 100644
---- a/drivers/dma-buf/heaps/cma_heap.c
-+++ b/drivers/dma-buf/heaps/cma_heap.c
-@@ -27,6 +27,7 @@
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/cgroup_dmem.h>
- 
- #define DEFAULT_CMA_NAME "default_cma_region"
- 
-@@ -58,6 +59,7 @@ struct cma_heap_buffer {
- 	pgoff_t pagecount;
- 	int vmap_cnt;
- 	void *vaddr;
-+	struct dmem_cgroup_pool_state *pool;
- };
- 
- struct dma_heap_attachment {
-@@ -276,6 +278,7 @@ static void cma_heap_dma_buf_release(struct dma_buf *dmabuf)
- 	kfree(buffer->pages);
- 	/* release memory */
- 	cma_release(cma_heap->cma, buffer->cma_pages, buffer->pagecount);
-+	dmem_cgroup_uncharge(buffer->pool, buffer->len);
- 	kfree(buffer);
- }
- 
-@@ -319,9 +322,17 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
- 	if (align > CONFIG_CMA_ALIGNMENT)
- 		align = CONFIG_CMA_ALIGNMENT;
- 
-+	if (mem_accounting) {
-+		ret = dmem_cgroup_try_charge(
-+			cma_get_dmem_cgroup_region(cma_heap->cma), size,
-+			&buffer->pool, NULL);
-+		if (ret)
-+			goto free_buffer;
-+	}
-+
- 	cma_pages = cma_alloc(cma_heap->cma, pagecount, align, false);
- 	if (!cma_pages)
--		goto free_buffer;
-+		goto uncharge_cgroup;
- 
- 	/* Clear the cma pages */
- 	if (PageHighMem(cma_pages)) {
-@@ -376,6 +387,8 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
- 	kfree(buffer->pages);
- free_cma:
- 	cma_release(cma_heap->cma, cma_pages, pagecount);
-+uncharge_cgroup:
-+	dmem_cgroup_uncharge(buffer->pool, size);
- free_buffer:
- 	kfree(buffer);
- 
+> > I expect this isn't really acceptable because if you crash before
+> > the second write fully makes it to the disk, you will have inconsistent
+> > data.
+> 
+> The scenarios that I can think that would lead us to doing something like
+> this, are when we are overwriting data without regard for the prior contents,
+> e.g:
+> 
+> An already partially filled page is filled with more rows, we write that page
+> out, then all the rows are deleted, and we re-fill the page with new content
+> from scratch. Write it out again.  With our existing logic we treat the second
+> write differently, because the entire contents of the page will be in the
+> journal, as there is no prior content that we care about.
+> 
+> A second scenario in which we might not use RWF_ATOMIC, if we carry today's
+> logic forward, is if a newly created relation is bulk loaded in the same
+> transaction that created the relation. If a crash were to happen while that
+> bulk load is ongoing, we don't care about the contents of the file(s), as it
+> will never be visible to anyone after crash recovery.  In this case we won't
+> have prio RWF_ATOMIC writes - but we could have the opposite, i.e. an
+> RWF_ATOMIC write while there already is non-RWF_ATOMIC dirty data in the page
+> cache. Would that be an issue?
 
+No, this should be fine. But as I'm thinking about it what seems the most
+natural is that RWF_WRITETHROUGH writes will wait on any pages under
+writeback in the target range before proceeding with the write. That will
+give user proper serialization with other RWF_WRITETHROUGH writes to the
+overlapping range as well as writeback from previous normal writes. So the
+only case that needs handling - either by userspace or kernel forcing
+stable writes - would be RWF_WRITETHROUGH write followed by a normal write.
+
+> It's possible we should just always use RWF_ATOMIC, even in the cases where
+> it's not needed from our side, to avoid potential performance penalties and
+> "undefined behaviour".  I guess that will really depend on the performance
+> penalty that RWF_ATOMIC will carry and whether multiple-atomicity-mode will
+> eventually be supported (as doing small writes during bulk loading is quite
+> expensive).
+
+Sure, that's a possibility as well. I guess it requires some
+experimentation and benchmarking to pick a proper tradeoff.
+
+									Honza
 -- 
-2.52.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
