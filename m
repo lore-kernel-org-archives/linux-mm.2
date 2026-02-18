@@ -4,85 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D9DE9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 08:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD20FE9A03E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 08:58:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ABF16B0088; Wed, 18 Feb 2026 03:58:40 -0500 (EST)
+	id 31CFB6B0089; Wed, 18 Feb 2026 03:58:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9597D6B0089; Wed, 18 Feb 2026 03:58:40 -0500 (EST)
+	id 307EE6B008A; Wed, 18 Feb 2026 03:58:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8659E6B008A; Wed, 18 Feb 2026 03:58:40 -0500 (EST)
+	id 217C56B008C; Wed, 18 Feb 2026 03:58:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 733F56B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 03:58:40 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D6041A045E
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:58:40 +0000 (UTC)
-X-FDA: 84456976800.26.9D1591F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 59D124000B
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:58:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771405118;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ECA76B0089
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 03:58:52 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C07F21C265
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:58:51 +0000 (UTC)
+X-FDA: 84456977262.09.CB52B06
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C5F4140003
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:58:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HTHj4AGe;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771405129; a=rsa-sha256;
+	cv=pass;
+	b=S3oJs/Pzqbq2VDOmV9saDS5dVFfrtbbIqABKs+ifmgIDivgCMryMlGR0UNE1ny78+urb9a
+	69dGHF2QjT0zCbH1tl7ivr5aVOSfdxMPMiC+0l0owzFguTM8UFWx4AEantYVl0VkYgi94q
+	siU+soEoCq5Egn8JzfxJcesOlqsfJ9E=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HTHj4AGe;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771405129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FW2jpvEaeZj8+mSBWzvRKn+BobGAmAvAZ+Tr44VJZFU=;
-	b=vaVflhN+z+NyYq8zeK69hrsZ5BQWTkbko13FpiJDljXNJqzdx67ZLLi218GP4JXfux9ktf
-	xzOhwcMxBNFXgFXpXkjflpAOkaP+gSYU/21/KVmHVndVjAAbkoLFbxrZuPz6UVBW5oTdsk
-	9IVL2rCsftaZJMXO2MM2TdQU0LzNXUQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771405118; a=rsa-sha256;
-	cv=none;
-	b=qCZFWKSqKm0ctHi9+6JeR3DYdyKVh24euFiJXzB4jlobyZHgvdOWBpskqiW3VqLZ9K4fE3
-	Kdk9lwFXXCxW1qy4/Zcf8fAClgshQmtQfhdCO3pzwanuxtMpQOLvUhvYBuUSir5Dtr1dTG
-	zTmWtkftHMw6beCyhthF9xrC37spYRY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC31F1477;
-	Wed, 18 Feb 2026 00:58:30 -0800 (PST)
-Received: from [10.164.19.71] (unknown [10.164.19.71])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 10C9E3F62B;
-	Wed, 18 Feb 2026 00:58:31 -0800 (PST)
-Message-ID: <ea08cc51-5890-48cd-825b-82ae031e8bd8@arm.com>
-Date: Wed, 18 Feb 2026 14:28:29 +0530
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Tvut1BfJ3cpazddpdU/nRmz0yZV3WbQMIAmidpNOpcs=;
+	b=JGnJblvIA1Lq643aEAUrLb7ZpgC28AkiieeqQowmbOvlaAm++AyYiljBkbHlL8E5QZjHGJ
+	++wUWvfrn0G0syiaSvmTUt+dm5dH/FnqRAaB+L+6hHsPSTa31V1xzYxLl4gjRmFBnEVhNw
+	ejvy8xMBefRm5dClRqwW3yoysGtsSyY=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8842e5a2a1so655983166b.2
+        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:58:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771405128; cv=none;
+        d=google.com; s=arc-20240605;
+        b=adLg/c0IyIJHsjHb7HHITwiwpGYcj4DHz9WTwYp/mwcLom12ywPi+cKr4yAfDLDeJR
+         DyQxdj34/5YiTQzLRix4gfM5IiGNPbfdAa//AgtQhaAy2Up8n5gL5DVmGpBpE4sLHl7f
+         bEzAzVIC3jJqTkGKOEMYd6DaxnuNWdsttbCvHtpQpOB0Q6f9PqCc0lLL6py1KUB4polM
+         x2+p+ocaiHCDoSp877g3vgW4lt73OYFrdVMBed2F34VeS9Mqlu9Y/boAAFi0iJBTzksQ
+         sPAHlhouLrEOgvGfodS9nNlsZjnDNj4ZtN2RKWZ1l28LOThmf0DBFPggQdqH4878FMQk
+         r0PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Tvut1BfJ3cpazddpdU/nRmz0yZV3WbQMIAmidpNOpcs=;
+        fh=g4nY5sqpwn/SCbPLxI3Y6gdc+TSkV6C/UOqukmREBI4=;
+        b=kiRQDnSnluF3JzfBaCBa9zees1ZFsWL0IRh9+EPyWUxuML6D47ZhTtznPTrAyDO8Qt
+         h9CTIFAnEKWWuI3ZPWne5z1yQ5bOyHTyyQLBIlHJ9ZSXroRSfxEZVrfcatAzAi4Gdm9F
+         d2apWFUMvPdalcBk85l8H1rL4geLmRppfhvP21EBG2oHlNKksA5BLvudXY9dlTBJl6RP
+         3F8ptcCn1DMRUL6AFslQMmyicQ72U86rssyLQ5S1cACEOoaZbZJVg6S/nXs2iVH00fft
+         XD0lnPikJRBs49StSapORGSY/Vr2R8nntDccUzkmkN8kuzA79ffohfX0wdS+/TdgeZqc
+         puvQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771405128; x=1772009928; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tvut1BfJ3cpazddpdU/nRmz0yZV3WbQMIAmidpNOpcs=;
+        b=HTHj4AGeZBVAlbxJpeyhxg/yI9yCL+rJo22O0Ij9QHgO7XQNsJlXQJqBFFcraNfJbM
+         vNbShNfgmCQV10o9UpyiaFLyuCs/oJa8QUgZj7nHwgg9eH5WkOQ3zJoVQ1lH6wFl4RH0
+         7y5DNnSBUGO2XKLSA8BDWGlUWhEN+0F/wBEbnRDQy5gqBVxqIvMlTMi/+w6m/HIRNlzV
+         yA2I3d9dtmeJ+roMUkqLI+7yPjFfOeGvFL0Zy7YcOPHSyejpsPOn9AHZu+3MmVJVAu68
+         JxcVBwIU507++ow6nMkr6OVBOLSLI8JIxQaXiZhptkbmvRA60KkzGn7zG4L4AnOpjJmd
+         heVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771405128; x=1772009928;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Tvut1BfJ3cpazddpdU/nRmz0yZV3WbQMIAmidpNOpcs=;
+        b=p4+vfoDP8e0glkQ3tcc8TXJsbwAzloTge2oVuOIfg/AZP5hfsFMyyBGhPKOldYqk6X
+         mRjnwNsdZ59mllWjszaOHm5oiPFzrezqV1ZI/7D/YGFlKM1HaaLifOsYMbcRuZNDlUa/
+         /yP6W4inBXShKa+ypR6BnzqrSULdvUgWXHnKmdVQeDgBgVSa85VqBDJ01IDGqBP+5QRT
+         hgLC0LOXUtpPcY/2g+WxtFPLb5l+Y5AF/IRuIDmt0nJaG9y5CtOGEMOj31k0XRS+/b67
+         beKHs628LgKM48H6da4pVzJGZA9bFiivFJp2Ygkqp7pa2p5yaAJNOdI2pMPx2pURNKXR
+         oUWA==
+X-Gm-Message-State: AOJu0YxFG1wQp8ierAXt6jWTpdfHnaQdI8YVjciPpolFWmFjVYxWpWgk
+	/MoL7706DMgv0BxGthN26QmVRHkEI8P9yv4aqAHMZ9P77bPMFvkO9o4MEbXrKFaP/OJ5fM8YehE
+	eDziVPNcDN/Zk7CEn0k4vjhfV2cuMTEU=
+X-Gm-Gg: AZuq6aL/IhvJYWB9YwOAk5kvnsRr/iORwchpemtu+skpQQcrrrA+JmPjBNoiW2MfMDe
+	8zmOFSb9Tzaiul/Iib4Y2ybxLJreWdzVoxmaaoWIEH1rmNS1wMqEvjE47saQe7glAdUKJnfhaPC
+	kLrL+uWLvTuj+GI0ACsFBfRwpgNDNq1wz1L96/qSNBDd+mSYAizEbK+kiASlJfIPKhHjbXKKqYa
+	IgihihUStokMmjGCK2F3uf3tj9my0gk/cr2Yqe61v2qZM6ktVmVoBkOL8Ak7AYg6UZoXW0DA9XN
+	7LlCbyTAWo56Q809xEMYavzFbrLETPKleorosW35
+X-Received: by 2002:a17:907:86a9:b0:b84:1fef:329f with SMTP id
+ a640c23a62f3a-b8fb4376aaemr897638566b.26.1771405127545; Wed, 18 Feb 2026
+ 00:58:47 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Per-process page size
-From: Dev Jain <dev.jain@arm.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: lsf-pc@lists.linux-foundation.org, ryan.roberts@arm.com,
- catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, david@kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260217145026.3880286-1-dev.jain@arm.com>
- <aZSHvt9Trlq7k7aH@casper.infradead.org>
- <bc47b56f-46be-442e-bbe8-11f489bca1fd@arm.com>
-Content-Language: en-US
-In-Reply-To: <bc47b56f-46be-442e-bbe8-11f489bca1fd@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 59D124000B
-X-Stat-Signature: b8ebumugzknf74i6hdp73p4s4yep8oxg
+References: <20260216-hibernate-perf-v4-0-1ba9f0bf1ec9@tencent.com>
+ <20260216-hibernate-perf-v4-2-1ba9f0bf1ec9@tencent.com> <CAGsJ_4z83AvzDNXFOY7UftOAkPcK+6AoR2rE_2rzQLTqx400eA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4z83AvzDNXFOY7UftOAkPcK+6AoR2rE_2rzQLTqx400eA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 18 Feb 2026 16:58:11 +0800
+X-Gm-Features: AaiRm50JBT6LZj4if3-0mAdpnUKWCt8vsnCaw7Vnh_a3smSA4u8vVHCPWn2aMxk
+Message-ID: <CAMgjq7D5P7n9z6w+MbQGXq7RY1iTpwxztVOd4B=tiyXDbNXxHg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] mm, swap: reduce indention for hibernate
+ allocation helper
+To: Barry Song <21cnbao@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, 
+	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C5F4140003
+X-Stat-Signature: 1hu4hrthgsqf9j3riip5xkeomummc1fb
 X-Rspam-User: 
-X-HE-Tag: 1771405118-789928
-X-HE-Meta: U2FsdGVkX19qUS/YIoACew6KIkO2c8eE/2RcV5wfRBz16xG4v+fhlo8E3DbQD8zcwgphXb5rtGlLmG2FMQJOT3jkCnQczTbxYcD7edOSSovBkkHcc01G3um7uFz1ZLeuBX5F9VIgXUTwFGpG3Crf+4Rl1zOKPE+v7iCVqkasbCYPMV5JdcDTBj5sSq/eiAnKiVrEUVsofmU/5aSgZEja6B+uKXx2LTYIHUS+53N0B/OurIDLS1gmRoUQSSNKspRXdrqSvZ3InS257B7Ru2rFGeCq2OBFG8dACavrlxtvD911C67HBke690vNWlHfACAr06dACYSWCzc/Pkkcj42rG5wJE3xnS7hAGrHD2C9JEXWJQi5EoSIglzShBxO7E5Pn7tZTfFjCUyt0lYR0cs8GVg+Psj4ANQiNPFzfhvQh5AMjMkh8m4M0P5LhtPlZW+Vozd6URK++bv7McP5IExHwMboJH2SBkwwtzAqHKSeRDvjMPEEPhHiANGbmh7ZmNzAB8s2UfTib15Jq1W4vnvuwZg56nAYkHVPMu8q4NbtAr1XXNBg0nl9sgCWUFnFo1xeKLYwknq5qnGUCGhsEECArEFxODaGlgml1V4qLVIG6ZlIOq17QFmtKuGyEd8tIrURT6aD8om8u03HExeuFLlGCf/r6YgQI/pFrKIV0Uu28YlrjYgcvNJBlh9GPjTVijRInAfX3isyMxJqU1Daw64RKAcCdbNTNTtb3xjfzRwwa2i66w4923AVH0iz2OXn2tI2GmRE6T+q3OCu+ebpKv2Tuj5Rl5hJSBuo7/2tgcub2wYqu1xNE4kR5ObVEi1fq5QmDbEGCbsV0yAHLNmjqbc5hDJW+sBEQXveYpCcNFcs6Xd/yNb8MVye5AFD6X8LDMy+Td9VrLocxl1deaqhsAmiUq2w3IOokLYsrIXDbkVd4LV89ISLzGiOxb0WiRqe3nNlYnnRN9EgedU0/n5WjtOI
- tXG6zlYl
- OnqlLuKM8ifRTgjrmVh/MhSdb4m3XSEx7GgqFj6rqYE0KNX7szlVX9bCHA+LvZCvAv86kqeiFNlg2JKbYsWqwueRLWIDNo3p/JeIEaPee2FUVwWktu6GQHuKUF0n84zBJrm8MymA5zD8AdYI=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771405129-456481
+X-HE-Meta: U2FsdGVkX1+9TMU//epQGyN7KQSwjmayJPAEGJvesNqh33IMdpCg+Mkpa5eMumEu9CTYlvUIFVNjnG7LjXPobNq6VrOnjpD2niTItdTNtZGb53hCDdcExvx0Ol6oBNMe+vXt62VwrivHGut2tyuiA7gs0Z4DLyfFuNEeKm8gHGsWw+8CNQ9aZcsoeMgrLunvkNDgbI17aoatt7dAhMiXAfh7BdEE8LCdC5HU8M1dXyUJHOnz016pZviD7aRLNQSxDOWKQ3HDl1B/4h9Tu1gcL4fD3djBmXEwl9CUJWW7srLyHAem/gUMHmszYK6c12drfsrIfC0CTh5cSSfsUMgddaDSQ5bD5rxOgCx/tvS4qFHeFlvwoP6n3MMMgu8zSYNClfc8Zsik2NpRpz0zHkyZa3G4x2rpf3YLSvuL4bOO2xQgTQ2iuuW7OrZOSV3xU8mjPShtUhuEYA9uF5bezlqvC/PKOAl6K7YwWRg+KlDxDW5EgrG2GMHuX2YBTBx2HLwlk9a3osNwgDYEkarstHkHr1MZ3fvywea2Q3AXT7VbHuEYLXjW7xs8vhUSvF1IJ1DENON/PdO6JP+Jn5gdXrsGxXbj1+xcJxLW0ih6nby5FsPvUuYsVA5nqcvG5H10Wrd9uDSZzgj3XHYgmOmS3o8fjrco+TEKs5C7mzYPd+Bel2M53lW8kN9/Sd400Tv9rfdz/nmR9ObaSln9BDo7tJddYAGugIDXxJgdhLx4EfBE9N8uI4v9xd02UaCqwAtVBUu6vXBlErx7kHfOuuG4WtsfGvTB0s3oPX64Xy0DCa3wp1gVud1vz9ShHvq0A0ViyMIrCIjknK0knFI7WXeMvHzKp2HwoxGlM7DYYhTllUnNX8W0DMVmEms6wUGyC8gG3Phd2GtOokm6poHOWdEcccSmgYE/14dFqfdANZV5mXZEydPgQ1ts4O8pL+SwjIVUbFtRKGcXzVcHmqaKFjAV32R
+ khBe7BQf
+ LAxf9hsSyr2P3Mt49cX8ILMYz47kEe4dV35CJ3/68bh1TYsFKUvWwf4GhVhr35HyViXTnv8TUI7LMhz//Ejf3eehBRQi9l6SglaU78vG8MykeHPdeQxy061TvA834uGqDHeTFyiXEHF2BVIpQfCHcjdvanpZtYjuEfIz6nKacy/4l8lUajyTeZEXks0SNCX31pAIskPdXlza1CZZNoCM1XICwXKP9whQ0IH6bisujsPNMnfCYSR6pDrp4EucG/It92+aLfoZdCuo7EKm1maojyhm1L9SH/sHC6wMn32CcHmFtICc/7WM3TV6fBdT94FhgEai/fUTPQv2qQtAzNuvTcTZH44oe+bvHJNnm1D9T93XFYVz84cd3Sh0mu0L7ZX/2NqJBnUqka6EtWV+3Um2R+SDD2Dar0guIiQJaBZgpJP/48OU9cRZ3goGaYeJwVGAIXTJ3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,82 +144,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Feb 18, 2026 at 4:23=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Mon, Feb 16, 2026 at 10:58=E2=80=AFPM Kairui Song via B4 Relay
+> <devnull+kasong.tencent.com@kernel.org> wrote:
+> [...]
+> > +       /* Return empty entry if device is not usable (swapoff or full)=
+ */
+>
+> I feel like swap full only affects the swap_avail_head /
+> swap_available list. Does it also make
+> get_swap_device_info() return false?
 
-On 18/02/26 2:09 pm, Dev Jain wrote:
-> On 17/02/26 8:52 pm, Matthew Wilcox wrote:
->> On Tue, Feb 17, 2026 at 08:20:26PM +0530, Dev Jain wrote:
->>> 2. Generic Linux MM enlightenment
->>> ---------------------------------
->>> We enlighten the Linux MM code to always hand out memory in the granularity
->> Please don't use the term "enlighten".  Tht's used to describe something
->> something or other with hypervisors.  Come up with a new term or use one
->> that already exists.
-> Sure.
->
->>> File memory
->>> -----------
->>> For a growing list of compliant file systems, large folios can already be
->>> stored in the page cache. There is even a mechanism, introduced to support
->>> filesystems with block sizes larger than the system page size, to set a
->>> hard-minimum size for folios on a per-address-space basis. This mechanism
->>> will be reused and extended to service the per-process page size requirements.
->>>
->>> One key reason that the 64K kernel currently consumes considerably more memory
->>> than the 4K kernel is that Linux systems often have lots of small
->>> configuration files which each require a page in the page cache. But these
->>> small files are (likely) only used by certain processes. So, we prefer to
->>> continue to cache those using a 4K page.
->>> Therefore, if a process with a larger page size maps a file whose pagecache
->>> contains smaller folios, we drop them and re-read the range with a folio
->>> order at least that of the process order.
->> That's going to be messy.  I don't have a good idea for solving this
->> problem, but the page cache really isn't set up to change minimum folio
->> order while the inode is in use.
-> Holding mapping->invalidate_lock, bumping mapping->min_folio_order and
-> dropping-rereading the range suffers from a race - filemap_fault operating
-> on some other partially populated 64K range will observe in filemap_get_folio
-> that nothing is in the pagecache. Then, it will read the updated min_order
-> in __filemap_get_folio, then use filemap_add_folio to add a 64K folio, but since
-> the 64K range is partially populated, we get stuck in an infinite loop due to -EEXIST.
->
-> So I figured that deleting the entire pagecache is simpler. We will also bail
-> out early in __filemap_add_folio if the folio order asked by the caller to
-> create is less than mapping_min_folio_order. Eventually the caller is going
-> to read the correct min order. This algorithm avoids the race above, however...
->
-> my assumption here was that we are synchronized on mapping->invalidate_lock.
-> The kerneldoc above read_cache_folio() and some other comments convinced me
-> of that, but I just checked with a VM_WARN_ON(!is_rwsem_locked()) in
-> __filemap_add_folio and this doesn't seem to be the case for all code paths...
-> If the algorithm sounds reasonable, I wonder what is the correct synchronization
-> mechanism here.
-
-I may have been vague here... to avoid the race I described above, we must
-ensure that after all folios have been dropped from pagecache, and min order
-is bumped up, no other code path remembers the old order and partially
-populates a 64K range. For this we need synchronization.
-
->
->>>  - Are there other arches which could benefit from this?
->> Some architectures walk the page tables entirely in software, but on the
->> other hand, those tend to be, er, "legacy" architectures these days and
->> it's doubtful that anybody would invest in adding support.
->>
->> Sounds like a good question for Arnd ;-)
->>
->>>  - What level of compatibility we can achieve - is it even possible to
->>>    contain userspace within the emulated ABI?
->>>  - Rough edges of compatibility layer - pfnmaps, ksm, procfs, etc. For
->>>    example, what happens when a 64K process opens a procfs file of
->>>    a 4K process?
->>>  - native pgtable implementation - perhaps inspiration can be taken
->>>    from other arches with an involved pgtable logic (ppc, s390)?
->> I question who decides what page size a particular process will use.
->> The programmer?  The sysadmin?  It seems too disruptive for the kernel
->> to monitor and decide for the app what page size it will use.
-> It's the sysadmin. The latter method you mention is similar to the problem
-> of the kernel choosing the correct mTHP order, which we don't have an
-> elegant idea for solving yet.
->
->
+Yeah you are right, full swap device doesn't affect
+get_swap_device_info here so the comment isn't that accurate. I'll
+update the comment later after 1/3 is moved to stable. Thanks!
 
