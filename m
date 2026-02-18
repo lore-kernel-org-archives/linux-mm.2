@@ -4,133 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F70E9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 17:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B228E9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 18:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A6376B0088; Wed, 18 Feb 2026 12:42:25 -0500 (EST)
+	id 8C4E16B0088; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 753ED6B0089; Wed, 18 Feb 2026 12:42:25 -0500 (EST)
+	id 81E016B0089; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 635B66B008A; Wed, 18 Feb 2026 12:42:25 -0500 (EST)
+	id 729CC6B008A; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F07C6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:42:25 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A15D1571A7
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 17:42:24 +0000 (UTC)
-X-FDA: 84458296608.14.C3663E2
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6710C40008
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 17:42:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BE186B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:02:35 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E1DBCC163D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:02:34 +0000 (UTC)
+X-FDA: 84458347428.30.C2622B0
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6568F40016
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 18:02:31 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxaekDEg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ch1fLl53;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxaekDEg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ch1fLl53;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pIrisjkg;
+	spf=pass (imf04.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771436542;
+	s=arc-20220608; t=1771437753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JvwZdWyBuPCaJq5onHfru+6aMaFDG/nTmYkmyAXu5og=;
-	b=fUcWOTBmCqaGN50vZ1YFo/399GBWJMvq3eY78q0ZwQjgund64Bzx9v3DwFprzGdiGFKsxZ
-	2elT1AJygblGSa+vR5Se8G7z0EgJpnmJsDNBjSwdOfN34r+Z/RKl8H5OWCWur3D7kC1gfs
-	VvBJu9NPqnlhVO0otFLF4NYNZXp5JnI=
+	bh=cx1YFMXeXn8Jw1SsA/vK5p52GVwbuIAqyFb1QuBwKqE=;
+	b=WCr3WtuBLRMaCTKw1oL/Y0i9iJLNiB6hTqvypraJMXvkLRIWMVzcjqB2Vm5DE2tXjxe/ya
+	XxURbKD0Bguk1keskIOelQmknPN0EPp5A2g8Kn/PFX0Mxtlw4ktmBHe0BMdUyGidjnyQr8
+	PZCS/ZbuY8+/qkV0n1ZOj2Mf/rMokgc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771437753; a=rsa-sha256;
+	cv=none;
+	b=FbR46LhyDra9BrqK8ECOg1oE5lKwqLW1+KJMh4r65ucGY7ISvTiUAFB6OhTHErNivPcwEr
+	a71G1ColtWTz3ZOeEgmhcGd1T/PPa/UPQ7rJ0NcMpCG90XWuokxo7Iwi9NGO1mCmxYLHKe
+	V1NjxG1zt+ik9xv/C4cBMOkGXwDm9Ag=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxaekDEg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ch1fLl53;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PxaekDEg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ch1fLl53;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771436542; a=rsa-sha256;
-	cv=none;
-	b=5KFQRVfaiIMx6rMgdmiKIrfj8lWxk8rO2gvQLjltPHmuGxIxQYHVmCX7jTy4fbd7TmA12S
-	Sd3g3Pb/+ygAjYYBfCy3RSexOam5bjYFKAUkCMIxgBkY1f98EwKS/qGqpnQX1I5/TBxFu8
-	OEYT5vULs87WECQiYPJjjGj3GZiLGzI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BD9683E6D4;
-	Wed, 18 Feb 2026 17:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771436540; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pIrisjkg;
+	spf=pass (imf04.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <fbcd6770-f555-443c-b5f2-fe5e73722118@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771437748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JvwZdWyBuPCaJq5onHfru+6aMaFDG/nTmYkmyAXu5og=;
-	b=PxaekDEgryjgjhp7gu9pnwHOKrO1w+Ild6EkoruNjPFB9xcrTFRJHcpg4wM1iMrrwV9nL9
-	+p0KTwTezVzUVsoU5P3776MvLd2UhU6GppBO19aXfEYGXEI4YmjE98DOMZwqZXE+v29yqa
-	OocbOqqZx2qsYHRjfOgH9QO7hDMuz20=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771436540;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JvwZdWyBuPCaJq5onHfru+6aMaFDG/nTmYkmyAXu5og=;
-	b=Ch1fLl53jWDItA/wsG5VC6xmr8thrkEqqKnsTtBDCAFDTy5xXH1KMWTVFMiY+uWnyLcXY1
-	EDZBrO7fKy55OdAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771436540; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JvwZdWyBuPCaJq5onHfru+6aMaFDG/nTmYkmyAXu5og=;
-	b=PxaekDEgryjgjhp7gu9pnwHOKrO1w+Ild6EkoruNjPFB9xcrTFRJHcpg4wM1iMrrwV9nL9
-	+p0KTwTezVzUVsoU5P3776MvLd2UhU6GppBO19aXfEYGXEI4YmjE98DOMZwqZXE+v29yqa
-	OocbOqqZx2qsYHRjfOgH9QO7hDMuz20=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771436540;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JvwZdWyBuPCaJq5onHfru+6aMaFDG/nTmYkmyAXu5og=;
-	b=Ch1fLl53jWDItA/wsG5VC6xmr8thrkEqqKnsTtBDCAFDTy5xXH1KMWTVFMiY+uWnyLcXY1
-	EDZBrO7fKy55OdAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A7FA83EA65;
-	Wed, 18 Feb 2026 17:42:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id H2z8KPz5lWnlbAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 18 Feb 2026 17:42:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6949BA08CF; Wed, 18 Feb 2026 18:42:05 +0100 (CET)
-Date: Wed, 18 Feb 2026 18:42:05 +0100
-From: Jan Kara <jack@suse.cz>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
-	Andres Freund <andres@anarazel.de>, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
-	hch@lst.de, ritesh.list@gmail.com, jack@suse.cz, 
-	Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, 
-	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <bf6eek2jagskkgu3isixqjjg3ftrkp5juf6lge3rjjutzzhbdd@vkliyqpsmrry>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
- <aZSjUWBkUFeJNEL6@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+	bh=cx1YFMXeXn8Jw1SsA/vK5p52GVwbuIAqyFb1QuBwKqE=;
+	b=pIrisjkgRvEhyzm7mm89uxk+UXLZ3lxBEZan3dCK+yy0F568+BiAbZu8NBsKky8pzCkCCT
+	uUW9PM9BMQvrw7vEkEVZlCqeTiQ4DXVLb5kwHS4v2KGbO/FRZ97l15af7lOF568zsJcNJd
+	ZDigBiY/QGr91OsSfQbgpnzWCW/+E/c=
+Date: Wed, 18 Feb 2026 10:02:15 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZSjUWBkUFeJNEL6@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-X-Stat-Signature: wmr6pg9ed5sqkfc9wsnjz1ionb1d96ji
+Subject: Re: [PATCH v2] mm: move pgscan and pgsteal to node stats
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+ mst@redhat.com, mhocko@suse.com, vbabka@suse.cz
+Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
+ byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
+ eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
+ hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ matthew.brost@intel.com, rppt@kernel.org, muchun.song@linux.dev,
+ zhengqi.arch@bytedance.com, rakie.kim@sk.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, surenb@google.com, virtualization@lists.linux.dev,
+ weixugc@google.com, xuanzhuo@linux.alibaba.com,
+ ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
+ kernel-team@meta.com
+References: <20260218032941.225439-1-jp.kobryn@linux.dev>
+ <10434f89-fe2a-4cfc-9b29-1cd2ed2bbb7e@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+In-Reply-To: <10434f89-fe2a-4cfc-9b29-1cd2ed2bbb7e@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6568F40016
+X-Stat-Signature: tkrzyujt9seazfkcoskk766zcte65wgg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6710C40008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771436542-581406
-X-HE-Meta: U2FsdGVkX1/b1XlKKvaFa9iWr0ioSsKHXh+1RvFoXZjpYXyTeaXvN4Khi8k7EEqUzXdqFVetJbtsH5waZ3t1afncTVzPxY/U4XlJ0D5YwjUQRATIyV2L0Ti7UPJTF0jNYU54kiDLGqmarWiUCS1OekV9txOCta33c5ixEMXiTj8lDE9meke/n00B0zrpfqktcpYykXn+T7wOZuDDtNad/XNQMjYr168d842evpbRZKakdzYIwGbeLEqgMRWr02ckW+dRxQzUzXxtr7MrxjzCXUrHAEdBIj21Nwh53Dw0ePQZ2Ws9NQjrRn8oUncCJLJyVMMCddp3ifSJFAiDeSZU3bY/L+TkfoiNqNC/jrOUXTI7wDGRDEyja5HIn0L5pdCzuPnVSuVBE4PCSDGmn9Gt4PzWPQfnPAmjyeIpRl63yBT72yBEvYQMiw640+VPH/q/u3dFwph9er41wiEddYnZgRgNQXTygPq2bHG12LYIsjlb7zb/GToBv8HWFnYbToIP1pej0HMmM1NwPOvwuA/iN0es+ewEERKy5Y1KSmuewbODyVonE+/b090Vynbf43WzmoHDeABydaMu/PDXxiq8zzVFyzwZyefQZ0+5c0HbFX2cx0pdeiWvBi37mFsbs81QW/8BYhc133Gl3lrQ5wbMTiy3Q0LXToqIkSYJegVVS7A/+uNNquOzA50a7y8ISZzF7kVIRxSIL9+nJcuQ5ylYplFpRmBh0v0e2q+2gnRDUgS/ZgpNsyIjmO/x+wMV7eg/uTdld0jizE1MVM2beri1PXt86/1TPkdWiZMDchUK9H5VzelwRPmH5EgQymDSSdNXSKQoaJI2WyLlBhk+zL9e5N8wjMVtFdcUB3JYEk61qNKMId2AA/m8ho9zyBjfZxP+QtszY8U9c1ri/bjCnnTH9ifHIbS+pUGleNmKPoM3rsw3bqWZJIjH5/rUQSe0FViH/6EXJDd/gFVTHRwh9Yi
- 9BD2KtEn
- 7HiZ5SVC0n7XAof6uQqqhhNRYfIi4wzGdkB3KvjsBtpxLdGEiGhzgeTmZRcM0dSNyKjM5NuSbH7RZtUWS1cCcsblt691II8dJW0p0len262rwxFanQBdBwqsYgwHspv8rEh4m1k9OQ6UuzGB9Xgj+eEXuhscg6u1QQ+wNatQcRA8Fy8zNnRLOTwzgUAjsZiTOHIgIl9vmEtBN0dAKrDU3QwqNjbEK5tNJ15tNXeYgob2D8NS9lU1L4nxXYGxoJ2ZrQEu5Qf11XjaKY1MjRewU2wecpgwtqD4WvGQAuWysMQZes3ZiARJj5up3U26zY7QYNAlUSomLBC+Z9r4zZ6fcPNyJIOEuCcHs4HHjb/9F67eQtBpe3T1B8xDgaKiAjDpgSiBDLaaWX9aKMuNtLkVBfODFa4A7JggjBdzS
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771437751-704584
+X-HE-Meta: U2FsdGVkX1/RCjjBRB6xMQipUrBaQCh3AkM/asihWOMMcinnvYlKET5/Gldh/2iQe8U6+6MPpfoVR79g24FH5DGyA4BjKqX0si6MQDIU/esfrRyqCB8HHFUECFH0mcQWDhtR3YEbyDV/WOCnRyaobGBhhId2ehdU2FAigIWtrLO7GjaAGoD23PrM/Ej5nxUWaGfDtIIdgQCQb5IWs3imeEoHbltEuX1lu+L0wGEOWZRx7NT15zdD+9RFF9rGHrpuIMsp8bhAz0Y6G6oJAVt9fSTeMgMD83Kih+ZJ+UCC9TqPSpTaf/nWgTUHzy93HNNNDHjE2DMLZugPKRmeX70vGNQO/uBiNIPgSM8THsShIgzq0ygNfrODa/bBgR4lIKcQKN4TimLpJ9pc7BBw+QMkSI+49sMmy+bsUO3Gw5ePtLsL6iUag2/sgmKRJ1yy3Os7lcBtWr7q0yP6OiCe27NNaNfe2e5niEdp2HKbB9CgTPrT3UM+MWKbv23mUy0JYB9GOtIOeyqAYmRGsQm5X7vuXQ3LaI+k7/eCFlRVB7C/q7mdWgeiqIfqkftbNS5D0KGTT187QnJXNJTPgnU9kv2Jz9mBieASMVirzqcV4/Gur3OwNJsZhCy+ox7qPotDpliC5oqjqT1fvRHFhF7BII1YOKpksRBvb0Ds/APmJxOs3qLhH8E4wcQoLY76ZqhmTy6DQaM2JmqRyKhDQD5r74aL0OTjEMi5EawRCIeCEWmESU8KSlzdyTaILtjrkDdqayZoQA2XNqNq+yM+NWr7miRU7Wj3GlL+ousHBynqAfqqxQO9+OBPxAEhq3pCzZokeWcJwOWljKyI2LKgT2U4mPYzlnTXEEBgQY+mauqC/x8XIUrvGTN//7YuKsQF6Sd/2VIp6NbM+VODQRsR1O9RIm62zWW7tm1N0HL5WSMf4Ptdb2e8Bq7CQ9OcIjeza3g0/G+C0rkcwePzg1t+hHBCjWW
+ 1nmtj01R
+ ptMuGl18GaVZgzBOhyDMZvWvd515jOYvQ5VFNmws0vEG3R4HBdj0UIiKkhM+nQr7avAt2Sqbd8n2hEJPZIuTEuTAsqAyLYhb1wDNEvi9WgcvbCoalhCK2AhxTClMgxWT78IVXH/279FIAkGbtukC8Hpvo6Q08tP1VvVjMGKZf8zz3fiMrtpB4pjGkV7m6yXomL71nPkRPfRXOMIplznX3WxNW45hXokWF7X+X8vja/2exELy3UxodUl4tGKGx+uSAUDrfAcyzIh2AqRd7PwlBPspFtg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,26 +101,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 17-02-26 22:50:17, Ojaswin Mujoo wrote:
-> On Mon, Feb 16, 2026 at 10:52:35AM +0100, Pankaj Raghav wrote:
-> > Hmm, IIUC, postgres will write their dirty buffer cache by combining multiple DB
-> > pages based on `io_combine_limit` (typically 128kb). So immediately writing them
-> > might be ok as long as we don't remove those pages from the page cache like we do in
-> > RWF_UNCACHED.
+On 2/18/26 12:54 AM, Vlastimil Babka (SUSE) wrote:
+> On 2/18/26 04:29, JP Kobryn (Meta) wrote:
+>> From: JP Kobryn <jp.kobryn@linux.dev>
+>>
+>> There are situations where reclaim kicks in on a system with free memory.
+>> One possible cause is a NUMA imbalance scenario where one or more nodes are
+>> under pressure. It would help if we could easily identify such nodes.
+>>
+>> Move the pgscan and pgsteal counters from vm_event_item to node_stat_item
+>> to provide per-node reclaim visibility. With these counters as node stats,
+>> the values are now displayed in the per-node section of /proc/zoneinfo,
+>> which allows for quick identification of the affected nodes.
+>>
+>> /proc/vmstat continues to report the same counters, aggregated across all
+>> nodes. But the ordering of these items within the readout changes as they
+>> move from the vm events section to the node stats section.
+>>
+>> Memcg accounting of these counters is preserved. The relocated counters
+>> remain visible in memory.stat alongside the existing aggregate pgscan and
+>> pgsteal counters.
+>>
+>> However, this change affects how the global counters are accumulated.
+>> Previously, the global event count update was gated on !cgroup_reclaim(),
+>> excluding memcg-based reclaim from /proc/vmstat. Now that
+>> mod_lruvec_state() is being used to update the counters, the global
+>> counters will include all reclaim. This is consistent with how pgdemote
+>> counters are already tracked.
 > 
-> Yep, and Ive not looked at the code path much but I think if we really
-> care about the user not changing the data b/w write and writeback then
-> we will probably need to start the writeback while holding the folio
-> lock, which is currently not done in RWF_UNCACHED.
+> Hm so that leaves PGREFILL (scanned in the active list) the odd one out,
+> right? Not being per-node and gated on !cgroup_reclaim() for global stats.
+> Should we change it too for full consistency?
 
-That isn't enough. submit_bio() returning isn't enough to guaranteed DMA
-to the device has happened. And until it happens, modifying the pagecache
-page means modifying the data the disk will get. The best is probably to
-transition pages to writeback state and deal with it as with any other
-requirement for stable pages.
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I'm fine with adding coverage for the active list side as well. For
+completeness, I could also include PGDEACTIVATE.
 
