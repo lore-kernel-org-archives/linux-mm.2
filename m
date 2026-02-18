@@ -4,99 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D054E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 09:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E30E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 09:40:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D22F6B0088; Wed, 18 Feb 2026 04:37:54 -0500 (EST)
+	id BF2A96B0088; Wed, 18 Feb 2026 04:40:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77FB96B0089; Wed, 18 Feb 2026 04:37:54 -0500 (EST)
+	id B9FEC6B0089; Wed, 18 Feb 2026 04:40:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6614B6B008A; Wed, 18 Feb 2026 04:37:54 -0500 (EST)
+	id A9F556B008A; Wed, 18 Feb 2026 04:40:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F486B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 04:37:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFEE68BB3A
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:37:53 +0000 (UTC)
-X-FDA: 84457075626.14.EE2FF93
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 28C1C2000E
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:37:51 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kPqyI43l;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9242C6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 04:40:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26F53B976C
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:40:11 +0000 (UTC)
+X-FDA: 84457081422.02.1D1A2E0
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 77E8C100002
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 09:40:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=E0xfeB1t;
+	spf=pass (imf14.hostedemail.com: domain of 394iVaQkKCLISdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=394iVaQkKCLISdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771407472;
+	s=arc-20220608; t=1771407609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZQ7Z8m395IoLgcg6kkA6jJpUO+vr9RLA7/yczoGzCcQ=;
-	b=WSR33AvU2OghmpabBXgKRqwRnjQ05guxeewWrgAP8g6kRP8CI8I03frHrIP1c3dp3CALsh
-	Xp5RvUcO6JA8RrlkAJIERCOlMtbR1Es65/3dq+yWvhUDacmw2DzC17a1N9dvgyXLLm94Ha
-	NswgjgUrIg5SitDSFIKSkMiyIvEwH0o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771407472; a=rsa-sha256;
-	cv=none;
-	b=WF+ZNn5jexf4TpIvDSuz2lxSMbdWWAHN7yM1sdCsRH/e2eEYq3lySWvccFogRp+u2tbaMe
-	1k81Yyi4lPhp1RJydEGrBsOuVgeu7ztDFTKcWqBPXOjhIht5X3KiD0N5su0IiIB5Ac45Lg
-	2RTDiVzLmnSQ99BtSuAX42NRqatO9EQ=
+	bh=+qgmQYzq/LwIvRAllD7t9G5Xcp/7gpl+R9gFqsKAeyw=;
+	b=Ngv7+14RwzDIunB+Has+Boa5fpC4wOVyiW8LqDla/hj9FClQwg2ifPaGuIoZJJdc4c2D+h
+	VnJU6DPd8Ya8/du9ZSrC1WNAQ6vy3UA9AH8XaNNisz4l31sjXsqJuo2VFpZ3ACBGunTT4z
+	cd3vScKyR75OP2N7zy0J61/fafMTMhU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kPqyI43l;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 31FFD44319;
-	Wed, 18 Feb 2026 09:37:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4685AC19421;
-	Wed, 18 Feb 2026 09:37:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771407471;
-	bh=5BhDohxi/Dt4pM2Aom0/HfkXZ43SmgfuTX1tvwIrp8w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kPqyI43lDuyH6COoxx8Jlawwo7f3PIUTUm3np3lZ3uUtlPTJNBhXG4I7B4hnl9Gmi
-	 /yAWsqGgdzL9yHIh3nDunHON6BIqLbR7ZE9lK8QpEVWFdhNmstlelVuuiYFY3/9rRa
-	 oje/E/aYEw8zgoOYUAmP35mpChGING4E2TF6Vuv+1wikJlty9OTYwF+wl8svtE5MuT
-	 AMeNE/2CGnP8ycuwSL/ZebbuwtnORNKnH4Rbtk2VgQwCNUwiwie7dOK1N2fB3O36er
-	 ADC3JXSKGa5j4wh0BQBf9V3tvqNcz5JZWJ7Hu316Tb2NNtUq540K29U5fGsNth3HD+
-	 fEiDWQaE3rN7w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: page: add method to copy data between safe pages
-In-Reply-To: <CANiq72kZQiu9DbQgkHXDDjHORwUdTm7oOhZOE4Tr8eHiyW7RbQ@mail.gmail.com>
-References: <20260215-page-additions-v1-0-4827790a9bc4@kernel.org>
- <20260215-page-additions-v1-2-4827790a9bc4@kernel.org>
- <g4ihY-XQwSZ3ysINoU0v3jFzzJG7Uzonq0b6C-EYEYDx4pbJWHHJ1hYmQsmGATIDzexHv6NFea8YNikY6zXq6w==@protonmail.internalid>
- <CANiq72kovxkiF1Kj66yVyQYKx1OijjtTGB6UN5M35th57UFFeQ@mail.gmail.com>
- <87ldgteftm.fsf@t14s.mail-host-address-is-not-set>
- <RHTfcS8-6wqboBRd0aNAk2RG-phiMsedyL_E78rwI1FbLtNzmdCAlk5Es1KyQMPV_-KAtJw_-ImmDchI0Mp0Gg==@protonmail.internalid>
- <CANiq72kZQiu9DbQgkHXDDjHORwUdTm7oOhZOE4Tr8eHiyW7RbQ@mail.gmail.com>
-Date: Wed, 18 Feb 2026 10:37:43 +0100
-Message-ID: <87v7fubdeg.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 28C1C2000E
-X-Stat-Signature: q7z1s5cemq86gmma1t9bw8w1wt6intpf
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=E0xfeB1t;
+	spf=pass (imf14.hostedemail.com: domain of 394iVaQkKCLISdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=394iVaQkKCLISdaUWjqZdYggYdW.Ugedafmp-eecnSUc.gjY@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771407609; a=rsa-sha256;
+	cv=none;
+	b=C9maygYdN6yo9siDOrAbe2mzfIcfaCUxuuFQZtsr7a+eCtGymYtYNHgngyFbKg8RakjKTw
+	Itkb0RRtaYtZc4GTWQ03eQuLDx57rdjpFhK+quowR71HhUL/mjKfLDtsbVeKt1ajWkj4rY
+	xjrHfU16Ige1g7POXpZwvqD7hRr6OhM=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4362197d1easo4345135f8f.2
+        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 01:40:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771407608; x=1772012408; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+qgmQYzq/LwIvRAllD7t9G5Xcp/7gpl+R9gFqsKAeyw=;
+        b=E0xfeB1tv4kC6beY+I7r3wLfd9K/SixeFfULPmqdBgNTYN0mIErdyRtbfk8e0AxU/3
+         XxYD9bGjMb5YhTPubAzDLzCvWQj9Qaw1RwI8qBuQS8QcWTRQ/kFR4Vsk/Sttc4rwmpRK
+         MafNlHMq/w/mpfvcZBM1MePm8HXKZAX3GublkoW52HnN6rXMO6jL6h9Z01zuGEl0LxKk
+         tn0yp7gc4AIXWv07dtPl8AaRPGVBAmW+DnKC3NeLAOwyLpWkPVkTQWMHQKJyU7402dxL
+         8lDvMYMs/rcdqiOHIw8t4eAEtUQ7pg8bqXXMQmhgBhSvEuhtvZ+SN5AEFyp6pZfHOJrN
+         qnVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771407608; x=1772012408;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+qgmQYzq/LwIvRAllD7t9G5Xcp/7gpl+R9gFqsKAeyw=;
+        b=f8GvZqorA3W1NbT7crMvzoRByF06/XlQJ+poiGoVUwWoLdTEGo90//2ZrCWbiIsiwe
+         PDuwv+g4damBFj4Jqso853aKKInsG4SKtJIDfw6LxWEYiTnbRbf+V9EyihtJq7qIcKXc
+         tH9Souona/uSXDw1CeAPopbyjnn0PMiR7zkqiG6oWmAX1IgfJBQ9piKshVp1HQHdBOAY
+         yTNfWNOFuoLDkLWJU+ora911oKGOS+htDavC2BSWQZnjLkuWbmePsES2doBE3GCfAAzz
+         b0DBDgx9ihmZ0SndNcfX+Xxq6li4jPeM4KkV+1V+lrMhZjghF1YwFyDn2P8Gkx5UKJCf
+         c04w==
+X-Forwarded-Encrypted: i=1; AJvYcCUIX2WHfFmsxBP5DXQHwa7lbnYEv/VAVmZK3S1QQD0MJCyNEYa341yNxhVex4RnPtgmoyaTdWUydw==@kvack.org
+X-Gm-Message-State: AOJu0Yxf4RrgLJXbwnD1unCqojV4Npi7rIWHYaDJRMaTtFqtoMcrNwcu
+	C95H2r1sezDHO8CnlL22sX7UQ54h4NnDVdXhRK77XUiQgmsBL3H6h3AvXayMNHkNuVFvy+aKzsO
+	wqn6Tabj5obB7qLDuEQ==
+X-Received: from wrbdr6.prod.google.com ([2002:a5d:5f86:0:b0:437:6ebe:6e58])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2dca:b0:437:6e63:9172 with SMTP id ffacd0b85a97d-43958df3516mr2229518f8f.4.1771407607843;
+ Wed, 18 Feb 2026 01:40:07 -0800 (PST)
+Date: Wed, 18 Feb 2026 09:40:07 +0000
+In-Reply-To: <67aea464d25c8cafb3113eea62c8221b@garyguo.net>
+Mime-Version: 1.0
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aZRY9HthKwVJrAf1@google.com> <67aea464d25c8cafb3113eea62c8221b@garyguo.net>
+Message-ID: <aZWI9zGIO6rtlCCg@google.com>
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771407471-890701
-X-HE-Meta: U2FsdGVkX1/tbsxCGuchOQOUHR9Kxt70JNvZUErIE5P5HMNVYa9RvXfA81LFfzwJxq0u9nccQASlmVuW6UER4WJB+HSlf0c1awys88/gJModGJOBz49ZEA7Cvd/drd/f2JOaf/k1KSb1JeebhEMyNn9+pY1O+t2pVRBbSfDuiPfauXcZ5wz+vfMJ6VvUKDfb+BRwsEzIN7lI3wkQlKJ1c3UrWVm2iZI+7PjIDCbmREMIvjbATSJUv5XkeKfh/iExwZs8O5hWXIMcVLo2eopbBr2huifNQ3AVyiw/CprrQCeQReR7SBybFxxmh1283eddNn9CFVGTK8Nqwfla64OVRzFg5Gggouijsi8DZ/lf4p/TgGKF1X0XnHRpffTSrzKxXHdN3u44tZmf37ymbi8CcMUL/pDoT6gjHVzKYj7R2/5TreLpsm9wpyVGJQw8+LYTTDwcEo4NYRnqEKbAInNQDqQTgfy8so8FMM0Qg6dpzwN/vCxkmAkhbdF5ju4pV89zvlBewSWqIroPahe0l9T/iTZ4c/lrEzeZHbUmV7UjhygPwiiAxLX3WDodJuQs8WJ/41KKKKDFAKeCvxSK0zsDOKkMrO2O5IDYrpo6q1bvMnEdXRHYMjE165i+PtlBiWtzVQYaY78nCViiMWYpkhu7jVwnKYDYowx4772FUBQ6uWzOyreK2DIQd6oxS6EqEDozhy+ObEr2SBH3OvzxyE2N+obNhOaRnlj3UOliLtuDpmsH2AZMoP8HtGR25bZF4DbC0c6fqSFhEhzU9x71yaFIk80gS1Zhv5TvTrB+kPusJTllZlbmfpAPHX1/dabdLHoM2rZV9goPYtSKtLxQ1/w0QBX3yyeGFLvzB9iJw42n8CArHaUTH19PY45yk82HSuCrFuAFjlW3GV8lRcNcVd/y5kORNST5VM97ZKN9zpDOiPsiR5LCdkrREXBm2Yb1liOTzZnifzDOAQkjdt0MG/D
- ImHfB7CN
- 9hLMFayhrViPHIqQv4ggbJXHa7JD0xhdkfGJPu+C4lT8PjxoLOKrkxmfoHNXrN0HPYkmzL4oN4bpZiwQPxJtajkCzJcNpWfayiiymRS+RsbOJs8mTNQXmhtyMEJ43pVVlCy6yNPuolED6HBxE2qkjPiO1qmS3ITOYydMMyQnn2nOxiOWreNG2eZzo1i5q4Aj2RYUEYhQJwaA9BJhsCsW9w920aLlWvHvOgDi7LMonzbuyrqy3EgG4Orn+a7qZIze6K06RHSXiU8h4f8qVtjS+sg8bk6If2XXeEVwKdmVNNulYvl1rpu7sfRDYpTFFVz0uArNx7NQm3yZFaWgS+GtNg4Ozrz47zz5vR/JohaqrArKLBm5VRhF+T1C8nA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 77E8C100002
+X-Stat-Signature: x1z357jjzbbasupqrxnmnx7cbk9cp7jz
+X-HE-Tag: 1771407609-421182
+X-HE-Meta: U2FsdGVkX19hGyP3Cy+Odw69LhU1/KLKEnv/LjUpAvJe2B4byjYbFCYy42mt8nImKAhgPIX938QDhcTl60T4mbfYjUmesnSSy3hD+ABfO8XUISSV0dqgZUh7cJ1qlBuobzEoyVLWbxYgwWoAnoJ4RFQBhozkScfGxBBUPbq9/egipFMJwJa4DzyN83lXk5OSqMgidOBp8xq1xd3MUElUsPW/eu5ceM30uzr8KfYJI1E0yarfbIE1BeaP/rmMUFHwe4Q9O+NkDZDTjxsvWzNiL27wCr1LdlzTjMzmzLrUslPrCUzxjtjzY0QRLYUTcHAcKsiHYDQ0kM1ap9PwLiXHUsE7g6C788DQ4EMFqjgyt6HSHXM261XQznjdsq/ExwWLfUlUTivemtAWgFplkB5w317X9cO7V6jIAHucJsy5YaDIuEy1dx/iy/aDz2pbasDA1E0M/L1nJQFZCQGNMf6SmguMBKsRPNjW99WtJ4BaX79Sv8JOAo3H49ENz9iUQ4H2jnurK9U8Pwrjm9UKsa2LQkb8lnmlQLr72MmLS3AB3U9APIiDLI4ZUHXEp0I4RxcXvXidu5WohQVohKF9OZOifDLmqnJJFpEEBzrm3E8RDlm8Xo8EoZ9ikJBymUe68Ke5MdTCBatoIQPVhWDQfGxGlnAZOUqc5fMAUiosFDYvaIBVZ8aqqKXyFSWHPyjNvtVbeWmsqofDXSK7CZMGuuJ7KkOdnIDf5dZFqFmSFUVQ9JTx9SDTW1KFbsHL+bIZIxUPyehGQ8+VND8mBOMOU7C63zxYCLLpq3A5UpFNzXzfTXk45FwJuk9VpPubqmcc2bCtQyw7nZkA6+MepXLWZ1Ze90DCxSISBMWyce+j5x/M344o/IFSv+XdOq1bPvCwZj80FqgTCa/0UStWZ0bdH6D76w0O00w+iAiYl14UKtgGXtwJ1mOCvoy4GFCNCKVKG79e+rkb5NpUXsg5mQNJmSk
+ TrFAEbdS
+ leISoOtZmiYfHxe9EPjLtoX7k60KoS/fzaCdnwvwl+CHvjiDwoKk7qrbjX0gnjhAgxXehYV/p4GleFFguF+T9aywejJeUyd86+aK98WCoIdUQpo1ChXq0RnusCtJP69EjvUdUgVAdpaW24dnHW0bM6qhJ094Cr3itO6KvXmq2soNbRSp0BpPi+T/i1zpUtsvuJbRRSPElIC5BCsq2oQHAkXzGArzIu0ru4XxyO87qdhmvj2etHIyMW4/qYXXaLWcKLoSeF+GoOT5siioPCGGgRtIvgWGnBpBx+aEvJ0sf7hTmaaz/LX3mTId66TY1KnsGmciEZBzkgYEfb/ePtIbfRzuq9ME82DrSwqTRqNphjkJDB359TnQ1dAlFWKKdtzDEYBZX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,107 +113,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Tue, Feb 17, 2026 at 11:10:15PM +0000, Gary Guo wrote:
+> On 2026-02-17 12:03, Alice Ryhl wrote:
+> > On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
+> > > When copying data from buffers that are mapped to user space, it is
+> > > impossible to guarantee absence of concurrent memory operations on
+> > > those
+> > > buffers. Copying data to/from `Page` from/to these buffers would be
+> > > undefined behavior if no special considerations are made.
+> > > 
+> > > Add methods on `Page` to read and write the contents using byte-wise
+> > > atomic
+> > > operations.
+> > > 
+> > > Also improve clarity by specifying additional requirements on
+> > > `read_raw`/`write_raw` methods regarding concurrent operations on
+> > > involved
+> > > buffers.
+> > > 
+> > > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > 
+> > > +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic
+> > > operations.
+> > > +///
+> > > +/// This copy operation is volatile.
+> > > +///
+> > > +/// # Safety
+> > > +///
+> > > +/// Callers must ensure that:
+> > > +///
+> > > +/// - `src` is valid for reads for `len` bytes for the duration of
+> > > the call.
+> > > +/// - `dst` is valid for writes for `len` bytes for the duration of
+> > > the call.
+> > > +/// - For the duration of the call, other accesses to the areas
+> > > described by `src`, `dst` and `len`,
+> > > +///   must not cause data races (defined by [`LKMM`]) against
+> > > atomic operations executed by this
+> > > +///   function. Note that if all other accesses are atomic, then
+> > > this safety requirement is
+> > > +///   trivially fulfilled.
+> > > +///
+> > > +/// [`LKMM`]: srctree/tools/memory-model
+> > > +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8,
+> > > len: usize) {
+> > > +    // SAFETY: By the safety requirements of this function, the
+> > > following operation will not:
+> > > +    //  - Trap.
+> > > +    //  - Invalidate any reference invariants.
+> > > +    //  - Race with any operation by the Rust AM, as
+> > > `bindings::memcpy` is a byte-wise atomic
+> > > +    //    operation and all operations by the Rust AM to the
+> > > involved memory areas use byte-wise
+> > > +    //    atomic semantics.
+> > > +    unsafe {
+> > > +        bindings::memcpy(
+> > > +            dst.cast::<kernel::ffi::c_void>(),
+> > > +            src.cast::<kernel::ffi::c_void>(),
+> > > +            len,
+> > 
+> > Are we sure that LLVM will not say "memcpy is a special function name, I
+> > know what it means" and optimize this like a non-atomic memcpy?
+> 
+> This "treating special symbol name as intrinsics" logic is done in Clang,
+> and won't be performed once lower to LLVM IR, so Rust is immune to that
+> (even
+> when LTO'ed together with Clang generated IR). So calling to bindings is
+> fine.
 
-> On Mon, Feb 16, 2026 at 12:42=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
->>
->> Why?
->
-> If you mean why we don't do it everywhere, then it is because for many
-> functions it wouldn't add much value, but it would add substantial
-> verbosity, which has a cost for both readers and writers.
->
-> Originally, we picked the standard library style, because it seemed
-> like a good balance that both had shown good results (especially for
-> this language, where we have rich, strong types in signatures which
-> help reduce the need) and that would get others to write docs easily.
->
-> Sometimes it may be needed, e.g. there are many parameters with
-> details to explain that wouldn't read well otherwise, or there are
-> primitive integers parameters with constraints on them (instead of a
-> newtype that enforces them) and so on.
->
-> i.e. why do you think you need it here? When a reader sees the list,
-> they will need to pause to read it, thinking there is something
-> important/subtle there -- is there?
->
-> (I say this as someone that generally likes structured, "exhaustive"
-> documentation such as, say, the classic Win32 docs...)
+Ok, that's good! Then I'm less concerned.
 
-I would rather not get into an argument about things that are subjective,
-but if we picked a style, I should for sure follow that.
+Though I guess it means that even if it's known to be e.g. an 8-byte
+aligned memcpy of length 8, then it still can't optimize it to e.g. a
+movq instruction.
 
-If we picked a style for documenting argument lists, perhaps we should
-add it to Documentation/rust/coding-guidelines.rst?
+> > I think we should consider using the
+> > 
+> > 	std::intrinsics::volatile_copy_nonoverlapping_memory
+> > 
+> > intrinsic until Rust stabilizes a built-in atomic per-byte memcpy. Yes I
+> > know the intrinsic is unstable, but we should at least ask the Rust
+> > folks about it. They are plausibly ok with this particular usage.
+> 
+> If we have this in stable, I think it's sufficient for LKMM. However for
+> Rust/C11 MM
+> says that volatile ops are not atomic and use them for concurrency is UB.
 
->
->> Writes require a mutable reference. There cannot be a mutable reference
->> while we have a shared reference.
->
-> Ok, but I am trying to map what you wrote with what the callee
-> requires. In the second bullet point, you justify there are no races
-> for the read side, and the third one for the write side. But you refer
-> to the type invariant in the second one, for some reason, and that
-> type invariant already promises no data races for `SafePage`, and all
-> we have here are `SafePage`s on both sides, no?
->
-> So to me it sounds like either you could justify everything just by
-> invoking the type invariant (that is why I mentioned circular
-> reasoning, because the type invariant doesn't seem justified itself in
-> `// INVARIANT:`) or the type invariant is actually a different, weaker
-> one (which would explain why you need extra explanations in `//
-> SAFETY:` on top of the type invariant).
->
-> (By the way, if we use bullet points, then I think we should map each
-> to the callee's one, i.e. #2 and #3 would be together since #2 is the
-> one in the callee about data races).
+I'm well aware of that! Yet, Rust currently provides no alternative
+whatsoever, even on nightly, and has already told us in other situations
+they're ok with Linux using volatile for this purpose in limited
+situations. That is why I suggest doing this temporarily, and after
+asking the rustc compiler folks about it.
 
-Others called out that the type invariant on `SafePage` is mushy. I will
-try to tighten that up. I want it to convey the information that the
-data of this page follows standard Rust aliasing rules. If you have a
-shared reference to a `SafePage`, there can be no writes to the data. If
-you have an exclusive reference, you are the only writer, and there are
-no other readers.
+> I recall in last Rust all hands the vibe at discussion is that it's
+> desirable to define
+> volatile as being byte-wise atomic, so if that actually happens, this would
+> indeed be
+> what we want (but I think semantics w.r.t. mixed-size atomics need to be
+> figured out first).
 
-I disagree that the bullets should be swapped. The second bullet at the
-call site:
+Yes, that's right.
 
-  // - By type invariant and existence of shared reference, there are no ot=
-her writes to
-  //   `src` during this call.
-
-Maps to the second bullet in the callee safety requirements:
-
-  /// * Callers must ensure that there are no concurrent writes to the sour=
-ce memory region.
-
-The third bullet at the call site:
-
-  // - By exclusive ownership of `dst`, there are no other writes to `dst` =
-during this
-  //   call.
-
-Maps to the third bullet of the callee safety requirements:
-
-
-  /// * Callers must ensure that this call does not race with a read or wri=
-te to the same page
-  ///   that overlaps with this write.
-
-I think it checks out? `self` becomes `src` at the call site.
-
-But now that I look, I think it should say:
-
-  // - By type invariant and existence of shared reference, there are no wr=
-ites to
-  //   `src` during this call.
-
-That is, the word "other" is misleading. There are no writers, not us -
-not others. We are doing a read of `src`.
-
-Best regards,
-Andreas Hindborg
-
-
+Alice
 
