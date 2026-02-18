@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FA20E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B730E9A049
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4055D6B0088; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
+	id A98626B0089; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B2E36B0089; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
+	id A42A26B008A; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BF236B008A; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
+	id 97D536B008C; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AEA6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:04 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B08D01BF3F
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:03 +0000 (UTC)
-X-FDA: 84457600206.14.7DEDCAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0A2271A000D
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZRQj+0Z+;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 84E056B0089
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDB96C04AE
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:07 +0000 (UTC)
+X-FDA: 84457600374.18.A5E6A24
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F3F1B8000D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W67mlTCK;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771419962;
+	s=arc-20220608; t=1771419966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sKcP9AezkYw4kw3AK8H8w2C/M1HfkGLDhA7lSmm4qFo=;
-	b=q+37V5qmcE3mYpT00DWTVV5nKpuBZNrXkfsl+QsAokFNCRlr1UI5q14AsC6a06gi3HQGyd
-	0fIg3h9GTbAJFimTFqG2W3Q181csRxPiHHEe/Pbkbs+X9O3YahyHwo2eV2kdzHA5/iJaJd
-	6QVJeCjOOoUdU9bh19Q/hc9AqLu9/7k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419962; a=rsa-sha256;
+	bh=njqxrMZbrsuV9V0JqvXQPGztJhPNpcsX6uZ34v8Qeso=;
+	b=zlSdvvlYtYD2BKtg0TIiLGVdpvtnX5/32Yf8K78yxUV7CmLtjBXeq5qcKtRGFI5E66/2Ug
+	gbnol0YhLalKctW2O+eJ0c1HbKx0+pFh8Re6FJ1iIslzHzUBIy+BPJBSy++1TJ0JULnk+Q
+	x/z5Dn3FpLqoB3JH/d3Q2Kz4jQZ8UBA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419966; a=rsa-sha256;
 	cv=none;
-	b=pZCysKIFkhr6XVV+BCp3umGI+dqCh4nGVzf1fOwxpvtVz4gFgQ1s0WzNha3jiws3YC+mx7
-	v/e7R9LPoZ5RFvm4kbO0PpCbqHNOPuGCdxzgiQP4CTy9ADZ6bY0v56yAuPtpGGMntIl3Qg
-	uOAC/rpG9HT4WnVAv2xvoGrgl4XyRY0=
+	b=valj0O/g8tNFNqKa7c+QVb9MQYwxAoql69rgrjflAgU7TNA1PZN64SCF8/eGQ58tWUVlTL
+	ivS4AbYF858y/UXjLbJpmx8oZlecI1+TjEPVDnZBci71y48yruONSXY8VrQfeMTKbGawBI
+	nT2slGLJAc6/RSJ5GxaRAbfP0PW/LkE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZRQj+0Z+;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W67mlTCK;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19004405A9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 45323600AE;
+	Wed, 18 Feb 2026 13:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81365C19421;
 	Wed, 18 Feb 2026 13:06:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F54C19421;
-	Wed, 18 Feb 2026 13:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771419960;
-	bh=wdJZZIzpHkDq9CqfLAQjA1xz1Y1X7C30wWjsc3kJBLw=;
+	s=k20201202; t=1771419965;
+	bh=6hsTAe3F6SFDAEMSoXMlTVM/m77RYjqo0PE8OHxHQF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRQj+0Z+xmjQDy7Gh1FpYKpwRI5gTMmaLTgEUNpjiE4drKJA1sUVKEgZiIheDcNfY
-	 rlZ8Rjn32bl+hR2oRNX2+FdmMJKBDFVjTBBzYnX5wO91q3cHZPvWvEAweJ8SWQtJlr
-	 Bs3krNJd/1KYRXoyDY5/bBCmBdOwBYLk7B310IBpcK06yAnFAHI8mTsjCYCZ3x/+eD
-	 HR0JgBwOpINJkPwRHftweSKDvpiqEPntdZEyGL5cQceQMCIGs3MYbqdRBL/AbK62bM
-	 s2MTUySTsZbAKNuTJh7GQ9OrtWkjaQnsEkkQH+sMO5PrKr3dWoE2HcyoE4Zv5BSlYr
-	 5IORZp81aGVCA==
+	b=W67mlTCKp72Zw4n9T5Y138as/HTEXsStwujszIVALFiBNltq9AwOHYT6/DcHNLQjc
+	 jeWoLrMgBBn+Y5PrP5CA2OHhb7Ff9nGjlQR9EtfrTacIJpQKbAn7Wax9h6t7taifxa
+	 8on73z29A63mz8hvQQCkQVHGe6Ng32rZT7kaIb8Qe9sp6Erh7DmMsGJc1IYNZAZMvZ
+	 HuQuWT/hS60Q6fHg9dbFnAJpL1/xX236ed4Q+/h/i3eKp/IZDW2LK61LCXyfEf5Q+R
+	 tJ9dLzHYB5Xxc/7iV+bi6Fi5XDYMkoNdn93MiZ81dYjd+f8BDqQaq/awbvIa/2Fvx4
+	 QPQAdiw++AR/Q==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -79,22 +79,23 @@ Cc: linux-mm@kvack.org,
 	Lance Yang <lance.yang@linux.dev>,
 	Miaohe Lin <linmiaohe@huawei.com>,
 	James Houghton <jthoughton@google.com>
-Subject: [PATCH 5.10.y 0/7] mm/hugetlb: fixes for PMD table sharing (incl. using mmu_gather)
-Date: Wed, 18 Feb 2026 14:05:45 +0100
-Message-ID: <20260218130552.55727-1-david@kernel.org>
+Subject: [PATCH 5.10.y 1/7] mm/hugetlb: fix skipping of unsharing of pmd page tables
+Date: Wed, 18 Feb 2026 14:05:46 +0100
+Message-ID: <20260218130552.55727-2-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026012610-absolve-ducktail-3c64@gregkh>
+In-Reply-To: <20260218130552.55727-1-david@kernel.org>
 References: <2026012610-absolve-ducktail-3c64@gregkh>
+ <20260218130552.55727-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F3F1B8000D
+X-Stat-Signature: 9e44gcrchsj37eoyowjuu7u6xxsqr5is
 X-Rspam-User: 
-X-Stat-Signature: cc3jgs9w7guo41ncrsjpdzyp58cfraax
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0A2271A000D
-X-HE-Tag: 1771419961-668789
-X-HE-Meta: U2FsdGVkX1/fTsedt3W8uXOpLsKjMM1KVQm0YLx4Z8YS7c5Xawkchncq1ovKKtYlZibgi69h3EHSQvqgml/ng7ZEG19DrH6QKK0L8maf3G7PzyIxuS/UDFAVwGRrzJMw66XJ/0o1GqqOtHFIZgTsuk1W/COyUmmP4aWT7E33CEIec2lMRg/kGDT7M06OA9jh9V6/S1ny2fHPqXHgzP9QunHdZCxnazhvTvxxts9VNc8OxmCFM9ZOU7FiHjBynRCFmTsFTKmC7657pghg9nka4SxzZ7Ob4b1P7tyDah9gCmrdDMH9kHv5/heHxeujIMg3sg/PH4WK9N5oVnctBwHO8YQJYdScnJMmW0fq1xPy17uDx+sv6DZUygyA7rc8WnB/wGXqdLHEyOpzCA5RegiFiHqX9KGAbsaBhKyOX2j7uFmvBME4l+/Wk9GlSIBs8E7IqynWBtGzalqE6UAVhembYEpeU5BnmWeJt60KDmrhPTLgynVO9MWzEOfoI8nuxSqXfvLV1zcJim0N2gtl5Zscu6u2qKum7ovdH9ThEVE2P3pKqUGiQTUSn8BmkO/YSHG3Yehm+Om1aa6PLskuK5lFBAA4q6NCtEu+VZ9qhnW/yIPZj7fhK6aOxYFZ53hS1oZEf0u0f/75VtcFoxDvQ1mmEmF2/js9TowFMhfiitak1N/iwcb++ZjqZiVFd6pTdsqcKFJhRZ0qvxzr2gvotu4jTGBU32iIzQYgRJNACYlH0msb9c8Q6IEHuGDdP1xt9tkIi0+khODScLVOFzoBdSRrdEcnhgHB2ElTl+EUxWtU/PXFgxc/PK2Q+iCxCf8VKphqBRrkQGSeIYf5FbPGf8RTDXXKN+Cs+LFemiM/pylaApVOfeCUjq2zzFRY3DnOX2+x1gEFHd7db2VE9A21RDRpUEqRvqZZquhiHOC1HOLIda7jjbGWCUP1U8AoZ57iFJpWgR81kjLhNiYL8UqlmNo
- RdmSMhDJ
- NEn+FLd9COTKb3REiDMpLDQc4PPzkFYnnByQqsAjWYEyCUUqmrilL+GLj8JAH4tOn1hVYTLQ8oBJY34qyxPxqsdHCVWBx81V3OSE45yqJb8low2XY7fkGeEdFIlBJgQldufyXpFEpm+tvLFH9jhI3GJ55Gg/Bij9umOZU2Nv9Hc5Lq4bg5QwjXGtNHcMggWUGlpd7E+68+p1BHIfGh+ThqzysnM69XSyMx++K08Pf8qMmLIVsyVsZeNUJSyfp4AKC4PmYnDqne7bVCC+mFDDKbDd/t+cgUVOYDrnEcD8aedU37oqDgoRU11+Qw3ziCqNK3dBsommyJHc6G0xr/jbLOgvsvu2PnjC03EPLhGH//lkk9pgR4F3L7y9sd3BMlsxnPppVjR7xQf3/BiPZSdleK7iE8JRx5vHbJ+6zIKAsRm9kzslj4GriU44Auy5qVw5MSUVEJNRrZ+cGDAXVyzbtS7bNm7nIuO54absGGyOQN6qpbng=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771419965-917314
+X-HE-Meta: U2FsdGVkX1/5gaC5f8CrA+OHEm1T2yfC048UfezSLwB32se4yjIbfHHh1t7vpOL7RXq+mNSNiNqdq/gWBtXDkMnRGvnKPmibVp1AwGmmFqKg3i+fCzTB0ezM7DiaG8dQtPmfxtxHSq/KqN/ZvgVDMDbcR1UwLa8mJPycKEXVKMgnl92ZnH6S0KL4+2uRE8Qkn7TD2M80miqZUh2V3JGPXtTScTKUL6s+Bj0simnEFpgW8Lrp7ljf3sEhgjXw1maIgO5Nl5yYe9QMD7266UIJMWh3pQa7oarDofhPU1/07svubFaj6enR2GV4fQKk7xXm5e3z1OmrH2fA6/sh/n0pYVOJXc67CTaLaDPuPOK/KXMG1bkMhlxjCqfYqe87dQWj9tVrhDM+7HB76CFEFNUnD8ABPJYdOmb2B7/duWVNLPzt4rQEw/FZ3Vl7HB4F9wZ3ESZasYCDnrq399Q/hFu5ZiivwaMXFwk+ASlCGW89/aRi2M3PXJLDuSQ0BSh2yY6Pe7Ei+qMwKPGWooaaRkUFnQTOlNE5W6/CDclcBjv5k/AykumVhtHGra5UhraVuoDjCn7Y1Slz9yFZOi3L1oyjwsz2e666XvAMHBqjFUZ6BMU4TTpPyjlQ7ommf5dEC17Wy7DtT3R96S9Q46PClj5LGBetz6+UtmjsZrYbV038AkJ1f753jWpx1sLq7CK8HVDLbbtYEL5GBrgFETIR0NINZwarlHtYl5gTTAkr7p8icF40RYjGzRSUXemDGWD1SRK1GUuu9Qj7gaHmq9hF4A7zue3VSr/d2zMijkT0sgW56Z6roDgtxD9uE69EmDQRlW27eE6546KUSHce05k0kRrtFGdIPYESLFbyMj8UB+ENAZ1neh0TS3YdDPMiwTMQSIcn01joYf3upnYzXJyRufgc72ceqi0alNpycT6d/BaTGSTM15+mOlwHmbvZTPKCGZi89C1AYaVoqvrPFINBS5C
+ Mrce9OOJ
+ TCN4yQHmSePlikaPfgJ+tgdMLgJBiF2ImXvfabTf3DvKz2q/f7Y2EyR5VepTnTaX7GWcMDN3g/7iYXczQwdO6hD7mN5HTVfkKxPY9YWqXe/LeGFVEC9kixU6wJEZjgNKiAOLYU6HFeX7GKe6AWWCvuOjZsfE5wWuqbnQCJ9tPAsHz9xuB9XMdw4J3MELXgCpmTmiY/BuhHb+SKzBSpi9qAW8zxH3dwLgmpFNF9IYaDKtchX0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,55 +104,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Backport of [1] for 5.10. Backport notes are in the individual patches.
+In the 5.10 backport of commit b30c14cd6102 ("hugetlb: unshare some PMDs
+when splitting VMAs") we seemed to have missed that huge_pmd_unshare()
+still adjusts the address itself.
 
-I found one bug in a previous backport, fix in patch #1.
+For this reason, commit 6dfeaff93be1 ("hugetlb/userfaultfd: unshare all
+pmds for hugetlbfs when register wp") explicitly handled this case by
+passing a temporary variable instead.
 
-I'm also including a cleanup/fix from Miaohe that makes backporting at
-least a bit easier, followed by the fix from Jane.
+Fix it in 5.10 by doing the same thing.
 
-Tested on x86-64 with the original reproducer.
+Fixes: f1082f5f3d02 ("hugetlb: unshare some PMDs when splitting VMAs")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/hugetlb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-[1] https://lore.kernel.org/linux-mm/20251223214037.580860-1-david@kernel.org/
-
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: James Houghton <jthoughton@google.com>
-
-David Hildenbrand (Arm) (1):
-  mm/hugetlb: fix skipping of unsharing of pmd page tables
-
-David Hildenbrand (Red Hat) (4):
-  mm/hugetlb: fix hugetlb_pmd_shared()
-  mm/hugetlb: fix two comments related to huge_pmd_unshare()
-  mm/rmap: fix two comments related to huge_pmd_unshare()
-  mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
-    using mmu_gather
-
-Jane Chu (1):
-  mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-
-Miaohe Lin (1):
-  mm/hugetlb: make detecting shared pte more reliable
-
- include/asm-generic/tlb.h |  77 +++++++++++++++++++-
- include/linux/hugetlb.h   |  17 +++--
- include/linux/mm_types.h  |   2 +
- mm/hugetlb.c              | 143 ++++++++++++++++++++------------------
- mm/mmu_gather.c           |  36 ++++++++++
- mm/rmap.c                 |  20 +++---
- 6 files changed, 208 insertions(+), 87 deletions(-)
-
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 8efe35ea0baa..99a71943c1f6 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5787,11 +5787,14 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+ 	}
+ 	for (address = start; address < end; address += PUD_SIZE) {
++		unsigned long tmp = address;
++
+ 		ptep = huge_pte_offset(mm, address, sz);
+ 		if (!ptep)
+ 			continue;
+ 		ptl = huge_pte_lock(h, mm, ptep);
+-		huge_pmd_unshare(mm, vma, &address, ptep);
++		/* We don't want 'address' to be changed */
++		huge_pmd_unshare(mm, vma, &tmp, ptep);
+ 		spin_unlock(ptl);
+ 	}
+ 	flush_hugetlb_tlb_range(vma, start, end);
 -- 
 2.43.0
 
