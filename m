@@ -4,121 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB61E9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 07:52:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A01C9E9A03E
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 07:52:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DD506B0088; Wed, 18 Feb 2026 02:52:07 -0500 (EST)
+	id 086EF6B0089; Wed, 18 Feb 2026 02:52:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860476B0089; Wed, 18 Feb 2026 02:52:07 -0500 (EST)
+	id 034026B008A; Wed, 18 Feb 2026 02:52:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 741B66B008A; Wed, 18 Feb 2026 02:52:07 -0500 (EST)
+	id E82F76B008C; Wed, 18 Feb 2026 02:52:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DC8C6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 02:52:07 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E874DB6A2C
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:52:06 +0000 (UTC)
-X-FDA: 84456809052.22.4543E7D
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E13BC40005
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:52:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Y7LecrvV;
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id D7B076B0089
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 02:52:40 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92D77C0833
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:52:40 +0000 (UTC)
+X-FDA: 84456810480.06.6B31650
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E0A2BC0002
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:52:38 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XBFwv/J0";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771401125;
+	s=arc-20220608; t=1771401158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ntZdvUFQplwCFL7s1fQ45P/X2oyjzcHIko4bs1V/f+I=;
-	b=UA/KOhtfctM8Jge8ICHutZ5P9JjmSAxF04/QoKmJIM5Nt3f6+IMBHEpc4k0wjDmUf9fbHX
-	oghqV19emDH/KMsRgzwI+77Eb/vL71Z/ysRw5Idb/I00SEdE6FN8PmQoHk5JTp1jNsjxNd
-	2d7bK86Ro3xNXIw9diCmVxgRhJ9bNRM=
+	bh=Bh8mNK6cWdRHE9lltvHCp/Tk3qXoITR4obKRh/opo/Y=;
+	b=P/EmvlhmyKj0nydQ2x+ovPA3fJfXfGcq+mFQnYyc9qxFHAhVWoOKeisguQ1Ae3WGRZey5v
+	LZPHGh/w67SLjf8bo/n5qWwgudLzpq9c1ZJiJ4/YYbcG3DF8rQ8vUSQZaAD5ECgWpfNWbt
+	4fauDtVTb9lCXIjwwKrLZPKhKorcr98=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Y7LecrvV;
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771401125; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XBFwv/J0";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771401158; a=rsa-sha256;
 	cv=none;
-	b=QvdNaY5pYBWQTy0lqZlik8QZzXXabII6VCGGR9Ueo+aAKarI1MBbl5aTRmdgEpfkkdiRK0
-	MX2f+lTLZFVMaqn52J68FQfh7yiIJ77FcYBt7q9t5crx1Oi94f4VnSfGjCw8plYBqi7/KF
-	6KPl+RwR9/BfMphfGL6HG38qV4hwcoI=
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-4362d4050c1so5697752f8f.2
-        for <linux-mm@kvack.org>; Tue, 17 Feb 2026 23:52:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771401123; x=1772005923; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ntZdvUFQplwCFL7s1fQ45P/X2oyjzcHIko4bs1V/f+I=;
-        b=Y7LecrvVdqEXmFpcBaZZFBMluktf/2/Gp3RuHQm6WjVhw5x+v7YTilJj75EUQLxGyh
-         Ies1HxvPgfmNIM50DWPeYM41QSQw3PS2qcuu7o8S/5aS12/cGVqFChe2IrKrQRDeVv/E
-         oJnpzyimU99rKsCvtxZMV2c5UwLUr67+DCC7DzBfwOufuduCAULUgYrl0APRBNfMtjqT
-         NR4lwbNcUy9aX/lXADTYXwxzGYf2YAW4d/cDyiwOfefItCTSO9cm7hyL3o9n5uTH9//r
-         NKev5Uy3ZSe7k+8rdUFnWxlrxosHIYfP6Y/Q0meZ8bN5El6RzHCan3EunFVc9F/elvs8
-         3JlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771401123; x=1772005923;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ntZdvUFQplwCFL7s1fQ45P/X2oyjzcHIko4bs1V/f+I=;
-        b=Q2RRnZD/VWytLIkykiyxAz/3QAM54c5cBhDvdiOWjJLDh6erMyp+4Qd3mZY8NIhSMI
-         CdrbWVGxgnhfz5s0qFb0m+hMs647ruN3rr0H4im9HAChFkVF02heWgCxLfEW2bq43aEL
-         dE3WYvQc7rwTsR3v3mDzCLIS46iVwYujTv+l+9rqyXlYM3y1ZVA5X9IaBlBRri6MRcw8
-         sT5TnHhm5jBy5ZUWw3ZyAkacXFHeb3lV6keJ6VFElrDz2zbim8rS7id587nZ3x0JGG1X
-         dhX/C+ROM2B12ZqZU65zQULOmMoDGjiEby1xFmARGtvfYL67xUP9mm+t1tSBw6Uioejl
-         POEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNpWS2Zs4LiB6MApNwaY+40xNW6NxcKY/3HujvsD24ufu8AVoVKh5a36QlZRNJQTU1PfbgcEPX0g==@kvack.org
-X-Gm-Message-State: AOJu0Yw03EGsBXJDgiaXWZVx50uItVfZlS5rPGlfKE4XhlCRs81nu5g0
-	ILa8RdbQUgg+grkXgjQX5WHFYrga8dxtzCnz4+N0qbluzkFa6tlDZ2KqjW2v4CDKhhM=
-X-Gm-Gg: AZuq6aJq1xyKDhvR7tAbtFLhp8aLOnRQlhthMplBrYXnG50kozbcYKKJGm6LTqbELF7
-	vrC4qX+P/t4JxySwIB7tUH0p2bG7H4QV+PJxoa6vf5Nl50tqZH1Iu+MihSZaX4DDik/e+f+Qcaw
-	c2M++lv5R6sI7nD5UTpSl6XuL6w7Z5ZpvY8MSNs2YdTDjSg2cG/JCqvX+kd5pNotoQX3r1NTtYt
-	PKysXS14bR1eseYrpCyXlARmFIwiIPLg+CpSMsgnAFe/Cfsz9rgUk3RhoN9kgxxNs3lys8tYMdG
-	Nl0iYFNAnJMGfa1lyfZimzDffcOSiVdE9hUGkNXY6vjpGRsYG3HpImxtU83UJCC0XQi+vobZBgP
-	XeB5qbnizrO0F9mfHcg9jPfKElR5bGgEAfvXwWEIbhNTDia/aUtvnXX0ELcSkdDB37CniG/9kvx
-	b215kWRY+1bisVgbmCQ983bot048tIXm1znHu/
-X-Received: by 2002:a05:600c:4f44:b0:480:4b59:932e with SMTP id 5b1f17b1804b1-48373a0a0c2mr261220115e9.11.1771401123031;
-        Tue, 17 Feb 2026 23:52:03 -0800 (PST)
-Received: from localhost (109-81-87-131.rct.o2.cz. [109.81.87.131])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4839712324asm13737895e9.3.2026.02.17.23.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 23:52:02 -0800 (PST)
-Date: Wed, 18 Feb 2026 08:52:01 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Add AnonZero accounting for zero-filled anonymous
- pages
-Message-ID: <aZVvoWZDyJFfBqBr@tiehlicka>
-References: <20260214084514.2842745-1-haowenchao22@gmail.com>
- <CAOptpSP1zx1akeGkZEuPBx1Fk8uz8rs4_m5c55GwPUROmCGxKg@mail.gmail.com>
+	b=ldKr0J4AzqDVBjjLXT0htdkCeRvm9dEdt/JpAoWS84IFxW2TI0GHFE5ZZjJAD/866hbpBK
+	bsdb5YHwZEBa3677PwS1Sdtm9DtuEzLWrupaOKxpL1sjXCLCpdsnNjw53qvBr6T88ZyHBt
+	yTActf3F0SVH4bmqTS41YemAuCgGaoI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3047B600AE;
+	Wed, 18 Feb 2026 07:52:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49BC7C19421;
+	Wed, 18 Feb 2026 07:52:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771401157;
+	bh=xHxjG4bDz4pgMox2OsAsfkgSSmmHF2eogXtvvKL0pkM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XBFwv/J0DHxfil/5yD6SPFQuYpECUHR5ZkFwRRYUuYJigiix4wzFkNC0ctIpYoBzr
+	 +B033FA2rkhfJBYWqPcqOcPyi+uvOk3iTMIFgQwOScyB/0CPD3YFTxLJRUCUQ2fwiF
+	 lx1Z61wkbIIabzOlIbr6+HAJ3RdLhPJuOLL+Lzb7hxNEusLBuOETkfMOZgrRp8akR/
+	 iiOUz7ij/AH7Lu4BDp0/PXkbshEP+BDDL0M+SFKHh+4BxJq9glypyjclCQasxxJDAk
+	 nW6P7XLVtdmDlnomvjPB9+HnqAAPIGYomS1z5G9i8fux+VWWPhtrgYO+ocIaj6qL/4
+	 4F3uFGDQRXr8w==
+Message-ID: <0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org>
+Date: Wed, 18 Feb 2026 08:52:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOptpSP1zx1akeGkZEuPBx1Fk8uz8rs4_m5c55GwPUROmCGxKg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/huge_memory: Fix use of NULL folio in
+ move_pages_huge_pmd()
+To: Chris Down <chris@chrisdown.name>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <aZU1vSmn5aF8xvJj@chrisdown.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aZU1vSmn5aF8xvJj@chrisdown.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 3bcextcdyb1hkhxmi8cphest14j5x7xt
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E13BC40005
-X-Stat-Signature: rn8houg89zgx11nu476yz4yspk57f7i1
-X-HE-Tag: 1771401124-407104
-X-HE-Meta: U2FsdGVkX192hdEXdmCTBl87r1obESAOzV6SQv86KXKz8W25qJvsQbAqxAxuL+/Nwd2jglgx0ksuMdM5ft6qBSV6borAaY8ZkyKbt0gGShQk1wQckp815IkFBMem9KlVNTO/prRHIFQKVOSo0R/H/2j3FR5htJXR05WSLHiwqiOZCRAAHcXkFrrqTklr5xmriIbl6ozmk/RncliG+fyaqCEM/uQrAWRsLsZT0h12atTjVJUCRIFZvb/G/nVBHDwOJ889qx9tCFU2fydR7/0hvR84VWd5M0H7hwttbSOdJXD+W4LywHYNG2YnpfKTqA7AGXN6Zh+OZX9tIqaBVsjJz+ba8eAHJC3lN6HuzJhk9blO92rAj6K6PXImNOg64MR3026y9uZjUHuecJa9gL7zrjt6j9g8UvTu8RQNueiRGdvJ79Jzdr8n5HhgxS2H/dK27vASTT2Oqn+QkH9VdBmokfiDQKZOx7zFsH8OqySrw6Wzzh4GUcvHwiUsKkEfMq0tu+gZACwnA9DvQ5kWzjZ5FFT39YWjC/u3MqqDHCFoB7GCYqP41dToORtEbYgG4+mfe5LcNFs5REJMZ+vW53GC0LuOF+Zkv6gvmelEAsLqZf0n3wT37u9vHl5smFplIsyPh9KC6CIFh4q0oTYGW/ePSiqLIL4q5njeX1Dcl5jhsvOt+PnzXAIeGSs8uA9HUaXNm857N+JxE1kz6qdxkCmEDi9KzHaImfp+3YhAwuysR80fgj+oxcfv+FCnErGYKPLhBR3t+H6fgdGp70Rz8GE8eVcwMUHzJjS5M6520Iio83+5yBzkjnSiKwS1OHk1OPdfuNPdjlV4Re2QtSYUkvN2qb64vPosNNrDnt75YqJgUcJDHlqzidDGwH5fQH7NUvOVE7Nq8QCcDRKKgwDxXk8sf4o2lodXhMO4ShEEMvH92liz6hsjvVT3j9912kJyPVFEz+YuqOmCglB5e7xYMnJ
- uVZ4pciu
- i/211LZlcmJZAWU3oQ8IwrDWgXKYVNi+s5neQuKqboXASF2oxiTMAs8XBEj/UoWoXcYRwBal8sifvEc3CoQqGRhUCs/jZbfXWRALAZeNwSrFzhJllVf2DfxS2VlwVBgrsnjQM7NVgFi4ylZgdhUAFWnT3FNLNxgEv1mMnV9uYe7q+yW1+8/K2mnJ+KPiK47LU5qNpaxedpyI1hi5P3nBoDs7DQ02I5B0XTEGEMiigAve7mY/6gu9RKGW+YhBBmG6AgIdqC1NE3M/aFB7E0kb5OyFF1ihCJLnJ2HpO2Hw3YXmj8NlEgRn6++E5Xb4F+AltK96cpDgrBGO/BEpwQy4yTu9VG9w+yYYwf3LhplPWqlbw24MAkQzAP353Y86zBZFTbhSP5gWtL0/D0CPSdqKR+eRg9sh1aoWc1zbvJAY1k1EaJyA=
+X-Rspamd-Queue-Id: E0A2BC0002
+X-HE-Tag: 1771401158-709805
+X-HE-Meta: U2FsdGVkX1+lrkA7hQDzdBHMIKfr9vfFjimx+rEAFgbX7Vcz2pq99g6sXYP56CNKj4HPVlSNKWHCoVD1KDxF4JooHSzBUHcNQiOvLznGsrNAiyBQk/1tatbTw6wyhRJONyLmfpoJq8yoNKXUdk57z3T0MILimRrdt86nV7Ke8rhcjwdIU3j6GJawkKM1tTGW5dH8kAYsd90SKHyS38iMdNdCNmgLCYrtzDPWI4nrcx5o8BTIayZoETAYdrbpOYbtRH9ouV+AGF9UaflP7g5b17Pc08znfM4LDfmvradsjUFbS3VJw6GGCXWy34LRAaGIegd40esbFvFkCcjGScLqs0B9JAmapNcNVApdRvdidGwlssd3kNWySoaG2101tdGU8K/nrSFnAVAGl9co9OpQs0p3/CBnqGnfrZvn19QuFDURjJ0isjod0KvZfi1dhLW6BMUuDWKJsRTDoDgMRNVROZzdy6aADg9WWvYzUoWow5DA9aWFAvwY3cKD0wAp0nfm/p0Pcqvo0tWToB0vCRKQ/2JogmesskALAX0A9kn9tTjrFHq+L2YGST1iq5G75jzolUYMasA3+2YND48MMSC1y3SoXBpyf2b7vhYIuu/wxlmT1RbAPEcmgdjNif0IjYrngC2P9jWIFQ7ZIxchCpsEU7/3WGLibQRk2B0HVYU6qalVgNQsDuCr7kJOd56cAGkMEHJ//kBWnvjYqPRBpx7124NsATQYvkbUM5VbjVGoHq91/j+E25owVmCU2qAsso24voVpNoGk9vz3kAsScVDgnYSFIr4kUnQvasjKjiuikUMchr/oGbaTKpQ7zXoQBOAF8YMxoAl5BPSg8hiFt2lwReMXkBPTMUE2r1a2ds6YjmyPbTVpJ8Tw+a9F/W4PbPGROdWfC+xXAuIrTq/REbiFR46GPsqKwqjiAasBLuQ5Ju+VvX0nKxAgfGgT041hgY25+qv9BeE+9WNoDhJPaL0
+ CvUBIGa1
+ xH8teBSXa2tME1hyaT8usj1mgpZUJBPBPq8Me3EZGJPBIVwyG3eesoAc1F8FMkfF0S5PdIXt1waUbd0wMCQ1lR6dZ9TkS3dQPCgLOuIPL6hUtO13tw0JzyvBqDohaeacOYQXL93yxTJgyr4tgkI0ZaCSwqBDqeytItcOnzN8sz91bwr1mVYyVi6IVxVII8H9f3o76vSgcldAUPhYMOzu4yZFAY64CjHjMKcvSqmFdWVCl3NQN0KoT4wQld11DQjoSKteBZgptMAH/iBzWfzjmdeg9hZJK/TvIkSydbYpFNuS4F/zNS1ybjBICzA8YRNyWhWJqCg8QAouSJWw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,77 +140,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 17-02-26 23:22:20, Wenchao Hao wrote:
-> On Sat, Feb 14, 2026 at 4:45 PM Wenchao Hao <haowenchao22@gmail.com> wrote:
-> >
-> > Add kernel command line option "count_zero_page" to track anonymous pages
-> > have been allocated and mapped to userspace but zero-filled.
-> >
-> > This feature is mainly used to debug large folio mechanism, which
-> > pre-allocates and map more pages than actually needed, leading to memory
-> > waste from unaccessed pages.
-> >
-> > Export the result in /proc/pid/smaps as "AnonZero" field.
-> >
-> > Link: https://lore.kernel.org/linux-mm/20260210043456.2137482-1-haowenchao22@gmail.com/
+On 2/18/26 04:45, Chris Down wrote:
+> move_pages_huge_pmd() handles UFFDIO_MOVE for both normal THPs and huge
+> zero pages. For the huge zero page path, src_folio is explicitly set to
+> NULL (used as a sentinel to skip folio operations like lock and rmap).
 > 
-> Sorry for the late reply. We are now on Chinese New Year holiday, so...
+> In the huge zero page branch, src_folio is NULL, so folio_mk_pmd(NULL,
+> pgprot) passes NULL through folio_pfn() and page_to_pfn(). With
+> SPARSEMEM_VMEMMAP this silently produces a bogus PFN, installing a PMD
+> pointing to non-existent physical memory. On other memory models it
+> is a NULL dereference.
 > 
-> The original goal of this patch is to measure memory waste from anonymous
-> THPs - pages pre-allocated on fault but never accessed.
-
-I believe you wanted to say "but never modified". Unless you map THP
-through ptes you have simply do not have that information. Reading
-zeroes might be just what your workload needs (e.g. large sparce data
-structures).
-
-> On memory-sensitive devices like mobile phones, this helps us make better
-> decisions about when and how to enable THP. I think this is useful for
-> guiding THP policies, even as a debugging feature.
+> Use page_folio(src_page) to obtain the valid huge zero folio from the
+> page, which was obtained from pmd_page() and remains valid throughout.
 > 
-> Let me summarize the discussion so far:
-> - Matthew Wilcox questioned the value and raised concerns fork but haven't
->   exec path
-> - Michal Hocko criticized the inefficiency of scanning zero-filled pages.
-
-Let me clarify. I am not objecting the inefficiency. _If_ you need to
-recognize zero content then there are no ways around. I have merely
-mentioned that the overhead is not negligible for /proc/<pid>/smaps as
-you suggested.
-
-> - Kiryl Shutsemau prefers a system-call-based interface.
-> - David Hildenbrand acknowledged the value and suggested implementation
->   improvements.
-> Please correct me if I missed or misrepresented anything.
+> Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Down <chris@chrisdown.name>
+> ---
+>   mm/huge_memory.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I suggest we first agree whether this functionality is useful for upstream,
-> before discussing implementation details.
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 44ff8a648afd..fed57951a7cd 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2794,7 +2794,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+>   		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+>   	} else {
+>   		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+> -		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+> +		_dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma->vm_page_prot);
+>   	}
+>   	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
+>   
 
-Completely agreed!
+God this code is horrible.
 
-> Reasons why this should go upstream from me:
-> 
-> - Anonymous THP can introduce real memory waste, but we currently have no
->   good way to measure it.
-> - With accurate metrics, we can make better THP policy: disable for
->   low-utilization cases, or early-unmap to relieve memory pressure and so
->   on. This is especially valuable for mobile/embedded devices.
+Why can't we simply move the PMD like move_huge_pmd() would do and make 
+this code less error prone?
 
-While I agree with your first point I am not so sure about the second.
-You can easily run the same workload with and without THP enabled and
-compare the rss to learn about a typical internal fragmentation (there
-are several layers of precision you can influence - only for process,
-madvise...). This is a very crude estimate but it gives you some
-picture. Is it convenient. Not at all but likely sufficient if you are
-debugging a reproducible workload. 
+	_dst_pmd = src_pmdval;
 
-So I would start by explaining why this crude approach is not really
-feasible. You are talking about early-unmap. How exactly do you envision
-this to be done? I mean finding zero pages is one thing but how do you
-make any educated guess that that particular sparsely used page needs to
-be broken down and partially unmapped. What kind of interface do you
-want to use for that? MADV_FREE for all zero subranges?
+According to validate_move_areas(), the permissions of both VMAs are equal.
+
+
+We might have to handle it just like move_huge_pmd():
+
+	_dst_pmd = move_soft_dirty_pmd(src_pmdval);
+
+To also set the softdirty bit.
+
+Then, we would want to just clear uffd.
+
+	_dst_pmd = move_soft_dirty_pmd(src_pmdval);
+	_dst_pmd = clear_uffd_wp_pmd(_dst_pmd);
+
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
