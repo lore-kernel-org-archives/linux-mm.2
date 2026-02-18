@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B730E9A049
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8140BE9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A98626B0089; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
+	id E31B26B008A; Wed, 18 Feb 2026 08:06:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A42A26B008A; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
+	id DDC9C6B0092; Wed, 18 Feb 2026 08:06:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97D536B008C; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
+	id CDA6E6B008A; Wed, 18 Feb 2026 08:06:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 84E056B0089
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:08 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDB96C04AE
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:07 +0000 (UTC)
-X-FDA: 84457600374.18.A5E6A24
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F3F1B8000D
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W67mlTCK;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B97C56B008A
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:06:12 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45CEF86838
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:12 +0000 (UTC)
+X-FDA: 84457600584.11.FA773B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7EC222001C
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:06:10 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kKWrxb4U;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771419966;
+	s=arc-20220608; t=1771419970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=njqxrMZbrsuV9V0JqvXQPGztJhPNpcsX6uZ34v8Qeso=;
-	b=zlSdvvlYtYD2BKtg0TIiLGVdpvtnX5/32Yf8K78yxUV7CmLtjBXeq5qcKtRGFI5E66/2Ug
-	gbnol0YhLalKctW2O+eJ0c1HbKx0+pFh8Re6FJ1iIslzHzUBIy+BPJBSy++1TJ0JULnk+Q
-	x/z5Dn3FpLqoB3JH/d3Q2Kz4jQZ8UBA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419966; a=rsa-sha256;
+	bh=JgGReFEUOJ0CSClaK4mJc+Y+4G1i2MN/X1ND3EJ6Zv8=;
+	b=dYiubfZKOnj6/krDtHWoytcHhqnBJmeg/DQsELHQA3T8yhm+4Km8rpRtqBuvkeKCGI10fr
+	5VskKTOiPvm6rNL45SFWLhdVUSjGjk9gisvdJ5aPHyF6C2eHAjIBoghteGFjKIIFVBtnkr
+	aK1zSyF/91F84z8D3JoCr4VKdMo7HLw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419970; a=rsa-sha256;
 	cv=none;
-	b=valj0O/g8tNFNqKa7c+QVb9MQYwxAoql69rgrjflAgU7TNA1PZN64SCF8/eGQ58tWUVlTL
-	ivS4AbYF858y/UXjLbJpmx8oZlecI1+TjEPVDnZBci71y48yruONSXY8VrQfeMTKbGawBI
-	nT2slGLJAc6/RSJ5GxaRAbfP0PW/LkE=
+	b=bKZgN4XcLADao2BqeYL7cVSvqRoYwGW2HxkjZZQalE9zu5Ze6GzOo9Mbb26E7m3fK/daaB
+	HV/gF5GAIJ2G9LRa/EwLvjyq+PzGSTu6EBjT/yOeJIeDWobyu0mvk9ZJ+TArBxfeDNgmt8
+	Wtn3iGZpsRT79a0t8Q9M+pr+A9BwQBE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W67mlTCK;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kKWrxb4U;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45323600AE;
+	by sea.source.kernel.org (Postfix) with ESMTP id A4BED405A9;
+	Wed, 18 Feb 2026 13:06:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F87EC19421;
 	Wed, 18 Feb 2026 13:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81365C19421;
-	Wed, 18 Feb 2026 13:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771419965;
-	bh=6hsTAe3F6SFDAEMSoXMlTVM/m77RYjqo0PE8OHxHQF0=;
+	s=k20201202; t=1771419969;
+	bh=yPQ64QWQ9T5wbUESH7R0G/IVUMAoQRQgu3/n5Wr6IrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W67mlTCKp72Zw4n9T5Y138as/HTEXsStwujszIVALFiBNltq9AwOHYT6/DcHNLQjc
-	 jeWoLrMgBBn+Y5PrP5CA2OHhb7Ff9nGjlQR9EtfrTacIJpQKbAn7Wax9h6t7taifxa
-	 8on73z29A63mz8hvQQCkQVHGe6Ng32rZT7kaIb8Qe9sp6Erh7DmMsGJc1IYNZAZMvZ
-	 HuQuWT/hS60Q6fHg9dbFnAJpL1/xX236ed4Q+/h/i3eKp/IZDW2LK61LCXyfEf5Q+R
-	 tJ9dLzHYB5Xxc/7iV+bi6Fi5XDYMkoNdn93MiZ81dYjd+f8BDqQaq/awbvIa/2Fvx4
-	 QPQAdiw++AR/Q==
+	b=kKWrxb4UfOYype6XihUVGv5QYEukedHvuEXBMMTmSdtlZK+u8xZTaUY5RUTnI1Nl/
+	 gc2cW0K/elejz0o99g0cUUpJs4fLpD8yzFtMBuqEYcNmb8OX6OQW/11eTkngH7HUAt
+	 X7/LhU/ydvmeposd4O3TjVtgVJTjTkrmNPO1Z8oJZZhgt8N4O8NpwKr7IfuF50JuDH
+	 5RTnz1UmZM4JebcnLs5zMboRLHa3Ds2mamNBRaHaXflJ+pz4G/4qWmn2SmrD+kmGpA
+	 /UIr8wFhCkY+TVoyyyCVA11M8RUeQdBErLp/igtmOGrQbMo0ktUoCNrbQWeKvTTSFZ
+	 xiLJfW1AjA5bQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -78,24 +78,27 @@ Cc: linux-mm@kvack.org,
 	Laurence Oberman <loberman@redhat.com>,
 	Lance Yang <lance.yang@linux.dev>,
 	Miaohe Lin <linmiaohe@huawei.com>,
-	James Houghton <jthoughton@google.com>
-Subject: [PATCH 5.10.y 1/7] mm/hugetlb: fix skipping of unsharing of pmd page tables
-Date: Wed, 18 Feb 2026 14:05:46 +0100
-Message-ID: <20260218130552.55727-2-david@kernel.org>
+	James Houghton <jthoughton@google.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH 5.10.y 2/7] mm/hugetlb: make detecting shared pte more reliable
+Date: Wed, 18 Feb 2026 14:05:47 +0100
+Message-ID: <20260218130552.55727-3-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260218130552.55727-1-david@kernel.org>
 References: <2026012610-absolve-ducktail-3c64@gregkh>
  <20260218130552.55727-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F3F1B8000D
-X-Stat-Signature: 9e44gcrchsj37eoyowjuu7u6xxsqr5is
+X-Rspamd-Queue-Id: 7EC222001C
+X-Stat-Signature: i13txwwnfnxqugyahhwy4kxfxnyu5ns7
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1771419965-917314
-X-HE-Meta: U2FsdGVkX1/5gaC5f8CrA+OHEm1T2yfC048UfezSLwB32se4yjIbfHHh1t7vpOL7RXq+mNSNiNqdq/gWBtXDkMnRGvnKPmibVp1AwGmmFqKg3i+fCzTB0ezM7DiaG8dQtPmfxtxHSq/KqN/ZvgVDMDbcR1UwLa8mJPycKEXVKMgnl92ZnH6S0KL4+2uRE8Qkn7TD2M80miqZUh2V3JGPXtTScTKUL6s+Bj0simnEFpgW8Lrp7ljf3sEhgjXw1maIgO5Nl5yYe9QMD7266UIJMWh3pQa7oarDofhPU1/07svubFaj6enR2GV4fQKk7xXm5e3z1OmrH2fA6/sh/n0pYVOJXc67CTaLaDPuPOK/KXMG1bkMhlxjCqfYqe87dQWj9tVrhDM+7HB76CFEFNUnD8ABPJYdOmb2B7/duWVNLPzt4rQEw/FZ3Vl7HB4F9wZ3ESZasYCDnrq399Q/hFu5ZiivwaMXFwk+ASlCGW89/aRi2M3PXJLDuSQ0BSh2yY6Pe7Ei+qMwKPGWooaaRkUFnQTOlNE5W6/CDclcBjv5k/AykumVhtHGra5UhraVuoDjCn7Y1Slz9yFZOi3L1oyjwsz2e666XvAMHBqjFUZ6BMU4TTpPyjlQ7ommf5dEC17Wy7DtT3R96S9Q46PClj5LGBetz6+UtmjsZrYbV038AkJ1f753jWpx1sLq7CK8HVDLbbtYEL5GBrgFETIR0NINZwarlHtYl5gTTAkr7p8icF40RYjGzRSUXemDGWD1SRK1GUuu9Qj7gaHmq9hF4A7zue3VSr/d2zMijkT0sgW56Z6roDgtxD9uE69EmDQRlW27eE6546KUSHce05k0kRrtFGdIPYESLFbyMj8UB+ENAZ1neh0TS3YdDPMiwTMQSIcn01joYf3upnYzXJyRufgc72ceqi0alNpycT6d/BaTGSTM15+mOlwHmbvZTPKCGZi89C1AYaVoqvrPFINBS5C
- Mrce9OOJ
- TCN4yQHmSePlikaPfgJ+tgdMLgJBiF2ImXvfabTf3DvKz2q/f7Y2EyR5VepTnTaX7GWcMDN3g/7iYXczQwdO6hD7mN5HTVfkKxPY9YWqXe/LeGFVEC9kixU6wJEZjgNKiAOLYU6HFeX7GKe6AWWCvuOjZsfE5wWuqbnQCJ9tPAsHz9xuB9XMdw4J3MELXgCpmTmiY/BuhHb+SKzBSpi9qAW8zxH3dwLgmpFNF9IYaDKtchX0=
+X-HE-Tag: 1771419970-287450
+X-HE-Meta: U2FsdGVkX1+9DntREnBeoAXp7w2hPJMgmlKSgtzMSzrqLAG0oOPDNtcfcISOmZ3UVfxFwMJbPPUbBmOiLT337HLrAxH+yWryM4W63yK44hFCDsgcMeDpu0tBYndc0OtH4w9FXbOqS5+04mHXZNP+Jls20Fv0BYQo3PgvSUBvRYuWgPrbR3ss5Im39OXDMFc0Svs0tRZ/au88SKWgQRuC4dZqcx3DTrf+7Ki8vKsQ+kV9b4ymN1vkL1qbNvdMv6ZhpHYEAAK60dwAoeGj9ZT3pmkIyfp1HlBHby8AHbc/mmhqnvDcJ0Xm1eXEwH5zLTr5TZfzbVqXotX+hMEdjJxafqHSfgFSV+8jyNk7WkXK5HGghC4MnTUIfIxy/GYTX0aYjv92qabmEayMtffdD/4wzNESHlivV/5WqOrl9xROOmLO0ehcQSbiSY8CfWce9cuaSkXpJhheNmCspDBhQhjIz6sV3zU6WeP4BvCwtX60hOMrlGDPj/ixaiYqHMZ1+Iz4vIkYF4eU8Mi3C/6ncAkWjJMvZ/U96SzmtlAtlioBOB0olANEyv626lyWngstbY7GJ94to+NKoIOEnbjqUfW7YZ/ewFgS3dZ1kVmc2jGuk+jSsiXMIL3uZf3oFhrRSKUlE36XgXZ1Qff1l0svOgTaWAkbmvA06bYZ54CsIIFoqwghnOFHmliDX53LM8HiBhScNAM/1aQTNTdvALwrZYXn8dnm3FuZ34JcnD8jNXYISajv8am7Jpk3AY1fGOZp8SiXIPNiQvRmHizHENOR4HH1xIGuon/HpDoSiv09rnMhW+141xXOpHmNrXh5bUBBdnkI7NoVmjY6l1mgF9UR8/oS42ieD1Ahcr+ZzBLFjDspY2gXozqQGWdOzl7fitNNnc9PXcW6pXf3JlhfejgZoXL7U5RwDeEAXfQ17LqPIKRRQoqUXFIO7prf+Rsp5WZAFnFQy4Ly4Yg41l8BeUQGMLR
+ GqbU5H2z
+ elTEIN9NTkNenhBJGREzs0VZW9A9CxcwxRZp7OCAUhKQBGJads42+/l5tsyEy+WagAFWYPuwPKC5biFhdrO8cmW4qql7D889FLk3KttlKh2hgrUv+dYomET3xUL/ACQFYFcQQET3jBz+xEKUX30Lqdp/LOAIIUGRwSQu38PuG4cGBv6LaI2R0dWHSwGG9blyyAxQRdEeiDb2Cp2HSR/4RUfkFQnLOOSM64avQAk7X53zrukUR5gyfvWowds5lBiE3+xk2DHkdHPfu+1EquuHTzUficWfw3rTmekRn94XwXNqfB8AEo91SVOpXGObWRKzu4NJYqB17VKVofCyTWHii4sMG/MTEGXxc7KLkLRhBWlPJveTk9uRrUUMtVj5A/rqpp+1/W5cuBFAWYMdFVwPQs+PlfwDpUdQFHieCsBzkqVRaY/CTrUVDFH1Rboxd4+KEw49JcG8Ep1Yuru8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,42 +107,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the 5.10 backport of commit b30c14cd6102 ("hugetlb: unshare some PMDs
-when splitting VMAs") we seemed to have missed that huge_pmd_unshare()
-still adjusts the address itself.
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-For this reason, commit 6dfeaff93be1 ("hugetlb/userfaultfd: unshare all
-pmds for hugetlbfs when register wp") explicitly handled this case by
-passing a temporary variable instead.
+If the pagetables are shared, we shouldn't copy or take references.  Since
+src could have unshared and dst shares with another vma, huge_pte_none()
+is thus used to determine whether dst_pte is shared.  But this check isn't
+reliable.  A shared pte could have pte none in pagetable in fact.  The
+page count of ptep page should be checked here in order to reliably
+determine whether pte is shared.
 
-Fix it in 5.10 by doing the same thing.
-
-Fixes: f1082f5f3d02 ("hugetlb: unshare some PMDs when splitting VMAs")
+[lukas.bulwahn@gmail.com: remove unused local variable dst_entry in copy_hugetlb_page_range()]
+  Link: https://lkml.kernel.org/r/20220822082525.26071-1-lukas.bulwahn@gmail.com
+Link: https://lkml.kernel.org/r/20220816130553.31406-7-linmiaohe@huawei.com
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546)
+[ David: We don't have 4eae4efa2c29 ("hugetlb: do early cow when page
+  pinned on src mm", so there are some contextual conflicts. ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/hugetlb.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 8efe35ea0baa..99a71943c1f6 100644
+index 99a71943c1f6..a2cab8f2190f 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -5787,11 +5787,14 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
- 	}
- 	for (address = start; address < end; address += PUD_SIZE) {
-+		unsigned long tmp = address;
-+
- 		ptep = huge_pte_offset(mm, address, sz);
- 		if (!ptep)
+@@ -3827,7 +3827,7 @@ static bool is_hugetlb_entry_hwpoisoned(pte_t pte)
+ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 			    struct vm_area_struct *vma)
+ {
+-	pte_t *src_pte, *dst_pte, entry, dst_entry;
++	pte_t *src_pte, *dst_pte, entry;
+ 	struct page *ptepage;
+ 	unsigned long addr;
+ 	int cow;
+@@ -3867,27 +3867,22 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 
+ 		/*
+ 		 * If the pagetables are shared don't copy or take references.
+-		 * dst_pte == src_pte is the common case of src/dest sharing.
+ 		 *
++		 * dst_pte == src_pte is the common case of src/dest sharing.
+ 		 * However, src could have 'unshared' and dst shares with
+-		 * another vma.  If dst_pte !none, this implies sharing.
+-		 * Check here before taking page table lock, and once again
+-		 * after taking the lock below.
++		 * another vma. So page_count of ptep page is checked instead
++		 * to reliably determine whether pte is shared.
+ 		 */
+-		dst_entry = huge_ptep_get(dst_pte);
+-		if ((dst_pte == src_pte) || !huge_pte_none(dst_entry))
++		if (page_count(virt_to_page(dst_pte)) > 1)
  			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(mm, vma, &address, ptep);
-+		/* We don't want 'address' to be changed */
-+		huge_pmd_unshare(mm, vma, &tmp, ptep);
- 		spin_unlock(ptl);
- 	}
- 	flush_hugetlb_tlb_range(vma, start, end);
+ 
+ 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
+ 		src_ptl = huge_pte_lockptr(h, src, src_pte);
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 		entry = huge_ptep_get(src_pte);
+-		dst_entry = huge_ptep_get(dst_pte);
+-		if (huge_pte_none(entry) || !huge_pte_none(dst_entry)) {
++		if (huge_pte_none(entry)) {
+ 			/*
+-			 * Skip if src entry none.  Also, skip in the
+-			 * unlikely case dst entry !none as this implies
+-			 * sharing with another vma.
++			 * Skip if src entry none.
+ 			 */
+ 			;
+ 		} else if (unlikely(is_hugetlb_entry_migration(entry) ||
 -- 
 2.43.0
 
