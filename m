@@ -4,97 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B6AFE9A03E
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 08:48:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14CF5E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 08:53:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF8136B0088; Wed, 18 Feb 2026 03:48:08 -0500 (EST)
+	id 03E506B0088; Wed, 18 Feb 2026 03:53:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA5916B0089; Wed, 18 Feb 2026 03:48:08 -0500 (EST)
+	id F2DF16B0089; Wed, 18 Feb 2026 03:53:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB1EC6B008A; Wed, 18 Feb 2026 03:48:08 -0500 (EST)
+	id E3AC36B008A; Wed, 18 Feb 2026 03:53:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 975326B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 03:48:08 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39D13B6FA1
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:48:08 +0000 (UTC)
-X-FDA: 84456950256.19.BDB4406
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 748FB2000A
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:48:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QLyKHTN/";
-	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CC1806B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 03:53:36 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51D771A0433
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:53:36 +0000 (UTC)
+X-FDA: 84456964032.18.3D82064
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 66D681C0005
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:53:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="p/c6MtAi";
+	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771404814; a=rsa-sha256;
+	cv=none;
+	b=Vm69C4BqeZYu0nrOMbbs0dDasXMkFmQ35S/L3ujI1SvdeqXhvptt/asfh+y1ZEhm/ntTFp
+	ujByInE/dRtWY5DOIBV8dsz/NsmzfAdShy1KQLc/lYvJyE8pzqzQjns+cOeFruId9hkunn
+	DRucve2Zk5880w2xADF08awtvvEy1+A=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="p/c6MtAi";
+	spf=none (imf21.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771404486;
+	s=arc-20220608; t=1771404814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k9PqqN5H5le5fCu01Yp11wurKO3JlCjDqu0u+gfwrdc=;
-	b=1bPY28EFv2Z4g/AYTLJZU9DYeZacJbX9k4/9Z65FsePTFpbHdNyWi8ig2PJ6TMJbGnFqbT
-	1HbAmUiSFHHV8eqM2roZUCKrqr+knd6Q9yC4WdrGwM34/g93e3e+E8R9fLRy431oIrw1jt
-	UjMMlydaYPgr2t3CGb43G/pewSw1WOQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QLyKHTN/";
-	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771404486; a=rsa-sha256;
-	cv=none;
-	b=GX7/Qef3r/3Nk8N3NMShkfYJHok2vLObqLc5E8Azdc67I2AwOSlbDUUYGfU8hh2kVTKgkN
-	GTTTSn8xttV9ruQTkaNUNqbe7daIURUnozW9X6yDUFFteIReBvLU/Kzw76OKg78295DQU/
-	nXd54PDYULP9xgkhscFxYIuvn5gn+0E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67F12440FF;
-	Wed, 18 Feb 2026 08:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18396C19421;
-	Wed, 18 Feb 2026 08:48:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771404485;
-	bh=k9PqqN5H5le5fCu01Yp11wurKO3JlCjDqu0u+gfwrdc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QLyKHTN/WcYxDps1vUTTG/pvRsmR1zHm4LrOU2+MVlj3Egjy7iUD0yuVIeKYgeGM1
-	 2C10zi9i/kF4lUTnwl/KD2xWGYZd7vlZr1udS67y85oUeDIKVUnLQtbnqBV9nux8yR
-	 yymvgmWkvtxUeK3Z7JYun6SHJEQfEdMjSwEgLZqF93thhCUPFjhaOIROefxEwYwaTu
-	 QHSldpty3bvTX5G7R/QD52f/wb5KX1FlfHv+du+xqmU5wznk6Mi9AogVeANhQIXgGm
-	 awjSU7ctNGxiA2gQGHIdkySgII/JpYJQ/wDtcP/dVlrVZdaQPiSznTVrrVA8D/ASoK
-	 xRcxGJhRihHOw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Daniel Gomez
- <da.gomez@kernel.org>, linux-mm@kvack.org,
- lsf-pc@lists.linux-foundation.org, Alice Ryhl <aliceryhl@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Daniel Gomez
- <da.gomez@samsung.com>, gost.dev@samsung.com, Greg KH
- <gregkh@linuxfoundation.org>, Julia Lawall <julia.lawall@inria.fr>, Kairui
- Song <kasong@tencent.com>, Luis Chamberlain <mcgrof@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, Tamir
- Duberstein <tamird@gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Evaluating Rust for XArray
-In-Reply-To: <CANiq72nTOpGw6JhrMLK47+7TCJjrLRdNebctrmj5xO6yqAqSuQ@mail.gmail.com>
-References: <aZRncP-sKLLS2K1U@macos>
- <ix0mR76G9a_ieuQUUkkfHMJIviAsrFaO859172fuFx9Goj7QdIfz1jtnv3ptubGEC7uEFCvVfEoWxcisUnTi1g==@protonmail.internalid>
- <aZR-ItMBkiqyBdKd@casper.infradead.org> <87bjhncl7j.fsf@kernel.org>
- <-MAJTecRs9k_Y3XGSFfdzJ3acTO2nemK8gQMmbYlAc40NjtX0hr75PYmNqNA9rA8QmGOtvZw8oIsyQzpmPxf9g==@protonmail.internalid>
- <CANiq72nTOpGw6JhrMLK47+7TCJjrLRdNebctrmj5xO6yqAqSuQ@mail.gmail.com>
-Date: Wed, 18 Feb 2026 09:47:26 +0100
-Message-ID: <87y0kqbfq9.fsf@kernel.org>
+	bh=rAlZyMlEkwV4M1809AS+1dB0r82ddfEQ5DHlS5PW2RQ=;
+	b=gZJBgCPNDt4dgoiZZ17g9pmFvixZPoxingfqFp7x69+Ag2MK+r16LOlnM4KEUbTYnt4xsy
+	09I3HZ+pzZIYv+dK26zrRAyRyZVOT8mMJXlvCdChU5DaGsPOAlQKiLXtwjdTuPRzuC4uaF
+	1sL6fKjzXOz6ytw5LUfxcOskENkINk8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rAlZyMlEkwV4M1809AS+1dB0r82ddfEQ5DHlS5PW2RQ=; b=p/c6MtAiG/lOf0ICRFINSX12Ky
+	KuW2LImUZx28lDB5aVM5gVMN3ugNTPOdisLtuzNUrNqmFreDEk0splkkfaVdUhQ8o6PWVq0rot5YM
+	awSIfMcj4suNpbxZ6SLa/1WCeGA1bQrA5EcgU8gSZzMXyaqQgJJk8pgF2jo7ob7EKgBNy83h4VRUk
+	hR7+o3S0z6qtnVU2Ikt76dvld60lx0ArsTEZ8GWimHmMivTGyKRHD/Nhmbtq4BzX1Y+hCc104hzNl
+	RxDtCNiGE5InWDgrpuAzfJbTNi7AxG4xcuCDEivt5RukrAVuEm7bnutd/XJzQxxZ83E8Wp+FG5AeF
+	jF9DuL0A==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsdJI-0000000H6cT-47oi;
+	Wed, 18 Feb 2026 08:53:29 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 79DBE300B40; Wed, 18 Feb 2026 09:53:27 +0100 (CET)
+Date: Wed, 18 Feb 2026 09:53:27 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260218085327.GC2995752@noisy.programming.kicks-ass.net>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aY9i8rbvnxdOA9DV@tardis.local>
+ <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
+ <102c86dd6fb1a907b7138a437dee00dc@garyguo.net>
+ <aZRHJ22UtG1YeBMj@willie-the-truck>
+ <aZShEW2b9-71r18I@tardis.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZShEW2b9-71r18I@tardis.local>
+X-Rspamd-Queue-Id: 66D681C0005
+X-Stat-Signature: dp8g7sogx4s8rfb6kkdfwryub66aigkc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 748FB2000A
-X-Stat-Signature: 6mxst4mr9yxyztk4cz995jybox6ww6fa
-X-HE-Tag: 1771404486-434467
-X-HE-Meta: U2FsdGVkX18RE3mv9CmJMt4UxQb4qxRjW4GV1HsGCLj9et0IYYKZGZOVyl8kMGpt/gf5HaJgJD5HopV/HkDdXH728W+m555zhVnjWj9iNc8oEgKbH5roY/8riQ4HiV1im2TODE5f66g31cjFV0oyVMkitX/xL71RqXf5TRdEBkaRg++GkUTneOlzPhixl/uxWbUR6WV1dRL2/INLfX3v/PsJDr84fuM89/AFC4zCKPrSvS/dtAe/I6eH9Z5Y7eKENTlOHayGijGUsFXEUpEe/uraBzyb/0Iv6BMfbrNpPEARc6Jwt0U8enSlBW2UU9HMkglOCt7uJeqNekWV3tj8tYmp1jfkDPnRrQFdRXUvpjSgdLvOpq8hZXYFSg77BsQaI9nsd9SxoFtzGRMBHMxcpWM7Zh8+y1NS0h1pU6tMzY9wuowsDt72xc4BZX6mI8E//bQUdzGR45uk3Lflf5y0jdEd9qDq8EKN9+6Bx6M4T4Hsqe0/dGOY6RArjQwMJ2m+ji2pLxniVncFcD0rI5HznGKNcoOQBPGwhIJ6h6K57qxkzSagrFj8RZw/cfz0jDhyAuVefG/DY2oW0Vm6bAYCuYWIiilrwThCglBhuG032oB49HjDjus6734Czs4T4YMiuH3mcrTgFVABrFmBjVZGQG4S65kYmH4JntGoyUiQuTCRIE5jajfOCSi3GsoyRNohrVzL1ZlFaXHzfgIWYhzRCdmVb+/WW9RVW1DsclSztPD24SQ/FEeWGsSOb8UP3dHZ1l5fZfNWhF4UxF9Q+M0jfIY8SpGAIrCiOp/IcXz/4oXwdca92k+YzVRZvECOudCgDtiKrgj25t6kVMU9YjtpgJvyTxdjLuOrz/1mNOXXh2J9NBa7jqK+4kAWjGVgq7GPxb1ZpEDaRVSv3Uaa40+csrQJWExE2fWt65xJYbd8VXBL0bzGFw+8Pd4B+lPQhfrZpg5XcZfcs2HjpE2YqOL
- ocKITj4m
- aTvfb9KnxcrD9p52uZxPAWxECDdxpjpa7mGEmayiy5RybRwrbEZeaDFXh0WX79lL9olxmMYqDg3dQr2JOvoJz9IG7ODHRVcvmDRcn7VkDu5ZTOcH2li5skvt72FF//jHjx8b8J7ogqjuG3lvGELSnzcqBNoUiY9sJuP3a/yaMNFo0nUmLwIH6Zvbpgr/JhGqH1ZsfsNOb6pKJcFUEbTcNNRlvdY4oO5RMqtViZjYeyq5r5fMXIeewtJ/z6XCMt+DEmESVT6ux0oJBkdWrMTHoG6/v0VaIy6f8Gfr1BNOknY+Lumi4IuanDSQVMQtu3/3wt36/L2mKy0az6RnYC+MWqJg5G7GR09Q5IgBbh8c1ugGJn6dBWOvdPUvzbg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771404814-779059
+X-HE-Meta: U2FsdGVkX18pKuBFU2AX/HgD9Y+oyXDyIe7km4jCxuJbOA5NvaR6Afns51ucL/u6Ljl+YvyZF+xn2E79TTpQfNGOrAdT1uX5qi7cKOOjEHc/vtjZpzmqzygancBevkngJajREWHtx00FBbva7UH7X1kfOdthB/t90/qLQK4rl9pB7T5XVPBFomdRPgYOFuzgr3p2vbg3tWZHvM68URY0Vho0cZp4m5RGUUnIPSplg4jUrDHtnyWVL8zlEw1ENuLPvqu3UWpqJTHY4ycMhsREAQDSVcTdSfV0ro0mtqOAqGFSnAElrn3s5qwQu6CAJGWSbq0uEmFa4eNPGhBkzgAhvzmM+jzu6+b7uRmBZfUQ1VrdpbGO2pjbF1Ni1I2nBL/wCbM9UrzNoW+1efG/o1oeaaxCT5zlkUctBa9LelUVSRxCvFNhZzyR3MhHDAJKpvN1dDl+/aBj2295/KKh6c6iTIew9BT+YiGNDTHlHyW0SfxDj/9AzXS0iucHEPFfVXnlTCQE9d8K6TeT38mbunxB0SnW10KcdyDvmt6LnMRZ6GmGxJDCWcUdhN3gpSXUDw0A4gsiMCLcNt79rZl0rUG2jJ1NGBZQt+Y0BxNzps+Z9EdaD06r9KDYotn9f6NUtS9lneDO8LeYfZRCugcXHR3rH7KB5YzpCUoYOwEfjtYFrxag4NK7CBfKjTYXBavCUwyuTa8lmYv2uhp5CQATTOzXkVXb/YXIrd3n+cfacVUTFMcY9MCS9QdxUwAS3HkyW8FDSMuZdGPoAMcACG7xj6LetcWodx/kVSUBGSkLHk4PP3WJveKXXBRQRI3Zkyoz0ZMGutSh99zDLl83J3L+XCweA8quOWACPdCzD2agS7L2Ir7IR1EFOxfxZibkpIoDErn4++1LT15n1vsvrUqm431CR412hPdKR76XM9+90u64EKqV00myMpaJLXALA3AwZZWUmpAa/EfXCz6rvzQBc4t
+ xoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,80 +105,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Tue, Feb 17, 2026 at 09:10:42AM -0800, Boqun Feng wrote:
 
-> On Tue, Feb 17, 2026 at 6:51=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> We can, and should, start evaluating if we
->> can deploy Rust in this area now. We might find that we are lacking
->> something from the Rust language to do what we want. We can work with
->> the Rust developers to make sure that the Rust language gets all the
->> bells and whistles that it needs, to support the use cases we have for
->> the Linux kernel.
->
-> To clarify for others that may not have the context...
->
-> We are already working with upstream Rust (and have been for years
-> now) on improving the Rust language for the Linux kernel. We have
-> regular meetings with them every two weeks, and have a shared roadmap.
->
-> To give a sense of the collaboration status, some major language
-> features are getting developed with/for/by the Linux kernel and the
-> kernel is even built in their pre-merge CI.
->
-> In terms of discovering features needed, I don't think there will be
-> big surprises there, given all the work done so far. But if the plan
-> is to expose a C API, then we may actually find we want new things
-> from the C language instead! :)
+> We are worried about two racing memcpy()s end up being data race and
+> that's undefined behavior. And "atomic" is the key word in C (and Rust)
+> to "lift" normal accesses to non-data-race, for example:
 
-I can lead with an example of what I mean.
+I hate people for calling that atomic. It has nothing to do with
+atomics.
 
-The C xarray uses a few different node types internally. Pointers to
-these nodes encode information about how to decode the pointee, in the
-lower two bits of the pointer. This is possible because of alignment
-guarantees of the pointee. It's a neat trick, basically implementing the
-pointer as a tagged union, without requiring extra memory for the tag.
+> 
+> 	thread 1		thread 2
+> 	--------		--------
+>     	*a = 1;			r1 = *a;
+> 
+> is data race, and 
+> 
+> 	thread 1		thread 2
+> 	--------		--------
+>     	atomic_store(a,1);	r1 = atomic_load(a);
+> 
+> is not.
 
-In Rust, enums are tagged unions implemented by the compiler. This is
-necessary to provide memory safety and avoid type confusion bugs. The
-compiler will usually implement the discriminant as an extra word.
-Sometimes it is able to optimize the encoding of the discriminant to
-avoid this extra word. This is the case for the `Option<NonNull<_>>`
-type for instance. The compiler knows that `NonNull` never uses the bit
-pattern of all zeroes, and it assigns that bit pattern to be the `None`
-variant of the `Option<_>` type. All bit patterns that are not all zero
-will be the `Some(NonNull)` variant.
+At the end of the day, they're both the bloody same thing, no matter
+what you call them :-( All this UB nonsense is just compiler people
+being silly.
 
-But the rust compiler is not currently able to utilize knowledge about
-alignment to encode tagged union discriminant in the lower order bits of
-a pointer. So when we implement xarray internal node pointers in Rust
-today, we do so the same way the C code does it; by manipulating a
-pointer value and injecting metadata into the lower order bits. This is
-of course an unsafe operation, because dereferencing a pointer that has
-been manipulated in this way can lead to loads or stores to arbitrary
-places, if done wrong.
+> In memcpy() case, since we don't need the whole copy to be a single
+> atomic operation, so as long as the atomicity is guaranteed at byte
+> level (larger is fine because 2byte atomic is still byte atomic), it
+> should be sufficient as a concurrent-safe memcpy().
 
-We talked to our contact points with upstream Rust about this, and they
-believe the compiler and language could be made able to do this in a
-safe way.
+But this is every memcpy(), ever :/
 
-We will try to push for this optimization to be available in the
-compiler, because it gives everyone a safe way to access this trick. And
-it would allow us to cut a big chunk of unsafe code from our Rust XArray
-implementation. Memory safety is one of the reasons for looking into
-this work, after all.
+> So either we want to live in a world where
+> 
+> "concurrent normal accesses with at least one being write are data race
+> therefore UBs, use the corresponding atomic API in this case and handle
+> the data carefully with concurrent accesses in mind".
+> 
+> or we want to live in a world where
+> 
+> "concurrent normal accesses with at least one being write are data race
+> therefore UBs, but there are 17 and more API which are technically UBs,
+> but they are not considered as UBs in kernel, use them"
+> 
+> To me, having a atomic_bytewise_memcpy() at least clear things out about
+> what is actually needed (at the very minimal) to have a concurrent-safe
+> memcpy().
 
-Not having this optimization does not mean that Rust is not ready. But
-if we can get it, it would be great.
+I'm still not seeing what it does over any other memcpy(), except you
+created one more API, so now we have 18 :-(
 
-I can't tell if we will run into more situations like this one when we
-try to apply Rust in various places in the kernel. And this is one of
-the reasons that we should do this work.
+> Moving forward, since the concept has been already somehow
+> proposed to C/C++, it's likely to be standardized (we can push it from
+> the kernel end as well) so we don't need to implement a concurrent-safe
+> memcpy() for all architectures on our own.
+> 
+> Hope this makes some sense ;-)
 
+I'm still not seeing it. All memcpy() implementations are already
+meeting the criteria you want. There is nothing to implement. And I
+really don't see the point in creating: magical_memcpy() that is
+*identical* to every other memcpy() we already have.
 
-Best regards,
-Andreas Hindborg
+AFAICT the only problem here is that from:
+
+  https://lkml.kernel.org/r/20260218083754.GB2995752@noisy.programming.kicks-ass.net
 
 
 
