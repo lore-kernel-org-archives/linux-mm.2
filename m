@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95BDAE9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 11:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4D3E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 11:28:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A89746B0088; Wed, 18 Feb 2026 06:24:08 -0500 (EST)
+	id 83E266B0088; Wed, 18 Feb 2026 06:27:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A36AC6B0089; Wed, 18 Feb 2026 06:24:08 -0500 (EST)
+	id 7EBD36B0089; Wed, 18 Feb 2026 06:27:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943936B008A; Wed, 18 Feb 2026 06:24:08 -0500 (EST)
+	id 6EAC56B008A; Wed, 18 Feb 2026 06:27:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FD2F6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 06:24:08 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16B8213B121
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 11:24:08 +0000 (UTC)
-X-FDA: 84457343376.18.5E98936
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A038D1C000F
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 11:24:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sas4Ja4l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771413846; a=rsa-sha256;
-	cv=none;
-	b=tsxEqE77rTIQZSg0n+0+55o/esbXwDgVw8iuJ4u2YOEE/w0O/KvKQBUXxSmquoum7gG3ln
-	g+LgglwZ7xXKQ9Dx9actDlQv3WpVdVOoROWrcIC8FTVTmOxncY6sAvZOA5Q+Rkmz03Lhux
-	BKeMrtroAW6u+yShianZ14ZpwW2hbg8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sas4Ja4l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A1FC6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 06:27:59 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B08B6160553
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 11:27:58 +0000 (UTC)
+X-FDA: 84457353036.12.B56B705
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8BC781C0003
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 11:27:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=s1MysdmD;
+	spf=none (imf20.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771413846;
+	s=arc-20220608; t=1771414077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YjcDm4OvNWAc/C0h8r71QKfYbrdjdZL+VMD9JOhvs6o=;
-	b=MmSJCDkiOUJSZBYraRtwU8sdTQGPvlGD9IsbAif8RIhUU2rDPPqVR+RQh9IytapagBbihH
-	bdyHd6n58OnVgE24f3wW5EFziAXROKtz69w1igkFzugJypiituJ8dt+G8s9BAaz6DOVJmX
-	rHuGqtkRZqJrCf8vKcCpuB0MkmQMffw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA9976132F;
-	Wed, 18 Feb 2026 11:24:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D184C19421;
-	Wed, 18 Feb 2026 11:24:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771413845;
-	bh=YVMv1ptFKNw6kEpdNrlOLxsWiwOQJELFd3S4YAz4D/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sas4Ja4lMC0iAp2bsc+/MKvz4KtmAhZsC8ejKyT2vUbu09628717QvJKpcXLHdEzb
-	 SwYg+6qXmHKd/1gN6J/KMKc5WvdfBEjAgAapTw1rn6p5p7IQXpUjqIJoY8/86EOBKY
-	 WCRHKZlK6+oav1Xr1hPOPb/wq/lvR5HCKrYJU+1DZHyF6ZQIsfPWkuEmGfEyigDg9D
-	 LoJAWMpDDJS5teuqJFswrZGZHu8T/e65wDUCjJ5Lb2Wk44Wy1O0fXVSm7XYF9iuXBW
-	 iKJof5st1/XGq5mCp18Bo4CLZxH6AjGRM8ACrSiSEuoM7ZVNjxJb4eWNjeozOAE3L+
-	 FJ9yEJUlb7HXg==
-Date: Wed, 18 Feb 2026 12:24:00 +0100
-From: Daniel Gomez <da.gomez@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, gost.dev@samsung.com, 
-	Greg KH <gregkh@linuxfoundation.org>, Julia Lawall <julia.lawall@inria.fr>, 
-	Kairui Song <kasong@tencent.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Evaluating Rust for XArray
-Message-ID: <aZWfP-LyMvDsHVnz@macos>
-References: <aZRncP-sKLLS2K1U@macos>
- <ix0mR76G9a_ieuQUUkkfHMJIviAsrFaO859172fuFx9Goj7QdIfz1jtnv3ptubGEC7uEFCvVfEoWxcisUnTi1g==@protonmail.internalid>
- <aZR-ItMBkiqyBdKd@casper.infradead.org>
- <87bjhncl7j.fsf@kernel.org>
- <CANiq72naQfG=nSiPJdCXgqM1M_7ynDE5Stt-jiBGPqS9pipQtw@mail.gmail.com>
+	bh=gsFxEV4P+LKXmedhnkVP2MzBuTaUdQtYYTNJtDkuMow=;
+	b=HJ4eCwm7b7j+j9BPAKJB+aUQg0lO611slgY5uTJYYSJ6AI+jabWZyIEGQVbYyebAs3FBs+
+	+kH/iBEvMbXGVFt9jY239Dg+3hP3a+7H/Tjg7f0to/NUj6dTL48089R85xK5Vwfe1vJ6+m
+	KMbI1Ww63SdMbf19un61KBxURuqO080=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=s1MysdmD;
+	spf=none (imf20.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771414077; a=rsa-sha256;
+	cv=none;
+	b=Mwl25C1ehTwfl5PwELrvIzwiCeNJCabGP1U8x7Mqeej09xiY2t5HTOV6AEYvM6UnwvzlfT
+	DcrmhkaqvtAUXOGdKeWDsbZ131yhr5xNLp9gsjsYBCpj+Y9VFVgiWgnppkMFci+io4Fqbg
+	dCMq+T19OYUqGYasiNKlg2pjd6RE5yU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=gsFxEV4P+LKXmedhnkVP2MzBuTaUdQtYYTNJtDkuMow=; b=s1MysdmDVjKqzTMoQ2H4afrHR1
+	zXG+OjemQB6clLoA4PHhXIUSsqNjNh5RsVYaEd7MCjGPainW53GN3XF695S44EHPJUlAenGxzVdzX
+	ke0DT3BZmDCfh9Xt+RBLbwUj6tXhVRenW8/HXfnds8+RfbxN0zmbN++W2pB7N34Lai4tqZMX3x0/y
+	r59jwRIWiBwfie1k45UgbRMi0p9ixFCvg1bF8+SjP+yNl+Mh+KBehWuWeOYTvRjxLXS21YVPnjGYN
+	Be0/4duHxUUweKGFQg6KV6AhYWNJ32BPxmOevw2rBqX36r0Yv41sUmNE6+mIE6hDfS8HwXU9fH7cb
+	jlovR90w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsfih-00000005wph-3SbA;
+	Wed, 18 Feb 2026 11:27:52 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 6DCEF3004AB; Wed, 18 Feb 2026 12:20:30 +0100 (CET)
+Date: Wed, 18 Feb 2026 12:20:30 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260218112030.GE1282955@noisy.programming.kicks-ass.net>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aY9i8rbvnxdOA9DV@tardis.local>
+ <20260217085541.GS1395266@noisy.programming.kicks-ass.net>
+ <102c86dd6fb1a907b7138a437dee00dc@garyguo.net>
+ <aZRHJ22UtG1YeBMj@willie-the-truck>
+ <aZShEW2b9-71r18I@tardis.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72naQfG=nSiPJdCXgqM1M_7ynDE5Stt-jiBGPqS9pipQtw@mail.gmail.com>
-X-Stat-Signature: 8z71hydm1hydtjqougfuq1aybydkm81u
+In-Reply-To: <aZShEW2b9-71r18I@tardis.local>
+X-Stat-Signature: yncscn4ja1cck1rpyb4pt6npn3ow6tbo
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A038D1C000F
-X-HE-Tag: 1771413846-890329
-X-HE-Meta: U2FsdGVkX1/fnEDNdivj+ycNAdrXL3gWjI+PGyw/yT9CudnCZ+h3RIiKvMJs7QnMKWZfrqc3+x07bh0oCor3qmAX/OCncQbd2joUwkviUU4ufjttExTWzgFDS1S9k0aSmPFFnPk1on09X3c55WfNQDL1g8RLEHdse0CIorcgwDjTVvUwmmcXsac+MhSek1Jp3723ndCHSFV8k+XNGQkTPYgl3QVyUGr0yNQnr4YS6ui01Zjm2bX0b92UTw93e9V9qa8z2pTaNtytXMcqPbAt7yOl40IIl1Zlj6b4gnxzoTOUA1OYJfu8sqszOs1vxiKP4x4f6sWIwP9ftXY9XpwnpJezjYmwwlSxhooPirNBLudzoCd0Rdu6ObeeDwiHIWCDb8NwrafyI5/pThOb7UZ9ovN1QB7JRmAo6eCpamts9/4JwKc+0B+b2vTfokwS97NFoc+TVjm7HFaQD8N9Y/8rr1plDlg6HSnppIKk0rXj4gkBTuQm08slb+G2c1xEnoOst5VBBSdZ0LggQVEEgEQP7qXJFcmOoCgx7cdxbUGv0IJMmT9yC/CHX60z5m0qUF4lM/ZqR5XQvxnZvlXbmQBz58fBRXJW2100GoP/m+o1k8yeEzdDDJtelfU6LZ+Jkq2CgH8WD0we+8am/9haqUJpuKiQJtXlZjGEQElWF/QIA44pQ6LNsUUf2BQnQ7LncyuYig664BMgmB5S1Y3I5bjvZrQ24SEy2iUiPcaJ+U97BMknyP6g0HRni/A11SqpeFwiouzBiklACSXaW+WphAz9iBZz60SMeh3AnbXKVuKVwFLIFSf3cFz46z2DbOto6lz8k8lu2Jx3IpWweXKXBzX1nXvJF3JozoxqRX+IEynPFd2bdzXef5rxZy4cXdJ9yv9T3Ex6tsdVsmbkSlsbcDbZRWppSH5uzXwgV3EwoznWfkbuqIs9P+IhGt2FKat1FNSCsOnqHbiaO9z9m+YC/yd
- qewuo+CV
- 5HR90wiwPM2X2UmCKwADc4Xjb8w==
+X-Rspamd-Queue-Id: 8BC781C0003
+X-HE-Tag: 1771414076-490749
+X-HE-Meta: U2FsdGVkX1/iX5Sm2X/nAwaAY9A3gS4TBGhI+Po869TU+iRZOUfan1b9rL/cWWGypa4t90R3NLY8PRblbz0D5vOR3Y4JYukFaJ/lkbyciv6uvzDLCwl012gxzPeYd3vEkQ4t6K6Savjwvtk0u9N309zq9ML8eHLkzs6C7amA1//y0sKnnvCDHIAi9HZqbToDxDGYL2RXftw5wwNX7dZ8hRfQOIpNk2BB3nIzV7z3+81H7HfJdWL97oFctSIv6ECHN/3me+Esvu7SGROc9/1WFVcXbseOijsVYBbae5jFHmTLLwMhzyonIWvExHM5l4FbpJszC5L4bz8V3723P7/jhGh1tLNzrKQoQTZytqRbWHYVwQWD7VaARpJm7BZcH0jymSBs6KIignp6XhRh+7EYYT4RQ6pLPI7zPMJGSRAl92rgXpVY/vTE+72f8JWml2PVn33S5KVFf7mIr+pVreDsh2a+LmP5DdnEkR3nET8WA0ZlsyK4qZPTt+oedzoZZPSahotoNSwpXCliXy8QnCOdG65rIwZEvJ8nA/jf6s0LLD+WVfw2I2oit2lXiCKsNPo21YbPwVMJDM8E/O8LIcErSDl4qNdg94xd/iv72chr+U5p+CwgMQC0rfYt2jJtnWTqsAL7kPuPoHgfptykSY4JXVBdwiwXs9gafnYZqPDJgP+tajHu04CiNHNQfjwzK/u99eIO6BTGsFMmWNzRmTZP6u/7GkI6Zb4C6ciVm4ftY3NVkBmsOSI56PWE9EI3OUDVph7O3mZxbmJKwNaMdVA55uIuy4AFG0YgGHUr6djPP2QXzaIk5YboW8Wkp7FJBYMbNJ3sZhaCiG/JSSNHL/MbZq+tzFAvGbxb1yO7hM6rraDEYxUOgLGS3wGP88J9GT9BjmF0t/Jo5qH6V9Ncsf8dig9cKGB2bJwxoEZ1mAlIne3jihXqA6AGZOtdtUsX0Vumy8omewQSxjM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,35 +104,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-17 21:18, Miguel Ojeda wrote:
-> On Tue, Feb 17, 2026 at 6:51 PM Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> >
-> > We don't have to wait 5-10 years for gcc to fully support Rust, before
-> > we start playing with this.
+On Tue, Feb 17, 2026 at 09:10:42AM -0800, Boqun Feng wrote:
+
+> To me, having a atomic_bytewise_memcpy() at least clear things out about
+> what is actually needed (at the very minimal) to have a concurrent-safe
+> memcpy(). Moving forward, since the concept has been already somehow
+> proposed to C/C++, it's likely to be standardized (we can push it from
+> the kernel end as well) so we don't need to implement a concurrent-safe
+> memcpy() for all architectures on our own.
 > 
-> By the way, I don't think we will need that many years to use GCC if
-> companies are interested on it and support projects like GCC Rust
-> and/or `rustc_codegen_gcc`, given their current state (for context,
-> the latter is able to boot a kernel with Rust enabled for x86_64, and
-> the former is prioritizing Rust for Linux).
-> 
-> Let me use this opportunity to say: if anyone wants to support that
-> work, e.g. hardware companies for their architecture, then please ping
-> me and I am happy to help getting in touch with them and figuring
-> funding and things like that.
+> Hope this makes some sense ;-)
 
-I'm not aware of the official GCC roadmap but LWN covered it in
-"predictions for the new year" article [1]. Quoting:
+So all of this is about compilers being silly, not about there being a
+problem with memcpy().
 
-"The gccrs project will deliver a working Rust compiler this year; it
-will be usable to build the kernel's Rust code. This ambitious project
-...
-The availability of a GCC-based compiler will make that transition
-easier for many people, especially those working with architectures that
-the LLVM-based rustc compiler does not support..."
+memcpy() as implemented by all architectures is *FINE*.
 
-Link: https://lwn.net/Articles/1052269/ [1]
+The proposal you refer to is:
 
-Whether that becomes true or not should not be relevant for the
-discussion, as stated in this thread.
+  https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1478r7.html
+
+(as shared by Will on IRC) and right from the start it goes sideways:
+
+  "But fences only order atomic accesses,"
+
+This is of course complete and utter bollocks. 
+
+No actual hardware works that way, so for the C virtual machine to be
+specified that way is complete insanity. This insanity then leads to all
+sorts of problems, and then these imaginary problems need solutions and
+we're up a creek that smells real bad.
+
+Can we please just 'fix' things by stating that *all* loads and stores
+are properly affected by the relevant barriers. Then things like:
+
+  https://lkml.kernel.org/r/cbbea9ecb994df975109d97a7756d73e@garyguo.net
+
+also instantly resolve themselves, because the compiler just isn't
+allowed to be *that* stupid^Wclever.
 
