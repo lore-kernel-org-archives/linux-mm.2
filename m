@@ -4,69 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB99AE9A047
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53E40E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:54:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EEAD6B0088; Wed, 18 Feb 2026 07:47:02 -0500 (EST)
+	id 918816B0088; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19CA86B0089; Wed, 18 Feb 2026 07:47:02 -0500 (EST)
+	id 8C68C6B0089; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09B236B008A; Wed, 18 Feb 2026 07:47:02 -0500 (EST)
+	id 7BB486B008A; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E460C6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:47:01 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 811A556064
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:47:01 +0000 (UTC)
-X-FDA: 84457552242.14.3E86C14
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9134B10000F
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:46:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771418820; a=rsa-sha256;
-	cv=none;
-	b=DK+5Zk7p3jF9bGhw3XaWWE21FhyXpSyTkO3tF8D4qtoMVXmX0NQeKNUo8VwA7bSJ/j8Ohg
-	/jV+rqKtcJlUqC+VG8zwKfqofUQG7W9vN4YDjCjwZcC84bUVe5SMsL2Cy+ffYimEfSMJWy
-	STpMmVp3U2ehpHN1cdjdqymhCDR7aU0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id 690496B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:54:47 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E2B41B3D24
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:54:47 +0000 (UTC)
+X-FDA: 84457571814.19.EECB51B
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C224BA000D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:54:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=EWdE9Pc+;
+	spf=pass (imf25.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771418820;
+	s=arc-20220608; t=1771419284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=bLOcpWT2jrT+LQSjzvFcP7qwYcuPTu2AgkLo1vdkh2A=;
-	b=3IAw/FJxZ7O4e0o+/rUxy+4/lLYAKyj1bSTIHC6kqMq3JVWDimS+EiCxem7R853XkmFI3M
-	zsdL3YqD1bA8ey//wHusz1DzytovOx2lzxGGFkEETO8qApHNnxN4LFyzfEWZ8wzLlD8/xS
-	dQkLIRymjh30xbbTYhfZKwJ56LrBfto=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 18 Feb 2026 21:46:54 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 18 Feb 2026 21:46:54 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: lsf-pc@lists.linux-foundation.org
-Cc: linux-mm@kvack.org, youngjun.park@lge.com, chrisl@kernel.org
-Subject: [LSF/MM/BPF TOPIC] Flash Friendly Swap
-Message-ID: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BlA1AbMzOeTmhaj5e99ZkJ4aaV0Ydzpz7qXESwhzBw0=;
+	b=s+JMh7j04TX5wLGTfaGBMv6wh+tn/jhJ183idC55Nws1K1VZhSLpM+MiiZhV+AEWAG4tUJ
+	pLKiRCstNA6H/NvB5LLiDQgVUHF2FKw0q9N7Ol7sxNiBcW3Ye5XwVLa9TkNzfAGG46JoL8
+	WC0lGzy3ieNrmNUcIwEqoQmoK8GHljQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771419284; a=rsa-sha256;
+	cv=none;
+	b=cuSIMKW4Qy1BMzeKZCQ2pOM/zkIiWVOkN8G7on0BstZU3A7w7NP40fqNEw7YqJRD7c4bXP
+	/omhVMZIxan9oWDwqtF9dOqQxgQBNUiVlqFdb3IIBxxGeB8Z8EcdI2l3zBTB2uTM0iRZL2
+	T85t2p2sL7e8d33smh7YIRXB9z90p1I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=EWdE9Pc+;
+	spf=pass (imf25.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61I9KWwC3661553;
+	Wed, 18 Feb 2026 12:54:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=BlA1AbMzOeTmhaj5e99ZkJ4aaV0Ydz
+	pz7qXESwhzBw0=; b=EWdE9Pc+rdxxTC8NAoOgznIV/LjA1IVskBFKXQuVm26iIA
+	IHPQ/mZhu82rmbL+PHKciaRpKm2FC20POFYFYT/pCwJ4V7U+qmTBOzPn5LwKwyAK
+	nLdlgu264oeKZ7dbqjjG7snnTXAM4Wnz7L8guKvTQvP2elc34nPaRb72ffZtk1/e
+	VusELSQfV23whrJXiGBjhzaxjzy7+zKb0h5QPe3ivi4DIfDQGAQVp1jky5TrccsT
+	eu4wuYPkzjxcq6Hkdr1aPRIi/XfWoyTxA+1/pruuQarggSnOMgy/w4SnNnNqhxnc
+	SCI861u8a1CwDBde0udKshfqUaiWEX847yo5oweQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjg4tq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Feb 2026 12:54:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61I8e4Zu001419;
+	Wed, 18 Feb 2026 12:54:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb2bftac-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Feb 2026 12:54:34 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61ICsWv553674438
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Feb 2026 12:54:32 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E7CA20040;
+	Wed, 18 Feb 2026 12:54:32 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD1A720043;
+	Wed, 18 Feb 2026 12:54:27 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.27.220])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 18 Feb 2026 12:54:27 +0000 (GMT)
+Date: Wed, 18 Feb 2026 18:24:25 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Dave Chinner <dgc@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Pankaj Raghav <pankaj.raghav@linux.dev>,
+        linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
+        Andres Freund <andres@anarazel.de>, djwong@kernel.org,
+        john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
+        ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>,
+        dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>,
+        gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com,
+        vi.shah@samsung.com
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+Message-ID: <aZW2geKlQESzxXzV@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
+ <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
+ <aZS18m1eIxjDmyBa@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <aZUHHvNl6cQr-uwd@dread>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: k8iu96f9ujfy7iny3qso7n4iumzrn85s
+In-Reply-To: <aZUHHvNl6cQr-uwd@dread>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: -fnHeqLWXVntKC1VPi5-hEcRrUMZ1eZU
+X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=6995b68b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=NEAV23lmAAAA:8
+ a=VwQbUJbxAAAA:8 a=mABpun1c11mrw8mCog8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDExMCBTYWx0ZWRfXzmhqwlV11zuf
+ HnmAQnAhefdBCrARMdXeJQSd44KB601SjyK/JR0C6gSI9FuU434jMjIZRB9peArV6ksn6dB2Tsi
+ +CKCwHjSLZHhmIeidEXc/OuKSEdQiwBeO3dceRy2JWC1wkS4RfklibBsSwHV0g4sP0Go5+lUnrI
+ J8w9YDYeei1TO3C51EgMJUXHPoieEjezgBQW7Px/RyxlZlURBGKTsRI709hFtHi9uXlgScWuCOI
+ 2/+K1Da1QZIKtGU3FvITkQnLC1t7+zZH1tKAWTueD49VcleXglUDjhdvTdqLsxUchkMMoZfwHSY
+ GTubwyHEfgWFZFR8jvUMmNph8Hqkv1r7evKqLlI+yTQoFimn0cTTwquPKo0dNZMvUUiRwMz8yR7
+ XKHguLAmceAQC1oPsMPCjwDrrjCEi2SSYMojmBcD7OMyTXGmo403Qrfp8IUIC9WfdGFDEIA72Dp
+ e9tPMACa/OGWvsZOx6Q==
+X-Proofpoint-GUID: VKj-YQ9wKR8GjOpfDRXrT459fMxy1rGC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-18_02,2026-02-16_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180110
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ry14io17596qj7d9ofzoeq1nmp1mqb9r
+X-Rspamd-Queue-Id: C224BA000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9134B10000F
-X-HE-Tag: 1771418818-26335
-X-HE-Meta: U2FsdGVkX1/4Uau+6VjRaAUDbpIr5vtCEVqfAjffIF6dCefAZhUzR02DgzNFIfxWeKMl1mxMEAZM4URWv4h6k0kA7aQE8UXsAs9U6xurUHjuX4kRr2ExauBE9wdrVjZD2pdMvkBNLiPgLDRI875rQwnAXovvF5cWGQTlKjiU59aFbhLlEG2RXFKoEmVYQrTUjmXXd2+K4ZADvr6lY5+ArMgzw7WLYcCWKeeScXspEly+KkXIoQkL73zsNUQvLPlgD2Jf2z7Z4Hn5v7HDv91jghfhliJl8ck9Uy811sw5KKiYnlZBQhLwjgWEE0Psg7i6bU1TZ3T2brnebi24wsWYxqQ3kuf2bIvu68CbWIwYtc/jVhrE6RppCIN9OkCaz1X3hjKGRh2YK5rp7JDV5RUC5cDepP8TOypD4lSwe5oXJXGizFh4RVPm2CXV0GLyqjaME6bIaSWmi9dcJ4iO4upcyhu83WNxArbyUM2zjIyPi61Gb085j7hoUzm3MiVgioBvTjpYIJNvugVSOkK/nVTS/yikCbw3nlbIr+JAz9Ac3JPPBYw2agtHiRHK2EINoy7iYKkfqXKPd9agzRClxJWKVoVftuOTJ/+IwIlzYaID46sI5Qal2TaUQNbJCm7+MOnHEcJke7E97mvhzbYq4D/9tBhzRwnHzypiXeZx8z1u53ErkzPseJZZKxppb1TRxFYuuOcBXccOY6KZZUVprGQ7sftG01ggrXV8Eq3K8HotwPuZ5RZxGtSINF3Prl71+UEBcveWteSSzYWs8OKFzNyH2m5cxPRk5I8TCYbY93iu74Dm7KP9LzWe/HB/K/C123YIx82UtunD6OPRCdEiixDQLXkRDbgCUa5t0nbLrRGAVOMX1MYCx4k0KQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.027055, version=1.2.4
+X-HE-Tag: 1771419284-499007
+X-HE-Meta: U2FsdGVkX1+DKO7EZWU8wtTsCnDcoHsFPyxFkxliXoBFyO7jxOtSy0+p8095MPpJZM6DgdSbAqt+46nvyXmhj9rsxHQgc9wjc1EQj7aKp6ED6QYeIIXLWZ6voWOSw2FtLbkXKmiM5H/g3Rhd2XD0LdeoP3FnBFeTb+6IDnOQgrNeoXu/lgXfC7rTrXmjPIL4A1RSrJ1PjRi0FYOjc483SauhQjmZZg81O9u8ZGCv6MP7D8oSlIFyCyDvBdtgfgIlIKypnmwr8IUH/aBClYVW9bFeT3WeE009xxeAWkBTIGN7cV9QFTf0INmJP9UWJNxC/oAdbfvtsy5q5Zec8bDquHOvt3lzQdshaWGUqowF38hYxmIJpA4+8EvpjB6MgXn5V1nE6XphlXmZp9IPuLdJLj1vIdh4K9h6aZdIKB0O5bvYHYcY1+5NGMdSd2Z/nCazSqpDA51OBppl6hPUTyHDAll2D99lh3BwYYQ4gN8H0XwZ5KseKoCuLcdc3tsCzY6NfN1AozZ5lihjTH1U4K/FKVD2it+sAKc500u6k1NBDSblDGysu4vfE0xQOjoEneliU6rViaW+PrJDrdO13vuz4aOzz5z90pznGVxo3QwB3nHPenrul5K32+C4Fnr7LhdoJOiEVIaYXOUEAGEvvVele0DCqlwu6MXaeLMVAi9aI06WkFt2iSXO/JWTmM+d6AdcD/vHSvXN5KqSFrEmdste6Y71STgdYU1E+lUIVh983S0WdIt2LrtMOrfVlOvUmVV44z2n+pTOYja8F7FBy5I0+LL5YEkHfownOQBIlcI5ddLvfASWmlBvHrx1O4+LTIdgG7ixvhlXJSwSE5MwrcbN/2yoEf5D+IkVPvoFl9fC2BChAzvqfmHSIIciWZQkBwO9Re6D6hTsXQ5sQWCehcB1MlmkI9w4omD59w7ByvA/IBODkzXkYSHr8sHSqFxP0R2gIhx659PbJkb+MnvzNP3
+ Hna8yAzo
+ s4XTb4Ol63OjVBDnIpBVljPjIgWUOCPfxK6aE+rAtGVexGMGCtSsfqLrRf7WDPtj39j5/Pywh1ybZhTXFnxYktb35VfNM/4yb9338VxDdDs/DArb/AgGwAg5t38ToYpMpYwyzxtLEKb54/YgNw0o9yn33lwegCNd55VB5TUTyYxelBInthkPYECabuF075O9364AhmGT3pdd0oqV1gAb4UpIsUlXQZTkdwGYnCmvHdX+b6C6jfkD2Ei59toWWnHui88jhu4QLCE1KqV6H1muv1X3XYwPLAq7GPkU09O2aDS5LOIg4wvKOhp8hCjSNO9+IIAPT2BdxpRVB6e5yPY0/GxyKNOBCTeRHH3PBrIsjMkrSugDQS4lBXUOZV2Hh5Z2EZOaZ3jWi4NZf5X0Xxx29sq3/WvDHq4giPjFbe8JRhbkCv7nDpym8DNXjVQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -74,95 +148,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Wed, Feb 18, 2026 at 11:26:06AM +1100, Dave Chinner wrote:
+> On Wed, Feb 18, 2026 at 12:09:46AM +0530, Ojaswin Mujoo wrote:
+> > On Mon, Feb 16, 2026 at 12:38:59PM +0100, Jan Kara wrote:
+> > > Hi!
+> > > 
+> > > On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
+> > > > Another thing that came up is to consider using write through semantics 
+> > > > for buffered atomic writes, where we are able to transition page to
+> > > > writeback state immediately after the write and avoid any other users to
+> > > > modify the data till writeback completes. This might affect performance
+> > > > since we won't be able to batch similar atomic IOs but maybe
+> > > > applications like postgres would not mind this too much. If we go with
+> > > > this approach, we will be able to avoid worrying too much about other
+> > > > users changing atomic data underneath us. 
+> > > > 
+> > > > An argument against this however is that it is user's responsibility to
+> > > > not do non atomic IO over an atomic range and this shall be considered a
+> > > > userspace usage error. This is similar to how there are ways users can
+> > > > tear a dio if they perform overlapping writes. [1]. 
+> > > 
+> > > Yes, I was wondering whether the write-through semantics would make sense
+> > > as well. Intuitively it should make things simpler because you could
+> > > practially reuse the atomic DIO write path. Only that you'd first copy
+> > > data into the page cache and issue dio write from those folios. No need for
+> > > special tracking of which folios actually belong together in atomic write,
+> > > no need for cluttering standard folio writeback path, in case atomic write
+> > > cannot happen (e.g. because you cannot allocate appropriately aligned
+> > > blocks) you get the error back rightaway, ...
+> > 
+> > This is an interesting idea Jan and also saves a lot of tracking of
+> > atomic extents etc.
+> 
+> ISTR mentioning that we should be doing exactly this (grab page
+> cache pages, fill them and submit them through the DIO path) for
+> O_DSYNC buffered writethrough IO a long time again. The context was
+> optimising buffered O_DSYNC to use the FUA optimisations in the
+> iomap DIO write path.
+> 
+> I suggested it again when discussing how RWF_DONTCACHE should be
+> implemented, because the async DIO write completion path invalidates
+> the page cache over the IO range. i.e. it would avoid the need to
+> use folio flags to track pages that needed invalidation at IO
+> completion...
+> 
+> I have a vague recollection of mentioning this early in the buffered
+> RWF_ATOMIC discussions, too, though that may have just been the
+> voices in my head.
 
-I would like to propose a session on NAND flash friendly swap layout.
-Similar to how F2FS is designed as a flash friendly file system, the
-goal is to make the swap subsystem write data to NAND flash devices
-in a way that causes less wear.
+Hi Dave,
 
-We have been working on this problem in production embedded systems
-and have built an out-of-tree solution with RAM buffering, sequential
-writeback, and deduplication. I would like to discuss the upstream
-path for these capabilities.
+Yes we did discuss this [1] :)
 
-Background & Motivation:
+We also discussed the alternative of using the COW fork path for atomic
+writes [2]. Since at that point I was not completely sure if the
+writethrough would become too restrictive of an approach, I was working
+on a COW fork implementation.
 
-We ship embedded products built on eMMC-based NAND flash and have been
-dealing with memory pressure that demands aggressive swapping for years.
-The limited P/E cycle endurance of NAND flash makes naive swap usage a
-reliability risk -- swap I/O is random, small, and frequent, which is
-the worst-case pattern for write amplification. Even with an FTL in the
-eMMC controller, random writes from the swap layer still cause
-additional WAF through internal garbage collection. Buffering and
-reordering writes into sequential streams can complement the FTL and
-reduce WAF.
+However, from the discussion here as well as Andres' comments, it seems
+like write through might not be too bad for postgres.
 
-Our team has published prior work on this problem[1], covering
-techniques such as compression, RAM buffering with sequential writeback,
-and flash-aware block management. Based on that work, we built an
-internal solution and are now looking at how to bring these capabilities
-upstream.
+> 
+> Regardless, we are here again with proposals for RWF_ATOMIC and
+> RWF_WRITETHROUGH and a suggestion that maybe we should vector
+> buffered writethrough via the DIO path.....
+> 
+> Perhaps it's time to do this?
 
-Current Implementation:
+I agree that it makes more sense to do writethrough if we want to have
+the strict old-or-new semantics (as opposed to just untorn IO
+semantics). I'll work on a POC for this approach of doing atomic writes,
+I'll mostly try to base it off your suggestions in [1].
 
-The current implementation is a standalone block device driver between
-the swap layer and flash storage:
+FWIW, I do have a somewhat working (although untested and possible
+broken in some places) POC for performing atomic writes via XFS COW fork
+based on suggestions from Dave [2]. Even though we want to explore the
+writethrough approach, I'd just share it here incase anyone is
+interested in how the design is looking like:
 
- 1. RAM swap buffer: A kernel thread accumulates swap-out pages and
-    flushes them to flash as sequential I/O at controlled intervals.
+https://github.com/OjaswinM/linux/commits/iomap-buffered-atomic-rfc2.3/
 
- 2. Management layer: Mapping between swap slots and physical flash
-    locations, with wear-aware allocation and writeback scheduling.
+(If anyone prefers for me to send this as a patchset on mailing list, let
+me know)
 
- 3. Deduplication: Content-hash-based dedup before writing to flash --
-    swap workloads often contain many zero-filled or duplicate pages.
+Regards,
+ojaswin
 
-This works, but as a standalone block device it sits outside mainline
-infrastructure. I am seeking feedback on how to upstream this.
+[1] https://lore.kernel.org/linux-fsdevel/aRmHRk7FGD4nCT0s@dread.disaster.area/
+[2] https://lore.kernel.org/linux-fsdevel/aRuKz4F3xATf8IUp@dread.disaster.area/
 
-Discussion:
-
-I would like to discuss the following topics:
-
-- Flash friendly swap I/O:
-
-  For flash-backed swap, writing sequentially and respecting erase
-  block boundaries can reduce WAF. What could the swap subsystem do
-  to better support flash devices?
-
-- Deduplication in the swap layer:
-
-  Swap workloads often contain many zero-filled or duplicate pages.
-  Should dedup be a swap-layer feature rather than reimplemented
-  per-backend?
-
-- Extending zram/zswap writeback with flash awareness:
-
-  zram supports a backing device (CONFIG_ZRAM_WRITEBACK) for writing
-  idle/incompressible pages to persistent storage, and zswap sits in
-  front of swap devices with its own writeback path. Could these be
-  extended with sequential writeback batching, deduplication, and
-  flash-aware allocation? Our implementation buffers swap-out pages
-  in RAM before flushing to flash -- this is conceptually similar to
-  zswap + writeback, but we found the current writeback path
-  insufficient for our needs because it still issues per-page random
-  writes without awareness of flash erase block boundaries. I would
-  like to discuss what gaps remain and whether extending zswap/zram
-  writeback is the right upstream path.
-
-- Swap abstraction layer:
-
-  Recent discussions on reworking the swap subsystem[2][3] aim to
-  decouple the swap core from its tight binding to swap offsets and
-  block devices. If such a layer materializes, it could provide
-  extension points for pluggable swap backends with device-specific
-  write strategies. I would like to hear the community's view on
-  whether this direction could also serve flash friendly swap needs.
-
-Comments or suggestions are welcome.
-
-[1] https://ieeexplore.ieee.org/document/8662047
-[2] https://lwn.net/Articles/932077/
-[3] https://lwn.net/Articles/974587/
+> 
+> FWIW, the other thing that write-through via the DIO path enables is
+> true async O_DSYNC buffered IO. Right now O_DSYNC buffered writes
+> block waiting on IO completion through generic_sync_write() ->
+> vfs_fsync_range(), even when issued through AIO paths.  Vectoring it
+> through the DIO path avoids the blocking fsync path in IO submission
+> as it runs in the async DIO completion path if it is needed....
+> 
+> -Dave.
+> -- 
+> Dave Chinner
+> dgc@kernel.org
 
