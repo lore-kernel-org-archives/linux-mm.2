@@ -4,140 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E73FE9A03B
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545A9E9A03B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 12:12:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA5CB6B0088; Wed, 18 Feb 2026 07:08:09 -0500 (EST)
+	id B17EF6B0088; Wed, 18 Feb 2026 07:12:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53D66B0089; Wed, 18 Feb 2026 07:08:09 -0500 (EST)
+	id AC51B6B0089; Wed, 18 Feb 2026 07:12:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A35496B008A; Wed, 18 Feb 2026 07:08:09 -0500 (EST)
+	id 9EE866B008A; Wed, 18 Feb 2026 07:12:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D9D06B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:08:09 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2EE99136CAD
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:08:09 +0000 (UTC)
-X-FDA: 84457454298.29.F45D7FC
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5F82B8000D
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:08:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="YV+Vf74/";
-	spf=pass (imf02.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771416487;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B98C6B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 07:12:44 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26966AD43B
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:12:44 +0000 (UTC)
+X-FDA: 84457465848.16.E587D28
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2EBA4C0004
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:12:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=RS4Uplmx;
+	spf=none (imf10.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771416762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EWJozyYgHIhJJQDNAoxanhYWFd4biMKeSCw3f5P1+Fk=;
-	b=HpQFXZJinZH7dMMuLvWcPwtdiLd3aCOOfLOiWQxDF6DpKo/IjLriXOZSDlQ+Ox2l4I+Lrz
-	rdjOSnD4oVrSdOWB1IBm2NYxpwf76rrG8B+58SxK/RJx0W6QDkfCkhV5/Umu1SRfnlaet5
-	bJeC1M2DYVPy//TBwYGhecMW5/huyg0=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="YV+Vf74/";
-	spf=pass (imf02.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771416487; a=rsa-sha256;
-	cv=pass;
-	b=NuRmlOstnSN/hA4Whp+Ip1PCT49faeSRARjfh4NWNBje9fO2009+ebVkfuuakUomhwWO4z
-	tqWxDELTSsbewNME1XkviKZHgsXjG5Q38LbUHGNs7q8ukZq4kHP2+le72vWP5eBggKm4rY
-	LXw7+xGNurvdMYXccj81MrqWs73S/4o=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-124b07e5fe4so331054c88.3
-        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 04:08:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771416486; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MyxyqOmiagVF2wYtAPKmAopwOi2KjgtrjsvqVMKiDxAZloew5FAy6cKxwN/7jrxaQt
-         FhFyrJfj5qtYORrPyIU2DVQD8m0ifivsvNJTkUxPbTDZjEl5YUvNRHDYeXiIJq8vXiBo
-         E0Zsu4GY5veqrUKWKokMZvO8FKRGYu+F6RiCUyI4vZG6Xl8IRckU5GZcGar/ZxrFLzp4
-         tZmDitNlusdmbVIvrSivfdi964TyKJR3ee6JXSr781fubFDZkYZCgk5wkxuWQ9XRWodx
-         IcqjRbK8UKnwH/LWH+FwQTKdLpkA8JKjQESwxndB858beU/SxTLoIDqICrJ0Ef2o5WAn
-         lxvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EWJozyYgHIhJJQDNAoxanhYWFd4biMKeSCw3f5P1+Fk=;
-        fh=qA/wtSphPYFYAhtgsvHjRKrJFl4y8Lp2DHRNGqeoI8U=;
-        b=PWusIkyJHGI5WzKEE4blxHifPeoyqHZqEm/mCW6wWJ6XRh/vnI+I/njcTB0wx9Ramf
-         opOQj8mUaf1T+3k6wrWy/H3/cea0Hea2LXsTt32vjBADMLYk5USq9ZSJCnACfA26TUMP
-         QmSKSOS5WE5HXZGIConGX9SBQyjajTYs7Lja5D9E4eL96u8hj1TNUzBDBfbBDUahV42S
-         jPRc/WCS062wRoyYY3hXZfgCd1cN6FkwD+0eByxEKxOuP2nB9iV+8PuMlMOt8Hlxkhpa
-         EmrotudJkgmkTcqFCCeqB8yfQLWHPHX5q55HA06dDvAA5bT3TWti3PnLXBEOfVKGMepN
-         vfFQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771416486; x=1772021286; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EWJozyYgHIhJJQDNAoxanhYWFd4biMKeSCw3f5P1+Fk=;
-        b=YV+Vf74/2/xblnnZSzHTQm3MOXlBjVVCFwiHycE1BGD7J+B1QXNS/6xHzCWddLVGQZ
-         pEHfoklrv7sv4LOT211Nc8UVNcXRUfZT7qKH5KpL/o2AcETb5X4mSX3dy8PpaV1l00Ik
-         WSFp++s1Hw8bYa+lQH1SeSkyvr+chcYFz4tSTVQNaCv2itkQepLuaf0qZKgwhZi3yGOo
-         qmVKRey6DKtXHH1Lo6qIN1x0NzSphvWf5WKqAgCQXZlETGse/PAQUYsplpP7MyFJZhSl
-         iT5+ORUqgu/bCDA4ukWj/rNxcDKPc2tPrj4umDjQUXI1J2e+JPOoeAb8Q2Y2bjBUe/8J
-         vJWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771416486; x=1772021286;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EWJozyYgHIhJJQDNAoxanhYWFd4biMKeSCw3f5P1+Fk=;
-        b=P5ESV/ET4kNxGWrAElLaV4+5boiZYMOJILR9BtlAWg7S2FwLozrwotR7YBzMw8/+8y
-         p+TBt5fLV6gj4zQR4n6Ny0j7yfaNP9WA/tEb7OIDqSa2D17RKxalqNwP1UriDHm3CtuQ
-         HDkWvm9sySjOObRSMyAk1rlsvQRHKWePcej39uwJsxqTcs4xrlbYDIxvmZ8sQstZzVmi
-         3O+QVWljnCsiVQRIa7nw1TyEsUhldbBB9fcNHbTZ1ySj3EvFUW3ivziX5/4B3h0vjaKe
-         rwod/hAB9GMc8kRrdCSRkrQ0JS8Ajx0vd76ug6m72c/UeCJT4bhUyFGsGNH6b1omfhBA
-         91BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTOPCv3jhur+A1Svl9YmIFY5KqEIg1wA2UFt1IvTTWHUzjoWeh5Y3tz3FWoRQvnHQDHsGvbn9acQ==@kvack.org
-X-Gm-Message-State: AOJu0YzZND+OjXZasaGP1PDLjiN2WEKwc8u3tuDdhZmVUzmQXmPYMKRU
-	6Nb2ifKpbIqvIaxIH9DexItvc9/1YPKDuXIoemJB29vKUHjq1g1KseLNrML49rrGM6SPAJCbpld
-	i/TyybTlcm8g9YMSlPnLKNL9JT348AD4G0hZt
-X-Gm-Gg: AZuq6aJ8wKuAJGFw+uMuwRdDHA3lOP/RYqSgikUxxW6VvqhRfJohvjwVVr2/Sq7UjSH
-	AWn4rhiSMXAls4eDgmH97KnX1NhRx49LOxcQ5IEzriALFRNzMZ0kcSOCgWtfRHz7J+zoC+pT/Dn
-	Ta6SeiIcBnLD6C7tribqPiScFrwUBPcpJ1euPTQ0oqsYedYnvJSPqhA6/MXYHBeeOvYUaEW0GQd
-	+r8cxJIcL8J1deaR81qsCRsi/CfhawS1pP34cQ4HblVGYDKZqZ7+7TRbC7Ndr1ooJFeZspfunT/
-	7Ku62fs4mrblET1dsY2aMaIYG4RbVFRceYtchNLGJ6BVzv3xeDooelzsJRlCFMF00UMnYVlABQK
-	ddi2J1qxEejG5pvEQ8yJxNLyC
-X-Received: by 2002:a05:693c:3106:b0:2ae:605b:d530 with SMTP id
- 5a478bee46e88-2baba0f2974mr3533606eec.6.1771416485976; Wed, 18 Feb 2026
- 04:08:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <CANiq72=5r2miRm6GWszb2gDNi4k5-RZUzvdOdFQ3yyndvmHbAA@mail.gmail.com> <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
-In-Reply-To: <CAH5fLgi6NVagOPA_=r7Dmk9MFXrvZVuq85D9bsJfUqLNOZjCaA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 18 Feb 2026 13:07:53 +0100
-X-Gm-Features: AaiRm53ciXTCNQ_ps-BQuSDA2XXw4eXpbCyjDzFmZTHRgWlet3KnVIqUuIAfwfk
-Message-ID: <CANiq72nCmZ57VmXsXdXbP9edmWYqOWCYgWNTPGKvxC30sy94KQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org, 
+	bh=6RURdNKTgo/45/sjZa4WZm4lS4SVP6Z6PKdxDGv+PE4=;
+	b=JELXCHu9Ho1k59JSlair5qpI/uILwJX7YYtdrRymwdlxTtfWIMmokwC3U4Y+ZLSsd0Evck
+	xn0iugBk5p4KIFOylwqKWZIjhsOSV32D0k2jdUIlhy0nwmb1ebbKGON7Hedx/cr0oU3mYz
+	z/jf8nf7nSUEeB2DQNV0yASDWdYnIeY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=RS4Uplmx;
+	spf=none (imf10.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771416762; a=rsa-sha256;
+	cv=none;
+	b=pSCuRJJpmBN8GQmjh3FJZrkNiE9ZwDsp7XjOP2R/yu2R66tMAGf43/AIKgmZUOGB3gDXal
+	npN/Gf0rNdNew0D/iicauLWu4kI9C5q9h94Az+PJSDiC8ihn7yh3N44qsTztmGLYVuXh7O
+	hdLAtv79U9jmXePQs6z4QdoAi8amNBo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6RURdNKTgo/45/sjZa4WZm4lS4SVP6Z6PKdxDGv+PE4=; b=RS4UplmxNHGAVzg44UJZa+YOVg
+	GINpcpHTRg4GtiLFt5XFju5NzaM0+BwrF1gWoUPqQ8CJJT/z0ilkeAlkaOXxgZq7rlxUJwGUywLtc
+	V9ZyfP3gMCmAmJoQA2r21WsUuYdMgXHRnrvX5HUarrLqW+VDOPehYfUPNe4IeL5w8noUQd7txmkLx
+	PzgNI9ZzuDqs4i2QIP3kQo57RKIWxnFptBJyxxKQ3H7h4Nb2EEL/h+uOLTpWDzCCtNxWbeq+8A9dL
+	vt1QGYJlo8/sDaOIg6w2uVLP+ZfiQmHnELM/KGhPrA++35Zqz/GmlwPMVQlfGQ+nFJ/MeoL7Upwqv
+	69qsTmHA==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vsgQ1-0000000HOYr-1t9l;
+	Wed, 18 Feb 2026 12:12:37 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E2DF73004AB; Wed, 18 Feb 2026 13:12:35 +0100 (CET)
+Date: Wed, 18 Feb 2026 13:12:35 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5F82B8000D
-X-Stat-Signature: 1azzz4tw8czrmeykt6o5sduie5kph3on
+Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <20260218121235.GF1282955@noisy.programming.kicks-ass.net>
+References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
+ <aZRY9HthKwVJrAf1@google.com>
+ <67aea464d25c8cafb3113eea62c8221b@garyguo.net>
+ <20260218102045.GD1282955@noisy.programming.kicks-ass.net>
+ <9029143b048c9385768d883d93da6531@garyguo.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9029143b048c9385768d883d93da6531@garyguo.net>
 X-Rspam-User: 
-X-HE-Tag: 1771416487-554836
-X-HE-Meta: U2FsdGVkX19kvrug//pNLJR1slmxaRj/TsFcK6+Co/3kndgsR7ko15T85R6jLkwRksExeHG3siv9Z06cjbysdmUoeKop67KNLRi2CMwwMSb35VUO2468TJkTkmEhap65HfuNpCrDYNc4eU1Fsi5b4LxCiB3MzqzSsfaOaP/kKzXNgGYsjLX4VjPSFMJFTIzksR0MbkieIFYQXiIyHGF9DBHV6Fkebyw5quPCE+GoLiO7W5eIROUuL9KdIEetjd9ZmXkUYvmZaIY+BQsvudmehG/y5pgvEmT37QB+THS0VgoHvHD1RDlHe0YzkgvXZ+Rch6Lddjnfasv6fnvrrW10/32LYpiY4WQFnGaFZNt7gIfsjkZ3I+OTeKiOX9rTL7hNuoxquY7G+GtZfvCOrR0UZMjur/OAcrIAxSDCIZ7MZf6gmq+ttLHogXWaP1AUozfpR6aAdF2K7bUNN0lQoF8T2cZ3wp9mXxzGbD8aPlDm9tpmZlGOuyFyVDOsqQpK33YnbmYc2du42i5YQarfVxXoGe8ai9IvSxoMAID32WcqP2ZGd1B9mhKxznhXkceMdPFES57l/mKExNiKNA2oquzJrDt0Yx1gqCQHPJhC0Tn3eAwZcruhVcW5n0wb/J5rjmmcGee8GLHfNyXUwg3RBsasSkhSW10Mu0X3Ak3PDtk2E7BnjA5MicmRz7ONGQYU/20WL3okr7k/PsJzU2rcddIDdNoe+AHKWEf7mxmL8N5gGCfnPWXb+Is43lXvkpNvO6uT65xANirGAYUK6BP4W4ZJ0oIzeK7PNJc+27Nj/FpquFthAeQdL50Pus+cFXikmC3exLqz0vcPJLBxNTcaHcZCsO+PwwXXveJRi7E+k69u4eUkJQiffkZoTL8DKZK5r2qvSC7vnoTfbSJmPpsYmA0OTP1abR1NoqoZXjP3gUZm2nScKBuCOpnpBEyHHwQSkG+PmC/xCgEplBGIOVt6TfH
- kxz0Be/v
- 8lY2XooXIwnX+Rhoy484ATELRPOxgt4c0L40sptQZRApZocHn/Sf5Qf1n9I12twfM72XT1inzysEtdNXiofeL5IyxURKu9aI6elD3LJyHzwfag2Ld10pAB/AtG9IBWi9ttPxlapDae0vmrRtcLXGgCpntnwGdoBzT/fGq
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2EBA4C0004
+X-Stat-Signature: gbkeejy6gnnk4daig1zqygked38mi65j
+X-HE-Tag: 1771416761-10016
+X-HE-Meta: U2FsdGVkX19k93+EXO/21xoh7zh3utUZbBdAu5EJr/UzSS15kB1TGYvV5quJX5VI3Pd9jUrkFoK3yp0oSHFyufjkI0r5l3vH2pPtl5c+uoVjFEWFdAGqtzJNLxlCGdmhHfFmZ8t0vP4HSPq7oH3lvWlgrqQs/bdK6/xMC76Q7rYEkAvDvjmS3QQ0CZWligbn7JrxY+lJ3I8bxguZdkyPGVswMYUnZwMbxNrgURr4RWxhCoiR+RBnWIncsxNYvgFxOhwWjzt0l8Pw5axiv5VjU156jT5PcQpV83Mpbh9JFQGQd6yLZdJ/jty/uD++0h0AkzEXYR8uZPUYnuZH+FDsx7nwo/EVVN+hgyOm2/2TjsBzjVtU0aT4NiyI+327qq8F9deXCZYUnqSj29oWIsIP7RGi384jg5weMxRUieBvRjv2VyOIPPw29t30orCgBPpKHe2TMx4+BmIzzSGugHqdG0mOgT8WaZV7FTTQXnrbWnhcjU6gtLu8voD0iy+Ki/eTjlCz9cMJOvURGSwkXHXs+nfQCb7O04T5KPMjsKGZlol+0lz/y8gYDPUEye5DcCCvzHu4jEURqNIJ0F3U/aM+u5gRrDYyEu9GaGB5gdCBeUv3nw+464X01+DBr+l5Dt3jOefu+G6RsHpQwcWseQfVgNgbmTInqHEcGA1nZMtlnBsFefcieVZlfjc46a3TwkIFPDmA7Xc9OEsMJo2BbyfjR2bAWhosvNi6ppbvJbqKRQItlteRGDi5woyGBakSHxwVhB+M5klOiqVNAYDx7TKlLmFFF35UINJ1K5jRSiRVIcN/5ex0sSDN+03OZB8OxrU4C7AvsnfTZl4P7XscOBQYqVnztIb3j38UOD6XmBv5/e+sw09D4LCxncvdVTcfFCtp/XxbqeMWWeQ7Tiyd90umCTW8jfY5+AQT6ZKazskwFsy7irvPKK2qIep0i5IdFBD7uBsBfyjJsynRcIgzU3W
+ TB9FdkWl
+ py37tTmlhdhdXqXO3Dk7G+gKC6pw4t4TUj9+APtLp53llZqMJuZ35mONTXr2b8AwU/+MwEEdnsiDsNK8TmIm+D/YK6igmJ7xdU9SiMPkmLS926oGN1/7v8vGYCCuZ6bj0tPmAEg4ja2hIuyBCKPXrohkW9XAFJ2bO6PX3AEqNFxTPvxODBAAC2O2gCXNwi6bB9FdjZpLj5NhnIiGXuZMxAGufV7DbvZh/Q9rGSyf7BI/3zCpohr0Gv0KeeaPf7WZD7FgU0bWQnp2rF8QV/bmA2qeMZkOCoJrWa705l0YT94Fg4cxRUp9KfKxtqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,18 +104,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 1:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> That's right, valid for reads implies that it's okay to read it.
+On Wed, Feb 18, 2026 at 11:36:20AM +0000, Gary Guo wrote:
+> On 2026-02-18 10:20, Peter Zijlstra wrote:
+> > On Tue, Feb 17, 2026 at 11:10:15PM +0000, Gary Guo wrote:
+> > 
+> >> If we have this in stable, I think it's sufficient for LKMM. However
+> >> for Rust/C11 MM says that volatile ops are not atomic and use them for
+> >> concurrency is UB.
+> >> 
+> >> I recall in last Rust all hands the vibe at discussion is that it's
+> >> desirable to define volatile as being byte-wise atomic, so if that
+> >> actually happens, this would indeed be what we want (but I think
+> >> semantics w.r.t. mixed-size atomics need to be figured out first).
+> > 
+> > I would strongly suggest for volatile to be single-copy 'atomic' for any
+> > naturally aligned word sized access. This is what we have with
+> > GCC/Clang.
+> > 
+> > If you pick anything else, you're explicitly creation interoperability
+> > issues.
+> 
+> AFAIK LLVM IR only "guarantees" this for primitives, so if you have a struct
+> that happens to be word-aligned and word-sized, it can still tear, which is
+> why the the "byte-wise atomicity" semantics is what's being proposed.
 
-Great, thanks for confirming.
+Urgh, what does GCC do? And are we sure this doesn't actually break
+anything? I'm fairly sure we rely on at least 'small' struct volatile
+reads (eg struct fd) to 'work'.
 
-> valid for atomic reads?
+> I recall it was being discussed that, for the MMIO use case, it is desirable
+> to have this defined in such way that one single instruction is generated for
+> an aligned access of small-enough integer primitive.
+> 
+> This is exactly the same situation in C too. If you have a volatile struct load
+> then Clang actually generates a volatile memcpy for you, and it can tear.
 
-That is the one he suggested, so it is likely to be a good one if two
-people thought about it :)
-
-Cheers,
-Miguel
+It could just be LLVM is broken and needs fixing in this case.
 
