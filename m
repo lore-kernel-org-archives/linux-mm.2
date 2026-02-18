@@ -4,95 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51EC5E9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 00:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D64E9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 00:27:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A13A6B0088; Tue, 17 Feb 2026 19:26:24 -0500 (EST)
+	id D86E16B0088; Tue, 17 Feb 2026 19:27:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84FAC6B0089; Tue, 17 Feb 2026 19:26:24 -0500 (EST)
+	id D61536B0089; Tue, 17 Feb 2026 19:27:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74DE86B008A; Tue, 17 Feb 2026 19:26:24 -0500 (EST)
+	id C8DF36B008A; Tue, 17 Feb 2026 19:27:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DD686B0088
-	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 19:26:24 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B48C01403C4
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:26:23 +0000 (UTC)
-X-FDA: 84455685846.29.E2C703D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 245A840008
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:26:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bCov9miZ;
-	spf=pass (imf04.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B54F76B0088
+	for <linux-mm@kvack.org>; Tue, 17 Feb 2026 19:27:30 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E9A358929
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:27:30 +0000 (UTC)
+X-FDA: 84455688660.14.A918C64
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E7FD518000D
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 00:27:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ayyBQH6z;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771374382;
+	s=arc-20220608; t=1771374448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lp+G4L2JZgMAEzmPx561nXVu6uiQAwXm1567Nc04SCA=;
-	b=H/cpj4BX8hLcUvA+uHBVd7X3dYIVH3p6M+MeZp0RZdPE2A7hKXZTu6ljFOnF9HrmjH1eV+
-	f4a8buCJTy4dj0F8Vn5yDX8VttnaXbEJ5rQPclGvGinhtm2c6DUyfHVo3JPFGT/BhqxrbJ
-	SrXXWxnT4pgQ7tkvAxHSvBjvCnU+gjM=
+	bh=AuHqmpdnpPSOMPmEbUpkXO6SYL63yYRi9xI4YqpucJc=;
+	b=56zK1PgExc0NNVIUWVMx+WAjIy/4OZbzrsgJBqFL7cgu0O51qY2k+MuKZ13qtsDHI2iWIo
+	A+H2g+Qd+J3+hf4O6vg08muIOXhxNrXUgFqNmWJnJJVmzfeGFkUnucm1Z0BZUbP51fceWI
+	APkTsig9NewDtpzvUnhE26IxBqnXs58=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bCov9miZ;
-	spf=pass (imf04.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771374382; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ayyBQH6z;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771374448; a=rsa-sha256;
 	cv=none;
-	b=i9dwIib7bV6EKy9jfW97qQ3pf3dl+F4WomEi1E8Hos5XXdyfjZgGt6qhiTHuc68JjwUVS/
-	RRUCm1b3hqmU1sk8R8mk5RlKBCHEzrxvWQXsUnH6QhggxAJCsJZxy5ZGZyMB3HHYt4ANnb
-	xhsvgXLnpkhTUD0OsKI74zm1O5VFMro=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C88F600AE;
-	Wed, 18 Feb 2026 00:26:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5C5C4CEF7;
-	Wed, 18 Feb 2026 00:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771374381;
-	bh=JboHkTUEpFKhTIugWR55+L+mSXwfGGmx5RWx7rWQmO0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bCov9miZG+BJgHwbaa9A/3mI2mNgqV5H6jiwKBjZMR4s7Uc4HRs/90W0cHyCt0wUC
-	 oJaKTwSbz0hKsm9K2C4/MXkajHdGBSHPNkW8zbFktAyK2CG7PAUj93YVPMYh4v8hd2
-	 utrss9Pqt1DSCEKS/ExNIFOQQoQwPDD0haApo1qj3RSKlR78YxiaJCMoLFYJZG1EdV
-	 JwsxKbSMRUNwEQjuuf6JuUH3H9+WjQ4jcTnwgwaKNWTDjaqaL/Eud2sm5ySWqZLeqz
-	 ibmbwEPJDCD/GCVzzKSCPvkO78Nmt5bT6MxLg7ZFjQ8oIb1TQzd5XB8bCgs7MKcf72
-	 GOexS+YBTVKkw==
-Date: Wed, 18 Feb 2026 11:26:06 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Jan Kara <jack@suse.cz>, Pankaj Raghav <pankaj.raghav@linux.dev>,
-	linux-xfs@vger.kernel.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
-	Andres Freund <andres@anarazel.de>, djwong@kernel.org,
-	john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
-	ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>,
-	dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>,
-	gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com,
-	vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <aZUHHvNl6cQr-uwd@dread>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <w3vwdaygcz3prsxwv43blo4co666mragpdwaxihbirt5stl4vr@agyz4mnaxghj>
- <aZS18m1eIxjDmyBa@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+	b=dywadxdPv2eDkAejVDRPU6+5wzdjeyiuWQG1VTdVH45u4PeV4/2hW7WFCXwxeL/LdavnKp
+	Y8NsM0IzMI6Ha2BhOxcT6pFvNz4P94UB/f81NmCCweVrvHMhPtCsFu7dZ5Hv2pIhQzZBMM
+	qyo2atybKAcXC6xdI2Mliz/yiD6i1Pw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771374448; x=1802910448;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fcWenNUMcYV2dYTPrnEXpTkuHZTjKtFPqvvPipIHmQw=;
+  b=ayyBQH6zsR2JYT852KJtWivKH9wFiQPRpUY1oacOovRfLfPjf24J+RzJ
+   wdsfJCdM56Amdl+Xil3hdzx2nyTwANKRj2lAX/HaAFXOhXBO0Zd6M/XkT
+   VAmL/oP5rkC2sHDf8kj+zS+6oyL6n1jbwSKhv+u++BUZ6DxtF9l6gDhqF
+   c5etoB9crKnbJIF1hhlhY0QkjG2co0vidkgxr8H+MZxRaGqIkGAfjNtpu
+   3SoTSYlUwTr/wYVT59mxxhOl8cIsPbeWcl8W6pWpnK+rBOjf7E5g35PZa
+   ZJmYwA17azR+ksOtiQS3sFB6jbvIZVu7XXyCAi9bV1+9MmNvfeaIi9sTK
+   Q==;
+X-CSE-ConnectionGUID: C+mwpXFJSgmBURCHv0f1fQ==
+X-CSE-MsgGUID: TWREDzs9Q0CBGIxfAagkqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="95082140"
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="95082140"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 16:27:27 -0800
+X-CSE-ConnectionGUID: AoyUbSm4QxWvTyl/s2K+PA==
+X-CSE-MsgGUID: ELDlXahcT5mjgqeEhxUaKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="244632599"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 17 Feb 2026 16:27:24 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vsVPV-000000011s0-24GQ;
+	Wed, 18 Feb 2026 00:27:21 +0000
+Date: Wed, 18 Feb 2026 08:26:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+	kernel@gpiccoli.net, gpiccoli@igalia.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 2/2] mm/memblock: Add reserve_mem debugfs info
+Message-ID: <202602180820.Vi6LlvfF-lkp@intel.com>
+References: <20260217195816.861684-3-gpiccoli@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZS18m1eIxjDmyBa@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-X-Rspamd-Server: rspam05
+In-Reply-To: <20260217195816.861684-3-gpiccoli@igalia.com>
+X-Stat-Signature: mnjh3m1d86qqzbj7uh9nubiyqp4dw4wn
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 245A840008
-X-Stat-Signature: gffnstqop3fkrf5xc5zm5jtaa3wzebif
-X-HE-Tag: 1771374381-768646
-X-HE-Meta: U2FsdGVkX1+r272uMBbl+v+IhXAeHsiOqQn7SmeikMmf+6wZHRFch8e8/13mUjlQ7OULedyVIW+MiFOtIc16wM1daDBhckd/D9Lq7gw3bUWRkVSfMKUOpp0UcOt3KGwf9dcrEINYsbM5Z/Tw5G2aQsliBL9YYofnMOhUMKKrqGEoJWTY/LvBMdmukuRXW6XR2ck2kDJsozzly48JgYQvTYyPpI60Ya0p7bc0z6NvpE0RcgrUyWAIl0vqHLNQUw/DIkvss6EjUhzjIYYVDthdwqp+wR4WJbv2juOeqlMAshc8CJ14q18Ttx8NK5y/3alNYTm6BiBaGdX+f60EoGg7gjbMylbzGF1MpeLCGbK7d7Xd/TQu2ZDGLMh5OxBTZyxPllf5h5gfm0aHvBkueFdhiyk9DGwZ1wzVnwMP0r/5j8ewapx/U7eLYqo0kMgFQmNP9AxOphDKkgqJUl915Tkme+wqOXc2BHV+Ixh1guya/6UY3RqwuWksQnsMV5gNTgJda53e21Ml/osndo3IcEU41knxBzSmPoEUYoedu5mHOD3RZha5hqlkSmvyiXoGYjA5nu6BOcooLGI2/gtxZ5fsixhCFhTECTRRHQaOhaUyERBCI+zxpRDc5iJWRY5q1zYGdDG1GbnstdI8mJxhPKvdIrSKF67R6npBfv32C3l5R6GZ4LT60Ol7htVKC0osLmHFeKkoOjcjono+MDRopvr+UybfeJwW/ZFDTQNAtntGPfvkntRWN7SbhJdCHIlPw+ZHttl3KruvEwAhYD19rnMOc2yTabDGwzX6U4kzmrF+TdIn+xd952EWKt+Vm/2k2y6Fh8Qt2zXg0HKgdDBcSeG5z7uKQswpEnwutmQIrHsDsdefniSSKAkNyjMxfCXMlGTFpiNjeYqFppxAkEIkFVDLEq8Y7gEQRxiKdl/qlpn4orKmwSQXMbJoNR0OS9AN0hcN+5Ib2YPobhVBVqe7TCp
- 6Fz13hnx
- smeyrgzWOtTOfz2m1jhUEnIJVCBcEiX1HAvvLRzh/V62yHVMJ5+uuJliRjoO2kosXBOZRZuhehUWHzg5CfMvc38vCPnjP/fcas/zKqwNjyCmpWuTWZNak6tltQlqyMhwgLZBDV5P1Iui8qOq1+IGvHNWwicZxfDKC4nNsMbHmOqX8t7/8hPmBvzxNjh5041tPhoGrw6/vIiWFoB4H8swBAB8kIsmt7Xe1V66GyTycPudoz7FRM6pg6WhkZBT52nwE1VO2Q2EK5CafZuEACtEe4M7FzWknkoS0CY3Jdr6V84vJDQks12dlS1i0oCVQSYkxkfO2tWQTgHKqIbXm4bdfgLXpRvnhoOCoc7n1
+X-Rspamd-Queue-Id: E7FD518000D
+X-HE-Tag: 1771374447-936347
+X-HE-Meta: U2FsdGVkX1/Isie65KuloBIKVWsLlApYwsld+2J5mGLTQLD2q+Om2B8K+w+DkH+9hjwrsYXdX9N5Ge2s/k8xXF0MgX2iipDj8mwVs+X3evbznG03MXp0vxMeR1BpAJTW1oqpzHy1XAap1ozVIHX3fWDeBwVkODQwqy4sxLUrCMwbIj3oGNrxVkx/Kfcs320FIlKPaRMlBovclphz0j0RPVaZvRQIJjXI2WVbsjD5796uZhq1j5c5R/nwNicapC3RURoOtypLNoEvMb/+6nbOi+zD3XtAv5dkblh5pfcFqnZ4yTcyfRrN5yJQ5+Vhc4BEvbmMShc6RWB8HliUKc6EH/khK5kSIa2f5BSwJ64eO/EZvgzMsxBWzeBSwvnsyfoFktU1AKaXye4RqHqCPoCyuEypSXMD/YotkObhaaBX/0OgUF0oo9qzcMrbmhylDWJ8tWTYBx+vLxUKpVNbnb38QQkZPphUV8W4yRIOzpVMXJrqP2wU1u3CE2UaNtEUvh50q62iBc3kLUni5H9rOD24rCbfh2Uef5uzWUpqbUzv2zvioUPbzgN+9zCTtQIXMU+OHoTf1Su/aENmsbVrEINs31q34LG5xv8LVG9C3ZXWchMtiEpUxKYfE8vIaFk20yTxb7JbLUTMWcnZ0BmOw+3lciUiSA8vZtP9iUjErzEG/BA45QFZ1R+6uO/EyUykQuNg0Zig8oXDvnX9ZKcPtZCO6ZFRmS0lGJhl8XIYlKr0PRT8/LeUrHIDvU8DNxcJIEYa8SjPgL0140WEL8bzhBQ2G5svXG20tuGywWl7IgZT5ERKHUUAQ7uGNJnjPT0NxxC7tqA+NEqMyuoXbUV/CCxB5mt470FDlIyU5mkfWVamXKw7JLqKDG/qjFVaCa0kjjTkE107fYoL+8ydIJznhGBeZXzOpCy8iJXiWPAxX8+cg5iS9gqAARswo8ACQNLOjoIp7GkeplKV6wS/fBFR/cY
+ 2/lIQZtO
+ 9/83W3VwfF9aF31bNdvOZTdIIdgrmCRGbvVAxlbtIvfwvV1cJ0prurot74j5CGUnfZKkV2rp+TrcVhhXk0eMxGT+pHX/9ayCW2xiBpP9o9Lx3JDuDFD6wd0QgrV+5qtsofdq2dFw2+0s/QQ1OD/6RMfI4Vtu8/yPEyvYWQUCvZt0Y+lAk/4AddnEYhWQa/jmixngJfujElyRrwamnK/7Algim5vn4ePnRfO32n5shK3ySR6IRJtPVqIKJ5kEz5rSHR5DG/DgGmaKjsiu+cZL98AA2joWGC92lznHoYOjZYdHDhehgM/W+9iYXNEeUCxu2R68fRbjsvtPaOdsmtG1oSBaUiJr6djT0qev9fIOkd0aReP5Z2ZphERJ2ho0YDlelsMZqIvJ2GZ2l2X3QueIgShRQQf5CQU6DGvFKptUvuXrvctIi4lntbtCRFpcimC77WcNDypHlNkv3iDU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,68 +112,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 12:09:46AM +0530, Ojaswin Mujoo wrote:
-> On Mon, Feb 16, 2026 at 12:38:59PM +0100, Jan Kara wrote:
-> > Hi!
-> > 
-> > On Fri 13-02-26 19:02:39, Ojaswin Mujoo wrote:
-> > > Another thing that came up is to consider using write through semantics 
-> > > for buffered atomic writes, where we are able to transition page to
-> > > writeback state immediately after the write and avoid any other users to
-> > > modify the data till writeback completes. This might affect performance
-> > > since we won't be able to batch similar atomic IOs but maybe
-> > > applications like postgres would not mind this too much. If we go with
-> > > this approach, we will be able to avoid worrying too much about other
-> > > users changing atomic data underneath us. 
-> > > 
-> > > An argument against this however is that it is user's responsibility to
-> > > not do non atomic IO over an atomic range and this shall be considered a
-> > > userspace usage error. This is similar to how there are ways users can
-> > > tear a dio if they perform overlapping writes. [1]. 
-> > 
-> > Yes, I was wondering whether the write-through semantics would make sense
-> > as well. Intuitively it should make things simpler because you could
-> > practially reuse the atomic DIO write path. Only that you'd first copy
-> > data into the page cache and issue dio write from those folios. No need for
-> > special tracking of which folios actually belong together in atomic write,
-> > no need for cluttering standard folio writeback path, in case atomic write
-> > cannot happen (e.g. because you cannot allocate appropriately aligned
-> > blocks) you get the error back rightaway, ...
-> 
-> This is an interesting idea Jan and also saves a lot of tracking of
-> atomic extents etc.
+Hi Guilherme,
 
-ISTR mentioning that we should be doing exactly this (grab page
-cache pages, fill them and submit them through the DIO path) for
-O_DSYNC buffered writethrough IO a long time again. The context was
-optimising buffered O_DSYNC to use the FUA optimisations in the
-iomap DIO write path.
+kernel test robot noticed the following build warnings:
 
-I suggested it again when discussing how RWF_DONTCACHE should be
-implemented, because the async DIO write completion path invalidates
-the page cache over the IO range. i.e. it would avoid the need to
-use folio flags to track pages that needed invalidation at IO
-completion...
+[auto build test WARNING on rppt-memblock/for-next]
+[also build test WARNING on rppt-memblock/fixes akpm-mm/mm-everything linus/master v6.19 next-20260217]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I have a vague recollection of mentioning this early in the buffered
-RWF_ATOMIC discussions, too, though that may have just been the
-voices in my head.
+url:    https://github.com/intel-lab-lkp/linux/commits/Guilherme-G-Piccoli/mm-memblock-Print-out-errors-on-reserve_mem-parser/20260218-035935
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
+patch link:    https://lore.kernel.org/r/20260217195816.861684-3-gpiccoli%40igalia.com
+patch subject: [PATCH 2/2] mm/memblock: Add reserve_mem debugfs info
+config: s390-randconfig-002-20260218 (https://download.01.org/0day-ci/archive/20260218/202602180820.Vi6LlvfF-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project e86750b29fa0ff207cd43213d66dabe565417638)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260218/202602180820.Vi6LlvfF-lkp@intel.com/reproduce)
 
-Regardless, we are here again with proposals for RWF_ATOMIC and
-RWF_WRITETHROUGH and a suggestion that maybe we should vector
-buffered writethrough via the DIO path.....
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602180820.Vi6LlvfF-lkp@intel.com/
 
-Perhaps it's time to do this?
+All warnings (new ones prefixed by >>):
 
-FWIW, the other thing that write-through via the DIO path enables is
-true async O_DSYNC buffered IO. Right now O_DSYNC buffered writes
-block waiting on IO completion through generic_sync_write() ->
-vfs_fsync_range(), even when issued through AIO paths.  Vectoring it
-through the DIO path avoids the blocking fsync path in IO submission
-as it runs in the async DIO completion path if it is needed....
+>> mm/memblock.c:2721:27: warning: unused variable 'flagname' [-Wunused-const-variable]
+    2721 | static const char * const flagname[] = {
+         |                           ^~~~~~~~
+   1 warning generated.
 
--Dave.
+
+vim +/flagname +2721 mm/memblock.c
+
+1e4c64b71c9bf2 Steven Rostedt (Google    2024-06-13  2719) 
+54091ffecefa11 Guilherme G. Piccoli      2026-02-17  2720  #ifdef CONFIG_DEBUG_FS
+493f349e38d022 Yuwei Guan                2023-05-19 @2721  static const char * const flagname[] = {
+493f349e38d022 Yuwei Guan                2023-05-19  2722  	[ilog2(MEMBLOCK_HOTPLUG)] = "HOTPLUG",
+493f349e38d022 Yuwei Guan                2023-05-19  2723  	[ilog2(MEMBLOCK_MIRROR)] = "MIRROR",
+493f349e38d022 Yuwei Guan                2023-05-19  2724  	[ilog2(MEMBLOCK_NOMAP)] = "NOMAP",
+493f349e38d022 Yuwei Guan                2023-05-19  2725  	[ilog2(MEMBLOCK_DRIVER_MANAGED)] = "DRV_MNG",
+4f155af0ae4464 Anshuman Khandual         2024-02-09  2726  	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
+4c78cc596bb8d3 Mike Rapoport (Microsoft  2025-05-09  2727) 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
+d59f43b5748092 Alexander Graf            2025-05-09  2728  	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
+493f349e38d022 Yuwei Guan                2023-05-19  2729  };
+6d03b885f0926a Benjamin Herrenschmidt    2010-07-06  2730  
+
 -- 
-Dave Chinner
-dgc@kernel.org
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
