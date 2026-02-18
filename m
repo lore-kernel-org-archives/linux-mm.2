@@ -4,88 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFCEE9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47FDBE9A02C
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 13:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A88D6B0088; Wed, 18 Feb 2026 08:20:31 -0500 (EST)
+	id 85CA76B0088; Wed, 18 Feb 2026 08:29:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 756056B0089; Wed, 18 Feb 2026 08:20:31 -0500 (EST)
+	id 7E07B6B0089; Wed, 18 Feb 2026 08:29:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67F646B008A; Wed, 18 Feb 2026 08:20:31 -0500 (EST)
+	id 6C1E56B008A; Wed, 18 Feb 2026 08:29:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 53A4E6B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:20:31 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0452884B1
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:20:30 +0000 (UTC)
-X-FDA: 84457636620.04.DFED219
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3DF83A0009
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:20:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of 3nLyVaQkbAL8x34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3nLyVaQkbAL8x34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	by kanga.kvack.org (Postfix) with ESMTP id 54F226B0088
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 08:29:54 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04F621A0189
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:29:53 +0000 (UTC)
+X-FDA: 84457660308.13.C113300
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2B4AC1C000F
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 13:29:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0wqFhLS;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771420829;
+	s=arc-20220608; t=1771421392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=YEKNNq6oUV+SSV/aFKVbooaESmUp/Dv23JqrzIIP1kI=;
-	b=UgXSq1FFLuElvWelP6I71rRJ1XNgob1HO3o45a7Ut8gZZF8idlVsZ+C5FkY9BIu/MUoeIy
-	ujXHrKbkNCe61a4DHQVygaDp10TymaEVXZIs5nQ9GjcwdZYQE5Y+Fks5OYjLcEJsfzLjYd
-	60mjx3agIbTOjo60DhKT3CzHskbjf/k=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BiB2zf8aJQBfuQVE7LAIKIuWY4snk5S1YZrTwu9tDTA=;
+	b=uLUXX8HbaDmP0Wa9GqjFAhz9el2Fi+vPLbrrvJ08IMlyOfuD3dk422i1UuRWOCVxI+z4rh
+	t81urbr7jk4T4PD7w11B7ibTSMvyIu33ZIb5Yf1n6TUUi5EI0y60deXqduNIoQg0J0esux
+	x2ldi5P6Gl48K4P8W6NhFD2zX0L9eNM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of 3nLyVaQkbAL8x34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3nLyVaQkbAL8x34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771420829; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0wqFhLS;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771421392; a=rsa-sha256;
 	cv=none;
-	b=Y01TwVcgAD8mLNGG6Xk90WjcTMYdemJ8Zan0CkfNJdtDj3403W/u+vAp0q+iXIxhY64C6V
-	pvtqCMTnBkD8LdrOWasEV6iflHpUkrUSeT+Z0NyJ0Ad6e8pa7OTFdvjMEVCW9LsX/vDPiU
-	fVjPlXT8/SrDphwCaK4tiy9nq86g3Ww=
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-463a314b114so42472123b6e.0
-        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 05:20:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771420828; x=1772025628;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YEKNNq6oUV+SSV/aFKVbooaESmUp/Dv23JqrzIIP1kI=;
-        b=hwbX/BGrFvydoGlUVyioLOLhEZ0TPyI1UG3OtRw6DKeYZzltOuJ8fIpcjso8cotSYx
-         zjlzIgv8eoC2Fz/I1o9ZYfi6ZsOgywpRdH19elt/d9aenX12etAPj82FGQD/Js+cBqDh
-         hXcN4gu9G5f+L18k8xatWZi5P54MPxiJRlC+FMWPGiuNwFIMbKtK++JxHLuzslQyYjCp
-         KFo1OPe/OzVECt5pyFAJVqRU0qt0GPFjl8x20zRfJyM7VrbioT1JG9On8SExUDH+uZgU
-         lIZvqCQNlQ0jii8VaWxQIJOb6KJY8FdsmyQ8Y9f2h+ykh5VGeZftDFBoqSpQr39p/3eD
-         ZvOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsBO2Ul7rpCBLMQ4YsVN71S9tlHDdjFeZrYp7KPjO64/0OBmxd738NiDf76W9WB7167y7wba5BYg==@kvack.org
-X-Gm-Message-State: AOJu0YyH1v+pwkpU9hKNPbJejgDgtPntDxfky0YofSt3SkZNLnCgRE+V
-	PDYhIFNzreBrN38whjHjc4RvNZppAk5YtMyRC4HvLx7WyN4+JoTTxhru0tBK0peY65UQCUvfvnU
-	kjDISKlAeE4AC8xRFUc8LUxYvelvdecTJ27O5tX3HT4SWn1JhbUrM8hR1CmA=
+	b=V4WQhM+o0zgi3I5hjfvzLZliqMRFdc/S0KrLbgAkWnNw1+LvhNp/J57brPwKm73RkKnxbA
+	lKi64WYWyH6aGqaYoRhlimfQfSp3vkScY7SRGGkypRRYSrxGb9zy63WE2fK0qv4x8msnRW
+	5bVK3yA6/u6pVkso/buxyCOlr0akh6E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 23B0942BA8;
+	Wed, 18 Feb 2026 13:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91126C19421;
+	Wed, 18 Feb 2026 13:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771421391;
+	bh=sKKUJ4hpt7H3ThiktsCgA+vUzyYvf+FASOjdc2KrzCE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c0wqFhLSzumL/OqPVbXtDtiizPalO/h0r5DGPjU7oar+NwxCyFoB85yznz0RpcjbV
+	 oOVPNlCz8+BYqDNziaw7p+V/YPTFeBTHdq7QmA0xvLJhQmy391sXlptl/YwqBg1yFy
+	 ygBkaBxZCYX4+wckU7C7SGe2N+4/4NSVzyY8ogVzeCJBZ7c9NaTjlhhhvzdpo+oO32
+	 nqTTdSy4BBbNZXaf6fE22dGE4qb6NkQoshHQ7GqKmP0U9elaVKCEjLr9E6IcedI9Rs
+	 DsEmNQG74Gg1n1Uu19FekKfzihoMfHu92RORquyyl8bif1R5AojphHltIwTTQwq8QY
+	 r4y21ZPFq0CUQ==
+Message-ID: <e5c037ac-ae57-408c-8b89-cef4e5951b5e@kernel.org>
+Date: Wed, 18 Feb 2026 14:29:44 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4b05:b0:679:a4cc:e04f with SMTP id
- 006d021491bc7-679a742d3a7mr953647eaf.51.1771420828171; Wed, 18 Feb 2026
- 05:20:28 -0800 (PST)
-Date: Wed, 18 Feb 2026 05:20:28 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6995bc9c.050a0220.b01bb.002a.GAE@google.com>
-Subject: [syzbot] Monthly mm report (Feb 2026)
-From: syzbot <syzbot+listbcf6e213aaf132e27830@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: g3yqcugtmin5t7bbka8u1uc15p77s6a5
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
+ PTE batching (cac1db8c3aad)
+To: Luke Yang <luyang@redhat.com>, dev.jain@arm.com
+Cc: jhladky@redhat.com, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
+ willy@infradead.org, surenb@google.com, vbabka@suse.cz, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3DF83A0009
-X-HE-Tag: 1771420829-182483
-X-HE-Meta: U2FsdGVkX1/SbUuxHBPCwReXl11GGFIQGAIFXAjjLzW12Uz8xVRW6xesMsXbfFiRg13N8SWGUq6VnNhQPYyiQRme1Ikz281vjDGjZuZafcJwTDVDMORuUaBxZ+TK0n3VJ3meI0inEZ1Bco+Bd7LZRSOd9CNbDD1zubglBcuAEg2DyN9FZ4Rn9w4OyuTzRP94fofUATgUbv0+iEODUHTe+owepHyeAkiRGvDZKTLoOp7JtagaH35IEuK6VQ2/2LImHEwTRz9eZnOY8q7W6f7d8lGiSN5XXiXsxZOv/2JUYEMikKBwZ5XioPxo5wTdfU3C9QGgoW75okIUL0C9awsLl2Z98vzNUAH0YPar2CZPnWi3g+i9RnF3T1/dega/sna8GvSM/H8Ogp7s7VtG6BbzMSFPKBG56ugius/hr99foPBO8OfXXrpR7QC3/TQtKKaFBifwhujLq8+wIRMZER+L4ZrmM+jStO0113YeuxSvMoLrFMh+H1FoEv0GVa0MxjIu7XP+j51RMfUmYQ5ZM7OwX2cyTAlWWR4GHw489rE4D36gcI3en3SbTPqbSwL+5/6D8PIrHiyzUEAX+qyyGWeluMkaF/lC4mSYHvaHf90f8ou8W2Cle1gANptjVd6kBa9SP7rnRD7yLabDVr1rCy5KVahBeet71I17LLsun96vVAk9mMgom+cyVRFG4lVFxd/9ZeZ7fob2sw8A7N446wjEMYwkv99tM+dcEK7kfMeY0EGiaJXiFiV+PHVNIgDZQJZCGVqVBAF8JxBcB+E39A7X7BxiDeD6HpZv4DEohE6A3LgjS4Ozm91xxg/gtNJlEZLMabMBwE/wCCckKPRUKyfittNtnb9klF+GW1b7xaG1ZyQiQEG6AXuPy/QvXIlYcOlHJzkY6+mWXv3U1ioieYx/P/q8XYafwP2Fnnl8rgLayB3gprYVtOp3r9SrPq/ECqtWjtU9gBK0a84WjqxSkm6
- at3qqiUb
- SQ3t4EB0I1IVvetm/gUFtLy7IT+6y3pKT6iN/OFn48iQTVzqw0rzxtoKKUHZUr/kk4XU94Z8q14hwV3DAL1ErwfqdXfh+FU3ssNziMF3piZKWvnBq4DLrNHD91bvPag8zA3JKXohCYHF0y09dz0aQ6r6sVafRI6RLnaRxmvQ9gPdFYsSVCwU6rhpVroFrsM/R+K4eupdroBTTwWvuNVztNvCk/mkWveTGhS0Nl6QShHdK1/LyS3ob6pFY9/Z6SuP75vlTFfkJkIG5Ab84qD3zrpwozNgOi3RXjEPhrpZY+CjwYI9z2rYzhJgPoibYRw4iYKQ1SzKDzjKYigv7q2/fD5iHqvmQt4o+4tAiL0Jw+hjv4i61lhebNbav7LYIZ8ZBHfhgIZ0UoXyMck6zpbWIQHp/oTz2/ZSKj6yp04Z8zrJWwAh4A+RqHR3MOCwL9n5IdGSofCN+B41mJLrVY+QGmWuC+Wlj/oYz19h5WrGvATELJydQKiBrEG2Iiq/NSifMrekMHWsSgA7Hr42g75ovZ3T+1PNOFNY21k4+PunmIwcILS2VrYsQYXXYGYo0lrRRIWZe8Dz/hRIWvqjY9+E98VvHKj8XtYxajiXxamV0iL+vF6qQGVg3h2a+oCX137llVysEK+Lxol78V4XW+S+tapF58++pUdtUyAfZJ4ng6z9qzAC3CjA6Mel4iOz+JNU7Q8h+PYMEeyS3+PJDNpMxMY081IQzWODU3phYk5oY5fwM9pZRSC0f5+QNHF5ziW3+sXKIfr+GwGDj7UGtCnSJhLnqdpSFJf4fw51oqNmvsM6h6kIMJRQE4Br4MfHUVY6WvTUfZPHuoTZHkvBsSlGc9XbSF3yW2jgSMn6nTHWqJPaVt68ersxFLEcYMy686pXy3GA7EGsMTM+Z7CryTkjAkCGkln4e4sHRlL+7BWMFBKMG3CFWOr7LAel4L5BOoat4pwUxxZu5mgt0YJI7yV1HOtKeM4Lj
- MavhUHB9
+X-Rspamd-Queue-Id: 2B4AC1C000F
+X-Stat-Signature: a1izxeow8mcrxdcdzugni69dd9xu7jpc
+X-HE-Tag: 1771421391-731558
+X-HE-Meta: U2FsdGVkX1+SKNQBnNjDtQ9Ytkclch7B3NQvNzhW3FogxWW3Ykdz5rEw9jmRg3ixiV4vNp6dA28vR6Sp8MYSUv36+YP715DFAxbPdXEIvE3uXC1EUf8mr+zWTd95BetsX+CQEC7VYZIwV7fxv7o8+B9Ad1y5WDP2IPtol7cNbPozDL3PDOxf3ahac3ZqrHkv5POlt4SiYKcq1M0vsyBFm2hkCIHgpue55L7Oo0hbhhJvFo1I+MdoI8sTxkXWCFCpEu6T12ykEbkwUQrZJl3caL4ucrhVOWNx5qR5AeJam1P57Rexnj9If2tEG2t094D6TD80k50rut6m1REourocROKGji0rggsyAxGxTbj6JCMvud+3zXXA/GjARIApX6Q3pG3998ozEQ8j4SVEoWw5FnwkHRNJMjJk6n2fKDDjbnEU+lrTsdzf4KtwxW0w5iYurcivRdu6LBsKW7Q6Es89IR5zeMUO8OvP/ZctCsyJGoEkdeyRQThpbE7t4lUbz87bmGiivdMwSup2eevUEAYMAde7wj6UbGx3VRQwPoLfjpY5MlYXbr0tnmxxJfeW3lTslEoQ7dR6YjALbfDp+0zaaPpewyzCeeVnlrfthBfH0Gv7aiPFlBko7MEgcW38cCmEW8Z5YYv6voKTCaxaneBsn+S2/QJfUrlaWxTSrffpIcE7EQb621pbRzfsAfOXT1S/rjYJ0pjjjEkXf0Mejo+hUZHq0eeFqj2nU7xP7e1xsPq6reOVS43PZWlqfnhWKiuLQeH0xZ/nGblNEUNrrgbNLutybvYMSfEwMPSFs0nLyeJZ/1dbjebpSycA6HVwQbygZKV6VRvgvRTaDIDrIi8+Two26LrpbywJhNtoF+qPIVAfjxNI1buhYZ4YitIWesfklpRP2RK/f2BDvQHNViPpJIOiMpgy22JrGQ3lIDqKvVrP9m/HpekpJDmhLljyfrtGc9gsuCNoxFuPuNBfvw2
+ qRv0xaVU
+ OoIlIFedQ3bamNmgQksiHToNYAopL/jeYqW/1TPioR6rXoNQFD0a2bJpQzszK9z8o+c9KM9ADul3bVNvgozCV0rzB+kLk+vLEh7s7p7UR79jfaj2Fd9s6ysDv9ooznw2PxWH7zB6DPzMhFusDgqkWpDiFoD38CoFzByOZfbSLcM42Mn3Hc+YG0CLEk1dKMcBMMwmjN/9dCMP32k8CLEq9wVDtb7Lt9R5WMmYHfoWlOuXxlZaELyXQVQcMtX6Ahh1o+h3h
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,49 +140,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello mm maintainers/developers,
 
-This is a 31-day syzbot report for the mm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/mm
+> int main(int argc, char **argv)
+> {
+>     int i, j, ret;
+>     long long k;
+> 
+>     if (argc < 4) {
+>         printf("USAGE: %s region_size_kib region_count iterations\n", argv[0]);
+>         printf("Creates multiple regions and times mprotect() calls\n");
+>         return 1;
+>     }
+> 
+>     long region_size = atol(argv[1]) * 1024L;
+>     int region_count = atoi(argv[2]);
+>     int iterations = atoi(argv[3]);
+> 
+>     int pagesize = sysconf(_SC_PAGESIZE);
+> 
+>     vchar_t **regions = malloc(region_count * sizeof(vchar_t*));
+>     if (!regions) {
+>         perror("malloc");
+>         return 1;
+>     }
+> 
+>     for (i = 0; i < region_count; i++) {
+>         regions[i] = (vchar_t *) mmap(NULL, region_size,
+>                       PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0L);
+> 
 
-During the period, 8 new issues were detected and 2 were fixed.
-In total, 121 issues are still open and 364 have already been fixed.
+I assume that the regression might be more pronounced with MAP_SHARED, 
+because there we really didn't ever required the page/folio during 
+mprotect() IIRC.
 
-Some of the still happening issues:
+-- 
+Cheers,
 
-Ref  Crashes Repro Title
-<1>  17819   Yes   WARNING in path_noexec (2)
-                   https://syzkaller.appspot.com/bug?extid=a9391462075ffb9f77c6
-<2>  11145   Yes   kernel BUG in hpage_collapse_scan_file (2)
-                   https://syzkaller.appspot.com/bug?extid=bf6e6a6ca143afea5ca2
-<3>  7452    Yes   WARNING in ext4_dirty_folio
-                   https://syzkaller.appspot.com/bug?extid=ecab51a4a5b9f26eeaa1
-<4>  3028    Yes   possible deadlock in filemap_fault
-                   https://syzkaller.appspot.com/bug?extid=7736960b837908f3a81d
-<5>  1654    Yes   kernel BUG in __filemap_add_folio
-                   https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
-<6>  910     No    KCSAN: data-race in __filemap_remove_folio / folio_mapping (2)
-                   https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
-<7>  684     Yes   INFO: task hung in _vm_unmap_aliases (3)
-                   https://syzkaller.appspot.com/bug?extid=fe8f8efd070d727de971
-<8>  665     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
-                   https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
-<9>  531     Yes   INFO: rcu detected stall in sys_openat (3)
-                   https://syzkaller.appspot.com/bug?extid=23d96fb466ad56cbb5e5
-<10> 510     Yes   INFO: rcu detected stall in sys_newfstatat (4)
-                   https://syzkaller.appspot.com/bug?extid=1c02a56102605204445c
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+David
 
