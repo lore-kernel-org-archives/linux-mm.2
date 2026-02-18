@@ -4,141 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D2EE9A02C
-	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 20:23:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D95E9A04B
+	for <linux-mm@archiver.kernel.org>; Wed, 18 Feb 2026 20:23:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97FF26B0088; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
+	id 916C86B0089; Wed, 18 Feb 2026 15:23:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92D886B0089; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
+	id 8B6546B008A; Wed, 18 Feb 2026 15:23:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80F956B008A; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
+	id 7C2276B008C; Wed, 18 Feb 2026 15:23:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A5A46B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:23:06 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BDC708AF2B
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 20:23:05 +0000 (UTC)
-X-FDA: 84458701530.06.2466FCF
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 66B27140012
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 20:23:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jhZQuTZW;
-	spf=pass (imf23.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A29E6B0089
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 15:23:29 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E252B1402C1
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 20:23:28 +0000 (UTC)
+X-FDA: 84458702496.14.23B5397
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1FA6514000B
+	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 20:23:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RIQo03zl;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771446207; a=rsa-sha256;
+	cv=none;
+	b=bGfMBfOYTcTWGmh8KE69MsMcB+xtI2Dd4RlylUH1e9/leUMGI9yPiQzSPTvNur+KRKcEUL
+	zp0COcb/NcRUu2ly96SsRxnvS5oFGKK4GvlOreLA9Oi+cju2p4ApuDMqJ/xELNtaSGJ9fv
+	mPWuvS+iWyEEO9hPjvs/dLZuUoL1sCY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RIQo03zl;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771446183;
+	s=arc-20220608; t=1771446207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E+i1/faGO1lFhzHanw7UXC5RtBSvvF1mijuShk8gkfI=;
-	b=t/JvgqtZh1JF/U5TQu4VP1qy7Wu3L++SJJBhEtrczfLByGtXKnUBCrSwAEOGrNc2UCxELo
-	IR9+OVaQZDY4/qkHOvaErnNlgJ5Uuh+FgH2a/Os27/s8LEXR0ZM3YkMCOAzvGJ2AC6CnjT
-	IGjn965GWzrVv6mDa/3bKppLVx5M1FY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771446183; a=rsa-sha256;
-	cv=none;
-	b=Yb78A7T0fhqB3R2glsQm5/CTEOTM2uaSVh08+/c6HFuBdTsd0XdqCaoQnpBy8ktFzbC5YI
-	nBuhK0Br6HHsQ3uUnuxONvPFxlWfvSOpYiaVD8h6EfOgtgtOSCsQ4l1WXxlUl62HqgGpA3
-	LCrw7O33vXBh+ImdGTd2qmPI/CZ2+uU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jhZQuTZW;
-	spf=pass (imf23.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61IEAEB41410265;
-	Wed, 18 Feb 2026 20:22:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=E+i1/faGO1lFhzHanw7UXC5RtBSvvF
-	1mijuShk8gkfI=; b=jhZQuTZWDC526OZq7bI3InheN/0s1ee1iDdXS7sBdxxWVT
-	0vxcEQ+6dr5E3yVw0MQ9DgMKFl6Ww7fr4IPPYiDrkdIqrla7V/eiKL5bfjrHfBOD
-	PfPhfTQCzlu1zVfjT5ayvpHPxFcZOiz5JmS+skR1x+SzOvXd7QDC7lmHtn5LKvKD
-	U/WNr+5N6QGJpXkYdyMkr6bQAaBUJe1blNUVbKOucrvqMgyM605aPwxmf4q5BldT
-	hW0Cg+LfXMUWCgcF3D0nlRzzAeueE/FUkgCi5YnUgx0LJFbQjydT/L9nsXOEotWT
-	/bFDlafoTxNKko6P9mkKS6ZUaM3sv+qc0gSFq3WQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj4khwth-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Feb 2026 20:22:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61IH03pO012024;
-	Wed, 18 Feb 2026 20:22:51 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb271eu6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Feb 2026 20:22:51 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61IKMnkv35914068
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Feb 2026 20:22:49 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6C5332005A;
-	Wed, 18 Feb 2026 20:22:49 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 196BD2004F;
-	Wed, 18 Feb 2026 20:22:45 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.25.124])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 18 Feb 2026 20:22:44 +0000 (GMT)
-Date: Thu, 19 Feb 2026 01:52:42 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Jan Kara <jack@suse.cz>
-Cc: Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-        lsf-pc@lists.linux-foundation.org, Andres Freund <andres@anarazel.de>,
-        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
-        hch@lst.de, ritesh.list@gmail.com,
-        Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com,
-        Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com,
-        tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
-Message-ID: <aZYfkuueWpMxEiHl@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <d0c4d95b-8064-4a7e-996d-7ad40eb4976b@linux.dev>
- <aY8n97G_hXzA5MMn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <7cf3f249-453d-423a-91d1-dfb45c474b78@linux.dev>
- <aZSjUWBkUFeJNEL6@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <bf6eek2jagskkgu3isixqjjg3ftrkp5juf6lge3rjjutzzhbdd@vkliyqpsmrry>
+	bh=GrumwxZuhFamLyUUgDeF5N06yYF8U9bWGEw44JTe9AE=;
+	b=1xC0aljYm5gbOSZ0SUbMEEQD/fgJSmFIGM9FL8A3LPUFl3VOHffLXDGI1aZkIiyB5VeJ6r
+	AmRITEblK1lqqu2vcxmHoBexh+mRfbDyuj7mbiHQxCZGdMgprLt+QnkoN2s7tWSjoFY4c0
+	x/8a/lVrgkHBIqtV3+UkXlhnvnCNwBI=
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-40ee486a76eso128940fac.2
+        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 12:23:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771446206; x=1772051006; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GrumwxZuhFamLyUUgDeF5N06yYF8U9bWGEw44JTe9AE=;
+        b=RIQo03zlIE8Df/4TXQx+K4orIBftjpHHPgM+voYkyS8ezowjJroHNOHhF+Mbbnc4sp
+         vOcAp8WWqNAqQyaAzuy7l/QOy/vTAqHhly9DBUrEoerDop4gZcqAlUpmOeuMaT+HhDE6
+         JPGIzKFuqziLW7CAINeYhnRUzUrqbAFNogdzBB8wXil6ZKEQx8GviD+VC5s/eW/4oBtN
+         CQGzMEzL2rZdxdeqAihEGi4kG6tsnvOhY9H8w7uccMrCPEiGufiGqeY0g6cpFAB7EQOB
+         wIjgAqFWag8ZzWpfAjTIAQbFMI+HzyIaB7NcONfsALfpeB99Utc8uLx/+rH9aMtGDMIk
+         LSEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771446206; x=1772051006;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GrumwxZuhFamLyUUgDeF5N06yYF8U9bWGEw44JTe9AE=;
+        b=pDyPmrqZwtOxX7cPJ7qJ747uGpaW2cETEp6NBcHUO7y4Q8rEdnQ7IJ2D2lv+DzMdsa
+         uxhLAnAIoE8XnCO9piDQ9E8mQ3Sa50w4vYVDn987mAkC1pg6jJF5BdgQ+LA/rcOFzPCS
+         QIKw1E1qsJnw1j1vio72tssdfmyLSa4XdMcBepkrZK7mV7mr4PXzG1N9R8vgzMl8cLvj
+         jjvjHFP28ODnwAX3IIv5rbAqauj7x3UQzpnFYv8UFZYWgd8lD27KC1XUHR+touvrEjVz
+         ttUemueNzQTJk6HrNgHboWTSzGvAw+Lr2LoIxCfeu+vG2Hsh7LaBX+bBMYqXcORwc9VC
+         0LmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+tjh8DGv06OYpQ4tB6EZZwfezpO1IjcAI0Gk1s8cEE+4/n5OtSwJYa0o+Z9t+S4Z+c2lS00jNxA==@kvack.org
+X-Gm-Message-State: AOJu0YytPTt3XZngvb9yxwGVyv784WFEf2RtNQxMvKeV439HQaS/NC94
+	SwCiqTjrWCuSx3Pqp6jqEJXuchqKYmTl/vCR1zAoMFrrVYGo3iga9onm
+X-Gm-Gg: AZuq6aK7I0Wo8X0k5uiETZIOOUFj2WC0YKaIwmMy045iV91p2aUc8mU92RwZYnkQcUb
+	c5RHYdNKQdovSgUhaRpONwgzRwGxBKaYgBM8AYU7UVPqapXsLpzvW7GhmbP/4BlwjS90PujH6+4
+	OvTMCCuPZqBpuDEnNXxsdIizi1pJkmjROP2Du66n43+ESe5FIneQeAlmyK51j7PXLePE2G6goSp
+	IUNJAd0jtjtSQSriPJ0u61U5GypH1NkEOG6hDkXRLPvl8OfxodMgVsvMRbK1hkI7gQWvprHvGqZ
+	R59bGiyfMjbO7ACbekEbBzM3s7b+aOSTlHlbZH3bt9Igl4a2n7kkj/hpis6TOfLR3k04d9Oyw+q
+	FsPkZP8UOR0l2+DwVE5GIHEzzL3eknnJpy82WaZIqxuor1Kq4LuaOZ6whORULb6XzAso44uRtoD
+	SnsqfMer95C6zIoNdOMLnVBy+n0tvt4sM1apft0XcEy+poWizjKwKo5yN7+gqJTOxMiNUxOgdAK
+	GpSnLptqsTGtiuml2DYwU9YFDgR2QXVqQZ6RNw=
+X-Received: by 2002:a05:6870:aa92:b0:409:8564:840b with SMTP id 586e51a60fabf-40eeeccc090mr10681264fac.39.1771446205902;
+        Wed, 18 Feb 2026 12:23:25 -0800 (PST)
+Received: from syn-2603-8080-10f0-ab80-0000-0000-0000-1382.res6.spectrum.com ([2603:8080:10f0:ab80::1382])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaeb42708sm22257991fac.0.2026.02.18.12.23.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 12:23:25 -0800 (PST)
+Date: Wed, 18 Feb 2026 12:23:22 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v5 1/4] mm: Add address apis for ptdescs
+Message-ID: <aZYfusoUR69JO1_X@syn-2603-8080-10f0-ab80-0000-0000-0000-1382.res6.spectrum.com>
+References: <20260211195233.368497-1-vishal.moola@gmail.com>
+ <20260211195233.368497-2-vishal.moola@gmail.com>
+ <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
+ <aY0ALB5yKXLY-M-X@fedora>
+ <aY0Z2qA1xiabEafk@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bf6eek2jagskkgu3isixqjjg3ftrkp5juf6lge3rjjutzzhbdd@vkliyqpsmrry>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDE3MiBTYWx0ZWRfX9FLEzf7jtPZJ
- gxRIrZ/x2mb/H3n910wOIdSzPtIrGUlfYxuofg56lSK0ItA0AyNFv8Kzn3TXJzZIrATwkusRCcG
- 0Xu9sAKUIAo4niQIgJvB/rhGZ5z2sx70baKRjeCDv8ftTvGZth3eNx29448fjestSwgOHQpMKSz
- 4EN8nz/qwWeVBGNI4PdG1jb8D4u50HpSPy6rPZvZ8AjixQDFsf+vXCnV9zBe9im2jSNVZLEeZ8D
- 65VdPgdMP4yUsBDEWzmUtzHEAMdbrtHHG7x7WA8P0WNP3A6cKPh338RkH2592PRkf7PYbrixmft
- 5xkKlIwNzF2cRpAscDzy90MLh+/F0Pgwb7rOsLImee/n4n/AUqN7bUtfV2wYRxp0FNR13VG8TnR
- zDFTGH23MCWaerUBCCb2lX9bse28g1p3GVo1g0wE8xxC91oeWvkMkSPe+E80ZmuKjhmmm53rCep
- /HZoD0qSHwr9ojMEJbA==
-X-Proofpoint-ORIG-GUID: Wn6Xsq6wTeBZ9-DdGXuQDbfw6exEBFXj
-X-Proofpoint-GUID: K4HPm-rnhFQtBUYE8FvRoE8HPd9myNYa
-X-Authority-Analysis: v=2.4 cv=M7hA6iws c=1 sm=1 tr=0 ts=69961f9c cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=iox4zFpeAAAA:8
- a=NybPXLiR-Eq3wr7rucQA:9 a=CjuIK1q_8ugA:10 a=WzC6qhA0u3u7Ye7llzcV:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-18_04,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015 phishscore=0
- impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180172
-X-Rspamd-Server: rspam09
-X-Stat-Signature: bg9eoqdcsoirfywetso6tj4y491nw6pr
-X-Rspamd-Queue-Id: 66B27140012
+In-Reply-To: <aY0Z2qA1xiabEafk@fedora>
 X-Rspam-User: 
-X-HE-Tag: 1771446183-434280
-X-HE-Meta: U2FsdGVkX1/L1mr6qxvXyziKCmhX2xLKbHFCrqyKBDcxmdtUf9sEHzzFHDbUh5fQAY0ircSsYGTiiVkMCfiY/A5ejSzO4DwrId+b5KkInZ55PmZX2EbOKlzKTVH9GohEFA1vjAwZTB/jj6AXmbuDThFxma6/ZnnxsTU5cSUEl50EBxEfpDeCQCOgJkmtHBHpVjW5yZ00y7IozQWQ/uwDM0PHCm7B8TXgzTEVb+VqlAuwt8xrO6oUnkwo0l2+felz0aAAEhSZOsA0n8KIWMJu/Udlw39bfvG+iDuO8glQ93CS6uEtMc37a18pwiOFdUsGMWh4721m8+/I7eYiKGuYpkXEJ79wpZaZnMiJ+D3rhy8ATl98rH6mSs4LTW1Xr9qqY92SoJMK33zDLa3AGkYoQ9R8lZvPOrhpFyJy54AehM7BnUZCxdZlLOCyPtN+YxATDhTIKz0wTIgdEi9NS0FVAaug4P7LbaqNeIPRtavfw7st9Xh962fspTt98vvCzJAw5OwLUeOboEk9eFnOA7ZRwW0okopCRW2GaQDpUsmHAYMrB4AeMIlBzUVAWN0nzBylm+hjauQA/ST1D+2F2OKCVOQnP6Ff4w4/OaKUEd/Sc876aJrMUHjcR9uou2dXjX1uBxifHEhwjntqHrE1PVLpXenG64VJLRTRP8RAvxT+9ElFSsNv0mfP0+aOsxQf5Hi5N+JmIdrbRV+hLDcIM/8FOAlz+g4yVf8Mtr4snssVgXR8Y1zNcPbFcxYR6Rc02q/2EzXxXoF+qW+z+UBKuzFHfKBEIZQVs9Fdu/1zbPurHReTvQZ9KwQQcaJ7Pb0zbjiF8NmLMYFxL3TFDR160qgESRpWnwVzo0t7k88nUsp9DacmtwNKTtNb53WiOh2oFcK73+8x/Khzt5BYHGAF6lAuTddtoZginMicZhml8L1xg2PXTHPVDS14AoIQ/kXZ+EzQxq+fj5DmxJV+qSjmWBe
- xzjVaD8+
- 9C7b4owsP2cR+Pk+XjaUL81iqNQNcgXZ/P3rgC89llkbpdudW0Vdp3nsHBI50y7Wcc4HbG/5xT8J99hDctT5nxtyLw7/FTDMPSUkNOYEmvXlPStt4lTnGS5K/NcH+XVt41PzwQyMxJY8i8VCTY50TdPyKg2FdlhIDDM9bO8nkdp5LTqXY3hAxIKnAwe/Qeb4L8ksSAay239jBD6R66m7gzD8gyx7HyCMOzHLcF3FyCI99xBkGoC+rHeZMD37fyd26dDu0nmYiMhkinHP0LHQtGH3o+5lwnH68MiT8oIP1PMB2DFhua4HfyiC0N10Ce1mMTApNWxxoJ9+uG6aap9NbCJl34vszyAk4jSFghEzA3uwUT1U=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1FA6514000B
+X-Stat-Signature: p7m14arz6376xuu6q9guuqn6iho7or1a
+X-HE-Tag: 1771446206-922443
+X-HE-Meta: U2FsdGVkX1/weEGHFiv71yUtC0lFCweXQLIgQLHBVRjVEa7W8Puh4dzGpHTpwxf358fU6uuhO0Y2OvbVcKfX/iobUrR7bWoKFcvdKVv0fSISmeJ35Zb8/uZ8SoweiCHLtzX1TDmCZxDSy5sVNIA3698n/4l20s1uFK1OkrmiKEzxtQVS03sp9ep7urQ7e/eeXMnyKAfYstZxclk/SFoL6pzL4ek0J9k6ImAVtAKmN4SdLYLhm1oTt/l2/CNqDXFIGvR9O26N2QD9IkePO/ONkMn2P81IvKcB2DcuPwULPZn/5RC52hGvlDOh7G57yAVlbc6uQ+ip0tfHhkb7EqBHsJn1907Nq9k6XpMX+Fv9L0vbV4PeD1Ki5CuKaHUW3RNslaGKtR27lFb5UCN3JJTWborCYuyjKK6cVBe6eoOjSEigEWgIt6IxC7wzM/GqLPQ1pzmF6uU8FkjcfirKFTYVV5fnmDVVYIa+vvdyHcYZByREV+0kBmwnuLMZ1cSlHUISHy/I3GmnEf9+te9M/A+HBpyEjBEI+rZ7m63vEwWcj8skOmqcmmIOu74iQ2JgF4fplPGtFHwW9X4cuW4REf3MQwl7TsmNwHcamjN3ulbrQA21YfRlrZRl8jzdIqbPHCkauK3LoV9OhbXGHGNI3TmLa2RokNtohNVU0h3dschnWuU1Ds2GRF8h7NzETcqhG2U6XO6yAamQLavLD40IozY8TS6gulyMUuhYDfSovJ7BIV9jbrdSpMzZIywn0xvWoySxztguYNyfuTc4ZeYdfuf2oFowvggavAUv3P0XrytU6HP9Pj3cc0FgjT5HGJBpNWc08MC5Zoyrhb4PHHLY/dRLAC3WfKxLWuxTmbH3zCMQh24E1zSIYv9q7vuFqB2VTBGO+9632qjj/BZH1cYeTB1IV0jwmu62jpCQtSGFx1AFxDycYLAhvnWmzfEqFFmEZ46ATFk7h/LNJjbxnuKdT0J
+ kDkrkK7c
+ do88/zRP08f43G6jVQsSnzHaqCs08w0Nvpk8UXY1ax99wZOY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,39 +127,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 06:42:05PM +0100, Jan Kara wrote:
-> On Tue 17-02-26 22:50:17, Ojaswin Mujoo wrote:
-> > On Mon, Feb 16, 2026 at 10:52:35AM +0100, Pankaj Raghav wrote:
-> > > Hmm, IIUC, postgres will write their dirty buffer cache by combining multiple DB
-> > > pages based on `io_combine_limit` (typically 128kb). So immediately writing them
-> > > might be ok as long as we don't remove those pages from the page cache like we do in
-> > > RWF_UNCACHED.
+On Wed, Feb 11, 2026 at 04:07:54PM -0800, Vishal Moola (Oracle) wrote:
+> On Wed, Feb 11, 2026 at 02:18:20PM -0800, Vishal Moola (Oracle) wrote:
+> > On Wed, Feb 11, 2026 at 12:13:10PM -0800, Dave Hansen wrote:
+> > > On 2/11/26 11:52, Vishal Moola (Oracle) wrote:
+> > > > +/**
+> > > > + * pgtable_alloc_addr - Allocate pagetables to get an address
+> > > > + * @gfp:       GFP flags
+> > > > + * @order:     desired pagetable order
+> > > 
+> > > FWIW, I don't like how pgtable_alloc_addr() looks in practice. It reads
+> > > like it is: "allocate a page table address", not "allocate a page
+> > > table". I don't have a better suggestion other than having:
 > > 
-> > Yep, and Ive not looked at the code path much but I think if we really
-> > care about the user not changing the data b/w write and writeback then
-> > we will probably need to start the writeback while holding the folio
-> > lock, which is currently not done in RWF_UNCACHED.
+> > Hmmm. I meant for it to read "allocate a page table and get its address."
+> > 
+> > > 	pgtable_alloc()
+> > > 
+> > > that returns a page table pointer, a void*, and:
+> > 
+> > Initially, I intended to name it pgtable_alloc() & pgtable_free(). I saw
+> > arm using pgtable_alloc() and powerpc using pgtable_free(), so I looked
+> > for another name.
 > 
-> That isn't enough. submit_bio() returning isn't enough to guaranteed DMA
-> to the device has happened. And until it happens, modifying the pagecache
-> page means modifying the data the disk will get. The best is probably to
-> transition pages to writeback state and deal with it as with any other
-> requirement for stable pages.
+> I've done some digging about these names.
+> The arm cases uses a function pointer, so we should be able to use that
+> name without issue.
 
-Yes true, looking at the code, it does seem like we would also need to
-depend on the stable page mechanism to ensure nobody changes the buffers
-till the IO has actually finished.
+Dave, I wanted to follow up on the below question:
 
-I think the right way to go would be to first start with an
-implementation of RWF_WRITETHOUGH and then utilize that and stable pages
-to enable RWF_ATOMIC for buffered IO.
+> What do you think is a reasonable name for freeing?
+>
+> pgtable_free() is defined for sparc and powerpc. I could rename them
+> prefixed with "__" to get the name since they only have 1-2 internal
+> callers.
 
-Regards,
-ojaswin
-
-> 
-> 								Honza
-> -- 
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+Matthew brought another question to my attention in this particular
+scenario. Should pat/set_memory's alloc_*_page() use pte_alloc_one()
+instead of get_zeroed_page()? Is there any reason not to?
 
