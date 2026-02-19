@@ -4,110 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79AE1E9A048
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 13:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D17BE9A04A
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 14:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A55576B0088; Thu, 19 Feb 2026 08:10:50 -0500 (EST)
+	id 18F916B0088; Thu, 19 Feb 2026 09:19:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A031E6B0089; Thu, 19 Feb 2026 08:10:50 -0500 (EST)
+	id 167926B0089; Thu, 19 Feb 2026 09:19:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E4936B008A; Thu, 19 Feb 2026 08:10:50 -0500 (EST)
+	id 09E4A6B008A; Thu, 19 Feb 2026 09:19:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7782C6B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 08:10:50 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1ADEB8BFC9
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 13:10:50 +0000 (UTC)
-X-FDA: 84461241060.16.2488C9D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 32DC1120005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 13:10:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jeaFC665;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ECF1C6B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:19:39 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 810171C40B
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:19:39 +0000 (UTC)
+X-FDA: 84461414478.06.A31E042
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 77D5D4000D
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:19:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771510777; a=rsa-sha256;
+	cv=none;
+	b=jbWf9R3VeUfLl1ZgA604VH09TSUjVY84Y+a7BwJSpVWaTNYW7neITLcJJMO9UMutMK8Jpr
+	sBym+Apv1ohk9hzkIME6EOCZJIAff/4lQstYqTnBIkq0FueYw4odn7fZmuAK+SEfKyY83m
+	M3ZyYL35hd+aUqHrIwTRaXixvNDdE6M=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771506648;
+	s=arc-20220608; t=1771510777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWhqAYrqfQLWG98hJqw5F1xa3WPJF+yKGe0WWcDlChY=;
-	b=42VLpNMXSeAjTv1zXI988+oCPIhHLVgwxOzgJQGpHprrL4J48c+aO5TNwlS0Zitq8LhsxS
-	UHSF4e18/HJKzeKW0qQObXQXunxbp50g7XrdlfIvGV8rsvBvxS30U1/7xFhDox+Xu3MnGH
-	Rvo6+Eowv/qxku/4caXMQJQWAS9o5pw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771506648; a=rsa-sha256;
-	cv=none;
-	b=enBs+6R7B0zEC/5xDEEWyWkmpCVgtztpSpfouEb4D5HXny/CH5GEv0sB5LvJFXyt8rwQbQ
-	KlLFpOLsmwBEueNMHXv5tzlNj4xoDZgf4CuZW1oN8AtOuQWP3m4SxH17TLDBIlSoTWF+M+
-	OuOoOmkVu4wbXGnh/24j+ilh/HLICng=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jeaFC665;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771506647; x=1803042647;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+ASt9RW3S8U9bMhrhcg5P9CXnzpEpApS+qGIkng/w1I=;
-  b=jeaFC665rwFs3oGI4Yb1Ek/AL7HQ1M3f+R5FQIvQwiF7DzS6HFN4lOkR
-   SutSjRq4x3AqyLJTo5jgee4yIhD09kwkMgZHGTdTraMFwK0ttgRqiVWsf
-   uUhFp7x3ruJtatWvA6cqo0PvNiaUgYUbdSgPUjQQ0X9/w/eqBXPDcXHR3
-   0KQKvrageTSPhKu4itZus50w2vjtWiMDCIxtyMES7YokGOACeSHGeAAPh
-   IAPb+3nazcariYtJf2fHa1Ix1Enw87FaDbmq0Nlvv52sR7pUePNx4VbHT
-   wMl7bZCMvYhOOrA+A4orzawla+Hdx927F9nbjQRnEZ2ruafNg2mP3A2Ww
-   Q==;
-X-CSE-ConnectionGUID: QCw9qLGYS4OWKYDfm5/mTg==
-X-CSE-MsgGUID: 4CrmUBXjSu6dqqBj/SZ2pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="82914201"
-X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
-   d="scan'208";a="82914201"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 05:10:45 -0800
-X-CSE-ConnectionGUID: NHFBFnBWR4uJA67vO80HYg==
-X-CSE-MsgGUID: jVog3KgkTsunK42T2C/5Ig==
-X-ExtLoop1: 1
-Received: from igk-lkp-server01.igk.intel.com (HELO e5404a91d123) ([10.211.93.152])
-  by fmviesa003.fm.intel.com with ESMTP; 19 Feb 2026 05:10:39 -0800
-Received: from kbuild by e5404a91d123 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vt3ng-000000003yL-3aSU;
-	Thu, 19 Feb 2026 13:10:36 +0000
-Date: Thu, 19 Feb 2026 14:10:08 +0100
-From: kernel test robot <lkp@intel.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>, linux-mm@kvack.org,
-	mst@redhat.com, mhocko@suse.com, vbabka@suse.cz
-Cc: oe-kbuild-all@lists.linux.dev, apopple@nvidia.com,
-	akpm@linux-foundation.org, axelrasmussen@google.com,
-	byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
-	eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
-	hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
-	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com, matthew.brost@intel.com,
-	rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
-	rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	surenb@google.com, virtualization@lists.linux.dev,
-	weixugc@google.com, xuanzhuo@linux.alibaba.com,
-	ying.huang@linux.alibaba.com
-Subject: Re: [PATCH v3] mm: move pgscan, pgsteal, pgrefill to node stats
-Message-ID: <202602191417.23zH3uja-lkp@intel.com>
-References: <20260218222652.108411-1-jp.kobryn@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1odQz2KgmPi+plwh23qCjejMmbe+Qj2ViPYmxxCrusw=;
+	b=Nx9GyfoNBfIbULJ952SQqqyDuyH1itudDZbMiC4V3LqrhZiNLvIpUCjBefHBix9UGD+5yC
+	Wu8UpTYof9jpz7J/yJigeboKUeiFJuLJbz5DlL5ShFo89RQP8gU2Nwxc6t7oQVpdmvsxI7
+	pnlvTBEF1Ywgwo9Vw5SGp0Ka4JIXN2M=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fGwVG3kLfzHnGj5;
+	Thu, 19 Feb 2026 22:19:02 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id B24FA40086;
+	Thu, 19 Feb 2026 22:19:32 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Feb
+ 2026 14:19:32 +0000
+Date: Thu, 19 Feb 2026 14:19:30 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Gregory Price <gourry@gourry.net>
+CC: Andrew Morton <akpm@linux-foundation.org>, Cui Chao
+	<cuichao1753@phytium.com.cn>, <dan.j.williams@intel.com>, Mike Rapoport
+	<rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <qemu-devel@nongnu.org>, "David Hildenbrand (Arm)"
+	<david@kernel.org>
+Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
+ of CFMW
+Message-ID: <20260219141930.0000124a@huawei.com>
+In-Reply-To: <aYYXif7IPXnXZPnn@gourry-fedora-PF4VCD3F>
+References: <2d1e23ad-7ec1-483b-88b3-70ce19b69106@phytium.com.cn>
+	<aXOl9CN_66HywIjZ@gourry-fedora-PF4VCD3F>
+	<a90bc6f2-105c-4ffc-99d9-4fa5eaa79c45@phytium.com.cn>
+	<20260205145842.efb90572a902ae4c481e6ef6@linux-foundation.org>
+	<aYUjf0OrD8f_bJCy@gourry-fedora-PF4VCD3F>
+	<20260206110305.00001fbb@huawei.com>
+	<aYXtHa4Y2y_5xgcS@gourry-fedora-PF4VCD3F>
+	<20260206150941.000028ae@huawei.com>
+	<aYYOZ1TK5dpX_h_Q@gourry-fedora-PF4VCD3F>
+	<20260206162644.000050fe@huawei.com>
+	<aYYXif7IPXnXZPnn@gourry-fedora-PF4VCD3F>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260218222652.108411-1-jp.kobryn@linux.dev>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
 X-Rspam-User: 
-X-Stat-Signature: a9cw5cc7jpckgdenrjc9nm1kqmtfdx1u
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 32DC1120005
-X-HE-Tag: 1771506646-524957
-X-HE-Meta: U2FsdGVkX1/dolcUelNWvce4WdpaRCtSwEz6Q0iRSOyz7wmjSVrKi3x0jww4BhH8GKkTRDwFp7fU62eCndURJdgKPMAvU8zsKjoSwKithkHSE8w2rUqyRCvvMetd5bwTk9GZ1h8lI1/3ExsO8Hw0ik7YpHqG78wpL1p7MOKoV6dMBrP6Y5eIr8cJgcIs8SINlRpJL45xSyc0uar5JvFPNPtpO6Z8yQ9gS0z7rnC5mISKp1euvcdgqN5jPKD5JMaAw5ubPGvh4DBA3D7m6uaP5grEIUSkJRo0zUhL+sefoKzD7R26CF8LSuxiJuVKcEnE7rk9QVl7uM7tq9E8bkSPM+nOFLWZMNfydRp3E8SbV6zW0I8r+noc/2q8mZA1mq8Oh/jaZNYbdQlKnpBRR2e+9avLsru+n+nJ444Nt/jYVzreN5nkxbifyUvktlkkqsAiEoieZ57e/TigIAsVBrM4cgj3NgtIMcJjV+335KwVQYDbo0JLkUsT3I9rsdyIOz/kQssjMQNEUcx3xjiD4EjILgzkqt+MtSK8BcagV54raMURJTU7ti/xxwZ83iUdh8TjzFrI0RwSl/3Fx0YAxyUd8S8IEBAVLKXuE4hKqoJ9urNb8G8oMkHk2bH/Dclrtjy+evJ3wWM8NbwEdCRawaWH4wI7bKWZvF2JnVRvG+HJmvsC4eGZvx89LrRVFouwOEGlAD0HgqZcxYndCKfXSyZrg6zC8gPbpytX33mcquPon4NAg2dgNtd2IfKEYYLqLyjPz/dbXlcwbXJj2Qw/QYHz2A8o8GMQDmvB4GGQ7kWX0eZiVKuR2mmGmTkd/da9/9XEY12XLbYwQ8D7Is6OOI/sko4wPPSUJ/WqJaFOWm+eycApycHMrHrYN/CDGbCnV9yi8oe+DlCthu61a87DSmFZYaZvw72PLxCm5MkoRJb8+vGupyGT+AQhUdTih45Xq/V2ftIS7E5nTKhxu4tRmSC
- GQOPrFln
- FgiD1J0VCnFz1LHh2HaTwUfFJdI3kXfSRw+A3hyCTjPHK0YeeoyG4n54/ERQbRWfwMFln6rS7i9mhn6sHwGUxzjng3yIF6iSnXK/V8F7MkDUmKXhFoXpXUFXC4hLsT1LGB8Rexe7wWoL+l/BpfT+nsiTaZQE52aTVK+P/540+YaDhtcCfZoRc6lXjrfV63UBsMpWX3dpSJ4GPlwNQ8d2l2K40QnMOYfguWPvtqBXYll0suYf3vcUQHQ8UPsoFwvM8n3ijHyBbqU5l2ywlxNloV5bCdbKzBeG4l0bgb+apkWaow4cdMs1ElrcAZ6QdaXN78/BaOMFGdLr/qcP0yTNEyqYaK5OWwdbk2eiwnaECqEVJh+A=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 77D5D4000D
+X-Stat-Signature: f66bc8ak4sf1mndckahtwjga8mfp6rri
+X-HE-Tag: 1771510776-881799
+X-HE-Meta: U2FsdGVkX1/syuQzEUJ9/I5XdhTVOVyuo/HFnQPsglYpryLLFlJ1Y2GPdNlk3Xe/wKTMVi8Pkp29znzc0M3WSrKplPEQ0NIx+fHYvs/fOMLA3mMeMtTkUjl5Df49Ia5CJ8MI1ufmDSfhHW5EprJgAf1NDLVnZaUn24wzdqLLp5xI9nYktd29f8/OuOzwu934CrhEeLc6VEvdCFFh6CYUCgLx3IC3TTMliL3RJFC3/XBA3F7YRYidxvyQ9A8Z5iSs+1YfCa3C0DfKHRJIgETMAJeGeP/4fpJzLLBbaMxxR7aQT1tqrW7/jM74F8Qxs8ylakt/tiGy1p2lnjT94wEaB6PJUwqU7iyi00aR08a+95bF+AfsuNQVPPqsNAeBIxBSYtcQXxZlv27n5Nu+3naT2Hefu0PaIy3ijHBe+E+veg578DRU4NWzx729TZIawTmjsBqkpUIxmPVj6KJ2DcgDhQ7kEKEzth505YhdUsiCVoKrVSgxtgm9ynifYGH/uw3uVq33pg2e/ue9v4HRTPdygAVAY6puv1S27pUNNgEiaaAcb+fDUIVSzy1LSg6sMSnkUB2QKyhNXr9XIs8h57+isIl/WyevOLAVLRRtK5WryN+o/LhO5PvS8mEqI/3SU1SwlTGeiEnsHDHtE7XLDHz5xwmgz8goH34psT/7I0dh8dFGo4VdWpWFU5ahZ7hFg86DjVMU+Hk5eBEawvluEKGOKHnD0xi9dANLVw1GSawFbh3QkE27YGoqybUZm58BXbY3ttTP0nUI5bR+Yxf6o+GXVexNGiuS7zBewo+3xPHCusdgFMJnGjFO5XxnUEmTxuDTg6TAXwVYbC+gFZZ0qJvrPj6z8SMpitPUR0SWBtbPBzJ+uwb6+4sB+3ejnD2/TU1y8XocBzHFY7ZQhVFejcZBCcxoOiPHi+KmGN9PBkQ95yxmOQU78KZj0/VCsB0jY8SkVuQOXlOAbIfRr2uUXLc
+ o5LXCcW9
+ bvCDNIiknwmC5DGqlkQH9Z87gSfF01Am6mmi8USeKTstbPW19TFM7mq10C2to7W4mcnlfVGYCzX++xs+sMeLDk5iXhteJYU30NfaG53UOXq6o4jfqSA8+nLbs/nn0K2Elhnh5I6f+g3ty9y2xLMGNNYUnkFyswddsm2xmrM5QgBF36ZJrZqBw3xqdWpmKJUiIh2M9tdTUp35eEW4ENu7ayc3//wkblftgAFhDzZn7RxB99JH6jbrAQ+sWrPb9uQPCrzGZIUzaV8yb/qxlH9IMzbPBYe7/JqLkhxMWFBhYtnxUFN7fA2CSNkr0/u+5u1yD7fMZpyJN1vohmD8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,118 +106,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi JP,
+On Fri, 6 Feb 2026 11:32:09 -0500
+Gregory Price <gourry@gourry.net> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Fri, Feb 06, 2026 at 04:26:44PM +0000, Jonathan Cameron wrote:
+> > > 
+> > > This should fall out cleanly.
+> > > 
+> > > The additional nodes won't be associated with anything, but could be
+> > > used for hotplug - I imagine.
+> > >   
+> > 
+> > That aligns with what I was thinking as a first solution to allowing this
+> > to be more dynamic.   We can get clever later if this doesn't prove sufficient.
+> >   
+> 
+> I can get this out pretty quickly, hopefully sometime next week.
+> 
+> I had a long talk with Dan about this topic previously, and I'm not sure
+> how we get more dynamic than this to be honest.  nr_possible_nodes is
+> *definitely* expected to be immutable after __init all over the kernel,
+> it's used to allocate a memory.
 
-[auto build test WARNING on akpm-mm/mm-everything]
+Indeed. But that doesn't mean to say they are all in use after __init.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/JP-Kobryn-Meta/mm-move-pgscan-pgsteal-pgrefill-to-node-stats/20260219-063016
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260218222652.108411-1-jp.kobryn%40linux.dev
-patch subject: [PATCH v3] mm: move pgscan, pgsteal, pgrefill to node stats
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260219/202602191417.23zH3uja-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260219/202602191417.23zH3uja-lkp@intel.com/reproduce)
+You end up allocating a bunch of space, that is not used until there
+is some memory there.  Not a problem.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602191417.23zH3uja-lkp@intel.com/
+So dynamic nr_possible_nodes is tricky.  Dynamic allocation of stuff into
+those nodes is fine. That happens with memory hotplug today.
 
-All warnings (new ones prefixed by >>):
+J
+> 
+> Surface area is very large here.
+> 
+> ~Gregory
 
-   mm/vmscan.c: In function 'scan_folios':
->> mm/vmscan.c:4542:28: warning: unused variable 'memcg' [-Wunused-variable]
-    4542 |         struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-         |                            ^~~~~
-
-
-vim +/memcg +4542 mm/vmscan.c
-
-ac35a490237446 Yu Zhao        2022-09-18  4527  
-af827e0904899f Koichiro Den   2025-05-31  4528  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-af827e0904899f Koichiro Den   2025-05-31  4529  		       struct scan_control *sc, int type, int tier,
-af827e0904899f Koichiro Den   2025-05-31  4530  		       struct list_head *list)
-ac35a490237446 Yu Zhao        2022-09-18  4531  {
-669281ee7ef731 Kalesh Singh   2023-08-01  4532  	int i;
-669281ee7ef731 Kalesh Singh   2023-08-01  4533  	int gen;
-b0e9e710c6bb5a JP Kobryn      2026-02-18  4534  	enum node_stat_item item;
-ac35a490237446 Yu Zhao        2022-09-18  4535  	int sorted = 0;
-ac35a490237446 Yu Zhao        2022-09-18  4536  	int scanned = 0;
-ac35a490237446 Yu Zhao        2022-09-18  4537  	int isolated = 0;
-8c2214fc9a470a Jaewon Kim     2023-10-03  4538  	int skipped = 0;
-49d921b471c513 Chen Ridong    2025-12-04  4539  	int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
-49d921b471c513 Chen Ridong    2025-12-04  4540  	int remaining = scan_batch;
-391655fe08d1f9 Yu Zhao        2022-12-21  4541  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-ac35a490237446 Yu Zhao        2022-09-18 @4542  	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-ac35a490237446 Yu Zhao        2022-09-18  4543  
-ac35a490237446 Yu Zhao        2022-09-18  4544  	VM_WARN_ON_ONCE(!list_empty(list));
-ac35a490237446 Yu Zhao        2022-09-18  4545  
-ac35a490237446 Yu Zhao        2022-09-18  4546  	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
-ac35a490237446 Yu Zhao        2022-09-18  4547  		return 0;
-ac35a490237446 Yu Zhao        2022-09-18  4548  
-ac35a490237446 Yu Zhao        2022-09-18  4549  	gen = lru_gen_from_seq(lrugen->min_seq[type]);
-ac35a490237446 Yu Zhao        2022-09-18  4550  
-669281ee7ef731 Kalesh Singh   2023-08-01  4551  	for (i = MAX_NR_ZONES; i > 0; i--) {
-ac35a490237446 Yu Zhao        2022-09-18  4552  		LIST_HEAD(moved);
-8c2214fc9a470a Jaewon Kim     2023-10-03  4553  		int skipped_zone = 0;
-669281ee7ef731 Kalesh Singh   2023-08-01  4554  		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
-6df1b2212950aa Yu Zhao        2022-12-21  4555  		struct list_head *head = &lrugen->folios[gen][type][zone];
-ac35a490237446 Yu Zhao        2022-09-18  4556  
-ac35a490237446 Yu Zhao        2022-09-18  4557  		while (!list_empty(head)) {
-ac35a490237446 Yu Zhao        2022-09-18  4558  			struct folio *folio = lru_to_folio(head);
-ac35a490237446 Yu Zhao        2022-09-18  4559  			int delta = folio_nr_pages(folio);
-ac35a490237446 Yu Zhao        2022-09-18  4560  
-ac35a490237446 Yu Zhao        2022-09-18  4561  			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
-ac35a490237446 Yu Zhao        2022-09-18  4562  			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
-ac35a490237446 Yu Zhao        2022-09-18  4563  			VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) != type, folio);
-ac35a490237446 Yu Zhao        2022-09-18  4564  			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
-ac35a490237446 Yu Zhao        2022-09-18  4565  
-ac35a490237446 Yu Zhao        2022-09-18  4566  			scanned += delta;
-ac35a490237446 Yu Zhao        2022-09-18  4567  
-669281ee7ef731 Kalesh Singh   2023-08-01  4568  			if (sort_folio(lruvec, folio, sc, tier))
-ac35a490237446 Yu Zhao        2022-09-18  4569  				sorted += delta;
-ac35a490237446 Yu Zhao        2022-09-18  4570  			else if (isolate_folio(lruvec, folio, sc)) {
-ac35a490237446 Yu Zhao        2022-09-18  4571  				list_add(&folio->lru, list);
-ac35a490237446 Yu Zhao        2022-09-18  4572  				isolated += delta;
-ac35a490237446 Yu Zhao        2022-09-18  4573  			} else {
-ac35a490237446 Yu Zhao        2022-09-18  4574  				list_move(&folio->lru, &moved);
-8c2214fc9a470a Jaewon Kim     2023-10-03  4575  				skipped_zone += delta;
-ac35a490237446 Yu Zhao        2022-09-18  4576  			}
-ac35a490237446 Yu Zhao        2022-09-18  4577  
-8c2214fc9a470a Jaewon Kim     2023-10-03  4578  			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH)
-ac35a490237446 Yu Zhao        2022-09-18  4579  				break;
-ac35a490237446 Yu Zhao        2022-09-18  4580  		}
-ac35a490237446 Yu Zhao        2022-09-18  4581  
-8c2214fc9a470a Jaewon Kim     2023-10-03  4582  		if (skipped_zone) {
-ac35a490237446 Yu Zhao        2022-09-18  4583  			list_splice(&moved, head);
-8c2214fc9a470a Jaewon Kim     2023-10-03  4584  			__count_zid_vm_events(PGSCAN_SKIP, zone, skipped_zone);
-8c2214fc9a470a Jaewon Kim     2023-10-03  4585  			skipped += skipped_zone;
-ac35a490237446 Yu Zhao        2022-09-18  4586  		}
-ac35a490237446 Yu Zhao        2022-09-18  4587  
-ac35a490237446 Yu Zhao        2022-09-18  4588  		if (!remaining || isolated >= MIN_LRU_BATCH)
-ac35a490237446 Yu Zhao        2022-09-18  4589  			break;
-ac35a490237446 Yu Zhao        2022-09-18  4590  	}
-ac35a490237446 Yu Zhao        2022-09-18  4591  
-e452872b40e3f1 Hao Jia        2025-03-18  4592  	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
-b0e9e710c6bb5a JP Kobryn      2026-02-18  4593  	mod_lruvec_state(lruvec, item, isolated);
-b0e9e710c6bb5a JP Kobryn      2026-02-18  4594  	mod_lruvec_state(lruvec, PGREFILL, sorted);
-b0e9e710c6bb5a JP Kobryn      2026-02-18  4595  	mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
-49d921b471c513 Chen Ridong    2025-12-04  4596  	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
-8c2214fc9a470a Jaewon Kim     2023-10-03  4597  				scanned, skipped, isolated,
-8c2214fc9a470a Jaewon Kim     2023-10-03  4598  				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-1bc542c6a0d144 Zeng Jingxiang 2024-10-26  4599  	if (type == LRU_GEN_FILE)
-1bc542c6a0d144 Zeng Jingxiang 2024-10-26  4600  		sc->nr.file_taken += isolated;
-ac35a490237446 Yu Zhao        2022-09-18  4601  	/*
-e9d4e1ee788097 Yu Zhao        2022-12-21  4602  	 * There might not be eligible folios due to reclaim_idx. Check the
-e9d4e1ee788097 Yu Zhao        2022-12-21  4603  	 * remaining to prevent livelock if it's not making progress.
-ac35a490237446 Yu Zhao        2022-09-18  4604  	 */
-ac35a490237446 Yu Zhao        2022-09-18  4605  	return isolated || !remaining ? scanned : 0;
-ac35a490237446 Yu Zhao        2022-09-18  4606  }
-ac35a490237446 Yu Zhao        2022-09-18  4607  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
