@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D17BE9A04A
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 14:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B00FE9A048
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 14:32:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18F916B0088; Thu, 19 Feb 2026 09:19:40 -0500 (EST)
+	id DD51D6B0088; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 167926B0089; Thu, 19 Feb 2026 09:19:40 -0500 (EST)
+	id D836C6B0089; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09E4A6B008A; Thu, 19 Feb 2026 09:19:40 -0500 (EST)
+	id CB9876B008A; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF1C6B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:19:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 810171C40B
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:19:39 +0000 (UTC)
-X-FDA: 84461414478.06.A31E042
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 77D5D4000D
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:19:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771510777; a=rsa-sha256;
-	cv=none;
-	b=jbWf9R3VeUfLl1ZgA604VH09TSUjVY84Y+a7BwJSpVWaTNYW7neITLcJJMO9UMutMK8Jpr
-	sBym+Apv1ohk9hzkIME6EOCZJIAff/4lQstYqTnBIkq0FueYw4odn7fZmuAK+SEfKyY83m
-	M3ZyYL35hd+aUqHrIwTRaXixvNDdE6M=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B83186B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 59EA5140592
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:32:48 +0000 (UTC)
+X-FDA: 84461447616.08.8EBC7ED
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 667A280007
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:32:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=DEZWVjL0;
+	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771510777;
+	s=arc-20220608; t=1771511566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1odQz2KgmPi+plwh23qCjejMmbe+Qj2ViPYmxxCrusw=;
-	b=Nx9GyfoNBfIbULJ952SQqqyDuyH1itudDZbMiC4V3LqrhZiNLvIpUCjBefHBix9UGD+5yC
-	Wu8UpTYof9jpz7J/yJigeboKUeiFJuLJbz5DlL5ShFo89RQP8gU2Nwxc6t7oQVpdmvsxI7
-	pnlvTBEF1Ywgwo9Vw5SGp0Ka4JIXN2M=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fGwVG3kLfzHnGj5;
-	Thu, 19 Feb 2026 22:19:02 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id B24FA40086;
-	Thu, 19 Feb 2026 22:19:32 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Feb
- 2026 14:19:32 +0000
-Date: Thu, 19 Feb 2026 14:19:30 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Gregory Price <gourry@gourry.net>
-CC: Andrew Morton <akpm@linux-foundation.org>, Cui Chao
-	<cuichao1753@phytium.com.cn>, <dan.j.williams@intel.com>, Mike Rapoport
-	<rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <qemu-devel@nongnu.org>, "David Hildenbrand (Arm)"
-	<david@kernel.org>
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
- of CFMW
-Message-ID: <20260219141930.0000124a@huawei.com>
-In-Reply-To: <aYYXif7IPXnXZPnn@gourry-fedora-PF4VCD3F>
-References: <2d1e23ad-7ec1-483b-88b3-70ce19b69106@phytium.com.cn>
-	<aXOl9CN_66HywIjZ@gourry-fedora-PF4VCD3F>
-	<a90bc6f2-105c-4ffc-99d9-4fa5eaa79c45@phytium.com.cn>
-	<20260205145842.efb90572a902ae4c481e6ef6@linux-foundation.org>
-	<aYUjf0OrD8f_bJCy@gourry-fedora-PF4VCD3F>
-	<20260206110305.00001fbb@huawei.com>
-	<aYXtHa4Y2y_5xgcS@gourry-fedora-PF4VCD3F>
-	<20260206150941.000028ae@huawei.com>
-	<aYYOZ1TK5dpX_h_Q@gourry-fedora-PF4VCD3F>
-	<20260206162644.000050fe@huawei.com>
-	<aYYXif7IPXnXZPnn@gourry-fedora-PF4VCD3F>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lIUfsf8JaxJ48qmG5xnIYm98ylX2DhnMOAxi5mf81Yg=;
+	b=C3tiaRB5NycS3D3Wfn89rhPNXtG1SEXllBgBVBHzd11uz8SDMFhcXp2nBy2TFczz/PLwv4
+	EWOrbePUv8Th0lfmczy4kttpDJoJUOTdeIZ6u2CQ91zwWRA6t/4LpjUhdsir/qy1kR1KAn
+	j9WEKM7RtOhJKR5D+08LegtaA5nnz70=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771511566; a=rsa-sha256;
+	cv=none;
+	b=02+EZMtn2/qX1cWB36yA6e0yHta3OYqRQVMOFzCjgeaTQymtVxMyDWn+sPi6BgNOmW/Ixi
+	sp+CISHRAKNBl/rLo15s4NGJCCbgkQz6OtlT7rsStI3nKKziQ151AAQpluiG34UKUumKY3
+	4gcU0e6MYLQM8IE2AgFsf2hb9WuHibM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=DEZWVjL0;
+	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+Received: from macsyma.thunk.org (pool-173-48-113-47.bstnma.fios.verizon.net [173.48.113.47])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 61JEWgXE019467
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 09:32:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1771511565; bh=lIUfsf8JaxJ48qmG5xnIYm98ylX2DhnMOAxi5mf81Yg=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=DEZWVjL0xyfCBeyRW70yV9z+bT8dLBgE3Cr2B2R1FFbqVgTk3+cS79TVtarhMc2s9
+	 y5zx36b7cGwjDDPIU1AWw8XobSbXIgAzVzvztzBkdZqcjFJNDQPiWezYsxlg+1EFp+
+	 NAQuCoBvWIlevFLqB2dNFE6pFxImmljumqGA8fl4UQfqVke3xPXcQf6GsSGCmPKXmt
+	 V4E5dQmrjeAAtwvTwwEDK9wAdOUwO6AYyEr05M2XZ20V4BpFkVWhICt9JfAkvDB29L
+	 FNzhu9oZiB2WhB/N+ewidJlIJbLrRavHs4WbMGzOC0EMfOLieSFtmPS+RU1fyX5p0t
+	 0rIcr3WomJl+Q==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id A4E16591BA5C; Thu, 19 Feb 2026 09:32:42 -0500 (EST)
+Date: Thu, 19 Feb 2026 09:32:42 -0500
+From: "Theodore Tso" <tytso@mit.edu>
+To: Hannes Reinecke <hare@suse.de>
+Cc: lsf-pc <lsf-pc@lists.linux-foundation.org>,
+        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        linux-mm@kvack.org
+Subject: Re: [LSF/MM/BPF TOPIC] Memory fragmentation with large block sizes
+Message-ID: <20260219143242.GC69183@macsyma-wired.lan>
+References: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: h83ykhfcnhcyoj5gkfmg43ugu9p479nz
+X-Rspamd-Queue-Id: 667A280007
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 77D5D4000D
-X-Stat-Signature: f66bc8ak4sf1mndckahtwjga8mfp6rri
-X-HE-Tag: 1771510776-881799
-X-HE-Meta: U2FsdGVkX1/syuQzEUJ9/I5XdhTVOVyuo/HFnQPsglYpryLLFlJ1Y2GPdNlk3Xe/wKTMVi8Pkp29znzc0M3WSrKplPEQ0NIx+fHYvs/fOMLA3mMeMtTkUjl5Df49Ia5CJ8MI1ufmDSfhHW5EprJgAf1NDLVnZaUn24wzdqLLp5xI9nYktd29f8/OuOzwu934CrhEeLc6VEvdCFFh6CYUCgLx3IC3TTMliL3RJFC3/XBA3F7YRYidxvyQ9A8Z5iSs+1YfCa3C0DfKHRJIgETMAJeGeP/4fpJzLLBbaMxxR7aQT1tqrW7/jM74F8Qxs8ylakt/tiGy1p2lnjT94wEaB6PJUwqU7iyi00aR08a+95bF+AfsuNQVPPqsNAeBIxBSYtcQXxZlv27n5Nu+3naT2Hefu0PaIy3ijHBe+E+veg578DRU4NWzx729TZIawTmjsBqkpUIxmPVj6KJ2DcgDhQ7kEKEzth505YhdUsiCVoKrVSgxtgm9ynifYGH/uw3uVq33pg2e/ue9v4HRTPdygAVAY6puv1S27pUNNgEiaaAcb+fDUIVSzy1LSg6sMSnkUB2QKyhNXr9XIs8h57+isIl/WyevOLAVLRRtK5WryN+o/LhO5PvS8mEqI/3SU1SwlTGeiEnsHDHtE7XLDHz5xwmgz8goH34psT/7I0dh8dFGo4VdWpWFU5ahZ7hFg86DjVMU+Hk5eBEawvluEKGOKHnD0xi9dANLVw1GSawFbh3QkE27YGoqybUZm58BXbY3ttTP0nUI5bR+Yxf6o+GXVexNGiuS7zBewo+3xPHCusdgFMJnGjFO5XxnUEmTxuDTg6TAXwVYbC+gFZZ0qJvrPj6z8SMpitPUR0SWBtbPBzJ+uwb6+4sB+3ejnD2/TU1y8XocBzHFY7ZQhVFejcZBCcxoOiPHi+KmGN9PBkQ95yxmOQU78KZj0/VCsB0jY8SkVuQOXlOAbIfRr2uUXLc
- o5LXCcW9
- bvCDNIiknwmC5DGqlkQH9Z87gSfF01Am6mmi8USeKTstbPW19TFM7mq10C2to7W4mcnlfVGYCzX++xs+sMeLDk5iXhteJYU30NfaG53UOXq6o4jfqSA8+nLbs/nn0K2Elhnh5I6f+g3ty9y2xLMGNNYUnkFyswddsm2xmrM5QgBF36ZJrZqBw3xqdWpmKJUiIh2M9tdTUp35eEW4ENu7ayc3//wkblftgAFhDzZn7RxB99JH6jbrAQ+sWrPb9uQPCrzGZIUzaV8yb/qxlH9IMzbPBYe7/JqLkhxMWFBhYtnxUFN7fA2CSNkr0/u+5u1yD7fMZpyJN1vohmD8=
+X-HE-Tag: 1771511566-736468
+X-HE-Meta: U2FsdGVkX190HL6N89/egwetQMvH95KE6qjKEPumVdOrXexhw2xfx9xFVSgbs96gJaisoVkY/Huefuu2nwy0Q1XuJJKyrWvyRv5Pnz1RhxfrOmCO6VRQ+f9QX5YYVPeG3RULP10yBwFiU7u/F5wj2m4bY5Cbpi/mhVDK2HeHe9Ezffbly3UCyeQ2DqDpmlR8knIOx6OARbrNnqm5Xet6FYyPDg8LEzZNMYw6vjQvsthmHXN+rptuylGlgIJwWG2B4h4feGV7Pk7MmrdDcE5GBIknx7nr+5+hNoeg9f+KjwKK0eEd4OJeTF5aD67nb83IMShDfTT4jBsVIV+1jeFGWATNJO2gw6uGiC4594XcjK4ibOGf0WWBOxBUKOQg/3e7M+WdkrqdSEBfxMrYprmwFa3Goa3fjnSWjX7i6s4RY7G/cYLwc3VnNp3FX7SGaqdPgFoB9wEfFgi3MFbIPBhuIlC99ZMq+mD+/8IViJRIMz7srWFot7h8W0/KYU5V/u2RH6hduGTdHgmypbg6lpk/x9bV3Q/G0ZW4r2b0zS1BSwSBp2sx1zYhx7259I72PgcnV0aVnWhviFBaYGmPZt9h5JmsNuvI6oAOOoofmCTUydRVKNSNgIcs9YkVMD5YLdid0qc+/NWnrD62/nXvbHIOIN//F+17a3wSe2tXmOlVxzHnDVJcT+WNzHByOikryjA6cn8b7vDdxKq3rBM2gYfxLYSE+p+z+ZnYVjypsyk1fzaE6ycCpbAmY02ke+zB9QsoBgUVMmKR5QiA+3N39AIe/sL5gi6FIsLAzFxwwQ7LlTq2GUXs4HMVR16wf/2lk9h4Q5VR1+lHUgYZSJFGwak9Lk3O00Zze2okUiv9NvMAJM++fXfCtLVkJy3PBUmj02yfz9Q9yI1Yl6o2UcQb/klKhtuqYBhQCTNybtSO6vpergTkFu5XDEPmyx1HG65Q4cAl1oa3t9L93t4uP2hZLBX
+ Z2SS2Zpf
+ QPY2ASevZ9TnNSnWwV8iT2bQdRMO7MYSiNqbDP04KznsJLmy4q9c/U/vpnKEM/G2YuRMqMvU5JQEpw15nwKjGVpsBGqir9k3y5qEQLHa0LNjEVYfb125wR9q7xacSDVzljHvMvuOCL5i6LfeVlw+OurdZzPU6gnkl+4jQ6D2Fa/Kni28TZNacrS7ZYNQ/XqN4pkGhQ0hoTJxFL06ta46Ikbn0Ww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,40 +95,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 6 Feb 2026 11:32:09 -0500
-Gregory Price <gourry@gourry.net> wrote:
-
-> On Fri, Feb 06, 2026 at 04:26:44PM +0000, Jonathan Cameron wrote:
-> > > 
-> > > This should fall out cleanly.
-> > > 
-> > > The additional nodes won't be associated with anything, but could be
-> > > used for hotplug - I imagine.
-> > >   
-> > 
-> > That aligns with what I was thinking as a first solution to allowing this
-> > to be more dynamic.   We can get clever later if this doesn't prove sufficient.
-> >   
+On Thu, Feb 19, 2026 at 10:54:48AM +0100, Hannes Reinecke wrote:
+> Hi all,
 > 
-> I can get this out pretty quickly, hopefully sometime next week.
+> I (together with the Czech Technical University) did some experiments trying
+> to measure memory fragmentation with large block sizes.
+> Testbed used was an nvme setup talking to a nvmet storage over
+> the network.
 > 
-> I had a long talk with Dan about this topic previously, and I'm not sure
-> how we get more dynamic than this to be honest.  nr_possible_nodes is
-> *definitely* expected to be immutable after __init all over the kernel,
-> it's used to allocate a memory.
-
-Indeed. But that doesn't mean to say they are all in use after __init.
-
-You end up allocating a bunch of space, that is not used until there
-is some memory there.  Not a problem.
-
-So dynamic nr_possible_nodes is tricky.  Dynamic allocation of stuff into
-those nodes is fine. That happens with memory hotplug today.
-
-J
+> Doing so raised some challenges:
 > 
-> Surface area is very large here.
-> 
-> ~Gregory
+> - How do you _generate_ memory fragmentation? The MM subsystem is
+>   precisely geared up to avoid it, so you would need to come up
+>   with some idea how to defeat it. With the help from Willy I managed
+>   to come up with something, but I really would like to discuss
+>   what would be the best option here.
 
+I'm trying to understand the goal of the experiment.  I'm guessing
+that the goal was to see how much memory fragmentation would result
+from using large block sizes with the control being to use, say, 4k
+blocks.  Is that correct?
+
+So I guess the question here is what are realstic workloads that
+people would have in real world situations, so we can do the A-B
+experiments to see what using LBS result in?
+
+> - What is acceptable memory fragmentation? Are we good enough if the
+>   measured fragmentation does not grow during the test runs?
+
+I can think of two possible metrics.  The first is whether it results
+in degradation of performance given certain real world workloads.
+
+The second is whether given a particular memory pressure, the memory
+fragmentation results in more jobs getting OOM killed.
+
+	      	      	      	   	   - Ted
 
