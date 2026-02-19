@@ -4,89 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B00FE9A048
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 14:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE7EE9A048
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 14:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD51D6B0088; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
+	id 113756B0005; Thu, 19 Feb 2026 09:53:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D836C6B0089; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
+	id 097096B0089; Thu, 19 Feb 2026 09:53:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB9876B008A; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
+	id ED7DC6B008A; Thu, 19 Feb 2026 09:53:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B83186B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:32:48 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 59EA5140592
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:32:48 +0000 (UTC)
-X-FDA: 84461447616.08.8EBC7ED
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 667A280007
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:32:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=DEZWVjL0;
-	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771511566;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lIUfsf8JaxJ48qmG5xnIYm98ylX2DhnMOAxi5mf81Yg=;
-	b=C3tiaRB5NycS3D3Wfn89rhPNXtG1SEXllBgBVBHzd11uz8SDMFhcXp2nBy2TFczz/PLwv4
-	EWOrbePUv8Th0lfmczy4kttpDJoJUOTdeIZ6u2CQ91zwWRA6t/4LpjUhdsir/qy1kR1KAn
-	j9WEKM7RtOhJKR5D+08LegtaA5nnz70=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771511566; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D5E426B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:53:36 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FBC21B5745
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:53:36 +0000 (UTC)
+X-FDA: 84461500032.26.CB7F228
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8E309180009
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:53:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=33m25o9O;
+	dmarc=pass (policy=reject) header.from=acm.org;
+	spf=pass (imf06.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771512814; a=rsa-sha256;
 	cv=none;
-	b=02+EZMtn2/qX1cWB36yA6e0yHta3OYqRQVMOFzCjgeaTQymtVxMyDWn+sPi6BgNOmW/Ixi
-	sp+CISHRAKNBl/rLo15s4NGJCCbgkQz6OtlT7rsStI3nKKziQ151AAQpluiG34UKUumKY3
-	4gcU0e6MYLQM8IE2AgFsf2hb9WuHibM=
+	b=qCdgLRcgZf8WxPMdr3gHWeHs7zy4zKRkevJKJ+EmeT2IrWu/9Rb1zMI/C6LK2vdOEsyVU2
+	H+17A2mY2Fy4ip0C7RRJCUAP3n8pckFo0yLYGPwUuNCaYvlF+SHIHK6aO1g88+XYiq06Eq
+	KpWujqVFdZ6mZdryqoJcrdicKs0LJYE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=DEZWVjL0;
-	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-Received: from macsyma.thunk.org (pool-173-48-113-47.bstnma.fios.verizon.net [173.48.113.47])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 61JEWgXE019467
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Feb 2026 09:32:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1771511565; bh=lIUfsf8JaxJ48qmG5xnIYm98ylX2DhnMOAxi5mf81Yg=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=DEZWVjL0xyfCBeyRW70yV9z+bT8dLBgE3Cr2B2R1FFbqVgTk3+cS79TVtarhMc2s9
-	 y5zx36b7cGwjDDPIU1AWw8XobSbXIgAzVzvztzBkdZqcjFJNDQPiWezYsxlg+1EFp+
-	 NAQuCoBvWIlevFLqB2dNFE6pFxImmljumqGA8fl4UQfqVke3xPXcQf6GsSGCmPKXmt
-	 V4E5dQmrjeAAtwvTwwEDK9wAdOUwO6AYyEr05M2XZ20V4BpFkVWhICt9JfAkvDB29L
-	 FNzhu9oZiB2WhB/N+ewidJlIJbLrRavHs4WbMGzOC0EMfOLieSFtmPS+RU1fyX5p0t
-	 0rIcr3WomJl+Q==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id A4E16591BA5C; Thu, 19 Feb 2026 09:32:42 -0500 (EST)
-Date: Thu, 19 Feb 2026 09:32:42 -0500
-From: "Theodore Tso" <tytso@mit.edu>
-To: Hannes Reinecke <hare@suse.de>
-Cc: lsf-pc <lsf-pc@lists.linux-foundation.org>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        linux-mm@kvack.org
-Subject: Re: [LSF/MM/BPF TOPIC] Memory fragmentation with large block sizes
-Message-ID: <20260219143242.GC69183@macsyma-wired.lan>
-References: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
+	imf06.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=33m25o9O;
+	dmarc=pass (policy=reject) header.from=acm.org;
+	spf=pass (imf06.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771512814;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Hunk2Dv1mebPSEeGUspQczD42feWNf6sRslRoqaD9x4=;
+	b=7+kxDmvm8Qkg8akSJ9vTmg9JiDFjrTQYXRVuXafYdQk4DYGvSh3Eu3Pb/+fepjnyW6b1Iv
+	SYYSDCiAYtZZGhdHAxfsn1d4O4plBZf5aTSxAtM2hggPyoKU1ZQsWqswCjEuBb8llaeNRQ
+	Z3s1iyMy8JicWpLOWNJHvjKvk+ugZfU=
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4fGxG53hkfz1XM0nn;
+	Thu, 19 Feb 2026 14:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1771512812; x=1774104813; bh=Hunk2Dv1mebPSEeGUspQczD4
+	2feWNf6sRslRoqaD9x4=; b=33m25o9OsFO5l3zjvISU1ttAkoFEsdWWD7CgzOx6
+	fC4HehvWZSOk3tjy5SD4cMAU8Lt99d8I/f5YC8NmHFO8wz+m75fWLW3TX/tXiN9y
+	PPKSBfZmsgmnTuQPOzARa1MGLiCP71c7dT72r5OxKVSYB2UtapBdyfaSqpTvUTaC
+	sjaMkrANYElMsbMEIlliiDx/T6lUR5hk6hSlvLoBLSldrGFiTLaV0Af4mfqt6Fe0
+	D7AN6/3OzTpCgoCufHH3hLRO1rasGIPT5ndOrNaqobxHy7Pp2mifDFeWHXRVCPke
+	gM81OQAepWn2NKRQH5OBSsD/lJyVQFA4vn/TP8BMvtyaNA==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id yijDWlHsKgO7; Thu, 19 Feb 2026 14:53:32 +0000 (UTC)
+Received: from [10.237.57.149] (173-255-98-114.utilitytelephone.net [173.255.98.114])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4fGxG232syz1XM6JF;
+	Thu, 19 Feb 2026 14:53:30 +0000 (UTC)
+Message-ID: <e2733d9f-823d-433b-9bfd-24df20b98b7d@acm.org>
+Date: Thu, 19 Feb 2026 06:53:28 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [LSF/MM/BPF TOPIC] Memory fragmentation with large block sizes
+To: Hannes Reinecke <hare@suse.de>, lsf-pc
+ <lsf-pc@lists.linux-foundation.org>,
+ "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ linux-mm@kvack.org
+References: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
 In-Reply-To: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: h83ykhfcnhcyoj5gkfmg43ugu9p479nz
-X-Rspamd-Queue-Id: 667A280007
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: w1t8wcm3nu97s33jjrnhjm8mgqpwutuq
 X-Rspam-User: 
-X-HE-Tag: 1771511566-736468
-X-HE-Meta: U2FsdGVkX190HL6N89/egwetQMvH95KE6qjKEPumVdOrXexhw2xfx9xFVSgbs96gJaisoVkY/Huefuu2nwy0Q1XuJJKyrWvyRv5Pnz1RhxfrOmCO6VRQ+f9QX5YYVPeG3RULP10yBwFiU7u/F5wj2m4bY5Cbpi/mhVDK2HeHe9Ezffbly3UCyeQ2DqDpmlR8knIOx6OARbrNnqm5Xet6FYyPDg8LEzZNMYw6vjQvsthmHXN+rptuylGlgIJwWG2B4h4feGV7Pk7MmrdDcE5GBIknx7nr+5+hNoeg9f+KjwKK0eEd4OJeTF5aD67nb83IMShDfTT4jBsVIV+1jeFGWATNJO2gw6uGiC4594XcjK4ibOGf0WWBOxBUKOQg/3e7M+WdkrqdSEBfxMrYprmwFa3Goa3fjnSWjX7i6s4RY7G/cYLwc3VnNp3FX7SGaqdPgFoB9wEfFgi3MFbIPBhuIlC99ZMq+mD+/8IViJRIMz7srWFot7h8W0/KYU5V/u2RH6hduGTdHgmypbg6lpk/x9bV3Q/G0ZW4r2b0zS1BSwSBp2sx1zYhx7259I72PgcnV0aVnWhviFBaYGmPZt9h5JmsNuvI6oAOOoofmCTUydRVKNSNgIcs9YkVMD5YLdid0qc+/NWnrD62/nXvbHIOIN//F+17a3wSe2tXmOlVxzHnDVJcT+WNzHByOikryjA6cn8b7vDdxKq3rBM2gYfxLYSE+p+z+ZnYVjypsyk1fzaE6ycCpbAmY02ke+zB9QsoBgUVMmKR5QiA+3N39AIe/sL5gi6FIsLAzFxwwQ7LlTq2GUXs4HMVR16wf/2lk9h4Q5VR1+lHUgYZSJFGwak9Lk3O00Zze2okUiv9NvMAJM++fXfCtLVkJy3PBUmj02yfz9Q9yI1Yl6o2UcQb/klKhtuqYBhQCTNybtSO6vpergTkFu5XDEPmyx1HG65Q4cAl1oa3t9L93t4uP2hZLBX
- Z2SS2Zpf
- QPY2ASevZ9TnNSnWwV8iT2bQdRMO7MYSiNqbDP04KznsJLmy4q9c/U/vpnKEM/G2YuRMqMvU5JQEpw15nwKjGVpsBGqir9k3y5qEQLHa0LNjEVYfb125wR9q7xacSDVzljHvMvuOCL5i6LfeVlw+OurdZzPU6gnkl+4jQ6D2Fa/Kni28TZNacrS7ZYNQ/XqN4pkGhQ0hoTJxFL06ta46Ikbn0Ww==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8E309180009
+X-HE-Tag: 1771512814-338204
+X-HE-Meta: U2FsdGVkX1/mpZgt49KRuZs2VxUH0qsAnspli5E5RuoLdFGjlGVnEq9OchxZoHsAXH1OEIVKGG+T0DyRIgKxpCvt58jRsBGvzxKKrdUShSNfEFTxbQdf3AstvDrY57KYO+x94QjfnxqFoVS9OW0+o1JixO8vEDHW6XZLLehaYukvGLhkXL0CDLq9LBlbAMulRPAYgrk7OzGEGRAwm9N3jCS5IjL1+KJ00k4rmaZuwQpVvZ+2goHfsqNXqdm7eeXX5FeplAphtNb5FLv7pxwmXmOVUoqksILr68238bTP/t+esQXNcSW1x5Dgw96zPhv+oRO3gRmU94Kn0Qz1joacRiAzPPMwgawk1Gpl5HpEjTZbp6E0LTHlC2g/WiXFFa2nuzk3JThB/MpZYXA0f6pQTbzSwslntZ3Ah39KxLkMIt7h9XCWwQpFi/fx/JHLvYV0JjlpdLNrJ5yG3mCJCnW2NQhkCfci+UFjr9lgiwn5Wr5DjPe3EN+d/6gyu+krZuLg1ZrOEEm9CkCzbDTT3/1v6KoqMYxzOuHMWaluS0YXiD3gHaDO5X/MtaBiDse7jdlIwl7ii2fWvkQ0HzZwoNC+VNSyiCdbsQSAf8E1+kITedz71YaJcPjNzAYvw7A4UdQ7mLWQSFrkx+doUIAZ/bTons3d5Pun16L40KSy3VhBBKuXXn4fQ00MW6FJGHbGBW+4VvAVJT3cPy+Lkn8SI4dkz8PzcH6GylhL8Sr1r7w+4RDbzM3lhn7K436q1At+TvIjq9VBmZjfrc2v0JArn1kZXNQbAjk4LT/z6Mb0FXzRVwUiYhz5urcteVLETygAOUrOo7aICny6GLi5O8fH00MoNZi+v6Sh3H5oE/dQrmF2VETLwCLfEKjRmAEkofPGcsNxrrB8doJ4gpHxnm5WkhhLhM0FFoPPRoKUZYndC5gVRNBjDqvqoZsVLTNjQt31IX4SsfvOJIQw9fHVkq3N9gL
+ Y7kcYHMH
+ ctOc2Xciqz1v5CqR2Pn/yGM38Yg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,39 +106,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 10:54:48AM +0100, Hannes Reinecke wrote:
-> Hi all,
-> 
-> I (together with the Czech Technical University) did some experiments trying
-> to measure memory fragmentation with large block sizes.
+On 2/19/26 1:54 AM, Hannes Reinecke wrote:
+> I (together with the Czech Technical University) did some experiments=20
+> trying to measure memory fragmentation with large block sizes.
 > Testbed used was an nvme setup talking to a nvmet storage over
 > the network.
-> 
+>=20
 > Doing so raised some challenges:
-> 
+>=20
 > - How do you _generate_ memory fragmentation? The MM subsystem is
->   precisely geared up to avoid it, so you would need to come up
->   with some idea how to defeat it. With the help from Willy I managed
->   to come up with something, but I really would like to discuss
->   what would be the best option here.
-
-I'm trying to understand the goal of the experiment.  I'm guessing
-that the goal was to see how much memory fragmentation would result
-from using large block sizes with the control being to use, say, 4k
-blocks.  Is that correct?
-
-So I guess the question here is what are realstic workloads that
-people would have in real world situations, so we can do the A-B
-experiments to see what using LBS result in?
-
+>  =C2=A0 precisely geared up to avoid it, so you would need to come up
+>  =C2=A0 with some idea how to defeat it. With the help from Willy I man=
+aged
+>  =C2=A0 to come up with something, but I really would like to discuss
+>  =C2=A0 what would be the best option here.
 > - What is acceptable memory fragmentation? Are we good enough if the
->   measured fragmentation does not grow during the test runs?
+>  =C2=A0 measured fragmentation does not grow during the test runs?
+> - Do we have better visibility into memory fragmentation other than
+>  =C2=A0 just reading /proc/buddyinfo?
 
-I can think of two possible metrics.  The first is whether it results
-in degradation of performance given certain real world workloads.
+The larger the block size, the higher the write amplification (WAF),
+isn't it? Why to increase the block size since there is a solution
+available that doesn't increase WAF, namely zoned storage?
 
-The second is whether given a particular memory pressure, the memory
-fragmentation results in more jobs getting OOM killed.
+Additionally, why is contiguous memory required for block sizes
+larger than the page size? Does this perhaps come from the VFS layer?
+If so, is this something that can be fixed?
 
-	      	      	      	   	   - Ted
+Thanks,
+
+Bart.
 
