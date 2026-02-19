@@ -4,81 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E7EE9A03B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 04:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECDBE9A03B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 05:03:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0876B0088; Wed, 18 Feb 2026 23:43:21 -0500 (EST)
+	id 503516B0088; Thu, 19 Feb 2026 00:03:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9DC46B0089; Wed, 18 Feb 2026 23:43:21 -0500 (EST)
+	id 4BA4C6B0089; Thu, 19 Feb 2026 00:03:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA9E86B008A; Wed, 18 Feb 2026 23:43:21 -0500 (EST)
+	id 3C63D6B008A; Thu, 19 Feb 2026 00:03:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B48686B0088
-	for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:43:21 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22A73B858D
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 04:43:21 +0000 (UTC)
-X-FDA: 84459962202.24.F9AB850
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 61E761C0008
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 04:43:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 288786B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 00:03:10 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE8771B43D4
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 05:03:09 +0000 (UTC)
+X-FDA: 84460012098.07.F5B1A07
+Received: from lobo.ruivo.org (lobo.ruivo.org [173.14.175.98])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EC151140005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 05:03:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ruivo.org header.s=mail header.b=VRp7cmXZ;
+	dkim=pass header.d=ruivo.org header.s=mail header.b=NBdWDNqD;
+	spf=pass (imf23.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
+	dmarc=pass (policy=reject) header.from=ruivo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771476199;
+	s=arc-20220608; t=1771477388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8GJPEuG0L9g+LUz9AmM8PFrBfZzeNWVlIK+K3ZTNbu8=;
-	b=Upwc2W4C4V5HETYEghzfo7+Q7jQIshHfITem9tbakKa9ZpVQD9ULNwoHrPA3dYqQMM0Edi
-	x63VVFgYl4Shhm/RU4P905pDBKB7tW9e474K+fTJqhvakkvztOSMJF62fgOrqKUisqhsvQ
-	pa8c+lmIKOyF+dYw3RE3dfvxvfZp12Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771476199; a=rsa-sha256;
-	cv=none;
-	b=79JO+/gymnM/MdN7fywHKpuKzlwp1lvhVPzQ/uuPIU1VCoJONnDCoKs7X85xllS8sIg5VM
-	OLWeaYmUbYZZebZH5EfBaP54ym7YpGXG6MTpWxguEZ/gQFOppE0EqGTCNLVsXTOT9onoji
-	dcI2gahzohd7wiZiaOJ6S2Brrjl/jEc=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=rgUOuq8+s6E9XErwU0wHbWiTKV6o9/+of9XcffzfYCs=;
+	b=cmMncyYV2iO1qGM2UxjjbYVE1KCOSndulsV+E70ZALec+AcdmyPMWoVHeAonRQaPQZZXG4
+	PcdW9Pwd2lcJrsj3WgpNGZjMRQE1ggOWUEY8AKgyCRYj1f2jfD/zWE3z8nC7Mz2zpJTmKO
+	yoG0d7qwWG1kCK04qZ8L9C8h8igUvt0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D9534339;
-	Wed, 18 Feb 2026 20:43:11 -0800 (PST)
-Received: from [10.163.171.219] (unknown [10.163.171.219])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 962943F62B;
-	Wed, 18 Feb 2026 20:43:13 -0800 (PST)
-Message-ID: <03cb5472-9186-43d5-8222-d6d0746d0320@arm.com>
-Date: Thu, 19 Feb 2026 10:13:10 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: skip migration tests if NUMA is unavailable
-To: AnishMulay <anishm7030@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, shuah@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260218163941.13499-1-anishm7030@gmail.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260218163941.13499-1-anishm7030@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	imf23.hostedemail.com;
+	dkim=pass header.d=ruivo.org header.s=mail header.b=VRp7cmXZ;
+	dkim=pass header.d=ruivo.org header.s=mail header.b=NBdWDNqD;
+	spf=pass (imf23.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
+	dmarc=pass (policy=reject) header.from=ruivo.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771477388; a=rsa-sha256;
+	cv=none;
+	b=eFYx67xMAkbRlFhZEdzucO5P3mhHKxNOu+qHip0sitbkTRTCRi2llwNsDK3icP7pN5vLat
+	pgMMsV79L2ho5OJZtXVIio5/VA4C4czvQY3AbB+yAu69gsBkDb7FEwcDoeA+/LYIl/EDWn
+	2A8javZdJ4NjfyqLwXFtzxpsnJLC5rk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruivo.org; s=mail;
+	t=1771477386; bh=GU0ijlFo3Auc4NIlfS913oGt4YwUM0CS5ID/b4zisu4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=VRp7cmXZBwuN75tTX5zivcS8l/vi15hpht2xufrLTivTia+rGOnR0qzEAMKmiETLc
+	 XrPSKYXoP74ZBiXpH66ZLYUUIcq7L9zEnVXSZVe9drbwdUg97rhHBR4665y/PZbVaE
+	 9VxsJInPeSafLgGMnvnQ2gIUStrsYpBZZZEXijlE=
+Received: by lobo.ruivo.org (Postfix, from userid 1011)
+	id 9169B53184; Thu, 19 Feb 2026 00:03:06 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruivo.org; s=mail;
+	t=1771477370; bh=GU0ijlFo3Auc4NIlfS913oGt4YwUM0CS5ID/b4zisu4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=NBdWDNqDgFlcsrXNDy3PZGYtwV1QsJmnkc5g5QsxhXCWTgUKaX0zNYaSa3H92QMt/
+	 PG32wNWKaTrsD2dGoZTl/X1MN8uSgUCdJTvWS5ha/s3PRi/sRjuCkBNTuMMonxuWh0
+	 4mpKpdYp8hMP9u18DnVPrDwFOvNlAQoAUsXsD7BA=
+Received: from helbrecht.local (bob.qemu.ruivo [192.168.72.19])
+	by lobo.ruivo.org (Postfix) with ESMTPSA id 49F0352388;
+	Thu, 19 Feb 2026 00:02:50 -0500 (EST)
+Received: from aris by helbrecht.local with local (Exim 4.99.1)
+	(envelope-from <aris@ruivo.org>)
+	id 1vswBe-00000004J0q-0ajo;
+	Thu, 19 Feb 2026 00:02:50 -0500
+Message-ID: <20260219050250.061598056@ruivo.org>
+User-Agent: quilt/0.69
+Date: Thu, 19 Feb 2026 00:02:50 -0500
+From: Aristeu Rozanski <aris@ruivo.org>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH 0/2] mm: gup: cleanup gup_fast call chain
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EC151140005
+X-Stat-Signature: ez4fyy46fopgutns93tsnpotmdttw1hu
 X-Rspam-User: 
-X-Stat-Signature: soxkeyhcq4ebj858poj48zou9jof3i1a
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 61E761C0008
-X-HE-Tag: 1771476199-752976
-X-HE-Meta: U2FsdGVkX19pxbXOvmjI5lpC9fT/KKhp+Q8srAp/xOepMjFlTPetB6YFcSg/aI90dpLThV2Q3QXN4Ot9/rVNsYVbYgCEGK+2hydnyDnv1+FyXENpqabjeJOVhsG/VfG4MXfkxknBFHUfXzvpFCxLy1jvCDoeolT7H2a5Ueu2IsEdDc0RwR3salVKd076KaNz1jTDgQC7UD8X4lONvUKDHiB77wHNenXuXBcxsPWLWRtuZcAD6HPtzRosh7Zdn8JRA8C0xQ+6hAyVisDNNYcJf26rusvH+MZ02zqPEBmAImNFm8Lwu3qd3WWQAr7KwG/Wjk/ke/YTTbo3qcb5IuVn/ufHp1/2+A68Rcwm3dhI8AdNc1khzGE3yE+n1aeCibLR9Ex6HC2qPqR63t+l5vQXhOXU38yc7QgDx7waMocCNjyMLFCzSR46m/Y9XLh2XvGE20rvjON/pIasxKZktxyhlX50PZ83uq37YduRxLXnB0JjRAJW6j65z0bllP45b6x7/mA/8C8QkiXfNrC351Z4AZHDb353KmIJ5Hmv7MUDkYxF0pDsV4jvB4P7FRE7c2RLBAniEtUOgebbbgYaAJJXvF/XsmqOLGhogbC1drA5+gtkaRmvi8HYLJROwZNUwIPYQsnLEBh2SyAsY95ayYqOmrXQMQOAyVApGUqu7m9HqhV2yOw1h+I0ozxc4qACB1FDpElD/+Fl/L/XBTSpBX3Saga9rYJt/h/vs1HVkgZ3pGCutue7N1FW3G1RcQYeMCCVyDdUKZONje4z8tiIFCp/YwxMrTf+jN+sLKcM1FTTYQErrA2SEJBCuL71iDBiQtWnELW8eq+wpwBAlUv3NrzK9RXPRjaPH/VP5oUKzSnEdtDVYTxJqNn5CR8wlvIgs4Jdpqc9FRQhUnIrb9m/6lUPglyjCWPe9JVZlonm78KplRGgHuIXt/3RBACMH6SeOWgFk30HvHe4E5imWoK/jKJ
- rPvrRX7Y
- qkN81aOojrbbBXKOGPExPnMLukF8XdFBV1bMdk1ZkyU2f807Raw22OcEVP+HDd+lKl5gQNJfGD3Mmjyqllx15/FUkxaRf43h8OcDMUC0OAWxcbM7QyyZ6+ZpUweQIJ17I0HW4nZDw4P7TZ8D6Lc1+aqphYkqIX+ObK1Y72mC3YAiq29FjsdPyNPgQ+QHWPTKUsFVIQ76nFxzQWQtuCF14VwxiLdCRxX7hivN8
+X-HE-Tag: 1771477387-447186
+X-HE-Meta: U2FsdGVkX19e7nsAOiJE5lwLIVCxrn/J38h1ROh+eAun6x9mSerudWi11MgTTiIeGRuZeUs2unLD8K2m0Nmodaga6lF1bfg5QoNoUZExHGwlYnLpH6VYqKMjUr3dfBWXKSjLV6P/56MDio7MYeRwASHAEahhfjd1Ekcph3jDz54cN5/+gR/4KQC1RZ4L95xpedALUWAqRSrJX0pzMGRigKrw0sXZktr1sdPAfPqsgEixxlh2y6USL3jjFGkLtkQ64HYCCs1uoetXfYs2DS9eDuyLgL/fHME3TYN9zZ5rnRC0XwHI44cJqLPSSBxcqbifosNoKWtlkM3Vmx9WFRl9rE/vUAFotbLCIPYuwKaJ8paqxegE7pa6IdHFwzgHVFv3hWcm1Nvwuw3Xoq/3saT4OwkPfaZXofIrQvM7jb39OWd4eXrbReTziYktofQ63XKE8oYRJ4Dduq0eWaF1tME98Cfl5J5xcdr7Ebs4megdwgyky0aGREEqjL/NarZfJL2VvJxb59WTT4jKDoasb3P6f5EnrvinFlrsg0O6yXqHwE29s/+MjjjTtiJI4J7QgB/pwhcc+cCZ54CbRxEXpuQ7789iTHm6NBHdtrWp+NG9Jyco8VZ8zf0PNARQFTBwjai9tlAJpUvfC36gYHieudNtZ6ufVpobCVcuwuaaHds9o6TlXgivHU5c7ti+QZfgEH2rLRuFzoS4WTBnl95YRnrCP8iEtPkte5l1CrAbnvFysbuvgdxgzbLSbX2b4Up1s+t7Gci6Z7uEubcQeq057a7fDlL8jM8QZ26goPpP8msnDV0nbSzKPaFzSXh5sVvBBMJvB9EMJClhaM8n2jrqSkJ5TcHZy/+aRK746eg+hSkLzSPz3XjcQ7XutEclavu/JT+uZNw/HKPkaNM7MyddOosoStZOiBHIV8SQfa6y01mcoa8pahd/HcRIBsTeCpOcWAuXp++rSWdP6jkHK48g0NP
+ gUZIEJ/d
+ McG0OYIov+tkZFm3O0wb1CuQO3Y/UIWpaaE4n9NYilQkfUMbSYjsjKEqB5QY6LoAHj01en/kjMfKtH4c7PHQPR3TKbzwJ7VsRo6tmiDW/iAIrk82sT6LWIhP61L612phQ+bKKU462UDfTLELPz7evb7IlW83KSSt0n8RReE+ycjOP7F9bExZ7c7QYd60u/sXoIKieNoDtugYq2lWMM0vJbK3bRE1QobiMLmTBIMqISxG98HPcfLd/HLYhIblyFGkLOPQdKKHjf26MyUmJK608y6e781YfRM+8RvO9vJ4hYKqXF54DPjZBmmxvhtkGx7R2wshqdYMAbMWajN8cYvGsw+vWujSyiJICUznO3FH5sJqanRUe6/mkOYMTGDO01dNfWWK7MiNa4tlIJGN2LR8yL1J9DaHp7bAgf7buAn+pPpZjnkQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,39 +97,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+These two patches implement the refactor in gup_fast call chain David
+Hildenbrand mentioned in
 
+	https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
 
-On 18/02/26 10:09 PM, AnishMulay wrote:
-> Currently, the migration test asserts that numa_available() returns 0.
-> On systems where NUMA is not available (returning -1), such as certain
-> ARM64 configurations or single-node systems, this assertion fails and
-> crashes the test.
-> 
-> Update the test to check the return value of numa_available(). If it
-> is less than 0, skip the test gracefully instead of failing.
-> 
-> This aligns the behavior with other MM selftests (like rmap) that
-> skip when NUMA support is missing.
-> 
-> Signed-off-by: AnishMulay <anishm7030@gmail.com>
-> ---
->  tools/testing/selftests/mm/migration.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-> index ee24b88c2b248..60e78bbfc0e3e 100644
-> --- a/tools/testing/selftests/mm/migration.c
-> +++ b/tools/testing/selftests/mm/migration.c
-> @@ -36,7 +36,8 @@ FIXTURE_SETUP(migration)
->  {
->  	int n;
->  
-> -	ASSERT_EQ(numa_available(), 0);
-> +	if (numa_available() < 0)
-> +		SKIP(return, "NUMA not available");
->  	self->nthreads = numa_num_task_cpus() - 1;
->  	self->n1 = -1;
->  	self->n2 = -1;
+Suggested-by: David Hildenbrand <david@kernel.org>
+Link: https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+-- 
+Aristeu
 
