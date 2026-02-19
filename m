@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F76DC531EA
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BDEDC531EB
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 274AF6B0099; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+	id 5A3776B008A; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EE516B0089; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+	id 4FA776B0089; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091846B0096; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+	id 101656B0095; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA2486B008A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E25CB6B008C
 	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:42:10 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 955EE1608BD
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94E77140924
 	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:10 +0000 (UTC)
-X-FDA: 84462832020.12.85C9022
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 841D518000F
+X-FDA: 84462832020.10.6597037
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B233F1C000F
 	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:08 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRrdbCjn;
-	spf=pass (imf06.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFjDBJol;
+	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771544528;
@@ -35,45 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+0gNWHA/y09nXIUNFDj8maL0lVZItVp/htDHlTl3p9Y=;
-	b=6FcaoGoXy2W6tvChxhTMaQ97sSsVM2Ema8Jl68GFiKU3i/7pG662E20p1Xetr0fZfvhMx4
-	rEdBcD8YvlUpvl8+znTB6VsSBZRmQEznWV2CTiXkfhkAf1WTa8UZfZR3hbpx/YpaCBfurn
-	oy9s9x8VU62CkM94fZSBLg4UQPVk3ss=
+	bh=iQCCt5FNNq1uYpw/8rWea2kFBzyVnTfQ1cGU9jbW9PU=;
+	b=OMShFX5mIDpyOtd3SJSC4V2XpWi27p24MmgHPMOA1QYRlRuLQRQIN7VpVJ+SyvYrJf5F6O
+	nqcYVdt0BmnwKkyElVKHx/Zj7GtLRca1M0Op+EFMdiO39iGGzvz9w0PEpim9azgK2Th0pQ
+	SyMu+Gi3+Ia/hn3Kq2EFXNeMHSQGTWI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRrdbCjn;
-	spf=pass (imf06.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bFjDBJol;
+	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544528; a=rsa-sha256;
 	cv=none;
-	b=B+VkucA3SBXwbIDOi9OG/IqsDKl9Hj48TzETMwDE1fn+8XGvc5xJ8HPEUpVfsJDadUF1pU
-	MW5sIRJovG7O8RxYOg3THhY7PZCkTvTJ+I0zCOjgxwXUyP0yAd0zwTF1i4h/iy3LGQN+/L
-	/jNMhMlHhGtycsL+ItpCPvwDwK0V09o=
+	b=jgMaSA5wB4gUNc23vLo7c4tWBS8drBp7Sxk61rSxEjq6oMQVWR+XwOc8l0//Whsr/ExmiI
+	OwjkU/d4VqzW+SbZbyrchJdF7uB9RBsj6OMVLGRaUV48i11SNj6Gv9s/LIaoRUaM9KviNp
+	qQlv5RtaV1dLuklK1bDO7xmsrW/sac8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68F93444CA;
+	by tor.source.kernel.org (Postfix) with ESMTP id D554A6183C;
 	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A67FC116C6;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9E549C4CEF7;
 	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771544527;
-	bh=5uwq0THsq2yE7wG5RBgSijQvYGxW9tqtgr8TxpPxV/0=;
+	bh=4iTCLXI0G718VK6Ca+BP/6nuHLoyDqG29VXYYyUPsLE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nRrdbCjnoXXR6G/oCB6bcdFMKGk6HxINrFXkE18iajX1TwVzHl5qq2wq3BnWKfOEW
-	 5XtTxo33wH97kj1hXsdVAmd47YFeTgNBZVqsh5kC68qIoVKHdAdTIWYV2dvp6Z3ovZ
-	 6G1WC/i4LW9VriWImqilMeMLUtaKaHuJHdn1O7THKxwHagwf04vJU7sFpNMOGgZold
-	 iK4u71B3+5IlDi+TeKASl358VbzH2OTTsVkB4TGjpmr0ieNddqmqmFrmIzrw7yAXwu
-	 Ai6Zs3mcp5jaJGQvP+8bIh6+j0X9m4oDV7mtwE9tYVnhgjVhP2wSxoMNvZerIDFnXF
-	 AqJZqUzUe80OA==
+	b=bFjDBJollDR0O+0bka0eoDtbc6D06nyu9hdmjQGBOI6slfe50chmcxflzdT62fvv4
+	 nKNTfKzaGo61ba8mDZfbmS/lJLuIkGRm64M8PIX2QvdWYEuHBqNvxqXskSBQTgFLlh
+	 KQHvUq5ZT4yu/xvVa8/721Q76mPVkzCopbjG8xrIX+gRNhS7NXpxsCckjA73uTlfoZ
+	 G7eCGkbROvGJ7gKkF89eg0e4yuk9OwrDXx7jA6Zm+DRHRgOuQSmzqhxHztvtQ3FQT5
+	 GrThfv7MrpJTrbJ4/N8dppdT3KiONe5MMV9ApYiYY9j8oaw51wiIQlqNlChkRofvla
+	 juYBVUtREH9Rg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C68EC531E3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92EFBC531EB;
 	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 20 Feb 2026 07:42:03 +0800
-Subject: [PATCH RFC 02/15] mm, swap: simplify swap_cache_alloc_folio
+Date: Fri, 20 Feb 2026 07:42:07 +0800
+Subject: [PATCH RFC 06/15] memcg, swap: reparent the swap entry on swapin
+ if swapout cgroup is dead
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260220-swap-table-p4-v1-2-104795d19815@tencent.com>
+Message-Id: <20260220-swap-table-p4-v1-6-104795d19815@tencent.com>
 References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
 In-Reply-To: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
 To: linux-mm@kvack.org
@@ -91,25 +92,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
  cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=13576;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=5359;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=n1cHUHJ7MXKr4ug4xnaunQlLGRDtG75OYXxYppL+FWk=;
- b=rG4YFu9U3/Ih89l7XZZzYUxJLVJtLVHuwWYfjQRpWNLAsLy8kWBYQsXB41nE3xM5e97+pg9FG
- AKJktt5DLY+BSvzlENe0fgk9nrA8g9gZSTEQhmyPPTLIE1BCU+cARSg
+ bh=9vO+dDP6+je7+jClnWWZNq1Qut+lGRZYCcUUD2nWDoQ=;
+ b=IJcUr2SA72vqNqyIF134yy4jJ7YYtmhGsNrcSmy0Q9+wfm8Xie+xv3UHp/3cAaYgf2KVDPluh
+ fEz1zi/4rLRAHAdpMH0ccI3u2DKM8Z0eLSBfg87HH3CD83K36kEjcv1
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 841D518000F
-X-Rspamd-Server: rspam02
-X-Stat-Signature: d58cam4artcphzfmhqrr5em7r9gnaeiw
-X-HE-Tag: 1771544528-365422
-X-HE-Meta: U2FsdGVkX18TDCBSRlWjE7PovKn+1t9i8q2pCWVvk+nnkhnpOIh0m0DsaQWvfWoTsQNj8P+5meqrnvGiTy4X6D4PVB081sxh1kKrOsZt1zaorBVd5vpM2itihq/U+Xq9sNSCvRa7VFtNTVDQsz7CQCh5ys835jrYQJzDNXCHP9TWF5MHVadQ4Q8iTYA8u2EAMbushFvKdkqoIAGHJBU/0Y5JxTHFI10FTM2KOWUecrpRNYioO6m4ZLUxxRmbaEHX8+KjqalcBWJ0jVrhn8iWAqp/yCF374GeLWJxjAw51017noX6OZDgGa+3hjCnHX4A/Ya8VLNt0vs1AuBlv4m83G3iDMg0l6S0Q4heRN/UX2waUNP1+hSzQxwBPixAPAq0W0lPiUMVUU515FrU70y6mIGNGtbkNvKhG0GiMHD1KgopH7eH9I9tUM/ut+rf0axr0NA1egCJ+pw0wjaGquRIAhwUequwSyL/tPC8MeOu/IF0cflx2iUnZ9A+tZ0uS07md/y9QiKoIUweqr2zp/GznL1QGfegv/obpIE3FuoN1BA00VhfkNPXGuH7CNWmu4dlmeIs5DiBLHN2VB5w9FmMRG1djk6RaJgsFmUCX/9k5fGwNL9+vMAIcW4We3loCPlmViC+mPIXy0AkNnXTKCVeCzQH+3xfhzvy8ZOQ5+461ZSLjgknWUFRzVfIf048ipIoxhZdBIvsqO89LquFbiA4WgVI6SCA30mHenhTopNxbz0s8g7o6B4TEqzUr/WdynIzrrSCyzLH9xrzGXWJeFWAOY1g9gUrYewNdB0i4ke4QJMKniqKQ3Bn8242DGYAW2PpdjU/PpjtfxLAfs1YOxl5EHYzE5MmFvbTowzFiQ6idsHo7XVoj48YmfaXWNwUX3MpaBW1NZLcolgQytlq6fxFG0mUhC78ZpZHkLI4g8bE7l4pK1LjYFbLuiV4t/5hJKWH3+TyeDHRMpxwrDk8mGx
- Z55duuH9
- rRWeEvq9ihsby8D+EqDTMuS4qOBOdwipQuFpUoMe8M4xm4c0ObbfRTN1SLtavbjHNNGEdaH80hn2N5I1+kw33sP8vTBCRHZ14TP2tyyP8CL1w0jdUKJQvoksbOVBsMieYFWDzWxmV+1qAlGpfmAMl8VD42ND80GpGuaPeSPiHyW4i1xsYvxak83XBvaCYY31eVIhlz6WRuyNSOl+pJuh4QVUw+H6ZstaPSAq2z3zGoaHfkoxI+6fgcS0gDnB6wE2hehzEV2SfRwxn1tepi+cvZRdhmO0VMG+iWJNijB36Dwju8KJ1es0TPlrCAsDnf+Q8+4p8GTd9HglPeW+sFehfllU6uWEMuVnr2Wa+KlX+x9MSVXcfAe6BcB3DKVnc8oVYIbv9eMo9tX922Dg4cnPof7bpl0o6GShNHmwFF5ZdnDOrpCo=
+X-Rspamd-Queue-Id: B233F1C000F
+X-Stat-Signature: kjdrxcnhppnn4cz3cb585bxjnysw81n1
+X-HE-Tag: 1771544528-267623
+X-HE-Meta: U2FsdGVkX1+kLEZ0n4h+NITnvuOmWJS8BvnWH3nyorb5HuIFcrQOzKCsj0BhBwNtVR5W4H/e1aOFgV8KyBzzv+UR1zA3GGEkUjyCDylobwL+ZxFSTryEDcOQzc4v0abYhbosxQv1zHXrpxoQpmSr2dd0FcBGDSf/ucGkNm+xLxS2tsIB9pTSuXG1Sbzs3429l59pHd68SQbu8SVKFtpyjMAeJYUX4o1BpnwgMBML09nFhiXU47H8jfD08S/QB4OUVDgvmQbNZ9BU08odCDkQy9kRYHFjcfZYKF0Ogj5e5pk8yxbYmrmouAuFzGAK6hSlPGt3LdlCILdAHohylFtg9mF4tjoA2UiW3V1ZpZt762ibrcPwL69UZIy1MUq6Bs/ALMA9L9ndTECQXk5rxzhlxuqMxgKvoZTdOPKBo+ebLyIrdeb4PO529IKJbbREl/1wbs9qUCaRczliWA/1ey1tbWKeEGCpgFgm47KDlI4DDZXIZcczlOZ2gfqYPuEmh9CObWepuaWzbk+WgUljr/zl1ijX8WImG4ZtbMdhjacTjosrdVoU8AcefNEG+r1De0QusfRb4mZJzdcihhYMwc9oBLZ/8kTYLAzTyEGuqV2s0kFdcozchODTLCypeQdKoE+kx3easvtKk3q0NlWYAV/Kj/apmEsmvl4bAbVG26l9YiZDFoBQUr7Db+5s4yB8m0hsBNZf7cfwBpm3T0W0x8jA+JXiXz27Gxy94lmZuUFnluIX8f5DiygJ3rsqK+ISz0DmYkweBvT8c+io/1ORuAEpnyd3FxV3SpHv7TAE+GapatVDPrKyNOV7VTotcxXu6JjPbeb+GQnffdKQ15a/FBiubBu2UbBFsUGnV7Hda6VHOERSyXGJahTZB6JSpS3rn61Ati6LkcYxiN7nMM+NFPx3cQlUJKuo5uKXX6/bUHHlwoH3h3vg58DHwQ/UzvZ/NncedW00VKBebYk+PcW/a0H
+ k4VdBmQ5
+ 24t8hzuueL6BAPcibtgMSA4tv7sb3irBf/W9vJd+uNfv5rj1n8w9xft6GvZoUlp55j5ZZe3UvLn69AlBFmwuozLbTqO0CETTA57q39USjj+BgfpVB82V/SInz8rzsd/5JAgs/jOuWRKgk7kzDJGUitUbnXUiJsak3kmHN6SE4zRkjzwourkcAq/1iGItHEpmWUk8QUqjLqdCnNbveY33+KjIXuzBW4POFo8MaSla/LHtcD0qps1l7Zj0X+g+IqYa4D8lyBkKjMxp2DEGP0v473mOQiyADw/JppgSJ1sZgi1SEqyyEHRTTURUPETEnQ7ee2pWLp7t66DH6etTmQePWMaF0AuyBeDadn2fSYJyawCy8BnVt85ydUFyoAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,405 +121,149 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Instead of trying to return the existing folio if the entry is already
-cached, just return an error code if the allocation failed. And
-introduce proper wrappers that handle the allocation failure in
-different ways.
+As a result this will always charge the swapin folio into the dead
+cgroup's parent cgroup, and ensure folio->swap belongs to folio_memcg.
+This only affects some uncommon behavior if we move the process between
+memcg.
 
-For async swapin and readahead, the caller only wants to ensure that a
-swap in read if the allocation succeeded, and for zswap swap out, the
-caller will just abort if the allocation failed because the entry is
-gone or cached already.
+When a process that previously swapped some memory is moved to another
+cgroup, and the cgroup where the swap occurred is dead, folios for
+swap in of old swap entries will be charged into the new cgroup.
+Combined with the lazy freeing of swap cache, this leads to a strange
+situation where the folio->swap entry belongs to a cgroup that is not
+folio->memcg.
+
+Swapin from dead zombie memcg might be rare in practise, cgroups are
+offlined only after the workload in it is gone, which requires zapping
+the page table first, and releases all swap entries. Shmem is
+a bit different, but shmem always has swap count == 1, and force
+releases the swap cache. So, for shmem charging into the new memcg and
+release entry does look more sensible.
+
+However, to make things easier to understand for an RFC, let's just
+always charge to the parent cgroup if the leaf cgroup is dead. This may
+not be the best design, but it makes the following work much easier to
+demonstrate.
+
+For a better solution, we can later:
+
+- Dynamically allocate a swap cluster trampoline cgroup table
+  (ci->memcg_table) and use that for zombie swapin only. Which is
+  actually OK and may not cause a mess in the code level, since the
+  incoming swap table compaction will require table expansion on swap-in
+  as well.
+
+- Just tolerate a 2-byte per slot overhead all the time, which is also
+  acceptable.
+
+- Limit the charge to parent behavior to only one situation: when the
+  swap count > 2 and the process is migrated to another cgroup after
+  swapout, these entries. This is even more rare to see in practice, I
+  think.
+
+For reference, the memory ownership model of cgroup v2:
+
+"""
+A memory area is charged to the cgroup which instantiated it and stays
+charged to the cgroup until the area is released.  Migrating a process
+to a different cgroup doesn't move the memory usages that it
+instantiated while in the previous cgroup to the new cgroup.
+
+A memory area may be used by processes belonging to different cgroups.
+To which cgroup the area will be charged is in-deterministic; however,
+over time, the memory area is likely to end up in a cgroup which has
+enough memory allowance to avoid high reclaim pressure.
+
+If a cgroup sweeps a considerable amount of memory which is expected
+to be accessed repeatedly by other cgroups, it may make sense to use
+POSIX_FADV_DONTNEED to relinquish the ownership of memory areas
+belonging to the affected files to ensure correct memory ownership.
+"""
+
+So I think all of the solutions mentioned above, including this commit,
+are not wrong.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swap.h       |   3 +-
- mm/swap_state.c | 177 +++++++++++++++++++++++++++++---------------------------
- mm/zswap.c      |  15 ++---
- 3 files changed, 98 insertions(+), 97 deletions(-)
+ mm/memcontrol.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 4 deletions(-)
 
-diff --git a/mm/swap.h b/mm/swap.h
-index a77016f2423b..ad8b17a93758 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -281,8 +281,7 @@ struct folio *swap_cache_get_folio(swp_entry_t entry);
- void *swap_cache_get_shadow(swp_entry_t entry);
- void swap_cache_del_folio(struct folio *folio);
- struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_flags,
--				     struct mempolicy *mpol, pgoff_t ilx,
--				     bool *alloced);
-+				     struct mempolicy *mpol, pgoff_t ilx);
- /* Below helpers require the caller to lock and pass in the swap cluster. */
- void __swap_cache_add_folio(struct swap_cluster_info *ci,
- 			    struct folio *folio, swp_entry_t entry);
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 32d9d877bda8..53fa95059012 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -459,41 +459,24 @@ void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
-  * All swap slots covered by the folio must have a non-zero swap count.
-  *
-  * Context: Caller must protect the swap device with reference count or locks.
-- * Return: Returns the folio being added on success. Returns the existing folio
-- * if @entry is already cached. Returns NULL if raced with swapin or swapoff.
-+ * Return: 0 if success, error code if failed.
-  */
--static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
--						  struct folio *folio,
--						  gfp_t gfp, bool charged)
-+static int __swap_cache_prepare_and_add(swp_entry_t entry,
-+					struct folio *folio,
-+					gfp_t gfp, bool charged)
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 73f622f7a72b..b2898719e935 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4803,22 +4803,67 @@ int mem_cgroup_charge_hugetlb(struct folio *folio, gfp_t gfp)
+ int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
+ 				  gfp_t gfp, swp_entry_t entry)
  {
--	struct folio *swapcache = NULL;
- 	void *shadow;
+-	struct mem_cgroup *memcg;
+-	unsigned short id;
++	struct mem_cgroup *memcg, *swap_memcg;
++	unsigned short id, parent_id;
++	unsigned int nr_pages;
  	int ret;
  
- 	__folio_set_locked(folio);
- 	__folio_set_swapbacked(folio);
--	for (;;) {
--		ret = swap_cache_add_folio(folio, entry, &shadow);
--		if (!ret)
--			break;
--
--		/*
--		 * Large order allocation needs special handling on
--		 * race: if a smaller folio exists in cache, swapin needs
--		 * to fallback to order 0, and doing a swap cache lookup
--		 * might return a folio that is irrelevant to the faulting
--		 * entry because @entry is aligned down. Just return NULL.
--		 */
--		if (ret != -EEXIST || folio_test_large(folio))
--			goto failed;
--
--		swapcache = swap_cache_get_folio(entry);
--		if (swapcache)
--			goto failed;
--	}
-+	ret = swap_cache_add_folio(folio, entry, &shadow);
-+	if (ret)
-+		goto failed;
+ 	if (mem_cgroup_disabled())
+ 		return 0;
  
- 	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry)) {
- 		swap_cache_del_folio(folio);
-+		ret = -ENOMEM;
- 		goto failed;
- 	}
- 
-@@ -503,11 +486,11 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
- 
- 	/* Caller will initiate read into locked folio */
- 	folio_add_lru(folio);
--	return folio;
-+	return 0;
- 
- failed:
- 	folio_unlock(folio);
--	return swapcache;
-+	return ret;
- }
- 
- /**
-@@ -516,7 +499,6 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
-  * @gfp_mask: memory allocation flags
-  * @mpol: NUMA memory allocation policy to be applied
-  * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
-- * @new_page_allocated: sets true if allocation happened, false otherwise
-  *
-  * Allocate a folio in the swap cache for one swap slot, typically before
-  * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
-@@ -524,18 +506,40 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
-  * Currently only supports order 0.
-  *
-  * Context: Caller must protect the swap device with reference count or locks.
-- * Return: Returns the existing folio if @entry is cached already. Returns
-- * NULL if failed due to -ENOMEM or @entry have a swap count < 1.
-+ * Return: Returns the folio if allocation succeeded and folio is added to
-+ * swap cache. Returns error code if allocation failed due to race.
-  */
- struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
--				     struct mempolicy *mpol, pgoff_t ilx,
--				     bool *new_page_allocated)
-+				     struct mempolicy *mpol, pgoff_t ilx)
-+{
-+	int ret;
-+	struct folio *folio;
+ 	id = lookup_swap_cgroup_id(entry);
++	nr_pages = folio_nr_pages(folio);
 +
-+	/* Allocate a new folio to be added into the swap cache. */
-+	folio = folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id());
-+	if (!folio)
-+		return ERR_PTR(-ENOMEM);
+ 	rcu_read_lock();
+-	memcg = mem_cgroup_from_private_id(id);
+-	if (!memcg || !css_tryget_online(&memcg->css))
++	swap_memcg = mem_cgroup_from_private_id(id);
++	if (!swap_memcg) {
++		WARN_ON_ONCE(id);
+ 		memcg = get_mem_cgroup_from_mm(mm);
++	} else {
++		memcg = swap_memcg;
++		/* Find the nearest online ancestor if dead, for reparent */
++		while (!css_tryget_online(&memcg->css))
++			memcg = parent_mem_cgroup(memcg);
++	}
+ 	rcu_read_unlock();
+ 
+ 	ret = charge_memcg(folio, memcg, gfp);
++	if (ret)
++		goto out;
 +
 +	/*
-+	 * Try add the new folio, it returns NULL if already exist,
-+	 * since folio is order 0.
++	 * If the swap entry's memcg is dead, reparent the swap charge
++	 * from swap_memcg to memcg.
++	 *
++	 * If memcg is also being offlined, the charge will be moved to
++	 * its parent again.
 +	 */
-+	ret = __swap_cache_prepare_and_add(entry, folio, gfp_mask, false);
-+	if (ret) {
-+		folio_put(folio);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return folio;
-+}
-+
-+static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
-+					   struct mempolicy *mpol, pgoff_t ilx,
-+					   struct swap_iocb **plug, bool readahead)
- {
- 	struct swap_info_struct *si = __swap_entry_to_info(entry);
- 	struct folio *folio;
--	struct folio *result = NULL;
++	if (swap_memcg && memcg != swap_memcg) {
++		struct mem_cgroup *parent_memcg;
  
--	*new_page_allocated = false;
- 	/* Check the swap cache again for readahead path. */
- 	folio = swap_cache_get_folio(entry);
- 	if (folio)
-@@ -545,17 +549,24 @@ struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
- 	if (!swap_entry_swapped(si, entry))
- 		return NULL;
- 
--	/* Allocate a new folio to be added into the swap cache. */
--	folio = folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id());
--	if (!folio)
-+	do {
-+		folio = swap_cache_get_folio(entry);
-+		if (folio)
-+			return folio;
++		parent_memcg = mem_cgroup_private_id_get_online(memcg, nr_pages);
++		parent_id = mem_cgroup_private_id(parent_memcg);
 +
-+		folio = swap_cache_alloc_folio(entry, gfp, mpol, ilx);
-+	} while (PTR_ERR(folio) == -EEXIST);
++		WARN_ON(id != swap_cgroup_clear(entry, nr_pages));
++		swap_cgroup_record(folio, parent_id, entry);
 +
-+	if (IS_ERR_OR_NULL(folio))
- 		return NULL;
--	/* Try add the new folio, returns existing folio or NULL on failure. */
--	result = __swap_cache_prepare_and_add(entry, folio, gfp_mask, false);
--	if (result == folio)
--		*new_page_allocated = true;
--	else
--		folio_put(folio);
--	return result;
-+
-+	swap_read_folio(folio, plug);
-+	if (readahead) {
-+		folio_set_readahead(folio);
-+		count_vm_event(SWAP_RA);
-+	}
-+
-+	return folio;
- }
- 
- /**
-@@ -574,15 +585,35 @@ struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
-  */
- struct folio *swapin_folio(swp_entry_t entry, struct folio *folio)
- {
-+	int ret;
- 	struct folio *swapcache;
- 	pgoff_t offset = swp_offset(entry);
- 	unsigned long nr_pages = folio_nr_pages(folio);
- 
- 	entry = swp_entry(swp_type(entry), round_down(offset, nr_pages));
--	swapcache = __swap_cache_prepare_and_add(entry, folio, 0, true);
--	if (swapcache == folio)
--		swap_read_folio(folio, NULL);
--	return swapcache;
-+	for (;;) {
-+		ret = __swap_cache_prepare_and_add(entry, folio, 0, true);
-+		if (!ret) {
-+			swap_read_folio(folio, NULL);
-+			break;
++		if (do_memsw_account()) {
++			if (!mem_cgroup_is_root(parent_memcg))
++				page_counter_charge(&parent_memcg->memsw, nr_pages);
++			page_counter_uncharge(&swap_memcg->memsw, nr_pages);
++		} else {
++			if (!mem_cgroup_is_root(parent_memcg))
++				page_counter_charge(&parent_memcg->swap, nr_pages);
++			page_counter_uncharge(&swap_memcg->swap, nr_pages);
 +		}
 +
-+		/*
-+		 * Large order allocation needs special handling on
-+		 * race: if a smaller folio exists in cache, swapin needs
-+		 * to fallback to order 0, and doing a swap cache lookup
-+		 * might return a folio that is irrelevant to the faulting
-+		 * entry because @entry is aligned down. Just return NULL.
-+		 */
-+		if (ret != -EEXIST || nr_pages > 1)
-+			return NULL;
++		mod_memcg_state(parent_memcg, MEMCG_SWAP, nr_pages);
++		mod_memcg_state(swap_memcg, MEMCG_SWAP, -nr_pages);
 +
-+		swapcache = swap_cache_get_folio(entry);
-+		if (swapcache)
-+			return swapcache;
++		/* Release the dead cgroup after reparent */
++		mem_cgroup_private_id_put(swap_memcg, nr_pages);
 +	}
-+
-+	return folio;
++out:
+ 	css_put(&memcg->css);
+ 	return ret;
  }
- 
- /*
-@@ -596,7 +627,6 @@ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
- 		struct swap_iocb **plug)
- {
- 	struct swap_info_struct *si;
--	bool page_allocated;
- 	struct mempolicy *mpol;
- 	pgoff_t ilx;
- 	struct folio *folio;
-@@ -606,13 +636,9 @@ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
- 		return NULL;
- 
- 	mpol = get_vma_policy(vma, addr, 0, &ilx);
--	folio = swap_cache_alloc_folio(entry, gfp_mask, mpol, ilx,
--				       &page_allocated);
-+	folio = swap_cache_read_folio(entry, gfp_mask, mpol, ilx, plug, false);
- 	mpol_cond_put(mpol);
- 
--	if (page_allocated)
--		swap_read_folio(folio, plug);
--
- 	put_swap_device(si);
- 	return folio;
- }
-@@ -697,7 +723,7 @@ static unsigned long swapin_nr_pages(unsigned long offset)
-  * are fairly likely to have been swapped out from the same node.
-  */
- struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
--				    struct mempolicy *mpol, pgoff_t ilx)
-+				     struct mempolicy *mpol, pgoff_t ilx)
- {
- 	struct folio *folio;
- 	unsigned long entry_offset = swp_offset(entry);
-@@ -707,7 +733,7 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	struct swap_info_struct *si = __swap_entry_to_info(entry);
- 	struct blk_plug plug;
- 	struct swap_iocb *splug = NULL;
--	bool page_allocated;
-+	swp_entry_t ra_entry;
- 
- 	mask = swapin_nr_pages(offset) - 1;
- 	if (!mask)
-@@ -724,18 +750,11 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	blk_start_plug(&plug);
- 	for (offset = start_offset; offset <= end_offset ; offset++) {
- 		/* Ok, do the async read-ahead now */
--		folio = swap_cache_alloc_folio(
--			swp_entry(swp_type(entry), offset), gfp_mask, mpol, ilx,
--			&page_allocated);
-+		ra_entry = swp_entry(swp_type(entry), offset);
-+		folio = swap_cache_read_folio(ra_entry, gfp_mask, mpol, ilx,
-+					      &splug, offset != entry_offset);
- 		if (!folio)
- 			continue;
--		if (page_allocated) {
--			swap_read_folio(folio, &splug);
--			if (offset != entry_offset) {
--				folio_set_readahead(folio);
--				count_vm_event(SWAP_RA);
--			}
--		}
- 		folio_put(folio);
- 	}
- 	blk_finish_plug(&plug);
-@@ -743,11 +762,7 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	lru_add_drain();	/* Push any new pages onto the LRU now */
- skip:
- 	/* The page was likely read above, so no need for plugging here */
--	folio = swap_cache_alloc_folio(entry, gfp_mask, mpol, ilx,
--				       &page_allocated);
--	if (unlikely(page_allocated))
--		swap_read_folio(folio, NULL);
--	return folio;
-+	return swap_cache_read_folio(entry, gfp_mask, mpol, ilx, NULL, false);
- }
- 
- static int swap_vma_ra_win(struct vm_fault *vmf, unsigned long *start,
-@@ -813,8 +828,7 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 	pte_t *pte = NULL, pentry;
- 	int win;
- 	unsigned long start, end, addr;
--	pgoff_t ilx;
--	bool page_allocated;
-+	pgoff_t ilx = targ_ilx;
- 
- 	win = swap_vma_ra_win(vmf, &start, &end);
- 	if (win == 1)
-@@ -848,19 +862,12 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 			if (!si)
- 				continue;
- 		}
--		folio = swap_cache_alloc_folio(entry, gfp_mask, mpol, ilx,
--					       &page_allocated);
-+		folio = swap_cache_read_folio(entry, gfp_mask, mpol, ilx,
-+					      &splug, addr != vmf->address);
- 		if (si)
- 			put_swap_device(si);
- 		if (!folio)
- 			continue;
--		if (page_allocated) {
--			swap_read_folio(folio, &splug);
--			if (addr != vmf->address) {
--				folio_set_readahead(folio);
--				count_vm_event(SWAP_RA);
--			}
--		}
- 		folio_put(folio);
- 	}
- 	if (pte)
-@@ -870,10 +877,8 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 	lru_add_drain();
- skip:
- 	/* The folio was likely read above, so no need for plugging here */
--	folio = swap_cache_alloc_folio(targ_entry, gfp_mask, mpol, targ_ilx,
--				       &page_allocated);
--	if (unlikely(page_allocated))
--		swap_read_folio(folio, NULL);
-+	folio = swap_cache_read_folio(targ_entry, gfp_mask, mpol, targ_ilx,
-+				      NULL, false);
- 	return folio;
- }
- 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index af3f0fbb0558..f3aa83a99636 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -992,7 +992,6 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	pgoff_t offset = swp_offset(swpentry);
- 	struct folio *folio;
- 	struct mempolicy *mpol;
--	bool folio_was_allocated;
- 	struct swap_info_struct *si;
- 	int ret = 0;
- 
-@@ -1003,22 +1002,20 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 
- 	mpol = get_task_policy(current);
- 	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, mpol,
--				       NO_INTERLEAVE_INDEX, &folio_was_allocated);
-+				       NO_INTERLEAVE_INDEX);
- 	put_swap_device(si);
--	if (!folio)
--		return -ENOMEM;
- 
- 	/*
-+	 * Swap cache allocaiton might fail due to OOM, raced with free
-+	 * or existing folio when we due to concurrent swapin or free.
- 	 * Found an existing folio, we raced with swapin or concurrent
- 	 * shrinker. We generally writeback cold folios from zswap, and
- 	 * swapin means the folio just became hot, so skip this folio.
- 	 * For unlikely concurrent shrinker case, it will be unlinked
- 	 * and freed when invalidated by the concurrent shrinker anyway.
- 	 */
--	if (!folio_was_allocated) {
--		ret = -EEXIST;
--		goto out;
--	}
-+	if (IS_ERR(folio))
-+		return PTR_ERR(folio);
- 
- 	/*
- 	 * folio is locked, and the swapcache is now secured against
-@@ -1058,7 +1055,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	__swap_writepage(folio, NULL);
- 
- out:
--	if (ret && ret != -EEXIST) {
-+	if (ret) {
- 		swap_cache_del_folio(folio);
- 		folio_unlock(folio);
- 	}
 
 -- 
 2.53.0
