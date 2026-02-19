@@ -4,136 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 794FDC531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 20:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA345E9A04C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 22:05:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EF486B0088; Thu, 19 Feb 2026 15:26:04 -0500 (EST)
+	id 76B7F6B0088; Thu, 19 Feb 2026 17:05:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69D166B0089; Thu, 19 Feb 2026 15:26:04 -0500 (EST)
+	id 7194F6B0089; Thu, 19 Feb 2026 17:05:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 575826B008A; Thu, 19 Feb 2026 15:26:04 -0500 (EST)
+	id 5FB236B008A; Thu, 19 Feb 2026 17:05:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 42F8C6B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:26:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB45113BABE
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 20:26:03 +0000 (UTC)
-X-FDA: 84462337806.17.A338B3C
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BB67C4000A
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 20:26:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=O47yDVE1;
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771532761;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BDD16B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:05:49 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC6FA1CB27
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 22:05:48 +0000 (UTC)
+X-FDA: 84462589176.13.6BD0189
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 105F6A000D
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 22:05:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PvNxMWWx;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771538747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LeBgE4c+zffhnIxLomDqTnQzqcUsHtC9ybf+HnwTsGE=;
-	b=PdD2x4ztCtouEXaEGMCIgcCpc7Cm3mNIPWBLU+hJFQJSLn+TMD8LIdlLZR9ke31w4ZmGqk
-	MZM35+SiVGG5KgU9gpZLM6k2qDI9G3B6Co9xKkUiyKVheGtUhgqqlhh+UzTeB4b9YNALj0
-	Gt5E3iRfIDJN0n0WHC1GGBkJa33w73o=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=O47yDVE1;
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771532761; a=rsa-sha256;
-	cv=pass;
-	b=dTqx7iccMF/2vmiWPl98mii0sWc4TLtHLSaV8lXLP1s/CcYyekdudYSl4SMx7k50DCWtot
-	BNrHTrDsR6ffoFN+ZwxkxbN6ZIhpu9T6QO7YmLnDh3UZ8R9VXHl6Gl4p9y128gWTKhT5yq
-	H79bLYoJ7xF8qlY4EWUgdgmz9nmkH04=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5033b64256dso106741cf.0
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:26:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771532761; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LdiGTJvFskGEdYS25/v67dcdzkHI+4Nva1LzfX3CWlgSPSTPkbrOSaBsTR75YmjOVG
-         SWDcxdTI2VX0aWaeK2rgSb6E4jgMG3tFVNDeFcIppTmGIRea5c5AJqogCrcFg0sjgQBM
-         4OVyuKip71/qPqMsAQXE14/2nBOVSAsEcGhyAqvYzpqUKUUc7wCi/ZBLzQRw5Umg3kET
-         i6MIrU+O3hcx0BJl7CHHQQr6f9qbJm3Tx9PnyDWxoV3t+oX1Z+CBzatkrah6KBt+l9bK
-         kntC5sIGPXLnu/+Xm04BXlSrmN3eIcTmstVshVYR/yuEjc8H/pNqxKb9C6aTi1oLg5Ac
-         Fo5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LeBgE4c+zffhnIxLomDqTnQzqcUsHtC9ybf+HnwTsGE=;
-        fh=YstgF6KmXfNlAWyCmyLW1OeLAx1LbIhKBfQSaSpnbSI=;
-        b=kF/lVPqRwK0cANcsKZ3IVWOJ4o6Zrpn43+CxJ+sM7NG8dnVJzbhKu5ufTYxNhEoZ7/
-         aUcV1uu6NYqgN4y0W+IwVcbnOemOImcHCdn560zGSibeQ7WuWJmK5E0iN0MLijmg9HyY
-         6aW0YF1Gr4o0QUj6FfkajCRQjTcnFdXcijY1oUOpy3OZ0mccuNXakMwfCpKNeDrnuZO4
-         IA6Cx7C4+FYDSQ0OP09LX7BWXhFrpoc+cEjUahU2XzrldBt3y+5jgqqgcV0+oyBzzFL4
-         jJc/tEUx6k5sI4aeeNB6LdKKYDNiHKh6CvK7rlteFo2Fk7QShsC92eyuVldD7zlacYVj
-         CUvQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771532761; x=1772137561; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LeBgE4c+zffhnIxLomDqTnQzqcUsHtC9ybf+HnwTsGE=;
-        b=O47yDVE1wNpe7YFW2TeafoKcwWnWPT0swk8o52Asee8Tx2mHpTm5nF6q2YC0zZce5a
-         AyfqPum14w1rKVHNGLSGsCTefcljkHbi9uev+npODQfahiKU+56Or1St/059Q/PRUD15
-         hCsoKjIccXs3JV3IiExSa1dwQfMZlCmB+hI1NyTkz4GS27bS2bXLNaqfjudySlcorW82
-         i/pSWBfUrj8iT1rw2IgpCh+ghLorbk4en1xlOeRqugQ4DqEoKImkZaLkZsJPGNv+Jm+P
-         UO4xO8YyzKTan2qFODb3/rqRZrLtM+/imHGgT0TCjizi3VKElymALvaydrUDyR5UGiaB
-         wj4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771532761; x=1772137561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LeBgE4c+zffhnIxLomDqTnQzqcUsHtC9ybf+HnwTsGE=;
-        b=tuCUOKgZEDrl1YuRv5XFuwQPfTUwTNa8mTZcvCTZHd+zumdODWlCqknUI6zQ6Jh7Cf
-         LZUEAewKKuzwWMqucqkwRIylskbHr+6r/ysNjaGaC+f2suKd8hfGb6/aQL6qq5TWjtY+
-         6JGzeBx6xNGj/dZl92vxl63KFMMKsj/Q5O7z38tLmMKKJIiU3UXDNHX1mLvmRnk4XqZB
-         C7Doj2hcN7pFiv01rHpapOisj2bJVOHLxgmmEDvVMOzBQ6aGe1Nx+AkYHj0K/N0IzkWk
-         eu6tLtT5ZjWCD/nwgLuQrRkaQIrBWmiU8cjQBpdj3CPuAziPL8jJLN6TeakUmlVsnRpU
-         cxIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdjaeQYs+pl92VchjHywazCHR8BzEEmlaaoM5OLm6iCRkbELWo8r7QKcCsWA8m8sCmt9LWoapkGw==@kvack.org
-X-Gm-Message-State: AOJu0YzfFIU3iCnS2nooNjaKyLDYL2vUu+VeKVyhBBFOeN6QLdSDKb1Q
-	N0aCAsop+ZzQvYe1Nvn0Wl8/3vaprBzBAQkvurJrZ8edmeXs0ksiffcxqSe6DzN+jEeDZF0UR5m
-	/hGL2AkOz9FVed341EkUeGMX8SZ68UBxQJ3g/Ch9i
-X-Gm-Gg: AZuq6aKYmcvXvtTuYHyNwsVf/Zfjh4xqe+J7YpmEGqCiXjOMh4/O3gpnAB7mBD6O+bL
-	EZvTGTVe06tUA5mN6Hl79i7O/+htWv+xXnk4o34cjDSteM5ofh/Ko6ORn6fG3cicFfJiToVQdCu
-	Wl7sCIHYAT4gOrwduTr54gifUf7FvrexBi+l8YqcVle6H3jML63YDiSRLxxTb9W4fbS1evF+0zb
-	3KIp9Sxj4vJmXteHI0J+pIwyUYR1kUt/63nmASzBtkwIIKS/R1Z6oKV7dfVTb3a85PW2SRUPD0a
-	DnPm+w==
-X-Received: by 2002:a05:622a:8c14:b0:502:f1e0:dd3b with SMTP id
- d75a77b69052e-506fb4be16amr2262671cf.7.1771532760278; Thu, 19 Feb 2026
- 12:26:00 -0800 (PST)
+	bh=CFwW5t4oULKDy33XbEoyiBS2u6210hrDJsVpjlLWV/A=;
+	b=Ks/ZiULcHj47Rw7vArlZO7H5x+xTF04VYWCF7d664swRF1r89oZpjribzXq1bem95MSRV4
+	RO5OH98WC+HdgOztXv79kpd0QQGUTVP+Hou4OJfSa5S5VAq3mdMImHJSLdHqvbS246JcKM
+	cH+8uibefbuL1FJQutbQ/OvtRoCz+AI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771538747; a=rsa-sha256;
+	cv=none;
+	b=DB+csuiOGGACuDFHHcIQFSX5tlH7sWIhTC5vtpI3KBCdXTFJeMQHXqev0JV8mJ3YmSUBGi
+	9eGTF+GpIrTC4sZVXnBTu7XYZCKPBAz+7Wx6IdMgoFTjWFT8ynAqbRJRwoGPuG9J/+mD1u
+	qkdAEIAvMAbpzjt1qaCJkakTMNlT4Vk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PvNxMWWx;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ED6E843F40;
+	Thu, 19 Feb 2026 22:05:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B865C4CEF7;
+	Thu, 19 Feb 2026 22:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771538740;
+	bh=jYFpoALfLCa4OWxliBejf6Dwu4SVOgXvW3YiZ+bEXpM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PvNxMWWxtjPfkY5rVfiF/3jNb07aCbWYDzFbFowGzg7fod8MHf+9y+X13VVx+eGZ2
+	 ++9gGq2nSZRc37dolcXpEhN6wZ5pt5u4K5RRaNBx2vXNZU6JhYgrilupKG7D+G/SOd
+	 gW27vIKTo4wVhOyBx98qBDeTLfORWt8p3/qcio34nTbVZ9ABSNAb1jOx4ch9nNUBdL
+	 ajosyy3ugTM7fCTgQ0Vci858hyQdgqU5TLL6A0+uKLGJcLKpGGvjkWOja74ogcThXl
+	 GKTfVBDRgzo4sV+sAewe3tU8rXOpCSKjmu+EGKh0v2CZdtknqkTsTUKfRCyuy5gBvN
+	 hlNL6cP1+5N0w==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E2C5FF40068;
+	Thu, 19 Feb 2026 17:05:38 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 19 Feb 2026 17:05:38 -0500
+X-ME-Sender: <xms:MomXabZzRI8saiJzVIp5ixHntwojZLZD4_WeHSiCobOSW4AB7FeCRQ>
+    <xme:MomXaankN70Fyp2yFl5crU93VM2jcF1Wx3m3aNDmfGJDh90-gLTFkF00Gmq31VAQW
+    aPMddAg5h45R45Y7hjKf6UbNAt60qLQEFQXkFAfw6gy40x_E39nlC8>
+X-ME-Received: <xmr:MomXaQmX63VJtB7OUQc92wBHUwLQX4c_ScOSpSxltP-JCQZ4BeSHPWxjdio55g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdeiieelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeegpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhsfh
+    dqphgtsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopeigkeeisehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrth
+    hiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgoh
+    esrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:MomXadNbzT91tL50PAkeXYXMy6NPNuIxq6aUEoqPNLxeE_fOyYaFPQ>
+    <xmx:MomXaaqfVSAz5P-xPysQz7oZ11bnUHFd5EX0bDQWorHGwq244blE3A>
+    <xmx:MomXaQQ6avArNOa2LK3YGWJ_nDfbhFxkSkTjxXDVWh7Jehy4lj8Wkg>
+    <xmx:MomXaaaXpv1_9fjLZhIVD7C3AG_61kiY17OZ_RBDT4_QP2MnVFqlJg>
+    <xmx:MomXaUMbVhEeblKoMaH5Uf2AI-7Dv8lLUSb0oHy0oX7VQyejcAo-9KRJ>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Feb 2026 17:05:38 -0500 (EST)
+Date: Thu, 19 Feb 2026 22:05:37 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Usama Arif <usama.arif@linux.dev>
+Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
+Message-ID: <aZeFeAP9Zh-9q7pH@thinkstation>
+References: <aZcmlIF4bmG0twkp@thinkstation>
+ <46817fe5-7166-4734-bad3-3109cc7feb1e@intel.com>
 MIME-Version: 1.0
-References: <8aa41d47-ee41-4af1-a334-587a34fe865d@lucifer.local>
-In-Reply-To: <8aa41d47-ee41-4af1-a334-587a34fe865d@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 19 Feb 2026 12:25:47 -0800
-X-Gm-Features: AaiRm515_KwWjm1EGENl8li3V_ta80Lt61PlBE55vHyON_pKbeUjW98bwcOJt_8
-Message-ID: <CAJuCfpHfkDmnLO3u25BaUcRE2Hv=WE1HrhKhqNxu81gFKJ_t6g@mail.gmail.com>
-Subject: Re: [LSM/MM/BPF TOPIC] The Future of the Anonymous Reverse Mapping
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Pedro Falcato <pfalcato@suse.de>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
-	Chris Li <chriscli@google.com>, Barry Song <baohua@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: w7jketrae9b6h1kdradhx9fo6ppzhai8
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46817fe5-7166-4734-bad3-3109cc7feb1e@intel.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB67C4000A
-X-HE-Tag: 1771532761-899996
-X-HE-Meta: U2FsdGVkX1++emxlwkLsE+hx8KQ5ZpC4kr99u+WpG8l6ySSeg8o+CrRl4iREjK4dBbghYhweEBDypeVbAvQ9tNjG0rq22daoUmR+vKEw3Wwvtb9oi3LcBndF0QaFx3s62C7iQk6mV9ELMOtwvfR0uK5bR+YCAFGb6nqP8Fcie6cASzHGVUNwqluOfOD0zW+KLjDhJt2dZ9yktqJXuAVJJsFlfe9c6mt+eeLrduxeMuR/hrwt1mPw8RmeQCC7nl2nW3pZPqb3enEB8WdK7Aw1a9WZZo3tXr3ieb8Tw8A59gO0kasq02iDZob2XUnQ7JdNHeMHWF1A1gfv0yMFysY618EY5IkVaaczOr8Lx5QAIkfrSQy0cXqYFCtNCF7ts2kj85FVDfqvYDZsH1m6D5HKK/45PNrZZ54Yxx6wQJkwXJSs+NcHy7iT7+lfJ1rYhK1qayhpZOMFAvt8NlOAydPW3ubke/nHCROWYWSOIuWJTCf5LYvWylkobLTs6lo/9V1Cor4+yr/QeQblNswJwVZnQ6YdT/s6qgSEcT6IEbQSX1egN3xQCilqPHvwc6xV2aLJmWiZC23Wh5cKUnih3LvKX1B+1A+j+iPL9VgJ5807QujJtSwr6VNF8bT29E0KZFS9l1r+h9MCg+erZtlB3pdKl/v5EWQhzRpRpWLvww2cHMYPZvIxnurGM/2fXM8WPugcjetgk4pyKY2W06JF+GMKv4AbhiZNRFTXoVSwupGVDk1S7oRlCgFV4ipJ+IPYBbKvtLiZq3Nvc6+FomunuQvVbfIneClXT7EcFubdQ5YaF/CDFVrwj269Ak0Bbg0JsxNqM2NY8tXnFpeSVddA6y17GLeyjlBPTfjnM0C5+zqNgnVDXxSp/Dy53HJNhnLqRlcBOG2ymTzNjb3WDAkR8hH9ywFNwUgF8Ki005lIViRSKLlJPYaV6N2o3EwV5S/ERfhKjg8+B21OgxSQdWHe0yb
- i1w9LkeH
- OMz42zfyAE9xlU9kGnZHHYvJBpyFvZq8ABfP3E9ObN0vehpf4h1GZW9PUsbbyHNMDNYdzeXYJu3UY8A0IiZB0OS+wOPfHCRmtNM5W5ZMCSf9xjv8uFgX1PSHpTuuaHVQQQqyBli5EeTPsYbWeNCVOCecH/+tlcRYLXs2/Bgk6CD+1fZQ6wk3nvNjBM6yiiDK4HEKd91mlTzXbm/yB+MrBhn+5wxfIymKMGAv9/gY9kBrNdrvHTdpu0wt/34h9RzpvDnpP5tQolAho0p+CoWuQ7ILmTXoV2FpQtb6Y1K/9NoC4LNzDZgj6KmqWKrq6IU0iUWOYUCQWHckvFD8=
+X-Stat-Signature: o1u7cc9pdufw37x6td4dcbzm3ke5qsma
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 105F6A000D
+X-HE-Tag: 1771538746-534320
+X-HE-Meta: U2FsdGVkX18akWOSLITWHpYLZeCTl7Vm6G/ns3G9Q66VXBNk5ErKfJ0IoGddM3LrCpLX7hfttUdvtp7GUvetZq4Lyik1D8RD+QDM3S7HDDkV9oBWrdg5ywJjzA1dkkLHNFIN2aK0lkZWevKVuru5MQhbUxRjeGWFjCpLGOBu/dL/1QJU/S0T/AcbENEnyBhbPGAuSMTRlWw7HTzJur6LjyNCvwHGFOGPHKBm4GbA8OTz52gpnS8iBqwj3i0SRxI9S8CAjkapXCS/hMeREOhEE7z/OqlRkvyTP3V/O/FS28Vs4WtZhFye06fPI/xpo/fqiecom/OYwQcocWTkJCqA3r6S2cyNeyUQjSIE10OnJCd0ihc6+VQ3QrgstLnQopSUd4colOqXIlGN8y2Xe2v0WdRWrnMFl7mSh8p8YpkhhWzLdQJ9HjN5pwfMXVCKWtndrt5OMeSr4x+xqsJ+hj/DRUUXXNbrZlMfOoaYd6cmt0swWMMHYu4mzExOpyC60lDxrJINGVeEhTOjwooUV+wVqIdC2jTB57UjNZBiCFDqy7NXNiIREJSOMthKYfhr7266vdfKIXhrC56F35ZJNa2u9t0Xbn6GY+wibirD8O574L219GstyysnE/IBGnBju84JWSIlqNc2eEBLRp6VRLaFgjDKK48W4EFBOv929VqiU1U+2qmFIOVp+9EwiWePFIhcoMi8wEGAWDJVEpdk+CRJVpU9m9/zVGqwrK9nVxsvYpcDWYBU5w3uONgO8gXDb7ix/MxwtrcLlAgHYDA7FyvdCPtmzw7JElV8F9X/B9UvDJXMclH+jb8xG830eVlEiAqvDZ7A8jxWpPSnq4vkYx8SIFQuaH7e31lFNQv6mx278KDuEl9g/s4nzQa14OuJ0mkoHdMoYki6ds9t1lZNEJ70x/640US/k0cVlFlJZli0v58+GfeYj6fHQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,108 +131,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 11:28=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> Currently we track the reverse mapping between folios and VMAs at a VMA l=
-evel,
-> utilising a complicated and confusing combination of anon_vma objects and
-> anon_vma_chain's linking them, which must be updated when VMAs are split,
-> merged, remapped or forked.
->
-> It's further complicated by various optimisations intended to avoid scala=
-bility
-> issues in locking and memory allocation.
->
-> I have done recent work to improve the situation [0] which has also lead =
-to a
-> reported improvement in lock scalability [1], but fundamentally the situa=
-tion
-> remains the same.
->
-> The logic is actually, when you think hard enough about it, is a fairly
-> reasonable means of implementing the reverse mapping at a VMA level.
->
-> It is, however, a very broken abstraction as it stands. In order to work =
-with
-> the logic, you have to essentially keep a broad understanding of the enti=
-re
-> implementation in your head at one time - that is, not much is really
-> abstracted.
->
-> This results in confusion, mistakes, and bit rot. It's also very time-con=
-suming
-> to work with - personally I've gone to the lengths of writing a private s=
-et of
-> slides for myself on the topic as a reminder each time I come back to it.
->
-> There are also issues with lock scalability - the use of interval trees t=
-o
-> maintain a connection between an anon_vma and AVCs connected to VMAs requ=
-ires
-> that a lock must be held across the entire 'CoW hierarchy' of parent and =
-child
-> VMAs whenever performing an rmap walk or performing a merge, split, remap=
- or
-> fork.
->
-> This is because we tear down all interval tree mappings and reestablish t=
-hem
-> each time we might see changes in VMA geometry. This is an issue Barry So=
-ng
-> identified as problematic in a real world use case [2].
->
-> So what do we do to improve the situation?
->
-> Recently I have been working on an experimental new approach to the anony=
-mous
-> reverse mapping, in which we instead track anonymous remaps, and then use=
- the
-> VMA's virtual page offset to locate VMAs from the folio.
->
-> I have got the implementation working to the point where it tracks the ex=
-act
-> same VMAs as the anon_vma implementation, and it seems a lot of it can be=
- done
-> under RCU.
+On Thu, Feb 19, 2026 at 09:08:57AM -0800, Dave Hansen wrote:
+> On 2/19/26 07:08, Kiryl Shutsemau wrote:
+> >   - The order-0 page size cuts struct page overhead by a factor of 16. From
+> >     ~1.6% of RAM to ~0.1%;
+> ...
+> But, it will mostly be getting better performance at the _cost_ of
+> consuming more RAM, not saving RAM.
 
-Do you have a link to the code we can look at before the discussion?
+That's fair.
 
->
-> It avoids the need to maintain expensive mappings at a VMA level, though =
-it
-> incurs a cost in tracking remaps, and MAP_PRIVATE files are very much a T=
-ODO
-> (they maintain a file vma->vm_pgoff, even when CoW'd, so the remap tracki=
-ng is
-> pretty sub-optimal).
->
-> I am investigating whether I can change how MAP_PRIVATE file-backed mappi=
-ngs
-> work to avoid this issue, and will be developing tests to see how lock
-> scalability, throughput and memory usage compare to the anon_vma approach=
- under
-> different workloads.
->
-> This experiment may or may not work out, either way it will be interestin=
-g to
-> discuss it.
+The problem with struct page memory consumption is that it is static and
+cannot be reclaimed. You pay the struct page tax no matter what.
 
-I'm interested in this discussion. Hopefully this will result in
-simpler rmap code and reduced lock contention.
-Thanks,
-Suren.
+Page cache rounding overhead can be large, but a motivated userspace can
+keep it under control by avoiding splitting a dataset into many small
+files. And this memory is reclaimable.
 
->
-> By the time LSF/MM comes around I may even have already decided on a diff=
-erent
-> approach but that's what makes things interesting :)
->
-> [0]:https://lore.kernel.org/all/cover.1767711638.git.lorenzo.stoakes@orac=
-le.com/
-> [1]:https://lore.kernel.org/all/202602061747.855f053f-lkp@intel.com/
-> [2]:https://lore.kernel.org/linux-mm/CAGsJ_4x=3DYsQR=3DnNcHA-q=3D0vg0b7ok=
-=3D81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com/
->
-> Cheers, Lorenzo
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
