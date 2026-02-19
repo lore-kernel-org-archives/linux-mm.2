@@ -4,76 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59660C531EB
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945B8C531EA
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 533926B009E; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
+	id 851BE6B009F; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50B9E6B009F; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
+	id 83A806B00A1; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F16F6B00A1; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
+	id 74DEB6B00A2; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C27696B00A2
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:42:13 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7EB071B3C30
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:13 +0000 (UTC)
-X-FDA: 84462832146.25.B20D632
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB836B00A1
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:42:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A88D1A05F4
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:14 +0000 (UTC)
+X-FDA: 84462832188.20.7E97725
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 65E2F1C000F
+	by imf25.hostedemail.com (Postfix) with ESMTP id E1AB5A0009
 	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P73uNUnN;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KQB2OPOB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544532; a=rsa-sha256;
+	cv=none;
+	b=5N5N65pwBMOb+WQdFu78IGJNcTSfO7qOmmI0AMWaTWrYcqYuISZU3gfGwRa8gd/u+zY56d
+	BD8Huxq2yWAxO6+648sRXuTz6t1abkBgv6+UIemJOxizD6mDwiWxccAeS4Lgkpt6Umqq4Q
+	XBkPHHcmFnvelqAACxpCU34kY1RPqt0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KQB2OPOB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771544531;
+	s=arc-20220608; t=1771544532;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OYU91KABfERXdaSKMNbEIKkca2Q6Bmtxd91qOt66T/Q=;
-	b=beQWhthCHgBXHly1hRIKKmryuJjCZqFn1Nti/aoOtsNIwLWsiGFYD43waK+8+6LIpOnHhG
-	rpDdPWxVynnLJQPO3Gh3BVsYznuV/xmb4R7t1h05Y9zQwyg6ZEp/XLdYO3hZPfhavpGnKH
-	IQOjHfbh+uCFgxX3vktYzPcoBhYEz+w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544531; a=rsa-sha256;
-	cv=none;
-	b=sA+5e/DiYFt8y3EErWd06f2Zk56LDPLSu+3b/vjXpXIkeAoE6MJ5ejHpfw5QjIdtzlwqPO
-	Z4toTg+Z4NmqgPtNpnuUvP1Glpyhct2JWCQ6LGUcQdga4MvTsdaYf9wN9b9IH5zQiHrdSv
-	tLHOIy9twvO4GzkWkdEWKLIcLpkfvoY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P73uNUnN;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Ct7bG/+Msg0HP5xMIFzO+EXANO8JKxwEd5+iV7C+DK8=;
+	b=kvRMEaV7bbcMhKj50uyyffeJEaEkuQvlfEvbpQPezYwodUbQSzFP4pYHdNMuYz//HEPEEL
+	W5e7ShjQp0e6RA2zSmtXOumCtq+b+aCoFluvPFlhC2qI8WwztDoxnS2991R3k8ZxN3eJcM
+	1A6bfQZFZtaMZDenAVUtTfyontzL6v8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6286544561;
+	by sea.source.kernel.org (Postfix) with ESMTP id 82F4B44574;
 	Thu, 19 Feb 2026 23:42:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 41142C4CEF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 64D08C2BCAF;
 	Thu, 19 Feb 2026 23:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771544528;
-	bh=o5/yQb2bx9F4jYBwj0NlqpQdPtP0c9FDJlMawMBLCJU=;
+	bh=/QtGbmL1TXC2oAX2Iuptbz2C/1byQSYgNfnZVKvjNtY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=P73uNUnNnqdZK6PtkKON1gQbC8woiJYlIrHCDBHaRPw7fKvDTBnfkv0LCwkl253Zl
-	 ZR19/O64c0CD61Td5oVNAJOsnRJwjTqEyACSraTPc/3vmwI5wlj+uwNvVmtB2y0dV0
-	 7dDjfikhnsui9/b5/7WAAg1s+WKliUBlxsWwwy7hGJFen9ZdRYsfHNTnzLks9li2YX
-	 r0vaN11/FoCGlWEbnIiVX3SXjRrnmxTMhJ9P8oXRBeNtdKD5OtpIEVl1siEEHxnWnD
-	 w5zBpbO9soIGtxw5A85v/rUIY03p38UKIDtzrBjtvdcHyLbsZw+tlBM8cTXNqsjCLG
-	 X/EqSLldo13SA==
+	b=KQB2OPOBM/pjAAk9pZ4JITH0OF9/923f2NJF43QpK5OC1bRKo/MqYSGoguMpcWjRV
+	 ezfMmrnDJCa9avsk30iBcqH1zsgYReHQKpbnvkpYAXyJ7+itUnyA1jnhHQJlYnQT5o
+	 F5DxQhBt7G5ilOTuwuUIscOGTm/hEYCtTOGr9y5NCnMF/S+PMJXLw/3gbT81KyabTQ
+	 7xScPg3ee4g3nseIs2H48OOg61uP5UmtVKErm/Pa0UpqW6YTF8/y3VN4f9k2Ycr4jo
+	 FPsn/RIU36S1xbMn9KV1KzUzyd4AYlRX827kHtD/gA2tk9PmYKzMnwZ8g3kEAkjOTA
+	 VL8tKd54XT78A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38A5CC531E3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C662C531EB;
 	Thu, 19 Feb 2026 23:42:08 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 20 Feb 2026 07:42:14 +0800
-Subject: [PATCH RFC 13/15] mm: ghost swapfile support for zswap
+Date: Fri, 20 Feb 2026 07:42:16 +0800
+Subject: [PATCH RFC 15/15] mm, swap: allocate cluster dynamically for ghost
+ swapfile
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260220-swap-table-p4-v1-13-104795d19815@tencent.com>
+Message-Id: <20260220-swap-table-p4-v1-15-104795d19815@tencent.com>
 References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
 In-Reply-To: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
 To: linux-mm@kvack.org
@@ -91,25 +92,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
  cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=8943;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=19753;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=ZmZgtJsn2gR54J687nHVHnXVV/ak1x2+yjhOddj8Wcg=;
- b=+pDVNWFeDBYtwUhtCIlBKrjwyp+Hgt8lbQaWIkI+yYC0tSduQHgFYrWs+EWMDZrAaio7Sx4J4
- r0uPcr3fuRyA3iOVaI3ZiAkumw8RoaZuW1gzuWdKuH6iy+YyoAAo28I
+ bh=u9csOIKG9VriVNBt5F3fiF35yiPdu1SM5al5oGisUCo=;
+ b=j9KplqMb0u3hORs3FRAbIrR2GIN8gWkTW7vVNI1catIXs2JB76IZ4taZdDfUTyG5R8KF2tiLx
+ gBiqJB5+ZdgBPoP2BUFi73FFXXiMuj1fHoA9SOBNYeHkmYIsqWeZiuI
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Stat-Signature: ddah78q9xincwhnrotzomgmg1c4bc461
 X-Rspam-User: 
-X-Stat-Signature: t6jrdbgp64zzgp4hjerf53sqw7k986ri
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 65E2F1C000F
-X-HE-Tag: 1771544531-539529
-X-HE-Meta: U2FsdGVkX19LNpuNqpnwmcKo41kQy+Jr+wV+iObXQ0XSDgb8zQc2VTFpCppcA+M0GQCmiN8f2b55PPamXkJcOjIcuquZXlpalBf7d07ChhQVAUJvadqTAUdaUFUsAMwaibzYMbGqdJAQJn/lzYo4EVLc9/BJecy900NojDGEcyNZSwl+uxFlSnd+5pNb/zxerHpKH4SxTFqtt343Up49L5UKzPYcgLlsaTt0GgrYmE6+lj8aMm/9VTBcCGfEJxSQHia4jSjuDEIgVPPidSrCvxxgREpTLtlM7P5j2rHk/c0SNp//rdOd5J7Ah0dtqi859CdXT3X8xplZ5d7DMth5gU8059FIeZeqrTzNo5RMp3w1UpNHGF/0UsV80OHKJiOOyeleJTD0Q4UpcXIW9vxIRL75CaFGw+etg0RssCoD1Cy1j+yxsEbFsRu1pqZuQLU3+omhoTtDt5GtHchLgX8Ls3f4RU9cj7sCYEsDKytOrzNMFjUkDBzBPr6Ih9LvxDk41mzSpgYZ1pI6efiEa7cREmCiYl26AaomQ012Te8LFmkyNbglKOB893WmC3HpbyFaRHmKM3ePvvIYQV5ftplJC5BJK4O+b1RpXsxs7xptqkkKaLgi14wXQMKGGaEAjaeBS4H1S1A7ewmypxFXh77vfTVg1QtWARdolOdl9OsokTVLJuzTgMzrgCKIMvQhUXmBUwwfu7GcA3lExodi5VsjsPG3d70/hXvWTf22dBLbOT+8/VTOB7ThNXfjzNBDC7blNjCkTXzMQbTAUehzNMv9f3lzykyKdwobD2LNKL6kIttRhSdkRB6I20sPgGZHyrldMBtmhHL4daynocaVqEfmRrnit8FtdcvXQTzPhmL3lDUag7+Bv1a6d7lwO5rsIWWL5fycfOkY75mJl5tR8TSKQaeWsLNdXDHCXGMQKBblXj1Obc1DXW7uALhoCG0kqI6FY3ciaLpu6fmuK4pZN7Z
- pELAQx79
- tDHirAqF5IjGNsTQuEDpnQFTlI4PR0TPSeaezMhni1XuzWRb/Df1YafA+5od3Mmx64UIyPkExeCI76xtTaP8ts0nsthsuFCzK01zG30dlsY9BGM0hKEvhjAz/T4W5472N/kF/PbCcgphfNJKbutBh5bTtL+btvqFQwswxigI2X0LaL2dI61gMTDodHqnqnMiuSa/T8cZ+nkD8sA4u1xmc61GHVjW/FZ19qZGjCeI9Vy1l3hMgae6e06cdUVOI8T1Zm2kKSKcdPbCewEIjIUUtq+Ygp7i4ZD9gC3qImR+iFyjzLRlJk4W4MSgUDEMkYWVCYO+k85BO8swsj2+ZAiYfO1+nzH6nqmSEQ/MRRu8dM2AyX/+Y1HL+wlF6/VR6WttA49z/6+xYz+cqU0HjfJIPKZjMx/6zxjmm9Tx/tQDBSzDQJ74=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E1AB5A0009
+X-HE-Tag: 1771544531-849915
+X-HE-Meta: U2FsdGVkX1/aQldj/CHcGyj8dILl0lL2Znov24MCnr8bF6NfX/l4JlseUPyVmBCqOhc1p69xaFI2x1sBfXqcsGIHruRHLFuxlnFd7EbTwTFtZqTSw3/SReEys25tKS7hh/zpzNS/gQAtH0LlbBahDyTNya54oGpQN94a8g1n0urEDHu2HQQPMhP1K1NW0BuE2iJL2oZFGoX7jmvqMh+zB/yz64Js2HTfUc9GvmooDdz6YcxykIs2EHzGHRBA5HBasVWZSQ6x95SXMOQ5PLi8ms5t34r2jL3kduFWbIs/EDS5sVeMvKhcajw8CtuyUoLefdiBeVPXjup9TD+G1fEckc/f7ur36IwZE+nHJoH7s0yK1r9SaWvpIHMijdT2ObvW0sFHuuo2Ai+ldlunWJU0FHa61dk/DAckjONMfCKbF6sLlcIHDo5UeW4zeNKANFJ362/LL9QsfodbEFCu49TEHFEWXxilDcA8e3tibbXw2BCWbgd6+C1/wqIWUdMA/biZp+8+lGR6hpH1t8+SSoDunkAo3T16pMwsx8FXNWm/agvgUa7vR7Mh01YuDRtKkLsh0/LtE4J3WGn/A+isTqgUcHR1ERlWh+Yl1mnnEFM7gNryvV9Mvl3coII/BFCKwpJ2EoEimMqkRvCiP6ikf3PkLXRB/ZjiPHzkHHqQlyr25a6O9pemymDH7nRsqNJym40iXykm6ZIOLhBsF1DePQVrPMF13N6NDOMhkYHh0mZ1NIxGlBCi0vjlTCbtPK6k0p8JLBBZa65EZrFz+nBMYKNUu/twWnJ8OzJ6ayp3iB8kmLmYAFi63aYi/jCVf2p/Z9bmpfI2qm676mq7c3vct8H8auoIhV6vV4IsXS+CUeni9LWoQzC7d98V4I+R0TbnvgQ5PeOzc1x/Ij0L7nteZdVzbD0xAdpRTUjxuJyu3BAOh6BBPCVV6b1Mdof/ThS4BP0xmvTUhimyr+rPNE/V0lP
+ 3xv77qPL
+ k3r5HWagt39UEfEW9u5rRNGmAarUKf6ro6WE6G9RAI2clkz9UavII32YIt+tA5Xpj9EP22mDA0qDSVKuC0QZkF+0qLS2Kh0Aq4WM1tbCG7eyeNRMDGRWYjowNtCABhpKiOtkqJM9lk2cCpD5t6l19f+QsB/yW1pY6Bd0sm4iFhJfrlRhiyQiZKDAXtq7eVL5uFXFBRK3NVyLv+xL2kSM8KPBVQbmH3BalZvH+T8DOzG+AW9RJqYkYKG1hVL9cPzS41Jm++5ypunxsUtWdVYzW0iFCkeurrlNg7eeXmW2fgzHrRuCB4rXdNtIBzJHaAUts8XXoK5gBd5LFTlZExy+iiv+7hcmxwYoqZ2/8WHKEVgnLDHhTxKuIoCgExa7YnCLRsC+3ExKzb4b9ewY77fKhiy1QfKi+EVYjaqcVM1crqRL7rIo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,277 +119,576 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chris Li <chrisl@kernel.org>
+From: Kairui Song <kasong@tencent.com>
 
-The current zswap requires a backing swapfile. The swap slot used
-by zswap is not able to be used by the swapfile. That waste swapfile
-space.
+Now, the ghost swap file is completely dynamic. For easier testing, this
+commit makes the /dev/ghostswap 8 times the size of total ram by
+default.
 
-The ghost swapfile is a swapfile that only contains the swapfile header
-for zswap. The swapfile header indicate the size of the swapfile. There
-is no swap data section in the ghost swapfile, therefore, no waste of
-swapfile space.  As such, any write to a ghost swapfile will fail. To
-prevents accidental read or write of ghost swapfile, bdev of
-swap_info_struct is set to NULL. Ghost swapfile will also set the SSD
-flag because there is no rotation disk access when using zswap.
+NOTE: This commit is still a minimal proof of concept, so many parts of
+the implementation can be improved.
 
-The zswap write back has been disabled if all swapfiles in the system
-are ghost swap files.
+And we have a ci_dyn->virtual_table that's is ready to be used (not used
+yet). For example, storing zswap's metadata. In theory the folio lock can
+be used to stablize it's virtual table data.
 
-Signed-off-by: Chris Li <chrisl@kernel.org>
+e.g., Swap entry writeback can also be done easily using a
+folio_realloc_swap, skip the folio->swap's device and use underlying
+devices, it will be easier to do if we remove the global percpu cluster
+cache as suggested by [1] and should just work with tiering and priority.
+Just put the folio->swap as a reverse entry in the lower layer's swap
+table, and collect lower level's swap entry in the virtual_table, then
+it's all good.
+
+And right now all allocations are using atomic, which can also be
+improved as the swap table already has sleep allocation support,
+just need to adapt it.
+
+The RCU lock protection convention can also be simplified.
+
+But without all that, this works pretty well. We can have a "virtual
+swap" of any size with zero overhead, common stress tests are showing
+a very nice performance, while ordinary swaps have zero overhead,
+and everything is runtime configurable.
+
+But don't be too surprised if some corner cases are not well covered
+yet, as most works are still focusing on the infrastructure.
+
+Link: https://lore.kernel.org/linux-mm/20260126065242.1221862-5-youngjun.park@lge.com/ [1]
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/swap.h |  2 ++
- mm/page_io.c         | 18 +++++++++++++++---
- mm/swap.h            |  2 +-
- mm/swapfile.c        | 42 +++++++++++++++++++++++++++++++++++++-----
- mm/zswap.c           | 12 +++++++++---
- 5 files changed, 64 insertions(+), 12 deletions(-)
+ include/linux/swap.h |   1 +
+ mm/swap.h            |  44 +++++++++++++---
+ mm/swap_state.c      |  35 ++++++++-----
+ mm/swap_table.h      |   2 +
+ mm/swapfile.c        | 145 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 5 files changed, 199 insertions(+), 28 deletions(-)
 
 diff --git a/include/linux/swap.h b/include/linux/swap.h
-index bc871d8a1e99..3b2efd319f44 100644
+index b57a4a40f4fe..41d7eae56d65 100644
 --- a/include/linux/swap.h
 +++ b/include/linux/swap.h
-@@ -215,6 +215,7 @@ enum {
- 	SWP_PAGE_DISCARD = (1 << 10),	/* freed swap page-cluster discards */
- 	SWP_STABLE_WRITES = (1 << 11),	/* no overwrite PG_writeback pages */
- 	SWP_SYNCHRONOUS_IO = (1 << 12),	/* synchronous IO is efficient */
-+	SWP_GHOST	= (1 << 13),	/* not backed by anything */
- 					/* add others here before... */
+@@ -284,6 +284,7 @@ struct swap_info_struct {
+ 	struct work_struct reclaim_work; /* reclaim worker */
+ 	struct list_head discard_clusters; /* discard clusters list */
+ 	struct plist_node avail_list;   /* entry in swap_avail_head */
++	struct xarray cluster_info_pool; /* Xarray for ghost swap cluster info */
  };
  
-@@ -419,6 +420,7 @@ void free_folio_and_swap_cache(struct folio *folio);
- void free_pages_and_swap_cache(struct encoded_page **, int);
- /* linux/mm/swapfile.c */
- extern atomic_long_t nr_swap_pages;
-+extern atomic_t nr_real_swapfiles;
- extern long total_swap_pages;
- extern atomic_t nr_rotate_swap;
- 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 5a0b5034489b..f4a5fc0863f5 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -291,8 +291,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
- 		return AOP_WRITEPAGE_ACTIVATE;
- 	}
- 
--	__swap_writepage(folio, swap_plug);
--	return 0;
-+	return __swap_writepage(folio, swap_plug);
- out_unlock:
- 	folio_unlock(folio);
- 	return ret;
-@@ -454,11 +453,18 @@ static void swap_writepage_bdev_async(struct folio *folio,
- 	submit_bio(bio);
- }
- 
--void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-+int __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
- {
- 	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
- 
- 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-+
-+	if (sis->flags & SWP_GHOST) {
-+		/* Prevent the page from getting reclaimed. */
-+		folio_set_dirty(folio);
-+		return AOP_WRITEPAGE_ACTIVATE;
-+	}
-+
- 	/*
- 	 * ->flags can be updated non-atomically (scan_swap_map_slots),
- 	 * but that will never affect SWP_FS_OPS, so the data_race
-@@ -475,6 +481,7 @@ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
- 		swap_writepage_bdev_sync(folio, sis);
- 	else
- 		swap_writepage_bdev_async(folio, sis);
-+	return 0;
- }
- 
- void swap_write_unplug(struct swap_iocb *sio)
-@@ -649,6 +656,11 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
- 	if (zswap_load(folio) != -ENOENT)
- 		goto finish;
- 
-+	if (unlikely(sis->flags & SWP_GHOST)) {
-+		folio_unlock(folio);
-+		goto finish;
-+	}
-+
- 	/* We have to read from slower devices. Increase zswap protection. */
- 	zswap_folio_swapin(folio);
- 
+ static inline swp_entry_t page_swap_entry(struct page *page)
 diff --git a/mm/swap.h b/mm/swap.h
-index cb1ab20d83d5..55aa6d904afd 100644
+index 55aa6d904afd..7a4d1d939842 100644
 --- a/mm/swap.h
 +++ b/mm/swap.h
-@@ -226,7 +226,7 @@ static inline void swap_read_unplug(struct swap_iocb *plug)
- }
- void swap_write_unplug(struct swap_iocb *sio);
- int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
--void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
-+int __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
+@@ -41,6 +41,13 @@ struct swap_cluster_info {
+ 	struct list_head list;
+ };
  
- /* linux/mm/swap_state.c */
- extern struct address_space swap_space __read_mostly;
++struct swap_cluster_info_dynamic {
++	struct swap_cluster_info ci;	/* Underlying cluster info */
++	unsigned int index;		/* for cluster_index() */
++	struct rcu_head rcu;		/* For kfree_rcu deferred free */
++	/* unsigned long *virtual_table; And we can easily have a virtual table */
++};
++
+ /* All on-list cluster must have a non-zero flag. */
+ enum swap_cluster_flags {
+ 	CLUSTER_FLAG_NONE = 0, /* For temporary off-list cluster */
+@@ -51,6 +58,7 @@ enum swap_cluster_flags {
+ 	CLUSTER_FLAG_USABLE = CLUSTER_FLAG_FRAG,
+ 	CLUSTER_FLAG_FULL,
+ 	CLUSTER_FLAG_DISCARD,
++	CLUSTER_FLAG_DEAD,	/* Ghost cluster pending kfree_rcu */
+ 	CLUSTER_FLAG_MAX,
+ };
+ 
+@@ -84,9 +92,19 @@ static inline struct swap_info_struct *__swap_entry_to_info(swp_entry_t entry)
+ static inline struct swap_cluster_info *__swap_offset_to_cluster(
+ 		struct swap_info_struct *si, pgoff_t offset)
+ {
++	unsigned int cluster_idx = offset / SWAPFILE_CLUSTER;
++
+ 	VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
+ 	VM_WARN_ON_ONCE(offset >= roundup(si->max, SWAPFILE_CLUSTER));
+-	return &si->cluster_info[offset / SWAPFILE_CLUSTER];
++
++	if (si->flags & SWP_GHOST) {
++		struct swap_cluster_info_dynamic *ci_dyn;
++
++		ci_dyn = xa_load(&si->cluster_info_pool, cluster_idx);
++		return ci_dyn ? &ci_dyn->ci : NULL;
++	}
++
++	return &si->cluster_info[cluster_idx];
+ }
+ 
+ static inline struct swap_cluster_info *__swap_entry_to_cluster(swp_entry_t entry)
+@@ -98,7 +116,7 @@ static inline struct swap_cluster_info *__swap_entry_to_cluster(swp_entry_t entr
+ static __always_inline struct swap_cluster_info *__swap_cluster_lock(
+ 		struct swap_info_struct *si, unsigned long offset, bool irq)
+ {
+-	struct swap_cluster_info *ci = __swap_offset_to_cluster(si, offset);
++	struct swap_cluster_info *ci;
+ 
+ 	/*
+ 	 * Nothing modifies swap cache in an IRQ context. All access to
+@@ -111,10 +129,24 @@ static __always_inline struct swap_cluster_info *__swap_cluster_lock(
+ 	 */
+ 	VM_WARN_ON_ONCE(!in_task());
+ 	VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
+-	if (irq)
+-		spin_lock_irq(&ci->lock);
+-	else
+-		spin_lock(&ci->lock);
++
++	rcu_read_lock();
++	ci = __swap_offset_to_cluster(si, offset);
++	if (ci) {
++		if (irq)
++			spin_lock_irq(&ci->lock);
++		else
++			spin_lock(&ci->lock);
++
++		if (ci->flags == CLUSTER_FLAG_DEAD) {
++			if (irq)
++				spin_unlock_irq(&ci->lock);
++			else
++				spin_unlock(&ci->lock);
++			ci = NULL;
++		}
++	}
++	rcu_read_unlock();
+ 	return ci;
+ }
+ 
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 419419e18a47..1c3600a93ecd 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -90,8 +90,10 @@ struct folio *swap_cache_get_folio(swp_entry_t entry)
+ 	struct folio *folio;
+ 
+ 	for (;;) {
++		rcu_read_lock();
+ 		swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+ 					swp_cluster_offset(entry));
++		rcu_read_unlock();
+ 		if (!swp_tb_is_folio(swp_tb))
+ 			return NULL;
+ 		folio = swp_tb_to_folio(swp_tb);
+@@ -113,8 +115,10 @@ bool swap_cache_has_folio(swp_entry_t entry)
+ {
+ 	unsigned long swp_tb;
+ 
++	rcu_read_lock();
+ 	swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+ 				swp_cluster_offset(entry));
++	rcu_read_unlock();
+ 	return swp_tb_is_folio(swp_tb);
+ }
+ 
+@@ -130,8 +134,10 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+ {
+ 	unsigned long swp_tb;
+ 
++	rcu_read_lock();
+ 	swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+ 				swp_cluster_offset(entry));
++	rcu_read_unlock();
+ 	if (swp_tb_is_shadow(swp_tb))
+ 		return swp_tb_to_shadow(swp_tb);
+ 	return NULL;
+@@ -209,14 +215,14 @@ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+ 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+ }
+ 
+-static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+-					swp_entry_t targ_entry, gfp_t gfp,
++static struct folio *__swap_cache_alloc(swp_entry_t targ_entry, gfp_t gfp,
+ 					unsigned int order, struct vm_fault *vmf,
+ 					struct mempolicy *mpol, pgoff_t ilx)
+ {
+ 	int err;
+ 	swp_entry_t entry;
+ 	struct folio *folio;
++	struct swap_cluster_info *ci;
+ 	void *shadow = NULL, *shadow_check = NULL;
+ 	unsigned long address, nr_pages = 1 << order;
+ 	unsigned int ci_off, ci_targ = swp_cluster_offset(targ_entry);
+@@ -225,9 +231,12 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	ci_off = round_down(ci_targ, nr_pages);
+ 
+ 	/* First check if the range is available */
+-	spin_lock(&ci->lock);
+-	err = __swap_cache_check_batch(ci, entry, ci_off, ci_targ, nr_pages, &shadow);
+-	spin_unlock(&ci->lock);
++	err = -ENOENT;
++	ci = swap_cluster_lock(__swap_entry_to_info(entry), swp_offset(entry));
++	if (ci) {
++		err = __swap_cache_check_batch(ci, entry, ci_off, ci_targ, nr_pages, &shadow);
++		swap_cluster_unlock(ci);
++	}
+ 	if (unlikely(err))
+ 		return ERR_PTR(err);
+ 
+@@ -243,10 +252,13 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	/* Double check the range is still not in conflict */
+-	spin_lock(&ci->lock);
+-	err = __swap_cache_check_batch(ci, entry, ci_off, ci_targ, nr_pages, &shadow_check);
++	err = -ENOENT;
++	ci = swap_cluster_lock(__swap_entry_to_info(entry), swp_offset(entry));
++	if (ci)
++		err = __swap_cache_check_batch(ci, entry, ci_off, ci_targ, nr_pages, &shadow_check);
+ 	if (unlikely(err) || shadow_check != shadow) {
+-		spin_unlock(&ci->lock);
++		if (ci)
++			swap_cluster_unlock(ci);
+ 		folio_put(folio);
+ 
+ 		/* If shadow changed, just try again */
+@@ -256,13 +268,14 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	__folio_set_locked(folio);
+ 	__folio_set_swapbacked(folio);
+ 	__swap_cache_add_folio(ci, folio, entry);
+-	spin_unlock(&ci->lock);
++	swap_cluster_unlock(ci);
+ 
+ 	/* With swap table, we must have a shadow, for memcg tracking */
+ 	WARN_ON(!shadow);
+ 
+ 	if (mem_cgroup_swapin_charge_folio(folio, vmf ? vmf->vma->vm_mm : NULL,
+ 					   gfp, shadow_to_memcgid(shadow))) {
++		/* The folio pins the cluster */
+ 		spin_lock(&ci->lock);
+ 		__swap_cache_del_folio(ci, folio, shadow, false, false);
+ 		spin_unlock(&ci->lock);
+@@ -305,13 +318,11 @@ struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp_mask,
+ {
+ 	int order, err;
+ 	struct folio *folio;
+-	struct swap_cluster_info *ci;
+ 
+ 	/* Always allow order 0 so swap won't fail under pressure. */
+ 	order = orders ? highest_order(orders |= BIT(0)) : 0;
+-	ci = __swap_entry_to_cluster(targ_entry);
+ 	for (;;) {
+-		folio = __swap_cache_alloc(ci, targ_entry, gfp_mask, order,
++		folio = __swap_cache_alloc(targ_entry, gfp_mask, order,
+ 					   vmf, mpol, ilx);
+ 		if (!IS_ERR(folio))
+ 			return folio;
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index 6d3d773e1908..867bcfff0e3c 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -260,6 +260,8 @@ static inline unsigned long swap_table_get(struct swap_cluster_info *ci,
+ 	unsigned long swp_tb;
+ 
+ 	VM_WARN_ON_ONCE(off >= SWAPFILE_CLUSTER);
++	if (!ci)
++		return SWP_TB_NULL;
+ 
+ 	rcu_read_lock();
+ 	table = rcu_dereference(ci->table);
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 4018e8694b72..65666c43cbd5 100644
+index d054f40ec75f..f0682c8c8f53 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -67,6 +67,7 @@ static void move_cluster(struct swap_info_struct *si,
- static DEFINE_SPINLOCK(swap_lock);
- static unsigned int nr_swapfiles;
- atomic_long_t nr_swap_pages;
-+atomic_t nr_real_swapfiles;
- /*
-  * Some modules use swappable objects and may try to swap them out under
-  * memory pressure (via the shrinker). Before doing so, they may wish to
-@@ -1211,6 +1212,8 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 			goto skip;
- 	}
- 
-+	if (!(si->flags & SWP_GHOST))
-+		atomic_sub(1, &nr_real_swapfiles);
- 	plist_del(&si->avail_list, &swap_avail_head);
- 
- skip:
-@@ -1253,6 +1256,8 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
- 	}
- 
- 	plist_add(&si->avail_list, &swap_avail_head);
-+	if (!(si->flags & SWP_GHOST))
-+		atomic_add(1, &nr_real_swapfiles);
- 
- skip:
- 	spin_unlock(&swap_avail_lock);
-@@ -2793,6 +2798,11 @@ static int setup_swap_extents(struct swap_info_struct *sis,
- 	struct inode *inode = mapping->host;
- 	int ret;
- 
-+	if (sis->flags & SWP_GHOST) {
-+		*span = 0;
-+		return 0;
-+	}
-+
- 	if (S_ISBLK(inode->i_mode)) {
- 		ret = add_swap_extent(sis, 0, sis->max, 0);
- 		*span = sis->pages;
-@@ -2992,7 +3002,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 
- 	destroy_swap_extents(p, p->swap_file);
- 
--	if (!(p->flags & SWP_SOLIDSTATE))
-+	if (!(p->flags & SWP_GHOST) &&
-+	    !(p->flags & SWP_SOLIDSTATE))
- 		atomic_dec(&nr_rotate_swap);
- 
- 	mutex_lock(&swapon_mutex);
-@@ -3102,6 +3113,19 @@ static void swap_stop(struct seq_file *swap, void *v)
- 	mutex_unlock(&swapon_mutex);
- }
- 
-+static const char *swap_type_str(struct swap_info_struct *si)
-+{
-+	struct file *file = si->swap_file;
-+
-+	if (si->flags & SWP_GHOST)
-+		return "ghost\t";
-+
-+	if (S_ISBLK(file_inode(file)->i_mode))
-+		return "partition";
-+
-+	return "file\t";
-+}
-+
- static int swap_show(struct seq_file *swap, void *v)
+@@ -404,6 +404,8 @@ static inline bool cluster_is_usable(struct swap_cluster_info *ci, int order)
+ static inline unsigned int cluster_index(struct swap_info_struct *si,
+ 					 struct swap_cluster_info *ci)
  {
- 	struct swap_info_struct *si = v;
-@@ -3121,8 +3145,7 @@ static int swap_show(struct seq_file *swap, void *v)
- 	len = seq_file_path(swap, file, " \t\n\\");
- 	seq_printf(swap, "%*s%s\t%lu\t%s%lu\t%s%d\n",
- 			len < 40 ? 40 - len : 1, " ",
--			S_ISBLK(file_inode(file)->i_mode) ?
--				"partition" : "file\t",
-+			swap_type_str(si),
- 			bytes, bytes < 10000000 ? "\t" : "",
- 			inuse, inuse < 10000000 ? "\t" : "",
- 			si->prio);
-@@ -3254,7 +3277,6 @@ static int claim_swapfile(struct swap_info_struct *si, struct inode *inode)
- 	return 0;
++	if (si->flags & SWP_GHOST)
++		return container_of(ci, struct swap_cluster_info_dynamic, ci)->index;
+ 	return ci - si->cluster_info;
  }
  
--
- /*
-  * Find out how many pages are allowed for a single swap device. There
-  * are two limiting factors:
-@@ -3300,6 +3322,7 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
- 	unsigned long maxpages;
- 	unsigned long swapfilepages;
- 	unsigned long last_page;
-+	loff_t size;
- 
- 	if (memcmp("SWAPSPACE2", swap_header->magic.magic, 10)) {
- 		pr_err("Unable to find swap-space signature\n");
-@@ -3342,7 +3365,16 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
- 
- 	if (!maxpages)
- 		return 0;
--	swapfilepages = i_size_read(inode) >> PAGE_SHIFT;
-+
-+	size = i_size_read(inode);
-+	if (size == PAGE_SIZE) {
-+		/* Ghost swapfile */
-+		si->bdev = NULL;
-+		si->flags |= SWP_GHOST | SWP_SOLIDSTATE;
-+		return maxpages;
-+	}
-+
-+	swapfilepages = size >> PAGE_SHIFT;
- 	if (swapfilepages && maxpages > swapfilepages) {
- 		pr_warn("Swap area shorter than signature indicates\n");
- 		return 0;
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 5d83539a8bba..e470f697e770 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -995,11 +995,16 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	struct swap_info_struct *si;
- 	int ret = 0;
- 
--	/* try to allocate swap cache folio */
- 	si = get_swap_device(swpentry);
- 	if (!si)
- 		return -EEXIST;
+@@ -708,6 +710,22 @@ static void free_cluster(struct swap_info_struct *si, struct swap_cluster_info *
+ 		return;
+ 	}
  
 +	if (si->flags & SWP_GHOST) {
-+		put_swap_device(si);
-+		return -EINVAL;
++		struct swap_cluster_info_dynamic *ci_dyn;
++
++		ci_dyn = container_of(ci, struct swap_cluster_info_dynamic, ci);
++		if (ci->flags != CLUSTER_FLAG_NONE) {
++			spin_lock(&si->lock);
++			list_del(&ci->list);
++			spin_unlock(&si->lock);
++		}
++		swap_cluster_free_table(ci);
++		xa_erase(&si->cluster_info_pool, ci_dyn->index);
++		ci->flags = CLUSTER_FLAG_DEAD;
++		kfree_rcu(ci_dyn, rcu);
++		return;
 +	}
 +
-+	/* try to allocate swap cache folio */
- 	mpol = get_task_policy(current);
- 	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, 0, NULL, mpol,
- 				       NO_INTERLEAVE_INDEX);
-@@ -1052,7 +1057,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	folio_set_reclaim(folio);
+ 	__free_cluster(si, ci);
+ }
  
- 	/* start writeback */
--	__swap_writepage(folio, NULL);
-+	ret = __swap_writepage(folio, NULL);
-+	WARN_ON_ONCE(ret);
+@@ -814,15 +832,17 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+  * stolen by a lower order). @usable will be set to false if that happens.
+  */
+ static bool cluster_reclaim_range(struct swap_info_struct *si,
+-				  struct swap_cluster_info *ci,
++				  struct swap_cluster_info **pcip,
+ 				  unsigned long start, unsigned int order,
+ 				  bool *usable)
+ {
++	struct swap_cluster_info *ci = *pcip;
+ 	unsigned int nr_pages = 1 << order;
+ 	unsigned long offset = start, end = start + nr_pages;
+ 	unsigned long swp_tb;
  
- out:
- 	if (ret) {
-@@ -1536,7 +1542,7 @@ bool zswap_store(struct folio *folio)
- 	zswap_pool_put(pool);
- put_objcg:
- 	obj_cgroup_put(objcg);
--	if (!ret && zswap_pool_reached_full)
-+	if (!ret && zswap_pool_reached_full && atomic_read(&nr_real_swapfiles))
- 		queue_work(shrink_wq, &zswap_shrink_work);
- check_old:
+ 	spin_unlock(&ci->lock);
++	rcu_read_lock();
+ 	do {
+ 		swp_tb = swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+ 		if (swp_tb_get_count(swp_tb))
+@@ -831,7 +851,15 @@ static bool cluster_reclaim_range(struct swap_info_struct *si,
+ 			if (__try_to_reclaim_swap(si, offset, TTRS_ANYWAY) < 0)
+ 				break;
+ 	} while (++offset < end);
+-	spin_lock(&ci->lock);
++	rcu_read_unlock();
++
++	/* Re-lookup: ghost cluster may have been freed while lock was dropped */
++	ci = swap_cluster_lock(si, start);
++	*pcip = ci;
++	if (!ci) {
++		*usable = false;
++		return false;
++	}
+ 
  	/*
+ 	 * We just dropped ci->lock so cluster could be used by another
+@@ -979,7 +1007,8 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 		if (!cluster_scan_range(si, ci, offset, nr_pages, &need_reclaim))
+ 			continue;
+ 		if (need_reclaim) {
+-			ret = cluster_reclaim_range(si, ci, offset, order, &usable);
++			ret = cluster_reclaim_range(si, &ci, offset, order,
++						    &usable);
+ 			if (!usable)
+ 				goto out;
+ 			if (cluster_is_empty(ci))
+@@ -1005,8 +1034,10 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 	 * should use a new cluster, and move the failed cluster to where it
+ 	 * should be.
+ 	 */
+-	relocate_cluster(si, ci);
+-	swap_cluster_unlock(ci);
++	if (ci) {
++		relocate_cluster(si, ci);
++		swap_cluster_unlock(ci);
++	}
+ 	if (si->flags & SWP_SOLIDSTATE) {
+ 		this_cpu_write(percpu_swap_cluster.offset[order], next);
+ 		this_cpu_write(percpu_swap_cluster.si[order], si);
+@@ -1038,6 +1069,44 @@ static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+ 	return found;
+ }
+ 
++static unsigned int alloc_swap_scan_dynamic(struct swap_info_struct *si,
++					    struct folio *folio)
++{
++	struct swap_cluster_info_dynamic *ci_dyn;
++	struct swap_cluster_info *ci;
++	struct swap_table *table;
++	unsigned long offset;
++
++	WARN_ON(!(si->flags & SWP_GHOST));
++
++	ci_dyn = kzalloc(sizeof(*ci_dyn), GFP_ATOMIC);
++	if (!ci_dyn)
++		return SWAP_ENTRY_INVALID;
++
++	table = swap_table_alloc(GFP_ATOMIC);
++	if (!table) {
++		kfree(ci_dyn);
++		return SWAP_ENTRY_INVALID;
++	}
++
++	spin_lock_init(&ci_dyn->ci.lock);
++	INIT_LIST_HEAD(&ci_dyn->ci.list);
++	rcu_assign_pointer(ci_dyn->ci.table, table);
++
++	if (xa_alloc(&si->cluster_info_pool, &ci_dyn->index, ci_dyn,
++		     XA_LIMIT(1, DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER) - 1),
++		     GFP_ATOMIC)) {
++		swap_table_free(table);
++		kfree(ci_dyn);
++		return SWAP_ENTRY_INVALID;
++	}
++
++	ci = &ci_dyn->ci;
++	spin_lock(&ci->lock);
++	offset = cluster_offset(si, ci);
++	return alloc_swap_scan_cluster(si, ci, folio, offset);
++}
++
+ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ {
+ 	long to_scan = 1;
+@@ -1060,7 +1129,9 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 				spin_unlock(&ci->lock);
+ 				nr_reclaim = __try_to_reclaim_swap(si, offset,
+ 								   TTRS_ANYWAY);
+-				spin_lock(&ci->lock);
++				ci = swap_cluster_lock(si, offset);
++				if (!ci)
++					goto next;
+ 				if (nr_reclaim) {
+ 					offset += abs(nr_reclaim);
+ 					continue;
+@@ -1074,6 +1145,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 			relocate_cluster(si, ci);
+ 
+ 		swap_cluster_unlock(ci);
++next:
+ 		if (to_scan <= 0)
+ 			break;
+ 	}
+@@ -1136,6 +1208,12 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 			goto done;
+ 	}
+ 
++	if (si->flags & SWP_GHOST) {
++		found = alloc_swap_scan_dynamic(si, folio);
++		if (found)
++			goto done;
++	}
++
+ 	if (!(si->flags & SWP_PAGE_DISCARD)) {
+ 		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
+ 		if (found)
+@@ -1375,7 +1453,8 @@ static bool swap_alloc_fast(struct folio *folio)
+ 		return false;
+ 
+ 	ci = swap_cluster_lock(si, offset);
+-	alloc_swap_scan_cluster(si, ci, folio, offset);
++	if (ci)
++		alloc_swap_scan_cluster(si, ci, folio, offset);
+ 	put_swap_device(si);
+ 	return folio_test_swapcache(folio);
+ }
+@@ -1476,6 +1555,7 @@ int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
+ 	if (!si)
+ 		return 0;
+ 
++	/* Entry is in use (being faulted in), so its cluster is alive. */
+ 	ci = __swap_offset_to_cluster(si, offset);
+ 	ret = swap_extend_table_alloc(si, ci, gfp);
+ 
+@@ -1996,6 +2076,7 @@ bool folio_maybe_swapped(struct folio *folio)
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+ 
++	/* Folio is locked and in swap cache, so ci->count > 0: cluster is alive. */
+ 	ci = __swap_entry_to_cluster(entry);
+ 	ci_off = swp_cluster_offset(entry);
+ 	ci_end = ci_off + folio_nr_pages(folio);
+@@ -2124,7 +2205,8 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+ 	pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
+ 	if (pcp_si == si && pcp_offset) {
+ 		ci = swap_cluster_lock(si, pcp_offset);
+-		offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
++		if (ci)
++			offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
+ 	}
+ 	if (offset == SWAP_ENTRY_INVALID)
+ 		offset = cluster_alloc_swap_entry(si, NULL);
+@@ -2413,8 +2495,10 @@ static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+ 						&vmf);
+ 		}
+ 		if (!folio) {
++			rcu_read_lock();
+ 			swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+ 						swp_cluster_offset(entry));
++			rcu_read_unlock();
+ 			if (swp_tb_get_count(swp_tb) <= 0)
+ 				continue;
+ 			return -ENOMEM;
+@@ -2560,8 +2644,10 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
+ 	 * allocations from this area (while holding swap_lock).
+ 	 */
+ 	for (i = prev + 1; i < si->max; i++) {
++		rcu_read_lock();
+ 		swp_tb = swap_table_get(__swap_offset_to_cluster(si, i),
+ 					i % SWAPFILE_CLUSTER);
++		rcu_read_unlock();
+ 		if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
+ 			break;
+ 		if ((i % LATENCY_LIMIT) == 0)
+@@ -2874,6 +2960,8 @@ static void wait_for_allocation(struct swap_info_struct *si)
+ 	struct swap_cluster_info *ci;
+ 
+ 	BUG_ON(si->flags & SWP_WRITEOK);
++	if (si->flags & SWP_GHOST)
++		return;
+ 
+ 	for (offset = 0; offset < end; offset += SWAPFILE_CLUSTER) {
+ 		ci = swap_cluster_lock(si, offset);
+@@ -3394,10 +3482,47 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 				    unsigned long maxpages)
+ {
+ 	unsigned long nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
+-	struct swap_cluster_info *cluster_info;
++	struct swap_cluster_info *cluster_info = NULL;
++	struct swap_cluster_info_dynamic *ci_dyn;
+ 	int err = -ENOMEM;
+ 	unsigned long i;
+ 
++	/* For SWP_GHOST files, initialize Xarray pool instead of static array */
++	if (si->flags & SWP_GHOST) {
++		/*
++		 * Pre-allocate cluster 0 and mark slot 0 (header page)
++		 * as bad so the allocator never hands out page offset 0.
++		 */
++		ci_dyn = kzalloc(sizeof(*ci_dyn), GFP_KERNEL);
++		if (!ci_dyn)
++			goto err;
++		spin_lock_init(&ci_dyn->ci.lock);
++		INIT_LIST_HEAD(&ci_dyn->ci.list);
++
++		nr_clusters = 0;
++		xa_init_flags(&si->cluster_info_pool, XA_FLAGS_ALLOC);
++		err = xa_insert(&si->cluster_info_pool, 0, ci_dyn, GFP_KERNEL);
++		if (err) {
++			kfree(ci_dyn);
++			goto err;
++		}
++
++		err = swap_cluster_setup_bad_slot(si, &ci_dyn->ci, 0, false);
++		if (err) {
++			struct swap_table *table;
++
++			xa_erase(&si->cluster_info_pool, 0);
++			table = (void *)rcu_dereference_protected(ci_dyn->ci.table, true);
++			if (table)
++				swap_table_free(table);
++			kfree(ci_dyn);
++			xa_destroy(&si->cluster_info_pool);
++			goto err;
++		}
++
++		goto setup_cluster_info;
++	}
++
+ 	cluster_info = kvcalloc(nr_clusters, sizeof(*cluster_info), GFP_KERNEL);
+ 	if (!cluster_info)
+ 		goto err;
+@@ -3538,7 +3663,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	/* /dev/ghostswap: synthesize a ghost swap device. */
+ 	if (S_ISCHR(inode->i_mode) &&
+ 	    imajor(inode) == MEM_MAJOR && iminor(inode) == DEVGHOST_MINOR) {
+-		maxpages = round_up(totalram_pages(), SWAPFILE_CLUSTER);
++		maxpages = round_up(totalram_pages(), SWAPFILE_CLUSTER) * 8;
+ 		si->flags |= SWP_GHOST | SWP_SOLIDSTATE;
+ 		si->bdev = NULL;
+ 		goto setup;
 
 -- 
 2.53.0
