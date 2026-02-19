@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F0C3E9A03B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 06:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B929E9A03B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 07:00:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0620D6B0088; Thu, 19 Feb 2026 01:56:30 -0500 (EST)
+	id 82C156B0088; Thu, 19 Feb 2026 02:00:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00EFE6B0089; Thu, 19 Feb 2026 01:56:29 -0500 (EST)
+	id 7D96A6B0089; Thu, 19 Feb 2026 02:00:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E33086B008A; Thu, 19 Feb 2026 01:56:29 -0500 (EST)
+	id 6BB686B008A; Thu, 19 Feb 2026 02:00:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CF3516B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 01:56:29 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66BE61A0477
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:56:29 +0000 (UTC)
-X-FDA: 84460297698.22.4B982F3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 597666B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 02:00:21 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 105551A0491
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:00:21 +0000 (UTC)
+X-FDA: 84460307442.17.E722FC3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 731E7140003
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:56:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="W37Bv/Qo";
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 15CB3100003
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:00:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MoACWPYB;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771484187;
+	s=arc-20220608; t=1771484419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gv0jjqCZW6K0UsYZxjdhLa4fFJIT6hmRRv5m/ihiq14=;
-	b=GDBzQA9YGII2wzqF+FccBqyABku0wB7ogNeXjM/KeENorkn4lQ1QtNiqrSrCR6dRlYE+F/
-	IgKf35o19k789m3z9UVHD3pinh+Kq3R1khZ3Di5nGaOVzeu/yDIIWASXQOk0ChDdkNn41m
-	6TfbCodVBoqA0JBKgDPX6H5jjXsWOAA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771484187; a=rsa-sha256;
-	cv=none;
-	b=6XkV4ArErm3U7pdLP8yhhMejND3s6AG7LX//XAQeqiReSEoryYjpuAIijb1NzKZmBGmcSK
-	RbZL+U9JHt5NBALbiJo7qzhuSj9xc1ALqT1H0brGMX7lnSvA2kv4JuAasFHzw/tNq5w0mS
-	9eFkPXk8ERLu9LVXJSuo/Hdt7K09R1Y=
+	bh=eJKl5QFt79TYtIEmB3ZSF1r7zVS4s3rTZoN9aScxyPk=;
+	b=8StX2bWOX1KHIGmzf77Yvm1FtC5hTDfQ4pkx7tiAjSKazqcB7lRlX9z502wlhYjdqkJ4Hp
+	E9gT2wmsC+jOuGpafxinZa+xiCAR5toNpJ9LFbjXzJ5hQErcBMXOVxA6YRBiwiiO3E0k5H
+	MZ7E5ubb7tWnpGK3HMZAL8dqw6PxKLw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="W37Bv/Qo";
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MoACWPYB;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771484419; a=rsa-sha256;
+	cv=none;
+	b=sieFUitAdU4XqYRoBUr3DgHYW6c3q4bfmMHaqSFexwd9kUSiB4JExE0Mj6chwRDvDDzY0B
+	kTojrQ+Ow3iYqIWzLTELt+M5UqFIm1uKO1Al6RWpOGkPD5RvC1hKNhixOXfLzVmPp4+WZi
+	Lt9c+Kd8uRF3otLu9jII0u3qbKa7mv0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E4C34435C
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:56:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DC7C4AF09
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:56:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E831E442D2
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:00:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B157FC2BCB2
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771484186;
-	bh=AItOOAYja2tqGc39fO6iBDFywpluhZmJkOohqQpeJ4k=;
+	s=k20201202; t=1771484417;
+	bh=j2BgW9/oHmFyIKNKI50Q/cqMDJ+EmPe7VweoRym+X/8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W37Bv/QocybyitKtZNSRWWBxtsJ9BdBLvVevBbpGtCuMF7cj2KSpqiMt+WFTCPX3H
-	 6z0nTpaRrQ2DtbuJSuaXGeeUTSZ5Hi41aAiBH0DoVqLqym2mwfisBhCZ8hRs0ckXny
-	 3zLw1ZwCUhq4TKivw+7wLHmv2iBBVtFOp0HcBHbeiV9pL2v0Lq3xseDqMcE7yoS4rR
-	 oyie/QpdHxSu/fOG/+d8snec2a4JL3SdVOpxJ8s+z9B8Hi5sChBTR2Un1Jev7qxuzY
-	 oJ+PQTcqGn2zpOAbadjhZiCjWPiS1zdOyZ4IkDD4yF/NWA4ZPwxFb1cCwPCIO9W6zn
-	 +akQMg2l9efOw==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-797d3864d89so7017997b3.1
-        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 22:56:26 -0800 (PST)
-X-Gm-Message-State: AOJu0YxD3hrjt34Fh2rvr8EY7VDF8xDToeogoHRDMY0HOL2g1gzDJPv1
-	VgSlhVKB02zJFII0/1W0Z0m6bIfmszxlw0qDs3+vQP2AHg5WvmljHyQtCdaDiJU2g/jq8nuyDOw
-	pJ2yGsbZT9tPjzhdJHn9ju7zU3asbWlueUCnCvOWYUg==
-X-Received: by 2002:a05:690e:d0d:b0:64a:ee56:1520 with SMTP id
- 956f58d0204a3-64c21b7f5efmr13690433d50.83.1771484185404; Wed, 18 Feb 2026
- 22:56:25 -0800 (PST)
+	b=MoACWPYBxiuflZX9jTdpuV4ZqNMVy8buKVgNztWskpax2P+6n9/38DKQddlrmAXmJ
+	 fMSq+r0slFXlqBlLFIE0u5Nrk5e1zh9Tn+W91xCRYvXKeCkjpWIFRcFl1mnFgL9ihp
+	 A/RyKjzQ7C68V/pq+CHA8rywjH67j37BtmqfGZ0sv/mzA2LFCSz3EnM6ymaFqxxqXg
+	 AhD1+Gldu01VY1UfqRRsmxxwkgLAT1tfdU035VLjXVAavKwuSmMlbXeFFSus+NQXkt
+	 +ZSXN0pDb4kJNyYbG2x+miTqpDzYRKuXKICOPF5m7hZhip7gZF9meuVDuAypR2aIJX
+	 mZv6JevF2O1yA==
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-649df393c04so486622d50.1
+        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:00:17 -0800 (PST)
+X-Gm-Message-State: AOJu0YxSsXO+IKC/doUMtu1omR6JJNKr0BTsiVdtCsMKlKeLSdGVKu09
+	oBwhy+QcFaqunChPhfBIx63g6BFr1QZq7CIKHXR1h2SP+RvQ1WJOpFWtUVf6PTWkvXNZPs9eoDD
+	d6B3aALj231/FpD/LKUVI+haoff436XL73YeRgWj3Wg==
+X-Received: by 2002:a05:690e:bcc:b0:641:f5bc:69a2 with SMTP id
+ 956f58d0204a3-64c556ca20amr2926387d50.80.1771484416792; Wed, 18 Feb 2026
+ 23:00:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com> <20260218-swap-table-p3-v3-5-f4e34be021a7@tencent.com>
-In-Reply-To: <20260218-swap-table-p3-v3-5-f4e34be021a7@tencent.com>
+References: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com> <20260218-swap-table-p3-v3-6-f4e34be021a7@tencent.com>
+In-Reply-To: <20260218-swap-table-p3-v3-6-f4e34be021a7@tencent.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 18 Feb 2026 22:56:14 -0800
-X-Gmail-Original-Message-ID: <CACePvbWtn=5=HCy-3SSKpJoBdY=zSE4Pa0DtfH60wVa6Q0tPHg@mail.gmail.com>
-X-Gm-Features: AZwV_QgdwLlOB5kCDhnsFx4CZuxLWCCIFXzS8OXSwNDRO_6xUhlmarko9nrTj-Q
-Message-ID: <CACePvbWtn=5=HCy-3SSKpJoBdY=zSE4Pa0DtfH60wVa6Q0tPHg@mail.gmail.com>
-Subject: Re: [PATCH v3 05/12] mm/workingset: leave highest bits empty for anon shadow
+Date: Wed, 18 Feb 2026 23:00:03 -0800
+X-Gmail-Original-Message-ID: <CACePvbUpCXTzNUFw1sHRao+pDZDhN9N7YUowwFQ_gOLihZx8+g@mail.gmail.com>
+X-Gm-Features: AZwV_Qj5GfGHeLD9NbyNrrUGBnhtinfPIMmqDXadiUoa9zQV8aQnwKY147Ikr_I
+Message-ID: <CACePvbUpCXTzNUFw1sHRao+pDZDhN9N7YUowwFQ_gOLihZx8+g@mail.gmail.com>
+Subject: Re: [PATCH v3 06/12] mm, swap: implement helpers for reserving data
+ in the swap table
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
@@ -89,14 +90,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Stat-Signature: psnf8f7tis4aykayt5umzmxa1ex1mwwf
-X-Rspamd-Queue-Id: 731E7140003
 X-Rspam-User: 
-X-HE-Tag: 1771484187-642710
-X-HE-Meta: U2FsdGVkX18b3kGzR2T4Boc+nsccdP6tpf9Vuc16+H6xFhkaP10U1kMxUwaodFZJas2rgHTqf4p/ihlYFqRDRdkalUEd0H/lJfmQ4fjTeqOQvlxpZ+Q6ynP4CLTSNNz2Zb/8jTBuifANNtXk8xfTVYawHpOe3c/gEO0ySAlf+95/Ddpyx/VDdfnAsF7TI0mfHY4hBD7CYn2zOZkw7YieCG6rjeiDrFOpJ4Y0EzT0Tmnp1w0eo/08DpJiuuACulhieeU2HwxXzh6GmZG+yd2zJlzud6o9Nlt7fjEkkAFIAJYo8LPxJmbLYnl7afza1HOnZ3Wrm8BzycKxrRUgFxbI7iKEuN2psGU/R9N9a4wAGRXgTYipy0XQkJ/A6TDdw2NOHgZz2P0Y9HerRZBeWkK/SdIlVxY9WofREGYpgy7GgShwC7491js30inpO5lERE0tsNtUIO4k5rncdfMzhXFjrLZE6DdZq4J3WO+UxAuYTGwIIA0+Q/1xTxVm6aErTaoD6r8/Y0+mY3upD3c7hEyVaHL6+/98y4vfnKRytanUn9DZAXtNsrhtQtdcXq4rNmtvgWG3/a6wJhEcmqsyyVU5SBSiizglXGe97IbR0YafiY3tcshxjpUJhcF7QsCv4n24fwioFbMpcXtga2g4yc/TtfPgLxzTWxCr6MGfnGsMJevg0XYwqK3nkuNupAEYktmcy2x15UVVs7mwj6yb5//IAJxUi3PmswpmzvA6D8+SmmjrXm4uBwEWkMWE8G3q2n7CrVNreWg3xsklCXvzC8LUgJqwek7UmQWLByp/RlrFctJULtNe1q9HSbiyzdPzZbzIMQBTRYppkpn53QZ7EfzsBFXE6pxwvREyBOI6DbsxoLwrBD6NPcLxDNp6ECqfNQHV/zImF5U91qll9Y0pN9A0i8QKPIY3Ib5kW+SJ/j6s6Sl7X5V2B6DPxCZ8uu43IB3BhBvQWN/VnXQm/lqoqvF
- NJvKJoQi
- HcAZPGHn7DIYiW6LAymDxYCHTGIhgSHcguYpj61oRG2hFnSvskzPARBmVYKyp4UmlRoD21DlyysMlloDFGLvKyG2sQwphZQjf6cgk/77kxW14cRF6E7O/zOQFbpzHOtO1ZLqeMxI/iEH78cDvZhJIbwiX8rsLY7z/lNzJvJmz1TEVdi3c4UAx90GHYNzy4yFtpo5rwy0zAovYdUxwCX0oCwo5T22PiJO5r0O3hgsvqnIEv9ErfM756+PJSWMGk4S/JtxTIzWr116XzqdmH/1Hhlvpy7/+lq/jdvcLI/H/VsaoYjeJdo+/X16FJMpTw/6esLKc2xfKzMbkEdQ=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 15CB3100003
+X-Stat-Signature: qhhcu6ts7qyw5hejabaz35i1kh34nc6z
+X-HE-Tag: 1771484418-156800
+X-HE-Meta: U2FsdGVkX19iVW9jNCVjkwJjtJi9fSdm61YYyP6bdd/wB0lizZLJeUVm1vApQCFinmI2wnK6dwehqKrP/0BvyPqSHnfbJZV4I/zcvsP9ij2mjL12I4+lsChHFMfbxlyZ3Mnt3nbYtpMFoy5CkIc/BbaDOx4d1V6m+kDqIF7R3azGLshjvKRXBLrpAChDDi6DqNS6tFWm6NRG3qNs6NzOgcKxc7pnNaPl9mT/15lySZuJaZNf1NKgAWTlKZVXm1G998FtTpkj0F7NF3EuuM11B0oBGzaVWL4SesCZShl3tknMg5Dze2fbdkf+SN9kgobbFQ0l+SoW9qEnQDebWy7+GFfLZAu7m3LnkIq9zOWW704jzwreyDZmWl2KXbK8/0+cEunmIxUgLjLBI7zQsFvSirJrPrCE+mjBpujHoiMZ9x4VTrhFT4E0xQQ727F6D6C1iHYuhwkoQHQan6wWzOUI+/B/FAJyvwKqnuLBlrXsP9cKqDiMqTMy9LWnyWVvrhzAPb+eNjHJBRMuRFiiPJbR2CZ0pj4Sdvy5UqMMvDKZHTWBIKX2fNKshFPRWT20oPjIsS2XbyZnn4E3Xjd2kfH9+3KVviLSvTIwA8Hg3SaRn0H9vWvdmTNGe0KWVZqMQURg+gM9bvkbElDJKhP8zjmWD+wbLVgzzRbSp12W3wuih22TKWSjGM8SXVKNQ+dym3a0uWLCN8htBcjJOaFM+yewtDCPIFoALBRQAnDnoUuuBOJDorqOJscQ5Htkb0Q1hsyYj8Okyss+io++2r4javhQpdt+T29temqDlxD7iB9fNDA4LOt/1PrdfrEg9zoL/3OTBDh0BImy4EJCgBP/Y3kVUYcvDWF9ck0GF+xxZVB+3509K54JPrr9/RINwoi68kQgYVPF7Vj/wv3/gvNDcfOQUrUOvtZe+3NkwnTaPJHSk8G7vIQNN9V8UnPt26i/jFul82S/A1yu6e/MYSPaXwz
+ H9lgU7WZ
+ yZDzhKxzM6V+X8GViyAaYRtnz4Jwjq4p72i6e7a00uRChaqATWCvXKOGlO2Nc30vmRhOkuBnIB4GxskBR2eSF0GCGbJkPNwi2dHhZK+rUTByOZyrDfUk6boAlb4upfpqx2Mdawx2AIgEe2NtTdXx+6ZJGU7OVlQMVGa0HuWoNj9BaxbjKgaf4+QfJB0GksVETV3hEnUsS4QW8FvEoccGbaB6n3HSrD23d5WFCLc3BmLLBk7/7cj194BaFmxdC3g0VfRE+JfSYdb/JC/eSZKZh85vd2yeiSzYx7D4Z42X73MX0N1gGzVb8mYqitc0Er4MLKc0vAkxLWCxsRGI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,272 +111,286 @@ On Tue, Feb 17, 2026 at 12:06=E2=80=AFPM Kairui Song via B4 Relay
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> Swap table entry will need 4 bits reserved for swap count in the shadow,
-> so the anon shadow should have its leading 4 bits remain 0.
+> To prepare for using the swap table as the unified swap layer, introduce
+> macros and helpers for storing multiple kinds of data in a swap table
+> entry.
 >
-> This should be OK for the foreseeable future. Take 52 bits of physical
-> address space as an example: for 4K pages, there would be at most 40
-> bits for addressable pages. Currently, we have 36 bits available (64 - 1
-> - 16 - 10 - 1, where XA_VALUE takes 1 bit for marker,
-> MEM_CGROUP_ID_SHIFT takes 16 bits, NODES_SHIFT takes <=3D10 bits,
-> WORKINGSET flags takes 1 bit).
+> From now on, we are storing PFN in the swap table to make space for
+> extra counting bits (SWAP_COUNT). Shadows are still stored as they are,
+> as the SWAP_COUNT is not used yet.
 >
-> So in the worst case, we previously need to pack the 40 bits of address
-> in 36 bits fields using a 64K bucket (bucket_order =3D 4). After this, th=
-e
-> bucket will be increased to 1M. Which should be fine, as on such large
-> machines, the working set size will be way larger than the bucket size.
+> Also, rename shadow_swp_to_tb to shadow_to_swp_tb. That's a spelling
+> error, not really worth a separate fix.
 >
-> And for MGLRU's gen number tracking, it should be even more than enough,
-> MGLRU's gen number (max_seq) increment is much slower compared to the
-> eviction counter (nonresident_age).
->
-> And after all, either the refault distance or the gen distance is only a
-> hint that can tolerate inaccuracy just fine.
->
-> And the 4 bits can be shrunk to 3, or extended to a higher value if
-> needed later.
+> No behaviour change yet, just prepare the API.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
 Acked-by: Chris Li <chrisl@kernel.org>
 
+Chris
+
 > ---
->  mm/swap_table.h |  4 ++++
->  mm/workingset.c | 49 ++++++++++++++++++++++++++++++-------------------
->  2 files changed, 34 insertions(+), 19 deletions(-)
+>  mm/swap_state.c |   6 +--
+>  mm/swap_table.h | 131 ++++++++++++++++++++++++++++++++++++++++++++++++++=
++-----
+>  2 files changed, 124 insertions(+), 13 deletions(-)
 >
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 6d0eef7470be..e213ee35c1d2 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -148,7 +148,7 @@ void __swap_cache_add_folio(struct swap_cluster_info =
+*ci,
+>         VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
+>         VM_WARN_ON_ONCE_FOLIO(!folio_test_swapbacked(folio), folio);
+>
+> -       new_tb =3D folio_to_swp_tb(folio);
+> +       new_tb =3D folio_to_swp_tb(folio, 0);
+>         ci_start =3D swp_cluster_offset(entry);
+>         ci_off =3D ci_start;
+>         ci_end =3D ci_start + nr_pages;
+> @@ -249,7 +249,7 @@ void __swap_cache_del_folio(struct swap_cluster_info =
+*ci, struct folio *folio,
+>         VM_WARN_ON_ONCE_FOLIO(folio_test_writeback(folio), folio);
+>
+>         si =3D __swap_entry_to_info(entry);
+> -       new_tb =3D shadow_swp_to_tb(shadow);
+> +       new_tb =3D shadow_to_swp_tb(shadow, 0);
+>         ci_start =3D swp_cluster_offset(entry);
+>         ci_end =3D ci_start + nr_pages;
+>         ci_off =3D ci_start;
+> @@ -331,7 +331,7 @@ void __swap_cache_replace_folio(struct swap_cluster_i=
+nfo *ci,
+>         VM_WARN_ON_ONCE(!entry.val);
+>
+>         /* Swap cache still stores N entries instead of a high-order entr=
+y */
+> -       new_tb =3D folio_to_swp_tb(new);
+> +       new_tb =3D folio_to_swp_tb(new, 0);
+>         do {
+>                 old_tb =3D __swap_table_xchg(ci, ci_off, new_tb);
+>                 WARN_ON_ONCE(!swp_tb_is_folio(old_tb) || swp_tb_to_folio(=
+old_tb) !=3D old);
 > diff --git a/mm/swap_table.h b/mm/swap_table.h
-> index ea244a57a5b7..10e11d1f3b04 100644
+> index 10e11d1f3b04..10762ac5f4f5 100644
 > --- a/mm/swap_table.h
 > +++ b/mm/swap_table.h
-> @@ -12,6 +12,7 @@ struct swap_table {
+> @@ -12,17 +12,72 @@ struct swap_table {
 >  };
 >
 >  #define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) =3D=3D PAGE_SIZE)
-> +#define SWP_TB_COUNT_BITS              4
+> -#define SWP_TB_COUNT_BITS              4
 >
 >  /*
 >   * A swap table entry represents the status of a swap slot on a swap
-> @@ -22,6 +23,9 @@ struct swap_table {
->   * (shadow), or NULL.
+>   * (physical or virtual) device. The swap table in each cluster is a
+>   * 1:1 map of the swap slots in this cluster.
+>   *
+> - * Each swap table entry could be a pointer (folio), a XA_VALUE
+> - * (shadow), or NULL.
+> + * Swap table entry type and bits layouts:
+> + *
+> + * NULL:     |---------------- 0 ---------------| - Free slot
+> + * Shadow:   | SWAP_COUNT |---- SHADOW_VAL ---|1| - Swapped out slot
+> + * PFN:      | SWAP_COUNT |------ PFN -------|10| - Cached slot
+> + * Pointer:  |----------- Pointer ----------|100| - (Unused)
+> + * Bad:      |------------- 1 -------------|1000| - Bad slot
+> + *
+> + * SWAP_COUNT is `SWP_TB_COUNT_BITS` long, each entry is an atomic long.
+> + *
+> + * Usages:
+> + *
+> + * - NULL: Swap slot is unused, could be allocated.
+> + *
+> + * - Shadow: Swap slot is used and not cached (usually swapped out). It =
+reuses
+> + *   the XA_VALUE format to be compatible with working set shadows. SHAD=
+OW_VAL
+> + *   part might be all 0 if the working shadow info is absent. In such a=
+ case,
+> + *   we still want to keep the shadow format as a placeholder.
+> + *
+> + *   Memcg ID is embedded in SHADOW_VAL.
+> + *
+> + * - PFN: Swap slot is in use, and cached. Memcg info is recorded on the=
+ page
+> + *   struct.
+> + *
+> + * - Pointer: Unused yet. `0b100` is reserved for potential pointer usag=
+e
+> + *   because only the lower three bits can be used as a marker for 8 byt=
+es
+> + *   aligned pointers.
+> + *
+> + * - Bad: Swap slot is reserved, protects swap header or holes on swap d=
+evices.
 >   */
 >
-> +/* Macro for shadow offset calculation */
-> +#define SWAP_COUNT_SHIFT       SWP_TB_COUNT_BITS
+> +#if defined(MAX_POSSIBLE_PHYSMEM_BITS)
+> +#define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
+> +#elif defined(MAX_PHYSMEM_BITS)
+> +#define SWAP_CACHE_PFN_BITS (MAX_PHYSMEM_BITS - PAGE_SHIFT)
+> +#else
+> +#define SWAP_CACHE_PFN_BITS (BITS_PER_LONG - PAGE_SHIFT)
+> +#endif
+> +
+> +/* NULL Entry, all 0 */
+> +#define SWP_TB_NULL            0UL
+> +
+> +/* Swapped out: shadow */
+> +#define SWP_TB_SHADOW_MARK     0b1UL
+> +
+> +/* Cached: PFN */
+> +#define SWP_TB_PFN_BITS                (SWAP_CACHE_PFN_BITS + SWP_TB_PFN=
+_MARK_BITS)
+> +#define SWP_TB_PFN_MARK                0b10UL
+> +#define SWP_TB_PFN_MARK_BITS   2
+> +#define SWP_TB_PFN_MARK_MASK   (BIT(SWP_TB_PFN_MARK_BITS) - 1)
+> +
+> +/* SWAP_COUNT part for PFN or shadow, the width can be shrunk or extende=
+d */
+> +#define SWP_TB_COUNT_BITS      min(4, BITS_PER_LONG - SWP_TB_PFN_BITS)
+> +#define SWP_TB_COUNT_MASK      (~((~0UL) >> SWP_TB_COUNT_BITS))
+> +#define SWP_TB_COUNT_SHIFT     (BITS_PER_LONG - SWP_TB_COUNT_BITS)
+> +#define SWP_TB_COUNT_MAX       ((1 << SWP_TB_COUNT_BITS) - 1)
+> +
+> +/* Bad slot: ends with 0b1000 and rests of bits are all 1 */
+> +#define SWP_TB_BAD             ((~0UL) << 3)
+> +
+>  /* Macro for shadow offset calculation */
+>  #define SWAP_COUNT_SHIFT       SWP_TB_COUNT_BITS
+>
+> @@ -35,18 +90,47 @@ static inline unsigned long null_to_swp_tb(void)
+>         return 0;
+>  }
+>
+> -static inline unsigned long folio_to_swp_tb(struct folio *folio)
+> +static inline unsigned long __count_to_swp_tb(unsigned char count)
+>  {
+> +       /*
+> +        * At least three values are needed to distinguish free (0),
+> +        * used (count > 0 && count < SWP_TB_COUNT_MAX), and
+> +        * overflow (count =3D=3D SWP_TB_COUNT_MAX).
+> +        */
+> +       BUILD_BUG_ON(SWP_TB_COUNT_MAX < 2 || SWP_TB_COUNT_BITS < 2);
+> +       VM_WARN_ON(count > SWP_TB_COUNT_MAX);
+> +       return ((unsigned long)count) << SWP_TB_COUNT_SHIFT;
+> +}
+> +
+> +static inline unsigned long pfn_to_swp_tb(unsigned long pfn, unsigned in=
+t count)
+> +{
+> +       unsigned long swp_tb;
+> +
+>         BUILD_BUG_ON(sizeof(unsigned long) !=3D sizeof(void *));
+> -       return (unsigned long)folio;
+> +       BUILD_BUG_ON(SWAP_CACHE_PFN_BITS >
+> +                    (BITS_PER_LONG - SWP_TB_PFN_MARK_BITS - SWP_TB_COUNT=
+_BITS));
+> +
+> +       swp_tb =3D (pfn << SWP_TB_PFN_MARK_BITS) | SWP_TB_PFN_MARK;
+> +       VM_WARN_ON_ONCE(swp_tb & SWP_TB_COUNT_MASK);
+> +
+> +       return swp_tb | __count_to_swp_tb(count);
+> +}
+> +
+> +static inline unsigned long folio_to_swp_tb(struct folio *folio, unsigne=
+d int count)
+> +{
+> +       return pfn_to_swp_tb(folio_pfn(folio), count);
+>  }
+>
+> -static inline unsigned long shadow_swp_to_tb(void *shadow)
+> +static inline unsigned long shadow_to_swp_tb(void *shadow, unsigned int =
+count)
+>  {
+>         BUILD_BUG_ON((BITS_PER_XA_VALUE + 1) !=3D
+>                      BITS_PER_BYTE * sizeof(unsigned long));
+> +       BUILD_BUG_ON((unsigned long)xa_mk_value(0) !=3D SWP_TB_SHADOW_MAR=
+K);
+> +
+>         VM_WARN_ON_ONCE(shadow && !xa_is_value(shadow));
+> -       return (unsigned long)shadow;
+> +       VM_WARN_ON_ONCE(shadow && ((unsigned long)shadow & SWP_TB_COUNT_M=
+ASK));
+> +
+> +       return (unsigned long)shadow | __count_to_swp_tb(count) | SWP_TB_=
+SHADOW_MARK;
+>  }
+>
+>  /*
+> @@ -59,7 +143,7 @@ static inline bool swp_tb_is_null(unsigned long swp_tb=
+)
+>
+>  static inline bool swp_tb_is_folio(unsigned long swp_tb)
+>  {
+> -       return !xa_is_value((void *)swp_tb) && !swp_tb_is_null(swp_tb);
+> +       return ((swp_tb & SWP_TB_PFN_MARK_MASK) =3D=3D SWP_TB_PFN_MARK);
+>  }
+>
+>  static inline bool swp_tb_is_shadow(unsigned long swp_tb)
+> @@ -67,19 +151,44 @@ static inline bool swp_tb_is_shadow(unsigned long sw=
+p_tb)
+>         return xa_is_value((void *)swp_tb);
+>  }
+>
+> +static inline bool swp_tb_is_bad(unsigned long swp_tb)
+> +{
+> +       return swp_tb =3D=3D SWP_TB_BAD;
+> +}
+> +
+> +static inline bool swp_tb_is_countable(unsigned long swp_tb)
+> +{
+> +       return (swp_tb_is_shadow(swp_tb) || swp_tb_is_folio(swp_tb) ||
+> +               swp_tb_is_null(swp_tb));
+> +}
 > +
 >  /*
->   * Helpers for casting one type of info into a swap table entry.
+>   * Helpers for retrieving info from swap table.
 >   */
-> diff --git a/mm/workingset.c b/mm/workingset.c
-> index 13422d304715..37a94979900f 100644
-> --- a/mm/workingset.c
-> +++ b/mm/workingset.c
-> @@ -16,6 +16,7 @@
->  #include <linux/dax.h>
->  #include <linux/fs.h>
->  #include <linux/mm.h>
-> +#include "swap_table.h"
->  #include "internal.h"
->
->  /*
-> @@ -184,7 +185,9 @@
->  #define EVICTION_SHIFT ((BITS_PER_LONG - BITS_PER_XA_VALUE) +  \
->                          WORKINGSET_SHIFT + NODES_SHIFT + \
->                          MEM_CGROUP_ID_SHIFT)
-> +#define EVICTION_SHIFT_ANON    (EVICTION_SHIFT + SWAP_COUNT_SHIFT)
->  #define EVICTION_MASK  (~0UL >> EVICTION_SHIFT)
-> +#define EVICTION_MASK_ANON     (~0UL >> EVICTION_SHIFT_ANON)
->
->  /*
->   * Eviction timestamps need to be able to cover the full range of
-> @@ -194,12 +197,12 @@
->   * that case, we have to sacrifice granularity for distance, and group
->   * evictions into coarser buckets by shaving off lower timestamp bits.
->   */
-> -static unsigned int bucket_order __read_mostly;
-> +static unsigned int bucket_order[ANON_AND_FILE] __read_mostly;
->
->  static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long ev=
-iction,
-> -                        bool workingset)
-> +                        bool workingset, bool file)
+>  static inline struct folio *swp_tb_to_folio(unsigned long swp_tb)
 >  {
-> -       eviction &=3D EVICTION_MASK;
-> +       eviction &=3D file ? EVICTION_MASK : EVICTION_MASK_ANON;
->         eviction =3D (eviction << MEM_CGROUP_ID_SHIFT) | memcgid;
->         eviction =3D (eviction << NODES_SHIFT) | pgdat->node_id;
->         eviction =3D (eviction << WORKINGSET_SHIFT) | workingset;
-> @@ -244,7 +247,8 @@ static void *lru_gen_eviction(struct folio *folio)
->         struct mem_cgroup *memcg =3D folio_memcg(folio);
->         struct pglist_data *pgdat =3D folio_pgdat(folio);
+>         VM_WARN_ON(!swp_tb_is_folio(swp_tb));
+> -       return (void *)swp_tb;
+> +       return pfn_folio((swp_tb & ~SWP_TB_COUNT_MASK) >> SWP_TB_PFN_MARK=
+_BITS);
+>  }
 >
-> -       BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH > BITS_PER_LONG - EVI=
-CTION_SHIFT);
-> +       BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH >
-> +                    BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_A=
-NON));
->
->         lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
->         lrugen =3D &lruvec->lrugen;
-> @@ -254,7 +258,7 @@ static void *lru_gen_eviction(struct folio *folio)
->         hist =3D lru_hist_from_seq(min_seq);
->         atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
->
-> -       return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, wo=
-rkingset);
-> +       return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, wo=
-rkingset, type);
+>  static inline void *swp_tb_to_shadow(unsigned long swp_tb)
+>  {
+>         VM_WARN_ON(!swp_tb_is_shadow(swp_tb));
+> -       return (void *)swp_tb;
+> +       /* No shift needed, xa_value is stored as it is in the lower bits=
+. */
+> +       return (void *)(swp_tb & ~SWP_TB_COUNT_MASK);
+> +}
+> +
+> +static inline unsigned char __swp_tb_get_count(unsigned long swp_tb)
+> +{
+> +       VM_WARN_ON(!swp_tb_is_countable(swp_tb));
+> +       return ((swp_tb & SWP_TB_COUNT_MASK) >> SWP_TB_COUNT_SHIFT);
+> +}
+> +
+> +static inline int swp_tb_get_count(unsigned long swp_tb)
+> +{
+> +       if (swp_tb_is_countable(swp_tb))
+> +               return __swp_tb_get_count(swp_tb);
+> +       return -EINVAL;
 >  }
 >
 >  /*
-> @@ -262,7 +266,7 @@ static void *lru_gen_eviction(struct folio *folio)
->   * Fills in @lruvec, @token, @workingset with the values unpacked from s=
-hadow.
->   */
->  static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
-> -                               unsigned long *token, bool *workingset)
-> +                               unsigned long *token, bool *workingset, b=
-ool file)
->  {
->         int memcg_id;
->         unsigned long max_seq;
-> @@ -275,7 +279,7 @@ static bool lru_gen_test_recent(void *shadow, struct =
-lruvec **lruvec,
->         *lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+> @@ -124,6 +233,8 @@ static inline unsigned long swap_table_get(struct swa=
+p_cluster_info *ci,
+>         atomic_long_t *table;
+>         unsigned long swp_tb;
 >
->         max_seq =3D READ_ONCE((*lruvec)->lrugen.max_seq);
-> -       max_seq &=3D EVICTION_MASK >> LRU_REFS_WIDTH;
-> +       max_seq &=3D (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_R=
-EFS_WIDTH;
-
-Nit pick, I saw you use this expression more than once:
-"file ? EVICTION_MASK : EVICTION_MASK_ANON"
-
-Maybe make it an inline function or macro?
-
->
->         return abs_diff(max_seq, *token >> LRU_REFS_WIDTH) < MAX_NR_GENS;
->  }
-> @@ -293,7 +297,7 @@ static void lru_gen_refault(struct folio *folio, void=
- *shadow)
->
+> +       VM_WARN_ON_ONCE(off >=3D SWAPFILE_CLUSTER);
+> +
 >         rcu_read_lock();
->
-> -       recent =3D lru_gen_test_recent(shadow, &lruvec, &token, &workings=
-et);
-> +       recent =3D lru_gen_test_recent(shadow, &lruvec, &token, &workings=
-et, type);
->         if (lruvec !=3D folio_lruvec(folio))
->                 goto unlock;
->
-> @@ -331,7 +335,7 @@ static void *lru_gen_eviction(struct folio *folio)
->  }
->
->  static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
-> -                               unsigned long *token, bool *workingset)
-> +                               unsigned long *token, bool *workingset, b=
-ool file)
->  {
->         return false;
->  }
-> @@ -381,6 +385,7 @@ void workingset_age_nonresident(struct lruvec *lruvec=
-, unsigned long nr_pages)
->  void *workingset_eviction(struct folio *folio, struct mem_cgroup *target=
-_memcg)
->  {
->         struct pglist_data *pgdat =3D folio_pgdat(folio);
-> +       int file =3D folio_is_file_lru(folio);
->         unsigned long eviction;
->         struct lruvec *lruvec;
->         int memcgid;
-> @@ -397,10 +402,10 @@ void *workingset_eviction(struct folio *folio, stru=
-ct mem_cgroup *target_memcg)
->         /* XXX: target_memcg can be NULL, go through lruvec */
->         memcgid =3D mem_cgroup_private_id(lruvec_memcg(lruvec));
->         eviction =3D atomic_long_read(&lruvec->nonresident_age);
-> -       eviction >>=3D bucket_order;
-> +       eviction >>=3D bucket_order[file];
->         workingset_age_nonresident(lruvec, folio_nr_pages(folio));
->         return pack_shadow(memcgid, pgdat, eviction,
-> -                               folio_test_workingset(folio));
-> +                          folio_test_workingset(folio), file);
->  }
->
->  /**
-> @@ -431,14 +436,15 @@ bool workingset_test_recent(void *shadow, bool file=
-, bool *workingset,
->                 bool recent;
->
->                 rcu_read_lock();
-> -               recent =3D lru_gen_test_recent(shadow, &eviction_lruvec, =
-&eviction, workingset);
-> +               recent =3D lru_gen_test_recent(shadow, &eviction_lruvec, =
-&eviction,
-> +                                            workingset, file);
->                 rcu_read_unlock();
->                 return recent;
->         }
->
->         rcu_read_lock();
->         unpack_shadow(shadow, &memcgid, &pgdat, &eviction, workingset);
-> -       eviction <<=3D bucket_order;
-> +       eviction <<=3D bucket_order[file];
->
->         /*
->          * Look up the memcg associated with the stored ID. It might
-> @@ -495,7 +501,8 @@ bool workingset_test_recent(void *shadow, bool file, =
-bool *workingset,
->          * longest time, so the occasional inappropriate activation
->          * leading to pressure on the active list is not a problem.
->          */
-> -       refault_distance =3D (refault - eviction) & EVICTION_MASK;
-> +       refault_distance =3D ((refault - eviction) &
-> +                           (file ? EVICTION_MASK : EVICTION_MASK_ANON));
-
-Here too.
-
-Chris
-
->
->         /*
->          * Compare the distance to the existing workingset size. We
-> @@ -780,8 +787,8 @@ static struct lock_class_key shadow_nodes_key;
->
->  static int __init workingset_init(void)
->  {
-> +       unsigned int timestamp_bits, timestamp_bits_anon;
->         struct shrinker *workingset_shadow_shrinker;
-> -       unsigned int timestamp_bits;
->         unsigned int max_order;
->         int ret =3D -ENOMEM;
->
-> @@ -794,11 +801,15 @@ static int __init workingset_init(void)
->          * double the initial memory by using totalram_pages as-is.
->          */
->         timestamp_bits =3D BITS_PER_LONG - EVICTION_SHIFT;
-> +       timestamp_bits_anon =3D BITS_PER_LONG - EVICTION_SHIFT_ANON;
->         max_order =3D fls_long(totalram_pages() - 1);
-> -       if (max_order > timestamp_bits)
-> -               bucket_order =3D max_order - timestamp_bits;
-> -       pr_info("workingset: timestamp_bits=3D%d max_order=3D%d bucket_or=
-der=3D%u\n",
-> -              timestamp_bits, max_order, bucket_order);
-> +       if (max_order > (BITS_PER_LONG - EVICTION_SHIFT))
-> +               bucket_order[WORKINGSET_FILE] =3D max_order - timestamp_b=
-its;
-> +       if (max_order > timestamp_bits_anon)
-> +               bucket_order[WORKINGSET_ANON] =3D max_order - timestamp_b=
-its_anon;
-> +       pr_info("workingset: timestamp_bits=3D%d (anon: %d) max_order=3D%=
-d bucket_order=3D%u (anon: %d)\n",
-> +               timestamp_bits, timestamp_bits_anon, max_order,
-> +               bucket_order[WORKINGSET_FILE], bucket_order[WORKINGSET_AN=
-ON]);
->
->         workingset_shadow_shrinker =3D shrinker_alloc(SHRINKER_NUMA_AWARE=
- |
->                                                     SHRINKER_MEMCG_AWARE,
+>         table =3D rcu_dereference(ci->table);
+>         swp_tb =3D table ? atomic_long_read(&table[off]) : null_to_swp_tb=
+();
 >
 > --
 > 2.52.0
