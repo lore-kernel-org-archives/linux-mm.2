@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C725E9A03B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 07:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E7CE9A03B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 07:19:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FA5C6B0088; Thu, 19 Feb 2026 02:18:40 -0500 (EST)
+	id 972CB6B0089; Thu, 19 Feb 2026 02:19:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CE4C6B0089; Thu, 19 Feb 2026 02:18:40 -0500 (EST)
+	id 91CE36B008A; Thu, 19 Feb 2026 02:19:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4EC6B008A; Thu, 19 Feb 2026 02:18:40 -0500 (EST)
+	id 8430A6B008C; Thu, 19 Feb 2026 02:19:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EDAC6B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 02:18:40 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 074BA58EAC
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:18:40 +0000 (UTC)
-X-FDA: 84460353600.24.C62DECE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3C67FA000D
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:18:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ikUA0hf/";
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771485518; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 709AC6B0089
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 02:19:39 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2B48140468
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:19:38 +0000 (UTC)
+X-FDA: 84460356036.21.F25A667
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 28477140009
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:19:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PRva4Rai;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771485577; a=rsa-sha256;
 	cv=none;
-	b=susCN3mSvA2oPjs86HaCb2W3wlWEOR2KTsXOnZYlD2HWZEDEKPF/HrZvLtpm+wu+HUFml3
-	kDGUrmJf9UT+KXDiF264b5qGBaFTQaCWGhjktU1Q2Ilul1jp02spICRtJZ6BZYzBBPocih
-	iJJdCpv1lqGPeBBTqmIlzpHOp3ZzsVA=
+	b=d2/EsmMQoKzlGZV7sfoAMAxqEDzR5qaVRq+mnMh53zPCWCkC0cgPZQ0Go56F9k32N6y7Es
+	gPKaeFL/k6xLPgeVjkNoZ+o1fLzdoi6npHw+OV17C5/U2ivwKrHmfw5RtGIRcNLAJ7hCsD
+	iHZ2uASxCwdRXTtmtA++TF3g0+hajDg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ikUA0hf/";
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PRva4Rai;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771485518;
+	s=arc-20220608; t=1771485577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIN59Bfs8XU7BWdkzpcczgrh5rpl3+VaiYTbqpxF6GE=;
-	b=OUwiqX016U/T0zRtJH9UAeJPVmBKqSDmQ7zI+tHiEIaozYBcleeRjan0q6QZz/FVVouhCe
-	UntMQaaYmXbKtmU47gIVAtMw3/MlYswPkEMu4jpd+LneeBukFBnRuD6mVwF3ciWPz8e3On
-	Z3sLR+zD9enDpvsROmjvX3+g+Fp157g=
+	bh=euVub2spsPYXplq1wMHPfr10FSdB3/H94TZdvACdrdI=;
+	b=aWtrTQBH7Rr2r1tscI5q9d4rURd9Mce1eaMbpXH6cQPnnycnSyKmv2XsQlgsJvzABFi05H
+	OD1eGwiDyT0o2eT1krqbA51UX2JYFxmd5l6IckhYujyITPcsRBUIlyc6C9i0ZPIh1KDD4Z
+	v/ZFOPa1yp4QYUYMg8u+h370zbqS25M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E7D344527
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C204C2BCAF
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:18:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DB8E6014C
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:19:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4C1C4AF0B
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 07:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771485517;
-	bh=yI5YHEdHSXppNqEi1vOfQlOdWb/dCPKXViqBNavPZ0A=;
+	s=k20201202; t=1771485576;
+	bh=SJMMwBLf7vRhZkOWHMBsNhcFy0+himckCdGenIwRclc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ikUA0hf/WaK5sTrTt9qL6BtZH4xnQhmIw1h7cQo7o+YFAeoiPtLhHWTtdsAZAnKV3
-	 erMOaPD8GHtWGESf4qpn1ld7eup/pDX3LyY1XWisb3TyslBc4ebU0RIxeKtLDcDcu1
-	 4koNFsl1XwVzABsSoaHNm2QQ+1+86JqU2gl40bSEzjHSuchwyMGYc0ZuCqyraYPWDr
-	 ZVhTCaelCpamzGDZ3o2nPRxFjrYRkFkGxQlOhwpCuQf0bLK1OosITk79myR+qZUDck
-	 cGnU0KasOiyK0/nqLN7cq0qTCUEM4ooHZdbd9On10w3a3p7Wa1oL9IpmQvirRR8CpR
-	 I87wUWqnjWaLQ==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-794fe16d032so5657017b3.3
-        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:18:37 -0800 (PST)
-X-Gm-Message-State: AOJu0Yw+VdZPF5/XHsol04RY8ygton7z7jErML2ZX9LGSV5xgXVqSxLc
-	4G6R4s8uiOwgsEiSad9bkWQAil2tWaDzhzTeXsNpynpBbMCtl604Keey6IAtAinwCAAqbdz3yI4
-	P/U5EYV73dkfTWcFrGe7PWcr0sgpx2Xj+fWbzaNE8Yw==
-X-Received: by 2002:a05:690e:4005:b0:64a:e61f:a6f1 with SMTP id
- 956f58d0204a3-64c5556248fmr3463431d50.6.1771485516210; Wed, 18 Feb 2026
- 23:18:36 -0800 (PST)
+	b=PRva4Rai7BDrZLkgOVmEo4atz6ZVm9lJGWZZmLF4UmPXFXnRpTiMkxRRlN07mqFi2
+	 8hk1Ar3pf7IFqoWaOLPTa1SnOCEMv+Dg84sm4e/tag+wH07+aXVRRgX6QJF1ibARIw
+	 qkkeW+VrGB2UzKvA2TPeSXmAwKOFRBtb0O4ro7Ujh4WYW7R/QragR9O8oQcpIny7xY
+	 ptaNgk+XKic9s4Bkea8pt1WvMWsfSQjsbmSUFGDkIgRd965MsqmzzHwdPtclo+leJ7
+	 v2GzcMu9Qaa7u1q2kNie3ynQqYo4w/9ZZTW95O2rvIPRLeQF/QZlqrX1lhfzzCBNU/
+	 drZfFH690GcJQ==
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-790b7b3e594so6286407b3.3
+        for <linux-mm@kvack.org>; Wed, 18 Feb 2026 23:19:36 -0800 (PST)
+X-Gm-Message-State: AOJu0YxlvvbjUG/yZotSqatDSCD4YzJtzDHBB600/2iZSR9wTmpMcsFh
+	JnPrUH4uqMIteMiZ/9du3fFM+dijguhWrHUt7fF2s1GnbN1dOSlBgj/yPHoCQaTLj6UYZzX2yvm
+	dfAcgTL8eMjH1Ccbd63F5WjDNgr1h6ZRLWJRy8iocfg==
+X-Received: by 2002:a05:690e:14c9:b0:64c:2114:16fb with SMTP id
+ 956f58d0204a3-64c211417efmr14227956d50.47.1771485575261; Wed, 18 Feb 2026
+ 23:19:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com> <20260218-swap-table-p3-v3-11-f4e34be021a7@tencent.com>
-In-Reply-To: <20260218-swap-table-p3-v3-11-f4e34be021a7@tencent.com>
+References: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com> <20260218-swap-table-p3-v3-12-f4e34be021a7@tencent.com>
+In-Reply-To: <20260218-swap-table-p3-v3-12-f4e34be021a7@tencent.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 18 Feb 2026 23:18:25 -0800
-X-Gmail-Original-Message-ID: <CACePvbUWVvy68XGfRTKxG6cTSKSt5OGRy=FhO5_TYY=oCO=2FQ@mail.gmail.com>
-X-Gm-Features: AZwV_Qhk6bFEH9ulAY7xmyQBsyZP277YFFryCuv7D-G4cJHhnJjODCfs37JRv3g
-Message-ID: <CACePvbUWVvy68XGfRTKxG6cTSKSt5OGRy=FhO5_TYY=oCO=2FQ@mail.gmail.com>
-Subject: Re: [PATCH v3 11/12] mm, swap: simplify checking if a folio is swapped
+Date: Wed, 18 Feb 2026 23:19:23 -0800
+X-Gmail-Original-Message-ID: <CACePvbU5B3+KEy+Xf1AeKR47QxDWoimM18bp0fZE1s8etLBkwg@mail.gmail.com>
+X-Gm-Features: AZwV_QjE161qrcxACUSsld5F1tIROGbcNIKW9kil2jWWKXZEn1QgV7RLVX1rwxM
+Message-ID: <CACePvbU5B3+KEy+Xf1AeKR47QxDWoimM18bp0fZE1s8etLBkwg@mail.gmail.com>
+Subject: Re: [PATCH v3 12/12] mm, swap: no need to clear the shadow explicitly
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
@@ -89,13 +89,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3C67FA000D
-X-Stat-Signature: 86x3hsm3rje38xumzgh4h3hx3zcpy76y
+X-Stat-Signature: mazbiqqimdqqubu947s5o5xwc74eocs1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771485518-884629
-X-HE-Meta: U2FsdGVkX18cvrRxhAL8PzWFtUW6h249XqZfEzzkoQuI2//V5RI0vX8vhqYbS34pR1VRtMs8+aOg1qAVjlAoWrfVpXkQRWbjEheLEUvCAC16JvPPhZKwBH89R4PrADbCJmVP8xiJFJ8TXV9+t4JGwGoF14tjnwLZw4+oL4ooVux+3LlPZrmHvoXLq1bpH2gFD/Dl7t2JDJ0O+l/O/e7Mt1RG0MnuiQrdycPH9m90o2DG0ndhhjEnM4jlW0RzzzJvSE0dr2Bpr1H+mD6dv/urL0bbcc4Wl7Czz+bLe6T7CNq/oWgCDTXD6/ff9uS0HL71+7vFwJoaVmYO0l8CnMReAJsx4ky4zMhiBBul0IXKlrEKAjie9VEC0+CFPF/IY9RC7IvE1i18uCyTlvsP75Up8hq/a+12vKfWQNmsxAo3T/qp0zqNrevnWA8hzUNwoArcKav1BUjvEfZbW6Ri/WxE8ZdXS0W5PS8s+ngLjSZThAYwSXYEO+t+vBeYnIqtcSOQEMIfWOPqllRd8uKcTkH3w0Qo98zgUEdgOy/e4DOi28+9qVTmdO3TmvMejDjDA9Kza5/AoqxMsqbhMJ7GJsqlLvWVjp+ch1VoII5eqZBxjweE48O3tEaIukjvOJ8yPv1kuQ1paBIjGjLPyRZZFOKjDWbc9Dhw4ZWt0v7spvf4S4/VTAicVfgVGRmFa41czgYaJzMSALth48ZG51WBahl6hDgvDDdLnaYl3hL6yopaYCkraUC0NUymKgMZmjhtxXtMA/QLyST7+aAtnk6+4laNEaQV9W4MK9yJ9oAU9knVMxNiUt79rqU9VSlJIqCkBTWI/RiUTDFD9lkfa9Sxfspu3ndJPbmlfYwRy1NXHkQ4BM7n44MeMfNXzz+SZUAVEIUUgDRHm6RX0xyIyYEI2aVJJSEXGnkZS+F3Io22tVqWFOBLCqvBWOs/cvYpkV1YPZn8BGRS5yXCqfl1FLNPX3Y
- Dkg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 28477140009
+X-HE-Tag: 1771485576-451913
+X-HE-Meta: U2FsdGVkX1/X+73pvYlcHQMEt86kcSEfi4uBX+ay7PSGu8QZk4QMLZqKbo/a/dJPJSnu71ioLQJNvBmvm1+7SfDSR6z9wzDQTaZN7WNLTzSHxQtsRyl3a2RdwnlDsu5Y3XzxU/iCyd3Msb3ZxUm1WKjSUFh2dW9FeOfEzwL8ANEYBR5wgu6gbDjAVbySFmHmSrj4BXeHtLwYcXxkhLMcszyPvJ1Lse4FgD1YCkAli27ZA+ck0agFl6jOnz2Vupw6/jvcu2kNvCLb8/dwu0aZKqu47MUgzBIJUz2ECG7ODSGHL6c0yG3jvRtvklujKqH5k/6GiMUox/wVPVojxkDfiD24IBewfsztLgJiAVoRRX3mwlu0iVQ0tdPm/P4NHglEKWiPISuG+zrc7eSfKIrGHDB+hfLZIV7yMmgvpqbhCjIMG79hnwu6rog0K2KIPzmLHYVrhSPMF/fn+0fg7yr7FFuLTmyFxH5Il+eNe5ON5eHjavvSx4MltIp3nw2k07ASKwbtROMp0M0PNJYMV+9ekdJPvrWBDOcem4LvEJJ7HAeM/yFuLYR2z3ibqZtTyvpCtdnIp3jTVpNLtuNvLLVKcPXnEdt1kCdiFwvMOS3h6nm07Tpxw9Ezca/1i+Jy6o0e6XmW3u8qXsKyfFM7jofdcs1RnQm4vC3L49REBpBOsUv6KtgEVW+c80fQFN1DW4sppQWR4KyVPvlF0dKH4ikJU9sb5iagZGTBO1BQsd+qR6pFWl/UF/voS28g+emiYWut3fqkdz01zo/jobURGr4HAIQJg24hwZVhVqipluXILKkRAIgMJn/x7sTLbRS7PEgWYC2YCeb0n13Q2x8FyaiyNyULkO7Q44zLEtwczne9p+0spe21xmMq4fEdhtL17sj2LAHzM7Q76so2/W6/a72idp7hv3EAPuGwaO4OyrtbYhoEfhGaY3hyu3TN5gODAHvVirRW/4mxwgemXosHBdd
+ M+bm5Bsu
+ fdETq/LiUXLh31JkvJi+t7LykMIvvqEYn7wM9tY24nAuk4RexRFjmBC3r32YADGpc4zk06AkaskKjOFXj1qiEcxElh7s2n7hU+CAheYs3adrXxsgrRpx3NMMujkCxqyV5WH8bIPEWPp/IBO91aizur5zEQMaiMN4ZffspFtRikoMwe8ngDu348WW7Hw0E2m5xXPtjppJs+whyXdPj3X7Ne1javRurhVlwG72uD/PSOWjuUuNGflFmlBu5L5r8Hf4X3yvFN6XCRJM/RwBgCFWLu0N+XkowzPpgylgRX16h1I/JnqZQJWFypamlJShOdJHzLG7TD10W9yGgycVJfKcMgKT2FStMNWMXz94ugSHpRDQdaeQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,31 +110,15 @@ On Tue, Feb 17, 2026 at 12:06=E2=80=AFPM Kairui Song via B4 Relay
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> Clean up and simplify how we check if a folio is swapped. The helper
-> already requires the folio to be in swap cache and locked. That's enough
-> to pin the swap cluster from being freed, so there is no need to lock
-> anything else to avoid UAF.
+> Since we no longer bypass the swap cache, every swap-in will clear the
+> swap shadow by inserting the folio into the swap table. The only place
+> we may seem to need to free the swap shadow is when the swap slots are
+> freed directly without a folio (swap_put_entries_direct). But with the
+> swap table, that is not needed either. Freeing a slot in the swap table
+> will set the table entry to NULL, which erases the shadow just fine.
 >
-> And besides, we have cleaned up and defined the swap operation to be
-> mostly folio based, and now the only place a folio will have any of its
-> swap slots' count increased from 0 to 1 is folio_dup_swap, which also
-> requires the folio lock. So as we are holding the folio lock here, a
-> folio can't change its swap status from not swapped (all swap slots have
-> a count of 0) to swapped (any slot has a swap count larger than 0).
->
-> So there won't be any false negatives of this helper if we simply depend
-> on the folio lock to stabilize the cluster.
->
-> We are only using this helper to determine if we can and should release
-> the swap cache. So false positives are completely harmless, and also
-> already exist before. Depending on the timing, previously, it's also
-> possible that a racing thread releases the swap count right after
-> releasing the ci lock and before this helper returns. In any case, the
-> worst that could happen is we leave a clean swap cache. It will still be
-> reclaimed when under pressure just fine.
->
-> So, in conclusion, we can simplify and make the check much simpler and
-> lockless. Also, rename it to folio_maybe_swapped to reflect the design.
+> So just delete all explicit shadow clearing, it's no longer needed.
+> Also, rearrange the freeing.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
@@ -142,178 +127,88 @@ Acked-by: Chris Li <chrisl@kernel.org>
 Chris
 
 > ---
->  mm/swap.h     |  5 ++--
->  mm/swapfile.c | 82 ++++++++++++++++++++++++++++++++---------------------=
-------
->  2 files changed, 48 insertions(+), 39 deletions(-)
+>  mm/swap.h       |  1 -
+>  mm/swap_state.c | 21 ---------------------
+>  mm/swapfile.c   |  2 --
+>  3 files changed, 24 deletions(-)
 >
 > diff --git a/mm/swap.h b/mm/swap.h
-> index cc410b94e91a..9728e6a944b2 100644
+> index 9728e6a944b2..a77016f2423b 100644
 > --- a/mm/swap.h
 > +++ b/mm/swap.h
-> @@ -195,12 +195,13 @@ extern int swap_retry_table_alloc(swp_entry_t entry=
-, gfp_t gfp);
->   *
->   * folio_alloc_swap(): the entry point for a folio to be swapped
->   * out. It allocates swap slots and pins the slots with swap cache.
-> - * The slots start with a swap count of zero.
-> + * The slots start with a swap count of zero. The slots are pinned
-> + * by swap cache reference which doesn't contribute to swap count.
->   *
->   * folio_dup_swap(): increases the swap count of a folio, usually
->   * during it gets unmapped and a swap entry is installed to replace
->   * it (e.g., swap entry in page table). A swap slot with swap
-> - * count =3D=3D 0 should only be increasd by this helper.
-> + * count =3D=3D 0 can only be increased by this helper.
->   *
->   * folio_put_swap(): does the opposite thing of folio_dup_swap().
->   */
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index df2b88c6c67b..dab5e726855b 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1743,7 +1743,11 @@ int folio_alloc_swap(struct folio *folio)
->   * @subpage: if not NULL, only increase the swap count of this subpage.
->   *
->   * Typically called when the folio is unmapped and have its swap entry t=
-o
-> - * take its palce.
-> + * take its place: Swap entries allocated to a folio has count =3D=3D 0 =
-and pinned
-> + * by swap cache. The swap cache pin doesn't increase the swap count. Th=
-is
-> + * helper sets the initial count =3D=3D 1 and increases the count as the=
- folio is
-> + * unmapped and swap entries referencing the slots are generated to repl=
-ace
-> + * the folio.
->   *
->   * Context: Caller must ensure the folio is locked and in the swap cache=
-.
->   * NOTE: The caller also has to ensure there is no raced call to
-> @@ -1942,49 +1946,44 @@ int swp_swapcount(swp_entry_t entry)
->         return count < 0 ? 0 : count;
+> @@ -290,7 +290,6 @@ void __swap_cache_del_folio(struct swap_cluster_info =
+*ci,
+>                             struct folio *folio, swp_entry_t entry, void =
+*shadow);
+>  void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+>                                 struct folio *old, struct folio *new);
+> -void __swap_cache_clear_shadow(swp_entry_t entry, int nr_ents);
+>
+>  void show_swap_cache_info(void);
+>  void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int=
+ nr);
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index e7618ffe6d70..32d9d877bda8 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -350,27 +350,6 @@ void __swap_cache_replace_folio(struct swap_cluster_=
+info *ci,
+>         }
 >  }
 >
-> -static bool swap_page_trans_huge_swapped(struct swap_info_struct *si,
-> -                                        swp_entry_t entry, int order)
-> +/*
-> + * folio_maybe_swapped - Test if a folio covers any swap slot with count=
- > 0.
-> + *
-> + * Check if a folio is swapped. Holding the folio lock ensures the folio=
- won't
-> + * go from not-swapped to swapped because the initial swap count increme=
-nt can
-> + * only be done by folio_dup_swap, which also locks the folio. But a con=
-current
-> + * decrease of swap count is possible through swap_put_entries_direct, s=
-o this
-> + * may return a false positive.
-> + *
-> + * Context: Caller must ensure the folio is locked and in the swap cache=
+> -/**
+> - * __swap_cache_clear_shadow - Clears a set of shadows in the swap cache=
 .
-> + */
-> +static bool folio_maybe_swapped(struct folio *folio)
->  {
-> +       swp_entry_t entry =3D folio->swap;
->         struct swap_cluster_info *ci;
-> -       unsigned int nr_pages =3D 1 << order;
-> -       unsigned long roffset =3D swp_offset(entry);
-> -       unsigned long offset =3D round_down(roffset, nr_pages);
-> -       unsigned int ci_off;
-> -       int i;
-> +       unsigned int ci_off, ci_end;
->         bool ret =3D false;
->
-> -       ci =3D swap_cluster_lock(si, offset);
-> -       if (nr_pages =3D=3D 1) {
-> -               ci_off =3D roffset % SWAPFILE_CLUSTER;
-> -               if (swp_tb_get_count(__swap_table_get(ci, ci_off)))
-> -                       ret =3D true;
-> -               goto unlock_out;
-> -       }
-> -       for (i =3D 0; i < nr_pages; i++) {
-> -               ci_off =3D (offset + i) % SWAPFILE_CLUSTER;
-> -               if (swp_tb_get_count(__swap_table_get(ci, ci_off))) {
-> -                       ret =3D true;
-> -                       break;
-> -               }
-> -       }
-> -unlock_out:
-> -       swap_cluster_unlock(ci);
-> -       return ret;
+> - * @entry: The starting index entry.
+> - * @nr_ents: How many slots need to be cleared.
+> - *
+> - * Context: Caller must ensure the range is valid, all in one single clu=
+ster,
+> - * not occupied by any folio, and lock the cluster.
+> - */
+> -void __swap_cache_clear_shadow(swp_entry_t entry, int nr_ents)
+> -{
+> -       struct swap_cluster_info *ci =3D __swap_entry_to_cluster(entry);
+> -       unsigned int ci_off =3D swp_cluster_offset(entry), ci_end;
+> -       unsigned long old;
+> -
+> -       ci_end =3D ci_off + nr_ents;
+> -       do {
+> -               old =3D __swap_table_xchg(ci, ci_off, null_to_swp_tb());
+> -               WARN_ON_ONCE(swp_tb_is_folio(old) || swp_tb_get_count(old=
+));
+> -       } while (++ci_off < ci_end);
 > -}
 > -
-> -static bool folio_swapped(struct folio *folio)
-> -{
-> -       swp_entry_t entry =3D folio->swap;
-> -       struct swap_info_struct *si;
-> -
->         VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
->         VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
->
-> -       si =3D __swap_entry_to_info(entry);
-> -       if (!IS_ENABLED(CONFIG_THP_SWAP) || likely(!folio_test_large(foli=
-o)))
-> -               return swap_entry_swapped(si, entry);
-> +       ci =3D __swap_entry_to_cluster(entry);
-> +       ci_off =3D swp_cluster_offset(entry);
-> +       ci_end =3D ci_off + folio_nr_pages(folio);
-> +       /*
-> +        * Extra locking not needed, folio lock ensures its swap entries
-> +        * won't be released, the backing data won't be gone either.
-> +        */
-> +       rcu_read_lock();
-> +       do {
-> +               if (__swp_tb_get_count(__swap_table_get(ci, ci_off))) {
-> +                       ret =3D true;
-> +                       break;
-> +               }
-> +       } while (++ci_off < ci_end);
-> +       rcu_read_unlock();
->
-> -       return swap_page_trans_huge_swapped(si, entry, folio_order(folio)=
-);
-> +       return ret;
->  }
->
->  static bool folio_swapcache_freeable(struct folio *folio)
-> @@ -2030,7 +2029,7 @@ bool folio_free_swap(struct folio *folio)
->  {
->         if (!folio_swapcache_freeable(folio))
->                 return false;
-> -       if (folio_swapped(folio))
-> +       if (folio_maybe_swapped(folio))
->                 return false;
->
->         swap_cache_del_folio(folio);
-> @@ -3719,6 +3718,8 @@ void si_swapinfo(struct sysinfo *val)
+>  /*
+>   * If we are the only user, then try to free up the swap cache.
 >   *
->   * Context: Caller must ensure there is no race condition on the referen=
-ce
->   * owner. e.g., locking the PTL of a PTE containing the entry being incr=
-eased.
-> + * Also the swap entry must have a count >=3D 1. Otherwise folio_dup_swa=
-p should
-> + * be used.
->   */
->  int swap_dup_entry_direct(swp_entry_t entry)
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index dab5e726855b..802efa37b33f 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1287,7 +1287,6 @@ static void swap_range_alloc(struct swap_info_struc=
+t *si,
+>  static void swap_range_free(struct swap_info_struct *si, unsigned long o=
+ffset,
+>                             unsigned int nr_entries)
 >  {
-> @@ -3730,6 +3731,13 @@ int swap_dup_entry_direct(swp_entry_t entry)
->                 return -EINVAL;
+> -       unsigned long begin =3D offset;
+>         unsigned long end =3D offset + nr_entries - 1;
+>         void (*swap_slot_free_notify)(struct block_device *, unsigned lon=
+g);
+>         unsigned int i;
+> @@ -1312,7 +1311,6 @@ static void swap_range_free(struct swap_info_struct=
+ *si, unsigned long offset,
+>                         swap_slot_free_notify(si->bdev, offset);
+>                 offset++;
 >         }
+> -       __swap_cache_clear_shadow(swp_entry(si->type, begin), nr_entries)=
+;
 >
-> +       /*
-> +        * The caller must be increasing the swap count from a direct
-> +        * reference of the swap slot (e.g. a swap entry in page table).
-> +        * So the swap count must be >=3D 1.
-> +        */
-> +       VM_WARN_ON_ONCE(!swap_entry_swapped(si, entry));
-> +
->         return swap_dup_entries_cluster(si, swp_offset(entry), 1);
->  }
->
+>         /*
+>          * Make sure that try_to_unuse() observes si->inuse_pages reachin=
+g 0
 >
 > --
 > 2.52.0
