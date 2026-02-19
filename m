@@ -4,134 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DBA2E9A048
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 09:42:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2525FE9A04C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 09:45:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36C5F6B0088; Thu, 19 Feb 2026 04:42:36 -0500 (EST)
+	id 82DC56B0088; Thu, 19 Feb 2026 04:45:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 319DF6B0089; Thu, 19 Feb 2026 04:42:36 -0500 (EST)
+	id 7DBB86B0089; Thu, 19 Feb 2026 04:45:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2263B6B008A; Thu, 19 Feb 2026 04:42:36 -0500 (EST)
+	id 6B01E6B008A; Thu, 19 Feb 2026 04:45:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B6946B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 04:42:36 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75C9113AFA2
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:42:35 +0000 (UTC)
-X-FDA: 84460716270.24.9B59837
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 945B8160005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:42:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L4TvFP9N;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5660B6B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 04:45:36 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15E09160483
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:45:36 +0000 (UTC)
+X-FDA: 84460723872.19.567146D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B523E180008
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:45:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dFxhBMuP;
+	spf=pass (imf16.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771494153;
+	s=arc-20220608; t=1771494333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8QsMn638cdRmwk3AgZMXyCq27Z00SOyz9lVnojbN1X4=;
-	b=Q189IWLVq6I3vyhzVKyVr8hbFliPllqkVWuE5Qe4GerxaZB00cE17VDipora3312HmidbM
-	cmbskQd0PzkuuFhu/9d37bTjr6d0mLdpuTmmVSfzZiXoLTJ+dHp2SU+gnGUDb6vm2z7Hkq
-	kuE6yNZQhrXZjnObUNaiUlfR2vBahEI=
+	bh=Jc3i9FwjGQs8rH6ZGdIFq1/g5A3pmIExt0aTpd8WwbE=;
+	b=7hWtWwRTEmJcRPfk0Xve0QR9hcN/EGhPcpg7SoXQsdDx2Sbgt6eS5vNddtqosGBCr6as3P
+	hh0oxLJvFQBX7dWtCgCZEUFDVPf+ZdwJP3WYb2kMBKVhU/f6ow+skq97T4GJQJQtXF2z2h
+	aNvMNq98rsF3gtsMyoTDB1EweFYFBaY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L4TvFP9N;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771494153; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dFxhBMuP;
+	spf=pass (imf16.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771494333; a=rsa-sha256;
 	cv=none;
-	b=BQrSanabWFidaMqqAy8u93VQdQ/V1GEYX4Rfooh5wUt9Rn2gZokp1K44vEYvKE9v3rYDGu
-	JAnE2qkRP9QcD7AdeWiU7RQXObkbnhosvRB4S1KXiIAudEdiiQCZTFfPv+evy4i/2d700k
-	QtnDr53a4UYitE7SgYnqu3NhoLfnS7U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 650D543796;
-	Thu, 19 Feb 2026 09:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F05C4CEF7;
-	Thu, 19 Feb 2026 09:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771494152;
-	bh=cu/PlxXbGok7ckcartXddupH1N/6QXZNtaFeQrDMmFQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L4TvFP9NqDPDX9tszEtIQBCAA/SIckD/DwbyRzr51GIqV9LbvuDIfQvfFi+4m6EQ0
-	 7pwExaAF7GyMhYqzMSH7/LnhnvDNH5V3RDhxCFOcluu6hUpyVlTkaUS4lqauL00CLj
-	 WpSG4wCafcWRg2hNJhE+5Fe6dRQKIArNKg5dc+PmzokVTPwzgoKqo1lA8QbNvp1pI2
-	 Z41Weo4j0PBOChWBrFB1dGX4bko0HnwH/MGOdMZo91bfq5L1Blcw9eB4jOk8vAEK+M
-	 7COokWyZ4gYCyRBWoVbZX9dGwe+GmbyGeR3mMBB0vcXh+5R3R879W8iCah5LCtFm6n
-	 YIuEhZEbS2T4w==
-Message-ID: <94f03cb9-c7eb-4a7e-8952-ec56697a2816@kernel.org>
-Date: Thu, 19 Feb 2026 10:42:28 +0100
+	b=FH4wUfEjg/6FnQIsjYeWiy/tQsWBgLA8ab5SQiWPvW7TZnYt2hIpsM+sqPYwrXmS1Kyia0
+	nHuBeV2AYO35K70sr1vpbMlcEvJ3wV4MrVOP3K6hGlwCQJpbcqlCYVt0EgkwFy1cyqzESq
+	vaphHbOm3CY4oRkbhO/ClyxIQxGjfZY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771494333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jc3i9FwjGQs8rH6ZGdIFq1/g5A3pmIExt0aTpd8WwbE=;
+	b=dFxhBMuPj9glkz+Ecbx4ytyjc7G3tcNVv5NAhD5j2tds1y0KcKMUVDmhtWjFw7GuwaVIFR
+	sRqmudR28bl1sZJlxe1+HsTLPicPaHAouWfDYt64wj6+Ff0IsYzj13ygp4VC56/5xOBqFf
+	ti2szQmnYU7AiCIanZVeVgheh7OU7/E=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-141-_ibK0OeQNnmj_7iEI_qSuA-1; Thu, 19 Feb 2026 04:45:29 -0500
+X-MC-Unique: _ibK0OeQNnmj_7iEI_qSuA-1
+X-Mimecast-MFC-AGG-ID: _ibK0OeQNnmj_7iEI_qSuA_1771494329
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-797b0076763so12488497b3.1
+        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 01:45:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771494329; x=1772099129;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Jc3i9FwjGQs8rH6ZGdIFq1/g5A3pmIExt0aTpd8WwbE=;
+        b=S4ttRy0Z7EqA1T0sD/laYlQjjZtPDxqJq+sCM8nhvSdjSmzX0s9wCyyBfGM35bWrnz
+         j8DI0aZ6gxoTAwy70DT4usa/jk4u/o3t/M9yVczBxp16Ajrwl/U3ZkTXagjtFTrlwSel
+         vuctcpw1vLmNqQ8YYoe9DnDhfrs4R2vu4EQ1VEE0dZtWq7eDs1+3AqHEfj07IkpzMwal
+         lGv0XrDqC2cXmSoEGztD2hc0jnCnayBpA4JcwZMxhRbM8fiFBumKP9Ov8nLSEwDWUa0S
+         30PsyNEArBZGrdAiS8LGaoW5Lz09zdUnkg9RyCbZ0/+u4ad5BvOhbZ77NhAVvFJ4jfqD
+         dqgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWn5C6tHveyOYiMQXlJvdwgl2gWg8+XE8sfkoiVIAPQ9c3agKHSehHny6sz+40tBaMNqBA4zNjLxQ==@kvack.org
+X-Gm-Message-State: AOJu0YyFyuRHGQ4e7/deu6Z27rFRsDY+DCuzeXBKV/C7nvds1Ide+qUM
+	6+0xtN33PAvZCoZ3m9H/N/exQcQYaslmD2+CeDNqtIFSEmCUK7FlBB0MyHFAHs7JvgdLTbr+k4e
+	ooOIXUn55Q4TO704y6yDvKsd0JkVKeIeC2tdS9T35JkrSOlrR8t0umSZcKFOhiEj4P/7T6OorJK
+	MeBebuSTey2Fa5ngtcg4oVNKCLfh8=
+X-Gm-Gg: AZuq6aJis9vz8ZOb9dksHONbigMibb6auZITGnwEz9ZVEouCtRcIknJ1d6HfmNLS4PQ
+	9iy+hP73KBj3oarGxFryknNBDOr0XC9aV2J9f489P0zhSOFin2V3n/7aUsakLFFBwiPN+Y+E0VB
+	1wpPKmVCYB41dcIyGHLFeAh5KLoJNYZ/5Cl9oa1wdwfPUtWg94yea6Jv226dKw18pR+zGgP7/fn
+	g==
+X-Received: by 2002:a53:ac83:0:b0:64a:cece:95f0 with SMTP id 956f58d0204a3-64c21b189b8mr12656985d50.61.1771494329173;
+        Thu, 19 Feb 2026 01:45:29 -0800 (PST)
+X-Received: by 2002:a53:ac83:0:b0:64a:cece:95f0 with SMTP id
+ 956f58d0204a3-64c21b189b8mr12656956d50.61.1771494328829; Thu, 19 Feb 2026
+ 01:45:28 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: gup: cleanup the gup_fast_*() call chain
-To: Aristeu Rozanski <aris@ruivo.org>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>
-References: <20260219050250.061598056@ruivo.org>
- <20260219050250.266876166@ruivo.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260219050250.266876166@ruivo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8widqznig9pamhqycmbnknot9wd5c3eg
-X-Rspamd-Server: rspam11
+References: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
+In-Reply-To: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Thu, 19 Feb 2026 10:45:17 +0100
+X-Gm-Features: AaiRm51_qfw3XQOH44zsawVMk4430XcLLbmTSpOFr53O7yUQLt26G4MawVh9oqo
+Message-ID: <CADSE00+6Jnv_R69nrWdakX2StNK058ksxva48z=ZnwT=Zr3UOQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] dma-buf: heaps: cma: enable dmem cgroup accounting
+To: Eric Chanudet <echanude@redhat.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, Maxime Ripard <mripard@redhat.com>, linux-mm@kvack.org, 
+	Maxime Ripard <mripard@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: fRzXzvpP8cTTNR81QvD6OzwbJ6Dwnth9eqZAMJB6JqY_1771494329
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B523E180008
+X-Stat-Signature: 4ycthtma86y1px3xmhg4au4jrhiqp1o6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 945B8160005
-X-HE-Tag: 1771494153-969040
-X-HE-Meta: U2FsdGVkX19DiDXmr3sdjKkepz5oLMF7UFkwU3PrJVJzBh9+RQyz9apW/ydUCwttxztrC97shydqw0YABDOWanfdfSo4ZG2bsSmY8YXzhgsE6HUtRJ0B5axCxCgd907Ts3sphFlaSKSJC4k+iKRQvGfNwMApyFiV89HUqG/Dp+5dE1on1/A5fK+Be/4othYNA5R6RLZl9wiyvdRugEdS4NmSUSh7ySaCGtMmLcUAgWuQFFpHpqDZ4n8z3osqCi7XBSGD6oLm0LWiDn+440lAiRgcM2R8SDH77W23YScUTdRZ5mTSEXSEzx9oUuvD9uMehct49dOs/hv8PaLlKzgRWM5jxumkwjOEZDHg+g27DSobcQWuv1Mbv9UGWB+ZQm229LSCp13vTATw0IvpXQf+4a9vq3Cl67RSU9nXyRBRF3SmhzpUQ9nyUcc/lP47+SxPlqJgiH/cV7rpSlgntoNTXtkEyXyApdHrqVeJlVPVmW0CE4LkqM1QHCnHm5NZEKP8BTpf3OK00f7G++p64p3x9l5FKUwoc5gLzdjvK2VZntWkp/T6FZuIBkrYlxirOEtU89SmG6Dj2Yto13lZZKM+beLBYODlQwxF1XJmumndsTAk6m7Js+YHxkU2pA+lzjccA9haZOO2OTNwXZcLuzdCMPGTyEgYs3MgY8BVKQECq5TR9DQd/d37eX+UtbfEWSgz3PwzLOXH7gPpq0veXKDv2DY9wG+j5eG2RkT1BD7SOs/jfNVjlVwSl2JnA2aZXcHlO1UyjNOT7WEVJD/MeAdNq6RM7SdkX4MoaWiZ5ccKNx6XAm4Brot5viYEDjI/+dwrCwPQR3cz3NkC7X/JHlb2iUk0utcAuANnNWsBgusnPRjoZPCLPiqNRT8o5kudZQtWqWASk8L3V5okuCgeppv9Ydpyrc+9UnzLsvSHbFpzUv1IDMVdXq9DrycdV3OkNI1sb3Utx+HoQNoZNC6axME
- +rmFAZR1
- NMFXw/ITzgkA2uiHrWdvsf2Zw1c9wE3GNREuS/0n/Ff/zKJh9FfgFDaQnlviTQXvNuf+4qdruwV/IE2qAt3MGRxHCE7cux+YUcjU4q014/gY0oibg8NTTvVuK52rdfGcFTKKWNCGwXus3TpRrCqxeZYdOQ2ZBl9SHdUHwtRnGkUh9frsQE523ulkRk6gV6o11sLzIuNz/+9fHlB1JptYZr99dwTKgCc3P0kvv+yJFw66IE5x22tHHT99ySiIIZzGqfS2l3tK3ABP7wm7CEdDyirB+yIU7athPVpWtKQWjLrEz4G8B4w7eJkStAk0JNvzvYvSdoZaywMFJYxXsKyLQCq5iGkEodyWvsYojZQ65+Y2zhjUeUTN5NzWS4jDu41udvetVQBRUt/DXvD/Pk9KTaNvU6erT3qMlQxdruzdFB96R3dnbR6Zyc4kdx4t/IQ3M9rdJI3d7mag/iVoZXFdedgCDtbtgbJNKr5y78XtFhqbOjsPie8qk+LTrj7wtys0dztH3tGd5nlJqdg7wxofB+btb/sPK9Eqp/P0qTBL7iozx/dE=
+X-HE-Tag: 1771494333-25494
+X-HE-Meta: U2FsdGVkX19gw88Ot+A834WOaG3gzSj47ca7/TKe2yja/1JW0gI3VaUVZn3YjriQ7wbqaevKuiuEJJ1VaTmZ4cAD8FNXHkh6Az5hLMFF1f7PMsDirCkl/YUQAtZBXeq2NPfBFSwcpPKS9SwRvsFRMkBXckQ7sdcW+Gb6BAl3prGMB+9FXFw6iLNA5qCmrF0EvR3bBFO795itfYh/4/fPBu7HZf3W/0YuD5zW11hY/kjfewMWC5fTRnf7IGzF/Hjl1hAYKtqInbUYx5r6L1AqZfA8WgnmfPRjvOXfG7kIVnu7oNr/eQF6TDd8b7fxVu4iHO2kwn7RBhPSNNbcKavplAH7kyeG3FfC+QSvs/avvPOX/z6IOvDhbZdCQBK0mfHeIDw+MaIGf5jWOsZIUiWLeZWdUchhWE1zh2e9qhTV4Zj3P8bgSgEsA+ZcIqVqVAAb+ntLXMTemx5X/LtNDKVAq8j2gu3emduXXDMw4lHuUhlupBT4yrRaNTHo8jzn/RO88UOQYZNaIu8CrXM+7mUFeCHGS8EJZg1gIELAEpCREKweeXhaRIGOXIcfqigrTHgWCrHWi5jxnABpACeZVVQjMx9DVaCHgfAmSFsArWvzN+tw3m/a8KYxJo59/myjTNwowRjp/ziLLfMJfNoAOHgF1r+sx5S4KHOMFXdIJXYynnhao2mfLwSmG9V8g2/AV53lkpL3rxs5MN/unt1c9I4aJyYsP7A4S8i7xGlYe8J1Up7k7C0BeRQjEXrx+9lcybDAvNlJP52ZgudsZvAvh/wYE2/6GUgTA+Tc+nMcJMbCmvMG30Ra31IC5jSasxMVrdz9qb4t7Kfkwk7vuzkUUVzZvyPcpLhLdfAYvq11/3ws7oSCEK48uckliFOBUqMvhmLj1k5d4rk/Oa8laOLt4nXuNIkTucov2FSi8t2ba47qPrSBKuB5rXvv3snOYLOxz7UsNXThWFHLVsO+0/Zi0y7
+ OSZ5AzAD
+ raJG9F8o8magyM7XIjU8DoximmYnFy6hSMXv2blZDzC3LoydnCubhHvS4qM97f0L5uUULQBS2FBmdLhBNeUobDqNjmApO6IK3tlW7SvDgTivd6nyVNB4aGmSqCnpNOT3IYZ5mlfHYhdUTJo5c/KAl1gUF3Gs25YuMWtq11t8eU3uEXvFnkVgyZMGOziYu78CxMIBi/B6PvAUKLcZ6JnuxBB5iEJdMfgVeaWOYcj7Cf3xaTkbgxMH8qel83AX4gcJ9Kyxa6g0/mLh94YEHSpvQgxfHAbokgC87Jp34mOE3KlC7pmiQFKDZCCYKrruzFgWbFCLTKPHwkdtn6b0B7NoBIFIJcT2fLrrQi0oI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,74 +134,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/19/26 06:02, Aristeu Rozanski wrote:
-> Refactor gup_fast functions so each step of the way returns the number of
-> pages pinned. Because the previous step of the chain knows what the number
-> it should be, less indicates an error. This way there's no need to pass *nr
-> along.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Link: https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
+On Wed, Feb 18, 2026 at 6:15=E2=80=AFPM Eric Chanudet <echanude@redhat.com>=
+ wrote:
+>
+> An earlier series[1] from Maxime introduced dmem to the cma allocator in
+> an attempt to use it generally for dma-buf. Restart from there and apply
+> the charge in the narrower context of the CMA dma-buf heap instead.
+>
+> In line with introducing cgroup to the system heap[2], this behavior is
+> enabled based on dma_heap.mem_accounting, disabled by default.
+>
+> dmem is chosen for CMA heaps as it allows limits to be set for each
+> region backing each heap. The charge is only put in the dma-buf heap for
+> now as it guaranties it can be accounted against a userspace process
+> that requested the allocation.
+>
+> [1] https://lore.kernel.org/all/20250310-dmem-cgroups-v1-0-2984c1bc9312@k=
+ernel.org/
+> [2] https://lore.kernel.org/all/20260116-dmabuf-heap-system-memcg-v3-0-ec=
+c6b62cc446@redhat.com/
+>
+> Signed-off-by: Eric Chanudet <echanude@redhat.com>
 
-[...]
+Tested-by: Albert Esteve <aesteve@redhat.com>
 
-> -static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
-> -		unsigned long end, unsigned int flags, struct page **pages,
-> -		int *nr)
-> +static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
-> +		unsigned long addr, unsigned long end,
-> +		unsigned int flags, struct page **pages)
->   {
->   	struct page *page;
->   	struct folio *folio;
-> -	int refs;
-> +	unsigned long nr_pages = 0, i;
+I tested the series with a Fedora VM, setting the global user.slice
+dmem.max value and then trying to allocate buffers of different sizes
+with DMA_HEAP_IOCTL_ALLOC. Exceeding the max limit results in
+'Resource temporarily unavailable' and the allocation fails.
 
-I don't think there is a need to initialize nr_pages to 0 here.
+BR,
+Albert
 
-[...]
+> ---
+> Changes in v2:
+> - Rebase on Maxime's introduction of dmem to the cma allocator:
+>   https://lore.kernel.org/all/20250310-dmem-cgroups-v1-0-2984c1bc9312@ker=
+nel.org/
+> - Remove the dmem region registration from the cma dma-buf heap
+> - Remove the misplaced logic for the default region.
+> - Link to v1: https://lore.kernel.org/r/20260130-dmabuf-heap-cma-dmem-v1-=
+1-3647ea993e99@redhat.com
+>
+> ---
+> Eric Chanudet (1):
+>       dma-buf: heaps: cma: charge each cma heap's dmem
+>
+> Maxime Ripard (2):
+>       cma: Register dmem region for each cma region
+>       cma: Provide accessor to cma dmem region
+>
+>  drivers/dma-buf/heaps/cma_heap.c | 15 ++++++++++++++-
+>  include/linux/cma.h              |  9 +++++++++
+>  mm/cma.c                         | 20 +++++++++++++++++++-
+>  mm/cma.h                         |  3 +++
+>  4 files changed, 45 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 948e195dfaa56e48eabda591f97630502ff7e27e
+> change-id: 20260128-dmabuf-heap-cma-dmem-f4120a2df4a8
+>
+> Best regards,
+> --
+> Eric Chanudet <echanude@redhat.com>
+>
 
->   
-> @@ -3129,8 +3139,7 @@ static bool gup_fast_permitted(unsigned
->   static unsigned long gup_fast(unsigned long start, unsigned long end,
->   		unsigned int gup_flags, struct page **pages)
->   {
-> -	unsigned long flags;
-> -	int nr_pinned = 0;
-> +	unsigned long flags, nr_pinned = 0;
-
-I don't think we have to initialize nr_pinned to 0 anymore.
-
->   	unsigned seq;
->   
->   	if (!IS_ENABLED(CONFIG_HAVE_GUP_FAST) ||
-> @@ -3154,7 +3163,7 @@ static unsigned long gup_fast(unsigned l
->   	 * that come from callers of tlb_remove_table_sync_one().
->   	 */
->   	local_irq_save(flags);
-> -	gup_fast_pgd_range(start, end, gup_flags, pages, &nr_pinned);
-> +	nr_pinned = gup_fast_pgd_range(start, end, gup_flags, pages);
->   	local_irq_restore(flags);
->   
->   	/*
-> 
-
-In general, LGTM, and our gup tests seem to pass.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
 
