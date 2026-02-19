@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ECF5E9A03B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 08:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 912AFE9A03B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 08:24:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 020B86B0088; Thu, 19 Feb 2026 03:01:13 -0500 (EST)
+	id 717E16B0088; Thu, 19 Feb 2026 03:24:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1A026B0089; Thu, 19 Feb 2026 03:01:12 -0500 (EST)
+	id 6C5326B0089; Thu, 19 Feb 2026 03:24:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E09566B008A; Thu, 19 Feb 2026 03:01:12 -0500 (EST)
+	id 5A71F6B008A; Thu, 19 Feb 2026 03:24:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CB5976B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 03:01:12 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 725121C4A2
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 08:01:12 +0000 (UTC)
-X-FDA: 84460460784.18.2046630
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 87D6FC000E
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 08:01:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=cj0Iz9Qt;
-	spf=pass (imf28.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771488070; a=rsa-sha256;
-	cv=none;
-	b=paiVd3vZVwSJ6E8TNgbyiNkrAyFrQ9A7T1p1HOe5hzQ0mnta9O8hm31HOrRK1Hio4liNla
-	/8kqhKkbCJ79Y5afSX8KaMUDgi33oj+ZZ5HXP49Guq56aKUGzmDlR/dkhTRWHBlFvzays3
-	QQKPOdnnHLngeDEmcLwirl5bmUzgJSA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=cj0Iz9Qt;
-	spf=pass (imf28.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44E376B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 03:24:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB5FD8BAD8
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 08:24:11 +0000 (UTC)
+X-FDA: 84460518702.04.D9BAC38
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EB8654000A
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 08:24:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=t6GzZMae;
+	spf=pass (imf27.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.221.52 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
 	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771488070;
+	s=arc-20220608; t=1771489450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uEQ27jPIjOmpNod7ihflopMRb8gsNhXOZ78DPDWRDlQ=;
-	b=c/Qg8o7ds/aYX09gSp58ZGcm/yiW3aeMIoEvi35v0ptNUWRL4OG059tdxmQHeUh+deVddP
-	FwWdM8BFy0ggolAm8jX9balG/lLYGMzI5PmrT3dO+2MeIhS2MPGyvWXuZVXbgr+ZOPkh/U
-	FKt/eHa34a6EhLBDBjtvxp54s0Uxe5w=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-483770e0b25so6569305e9.0
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 00:01:10 -0800 (PST)
+	bh=0GbbSdysg+YFEUJI01k89ruDtqq8bN+fDTrKedLeRl8=;
+	b=JWfL5UU8+7BRzcu6NfgEWykfq0tLK0Naabo+c58PB5J53Z+BoSo3LNebSM9zT384HtpF7U
+	NRcsttR9xHAVBeY0QswutRs1wSp9pUv9q8dZvtZ0VgCZhRvTqzQ9sePS3RCcrzJspjCZ1f
+	tX8Lq90Rgo5UhMSm6Jhc1rk0gyEPErU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=t6GzZMae;
+	spf=pass (imf27.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.221.52 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771489450; a=rsa-sha256;
+	cv=none;
+	b=PJH1GYWr2O6PpWKCGR8/uiDnP05MaL85dpLCaYWk87NrDtU3Qc0AdwAm34splM9b4FkmlN
+	IKu7sNTcZgNVC7H0hM7piRmaiuTDQOVnhGn6qpTHNeExkgqhChSsl0cTfKoWMBdsTD6U3X
+	G13p1nvnNfiXv5dCbu5VxCWBemvW/90=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4327790c4e9so417281f8f.2
+        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 00:24:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1771488069; x=1772092869; darn=kvack.org;
+        d=linaro.org; s=google; t=1771489448; x=1772094248; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uEQ27jPIjOmpNod7ihflopMRb8gsNhXOZ78DPDWRDlQ=;
-        b=cj0Iz9QtD1rdWG3xZjltpV8h41cdUCthZLq8iR1SbEuaITU9c4Pnw4yqRbdIeRCQsd
-         NgtAs2G4eWKMS/01plMXZNPA6j7xsa0X/lDqmStNH/2rAF7QCZes4IWnaBHBB6L1Oz5P
-         DtZaxxjVE4gKMlyAu/6T8JHNQA/vS1hLbl1Lpeb0vuIL2g0zZ5OPcXKZGUM1Gz9CPFN4
-         2cD4jOEYrwWgQTpQWv27JC9RIAMHzGaG7E5IfrKwc8qXHprVGkoV+M2k66Ba50Xm/6D8
-         FdFJ+z2PT+NoBAmxauOLeqCQRO9EATwqXI3FgOyNs/Awu+xxmwJ++1G5R0ZU8rBUSl7K
-         9vCg==
+        bh=0GbbSdysg+YFEUJI01k89ruDtqq8bN+fDTrKedLeRl8=;
+        b=t6GzZMaeRxpWnHhhJQsBK1zCVUUb1iVO885CLz+YcDq+5DI7Bz1UKScGwWFCYEu63H
+         3zDrkEpItm+qOmYBEIKCRYok8A6saBGKNj/cRuTcpvXb6urS874A4XyAUhcAL0PLwYd2
+         JjSfSVS2WB0inbQqvB2T9DlW6FOIXQo2yghmIJ5ge++GrVYxFbXHi3c6YJnbmI6MYhc9
+         dtkjTSb8b7HS3/3WUobDdpfM7td5aNKUtjQDt1KHbwF9N+C3YMCGLDWqHPKK5VuOJmOA
+         UYF2QKOV5YjpGNbq1GqgWzDv62PkZibi+hEOZUYMiNxLOu5EL0WkAVblL7rN05vwODIf
+         kg8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771488069; x=1772092869;
+        d=1e100.net; s=20230601; t=1771489448; x=1772094248;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uEQ27jPIjOmpNod7ihflopMRb8gsNhXOZ78DPDWRDlQ=;
-        b=LDpS9Tq/WVFqtcf2bvjpVpDwQEXjbQKjFJyQcJCFRkFuUBNpIvFdFs+W7SxcKnedws
-         nZJIsKWToVp2iWw44nd1g2ERUHfnqO0y7CnLKjJP3McIp6TdFN1AIdSFkd589AIpcUlo
-         PG9AVvQbiEVkyTkTxastH32xS20GnYqfgVifZyQ8XGNDE6sjoV0LeSp5OyfRqUEBXbQd
-         g6LyHGO1LpRVltpf9WtJpw69YRrPqM2ckwfeTDUN3m1CwYciwX5M6+eKZ7rem9dJq2PG
-         +GDSBxG+aS+mWvU2gL3XUo+qjRipNVgBoEQVlNdeYlfaHbqtMEuZFHA70Fj7p6akoU+Z
-         xmcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVwTHIUJf2MWPyJSiV3DUoxJ2dw5EyGCy6nwkT7nmzN4e083wT9wnIsFQ0iO4rtJmpTKJfEW5onBg==@kvack.org
-X-Gm-Message-State: AOJu0YxP9FOkEy7r6lQAQ9AYvyBQjHzyTNR6R4eU1q0nzuo0m5hoLEzv
-	DlVhZYjc68UvSUUPN5H2DnlcbA4JHSvKRCiUu5/qiltJRB4mDpxNSnzApvw0vNExmJM=
-X-Gm-Gg: AZuq6aL2YAZeldGpdvq3HGpze2DTr2o13Z3bQ3j9UhSnK8X0nPZn7oM5jDbxkr2HdB3
-	b4zd6nzmk8ZNiR1lhELLxdP9S/pFhkpJPzAiKrX6ZHPoWLsyxKmpo30EJX2PidAuzDQ8QCKAVmP
-	mHKQsBTUHJYWPDTOmIz1eEfmhw3Qfk2viPqvb10rWyLRiPXBGllRb78RpxwAumh3iYupe+bw7vB
-	ym6c8yj5ougr/9qtppqzMMvZEpPUQHltZ/SDGCnLBPJ1WaVQTiP+IPVobHiZrWKcaqZR275fgWB
-	hu7YumXTQeIyoHOhFiloe44zBbKW90WJxG+fYVM3qjl9grdGlGG/lf9BwZb9TYAbYC4/o+04Pti
-	mhRaK72s0A8e6slqYXVpZ/pWkv2WLm+m5qSjjvcavWchU/SlsSmYdlgjaglFfOpb6WsZCdFuwzg
-	d+L5ENUYp5EUTBfKVXYHpPU6SvsU/HX8XVI9+/sAg=
-X-Received: by 2002:a05:600c:1381:b0:483:ea6:8767 with SMTP id 5b1f17b1804b1-48371098c8dmr309544945e9.36.1771488068588;
-        Thu, 19 Feb 2026 00:01:08 -0800 (PST)
+        bh=0GbbSdysg+YFEUJI01k89ruDtqq8bN+fDTrKedLeRl8=;
+        b=CBDNU+Xurld5sXYdTx9/OrY+wq0cVRDllo3lnwYE+j2U+QtWTgMAA62E3Fi7tHfodl
+         QDnHZt1tQ2415TCEtVt/xZJo6B5SkTqnMwGMbOWIgwMyiRuRzcbHXMVVd//v0SORCgfE
+         Qo5aJsrXe3GV3p/DAQdeGNEMFyhyZt4O1nUB/wACvXc7w9U3chK6gB3iT2n0hguliw81
+         +WyUmsZImiknisBKu1ioSgo2m0fW6O2xO3Q16Vlh7xRHHCWNBDyCY3/dp3x9QKPkKSif
+         sqNURilKMzqyNLgnMBdioY1o1TJn+DjNDO3xp8Qv317/1yxsjJhuXaRoj44AjBjFZbjV
+         HgNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUn/Op/Ooe+4ENorsfObGstjW30iLTILh/cS7vBty6kvZUd2idOYlKc6Es7gGaLxr+UGi3l8EOX3A==@kvack.org
+X-Gm-Message-State: AOJu0YxbsHVILRlI3laULEW9bHDF3DMXlN43kScBloXbPyDN6jCGTpSS
+	AjRu6dIQaqr43AEyPuUOMgDzLM5h/Bzr2CCNOQuyf63ajpayKIymm981jjvcwooaGJk=
+X-Gm-Gg: AZuq6aLU2zMifW5PoUwbjSFojfXKpZg05kDSX4KTI0SjLtTdkrX5dC8aAjYm6Hz7oX0
+	X9lgvtJKwtEW8I0kCB+LGdtIj6MeveoVM1/cytg44O1LyAoFJrH/61esrPbfansJWXfQqtPgVrF
+	Tfcc0P8rLVXyrzvnajP5PFgCV3zNLwyt0mxKknyvaJ3kbeUJQPP53sW+lMEugGOq2GojRqOyA+S
+	NASvXtjvbA7UaZYBMgO09I3UBHPKBAYjtvpE7IuBQhUOf3KgKIOr4cpPsPjsucGt8h0C3AXv3g5
+	muaYWu7FyokSUdPNyLJgaOJeto/J5A5raJ46C/ocBISURQnC6lBEcAMqoZamXPdO7G1hXdUtcna
+	rlV+PoXVVRmfwicUUXxNgTsp7sOKan4G7oejSrhM+5kr8aXDImyf8+79l1NlwptTyYIL97er9q7
+	Iy0pZ8J5CO34eDtYZhuYdxdTsr9AQb
+X-Received: by 2002:a05:600c:6912:b0:483:456a:5146 with SMTP id 5b1f17b1804b1-4837108fed4mr354407295e9.25.1771489448240;
+        Thu, 19 Feb 2026 00:24:08 -0800 (PST)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4837b68e5adsm461946265e9.9.2026.02.19.00.01.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4836ff00332sm412241365e9.2.2026.02.19.00.24.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 00:01:07 -0800 (PST)
-Date: Thu, 19 Feb 2026 11:01:04 +0300
+        Thu, 19 Feb 2026 00:24:07 -0800 (PST)
+Date: Thu, 19 Feb 2026 11:24:04 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Kees Cook <kees@kernel.org>
 Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
@@ -125,21 +125,22 @@ Cc: Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
 	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
 	linux-doc@vger.kernel.org, llvm@lists.linux.dev
 Subject: Re: [PATCH v6 1/5] slab: Introduce kmalloc_obj() and family
-Message-ID: <aZbDQLeMsHCv32X8@stanley.mountain>
+Message-ID: <aZbIpCSuKU45b66t@stanley.mountain>
 References: <20251203233029.it.641-kees@kernel.org>
  <20251203233036.3212363-1-kees@kernel.org>
+ <aZbDQLeMsHCv32X8@stanley.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251203233036.3212363-1-kees@kernel.org>
-X-Rspamd-Queue-Id: 87D6FC000E
-X-Stat-Signature: s6u3so8h6dc97qdbzcqod841jsfnnmah
+In-Reply-To: <aZbDQLeMsHCv32X8@stanley.mountain>
+X-Stat-Signature: msz69xe8ojkdxo4gpb86y57pr9qeewzj
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771488070-634528
-X-HE-Meta: U2FsdGVkX1+yJoNRAQjjYKct6lJ1VzuaQeoUKvNTlk9XcIvQwydMiNSTa2tYyjeejd/SSUGK4K08aLlF+hIVxIYR04uy7m549e+nfcdoSBUbFmukMJaXhbiijOQvMgWlfnJn8qn6gqYMImqtuiEUmVcv11RlcZgOpCDCPHLCqrgAhxpFPlUvj6tXYH8RU6dAr10hgNsE2IY/B5xJtZdbOMfxJNdppWEYNSJZxQzZmQaKN0em2ZuL6ow9C5YC5ATgChmwQIABQ26XTiktAj3zrHmESd3vPKoprrdZp/Mc0XdPmIUcSVb31aHycVFGJiWxewRm/dyfXqiREipUcFFkoIr59CqA1Ljl/xyAX5gfIwugSJ5AQgUA+W9EQSBtedogtE9Cw6qeI0XObXDAgsGbyOLoG+BFjkQ8jtAWCvh4MChmpXpJ8xdByu4tHmT0gBRfmhtmHBhNc/yoDDr+1SUtyaWH0znFguDqSjKs+G3VKlLbP/oK7Py9yTSwcVTTh4ZXn90wGLYzC3MDwftM9xqcOCS9+EbI4xdbMVm1eeyAe3ipeCh6LXhBgbeKJ4/a+YjaBYfWVYiNq2xh6BeBcsAR0LTKBu5ywl5FejTH1KJhbTt3tvsP+rKDcllWc616h5m9XxDgMbKryZfJ5r+rUgvGMaRTN16TwvRr/u90dWFkNKzIbdmeL3Az96uY4URAsnHBNe5gIO6/KAZ5HE0ctfJHSrnacQQcVYtKyDtMOnZkQ64/y2b2791j2+M6Gde67JSm2qxoMnAyjnZkcmIxMiZmHZxsf0EFr0QgMI+86jTGrqCcXLy+NmrbSuHt4TVZE4pfXHiQClYeVKk9MZFkrcvLwDLwZK70XgPykclZzRu4iz3eX5/O+mCJQfZ5txh5rR6pEEb81lNglkgGvjgqcEaI/VJwOaSZdShYxpyOylvH1svR1iJxjfUMg/MgTYuJKD1Ckedp2TZhXAyjouzwyYe
- isy5xNjI
- 9oFMt19VJbVh3H2JJ2f7lklBKQPcCNLmJWiKOilJEXWGzcSi+HhhMenTS2aem+Jg+JQNfK9aW8+RcYVYlEeXY+XM637tktDggeuuCoXk+X2KkO3Ats20flyF3njR9nQ/VA6JoRCecGlyElUix6e1gXCpi9ALsmB70h4IpGKe2wQAsX7D/F2f8sKsth1yh6KhrWcExzLSgq5+b1RjDK6o/q0RlRejkqXSti0meEV2rXfEAvbrmijNZf+4GIGYqh0WYuz+gJCXJ46PGura7USo9CqZczdUvwB7x5dBFFkgnhE8FKvyE/dQOZwVeHXiAnkunzDeN+XE9JhJYcs1RaSKZNojVsHNYuJvM8zmjTAmr1k7MyqRMGrfoSDmaO1arBF9KmNDWKcYgMS9zsMroECyx9gLB2YAJAuHjZnx/PopPbXmjs5Q9MxJa1VUJz1UPoseC7ehB
+X-Rspamd-Queue-Id: EB8654000A
+X-HE-Tag: 1771489449-657411
+X-HE-Meta: U2FsdGVkX18luJennvXJrfOFKZUA15SCjNqF2/ii/E4OaSIJZEEMzszd5h7P7DDHqSt0na5QI318tWWpE+oKZDUU9trPEpXIbbjk26DmoZROyhN+sSIh/qWoOhRdGib7W/cNg8xBB7Ubzgj7RdZiNjFdFMHUOyj4fazxwABpFC+p6mBkz+8ryARkF9SCqVJ7pX+K9KOcQB8sHVWxM6xLFsMudDNLPqqwBxgQYASBVs+c+zg7+0fP+0np4KwB6elFh7gfbMxKsiT+wsppt4VuJEzGNadRGAv1O+W9obP6/C/Vv052Inxoh1vNvdW1BqE1onPb7xdKh6W06jtJIk+6cchoKVweoRyyR0eWzFeCn5QdBYwpb3pgK93mnydvZUudGdENEJiP7E7+XgfjkPWf8RGvPxmZ63cZnTGsz/mO6YiO9CJX0f54sROjQgXNUa+dnnfFr8U2i3I1BJTpdOB1qcnKpp9f6ixi8spG2D6RdKNOJojYLr+2bNDUXEvvHFUyULEm1MtlBqGTicU2AcaIABXI4A2R3NUHEtX2w5NK266/aRpatZcj3Jz14A85Hm0qDM+B8Imi5wBPbx3cPX/amOCjZUij9HTjvWbGku4Wl1oD0hFl8Mbid0ISox2lTKrCkx8ZlORjl1OGKXqpfqrmobnFY5MhxuwHdjRWRw4p964PdT4enUOM3MCyGv878228x1HB9L4M9RhlUsdOufYBl8prFOMVS8gDwINFQE22/4jG5cpCovWI7aaBCTk9shk3GCXvfjGbeet6gHyxAhVZUtTBX2naN+5owysWBlKPufpavTGoQvSIG1p7UJzOxLPN3r8snciPbz4bDWOz+JDTQpActOaK7BSZvFld3R7BhFuH5aVo0chPoo6Qiv408k7G3gFSa74kQKcTI76/Wb2yAbbnSnijDQHj9DEumL/FIuemC0sfyGS3LNsGO6qQqUIP2JgdxR9FkvzxwmMxW+B
+ Ep+gnxsa
+ Mb82IfmzXIDJ3+T4WYRHc/12wKs6GWK9I5DHYV1/cgKjwDj9lGopd4yT7HVBGC4B9LSUPQM+tx6WzYHrN5umNfTXzPuioxjQnSlyJK/Xyksh7rbEswet33g4Mg0+2O2uu2ZgnH5Dfx2F6Bm1Poq1gmF4B7ScA0SYw+2BrK/6XaIfBMmbkApJy4B7uwS6yiuQCb4rzfkiYg+8bIXBgaRwM1+6+Tc0n4cR5BSL0j6PeBWdoUSlPSjNXsYFzn3dvy4eI5lIJoio6pF7JlnD1yTSZIYUcPq3EWG4+NOWQpb/sFrkYNhyNqaEn21koEn/mSqXTMpWh0gdb5VtmxVeWt1lKJ0oZ8TOsEYqMtiDchCd46wPAOB2+jddHFRU5YcMjCIp1G599a8kzj3L5QzhqvlbCMIfQC0lGUvOZPhZAzqlPFiCeFsqQ/+U3aic+jt/Uz7LdTUn0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,27 +149,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Dec 03, 2025 at 03:30:31PM -0800, Kees Cook wrote:
-> Introduce type-aware kmalloc-family helpers to replace the common
-> idioms for single object and arrays of objects allocation:
+On Thu, Feb 19, 2026 at 11:01:04AM +0300, Dan Carpenter wrote:
+> On Wed, Dec 03, 2025 at 03:30:31PM -0800, Kees Cook wrote:
+> > Introduce type-aware kmalloc-family helpers to replace the common
+> > idioms for single object and arrays of objects allocation:
+> > 
+> > 	ptr = kmalloc(sizeof(*ptr), gfp);
+> > 	ptr = kmalloc(sizeof(struct some_obj_name), gfp);
+> > 	ptr = kzalloc(sizeof(*ptr), gfp);
+> > 	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
+> > 	ptr = kcalloc(count, sizeof(*ptr), gfp);
+> > 
+> > These become, respectively:
+> > 
+> > 	ptr = kmalloc_obj(*ptr, gfp);
 > 
-> 	ptr = kmalloc(sizeof(*ptr), gfp);
-> 	ptr = kmalloc(sizeof(struct some_obj_name), gfp);
-> 	ptr = kzalloc(sizeof(*ptr), gfp);
-> 	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
-> 	ptr = kcalloc(count, sizeof(*ptr), gfp);
+> We are already getting patches that covert these to:
 > 
-> These become, respectively:
+> 	ptr = kmalloc_obj(ptr, gfp);
 > 
-> 	ptr = kmalloc_obj(*ptr, gfp);
+> (without the *).  This feels like the obvious bug people will introduce
+> with this API.  I sort of think that "ptr = kmalloc_obj(ptr, gfp);" is
+> more natural, so maybe we could make it work that way instead?
 
-We are already getting patches that covert these to:
-
-	ptr = kmalloc_obj(ptr, gfp);
-
-(without the *).  This feels like the obvious bug people will introduce
-with this API.  I sort of think that "ptr = kmalloc_obj(ptr, gfp);" is
-more natural, so maybe we could make it work that way instead?
+Never mind.  It causes a compile error when people leave out the
+asterisk.  Thanks for that.
 
 regards,
 dan carpenter
