@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C23D3E9A048
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 15:17:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC0B2E9A048
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 15:20:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035676B0005; Thu, 19 Feb 2026 10:17:45 -0500 (EST)
+	id B5A026B0005; Thu, 19 Feb 2026 10:20:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFB196B0089; Thu, 19 Feb 2026 10:17:44 -0500 (EST)
+	id B07466B0089; Thu, 19 Feb 2026 10:20:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06CF6B008A; Thu, 19 Feb 2026 10:17:44 -0500 (EST)
+	id A13C26B008A; Thu, 19 Feb 2026 10:20:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CAFCB6B0005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 10:17:44 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AFF01A061B
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:17:44 +0000 (UTC)
-X-FDA: 84461560848.13.4CD4AA5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 89F396B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 10:20:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A1AC8C0A4
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:20:56 +0000 (UTC)
+X-FDA: 84461568912.18.4F283C8
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 03D311C0018
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:17:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="gslqVXS/";
-	spf=none (imf20.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 73E3820015
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:20:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=f+zedE0z;
+	spf=none (imf13.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771514263;
+	s=arc-20220608; t=1771514454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uCjIAKqryddsHbFGalV/RlHhxKplrqjevsHUZi32Bao=;
-	b=tUJE9dRP5sjqlTaWP5IcWXSgzev4zvbmpR8/eOuaZwBZcALW422jCRt1xrvpWuE7tc3NsU
-	5qRIOTFGF7GaUwj9wjv010u4X+xUHei3JGGuiseCsvuUtb7ZLwQyfTuOMnFFkqi3eXMD2P
-	f/upsEuTIrpxyw9P7Magsp0A7apgZH4=
+	bh=GJWQHabnh6u189YCJEq42YLB+uPwZUwkYJ7q/vk+sIY=;
+	b=zVtjCiPywFmg44m44yWtBkKvfbmvcQ+X1eTAUdNu3cbCPi7Tc36DNQeLSb9BFmk2SuItiW
+	qNrqu7O0daMHTuVQU06HkvIwVUxbVM0ftPucuRwzDjzFJ6VKOHg5A76lPVixN3pTtU+cIT
+	srsSYmyxQYLDkFCyJBY2GtzsphSNR1Q=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="gslqVXS/";
-	spf=none (imf20.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=f+zedE0z;
+	spf=none (imf13.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771514263; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771514454; a=rsa-sha256;
 	cv=none;
-	b=QH25bRpfN+G3ZK7xUOSTd8r32rjhvpvrTu0cEHgNyEVbc9yIo/NwSwtwJ6I5UMstxjtU1M
-	lnYj6CwlA/tbqlG/W+BoR6CGGRCHwmxlVCWPvAGz5eRd0l7DOQ9g/oBi3mZ3dNUl/iOFat
-	CvLYloa3RyB6moVITYM7sCOWwjhlSz0=
+	b=xxqUkA1Yqa6+eYxDRca9Krw+QyS3C/fAWwWPuFkN9zgSfEMG6ePeXkRasZiWdojR2qr0lO
+	jPJBMIwx8APvotZvnAfCTjeuWjbXb3Xq1mtnkviYIiO1YlE6mZAOFAVPuwmZEaEPSEY04t
+	bGruL/n/pZnhmbVH3GwwKnbJ3slR8sI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uCjIAKqryddsHbFGalV/RlHhxKplrqjevsHUZi32Bao=; b=gslqVXS/BOf1Ra4BuCed6sP0Ff
-	SiZ6o0RIHtLX4h2MAnbUnjj9q323CIKTSi3BB1M/lSGllO6ff8KRj7cI07aVVY2GXJR5N10ZAf5vu
-	bNRxKJY6Ofaejsqhr+SmnIwWkR6zzfE7GBCZcdaW0d1L0VokcN2NgqqjiYkk4R1SqJMX/KltNsESm
-	sbvl8E9aQQA5NcSa6biLGr63OvCqfXRWGRWgL2IxX/R1Xb9nd2CGTPRb95dFbEBEOw6tNTqP3H6hp
-	6YFAFDIX7l4SD10C4xhKhfu40nZVld9FlDRNvroVQmVaWtMQPwn+zJm3nhwgXsVHDILgKDNc4azPD
-	Po0/MOCQ==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	bh=GJWQHabnh6u189YCJEq42YLB+uPwZUwkYJ7q/vk+sIY=; b=f+zedE0zzjUGv9Mglc5T/eVrMT
+	7JM6mK0oAgYogGk3XbEpjFlHTEtueSGdnuIv79gW/a+c0XyfzDZjQjWb8JvcvtGRuAzW59Di6RGNG
+	2evcxWw0L196DIh+jk3COnP7ev4Xaw14jXdjdIcR8CnDiSgY876fTHVEVHg1Buz13/hxSNLOGAoXr
+	NzDl59gsBj6D4fiKzz8A7jbHL5wYPMX0K2iW5fAzDYmr3YooahPaD/oFPfjXZw1AVgVLanv3ZkFYp
+	mRH0GdRHsdzIF0GHOWGVlk6g4+FO31HMwxBzvxGPPyO738RcAH2bajKX7qq4lv5p3zt+G3kp90IPP
+	CvXz6LUg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vt5mV-00000001RgU-0FtL;
-	Thu, 19 Feb 2026 15:17:31 +0000
+	id 1vt5pd-00000001RvQ-3eH1;
+	Thu, 19 Feb 2026 15:20:47 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id B29DA30075B; Thu, 19 Feb 2026 16:17:29 +0100 (CET)
-Date: Thu, 19 Feb 2026 16:17:29 +0100
+	id 10EB930075B; Thu, 19 Feb 2026 16:20:45 +0100 (CET)
+Date: Thu, 19 Feb 2026 16:20:45 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Kiryl Shutsemau <kas@kernel.org>
 Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
@@ -81,20 +81,21 @@ Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Usama Arif <usama.arif@linux.dev>
 Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <20260219151729.GK1282955@noisy.programming.kicks-ass.net>
+Message-ID: <20260219152045.GR1395416@noisy.programming.kicks-ass.net>
 References: <aZcmlIF4bmG0twkp@thinkstation>
+ <20260219151729.GK1282955@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZcmlIF4bmG0twkp@thinkstation>
-X-Stat-Signature: 68pbn93a94zrnnfxmptc14h3p177yui1
+In-Reply-To: <20260219151729.GK1282955@noisy.programming.kicks-ass.net>
+X-Stat-Signature: xoattf4en3ed4jsqo6b4ohb4i5spyjjs
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03D311C0018
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771514261-759484
-X-HE-Meta: U2FsdGVkX1+B93rArEvWpjKXVGWDvxGeHiO6MD/BgCvRnk6zHp3UuQ6eVWKkxiTqs7xtevZc7GqfOH3xdYMKNuJccrp98c9zumDJe6VViYVETtZ3akXZYT1rYpuxYDh5DERl+WiWfjg0SpokpvJYJr5j124XnUh62Kz23GJYKQzWv1FmlrvI++6UiPuKFwu31vPnJUHhAt46df208Vc4vLIcMUUHBBOfIq49URK1zObIWormeCWdA70A++pvGPI2nMYM/l5Hq5TCP9Jw3mVht9Xxu1ItF7ph9NlDdTxr+4+k8s1tZ0RgLG6N2GPEhNN41j4xMsxN3bOx2UvxWkwPWXDugM8pSEHA17wggLXaJGE/rsjdjQOATgEHjsA0/00aPOn4ca+c8/bDapcho93qGXwy5YGI3UU0eucbnQaAi+d2w3gVPJjkx9q0M8jMDruIo455ROKWd7Psb3YWZNFi+p9n5oW3ApeljOoaUpVaSwjhym6rVxlAeIaroQrJ057hk02Xb34lF9rvXTqs4NQVv3y+vPyGS5yA8w6YARzbz5ezqEWrZMtZJgyH7kXGip2f0YHs6XlG68HS3CcfwKS5of/HjtVtzTjI36NEWE3mC5eTqCZCy0z1vFY116M0orWWrL4K9qAOXaXk6NH8ZdL7C/8g2T3FOJI0+5Y0ixodr3V10xCohkziZpkNm+g9+m76SdNS7yQk4CWjTq5u9ScO5d2GwGXbvYPEDre708n10+s2UuB/SmwOMzRklHqDspYE5MWqnOCOmzK+s8nuVrIq37cKCJ5ossFL+uswiDVWPevgn8P/GZ6KzqR8VgHCNSSf9bfj9TC8ttbkXussto5OQ1lQOS/HcmwMlFUBJt1q47Sy//ETUHX3QHM+vhafkjyH98BrJrSDEO/NkARUUYFgyBe6dG9TagnmLkyT//42PsEAqwq/6Nt5mGx7lXUleDEXPn1d7tWVfS5FRggp7Ma
- irRkMsvL
- eOaqhxuamyXrjWDvjwoGz475XxnXDBpcigTLWfGwN0Y2IKwJIaWL9QSVdN9bNoJQ9Qekw+uHJrcDF5GUZPeJMjgysEpoZXxLCYl0NgSdO+QI/IRv7EoGOOt0/KfpDSIfqG1Qzx3KL8f9eedMKAqaWjFLnMcmDC+O91FTpoH1+J/jPPaPCeszM0El8mGJys/Cmj3VSpwg7cZLBmPvn/T/96AADmpRjKUqyEWo5SWZW0Mi4kGI=
+X-Rspamd-Queue-Id: 73E3820015
+X-HE-Tag: 1771514454-590882
+X-HE-Meta: U2FsdGVkX1+1GNNWbrghV3Y7ClWX8R23QrolNmVEfBmU8IsS1gcVHOv6Z69HqygKGcTchTzfWl/9wJ9tY/ZAYh4texrN8fVFq+BPC/t10z9x5aFArtVHDKllO2w1Bwi9li2JlrYX0qxXr3jubP7K/eOJePxkzEKmbgBo9zql2sPxCZhnZUS6r48xBdHrInmdKELi6mbQJJi5d2cHruZ0QJgfZCHfC1xI2SZOoU8/nlynI2w4vbqgilCTqRZdXO0pJ52lNRwTntv/LOrJ4U1Z+5l2Vutz0KfK5pp+ugcYjq/O1FWhxO9fcf6+QqivbSi3ZsAHgnsJVIlS97X3Lc4c6h+l9oLBci4KBTVNLyTorxpJHIEwi34qCH0JCmuD/ji5tJ/7LCqRrD4I1AFq/sElG0IB3ggQaOxKcU3j8qLVjInzGLttvA9TosM0LukirWLX5kYmHmvzEIVolEOaNdX7LB8gc2H9L9pzS0Ghx1L2g8JgUZyE+PvBMV9Jd/Nn8nVJBdheYo4Oqoniz0RPbFalpFzdLzQi6icWDRehJNClDIqQdhoguumdxg+qqEyw8MG+95wRak/Tqi7axEMCyBg0BWA47oWzWskNGnLCs70C2dq7z9oi+zEdzhFhWrlFkvNBFRhscW9iiye8v2ZT6KVpGQuH1ViPIJl4+ZGwLmw7owS5jb7blzMJ/2vvuyuuTr/8grnIyLMes2HRS/YUf/nWmN6+uv5G99N13RH+OmfFZPmimXZ+U0QIe/4Ab0V9WbIG/3xSoOq/UU0kGB0BZUcZz7n1xgXFN+6CUhPWqwoIbGXpBSukWq0F3unc3Bw72dx8aJjesApQYApMRF4H0osIYwVF0ferSnWWJ2ioCasf0QIUS973ZoWGXihG0US4CzGqA9Jn5mBk7SJ0pY9OdTdCLLTHpJGQStGu0jVk0qw2hXOyYknEwStZD3a+LEfCP+5f/rukYM/axXak0xc0rkL
+ Iy3kfhuS
+ eBpdY2P1MrgnNDIVfYQXnkLRg/dscF1rQwBRL7vFlzQsj0kR6J5lVgadpKRwyetAMhr+OLRN8Q/oUINt33biu7SLpZvBIgpX+dsX9xTt2UTCFPURafolFvdBBzUjJclQj5ShhxrragiRS2so1UNclR+JdEwP1w+ehNCGKQvRk5Qa6xak392GtIriW6q5USQkr/HNBOTiILg9aAU96zu5hx09Y6/ePLxl8gcDVyP8bqpHmYiHaZhQy53egh8hjOFi9dSRE4rIjlL1HfoY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,19 +104,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 03:08:51PM +0000, Kiryl Shutsemau wrote:
-> No, there's no new hardware (that I know of). I want to explore what page size
-> means.
+On Thu, Feb 19, 2026 at 04:17:29PM +0100, Peter Zijlstra wrote:
+> On Thu, Feb 19, 2026 at 03:08:51PM +0000, Kiryl Shutsemau wrote:
+> > No, there's no new hardware (that I know of). I want to explore what page size
+> > means.
+> > 
+> > The kernel uses the same value - PAGE_SIZE - for two things:
+> > 
+> >   - the order-0 buddy allocation size;
+> > 
+> >   - the granularity of virtual address space mapping;
+> > 
+> > I think we can benefit from separating these two meanings and allowing
+> > order-0 allocations to be larger than the virtual address space covered by a
+> > PTE entry.
 > 
-> The kernel uses the same value - PAGE_SIZE - for two things:
-> 
->   - the order-0 buddy allocation size;
-> 
->   - the granularity of virtual address space mapping;
-> 
-> I think we can benefit from separating these two meanings and allowing
-> order-0 allocations to be larger than the virtual address space covered by a
-> PTE entry.
+> Didn't AA do this a decade ago or somesuch?
 
-Didn't AA do this a decade ago or somesuch?
+  https://lwn.net/Articles/240914/
 
