@@ -4,86 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3CC8C531E3
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 22:33:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93929C531E7
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 22:47:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBA6D6B0088; Thu, 19 Feb 2026 17:33:31 -0500 (EST)
+	id A48176B0088; Thu, 19 Feb 2026 17:46:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D68356B0089; Thu, 19 Feb 2026 17:33:31 -0500 (EST)
+	id 9F5BD6B0089; Thu, 19 Feb 2026 17:46:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C956D6B008A; Thu, 19 Feb 2026 17:33:31 -0500 (EST)
+	id 9011F6B008A; Thu, 19 Feb 2026 17:46:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B74D96B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:33:31 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60BF2BBEE8
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 22:33:31 +0000 (UTC)
-X-FDA: 84462659022.13.3A1CCA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C3ABF4000B
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 22:33:29 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NBFnaQyi;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DECE6B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:46:59 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2803E14073B
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 22:46:59 +0000 (UTC)
+X-FDA: 84462692958.20.914DD33
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CC4FF10000A
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 22:46:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771540409;
+	s=arc-20220608; t=1771541217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GFc8ym6gZuICbQU21rVdF1W9JGroD4kIIacLNFrrQyg=;
-	b=dqOcjnUvCnzFWXK0m5yAJDiFSf4eym6dsS/GM2z+YSCo0riFYjlroDG89t+B80lgscWtE4
-	w9B0Rs9R4bvkdJdT/WEwzPdjSKFdYTF3w3OvEzmgv49LJlrvhHhMDscwhLKrUX3MG5soYW
-	oflPttWO5j68V0/MXb5qtnQ3LEUqWg0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NWJOhFc8ZWfGjk3eQ+uXyqYdr3CIP4cuSKl/DyEuGcA=;
+	b=CoO+UclE4pyUOwp4OB0SUGsOZbpp3+IGYBfVJ0Cbx+sACOOWSqArf+zysQxXXi6MT4QvIc
+	N1EGSKBu9tl0KKp5wUll+tbRaKkcL7/VFlrWaxRNfJG66pEp0n4PZY+NyS2E8NvbQ8wCeh
+	wou9S5vD8hrhhCVazNKidwxKo0TyHFE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NBFnaQyi;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771540409; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771541217; a=rsa-sha256;
 	cv=none;
-	b=kYFcr6Bnn6+PufeCz3rmMXQ3pWTFgLYplY4kln+0W3WspYJSTVJc85M/vlvSZfT608+kBx
-	PpxDfR6/wHJ3np/QlL1gz7l/xtK+ZXQBplCuBLdQDua+qJGLnUfTSIIewceQsXx9yB67J4
-	hcc3FrcFmsFnKjcTs9Bs3LV0zCRm2rw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 253BA60131;
-	Thu, 19 Feb 2026 22:33:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E872C4CEF7;
-	Thu, 19 Feb 2026 22:33:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771540408;
-	bh=W9HLRQM9kqFpJqXVvPFl/ReXTVVBlA9Iv4Py9xp2Vgk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NBFnaQyioKKw1bIV5AcFUa9w94kDnQ2v7fOfXUvRvawLkMTHvWO9edHXl7gFEvbsf
-	 OZMlvWsTY7IKgqoKwAMv+VszsCdHhpQ/VsNVKf2IesBtXt7hHTKBSV62mkuQU57wpt
-	 smtqjGhkuSuYv+2zbDWUv1GfNLqSZ5CjArIdGI5Q=
-Date: Thu, 19 Feb 2026 14:33:27 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] khugepaged: convert redundant check to WARN_ON
-Message-Id: <20260219143327.7693e4b1474a337821e4c637@linux-foundation.org>
-In-Reply-To: <20260219054827.4111334-1-dev.jain@arm.com>
-References: <20260219054827.4111334-1-dev.jain@arm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=ILqYkiFAZJ0MoAfnLS0iGeJQHoYNcP2y33RR13gu3+r7HzZljtpwCUz6NKoOEC7f6qHRHc
+	J05dvpJbgjzKVbjidKR2TOxjDlBSvdON1mRor2O+c8UAbqnXjYUXz4RR00srKWeBag4pLg
+	URdm03vkV80xxhEIA2lbOjJyQmN1BFE=
+Received: from [IPv6:::1] (localhost [127.0.0.1])
+	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 61JMkoFT619016;
+	Thu, 19 Feb 2026 16:46:51 -0600
+Message-ID: <39289588fddb4844264546cd103ba4595430f313.camel@kernel.crashing.org>
+Subject: Re: [PATCH v2] mm: Fix memblock_free_late() when using deferred
+ struct page
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Date: Fri, 20 Feb 2026 09:46:50 +1100
+In-Reply-To: <aZbjCFqlqdFwKSHR@kernel.org>
+References: 
+	<ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
+	 <bbffd0db46460cebd604f5c1e6668984fd4cc435.camel@kernel.crashing.org>
+	 <14295eba34f10f5896e6cb7d3e1abd36199cd918.camel@kernel.crashing.org>
+	 <4d93284349178a783725539b66dca25725fa779d.camel@kernel.crashing.org>
+	 <aZVyxKVS8y-rqwrK@kernel.org>
+	 <6453da0558ba20d5c87e730bdfedd47966977931.camel@kernel.crashing.org>
+	 <aZbjCFqlqdFwKSHR@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
+MIME-Version: 1.0
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CC4FF10000A
+X-Stat-Signature: 8wffp86nza6t8bgydxq5kfmpuyxk7drw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C3ABF4000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: utd6jbjd1ndaot9xd9ep5emd6bfnxu9k
-X-HE-Tag: 1771540409-270085
-X-HE-Meta: U2FsdGVkX18j4wk4d3eBvboXnKFdFeCuqLHVzsZEviPYxhWCuwuvVvr1SiKar+rzpABw8WxqEjMxiGLcgncTxgzYoHBUoAfbRVKbUq/HWT3x6xbqdrEWvh4Nb3YL/lwEWuCNH4plOJS4agrimee4/HufI4p1af4OLAHKkijD2lP5aX59FEcMU1J7m3fuTTfSmQizzWGZ8yRXN3s+3he68qwC170ZbyeEq7n114t5tGMPKW/yV3LgJrXd4MQOweeZO5xTrteYKNpZT6KWkwR/7taABx+p4LRtiUFamJ7bhhxg5/qEeJOWnqalZTWn1EjM733ohDYGR8Wt6FR2tgyANosMl8TXNZX1zoowkgH45/4Dd2WP2ldBwYDOR/lwORQCtU2GeQ3T6abJHYoaM3MPW8F6MAQ5Oz+Xuip921626elhA1pR/yHfzxO+2iVhr2uYWxas8Zh24i89v5jjRX7/0X/ikQl7Fam2LPqlhuwrpJYiZ4X8gtYKsLcUdnhFVPHYOnb3am2TNIEaxxvmVXJdM07ser/wtVxo+EdOiUhdNLKaloLyYiUCoEtRKDZM54U18Q89J6dUhUKak4U2r8yfcuBicpBLc+8cOR+As4BdtuJnYrxAClh42XQDbK/0ouqTzWAe7QiV1E9HiaxxOBbbROMIRwCgDirI4zLugMteQjjRe4K596VURq0GvVKopg/QaHZxBfoq5XKq0fp7P6uDmlDl9LOoI3St+P/uOisMlmmX0fu6OzkM0LuSYMbrZmUAWK8GExkIuaKYD3S29pMIzLmkXIfVdQpcFWCeX+6j0HVCBuoi9ndF+vt0IQuyzoTQZ7nP5irs+3MuZbrAMsYcIajQYZ0MiBVkIeYEG/ZNiUGrQfhH/4wNKxHdY2qhOqtqQEn+ng5Wtb91Y3ytYkUasLmwwELILGXQ7HOCCNnIGBkQyXgOT7TzrP4l145sKq70pZvag8XfMdd8Nh1wSnD
- dNHTPEWv
- C5fvXxpBzh/3WOKpZwudw/biNT/4BNtHL8PISmXoEzAsfUnBTu0300NJws+cc5L5P+TiXOm6CleNKLG/V9lIIzwdKql6elx7Zm5wBGXgfOeJAYVSFSE0vpBLEtx6G1zu11GhU581j2DgTJLJaVzaH0dryIKk1hEj7CbwxXh71OrOGvWL0e8VTsoQ+gCniXTqa44dKTfYd5hMA+SzZFbjFjnCpf5tbmRcfCdRgahiBnzrICbd3cr43HFLDvw1k2z1xIibkdRPREqtlOI3yEMH3miWQgX7f+jJ4i3EZhbAYqVgVbSp1UqFrkWwak1Ii8Thtp7a7vAewGjQnJwqUUUGWd2XZgsb7t2LUBbn6
+X-HE-Tag: 1771541215-725896
+X-HE-Meta: U2FsdGVkX1/dpvsVBOHvm+t/JxfoKxQO2OnB7wW6k1rRjo3YHs4MXj+tKMLdFKqy2hMDEVY6AovYcCAanz+LPtTZYwPTvAUFKwbcqw7RJd0dA5yQBgOuPPQh6mLOGn5uVsNjLCABBzQUZygFa+YUSz8hkeoHctdQRVD38aiPEvCDMKFkUxE8ILE5D63zALd1sEZ+dYkratx5Gwrm/LQkOCfnkwUUUuaK4L/zpfWFBjTEkbAisKHAOEMhHJpBZnFulxOXm9rLk/XIBnWeauunO/JfUI3WQj2U5KCVZO90afVvbz7fAO2x+YuWloqyerXR6NRwdZ9NkXh4mNQ9QNlA5ks9ieLwjHGU8SAgl5ynIeZjGYC43wZuzBBxtKBeH2lBeernQ8hMZzNAHiygp05jcis42VzJl4ob3onf3NQ9UL9SXkPAkkH+ktojvoGN13iUvpsmUEILfiDeq506C7o7RqO740sPRzkn/4MLM4fvQjNiOhd0zpLT6U6oszwkHVhVcoKTpYOjyUFN7vv1R51i3QekAAU689l5/2Tm+IfOT6Np1OZ2Xh1AXD+PTYPDnZHffPvb+tM1dM8v8MK1UgNpl2Cl8zondm+GFz9M/gKRyj1H3uIysaw+XtZvWKX7HqLv9LJCV2Dm79kQZ+xs4sBQsTyMpucEOwmDLR97hORoWFPZXX5wsekOBuGQRpIozVSfW8F5Lbx4zETphZfR+1BmKwOHW2gw2QSWUt436Sr8IPZ1XCZ+VCsAiqgDjI7uB1DrucBaqK2aS7TFnuweUSwgVVMeQhlnti8zb1d+SGvvVvxPjwtxZAXgmX19RgRtL2G6t0BAFBc6yb+NJExGT1Vs3wRnFN63UPEze6iV2QW7vG0IPaDD3of7M9pc28YkTtvHnCLdFsbD6G7gdp+/P4JCoyzsC8V3v8jsZoZTpKI5lphoEp4HPG5S154oHqR93yweCpiX2M3GJVx55IHqU6H
+ 2526CW5Z
+ SKzuIlaU34aF0eKcVeW+V/aG+eSbWtO+5Ju7ZHN1naPeEZM/1FBEoiaiuHKU8RLYeebVZXaGYuhHNgk2NFTUR1/a8B9/Qd0yKZnRNNhcfit+5+igiDKyKZ6OCsw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,40 +86,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Feb 2026 11:18:27 +0530 Dev Jain <dev.jain@arm.com> wrote:
+On Thu, 2026-02-19 at 12:16 +0200, Mike Rapoport wrote:
+>=20
+> Let's split it. EFI does weird things with memory already, like mremappin=
+g
+> normal memory for example.
 
-> Claim: folio_order(folio) == HPAGE_PMD_ORDER => folio->index == start.
-> 
-> Proof: Both loops in hpage_collapse_scan_file and collapse_file, which
-> iterate on the xarray, have the invariant that
-> start <= folio->index < start + HPAGE_PMD_NR ... (i)
-> A folio is always naturally aligned in the pagecache, therefore
-> folio_order == HPAGE_PMD_ORDER => IS_ALIGNED(folio->index, HPAGE_PMD_NR) == true ... (ii)
-> thp_vma_allowable_order -> thp_vma_suitable_order requires that the virtual
-> offsets in the VMA are aligned to the order,
-> => IS_ALIGNED(start, HPAGE_PMD_NR) == true ... (iii)
-> 
-> Combining (i), (ii) and (iii), the claim is proven.
-> 
-> Therefore, convert this to a VM_WARN_ON.
-> 
-> ...
->
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2000,8 +2000,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  		 * we locked the first folio, then a THP might be there already.
->  		 * This will be discovered on the first iteration.
->  		 */
-> -		if (folio_order(folio) == HPAGE_PMD_ORDER &&
-> -		    folio->index == start) {
-> +		if (folio_order(folio) == HPAGE_PMD_ORDER) {
-> +			VM_WARN_ON(folio->index != start);
+Yup.
 
-It's a bad sad to remove unneeded code by retaining that code and
-adding even more code.
+> Here's my take on the split. Lightly tested on qemu and recovered ~45M of
+> ram with the OVMF version I have :)
 
-Perhaps add a comment reminding us to remove this altogether at a later
-date?
+Nice :-) I'll test this here.
+
+> >=20
+> +struct efi_freeable_range {
+> +	u64 start;
+> +	u64 end;
+> +};
+>=20
+
+Haha, you went the blunt way :-) I was trying to avoid creating yet-
+another structure with "start/end" :-)=20
+
+> +
+> +static struct efi_freeable_range *ranges_to_free;
+> +
+> =C2=A0void __init efi_free_boot_services(void)
+> =C2=A0{
+
+I was going to call it efi_unmap_boot_services() to avoid having two
+things with almost the same name.
+
+> =C2=A0	struct efi_memory_map_data data =3D { 0 };
+> =C2=A0	efi_memory_desc_t *md;
+> =C2=A0	int num_entries =3D 0;
+> +	int idx =3D 0;
+> =C2=A0	void *new, *new_md;
+> =C2=A0
+> =C2=A0	/* Keep all regions for /sys/kernel/debug/efi */
+> =C2=A0	if (efi_enabled(EFI_DBG))
+> =C2=A0		return;
+> =C2=A0
+> +	ranges_to_free =3D kzalloc(sizeof(*ranges_to_free) * efi.memmap.nr_map,
+> +				 GFP_KERNEL);
+> +	if (!ranges_to_free) {
+> +		pr_err("Failed to allocate storage for freeable EFI regions\n");
+> +		return;
+> +	}
+
+Do we still want to do the whole unmap dance in that case ? I mean, OOM
+here means the system is pretty much a goner at that stage but ...
+
+> =C2=A0	for_each_efi_memory_desc(md) {
+> =C2=A0		unsigned long long start =3D md->phys_addr;
+> =C2=A0		unsigned long long size =3D md->num_pages << EFI_PAGE_SHIFT;
+> @@ -471,7 +486,15 @@ void __init efi_free_boot_services(void)
+> =C2=A0			start =3D SZ_1M;
+> =C2=A0		}
+> =C2=A0
+> -		memblock_free_late(start, size);
+> +		/*
+> +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+> +		 * map are still not initialized and we can't reliably free
+> +		 * memory here.
+> +		 * Queue the ranges to free at a later point.
+> +		 */
+> +		ranges_to_free[idx].start =3D start;
+> +		ranges_to_free[idx].end =3D start + size;
+> +		idx++;
+
+Do we want to make this conditional to CONFIG_DEFERRED_STRUCT_PAGE_INIT
+or we don't care ?
+
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	if (!num_entries)
+> @@ -512,6 +535,23 @@ void __init efi_free_boot_services(void)
+> =C2=A0	}
+> =C2=A0}
+> =C2=A0
+> +static int __init efi_free_boot_services_memory(void)
+> +{
+> +	struct efi_freeable_range *range =3D ranges_to_free;
+> +
+> +	while (range->start) {
+> +		void *start =3D phys_to_virt(range->start);
+> +		void *end =3D phys_to_virt(range->end);
+> +
+> +		free_reserved_area(start, end, -1, NULL);
+
+I assume here too the total_ram_page_inc stuff is taken care of ? I
+haven't really looked. This feels like a fragile counter.
+
+> +		range++;
+> +	}
+> +	kfree(ranges_to_free);
+> +
+> +	return 0;
+> +}
+> +late_initcall(efi_free_boot_services_memory);
+> +
+> =C2=A0/*
+> =C2=A0 * A number of config table entries get remapped to virtual address=
+es
+> =C2=A0 * after entering EFI virtual mode. However, the kexec kernel requi=
+res
+>=20
+> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+> --=20
+> 2.51.0
+>=20
+> =C2=A0
+> > Cheers,
+> > Ben.
+> >=20
+>=20
 
 
