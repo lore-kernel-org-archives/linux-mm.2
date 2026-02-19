@@ -4,108 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D13FCE9A052
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:11:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C36E9A052
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:13:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 305EC6B0089; Thu, 19 Feb 2026 12:11:59 -0500 (EST)
+	id 522296B0005; Thu, 19 Feb 2026 12:13:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D03A6B008A; Thu, 19 Feb 2026 12:11:59 -0500 (EST)
+	id 4CBB36B008C; Thu, 19 Feb 2026 12:13:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DC176B008C; Thu, 19 Feb 2026 12:11:59 -0500 (EST)
+	id 3EF016B0092; Thu, 19 Feb 2026 12:13:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 097F66B0089
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:11:59 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3B921C7A7
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:11:58 +0000 (UTC)
-X-FDA: 84461848716.07.E596A68
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B5D88C000E
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:11:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OXqNFzmD;
-	spf=pass (imf10.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ECC76B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:13:31 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB0FC13B6BD
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:13:30 +0000 (UTC)
+X-FDA: 84461852580.21.65F1885
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9EC7EC0003
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:13:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bubQfZFZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771521209; a=rsa-sha256;
+	cv=none;
+	b=01a5nKthQSyADhA9Nbe6pI42YIVRCUe2o3789dkkcFTAZzlQaDHU3eNaReajqHbqVKzW3y
+	D7NPpz/AXjTMZEmfv87Ufa6fIk6O6MIkGtmA26O7lfmhmS3AdhmQ6fVqUxJIoecUlzIDbQ
+	1kaGkFyB6KYsq1y+DJqVEvX+1nDI8j8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bubQfZFZ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771521117;
+	s=arc-20220608; t=1771521209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+RWsn8SH7pIL+5++p26/f2iAjcblDgJ9cg2dRlU5FJQ=;
-	b=7pdFyNYcs5pc5u8udHdDOu2ZmH6/QZ0ZIUG9yd8Ux0h/cTy/IauEmk7myk3f9vxKTSRFNw
-	HcMd5HkgcovDNdjn3TH8rgCEIH4xwaakgbbCIG9vHRiV8TN5xbSmCSxd+TQ8UsNEs5NjFP
-	P9FRhx1mFlTDkohJTrZP9G+pt7Vs1eg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OXqNFzmD;
-	spf=pass (imf10.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771521117; a=rsa-sha256;
-	cv=none;
-	b=QQn8zjJCiTVGF4y36agAynkTUXtqbKjMrR9Dmz0ERi33T2NIA8H/YtxBbvcELjYBANNQc1
-	oQ+zujmLyFgSm6t3diaEA/rhf2PCRrgvl3DUzfnzFPCiaPBEuFS7Nh9lLsY9bvff5KeqPE
-	Aluy4XewNwz6Yfl22Qr2vXwUel5W/NA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771521114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+RWsn8SH7pIL+5++p26/f2iAjcblDgJ9cg2dRlU5FJQ=;
-	b=OXqNFzmDsoF7kA9hBmDN4oeXuPaJGIXd8GjWjt2oz8TyqnUySKzQe8MaAuz//UFK4QPArW
-	KIVlusYNzTIxkdq7EBi+j4aopsoIlrBarN4ULpBstiaNxCrOqAdVGxh2faPrMbuKhZr75d
-	sCkRZupqfjRxzwJUp2OpKkTIh8yy10g=
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-To: linux-mm@kvack.org,
-	mst@redhat.com,
-	mhocko@suse.com,
-	vbabka@suse.cz
-Cc: apopple@nvidia.com,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	byungchul@sk.com,
-	cgroups@vger.kernel.org,
-	david@kernel.org,
-	eperezma@redhat.com,
-	gourry@gourry.net,
-	jasowang@redhat.com,
-	hannes@cmpxchg.org,
-	joshua.hahnjy@gmail.com,
-	Liam.Howlett@oracle.com,
-	linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com,
-	rppt@kernel.org,
-	muchun.song@linux.dev,
-	zhengqi.arch@bytedance.com,
-	rakie.kim@sk.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	virtualization@lists.linux.dev,
-	weixugc@google.com,
-	xuanzhuo@linux.alibaba.com,
-	ying.huang@linux.alibaba.com,
-	yuanchu@google.com,
-	ziy@nvidia.com,
-	kernel-team@meta.com
-Subject: [PATCH v4] mm: move pgscan, pgsteal, pgrefill to node stats
-Date: Thu, 19 Feb 2026 09:11:24 -0800
-Message-ID: <20260219171124.19053-1-jp.kobryn@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=msPWRo+gFrElWrkBp5gqc0EHMQtZwyVpZrcigBdREQY=;
+	b=roLNugv/18qtLYQIx2UdBL0VrUdr5bwjjQXJLLK/1Qg3fvY9OX7qIjRDmXXFKyYsPuHQQq
+	aug713Danm+Ox/vOpjQA+KMc639B2CczQbHHP7iIB7j9toiGPaPf0EKsIu9eCgpK+7tYZM
+	f9TuwZwkmwzZEINOPxyDhixQB3aKYU4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=msPWRo+gFrElWrkBp5gqc0EHMQtZwyVpZrcigBdREQY=; b=bubQfZFZw8ANEveARVK+bO4D5P
+	5SCQTd0CKmfEd/68ha+1aZS/N3kfjflgp4PcVh/Tn5vWlK0xxK9vSkmTPGAjhgHDZbEKDYpgzKzCX
+	lj6Nb3tGgRtd9j9JgtKSTzJVdooXgt9v/M9sMizGuu+spmSMfZuxJBG7J7GoV/aJyPSleWtzQ/Wuj
+	p6VN4cLQOiQ9CVoD3SeEcIYdm88ZNtfrpxlReMp9gctWvwKYNN/5Z8oCBLWlC3iCPnuLWGooSyFia
+	ewyC1ptezB6BYfQ542FbB6q6XrQpHV8JIX+uUbOMOqWcYahgoFRvaqMBK8wbmM6vWmG41ZkdZVnw+
+	9O6G6O3w==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vt7aZ-00000007vdw-1jEq;
+	Thu, 19 Feb 2026 17:13:19 +0000
+Date: Thu, 19 Feb 2026 17:13:19 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>, riel@surriel.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Lance Yang <lance.yang@linux.dev>,
+	Frank van der Linden <fvdl@google.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need
+ 1GB Transparent Huge Pages
+Message-ID: <aZdEr32uMfTGjChl@casper.infradead.org>
+References: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+ <3485c8c8-9bfc-4725-885a-626e79d0aebb@kernel.org>
+ <87DAD8A6-85E7-4BC9-B81A-4A842DC546E3@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 6djk48nk9tn1r3nf4hcb96kbfp1s7mt1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87DAD8A6-85E7-4BC9-B81A-4A842DC546E3@nvidia.com>
+X-Stat-Signature: ux7pbgk6aimmrtmwu5seqono7r5w77mh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B5D88C000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771521116-273105
-X-HE-Meta: U2FsdGVkX1+kjbSCrmX6tcVv9tRn57OsXDOLrrFpZF2HxgExWDtRWAlLrPA4T6ZmZSBXmlUlmaO+pksTfpGxt+xxi/U7kq+CLhuf1tEiMz+Wm8CjDptNlDLUtfDr0i51kMQQWdpfGtHIkvT/rBVsWRjaxCeW+HeFz7OMNpLoZ4YttzAfm1jYMCEH2HY73mwQuYSTt1gACbEEt3COV8tgD1LMKS0re0E88vEnV3pqnB6q7juXbpZ3SELFr8gNddC0XKv5L/hiGtcBi+jjEEg0pSk123/hXNPXXZ2xXqMukMYzXWrmho++zf3HdnXPnQEGDVVLJC0Dn4qtxtRZUTpFKWM+vNoI2Fi9pFTowFZk7Z+0DSshEY4ZzBJmD/Dm9LSCpBh4z1qI8fEZcwqgFMovZukYpL3AlUuzo3iWzoQ1Fc5GLFMtJVb3bQiocs/5kwwaMV936bogWP9hDuDnFedEJpjKIhwwcwq63Mw9Wgu9YxPCwZdhC0ZP8uT8a6y+xJv1XM4ijcDBKDN5mTC8Iwzsnejjey0lUqMadCo0IO8WMudUEEl9W0FQVyOZ74A9pjfBOomiKpYbCIPo5hXwoh3nyXMZLy1AeQgIk54VvZm45NalRTxL+p2/P4m8woaGnVrnlQG7UrGXrEmx4ImRV7S6CSfzoipuVYXdoNgFcu1oXAN0VhafAAf1YLP3CQ5kTJ/JHvZb8tbrO/4YKIAsNLemkjgyejYglG3Uque+NG+Xdvrg7TZP0GqcnpMF5lxlMDOQbTtBFlvzjWRTzZwst0j85WHh3fLk7059Zg47JYtMrjOSgNKaTUxowSeT9LMUkeJ7FtlDVbD41gK07oArHrpA9hEHmGEpzX22kFatz9IEqw+dfrHb0fufLVLwkbmwY2lFBYLqx9L2pVucFfacxKemw+8k6ObLOzqLvOegXnmhkJJW8zYXc/ReMw4wWx57xBL4U5K1pf+Ncl5OxEo1vy+
- +tiHsql7
- 6I7oNc/bAUWxJSj8VGPILWHFOSklrkQtmP/AQyhWOUbIRMREGt8k0destjXuSTUsZbpNvp1DslGkHvyoo9K24bTUI8C1pT6jZ2BiX/EjXYpmbWbBTB0aK++FHE5kn44jE8rj9dhMCH8/RaZlnUBuRRyDxpUQaSGHXx6FseggAsvNSLe+07tjWG4ngMMfS3NKDRysvuAbtaeh6FZYbXzdRZYOpQAzY652JXgC4o98KMkvbCRZVe6mZxmfTJflqwYdSMh4FrInbFDPPChPqEx7Rh7yQvPSLz3lrHhMiSlaVarkxZy6wJxgC1VIk6oja0f7vmmEPmeGeVqoeyzwW8Ip13Pofmu4RgW+0xbvWx7m7HbbmRyL2f1WFFrBw0o0SZbYkFJ0th2U5M61GC3WSjgaVhXaamQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9EC7EC0003
+X-HE-Tag: 1771521208-566715
+X-HE-Meta: U2FsdGVkX1+sQ9I1ysF4mhsg4PPvEt9j+xw+PUWZJlP9aUBOh+9hK5R0paXjHPGbuP78f7kPnRpfx/o25s/l3cVKb2+9sCOcS4vNiIS1JbAH/peGgq5Ola4tw1Xbh7rwZsV59Pvd0mPr8N9Uc104oNn3LoWssItaNLVZSsCXrq3EQskTCPAk7vp8twrWV8v4AK4rFmsgpL8e2iTXbjY0+airIMFwo2ZEVK6bL31egdrYNNwSoPoEFOuyyUbDzGFvWtraA3Sdjw0lvKrLj/JVCNnlLQGfqfES3z5e/1QWo/cmYkAEWwjq0ZVSF2I7k+HbU+YPuejr7K04qVAs9cir6pkpJEsSq8Qqr5Vd3zOm0vcbb9ZS6VO6sm9PkOBgZxqX2BXAguJ9A2rC+b2Jpt8KI2sFfsf5tFwjf8SREez82gXa3dhn4hcnSBfsYWkxy7+wCYl7ddZATi+ERjZvwbkCiKy/6Cb1OxgrgVEXhV8/BeQQmGVCU4jHXJNk8yMPdmm+FjcpCNBztnpeT1tmFx+nZ6JJcI8UhFta7OTdwXeif6uY3WnjFLQbxvv6p7csO4UY6LrC3Cp/uqnXCwIeTn/Dcr22ttPhjrh1bF9jFOW801n4YhIoiS+rlkFRyEMNNXj8nNPEA7s4D9190k3Je7SgUaTxASdOpgR8LzhQHaqerOMJXluU/ZpeqH3890iJf5LJBRqMyezhx0t4ZiG3RCM+HmA+v1ERV8c0Xd/ZF0eg4wwGlcrZp9RnQxSDrfmH+0tflFcFQKXGAFCDVOqZ5r1Wm9jRxQbILshvdNtgYLd9yThqrV/1bwB60+iWHrGcKxZp8g/Yd79HNxx3gNerRd1lvcUtgz7umyNM4z43JyfSvVhWQd487xQkMk9nwMdqv4wUYvJ7KWokXLL+6EbaW+e2V/RdUHdqOAOnM7l1K/BaYoMxoP/zBxiebXthDo7hO730eIEpxioPf1EHA/VyNUW
+ 3q3fRkbx
+ cRxZtG2SBCg2sYOvXF6yQT2gJa6ZwKvLK8zV63HQ7LFh6LPNIja439FB4Wl3VIlTiPlNhnZ7kolXH8SyK0aViDVvsHr3UP/EGq1LBHvTNGrUcG/G7InV0oyJV6gpyiPx28QUu/gSQnjidJeKTb+UDP4Wc8HfcpS9o5V5tnomUkux0G2Bz85tp2cAbr2tz/JhSRVUdpUnSrutA33NS+GDh0gl/1qTiwojEWuaMQWSTjTpTMdqu6/rnl7hhqwnbjDKVuOoF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,384 +105,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are situations where reclaim kicks in on a system with free memory.
-One possible cause is a NUMA imbalance scenario where one or more nodes are
-under pressure. It would help if we could easily identify such nodes.
+On Thu, Feb 19, 2026 at 11:49:27AM -0500, Zi Yan wrote:
+> If HW can support multiple TLB entries translating to the same physical frame
+> and allow translation priority of TLB entries, this remapping would be easy
+> and we can still keep the 1GB PUD mapping. Basically, we can have 1GB TLB entry
+> pointing to the 1GB folio and another 4KB TLB entry pointing to the remapped
+> region and overriding the part in the original 1GB vaddr region.
 
-Move the pgscan, pgsteal, and pgrefill counters from vm_event_item to
-node_stat_item to provide per-node reclaim visibility. With these counters
-as node stats, the values are now displayed in the per-node section of
-/proc/zoneinfo, which allows for quick identification of the affected
-nodes.
-
-/proc/vmstat continues to report the same counters, aggregated across all
-nodes. But the ordering of these items within the readout changes as they
-move from the vm events section to the node stats section.
-
-Memcg accounting of these counters is preserved. The relocated counters
-remain visible in memory.stat alongside the existing aggregate pgscan and
-pgsteal counters.
-
-However, this change affects how the global counters are accumulated.
-Previously, the global event count update was gated on !cgroup_reclaim(),
-excluding memcg-based reclaim from /proc/vmstat. Now that
-mod_lruvec_state() is being used to update the counters, the global
-counters will include all reclaim. This is consistent with how pgdemote
-counters are already tracked.
-
-Finally, the virtio_balloon driver is updated to use
-global_node_page_state() to fetch the counters, as they are no longer
-accessible through the vm_events array.
-
-Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
-v4:
-	- remove unused memcg var from scan_folios()
-
-v3: https://lore.kernel.org/linux-mm/20260218222652.108411-1-jp.kobryn@linux.dev/
-	- additionally move PGREFILL to node stats
-
-v2: https://lore.kernel.org/linux-mm/20260218032941.225439-1-jp.kobryn@linux.dev/
-	- update commit message
-	- add entries to memory_stats array
-	- add switch cases in memcg_page_state_output_unit()
-
-v1: https://lore.kernel.org/linux-mm/20260212045109.255391-3-inwardvessel@gmail.com/
-
- drivers/virtio/virtio_balloon.c |  8 ++---
- include/linux/mmzone.h          | 13 ++++++++
- include/linux/vm_event_item.h   | 13 --------
- mm/memcontrol.c                 | 56 +++++++++++++++++++++++----------
- mm/vmscan.c                     | 39 ++++++++---------------
- mm/vmstat.c                     | 26 +++++++--------
- 6 files changed, 82 insertions(+), 73 deletions(-)
-
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 4e549abe59ff..ab945532ceef 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -369,13 +369,13 @@ static inline unsigned int update_balloon_vm_stats(struct virtio_balloon *vb)
- 	update_stat(vb, idx++, VIRTIO_BALLOON_S_ALLOC_STALL, stall);
- 
- 	update_stat(vb, idx++, VIRTIO_BALLOON_S_ASYNC_SCAN,
--		    pages_to_bytes(events[PGSCAN_KSWAPD]));
-+		    pages_to_bytes(global_node_page_state(PGSCAN_KSWAPD)));
- 	update_stat(vb, idx++, VIRTIO_BALLOON_S_DIRECT_SCAN,
--		    pages_to_bytes(events[PGSCAN_DIRECT]));
-+		    pages_to_bytes(global_node_page_state(PGSCAN_DIRECT)));
- 	update_stat(vb, idx++, VIRTIO_BALLOON_S_ASYNC_RECLAIM,
--		    pages_to_bytes(events[PGSTEAL_KSWAPD]));
-+		    pages_to_bytes(global_node_page_state(PGSTEAL_KSWAPD)));
- 	update_stat(vb, idx++, VIRTIO_BALLOON_S_DIRECT_RECLAIM,
--		    pages_to_bytes(events[PGSTEAL_DIRECT]));
-+		    pages_to_bytes(global_node_page_state(PGSTEAL_DIRECT)));
- 
- #ifdef CONFIG_HUGETLB_PAGE
- 	update_stat(vb, idx++, VIRTIO_BALLOON_S_HTLB_PGALLOC,
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 3e51190a55e4..546bca95ca40 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -255,6 +255,19 @@ enum node_stat_item {
- 	PGDEMOTE_DIRECT,
- 	PGDEMOTE_KHUGEPAGED,
- 	PGDEMOTE_PROACTIVE,
-+	PGSTEAL_KSWAPD,
-+	PGSTEAL_DIRECT,
-+	PGSTEAL_KHUGEPAGED,
-+	PGSTEAL_PROACTIVE,
-+	PGSTEAL_ANON,
-+	PGSTEAL_FILE,
-+	PGSCAN_KSWAPD,
-+	PGSCAN_DIRECT,
-+	PGSCAN_KHUGEPAGED,
-+	PGSCAN_PROACTIVE,
-+	PGSCAN_ANON,
-+	PGSCAN_FILE,
-+	PGREFILL,
- #ifdef CONFIG_HUGETLB_PAGE
- 	NR_HUGETLB,
- #endif
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 22a139f82d75..03fe95f5a020 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -38,21 +38,8 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		PGFREE, PGACTIVATE, PGDEACTIVATE, PGLAZYFREE,
- 		PGFAULT, PGMAJFAULT,
- 		PGLAZYFREED,
--		PGREFILL,
- 		PGREUSE,
--		PGSTEAL_KSWAPD,
--		PGSTEAL_DIRECT,
--		PGSTEAL_KHUGEPAGED,
--		PGSTEAL_PROACTIVE,
--		PGSCAN_KSWAPD,
--		PGSCAN_DIRECT,
--		PGSCAN_KHUGEPAGED,
--		PGSCAN_PROACTIVE,
- 		PGSCAN_DIRECT_THROTTLE,
--		PGSCAN_ANON,
--		PGSCAN_FILE,
--		PGSTEAL_ANON,
--		PGSTEAL_FILE,
- #ifdef CONFIG_NUMA
- 		PGSCAN_ZONE_RECLAIM_SUCCESS,
- 		PGSCAN_ZONE_RECLAIM_FAILED,
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 007413a53b45..a2e6d6ada823 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -328,6 +328,19 @@ static const unsigned int memcg_node_stat_items[] = {
- 	PGDEMOTE_DIRECT,
- 	PGDEMOTE_KHUGEPAGED,
- 	PGDEMOTE_PROACTIVE,
-+	PGSTEAL_KSWAPD,
-+	PGSTEAL_DIRECT,
-+	PGSTEAL_KHUGEPAGED,
-+	PGSTEAL_PROACTIVE,
-+	PGSTEAL_ANON,
-+	PGSTEAL_FILE,
-+	PGSCAN_KSWAPD,
-+	PGSCAN_DIRECT,
-+	PGSCAN_KHUGEPAGED,
-+	PGSCAN_PROACTIVE,
-+	PGSCAN_ANON,
-+	PGSCAN_FILE,
-+	PGREFILL,
- #ifdef CONFIG_HUGETLB_PAGE
- 	NR_HUGETLB,
- #endif
-@@ -441,17 +454,8 @@ static const unsigned int memcg_vm_event_stat[] = {
- #endif
- 	PSWPIN,
- 	PSWPOUT,
--	PGSCAN_KSWAPD,
--	PGSCAN_DIRECT,
--	PGSCAN_KHUGEPAGED,
--	PGSCAN_PROACTIVE,
--	PGSTEAL_KSWAPD,
--	PGSTEAL_DIRECT,
--	PGSTEAL_KHUGEPAGED,
--	PGSTEAL_PROACTIVE,
- 	PGFAULT,
- 	PGMAJFAULT,
--	PGREFILL,
- 	PGACTIVATE,
- 	PGDEACTIVATE,
- 	PGLAZYFREE,
-@@ -1382,6 +1386,15 @@ static const struct memory_stat memory_stats[] = {
- 	{ "pgdemote_direct",		PGDEMOTE_DIRECT		},
- 	{ "pgdemote_khugepaged",	PGDEMOTE_KHUGEPAGED	},
- 	{ "pgdemote_proactive",		PGDEMOTE_PROACTIVE	},
-+	{ "pgsteal_kswapd",		PGSTEAL_KSWAPD		},
-+	{ "pgsteal_direct",		PGSTEAL_DIRECT		},
-+	{ "pgsteal_khugepaged",		PGSTEAL_KHUGEPAGED	},
-+	{ "pgsteal_proactive",		PGSTEAL_PROACTIVE	},
-+	{ "pgscan_kswapd",		PGSCAN_KSWAPD		},
-+	{ "pgscan_direct",		PGSCAN_DIRECT		},
-+	{ "pgscan_khugepaged",		PGSCAN_KHUGEPAGED	},
-+	{ "pgscan_proactive",		PGSCAN_PROACTIVE	},
-+	{ "pgrefill",			PGREFILL		},
- #ifdef CONFIG_NUMA_BALANCING
- 	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
- #endif
-@@ -1425,6 +1438,15 @@ static int memcg_page_state_output_unit(int item)
- 	case PGDEMOTE_DIRECT:
- 	case PGDEMOTE_KHUGEPAGED:
- 	case PGDEMOTE_PROACTIVE:
-+	case PGSTEAL_KSWAPD:
-+	case PGSTEAL_DIRECT:
-+	case PGSTEAL_KHUGEPAGED:
-+	case PGSTEAL_PROACTIVE:
-+	case PGSCAN_KSWAPD:
-+	case PGSCAN_DIRECT:
-+	case PGSCAN_KHUGEPAGED:
-+	case PGSCAN_PROACTIVE:
-+	case PGREFILL:
- #ifdef CONFIG_NUMA_BALANCING
- 	case PGPROMOTE_SUCCESS:
- #endif
-@@ -1496,15 +1518,15 @@ static void memcg_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
- 
- 	/* Accumulated memory events */
- 	seq_buf_printf(s, "pgscan %lu\n",
--		       memcg_events(memcg, PGSCAN_KSWAPD) +
--		       memcg_events(memcg, PGSCAN_DIRECT) +
--		       memcg_events(memcg, PGSCAN_PROACTIVE) +
--		       memcg_events(memcg, PGSCAN_KHUGEPAGED));
-+		       memcg_page_state(memcg, PGSCAN_KSWAPD) +
-+		       memcg_page_state(memcg, PGSCAN_DIRECT) +
-+		       memcg_page_state(memcg, PGSCAN_PROACTIVE) +
-+		       memcg_page_state(memcg, PGSCAN_KHUGEPAGED));
- 	seq_buf_printf(s, "pgsteal %lu\n",
--		       memcg_events(memcg, PGSTEAL_KSWAPD) +
--		       memcg_events(memcg, PGSTEAL_DIRECT) +
--		       memcg_events(memcg, PGSTEAL_PROACTIVE) +
--		       memcg_events(memcg, PGSTEAL_KHUGEPAGED));
-+		       memcg_page_state(memcg, PGSTEAL_KSWAPD) +
-+		       memcg_page_state(memcg, PGSTEAL_DIRECT) +
-+		       memcg_page_state(memcg, PGSTEAL_PROACTIVE) +
-+		       memcg_page_state(memcg, PGSTEAL_KHUGEPAGED));
- 
- 	for (i = 0; i < ARRAY_SIZE(memcg_vm_event_stat); i++) {
- #ifdef CONFIG_MEMCG_V1
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 44e4fcd6463c..8ef1a737d67c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1984,7 +1984,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	unsigned long nr_taken;
- 	struct reclaim_stat stat;
- 	bool file = is_file_lru(lru);
--	enum vm_event_item item;
-+	enum node_stat_item item;
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	bool stalled = false;
- 
-@@ -2010,10 +2010,8 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 
- 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, nr_taken);
- 	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
--	if (!cgroup_reclaim(sc))
--		__count_vm_events(item, nr_scanned);
--	count_memcg_events(lruvec_memcg(lruvec), item, nr_scanned);
--	__count_vm_events(PGSCAN_ANON + file, nr_scanned);
-+	mod_lruvec_state(lruvec, item, nr_scanned);
-+	mod_lruvec_state(lruvec, PGSCAN_ANON + file, nr_scanned);
- 
- 	spin_unlock_irq(&lruvec->lru_lock);
- 
-@@ -2030,10 +2028,8 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 					stat.nr_demoted);
- 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
- 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
--	if (!cgroup_reclaim(sc))
--		__count_vm_events(item, nr_reclaimed);
--	count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
--	__count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
-+	mod_lruvec_state(lruvec, item, nr_reclaimed);
-+	mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
- 
- 	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
- 					nr_scanned - nr_reclaimed);
-@@ -2120,9 +2116,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
- 
- 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, nr_taken);
- 
--	if (!cgroup_reclaim(sc))
--		__count_vm_events(PGREFILL, nr_scanned);
--	count_memcg_events(lruvec_memcg(lruvec), PGREFILL, nr_scanned);
-+	mod_lruvec_state(lruvec, PGREFILL, nr_scanned);
- 
- 	spin_unlock_irq(&lruvec->lru_lock);
- 
-@@ -4542,7 +4536,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- {
- 	int i;
- 	int gen;
--	enum vm_event_item item;
-+	enum node_stat_item item;
- 	int sorted = 0;
- 	int scanned = 0;
- 	int isolated = 0;
-@@ -4550,7 +4544,6 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
- 	int remaining = scan_batch;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
--	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 
- 	VM_WARN_ON_ONCE(!list_empty(list));
- 
-@@ -4601,13 +4594,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	}
- 
- 	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
--	if (!cgroup_reclaim(sc)) {
--		__count_vm_events(item, isolated);
--		__count_vm_events(PGREFILL, sorted);
--	}
--	count_memcg_events(memcg, item, isolated);
--	count_memcg_events(memcg, PGREFILL, sorted);
--	__count_vm_events(PGSCAN_ANON + type, isolated);
-+	mod_lruvec_state(lruvec, item, isolated);
-+	mod_lruvec_state(lruvec, PGREFILL, sorted);
-+	mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
- 	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
- 				scanned, skipped, isolated,
- 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-@@ -4692,7 +4681,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	LIST_HEAD(clean);
- 	struct folio *folio;
- 	struct folio *next;
--	enum vm_event_item item;
-+	enum node_stat_item item;
- 	struct reclaim_stat stat;
- 	struct lru_gen_mm_walk *walk;
- 	bool skip_retry = false;
-@@ -4756,10 +4745,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 					stat.nr_demoted);
- 
- 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
--	if (!cgroup_reclaim(sc))
--		__count_vm_events(item, reclaimed);
--	count_memcg_events(memcg, item, reclaimed);
--	__count_vm_events(PGSTEAL_ANON + type, reclaimed);
-+	mod_lruvec_state(lruvec, item, reclaimed);
-+	mod_lruvec_state(lruvec, PGSTEAL_ANON + type, reclaimed);
- 
- 	spin_unlock_irq(&lruvec->lru_lock);
- 
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 99270713e0c1..d5e6ba683211 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1276,6 +1276,19 @@ const char * const vmstat_text[] = {
- 	[I(PGDEMOTE_DIRECT)]			= "pgdemote_direct",
- 	[I(PGDEMOTE_KHUGEPAGED)]		= "pgdemote_khugepaged",
- 	[I(PGDEMOTE_PROACTIVE)]			= "pgdemote_proactive",
-+	[I(PGSTEAL_KSWAPD)]			= "pgsteal_kswapd",
-+	[I(PGSTEAL_DIRECT)]			= "pgsteal_direct",
-+	[I(PGSTEAL_KHUGEPAGED)]			= "pgsteal_khugepaged",
-+	[I(PGSTEAL_PROACTIVE)]			= "pgsteal_proactive",
-+	[I(PGSTEAL_ANON)]			= "pgsteal_anon",
-+	[I(PGSTEAL_FILE)]			= "pgsteal_file",
-+	[I(PGSCAN_KSWAPD)]			= "pgscan_kswapd",
-+	[I(PGSCAN_DIRECT)]			= "pgscan_direct",
-+	[I(PGSCAN_KHUGEPAGED)]			= "pgscan_khugepaged",
-+	[I(PGSCAN_PROACTIVE)]			= "pgscan_proactive",
-+	[I(PGSCAN_ANON)]			= "pgscan_anon",
-+	[I(PGSCAN_FILE)]			= "pgscan_file",
-+	[I(PGREFILL)]				= "pgrefill",
- #ifdef CONFIG_HUGETLB_PAGE
- 	[I(NR_HUGETLB)]				= "nr_hugetlb",
- #endif
-@@ -1318,21 +1331,8 @@ const char * const vmstat_text[] = {
- 	[I(PGMAJFAULT)]				= "pgmajfault",
- 	[I(PGLAZYFREED)]			= "pglazyfreed",
- 
--	[I(PGREFILL)]				= "pgrefill",
- 	[I(PGREUSE)]				= "pgreuse",
--	[I(PGSTEAL_KSWAPD)]			= "pgsteal_kswapd",
--	[I(PGSTEAL_DIRECT)]			= "pgsteal_direct",
--	[I(PGSTEAL_KHUGEPAGED)]			= "pgsteal_khugepaged",
--	[I(PGSTEAL_PROACTIVE)]			= "pgsteal_proactive",
--	[I(PGSCAN_KSWAPD)]			= "pgscan_kswapd",
--	[I(PGSCAN_DIRECT)]			= "pgscan_direct",
--	[I(PGSCAN_KHUGEPAGED)]			= "pgscan_khugepaged",
--	[I(PGSCAN_PROACTIVE)]			= "pgscan_proactive",
- 	[I(PGSCAN_DIRECT_THROTTLE)]		= "pgscan_direct_throttle",
--	[I(PGSCAN_ANON)]			= "pgscan_anon",
--	[I(PGSCAN_FILE)]			= "pgscan_file",
--	[I(PGSTEAL_ANON)]			= "pgsteal_anon",
--	[I(PGSTEAL_FILE)]			= "pgsteal_file",
- 
- #ifdef CONFIG_NUMA
- 	[I(PGSCAN_ZONE_RECLAIM_SUCCESS)]	= "zone_reclaim_success",
--- 
-2.47.3
-
+Uh, do you know any hardware that supports that?  Every CPU I'm familiar
+with has notes suggesting that trying to do this will cause you to Have
+A Very Bad Day.
 
