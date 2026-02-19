@@ -4,109 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D983C531EA
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7785DC531E3
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AA946B0005; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
+	id D4BCE6B0005; Thu, 19 Feb 2026 18:42:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 658606B0089; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
+	id CCF946B0089; Thu, 19 Feb 2026 18:42:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 564476B008A; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
+	id BDB9A6B008A; Thu, 19 Feb 2026 18:42:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 404C66B0005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5F9E140943
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:37:16 +0000 (UTC)
-X-FDA: 84462819672.30.5A7218B
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 19A511A000B
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:37:14 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LqitZZjL;
-	spf=pass (imf19.hostedemail.com: domain of 3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A74A66B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:42:10 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C16613BE84
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:10 +0000 (UTC)
+X-FDA: 84462832020.03.1E1C400
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5DB9640007
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RX0imueN;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771544235;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771544528;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=fMf1qxcGK6Wxv/U+V8Of3DjwHpI1qGbRPjrj7xoTTd8=;
-	b=kQ4sne7QV4PChhoQzCSPm9HA+re71vrSdP5JsiKVeRunaxBODfGPpNHrhPS2P5EWXPFXdH
-	qYQ9JuYVUmOSjquTUbeLgKjCI+x09JtQrwY+5PIqwt3yHWRTPH4gX/OGOv0SjJU+eBoSHi
-	c4+H0t3zjMYSk/nr6q3cizhMksaZKYg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544235; a=rsa-sha256;
-	cv=none;
-	b=gqhTEhLedKxR9QdNB9/BSA4H21Bx7s3i9lsFjnNzjtrCmKyi6ZNeU83bIrfUVF3pLeK123
-	I604CAE/i/FHBOSnHOUxOzQmJ2Ez5DmxM9vVzlkoboxpSuG18l1B+oNuHxadLMRbyfHg3v
-	SV7+R8Biu2Awhu0CN6ZEsY4/ZJeTCBE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sSCrOMAJAnvRfX+pGlm+u+gNwgbUcZ8Y/JH5xIO0ej8=;
+	b=p8F8SIHJwue5H0mwNwMT6LgMB15py1eJWbTscM/3QMHH6AApG08q9C5+zxiTW+Mvm3ZpiJ
+	jYi3jKkg2E98ln6C9wB1RqFimRM2ffN/hdcl7QGcI8GBELVE0re/zrf/awtiL66wJCRpjS
+	mpSO40jncDT9zGKuIpygX4TeV205iSk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LqitZZjL;
-	spf=pass (imf19.hostedemail.com: domain of 3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2ba8013a9e3so1678497eec.0
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:37:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771544234; x=1772149034; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fMf1qxcGK6Wxv/U+V8Of3DjwHpI1qGbRPjrj7xoTTd8=;
-        b=LqitZZjLpf2L0eM4aNhVk84CFPHOmtc1sdd8Ibo96PvU+OLmMM67nyTZ2Z2SZVJ1Rl
-         0TIZFKwBUZRB7KPDW616G6tJSHMjEBzZ21Jr9rnihnhxvKTLXjJiujcx8N4SUQga6OTC
-         3QPCfaf6Ot+YYN96oVw/jlsfmWFsFIprab5+CU1XLBDYJp8WTBjBJd5jtX1mnm0uU19g
-         IxPlwhIQskBfgaP3/JEu2M2nnPomCUGxhIKUu1ovVrvfJ/Ev5knNjj/tO4Itlk4wbHdl
-         UJvxYUI14lVc1v92BvP+SjvjdhfmZL4ihWgftwDIR4H+rAz3yD97rApEl8VT9UTEx5cj
-         XYfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771544234; x=1772149034;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fMf1qxcGK6Wxv/U+V8Of3DjwHpI1qGbRPjrj7xoTTd8=;
-        b=McHA+pLj60JVUcbo60T9a3Zn2LqvPGvIWfcaVgLQLCZfNsYj4D/b53EQkgoWKSGF6V
-         ummGgXS/aEuq1gk+nag9DMBtaxj0MEtMUl/Fhb/TQenK3kvzSRd97J6Ynqubq9vV3amT
-         XB0b+QuaF54sknNgK9rou75oJxEXL3JwUlZG1d/JZBMVsWLDLI6m8gFusrrWAm222T/p
-         uh9S3NtZPFPxBsgSkIlegk/LYYFXtglcwGdwbREBklIR+WO2j33lfpla2kwj1iFmhjK7
-         E2XxNC6WLJFIdI0fgoflBTiK6iXa1mfa7ThDgYmuAm83xK7JQ3k3tkqasKEwRFjVkct+
-         WTOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgCf8gDVmCifK82LKuDHYzasZRMbWOENKuKVyrBgQfD6R7itIxvPrkcPIbILSuXvg71Ob6OHsteg==@kvack.org
-X-Gm-Message-State: AOJu0YzdqeLY5nMqhynIRefsU8wfpf6s8BU4bap3rCzM72oo4fsxqF1u
-	MbLX+lYIxRfGjR4ktQsg3YeItCCyULb8dBirQ8iHFzZ051NJ5Jxg2CGXTgBT5Uk7zTLRJw45QIN
-	ZF7ztL9E4ATL4hxhf8eAZarpdTg==
-X-Received: from dybic28.prod.google.com ([2002:a05:7300:c71c:b0:2ba:8e16:e465])
- (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:3108:b0:2ba:6854:8d4d with SMTP id 5a478bee46e88-2bd501701e4mr3357396eec.20.1771544233484;
- Thu, 19 Feb 2026 15:37:13 -0800 (PST)
-Date: Thu, 19 Feb 2026 15:36:56 -0800
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
-Message-ID: <20260219233708.1971199-1-kaleshsingh@google.com>
-Subject: [PATCH] mm/tracing: rss_stat: Ensure curr is false from kthread context
-From: Kalesh Singh <kaleshsingh@google.com>
-To: akpm@linux-foundation.org, rostedt@goodmis.org, joel@joelfernandes.org
-Cc: kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Minchan Kim <minchan@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Martin Liu <liumartin@google.com>, 
-	David Rientjes <rientjes@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Wander Lairson Costa <wander@redhat.com>, Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 19A511A000B
-X-Stat-Signature: jp1dau3heyphytifkhjuck7jmznyc4ok
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RX0imueN;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544528; a=rsa-sha256;
+	cv=none;
+	b=bwBMoflCCZz7ogb1/CElCS/VtUZf5L4PYao4K5cmvFLUW8yr5NDaCHf1MTeBSDu+/JRVV2
+	w/PGOtHKu20N2zOnSZeh1sZln7sIspNgpxISpFzYilm0k6Z+362r7Jz8DJacVQM29XejsK
+	ZyweIp07YED6/Ew7EZLQtvSVTM+vYrI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8BA6860130;
+	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2A7D0C19423;
+	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771544527;
+	bh=ob6VrZobjIxhJd1syjRnD0Fz6UDbLx7k9+0T35c5Ifk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=RX0imueNLxnKo6rUXkF0FvQ104tNzT+RDIgI3/9VpHbGhPl5ylP02acqwECdl9lIi
+	 csDtkTmVwrUdMm5ocEnx0KSqrFsH/NreFVdyX+OZz4oV8nTO/fXJ36uuqx+Q90OLqj
+	 QtHAv2ozRZVQlO8EJXfZhrov9EzaOU6DtSnvEkEfSoNOFrDO2rl3il4T2iEK1xPhdM
+	 29LcWXU+gcudZkW0wUMrsTxx4l6WtZfZQ1NcX7b3Hh9Jg0JurM3DDaBiyeaCNZlvq4
+	 MbrubBu3OlOc0PTIHbGKHerkilSmMx8S+PT5KLNpXaFyRD3kgWmbMEqZZtvNd24yTF
+	 3WbmjOcRZVPJg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 185FBC531EA;
+	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Fri, 20 Feb 2026 07:42:02 +0800
+Subject: [PATCH RFC 01/15] mm: move thp_limit_gfp_mask to header
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260220-swap-table-p4-v1-1-104795d19815@tencent.com>
+References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+In-Reply-To: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+ Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Yosry Ahmed <yosry.ahmed@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
+ cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=3548;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=EsaDsTDGqRS39tj8l8nvpBNRy9miEhNym6TC8RjJmDw=;
+ b=wZakvnnlS13do00sOlIWHX8u8pD1P7hONi6OwqAIkTyXNu+BQg7Edjqh/iZMYuGM58ZYbJdRG
+ 6jgP9IrnMLJDt6qpU2w2ZuSjAyEz0NYHpKdYslZ4KSCbENbjAT0krGo
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771544234-294247
-X-HE-Meta: U2FsdGVkX1+cL30jIOL+ksG26R2lsjcTdikuv9g+G1lv2x1uKB5wmGVvQAEnPY3DZ9g0s0TMRtqVWtmY8Rc39NxCzlj2PjUN4DRFXGt7psjnL580iGZJoyIJhgyEk1NLMuxQCcfVNY9z+o8qms97902bs2ig9qe+89YRdzMO9VYScJR11+2ZY8AA9IGZLDI13649vbeHk2TqRNqrcqFa0Du9WO0S2ScwYHCVSV3AeAXjxi8m8SwRzbPQ2hMCwxUPHOIEdfWrCNMBo9syr+O194AcIaQyxn+2PoTPUNuVgYhvyt5RdZ1EVMF06rR/8OKhrV3XyoYnrPeBmCbatw0hYDuR4tlvTIy2Y4IuDAVoFS1jGrjVh2hbCSryDpGk74buaq8WzkYoCNC26hz+qs1u3HSMzrVoBroq1ei5gnd/SEC9SSvGxufkJQs7prNB2ZpkOTRvvkUrM8eCpprcUg9OK8Y+sFVM4xC60q32pBidWiW6R1+vHKEOqsFT/imVtBqiNDtUsUCLsfRlsprnuHLM5otDMIlpC/G381gc9UpCig6I/Y3Qs0Sm17UJvmQ0k8XkcVzuONVoW5W5nDQrYuTpLZNj8a1p/R9ppu0J9J9xr36CHhoOBHaax+pcARt2Vq6csvUp/1aj/w6gCrfCjYOhyClYdqpKUS7r5hBVCm7gzyqiknGeNMrO86My+PFqjtgxCyEBleSIbCbklv8U53UJtPKMf+zakt3wH5qRjSKdaIhd3UCu5/ksbwxgcCavxUczOVnaT14droH5eYJxhm6O42aygNzA5aSCyo7oUa62egaQptOJV1Xs0tDGsMq1ostk1c8h0LBbSFtAvM86+oIsoBsts9dyxKjFFJu5ccSAOq0zbmHnA90Rla3YTqsqkd7jSGH1J9NRloksTw8Eg4ra85g/WW93M5eCapCvE0ki7etJzPDp0OsuvNqhr3Q8hGIBBcIXJy6HgIA5+NY8/SD
- PyH6qexP
- VvfFYbSoeYmOYfG2L37gjk+yJ9ZXyIObL9fsdvckPP7aCPsInlK4MVNZndvv6jxGzb5IcCibiSGP/HBm54P+619VjTFmHgexmPDUk/I94dOBqE72Y6tZmjOoWJU6lTPMydurtm6ckI9pk2cdYn/VQVAEL+3YgOnyD81yY1sPf6Xmd7JbRnXq404QOYraPtmfhI0rVSxnCvxKT289wJnAzEC6Ez1FGIk9pWt091zuCYvm1RlT16EY654XHUoPjHAb+kMpwC7u8VKc6KJUVunCwYWkXJO7QQVh2r9cUPeq5gf5df1DT7dEYqChRSNc2p6UxdfVeKIQZEcmqUaTQQTLUDplELN8CzsnnF+QNqsGRVZmIjfYfm7F8O371lObGfSz6IZLwbt73FcPg22o4wbJj7u5QdNdOf3Ov13tuR1ObnyU9bCg4vxrA2m1DTBfxfKylF9v/ZVlwtXCpVCq2FvZ9ZZEy3lEGn4Prr69zThbdgLWNkxiPn3iFC+Qv+XZi6AQ3WxlK2AbdlvSsf6GrbRWazYBN3yMXlxhTKGiPF6hqvN+AXZxhlUMH1lGBGFntvihjQrIV02v8nEwG/SCKjh3hZV0DM3Wt1k/P4IPHEbu9NqkkHl0/b2mNP3LA3+V6ZzfUP0OMp+gRYwuLga8+WIxpmBboHvWiMlYxQ+lMXnmK9ldud0qZw5ko+mM8M2Tq1rtoW99sIUU5aElFuq/1QbTaltaN1THNKsvLs1Z/GDNZIpYP+21KvdkL9662BeCPWt5JGltTp5e7BOZXC0ly+3dmJX7r4qMp4UX3cgsWkHRecE88Uw4HnPfc+rDRm2j3EHI6C9XAAUWeSoFMuRXhULHCRDo3p4unMYmVb6rBoShF5EiNCK/IptfLp6vLBHX77XkhoZromZPdT4SU4ZTMJ/eI8iBc2I7/Ogn72Sl9jZijk6UeBX3QuCFIWApX5Y+MVDUKhsYNwf0Z2/DUNpYLOjX5dmZuhTiH
- 8nR4N0wU
- X5dMz2jvpFhHOdEadK1JOA==
+X-Rspamd-Queue-Id: 5DB9640007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: pbjnhnyugq6fk4b94k3pi8thub7bwadd
+X-HE-Tag: 1771544528-373612
+X-HE-Meta: U2FsdGVkX1+MxRM+EDRALnybejlvhb/+36IaHhNVaZJiHsdyfalmTh8q9P5FOdMnzrUoTOlpQTmUFXepM2wxhlfsYmTASCuY7HEUHH2RKLHFoZPc6LpwvYelJoFSXXuHdm7Z4oxmIxNY6BpPRGdTSloai6elVA40lGqRWdj2odfmpTouQAdrjFdyfE2XS7rt+QHwld1M+dXpH8g81HKZ0X0a7TdfNx9aRDHbrS7xBd1IS5fAmTkVpEpeSYmouMhSXVHz1AxneX3IQ3AoUhRtyMkqXz/mtNb3Tpp3AO81l0urLvLDB0HMJ0l324BNp6x8FZ2Rk4XdhNI1mPEOHJNQVMdaQYkYVTcAyHYeNg0HrhO6ynra7+j30iyaOSVzgsHNUHxeHZpBuHbS7Er5dVtLOXuYHLgaOs7YO+YcpHf3eJg93prvjcJRPXRkO8F3YRIjcDD2o2d8ohmjwA7CWl8XGb3W9OiWwMG45c9uxLkNK4slOPgensknuMfBgw4Q1+puGBQLWGJWegSoi/c/Cs2OkJX3cekdF6AkO9Vj5JfL5BlQbGEOT9GYhqOXvNK25waCrcXW4OP3wATGXC2mP+FH23vnJOKrTUsqje9uX7i7otES4dDein2DmarKcNIgOZx5wkCXpQmF2wDSxU168NfeNJlnzkzhsfVVl0w9TKQ8frtAScEUobvFpZKA1JZoKlGWhaHZJpQ4DRC4Wp6TbsqxIKEoLsKsD0wmFbkWAH7GLKNQIcEkzrVRsOLJVfpa+xTU5NE23ClJb3hp35UbEbioZyaSvpVPRQ42dlGwKOkRuEXChpkJpGVUd0LNT2bGG1iMW/kMogyS6hJeU6VE1lZ2l9A8g5N3NsvokSt9gAsywtdCA8tuud3Uw6N0OAu5bNkGiedhkcx8LrB6EZOEDAuC2AZOLcYOKtkOycEvozmz5poOVJBoLRKdCSPgVQmYuuCbVPDjVo9bVkvgjSewb1j
+ RCtK4rYL
+ +AFk2/eV4HZDf3yr36px+ZOS66HQJhW/OY5j9aOdJkuIYpmUO1sd8oAsdBpGDCQsu0SgzZJgqdGQndFtAcxuEKZUaXN46B22DdbgvmqCqF+2lRyIm507i2FqDlYlnVTL3kMWkBbTfqAR0JChSn7kU+gsripPLHtFok8vV5dLskOKXgofBUg0Y3852HbFIPhOdkJNUrR9ife6dGBb/PXS7/IBRbOIdEdOTpV+fqlr2aLQVzI3FdwLuVc9dS71QBGzj9EE17jtdXzw8FJClEwH4HwJodqIimRMsTGay1jhYddzSTd7gFpzx4+iNVkM0Me319UynvNSN1RsPiDLdfr+t4LvThKA6wjYX1x+cIjpW3Tcl3pW2DQtEf+ZxjbUaNo0uRRVIZee+Er7wrGGXGIl6BKD4X0KF9gbloEYN5VIk1vQ6wSj5fscOQqYej0cMoA75UdaK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,78 +118,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The rss_stat trace event allows userspace tools, like Perfetto [1],
-to inspect per-process RSS metric changes over time.
+From: Kairui Song <kasong@tencent.com>
 
-The curr field was introduced to rss_stat in commit e4dcad204d3a
-("rss_stat: add support to detect RSS updates of external mm").
-It's intent is to  indicate whether the RSS update is for the
-mm_struct of the current execution context; and is set to false
-when operating on a remote mm_struct (e.g., via kswapd or a
-direct reclaimer).
+No feature change, to be used later.
 
-However, an issue arises when a kernel thread temporarily adopts
-a user process's mm_struct. Kernel threads do not have their own
-mm_struct and normally have current->mm set to NULL. To operate
-on user memory, they can "borrow" a memory context using
-kthread_use_mm(), which sets current->mm to the user process's mm.
-
-This can be observed, for example, in the USB Function Filesystem
-(FFS) driver. The ffs_user_copy_worker() handles AIO completions
-and uses kthread_use_mm() to copy data to a user-space buffer.
-If a page fault occurs during this copy, the fault handler executes
-in the kthread's context.
-
-At this point, current is the kthread, but current->mm points to the
-user process's mm. Since the rss_stat event (from the page fault)
-is for that same mm, the condition current->mm == mm becomes true,
-causing curr to be incorrectly set to true when the trace event is
-emitted.
-
-This is misleading because it suggests the mm belongs to the kthread,
-confusing userspace tools that track per-process RSS changes and
-corrupting their mm_id-to-process association.
-
-Fix this by ensuring curr is always false when the trace event is
-emitted from a kthread context by checking for the PF_KTHREAD flag.
-
-[1] https://perfetto.dev/
-
-Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/trace/events/kmem.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/huge_mm.h | 24 ++++++++++++++++++++++++
+ mm/shmem.c              | 30 +++---------------------------
+ 2 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
-index 7f93e754da5c..cd7920c81f85 100644
---- a/include/trace/events/kmem.h
-+++ b/include/trace/events/kmem.h
-@@ -440,7 +440,13 @@ TRACE_EVENT(rss_stat,
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index a4d9f964dfde..d522e798822d 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -237,6 +237,30 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
+ 	return true;
+ }
  
- 	TP_fast_assign(
- 		__entry->mm_id = mm_ptr_to_hash(mm);
--		__entry->curr = !!(current->mm == mm);
-+		/*
-+		 * curr is true if the mm matches the current task's mm_struct.
-+		 * Since kthreads (PF_KTHREAD) have no mm_struct of their own
-+		 * but can borrow one via kthread_use_mm(), we must filter them
-+		 * out to avoid incorrectly attributing the RSS update to them.
-+		 */
-+		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
- 		__entry->member = member;
- 		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
- 							    << PAGE_SHIFT);
++/*
++ * Make sure huge_gfp is always more limited than limit_gfp.
++ * Some of the flags set permissions, while others set limitations.
++ */
++static inline gfp_t thp_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
++{
++	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
++	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
++	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
++	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
++
++	/* Allow allocations only from the originally specified zones. */
++	result |= zoneflags;
++
++	/*
++	 * Minimize the result gfp by taking the union with the deny flags,
++	 * and the intersection of the allow flags.
++	 */
++	result |= (limit_gfp & denyflags);
++	result |= (huge_gfp & limit_gfp) & allowflags;
++
++	return result;
++}
++
+ /*
+  * Filter the bitfield of input orders to the ones suitable for use in the vma.
+  * See thp_vma_suitable_order().
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b976b40fd442..9f054b5aae8e 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1788,30 +1788,6 @@ static struct folio *shmem_swapin_cluster(swp_entry_t swap, gfp_t gfp,
+ 	return folio;
+ }
+ 
+-/*
+- * Make sure huge_gfp is always more limited than limit_gfp.
+- * Some of the flags set permissions, while others set limitations.
+- */
+-static gfp_t limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
+-{
+-	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
+-	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
+-	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
+-	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
+-
+-	/* Allow allocations only from the originally specified zones. */
+-	result |= zoneflags;
+-
+-	/*
+-	 * Minimize the result gfp by taking the union with the deny flags,
+-	 * and the intersection of the allow flags.
+-	 */
+-	result |= (limit_gfp & denyflags);
+-	result |= (huge_gfp & limit_gfp) & allowflags;
+-
+-	return result;
+-}
+-
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ bool shmem_hpage_pmd_enabled(void)
+ {
+@@ -2062,7 +2038,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
+ 		     non_swapcache_batch(entry, nr_pages) != nr_pages)
+ 			goto fallback;
+ 
+-		alloc_gfp = limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
++		alloc_gfp = thp_limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
+ 	}
+ retry:
+ 	new = shmem_alloc_folio(alloc_gfp, order, info, index);
+@@ -2138,7 +2114,7 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
+ 	if (nr_pages > 1) {
+ 		gfp_t huge_gfp = vma_thp_gfp_mask(vma);
+ 
+-		gfp = limit_gfp_mask(huge_gfp, gfp);
++		gfp = thp_limit_gfp_mask(huge_gfp, gfp);
+ 	}
+ #endif
+ 
+@@ -2545,7 +2521,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+ 		gfp_t huge_gfp;
+ 
+ 		huge_gfp = vma_thp_gfp_mask(vma);
+-		huge_gfp = limit_gfp_mask(huge_gfp, gfp);
++		huge_gfp = thp_limit_gfp_mask(huge_gfp, gfp);
+ 		folio = shmem_alloc_and_add_folio(vmf, huge_gfp,
+ 				inode, index, fault_mm, orders);
+ 		if (!IS_ERR(folio)) {
 
-base-commit: 8bf22c33e7a172fbc72464f4cc484d23a6b412ba
 -- 
-2.53.0.371.g1d285c8824-goog
+2.53.0
+
 
 
