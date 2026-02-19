@@ -4,125 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AADC4E9A052
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9880BE9A053
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1360B6B0092; Thu, 19 Feb 2026 12:10:08 -0500 (EST)
+	id 0924E6B0089; Thu, 19 Feb 2026 12:10:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 078046B0093; Thu, 19 Feb 2026 12:10:08 -0500 (EST)
+	id 05CBD6B0093; Thu, 19 Feb 2026 12:10:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06006B0095; Thu, 19 Feb 2026 12:10:07 -0500 (EST)
+	id EAAB96B0095; Thu, 19 Feb 2026 12:10:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C44D56B0092
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:10:07 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 86E961B58C3
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:10:07 +0000 (UTC)
-X-FDA: 84461844054.18.7C129F9
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A2B4E40005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:10:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QrYABH3J;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771521005;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D60EA6B0089
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:10:49 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F079BA5E8
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:10:49 +0000 (UTC)
+X-FDA: 84461845818.22.7CB0FB9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8B41320015
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:10:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YD3SyL0D;
+	spf=pass (imf13.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771521046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SfOnUUghgm3+fdRkPGu24cbqVbuOmL72xyd/b5ck1c8=;
-	b=m4xSMC3KASRmS7RuSvcb3OvEVMLDTu2vKE7tNF0NUe6CqnjuMgBbCrhZFhVTaUK2JEf2zR
-	6DhXmb5ai95QXQEQEHGOgxcsyNo89VAc0brMHvaDj9aW6fsZVIMSQae0ObnpRNyyFLIAtF
-	fur4QHX0xBMn9kNpErFXVyrMxgtgtEM=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QrYABH3J;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771521005; a=rsa-sha256;
-	cv=pass;
-	b=J4FFz9kwhx8yOK69ZxOI/vK9NaVcWdZxsR1srShtoi/WbvO3ZftKWuyFcf6haNEIVbCmDF
-	Id/2L4BEzJP5RK+1XIkpyHQui5qQD0wX4FXkcT5sDGDRKeOee4CXWzJTN2y0Wh2acTJWYH
-	Ye+ieTTcT0y3p0YY9CCrMkXYV31HqkQ=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso1300061a12.1
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:10:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771521004; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VuISeWG81aYmgf2CrF++J0PAuMqBVnTu54ASHNsDHLZpI7m/dMtnBW75OjZ7MMfsJb
-         H/BOgMqlQkOV+vZ4qBbAht7TNr/DxbERgmL9im+RCF3LRT9eKwy5yoW3XkOj/meWbQiy
-         Bqw8JrLs9Yrco+T6O/K7T5G9Bfj3vI0dzfKvKIMf54gv33s66YIYpxR+poQonxB2lAzp
-         wigsM/OGp08DBex0vzOTe0YYAY7GHCZ8f8+Ign8vzMF5AB0oON8cqW2OKC6h2LbXSJoa
-         fy1X+MkGx19htz9GWzj46rKhwPm5GDD2+g1qFg/IWIcpPfDpGnt9pozVDm1gRsRLHebm
-         qWRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=SfOnUUghgm3+fdRkPGu24cbqVbuOmL72xyd/b5ck1c8=;
-        fh=rKaOCJopJKH7YSN7OXnn51KxqeHH6mO8BaFfO0Yae2Y=;
-        b=g6fjfF2mxubZjM5gsNX1BuClYG+cYZ+JowMD8R9qR109GSQdv4tw59j+UcjKbvOSEI
-         219gCsDBiVoi7/AdmnLxedcN2ABXqPDwrzg9+h1heGxBPgtiHVLpjs6DU2eUp2ZBFVz2
-         wQcyn70iyTzWZe8dxi7VCfEXcNAiFdpnq9/LS+APXfmEhdyNU28ExW/vVWXB24lbz5Pw
-         nkVojXHL00bEg8SuMbP0CcknQgyJnxp/VbGtyQY+oKOgBWJ1Fo+Rl/0afbrVbtFrek6+
-         V0fq9iQDA4rfJdTNxFoh3cKCua9TUjoYf45yUhbo0F0k6hT5o2TVnzhSa+HtUqZ2BSuo
-         ATRg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771521004; x=1772125804; darn=kvack.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SfOnUUghgm3+fdRkPGu24cbqVbuOmL72xyd/b5ck1c8=;
-        b=QrYABH3J/+kRYq5edziRfQC+cZ9fE7TPAIzMSd/aetDK7OBgegcqzn0Pquz0G39Bz8
-         jj8OOWSBJN12TH61S9i6NfKDYXn5T9alYQY04cHhpcKpMKnF5YVXlI976qzYqwAjqvi+
-         CIQbKqVdRZvm3P0XRZPFD3MITlKO6rKIgbB1dfrO7ygMeREQXMpVSwaGUUSw8IIfJcZc
-         qYR/RS7kB7jZfqO8iKLJzjNXYualPPvEuKT0laZiJ5IAvm4PQ5fVcyQO6YjXulp6n1dL
-         nbqVnuAloZZFH4KJtH4+hcOF5873Zl55s8fK/QScw2M5hr6t2h0hC4UTKzJ4gXSyRWqM
-         ZxZQ==
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1ufSHZcVh+Dpk6NOIfY9tkcU2Fx29sq1FQcHOa9iMf4=;
+	b=JhJHozmhsnQo7/0Q3/oaGT8Q2MsbdpGr8oOdoxnevE4Zk0iLRk5ydrEF+pzuzB+si7vO7q
+	6bC0DE/hWbrmIhHHnS41k3CZklbbE6JFJMC5Qxmv+eyZqcYpJsLNzYxYXM/p8Ez4o2bw4N
+	54kFMmTzBTtfO1FfGncbTTS0pNWnvjU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YD3SyL0D;
+	spf=pass (imf13.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771521046; a=rsa-sha256;
+	cv=none;
+	b=sk8wBZukfWF8ZCRTJIjoyByEhQCPCf40RC0omw9DynGRXuuQTsyw9mNqFCpL9tck0uRM6Z
+	Giyf2aVDFg9y41eGXn6my6jZJ2s9Rhynu9yY1+48zRDV0o+JP5TDldipjOXSp/Knc3Db0p
+	FXGHnMwrZbQfLLYX7V4bhr8JNGcPMoY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771521045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1ufSHZcVh+Dpk6NOIfY9tkcU2Fx29sq1FQcHOa9iMf4=;
+	b=YD3SyL0DtxRA91L5WAKXCYQ49f11bVorKkKPHTjx76X12k2V8XY093Hmdx/kmeAwV2kQIB
+	c/Jfb1c0SKNR5acXyF7CZzISngRFYbe3wTfO3a6i8FAYN2X7mJaAMT9CCqjvcbIjPjedn2
+	91+ainb9FsRHvogQ74qW1FkNQuY+aoU=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-dJyYmdKyPcSLEzc13uDXNg-1; Thu, 19 Feb 2026 12:10:43 -0500
+X-MC-Unique: dJyYmdKyPcSLEzc13uDXNg-1
+X-Mimecast-MFC-AGG-ID: dJyYmdKyPcSLEzc13uDXNg_1771521043
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c71655aa11so1166424985a.3
+        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:10:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771521004; x=1772125804;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+        d=1e100.net; s=20230601; t=1771521043; x=1772125843;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SfOnUUghgm3+fdRkPGu24cbqVbuOmL72xyd/b5ck1c8=;
-        b=gK+LaaMacwthdqfEdS9fTtGCR5+7VjSzWgO7dnWpGiy09Cqi+GXmQNSTpjWN308k9a
-         PZt3ZSbpqDKTo70mKUdarpykYT+QOiqMg6IiOns0k6HMK074MifJNMjxzN4wrfZbR1jR
-         R0PEULH1wIaIdeyH8t60Vp/LrX62AtoPMKC/ZZpEypcFqoRPC/lqLfPZOiLvc7ksjLUC
-         Ma96aDBJlqK/JMBAjR+39JyEKXcTfkAwQXibgzxY1HGmR8fZ8UAoP/chkhhxt1VUrwlO
-         HHENjJ6Sf56RkAIQa5QIY/L5x96Iho8/OtKkYsAMIWcggYhfZ6w3Mj5nhQ1lqXXEQ4Ij
-         AZUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuVQMArVXuG2ZlRB3Zq70yASb9OhNSMHxW6OgQUmTtBkmi7ms8MqBsszG+e6DR1GT0cbXWCWHZGg==@kvack.org
-X-Gm-Message-State: AOJu0YxkbvRBI/q5SCJTwo9/pIY5x+LgW02nhsK3nxMhNNtRTs0Vf75M
-	R3AOkUIFvkslGYsdU1gi+PQdJTtlAhIBHIxZyaDVUk24XezZDbIhJv1CYlSfeGGWVt+QvGBDoha
-	VsqtUwPCPsZ3A+JT51RSYAz5nBY+7z1GDcDj+e2IFYw==
-X-Gm-Gg: AZuq6aLInVEw1+4/ytfVdMmD56JtsIaSbyiXKDpokOwR+GqdSOsw/BI4jP4/YZyhcEk
-	Ma8Xzwg3gVju0cuIjog+0/TmgVP97g7sb0/5VMvN5qbNGQnMH3E0pF53AiNYqpO3rPXHEZxEyiq
-	xd2PcutXv2w5qoDmfWCulGSVk2DJdT03tQzLsv9AtWs9SGEC3yFJKS3i9FH4sPyLIOFIH24iMfd
-	bcZOKHYj9jPTftT9fNznfyZlAp5dYkP4oqWXUO9HdsLTSGnSch2TVH1iuEoLH12h/MQiJfFYg8m
-	/WqgY27AxOTdyQLPaHTtDatjV+eF7sAME9jBf+76
-X-Received: by 2002:a17:907:7215:b0:b8f:9fe5:fd62 with SMTP id
- a640c23a62f3a-b904dc6a2fdmr206963066b.42.1771521003677; Thu, 19 Feb 2026
- 09:10:03 -0800 (PST)
+        bh=1ufSHZcVh+Dpk6NOIfY9tkcU2Fx29sq1FQcHOa9iMf4=;
+        b=rszIKZezqIIq/LMQ2rN6Qyl6Ec/Ya0fl5CMurlVik5JY7w6cjelR+XFcaw5xoB4x8o
+         UFwWWUZ0DIjyxSRP1e2dbj0IAeJPKXMQ100k6Wvpv8a2hz9UpbRCFAyoAReyrTp6Xx/G
+         L3Yf+lkl+ajE6Mg1mMdXyBRc17Gbxc3/62ymWguaQWXLqgemdtkdBPpVdvy4TDr7uEgl
+         xxa0mme0eWnzzP8HRGtIyoUxG3lLJhinU8uAiFk5MRKJH1QRi86uxa0f6UdRycjnAE8C
+         pDJBTPrajKm7n/PqDAO53C/59a0rPdNMJqS/la0bkc6AYnIEp4H+hPToqd0Kd9i6B9Lu
+         VL9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVxNziiomEield21E/k9dhd9ov2WaAnIDc8eIZ6G6ACPrJ5bG/zfeUTFO50ZBeDGYVPuQdh2PGjyQ==@kvack.org
+X-Gm-Message-State: AOJu0YyAv08lIzWjJl/inRlQcHDAepffZQc6xVKvIMLXV1HgB7gXKVgZ
+	ccjIi3iq2Avx+LE3p+PRy9M10jmk0WXJalSvciMjMUnSfOfJxbxZojr2nFzksgPskysdnGipg+8
+	B8co9FBY9nJEWLUfl5N9pO+1/77eRYAOL/vMLEWP4lrWdIbQTw21e
+X-Gm-Gg: AZuq6aJLTMJa3IX0WhYPKZ8JYEQr61VnpS4DKaCY1i8oWlCsScQTZ0TQrvV77/E1vAG
+	Dqvzax+5waB0tQXCj8t3ptBSmnGhf6yYrdOXhy9q1u7+X6zIAX+ObyWDXRztWJr3SCid0Ig3vu6
+	azrKa+vtMHbt/L6RpVySpT3SwUmA3dE41AplB1/WdxP5OkjY1yKXdfU4+ekQ+SYIaCtT+aUUYXX
+	5F66LaXFRbSPTzHDAZ/h8QVBuwb3+S4uzSB/CHzOj2CXTPkIVZNehPP8MXI8Ueepex8hBeHuOIZ
+	eYb2j0B7hHSClw5qWZDL96FCctI4Em2DLg4XtCVc+UZqTplvfTFH60XPFUor/0uXl3Nb8J5A53I
+	0dXSTXDS4jUu+sVPNBTS3viZFlP7qQmoFYzIuqmmONf2lBBxa/Xan14ga/Cmefx8=
+X-Received: by 2002:a05:620a:44c2:b0:8c7:fdc:e877 with SMTP id af79cd13be357-8cb740b5c53mr703610385a.41.1771521043238;
+        Thu, 19 Feb 2026 09:10:43 -0800 (PST)
+X-Received: by 2002:a05:620a:44c2:b0:8c7:fdc:e877 with SMTP id af79cd13be357-8cb740b5c53mr703604885a.41.1771521042525;
+        Thu, 19 Feb 2026 09:10:42 -0800 (PST)
+Received: from localhost (pool-100-17-19-56.bstnma.fios.verizon.net. [100.17.19.56])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb2b0e12eesm2128955585a.15.2026.02.19.09.10.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Feb 2026 09:10:42 -0800 (PST)
+Date: Thu, 19 Feb 2026 12:10:41 -0500
+From: Eric Chanudet <echanude@redhat.com>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 3/3] dma-buf: heaps: cma: charge each cma heap's dmem
+Message-ID: <aZdAOMBRdRw59fa0@fedora>
+References: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
+ <20260218-dmabuf-heap-cma-dmem-v2-3-b249886fb7b2@redhat.com>
+ <435330fd-ecdd-43c7-8527-f285c03c6421@amd.com>
 MIME-Version: 1.0
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 20 Feb 2026 01:09:27 +0800
-X-Gm-Features: AaiRm50zrqp78V0Krn7VW-DgHg4OPDcNXDr0bwNcyrfHNUiYHaLGgQn9Ou5LHnw
-Message-ID: <CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com>
-Subject: [LSF/MM/BPF] Improving MGLRU
-To: lsf-pc@lists.linux-foundation.org, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <435330fd-ecdd-43c7-8527-f285c03c6421@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EYjvavuUBrX5iggDuOu0celvLeVdsPVdHpdgyUCm7Hg_1771521043
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A2B4E40005
+X-Rspamd-Queue-Id: 8B41320015
 X-Rspamd-Server: rspam02
-X-Stat-Signature: hqomz83mbcg41eco7xp6yb5u55ym4gid
-X-HE-Tag: 1771521005-998646
-X-HE-Meta: U2FsdGVkX1/DUYEFGSUH0cye862iUqZp+80X5iVsLH0xzpyioHZJMnPTHIxRn4iqeoibOVzoyGla+RX4o/eWVa237bZAWCpz/9VUQ1Z5SREHPpJSPcrp7mJXhiMP9kRtnuivOIFoFUeo7ezG/U6aJH1fWy6FaEsw7YCdbJPCqH9E/NZT9F7TYGdADv+lcbb6UJn2d6/LNyk61HogwYpIglQP6DOHJhLx2bBj68PllZGfctwfnoqo6M95evThqDnI1qs9jouxRBMwDpgFbobRUsL8RBbqaW3qoQFIhFKnGSU+njBiV/6dCP1AMTvjDTsAupnScUvZZWbI4jb7jjGDMIYmr14W/lgPzqby529r6+HnDMi/w/h1/kTL+/JkUtGc785Msanom8tIJhNJgnlc8esa3VomCh0+Y2KMGVIFArrHuS9XlYt9eWFDgfVNcaZo04KEzPI4JHUKC4C4SjeSLgu8LzryjMbo3g0jAA3ibUAacK4CRfg3AEuQj/rZocRWSWt2w/g3JBXv5YWeKLiWFpUxUkfn0mZee+hxjMycPsTkAGA4VPNYTngnMSxCkcvNjYNMXG6czbQdvU3yPWpYt2vsc1ZYjrjOqLK6ZyqwWWU0sya7CTOoBw0M4iS1ZkkdHT13RQlsxZB+O/gNaIXQ3JWFIh/9NkQ/EqDgKtoWLyXr5kmAaq0X/9ruIULScisR5GLf80dHZHT0CfSXlu92N2EX+DoMuBC+1a+2QEd4/ss8tz0ZNfK9C+Xpc8N2sBQ/FSSnBxOEqbSN3yGfOY/Se8311W/cDRc9Q2yJUriYNzECMG+jhsdgp2GVrAY3ZYk22XUM3N6NSStWQBKeEShVQfDYsltWSzgDiEBCEpES7cVhznxmbw70oF4UVMf1JHcEZrqP8lXsl1JHMHV2dzAQyf2Xf2pcb9AxoTE8X8UqF2zxqSUgdlNJHKEuCi7aFxbMWnqZFrsb/qfA/7U1HUP
- HZl+pTkz
- TKeIT9bx3lavRoCmSI2yg9TLiCaxdGlkvII/cBTJV7S+SgeQHZc/wZK0F1+mkTLaIFEzmkg8Xz611gJoqN49874frBKZ9YGpZ+jynqTEHz0G/ND/fvm2R30mmjjwOPG3s5OolBDchlqIKtvFJFAt7C4sMfKfxfgzONosfXo0dXjtSeEda6gIRLv2eaVxOelb7XHu6p3lkGR9W4BVYKqu9NgzjTGowaZv1ItG6kiGI8zxN5FQ9lqFumJcmNv6wdoZlwK4YVWkBSRSuPuYyDfYGTnm6G/sngWzAHR9ZPba+RUfce1iLgU7lj98lOQLDsTZzjX12edE/PDlp2qm+x/oUwIiBGqu6GRMi2/4vOjMy1JLZDHhnHz6G1V7AewaZvha2xxUlD3q894JSDq3Adp8OmxGI0RNnFIFtVXPkmVks1uwFNs2mONSDDjf4xc+tF6TCXxDZJDhIduCWwGTHZQ0Iuitl9jBe8pih0zIY7Id3Bds5v904RcbmaeSYBN4g6qBNhVIIBy23cSGthISAWl3ljz+vEi4S3dgPr4R9CSlkNj1Zl8DfjJyHJ4JbS72ZAkxL5AdNVh7P61S2e6rU4E9VtUN9Q5AiauBk9bMO2Wh0yZMo95o=
+X-Stat-Signature: mwtwcmh1179pu5abwuobkd853fto3rsr
+X-HE-Tag: 1771521046-932268
+X-HE-Meta: U2FsdGVkX18Rb8ZpEsLD3lzWKnHdyXrBVJHvnwfROuq5ExeI2S1MzWbq9M7CxHws4y5wG/urkJvSsyVMYN7IEzaE6xS0qJPX/LDpcW0SMzuVErre7cvub/SDNEyoavbBc4HuVB479VCmvLdUAt+GETIjcwVQQW81mvUDwqUYTK5pcNjhhZ0Ii0D/O2eUvmPqavIa84YwmD1YD2ch7bDQ4Upa+MNfwDEySpnmDFhLZEZ6kfAUVYBS8PAgVqrTj4R8OLsT++VlEbFVKoQxc/cLqIOhVteHWoJpGMwCJgnfcday1Z+ibtw6YF1nKCDFJlEQFs6EF56zN31Az57EswkGsXJsfvnrVEB4AaTzG6bSJCHTF5n1skMfDVKehAcQ4Wb1tMvbENiHGkA7KVa2HbBeHIIxoEkOOFNlOTNoCeNtLE3vgNi+2XiiPyhq5FPvFVw9l+O5OsmC1eJmJ8fWNnKgKFA7vD1WnvFlPmz/mbkCslkec6YxwxekRkM7On+8Md0sK81RQiKjWERkN9qbqZcRQ6bq0QIaMABFi9mMFec6DXTpnV/LRBGvzdydjHZZ3bZK8AWuvD2o+26tJIGM+LUrkU4xs35sqIBHCv06tuAFrs3FELIyRmHwuyzNWyH11bkH0MGq2A5EG+wqDOeTBOvmQm/p9VWiKRFH6vcgDuhRRpHq3KIWXBHXbln0k6JZEoMbFJqM5MhYzKP/YcEVXYxP5uj/A5Cx2SVuJw4vQEDLS2n3dqvCkeSkQJ5H/vqwK71cRN3A0zutuyO+S9UXJIZ8I2rDppThJsaMrjbzVGcftLdeOAZsifpcMmNlBumaxq6m/37RFLnKQ91bsJ8JTWrWVjzZUU7RlSD3T1pqdQDD5BtYYLLcvmTkX78hTR+aQqFqNKNV70P99XXxhym78w+T3Aj403nuII3A52X8EhbwY4tlHXcnSWPIolrdWOZf4iv5Yr993cJ5B0EyNL1EwNY
+ 4xL4Bf+L
+ q3nmpZAWUYIWQ24mK0TCfLtO2Xo0gmeQ+L0BzVLSYf0LoiML5HJiGZ/UN3blhRELjkcjFjxpjd9KsQakhIG6nBfwKVIY6D2xddmKGFeQUZ64Nc9EzYo5lxp1mGB1tW5RL0VbncIocntR+u+4KM6IjrsLmlSD/kHUQfE+VA7WvD4QjadZCHSXgEc4TgEYhnZIhVUt23d01wwDHTuDGB6+gO1Qt6Owpe0F3EqlE9htDXG7kIdcgVDYH2nD/a97EVG9KivABvBN6u8HG99ZndterQLRzo+b7Kgmo1Ie+VivaiWVctCrksewNROz6C1N10x5onVdHjnDgfxLtvNBnhnLRu5qgx3mESxn3NV+Baq51By8clZXWLPb5WiC9dzxE6d0RNWMmtX+9iz43VThu0DW+p3SDOQfWlI6mfTwS6t1wNeHnsDBfYYhyW58qfROmWQ7H4a6LY+/iQsyNGa6NhnvbMeA/Xy+BwRJryt7eGD1nPY7nKPqj0Qf82H1+MHRHsQwJHQYuv7XJu75SBQPWJcc6JqbaAhDKLWixuNQ4ZJBujaW9CuQq9bjyqdOMkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,180 +138,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi All,
+On Thu, Feb 19, 2026 at 08:17:28AM +0100, Christian König wrote:
+> 
+> 
+> On 2/18/26 18:14, Eric Chanudet wrote:
+> > The cma dma-buf heaps let userspace allocate buffers in CMA regions
+> > without enforcing limits. Since each cma region registers in dmem,
+> > charge against it when allocating a buffer in a cma heap.
+> > 
+> > Signed-off-by: Eric Chanudet <echanude@redhat.com>
+> > ---
+> >  drivers/dma-buf/heaps/cma_heap.c | 15 ++++++++++++++-
+> >  1 file changed, 14 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/dma-buf/heaps/cma_heap.c b/drivers/dma-buf/heaps/cma_heap.c
+> > index 49cc45fb42dd7200c3c14384bcfdbe85323454b1..bbd4f9495808da19256d97bd6a4dca3e1b0a30a0 100644
+> > --- a/drivers/dma-buf/heaps/cma_heap.c
+> > +++ b/drivers/dma-buf/heaps/cma_heap.c
+> > @@ -27,6 +27,7 @@
+> >  #include <linux/scatterlist.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/vmalloc.h>
+> > +#include <linux/cgroup_dmem.h>
+> >  
+> >  #define DEFAULT_CMA_NAME "default_cma_region"
+> >  
+> > @@ -58,6 +59,7 @@ struct cma_heap_buffer {
+> >  	pgoff_t pagecount;
+> >  	int vmap_cnt;
+> >  	void *vaddr;
+> > +	struct dmem_cgroup_pool_state *pool;
+> >  };
+> >  
+> >  struct dma_heap_attachment {
+> > @@ -276,6 +278,7 @@ static void cma_heap_dma_buf_release(struct dma_buf *dmabuf)
+> >  	kfree(buffer->pages);
+> >  	/* release memory */
+> >  	cma_release(cma_heap->cma, buffer->cma_pages, buffer->pagecount);
+> > +	dmem_cgroup_uncharge(buffer->pool, buffer->len);
+> >  	kfree(buffer);
+> >  }
+> >  
+> > @@ -319,9 +322,17 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
+> >  	if (align > CONFIG_CMA_ALIGNMENT)
+> >  		align = CONFIG_CMA_ALIGNMENT;
+> >  
+> > +	if (mem_accounting) {
+> 
+> Since mem_accounting is a module parameter it is possible to make it changeable during runtime.
+> 
+> IIRC it currently is read only, but maybe add a one line comment that the cma heap now depends on that.
+> 
 
-MGLRU has been introduced in the mainline for years, but we still have two LRUs
-today. There are many reasons MGLRU is still not the only LRU implementation in
-the kernel.
+Agreed, while read-only it is easily missed without at least a comment.
+Alternatively, should that value be captured in the init callback to
+guaranty it is set once and make this requirement clearer?
 
-And I've been looking at a few major issues here:
+Thanks,
 
-1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/Inactive
-LRU.
-2. Regressions: MGLRU might cause regression, even though in many workloads it
-outperforms Active/Inactive by a lot.
-3. Metrics: MGLRU makes some metrics work differently, for example: PSI,
-/proc/meminfo, smap.
-4. Some reclaim behavior is less controllable.
+> Apart from that the series looks totally sane to me.
+> 
+> Regards,
+> Christian.
+> 
+> > +		ret = dmem_cgroup_try_charge(
+> > +			cma_get_dmem_cgroup_region(cma_heap->cma), size,
+> > +			&buffer->pool, NULL);
+> > +		if (ret)
+> > +			goto free_buffer;
+> > +	}
+> > +
+> >  	cma_pages = cma_alloc(cma_heap->cma, pagecount, align, false);
+> >  	if (!cma_pages)
+> > -		goto free_buffer;
+> > +		goto uncharge_cgroup;
+> >  
+> >  	/* Clear the cma pages */
+> >  	if (PageHighMem(cma_pages)) {
+> > @@ -376,6 +387,8 @@ static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
+> >  	kfree(buffer->pages);
+> >  free_cma:
+> >  	cma_release(cma_heap->cma, cma_pages, pagecount);
+> > +uncharge_cgroup:
+> > +	dmem_cgroup_uncharge(buffer->pool, size);
+> >  free_buffer:
+> >  	kfree(buffer);
+> >  
+> > 
+> 
 
-And other issues too.
-And I think there isn't a simple solution, but it can definitely be solved. I
-would like to propose a session to discuss a few ideas on how to solve this, and
-perhaps we can finally only have one LRU in the kernel. So I'd like topropose a
-session to discuss some ideas about improving MGLRU and making it the only LRU.
+-- 
+Eric Chanudet
 
-Some parts are just ideas, so far I have a working series [2] following the
-LFU and metric unification idea below, solving 2) and 3) above, and
-providing some very basic infrastructures for 1). Would try to send that as
-RFC for easier review and merge once it's stable enough soon, before LSF/MM/BPF.
-
-So far, I already observed a 30% reduction of refault of total folios in
-some workloads, including Tpcc and YCSB, and several critical regressions
-compared to Active / Inactive are gone, PG_workingset and PG_referenced are
-gone, yet things like PSI are more accurate (see below), and still stay
-bitwise compatible with Active / Inactive LRU. If it went smoothly,
-we might be able to unify and have only one LRU.
-
-Following topic and ideas are the key points:
-
-1. Flags usage: which is solvable, and the hard part is mostly about
-   implementation details: MGLRU uses (at least) 3 extra flags for the gen
-   number, and we are expecting it to use more gen flags to support more than 4
-   gen. These flags can be moved to the tail of the LRU pointer after carefully
-   modifying the kernel's convention on LRU operations. That would allow us to
-   use up to 6 bits for the gen number and support up to 63 gens. The lower bit
-   of both pointers can be packed together for CAS on gen numbers. Reducing
-   flag usage by 3. Previously, Yu also suggested moving flags like PG_active to
-   the LRU pointer tail, which could also be a way.
-
-   struct folio {
-       /* ... */
-       union {
-               struct list_head lru;
-   +           struct lru_gen_list_head lru_gen;
-
-   So whenever the folio is on lruvec, `lru_gen_list_head` is used instead of
-   `lru`, which contains encoded info. We might be able to move all LRU-related
-   flags there.
-
-   Ordinary folio lists are still just fine, since when the folio is isolated,
-   `lru` is still there. But places like folio split, will need to
-check if that's
-   a lruvec folio, or folio on an ordinary list.
-
-   This part is just an idea yet. But might make us able to have up to 63 gens
-   in upstream and enable build for every config.
-
-2. Regressions: Currently regression is a more major problem for us.
-   From our perspective, almost all regressions are caused by an under- or
-   overprotected file cache. MGLRU's PID protection either gets too aggressive
-   or too passive or just have a too long latency. To fix that, I'd propose a
-   LFU-like design and relax the PID's aggressiveness to make it much more
-   proactive and effective for file folios. The idea is always use 3 bits in
-   the page flags to count the referenced time (which would also replace
-   PG_workingset and PG_referenced). Initial tests showed a 30% reduction of
-   refaults, and many regressions are gone. A flow chart of how the MGLRU idea
-   might work:
-
-   ========== MGLFU Tiering ==========
-   Access  3 bit    lru_gen  lru_gen |(R - PG_referenced | W - PG_workingset)
-   Count   L|W|R    refs     tier    |(L - LRU_GEN_REFS)
-   0       0|0|0    0        0       | - Readahead & Cache
-   1       0|0|1    1        0       | - LRU_REFS_REFERENCED
-   ----- WORKINGSET / PROMOTE --- <--+ - <move out of min_seq>
-   2       0|1|0    2        0       | - LRU_REFS_WORKINGSET
-   3       0|1|1    3        1       | - Frequently used
-   4       1|0|0*   4        2       |
-   5       1|0|1*   5        2       |
-   6       1|1|0*   6        3       |
-   7       1|1|1*   7        3       | - LRU_REFS_MAX
-   ---------- PROMOTION ----------> --+ - <promote to next gen>
-
-   Once a folio has an access count > LRU_REFS_WORKINGSET, it never goes lower
-   than that. Folios that hit LRU_REFS_MAX will be promoted to next gen on
-   access, and remove the force protection of folios on eviction. This provides
-   a more proactive protection.
-
-   And this might also give other frameworks like DAMON a nicer interface to
-   interact with MGLRU, since the referenced count can promote every folio and
-   count accesses in a more reasonable and unified way for MGLRU now.
-
-   NOTE: Still changing this design according to test results, e.g. maybe
-   we should optionally still use 4 bits, so the final solution might not
-   be the same.
-
-   Another potential improvement on the regression issue is implementing the
-   refault distance as I once proposed [1], which can have a huge gain for some
-   workloads with heavy file folio usage. Maybe we can have both.
-
-3. Metrics: The key here is about the meaning of page flags, including
-   PG_workingset and PG_referenced. These two flags are set/cleared very
-   differently for MGLRU compared to Active / Inactive LRU, but many other
-   components are still using them as metrics for Active / Inactive LRU. Hence,
-   I would propose to introduce a different mechanism to unify and replace these
-   two flags: Using the 3 bits in the page flags field reserved for LFU-like
-   tracking above, to determine the folio status.
-
-   Then following the above LFU-like idea, and using helpers like:
-
-   static inline bool folio_is_referenced(const struct folio *folio)
-   {
-    return folio_lru_refs(folio) >= LRU_REFS_REFERENCED;
-   }
-
-   static inline bool folio_is_workingset(const struct folio *folio)
-   {
-    return folio_lru_refs(folio) >= LRU_REFS_WORKINGSET;
-   }
-
-   static inline bool folio_is_referenced_by_bit(struct folio *folio)
-   {    /* For compatibility */
-    return !!(READ_ONCE(*folio_flags(folio, 0)) & BIT(LRU_REFS_PGOFF));
-   }
-
-   static inline void folio_mark_workingset_by_bit(struct folio *folio)
-   {    /* For compatibility */
-    set_mask_bits(folio_flags(folio, 0), BIT(LRU_REFS_PGOFF + 1),
-BIT(LRU_REFS_PGOFF + 1));
-   }
-
-   To tell if a folio belongs to a working set or is referenced. The definition
-   of workingset will be simplified as follows: a set referenced more than twice
-   for MGLRU, and decoupled from MGLRU's tiering.
-
-4. MGLRU's swappiness is kind of useless in some situations compared to
-   Active / Inactive LRU, since its force protects the youngest two gen, so
-   quite often we can only reclaim one type of folios. To workaround that, the
-   user usually runs force aging before reclaim. So, can we just remove the
-   force protection of the youngest two gens?
-
-5. Async aging and aging optimization are also required to make the above ideas
-   work better.
-
-6. Other issues and discussion on whether the above improvements will help
-   solve them or make them worse. e.g.
-
-   For eBPF extension, using eBPF to determine which gen a folio should be
-   landed given the shadow and after we have more than 4 gens, might be very
-   helpful and enough for many workload customizations.
-
-   Can we just ignore the shadow for anon folios? MGLRU basically activates
-   anon folios unconditionally, especially if we combined with the LFU like
-   idea above we might only want to track the 3 bit count, and get rid of
-   the extra bit usage in the shadow. The eviction performance might be even
-   better, and other components like swap table [3] will have more bits to use
-   for better performance and more features.
-
-The goal is:
-
-- Reduce MGLRU's page flag usage to be identical or less compared to Active /
-  Inactive LRU.
-- Eliminate regressions.
-- Unify or improve the metrics.
-- Provides more extensibility.
-
-Link: https://lwn.net/Articles/945266/ [1]
-Link: https://github.com/ryncsn/linux/tree/improving-mglru [2]
-Link: https://lore.kernel.org/linux-mm/20260218-swap-table-p3-v3-5-f4e34be021a7@tencent.com/
-[3]
 
