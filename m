@@ -4,140 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F2BAE9A03B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 15:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4414AE9A03B
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 15:53:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A578B6B0005; Thu, 19 Feb 2026 10:53:19 -0500 (EST)
+	id A0F0D6B0005; Thu, 19 Feb 2026 10:53:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A053C6B0089; Thu, 19 Feb 2026 10:53:19 -0500 (EST)
+	id 9F9CF6B0089; Thu, 19 Feb 2026 10:53:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 911046B008A; Thu, 19 Feb 2026 10:53:19 -0500 (EST)
+	id 90FF96B008A; Thu, 19 Feb 2026 10:53:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F4FA6B0005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 10:53:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D6DC1A0602
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:53:19 +0000 (UTC)
-X-FDA: 84461650518.02.43A147B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 595D8100014
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:53:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TD64GyPq;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B30A6B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 10:53:54 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 330EC1605D8
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:53:54 +0000 (UTC)
+X-FDA: 84461651988.08.DE7A6CF
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9EF751C000F
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:53:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W0DedDsJ;
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771516432; a=rsa-sha256;
+	cv=none;
+	b=dBAnP21Er7aGk1MG/pNWbrDRqlk1eisnXRYg11nEESnZ5umiPFSmSbSzftm7+jepoPf9zq
+	X7UZbxBFEJQdg7wwDjgwL0/D6dAOHk75pEhJ6xj5TPYTGMFdSHyoMea7e8Tj3gLLFa4FCh
+	ZpjSTcIx0as6idbmZHwnRuAt8yd6dO4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W0DedDsJ;
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771516397;
+	s=arc-20220608; t=1771516432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KUb1MPPUwyCxzj2goytrraqmabyZ5teqolKXmyMrBc0=;
-	b=vAoiSU0mMZ3Qz2nJ2QoX2kmRp9xeJC/Q5iqp0m+QTj8SLjgquew5jAyBb07212RgHkCJ3b
-	2slYlDh/xjvwkEY5ucdR2O8V/VLhDtQ8tk+lJl/mu6HpXVyHwmv898pcZD2R47Yf4bdeq7
-	iysFwPowbzvHiZKTm/Clb8RTqE8b2jQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TD64GyPq;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771516397; a=rsa-sha256;
-	cv=none;
-	b=wJBGTbBz8J5fcEwhrqr8sxqS5er3bMDoZhIglzAfeuzrgo4/Kqz0cC7JV3Z0OGDwusvR59
-	0okn9l/7muMBohfpNqeTTvWNJqm/x8RBpTUM8ovL95kYQTNgBoZ/19jKYA860kfIb0CNcM
-	TKJ5qVVKDJQ3skBrRts9mjLYmI14KNc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8730660054;
-	Thu, 19 Feb 2026 15:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E18C4CEF7;
-	Thu, 19 Feb 2026 15:53:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771516396;
-	bh=qFXqzjhF6S1cndDPwj4lCD499Qd5CkE/vgQLAzospSA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TD64GyPqIFjUiJBCF3Qqom32GDBmy8sLsSlPBIRYxajLBWNG82r24/a0CI6JgeaCt
-	 Xtl22DieFcViEZYL8D8lqFSjrBnUJtL9eeK+8enxDDpSItJ1mQgm6vGfnTjVN3+Lmn
-	 GuZ3CZZFulPFXU9sMcCSRfdSMozNs9Ht8Z63Jqx9dfUxYoR75wsxVoWRPuDamOgcYl
-	 Fo6S00ejc00Xaq7MKaSTZVDx42NfOPwnbkq7upj9kObqNHbiuWv+B1THyWMvwy6920
-	 cSduj/bWJHrcOUUM1jpJT3aHz+w+lPhGPC82kdGgnPkT58XOpI3XoazTQd9szWCTxl
-	 gaSj1zuIK+04Q==
-Message-ID: <0e2621c6-8829-46d1-9f29-81aebf365ba3@kernel.org>
-Date: Thu, 19 Feb 2026 16:53:10 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=dSP/e2rQjKm5La6eyDuAyZddRv1Avp/Z7iJj0oftI2s=;
+	b=nP39qoVnIj6Gw3QIcrLJtTeP0t6cpD+uzgYkdpqZjBW7yUIeP4iSksZmXJB8+zzz+XWYPm
+	2A/q1VGQvMrfYShWq/rgmixhQk35rkp5QbxtjQhevByGYhemXlmiT9ZftJFHcdSjvq3SFp
+	78es52zGBrjjocYXkmygtetV+EVALys=
+Message-ID: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771516426;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dSP/e2rQjKm5La6eyDuAyZddRv1Avp/Z7iJj0oftI2s=;
+	b=W0DedDsJRFOqezMnja3LDy9h1C3uDcPJP3wlKYXXYUCqKiAKMaHEephxHbS4gw8ciUp44D
+	9lRFP/NB3an9X0TfznYqlKoiJl7kfXPOhK/daLZCsGtc84cb7IE/mS67FBDXRgwGwQrzG4
+	0RWb0HFMzFqaFI2TmQbZig1stpei58g=
+Date: Thu, 19 Feb 2026 15:53:35 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-To: Kiryl Shutsemau <kas@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <l5lnb7fvqk2fndlvejibcrxru7i5xwdchl2hcnlk6dzttdfkyc@vtuqkied3mtt>
- <aZcuvbTTXn1MD5KK@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aZcuvbTTXn1MD5KK@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pygj88ppjwon7rbqaaqxehdn8z1rrcij
+Content-Language: en-GB
+To: David Hildenbrand <david@kernel.org>,
+ "willy@infradead.org" <willy@infradead.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ lsf-pc@lists.linux-foundation.org, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, "riel@surriel.com"
+ <riel@surriel.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Lance Yang <lance.yang@linux.dev>,
+ Frank van der Linden <fvdl@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+Subject: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need 1GB
+ Transparent Huge Pages
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 9EF751C000F
+X-Stat-Signature: c65bc54cky8r67difijhpt44dgbfy33w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 595D8100014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771516397-320094
-X-HE-Meta: U2FsdGVkX18yZJ0WRZk9AfDdmgvRbnhxwLbSUMtWq+ykKDi+ZM54FyPXSTIbx2fbxf8DToC6FmmgsI7rN4Wv4tFRaA1E/nhgcwG1UmxXIjOHJ4H4JcrixiMaQQmyirJRmiILBe9j0Klw3b+nRPCyFMxusvh40oIexYWelqCwknbGngJ8yodLR9anAAyliEbSL0xjbC8sp4QcdMTKzHUm6nVzSwGLfEBz/naDmolBQpPiYwmHnQ7tCyIfsNqiCmNEi+O224R5KX568+KrTr3eKU665UcmhomhmtxXrtz9dxL2Z5g+ycKqEDJAi6kKC/J2Kt1wNPGCT+SZzvit1XQWZTQMSuPIXfupyQ+0Q0+muXgJgdHrxUTZFYQHyYzBzvuDcTF4CXHt5pBe+lbMX406LFig2dcS3ZpKRzqo/m/b2BOOky8ZvLJa8CPq1xh1iZm7psWKZ5wuewIt6fyn100VTg6b0zlCzYAJXseG/EgTituymRDY/5HdT3RV01/2a5KXhqJD6DUhTwu3fb6X60jj6296Ksec0I13LmYzHAwtsyVZL0h17Fqp2g+T4K5mIuUi/wuDsnQEVlIFL19sPS6/PXxAZbMc+7Z/tBZITx1M/qh/MusgokgiZhkDhNfPT6toQL4EiFfzBbPDNu7B6RFuv78McIWlw8Liuh9uERyPHLm2c+/+vp1wuJAbsTR86uFsvS4ybqFiLmxtvD9atsNsQgWL77mVasp47LjND28N/HgdAs4xos0tE3q5rlFxhADmhpJ2EB2ttsM04LkSLtXI+r07CWeKfiKK6dQOL9qbW5v4lSswORdVrKMRk/+Lqn2TCc6c38YXfDwx6/hmlY4n9iX1zwzeZr0HpeUm/3Zvh0Nb+EVdmsigcwLrV1WdGZsLGHIuxElgj7DqqgeF1SlNLpHNONCtl1iS5hN9AXCDB0b231IjKe0SjuDXfUG+GeLwWt+AZYY3LvjFjjNCij5
- YAwJ6lb0
- 8VZv+ahVztwDwU3wKxJLfad5Ky7pOcPzb+IbD0cl6m5Mcf33jg+pppnPpI0/PYQm12g+EyhtXYEE9MVS6JjJrxqbREhUDoXXOzJowdazoYgVm8V+Gh93+4dM7K/xVh03PNE7dOCksgWqQOdbLcTMhJfOeSYo3X+N/JQC0E3GFpl2AUvIrDYevK6jZMpJQ8yj/XiPdr96YOhN2VhEnliQPsyMkqrcBBzE/6hkCfAr2JHsOoe2SC7Y2MayBe1SR0FaL9z45
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771516430-899511
+X-HE-Meta: U2FsdGVkX19WkPHpwn8sqKH6Nx3lzxshB1Tq9s89wFik9sQsWwopP0De3kniutGBVP4QNSfiHOzsRX4o89To1BGGYr3HQ8nulMU5B/1Ww7d0OjcvEhsqvaauPwiVkPqFIsFSExwvlSazLisduGvuOPcBJnWbP2IJPha6182dunLKObVpYs1W2idNR5yGzIMzDyVjeKbqZ42L8cBEBMJJfGlZZU/nAeTd3RNB4/wogtaEvmgvSnRh/Ag5ktnNsEviHUt+GNdshInlYJQX/ZYn+WGu/zQ+gxxt0yqh7vFlOeTqbL4XieiPpoq+Z+RddkzosDKtfLsWJk0fSwVSXUj4FVywJFHJMWHY1X/F6FvBQ8h1J8SiSsjtlxjAahyPP+PKZgCt7WP240CW4W9D/6e6/+SYFIcrWDyKLPOZlCCOJPBM4xRg5742Ps3pewEw6zOALNUAKCc8mWmN7F9J1+87HDJ4kgyCL9Qsql/vHta63ZScPknJm3mpUE+Hd0d8TanPgg4+37Ys99Y5FtlVWGom1awNsjDtveVALifoE8+VlBPm5uhbCzX861O8XnoiE/HvI0vKvoI39WadHasJstoAUO3MtHpKefAbm+5sK7FxytArh8wWu5zviNSgm8AL/qcsyk2YlsXtnkQ42dcqQ/gxKJ3fszrKAiwKstABwQJGLBBcX8UDV7zJksKOpkCUJnaWtIID3hcd98QkqJnGehM1f9UYRm03DXWkNdVwYVZLPWykt0+LbisJmGsH77wgnSXX6i/5bl2J78EzBJOPvRLThbcT1Sr6JcQdu5+z0Dg9vt6W/96BKvINo2g0Gi/5Z21AigUTbVyaET1+wD2uQZ2rixVl6PPlct9OIeYi+X5ltKbQY3BBasqWLaS8XjEJEpGB3t5oaGgydtZMvRp8xTQNBfkJOSyc8o1N9VPy3h0I2lgUSPpngv3uAveRdhPRyfnJbmP2IRiERgoxcHa+/8/
+ GDkYbg9w
+ Vhi8Uiu+VTFYZ4kx7+EklQLqVYZcnNx6Q57CFQ5NH6z5TiV5iBZxLvgTWFs0UfKecxsLWsA22LuBagH9ZyEz5p/jm3bEtTJo7DyKOG2UL8U0+SBvEzLDBbaFdl4JhZxoNfnWA/SWn7ITPWMduEQ4k9vvQMIbjIB4fV7nEbNfPpzQsQ/GYOtNlpwRHuuI1MfHZisgl8NNjEl3dps2H0cUe9fy7YNUU4KDfWAc4MX66umijlRsD9YzhI2re47wrbjxMEUasIsJ3Pf6IfHZv2Hp5N078PWmGbivaozKR5L+i2lBbdteIoIw7s9Ic6LM/Msc3Aj71yw4Q0ZWxnTY3StilWsjV561Z23Ol8xCS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,71 +97,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/19/26 16:50, Kiryl Shutsemau wrote:
-> On Thu, Feb 19, 2026 at 03:33:47PM +0000, Pedro Falcato wrote:
->> On Thu, Feb 19, 2026 at 03:08:51PM +0000, Kiryl Shutsemau wrote:
->>> No, there's no new hardware (that I know of). I want to explore what page size
->>> means.
->>>
->>> The kernel uses the same value - PAGE_SIZE - for two things:
->>>
->>>    - the order-0 buddy allocation size;
->>>
->>>    - the granularity of virtual address space mapping;
->>>
->>> I think we can benefit from separating these two meanings and allowing
->>> order-0 allocations to be larger than the virtual address space covered by a
->>> PTE entry.
->>>
->>
->> Doesn't this idea make less sense these days, with mTHP? Simply by toggling one
->> of the entries in /sys/kernel/mm/transparent_hugepage.
-> 
-> mTHP is still best effort. This is way you don't need to care about
-> fragmentation, you will get your 64k page as long as you have free
-> memory.
-> 
->>> The main motivation is scalability. Managing memory on multi-terabyte
->>> machines in 4k is suboptimal, to say the least.
->>>
->>> Potential benefits of the approach (assuming 64k pages):
->>>
->>>    - The order-0 page size cuts struct page overhead by a factor of 16. From
->>>      ~1.6% of RAM to ~0.1%;
->>>
->>>    - TLB wins on machines with TLB coalescing as long as mapping is naturally
->>>      aligned;
->>>
->>>    - Order-5 allocation is 2M, resulting in less pressure on the zone lock;
->>>
->>>    - 1G pages are within possibility for the buddy allocator - order-14
->>>      allocation. It can open the road to 1G THPs.
->>>
->>>    - As with THP, fewer pages - less pressure on the LRU lock;
->>
->> We could perhaps add a way to enforce a min_order globally on the page cache,
->> as a way to address it.
-> 
-> Raising min_order is not free. I puts more pressure on page allocator.
-> 
->> There are some points there which aren't addressed by mTHP work in any way
->> (1G THPs for one), others which are being addressed separately (memdesc work
->> trying to cut down on struct page overhead).
->>
->> (I also don't understand your point about order-5 allocation, AFAIK pcp will
->> cache up to COSTLY_ORDER (3) and PMD order, but I'm probably not seeing the
->> full picture)
-> 
-> With higher base page size, page allocator doesn't need to do as much
-> work to merge/split buddy pages. So serving the same 2M as order-5 is
-> cheaper than order-9.
+When 2M THPs were introduced, the new server hardware coming out had memory in
+the scale of low hunderds of gigabytes. Today, modern server hardware ship with
+several terabytes of memory. This is widely available at all hyperscalers (AWS,
+Azure, GCP, Meta, Oracle, etc).
+While 2MB THP have mitigated some scalability bottlenecks, they are no longer
+"huge" in the context of terabyte-scale memory. There are concrete scalability
+walls that large-memory machines hit today. This includes LRU lock contention,
+zone lock contention when missing PCP cache at allocation, extremely low TLB
+coverage, amount of page tables used...
 
-I think the idea is that if most of your allocations (anon + pagecache) 
-are 64k instead of 4k, on average, you'll just naturally do less merging 
-splitting.
+1G THPs come with their own set of challenges, more difficult to allocate, higher
+compaction times…
 
--- 
-Cheers,
+Why 1G THP over hugetlbfs?
+==========================
 
-David
+As mentioned in the RFC for 1G THPs[1] while hugetlbfs provides 1GB huge pages
+today, it has significant limitations that make it unsuitable for many workloads.
+
+The classic hugetlb user is a dedicated machine running a dedicated HPC workload.
+This approach just doesnt work when you run a multitude of general-purpose workloads
+co-located on the same host. Enlightening every one of these workloads to use
+hugetlbfs is impractical -- it requires application-level changes, explicit mmap
+flags, filesystem mounts, and per-workload capacity planning. Sharing a host
+between hugetlbfs consumers and regular workloads is equally difficult because
+hugetlb's static reservation model locks memory away from the rest of the
+system. In a multi-tenant environment where workloads are constantly being
+scheduled, resized, and migrated, this rigidity is a serious operational burden.
+
+Concretely, hugetlbfs has the following limitations:
+
+1. Static Reservation: hugetlbfs requires pre-allocating huge pages at boot
+   or runtime, taking memory away. This requires capacity planning,
+   administrative overhead, and makes workload orchestration much much more
+   complex, especially colocating with workloads that don't use hugetlbfs.
+
+2. No Fallback: If a 1GB huge page cannot be allocated, hugetlbfs fails
+   rather than falling back to smaller pages. This makes it fragile under
+   memory pressure.
+
+3. No Splitting: hugetlbfs pages cannot be split when only partial access
+   is needed, leading to memory waste and preventing partial reclaim. It would
+   also make recovery from HWPOISON much easier, by splitting the 1G THP
+   which is not possible with hugetlb.
+
+4. Memory Accounting: hugetlbfs memory is accounted separately and cannot
+   be easily shared with regular memory pools.
+
+PUD THP solves these limitations by integrating 1GB pages into the existing
+THP infrastructure.
+
+The RFC [1] coverletter contains performance numbers for 1G THPs on x86 and
+512M PMD THPs on arm which I wont repeat here.
+The RFC raised many good questions for how we can approach this and what the
+way forward would be. Some of these include:
+
+Page table deposit strategy:
+============================
+
+The RFC deposited pagetables for the PMD page table and 512 PTE page tables,
+which means ~2MB of memory was going to be reserved (and unused) during the
+lifetime of the 1G THP. David raised a valid point if this is even needed for
+2M THP, and I believe the answer is no. As part of cleaning up the current 2M
+implementation, I am currently working on seeing how kernel would look like
+without page table deposit for 2M THPs [2] (for everything apart from PowerPC
+hash MMU).
+
+For 1G THPs a similar approach to [2] can be taken. And probably no initial
+support for 1G THPs on PowerPC hash MMU which requires page table deposit?
+
+There will also be a lot of code reuse between PUD and PMD, and similar to
+page table deposit cleanup, it would be good to know what else needs to be
+targeted!
+
+Is CMA needed to make this work?
+================================
+
+The short answer is no. 1G THPs can be gotten without it. CMA can help a lot
+ofcourse, but we dont *need* it. For e.g. I can run the very simple case of
+trying to get 1G pages in the upstream kernel without CMA on my server via
+hugetlb and it works. The server has been up for more than 2 weeks (so pretty
+fragmented), is running a bunch of stuff in the background, uses 0 CMA memory,
+and I tried to get 100x1G pages on it and it worked.
+It uses folio_alloc_gigantic, which is exactly what this RFC uses:
+
+$ uptime -p
+up 2 weeks, 18 hours, 35 minutes
+$ cat /proc/meminfo | grep -i cma
+CmaTotal:              0 kB
+CmaFree:               0 kB
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti        97Gi       297Gi       586Mi       623Gi       913Gi
+Swap:          129Gi       659Mi       129Gi
+$ echo 100 |   sudo tee /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+100
+$ cat /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+100
+$ ./map_1g_hugepages
+Mapping 100 x 1GB huge pages (100 GB total)
+Mapped at 0x7f2d80000000
+Touched page 0 at 0x7f2d80000000
+Touched page 1 at 0x7f2dc0000000
+Touched page 2 at 0x7f2e00000000
+Touched page 3 at 0x7f2e40000000
+..
+..
+Touched page 98 at 0x7f4600000000
+Touched page 99 at 0x7f4640000000
+Unmapped successfully
+
+
+I see 1G THPs being opportunistically used ideally at the start of the application
+or by the allocator (jemalloc/tcmalloc) when there is plenty of free memory
+available and a greater chance of getting 1G THPs.
+
+Splitting strategy
+==================
+
+When PUD THP must be break -- for COW after fork, partial munmap, mprotect on
+a subregion, or reclaim -- it splits directly from PUD to PTE level, converting
+1 PUD entry into 262,144 PTE entries. The ideal solution would be to split to
+PMDs and only the necessary PMDs to PTEs. This is something that would hopefully
+be possible with Davids proposal [3].
+
+khugepaged support
+==================
+
+I believe the best strategy for 1G THPs would be to follow the same path as mTHPs,
+i.e. not having khugepaged support at the start. I have seen khugepaged working in
+ARM with 512M pages and 64K PAGE_SIZE, so maybe there is a case for it? But I
+I believe the initial implementation shouldn't have it.
+Maybe MADV_COLLPASE only support makes more sense?
+I would love to hear more thoughts on this.
+
+Migration support
+=================
+
+It is going to be difficult to find a 1GB contiguous memory to migrate to.
+Maybe it's better to not allow migration of PUDs at all?
+As Zi rightly mentioned [4], without migration, PUD THP loses its flexibility
+and transparency. But with its 1GB size, what exactly would the purpose of
+PUD THP migration be? It does not create memory fragmentation, since it is
+the largest folio size we have and contiguous. NUMA balancing 1GB THP seems
+too much work.
+
+There are a lot more topics that would need to be discussed. But these are
+some of the big ones that came out of the RFC.
+
+[1] https://lore.kernel.org/all/20260202005451.774496-1-usamaarif642@gmail.com/
+[2] https://lore.kernel.org/all/20260211125507.4175026-1-usama.arif@linux.dev/
+[3] http://lore.kernel.org/all/fe6afcc3-7539-4650-863b-04d971e89cfb@kernel.org/
+[4] https://lore.kernel.org/all/3561FD10-664D-42AA-8351-DE7D8D49D42E@nvidia.com/
+
 
