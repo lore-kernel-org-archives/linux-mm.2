@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 484F1C531E3
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF7CC531EB
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:42:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4E426B0092; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+	id B6A606B008C; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CAD06B008C; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+	id A1F8D6B0096; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47C8A6B008C; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+	id 703116B0092; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E2CC76B0092
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:42:10 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 977F35AF4B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 32B376B009B
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:42:11 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F19C98C823
 	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:10 +0000 (UTC)
-X-FDA: 84462832020.11.266128D
+X-FDA: 84462832020.15.135F61B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7F1992000C
+	by imf13.hostedemail.com (Postfix) with ESMTP id E41362000D
 	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:42:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pnqCTMkg;
-	spf=pass (imf03.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ozQVrw3f;
+	spf=pass (imf13.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771544528;
+	s=arc-20220608; t=1771544529;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xj/CmpVESdQHG0LN7FjI3PvpOLf6HuT2Rg9DKv7LDcQ=;
-	b=TKCpbxeo14Cb9kc8R9MmSXIXUn/Uq4hd1okWvftpVS1zW9Ehk1Sed7RkB0Q67Ar+Byg/gE
-	0sz3P6bCX9IsMMXPIgvBBE+M4QlmMVigpOzLdjLVOUJZNdWpLdQnZFFt17Z3ujbFQqYf6j
-	Xfk0J+4wvHWlD2B7QW8cl3k1ginxFZ0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5qPt8PbMXLS0TvDXyjYMAYrh98oyECzEYf3ibtxeuZ8=;
+	b=QKBwskzNxV/bLgjmQekF63OgxjQFYM2qlEGtFSOxoFjYX/L9BkHAdfQY/G3/NlHBqFce/r
+	1lnpTeuZwvOU0AyGI+hIppos2J7AAnXX0Bb9OULafFOb30al1PAfJHer7ZTSKB0fMBmuMr
+	R0NAaZIb0OhABKBRMkl8UvwCg2EC5D0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pnqCTMkg;
-	spf=pass (imf03.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ozQVrw3f;
+	spf=pass (imf13.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544528; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544529; a=rsa-sha256;
 	cv=none;
-	b=70ergHwmUviSn+2wXGUgo/SHirMZnePA+0GR5nouwNXS8s7FyJfDOAjQJcyatIReeO3qHk
-	YlObsEb35IRpAXK/Fux0MDCUHMQlmd68yM3E3oEGfWLpv01Oo63rfMjM3ntXkLljQTNxIo
-	f0Et0BxhBmGEOyPpdwZot+2XWa8tY9s=
+	b=bm1bEC1+Buvc6v3WGgAAnbSa6Ho7Gp7xv6Uo/o6zFTOSWjKbD0O46EpvXWduAshAQPI/WE
+	gQtD8esUCBPZekfAqrWi7qZfY5o6eKoVX52FESHuJ1Ewpkp6kH+eSOxkDdRK0exOpLZdZI
+	WzRtNzawNhpJIXXYUVpaaTlzw2SaEdE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 468F541A69;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8706E444EF;
 	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A400C4CEF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6754CC2BC87;
 	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771544527;
-	bh=AKav55qicOcAvRRVOAKirVRCJ9tBFhlmEFMkkyeMvqU=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=pnqCTMkg22dbooGByVctCRCYK7QqIENzZfe499K5bmGyDkWwmxwCGXhKMYN5ExCta
-	 +q6pxDUxR5i+3hs4D38hLP3OicwysASRZqVnVVMoVO23fakOpIiZTny17fuFqBYY7U
-	 Ftzu0h0rKaXcjUSzNs9Bup95ojkFBZtx5FJ7RLsjjq5jBWyhPDcdy29dhnDvcX4q0r
-	 RLeiT5Qjtk2GW9g844EINFH+pf1tuU2cYJddL88RRUdIIuliON4V4ZqZlFa8WFO/AX
-	 7DwTpoQgBuUxeONBWinJ9yGaN6slq8K4UT/5wUaBSuYkoNMfvKNlZMU8yZijQaPOKB
-	 4Kwm2pmhxawYA==
+	bh=xxmdaXbJhm2fa/xOaTiqJLbiS6Wf5af2Y0X+Fu5RtUo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ozQVrw3fR2WH1Iv9/eXne8azFHDLeuJC+Zmj3eo9zHJOTf7MFMkqLTNoJeNzZfxb7
+	 vEaRwJtqDMv1v9alomEUEVe/Uv5UyeiUkw3ymYUqhQMxOAs1KMzgenkc5TlqC1LiDJ
+	 s1xLaiUR2ElFdmCQV4Oth0ukHW/uZ5YKfvbYK+8SiuFqFx4FwasYlyRtKu1h7U/20V
+	 PiNFBzl43elGgUTMbxHYIm0tHAHAgiwUr0q9jUsYQC5YuIJ4F7LTB7y3cXSWOamHWv
+	 gBZT/twWXLTH88IZlGn+3IITFPt/EHO9R2ORANTYa/8CUuhTSjZXaF61S3W0cx5L0S
+	 9CbXqjfvLUAZg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2765E9A04F;
-	Thu, 19 Feb 2026 23:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D584E9A04F;
+	Thu, 19 Feb 2026 23:42:07 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH RFC 00/15] mm, swap: swap table phase IV with dynamic ghost
- swapfile
-Date: Fri, 20 Feb 2026 07:42:01 +0800
-Message-Id: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+Date: Fri, 20 Feb 2026 07:42:05 +0800
+Subject: [PATCH RFC 04/15] mm, swap: add support for large order folios in
+ swap cache directly
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQ0ND3eLyxALdksSknFTdAhNdS4vUVEujpMRE82QTJaCegqLUtMwKsHn
- RSkFuzkqxtbUAaUzH9mQAAAA=
-X-Change-ID: 20260111-swap-table-p4-98ee92baa7c4
+Message-Id: <20260220-swap-table-p4-v1-4-104795d19815@tencent.com>
+References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+In-Reply-To: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, 
@@ -93,25 +92,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
  cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=11242;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771544524; l=10217;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=AKav55qicOcAvRRVOAKirVRCJ9tBFhlmEFMkkyeMvqU=;
- b=bMefXg26orrFX/o/nP5DoOVALI8DvpdRKz5GQyxQ2ji+AkA29lvpzsGW6SlKs8POwATD89TXr
- Fhn+jBg+Dk9CCC0HTIVF4vUMHUL9EDmVX7yiEuuYe9M6qlHxOK7KjCJ
+ bh=iRaA16zPocun7MNZRSreX0nvZb3ZKPTMy/X1q06icVE=;
+ b=zwpwc54oeGo2FV9brWSj7Ua9BWGbgsk7pitnp3rs3n/80DvSbA5U89WYopprBd/WDxiPl9kUJ
+ 8kbvnF3WNGkBhVzE4ooNnEcc9N7F5qKH7pOt9uS3DzM4hdGngRJzAty
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: d7kfc5qum9hjfdgedr68jj979ro4tceh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F1992000C
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771544528-970629
-X-HE-Meta: U2FsdGVkX185WX/+AM2G3Ti55AK00Go1gKCIk/U17RtmeERRYNnovpH3Te2tlVSfiARF2tHL/dHceoAzLQqhHb0bDkZypFR5Tbaxvgin+Rm4/FxtPF4V8j1UbkHvpZIiqAHBch49m/kK3u5wq1FyrxwrNwv5fJNo/Z87zVYYtng7XXDgYm7uSJDmDbfgYJCipfLU6LK1ETdiYy6b0DEce73L51kFozfbGfY+sWCOQ1JlFC7ctEHPbZo/KIZ24gwDfZAwz7gz37v2ZvHHJAzQHu+CUUnuEfh2nuASoC8Mj+oMeKstQP+1ymFRmYwgxqUweCOYKx64oivk35w1X+CLGyZheFSnu2GV6P4g1xveV1aR1//P0FfwC7+4KODYwSzl4bYTLt8npDN3Ws7g86xTW4Mk0ilEj5DToKd36rULzk9Fo0+yWfxxyXFOzlgMeCY0o5uiP86WMR0pxpltRVwX8Cwns62uXClfT05hwU0XJ7ZNVKtMobIY6fwinZwwzKrL9yDezWxPJVbcxwka0VqFcSe/Ac5owdA/jXVpl4w1xPqSPIvX5VzP7utRrfv3+4/FZPU4KY6ApAkMoseVBBUixJ9PcpJARCWz072Xf2cgWsGxwifwzrY2zWGcP3fmUIt1fjJqb6VQGVIoe3EK41z0+xiPwKGq9nYQgqOqaPDjYxBm9jvOXdeZ7b7GVqs/050exBxbS3usJ90PYIf/pNo/higByz9qDzWrlXiMyOnlTnxZpYbJ6CmXGNM/gSOqDycFY77+m0F/vnImCmJvXnWoM0jn9vaj5CdqH5c5CKycaS0FrS30gOoWcIDDKmKMQ9goY2HZedNy75Sgr/4QyhXvcedPlfRyqhUzzYA5YJ3eISBKsy4wJ3uvXYN1aZIMz9RQyX5r4lhTZSlv79ZLNwDwjnOnwCMSg4slHXlFoWmgYGBDgOpBDvTTxnPETqVo10Z48pqthexNzbUMCeryhN/
- 1BQB7MwX
- LFXU0imdj39ZdqV0OZvAzjRdy1+FBRL+zEnMjfdqp4lhyQumZyMkxwBryRhlh7epBYsp3JSiGyOMZts9K9Ve7qie2k63ydsJm36hT+8Wkxotb51Gpr85XpSQmb25IpH5NXgxkdVEmwAJL4iC1SvzsWzZfDt+sbWyuDb40geI52xdLR3vIMW6RSw8pz7tbgYiq8BghuEjuFOWEtPBmE06kFYelprjCpM2LQV+E0SzQPm7XtLixQX5ubm4fJvanK7fH0aSAdQmFV1x5xvN0N9dIkq4PqciGFc3A2OtgAJp7GUR6XeNBOXwjDBSYA2vwTfKohAYYKa26TtYXp61tsstqDaOLjfPydyyKBQhYeGshhiulqXFhh1F2DguWImzcFTelEAvo/PvIcedu/WOYEA1yia6cOl2a8una3YdtYhOpqeeA53TLQrfxFx8FDMUNcicGH+3vXu17grZzkTyO00X6u/YaVJft3py9a3bnRBRyIaxOp4dj1ntFIbEtcQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E41362000D
+X-Stat-Signature: a3i34ahzikar3qqd6oqe9i4czph3m5w1
+X-HE-Tag: 1771544528-294958
+X-HE-Meta: U2FsdGVkX1+nqbv0V1jciu9b7mHTmblq158ArAgvJxpvlUzyeOhaMt+bTZWRA9rWyTAKib00ZVUoK7Km5RaiRGKCQxDY7aUKL2BW3aZr/hOv+z/0tbA0ePQtOXh87ZRWEIPzQ9HSCHqjD/T7ZXWIm5qBzY+ahT7c5/rhO2ByCw0bBNl4FyC7K7C/z6/WZO268mk6XKCOmLJDaMOCpQC/N1AJ9H4tC6CBD2gWUe47KH4ILKH86iYMBYbNjcT1jYikd5vD0uvSatO8D2zh+SjxC5tKrnBmmc85e7wS/QCB0suuRm3ax8Idos1oVI/ASTTCySuU7WgkZc1oNeJBGUTtcrXpKhFfuoZUXPLaRwd1ehAvD6LUz7pZ8BPPwWLfurBP3lWBlBlmDkOLzK50qqFLIcrh0Fw85GOELihMvwL9U0A0qOLdhHyDxyEr3xaovtJA5LdGqyzIV22M9vgiTu4D2abRJ5m2+kcXliIXWdoLqnt+j0Rcw3tADPUecR5BgUMcfHhGOeeKunryWynS6rp7JF2vNREN0wEGbswKeWBGXYYj1KpqWWWc3qE+f4rfV4rhws1TRepxC2lBnCRsY+IU4yShlFHgPT/5XZ4l5sAgnMbA6WargsL4bbm0rZLfQ97nWTduXFk68CFHxZZPdzNjLnOvQsTANHBsa+/5Nb2tl+mEH4sndcFiTd2ogQyOHJrdVGHsbPyqSmhXTglyFQC3wDE0lxuM2kNRgftz572bOfouEQOVxUiD4/h8t4m8FlBvDsyv9wjSVcEA744rXbEtWhg+CbsHHlEHhu02lkC66Dzply+PdKmYwGg286t4n45IooeXH0eifYxIKLQPnOt9PJ2q+Uk50lYvC/f7MuJazZDovN099wY2StMGaoMHFkJ3JifBUpoXhaQTnqN4WVIjOf4XE4w8sJ4LUENae2tAo232jjU+vweyP7M3ccaqR/vkIHkQObXN8B8yfBIpzjV
+ tW1uEvq+
+ BdR4UfmFq0STjQDScu9hf9GnetlnbmuQUqFs65nCkrgqTWH/DMFAZUunfeDBJEHFw4PMDoHASyx1w1F+EkSZTwt2NEOvvzY0M5+p6pAGrbEifbGsxIIjAqQzk8RlsZtOLNuwz++pHMDuYjBMJpcZMlR28y62GeGQHjvhayxdBu7ZmQCKHlicXgSre+jIB3tcWWl8bsJLLOAzfMJ+HfqFN6SoAqy1h2mr09BP2GBfT9d52uG8lZN+aJsMfY7fdRKVMAP2WtsjvUipsO62ZJzx8j7mAOetuAEA6CeghODA1aX6pwejKK/yjiXa1FR4QKOYImaHsvLQEG5sPdBUMW+7hcIotKQNllggSEyrqM4zgPrW3dyB29hJTRMjTmw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,223 +119,299 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NOTE for an RFC quality series: Swap table P4 is patch 1 - 12, and the
-dynamic ghost file is patch 13 - 15. Putting them together as RFC for
-easier review and discussions. Swap table P4 is stable and good to merge
-if we are OK with a few memcg reparent behavior (there is also a
-solution if we don't), dynamic ghost swap is yet a minimal proof of
-concept. See patch 15 for more details. And see below for Swap table 4
-cover letter (nice performance gain and memory save).
+From: Kairui Song <kasong@tencent.com>
 
-This is based on the latest mm-unstable, swap table P3 [1] and patches
-[2] and [3], [4]. Sending this out early, as it might be helpful for us
-to get a cleaner picture of the ongoing efforts, make the discussions easier.
+To make it possible to allocate large folios directly in swap cache, let
+swap_cache_alloc_folio handle larger orders too.
 
-Summary: With this approach, we can have an infinitely or dynamically
-large ghost which could be identical to "virtual swap", and support
-every feature we need while being *runtime configurable* with *zero
-overhead* for plain swap and keep the infrastructure unified. Also
-highly compatible with YoungJun's swap tiering [5], and other ideas like
-swap table compaction, swapops, as it aligns with a few proposals [6]
-[7] [8] [9] [10].
+This slightly changes how allocation is synchronized. Now, whoever first
+successfully allocates a folio in the swap cache will be the one who
+charges it and performs the swap-in. Raced swapin now should avoid a
+redundant charge and just wait for the swapin to finish.
 
-In the past two years, most efforts have focused on the swap
-infrastructure, and we have made tremendous gains in performance,
-keeping the memory usage reasonable or lower, and also greatly cleaned
-up and simplified the API and conventions.
-
-Now the infrastructures are almost ready, after P4, implementing an
-infinitely or dynamically large swapfile can be done in a very easy to
-maintain and flexible way, code change is minimal and progressive
-for review, and makes future optimization like swap table compaction
-doable too, since the infrastructure is all the same for all swaps.
-
-The dynamic swap file is now using Xarray for the cluster info, and
-inside the cluster, it's all the same swap allocator, swap table, and
-existing infrastructures. A virtual table is available for any extra
-data or usage. See below for the benefits and what we can achieve.
-
-Huge thanks to Chris Li for the layered swap table and ghost swapfile
-idea, without whom the work here can't be archived. Also, thanks to Nhat
-for pushing and suggesting using an Xarray for the swapfile [11] for
-dynamic size. I was originally planning to use a dynamic cluster
-array, which requires a bit more adaptation, cleanup, and convention
-changes. But during the discussion there, I got the inspiration that
-Xarray can be used as the intermediate step, making this approach
-doable with minimal changes. Just keep using it in the future, it
-might not hurt too, as Xarray is only limited to ghost / virtual
-files, so plain swaps won't have any extra overhead for lookup or high
-risk of swapout allocation failure.
-
-I'm fully open and totally fine for suggestions on naming or API
-strategy, and others are highly welcome to keep the work going using
-this flexible approach. Following this approach, we will have all the
-following things progressively (some are already or almost there):
-
-- 8 bytes per slot memory usage, when using only plain swap.
-  - And the memory usage can be reduced to 3 or only 1 byte.
-- 16 bytes per slot memory usage, when using ghost / virtual zswap.
-  - Zswap can just use ci_dyn->virtual_table to free up it's content
-    completely.
-  - And the memory usage can be reduced to 11 or 8 bytes using the same
-    code above.
-  - 24 bytes only if including reverse mapping is in use.
-- Minimal code review or maintenance burden. All layers are using the exact
-  same infrastructure for metadata / allocation / synchronization, making
-  all API and conventions consistent and easy to maintain.
-- Writeback, migration and compaction are easily supportable since both
-  reverse mapping and reallocation are prepared. We just need a
-  folio_realloc_swap to allocate new entries for the existing entry, and
-  fill the swap table with a reserve map entry.
-- Fast swapoff: Just read into ghost / virtual swap cache.
-- Zero static data (mostly due to swap table P4), even the clusters are
-  dynamic (If using Xarray, only for ghost / virtual swap file).
-- So we can have an infinitely sized swap space with no static data
-  overhead.
-- Everything is runtime configurable, and high-performance. An
-  uncompressible workload or an offline batch workload can directly use a
-  plain or remote swap for the lowest interference, memory usage, or for
-  best performance.
-- Highly compatible with YoungJun's swap tiering, even the ghost / virtual
-  file can be just a tier. For example, if you have a huge NBD that doesn't
-  care about fragmentation and compression, or the workload is
-  uncompressible, setting the workload to use NBD's tier will give you only
-  8 bytes of overhead per slot and peak performance, bypassing everything.
-  Meanwhile, other workloads or cgroups can still use the ghost layer with
-  compression or defragmentation using 16 bytes (zswap only) or 24 bytes
-  (ghost swap with physical writeback) overhead.
-- No force or breaking change to any existing allocation, priority, swap
-  setup, or reclaim strategy. Ghost / virtual swap can be enabled or
-  disabled using swapon / swapoff.
-
-And if you consider these ops are too complex to set up and maintain, we
-can then only allow one ghost / virtual file, make it infinitely large,
-and be the default one and top tier, then it achieves the identical thing
-to virtual swap space, but with much fewer LOC changed and being runtime
-optional.
-
-Currently, the dynamic ghost files are just reported as ordinary swap files
-in /proc/swaps and we can have multiple ones, so users will have a full
-view of what's going on. This is a very easy-to-change design decision.
-I'm open to ideas about how we should present this to users. e.g., Hiding
-it will make it more "virtual", but I don't think that's a good idea.
-
-The size of the swapfile (si->max) is now just a number, which could be
-changeable at runtime if we have a proper idea how to expose that and
-might need some audit of a few remaining users. But right now, we can
-already easily have a huge swap device with no overhead, for example:
-
-free -m
-               total        used        free      shared  buff/cache   available
-Mem:            1465         250         927           1         356        1215
-Swap:       15269887           0    15269887
-
-And for easier testing, I added a /dev/ghostswap in this RFC. `swapon
-/dev/ghostswap` enables that. Without swapon /dev/ghostswap, any existing
-users, including ZRAM, won't observe any change.
-
-===
-
-Original cover letter for swap table phase IV:
-
-This series unifies the allocation and charging process of anon and shmem,
-provides better synchronization, and consolidates cgroup tracking, hence
-dropping the cgroup array and improving the performance of mTHP by about
-~15%.
-
-Still testing with build kernel under great pressure, enabling mTHP 256kB,
-on an EPYC 7K62 using 16G ZRAM, make -j48 with 1G memory limit, 12 test
-runs:
-
-Before: 2215.55s system, 2:53.03 elapsed
-After:  1852.14s system, 2:41.44 elapsed (16.4% faster system time)
-
-In some workloads, the speed gain is more than that since this reduces
-memory thrashing, so even IO-bound work could benefit a lot, and I no
-longer see any: "Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying
-PF", it was shown from time to time before this series.
-
-Now, the swap cache layer ensures a folio will be the exclusive owner of
-the swap slot, then charge it, which leads to much smaller thrashing when
-under pressure.
-
-And besides, the swap cgroup static array is gone, so for example, mounting
-a 1TB swap device saves about 512MB of memory:
-
-Before:
-        total     used     free     shared  buff/cache available
-Mem:    1465      854      331      1       347        610
-Swap:   1048575   0        1048575
-
-After:
-        total     used     free     shared  buff/cache available
-Mem:    1465      332      838      1       363        1133
-Swap:   1048575   0        1048575
-
-It saves us ~512M of memory, we now have close to 0 static overhead.
-
-Link: https://lore.kernel.org/linux-mm/20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com/ [1]
-Link: https://lore.kernel.org/linux-mm/20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com/ [2]
-Link: https://lore.kernel.org/linux-mm/20260211-shmem-swap-gfp-v1-1-e9781099a861@tencent.com/ [3]
-Link: https://lore.kernel.org/linux-mm/20260216-hibernate-perf-v4-0-1ba9f0bf1ec9@tencent.com/ [4]
-Link: https://lore.kernel.org/linux-mm/20260217000950.4015880-1-youngjun.park@lge.com/ [5]
-Link: https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXHGBnfisCAb8VA@mail.gmail.com/ [6]
-Link: https://lwn.net/Articles/974587/ [7]
-Link: https://lwn.net/Articles/932077/ [8]
-Link: https://lwn.net/Articles/1016136/ [9]
-Link: https://lore.kernel.org/linux-mm/20260208215839.87595-1-nphamcs@gmail.com/ [10]
-Link: https://lore.kernel.org/linux-mm/CAKEwX=OUni7PuUqGQUhbMDtErurFN_i=1RgzyQsNXy4LABhXoA@mail.gmail.com/ [11]
+Large order fallback is also moved to the swap cache layer. This should
+make the fallback process less racy, too.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Chris Li (1):
-      mm: ghost swapfile support for zswap
+ mm/swap.h       |   3 +-
+ mm/swap_state.c | 193 +++++++++++++++++++++++++++++++++++++++++---------------
+ mm/zswap.c      |   2 +-
+ 3 files changed, 145 insertions(+), 53 deletions(-)
 
-Kairui Song (14):
-      mm: move thp_limit_gfp_mask to header
-      mm, swap: simplify swap_cache_alloc_folio
-      mm, swap: move conflict checking logic of out swap cache adding
-      mm, swap: add support for large order folios in swap cache directly
-      mm, swap: unify large folio allocation
-      memcg, swap: reparent the swap entry on swapin if swapout cgroup is dead
-      memcg, swap: defer the recording of memcg info and reparent flexibly
-      mm, swap: store and check memcg info in the swap table
-      mm, swap: support flexible batch freeing of slots in different memcg
-      mm, swap: always retrieve memcg id from swap table
-      mm/swap, memcg: remove swap cgroup array
-      mm, swap: merge zeromap into swap table
-      mm, swap: add a special device for ghost swap setup
-      mm, swap: allocate cluster dynamically for ghost swapfile
+diff --git a/mm/swap.h b/mm/swap.h
+index ad8b17a93758..6774af10a943 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -280,7 +280,8 @@ bool swap_cache_has_folio(swp_entry_t entry);
+ struct folio *swap_cache_get_folio(swp_entry_t entry);
+ void *swap_cache_get_shadow(swp_entry_t entry);
+ void swap_cache_del_folio(struct folio *folio);
+-struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_flags,
++struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
++				     unsigned long orders, struct vm_fault *vmf,
+ 				     struct mempolicy *mpol, pgoff_t ilx);
+ /* Below helpers require the caller to lock and pass in the swap cluster. */
+ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 1e340faea9ac..e32b06a1f229 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -137,26 +137,39 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+ 	return NULL;
+ }
+ 
+-static int __swap_cache_add_check(struct swap_cluster_info *ci,
+-				  unsigned int ci_off, unsigned int nr,
+-				  void **shadow)
++static int __swap_cache_check_batch(struct swap_cluster_info *ci,
++				    unsigned int ci_off, unsigned int ci_targ,
++				    unsigned int nr, void **shadowp)
+ {
+ 	unsigned int ci_end = ci_off + nr;
+ 	unsigned long old_tb;
+ 
+ 	if (unlikely(!ci->table))
+ 		return -ENOENT;
++
+ 	do {
+ 		old_tb = __swap_table_get(ci, ci_off);
+-		if (unlikely(swp_tb_is_folio(old_tb)))
+-			return -EEXIST;
+-		if (unlikely(!__swp_tb_get_count(old_tb)))
+-			return -ENOENT;
++		if (unlikely(swp_tb_is_folio(old_tb)) ||
++		    unlikely(!__swp_tb_get_count(old_tb)))
++			break;
+ 		if (swp_tb_is_shadow(old_tb))
+-			*shadow = swp_tb_to_shadow(old_tb);
++			*shadowp = swp_tb_to_shadow(old_tb);
+ 	} while (++ci_off < ci_end);
+ 
+-	return 0;
++	if (likely(ci_off == ci_end))
++		return 0;
++
++	/*
++	 * If the target slot is not suitable for adding swap cache, return
++	 * -EEXIST or -ENOENT. If the batch is not suitable, could be a
++	 * race with concurrent free or cache add, return -EBUSY.
++	 */
++	old_tb = __swap_table_get(ci, ci_targ);
++	if (swp_tb_is_folio(old_tb))
++		return -EEXIST;
++	if (!__swp_tb_get_count(old_tb))
++		return -ENOENT;
++	return -EBUSY;
+ }
+ 
+ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+@@ -209,7 +222,7 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ 	si = __swap_entry_to_info(entry);
+ 	ci = swap_cluster_lock(si, swp_offset(entry));
+ 	ci_off = swp_cluster_offset(entry);
+-	err = __swap_cache_add_check(ci, ci_off, nr_pages, &shadow);
++	err = __swap_cache_check_batch(ci, ci_off, ci_off, nr_pages, &shadow);
+ 	if (err) {
+ 		swap_cluster_unlock(ci);
+ 		return err;
+@@ -223,6 +236,124 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ 	return 0;
+ }
+ 
++static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
++					swp_entry_t targ_entry, gfp_t gfp,
++					unsigned int order, struct vm_fault *vmf,
++					struct mempolicy *mpol, pgoff_t ilx)
++{
++	int err;
++	swp_entry_t entry;
++	struct folio *folio;
++	void *shadow = NULL, *shadow_check = NULL;
++	unsigned long address, nr_pages = 1 << order;
++	unsigned int ci_off, ci_targ = swp_cluster_offset(targ_entry);
++
++	entry.val = round_down(targ_entry.val, nr_pages);
++	ci_off = round_down(ci_targ, nr_pages);
++
++	/* First check if the range is available */
++	spin_lock(&ci->lock);
++	err = __swap_cache_check_batch(ci, ci_off, ci_targ, nr_pages, &shadow);
++	spin_unlock(&ci->lock);
++	if (unlikely(err))
++		return ERR_PTR(err);
++
++	if (vmf) {
++		if (order)
++			gfp = thp_limit_gfp_mask(vma_thp_gfp_mask(vmf->vma), gfp);
++		address = round_down(vmf->address, PAGE_SIZE << order);
++		folio = vma_alloc_folio(gfp, order, vmf->vma, address);
++	} else {
++		folio = folio_alloc_mpol(gfp, order, mpol, ilx, numa_node_id());
++	}
++	if (unlikely(!folio))
++		return ERR_PTR(-ENOMEM);
++
++	/* Double check the range is still not in conflict */
++	spin_lock(&ci->lock);
++	err = __swap_cache_check_batch(ci, ci_off, ci_targ, nr_pages, &shadow_check);
++	if (unlikely(err) || shadow_check != shadow) {
++		spin_unlock(&ci->lock);
++		folio_put(folio);
++
++		/* If shadow changed, just try again */
++		return ERR_PTR(err ? err : -EAGAIN);
++	}
++
++	__folio_set_locked(folio);
++	__folio_set_swapbacked(folio);
++	__swap_cache_add_folio(ci, folio, entry);
++	spin_unlock(&ci->lock);
++
++	if (mem_cgroup_swapin_charge_folio(folio, vmf ? vmf->vma->vm_mm : NULL,
++					   gfp, entry)) {
++		spin_lock(&ci->lock);
++		__swap_cache_del_folio(ci, folio, shadow);
++		spin_unlock(&ci->lock);
++		folio_unlock(folio);
++		folio_put(folio);
++		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	/* For memsw accouting, swap is uncharged when folio is added to swap cache */
++	memcg1_swapin(entry, 1 << order);
++	if (shadow)
++		workingset_refault(folio, shadow);
++
++	/* Caller will initiate read into locked new_folio */
++	folio_add_lru(folio);
++
++	return folio;
++}
++
++/**
++ * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
++ * @targ_entry: swap entry indicating the target slot
++ * @orders: allocation orders
++ * @vmf: fault information
++ * @gfp_mask: memory allocation flags
++ * @mpol: NUMA memory allocation policy to be applied
++ * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
++ *
++ * Allocate a folio in the swap cache for one swap slot, typically before
++ * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
++ * @targ_entry must have a non-zero swap count (swapped out).
++ *
++ * Context: Caller must protect the swap device with reference count or locks.
++ * Return: Returns the folio if allocation successed and folio is added to
++ * swap cache. Returns error code if allocation failed due to race.
++ */
++struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp_mask,
++				     unsigned long orders, struct vm_fault *vmf,
++				     struct mempolicy *mpol, pgoff_t ilx)
++{
++	int order;
++	struct folio *folio;
++	struct swap_cluster_info *ci;
++
++	ci = __swap_entry_to_cluster(targ_entry);
++	order = orders ? highest_order(orders) : 0;
++	for (;;) {
++		folio = __swap_cache_alloc(ci, targ_entry, gfp_mask, order,
++					   vmf, mpol, ilx);
++		if (!IS_ERR(folio))
++			return folio;
++		if (PTR_ERR(folio) == -EAGAIN)
++			continue;
++		/* Only -EBUSY means we should fallback and retry. */
++		if (PTR_ERR(folio) != -EBUSY)
++			return folio;
++		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
++		order = next_order(&orders, order);
++		if (!orders)
++			break;
++	}
++	/* Should never reach here, order 0 should not fail with -EBUSY. */
++	WARN_ON_ONCE(1);
++	return ERR_PTR(-EINVAL);
++}
++
+ /**
+  * __swap_cache_del_folio - Removes a folio from the swap cache.
+  * @ci: The locked swap cluster.
+@@ -498,46 +629,6 @@ static int __swap_cache_prepare_and_add(swp_entry_t entry,
+ 	return ret;
+ }
+ 
+-/**
+- * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
+- * @entry: the swapped out swap entry to be binded to the folio.
+- * @gfp_mask: memory allocation flags
+- * @mpol: NUMA memory allocation policy to be applied
+- * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
+- *
+- * Allocate a folio in the swap cache for one swap slot, typically before
+- * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
+- * @entry must have a non-zero swap count (swapped out).
+- * Currently only supports order 0.
+- *
+- * Context: Caller must protect the swap device with reference count or locks.
+- * Return: Returns the folio if allocation succeeded and folio is added to
+- * swap cache. Returns error code if allocation failed due to race.
+- */
+-struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
+-				     struct mempolicy *mpol, pgoff_t ilx)
+-{
+-	int ret;
+-	struct folio *folio;
+-
+-	/* Allocate a new folio to be added into the swap cache. */
+-	folio = folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id());
+-	if (!folio)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/*
+-	 * Try add the new folio, it returns NULL if already exist,
+-	 * since folio is order 0.
+-	 */
+-	ret = __swap_cache_prepare_and_add(entry, folio, gfp_mask, false);
+-	if (ret) {
+-		folio_put(folio);
+-		return ERR_PTR(ret);
+-	}
+-
+-	return folio;
+-}
+-
+ static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
+ 					   struct mempolicy *mpol, pgoff_t ilx,
+ 					   struct swap_iocb **plug, bool readahead)
+@@ -559,7 +650,7 @@ static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
+ 		if (folio)
+ 			return folio;
+ 
+-		folio = swap_cache_alloc_folio(entry, gfp, mpol, ilx);
++		folio = swap_cache_alloc_folio(entry, gfp, 0, NULL, mpol, ilx);
+ 	} while (PTR_ERR(folio) == -EEXIST);
+ 
+ 	if (IS_ERR_OR_NULL(folio))
+diff --git a/mm/zswap.c b/mm/zswap.c
+index f3aa83a99636..5d83539a8bba 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1001,7 +1001,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 		return -EEXIST;
+ 
+ 	mpol = get_task_policy(current);
+-	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, mpol,
++	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, 0, NULL, mpol,
+ 				       NO_INTERLEAVE_INDEX);
+ 	put_swap_device(si);
+ 
 
- MAINTAINERS                 |   1 -
- drivers/char/mem.c          |  39 ++++
- include/linux/huge_mm.h     |  24 +++
- include/linux/memcontrol.h  |  12 +-
- include/linux/swap.h        |  30 ++-
- include/linux/swap_cgroup.h |  47 -----
- mm/Makefile                 |   3 -
- mm/internal.h               |  25 ++-
- mm/memcontrol-v1.c          |  78 ++++----
- mm/memcontrol.c             | 119 ++++++++++--
- mm/memory.c                 |  89 ++-------
- mm/page_io.c                |  46 +++--
- mm/shmem.c                  | 122 +++---------
- mm/swap.h                   | 122 +++++-------
- mm/swap_cgroup.c            | 172 ----------------
- mm/swap_state.c             | 464 ++++++++++++++++++++++++--------------------
- mm/swap_table.h             | 105 ++++++++--
- mm/swapfile.c               | 278 ++++++++++++++++++++------
- mm/vmscan.c                 |   7 +-
- mm/workingset.c             |  16 +-
- mm/zswap.c                  |  29 +--
- 21 files changed, 977 insertions(+), 851 deletions(-)
----
-base-commit: 4750368e2cd365ac1e02c6919013c8871f35d8f9
-change-id: 20260111-swap-table-p4-98ee92baa7c4
-
-Best regards,
 -- 
-Kairui Song <kasong@tencent.com>
+2.53.0
 
 
 
