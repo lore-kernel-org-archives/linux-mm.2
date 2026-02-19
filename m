@@ -4,125 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43EBDE9A053
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6936DE9A056
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:28:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93CA36B0005; Thu, 19 Feb 2026 12:26:15 -0500 (EST)
+	id 86E1A6B0005; Thu, 19 Feb 2026 12:28:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EA236B0089; Thu, 19 Feb 2026 12:26:15 -0500 (EST)
+	id 81C556B0089; Thu, 19 Feb 2026 12:28:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BF386B008A; Thu, 19 Feb 2026 12:26:15 -0500 (EST)
+	id 6C9CB6B008A; Thu, 19 Feb 2026 12:28:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 632CB6B0005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:26:15 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14FBE1B58D8
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:26:15 +0000 (UTC)
-X-FDA: 84461884710.02.7EB80A6
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 344891C000F
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:26:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=na4B2Teh;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771521973;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JV97SDQt+B4S3g9wifTSiOcyvSjPUUf+slORBauOG/0=;
-	b=xcmq5TpgdPxvKSmaNhc6caV0oQK41GVv079L0NMEX9Et4+vz+czDoreu9cReNuOazy7DSm
-	d8v2AYeEtIOlIK8wHf6Bhxbx6cKs+D4R92p+jbnauwULsiDkDDR070hlEFoxftlk3GNEjS
-	MNah3rXWW9ZHN/qo6jZ/wemI0pAs8MA=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=na4B2Teh;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771521973; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 563526B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:28:25 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FA26BA45F
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:28:25 +0000 (UTC)
+X-FDA: 84461890170.24.279C450
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012048.outbound.protection.outlook.com [52.101.53.48])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5234B18000E
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:28:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LgL0dE3U;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.48 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771522102; a=rsa-sha256;
 	cv=pass;
-	b=TKiAXL2fuYCNweAfYbtNaIdFSyfnDMeZQYBT2zLz4Cy7lJ25890s+y0PM+3nNWu1XS+NK+
-	gMeWXe2gjQlhiH7/uLOOVgcr9+20Kub9ij6/WmfZ327ULCpmYnlJ57tyLUUg4tkxhcIaKX
-	GSrPMQgYYfPauWm4zxfEfPBKw5mW5w8=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8fbe5719ceso235046766b.1
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:26:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771521972; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JTe54y8Kqpwrmt/AU/fAPAEq/b2Alcg8u823nNJDozBwG6aAUX3Igpe6r6cHuYVSzM
-         2P7ZtIRsPeAA6dD+icH0AU5yFLjqf0ujtaSM21pBqw/97qEX63+t/ZT31HwrJ6IRZHEc
-         TShwh02ITjheuxK8RzGGAM7d0GmXKxj653J/tfKfcLHqCkfEuDm2CF0mkdQa5hkocf0C
-         jnN4zobewHBnuRNoyHsYR/v/+i1hBPSANnnBSX48UMobzUXCqlqXYDb5qUQtrmGrItLD
-         j1l31dqJ8lZJ5VL4KQGuOgioO41mrSFNtHGbINzAJRBPipE9UpFpwTgAFqZQE0rwj7Uk
-         bocQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=JV97SDQt+B4S3g9wifTSiOcyvSjPUUf+slORBauOG/0=;
-        fh=wpV44rI4wWBVcTTH/ZkG+tNZCQYPez7Jaup/MycB+Sg=;
-        b=N1LH2a2e/inNohNEbhqOxnt+CwykNDRbRf7ltuk/x8ZyxxThic3tdGywZ4pGAqjYmw
-         XOxcxTA4jyZ5MuRBvN0id2AC2Ig/vLjNKGtHoMrfD2/lY8OkJZx9kaVUyQ3uaWEyxOEk
-         LNqsCv0eE9W6pQrMTMtP12pBWbAkyb1ihpXoc6xeIX2kzXkg7MttEgJRifhOY5prtnnV
-         f5/P+/MqstJCLrwtvPdwCJRY+879U7thttJTRXy84DZPrrzfUe0gcybuqWlgqGh+wBK8
-         tnA1r96r35bJ51ZeEOeULLkKLOfrrnh0+FLnGG8AT739uiOrk3mX484RZoHX87IvI+rI
-         yfWw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771521972; x=1772126772; darn=kvack.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JV97SDQt+B4S3g9wifTSiOcyvSjPUUf+slORBauOG/0=;
-        b=na4B2TehiLLby/DBoQWFHA1iEwraZl4yahY5jXU8kd92B6LAcOMjCuCBnIwksXA9AM
-         vaTfORfgC59MRB3/H3HA34N0lCIB5InmczPHh213fovgGHN5t5GjIzTtpkKMLu3//ku8
-         bhwOCzsIZCTQ80wf4NDk36V/RkskecswCV42cC3+jdXKVINJLpwTzzgPCVm6Zq2796//
-         QEPvE0YFPwrTls/k4j0VJY0/M2ZFmXIUoPKl/pe7VHKke59hl6iiCt6iDCT/0v5f9sFa
-         39QhFtAVm9WiLucPWkjQp5TXhVU5FhXg8V1Cwug52ydiOJfhdQo8iNnhAuKGuQmUKyGU
-         4a2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771521972; x=1772126772;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JV97SDQt+B4S3g9wifTSiOcyvSjPUUf+slORBauOG/0=;
-        b=L2WBlwpAqClC5IHUnfniBmwbv0i4OTT3OdRW8DTZV2TC0du+0lchTAG6UiwzDDv7No
-         ZfSKQRIqjXpG6bp7gOxtTIAroPC9R54PdI5rL5T4zf7PvU3KrMHLXhguVL4Lkco5iA6d
-         0qIm0MA/FfmPmzLjPyTRRUEojc2+8aBfar2YIXIgLNZtvOOEZt3SPXLyjVHqNx+n8c4T
-         9HUbM4mZjRPJq37JHzHLGkHitcZktYhrUokxNZPiKDZWdJ90nNEAuji+5iFerrgus/W2
-         DPKMr8pX1KqpOiohIBCpdva4G0RmTmkKsj+mX/6PBpu1hGbKNQ5016c5r6Re30imzSF3
-         Q3hA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmo0n7jR+GiG1wBwlO6Igp926unJHEHZZpnFNwlwlK3kVnDPds43iu7BADEn948y9VUE7WPCffuA==@kvack.org
-X-Gm-Message-State: AOJu0Yz33f3QnstzwO10fn2HlCuPLtqCIn0R5HFsUTpi/SxiETMRwQ3q
-	QZ5X9v0CL0fODwn/9TOTH03gb/r4+zBL/Xj7iKNvAhnu++rLxAUrGuSvR4pnJSz/ewi1Fr4MUEu
-	FsLfjC3TwnpKf7o8nnZE1KpbhssmIUDA=
-X-Gm-Gg: AZuq6aIRVEBLAt85VV31C7S0wcg1KcAlzfZi3eNgRPeam5fQpo8dQKpE+PYJS3/Vviq
-	RSlJli7HLjR7grnLsd1+zOrupbL5/Balqzk7UYQbq40v01zlxEjc7zN6qZt5ltdO4w/iekMF0Vo
-	aHTUeFKQoo4cK8COyvzhKbBlinJFnC3Sz+Q+Qe3BxqmOGIvc6erLPwAgWjTVZllou0jtdUlznEn
-	fJ5U4NeVZrZGOjMFzZbFK5jE6QpYKZofVfmEAvKYSlTDw4++HviXPgC8cLbE8aLJWNbt6zWQ2tp
-	ih21W4XU7UOTQcC8RHUdKCoRmwNYDYpcpzW4GlGkuaNkjOYtIbE=
-X-Received: by 2002:a17:907:7215:b0:b8f:9fe5:fd62 with SMTP id
- a640c23a62f3a-b904dc6a2fdmr209711666b.42.1771521971313; Thu, 19 Feb 2026
- 09:26:11 -0800 (PST)
+	b=WY7hnZayQnyIhMllIVcSfmoYTGGJgDYVI7+65CJz9tnUtgZGIHRAUajKi7zewxMGoE5S7H
+	TfsURwLhfporObdMi8KbB6d1g6p7pnvugGGqY1XNMj5P0iBCFOI5/mo9XgoMHnNfa8J0QV
+	8U7ts/g8pdL78wmrHg9czTKB9k1YnZw=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LgL0dE3U;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.48 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771522102;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oYIstLP+I3SMhfJZuStgF75zFke/K0CT7EG2UuCuyEs=;
+	b=Os8loIwUsmSwPjzj3tXcLEZFQAkTP9w4I51LWImI5WTPoqy3iCxBGkW8pLLhXGTeGsB4FT
+	s1/uEAf5ybU4P4R//DTXDup0xJgtIzAnlV598d70+R4MC0DYGY+uhMtRC6ucOSHt6t6Kmq
+	ZgE5VPzEjwActF9JJYVLDLeev4tMZW4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XEUzx0KpXl5XW87c3IBaYfIL8Ax7DvnfGiyJuvUlKMsekm8u4p4FCO+VLsVbR8ajHNqLggO83T+EvFa9hQXccXDMMMqsxV8j0159El5mXd3eB8ZVHts43zZsH1srMV2db88cD1Dd3EwG6gJBVY4+1cQcnfqYzRLhwDzEiGqzMYF48LvUvf2051F/ll+FaLNn4BbE5+PF5cpBhrLYPY2H8Fex+cP0rGylcfAlt2jsQ6m/eniMgMhyaQEU2c7z5R6T4N/nSePQI3TtR81FIZYaMoJFbGz5hvtGpztrmkAVRH2OZEA6agU3gBhENJlclf6NwzGmV9N1gWNgYBN6lPK9Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oYIstLP+I3SMhfJZuStgF75zFke/K0CT7EG2UuCuyEs=;
+ b=uFwy9H8TeX5StVOLNJ/InMyWkiUeQHFXPe6geqa4sHV2rw50FHB/+e2OswuufCYMmwJzakVK6+diBv1LhOenQouzEC3oYiVTyfJAubaBdJ1EpuYugNYi9SiCZD/m6xhLsBQAudHAQUjjESVGEZpmFtGWE5ObagvA++rPMi6UgWT4+H03tQJWXsgK9KNL4Y441CdKNiaGMVr1GqP5qK73zZntsa34g4dtYCrb3QmvVL8F2zJbGU5FlZl7mHWI+5XOaWA9zoTVnyvGA8lNACeLHpJIuOF0Fudp/SiKQ5omHoI0ue3CeJY02nitKDZbKyJwm5hk61yJNX5iXyqzq0lChg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oYIstLP+I3SMhfJZuStgF75zFke/K0CT7EG2UuCuyEs=;
+ b=LgL0dE3Un8FU4KUWwN+SuUioB9KXa7diuEMp7+FNgySaIUl8dxaOsx6kgGlNF45gX9pwNuPAToubijFwm1M3SSLl29Igyh0DXP/Qc1IT5rxb9MccBaZ5G4OqsVSZ6KvN199FSvxAvkQLq5MvHpGp2me32//G9CbMhJAmnjb97yjKylG4wwjLnxEgQ1EiLNQkUb6bNYVK4cNeL2/+Pt3zJqh2pQpdIujWd0A7yeWAs4xsuJzUGK/8eRdF4CVE0Vq09YOWiqMtvnyILjPlKf5hrmzWXHelBES3GNjMKy/ILIVXPq2rq8hCBPvBUBw2WA+PayA0Rh3gIPaEgp7RrRABMw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MN0PR12MB6080.namprd12.prod.outlook.com (2603:10b6:208:3c8::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Thu, 19 Feb
+ 2026 17:28:13 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9632.015; Thu, 19 Feb 2026
+ 17:28:13 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, lsf-pc@lists.linux-foundation.org,
+ linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, riel@surriel.com,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Lance Yang <lance.yang@linux.dev>, Frank van der Linden <fvdl@google.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need
+ 1GB Transparent Huge Pages
+Date: Thu, 19 Feb 2026 12:28:07 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <B41A41FF-D8F4-490F-AA3D-D11D94236F89@nvidia.com>
+In-Reply-To: <aZdEr32uMfTGjChl@casper.infradead.org>
+References: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+ <3485c8c8-9bfc-4725-885a-626e79d0aebb@kernel.org>
+ <87DAD8A6-85E7-4BC9-B81A-4A842DC546E3@nvidia.com>
+ <aZdEr32uMfTGjChl@casper.infradead.org>
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR03CA0019.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::24) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 20 Feb 2026 01:25:33 +0800
-X-Gm-Features: AaiRm53zhnzPLnk8KFWJHfDt0AptWFmxbQsc-cOjtqp9oLQwO5DcZyTr-Critbs
-Message-ID: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
-Subject: [LSF/MM/BPF TOPIC] Improving MGLRU
-To: lsf-pc@lists.linux-foundation.org, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MN0PR12MB6080:EE_
+X-MS-Office365-Filtering-Correlation-Id: cabf6a30-1381-4dfa-2f35-08de6fdc4257
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?P3tenMbLoB61NCjAlB4PrIsMJm4pvJptQyj2RSNSn3soT4fEeVwR4dHg579l?=
+ =?us-ascii?Q?adbrnFrTKMA+JcaWuWeUPuxkZBetP8rjbxEJGMBiYf0TNgMYfcy4X7RlFFQc?=
+ =?us-ascii?Q?FhiWQgZ8KNBSms0wO7kE/5I012nY0kw6L+QHjT7atOibOcqEHRbQ8YIlK1o4?=
+ =?us-ascii?Q?cpIDFTg7WCcbtKfMWBUNZ0uVxjZR+wqubIxU50i0cGHXcOxLRAYWhtWj0/p0?=
+ =?us-ascii?Q?8ukUayU6Je8dQXRb8fvxIdfDoi+FsFC3NVGtfFvNAKDuL//Nh16I6FNYUoF1?=
+ =?us-ascii?Q?6LazXlAASrBuHyofMCuoSGZqrYZFcY8dhQjzzu9BMc4Bqz8+GYQZditG3ZcN?=
+ =?us-ascii?Q?rmLmSGgjwBNTn3D6qC36z7AAXs7V6jKJ/g322XFSLv4SvTOLf5EGjJewIcN/?=
+ =?us-ascii?Q?HjC0PHfFA7nx1np8OHNKyW3ZCXdY18nF+0FeSBUubGrDgfDSH/VVNw1/mU19?=
+ =?us-ascii?Q?Wx0LtRqoQlkvlp40G8B6blF06p+GRZRgsiTR54ISeQoxHzdG6c7qay0hpPtI?=
+ =?us-ascii?Q?Cl3Un08iPYyjBdDxM/29jbqYO8Ve3WiF4oEy4Hy1KU5xeoOonEZMIxWfyq5h?=
+ =?us-ascii?Q?hKdUlPwHkMEN0nkUam3Tm2zw6E/bU2jvBOeM/gsF/lKND7s0g/4fNwGqQlVa?=
+ =?us-ascii?Q?KoTOTCWgLZMoa4bGJkvi91nUaQdniUGUBIJs/yQB5IoDn6hwmMzwpXCx6bhn?=
+ =?us-ascii?Q?SRAI7VfhT0LiSqV1rYpOO6+pHko+IPFksEGyLJWkgFZkSjC9/2MjMSNzmniY?=
+ =?us-ascii?Q?bCg9eSC7ql7cTJKOaGB9DPnK3sLhakhkPA3c0O5acwcPrPcq5nW3ridkjSiy?=
+ =?us-ascii?Q?veR/3xhOxfJQF0Rf31jX7ObusCFbIn1EuyRow8Nv6RY5EECvazyeufHjJaD+?=
+ =?us-ascii?Q?TbrUymK/0VDoBfWyNS2kAScFrTFc5pBbRinOQEGozTXp8w/W624JJlal39UD?=
+ =?us-ascii?Q?bKrF0fQ4tzZKa0T7Ox8BASi6WI/zW+gVkjaaF1zG0clIsGE/sUNG76lM/S+G?=
+ =?us-ascii?Q?befDgPFVpVFpkiYHm3OVnr8ZKSMhA8S4glX2ghnVD2PSPnaLek3syciadkTf?=
+ =?us-ascii?Q?IUqUAudgjxC340ALMseSoEWUe/KrjPoJ2/ZWWWC3G0/nYcDqUQylUfx/vED2?=
+ =?us-ascii?Q?iUWNeN1BuH/R1mMOtVK950fQZgKlnx39pNH0ie5zKbsfNGdN0xY6bjSa/p/C?=
+ =?us-ascii?Q?e38NOBFoD7XsPyVGKMCjWJLLWUIQ8I21MZ3icBSPDNjR4YsyX0VMBueMfkK4?=
+ =?us-ascii?Q?euf3g6QBaw7fmRA4EFCB+7RFvyAN1W75m89J9Ju7cWTblZkkFgGGKaIrjj7V?=
+ =?us-ascii?Q?vKeLU5yg7cACPzYQhlWjqDtqxTqQbfJ84CnWVGBnaD1ymz78OtC+sazmGN1d?=
+ =?us-ascii?Q?Vo8gn3dMGKZz+Pp8XGHzMhoBijpr+DSzlyynlfvGTBcnQwKgJnudg411YiTJ?=
+ =?us-ascii?Q?W8cCZ/oPXxnslGtLVowDdHy4SyF+iRVPhVWvjBugJghpSdoWGhGO71fpfX4N?=
+ =?us-ascii?Q?14wOjFgRs5Jgycxv1laOp0EK7T3DomF6R5TIHaK5MaZXGFLZeJA1qAHxbm4G?=
+ =?us-ascii?Q?4lJMB+ITB9wc7CggKPM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hF8Th062Hzp9juvz0F3WkEYNo43/qh/Yuz7b0wQGMVkSsoRs046FnheQCcj5?=
+ =?us-ascii?Q?Dk0Kc+VDXCL2PHIGDFp9hoZ9VyelMm0OKbgEVtQKkCRfi7T35HjRkcldwe48?=
+ =?us-ascii?Q?IQYJCP1Tud1eHpyyb3cE3CkJu7Ifvuv7siW14GG6FB3b7Ih/31P+TY0kLDZ/?=
+ =?us-ascii?Q?0qMXqJXBG6MVQCAV7SLb9jqO7eVsGXUH3L2UIEyKEkFtRLGoNB937Mu3rw53?=
+ =?us-ascii?Q?RwyZf9l/3aWx330oWuBaxf1cxgbTyBkGU+5DC1l62STS49dLB5kM55QMEprn?=
+ =?us-ascii?Q?6TcRgd8IC4nqJrc0P9BdrMJboQbQLY8l29Umo0e130ML1wonn9cZ4ZJrIF/g?=
+ =?us-ascii?Q?65SDc9BeBBuyDMlfGikWAnPuWWsbp5K+qApe36mOFTqTtdEkh+eHcu14ZBw1?=
+ =?us-ascii?Q?aXzKVfyIguvhOBMexWTaKCKeqjiiRTy0t5D2f5xDqT1fUAjnsA6Tw/ZYnkTk?=
+ =?us-ascii?Q?OcGcuPaEkbEt+0TzB2iIL8ZsVTjdTSsULyAp/HHdx8W3yADUuAp4CU3zcVWm?=
+ =?us-ascii?Q?VEbNSQQNouwPCG/svKiPdK5BiifV7nOerAb555WrVohEGWtWVReqolNF8Pnz?=
+ =?us-ascii?Q?jhVB7a1On4hRKK6dSmwfENb/cw96o0NAufpS0oqqdPu+fThSEHn649G+zOyM?=
+ =?us-ascii?Q?gRSrmfTLD8UQ6XxmmTD4iz4bBRqdGQUoTCdFx5tY2fPYlsiB/g63S7a/tnvs?=
+ =?us-ascii?Q?OrDHQv1y7WV3+8jVCecBSxMZ+w1dNpZRYSsa1H7xOulBRFTZhyuM6E9K+bEt?=
+ =?us-ascii?Q?G71L66Bz9ZEQyqWdi2pp18ZAGMPZnnXTPEe5aocs/4cHbxNkebFzjiC2U3S2?=
+ =?us-ascii?Q?qm5j/yG4yt7/hn+9Qz6Q6X2Sn6ajlswvmvmLMqwGcTATEMZWx1ybuxfZdNEo?=
+ =?us-ascii?Q?NIO2f3AQiDYEGDSeQqkwmDoTp4L3yynsrgGnjqhGl6Qdb2QMeimpxxF3YI5h?=
+ =?us-ascii?Q?x/bkteRMwSKZskejgkjACQ3L0yaGYjNmLaXClxXOCdXLIKx8KbeFEHQBd/Yl?=
+ =?us-ascii?Q?E6rJI4tSiPZrG8v9qngnpjH0lLffMdzlpdSeCTs0a359PEJiGuo9VJGQaxmz?=
+ =?us-ascii?Q?SrtLlDggExLfzmCrzKg64DuMWe+TQJL9jsW2vX6kz9B8j2WYPZGYSM442oHz?=
+ =?us-ascii?Q?JYEj/7xXmrAhu8BMhcTIb0czj95c5bdzKaJg2TrrmiIYMPhwAz1nURizQi9w?=
+ =?us-ascii?Q?HRemY/oObhH17n+J8Ok0HZpGNqcEXw/fqayrC/XJpHWDXuvQLjPkxfyUwsmM?=
+ =?us-ascii?Q?mZfkEZW3EGo8Uyuiu74EjyKbQRsgmf9mStOV9I6xVT89rAbceTQsZYFAMcop?=
+ =?us-ascii?Q?d3kIAjCJFmMQvv0I0KVjIO+wLAIj9VRzlJ0FdnI/fuJeIRRU40YOzXSAB/cR?=
+ =?us-ascii?Q?baIgMjvQmH0pIonkMPs1Tnf9SOvLOuONaH9sZPXeF1vFua3N2oFRbfXzw20w?=
+ =?us-ascii?Q?iFJiY2CAnZo5/SwDqMvn3nj/nVCyu/TWBF7WHe2+beZYSJPNNDj41wdmxpwU?=
+ =?us-ascii?Q?4zQsd+4TyLGUzT3LBuTHJKHUkqm6SN8pMQuS2K03KqejuKUsRVa66w+KC3oD?=
+ =?us-ascii?Q?oXODLAUipHfNWBT0KM3ZsSwoX2b1zIEFLUEOcZm9kCCgqGUcSU0HHuWWupX1?=
+ =?us-ascii?Q?rd9ajJh3OBcg8vS2eKtVNecDob0IXUW5zG5LvnA2m6m/Xo82PAp9DOYhq4hR?=
+ =?us-ascii?Q?WtoxHzVm8Ren5KxsTTDayD2yRs8isC8DtGY17aZ2XrBxts1yCcm/I+6b+hC+?=
+ =?us-ascii?Q?WQy8On//hg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cabf6a30-1381-4dfa-2f35-08de6fdc4257
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 17:28:13.0898
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X/IY1635N7hV99Ymf0qdBw7qKCQ62iwbBK5RzBKxxvCJaFiEYu9wnJhuA1Yxfnkb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6080
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 344891C000F
-X-Rspamd-Server: rspam02
-X-Stat-Signature: w764zbozo83nmo8dtb9axtg5gz7xq7pu
-X-HE-Tag: 1771521972-294737
-X-HE-Meta: U2FsdGVkX1/LxJX/BxJqYJUVl5FloGIAdENu1zwPKnkKc5Q8xmmwYUex1EfevccZOM2mfVnJNb0uZQvCcq3CNUazVRp9MwFKYXK4SDu0iXyaQM8nqI61GSTlQekihPJQWik7zJ5C0/F5fbYr7Vp5Al8LmYr+3NRcpqDJvjk+xmC+S0KUzIeyVRxiWOrtMLo0pXtEdhNZIGKYGgbBQfS5pq/YWexyGEk8B8nhnpfQERL1RL9+P97SGSB7VA8+BksHoqVBMo/vXcH8Fd5JvBV92ZYERcyd3soWxp2VbNB6HGMxF8txZtKWrfLHLWsnjh4l88ptptpFWawkGfgZ6GPPUFYZ+KRZ4LvLvkpG6zvwqU84Xztj6JkA64bZBTNkDwQoMBxQ7BNJvvth2GqsfN1EdAIGCkrtRtItuSgG5VZj7aLpXcaSMm1ryfqsGrqM99LvxaG6+DkdaSc7uJQQ+Shdqtx93qqR/E72gPQfvYsCdX4foY7VPUIYg/gL3HmvHqbNyFMM6PZwYh/drKhWhp4AWB9/gu80gAmkesqvAdcZTD8Bo5CTpFABxRrS6M4EhsrdlciKFFBzvxmqZj1W+8spGWo0lK/T/XQHui8ECafF8DFeWiKdLEsdZC2+bV4TzWwQlkm+n1Hlg0yYmpHxQabzIF5tNyNMrrYasx7Dv4pCp+37rUCn1j2ViH9vYq0SZ0k6ni3a2ANMOwLWTKK+RwhFl/2IJVj8o+feSwvtawBFTclJlFOEK3vrZwASjZ7d5eA3vLlo6wDDKsXmJHavkCcCTux9UUNU1Jqs0RNshxE1gxQxiAPgc4OkI1nVaE095/rheLmFB6Xg5uwwxQTVbZsvc6SwMnXB6flnbwjNlj63Pi3TnfAW8zW8oD9u5ZCIBdjyqI2prYUHdGLhvKYadJicKUO70D030YlI0cYsCwggPKWATxoFtYKJIWSg+4ZeWDyUh3wOLFAzo9ko3UL0IQf
- Ja+tDxs8
- BtnslZ2uW/L7HXNkYFy+ujALoQx3QUfbtFvBKU3NXjY0cFMPZiuaM33yRu5cvClMMeD6o32CHt8W5h01MxLikvJ3XCoeIWZRcwVWQhlcvfGqEi4gNln3lysvsOMiw47d6oFrA+BzZoVwFYRFMYtuzbpYq6ptDz054w7NnTG9HeFIZYKzDw24WLR/0DcAvPH8HW7XiKU16oV2Z7AZsXMC522bg3toSc2Iuur/linyNZ4M7xju5gZ/7g12TNpKOz79od4vhPXNiMtZxTR3lUXE++dwaS10Yd7hKAAIrWtGN9afSvnJp2fY+Ip1QS/pWY6sfWckXNWHIei6I2wwHvZCni3Y66ZitU+TsMV0iHKLNlbxSN6ECnf2bMWFPie4V6xHFvwXXaMZav2n0yzd970I+DnCVrQTQODdbW3ydfx/bUPE1MxnJmbJ7tOK6pHhPdnKRnOQexG5B0m+zL7NebE0RAjBPEZYw/70BFJ+ggXg5IBFyOHdKQ8EIjvLVFKK+oOZpMJSY+SXGG3VJ64qakKZQJdlrGw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5234B18000E
+X-Stat-Signature: doeg577f4936ik4io3pt84xx9hs8hpry
+X-HE-Tag: 1771522102-179501
+X-HE-Meta: U2FsdGVkX1+hQj3Qv9Lfh2O4z5j7LfqpdWINDso9irA/jnXd6H47DTstI5V0jmwdeb2Hql612uW5q4cY5tZKTmGWeYDMftU8AFSRqh/en4C56GIhl0AxPQn79u+gMHYK2wrDk66v9Rj1HOabGGrAwEsJxDqScqnYv9/Zm1A/x/d04ebVuImISBoqDXFXeAU+V+Z8ZQDSNNkqDLQ7eGS1o7p2NlUX8g0aZj4BhnC3AIiKZukbBBUlvqnPPTg1SVCYPKAhFq4uym9uxWpCC55o0Mf2jkg2WfUPBY2ehmdnJecVB02FmoZaCZg29GhZ5nzMzEag+3jjeumLNzrD3QDvKiUH2aRvPGhGxS3MSDdXuJY8iF0Idyy8EfRFuWft2arb+kfSq4kKk0lZqh9VjT7gFsglTAmvN5B9if0QfHUtkVkhi9wcVabK5xB4+rwLZanPjquQ6GamDvjdJZetq84n0hwm2CAHN0yQNDOMlCEWmonAxo0bYU+HeOYW9bArjuYXFL3ZPIAc22CK4PDVsqvswKaQl4yyTfyDiPYq6aa2m/fIdG38xvPUXtJ8pZyrMdZFP0todx7xsi3MZRscrJFPlS3bWuz7ML3iVwqE47okG02oBQX+0XwosQQdNh93UZVqNODJqN7z2bxFMdT8yGPEtijRxqLE9FXSoIS6/n28LhlHzXlUhteeGwyx7N3CN6Y1fxUcma1KVEiIVs4QWOw/x1mFCOBZBGtQIC73uaOK3KXN5ZqQKKKSAIUiUPVV4i28pS3RWJZVwFVGi6dcJshxjG/yXIfY4CtOP0r2g5dVopw0vmwDlS8BYzZGiKcvTl+kCq5JqnKiM34FGn3oIuA9kk5vH7w56zlXwmrErAs6A7JFLNAo5Vp5khhlJdwTCK+Pm+aRQAiTuVcm7cg+1RMYDQob8tvey7BM20aLAZeQu1tiR2/HPH4H/hhWWZu/IQJH6GYT+U/TpeVohjTsh+E
+ dWMVcGbL
+ WWCUR0ZiabSF3tMDVJkIByNh4ttXTzTkmSsSvc+QblSQkODZjpce4R9tHkugaM0+unofOz137ik6HE4Iib4tPmA7dY4u6Wm2tacN1lgHg614VtxKI2zs8qo462Y8TjAR8JE3JpwpXsqT3v0OT2d4C60vML4/+V/DqYYRrIBm1Mry+LFev2Wj6vCeRYVTMT/LQNiOjfGNI7WTHorIX6Nh20UzE41yClUvF4zIJT0/1S5PJ3W9bTdtCGQ+q6X3oVMII0rnjjx15pW43q3yJRvYUAxSWHgnOU/qnldFQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,183 +197,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi All,
+On 19 Feb 2026, at 12:13, Matthew Wilcox wrote:
 
-Apologies I forgot to add the proper tag in the previous email so
-resending this.
+> On Thu, Feb 19, 2026 at 11:49:27AM -0500, Zi Yan wrote:
+>> If HW can support multiple TLB entries translating to the same physical frame
+>> and allow translation priority of TLB entries, this remapping would be easy
+>> and we can still keep the 1GB PUD mapping. Basically, we can have 1GB TLB entry
+>> pointing to the 1GB folio and another 4KB TLB entry pointing to the remapped
+>> region and overriding the part in the original 1GB vaddr region.
+>
+> Uh, do you know any hardware that supports that?  Every CPU I'm familiar
+> with has notes suggesting that trying to do this will cause you to Have
+> A Very Bad Day.
 
-MGLRU has been introduced in the mainline for years, but we still have two LRUs
-today. There are many reasons MGLRU is still not the only LRU implementation in
-the kernel.
+No. I was imagining it. :)
 
-And I've been looking at a few major issues here:
+But thinking about it more, that means for every >PTE TLB hit, HW needs to know
+whether any sub-range has an additional translation. It is easy if all sub-range
+translations are present in the TLB. Otherwise, a per sub range bitmap or rewalks
+of each sub range is needed. Never mind, thank you for waking me up in my
+daydream.
 
-1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/Inactive
-LRU.
-2. Regressions: MGLRU might cause regression, even though in many workloads it
-outperforms Active/Inactive by a lot.
-3. Metrics: MGLRU makes some metrics work differently, for example: PSI,
-/proc/meminfo.
-4. Some reclaim behavior is less controllable.
-
-And other issues too.
-And I think there isn't a simple solution, but it can definitely be solved. I
-would like to propose a session to discuss a few ideas on how to solve this, and
-perhaps we can finally only have one LRU in the kernel. So I'd like topropose a
-session to discuss some ideas about improving MGLRU and making it the only LRU.
-
-Some parts are just ideas, so far I have a working series [2] following the
-LFU and metric unification idea below, solving 2) and 3) above, and
-providing some very basic infrastructures for 1). Would try to send that as
-RFC for easier review and merge once it's stable enough soon, before LSF/MM/BPF.
-
-So far, I already observed a 30% reduction of refault of total folios in
-some workloads, including Tpcc and YCSB, and several critical regressions
-compared to Active / Inactive are gone, PG_workingset and PG_referenced are
-gone, yet things like PSI are more accurate (see below), and still stay
-bitwise compatible with Active / Inactive LRU. If it went smoothly,
-we might be able to unify and have only one LRU.
-
-Following topic and ideas are the key points:
-
-1. Flags usage: which is solvable, and the hard part is mostly about
-   implementation details: MGLRU uses (at least) 3 extra flags for the gen
-   number, and we are expecting it to use more gen flags to support more than 4
-   gen. These flags can be moved to the tail of the LRU pointer after carefully
-   modifying the kernel's convention on LRU operations. That would allow us to
-   use up to 6 bits for the gen number and support up to 63 gens. The lower bit
-   of both pointers can be packed together for CAS on gen numbers. Reducing
-   flag usage by 3. Previously, Yu also suggested moving flags like PG_active to
-   the LRU pointer tail, which could also be a way.
-
-   struct folio {
-       /* ... */
-       union {
-               struct list_head lru;
-   +           struct lru_gen_list_head lru_gen;
-
-   So whenever the folio is on lruvec, `lru_gen_list_head` is used instead of
-   `lru`, which contains encoded info. We might be able to move all LRU-related
-   flags there.
-
-   Ordinary folio lists are still just fine, since when the folio is isolated,
-   `lru` is still there. But places like folio split, will need to
-check if that's
-   a lruvec folio, or folio on an ordinary list.
-
-   This part is just an idea yet. But might make us able to have up to 63 gens
-   in upstream and enable build for every config.
-
-2. Regressions: Currently regression is a more major problem for us.
-   From our perspective, almost all regressions are caused by an under- or
-   overprotected file cache. MGLRU's PID protection either gets too aggressive
-   or too passive or just have a too long latency. To fix that, I'd propose a
-   LFU-like design and relax the PID's aggressiveness to make it much more
-   proactive and effective for file folios. The idea is always use 3 bits in
-   the page flags to count the referenced time (which would also replace
-   PG_workingset and PG_referenced). Initial tests showed a 30% reduction of
-   refaults, and many regressions are gone. A flow chart of how the MGLRU idea
-   might work:
-
-   ========== MGLFU Tiering ==========
-   Access  3 bit    lru_gen  lru_gen |(R - PG_referenced | W - PG_workingset)
-   Count   L|W|R    refs     tier    |(L - LRU_GEN_REFS)
-   0       0|0|0    0        0       | - Readahead & Cache
-   1       0|0|1    1        0       | - LRU_REFS_REFERENCED
-   ----- WORKINGSET / PROMOTE --- <--+ - <move out of min_seq>
-   2       0|1|0    2        0       | - LRU_REFS_WORKINGSET
-   3       0|1|1    3        1       | - Frequently used
-   4       1|0|0*   4        2       |
-   5       1|0|1*   5        2       |
-   6       1|1|0*   6        3       |
-   7       1|1|1*   7        3       | - LRU_REFS_MAX
-   ---------- PROMOTION ----------> --+ - <promote to next gen>
-
-   Once a folio has an access count > LRU_REFS_WORKINGSET, it never goes lower
-   than that. Folios that hit LRU_REFS_MAX will be promoted to next gen on
-   access, and remove the force protection of folios on eviction. This provides
-   a more proactive protection.
-
-   And this might also give other frameworks like DAMON a nicer interface to
-   interact with MGLRU, since the referenced count can promote every folio and
-   count accesses in a more reasonable and unified way for MGLRU now.
-
-   NOTE: Still changing this design according to test results, e.g. maybe
-   we should optionally still use 4 bits, so the final solution might not
-   be the same.
-
-   Another potential improvement on the regression issue is implementing the
-   refault distance as I once proposed [1], which can have a huge gain for some
-   workloads with heavy file folio usage. Maybe we can have both.
-
-3. Metrics: The key here is about the meaning of page flags, including
-   PG_workingset and PG_referenced. These two flags are set/cleared very
-   differently for MGLRU compared to Active / Inactive LRU, but many other
-   components are still using them as metrics for Active / Inactive LRU. Hence,
-   I would propose to introduce a different mechanism to unify and replace these
-   two flags: Using the 3 bits in the page flags field reserved for LFU-like
-   tracking above, to determine the folio status.
-
-   Then following the above LFU-like idea, and using helpers like:
-
-   static inline bool folio_is_referenced(const struct folio *folio)
-   {
-    return folio_lru_refs(folio) >= LRU_REFS_REFERENCED;
-   }
-
-   static inline bool folio_is_workingset(const struct folio *folio)
-   {
-    return folio_lru_refs(folio) >= LRU_REFS_WORKINGSET;
-   }
-
-   static inline bool folio_is_referenced_by_bit(struct folio *folio)
-   {    /* For compatibility */
-    return !!(READ_ONCE(*folio_flags(folio, 0)) & BIT(LRU_REFS_PGOFF));
-   }
-
-   static inline void folio_mark_workingset_by_bit(struct folio *folio)
-   {    /* For compatibility */
-    set_mask_bits(folio_flags(folio, 0), BIT(LRU_REFS_PGOFF + 1),
-BIT(LRU_REFS_PGOFF + 1));
-   }
-
-   To tell if a folio belongs to a working set or is referenced. The definition
-   of workingset will be simplified as follows: a set referenced more than twice
-   for MGLRU, and decoupled from MGLRU's tiering.
-
-4. MGLRU's swappiness is kind of useless in some situations compared to
-   Active / Inactive LRU, since its force protects the youngest two gen, so
-   quite often we can only reclaim one type of folios. To workaround that, the
-   user usually runs force aging before reclaim. So, can we just remove the
-   force protection of the youngest two gens?
-
-5. Async aging and aging optimization are also required to make the above ideas
-   work better.
-
-6. Other issues and discussion on whether the above improvements will help
-   solve them or make them worse. e.g.
-
-   For eBPF extension, using eBPF to determine which gen a folio should be
-   landed given the shadow and after we have more than 4 gens, might be very
-   helpful and enough for many workload customizations.
-
-   Can we just ignore the shadow for anon folios? MGLRU basically activates
-   anon folios unconditionally, especially if we combined with the LFU like
-   idea above we might only want to track the 3 bit count, and get rid of
-   the extra bit usage in the shadow. The eviction performance might be even
-   better, and other components like swap table [3] will have more bits to use
-   for better performance and more features.
-
-The goal is:
-
-- Reduce MGLRU's page flag usage to be identical or less compared to Active /
-  Inactive LRU.
-- Eliminate regressions.
-- Unify or improve the metrics.
-- Provides more extensibility.
-
-Link: https://lwn.net/Articles/945266/ [1]
-Link: https://github.com/ryncsn/linux/tree/improving-mglru [2]
-Link: https://lore.kernel.org/linux-mm/20260218-swap-table-p3-v3-5-f4e34be021a7@tencent.com/
-[3]
+Best Regards,
+Yan, Zi
 
