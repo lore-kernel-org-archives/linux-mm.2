@@ -4,100 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C825DE9A057
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 17:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE40E9A05C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 19:03:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 067F46B0005; Thu, 19 Feb 2026 12:51:19 -0500 (EST)
+	id 5D4746B0005; Thu, 19 Feb 2026 14:03:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 015E16B0089; Thu, 19 Feb 2026 12:51:18 -0500 (EST)
+	id 5AC446B0089; Thu, 19 Feb 2026 14:03:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E63D46B008A; Thu, 19 Feb 2026 12:51:18 -0500 (EST)
+	id 4AB356B008A; Thu, 19 Feb 2026 14:03:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CF2A36B0005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 12:51:18 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 301E91C782
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:51:18 +0000 (UTC)
-X-FDA: 84461947836.08.725BBBB
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 70B63A000A
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 17:51:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0VD2J1Dq;
-	spf=pass (imf15.hostedemail.com: domain of 3kk2XaQgKCN0I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3kk2XaQgKCN0I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771523476; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 374D36B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 14:03:12 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AABCCC22D8
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 19:03:11 +0000 (UTC)
+X-FDA: 84462128982.26.AE8DC18
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C696720003
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 19:03:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=YjHL36mt;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771527789; a=rsa-sha256;
 	cv=none;
-	b=a0j8V9bqrUalxkDKaAKCRmxNMSvKs4Fj6loOtfSfwAVedxPWYnjBa8Pb/7pUdZeUOY7yyg
-	9kc7j9ZnZIxbe8Cg3d96kUm4sDws7Y2r30CBr5A7hUlrDtuI7qyvBiSa783J9tM8k72ZqN
-	Dxueghq7WFmEqxIaGmh6m3YUOeOTsag=
+	b=0gn/GRK2kAYBIdTmbRf4AqmeX5Z41/HX+29nHR1RxgNdMyObFxSJuGekhCGbpTfGuMF4WT
+	8oEMJKvAb2ceeFZOUVg1dVEijtivtb33dRZTQge039YpYY43WBZI8FzektdMwwgqf8dmfM
+	gAktMg5c34JTn9kbNqdI9M+9JQlv984=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0VD2J1Dq;
-	spf=pass (imf15.hostedemail.com: domain of 3kk2XaQgKCN0I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3kk2XaQgKCN0I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=YjHL36mt;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771523476;
+	s=arc-20220608; t=1771527789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IXpBP8QQij/QANTEmrSzmhAgXmjTuFNt1jCC1s0HYK4=;
-	b=g1pAPr05CFLd/sWbFTlfPwk0PChnxC1fVvjHYqqY9o/vrqjhaTXwq7hE2BbE7Jnpl72T8z
-	jhJaYAvJ6QjaChSVjpHuAsnay6MTjAuYSzRB/1A0V2iEi99h2hZzuiRCjdkjQ5NNw6TDwT
-	KI7nLL2hd2pgzuAj2IR6D/JyhuNfSrk=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so10309755e9.3
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 09:51:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771523475; x=1772128275; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IXpBP8QQij/QANTEmrSzmhAgXmjTuFNt1jCC1s0HYK4=;
-        b=0VD2J1DqhoCNnl8rptgfJdznOi97sT3zUdEtR22dqo9RNSOVug0cZJVO0Qi8MeiQtc
-         7e3nkLYYCBljKE0G/NbWYhrVSF1X73efYlnvTM6U4yVAoq1NwE7cqpg9tu71SFCGcEbJ
-         3+qMoYPKixIdP6NvmmB+lRe4qvkFscGcKPKVF6VPHonJrL/LpVjcCz68LB60A6/iGKH9
-         FVWGSBHs+PluN/qSfkKoPuXijOF1NvW51e3/S3+OT1w7FQgEFDE3IpWrXXH7o82bXdF2
-         ZMjfCIzsiHNTOKYMZq8laQhDxQyzcDrem8UO3ROE02WH6517cYtx+hHXxRDyvWxgaUVY
-         7mZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771523475; x=1772128275;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IXpBP8QQij/QANTEmrSzmhAgXmjTuFNt1jCC1s0HYK4=;
-        b=I0RLDhcQZPWrXIgkCgChHNUYdfwMzirw2g5b0/BxOLOk930EbEsw33WAGitnkb4I9c
-         X1IPH6dwJX1ZsRIsc4D7p6eMpd1fr0wVDRTxZzKx9Dtv/qu/vZk9sNW9CoHuL/gYDtfu
-         9VXQcYbOXVVRnnNkr05LDMXwt4ngG5pQYv1+iy/H4XmCwYIDogZOi3YtD5IL4HTNTzsw
-         jE6HxYsuxCrhutLqkUD7+jjmcm65ZtNgM8BWJTr3QEhB+FNVns40mLQFS2lpKN4+dUXW
-         nCHWvMWxvIPwZRPSdV62372/XiJbIlofSBUSSFiRX+WLXeJeoom2gVbfByDgmD4pNQlL
-         mJOA==
-X-Gm-Message-State: AOJu0YwKmiqo4/bfsmXWwBK1JOrBXkTDrwP+rQFrnpsWIgwXdZ68m+vA
-	M2U7zGmHgwJTWwQFbKSD+wo48lEoEE5kb47aKf8lP4l/so4VURD4FR3ciTeWxkfzGTlRlQglTT5
-	nTEphP/0C9ZU5bg==
-X-Received: from wmqi17.prod.google.com ([2002:a05:600c:3551:b0:483:2c43:9664])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c08:b0:47a:8cce:2940 with SMTP id 5b1f17b1804b1-48379b991c6mr321632285e9.14.1771523474570;
- Thu, 19 Feb 2026 09:51:14 -0800 (PST)
-Date: Thu, 19 Feb 2026 17:51:09 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.2
-Message-ID: <20260219175113.618562-1-jackmanb@google.com>
-Subject: [LSF/MM/BPF TOPIC] A pagetable library for the kernel?
-From: Brendan Jackman <jackmanb@google.com>
-To: lsf-pc@lists.linux-foundation.org
-Cc: linux-mm@kvack.org, rppt@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kmKk/By0d6RKmDgMTzg9/YoIMJ9w8tE5cRbcyNJk3j8=;
+	b=jx/3miBhhrPHwbS5nydBmB1A7RFaHqrGKDdAzt5dca/ZxNOQyLs9vVwjQnXibwscjWjIMx
+	yba4vj8a9C0f8ikLTJtwIImpbwQmILsFv6+y8TuMeVKVqiLMt7aooEQiATBJqQ5nXxPSO6
+	faSc0Sn4undWvn+jBokQPgZOHfYQ2kI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=kmKk/By0d6RKmDgMTzg9/YoIMJ9w8tE5cRbcyNJk3j8=; b=YjHL36mtvhtRzCYsI+V5P5uuIp
+	Q2Z5GxCSp3txLFabtIID5JbibUZj01/UMa4E9XnvT8UyoZakfM41p64e9GtKQ7JmXmO5d0zZDKaVm
+	c1M5RtX1yhK7kZDyE7NIWiws3Bv1J2HlzBdeji39nqr5XO4eqMCg0EgZIhjWICEa+FxaRArgViB4f
+	NJFnkQW+fQLNZseeDDgZnltzTnY8JBQ7rWIVagxDUWkUEIZ3eQhDNCiCnXlCRu1Kd/J9rxcEaOsSC
+	KI582Epg9HYQRYAqcRJzWUlEycRzyp2tVdhh6rLY0P0+eIgdBtnr9pLMHZqY5T5ZwSpxk8sDCaTQJ
+	+wCwPrvw==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1vt9Hv-000000000n1-2Xsr;
+	Thu, 19 Feb 2026 14:02:12 -0500
+Message-ID: <0c81121c23a9b1016425da100f11cb31feddd7ad.camel@surriel.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need
+ 1GB Transparent Huge Pages
+From: Rik van Riel <riel@surriel.com>
+To: Usama Arif <usama.arif@linux.dev>, David Hildenbrand <david@kernel.org>,
+  "willy@infradead.org"	 <willy@infradead.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Zi Yan	 <ziy@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, 	lsf-pc@lists.linux-foundation.org,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
+ <shakeel.butt@linux.dev>,  Kiryl Shutsemau	 <kas@kernel.org>, Barry Song
+ <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,  Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, "Liam R .
+ Howlett"	 <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Vlastimil Babka	 <vbabka@suse.cz>, Lance Yang <lance.yang@linux.dev>, Frank
+ van der Linden	 <fvdl@google.com>
+Date: Thu, 19 Feb 2026 14:02:12 -0500
+In-Reply-To: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+References: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 70B63A000A
-X-Stat-Signature: 8bxf9urkwttpqeqmz4rm4ci8hhbb4hxe
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771523476-873310
-X-HE-Meta: U2FsdGVkX18ax6nlRou7dpiAnRYH9VQ8l5u59cbQw23o3AJdGXG26CbkCw0Ge5p3nO36brxqrtSo1r1oTn9U6wOrAm3CGSPSPaleDZuof7cMArnJ0Ci4K+Z0M2k+e41MYjwQS2ltB+lAeqvcnuAsrfKUPD8v3weYEoI9IFrDqFoL8KdOwQY56wWgmUps6Nnh8IVzaD4Crf9dBVvxD6QypIcMHypZDiZfRkfzEkoPF3X8MRUhKek2e+He4/wiXEZwoyWNhC7JywJhTwnIB6612MqpGKvKwGRJzIGdZuFrKKCRc5pE/+u6nCZ3piOZ0G+VeqqILtFvlGKmLAb+rYlXFdhjOvTie24qP9HIxJrjSLf8Abg1FHWxb6TUJIZJNRiY8Q0ve9wCHfEtHiFEtlU2ez5YyUPbFsoagmAUOIZ/arhnjtHnPoKPH/Gm2y+CSLwGFCsqJ5lxlGWZG8UyPU4IOonqKYewmAwwR/2GXLht3KIFAfcbMO9/t/oX2GnsXO4cGtUJxvNHYPPk/GnQBT8XdsoMnCVOwkJi42RBrlnfCsEc0nuqaOxvcaO5CF9PdthOlhQQ6mJ9OrgeHcuX99659t0lbgeB7o07HT4LNbY1hp5vxKm0LVYR4YKPm09QhnphnkWQHNV4ZeYwKPHPaeiHD8YxtOK+BFQI1FyTCRTusidD8jMukruoKhs0ziDyedRW8JVfeIF061PYrYEiqVD0Wj5Y/rEOcskg5xj7EQm8WTLWoAbgY6NlW5Ipq9S1cB8qLn8R+HE6BZuWHPtTn4eZSslboD9RA29KM162GsVQVjxgfuUAtdoRLQHwnlHlw7LIpvUXoOn6wdC0bXDHKcsfy0tmaPIfCDClLaEWpBKO/BZmUO48/3t3H+aVjf4SxC2o7wsB9/DKjnOByWJT2WRenWW6zn1R6vNPSDUA+dd97TaikUGsxFP0xNdpKHngo8UpEtIUhhKqKQz32Z0Qzgp
- gdGOiNP+
- ilwjNr7Cj/V6+nvNad+Lk6HVZ0iWloxe/vNRqQKMNPLaYlD5ZGhfEQqO9AqVDDcJz8S5kKQE8pQZ3AYB+yav1GNve9EEHiGI+PUvu/yox2b5wRF1IMq/8KyJgSR5BqKlE2lfG5DcLH7Y0i/ZxLZCqNgMz7A75RKBpP0oTMG49J74F0xcNjBVUXY5FGKmXDsUmZxpikkoC7PrAdtEsHYbJ8WJk/+akFflDA87zWCQfZOPt7gRFdxIlt6+WJi7X3UHmM7ZbJKs8wr4aTk9OFuSRRHYWz++gXMsVVO/SMKQ53waT/frNe6kp7um3VP9+7VEs3Vfvc/PgHPzhyP/tKjCrC/koytIb03H1iVyGy/eBPpOSYXTpC4k6SjI8dEZ3iT64FW4E2VutzhzUYFyTcaGhV4lVxvIQTQ+6L5j84rSypk8VVrbbzuPhskFvnZ+06T6z2g6BK4Z/iPvHN5fiZiYn7J5uWqBCx+Jb52aauDjczUifquxuRjvgTTB31KR5XMxp31q7RdTclhh/IStfDNI+htjsZRcUK8E4GkjXwN/QfR1nSM2A+pyM6oyLM8tiokujwHZAO5tyq+ZRdoJYN4AeazUsB4iR9wMTs0KKXV97sXOXFaZAOUqpmqoFi0+OYSriqC14lWPuiXdCFqe+a+DOKVf0yKfU9Vy5HkxQMvjk9TfjDHuKIe0EFRJXVdjCCN0BQOnboXSW6cOM4yU=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C696720003
+X-Stat-Signature: mxyonhmur1fctkpouorgzyuwx9j5tqsj
+X-HE-Tag: 1771527788-279460
+X-HE-Meta: U2FsdGVkX1/zvXmJfndxTptAwSTctqMQZHV8BzToGWh9LNDpD6jFqovlEt3QZotDwXksABqgyoStjPN6Fh9hRr1Kf1RCIx4Q6mJQGiGwjGsvXhuxI5WXidk7Vt9Q2J2NuqXvRU+ZgRtNvqShUREFESXDZ6J28ph3rZOmKB5z1Svya5BMEGKg2nF5NCjghrWfmhpjjOECq9B3eP1sLvJdwv5HcgiIhR03ZEORZoRsNvK2vp7hqZkOh+aSADtxG7EksRlifzr7tf/OZPpP4JUo2QVdChALrZj1InNx5PFfXLYcfvLksmY0TWMF+a1g6JIyBvGMtrr8DFF2KwS7jeWw4H0AcKZBb9Ns5twzU8/Gfo3bMiOagQfFOIb3yGj4XqyVj3XRWJsQRdvDKk5quts0hFEQ+oIyxrn6R38VZKutJpTJlQZIiNrsaJhwEfPWE3kfoqmp1S7Yh+l/dHf7tBx2EcfWnlKoRqtb0LNJh6kHEmwgQsxJ2YbGJFfFTt2tlV0KZe3YtmOMALqbGy/ZhnmdYdhBM0utSOjZXr0W8fOUdG8Vjx5ELC+c7uAPvUXq+crwcHvpl3pkBAmE6FQCW+vaoGRQbizD9e4UWBT96PE2+MoHHwLCBHeDmAQ2CGMw+y1hBHrkZ2t5YPpGYTNRDKftjp73/FZ2CM2n1EE1Z+M5s+zaOkWsSXbpGcYn3E2HlMb8OgQbbcnlBa2r3+POEdtoJZAW0Ndtd8yBfi2wKounhd26RyyNIwcEpRKG8sOqW7dx9IxLTNPh3m027Om33cXCzg32h7XtJOrNZ5MSvZgfFUNseF4cZkWao8W+kzsYGW9MZJp8I+de+n06R+ePz111dQCE8dOLMzKYO1+mU3gj/Zyb3a+hTNM+BI/e5UvJggOnofIuHK1X6l+OXN4bOSHRaiyVKfOtXImuKaGyHkzlysNu7oQCopKUmK+CDqFW3mftSrq06jliy0sC8wEmIXG
+ SeEI8Bd4
+ 5cbcpbvxSL016fd2KhJKUrLZXdpFd1LQUOMVwNg4+nhczsYA1MC9opw1nlxW4Qcdr1xxqSF1YHxF0ZpGirvkg0J2xKoP8lsmzCVjvwzTqwRJQ6FxpVFATsQub6HLLJMqD6nAbC16U1obEYmfWCWGshAx0cj/ga+N2cy3E1vl8nHqcmVbRUb7tTCSJ6x1tqg9c+9HvK/8wNkJOFouZHJv2rJG41zxieEPurDuukaETKL+shtQUBaIgLQJIEpj5d7FS6V4bfFEuo5wMbj0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,90 +130,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As work on Address Space Isolation [0] trudges slowly along (next series co=
-ming
-soon=E2=84=A2... I promise... some details of the plan are in [0]) I've bee=
-n running
-into a common issue whenever I try to do new stuff with the kernel address
-space: We have too many sets of pagetable manipulation routines, and yet we
-don't have one that suits ASI's needs.
+On Thu, 2026-02-19 at 15:53 +0000, Usama Arif wrote:
+>=20
+> Is CMA needed to make this work?
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> The short answer is no. 1G THPs can be gotten without it. CMA can
+> help a lot
+> ofcourse, but we dont *need* it. For e.g. I can run the very simple
+> case of
+> trying to get 1G pages in the upstream kernel without CMA on my
+> server via
+> hugetlb and it works. The server has been up for more than 2 weeks
+> (so pretty
+> fragmented), is running a bunch of stuff in the background, uses 0
+> CMA memory,
+> and I tried to get 100x1G pages on it and it worked.
+> It uses folio_alloc_gigantic, which is exactly what this RFC uses:
 
-Similarly, I'm currently working on support for efficiently unmapping
-guest_memfd pages from the physmap (an extension to [1]) - in this case I'v=
-e run
-into very much the same issues as with ASI.
+While I agree with the idea of starting simple, I think
+we should ask the question of what we want physical memory
+handling to look like if 1TB pages become more common,
+and applications start to rely on them to meet their
+performance goals.
 
-Here are some areas of the kernel that manipulate pagetables:
+We have CMA balancing code today. It seems to work, but
+it likely is not the long term direction we want to go,
+mostly due to the way CMA does allocations.
 
-1. The collection of APIs that are specific to userspace pagetables: mmu_ga=
-ther,
-   mm/pagewalk.c, some vm_fault logic, all that good stuff.
+It seems clear that in order to prevent memory fragmentation,
+we need to split up system memory in some way between an area
+that is used only for movable allocations, and an area where
+any kind of allocation can go.
 
-2. The set_memory_* and set_direct_map_* APIs. (Which are implemented per-a=
-rch).
+This would need something similar to CMA balancing to prevent
+false OOMs for non-movable allocations.
 
-3. Some non-userspace-specific APIs in mm/memory.c, such as
-   apply_to_page_range().
+However, beyond that I really do not have any idea of what
+things should look like.
 
-4. mm/vmalloc.c
+What do we want the kernel to do here?
 
-5. Highmem logic such as kmap_local_*
 
-6. Boot and memory-hotplug support code (your architecture's version of
-   arch/x86/mm/init_64.c).
-
-7. x86's KPTI
-
-8. x86's LDT logic
-
-(At LPC I started enumerating these off the top of my head and multiple peo=
-ple
-spoke out with more examples I hadn't thought of - please join in if you ca=
-n see
-more!)
-
-By and large, these components are designed completely independently from o=
-ne
-another. This is made possible by the smart design of the low-level helper =
-API
-(pte_present() and friends), and it does lead to nice explicit coding style=
-.
-
-Here are some "new" things I've wanted to do with pagetables, which are not
-currently supported by any library:
-
-- Have a second kernel pagetable (for ASI's "nonsensitive address space")
-
-- Modify pagetables safely from a context where allocation is not possible
-
-- Modify the kernel's pagetables while accounting pagetable allocations to =
-the
-  current process
-
-I think it's time to discuss if there's a way to scope out a "library" that=
-:
-
-a) Reduces the overall amount of code in the kernel, while
-
-b) Serving the needs of the incoming guest_memfd and ASI features.
-
-In this session I'd first like to do a quick survey of the pagetable
-manipulation systems already in the kernel (that I know about), what purpos=
-es
-they serve and what capabilities they have. Then I'd like to discuss some i=
-deas
-for the scope of a new "library" and which of these components it might rep=
-lace.
-
-Mike Rapoport has shared a prototype that he wrote for a generic higher-lev=
-el
-PGD abstraction, so I will be using that as inspiration.
-
-This is mostly about looking for feedback and input from maintainers and
-experts: what opportunities for refactoring might I be missing? What challe=
-nges
-might I be forgetting about for sharing code?
-
-[0] https://lpc.events/event/19/contributions/2029/
-[1] https://lore.kernel.org/all/20260126164445.11867-1-kalyazin@amazon.com/
+--=20
+All Rights Reversed.
 
