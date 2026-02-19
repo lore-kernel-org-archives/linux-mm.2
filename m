@@ -4,83 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F197E9A03B
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 05:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DC3E9A04C
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 06:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 332DD6B0088; Thu, 19 Feb 2026 00:49:44 -0500 (EST)
+	id 44D756B0088; Thu, 19 Feb 2026 01:35:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E07F6B0089; Thu, 19 Feb 2026 00:49:44 -0500 (EST)
+	id 3FB766B0089; Thu, 19 Feb 2026 01:35:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EC546B008A; Thu, 19 Feb 2026 00:49:44 -0500 (EST)
+	id 2CF916B008A; Thu, 19 Feb 2026 01:35:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A2C16B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 00:49:44 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA1CB1C465
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 05:49:43 +0000 (UTC)
-X-FDA: 84460129446.11.A03D8A2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1A5CBC0002
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 05:49:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 178B06B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 01:35:23 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9090C14044B
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:35:22 +0000 (UTC)
+X-FDA: 84460244484.10.9AA3E42
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 224B21A000A
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:35:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=qWXPew85;
+	spf=pass (imf19.hostedemail.com: domain of sgsu.park@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=sgsu.park@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771480182;
+	s=arc-20220608; t=1771482920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=7rV/lAXNbUqLszq/OvG0p6hLe4ZaSnskVTcW4MS2a1Y=;
-	b=5iLynMQoNBLkTzeaIbF/uv7n8BEJ0XRPlJKLXMAEF7LmH3SjjPXeK/YUCntJSRbksgoY7o
-	T4KNWnJvHDYu/64W2GgfvosoGo4vpEDb2DoidY7Pj7kz4O5GIZ+PQCHf+vdJWStnWyLzMe
-	ftlGmfSJMr7VGuVkijEbIZKryAh8qos=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771480182; a=rsa-sha256;
-	cv=none;
-	b=WIThcJY0NaoyN15nsLOe31k6iOGz4bly3U/g2c6n8N2S+4lOgVqwsxY5ONmJD8wXl1+OcZ
-	Tr91VgSnfcNvNQtpqPTaX7nRNW3ELWl+T7SboxEfW5eyJzdkvGjV3kXkgxOmVItCMXx0jN
-	/gd7R50MLyez5HvWtgoT/aCJYcMXENA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=aloF7MkDLud0BSRnjOsxj2IOpjpppNDUaB9hMm+IoPs=;
+	b=UVdPQEiP3LTBl/bY67blySzpzXRSJGgCuQh3r/4EiHPmqCbT45qKw0yyt6nbf1+chdEVGb
+	N+QavX3s7AvvxnfrcfvE0j7cBbMZ4SMVfaQzc8+BfvMeYYgOI1X5DOhpIKulsMgiSUUlon
+	OufoSDcCLTUGcBSj6j4GodwFyQdOimA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2ABD339;
-	Wed, 18 Feb 2026 21:49:34 -0800 (PST)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 593673F632;
-	Wed, 18 Feb 2026 21:49:37 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com
-Cc: ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH] khugepaged: convert redundant check to WARN_ON
-Date: Thu, 19 Feb 2026 11:18:27 +0530
-Message-Id: <20260219054827.4111334-1-dev.jain@arm.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=qWXPew85;
+	spf=pass (imf19.hostedemail.com: domain of sgsu.park@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=sgsu.park@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771482920; a=rsa-sha256;
+	cv=none;
+	b=S2BTCAwUro/reQHEUF9QLIDrZtMtmMGMPHe+gPs6O2cbCq2dOuQIWX++9y26QXZtY9N8Pq
+	luhSLqcjA7mislZf0w9trjoS+Wj7MDyGLzcEmPu92l6nOYUNhS77gJiDlOJ5d2nfDDoxoo
+	Cf9ur7NVvzlroXQzX2vFTPxPm8fapVs=
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260219063515epoutp0390ad0a4462dd412dfa92d2425fef584e~VklNUgPw82730827308epoutp03Z
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 06:35:15 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260219063515epoutp0390ad0a4462dd412dfa92d2425fef584e~VklNUgPw82730827308epoutp03Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1771482915;
+	bh=aloF7MkDLud0BSRnjOsxj2IOpjpppNDUaB9hMm+IoPs=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=qWXPew85r6IG5W3gx73mRYzHEDp0D+8g86aZEz2fBRX6ccurudJZ9C5ZRjXr4IkJ5
+	 YcVHyb7QyUjFXxk38WM4NxDzenGsJSfFP1TUOWiXbnbDK/5jUZO+4pvME1MBc3zOtx
+	 1jyEhPfI1puzw8V9nSXMy8pFYQmNQG5IBUinqtCU=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas1p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260219063514epcas1p19a13513456955c828a2a6ebc020ae3e8~VklNByP640223502235epcas1p11;
+	Thu, 19 Feb 2026 06:35:14 +0000 (GMT)
+Received: from epcas1p3.samsung.com (unknown [182.195.38.190]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4fGkC62Vv0z3hhTN; Thu, 19 Feb
+	2026 06:35:14 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260219063513epcas1p15c63c2cdc21afdc58de9e5dd5e741833~VklMFQLR90223502235epcas1p1u;
+	Thu, 19 Feb 2026 06:35:13 +0000 (GMT)
+Received: from U22PB1-0412.tn.corp.samsungelectronics.net (unknown
+	[10.91.134.171]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260219063513epsmtip2e76aff6f7aa8ad043e142729f46cb468~VklMAPEV01618616186epsmtip2K;
+	Thu, 19 Feb 2026 06:35:13 +0000 (GMT)
+From: Seongsu Park <sgsu.park@samsung.com>
+To: catalin.marinas@arm.com, will@kernel.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, akpm@linux-foundation.org,
+	Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, Seongsu Park
+	<sgsu.park@samsung.com>
+Subject: [PATCH] mm/pkeys: Remove unused tsk parameter from
+ arch_set_user_pkey_access()
+Date: Thu, 19 Feb 2026 15:35:06 +0900
+Message-Id: <20260219063506.545148-1-sgsu.park@samsung.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A5CBC0002
-X-Stat-Signature: cge4kgt3jr8s8icxbfjnsr1bs5e7z1yw
+X-CMS-MailID: 20260219063513epcas1p15c63c2cdc21afdc58de9e5dd5e741833
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+cpgsPolicy: CPGSC10-711,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260219063513epcas1p15c63c2cdc21afdc58de9e5dd5e741833
+References: <CGME20260219063513epcas1p15c63c2cdc21afdc58de9e5dd5e741833@epcas1p1.samsung.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771480181-788938
-X-HE-Meta: U2FsdGVkX1++oRlRUFFAKD54ojZPhWCm0nBEkHzBEOW1KaRdIooyF/CSFMBOjUF88mxUKmYv5LcovpT5Z+G/3hZwGyZSnvMn15EVerIB/xoBLQAvRT5uPdF3S5AAdKIvLTQdCMnXycw6lihfHzRGe91CZIhPcr7KiZEGREcPXh8m9bnoOCaikNL+hUpwJ3CeuC1obGXtd4Um9coqyiatrmC2xpne/34zGsPPfwG55s63BafSXW82PbvAxgKKotGO6hU5y6dQGYfO+CcEPZf6ELhr/LCwwwrMa4fUsx+LM4PH63m6X7k4YOceaGRT6uhhv4rr5aJfys/Yj1pBPPJUuM2gYwx/zDKv0kTkX2x/EZaXogRibtatTMht7Z4yWhR7qtoEuy4cXdhGpXAiW74KikFcItaI1iSvqYjN49BumPrchWnYRtCjN4ZBEEHn5j7xMmk0EoYF9pRDsUGD5gPuCUAxPeEwQyTx7bBtv6cVIntyAlcteHpJD3U9K9R2EtILVPFa7mEh8NlX4LVs+hcoPfTyS+YM/7ud4It7KCdCFk4b3GLWCaxj6Q7aQrMWmXz3qmTu0Ml648a743Ao4Usr1ioN0k3jG0Pv1q8IwWseIAlc17HvtSYmXlWOemsmQjMKGUk4z2Y0Qx6pEl34tPnN6bVaHQkNhGLGrQ8XDwq9+N5sDaGRNrDdn2Li/wTPhMQ4q4zGCc2gaRqvhFcQ5C7P4QWJBe2oHAMMLjem4peP4SGPunSIE9uYtliJP/oDhYPp4L4Ohy+DDJoTOkhtQO/WM96IKiHZ4o7D3G9RNKdpQCVM/M1fztkTnUGnlAAoDXbOXER5yd+DXlGnveppTH+WCF32XUhHKGi3kUJNO0zh62it+69xePPKTKadyzoSgDslmOiBZrVpQX2XMgJSwglxfYu3fBB6a9cXMKmPt/deeX2SGoygzNb/PO7nEzv2XfYROztrTPEeZklw+c4kcg6
- cjC7gN1F
- nMzVyN8lcQ4BX0NWKImQTRiFiY2WD4r2yPteDA7rm3NB/57tB7s4bdZMMi7w726K7MSDxp4BCqHBsAmeQShoKmQNwj8fpsxE0CZil8GOiVz/RHYKgQWwqWM5faueToVm1EP8frFdey00FqsQP1RolxVJ0HUVgiMCmZiJhpT8l1xb95GyALs7SMKcvXaw/6WA1Td6C
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 224B21A000A
+X-Stat-Signature: 76du47f9wuqti5zutep698x7q5suqois
+X-HE-Tag: 1771482918-714028
+X-HE-Meta: U2FsdGVkX1+JtLDAiRKTGHE7Lnof8ZAjptKXO2g31QZKcKzHNpQxA0QMEkj6DzwrlQjF2sMpveRz6uVjvpzmjkazZgB/nv+1c6ec9AzkVtEkHY0DIOxYlI8w6NMIr5dJ56WYc8kAcESHzNhu1MCJmGZgCohPMBJUGDITCbR3r8UNAZrgKGDLbByD0mHUmpv+nysYxwRSstd9bJJTRSncVfWfK482erjkte2RasQ+5c13u1R0qZW5QeR4vcWPiVWduoVaQyiUT3gXAuNnxkWvxKB2u2P1XsMl2YH7HUNUPSTYX1gh4f8426GIEgoqrGX0/wdfdVPQaoxVEssfmFbhplFxsRqhQpGT0k6wAzosmMfMLPdtZOzL/9Gp4PS346AZXW40pr42a1h7b0XlU2oaQdLeaqfyDkrIlEOKVERC1E8sgizkE80bqQplh/k6QeZYPPkqvhE2Y6rG6QXOx3THI/UfXJdsJLvPfHEt8zuyHKMCJWHkq4RzdweH8CyQdf42l4szffSSiBqldXm3U6/fgddZ77/X8H3RVR3FQHy9ZlLY2VOMqD8s82C210ACdexie0pfr+TDPsMfG7wuNqjUB8wS41WOMwgADfPhIKPkVk+9pnRwryjPQuqGNBP6CkoskhOgoyE7JomBi6EJr7xfomaxAUN20JQaC23zR5teXF7oTN/bYFKa4fzVjtOcCv4S/Asir9EOki7vNOMprfDdZZ/F0uEUAsL2d46O7ZeAS9od3gbZ5HWZ8pVCH22DCcrYat9MPC+YFbLuuceGb1AyWpVdmamcKKelz3UH+t0UrmzvPy7Z1Kde3PeEgTsXH/5zEmsXmnSJvflVDFqqE+laC8z7/dp34uGe5GsbDKXkftGs62INpHwsNWNNKD9lEeL+BjtqRaIvYLYPNy5fHkDZEPYZ/IazoYoK1driJghoPo409Mzf8yGBhFNuAreZK16BUgEQi4Pxz6kUvu8BjKO
+ HZpZMQTH
+ P+AqR8Ym9/0Td8NOfjqFyIonGsoiebt9hoW0tNg56NqpPLaYG4fleYLS/otIx8MA6qlfV4Z73WG9QGiKsvcdT4farT6E5KKg8rsh4tByOdqjKTSH14x+NpV3f7qz6VUBnzZAg6J2iSM2x0fw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,56 +114,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Claim: folio_order(folio) == HPAGE_PMD_ORDER => folio->index == start.
+The tsk parameter in arch_set_user_pkey_access() is never used
+in the function implementations across all architectures (arm64,
+powerpc, x86).
 
-Proof: Both loops in hpage_collapse_scan_file and collapse_file, which
-iterate on the xarray, have the invariant that
-start <= folio->index < start + HPAGE_PMD_NR ... (i)
-A folio is always naturally aligned in the pagecache, therefore
-folio_order == HPAGE_PMD_ORDER => IS_ALIGNED(folio->index, HPAGE_PMD_NR) == true ... (ii)
-thp_vma_allowable_order -> thp_vma_suitable_order requires that the virtual
-offsets in the VMA are aligned to the order,
-=> IS_ALIGNED(start, HPAGE_PMD_NR) == true ... (iii)
-
-Combining (i), (ii) and (iii), the claim is proven.
-
-Therefore, convert this to a VM_WARN_ON.
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Seongsu Park <sgsu.park@samsung.com>
 ---
-Based on mm-unstable (d9982f38eb6e). mm-selftests pass.
+ arch/arm64/include/asm/pkeys.h   | 3 +--
+ arch/arm64/mm/mmu.c              | 2 +-
+ arch/powerpc/include/asm/pkeys.h | 8 +++-----
+ arch/powerpc/mm/book3s64/pkeys.c | 3 +--
+ arch/x86/include/asm/pkeys.h     | 3 +--
+ arch/x86/kernel/fpu/xstate.c     | 3 +--
+ arch/x86/mm/pkeys.c              | 3 +--
+ mm/mprotect.c                    | 2 +-
+ 8 files changed, 10 insertions(+), 17 deletions(-)
 
- mm/khugepaged.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index fa1e57fd2c469..f27cbb4d1f62c 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2000,8 +2000,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		 * we locked the first folio, then a THP might be there already.
- 		 * This will be discovered on the first iteration.
- 		 */
--		if (folio_order(folio) == HPAGE_PMD_ORDER &&
--		    folio->index == start) {
-+		if (folio_order(folio) == HPAGE_PMD_ORDER) {
-+			VM_WARN_ON(folio->index != start);
-+
- 			/* Maybe PMD-mapped */
- 			result = SCAN_PTE_MAPPED_HUGEPAGE;
- 			goto out_unlock;
-@@ -2329,8 +2330,9 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
- 			continue;
- 		}
+diff --git a/arch/arm64/include/asm/pkeys.h b/arch/arm64/include/asm/pkeys.h
+index 0ca5f83ce148..cd286d3a9c94 100644
+--- a/arch/arm64/include/asm/pkeys.h
++++ b/arch/arm64/include/asm/pkeys.h
+@@ -12,8 +12,7 @@
  
--		if (folio_order(folio) == HPAGE_PMD_ORDER &&
--		    folio->index == start) {
-+		if (folio_order(folio) == HPAGE_PMD_ORDER) {
-+			VM_WARN_ON(folio->index != start);
-+
- 			/* Maybe PMD-mapped */
- 			result = SCAN_PTE_MAPPED_HUGEPAGE;
- 			/*
+ #define arch_max_pkey() 8
+ 
+-int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-		unsigned long init_val);
++int arch_set_user_pkey_access(int pkey, unsigned long init_val);
+ 
+ static inline bool arch_pkeys_enabled(void)
+ {
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 9ae7ce00a7ef..3fc8566708ea 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -2207,7 +2207,7 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
+ }
+ 
+ #ifdef CONFIG_ARCH_HAS_PKEYS
+-int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long init_val)
++int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+ {
+ 	u64 new_por;
+ 	u64 old_por;
+diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
+index 28e752138996..bd20d4106471 100644
+--- a/arch/powerpc/include/asm/pkeys.h
++++ b/arch/powerpc/include/asm/pkeys.h
+@@ -143,10 +143,8 @@ static inline int arch_override_mprotect_pkey(struct vm_area_struct *vma,
+ 	return __arch_override_mprotect_pkey(vma, prot, pkey);
+ }
+ 
+-extern int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-				       unsigned long init_val);
+-static inline int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-					    unsigned long init_val)
++extern int __arch_set_user_pkey_access(int pkey, unsigned long init_val);
++static inline int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+ {
+ 	if (!mmu_has_feature(MMU_FTR_PKEY))
+ 		return -EINVAL;
+@@ -160,7 +158,7 @@ static inline int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+ 	if (pkey == 0)
+ 		return init_val ? -EINVAL : 0;
+ 
+-	return __arch_set_user_pkey_access(tsk, pkey, init_val);
++	return __arch_set_user_pkey_access(pkey, init_val);
+ }
+ 
+ static inline bool arch_pkeys_enabled(void)
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index a974baf8f327..2002331b05ba 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -335,8 +335,7 @@ static inline void init_iamr(int pkey, u8 init_bits)
+  * Set the access rights in AMR IAMR and UAMOR registers for @pkey to that
+  * specified in @init_val.
+  */
+-int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-				unsigned long init_val)
++int __arch_set_user_pkey_access(int pkey, unsigned long init_val)
+ {
+ 	u64 new_amr_bits = 0x0ul;
+ 	u64 new_iamr_bits = 0x0ul;
+diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
+index 2e6c04d8a45b..06ed2cd2592e 100644
+--- a/arch/x86/include/asm/pkeys.h
++++ b/arch/x86/include/asm/pkeys.h
+@@ -9,8 +9,7 @@
+  */
+ #define arch_max_pkey() (cpu_feature_enabled(X86_FEATURE_OSPKE) ? 16 : 1)
+ 
+-extern int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-		unsigned long init_val);
++extern int arch_set_user_pkey_access(int pkey, unsigned long init_val);
+ 
+ static inline bool arch_pkeys_enabled(void)
+ {
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 48113c5193aa..0caf91a7e062 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1080,8 +1080,7 @@ void __user *get_xsave_addr_user(struct xregs_state __user *xsave, int xfeature_
+  * This will go out and modify PKRU register to set the access
+  * rights for @pkey to @init_val.
+  */
+-int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+-			      unsigned long init_val)
++int arch_set_user_pkey_access(int pkey, unsigned long init_val)
+ {
+ 	u32 old_pkru, new_pkru_bits = 0;
+ 	int pkey_shift;
+diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+index 7418c367e328..1dfcfaf77e23 100644
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -42,8 +42,7 @@ int __execute_only_pkey(struct mm_struct *mm)
+ 	 * Set up PKRU so that it denies access for everything
+ 	 * other than execution.
+ 	 */
+-	ret = arch_set_user_pkey_access(current, execute_only_pkey,
+-			PKEY_DISABLE_ACCESS);
++	ret = arch_set_user_pkey_access(execute_only_pkey, PKEY_DISABLE_ACCESS);
+ 	/*
+ 	 * If the PKRU-set operation failed somehow, just return
+ 	 * 0 and effectively disable execute-only support.
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 283889e4f1ce..fea7d56f55e3 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -978,7 +978,7 @@ SYSCALL_DEFINE2(pkey_alloc, unsigned long, flags, unsigned long, init_val)
+ 	if (pkey == -1)
+ 		goto out;
+ 
+-	ret = arch_set_user_pkey_access(current, pkey, init_val);
++	ret = arch_set_user_pkey_access(pkey, init_val);
+ 	if (ret) {
+ 		mm_pkey_free(current->mm, pkey);
+ 		goto out;
 -- 
 2.34.1
 
