@@ -4,142 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B014BC531EB
-	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D983C531EA
+	for <linux-mm@archiver.kernel.org>; Thu, 19 Feb 2026 23:37:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75E4C6B0005; Thu, 19 Feb 2026 18:24:53 -0500 (EST)
+	id 6AA946B0005; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70C2C6B0089; Thu, 19 Feb 2026 18:24:53 -0500 (EST)
+	id 658606B0089; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C3D56B008A; Thu, 19 Feb 2026 18:24:53 -0500 (EST)
+	id 564476B008A; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4556F6B0005
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:24:53 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA72D5BB1A
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:24:52 +0000 (UTC)
-X-FDA: 84462788424.20.E1C0384
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CD92F160002
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:24:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="U/2Jh3yS";
-	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771543490;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 404C66B0005
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:37:17 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5F9E140943
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:37:16 +0000 (UTC)
+X-FDA: 84462819672.30.5A7218B
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 19A511A000B
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:37:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LqitZZjL;
+	spf=pass (imf19.hostedemail.com: domain of 3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771544235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N81mihdf1oXQ5HgGZbFFRvlKM1gdCdpIV1qQLDbyueM=;
-	b=cXoH8qjteeqSba/xcfQBOhlT4V+mrw8bu0x+F+aC6cUJ85K18XAKtAl8VsafRi1Pi6FUGW
-	L2AZTEPEb1ZTCZqrDaAhwumO3FfA2whCPGOKhB+TlCfBNX7A36swISAjSZfnT6p737X8jR
-	2JBhT9okME5jxfLh887TjAVNmwl0j4Y=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="U/2Jh3yS";
-	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771543490; a=rsa-sha256;
-	cv=pass;
-	b=KKQjhmpsa5Yxw4JUEnAYLU8lV8uZZUtHcJ1YjqVQv9XbqkM627/2+cpiTW859JJ2eKoK6A
-	3d9SMAodhO0IoMEHD18m2M5QsPx40XiCE4IqNaD0FgBlbp3OuPttDiTsTieO60IVihTiDf
-	igg2zeMPW7D1EWsP0j4DYYwb6eeHhYY=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2aad8123335so16835ad.1
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:24:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771543489; cv=none;
-        d=google.com; s=arc-20240605;
-        b=htADL09TmZpf32e4CMTQ2RzyLTa0mIPM81d/TuqYsvS+f4ZrOOjtykq8MGSaU7kc4f
-         S7GR6oxJbC/1iJi7jcDhskleJ8iE4Vphy02ndURhzk5lwUcZtLdO2/t09Op9yJufibMl
-         f/62Umc0RGB1KjxMydFHEqWxP6RiHrpfURcP2ZE3fB72wZH57TfKk64qqiOPZRImEPt5
-         AcINbdPXYnnWZkQhfXGie6mR2huBqSRPw5RQUVAWSUM/89ADwbiZOcu/OOiMyWJgFw3R
-         w709Sh0S8SkYUImrXZI/fzkOmGTpLZljXTKEmtRofCafuc6/B/huJjsARLh3glFwJkd8
-         SwlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=N81mihdf1oXQ5HgGZbFFRvlKM1gdCdpIV1qQLDbyueM=;
-        fh=6QfKH9jHeDlYrUdTzPcusnHn9Pu3idbgkTlUTxBHtio=;
-        b=XVQ+C6Tv7Uq553DDuv2XrWc8wWwn1dqjJQ6MOAeJHMsTLocTVp00A2PW0Sat2sfPEG
-         4eV4//1wGCJWJT01k2VeLHJdubZkBbdM3oJQpya85G/IcvAWVQNK/wQJGERjxWy+DqE5
-         C0NDQb0XXNNRHU5WrGQ7FBo5qFyk4a1tLPJmGaOooFQAoFRcBHRBCW3lqpXU01DkjVFb
-         I91GcQot9SYuitU43g4ToedLvSkMPKHjxWMYBpdwwypyYwbsYCId1m15uCLzHX6x1+qM
-         HWqg2hggQ7KrNq5Wm6I846SYCXCAcssVhU4MqGAGR/NhHDT6pTgB5OlnQUcN+dURaBTG
-         Wd6A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fMf1qxcGK6Wxv/U+V8Of3DjwHpI1qGbRPjrj7xoTTd8=;
+	b=kQ4sne7QV4PChhoQzCSPm9HA+re71vrSdP5JsiKVeRunaxBODfGPpNHrhPS2P5EWXPFXdH
+	qYQ9JuYVUmOSjquTUbeLgKjCI+x09JtQrwY+5PIqwt3yHWRTPH4gX/OGOv0SjJU+eBoSHi
+	c4+H0t3zjMYSk/nr6q3cizhMksaZKYg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771544235; a=rsa-sha256;
+	cv=none;
+	b=gqhTEhLedKxR9QdNB9/BSA4H21Bx7s3i9lsFjnNzjtrCmKyi6ZNeU83bIrfUVF3pLeK123
+	I604CAE/i/FHBOSnHOUxOzQmJ2Ez5DmxM9vVzlkoboxpSuG18l1B+oNuHxadLMRbyfHg3v
+	SV7+R8Biu2Awhu0CN6ZEsY4/ZJeTCBE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LqitZZjL;
+	spf=pass (imf19.hostedemail.com: domain of 3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3qZ6XaQsKCJgC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2ba8013a9e3so1678497eec.0
+        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 15:37:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771543489; x=1772148289; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N81mihdf1oXQ5HgGZbFFRvlKM1gdCdpIV1qQLDbyueM=;
-        b=U/2Jh3ySIV7KAHxYgDfynsz5IRzSnRMY4Aei3Q+/s4K3PSAFZC+wU0j/1i8D4BZK42
-         QeIEA5tB1S+g89icx+BUhlNPKrnmQdGbFjXSV1UPjbkJ9C8c2BZA/AaAfd87knkSMJSU
-         ePJHeHXWzmBTdfE/s0czHUenzUPky3V7M3njLqBsiPT8M3Q//qrwJXxPLTc+tNYuz4c9
-         lCz+kDQhjSTUC6dhtGGgHEIiv3E0SMk2HzglgSGJzW3beBPHIjOEP1/uVomvUbzrgHRo
-         AgFHb/BZlGscLbTF57XyQNoSJb2KEpu5nhXbq0AHoMXI7NPFAVXH89pAJNMwhVnFG9V2
-         tMsQ==
+        d=google.com; s=20230601; t=1771544234; x=1772149034; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fMf1qxcGK6Wxv/U+V8Of3DjwHpI1qGbRPjrj7xoTTd8=;
+        b=LqitZZjLpf2L0eM4aNhVk84CFPHOmtc1sdd8Ibo96PvU+OLmMM67nyTZ2Z2SZVJ1Rl
+         0TIZFKwBUZRB7KPDW616G6tJSHMjEBzZ21Jr9rnihnhxvKTLXjJiujcx8N4SUQga6OTC
+         3QPCfaf6Ot+YYN96oVw/jlsfmWFsFIprab5+CU1XLBDYJp8WTBjBJd5jtX1mnm0uU19g
+         IxPlwhIQskBfgaP3/JEu2M2nnPomCUGxhIKUu1ovVrvfJ/Ev5knNjj/tO4Itlk4wbHdl
+         UJvxYUI14lVc1v92BvP+SjvjdhfmZL4ihWgftwDIR4H+rAz3yD97rApEl8VT9UTEx5cj
+         XYfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771543489; x=1772148289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=N81mihdf1oXQ5HgGZbFFRvlKM1gdCdpIV1qQLDbyueM=;
-        b=p7w5aFGHjrNLxOpeQGWtFSBuj0qAjLNwasU6FyfMzxOyRq5+cOAEZSxaGaphNmN+IO
-         7KyBBFLub5a8nQkqUF1wworJoxmK5dpDv3WIRS0XbXgkEt1RxXNumnOi6/2f98achI2J
-         3R1oWNZ+FZajutQ2SIdcSsevYrFleBRfwh6APf9WwgAvS78t8WfVwfp2O/o7WKgnxWdq
-         kyKBOWSG9qpwRY48PMNDzvkwBxck67tJ+ClhfDHrow3zfoFn6NC86wSYt9fiadArFXLl
-         U/Vaxye3oJMYXdNebHw7ETl/TSzaOHokGjyH5i08iLVb4BQtCG4uU2ZV5i43ivp60RVk
-         f/lw==
-X-Forwarded-Encrypted: i=1; AJvYcCVRF3aQBgSaMzwl5tvze/MTWw0NSwO3Njnfm++XO6vsRMXCLB7TCLxDPTCEUZWnUSasQzIVUdE8tA==@kvack.org
-X-Gm-Message-State: AOJu0Ywltiz0XyfkzLLtDDqXtSWcrHjTfgs/Xi2GcJkKAQUiayWm6tP8
-	O4qzUhwwcKO3JQJdTJKkDz32zjrVE2DRCemQBHJCLsktY9LUvbq4EZBdiG+veoOOssZH3QWSymB
-	fQKkSO68t08iGUl2LGNcYRX95wK/sLMdgAo5Vvnzq
-X-Gm-Gg: AZuq6aJGf9WoK5p0RO4FTHlQECTwjVfh94350eMScljBrWkHf0T34nQY2hy69UjTD5a
-	DqDeciuMUmcFyymYhzSpzFcKPpoBX0ewkRW+UuaeVdv1cr4jKnhaLaqqhCWxRQK7VmBektp4z1K
-	WSDGp/ZiDV21PdKB1YEKeNbYpX8SEhb5aQ1JrhlUvounhhCQNx+wDb/VEzsdJ7fCvRMijPKNX5V
-	1z28NJrtfu8HM2IFk3PRJp0urTa7C4SDkX0rO1tKG3z24zHg3Q0b03OfurexvW+Q14GUrn8lNhu
-	JCdlM3mDqthqgFOL9L2THLLEiDHQpFQGHvOJWLdFjp3qeLMD
-X-Received: by 2002:a17:902:d48b:b0:2a0:89b0:71d6 with SMTP id
- d9443c01a7336-2ad6b0bcda3mr317825ad.17.1771543489146; Thu, 19 Feb 2026
- 15:24:49 -0800 (PST)
-MIME-Version: 1.0
-References: <aZcmlIF4bmG0twkp@thinkstation> <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
-In-Reply-To: <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
+        d=1e100.net; s=20230601; t=1771544234; x=1772149034;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fMf1qxcGK6Wxv/U+V8Of3DjwHpI1qGbRPjrj7xoTTd8=;
+        b=McHA+pLj60JVUcbo60T9a3Zn2LqvPGvIWfcaVgLQLCZfNsYj4D/b53EQkgoWKSGF6V
+         ummGgXS/aEuq1gk+nag9DMBtaxj0MEtMUl/Fhb/TQenK3kvzSRd97J6Ynqubq9vV3amT
+         XB0b+QuaF54sknNgK9rou75oJxEXL3JwUlZG1d/JZBMVsWLDLI6m8gFusrrWAm222T/p
+         uh9S3NtZPFPxBsgSkIlegk/LYYFXtglcwGdwbREBklIR+WO2j33lfpla2kwj1iFmhjK7
+         E2XxNC6WLJFIdI0fgoflBTiK6iXa1mfa7ThDgYmuAm83xK7JQ3k3tkqasKEwRFjVkct+
+         WTOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgCf8gDVmCifK82LKuDHYzasZRMbWOENKuKVyrBgQfD6R7itIxvPrkcPIbILSuXvg71Ob6OHsteg==@kvack.org
+X-Gm-Message-State: AOJu0YzdqeLY5nMqhynIRefsU8wfpf6s8BU4bap3rCzM72oo4fsxqF1u
+	MbLX+lYIxRfGjR4ktQsg3YeItCCyULb8dBirQ8iHFzZ051NJ5Jxg2CGXTgBT5Uk7zTLRJw45QIN
+	ZF7ztL9E4ATL4hxhf8eAZarpdTg==
+X-Received: from dybic28.prod.google.com ([2002:a05:7300:c71c:b0:2ba:8e16:e465])
+ (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:3108:b0:2ba:6854:8d4d with SMTP id 5a478bee46e88-2bd501701e4mr3357396eec.20.1771544233484;
+ Thu, 19 Feb 2026 15:37:13 -0800 (PST)
+Date: Thu, 19 Feb 2026 15:36:56 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
+Message-ID: <20260219233708.1971199-1-kaleshsingh@google.com>
+Subject: [PATCH] mm/tracing: rss_stat: Ensure curr is false from kthread context
 From: Kalesh Singh <kaleshsingh@google.com>
-Date: Thu, 19 Feb 2026 15:24:37 -0800
-X-Gm-Features: AaiRm506iCuwBzt769z6f8HgaTqphlJIMr6ZOf2foqNwbaXvYNvrCMUTeVEWOk0
-Message-ID: <CAC_TJvdUoBmZNj68Yghmwhr4W0930s+p7UkAtSj5x5XoGAHhwg@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>, android-mm <android-mm@google.com>, 
-	=?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
-	=?UTF-8?Q?Mateusz_Ma=C4=87kowski?= <mmac@google.com>, 
-	Steven Moreland <smoreland@google.com>
+To: akpm@linux-foundation.org, rostedt@goodmis.org, joel@joelfernandes.org
+Cc: kernel-team@android.com, android-mm@google.com, 
+	Kalesh Singh <kaleshsingh@google.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Minchan Kim <minchan@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Martin Liu <liumartin@google.com>, 
+	David Rientjes <rientjes@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Wander Lairson Costa <wander@redhat.com>, Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: j8hrrekj6h3eakr9kqct5b5n1wowdwdg
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 19A511A000B
+X-Stat-Signature: jp1dau3heyphytifkhjuck7jmznyc4ok
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD92F160002
-X-HE-Tag: 1771543490-204682
-X-HE-Meta: U2FsdGVkX19zrFsL5Rqw+psiE7pKJAFaWlH0KmOU4o87WUNQy3HjvvMOpmDH2/Q23IQhY8QJ8dHqzZbgcMT0CF3Psf2XsJQeVMFRXCZ+agzTRBuMJx5/dcqa9phE9OSe/AjlKtyQZtTCgGKEgJIRrZ9EOoEVG6aNJQj0ZzjYpPbqDULzJpla3YGFwPNb/iqroDHovw1oMSsD9MrE8rsDNd6hrRZxGhVXpudfJWzun/3xlYqOkIym2mCDQsnsylqU4TcKUcO8uVYGnpGT44E+Z1tB3sVsB5YtGBApsYdB1zeoUJ6tUbEBm+rt8glA0avDiAg0Zl/8R0RZrw960JV9C5EuCkPRaRZMpylU6Z/6Zq4O0MtF1msRh69cK4krcWW8GfxjnPmHSTFRhrBjmeURKGonHp3DFX2EooDgOX1YwNG1Tdnpzcs5eXZbcInUfPCm+UUaYhfB96vS/a3+vh6q8waZgK079CpxNqimoGIDi9EKNAjOLHHlsadWCwMBbQmd5kf4tEk3OaPBYpF8JN5Vc5o6/X74n7uTzM2zozgNmJKtC2MlddV/5pxOVJO7idsPeIl2tORaH1n/N29xd09ln5d9427zz6ILttf7CUh3iDDnZ02AZQmD3hsVbwjpJmUVapRvMKgmFQsrFPdFy+xMf4JM3uZg3dAt4mBhkx0dRJ2C4oVcAsJ0nWkSEMiWQWWC5ZgVMwljhMM0YCpwg0eRGWJY+ZKRKE+01ps4cYbv1Z0giOXVGDKZyIquKQxi9vYlcDrkPXwqpW7SWwMch0cpRYLpyvVZLh+CNqV7FiXMdYlj1JXyqj0Q9e6pH2DCRJb3hpYRdVdZhh8CizTL6apQG842lRHmcAocf9EAOE5SpDKDrla/uYVLNEpMUCkrnmm4CitIvvDeAp9CRmuMz54IDbS5OrCsHLu4B8bcVACjs3O/4jY5MKALvoWjpeFAj75TiuAs/Zpx+OPMrJDe2tW
- zlUghZOP
- h4SH+/KC/djGM2YeLEIDWiY6OeTuu2qgdCppbfstUszKht+rEv9IMJTfxK/hd+FatKR86pi0TH6dl+OiK8TArTkuFt0v7Tx1oE1lGFwjK6sYPmzNKKuaKWHTClPCLqQcc5HKKTulfMuY6frC39CV4KW/gM44YNRI41+iIruEaqSB80afG5PBdZdrM2fyJZmJzOZkAZQ+UMi3WWTIHjIhYwBu1X/b9ByPY/ooBOdoWG/Lf/j/nc8h08TJLQLYIwsc+J0iIOkMwhFfLsqwb9tlyNJvbjN5SgH9jyRPP
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771544234-294247
+X-HE-Meta: U2FsdGVkX1+cL30jIOL+ksG26R2lsjcTdikuv9g+G1lv2x1uKB5wmGVvQAEnPY3DZ9g0s0TMRtqVWtmY8Rc39NxCzlj2PjUN4DRFXGt7psjnL580iGZJoyIJhgyEk1NLMuxQCcfVNY9z+o8qms97902bs2ig9qe+89YRdzMO9VYScJR11+2ZY8AA9IGZLDI13649vbeHk2TqRNqrcqFa0Du9WO0S2ScwYHCVSV3AeAXjxi8m8SwRzbPQ2hMCwxUPHOIEdfWrCNMBo9syr+O194AcIaQyxn+2PoTPUNuVgYhvyt5RdZ1EVMF06rR/8OKhrV3XyoYnrPeBmCbatw0hYDuR4tlvTIy2Y4IuDAVoFS1jGrjVh2hbCSryDpGk74buaq8WzkYoCNC26hz+qs1u3HSMzrVoBroq1ei5gnd/SEC9SSvGxufkJQs7prNB2ZpkOTRvvkUrM8eCpprcUg9OK8Y+sFVM4xC60q32pBidWiW6R1+vHKEOqsFT/imVtBqiNDtUsUCLsfRlsprnuHLM5otDMIlpC/G381gc9UpCig6I/Y3Qs0Sm17UJvmQ0k8XkcVzuONVoW5W5nDQrYuTpLZNj8a1p/R9ppu0J9J9xr36CHhoOBHaax+pcARt2Vq6csvUp/1aj/w6gCrfCjYOhyClYdqpKUS7r5hBVCm7gzyqiknGeNMrO86My+PFqjtgxCyEBleSIbCbklv8U53UJtPKMf+zakt3wH5qRjSKdaIhd3UCu5/ksbwxgcCavxUczOVnaT14droH5eYJxhm6O42aygNzA5aSCyo7oUa62egaQptOJV1Xs0tDGsMq1ostk1c8h0LBbSFtAvM86+oIsoBsts9dyxKjFFJu5ccSAOq0zbmHnA90Rla3YTqsqkd7jSGH1J9NRloksTw8Eg4ra85g/WW93M5eCapCvE0ki7etJzPDp0OsuvNqhr3Q8hGIBBcIXJy6HgIA5+NY8/SD
+ PyH6qexP
+ VvfFYbSoeYmOYfG2L37gjk+yJ9ZXyIObL9fsdvckPP7aCPsInlK4MVNZndvv6jxGzb5IcCibiSGP/HBm54P+619VjTFmHgexmPDUk/I94dOBqE72Y6tZmjOoWJU6lTPMydurtm6ckI9pk2cdYn/VQVAEL+3YgOnyD81yY1sPf6Xmd7JbRnXq404QOYraPtmfhI0rVSxnCvxKT289wJnAzEC6Ez1FGIk9pWt091zuCYvm1RlT16EY654XHUoPjHAb+kMpwC7u8VKc6KJUVunCwYWkXJO7QQVh2r9cUPeq5gf5df1DT7dEYqChRSNc2p6UxdfVeKIQZEcmqUaTQQTLUDplELN8CzsnnF+QNqsGRVZmIjfYfm7F8O371lObGfSz6IZLwbt73FcPg22o4wbJj7u5QdNdOf3Ov13tuR1ObnyU9bCg4vxrA2m1DTBfxfKylF9v/ZVlwtXCpVCq2FvZ9ZZEy3lEGn4Prr69zThbdgLWNkxiPn3iFC+Qv+XZi6AQ3WxlK2AbdlvSsf6GrbRWazYBN3yMXlxhTKGiPF6hqvN+AXZxhlUMH1lGBGFntvihjQrIV02v8nEwG/SCKjh3hZV0DM3Wt1k/P4IPHEbu9NqkkHl0/b2mNP3LA3+V6ZzfUP0OMp+gRYwuLga8+WIxpmBboHvWiMlYxQ+lMXnmK9ldud0qZw5ko+mM8M2Tq1rtoW99sIUU5aElFuq/1QbTaltaN1THNKsvLs1Z/GDNZIpYP+21KvdkL9662BeCPWt5JGltTp5e7BOZXC0ly+3dmJX7r4qMp4UX3cgsWkHRecE88Uw4HnPfc+rDRm2j3EHI6C9XAAUWeSoFMuRXhULHCRDo3p4unMYmVb6rBoShF5EiNCK/IptfLp6vLBHX77XkhoZromZPdT4SU4ZTMJ/eI8iBc2I7/Ogn72Sl9jZijk6UeBX3QuCFIWApX5Y+MVDUKhsYNwf0Z2/DUNpYLOjX5dmZuhTiH
+ 8nR4N0wU
+ X5dMz2jvpFhHOdEadK1JOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,181 +115,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 7:39=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 2/19/26 16:08, Kiryl Shutsemau wrote:
-> > No, there's no new hardware (that I know of). I want to explore what pa=
-ge size
-> > means.
-> >
-> > The kernel uses the same value - PAGE_SIZE - for two things:
-> >
-> >    - the order-0 buddy allocation size;
-> >
-> >    - the granularity of virtual address space mapping;
-> >
-> > I think we can benefit from separating these two meanings and allowing
-> > order-0 allocations to be larger than the virtual address space covered=
- by a
-> > PTE entry.
-> >
-> > The main motivation is scalability. Managing memory on multi-terabyte
-> > machines in 4k is suboptimal, to say the least.
-> >
-> > Potential benefits of the approach (assuming 64k pages):
-> >
-> >    - The order-0 page size cuts struct page overhead by a factor of 16.=
- From
-> >      ~1.6% of RAM to ~0.1%;
-> >
-> >    - TLB wins on machines with TLB coalescing as long as mapping is nat=
-urally
-> >      aligned;
-> >
-> >    - Order-5 allocation is 2M, resulting in less pressure on the zone l=
-ock;
-> >
-> >    - 1G pages are within possibility for the buddy allocator - order-14
-> >      allocation. It can open the road to 1G THPs.
-> >
-> >    - As with THP, fewer pages - less pressure on the LRU lock;
-> >
-> >    - ...
-> >
-> > The trade-off is memory waste (similar to what we have on architectures=
- with
-> > native 64k pages today) and complexity, mostly in the core-MM code.
-> >
-> > =3D=3D Design considerations =3D=3D
-> >
-> > I want to split PAGE_SIZE into two distinct values:
-> >
-> >    - PTE_SIZE defines the virtual address space granularity;
-> >
-> >    - PG_SIZE defines the size of the order-0 buddy allocation;
-> >
-> > PAGE_SIZE is only defined if PTE_SIZE =3D=3D PG_SIZE. It will flag whic=
-h code
-> > requires conversion, and keep existing code working while conversion is=
- in
-> > progress.
-> >
-> > The same split happens for other page-related macros: mask, shift,
-> > alignment helpers, etc.
-> >
-> > PFNs are in PTE_SIZE units.
-> >
-> > The buddy allocator and page cache (as well as all I/O) operate in PG_S=
-IZE
-> > units.
-> >
-> > Userspace mappings are maintained with PTE_SIZE granularity. No ABI cha=
-nges
-> > for userspace. But we might want to communicate PG_SIZE to userspace to
-> > get the optimal results for userspace that cares.
-> >
-> > PTE_SIZE granularity requires a substantial rework of page fault and VM=
-A
-> > handling:
-> >
-> >    - A struct page pointer and pgprot_t are not enough to create a PTE =
-entry.
-> >      We also need the offset within the page we are creating the PTE fo=
-r.
-> >
-> >    - Since the VMA start can be aligned arbitrarily with respect to the
-> >      underlying page, vma->vm_pgoff has to be changed to vma->vm_pteoff=
-,
-> >      which is in PTE_SIZE units.
-> >
-> >    - The page fault handler needs to handle PTE_SIZE < PG_SIZE, includi=
-ng
-> >      misaligned cases;
-> >
-> > Page faults into file mappings are relatively simple to handle as we
-> > always have the page cache to refer to. So you can map only the part of=
- the
-> > page that fits in the page table, similarly to fault-around.
-> >
-> > Anonymous and file-CoW faults should also be simple as long as the VMA =
-is
-> > aligned to PG_SIZE in both the virtual address space and with respect t=
-o
-> > vm_pgoff. We might waste some memory on the ends of the VMA, but it is
-> > tolerable.
-> >
-> > Misaligned anonymous and file-CoW faults are a pain. Specifically, mapp=
-ing
-> > pages across a page table boundary. In the worst case, a page is mapped=
- across
-> > a PGD entry boundary and PTEs for the page have to be put in two separa=
-te
-> > subtrees of page tables.
-> >
-> > A naive implementation would map different pages on different sides of =
-a
-> > page table boundary and accept the waste of one page per page table cro=
-ssing.
-> > The hope is that misaligned mappings are rare, but this is suboptimal.
-> >
-> > mremap(2) is the ultimate stress test for the design.
-> >
-> > On x86, page tables are allocated from the buddy allocator and if PG_SI=
-ZE
-> > is greater than 4 KB, we need a way to pack multiple page tables into a
-> > single page. We could use the slab allocator for this, but it would
-> > require relocating the page-table metadata out of struct page.
->
-> When discussing per-process page sizes with Ryan and Dev, I mentioned
-> that having a larger emulated page size could be interesting for other
-> architectures as well.
->
-> That is, we would emulate a 64K page size on Intel for user space as
-> well, but let the OS work with 4K pages.
->
-> We'd only allocate+map large folios into user space + pagecache, but
-> still allow for page tables etc. to not waste memory.
->
-> So "most" of your allocations in the system would actually be at least
-> 64k, reducing zone lock contention etc.
->
->
-> It doesn't solve all the problems you wanted to tackle on your list
-> (e.g., "struct page" overhead, which will be sorted out by memdescs).
+The rss_stat trace event allows userspace tools, like Perfetto [1],
+to inspect per-process RSS metric changes over time.
 
-Hi Kiryl,
+The curr field was introduced to rss_stat in commit e4dcad204d3a
+("rss_stat: add support to detect RSS updates of external mm").
+It's intent is to  indicate whether the RSS update is for the
+mm_struct of the current execution context; and is set to false
+when operating on a remote mm_struct (e.g., via kswapd or a
+direct reclaimer).
 
-I'd be interested to discuss this at LSFMM.
+However, an issue arises when a kernel thread temporarily adopts
+a user process's mm_struct. Kernel threads do not have their own
+mm_struct and normally have current->mm set to NULL. To operate
+on user memory, they can "borrow" a memory context using
+kthread_use_mm(), which sets current->mm to the user process's mm.
 
-On Android, we have a separate but related use case: we emulate the
-userspace page size on x86, primarily to enable app developers to
-conduct compatibility testing of their apps for 16KB Android devices.
-[1]
+This can be observed, for example, in the USB Function Filesystem
+(FFS) driver. The ffs_user_copy_worker() handles AIO completions
+and uses kthread_use_mm() to copy data to a user-space buffer.
+If a page fault occurs during this copy, the fault handler executes
+in the kthread's context.
 
-It mainly works by enforcing a larger granularity on the VMAs to
-emulate a userspace page size, somewhat similar to what David
-mentioned, while the underlying kernel still operates on a 4KB
-granularity. [2]
+At this point, current is the kthread, but current->mm points to the
+user process's mm. Since the rss_stat event (from the page fault)
+is for that same mm, the condition current->mm == mm becomes true,
+causing curr to be incorrectly set to true when the trace event is
+emitted.
 
-IIUC the current design would not enfore the larger granularity /
-alignment for VMAs to avoid breaking ABI. However, I'd be interest to
-discuss whether it can be extended to cover this usecase as well.
+This is misleading because it suggests the mm belongs to the kthread,
+confusing userspace tools that track per-process RSS changes and
+corrupting their mm_id-to-process association.
 
-[1]  https://developer.android.com/guide/practices/page-sizes#16kb-emulator
-[2] https://source.android.com/docs/core/architecture/16kb-page-size/gettin=
-g-started-cf-x86-64-pgagnostic
+Fix this by ensuring curr is always false when the trace event is
+emitted from a kthread context by checking for the PF_KTHREAD flag.
 
-Thanks,
-Kalesh
+[1] https://perfetto.dev/
 
+Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+---
+ include/trace/events/kmem.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
+diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
+index 7f93e754da5c..cd7920c81f85 100644
+--- a/include/trace/events/kmem.h
++++ b/include/trace/events/kmem.h
+@@ -440,7 +440,13 @@ TRACE_EVENT(rss_stat,
+ 
+ 	TP_fast_assign(
+ 		__entry->mm_id = mm_ptr_to_hash(mm);
+-		__entry->curr = !!(current->mm == mm);
++		/*
++		 * curr is true if the mm matches the current task's mm_struct.
++		 * Since kthreads (PF_KTHREAD) have no mm_struct of their own
++		 * but can borrow one via kthread_use_mm(), we must filter them
++		 * out to avoid incorrectly attributing the RSS update to them.
++		 */
++		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
+ 		__entry->member = member;
+ 		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
+ 							    << PAGE_SHIFT);
 
+base-commit: 8bf22c33e7a172fbc72464f4cc484d23a6b412ba
+-- 
+2.53.0.371.g1d285c8824-goog
 
->
-> --
-> Cheers,
->
-> David
->
 
