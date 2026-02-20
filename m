@@ -4,141 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0FDEC5AD69
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 19:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E0F2C5B56B
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 21:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA7116B0088; Fri, 20 Feb 2026 14:33:34 -0500 (EST)
+	id 294F56B0005; Fri, 20 Feb 2026 16:36:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E547D6B0089; Fri, 20 Feb 2026 14:33:34 -0500 (EST)
+	id 255596B0089; Fri, 20 Feb 2026 16:36:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35936B008A; Fri, 20 Feb 2026 14:33:34 -0500 (EST)
+	id 141526B008A; Fri, 20 Feb 2026 16:36:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BAD7A6B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 14:33:34 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B2895820D
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:33:34 +0000 (UTC)
-X-FDA: 84465834348.04.88034FC
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 18E38180014
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:33:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OV3E9vK+;
-	spf=pass (imf16.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F134B6B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:36:14 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93C241BF69
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 21:36:14 +0000 (UTC)
+X-FDA: 84466143468.15.047CF4E
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 87819140008
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 21:36:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="0bURw4f/";
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771616012; a=rsa-sha256;
-	cv=pass;
-	b=QK9LsqEoQaNHyqJ2EfVmyXSoEkasAv9PB6MOUe4eU2iSTHuwf6sUIo/ZO5C8FjN9m5k6Na
-	ohEB1Xj7+Fa893bykRwQ+s2OAJ4zDSqsPkqZ+USU9f3JSf9SXqOzfAZgIEgsaTP1jWbGKo
-	HAkSkrppJciVf5yt/0ebRGt3q72wYDo=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OV3E9vK+;
-	spf=pass (imf16.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771616012;
+	s=arc-20220608; t=1771623372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fPNU3Iqc/8CEt2YTyreNZ9j40AP0Tzd+qCCvU1fbH94=;
-	b=3E5PjWuIXgVdwN81fwGOnOEGbShvOmvvorSPyG5+D9nx+/JnyVCLD+lxK4BTs7bzIuCTH8
-	2B1bVbBJ2HgKzV1M25X+TApg6fUb9/S+3Yc+zbo5u0xO8kSWxwyKggTi88tx/U4uMifB9N
-	1E4e1vGMBZ19fxwPrtJunYEAF0sgD2g=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a885af8ee7so8165ad.1
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:33:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771616011; cv=none;
+	bh=hz25v6lNfFpsqcoUVzeMgcEtFNoS0C98fF1StYX9804=;
+	b=fVsxIfKZl0JgMzji+NEN3OMGv/dCpoM+FDqQj6Ol3v8XDamW34BTddmdyqPl/wLkcPN/NB
+	6ONwcTW3HcYuQJbA47aW5QOzLJ1HjIhz6FsMo5r1+pir59WDUFhta/RwvSXGUzFUO7NiTq
+	77XcdRhQEk3TrKoapAluT8ziBT4xCPU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771623372; a=rsa-sha256;
+	cv=pass;
+	b=igOUrgzKyULDxMzyFRL3NCuSVeXCQ7sBot/5NelWR2O0bMwJksc/R1i2KymXkakdmuBMhT
+	8bKIsYOs0q/y0oalsT/f7ktvfJX4PWs/C4qC8ENy4NkAD158G+CUT7EBMjNDlgM4f4JaTU
+	EQ9qsNBPydzIewxFa8D/5wSe4mH28eY=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="0bURw4f/";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2aad8123335so7275ad.1
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 13:36:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771623371; cv=none;
         d=google.com; s=arc-20240605;
-        b=K7825Rsrti8E6G8xFniyllirtSdjgBci2HTh11YBQOM5nY/EpKZuOguPYXmy9Q5XjW
-         TWYvo85Icr1qVcJScLsaV6/uMY3kNwjXGBMdNOpWflczL3zJo3dbRfKKxOp5f6dJ87nf
-         LrCtjqQGItB+ZKDZBKfqw9Uh3DQjlu0CNoFJrFcOePs/D2ge7/7DJ4z2H9D2HPzho66E
-         e2dQeM1aK0LTvROn0SqRiruqoNyAOIufXugXkbqVN077CODaWJ/xt8FdBddkDDY8Cw3j
-         ipvGG+TDIeu7D1tALsWX3EXx877nuRjom14OyJ4+fq96w5V4aTj+vsUSqNK61MZyO9yr
-         VEiQ==
+        b=jNSyuKGhk+aGRfPfB9KPHzosPUHrYREbMrogLYqZk1KoIoQ1kHcGRTVBjcMcrm0qYf
+         1TWBbLL06nRVIed8iIpCBknxfNetZjlG2431PuM1cRrf0KGpoaz/cOOJbCEcc/nrAaDJ
+         pJrNSr8Q6nC68a/JF7GFOxxDY6rN9y5C6fxKUUkA5Y5t0wXa5NDo5UCB3bRWpZ+exPgL
+         dBQkCZgqJK9Y1bPEKN02XKqLuuIGwQan3DBBnwoQoiwArymcBM55v99MUbXZcoLM106v
+         uk+HwJwfEmQx608m+F2huQ5APPqYki+stuxKe7ae24J7OZYWH8O+oXsxVqJtlsFZFBY9
+         P+6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=fPNU3Iqc/8CEt2YTyreNZ9j40AP0Tzd+qCCvU1fbH94=;
-        fh=VJqSMAO9mySFtwmACjhp9SlG+XH4EcwnzfcrvVop7EA=;
-        b=H5iCAx8x9UFPj1qmMk2DQaBMi2wDWxr8eXHhEh2B6XI5VWJv+6fSPtnXPMwXTFfll2
-         wGtyFOLCPqS/S7ILAf3Yr98OXTtV7Paa0A3pJsU160WjAgq9P/ZKjnCqNrVh/nsGjetQ
-         +2sHGAgBDPkzmJisoOMREHMmX+FS3aaXzjSYL6jhlXEqlsPN30F9uTvltta+7jGjdXtD
-         obTHocr41RHodeYcITmeDuayawMRC/y9M0KPCfcldpqv6Vt+PAG84L8SaG1ejqapl+sB
-         7KMutBxZyMLlEzz+FZe7zMuBHTnC3gT1zmkePA67fenM/oyZYjiLX0vlJ84EVJ4Yn51a
-         tBAQ==;
+        bh=hz25v6lNfFpsqcoUVzeMgcEtFNoS0C98fF1StYX9804=;
+        fh=T2xJoj5kZqIViHLkYyHZv68zlQzjIEUMSfKh3Ck1Fo0=;
+        b=SSIjjmLRkR3WP3o5eSsQbgChjNWdZxGVmY599C7CUMqN4DGSFJCmjWWiB6bY/6Hf7A
+         VaK36sjvKYlysBVFGciA/9UMZ60mdjXx2l6hEUSgcHmrKnNN5xNG5acFRre3xbKOVmuy
+         sXvsMK4pR0qoSqLI242lpQrA7mBOZQsC6zLjMdG64Gi9k4uYoBbz8BEIWR3vjycxHIbw
+         4Aw8OahOqI5QM1fl3AEA/VcBjfWkvDRTdfQ/nSUn/T5eyB/k6c5+DA/zeKRHhgjaXGQU
+         jyXmNgz1sUELyHL6cqVzjXnGWnvKsG9nKGuIFGezqiW+KNNHhX/tMMPEVEBrSyn9ByqA
+         6Ydw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771616011; x=1772220811; darn=kvack.org;
+        d=google.com; s=20230601; t=1771623371; x=1772228171; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fPNU3Iqc/8CEt2YTyreNZ9j40AP0Tzd+qCCvU1fbH94=;
-        b=OV3E9vK+FiTGErA6y1u10tfpFoPyOuuVuXvFA71yBjuS1rhD1/vvXoSt/PfbEjJ1LP
-         H1wRFDE7wXf4tOxe5jr0bV8J1dnRi4kJMRdXDlt+SeaynpyDoGn/MVWB0LKaSuVkzJNi
-         obrA+7YzFH1enBbzDej6GkxjaMX5VFe0p3DuM33n5bwJlK9m8RwK9yip9/+X/L89cwKM
-         I7SjSF/hrbu5RMCdtcLbsItMf4TVrZfm14tlP1X5qzn1LDRtnahbOWIMGx/dWGLtAObu
-         5+P0M0A560FrdH9WI1uAP+XXDJN+8gW0GlpMcPzrSE4D9/yarSrsDpNqzYSdEpGIvoaW
-         B9Gg==
+        bh=hz25v6lNfFpsqcoUVzeMgcEtFNoS0C98fF1StYX9804=;
+        b=0bURw4f/pM6WNT+2cGcf60eW0MEUyDNoN9urnc6Cv25L9QituqtLmTper8kJt0Jh19
+         RD66br9HSy9MqDVkEDyYqsLj/UieQSJCJ25+l2kayC860RSfRiK3M2utJcOiL8t7gH8p
+         8mShouVl+geKwbS2JbAC0u489hBHrKiz7XoJzKFiLzu5ikCH9cHZF7iirH/45lJeCBIu
+         +jhLhqGbW00pTYynMkpa0APDd66EOKzZf8yYwB9DqBUfLFTNmzXOZH2hOJ3dKcd6NUmi
+         GQnCEztwZR7OyVnsrrUiyXk5hwLlxx5JF1lwI9aFf2aK8qaDQV62/Ap5o0sudBfx/E8e
+         bSZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771616011; x=1772220811;
+        d=1e100.net; s=20230601; t=1771623371; x=1772228171;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fPNU3Iqc/8CEt2YTyreNZ9j40AP0Tzd+qCCvU1fbH94=;
-        b=cJ0Y6h24zvchG+Qb+YNdmUhpGkO1LU2JSLHUXz+tD67F0ML7MZahJGSENDfzMeyifA
-         cczCn5+226/kCdA9ZBehcw3YxxfQDZggkVf/gGwPnsdn04T2M2h0yxGdGyfC8b/XL+Lr
-         9T2fXi9p/6hFP4HWrq7lJUrHzL981/I6zpbrE/i4tlasIQLpas7jwbpZuKxnOZEE0Ukj
-         7gVQMvcE0AImlAnr9AyOATp3FKcj97bwZAv/jF1h2un94prwwd2GWYkf2k0udoezeSM+
-         DSrS2sYVvhffTYKaFuT2fias0hCyDLoODHPSxIcx+oAHsWzDwzLrXbamXyjuwTB4y3y1
-         GxiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV41sjqazSjSOg3Ufy12ijimlVVqletaltTmU3oQGVTPRBroQx5qx0FxodSbZ7ECI/jPWsOBSJwMw==@kvack.org
-X-Gm-Message-State: AOJu0Yz+grRllLiRwi95LGosLIi09mFEK89eNUKsVI6NS4kb94oYRh8E
-	HMyQ7NrDgjz1xr6O6dUxKhR5YcSjq3e5vGEcE2lTPZElIhKPwrbVu4NUKG3363+GAOwHboR1GSj
-	CXIp+21lvcuBcec+6uf5qj7li6t4wFZ8wpw+WS/ZG
-X-Gm-Gg: AZuq6aJaD3Og5NqTXJtOcTgnGHkw/GcmsLDJmBHPjAy0yYnhbsnb0HG3NXVA8Yr/7CE
-	jIfq0lzX/wAN/aoM2OGGT4C1JFEM86nFWjo6pRmdiBeeR/qZnPEMIbeMRPIMX8dwxzDOP0rsNc9
-	zd2StUIwxhZ+Fjs8bxXtv3+0oNYaUh8tajnK7TK4nqG0r4/5R6fL/yrpOylauK2EJ3Gip/L8mW2
-	WY3aU/PVN7/hG9a5KACU26nj/yoPNsCKQZGvVUvNZsZoGtfgOKaMLryjRwvHGDHRzDvsiIsNuBe
-	fONSokn5QeFSXZB4sPdEsGvqf/d322QSEHQ/NIy5babqpBIyCmo=
-X-Received: by 2002:a17:903:3c47:b0:2a7:640c:834b with SMTP id
- d9443c01a7336-2ad75001831mr236155ad.0.1771616010499; Fri, 20 Feb 2026
- 11:33:30 -0800 (PST)
+        bh=hz25v6lNfFpsqcoUVzeMgcEtFNoS0C98fF1StYX9804=;
+        b=bOWIB7spBBm7nY8OV1jhDAVYBOoG+fARV8uxuwhv4Qoyiw+bJVWyMp+aRbocUF9Wd5
+         f+qOSQGL1itdSAmnuKbvNxIE3arUWm5XTybgJVoopYd2YlyfbYytfSZC02sQXl2JA1a7
+         eq/HLt+gVGt5cRYndSZvM05MeooDWCqpZDjm0eRqE8U23GMK7aLEXkx5bModHDqRSpM1
+         1MxShrJYbWpXOo2UjjOSzlepM+kgEAq/S+UiXH8YEFYDvkaRxXLk4VRMA/Ue2Ogl8nUz
+         9F159lyd3gxqah6w5YxZpdYVSQhUtT186uDvn7whL5JsY3RLmmMEekvglPt7yy0+iXOD
+         aRKw==
+X-Gm-Message-State: AOJu0YxJpuBog1j6Zapd2f30HGLt/nm6i7FfXZu2hqw+JN4E+94pbwHM
+	vKBpRub982CToKI97bOMOnsQhZVU/uIRxTikdLDZMJ89M2TXdcYsnSD8B6r+8y/xNfn+ATl9Twk
+	W8ooF98vZHs8xZjBRWXMKqlJ0eBv3sDbY6Z8rTzk3
+X-Gm-Gg: AZuq6aLt19Yq3tmhprIhWrpFIoMRHfilJ8AAr8vHx2Z7FpQ4vSEGAg1lNovYDS8eyJK
+	ITrnC5vM3Ywy4Vhsp85q9ZYOh6Uol/RXdcMA0n/Kz5K5tdgMC/ZQRSEQnSZFyCDX2CzqHv1Xc1d
+	F//FLBfWjJhfYlYupCOzjTk7Z680ftYSAvge5SpAiygw5JgErWEamGFr0139itIkyUxbJUPqDkt
+	JKk+rBj90EH1yJdOzMaqH40RRDx1VUWx2G4HZrlUK0PVLRzXqPL1NWwTBIqMQWL1VbOvRmSxeIL
+	hkMRpZgPxABkueljLt68KojV0P2+M3oehXMme7y9
+X-Received: by 2002:a17:903:15ce:b0:2a7:5652:50b2 with SMTP id
+ d9443c01a7336-2ad75d67a7fmr60225ad.9.1771623370611; Fri, 20 Feb 2026 13:36:10
+ -0800 (PST)
 MIME-Version: 1.0
-References: <aZcmlIF4bmG0twkp@thinkstation> <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZdCl8byz51Q1-v6@thinkstation> <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
- <aZhErt9DZcWI24_v@thinkstation> <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
-In-Reply-To: <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+In-Reply-To: <20250820010415.699353-1-anthony.yznaga@oracle.com>
 From: Kalesh Singh <kaleshsingh@google.com>
-Date: Fri, 20 Feb 2026 11:33:16 -0800
-X-Gm-Features: AaiRm50WJcSLH2NNCImK5PDnOYNWacr6Dhyx2jE0urcnByKvMWFxfpdAqCZGFzE
-Message-ID: <CAC_TJvd=wKKnj=d3phZsAaarXUdUbZDGauxWNWkQtsFV-MTYEg@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>
+Date: Fri, 20 Feb 2026 13:35:58 -0800
+X-Gm-Features: AaiRm50GP3k8OLUJ3qKyKn32C8iCar6BHko2HVxt-jsOwPsBNQoXEdqDCA-OlWM
+Message-ID: <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+To: Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, andreyknvl@gmail.com, 
+	arnd@arndb.de, bp@alien8.de, brauner@kernel.org, bsegall@google.com, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@redhat.com, 
+	dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com, 
+	jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com, 
+	khalid@kernel.org, liam.howlett@oracle.com, linyongting@bytedance.com, 
+	lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com, 
+	maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com, 
+	mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de, osalvador@suse.de, 
+	pcc@google.com, peterz@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
+	rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz, 
+	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
+	willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 18E38180014
-X-Stat-Signature: ieecnfjxc1agbd98nwfb1da31wtdo5cp
+X-Rspamd-Server: rspam09
+X-Stat-Signature: qmiqdgtsqx7sygtdqm7nbyhgzutgxiw8
+X-Rspamd-Queue-Id: 87819140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771616011-722262
-X-HE-Meta: U2FsdGVkX19BM+/JZqDPku+/Ao5il0++ly6CDadT2KXZ/RLWtFBZCllpc6SWY073MxPpoPYtEOk2Q/g43gzXVdWuiHousGPeHz7uX9DYhq8Od6HjUqyw0CdhHbkMPQ+oQXJcQ5dZLlgX7rhdQ1hXhsvPjAae3NL+IikGnJr/QibAKOBOIq89w1P+XiV2q4QAl/3LwJBh3zLpjE3SLWlFHmTt/QqDAh8BxbJige4ICk+rRPUIHZk+jru4Ue750XiJDn7MORADej1lmcyIKwPEeAS6iEbJhgp7VcN02UBtW3wUnujMpTAohhJMix6IQbMQJ3Ql5s6evmi+ijCbw062CxVWR5zp2zN+udXZzU9jrQi0oRU+Y8nfvRWBoHB7/60PLYnyVflJHohkfLwoQ28dNH+clB7dJWO4JNtEcio8eKl6ycFNISQwbRNnhzXvmbZp/5QnkUxbprvBdVEOzaW4Agh/85FtXgfPdaAqBo3QqIVAJywfSG+zrh3jOS8QDBYQgUwD+p/pgquy8s6oMd5M76yQOftli2kdNt+oELbsQVBrQpMpipmoiJcV639emT/GDA3s0+XMA7qVqIHOlcd70tzRsrsgCLMJNcMhi1yJjaGOu76VP/KIVTmetSnqaeWFDqls1RDuEiqR4MuYA5NVeJ0H/rCJFdSkaYAEd6b3IAPZaedN9QyyCC7BL5VNOnOU0lmir3DancYTZlk8Z5dO6ivknGWPqMM6FWSDcw4AXHvYtoiDq1IHXIHD96AFuUXf2hdJr7BjvnoDyA7bdux54U1ASNDSz29PIedCI0DaD9V7MSru2AUKYU43oodW/VP1SAqz8nkvddBDecqLe/NxulQwXKs5ZNqzTbaLwNq6QyJiFQObbduZhzbLjCyl7NJptDSRHaMW5jaCJeet1a78m2BXdIUJbRD3uWUqNsk1GWXPmDhmMl2eJYeP+k89Ou2ExjgkIPaEXDvdnJWVUiv
- enJm/Z09
- tfomvDnMWc61FnlCW6r0rXdHVMpE8bnez1CSIz06M6e9Xe2WbWfxIPUiBNfFDlHfnBMhPC0gh+wbV/PYm47rPCNaYdghFag682BO2q4ByJQE0uFHWts+GCFdn0bqNA4KWEborW5EpdReq8Kan60a/nZIw14E6hUsdDCAgya7J+h/8I1lN4tVMEZ6Eh0j7Uy+G+/b/0fc7OikKv86JDF0nZfmr+cNl7mSNAzOKGISRzgK14ykMAzNz2oDU4ThjCwDBBVcObRUhl+vEplg=
+X-HE-Tag: 1771623372-676086
+X-HE-Meta: U2FsdGVkX18m/UBD+f4j5ym0vRF0c+B5hx8fheV0XSyMTbF6e6BEhQZbXdgoO5IpT5BHJVI4ImK/+KXho0Yw7nTakRXSjyz+EeX+98JuKD5nmEYsvO+AhAzXxj9KcOUB59RKMwAW62TVtTgFUhbJ6qR31JqQsIp/ZDlxk7omp+0BJcBdBvwCB4xTg26Tb86bArkmoYGUrtVy5/WxzuDI9kOZ7sLsJSqKjX+y4WDrNjBLZctQJadWoLMHwAiYBb0FYuJOpWnGG+oWWXdfPOEp217XBCbjXxoeRTbt8qHe26eDtEX1S5SMh1fDPYLvpfN62AvLL9nKJEkM2/gEK03Zf4Gvk/dcN2vcZydl62V8dOl61H3CeOCX+2fl4D5XYoQ+uHO+PmnW6S+pPAeQFz7XPLe7UKNRXNoi9/fxerqhoFloWuFMDHzNW+wSvEBHTBgPHV4Rm/OfQ611WUvzK4SajKjXThPBxcgA1Y75pj5PaqY6WF4tvmLGfSHhSwuDY0o+IN3Kb7txFq6q8b8Jaw9a5SaK3GtEWfawkJLMWNLdRd1uaIHA7IZ5rnuPAtdbmS4I8Ss+0yH+GrDOXnWkgI1UXYExtxuq50pit2k1jA35RQ1Z+nq9EyAJXo8njREyh+7mUa2Dv7EMxooDFtf0g6jHfDQT8JmVRC7tKke6akiMcmZBI2+a0aqKzS0U31OMTLhvfVUgUZL/W/TLZ59g0wnRYRgdSx+mKsZ+BBk5xGFxU0/y6664ypaXBEEIJrH5GvEBEpil0qI3P0yjxAaX4I2xRG7pvzxVNvM+kqELSLzqfcWkiS4H4vhlhJIrat90vYyEgBhq072azcjH0s0EzGYZnith1QdKVpmHWvRQlxBwsCJQRlvdTRVaMiES7proNk0CJTBl1efAiHYWucGK0R9hqePBVrqGiDKbJYQioh0KFDQRK7YLm+/iZ5d4AQJYUUvkEa0IhxXSuj+dNejKcGK
+ UYWYh+Zc
+ CS8KQTTMqIcbKk5D6i3PfM7zJU8UWrvbb+rtf+7Pn/J89n+QxUn5AikqovFzQC2+ea4lbxxrSXQiS/ldMst7UKeJheNLwVVQB+eYStb7t6N2MNzA6yarYduUxyTp6tFX9/a5D3CbvryNY3O4bbQotSrHYPCbbNzO2al7h284ktFlRykc+s9WZdX32WGrIPdrQ7MKDTOQuTCndVyJY04wDSRwUukPP/3aQvoM3uaAzYUa2wH8BSiZC2vnOUf6aic5rPsPs49QkVuMvedqjEwpx/ARU9v3fOKbGAxQRsLbO2OSXJnDHvDKxa5QzWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,137 +152,381 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 8:30=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+On Tue, Aug 19, 2025 at 6:57=E2=80=AFPM Anthony Yznaga
+<anthony.yznaga@oracle.com> wrote:
 >
-> On 2/20/26 13:07, Kiryl Shutsemau wrote:
-> > On Fri, Feb 20, 2026 at 11:24:37AM +0100, David Hildenbrand (Arm) wrote=
-:
-> >>>
-> >>> Just to clarify, do you want it to be enforced on userspace ABI.
-> >>> Like, all mappings are 64k aligned?
-> >>
-> >> Right, see the proposal from Dev on the list.
-> >>
-> >>  From user-space POV, the pagesize would be 64K for these emulated pro=
-cesses.
-> >> That is, VMAs must be suitable aligned etc.
-> >
-> > Well, it will drastically limit the adoption. We have too much legacy
-> > stuff on x86.
+> Memory pages shared between processes require page table entries
+> (PTEs) for each process. Each of these PTEs consume some of
+> the memory and as long as the number of mappings being maintained
+> is small enough, this space consumed by page tables is not
+> objectionable. When very few memory pages are shared between
+> processes, the number of PTEs to maintain is mostly constrained by
+> the number of pages of memory on the system. As the number of shared
+> pages and the number of times pages are shared goes up, amount of
+> memory consumed by page tables starts to become significant. This
+> issue does not apply to threads. Any number of threads can share the
+> same pages inside a process while sharing the same PTEs. Extending
+> this same model to sharing pages across processes can eliminate this
+> issue for sharing across processes as well.
 >
-> I'd assume that many applications nowadays can deal with differing page
-> sizes (thanks to some other architectures paving the way).
+> Some of the field deployments commonly see memory pages shared
+> across 1000s of processes. On x86_64, each page requires a PTE that
+> is 8 bytes long which is very small compared to the 4K page
+> size. When 2000 processes map the same page in their address space,
+> each one of them requires 8 bytes for its PTE and together that adds
+> up to 8K of memory just to hold the PTEs for one 4K page. On a
+> database server with 300GB SGA, a system crash was seen with
+> out-of-memory condition when 1500+ clients tried to share this SGA
+> even though the system had 512GB of memory. On this server, in the
+> worst case scenario of all 1500 processes mapping every page from
+> SGA would have required 878GB+ for just the PTEs. If these PTEs
+> could be shared, the a substantial amount of memory saved.
 >
-> But yes, some real legacy stuff, or stuff that ever only cared about
-> intel still hardcodes pagesize=3D4k.
+> This patch series implements a mechanism that allows userspace
+> processes to opt into sharing PTEs. It adds a new in-memory
+> filesystem - msharefs. A file created on msharefs represents a
+> shared region where all processes mapping that region will map
+> objects within it with shared PTEs. When the file is created,
+> a new host mm struct is created to hold the shared page tables
+> and vmas for objects later mapped into the shared region. This
+> host mm struct is associated with the file and not with a task.
+> When a process mmap's the shared region, a vm flag VM_MSHARE
+> is added to the vma. On page fault the vma is checked for the
+> presence of the VM_MSHARE flag. If found, the host mm is
+> searched for a vma that covers the fault address. Fault handling
+> then continues using that host vma which establishes PTEs in the
+> host mm. Fault handling in a shared region also links the shared
+> page table to the process page table if the shared page table
+> already exists.
+>
+> Ioctls are used to map and unmap objects in the shared region and
+> to (eventually) perform other operations on the shared objects such
+> as changing protections.
+>
+> API
+> =3D=3D=3D
+>
+> The steps to use this feature are:
+>
+> 1. Mount msharefs on /sys/fs/mshare -
+>         mount -t msharefs msharefs /sys/fs/mshare
+>
+> 2. mshare regions have alignment and size requirements. The start
+>    address for the region must be aligned to an address boundary and
+>    be a multiple of fixed size. This alignment and size requirement
+>    can be obtained by reading the file /sys/fs/mshare/mshare_info
+>    which returns a number in text format. mshare regions must be
+>    aligned to this boundary and be a multiple of this size.
+>
+> 3. For the process creating an mshare region:
+>         a. Create a file on /sys/fs/mshare, for example -
+>                 fd =3D open("/sys/fs/mshare/shareme",
+>                                 O_RDWR|O_CREAT|O_EXCL, 0600);
+>
+>         b. Establish the size of the region
+>                 ftruncate(fd, BUFFER_SIZE);
+>
+>         c. Map some memory in the region
+>                 struct mshare_create mcreate;
+>
+>                 mcreate.region_offset =3D 0;
+>                 mcreate.size =3D BUFFER_SIZE;
+>                 mcreate.offset =3D 0;
+>                 mcreate.prot =3D PROT_READ | PROT_WRITE;
+>                 mcreate.flags =3D MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED;
+>                 mcreate.fd =3D -1;
+>
+>                 ioctl(fd, MSHAREFS_CREATE_MAPPING, &mcreate)
+>
+>         d. Map the mshare region into the process
+>                 mmap((void *)TB(2), BUFFER_SIZE, PROT_READ | PROT_WRITE,
+>                         MAP_FIXED | MAP_SHARED, fd, 0);
+>
+>         e. Write and read to mshared region normally.
+>
+> 4. For processes attaching an mshare region:
+>         a. Open the file on msharefs, for example -
+>                 fd =3D open("/sys/fs/mshare/shareme", O_RDWR);
+>
+>         b. Get information about mshare'd region from the file:
+>                 struct stat sb;
+>
+>                 fstat(fd, &sb);
+>                 mshare_size =3D sb.st_size;
+>
+>         c. Map the mshare'd region into the process
+>                 mmap((void *)TB(2), mshare_size, PROT_READ | PROT_WRITE,
+>                         MAP_FIXED | MAP_SHARED, fd, 0);
+>
+> 5. To delete the mshare region -
+>                 unlink("/sys/fs/mshare/shareme");
+>
+>
+>
+> Example Code
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> Snippet of the code that a donor process would run looks like below:
+>
+> -----------------
+>         struct mshare_create mcreate;
+>
+>         fd =3D open("/sys/fs/mshare/mshare_info", O_RDONLY);
+>         read(fd, req, 128);
+>         alignsize =3D atoi(req);
+>         close(fd);
+>         fd =3D open("/sys/fs/mshare/shareme", O_RDWR|O_CREAT|O_EXCL, 0600=
+);
+>         start =3D alignsize * 4;
+>         size =3D alignsize * 2;
+>
+>         ftruncate(fd, size);
+>
+>         mcreate.region_offset =3D 0;
+>         mcreate.size =3D size;
+>         mcreate.offset =3D 0;
+>         mcreate.prot =3D PROT_READ | PROT_WRITE;
+>         mcreate.flags =3D MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED;
+>         mcreate.fd =3D -1;
+>         ret =3D ioctl(fd, MSHAREFS_CREATE_MAPPING, &mcreate);
+>         if (ret < 0)
+>                 perror("ERROR: MSHAREFS_CREATE_MAPPING");
+>
+>         addr =3D mmap((void *)start, size, PROT_READ | PROT_WRITE,
+>                         MAP_FIXED | MAP_SHARED, fd, 0);
+>         if (addr =3D=3D MAP_FAILED)
+>                 perror("ERROR: mmap failed");
+>
+>         strncpy(addr, "Some random shared text",
+>                         sizeof("Some random shared text"));
+> -----------------
+>
+> Snippet of code that a consumer process would execute looks like:
+>
+> -----------------
+>         fd =3D open("/sys/fs/mshare/shareme", O_RDONLY);
+>
+>         fstat(fd, &sb);
+>         size =3D sb.st_size;
+>
+>         if (!size)
+>                 perror("ERROR: mshare region not init'd");
+>
+>         addr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)=
+;
+>
+>         printf("Guest mmap at %px:\n", addr);
+>         printf("%s\n", addr);
+>         printf("\nDone\n");
+>
+> -----------------
 
-I think most issues will stem from linkers setting the default ELF
-segment alignment (max-page-size) for x86 to 4096. So those ELFs will
-not load correctly or at all on the larger emulated granularity.
+Hi Anthony,
 
--- Kalesh
+Thanks for continuing to push this forward, and apologies for joining
+this discussion late. I am likely missing some context from the
+various previous iterations of this feature, but I'd like to throw
+another use case into the mix to be considered around the design of
+the sharing API.
+
+We are exploring a similar optimization for Android to reduce page
+table overhead. In Android, we preload many ELF mappings in the Zygote
+process to help application launch times. Since the Zygote model is
+fork-but-no-exec, all applications inherit these mappings, which can
+result in upwards of 200 MB of redundant page table overhead per
+device.
+
+I believe that managing a pseudo-filesystem (msharefs) and mapping via
+ioctl during process creation could introduce overhead that impacts
+app startup latency. Ideally, child apps shouldn't be aware of this
+sharing or need to manage the pseudo-filesystem on their end. To
+achieve this "transparent" sharing, I would prefer Khalid's previous
+API from his 2022 RFC [1]. By attaching the shared mm directly to the
+file's address_space and exposing a MAP_SHARED_PT flag, child apps
+could transparently inherit the shared page tables during fork().
+
+Regarding David's and Matthew's discussion on VMA-modifying functions,
+I would lean towards the standard VMA manipulating APIs should be
+preferred over custom ioctls to preserve transparency for user-space.
+Perhaps whether or not these modifications persist across all sharing
+processes needs to be configurable? It seems that for database
+workloads, having the updates reflected everywhere would be the
+desired behavior. In the use case described for Android, we don't want
+apps to be able to modify these shared ELF mappings. To handle this,
+it's likely we would do something like mseal() the VMAs in the dynamic
+loader before forking.
+
+Perhaps we could decouple the core sharing logic from the sharing API
+itself? Since the sharing interface seems one of  the main areas where
+we don't have a good consensus yet, perhaps we could land the core
+sharing logic first. Keeping the core infrastructure generic would
+allow it to be used transparently via MAP_SHARED_PT on standard files
+(revisiting Khalid's approach), while msharefs could act as a specific
+frontend for the database use cases?
+
+[1] https://lore.kernel.org/all/cover.1682453344.git.khalid.aziz@oracle.com=
+/
+
+Thanks,
+Kalesh
 
 >
-> In Meta's fleet, I'd be quite interesting how much conversion there
-> would have to be done.
->
-> For legacy apps, you could still run them as 4k pagesize on the same
-> system, of course.
->
-> >
-> >>>
-> >>> Waste of memory for page table is solvable and pretty straight forwar=
-d.
-> >>> Most of such cases can be solve mechanically by switching to slab.
-> >>
-> >> Well, yes, like Willy says, there are already similar custom solutions=
- for
-> >> s390x and ppc.
-> >>
-> >> Pasha talked recently about the memory waste of 16k kernel stacks and =
-how we
-> >> would want to reduce that to 4k. In your proposal, it would be 64k, un=
-less
-> >> you somehow manage to allocate multiple kernel stacks from the same 64=
+> v3:
+>   - Based on mm-new as of 2025-08-15
+>   - (Fix) When unmapping an msharefs VMA, unlink the shared page tables
+>     from the process page table using the new unmap_page_range vm_ops hoo=
 k
-> >> page. My head hurts thinking about whether that could work, maybe it c=
-ould
-> >> (no idea about guard pages in there, though).
-> >
-> > Kernel stack is allocated from vmalloc. I think mapping them with
-> > sub-page granularity should be doable.
+>     rather than having free_pgtables() skip mshare VMAs (Jann Horn).
+>   - (Fix) Keep a reference count on shared PUD pages to prevent UAF when
+>     the unmap of objects in the mshare region also frees shared page
+>     tables.
+>   - (New) Support mapping files and anonymous hugetlb memory in an mshare
+>     region.
+>   - (New) Implement ownership of mshare regions. The process that
+>     creates an mshare region is assigned as the owner. See the patch for
+>     details.
+>   - (Changed) Undid previous attempt at cgroup support. Cgroup accounting
+>     is now directed to the owner process.
+>   - (TBD) Support for mmu notifiers is not yet implemented. There are som=
+e
+>     hurdles to be overcome. Mentioned here because it came up in comments
+>     on the v2 series (Jann Horn).
 >
-> I still have to wrap my head around the sub-page mapping here as well.
-> It's scary.
+> v2:
+>   (https://lore.kernel.org/all/20250404021902.48863-1-anthony.yznaga@orac=
+le.com/)
+>   - Based on mm-unstable as of 2025-04-03 (8ff02705ba8f)
+>   - Set mshare size via fallocate or ftruncate instead of MSHAREFS_SET_SI=
+ZE.
+>     Removed MSHAREFS_SET_SIZE/MSHAREFS_GET_SIZE ioctls. Use stat to get s=
+ize.
+>     (David H)
+>   - Remove spinlock from mshare_data. Initializing the size is protected =
+by
+>     the inode lock.
+>   - Support mapping a single mshare region at different virtual addresses=
+.
+>   - Support system selection of the start address when mmap'ing an mshare
+>     region.
+>   - Changed MSHAREFS_CREATE_MAPPING and MSHAREFS_UNMAP to use a byte offs=
+et
+>     to specify the start of a mapping.
+>   - Updated documentation.
 >
-> Re mapcount: I think if any part of the page is mapped, it would be
-> considered mapped -> mapcount +=3D 1.
+> v1:
+>   (https://lore.kernel.org/linux-mm/20250124235454.84587-1-anthony.yznaga=
+@oracle.com/)
+>   - Based on mm-unstable mm-hotfixes-stable-2025-01-16-21-11
+>   - Use mshare size instead of start address to check if mshare region
+>     has been initialized.
+>   - Share page tables at PUD level instead of PGD.
+>   - Rename vma_is_shared() to vma_is_mshare() (James H / David H)
+>   - Introduce and use mmap_read_lock_nested() (Kirill)
+>   - Use an mmu notifier to flush all TLBs when updating shared pagetable
+>     mappings. (Dave Hansen)
+>   - Move logic for finding the shared vma to use to handle a fault from
+>     handle_mm_fault() to do_user_addr_fault() because the arch-specific
+>     fault handling checks vma flags for access permissions.
+>   - Add CONFIG_MSHARE / ARCH_SUPPORTS_MSHARE
+>   - Add msharefs_get_unmapped_area()
+>   - Implemented vm_ops->unmap_page_range (Kirill)
+>   - Update free_pgtables/free_pgd_range to free process pagetable levels
+>     but not shared pagetable levels.
+>   - A first take at cgroup support
 >
-> >
-> > BTW, do you see any reason why slab-allocated stack wouldn't work for
-> > large base page sizes? There's no requirement for it be aligned to page
-> > or PTE, right?
+> RFC v2 -> v3:
+>   - Now based on 6.11-rc5
+>   - Addressed many comments from v2.
+>   - Simplified filesystem code. Removed refcounting of the
+>     shared mm_struct allocated for an mshare file. The mm_struct
+>     and the pagetables and mappings it contains are freed when
+>     the inode is evicted.
+>   - Switched to an ioctl-based interface. Ioctls implemented
+>     are used to set and get the start address and size of an
+>     mshare region and to map objects into an mshare region
+>     (only anon shared memory is supported in this series).
+>   - Updated example code
 >
-> I'd assume that would work. Devil is in the detail with these things
-> before we have memdescs.
+> [1] v2: https://lore.kernel.org/linux-mm/cover.1656531090.git.khalid.aziz=
+@oracle.com/
 >
-> E.g., page table have a dedicated type (PGTY_table) and store separate
-> metadata in the ptdesc. For kernel stack there was once a proposal to
-> have a type but it is not upstream.
+> RFC v1 -> v2:
+>   - Eliminated mshare and mshare_unlink system calls and
+>     replaced API with standard mmap and unlink (Based upon
+>     v1 patch discussions and LSF/MM discussions)
+>   - All fd based API (based upon feedback and suggestions from
+>     Andy Lutomirski, Eric Biederman, Kirill and others)
+>   - Added a file /sys/fs/mshare/mshare_info to provide
+>     alignment and size requirement info (based upon feedback
+>     from Dave Hansen, Mark Hemment and discussions at LSF/MM)
+>   - Addressed TODOs in v1
+>   - Added support for directories in msharefs
+>   - Added locks around any time vma is touched (Dave Hansen)
+>   - Eliminated the need to point vm_mm in original vmas to the
+>     newly synthesized mshare mm
+>   - Ensured mmap_read_unlock is called for correct mm in
+>     handle_mm_fault (Dave Hansen)
 >
-> >
-> >> Let's take a look at the history of page size usage on Arm (people can=
- feel
-> >> free to correct me):
-> >>
-> >> (1) Most distros were using 64k on Arm.
-> >>
-> >> (2) People realized that 64k was suboptimal many use cases (memory
-> >>      waste for stacks, pagecache, etc) and started to switch to 4k. I
-> >>      remember that mostly HPC-centric users sticked to 64k, but there =
-was
-> >>      also demand from others to be able to stay on 64k.
-> >>
-> >> (3) Arm improved performance on a 4k kernel by adding cont-pte support=
-,
-> >>      trying to get closer to 64k native performance.
-> >>
-> >> (4) Achieving 64k native performance is hard, which is why per-process
-> >>      page sizes are being explored to get the best out of both worlds
-> >>      (use 64k page size only where it really matters for performance).
-> >>
-> >> Arm clearly has the added benefit of actually benefiting from hardware
-> >> support for 64k.
-> >>
-> >> IIUC, what you are proposing feels a bit like traveling back in time w=
-hen it
-> >> comes to the memory waste problem that Arm users encountered.
-> >>
-> >> Where do you see the big difference to 64k on Arm in your proposal? Wo=
-uld
-> >> you currently also be running 64k Arm in production and the memory was=
-te etc
-> >> is acceptable?
-> >
-> > That's the point. I don't see a big difference to 64k Arm. I want to
-> > bring this option to x86: at some machine size it makes sense trade
-> > memory consumption for scalability. I am targeting it to machines with
-> > over 2TiB of RAM.
-> >
-> > BTW, we do run 64k Arm in our fleet. There's some growing pains, but it
-> > looks good in general We have no plans to switch to 4k (or 16k) at the
-> > moment. 512M THPs also look good on some workloads.
+> Anthony Yznaga (15):
+>   mm/mshare: allocate an mm_struct for msharefs files
+>   mm/mshare: add ways to set the size of an mshare region
+>   mm/mshare: flush all TLBs when updating PTEs in an mshare range
+>   sched/numa: do not scan msharefs vmas
+>   mm: add mmap_read_lock_killable_nested()
+>   mm: add and use unmap_page_range vm_ops hook
+>   mm: introduce PUD page table shared count
+>   x86/mm: enable page table sharing
+>   mm: create __do_mmap() to take an mm_struct * arg
+>   mm: pass the mm in vma_munmap_struct
+>   sched/mshare: mshare ownership
+>   mm/mshare: Add an ioctl for unmapping objects in an mshare region
+>   mm/mshare: support mapping files and anon hugetlb in an mshare region
+>   mm/mshare: provide a way to identify an mm as an mshare host mm
+>   mm/mshare: charge fault handling allocations to the mshare owner
 >
-> Okay, that's valuable information, thanks!
+> Khalid Aziz (7):
+>   mm: Add msharefs filesystem
+>   mm/mshare: pre-populate msharefs with information file
+>   mm/mshare: make msharefs writable and support directories
+>   mm/mshare: Add a vma flag to indicate an mshare region
+>   mm/mshare: Add mmap support
+>   mm/mshare: prepare for page table sharing support
+>   mm/mshare: Add an ioctl for mapping objects in an mshare region
 >
-> Being able to remove the sub-page mapping part (or being able to just
-> hide it somewhere deep down in arch code) would make this a lot easier
-> to digest.
+>  Documentation/filesystems/index.rst           |   1 +
+>  Documentation/filesystems/msharefs.rst        |  96 ++
+>  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+>  arch/Kconfig                                  |   3 +
+>  arch/x86/Kconfig                              |   1 +
+>  arch/x86/mm/fault.c                           |  40 +-
+>  include/linux/mm.h                            |  52 +
+>  include/linux/mm_types.h                      |  38 +-
+>  include/linux/mmap_lock.h                     |   7 +
+>  include/linux/mshare.h                        |  25 +
+>  include/linux/sched.h                         |   5 +
+>  include/trace/events/mmflags.h                |   7 +
+>  include/uapi/linux/magic.h                    |   1 +
+>  include/uapi/linux/msharefs.h                 |  38 +
+>  ipc/shm.c                                     |  17 +
+>  kernel/exit.c                                 |   1 +
+>  kernel/fork.c                                 |   1 +
+>  kernel/sched/fair.c                           |   3 +-
+>  mm/Kconfig                                    |  11 +
+>  mm/Makefile                                   |   4 +
+>  mm/hugetlb.c                                  |  25 +
+>  mm/memory.c                                   |  76 +-
+>  mm/mmap.c                                     |  10 +-
+>  mm/mshare.c                                   | 942 ++++++++++++++++++
+>  mm/vma.c                                      |  22 +-
+>  mm/vma.h                                      |   3 +-
+>  26 files changed, 1385 insertions(+), 45 deletions(-)
+>  create mode 100644 Documentation/filesystems/msharefs.rst
+>  create mode 100644 include/linux/mshare.h
+>  create mode 100644 include/uapi/linux/msharefs.h
+>  create mode 100644 mm/mshare.c
 >
 > --
-> Cheers,
+> 2.47.1
 >
-> David
 >
 
