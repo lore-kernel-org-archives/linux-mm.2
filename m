@@ -4,151 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9AAEC5AD2B
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 17:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54B91C5ACD9
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 17:36:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 067E06B0088; Fri, 20 Feb 2026 12:34:07 -0500 (EST)
+	id 9A46C6B0088; Fri, 20 Feb 2026 12:36:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00E2B6B0089; Fri, 20 Feb 2026 12:34:06 -0500 (EST)
+	id 94F646B0089; Fri, 20 Feb 2026 12:36:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07516B008A; Fri, 20 Feb 2026 12:34:06 -0500 (EST)
+	id 810536B008A; Fri, 20 Feb 2026 12:36:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5A6E6B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:34:06 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A6E71C177
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:34:06 +0000 (UTC)
-X-FDA: 84465533292.14.1D823B6
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5886220014
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:34:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ifRpMV82;
-	spf=pass (imf13.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771608844;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 63A3E6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:36:19 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA5D91C206
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:36:18 +0000 (UTC)
+X-FDA: 84465538836.30.06859FD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D298940013
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:36:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R5uJSYVE;
+	spf=pass (imf07.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771608977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
-	b=Ntcw8AkxkFvBNA/zMrgzhX8zdB4RIq1eHSBeG9LTtdygqSP4UzBQCBjKzbWf7eALnwTe/c
-	XASG732kCtoImeF8/k/Wjrczr9bAA+wG+4HD2C3UqT149ww8nZ64YO0rV9kCoOixqQYBO9
-	HCxCONv6Rh6whPMCkrvC6zxFwjUWwto=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ifRpMV82;
-	spf=pass (imf13.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771608844; a=rsa-sha256;
-	cv=pass;
-	b=hRJNjYYfgtegPGvXUni6PtTNyZLRbpQ5qmzOyTe8hmvBFMyPLEMwo6h6gob5CwfksJeKFJ
-	M5itVoAgNQ8ZdZjVdSfAMytCRksd/upVWRoORnhEe143ph39DxXPl2wqN4VQQGLBSaR8mh
-	DZiA01PHQxY0i9QMvb+MWeN7bTqZJ7M=
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12736a0147cso191952c88.1
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:34:04 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771608843; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lHkElvJBg954sWdz3J5otT9dQGbMc0+YzairaI5TsDl3f19SUYK2823p2oh9fhDUY6
-         kElltcUuJhzgWrKzAH9k+ar1aXZSAMiYlAt5lpqh3VdH/bJVshS9ERF8XmXPbnjQKGn6
-         gqK6r/5qmpYFmTgJYVg2b1GXxAOdZ7l5BC6OVBXnI3EIN20fUENO0SDxXXa5tbiDKD3h
-         +i1xytcJ+oCJiIEzRa3BC0LHS8F5OTmJNHTNcvTKWrt/3hIajiTtev7LGr2F384knSeq
-         YY9ThXRuu2GG6GhQIQvrPeMrWjxCMwFC32GumElrdHiqlfbHN28oSA34VYIYGhRMI+ns
-         tLIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
-        fh=LrihlPWwAvKxxkdJ6T1Qx1svHZqsoyZq7JrtvIW/V9k=;
-        b=FSfSobIGMoGAF0TtuIfVPdwr5mSICrWfboYHVhR2eKPA6sjaAhLEKQuL8DLiFPUxle
-         VfQdgpLFqv+S1hmIkqFoY+Ui+JqQYTn3mn6wusAYQ0awfXI1DdLYk8B1TRAag1D1iBK1
-         Rr8swjEComi6X8HDkb0GaiAJT+/WeKO1+Eo9J3NM3+4bic9lglI8LrIWYZ7+z8Ix8OxQ
-         r83Q7I4FZhGAZ61JPRF9hQ7hsgq+feARYfRRwaDSQxMM7ZiRJYDcF4jVThKqkz4e0hhi
-         F3dYUbBFY8DoM3QnUuOhbHS+ErljYEwqnolhY/NGv+VwHdneZY9bO0Kb/wYI4OCe4CtG
-         0VYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771608843; x=1772213643; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
-        b=ifRpMV82wO7qH4Ws3ySHrJ9v4JKSW8ebNpHXtqngCQcb2PxLXfpJybtgFwjgHCwibA
-         V8p0li5aSu0EkJpCK6dR0pXhNA9vnOLdJP1oGwIiqNgkfwYN1ahTfSdxSkIZWGMCojdB
-         kuj+AgaZcyw39B3ZbisebR2QZ5kViDbACsuRXYylP3JZ2HryBwJVwcvEoYGF6TYeS0m0
-         7FdQvDgKxxOAvtz3ZDT436wyKym43VodexB305OoyzmhWjrfa9fjosN/UEGIhMSbKnZG
-         2Qtjks7oiC4Jm15G34Zfv8Kxbkv0hFGsZl/KMFVluBuKBUUA78p0LDjmT/ulhT/hV0H8
-         1wPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771608843; x=1772213643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B3RiLfffpu7Ffa96sGXtUyFTXMqhEfmtMEWOofkZHzs=;
-        b=JNWFsPRHo/Z5fyie8xOpvAeb6Cu5tIkMLrszcTM0aFCG+EsotH69EgeFLTuMNZ56ac
-         oNqVlWlT/jai7QW1dQjBANK5O6xbRKSwzrB+dBDestgEy0P7nPUUjf/XXfFSpdEDDHwm
-         3veUWIbvZ4l1+83CaoE3XTnPvU5uB+I6/gYs3Utf4Di0+4Vr1lOW7aMT2xIeMzthtu1P
-         B4S+TTaKTjgZ4oeNnvexOva+gONsAT4sXmP7sQE2o0e3phLR0HZeLPwk2Tn8IeunXSLh
-         WCJdzZmWfMwduxHW944ZDTQI4pYDwpU33qEk4sr7w5JTQtJZ23kopg+eHnVtdEm+hu1P
-         xJ/g==
-X-Forwarded-Encrypted: i=1; AJvYcCW1709L5nMfXndd1cVsAdF7r/mllluezERNMd3at3Im7fqLONhmNZjBoGMI/0upvhnhXEwC/8AAYg==@kvack.org
-X-Gm-Message-State: AOJu0Yz4cwRGfBZ6oseVZ6bf9wCdtz8fzosMeXa33QC/s/FDYg3WWk9G
-	MMrnbRoojo9LC7fy38grwh0ddj4HRALA7B+BkjigSIyg2gq3s9SzKMppr53o25gx+JpxGGPJEei
-	c9fvHsqgmqpnuHK+YRimtjfv1+TdnJuw=
-X-Gm-Gg: AZuq6aKHPhTd3Jw3EZRUeqsLLvcB7Q0wXyxkBHMxsUYIJDkWiDmMeQaMvH2s4D73ugN
-	Z/VvNtGjrHcEBpS+yiYBgsKsb7BSapkFldU8RUQypy8jG9JcIHuQwRmG9FMP582IeH3Y7hdYEAv
-	ktNZJEA8omnAuXpKZPO8nkn8Yor4TtrUDagq6wcPMzuLLoBBY3eQ6Cad+2CP7SLRBzZMuxjHZqh
-	pNaVEfpSOF1pHHM44+9Fxh6lV61G7PvZglwZILfpNWCyN/2TJ/OWE/KEtbCFVjS6KI0+PDE1YcU
-	60Z2O1B7SoHvu15S4nXpx6WYcLZd8jkEF0HPM3J/vcTStTZEZoYSOa/JN7YeM3KK0eE/nsYQLEQ
-	y++vFDYAEFhg31k5vIzcEm72w
-X-Received: by 2002:a05:693c:2c17:b0:2ba:674a:dbe8 with SMTP id
- 5a478bee46e88-2bd7bdbce7cmr74947eec.8.1771608842904; Fri, 20 Feb 2026
- 09:34:02 -0800 (PST)
+	bh=3IqjOdiofWjjCWCfPy8j7WH4t5XK2/Efigokxu3dvlE=;
+	b=GEAQnjPXm00oJbVSc3X74z1j2akpyRRnlqbo75BLrNXB3aa82WHxntM0MwEDMzgFz9ZeCS
+	EjZlUWy8WijfH1zR74NGK7NAySGbjrGa/m+ZyRCfOMqX6Up261GU+5TSEnRXz2EDBqEU4I
+	OEBpEvZI4my1YeAVt7pm90JlMn46QkY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R5uJSYVE;
+	spf=pass (imf07.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771608977; a=rsa-sha256;
+	cv=none;
+	b=OtZczbYYceUgeJIfk2aMZyJsppdnHEK2nUihZNqRaHckmwqxy3kNxavPH9ZDGj7rbCTfZh
+	i07GvUK5aJ28ZGpwaHp7oXaiLEF207PUMGGbYDayM1S3YUG4frL7hlMzPQMaUTnDsetJIY
+	4VoOZ19fvy6Cm0kPUsKMOjb5TXQ/RTc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771608976;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3IqjOdiofWjjCWCfPy8j7WH4t5XK2/Efigokxu3dvlE=;
+	b=R5uJSYVEIN2JuvNK/ygmw/76BsKKRz2pd+hxXhR7RYAXgAxzPvuQ6+/sGM0B/EEGrqf/LU
+	YCjVM9aKGeRcn5FaUfxPnF9m22udYMQ+f6hw6Sl1cW0nGLSbn+2RfK+2BUSRabiyrnZr/T
+	pWJyl9oQGDGDjjylOoGYtKVY5J1DAkM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-GCy-qzgoOVO6a-GZTQQOwQ-1; Fri,
+ 20 Feb 2026 12:36:11 -0500
+X-MC-Unique: GCy-qzgoOVO6a-GZTQQOwQ-1
+X-Mimecast-MFC-AGG-ID: GCy-qzgoOVO6a-GZTQQOwQ_1771608969
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F65719560A3;
+	Fri, 20 Feb 2026 17:36:08 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.4])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF4231800348;
+	Fri, 20 Feb 2026 17:36:06 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id BD690400DC5A8; Fri, 20 Feb 2026 14:35:41 -0300 (-03)
+Date: Fri, 20 Feb 2026 14:35:41 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Vlastimil Babka <vbabka@suse.com>
+Cc: Michal Hocko <mhocko@suse.com>, Leonardo Bras <leobras.c@gmail.com>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aZibbYH7yrDZlnJh@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <aYs6Ju2G4bm6_tl2@tiehlicka>
+ <aYxviLoWsrLqDU7o@tpad>
+ <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash>
+ <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZcr255pGT3B/eaL@tpad>
+ <3f2b985a-2fb0-4d63-9dce-8a9cad8ce464@suse.com>
 MIME-Version: 1.0
-References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org> <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
-In-Reply-To: <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 20 Feb 2026 18:33:49 +0100
-X-Gm-Features: AaiRm53lo0keI-FayfnRj4AYfVuM2jzmE06bNyAO-n4MO92LWSUkvblDHz_tCFM
-Message-ID: <CANiq72myc+tCEHm0WtZspZHWwsSzvesxsmUvk31=GCdUN_zVNA@mail.gmail.com>
-Subject: Re: [PATCH v15 9/9] rust: page: add `from_raw()`
-To: Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: s8e3ji3gdunodr3wgxs15xxinhf7i8ce
+In-Reply-To: <3f2b985a-2fb0-4d63-9dce-8a9cad8ce464@suse.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: Ed3yG8ifXcw6x6QxZdb2p8RMDrOdpgkECwTD_kAlxRQ_1771608969
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: sw3kjt53b4434tqosarf8cw735wwiqim
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5886220014
+X-Rspamd-Queue-Id: D298940013
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1771608844-835708
-X-HE-Meta: U2FsdGVkX1+m5oQo4MNJDnR3XYRUu0dahTJk2M/UDpY5lziYoWJbdQZhl99gvzJwIds3AX/0vDF4ZV5Fq8In3em97ll8Ul5BZz+cSjIze+1AqKJU/6OSca5JGJFXH5KSUR6mOi0OxN/CzSPpkCDX8fHYlUqKuiidwfCTeoHs92RkfxkZI9v+ghnuVpb01SLLqlT1+q21xwo2ENYKuiE0Gn0O1QIZRQHOlcgYMZQQYZWtB3NjSHem15fzpVlpWtfVxILh9tcjGZ1pWHx/8EqZ2/dpFL4lYGmRPh3f6I7E+XqSutlzWozsxMhqknywl5Y32xUwFKDgCRl/3+IWL8KfzU4a0gcf4ubrLOpjtSri30cWavYH+4HXCbwYQCkfn68PuYaxcEyx458nDyACUSKFOGx6vMc2GotHh2t6SOMD0E4Zp6meTxAKHnX+ez9rrP3xiFFZcszOrXG2QCM0kBkGgygFu6SomrQq07CyG3ThB/9ohv+A+TI1pva42te9i7u4lqbNqgQRhylWTiPNYBggDTP2rSReYAggNt6G+E43ujUeX8MZf1jZj27mgxaok/WUM4cWsNxUFDceJluIRVamMOFGQGtFqhnk09fVYhqzhlowNtoUYNeGtRSxdJnwXzCgntRBTVZen/00LOl/mVwgQe12krGySa0hKLCzTUnuvhMWhaOwqtKReOGD/z/oOQ9bxULtPlQquY1f21Q4GRW78++40aOJjA6OAXtuQzrCElcum4Flf4LSRrjz4vXkevxrTXLm45a65GExDGJZ+XQk65Cvmpxr46AiSSTUHo+gPfAMrI9NUBa3oZYIfpx2EANLUJBPrYRuZMv0ogfhAIRmCw86S38uZ+B8GaULueirF9BM4cy7Ddx7zhBItz4NX9Bv1cobjk5Lzso/cEkkufsIJur+biyzReNd4fX1FJjbftdmhNGOHzS0u7jf9nZe2V1JVxEIpdE/uwUxe2m79km
- 4CX9x6ee
- X1aNt8+299VvE01z0BcuGlnlHf4sLlWLvYTOZx1zAS1EhFGBC0o7MtWzeIqmlvrlQLclijqr7Ar3o3KDBFpqS3qYrKbcDT6PrA7VyhOz08vV8EJMdMdeOH6qzgxuovDOgX2f3b/Djd0kyhkD1Jxx9BSf5CZjZKmQu5tD6ewp/7lLGxLVGkDd7tVdnHZFJRJEy75i+C6odtS7uOR3SIzkatHHSyYJ3o++LMor4ZZNJs1L1sR/48DD9GAMQXMuJJ6P4RG7gv7JEab7wOE9gwhijkbOWhJXWoeyjcaXBazaZ7wldnwTTOYgx/8gb8x5/jFdvADMAPxVAr2QpGPFrZurcaKDs7aKF1iR50WK0bSBzXZqPVmwGkweNASeSVFjo0huPEokNq22bavQQsNEUacV9DHUBC/NBw9FVk0iUt/8TAZE5xb2Dl2pNxky+xpzZFX7Dd4GF65cMdPxOIB/+vGbquMhTLhK70k4cdeMevM7tG6POnhK18uGrH2SyIE3jfqux0T2ssrHU0K/qvIEitFZPVj4xApd3tDczIbs8uHhgUyDdpqLCKUAqsR6UHa+A4C4iH5mXQ9uN8ho1nuRBE/CK9ajd4zV9FQOfW7OsaxvUtHBmI3Y=
+X-HE-Tag: 1771608976-938138
+X-HE-Meta: U2FsdGVkX189ctDibx3MBe1Rh8mYLoSjDt6ma2ADKplmPp3rGL837bb+CPiQS8pmteJXbsyAM79zi3NQ4O6a2uoq+HI6FCG0g5Q3AScQ9/Z1NPEuz697l5cxBfOrQ9oQ+BVhswFIOWAVMLEFkC/r7+JoPV8qxXdq/b2a3SV5zr0Nz5Mdi40Zy24LcSQC7uChaTfEzWAaWXZZL0GYZhkYMz4moYOn09y0JgU3aE3+LVxWD5Y7dtZyB+CxKIrWs6aFBEnI7QLBymvCtQQxww9t5HZi5m8OH0Ee0DD8hvPnNRM7NHNbPVFqfoR31OdY+Vt4a/Q3/eLzpSyCVc8O4hg4ad6bdDgcq5nPILuhrIwXG3WHQP5S4d+vQshlJQWo6DrdQ7arsEBQFihlG4U+xjffTYJMzBbpf5gsQ3UOx6EH0TZchS4hwtDOseAlsDVpwOjkqTYPFoHHU4K6uJHkGNxWMX4vq25KQIRFIbL7DMZS4rNxaUFl1tgcGyWwZ+0QcDdgyei/Rv7SwOPryCm+6zeCY6zffM0km5YO6ftLrBmpzT0FWMLOCf0haPoDFle9VTj8ptlMvjBI81WKvS9C9p3uqXoi7+PfJ9eMjZTVD2wLxBGIi/Z2amx9AuYQU8YftiQ5ndlOvaZOZEhvLvOq24l/F8aafmXFz67LwccTmVYQs7QbUpa5mG5gOoVzEW28TYh8KUzNvIEJVXzET3CCfH9flcJk8Dlh2U4tGuG7wjFc6dYsBB7fvTChLHzmTUT8eWnGFB5WMREvIYpVihJLZQ13N2NJ8TzYGq/e6NVERiYJ0OaLxxdLokybF1OjFmQswmORLcpm1XGItsN/fhdrSsWJ1FhLRxnZJ678jgRf6cdUtHyvT/FT7HUj0tccjS02t6bHnowwZxCirPvL/zNxZpL03mxCFMNkzcQd+3qwRwv/SufLmzkengTnJFRTlRMm43c1T4Z3jh3KTSEEDo/EMJf
+ ZTTXvI2X
+ 6MdkT1g/rLP2ZaZEqsUQQPoldKxps2gWeqD9jBcPFkz2y4Sy0d//Zv0HWwTGN1Dnjdm1Ay/ZXmjW95q9/mbEjWIw4C3M66voOMZR+zi71UuzXwvH4fGDvLDKh+Ouc/q+P8ioF+MihxPfgi9wN6/l5BxDpXW3/rYIJT6VqGK9DiS4MYpc2/k/icneB/PLMljVOHbIHf5HotlHDMoBqfeCTZqhypluHe7G0HWj4VNdZphM5t3mpS7BvQU5iT26pKOfp/AO3W9TDAhY0RkgMQeOa0PtaPPk/7sLBtEWsppZJPUoWBZtkQ2t1oUSO3RGirWxSK0arGkssUUvz34EELzU9+8DE8KrOoAvbNkLvvgOTVn2aB1YSP0wg8CIWKEtPJEXqKeNuiRb5HefikBpUSCEjd3BnMe3IZNeZpFnyPpPcqOi377b5PDzGfh3BfvSLs82Zqu8V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,47 +127,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 10:52=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->
-> +    /// Create a `&Page` from a raw `struct page` pointer
+Hi Vlastimil,
 
-Please end sentences with a period.
+On Fri, Feb 20, 2026 at 11:48:00AM +0100, Vlastimil Babka wrote:
+> On 2/19/26 16:27, Marcelo Tosatti wrote:
+> > On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
+> > 
+> > Michal,
+> > 
+> > Again, i don't see how moving operations to happen at return to 
+> > kernel would help (assuming you are talking about 
+> > "context_tracking,x86: Defer some IPIs until a user->kernel transition").
+> > 
+> > The IPIs in the patchset above can be deferred until user->kernel
+> > transition because they are TLB flushes, for addresses which do not
+> > exist on the address space mapping in userspace.
+> > 
+> > What are the per-CPU objects in SLUB ?
+> > 
+> > struct slab_sheaf {
+> >         union {
+> >                 struct rcu_head rcu_head;
+> >                 struct list_head barn_list;
+> >                 /* only used for prefilled sheafs */
+> >                 struct {
+> >                         unsigned int capacity;
+> >                         bool pfmemalloc;
+> >                 };
+> >         };
+> >         struct kmem_cache *cache;
+> >         unsigned int size;
+> >         int node; /* only used for rcu_sheaf */
+> >         void *objects[];
+> > };
+> > 
+> > struct slub_percpu_sheaves {
+> >         local_trylock_t lock;
+> >         struct slab_sheaf *main; /* never NULL when unlocked */
+> >         struct slab_sheaf *spare; /* empty or full, may be NULL */
+> >         struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
+> > };
+> > 
+> > Examples of local CPU operation that manipulates the data structures:
+> > 1) kmalloc, allocates an object from local per CPU list.
+> > 2) kfree, returns an object to local per CPU list.
+> > 
+> > Examples of an operation that would perform changes on the per-CPU lists 
+> > remotely:
+> > kmem_cache_shrink (cache shutdown), kmem_cache_shrink.
+> > 
+> > You can't delay either kmalloc (removal of object from per-CPU freelist), 
+> > or kfree (return of object from per-CPU freelist), or kmem_cache_shrink 
+> > or kmem_cache_shrink to return to userspace.
+> > 
+> > What i missing something here? (or do you have something on your mind
+> > which i can't see).
+> 
+> Let's try and analyze when we need to do the flushing in SLUB
+> 
+> - memory offline - would anyone do that with isolcpus? if yes, they probably
+> deserve the disruption
 
-> +        // SAFETY: By function safety requirements, ptr is not null and =
-is
+I think its OK to avoid memory offline on such systems.
 
-Please use Markdown in comments: `ptr`.
+> - cache shrinking (mainly from sysfs handler) - not necessary for
+> correctness, can probably skip cpu if needed, also kinda shooting your own
+> foot on isolcpu systems
+> 
+> - kmem_cache is being destroyed (__kmem_cache_shutdown()) - this is
+> important for correctness. destroying caches should be rare, but can't rule
+> it out
+> 
+> - kvfree_rcu_barrier() - a very tricky one; currently has only a debugging
+> caller, but that can change
+> 
+> (BTW, see the note in flush_rcu_sheaves_on_cache() and how it relies on the
+> flush actually happening on the cpu. Won't QPW violate that?)
 
-> +    /// `ptr` must be valid for use as a reference for the duration of `=
-'a`.
+(struct kmem_cache *s)->cpu_sheaves (percpu)->rcu_free with the
+s->cpu_sheaves->lock lock held:
 
-Since we will likely try to starting introducing at least a subset of
-the Safety Standard soon, we should try to use standard terms.
+do_free:
 
-So I think this "valid for use as a reference" is not an established
-one, no? Isn't "convertible to a shared reference" the official term?
+        rcu_sheaf = pcs->rcu_free;
 
-  https://doc.rust-lang.org/std/ptr/index.html#pointer-to-reference-convers=
-ion
+        /*
+         * Since we flush immediately when size reaches capacity, we never reach
+         * this with size already at capacity, so no OOB write is possible.
+         */
+        rcu_sheaf->objects[rcu_sheaf->size++] = obj;
 
-In fact, I see `as_ref_unchecked()` and `as_mut_unchecked()` just got
-stabilized for 1.95.0, so we should probably starting using those were
-applicable as we bump the minimum, but we should probably use already
-a similar wording as the standard library for the safety section and
-the comment:
+        if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
+                rcu_sheaf = NULL;
+        } else {
+                pcs->rcu_free = NULL;
+                rcu_sheaf->node = numa_mem_id();
+        }
 
-  "`ptr` must be [convertible to a reference](...)."
+        /*
+         * we flush before local_unlock to make sure a racing
+         * flush_all_rcu_sheaves() doesn't miss this sheaf
+         */
+        if (rcu_sheaf)
+                call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
 
-where the term is a link to that section. Cc'ing Benno.
+        qpw_unlock(&s->cpu_sheaves->lock, cpu);
 
-I have created a (future) issue for that:
+So if it invokes call_rcu, it sets pcs->rcu_free = NULL. In that case,
+for flush_rcu_sheaf executing remotely from flush_rcu_sheaves_on_cache
+will:
 
-  https://github.com/Rust-for-Linux/linux/issues/1225
+static void flush_rcu_sheaf(struct work_struct *w)
+{
+        struct slub_percpu_sheaves *pcs;
+        struct slab_sheaf *rcu_free;
+        struct slub_flush_work *sfw;
+        struct kmem_cache *s;
+        int cpu = qpw_get_cpu(w);
 
-Cc'ing Tamir since this is close to the cast work, so it may interest
-him as well.
+        sfw = &per_cpu(slub_flush, cpu);
+        s = sfw->s;
 
-Cheers,
-Miguel
+        qpw_lock(&s->cpu_sheaves->lock, cpu);
+        pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+
+        rcu_free = pcs->rcu_free;
+        pcs->rcu_free = NULL;
+
+        qpw_unlock(&s->cpu_sheaves->lock, cpu);
+
+        if (rcu_free)
+                call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+}
+
+Only call rcu_free_sheaf_nobarn if pcs->rcu_free is not NULL.
+
+So it seems safe?
+
+> How would this work with houskeeping on return to userspace approach?
+> 
+> - Would we just walk the list of all caches to flush them? could be
+> expensive. Would we somehow note only those that need it? That would make
+> the fast paths do something extra?
+> 
+> - If some other CPU executed kmem_cache_destroy(), it would have to wait for
+> the isolated cpu returning to userspace. Do we have the means for
+> synchronizing on that? Would that risk a deadlock? We used to have a
+> deferred finishing of the destroy for other reasons but were glad to get rid
+> of it when it was possible, now it might be necessary to revive it?
+
+I don't think you can expect system calls to return to userspace in 
+a given amount of time. Could be in kernel mode for long periods of
+time.
+
+> How would this work with QPW?
+> 
+> - probably fast paths more expensive due to spin lock vs local_trylock_t
+> 
+> - flush_rcu_sheaves_on_cache() needs to be solved safely (see above)
+> 
+> What if we avoid percpu sheaves completely on isolated cpus and instead
+> allocate/free using the slowpaths?
+> 
+> - It could probably be achieved without affecting fastpaths, as we already
+> handle bootstrap without sheaves, so it's implemented in a way to not affect
+> fastpaths.
+> 
+> - Would it slow the isolcpu workloads down too much when they do a syscall?
+>   - compared to "houskeeping on return to userspace" flushing, maybe not?
+> Because in that case the syscall starts with sheaves flushed from previous
+> return, it has to do something expensive to get the initial sheaf, then
+> maybe will use only on or few objects, then on return has to flush
+> everything. Likely the slowpath might be faster, unless it allocates/frees
+> many objects from the same cache.
+>   - compared to QPW - it would be slower as QPW would mostly retain sheaves
+> populated, the need for flushes should be very rare
+> 
+> So if we can assume that workloads on isolated cpus make syscalls only
+> rarely, and when they do they can tolerate them being slower, I think the
+> "avoid sheaves on isolated cpus" would be the best way here.
+
+I am not sure its safe to assume that. Ask Gemini about isolcpus use
+cases and:
+
+1. High-Frequency Trading (HFT)
+In the world of HFT, microseconds are the difference between profit and loss. 
+Traders use isolcpus to pin their execution engines to specific cores.
+
+The Goal: Eliminate "jitter" caused by the OS moving other processes onto the same core.
+
+The Benefit: Guaranteed execution time and ultra-low latency.
+
+2. Real-Time Audio & Video Processing
+If you are running a Digital Audio Workstation (DAW) or a live video encoding rig, a tiny "hiccup" in CPU availability results in an audible pop or a dropped frame.
+
+The Goal: Reserve cores specifically for the Digital Signal Processor (DSP) or the encoder.
+
+The Benefit: Smooth, glitch-free media streams even when the rest of the system is busy.
+
+3. Network Function Virtualization (NFV) & DPDK
+For high-speed networking (like 10Gbps+ traffic), the Data Plane Development Kit (DPDK) uses "poll mode" drivers. These drivers constantly loop to check for new packets rather than waiting for interrupts.
+
+The Goal: Isolate cores so they can run at 100% utilization just checking for network packets.
+
+The Benefit: Maximum throughput and zero packet loss in high-traffic environments.
+
+4. Gaming & Simulation
+Competitive gamers or flight simulator enthusiasts sometimes isolate a few cores to handle the game's main thread, while leaving the rest of the OS (Discord, Chrome, etc.) to the remaining cores.
+
+The Goal: Prevent background Windows/Linux tasks from stealing cycles from the game engine.
+
+The Benefit: More consistent 1% low FPS and reduced input lag.
+
+5. Deterministic Scientific Computing
+If you're running a simulation that needs to take exactly the same amount of time every time it runs (for benchmarking or safety-critical testing), you can't have the OS interference messing with your metrics.
+
+The Goal: Remove the variability of the Linux scheduler.
+
+The Benefit: Highly repeatable, deterministic results.
+
+===
+
+For example, AF_XDP bypass uses system calls (and wants isolcpus):
+
+https://www.quantvps.com/blog/kernel-bypass-in-hft?srsltid=AfmBOoryeSxuuZjzTJIC9O-Ag8x4gSwjs-V4Xukm2wQpGmwDJ6t4szuE
+
+
 
