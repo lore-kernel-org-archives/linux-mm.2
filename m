@@ -4,140 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52634C5ACD3
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 16:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7643EC5AD05
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 16:52:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C5B86B0005; Fri, 20 Feb 2026 11:50:54 -0500 (EST)
+	id A8FD76B0005; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 372F46B0089; Fri, 20 Feb 2026 11:50:54 -0500 (EST)
+	id A5D876B0089; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255476B008A; Fri, 20 Feb 2026 11:50:54 -0500 (EST)
+	id 98A936B008A; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F05ED6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:50:53 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7BD781A020C
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:50:53 +0000 (UTC)
-X-FDA: 84465424386.28.1A05828
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A6A6540002
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:50:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d5W1HDLz;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 74ED86B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2156F140211
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:52:12 +0000 (UTC)
+X-FDA: 84465427704.20.A3A4180
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6AC7E160009
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:52:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xfiIyRVV;
+	spf=pass (imf08.hostedemail.com: domain of 3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771606251;
+	s=arc-20220608; t=1771606330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OhJz6AO2smTz4OPHnhTTcMcb/SkGEP42mmzEHHMk7X8=;
-	b=mDzBDrz+LTXsg9XRT1Ev4JATVp8PIwu9oizp9hUJpniK8bTjEWYv8HTddpUYpTYZBkGRr4
-	uHAnc9adgD3mSCblUHrOrKnljeFiZ26RejNiC5I5ppTVjv3Mmhr0QMQNZwTnocYaepc0MJ
-	AbBOD2hLpw7+qimN95nmf7gtKIXP7Oo=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CZAtOD8ZRnarQucUHW7t2nY+Ut5JOEodfHGgZzqPkiE=;
+	b=zhTKOZI7pHmOH8qtLgAzd+u6sfpjg864fMwK//ygYwYhW96iQNT5oAW/0cc3lYsZ+auHFT
+	YMO7R5gLLa0EnTStNYhnntWgzyo5ta/iY3m+irEKsdtnfFEfRfXDlA14+mFxOyIvnJUEQ7
+	WIUEKmxjaecrPbe+uv8LaJSvdhQUyrI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d5W1HDLz;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771606251; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xfiIyRVV;
+	spf=pass (imf08.hostedemail.com: domain of 3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771606330; a=rsa-sha256;
 	cv=none;
-	b=INzTX+cfOZj99WGRZKzxn6+XEJZrU0Ibc+Zb0UawplJn4yhnGGevvd/AzPO6kti6CRZ0p6
-	6VAVI59a57DHb5HRMLnrD4t1aISSWPkhljS+GlEYvvEpZAwkScQ9Y8hYLjwcfcuPIdPzR0
-	mxXWK88US3CZ0pnji6NBE/wnXGY+5Aw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B34BC41AF2;
-	Fri, 20 Feb 2026 16:50:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BC8C116C6;
-	Fri, 20 Feb 2026 16:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771606250;
-	bh=+Uij/0xoD2fksuZzZkZLFNcIAKJYICDzDr0TGD6sxow=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d5W1HDLzSBMx3frw2niVk0GR2O9vcnpmuDh3nVZ09DxzHczZ5uzY2u225TKsjUTua
-	 bZnCGRvMT7WmR5K5UJUVsUJk/Rt1oUCOQozAkKZYIbZ5sd1vuDPYRD+oXzRT//KPRH
-	 DvrTY8DWFMcDHceh3SgIZQCVBHw+KKQ9PO9czG3ta2WIyETUS5IG2NxNpHIC333463
-	 3fjyC5hLQVzbEqVqV9OP0tgNsDBH5aj4jjeUmOX8aBQDVWuDn+VTfFHZSlo2clBzd6
-	 ViGv4WtWdnCqQdApp6geo/GRYIvEtQRzpZfwufEoU/00iPUg7GvvN2ngvmfIGhopfE
-	 ecrZkicAFaTMA==
-Message-ID: <5f61a5fd-ab38-4635-aab8-5de515c4015a@kernel.org>
-Date: Fri, 20 Feb 2026 17:50:44 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Per-process page size
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Dev Jain <dev.jain@arm.com>, lsf-pc@lists.linux-foundation.org,
- ryan.roberts@arm.com, catalin.marinas@arm.com, will@kernel.org,
- ardb@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260217145026.3880286-1-dev.jain@arm.com>
- <aZSHvt9Trlq7k7aH@casper.infradead.org>
- <2e68ef61-dcf2-46b2-913f-14980a104faf@kernel.org>
- <aZfn0tbKl_1JD-VM@casper.infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aZfn0tbKl_1JD-VM@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mj5no18ikynhrpjf6wzp8tfzkdwxiq5z
-X-Rspamd-Server: rspam11
+	b=rPdx3XOeYZs0okN+mIjOwjZY4+5xPmoIv2LsiZGwaFfIYzCx65jrFcDq+ZH1bykekylQSm
+	GcE2hd4QQYPgIDGI04bVryirq7tNdrba29To+MK464yHNMGdHabQYWuK7wDs+PGMujCHhn
+	89kLuJM6up91va5nIYKzyvTWSYb88xg=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836cd6dfe6so17691345e9.2
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 08:52:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771606329; x=1772211129; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CZAtOD8ZRnarQucUHW7t2nY+Ut5JOEodfHGgZzqPkiE=;
+        b=xfiIyRVV7aLZ+cRwvg1c8v3YkFcRqR1e7hGuV2eHnIFxBdqfK3U11YdsVOJNeJj3J1
+         lAXmYr5UYM51Bm+DvyyevO8iRcQhnN8g1sv1ZCDD6eL+oDMCRAPTCHquzWtpxVxB7C+v
+         BZ+8JRDqgmvzZP9K75D96A7EYFLkJJwrAXzptqQNcWWcM7QokrwdIforRF4toZIcKIra
+         BeESF0Pc2ssl99eORDecG5oZInbB+x0F1i6CyVPRnr5ub5Kv6VU06rYoIrIXgGYi7H3p
+         1vV1wNfeZIWbdUGz3hBT/n0vnU+fLeiAY+qoyzkFOoYftt02nAwfhJmeok+QZy4VggfE
+         fsXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771606329; x=1772211129;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CZAtOD8ZRnarQucUHW7t2nY+Ut5JOEodfHGgZzqPkiE=;
+        b=LYnZ5/6XyanNewaDEd6lIRnhSVgDePCGK7xHKxoPDGXTtmH3PeLxRBJvYiGEHSCdN7
+         fa7aUK9o1zn/LP99tKlkYX9EQtpWNRteWgXDxS3h7HihzqHnru0yDZQQ18kmgsQMhc3r
+         +X4d9L/axApqmrSkXKrFTpK67E/4Y2jRfII/xbZgRrX1okUu8l2o3a7Jl/gtfj1wcFYT
+         tFXA8c1LU+e+kFS6dmIbNAVfw0zw3VoAh6E8c8H2YygJJaKOJqtQ1kHQsHq32KrStYZn
+         PPy+OsuQcxTQ6GZuSBoJQ9dxwfgiryMZiyvVzNgSo0oQTiKkbqltdU0nI6+Ihc0WxB6D
+         k2KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcgN621eHANqEXxFLX3e2gHt2osny/etvN03v7l6HQizOJVdAH3s8zsvus0Wzz5P1Bymx25OH28Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyj4QgVi9FXe7KMLauUOUrKTijpykn/9RLMYOpFDIpXRKWbyRgv
+	L6Nyjftcg9MxB+orz2Ta8v8DNmXoW0jhgz5wLr/vnJ3yYFhJhZyfVFXYxmqSfLCFgIIs3g3fRIu
+	tQ8NG3vkIs1JX5KSXeeQeKA==
+X-Received: from wmog4.prod.google.com ([2002:a05:600c:3104:b0:483:6fcc:920])
+ (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5287:b0:47e:e807:a05a with SMTP id 5b1f17b1804b1-483a963c238mr2105545e9.33.1771606328737;
+ Fri, 20 Feb 2026 08:52:08 -0800 (PST)
+Date: Fri, 20 Feb 2026 17:52:01 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260220165203.3213375-1-mclapinski@google.com>
+Subject: [PATCH v4 0/2] kho: add support for deferred struct page init
+From: Michal Clapinski <mclapinski@google.com>
+To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Clapinski <mclapinski@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6AC7E160009
+X-Stat-Signature: 75okk1wfdt4bnifj186wtbuyrbp6aiu6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A6A6540002
-X-HE-Tag: 1771606251-990258
-X-HE-Meta: U2FsdGVkX1/X+tPL9IEAFqdalLVxtlvRqm1QbIr7rIAtrw7YXmCZlJzhOe0ow5KYXKR2o09y/lVd70tO2/EqQWWUrs4AEibi6QIbiXjIGYy3OJwx5svsmgyTbYkeYvni0Fwh4T4gSvV7GveNWsJtqt+XNjU31BzNBwxa6rw5opvgzH+4j0H5baZI4afC7jeN6NT02OSJP5suNhFJuH22vDgDeTKZEpIC9VlEanEAjkkLdmWm0la9PMEbYwr7SUD321ukjP7Rg62fh2ZZQdJiG/gIO080mVbv4eJillAyxUvtrehpn5I7OM9rdzN/XkdQZ9klaIkdL4cz2nJX8Y6pZgJaUvL1XX6YsOSFUpcFRRZw6kGQg5OQ853REW9R4LDkj0sJFedH+4YB7IlUtzrYB/hxM+XYM4B8a+uRgljiL6oSwChwHMHsA3HAm9UD0Ae6XzmdLg2UiOw0jrPxE8GrNxna2yrcHJZ5d7hoLoLuLdtliDzqNx3MOzabGxcTc2IAK174QTp2KqScv5sUMw3RZJZBtCunkeqRrTz3g2ZbwUhtua67M6/A8qPv6dQHdpVo8+RhBqEts4bwstwYvQWSgVAv066dFUtwAtZzR3smSnynzZH+7hCigz6x1UggJgQ9DuHXgKoOZ/lnYscf0sFX3lCQLxsxIZY8aCsyDH8h5DPTwAnFMlhE+v22qIbX4ELEZ2ofLUXq8B2hZmOK7PcIz99FLNy0Rlt4z8mvJew60nYL/80UxzdY6dUO9fezwOCXUlAkzdny0RzJJIt3RWlMSS1dBujDtE0sxse4B9obUDiljrimffsxOQKNvC/UInIWxSQGCRKZOlcyOcX6Sfy4UT/LFGIE4Fl4xFv4JxW+0fr9e0m7PyLWV0rQJSKwZa/jagTDtpPrQlsauFO0k8GP8D3ts3DsUgmPmZpcTDR6ZWPPRpgMZgEt3EfRsA3vGQUMvoP6BX7XwHFNcUTnfPt
- jjsjyx4j
- cyDL44vZRzvwBMiz//XfJNqvsWM+gI44d4ataOCjRRV4ny0a8RXHKXhdapXSeMJRsULjGusPxQjuqkWUDsXn8sq2UZ8JWVBdp//fb6g3SmaD/+/Ek6YW13HwZ2mMWu4Ryu7SYyFI1liE9qGgLSrqA+lgTk2nQmgatRub8LA7xqmsVCeWL7cSMUt+rJq9NWf5GN56QLZHEwkgffVnwkQUTpPJFh5oa18S9YiBs3XKh1grAARk2nPzB0Ts0X//JS6vm74gv
+X-HE-Tag: 1771606330-288300
+X-HE-Meta: U2FsdGVkX1/52HVlqJdJsGhN9PgYI21z5WIsHbL3D2Ejh+A+T11SzUJsAAxaSKVINwHK5PF1MxbJMdqH7vecSNhSlz++av/OGIHXyaPAH0Exng2I+HxCkTSU7Gzb6P/YkYNuUez0q584rvtCH0qGkOoZH1CyvtVMczH9+1+eBEv0baiG1bigxnjn6pYgbjVYBM5Esf5wmI9FX0ZqB/+iUgDXyVRj6OT6OAhL5nj89HrjUMr+66RSM1qWnBI7oOAP3g5v+/SHUH8eiW3EZIZ0HKaiXX85DY+CxC3ixVPgnQ+v9fQplPiEt6AEzE7LmdZ8tgbUCkgE3QM89hMuSlm76mZXQBiS7wcwWSVyqsFLu+wEXo8hINAshz6khkvYejzRfHwTKLMzJEjLNDGp4jFzEWaEwudVbriPNwdz9r2Pd2Jbvuje1UlpZSoC/7bQhCsyceEYjvuAxqnBD8SYp5B2ZIjkXocGyCoQk8DinUg3g7mjLkbi7+exkoOqS13yd++N+09SS7swXpWiJXIX/h4446lVvCFOtmWJT6S/ngSHmKBkGm+arYrrItxp9fH6bZcsvVvXp7gJXDSgTdrhTP3Qg1UX1DopcEBRU27rt4MbjGZpWB2BUwHr+Y9xwNLZGvPS4rlNsQZPGHQ89pTAkkj4hCVnbi4HmMgkAjWgKwB2ygtRCoDdY5orA55yulufTEW8SEPHRYXgysnoIymkjfhSM3Xna4IWgR4y41ppYfW0z5nWavwObjNSZpEFMqyENwdniZ1x0xqJEVDA/7SilPgC/GbFZGVE2XB6dzG56E5rvZ1AoJ1epkc1AoyFUPKQRBxU8gfpw9P8zAX2r/m+/TWzsKinE2ShVsmGOtIEe4Xo5dHrvvDRGfi/wNIbSiOSV375mPpC4h4mTG5Y0Q5gvSSb8ElqAkeZF0vormYQPGH1McGGtLU/LQeUCWLlLoZHCaZdY+lKgj+Wa5psvelzgRG
+ q2eFzJS4
+ T0qxVNrZVu8+iimAWsnK4VnzLfqqk8GVudrtrcx219WpamB+XwhyzZtf3mVMnxO77uZomxQzM0NaVqkHHPa3N6G64lcZ5+Htpwh0NqyOJ3R5NZdC82Wpzkp/osZVtRE3pJIWJAn0qTCJBvvyfd+XEFSb6EMg3H/xTrovS1ijl1Z7m1Y9NnOv65JRGdFie/89/6r8fuy9LNp+w7obJL7NyTcmzt+Vrxd2cqpeGtgxPGm78FS6qj259FyqAaqvZeT1SatTnaZw5AUVhkz+3JeimllHm/seeZ1G2O5afyYMCk5uPHblFEhkjamie5l2aB+PFav/JjrxvCnjsTK5Omawuc/qiMLOxKN+POEhDdLjE97uctrmDk4Jwupc1NRd32UtYkFcFJyAKEAduShWhNXhoJwytOkNMRL4I+qZu1KW1QmBaBRj+lKWv5VQYVxcbplPHWOYPMKWhcsB2ucdP06yiANMr39FDicdoBIVJiTo8pJn1OQucfJqJjzIsGCbWb4VU/1Eq0ZOpd/fQYB8vCt6dkSG4ECko6b4vY4PnHcOXzNb+5e9KkVmAIK0bgdqNl72etVLR6vL0J7/4RiQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,48 +107,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/20/26 05:49, Matthew Wilcox wrote:
-> On Tue, Feb 17, 2026 at 04:30:59PM +0100, David Hildenbrand (Arm) wrote:
->> In a private conversation I also raised that some situations might make it
->> impossible/hard to drop+re-read.
->>
->> One example I cam up with if a folio is simply long-term R/O pinned. But I
->> am also not quite sure how mlock might interfere here.
->>
->> So yes, I think the page cache is likely the one of the most
->> problematic/messy thing to handle.
-> 
-> So what if we convert to max-supported-order the first time somebody
-> calls mmap on a given file?  Most files are never mmaped, so it won't
-> affect them. 
+When CONFIG_DEFERRED_STRUCT_PAGE_INIT (hereinafter DEFERRED) is
+enabled, struct page initialization is deferred to parallel kthreads
+that run later in the boot process.
 
-Yes!
+Currently, KHO is incompatible with DEFERRED.
+This series fixes that incompatibility.
+---
+v4:
+- added a new commit to fix deferred init of kho scratch
+- switched to ulong when refering to pfn
+v3:
+- changed commit msg
+- don't invoke early_pfn_to_nid if CONFIG_DEFERRED_STRUCT_PAGE_INIT=n
+v2:
+- updated a comment
 
-> And files that are mmaped are generally not written to.
+Evangelos Petrongonas (1):
+  kho: make preserved pages compatible with deferred struct page init
 
-Well, let's say many mmaped files are not written to. :)
+Michal Clapinski (1):
+  kho: fix deferred init of kho scratch
 
-> So there should not be much in the page cache for the common case.
-
-You'd assume many files to either get mmaped or read/written, yes.
-
-> And if no pages from the file have been mmaped yet, they cannot be pinned
-> or mlocked.
-
-Is there some other way for someone to block a page from getting evicted 
-from the pagecache?
-
-We have this memfd_pin_folios() thing, but I don't think we have 
-something comparable for ordinary pagecache files.
-
-... putting them into a pipe and never reading from the pipe maybe (I 
-assume that's what splice() does, but not sure if it actually places the 
-pages in there or whether it creates a copy first)?
-
-But yes, doing the conversion on first mmap() should handle mlock+gup.
+ include/linux/memblock.h           |  2 -
+ kernel/liveupdate/Kconfig          |  2 -
+ kernel/liveupdate/kexec_handover.c | 70 ++++++++++++++++--------------
+ mm/memblock.c                      | 22 ----------
+ 4 files changed, 37 insertions(+), 59 deletions(-)
 
 -- 
-Cheers,
+2.53.0.345.g96ddfc5eaa-goog
 
-David
 
