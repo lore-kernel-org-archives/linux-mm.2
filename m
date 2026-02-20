@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F2EC5516E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 09:52:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B4FC55178
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 09:52:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D28C6B009D; Fri, 20 Feb 2026 04:52:41 -0500 (EST)
+	id B66CB6B0089; Fri, 20 Feb 2026 04:52:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A0816B009E; Fri, 20 Feb 2026 04:52:41 -0500 (EST)
+	id B33DA6B009E; Fri, 20 Feb 2026 04:52:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8961C6B009F; Fri, 20 Feb 2026 04:52:41 -0500 (EST)
+	id A4A596B00A0; Fri, 20 Feb 2026 04:52:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E8646B009D
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:52:41 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28205C3875
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:52:41 +0000 (UTC)
-X-FDA: 84464370522.13.9A423CD
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9359D6B0089
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:52:49 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B70813C152
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:52:49 +0000 (UTC)
+X-FDA: 84464370858.22.28322F6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 431DD40005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:52:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cPkoJgHz;
-	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4A023140003
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:52:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Pa9f/rFM";
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771581159;
+	s=arc-20220608; t=1771581167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bq4FT148+U1qC14uOzP98fzEOEq1xubS3TDVd9YMopE=;
-	b=j37uZBKbMMCGZGaTQ84R/gQGdYY4akmARXHJ7bGEaw26wVV7E7yQD20Dmkjv1P7a0NAyuB
-	DmYWRIZt4AFId/BhGN/wiwcL8owWU5x4F5lOaSVq9EP1Am8iVnaA8Dl0k2RBvcLljFzA0Z
-	SWWOidVPV2EFoAWA4REDNpH0riuogFs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cPkoJgHz;
-	spf=pass (imf07.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771581159; a=rsa-sha256;
+	bh=ntJYUYqYp3Gn7FI7pRL2pZqwu0nCn58LEkukXjOhJQ8=;
+	b=cKrTDk4lLKWyieplFRrOz2ilOebs3PkZyQohvE31QKaACRYXdqU4t5tHRaTYg+2hWtn//9
+	sh4WjphLI8yfylL0TFqmP3tpoXg9QslC6Sr3r8rBgtBnoX8hLpYxq+Ux4c6zo+o267yHss
+	g0ELKcA4QpJvP/IxvTbj6lURxVCS0hs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771581167; a=rsa-sha256;
 	cv=none;
-	b=uaXI4AbfJLShOJ4Tf5UzalNRh/+TWCZBowSwsa4Ssjndq4Oza10wc62kPDbOYvjrJx3QYQ
-	6VskpTHA8T0fMPe8HXnL/TqbQdj1Gn6nMksam52y0iZ+vzzS1ojZs7esOipWyWvuKjcAoP
-	TE4EeuKTnS2p23CraEIzi2f4muVvk30=
+	b=ESHQzkeg4LSbLiNxyiE26EsGwGQBnUDXMgIoymziU2Fk/QSpBSsGs2PwFIo8fC3yFMnyqc
+	PdhyNdE5fPYdIKENUP7a7KIv+WkZFrYJRVkDa49he/3kqpOOg6+O+6VXgrbMPS0S5skmdA
+	n8Wel+axsJtGC4yQGaSDf+Ya6MLpQE4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Pa9f/rFM";
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2243F4377F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 290984377F;
+	Fri, 20 Feb 2026 09:52:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952BDC116C6;
 	Fri, 20 Feb 2026 09:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1BCC116C6;
-	Fri, 20 Feb 2026 09:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771581158;
-	bh=TzCUGpEDUTKD6tcoKokHDlQAGVLw4XXksTwjbV99rHQ=;
+	s=k20201202; t=1771581166;
+	bh=4kJUgBgTj0V7kRaDlo9MltCBPjRgIT4dj8eMOKXfB5o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=cPkoJgHzjTOK4adLqKvtWOk0lV5xxjHFhFd25u0lCbutgaak9HaBvj5iIti9G5zzW
-	 t5vdRzwJCLIKRG+RRSwnAgaRKFt8OQCM5Bsl53NinxBG8sVCTF4QNaeLdH9UxPUy38
-	 SnApW6PeCr6R83MsQ4DvuDxOcpHt19YUEVb8MoxXaiN0eIPQECQ/Mvy2ooVEw6Susy
-	 EaQEmFLvxd1MwRXs2wqSCWeHSLIcYvdOQxH7HmLfJLbN8RM7dhkJKZWm6wOC3jReXI
-	 d2uxnfQYxQPohdutcdThilJmAB86H/L0DvpS2d8rLyBBWYMWfuezR7qHlVEqzMZcsA
-	 g8ACwDxkQlGnQ==
+	b=Pa9f/rFMzl4E/wPD8ciUx13iCfAgUF6vmSFXaR6Ks+u5bb5DAJXeMviiLdxh2MJv8
+	 8+qc5hza/6VMGw4cPNgIQtSvcyxAvv/XWpRWhKCTzzjefbOVYgl2Bn+9VGuU00cEAc
+	 jTvBr1iVHBszyNOkPQO3sX9uTj+4qv9eIpWpokFIoB5BYxSyamUEEtpnqHSLtYolX3
+	 imBdySgeUu1FiifVSkCzKnQQ5D89I3lmT78VRrlGo0C4YvUidrWgNYFLXT3STRDR1B
+	 TCUlRIjeq31xVyq9aJ1FHRa6M6evLAQpUau+Rs7uGaiXXLTqvstat9/ewV25hDKnY2
+	 FyieTCY2HPk1g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Feb 2026 10:51:15 +0100
-Subject: [PATCH v15 6/9] rust: page: update formatting of `use` statements
+Date: Fri, 20 Feb 2026 10:51:18 +0100
+Subject: [PATCH v15 9/9] rust: page: add `from_raw()`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260220-unique-ref-v15-6-893ed86b06cc@kernel.org>
+Message-Id: <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
 References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
 In-Reply-To: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -96,32 +96,33 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
  linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=910; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=TzCUGpEDUTKD6tcoKokHDlQAGVLw4XXksTwjbV99rHQ=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmC6j7xMqrOaWhqb9sz3GGfZ0fqISUkN5QKA93
- RZup+H7tAiJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZguowAKCRDhuBo+eShj
- d0DZD/0dTBrrqUbBOcxFA2tD+zDIiI+fVqhQyXpWOHZTJ14cd+6Va4NBWr4jjedyZ060dAaM1sA
- Femvxpu86flN8RTIjT1fu/C1Xs2xhYXBJFk5pYbKzIzYG18wMgunFXxKnF8fzwQj5Q55A0x6dSX
- d4sn/PolHwlhr/GJeDpRZbrCiypzkXj4a4yuOdjQNdooFyEfvj+8NbUSFgbidam5i/qUWNQCy2d
- 5iGDU7RejE+DaQPyVc7RRenEMGW0GkVZqQIEcFj4QpDcCqUBduVmeMKJTAq4Hey9md/SCJ1RiPu
- CYiacAclAAKm9n0ybuxbdSJxi0PTvf+fzWIA6n95kw67kRWiUY8YtQvAd+IN3vL64EW5L1uib+H
- RyPos2pTret4c2ZrRxYKFRRWWTZpDs2Ar6HDMojnmuJ+5+74601NEJqBPN9Xk0AYTrR2TglyTjd
- Z/2T9Aex4ZOhAl3GsayG4AEAIJ14DcEej1m+GxHfGKpvmAU4FjhP2JkEKPlWbTdmeZO702b17nw
- ZBIdWaLXJx3pPL4ZrTHqGfdpWlSYag7OkRTNCKhDn0JGyNU85S3MWU7JwuBf0oStMiFrR352hs3
- eH+ufisPMWgHK5PriCQ5BN9Wrjq/QaF7Y/kQaK5SfsooyRg3R42rIYY7jf5WnRUHCZCREvdgm5P
- RQI1LGOLLZoKTjw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1098; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=4kJUgBgTj0V7kRaDlo9MltCBPjRgIT4dj8eMOKXfB5o=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmC6mLFWJC4FUrb2akl8BDN0BW5kYHddNAH8R6
+ ePI4Cw2p8aJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZgupgAKCRDhuBo+eShj
+ d4hjD/9a6KYUv/3QDTCUbU4jBZySYMrlWTE3KyUKD7sMA5hI7Q0Tt6utA8LOxT6+fWgt78T6dsP
+ YLaKTrcMsbBbF9ZlaZrHl8lklZikAR4xxXgnPSPGr59l/ggK4Mo7kCUQdgwUuC8ahkpgb3RVcUP
+ l5OhLwF21W8lWV0hEx409t8Kzk3WeW2aOLHrkVtgPaBMUoTkJvPAEdi/M7QMEd7KvTGtBEN10Sd
+ uhQioHELdqQTvuoGD/2Nklb8dMjHCDjnPf6DJyD7DydQTfEn2hjA6jQdq7K8J00MQuP/InZd1qU
+ EMO1sfL3nqfaUHKHOpGHjKARDrvThnL2r030YD0tcCw2YZMWv5umGNAlyGF1CNCEDVa59lBEGmW
+ owSPtNvf3UrEKKpr7iymtNmm91VsmBBLGJ8Zwg5nZHvn44w2XR5sr6sXo0Qe5IlG+RZQPG7y+cX
+ rB+YoFcD82kVzVU3ZT/1RJWC2PZPOs34ie+0a+iU/I3k5swQfcovtHfPX+UM5RXMZmUiFZJmvKU
+ FWReMNdU9IC65rTvBqhTBOmM6OZJu8DGdagZs9ZIcaXPj84ZEtd+dYi7mQlLkTxwBnCjC0nwacH
+ JuKEKkSC25+lzZDp9QXvecJqUf1eC1gnMOjlYogawynT0QOSpqelvJDq1GJeBuRYH3wCvocTQ8u
+ WWDeedFFS03kT+w==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: 1adb4ssxazgxmfaqfmr9795zseed39eo
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 431DD40005
-X-HE-Tag: 1771581159-675214
-X-HE-Meta: U2FsdGVkX18unvoolIMlNFn7e9u7XsA/jbBLBlVwHkOiXTEqcPa4UcFR7seng+b1O2bYm9cC92AgzXXcrcURKKbMJ5QlNm2wkdVT9PFkl4phEUQcB3+nHJzNGrx/GH+d9PU9wz8BeJ428bLCLQsz7TyYW0ZiaeHxUp4yoZLKLt7pdhexy/b6VvEJYIxC9Vqf3tWy25553W4iTeo9NkGlng1KDYx9iWhyxH6/uqMwaXONcHjimLXzlrJVUuJH666jBGqf5dino2Eh9kLV20VIlKobYDwheVl3PiiagK2AybWGcT3jFfZM9CbzH7oAsb5TYPqpEeBdnBbruUhO2KvvPtOlV1hXOD4JsI0IXUodk1d6zlYpdVIKWKGKlS3Kax6JGDd00PkjtAiwOd03VaxzBhZB59sxc1skNoLAsYBJlkLuiuEgnytRM+YgZMZK0eTRc3i7rkAF08tjA0my+oHLkeQnWMAiXbR2r9A1Q2Zg+Vv/JaMJAkmFJx5Y0o7yAB827Pboam1+whuserkxfhGnZSulVlAt0ikMPg7M7Q4c/d8Q2PasdJzOBY/IShX0kogib2QL3CAxcUmLF4hhBItslcLR9ZqoftAiOlH0D/bT9QLSvgYDfbyV0UwchHC765W3FnzYSu/vKJ5oe+5j8/U9hogYwocglziFa5iicLqRMoXTKTtmpehgQupcF5mMWrE9d8uMFyBv7KnU9eVvafkOWY1K6fA5a7GlpNVnzj9qk4RmejI2X40IssDOLulP1KkeprP1W9ceCOS8fX+VJjraL+HYPgOSb0RH6y2Ki15b9wMky6W9w4jiUkLj0vKp9ZFaRkgI0ejZgmTLKNUZIjBDNb8p0q690+bD4jSbBUcJmfafvtzR/6GAFGT8zCi+FvO+A+jJ9FUx4ceLOEcUCyyEVVqVSVF6WnS9982zLBCAF6zvSnksxrv8IT2rMwOZpjgPl3D8zj2dmjJtfv/6Hev
- bPG5Y6wc
- u+pHCoOJWLMfcOxgYbLv8HLg3UA7YlI8INqcUjI9WyjmXiAmk6MbUGymHCZeGWS/YeOBDdsfkHJFDop/s16KY48l6RRX9qATPe53b8nFY1gJ3naGZA80upWbHmgAt3ab22Rbs30+vvspCOq2edTS8WxM+sbEd5yXxiWHofzOWCsPtjsP7+hDHyNQNJOVHVa9NWQ9xIWvfO5QEEdIizZr0bSukB9eF4NItbfWDWrPLnELSEiqLYSy8GPbRVRnDc0msrCukY5aDkgjCNT8xoZ/KsoJUWCrW4cikdEc0XPhHAL80kehJyAdLviXcuMkO8N/qA+gf
+X-Stat-Signature: w37qwqy4befjbxpzsn61sjn5hxoo7ki7
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4A023140003
+X-HE-Tag: 1771581167-444179
+X-HE-Meta: U2FsdGVkX18DZhGLpgVHJ7B4991RPzXMJYS4HZqc6LA+0FCFoqZz21YFZB5L3LBSI1Uw4BvR4ONVw7IPFmPn4JymNP4Mx2V1F/e+6LT7CZUg09saqhd8maXCHOsU0+D3FrIl3w5FUJ/4V3B94j2gSRUzI8v5UyRLNKGHgEXpZDmyOXeK/20BlHkyk1e2uuYHiyv03a/E5aFmm90OvkFy4wLi3+aq7sRIY3SUtpbSe2VsxD/p8CsDAPdTzCY2/WdprdeTMtmZYzXH5ySh2qFOjIbExMnQO/sNw3CFvSgV2h12MewlSUne20aaSKCYdlLQDN8SoQojGE1WOg7wgsUdEf+NFN9DYNMLEOzmsVYyYSMgjuTt+B3JpJMy7QI2Icma7kMgZgsGI3iIddCWkkxVq0wvRkXvjEa9U4rqOhsP7s7vtoiDHOsOlQyl/WzBEegFN+z4OhaGGwNWGarpYuT4RZXd2Z01g3o+jAJaPe5M1o9wk8nADlS7+AJjSPEURhMyE5DZGQW03KDPPSKg8c1B/MXqYEdpa2iRhSoQP0bkmzLb1MPnXA0LdCoSc72YiH+L+ZkNQ/2WyWmh3IOtyUECIdboSNj1/XVdIScZgVrnQmmk63mnu/jy6UT2niKQWdL+6naSAdxZTyEC5lAEcnIHwDUVx+K3h1tTUaKBemC6SO8pNi+kIUmIfnZ42KtXApxPWPyeI8WWfz3yXZSpT3fwgPO6oYpebOjwZa+SXC9dLEEDEH51t2djvuG0NF4AEt+hynLUXaW7axGcKs9jEHwJKEQnB4ePe+PEWGXmVxxE1zpX4eGVb8Qy79gVRK2Voy9trekf7NLFKpmM3PkqkaHtM1rtB37Oiic1iMTrcftGxOylYfgFh2ot1T/sUGMyGSqdY9KmVaHzufPSRhYt4XgjgI0zSbpTWIhwHpyMAO0T+EsRD9svOc3OTiizBvX2CyOCDYz7zbaAqXnz3WeX/A2
+ PCuhO8Mf
+ HyATUdN22463zOKXBqCLO4mn5Jf+VLyE7juxoiq4tE2ts6wfIRI+HxJilrD3JfsrnOvA3yCNtPi9JGwdatVohyBWzAY7YmQV6Vc0ZEVJmGzfoyAaIdxAwWG8/d558BsZBWV5BMrcasFyF/XX2PE2Bi5wGHWD64/kY5GXHQqrOHe/53/4vYXuQTHjd/iWSpkGdyhTULAX3M/3g2wqBUFceRghOzUBtBQ/n1BdAL0kCPT1ez/HEd3p9KdKSu+/ZY28z7QriRgqIRkUK/eVRUcvD4oDDi5TfX49O8QNTAZ3u0fQPBloRfKHDqe1LhWV2ntnaSsuxZRC2pLW0t5Bz+jdZyH5vBq/t86inNRzYs5xN+FjmjU8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,44 +131,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update formatting in preparation for next patch
+Add a method to `Page` that allows construction of an instance from `struct
+page` pointer.
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- rust/kernel/page.rs | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ rust/kernel/page.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 432fc0297d4a8..bf3bed7e2d3fe 100644
+index 4591b7b01c3d2..803f3e3d76b22 100644
 --- a/rust/kernel/page.rs
 +++ b/rust/kernel/page.rs
-@@ -3,17 +3,23 @@
- //! Kernel page allocation and management.
+@@ -191,6 +191,17 @@ pub fn nid(&self) -> i32 {
+         unsafe { bindings::page_to_nid(self.as_ptr()) }
+     }
  
- use crate::{
--    alloc::{AllocError, Flags},
-+    alloc::{
-+        AllocError,
-+        Flags, //
-+    },
-     bindings,
-     error::code::*,
-     error::Result,
--    uaccess::UserSliceReader,
-+    uaccess::UserSliceReader, //
- };
- use core::{
-     marker::PhantomData,
-     mem::ManuallyDrop,
-     ops::Deref,
--    ptr::{self, NonNull},
-+    ptr::{
-+        self,
-+        NonNull, //
-+    }, //
- };
- 
- /// A bitwise shift for the page size.
++    /// Create a `&Page` from a raw `struct page` pointer
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must be valid for use as a reference for the duration of `'a`.
++    pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
++        // SAFETY: By function safety requirements, ptr is not null and is
++        // valid for use as a reference.
++        unsafe { &*Opaque::cast_from(ptr).cast::<Self>() }
++    }
++
+     /// Runs a piece of code with this page mapped to an address.
+     ///
+     /// The page is unmapped when this call returns.
 
 -- 
 2.51.2
