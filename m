@@ -4,128 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B225C55ABC
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 12:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC284C55ABC
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 12:42:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C9756B0088; Fri, 20 Feb 2026 07:33:15 -0500 (EST)
+	id 180DA6B0088; Fri, 20 Feb 2026 07:42:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89DDD6B0089; Fri, 20 Feb 2026 07:33:15 -0500 (EST)
+	id 1618F6B0089; Fri, 20 Feb 2026 07:42:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CA926B008A; Fri, 20 Feb 2026 07:33:15 -0500 (EST)
+	id 08BCE6B008A; Fri, 20 Feb 2026 07:42:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66F996B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 07:33:15 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 08CE9140164
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:33:15 +0000 (UTC)
-X-FDA: 84464775150.12.B62F793
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E4E0F40006
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:33:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VOOjLrWN;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771590793; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA63C6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 07:42:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F1D61A0175
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:42:52 +0000 (UTC)
+X-FDA: 84464799384.22.9682A1F
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A242D120007
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:42:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="b/eSpyAk";
+	spf=pass (imf29.hostedemail.com: domain of sanjayembeddedse@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=sanjayembeddedse@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771591370; a=rsa-sha256;
 	cv=none;
-	b=Sc5FfnY6QD8W6Gha80UYU4FFhAi6ACMf0+uKJba1V34tctROl7rItagtyIS5iIOPPohqwN
-	rKexXcGpaNVPOscpC7H4PFfjjnv0yEovXwP5eIk2TQNckItZ6zAJ/P48kwL9hpEGSb7gSt
-	ZR8eQgNgfHcqMBUNjp+YWH1sPwW+Jck=
+	b=W+92CHWscYz6nZl5uodsiwZkk03yb8KrEiVOgFcsVP9MQ77exZtZxjXbDBk9pDwTzR+twT
+	GnGGVB5Gzc6ZELd50riGpKcEwdlOaedsNxu8UM0KExKf6KSungYiozvjCSjzmm/BNbERGM
+	4z4ys64DUcuNry3J10wVR9vnUm7MYJI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VOOjLrWN;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="b/eSpyAk";
+	spf=pass (imf29.hostedemail.com: domain of sanjayembeddedse@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=sanjayembeddedse@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771590793;
+	s=arc-20220608; t=1771591370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eAbKwgluZ6x29sQ7DMnPYdNLqhQZwViZnBi+Q923Sys=;
-	b=stygwGWjA91XRpYZLYeMbJSkp0k0IcPhKaL/CQrIlr25Yaux1CHNHZYEwlEJuZ37+3F0Qh
-	5lOk2ucqnEwdye5RNJZUB1exE51sI5lYWy2x3N21gcDPkltEnJwQqE/choOFyH/uwWnLgh
-	9mVX8fWSZN6wejmc5WAVv8CrqrAoxOM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C103743FDA;
-	Fri, 20 Feb 2026 12:33:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFF1C4AF0B;
-	Fri, 20 Feb 2026 12:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771590791;
-	bh=HEav6OKo9Ka2eLWNoeqr+fC5xj+AerMf/qZFR5ZgdYw=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=VOOjLrWNvuLJ/gLuKzddCn1meEfv0f1LM/VWGLNgpdpvUZpc7/DBcH4tO33ee6GAf
-	 8gOrynd24/1JtlWepOTFTCA/4J3E7Mh3Bisy072/WDcBw5sR9ML13CDJgYr8/Eg6+r
-	 I9wTZYmjIP0P6VNO4jDa0AcO8AXAI98hjNgX357a1U6VFSdNuWJt73UiOkt49A9Ip4
-	 eVsevTdZTXdGuW5RL0F+mp4bBAKGoqxzufeTeYess2suL/1XVhfsskb8pDKcyK+VF1
-	 wkGIucWNB2j68PoP9TB8fEDQ8uQ1qgdvdc0oal7Grmq+NDvBgx/Ykb0NGYfJbBnqmf
-	 wKh6JjuZ2arxA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 558B3F4006A;
-	Fri, 20 Feb 2026 07:33:09 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 20 Feb 2026 07:33:09 -0500
-X-ME-Sender: <xms:hVSYaYnHDKZ18bE5ij_zDhuWpb4IcZ05XcGC8o_u4_t1Lw7Jx5qepQ>
-    <xme:hVSYaT9W4PmWfabA3lbSuPi0IFFyTQaBBZP7tUuaLjSHqXl1sUjr3FTmKe2Q_Bvs5
-    ApVtyWzFf1B_uquykX87-ySe_vdl0ktymWa2EdmqejP4ONZDqOiW-bx>
-X-ME-Received: <xmr:hVSYaf5uatMTQ6JS714Cg2aEzLZA-hSKCm6tc1iWJspYlJHttRTH-Rsl5mpBGw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdekgeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeejgedvhfeifefgleeuteekfeehfffgleegvdfgffehfeekgedtuefggfffjefgkeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    oheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopegurg
-    hvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhsfhdqphgtsehl
-    ihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlih
-    hnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdho
-    rhhgpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepth
-    hglhigsehlihhnuhhtrhhonhhigidruggv
-X-ME-Proxy: <xmx:hVSYaTrbFI6EXEHSLPa5UtqW6xf5Ab3JgyCnWNx4-h4inpFylTwHNw>
-    <xmx:hVSYabBqz_dugEs3Jssql6n2r9hfd-io68v2gS59uuGaPK78OanqOQ>
-    <xmx:hVSYacOBTKwL4yJVNCXEqNLmowvCe2ODgg8BE7i5ETZdLLwnMAeybA>
-    <xmx:hVSYaan0tnSXqXu1m4C1HA3YrvAvEz5WpBD9m3Lg-fOe1heVkLkeCw>
-    <xmx:hVSYaedNHmj_lgFe5sVvxL5Vb1iECVrJXnRUC0wqkwgqx9XwQIlvMHqV>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Feb 2026 07:33:08 -0500 (EST)
-Date: Fri, 20 Feb 2026 12:33:06 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Dave Hansen <dave.hansen@intel.com>, lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <aZhRKOK9I_MLEeHT@thinkstation>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <46817fe5-7166-4734-bad3-3109cc7feb1e@intel.com>
- <aZeFeAP9Zh-9q7pH@thinkstation>
- <vq6hv7gyieakkka33po6nveq52vayruxsdbymcjxja6vtxlldp@th5gwdlfhrwa>
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YUKllnwoQidCF+8PfJZeXrieG2MX2j2TwvAmx1Ac+no=;
+	b=DVtAWmds450mJE6985ace4c56hqWSOSxBx/OnD9Uynct+c5brAOdibN1Ev7z9x0V9H4fcn
+	SJonbcoCsFeMmTryFXvtqh+khOdhFwLhZ9KAdtlVr75AMeZXivv24fWmZBe1ix8CzmYKeM
+	aORHfINSQI6oeheyF//ktUQoRG9PfEE=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a91215c158so13875965ad.0
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:42:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771591369; x=1772196169; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YUKllnwoQidCF+8PfJZeXrieG2MX2j2TwvAmx1Ac+no=;
+        b=b/eSpyAkE8furJ7hlBtGz8tjxnbby/gr6XKIWlG9SWDwJw3GVFfeXFzSEFjvPoq2vy
+         gZsRAkn15Bcwo5m9Od1m3AQPe2Qmi+2LwqEKDAL44c6tYNRAAel/4NtDJ96L9A0519EU
+         91gYcLpLEjD58EtXfE2T7t8rm7nq69gO4wtgCUd7nfdYimAFhgZlGhNPBOb0jd3oBFRj
+         TPK1V6z5UlE8kO6jOVQFCzcxSFCy9dmeMxL+lJqS18ZXl9NNwE6uZxpeo43PJH2P81r6
+         DRKGJAlX5Ef2kJLQCyrAxBr26JgFeQQdlhCi7NPtoyZtENPnXAW+oKeygg8bicSaoH5p
+         ub2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771591369; x=1772196169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YUKllnwoQidCF+8PfJZeXrieG2MX2j2TwvAmx1Ac+no=;
+        b=xAoN0d0MMALVYP9em6Lq8xI5sVmqfHDwrJp9A1+jUZT1l+0Y40uBqlyXuvl13PTAYe
+         lqhzOV06QILgVD9dJ5fNVxqDk6mUK9MxBOydD1HJGE0JdARpVz0/h1NljUJvISpLqGCi
+         k3ifBD7ZY33AOkGHlS5699/fWqy8ub57B63L5G7IsidGd2jhg060J5LftOuRsvvjlh7Q
+         QJ2QW148kW9Kb1Mbt9DZs77khNe6QzjYbY+N70rYNu56PWGN1kwLBaPtlAM8WCuvzS7Y
+         cOwiP/WU4LNaZUOt22NSkTsmYMhn/HOIqxCkRfPXHK4hZ+AdlNrDC/7IGDzDKkbRfxqk
+         GLZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLx+p5Y+/AgaJOMOGlKkcReIE3hLQSq3Q3An5tKRtPrmaDdKHoaq18hhUf7h3e7W+3CzG8+ariUg==@kvack.org
+X-Gm-Message-State: AOJu0Yw4WLylraAvZvdo4tMe5BwRa8tWBUyJTjyjo8Ghb6Z5Wlqsicb7
+	4A/lpVd67tDB1lTxfd6WA7bmBH6e9RrGOc352ynuZ+ZLeGDxIZmXrgrg
+X-Gm-Gg: AZuq6aLVIOy2PPiwgYslTBl9FEIjnj5QrBsom/WpXfMH8sHd5KQmgwGd4836l9irmXC
+	21OzeL49cg4mJDJNUYRNywfSBMDbZguFRm5d/qopG9BUR/kBJSjYwOrEH/rMX4UZulnOlblg2sB
+	jCmck2ksNGDsYrucQhAYQvGc7KQ0ZeUjZN24y2BbKPHthXFkU9NCjmx5nm7jwrelb/QXjp1dTVW
+	cIzgkhWx/tDDygv7AlTx2eYP2iwze6XOVE6tbtaUyoy2xoQPiGNB8qF1yASQ/XIaPoUPFpen+DA
+	aB59odyPc8MHArcgj6wsbqfcV34Uuc38wfYkCHs3d/ZRdciYCcPEGjHmuqWgTUIDroHZo1LkY7V
+	F9/th9EsMPFB+wngca9XWhPQt/sWKFXXJYGjog3lIi6pCU3lm7lMVg4Df3pdBycfjq7R0EKA+pA
+	7lFAVCqo/lU20qaRWpZx8/hbU/Wl98oF6Ch2WgobWeMumQyG2t
+X-Received: by 2002:a17:90b:28ce:b0:341:2150:4856 with SMTP id 98e67ed59e1d1-358891302f8mr8246072a91.17.1771591369225;
+        Fri, 20 Feb 2026 04:42:49 -0800 (PST)
+Received: from hu-ckantibh-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3589d8e3e73sm3001661a91.15.2026.02.20.04.42.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 04:42:48 -0800 (PST)
+From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
+X-Google-Original-From: Sanjay Chitroda <sanjayembedded@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sanjay Chitroda <sanjayembeddedse@gmail.com>
+Subject: [PATCH] mm/slub: drop duplicate kernel-doc for ksize()
+Date: Fri, 20 Feb 2026 18:12:43 +0530
+Message-Id: <20260220124243.3264133-1-sanjayembedded@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <vq6hv7gyieakkka33po6nveq52vayruxsdbymcjxja6vtxlldp@th5gwdlfhrwa>
-X-Rspamd-Queue-Id: E4E0F40006
-X-Stat-Signature: pd8f8eusnxzs5ddp9zy1p4r3cpsphq8h
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A242D120007
+X-Stat-Signature: mn8pdbfqfwda4ximwgdufpz8go9dcknw
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1771590792-386988
-X-HE-Meta: U2FsdGVkX1/TsSKqQgTagQTeVyUUXX5+2FcXgUQghquie5ps2PB33BScpQmwrskHhZzPJPdxvtB3eRoT8PhZkzNkeCigzMJxIVfEKQ2SxKe6OrIquKTJtwgVtRC5bUOgRE72wbPGfuYBcTUw/pfoGThGb0/FxqI7BzLDz1tJNcjdpE5nspeZx7u1BX1v/RWv+yjEsx7CdDux9Xa/mA494mrTGaPSDFWS1IDWfaZTFnbkCBv5egIZcbBo/pqB5Rd9yG1x/mZgwqqUMhyyqUjQZiuppH0wQyUpypjh1uaUzni2KKEG2goVAr7TaoNF9BaQhslXW90uSCmwOEyIzjO8Xg9pPLX4aVPn3n3uoRjQkKlqfue7t4jM0HQk53fGDxLtMG0j9kPkkOa5ohGMJmvdEVlRIIhkG+ArB/Mo23o95SDTVTjvhMTT38mRSoMgKiOUsHcCdl1LgBK877CkT85vWFMw+Ivkp+fhJCZS+3bdsmWX5UQIQ8KipvtfBg3QZQnkfmdrCogsO7rS3S4xlNbOlGURtWMLo2zjxHHd6Jb+GK4xAalZFfIr7YcPWpR663pGFpse0tI06MTBcbtcrHuVT582OMedwNiyeTi5VLgTpihPn4yvTyd7ZIfICNXX4k0aEg8fI9k2D8ixDrViImN9BqBfGMXPtktucrnSwrcnD6rqpuWlVRfVXC3+gDqTFtHU9S8n0uQOxDsugdHM+U/ZK6UJJVoc1AXkVr9mi8JnHfhvdZLRK0f5yUOAvZMK/2tlw+uTua425Cq2OpFdvkvRP2YRR83xfJhcxapJmj6pUh5BG038v82Svo+Yrk3BXkOJ28A0h6ff1j6v985Rc5wtTbrxh7T1y3DMEKA9IHif2ABlZUEmn3bxmSEjG64ZkBnYA9m19nqj3riESUzPejtjHHoRaCjEwmDRlQcwpH7ohmmirXmuwc7GF7P3Tkb4nCSUPep4mCc4Z2axYU1CV2W
- 4Q2WysBp
- a6dwHIJbk6uSzIBOkVU0i05RVgBHqoc4kf0r8GodZGGYIpS0Aux4nYSTW0tttqkLuu8jiTFjN5zezR1jrpLfzUsoy7hCxYL+jjjgWPBGnOET8zl4MzYb7gwD/iNCf4nPRpCcYGxssKxusmvwuL/Iu+TCg1sXMlX9nKaS/5OBdGd99oNkDRfrnPUpmGtyx+dbL1XN5S7gJjOy8Ax93bz+HK0GoPNYgnCCHygPI0M8qodUZGyMVe1TgK1q1CWr0rNQ7CbT82BceBUuG0iOlT+8BL9+Za8Yu3ZZIAfV0lxt7Y6a19nw=
+X-HE-Tag: 1771591370-359800
+X-HE-Meta: U2FsdGVkX1/ANQjG5pmHwbXsOxBpgQMKv2HYYMDMo5PaWbqWcKo2RefdYyL1MUZYT04SicHs2YcxLQ0g/wwL7ggKMeYNI5LOeXUL0CTh0QVMXZe4EAmmB0J7TuwvRLLGgR+wn1O6SKJUofgh2EMPfWN8WiWxWoDlPetVzGdst8jIubbGj6LV9pC/I2ZOWKkpWrKDYUk484vrJmeDreJ83BafI9WkNu61HKB6Ptax+/TKqZhfMPxwQ41Eo7r1A4OMiIRavZ9dSa+Qd6PMBqZLtTaXPGNcaOQjBLbwViEYCOZfrlLavufo63evn2GQY2/WrFIdd3OgU4n6T16v1HCihslzYMuyBn50mGMpDmT/IF8VB8VTtfmyN7EMf/SQnS0wYYvvzddqIhb8ci+YbVVdWxKkFZnNR4XM4HMjvTsKedJGVqQEuVVuNKTcFmMsQ5l+53nM2sBuDtoQ49x6rlLBvHIoqmI1lCoylLGtwlMtLUE4XBon/OLAYB0UNjUIh8R69/s4IZm/nFx6wZalJiu8pfhQJz9Vilta0V5lGi0GZQOClqRiuu0+3WUAcqIc6wPBOz1omgEVEggB1RHMU4vWi0QNrhM8yChZpbW/4+aENw8ml6SH/ShOgAaYxLx8GRCjLFca17qWVVldN24gjfkS4NZA/ZX83WjcBkybH0S+L4asH/UKXvaDSXfeXXyCm0JmUQYwbcnHerPb6nC3wc3Wo54YNHCr9Gk4ad/CnN0mQNofKi6JTPZ9319ldhwVJ8qDvvILpHFzokvNqk+bq92R5p/eikd5ZSEXwDYGgw1ylLezVssMEuMRuRLyXDWHP0/mqq0c1kFvyQsJuuYnO/XSIP0UG3DFV4MTBxIYnuplqrWtPm/1Zh0UomAxjZAs4jwnneXBY40gn3xqcxSP4jwzK3QFkwHEB8trshRVgwNvmEzczoGlC5XK7RticG5CiA8qzX5KQeelnNSz2T5qm1C
+ 4nM6BxCI
+ xI4TXYbR762ChRw50mbW6Fw9161Evo5SdeoWOymrlrv47Ktd5oy26qHTzHN36tDfiq8DhP6xYXf58O9tnhj+qmZAbP1Mh+0BCAtmzkIQ6mClcY6CF8pIF6JUrr272CaF50JRX9Cka3jKC9vzreLaoUrppShfdPJm+9BJWJiC+56uNdiVGW2gClcB+ySJ1quO7CJVcFFe97pRzqkFVOpFtb9VXu97hVGyH3Xz8G0hbOxF0fzfGBYG2obP2bbRTgZIjpRTwOYyv6t4jLPWwFS6hzAjX6wT4RGVnjoBzp40Zpm1QIeYaP0+iFaLmudqwMlEMnBV1s/EvIXVy6t4lV5/FTjHsINpXPujBP/4YKQgSnVvtHC9X43crLY/H6uiBA028WCuczeCyz8aLZqF/RvYnd5aMP03kgAYlPnau
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,60 +122,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 10:28:20PM -0500, Liam R. Howlett wrote:
-> * Kiryl Shutsemau <kas@kernel.org> [260219 17:05]:
-> > On Thu, Feb 19, 2026 at 09:08:57AM -0800, Dave Hansen wrote:
-> > > On 2/19/26 07:08, Kiryl Shutsemau wrote:
-> > > >   - The order-0 page size cuts struct page overhead by a factor of 16. From
-> > > >     ~1.6% of RAM to ~0.1%;
-> > > ...
-> > > But, it will mostly be getting better performance at the _cost_ of
-> > > consuming more RAM, not saving RAM.
-> > 
-> > That's fair.
-> > 
-> > The problem with struct page memory consumption is that it is static and
-> > cannot be reclaimed. You pay the struct page tax no matter what.
-> > 
-> > Page cache rounding overhead can be large, but a motivated userspace can
-> > keep it under control by avoiding splitting a dataset into many small
-> > files. And this memory is reclaimable.
-> > 
-> 
-> But we are in reclaim a lot more these days.  As I'm sure you are aware,
-> we are trying to maximize the resources (both cpu and ram) of any
-> machine powered on.  Entering reclaim will consume the cpu time and will
-> affect other tasks.
-> 
-> Especially with multiple workload machines, the tendency is to have a
-> primary focus with the lower desired work being killed, if necessary.
-> Reducing the overhead just means more secondary tasks, or a bigger
-> footprint of the ones already executing.
-> 
-> Increasing the memory pressure will degrade the primary workload more
-> frequently, even if we recover enough to avoid OOMing the secondary.
-> 
-> While in the struct page tax world, the secondary task would be killed
-> after a shorter (and less frequently executed) reclaim comes up short.
-> So, I would think that we would be degrading the primary workload in an
-> attempt to keep the secondary alive?  Maybe I'm over-simplifying here?
+From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
 
-I am not sure I fully follow your point.
+The ksize() API is already documented in the public header, and
+Documentation/core-api/mm-api.rst pulls that canonical doc into the
+book. The kernel-doc block added to mm/slub.c by commit
+fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
+introduced a second definition for the same symbol in the generated
+docs, which makes Sphinx emit:
 
-Sizing tasks and scheduling tasks between machines is hard in general.
-I don't think the balance between struct page tax and page cache
-rounding overhead is going to be the primary factor.
+  WARNING: Duplicate C declaration, also defined at core-api/mm-api:521
+  Declaration is '.. c:function:: size_t ksize(const void *objp)'
 
-> Near the other end of the spectrum, we have chromebooks that are
-> constantly in reclaim, even with 4k pages.  I guess these machines would
-> be destine to maintain the same page size they use today.  That is, this
-> solution for the struct page tax is only useful if you have a lot of
-> memory.  But then again, that's where the bookkeeping costs become hard
-> to take.
+Remove the redundant kernel-doc comment from slub.c so only the
+header-provided documentation is emitted. This keeps the user-visible
+API documentation intact while eliminating the duplicate-declaration
+warning during `make htmldocs`.
 
-Smaller machines are not target for 64k pages. They will not benefit
-from them.
+No functional change.
 
+Fixes: fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
+Signed-off-by: Sanjay Chitroda <sanjayembeddedse@gmail.com>
+---
+ mm/slub.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 865bc050f654..3f58a485e95e 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6309,18 +6309,6 @@ static size_t __ksize(const void *object)
+ 	return slab_ksize(slab);
+ }
+ 
+-/**
+- * ksize -- Report full size of underlying allocation
+- * @objp: pointer to the object
+- *
+- * This should only be used internally to query the true size of allocations.
+- * It is not meant to be a way to discover the usable size of an allocation
+- * after the fact. Instead, use kmalloc_size_roundup(). Using memory beyond
+- * the originally requested allocation size may trigger KASAN, UBSAN_BOUNDS,
+- * and/or FORTIFY_SOURCE.
+- *
+- * Return: size of the actual memory used by @objp in bytes
+- */
+ size_t ksize(const void *objp)
+ {
+ 	/*
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.34.1
+
 
