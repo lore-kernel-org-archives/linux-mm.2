@@ -4,138 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5813AC531FF
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:24:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573DAC5518F
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A0956B0088; Fri, 20 Feb 2026 05:24:45 -0500 (EST)
+	id BA2D76B0088; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 624766B0089; Fri, 20 Feb 2026 05:24:45 -0500 (EST)
+	id B4CD26B0089; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FC526B008A; Fri, 20 Feb 2026 05:24:45 -0500 (EST)
+	id A862D6B008A; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 39EE46B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:24:45 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BBE3A1604C5
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:24:44 +0000 (UTC)
-X-FDA: 84464451288.12.39A711B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 27F211C0008
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:24:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vENCC3nB;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 96E5E6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34473BD886
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:25:46 +0000 (UTC)
+X-FDA: 84464453892.21.F9AEA6E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 85567140012
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:25:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RN7maaPJ;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771583083;
+	s=arc-20220608; t=1771583144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AVh2E6t9pep775eUDONewZBdgCrsHyOzrBn3KPRat7w=;
-	b=6+LfLC9XDVpdKjFnGh8wQJIhZ443RZzdLMnKzDNTyfq7VfAzKX73sFXeGyel2WV4/x1zIu
-	b2xWIrCPl67t0zwplEchKLEkDnM4g0YUcnHs/fGvwago7NWP8s4pWJnVVJL/xQ1983rAga
-	OP+pPQAePPcGbi4qeFnhsrKvM1oJLNQ=
+	bh=KSFq/eMlnsGxU/O/AIGO+U7y44qkWS2NgoGDTmE/KsM=;
+	b=s/7ZV0TOyz6ihJuijIqkXrP3SQYjAfBBrfhwkeG0hAzStlujwunL7DvJv0VSZMNdK7Q1n0
+	uf0EsdF9QhWE6VdaX7orp0XtueaAe7xGTSyY1xN9bGu7V1TxzauR+ezBy/dq8pENbFLULK
+	ptsGKuU0/XMxEx8mb1fzejuNmgdJSOM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vENCC3nB;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RN7maaPJ;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771583083; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771583144; a=rsa-sha256;
 	cv=none;
-	b=Qr6VujGFDEakkagURUR8EpVkbBoA+7yy5PfYZUSKkMOvtjFjR/oJgFnFlV0MG0vZDKHD6u
-	RNIEtLn3OtAo3swKw9IF062qs/ONnXAM9pmKq7vXpHMw2Jz5M4dseFqBKRz8pG4HLlBCoY
-	ZpvsfhP1qPngfUDxJ+sNdSYq0GNRU8Y=
+	b=d56lCKLmWN5DdKJ2AcAp5IG9jFy4KDgR1Dy6v+tfVsRGk4jNzWCWlgvRIfn+freA6vY5WW
+	09U9M1y0/QYv2c1QoqiKCg0l5HpvEsabIlTciIpqwj6BRf3GbPS4aVKmy6MhXtebqjfxDp
+	Mvc+h0SiqkjH4XFmTCkzJoqdE3cC6Cs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 659DC60054;
-	Fri, 20 Feb 2026 10:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D6DC116C6;
-	Fri, 20 Feb 2026 10:24:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1677A40D79;
+	Fri, 20 Feb 2026 10:25:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09801C116C6;
+	Fri, 20 Feb 2026 10:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771583082;
-	bh=vf4PV+HFXsaMD32nDkPwT40QxEw4obzOE+eqOI/Igck=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vENCC3nBziICLreN9JbBgQwrH4kVgp5ggptDZJ+wz2dwIDcVxtN99gsr11ZOC5lT3
-	 gkBpR5nfQe1+Ivof2tnCoOvgfPloDYgG1SavSyjX7x0tZHpLxHOD7sgOz/NZFb7fO4
-	 DrWAI7jdS07wlbZxCYB75pMYrkRWaiFjP1hG7gdZk/iX4mkPCcmgjAfTmjtscVi7fk
-	 kdF6+ApkM7CgyuoJ+jPCBHxF2BuRI7+lx4sQuxUY8tmYa/nWCup+X2HWYAdsPXs7wQ
-	 JzjOucuO1t2Rwnykov1w0sFiiYeyHWgvfWimtPG8Ok2SFJUaTbJEnsv0MpGy2D8w5D
-	 ALCGRjz1AXh7A==
-Message-ID: <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
-Date: Fri, 20 Feb 2026 11:24:37 +0100
+	s=k20201202; t=1771583143;
+	bh=fHah0S5EiDYqAgVFYIH+gMaVRw0f/1dDoBvuNE5U2VI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RN7maaPJvT08Xjj1xqxQX7/6YIpJ67iktTwqQUoO/AuJZ/51ixeV3h0DvF2QGF9n9
+	 qVNhmzOUKgR7bymsT+7lLXaoV3MQNZJ/2jtu0D3kRHqbUN5jmN6oUv7GjFxlOwTFkH
+	 1TwIl/N3tp4jqHzj7JmBJj8OGhRLNA1JGHokVT1OWfvA9YpIeb1VZDrsWdMZCdv0bN
+	 i/QjySoM1tg7kYeIQFK3UytAVsfnjzQfbstOvjsTcSiVVuLJhn1pgejcL3kknCkf2e
+	 ogEYWRK5OdB5mD3k1e75M47/hvMVIcRhGTZ+Cc7tZwpQT3qF1I3I0geNTsv5a8NWbc
+	 WrVuYRNuVbz5Q==
+Date: Fri, 20 Feb 2026 12:25:36 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	akpm@linux-foundation.org, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v6 0/4] Convert x86/mm/pat to generic page table apis
+Message-ID: <aZg2oE6FshskL_Kb@kernel.org>
+References: <20260219020354.321088-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZdCl8byz51Q1-v6@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aZdCl8byz51Q1-v6@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 27F211C0008
-X-Stat-Signature: aj57j695hs1rfa3s7e7ipndngtqpudsg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219020354.321088-1-vishal.moola@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1771583083-584116
-X-HE-Meta: U2FsdGVkX1//M6yR/zY60s1xNpMpHy12AMAqXNGYrQW27qVlweZ/W5/W91dkqVbGQPWv0365s2t/bDW/aV6qie6EVL/dlPLTMVF9MNAGKZJF6EsA2bU7dpVFG4tWQudM8qQvjmThvW5Q6c4UdeXOBAtcICRkKpx59nwXWW1qwP9E5U76+ZP5kGWlXzNivRdYb5JWTHVZ1AMHotjHgQp96vEysMQYvs93OfMo013SjAapo+xoVp39F6yuQ739zbEmWO3CT0+Tvttl7vNFTebctkIOJWNHbeiG7U1/LlqOG9LzC+ALhhbQ1/AM2wHiFNBkmuWkvN9aa1BAFzULAm6wuvGwTNUqPUzVT3AK8hcyVs7tNDVtDkLl9Zrzjgd8qBEhKSMh7fToZ+jN9pf229Q6JNF/YTqlehnIPXEGDwFw49dLJUPRd/f95rhBG9gkcB82buomRre6+TT2Xw063eqo1qVzyEF+LQq5cAMVQF3OAtAf4DDRCCQHOxJLYItPcx+jAZaGJ6SOv7ZHWpJUTAuqnXqSdtnPy5+2IfJYset/IWruzCbdyom4zk9CbXva3e9No4G8JCanrG/u47XEJktKI5fNwJj27sJSR4Xb+MQxbJMtHXqEc2h5/93QlmwvG1JtsWu0RxZUN6kg37m1muF262emyAZLX77sfX0pFvNGzwKCF53+dMECyaT5QOPUd/VzdBM3n++ioXs5NsN5xQ4y3xCuDhZAoQVYo+OgyyIg+FCwf2UVYrkj1N4iSfcH/9oNbpJE5FRPVAS//So1K8K2ccSw3EdDh6VsJ+DjpgziJXRlbaEv+HWzlpfURn+zYCNAQY/nNzO4/cO7hgcZ7fE6j8hb3/90Jh5fcAQNQdepSovE2Z/I9/pLdBUABra+n4n4Yi58+OlHxINDsAsaG+JECgxl6fdQmg/VOkN7K9eQij8wxgUCCFX8EA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 85567140012
+X-Stat-Signature: x4djud7u8a31sseqgjhpkg18psq1o384
+X-HE-Tag: 1771583144-839223
+X-HE-Meta: U2FsdGVkX18h4ZYI34Rx7U8rnh+uWrIDvMh1tp01Mcny64RIbWxr6YcjlzzQkdSghe3vvUx9wl5XBg8p1aBFXGF3pWbP+pHM+bDHn/TTSAUo1J7NBvhLaY3YVUIzVX69V8mGHSRocGiQOfVxQxqi80rxK56ImzLN1axTTSLtoArDTAp5GtijsWsj2Ar7fLotjeC+UHTkidO/E+8brWW4bQtjD7MM8afq7lY3sVTnVhZV/pg4Q5ZSVluJmYR53rt7wr7L7vWKeRIssMZyeqyU039abWhT1+Zz+HxMakprXihWzJld19SvB0i8c6wiXKuueYeAdvdptyU5Jr3wQABo0HQC6Kn+rQkwqXDhzQ6eiItFGnPH/VCJgMYbGbu3eJ6GUwA276sn9vtRNrEEqibq05ygXHZGjHxP1KcdWE25AyDBHgpiMLVdx4yPhIo43x0ozfKr25FsNHZwqTMthqnyoRak5MrUnEaL+aCN2YxxZwYyLwspIqik7p3vOi4YFHU84PaTZY7umJ6Iun0GfB9at/pkaD7zwjsq1NBaqciDcsp95RskLnz7sgDF98/bMRg6Mb7Htd8rdpJMik0rIue9hnSUWZb6QRDvTGo0IE3SwuVJyN6u1U6xEw+CvuN6fNM/WCmIkRpyMyQkVYutRN5JJ3shCNjUnhlJwwMH1wg2BLaoagPBjK2x+B3ZGG/sf2JyN6KeykuAVeaYcweVG3kX8z1mYw1NqURsECxe5ePFa0LYI1bd5/BD8m7MDdh1xmnufJqDVUX0eBR7/As3DYnX+azzjKKoIf3MYNBwX+3yxJeHoBdd5/WtJvfVUg9mNH5f+e0V7TXKs4ut7RFbVXDTDMTJyc5yPq7fVQnA69MmEVWNiK6eDI7ki/65GrTxH1rNQpjFiRR0/cwf4r3FJifwZUoVx3NCOlDsy5Vx536a3d67+M3s4nVyPQsFrCJanGZnfCuGHloCFAgTiKea29Z
+ cQeN//s6
+ 84j1w0K5ePSoZF5PSh/kTddRtCO8CUF1kO6VHz9asM0weOC+bwuJESxXXa7c5MeoVm82gp0wz8l89KHbqzL86rEw6agZl390nQ5KDBfb5L+EHLGIBM6lfHeVfeC37ki+5lbApjFQvGI4P102suO2bJMllN5kzOmdGNRbZbQ/ESG7aH0H4h7euDKz9+PCPvsVCNMJXzQNSbRfDVnsvw0uW+vUV3XbnnwQv/7URc6rxLqWT/y9++yDG4b4sGlovKGfo1S0yCZcIj5VAzjQrnaQYvsDdhOnCPAoR3l+uuAlBqKHi8/+kBwBczSctV6jy+w3fW93TVYCyEwwSm9dru+qOs9kY4UAtmIAWOf+5+wjPKqpaonO0xUiJXASlXOUNc5grAoOs2NUUSzBp0G/wgYcKKCMWWKdMYKmD3SsyNCViPUQ4Cx2BWnYySO4kIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,74 +94,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> When discussing per-process page sizes with Ryan and Dev, I mentioned that
->> having a larger emulated page size could be interesting for other
->> architectures as well.
->>
->> That is, we would emulate a 64K page size on Intel for user space as well,
->> but let the OS work with 4K pages.
+On Wed, Feb 18, 2026 at 06:03:50PM -0800, Vishal Moola (Oracle) wrote:
+> set_memory.c has a call to pagetable_free(), while the allocation sites
+> use get_free_pages(). This causes issues separately allocating ptdescs
+> from struct page.
 > 
-> Just to clarify, do you want it to be enforced on userspace ABI.
-> Like, all mappings are 64k aligned?
+> It turns out that we can just use the appropriate generic pagetable
+> apis for allocation/freeing. This helps simplify and standardize the
+> code.
+> 
+> In the short term, this helps enable Matthew's work to allocate frozen
+> pagetables[1]. And in the long term, this will help us cleanly split
+> ptdesc allocations from struct page[2].
+> 
+> [1] https://lore.kernel.org/linux-mm/20251113140448.1814860-1-willy@infradead.org/
+> [2] https://lore.kernel.org/linux-mm/20251020001652.2116669-1-willy@infradead.org/
+> 
+> ------
+> 
+> Based on current mm-new.
+> 
+> v6:
+>   - Drop the renaming of *page* functions
+>   - Use existing page table api instead of creating new apis
+>   - Split the pmd and populate_pgd() changes into separate patches
+>   - Reword the cover letter to describe the new approach
+> 
+> v5 link: 
+> https://lore.kernel.org/all/20260211195233.368497-1-vishal.moola@gmail.com/
+> 
+> Vishal Moola (Oracle) (4):
+>   x86/mm/pat: Convert pte code to use page table apis
+>   x86/mm/pat: Convert pmd code to use page table apis
+>   x86/mm/pat: Convert populate_pgd() to use page table apis
+>   x86/mm/pat: Convert split_large_page() to use ptdescs
+> 
+>  arch/x86/mm/pat/set_memory.c | 36 ++++++++++++++++++++++++------------
+>  1 file changed, 24 insertions(+), 12 deletions(-)
 
-Right, see the proposal from Dev on the list.
-
- From user-space POV, the pagesize would be 64K for these emulated 
-processes. That is, VMAs must be suitable aligned etc.
-
-One key thing I think is that you could run such emulated-64k process 
-(that actually support it!) with 4k processes on the same machine, like 
-Arm is considering.
-
-You would have no weird "vma crosses base pages" handling, which is just 
-rather nasty and makes my head hurt.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > 
->> We'd only allocate+map large folios into user space + pagecache, but still
->> allow for page tables etc. to not waste memory.
+> -- 
+> 2.53.0
 > 
-> Waste of memory for page table is solvable and pretty straight forward.
-> Most of such cases can be solve mechanically by switching to slab.
-
-Well, yes, like Willy says, there are already similar custom solutions 
-for s390x and ppc.
-
-Pasha talked recently about the memory waste of 16k kernel stacks and 
-how we would want to reduce that to 4k. In your proposal, it would be 
-64k, unless you somehow manage to allocate multiple kernel stacks from 
-the same 64k page. My head hurts thinking about whether that could work, 
-maybe it could (no idea about guard pages in there, though).
-
-
-Let's take a look at the history of page size usage on Arm (people can 
-feel free to correct me):
-
-(1) Most distros were using 64k on Arm.
-
-(2) People realized that 64k was suboptimal many use cases (memory
-     waste for stacks, pagecache, etc) and started to switch to 4k. I
-     remember that mostly HPC-centric users sticked to 64k, but there was
-     also demand from others to be able to stay on 64k.
-
-(3) Arm improved performance on a 4k kernel by adding cont-pte support,
-     trying to get closer to 64k native performance.
-
-(4) Achieving 64k native performance is hard, which is why per-process
-     page sizes are being explored to get the best out of both worlds
-     (use 64k page size only where it really matters for performance).
-
-Arm clearly has the added benefit of actually benefiting from hardware 
-support for 64k.
-
-IIUC, what you are proposing feels a bit like traveling back in time 
-when it comes to the memory waste problem that Arm users encountered.
-
-Where do you see the big difference to 64k on Arm in your proposal? 
-Would you currently also be running 64k Arm in production and the memory 
-waste etc is acceptable?
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
