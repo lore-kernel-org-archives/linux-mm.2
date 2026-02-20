@@ -4,88 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573DAC5518F
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6CA5C531FF
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:35:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA2D76B0088; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
+	id 0F7916B0088; Fri, 20 Feb 2026 05:35:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4CD26B0089; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
+	id 07A386B0089; Fri, 20 Feb 2026 05:35:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A862D6B008A; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
+	id E94306B008A; Fri, 20 Feb 2026 05:35:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 96E5E6B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:25:46 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34473BD886
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:25:46 +0000 (UTC)
-X-FDA: 84464453892.21.F9AEA6E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 85567140012
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:25:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RN7maaPJ;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D428C6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:35:17 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 857B91B622C
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:35:17 +0000 (UTC)
+X-FDA: 84464477874.11.E803D7F
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B69F820005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:35:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PlBxqdGp;
+	spf=pass (imf13.hostedemail.com: domain of 34TiYaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=34TiYaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771583144;
+	s=arc-20220608; t=1771583715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KSFq/eMlnsGxU/O/AIGO+U7y44qkWS2NgoGDTmE/KsM=;
-	b=s/7ZV0TOyz6ihJuijIqkXrP3SQYjAfBBrfhwkeG0hAzStlujwunL7DvJv0VSZMNdK7Q1n0
-	uf0EsdF9QhWE6VdaX7orp0XtueaAe7xGTSyY1xN9bGu7V1TxzauR+ezBy/dq8pENbFLULK
-	ptsGKuU0/XMxEx8mb1fzejuNmgdJSOM=
+	bh=SuBBZbTgNeFNGP2KTDBOL9VXYwpq19RWtpTtqUl4jLA=;
+	b=stn3ti0CFUZ0sA/A0rhM9HWEbae5wK2ntzq+zksohDS9wRJpXX0n1+NNC2ZXfo51jxs9hk
+	vsyCecHzRWXm2PJRX9pN5zpQurUf9bbfuaPNMgFLNxZhJiJa5Q8MW+vmN/t8nYuOoItCsL
+	++O2zlZr+os5iiGkDW3QqCs0BKSuDIQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RN7maaPJ;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771583144; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PlBxqdGp;
+	spf=pass (imf13.hostedemail.com: domain of 34TiYaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=34TiYaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771583715; a=rsa-sha256;
 	cv=none;
-	b=d56lCKLmWN5DdKJ2AcAp5IG9jFy4KDgR1Dy6v+tfVsRGk4jNzWCWlgvRIfn+freA6vY5WW
-	09U9M1y0/QYv2c1QoqiKCg0l5HpvEsabIlTciIpqwj6BRf3GbPS4aVKmy6MhXtebqjfxDp
-	Mvc+h0SiqkjH4XFmTCkzJoqdE3cC6Cs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1677A40D79;
-	Fri, 20 Feb 2026 10:25:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09801C116C6;
-	Fri, 20 Feb 2026 10:25:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771583143;
-	bh=fHah0S5EiDYqAgVFYIH+gMaVRw0f/1dDoBvuNE5U2VI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RN7maaPJvT08Xjj1xqxQX7/6YIpJ67iktTwqQUoO/AuJZ/51ixeV3h0DvF2QGF9n9
-	 qVNhmzOUKgR7bymsT+7lLXaoV3MQNZJ/2jtu0D3kRHqbUN5jmN6oUv7GjFxlOwTFkH
-	 1TwIl/N3tp4jqHzj7JmBJj8OGhRLNA1JGHokVT1OWfvA9YpIeb1VZDrsWdMZCdv0bN
-	 i/QjySoM1tg7kYeIQFK3UytAVsfnjzQfbstOvjsTcSiVVuLJhn1pgejcL3kknCkf2e
-	 ogEYWRK5OdB5mD3k1e75M47/hvMVIcRhGTZ+Cc7tZwpQT3qF1I3I0geNTsv5a8NWbc
-	 WrVuYRNuVbz5Q==
-Date: Fri, 20 Feb 2026 12:25:36 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	akpm@linux-foundation.org, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v6 0/4] Convert x86/mm/pat to generic page table apis
-Message-ID: <aZg2oE6FshskL_Kb@kernel.org>
-References: <20260219020354.321088-1-vishal.moola@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260219020354.321088-1-vishal.moola@gmail.com>
+	b=HmBpSv7izhEbO5AWRbeVphEMN1vpbwHsxhcvaBPL8RM5Vo89q03IlFnpkXlaQViDOJTMaw
+	IKA2U1ZP5MqFNdZ0nSK6gCkyTeGJvsTlrIgHV4LYHQZbBSQlQG8NsOLtM3Asjae+tVupEq
+	E5Ju23Siz13j3wUZ6qOeRc4HLeXhdEs=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836ff58111so21044705e9.1
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:35:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771583714; x=1772188514; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SuBBZbTgNeFNGP2KTDBOL9VXYwpq19RWtpTtqUl4jLA=;
+        b=PlBxqdGpa5GiV4VFRqJlhknjIt5RuJpa4pDp9IHgI2Vi22c82H80xDES77JdxtEfWk
+         Xl8V5on2HE1XwJQmja5FsEVnrCzB12TnOjy3ZdPCtQrGCBOEoqV6V6q81xpDTNgZzJXT
+         Exmza06TSwXIrXZDBsQQtPWvgesudBXb9Hb9ULDecdApaeQmJCWxhPnqqq20i3WB3vkP
+         moXDENx+IRUORQQuahWBDTKQ1Rrmg+qtgmKlmNQ62yULyOnnRf+npL4qAchbiGUCsjH7
+         vyoql4lLVWcV3TtLdYisxbIoahl7qyub+aTKErjFrc0Hw5lRLRuHQntRVZWr3iCSxfmk
+         Z/XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771583714; x=1772188514;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SuBBZbTgNeFNGP2KTDBOL9VXYwpq19RWtpTtqUl4jLA=;
+        b=bPzzTyKE56ZCyh2RmFncs3QNkHxO6992iBf+sHUCyFLrivTv+i7Uw8N7CO7Fax5tBU
+         KBCUsBCsBBDL3xQXZzM+sQyWRBnv+aG5ZMLmxu7oc74ftxpvyy0SZjOYF7esBxOPTcpI
+         b3aG+P69OSOnnJ6Wcp5b93M0CJIFej/0ofDKyQgw5V0NobsNca7CTZyRUSkAbBxe1rg8
+         GFSOqMHNIBe/HJ0YDUkbuyPfhT4uC+EG1MJSCfgwL3N8X2F+IjKa1kK+nkRGhCoZfIh8
+         hdnC7zke/gfPTDgvL/0Jt0xQMZrHdgf2aSi/peNEGnfMr3W21FlvqzUl1PCZRJTFPEfO
+         C5wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWskenp97Gf0YZnNMtTm2F5mN89UpWi850xdP+p2dAcHfZKQOTKvxh+viyq1gjqNLWYJGMY8S3iuA==@kvack.org
+X-Gm-Message-State: AOJu0Yw/ZJr1n53N7tJWs4+YcE45BDGJBG0AZFUAS9CjMPThTzhy/WkF
+	q34EVycGztMTJsiZNc99/r8VYnkxEtUr+BZP7kpgOtTdtBXEByj3Xaks83GlLOi7V9XZOH18HOl
+	eumHuVBuWaUPjFHSr8w==
+X-Received: from wmbdr17.prod.google.com ([2002:a05:600c:6091:b0:480:4a03:7b73])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b26:b0:465:a51d:d4 with SMTP id 5b1f17b1804b1-48398a47222mr123364405e9.6.1771583713704;
+ Fri, 20 Feb 2026 02:35:13 -0800 (PST)
+Date: Fri, 20 Feb 2026 10:35:12 +0000
+In-Reply-To: <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org>
+Mime-Version: 1.0
+References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org> <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org>
+Message-ID: <aZg44EmMWKK-z5KP@google.com>
+Subject: Re: [PATCH v15 1/9] rust: types: Add Ownable/Owned types
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>, 
+	Oliver Mangold <oliver.mangold@pm.me>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B69F820005
+X-Stat-Signature: dmrybiog6ixg9jbmsmtjc35j7wec9km6
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 85567140012
-X-Stat-Signature: x4djud7u8a31sseqgjhpkg18psq1o384
-X-HE-Tag: 1771583144-839223
-X-HE-Meta: U2FsdGVkX18h4ZYI34Rx7U8rnh+uWrIDvMh1tp01Mcny64RIbWxr6YcjlzzQkdSghe3vvUx9wl5XBg8p1aBFXGF3pWbP+pHM+bDHn/TTSAUo1J7NBvhLaY3YVUIzVX69V8mGHSRocGiQOfVxQxqi80rxK56ImzLN1axTTSLtoArDTAp5GtijsWsj2Ar7fLotjeC+UHTkidO/E+8brWW4bQtjD7MM8afq7lY3sVTnVhZV/pg4Q5ZSVluJmYR53rt7wr7L7vWKeRIssMZyeqyU039abWhT1+Zz+HxMakprXihWzJld19SvB0i8c6wiXKuueYeAdvdptyU5Jr3wQABo0HQC6Kn+rQkwqXDhzQ6eiItFGnPH/VCJgMYbGbu3eJ6GUwA276sn9vtRNrEEqibq05ygXHZGjHxP1KcdWE25AyDBHgpiMLVdx4yPhIo43x0ozfKr25FsNHZwqTMthqnyoRak5MrUnEaL+aCN2YxxZwYyLwspIqik7p3vOi4YFHU84PaTZY7umJ6Iun0GfB9at/pkaD7zwjsq1NBaqciDcsp95RskLnz7sgDF98/bMRg6Mb7Htd8rdpJMik0rIue9hnSUWZb6QRDvTGo0IE3SwuVJyN6u1U6xEw+CvuN6fNM/WCmIkRpyMyQkVYutRN5JJ3shCNjUnhlJwwMH1wg2BLaoagPBjK2x+B3ZGG/sf2JyN6KeykuAVeaYcweVG3kX8z1mYw1NqURsECxe5ePFa0LYI1bd5/BD8m7MDdh1xmnufJqDVUX0eBR7/As3DYnX+azzjKKoIf3MYNBwX+3yxJeHoBdd5/WtJvfVUg9mNH5f+e0V7TXKs4ut7RFbVXDTDMTJyc5yPq7fVQnA69MmEVWNiK6eDI7ki/65GrTxH1rNQpjFiRR0/cwf4r3FJifwZUoVx3NCOlDsy5Vx536a3d67+M3s4nVyPQsFrCJanGZnfCuGHloCFAgTiKea29Z
- cQeN//s6
- 84j1w0K5ePSoZF5PSh/kTddRtCO8CUF1kO6VHz9asM0weOC+bwuJESxXXa7c5MeoVm82gp0wz8l89KHbqzL86rEw6agZl390nQ5KDBfb5L+EHLGIBM6lfHeVfeC37ki+5lbApjFQvGI4P102suO2bJMllN5kzOmdGNRbZbQ/ESG7aH0H4h7euDKz9+PCPvsVCNMJXzQNSbRfDVnsvw0uW+vUV3XbnnwQv/7URc6rxLqWT/y9++yDG4b4sGlovKGfo1S0yCZcIj5VAzjQrnaQYvsDdhOnCPAoR3l+uuAlBqKHi8/+kBwBczSctV6jy+w3fW93TVYCyEwwSm9dru+qOs9kY4UAtmIAWOf+5+wjPKqpaonO0xUiJXASlXOUNc5grAoOs2NUUSzBp0G/wgYcKKCMWWKdMYKmD3SsyNCViPUQ4Cx2BWnYySO4kIg==
+X-HE-Tag: 1771583715-49240
+X-HE-Meta: U2FsdGVkX19eaLjyavnWo3gcgZwmZdfxH/SCUJ/X+hnCr4I6nMJuYlnMshXYEK0cOuXLP2FD+DVSyBSabYVUiWKnuk9ARJQf9jaLcxXl+vUb34Lj5BBZJW2lBCUkfUejm34MZd64X30g1RrK57kkv+PYY9bElVtatOOtu6QD06gUBBVsecwKNMf/tPChM4wCbuS9bgFCQ9Gp2fbLaGdRp01KgfP69zNvSlk97KyQB7RLg4asFI0+lL7Z/ppU5fpv82LlUK1PuuwW1TxLXeoTFWzfsHfKLh6urCTRWhGl1g79rNoJPMyAEg6198pYA9WnQbzQZrbVN9tgQM3X38E0tKEx5emIIVLrJvk4Tz6ofF/LUBlIplf7zOJG7kfss1IFrmKcVedhL4vlopY+SVGSlOFDj51yJHHGZ/OILToN8hwXdcZfB4+7uoZ/8U4obgG/sWx6eoZ2zxIS/7T4JmT+A5bPOJr4bywt2OWAAxySdxVydw03/dDArOGrCELc+kVYuR/9xuecDif4blkET7he68lHrBbP+jZygAMaXu8Tt/6AwGDOmj9ogS61Gfv80TcPKOTwX+HWafUKnK9eYHF4eGJz37aV71kDU4p9M5Bqw8PjelEkY71PIpH6H6mxTnjq4WZKQ9Ji2lqYrhvDy0CpuCluhRORrPcS6qD4zj+ZwZjUfNsnA+Ce1dXzdKb3Cp6M4VPQXtwkwunFkmB+srx0L1AzmlNi+WpgaZyc41QnUuSGOxZGkoHaUDZSLrB00oeBn/tbpja/Mz8AqKHEDL8mxs6T2kSIk+oXXhEgsB3vQnUd6sMTiq5qGJi+qkMDftafecSQbtnlOW4so3xst0qUTs0RJJi7/zhMQS12wB0T3Yg3q8QJ3gUspnnKj5BRdO47Uq7GdroSAbEWeRWG67ANOLVWv2Upf1UsD+1s09/0d+ke90lrAS/oFvVTELFWf9hWttSJRG1YQPEmybIeHtt
+ ckk+5Glu
+ ycsd1aKimbXvtrHyuq/9fpG5a+gX752scyin1O4QqTJn/3C4C7k+M26ihoqTgCqW0Xa+g8LxGk7ERrHn7WNUArLbmwFPsioDnRepkbPDkQuHsGyOXftgttE0nfC4D22WsuGUpJSEwo/YPNgN9HcmMNDe+BBBFMd26y2z5F7HS4Svnawfhn0Dyfz0nvASNR8MuWucTrV/h3i26vizflATU6CJ81S1WMMwF67sxyzrjgN8pmmWYqvTFlG2ivJBLEGAeBms9Hh49DqiHR0LmRDpjSH+Vqus8AdJSzCQ4wiBsqu5dOzWq0BOwkZ5exMzfzAadGh2aniSmiFfrlyI0zK31KekB40Gpozh+8M0f0FsecMFWbTlRiYUjixLI+26JVC0ZUqiS51GPOkVVAKVEZZd2BvxeUR7sUNIW/T+krByGrolfyvr0d08KHhqH1vBSZiAAeT1M+VjTKa56dv5mZVCnbmahYq1Bffj4xDa8syz13zLuAtZWn3Z46RL2ceJOIwRhlfWbgFhjxRT++aMsnjlYGKvN9Pqg/VP1E1ts953vUkN4fjAQSYzeUkOjIbNMk8ixdzhtDOWos2dR2cDfdA5/KIZDrYUeTooMRL+KTYu/7UAMFSywccNtZggZMWOBFysHvBd27KF/kKU+1gYCEb5nEReJHb2MYN7mCTxJqjnFArGCTB1SgpkTdLslzf3UVH6iuT4IMr+pU5cZnALHhrbM+vv6WtmkQa8qb2Dd9vnFwLNQaCok4ENuG+PNz+G+88zOxcB59cPCYNVThrWcwigbZXcN30Q0UJHErCmYFuXfxLKNBuvujItKab1JGH2RugF1DuqBiOgVldDZmik+8zwKUHrwi6dTrKIn19Ik+Ypnf9rVxnjQFlAs8HVgXjQKogYrFMSt4WS57FaaYBDdA94tQZ/gNHLUyjUk/lxe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,52 +123,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 06:03:50PM -0800, Vishal Moola (Oracle) wrote:
-> set_memory.c has a call to pagetable_free(), while the allocation sites
-> use get_free_pages(). This causes issues separately allocating ptdescs
-> from struct page.
+On Fri, Feb 20, 2026 at 10:51:10AM +0100, Andreas Hindborg wrote:
+> From: Asahi Lina <lina+kernel@asahilina.net>
 > 
-> It turns out that we can just use the appropriate generic pagetable
-> apis for allocation/freeing. This helps simplify and standardize the
-> code.
+> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
 > 
-> In the short term, this helps enable Matthew's work to allocate frozen
-> pagetables[1]. And in the long term, this will help us cleanly split
-> ptdesc allocations from struct page[2].
+> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+> resource management to the `T` instead of using a generic allocator.
 > 
-> [1] https://lore.kernel.org/linux-mm/20251113140448.1814860-1-willy@infradead.org/
-> [2] https://lore.kernel.org/linux-mm/20251020001652.2116669-1-willy@infradead.org/
+> [ om:
+>   - Split code into separate file and `pub use` it from types.rs.
+>   - Make from_raw() and into_raw() public.
+>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+>   - Usage example/doctest for Ownable/Owned.
+>   - Fixes to documentation and commit message.
+> ]
 > 
-> ------
-> 
-> Based on current mm-new.
-> 
-> v6:
->   - Drop the renaming of *page* functions
->   - Use existing page table api instead of creating new apis
->   - Split the pmd and populate_pgd() changes into separate patches
->   - Reword the cover letter to describe the new approach
-> 
-> v5 link: 
-> https://lore.kernel.org/all/20260211195233.368497-1-vishal.moola@gmail.com/
-> 
-> Vishal Moola (Oracle) (4):
->   x86/mm/pat: Convert pte code to use page table apis
->   x86/mm/pat: Convert pmd code to use page table apis
->   x86/mm/pat: Convert populate_pgd() to use page table apis
->   x86/mm/pat: Convert split_large_page() to use ptdescs
-> 
->  arch/x86/mm/pat/set_memory.c | 36 ++++++++++++++++++++++++------------
->  1 file changed, 24 insertions(+), 12 deletions(-)
+> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> [ Andreas: Updated documentation, examples, and formatting ]
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> +///         let result = NonNull::new(KBox::into_raw(result))
+> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
 
-> 
-> -- 
-> 2.53.0
-> 
+KBox should probably have an into_raw_nonnull().
 
--- 
-Sincerely yours,
-Mike.
+> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
+> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
+
+Use ? here.
+
+> +/// }
+> +/// // `foo` is out of scope now, so we expect no live allocations.
+> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
+> +/// ```
+> +pub unsafe trait Ownable {
+> +    /// Releases the object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that:
+> +    /// - `this` points to a valid `Self`.
+> +    /// - `*this` is no longer used after this call.
+> +    unsafe fn release(this: NonNull<Self>);
+
+Honestly, not using it after this call may be too strong. I can imagine
+wanting a value where I have both an ARef<_> and Owned<_> reference to
+something similar to the existing Arc<_>/ListArc<_> pattern, and in that
+case the value may in fact be accessed after this call if you still have
+an ARef<_>.
+
+If you modify Owned<_> invariants and Owned::from_raw() safety
+requirements along the lines of what I say below, then this could just
+say that the caller must have permission to call this function. The
+concrete implementer can specify what that means more directly, but here
+all it means is that a prior call to Owned::from_raw() promised to give
+you permission to call it.
+
+> +/// A mutable reference to an owned `T`.
+> +///
+> +/// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
+> +/// dropped.
+> +///
+> +/// # Invariants
+> +///
+> +/// - The [`Owned<T>`] has exclusive access to the instance of `T`.
+> +/// - The instance of `T` will stay alive at least as long as the [`Owned<T>`] is alive.
+> +pub struct Owned<T: Ownable> {
+> +    ptr: NonNull<T>,
+> +}
+
+I think some more direct and less fuzzy invariants would be:
+
+- This `Owned<T>` holds permissions to call `T::release()` on the value once.
+- Until `T::release()` is called, this `Owned<T>` may perform mutable access on the `T`.
+- The `T` value is pinned.
+
+> +    /// Get a pinned mutable reference to the data owned by this `Owned<T>`.
+> +    pub fn as_pin_mut(&mut self) -> Pin<&mut T> {
+> +        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
+> +        // return a mutable reference to it.
+> +        let unpinned = unsafe { self.ptr.as_mut() };
+> +
+> +        // SAFETY: We never hand out unpinned mutable references to the data in
+> +        // `Self`, unless the contained type is `Unpin`.
+> +        unsafe { Pin::new_unchecked(unpinned) }
+
+I'd prefer if "pinned" was a type invariant, rather than make an
+argument about what kind of APIs exist.
+
+> +impl<T: Ownable + Unpin> DerefMut for Owned<T> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is valid, and that we can safely
+> +        // return a mutable reference to it.
+> +        unsafe { self.ptr.as_mut() }
+
+Surely this safety comment should say something about pinning.
+
+Alice
 
