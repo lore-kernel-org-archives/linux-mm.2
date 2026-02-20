@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7643EC5AD05
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 16:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6401C5ACD3
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 16:52:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8FD76B0005; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
+	id 198D46B0089; Fri, 20 Feb 2026 11:52:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5D876B0089; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
+	id 146A16B008A; Fri, 20 Feb 2026 11:52:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98A936B008A; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
+	id 086F06B008C; Fri, 20 Feb 2026 11:52:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 74ED86B0005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:52:12 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2156F140211
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:52:12 +0000 (UTC)
-X-FDA: 84465427704.20.A3A4180
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6AC7E160009
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:52:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xfiIyRVV;
-	spf=pass (imf08.hostedemail.com: domain of 3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4C2B6B0089
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:52:15 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E40EC111D
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:52:15 +0000 (UTC)
+X-FDA: 84465427830.07.EEB6045
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 93A22100009
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:52:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="a97V7/sJ";
+	spf=pass (imf05.hostedemail.com: domain of 3PJGYaQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3PJGYaQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771606333; a=rsa-sha256;
+	cv=none;
+	b=y0K7s35L73ObNuJ4TskGKnt/yVd2DniNEIStnFWcWjufrJCrJ9OvoXLYS2jGZgV+Jzw7ps
+	THpKXMBNo0nnTlQYy8I220r7UdXJPxjJJYucix08+cgCJOleEqwzCjK083yimpFQ03pWgU
+	czZeU153YKlzvrVKaoTKse7j4TxkcWE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="a97V7/sJ";
+	spf=pass (imf05.hostedemail.com: domain of 3PJGYaQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3PJGYaQoKCBU7x6vA38D5319916z.x97638FI-775Gvx5.9C1@flex--mclapinski.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771606330;
+	s=arc-20220608; t=1771606333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CZAtOD8ZRnarQucUHW7t2nY+Ut5JOEodfHGgZzqPkiE=;
-	b=zhTKOZI7pHmOH8qtLgAzd+u6sfpjg864fMwK//ygYwYhW96iQNT5oAW/0cc3lYsZ+auHFT
-	YMO7R5gLLa0EnTStNYhnntWgzyo5ta/iY3m+irEKsdtnfFEfRfXDlA14+mFxOyIvnJUEQ7
-	WIUEKmxjaecrPbe+uv8LaJSvdhQUyrI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xfiIyRVV;
-	spf=pass (imf08.hostedemail.com: domain of 3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3OJGYaQoKCBE3t2r6z491zx55x2v.t532z4BE-331Crt1.58x@flex--mclapinski.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771606330; a=rsa-sha256;
-	cv=none;
-	b=rPdx3XOeYZs0okN+mIjOwjZY4+5xPmoIv2LsiZGwaFfIYzCx65jrFcDq+ZH1bykekylQSm
-	GcE2hd4QQYPgIDGI04bVryirq7tNdrba29To+MK464yHNMGdHabQYWuK7wDs+PGMujCHhn
-	89kLuJM6up91va5nIYKzyvTWSYb88xg=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836cd6dfe6so17691345e9.2
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 08:52:10 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/cSTzAkt5CK3RH1LCsoiWKzafA/Onxi/2uJ8AKZyka0=;
+	b=lN56jpomZLh/D1sdrwQpQFa8mr0JDIwm/S6/HdJCJVoGq1JeOD7X6tIFaF0+qAq9lUSq8I
+	AD1yp8DF+QyUMdGhkA5/Aek0lCmisyRyOYb4a/64j8NzVA/V3EMunK7twf5psHfs2RajZ+
+	7otx74mF9iZUPaJ/ZZ/LxaxFipdFcfs=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4832c4621c2so25230065e9.3
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 08:52:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771606329; x=1772211129; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CZAtOD8ZRnarQucUHW7t2nY+Ut5JOEodfHGgZzqPkiE=;
-        b=xfiIyRVV7aLZ+cRwvg1c8v3YkFcRqR1e7hGuV2eHnIFxBdqfK3U11YdsVOJNeJj3J1
-         lAXmYr5UYM51Bm+DvyyevO8iRcQhnN8g1sv1ZCDD6eL+oDMCRAPTCHquzWtpxVxB7C+v
-         BZ+8JRDqgmvzZP9K75D96A7EYFLkJJwrAXzptqQNcWWcM7QokrwdIforRF4toZIcKIra
-         BeESF0Pc2ssl99eORDecG5oZInbB+x0F1i6CyVPRnr5ub5Kv6VU06rYoIrIXgGYi7H3p
-         1vV1wNfeZIWbdUGz3hBT/n0vnU+fLeiAY+qoyzkFOoYftt02nAwfhJmeok+QZy4VggfE
-         fsXg==
+        d=google.com; s=20230601; t=1771606332; x=1772211132; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/cSTzAkt5CK3RH1LCsoiWKzafA/Onxi/2uJ8AKZyka0=;
+        b=a97V7/sJe4Q1N5YE7lUzAbpZ0tX+MaFXDQPnOpSY6H8+ohxYbc7V4mgHCTDG8rmGLI
+         kezHOnwlqvTnivcrH0/zQg4PgW4Pnh3TfVcBlpkO96VO0iipU7lSIaHhqdxAmLV5bFkn
+         rluj+SFLUzIWiQ29PGws9OylFA9MsD/aqWSOU6d+YEuxQS2UTh5TI17uu6pWQWNlx0dU
+         GBxJIDNr9FRMhupiGBav8i3qEFMhcDQqTi2r54h4nbAmWrdAq9byMOzap2W1VMost6Hj
+         kX+Ss5mBsqbawBoPDvFz1pHRUZUxveQA92QtnY0e8CNa3SPMpsVFIiVzEp0i+evtKX1v
+         6f7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771606329; x=1772211129;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CZAtOD8ZRnarQucUHW7t2nY+Ut5JOEodfHGgZzqPkiE=;
-        b=LYnZ5/6XyanNewaDEd6lIRnhSVgDePCGK7xHKxoPDGXTtmH3PeLxRBJvYiGEHSCdN7
-         fa7aUK9o1zn/LP99tKlkYX9EQtpWNRteWgXDxS3h7HihzqHnru0yDZQQ18kmgsQMhc3r
-         +X4d9L/axApqmrSkXKrFTpK67E/4Y2jRfII/xbZgRrX1okUu8l2o3a7Jl/gtfj1wcFYT
-         tFXA8c1LU+e+kFS6dmIbNAVfw0zw3VoAh6E8c8H2YygJJaKOJqtQ1kHQsHq32KrStYZn
-         PPy+OsuQcxTQ6GZuSBoJQ9dxwfgiryMZiyvVzNgSo0oQTiKkbqltdU0nI6+Ihc0WxB6D
-         k2KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcgN621eHANqEXxFLX3e2gHt2osny/etvN03v7l6HQizOJVdAH3s8zsvus0Wzz5P1Bymx25OH28Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyj4QgVi9FXe7KMLauUOUrKTijpykn/9RLMYOpFDIpXRKWbyRgv
-	L6Nyjftcg9MxB+orz2Ta8v8DNmXoW0jhgz5wLr/vnJ3yYFhJhZyfVFXYxmqSfLCFgIIs3g3fRIu
-	tQ8NG3vkIs1JX5KSXeeQeKA==
-X-Received: from wmog4.prod.google.com ([2002:a05:600c:3104:b0:483:6fcc:920])
+        d=1e100.net; s=20230601; t=1771606332; x=1772211132;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/cSTzAkt5CK3RH1LCsoiWKzafA/Onxi/2uJ8AKZyka0=;
+        b=qQRq+mHF38BEDjfoZYkU6E0Typ0mrjkgZdRdFI9AX2DYtdnAU6Vw/4XMr2+ljmpNRP
+         jvWwZMI06tLdlA/1x67EpTFm/C6f0QXixwv1G8hQVIscdfqsfDUyho6YXccv+XZfuV+h
+         J0Lr3S0tohIxMbxhz3sMRUKJyzy0Nn6Zs/kdpxn6e3fzXcL2gLBeOuhp+ljsmcY9w1bp
+         fRwL0C7mdaA8YpiJtk4/ym2RRwbPKO1IwKlTfEYApUdZFuLl6M/ByGyXtmGmi3pGhqlX
+         DVEUWQO1SYgjE3fzbG2zY8Rv7Sx2DJRb5suHNMpJsf8YjLZGBrck8KcBc2GSeULES4yw
+         wHQA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSS5ObM62tBgNd8eJGY9u8Y4r2TlLlHMwiO7B87iKb1AkNWqAXeeEJyUcCGH5TQfjLjYq0JG08vA==@kvack.org
+X-Gm-Message-State: AOJu0YyWVJIP0SwUjx5aXaqyQ/77uf9UbuYKBYxMDZ2klY1wDg+I8KU7
+	2gdgavxnNNWSVX1GBV9rXVecg4d/1p8HSpHyNiW/7r7EJhUcLCrOAKjQy50zmFE1ZIxUY1FagNk
+	0RZg6and/Ufz3lKxa6vgP+g==
+X-Received: from wmhn17.prod.google.com ([2002:a05:600c:3051:b0:480:4a03:7b79])
  (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5287:b0:47e:e807:a05a with SMTP id 5b1f17b1804b1-483a963c238mr2105545e9.33.1771606328737;
- Fri, 20 Feb 2026 08:52:08 -0800 (PST)
-Date: Fri, 20 Feb 2026 17:52:01 +0100
+ 2002:a05:600c:3153:b0:480:3b4e:41b8 with SMTP id 5b1f17b1804b1-483a9603c07mr2950695e9.33.1771606332067;
+ Fri, 20 Feb 2026 08:52:12 -0800 (PST)
+Date: Fri, 20 Feb 2026 17:52:02 +0100
+In-Reply-To: <20260220165203.3213375-1-mclapinski@google.com>
 Mime-Version: 1.0
+References: <20260220165203.3213375-1-mclapinski@google.com>
 X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <20260220165203.3213375-1-mclapinski@google.com>
-Subject: [PATCH v4 0/2] kho: add support for deferred struct page init
+Message-ID: <20260220165203.3213375-2-mclapinski@google.com>
+Subject: [PATCH v4 1/2] kho: fix deferred init of kho scratch
 From: Michal Clapinski <mclapinski@google.com>
 To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
@@ -91,14 +94,14 @@ To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@so
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Michal Clapinski <mclapinski@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6AC7E160009
-X-Stat-Signature: 75okk1wfdt4bnifj186wtbuyrbp6aiu6
+X-Rspamd-Queue-Id: 93A22100009
+X-Stat-Signature: humd8a5u6tupsydb4ggafuu83t5ah1qu
 X-Rspam-User: 
-X-HE-Tag: 1771606330-288300
-X-HE-Meta: U2FsdGVkX1/52HVlqJdJsGhN9PgYI21z5WIsHbL3D2Ejh+A+T11SzUJsAAxaSKVINwHK5PF1MxbJMdqH7vecSNhSlz++av/OGIHXyaPAH0Exng2I+HxCkTSU7Gzb6P/YkYNuUez0q584rvtCH0qGkOoZH1CyvtVMczH9+1+eBEv0baiG1bigxnjn6pYgbjVYBM5Esf5wmI9FX0ZqB/+iUgDXyVRj6OT6OAhL5nj89HrjUMr+66RSM1qWnBI7oOAP3g5v+/SHUH8eiW3EZIZ0HKaiXX85DY+CxC3ixVPgnQ+v9fQplPiEt6AEzE7LmdZ8tgbUCkgE3QM89hMuSlm76mZXQBiS7wcwWSVyqsFLu+wEXo8hINAshz6khkvYejzRfHwTKLMzJEjLNDGp4jFzEWaEwudVbriPNwdz9r2Pd2Jbvuje1UlpZSoC/7bQhCsyceEYjvuAxqnBD8SYp5B2ZIjkXocGyCoQk8DinUg3g7mjLkbi7+exkoOqS13yd++N+09SS7swXpWiJXIX/h4446lVvCFOtmWJT6S/ngSHmKBkGm+arYrrItxp9fH6bZcsvVvXp7gJXDSgTdrhTP3Qg1UX1DopcEBRU27rt4MbjGZpWB2BUwHr+Y9xwNLZGvPS4rlNsQZPGHQ89pTAkkj4hCVnbi4HmMgkAjWgKwB2ygtRCoDdY5orA55yulufTEW8SEPHRYXgysnoIymkjfhSM3Xna4IWgR4y41ppYfW0z5nWavwObjNSZpEFMqyENwdniZ1x0xqJEVDA/7SilPgC/GbFZGVE2XB6dzG56E5rvZ1AoJ1epkc1AoyFUPKQRBxU8gfpw9P8zAX2r/m+/TWzsKinE2ShVsmGOtIEe4Xo5dHrvvDRGfi/wNIbSiOSV375mPpC4h4mTG5Y0Q5gvSSb8ElqAkeZF0vormYQPGH1McGGtLU/LQeUCWLlLoZHCaZdY+lKgj+Wa5psvelzgRG
- q2eFzJS4
- T0qxVNrZVu8+iimAWsnK4VnzLfqqk8GVudrtrcx219WpamB+XwhyzZtf3mVMnxO77uZomxQzM0NaVqkHHPa3N6G64lcZ5+Htpwh0NqyOJ3R5NZdC82Wpzkp/osZVtRE3pJIWJAn0qTCJBvvyfd+XEFSb6EMg3H/xTrovS1ijl1Z7m1Y9NnOv65JRGdFie/89/6r8fuy9LNp+w7obJL7NyTcmzt+Vrxd2cqpeGtgxPGm78FS6qj259FyqAaqvZeT1SatTnaZw5AUVhkz+3JeimllHm/seeZ1G2O5afyYMCk5uPHblFEhkjamie5l2aB+PFav/JjrxvCnjsTK5Omawuc/qiMLOxKN+POEhDdLjE97uctrmDk4Jwupc1NRd32UtYkFcFJyAKEAduShWhNXhoJwytOkNMRL4I+qZu1KW1QmBaBRj+lKWv5VQYVxcbplPHWOYPMKWhcsB2ucdP06yiANMr39FDicdoBIVJiTo8pJn1OQucfJqJjzIsGCbWb4VU/1Eq0ZOpd/fQYB8vCt6dkSG4ECko6b4vY4PnHcOXzNb+5e9KkVmAIK0bgdqNl72etVLR6vL0J7/4RiQ=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771606333-589376
+X-HE-Meta: U2FsdGVkX19XpShN9WAb0kBT9MNz5+y3+OYhBx+xsUxwF7xRX04JGOtPWm1va1DRwzxWJQ3TFmIfuLtXtw0L+Ci+OJMMwc60bkwFi8d/gelNcCjYYa9O6qXYsUEPN0MHNgBTMFBa79RCNQPc8rLaOTDKRjPR/kidOPVwEd9PeROjG1NgCmlxXMz5Vep/UxMQBgbBQM0vRn2eMcIQS308oYlWCRnnOUSLv/GM5A/MzOBnYD6/F7lexWerv3W3WzsUJ8YsSpVhJOEtCkujHERyxUagdZI0PjEkweF1whc5K0LTUJwMk+Z7QbyCLjVPU1RS13Z119LoqP5qG10tF8U/8VHSWm8SgZRGdt7nD6ihjF93vm2gzzOU3DC5n9mA+fooeCbhqM8lhnVnXRON6w1ULw6De6PdtXBsfdx/u9Ov4zhq+sjWEjCXQyPWb4NIxKs5vtk0yvOn145jWdonkEgoCYOxlfulQHY/9GOKzLiqDTV/jLpOKjwWv8ixaBVgNWjqofwVBFFCfns2IOHwCxkP1lKiteuh57qSbjzbz44nzslm1sVQil7QGOp81oBe8SLU3cghxcA79olgempOLiYaqSCsmsbJUOSxy87A2dJPLqbQSej+fXMXhe1mY8y3gi0n7LtJ8KG9jG/lL/VJbZ5tUAOWNDZvuMVh3y5eAYvURBP60fcJKaeDvJOtnTSF4FzOnIKUR/VgrSS7AfNe6FdT4ZcvWrT94wR+audcZ0h4T7/XVVVKL68HwyF84yauabDQtA4RpqpVSKoRb5OGU3ZcLuOA2Hm/IuhPw8UxIS4xghjIV6OZSiq63tYjCe+hpxyJfKZqCrsgeQZz7g2Xgp3A892COvQfUXRoy6LyDlGYKxkJdVH1rjPt/BN1W32C16zD3EEI2Hadve6wXGS68uKRV38lEfE2/rVPXDFCCrVw6XRDWzpIo956Rzfzlbd8pTmxUn0aVy4Vtp8QjnCp5sm
+ dt8ZC4FS
+ JOLmq2Pw+OdSHyOWr4CMZFpph7sTpHQzurp4UUQWohP4P3JEIFYmyoimGboiU2drVrpAstHLWWsEvbyCwvShn7+4E4YX7feW8xzYsHDFMkWdiYbQje7mKmXoG56do2g9mJSgU1PosAre4qPGG35lXCWcI89Ey2RK1t1S9oMbT3wzNALtdtC6Y1johUgl2JM5NUHEaOJ7LseQun3Bq+wELZ8ZVglUiPpSurfP7wG4/3i0ZLJZAQTP6a1WfGgJyVRywvJH8oHw+Sj6kASZeOLh7LnYO3GJEsVuvXX8+P6G9xupjaarRFh12alQYH6EJDwA6GToWTPGgp7iyG3Bk149TTjL/KvpI0/FTau1WuAiPp3Yt1GVsk219M4lMFgLBoRz3S8B4Vf+6IxZ8Xt8gbnpDw0DobuChFtsspGsiPqvsdDJ+/CQLayhoZ4ECojEnCqi/NQ7QxV1TeEb5vVwcjzJKK1Q88MbvWrbTaotGHnct6K1noOWDUPJn8M48AWK7PKYUhM22VPcpIRyccp043/Jrh9Ssiyrg3emFTqCHTb06YWzviIAheVkjAj0qMf0KaZQ2O8LmdchqoutKDhlru4DfnujNs/E5lUHLDMkwT+EVCpPJRaY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,34 +110,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_DEFERRED_STRUCT_PAGE_INIT (hereinafter DEFERRED) is
-enabled, struct page initialization is deferred to parallel kthreads
-that run later in the boot process.
+Currently, mm_core_init calls kho_memory_init, which calls
+kho_release_scratch.
 
-Currently, KHO is incompatible with DEFERRED.
-This series fixes that incompatibility.
+If DEFERRED is enabled, kho_release_scratch will first initialize the
+struct pages of kho scratch. This is not needed. We can just let
+page_alloc_init_late init it.
+
+Next, kho_release_scratch will mark scratch as MIGRATE_CMA. If DEFERRED
+is enabled, this will be overwritten later in deferred_free_pages.
+
+To fix this, I removed the whole kho_release_scratch.
+Marking the pageblocks as MIGRATE_CMA now happens in kho_init, which
+runs after deferred_free_pages.
+
+Signed-off-by: Michal Clapinski <mclapinski@google.com>
 ---
-v4:
-- added a new commit to fix deferred init of kho scratch
-- switched to ulong when refering to pfn
-v3:
-- changed commit msg
-- don't invoke early_pfn_to_nid if CONFIG_DEFERRED_STRUCT_PAGE_INIT=n
-v2:
-- updated a comment
+ include/linux/memblock.h           |  2 --
+ kernel/liveupdate/kexec_handover.c | 43 ++++++++----------------------
+ mm/memblock.c                      | 22 ---------------
+ 3 files changed, 11 insertions(+), 56 deletions(-)
 
-Evangelos Petrongonas (1):
-  kho: make preserved pages compatible with deferred struct page init
-
-Michal Clapinski (1):
-  kho: fix deferred init of kho scratch
-
- include/linux/memblock.h           |  2 -
- kernel/liveupdate/Kconfig          |  2 -
- kernel/liveupdate/kexec_handover.c | 70 ++++++++++++++++--------------
- mm/memblock.c                      | 22 ----------
- 4 files changed, 37 insertions(+), 59 deletions(-)
-
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 221118b5a16e..35d9cf6bbf7a 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
+ #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
+ void memblock_set_kho_scratch_only(void);
+ void memblock_clear_kho_scratch_only(void);
+-void memmap_init_kho_scratch_pages(void);
+ #else
+ static inline void memblock_set_kho_scratch_only(void) { }
+ static inline void memblock_clear_kho_scratch_only(void) { }
+-static inline void memmap_init_kho_scratch_pages(void) {}
+ #endif
+ 
+ #endif /* _LINUX_MEMBLOCK_H */
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index b851b09a8e99..de167bfa2c8d 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1377,11 +1377,6 @@ static __init int kho_init(void)
+ 	if (err)
+ 		goto err_free_fdt;
+ 
+-	if (fdt) {
+-		kho_in_debugfs_init(&kho_in.dbg, fdt);
+-		return 0;
+-	}
+-
+ 	for (int i = 0; i < kho_scratch_cnt; i++) {
+ 		unsigned long base_pfn = PHYS_PFN(kho_scratch[i].addr);
+ 		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
+@@ -1397,8 +1392,17 @@ static __init int kho_init(void)
+ 		 */
+ 		kmemleak_ignore_phys(kho_scratch[i].addr);
+ 		for (pfn = base_pfn; pfn < base_pfn + count;
+-		     pfn += pageblock_nr_pages)
+-			init_cma_reserved_pageblock(pfn_to_page(pfn));
++		     pfn += pageblock_nr_pages) {
++			if (fdt)
++				init_cma_pageblock(pfn_to_page(pfn));
++			else
++				init_cma_reserved_pageblock(pfn_to_page(pfn));
++		}
++	}
++
++	if (fdt) {
++		kho_in_debugfs_init(&kho_in.dbg, fdt);
++		return 0;
+ 	}
+ 
+ 	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
+@@ -1421,35 +1425,10 @@ static __init int kho_init(void)
+ }
+ fs_initcall(kho_init);
+ 
+-static void __init kho_release_scratch(void)
+-{
+-	phys_addr_t start, end;
+-	u64 i;
+-
+-	memmap_init_kho_scratch_pages();
+-
+-	/*
+-	 * Mark scratch mem as CMA before we return it. That way we
+-	 * ensure that no kernel allocations happen on it. That means
+-	 * we can reuse it as scratch memory again later.
+-	 */
+-	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+-			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
+-		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
+-		ulong end_pfn = pageblock_align(PFN_UP(end));
+-		ulong pfn;
+-
+-		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
+-			init_pageblock_migratetype(pfn_to_page(pfn),
+-						   MIGRATE_CMA, false);
+-	}
+-}
+-
+ void __init kho_memory_init(void)
+ {
+ 	if (kho_in.mem_map_phys) {
+ 		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+-		kho_release_scratch();
+ 		kho_mem_deserialize(phys_to_virt(kho_in.mem_map_phys));
+ 	} else {
+ 		kho_reserve_scratch();
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 6cff515d82f4..3eff19124fc0 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
+ {
+ 	kho_scratch_only = false;
+ }
+-
+-__init void memmap_init_kho_scratch_pages(void)
+-{
+-	phys_addr_t start, end;
+-	unsigned long pfn;
+-	int nid;
+-	u64 i;
+-
+-	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
+-		return;
+-
+-	/*
+-	 * Initialize struct pages for free scratch memory.
+-	 * The struct pages for reserved scratch memory will be set up in
+-	 * reserve_bootmem_region()
+-	 */
+-	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+-			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+-		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
+-			init_deferred_page(pfn, nid);
+-	}
+-}
+ #endif
+ 
+ /**
 -- 
 2.53.0.345.g96ddfc5eaa-goog
 
