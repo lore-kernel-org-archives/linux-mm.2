@@ -4,108 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1718EC5DF66
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 23:54:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92B90C5DF68
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 23:59:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28C366B008A; Fri, 20 Feb 2026 18:54:49 -0500 (EST)
+	id C505B6B0005; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 223236B008C; Fri, 20 Feb 2026 18:54:49 -0500 (EST)
+	id C27CA6B0089; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16D6C6B0092; Fri, 20 Feb 2026 18:54:49 -0500 (EST)
+	id B53F76B008A; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F140A6B008A
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 18:54:48 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BDE8F1B5420
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 23:54:48 +0000 (UTC)
-X-FDA: 84466492656.09.97B7C0A
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F2D6040004
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 23:54:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vd61WsB5;
-	spf=pass (imf12.hostedemail.com: domain of 3RfSYaQsKCOQGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3RfSYaQsKCOQGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771631687;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A326B6B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D08A1B5671
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 23:59:56 +0000 (UTC)
+X-FDA: 84466505592.01.5328093
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 52B071A000C
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 23:59:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Q8spDmPm;
+	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771631994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E9n+rIu6TMqcCjcRNbiRVZNUoVIfjXuiOSfksLOomjk=;
-	b=MQxv2400DAL29I+xh4B94vqVgd9PcIWdBZBSYbLSyLsdR8Lzsj4e6VB/7h64vmbPGFsSde
-	K5ouByDxXZ/6Uo9Af1PGuqXR/MqCGlR0ujRDv1CEbGCpTfC23t9oo2uXNz8AvFmOXbtKny
-	QDmKVZVzrRwwqkylgI2O8f12EG4b1b8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vd61WsB5;
-	spf=pass (imf12.hostedemail.com: domain of 3RfSYaQsKCOQGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3RfSYaQsKCOQGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771631687; a=rsa-sha256;
-	cv=none;
-	b=dX61LXQP1HfuXcuJPWEcwlZAMGzNtGN2iP5llHzZ3EkL155yQKCHCq4CZNtZ1SsPYdN3Sp
-	AiAPxfhrxnhVfM7XOsONC0OkPg6BHdCuymr9kOqqg2IWhH8k/XIY7k9uc77+nAaghs0dYD
-	7YNu1eVoDcr+cPMgfyS9CCwYr8m9beM=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-824ae2c9ff4so8659651b3a.0
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 15:54:46 -0800 (PST)
+	bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
+	b=josL3CSqhN6GVZV3/mQSn1IDGA39+synBW7IK6AueZVXMy5iYBUpvbb/VwJGH2ZNVegIAp
+	vrQYCraotAdCQY0IQbTMVlvIAGt1qOCvsL4HD2/XGqCVdTPWqeJDcwM0qx359CYCLDRYCf
+	8iK/JXPWMhQ7VOAgdqyEC3/j4m9yJ1Y=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Q8spDmPm;
+	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771631994; a=rsa-sha256;
+	cv=pass;
+	b=pHke9GANNPXOYQJRTUQ5A5UbVnl6KSA3BwhuadzqitoAyqbfszeyCY4N5VWYWCqf7TaN0a
+	2jPG745xR2jFpirRUK17r7M6xVfOoqsw1cdhOFZ8pVYWMAYdN6vz6DjmEy20SgTV8MJEwE
+	WBhw4UBHr9PHYzTvOa4LjTGAYryab1A=
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5673fd077b4so1252599e0c.0
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 15:59:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771631993; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ON+kTphqZU9H+IMo0n/u70urtLq5cDGfIIjQQ6WAfOOtNFak3o+ZmXQVWIsMi2P/8D
+         vo8f0jCVR7JfnRaUGn5DqgHq8XCJ1VUd/XYjLoDLUg67m4tmm532Ls+lxFmIhR75fGDv
+         Uii9TbyuP7mZdl2Woknjp0YOlLOC+2GhcBguV3SxgtYz5NFybhciygOjQLxbUdseF8aO
+         PBgL6Kti5BiTK3Eoh6kWtYkawntHASuCy6bh4PJ+YaxJzj3h579Ks3xej2/Eh9iNDqRd
+         qxfch8j49cq6cONplU5+OKyiCPe6xw8eNlchgP1TU9m4LZ5mEPwrEo60DTnUIPfOS4Bl
+         TZzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
+        fh=DSxFU9vb00RnrBYf9XlvrG2hgm3vpNwB6RG26FlbDVI=;
+        b=cH6fz671x2+7YoIVeDyiFyek6kn9PKqpM3AsEO8R9AY0t4+KOIHj7L8pSZyRN84fLu
+         Tp7x9Ud2STkl6luSs5rZHDyL6R4XRREP1/Ln48Tk70z3owenrgU8cIHEY9QHhYV6s2wm
+         fNPJj9qFCmWgb51UUgTGodr7QP5UjVagWnN6+2U8XotMiijtrMVzp6Y9OLSKSUR1hi/M
+         rT22qfsbqhkugD7FIlBY/rWNDHRZIfWM5um9mrnKLmbjrk8iyWJNjMwzwFVnQOPghdVw
+         kVQgrb/Wtx4JG4kyRhDcW/SCV8L5G1NXlvalX9gfsurXd4VlzTZcS+/wFvZ6JiAjDYnP
+         37Wg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771631686; x=1772236486; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E9n+rIu6TMqcCjcRNbiRVZNUoVIfjXuiOSfksLOomjk=;
-        b=vd61WsB59V2CbqU+/4uB/XvZR+c3Via0cyfW06Xu9+NTLhpoGTvefXsE7YlIeLv9qL
-         z89CVLnJMJn4OXueH1ZxKNaQ4l10qnz7cbDTxxIIS4roO5p8grpexy65RCBpfwvVpfkH
-         5s2TbLFfN2hmXEKxkght+6pEGizOLBizHdcbSed8PH/MhKR5ho1Q1AupzGG4fmmG92dp
-         vQPiO0lDAO4i1jC8dpZBDXOQn2ocrh3I4kU3OK1NyQcsrCU2oHwvr3yyBnVzE0U//mXl
-         rgQF4qacGR2YPGn3YAiGyQVqp7tp84nzRbzu2EKJmPz0UbL5328kWdeB6Obz6xbEGJ7J
-         Zo0g==
+        d=google.com; s=20230601; t=1771631993; x=1772236793; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
+        b=Q8spDmPmoL7MPGPg5y3eItaw9T4w0NMJ+l9bUfuaZyitgPyl66OV9zL7F/J8pvfwDN
+         tHVQ05SgqBWckFuo8m2ZlA0KQyNJJNSIA04SFPq0nmIkxh+PszL0eAe1gXLHZlzGB8UK
+         sUe5OADqIFEf2eOecQMNyjGSTvagFgRM5kNsQbqPMNCJ4w8vCCxBnvEKisRJvjsrUw4F
+         uzsY/fntd/HC2QZ6kYkpQiKd63pCbnNyXRDZMGwgUo/ZJsCAT0/kfzj4rSkaV1qXf4Xk
+         T7An/WnpzVvc+SKSX04Qnvrf4Mb55PfdjJJ10jyHLu3p+ElBWfjwpnRA5AHYq8pqqG8T
+         bqoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771631686; x=1772236486;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E9n+rIu6TMqcCjcRNbiRVZNUoVIfjXuiOSfksLOomjk=;
-        b=BlkwXxzK2XSiCa0f964qeyVoc3t74ZFfCUVUrKwGSCv/oUAHaabXdYo6m7e/VNhajU
-         RbP+N9nshqAekxMVFwOyeEZwg4XIGhhnS64DEa8dc34FJJaZ2HxW4Mgvm+27HwQptvq1
-         5hc0MFnIPJLvGizBQzWDfdjkZdutkLUOfFIbvP4dRbRNU+ctFY25TNm2hPF12dZDxW71
-         6sBnCqskRKQC9v1OjJKauLrSzXWK6s61/FAaQ4IhITonmy1CoGA2/oCHfsSPLCTuU/Tv
-         QLu+Rr7qLebf63UQWyfDBY6/VMtSzUuIicR8yFHu5YrUHyEM/mZSfisrBSoFhivSnrIs
-         tlaA==
-X-Forwarded-Encrypted: i=1; AJvYcCXFHOnE5cDLyk+OehRjTFQmTyDF1AWuWXPVaeapkJrSAOsSox9mad8LMeMDiUh76FtmDjW2FTT7sA==@kvack.org
-X-Gm-Message-State: AOJu0YziSKfIwJVPpkgB6MA+p10RKFRifwc9A+pu+CAR/ViJmLLE/64l
-	FYLAgKn2kRUgrdkLnG4bEEUzvbyII7OP0HOeJaJgVi60DKUK9mIGTDEvUppAXvIxMcICec2tE4O
-	+RnZi3kQeoVt8So6lWS6Wb6owxQ==
-X-Received: from pfbjo15.prod.google.com ([2002:a05:6a00:908f:b0:824:bfe3:b54e])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:b92:b0:81f:b3ce:17a3 with SMTP id d2e1a72fcca58-826daa20081mr1165866b3a.48.1771631685524;
- Fri, 20 Feb 2026 15:54:45 -0800 (PST)
-Date: Fri, 20 Feb 2026 23:54:36 +0000
-In-Reply-To: <cover.1771630983.git.ackerleytng@google.com>
-Mime-Version: 1.0
-References: <cover.1771630983.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <8048d04f150326d1e2231318aa9f1b3fce3e2e2c.1771630983.git.ackerleytng@google.com>
-Subject: [PATCH v2 2/2] KVM: selftests: Test MADV_COLLAPSE on guest_memfd
+        d=1e100.net; s=20230601; t=1771631993; x=1772236793;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
+        b=bBYIprgOsrJAotTM9hXEjagcslusp+VjkqTV/7slFc9awu+CO4y13YPoqymOj1KY7n
+         dJBgJVDi7fyENEsK4U4o2vC42Smo8odFI+BK0nwEPLayvWLl0kLLRJhYEog6Agm4AiFy
+         yHzWjrVhZpMB0VxY3aQdgOMNOifBtSxMItp3NhzfcOP1dI5QJHewdiU7zxVv1uB1Jj4+
+         D1PK8dLJ/SPLjWMmI8ihlAfQT7Jc9q6xkv6tAtzXIHALH6jlJLqgMuYlV8I2VIyDDHul
+         jXiSunruv9gHzsOGpeEeHedwn+O+rdaMCe9snPoOOtTBTU4ZrdIWCj2pm4YTYas08+ML
+         voCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHbwhPRaEXnrvDsixunqbFa0Yh7mE0tWChzpslK7dT/jBoG3heVEUFFl5lgjCNoyJJ/FOs9XPt2Q==@kvack.org
+X-Gm-Message-State: AOJu0YxPnFWY+XZ2JSzW3R+sau9vGSOw4coAOdwPekQ4IFHUoBkFB2iG
+	Tnl13ZKw9Hd0XcqyPygjKnEt8BjaUpcgQ5kxPe6HEIpEA/ITSNtfmCqlHpn2oBClE/4N2dvmPGN
+	jn+ciMcDJne5eZzW+PFGtMR7ekiRJVhfYvPJ2Z0ZX
+X-Gm-Gg: AZuq6aKmeYDcBsSqYDbX/H6j4c6Y+8Q2aJJVhqBLgzFUjJXAhkSplh3FZKh0bOQEyVR
+	TsFTLNx7RYPYgpNXmiIh4JfjGf9PIQnqqSC80+h508be/bqa6SAR92OjGEUpjy45N2yCTz0klYE
+	MNCLCWe2BxQugdAwsZhEC5uVn9e1FtWChy7MCcNU9MFj9ajfjlYkzTozjq364wTLtdwsxi5Q7vC
+	thWdlnCMreFdGZLeYRzIPK7lpYXo6qPDhd4ZTUDxhrngDt3IyhoxC62VBkApk6MBnHFTID00FSf
+	4k7KLzTN0xnsxdrUWx+sDnsDV8cUibAx34mu9hN3dw==
+X-Received: by 2002:a05:6102:358d:b0:5db:3bbf:8e62 with SMTP id
+ ada2fe7eead31-5feb2e60d7dmr725313137.1.1771631992819; Fri, 20 Feb 2026
+ 15:59:52 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 20 Feb 2026 15:59:51 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 20 Feb 2026 15:59:51 -0800
 From: Ackerley Tng <ackerleytng@google.com>
-To: kartikey406@gmail.com, seanjc@google.com, pbonzini@redhat.com, 
-	shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: vannapurve@google.com, Liam.Howlett@oracle.com, ackerleytng@google.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com, 
-	stable@vger.kernel.org, syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, 
-	ziy@nvidia.com
+In-Reply-To: <aZSGD-EGSR3Z5Qyi@google.com>
+References: <20260214001535.435626-1-kartikey406@gmail.com>
+ <20260217014402.2554832-1-ackerleytng@google.com> <aZSGD-EGSR3Z5Qyi@google.com>
+MIME-Version: 1.0
+Date: Fri, 20 Feb 2026 15:59:51 -0800
+X-Gm-Features: AaiRm50KSzR4QWeR2pY6q56NWZqd8e8f9tXSjFga3oRJAj_7AZ0rMRT-3FKVTjc
+Message-ID: <CAEvNRgHQZzdy8+rbsH2EibpCo8ddinXMSSef5h1_r3mK74q-xg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: selftests: Test MADV_COLLAPSE on GUEST_MEMFD
+To: Sean Christopherson <seanjc@google.com>
+Cc: kartikey406@gmail.com, pbonzini@redhat.com, shuah@kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, vannapurve@google.com, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, 
+	i@maskray.me, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, shy828301@gmail.com, stable@vger.kernel.org, 
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 8rhfzywq57biedkbaomxxppk4kbnfesb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2D6040004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: e6smio8docbeywu33g7gngcrj18ribfs
-X-HE-Tag: 1771631686-40113
-X-HE-Meta: U2FsdGVkX19YTKDCLVOn4/j5ykU4BQPsaTkLyJFrUiTv8QOkfsI8y5BZerVSyNwbsNKr7PtL8DtRZpu/N64b/8lz0JUsy2h0wOsEbzK/U4VCBHp1hv5quph7j+dJu1Qg/0Ds6VHuLQ8YmDUsFUACMAF/VKTP1FzRZdzgpAsPSFA4UV54UNvoWv/vfD3tYmw3yCm5HZbT+ffO6uUB0nc0/A5S5bCfyh2IE0899NhvdK7XO8RsqfPP/Rl//VWot2Vj1XkG+CzRiZimz2kAlOsfDqnOOviNKDA03+RNt0gw1cl5fx9b1w1QpxfEfzic1DUcPxBi7H1e1GXORkDomNJMDNVsbbGVVmBAoXyA4ZjA/LTmSsjCyfGRejM/mnYPEeGu+groKBGuj0xPlEyG3wXldEjD+XZOrZJxrWVKjFs+yCm5TiP6c5QZxhrOu6eRDD716RfjvLrqEW5oFR/z4dB702oHcqa+OV1Hzc9lcFMRsgPX7lpCwofRvMW87NN4FTGvyuErCM64mnE6C6WQpYofZP5qIXZYM5BsD0My68Wd7GIGESUbgxIBoA/thumefX0Qj48H7wxhIacHtx71nToJ4pI9TtN6TFSWsgcCBAOtxIYUW5JMJ8B+SqYpxIAqN28g0yfMNEkiuFI5ApCOe26Iy9XCRKtEZor1LgVW/vj7x58xnc4EcdS1LDA2vyFRr+uGs8xSWWHq6bUlD9OD5/xROaJAy6sbmigqyOerbWwK64A/hSss/XpjaY9H3JSloh5cP799WHBLZX7rIWSblJec66lmAeHu1L0KEr2bLdEEzwkWxQun3Q4UmNL5pOPvhmAMFsRhjh2qVeuHesN16oOpu7LwKCpzfkhUmmx3mNiHEVqz6Ik7iF2x6r+1rL+nA3Wet7Ft93uU/Ffv1qMk8tFYNx57QB6+NJYNRPkgaMfkMERR9Hop7/1xY1WzgVfXp9w8vtDeTPa6bbh4HBvFAWS
- VjLDLbKY
- hwBHLV4FPJ2S/x/mSdIzv0647TEws70Be3lrj1Gm3XiuFFUfV5UUOLBNOfbYO0Rjmb9OJIHw5p6T1yuXFUu7EnbwGPqH9GT20jaNerdD7rCeFNermsfLPdjh82tZgH9IyCchlrFP1Soiw2tw4lBtOSVbP24G7yainBh2qJmv2GJSu3USJRSx98HGrB+p0F0PuF6mwPnY8Q2NnextFjiYbrEpN9MDMoya7M0WS/IA+463CuHvQ3Iojrha0r5gOwZw4zdMmgkmPgbHIDLo3pY1bFDRB3Fp5uwVTvVn4SpW+yRp1NMiouDR/eeSbw4qtACMLBfrv+ShN0XYd+oUVl7Z40NPKJ0SQce2o3lte3IjG2WYmaze2OWBT7jqXz28esUqG4h6vDpw6AMdEDJcnPC5Hx8+EzVH57SzbaLabKLyOta5g+ZpidZy6C47tLdvTUp/xdQuM26W6kgUUQXGIPxC7GYoNinE8TlAUUC7vQ/tIzQ4wabcqg1/FHkLd4JF+Ex2uW5uoq1YKxZ2EyTn7J68D/wAZOtX1jJ43ISb29feKA6e7CUb+RpAUfEyuAk5HIXHIN5tsNUpKY2qFdKUpyPO/6pA6S0ovW0nTocsmShdfAEnPMoYuWa7HzXQsmMkR5IVR5Bh693h4IbwQ1Bv4TvaQY0AcdOxFGtHhZ41T30ZHOZGLGi/YT91HCK63l5oz4yhmLibC1n6LJ9+orUL2s3BuJXtBBiD2TsbKbsVwW+GgnvfQX8+O6uujFm/rnOhAY91BtUB91JFxG6acmYa+TQsgIK7ELVjnzvivrsg7CJWvlNo3v85ioGFPgZSIQGabCIvhlOzC2LzBumt7YLjujvVkUMQAgaWzc9E2gmbEZfA/INxcX0wrpHj2B+k4lkO8EphXuVniSc8aUax6zPA=
+X-Rspamd-Queue-Id: 52B071A000C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771631994-686129
+X-HE-Meta: U2FsdGVkX1/vGluJGhLadax+pWLV9r0y6OYA0uiIY5zgbdnvZLyvtwjrMovBOGkg6IpPaQWa6GKIe2txs1szkRI+DH6mEnyHHVaBolopuJmxJSEOKMKLR8W27+4CEYwyPfRkuBja+qsSbZHqDuxhD7xmwjWmBjfpmZlSPPEnf71RQjhJE9PaG/a5FrBd3hrGeMkaDv2sEmUwQ+f73uNfFlTC77dRPSNlv0MfoMz5yG5t0CEwoLVqRFKcdWeBfZ5SnYjQceoSGjPJX1WNVgs1bQl8+ONWRxVdPutllxm8QcGtG0Ra9FxRAtk1yyJWwK7UPbCrX9Ahj08EVEjRhmh5BCaHJbhkOAdFiyd1KuRPj6+fQATDOKbvKB+J8Kx6tk7X4JUj+W21X6Sq0nOTJUWb3Ioj+liwJdbQv01/XjZWxAYMr86KmhInOAWpiTtZqINTXgoUYTUhC98hokA06B5gr5IRiNttGQqdPKzMUTBTHukf6t8HPDO0wCJ9/s/ona4PZg/1XuZSlJREhumRy8kAWgNtnF9uq9gaApho/Hs+PMTv9tbKqYgEZJOJp509bftZRIYToGjbII8/8Qj0ENqW3iI1X7bwoUlYQjLhfty3yWNvDL6qvR5hGn7m3KuovKEQaPc/n3M4WOp9OhHcnQ9hc92CMQ+DiUWvt4QhrzSia5fHDj+ncaFmFo9B20ALZ/pdcH3Ini/XcnsSj/S+eg8XsVZx5oNGajABaFHdl5dWf6OAX77A0L8bwVcsSOLh3z4eYwkNuBEeAg4oM4mrhtCXMknauanQZCGVAljZMBWKqdwH7hJGEDhRBcoAtv7K3Lfk7QdgUrJZ2vUP4tPt7oZfImtJkohmk5GlgKAHqiFWybI4cJN5+RhoMGNcYKKq7fFLeNdB1gAtrJyHlOvSboJdTlPazdQCUSx1JlIerSBeTdxsh3VklrLdC6bHSZokbnz2SC4pD5/n/PqHvVqeQaf
+ RLE7e8il
+ zAyuCXypDAiOIbYimZ3Jou8G6EuITZJ5aNrLR2EapEgk0iybf2VPGyK75q8Xm6eWb2k/5h8aiIqlj3lOr3uy4MO8JKX1sBLB5Iqtal+VMKACCSGTr0XBycZ9RBkDZy6GhgiruRbvmOrVrlkGFuarb6hLvRjS/dgy6oxVnXHuHGRrbtVYS8ypbq1Fgd6Q28+AL8mQtIseQeKZo62hOSCuKrxKWNIwV4amQgY9plbXMDV610DutvvuUHS2rTswZwxi1d1EdWJPTMqrsCz4iBdlm8qX+xwUo+4S2uoYnaLVSOLtigFXYJFUMuuzYyjEySAuminuTFtBT7C3z/xhARIXhA69wd+BzTcrce7EgN5D2xM5M/scF9lwETNRDK9UOD/e5Az3uh0tdLmy55dsH0y5hw0dol4mkuJHVNIiF4nNNACSr8DFzhuPNNX9LReMOWn7L2Vlf9MoysMGPan5fIKZFtWxT36OxPxjO7cU3cmLE2timMtI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,129 +147,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-guest_memfd only supports PAGE_SIZE pages, and khugepaged or MADV_COLLAPSE
-collapsing pages may result in private memory regions being mapped into
-host page tables.
+Sean Christopherson <seanjc@google.com> writes:
 
-Add test to verify that MADV_COLLAPSE fails on guest_memfd folios, and any
-subsequent usage of guest_memfd memory faults in PAGE_SIZE folios. Running
-this test should not result in any memory failure logs or kernel WARNings.
+> On Tue, Feb 17, 2026, Ackerley Tng wrote:
+>>
+>> [...snip...]
+>>
+>> +
+>> +	/*
+>> +	 * Use aligned address so that MADV_COLLAPSE will not be
+>> +	 * filtered out early in the collapsing routine.
+>
+> Please elaborate, the value below is way more magical than just being aligned.
+>
+>> +	 */
+>> +#define ALIGNED_ADDRESS ((void *)0x4000000000UL)
+>
+> Use a "const void *" instead of #define inside a function.  And use one of the
+> appropriate size macros, e.g.
+>
+> 	const void *ALIGNED_ADDRESS = (void *)(SZ_1G * <some magic value>);
+>
+> But why hardcode a virtual address in the first place?  If you a specific
+> alignment, just allocate enough virtual memory to be able to meet those alignment
+> requirements.
+>
+>> +	mem = mmap(ALIGNED_ADDRESS, pmd_size, PROT_READ | PROT_WRITE,
+>> +		   MAP_FIXED | MAP_SHARED, fd, 0);
+>>
+>> [...snip...]
+>>
+>> @@ -370,6 +441,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+>>  			gmem_test(mmap_supported, vm, flags);
+>>  			gmem_test(fault_overflow, vm, flags);
+>>  			gmem_test(numa_allocation, vm, flags);
+>> +			test_collapse(vm, flags);
+>
+> Why diverge from everything else?  Yeah, the size is different, but that's easy
+> enough to handle.  And presumably the THP query needs to be able to fail gracefully,
+> so something like this?
+>
+>
+> [...snip...]
+>
 
-This selftest was added as a result of a syzbot-reported issue where
-khugepaged operating on guest_memfd memory with MADV_HUGEPAGE caused the
-collapse of folios, which then subsequently resulted in a WARNing.
+Addressed your comments in a v2 [*], thanks for reviewing!
 
-Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../testing/selftests/kvm/guest_memfd_test.c  | 70 ++++++++++++++++++-
- 1 file changed, 67 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 618c937f3c90f..0edbc7cf6c1ad 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -171,6 +171,64 @@ static void test_numa_allocation(int fd, size_t total_size)
- 	kvm_munmap(mem, total_size);
- }
- 
-+static void test_collapse(int fd, uint64_t flags)
-+{
-+	const size_t pmd_size = get_trans_hugepagesz();
-+	void *reserved_addr;
-+	void *aligned_addr;
-+	char *mem;
-+	off_t i;
-+
-+	/*
-+	 * To even reach the point where the guest_memfd folios will
-+	 * get collapsed, both the userspace address and the offset
-+	 * within the guest_memfd have to be aligned to pmd_size.
-+	 *
-+	 * To achieve that alignment, reserve virtual address space
-+	 * with regular mmap, then use MAP_FIXED to allocate memory
-+	 * from a pmd_size-aligned offset (0) at a known, available
-+	 * virtual address.
-+	 */
-+	reserved_addr = kvm_mmap(pmd_size * 2, PROT_NONE,
-+				 MAP_PRIVATE | MAP_ANONYMOUS, -1);
-+	aligned_addr = align_ptr_up(reserved_addr, pmd_size);
-+
-+	mem = mmap(aligned_addr, pmd_size, PROT_READ | PROT_WRITE,
-+		   MAP_FIXED | MAP_SHARED, fd, 0);
-+	TEST_ASSERT(IS_ALIGNED((u64)mem, pmd_size),
-+		    "Userspace address must be aligned to PMD size.");
-+
-+	/*
-+	 * Use reads to populate page table to avoid setting dirty
-+	 * flag on page.
-+	 */
-+	for (i = 0; i < pmd_size; i += getpagesize())
-+		READ_ONCE(mem[i]);
-+
-+	/*
-+	 * Advising the use of huge pages in guest_memfd should be
-+	 * fine...
-+	 */
-+	kvm_madvise(mem, pmd_size, MADV_HUGEPAGE);
-+
-+	/*
-+	 * ... but collapsing folios must not be supported to avoid
-+	 * mapping beyond shared ranges into host userspace page
-+	 * tables.
-+	 */
-+	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -1);
-+	TEST_ASSERT_EQ(errno, EINVAL);
-+
-+	/*
-+	 * Removing from host page tables and re-faulting should be
-+	 * fine; should not end up faulting in a collapsed/huge folio.
-+	 */
-+	kvm_madvise(mem, pmd_size, MADV_DONTNEED);
-+	READ_ONCE(mem[0]);
-+
-+	kvm_munmap(reserved_addr, pmd_size * 2);
-+}
-+
- static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
- {
- 	const char val = 0xaa;
-@@ -350,14 +408,17 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
- 	}
- }
- 
--#define gmem_test(__test, __vm, __flags)				\
-+#define __gmem_test(__test, __vm, __flags, __gmem_size)			\
- do {									\
--	int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);	\
-+	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
- 									\
--	test_##__test(fd, page_size * 4);				\
-+	test_##__test(fd, __gmem_size);					\
- 	close(fd);							\
- } while (0)
- 
-+#define gmem_test(__test, __vm, __flags) 				\
-+	__gmem_test(__test, __vm, __flags, page_size * 4)
-+
- static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- {
- 	test_create_guest_memfd_multiple(vm);
-@@ -367,9 +428,12 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- 
- 	if (flags & GUEST_MEMFD_FLAG_MMAP) {
- 		if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
-+			size_t pmd_size = get_trans_hugepagesz();
-+
- 			gmem_test(mmap_supported, vm, flags);
- 			gmem_test(fault_overflow, vm, flags);
- 			gmem_test(numa_allocation, vm, flags);
-+			__gmem_test(collapse, vm, flags, pmd_size);
- 		} else {
- 			gmem_test(fault_private, vm, flags);
- 		}
--- 
-2.53.0.345.g96ddfc5eaa-goog
-
+[*] https://lore.kernel.org/all/cover.1771630983.git.ackerleytng@google.com/T/
 
