@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60589C531F2
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 04:10:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1C0C531E4
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 04:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3BB26B008C; Thu, 19 Feb 2026 23:10:57 -0500 (EST)
+	id 487326B0088; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A10D76B0092; Thu, 19 Feb 2026 23:10:57 -0500 (EST)
+	id 435456B0096; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 913106B0093; Thu, 19 Feb 2026 23:10:57 -0500 (EST)
+	id 316886B0098; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E9756B008C
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:10:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 184EF8CB24
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:10:57 +0000 (UTC)
-X-FDA: 84463509354.25.7D474BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7EDD3C0009
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:10:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N1VrZuK9;
-	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D5AA6B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1A125C242
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:12:55 +0000 (UTC)
+X-FDA: 84463514310.18.87FD9B4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6143C140003
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:12:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771560655;
+	s=arc-20220608; t=1771560774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/A0Yxvye63cj+hpAab8QOVcalyFGH3t35eHSGcH62hs=;
-	b=MAPvsErVdCsXBnadPfUNEkD69ycm2pviD129u1GbNe0Fk1Rd1cOpL/27sews1bF48FXhYi
-	Jf37xy4QPEmYo3a36xIeMSwyjenLthOmMH3MUCZRnqMK6ZCfB47T7Yryzqo5qKXsDRP77s
-	Ghok/tv0bjktdg+2mnzNhK4pfwFXN/0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=9drD0xvk2/sSUZgUNn+/Wos7OqQ6apy7XGgOP+RDgXg=;
+	b=JkQd/hM+AYAYN7EqYiAFzEjN1ijemshUX9NTWpzRyzKCDMJrV72rDwdTTF0trRQvGLM0oS
+	6feCIRy0S6w6s3ni7EC5wvrvM0Vj8H+8QLsAkeIfKVvA7QTzLxqCtgbfHjn9BgzUCESUz4
+	zstkC+jOODx90l+6hzCRHmmCM/MAKfc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N1VrZuK9;
-	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771560655; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771560774; a=rsa-sha256;
 	cv=none;
-	b=78Bk1+6QJ+yBzbB6RPVgBEdtpO6qeixxC2TyEnKdv3dtD3FOj8vexr+wQAd9iweP68UyYx
-	TJBfxrTzD6DpM9VoKsjNVp3YzT1zX9CRwiVmr5Bba+D16uLHBxfULzzSWuaKJCdmwq2xlB
-	g6o3/iHQeAVDyr3IywNYo8idhIUjNjY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA55A6185D;
-	Fri, 20 Feb 2026 04:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD7FC116D0;
-	Fri, 20 Feb 2026 04:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771560654;
-	bh=Wl/q2I9MW4EAYAIqkkPs9cMuPySyeP7Ys0yLcRoxiik=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=N1VrZuK9lrvi+0jv5UrnpCwpMzW70T8EtjcsHnyvYb/C3ysXhXnwcXh0J1BUrz/fQ
-	 FXvJgc0MX5grtuvCDCjFOveYmh43k7YKrhJKjA6KNPY5GbthY3tSAB5Rd8DWyI60O4
-	 60LGpZhdpz2TPplFhz9GOt22IkO9j9SafKfb23NhzY6Pqtbyy2AyC4nRduEnajg21H
-	 pPrMunHoqFuSELpIJz/FNzbQUBVTQ/4/r5X9keCr5k8mekJQPLFSEN/1VTk4FKKX96
-	 mGvQFqOn+07PQ7stZW8usaIlrYxFaew9yX4CoBIDJ2elY6T+mswJuAAcc8jX+e9rPf
-	 2Anz+jmhWYL+g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FEBA3809A88;
-	Fri, 20 Feb 2026 04:11:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	b=nb8EeCfpU+NHELi0GDzQC7AC3WOEtkFiPdUl1Vzh9G+SIveS8FL5mvaqzYj8ZQFyDjKE5K
+	7Zw+mSLVAorgnxO+JeVu7GjGg3TwcvYNfiRJRTAdicuMeYsoV5g2jRIIlzrL1YJMSHLr8i
+	KLibghlge6ae7bVT/KhwYb/7cLUlC5Y=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF965339;
+	Thu, 19 Feb 2026 20:12:45 -0800 (PST)
+Received: from [10.164.148.40] (unknown [10.164.148.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8EFF3F62B;
+	Thu, 19 Feb 2026 20:12:48 -0800 (PST)
+Message-ID: <484434ed-6300-450a-aacd-3e370e1c167c@arm.com>
+Date: Fri, 20 Feb 2026 09:42:39 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 3.5] arm: make initialization of zero page independent of
- the
- memory map (was Re: [PATCH v2 22/28] arch, mm: consolidate initialization of
- nodes, zones and memory map)
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <177156066278.189817.13783312336351868850.git-patchwork-notify@kernel.org>
-Date: Fri, 20 Feb 2026 04:11:02 +0000
-References: <aVpWpLV4Dut5Muo2@kernel.org>
-In-Reply-To: <aVpWpLV4Dut5Muo2@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-riscv@lists.infradead.org, klarasmodin@gmail.com,
- akpm@linux-foundation.org, alexs@kernel.org, agordeev@linux.ibm.com,
- andreas@gaisler.com, bp@alien8.de, bcain@kernel.org, chleroy@kernel.org,
- catalin.marinas@arm.com, davem@davemloft.net, dave.hansen@linux.intel.com,
- david@kernel.org, dinguyen@kernel.org, geert@linux-m68k.org,
- guoren@kernel.org, hca@linux.ibm.com, deller@gmx.de, chenhuacai@kernel.org,
- mingo@redhat.com, johannes@sipsolutions.net, glaubitz@physik.fu-berlin.de,
- corbet@lwn.net, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- linmag7@gmail.com, mattst88@gmail.com, jcmvbkbc@gmail.com,
- mpe@ellerman.id.au, mhocko@suse.com, monstr@monstr.eu, muchun.song@linux.dev,
- osalvador@suse.de, palmer@dabbelt.com, pratyush@kernel.org, richard@nod.at,
- linux@armlinux.org.uk, shorne@gmail.com, surenb@google.com,
- tsbogend@alpha.franken.de, tglx@linutronix.de, gor@linux.ibm.com,
- vgupta@kernel.org, vbabka@suse.cz, will@kernel.org, x86@kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7EDD3C0009
-X-Stat-Signature: 5xuihbndp985phdkc93xmybeo9aq7xix
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
+ PTE batching (cac1db8c3aad)
+To: Pedro Falcato <pfalcato@suse.de>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Luke Yang <luyang@redhat.com>, surenb@google.com, jhladky@redhat.com,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, willy@infradead.org,
+ vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <aZSoyjQHvVWFBZdZ@luyang-thinkpadp1gen7.toromso.csb>
+ <nfrvygkft42c35ymgupwggrc2hrbatxaa6cn3hjxffrvhaprqg@wjg4ye4uv5go>
+ <8315cbde-389c-40c5-ac72-92074625489a@arm.com>
+ <5dso4ctke4baz7hky62zyfdzyg27tcikdbg5ecnrqmnluvmxzo@sciiqgatpqqv>
+ <eaa6be47-f1fc-4b88-b267-5aa38e3ba2a9@arm.com>
+ <340be2bc-cf9b-4e22-b557-dfde6efa9de8@kernel.org>
+ <cdrrvtzy76f7wplcrls3pbfe37kzrvzsrlaed7glg2cq6j3yob@wjbjklvovpl2>
+ <624496ee-4709-497f-9ac1-c63bcf4724d6@kernel.org>
+ <r2b2cjuqicmrw3zdwruacpelulhjhfdawrtbgzph5vsf6h5omj@dhrga7p62hju>
+ <9209d642-a495-4c13-9ec3-10ced1d2a04c@kernel.org>
+ <rtaao2lmzbmyugjeqdwhnacztjfgijjcax6itgst557qhqsnkr@iibocfiibsfh>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <rtaao2lmzbmyugjeqdwhnacztjfgijjcax6itgst557qhqsnkr@iibocfiibsfh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1771560655-531128
-X-HE-Meta: U2FsdGVkX18OXi74EzFfrnL0ixBwBEAe1iEMHm5VLBf9VCD7csdDCVct8VpdgiEiD1NL5ucevHNTDENHnkryE19V5Ucnufp2K9DfmJ4Q213ShsTLw30jWyc8yBgBxb4gS4cEPNPKwl0e+xA2eiRp9oVVHXjASdVFC1IY1xqqFGJriCuDYcZG/E0xVX+nPyeJ+TV7Svt8lfWjPhfe+v2lku89n4I1kuUlcfzXZ5q56ml/745Jl113Hudf0JO5FRFKJoMuTNXu6VxyXXoagwZhQBwbSX0zUPYMXHpgQ39xKoSbvcxqKgCsI5aKCu6QUtL2bNylZOba5XeSLufR572ziZAs2KfXjUQiEEcylY8zXA0lQXZuAGFJ27CVASIdCyvIft6NSYCOe6Pt9EWXFPoAnSgWw7wwMpE5EMB/+iGiKcdeiWTE8aUO3Yay3d9gqo3NVfjhkRspmIj4lLsyDqICd28pS3rUR0h/wV7RE00C3QhXJjst1L0FD8JPoxunfRX3vzfc8Z3Wk1WYm1xofu27gdLQ5DNjVHiyiJejI93RguN9NAZV3RUggm4M7z29iabCbd0IFP+fjOQXfaMbTsbxc47Qrls/cstcskGZKwD3ys99XAu0iV5z8jrYACCEttKbh8C1sX26HyYN5AR9rbKmWFwx7HGS6sYYbWVRJamcbPqxMUiO/wJCp5xfTu+M3YmHUD45z2b+aBzcqVPUHypaTSLhJBK4Zi6gP90NwkgnpqnTCxn0wTUZCRtNNcTb0tPAWRfOeyH6oyixeYR+bjwZHoqaruO+DIVxsKgXICgTICq/dOHBs+f1dVSjzYWaLAFsJw1/OlHpqeqeD2yYLUNrbLZ9ExcSAaAuds6kqDsrDeKwzdB1fej2JedzdBNI1WzrfTpG7c/0LIX9ge2QLErjiEt8DDRg9J5LhSDiqCsoduLvGU18vBHA4n1/lTq2xVJ6l8orejxKGMdtEZVM0tJ
- 5uA7eH92
- s6vgskqXeEtZU3YturhDjcw/9ciNKafcyMNUbl5PT0VHlH0euOas7d+DUy4WhhA2169HS6ciW2eOo01PppB62anPne8HgtpsDxvS+ioeUPEVH0Cbb+Ewlfc8QsbZEaYub9ZrV9qYDzMJknYvLymnH4o45jMOM6LXnsNWD5gPPBPRodnuChxsM6mKTmTWTRhn99Jt0+6SuY0zMUTCmwwluAMiJG8d8V2W94H5/XrTSPxcBVrCplptKb//ro/CX7l78vjd5ASY8HtFaJ0fKYdFaPRrwguSM9lKWR1sWSQ3Z0koZe7ul4MdZIR5vNZxHvW9aOZufOFSTt3MNAvc0xTGgz3kQ/Rf9oU7t7fI65Qgee4kqRJzJSY21rdq28B/5RSwG0ul7tPwZ322QhUYCiPlUQZWpadvSEuH8kag18ggRfS3fGY4Lw4b7QkGMsIUUv/4sgOzhYTAD9iwm8WCyuV4nTpJu2adOWaV5sSwkzPpXJ+TRFHo=
+X-Rspamd-Queue-Id: 6143C140003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wkdakess9jie7u5gxb18neek5hhsm5gq
+X-HE-Tag: 1771560773-28007
+X-HE-Meta: U2FsdGVkX1/J27R2deSDZxNSpywYW1qs/zV+VNVtRUqU2emnCmjxY4TyC6OBbC6vR7nSz555J2ajGTm4pczpc5iIF2eOxE96nV4IozIdk3VqCzQ40B+KyTWYCBquOGH4ZKZr7DNpbzTFy1xAXC4KVQOKrreadykYhqAaBRbbvjcgO4gruW0xn9DZhyfn3ZXfkeWwxRTyJWYW0TYp0lWTw7stYgS3tIkuTtvYG+8e26KiLP0z+3ycgscj1fxnrgz2UCanJb4jH+I0OF7AnkGKirEHQArPmpcocJswKATr6oeN5x8qU+br/+I6tsfkfCDl53of8vNUwZzmguzRxg5HM/io6rSrHtcLRqjypViKE7dtBZwCktq23SM3mU+PeZOrd4r4T9vHlKuMi5jzFbBeul1Qz9cL5wWH4wZXd0rLDjI+SYyal8y0fiD/cEgaoeJzFNZE5Ffq8JYkCCMJ9pkYnGvb0KWd9wZ+8ewsQKG22mL60K3BYDEEMYYYzR72+u75vFdnntvRLZ5eUFRMD2C2Jgt8ejE0mxotrqwmcGdMZQ4IaRyhb+hVJEHP4LvbcPhSk3NzkgYtlCJqUbhaYQxB5q6h6pMKt7OeA78pvGr5CXtB/fhVM5KPUutF9o/arWguFZceFLSSa8Ane4Uop6bdPFjiAbekne4sDkLMyQz7qcOnngXdUGzw4mAtUchzOIaCmpFiOuf4oZvcn/ZYxCZkgDC/7LZBJvZqRId0NqsJsy8qFXMKySmHq3cRn7uLYN2IgEykDbNvatw75XYSq2QF9JLUhQJ4gMt7OMIPEjPwwgWeqieiLGUgr9e6lncr3/HU7lXRBe+rOiQwPLZKacIJN8eOZvyL3fWlzBJEBhOyZo1KgXI9USm0kgHYPyRgL5e269x8GiyeBA66ZR4Zvs0FwJErr00j8AsTaBg9hASaq/r6g4KwmJGaHS9OtONXEBgJ8uv3NNJMvEE0Fra+txT
+ UQMtq+md
+ 7rCMvOsbGCUuRlPBuAEpc3ggErZhnITCaoJ+ktrt0Ij6sHbtp1W/ij/59pM1vGPIBm2Q5iSwlLpyUzP+SyXIEZKZYUqXW+ifE4k9+R98LkVmoZmkiPu6g5n7MNtgqxghTBD6Qt/vTVC58OBs9fGfug8tkJ9ANbGO04e0P2nlvKlRc3DNTH9fBvslrKoyyzVaAveA5UO4Nyd1MCd+V9zclTj3I3vwQJXWRQn+s
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,34 +98,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
 
-This patch was applied to riscv/linux.git (fixes)
-by Andrew Morton <akpm@linux-foundation.org>:
+On 19/02/26 8:30 pm, Pedro Falcato wrote:
+> On Thu, Feb 19, 2026 at 02:02:42PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/19/26 13:15, Pedro Falcato wrote:
+>>> On Wed, Feb 18, 2026 at 01:24:28PM +0100, David Hildenbrand (Arm) wrote:
+>>>> On 2/18/26 12:58, Pedro Falcato wrote:
+>>>>> I don't understand what you're looking for. an mprotect-based workload? those
+>>>>> obviously don't really exist, apart from something like a JIT engine cranking
+>>>>> out a lot of mprotect() calls in an aggressive fashion. Or perhaps some of that
+>>>>> usage of mprotect that our DB friends like to use sometimes (discussed in
+>>>>> $OTHER_CONTEXTS), though those are generally hugepages.
+>>>>>
+>>>> Anything besides a homemade micro-benchmark that highlights why we should
+>>>> care about this exact fast and repeated sequence of events.
+>>>>
+>>>> I'm surprise that such a "large regression" does not show up in any other
+>>>> non-home-made benchmark that people/bots are running. That's really what I
+>>>> am questioning.
+>>> I don't know, perhaps there isn't a will-it-scale test for this. That's
+>>> alright. Even the standard will-it-scale and stress-ng tests people use
+>>> to detect regressions usually have glaring problems and are insanely
+>>> microbenchey.
+>> My theory is that most heavy (high frequency where it would really hit performance)
+>> mprotect users (like JITs) perform mprotect on very small ranges (e.g., single page),
+>> where all the other overhead (syscall, TLB flush) dominates.
+>>
+>> That's why I was wondering which use cases that behave similar to the reproducer exist.
+>>
+>>>> Having that said, I'm all for optimizing it if there is a real problem
+>>>> there.
+>>>>
+>>>>> I don't see how this can justify large performance regressions in a system
+>>>>> call, for something every-architecture-not-named-arm64 does not have.
+>>>> Take a look at the reported performance improvements on AMD with large
+>>>> folios.
+>>> Sure, but pte-mapped 2M folios is almost a worst-case (why not a PMD at that
+>>> point...)
+>> Well, 1M and all the way down will similarly benefit. 2M is just always the extreme case.
+>>
+>>>> The issue really is that small folios don't perform well, on any
+>>>> architecture. But to detect large vs. small folios we need the ... folio.
+>>>>
+>>>> So once we optimize for small folios (== don't try to detect large folios)
+>>>> we'll degrade large folios.
+>>> I suspect it's not that huge of a deal. Worst case you can always provide a
+>>> software PTE_CONT bit that would e.g be set when mapping a large folio. Or
+>>> perhaps "if this pte has a PFN, and the next pte has PFN + 1, then we're
+>>> probably in a large folio, thus do the proper batching stuff". I think that
+>>> could satisfy everyone. There are heuristics we can use, and perhaps
+>>> pte_batch_hint() does not need to be that simple and useless in the !arm64
+>>> case then. I'll try to look into a cromulent solution for everyone.
+>> Software bits are generally -ENOSPC, but maybe we are lucky on some architectures.
+>>
+>> We'd run into similar issues like aarch64 when shattering contiguity etc, so
+>> there is quite some complexity too it that might not be worth it.
+>>
+>>> (shower thought: do we always get wins when batching large folios, or do these
+>>> need to be of a significant order to get wins?)
+>> For mprotect(), I don't know. For fork() and unmap() batching there was always a
+>> win even with order-2 folios. (never measured order-1, because they don't apply to
+>> anonymous memory)
+>>
+>> I assume for mprotect() it depends whether we really needed the folio before, or
+>> whether it's just not required like for mremap().
+>>
+>>> But personally I would err on the side of small folios, like we did for mremap()
+>>> a few months back.
+>> The following (completely untested) might make most people happy by looking up
+>> the folio only if (a) required or (b) if the architecture indicates that there is a large folio.
+>>
+>> I assume for some large folio use cases it might perform worse than before. But for
+>> the write-upgrade case with large anon folios the performance improvement should remain.
+>>
+>> Not sure if some regression would remain for which we'd have to special-case the implementation
+>> to take a separate path for nr_ptes == 1.
+>>
+>> Maybe you had something similar already:
+>>
+>>
+>> diff --git a/mm/mprotect.c b/mm/mprotect.c
+>> index c0571445bef7..0b3856ad728e 100644
+>> --- a/mm/mprotect.c
+>> +++ b/mm/mprotect.c
+>> @@ -211,6 +211,25 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
+>>         commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
+>>  }
+>> +static bool mprotect_wants_folio_for_pte(unsigned long cp_flags, pte_t *ptep,
+>> +               pte_t pte, unsigned long max_nr_ptes)
+>> +{
+>> +       /* NUMA hinting needs decide whether working on the folio is ok. */
+>> +       if (cp_flags & MM_CP_PROT_NUMA)
+>> +               return true;
+>> +
+>> +       /* We want the folio for possible write-upgrade. */
+>> +       if (!pte_write(pte) && (cp_flags & MM_CP_TRY_CHANGE_WRITABLE))
+>> +               return true;
+>> +
+>> +       /* There is nothing to batch. */
+>> +       if (max_nr_ptes == 1)
+>> +               return false;
+>> +
+>> +       /* For guaranteed large folios it's usually a win. */
+>> +       return pte_batch_hint(ptep, pte) > 1;
+>> +}
+>> +
+>>  static long change_pte_range(struct mmu_gather *tlb,
+>>                 struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
+>>                 unsigned long end, pgprot_t newprot, unsigned long cp_flags)
+>> @@ -241,16 +260,18 @@ static long change_pte_range(struct mmu_gather *tlb,
+>>                         const fpb_t flags = FPB_RESPECT_SOFT_DIRTY | FPB_RESPECT_WRITE;
+>>                         int max_nr_ptes = (end - addr) >> PAGE_SHIFT;
+>>                         struct folio *folio = NULL;
+>> -                       struct page *page;
+>> +                       struct page *page = NULL;
+>>                         pte_t ptent;
+>>                         /* Already in the desired state. */
+>>                         if (prot_numa && pte_protnone(oldpte))
+>>                                 continue;
+>> -                       page = vm_normal_page(vma, addr, oldpte);
+>> -                       if (page)
+>> -                               folio = page_folio(page);
+>> +                       if (mprotect_wants_folio_for_pte(cp_flags, pte, oldpte, max_nr_ptes)) {
+>> +                               page = vm_normal_page(vma, addr, oldpte);
+>> +                               if (page)
+>> +                                       folio = page_folio(page);
+>> +                       }
+>>                         /*
+>>                          * Avoid trapping faults against the zero or KSM
+>>
+> Yes, this is a better version than what I had, I'll take this hunk if you don't mind :)
+> Note that it still doesn't handle large folios on !contpte architectures, which
+> is partly the issue. I suspect some sort of PTE lookahead might work well in
+> practice, aside from the issues where e.g two order-0 folios that are
+> contiguous in memory are separately mapped.
+>
+> Though perhaps inlining vm_normal_folio() might also be interesting and side-step
+> most of the issue. I'll play around with that.
 
-On Sun, 4 Jan 2026 14:01:40 +0200 you wrote:
-> Andrew,
-> 
-> Can you please stick this between patch 3 (arm: introduce
-> arch_zone_limits_init()) and patch 4 (arm64: introduce
-> arch_zone_limits_init())?
-> 
-> From 35d016bbf5da7c08cc5c5547c85558fc50cb63aa Mon Sep 17 00:00:00 2001
-> From: Klara Modin <klarasmodin@gmail.com>
-> Date: Sat, 3 Jan 2026 20:40:09 +0200
-> Subject: [PATCH] arm: make initialization of zero page independent of the
->  memory map
-> 
-> [...]
+Indeed this is one option.
 
-Here is the summary with links:
-  - [3.5] arm: make initialization of zero page independent of the memory map (was Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes, zones and memory map)
-    https://git.kernel.org/riscv/c/18b7cc70dea8
+You can also experiment with
+https://lore.kernel.org/all/20250506050056.59250-3-dev.jain@arm.com/
+which approximates presence of large folio if pfns are contiguous.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+>
 
