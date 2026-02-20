@@ -4,129 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 735D1C5AD46
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 17:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 082DEC5AD55
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 18:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0E9A6B0088; Fri, 20 Feb 2026 12:58:16 -0500 (EST)
+	id ED7BA6B0088; Fri, 20 Feb 2026 13:24:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BC076B0089; Fri, 20 Feb 2026 12:58:16 -0500 (EST)
+	id E85566B0089; Fri, 20 Feb 2026 13:24:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8695A6B008A; Fri, 20 Feb 2026 12:58:16 -0500 (EST)
+	id D66C96B008A; Fri, 20 Feb 2026 13:24:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A8A36B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:58:16 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0CF721B4DB8
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:58:16 +0000 (UTC)
-X-FDA: 84465594192.17.BCC57BE
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C67794000B
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:58:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Uxtq7NOK;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=vbabka@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id AF2AA6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 13:24:34 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EEF0160205
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 18:24:34 +0000 (UTC)
+X-FDA: 84465660468.21.051E52D
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 21B791C0008
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 18:24:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HkfI9TBd;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771610294;
+	s=arc-20220608; t=1771611872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qjc7Lf5ark/1hfgAzfJZnbueKXyvbrGroEnzxtDEvpw=;
-	b=h+jm1fSGpOT90lxYmJVW541lcomJ/MDW+4YCKd8xtcGmCAgOYtGdn5jI++0S7ddEdudgDr
-	UEdwkMCAeuvNu9YHKISaFknrkk2WbTiuYL776UqQOrfVNopZ9aF2xTlr27iJjO92jjaoLH
-	Mq+Y7aQ7gxSc70gTQDotn1WLoGQqwV0=
+	bh=oCzQRspACLmQoBZ/bTk/LrnZL7VoOC9zA/xIvIg732Y=;
+	b=0O/0dxqkDF+NvOcd/LP+M8Di0JlXqrnSkfFY+3BQwHtOF+e2hsypuI5jFcIjUF4xdfU3xY
+	vlXjMISRKgKzIhvQQ8Xyg1W3FBBTfU5f3Kq22CspV1borgvqkHi5I1WvcNN7fEyfn2PEA+
+	lC8r88maS75rn7wGl5DX88/g2Fd9lws=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Uxtq7NOK;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=vbabka@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771610294; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HkfI9TBd;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771611872; a=rsa-sha256;
 	cv=none;
-	b=5yh1D4hTtROeT13wFiJWY3ovT99eY55/6V5nnXSLVKRmG66qAoSfH7k9IiT4h+2pf/ZbfV
-	9tKvHIWrUfmvzizdG9bn5w0Ba5THVMKJgg7VePkhGAcXK2fVXWhfJ6+Rbynpy/9MwudYw6
-	ySLdavXrQNnnjYVAf+mrVQjYZwwoUnA=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4836d541968so2204055e9.2
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:58:13 -0800 (PST)
+	b=eKSoQ6Tjt1Q2oQmpXO+aLvFBhVdslgi1I1M4mbfh4rP+aJBPyl08pVDDkJQakzPHDrs1hv
+	qc9jvcxvTVXBmnoh1R1IGqyvTKBN3v48ruqzlrtMHH4PZIk7Ca+hycRLELltX892w9pQAZ
+	a+sFs+xd1/rosxO16UgRv0oPRY6iCfs=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c6f21c2d81so223540085a.2
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:24:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771610292; x=1772215092; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qjc7Lf5ark/1hfgAzfJZnbueKXyvbrGroEnzxtDEvpw=;
-        b=Uxtq7NOKUlowyIFEVTd0ISkJhmsdOSNPjMjHjyXatYHSWV8h+gY+VJKiieB9FuchMs
-         ZvsjjN49VflcdxIxJ/en8Fd12s4Yew5KbPT2XRpUD25lEzu+xDytov2jHaK6zbZzRrbe
-         gYg8KKjl5OkAwvauPSJl920q7pHqwfOxT0msU0L6toC3sQTQka5RcNM4tNLJm56crp1n
-         A70uS3yPGcBOiLKWDG+cT1dhz8ZYoh7IrF5qR+6j8+poRnybD+nVRjEgO2ivPI3B+0OV
-         POqHvxO120IRZtu1uC+mN1Lk/yPOyxjxc+57wGcpPzDbtnIOfOo+CnCzEcLNvoJN4LyJ
-         IquA==
+        d=cmpxchg.org; s=google; t=1771611871; x=1772216671; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oCzQRspACLmQoBZ/bTk/LrnZL7VoOC9zA/xIvIg732Y=;
+        b=HkfI9TBdK9VkssJnqNwp8Di40m2EHjaTKVSnwlXjF86JxZVmomYYIRD3oeM0A7YBXp
+         mbiBZ9J4EZzXAiRwnXeSm7RKD9/yitx8ugpC3UVep0rv2v66q3OIdDGu+jednR49oh+y
+         BUclYvb9AmvVWUfC7IZjB/ijPDU8b6ByzbT+4I5hvlBqdaEf8nEccYcExYGoGe/i9Va5
+         MPpLqYtc4yNEhWYMdDWiGkdwBXcQwkE7AQgZhEtzSJesrsWbSZuEjDOPzLJzkR0JA9B0
+         JG3lJf8vsBqt4hihN2dqoBkXuEK5GljKEKf918ptXb5CtEvpU7Szgnw7TlmAwWeopIh5
+         s9WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771610292; x=1772215092;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qjc7Lf5ark/1hfgAzfJZnbueKXyvbrGroEnzxtDEvpw=;
-        b=PfGNN+CD/boPm+qgAh+floCJBNFWdKHNIWnjW+2XQbOIA6qHDH8KN26HSba3nzwwS7
-         f6CL1h8cj9vNjFjzXIHGnCOGjHe0gdzpB6vk3iVAMWz1J1o2ZDDyQa3IxxhJLOHCQuTT
-         izcTTpbRy+s38xbqUdPDYRTC5MyvAHJkBZP8f1qCfduCmwa1d5ceCZpT73Ngn9D+WNjm
-         g2f24EUkj19lT3EZ5I3c7GHEPzwRsB8io00f9mQwqP7pc70f+71slB29CsYaGXd8/+3W
-         lr1yzOixAal8FDCXk28FXN/yh0zeDRXyMXrD3RzW2LHXmj1xJOrcoyJJRwB7F7fb+nlT
-         h7jA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6YVeD9JVgBxn8gSUZoakwBYYGYGRPKufNUx2FOnKSiIRDibIbeB19ujcA4QQ2+hlw465w9Znpgg==@kvack.org
-X-Gm-Message-State: AOJu0YyEXL6P3JH7fvSDV6+gn2CMDE74I9spYj2fsBJqkWbFlvZwRZcZ
-	dyN41dIsvCVIIlrZ7hOxXgvEzAZXJ3ySens1gzBXqYAJGQUWahW8tCZGx0N8IScilRI=
-X-Gm-Gg: AZuq6aIkrsPCHE+GTk+qAJ3obevbmiEi6eWzj9CoGApn7PjOZmhuhpLTbYJMdNJMG30
-	Uuf9ofFXJcZ+dn//dIBEj5JgXiSDRn7qXJrFI4yIZKnzUF9sjjGr4EZyska0tYo0a0AnPJTmarJ
-	rLg21lQW0BowcgGZS6kMuiOdO3J+9L5Q5juEKGogEOCzv0v67SOZU2n3QbfO5hW8KpJoHm9cFQK
-	ecbcj9I/WwtWph06VopD/NwZ0pgbXn5HeVVn6aK6UgPVeaG0jV2L53rPYCd9zevVg0gPz25wDi3
-	yb53GMQW7ag1Y2uDEnzmfOpzDBt+5BKrTPppEQs3gqfcdIh09r7DSfkVa9Iqsm877cYuoD+sUbK
-	6v/8e3Ki9rRRrP7gogAbTdswTrx4tgoR6lSwr7S9ZLsOYx3PdlRxxrwHtX+FVIu651FO43Pb2lg
-	N7K85Njk8xput1G1bxOQ==
-X-Received: by 2002:a05:600c:6218:b0:47d:3ffa:9838 with SMTP id 5b1f17b1804b1-483a95eb914mr3579945e9.1.1771610292057;
-        Fri, 20 Feb 2026 09:58:12 -0800 (PST)
-Received: from ?IPV6:2001:1a48:8:903::e14? ([2001:1a48:8:903::e14])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a31c56d8sm134807145e9.8.2026.02.20.09.58.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Feb 2026 09:58:11 -0800 (PST)
-Message-ID: <a1c11a09-da88-4edd-9571-0f792b59e9c3@suse.com>
-Date: Fri, 20 Feb 2026 18:58:10 +0100
+        d=1e100.net; s=20230601; t=1771611871; x=1772216671;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oCzQRspACLmQoBZ/bTk/LrnZL7VoOC9zA/xIvIg732Y=;
+        b=i5UHRwufEwDK/0grqmTSmqZGLVPkeKaST20+HYgKGQR1nO+ySwKO6N8TgUzxczckq/
+         j6l9XjADiKHqNSgohfSQBzn6OsEz7cDoTf7EqiKQm1KKaplHGDFRya8gMATIVjYkUEho
+         SFxGK9CHZglNgF8/uwvwLgKC6pMDbeJw+tETBg/3oZ+CFsfn8bEfttQ5D2/V52OYDkKg
+         Vng2oVzzsNSbsC4KLSXPSJFVQJCX4awo097SxTbnWt8epElHiX00OWC9bqv7IhlHIFuz
+         Ei2PVjO3uZihfFS67pQ0B7FTLb/BCY493PnRM49vK+M14t5vBydWi9o8GZxvTQ/hD5kg
+         B4Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYsr/hmcrFsvxJcYt3CN0Dqc9M/bwgA6+eVp0GgNJrGrBQVq8PQ+/pwaT3nqw6WusUfQ0IQTfwOQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz+9Zwj72C1mpdpRpJXaCCdva705P2K+mMiwtR8lageMTD9EIh6
+	8xiJSCxXR3q5i4ADVMi8TrZUMGGiJ2MgYvxZyNRolI8UGqyOPO0OTSwr6+LYGVHQB8k=
+X-Gm-Gg: AZuq6aJIaM6NmaTvBofluDQ1RbE6i9xJseNrawmzBzgZT5t+4IWyYAcg1ns0+QaAJyX
+	03V/wrWmeWc9pt9N2HoF7NqLLetVvYT2G2uTM0QPM80sokeqnaZFPNitzt7joZlrRAAZ8NSRcac
+	w5fhwKLR/YeAs9ABjeKacsaydWP6WH1aVafYDUxyIYN68Vae0skVx1oat7PHDEdHAmDW4MF53ui
+	479i6Ppj1LgAXr1xMiZk+IOXhAC6mopxroCOgUKZbJOPFAcR8zpG2C/tqBAi/7hPC0+MmFoIdbV
+	/5pbCi3mMliYupa/f3dgtGa2h3r3GRmb0hYDQlHE4iBbQajqxCheigpMp8ThGkg/McfxdKGLVR6
+	zg640AFJwT7MisQv8oEuwe5DIJdpuZmWWrcB8hcWkxwmx5raz2dKR29hvJH2UCTJNSzZFFoWz0n
+	UbGG0Bz0ffA65vtlx4tXmc2Q==
+X-Received: by 2002:a05:620a:371a:b0:8b2:7558:409c with SMTP id af79cd13be357-8cb8ca14b43mr70053185a.36.1771611870954;
+        Fri, 20 Feb 2026 10:24:30 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d06f422sm11687485a.20.2026.02.20.10.24.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 10:24:30 -0800 (PST)
+Date: Fri, 20 Feb 2026 13:24:26 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: lsf-pc@lists.linux-foundation.org,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	linux-mm <linux-mm@kvack.org>
+Subject: Re: [LSF/MM/BPF TOPIC] Improving MGLRU
+Message-ID: <aZim2hT0nNjcRYVG@cmpxchg.org>
+References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Content-Language: en-US
-To: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>, Leonardo Bras <leobras.c@gmail.com>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@linux.com>,
- Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, Vlastimil Babka <vbabka@suse.cz>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>, Leonardo Bras <leobras@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Waiman Long <longman@redhat.com>,
- Boqun Feng <boqun.feng@gmail.com>, Frederic Weisbecker <fweisbecker@suse.de>
-References: <20260206143430.021026873@redhat.com> <aYs6Ju2G4bm6_tl2@tiehlicka>
- <aYxviLoWsrLqDU7o@tpad> <aYywl1hdBQP2_slo@tiehlicka>
- <aZDw6xI2izFDfuuu@WindFlash> <aZL45yORfkNvS9Rs@tiehlicka>
- <aZcr255pGT3B/eaL@tpad> <3f2b985a-2fb0-4d63-9dce-8a9cad8ce464@suse.com>
- <aZibbYH7yrDZlnJh@tpad>
-From: Vlastimil Babka <vbabka@suse.com>
-In-Reply-To: <aZibbYH7yrDZlnJh@tpad>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C67794000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hrhrizhigr7oqkxnaabwjscim7it8cqh
-X-HE-Tag: 1771610293-654219
-X-HE-Meta: U2FsdGVkX19U07Q8MVrNfUWDaNPSy1iQbB7lLcRncFhZ44BE3N3PLk7mxlD1ESQb6hllBtJqI8+S3fzjL6yrMs6pdk0nryL/y5LhsAdYTIELP6zVnYwYjrN4EuQbCTJf/wF2zT+hrm5YHIEhxOiFEG1hP9sqOR3dJv+VzB9JmVB1JISei7qF/4CtBxw0uB/iPIJQeBAXcGdQHGGConQ/fOl+xqQF2Uk+IffcsX4WyaoCuyrGBVQMwzj1Lfiw9Q+YxZkLe3mFN+1m6v6SoPtnNTkYk95P6y+pjGeqvefy68IGTknt1laCs0k1vn2BhAirA53NW2triUCCdJ1d19jpJb7r1UR4SgKAhC5WqlKjuFLLFtUSN2aFlVRfotQ4OhHqzw2ANi+hHmTr2BACz8/0EZOhumy/E5JlF0dcY5H6aJfsArsXfBw3TlGMWj5XR4zqlFoVT5l2rzZp2E541gyiGvpBn792cZyO0dKc+MYk0KHpLa9Q83v52u0UzlpOTB6cpwr2I01q40lEwueeMcGc75K4e815v3RU7Y96NWX72xJ+f8CgSvid3YgwNixd/zlAzNwv3B8yhcWMBCZCWkAoAfH4Nbck1Fc1Rt9zu0EAe2WFt0bTIX0LxUNUxXxgMIJyCOXqBG6LAFQaQ22brMNWBe8jOiAi0x25vbXfVLJ5A4zRyG/ANg+rb+Ur3QEG8AJ4SO9cwH54nzWfaH+l1kyEqlijelMJ5wW7V0mK1KWYnmIhtY1EdYW3eRE2wJQTm5xyunD041g0H4hVifYHkn9DlhOUSw4364SVYLBqDmKiorcKJU/I0y6E4m0CWWwIdamBg7F/EmGcdZFYfepqwipkwgKsbjDN20A/RTY1Ig0ustyt2IwtIh0+c1aJIFP2vGe6Nj/fEs5LTBxOEEHq7+9tp72Yc5PKX/blwkTqFtaiHs5n7XSKlnAGfrnvqsjMXx7rTJEodBlyDqTt10bIt/Y
- R8qYc2In
- iLf73u34cfWEOIxT9JJ6bGjmrZeOVcQBI7Js/FLl7UlqtWcxLa6pKw/Z8MiMi2L6awWEKFx1ef46o2JRgHkih/3i+R2RLqxWLU9Kes8GvQKflXqDw9SlN34LU6w1jE4dyB8QU0k8z0dEFAarv6Wk5l7r61ns5AOZj69MXNNRWR+Lnu2rTUoMn3NbGO/J5iqR1WiIIN/XVjHaQZpiBNDk6ML4TcvDgCNltgd0pq+bqN09xVBnPDtL9oORqDbfALPrt7PlfOW2z/u4cp5XR/0SoSsGl1Bkh8hv3ZALXqlsccAn/xTHKEQ/f5izIhhtnQHTiIbOY1hlAxZG/8iaiJV6qRkbEjK7NL8bIqdslg8VCOgjEgOE5RO3IPCJp33Fsa987YJ1aUuKtBMwTzqiSMUJVDoOkrkyoYea0CyJv5PdbJ0CTk8yyFurjhWRf+4XkbJslfCj1h42PtWbGTX8NpNeeUvPDJKXq7t70pdo2WsCl+aF0Wcs=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 21B791C0008
+X-Stat-Signature: yp94hfcyywcwi46wrte1iznoeuqhheg9
+X-HE-Tag: 1771611871-768185
+X-HE-Meta: U2FsdGVkX19nRwGKBNaaeMxqXYlMO8Ey2Htm8FV1Gp9wsiT9pFZC4/TOYFaLfcdkTCPBUQMQnuu0zgOF4AFepZNeXaujSUu16AZnxDNuAaIMDf8YIMxrNFHuhggnvOavzzm3UmOX+LEyZ5DWc7MsmfVE5paO6eaUgANhRTTo/zzQQvhZWEBn3aLju5AL3ANNWYVsYdXVx5+wUCb3n8JckxdQSJFoSlzF0HuEnAxsBoGERXT7XcFxx5tGJhG/OH5YZQ15gIONEOOW4jndqm/hWyJHTiA0E2+4uGeq4Fjk/GqUlmLyz/NhaJY1ClmreKjUibkixn1AnInqpEUstsBIbAo1Q0TIX2nAvJKfIwvvY5pWUS1e3ota39XGsnnozDyx+YhSdmDpQ+gt0q7nY7eFkrQbi4DwOoJNA844gVuaT9eIjv69lMkzQkYz/PBe6OcU8u2f+GSObvCHL/2vqoZ+7escu9LtbCR1xBtzBageecAzTvbnzsjpS/sZ78ksTyb8DhDbvhM2acEbYUc8cxv8JG4ztCr4i8xGGJgNpPDIpcSS4GS0eFVwftZZtIlcRdbOuyXttQG4B7BgLOwr7KRyU10+iw6m5myN8UQO6glN0Ner5fnLoVO9j0LsS/Ww6++TNlN8JzOFlvL/GYuyEgib88EQBRODSd9gV5ziSm9aa4M6uHx0YszSms/PiMAF97Ps1hHsOdZg8xRPExJQ2jOJ/YEyv+bI3F4WpIoeeamJ/EB7VzwxqfhGxaG09HxCVCfp4h5pIux11GSymT78JCBcDmCjjn4Vu4yRPjQob9Zip9Q0gNRhRLOMz32IBA3Y+tHHBmAFw5pk4DTZp39SR+0rA15EgtgX9YshXr1kvETnFke1P0HdoLy0DGosNMoaZfT4PCjkLYJ8YF6vrli7c5GSQg1VeCX85I1XkwQYD8U+x99XjLdLmEYj5JKJX8swyM4UYOq5TR5wWZondeP7vbr
+ E31/7u3Y
+ FRro3/kE2/RWLtqcj6Y2zRgch04WvSxPacGuWPvpfuQECD6/Fg2t4/RNnhFb8aBFdd9p7LVRbGZOFUq19gGjKTODBU/fZ6rJI1ETGCqe/9ZZ3grTbrEQnqZZXfSjT03uOhJLC9wCJZxg+9fgBjjNWMIwXxjR7E94GxfOB1HGqdu4V3qY+1KMnfROM7gBpwmIYwDc9jxUjcTrA9gNEV8JD4bt9wVijBFgETeLbXWuMmyY83CrGYfilmtjc52snP0TUy97KhAadjcNpkMl3k0sB+pp/Hla0XuNMk9zwxe9aJKy531Ewtry623vyuFSXAbDqmrWlWY/s7peTd9NgDGHMxCVFn4DfPYO2NLsUD0i0SbXat6vR3km6Y7dAN2WmSb93SU0sT9epQhUNEXOgF0Me9Wpdbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,68 +119,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/20/26 18:35, Marcelo Tosatti wrote:
+On Fri, Feb 20, 2026 at 01:25:33AM +0800, Kairui Song wrote:
+> Hi All,
 > 
-> Only call rcu_free_sheaf_nobarn if pcs->rcu_free is not NULL.
+> Apologies I forgot to add the proper tag in the previous email so
+> resending this.
 > 
-> So it seems safe?
+> MGLRU has been introduced in the mainline for years, but we still have two LRUs
+> today. There are many reasons MGLRU is still not the only LRU implementation in
+> the kernel.
+> 
+> And I've been looking at a few major issues here:
+> 
+> 1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/Inactive
+> LRU.
+> 2. Regressions: MGLRU might cause regression, even though in many workloads it
+> outperforms Active/Inactive by a lot.
+> 3. Metrics: MGLRU makes some metrics work differently, for example: PSI,
+> /proc/meminfo.
+> 4. Some reclaim behavior is less controllable.
 
-I guess it is.
+I would be very interested in discussing this topic as well.
 
->> How would this work with houskeeping on return to userspace approach?
->> 
->> - Would we just walk the list of all caches to flush them? could be
->> expensive. Would we somehow note only those that need it? That would make
->> the fast paths do something extra?
->> 
->> - If some other CPU executed kmem_cache_destroy(), it would have to wait for
->> the isolated cpu returning to userspace. Do we have the means for
->> synchronizing on that? Would that risk a deadlock? We used to have a
->> deferred finishing of the destroy for other reasons but were glad to get rid
->> of it when it was possible, now it might be necessary to revive it?
-> 
-> I don't think you can expect system calls to return to userspace in 
-> a given amount of time. Could be in kernel mode for long periods of
-> time.
-> 
->> How would this work with QPW?
->> 
->> - probably fast paths more expensive due to spin lock vs local_trylock_t
->> 
->> - flush_rcu_sheaves_on_cache() needs to be solved safely (see above)
->> 
->> What if we avoid percpu sheaves completely on isolated cpus and instead
->> allocate/free using the slowpaths?
->> 
->> - It could probably be achieved without affecting fastpaths, as we already
->> handle bootstrap without sheaves, so it's implemented in a way to not affect
->> fastpaths.
->> 
->> - Would it slow the isolcpu workloads down too much when they do a syscall?
->>   - compared to "houskeeping on return to userspace" flushing, maybe not?
->> Because in that case the syscall starts with sheaves flushed from previous
->> return, it has to do something expensive to get the initial sheaf, then
->> maybe will use only on or few objects, then on return has to flush
->> everything. Likely the slowpath might be faster, unless it allocates/frees
->> many objects from the same cache.
->>   - compared to QPW - it would be slower as QPW would mostly retain sheaves
->> populated, the need for flushes should be very rare
->> 
->> So if we can assume that workloads on isolated cpus make syscalls only
->> rarely, and when they do they can tolerate them being slower, I think the
->> "avoid sheaves on isolated cpus" would be the best way here.
-> 
-> I am not sure its safe to assume that. Ask Gemini about isolcpus use
-> cases and:
+> 2. Regressions: Currently regression is a more major problem for us.
+>    From our perspective, almost all regressions are caused by an under- or
+>    overprotected file cache. MGLRU's PID protection either gets too aggressive
+>    or too passive or just have a too long latency. To fix that, I'd propose a
+>    LFU-like design and relax the PID's aggressiveness to make it much more
+>    proactive and effective for file folios. The idea is always use 3 bits in
+>    the page flags to count the referenced time (which would also replace
+>    PG_workingset and PG_referenced). Initial tests showed a 30% reduction of
+>    refaults, and many regressions are gone. A flow chart of how the MGLRU idea
+>    might work:
 
-I don't think it's answering the question about syscalls. But didn't read
-too closely given the nature of it.
+Are you referring to refaults on the page cache side, or swapins?
 
-> 
-> For example, AF_XDP bypass uses system calls (and wants isolcpus):
-> 
-> https://www.quantvps.com/blog/kernel-bypass-in-hft?srsltid=AfmBOoryeSxuuZjzTJIC9O-Ag8x4gSwjs-V4Xukm2wQpGmwDJ6t4szuE
+Last time we evaluated MGLRU on Meta workloads, we noticed that it
+tends to do better with zswap, but worse with disk swap. It seemed to
+just prefer reclaiming anon, period.
 
-Didn't spot system calls mentioned TBH.
+For the balancing between anon and file to work well in all
+situations, it needs to have a notion of backend speed and factor in
+the respective cost of misses on each side.
 
+> 4. MGLRU's swappiness is kind of useless in some situations compared to
+>    Active / Inactive LRU, since its force protects the youngest two gen, so
+>    quite often we can only reclaim one type of folios. To workaround that, the
+>    user usually runs force aging before reclaim. So, can we just remove the
+>    force protection of the youngest two gens?
+
+[...]
+
+> 6. Other issues and discussion on whether the above improvements will help
+>    solve them or make them worse. e.g.
+
+[...]
+
+>    Can we just ignore the shadow for anon folios? MGLRU basically activates
+>    anon folios unconditionally, especially if we combined with the LFU like
+>    idea above we might only want to track the 3 bit count, and get rid of
+>    the extra bit usage in the shadow. The eviction performance might be even
+>    better, and other components like swap table [3] will have more bits to use
+>    for better performance and more features.
+
+On the face of it, both of these sounds problematic to me. Why are
+anon pages special cased?
+
+The cost of reclaiming a page is:
+
+    reuse frequency * cost of a miss
+
+The *type* of the page is not all that meaningful for workload
+performance. The wait time is qualitatively the same.
+
+If you assume every refaulting anon is hot, it'll fall apart when the
+anon set is huge and has little locality.
 
