@@ -4,116 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC284C55ABC
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 12:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3877BC55AB9
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 13:06:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 180DA6B0088; Fri, 20 Feb 2026 07:42:53 -0500 (EST)
+	id 2FDDC6B0088; Fri, 20 Feb 2026 08:06:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1618F6B0089; Fri, 20 Feb 2026 07:42:53 -0500 (EST)
+	id 28AC76B0089; Fri, 20 Feb 2026 08:06:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08BCE6B008A; Fri, 20 Feb 2026 07:42:53 -0500 (EST)
+	id 1C0A46B008A; Fri, 20 Feb 2026 08:06:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA63C6B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 07:42:52 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F1D61A0175
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:42:52 +0000 (UTC)
-X-FDA: 84464799384.22.9682A1F
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A242D120007
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:42:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="b/eSpyAk";
-	spf=pass (imf29.hostedemail.com: domain of sanjayembeddedse@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=sanjayembeddedse@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771591370; a=rsa-sha256;
-	cv=none;
-	b=W+92CHWscYz6nZl5uodsiwZkk03yb8KrEiVOgFcsVP9MQ77exZtZxjXbDBk9pDwTzR+twT
-	GnGGVB5Gzc6ZELd50riGpKcEwdlOaedsNxu8UM0KExKf6KSungYiozvjCSjzmm/BNbERGM
-	4z4ys64DUcuNry3J10wVR9vnUm7MYJI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="b/eSpyAk";
-	spf=pass (imf29.hostedemail.com: domain of sanjayembeddedse@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=sanjayembeddedse@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E65C46B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 08:06:43 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A8911A0104
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 13:06:43 +0000 (UTC)
+X-FDA: 84464859486.21.D691978
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 133BE140013
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 13:06:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=tugraz.at header.s=mailrelay header.b=eaazT5cT;
+	spf=pass (imf09.hostedemail.com: domain of ernesto.martinezgarcia@tugraz.at designates 129.27.2.202 as permitted sender) smtp.mailfrom=ernesto.martinezgarcia@tugraz.at;
+	dmarc=pass (policy=quarantine) header.from=tugraz.at
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771591370;
+	s=arc-20220608; t=1771592801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YUKllnwoQidCF+8PfJZeXrieG2MX2j2TwvAmx1Ac+no=;
-	b=DVtAWmds450mJE6985ace4c56hqWSOSxBx/OnD9Uynct+c5brAOdibN1Ev7z9x0V9H4fcn
-	SJonbcoCsFeMmTryFXvtqh+khOdhFwLhZ9KAdtlVr75AMeZXivv24fWmZBe1ix8CzmYKeM
-	aORHfINSQI6oeheyF//ktUQoRG9PfEE=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a91215c158so13875965ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:42:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771591369; x=1772196169; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YUKllnwoQidCF+8PfJZeXrieG2MX2j2TwvAmx1Ac+no=;
-        b=b/eSpyAkE8furJ7hlBtGz8tjxnbby/gr6XKIWlG9SWDwJw3GVFfeXFzSEFjvPoq2vy
-         gZsRAkn15Bcwo5m9Od1m3AQPe2Qmi+2LwqEKDAL44c6tYNRAAel/4NtDJ96L9A0519EU
-         91gYcLpLEjD58EtXfE2T7t8rm7nq69gO4wtgCUd7nfdYimAFhgZlGhNPBOb0jd3oBFRj
-         TPK1V6z5UlE8kO6jOVQFCzcxSFCy9dmeMxL+lJqS18ZXl9NNwE6uZxpeo43PJH2P81r6
-         DRKGJAlX5Ef2kJLQCyrAxBr26JgFeQQdlhCi7NPtoyZtENPnXAW+oKeygg8bicSaoH5p
-         ub2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771591369; x=1772196169;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YUKllnwoQidCF+8PfJZeXrieG2MX2j2TwvAmx1Ac+no=;
-        b=xAoN0d0MMALVYP9em6Lq8xI5sVmqfHDwrJp9A1+jUZT1l+0Y40uBqlyXuvl13PTAYe
-         lqhzOV06QILgVD9dJ5fNVxqDk6mUK9MxBOydD1HJGE0JdARpVz0/h1NljUJvISpLqGCi
-         k3ifBD7ZY33AOkGHlS5699/fWqy8ub57B63L5G7IsidGd2jhg060J5LftOuRsvvjlh7Q
-         QJ2QW148kW9Kb1Mbt9DZs77khNe6QzjYbY+N70rYNu56PWGN1kwLBaPtlAM8WCuvzS7Y
-         cOwiP/WU4LNaZUOt22NSkTsmYMhn/HOIqxCkRfPXHK4hZ+AdlNrDC/7IGDzDKkbRfxqk
-         GLZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLx+p5Y+/AgaJOMOGlKkcReIE3hLQSq3Q3An5tKRtPrmaDdKHoaq18hhUf7h3e7W+3CzG8+ariUg==@kvack.org
-X-Gm-Message-State: AOJu0Yw4WLylraAvZvdo4tMe5BwRa8tWBUyJTjyjo8Ghb6Z5Wlqsicb7
-	4A/lpVd67tDB1lTxfd6WA7bmBH6e9RrGOc352ynuZ+ZLeGDxIZmXrgrg
-X-Gm-Gg: AZuq6aLVIOy2PPiwgYslTBl9FEIjnj5QrBsom/WpXfMH8sHd5KQmgwGd4836l9irmXC
-	21OzeL49cg4mJDJNUYRNywfSBMDbZguFRm5d/qopG9BUR/kBJSjYwOrEH/rMX4UZulnOlblg2sB
-	jCmck2ksNGDsYrucQhAYQvGc7KQ0ZeUjZN24y2BbKPHthXFkU9NCjmx5nm7jwrelb/QXjp1dTVW
-	cIzgkhWx/tDDygv7AlTx2eYP2iwze6XOVE6tbtaUyoy2xoQPiGNB8qF1yASQ/XIaPoUPFpen+DA
-	aB59odyPc8MHArcgj6wsbqfcV34Uuc38wfYkCHs3d/ZRdciYCcPEGjHmuqWgTUIDroHZo1LkY7V
-	F9/th9EsMPFB+wngca9XWhPQt/sWKFXXJYGjog3lIi6pCU3lm7lMVg4Df3pdBycfjq7R0EKA+pA
-	7lFAVCqo/lU20qaRWpZx8/hbU/Wl98oF6Ch2WgobWeMumQyG2t
-X-Received: by 2002:a17:90b:28ce:b0:341:2150:4856 with SMTP id 98e67ed59e1d1-358891302f8mr8246072a91.17.1771591369225;
-        Fri, 20 Feb 2026 04:42:49 -0800 (PST)
-Received: from hu-ckantibh-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3589d8e3e73sm3001661a91.15.2026.02.20.04.42.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Feb 2026 04:42:48 -0800 (PST)
-From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
-X-Google-Original-From: Sanjay Chitroda <sanjayembedded@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sanjay Chitroda <sanjayembeddedse@gmail.com>
-Subject: [PATCH] mm/slub: drop duplicate kernel-doc for ksize()
-Date: Fri, 20 Feb 2026 18:12:43 +0530
-Message-Id: <20260220124243.3264133-1-sanjayembedded@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A242D120007
-X-Stat-Signature: mn8pdbfqfwda4ximwgdufpz8go9dcknw
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TI6pL5l6NcVbZgYUegCvNR9UgHAy5UP25eLtZeSKxCI=;
+	b=57r1VL4t5GA3QuB75Pkvqw/0sR6vY8oZDQpwRBhULcg9PxiC5DgPc4jkfXEKfU6usb9a19
+	O3HleqMXnCAlKq5q55j/SE1YlbftnplMKFy9V2T/o3qrvY7w33YwSeWtwYeAoI7g5ip+mu
+	jAn9mdCa981opcQw/46UtV6birP5O2I=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=tugraz.at header.s=mailrelay header.b=eaazT5cT;
+	spf=pass (imf09.hostedemail.com: domain of ernesto.martinezgarcia@tugraz.at designates 129.27.2.202 as permitted sender) smtp.mailfrom=ernesto.martinezgarcia@tugraz.at;
+	dmarc=pass (policy=quarantine) header.from=tugraz.at
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771592801; a=rsa-sha256;
+	cv=none;
+	b=ggd7dHO1AhGUvp5+jej3cbuREAqWb7oU8OZiZU83dyNsC9sfABTPwLib2xLJUC704Q4ajK
+	Y2fGLxnPTC0N/N736DdpMXhq7A0fzIuSzpVmHwBfVy4/pe0kje2VSChE8G7eH1udAxs2oZ
+	5AUht02bqyDhtK01zvbkbSF4Ao/mGTE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1771592794;
+	bh=TI6pL5l6NcVbZgYUegCvNR9UgHAy5UP25eLtZeSKxCI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eaazT5cTRW+EmP9R7NcUzYa45LVOLatiiLUOcMzvdWN9lfGzeX29bdLd/qNpldzjp
+	 H4k/GSXyuZm4J45UVCM9WU9kn74dILYyfVBtb1sf1Dt4wLm3tiTSrOTpgS3JqnJDQK
+	 X62nEBE+FP1RbCCCeqd1oGpQylYoQhte6/o1Gfqs=
+Received: from localhost (unknown [129.27.152.14])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4fHVr968vzz2xP0;
+	Fri, 20 Feb 2026 14:06:33 +0100 (CET)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=Flowed
+Date: Fri, 20 Feb 2026 14:06:33 +0100
+Message-Id: <DGJT8E07A37R.2GC7KEDWEI7R@tugraz.at>
+From: "Ernesto Martinez Garcia" <ernesto.martinezgarcia@tugraz.at>
+To: "Marco Elver" <elver@google.com>, "Alexander Potapenko"
+ <glider@google.com>
+Cc: <akpm@linux-foundation.org>, <mark.rutland@arm.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <kasan-dev@googlegroups.com>, <pimyn@google.com>, "Andrey Konovalov"
+ <andreyknvl@gmail.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>, "Dmitry
+ Vyukov" <dvyukov@google.com>, "Ernesto Martinez Garcia"
+ <ernesto.martinezgarcia@tugraz.at>, "Greg KH" <gregkh@linuxfoundation.org>,
+ "Kees Cook" <kees@kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v1] mm/kfence: disable KFENCE upon KASAN HW tags
+ enablement
+X-Mailer: aerc 0.21.0
+References: <20260213095410.1862978-1-glider@google.com>
+ <CANpmjNPJV-aQKnQ7Mtr6e8_12UR3C2S3abJx_ePFWmS1WV_UVg@mail.gmail.com>
+In-Reply-To: <CANpmjNPJV-aQKnQ7Mtr6e8_12UR3C2S3abJx_ePFWmS1WV_UVg@mail.gmail.com>
+X-TUG-Backscatter-control: odR5CN6y6BwYAgRjfEtHZQ
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.117
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771591370-359800
-X-HE-Meta: U2FsdGVkX1/ANQjG5pmHwbXsOxBpgQMKv2HYYMDMo5PaWbqWcKo2RefdYyL1MUZYT04SicHs2YcxLQ0g/wwL7ggKMeYNI5LOeXUL0CTh0QVMXZe4EAmmB0J7TuwvRLLGgR+wn1O6SKJUofgh2EMPfWN8WiWxWoDlPetVzGdst8jIubbGj6LV9pC/I2ZOWKkpWrKDYUk484vrJmeDreJ83BafI9WkNu61HKB6Ptax+/TKqZhfMPxwQ41Eo7r1A4OMiIRavZ9dSa+Qd6PMBqZLtTaXPGNcaOQjBLbwViEYCOZfrlLavufo63evn2GQY2/WrFIdd3OgU4n6T16v1HCihslzYMuyBn50mGMpDmT/IF8VB8VTtfmyN7EMf/SQnS0wYYvvzddqIhb8ci+YbVVdWxKkFZnNR4XM4HMjvTsKedJGVqQEuVVuNKTcFmMsQ5l+53nM2sBuDtoQ49x6rlLBvHIoqmI1lCoylLGtwlMtLUE4XBon/OLAYB0UNjUIh8R69/s4IZm/nFx6wZalJiu8pfhQJz9Vilta0V5lGi0GZQOClqRiuu0+3WUAcqIc6wPBOz1omgEVEggB1RHMU4vWi0QNrhM8yChZpbW/4+aENw8ml6SH/ShOgAaYxLx8GRCjLFca17qWVVldN24gjfkS4NZA/ZX83WjcBkybH0S+L4asH/UKXvaDSXfeXXyCm0JmUQYwbcnHerPb6nC3wc3Wo54YNHCr9Gk4ad/CnN0mQNofKi6JTPZ9319ldhwVJ8qDvvILpHFzokvNqk+bq92R5p/eikd5ZSEXwDYGgw1ylLezVssMEuMRuRLyXDWHP0/mqq0c1kFvyQsJuuYnO/XSIP0UG3DFV4MTBxIYnuplqrWtPm/1Zh0UomAxjZAs4jwnneXBY40gn3xqcxSP4jwzK3QFkwHEB8trshRVgwNvmEzczoGlC5XK7RticG5CiA8qzX5KQeelnNSz2T5qm1C
- 4nM6BxCI
- xI4TXYbR762ChRw50mbW6Fw9161Evo5SdeoWOymrlrv47Ktd5oy26qHTzHN36tDfiq8DhP6xYXf58O9tnhj+qmZAbP1Mh+0BCAtmzkIQ6mClcY6CF8pIF6JUrr272CaF50JRX9Cka3jKC9vzreLaoUrppShfdPJm+9BJWJiC+56uNdiVGW2gClcB+ySJ1quO7CJVcFFe97pRzqkFVOpFtb9VXu97hVGyH3Xz8G0hbOxF0fzfGBYG2obP2bbRTgZIjpRTwOYyv6t4jLPWwFS6hzAjX6wT4RGVnjoBzp40Zpm1QIeYaP0+iFaLmudqwMlEMnBV1s/EvIXVy6t4lV5/FTjHsINpXPujBP/4YKQgSnVvtHC9X43crLY/H6uiBA028WCuczeCyz8aLZqF/RvYnd5aMP03kgAYlPnau
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 133BE140013
+X-Stat-Signature: pak7jxyptcs58timwk8nemin1eetyf7d
+X-HE-Tag: 1771592800-780339
+X-HE-Meta: U2FsdGVkX183MaB/N0BZVJMfbF1xzfFdJlm1IgT0TKuHRs2Sh6bL6OnJ0b3bWQ0AsdLoUhos1wzPkS5lDsJSIfjaU0dVLO9Qj2cdd+c4PEMKgiOCszsUqnCMKseKNxvQgW+QeVtSGa0j+vM33zmFbijkMYzA9RZg4SzhPoWGx9FtFDj2mT5aQf2rw7tDVPpZorPGX45h9y0T22pElkxhjOxPmqEfo99y0i6YMC00A+tCXrkRJtLV9cGmq7TRkOsRaG9DhseWC0tgAdasMM2SKXzwZ0lyDcif4ijkRsNKEFQimoNf9PMpgQtjUHJZvNzriExij7FkXPEa8/5bx10/mxm1/agQuoNBvnOJDLJg3CIf/2nlMoqOaf4behk1HngN8T+7RfRFr7RGvRbbuKxCXk0UvlGgl9+JfI+Dhd/9arKBD4l6ywatrVbzb47mUBxOIK6hvazAa8p+Utykhpf0JT91zA6WbpoJLiXLtWxYLk++tGFSjf1oZvmPgYrZsBAacWvWWLUUMoQT7Y2igs1VfKFoaSFY7wV0DQzGFY/BXleHGYz0nut9n9527O1KMfszaupIxaFROBXRfFlfrJ4IuuVIrEFRJnVDqdXU3jc6dKwqdfN8pXdJ3DpyqS6HNdIi5080tUUeZ//koH27lLMjtDFbihK/VchHrG0vNAyVkU2OKV4Ggdmn411TN7Lc9fTSszNQ76MLrZ+CSRutq4yXCVjwhu4QLX5t9CoAr1bTMYhcmbaHYLXapxAT9O4XBiWmW/VSlEHjeXzPpPER+sRngjSIGE6Uu9+a9AuEjdkQX4lavxeRJ9ICoNhbzlErW9CJDG/eNqimVXoTLz2crH9LaHoaMZrFD+gjeF7v0dpISVgqyj674ZGFwYoQuqlL+27PwUIBjScluhf6B3yqZV2ncxQ+2iGytreocnxx5jjx4za8+VJG1ubhMYOxKnlfH04so3LyW5J0MdKXDDzYABU
+ j1nUWpCH
+ N8LJeqnM1NWENDvmUT4WyRxiFDc1am5WRuLwMdeSV/qb24NnG/RQLNC5z1usU3mpilAuxQGRwTsyhm2QvoGjfNS5QnE5sxv9Vu7+qnFgo4mHIveLadewLYLURpgG2o3k47govvr2eKGLJAXh5avsoRh34UMijK6qE8x8Xe/bxTYLCLjdtuNIw9m/9rdicnr8y5/ZrtVEGDtTuTKTNh2wazugZLxnOdTf1BTPju5qO/34r9iRC7N966FEFbpwsYjE7OknBA/+xNIpJVRX6VZKrMSLAjPO16pMmiH8jB/imEi0vOqoJJAF5lVqT7gkP2KhuLZ8pDOBwoRtmWsRszGtT9Ux+d9CNOClbnDi4xF+UBMg5C79gRWs4ztMK+Yd7bIj+Mn0q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,55 +98,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
+On Fri Feb 13, 2026 at 11:50 AM CET, Marco Elver wrote:
+> On Fri, 13 Feb 2026 at 10:54, Alexander Potapenko <glider@google.com> wro=
+te:
+>>
+>> KFENCE does not currently support KASAN hardware tags. As a result, the
+>> two features are incompatible when enabled simultaneously.
+>>
+>> Given that MTE provides deterministic protection and KFENCE is a
+>> sampling-based debugging tool, prioritize the stronger hardware
+>> protections. Disable KFENCE initialization and free the pre-allocated
+>> pool if KASAN hardware tags are detected to ensure the system maintains
+>> the security guarantees provided by MTE.
+>
+> Just double-checking this is explicitly ok: If this is being skipped
+> enablement at boot, a user is still free to do 'echo 123 >
+> /sys/module/kfence/parameters/sample_interval' to re-enable KFENCE? In
+> my opinion, this should be allowed.
 
-The ksize() API is already documented in the public header, and
-Documentation/core-api/mm-api.rst pulls that canonical doc into the
-book. The kernel-doc block added to mm/slub.c by commit
-fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
-introduced a second definition for the same symbol in the generated
-docs, which makes Sphinx emit:
+Should work, as the late enable codepath is:
 
-  WARNING: Duplicate C declaration, also defined at core-api/mm-api:521
-  Declaration is '.. c:function:: size_t ksize(const void *objp)'
+- param_set_sample_interval()
+	- kfence_enable_late()
+		- kfence_init_late()
 
-Remove the redundant kernel-doc comment from slub.c so only the
-header-provided documentation is emitted. This keeps the user-visible
-API documentation intact while eliminating the duplicate-declaration
-warning during `make htmldocs`.
+While the check is only present at:
 
-No functional change.
+- mm_core_init()
+	- kfence_alloc_pool_and_metadata()
+		- kasan_hw_tags_enabled()
 
-Fixes: fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
-Signed-off-by: Sanjay Chitroda <sanjayembeddedse@gmail.com>
----
- mm/slub.c | 12 ------------
- 1 file changed, 12 deletions(-)
+However the late activation triggers BUG_ON or KASAN invalid access
+issues at the moment:
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 865bc050f654..3f58a485e95e 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6309,18 +6309,6 @@ static size_t __ksize(const void *object)
- 	return slab_ksize(slab);
- }
- 
--/**
-- * ksize -- Report full size of underlying allocation
-- * @objp: pointer to the object
-- *
-- * This should only be used internally to query the true size of allocations.
-- * It is not meant to be a way to discover the usable size of an allocation
-- * after the fact. Instead, use kmalloc_size_roundup(). Using memory beyond
-- * the originally requested allocation size may trigger KASAN, UBSAN_BOUNDS,
-- * and/or FORTIFY_SOURCE.
-- *
-- * Return: size of the actual memory used by @objp in bytes
-- */
- size_t ksize(const void *objp)
- {
- 	/*
--- 
-2.34.1
+	~ # dmesg | grep 'disabled as'
+	[    0.000000] kfence: disabled as KASAN HW tags are enabled
+	~ # echo 100 > /sys/module/kfence/parameters/sample_interval
+	[   30.440993] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[   30.442418] BUG: KASAN: invalid-access in __memset+0x10/0x20
+	[   30.443275] Write at addr f4f00000c2e34000 by task sh/1
+	[   30.443420] Pointer tag: [f4], memory tag: [f1]
+	[   30.443448]=20
+	...
+	[   30.445742] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[   30.445946] Disabling lock debugging due to kernel taint
+	[   30.459644] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xf5f00000c1c00000-0xf5f00000c1e00000
 
+Likely because the KFENCE pool/metadata memory is allocated and tagged by M=
+TE:
+
+	[    7.590336] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xf2f00000c1600000-0xf2f00000c1800000
+	...
+	[    7.710112] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xf1f00000c1600000-0xf1f00000c1800000
+	...
+	[    6.627959] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xf8f00000c1e00000-0xf8f00000c2000000
+	...
+	[   19.137156] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xf3f00000c1e00000-0xf3f00000c2000000
+
+Which seems to be an upstream bug of KFENCE+MTE, as I can reproduce the
+same issue on mainline 6.19 without the patch applied:
+
+	# uname -r
+	6.19.0
+	# cat /proc/cmdline=20
+	root=3D/dev/vda console=3DttyAMA0 rw rootwait earlycon debug hash_pointers=
+=3Dnever kfence.sample_interval=3D0
+	# echo 100 > /sys/module/kfence/parameters/sample_interval=20
+	[   45.555499] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[   45.556989] BUG: KASAN: invalid-access in __memset+0x10/0x20
+	[   45.557844] Write at addr f8f00000c3032000 by task sh/148
+	[   45.558063] Pointer tag: [f8], memory tag: [f4]
+	...
+	[   45.560695] Disabling lock debugging dHey thank you will take a looksie=
+ and tell youe to kernel taint
+	[   45.574599] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xf4f00000c1600000-0xf4f00000c1800000
+
+Disabling and enabling won't trigger as the KFENCE pool is not freed on
+disable. To trigger the bug it is required to go through the
+kfence_init_late() path: KFENCE disabled at boot time.
+
+	Note: Tested with qemu-system-aarch64 -cpu max -machine virt,mte=3Don (10.=
+1.3)
+
+Changing kfence_init_late() pool and metadata allocations to
+use the __GFP_SKIP_KASAN flag fixes it:
+
+	~ # echo 100 > /sys/module/kfence/parameters/sample_interval
+	[   19.488734] kfence: initialized - using 2097152 bytes for 255 objects a=
+t 0xfff00000c1600000-0xfff00000c1800000
+	~ # cat /sys/kernel/debug/kfence/stats=20
+	enabled: 1
+	currently allocated: 1
+	total allocations: 12
+	total frees: 11
+	...
+	~ # echo 0 > /sys/module/kfence/parameters/sample_interval
+	[  778.414494] kfence: disabled
+	~ # echo 100 > /sys/module/kfence/parameters/sample_interval
+	[  784.215866] kfence: re-enabled
+	~ # cat /sys/kernel/debug/kfence/stats=20
+	enabled: 1
+	currently allocated: 2
+	total allocations: 32
+	total frees: 30
+	...
+
+But this requires adding __GFP_SKIP_KASAN as allowed in
+__alloc_contig_verify_gfp_mask I think. Unsure if there is a cleaner way
+of doing it, or if changing __alloc_contig_verify_gfp_mask could break
+something else unexpectedly.
+
+I would be happy to try to submit a patch for it :)
 
