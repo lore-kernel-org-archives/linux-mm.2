@@ -4,197 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1809C5AD4E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 19:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D52D8C5AD4E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 19:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5BE96B0088; Fri, 20 Feb 2026 14:10:15 -0500 (EST)
+	id 3FEF46B008A; Fri, 20 Feb 2026 14:10:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12496B008A; Fri, 20 Feb 2026 14:10:15 -0500 (EST)
+	id 395C36B008C; Fri, 20 Feb 2026 14:10:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF5226B008C; Fri, 20 Feb 2026 14:10:15 -0500 (EST)
+	id 299496B0092; Fri, 20 Feb 2026 14:10:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA1046B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 14:10:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5EE931BD1A
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:10:15 +0000 (UTC)
-X-FDA: 84465775590.20.67E6263
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010064.outbound.protection.outlook.com [52.101.61.64])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 444EB1A0016
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:10:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=zgRiBSkP;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 52.101.61.64 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771614612;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 16F9C6B008A
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 14:10:40 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9DD61602E4
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:10:39 +0000 (UTC)
+X-FDA: 84465776598.21.F484FB2
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BD0334000A
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:10:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=W9QWlrJe;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771614638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=04gaNMWQBuHiKHl2ClYwVAqWs211MC0Ytv3ZGWMIDys=;
-	b=21U939PQp6YgOJMkYU/oieAouGuylxtJ8RL6iZ1cNclL29Q5afHmlNyXuFAtjiMc9yS2I5
-	/v807FwWZBh6dHZLe+6Q+r8VjnI4TU3pJbKMiVwklY7LEYxibhDGa7ZSBwxMNvbHF1UmA0
-	FzlY6TJc1uk/HWy2tY5KGnziPrsIxRc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771614612; a=rsa-sha256;
-	cv=pass;
-	b=4RHc+54lI6QXGOEnKKPruGggWFmYKqzAxOm+IHTmFAZkfeyAvNZpkRFpdgw9uiYCvokMSE
-	z3xAREA7qjw0UwKlWU8ccRpAh5trROpqYfDtXtJomItY0+eQwW6uL8YcqrKdFLnYUmkwx/
-	702MZNE7fdF6XQwdfnbwWmRC1Tu9OGQ=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=zgRiBSkP;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 52.101.61.64 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C+p0C1Pfhp0ma+g0Tkmn0sWGmcQV0BG5xYp8LqMuXJ/IskD5YLH3mhxsfpYzE0MEPtavUuZe2XK8ngbLl9MYeVMNypUAE3g8//KzqknjIBFk/zpwtNFJFAjYsatREl0USMcVadfgMnPHXSTK4SF79mpVeTBlj+jyZy5o20WfC1JT1JEHPYqRg/KoeD+8YpEU7078heYjnsZORRWhrhaZHQoT5/vNj1lRRlNIxmXNVvC7MFGzGZJItXA1Q0fhC8TJ6yZoBy9F85W3gOurPykHCTXnMqKv9UCENULVjlW/J6lxCxxleZ4sfN3X83us7kp7iCvJc59H68YFRHrya9iqdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=04gaNMWQBuHiKHl2ClYwVAqWs211MC0Ytv3ZGWMIDys=;
- b=nXKiXLxLokZsBDYSSriXGFTRTOe2rTJl1xgNsPyNKMORE4o6rnC1t8wBaZzS8SJSHQC7KBP++QBLdhzdgHT3N8iBTWYlJSaXg9XBlWm9n63RzYHzaYKP7MNqjCPa6E9uTdQLtosr1+fCgtD5eqd0yeoGGsH7j/O9bGGfW9eLfYG3NouIY9jOpguGgqi5GOgALK9hthn65P0XTjalC66Tyu+TQTUQhTCaeg+8RxL6pdHA4G4T80imZKjy34B1AYckDk/2iZ6ol7JD+Ooh3uJ1qwi628iou/ukhKH4hxPUSdTH8VGmpuAZoa+I0ZodTxF76nc3PJEvl5CR2JPXb/YF/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ilvokhin.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=04gaNMWQBuHiKHl2ClYwVAqWs211MC0Ytv3ZGWMIDys=;
- b=zgRiBSkPZ1pmC+742aaFXwtOwY159iDRqu1dEoPeLg4RV3HQD7GdKQ/u97AQSQkQthc1jmLQBnNJ8TFiU6TOBl7QvHAHyAA0XEN01MnzbSEJmv2hVQJ46UWOtYlzpU5qmQvAKBse2Cl6IMo5LZJX3rHG0VmF8Qr7ycjUKlDTJ2Q=
-Received: from PH2PEPF00003851.namprd17.prod.outlook.com (2603:10b6:518:1::76)
- by DS5PPFFF21E27DC.namprd12.prod.outlook.com (2603:10b6:f:fc00::66b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.15; Fri, 20 Feb
- 2026 19:10:07 +0000
-Received: from SJ1PEPF000023D9.namprd21.prod.outlook.com
- (2a01:111:f403:c902::13) by PH2PEPF00003851.outlook.office365.com
- (2603:1036:903:48::3) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.16 via Frontend Transport; Fri,
- 20 Feb 2026 19:10:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000023D9.mail.protection.outlook.com (10.167.244.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.0 via Frontend Transport; Fri, 20 Feb 2026 19:10:07 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 20 Feb
- 2026 13:10:06 -0600
-Received: from [10.236.185.70] (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 20 Feb
- 2026 11:10:05 -0800
-Message-ID: <74fc1f28-b77e-4b9c-b208-51babae9d18e@amd.com>
-Date: Fri, 20 Feb 2026 13:10:05 -0600
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OWO7RKWgQr+7ICFBB9SCVBLs7NDhlsurdO9niRwwF2Q=;
+	b=ho4a34euIFs/q+FWSz9lWLTQk6fQS7ZV9xd45e1sR7vwBjF+w1nVAtN8mD8ap1Q/uZSxrn
+	ia6TsIiALLAVwfDK69v7DKXbGLcL+YV8Cq1/vtnAZbSjWY6ZywVBIjc3Yn8Vz14zx9GAI9
+	NLAiMAnQhxKbP+uIaBQEBwZSIOcqrnA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=W9QWlrJe;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771614638; a=rsa-sha256;
+	cv=none;
+	b=EJ7nYn3I4cJmraInoECJKpEiCKg05i5AguNTfColcyK7gUxSpscqNZwcZos3EQNFjzaZPD
+	4Cj3GiifoJzZma46s3Pd+BUm+C7ifWoz5pA2xVNFTYfVgSEGufLT/1t5sLsTAOZT4rHgVx
+	CJuBGBwLJQjA+x4neI8G3dbarXm01ug=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8cb5c9ba82bso368032085a.2
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:10:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1771614637; x=1772219437; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OWO7RKWgQr+7ICFBB9SCVBLs7NDhlsurdO9niRwwF2Q=;
+        b=W9QWlrJetvvnkVJScyAVyBLYJbMYh9lceJTz7YeT5eN0WLsi7ANV6//z2LEghOwW5g
+         dEVoSK2jW0vLJm7MCFIZziRU4diCTPhAgl9x6Rm3deLThZ4SpzVY6NC/6RyQkjVOG7II
+         iuJm9WWrzaoYozGHbMmXIZvJuxaeRLnExn1WNi1joy5OphB/eE4MQBngIIMU7iznRJCO
+         oqLci8PCaqR15zcF6iT1V1T4oidDXUIp6joIqik4BWN5p/EbWYt8YgfOM1eYIvoyamO1
+         qgnEvmpGevSEeZJYDnFQL3fj9gipOmSeLVwXubHfLs9NOI36RiK1h91tv2cpIvFn9axe
+         mh6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771614637; x=1772219437;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OWO7RKWgQr+7ICFBB9SCVBLs7NDhlsurdO9niRwwF2Q=;
+        b=sF7k72f+hGSc6GaI/xE5jl3l7+OrkYS7m+IGedMWb68Wkkuga5WqW4UYUJS6sGRikf
+         8cRkEKs2oxJcEoAFYU1p5qQmCQ3WfmOgCDfTsmLId8hNlv4XwvFBdPZ9k0gzEiJDX1WX
+         C5kNfEjs5K2jNXEaifwaLqXXayIdfASDivrMWYIgqtYEILpAIp+3DvCjmkQ0ZXaEKn8p
+         2nedmBaMG3PLVZ7wDQgVwoTOXSBG50iDmy0Zj9/y4tnE9aEy01Wepky4D2F26q/5LmmR
+         fNYypx0GgdioH2hoxosyuyYeMCvzGr7MhxvKTOlpbALHncf5ZJoYjWCty53y51fVD5mG
+         4D/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUJIyzOHKDJkUiJn7vWeXF9h8gpo2IUPad2JvceAzTBrxqhqRKP0S+B5GPcosdNNJkcEu5OfbTjJA==@kvack.org
+X-Gm-Message-State: AOJu0YzztMM9M8hrr5rfoOYDONDVDSmYdcM/lKX1kf3p/RQH5tMFRcIK
+	7av749CCYt2c1HEHGJQ5lBz76xfwcunfUMz3RLBLUJxYlmcj935R/11I6nxqRaR/4yo=
+X-Gm-Gg: AZuq6aLE58GABsdRNtnVBvF4qJ1HvrBwq879eTIimCJB2Gc+yDhZDPI7lD6+paQbJsx
+	/s2cQ5jSNNgrp2axIsy7WX7tu9OnV2YGACiugHWPgm+CeAwcq4pIYosV4sS3V+rQEHMBsqG4eEp
+	3inCiu8JnSwdmWozCam6rSXkNUUwyWtGsIM/aXPK4LVFOZkG5r1He99glOrQLhhGk2a4RYoBwOU
+	stnGvNFK06x7sZWl9YgKtJNG2pHMwSQlWZEYRlm+ifiIcntMPB2eV1+jgt9xpIaH/ddI8ZIktsx
+	t8vNV8OtGfL5AG9MkeC24G5Zw2mojcIMsGp3FEUiteX2Y+nRlxVo/YPesnDTEP3S0QcQ9tIDhgZ
+	9mAQP57QC7vzBlXHjsXnuppf5jImjiEOfHvdluWYDk37p9CQzy66Itau8Mi8vBPqnnya0MAB07C
+	9C03HvC3C/m/8nxmQeMokFEcj6OJNlAump
+X-Received: by 2002:a05:620a:d8d:b0:8c6:a5bc:8a90 with SMTP id af79cd13be357-8cb8c9e0086mr82079585a.14.1771614636634;
+        Fri, 20 Feb 2026 11:10:36 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d0ebcd0sm22196885a.28.2026.02.20.11.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 11:10:36 -0800 (PST)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] mm: vmalloc: streamline vmalloc memory accounting
+Date: Fri, 20 Feb 2026 14:10:34 -0500
+Message-ID: <20260220191035.3703800-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH 3/4] mm: convert compaction to zone lock wrappers
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<kernel-team@meta.com>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Steven
- Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-	"Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
-	<ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Qi Zheng
-	<zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, "Axel
- Rasmussen" <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, "Wei
- Xu" <weixugc@google.com>
-References: <cover.1770821420.git.d@ilvokhin.com>
- <3462b7fd26123c69ccdd121a894da14bbfafdd9d.1770821420.git.d@ilvokhin.com>
-Content-Language: en-US
-In-Reply-To: <3462b7fd26123c69ccdd121a894da14bbfafdd9d.1770821420.git.d@ilvokhin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D9:EE_|DS5PPFFF21E27DC:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e61f732-4893-40c9-f6b4-08de70b3a922
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|30052699003|82310400026|36860700013|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Qjl0MWVPVUdweS8rQVhpNTgvcTljNFkwb1JnbktHV2Z1U0ZERHNKZG92bjZ5?=
- =?utf-8?B?ekU4K1ZIQVpDak9TUTNJWHlGZXJzY1RtcXdqTVpVZUhGdjFaRkVUUnFEQ0dl?=
- =?utf-8?B?Z29UZzdCWDJmNzZUdVZhcjFPa0VqOEF3VU9lUGRPajkzWHE1R01Hckd3T3dx?=
- =?utf-8?B?UXFsN0hTbWRRclRlZ2U5QzFOcTN6Q01EZk8wdURjcE5KdTZ2bFF6ZmxXcllu?=
- =?utf-8?B?STRFRnVMTkgzZWt0Q3hrZUozaG15cTl3YkErWmFSZDAwalBMbktLd1laYXg3?=
- =?utf-8?B?YitUYndaVisrUDY3MW1OdDNGSzdjbzBvYjl1Rmc4cTBSSzB1dFlpV0UwUUNG?=
- =?utf-8?B?Y3cvL0NiZGxTT2tmVWVicGEwOVZRQk5RMExOVnM3azk4NzU4RnVmVjVRTEw3?=
- =?utf-8?B?UHRsQUhsbUlrT1A1TStkNTlqQTVnV2YzR2N2OUJYUWR3RWFsTnJpRDNYa0VW?=
- =?utf-8?B?dHRNWkgzSmQvb0sxbnJmYmQ2dlE4d1dFbldrMWE0cnZQQlBFTndJQVlBVTh2?=
- =?utf-8?B?ZHRTRUlBek5YTU9LTy9qa0ZoZFlReXdCRjhRV20vUTlmby84YnB5UUZuWkZM?=
- =?utf-8?B?UXBvQjVNWDdQRkpuRUZsRkN6bEE3bFgvdzV1Njh5ejByazQ3Rk5LRnZLK2dS?=
- =?utf-8?B?OFBEMjBUVi9aSG4wdlJjQUkzSzcrZm5IbEFQY1FjWHh4WGNYanp3YWUrR0JS?=
- =?utf-8?B?aWpHZVNYczU4OFJCc2t0R2tSYW40c00rMVZwWkVLMW5XSTczL3JHdVZUZ2ZY?=
- =?utf-8?B?QmtYL21XVDVhQTRFSVpYbUk4TWNza2IzczhGS1p2aVBrdUYxd0JzMXlRMlZW?=
- =?utf-8?B?ckpIM1VVa1N1RTZlemV2aytkazFndjY5d3RvVU1acUIrQUE3V1JxYzRTRkw4?=
- =?utf-8?B?TEU2cE5iZUhZT3ZFS3pySHN0MjRmaDExbWxTdHhjWGpTQ1JoWjM0SEJkQkpl?=
- =?utf-8?B?R1Q5SFU1QnFPcUdVa3paWHYvd2Z3WkVhQVZ5djluMDhFaWxrS3kxcG9kdHVS?=
- =?utf-8?B?TEhBQUZmbzVKQUF1cjlIMWYrV0VRWENSeXZodmFPdzdWREk1TzNENk5CazMx?=
- =?utf-8?B?bWJyZFFiSmxacVUrbXRhM2FySmdqRDNsenVZN1JYT0pxMzRSaWtIWUI0VTFZ?=
- =?utf-8?B?b09XalVzU2RSVHo5NzZ5Z0RQdVZxd2JqQlI0OHdzclBiYlJFVHloLzJIcmVG?=
- =?utf-8?B?ZDFaNGRTaWtiaUdSS2tuTUZ0U0h6czJEYVZDeHJnMmRWbGhZNXUyeElCWmRs?=
- =?utf-8?B?aTBtZVpDR0JiRTBtNlRCVEtNN1dYWnVkb0lZMlNwU054NFQycU5lNHdYd1lE?=
- =?utf-8?B?MjZlTDk3MmM0aERMTk5lZDFrNS9XY3VrWkRxVjlNUHFNZ3Qxb0E4M3EvWmZ2?=
- =?utf-8?B?M0hvOC9VQ0w0MlRvdW5VN0JnMXo1b3NUVGUvZC9XbDQyTjdjYWdqeTdzSlVi?=
- =?utf-8?B?WEZOYUFqR0dsT1RSSXJsUzZ6RzNiM2hGcjYzTk9BZ2Z0ZEdsTGNQVjJhUnBs?=
- =?utf-8?B?YkdoSTRIeGFVSEhUVkV6Q3Avb244OG5ucXBpMWl4TjZUNmorcE92cExqenQr?=
- =?utf-8?B?RVlZSlVEME5hVEphdGJVbml5cFE4ME0xeUJRY041UHdTV2ZIanRKcGExZ291?=
- =?utf-8?B?UVpvMWxVMlhxU1ZYYjVpYjVNcTZBR2VJUm5rZ1dNSm5UMnhvYXNORFljUFc0?=
- =?utf-8?B?NFczc0JDSWhDSmViaTZNUitvQXh6VlV0VWhnUjZvVmZPWEY0dGY5NnlRdFhs?=
- =?utf-8?B?VzBkT2pKdzlDejQwYmxQZzdWbmlMOG5SWENCMzh3TEMzU2NBZmtMakpmY2kv?=
- =?utf-8?B?aDZDb3pOWDN3ZzBVR3lxNHhFZjYvcFRHOVoyMWNlTWNlMEY0YmRvcGZ0dXJH?=
- =?utf-8?B?RVcrdENOcmM1Ylp2c3djY1UrUy80QzArZnJIbDB0SGt1VDRBNkNIQTY4clB5?=
- =?utf-8?B?VnUyVkdrM1lwSnBYSnJnSGRLNTFCeVl1MTdPeXBsUkFzWVFTYlFkczkvOTUr?=
- =?utf-8?B?L3NpSnJMRE1YSjhESmZjSmJ0ZGxMWTgvUi9OY3RIeXRCN3IrUUdZaWZIREZ3?=
- =?utf-8?B?M1Zkc3d4S2lKOVBsWEkwTVd3YW4rTnZmMmZ1cWNUMWJWNEduYTdBS083VERa?=
- =?utf-8?B?K3RhYWhkSGg2aVJZd1FCcGRVeXg1Tzk5UVFUaXlCbmhaSjlzayt6V0d5OER1?=
- =?utf-8?B?WHdJNHlkWXoxcVRnN01kTGZ1OUpCMVlSWFVBckNOTWFLcVZKKzB2eUx6VTZi?=
- =?utf-8?B?R0gvRHNsYUJUTmk2MGp2NHRpWlNnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(30052699003)(82310400026)(36860700013)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CdETpvuae9MsLoiISeMTrLS+2N+IXfSHkw+dS//XJ4FPtP3tXTKVltKMHU4c1k218KHGyLMf0ydQO0J8/0pnq8wBBUwhrSnnHPJux0/jpnyTnP5SiRmGkSFYSdGpfmyaym4mYmwjyOFCNlLHdnGyZOBYoqRViekwRzN+WE9Qrb+4a2uEokRAnM902gq3IGWbUTCQWRoSxFdknSGkzM3T7v7dV3WEqiE2098lM2FhQ7YNE+I6bHSEKtQTJYLfDSKTR8bDd+OT7JYfrUEcf9Q0+BYdUErZHre5xK/Gb8D5CtWqdPWTdd1xm5hOKudPoAIft4WWDs9sY0LXJ36NG97Qz4QhJ6w0yf/aJNiZwoG9AWwmphHD1a0MgQ2GUPG1GE/xcuVKkXniFeubYsYj2l9X1+F6hDHRxgrrJa3O+QAkkEJbgP3NQw028kyiTYv2SOLt
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2026 19:10:07.1180
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e61f732-4893-40c9-f6b4-08de70b3a922
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D9.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFFF21E27DC
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 11r1oxj8asihzxy769dtit55htuiec34
-X-Rspamd-Queue-Id: 444EB1A0016
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1771614612-61979
-X-HE-Meta: U2FsdGVkX1+8q7bG3YeumaiGFA+tudOxMqk/bccFAuK7igKodTiZaO20FCq2O7IBJL6ABKs5cV4BftQ79bnkd6Gq0o904+HUao/lRA7XOa4LOahCEiN6RqRNd1c6pWz7xQI0Sp3jgSHkQKiLM5TB5XVrXRm194P4sekk8IEaEog/r/QONmB3HupoPdXgRqFTRU+ZxWAV1TcbfWHfpQ/xgWZwl9C3KGGsQ5DlkUOFkTcXCAFWfHObzwlq+yorIcDTkk+Exd5a98sjTwS7VFtd2ZlRNhSND8ER3GW75QTGnxgNs3spApe+0NZzd1X7noMjFjopXCCKNZulUNMO2YR0MmvfP6wlqC9BpIL40OuOBMDaPXGetWU/fjxsDRiijw5Fk4T1ZN1YDcAyZVz8sc4cXSwsP7mqc2KTySEacFdWq75Xp2u78SZJQW5kOvy5CoeUE8XI0d/qbwXf2aJprCc1RSkDkOiwY+ZSqyS0dCSlJjv/ec5IF7n3qKwytHn9eHcVPPDw0LyDN81kRHiORQlpSf73iVo4g3xzcNgvADQtwa25swp4pudFpsdcuY9XBiHI7LPuRfEbR5n3/d8WG3b362B69qQoztiCN8g8lKBmSFgOSW6IxBXycUduGJQaZ+QEN9CIXGj1hT4RpMCmv8J6KCsAVgh7lFwlRvBHV0DNqB40ec7S9PUlakrC1JGF8r0JPPRpkI15weY0bov6Bcw3xEzKuqsABRo+uZwbqiMYgobc26rWyejFcUUrwSMfXTZtQDugrTtzdPxIOyHO94/iD0wzYF12RHd3PMJs0Q3RJyajbHoc4/S06U9qtffNs8jiMMyfihNyTwdzvkWVygzBKDywFBnwMeXpKlKjfgGzC+jVv1WMDR6lvdXN0THLeH1GMGwiRAMjoqGZAGfnvCxHxX7orXu2v7aTLJSCjpWgdw0Xxto+Q0y0Bk4T1+SRY6miS4flGjRvGIdwkdtgEYb
- tVLewX7A
- kBixK4X48gpwzck8co8vZN6j61CwBfK8h5inSiTnYP0G3DqpwWnTsXunyC2d+Uamv4aUcdoCvvyrKhFUcG+ckQA1neVbJz2j+62QYQCnPdhBSv3mNJKIJZwF4kElQmyrCPEYXcpOMgiFgaup3odyb7sYXwVfzBQjIO5uTS4MLqCV+N9Y7FG1jt2qxuWpTkfLzaBFA3+j6xf0JCGhjPW0Bj44GeWbtoZOmPIxgYrUCYcQc6P1DAOTVxBWIUK6QLv+8nF36dSmwYGB/83JEOsXTzZkVolcqF6/rQ3rq2gJBKl9CiLSGe+sMFmbs6zY1IyjWZcPWhOUIG2RhbRQCszkXnt5RuaKfKlhivlxJ2isTY8qPORMC3RqKPAU3W/v1kayuDBGntMDAjiR8Cv33N4gHZQS6C3XuY5TjTjl7qQR+f/8bVTCnxyhQ5ugFChV2O+tKv8gnq0+yxCXv6/V0eR6eemvI4MM2HGqyR1Xh0nEiWaJC44estqkamDm/jJ0aQim1sG30zUNiGUB6JgWn/ICxQuNsdQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BD0334000A
+X-Stat-Signature: bcn9yf3nqjfehq5zmstuet47ho8anx9w
+X-HE-Tag: 1771614637-863372
+X-HE-Meta: U2FsdGVkX181ES0hKX5DcLyuZisUxXxr0+CWWE2vpUmzYh+LI191RGLe1kH4UKfSqpNgLuG65YPqhFvPkyqDRM54/9Iht91quNb94qEFygIgMEsvTRmAEq3TaQtrD7UuhDKCO4aPTEOQRZcUrtsTqpZO4qacAR3xCF/UQRxQiXMXLVqZlWS7L9tZ+ZlnuHJbrnUBmrTu8C8MAfIT9weKDcPzMrBLcbVL15Diwcnl/btQhCQdvxOd1x9yi6bs3yEUlaBmXHv0/xkSEoWSJUl666VlnyNJGZUshCqGNPKmVzGA9R/1txAycyIm8rpjLbFyBp22efqykKpA46SmC/5DEuQQrw7M8XKCKajX5pnrIJK0cTSY3xkQlOVQtST1zga6fzKuenNDWjLhG0kC3lDnCBm7oBM39X0OhYBgshpz/UQHHxQlUq14YreCKkkaoq0rGFizQryb8Sw3znZKhxTnSCnPf+0sVb2/nLAAYI+60+RB630rSkztNkjljKKEF/NmbfRvFyZVxLAfCHziI0uF8rnjM+SkW1wl8d3OwDwDLhTGGhWam/56OPVqLEzUBcf82xfqju+kB3T83PZn08OAMXEtuGVH2UJ/1xbXhrA329XTl/W+PdNxQLNe6G9n0elPsWxqeLzt/NmA7x4FkJ+2v+Cac3OuXNLZCzSQ2UCR0LLAdW25j0EOdIi7wYW1iG4Nb3s1R5ZOYuhY8+IK1Ym1XqMI3cIC7aVQ+lYC/12QfIHePQYB+p/PIY+l8pIRBHS3uFn5GaOhf+HVbrCefyI0J5lhdTXbzPbJrgvs7LYYXD4aAQ8UGvswBP6lL8nHEIM198Xie5vwMISUwenn14lDZ1d4dgIND5p/wlx6rAEF8TBRpP7maMQN6wV45tNt3egliERPTk9+vCUqGuSl06wypCqCbROCjEjvqYnKnbgE3h6PN5MAg74DO8BiiWArMGSdzPyAyKsLlPDxn65h5oo
+ hwe/D2sj
+ jE8YUcdyhqeHQOKOq6LalA67s8o87AEHbe8kWHyTGgkK3aPVu9tdjgFkQPud+mfdUGdoClj4ye2unEwa5dtiihHdPmxxvCZWAozaPGi0qHsMRMyZPaAkTIKVZUbWNZxtmImiKtIG5sdMHzEtTaxihNiHd8GO8exHl2fgmlZ/UZhjD0gBnvBntnUrN62MDOPAosDmtMGOTFeVgdoqtu8vedeG2p27aTjILdoOfPvK+/KT9BONqjoKievL2gGX2MvCXgrSIDyhMVe4eMXc7USdN7JXCdBVh/uNI9BmAwtuffL0dB59L9jaDo3hTh7pCgKdJsSCc4flq92XJf1s2QaKnsBDwhrEu3zASv4McSz34CDeHGl6fMQSiwiWdE74ENov920MIjHgm1yHPK+0JAykfS88FSjMZmYNvTr8TaDsQE6qlhswu3s1xMS+O6f3Kzwcz7o+9jSoPwKozE6ZVVilskaFGOGirprCnc+fhYTYWQ92q6H0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -203,247 +122,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/2026 9:22 AM, Dmitry Ilvokhin wrote:
-> Compaction uses compact_lock_irqsave(), which currently operates
-> on a raw spinlock_t pointer so that it can be used for both
-> zone->lock and lru_lock. Since zone lock operations are now wrapped,
-> compact_lock_irqsave() can no longer operate directly on a spinlock_t
-> when the lock belongs to a zone.
-> 
-> Introduce struct compact_lock to abstract the underlying lock type. The
-> structure carries a lock type enum and a union holding either a zone
-> pointer or a raw spinlock_t pointer, and dispatches to the appropriate
-> lock/unlock helper.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> ---
->  mm/compaction.c | 108 +++++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 89 insertions(+), 19 deletions(-)
-> 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 1e8f8eca318c..1b000d2b95b2 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -24,6 +24,7 @@
->  #include <linux/page_owner.h>
->  #include <linux/psi.h>
->  #include <linux/cpuset.h>
-> +#include <linux/zone_lock.h>
->  #include "internal.h"
->  
->  #ifdef CONFIG_COMPACTION
-> @@ -493,6 +494,65 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
->  }
->  #endif /* CONFIG_COMPACTION */
->  
-> +enum compact_lock_type {
-> +	COMPACT_LOCK_ZONE,
-> +	COMPACT_LOCK_RAW_SPINLOCK,
-> +};
-> +
-> +struct compact_lock {
-> +	enum compact_lock_type type;
-> +	union {
-> +		struct zone *zone;
-> +		spinlock_t *lock; /* Reference to lru lock */
-> +	};
-> +};
-> +
-> +static bool compact_do_zone_trylock_irqsave(struct zone *zone,
-> +					    unsigned long *flags)
-> +{
-> +	return zone_trylock_irqsave(zone, *flags);
-> +}
-> +
-> +static bool compact_do_raw_trylock_irqsave(spinlock_t *lock,
-> +					   unsigned long *flags)
-> +{
-> +	return spin_trylock_irqsave(lock, *flags);
-> +}
-> +
-> +static bool compact_do_trylock_irqsave(struct compact_lock lock,
-> +				       unsigned long *flags)
-> +{
-> +	if (lock.type == COMPACT_LOCK_ZONE)
-> +		return compact_do_zone_trylock_irqsave(lock.zone, flags);
-> +
-> +	return compact_do_raw_trylock_irqsave(lock.lock, flags);
-> +}
+Use a vmstat counter instead of a custom, open-coded atomic. This has
+the added benefit of making the data available per-node, and prepares
+for cleaning up the memcg accounting as well.
 
-Nit: You could remove the helpers above and just do the calls directly in this function, though
-it would remove the parity with the compact helpers. compact_do_lock_irqsave() helpers can stay
-since they have the __acquires() annotations.
-> +
-> +static void compact_do_zone_lock_irqsave(struct zone *zone,
-> +					 unsigned long *flags)
-> +__acquires(zone->lock)
-> +{
-> +	zone_lock_irqsave(zone, *flags);
-> +}
-> +
-> +static void compact_do_raw_lock_irqsave(spinlock_t *lock,
-> +					unsigned long *flags)
-> +__acquires(lock)
-> +{
-> +	spin_lock_irqsave(lock, *flags);
-> +}
-> +
-> +static void compact_do_lock_irqsave(struct compact_lock lock,
-> +				    unsigned long *flags)
-> +{
-> +	if (lock.type == COMPACT_LOCK_ZONE) {
-> +		compact_do_zone_lock_irqsave(lock.zone, flags);
-> +		return;
-> +	}
-> +
-> +	return compact_do_raw_lock_irqsave(lock.lock, flags);
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ fs/proc/meminfo.c       |  3 ++-
+ include/linux/mmzone.h  |  1 +
+ include/linux/vmalloc.h |  3 ---
+ mm/vmalloc.c            | 19 ++++++++++---------
+ mm/vmstat.c             |  1 +
+ 5 files changed, 14 insertions(+), 13 deletions(-)
 
-You don't need the return statement here (and you shouldn't be returning a value at all).
-
-It may be cleaner to just do an if-else statement here instead.
-
-> +}
-> +
->  /*
->   * Compaction requires the taking of some coarse locks that are potentially
->   * very heavily contended. For async compaction, trylock and record if the
-> @@ -502,19 +562,19 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
->   *
->   * Always returns true which makes it easier to track lock state in callers.
->   */
-> -static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
-> -						struct compact_control *cc)
-> -	__acquires(lock)
-> +static bool compact_lock_irqsave(struct compact_lock lock,
-> +				 unsigned long *flags,
-> +				 struct compact_control *cc)
->  {
->  	/* Track if the lock is contended in async mode */
->  	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
-> -		if (spin_trylock_irqsave(lock, *flags))
-> +		if (compact_do_trylock_irqsave(lock, flags))
->  			return true;
->  
->  		cc->contended = true;
->  	}
->  
-> -	spin_lock_irqsave(lock, *flags);
-> +	compact_do_lock_irqsave(lock, flags);
->  	return true;
->  }
->  
-> @@ -530,11 +590,13 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
->   * Returns true if compaction should abort due to fatal signal pending.
->   * Returns false when compaction can continue.
->   */
-> -static bool compact_unlock_should_abort(spinlock_t *lock,
-> -		unsigned long flags, bool *locked, struct compact_control *cc)
-> +static bool compact_unlock_should_abort(struct zone *zone,
-> +					unsigned long flags,
-> +					bool *locked,
-> +					struct compact_control *cc)
->  {
->  	if (*locked) {
-> -		spin_unlock_irqrestore(lock, flags);
-> +		zone_unlock_irqrestore(zone, flags);
-
-I would move this (and other wrapper changes below that don't use compact_*) to the last patch. I understand you
-didn't change it due to location but I would argue it isn't really relevant to what's being added in this patch
-and fits better in the last.
-
->  		*locked = false;
->  	}
->  
-> @@ -582,9 +644,8 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
->  		 * contention, to give chance to IRQs. Abort if fatal signal
->  		 * pending.
->  		 */
-> -		if (!(blockpfn % COMPACT_CLUSTER_MAX)
-> -		    && compact_unlock_should_abort(&cc->zone->lock, flags,
-> -								&locked, cc))
-> +		if (!(blockpfn % COMPACT_CLUSTER_MAX) &&
-> +		    compact_unlock_should_abort(cc->zone, flags, &locked, cc))
->  			break;
->  
->  		nr_scanned++;
-> @@ -613,8 +674,12 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
->  
->  		/* If we already hold the lock, we can skip some rechecking. */
->  		if (!locked) {
-> -			locked = compact_lock_irqsave(&cc->zone->lock,
-> -								&flags, cc);
-> +			struct compact_lock zol = {
-> +				.type = COMPACT_LOCK_ZONE,
-> +				.zone = cc->zone,
-> +			};
-> +
-> +			locked = compact_lock_irqsave(zol, &flags, cc);
->  
->  			/* Recheck this is a buddy page under lock */
->  			if (!PageBuddy(page))
-> @@ -649,7 +714,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
->  	}
->  
->  	if (locked)
-> -		spin_unlock_irqrestore(&cc->zone->lock, flags);
-> +		zone_unlock_irqrestore(cc->zone, flags);
->  
->  	/*
->  	 * Be careful to not go outside of the pageblock.
-> @@ -1157,10 +1222,15 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->  
->  		/* If we already hold the lock, we can skip some rechecking */
->  		if (lruvec != locked) {
-> +			struct compact_lock zol = {
-> +				.type = COMPACT_LOCK_RAW_SPINLOCK,
-> +				.lock = &lruvec->lru_lock,
-> +			};
-> +
->  			if (locked)
->  				unlock_page_lruvec_irqrestore(locked, flags);
->  
-> -			compact_lock_irqsave(&lruvec->lru_lock, &flags, cc);
-> +			compact_lock_irqsave(zol, &flags, cc);
->  			locked = lruvec;
->  
->  			lruvec_memcg_debug(lruvec, folio);
-> @@ -1555,7 +1625,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
->  		if (!area->nr_free)
->  			continue;
->  
-> -		spin_lock_irqsave(&cc->zone->lock, flags);
-> +		zone_lock_irqsave(cc->zone, flags);
->  		freelist = &area->free_list[MIGRATE_MOVABLE];
->  		list_for_each_entry_reverse(freepage, freelist, buddy_list) {
->  			unsigned long pfn;
-> @@ -1614,7 +1684,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
->  			}
->  		}
->  
-> -		spin_unlock_irqrestore(&cc->zone->lock, flags);
-> +		zone_unlock_irqrestore(cc->zone, flags);
->  
->  		/* Skip fast search if enough freepages isolated */
->  		if (cc->nr_freepages >= cc->nr_migratepages)
-> @@ -1988,7 +2058,7 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
->  		if (!area->nr_free)
->  			continue;
->  
-> -		spin_lock_irqsave(&cc->zone->lock, flags);
-> +		zone_lock_irqsave(cc->zone, flags);
->  		freelist = &area->free_list[MIGRATE_MOVABLE];
->  		list_for_each_entry(freepage, freelist, buddy_list) {
->  			unsigned long free_pfn;
-> @@ -2021,7 +2091,7 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
->  				break;
->  			}
->  		}
-> -		spin_unlock_irqrestore(&cc->zone->lock, flags);
-> +		zone_unlock_irqrestore(cc->zone, flags);
->  	}
->  
->  	cc->total_migrate_scanned += nr_scanned;
+diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+index a458f1e112fd..549793f44726 100644
+--- a/fs/proc/meminfo.c
++++ b/fs/proc/meminfo.c
+@@ -126,7 +126,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+ 	show_val_kb(m, "Committed_AS:   ", committed);
+ 	seq_printf(m, "VmallocTotal:   %8lu kB\n",
+ 		   (unsigned long)VMALLOC_TOTAL >> 10);
+-	show_val_kb(m, "VmallocUsed:    ", vmalloc_nr_pages());
++	show_val_kb(m, "VmallocUsed:    ",
++		    global_node_page_state(NR_VMALLOC));
+ 	show_val_kb(m, "VmallocChunk:   ", 0ul);
+ 	show_val_kb(m, "Percpu:         ", pcpu_nr_pages());
+ 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index fc5d6c88d2f0..64df797d45c6 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -220,6 +220,7 @@ enum node_stat_item {
+ 	NR_KERNEL_MISC_RECLAIMABLE,	/* reclaimable non-slab kernel pages */
+ 	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
+ 	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
++	NR_VMALLOC,
+ 	NR_KERNEL_STACK_KB,	/* measured in KiB */
+ #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
+ 	NR_KERNEL_SCS_KB,	/* measured in KiB */
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index e8e94f90d686..3b02c0c6b371 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -286,8 +286,6 @@ int unregister_vmap_purge_notifier(struct notifier_block *nb);
+ #ifdef CONFIG_MMU
+ #define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
+ 
+-unsigned long vmalloc_nr_pages(void);
+-
+ int vm_area_map_pages(struct vm_struct *area, unsigned long start,
+ 		      unsigned long end, struct page **pages);
+ void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
+@@ -304,7 +302,6 @@ static inline void set_vm_flush_reset_perms(void *addr)
+ #else  /* !CONFIG_MMU */
+ #define VMALLOC_TOTAL 0UL
+ 
+-static inline unsigned long vmalloc_nr_pages(void) { return 0; }
+ static inline void set_vm_flush_reset_perms(void *addr) {}
+ #endif /* CONFIG_MMU */
+ 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index e286c2d2068c..a49a46de9c4f 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -1063,14 +1063,8 @@ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+ 
+-static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+ 
+-unsigned long vmalloc_nr_pages(void)
+-{
+-	return atomic_long_read(&nr_vmalloc_pages);
+-}
+-
+ static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *root)
+ {
+ 	struct rb_node *n = root->rb_node;
+@@ -3463,11 +3457,11 @@ void vfree(const void *addr)
+ 		 * High-order allocs for huge vmallocs are split, so
+ 		 * can be freed as an array of order-0 allocations
+ 		 */
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			dec_node_page_state(page, NR_VMALLOC);
+ 		__free_page(page);
+ 		cond_resched();
+ 	}
+-	if (!(vm->flags & VM_MAP_PUT_PAGES))
+-		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
+@@ -3655,6 +3649,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			continue;
+ 		}
+ 
++		mod_node_page_state(page, NR_VMALLOC, 1 << large_order);
++
+ 		split_page(page, large_order);
+ 		for (i = 0; i < (1U << large_order); i++)
+ 			pages[nr_allocated + i] = page + i;
+@@ -3675,6 +3671,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 	if (!order) {
+ 		while (nr_allocated < nr_pages) {
+ 			unsigned int nr, nr_pages_request;
++			int i;
+ 
+ 			/*
+ 			 * A maximum allowed request is hard-coded and is 100
+@@ -3698,6 +3695,9 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 							nr_pages_request,
+ 							pages + nr_allocated);
+ 
++			for (i = nr_allocated; i < nr_allocated + nr; i++)
++				inc_node_page_state(pages[i], NR_VMALLOC);
++
+ 			nr_allocated += nr;
+ 
+ 			/*
+@@ -3722,6 +3722,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 		if (unlikely(!page))
+ 			break;
+ 
++		mod_node_page_state(page, NR_VMALLOC, 1 << order);
++
+ 		/*
+ 		 * High-order allocations must be able to be treated as
+ 		 * independent small pages by callers (as they can with
+@@ -3864,7 +3866,6 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+ 			vmalloc_gfp_adjust(gfp_mask, page_order), node,
+ 			page_order, nr_small_pages, area->pages);
+ 
+-	atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
+ 	/* All pages of vm should be charged to same memcg, so use first one. */
+ 	if (gfp_mask & __GFP_ACCOUNT && area->nr_pages)
+ 		mod_memcg_page_state(area->pages[0], MEMCG_VMALLOC,
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index d6e814c82952..bc199c7cd07b 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1270,6 +1270,7 @@ const char * const vmstat_text[] = {
+ 	[I(NR_KERNEL_MISC_RECLAIMABLE)]		= "nr_kernel_misc_reclaimable",
+ 	[I(NR_FOLL_PIN_ACQUIRED)]		= "nr_foll_pin_acquired",
+ 	[I(NR_FOLL_PIN_RELEASED)]		= "nr_foll_pin_released",
++	[I(NR_VMALLOC)]				= "nr_vmalloc",
+ 	[I(NR_KERNEL_STACK_KB)]			= "nr_kernel_stack",
+ #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
+ 	[I(NR_KERNEL_SCS_KB)]			= "nr_shadow_call_stack",
+-- 
+2.53.0
 
 
