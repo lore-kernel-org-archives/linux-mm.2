@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17068C55178
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 09:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77091C55183
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 09:52:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EC836B0089; Fri, 20 Feb 2026 04:51:54 -0500 (EST)
+	id D56B36B008A; Fri, 20 Feb 2026 04:52:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 599EF6B008A; Fri, 20 Feb 2026 04:51:54 -0500 (EST)
+	id CD9DA6B008C; Fri, 20 Feb 2026 04:52:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C64B6B008C; Fri, 20 Feb 2026 04:51:54 -0500 (EST)
+	id BDC9C6B0092; Fri, 20 Feb 2026 04:52:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35B276B0089
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:51:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64108BD8A5
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:51:53 +0000 (UTC)
-X-FDA: 84464368506.19.1902DCE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CFF2EC0004
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:51:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oSMnR2VB;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AAB1A6B008A
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:52:01 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B2FD160C49
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:52:01 +0000 (UTC)
+X-FDA: 84464368842.06.AC9F05F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 84CAE80016
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 09:51:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBlUoq08;
+	spf=pass (imf30.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771581111;
+	s=arc-20220608; t=1771581119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Zfvy7nM/NrHVVX1PT+lkagG6YqHQTr0oHEXLQMyTIs=;
-	b=QVd9Odxvh7WqPjpPGnfZqmpVglcitmKg93Pqk0s43ZkCn0vJXoDvVqNu5J3LBq0+Vri8Mt
-	3bGdsOLNkqDLysbfNyK7Nc1QuDk0A0jhiuEt1VOhOtC/S+dyxzaLYWH6ArEp6Ox77yfJyb
-	D3+xec/rCJCkimZgc6exgCwZ2c3NslM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oSMnR2VB;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771581111; a=rsa-sha256;
+	bh=fEYMJwatXgPu+YWsD6k99uwLF7wZEliuaUYi50HKU1Y=;
+	b=A2Rtcwbb3JIjVeKekqOM0wglOF0PneSYqjLyjnb+kEqier+dxSZYYPPNs8ALD0kjMayrtk
+	8Ro9AzMh2XfaM0IASTnojoGrHQYDA/zN3SWMS5SJHd635N5tkMky2MUlNwmVLjKYjUoURd
+	oNlR635HQpKIV2pzwMFGBMININIkRDE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771581119; a=rsa-sha256;
 	cv=none;
-	b=Fi9HWkiNez62DBu5IUZkoqhNCPbU+agobRo2snIXJbH0sI319JkQPNCyUdHEIcd9PFNd4s
-	AHfXFFrgUNf4ibKbGT74YHAtLt9wH+njzV9Nu6yq1f6wbLhss0zdce/Wb6acoC+2+r9Oqm
-	+MVuwEkkKA8Xj2FDiEvQ6f56n6IxQvE=
+	b=ZlGlZwdOddu/WPBS8Y6rw2XhUIx/OVCP4XmOkYUjanGze0caU4pw0NmowcqkLEpVYbEGvz
+	iP9urox5vO/kJjC1OlvT4eh8DVlwOTsfCwoc6cn67vlYQdtV6hkz/TUrmzRKCGSUJyuAFP
+	YQOvPZscaMPzW96l2VRtjxxRg9lsJZo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBlUoq08;
+	spf=pass (imf30.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB3D260054;
-	Fri, 20 Feb 2026 09:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E18C116D0;
-	Fri, 20 Feb 2026 09:51:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5895943BE1;
+	Fri, 20 Feb 2026 09:51:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC2AC116C6;
+	Fri, 20 Feb 2026 09:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771581110;
-	bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
+	s=k20201202; t=1771581118;
+	bh=B5FbaZHoWu3lXzLWsvxiL2xffXnxnFX4nBQhSLyFXlg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=oSMnR2VBFiYF7mSjxjkfNVi7njkjNf3PLhFrBmpcM9d4pWK/GXd5fkMSWFUZ6VD2x
-	 5eWFNCJJkIsdUzWD77f02RYiEeD4v6skYIt2XW4ao3NA2rgWmQjg+wQhZGtGTM0+Zj
-	 QiUHPRguHu8S8fyOflkwjbIMsLyOrB/J3XN0Hx2jcXaSuNOpyqtRqMaEsgaUkyYUeX
-	 KxMtJKZRfO/w92vTqQMucveSOe8zWyt3q17hU4n7gBLOq3rKrBHkil4p0WmBHZZPXk
-	 G1/C+VImEEajDd/Cp9FfpLnahW7HziI4vghEkK4AbpaRBMnwIhHj6tE38PTOuLCsH6
-	 mzUUw11uwWtqQ==
+	b=TBlUoq08h8THjyqgOPa5qFuSUJ9EA2rl/GDN9uRVQwt25XUkK2RxR0vWqjtTL+7yR
+	 cxoufxtl3dRE9KagTQfI7RkbgRykxBYpq8jJ357TWuSs3n6WeNy78TnJ/OsGZlbPKT
+	 Thm6Otw7Q8bFXfFocqjTXBUKiV7Vq5W/wpQDQS4W6T/s8x/iBPpgcY0S/jf3hOLE33
+	 0EliLnOFmz9t6PWADdrJir83Vzp8lwr1ATpcd8KGS9kH3OtcrnuhXChO/0fBhJkudy
+	 zok60YIdfXuLJ3TKGwePrpf4o1T+iRXL6mZVb9VWayQRcEU3mgx8PQfbIuGjqMAxUD
+	 GWwJKsOvDrPrg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 20 Feb 2026 10:51:13 +0100
-Subject: [PATCH v15 4/9] rust: aref: update formatting of use statements
+Date: Fri, 20 Feb 2026 10:51:17 +0100
+Subject: [PATCH v15 8/9] rust: implement `ForeignOwnable` for `Owned`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260220-unique-ref-v15-4-893ed86b06cc@kernel.org>
+Message-Id: <20260220-unique-ref-v15-8-893ed86b06cc@kernel.org>
 References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
 In-Reply-To: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -98,29 +98,30 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=753; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmC6hzPFPu7KGUd6cRx7n7GKtIx6VHoVNewyV0
- EXg0W57W8CJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZguoQAKCRDhuBo+eShj
- dxM1EACnIHiAlYn9gPgqZulCKlNlf50uQDXyF9B5lqzxCB4xzKIk29CViLlfREtNEQpmiNQ6TtS
- hzd1FYLf8u5dAvd4QayeNLUYTUptXcQrByNp2EdNsAhuMhgCPbvxv+5XzO7Yb4c2iwvxXZ/GV3F
- Ez583A3k+mRd7YqWWpEj4RFpnKFo5uIsu+8LJckCpHdVp+QBP16CQHoJpF/FjhcEYaulQ62G4kF
- NkTJmahq5F85IlPLQZ9bZfLgDII15NQvFGJDbj6tOPcVDVLOZrSpdw9wHnDj5K7h4UE2FTUpyZ8
- sl8Hk5h+JXj/1GqZbQyHuxIM2mJq3l3W8UusstI+ftPaYNK+cRNg5aEEWt/uP7WYBqUR2R+rFez
- NF32cG5Xgq9fKisyoiE0H808A3G9U4UA8GIZlqilG16eM24JIQWAw/cbRleD8D7YDiPtRb6id5R
- yRJBMLPT83Cz61htPmBosbIHLJX7srwu8C40hy8wXT8NeJvJKVYf2HY8q1ViVS9uaHBWecAHYjJ
- qa0FaiULDIt0mIIUOHhDKnldiiopsOPUz3D+Fz0tJhlLaaw602DiBfp+t8ghomDp+O6GNvrZA5m
- yzaE5kR1WUPNuPs0iFLB5ez3KpIEebt3HS7YpUVYt1xLlkOuC4mg364/IymHXlngTS1mnkrgVVf
- wmnQL4v1G3QBseQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2835; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=B5FbaZHoWu3lXzLWsvxiL2xffXnxnFX4nBQhSLyFXlg=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpmC6lQ8ViWhXfTBxkBwYXwCvpZEQQpsFdLjSWt
+ Z/0DPcp01iJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaZgupQAKCRDhuBo+eShj
+ dynCD/wPCHcbzgHFtI1xHdF07F3Sl7RvyuqebxX7QafkNthmS2wK+6fYvfrTUdnL1z/OBT1a29v
+ Ekv+847w5ksZlRBgGMKWxazpNxfKF5eWQvBoKPWlYxkyWDMvo5kyar5hxw0w3x3COrfeu9QKl56
+ KhsRSpsbaevfgdJSut7YliqvTpAiGKoUhon8VZJN9MfpgxHFA8h4daaTbVL7VknN+9j2z7j7sy1
+ Sgk87Kl23zumku0CP8xCTL/v2iQdTZkeAo0DqBaYMIqW99TDPpzpfzfY0vMKWUdz3CKfi0NVOL1
+ ha+JjyDc1y9rbdiDLBax6CvmSMa3YTUcETVRBpfR1iK9Nv5jfwJ/ahTThdwfuq27a98NOsjeZM7
+ xSMg0DOPOZm2bogbOUFEwQxYUeZawSZw5998KQzSnn9YHKJwKEyRhqKqLDSfv8O35BgPsTCYfZx
+ ulAarVM09f3S8iZXGFdpWCwIIZXvoyMEV5vsnhvNxrcgESzwem5PCkmknWlGyJB4BTjaB7CVwu4
+ EhB+2yo3w2A6G3YxFFEK2Y+4pBEXalKlRTVLSKaOAPoKkXmw4MtJptUOgpKFlnAlWsJJPvDVAPX
+ Zj4fG0pZkGwmYQf3x8c6EhW/QFvUIWp3kCah+QYzszA1iz7lJcu0LsCpfHpmCOqa9mFhCq4JFVx
+ H3Cwg/+isbapMRQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFF2EC0004
-X-Stat-Signature: qa585tm6ptqd17zde6pzxoraiyxzu885
-X-HE-Tag: 1771581111-288512
-X-HE-Meta: U2FsdGVkX1+butnAR0/oIft3MCWWyYdbqr2NBDXbsAXE1RvHDuACv8EvzyqRsLHWEJzaUD3zao3aPXuH47FKcR+zutULjrz9ylax0qGPEWXHQ+DLd7ei0ff3RkpoL1JoMdUwCh8l2qaLEZQ1xARYbws2V76O2ItAhqRTscQ99GuIdlz4YpZL6cBJITVWj4FIP8Vp6yoHfFcd+aizUsijOawM9FUrbZKrqfxTQ+pfkNgWWSNEUseo88CSaJ+R75pGCOKkJsEbRZUokhL7vTFV6AhNqBuHVxQESYhJehdungB1EE8mDcsc+6CZfMbqKqrSKzMBCisVUQ4WSEcDhTcMuuouDk7OcGio/8gndZNJF+R9eIv0fmmMg6pGl785f+VOD9k8hg1YxHelYfElZg0/zrz11Jsn5M7sH4mBOrbFAS5CGBR0YW4OpIYiDZJeVkfwzaBGj8lxsjJU2iR5DxG9p+dfMgjnW6iZ9ejSU6yRXaVwoMrsmMRHAZ9AOR2STuVA5tT5EO6R7iYoha2qM2Nf2TvL7Iop9iKkC2OYNac2iHb07sfxK798q58qYuyvx3aiVaMbSgQdnTpcsWnWH0fwWKVReM3el1V0FiWDFza/m8prPGpw/E6roQi15cmqzUY8r5wLKISi6TxHeLeVA/D1NkvS8zuuAs0aGIzwM3cg3J25p4zfjeTV3IxJV/XsqcFNJpajovyb+hzhB+YPe7kNgjXfV3kVMcEvEIXfqXU6HSlEeX/jLch2lqbyq78rUp+/vsNEi5V2y5AAbMy5LPZjvxqSm+5BXG8bIoVoNbOCB3J4i74bIBqZW+25wr8ghB/s0/XR++eWvdSzzYVIpCtVC54tyNssN/+fgh7oTLSWMbhyy8uGJuD9B/eJmSEO4nrkex1Js0WHzlNQ17UGHfNUw9dhIUP0D18Dcft+jYB/IjLA1AUqsL9ifl6WHllsVcoKAyt3grE8g2MLnFFgXnA
- PLg==
+X-Stat-Signature: b59b7364f4cp7y3tjw3kjokm8qnj9by3
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 84CAE80016
+X-HE-Tag: 1771581119-559713
+X-HE-Meta: U2FsdGVkX19NVT+FuqEJY2reiH2eYJCJzmn/lU+5rjs2NE1R7M+77lF/8Kvl5+tAttjoTDcCULpttDcctOPpzt3dyweTRc35nUAZPqrJJnr59AVQQHs6y8kGe3pOGaForbjaGkI8OxCYDpRBNOAshGAoCUdpe8BVi067H4SkurI606b3eUQN89a8Qgab3LDfES3IrnnJK+CvLhXIj8TdJ2dxTYJCK7L5VvgOARjetnFFC1/9kDElEu8xhX0LkS5CzpZh3+JRCCFOiP4XIFLjW4Ksh44VeM/SOMrmtIY2I1m62QQyqdbtCCmixF3+qj0g6udFAgvTozV306YbrZHpKx6aggRhGzZiuVYggDaIT2XXEe6V3sre78X0Ay4BGLXmwsKqY2I3CA68JiZMPjW6w1EN87kR4YwwXjpomv36tmr9u5V2+VNxYABkTwD2LqY0dfceuae+tLiPSReQuuNyj74XbVWgMxnXxxRwK1wYzcDstcx47DjSriav0aY47PLAGmQAPvYZpfn7LVzwCVjq1TBnffi9h6Y+jvUbGyrUhCYvuVomlzpRVRdM+PskmG9ch+/EXD9NnSuz/Y8LUmKiPD4icEPRMHwqcX6S5HJAqi+bb7Z804PNNdyCEckms8XWB/67YgPBGO8JorEOGEvR89u3bujtNKtxANOU8cT1EOb4Xe/VsNjt0NyjAdTMDRewiMMhBkhQCgnfUjilNBFJnEnUY9xgnBsCHiRi47s8q8Rg+h15Y+1IPmnQTk8f6ArpGA6p+f6McQygJBH2pJN4+DdxkZDfpc6jYg8/St8zdBnamFy8Z/FQBqByPSIoAc1ykrNvg00co8D08zEWYsSaKlpJXHm14HRqRGuIOaHJiw0AohvmwJBmwaQeTLNoQ3MTNQjdUHPM9PhFJYt5WxH6/Q/ab7el4urLUyzPx2lXlvNZ7ZFl5MNv166p9/dcBsLEsxDlfr1QWzzl+2nEJ1G
+ Iw4gywFS
+ WzAjm8H6rFxrRjIbqnhKlpN8tl9YHxghDeLa3TqES1NQXvkLV+w5ucpA/7VntREpOxPBhLilqp/nSVnH3aFIV2cJaPn4zodQy8/Ad82C7klEtkSc6lqVgKXAc6wte2Q9G49p851w3M2aKI6J4Ll+FwPm7qJOMv9cJCALzGj+8TINe4SmIUiurDAMw8XS32CTLYb1v13A4K+kcUO6FHQ4lZjIM84HeA7DXugTuShaR5DSQbO9jvmtqZ9h5653b59qH9gJ1Tu+K/z1tK7xW9PjB67QxgfteCPuTVu9uNbDHR4c7D/OzQccixExwPSeYirMZPE4W
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,30 +130,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update formatting if use statements in preparation for next commit.
+Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` in
+places such as the `XArray`.
+
+Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` to
+implement `ForeignOwnable`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/sync/aref.rs | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ rust/kernel/owned.rs | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index efe16a7fdfa5d..3c63c9a5fb9be 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -17,7 +17,12 @@
- //! [`Arc`]: crate::sync::Arc
- //! [`Arc<T>`]: crate::sync::Arc
+diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+index a9bc871e07ce1..b115b4f3db6d0 100644
+--- a/rust/kernel/owned.rs
++++ b/rust/kernel/owned.rs
+@@ -16,7 +16,10 @@
+ };
+ use kernel::{
+     sync::aref::ARef,
+-    types::RefCounted, //
++    types::{
++        ForeignOwnable, //
++        RefCounted,
++    }, //
+ };
  
--use core::{marker::PhantomData, mem::ManuallyDrop, ops::Deref, ptr::NonNull};
-+use core::{
-+    marker::PhantomData,
-+    mem::ManuallyDrop,
-+    ops::Deref,
-+    ptr::NonNull, //
-+};
+ /// Types that specify their own way of performing allocation and destruction. Typically, this trait
+@@ -120,6 +123,7 @@ pub unsafe trait Ownable {
+ ///
+ /// - The [`Owned<T>`] has exclusive access to the instance of `T`.
+ /// - The instance of `T` will stay alive at least as long as the [`Owned<T>`] is alive.
++#[repr(transparent)]
+ pub struct Owned<T: Ownable> {
+     ptr: NonNull<T>,
+ }
+@@ -201,6 +205,45 @@ fn drop(&mut self) {
+     }
+ }
  
- /// Types that are internally reference counted.
++// SAFETY: We derive the pointer to `T` from a valid `T`, so the returned
++// pointer satisfy alignment requirements of `T`.
++unsafe impl<T: Ownable + 'static> ForeignOwnable for Owned<T> {
++    const FOREIGN_ALIGN: usize = core::mem::align_of::<Owned<T>>();
++
++    type Borrowed<'a> = &'a T;
++    type BorrowedMut<'a> = Pin<&'a mut T>;
++
++    fn into_foreign(self) -> *mut kernel::ffi::c_void {
++        let ptr = self.ptr.as_ptr().cast();
++        core::mem::forget(self);
++        ptr
++    }
++
++    unsafe fn from_foreign(ptr: *mut kernel::ffi::c_void) -> Self {
++        Self {
++            // SAFETY: By function safety contract, `ptr` came from
++            // `into_foreign` and cannot be null.
++            ptr: unsafe { NonNull::new_unchecked(ptr.cast()) },
++        }
++    }
++
++    unsafe fn borrow<'a>(ptr: *mut kernel::ffi::c_void) -> Self::Borrowed<'a> {
++        // SAFETY: By function safety requirements, `ptr` is valid for use as a
++        // reference for `'a`.
++        unsafe { &*ptr.cast() }
++    }
++
++    unsafe fn borrow_mut<'a>(ptr: *mut kernel::ffi::c_void) -> Self::BorrowedMut<'a> {
++        // SAFETY: By function safety requirements, `ptr` is valid for use as a
++        // unique reference for `'a`.
++        let inner = unsafe { &mut *ptr.cast() };
++
++        // SAFETY: We never move out of inner, and we do not hand out mutable
++        // references when `T: !Unpin`.
++        unsafe { Pin::new_unchecked(inner) }
++    }
++}
++
+ /// A trait for objects that can be wrapped in either one of the reference types [`Owned`] and
+ /// [`ARef`].
  ///
 
 -- 
