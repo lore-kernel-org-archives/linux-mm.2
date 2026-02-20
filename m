@@ -4,69 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDA1C55184
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:38:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1479C55196
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:43:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A058A6B0088; Fri, 20 Feb 2026 05:38:31 -0500 (EST)
+	id E24936B0088; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D33E6B0089; Fri, 20 Feb 2026 05:38:31 -0500 (EST)
+	id DD1C86B0089; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E8CC6B008A; Fri, 20 Feb 2026 05:38:31 -0500 (EST)
+	id CB3A66B008A; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 79BAB6B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:38:31 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 052415C909
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:38:30 +0000 (UTC)
-X-FDA: 84464486022.11.36EDEA1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F2E2D180002
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:38:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id AF4046B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3AC1D140C1E
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:43:18 +0000 (UTC)
+X-FDA: 84464498076.18.23889BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 824BC180002
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:43:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h4Rdg48R;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771583909;
+	s=arc-20220608; t=1771584196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w5u3kQTrIq3O+jY5VJ1mU4yV9b3FE5af1/T9YCUCPeA=;
-	b=p1ixoQmf5+C8Htbjlj9R5UgZpnlGtSpmdjnc/lze7cK4DxMWp299egGICGt6Ql2qw+bgmr
-	qXGtcQEA1a+kdzExVTgBvk15H5Y5rOkmu6C7RBTwefEWEBO4j4/ZPRFR3uadXKNN7S04/w
-	c22zRcvSObSDUinDaXL18cfz0aJGd90=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771583909; a=rsa-sha256;
-	cv=none;
-	b=YOPe9D03myNzx12T/k9ERutreSkty7FQRGW3WqTZ3eBEBqHoJ+9rQ5zfhzxEoLVVV6c7JP
-	g5+sUhG4xU9w4ylwdqEvQT4BtKpie88SCPPYI2G7itBBCgyrLujoTW6Fv76YGl3psPNGkN
-	TKRxuyjXFwG4/48/P3M9a4MOyFpt1JE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lOTSyKS7v1pB8BGMmuAy1KIzWpJRl3+1EGlLKkiwmgY=;
+	b=GeeZGm7RdJcRTMCkoN1gIYd0u+6wPbGk+MO3umAT03kbfcAm+qkNlKRDCDNxtVqF5gngUV
+	KmMUNRv9xkQ4LvUTDq8uGPnIA3znoqCkxla37zNHHpfTERjoC5DiFe7mklBSC6byaFuD7o
+	OdAqt4OO7nHZ3xQ6rRrFLIoT3C8kTA0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 64A86339;
-	Fri, 20 Feb 2026 02:38:21 -0800 (PST)
-Received: from [10.164.148.40] (unknown [10.164.148.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1EB303F62B;
-	Fri, 20 Feb 2026 02:38:12 -0800 (PST)
-Message-ID: <784588bc-2071-4418-825b-9072cc3659e2@arm.com>
-Date: Fri, 20 Feb 2026 16:08:10 +0530
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h4Rdg48R;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771584196; a=rsa-sha256;
+	cv=none;
+	b=op3sWTEZcKTLgdpKsgrugUG5DYDmNLeMEUDBv5ET9JsxryEKcfZSgaXsBBobmMFucgasFj
+	x1PiyKDrZ3UWzc5E9Qe9IIqWRRkYmeR0TutynOkwqDsCoOXvDk6Ue/XpjWxjAM2hos0qtK
+	B8mM8HCLQ0w3fxZK3hxOu1esxhln1Ug=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5787C6185C;
+	Fri, 20 Feb 2026 10:43:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C728BC116D0;
+	Fri, 20 Feb 2026 10:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771584195;
+	bh=Yvu77UXexzu7sZa0hKrXXXI2ScqTjgPRW4bmvkkBJQQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h4Rdg48RMBdTsnXg19agUNta0otbn50YtUgDABQpHPFM2VJDqCrGZiYR05kFA6H8R
+	 vUjP0E67Jt5n/RKkfwG8ypfiGduTgpnus1XeBgjOXpHhyyzNcQEf5QXJN3y8bkJUtj
+	 E2279EUMv99nJtCLRuGwPwivk8uyyLKM3VhRkz11OXAhlFYWkcmsu0CSUmPQG1Ht66
+	 yu7qlHs+e75gj7+AeSlAogxzfhLJhQzzEb1M5eLQmnRF9JhhAC1djj0a7jhhAiuh9j
+	 C8/+zAl7YyDw4XT8rEZ/egq4W7ei38WDxn1uTLL6RvglLCPRcB6zH/w03VXpliGhhE
+	 ucFk7lxuD2udA==
+Message-ID: <8bb7d240-31fb-4cb9-a3f6-ac81b8b9beae@kernel.org>
+Date: Fri, 20 Feb 2026 11:42:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
-To: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
+To: Dev Jain <dev.jain@arm.com>, Nico Pache <npache@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
  baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
  cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- david@kernel.org, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
  jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
  joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
  Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
@@ -82,19 +91,64 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
 References: <20260212021835.17755-1-npache@redhat.com>
  <20260212021835.17755-3-npache@redhat.com>
+ <784588bc-2071-4418-825b-9072cc3659e2@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260212021835.17755-3-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <784588bc-2071-4418-825b-9072cc3659e2@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Stat-Signature: srenukbxwukuha54779uhsomfqtoq6h1
-X-Rspamd-Queue-Id: F2E2D180002
+X-Stat-Signature: 6npicdmhf9rtchjitpdq543p4umf7a61
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1771583908-261189
-X-HE-Meta: U2FsdGVkX1/VkWgdnDvx15CaQLKYiv7AeFvHoEAe1Hm8uitess6IKCeNTGcbN2NqazHCwrqItx4UYVqVhV8sp/SwmDdtkg6+4lxDnG2X+ChPC1H2n7Nbo8UcGeJhDTeoi52MjTct84/GGyovS3kMW6CSdQqKJ4zUu9Kwq0Elgu2Yvf8v5rnayUUTmCr9w2n2CdH12ZbEr3Si4K7bTn4poqb7nVakt3RAnPBZ2hHV4jZvdDa84jwnDIH1q61i+ukQCGBOQa79t0ugPKWlqLeoFW9QP24Qzs+uv7JpJTXUnouXY9mkJdi5JPg5YCuCV3VY11BAQbkRx35Wl/mhghuYejknO1svkN33fuO0YyLQeHVYDhxJS9bRcYbVv6/dE9otfDcZCAbcM17T0blzKZYHtvJ9D+FfJWGc6sxEKr6RQwz3a8JrQaXOvHq+oZS/F6hQ6mZ/lYEUav+bpammiTT50m1znmkL/Sgs4vYOut5hCc3sAlhPFDwebmV4qgemu4+0VJ2jAOmlFvuifKeBD1GH4s0ASRXifBMiyqLuERVHgAvlHSPk/apyOST1gcEalWoSzm4gDVLJlixuWKzzCcNt7AdEMHqs2q7PmakI6vLKbwqdIa/mdAWX93Ch9gplCS3XiNgoD5odpvj2cuE+1OYCit3Ss5LQ/T6n5GuQhoFt0RH2H7L42Q1rBoAm6m7GG3Gv9ZAJEs/KFmZi2kMEQXQm5LJZxhZGnQGLC8eRXy4Dz0pYpWwle2Hnh6ew/VMbSXZjch3t5DIYf3dvZ4lFjs8bgpy5ok+MEItD0i56UaZcCjjFw0ogw4T5GzHw5KKLmGm88hKoK8i7jhi8Z+6oHGWhYAlnYISY5opEplWJxtV4yTgXGyER3HZRsA7ukoELkuObAsDfDb8xrLdF+6IpuwzmtF/udldGXmpVBF6taA7d3n6VaAZfViW1tYjwRVjJ80o8qS2C9fGMlNP1jobS90y
- J1MJXwmS
- n+xOh6vAGcVndIC9lQmw7VBgE+fgo73I04q7lppb1lqy/x0+eUNDK2hfZT0ctbkdVe1TyaZBH8w8Ao3aGpEYUI0idWtzvbJYFgEXlMM5xNWC4SYt0S3shSie7RPJhNlMnAA4lSTrwH5Wyk2K7haKWde1bSve5ZYn7SWx63F+1rTHiVBM1G3As286RMb4HhNT3xbBlyTrZ+kfkxSYvdXbvO5RlDNh7dI4Z4JQeVdMavJnEehS4u0weU5qtnWgIatH0foKWXJDg1HeRRpyJsk72k9+RUhrZ0Bk5nDRGgIEO54o6KcApKGdB3BfvdcpTtfNtwgLuM84HgCV4PNhT8B/SKS224Q==
+X-Rspamd-Queue-Id: 824BC180002
+X-HE-Tag: 1771584196-569289
+X-HE-Meta: U2FsdGVkX1+GVagkAjaI6KiIA9b1lNxqAdq5k5OrplnIJA0QT52FtlVNwt9KBJcSutGBAqQj4Ndy6p2lcdpVuDNtW7gb2/uC/NPs7ta2nmak9mqJ63DYYtCxFyX/uvqYuA+PYxp0YSvzNqF6p0wtJ+drJLZRQXG/0pmC1BwN12UOqxLp+2oJ/+nn10n/+J3JhLh4m2LRp+CYBHf3ZGT6paZBZ+pWgwW0WN6fURFO0YGQCN7j08BgVJplwH8mwVL0peXwXNI8Hss4963IsDxLuVhLTvsY5827jRC0AhPtvNnjLYLM8TV5NEoph/zYybUEDcFUXOD4nAXiP8JNZ+Ow/kQjffuBVIqlOFmbHraH//PIhoLNCUJAmH4WjP/oJGQvfDEUUVkF3NF3pdKFUSWUH1CyiDtigMbURt7/2CXwkJrjEs3egKjWTDRSQ9CH8dvnASmjMVjxhkyzfZEAP6siy6GR1+IvtUZ7YBxMuOOMMzJGJLTuoseK9znLyMVN9fASL8JFbfK6seMFvSkRxBtAe5FiBkvzRj4/T6gDwfxajLcxJiKIoENdoctcbXuSPqvCFAj7PVEzfxjs7ru6b0cDpC1kCYJqDxj2dHd7lEAjLqO1LIcQspxEy4xkINABAuCOkF/UEuAFnsqEl8SiLpcdirkcPBos3QmpSoysne8rjh7f6wXk6Sd+DqSvGSfpqNhzbyqsVDg9Dk41DedilG4gLFLNy1kAw1czWLHJ4qv11xZcuflFouZ5wSMev99+OqJPTSqn79NfNe/0Tu/EuR4dG9d5cTz4doPF/ADpj3N0uCMyCZJyyD1BJWPapMazgEU83ghQQbur/lBZCV+qiQ7KFostrdGjEJFFLj1Y9aWOKEsDPDuKH8Sl2d4au1OYyGOzM5ev5/cSm+/L1irx2FZUnggoyEtSRyUQsuKKjroemvzf39ScD1HOXXrYkMPI2Ic3iHuGLcdwqYp2eVGFBOV
+ 32OIjbe8
+ t1m5OCwraBt67YkOwyl2snbAp1Zi0TfbRGAvMFFbgjHNBVsgSq57onrHkUmkVdH8eSTk52WEwpaMPqIVQ7lcAEN3UJ/Mo2Vt7fCWQ9bOt7US56l0zhTsiJ33YONhkxsqdXPa+xwYz4dGIfbYlLc47KJOOJjGYTlOCvmS9O8bsBceTpv08Rtp37uD94WHyZ6BGbC2LXCGihtls1yk3OkIuWH5EB7+2NaDHfLJi4u1DfMLKMegYdgBQ2GVyycH07M0EmH71hojdsfkjoDV3R1oC0dZnQzdK9T58eG1Ak4wxySWcTOtzrf1ZV2sFX/QxWbLp5pSyygjN0sL420MXfpxliyCQFpr1BjCMDZW/HErGqDFiip+iI+1cozkiwq6x0CVXBIs4WGguwlftU86WOR/S7cFNv9pp6tMnzggT8XLXenjFxzk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,114 +157,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2/20/26 11:38, Dev Jain wrote:
+> 
+> On 12/02/26 7:48 am, Nico Pache wrote:
+>> In order to add mTHP support to khugepaged, we will often be checking if a
+>> given order is (or is not) a PMD order. Some places in the kernel already
+>> use this check, so lets create a simple helper function to keep the code
+>> clean and readable.
+>>
+>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+>>
+>> arches#    pick b3ace8be204f # mm/khugepaged: rename hpage_collapse_* to collapse_*
+>> ---
+> 
+> Thanks, this is useful.
+> 
+> In drivers/dax/device.c and fs/dax.c, we have order == PMD_ORDER check,
+> not HPAGE_PMD_ORDER. Therefore,
+> 
+> 1) Do we have a bug here, in that these codepaths are fault
+> handlers, therefore should be using HPAGE_PMD_ORDER since the
+> definition of this macro zeroes out on !CONFIG_PGTABLE_HAS_HUGE_LEAVES?
+> 
+> 2) If the distinction between HPAGE_PMD_ORDER and PMD_ORDER is real,
+> then the helper should be named is_hpage_pmd_order?
 
-On 12/02/26 7:48 am, Nico Pache wrote:
-> In order to add mTHP support to khugepaged, we will often be checking if a
-> given order is (or is not) a PMD order. Some places in the kernel already
-> use this check, so lets create a simple helper function to keep the code
-> clean and readable.
->
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
->
-> arches#    pick b3ace8be204f # mm/khugepaged: rename hpage_collapse_* to collapse_*
-> ---
+HPAGE_PMD_ORDER is weird a stupid legacy leftover IIUC,
 
-Thanks, this is useful.
+The only thing it checks is that you are not using HPAGE_PMD_ORDER in 
+code that might be compiled without THP support:
 
-In drivers/dax/device.c and fs/dax.c, we have order == PMD_ORDER check,
-not HPAGE_PMD_ORDER. Therefore,
+#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
+#define HPAGE_PMD_SHIFT PMD_SHIFT
+...
+#else
+#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
+...
 
-1) Do we have a bug here, in that these codepaths are fault
-handlers, therefore should be using HPAGE_PMD_ORDER since the
-definition of this macro zeroes out on !CONFIG_PGTABLE_HAS_HUGE_LEAVES?
+-- 
+Cheers,
 
-2) If the distinction between HPAGE_PMD_ORDER and PMD_ORDER is real,
-then the helper should be named is_hpage_pmd_order?
-
->  include/linux/huge_mm.h | 5 +++++
->  mm/huge_memory.c        | 2 +-
->  mm/khugepaged.c         | 4 ++--
->  mm/mempolicy.c          | 2 +-
->  mm/page_alloc.c         | 2 +-
->  5 files changed, 10 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index a4d9f964dfde..bd7f0e1d8094 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -771,6 +771,11 @@ static inline bool pmd_is_huge(pmd_t pmd)
->  }
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->  
-> +static inline bool is_pmd_order(unsigned int order)
-> +{
-> +	return order == HPAGE_PMD_ORDER;
-> +}
-> +
->  static inline int split_folio_to_list_to_order(struct folio *folio,
->  		struct list_head *list, int new_order)
->  {
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 44ff8a648afd..5eae85818635 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4097,7 +4097,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  		i_mmap_unlock_read(mapping);
->  out:
->  	xas_destroy(&xas);
-> -	if (old_order == HPAGE_PMD_ORDER)
-> +	if (is_pmd_order(old_order))
->  		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
->  	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
->  	return ret;
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index fa1e57fd2c46..c362b3b2e08a 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2000,7 +2000,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  		 * we locked the first folio, then a THP might be there already.
->  		 * This will be discovered on the first iteration.
->  		 */
-> -		if (folio_order(folio) == HPAGE_PMD_ORDER &&
-> +		if (is_pmd_order(folio_order(folio)) &&
->  		    folio->index == start) {
->  			/* Maybe PMD-mapped */
->  			result = SCAN_PTE_MAPPED_HUGEPAGE;
-> @@ -2329,7 +2329,7 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
->  			continue;
->  		}
->  
-> -		if (folio_order(folio) == HPAGE_PMD_ORDER &&
-> +		if (is_pmd_order(folio_order(folio)) &&
->  		    folio->index == start) {
->  			/* Maybe PMD-mapped */
->  			result = SCAN_PTE_MAPPED_HUGEPAGE;
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index dbd48502ac24..3802e52b01fc 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2450,7 +2450,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  
->  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->  	    /* filter "hugepage" allocation, unless from alloc_pages() */
-> -	    order == HPAGE_PMD_ORDER && ilx != NO_INTERLEAVE_INDEX) {
-> +	    is_pmd_order(order) && ilx != NO_INTERLEAVE_INDEX) {
->  		/*
->  		 * For hugepage allocation and non-interleave policy which
->  		 * allows the current node (or other explicitly preferred
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c2e96ac35636..2acf22f97ae5 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -719,7 +719,7 @@ static inline bool pcp_allowed_order(unsigned int order)
->  	if (order <= PAGE_ALLOC_COSTLY_ORDER)
->  		return true;
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	if (order == HPAGE_PMD_ORDER)
-> +	if (is_pmd_order(order))
->  		return true;
->  #endif
->  	return false;
+David
 
