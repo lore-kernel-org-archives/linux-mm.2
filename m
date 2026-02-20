@@ -4,134 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE49C5B568
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 21:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A066C5CFE6
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 22:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8C2A6B0005; Fri, 20 Feb 2026 16:58:30 -0500 (EST)
+	id F407C6B0005; Fri, 20 Feb 2026 17:09:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36456B0089; Fri, 20 Feb 2026 16:58:30 -0500 (EST)
+	id EEDA06B0089; Fri, 20 Feb 2026 17:09:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C42716B008A; Fri, 20 Feb 2026 16:58:30 -0500 (EST)
+	id DF9886B008A; Fri, 20 Feb 2026 17:09:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A9FD16B0005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:58:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 498181B4E6D
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 21:58:30 +0000 (UTC)
-X-FDA: 84466199580.22.66B7B0A
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 45FFA14000C
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 21:58:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DGP3H5C6;
-	spf=pass (imf23.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B73426B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:09:40 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FDEE1C298
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:09:40 +0000 (UTC)
+X-FDA: 84466227720.08.71342EF
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5B43440011
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:09:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GTyA4VOW;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771624708;
+	s=arc-20220608; t=1771625378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sv6xYJAa/oThbMSrWyTLhp6ItSvlOyI8CiwPK1KtBnU=;
-	b=kAY4/5kqcM0gjN/9flQKsrSJw7bSgBT3xZ4xj5tWDcNC4nFid6fzpnoEc3nkdwOGFcfebG
-	xo68toxB9ujRaOMs1ZjCbjmAHTKwg9o6h3qZNbgNPmtI6OB0gScnbj9OeCJijVNCsROlVy
-	NtzLFDNAyvlzrOH8tqIeJwCpnE4yJls=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771624708; a=rsa-sha256;
-	cv=none;
-	b=WOZOlzTTFQ1pOgsC/H/q2V4vxoSwLnIxA5F40aBJrPo4utmz8rl5ckMQaEYtTRyye/pJjT
-	xvrQElh0p2EE8z1q4X+P8mMeNjv2FGTL9ERXLepCGFSXJaSimzuI779Im8/Jn0a4AGeoeI
-	IrOOXNFpE0kbxT5Rb8fch0KM6yrqcX8=
+	bh=bMcpQEUmQPBfSHE/XsFFGAO79A7tRmTzeXgyD6t0vqU=;
+	b=Cu58ByS04gb+DDNb5YlcW1UUOjEOzbrjy9Wiz44zNq5pGiA4csqzCrJ63gG+7MP5INFzM3
+	MSQLsZ34db2k0UFBsBfWcgEG69S6/vmxiWbnsVhcfGnezcLX8KSmGJ7cF3JUKBxS3oz2dL
+	003A/B0ppq956A+H4tou3A30y/WksRk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DGP3H5C6;
-	spf=pass (imf23.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4375d4fb4d4so1662663f8f.0
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 13:58:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771624707; x=1772229507; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sv6xYJAa/oThbMSrWyTLhp6ItSvlOyI8CiwPK1KtBnU=;
-        b=DGP3H5C6QEM9A3raUDjKkRhM8/9nkZ0wHodqzi5InXI1CYNR17N1Q6sVWphNceX0J6
-         T052E0JC5NpOJZxoQ0K7CQkv6ffA3i6HgVuAlX2tm2o3wioqmvQng5UuHYBXbLjbqz/E
-         iEKlR7/9/Nf5PW0YifXcSAePWSOmFC0sxg+B+swiolmfZb72vvbMm64sa6NcJRDzUxk1
-         ZgQ8nCXuOWR49XbRyxdnJCMOOszcOCU5YTs2JQCvl3G3Mx+17xUkrVQT3XFfjZdl8NPF
-         xgtR7VBpfVYkj//gm6afhsQXq9Z+OKgUIqdYSr8ktFrbRjm/g4LzAPjoJZY0o3c3Yna6
-         4Lvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771624707; x=1772229507;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sv6xYJAa/oThbMSrWyTLhp6ItSvlOyI8CiwPK1KtBnU=;
-        b=tvjh9X+NJzc9c/K+HBu8g3l4lpWkFTpLDyfwRiKVajEoYn/jNSgs8TSyWeQ+ZirQT8
-         HxzfoxZDqV0PbfZ8SJauCZYgCxGzs+bKqJaqU+wkGcXHIUHDJiiZEa9J6SwaZXsSmU8l
-         6eTWmv5PXTTJNLBjLY9UDZILY+S1SZKZO+1sQ6XcBM0yP2Z4IV8v2ukIMwcvGMaSsiPp
-         LZXxphKDLzAObkTGw0cb1bvrHsjWYekyRsFXnfbb0m86yg7VSmg+aPn+dLGkPz8HPB0k
-         92AWz6t2MJrGoutYhUMpd451hJUriRlcx9ChtngI7ncexWH8JxS63YcVEp+uOMMrGEUv
-         0/0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUhEOyTOzVvarkv8hAx9x/dlqGrN1t4YdZ5zv2F5c/Zud4dgMgduRq6bDEHyNrbPCISs/dc3zW0RQ==@kvack.org
-X-Gm-Message-State: AOJu0YyU+yX0dndp8xTFsnqC4CzEBhKOEdKecQ2jejPQhEAhy0FvDIyk
-	vgTWSo0s6BOTubzJrhWsGshzTrSycZ0dR+LvvjC5A8jjOCPiUnFyA3jK
-X-Gm-Gg: AZuq6aLiqmcNbNqLr149Yr7gAxFTOy1jCCa8ZpTuj4Bm/PWgJzXRK6PCILz+D4KDvLL
-	zkl2XHT3qscVbx2KAHCtAhP/hTOhhssx9oO1Gw4+QrKpLoBkMVv+2PGlQ55TUowe7dNCzV0vF2w
-	wQX90q0lkZE7dwY47+t54qH+ssyM0AKA98HGRNGlr5eo3j/HJChOmJHT2gdZUBrkI4yhmQIYG1w
-	TfqpJPSEd1grYEt7rpchAJ8f4sXWmndWid8gCPqDlKOCFB4diH8qlZ2XxG1AJE+bebC9kgxRwMy
-	THryLGrtzYWzDB+pOsKebr56pD+PNruOxEG5eXX+jG8walXzVLTku10yaw2tM1NyXy+NVX9kcsd
-	kgl39d42j+DWd1XDZQ3/uI8zNj8vPJoeYTqQo/Mr7NVNVPfVrAxX9pwcd3m46jhZiFrBuDDzuqX
-	XchfioW25IPdaKIDIBaCE4LLx4i24kT3xLckGkTs0O+oqKUA==
-X-Received: by 2002:a05:6000:248a:b0:436:3475:473e with SMTP id ffacd0b85a97d-4396f187ebemr2551008f8f.51.1771624706322;
-        Fri, 20 Feb 2026 13:58:26 -0800 (PST)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970c00768sm910737f8f.10.2026.02.20.13.58.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Feb 2026 13:58:25 -0800 (PST)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Date: Fri, 20 Feb 2026 18:58:14 -0300
-Message-ID: <aZjY9h3XXMNY-Ytd@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aZL45yORfkNvS9Rs@tiehlicka>
-References: <20260206143430.021026873@redhat.com> <aYs6Ju2G4bm6_tl2@tiehlicka> <aYxviLoWsrLqDU7o@tpad> <aYywl1hdBQP2_slo@tiehlicka> <aZDw6xI2izFDfuuu@WindFlash> <aZL45yORfkNvS9Rs@tiehlicka>
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GTyA4VOW;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771625378; a=rsa-sha256;
+	cv=none;
+	b=jEmDYbxABjLoysx9HQ32Cpw5BSnpoGnoRQdD5lmkZ0Uv/kpxJ3lczMq1GtU8CmH1YeOcNo
+	kr/m37Rimz9JwNrofOk0czDZ6krKHE+PxmhZZyfCDwrybtquYHnngesA1fqWStD3JD/Y9w
+	XIyU42CntX6IHsrluOpJ3KuP2YZMn1Y=
+Date: Fri, 20 Feb 2026 14:09:28 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771625373;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bMcpQEUmQPBfSHE/XsFFGAO79A7tRmTzeXgyD6t0vqU=;
+	b=GTyA4VOWkcp/D3+UgQRVXcg0nUbDJZuVwMWrhkq8xt2zoFpEYEYArzx40OrtD3f+yFGrSu
+	q/skB1MhRSv5lfsszeTX172W2sdttYgXZoh6DGEM6hqJMHhzotH2TexkLuio74cY71uc32
+	ctHmYlWTLWgvZsdzpTgRLwORojKBBLo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Michal Hocko <mhocko@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: vmalloc: streamline vmalloc memory accounting
+Message-ID: <aZjaxAi-AzyOYzNT@linux.dev>
+References: <20260220191035.3703800-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 45FFA14000C
-X-Stat-Signature: csmhs8zmd1k746ms1x84j8xz7t4yj1s4
+In-Reply-To: <20260220191035.3703800-1-hannes@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 5xia537hy11h14xepwrmot6qeknmmjkp
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771624708-116598
-X-HE-Meta: U2FsdGVkX1/u1SyWK4BM59EhKLGMSPaM4mUJDv0FgWonzx9Sl4QpGHPZ/cQ0Nb4YTicSW0hplSydm4xoLT9xSDE39mFy6L2usEZPG8QmFPC9ajoOsXO5P7LizM0Q7E9rLSEuhSa8EiM7Jq7Id2adKZN+lxm9UhzOoxAiJzDObHCXQI/7XAcgiJQGsLaqzw2So6I7uGkCMMGHx4EgBeBPtSF4yIGmXz85cdlGxh0DM9vRCP/l5QIHWFV4MIE224Gl4pJYbG9EawRQmn8k2b0T6wK0iaumUuniHpYz70rJ/mgxWZzuNGMShk5tH5npLVTJcQ4bkSi1av2DU6QHz9jnOyCthpoi3Ry/T+o9XnVLXbs+Bt6CI4HVCS6JiuALMgj3qxKmqaQelR/DzbESSIpmvYJn7qC23SVlSTiQdRitTT4yv9nDxdpr3TcT1BkIIzr+BoBzq5zkxcLVcV1TLlLNoLAvndAOAjP3zsK9o2zrzY9yTgMdyWhYMF7njJ4J3qlqo1GVyGZbIMsW7+i7KABSjWYSEI+B1I/S/Ja5RutA17SJ/1/IEwuVuxI+HoLr2tycPxIlSEJ/+xBn1fma8i1m+zif4ikBQ3og9XzG1jmsv1sIimW0lwsVlCCm46qyYJXAQMAKvqxTMigUoM5ONrMsRaYYUUCYKAF5DT0HVl/BCzEx+ucb83p2gyK6firSBDT1WjtHDamZtvsHifBtdA2i0tjafU4W4SwkKU47NJxTuAIidSlxl9vAghFRGRuu4s3eeGZ44xW1I/fJ/hnrdumwdHeTvaEIoDp23Po4lUBMbldEMvphqLtVpFg9V9Kiy0fZpyOPMBfORjjodc3T2WuHo+q2VaSUokwmj5JFoTLPPOO/LM9gM1AI4pAu0erkJjIRVkN4XIsiQliEPQAC4EJSUYA9Y7PpjMhdSEE/ihshmPIZcXKEpb6pRvSjWzcr1OV3fe9ZNbhZKFqYXzIVfsu
- 0nQdUwnP
- 2w8zeFrca7w3aMCSmgE4JOZnWcnFTiCkRezBjVc+v1dGcv1yhS3W0zhwunt/WKzoWU2OAYgYrYelKjQpEPSLWw8ayp7i6SNlTQr57rmHw6WwU/WGjvzOcYeMzQumk6O0Ih3hXJKfFOCD64LS1VdsWB8B0AIuRbcUm9zOWcI554VjCJdpUc3Cs1QT8zrLTjTa2pU4TaE56Qw0/XcDRndbprRb+8R0DWe+SggHl/UqLYJyVrAWkpzt1uKd1FtMSYT0aBtgAX7XIqbuBElrnBjkYS35S/qyn8aTvPukA82VL+IkUau0K+nrZvp6mfvhobNiELDG/ELZVihdsw4U91d2sX5yP7umrVI+pINConsiD+HYpVEd881qFJkpac/wYIpnJlJLq/z5rqUiyIxrEI9J00uNe1yd2Vb22EYkFb7AebUl0w56hH3EnblLv5oIOIR22xpRzXAj8vnbVIzZWOJr+cxOAplrzEoWlhGQSM05lmuw6WS+S25kLyKqK3nfjCpOOQqn5eZMsGRoDnKnHCatNC5Z/NcB4X0dPMSxxWJZ1f5ET8GHCs5e35K40SEfDs7zpRPBCKLJ/iIfXqllQzH0anDEs52LC2LDf+X1DsXrMz1aFRenRGTLzr2rP/9Quo1Bd03dnyeUcBRrO/MUec1eXEV2D4DCym2Qp3byx
+X-Rspamd-Queue-Id: 5B43440011
+X-HE-Tag: 1771625378-694441
+X-HE-Meta: U2FsdGVkX1/1tVK96Luj3kTbT/2uU99k9q11Gd6tAFFIGVVuZIRednGIFV08EpJkV4mIWRiS23+jP11O31JKsIS8o/GDhn2SjIb2aQpPlLbAdXkw+U/7COROe9GlD1vhTOGwo33qJhEcz841EDqyICXilGDDuX9UrdH2GlZdNagA+jqA8LYGccvCczChfWG7m3OeMJlr8yVaZB/jie8rkm/Z4CuP1jLtsj3TAxTCmZOfhJG4eU9v2FM2CyAPS1FSn/ZC4hOoArp5zPJg8cyfa94ypyWbugsz+jQOAtfG09pNRyURoIxHyGHmD5NV+OCc4aF/8h6xSPFDld7Cz0FCZDKn2C9sEgUOLmZWmtRs7kndrK4vFkISqYrfUVnWmbyGLgZGyiaBFBf7vAZy/KLjeGzry/g/eG85DpJDRqrmnokVX0PTNEytvC4A8SJuWsSQqAanjBONfWNfeBI+Zx1lRFj6wfmDpsMqpCb/PbHVVnjyUuOz1upmZFXQRhols9TxqDJQ1odpPB6E6Mj3NT4NW8U/NfzM6bhpnlR3FAuuvUg1IkNSFrIPQA5qyj2/Dgmp1NqRyRkdOrPzQ2Gk13ZisblVvOZRT4WlUygK32neoVk7FEO5xwuavawlLrTBK+5DsOrzrf0bUlz5Meen+tsH6ARDKep9K9qjMxQ2J2GOTt+AGs5bQBxL3UpO7a6edp2yvFwWzaedU0Dio9gKAkXW5Zke1m+Ys4haZlAdQ2yQHpa+MpnQKZo5P5ugwpE6eyKvI6ooIJmw9KTbJXCeIPtcSGcLYiPevYncu72IcbAyM1u4/184BBk+nJAroiuXQ21Nqk4UANX5mdvsPluhtEhB017Fv1npS7xq/FAeb+GmY1SZ2tcSaWkwoe7FWRTjPpug+Mda/xKXhqdyHj6APsVcgug19XiRIWe3Zwec4V+54ZtHr0SYcNz0d/LZ7E2rLWmF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,89 +88,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
-> On Sat 14-02-26 19:02:19, Leonardo Bras wrote:
-> > On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
-> > > On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
-> > > > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
-> > > [...]
-> > > > > What about !PREEMPT_RT? We have people running isolated workloads and
-> > > > > these sorts of pcp disruptions are really unwelcome as well. They do not
-> > > > > have requirements as strong as RT workloads but the underlying
-> > > > > fundamental problem is the same. Frederic (now CCed) is working on
-> > > > > moving those pcp book keeping activities to be executed to the return to
-> > > > > the userspace which should be taking care of both RT and non-RT
-> > > > > configurations AFAICS.
-> > > > 
-> > > > Michal,
-> > > > 
-> > > > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
-> > > > boot option qpw=y/n, which controls whether the behaviour will be
-> > > > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
-> > > 
-> > > My bad. I've misread the config space of this.
-> > > 
-> > > > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
-> > > > (and remote work via work_queue) is used.
-> > > > 
-> > > > What "pcp book keeping activities" you refer to ? I don't see how
-> > > > moving certain activities that happen under SLUB or LRU spinlocks
-> > > > to happen before return to userspace changes things related 
-> > > > to avoidance of CPU interruption ?
-> > > 
-> > > Essentially delayed operations like pcp state flushing happens on return
-> > > to the userspace on isolated CPUs. No locking changes are required as
-> > > the work is still per-cpu.
-> > > 
-> > > In other words the approach Frederic is working on is to not change the
-> > > locking of pcp delayed work but instead move that work into well defined
-> > > place - i.e. return to the userspace.
-> > > 
-> > > Btw. have you measure the impact of preempt_disbale -> spinlock on hot
-> > > paths like SLUB sheeves?
-> > 
-> > Hi Michal,
-> > 
-> > I have done some study on this (which I presented on Plumbers 2023):
-> > https://lpc.events/event/17/contributions/1484/ 
-> > 
-> > Since they are per-cpu spinlocks, and the remote operations are not that 
-> > frequent, as per design of the current approach, we are not supposed to see 
-> > contention (I was not able to detect contention even after stress testing 
-> > for weeks), nor relevant cacheline bouncing.
-> > 
-> > That being said, for RT local_locks already get per-cpu spinlocks, so there 
-> > is only difference for !RT, which as you mention, does preemtp_disable():
-> > 
-> > The performance impact noticed was mostly about jumping around in 
-> > executable code, as inlining spinlocks (test #2 on presentation) took care 
-> > of most of the added extra cycles, adding about 4-14 extra cycles per 
-> > lock/unlock cycle. (tested on memcg with kmalloc test)
-> > 
-> > Yeah, as expected there is some extra cycles, as we are doing extra atomic 
-> > operations (even if in a local cacheline) in !RT case, but this could be 
-> > enabled only if the user thinks this is an ok cost for reducing 
-> > interruptions.
-> > 
-> > What do you think?
-> 
-> The fact that the behavior is opt-in for !RT is certainly a plus. I also
-> do not expect the overhead to be really be really big. 
+On Fri, Feb 20, 2026 at 02:10:34PM -0500, Johannes Weiner wrote:
+[...]
+>  static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *root)
+>  {
+>  	struct rb_node *n = root->rb_node;
+> @@ -3463,11 +3457,11 @@ void vfree(const void *addr)
+>  		 * High-order allocs for huge vmallocs are split, so
+>  		 * can be freed as an array of order-0 allocations
+>  		 */
+> +		if (!(vm->flags & VM_MAP_PUT_PAGES))
+> +			dec_node_page_state(page, NR_VMALLOC);
+>  		__free_page(page);
+>  		cond_resched();
+>  	}
+> -	if (!(vm->flags & VM_MAP_PUT_PAGES))
+> -		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
+>  	kvfree(vm->pages);
+>  	kfree(vm);
+>  }
+> @@ -3655,6 +3649,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  			continue;
+>  		}
+>  
+> +		mod_node_page_state(page, NR_VMALLOC, 1 << large_order);
 
-Awesome! Thanks for reviewing!
+mod_node_page_state() takes 'struct pglist_data *pgdat', you need to use
+page_pgdat(page) as first param.
 
-> To me, a much
-> more important question is which of the two approaches is easier to
-> maintain long term. The pcp work needs to be done one way or the other.
-> Whether we want to tweak locking or do it at a very well defined time is
-> the bigger question.
+> +
+>  		split_page(page, large_order);
+>  		for (i = 0; i < (1U << large_order); i++)
+>  			pages[nr_allocated + i] = page + i;
+> @@ -3675,6 +3671,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  	if (!order) {
+>  		while (nr_allocated < nr_pages) {
+>  			unsigned int nr, nr_pages_request;
+> +			int i;
+>  
+>  			/*
+>  			 * A maximum allowed request is hard-coded and is 100
+> @@ -3698,6 +3695,9 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  							nr_pages_request,
+>  							pages + nr_allocated);
+>  
+> +			for (i = nr_allocated; i < nr_allocated + nr; i++)
+> +				inc_node_page_state(pages[i], NR_VMALLOC);
+> +
+>  			nr_allocated += nr;
+>  
+>  			/*
+> @@ -3722,6 +3722,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  		if (unlikely(!page))
+>  			break;
+>  
+> +		mod_node_page_state(page, NR_VMALLOC, 1 << order);
 
-That crossed my mind as well, and I went with the idea of changing locking 
-because I was working on workloads in which deferring work to a kernel 
-re-entry would cause deadline misses as well. Or more critically, the 
-drains could take forever, as some of those tasks would avoid returning to 
-kernel as much as possible. 
+Same here.
 
-Thanks!
-Leo
+With above fixes, you can add:
+
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
