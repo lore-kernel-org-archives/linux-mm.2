@@ -4,149 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4DDFC5518F
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:50:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC1CC55A79
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 11:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E95F56B0088; Fri, 20 Feb 2026 05:50:13 -0500 (EST)
+	id 7EE6A6B0088; Fri, 20 Feb 2026 06:07:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4D4C6B0089; Fri, 20 Feb 2026 05:50:13 -0500 (EST)
+	id 79C3B6B0089; Fri, 20 Feb 2026 06:07:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3C436B008A; Fri, 20 Feb 2026 05:50:13 -0500 (EST)
+	id 649DF6B008A; Fri, 20 Feb 2026 06:07:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B01D46B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:50:13 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2BDD5140C24
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:50:13 +0000 (UTC)
-X-FDA: 84464515506.22.E11A9D6
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 15B75C000E
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:50:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2DcS2NV1;
-	spf=pass (imf28.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771584611;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AA2A6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 06:07:53 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E11241BD0E
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:07:52 +0000 (UTC)
+X-FDA: 84464559984.11.3A75B84
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A616A1C0009
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:07:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KG1fILvH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S5nqOlUo;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mX6Zn0tY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pv0E1s3J;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771585671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UAf0+WPiEFSXz/CCPkkC3DmUlSyhmOoTBssum21ipoU=;
-	b=RgslRsZEz2UBNRM+uzQcJEZsGmpQZSrwGt/5cu/TVCY3Zyzs/cFxO9RE6gel2aHcdmqMZt
-	OpSPNjpj0dq5oMilOFZI+EctkvA3NEkFledOVY9z0xkyuR3+v1pxgEqDbPvkp9ph64irhv
-	Gm9uTo88h4HgAE2CVDQJ7rb87MkWqVo=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2DcS2NV1;
-	spf=pass (imf28.hostedemail.com: domain of aliceryhl@google.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771584611; a=rsa-sha256;
-	cv=pass;
-	b=P9ZWPKQkCB/IouC1mMvHZaufRQ7+jGGfeVon/QpT+ku6AphBHyGUtCSJsrSuXQTzE9JcZ/
-	YweXtNlBsPOjl0u5kcM50Drsi8FJ1QRq5/ZJuQ7J9KapN4nIHniB0Z7NckARgaoQt+jVD6
-	mUqSay6U+jeHGj2CNKn2WqXOrXR6NU8=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43638a33157so1805135f8f.1
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:50:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771584610; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ahWsO4tZexdWrXzerjquQGk0+93ZE8LRHRaxImw4Is2pG+cP6MC8wEoKx6tmXNuDpM
-         /I+DcYHKAoCvt8BYauwPvP6m092YRlur22fsCvcxkkiupFO5TaIfmj/bBwlNP7vZaXEF
-         wkNhht4kyDRpf/b04SyB40cmfJdrgpd5zRtBTWJsXe5CR/qjM+XS1RbzfG2ff/HJ1AuB
-         xsHn49rAAmoLay005IhUJN23ZpdPR8HArjSf6+6VlpW34LC6h04oG+IR6RRp05vUW2vg
-         f2/LjS2Yf1af+fv6k2AnsSNOh9pMpLnGKmTWfRfSy8OWGUS9hyDsGKIzu4J4FtJRKWyR
-         W3qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UAf0+WPiEFSXz/CCPkkC3DmUlSyhmOoTBssum21ipoU=;
-        fh=6GmM30I050fVfdm9vMdiEYrtqwhnsgt+oiIIzhQGGpg=;
-        b=i0GpuqFzc0VRzKzlTnmFMXNluG5Psf373ywJT84zqNZdPfU3WaqhfsyGfActuxbCOm
-         8sNjqFe1b3IJTgFPGy18eyd74Vx3bsgv5U3l+iUmeAbSnc7FDoXMDcSwwnpY/a/IdJ63
-         FcegEHbw57VXPE+UO39AGzsnPljuSos34hSrukB9roW8jWYFq+CTlT8nQmmKchf6zhUo
-         HJ5hThl1BGo8RRRkFRb8Y+dNbbAb7lzzVU624/DPWGCknG+BaKtLlBSwO0joH8WH/VsL
-         wFqPfRhSEuN5MpZDrp8kyCr4Ff+mKBzwQ6QEsOIaGFPL6U8uzbaXhW40U+V3vbVY1bLy
-         Bl1w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771584610; x=1772189410; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UAf0+WPiEFSXz/CCPkkC3DmUlSyhmOoTBssum21ipoU=;
-        b=2DcS2NV1dpipI6ZHQRfyADH2o/O62r9DRqPq/0Ryedpx+K+RNCYnpOcxDM/gxPn69k
-         9fypS2eFZI/Ap+mbP6w71XJSj0cmHy8ihuNcx7+CXMo0HVc6+yq0C7tZvtXmAu6TfcEf
-         5xnZxwOFkFUhP3cdS3jTIey6ciE4AmH32hPKTUUzW5DqqvHiaNLC5Fk5L+PHKsPd+Jf+
-         Mb2VDoJGbl3kDROzyAiovD3S/kU3OFxq1xYoRm4Ar1of2S9iSdNbXfovanmacvglvD93
-         PfeFjTJr0bsk2qb2Wd7MgUyn+GxxWdTDzv+I6a1micsZX/zKD+oPPZ+JSjehINiagpUx
-         PpCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771584610; x=1772189410;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UAf0+WPiEFSXz/CCPkkC3DmUlSyhmOoTBssum21ipoU=;
-        b=gqSoNwOQcSes43znkXtaXGUeZ/GyJ/Gi9/sb0QgPhLifizqXouO95GGN/Ttrce/2kg
-         vugl5cKNfj+bHks93ZSmXKttV3GxJNo9wuR1JuvpkEchOlmU86ICltu1jHRpDKOlGwPl
-         dqL/5udbViaDGnKwq5FpIkFDFju/IwVnT65GdpvVFSRr3r1whDEltB1DJCQWB7RD/kCg
-         QIA9oDFoC+vo5LxOabfNb1M9KDq4TOFo/hTQxsqEH76f4Pjiw+GV+GduCp/1VGFVN3dU
-         wjI27pFSdibEO5uGqNaQxQtp8yoXdWiuleq/JcJyxUWO8ZFHH6VlOS3tXwuneE9aoBV6
-         SNbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUb0g/5LxIIBRYaBW2WT/weHN0v7b8w/ptuLvlMXWhiA15al0Z6yfdOR3F2UWj/2CQ6IVmYoZBTQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx4684NH93FLyDaY6QU6+mu1XMX3JpMjQi3/lKiNINzH4JDCKSJ
-	SsseBFkANqKNqYEnM20mcq8rwZNg6hWPnhru/wHVETPKC5Nm6iZsGevX7e+Ao7c4v9QY8o2PYqw
-	kwx6fR7G/5DpT6zXBGpAnX2sp/yUZ5CyxEiaoL5id
-X-Gm-Gg: AZuq6aKVuJGty/ubbmhf/0Pke6zGPXdL7eHDabfYeehfXWBQndTh+k/Io6SktLaQmAR
-	WNts958qy30VWufZm2w5CKTPQAp6IVy7Pbe6iscpWxIaUeVbQjM4frFfxt04rBLaicfaYbRR1eR
-	PDImwfnuxD3A9B4i8Dlw0v1fUYzEaMzu7o9mr3Pok826/Vtk8wGG7P6KIYkA53Yhb9ZqyZ2ITnS
-	BZfqq9gmAvt7iZSIh4AKi0k+CNlPNOwAVoILTJSk58ZGcOjcqZojuRlf37n0Dwkv9ITIORCeVnt
-	rL1rVwkFSzn0o+WZ3VPJ9MaEt0StKsaGcajUrg==
-X-Received: by 2002:a05:6000:2409:b0:435:95c9:6895 with SMTP id
- ffacd0b85a97d-43958e00ce5mr15101201f8f.18.1771584608836; Fri, 20 Feb 2026
- 02:50:08 -0800 (PST)
+	bh=TLv+hA5hd7MVtuLJRJZBuqjxVwO8h8t75XfQY9oDWAo=;
+	b=6+qyHG8NYaPT6TSq+9i503f0m+xFeAZRzQxwI4sCsCAUY9wGylFIfP99otBHnF7TYFTrKq
+	ag5lmndekFY5qgDsuaKGQFqi6ZScHaeqs588Y2LPy7m+zWqvZkJP5tV2v/DKDuVwfy89Ir
+	wWe35PEwlcQO8IMkmUy3ZfdthESJts0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771585671; a=rsa-sha256;
+	cv=none;
+	b=fTvCI3+CuXY36YANPBS45+jBGGzs8Gq2bVTdAaBqdQX51GiIKK9AIphoEKUs1HEPSedp1Q
+	6i6IktdjuMFCh6NSSxihLydW83RlRNsBj8MGb7E6afzlAjvdggNkQg4hW6p2qL/3w89bYf
+	L/R+UwCI4P8IDM1ZTHsIppPcdXmbDUk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KG1fILvH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S5nqOlUo;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mX6Zn0tY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pv0E1s3J;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B1ECF3E6D8;
+	Fri, 20 Feb 2026 11:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771585669; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TLv+hA5hd7MVtuLJRJZBuqjxVwO8h8t75XfQY9oDWAo=;
+	b=KG1fILvHZvhZuKFnwQga7mSrv7B5/ivr5bdAke6Hh049E9a81GFjDaw4SPBKqpsfJp4+Ze
+	fd6EMaeBlh/rjFyZoOOOt9LksTeVQKSMN8ADGspachfdZp2K8OEQAMwP15fao/XXeTcD9b
+	NdYKQZ44NdgV/jkVqO8ziJqaBhpp5yQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771585669;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TLv+hA5hd7MVtuLJRJZBuqjxVwO8h8t75XfQY9oDWAo=;
+	b=S5nqOlUoY59dooEbrnRQXHpR+eQcDHuF7gej0JWBPdJxI4dbEQqWFsFF3xzvQgNvmWnEWh
+	9N2sjew5O/vpWyAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771585668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TLv+hA5hd7MVtuLJRJZBuqjxVwO8h8t75XfQY9oDWAo=;
+	b=mX6Zn0tYmj5iBTFHvzo0OzGHKBPS/iRUbzlfiDY4dy6bY19c2wyJbX+/ZwEafzRIbf9ZAc
+	UC/ZiG6GiclDyV8bK7QsNHBv+qur+qPVbx06IdSTn1/KWflI3nyPJhvlUwCSOOVf34699u
+	PjZtIVinbzA4Rg8ZL1CCg6LWBth32GY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771585668;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TLv+hA5hd7MVtuLJRJZBuqjxVwO8h8t75XfQY9oDWAo=;
+	b=pv0E1s3Jd5NzINhqD7MZPs8hO4hfhXVGbuvqilxIeepAEbK6GeG5Dp9W0vVJ9QhpWbhIBM
+	ENRuA6MTmsbYEjBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 250843EA65;
+	Fri, 20 Feb 2026 11:07:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jaKzBYNAmGmERQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 20 Feb 2026 11:07:47 +0000
+Date: Fri, 20 Feb 2026 11:07:45 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: akpm@linux-foundation.org, rostedt@goodmis.org, joel@joelfernandes.org, 
+	kernel-team@android.com, android-mm@google.com, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Minchan Kim <minchan@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jann Horn <jannh@google.com>, Martin Liu <liumartin@google.com>, 
+	David Rientjes <rientjes@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Wander Lairson Costa <wander@redhat.com>, Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/tracing: rss_stat: Ensure curr is false from kthread
+ context
+Message-ID: <6wljnbdh2tvi5egjd462hel7zkxvxedqgeqbjsdpoibc5n2j43@fsjneenogr3y>
+References: <20260219233708.1971199-1-kaleshsingh@google.com>
 MIME-Version: 1.0
-References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org> <20260220-unique-ref-v15-3-893ed86b06cc@kernel.org>
-In-Reply-To: <20260220-unique-ref-v15-3-893ed86b06cc@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 20 Feb 2026 11:49:57 +0100
-X-Gm-Features: AaiRm525n9TXR47KvplRQPUHuuUwgU5iN4_ng3kUHWK8LN9TrQcHulfhA1IhjZ4
-Message-ID: <CAH5fLggNjCZ3AvHnhO8O0cmd33B3zMbfq+hhNvonznTsLLtgYw@mail.gmail.com>
-Subject: Re: [PATCH v15 3/9] rust: Add missing SAFETY documentation for `ARef` example
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219233708.1971199-1-kaleshsingh@google.com>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 6c6imijrh5hedmssy5ik93hazgs5g14u
+X-Rspamd-Queue-Id: A616A1C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15B75C000E
-X-Rspamd-Server: rspam02
-X-Stat-Signature: f1xumkdr3h4z9ktnwe7pwi17njcqfjfz
-X-HE-Tag: 1771584610-724310
-X-HE-Meta: U2FsdGVkX18M1VLljlcaA22WOW2NtX4OLPjkT2fZA6TE3tyKOWXvJmc74ki0SY36E8t+Dbxg6WvVTRDGFugmGYFWFSA0GEmwqJ/KXM8M9c66VQep2S9Jeb0jeGRqJ3jfyOFnWOQsBItkgAo/XG7T8MmfJg7WcrRSR6U8A2XewVhkxMlpvlRIJE6PUS7mrRDw0sKR8LWRWYMp5OIj++Ut8NpCRbkjSu7P0kyFiVz6GQGHFyplP1MTAqFC8kmyPQ4oyFohn/6MElfGHXvg89k8V8G8/LAXOIgbHGoq2jSVkygGxxqAl1+Xkw54s/VMyqQKnaM4A/4bdKCddIsVTvoYULdyHJOSpE4zCn3IxxFIik6/TIjY+4z6EfXS0fyRTb/Zldiy3i0Y1C+Bx71CcEeP+ud+t2X+rUjFHspwfgbTDEsj2TaQyqAwUNeyXdqIR137DsALjcMvFG+1UK7M0t9/Posxn/3ooDggKaepRPcfh89dPvnS3m1fV7HHNbLAQz8/bKTktNTj0edtxpOoHLB2mdwOJjK4kotEgjkM6/8v03brbJ+Ua7c2jaBK3lidktECccA1lPqybZM8FbiyqfOzJEKJ/BET7v2PSBjUKigMDE4JK7tOM0lemGNV5rhF/1klsyWSYldJoIyBGqfHQsVXT1tcI2YThRkr8laJCs2jr0YCgVYmtroIS1wUjFkUaAmfP80e42bFP4nJxHmZjjJL+CdBSrC3TR2NWzQOvELvGlDQh/BO4JCjmOBJHywv+lWzqI2AflH8OqV4Vdahs7IQk8fUUgA8vWdE371+2GO/j5+pTzlvJkPwDUuC7VoK8SXWZPYBAq7aC0ZMs8VSvjAaCEN5bX9ZTwpwi/sJurtRCJpfsyOONymmzfXZ9NrYsSYusCn1Cugq0qnfWoOA1dD79KaI4myEaX7jdyVz1/pGvJlbXYw6RuCtdysiskmIXvZBgsAmh3G09ieZKurYTF9
- ZPWGqvDP
- yNRXLCuUCrde3Q9RsViwjMiZIeXH6327Lk1uLSkw9LXyxgOG1qpe+uTVwK3bQYpca93JSJws9dm6m6UyoICjD9HSnYYUCDvvHrBuvuohBJpsJtevjr6L3cQVgVbP3+lqgqrikLuG9TxnB/wwKEr4coqCxKRgG03KoCGUa1TrENGa7NcI09MpoOXdD1QoQFD7btxOq5i39IdwZozK9iWoJ4+0YlivsRgWtz5vac0P4mGolHD/KKkVThML5lGPOJZlVqB3XbgLGLgFPQwxKUuVKXzo3U6jkel9WeNttjeDYsVUkJdy7+TpX1HGHlXA50/tDt77B4wfQX1DtEKFTIltycnvZ1M66egbZ0yC6OPc03zxkEm6lw6ovlSJdaOGYVfP68JlO4wk1+M1M4ohp/B+DJ3OjrYStGRze3elxdfa6mOlbpJeTlvb7gvPKcpvrrxkkqN5Ptbncdk3tFSMFJQeYkvqZAYA/j9OMZnfx
+X-HE-Tag: 1771585670-696333
+X-HE-Meta: U2FsdGVkX1/yzw2NdM0fXwk5SnXofBCw/F/pbyJhjh3V3rDfKvZ1CgruEE7CvBh766mWd1YmcroTW4T3UcHBHJBpUy2JD/UfxalTuG5wLoTz9QXJZOnmluO5aoxZ2CDoD28MAnSumJdexG6XZWJe1DX/qxTDhJZ/nPWZS/RGebGEMJ9kBDPhpwIlLDca+6j6KRuHcld2o2qTlrVLjw7GGPbuKhLFbNKBTUlaN/AOhHTXRRcegLFR2GghOS8ZHq4gMQhhKcRXL0Y91aMR0cIFgrShaMEMILE1ce47Z1gKtN7eT+tq9bSY+tOetCdjZ3BY07lD3lkGJHQwm0NpeWhopCkwZZR18ue/3CQzYLaHqFlGe9uKcyqjInkI3FkNHMFZvva1FBf4c288oygqnfnpHxY6fg9jXQZOT0lsJFE/K+4lbhLDDiTjfh1YMhpp2aaBqzsHVuSJzyMFuoI9nkWpQmFMNDpkS7LTLS0+pd3lWE9mnDIRQCC3b7YvPIUkr998AppE3Zr6biST9O4jZk2YGLGn0Q5aY68rNA2UugiP2MsWqRz40dgQ6vb4vd7432wqopLtYHBqElkaS/x+tvzXGS0LpN4mA3eeOJmsEVoaKiF3qk6wbAaj5mWrZQCS/2HAh4ORIHbIosA+9DUqSe9V1iRUhbt3Yio17IOsaLnb67uGkkf4N9OpO6Krc3B4Q7iYFrGCTpUvFdI6GCpLYpvxuNdR2nLfn4JyDCiuPiQ4p3SozMyMssvyNdc5R2dD10cKw6cg9pGE2ylhPzio1JJujtbB7MohRRUaCq37O7M8BV+X+BMPOQdSNiR+x+rEWI+17jo000O6YuGi+gqWK3pD4TUavynz93dzRiQiqD+qOSFVElKgY9OavEfHrKwhCAr5lKjgr+fsYwRcqeknLE1JcVgicbfd+0RXRAdYd2CSKT2xRqSAO1zaC0tCJWXPOenZkLZ+0ggPRj5KTzq1Tg1
+ aI2Rijrm
+ PjzS1lSU7cmJlD/nWRDSP7GRPlptbl3FtiZGY2CzVT/8l4DkKIkjoaRe+i9EDQgsHMjjxm0K+zSC+3fe0voXMZhE0q5fSa9tXjpWoaiqT3cuMVEMrV+gz8mdSs3mYNqJVZTbOn9gMXp3r0IOGv41PORVCY8zTRDfXyPjh+j39UGg5LhXFyNZC8iTylvU7h209MPz8rTcWD/9zly/e2LtSqLwKLYgQ+AJuvK09YDUWJCIz6r7f3NVJjuF0gNA6xsNyHBuJySMHdUEnuy8Q52q9tRs7eMwcEFvlugAZw1fjr7MsiJmj1uUSaJB9iPno6IIeagy6PslbYy5TqbcIYXj4yeuRlbMCH3TX0dGTscjQ6kuhZP92QANX3sxwVFfq6p4kPoYWajDMcCq9Wczcv1eSCI8czsFdkUDusXUDF2IsLuKuhuhaUXhJLqNgW4zzpTGy/+3gOcfqtFN0n9CS51O8z+Kod0owLbbnjNb+kSI7/kmuU6kxNQl7ohJIP4Fg1rzpzTCUhLC8Igomr4sPtIbhQYU9k0JpVdlLFBPHlqnBNin05IaBm1DOxzDHleeCs/hLR9VFbWNjSfGRfkYkOPOmclUsU9TI9nFVKANpBTDfpx/ektx/MZNLINOJK8PqP+UbkQL3qen4JnR30aP/KT/DfE+tYA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,61 +140,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 10:52=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->
-> From: Oliver Mangold <oliver.mangold@pm.me>
->
-> SAFETY comment in rustdoc example was just 'TODO'. Fixed.
->
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/sync/aref.rs | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-> index 61caddfd89619..efe16a7fdfa5d 100644
-> --- a/rust/kernel/sync/aref.rs
-> +++ b/rust/kernel/sync/aref.rs
-> @@ -129,12 +129,14 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->      /// # Examples
->      ///
->      /// ```
-> -    /// use core::ptr::NonNull;
-> -    /// use kernel::sync::aref::{ARef, RefCounted};
-> +    /// # use core::ptr::NonNull;
-> +    /// # use kernel::sync::aref::{ARef, RefCounted};
->      ///
+On Thu, Feb 19, 2026 at 03:36:56PM -0800, Kalesh Singh wrote:
+> The rss_stat trace event allows userspace tools, like Perfetto [1],
+> to inspect per-process RSS metric changes over time.
+> 
+> The curr field was introduced to rss_stat in commit e4dcad204d3a
+> ("rss_stat: add support to detect RSS updates of external mm").
+> It's intent is to  indicate whether the RSS update is for the
+> mm_struct of the current execution context; and is set to false
+> when operating on a remote mm_struct (e.g., via kswapd or a
+> direct reclaimer).
+> 
+> However, an issue arises when a kernel thread temporarily adopts
+> a user process's mm_struct. Kernel threads do not have their own
+> mm_struct and normally have current->mm set to NULL. To operate
+> on user memory, they can "borrow" a memory context using
+> kthread_use_mm(), which sets current->mm to the user process's mm.
+> 
+> This can be observed, for example, in the USB Function Filesystem
+> (FFS) driver. The ffs_user_copy_worker() handles AIO completions
+> and uses kthread_use_mm() to copy data to a user-space buffer.
+> If a page fault occurs during this copy, the fault handler executes
+> in the kthread's context.
+> 
+> At this point, current is the kthread, but current->mm points to the
+> user process's mm. Since the rss_stat event (from the page fault)
+> is for that same mm, the condition current->mm == mm becomes true,
+> causing curr to be incorrectly set to true when the trace event is
+> emitted.
+> 
+> This is misleading because it suggests the mm belongs to the kthread,
+> confusing userspace tools that track per-process RSS changes and
+> corrupting their mm_id-to-process association.
+> 
+> Fix this by ensuring curr is always false when the trace event is
+> emitted from a kthread context by checking for the PF_KTHREAD flag.
+> 
+> [1] https://perfetto.dev/
+> 
+> Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+> Cc: Joel Fernandes <joel@joelfernandes.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 
-Either keep the imports visible or delete this empty line. And either
-way, it doesn't really fit in this commit.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
->      /// struct Empty {}
->      ///
-> -    /// # // SAFETY: TODO.
-> +    /// // SAFETY: The `RefCounted` implementation for `Empty` does not =
-count references and never
-> +    /// // frees the underlying object. Thus we can act as owning an inc=
-rement on the refcount for
-> +    /// // the object that we pass to the newly created `ARef`.
->      /// unsafe impl RefCounted for Empty {
->      ///     fn inc_ref(&self) {}
->      ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-> @@ -142,7 +144,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->      ///
->      /// let mut data =3D Empty {};
->      /// let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
-> -    /// # // SAFETY: TODO.
-> +    /// // SAFETY: We keep `data` around longer than the `ARef`.
->      /// let data_ref: ARef<Empty> =3D unsafe { ARef::from_raw(ptr) };
->      /// let raw_ptr: NonNull<Empty> =3D ARef::into_raw(data_ref);
->      ///
->
-> --
-> 2.51.2
->
->
+Looks cromulent, thanks :)
+
+-- 
+Pedro
 
