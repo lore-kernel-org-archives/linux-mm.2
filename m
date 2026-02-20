@@ -4,128 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A5C6C55AB9
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 12:07:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BA0C55ABC
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 12:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51FE16B0088; Fri, 20 Feb 2026 07:07:45 -0500 (EST)
+	id 50B456B0088; Fri, 20 Feb 2026 07:10:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CD656B0089; Fri, 20 Feb 2026 07:07:45 -0500 (EST)
+	id 4C1746B0089; Fri, 20 Feb 2026 07:10:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AF326B008A; Fri, 20 Feb 2026 07:07:45 -0500 (EST)
+	id 36F5B6B008A; Fri, 20 Feb 2026 07:10:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 27DE86B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 07:07:45 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1705140153
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:07:44 +0000 (UTC)
-X-FDA: 84464710848.09.9DE8153
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 26FD56B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 07:10:55 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF8A51A0148
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:10:54 +0000 (UTC)
+X-FDA: 84464718828.20.560F82D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9B3634000F
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:07:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eVxXSFKQ;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 220051C000D
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:10:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NZrAb9YX;
+	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771589262;
+	s=arc-20220608; t=1771589452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jj1VxsoKh/HLpPU4m/YPCevJ2qQdPEp5xTV4NrJooAY=;
-	b=D+vnzbm8Zumhl8eZSPHIAFz+ebBSMJcGaxc8NPmv9P+ApHoxSSIfUeMAJXPdei60AAaknt
-	+JP+gh7Pn2nwgGzOyv3HQ50lSh9IdOgjeiE/36+CMoE/jmG2NWhgUKkuPg6WpbGRIoPUwQ
-	F27fmZSBmYRRccKMhAWlWBXi2JKivxI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771589262; a=rsa-sha256;
-	cv=none;
-	b=WK/EvJaS9HObPKYLA+CLc4SSDR3R2kMs0xmE/0uqefgZu1L1t3nxsF3Qx+DiDYClXczHvT
-	6e+6DIosM1L8xTandgU6OeyORdrQGdH7rBbH8kJSgij042BSVy6H9dzrJcy2WPKBJSwMr1
-	7G2GoAmRy6t7L9JvF5DTYt9Gs2GoVxQ=
+	bh=diBJa2PYeckVGNkOjpReeL/GMe1HxhkUGj4Qs3envAU=;
+	b=gxpIesKTvi3fxJ65GHpp00TmeXolrSiQpf0Jw4g2jEs3E76wZjrkL0hFzYZWCeJB2WU7yd
+	HC8+SiKCiN89bQLjcjF3OQ8PRJwUrzjiNHXif5T2+35UfMhs/IFB2cyb3VXjDsuMsEVDuK
+	pjGWkuljrWeE1KBrLZt4Hh9a1/Tjfd0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eVxXSFKQ;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NZrAb9YX;
+	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771589452; a=rsa-sha256;
+	cv=none;
+	b=yjkibLx8FyzV6+i0O9XA0rZcO+5QfkbL5uox7gFC61cc/VC05ZEcpMZ7To6kIfblnukwLm
+	KLtaEtCvW5ccUc7I8TYLfYoY9xJabfra3enu1DL4ditUcpGE9tt/bd72smVGSNP+ehS4/w
+	kHUdL6v53e5jYHdQwQcI1NViXk08g8w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B9264056D
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:07:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1536DC116D0
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 12:07:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DBA5544547;
+	Fri, 20 Feb 2026 12:10:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63E0C116C6;
+	Fri, 20 Feb 2026 12:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771589261;
-	bh=/CPahougHkSBh/z622YkITmIeyFUeeEQQj35cCE/BuU=;
+	s=k20201202; t=1771589450;
+	bh=CkuMvJSvk6Bm3IKgxxcihreO2cDBuepEy+Dn/PXjewM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eVxXSFKQFhpPbqwJTv17D/64FEp6M0gDXd7Z+BXbBHVgncVC85YvTD+URKGDoxZlF
-	 nE9DGRfLLuonVhg92nip7SCDbZWqvpm35drooAgIIXtfn5CMUaJeHC75bule994Hsq
-	 OaEw5VcMLt7eM6BpNdxgeBTiatyVBDv+O7knHXF3hNAPPKCuYJ81iKXLrWjTlZ4i8N
-	 4338qvfvl9WuzWwTameA1mZt0446Ya62c7eGh0qbpWSBl0DaFio9eKmHu38dWDUChd
-	 8uSjYvKmebLbGOxPpburXteY45KVmkFc3ksmSLUaUtcmiGbvKsUZl1/4n1s3WpojO5
-	 AfZNpdhgHnCKA==
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CDDC5F40069;
-	Fri, 20 Feb 2026 07:07:39 -0500 (EST)
+	b=NZrAb9YXiTa5a3dkoDI2JcAKRafqDqYVTcfhKHK+9W2w9WUObL4bCtnNg5CZgupNm
+	 2wZeg82UdHp5PeaUq94b1mvwNtF9OjJlIBvSgsPXmTxDyzF8WrdpTihmmTWbyK2pO4
+	 DBv8TidrpW29F1ziJ4SMKiRWPls1UKbDeMVVLWRUP3YDAbzBHSP44Yurs+G7w/SKnn
+	 5Af3LRaiHx6Fg+J9GW5C27HVMj/pNzkkPMA5gHh3LgsL8bc5a2f82I16zynaXkwe9t
+	 wzPLqj7Wwg8yzRjUjr0remSGyM9AjoKPmW+mda0cRCGKXEt/dvAl0sAbwXGSdMPMBY
+	 hmxsM+CDOuMJQ==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 92595F40068;
+	Fri, 20 Feb 2026 07:10:48 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Fri, 20 Feb 2026 07:07:39 -0500
-X-ME-Sender: <xms:i06YaeJCyakHHKwndht5YOe3MIDWetwc7ZJBm3Lo3RxWyoBFo9HB7w>
-    <xme:i06YaYcqGl5iWtjoUFDerrosOHCWODBo9L71HHyaUVeoqNfu0dqc9q3KSSas9QGqw
-    cU36rkpwPpFQtugmMWBDNVKLGVLU-JuOxpSctrTqievunBj_1WM8Co>
-X-ME-Received: <xmr:i06YadbCoPZ6ILf7rjGA2U03z6BxbOHNybN6Z1v3c0qhsfDwjs9Snnj2dJayRw>
+  by phl-compute-01.internal (MEProxy); Fri, 20 Feb 2026 07:10:48 -0500
+X-ME-Sender: <xms:SE-YaaKvwf9CGVCxtNhezSZfi82zEzRctZ674jfOQYmchilmaaZ5_g>
+    <xme:SE-Yad2hnuMSu3ULWKqfb4sEO0XKxpyr8QodDTkg_QpWpB-WxDGoHANyEQi_K3pKo
+    31GnJSO2w9KjEx9jUA5Z1EnQQU4VBuDZV0MAFhtJ9eOL8JJJSpoSQE>
+X-ME-Received: <xmr:SE-YaeUW7wfcMXYqSadLUdMlMCVL1eQVXXBxDErxetyesxPI11IaUEw2P6eqmQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdekgedtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlshhfqdhptgeslh
-    hishhtshdrlhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhi
-    nhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
-    hrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthho
-    pehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrd
-    guvg
-X-ME-Proxy: <xmx:i06YaQVP9BtzHL1sUHRVDBFpUDdryurKO2ANwWGuIryLxnFNZn4O8A>
-    <xmx:i06YaTBAMTLjL75c0_06_89vrWeaLrQVnbjkMW2hd7mG_ALECmNyzA>
-    <xmx:i06YaXAks5pLlsZFm9DczvH1YWsJUb_01qqg-HIXyQJGsU_i2ON9rw>
-    <xmx:i06Yaao5uJK4_itjqHgUmVmfEac8yo5D-sHQN13HKZwZEDaCqQG28Q>
-    <xmx:i06YaTAxaC87igDWq9V-wS9gka6QYVTZ8DCxYN07a1o2oHYWC6_TKxC8>
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeutdelvddtvedthfefffejjedvieelleektdfgfeelveejfeehheeuffeuhedt
+    veenucffohhmrghinheprghnughrohhiugdrtghomhenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspe
+    epkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthho
+    peegvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhgrlhgvshhhshhinhhghh
+    esghhoohhglhgvrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheplhhsfhdqphgtsehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtih
+    honhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgt
+    phhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvg
+    hrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuh
+    htrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:SE-YafpLfM1JFQNAbcmwZu8dg924zrFrVDabqqcjces-ajlMq7wVdg>
+    <xmx:SE-YafY6zes04E4Xfuaj3ebU22pzBQ6Ig5WD_brCDJPIgUjuyiv52g>
+    <xmx:SE-YaTDAUe1Lf4YHrI5VKomVYCT2S1kEutAZmCdX37ScoJZq9FXkzg>
+    <xmx:SE-YaaGLSgZ0iYnX_u-AFGPfOTZNpRvZgIHoD9OPWAa_emLnfDA18Q>
+    <xmx:SE-YafwneVGX1_o04DJnCBlRa0FPoTeTr6x1J8ktazYAexB0PTTjLLo2>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Feb 2026 07:07:37 -0500 (EST)
-Date: Fri, 20 Feb 2026 12:07:32 +0000
+ 20 Feb 2026 07:10:46 -0500 (EST)
+Date: Fri, 20 Feb 2026 12:10:41 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
 	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>
+	Usama Arif <usama.arif@linux.dev>, android-mm <android-mm@google.com>, 
+	Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>, Mateusz =?utf-8?Q?Ma=C4=87kowski?= <mmac@google.com>, 
+	Steven Moreland <smoreland@google.com>
 Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <aZhErt9DZcWI24_v@thinkstation>
+Message-ID: <aZhOnSVao9yFJML7@thinkstation>
 References: <aZcmlIF4bmG0twkp@thinkstation>
  <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZdCl8byz51Q1-v6@thinkstation>
- <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
+ <CAC_TJvdUoBmZNj68Yghmwhr4W0930s+p7UkAtSj5x5XoGAHhwg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: jdbf3fwdbkuayaa8bh985itpyubue96q
-X-Rspamd-Queue-Id: 9B3634000F
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAC_TJvdUoBmZNj68Yghmwhr4W0930s+p7UkAtSj5x5XoGAHhwg@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 220051C000D
+X-Stat-Signature: ntfjthrbxo4fjtg47tcmhoy9boc7jtfk
 X-Rspam-User: 
-X-HE-Tag: 1771589262-860546
-X-HE-Meta: U2FsdGVkX1+CKiMkJOX7cq8bP1OxQpmc+iUCad3eJx7xGYxvW2ts6OhKJJr+OGoDDue354/d2Ux2n2svbR1AjXaQNNOdwWvy+y/ThUN/mYCa3Ph8+53NG+ndVyYbhGpIVava0y2ASxDQTWMjaLVxIip8mUD3TO0lLmPVwQgE4igr/7JYg2Yee26GGIXhaCMdb4o0nmZUk/2gUV9kXtlKGf2lNEfBwErRJW3YE20qRPcMAh/Zzkkt5SXAXPMqwXJ6DosihxIXHlAMtyipy7HilOvuxVcRr2+WNl6unXhtY2VOIbVRxo4Ol+PJ0QCsTduG2EIyOIcSCiONIPFcp+2K+dPhspshfSacGDRrJvfilzM22R6m6R3Efe/ueYauCBnmjn13dCGAG/9FknLg14+3m/XhtGPuObXOTAaZq+bFJfOowvmb+mEAJTcSYfyP7DbRxUUrj/BvXnkBgHhg/Ds4sHl/ngoolHLMLf29aDhIlueh0mTOiquwD5Plkkj1tW02lujedxhBGamTiwL9A9KkDS3UvJFrNQRX6YygyrtQELlAzfR8TyiNG5QzDYRMqwHlJSxlqC1qapDu2Pn0PQmb0/GEjtKdYegLXmav7xyzScDx9xK4y0MQ7pke7m/v+fXtjwiyNgEvFp4t2UtLYqiFA39LHqJW3s+QuYRclYq3RbP04LOEoV/rI9pFpV9/ecDyJTE31CIRQ2ix6SjVrEWYn6t9O4If+zBe5Xd0edmIORfQUrJebFEzupI+0Ec7QN51FuMHwwBEh5EOhYaFne6vvIlu1wkTIL+On3Us4NfS1kUnRF/P3DeD4hzUHNRp7/GHiqy46IePlJUBgUF7IAS7cNkl1rC/k5KII91LIWfYP26+mNpV7iQjqyv/vL7W2EhGIwAFXNvd/W2NydfhXcNfFeoSgihvgjDWWxBxXGPXTjpnjgB0h7aJEqNhbQV/9lm6ZKheqtIMLSD+fRDIX4b
- zPYDsD1N
- bYKZFsxCj1b/Ir8zrM04SXO7x7n1ugc10nwm3gSnp88+8dVmu+3Y37TfR4BhdzNbkZF4SCg2YTkY0MibDc/KFVFigEm2RUcs6m6n+zfDBkdYesL3agA4ISyYthZ2RcH9LVeUxW706Fxo6rGQit6xknXKHsrTU2qxzCiBat69OH0lMoBCUCibTDUzvgtoUGlvY8X+VNhAvRHe7bwIXyS0yfFqXICW69GdocgUlzLsr+PDKbPkw5M1AFwOWEvqM4XvPlzGmxNcuAFHB0Gp6PrHAlpA9OGs86szbb2zxU9ygMDSI/VMk05YJv7tKUCxmHGxwzyxQsMQTXmP3IVL0Iq9uc9rClhUUJqWnwwq+
+X-HE-Tag: 1771589451-890285
+X-HE-Meta: U2FsdGVkX18pcTnDqrYgIFUA1v6JvhL1So1czS/KLrlkLOcbswrygarckqrA0uQp9yAxG0LKjPF0EiSfRpQLK0/koct1RmEQvyyocl233vsgom6RMterOw4CwnCDlxCv3AX/bW0cUzYt576fAXaffpc3RGKg6ngSTRmqqUkwN2vXByuCVe07AOogrmsJ8V3gkPPR+CNIZicIG+mBddOVf2NfAgR6Vcz1GDtKQBzROgbvh7ZvgGyMCuJ7pytd1oOCYYxkdSLCgyvICn8VWFNapX0pOyLD9erg/hTh8U5H8BzuTDOOR2mLxpQSov8YNnOzsmOMcpDx7o921OVjhOVk0exvAf9pV7JJPvCqgM8KTauIaa0ffIuU9aPI8GoeWNvJwOmNrQV+Az1mWzleCZ7354w9h5zbwQkhHFnZH/6yNJ/8xILwkGS3HblvNUe5HbuMdMx6SdBRH2NEqvgz9PmXdeSOYzIQLoXihoYtavtw2CHVdCF4xVCTRjo7rRpHQjI+NYIGDY30Oof1LgbpqdOn9hE0UyJKcI1q0GCrfNh8ww8UO0AzN8OuoGNxbgVa3QRp1q+z246lXaFjEF6aLHC4AJvVN+NOEy6RBT3k8GCUDwd9eP6yznEZ6cw655fKrvnYHjEOesacV9cqhb95BiFcab+2VO2k35wsd/LGynKb8r4Nqjh0AvIWEXuB4kYapNKQ2NfDpvr32mXjv68x27r9wQOYDsVhFxmFAb86i+2/ODyQtNEqmJxmVtgbFQ+XL7uqkS8pOElsteqkw6XH2veOMQaCwqWiuznogCE9CznyjTWvkTVR/TDhdyNIr2Uv1NcbhvffWmrqBQD0HEMg6zNRj32Wu5l5s3myk/W0IPUcdEXiCKKqqUdRMv/P1dso6KdU4d2xKnR2jaEug9umqdYlNrdqJDVzN/1s/VNt+Dp9tmPv3v/Sw6qb+ZMe1GYRwZBIyPH0ki0EJYC1J/2Iy9p
+ KFFc7Xtm
+ 0eNKfKq/Ov7eq2GHi1KND4PK+ajHxDuNP3COvULv6mm6R24qgAxPcsgO5WRscfoLlWvZjaKtG3tZGJkQRuGhiKw6kxSjyjM5BTInoAXnV9vXfKWwPkS6iJZR2ccKNpAJ9oR3Tot5B9HsXRJFs5cSuq7v6csUjUYc1KqCU4abQYMJoufsIsdVAAan8pcHt5kFwOBbfwXGfOpIGTCVQTVGxaVMn6ccwGwFcMZaKBMsNkx/b37ICsPTtVbtI5gU6EhfbkpT5pPG1X/VjnDswxJBj4/MxN8whPAebG2W2wo3YIYFdvf9nL+NP9V4wYEPQUdbi6JdUeivvhD76rP1/Vp1o5kk0tGebTl6qndkQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,82 +138,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 11:24:37AM +0100, David Hildenbrand (Arm) wrote:
-> > > When discussing per-process page sizes with Ryan and Dev, I mentioned that
-> > > having a larger emulated page size could be interesting for other
-> > > architectures as well.
-> > > 
-> > > That is, we would emulate a 64K page size on Intel for user space as well,
-> > > but let the OS work with 4K pages.
-> > 
-> > Just to clarify, do you want it to be enforced on userspace ABI.
-> > Like, all mappings are 64k aligned?
+On Thu, Feb 19, 2026 at 03:24:37PM -0800, Kalesh Singh wrote:
+> On Thu, Feb 19, 2026 at 7:39 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+> >
+> > On 2/19/26 16:08, Kiryl Shutsemau wrote:
+> > > No, there's no new hardware (that I know of). I want to explore what page size
+> > > means.
+> > >
+> > > The kernel uses the same value - PAGE_SIZE - for two things:
+> > >
+> > >    - the order-0 buddy allocation size;
+> > >
+> > >    - the granularity of virtual address space mapping;
+> > >
+> > > I think we can benefit from separating these two meanings and allowing
+> > > order-0 allocations to be larger than the virtual address space covered by a
+> > > PTE entry.
+> > >
+> > > The main motivation is scalability. Managing memory on multi-terabyte
+> > > machines in 4k is suboptimal, to say the least.
+> > >
+> > > Potential benefits of the approach (assuming 64k pages):
+> > >
+> > >    - The order-0 page size cuts struct page overhead by a factor of 16. From
+> > >      ~1.6% of RAM to ~0.1%;
+> > >
+> > >    - TLB wins on machines with TLB coalescing as long as mapping is naturally
+> > >      aligned;
+> > >
+> > >    - Order-5 allocation is 2M, resulting in less pressure on the zone lock;
+> > >
+> > >    - 1G pages are within possibility for the buddy allocator - order-14
+> > >      allocation. It can open the road to 1G THPs.
+> > >
+> > >    - As with THP, fewer pages - less pressure on the LRU lock;
+> > >
+> > >    - ...
+> > >
+> > > The trade-off is memory waste (similar to what we have on architectures with
+> > > native 64k pages today) and complexity, mostly in the core-MM code.
+> > >
+> > > == Design considerations ==
+> > >
+> > > I want to split PAGE_SIZE into two distinct values:
+> > >
+> > >    - PTE_SIZE defines the virtual address space granularity;
+> > >
+> > >    - PG_SIZE defines the size of the order-0 buddy allocation;
+> > >
+> > > PAGE_SIZE is only defined if PTE_SIZE == PG_SIZE. It will flag which code
+> > > requires conversion, and keep existing code working while conversion is in
+> > > progress.
+> > >
+> > > The same split happens for other page-related macros: mask, shift,
+> > > alignment helpers, etc.
+> > >
+> > > PFNs are in PTE_SIZE units.
+> > >
+> > > The buddy allocator and page cache (as well as all I/O) operate in PG_SIZE
+> > > units.
+> > >
+> > > Userspace mappings are maintained with PTE_SIZE granularity. No ABI changes
+> > > for userspace. But we might want to communicate PG_SIZE to userspace to
+> > > get the optimal results for userspace that cares.
+> > >
+> > > PTE_SIZE granularity requires a substantial rework of page fault and VMA
+> > > handling:
+> > >
+> > >    - A struct page pointer and pgprot_t are not enough to create a PTE entry.
+> > >      We also need the offset within the page we are creating the PTE for.
+> > >
+> > >    - Since the VMA start can be aligned arbitrarily with respect to the
+> > >      underlying page, vma->vm_pgoff has to be changed to vma->vm_pteoff,
+> > >      which is in PTE_SIZE units.
+> > >
+> > >    - The page fault handler needs to handle PTE_SIZE < PG_SIZE, including
+> > >      misaligned cases;
+> > >
+> > > Page faults into file mappings are relatively simple to handle as we
+> > > always have the page cache to refer to. So you can map only the part of the
+> > > page that fits in the page table, similarly to fault-around.
+> > >
+> > > Anonymous and file-CoW faults should also be simple as long as the VMA is
+> > > aligned to PG_SIZE in both the virtual address space and with respect to
+> > > vm_pgoff. We might waste some memory on the ends of the VMA, but it is
+> > > tolerable.
+> > >
+> > > Misaligned anonymous and file-CoW faults are a pain. Specifically, mapping
+> > > pages across a page table boundary. In the worst case, a page is mapped across
+> > > a PGD entry boundary and PTEs for the page have to be put in two separate
+> > > subtrees of page tables.
+> > >
+> > > A naive implementation would map different pages on different sides of a
+> > > page table boundary and accept the waste of one page per page table crossing.
+> > > The hope is that misaligned mappings are rare, but this is suboptimal.
+> > >
+> > > mremap(2) is the ultimate stress test for the design.
+> > >
+> > > On x86, page tables are allocated from the buddy allocator and if PG_SIZE
+> > > is greater than 4 KB, we need a way to pack multiple page tables into a
+> > > single page. We could use the slab allocator for this, but it would
+> > > require relocating the page-table metadata out of struct page.
+> >
+> > When discussing per-process page sizes with Ryan and Dev, I mentioned
+> > that having a larger emulated page size could be interesting for other
+> > architectures as well.
+> >
+> > That is, we would emulate a 64K page size on Intel for user space as
+> > well, but let the OS work with 4K pages.
+> >
+> > We'd only allocate+map large folios into user space + pagecache, but
+> > still allow for page tables etc. to not waste memory.
+> >
+> > So "most" of your allocations in the system would actually be at least
+> > 64k, reducing zone lock contention etc.
+> >
+> >
+> > It doesn't solve all the problems you wanted to tackle on your list
+> > (e.g., "struct page" overhead, which will be sorted out by memdescs).
 > 
-> Right, see the proposal from Dev on the list.
+> Hi Kiryl,
 > 
-> From user-space POV, the pagesize would be 64K for these emulated processes.
-> That is, VMAs must be suitable aligned etc.
+> I'd be interested to discuss this at LSFMM.
+> 
+> On Android, we have a separate but related use case: we emulate the
+> userspace page size on x86, primarily to enable app developers to
+> conduct compatibility testing of their apps for 16KB Android devices.
+> [1]
+> 
+> It mainly works by enforcing a larger granularity on the VMAs to
+> emulate a userspace page size, somewhat similar to what David
+> mentioned, while the underlying kernel still operates on a 4KB
+> granularity. [2]
+> 
+> IIUC the current design would not enfore the larger granularity /
+> alignment for VMAs to avoid breaking ABI. However, I'd be interest to
+> discuss whether it can be extended to cover this usecase as well.
 
-Well, it will drastically limit the adoption. We have too much legacy
-stuff on x86.
+I don't want to break ABI, but might add a knob (maybe personality(2) ?)
+for enforcement to see what breaks.
 
-> > > We'd only allocate+map large folios into user space + pagecache, but still
-> > > allow for page tables etc. to not waste memory.
-> > 
-> > Waste of memory for page table is solvable and pretty straight forward.
-> > Most of such cases can be solve mechanically by switching to slab.
-> 
-> Well, yes, like Willy says, there are already similar custom solutions for
-> s390x and ppc.
-> 
-> Pasha talked recently about the memory waste of 16k kernel stacks and how we
-> would want to reduce that to 4k. In your proposal, it would be 64k, unless
-> you somehow manage to allocate multiple kernel stacks from the same 64k
-> page. My head hurts thinking about whether that could work, maybe it could
-> (no idea about guard pages in there, though).
+In general, I would prefer to advertise a new value to userspace that
+would mean preferred virtual address space granularity.
 
-Kernel stack is allocated from vmalloc. I think mapping them with
-sub-page granularity should be doable.
-
-BTW, do you see any reason why slab-allocated stack wouldn't work for
-large base page sizes? There's no requirement for it be aligned to page
-or PTE, right?
-
-> Let's take a look at the history of page size usage on Arm (people can feel
-> free to correct me):
 > 
-> (1) Most distros were using 64k on Arm.
+> [1]  https://developer.android.com/guide/practices/page-sizes#16kb-emulator
+> [2] https://source.android.com/docs/core/architecture/16kb-page-size/getting-started-cf-x86-64-pgagnostic
 > 
-> (2) People realized that 64k was suboptimal many use cases (memory
->     waste for stacks, pagecache, etc) and started to switch to 4k. I
->     remember that mostly HPC-centric users sticked to 64k, but there was
->     also demand from others to be able to stay on 64k.
+> Thanks,
+> Kalesh
 > 
-> (3) Arm improved performance on a 4k kernel by adding cont-pte support,
->     trying to get closer to 64k native performance.
 > 
-> (4) Achieving 64k native performance is hard, which is why per-process
->     page sizes are being explored to get the best out of both worlds
->     (use 64k page size only where it really matters for performance).
 > 
-> Arm clearly has the added benefit of actually benefiting from hardware
-> support for 64k.
 > 
-> IIUC, what you are proposing feels a bit like traveling back in time when it
-> comes to the memory waste problem that Arm users encountered.
-> 
-> Where do you see the big difference to 64k on Arm in your proposal? Would
-> you currently also be running 64k Arm in production and the memory waste etc
-> is acceptable?
-
-That's the point. I don't see a big difference to 64k Arm. I want to
-bring this option to x86: at some machine size it makes sense trade
-memory consumption for scalability. I am targeting it to machines with
-over 2TiB of RAM.
-
-BTW, we do run 64k Arm in our fleet. There's some growing pains, but it
-looks good in general We have no plans to switch to 4k (or 16k) at the
-moment. 512M THPs also look good on some workloads.
+> >
+> > --
+> > Cheers,
+> >
+> > David
+> >
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
