@@ -4,151 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1479C55196
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C30C5518F
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 10:48:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24936B0088; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
+	id AC67E6B0088; Fri, 20 Feb 2026 05:48:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1C86B0089; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
+	id A73FE6B0089; Fri, 20 Feb 2026 05:48:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB3A66B008A; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
+	id 97FD76B008A; Fri, 20 Feb 2026 05:48:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AF4046B0088
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:43:18 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3AC1D140C1E
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:43:18 +0000 (UTC)
-X-FDA: 84464498076.18.23889BB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 824BC180002
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:43:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h4Rdg48R;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 68C346B0088
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 05:48:06 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC4F45CA97
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:48:05 +0000 (UTC)
+X-FDA: 84464510130.20.F579EDC
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9FB4BA0007
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 10:48:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="RBb/en0o";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771584484; a=rsa-sha256;
+	cv=none;
+	b=Qm3qRrLgGRMG+WfKsY3hQkYP+QiFb8VusCd7MGyrtytPqJduF6vUQA6WgxCymk7q1+KHny
+	RCKj/2JfDVg/m3xGYeF+HyERYqxEq1x2uqhlLt8f9bptqeSSeoOx01kACpezLTFMesFz4i
+	zZw8VtD9OzjEhJM3y7pbskKRvOKTCuM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="RBb/en0o";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771584196;
+	s=arc-20220608; t=1771584484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lOTSyKS7v1pB8BGMmuAy1KIzWpJRl3+1EGlLKkiwmgY=;
-	b=GeeZGm7RdJcRTMCkoN1gIYd0u+6wPbGk+MO3umAT03kbfcAm+qkNlKRDCDNxtVqF5gngUV
-	KmMUNRv9xkQ4LvUTDq8uGPnIA3znoqCkxla37zNHHpfTERjoC5DiFe7mklBSC6byaFuD7o
-	OdAqt4OO7nHZ3xQ6rRrFLIoT3C8kTA0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h4Rdg48R;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771584196; a=rsa-sha256;
-	cv=none;
-	b=op3sWTEZcKTLgdpKsgrugUG5DYDmNLeMEUDBv5ET9JsxryEKcfZSgaXsBBobmMFucgasFj
-	x1PiyKDrZ3UWzc5E9Qe9IIqWRRkYmeR0TutynOkwqDsCoOXvDk6Ue/XpjWxjAM2hos0qtK
-	B8mM8HCLQ0w3fxZK3hxOu1esxhln1Ug=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5787C6185C;
-	Fri, 20 Feb 2026 10:43:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C728BC116D0;
-	Fri, 20 Feb 2026 10:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771584195;
-	bh=Yvu77UXexzu7sZa0hKrXXXI2ScqTjgPRW4bmvkkBJQQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h4Rdg48RMBdTsnXg19agUNta0otbn50YtUgDABQpHPFM2VJDqCrGZiYR05kFA6H8R
-	 vUjP0E67Jt5n/RKkfwG8ypfiGduTgpnus1XeBgjOXpHhyyzNcQEf5QXJN3y8bkJUtj
-	 E2279EUMv99nJtCLRuGwPwivk8uyyLKM3VhRkz11OXAhlFYWkcmsu0CSUmPQG1Ht66
-	 yu7qlHs+e75gj7+AeSlAogxzfhLJhQzzEb1M5eLQmnRF9JhhAC1djj0a7jhhAiuh9j
-	 C8/+zAl7YyDw4XT8rEZ/egq4W7ei38WDxn1uTLL6RvglLCPRcB6zH/w03VXpliGhhE
-	 ucFk7lxuD2udA==
-Message-ID: <8bb7d240-31fb-4cb9-a3f6-ac81b8b9beae@kernel.org>
-Date: Fri, 20 Feb 2026 11:42:59 +0100
+	bh=aIuh/mqVOC+QEYbxZAPJ2XnAxftipx1GQkPpqjSSnEY=;
+	b=YJmhfPofeZ07LiHu+QskiqgcEkw0yPkNC/otGokxZ+q4IL9tsPE+/o7+zixyFEVsV0sdtH
+	t6K9/Qm3PaiyXwGFBqel/RRoVA0v+GsYsLoSvSODM1vpn87Rm4yaJdlX+6EmsMTM4FHawP
+	DEDdpNv8xmPhFW0PL6xtZP32TcdVmmg=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4830b67aa6bso2587315e9.0
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:48:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771584482; x=1772189282; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aIuh/mqVOC+QEYbxZAPJ2XnAxftipx1GQkPpqjSSnEY=;
+        b=RBb/en0oFil/k9UVQgV2iX5Iy1rfmEaPBzgYgbrfjCOMWIgAx0H8RIZx950sx7FqGf
+         s9QJsoOjTj8YhH20OoOkBrwW03hXfa0r9WvYXPmfzNeI6ArFsuaUQ3Bh4XO3zmPqpc7K
+         odUk04QL++Fgfick9s4cGaMA1pPD6WEBZd4rMvEQdJG4yKTZKOFLgOJu69heiRyMflpj
+         hneWMcAoPHMgZM1j87uyQO6PUto7KdEdaoH9q2EjmP5drGftMxQpW93MT7j5vnhKbK5H
+         5smF+gcO0IFd/s/ProZAym6xnjfKAl5KCRem/AY5LDkbpU6aF6e5DpuHT+IY+AGWEgaa
+         IEWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771584482; x=1772189282;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aIuh/mqVOC+QEYbxZAPJ2XnAxftipx1GQkPpqjSSnEY=;
+        b=vwoFnJ9WDurDQDDvX56fmRoIDFjdvQf3jFjuTR0CcQZs4Hd0dutnifjMxO6iocfDkx
+         jpjSqlgI3jcUA5TQiiaYOhFRc0aGvW0JfKwsVm+vhu/dzKsnZEuHXfUGFGdrjw05mUBm
+         2nRALJ3l9YOLBLLN3ei27r7m2m5r6KbqgYHrFlkZEa9DqVb1tf4irSJC7jYg5qCZIOG6
+         Cib5jBCZY/4PeZ6OanWa6cG9TstB2h1v9zzC9GIJlLRSywPdKwRhbnCP7XrJDFQOZgq+
+         FJXm2I/pAnLC6CLq+oUclzX1lrbwdRWhA3mNp+kSdZVdnTcgTW24jiy+JmIRR8voVWo5
+         kb+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUqLJa0yZxLEjWPsgR8CNWhEa9BTIq5WPmTNjIwKL2/mYAz0sJc3pS+LLZGK/rz3w0G1nQetCHAYQ==@kvack.org
+X-Gm-Message-State: AOJu0YxVaoOzJI61pW7Fs4KjHvlr+Xxd8yJxRTn4BsZ/Y2qhu60PfYDa
+	5yuXuX6kYvQhkr7gx7SZzfGybD+z27IMAP0xisIU1K+FFNWc119d7rw8dujsZeqCPyo=
+X-Gm-Gg: AZuq6aI5c0LOFkRaP8LZzvaO2GKYqVvlWCxGn+01qVZbHVHtGLjOa3CLL79FNzisRZL
+	qLbss32FuAyWb+hHmEw6QRDdQ0ZGC/PdLK5xZix2Ot7UUKvBbHw1tgwRUnbSSxQMG/KvninutDE
+	VQTjBZ/2gWK3Hs7nAZlG+CaPRxBwXGH7P/XCq5s0GZWz+dksLYjfVjpXLnrVqiJ5Xcl0HsatMot
+	jly8xDleq9sjFHUqrDMqgPrld6KqnHbatpMAqrmj88zeSUwC90jaQO2dozg6XynWZ9g1+tlAOJ7
+	4sJAI55wBDxONzcJxNyKdLbMBMcDV9wP++dMwbTVqlO7gUKPrJR5ap6oT3dkzMDuk3+OiZ4NIC4
+	Md3LS48DqgrWz3cYTzJEm5rSZIQsNnmHnLh39fk0Ow/brC9eaLA796kPVeL3hc18IEA3+5uLlXe
+	i29mglDqJIRjUNWjZurh6LprUzbLSX
+X-Received: by 2002:a05:600c:4448:b0:47b:d992:601e with SMTP id 5b1f17b1804b1-48370e2b6bemr278598485e9.2.1771584481843;
+        Fri, 20 Feb 2026 02:48:01 -0800 (PST)
+Received: from ?IPV6:2001:1a48:8:903::e14? ([2001:1a48:8:903::e14])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796abe3b3sm62652000f8f.18.2026.02.20.02.48.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Feb 2026 02:48:01 -0800 (PST)
+Message-ID: <3f2b985a-2fb0-4d63-9dce-8a9cad8ce464@suse.com>
+Date: Fri, 20 Feb 2026 11:48:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
-To: Dev Jain <dev.jain@arm.com>, Nico Pache <npache@redhat.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260212021835.17755-1-npache@redhat.com>
- <20260212021835.17755-3-npache@redhat.com>
- <784588bc-2071-4418-825b-9072cc3659e2@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+To: Marcelo Tosatti <mtosatti@redhat.com>, Michal Hocko <mhocko@suse.com>
+Cc: Leonardo Bras <leobras.c@gmail.com>, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@linux.com>,
+ Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>, Leonardo Bras <leobras@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Waiman Long <longman@redhat.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Frederic Weisbecker <fweisbecker@suse.de>
+References: <20260206143430.021026873@redhat.com> <aYs6Ju2G4bm6_tl2@tiehlicka>
+ <aYxviLoWsrLqDU7o@tpad> <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash> <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZcr255pGT3B/eaL@tpad>
+From: Vlastimil Babka <vbabka@suse.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <784588bc-2071-4418-825b-9072cc3659e2@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <aZcr255pGT3B/eaL@tpad>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6npicdmhf9rtchjitpdq543p4umf7a61
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9FB4BA0007
+X-Stat-Signature: gqneruqiz8yhimuknoot8bs9xtmfcnfj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 824BC180002
-X-HE-Tag: 1771584196-569289
-X-HE-Meta: U2FsdGVkX1+GVagkAjaI6KiIA9b1lNxqAdq5k5OrplnIJA0QT52FtlVNwt9KBJcSutGBAqQj4Ndy6p2lcdpVuDNtW7gb2/uC/NPs7ta2nmak9mqJ63DYYtCxFyX/uvqYuA+PYxp0YSvzNqF6p0wtJ+drJLZRQXG/0pmC1BwN12UOqxLp+2oJ/+nn10n/+J3JhLh4m2LRp+CYBHf3ZGT6paZBZ+pWgwW0WN6fURFO0YGQCN7j08BgVJplwH8mwVL0peXwXNI8Hss4963IsDxLuVhLTvsY5827jRC0AhPtvNnjLYLM8TV5NEoph/zYybUEDcFUXOD4nAXiP8JNZ+Ow/kQjffuBVIqlOFmbHraH//PIhoLNCUJAmH4WjP/oJGQvfDEUUVkF3NF3pdKFUSWUH1CyiDtigMbURt7/2CXwkJrjEs3egKjWTDRSQ9CH8dvnASmjMVjxhkyzfZEAP6siy6GR1+IvtUZ7YBxMuOOMMzJGJLTuoseK9znLyMVN9fASL8JFbfK6seMFvSkRxBtAe5FiBkvzRj4/T6gDwfxajLcxJiKIoENdoctcbXuSPqvCFAj7PVEzfxjs7ru6b0cDpC1kCYJqDxj2dHd7lEAjLqO1LIcQspxEy4xkINABAuCOkF/UEuAFnsqEl8SiLpcdirkcPBos3QmpSoysne8rjh7f6wXk6Sd+DqSvGSfpqNhzbyqsVDg9Dk41DedilG4gLFLNy1kAw1czWLHJ4qv11xZcuflFouZ5wSMev99+OqJPTSqn79NfNe/0Tu/EuR4dG9d5cTz4doPF/ADpj3N0uCMyCZJyyD1BJWPapMazgEU83ghQQbur/lBZCV+qiQ7KFostrdGjEJFFLj1Y9aWOKEsDPDuKH8Sl2d4au1OYyGOzM5ev5/cSm+/L1irx2FZUnggoyEtSRyUQsuKKjroemvzf39ScD1HOXXrYkMPI2Ic3iHuGLcdwqYp2eVGFBOV
- 32OIjbe8
- t1m5OCwraBt67YkOwyl2snbAp1Zi0TfbRGAvMFFbgjHNBVsgSq57onrHkUmkVdH8eSTk52WEwpaMPqIVQ7lcAEN3UJ/Mo2Vt7fCWQ9bOt7US56l0zhTsiJ33YONhkxsqdXPa+xwYz4dGIfbYlLc47KJOOJjGYTlOCvmS9O8bsBceTpv08Rtp37uD94WHyZ6BGbC2LXCGihtls1yk3OkIuWH5EB7+2NaDHfLJi4u1DfMLKMegYdgBQ2GVyycH07M0EmH71hojdsfkjoDV3R1oC0dZnQzdK9T58eG1Ak4wxySWcTOtzrf1ZV2sFX/QxWbLp5pSyygjN0sL420MXfpxliyCQFpr1BjCMDZW/HErGqDFiip+iI+1cozkiwq6x0CVXBIs4WGguwlftU86WOR/S7cFNv9pp6tMnzggT8XLXenjFxzk=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771584483-882425
+X-HE-Meta: U2FsdGVkX1/kHjnbOBT68mtZpNs4yHLcDJcsZ/01xMo8U+ohbKvzbmxmgTZmTBERynMeMHn1xQ0k7aDa54Ynt6bQOCqBMUUoQj69YvT20PbbXlowwwHT/CxDXDLqFh/z421SpRgr1rCXrTcj6HoM8WczP3aQNjKA7rjgjZOZxaukBAn/zx1vVcNe2vxSEzWX3Mw5rMmLdCvACf2IW0ob164bR5R9uapVBIYCLhc52zhWQNOoWXviPTOOC8dZTHYJbF78jMXDhroe7HwDGgKUaocz0TPvV+J3EvRL1oa/hfsmCvf6iVfW8I0UX5Zec6gLJXBZ3oT8V1i77SqQe8mGHYhTS/+2Wj6jdxiS3liPIjkDpK+gYvRPWkx6fRzgs9F6cZosS8bEg6Ti5x7h8Gyij/2ALKuhCTf+BWfTv2V3/qWZSCg/CWm0C+oYvfR7tHjuS8G5z8J5aLZL7YYMvA42nFz55xzP8hAlhUbHzxgOP8EFI/QuNdjVA2dbB6e34x/z/wH67FU+ENUr2tjsZOiu9eW+Yd1rExpFJku4nmLv6Mh8nbs0zUA6QGYaExccFshrjYoYH4YVByE4oG9PBLDhnpsB+Rlma56oh9I5kZ/10kDcnuV6Oxx2WbSpsqfz54lT5Pc/JLwx1cjmcPmZCwFziYkKrD4Z3YQf13RGx/nHfr911GA+1ejdlwRaPIxGZsWoqoKTlvLgfnnRw/0ApSORCVGkbZjc9uaUsZbtJ6t9Ojv94M+ZE50OH4NyZa5ACx92IrusW1nTD1vClKA+acde1Sf1RIB5lseere2VAtnRfaKjhrF6ARGwBpxBifRNuqlggLzdLUFk46/2xL0tXbV5n/t/L+5Wxl4dLtmJla3Q6s2stxBR8BhvozIlh+VLPfwfIIni+UpU4fws55Jjc/FnfT9FxaHSU3tPQGeCB+apBJM3423GkL3OVd/XELIgynk1R1jXpyrElnTvDMvKBQx
+ 5XNH0Npf
+ 7PPAEnos/XccXXfee0cYRgz8J48QJEMlFLC+FA1SWLFGJD2RxvC+Vm43m+qhcPkzJqQn1MaYW0BcHKU0pOAEBDJz5F9p5AhEAcFU1TVQHZYVHFaui7Mm+810b1z2yDkC8dGLzz84QUY8Am76rqwVsST9wm+PYlU3vyymAECd4TPU4wl1IfeIMT2q1X4FTgSx6qI3FZ58oU6BvpRDSq5gRNEC728Apvzfo/76U9xJ96c4jOgMfAg7jy8E+dS8g1Z7dHb8yotGs+Kf0Zxr4VgmKnpYkEM/RMgkt+fCZwk/fhdHNCpb+KolehMSLxLoImvDPVLyC4NagwZ0o/0I3l2gyxxwCc8OlGIftKihGMNOlvbX4V3bm5w3LmkLFiz665ceXMqmcEux7xm8gnTBWmeCpHxjJ/vELI7IJpfQANsEPn4sNpc0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,47 +134,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/20/26 11:38, Dev Jain wrote:
+On 2/19/26 16:27, Marcelo Tosatti wrote:
+> On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
 > 
-> On 12/02/26 7:48 am, Nico Pache wrote:
->> In order to add mTHP support to khugepaged, we will often be checking if a
->> given order is (or is not) a PMD order. Some places in the kernel already
->> use this check, so lets create a simple helper function to keep the code
->> clean and readable.
->>
->> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Signed-off-by: Nico Pache <npache@redhat.com>
->>
->> arches#    pick b3ace8be204f # mm/khugepaged: rename hpage_collapse_* to collapse_*
->> ---
+> Michal,
 > 
-> Thanks, this is useful.
+> Again, i don't see how moving operations to happen at return to 
+> kernel would help (assuming you are talking about 
+> "context_tracking,x86: Defer some IPIs until a user->kernel transition").
 > 
-> In drivers/dax/device.c and fs/dax.c, we have order == PMD_ORDER check,
-> not HPAGE_PMD_ORDER. Therefore,
+> The IPIs in the patchset above can be deferred until user->kernel
+> transition because they are TLB flushes, for addresses which do not
+> exist on the address space mapping in userspace.
 > 
-> 1) Do we have a bug here, in that these codepaths are fault
-> handlers, therefore should be using HPAGE_PMD_ORDER since the
-> definition of this macro zeroes out on !CONFIG_PGTABLE_HAS_HUGE_LEAVES?
+> What are the per-CPU objects in SLUB ?
 > 
-> 2) If the distinction between HPAGE_PMD_ORDER and PMD_ORDER is real,
-> then the helper should be named is_hpage_pmd_order?
+> struct slab_sheaf {
+>         union {
+>                 struct rcu_head rcu_head;
+>                 struct list_head barn_list;
+>                 /* only used for prefilled sheafs */
+>                 struct {
+>                         unsigned int capacity;
+>                         bool pfmemalloc;
+>                 };
+>         };
+>         struct kmem_cache *cache;
+>         unsigned int size;
+>         int node; /* only used for rcu_sheaf */
+>         void *objects[];
+> };
+> 
+> struct slub_percpu_sheaves {
+>         local_trylock_t lock;
+>         struct slab_sheaf *main; /* never NULL when unlocked */
+>         struct slab_sheaf *spare; /* empty or full, may be NULL */
+>         struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
+> };
+> 
+> Examples of local CPU operation that manipulates the data structures:
+> 1) kmalloc, allocates an object from local per CPU list.
+> 2) kfree, returns an object to local per CPU list.
+> 
+> Examples of an operation that would perform changes on the per-CPU lists 
+> remotely:
+> kmem_cache_shrink (cache shutdown), kmem_cache_shrink.
+> 
+> You can't delay either kmalloc (removal of object from per-CPU freelist), 
+> or kfree (return of object from per-CPU freelist), or kmem_cache_shrink 
+> or kmem_cache_shrink to return to userspace.
+> 
+> What i missing something here? (or do you have something on your mind
+> which i can't see).
 
-HPAGE_PMD_ORDER is weird a stupid legacy leftover IIUC,
+Let's try and analyze when we need to do the flushing in SLUB
 
-The only thing it checks is that you are not using HPAGE_PMD_ORDER in 
-code that might be compiled without THP support:
+- memory offline - would anyone do that with isolcpus? if yes, they probably
+deserve the disruption
 
-#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
-#define HPAGE_PMD_SHIFT PMD_SHIFT
-...
-#else
-#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
-...
+- cache shrinking (mainly from sysfs handler) - not necessary for
+correctness, can probably skip cpu if needed, also kinda shooting your own
+foot on isolcpu systems
 
--- 
-Cheers,
+- kmem_cache is being destroyed (__kmem_cache_shutdown()) - this is
+important for correctness. destroying caches should be rare, but can't rule
+it out
 
-David
+- kvfree_rcu_barrier() - a very tricky one; currently has only a debugging
+caller, but that can change
+
+(BTW, see the note in flush_rcu_sheaves_on_cache() and how it relies on the
+flush actually happening on the cpu. Won't QPW violate that?)
+
+How would this work with houskeeping on return to userspace approach?
+
+- Would we just walk the list of all caches to flush them? could be
+expensive. Would we somehow note only those that need it? That would make
+the fast paths do something extra?
+
+- If some other CPU executed kmem_cache_destroy(), it would have to wait for
+the isolated cpu returning to userspace. Do we have the means for
+synchronizing on that? Would that risk a deadlock? We used to have a
+deferred finishing of the destroy for other reasons but were glad to get rid
+of it when it was possible, now it might be necessary to revive it?
+
+How would this work with QPW?
+
+- probably fast paths more expensive due to spin lock vs local_trylock_t
+
+- flush_rcu_sheaves_on_cache() needs to be solved safely (see above)
+
+What if we avoid percpu sheaves completely on isolated cpus and instead
+allocate/free using the slowpaths?
+
+- It could probably be achieved without affecting fastpaths, as we already
+handle bootstrap without sheaves, so it's implemented in a way to not affect
+fastpaths.
+
+- Would it slow the isolcpu workloads down too much when they do a syscall?
+  - compared to "houskeeping on return to userspace" flushing, maybe not?
+Because in that case the syscall starts with sheaves flushed from previous
+return, it has to do something expensive to get the initial sheaf, then
+maybe will use only on or few objects, then on return has to flush
+everything. Likely the slowpath might be faster, unless it allocates/frees
+many objects from the same cache.
+  - compared to QPW - it would be slower as QPW would mostly retain sheaves
+populated, the need for flushes should be very rare
+
+So if we can assume that workloads on isolated cpus make syscalls only
+rarely, and when they do they can tolerate them being slower, I think the
+"avoid sheaves on isolated cpus" would be the best way here.
+
 
