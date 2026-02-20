@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8EF9C5B568
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 22:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 120EDC5ACC0
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 22:36:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FFFE6B0005; Fri, 20 Feb 2026 17:19:06 -0500 (EST)
+	id B529C6B0005; Fri, 20 Feb 2026 17:36:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18C806B0089; Fri, 20 Feb 2026 17:19:06 -0500 (EST)
+	id B00D46B0089; Fri, 20 Feb 2026 17:36:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3696B008A; Fri, 20 Feb 2026 17:19:06 -0500 (EST)
+	id A0C636B008A; Fri, 20 Feb 2026 17:36:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EA56B0005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:19:05 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68BC88B340
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:19:05 +0000 (UTC)
-X-FDA: 84466251450.26.30E4020
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 97C2EC0012
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:19:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fNrlUOzZ;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 785266B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 17:36:42 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0ACA113A872
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:36:42 +0000 (UTC)
+X-FDA: 84466295844.15.D6B7872
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 10435140005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:36:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pKvJjS9D;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771625943;
+	s=arc-20220608; t=1771627000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XfObkIhOT0Ua1/RMBtrT9Uid8uwfbK9pIchG0yozPAo=;
-	b=QJl4ysoVoegO5ip93vzIufJGqm1b+wlCdtO6Tdv20ck56mO1bkQDn3KawzMSOvUG5Bn2k9
-	TAAhzpo4G4RqY0iri0tKvPn8DP8xkZUT1TYa/3PfQAxjAGTQkHaKVA+M6sh6KEyZM+uY3V
-	gcrmaCsVqsokNEDeCYry+SFCGGKVJVc=
+	bh=17l9wsknqpDh3Ho+puVaM2L51kBHPZptdt5u/gzymAg=;
+	b=OOkIUC/5TePOD4GlBzwKxY1iFPsUdiH4AKPyqJJyAbo6wioMo+mBlv6i7kWHKd7j9EE4qT
+	f+0pXKDNpwxdJ3ZNXF6ICYJ7NBT8381cU0BxavCh3LTLJOFuaOgValLgdq2ioMR/I1Gzvr
+	rm6NTXY5AvjS1CEE/2OGnz0ErsOr3WQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fNrlUOzZ;
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pKvJjS9D;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771625943; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771627000; a=rsa-sha256;
 	cv=none;
-	b=MR+aVjW1FMXByZW9hJmLC9CkNi6Yx6zlqksoDxXu5vGR69IcGQApzSB/UojcY4HtxVj4ug
-	JzcEKJSOr2iXpojUDHexR0KoV88Mc/KG4FqMPbPXnec51aw4ZsGTv2Pz09sRx+fTboLtqi
-	W0dmh8v2iS6M7Lbnhl8zmin2X5abe+I=
-Date: Fri, 20 Feb 2026 14:18:54 -0800
+	b=u36h125lVPrPRHwct2HTtwqa2hs1Vwvn2dKDsxO4vCUw1tQNAenCojXZGnvsg81uic2NyX
+	W2SzxCAGKTTqsFe6xsV4nhGpPmDGZTZxCy3KSDn2/9LYNPaDNVnJp+hljvoCveX9UnTAFC
+	QAu25r/fsvUH1reWEaA8ny+nivaIMg0=
+Date: Fri, 20 Feb 2026 14:36:29 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771625941;
+	t=1771626997;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XfObkIhOT0Ua1/RMBtrT9Uid8uwfbK9pIchG0yozPAo=;
-	b=fNrlUOzZf8XHzHoiMAE7mfXGUjLekaDwrSQDCDbWFxlptq8b9gy3v41LnM/pUY8SonBkuW
-	t+4GkA2socG0NHU/j7lfAandXGjH+RrzghxlmLtMiGyHlLxr3a5SU8j9AX4dS1edcUm6w5
-	TJUbfA2LxA6RdiC0qYQiox3K0XH8vC8=
+	bh=17l9wsknqpDh3Ho+puVaM2L51kBHPZptdt5u/gzymAg=;
+	b=pKvJjS9DhaYP6P189MDYI9eqKNgtG2SFJBPkLvlJ+EBhb2h1Hrm9vIr1r3RBj6tuvWybPL
+	HOqCqJcKbLRyHd56eGCI5eEreqe8BzOONEYoL5854Uq/71x6q4FoY5OEOnRKxdpxmLsDRx
+	8fv3ZkcV40+xfqzepF/mQibG5VpBqV8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org, mst@redhat.com, mhocko@suse.com, vbabka@suse.cz, 
-	apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org, eperezma@redhat.com, 
-	gourry@gourry.net, jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com, 
-	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	matthew.brost@intel.com, rppt@kernel.org, muchun.song@linux.dev, 
-	zhengqi.arch@bytedance.com, rakie.kim@sk.com, roman.gushchin@linux.dev, surenb@google.com, 
-	virtualization@lists.linux.dev, weixugc@google.com, xuanzhuo@linux.alibaba.com, 
-	ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
-Subject: Re: [PATCH v5] mm: move pgscan, pgsteal, pgrefill to node stats
-Message-ID: <aZjdZv1eJc4HanML@linux.dev>
-References: <20260219235846.161910-1-jp.kobryn@linux.dev>
+To: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+Cc: Dmitry Ilvokhin <d@ilvokhin.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+Subject: Re: [PATCH 0/4] mm: zone lock tracepoint instrumentation
+Message-ID: <aZjg6PWn_xhZV7Nb@linux.dev>
+References: <cover.1770821420.git.d@ilvokhin.com>
+ <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260219235846.161910-1-jp.kobryn@linux.dev>
+In-Reply-To: <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 8xbxpc4qktx6z6o59fzdfxbmez1e7zuw
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 10435140005
+X-Stat-Signature: rqhpzhwdz9fiu5cj46zdsq6mxyar19c1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97C2EC0012
-X-HE-Tag: 1771625943-426196
-X-HE-Meta: U2FsdGVkX18acAI2OgLAYjLaXQDDVl9wAMK7A/Tl/gKAtaoTOTDYx0U3L9F4+7iotSc5bL2hn2mmhCl3Iu2sA0khBjFzhhL+b5YeBRm417pczLnrVKOeG1vyJgogVTakIhQCWu2gAzv0OOJCvxwf/8LsJO8P/9/ypexHfrQKxm6k586W3AXSAx4KoIsUHOL3xko1jgvtxjofRg0gCdLXVodFh+ek/f/9fCxEGv1bOQ2BozF+tzHSNqmWOhaIcg3w1W8cQaA10DBndSR7XYb7j0bgXyqoKfYxs0/eNbNvdRIq0vXrjffv7N3fnmgza22Qw7Em8mRG0zSa02eErjGu/8u6YpJH9Nm+diTaJy51Xv+s+ZLWniH2Awp6ISHMATjvHxgmrluzd8t1EPMe23ycA/LeonJDnidhRC777OMkuT38naxLHZwPN/OVQP/C7K9eWhTuXkTsouK/iKcCiJoDQLDo2woXriSst0o2dTJBVuw/lZPZky7eARYHelhGu3vppQJL0oGMrse4/+bbOkSQk5Z9pHtC3YdhjAN5pOcztnv8rtizIctgMmghYJ2Zs6Tr/4pbnm0rfDip5K8+wA6KErmSpv47IzH/2ZLXcLuLvguucKiRz7qpCD9Xu/zp1G56rRaiYwa4XtYg1GgdRjryc4WtWeGf0b3F4mCFUxpzv4XzFBXHhP51w6E+k0DcTkGRhofCRi2F506KqQGWG+1/WT4NyEaW4aghix89dPmfZG2I51qrLSE2e7yYI2l6Kj+dY6czYNwSqiWC4sbYyEP4sDx7TRppp3BOrr8NQ70MwOACbCUKSEKuejwNyrBcKkWPe+y96N+vSnGjxansWXFX6eRyO5onUQWalRWGam1S0zkRWY1t3UxBpfoLQO3+FvPn5Dp7jt0WWXqbK59b7aHgjzp7RsNpXhy5mwzWByL5H7a/KseVJeVb52zTMV2UVyCM5bjr0CYLNqXycJGS6Qs
- SEzf6Ss+
- wv896FsJdp+HlLhhjTNAMaE5I9ihHNoJZlK53HwdsFlYVUX1Gul6TH7Y22u55Z5x3I8g7PAJJ10u3ytiJIl89QftLiTQz2EyWrA1TApzloKDl4HyqylQJ0HkHGnypGrqilgrdCqMqQazxS6MX2oBK6jbJ29U/h0cXJwoB9ut8LeRC/AMUdcLOYVsw51nUmjv1y4RAbsk//KWSS+U6nGG1sWSh9meyGd3C60kThEH6NnbJuU4awiHxuMdkzMIyvZ5CZJA6y2JNbiCKHNHx/1c+rfpTzs4XgJ12Q33E57PW5odnc/hiS93bzAxO+AxEDCR5aMLoZL641w6CM3qM31ofTmLOg0WssqICVwynnvXIt6zX7oIJu++LCrPOs/7vnLlEURW0
+X-HE-Tag: 1771626999-941899
+X-HE-Meta: U2FsdGVkX19lShAHraj6wO+d2N9zpS6y9NGxD2RQXBd7g4RNS10u/wYku5wVzfPu8ffMLkwtaLDnripZHj8EYvzWngvTQf9Th1KD3HQVzLOz0EKBy8vck/5+00Z2K7I61g64tA3rNpGNteKjNkN+CZJGUMH+uSqIm30fmwh65fIOSkaH5wf9mzjy4DSXE3eOyl3rrFVl8i3tiTpj3dOvTG8UjNGPebq9RxHrUA9OyeV9pBB94US3QkeaN4JD6fzY8loYeeALQepCiAoGxHsyytGykeUPxY5D2b56Rp9Z26BDMsGwawoQFIWwj7psmvpPwfne1Bd5g9ibvfmE1JWkO47gIXwtzyBtYR4WGDzdGpQacsNP4OZgNntd3xH8XOEXVdIpKGIL9wWWkNHqR9mpliARekQKUuLc6FU3C1Pamwin8EvnUCH5CjEeQzWsS/RuZdpQiO74+cQTEHyoGth+cJDY/s3ngbdFaink3ylp4p8ETRVv1Z/qPe/dmLkHX8x4NrMepcm2Pwwr7pIvEVmKSe/P3fQyMJSZ9NkRvedgTc9bCBKwa1NDDDED8ojNYbrdqexQPjY0bb4WMG3Wt+p7ePHl2JCSEgQ6ODR1B1z3B75LUspcqgja6RsIz4XRJ/uzPYaD2x6ETAhcYeKDLcXcovZd/zv0KS6/UCQXpvyvyt9Z+yP+lZtEx0MAr2SeziOB8aKg8+cI09t8kyWvQm2Hg1quthM7P+cMVQszfjZU8Be1WYIvIB2OQulHzAvREIcwJjdnltTgmY39fqvhKfY8ZP6HvsbkxMOW/Y4ZRAdbVF4x8XWtU9h1rujvQdeaaEmOIlVw+sp6WjDaLqbvlcczZQGGNVowD16WVQoYuas58f5Re0PWZ/zo69hOmrzE8Be8BiFKmAfsOTMrgqSBIy+hfRwZtbRTfRHYqqsnOtXB2WCd5sZxsbRzjECUWO03N6QTrcmgl6G+5UtyThHN81g
+ Qd1gwPZx
+ AsErN1+6S2IXxSYpYuxPSwxKmdYwGAVrqj10zhJXJfPkza6Ld/WZceWrFfcdMDwz+J2Sm8S3IRRuuuYKZANyLvQ8+tFD4tJROSC6k1FX94oc/QerhOJSJ5GWEiYtAfhEhQH8kx9smksqcyreE5MdQsim3FP4zlvMIBpI7bpGcnZ/7yJuCUX46FLvFnrh8LLEpunpQf86qLwe+dwzI7jz8d8wNFw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,43 +97,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 03:58:46PM -0800, JP Kobryn (Meta) wrote:
-> There are situations where reclaim kicks in on a system with free memory.
-> One possible cause is a NUMA imbalance scenario where one or more nodes are
-> under pressure. It would help if we could easily identify such nodes.
+On Fri, Feb 20, 2026 at 01:09:59PM -0600, Cheatham, Benjamin wrote:
+> On 2/11/2026 9:22 AM, Dmitry Ilvokhin wrote:
+> > Zone lock contention can significantly impact allocation and
+> > reclaim latency, as it is a central synchronization point in
+> > the page allocator and reclaim paths. Improved visibility into
+> > its behavior is therefore important for diagnosing performance
+> > issues in memory-intensive workloads.
+> > 
+> > On some production workloads at Meta, we have observed noticeable
+> > zone lock contention. Deeper analysis of lock holders and waiters
+> > is currently difficult with existing instrumentation.
+> > 
+> > While generic lock contention_begin/contention_end tracepoints
+> > cover the slow path, they do not provide sufficient visibility
+> > into lock hold times. In particular, the lack of a release-side
+> > event makes it difficult to identify long lock holders and
+> > correlate them with waiters. As a result, distinguishing between
+> > short bursts of contention and pathological long hold times
+> > requires additional instrumentation.
+> > 
+> > This patch series adds dedicated tracepoint instrumentation to
+> > zone lock, following the existing mmap_lock tracing model.
+> > 
+> > The goal is to enable detailed holder/waiter analysis and lock
+> > hold time measurements without affecting the fast path when
+> > tracing is disabled.
+> > 
+> > The series is structured as follows:
+> > 
+> >   1. Introduce zone lock wrappers.
+> >   2. Mechanically convert zone lock users to the wrappers.
+> >   3. Convert compaction to use the wrappers (requires minor
+> >      restructuring of compact_lock_irqsave()).
+> >   4. Add zone lock tracepoints.
 > 
-> Move the pgscan, pgsteal, and pgrefill counters from vm_event_item to
-> node_stat_item to provide per-node reclaim visibility. With these counters
-> as node stats, the values are now displayed in the per-node section of
-> /proc/zoneinfo, which allows for quick identification of the affected
-> nodes.
+> I think you can improve the flow of this series if reorder as follows:
+> 	1. Introduce zone lock wrappers
+> 	4. Add zone lock tracepoints
+> 	2. Mechanically convert zone lock users to the wrappers
+> 	3. Convert compaction to use the wrappers...
 > 
-> /proc/vmstat continues to report the same counters, aggregated across all
-> nodes. But the ordering of these items within the readout changes as they
-> move from the vm events section to the node stats section.
-> 
-> Memcg accounting of these counters is preserved. The relocated counters
-> remain visible in memory.stat alongside the existing aggregate pgscan and
-> pgsteal counters.
-> 
-> However, this change affects how the global counters are accumulated.
-> Previously, the global event count update was gated on !cgroup_reclaim(),
-> excluding memcg-based reclaim from /proc/vmstat. Now that
-> mod_lruvec_state() is being used to update the counters, the global
-> counters will include all reclaim. This is consistent with how pgdemote
-> counters are already tracked.
+> and possibly squash 1 & 4 (though that might be too big of a patch). It's better to introduce the
+> wrappers and their tracepoints together before the reviewer (i.e. me) forgets what was added in
+> patch 1 by the time they get to patch 4.
 
-Yeah this difference always confused me.
+I don't think this suggestion will make anything better. This just seems like a
+different taste. If I make a suggestion, I would request to squash (1) and (2)
+i.e. patch containing wrappers and their use together but that is just my taste
+and would be a nit. The series ordering is good as is.
 
-> 
-> Finally, the virtio_balloon driver is updated to use
-> global_node_page_state() to fetch the counters, as they are no longer
-> accessible through the vm_events array.
-> 
-> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
