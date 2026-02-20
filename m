@@ -4,140 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1692DE9A049
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 02:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 417FAE9A049
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 02:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 297336B0088; Thu, 19 Feb 2026 21:50:40 -0500 (EST)
+	id 6F4A76B0088; Thu, 19 Feb 2026 21:55:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 244B06B0089; Thu, 19 Feb 2026 21:50:40 -0500 (EST)
+	id 6A2D86B0089; Thu, 19 Feb 2026 21:55:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11CC06B008A; Thu, 19 Feb 2026 21:50:40 -0500 (EST)
+	id 54C8A6B008A; Thu, 19 Feb 2026 21:55:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EFBCC6B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 21:50:39 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D8066B0088
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 21:55:19 -0500 (EST)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 98B5D5C06B
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:50:39 +0000 (UTC)
-X-FDA: 84463306998.01.AA7672F
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 90B874000A
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:50:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T+3CrSGC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771555837; a=rsa-sha256;
-	cv=pass;
-	b=boCzU41kflEQ10Bkopk7YEOK0Mnfw0m4f2itKjMcNK7K7ArAK9y02LTKi7WQ0EJ8/uIYPh
-	nmKIr7fJ5MCwjAc6oVkT0xn2tWOl9XU3dMK64YeRsBGw+C2rDQLozHG98dkBaB4YV4Vg+q
-	ztvetzWXJN7ecLaHq19sv1qHs1wuKQs=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T+3CrSGC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B57891B6169
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:55:18 +0000 (UTC)
+X-FDA: 84463318716.01.B025758
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010056.outbound.protection.outlook.com [52.101.201.56])
+	by imf14.hostedemail.com (Postfix) with ESMTP id AC364100008
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 02:55:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Be1/SiGD";
+	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.56 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771555837;
+	s=arc-20220608; t=1771556115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=//4TvN505NNuNnrj6p7kVS0Ee18l5lpIvo3njUSZ+Is=;
-	b=76GuXk0TewPPW3w9JgwUjgyu0ZAVXA0Mfj5dGf+LiRXqclbaS2pbt+oUN2BWl+XIKLqmTx
-	2xn273fPlOKlv82y0SKkxbOHXacl26rs7RgZEV0sgEn83/3BfzVVj/HbXGSlRTJa+9IFzb
-	EZRMDYO6sRrXb+SaSqJDfuDjHQU6aZI=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43767807da6so1176319f8f.2
-        for <linux-mm@kvack.org>; Thu, 19 Feb 2026 18:50:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771555836; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kaqaCQ2gA8BTg2MsaRzAHRMoNcDk83SzdLF3LGo+9TmaoTNOxARikjwYTg1a1Ap4Sf
-         169GupEu/E0dLDbLMwvBFTsQP2bYQQerIy+tHuv9HsfQhPZCgTF87sfy6UJVuQ+r+Fq7
-         kRgUzMU0wr66thNW0/BY6m4pvx4Ilw7550425//z2UOvrndPlcHmKmaAgbFooE+DCLJJ
-         T9lpwnMqW2So1UohSUrDROk/hb7wuINm1CUtwb6wXCBfO8q0bcg1ZKcYeLGjJTO7UV1u
-         ySLwVOD5ofJK0avudycIvF6iDScxHZ07r/Ik3QIDEoAWHquYrXLYO0eySWWkW8YSqcP9
-         OMDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=//4TvN505NNuNnrj6p7kVS0Ee18l5lpIvo3njUSZ+Is=;
-        fh=XN7hKfW1GBcJhJlsAOnFH0A8GaWwRpTcUSJsNwTT3yQ=;
-        b=afOn/rNq79Dd1IgMd3nip7TJ8vANfP6FIeemiN6RUfmnM5yOCDUNytfhjRPMvwmYRF
-         ol9Hkm3uORjCFB+DHY27fgKoXJVloSGTxEON3MybZ590doZBOodUzoOvrxzL1dfZXNkP
-         kvZEb4jrSh/rfgRrXkzPizq0Gp99IOWjDFi6bz/Thbp/LXJYm0DEm3FEFmbfy22w6sg0
-         LsYmZ4nAB9SWvWWTvsAHeYx4mIbT5PYYsRULEg9n6R4W62uCTcZjVwb4Zhisg81O5NiK
-         wPlfVN6Wx8yfT9ceSDTnp4XEdPFyOUeQ6HdGmGe8L26QV6PuBMhpXvvDXyaSZhaE8nOR
-         lxhQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771555836; x=1772160636; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=//4TvN505NNuNnrj6p7kVS0Ee18l5lpIvo3njUSZ+Is=;
-        b=T+3CrSGCPgxg+usO6FwUT1kcQVsX6GgwHf6wCf1AoD4pRTGOzu6l7Ue5dXzjcpO/Fm
-         CFuRWOnmzv8kDCUzMPv2jf1/i5IDyug18EJIpDWc1WEjxyUqTLUjPEgXbCCDDFkJfFE6
-         sg1wOGX/t4cSDVKNfvYSbNaGAb32Pnq0XiG6p8VYrDjY1CbyYpRhc12i1Mad+cHUEfPa
-         Deg8Ofgpgrzv9W5f6bCkgaAxcrPKPKBW7nQqv85UialN+KO6BijHXzAe+Rj23hwksviv
-         qCpusVs8wK+SmNM1rFgBd8jmMu8mtsFFHwCFtu8pBCJuhNxdyzBINKRyGtyHofxESQ+3
-         5MxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771555836; x=1772160636;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=//4TvN505NNuNnrj6p7kVS0Ee18l5lpIvo3njUSZ+Is=;
-        b=AIax4Su8DBNWZbf5I+H3Mn66Z8vzSe7glRuVy2MruC1D4xDEFbBEA4wxnxB9Gw/rdf
-         b3og1t0ypPG2RcwWduhqExTrxZSI85Q9wDGbwgqY8sd7C/qjEbw1e5vXQAu91cSQCyle
-         4ErvEJovi1bBwldhKKazW4ugXjv+d1iPt6n4nbiWz3lWhRU/+Teqc3eFE+MRjiMyliCe
-         E4XdhvGCdd0VhNkrMaQibi0gZEBzqkgzXaraTpY7Ix4LTaF4wQsyIdGANW384hNUDttS
-         mv3yVNGisspaxIE88HC5YRXPqSTFNXkSnUH8Tp5FDrTo4oLWRvtrGqf7b6dWg+jjb+Jj
-         Q7WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+pyAR7n29qDSnWEs41Ylgy7aUQVSAcQKriNkiM3S8Ixzskdp8sU15CgfLVRlCMfgn5Lue28hshA==@kvack.org
-X-Gm-Message-State: AOJu0YxEaK+gL500v8/B00ZaH9J72wMw5K4cooe2nXZdxRYQkPE1FVmV
-	UVzNkzMp5LN2mcS5GT2U28S41wnOmuLNxb46Tm5pOy793Ibs9+iwcvYD4bYnCn0CYpgFvkK77OR
-	vdlmAhikFxbmVK9NGqwUWPUWZfbsgOzk=
-X-Gm-Gg: AZuq6aLErGeA+hT9PEztJCKcpwBtEsOmYrmxK9ZmelKEtOSPrBraQS7Va/u+MV2VLBZ
-	QKIhy83Yo6qHcU9BqHzOtjvfVYswzxAk6p4K/hyMuFBTjdZWQ8x3KwHbI6MAs76Xq/LmVn3hZlA
-	3MS4iODv0z5pHUHhxxtAeb2ctFysurevSu5I04RpMdjI7hdcbhjWUxpmaPwWuBeyjYyNZNgNDrJ
-	aWjL89TI+Na5JODTYobvr31mVuzX0o8Dbci46S8pD5I6pL6J20yarl3hvTygXACJ70VawnljbGK
-	R/xKlnNBnM7+HNVxY1VdKBBQCCqq907HC8zGLiWOgPd57mvaIJSKPL/HRd1JbATpifyIGNvku/G
-	e6KhFw/InFoNFhFHREhDaVJF2DCM4EZQM6uGq
-X-Received: by 2002:a05:600c:8b77:b0:483:6d4e:9811 with SMTP id
- 5b1f17b1804b1-48398ae6736mr142110645e9.31.1771555835677; Thu, 19 Feb 2026
- 18:50:35 -0800 (PST)
-MIME-Version: 1.0
-References: <aY3+Raf8eZqipCd6@e129823.arm.com> <CAADnVQ+D7v+sGFFyTfSxFSEEcnGV111NeSaVtASYHfP-mDnV4w@mail.gmail.com>
- <aY4Vipl+4rGa+u6D@e129823.arm.com> <CAADnVQ+ad1Eu34hS21HNLgzA5eeFHMvQmoC33xKpP0z247MaHA@mail.gmail.com>
- <aY74MqGV4A+kwsQM@e129823.arm.com> <CAADnVQKAv+MRNrK=2MmEFKcB0FkmtG2pchdp35xo1ya-ujqVHg@mail.gmail.com>
- <9c7a5db754143f59bdb2129616d2a23495d4b3b9.camel@HansenPartnership.com>
-In-Reply-To: <9c7a5db754143f59bdb2129616d2a23495d4b3b9.camel@HansenPartnership.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 19 Feb 2026 18:50:24 -0800
-X-Gm-Features: AaiRm510k0AJv93e_6kEPHNHD651Rror5rKfPW512B9wpfkVqt4fKVcueOPO-KM
-Message-ID: <CAADnVQJuYDgbwvZa9zuUXcPoHRp25n5NYutbEsv6F-NzeK4oDg@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] eBPF isolation with pkeys
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, lsf-pc <lsf-pc@lists.linux-foundation.org>, 
-	linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, david@kernel.org, ryan.roberts@arm.com, 
-	kevin.brodsky@arm.com, sebastian.osterlund@intel.com, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+	bh=8ccNbNKtvvfSmcYQofnTIvSJ1WMn2d1ic/6WdSYAeOk=;
+	b=JwHBi6u8ABA/hCaRT19lD1MrMJbPrUgD/prCkDqD/a4WjCQ6qOYJ1Vn7ftAbyKIlk9Nwq0
+	5etoQ8HhbMsYiWQBc2lLMDhWEIF/QUtQMwgw3myyj5OPbiumV648GOlP02emkFkk3qYhLt
+	Ph34AGlbfc2oXWxO4b/HzUvWbOQqv3k=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Be1/SiGD";
+	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.56 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771556116; a=rsa-sha256;
+	cv=pass;
+	b=yN6lDZ2NVvo2fETsCd2wX+Ut1ZX5nOnTgw+nThI7tMopBN6dh6taG5DiW0cS9J0I6mPWVs
+	zMvBQ0+kE6Nc964fpV8AwbOPJ4XDk3uwm0G40wTgDTi47VCwS2TUtkmQnLu6deyV8RfKQC
+	KEUmpHCIdeIAOiBT/NKk+oYCYFOeV7o=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cpegPtuz+Y9yO6uyWmAok0QBABFAFkcYr4s65PeuSwe7GmOPMFKfFNk+0OfdLmIiz7WJJhmki54vyB4hQ1euMU2SNUW7wLWkKPbAV/qaT0mll9BOIDComFaL8kA0LEuIHtS3LjkOeWIxQx95E/sYgJZQR6g507mzb5XrsTgJ4cgz5NLTFEo337ATDoQj9qrk+XPctde1A8rEreQkemzW2cJ49BRfmg1Jgv+BZXkrmsZr9bxA10X2yB1mTunUQZVn17YfPk4mYcrVqXTnypYSwEF7MzZ4WtgSEcOx7knYAe4ipcrNv0imDffmmMFIdUYMyLzWzjQ55p1atuhQVdDbrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8ccNbNKtvvfSmcYQofnTIvSJ1WMn2d1ic/6WdSYAeOk=;
+ b=RLbC7nt46msByhgs7yOjh4dVtXsg38DOAkbUKY0yy79RbooORTQyo2s74lbh409rML2eB53qd8135s8eDXnAsp7qYrhPOgIiQTvd6hpIcg1lI2IYsVMGh0GxdiW8vUZGrHKe4Nec1K65s8fLAMooUXUrAb7t3IG/YElKwn5HGa2ibffx+8gAOY0HfuBNH2KKcA8TfptyFbCg78IIfB0ubUV12rDurT18sj5jCeJOCEZ54bKgb12TFYcTQ1UozQdJXaj7DkF3jsDJb/j479lUKLK94holTiiFE1beop8H+iWpxf2HdF7ixGJbSpOb1O+ywSlH2vxjz8PVAepW3ycjOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8ccNbNKtvvfSmcYQofnTIvSJ1WMn2d1ic/6WdSYAeOk=;
+ b=Be1/SiGDpJtQwHioKFtIJd1P3lOLidHq15rj3CKq8K0xMNNcBi9LOAd/X/pPdnNon6lU08GjTBMwHgkmW1PuINjE0NtWt9M0MDwihJLiDnCKGD8ND1Hm9dE4sTI7YFAoJ9O24sjfo2TlwvybgBPM8X/ROZoyaose7TKvYK6gAqCfXnH/LzfFeflKPPuMvQP377GqjBFErj22gDgOFnohsylEZtGM0QpUT/rhlcCbfNut5++on1UG+fVT+kG3NK5UIRBlhHeF3yw0ZdF3Xm1ZoiF83Q+GS9OxoDCvCr4KXp9EMd0XyUEukhB1CpYp5xzld0wKmfjYk2LQk7hnXESFJQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MW4PR12MB7237.namprd12.prod.outlook.com (2603:10b6:303:22a::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.15; Fri, 20 Feb 2026 02:55:08 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9632.015; Fri, 20 Feb 2026
+ 02:55:08 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, lsf-pc@lists.linux-foundation.org,
+ linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Usama Arif <usama.arif@linux.dev>
+Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
+Date: Thu, 19 Feb 2026 21:55:05 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <34730030-48F6-4D0C-91EA-998A5AF93F5F@nvidia.com>
+In-Reply-To: <f261995f-a45a-448d-b72d-18d476697d88@kernel.org>
+References: <aZcmlIF4bmG0twkp@thinkstation>
+ <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
+ <aZcxWsWO7AxQW6JC@thinkstation>
+ <f261995f-a45a-448d-b72d-18d476697d88@kernel.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 6bhnfcmie3rts8atr46e1h6gk4dqzr3y
+X-ClientProxiedBy: BL1P223CA0004.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c4::9) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW4PR12MB7237:EE_
+X-MS-Office365-Filtering-Correlation-Id: e89bf9d6-3e37-4ce5-239d-08de702b7547
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+kQhpny1gg+S6xOU5UkoC25B6AjDJfPo1RhAuQoorAblEaFlJTubjNlgjHw3?=
+ =?us-ascii?Q?HV/1QoCgS2yxhlY+qCykZSOPunwkwkzcObt6tm0ty28t/K8/ifs8ORhZGP2D?=
+ =?us-ascii?Q?fXTn2M3pFsTiTIgMUhgUzwTKYP77nwuT1OClcBqL5gkfI95qtMaO11V0SaaD?=
+ =?us-ascii?Q?slvpswcuIUygeJAjCyQN3VbpXpNb7b+kU3MBbdObePwcJ7nTB2PmMm8OzfhL?=
+ =?us-ascii?Q?hORSxf1iXKy488fvUgbQZWcCpKue1BpD6m3g/4wG/kEy1ltVfehOb2vvhFeY?=
+ =?us-ascii?Q?wmc7+oM76AcQajcjfYgGzTFsRaejfBeNtl/Y3QyJEkOzAeG7DCvXwR7t0ztL?=
+ =?us-ascii?Q?XnCLGV/zxn70AeH6PmRE0ZyQI/DBg/rEyLXxAVBy7SGysckMH5o9CitDvctC?=
+ =?us-ascii?Q?QDVjE2hd6gDXX/v1A2707nKD76zAhUCO2V/ttpjU2XbJm2Ehw7M3opuTq+UF?=
+ =?us-ascii?Q?50ggH/wvdUIIarKWnFUK2JwTgioPCtx0k3Y4sr2cPSvydIk6gzVUpXyI4NVm?=
+ =?us-ascii?Q?2ApW+BF1i/Z9bMR6NBOgHh45/yqfBrdjZm5rrVOlykfC74Nz10of2H0Wbmoc?=
+ =?us-ascii?Q?pzpbzaV0XPlLmOBU0HxRpaBhISzKePnQ7Xh3FHpdC7eSwl7ePxAkpdk487AG?=
+ =?us-ascii?Q?orE3MY9ceSP2qK1GPOvv4Qw2hfrv9BjkP/f/UesmJ7VNfqZuIlWJQMn28KWR?=
+ =?us-ascii?Q?GL31Ha3daZrT30ZYWEs9ZEVxkCz1uShlZuODvTmJrPU80Wjf8i8KbvkvJdVE?=
+ =?us-ascii?Q?9mdAZkbybdaYWeuakgGmdWCKb3+PCIpiuAlEPJGmUlgCTnSs3dVv9A/s9NOi?=
+ =?us-ascii?Q?UvkLD5tY+I0UwGSOQYR/oaXnsianIkO/zNVP8Ru9NeT1PbKPYB1HLezkkx50?=
+ =?us-ascii?Q?62EkbnBBAG35IsXfo9sNoU7yR+ggHkFt86luKSvgfEGXGOinWHfY2myDfHW9?=
+ =?us-ascii?Q?xd6eR3bS/enAaRiZM78CNpPC0GvzHHSnHHm0VmCzL5F2fLtViNfOFSp6UM2S?=
+ =?us-ascii?Q?8NEbcJW3rj+lPWQmRvjI1wxqw+h6cdz+zcDiCsCRLwcBoyUSPQQEBVcONro7?=
+ =?us-ascii?Q?dUtoiNnPAdqN+R9xjPUaOXOKMjzly2zM85ubQaazuGKKP892IPkRocDHPjTq?=
+ =?us-ascii?Q?7eWxqTUpA5lGkRtvGjzVozT/V6ic9oTnMimeVOqE7Uu5i2Yw2RqZJKoLnyxd?=
+ =?us-ascii?Q?uhoCq0FnMD4v179DP+sqU3cCsobqqpcqMMbb/aSWjymLvlS/0+JFmWusCwjy?=
+ =?us-ascii?Q?KEPsqD9MdGdfSq+zanO+r8hGE5p/VYmcr6U0fRsVZfYVuM/w3gM7Ln8gkPay?=
+ =?us-ascii?Q?8Ze22uq12JhWZsnrq4vDjuZkUh8Q4VLGZeBJv/VnyzcRT8py1bKjHzh+BKIh?=
+ =?us-ascii?Q?gyLOOXNB9nk1DDYITnFS6rMwh7Ezcw96zCvmD+veCCOS8kCFOazcv5xMzV2B?=
+ =?us-ascii?Q?7gXR9asdbJOMx16D1S2qLzf1pzKD/Ra4OA1vKjgpZhBjPuGqDE+gR/JGNaNH?=
+ =?us-ascii?Q?OHfu9bNlN0QRkL+zbfQ9gSlOTgxocB31Eynm0nPrbkRsbtsTGBp+nzUu96s1?=
+ =?us-ascii?Q?Qx1cGsUnJxVAHBPqWmU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fFpXHyi7rAwFvVebbmToj4Yxl6PILHaXziJY3XRnCpZ1tnrDLrqt0e25U1+B?=
+ =?us-ascii?Q?MgApKDihxsVG3vVKf9kFNmU7bU52kkvWIBdyjxnIh2AYS6zDfe4elqfbIUoA?=
+ =?us-ascii?Q?kIqE2xJt7cgQq3Zz1Xrqx0VRcYeEK5bJCf4l2E9C79aZ2RYjsRBeALS8E5bk?=
+ =?us-ascii?Q?3zrkMEqMF2cAS7D2BJbXSXey/GwCXwiFt9q2ssbTWUbl/RcySvY6DmOQeG+P?=
+ =?us-ascii?Q?FE1OS/wK0UQ4DqL6e/nndHxpraYnGY7et3vkOvEekmuIfLnc46SgXog7K9DM?=
+ =?us-ascii?Q?2GuPupYVfarO0+tzqI8+1PRlP6WilE5hForgp/SBNqTvaxMSZV4mME3S2bbw?=
+ =?us-ascii?Q?jZxpkHYvM531bZSQ8BkUW4a3/iZ4Ij4yHpi6WNgErsR4sQcG+LviEYLumKui?=
+ =?us-ascii?Q?9IkRPviEK7YwIy0dn8ulMQ/HTFkLu8d0941Mn+ek1zQKgk6+5g92nCz6oVqk?=
+ =?us-ascii?Q?BTQIivkMUzw/PGXHCxx107rCRo31ryexRNIKL49HvBR7X75nJ+ucSWgZMcSX?=
+ =?us-ascii?Q?Q0PL/QRvZF0i7CDxwWjJut5YklMk9o0H0eGHyICdqvtSE0hKZfHUm3JQeKeC?=
+ =?us-ascii?Q?JZVAdIHTXM+/cb9+QZQABVVY4iwpHMP+3lfvj/8O3GbgaPVGzQqFhhVArsBF?=
+ =?us-ascii?Q?00MVqOKYnaA8vL2mpZNGn9oDHKv53SCBVzIfzVgV50EtbY3SaUdFG5Lfepmk?=
+ =?us-ascii?Q?8tLHGTB6ZBa5FKs2YC3fhUaxae7Ov56T1oIDe0FaQXsmXHzprBDKD0TDgJmE?=
+ =?us-ascii?Q?Rrc25inzKBqEclrfBRdXWfZERmX1j8SxeWMKWrUPILESLiMztUTgmZaBY2/i?=
+ =?us-ascii?Q?dNqNblbYGdGKkzD9+3e4l01wjP8TcJBxL+qdjqnc9EPNNDSedl71cirF9POm?=
+ =?us-ascii?Q?E3Qk08FnSHA8wjgYWypP8xkaaageVOXlpRg/jX4A+yIKVtv1T9ba3fnwFs47?=
+ =?us-ascii?Q?POX0yMUgbgDF4HdnShm8f2P1uHOCkeJLU7J1CpHhmAThSNhmIAbRjqU1g9cQ?=
+ =?us-ascii?Q?BN3ZUgSoxt074z9FqJ2pUbqa/O4b3J3jLI+E28N3BtPFbtMYQJDOlY+8/FJf?=
+ =?us-ascii?Q?VWX/x3F34/i/PQeFfwT7gwX6/3ogNCbQfCmyMcHDEyWEJPxsac4AhU6qG29i?=
+ =?us-ascii?Q?abhjFO+zC2Z1q84sRgfBbJRVRlg5g4OdVAVpWGH7pRNUigMd1GqI2oU7f9aO?=
+ =?us-ascii?Q?utAKBSXYlWBkzEl5SR0dpR0NhUT1B3vqoIWIxTs2zN9b87v2nFuUDe66js8a?=
+ =?us-ascii?Q?csP5k4bwUru3pO0Jde392oiQIvJkwZa9Pq6NjDcoPgO3A+CfwLxmva27yLGU?=
+ =?us-ascii?Q?5TyYMrgMVExwrFmDTjJEnj2Mmb9ddusgV3KfmGnJW/mqup9PUPn4HnNeB1Gi?=
+ =?us-ascii?Q?jwdUdykV/b+MflY5wesCgmwDA2aeTEk5pLLXq2iVy/m7H0pBWYozOVnsMqa5?=
+ =?us-ascii?Q?LoVmphE5OfVq75pliFPqIie+65zt+5Vh/OSJruqXNNNzU16cGhzkvLdfJbJI?=
+ =?us-ascii?Q?+a73JeDOjx20NA+/J6BE0jNAMzrshg6guT6dr5L6QX7sCZDryiReq6BLP7oS?=
+ =?us-ascii?Q?vs6WUQxBqdBRQ9c3qSnoFsjoQykzN9WDsakqcVcmtZfwExLbgWSjtSnpdz40?=
+ =?us-ascii?Q?JkxWlVB/i/M2P/LDQRYOblTy/hrL3Z1soBHXTHRIcZT/p8cHcbrVpYoDCNSv?=
+ =?us-ascii?Q?rreGKaXMzSe5UD3I5E5P8ksOYsvVeH26JNyKEExF1ZRU+wFA?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e89bf9d6-3e37-4ce5-239d-08de702b7547
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2026 02:55:08.7981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ucY+d6Jpo7706V2MEG9l9iuFflSgtftjUqvaRbACbogxHj6jgaUxIRaUYkyJAKYj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7237
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AC364100008
+X-Stat-Signature: ipizbe1muci4xieqjq5c7deucbxksdta
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 90B874000A
-X-HE-Tag: 1771555837-299062
-X-HE-Meta: U2FsdGVkX1/2sHlQ3sreIPLVRO+UFaHbLdiiyrVn+q9w2jrIMXTD2iYYYe5RaN3IK1VW0oaJXr09xTHOtrj7qQaWApbkxu+90E0GYJKhBiX/U+APz7qMIKcNrrAxHXm81F3qekM9T596dH0YpGuJyveW6h7BxWSmewk31j1JSuu53zmU+Z9jzB+d6Pji6U/suCpdauFup5Uu6cF2+R35k9vneuBaUb3Fy2ESAoaEmv3JMg85W9skk0Sc989nEJLy1R9kuqxqK2futOsaciMnq4wvSu447m/UuL/7+7JsdRmQkhKdf16kJ5FxEVEQR1fM0nq+K9gATObs6cup4qx2X7JF0tg/zf0Ap4ROboT6a1F+4tSGtvvqpH5wJv5J73PtQN8pwxH9gNlYjWuPVA+7ovS3shXbzMFXE6Jhx7TTVRfw3rlbqbIjt95szVHtDTmx4O9h2z5OG9wcorFSRDIx9D3J2r8pXuWBz+6r4OBcPQCzyxWijkq8cGkL3DdLm9uotI8hrVQ8xvscwUHb759ku+1O+Z6VPIK9pM7NRQECM1sNwsfXxjVzFS0dmPiK2XCsNY4ar8jvn+Z0QO9WGxXGOj1wBATrspgrNQahu1MyPHaPmpuLdF06Kvu+b++REmvztgZlZ07rc+lHUkAaRk8dDQVrKnbiInBYR7KsBJ+MhsQ6GmyNFTZo4m5YYS/GqZBME3XhWTMTNEQ04IaHUq19RLgUy4XYbIC3NgNMbYkQw0SZf4fkMuySQjjQ3+LJxDSvwGZgsyBMYu4QygWy1rx0K2PfgyMQybi/MoejKW5fKSFEkR8D/7TShW6LznghQZ+f0qpL93iHazW3swP2ZCchwRGocCmDYUGTto7DofzYiLm1r5+SWzbenzumY0XsAe1wFhof0Z6XgabaReL3Zblv6h3LTcPeYE/6zM9Cm4mv5FmZXEjLwsdtZL+kfl/aDSw8Z7Cy32MDOZ0otT+1OUE
- YOb2DZ9K
- Dc6WXpKgqnv8GvZEXNUN2FWSbKTVh8UGWK6mg8hrqUojHsztQO4RPEJ431oStCB5GOHMScfBc8qrolOF2GywB4AwORWnoK1nbae6roviUEjNwojpOiYDrNg4LNzgqWQRp4xm2geL3YdU4XvGPvEC+IN5oHymkLQ3ZwBYYUU3u0ENczgGiWT9roRnlmLFYb7wc33wGe6Gb1m00djdVBuse3Iowl8IOdTL/9ql96PvjUV46l4xx1/5aS8xBmqk8K//o0qGmG7geOOLWnf0QfKxZ82TFLOlNXIpGlhzQn1lBn0T5Jatfgt1Q9C9aiBurachirhYeJSvI3elJXW3ILRFIXD0mDrW6OTaDZ8bTWuX9Ie2i0ROi+JZbccXc4+5xLWHbC5rUvzeF1vCJZAzIRkZOknLLLjkwkz7I721DcmAbZlgPQYDc1HvQekNMHUoWnLY8+1eAFWGH+pHr2V26vLex7exOqAsQ03bWmuMscw+iEx3FXm/8aNJyCDtUH+UG8/0iN70cjTUcPn6oqJX2AGCJd5o46LcEIzamI9yx2HMzW68WPj4=
+X-HE-Tag: 1771556115-687244
+X-HE-Meta: U2FsdGVkX18E1GOBH8Gd28GPdjn4EeUbyyW5/mwUuYzIzZR0MmRxR4oZ4+qXRD1lboW+BAMJyVlqWVWPL+nQwQ1QtR0BY3z/YE2UfLmttLaZIJMfhlGavkFxmAri4VQde4qkvlTTdvctE7hTkdiqohqYH9dCFQB0n0Kn7dJ7mMWi7KYmrGD9U+cGhzrG0uuTgW28VKnodcUjbBnAXDgqTi7YkbLz35H+PKm6z4tV6EJ8AFEXbE4EZUsxte0BfEBUfr7RyA/nb8kbNDpC+vx8a+7rJJgDcUNQ+GAO1hd54kwu/2n5ANDda1CrTmH2iiPfbf7GRkgUIIdlwqCa4jWWA5nzgGaCQVMfFBvzZrFq+0c6COYqHcZW2UFhCO4k3CGyRkHJzwYNalyOmIT3vkvwygiifAua86bYIrLkC98MIbwMtnnviIZooXi6kb12fD7deIeRXnxM4K5Rq/t74545C122OUiHSlToTfmLWpZXy94zFyYmHlXDi/zOBEjM2ZTAk5SXeMHwl+GVMuJJo8m+BV18Ub2r0tAPsZfGAzcDQzoZ4vPK4PBpDc4LpEyO6lqTVntqFHzeq44OPwob04Gx6/TlwAVRHDwfK2BoI9w64Fnyn0b2nwikNRj8bZZdlt9cIKsZm8Ha6stxlJ/eEcBL+mwSf2EnKM4+qz7lTUgW9KdkmtY03KpwD5mvSof0YKZsoge2NJjDEVUZyGn+PsVyqaYPn9DwwjCESfsMW8uBkC4W+lmQutZxWCfYO8DWQw2SkD7lxHXINACQuUd5vJWSWtZaH/DZmuv5KTnWn245GM5rveO/M60aSwB68blwFI4yNPlrZe41FiDcF8rrYGmS4pLXBr3wa0XxE4fQL9mI34oJX0lC8d0/dOEgw59awxp6iGzZwDFsBRvrvg/Dgtx241RR1KxN5uVZA5YaTyzlmbzWVIoVULzs2fvOS0me6tK446EbF7ffsCDUzWgiq0C
+ UwPEMvri
+ PdNO1w9pQLLNv2ly3wLHAUY/E0v0mshUE+m5y39voN8mvRubddKeDqSThDwXdB3vuttpiKCdoTLxL/Ka2hDRuwYbZydxqr6OJ5xknB4ULBs6l20TVyrbO0td4QZHXqTT3CyjAfTC+tuReUzuygWLMsdNw7HdZ5pY5ye8fvqhzwTBKTvQ11+XtoPtrMq5IvzMqUmRo8L/+IU3Che8INZ8PpiMCi+UKI0TDfkr2g7LwrASv67Ns8jXV4ZplW8RDDLmF2VRl7m57l4VAnCIY3qlS4FdOao09lqLC7bfwUi2UUfqaJEplqZai1MECWAkkkcPD0cqE4y1ZJIOpAE5KFc0l+9idx57uqXXaJZuwyL7edbHJWR87KBPs2hCgdQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,48 +194,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 16, 2026 at 6:27=E2=80=AFAM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> On Fri, 2026-02-13 at 13:37 -0800, Alexei Starovoitov wrote:
-> > On Fri, Feb 13, 2026 at 2:10=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.co=
-m>
-> > wrote:
-> > >
-> > > Hi Alexei,
-> > >
-> > > > On Thu, Feb 12, 2026 at 10:03=E2=80=AFAM Yeoreum Yun
-> > > > <yeoreum.yun@arm.com> wrote:
-> [...]
-> > > > > That is correct =E2=80=94 this is a verifier bug.
-> > > > > However, the concern is that such a bug can lead to a security
-> > > > > incident. Not only root, but also users with CAP_BPF who are
-> > > > > allowed to load eBPF programs could potentially trigger
-> > > > > additional security issues through such bugs.
-> > > >
-> > > > Again. They are not security issues. cap_bpf is effectively root.
-> > > > Just like cap_perfmon in tracing space is a root.
-> > >
-> > > The argument is not about whether the verifier bug is a security
-> > > issue per se.  The point is that relying solely on privilege
-> > > boundaries (e.g., root-only loading) does not eliminate the impact
-> > > of a verifier bug. Therefore, leveraging hardware isolation to
-> > > further constrain the blast radius is a defense-in-depth measure.
-> >
-> > I hate the reasoning that bpf somehow needs this hw feature.
-> > It's not. Look for other use cases for pkey.
->
-> That's a bit of a short sighted attitude and also you're looking at it
-> in the wrong way: hardware, correctly designed, should always be
-> looking at ways to help software.  eBPF may not "need" this in the same
-> way qemu doesn't need the VMX accelerations ... it's just more secure
-> and efficient when they're in use.  After all, if the kernel had said
-> "no" to VMX in 2006, KVM would never have existed, we'd have been stuck
+On 19 Feb 2026, at 11:09, David Hildenbrand (Arm) wrote:
 
-This is a false analogy. Virtualization extensions were added
-because virtualization software already existed and had shortcomings
-that CPU designers wanted to address.
-Here pkey was added to differentiate one ISA to another and
-now cpu folks are desperately looking for a use case.
-Maybe it exists, but it's definitely not bpf.
+> On 2/19/26 16:54, Kiryl Shutsemau wrote:
+>> On Thu, Feb 19, 2026 at 04:39:34PM +0100, David Hildenbrand (Arm) wrot=
+e:
+>>> On 2/19/26 16:08, Kiryl Shutsemau wrote:
+>>>> No, there's no new hardware (that I know of). I want to explore what=
+ page size
+>>>> means.
+>>>>
+>>>> The kernel uses the same value - PAGE_SIZE - for two things:
+>>>>
+>>>>     - the order-0 buddy allocation size;
+>>>>
+>>>>     - the granularity of virtual address space mapping;
+>>>>
+>>>> I think we can benefit from separating these two meanings and allowi=
+ng
+>>>> order-0 allocations to be larger than the virtual address space cove=
+red by a
+>>>> PTE entry.
+>>>>
+>>>> The main motivation is scalability. Managing memory on multi-terabyt=
+e
+>>>> machines in 4k is suboptimal, to say the least.
+>>>>
+>>>> Potential benefits of the approach (assuming 64k pages):
+>>>>
+>>>>     - The order-0 page size cuts struct page overhead by a factor of=
+ 16. From
+>>>>       ~1.6% of RAM to ~0.1%;
+>>>>
+>>>>     - TLB wins on machines with TLB coalescing as long as mapping is=
+ naturally
+>>>>       aligned;
+>>>>
+>>>>     - Order-5 allocation is 2M, resulting in less pressure on the zo=
+ne lock;
+>>>>
+>>>>     - 1G pages are within possibility for the buddy allocator - orde=
+r-14
+>>>>       allocation. It can open the road to 1G THPs.
+>>>>
+>>>>     - As with THP, fewer pages - less pressure on the LRU lock;
+>>>>
+>>>>     - ...
+>>>>
+>>>> The trade-off is memory waste (similar to what we have on architectu=
+res with
+>>>> native 64k pages today) and complexity, mostly in the core-MM code.
+>>>>
+>>>> =3D=3D Design considerations =3D=3D
+>>>>
+>>>> I want to split PAGE_SIZE into two distinct values:
+>>>>
+>>>>     - PTE_SIZE defines the virtual address space granularity;
+>>>>
+>>>>     - PG_SIZE defines the size of the order-0 buddy allocation;
+>>>>
+>>>> PAGE_SIZE is only defined if PTE_SIZE =3D=3D PG_SIZE. It will flag w=
+hich code
+>>>> requires conversion, and keep existing code working while conversion=
+ is in
+>>>> progress.
+>>>>
+>>>> The same split happens for other page-related macros: mask, shift,
+>>>> alignment helpers, etc.
+>>>>
+>>>> PFNs are in PTE_SIZE units.
+>>>>
+>>>> The buddy allocator and page cache (as well as all I/O) operate in P=
+G_SIZE
+>>>> units.
+>>>>
+>>>> Userspace mappings are maintained with PTE_SIZE granularity. No ABI =
+changes
+>>>> for userspace. But we might want to communicate PG_SIZE to userspace=
+ to
+>>>> get the optimal results for userspace that cares.
+>>>>
+>>>> PTE_SIZE granularity requires a substantial rework of page fault and=
+ VMA
+>>>> handling:
+>>>>
+>>>>     - A struct page pointer and pgprot_t are not enough to create a =
+PTE entry.
+>>>>       We also need the offset within the page we are creating the PT=
+E for.
+>>>>
+>>>>     - Since the VMA start can be aligned arbitrarily with respect to=
+ the
+>>>>       underlying page, vma->vm_pgoff has to be changed to vma->vm_pt=
+eoff,
+>>>>       which is in PTE_SIZE units.
+>>>>
+>>>>     - The page fault handler needs to handle PTE_SIZE < PG_SIZE, inc=
+luding
+>>>>       misaligned cases;
+>>>>
+>>>> Page faults into file mappings are relatively simple to handle as we=
+
+>>>> always have the page cache to refer to. So you can map only the part=
+ of the
+>>>> page that fits in the page table, similarly to fault-around.
+>>>>
+>>>> Anonymous and file-CoW faults should also be simple as long as the V=
+MA is
+>>>> aligned to PG_SIZE in both the virtual address space and with respec=
+t to
+>>>> vm_pgoff. We might waste some memory on the ends of the VMA, but it =
+is
+>>>> tolerable.
+>>>>
+>>>> Misaligned anonymous and file-CoW faults are a pain. Specifically, m=
+apping
+>>>> pages across a page table boundary. In the worst case, a page is map=
+ped across
+>>>> a PGD entry boundary and PTEs for the page have to be put in two sep=
+arate
+>>>> subtrees of page tables.
+>>>>
+>>>> A naive implementation would map different pages on different sides =
+of a
+>>>> page table boundary and accept the waste of one page per page table =
+crossing.
+>>>> The hope is that misaligned mappings are rare, but this is suboptima=
+l.
+>>>>
+>>>> mremap(2) is the ultimate stress test for the design.
+>>>>
+>>>> On x86, page tables are allocated from the buddy allocator and if PG=
+_SIZE
+>>>> is greater than 4 KB, we need a way to pack multiple page tables int=
+o a
+>>>> single page. We could use the slab allocator for this, but it would
+>>>> require relocating the page-table metadata out of struct page.
+>>>
+>>> When discussing per-process page sizes with Ryan and Dev, I mentioned=
+ that
+>>> having a larger emulated page size could be interesting for other
+>>> architectures as well.
+>>>
+>>> That is, we would emulate a 64K page size on Intel for user space as =
+well,
+>>> but let the OS work with 4K pages.
+>>>
+>>> We'd only allocate+map large folios into user space + pagecache, but =
+still
+>>> allow for page tables etc. to not waste memory.
+>>>
+>>> So "most" of your allocations in the system would actually be at leas=
+t 64k,
+>>> reducing zone lock contention etc.
+>>
+>> I am not convinced emulation would help zone lock contention. I expect=
+
+>> contention to be higher if page allocator would see a mix of 4k and 64=
+k
+>> requests. It sounds like constant split/merge under the lock.
+>
+> If most your allocations are larger, then there isn't that much splitti=
+ng/merging.
+>
+> There will be some for the < 64k allocations of course, but when all us=
+er space+page cache is >=3D 64 then the split/merge + zone lock should be=
+ heavily reduced.
+>
+>>
+>>> It doesn't solve all the problems you wanted to tackle on your list (=
+e.g.,
+>>> "struct page" overhead, which will be sorted out by memdescs).
+>>
+>> I don't think we can serve 1G pages out of buddy allocator with 4k
+>> order-0. And without it, I don't see how to get to a viable 1G THPs.
+>
+> Zi Yan was one working on this, and I think we had ideas on how to make=
+ that work in the long run.
+
+Right. The idea is to add super pageblock (or whatever name), which consi=
+sts of N consecutive
+pageblocks, so that anti fragmentation can work at larger granularity, e.=
+g., 1GB, to create
+free pages. Whether 1GB free pages from memory compaction need to go into=
+ buddy allocator
+or not is debatable.
+
+--
+Best Regards,
+Yan, Zi
 
