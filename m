@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1C0C531E4
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 04:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D3CC531F2
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 04:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 487326B0088; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
+	id C6F756B0089; Thu, 19 Feb 2026 23:14:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435456B0096; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
+	id C19BF6B0092; Thu, 19 Feb 2026 23:14:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 316886B0098; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
+	id AF2366B0096; Thu, 19 Feb 2026 23:14:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D5AA6B0088
-	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:12:56 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1A125C242
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:12:55 +0000 (UTC)
-X-FDA: 84463514310.18.87FD9B4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6143C140003
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:12:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 982FC6B0089
+	for <linux-mm@kvack.org>; Thu, 19 Feb 2026 23:14:05 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C694140A6A
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:14:05 +0000 (UTC)
+X-FDA: 84463517250.26.9FE9D25
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5A1D1160002
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 04:14:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=n1ZkfbS8;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771560774;
+	s=arc-20220608; t=1771560843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9drD0xvk2/sSUZgUNn+/Wos7OqQ6apy7XGgOP+RDgXg=;
-	b=JkQd/hM+AYAYN7EqYiAFzEjN1ijemshUX9NTWpzRyzKCDMJrV72rDwdTTF0trRQvGLM0oS
-	6feCIRy0S6w6s3ni7EC5wvrvM0Vj8H+8QLsAkeIfKVvA7QTzLxqCtgbfHjn9BgzUCESUz4
-	zstkC+jOODx90l+6hzCRHmmCM/MAKfc=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=dqLfw7GGiJei0YN+qd5CWZM+FbwwYCQaQGNKlOtltZg=;
+	b=lAOUfBL7nOgrth+u4jK4tHASUlzTksTfLKlTuOAE/rdZhlzTYUHSwyqj7M5qnC+CQlT4fd
+	gOsgUjjybQ+5GmTUILJc9TEHbynjEFjAALPghiANLaD9MFtzpODeelRzNh5tEAAg2xoypP
+	d5pynYqJ1tnvbhlSBAQdMZaZtHkMpyc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771560774; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=n1ZkfbS8;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771560843; a=rsa-sha256;
 	cv=none;
-	b=nb8EeCfpU+NHELi0GDzQC7AC3WOEtkFiPdUl1Vzh9G+SIveS8FL5mvaqzYj8ZQFyDjKE5K
-	7Zw+mSLVAorgnxO+JeVu7GjGg3TwcvYNfiRJRTAdicuMeYsoV5g2jRIIlzrL1YJMSHLr8i
-	KLibghlge6ae7bVT/KhwYb/7cLUlC5Y=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF965339;
-	Thu, 19 Feb 2026 20:12:45 -0800 (PST)
-Received: from [10.164.148.40] (unknown [10.164.148.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8EFF3F62B;
-	Thu, 19 Feb 2026 20:12:48 -0800 (PST)
-Message-ID: <484434ed-6300-450a-aacd-3e370e1c167c@arm.com>
-Date: Fri, 20 Feb 2026 09:42:39 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
- PTE batching (cac1db8c3aad)
-To: Pedro Falcato <pfalcato@suse.de>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Luke Yang <luyang@redhat.com>, surenb@google.com, jhladky@redhat.com,
- akpm@linux-foundation.org, Liam.Howlett@oracle.com, willy@infradead.org,
- vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <aZSoyjQHvVWFBZdZ@luyang-thinkpadp1gen7.toromso.csb>
- <nfrvygkft42c35ymgupwggrc2hrbatxaa6cn3hjxffrvhaprqg@wjg4ye4uv5go>
- <8315cbde-389c-40c5-ac72-92074625489a@arm.com>
- <5dso4ctke4baz7hky62zyfdzyg27tcikdbg5ecnrqmnluvmxzo@sciiqgatpqqv>
- <eaa6be47-f1fc-4b88-b267-5aa38e3ba2a9@arm.com>
- <340be2bc-cf9b-4e22-b557-dfde6efa9de8@kernel.org>
- <cdrrvtzy76f7wplcrls3pbfe37kzrvzsrlaed7glg2cq6j3yob@wjbjklvovpl2>
- <624496ee-4709-497f-9ac1-c63bcf4724d6@kernel.org>
- <r2b2cjuqicmrw3zdwruacpelulhjhfdawrtbgzph5vsf6h5omj@dhrga7p62hju>
- <9209d642-a495-4c13-9ec3-10ced1d2a04c@kernel.org>
- <rtaao2lmzbmyugjeqdwhnacztjfgijjcax6itgst557qhqsnkr@iibocfiibsfh>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <rtaao2lmzbmyugjeqdwhnacztjfgijjcax6itgst557qhqsnkr@iibocfiibsfh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	b=CyFjO0U+XZOocQPUELjIfMgvUPJKLFUWeVmgN+vIqgy84MeYHwyLXsM6TVJ1LfURu7RlBT
+	48EdZDvgcYbvyY6Q9XD0vQEW8UUlCtpebxUAs10HO8jZSYNze7JsNuhC1lQ32L9zNeqMNt
+	M0jyAHyj8lL63E5tGuewW0zJnwVK2HE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771560843; x=1803096843;
+  h=date:from:to:cc:subject:message-id;
+  bh=/dlq3b1SWb1/EDayMgspiIhB9qAfUlH+dGjpcJTNzag=;
+  b=n1ZkfbS860phbWlSvuI46IvNwPqOXmwtEIpJw5M9ZcYrbPPuhpn9vN9n
+   7oAWXM6aQRnrmvFCj83dx5gOJNxk4L53wsXNpvWBXjRrSsit/C74KI2oC
+   KdTVkoQwWj14lRa+epP9E1H1D1ZH8cKtiGaNYZKoNCpkBxs3cf91ZBK9r
+   +NrUABrp59POF51mY0VfcG6geAUMy0Kw4KWdUJKf61ddz9aBUSWoXuyZD
+   JqR+ruSO+aTH9ogyVbQlFfz6ia5jp8HcxvO7of2Y51AJWMihindvTsmTK
+   bf/kkSFPy+6zvVZHI/a/aq1LGCIkjXdyjYjeEIe8cBuea0EqtKZk4Aizy
+   Q==;
+X-CSE-ConnectionGUID: bZF61mtBRb+qh7LuxP2pPw==
+X-CSE-MsgGUID: tL3cEIXRREeutydfv59LHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="72556191"
+X-IronPort-AV: E=Sophos;i="6.21,301,1763452800"; 
+   d="scan'208";a="72556191"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 20:14:01 -0800
+X-CSE-ConnectionGUID: uimu8WroQZu48k+xFnUsrw==
+X-CSE-MsgGUID: RgoVTJq+RuGneumVdWZggg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,301,1763452800"; 
+   d="scan'208";a="213332959"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 19 Feb 2026 20:13:59 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vtHts-000000013oK-3qhf;
+	Fri, 20 Feb 2026 04:13:56 +0000
+Date: Fri, 20 Feb 2026 12:13:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS
+ 44982d352c33767cd8d19f8044e7e1161a587ff7
+Message-ID: <202602201226.fgHcUqTq-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6143C140003
-X-Rspamd-Server: rspam02
-X-Stat-Signature: wkdakess9jie7u5gxb18neek5hhsm5gq
-X-HE-Tag: 1771560773-28007
-X-HE-Meta: U2FsdGVkX1/J27R2deSDZxNSpywYW1qs/zV+VNVtRUqU2emnCmjxY4TyC6OBbC6vR7nSz555J2ajGTm4pczpc5iIF2eOxE96nV4IozIdk3VqCzQ40B+KyTWYCBquOGH4ZKZr7DNpbzTFy1xAXC4KVQOKrreadykYhqAaBRbbvjcgO4gruW0xn9DZhyfn3ZXfkeWwxRTyJWYW0TYp0lWTw7stYgS3tIkuTtvYG+8e26KiLP0z+3ycgscj1fxnrgz2UCanJb4jH+I0OF7AnkGKirEHQArPmpcocJswKATr6oeN5x8qU+br/+I6tsfkfCDl53of8vNUwZzmguzRxg5HM/io6rSrHtcLRqjypViKE7dtBZwCktq23SM3mU+PeZOrd4r4T9vHlKuMi5jzFbBeul1Qz9cL5wWH4wZXd0rLDjI+SYyal8y0fiD/cEgaoeJzFNZE5Ffq8JYkCCMJ9pkYnGvb0KWd9wZ+8ewsQKG22mL60K3BYDEEMYYYzR72+u75vFdnntvRLZ5eUFRMD2C2Jgt8ejE0mxotrqwmcGdMZQ4IaRyhb+hVJEHP4LvbcPhSk3NzkgYtlCJqUbhaYQxB5q6h6pMKt7OeA78pvGr5CXtB/fhVM5KPUutF9o/arWguFZceFLSSa8Ane4Uop6bdPFjiAbekne4sDkLMyQz7qcOnngXdUGzw4mAtUchzOIaCmpFiOuf4oZvcn/ZYxCZkgDC/7LZBJvZqRId0NqsJsy8qFXMKySmHq3cRn7uLYN2IgEykDbNvatw75XYSq2QF9JLUhQJ4gMt7OMIPEjPwwgWeqieiLGUgr9e6lncr3/HU7lXRBe+rOiQwPLZKacIJN8eOZvyL3fWlzBJEBhOyZo1KgXI9USm0kgHYPyRgL5e269x8GiyeBA66ZR4Zvs0FwJErr00j8AsTaBg9hASaq/r6g4KwmJGaHS9OtONXEBgJ8uv3NNJMvEE0Fra+txT
- UQMtq+md
- 7rCMvOsbGCUuRlPBuAEpc3ggErZhnITCaoJ+ktrt0Ij6sHbtp1W/ij/59pM1vGPIBm2Q5iSwlLpyUzP+SyXIEZKZYUqXW+ifE4k9+R98LkVmoZmkiPu6g5n7MNtgqxghTBD6Qt/vTVC58OBs9fGfug8tkJ9ANbGO04e0P2nlvKlRc3DNTH9fBvslrKoyyzVaAveA5UO4Nyd1MCd+V9zclTj3I3vwQJXWRQn+s
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5A1D1160002
+X-Stat-Signature: 4przc857brz75bs419enoijf6jujizox
+X-HE-Tag: 1771560842-74358
+X-HE-Meta: U2FsdGVkX1/Xzf60wfkwztUNKmKso/ySrT9aRdm+dftTZ+HR+4krgY9eyFtUSNpehcIKZF9wMwj+acTqazyyBSQDpPLsvc5Q9Ah3K/a9ALEYAf70b3dSDpaA6tovfika3PDgZ5u+bIOPZd9YHScgx6mUmVZnuM1ovKCZLn7bvtCJHA3O6r3zdZ1Tzl5e5p7KjBWxWf2Nwhf2Qt8l+vT4nB79T2aoOI+/IF+c/UWidsfQ0rBkvrS40rl8Go2xOnZpNW3Ga2wF3icaZYLhJtnf4RnRHNXEC1+SySQ562TC7wWvhZzlB0qwe7WhpFBakYww7wAvU2fI8ZtWCnOZQJRhHjS+xN0qkXpulSL+w+dCBFzAgmI7VmjxQ3gIhoWqFXaOFli/1TsM5aE2WOQV3J02T7HXmRuccz1EH4hRCF8Hy78eh8UgoXQStABEGTS4I1U8bPHBcwV3TnDDolUTHji9DJIt8JrJidM3jyr1vlsowOjIMNj+jvqv11jIEUIkNA4Rg5HkxE9Ampl+ZZEtCozWg1Go+u4pQH+hWg8Qid17XPSdtZ8WECM1qeCeLbh4A67KmbEL878Fb5q3zumfGYIwnpxgpR2dpa4Jqnhi3+2XYV+Vg+6nsNCH9JXqmSbdHJUvppTcm9yLwy1LH9UX45HmXwtUSJ5BCX3PkfmYqG3HhoUkNZzrhNxrkjFTTEwgeUxxd1JzVuysOb+ux6sTJlt/JyJe+WfmA/xecuZmaB7H7wzFMLgwsVIJRx51SVqjRahhs1xHX21H5WwSQ8czfqefM9AOtQhvT+FxsVnWnhWz+sNYOdSYSCmqVrR49+ZxyDmP1KdbQ8kIe1QcLzg3rCc/dEXqpMJbhv7biSkYneGojd5duDkqDSBNA9jFi0uDyqKU92FekKioGqzpWw3InTnr+F1qKk650VgeuZGI6uvOYxtTqe8w+1JvTMecjG7o1iQuZBnqqcnyn7g5OaDRZak
+ phWkPHFP
+ Q+XGa6GJ4Fhz6iq7k1auGC+a8K1eLTXc1o2kCv1cWKDqjKv+htCuykgdAUyuAWjE9s48IO7PX1AW1etRMGIgXPdhnG6jXqPArVCTEfDCCFCUCTWUQ8tQKmeWwF0w0Sjtpg2ezvg9gdRMNujnejEApsmPgAsl/CbPvncVg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,149 +102,301 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 44982d352c33767cd8d19f8044e7e1161a587ff7  Add linux-next specific files for 20260219
 
-On 19/02/26 8:30 pm, Pedro Falcato wrote:
-> On Thu, Feb 19, 2026 at 02:02:42PM +0100, David Hildenbrand (Arm) wrote:
->> On 2/19/26 13:15, Pedro Falcato wrote:
->>> On Wed, Feb 18, 2026 at 01:24:28PM +0100, David Hildenbrand (Arm) wrote:
->>>> On 2/18/26 12:58, Pedro Falcato wrote:
->>>>> I don't understand what you're looking for. an mprotect-based workload? those
->>>>> obviously don't really exist, apart from something like a JIT engine cranking
->>>>> out a lot of mprotect() calls in an aggressive fashion. Or perhaps some of that
->>>>> usage of mprotect that our DB friends like to use sometimes (discussed in
->>>>> $OTHER_CONTEXTS), though those are generally hugepages.
->>>>>
->>>> Anything besides a homemade micro-benchmark that highlights why we should
->>>> care about this exact fast and repeated sequence of events.
->>>>
->>>> I'm surprise that such a "large regression" does not show up in any other
->>>> non-home-made benchmark that people/bots are running. That's really what I
->>>> am questioning.
->>> I don't know, perhaps there isn't a will-it-scale test for this. That's
->>> alright. Even the standard will-it-scale and stress-ng tests people use
->>> to detect regressions usually have glaring problems and are insanely
->>> microbenchey.
->> My theory is that most heavy (high frequency where it would really hit performance)
->> mprotect users (like JITs) perform mprotect on very small ranges (e.g., single page),
->> where all the other overhead (syscall, TLB flush) dominates.
->>
->> That's why I was wondering which use cases that behave similar to the reproducer exist.
->>
->>>> Having that said, I'm all for optimizing it if there is a real problem
->>>> there.
->>>>
->>>>> I don't see how this can justify large performance regressions in a system
->>>>> call, for something every-architecture-not-named-arm64 does not have.
->>>> Take a look at the reported performance improvements on AMD with large
->>>> folios.
->>> Sure, but pte-mapped 2M folios is almost a worst-case (why not a PMD at that
->>> point...)
->> Well, 1M and all the way down will similarly benefit. 2M is just always the extreme case.
->>
->>>> The issue really is that small folios don't perform well, on any
->>>> architecture. But to detect large vs. small folios we need the ... folio.
->>>>
->>>> So once we optimize for small folios (== don't try to detect large folios)
->>>> we'll degrade large folios.
->>> I suspect it's not that huge of a deal. Worst case you can always provide a
->>> software PTE_CONT bit that would e.g be set when mapping a large folio. Or
->>> perhaps "if this pte has a PFN, and the next pte has PFN + 1, then we're
->>> probably in a large folio, thus do the proper batching stuff". I think that
->>> could satisfy everyone. There are heuristics we can use, and perhaps
->>> pte_batch_hint() does not need to be that simple and useless in the !arm64
->>> case then. I'll try to look into a cromulent solution for everyone.
->> Software bits are generally -ENOSPC, but maybe we are lucky on some architectures.
->>
->> We'd run into similar issues like aarch64 when shattering contiguity etc, so
->> there is quite some complexity too it that might not be worth it.
->>
->>> (shower thought: do we always get wins when batching large folios, or do these
->>> need to be of a significant order to get wins?)
->> For mprotect(), I don't know. For fork() and unmap() batching there was always a
->> win even with order-2 folios. (never measured order-1, because they don't apply to
->> anonymous memory)
->>
->> I assume for mprotect() it depends whether we really needed the folio before, or
->> whether it's just not required like for mremap().
->>
->>> But personally I would err on the side of small folios, like we did for mremap()
->>> a few months back.
->> The following (completely untested) might make most people happy by looking up
->> the folio only if (a) required or (b) if the architecture indicates that there is a large folio.
->>
->> I assume for some large folio use cases it might perform worse than before. But for
->> the write-upgrade case with large anon folios the performance improvement should remain.
->>
->> Not sure if some regression would remain for which we'd have to special-case the implementation
->> to take a separate path for nr_ptes == 1.
->>
->> Maybe you had something similar already:
->>
->>
->> diff --git a/mm/mprotect.c b/mm/mprotect.c
->> index c0571445bef7..0b3856ad728e 100644
->> --- a/mm/mprotect.c
->> +++ b/mm/mprotect.c
->> @@ -211,6 +211,25 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
->>         commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
->>  }
->> +static bool mprotect_wants_folio_for_pte(unsigned long cp_flags, pte_t *ptep,
->> +               pte_t pte, unsigned long max_nr_ptes)
->> +{
->> +       /* NUMA hinting needs decide whether working on the folio is ok. */
->> +       if (cp_flags & MM_CP_PROT_NUMA)
->> +               return true;
->> +
->> +       /* We want the folio for possible write-upgrade. */
->> +       if (!pte_write(pte) && (cp_flags & MM_CP_TRY_CHANGE_WRITABLE))
->> +               return true;
->> +
->> +       /* There is nothing to batch. */
->> +       if (max_nr_ptes == 1)
->> +               return false;
->> +
->> +       /* For guaranteed large folios it's usually a win. */
->> +       return pte_batch_hint(ptep, pte) > 1;
->> +}
->> +
->>  static long change_pte_range(struct mmu_gather *tlb,
->>                 struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
->>                 unsigned long end, pgprot_t newprot, unsigned long cp_flags)
->> @@ -241,16 +260,18 @@ static long change_pte_range(struct mmu_gather *tlb,
->>                         const fpb_t flags = FPB_RESPECT_SOFT_DIRTY | FPB_RESPECT_WRITE;
->>                         int max_nr_ptes = (end - addr) >> PAGE_SHIFT;
->>                         struct folio *folio = NULL;
->> -                       struct page *page;
->> +                       struct page *page = NULL;
->>                         pte_t ptent;
->>                         /* Already in the desired state. */
->>                         if (prot_numa && pte_protnone(oldpte))
->>                                 continue;
->> -                       page = vm_normal_page(vma, addr, oldpte);
->> -                       if (page)
->> -                               folio = page_folio(page);
->> +                       if (mprotect_wants_folio_for_pte(cp_flags, pte, oldpte, max_nr_ptes)) {
->> +                               page = vm_normal_page(vma, addr, oldpte);
->> +                               if (page)
->> +                                       folio = page_folio(page);
->> +                       }
->>                         /*
->>                          * Avoid trapping faults against the zero or KSM
->>
-> Yes, this is a better version than what I had, I'll take this hunk if you don't mind :)
-> Note that it still doesn't handle large folios on !contpte architectures, which
-> is partly the issue. I suspect some sort of PTE lookahead might work well in
-> practice, aside from the issues where e.g two order-0 folios that are
-> contiguous in memory are separately mapped.
->
-> Though perhaps inlining vm_normal_folio() might also be interesting and side-step
-> most of the issue. I'll play around with that.
+elapsed time: 871m
 
-Indeed this is one option.
+configs tested: 281
+configs skipped: 4
 
-You can also experiment with
-https://lore.kernel.org/all/20250506050056.59250-3-dev.jain@arm.com/
-which approximates presence of large folio if pfns are contiguous.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-23
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260219    gcc-9.5.0
+arc                   randconfig-001-20260220    gcc-8.5.0
+arc                   randconfig-002-20260219    gcc-10.5.0
+arc                   randconfig-002-20260220    gcc-8.5.0
+arm                               allnoconfig    clang-23
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                                 defconfig    gcc-15.2.0
+arm                       imx_v4_v5_defconfig    clang-23
+arm                            mmp2_defconfig    gcc-15.2.0
+arm                   randconfig-001-20260219    gcc-15.2.0
+arm                   randconfig-001-20260220    gcc-8.5.0
+arm                   randconfig-002-20260219    clang-23
+arm                   randconfig-002-20260220    gcc-8.5.0
+arm                   randconfig-003-20260219    clang-23
+arm                   randconfig-003-20260220    gcc-8.5.0
+arm                   randconfig-004-20260219    gcc-13.4.0
+arm                   randconfig-004-20260220    gcc-8.5.0
+arm                        realview_defconfig    gcc-15.2.0
+arm                           sama5_defconfig    gcc-15.2.0
+arm                    vt8500_v6_v7_defconfig    gcc-15.2.0
+arm                         wpcm450_defconfig    gcc-15.2.0
+arm64                            allmodconfig    clang-19
+arm64                            allmodconfig    clang-23
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260219    clang-23
+arm64                 randconfig-002-20260219    gcc-8.5.0
+arm64                 randconfig-003-20260219    gcc-8.5.0
+arm64                 randconfig-004-20260219    gcc-14.3.0
+arm64                           snd_defconfig    gcc-15.2.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260219    gcc-15.2.0
+csky                  randconfig-002-20260219    gcc-12.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-23
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260220    clang-17
+hexagon               randconfig-001-20260220    clang-23
+hexagon               randconfig-002-20260220    clang-23
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260219    gcc-14
+i386        buildonly-randconfig-001-20260220    clang-20
+i386        buildonly-randconfig-002-20260219    gcc-14
+i386        buildonly-randconfig-002-20260220    clang-20
+i386        buildonly-randconfig-003-20260219    gcc-14
+i386        buildonly-randconfig-003-20260220    clang-20
+i386        buildonly-randconfig-004-20260219    gcc-14
+i386        buildonly-randconfig-004-20260220    clang-20
+i386        buildonly-randconfig-005-20260219    clang-20
+i386        buildonly-randconfig-005-20260220    clang-20
+i386        buildonly-randconfig-006-20260219    clang-20
+i386        buildonly-randconfig-006-20260220    clang-20
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260219    gcc-14
+i386                  randconfig-001-20260220    clang-20
+i386                  randconfig-002-20260219    clang-20
+i386                  randconfig-002-20260220    clang-20
+i386                  randconfig-003-20260219    clang-20
+i386                  randconfig-003-20260220    clang-20
+i386                  randconfig-004-20260219    clang-20
+i386                  randconfig-004-20260220    clang-20
+i386                  randconfig-005-20260219    clang-20
+i386                  randconfig-005-20260220    clang-20
+i386                  randconfig-006-20260219    gcc-14
+i386                  randconfig-006-20260220    clang-20
+i386                  randconfig-007-20260219    gcc-14
+i386                  randconfig-007-20260220    clang-20
+i386                  randconfig-011-20260219    gcc-14
+i386                  randconfig-011-20260220    gcc-14
+i386                  randconfig-012-20260219    clang-20
+i386                  randconfig-012-20260220    gcc-14
+i386                  randconfig-013-20260219    gcc-14
+i386                  randconfig-013-20260220    gcc-14
+i386                  randconfig-014-20260219    gcc-13
+i386                  randconfig-014-20260220    gcc-14
+i386                  randconfig-015-20260219    gcc-13
+i386                  randconfig-015-20260220    gcc-14
+i386                  randconfig-016-20260219    gcc-14
+i386                  randconfig-016-20260220    gcc-14
+i386                  randconfig-017-20260219    gcc-14
+i386                  randconfig-017-20260220    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                        allmodconfig    clang-23
+loongarch                         allnoconfig    clang-23
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260220    clang-23
+loongarch             randconfig-002-20260220    clang-23
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                             allyesconfig    gcc-15.2.0
+m68k                          atari_defconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+m68k                            q40_defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+microblaze                      mmu_defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                          ath25_defconfig    gcc-15.2.0
+mips                        bcm47xx_defconfig    clang-18
+mips                        bcm47xx_defconfig    gcc-15.2.0
+mips                         db1xxx_defconfig    gcc-15.2.0
+mips                     decstation_defconfig    gcc-15.2.0
+mips                malta_qemu_32r6_defconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260220    clang-23
+nios2                 randconfig-001-20260220    gcc-9.5.0
+nios2                 randconfig-002-20260220    clang-23
+nios2                 randconfig-002-20260220    gcc-8.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    clang-19
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260219    gcc-15.2.0
+parisc                randconfig-001-20260220    clang-23
+parisc                randconfig-002-20260219    gcc-8.5.0
+parisc                randconfig-002-20260220    clang-23
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                        cell_defconfig    gcc-15.2.0
+powerpc                   motionpro_defconfig    gcc-15.2.0
+powerpc                    mvme5100_defconfig    gcc-15.2.0
+powerpc               randconfig-001-20260219    gcc-8.5.0
+powerpc               randconfig-001-20260220    clang-23
+powerpc               randconfig-002-20260219    clang-23
+powerpc               randconfig-002-20260220    clang-23
+powerpc                  storcenter_defconfig    gcc-15.2.0
+powerpc64             randconfig-001-20260219    clang-23
+powerpc64             randconfig-001-20260220    clang-23
+powerpc64             randconfig-002-20260219    gcc-8.5.0
+powerpc64             randconfig-002-20260220    clang-23
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260219    clang-23
+riscv                 randconfig-001-20260220    gcc-11.5.0
+riscv                 randconfig-002-20260219    gcc-8.5.0
+riscv                 randconfig-002-20260220    gcc-11.5.0
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260219    clang-17
+s390                  randconfig-001-20260220    gcc-11.5.0
+s390                  randconfig-002-20260219    clang-18
+s390                  randconfig-002-20260220    gcc-11.5.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    clang-19
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260219    gcc-15.2.0
+sh                    randconfig-001-20260220    gcc-11.5.0
+sh                    randconfig-002-20260219    gcc-11.5.0
+sh                    randconfig-002-20260220    gcc-11.5.0
+sh                             shx3_defconfig    gcc-15.2.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260219    gcc-15.2.0
+sparc                 randconfig-002-20260219    gcc-15.2.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260219    clang-23
+sparc64               randconfig-002-20260219    clang-23
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260219    clang-18
+um                    randconfig-002-20260219    clang-23
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260219    gcc-14
+x86_64      buildonly-randconfig-001-20260220    clang-20
+x86_64      buildonly-randconfig-002-20260219    gcc-12
+x86_64      buildonly-randconfig-002-20260220    clang-20
+x86_64      buildonly-randconfig-003-20260219    clang-20
+x86_64      buildonly-randconfig-003-20260220    clang-20
+x86_64      buildonly-randconfig-004-20260219    gcc-14
+x86_64      buildonly-randconfig-004-20260220    clang-20
+x86_64      buildonly-randconfig-005-20260219    gcc-14
+x86_64      buildonly-randconfig-005-20260220    clang-20
+x86_64      buildonly-randconfig-006-20260219    gcc-14
+x86_64      buildonly-randconfig-006-20260220    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260220    gcc-14
+x86_64                randconfig-002-20260220    gcc-14
+x86_64                randconfig-003-20260220    gcc-14
+x86_64                randconfig-004-20260220    clang-20
+x86_64                randconfig-004-20260220    gcc-14
+x86_64                randconfig-005-20260220    clang-20
+x86_64                randconfig-005-20260220    gcc-14
+x86_64                randconfig-006-20260220    gcc-14
+x86_64                randconfig-011-20260219    gcc-14
+x86_64                randconfig-012-20260219    gcc-14
+x86_64                randconfig-013-20260219    gcc-14
+x86_64                randconfig-014-20260219    gcc-14
+x86_64                randconfig-015-20260219    gcc-14
+x86_64                randconfig-016-20260219    gcc-14
+x86_64                randconfig-071-20260219    clang-20
+x86_64                randconfig-071-20260220    gcc-14
+x86_64                randconfig-072-20260219    gcc-14
+x86_64                randconfig-072-20260220    gcc-14
+x86_64                randconfig-073-20260219    gcc-14
+x86_64                randconfig-073-20260220    gcc-14
+x86_64                randconfig-074-20260219    gcc-14
+x86_64                randconfig-074-20260220    gcc-14
+x86_64                randconfig-075-20260219    clang-20
+x86_64                randconfig-075-20260220    gcc-14
+x86_64                randconfig-076-20260219    clang-20
+x86_64                randconfig-076-20260220    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260219    gcc-15.2.0
+xtensa                randconfig-002-20260219    gcc-8.5.0
+xtensa                         virt_defconfig    gcc-15.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
