@@ -4,95 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A12C5ACAC
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 16:03:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D776C5ACD3
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 16:22:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 112906B0005; Fri, 20 Feb 2026 11:03:26 -0500 (EST)
+	id 33EC46B0005; Fri, 20 Feb 2026 11:22:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A9036B0089; Fri, 20 Feb 2026 11:03:26 -0500 (EST)
+	id 2ED086B0089; Fri, 20 Feb 2026 11:22:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F01C66B008A; Fri, 20 Feb 2026 11:03:25 -0500 (EST)
+	id 1FAE36B008A; Fri, 20 Feb 2026 11:22:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D771D6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:03:25 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D585576DE
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:03:25 +0000 (UTC)
-X-FDA: 84465304770.14.844845A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4CB7D12001D
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:03:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KglBC5WO;
-	spf=pass (imf29.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 02BE66B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 11:22:32 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5790016022F
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:22:32 +0000 (UTC)
+X-FDA: 84465352944.13.EF9029A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C73A620010
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 16:22:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CGCEvJdm;
+	spf=none (imf03.hostedemail.com: domain of BATV+48c09b353778ff9f8542+8216+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+48c09b353778ff9f8542+8216+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771603403;
+	s=arc-20220608; t=1771604550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=XK6eKrk/MEL8AorixobkPUMbfSElLezdgSmbF9o/oW0=;
-	b=0TRIIq24b/LN1wCLIGdCycnAr0+NIeRON6KnpekNJM046tXBFhrPyjS26CaNasjLumNXS8
-	Teyk/zE1JeKyZGpPm9Y/OiqSXHRfgPwznVK6CkELG7vlUvnY5BMcP8vSMZqZZsBjxoUp74
-	PwnbqkxmkZjmR4SNErEJMidnv/dwklY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KglBC5WO;
-	spf=pass (imf29.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771603403; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JRnb4BkrQlqKhx6q+mEan9QZi8Q7dlXMpG6gOi5/rDU=;
+	b=IBeaXOAcmpN9BNn68N2WKYJiAm2/WzfZhbvlCJzJM5KcktiAzySDB0UlUwi2XGlIJFBi/3
+	tu4c4b4xqoaIGw/q3qB69dDuACmZXSh3FtSYwSdMw3N0WgqAk571/Qg/LmIu3/VeuhmqbM
+	07JTxrSc8oGh4U05Ex/mJgpPG56WAro=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771604550; a=rsa-sha256;
 	cv=none;
-	b=KFjmaX7uX4EiNIDs5VsPTnTn8yRLTS6raEp8yCg65AWRtB5R3jS6DzLWZ5qBL5Gyk7lZe3
-	NFr98ob9d/2ntNjkiGHaTizfAk97ec5p+Wr24HrW0zlti+W3TdgYrZJvA4Obg9MYBzgi4m
-	odvac9NIK+9TDJIpHa4PiIg9hBtQohE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771603402;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=XK6eKrk/MEL8AorixobkPUMbfSElLezdgSmbF9o/oW0=;
-	b=KglBC5WO5RDPfAyCtFSFCX8HVcKA1pNY407+2s8IqX/n6QxQskswZSufiTHBQiwXz5PQY+
-	oq7phUPL6L2Zad34h6uHEoHJNpdWwH4R7zD+VSBXlJNz88DbADe0vRFjxHo6CK6DzKIM+S
-	xyGasOs7xvmtRi+b13goKtovivpezQ0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-43-pdCMByvHMC2r1zPa4njmzA-1; Fri,
- 20 Feb 2026 11:03:18 -0500
-X-MC-Unique: pdCMByvHMC2r1zPa4njmzA-1
-X-Mimecast-MFC-AGG-ID: pdCMByvHMC2r1zPa4njmzA_1771603397
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 40D3119560B3;
-	Fri, 20 Feb 2026 16:03:17 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.8])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E9035195410F;
-	Fri, 20 Feb 2026 16:03:15 +0000 (UTC)
-Date: Sat, 21 Feb 2026 00:03:11 +0800
-From: Baoquan He <bhe@redhat.com>
-To: lsf-pc@lists.linux-foundation.org
-Cc: linux-mm@kvack.org, youngjun.park@lge.com, chrisl@kernel.org,
-	kasong@tencent.com, 21cnbao@gmail.com
-Subject: [LSF/MM/BPF TOPIC] swap_ops and plugable swap back end
-Message-ID: <aZiFvzlBJiYBUDre@MiWiFi-R3L-srv>
+	b=DUaPFGLnH6z1lemfZwyecvemQpArz4UEGqEosCQ9Fodb0s5yBF9a8FpPxY/NysNB5A7Dlb
+	roP3WV35pctGOsJ39roFx6D52bWCUWOm3OZz+soqJFrkedSkITTlX4KyH1FmH2FweEpf/6
+	/03Qd4LHnGbC2N+Ol87rXTRUdd+dctE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CGCEvJdm;
+	spf=none (imf03.hostedemail.com: domain of BATV+48c09b353778ff9f8542+8216+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+48c09b353778ff9f8542+8216+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=JRnb4BkrQlqKhx6q+mEan9QZi8Q7dlXMpG6gOi5/rDU=; b=CGCEvJdm3G8Zx0dH30TeN5aaSa
+	HHac/iNGrEN4/ftoNZXONISPs+51ihEOHZXi/a3o/nUiXDjvSTYoGKioArcVaPPkXlVg+Qyl8NHP/
+	UfowdDJ16SFuzMMmJBA/Y02hinZT3QegUfeioqc/yiAiGsunNanX+S4vJc1mn7Lee7xZSnSZaVvc3
+	4gNxr1idPs82bfPS3qFWhPcPJvS6AHpOo2FFkVOuQO91AzBVlQYIDD+D+qhnm99aLMkiCseYxHz0G
+	pEBmXUqsObD8vfdg1w0ICgaFzgTJctbPyVvDV2+kQi4aYfbkTu1BbIgMqPqtT48V1x9t0l8qEMQYy
+	/8osRV8Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vtTGt-0000000FFkF-1hCw;
+	Fri, 20 Feb 2026 16:22:27 +0000
+Date: Fri, 20 Feb 2026 08:22:27 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org,
+	chrisl@kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Flash Friendly Swap
+Message-ID: <aZiKQwT7KjWDLspH@infradead.org>
+References: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XWomtx192IMkjgLEKziYjjyyepsBQQiLPlW21hh0xfw_1771603397
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: ekma1dk4nd5j76peaknnm69zqtbocibp
+In-Reply-To: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: C73A620010
+X-Stat-Signature: ahr1usuqrygwz48comdj69qoos4ionpq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CB7D12001D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771603403-362721
-X-HE-Meta: U2FsdGVkX18iVO14ucWUZoa80CNNuTR6Vjp+PH7JMgiXtvZPCQY+xejAioSjtEJr9HZlipk2Y72BKcTL3eFznGswAmmwN7UophtDRpJe/vNmjHZev+2Cs28d0xoDZO8HAjUxKMPrpIFS2quIdlrtCm2WfFYFnIFBnC+5GhE/0bz5Vpo7PHY+MnDb0EW+Hu6c81gCgTY+9JrpzOzznuRM3Z081riD7NP3N4O0bBIjN5jK4XKzxM21i0jloApSQp79LyPksUZB13H+/ujN1/rMjjM9mlcgMxVRsgm3iTWG/2vNm9vAktaiylv7j3C/TybqilxBAFl6xSFbB64zoeiXTd/vRe2d47t56HkPviwEe8oVzdCZukMKKAePD+pWDUFMXe7oQlWoKhmd1k+Bfm/M9QA4cGx2pLaJ+lNRfXUPgZjXsv6E3O4t71C8bkbgg51MzQEHsVY0ZqZoUvPljhj4y8Ebr3/kDHdUeXu1GdXfHGQ+Q9iuvFouQAv2QzGuMsPb6nkykbK98bPGrVINKgZZbXcrgc7iSP0QmYYvGODoH7Csr4dxILFM7Tqib4WIWKOJ+yauHI1J7IptMFyIPLAnrt6Gkuz3lN//cRxZQc6clOggpD0EZDx10ToQwCg+hIpd1enwXLNPiUQK7rRg8Z4bZ57JuTsenylsR/fbLXjwmYOoCqfunT87/OVGEf2uHvtagFo8HFV+8B1B175rI3N8a27D0y4yDqr0pFz7Blq9zJmzTw27uXq53kfBIf9dPr9aq72GmBNFywW5AXK2+gxHEsXeYdElXTzxcGNHtQrEt+qlwWW2Q4zh+pPUIl8JwLYghdLXRd/n74tyszdrDdB6m8PL5lGVKoZRa0OfnyEjAUTHit3ohzJqGk2EtvJvnq+G9DCObpyeF9ruP7Kn19jzoE3PaT6Bjx8TbIm6BpCdCRvyX4yHY1AP2QhQ6qRi2Z7hGTuIQxX4dgVxqec5Vbt
- Nwx+6jPh
- XVHeIoFCWpElI0Ni2V4Y21+XMn6dLj2SCtywelnQnBo1qkYWCbp8gW57tBwwb2g0jSkm4lhoaonqiia+JmUprv61gBCq/WG+AUlMrltxBYQi4Ls5YxlJsJ+g247y7fveASiko04KSDQUU7/PXh26hzH0E1kSI+YgYkhhKkB0BIyzbcnhmt1qEBgvO+IW510NjqmHlfgnGZogLGk5lWnZ9WxDr0tGK3bWouLXZp8eGW7nEFCE2j6iRtkHguM9MZGTTJtg4LjbcWmekP1gPDBYEUQJukP62piOtpuINa/ubXoQrQYKnwcgP16QCE4pObl1s24Dcz9HeW1SRu5JCLFmF9JUEP7pg5KCWgnPUxPL67dUCxJ0HV8SqnDrjP0H77Orz4RgZtPh1Lsw+F2irikdd0GJcRRdE4wVqcrprfI5hgo7RnSRa4E65579gr1FAnLwhqpMO
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771604549-421255
+X-HE-Meta: U2FsdGVkX19vEEVSrqWewVpfdS/ZDjOiGVFs+pEGLQnCuBzGC0jXhjkze0IQDFa1Msps0xu/gHw86ra6dJOocHLEqkjaBHSTvIxkmEyPeXeqhnGJ5XeruDa6a28/iUDum8zU1tAt8mEam4TFLcgg+GnSuh7zV9p7V0TE6V+x5zLdWzZIqK3UHBj1/fuUMdtWtmXOUC6+hiLgwOKxROIfqUP3Tuy1OkddSChKBHUMy2JXYOZmViqc4ehLkKrEeNHs5UgBGIQcaY5h5pRAThc33wsa8+EsqsLyzqoRADlUbEqHLmUfBNwmuI1DRw8PTyiRx4dm65AFygoeOBboBuF1zfzV+pmv7+wU6zkdOrqW7/RdocgfUHOa1dRkwME9ZUTj6som87ML+YLP9x2f9q9vSYQyNXx4ar+9214poJFYa/uCi+Gxip/Tixqwirb9F6LwKgbysZYiy7oRD0ep0rm+xwA57pXspErKJy42FmeWDNUTLnJ2+pftYl2Gk97DgVd0O0qKJJJzecZjBYVVRIEVIXrErVsQGfEoQd+wf5596Iajkez1ukqnCo0PSqtQFCz985MtP28dFWmzVaBm9phQD4s/J0yB/XZFoCzvj1bTk2tmXIyDBTfXkH41eFMNXPuTivACYRyPfWAcvkiNDxQi7pTBR1+/PnT0rrTcpcEaUNrtLQLd/D+9FGwiboRkMDyNGFSNrUFQLGn1TPRrOH2Zn3vqYq0fF2ptii44zNdMGxHmuYNyB9VeGDs6YHqh8VJfsmfpyypFmYOwZ0UTuZyfwv06GlV30Ws12sMU1gvlaOX0Ev9UrydWh59pIBeDVg9fqf85ZH0WAyDM0KJ7DMQlCQqVRi37oZ81yLQLXCz3LoRdgvnICq8gJ+DH7GrEqVpweTS14rTWyomMmVjo2ptL7DiEf6IqfcIttO890LlkfOCDOq67lQvehTluJvHuIamoLQz6eLUaQBTuS4uCZAo
+ Pw6wZJae
+ GYRSiS2OASsB9Xjv6q/Ah5JGqNe1n2w0fAWAp/8aS9oHeTilS9A1x2H7G5sQ1K5G5T9WDubXnPfSl+T+v/I9bXuoFjSg6+3HQ9DZSSGAbVG3bPIAyS6d3UeMqfhHhNyvNEiFO+y0ToUcznxJOXUOyAbxWTupSGzcbSi7S5mAOy7c6y7uHdBktiIC7OBwoVxyvl9clSZzZedVtzlyqebh9PqPCyjNSBwNBjhtuiBVHScmDLh5cG1k7zzasxIT/KPAwXBgmRolhj6mE/JMZ7ZoMJurZcu05lgO/vBP/vFDkVahKO7A8afKObcf79H5p4OulMcETkmIV46blKG1RXkKyZfhh1rHjMvCBwsbx7RH/QRGbr6JnsM9RMBhRCmOLTaDJQT88BsAl4sK1F1BLEA51C2ey5/Ok+UEPJlT4x0mE8t7A6zAr6v58yJS8zUp3i5RHm88OMQ9AtRrBjCuJ5uNHBk4S96RLGruw8w4agAc1K6U+lla+QJ5g/CF5gQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,45 +90,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The swap_ops provides an unified interface to allow registering
-different swap back ends to coexist in the kernel with their private
-implementations of how the swap behavior was handled. e.g. the "flash
-friendly swap layout" proposed by Yongjun in another LSF/MM topic,
-which is more about flash related swap. I want to dedicate this
-discussion topic to the infrastructure to support that: the swap_ops.
-Another potential user is Android, Android team has been wanting
-to swap out compressed data to reduce the amount of the IO needed to
-perform on the swap backend.
-
-The plugable swap backend is somewhat similar to the file system.  I
-hesitate to call it a swap file system because it is not a file system
-in the traditional sense. The API is tailored to the swap specific
-usage. Even though the swap entry looks like an inode, it does not have
-the concept of directory and does not use the VFS data structures. It
-uses swap tables to keep track of the frontend related swap metadata.
-(e.g. swap count). The back end can choose where the data is actually
-stored and how it is stored.
-
-The typical operation includes: read/write a swap page, allocate a
-swap entry and maybe more.
-
-The current core swap already has synchronous block device vs
-asynchronous block device. Those can be moved into two different
-plugable swap back ends. These swap_ops expect to have no additional
-cost to the existing swap behavior other than calling through the
-swap_ops function callback pointer.
-
-Discussion:
-
-How the swap back end was chosen. We can make it a swap mount option.
-We make the swapfile header look like a file system super block. The
-different swapfile header contains different back end types and
-options.
-
-How to handle storing compressed data. e.g. data from zram directly
-write to the swap backend without uncompressing.
-
-How to allocate swap backend's private swap entry meta data with
-minimal memory overhead.
-
+Honestly, I think always writing sequentially when swapping and
+reclaiming in lumps (I'd call them "zones" :)) is probably the best
+idea.  Even for the these days unlikely case of swapping to HDD it
+would do the right thing.  So please no conditional version that need
+opt-in or stacked block drivers, let's just fix swapping to not be
+stupid.
 
