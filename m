@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C45C61DE3
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 18:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C04C61DFD
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 18:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3354F6B0088; Sat, 21 Feb 2026 13:08:06 -0500 (EST)
+	id BB2796B0088; Sat, 21 Feb 2026 13:31:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E3C36B0096; Sat, 21 Feb 2026 13:08:06 -0500 (EST)
+	id B607F6B0089; Sat, 21 Feb 2026 13:31:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF186B0098; Sat, 21 Feb 2026 13:08:06 -0500 (EST)
+	id A6C266B008A; Sat, 21 Feb 2026 13:31:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 08DB06B0088
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 13:08:06 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68FBE8BAD1
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 18:08:05 +0000 (UTC)
-X-FDA: 84469247730.10.0477833
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B8F05100004
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 18:08:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DdZcYRDF;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771697283;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BPzQx21V/we35w66JCHEVqoFg7dX4MoY+Ku4InKpaBU=;
-	b=BQtQrrHlNyFFjUUynP0OoSVlNdSKjf2amR7CwE2QVb9NjyBw2UgR03usC/KMuewUVBxjqh
-	I8Q6imp4dwxPJyikEiLjA7pZoPBfHyGa7TvLITez8GpByFcTAd+W9LOJJjXF4wyyc25L9T
-	2nxeeckLqvzpaCILdCkoOreWTDF1OkQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771697283; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 923F16B0088
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 13:31:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43327C1FDC
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 18:31:46 +0000 (UTC)
+X-FDA: 84469307412.13.527E21E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7D3374000D
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 18:31:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uQ58nDhT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771698704; a=rsa-sha256;
 	cv=none;
-	b=JVBIHisyZQgIRhpgB09ozJWgrEFqkOwsgx2tMDDDhBlQzTrL2cJ4AVyFVG2sqSiLVIyl+/
-	iP/5/MkK9PhobDPF3XOAMSIbFEGzOV18BpOpqDTGdnZZ58Nt8bBKMEsKKnsxWRJQ9x07Ib
-	LgzfGYV/zFzaP2O8NJ4ccY20U9BfK1M=
+	b=WDd0wpd9Vlny2M20Qcnfdy409pcbq8ZA8HXdF75neYCge3NrrCykJAQUhd4aLHC9PU99OD
+	PcSWEnTQ0oRWbp0eCPMsa3PMjgIacgUgCFyBJksFdGuffKWTSto5ZYxpnhDZ7qy1s3Gwam
+	kkypJN/vYwQPlXWHBBZ+VdsRWVm5dlQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DdZcYRDF;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uQ58nDhT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771698704;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=CpSEyt2Bz6jF1nDVa6tVNFmBKBC4/1g00X4HNf6NDxo=;
+	b=ov5FZsSxQkmCTJ4MUrWqzMsy/QmrJ2RkBGiY6ddQynNl1DHR8+j/nJblLuLBkhuIGN7+Um
+	6hf2Fj8TVFtGaWfe4Ai5uUjeG1ruMnKn4zO9mbA4m/deuEOm3l9Uz4+XeE/v5cP3tIWf0G
+	elELknpnVBTq/1siTC3H82VBuNNhgUk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B720E43D3D;
-	Sat, 21 Feb 2026 18:08:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EAEC4CEF7;
-	Sat, 21 Feb 2026 18:08:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DFA8C60097;
+	Sat, 21 Feb 2026 18:31:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9796FC4CEF7;
+	Sat, 21 Feb 2026 18:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771697282;
-	bh=BPzQx21V/we35w66JCHEVqoFg7dX4MoY+Ku4InKpaBU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdZcYRDFdDDod4Ylxzd6FUP3KNcZ3/n8AypcPv1RyjZ+W4wfw/KfVd84c/VtTvAau
-	 tUCEDNnzKueD+mOzVIJl/E7JxGAiyu0UJFHY0TwKsEbl1nEHYPDvLkAAfh5hY3/T2d
-	 yINBPVtZceE7vfBeC8GVRA84vKh5uDzNoDjym5BS88navj4YHY/HyI/9hBD3e4BYhW
-	 pJkT5czeZfNdWg271WExdWGmy05pwyU3mmR+QJyDmQ9CuekLJUgYWiq/8WSglI5yV4
-	 s3greZkZ/hRatkmAskwhW+0vQZRtmgeWf4RdsusLlizFUBWT69yh5DpJMZbhXiS0rO
-	 TKxEWT6W7jwRg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Akinobu Mita <akinobu.mita@gmail.com>
-Subject: Re: [RFC PATCH 1/3] mm/damon/core: split regions for min_nr_regions at beginning
-Date: Sat, 21 Feb 2026 10:07:54 -0800
-Message-ID: <20260221180755.10505-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260220151301.58159-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 3nmcfgq48fj1z7bnxgwfutk9djm333dn
-X-Rspamd-Queue-Id: B8F05100004
+	s=k20201202; t=1771698703;
+	bh=eu2Qd1miG4+A86SNTgiVxIiJHHSHvccLdVNaE0DdCW0=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=uQ58nDhT8vcOVJYkpLg77asutNk5QsAqPCbCKnh6gsdLXo4OL1YlJi3DhIZ5U76ig
+	 5v0mDMWq6j0Fucf5mqrioi6U8eJre1OjpJaeW36yEgnxpU+Ierd7Cax3otWzmjKtB2
+	 zaHhBfQGHPStZ3csMHymXNAmDob5LVLF4T6lj4QmdYXQlkSkwqSf75bIDjiz8d9Sau
+	 lEO3Z2Wnzid4hMfnFuE0+F6DO78LnXAVT0Y9QsPb9dTnhiYqWnNC57gwb+EY54Omk+
+	 wvpH35BPAGyibG5hg7wJyGkL7EURoLzuIgSO8XXSr9bfMmDjsP/6A7B7ZRiGH2OKUN
+	 +jFtLMOmhTShw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FEF73808200;
+	Sat, 21 Feb 2026 18:31:52 +0000 (UTC)
+Subject: Re: [GIT PULL] memblock: numa_memblks: fix detection of NUMA node for
+ CXL windows
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <aZmMhdk7rrvJ6nzS@kernel.org>
+References: <aZmMhdk7rrvJ6nzS@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <aZmMhdk7rrvJ6nzS@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/fixes-2026-02-21
+X-PR-Tracked-Commit-Id: f043a93fff9e3e3e648b6525483f59104b0819fa
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 817c16e5655958c34035a10c8c4b93e33e529624
+Message-Id: <177169871094.1180555.12921561342220457943.pr-tracker-bot@kernel.org>
+Date: Sat, 21 Feb 2026 18:31:50 +0000
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Cui Chao <cuichao1753@phytium.com.cn>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 X-Rspam-User: 
-X-HE-Tag: 1771697283-544544
-X-HE-Meta: U2FsdGVkX18oMwLS00FN6+ApDi1fIQKDBVc8MM30oG53AC1kgdHIQk41S1AA/DC72mkV+xAq6TKx2pEe/7fvhpEuz6vE7JKoo6fGRi8UA/4/f8XNUdyBHLO3SvZ95h9VDNn01XeuLCg9R0f4XsHKgLcM6FMrv+q6I4pjR65nQvVK+eZQ28AFLzjYwM3WTaPxd2a5QcXH/zVXyxw+JBRaz043I0eUBRP+NlTgMjc7zfFp57Q5zm6Lc8XyjdU9Iflbp7bwWaLz1xINKsOIR12lKSfhgfg/tHkDKYbtHCj781vEvzsVd7UHDpBnKkC9hYVo9lkge3nNXQT3u9T2jKZhpaYzy2HkhBs1DKu56dMlvaecrKQZz1U5K4FOKIrZrMYSBzeWWoHW8H2QUi1hop6mMGHjGHHbMNn3IPsAEHaFe2T8Nvd/SC7tdO5ZuUz2A8HrGuyYn/qy6GugeZbakOhbRdJijCUQIdCt+VIINtkdYH08i6aKbP7pzIp2MLgJABEPOOsQdWdcdVcl1RAgurvhK4rq1qYf8/PlFDmsk2IbnerWjTgI0pR1AeLn5e/XvYcTDH8MMaI/hjRdu6M6QffVMbfcxkB8aY1lEDmxB8gOrFnhdKJ5cHUvgCkiLYtuvQhtAR1dgIHOQTYatib5qPv/uSMIq44dXzSLO05+JlC7eO2su3gQ7hoCv9Wz6xKkCeITFRjbO5/Ks0SUERPvTu9dHU6teAQc/qZ9M9BOc/2seK0vH5ZEvTjtEJBgAlVavAFWYAvUU42rB8ED4+cFk+cmZriYQV88UzI00Dkhoxlxv8OXTWq1AIrt2rwrhbnXuOSii+fFFWA+UimahYo5DXq8i4nbHO4JOm+uAnBXGQdPBLuK1Z1/IsBMcRdb3+HMZ+H+eDvAJNebpeqmyCxDC6qnLWFmQMbteRpgBebv9ez/bCqHBu+ncSyHMWEyRs+ZtJBqThIGJyfsxTTrmvIF3sf
- l7hQ/TYB
- 1oWv4+qJUYVoT4nrXc4DrrCzBgWAaOkP6fm0btHIYdL4gJFDb9MBSQaggYiuZWSTISJe+4VmS6u79leydIzfLBpX/lKijgqWP+85kr7C8GgXAwugcBRLtymO13+uPuNvCcxirBpXuliPOk7BXvjxZRVA/oZFBPVY+Yv1xbYvWWThWqCUGhC3Gt7tQF55RzLIYGejTLU/yIZXua2+e6HI3xORgZt5mn7lwNx6Gf2BrGXUi/aMDkGRbcddhX8OZcpFRmv7MwpaMmqDMzZtmbQxZGM+UQM1rz3IU5nC2xeARWHoV5HVC+Y3QxyhuIVHG8a+GbDzEz3dknz4KC0CjE1mgIJ7K0NpRFAMYQhM7
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7D3374000D
+X-Stat-Signature: t1xmb8p9wiuejrp4a14ousp59qjh4db4
+X-HE-Tag: 1771698704-918723
+X-HE-Meta: U2FsdGVkX1/xtqWor+YcAJCZkot3GIVIMx15NAS4N5U9R6gC3OQqHcJuTw/QfKyOHdW3Vlcj60iAFHhWGcpy5fAS9kGfhZ0qejs8QdCL40JhH5O90bBISAseWYTU7trotdoM4OzQpjfXCpqSwIrXcoxJOY9n5+esxo7/a6ORPXsRa7K2bI0BjvkBhNkFUtyvXLmN/jilex5RNbhZCLvUshSFmGklLKCg4BiUYVXQeRCdUFr9wtaot8G5ALKbzNt2IWk0ikezAPv8R4ebk4Mp+jyyO7eSvmHh3tKpco0ndair5rP5JMf99EFzki2PVy4aIb1v8dCGsyLH5eZ8xNcZRmMsWfPkz17lZB1Vq6qaCHUhvL8cdPOGSrU/Wjx5ik546QIqHkfNgqpSy5pXCloxB+a4tEKD4BMWDIXWffpd9wZDW9uLedaz6GlnKddse8KZXsMcZ5f3fZWsJC6kyrt4z6dMp7JdcTsz0LR0fXQcDXXc0FIX9gcBh5yW0HrUieGOKHr4ibg124+kA1bbJwNQC9sCkbiJA2n0iHYZoxMasVVsJhitVj+dvXSG33lsDGVJVnSiBprg44tLleUiJ/k+gbSfyNqUf7jsQCUNj9Mhz+vi4jLm3AwEq6tVAIoLcKjoptO/134FEQBL/TjQeMd+jgwv0yA/Qbpnvfp9A8z1pUp0gDO1AMLRPJbUwbuzkzLZ9ObaEQhM/ZAc1dQEhu4HJggZA/d9mqTBiBlvprK8iN7TiEMnG3ljAal4t5FC1gXZqtXdfM1yBYrBWMxzuePXMjk6JDWpdX95u+rMdiOf6662ZIoFpyldCGKXLfdJvBQjCUjjFlY37VAeVorEgBhMjf+NYWS4ca/Gyl4klhNhIOlr+B/wUOFMAtS44syqg1ZRwmVb6GENYzOA2ap+XwQDY+XyxCM3/SeR7pi5nfVJgKrJkBRcsIB0FWtyHIzueNfDWaHxBy3kNPFrTLNqWbU
+ ONOiPDnC
+ AZiwb/HaQm36Cx5NYtRFSswqNMgu/n5nXbLC22EZY/RntLonEcRi9I+T63m1ZNJRPDaSQ6ONRNPjEeVAVxd6vnkFF+ShR1UtmMgWL1UpGiBDYTyMMhbklZ7eUDo8EM5m9Kac84DilbcsX03kFfQHGU+d3Fv7m3YHCBwTEhar3R0KfjKKJBqFsHeEQxhbelCjUPfTDUMvOFSuM4UfD7HbFQJefIH35iNVV8Yx/k5tAOABfnjv5oLCcB8Kbefp53FvtRkQfPn34oPTYy/cKZl0KWaw01XnpTc/x7IijD96qhNbo0EKILRYFgtTLmjatAZ8rt9PVJaT38FMoDUfkH2rbgjGJ9pSU34/B26bcZ3SMV5bOn9ajCN7qHW4sLoHUdvgOVM4Dpnlu8ANma1uRuc96lLw3miG5jySZIynWBBOfaYaPOywbNm5AoDvoGA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,18 +98,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Feb 2026 07:13:01 -0800 SeongJae Park <sj@kernel.org> wrote:
+The pull request you sent on Sat, 21 Feb 2026 12:44:21 +0200:
 
-[...]
-> If nobodys finds some problems on this, I will post RFC v2 of this after
-> squashing the above diff into this patch, probably within this weekend.
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/fixes-2026-02-21
 
-The RFC v2 is posted:
-https://lore.kernel.org/20260221180341.10313-1-sj@kernel.org
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/817c16e5655958c34035a10c8c4b93e33e529624
 
+Thank you!
 
-Thanks,
-SJ
-
-[...]
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
