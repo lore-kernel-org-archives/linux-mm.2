@@ -4,127 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC0FC61DE5
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 10:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6411EC61DE2
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 12:40:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6DA46B0005; Sat, 21 Feb 2026 05:50:58 -0500 (EST)
+	id 272B36B0005; Sat, 21 Feb 2026 07:40:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1B266B0089; Sat, 21 Feb 2026 05:50:58 -0500 (EST)
+	id 21FEF6B0089; Sat, 21 Feb 2026 07:40:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FD336B008A; Sat, 21 Feb 2026 05:50:58 -0500 (EST)
+	id 101B36B008A; Sat, 21 Feb 2026 07:40:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AE216B0005
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 05:50:58 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0577B13A9BD
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 10:50:58 +0000 (UTC)
-X-FDA: 84468146196.18.C0525EA
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0CB0F120005
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 10:50:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=grVG2jbL;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771671056;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED5F56B0005
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 07:40:42 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F0601604DB
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 12:40:42 +0000 (UTC)
+X-FDA: 84468422724.03.5CF9A1A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2CA7120003
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 12:40:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
+	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771677640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+aReRVSH1h9SjGJ7WnDbxbUNqLv/01ztoB2jWcU4nk8=;
-	b=Hql8dggAdD8/n7ptwEbnPzBCN9hxhSIkyeSR5lt+yLtEkEuRfm/svk88iAKYOh/wIn/O+l
-	LU1u4SE4+YZreTNgEIpygrMk0xMsF+SyqE4QUT4KRg7DkyjPYCDwgWEKqMFSgsP46VYI50
-	9ryyXPIN40dEBWU11JYZJtPER0+b6Kw=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=grVG2jbL;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771671056; a=rsa-sha256;
-	cv=pass;
-	b=0rqvQaFFq0nxOawswq4/QJ0I7yXJEKYCrccW11FIxQSjRMA7ksvFD7J5xBg3R3ji6EG5Rn
-	emD586VuFXQiLXCFMvqbQMglc9JIDLgzceBly6blTLZHTb9lXzMrqUmQXyW+aPWEvXQcG0
-	Y53RQohkatnwRiMg9FxhJuspjdcSbH8=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso3324598a12.1
-        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 02:50:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771671054; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iA7bfpfzZhFCoBkp7jY0Bg4tK2oQ4Pg2bbZnxjt0br9zGW3s386b4Zwh5dTAcHO39N
-         8ucZpltQJdCdfFcceR1nCs/8229706dqZ0zrNTt81PT0B+CaY7suvJ0kKW8GbRdWd4Ca
-         fd+IhBlWW55o5QyQLDyMKatUnle9lolj4akwVJPtcPDXUUgvy6cLCQPsQlBC75AedGMb
-         rGvFvcsyGYTeTBhBo+wV70K0D5XES/lRQg/z2WyvbHVgl65K2E5Vcmgi/ke01pVRVjWL
-         ez53HcwWYiPcTczEFtQPFOh+PrCbLBKw1Nn93DlI9o6DtS+BHjJNuOd+lZo/J04Y28xW
-         rWqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=+aReRVSH1h9SjGJ7WnDbxbUNqLv/01ztoB2jWcU4nk8=;
-        fh=0D+G6ihJLVTciY7IUXEfF3y69R0mmh46moKlP6A0fBU=;
-        b=f+T7c+ZXgXBj+WTUMRYzs/rGm2AJ9n/GeDT0JiN9dWMjuZTQ5ianViAFOADUcIeRdz
-         cswyhbTvmZ+MQQA6UMWreek3ebOGg2Yh8zkz/9Goj9rolSRkRCUK5GMU+poznSSPQ4A1
-         13cnoLjG60m9VVnhFRO5eehoXK2JVGI2KpSm4XmtKk9ObG7sTJsvDg+wfPuC2H1yQFEB
-         pXWFyGFMYjpm/kJFnZ/7OTGsFsNW9ZNN7dTGCXa5GpAYH8jCeiNOhJRNusm2xL4RU4qC
-         VkE9p3rrTmyciqeXoO86PHFxSSfctGWWOxBrZp5vR5Jir4uMWqHRPtv/KqsQx+YQw353
-         f8NQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771671054; x=1772275854; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+aReRVSH1h9SjGJ7WnDbxbUNqLv/01ztoB2jWcU4nk8=;
-        b=grVG2jbLm1/fiWHQ1RdidXgwc9q40xKfG9+Y4TteMn0uSV2PLP4Z9ItpsbChtbCMy9
-         oT7kJHtf/fepe/Z6himBRjpJaoKMVqFLHcEixBzakOytOYeaiF5pWIruJKXVsh6fhxE5
-         +Fk7sWOD5KZ1un1pB5uXi62ikFs2ZKBQXkGDbiEsmtVhzC04qNaDrZMTRFZRxlIPqj3O
-         JgtVm5Mb2RzlJKHfKCdIDswLRcnjiq0FkqVs4pOsvZFdt5A/QPsa3Hvf7sTbv8s9Q0YR
-         hBYlgLfN2d+H48ADaMrkqDAb3CwP3YZe7SGLLwY67OHpEhgy+PwqmOLzcri6ROYkMHNV
-         XULg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771671054; x=1772275854;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+aReRVSH1h9SjGJ7WnDbxbUNqLv/01ztoB2jWcU4nk8=;
-        b=seKNXoh70nts8Pj+dSz6m3p6k4hy0wj/SwWCiFfDFpOWPX5f3rP7yQzL8BYLg4WAln
-         0bWnukmQlBYBR2Vx04OPYI58/KVIS9MilzOBnbNW2nbK8ufUTsTcpCu8DDaTOSwiv5ly
-         WI6g130z8Q3ALD2mJCXsWLKexJK8RPpHjwayjhqMknVLwdO70CUG2RpIGaJCvU9v3hea
-         Lzn+oV03QtAVCGRRPxllQ6NphltrmImA59LduDymoHDVzXbiwmL9t/lx7L9qZ9HIB5C4
-         sRZ6SsYqY5YK0ghDzjCMmi5nwlvzFU2EirjrIItwOkvmRUWjmH8cs1JuDkodcY/gsUZx
-         XgvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXtvCqKIFQQSGUKrwaQ0RM1vz6pvl+ibYjaxGAcAllKYlAqF/khR5xP+4c6NABzR5I/PWdd6R2CA==@kvack.org
-X-Gm-Message-State: AOJu0YwuydiLzWVEnrLDHyjVBSozuJoC9ZMNr5Tk1onThcYkzMtBDUi7
-	UIZCmYrTILtAtkeYX58eqjsk3eM/kYnPydBkaRHZf2zV3GBV8FPb1+TVaeYpOXxdAxcv4ScbhGG
-	8s/bZa4Pnf6GfmplAB7oKxWbYtp6aIi4=
-X-Gm-Gg: AZuq6aKTWg8le1t5b/m7StI7fNnbG6wvhh83gfNoGpsZc/73Ez8FVNeFuPwyXARwN5e
-	OxDnp1fXLAp0TbjwIbnjW9080T3aOl/fl2YgB3OhtTvllQTIqPjumVThwaSSo8P+W3GcI1CZ/gW
-	exsOQZd6pxMWRqVm1q/f560sH/dNWExVpGiY2QNmfpZzCv0XJQufKl2DmGiGa4EVbEG6JwCVXsV
-	irYurU56UeOUYRCvrqBkmC1x+Ym1eQ8yM3U7XSEXj2a9swmmzSd4AtJ8hkrYB4NyjoGTOvTucrD
-	J8eE98v3ZXWusjki0twkC9m/3MUF2zVh0CFv4cxq
-X-Received: by 2002:a17:906:eec7:b0:b87:115c:4a2b with SMTP id
- a640c23a62f3a-b9081a4c646mr157993466b.25.1771671053969; Sat, 21 Feb 2026
- 02:50:53 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
+	b=jq9WwD3Yp/c2MvVvM7jRBFIltQOZhFW+Eb2EHE+ZnAKzIhtqx31jtU8MAvwahWH6JmY/va
+	rfvQb3BLB73mW1SHIiG9CgXPVoBUsJ7IIUOxTnvWUSrBXsWmTIwBQcFRt3dkbK9EOG36Ex
+	fuXjG1YzE/KnI7jkJcyfi5uwI5oCBg4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
+	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771677640; a=rsa-sha256;
+	cv=none;
+	b=Xw8zFsQ24KF3lpmq04M+esy/i0x8m23yc2BG6/lbfAOC3OmfVa/PSeMdX4pKX4W5rMgyU4
+	B366RkEDIQJaWx5buETMNRcm9d1NEV3CFdqT0ufFvqpnU2HEn8//mkaxYP4EA1MpRzVfRt
+	1Xv3JwS7ovlwhc0j4ZwvAk+33g0scis=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3050D5BD3F;
+	Sat, 21 Feb 2026 12:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771677638; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
+	b=jrOe8ov37EkB2K7QUZplzqcG8pi2oFUc+DYcV5zsv+Xkl2edFU7SkkkDGLgvMAToMW3SH+
+	7vcbBFZPYExHZI69VAyShBS8Kf24Z/6Uwf6v9iLGPtjZgGs/zDZwO/LnTT8vH6pcMKKtYb
+	gXOA/9laRLea0QhjV9HmHcNE5tn711c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771677638;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
+	b=D7VDnLHe6UuPsUfysJ7Ghv4MGZ8WJ9s9uJwsuA4Dj32i9htGLmbvxBcMAHDU3/gQvETS2l
+	ItKxEdXlWgd7+CCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771677638; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
+	b=jrOe8ov37EkB2K7QUZplzqcG8pi2oFUc+DYcV5zsv+Xkl2edFU7SkkkDGLgvMAToMW3SH+
+	7vcbBFZPYExHZI69VAyShBS8Kf24Z/6Uwf6v9iLGPtjZgGs/zDZwO/LnTT8vH6pcMKKtYb
+	gXOA/9laRLea0QhjV9HmHcNE5tn711c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771677638;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
+	b=D7VDnLHe6UuPsUfysJ7Ghv4MGZ8WJ9s9uJwsuA4Dj32i9htGLmbvxBcMAHDU3/gQvETS2l
+	ItKxEdXlWgd7+CCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 155683EA63;
+	Sat, 21 Feb 2026 12:40:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Jg9uAcOnmWm7UAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Sat, 21 Feb 2026 12:40:35 +0000
+Date: Sat, 21 Feb 2026 12:40:33 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de, bp@alien8.de, 
+	brauner@kernel.org, bsegall@google.com, corbet@lwn.net, dave.hansen@linux.intel.com, 
+	david@redhat.com, dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com, 
+	jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org, 
+	liam.howlett@oracle.com, linyongting@bytedance.com, lorenzo.stoakes@oracle.com, 
+	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org, mhiramat@kernel.org, 
+	mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, muchun.song@linux.dev, 
+	neilb@suse.de, osalvador@suse.de, pcc@google.com, peterz@infradead.org, 
+	rostedt@goodmis.org, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz, 
+	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
+	willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+Message-ID: <fqabaahjjlmoc2xh4cwh4ykbqyu3rnzvjw5epxi5wwpmgqth7f@d3mqpjozwmo4>
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
 MIME-Version: 1.0
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 21 Feb 2026 18:50:17 +0800
-X-Gm-Features: AaiRm533b9aqm5IDc5d9EWVJpodFU3COq9wX3tec_FMWzWTz_Ri3EelkS5knl5Y
-Message-ID: <CAMgjq7CCcsh2twG-Ud2b4U0hZrAMV8zmvLaM=NBDvmoaWziPqg@mail.gmail.com>
-Subject: [LSF/MM/BPF TOPIC] Swap status and roadmap discussion
-To: lsf-pc@lists.linux-foundation.org
-Cc: Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Barry Song <21cnbao@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	linux-mm <linux-mm@kvack.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: a3r1qqw4ctac981hcra19qzabxpipe8q
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2CA7120003
+X-Stat-Signature: ch1u8nkqudkusybgztg1w6zwt9q53bws
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0CB0F120005
-X-HE-Tag: 1771671055-569658
-X-HE-Meta: U2FsdGVkX1+HJujB7pj56wc8WfYOe3tWFoEvmB5wwnE3FwMubX+MIrULlAHB2TIvnSpCOwB5lRTn1aLneHJw5JoKskJ2diaw8Uqb1Qk6mJAtxWXSCx74Jv+Y4MXcilrGo54R0iTU4I71NS6lSkXtBHcgHfvkV9DsUJiHSGVAHQetYPkkBuMhtoTlMEGT0vwKSD8uO9QKWCDEC2o+n13fMXJn5u6p28Ha/doJbO3fGWg9ebdQhAiwOrb62A/bo26CzxBNWTkprYV+BKtkLqMBQE4yCrau9BRQpM2AE8y01SCAF+WYR2hH0Q1kAxe6yGjAVg1JXxiNVGPy6m5kyUF/9/lPqm2PiLKm5NK5wxFs+o12x+Y4C57tgMBGa3WTWI8IdG/z66XTEiz4eadREV1E1ooCnigJx4rgBC6NSnp04TzCuW6ny9droatK7G1euYnJRm+8x7V7isbWweWixUta5/dP+wY9pd9COW4335iiiuMgIVbZgeV3f0pP97/ccIykiql+lW4wvTd/wZsoJev3awNURaJxFElApAOhvOPaPpdhnXuR9L2g4NrZrsqYVgmdDW9mn9mPv3/NNHijulscGFylYQpZZ13yODca9W5Q+yDbdDVVIdXk3v9YEKefcOlBy3Cawle+vmbMYrHVCwDorleZ53wuGF2GKFyc8rF4NvohHd9eysQcjT9TDoZBuQa7hS3ElFmdD3bFJDPBjE61hCEbJf+Yo3YlY807zm+A8MlARyee4YQVP32Xb2Fz6M9Ve7BXwBp0t5mWpwuX3pBbgz6Znvl2WLN6nm3NGDINOJqBxjXpCcqpVsAANKIq0p7Yc8b6wEGF6M9ekOL3Yq0qabea+7RJmbn/ThSftovuA8MpVcyrQTZrdklsp6VYedkvJESPfYEpyfCPmSJO/4vBwStPW8mt9YAmE97Meykk827vWJyarrpxS7ze3lblGUHz+L0w4xquzoNxywgJexo
- 8Q8EhNuy
- udCNeqgjHEQVr+1YF/d+NLLlHUnGF+fIS39oz8dVRklcI9W9kodLFoT0EAigliL2/TKIKSRx3oSxO7de2z4EbEPF4jQSNoILgEOEFITtlY9trapr03meH0Z+xAU7lUH4z9iiyiYMDs3Xy8EnwrkwhaTg5/GKl71bVaVBenKnqSXW5PVkx02Gf1mgMUZqvKktM4nMZmYpyJ4572wG2qF7en7ebUhTl/QZniQcUDpWIryi/4yCzRHf/Go4X9msFAsZaMjxaoSGRSJYyeRbLSVS5Oo7cNgYYWhe0V9WuV5M6UiidJP/wW+j5x73jKssQ16tXA537C20v38nLmpxosDgI8mIe7tRsiJJWhMEqCA3mR0uDCFzIoZGWU/6EosP0vRBOqisczXdv0K18uF5o0RqElaJLP14284HB00nuZ9IXpHjekBXZupERaPe7MtQNuW4l0DXEmvddtnQrFaj3WsC5nVT+kAc72IyMYfimNFj6d0JiUxW3B2v76XkSFcny+B9D/AlM401egKolY7VWvBinoYJr3K11jTp1p3tEA6iCSmQ124QhPhvg00bfE4imttoROC8Z
+X-HE-Tag: 1771677639-304943
+X-HE-Meta: U2FsdGVkX1+MS4BfT0vU1uz1f7ltVDVT5wPw/OODfHBjZXTSTYANktOLb+8SvlACVpEwjCk6+j7DXtl7jkKrTVTL6dak4h79wfahT78Cex20H1OfI80xGsuLMSaWu5dJE12nCBEKHrlfJ1vy24wan0zp3gKDpSkK9LdeVtfRut9g7QqMQWOxACi8oH8fgO+nL4W7GF6PGWFW05lZkovXD4CpJZLBk7dMKSKP08EiEQGMG0NadUpRlkl1zoagbPQTV5dg8as3hP5wkF/BqQFo+tdUNgbF88FJdr20D/K/PqPmd2kG3Q7xP2nLLC1VIDONHDG6YUBlAn7mC5G8gInM30hnUa9FX2B6RPfLbTWpgLk/TbXnq7MnFbV8uigHk9ZnQ8IyDKOI2XCJhIrg094OBTluu5VFC49vUkKYBdcU1u0df6J1oJkkiC/Lc2XY4Cqx/CbN50oAr51FNTCBMzsjzJO0ckPihA7MM9ijncPgOtYBtTok2oMWJSF/xYkxA91uga6ErDNSJz6R1jwOeWc4aATw/LzZXFfE3tJ17EUcFtLXLFqnwptTypSx1JfzK05UtSBiZRCPSARi56O+4kj2d18mIFCYchfJSeNgdZPF9WmGpq0hdYcfY6zp+XEKprrJphVvIGPYFIxyVFUJmSQPb1B5ePy2YBKT6mVNUPyq26Y8+8G1VOhFu4eQJ3EO4Oxm2Z9YZj0u9vZg7Kfz/bAEolA8F2cOkFYXHxfFpMaFXv07/88fSqL2CDRAQKYLxtQn9/uaYHW7OKkPMw2xdwjvkKbdD6QiS9ExHnC4G51KyGc8ygk6lYN/P7ZhFoCeGRf13Pceb5PWZKiEAdIUlf7rvccI1uw/JPWxVEppq/+yIV9hPS29vtdZvysv2KeJNS//ItZmYkqkqsHSNSQtqoxLyfqOePsZlBC5Zmsz5/GVouTRVB14HHrkxmNUyPQLNWfnQi3IIszq4mX7iLAKDOu
+ zjrzUB5H
+ r1dULpCQAv9jV+qwnaAVZ5dUBArlj6koVk2G/MjPuo+TMsYqWO5Tk53Q8XAd9d9bYkTpiChBscXA9c0bpKC4E6n0DPOpAjdiT3gCJ5AYFu+EzL89YjQ2cjsvWCLbn9WKsKFSsGS9RU61aUolcLb3Gy9B56ZskmsjPJv819LqapHcu5tBqdovma2T+YYWrUC/66TsxhDcgwocKTtWoR3iDeOn7aveGOUM6ddtrzJZ1uGIvfVpg+aZRR9hk7w5jAgD596+ZA7CdCn0pZYwU3/ly34kMdtPyXPikoYwSCbpdlXfxEaIunBPaeJYhrDe3Jiie7inzfJ1FL1bPsowmfqOBGxQHQeRZjyDXOLmL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,78 +149,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Last year, we successfully cleaned up the swap subsystem using the swap
-table design [1], and that's not the end of the story. Combined with
-layered swap table, ghost swap as posted by Chris, YoungJun's swap tiering
-[2] [3], and Nhat's idea of having a dynamic swap size [4], we can have a
-flexible, feature-rich swap. And importantly, the overhead of both CPU and
-memory will be minimal for all users in all scenarios, lower than the old
-swap system. And every component is runtime optional, configurable, and
-highly compatible with future features (e.g. I just noticed Baoquan's
-swapops [5] which should fit well here. Swap table compaction based
-on full list too).
+On Fri, Feb 20, 2026 at 01:35:58PM -0800, Kalesh Singh wrote:
+> On Tue, Aug 19, 2025 at 6:57 PM Anthony Yznaga
+> <anthony.yznaga@oracle.com> wrote:
+> >
+> > Memory pages shared between processes require page table entries
+> > (PTEs) for each process. Each of these PTEs consume some of
+> > the memory and as long as the number of mappings being maintained
+> > is small enough, this space consumed by page tables is not
+> > objectionable. When very few memory pages are shared between
+> > processes, the number of PTEs to maintain is mostly constrained by
+> > the number of pages of memory on the system. As the number of shared
+> > pages and the number of times pages are shared goes up, amount of
+> > memory consumed by page tables starts to become significant. This
+> > issue does not apply to threads. Any number of threads can share the
+> > same pages inside a process while sharing the same PTEs. Extending
+> > this same model to sharing pages across processes can eliminate this
+> > issue for sharing across processes as well.
+> >
+> > <snip> 
+> Hi Anthony,
+> 
+> Thanks for continuing to push this forward, and apologies for joining
+> this discussion late. I am likely missing some context from the
+> various previous iterations of this feature, but I'd like to throw
+> another use case into the mix to be considered around the design of
+> the sharing API.
+> 
+> We are exploring a similar optimization for Android to reduce page
+> table overhead. In Android, we preload many ELF mappings in the Zygote
+> process to help application launch times. Since the Zygote model is
+> fork-but-no-exec, all applications inherit these mappings, which can
+> result in upwards of 200 MB of redundant page table overhead per
+> device.
 
-We should be able to achieve a solution that users ranging from sub-GB
-devices to TB-level servers will all benefit from.
+This can be solved by simply not using the Zygote model :p Or perhaps
+MADV_DONTNEED/straight up unmapping libraries you don't need in the child's
+side.
 
-Based on the swap table P4 RFC [6], we will achieve (see detail in that
-series):
-- 8 bytes per slot memory usage for plain swap.
-  - And can be reduced to 3 or only 1 byte.
-- 16 bytes per slot memory usage, when using ghost / virtual zswap.
-  - 24 bytes at most for multi-layer.
-  - And can be reduced too by simply using the same infrastructure above.
-- Minimal code review or maintenance burden. All layers are using the same
-  infrastructure to manage the metadata/allocation/synchronization, making
-  all APIs and conventions consistent and easy to maintain.
-- Every component is minimal, runtime optional and high-performance so
-  existing users of ZRAM or high performance devices have literally zero
-  overhead.
-- The ghost / virtual swapfile has a dynamic or infinite size with no
-  static data overhead.
-- Migration and compaction are also easily supportable as both reverse
-  mapping and reallocation are prepared.
-- Highly compatible with YoungJun's swap tier, because everything is just a
-  device [2] [3].
-- Solves large-order swapout and minimum swap order requirements.
-- The fast swapoff feature is also supported by just reading the swap entry
-  into the ghost / vswap's swap cache.
+> 
+> I believe that managing a pseudo-filesystem (msharefs) and mapping via
+> ioctl during process creation could introduce overhead that impacts
+> app startup latency. Ideally, child apps shouldn't be aware of this
+> sharing or need to manage the pseudo-filesystem on their end. To
+> achieve this "transparent" sharing, I would prefer Khalid's previous
+> API from his 2022 RFC [1]. By attaching the shared mm directly to the
+> file's address_space and exposing a MAP_SHARED_PT flag, child apps
+> could transparently inherit the shared page tables during fork().
 
-And besides these, swap now has the opportunity for even further
-optimizations, e.g. PG_drop for anon reclaim since swap now has a unified
-convention; Reducing rmap lock contention as was once suggested by Barry
-Song [7]. Growth of the static swap file can also be added later, so plain
-swap on top of things like LVM can finally grow without causing memory
-pressure.
+So, we've discussed this before. I initially liked this idea a lot more.
+However, there are a couple of problems here:
 
-And there are unsolved design decisions that need discussion, such as:
-- Should we use swapon / swapoff on the virtual / ghost device? Or expose
-  it in other ways, or make it on by default? Using the classical swapon /
-  off provides huge flexibility; on by default is also doable and hides
-  complexity.
-- Should we expose special devices like /dev/xswap, or just use a dummy
-  swap header file?
-- How to, or should we report the usage of ghost / virtual swap devices as
-  ordinary swap under /proc/swaps? We definitely need some way to report
-  that.
-- Is 64 bits really needed for reverse mapping? For the context, reverse
-  mapping here is a swap entry recorded in a lower / physical device
-  pointing to the ghost / virtual device.
-- The swap device size is now just a number, to adjust that, we need an
-  interface, and what kind of interface is the best choice? Or just
-  make it dynamic (e.g. increase by 2M for every cluster allocated)?
+1) mshare (as in the mshare feature) isn't really aiming for transparent here.
+There is e.g a specific need to setup an mshare region, with a few files/anon
+there, and then later mprotect/munmap parts of the region - and have it apply
+on every process that has it mapped. This is why we're aiming for different
+system calls (not ioctls anymore), doing munmap(mshare_reg, 4096) is ambiguous
+as to whether you want to unmap the mshare VMA, or a VMA inside the mshare mm.
 
-Link: https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXHGBnfisCAb8VA@mail.gmail.com/
-[1]
-Link: https://lore.kernel.org/linux-mm/CAMgjq7BA_2-5iCvS-vp9ZEoG=1DwHWYuVZOuH8DWH9wzdoC00g@mail.gmail.com/
-[2]
-Link: https://lore.kernel.org/linux-mm/20260217000950.4015880-1-youngjun.park@lge.com/
-[3]
-Link: https://lore.kernel.org/linux-mm/20260208215839.87595-1-nphamcs@gmail.com/
-[4]
-Link: https://lore.kernel.org/linux-mm/aZiFvzlBJiYBUDre@MiWiFi-R3L-srv/ [5]
-Link: https://lore.kernel.org/linux-mm/20260220-swap-table-p4-v1-0-104795d19815@tencent.com/
-[6]
-Link: https://lore.kernel.org/linux-mm/20250513084620.58231-1-21cnbao@gmail.com/
-[7]
+2) Sharing the page table at all (even worse so, Transparently(tm)) is a huge
+pain. TLB shootdown becomes much harder, and rmap as-is isn't suited to deal
+with this case. The way things are going with mshare, the container mm will
+have one single entry in rmap, and then actually doing the shootdown is a
+huuuuge pain (which, fwiw, will probably need a per-mshare TLB workaround),
+because you need to find out and shoot down _every_ mm that has these tables
+mapped. And then, naturally, since you're sharing page tables, doing A/D bit
+collection on these becomes extremely useless - and that will naturally pose
+problems to the reclaim process if you abuse it.
+
+3) other misc problems that make it hard to work transparently (VMA alignment,
+levels which you may or may not want to share, you need to revisit most page
+table walkers in the kernel to get a completely transparent feature, etc)
+
+> 
+> Regarding David's and Matthew's discussion on VMA-modifying functions,
+> I would lean towards the standard VMA manipulating APIs should be
+> preferred over custom ioctls to preserve transparency for user-space.
+> Perhaps whether or not these modifications persist across all sharing
+> processes needs to be configurable? It seems that for database
+> workloads, having the updates reflected everywhere would be the
+> desired behavior. In the use case described for Android, we don't want
+> apps to be able to modify these shared ELF mappings. To handle this,
+> it's likely we would do something like mseal() the VMAs in the dynamic
+> loader before forking.
+
+mshare_mseal!
+
+> 
+> Perhaps we could decouple the core sharing logic from the sharing API
+> itself? Since the sharing interface seems one of  the main areas where
+> we don't have a good consensus yet, perhaps we could land the core
+> sharing logic first. Keeping the core infrastructure generic would
+
+I think the core infrastructure is relatively generic (at least the
+small core mm modifications to get this to even work) already, but
+perhaps Anthony can comment on that.
+
+-- 
+Pedro
 
