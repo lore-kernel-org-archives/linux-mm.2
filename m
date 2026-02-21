@@ -4,143 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6411EC61DE2
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 12:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40C05C61DE5
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 13:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 272B36B0005; Sat, 21 Feb 2026 07:40:43 -0500 (EST)
+	id 5D3356B0005; Sat, 21 Feb 2026 08:39:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21FEF6B0089; Sat, 21 Feb 2026 07:40:43 -0500 (EST)
+	id 581296B0089; Sat, 21 Feb 2026 08:39:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 101B36B008A; Sat, 21 Feb 2026 07:40:43 -0500 (EST)
+	id 4624E6B008A; Sat, 21 Feb 2026 08:39:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED5F56B0005
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 07:40:42 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F0601604DB
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 12:40:42 +0000 (UTC)
-X-FDA: 84468422724.03.5CF9A1A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2CA7120003
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 12:40:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 341C56B0005
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 08:39:12 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B00CE1A04ED
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 13:39:11 +0000 (UTC)
+X-FDA: 84468570102.07.7E4AE26
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CAAD54000E
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 13:39:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JCcA5Vos;
+	spf=pass (imf11.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771677640;
+	s=arc-20220608; t=1771681149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
-	b=jq9WwD3Yp/c2MvVvM7jRBFIltQOZhFW+Eb2EHE+ZnAKzIhtqx31jtU8MAvwahWH6JmY/va
-	rfvQb3BLB73mW1SHIiG9CgXPVoBUsJ7IIUOxTnvWUSrBXsWmTIwBQcFRt3dkbK9EOG36Ex
-	fuXjG1YzE/KnI7jkJcyfi5uwI5oCBg4=
+	bh=1NlzYsZe90DjtvqtblrNeu69Kj4uAwFuPdcXlyGCTNw=;
+	b=ga9PW+B4Q0KJmG7OwhJSE7FqN9qJZ3D11O7vRmadkXsabRk8IsaYnVpg0t+Jh390BI8F0U
+	fcyG+qB5YYKfMyYuekFPa1taKnro4lXfa54cNiV7k4VyEc5oGfU31aVxXjlelcbvdP9kfr
+	Z5zLZgW4E4dfFbXs0VVdChOe315e9ic=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jrOe8ov3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D7VDnLHe;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771677640; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JCcA5Vos;
+	spf=pass (imf11.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771681149; a=rsa-sha256;
 	cv=none;
-	b=Xw8zFsQ24KF3lpmq04M+esy/i0x8m23yc2BG6/lbfAOC3OmfVa/PSeMdX4pKX4W5rMgyU4
-	B366RkEDIQJaWx5buETMNRcm9d1NEV3CFdqT0ufFvqpnU2HEn8//mkaxYP4EA1MpRzVfRt
-	1Xv3JwS7ovlwhc0j4ZwvAk+33g0scis=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3050D5BD3F;
-	Sat, 21 Feb 2026 12:40:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771677638; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
-	b=jrOe8ov37EkB2K7QUZplzqcG8pi2oFUc+DYcV5zsv+Xkl2edFU7SkkkDGLgvMAToMW3SH+
-	7vcbBFZPYExHZI69VAyShBS8Kf24Z/6Uwf6v9iLGPtjZgGs/zDZwO/LnTT8vH6pcMKKtYb
-	gXOA/9laRLea0QhjV9HmHcNE5tn711c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771677638;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
-	b=D7VDnLHe6UuPsUfysJ7Ghv4MGZ8WJ9s9uJwsuA4Dj32i9htGLmbvxBcMAHDU3/gQvETS2l
-	ItKxEdXlWgd7+CCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771677638; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
-	b=jrOe8ov37EkB2K7QUZplzqcG8pi2oFUc+DYcV5zsv+Xkl2edFU7SkkkDGLgvMAToMW3SH+
-	7vcbBFZPYExHZI69VAyShBS8Kf24Z/6Uwf6v9iLGPtjZgGs/zDZwO/LnTT8vH6pcMKKtYb
-	gXOA/9laRLea0QhjV9HmHcNE5tn711c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771677638;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J4DZA0cZrsuyUDUuxvrOVRkY0/iTG4B7ICkpMg3aNYg=;
-	b=D7VDnLHe6UuPsUfysJ7Ghv4MGZ8WJ9s9uJwsuA4Dj32i9htGLmbvxBcMAHDU3/gQvETS2l
-	ItKxEdXlWgd7+CCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 155683EA63;
-	Sat, 21 Feb 2026 12:40:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Jg9uAcOnmWm7UAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Sat, 21 Feb 2026 12:40:35 +0000
-Date: Sat, 21 Feb 2026 12:40:33 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de, bp@alien8.de, 
-	brauner@kernel.org, bsegall@google.com, corbet@lwn.net, dave.hansen@linux.intel.com, 
-	david@redhat.com, dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com, 
-	jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org, 
-	liam.howlett@oracle.com, linyongting@bytedance.com, lorenzo.stoakes@oracle.com, 
-	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org, mhiramat@kernel.org, 
-	mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, muchun.song@linux.dev, 
-	neilb@suse.de, osalvador@suse.de, pcc@google.com, peterz@infradead.org, 
-	rostedt@goodmis.org, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
-	tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz, 
-	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
-	willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
-Message-ID: <fqabaahjjlmoc2xh4cwh4ykbqyu3rnzvjw5epxi5wwpmgqth7f@d3mqpjozwmo4>
-References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
- <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
+	b=j8O+dQ31Nmj/QjDlO0UeuYA/5KYasNKzrJsfeDIiG0WEaDKN3efHhLV5dTVkGKX5BvbGlh
+	YOlywn94hhb4woTxMh50kWtDl0hMHCXn6x0F7OHZjz1pOGnH+sF7zqhuAQAu88DxacQ6nU
+	+s2Fa/HkjvS/Fog8oDzOaFoKIexXqC4=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aaecf9c325so18499415ad.1
+        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 05:39:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771681148; x=1772285948; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1NlzYsZe90DjtvqtblrNeu69Kj4uAwFuPdcXlyGCTNw=;
+        b=JCcA5VoshSSi7bZZvpqe6uQVnHXNwJ4J3DJB/HX+dvprxlhhXSHL0UGRIA4JU/D3pH
+         vcmIELMEGZhMdCkKRq/+NisT6F/ndRaAQAuutgSbx/qSRG621nrtgOsYtGkGWbmhbH0f
+         BYhCAqBzf9FPhhFCV0F6WYWh/ocNej/RtLna6NGWvsYBOFFnOO4uLJJIVuywjwV5+p0Y
+         xJCH+R4jHBdEELCi9Ktvo6jSCfrNxQHQPte3BzuTA3D4+XNW2PqjFyEUwhcfyQNRDkzM
+         v7g757S81dwfmnBQYxn93ZATLf7Mp3Of3GWmK0Qd90inL/0zLD8+g0X6h8ZywELpN9v1
+         hcxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771681148; x=1772285948;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1NlzYsZe90DjtvqtblrNeu69Kj4uAwFuPdcXlyGCTNw=;
+        b=n7Z4rFFkvk3zAhSYJdGkweE/NXNUUwUkO92rHoDj2b8QEasGSdbgm+u5yg7UU3AT6i
+         mUz1AuIcUzABMhpwrAdF2fCqTgL8NF9I1Nu6ajP7YWrqojo62GDxe0Vg+hpJqUKYngY9
+         74wzktbao65z+3kfTHfaFhMr76snejcRjz/BOeYOA8bonLpWrBHgMbTsSXRXkkxy1/FQ
+         EUT5YcgiYeI8LfQEnp82EMi55t5f27uvtEMq+iLQuDP3ca81OsOIUEipP5dOtnG2Dp/R
+         K++6E3phxRNpzE6AMV1v+xKOHspcy5VvkIEiwBTiZmxdNMHTOK+82yDJe3K07WiIQOn0
+         NLyg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMptMQJaYdF4f09FoiAcf586fT0Z/NR8lZqaWtG8gPrhaD5xxv2RIA6fP3tIXFmYFxPQh6TRgV6w==@kvack.org
+X-Gm-Message-State: AOJu0YwE3wuth7iqj4l2bQ/IRDPy3I9zbZNu8e+MD+0xWXamDSYvfOAe
+	4qGvfZ1oLCmjxWzSoMG/deR6VusQTKrFfoUhxEDZk6hAU8hTEztQFN8w
+X-Gm-Gg: AZuq6aJKt8FkIOX6HlS4KV9JmOOzYTizhv4VguSQnFn73xxSBgmOCREEn2VFHtPZHM4
+	2XVJtn4pnhrFIJyZOqA84fw4LbO1gs9EvNoh+oD96YhptOttDv1CRv8HvWD7FZO4RpkcZwPdox1
+	LPtpq7bgvTFeKlmUXbdNYD3F0hyWxmLvqp0uwJTh0/a3QzXI1OsLWKduC1KACH2aPjANfyibE8q
+	TopFlzKNyRs3WtYAXfwnzrFMDLo/zQwEJvY8BcyUZKfOrd4bs/fHgpSSA4cdx5AHO2isRtf5dce
+	fRux/6/E0iF+cEgt9tC4cc77drjuoY1T4xmEuLhUODsd5PPs9pBNOxUV0mGmERGZDb0gXFYalIq
+	Fepm4ByQLtyjKGXc1H6WsQiKznB7J8gFTkqYAHB+ma27V4xXJSLpiAIAFvFM9/N/P14PuJmZmLS
+	qMZ/KQmvR6g3pXTWlRnBTyHiRBSFC+C2n+8g==
+X-Received: by 2002:a17:902:ce03:b0:2aa:d2f4:9c11 with SMTP id d9443c01a7336-2ad5f7019c7mr89837135ad.5.1771681148427;
+        Sat, 21 Feb 2026 05:39:08 -0800 (PST)
+Received: from localhost.localdomain ([49.79.21.101])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74e34fdcsm22206915ad.19.2026.02.21.05.39.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Feb 2026 05:39:07 -0800 (PST)
+Date: Sat, 21 Feb 2026 21:38:58 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH mm-new v8 4/4] mm: khugepaged: skip lazy-free folios
+Message-ID: <xbej7d3uc3xzlx53djgg3to3ejcgrxotxwxvrdppqxfsgieife@5moeg6x2vutg>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+ <20260221093918.1456187-5-vernon2gm@gmail.com>
+ <CAGsJ_4z1twdSNrAVR_vZRnLW4xtsfi+vegNMCwht+RPCjy=E4w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2CA7120003
-X-Stat-Signature: ch1u8nkqudkusybgztg1w6zwt9q53bws
+In-Reply-To: <CAGsJ_4z1twdSNrAVR_vZRnLW4xtsfi+vegNMCwht+RPCjy=E4w@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1771677639-304943
-X-HE-Meta: U2FsdGVkX1+MS4BfT0vU1uz1f7ltVDVT5wPw/OODfHBjZXTSTYANktOLb+8SvlACVpEwjCk6+j7DXtl7jkKrTVTL6dak4h79wfahT78Cex20H1OfI80xGsuLMSaWu5dJE12nCBEKHrlfJ1vy24wan0zp3gKDpSkK9LdeVtfRut9g7QqMQWOxACi8oH8fgO+nL4W7GF6PGWFW05lZkovXD4CpJZLBk7dMKSKP08EiEQGMG0NadUpRlkl1zoagbPQTV5dg8as3hP5wkF/BqQFo+tdUNgbF88FJdr20D/K/PqPmd2kG3Q7xP2nLLC1VIDONHDG6YUBlAn7mC5G8gInM30hnUa9FX2B6RPfLbTWpgLk/TbXnq7MnFbV8uigHk9ZnQ8IyDKOI2XCJhIrg094OBTluu5VFC49vUkKYBdcU1u0df6J1oJkkiC/Lc2XY4Cqx/CbN50oAr51FNTCBMzsjzJO0ckPihA7MM9ijncPgOtYBtTok2oMWJSF/xYkxA91uga6ErDNSJz6R1jwOeWc4aATw/LzZXFfE3tJ17EUcFtLXLFqnwptTypSx1JfzK05UtSBiZRCPSARi56O+4kj2d18mIFCYchfJSeNgdZPF9WmGpq0hdYcfY6zp+XEKprrJphVvIGPYFIxyVFUJmSQPb1B5ePy2YBKT6mVNUPyq26Y8+8G1VOhFu4eQJ3EO4Oxm2Z9YZj0u9vZg7Kfz/bAEolA8F2cOkFYXHxfFpMaFXv07/88fSqL2CDRAQKYLxtQn9/uaYHW7OKkPMw2xdwjvkKbdD6QiS9ExHnC4G51KyGc8ygk6lYN/P7ZhFoCeGRf13Pceb5PWZKiEAdIUlf7rvccI1uw/JPWxVEppq/+yIV9hPS29vtdZvysv2KeJNS//ItZmYkqkqsHSNSQtqoxLyfqOePsZlBC5Zmsz5/GVouTRVB14HHrkxmNUyPQLNWfnQi3IIszq4mX7iLAKDOu
- zjrzUB5H
- r1dULpCQAv9jV+qwnaAVZ5dUBArlj6koVk2G/MjPuo+TMsYqWO5Tk53Q8XAd9d9bYkTpiChBscXA9c0bpKC4E6n0DPOpAjdiT3gCJ5AYFu+EzL89YjQ2cjsvWCLbn9WKsKFSsGS9RU61aUolcLb3Gy9B56ZskmsjPJv819LqapHcu5tBqdovma2T+YYWrUC/66TsxhDcgwocKTtWoR3iDeOn7aveGOUM6ddtrzJZ1uGIvfVpg+aZRR9hk7w5jAgD596+ZA7CdCn0pZYwU3/ly34kMdtPyXPikoYwSCbpdlXfxEaIunBPaeJYhrDe3Jiie7inzfJ1FL1bPsowmfqOBGxQHQeRZjyDXOLmL
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CAAD54000E
+X-Stat-Signature: s5yskt6mqey1cr6hf7zspf38dnzpwzhw
+X-HE-Tag: 1771681149-385872
+X-HE-Meta: U2FsdGVkX18NYQudT7ITMvVMeB1jGcpque6njmdVr9XY6FqQBnE/IlzGgA8XH3viK7S7D6J4F+yORbrC2pqnhK+SNNHsGgbGRGOOpvpac1yFB7m9CtJMGFjOnQl4I+R9MD7VGWrIWH9ws/3N07jpMDHLeQ0AGyJPNKmV1FWJfWddlMY1tSowhIIYqgT/XxCZPOpy6BJYuprmSTYXe4pcVwBpwN7wIiFJqI9gwtHY7gZxUDz6+WU+9NfNk+XS7vQYoLQzz17PzqspSXceUBzgx0L1B2oRhORx3QLSF4X3bgNCSejaBB6VymQMwssbV2+Yt6Ga9M3CxfXAVUXjGlpBg6qFcf72+9ZJWBY7QM1Fb2eNrm2rjY2kFCV4LrnutxgpbxO+jnW6n2xHDvSWm1hEV4zQdmDp8CbjXck5ZRsPsgaBN3XECdByw8tBV002OS8GlENyv8g9EgNIGn8jbXjMA+4K/gf7TuLmnAMb+hG4nCE9vSdlTQ9U0Vjzh/Bfi77nhkQG0EF0ITR1hLkUM1M7RIu1Yd0zPRYPwo3+ydYZ31ORxQ9PGzqsQ7UAwLTlTdfH2D5s/AdUkk31UP/ht5DECCZCOhzw9lP/YgnJxAn6hRs8L/VxBCul+T9dGB4B+kK521sXrR08meDizyN1uDLQj7Kcp9yXdSDR/+a2TESd3dSEkbs9anHZfuQkX/lY6mVSU9D/QSFK8b1waUkHVE+Nu7c4vzawLDcZY4xFy8f+K1ycPTr3qUfDXYiQbPIaFuD7/1hDKGecltPH1ljJP1Vg0VizOlA/Qx1aUIy71JIDmIisoz3AGC5Y9DpeM9k78heHK8iPg0oTqkSPdh/de+OlvQdwMmnwnwL4oV/zVD4YYhkkUEZ6UTtXKWTyWxXlYPA0itLZASZb5jlz+jJ9nUcRg8UASK22azz8gH4Rp5cT2dTlVRXas01gEKVmL+wroGx1CxzxHinFcbcqXZa7mUZ
+ KRRdp8YA
+ LHyVTSBr6DuX0k98YjKEMkd1Ik1Hla6DISx9VgvE644QdRbadDGJmEbS3b6YaIAhPAXOgyk0bNkke2cHNoaSS9EACy7wLBqC7Pfvb0Pk1+Q/XrnzySl6lEJfqx4jfu3iqFyVELHhzodmhNJ5Mi6DMiwsX+C97UznsWmhXfrH0YWVqOATilHw/qu0kVb/UxOhLr5XwBsX4T4Rm8GZ48dn17lQql4DFulhkjA+D6mt3+mOYqvDYgFZfbMCuUpB60L7CODteX1hVFSrUcRwMwNMxV0ZZK09giFMwHBllzH3daJGgFZws2KS7SppVVKdPTefMKTOYTJq+npEjh3q7k9jRVz1ynWiXy1Bgrlk1Eedl6FJsOfqBF+tz9v3WSzClHKTNWi7FZbGTxHFxnhLBiKIhTDxe2DWc4+caod+FvS7su3URKAe8wVfKhYeocbVk7hqbSOgr99CtiCx+5A6gnP/O492GbjNg5HPPLwPs7yZhtUuv1E2Jd0l7XBdNM5rCYbPr4Ne5TwkPPPPw/KahmnTXzsLJ24WyjiwXFAIFd6oWx6RH/bw7RK2Q81eQFaEtMeLXed7aP3aInMLSt8Q3zwSSPu+Ltg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,102 +124,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 01:35:58PM -0800, Kalesh Singh wrote:
-> On Tue, Aug 19, 2025 at 6:57 PM Anthony Yznaga
-> <anthony.yznaga@oracle.com> wrote:
+On Sat, Feb 21, 2026 at 06:27:36PM +0800, Barry Song wrote:
+> On Sat, Feb 21, 2026 at 5:40 PM Vernon Yang <vernon2gm@gmail.com> wrote:
 > >
-> > Memory pages shared between processes require page table entries
-> > (PTEs) for each process. Each of these PTEs consume some of
-> > the memory and as long as the number of mappings being maintained
-> > is small enough, this space consumed by page tables is not
-> > objectionable. When very few memory pages are shared between
-> > processes, the number of PTEs to maintain is mostly constrained by
-> > the number of pages of memory on the system. As the number of shared
-> > pages and the number of times pages are shared goes up, amount of
-> > memory consumed by page tables starts to become significant. This
-> > issue does not apply to threads. Any number of threads can share the
-> > same pages inside a process while sharing the same PTEs. Extending
-> > this same model to sharing pages across processes can eliminate this
-> > issue for sharing across processes as well.
+> > From: Vernon Yang <yanglincheng@kylinos.cn>
 > >
-> > <snip> 
-> Hi Anthony,
-> 
-> Thanks for continuing to push this forward, and apologies for joining
-> this discussion late. I am likely missing some context from the
-> various previous iterations of this feature, but I'd like to throw
-> another use case into the mix to be considered around the design of
-> the sharing API.
-> 
-> We are exploring a similar optimization for Android to reduce page
-> table overhead. In Android, we preload many ELF mappings in the Zygote
-> process to help application launch times. Since the Zygote model is
-> fork-but-no-exec, all applications inherit these mappings, which can
-> result in upwards of 200 MB of redundant page table overhead per
-> device.
+> > For example, create three task: hot1 -> cold -> hot2. After all three
+> > task are created, each allocate memory 128MB. the hot1/hot2 task
+> > continuously access 128 MB memory, while the cold task only accesses
+> > its memory briefly and then call madvise(MADV_FREE). However, khugepaged
+> > still prioritizes scanning the cold task and only scans the hot2 task
+> > after completing the scan of the cold task.
+> >
+> > And if all folios in VM_DROPPABLE are lazyfree, Collapsing maintains
+> > that property, so we can just collapse and memory pressure in the future
+>
+> I don’t think this is accurate. A VMA without VM_DROPPABLE
+> can still have all folios marked as lazyfree. Therefore, having
+> all folios lazyfree is not the reason why collapsing preserves
+> the property.
 
-This can be solved by simply not using the Zygote model :p Or perhaps
-MADV_DONTNEED/straight up unmapping libraries you don't need in the child's
-side.
+In folio_add_new_anon_rmap(), we know that the vma has the VM_DROPPABLE
+attribute, which is the root reason why Collapsing maintains that property.
+The above commit log clearly states "all folios in VM_DROPPABLE are lazyfree"
+                                                ^^^^^^^^^^^^^^^
+(the "if" is redundant and should be removed), not "all folios are lazyfree".
 
-> 
-> I believe that managing a pseudo-filesystem (msharefs) and mapping via
-> ioctl during process creation could introduce overhead that impacts
-> app startup latency. Ideally, child apps shouldn't be aware of this
-> sharing or need to manage the pseudo-filesystem on their end. To
-> achieve this "transparent" sharing, I would prefer Khalid's previous
-> API from his 2022 RFC [1]. By attaching the shared mm directly to the
-> file's address_space and exposing a MAP_SHARED_PT flag, child apps
-> could transparently inherit the shared page tables during fork().
+> This raises a question: if a VMA without VM_DROPPABLE has
+> many contiguous lazyfree folios that can be collapsed, and
+> none of those folios are non-lazyfree, should we collapse
+> them and pass the lazyfree state to the new folio?
+>
+> Currently, our approach skips the collapse, which also feels
+> a bit inconsistent.
 
-So, we've discussed this before. I initially liked this idea a lot more.
-However, there are a couple of problems here:
+Yes, they are inconsistent, because this question need to scan all folios
+to make a decision, and it cannot solve the hot1->cold->hot2 scenario.
 
-1) mshare (as in the mshare feature) isn't really aiming for transparent here.
-There is e.g a specific need to setup an mshare region, with a few files/anon
-there, and then later mprotect/munmap parts of the region - and have it apply
-on every process that has it mapped. This is why we're aiming for different
-system calls (not ioctls anymore), doing munmap(mshare_reg, 4096) is ambiguous
-as to whether you want to unmap the mshare VMA, or a VMA inside the mshare mm.
+> > will free it up. In contrast, collapsing in !VM_DROPPABLE does not
+> > maintain that property, the collapsed folio will not be lazyfree and
+> > memory pressure in the future will not be able to free it up.
+> >
+> > So if the user has explicitly informed us via MADV_FREE that this memory
+> > will be freed, and this vma does not have VM_DROPPABLE flags, it is
+> > appropriate for khugepaged to skip it only, thereby avoiding unnecessary
+> > scan and collapse operations to reducing CPU wastage.
+> >
+> > Here are the performance test results:
+> > (Throughput bigger is better, other smaller is better)
+> >
+> > Testing on x86_64 machine:
+> >
+> > | task hot2           | without patch | with patch    |  delta  |
+> > |---------------------|---------------|---------------|---------|
+> > | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
+> > | cycles per access   |  4.96         |  2.21         | -55.44% |
+> > | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
+> > | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
+> >
+> > Testing on qemu-system-x86_64 -enable-kvm:
+> >
+> > | task hot2           | without patch | with patch    |  delta  |
+> > |---------------------|---------------|---------------|---------|
+> > | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+> > | cycles per access   |  7.29         |  2.07         | -71.60% |
+> > | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
+> > | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+> >
+> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> > Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> > ---
+>
+> Overall, LGTM,
+>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 
-2) Sharing the page table at all (even worse so, Transparently(tm)) is a huge
-pain. TLB shootdown becomes much harder, and rmap as-is isn't suited to deal
-with this case. The way things are going with mshare, the container mm will
-have one single entry in rmap, and then actually doing the shootdown is a
-huuuuge pain (which, fwiw, will probably need a per-mshare TLB workaround),
-because you need to find out and shoot down _every_ mm that has these tables
-mapped. And then, naturally, since you're sharing page tables, doing A/D bit
-collection on these becomes extremely useless - and that will naturally pose
-problems to the reclaim process if you abuse it.
+Thank you for review.
 
-3) other misc problems that make it hard to work transparently (VMA alignment,
-levels which you may or may not want to share, you need to revisit most page
-table walkers in the kernel to get a completely transparent feature, etc)
+> >  include/trace/events/huge_memory.h |  1 +
+> >  mm/khugepaged.c                    | 13 +++++++++++++
+> >  2 files changed, 14 insertions(+)
+> >
+> > diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> > index 384e29f6bef0..bcdc57eea270 100644
+> > --- a/include/trace/events/huge_memory.h
+> > +++ b/include/trace/events/huge_memory.h
+> > @@ -25,6 +25,7 @@
+> >         EM( SCAN_PAGE_LRU,              "page_not_in_lru")              \
+> >         EM( SCAN_PAGE_LOCK,             "page_locked")                  \
+> >         EM( SCAN_PAGE_ANON,             "page_not_anon")                \
+> > +       EM( SCAN_PAGE_LAZYFREE,         "page_lazyfree")                \
+> >         EM( SCAN_PAGE_COMPOUND,         "page_compound")                \
+> >         EM( SCAN_ANY_PROCESS,           "no_process_for_page")          \
+> >         EM( SCAN_VMA_NULL,              "vma_null")                     \
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 61e25cf5424b..e792e9074b48 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -46,6 +46,7 @@ enum scan_result {
+> >         SCAN_PAGE_LRU,
+> >         SCAN_PAGE_LOCK,
+> >         SCAN_PAGE_ANON,
+> > +       SCAN_PAGE_LAZYFREE,
+> >         SCAN_PAGE_COMPOUND,
+> >         SCAN_ANY_PROCESS,
+> >         SCAN_VMA_NULL,
+> > @@ -574,6 +575,12 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+> >                 folio = page_folio(page);
+> >                 VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
+> >
+> > +               if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
+> > +                   folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+>
+> I would prefer to add a comment about VM_DROPPABLE here
+> rather than only mentioning it in the changelog.
 
-> 
-> Regarding David's and Matthew's discussion on VMA-modifying functions,
-> I would lean towards the standard VMA manipulating APIs should be
-> preferred over custom ioctls to preserve transparency for user-space.
-> Perhaps whether or not these modifications persist across all sharing
-> processes needs to be configurable? It seems that for database
-> workloads, having the updates reflected everywhere would be the
-> desired behavior. In the use case described for Android, we don't want
-> apps to be able to modify these shared ELF mappings. To handle this,
-> it's likely we would do something like mseal() the VMAs in the dynamic
-> loader before forking.
+Is the following comment clear?
 
-mshare_mseal!
+/*
+ * If the vma has the VM_DROPPABLE flag, the collapse will
+ * preserve the lazyfree property without needing to skip.
+ */
 
-> 
-> Perhaps we could decouple the core sharing logic from the sharing API
-> itself? Since the sharing interface seems one of  the main areas where
-> we don't have a good consensus yet, perhaps we could land the core
-> sharing logic first. Keeping the core infrastructure generic would
-
-I think the core infrastructure is relatively generic (at least the
-small core mm modifications to get this to even work) already, but
-perhaps Anthony can comment on that.
-
--- 
-Pedro
+> > +                       result = SCAN_PAGE_LAZYFREE;
+> > +                       goto out;
+> > +               }
+> > +
+> >                 /* See hpage_collapse_scan_pmd(). */
+> >                 if (folio_maybe_mapped_shared(folio)) {
+> >                         ++shared;
+> > @@ -1326,6 +1333,12 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >                 }
+> >                 folio = page_folio(page);
+> >
+> > +               if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
+> > +                   folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+> > +                       result = SCAN_PAGE_LAZYFREE;
+> > +                       goto out_unmap;
+> > +               }
+>
+> As above.
+>
+> > +
+> >                 if (!folio_test_anon(folio)) {
+> >                         result = SCAN_PAGE_ANON;
+> >                         goto out_unmap;
+> > --
+> > 2.51.0
+> >
+>
+> Thanks
+> Barry
+>
 
