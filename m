@@ -4,102 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CEC5C61CE0
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 06:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2296DC61DC6
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 08:15:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B61B96B0005; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
+	id EB27F6B0005; Sat, 21 Feb 2026 03:15:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0EE26B0089; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
+	id E60346B0089; Sat, 21 Feb 2026 03:15:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F0576B008A; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
+	id D62616B008A; Sat, 21 Feb 2026 03:15:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A97B6B0005
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F48313ACAC
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:08:00 +0000 (UTC)
-X-FDA: 84467433120.07.33E0900
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4D6DB1C0006
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:07:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrGOxfCf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771654078; a=rsa-sha256;
-	cv=none;
-	b=h0sPRZw+zECgtInyJjhd/Nl8kw9HPHe8+7F/WZIbIrf+my5RXII9gRbK9LyVFbs4koXh7B
-	aj3eqgXhejfFY1AU7h4Kf96V//loj+RQGEYpi3RnXt3gUnes+Z9kEZ72RgLn+DIlcJnbpK
-	azWyLUpNkNmidvyIy82veal6obYPT+4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrGOxfCf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771654078;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC1BF6B0005
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 03:15:56 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AB5B1C47A
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 08:15:56 +0000 (UTC)
+X-FDA: 84467755512.06.2C8BF34
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3FC0B4000D
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 08:15:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="lJ0OYi/B";
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771661754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vNYOII3ATo8v6v5YfJjwWytPBUpNMd9xBlA+zTtOasc=;
-	b=KygRmWH2kY1w+5lvwZuZxbhSHLV9TOOYoAB6Em9GM4lmmQmUj0Jn8apbfvuetitXZOibeF
-	Tqx6hdOxF9ltBNJvS3qC9H4oYT/ucH2PSA/4g7jGtREOtsRVxkFFk1DJMIg5J2a0SGLTLc
-	ruR4hXUiG2ywOKaGBTs/aSOq1Q6YpRI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 057FA4455F
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFBEC2BCB8
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771654076;
-	bh=tuqfdUH5dLNaI48UltQSQ/DDXtuz46WoSnM/Ewc6hV8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rrGOxfCfrzO5Z6TnyNZTGHHC4AhkzmXzc5/I4icCCEJTpLic/HBXPpgymzMVXUeIV
-	 g6H0/oLcyDcl163lJCCr+cHv8ngAYosNdzRxHPGp+unCyQzeCSQVtDHH+J7QdU1+5W
-	 r0ne/wnYGg57yboj15LDo3iwcEIb4NIdbIAazPZAIGHrVVWX/n6yTSF6JcxyEI5LqC
-	 8yZdxcSomkvg3lRtkZtlaW6AXuJBJIGnPzNFrCBFW7uOf9OL1a3/zKc/Y8HsZhGTTj
-	 cdZywz7YCTZIGId7HSNWks/LODrcKsBUur+p858EiiWlcI4aOa9AqWf6vDL0csC7XX
-	 tSjxIKaaXnklw==
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79628fb5c05so21913357b3.2
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:07:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWT/hTIGGZPttNHoXEDhVRuzrzVPzjLB5RdBNQv/t4NUHqgGHLS2pLABv8aJ4qqTs7r+jev+ZoJmA==@kvack.org
-X-Gm-Message-State: AOJu0YyUe3JVi6+oN0i02J6dgMo28C9GiiRB+uOVi/iVwqVeJlQweqec
-	GPOKDdPv2TuqmOikhkZ0ZKi/VFJ9Moxyko4J3b7MOlfRFTfvLXKXDEZlYU98G41U8b9yX0sgwpv
-	yT47x3hA+NIJI2wKhhcpVRWan2lYYVK/eZucTXU7eVA==
-X-Received: by 2002:a05:690c:438e:b0:796:2dfb:4aeb with SMTP id
- 00721157ae682-79828ff5e9dmr17141547b3.37.1771654075666; Fri, 20 Feb 2026
- 22:07:55 -0800 (PST)
+	bh=pqJhtOyCKaatcPuVbcWAYul34KhkdgQblBgCMkQEGTI=;
+	b=jyeI+Q/eMDgD/f2VUKxhpIKnxIGXs6W2zhFvArm97zh8ErQGC4PGOUIaukt+vza2Gqgtcv
+	BtHkPiHTvFZIDrBnv2CIR0uANro4Z86ZcGeyT8VIvUZKAJacSRZwUVi0Tbz+4h17aSaogE
+	EhVG+hAS2ONOXKUAaRBpZ/99oyxS6cE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771661754; a=rsa-sha256;
+	cv=pass;
+	b=XQBX2O7M9lGRxu4EoHCBrvOyzrgY9cqP+zyExoJ/wLe6p1pBYH3IogwbISiBbl5z5gZrnH
+	lHna3RySkI7G5LryYMjFJNP8slZRhXou58cs/qFt4+9UM/74Ycb+79IGcp7TkKVwam571C
+	+rc+w6uIcI2ODToyEbnnM/IxmXXOQiM=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="lJ0OYi/B";
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8972a14e27bso36721656d6.2
+        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 00:15:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771661753; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TMi1AFVQO74G0+28DDM32Wdo3D3NRd6EJ4vjI62xB+KIqbNHVEe/mpNGmb9E2kNunN
+         iUnZ+c+7lJVb4CCyAMslXciBW8U9vOsbRvm3k3pbDN2sRRRT812ufaflIBGNXW+WAWhL
+         CtDdCtF6inad3IemZRsDm4b7UQ/vlxwxfOLKkLtX9UR3lIYYA6l+lms/XIaTcQB9YRyG
+         i1jffEw1XLqt/GjtbDXffgM/NZ1bgX68yBmxQAYbZQEwf4azpx5WbkFoUrwOy210MqNg
+         ZfjVLMa4LChPlJNNGxoz1DdPZgmV28gtUhlifAabwSckX2Gof0uNGDzYo0ZTIhZ+lZEz
+         x3WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pqJhtOyCKaatcPuVbcWAYul34KhkdgQblBgCMkQEGTI=;
+        fh=jIchxDKlRgnfV0eL5R53VjxB0IUCJp2NSH1bWCUm7G0=;
+        b=MxlPgmJuuk4f1vumjnlbo+fZpnFVnKPzzmUzNgQsuUnPCfGnr+ZxXFVJDPC+t2X9jo
+         63kNn+CQEeHfRVA4ITavr8RvHzJJITZkoPC6Z7Ww3b3j4Ja8TYMuwknOrGcwZn0cmh4n
+         hNJkfRwW0aS+v2EpIT1Zmd2f+YR0TiVfTGyn/H1gmzklCPPF+Sm3NWKAAZHxlORGZcGU
+         MHnVqkxQ0rCx1JjcDDQDfrmKWB2LdlOkdDdEFnSGPHS0NNyBlesectZvrI7t5faw2sa2
+         hherc1icRq6U9PTFgxQ4ziDCcM5hsGExAFk35Ae16VeaLaz6DEA8QyQz5lkb6w9Noo2W
+         LIvg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771661753; x=1772266553; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pqJhtOyCKaatcPuVbcWAYul34KhkdgQblBgCMkQEGTI=;
+        b=lJ0OYi/BPilJMWuhMZr+HgU2/g+EcS9C8nxNDlkfGaxhxrFLgbZIlOY+rcWGd4Yh3t
+         q0kbbVV+uJvMBUWTQ8xklUyjDjldUGX4VBJ6wJpb6bIyBq1zI0uHX/GIUKVEzG4X2+1A
+         fTycUKXldKsL7cAL4wXJznjfqtIxPqU9Ja6jDed31qzME1JUh5VaYg1dSlwgWzzUEcBT
+         FA+3rRD1ReWTt4Pe/QpoyfuFMeScY1gzrUCurF9UmA41vm0+Cc3GSQg1gXeg4kZeNmKz
+         FofqHnRrlkRemuEA73W5eEesLzGreadNGo5dVDDEvvY7sXQSkBag1TFpoybuVLodBaU7
+         dtPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771661753; x=1772266553;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pqJhtOyCKaatcPuVbcWAYul34KhkdgQblBgCMkQEGTI=;
+        b=p7YLNHAjbg7RIcn0msZRWIKmV57JnGNehxnhwxxqDjdAfrYSLM7TxsYBYbNndv7XCu
+         MR8Dez0Df5LVonjWRoFFSc5x05DhK9PbgaIgrvLII6AZpcFOV55ww3c9Qq+O96I5Ec9F
+         Gi1Q3jVwGPEttkbakhpab+7qoKIoESNh+S2uBxgQiN26RDwgACPWxlWnky8g19hPSupY
+         30GHLuGqM9pt8NzaS55qKcGCLzYMPFHFcGdhaOIjY8ItaCbgHr4isyv1poF2870DsMvy
+         vJlQ6H8pmUqL/Z65+c4+BfzUgAPQm4Is7h8fecf9e0n9JAavmG2CnjgDDKQ3j+pFNp1j
+         UfLg==
+X-Gm-Message-State: AOJu0YxBVNSMlm44AHJEQWxkTeFaHEmQl+lAUqTWmW+p1VMWGLKjYC9L
+	vyKaaA1Gp/Sp8WLoFpHgvd4uGw5o/QMMuhDepAAqjKdJdFLM61bB1CtutFGiiOua8qidz8/dUn8
+	wmc/jeub+oF+M8Br3JcDbsLdJubZx9dA=
+X-Gm-Gg: AZuq6aLT2BU7H9je6R5HHVEwSp/u3PZr8r8OhY+trLIaLM0B4c7Bp85/1WrUX7eFc1V
+	mP0m7hkaK67imQ6ItmX5E5t9rpirl4B7dqxxhpZngC4YKBH978i68efNPGpkL4wh9KApKLHsKHM
+	Ac7X2WEN4KeLwSu6dxN86Kn4VgWb/s1EesUqde544LpT/Uv7rUF5JJ39tM7hi/vlqseGo0U9dUu
+	zCfo253U+3/aAFQYNDOB7didTHnJVeSiiW4mNi60BS/A31juKifQYbsx5Qh1e9Ktf/ofjlYSwnK
+	hQfw1g==
+X-Received: by 2002:ad4:5b83:0:b0:894:773a:4581 with SMTP id
+ 6a1803df08f44-89979ef88f8mr35023106d6.49.1771661752857; Sat, 21 Feb 2026
+ 00:15:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev> <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330> <aZjxP2sTavBRGC1l@linux.dev>
-In-Reply-To: <aZjxP2sTavBRGC1l@linux.dev>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 20 Feb 2026 22:07:44 -0800
-X-Gmail-Original-Message-ID: <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
-X-Gm-Features: AaiRm52oT9bCdTg2KlqgudQjXVvw63FwwA4FX_ypBGoSC1POgtIdGTHmnFwj-bE
-Message-ID: <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: YoungJun Park <youngjun.park@lge.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com, 
-	taejoon.song@lge.com, austin.kim@lge.com
+References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+In-Reply-To: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sat, 21 Feb 2026 16:15:41 +0800
+X-Gm-Features: AaiRm51aBJQnXsyOpa3tomJfwexW2cBBfl33LWP9FjuNSVqwIZLll-dWCZQAZ08
+Message-ID: <CAGsJ_4xF5sK8H1RsqRNoi7DfGBtThASsozY30gq_kdRLaYgaTw@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/15] mm, swap: swap table phase IV with dynamic
+ ghost swapfile
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3FC0B4000D
+X-Stat-Signature: mcy9s8skd4nibabssi1e76shjdcj7gad
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4D6DB1C0006
-X-Stat-Signature: xd3cfwpyhmo1wkfqhtkzme6iq9exkucu
-X-HE-Tag: 1771654078-405557
-X-HE-Meta: U2FsdGVkX1/otnOz45HpjxFwJ9qCso8ukx119UqIhakV4wWHr0tsEKoqZT/9DhUc7GCcVXy++S4piyvXc82h+kY8mMlo/xtHahvReNeq5VMDzwrkoTQD/C1kWqfxi8723b2yhTBa54wNJ0X7KYw5XkJr49IlyxRbLsCBfxGeNdGYAYO9lW/teMdD1amqV1OKf33T+h4ujsbpxHxKDoFDCOO/UMrIiw5n2821wg12eXN5+95BIPTfhSHmunz9/tmfGbaQRiTBEbabivQ8+XGuMf4jAMCVb2fXn0T7AwgF0UWzoya/OOaIw6+jBV63P/2dDB9yypYpaMXjrCoZTlCUenvIGOXdUtbi3T4uIX4DTDJ8fM1Bp0+rPfWBkiEM2u9GNE2yeqRU1ldkXgTvMErFySDZFjd0iYyT4oUglJpaXg0xHaFiNPTGIzEtxLbGSgJlXBMS0Lx3Zh2xMk/rbgsOIicg0vfvSjk1lk5QnjU0CQbAlN9ny9c7eEqHhqsCGO/y2POPHEQ7PVkqfZvVOEVPwYH7BDUEBsyvdQSa3aqzGo04WjuJbM7U+X1tpalip4Weh8g3agW4Cp94Z6GGfWnDrhHwsd+d4ebVSfExGzerYln+2UA+EU0K9jodJDYKYZO/AwOZWfapM9U3u9ny/G5EdJyviag0BX8+eLFVhA+nWn0GutD/mls/ooxu9mtQLQvnxOZQiWXpr0TrW1z7g+yCh3DKGI8wTHeu93Y/T3GEA5o+GtaNbNxN5KYYqoYZT6QCh3HHZ1aWMSQL6A1JTyt21HgA5fSFMENvNs+96nN1bPljnBtSxux9GNQdL7Ua+fIUSXbA2SVrmRnH+4n15pn3+9Igpgl9UXzgKhCkXNQhIXNbIP26EP6+hT3rQe0znEURnmITfnBkgtk0HrCkWU8l8GEWqg9K08MO2RnU1t6FGwP9wJ7I29x20N5LkXVICkqmc1OKnIL8KUOCB64EmvI
- ysg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771661754-212568
+X-HE-Meta: U2FsdGVkX1/Nsc3LyLoaopeMsPIsNpiY/f3OjqQ72v0Fi7rWpcoI+2eLKh5jw4oApBSwtuxE6nNf5FxrXU0mzoyqP58FdRvpKt7bDe9Ub3zgLAXt1jheyy36RPsJ+JeYTbVFpg5+cogMgErpLxTq3CSjXKmelI+9raOxWpbNkzU3sHo/MdXM6N+QBksiQmJZZVafIdcIdCinUJ237HCUVkkUllq2SGZAMyPCoGByeEBVx7IZeKXjkE8hFR1n5mqbvrXUMMrRVupffNGdz1HdKKrGmh/yewOqn41CKJj6o2mE6LeaRKDOxKKMVgA6Z5Ur+uqDKAl97AsFSvjE3YHVokmTb7BzDcvjHpyVxi01xZwZn87vN12sFJXXxM9x9Lv9oegk1dy5e8P89hxx5D79kZ+2wtSa/kc/uhi4XY4FZZv0LdlKsc7cWe9RfckpkB3KYlij2Zvi/mezfmDgZwJG6647oA5hG4Ev+8V33v8b/rNZ9eZRoxefhpAcYKOvlP4+IM+vfZd690MDVIjSyCZWI6nBPPQ7ILiNiDfYi7B5iCLAz7vGMza3RjWfGilDX3PjnU8W8WPe5LI/8K4CdKzQorTgJ4pdD4NQ7SPQi+F4NIAg5TT+QF4oqVCfH69NRjOPBO/qB1Oa/72iSeHETlGRkMKZ+YhQOp7DNOHrQO+jvl5aLRemaA3mmU8H2gZYUzBdZb03Yvd4AqfqS+sXEU6jJNC2EyZKCJ2AVMoXe5RnYc+GcVfNUXdkXs7FGiLQZQEmMmF8ArXF53XqDRe+4MIDhHrF1F/zDyfSFJC7cAsrshzMce9UsDTouSoLQiQK3XC0xdjgUXkr93GCNniHmlWRwp9NyjPKdx8154toiinuyvdp8kP0wxooBuNx3KbaxzqrGd3t5biql5w9RaSD3aFUgMG5D7etlBjhfcFtzCVq0fJLo1ppJWClKn4iEn6wUZhUo+4CJfIu/hCm65Ml5XL
+ R9w8YmHI
+ OZroYlXAI4nZ03S1u6O8S766eSsmN5xiViYWYEPGPJg2E0KG7yS2BKo2h3oTkZea1FHDboM4gmbHtWz6/jLTaoskaQRyL+PrgK0wGOtEokcPxnieBlfPc0f6VZAUcuCBFsCgqi+ZkMJxmNXbXZdf1IZ864wKzdDeajEKz3jbYt0fWIiNwRJ3wS9HfJD/o3BLwE5nGtAUiD0pG2kuCRYvUn5AUJuLPMk39df/gW/LF+TFnVNvCTOato/0Iz6OiOwdkwQZPWins+dXWJ1LWGfQyAPTa+0fBSUsU4MzY5qccwP2GTrTdsN/VkuAE9zHO3x/fDMf4QyqeHWavjAI8kjKGTsr2+9H9LkZmD205lmUuSXi3P4mzuJ/H4wUlciUhCCriR4QOffM/6QvAmDARt4p59s5OJmmeiZbbAgEtulgSeU56vkWyiS8DiIS/TMCtXmGetmuXQZEC6mKcgrtpSsj/TY0JAEOmt/ZkSh94zC9zMBonNQpZxEf/U3BJWl8w435UnVN6rfTn1HHRWqY7toKOreXT9bLWIc9LnKjKkmNJ5awaI8V8xUuHE1LHKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,185 +147,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 7:47=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
+On Fri, Feb 20, 2026 at 7:42=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
 >
-> Please don't send a new version of the series before concluding the discu=
-ssion
-> on the previous one.
+> NOTE for an RFC quality series: Swap table P4 is patch 1 - 12, and the
+> dynamic ghost file is patch 13 - 15. Putting them together as RFC for
+> easier review and discussions. Swap table P4 is stable and good to merge
+> if we are OK with a few memcg reparent behavior (there is also a
+> solution if we don't), dynamic ghost swap is yet a minimal proof of
+> concept. See patch 15 for more details. And see below for Swap table 4
+> cover letter (nice performance gain and memory save).
 
-In this case I think it is fine.  You haven't responded to YoungJun's
-last response in over a week. He might have mistaken that the
-discussion concluded.
-Consider it is one of the iterations. It is hard enough to contribute
-to the kernel. Relax.
-Plus, much of the discussion on the mailing list always has differing
-opinions. So, it's hard to determine what is truly concluded.
-Different people might have different interitations of the same text.
+To be honest, I really dislike the name "ghost." I would
+prefer something that reflects its actual functionality.
+"Ghost" does not describe what it does and feels rather
+arbitrary.
 
->
-> On Fri, Feb 13, 2026 at 12:58:40PM +0900, YoungJun Park wrote:
-> > >
-> > > One of the LPC feedback you missed is to not add memcg interface for
-> > > this functionality and explore BPF way instead.
-> > >
-> > > We are normally very conservative to add new interfaces to cgroup.
-> > > However I am not even convinced that memcg interface is the right way=
- to
-> > > expose this functionality. Swap is currently global and the idea to
-> > > limit or assign specific swap devices to specific cgroups makes sense
-> > > but that is the decision for the job orchestator or node controller.
-> > > Allowing workloads to pick and choose swap devices do not make sense =
-to
-> > > me.
-> >
-> > Apologies for overlooking the feedback regarding the BPF approach. Than=
-k you
-> > for the suggestion.
->
-> No need for apologies. These things take time and multiple iterations.
->
-> >
-> > I agree that using BPF would provide greater flexibility, allowing cont=
-rol not
-> > just at the memcg level, but also per-process or for complex workloads.
-> > (As like orchestrator and node controller)
->
-> Yes it provides the flexibility but that is not the main reason I am push=
-ing for
-> it. The reason I want you to first try the BPF approach without introduci=
-ng any
-> stable interfaces. Show how swap tiers will be used and configured in pro=
-duction
-
-Is that your biggest concern? Many different ways exist to solve that
-problem. e.g. We can put a config option protecting it and mark it as
-experimental. This will unblock the development allow experiment. We
-can have more people to try it out and give feedback.
-
-> environment and then we can talk if a stable interface is needed. I am st=
-ill not
-> convinced that swap tiers need to be controlled hierarchically and the no=
-n-root
-> should be able to control it.
-
-Yes, my company uses a different swap device at different cgroup
-level. I did ask my coworker to confirm that usage. Control at the non
-root level is a real need.
+I suggest retiring the name "ghost" and replacing it with
+something more appropriate. "vswap" could be a good option,
+but Nhat is already using that name.
 
 >
-> >
-> > However, I am concerned that this level of freedom might introduce logi=
-cal
-> > contradictions, particularly regarding cgroup hierarchy semantics.
-> >
-> > For example, BPF might allow a topology that violates hierarchical cons=
-traints
-> > (a concern that was also touched upon during LPC)
+> This is based on the latest mm-unstable, swap table P3 [1] and patches
+> [2] and [3], [4]. Sending this out early, as it might be helpful for us
+> to get a cleaner picture of the ongoing efforts, make the discussions eas=
+ier.
 >
-> Yes BPF provides more power but it is controlled by admin and admin can s=
-hoot
-> their foot in multiple ways.
+> Summary: With this approach, we can have an infinitely or dynamically
+> large ghost which could be identical to "virtual swap", and support
+> every feature we need while being *runtime configurable* with *zero
+> overhead* for plain swap and keep the infrastructure unified. Also
+> highly compatible with YoungJun's swap tiering [5], and other ideas like
+> swap table compaction, swapops, as it aligns with a few proposals [6]
+> [7] [8] [9] [10].
+>
+> In the past two years, most efforts have focused on the swap
+> infrastructure, and we have made tremendous gains in performance,
+> keeping the memory usage reasonable or lower, and also greatly cleaned
+> up and simplified the API and conventions.
+>
+> Now the infrastructures are almost ready, after P4, implementing an
+> infinitely or dynamically large swapfile can be done in a very easy to
+> maintain and flexible way, code change is minimal and progressive
+> for review, and makes future optimization like swap table compaction
+> doable too, since the infrastructure is all the same for all swaps.
+>
+> The dynamic swap file is now using Xarray for the cluster info, and
+> inside the cluster, it's all the same swap allocator, swap table, and
+> existing infrastructures. A virtual table is available for any extra
+> data or usage. See below for the benefits and what we can achieve.
+>
+> Huge thanks to Chris Li for the layered swap table and ghost swapfile
+> idea, without whom the work here can't be archived. Also, thanks to Nhat
+> for pushing and suggesting using an Xarray for the swapfile [11] for
+> dynamic size. I was originally planning to use a dynamic cluster
+> array, which requires a bit more adaptation, cleanup, and convention
+> changes. But during the discussion there, I got the inspiration that
+> Xarray can be used as the intermediate step, making this approach
+> doable with minimal changes. Just keep using it in the future, it
+> might not hurt too, as Xarray is only limited to ghost / virtual
+> files, so plain swaps won't have any extra overhead for lookup or high
+> risk of swapout allocation failure.
+>
+> I'm fully open and totally fine for suggestions on naming or API
+> strategy, and others are highly welcome to keep the work going using
+> this flexible approach. Following this approach, we will have all the
+> following things progressively (some are already or almost there):
+>
+> - 8 bytes per slot memory usage, when using only plain swap.
+>   - And the memory usage can be reduced to 3 or only 1 byte.
+> - 16 bytes per slot memory usage, when using ghost / virtual zswap.
+>   - Zswap can just use ci_dyn->virtual_table to free up it's content
+>     completely.
+>   - And the memory usage can be reduced to 11 or 8 bytes using the same
+>     code above.
+>   - 24 bytes only if including reverse mapping is in use.
+> - Minimal code review or maintenance burden. All layers are using the exa=
+ct
+>   same infrastructure for metadata / allocation / synchronization, making
+>   all API and conventions consistent and easy to maintain.
+> - Writeback, migration and compaction are easily supportable since both
+>   reverse mapping and reallocation are prepared. We just need a
+>   folio_realloc_swap to allocate new entries for the existing entry, and
+>   fill the swap table with a reserve map entry.
+> - Fast swapoff: Just read into ghost / virtual swap cache.
+> - Zero static data (mostly due to swap table P4), even the clusters are
+>   dynamic (If using Xarray, only for ghost / virtual swap file).
+> - So we can have an infinitely sized swap space with no static data
+>   overhead.
+> - Everything is runtime configurable, and high-performance. An
+>   uncompressible workload or an offline batch workload can directly use a
+>   plain or remote swap for the lowest interference, memory usage, or for
+>   best performance.
+> - Highly compatible with YoungJun's swap tiering, even the ghost / virtua=
+l
+>   file can be just a tier. For example, if you have a huge NBD that doesn=
+'t
+>   care about fragmentation and compression, or the workload is
+>   uncompressible, setting the workload to use NBD's tier will give you on=
+ly
+>   8 bytes of overhead per slot and peak performance, bypassing everything=
+.
+>   Meanwhile, other workloads or cgroups can still use the ghost layer wit=
+h
+>   compression or defragmentation using 16 bytes (zswap only) or 24 bytes
+>   (ghost swap with physical writeback) overhead.
+> - No force or breaking change to any existing allocation, priority, swap
+>   setup, or reclaim strategy. Ghost / virtual swap can be enabled or
+>   disabled using swapon / swapoff.
+>
+> And if you consider these ops are too complex to set up and maintain, we
+> can then only allow one ghost / virtual file, make it infinitely large,
+> and be the default one and top tier, then it achieves the identical thing
+> to virtual swap space, but with much fewer LOC changed and being runtime
+> optional.
+>
+> Currently, the dynamic ghost files are just reported as ordinary swap fil=
+es
+> in /proc/swaps and we can have multiple ones, so users will have a full
+> view of what's going on. This is a very easy-to-change design decision.
+> I'm open to ideas about how we should present this to users. e.g., Hiding
+> it will make it more "virtual", but I don't think that's a good idea.
 
-I think this swap device control is a very basic need. All your
-objections to swapping control in the group can equally apply to
-zswap.writeback. Unlike zswap.writeback, which only control from the
-zswap behavior. This is a more generic version control swap device
-other than zswap as well. BTW, I raised that concern about
-zswap.writeback was not generic enough as swap control was limited
-when zswap was proposed. We did hold back zswap.writeback. The
-consensers is interface can be improved as later iterations. So here
-we are.
+Even if it remains visible in /proc/swaps, I would rather
+not represent it as a real file in any filesystem. Putting
+a "ghost" swapfile on something like ext4 seems unnatural.
 
 >
-> >
-> >   - Group A (Parent): Assigned to SSD1
-> >   - Group B (Child of A): Assigned to SSD2
-> >
-> > If Group A has a `memory.swap.max` limit, and Group B swaps out to SSD2=
-, it
-> > creates a consistency issue. Group B consumes Group A's swap quota, but=
- it is
-> > utilizing a device (SSD2) that is distinct from the Parent's assignment=
-. This
-> > could lead to situations where the Parent's limit is exhausted by usage=
- on a
-> > device it effectively doesn't "own" or shouldn't be using.
-> >
-> > One might suggest restricting BPF to strictly adhere to these hierarchi=
-cal
-> > constraints.
+> The size of the swapfile (si->max) is now just a number, which could be
+> changeable at runtime if we have a proper idea how to expose that and
+> might need some audit of a few remaining users. But right now, we can
+> already easily have a huge swap device with no overhead, for example:
 >
-> No need to constraint anything.
+> free -m
+>                total        used        free      shared  buff/cache   av=
+ailable
+> Mem:            1465         250         927           1         356     =
+   1215
+> Swap:       15269887           0    15269887
 >
-> Taking a step back, can you describe your use-case a bit more and share
-> requirements?
+> And for easier testing, I added a /dev/ghostswap in this RFC. `swapon
+> /dev/ghostswap` enables that. Without swapon /dev/ghostswap, any existing
+> users, including ZRAM, won't observe any change.
 
-There is a very long thread on the linux-mm maillist. I'm too lazy to dig i=
-t up.
+/dev/ghostswap is assumed to be a virtual block device or
+something similar? If it is a block device, how is its size
+related to si->size?
 
-I can share our usage requirement to refresh your memory. We
-internally use a cgroup swapfile control interface that has not been
-upstreamed. With this we can remove the need of that internal
-interface and go upstream instead.
->
-> You have multiple swap devices of different properties and you want to as=
-sign
-> those swap devices to different workloads. Now couple of questions:
->
-> 1. If more than one device is assign to a workload, do you want to have
->    some kind of ordering between them for the worklod or do you want opti=
-on to
->    have round robin kind of policy?
-
-It depends on the number of devices in the tiers. Different tiers
-maintain an order. Within the same tier round robin.
+Looking at [PATCH RFC 14/15] mm, swap: add a special device
+for ghost swap setup, it appears to be a character device.
+This feels very odd to me. I=E2=80=99m not in favor of coupling the
+ghost swapfile with a memdev character device.
+A cdev should be a true character device.
 
 >
-> 2. What's the reason to use 'tiers' in the name? Is it similar to memory =
-tiers
->    and you want promotion/demotion among the tiers?
-
-I propose the tier name. Guilty. Yes, in was inpired by memory tiers.
-It just different class of swap speeds. I am not fixed on the name. We
-can also call it swap.device_speed_classes. You can suggest
-alternatives.
-
-Promotion / demotion is possible in the future. The current state,
-without promotion or demotion, already provides value. Our current
-deployment uses only one class of swap device at a time. However I do
-know other companies use  more than one class of swap device.
-
+> =3D=3D=3D
 >
-> 3. If a workload has multiple swap devices assigned, can you describe the
->    scenario where such workloads need to partition/divide given devices t=
-o their
->    sub-workloads?
+> Original cover letter for swap table phase IV:
+>
+> This series unifies the allocation and charging process of anon and shmem=
+,
+> provides better synchronization, and consolidates cgroup tracking, hence
+> dropping the cgroup array and improving the performance of mTHP by about
+> ~15%.
+>
+> Still testing with build kernel under great pressure, enabling mTHP 256kB=
+,
+> on an EPYC 7K62 using 16G ZRAM, make -j48 with 1G memory limit, 12 test
+> runs:
+>
+> Before: 2215.55s system, 2:53.03 elapsed
+> After:  1852.14s system, 2:41.44 elapsed (16.4% faster system time)
+>
+> In some workloads, the speed gain is more than that since this reduces
+> memory thrashing, so even IO-bound work could benefit a lot, and I no
+> longer see any: "Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying
+> PF", it was shown from time to time before this series.
+>
+> Now, the swap cache layer ensures a folio will be the exclusive owner of
+> the swap slot, then charge it, which leads to much smaller thrashing when
+> under pressure.
+>
+> And besides, the swap cgroup static array is gone, so for example, mounti=
+ng
+> a 1TB swap device saves about 512MB of memory:
+>
+> Before:
+>         total     used     free     shared  buff/cache available
+> Mem:    1465      854      331      1       347        610
+> Swap:   1048575   0        1048575
+>
+> After:
+>         total     used     free     shared  buff/cache available
+> Mem:    1465      332      838      1       363        1133
+> Swap:   1048575   0        1048575
+>
+> It saves us ~512M of memory, we now have close to 0 static overhead.
+>
+> Link: https://lore.kernel.org/linux-mm/20260218-swap-table-p3-v3-0-f4e34b=
+e021a7@tencent.com/ [1]
+> Link: https://lore.kernel.org/linux-mm/20260213-memcg-privid-v1-1-d8cb7af=
+cf831@tencent.com/ [2]
+> Link: https://lore.kernel.org/linux-mm/20260211-shmem-swap-gfp-v1-1-e9781=
+099a861@tencent.com/ [3]
+> Link: https://lore.kernel.org/linux-mm/20260216-hibernate-perf-v4-0-1ba9f=
+0bf1ec9@tencent.com/ [4]
+> Link: https://lore.kernel.org/linux-mm/20260217000950.4015880-1-youngjun.=
+park@lge.com/ [5]
+> Link: https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXH=
+GBnfisCAb8VA@mail.gmail.com/ [6]
+> Link: https://lwn.net/Articles/974587/ [7]
+> Link: https://lwn.net/Articles/932077/ [8]
+> Link: https://lwn.net/Articles/1016136/ [9]
+> Link: https://lore.kernel.org/linux-mm/20260208215839.87595-1-nphamcs@gma=
+il.com/ [10]
+> Link: https://lore.kernel.org/linux-mm/CAKEwX=3DOUni7PuUqGQUhbMDtErurFN_i=
+=3D1RgzyQsNXy4LABhXoA@mail.gmail.com/ [11]
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+> Chris Li (1):
+>       mm: ghost swapfile support for zswap
+>
+> Kairui Song (14):
+>       mm: move thp_limit_gfp_mask to header
+>       mm, swap: simplify swap_cache_alloc_folio
+>       mm, swap: move conflict checking logic of out swap cache adding
+>       mm, swap: add support for large order folios in swap cache directly
+>       mm, swap: unify large folio allocation
+>       memcg, swap: reparent the swap entry on swapin if swapout cgroup is=
+ dead
+>       memcg, swap: defer the recording of memcg info and reparent flexibl=
+y
+>       mm, swap: store and check memcg info in the swap table
+>       mm, swap: support flexible batch freeing of slots in different memc=
+g
+>       mm, swap: always retrieve memcg id from swap table
+>       mm/swap, memcg: remove swap cgroup array
+>       mm, swap: merge zeromap into swap table
+>       mm, swap: add a special device for ghost swap setup
+>       mm, swap: allocate cluster dynamically for ghost swapfile
+>
+>  MAINTAINERS                 |   1 -
+>  drivers/char/mem.c          |  39 ++++
+>  include/linux/huge_mm.h     |  24 +++
+>  include/linux/memcontrol.h  |  12 +-
+>  include/linux/swap.h        |  30 ++-
+>  include/linux/swap_cgroup.h |  47 -----
+>  mm/Makefile                 |   3 -
+>  mm/internal.h               |  25 ++-
+>  mm/memcontrol-v1.c          |  78 ++++----
+>  mm/memcontrol.c             | 119 ++++++++++--
+>  mm/memory.c                 |  89 ++-------
+>  mm/page_io.c                |  46 +++--
+>  mm/shmem.c                  | 122 +++---------
+>  mm/swap.h                   | 122 +++++-------
+>  mm/swap_cgroup.c            | 172 ----------------
+>  mm/swap_state.c             | 464 ++++++++++++++++++++++++--------------=
+------
+>  mm/swap_table.h             | 105 ++++++++--
+>  mm/swapfile.c               | 278 ++++++++++++++++++++------
+>  mm/vmscan.c                 |   7 +-
+>  mm/workingset.c             |  16 +-
+>  mm/zswap.c                  |  29 +--
+>  21 files changed, 977 insertions(+), 851 deletions(-)
+> ---
+> base-commit: 4750368e2cd365ac1e02c6919013c8871f35d8f9
+> change-id: 20260111-swap-table-p4-98ee92baa7c4
+>
+> Best regards,
+> --
+> Kairui Song <kasong@tencent.com>
+>
+>
 
-In our deployment, we always use more than one swap device to reduce
-swap device lock contention.
-The job config can describe the swap speed it can tolerate. Some jobs
-can tolerate slower speeds, while others cannot.
-
-> Let's start with these questions. Please note that I want us to not just =
-look at
-> the current use-case but brainstorm more future use-cases and then come u=
-p with
-> the solution which is more future proof.
-
-Take zswap.writeback as example. We have a solution that worked for
-the requirement at that time. Incremental improvement is fine as well.
-Usually, incremental progress is better. At least currently there is a
-real need to allow different cgroups to select different swap speeds.
-There is a risk in being too future-proof: we might design things that
-people in the future don't use as we envisioned. I see that happen too
-often as well.
-
-So starting from the current need is a solid starting point. It's just
-a different design philosophy. Each to their own.
-
-That is the only usage case I know. YoungJun feel free to add yours
-usage as well.
-
-Chris
+Thanks
+Barry
 
