@@ -4,135 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BB31C61DBE
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 06:04:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CEC5C61CE0
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 06:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D68456B0005; Sat, 21 Feb 2026 01:04:24 -0500 (EST)
+	id B61B96B0005; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEC1C6B0089; Sat, 21 Feb 2026 01:04:24 -0500 (EST)
+	id B0EE26B0089; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCDF06B008A; Sat, 21 Feb 2026 01:04:24 -0500 (EST)
+	id 9F0576B008A; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A630D6B0005
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 01:04:24 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0862E1A041B
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:04:24 +0000 (UTC)
-X-FDA: 84467424048.28.7801490
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0B85040005
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:04:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LMxxdDlj;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771653862;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A97B6B0005
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 01:08:00 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F48313ACAC
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:08:00 +0000 (UTC)
+X-FDA: 84467433120.07.33E0900
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4D6DB1C0006
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:07:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrGOxfCf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771654078; a=rsa-sha256;
+	cv=none;
+	b=h0sPRZw+zECgtInyJjhd/Nl8kw9HPHe8+7F/WZIbIrf+my5RXII9gRbK9LyVFbs4koXh7B
+	aj3eqgXhejfFY1AU7h4Kf96V//loj+RQGEYpi3RnXt3gUnes+Z9kEZ72RgLn+DIlcJnbpK
+	azWyLUpNkNmidvyIy82veal6obYPT+4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrGOxfCf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771654078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uTauQkrmFvKkr/II8+81Sp8G1oZoJ9jGOwsLPvYTl+U=;
-	b=ICNv2+33OM9yiXoXNGmtRZTlqksYLavwPFXSsTCte0i8JUAtFE+HTgoIH7ch4I/s8jgRbN
-	5qIY1sc9cZH8RPL/6ZkSbxhQHepnBFYhOPETxn9rv4FOIdZAsZCPfKcXzNSpcg0FUgoAbu
-	s4MuU0YvaZKJG63hbu/HiQb7bQbUqgs=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LMxxdDlj;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771653862; a=rsa-sha256;
-	cv=pass;
-	b=yK2700IV6YijczgAI0TdAMnfKzrAsYY3mt9j/RMJprb5+Qg1Yv5Hn4wdiVwtcpzlFI9Vri
-	YxY0kNPUFdpHJlaU9AnjAh/eMEyaTMa4lzA0igQHJsl4nCRQRRq882/mLRikb5uu5XMiGF
-	EED9i9qRLhMB2TyWPzwsrvA9shYcHto=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65808d08423so4071646a12.1
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:04:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771653860; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QXH6NUTKZpmEzsCi9ZMlhC4eJIM4ZlPaNw8J08k+GtsXPMAmPJFUufCqyd8bN7Dkl9
-         fWiHmH4b03MWHRhFXjNhPSv2/0ehspAVX47IFgcCc7iMtfM+ajPEg0P9jlarDSM+EjlB
-         MrxY+Jy8v2pv+ONFhdoh2NQW3KXAT+w6IW12BAmx9dNPhTeLCxsENlFs2QXPMldwsh80
-         mCjlMBe6ZSNe50IJ/qa8O4hwwBdaJeTCVwgs9FTLsM5VDbVjLoO6q+Xf47ec7uVIO4i7
-         knzzqUrIHSk+1CRD8rZA+Lh2PrRIV8vDy5xIxxWU6+1p4qe4mwZlN/grFw2gC4Az0zhS
-         y2lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uTauQkrmFvKkr/II8+81Sp8G1oZoJ9jGOwsLPvYTl+U=;
-        fh=Nllzl1aC1epaaaZSw1fRz1vcjxLYlJhGQe+wLm3SZcQ=;
-        b=RHGeA/WRKUtuPVxLFe14rx2l5U/3nwONaqHm1F1kbyFVQgg2RhEB6ctnI9BuqZ0hjO
-         bazD0/8cFCA1y6RkkQWUTeOYseD2zJyC8SF6Fa5jJAcpSSWtTZHPH6RW6PjCCpxUUbc+
-         /h2en7HegSLkTQbmAoR8tlQ1ZW1hpnKi4Pb5+mwR5QcPAFP1kAS0H9VSQBKEqDylglXt
-         X2Q71oxyrRpqsgqKM6zE0KKeXqx7d+B2Hdz0cAKekjKHHkqv4s9uAyl3bbOSGy78jPYf
-         CRtQPh+rqtpDeN6ddd6AAp1y6Ss0EyvJJfmHzuAYyqBuyrc4FCO7InrJjWUQETRZtWwK
-         LyhA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771653860; x=1772258660; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uTauQkrmFvKkr/II8+81Sp8G1oZoJ9jGOwsLPvYTl+U=;
-        b=LMxxdDljl3HhcVe+Vftstbt70PlVCSifR2Q2BybiSgplO99KBiUmhV0z9T9r+1k8Fh
-         886/emFJpfDIpE/aY8cCCsCpwdZissZG3ylCNNJm/OI9S8PkJ+ghBdXQDPaYuSclRNQ3
-         YMKcldkdpnZEEN0K84/ie23CtXcnMpo1/lDrXCYLIiEKCg7E/gEdK99ZGGYximbZeXXB
-         klO+MFTeb85xDEJfKEl15Oxp0AWf5Hod7H0Ci2T9ZLGv50T5ezcqiq2xOa3PHXLhmD7G
-         h7qwxsg4dj3Xc7LxHNBCiSUB1MM974QTjGxM4vGPG9m4CYmDPvwy4xiL/r3hMrg3ZPjE
-         QURw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771653860; x=1772258660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uTauQkrmFvKkr/II8+81Sp8G1oZoJ9jGOwsLPvYTl+U=;
-        b=v41p9Ft2MS3WA7uBrd2YmkMsOBJG9AWwH1PEB5cfnQSTsNWfbtW9II5EFFJCeIGu1o
-         LGdaOOh/hLXp98+AGpHB2sizZvnOm6uGMYDAfIkn27a5XOvhTQKnif0SHnqXOx6GoTL2
-         gtNbPflTvSVx/bfzmLH8N5Go+qwmgL4ujhRoVzZ8T+NKovKvxD8556tcFc4VZ5+YcUal
-         2XDo1TNLdzk9pV5lYNJR6oYfo1eOjrj+HhBofF9gUcNr8Ds2ZycaluisbAjXGn8SOd7T
-         UiZmWRO3lNCMRMMzIPPgt2wQ9MoX2RpMQdivSxQ0pjkJ44u90ALO3N8vXTjH2EqxVifz
-         yplQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+6er/OJBug/4nWVdVMmRdQQP4uDYMsWy3pfFvDSHa+gePFxvEhZq+412CoQVoQMYdoEvtyiDnWg==@kvack.org
-X-Gm-Message-State: AOJu0YzmSjPtWtGPl83mdMWI4JFO22BroGncAhGcUOCu+I+lSRcm0LGA
-	qErQI8yHaiGZRl061PBCtFvIQ8kI5P7Q6tRuGs3UzmjWMCL1iMA1thAWgSTyYRCdf7ayYlM2lL0
-	TT7PEou57Lnupskave6zEaP7oDMbkuRw=
-X-Gm-Gg: AZuq6aJc+Z85fnyMIL6BBa/2CCCM2SsI/I4DYAZX6AwAH3DlzB73pwS5h1NdO7UgMof
-	m9IPAa/dmKD9nFh+vQnpmv3C4n7YHZyEYUA6pk9XDj060GzuCgp1fJ6VvycEW1eLqZmtaQlDz1e
-	PUw5FBOBQq++8lu2Il+zFb6OLyCettafjhAbRKi6NKL/8m7SM1VkoUixTauoDnDfZUFXOADLpPH
-	C0MAkIvM0I6aIuldP7wCyaYe9XkkTn7YUWqW/zBNwbQhJwlrcDUNNkCvZP6/N6FJhUh/XFkDNqj
-	R2yoDnCvvTJs/+yz5J/eeAj6lx0m79fnQU8rouTo
-X-Received: by 2002:a17:906:fd89:b0:b8f:8660:3cb4 with SMTP id
- a640c23a62f3a-b90819546a3mr103681266b.8.1771653860014; Fri, 20 Feb 2026
- 22:04:20 -0800 (PST)
+	bh=vNYOII3ATo8v6v5YfJjwWytPBUpNMd9xBlA+zTtOasc=;
+	b=KygRmWH2kY1w+5lvwZuZxbhSHLV9TOOYoAB6Em9GM4lmmQmUj0Jn8apbfvuetitXZOibeF
+	Tqx6hdOxF9ltBNJvS3qC9H4oYT/ucH2PSA/4g7jGtREOtsRVxkFFk1DJMIg5J2a0SGLTLc
+	ruR4hXUiG2ywOKaGBTs/aSOq1Q6YpRI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 057FA4455F
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFBEC2BCB8
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 06:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771654076;
+	bh=tuqfdUH5dLNaI48UltQSQ/DDXtuz46WoSnM/Ewc6hV8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rrGOxfCfrzO5Z6TnyNZTGHHC4AhkzmXzc5/I4icCCEJTpLic/HBXPpgymzMVXUeIV
+	 g6H0/oLcyDcl163lJCCr+cHv8ngAYosNdzRxHPGp+unCyQzeCSQVtDHH+J7QdU1+5W
+	 r0ne/wnYGg57yboj15LDo3iwcEIb4NIdbIAazPZAIGHrVVWX/n6yTSF6JcxyEI5LqC
+	 8yZdxcSomkvg3lRtkZtlaW6AXuJBJIGnPzNFrCBFW7uOf9OL1a3/zKc/Y8HsZhGTTj
+	 cdZywz7YCTZIGId7HSNWks/LODrcKsBUur+p858EiiWlcI4aOa9AqWf6vDL0csC7XX
+	 tSjxIKaaXnklw==
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79628fb5c05so21913357b3.2
+        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 22:07:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWT/hTIGGZPttNHoXEDhVRuzrzVPzjLB5RdBNQv/t4NUHqgGHLS2pLABv8aJ4qqTs7r+jev+ZoJmA==@kvack.org
+X-Gm-Message-State: AOJu0YyUe3JVi6+oN0i02J6dgMo28C9GiiRB+uOVi/iVwqVeJlQweqec
+	GPOKDdPv2TuqmOikhkZ0ZKi/VFJ9Moxyko4J3b7MOlfRFTfvLXKXDEZlYU98G41U8b9yX0sgwpv
+	yT47x3hA+NIJI2wKhhcpVRWan2lYYVK/eZucTXU7eVA==
+X-Received: by 2002:a05:690c:438e:b0:796:2dfb:4aeb with SMTP id
+ 00721157ae682-79828ff5e9dmr17141547b3.37.1771654075666; Fri, 20 Feb 2026
+ 22:07:55 -0800 (PST)
 MIME-Version: 1.0
-References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
- <aZim2hT0nNjcRYVG@cmpxchg.org>
-In-Reply-To: <aZim2hT0nNjcRYVG@cmpxchg.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 21 Feb 2026 14:03:43 +0800
-X-Gm-Features: AaiRm53_Z_Uanuz2pbqKEn_PEYzIznLIBK-pucpY6EGel6jJHnN1IU9znKEInpM
-Message-ID: <CAMgjq7D8uPq3CpCksdqZYh0kybOiWojsZnfLPTYfP-UCuw=zwA@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Improving MGLRU
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Chen Ridong <chenridong@huaweicloud.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-mm <linux-mm@kvack.org>
+References: <20260126065242.1221862-1-youngjun.park@lge.com>
+ <aY4bQFvpPRWgnOTM@linux.dev> <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330> <aZjxP2sTavBRGC1l@linux.dev>
+In-Reply-To: <aZjxP2sTavBRGC1l@linux.dev>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 20 Feb 2026 22:07:44 -0800
+X-Gmail-Original-Message-ID: <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
+X-Gm-Features: AaiRm52oT9bCdTg2KlqgudQjXVvw63FwwA4FX_ypBGoSC1POgtIdGTHmnFwj-bE
+Message-ID: <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
+ cgroup based swap control
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: YoungJun Park <youngjun.park@lge.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com, 
+	taejoon.song@lge.com, austin.kim@lge.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0B85040005
-X-Stat-Signature: xpofr9yqc93mzua56ouub5mahftijejc
-X-HE-Tag: 1771653861-535698
-X-HE-Meta: U2FsdGVkX1/abpyjaovUa8aGAXfop+tXS+unEUrcvw7CYJPM/QiRw7JxQOzKEEkf5KIuqouOZveg1YUiUDnFx5kwejd3msE1nVe11yOVe09yqM5I/VyE5l0RjwjtdTvFtc0LJ9JrgHc5c4olL5pm9z/2XKZVVFei5BRSH+OslfHqljiywwlyscswNoeMKCDsPmOQ2DnyG2YOT32p8R8oSNPEWr9qzQ/cKi+ueXKAIDmGAIl43bSFSCQO15pKSMNm8d45T2o0gY2/o0QwnIVvUa0gDMeBBk246V+ZzRjjUx/HXYUWuWtlvwbXxJcgAjLUYnle/yngiLuzMq1KHOK0XmoNVbBKz4Ilp0rC9eDWOCb+QQaTF+dFeM/XJUsiZXoMHZUeV4Phm7Yrfqzrp9xTCHJZ6T9s0I4Yf2gJuOnIVBPuszPOfXmp2GX6wb7Lz2r0zNr6CXbHk0+QiVuqHiej8JkHxcSvgSVXG3zQDWF7/XdLrPFItW1EAfDty5Rr2EkGVL23gGEgO6jEVuOdKScGdUpQsEwdboP1HT4dfPDSlhg8WhDVMUoUmS1vGkpxpC/PqJoJwVcotEAcS8Kh3Xz4uRuObl4rRBXdKwChP801DCEMrOXEFHj/MS3jHA3ogd3sf+tB/2otHXhH4peePJ2brKcU+SOV6EtLnIl6OO02mxX/WgisuUd4++iIxIjYOCeCb8RM932+1F1LMM86sEHGqnSVxZc+/CxQW42Z9C2grdzZd4+oAshbGuOKHLjlEQoO3YS8ZvvwFnhvumPWWGkJnDlHJF7wYOZOzS1ODB4cgz9iqoxXFwUN5u40dIeXUXAaY5yZyqL47hSdKTEXQC3e+ziSUnNuYNKf8kcBKr18iukxlUsqj5NsjMEcMb1rnoziVJD0iNQ3s3c53mkG3w0+yl4KPwc0HW+VaQjEnmZutvX1yoFl2wN1blRv1/WgZUjs2lK+koucidiNjqWRDWL
- AHrsauyU
- dcHDk0JLQlL4pQgJcpE4Iyl+1sqxggghxGmf+EnjE25Ojd8CX23QqGboJV9g0ajKcp1O4l15iJ3HTTcBL0jGazHFT4n2NAxY2YZF9DlX2KE3wVjwqWQA3inN4IeMjoIYY0X7oUWK/yiMLE018XFSDUNLGs5+19pZ6mN0rcvapI9jqVziQp3N9HnBN8tmlodtrxuHS8QFlkkQQEO858QR0/ovNUIY97J8YhrY29DBQ6sMNfS8zVJ8HlbCzrePnEsl8iCxm3ZMqmbXjNRXqSSiOQZoQGBFj/JGs/NFlwfm0AREpwLvx21XkxOgY8OJgmifD/yIUva1bVq+0HG0bFA5lpMx7Vncfc4RWTUgbq5MYy97MvdKWUiLiEXezzNRbCnJn5gRVORfGZkA36oWZEilKhFsZAHp4iUHQZmbSS5wCHCIHrclLg+7qepifCScHeNvy+bQAoszUrLFOQ2CT25B7F/v2kM6HOCgg9xg96TsQlPeMH0Z1Shu199PF5+WiOUvIUKRLXf+y+w/5H4SsOD7x0k9mHZ6ZTdL+YQpOD1VbipJFwed9HL2mg7Ewab/kfmVaP4nrVzQ+pXaSWkTi56LeG0AvV3g6/nyVMGNq
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4D6DB1C0006
+X-Stat-Signature: xd3cfwpyhmo1wkfqhtkzme6iq9exkucu
+X-HE-Tag: 1771654078-405557
+X-HE-Meta: U2FsdGVkX1/otnOz45HpjxFwJ9qCso8ukx119UqIhakV4wWHr0tsEKoqZT/9DhUc7GCcVXy++S4piyvXc82h+kY8mMlo/xtHahvReNeq5VMDzwrkoTQD/C1kWqfxi8723b2yhTBa54wNJ0X7KYw5XkJr49IlyxRbLsCBfxGeNdGYAYO9lW/teMdD1amqV1OKf33T+h4ujsbpxHxKDoFDCOO/UMrIiw5n2821wg12eXN5+95BIPTfhSHmunz9/tmfGbaQRiTBEbabivQ8+XGuMf4jAMCVb2fXn0T7AwgF0UWzoya/OOaIw6+jBV63P/2dDB9yypYpaMXjrCoZTlCUenvIGOXdUtbi3T4uIX4DTDJ8fM1Bp0+rPfWBkiEM2u9GNE2yeqRU1ldkXgTvMErFySDZFjd0iYyT4oUglJpaXg0xHaFiNPTGIzEtxLbGSgJlXBMS0Lx3Zh2xMk/rbgsOIicg0vfvSjk1lk5QnjU0CQbAlN9ny9c7eEqHhqsCGO/y2POPHEQ7PVkqfZvVOEVPwYH7BDUEBsyvdQSa3aqzGo04WjuJbM7U+X1tpalip4Weh8g3agW4Cp94Z6GGfWnDrhHwsd+d4ebVSfExGzerYln+2UA+EU0K9jodJDYKYZO/AwOZWfapM9U3u9ny/G5EdJyviag0BX8+eLFVhA+nWn0GutD/mls/ooxu9mtQLQvnxOZQiWXpr0TrW1z7g+yCh3DKGI8wTHeu93Y/T3GEA5o+GtaNbNxN5KYYqoYZT6QCh3HHZ1aWMSQL6A1JTyt21HgA5fSFMENvNs+96nN1bPljnBtSxux9GNQdL7Ua+fIUSXbA2SVrmRnH+4n15pn3+9Igpgl9UXzgKhCkXNQhIXNbIP26EP6+hT3rQe0znEURnmITfnBkgtk0HrCkWU8l8GEWqg9K08MO2RnU1t6FGwP9wJ7I29x20N5LkXVICkqmc1OKnIL8KUOCB64EmvI
+ ysg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,127 +108,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Feb 21, 2026 at 2:24=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
+On Fri, Feb 20, 2026 at 7:47=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
 >
-> On Fri, Feb 20, 2026 at 01:25:33AM +0800, Kairui Song wrote:
-> > Hi All,
+> Please don't send a new version of the series before concluding the discu=
+ssion
+> on the previous one.
+
+In this case I think it is fine.  You haven't responded to YoungJun's
+last response in over a week. He might have mistaken that the
+discussion concluded.
+Consider it is one of the iterations. It is hard enough to contribute
+to the kernel. Relax.
+Plus, much of the discussion on the mailing list always has differing
+opinions. So, it's hard to determine what is truly concluded.
+Different people might have different interitations of the same text.
+
+>
+> On Fri, Feb 13, 2026 at 12:58:40PM +0900, YoungJun Park wrote:
+> > >
+> > > One of the LPC feedback you missed is to not add memcg interface for
+> > > this functionality and explore BPF way instead.
+> > >
+> > > We are normally very conservative to add new interfaces to cgroup.
+> > > However I am not even convinced that memcg interface is the right way=
+ to
+> > > expose this functionality. Swap is currently global and the idea to
+> > > limit or assign specific swap devices to specific cgroups makes sense
+> > > but that is the decision for the job orchestator or node controller.
+> > > Allowing workloads to pick and choose swap devices do not make sense =
+to
+> > > me.
 > >
-> > Apologies I forgot to add the proper tag in the previous email so
-> > resending this.
+> > Apologies for overlooking the feedback regarding the BPF approach. Than=
+k you
+> > for the suggestion.
+>
+> No need for apologies. These things take time and multiple iterations.
+>
 > >
-> > MGLRU has been introduced in the mainline for years, but we still have =
-two LRUs
-> > today. There are many reasons MGLRU is still not the only LRU implement=
-ation in
-> > the kernel.
+> > I agree that using BPF would provide greater flexibility, allowing cont=
+rol not
+> > just at the memcg level, but also per-process or for complex workloads.
+> > (As like orchestrator and node controller)
+>
+> Yes it provides the flexibility but that is not the main reason I am push=
+ing for
+> it. The reason I want you to first try the BPF approach without introduci=
+ng any
+> stable interfaces. Show how swap tiers will be used and configured in pro=
+duction
+
+Is that your biggest concern? Many different ways exist to solve that
+problem. e.g. We can put a config option protecting it and mark it as
+experimental. This will unblock the development allow experiment. We
+can have more people to try it out and give feedback.
+
+> environment and then we can talk if a stable interface is needed. I am st=
+ill not
+> convinced that swap tiers need to be controlled hierarchically and the no=
+n-root
+> should be able to control it.
+
+Yes, my company uses a different swap device at different cgroup
+level. I did ask my coworker to confirm that usage. Control at the non
+root level is a real need.
+
+>
 > >
-> > And I've been looking at a few major issues here:
+> > However, I am concerned that this level of freedom might introduce logi=
+cal
+> > contradictions, particularly regarding cgroup hierarchy semantics.
 > >
-> > 1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/In=
-active
-> > LRU.
-> > 2. Regressions: MGLRU might cause regression, even though in many workl=
-oads it
-> > outperforms Active/Inactive by a lot.
-> > 3. Metrics: MGLRU makes some metrics work differently, for example: PSI=
-,
-> > /proc/meminfo.
-> > 4. Some reclaim behavior is less controllable.
+> > For example, BPF might allow a topology that violates hierarchical cons=
+traints
+> > (a concern that was also touched upon during LPC)
 >
-> I would be very interested in discussing this topic as well.
+> Yes BPF provides more power but it is controlled by admin and admin can s=
+hoot
+> their foot in multiple ways.
 
-Thanks, glad to hear that!
+I think this swap device control is a very basic need. All your
+objections to swapping control in the group can equally apply to
+zswap.writeback. Unlike zswap.writeback, which only control from the
+zswap behavior. This is a more generic version control swap device
+other than zswap as well. BTW, I raised that concern about
+zswap.writeback was not generic enough as swap control was limited
+when zswap was proposed. We did hold back zswap.writeback. The
+consensers is interface can be improved as later iterations. So here
+we are.
 
 >
-> > 2. Regressions: Currently regression is a more major problem for us.
-> >    From our perspective, almost all regressions are caused by an under-=
- or
-> >    overprotected file cache. MGLRU's PID protection either gets too agg=
-ressive
-> >    or too passive or just have a too long latency. To fix that, I'd pro=
-pose a
-> >    LFU-like design and relax the PID's aggressiveness to make it much m=
-ore
-> >    proactive and effective for file folios. The idea is always use 3 bi=
-ts in
-> >    the page flags to count the referenced time (which would also replac=
-e
-> >    PG_workingset and PG_referenced). Initial tests showed a 30% reducti=
-on of
-> >    refaults, and many regressions are gone. A flow chart of how the MGL=
-RU idea
-> >    might work:
+> >
+> >   - Group A (Parent): Assigned to SSD1
+> >   - Group B (Child of A): Assigned to SSD2
+> >
+> > If Group A has a `memory.swap.max` limit, and Group B swaps out to SSD2=
+, it
+> > creates a consistency issue. Group B consumes Group A's swap quota, but=
+ it is
+> > utilizing a device (SSD2) that is distinct from the Parent's assignment=
+. This
+> > could lead to situations where the Parent's limit is exhausted by usage=
+ on a
+> > device it effectively doesn't "own" or shouldn't be using.
+> >
+> > One might suggest restricting BPF to strictly adhere to these hierarchi=
+cal
+> > constraints.
 >
-> Are you referring to refaults on the page cache side, or swapins?
+> No need to constraint anything.
 >
-> Last time we evaluated MGLRU on Meta workloads, we noticed that it
-> tends to do better with zswap, but worse with disk swap. It seemed to
-> just prefer reclaiming anon, period.
->
-> For the balancing between anon and file to work well in all
-> situations, it needs to have a notion of backend speed and factor in
-> the respective cost of misses on each side.
+> Taking a step back, can you describe your use-case a bit more and share
+> requirements?
 
-A bit more than that. When there is no swap, MGLRU still performs
-worse in some workloads like MongoDB. From what I've noticed that's
-because the PID protection is a bit too passive, and there is a force
-protection in sort_folio which sometimes seems too aggressive.
-Active/Inactive LRU will just move a folio to head if it's accessed
-twice while in RAM, but MGLRU won't do so, as result hotter file
-folios are evicted equally as the colder one until the PID gets
-triggered, or still gets protected even if it hasn't been used for a
-while. And by the time PID finally gets triggered, the workload might
-has changed. This is fixable using the approach I mentioned though,
-and it seems to be better than the Active/Inactive in all our known
-cases after that, whether that is a good fix worth discussion.
+There is a very long thread on the linux-mm maillist. I'm too lazy to dig i=
+t up.
 
-I also notice Ridong has a series to apply a "heat" based reclaim,
-which also looks interesting.
-
-> >    Can we just ignore the shadow for anon folios? MGLRU basically activ=
-ates
-> >    anon folios unconditionally, especially if we combined with the LFU =
-like
-> >    idea above we might only want to track the 3 bit count, and get rid =
-of
-> >    the extra bit usage in the shadow. The eviction performance might be=
- even
-> >    better, and other components like swap table [3] will have more bits=
- to use
-> >    for better performance and more features.
+I can share our usage requirement to refresh your memory. We
+internally use a cgroup swapfile control interface that has not been
+upstreamed. With this we can remove the need of that internal
+interface and go upstream instead.
 >
-> On the face of it, both of these sounds problematic to me. Why are
-> anon pages special cased?
+> You have multiple swap devices of different properties and you want to as=
+sign
+> those swap devices to different workloads. Now couple of questions:
 >
-> The cost of reclaiming a page is:
+> 1. If more than one device is assign to a workload, do you want to have
+>    some kind of ordering between them for the worklod or do you want opti=
+on to
+>    have round robin kind of policy?
+
+It depends on the number of devices in the tiers. Different tiers
+maintain an order. Within the same tier round robin.
+
 >
->     reuse frequency * cost of a miss
+> 2. What's the reason to use 'tiers' in the name? Is it similar to memory =
+tiers
+>    and you want promotion/demotion among the tiers?
+
+I propose the tier name. Guilty. Yes, in was inpired by memory tiers.
+It just different class of swap speeds. I am not fixed on the name. We
+can also call it swap.device_speed_classes. You can suggest
+alternatives.
+
+Promotion / demotion is possible in the future. The current state,
+without promotion or demotion, already provides value. Our current
+deployment uses only one class of swap device at a time. However I do
+know other companies use  more than one class of swap device.
+
 >
-> The *type* of the page is not all that meaningful for workload
-> performance. The wait time is qualitatively the same.
->
-> If you assume every refaulting anon is hot, it'll fall apart when the
-> anon set is huge and has little locality.
+> 3. If a workload has multiple swap devices assigned, can you describe the
+>    scenario where such workloads need to partition/divide given devices t=
+o their
+>    sub-workloads?
 
-Sorry I didn't make it clear. For MGLRU currently it already ignored
-the shadow distance for re-activation. And yeah, basically all anons
-are activated on fault, which turns out to be quite nice? None MGLRU
-users considered that as a problem and in fact the performance looks
-good.
+In our deployment, we always use more than one swap device to reduce
+swap device lock contention.
+The job config can describe the swap speed it can tolerate. Some jobs
+can tolerate slower speeds, while others cannot.
 
-Of course we can restore the old behavior to test the folio
-against some distance (gen distance or eviction distance), or push it
-further to only keep the reference bit (not completely ignore the
-shadow, just only keep the reference bits, if the LFU + PID still
-works well without the distance), and gain more performance and bits
-to use.
+> Let's start with these questions. Please note that I want us to not just =
+look at
+> the current use-case but brainstorm more future use-cases and then come u=
+p with
+> the solution which is more future proof.
 
-BTW I tried to restore the refault distance behavior for both anon and
-file folios sometime ago:
-https://lwn.net/Articles/945266/
+Take zswap.writeback as example. We have a solution that worked for
+the requirement at that time. Incremental improvement is fine as well.
+Usually, incremental progress is better. At least currently there is a
+real need to allow different cgroups to select different swap speeds.
+There is a risk in being too future-proof: we might design things that
+people in the future don't use as we envisioned. I see that happen too
+often as well.
 
-For file folios it indeed looked better, anon folios seems unchanged.
-But later tests showed that it doesn't apply to all cases, and I think
-something better can be used as suggested in this topic.
+So starting from the current need is a solid starting point. It's just
+a different design philosophy. Each to their own.
+
+That is the only usage case I know. YoungJun feel free to add yours
+usage as well.
+
+Chris
 
