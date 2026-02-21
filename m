@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2AC3C61DFD
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 19:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8190C61DEB
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 19:36:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 782FF6B0093; Sat, 21 Feb 2026 14:36:40 -0500 (EST)
+	id 22B326B0098; Sat, 21 Feb 2026 14:36:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72DD76B009E; Sat, 21 Feb 2026 14:36:40 -0500 (EST)
+	id 206F66B009B; Sat, 21 Feb 2026 14:36:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 675BA6B0093; Sat, 21 Feb 2026 14:36:40 -0500 (EST)
+	id 102556B009E; Sat, 21 Feb 2026 14:36:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4820C6B0099
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E5C086B0098
 	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 14:36:40 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DCB8D1C0D5
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:36:39 +0000 (UTC)
-X-FDA: 84469470918.30.D087138
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B23A316056A
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:36:40 +0000 (UTC)
+X-FDA: 84469470960.16.F46A350
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4374680003
+	by imf23.hostedemail.com (Postfix) with ESMTP id F2E55140004
 	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:36:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C9t+9Jz2;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NzDLCrir;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771702598;
+	s=arc-20220608; t=1771702599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+rfsiGmhc01BRcFOe+jthn4zrRso6eCF1denja9H0Zg=;
-	b=WPj7efX0PTX1FuyC81sF9ySaGC+5Y4nPLfUIO5/op7PtE5jw3kTO1hLaKGHP45iONSJrsm
-	kUGPsaNl/gaUBKjsHMXZ8qjy6PUrFAPo/lECOI4x0CXJUTlL8xwtWI9cTLaKxAD6/B1gLj
-	CsrXuAzZ3IEhtuIwrrw8TOl6KdsVIvw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771702598; a=rsa-sha256;
-	cv=none;
-	b=yuXWGXvWQV8h3S8JMnjumrwTB8jj1hIP71L2C+StI6gdE5Aro/Q6v1OF0o/fcMz2+vDfVr
-	WF5KJ1MF23SStBrSRT98u1o4euyfWVEhIRNGf5hdhhbAylcpOOBy/GJ+qfvdg+8jb0ONHo
-	96N5P6Rnaz3H3LL1lLY49JTKV5gscoo=
+	bh=/N5I5kJjkEZIg64PkYpdtlaZKZ0JKdMBYrahzLr8qZI=;
+	b=5B3Fi7SoI84tcGS6TcI88PJPfHLCqHfPCGFsF242YlcheSeaYgKCcuhj3/OnlMDe76iCVE
+	UlB4IzmutX1LjZo1F85+/OTICXnMDcO40D8Z0zNbhu98mCSvMk2beywExMExRMkkxKkL9k
+	qf3V2iPHvf3VELgt6UsvT9hj8JcwoVM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C9t+9Jz2;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NzDLCrir;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771702599; a=rsa-sha256;
+	cv=none;
+	b=Zs1Vqv9ZC6plgwANg8UvVwX8ZO9rziH+YvRX3FTlrLglWIne33G2sKPd5xAHwC5/DoBsDp
+	J2dgLkKMMyLqqVahAhLcNYN7eANBPCREaZWCC2q9z9ClOIMpKOjXwZX3EMkAeV+hG9VDCC
+	KUYw6lNYhvxVtjL9N0AOYplFplaWgTo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7A28E44539;
-	Sat, 21 Feb 2026 19:36:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CC1C2BC86;
+	by sea.source.kernel.org (Postfix) with ESMTP id A9781444C4
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:36:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76021C19424;
 	Sat, 21 Feb 2026 19:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1771702597;
-	bh=BLMf6S2CwC1uRw1Za6T26Ewe+0K+xw3rETEPypk9tzs=;
+	bh=iYt3HJjJZ2u5nNYQJzA/aRcSczmrsEXHtQU6RM/AfoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C9t+9Jz2hPriFjK93TVr0kL3267n6+R42N2n8VOHwQv5agnOpvqATVqVnAs6mYeJm
-	 +jZ4j4ch1N3NYgkCQDXyClUwsO7Pc8NzeLulg0ok3FhJmvecX/JCvcbAl10foHRcuB
-	 wLWPSfzEKGFv51WI3SPLtLH1z+U8nZX/2vPST3mDPKjOOAhNB/jBsZhuvJFz3q/4SW
-	 q1fGqkjXmcnDd+yGMIWKed55s7RyH8fKJvHntiEQtHC3L3GrwQG4kQjKAoU5pwvi2a
-	 c3diqLvXjRbg/Cvnp0m79+SFhrEe43XikHTdiz1L516/jdlbYWtmPA93R3Yn77Jg/Q
-	 lCDWB2zdWQ64A==
+	b=NzDLCrirLxiXJ5MTJob6eNXmUGHqltZBK4hK3K0ojglQ/kKc2jCJd25QXbbRj2Ur0
+	 iBSBXBBAG2ggVEbKhok1CboQbE/p4yB/MIXimsyzj5hbKHv2C0+1PHD5PrBfprXSuA
+	 iI9BBmHp4AvcOhm97QzFfcBMvgSbdkO9YlR7EwH3JOS1o4qeYOo3zldg9cRGehVEmE
+	 zqErZ2xaNFzRBlDtjrETMekCQ8YZMPLJjYR10du2COPKT5A5KwGoR/RXhu86MyVCz8
+	 8aWb0SLnTdrTljbn2zODv0ipNtRK9s1HND3HJMEEw5udY9vRGYU6N1yxatbheZOz7d
+	 I5sthnhmS/M9g==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 09/10] mm/damon/tests/.kunitconifg: enable DAMON_DEBUG_SANITY
-Date: Sat, 21 Feb 2026 11:36:26 -0800
-Message-ID: <20260221193629.19332-10-sj@kernel.org>
+Subject: [RFC PATCH 10/10] tools/testing/selftests/damon/config: enable DAMON_DEBUG_SANITY
+Date: Sat, 21 Feb 2026 11:36:27 -0800
+Message-ID: <20260221193629.19332-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260221193629.19332-1-sj@kernel.org>
 References: <20260221193629.19332-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F2E55140004
+X-Stat-Signature: 73pm813brbm63t9aszagy64dwqqe4dxd
 X-Rspam-User: 
-X-Stat-Signature: t5bw7g9nyuixfnen8rginmdtzahu4cyy
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4374680003
-X-HE-Tag: 1771702598-673556
-X-HE-Meta: U2FsdGVkX1/HuFeAswQlF9kFok7cWATj82j+I54WL9af8qt9Bxsu4w9gYla0mkqWUc7FOfibzjtWVUKAFDax+pfn68OPr6bf0zcl6FG8CBhv8lq7COtQlyK6/0SmJHSw0HMat6IJzOUZOqntL6GxSjld/NkEVa7LgeXlAgzYnYw+o7CCiwElm6WxrjQQg4VytaMcyYO0iMjGkA1YsuLmgvB+BnJwDQd8wZ4FmwUbJQdbo4Z95XmA+upZWhQq4U4fcsLnMMolWPBLG/XwkYbOSTomEflAchxS3ICNCy1g2PX2YI2zysqHICeyBcgLJwmdo5JW/Z4bJtWrFsIg6A/XAWNFbWNMegEjbgBrKGw1X180ywmDPVEHIzC5CJIqlKMbcBXJIw8KdmoFmlQRzkDHNSYQrcVFeZwn6cLnvYIA7wtldDNk3R+/RUJqeJG71iT+QRlN4SEelfr/NWZOTFNfSdkCcuLxyQsYpnhgWvRZFliUieatrpPl+GGO6VncRFnGOCxrX6Za1hxA4irVLKLdH3XocuZEJlo5wRFqXG++jSIQ0bLdA7V/zEy9YnmVxPs3jUNnWFnY65PAIPEKzQW6dOLZgrUxQmbvIeG49lNyZH7KlFAgznv3kPQR/fCAqTtJSmT0scVgtT1DAvqs1GOEs4EXYpTfdJAxqA+j2lmh6JNjzILaIgGAYix4bEZsAsweLqd/2KuvZ1StqSHStfXh+vVfEMV668MEvZmx2byaF3ZRU0IpcTNfHwbuuE5YkREXjr/QroJQeMZMDbiD+nILqTPIzhGV5O9aO7NQhpuuVeHkGpFaEGHvvkegxrRWGQRIPp8llhSq2qp8YJgsXy0eIMA3ivjhVupoXVfyy8+taa3W5iYEBSyz3TZ6PKBAUAt2FaND8UeNLR/h0HnO5WaTM9hcBO3S7B7tm1Oima9n2HI2kUg4y74RJAfonESxuZ7Ny9XJ8gEMab22CXyakEh
- QCG7507k
- fLkp/1CnZdISK2M7n1D6Aer+6ch3vrt1lNizURFCgXSH3qaeft2mijsYU4cmSCNZgxeFE3VRtR/U00E3UGeLdAtN5ondTLHb353V6DY8vQjyeFpodh3YvMQNxXOC6oNg0x1dpoeVAZmkpbjIn3byx1OFw4YC9T0MI79ptSjmh3hFRZM1reDXIG403GEJJTa4q0p7c4Hgm8s9cC56ciOWd8vt/QujLRZGfMSRmnvCqFbDbIVWMl30LX4BIjq458Xq1oLZMD4n8HNfKy0V/e2lVjXAaAQ==
+X-HE-Tag: 1771702598-181749
+X-HE-Meta: U2FsdGVkX191C+xkN+ZZPHDVRm8aC+43UnNuV7KC944WEDVJUD3olDaHIpK51FwjHNjscyiMzk1QONkHM1hOOdNh+LUsvAdmAl05Y3NFZampfv6yE+Z8T882VBF59+Qwo8bupgvG8GxaK/kUwKkSAFnkhYa7TKQO5ccEMk8xKNd2dJg5WIN9f0e4DWQf1Dl2JLzlfECdnOXUYcNdFSI20J77wLycmFtcjWX6SvaJsUJcPR8O+BhVk8SSq71HEZvquW2LkN4sTgtNLOhbnhW3bJvOIUuBdmqOSl9ZG3hl5diAd01IXyEo8AZSDrS1l0ht+86EuCEahynZPevLL6RYSU3fH/yDJY6eBRkjQI3Is+bguN3Wqac++dwcKX8eqIQmfMCJe+vPxuandRjTiLS2ZitvPWqs5Z6RFxh4Bui0+2N9+cOiUQaSdCEv+xyY9ou/6dcr6f5adMdP9B6aC+VOUIEPghlurKgr0uQ2EUj8k1nDxMB1xZDzoRsYd04WwRrHlaj81xzAaI4S80LpGZz6Zt1s+bv5auP+P9R1ONW5avcjlrStLR0pCb+wcg7xpVFBJ3e3O2QQAZIjSTeIMkJm2qgwUd/uMZ8zb1kZb2bwyDbpPNi+T64hi4kqadU8Zy/etqatVMnZVk2ZUfTY/mvIx168Lt9kV84ceCH1IBz7Upln/EFNLtWg161kmgaDq9QCLc+4JEcDTFdM3WdyVX31kbT68797ku4DdfujGzGW9ArKmhl6Y87bHTjOOmQMmKvf9h8JdAsjuCNFXTddmn3mkxpi4YQQrklHEkJh+E0mn65KPWXhZcCvIjzi5/zoGFcZPIPK2xy9RfgPC8gzWaQYhILGN755sqKhCUSnkcPvXqAol0+ZLtSXTBlFks5dcfMRUWPFfUAyGDpmLhqMvej5RwbA+MN7csof3m13dF9pE+6/FBbSl75oBqFIsccfqMl8ENk7KPit7GcMgulzBen
+ AiznuUmt
+ wdYuR2wj0j7iGfy+kRxJDYecOgWQdhuj2NVvcCypuZKEhdua7qS7EWsL7Egb7yEG/gFsN7MiUFD9PfPctBhdm+ibF9fa/Y3z6UoXQMFlMu6+0uH4NHDntR1XJOPI5zYl9UyVfn4QtojNp9wM9XuAa6hUFBoCJvFPPL5ZM98qn5KIvBtoCdwLFpD4fBDrFe92iFGiZvdI3EP1dpPwqunrpB03O9PFWf93DkRSJNl58g7gqJETBdDlp2S/G5kfxtrgW+nZo+4nho4JUHpg4i9FuUA09nFMQqr1hqQs27HVSsgo0ak2whX5rnefedq0hh7X95heFy197ZxmhXEn0WdMJ31ACyx/jDWCtdg68
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,24 +96,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 CONFIG_DAMON_DEBUG_SANITY is recommended for DAMON development and test
-setups.  Enable it on the default configurations for DAMON kunit test
-run.
+setups.  Enable it on the build config for DAMON selftests.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/.kunitconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/damon/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/damon/tests/.kunitconfig b/mm/damon/tests/.kunitconfig
-index 36a450f57b581..144d27e6ecc5c 100644
---- a/mm/damon/tests/.kunitconfig
-+++ b/mm/damon/tests/.kunitconfig
-@@ -13,3 +13,6 @@ CONFIG_DAMON_VADDR_KUNIT_TEST=y
- CONFIG_SYSFS=y
- CONFIG_DAMON_SYSFS=y
- CONFIG_DAMON_SYSFS_KUNIT_TEST=y
-+
-+# enable DAMON_DEBUG_SANITY to catch any bug
+diff --git a/tools/testing/selftests/damon/config b/tools/testing/selftests/damon/config
+index a68a9fead5dca..6304adacb741c 100644
+--- a/tools/testing/selftests/damon/config
++++ b/tools/testing/selftests/damon/config
+@@ -4,3 +4,4 @@ CONFIG_DAMON_PADDR=y
+ CONFIG_DAMON_VADDR=y
+ CONFIG_DAMON_RECLAIM=y
+ CONFIG_DAMON_LRU_SORT=y
 +CONFIG_DAMON_DEBUG_SANITY=y
 -- 
 2.47.3
