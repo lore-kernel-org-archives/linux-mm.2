@@ -4,141 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92B90C5DF68
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Feb 2026 23:59:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8123AC5CFF1
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 00:03:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C505B6B0005; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
+	id DB1726B0005; Fri, 20 Feb 2026 19:03:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C27CA6B0089; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
+	id D5EE76B0089; Fri, 20 Feb 2026 19:03:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B53F76B008A; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
+	id C6B556B008A; Fri, 20 Feb 2026 19:03:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A326B6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 18:59:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D08A1B5671
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 23:59:56 +0000 (UTC)
-X-FDA: 84466505592.01.5328093
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 52B071A000C
-	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 23:59:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q8spDmPm;
-	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771631994;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ADF036B0005
+	for <linux-mm@kvack.org>; Fri, 20 Feb 2026 19:03:30 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61B051C23F
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 00:03:30 +0000 (UTC)
+X-FDA: 84466514580.19.E45B958
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 99246140003
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 00:03:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gTcXljw2;
+	spf=pass (imf09.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771632208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
-	b=josL3CSqhN6GVZV3/mQSn1IDGA39+synBW7IK6AueZVXMy5iYBUpvbb/VwJGH2ZNVegIAp
-	vrQYCraotAdCQY0IQbTMVlvIAGt1qOCvsL4HD2/XGqCVdTPWqeJDcwM0qx359CYCLDRYCf
-	8iK/JXPWMhQ7VOAgdqyEC3/j4m9yJ1Y=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q8spDmPm;
-	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771631994; a=rsa-sha256;
-	cv=pass;
-	b=pHke9GANNPXOYQJRTUQ5A5UbVnl6KSA3BwhuadzqitoAyqbfszeyCY4N5VWYWCqf7TaN0a
-	2jPG745xR2jFpirRUK17r7M6xVfOoqsw1cdhOFZ8pVYWMAYdN6vz6DjmEy20SgTV8MJEwE
-	WBhw4UBHr9PHYzTvOa4LjTGAYryab1A=
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5673fd077b4so1252599e0c.0
-        for <linux-mm@kvack.org>; Fri, 20 Feb 2026 15:59:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771631993; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ON+kTphqZU9H+IMo0n/u70urtLq5cDGfIIjQQ6WAfOOtNFak3o+ZmXQVWIsMi2P/8D
-         vo8f0jCVR7JfnRaUGn5DqgHq8XCJ1VUd/XYjLoDLUg67m4tmm532Ls+lxFmIhR75fGDv
-         Uii9TbyuP7mZdl2Woknjp0YOlLOC+2GhcBguV3SxgtYz5NFybhciygOjQLxbUdseF8aO
-         PBgL6Kti5BiTK3Eoh6kWtYkawntHASuCy6bh4PJ+YaxJzj3h579Ks3xej2/Eh9iNDqRd
-         qxfch8j49cq6cONplU5+OKyiCPe6xw8eNlchgP1TU9m4LZ5mEPwrEo60DTnUIPfOS4Bl
-         TZzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
-        fh=DSxFU9vb00RnrBYf9XlvrG2hgm3vpNwB6RG26FlbDVI=;
-        b=cH6fz671x2+7YoIVeDyiFyek6kn9PKqpM3AsEO8R9AY0t4+KOIHj7L8pSZyRN84fLu
-         Tp7x9Ud2STkl6luSs5rZHDyL6R4XRREP1/Ln48Tk70z3owenrgU8cIHEY9QHhYV6s2wm
-         fNPJj9qFCmWgb51UUgTGodr7QP5UjVagWnN6+2U8XotMiijtrMVzp6Y9OLSKSUR1hi/M
-         rT22qfsbqhkugD7FIlBY/rWNDHRZIfWM5um9mrnKLmbjrk8iyWJNjMwzwFVnQOPghdVw
-         kVQgrb/Wtx4JG4kyRhDcW/SCV8L5G1NXlvalX9gfsurXd4VlzTZcS+/wFvZ6JiAjDYnP
-         37Wg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771631993; x=1772236793; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
-        b=Q8spDmPmoL7MPGPg5y3eItaw9T4w0NMJ+l9bUfuaZyitgPyl66OV9zL7F/J8pvfwDN
-         tHVQ05SgqBWckFuo8m2ZlA0KQyNJJNSIA04SFPq0nmIkxh+PszL0eAe1gXLHZlzGB8UK
-         sUe5OADqIFEf2eOecQMNyjGSTvagFgRM5kNsQbqPMNCJ4w8vCCxBnvEKisRJvjsrUw4F
-         uzsY/fntd/HC2QZ6kYkpQiKd63pCbnNyXRDZMGwgUo/ZJsCAT0/kfzj4rSkaV1qXf4Xk
-         T7An/WnpzVvc+SKSX04Qnvrf4Mb55PfdjJJ10jyHLu3p+ElBWfjwpnRA5AHYq8pqqG8T
-         bqoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771631993; x=1772236793;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+f0CcQxmI0koMDUEbyqFOb1QILsoY/SYqmL6D7Q+4cE=;
-        b=bBYIprgOsrJAotTM9hXEjagcslusp+VjkqTV/7slFc9awu+CO4y13YPoqymOj1KY7n
-         dJBgJVDi7fyENEsK4U4o2vC42Smo8odFI+BK0nwEPLayvWLl0kLLRJhYEog6Agm4AiFy
-         yHzWjrVhZpMB0VxY3aQdgOMNOifBtSxMItp3NhzfcOP1dI5QJHewdiU7zxVv1uB1Jj4+
-         D1PK8dLJ/SPLjWMmI8ihlAfQT7Jc9q6xkv6tAtzXIHALH6jlJLqgMuYlV8I2VIyDDHul
-         jXiSunruv9gHzsOGpeEeHedwn+O+rdaMCe9snPoOOtTBTU4ZrdIWCj2pm4YTYas08+ML
-         voCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHbwhPRaEXnrvDsixunqbFa0Yh7mE0tWChzpslK7dT/jBoG3heVEUFFl5lgjCNoyJJ/FOs9XPt2Q==@kvack.org
-X-Gm-Message-State: AOJu0YxPnFWY+XZ2JSzW3R+sau9vGSOw4coAOdwPekQ4IFHUoBkFB2iG
-	Tnl13ZKw9Hd0XcqyPygjKnEt8BjaUpcgQ5kxPe6HEIpEA/ITSNtfmCqlHpn2oBClE/4N2dvmPGN
-	jn+ciMcDJne5eZzW+PFGtMR7ekiRJVhfYvPJ2Z0ZX
-X-Gm-Gg: AZuq6aKmeYDcBsSqYDbX/H6j4c6Y+8Q2aJJVhqBLgzFUjJXAhkSplh3FZKh0bOQEyVR
-	TsFTLNx7RYPYgpNXmiIh4JfjGf9PIQnqqSC80+h508be/bqa6SAR92OjGEUpjy45N2yCTz0klYE
-	MNCLCWe2BxQugdAwsZhEC5uVn9e1FtWChy7MCcNU9MFj9ajfjlYkzTozjq364wTLtdwsxi5Q7vC
-	thWdlnCMreFdGZLeYRzIPK7lpYXo6qPDhd4ZTUDxhrngDt3IyhoxC62VBkApk6MBnHFTID00FSf
-	4k7KLzTN0xnsxdrUWx+sDnsDV8cUibAx34mu9hN3dw==
-X-Received: by 2002:a05:6102:358d:b0:5db:3bbf:8e62 with SMTP id
- ada2fe7eead31-5feb2e60d7dmr725313137.1.1771631992819; Fri, 20 Feb 2026
- 15:59:52 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 20 Feb 2026 15:59:51 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 20 Feb 2026 15:59:51 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aZSGD-EGSR3Z5Qyi@google.com>
-References: <20260214001535.435626-1-kartikey406@gmail.com>
- <20260217014402.2554832-1-ackerleytng@google.com> <aZSGD-EGSR3Z5Qyi@google.com>
+	bh=WmKPbG0rn/IwxZixewvNnkvJ1twLoxLjwi2Y6HdPwfs=;
+	b=6aMxjoHuWALGrghxKhxHbRC56zrJY9vVvBDOHu5yh1yx2oc2PsHOcPmZNHjP1t/hex3NVI
+	ujwdbJbEOu2YPOVYz/+ImkuCx2KbzaA+ibytRxqmllZLzFngc7J0jleGOfck6XpOsRA0uw
+	dmOlSljGzJcvp+GI3KxW4mxnYfPO6pE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771632208; a=rsa-sha256;
+	cv=none;
+	b=hNv0DQQ5rFyV5QXVBJSw0VprDGActALKyKhbocmfr6bZ/47FJH0KPtilCNaeGLv7nRMVNv
+	cC9Kk1uNlREm52BN7xMAiOEeFGNflzVaDrhy69C2MIjfmraH5m+yN/N0Mk79uFO+6GKEQK
+	eMIV3j49TyJWOlez4vQe5LsvR6WTxQQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gTcXljw2;
+	spf=pass (imf09.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 737C34034A;
+	Sat, 21 Feb 2026 00:03:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43295C116C6;
+	Sat, 21 Feb 2026 00:03:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771632207;
+	bh=ZmGa5tIl8OA5KzSQQqrKLWKWS9mT3TwNVeOHxd0u60A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gTcXljw2vb7Kj9dQWNO0DAr4Fzq2ZV+nbvUzavcQDOCPQbhHsksbvN4P/mZQFiTTp
+	 jxGFz/OR0+5GFzL0PTwcNdVZlGifjxqmXte5HjWO63X/t/GqESD9jDdBuUsRyb8+2v
+	 C+SrYIWDq2y/C3DLPQfjDGJpx9K+nT/nlFvReuOhX3v0m4m6JuLrZtYX8jR4TmMuOG
+	 OKbvv0xg5bNp47dmdtG/Jd4aNSWh9F2VXgMxZrh5G9z9MqHPf7P9kJo57rKIYe2Q1T
+	 7VfnqWXai7h2I/MwJJQGGDy3wExJrV5M8KHm9+4fmdwT5DE4aMuzPGEt4b1d3CaF8M
+	 N/g4IWbEgRHGQ==
+Date: Fri, 20 Feb 2026 16:03:26 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 09/14] xattr: move user limits for xattrs to generic infra
+Message-ID: <20260221000326.GB11076@frogsfrogsfrogs>
+References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
+ <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
 MIME-Version: 1.0
-Date: Fri, 20 Feb 2026 15:59:51 -0800
-X-Gm-Features: AaiRm50KSzR4QWeR2pY6q56NWZqd8e8f9tXSjFga3oRJAj_7AZ0rMRT-3FKVTjc
-Message-ID: <CAEvNRgHQZzdy8+rbsH2EibpCo8ddinXMSSef5h1_r3mK74q-xg@mail.gmail.com>
-Subject: Re: [PATCH] KVM: selftests: Test MADV_COLLAPSE on GUEST_MEMFD
-To: Sean Christopherson <seanjc@google.com>
-Cc: kartikey406@gmail.com, pbonzini@redhat.com, shuah@kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, vannapurve@google.com, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, 
-	i@maskray.me, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, shy828301@gmail.com, stable@vger.kernel.org, 
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 8rhfzywq57biedkbaomxxppk4kbnfesb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: zhpadmxuegwbm8apkqojns9gymirkx81
+X-Rspamd-Queue-Id: 99246140003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 52B071A000C
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771631994-686129
-X-HE-Meta: U2FsdGVkX1/vGluJGhLadax+pWLV9r0y6OYA0uiIY5zgbdnvZLyvtwjrMovBOGkg6IpPaQWa6GKIe2txs1szkRI+DH6mEnyHHVaBolopuJmxJSEOKMKLR8W27+4CEYwyPfRkuBja+qsSbZHqDuxhD7xmwjWmBjfpmZlSPPEnf71RQjhJE9PaG/a5FrBd3hrGeMkaDv2sEmUwQ+f73uNfFlTC77dRPSNlv0MfoMz5yG5t0CEwoLVqRFKcdWeBfZ5SnYjQceoSGjPJX1WNVgs1bQl8+ONWRxVdPutllxm8QcGtG0Ra9FxRAtk1yyJWwK7UPbCrX9Ahj08EVEjRhmh5BCaHJbhkOAdFiyd1KuRPj6+fQATDOKbvKB+J8Kx6tk7X4JUj+W21X6Sq0nOTJUWb3Ioj+liwJdbQv01/XjZWxAYMr86KmhInOAWpiTtZqINTXgoUYTUhC98hokA06B5gr5IRiNttGQqdPKzMUTBTHukf6t8HPDO0wCJ9/s/ona4PZg/1XuZSlJREhumRy8kAWgNtnF9uq9gaApho/Hs+PMTv9tbKqYgEZJOJp509bftZRIYToGjbII8/8Qj0ENqW3iI1X7bwoUlYQjLhfty3yWNvDL6qvR5hGn7m3KuovKEQaPc/n3M4WOp9OhHcnQ9hc92CMQ+DiUWvt4QhrzSia5fHDj+ncaFmFo9B20ALZ/pdcH3Ini/XcnsSj/S+eg8XsVZx5oNGajABaFHdl5dWf6OAX77A0L8bwVcsSOLh3z4eYwkNuBEeAg4oM4mrhtCXMknauanQZCGVAljZMBWKqdwH7hJGEDhRBcoAtv7K3Lfk7QdgUrJZ2vUP4tPt7oZfImtJkohmk5GlgKAHqiFWybI4cJN5+RhoMGNcYKKq7fFLeNdB1gAtrJyHlOvSboJdTlPazdQCUSx1JlIerSBeTdxsh3VklrLdC6bHSZokbnz2SC4pD5/n/PqHvVqeQaf
- RLE7e8il
- zAyuCXypDAiOIbYimZ3Jou8G6EuITZJ5aNrLR2EapEgk0iybf2VPGyK75q8Xm6eWb2k/5h8aiIqlj3lOr3uy4MO8JKX1sBLB5Iqtal+VMKACCSGTr0XBycZ9RBkDZy6GhgiruRbvmOrVrlkGFuarb6hLvRjS/dgy6oxVnXHuHGRrbtVYS8ypbq1Fgd6Q28+AL8mQtIseQeKZo62hOSCuKrxKWNIwV4amQgY9plbXMDV610DutvvuUHS2rTswZwxi1d1EdWJPTMqrsCz4iBdlm8qX+xwUo+4S2uoYnaLVSOLtigFXYJFUMuuzYyjEySAuminuTFtBT7C3z/xhARIXhA69wd+BzTcrce7EgN5D2xM5M/scF9lwETNRDK9UOD/e5Az3uh0tdLmy55dsH0y5hw0dol4mkuJHVNIiF4nNNACSr8DFzhuPNNX9LReMOWn7L2Vlf9MoysMGPan5fIKZFtWxT36OxPxjO7cU3cmLE2timMtI=
+X-HE-Tag: 1771632208-497653
+X-HE-Meta: U2FsdGVkX1+w4I6fHRFk9ceX9ZFEC1E/HsnyK+WmAkYevlYQiz2ogNviJWhiU8o32vBOOWbvH7x3SbYo0qSXWOema2XUrxUkOOs8g8KzK6MwjkdihZupvn1wqggW3MeJtkGH96bl15BYCsmkDNqj7QyRaIgt55gWHSPrcIlxLavXTQVTXFSGAFyAwLy5phhpPJBnftOMZxl9VNU+eQpVlhIXwI7Bkxcx55Ytb+H704o+EFL3iUW1Mk2TJ0bZLFlWVgpS8otFJ3kaaRYcL8N/HyC+pLUwIJbtVO50L6QEyubj11xThsMqnFv0P4ZCWlEl1VbprT914WOkpfHIdXciIdp6qr3PgllTbrBIBP2s7k5Jww8Jpqxq4PwatDlQBI89VYOxYgvyg6InHz591DrZbm5THu5qN+HUQIHf7IGoVQKfj/grOKHOzTb1NpLPR9ZQdgiBk6l/x5h5AOWbG5p3EeSMi9Z16Ombz+Q+SC9awwA3fgf8Gz1vbMDvSAC2kKIM08R4G/jFl+eMpe7y+mA2L7vA+AIADkGx10KNY4a8IDTcvfQr1gBviemWijMevR1LIzAdo0MQxL7E09enb727kqatYmQJx9BHy1tjKorEZ90IP81qoeio50RbFrJybRf5SydAV7nKV7usgE+kp64w4XoJsiikHGeTiTrYjb2BkZUqy4W0h8vUWUaKCI31hqNhRMdToqnHQuUMZFteYSnSiG3MBnf8oAbs42Boc7Nk226MpIsjXmpLxtmHNRj2FbmLPOnm2Xv/na14maeCNMTZdS8ZK3CznUbnqDlIYZaP9hPwIoMyv4twRzwVn7fATKSa1tq2uuVbHyFd3K4h9L329q9zY+Og8FnEMeriZjLpGvFOiNk6TH3qrQLh7aUyqwdzy6RGFAr68BXW5Axxd6jYL3qLpBFLllp4a15nRpsqRCPzUAsy3OkSa8XVDfg+IFT49TZjx2kJPowMlsZ2Er1
+ EpjfxRoE
+ TUnerpvKXGX41oS+k+2okeHiZ4fb4sp1O5iLuSZIoOxPMv65CUcehz4bkQPxbaty/DmABM44baqZ6GTwGNAju0NMbjoCVqBbSnn3Zwb4UvTddsFuGIfny3CHEp2ld+slAFXGYPR/7J3mxsemTEHJ9613FMhHaw2SDBdV/Z2iBksITP8Pa13GXhGspnQ1Nu2Q5g8XwcCkHAqlpkMgkOr5voy787649L8BwmIWL3ZiaC0kTm5U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,51 +98,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On Mon, Feb 16, 2026 at 02:32:05PM +0100, Christian Brauner wrote:
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> ---
+>  fs/kernfs/inode.c           | 75 ++-------------------------------------------
+>  fs/kernfs/kernfs-internal.h |  3 +-
+>  fs/xattr.c                  | 65 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/kernfs.h      |  2 --
+>  include/linux/xattr.h       | 18 +++++++++++
+>  5 files changed, 87 insertions(+), 76 deletions(-)
+> 
 
-> On Tue, Feb 17, 2026, Ackerley Tng wrote:
->>
->> [...snip...]
->>
->> +
->> +	/*
->> +	 * Use aligned address so that MADV_COLLAPSE will not be
->> +	 * filtered out early in the collapsing routine.
->
-> Please elaborate, the value below is way more magical than just being aligned.
->
->> +	 */
->> +#define ALIGNED_ADDRESS ((void *)0x4000000000UL)
->
-> Use a "const void *" instead of #define inside a function.  And use one of the
-> appropriate size macros, e.g.
->
-> 	const void *ALIGNED_ADDRESS = (void *)(SZ_1G * <some magic value>);
->
-> But why hardcode a virtual address in the first place?  If you a specific
-> alignment, just allocate enough virtual memory to be able to meet those alignment
-> requirements.
->
->> +	mem = mmap(ALIGNED_ADDRESS, pmd_size, PROT_READ | PROT_WRITE,
->> +		   MAP_FIXED | MAP_SHARED, fd, 0);
->>
->> [...snip...]
->>
->> @@ -370,6 +441,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
->>  			gmem_test(mmap_supported, vm, flags);
->>  			gmem_test(fault_overflow, vm, flags);
->>  			gmem_test(numa_allocation, vm, flags);
->> +			test_collapse(vm, flags);
->
-> Why diverge from everything else?  Yeah, the size is different, but that's easy
-> enough to handle.  And presumably the THP query needs to be able to fail gracefully,
-> so something like this?
->
->
-> [...snip...]
->
+I know you're just moving code around and that looks ok, but:
 
-Addressed your comments in a v2 [*], thanks for reviewing!
+> diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
+> index b5a5f32fdfd1..d8f57f0af5e4 100644
+> --- a/include/linux/kernfs.h
+> +++ b/include/linux/kernfs.h
+> @@ -99,8 +99,6 @@ enum kernfs_node_type {
+>  
+>  #define KERNFS_TYPE_MASK		0x000f
+>  #define KERNFS_FLAG_MASK		~KERNFS_TYPE_MASK
+> -#define KERNFS_MAX_USER_XATTRS		128
+> -#define KERNFS_USER_XATTR_SIZE_LIMIT	(128 << 10)
 
-[*] https://lore.kernel.org/all/cover.1771630983.git.ackerleytng@google.com/T/
+I guess this means you can't have more than 128 xattrs total, and
+sum(values) must be less than 128k?  The fixed limit is a little odd,
+but it's all pinned kernel memory, right?
+
+(IOWs, you haven't done anything wild ala xfile.c to make it possible to
+swap that out to disk?)
+
+--D
+
+>  
+>  enum kernfs_node_flag {
+>  	KERNFS_ACTIVATED	= 0x0010,
+> diff --git a/include/linux/xattr.h b/include/linux/xattr.h
+> index f60357d9f938..90a43a117127 100644
+> --- a/include/linux/xattr.h
+> +++ b/include/linux/xattr.h
+> @@ -118,6 +118,20 @@ struct simple_xattr {
+>  	char value[];
+>  };
+>  
+> +#define SIMPLE_XATTR_MAX_NR		128
+> +#define SIMPLE_XATTR_MAX_SIZE		(128 << 10)
+> +
+> +struct simple_xattr_limits {
+> +	atomic_t	nr_xattrs;	/* current user.* xattr count */
+> +	atomic_t	xattr_size;	/* current total user.* value bytes */
+> +};
+> +
+> +static inline void simple_xattr_limits_init(struct simple_xattr_limits *limits)
+> +{
+> +	atomic_set(&limits->nr_xattrs, 0);
+> +	atomic_set(&limits->xattr_size, 0);
+> +}
+> +
+>  int simple_xattrs_init(struct simple_xattrs *xattrs);
+>  struct simple_xattrs *simple_xattrs_alloc(void);
+>  struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xattrsp,
+> @@ -132,6 +146,10 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
+>  struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
+>  				      const char *name, const void *value,
+>  				      size_t size, int flags);
+> +int simple_xattr_set_limited(struct simple_xattrs *xattrs,
+> +			     struct simple_xattr_limits *limits,
+> +			     const char *name, const void *value,
+> +			     size_t size, int flags);
+>  ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+>  			  char *buffer, size_t size);
+>  int simple_xattr_add(struct simple_xattrs *xattrs,
+> 
+> -- 
+> 2.47.3
+> 
+> 
 
