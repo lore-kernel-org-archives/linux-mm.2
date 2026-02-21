@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F31C61DDE
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 09:40:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A2CC61DDE
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 09:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 444DE6B0089; Sat, 21 Feb 2026 04:40:02 -0500 (EST)
+	id 410CB6B008A; Sat, 21 Feb 2026 04:40:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EF536B008A; Sat, 21 Feb 2026 04:40:02 -0500 (EST)
+	id 3B1A76B008C; Sat, 21 Feb 2026 04:40:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C73C6B008C; Sat, 21 Feb 2026 04:40:02 -0500 (EST)
+	id 268946B0092; Sat, 21 Feb 2026 04:40:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 191E36B0089
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 04:40:02 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2734B8399
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 09:40:01 +0000 (UTC)
-X-FDA: 84467967402.04.2584819
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DF184160006
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 09:39:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=imj4vQMv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771666800; a=rsa-sha256;
-	cv=none;
-	b=2//lOX+2jXL80l7wbXCsdqLA4dE6n8XIaq5YcpVSR7WE/Jp4nO0zHRo1rqsBnmfDez3eR4
-	bHMpu0uCbqqKjhChDpfJMsM+fWsydBwqeF2L8mVmrlctJX5K0h88eiKAtkP/Zk/g/RXxJ4
-	/Au1/ai1+bbJzWHlqgUHiMJ/H0jcg38=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=imj4vQMv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 139E66B008A
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 04:40:06 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD7551C2D2
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 09:40:05 +0000 (UTC)
+X-FDA: 84467967570.03.BFB1D60
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0C156A000B
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 09:40:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IxvqDYGG;
+	spf=pass (imf15.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771666799;
+	s=arc-20220608; t=1771666804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhfMK34w+7c74FDll4ied9faGONb5ohZzrn5WysTLck=;
-	b=76ZEYIBHIgFL9seDe+6RCzF+6Yp0WxmxPPa6PFRniAblPXZ6t0PfEnprQpsDHKNKKctgCw
-	JpoqdslVPGifozk1cYxe/ULXmuf6MJcJ1MuLfj5pZZe5BolM1xx2wrkZHnW+I8cH+1Mxlf
-	n/K/Yx1IwgA8VLV6UcOsxsbEdwAHgxc=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-824adc96ad2so2922094b3a.3
-        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 01:39:59 -0800 (PST)
+	bh=Lr0amJtGkckOgt1zwhQW2YcmsdAALF/BjkLZrgfyvsQ=;
+	b=4FmTBahWsgwJ8VGwNPOnjSc4M2GDaEi7cNrbv1ZdV9ly9WHHrGosKIGfY1QB4hvGGi/5sA
+	IrCz73Wv4d70eSvTF3hcdgzWWpEbPclfE7WFH4dV1rhEln4wTe2U64l6f3VhgL+ZOeBEHh
+	Y9VqOPDO7ox1EjxL/76P94LdzgRRork=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771666804; a=rsa-sha256;
+	cv=none;
+	b=CNzbQO5J9Cv6V7i/MkhVB30SyVhqIFunue87IeQ9eFKGKYEA1k8NvBnfC+ESrCG64s7t8b
+	8yo7deDdyNXDVK3/vm1ibUNM+eBwaD1qCdiNnLvpAyuieSNQc+2gdvvif1KQ70VC3ILrB2
+	IKAmi3KlXNylxUSMhKWfcfZSkr0+1xA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IxvqDYGG;
+	spf=pass (imf15.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-823081bb15fso1679074b3a.3
+        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 01:40:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771666799; x=1772271599; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771666803; x=1772271603; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FhfMK34w+7c74FDll4ied9faGONb5ohZzrn5WysTLck=;
-        b=imj4vQMvbviNezvlMhCABWMsGqv8Ua29A16ZHpV111xB5q+I3p1KxtIc96wiGMcItE
-         FYYCC5yKbic2xOM5tu/my+TCZLKz6ziz8XzjqM50G+tui/H5nTcDHczFpD+Rb2PBXNWw
-         Dnxco5tByTYH/1MDIiI9iRJeDMKsoOJnZGqZKsDFoiN1Vq7IS7rvIoDM6eJRl93Ip9A4
-         KXDCKdlUASy+Gm2BlLexg08qKabKrtpVZnzj9N2fBnB/uBmYVUqmhjjG3TJZ+F9sgopi
-         hCDWyvmTbxBj4Hzk5/Rb61p5gOM/BUiNBrqazjys2RdWN3VRkcDvLswzQh0NsY2WgzMb
-         14NA==
+        bh=Lr0amJtGkckOgt1zwhQW2YcmsdAALF/BjkLZrgfyvsQ=;
+        b=IxvqDYGGGneHwooU/Gnj/+cYR0A/WtZZZf0404MpvyKhqY6eeF8zPwXkJU7JYkxyZ5
+         cRsnfY7Cj5kveo1ql9squDlp6MPiaJV+XU22HpvxtYTHqFlRDL7OC6XYkVVPPiDhsaJ0
+         RWFD08sMYywMzXV6NVXICL8QnoMSZkvtGO1s0k+UWfOa3zqbCdzCZBdLh9OtI+Ng6wFm
+         yo0LyYL2aoxOPTgg2im7fPm/MOHwmDmfSbqT4PXpHvI++QKUo8m67GmWI7bBiA1lttzp
+         LJzNz89A0kHezl6EF+sREU4nAb7npEFH4eyN1zEjXXNa+aKY8kXYA8PtDw2hBh2FD4cJ
+         R0JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771666799; x=1772271599;
+        d=1e100.net; s=20230601; t=1771666803; x=1772271603;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FhfMK34w+7c74FDll4ied9faGONb5ohZzrn5WysTLck=;
-        b=MVNC2h9uZnmSMi+NgHyKgbuvDIAzPX1pTTZd3dNidgqwlaf8XUXCcEMrVE9958aHxL
-         2jjfZyv0IhErThBZzpoUpzbvjlu3B9GF4Q8Izn0v6sTgEZKqpl5n7IC0FfV5B5oc9bAv
-         Cef622kIWfl3Gzzr9PrEqHqNBV962kPTfSIIjb+JF/yMnUJ/5z8JoogcoOOSH0+SrEzA
-         CCtU9wIvizcpnXiT4y3yQkT3lrwHbWXqpBHqT2y2RQ6SQoygNaoiyw/PCn/7aZhI3F4R
-         vGAeCjx10zZm4oMFZKlJTyI5xREUMvVBFTC60lIzpvxNpuDdXcsbexJ5zr5ih/7DurMD
-         hUYA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/IVDU58K8309f1opDz+fQlROwPkRWOxw0XVDG4wSszV83ezJugf428ONd7fTCYSKLJ0J6wRO6cg==@kvack.org
-X-Gm-Message-State: AOJu0Yx0GGcacNvo7WvBKVGwZD10AFX59ipQCUA3aoWnof8gZT2iZfBV
-	D7nkl/Sdl3Wyfil9u0eE9BAk54eWKIaN7T2esM9z8uEND9J3iZhUaYKa
-X-Gm-Gg: AZuq6aJwEMD++MW/EpjQv0T7R8BIXnILMP5jtrnHPdXjNdTygLBsTC3f4F6edFRcrD9
-	ubxbIyB/qDuuKGWGwezKQTPMSd4lJ/SdZKxwOGjk+cF1le4zJUL/9yrTU8LqEYdx7QwI0bI9cZ1
-	auMBJ4gWgSXCEcPP6J1++ONxAtnASgnOEeBuGfnY5xFXE7gzveNrw7K+qxkVPcCEYeOpt9+imit
-	3SCi0yuJIkeve3viM74SZVb1hfM39H0ZtSS6ifzdN7/Djl73AtcpW0m3ueeolqbuQ7zSrbWI7S1
-	RYVhfnVtfhzQ2OOmBqM6EAqWPTYabPj0tarubhNMZSJ/JRi2RlJPbknpZG9eg05QuzCloefMUkU
-	1n5QOvIhV7IxfmS4+AbuBDv/p70r8HJPp2lMB6G+wmJhhgiC21gRVMd9AYVYBjB/mtQzW7CUyRu
-	8zjXI/v4zPS3RRdhP0wL8yeJ0BbzDWCdawkQ==
-X-Received: by 2002:a05:6a00:2913:b0:7e8:4433:8fb4 with SMTP id d2e1a72fcca58-826daa82a8dmr2231143b3a.60.1771666798773;
-        Sat, 21 Feb 2026 01:39:58 -0800 (PST)
+        bh=Lr0amJtGkckOgt1zwhQW2YcmsdAALF/BjkLZrgfyvsQ=;
+        b=svyCm+jkJtnQn/CFdfV6029ZK4f2RFFQ1JxYuwBphyjptCIV1b9HCgtRGGltZefm6m
+         UjuraM8uOOsrnBUX57N/bsbgZbyimtMSuKXVKqM8Xknf2+/vVb3LKBe94f2f26x6UqRo
+         w4qKybR7YFFHrgz/kEZQyKpdtayLr3bFSFxfNBO2qZJrmtdq7JNyWlb4yjLRGF4PSXNK
+         g8TXaWpSBXxOKjCMjEJNvksU/EIhfHwZzE+jLYnbD7HhENSwcJMJFUI2jeq+E1WX6mln
+         c5jFMFqQR9OwF83P+xY3GTTG1EtBI18YqqlUYKCyKb/giCpHLavpQhPBON3Htpv3hTL7
+         93uw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqosI3MVCpDgGRgKWJjFy0TykHSSG2gkZkGIUzplXllVqvm30eLxBdjvitqmfFcZt7/2OGu3pS7w==@kvack.org
+X-Gm-Message-State: AOJu0YzSSF0e7ospjW0TxdiuXEaiU324AO/D+b3BVrj+h582Uu5xni3K
+	ZcLavcG4YZK1hstuD9OocigyEMbOo9EEjMEoxKSrvQkQ7macZcqYH/8n
+X-Gm-Gg: AZuq6aJK8dRNYN3d5BbyP25UPpvj83720w3dUm9jmH6ShOmZnvgHeiOxTRcqz05VUoZ
+	X49hZsSJSjoFslpRIwGYHpVz5ZQDbObOEmBsPN50mMvLQDf8XeF1u4/uK5SwbHB+kF/XN1WVvsV
+	WqBizOfXL2qU1g5VgG9+/MOra9veHb/EvrTnfOL+T93LhVOUVQ2dNJxdSlSHjMzCyQ8qAapei74
+	eiBbkK5RTN1BC8KIUdPTworUsYobXEO1xqy5QeNPKszsDFTXYl0W41jggH0xoNuqnIR7YILYWfZ
+	zVS3aSAzI6l+HMknynVQ2FGU2T4HNYRtU/9RsiA3f9IN1WPJp5Bg/RVnz6koiLFkRm00F1OPr/A
+	U44aK9LOtkUcf7Wqo5VECx0Zy3A1A+IVETJWpnopfN/w0CyHux4AA1cxZ+tUFwKkoqSjTJ1b8Q+
+	A/7bzyubAYgwQYwCtaUlzn3UWMNfum9hTkTw==
+X-Received: by 2002:aa7:88c9:0:b0:81e:f623:ba04 with SMTP id d2e1a72fcca58-826da8e2f04mr2478100b3a.13.1771666802917;
+        Sat, 21 Feb 2026 01:40:02 -0800 (PST)
 Received: from localhost.localdomain ([49.79.21.101])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8ba11bsm1761708b3a.50.2026.02.21.01.39.53
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8ba11bsm1761708b3a.50.2026.02.21.01.39.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Feb 2026 01:39:58 -0800 (PST)
+        Sat, 21 Feb 2026 01:40:02 -0800 (PST)
 From: Vernon Yang <vernon2gm@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -101,22 +101,22 @@ Cc: lorenzo.stoakes@oracle.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
-Date: Sat, 21 Feb 2026 17:39:16 +0800
-Message-ID: <20260221093918.1456187-3-vernon2gm@gmail.com>
+Subject: [PATCH mm-new v8 3/4] mm: add folio_test_lazyfree helper
+Date: Sat, 21 Feb 2026 17:39:17 +0800
+Message-ID: <20260221093918.1456187-4-vernon2gm@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260221093918.1456187-1-vernon2gm@gmail.com>
 References: <20260221093918.1456187-1-vernon2gm@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zg1i9yo8knw31psszmwr4197ft1qto1j
+X-Rspamd-Queue-Id: 0C156A000B
+X-Stat-Signature: j1premn5uog7dzjz9ci47ri594zwa73h
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DF184160006
-X-HE-Tag: 1771666799-596399
-X-HE-Meta: U2FsdGVkX1+9tE8Sqpp+TIFigIVJXCBjYSHb7+nH1MhZN23UzSxXWD4KtfIRqzp9rSb5YVflNg/jvJMtnet6ccVVn864KHoWUNC0Vyc1lre1THZq/+6qqu/fniSPetQZX4PSax2pSAzeVz+HkLAgTnF5v9atsV8fvEGRzZRQf+J9dOvcAQJbaRPWGoaK8nwgYMgihPz8b4kmK29qlhkKT/lXvFe64PHfU7FhpvHdyecbJmZ3LUBpanJHtPqoBoLCtNMVFy9FdVRsWOazAuNJfG/m7v/7mBVzuBK+mmBVz1KggnFtLGPGiOK4B/v+E8CdDCpfYE/mCLZcp3/fNBOKwwCuizJv5vHCLM53VfZByuwWweG1aXV/BgoGCe8rHOQoQnj6bbhfzjED6xcXDFeFmt6NbVMY8u8gxtoA0++ncccWouKt9P96C9tbV6fAzrE84ZtbtD218CoeX2yvqJCmkZk91BUpkE6qdqMNYTRNi6lI1G9CpJmK9Zz/tYcgtBoGJnMQexyO8yB7RYazOUW2bZOUJHndFkXHC9lKTqtV5/Wpa595n1TwAbEoteHUuSblxbNaYjC15aNh6D/K++OTB3kYq5f5lbfMKQcxvMrLS/Q/LDRwsyxr6vJmmYMXwgZTFkA96ydW5l1vBilUEpLaOhNzjXGzuMWiqNsYWBjcM8CDAcIE3fpvR+CsirEfKKRyA2A7Gbh5fqk8p0s1Z5NctuMvLRXbRpvtVSdZUhddgXDpvF7ArzqJVqJAyNME4/ouwnah41u18leoLkKskTbaWluHCoF569b1ykbS2eg2BpUGAYSDfcVgcxEbN92zv8DnR8hUd6fGaV62jXa8tmvbEub0URKfDTnm2qnan4szvcGlAO7ZrD0F+sDLGBW65Z5KmxoJnlaAh9irAHU227DxRjRRLfpO1jU3bk1k6O9QsQnRolEKfA/6uuqckF+9EJaZI8SFQHc3wLOhqeGRd0Q
- qUi7Csvz
- F+bjpAK5MHtZOn00Trkdh42OxJ5P9KIPcq7Lj5n/03RIwyhYD5fkZTv2avs984dE08MfX10N1KY7vAWRvB9mBr30Gmbe8uIb3PDGCu0E9rR/P3hfXKBTwz427dOUM27fKCnsEhHv6z+Dc0QKFcy99WbaoORALyegstBngmk0EXalLd7wg0EehlgIvHiA4j0W0EeYGCs6MjBQMuvYrKdUyZ499VnxnzwqwKAQ2Okhk168UPALh/MjY6stK10FueCAUp4RMz4oj3M2O/n5ml845NlLjUn+rqxoJrllfClOPE+v9KHtkgf/PRox6kdmLf1ND/Sq3AW95I2l0vA7j2v0YDVrewN5BnxlI7ehH2Cj5DmwOAXQhf8+uDIbtvG+RP59KyvsgzNZQ/+K9A51lzG6cqsrea9QBO3yDG2LeS2eW1elhCV+P21CA4zSB9ZyQAKquiCNAyfCT92rhElZWCc7cOLZfcMon7cJfg+GxtIJlznWPCycgNkG1rNIx0Ou4yT2Nc4jY8Fimyu4bsW+5/S8kUfwg5jydckMpjqdlFAlgcKIX35DM53ALFciUBw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771666803-804953
+X-HE-Meta: U2FsdGVkX1/QNJv+UMWgeZ4PsKCPp3ohFcG2v2T/MTTc7sqNNT6/QKzaU0VxQCD6j3J95Gh6VxoYVbcoWif6Mev3q3SCsc001jMp5wCpX9zkek0jBuoX8AB6ONKb35rE53jAk/00+p3tIUF89NYtgpg1Dqkg45zV5yDPxFZnf/VXa9JcffEcPk4wgXqbLv//dD1QXzdoI0rvdLKEdECZnPZwsBaxa6lmTz6u5Ho1bszMHigb6Oc+2jOKvtJRM4M6h0HvnIGJvudd6gC4zxcatP244ViRD0OKYhMpgLSeoo2qdKSsTONrbBSCSaQB3vjyRWa0gjG9GThgqU6PekGRbDCf5Tjvu56142/gjM3GCbHFezONVLfjjJOSS71YcuUT60acRJdfTJOHxTN2Qfx1fJLsaPEwba6WZ0buXsZvMtBwAVw+HS3jz8pcsFpz/ixqKZMndW5W2hylaXPqVgXGnUTc+PnG99IvV9dIgK5myU/I81NlGt1N2WYsGDaO//T+YZO0j+Vz6IERPxpOIeGLFFL/KBv8JeLG6bfAL+h4pZJDYoQthQEIF+BiGJ/LT3+a6JJ5KvyO9TlYvJEmNM86SIpKIIbvyhT0spIHKgWqpbxEFyF6hsyxEUBW642mG8i3UFBslUbmqd7CPSlObbwSCRbI8AwhMScrZijiRmcLKy3K4fQy+5L6wLQR5B8O3Y9nQoRQOv3ivoqQKybGrEX183+shd0Xe1NA6wY5QcbE3D32XgxyZtmX0qMIWiTgXIzTGR+z2mVnUJ9mIcbsZZQT6aBfSmgn2ZuW/kK1SNLFKllMOfj4G69nLngP0TElECT59Z4Pb11Kz7BPikRNxU8xfCkGR7nvdOy1Hg/ogaJZ/S41JbTs0uPNcCzmxEn59MgsZFOvZXq/PCkk9ITY+9nLGc6QCAslPssHEHCeGboWhNg2uA0ugyA0P9JL6F670hc4+lOB1nNgFNF5JipJJ0W
+ p5PH1KtM
+ PQ1SZrlIRq1TONTBkxxi1KQzFL0tHm1GTx5EasNk4R+c0VsiqTYcq0l/pZR0/Sd4wJ8fqV157CavPA655x3zch3zmy/2hDjzWZ/2MUgWpIeZhePzLGaZW+62X6newEJob8iMAeV2kar4I8r5WL4MVy1M3tneTPlgVPQ99h7Jglbn5WZXh82WAs4g/ke2VwT5kkznW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,210 +127,72 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Vernon Yang <yanglincheng@kylinos.cn>
 
-Currently, each scan always increases "progress" by HPAGE_PMD_NR,
-even if only scanning a single PTE/PMD entry.
-
-- When only scanning a sigle PTE entry, let me provide a detailed
-  example:
-
-static int hpage_collapse_scan_pmd()
-{
-	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
-	     _pte++, addr += PAGE_SIZE) {
-		pte_t pteval = ptep_get(_pte);
-		...
-		if (pte_uffd_wp(pteval)) { <-- first scan hit
-			result = SCAN_PTE_UFFD_WP;
-			goto out_unmap;
-		}
-	}
-}
-
-During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
-directly. In practice, only one PTE is scanned before termination.
-Here, "progress += 1" reflects the actual number of PTEs scanned, but
-previously "progress += HPAGE_PMD_NR" always.
-
-- When the memory has been collapsed to PMD, let me provide a detailed
-  example:
-
-The following data is traced by bpftrace on a desktop system. After
-the system has been left idle for 10 minutes upon booting, a lot of
-SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
-by khugepaged.
-
-From trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file, the
-following statuses were observed, with frequency mentioned next to them:
-
-SCAN_SUCCEED          : 1
-SCAN_EXCEED_SHARED_PTE: 2
-SCAN_PMD_MAPPED       : 142
-SCAN_NO_PTE_TABLE     : 178
-total progress size   : 674 MB
-Total time            : 419 seconds, include khugepaged_scan_sleep_millisecs
-
-The khugepaged_scan list save all task that support collapse into hugepage,
-as long as the task is not destroyed, khugepaged will not remove it from
-the khugepaged_scan list. This exist a phenomenon where task has already
-collapsed all memory regions into hugepage, but khugepaged continues to
-scan it, which wastes CPU time and invalid, and due to
-khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
-scanning a large number of invalid task, so scanning really valid task
-is later.
-
-After applying this patch, when the memory is either SCAN_PMD_MAPPED or
-SCAN_NO_PTE_TABLE, just skip it, as follow:
-
-SCAN_EXCEED_SHARED_PTE: 2
-SCAN_PMD_MAPPED       : 147
-SCAN_NO_PTE_TABLE     : 173
-total progress size   : 45 MB
-Total time            : 20 seconds
-
-SCAN_PTE_MAPPED_HUGEPAGE is the same, for detailed data, refer to
-https://lore.kernel.org/linux-mm/4qdu7owpmxfh3ugsue775fxarw5g2gcggbxdf5psj75nnu7z2u@cv2uu2yocaxq
+Add folio_test_lazyfree() function to identify lazy-free folios to improve
+code readability.
 
 Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
 ---
- mm/khugepaged.c | 42 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 32 insertions(+), 10 deletions(-)
+ include/linux/page-flags.h | 5 +++++
+ mm/rmap.c                  | 2 +-
+ mm/vmscan.c                | 5 ++---
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index e2f6b68a0011..61e25cf5424b 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -68,7 +68,10 @@ enum scan_result {
- static struct task_struct *khugepaged_thread __read_mostly;
- static DEFINE_MUTEX(khugepaged_mutex);
- 
--/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
-+/*
-+ * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
-+ * every 10 second.
-+ */
- static unsigned int khugepaged_pages_to_scan __read_mostly;
- static unsigned int khugepaged_pages_collapsed;
- static unsigned int khugepaged_full_scans;
-@@ -1231,7 +1234,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index fb6a83fe88b0..0426cac91c0b 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -724,6 +724,11 @@ static __always_inline bool folio_test_anon(const struct folio *folio)
+ 	return ((unsigned long)folio->mapping & FOLIO_MAPPING_ANON) != 0;
  }
  
- static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
--		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
-+		struct vm_area_struct *vma, unsigned long start_addr,
-+		bool *mmap_locked, unsigned int *cur_progress,
- 		struct collapse_control *cc)
- {
- 	pmd_t *pmd;
-@@ -1247,19 +1251,27 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
- 	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
- 
- 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
--	if (result != SCAN_SUCCEED)
-+	if (result != SCAN_SUCCEED) {
-+		if (cur_progress)
-+			*cur_progress = 1;
- 		goto out;
-+	}
- 
- 	memset(cc->node_load, 0, sizeof(cc->node_load));
- 	nodes_clear(cc->alloc_nmask);
- 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
- 	if (!pte) {
-+		if (cur_progress)
-+			*cur_progress = 1;
- 		result = SCAN_NO_PTE_TABLE;
- 		goto out;
- 	}
- 
- 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
- 	     _pte++, addr += PAGE_SIZE) {
-+		if (cur_progress)
-+			*cur_progress += 1;
++static __always_inline bool folio_test_lazyfree(const struct folio *folio)
++{
++	return folio_test_anon(folio) && !folio_test_swapbacked(folio);
++}
 +
- 		pte_t pteval = ptep_get(_pte);
- 		if (pte_none_or_zero(pteval)) {
- 			++none_or_zero;
-@@ -2279,8 +2291,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	return result;
- }
- 
--static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
--		struct file *file, pgoff_t start, struct collapse_control *cc)
-+static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
-+		unsigned long addr, struct file *file, pgoff_t start,
-+		unsigned int *cur_progress, struct collapse_control *cc)
+ static __always_inline bool PageAnonNotKsm(const struct page *page)
  {
- 	struct folio *folio = NULL;
- 	struct address_space *mapping = file->f_mapping;
-@@ -2370,6 +2383,12 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
+ 	unsigned long flags = (unsigned long)page_folio(page)->mapping;
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 0f00570d1b9e..bff8f222004e 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2046,7 +2046,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
  		}
- 	}
- 	rcu_read_unlock();
-+	if (cur_progress) {
-+		if (result == SCAN_PTE_MAPPED_HUGEPAGE)
-+			*cur_progress = 1;
-+		else
-+			*cur_progress = HPAGE_PMD_NR;
-+	}
  
- 	if (result == SCAN_SUCCEED) {
- 		if (cc->is_khugepaged &&
-@@ -2448,6 +2467,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 
- 		while (khugepaged_scan.address < hend) {
- 			bool mmap_locked = true;
-+			unsigned int cur_progress = 0;
- 
- 			cond_resched();
- 			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-@@ -2464,7 +2484,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 				mmap_read_unlock(mm);
- 				mmap_locked = false;
- 				*result = hpage_collapse_scan_file(mm,
--					khugepaged_scan.address, file, pgoff, cc);
-+					khugepaged_scan.address, file, pgoff,
-+					&cur_progress, cc);
- 				fput(file);
- 				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
- 					mmap_read_lock(mm);
-@@ -2478,7 +2499,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 				}
- 			} else {
- 				*result = hpage_collapse_scan_pmd(mm, vma,
--					khugepaged_scan.address, &mmap_locked, cc);
-+					khugepaged_scan.address, &mmap_locked,
-+					&cur_progress, cc);
- 			}
- 
- 			if (*result == SCAN_SUCCEED)
-@@ -2486,7 +2508,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 
- 			/* move to next address */
- 			khugepaged_scan.address += HPAGE_PMD_SIZE;
--			progress += HPAGE_PMD_NR;
-+			progress += cur_progress;
- 			if (!mmap_locked)
+ 		if (!pvmw.pte) {
+-			if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
++			if (folio_test_lazyfree(folio)) {
+ 				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+ 					goto walk_done;
  				/*
- 				 * We released mmap_lock so break loop.  Note
-@@ -2809,7 +2831,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 			mmap_locked = false;
- 			*lock_dropped = true;
- 			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
--							  cc);
-+							  NULL, cc);
- 
- 			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
- 			    mapping_can_writeback(file->f_mapping)) {
-@@ -2824,7 +2846,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 			fput(file);
- 		} else {
- 			result = hpage_collapse_scan_pmd(mm, vma, addr,
--							 &mmap_locked, cc);
-+							 &mmap_locked, NULL, cc);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 6a87ac7be43c..9ce3f54f43b8 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -963,8 +963,7 @@ static void folio_check_dirty_writeback(struct folio *folio,
+ 	 * They could be mistakenly treated as file lru. So further anon
+ 	 * test is needed.
+ 	 */
+-	if (!folio_is_file_lru(folio) ||
+-	    (folio_test_anon(folio) && !folio_test_swapbacked(folio))) {
++	if (!folio_is_file_lru(folio) || folio_test_lazyfree(folio)) {
+ 		*dirty = false;
+ 		*writeback = false;
+ 		return;
+@@ -1508,7 +1507,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 			}
  		}
- 		if (!mmap_locked)
- 			*lock_dropped = true;
+ 
+-		if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
++		if (folio_test_lazyfree(folio)) {
+ 			/* follow __remove_mapping for reference */
+ 			if (!folio_ref_freeze(folio, 1))
+ 				goto keep_locked;
 -- 
 2.51.0
 
