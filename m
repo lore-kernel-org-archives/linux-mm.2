@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4033AC61DEB
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 19:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB253C61DEB
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 19:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EDB86B0095; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
+	id 518166B008A; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28E526B0092; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
+	id 4CBA06B0092; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C4EE6B0093; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
+	id 2EC4A6B008A; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 035316B008A
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 14:36:37 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9AF6D8BF3B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 053FB6B008C
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 14:36:38 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3E19160567
 	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:36:37 +0000 (UTC)
-X-FDA: 84469470834.28.55569A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E7DFF40004
+X-FDA: 84469470834.24.08CE88C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0BB40160004
 	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:36:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f/wZ7aER";
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k+72ZuX/";
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771702596;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VaesDynQ63dW3V3BuRForPVnEhfazfZI3wy4eshNiOc=;
-	b=lW/WjEQYx9M4qJZw0Vn6UetqLTnFO9qcVGcuSOZCUfit1OkWisPQm9mz0Vg2+OYdUAOWbW
-	Dk9yKZZq03purEj7goKDf4l8QJ6e6dKFnXAKnZft0yCkTS93gv2Wvjx4y7t24D3R2R6lH7
-	qc19vftiA8ZiHtX1UJf12Uk2EmUSLWE=
+	bh=oSSE+dkCyqJdTCeX6IMZuI0BpxiwOOj08VohuPphVY8=;
+	b=ArrrpQWHCFAn2UZ0iJURkfk6rFaR66juyVsXS/ZZmcsnp60YriwMgS8hYsAuFFSmYj0h/1
+	la+PHZB5ypzZgKatB8e5QAFPyC9ss1GPoQddksTVUxAk4DmuZK2NxKHwA2ol2rLAkRf+aU
+	Zv1X2ZYp32YgIeKV/KTE67VzwQ55c7A=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="k+72ZuX/";
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771702596; a=rsa-sha256;
 	cv=none;
-	b=YAbdcOszbk7CojZDbszES41Dos//gmb3vz8EOIA4YVPfwtJTu65r1I4t4pHhF0GJG6QFIl
-	eru9E7RKEaz5wirbfrFbXpYEFK2tjkLOQlvk0B0xdENKkfvXsb5vlNOm8BpmvL6k/8iUWL
-	tFq9fdcv0ONkkNykTwSBVPb8xxOsrtY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f/wZ7aER";
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=Pu3v3um8m0Iy+FgenlHlPxmd/T6JL21vSdRH4y6hKImLP8VpXMoH6Z6GRhK0g9F/bZJVep
+	GmCevZbX8Dkx3dHdk4WRj62znn9mQutqzS5ocMHrg/K+gbvH40NFvJax3BSDWO8pA42r3a
+	sn9l2nZvx+glPzrW4tnPI3UALnh/Yuo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1C6C44407;
-	Sat, 21 Feb 2026 19:36:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973C6C19422;
-	Sat, 21 Feb 2026 19:36:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 86B7D600C4;
+	Sat, 21 Feb 2026 19:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AF2C2BC9E;
+	Sat, 21 Feb 2026 19:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771702594;
-	bh=NP5yGYScgnKGoybmv99+TvTrjNGo877C34B0II+hAcY=;
+	s=k20201202; t=1771702595;
+	bh=I8vgGzFmn9eOAxp25MVWasYsGVVIm8Br+R7YY0e17Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/wZ7aERGs2PvqVhMrKPyc6Tc+lGG1/WZh2v8Sb4EoKD5+7RTgO9/TJc5ZAfJXkvp
-	 eb5b2xcJ3HFcTadFVuhNa8aNxrjCf+yOxE1DS2O847hktwk22wgrJ02hc+cvEsNlg4
-	 yEPg8AcEKU9J3oc1IdwNrhSWZq3FPC15HSY0XFrJ0MyjN0RhP0fCurfvjnAAMUzFox
-	 lnGtcsT8xfuFl6BLGuiT16hYzCgHtqMZkm2Ni8USIF4ehnaQyZ+jdGGH7oJf9Z5ws5
-	 xCb40o6OBnj1RMff/oNVgxYUcxQXyfXf/Y/J9GwvGyFFTQNnmHhknLyf8oEEM/BH/r
-	 QKg5pTnR6c9Uw==
+	b=k+72ZuX/URzHsMuAN+fknl+2ID4qfoFDQn3AZe8rUqgJu5ygA/+FDLFEpgXnoBds+
+	 J2Uf9ypx2huS+b6oURZLEquamH70DT70inxL8Wszswem0BkIrwPjbwVXhFnnP8h2NJ
+	 uqTI/kCmCFOd0xwr5CF4JbHUUCJX1z5YI9cSAE39G9RgDnPWhbBqQRTE60DrGcyC6j
+	 bIdQxBe+P09rlDSLGaprGs6UmENL/MhYNxVsl2+VG0StOzDK0nZO9CHruaz/Ybi09b
+	 EOLzZignmqx3ExNAaewSGm/3kx4guwjE/qZBdFU6Qvws+hwOcbrQ2D+rII4qq8Y1E2
+	 eDtlfGIfpHYkg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 01/10] mm/damon: add CONFIG_DAMON_DEBUG_SANITY
-Date: Sat, 21 Feb 2026 11:36:18 -0800
-Message-ID: <20260221193629.19332-2-sj@kernel.org>
+Subject: [RFC PATCH 03/10] mm/damon/core: add damon_del_region() debug_sanity check
+Date: Sat, 21 Feb 2026 11:36:20 -0800
+Message-ID: <20260221193629.19332-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260221193629.19332-1-sj@kernel.org>
 References: <20260221193629.19332-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Stat-Signature: 14ckopwr4y7yd57ezsareqmsbufepb6x
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E7DFF40004
-X-HE-Tag: 1771702595-236376
-X-HE-Meta: U2FsdGVkX1/6dcO35HErNxPUDfyBC8fLMVf62W1FvAdt6F1vEB9gvGnEkKODKJxARgK8ml4NwFEv/BeyVq+amOTLq5d1+eJ3NYDN9qD2UPdxscyaYFvSTLYwuFSQXAiR9b9J/Pi41w4LCFl5zrL7kzZ64aS0UlyVxn/atWWBRsvQ0uhCGtkbvPZVjbUI27k2FvipnZlFdvOlRZ4qrQedI69TrhJC5EuPxvIAJChTU2WFy1a6CJUdz7I476uxjNTl4xrHqO3f0SfUJDhLCfTwzU5cQWnKQY0BoDg2Mpe5AD2tASi1dWthsOnpmW0T7fZeXxwmN7s43TaJjmAfsZwybVDqRy/WPS90vHsnNI276syr+waML9cISP3pj1Abwcqb0BhbflsdG3Zd8efZey+ngrIYLkT+9UeJ6xRQTC8T1ocGwQ7q+dUC3MRxRA4q3Mf4FTASQCyelpzekCnXlJVwJg23eiUGhF4gyE21MeWEeUdNka409pu1yksLynrIjSgSN5fDu0zOoUPdPxXD04GLjiPfQWAEkJBVDNRIfXK0lZYWf5wln0xL0CSbnuKtH3pGloFmkEVP1HRxoyYrQiCeAZs6xWpAt3YfkAgYY1IMq/wF9xD9RXqeiK6gJlklbGxuyueNSfDhHh5mt56VpfCNehIfegv76Yk0NkAoQ5JfmZA85WHtnAgMTcT/EOiIX3AAfDQ1SQmwwmXAlW+Dn8cvKpTenuFCAqh9rBW9xFT9MkZxokI6gO3zVoaQ6F3Ytd9ihYbkRwROoLqXM3gG7zyx51b+z9BMr1IKw4cB/EukvTbcrbPOZlCti+FC2ShXqfJK0FDDjuJO/tgt6ZhgKInuU6kxbp0b8itMbMAk6lenNayvJL5+aEmCJoYW6kLGvjujrPn0WQAfGcjfbcUM96qdh24iBHycc2qMbgGrjX7d+bG3oCyE4Vqeo0pyUjmAufZIpiOMKh7i8Ktq2PCm/+V
- qXiU4Bd4
- UCsv9KoWwxmPiIZmSrXMIvm0nk6fFpRpjZbrWKIy5KMN/Hzrn1ZUb32JXBIlp5HgalecYTJ60BgCOJxRl2mx0B++ztulb/q9T4TiVhrsdS2jLCx8F8F16qj7/JGp5cP/J5pWJj6UsZWU/bWwotX4PLvyd7GBUs0X5sPuiF9+aKgjp5j0lPmJWK4JFpYVZxXnYpuaGh6l/KHAoqSI1jQjuIdbraT3ygz1uyvGMATsoZKsskqO9MY0xT8E9YYuvV9YxJWbUNBJSo/CwrMJZ6/UV/tiCpg==
+X-Rspamd-Queue-Id: 0BB40160004
+X-Stat-Signature: ct6cm5jmanktrpopmngh5puurr34s37h
+X-HE-Tag: 1771702595-469786
+X-HE-Meta: U2FsdGVkX1+kYFCgNmqK79nABZ8ztYD1j/ARG8KROIS5wrk7EfmFHTWcZC7o3YErWBT/wboyRB+gzSujwqQjKuMd50Ms6SAoPVOH84BDnRcMbBSIICaQNNiVam5T1O9b8k6yZO61dq2Xlrp5cS93cYUf6we4Pgb5RXuypeSRNZwqUctHzaEzBpwg4XS0bhJuP0Bq1Yo+Q0ZIuwfGkBuTnb7jPDa2cs+xcR9WUxfBaKm6xnF/xIa7L3Q8tDlozS9XB+zHUkHQRQNpK/XGbUs55BrQBrMpx7dyetbOk/wdr5seIEW141nGAmhpHqdzM/IM5V2id0c2TEhGf1CeWCS9yafzONIoQ5hah9dbClz0XkEAGefWhpjP1FXbOJ0+PqjbvNaigLKfc1UmJVMNWsYlFkpMSkQEGGiDD/F8SuZzb77PrgX9V9xhAZz8s2QbXcOZZghJ8ruJH6Q2XQAB3S57EwcIPG9V+s3ZG3lhjjLsVluwMQc/CGo0N64d6na5fmdO+nt8mmNS3UP7FbMmnegrZvx+MSBE7/ZbFk/PpIbkpUvY4MF/YSI1Gq442iXSfKu2i+WaErX8HM4N3eZds8R4L9uE8erQVOmZorrSj9ZRELaYN0nRzSjqddE0Bw/q8K9Fi2sffqPOalxGvdctYyzDxEQSsBSNvd1kWhFnAYoM6JlRQ3cvRw7CgEFOf+cmVjBpHFvcBzD475fjBVYnXD9HUBckiUfqlf7M1j04NJC4p/ttcT7HFxyjopMH9QhL24cAJaXpXakpLKTZt6uktRhbOMIFBpLoZDmt+T355TJXq08o8Qdf5U/uMugQmKl3zpVbAwDjmSkVXHkH8l3N/X9pTXFytGqt6cpmyhVOY5/RnPSJlKlaOC80LM/fwlHX8cVnb52yP1bF0c24IK4bfv56apX1hbojr4+Il2zJwNb5x7tG+rzeU3AuUgn/1TKoHr+Ws7lYuCm08feSHrLipVk
+ 5rwUT/ZO
+ dRb0NAJ3+d5NoH/t3aZF+tkL1pAQsQ5AoIMVW0zYPJt9U/iLw6KYUi7vocMoK2rKhkWoKfP1cmu6zdZMBHgy44WziJkCAfmHW1ALRQDEa/EC168PeQniYfvWdmK9+FfBRF1JT/jYMgc0jHy67SvmBy54skPYwQNGT81QAIwaz0dQ38rZzps1a5q4wF5dRrjqhIuznuMwR36hdN+HXjnXYrva5MvgBlVryOpAgxKusqFGQx/sJXcCLoMcungBcL3/lUqqy1RP73u8j5QB05N4mrCfxww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,37 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new build config that will enable additional DAMON sanity checks.
-It is recommended to be enabled on only development and test setups,
-since it can impose additional overhead.
+damon_del_region() should be called for targets that have one or more
+regions.  Add a sanity check for that under CONFIG_DAMON_DEBUG_SANITY.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/Kconfig | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ mm/damon/core.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-index 8c868f7035fce..413adbd8e4089 100644
---- a/mm/damon/Kconfig
-+++ b/mm/damon/Kconfig
-@@ -12,6 +12,17 @@ config DAMON
- 	  See https://www.kernel.org/doc/html/latest/mm/damon/index.html for
- 	  more information.
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index a7f5748c1fe17..7e03c3af03694 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -158,8 +158,25 @@ void damon_add_region(struct damon_region *r, struct damon_target *t)
+ 	t->nr_regions++;
+ }
  
-+config DAMON_DEBUG_SANITY
-+	bool "Check sanity of DAMON code"
-+	depends on DAMON
-+	help
-+	  This enables additional DAMON debugging-purpose sanity checks in
-+	  DAMON code.  This can be useful for finding bugs, but impose
-+	  additional overhead.  This is therefore recommended to be enable on
-+	  only development and test setups.
++#ifdef CONFIG_DAMON_DEBUG_SANITY
++static void damon_verify_del_region(struct damon_target *t)
++{
++	if (t->nr_regions > 0)
++		return;
++	pr_err("damon_del_region() called while t->nr_regions <= 0 (%u)\n",
++			t->nr_regions);
++	WARN_ONCE();
++}
++#else
++static void damon_verify_del_region(struct damon_target *t)
++{
++}
++#endif
 +
-+	  If unsure, say N.
+ static void damon_del_region(struct damon_region *r, struct damon_target *t)
+ {
++	damon_verify_del_region(t);
 +
- config DAMON_KUNIT_TEST
- 	bool "Test for damon" if !KUNIT_ALL_TESTS
- 	depends on DAMON && KUNIT=y
+ 	list_del(&r->list);
+ 	t->nr_regions--;
+ }
 -- 
 2.47.3
 
