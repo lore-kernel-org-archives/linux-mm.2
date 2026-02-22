@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5191C624D2
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:49:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20C38C624A6
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:49:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24FAD6B008A; Sun, 22 Feb 2026 03:49:04 -0500 (EST)
+	id 7E57D6B008C; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 224A06B008C; Sun, 22 Feb 2026 03:49:04 -0500 (EST)
+	id 7B9F66B0092; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F94C6B0092; Sun, 22 Feb 2026 03:49:04 -0500 (EST)
+	id 664176B0093; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1E66B008A
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:49:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3E70B9DD2
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:03 +0000 (UTC)
-X-FDA: 84471467766.03.5767770
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D9355180006
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tcR20grZ;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 549996B008C
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCF7859807
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:07 +0000 (UTC)
+X-FDA: 84471467934.24.6812BE6
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 091F11C000B
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="hPw7x/ul";
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750146; a=rsa-sha256;
+	cv=none;
+	b=5PwiGa0Ci0Pjpwd0gOb617gpxg4V11l/JCz11ZXzgL15+ybdIfIWoQzFAA4oZ72iOa25LF
+	aCAd++Q4qDasrIbt2MmPDoRVa8LWKuzNn+aVaRAWtmUEPh8HmiKKwRObzZQ61OAnU5oHna
+	7tIcNi8xK0A6Mdb4e77aFDh2s/ljfN0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="hPw7x/ul";
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771750141;
+	s=arc-20220608; t=1771750146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=itvSMpOqGG7PqHHjVhXbDUHp+0Ke3fJUKOX/SDJBBVY=;
-	b=2roqBSU7dSehinXOmdiVldqMka+q1PIgRb5RAJ0LCVmb23V6aoCDSRcAyopLfWBDu0znlj
-	EujcjTqH+C9zTnULmirJFBD8H23/ETquPOSMffclgqwSmFb3ODsYORVSDbOdbYEZ8hGe6g
-	qwpgTq4IvjSa2dEPmDgkuNdDdXwCgj0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750141; a=rsa-sha256;
-	cv=none;
-	b=sBknY1ZVT+yfPS8JENlZAIiBdzONjUyxpkCkBh/cz/ToBZ+/NAKkjfQVCNSNwV3i52QWvH
-	Z3Q4N3I56Iv10C0/G0aITL0DMh/geGpJA1zAUnBLwmQ5g82KuyrVI/3WD8CFV9O2U918TW
-	MGSCxBpwmVNcWoAPqzeh75X34Cp94P0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tcR20grZ;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-505a1789a27so20699381cf.3
-        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:49:01 -0800 (PST)
+	bh=84BLe7DIZgrLHIYUbF37QCRxTh9GXhBrS3ZeLS92Kiw=;
+	b=7xFNiqU2QDHDi9YVq0aIxwBxOn0rLYy5sCU7ubiebnOrN2/SRCqtSTPza6nfdDIsQSox/F
+	r8aQyqKBaMDEnV2p9ZRSAaUvmh7N3L5srHmN89+tf6KbFXK8YHM4iHFW/kCvPI2LmF/4Hy
+	tAlQe8fhnOFUHKQHH3MT+6rcmO2KuDA=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-506a747448dso28328521cf.0
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:49:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771750141; x=1772354941; darn=kvack.org;
+        d=gourry.net; s=google; t=1771750145; x=1772354945; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=itvSMpOqGG7PqHHjVhXbDUHp+0Ke3fJUKOX/SDJBBVY=;
-        b=tcR20grZmhEQVkxL3DWKWEoATCCCKcV7c5gb+Fn94kdhCNuoK1PLTEplOkEcD0knvw
-         ncctUaxh322DukBGicruLeWCSerz/vG13xBv3MULOdsXy6+l5uxxav4LPfDipP4vJfYS
-         4yiGpOO1RI+Q4jBmpNcTxnCvWtOGDqZd9CKkosA+qklWWJtI2jaB005GAQMhQljvISU/
-         bYmKsq8M6ncArJpec199fCk51T09p7bsKTyPh2k+EXU3pxtB3Gqf48uLsaj6nOnnLvZq
-         69/S8gPxVJW4lfRebsLOVQdZfDjai1QLUC8rFb7ykGEn1h7FGG3WYXd/o2d8MUrDPt1Z
-         8Pcw==
+        bh=84BLe7DIZgrLHIYUbF37QCRxTh9GXhBrS3ZeLS92Kiw=;
+        b=hPw7x/ulj0W5pVI6wBBZU1nlvxI1CSpk1m05vQdjgzIcOIfa4k56eqKjJkPMhNjOxu
+         HMStU45jy2Xv49fQBwi8vGVRq02ZTs3wE6VEFhYMl13Oh4WkfMnZcfoxstUSaU7HSjYf
+         9mysVWYuRGGVUmuq/KMO9PgJMVT4kpnqUSd2OLJFsvaQC6KKxMi+/qRFRD9KaPD3/1RZ
+         zxrN+mFCiVhYIyHNCvhv3OOe/6iWB5Rli+VpDNdHLixIKp1Xf7K6JyrzJuSzsAhr9ZCv
+         0rktm+xSPZ7AcNyV8Rn8+i3u0yemNQ0Mw8TbUUaT4JgKVjxuIFmcvtbxUpQ2InXh0DLc
+         odew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771750141; x=1772354941;
+        d=1e100.net; s=20230601; t=1771750145; x=1772354945;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=itvSMpOqGG7PqHHjVhXbDUHp+0Ke3fJUKOX/SDJBBVY=;
-        b=JbV3KDzWLrB4mcwx80i0bGnmm6oS3OqLpzfsueEREg8Q4bNCC6Tx4jFkMDHm+VE9Ct
-         mWFtVSW2tOPb/qHveIMeyb7z+0pRFt+HSZw58dsgo1CzUKr73XlnydPeC5jlDqmlCCya
-         UEY/o8l1/hA82JP0t9dq8MgNsu/RklyEIkfrnLJ/qUlgzQ/agbj2oV5yBD1WPqUX0H2k
-         bDYfmrnNrdL1KNehRKJ8wiT48kK1keh5XmafaPcPtGRHv6r9D+IPhfy5z+DmLibpHsPl
-         XAuJ6PPDXnSQriuvoEvENM88t5c61sRUb4fpSIbEQMztofIMOdTQ+LzgdgUIXiWUrKlQ
-         P6Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlg/y8djMrMFWhXrRk0Zl0w+glCEgNvhvKI7T583dWKYorl4a50/BOjx9txK3Z2zoVJ2lCOgrA7w==@kvack.org
-X-Gm-Message-State: AOJu0YyCPnJNL2TGuK1rvh9YFnuueavo1rx28+iI3HZRbJNSNH/ReRCy
-	8HsX9+3B8zw7Who1Dh8mnG5HRh8fnH+fbxs2T8eY7GJHiWrkzQWrQcijuqSUvgtg0AI=
-X-Gm-Gg: AZuq6aKGAWknID14wf60H83cYn7AvFUXKnpp7W1RBKV7HT/WQZSbryZNTZPXnzT6Kye
-	BrZpgc0RV31SGSMjRm+rs4tIiCZh9ifjwITi9Dy88cIj+s3S+tEiPX/mEMeXXaH7pAzKmsnU7C1
-	psaRZXpBC72KRdZ8Ujx/GB0a+qfDf4EPlZ9bQJHKLTt+Ql9c/jvbjlmpAdgv02elqZUJgQKLOEp
-	HqQ8SAtlYim6IITeOjEIrkoX8hwqcsu3ddrKe17D7AdTNBeD3Z/wKaqv6iAwbSwol7Xvu/zX2Jz
-	KgQ6L41og5GGc2uJ0SRSXYkkoCNtUxDRn0CKoxUVELh77QduhKMACpIiiRxJrGOaXsaJK39kmmj
-	41a9jBgSz/J6BPvdaDaLW6Lu/uwY1ogQMEueOOKcwYSAoXlZJu62O+5LWIRsaL0IhTUEoUI7k7R
-	h+LOIybWe0AcTij66rggIypSw+9XAHK+IESSrj+X8617cZqRsaC0PR6InCnvofXYSHrq9TSOezm
-	tUEM7agrvGqWnQ=
-X-Received: by 2002:a05:622a:1355:b0:4ec:f26f:5aea with SMTP id d75a77b69052e-5070bce327dmr60794421cf.68.1771750140761;
-        Sun, 22 Feb 2026 00:49:00 -0800 (PST)
+        bh=84BLe7DIZgrLHIYUbF37QCRxTh9GXhBrS3ZeLS92Kiw=;
+        b=EPwqJ1wmephhWg9KP6BnVzPdF50hfCKCA1lrkKrzcxaKQBwt2r3Zow5UuHXJcunefw
+         MFEC8HDARpC7hsZfwSmRtKkjPbZRNuJBQc34Iwp3Yc0bBw1kRr2VEjYCoiPMDDDh1qB5
+         vmNtrhzDYq8O2oyICxRadcZtKllqzRMY4DqesVlY2vWt7WHpRM8pH+QJn/epP0ZvBKXL
+         qz7934IUWfC92MK+JKjfE4I99m8cQwkOmpCcaw2WxYA8B3kpf+zcWXBe5gcS/oyjiaG1
+         uOhBDJjEBm/3V/PHqoh+4u1iZ4N3zQ/ygFktBVh8q8be4Dp9uPSPrjEX73honPKkoQDO
+         CGbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXOYqykeK7BAc3ts5G0HIZU/1HcZmD92qYf2wdnMJhcbehV5jsnYNzOPczJs7x4TD/H+Xf0Duthwg==@kvack.org
+X-Gm-Message-State: AOJu0YyPaUjIrvIGidrgbGEFA8ZzZkmrKF4d2X/xtMCq852gtN6fDw9s
+	rmBTrTxVxKT8WnzQ2hIIXY2MzmiMErB3hJiS7V0ExseZXaXnv+z052lYNFsEGAlxOck=
+X-Gm-Gg: AZuq6aKE1ypHEoGmZcg3qe1oRba0nyD4S3glWmL/X0p3c0jBxW4//SuUHG/7nWPR6M5
+	ki49ntll0/V+DEqvnSQFm47uMAdFR05340yOFn5wSvFI42fZdmOr9sSFYoxhDkhc5n66f6D7oVV
+	2GG56IEJMzEWqOMGR7ttvER0s2g0YH49rWrh03hu0t5zJwtYw8AFIWaR3lPqqAvNyBb5U9VSmp5
+	jtPe9zE0YgldN/xOfaaUAGPDVWjYVZrJydr009gmfGJc0haeCpKva4Z8pUvQ5R+f3qYGzi2psi4
+	yUc6sKMniLmbPSB9N05pQdv5giwVcX1Sw5+OozvZrg4crBKJLMmQZeurbvlLpmKUU26Aw1ABzi3
+	dhZEwVM0xLsHdkiP5hW2sS9iJJ8WcCaUYa5x0TrZ1X7kB/Lj+UZWywYyocXGVnhBqPBpf7DTMbY
+	5kVPD9fVVI5o5LVHgJrvcSHA9TXcTEygAWpukeksthMZOkN49oe0F5cIjxAYIRQ5V6VH6+5xoVP
+	Qv2/KyO6qdOzjI=
+X-Received: by 2002:a05:622a:113:b0:4f4:a9cf:5d40 with SMTP id d75a77b69052e-5070bba20d9mr79750811cf.11.1771750145024;
+        Sun, 22 Feb 2026 00:49:05 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.48.57
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.49.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 00:48:59 -0800 (PST)
+        Sun, 22 Feb 2026 00:49:04 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: lsf-pc@lists.linux-foundation.org
 Cc: linux-kernel@vger.kernel.org,
@@ -166,22 +166,22 @@ Cc: linux-kernel@vger.kernel.org,
 	bhe@redhat.com,
 	zhengqi.arch@bytedance.com,
 	terry.bowman@amd.com
-Subject: [RFC PATCH v4 02/27] mm,cpuset: gate allocations from N_MEMORY_PRIVATE behind __GFP_PRIVATE
-Date: Sun, 22 Feb 2026 03:48:17 -0500
-Message-ID: <20260222084842.1824063-3-gourry@gourry.net>
+Subject: [RFC PATCH v4 03/27] mm/page_alloc: add numa_zone_allowed() and wire it up
+Date: Sun, 22 Feb 2026 03:48:18 -0500
+Message-ID: <20260222084842.1824063-4-gourry@gourry.net>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
 References: <20260222084842.1824063-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: knhzppqu6jr6xpn8yied15qoyb45t4sx
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D9355180006
-X-HE-Tag: 1771750141-684310
-X-HE-Meta: U2FsdGVkX1/zazfZtGsGQgk5fstjW0ILJtJIf1d9/9wKQ83ysp0Fbx9C+aOxmGVSparJMzcKoFennmqWS5cFAbKJSmiyaEB/ODKuKIcF+dOMQtUbt9vOJtbA0D7F/9BPDy/2Zxn56EInv+EUfukSeQwk4PXXHoUC8R68OyfZSWRPl7w2oAChV7Uj5uOFYgYGCnFJrcHE05pwOmeYe9doUjFwVnr39dXgYMyyGuawxzV1BX5ChC1VUvAmi2MxLbD26y4ZvzUzMcTdTh3DzhA5YkZOS86e8HHIfCjCuZEV4BSPBbG0c8RSpZkQxMERIvJlCL4ORoilCdljRyyrEnYUI0wQMbabH3aIrDB/E5lg6jfiAiof1fQwUz/NQlSR9h2Mc+DD2JOI6wr4CNgXXb098YbwV4nncleej8lFTDPjKG3bKkxSEMgPXo/YnImMKA5WODp/GXDZB1zKip3Y60kS0knxtv+4xN6xF8p9eaSZuZm8g+U1hwbNK0ryqeK3J3gtg1SNAiOQKDuCSTnne+M5u9ve7KJMAZhojlvAGj+Zlhunll8KlwaDksBaLE/H1gojiAZJswsy70jV+nHt8Ae8inGzc9aKITh50UkcY8RFv1RQy3si5KXoSv20U6j7GM6gCkCpKeCotD0jTdG8D0I3gM5o1ULWBzvWbL4USBjue6xpG2ElLtd/fmLNfBkd8fQ7g56zX9w5OOdouZA8+zCPHqjPxVwCdx9arbhS4Ulw/pQvibNYOvVKJnvGgZKCTqh7tVhZN9Mod1P1DIAgGxEKyqABV52o59vrGW962S9eMlXPssZGt8UN84poGe/MjfjGLxvi67robUXtfD+qhcw/yLUdD2WHrf3D6KbwJjk2coZv+VAnTm2H7uh0HH1lXCIDr/IJlBjT3apjCsuqPyAswJoSOpZvVemakHSThtwrzn53gPqPM5DzvOEUljzo/3XwHFuuJ/SfJWIKjMg0ZhA
- aHQ1qdDz
- FnUKd9GF4hh2KwjG6SPSxUoIlce7mH8p0K2m9HPa870jex5hNYZX4Q8pqXFtQACcxRllbMwx5PowEYecsmHEmNsEdnLFgsUhxtyw8JaI4/SkihG9qzFMGQdD5yRPvOHFSGN/mfoLNIsyrvRCtaKQ76HSyIbKR6tbr36frt7fm30TMlRkiuokQW6DJDhHqCD6gUcyipf5QcyzUHE4ChxaSnxdf8w0ojydYv+siB3Q+LnA/5vC/ApTIIc10VCv/WUy2b9CxgfRXBQNYT6w18PeKKUXUFX+t9IYklO5Ex9zLZNRFQUewowb6TpAQREQDR4vYh8BkKdIs5Hy3EV71g266dIitNhkprBzrf4BIsj6y6NW+lDMtB+cj5AEM2G4SoZtyRQKtsJk/Ws7E0xjObC7ctU9dsrU1AxdmyTJsCgU3fDjD+nWm5RjxWkib8n3fnyGkoj4d4JleTXmWvEE=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 091F11C000B
+X-Stat-Signature: w99cjgryy6a4wgq4aerpx9bjpxo6dwqt
+X-HE-Tag: 1771750145-38605
+X-HE-Meta: U2FsdGVkX19+sI+JFRHe5HBLWf1wAkX0u5T7zMqlnQGm0dt4EbWzCX/lVrppewmA8r6AEe4iTHsbIiweU01vjU+gSydStDc4/zl1eDzokmPBhWWJ/mKhwPVeMFBVdM8JA5EFfpSmYEcm0dVWPRfjb3s3qbxcf7C/4MCry4HojT7ipwbOT3+j0mq14n1fQQHfxC3UXGU+BjbIFpeMGZnff5gGNTU9kBn3PpXAh0KQNCz7OtrQYk5grjhZQLGhf+ml2fzMV9rOCOstYyhGm3ZOphsPCiz6Bzb+XGr7rZL6kQm/Vdxpnl221QRPofRhgoqFHlzuxJ3WFULTomU07abwuzL9Ellln+f60v01PvR1r+zvJPoLvWjWD0VJdXvtQa2YCmM10YsHewwKxLke2oX/87bBXuNJFUQRcvYue72e1RqXmmDJ+EUpgZGqnF8y+izVXXLZHS9IHoK6eeaYZYseB3fQO50Q+G8l92tVb476xvXpDchQkt95q15gzD+2hv0n6w6vfuCqoo2/PCkjNkAdGkXUN68IyUAB9vROnEFfkuT93ViEO6LIhHrALHoXjHYxim1XTv1Ssah1jZOV7MmrFu5IA3f7Eu6U30iWJBp9XUxjV6K456gv6svY6RU9giwjCJW1KW4C2JU5qofjcZeT8quNnAoqdWqAl+7xAk0FmYYmPQ12XehYqC+hFUC6frCghVGNvR/YGrpgy6a8aEGrG4Z1/hUvQVnQTSIkzaOlskJ0XrHKArLazZTrlcfsf1Wz9ViWIIyXdaeFhWIpha7/9iar/WRNm5696yu/eLOCp6kpIPmCvaCNOhy979bmLm53UWXZS79oilE6H9qo9p46L6QGRONe0AgcHElzhcUiwH/c51Ww9q2VCZBodkV6DZiwqndlOhr26Uaef3m6dFcmvN/xaj50OhMHsEW3B/blqM2bmylXwuV55GBqx2P8H6GYE40hGS+QWPSAufT7M8T
+ UBckMa/R
+ JeQOcuEGd20D0lBCg25PnMtv3LoONrPkNrcS0QYn2kGwQ5n8dceU+ihTHUfjg0+5dEUao9S4UH4HAzT+Q5JWFOEQ5+hZsJW9wnJxptEi+245rzePaNG7OUpb/ACFCYG35y79Wg/X/CEmVrm8P4nSRohZLmcKpt5b266stIgdmbWbyge+/GqSuNw0DYNt0Vk1L8kBmQ9R8QTRq3tx+SsSJd2jeEIf/ZhVv8kXhe2IlQYHNggyg34OYjlcXQmKbZR5wYq3UeRQ4YZRUtjagzEFv+4+d3qUEI2610dk+qTWLub9RekIt30UUsCEJv7WYuYCub8Me0MqbYXWyDA+hydYErZ0mKbYj/ZseOVhKYIxwtvcxrRh0rVtGShazevFHKAYBERx07siPa8H0qCZrDbUffjNCqjpQkNMsFHrb9sZ3jE6tao2e7aDe4Ae7z6wKL5qWenoAESD9Zq464Yo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,188 +190,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-N_MEMORY_PRIVATE nodes hold device-managed memory that should not be
-used for general allocations. Without a gating mechanism, any allocation
-could land on a private node if it appears in the task's mems_allowed.
+Various locations in mm/ open-code cpuset filtering with:
 
-Introduce __GFP_PRIVATE that explicitly opts in to allocation from
-N_MEMORY_PRIVATE nodes.
+  cpusets_enabled() && ALLOC_CPUSET && !__cpuset_zone_allowed()
 
-Add the GFP_PRIVATE compound mask (__GFP_PRIVATE | __GFP_THISNODE)
-for callers that explicitly target private nodes to help prevent
-fallback allocations from DRAM.
+This pattern does not account for N_MEMORY_PRIVATE nodes on systems
+without cpusets, so private-node zones can leak into allocation
+paths that should only see general-purpose memory.
 
-Update cpuset_current_node_allowed() to filter out N_MEMORY_PRIVATE
-nodes unless __GFP_PRIVATE is set.
+Add numa_zone_allowed() which consolidates zone filtering. It checks
+cpuset membership when cpusets are enabled, and otherwise gates
+N_MEMORY_PRIVATE zones behind __GFP_PRIVATE globally.
 
-In interrupt context, only N_MEMORY nodes are valid.
-
-Update cpuset_handle_hotplug() to include N_MEMORY_PRIVATE nodes in
-the effective mems set, allowing cgroup-level control over private
-node access.
+Replace the open-coded patterns in mm/ with the new helper.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- include/linux/gfp_types.h      | 15 +++++++++++++--
- include/trace/events/mmflags.h |  4 ++--
- kernel/cgroup/cpuset.c         | 32 ++++++++++++++++++++++++++++----
- 3 files changed, 43 insertions(+), 8 deletions(-)
+ mm/compaction.c |  6 ++----
+ mm/hugetlb.c    |  2 +-
+ mm/internal.h   |  7 +++++++
+ mm/page_alloc.c | 31 ++++++++++++++++++++-----------
+ mm/slub.c       |  3 ++-
+ 5 files changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 3de43b12209e..ac375f9a0fc2 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -33,7 +33,7 @@ enum {
- 	___GFP_IO_BIT,
- 	___GFP_FS_BIT,
- 	___GFP_ZERO_BIT,
--	___GFP_UNUSED_BIT,	/* 0x200u unused */
-+	___GFP_PRIVATE_BIT,
- 	___GFP_DIRECT_RECLAIM_BIT,
- 	___GFP_KSWAPD_RECLAIM_BIT,
- 	___GFP_WRITE_BIT,
-@@ -69,7 +69,7 @@ enum {
- #define ___GFP_IO		BIT(___GFP_IO_BIT)
- #define ___GFP_FS		BIT(___GFP_FS_BIT)
- #define ___GFP_ZERO		BIT(___GFP_ZERO_BIT)
--/* 0x200u unused */
-+#define ___GFP_PRIVATE		BIT(___GFP_PRIVATE_BIT)
- #define ___GFP_DIRECT_RECLAIM	BIT(___GFP_DIRECT_RECLAIM_BIT)
- #define ___GFP_KSWAPD_RECLAIM	BIT(___GFP_KSWAPD_RECLAIM_BIT)
- #define ___GFP_WRITE		BIT(___GFP_WRITE_BIT)
-@@ -139,6 +139,11 @@ enum {
-  * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
-  *
-  * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
-+ *
-+ * %__GFP_PRIVATE allows allocation from N_MEMORY_PRIVATE nodes (e.g., compressed
-+ * memory, accelerator memory). Without this flag, allocations are restricted
-+ * to N_MEMORY nodes only. Used by migration/demotion paths when explicitly
-+ * targeting private nodes.
-  */
- #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
- #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
-@@ -146,6 +151,7 @@ enum {
- #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
- #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
- #define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
-+#define __GFP_PRIVATE	((__force gfp_t)___GFP_PRIVATE)
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 1e8f8eca318c..6a65145b03d8 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2829,10 +2829,8 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+ 					ac->highest_zoneidx, ac->nodemask) {
+ 		enum compact_result status;
  
- /**
-  * DOC: Watermark modifiers
-@@ -367,6 +373,10 @@ enum {
-  * available and will not wake kswapd/kcompactd on failure. The _LIGHT
-  * version does not attempt reclaim/compaction at all and is by default used
-  * in page fault path, while the non-light is used by khugepaged.
-+ *
-+ * %GFP_PRIVATE adds %__GFP_THISNODE by default to prevent any fallback
-+ * allocations to other nodes, given that the caller was already attempting
-+ * to access driver-managed memory explicitly.
-  */
- #define GFP_ATOMIC	(__GFP_HIGH|__GFP_KSWAPD_RECLAIM)
- #define GFP_KERNEL	(__GFP_RECLAIM | __GFP_IO | __GFP_FS)
-@@ -382,5 +392,6 @@ enum {
- #define GFP_TRANSHUGE_LIGHT	((GFP_HIGHUSER_MOVABLE | __GFP_COMP | \
- 			 __GFP_NOMEMALLOC | __GFP_NOWARN) & ~__GFP_RECLAIM)
- #define GFP_TRANSHUGE	(GFP_TRANSHUGE_LIGHT | __GFP_DIRECT_RECLAIM)
-+#define GFP_PRIVATE	(__GFP_PRIVATE | __GFP_THISNODE)
+-		if (cpusets_enabled() &&
+-			(alloc_flags & ALLOC_CPUSET) &&
+-			!__cpuset_zone_allowed(zone, gfp_mask))
+-				continue;
++		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
++			continue;
  
- #endif /* __LINUX_GFP_TYPES_H */
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index a6e5a44c9b42..f042cd848451 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -37,7 +37,8 @@
- 	TRACE_GFP_EM(HARDWALL)			\
- 	TRACE_GFP_EM(THISNODE)			\
- 	TRACE_GFP_EM(ACCOUNT)			\
--	TRACE_GFP_EM(ZEROTAGS)
-+	TRACE_GFP_EM(ZEROTAGS)			\
-+	TRACE_GFP_EM(PRIVATE)
+ 		if (prio > MIN_COMPACT_PRIORITY
+ 					&& compaction_deferred(zone, order)) {
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 51273baec9e5..f2b914ab5910 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1353,7 +1353,7 @@ static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_
+ 	for_each_zone_zonelist_nodemask(zone, z, zonelist, gfp_zone(gfp_mask), nmask) {
+ 		struct folio *folio;
  
- #ifdef CONFIG_KASAN_HW_TAGS
- # define TRACE_GFP_FLAGS_KASAN			\
-@@ -73,7 +74,6 @@
- TRACE_GFP_FLAGS
+-		if (!cpuset_zone_allowed(zone, gfp_mask))
++		if (!numa_zone_alloc_allowed(ALLOC_CPUSET, zone, gfp_mask))
+ 			continue;
+ 		/*
+ 		 * no need to ask again on the same node. Pool is node rather than
+diff --git a/mm/internal.h b/mm/internal.h
+index 23ee14790227..97023748e6a9 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1206,6 +1206,8 @@ extern int node_reclaim_mode;
  
- /* Just in case these are ever used */
--TRACE_DEFINE_ENUM(___GFP_UNUSED_BIT);
- TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
+ extern int node_reclaim(struct pglist_data *, gfp_t, unsigned int);
+ extern int find_next_best_node(int node, nodemask_t *used_node_mask);
++extern bool numa_zone_alloc_allowed(int alloc_flags, struct zone *zone,
++			      gfp_t gfp_mask);
+ #else
+ #define node_reclaim_mode 0
  
- #define gfpflag_string(flag) {(__force unsigned long)flag, #flag}
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 473aa9261e16..1a597f0c7c6c 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -444,21 +444,32 @@ static void guarantee_active_cpus(struct task_struct *tsk,
- }
- 
- /*
-- * Return in *pmask the portion of a cpusets's mems_allowed that
-+ * Return in *pmask the portion of a cpuset's mems_allowed that
-  * are online, with memory.  If none are online with memory, walk
-  * up the cpuset hierarchy until we find one that does have some
-  * online mems.  The top cpuset always has some mems online.
-  *
-  * One way or another, we guarantee to return some non-empty subset
-- * of node_states[N_MEMORY].
-+ * of node_states[N_MEMORY].  N_MEMORY_PRIVATE nodes from the
-+ * original cpuset are preserved, but only N_MEMORY nodes are
-+ * pulled from ancestors.
-  *
-  * Call with callback_lock or cpuset_mutex held.
-  */
- static void guarantee_online_mems(struct cpuset *cs, nodemask_t *pmask)
+@@ -1218,6 +1220,11 @@ static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
  {
-+	struct cpuset *orig_cs = cs;
-+	int nid;
-+
- 	while (!nodes_intersects(cs->effective_mems, node_states[N_MEMORY]))
- 		cs = parent_cs(cs);
-+
- 	nodes_and(*pmask, cs->effective_mems, node_states[N_MEMORY]);
-+
-+	for_each_node_state(nid, N_MEMORY_PRIVATE) {
-+		if (node_isset(nid, orig_cs->effective_mems))
-+			node_set(nid, *pmask);
-+	}
+ 	return NUMA_NO_NODE;
  }
++static inline bool numa_zone_alloc_allowed(int alloc_flags, struct zone *zone,
++				     gfp_t gfp_mask)
++{
++	return true;
++}
+ #endif
  
- /**
-@@ -4075,7 +4086,9 @@ static void cpuset_handle_hotplug(void)
- 
- 	/* fetch the available cpus/mems and find out which changed how */
- 	cpumask_copy(&new_cpus, cpu_active_mask);
--	new_mems = node_states[N_MEMORY];
+ static inline bool node_reclaim_enabled(void)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2facee0805da..47f2619d3840 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3690,6 +3690,21 @@ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
+ 	return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
+ 				node_reclaim_distance;
+ }
 +
-+	/* Include N_MEMORY_PRIVATE so cpuset controls access the same way */
-+	nodes_or(new_mems, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
- 
- 	/*
- 	 * If subpartitions_cpus is populated, it is likely that the check
-@@ -4488,10 +4501,21 @@ bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
-  * __alloc_pages() will include all nodes.  If the slab allocator
-  * is passed an offline node, it will fall back to the local node.
-  * See kmem_cache_alloc_node().
-+ *
-+ *
-+ * Private nodes aren't eligible for these allocations, so skip them.
-+ * guarantee_online_mems guaranttes at least one N_MEMORY node is set.
-  */
- static int cpuset_spread_node(int *rotor)
++/* Returns true if allocation from this zone is permitted */
++bool numa_zone_alloc_allowed(int alloc_flags, struct zone *zone, gfp_t gfp_mask)
++{
++	/* Gate N_MEMORY_PRIVATE zones behind __GFP_PRIVATE */
++	if (!(gfp_mask & __GFP_PRIVATE) &&
++	    node_state(zone_to_nid(zone), N_MEMORY_PRIVATE))
++		return false;
++
++	/* If cpusets is being used, check mems_allowed */
++	if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET))
++		return cpuset_zone_allowed(zone, gfp_mask);
++
++	return true;
++}
+ #else	/* CONFIG_NUMA */
+ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
  {
--	return *rotor = next_node_in(*rotor, current->mems_allowed);
-+	int node;
-+
-+	do {
-+		node = next_node_in(*rotor, current->mems_allowed);
-+		*rotor = node;
-+	} while (node_state(node, N_MEMORY_PRIVATE));
-+
-+	return node;
- }
+@@ -3781,10 +3796,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 		struct page *page;
+ 		unsigned long mark;
  
- /**
+-		if (cpusets_enabled() &&
+-			(alloc_flags & ALLOC_CPUSET) &&
+-			!__cpuset_zone_allowed(zone, gfp_mask))
+-				continue;
++		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
++			continue;
+ 		/*
+ 		 * When allocating a page cache page for writing, we
+ 		 * want to get it from a node that is within its dirty
+@@ -4585,10 +4598,8 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 		unsigned long min_wmark = min_wmark_pages(zone);
+ 		bool wmark;
+ 
+-		if (cpusets_enabled() &&
+-			(alloc_flags & ALLOC_CPUSET) &&
+-			!__cpuset_zone_allowed(zone, gfp_mask))
+-				continue;
++		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
++			continue;
+ 
+ 		available = reclaimable = zone_reclaimable_pages(zone);
+ 		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
+@@ -5084,10 +5095,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
+ 		unsigned long mark;
+ 
+-		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
+-		    !__cpuset_zone_allowed(zone, gfp)) {
++		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp))
+ 			continue;
+-		}
+ 
+ 		if (nr_online_nodes > 1 && zone != zonelist_zone(ac.preferred_zoneref) &&
+ 		    zone_to_nid(zone) != zonelist_node_idx(ac.preferred_zoneref)) {
+diff --git a/mm/slub.c b/mm/slub.c
+index 861592ac5425..e4bd6ede81d1 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3595,7 +3595,8 @@ static struct slab *get_any_partial(struct kmem_cache *s,
+ 
+ 			n = get_node(s, zone_to_nid(zone));
+ 
+-			if (n && cpuset_zone_allowed(zone, pc->flags) &&
++			if (n && numa_zone_alloc_allowed(ALLOC_CPUSET, zone,
++						   pc->flags) &&
+ 					n->nr_partial > s->min_partial) {
+ 				slab = get_partial_node(s, n, pc);
+ 				if (slab) {
 -- 
 2.53.0
 
