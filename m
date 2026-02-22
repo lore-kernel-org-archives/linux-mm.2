@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 277B2C61DFB
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Feb 2026 20:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 303EBC61DF0
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 00:45:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F066B0088; Sat, 21 Feb 2026 15:15:54 -0500 (EST)
+	id B26DE6B0088; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34D4F6B0089; Sat, 21 Feb 2026 15:15:54 -0500 (EST)
+	id AD4A06B0089; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22E786B008A; Sat, 21 Feb 2026 15:15:54 -0500 (EST)
+	id 9E0506B008A; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1033D6B0088
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 15:15:54 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D1721A0541
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 20:15:53 +0000 (UTC)
-X-FDA: 84469569786.15.B09F6A1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C98EA80002
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 20:15:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rCo9fZp7;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A9186B0088
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11C2513B331
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:45:33 +0000 (UTC)
+X-FDA: 84470249346.02.E840272
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5A5B340003
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:45:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vhxgkp20;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771704951;
+	s=arc-20220608; t=1771721131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ScbndZAlL5TLwTCorRi9fwmEwaCbVhAtPVNqLWFYN2c=;
-	b=CWrdR1prfm9deFfa/5zkoLvMwHIHDCLgDi5WhRap+K2uhI4sM480vqd0mEOxUkfP1JcPrX
-	Q6CG1B0M+n5zVDQ29B81G+vxB4mYCAt/+QXlZNTmNHA/3JxnOUZHwcDGtDgz603zMNzNFm
-	SppfgV3usD8vaSqm2z07JbRglymgVuU=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=yYGTIc7SD018JpENXhjw0YCEQOJiW9k0ZXQAJAzD2ns=;
+	b=Wc840KLSfuP40sKLRwUiiaHg9eGDZgsKm/HR0dil9HIfVmw/kSyawwlwiVisNTd9kP4lhQ
+	Y0QcTTqfkiSLLovIF6MmCFEoIGK2Wr0jbCHvnwNjmt2CLJ1qtuZC6q3cbzKSTEoJoqbIKJ
+	O/Vt5v5iRHKWybApy5WILXCh3XcEWck=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rCo9fZp7;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771704951; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vhxgkp20;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771721131; a=rsa-sha256;
 	cv=none;
-	b=p5aowGpc9rJkX3esV+ME3hqrxnzarc0R/l8PvGXGf04pCWGdoUdTL4KXt3HghhJv4PrJDW
-	V3rFlIr/BgKdiZH1G/tgRSpj25v6Yx/Ww7q72jSHd53ndzyNmvacQqaJn1NVL5/5ueqB82
-	4MkpikaXE4SPQGOPGQ39XP59pRlU+UU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C20860053;
-	Sat, 21 Feb 2026 20:15:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9048AC4CEF7;
-	Sat, 21 Feb 2026 20:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771704950;
-	bh=u2lzxOaYu+TQWqH/uMkeTj5YiPDYlTP3c0J6MrqedxI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCo9fZp7C062sLKYnb7OW4C65uQt6vV7Su9amxqp2y7NcpX+SyTXVpfozk1KgWegU
-	 vT5Fe75M1tJ1r/ok/yqcLxI03o6uWH646I8Y9U80iRIU54YLnzYDLIk0Bq70FwuUAE
-	 P5laELfTfIeCqXu41bRPZcwZQ2Q0tVg0Vz1B4DfkOX8UA+rCuX5sT8ZhG96Y5klgRK
-	 PHeXXaXQrinXAHLypUo64nJTtBLvJVTsw2JmnEmwBAqPkpyIbC3NTyFsJua6WLX2jz
-	 s+d9W4ReAiCDFe4J/3p4GuU0eYLzEoankF9Uc4XkVkbwSqloEDPC5xh1Ao51A6mP8N
-	 4SLvhdPfDO4Cg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 09/10] mm/damon/tests/.kunitconifg: enable DAMON_DEBUG_SANITY
-Date: Sat, 21 Feb 2026 12:15:41 -0800
-Message-ID: <20260221201543.99335-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260221193629.19332-10-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
+	b=kEAmZcbxaKF2+Gr9A+9QxnjMbBZ7Nlzmtl8JBTuq2AcARqqMZPX+gP4tszUZ1ms8qq57bf
+	UnTv+zytFLlKmzK4eLBdaBAvF7A9iIAuM53t22shR/CSZblPGvPjDHCEUTTf5SFLM+cXU7
+	nAed+HfqH2C73+MWOBNTy8M6lqBRBcs=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8fbb24a9a9so611246066b.0
+        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 16:45:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771721130; x=1772325930; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yYGTIc7SD018JpENXhjw0YCEQOJiW9k0ZXQAJAzD2ns=;
+        b=Vhxgkp203cc3e1Jtd+xwAtzuZk18OPiJdZokjwhgFoUoy89ZFKmr3UPJp174eosg0M
+         4mmgFGSXTMVb64NNbahyqyuzjN5+t63ZkbzPfiHkp+N9tUCe+Og3ljAH/VQEbIY7ySXu
+         bKgMYBO4hYF1mmWcQksGm+xtbszwOlcddb+lx0wGIOErpQ9Xl7dtXUXBmSR271lOxcyP
+         QB+ecbunak5UX2EJCC5yjNg4WxeYDXxFOQfARHPH1iJ9NRToN4w7XavYJQZYJaHlSBSf
+         ldVEb70q7SiEZLyqDqnHiOEH3MHJq6qv94HAKo4F5HA8Qr7PG5LPN0Af86JBwnrg8bub
+         VGiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771721130; x=1772325930;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yYGTIc7SD018JpENXhjw0YCEQOJiW9k0ZXQAJAzD2ns=;
+        b=nDmp/9MG49ZfYNTFVbb33qWBlvihyUojAa0w9EicCTo39VnJ5lYfZEQ1o7iCa7kwcp
+         4FDqKj0krgdU8oPx+PwRJzxUWKhXzjBMlMC+eJ8um95t3uNRkD5ZPI774UCrVXW8+pd2
+         N3oSj50M/907cWJkj8cl0E6xb+o/2rhxtysh4p9VjuN5EZ2HKiykdpMnCAihzevjuRQW
+         V77mKQhBLf0QBnZ313wmnNBvgQOk4A/5hkCfV7bO9jgt4HFmhNo+oSkxo1iyPIodIbnV
+         +YyaVV8DZCnNOIN9d5D1DQWH1J2Qx7Py1iPyf//kIYb41Sk1TRCvgp92RwvjIytVrrOT
+         xOow==
+X-Forwarded-Encrypted: i=1; AJvYcCWeFQnNE4OhMAagQ40o6I1978JXafQtiJNKCT+6JhoP9Cn42dVsaTZReUwIgDyZjGMDvLD12oUOdg==@kvack.org
+X-Gm-Message-State: AOJu0Yypci4O96cQ4hGJ83tw6S8cluD3CArD5nuH/2vT0uxEyavkmhS1
+	dPC353wzWGaeDWzN3Ha0ISa+POhb1rbDQA/9n9J/PYQrg7BeiGfpZZ/C
+X-Gm-Gg: AZuq6aLvi0H9lal1wD5ip2ciovkPkVNwDaVEL73z23mtIwcEouqPMWhdlTYQN73qjUg
+	HwSVHz21Ts+55T45+GG6sUNh6+cV3wksOkouzlw9FMiX+JFdzrAQQFuQlCEWRD0eJ1T8Lu3S/Fx
+	v5nv1fIo7NoU5uNnbGLcMgpLNETmeucF2hCxH4sSdLu/N7J1QKkTCjpvdN/vxGrqMqHTVvZmZbL
+	J0Deh1wzU4wVpmDVCzPQdJZQ2io/XLzs7IxMZEdNjozvkF7qvchyLPF406gD168GLAjSvVtk6QJ
+	7a+L9dTeK+zU7ND8MlHVYB7ioEOPdvFyQB6qbebEXlz6zSrsf/9Oty5uQESJh8RGVZ/cH3JZJnp
+	Y1BpE4vNZs6nxdCHGRMGXQitjFKXzmhAmAK1zK4RGE4k+hqKCkHSt8SeQviAFQRynqyCiWn+FBf
+	86E7iT311lKaQKLZA2yP8OgQ==
+X-Received: by 2002:a17:907:1ca2:b0:b8f:e992:3fc9 with SMTP id a640c23a62f3a-b905415c02bmr661118366b.6.1771721129445;
+        Sat, 21 Feb 2026 16:45:29 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084c824aesm157564466b.19.2026.02.21.16.45.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 21 Feb 2026 16:45:28 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: will@kernel.org,
+	aneesh.kumar@kernel.org,
+	akpm@linux-foundation.org,
+	npiggin@gmail.com,
+	peterz@infradead.org
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH] mm/mmu_gather: define RCU version tlb_remove_table_one() in CONFIG_MMU_GATHER_RCU_TABLE_FREE
+Date: Sun, 22 Feb 2026 00:45:12 +0000
+Message-Id: <20260222004512.839-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Stat-Signature: ugho6ygwurrps55nyw815ohdo5g9e9nb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C98EA80002
-X-Stat-Signature: 3wkguj5uqk9dkdrbuh3qund44d8mci95
-X-HE-Tag: 1771704951-696279
-X-HE-Meta: U2FsdGVkX1+8LWd/dVR8etl3Vv9wil8WMJMuCHKBlzv+PbFAGAlg2zQMDODWRu1y7rhv3YdGpteJl5QmXXFbtOyUoiqL3a/DEuiam+jrFooA+jvYGAvI4HWnLTJ6uaKVA53EQyKCC7QqGxj6agZebT5td0i68YTr36fwYEQ9U9Wua0BtE+s/WVZUptqjtiHJFqK6SxuiV9vQ4QXctiqlwILhzQ661sLAVmwxmThmGKo+mfFs6xnCeDW/dFqoPW1PxFFIqiLgimnHv6BtmZPR/qY/OlYiSycx40BRaWqTshNIx/2pR1NBfciNiIQoSStu+MTkxpEZMUPVig6DM3b9kigjJsf4C7A87Ba9yUcc8QyusXfMIswO0E5bQQErx1KSViXnD4DOLxxXGCPzmnEhNt5//Io41WTBD9yA2y6Cz06L6BHgYsgUcax1BaRQYkZqeCceRe9TZJPH1b/cEUYt/oifTuq0iVT8FO3H8xPksvNLf0vREYJhbIYbhq2C+qQe9LsR/IJlE70oXekjwKksagoQHId5cII0+8avOzfOnZFKkF6UlxcC2IWzbS0sTAyyITjtWeqi0Tb4ytOvbWckQcWmjTRS0OhxtZ6/QfSbyKE9YLgTwdGpTxsxdgCR8ItaTafKgaG0inV5+hiOt7xotDa6VqyhaCW6nMajPzceDdb1/3A5UqW/omJNjDZHdmItFNhr1pDPjGalZZM2IAT0aIqy9egxQmgxNAuQTU0ix7kkUoWfD3c9jqcnMtgTXXU3cQisHhVUeQdXt2SfmwyJjpxbFPt3rEU7obBu4yZgWO3JzmzRqV0vkfYmHQYAac35GpodOK5J6Nmfb5v7MURWnPPYRJZs8K6jrw0ym3EciFIIg+FVLLdC1biLiOFFs7G49+vwuoVHX0ynaJZmT6Akg9PzJd3GBdm4RLff8s/G1rOKMJAl+iru2BSVt2d6eiTtetPPQwAEgpkAehtxTto
- xpjpRhI7
- 6gPk2AfLqa55VOFDvSIHEbHHQHyQ8AbK7LBd03ef0YXtn5TOMyIWinrskBeRobGnyHeQ0GrgGGvXtECjjuZq6sKrhfvfwRhjkYiWeRTFjFn+0WGR7v6TiDvW3CsL9yEIw9dSs3EMP75RJIhy8cCk/DzgctmNDE5u+JvP6XDDO5uUFAXCdp/JOUjxEOwQITNok2AF8EN4fCjHwlbP1sldVZt+CaWSOlZ/WkfOKQhecbSbGqnXbBq+HGzWtOCU7cB9zUWENyhzSbUHVMvAEvV32S9iXeOntg6AuAfjHIRY9ABq8PER+YQmsta9fZA==
+X-Rspamd-Queue-Id: 5A5B340003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771721131-397791
+X-HE-Meta: U2FsdGVkX199URhRK0LHjumWIX1wsgzZAd+pWxwXM1szCenWOYUi+IbQ347dcdeuTlu7zenDfDoaMkVFPu53J8DsQSw1O2LrUZGLafquZBE77t8C5Bekfb+cFwKwBcaaP2OICKfMvqRkre9GvbBuHGdM575Mu9qso2tmbQp2ZEOem4btl6db0cPvWp42LW+rjehuMzRP1aOYcSC28BWkqUqEHqh4nOiWXGGohMIbVXZ9RH/15aOVsMyd0xaDmCNDDMHM0agEnYbqv8OWpYa+PLp/TsoEBXaFB5YVi+l4jPsk22g7i9o8VbhMSC3azccHqPodLGyaA/7XShuHXIlHQZdx1zjegcgPkbX6hh+qynaSGPNjd3hd0MRjeSF3gXqamR6evcEDz5FoAl+g0NmmWokBKPokzAKbNb8IYmFbvmefLIaPM53EK6LgtcUfWMNJSntFaCxuHlenRtDDX4t4KwbICUcfv7AL3u3tTKqd/2Blj6Je766GfAJOZ6KJo6sKy0TmckI9DIV8rVSDaTGr+69x3afCoe2YInJEjVhAO8j6Pvq+IO66iAticEQaaCbfA7DLBO02SwUKFFhc1vF1sWV/dVm0cE3yrD8CCz7HQjEIZML3RSZRpglb4CJWUA0+5jJfjMdLLi/nLc2iv9q4TDLngJNqpQTJbZ7qPmJVHa2CZZ+GhdEvn7vcq5F3iI4ouggGxyhyc2a3W4MES7GSNtybMLPCZ4e4jiyamTPhs0Dv6tJuR+y+6HuosIp4FnofEN3V2cRIKR3E+SM35V0U84stQmtT4JgE/4VVPV43aTFMJnyr6PXo9NNZQspVpYSlEcFFJDuBLgywyFWuQhRILoVVTMp5SAug1fBAxEn8eJ6+x2KWERf029a7e7CD6Y4tDbMYGGpDKON96d3AvPeD3pLSJU4g7IclGajabth55Lk4LqsUgt1DLvuDe8HxLPkTXK8qgJFo+eF7B+VZyyT
+ Smg+IQ3V
+ RtwahtKTkZFjyJDEPQwyGLdzpq2UFfe5uH/0n2TSenQyERgsggtALnyAkKi0JOUvXn0J+8B72v/rEsGzg9uu1leoa+ZeSzS/Ur/iTlEWh5HLNTWf5D8PXZPKuou8f2a3wj5d0s0bEW/IfRazQYvFopKR0/Xw4Kf/OINrI4TnrhCRJgExDacVvUKmENWamOrLiBcgp5eFzpPky00hOGLyDlZVYUqwq5x6rvttlMdiO/CB30+ijYkEq90llcPU8bSWnDwLVONSfHekOTzoweBj9sleIpF1cvujFJgWJUy+DpAY/CRsUVbl9bi8pQu6K7AX/MvwTom5YouknRuFLRREsS/lvt5xW0B7PSW/+9rXHMMKUgz8DHWX8KyIhMpyOidXzwC2xdnIP9HkVf5m4t2st03FMzDjNWUHOCKeX1i92cuSLqUvoncIhTkfpoOErGrWeWdvPFfIFUrJr3UmEZ46JnP5jBnbcn0IVJd63of9HIDWHnowikQfvVHXCnJsjCvXzr0cHmCvKnNcjayNgHRBlAcZM23MS+YyU3IXHXkm+aRrIvqMO5bwS0jtt580oBeOg3fDwG7sRCOrPue6cgNfz092kydlYY/3jU+FHDW42e9ZWKcGheY7MNbSDm5jv/0x0Mf3Cx2jK2iEDgpgQZoREV21H/tN2IafOym33+NY2+TBHoxH4OSTI6YyOwA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,72 +118,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Feb 2026 11:36:26 -0800 SeongJae Park <sj@kernel.org> wrote:
+Before commit 718b13861d22 ("x86: mm: free page table pages by RCU
+instead of semi RCU"), the page table pages will be freed by semi RCU,
+that is:
 
-> CONFIG_DAMON_DEBUG_SANITY is recommended for DAMON development and test
-> setups.  Enable it on the default configurations for DAMON kunit test
-> run.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  mm/damon/tests/.kunitconfig | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/mm/damon/tests/.kunitconfig b/mm/damon/tests/.kunitconfig
-> index 36a450f57b581..144d27e6ecc5c 100644
-> --- a/mm/damon/tests/.kunitconfig
-> +++ b/mm/damon/tests/.kunitconfig
-> @@ -13,3 +13,6 @@ CONFIG_DAMON_VADDR_KUNIT_TEST=y
->  CONFIG_SYSFS=y
->  CONFIG_DAMON_SYSFS=y
->  CONFIG_DAMON_SYSFS_KUNIT_TEST=y
-> +
-> +# enable DAMON_DEBUG_SANITY to catch any bug
-> +CONFIG_DAMON_DEBUG_SANITY=y
+  - batch table freeing: asynchronous free by RCU
+  - single table freeing: IPI + synchronous free
 
-And this makes kunit for DAMON fails, like below.
+This commit introduce a RCU version for single table freeing to support
+PT_RECLAIM. While it is not necessary to limit the RCU version only in
+CONFIG_PT_RECLAIM. It is reasonable to asynchronous free single table by
+RCU if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
-'''
-$ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
-[11:57:20] Configuring KUnit Kernel ...
-Regenerating .config ...
-Populating config with:
-$ make ARCH=um O=.kunit olddefconfig
-[11:57:24] Building KUnit Kernel ...
-Populating config with:
-$ make ARCH=um O=.kunit olddefconfig
-Building with:
-$ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
-ERROR:root:In file included from ../include/asm-generic/bug.h:7,
-                 from ./arch/um/include/generated/asm/bug.h:1,
-                 from ../arch/x86/include/asm/alternative.h:9,
-                 from ../arch/x86/um/asm/barrier.h:6,
-                 from ../include/linux/list.h:11,
-                 from ../arch/um/include/linux/time-internal.h:9,
-                 from ../arch/x86/um/asm/processor.h:4,
-                 from ../include/linux/sched.h:13,
-                 from ../include/linux/cgroup.h:12,
-                 from ../include/linux/memcontrol.h:13,
-                 from ../include/linux/damon.h:11,
-                 from ../mm/damon/core.c:10:
-../mm/damon/core.c: In function ‘damon_verify_new_region’:
-../include/linux/once_lite.h:28:50: error: expected expression before ‘)’ token
-   28 |                 bool __ret_do_once = !!(condition);                     \
-      |                                                  ^
-../include/asm-generic/bug.h:185:9: note: in expansion of macro ‘DO_ONCE_LITE_IF’
-  185 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-      |         ^~~~~~~~~~~~~~~
-../mm/damon/core.c:127:9: note: in expansion of macro ‘WARN_ONCE’
-  127 |         WARN_ONCE();
-      |         ^~~~~~~~~
-'''
+This patch moves the definition of single table freeing in
+CONFIG_MMU_GATHER_RCU_TABLE_FREE, so we have both RCU version
+batch/single table freeing if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
-I changed BUG() to WARN_ONCE() on the last moment of this patch posting, so I
-missed this failure.  I will fix this on the next revision.
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+---
+ mm/mmu_gather.c | 51 +++++++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index fe5b6a031717..6c1cbd9c717b 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -296,6 +296,22 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
+ 	call_rcu(&batch->rcu, tlb_remove_table_rcu);
+ }
+ 
++static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
++{
++	struct ptdesc *ptdesc;
++
++	ptdesc = container_of(head, struct ptdesc, pt_rcu_head);
++	__tlb_remove_table(ptdesc);
++}
++
++static inline void tlb_remove_table_one(void *table)
++{
++	struct ptdesc *ptdesc;
++
++	ptdesc = table;
++	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
++}
++
+ #else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+ 
+ static void tlb_remove_table_free(struct mmu_table_batch *batch)
+@@ -303,6 +319,12 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
+ 	__tlb_remove_table_free(batch);
+ }
+ 
++static inline void tlb_remove_table_one(void *table)
++{
++	tlb_remove_table_sync_one();
++	__tlb_remove_table(table);
++}
++
+ #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+ 
+ /*
+@@ -320,35 +342,6 @@ static inline void tlb_table_invalidate(struct mmu_gather *tlb)
+ 	}
+ }
+ 
+-#ifdef CONFIG_PT_RECLAIM
+-static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
+-{
+-	struct ptdesc *ptdesc;
+-
+-	ptdesc = container_of(head, struct ptdesc, pt_rcu_head);
+-	__tlb_remove_table(ptdesc);
+-}
+-
+-static inline void __tlb_remove_table_one(void *table)
+-{
+-	struct ptdesc *ptdesc;
+-
+-	ptdesc = table;
+-	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
+-}
+-#else
+-static inline void __tlb_remove_table_one(void *table)
+-{
+-	tlb_remove_table_sync_one();
+-	__tlb_remove_table(table);
+-}
+-#endif /* CONFIG_PT_RECLAIM */
+-
+-static void tlb_remove_table_one(void *table)
+-{
+-	__tlb_remove_table_one(table);
+-}
+-
+ static void tlb_table_flush(struct mmu_gather *tlb)
+ {
+ 	struct mmu_table_batch **batch = &tlb->batch;
+-- 
+2.34.1
 
-Thanks,
-SJ
-
-[...]
 
