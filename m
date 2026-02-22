@@ -4,60 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 728BEC6369E
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 23:37:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A071BC6369E
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 23:49:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CE6F6B0088; Sun, 22 Feb 2026 18:36:59 -0500 (EST)
+	id BE4B96B0088; Sun, 22 Feb 2026 18:49:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 251916B0089; Sun, 22 Feb 2026 18:36:59 -0500 (EST)
+	id B929C6B0089; Sun, 22 Feb 2026 18:49:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15ED16B008A; Sun, 22 Feb 2026 18:36:59 -0500 (EST)
+	id A875D6B008A; Sun, 22 Feb 2026 18:49:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 000646B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 18:36:58 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B49AC27D4
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:36:58 +0000 (UTC)
-X-FDA: 84473705316.23.9D79BA9
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0D08D1A0006
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:36:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jmzNs2So;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 932C06B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 18:49:06 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67708BAA6A
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:49:05 +0000 (UTC)
+X-FDA: 84473735850.01.0E2D020
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AE60A160002
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:49:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CrjLnC6J;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771803416;
+	s=arc-20220608; t=1771804144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ybdV4563dtS4ZOEJOasBlah8k8g9tI2C0k/Ph+ecmnQ=;
-	b=ZG0hEz13iWSMQrfq4aN6SQ/pEk0gji5NU3tQ83XLfhlN2jp9HyyiKvLldWw9UHhYgrQJ9J
-	YOhT/Z++WSFWADntjPe7ioUa+NOgxxJ/koHKUmhdsu+AnoqWrQTA5lkdN5ypoxbbKWp2zy
-	0lDR8h47r/VSg33dGWAiBvbl9vsb/BE=
+	bh=Wf1OfANA38l1Nqjx+a+UYfaqGfLco3xZ9QiXSc8+bzA=;
+	b=5ZFPUzEGKFuNBLD4aviy+nkVTA2xifnZeFW9tj9toOO8LDWB7u5wMVuAIVL64UuArH9Z23
+	gB+J5rkPezWboxgnKbfgeW7Rh38A8S9wMeExrGv8eivftSXzcN3uUNC1Lz8sTLQK1orOUv
+	kMDkrQnpmFzbTg17mV2nifMOKmOSMQI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jmzNs2So;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CrjLnC6J;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771803416; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771804144; a=rsa-sha256;
 	cv=none;
-	b=adOoV6v+elKQ+wWtKHr8r2oFAFVjJ3x9XI0qmRpqlUirnYIKLvyo/JoK+i5omwE1MZnEGQ
-	DmBKo9ARqKVBOl0gpNTF6QANJLifG04uCHYKBOuvbMA3/l/GmcGYtAiHoWEGb150d6xmnA
-	9xcMSVZNA7P/QbK0p5MIymxjQxYmXb4=
-Date: Sun, 22 Feb 2026 15:36:46 -0800
+	b=n3FLguXC04qTAjCV7Ac+u9O/axkmBQsbCCSnyG3w/GWp/jkzbVhzAXi8iIMyrRdp/9R45I
+	6gJ3qDHATaRX/AFF6l9D6XD5H9LEHT6gR28fvNgSvBwf8CzH0Q8vhROMJjddOR/fbYfYlf
+	lWhuAyYzSFvaU3bFyNrJoA6BUvpTy14=
+Date: Sun, 22 Feb 2026 15:48:53 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771803412;
+	t=1771804141;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ybdV4563dtS4ZOEJOasBlah8k8g9tI2C0k/Ph+ecmnQ=;
-	b=jmzNs2SoD9+RFFddxf4oFJZOTAgJDRPiWKMADSlzPRz1xaIQL6NpjmJr516CT11xADF0Lk
-	8AEwwQXmBGTiFzH4ztm4iliD7eR1HfJc1g2gRrN+/cHmTeEDQp28M0hMQcCtLw2vrNgx+D
-	PwW6nbXK22WWy2SyFObMjPIkJAF6vIA=
+	bh=Wf1OfANA38l1Nqjx+a+UYfaqGfLco3xZ9QiXSc8+bzA=;
+	b=CrjLnC6JILfkdrFtkitx8WNrZzh/SpyN8brXdb+YUkYTugS6Wi3PSNDnM6X4kTDJfo4UdK
+	tTApzlJhUwSDhEz3EQOaU6KmYKK6DHcpd67RWoubBbUO1seAP++WmaKcIV6/4LSmsP4S6C
+	FH9flvlL2j1ZmkT58kG4f0z7JIuGNwY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Harry Yoo <harry.yoo@oracle.com>
@@ -71,25 +73,25 @@ Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	Hao Li <hao.li@linux.dev>
 Subject: Re: [next-20260216]NULL pointer dereference in drain_obj_stock()
  (RCU free path)
-Message-ID: <aZuR6_Mm9uqt_6Fp@linux.dev>
+Message-ID: <aZuVgStlrvZ87duZ@linux.dev>
 References: <ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com>
  <aZReMzl-S9KM_snh@nidhogg.toxiclabs.cc>
  <b4288fae-f805-42ff-a823-f6b66748ecfe@suse.cz>
  <ccdcd672-b5e1-45bc-86f3-791af553f0d8@linux.ibm.com>
  <aZrstwhqX6bSpjtz@hyeyoo>
+ <aZuR6_Mm9uqt_6Fp@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aZrstwhqX6bSpjtz@hyeyoo>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZuR6_Mm9uqt_6Fp@linux.dev>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AE60A160002
+X-Stat-Signature: nacokhsbqae73kdj5ic6s6n5e5k6ts8a
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0D08D1A0006
-X-Stat-Signature: mwgdtmecoj1pk4upfang66ua8dq9pwgd
-X-HE-Tag: 1771803414-981646
-X-HE-Meta: U2FsdGVkX1+I/KMDwQ6HXkWdbz42LO+XIATGVgkKE1i2M0J/Jh8XjCM/JS3Osmp4gOmrOM03VreKdb0xQnWmaDp7XZ2gOsV1Eex1ubGpt5+yRyXTVwLexNrvlgIIwZiFNw48diU8t0ugxYqt5VecyhFBgIrI2AD9Q3OSajoXqQ7yVIS0JwKZqkgTEurQCYI3oeOS/8QaAtRoV5Z4tJt7SJblgEOFEVV+I9ZRI62YhTFQQGmHOJ1w3NFTZVa1q/3W3jFQWOMgUJ5BXVcoJv42uqrCK+ZGwpi1c9OmfX7wG4UoBjSKCz+vm9khzmNn5hBPOOsTdaoc1GKU862nR/rT5a/C0BZf+7recVHfCMJSeK62HUzGJ5DxFpRSqHhG8W/sNCZz66WYjM4AO+MZeMwJU9yrD/bhjI+VA38LrXzMq6ydGKNKPo+Bi3lI1HJR/BeVVP2mYpdZzgSImddB8U4ESMpKhdGG9eJx2hsxlGVzA6+qfEq4PnEo8YHJLYXX8JnXoblwLRnZV3eNDIj0nMXviWYUbmPjRkXq/TuAxkPcY9jkebzThoxdPwSGAFZMOTd3YZJMJBo70hcJiIhbAeIW64/1Yp7csNyG4Hfqf07dG5YIN7TANBtxCAHK6LeuU96rmYKDZcTNvAoXTZSvvu63ZgThdx2699l12Wi1GAW/JTyKSuH6rlxu1SBILyxvDAap666KVDoaamS+VqgKfmMnGMI4IWe/c/+9n3vDUphjmig5J5MLqDklica4Wd+SuTmcmFS5np19Yc3xre+WaoGAbjcBMGpzN3jQ3wVVTLiqG2LBXCdpz2ZDacwNSGIcGSy/rPlXJtHRNcLIqZP3U/I7dO2ceybf9juGWbt+v0h4X8V38GKo7Ix9+rXz7njoexKmlH0B8mzM4t6eTaDmFHgPTYs7tW7h5+UNytFLr7GVPCYsAowacoYcCwV8fqHqaWiHTp5Wl1oAE0hJXx8P9BK
- MB6JBeIX
- voxES5Xo7XLGa6zrNU8CnT0aoXpBtlv5H61qUXK7iMvozpHoVJhm7g+OnkHOw5BtUBR0g2FeeE15Y/BPrED0Rf4xqZkhl0rdu/XhbXTe3Phqnweathhel5A3TItfYVBNv5KgxGgOnVDsrUI06HeGPEDLH90Vi6Jmwq5YAdCf1eE7dfdSl0EEhSgpLzl44jPYIypJlt7zceRSztyJJ46TJvHwfrWJWuKnus9sFjqTWS2let7WtZd0XYPDBP6m2TNjgfHXK6Ig+GEmbkdaYzIanRbgFnTSl79Qek45g5PrmK6im/Wk=
+X-HE-Tag: 1771804143-295429
+X-HE-Meta: U2FsdGVkX19dcL8ssDmDZaK/1iNe/LUUC3QVBZMxKAYHcLlPqgO42FbfzrPTFQnaaNPSlDAHDSquEnP388smyIPubwo3b126STgfffrL6cfvGd89/c2ry2NKXWci1haFJmMjGhHqR3Vd0Ew0Qh+Mn+6Bs3pOvrY/Vh5flZwhAUihuhMXHMPxQNDAccgYUrob6+iowixJ5SPtiDHS0NOTdY8si7uYV4qNHbwqIZnL0kg5rilmJLYVhSNYKAWBlqfFYMX74sqE+x5Jo/8paCm6hnQwShh24p5wk/CHCRORuAAyEAiZ8fbDImGJQeqyLBP5c0CHoGvQfMRjJWPqiVEwnhOlOW5X7spOl3aMGCNy1WNREH4rWQQiG1xWjcbH8NKTYvLjLtjZ8kjF3CLMN7h8H8InvwkPfj32fmjxBDTxpLIC1BVCNsciaw/4EiK0n4PQSsJZWt0q1hvW/6jYyHjK42A9+vFgsi7615J3K+L48N9YoNYw+6FJ6SuT5SsxBOjOS8zrVIeXkl57W2G8OoePWgIMchzJfZ5X55k/JFZdPTx4tJto7Jqo0cam2Z4sNqFgPopLvX3oHeSzjNt+LWRfWc/6TiiJ1+vJ2Hv8mj/NMcAYEPW7CG5VNysSAu/vkfxxIk5tpQ3igcA0QTppDZk89N6ZLcYZQYLylx/cGHYUoqXKS0fi/prvTNZsOwWvP0ngsgIX4gmuLH6pDhumMZS/Tj1Rhu3MQLYMSQbwvh7TdzXdT4rjujrtjnu/Tc8FEZFmIXeX1DwzNms/+ItmKv9B6eUMBiWfeKvcoECBWTqXE8fvwpl0HKrtznXDZLiSC8bnvOmwymcTVUZ/IElsxUm2sA1bhnisLVnLKHeGdwHjWQwEgw4e71te3blzxhLBik62kCbQiwVK588YSH80tX4adJEleQhu9cgkkyP9575xveO9+9zF8OBj9o/T9P4iy+6eVC0CpIma/Ug=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,35 +100,340 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 22, 2026 at 08:47:03PM +0900, Harry Yoo wrote:
-[...]
+On Sun, Feb 22, 2026 at 03:36:46PM -0800, Shakeel Butt wrote:
+> On Sun, Feb 22, 2026 at 08:47:03PM +0900, Harry Yoo wrote:
+> [...]
+> > 
+> > It seems it crashed while dereferencing objcg->ref->data->count.
+> > I think that implies that obj_cgroup_release()->percpu_ref_exit()
+> > is already called due to the refcount reaching zero and set
+> > ref->data = NULL.
+> > 
+> > Wait, was the stock->objcg ever a valid objcg?
+> > I think it should be valid when refilling the obj stock, otherwise
+> > it should have crashed in refill_obj_stock() -> obj_cgroup_get() path
+> > in the first place, rather than crashing when draining.
+> > 
+> > And that sounds like we're somehow calling obj_cgroup_put() more times
+> > than obj_cgroup_get().
+> > 
+> > Anyway, this is my theory that it may be due to mis-refcounting of objcgs.
+> > 
 > 
-> It seems it crashed while dereferencing objcg->ref->data->count.
-> I think that implies that obj_cgroup_release()->percpu_ref_exit()
-> is already called due to the refcount reaching zero and set
-> ref->data = NULL.
+> I have not looked deeper into recent slub changes (sheafs or obj_exts savings)
+> but one thing looks weird to me:
 > 
-> Wait, was the stock->objcg ever a valid objcg?
-> I think it should be valid when refilling the obj stock, otherwise
-> it should have crashed in refill_obj_stock() -> obj_cgroup_get() path
-> in the first place, rather than crashing when draining.
+> allocate_slab() // for cache with SLAB_OBJ_EXT_IN_OBJ
+> 	-> alloc_slab_obj_exts_early()
+> 		-> slab_set_stride(slab, s->size)
+> 	-> account_slab()
+> 		-> alloc_slab_obj_exts()
+> 			-> slab_set_stride(slab, sizeof(struct slabobj_ext));
 > 
-> And that sounds like we're somehow calling obj_cgroup_put() more times
-> than obj_cgroup_get().
-> 
-> Anyway, this is my theory that it may be due to mis-refcounting of objcgs.
-> 
+> Unconditional overwrite of stride. Not sure if it is issue or even related to
+> this crash but looks odd.
 
-I have not looked deeper into recent slub changes (sheafs or obj_exts savings)
-but one thing looks weird to me:
+I asked AI to debug this crash report along with a nudge towards to look for
+stride corruption, it gave me the following output:
 
-allocate_slab() // for cache with SLAB_OBJ_EXT_IN_OBJ
-	-> alloc_slab_obj_exts_early()
-		-> slab_set_stride(slab, s->size)
-	-> account_slab()
-		-> alloc_slab_obj_exts()
-			-> slab_set_stride(slab, sizeof(struct slabobj_ext));
 
-Unconditional overwrite of stride. Not sure if it is issue or even related to
-this crash but looks odd.
+# Stride Corruption Bug Analysis
+
+## Bug Report Context
+
+- **Crash Location**: `drain_obj_stock+0x620/0xa48` in `obj_cgroup_put(old)` at mm/memcontrol.c:3059
+- **Root Cause**: `percpu_ref.data` is NULL, meaning `obj_cgroup_release()` already ran
+- **Platform**: IBM Power11 (pSeries LPAR, Radix MMU, LE, 64K pages, kernel 6.19.0-next-20260216)
+- **Trigger**: xfstests generic/428
+
+## Identified Bug: Unconditional Stride Overwrite
+
+### Location: mm/slub.c lines 2196-2223 (alloc_slab_obj_exts)
+
+```c
+retry:
+    old_exts = READ_ONCE(slab->obj_exts);
+    handle_failed_objexts_alloc(old_exts, vec, objects);
+    slab_set_stride(slab, sizeof(struct slabobj_ext));  // BUG: UNCONDITIONALLY SET
+
+    if (new_slab) {
+        slab->obj_exts = new_exts;
+    } else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
+        // obj_exts already exists, BUT stride was already modified above!
+        mark_objexts_empty(vec);
+        kfree(vec);
+        return 0;
+    } else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
+        goto retry;
+    }
+```
+
+### The Problem
+
+The stride is set to `sizeof(struct slabobj_ext)` **BEFORE** checking if `obj_exts` already
+exists. If a slab was created with `SLAB_OBJ_EXT_IN_OBJ` mode (where stride = `s->size`),
+and later `alloc_slab_obj_exts` is called for any reason, the stride gets corrupted.
+
+### Stride Modes
+
+There are two stride modes (see alloc_slab_obj_exts_early):
+
+1. **Normal mode**: stride = `sizeof(struct slabobj_ext)` (~16 bytes)
+   - obj_exts is a separate array or in slab leftover space
+
+2. **SLAB_OBJ_EXT_IN_OBJ mode**: stride = `s->size` (object size, e.g., 64-256+ bytes)
+   - obj_ext is embedded within each object at a fixed offset
+
+### Consequences of Wrong Stride
+
+When `slab_obj_ext` is later called:
+```c
+obj_ext = (struct slabobj_ext *)(obj_exts + slab_get_stride(slab) * index);
+```
+
+With corrupted stride (16 instead of 256):
+- **Expected**: `obj_exts + 256 * 5 = obj_exts + 1280` (correct obj_ext for object 5)
+- **Actual**: `obj_exts + 16 * 5 = obj_exts + 80` (WRONG obj_ext - belongs to object 0!)
+
+This causes:
+1. Reading wrong object's objcg pointer
+2. Releasing wrong objcg reference (`obj_cgroup_put`)
+3. Reference underflow on victim objcg
+4. Early `obj_cgroup_release()` → `percpu_ref_exit()` → `data = NULL`
+5. Stock still caches the objcg pointer
+6. Later `drain_obj_stock()` tries to put it → **CRASH**
+
+## Missing Safety Check
+
+`slab_obj_ext()` in mm/slab.h has **no bounds checking**:
+
+```c
+static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
+                                               unsigned long obj_exts,
+                                               unsigned int index)
+{
+    struct slabobj_ext *obj_ext;
+
+    VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
+    // MISSING: VM_WARN_ON_ONCE(index >= slab->objects);
+
+    obj_ext = (struct slabobj_ext *)(obj_exts +
+                                     slab_get_stride(slab) * index);
+    return kasan_reset_tag(obj_ext);
+}
+```
+
+## CRITICAL: Memory Ordering Bug on PowerPC (Likely Root Cause)
+
+### The Problem
+
+In `alloc_slab_obj_exts` (mm/slub.c lines 2199-2220), there is **NO memory barrier**
+between the stride store and the obj_exts visibility via cmpxchg:
+
+```c
+slab_set_stride(slab, sizeof(struct slabobj_ext));  // Store to stride (line 2199)
+                                                     // NO MEMORY BARRIER HERE!
+if (new_slab) {
+    slab->obj_exts = new_exts;                       // Store to obj_exts (line 2207)
+} else if (...) {
+} else if (cmpxchg(&slab->obj_exts, ...) != ...) {   // Atomic on obj_exts (line 2220)
+    goto retry;
+}
+```
+
+### Why This Crashes on PowerPC
+
+PowerPC has a **weakly-ordered memory model**. Stores can be reordered and may not be
+immediately visible to other processors. The cmpxchg provides a barrier AFTER it
+executes, but the stride store BEFORE cmpxchg may not be visible when obj_exts becomes
+visible.
+
+**Race Scenario:**
+1. CPU A: `slab_set_stride(slab, 16)` (store to stride, in CPU A's store buffer)
+2. CPU A: `cmpxchg(&slab->obj_exts, 0, new_exts)` succeeds, obj_exts is now visible
+3. CPU B: Sees `obj_exts` is set (from step 2)
+4. CPU B: Reads `slab->stride` → **sees OLD value (0 or garbage)** due to reordering!
+5. CPU B: `slab_obj_ext` calculates `obj_exts + 0 * index = obj_exts` for ALL indices!
+6. **All objects appear to share the same obj_ext at offset 0**
+
+### Consequences
+
+- Object 0's objcg is correct
+- Object 1..N all read object 0's objcg (WRONG!)
+- When freeing multiple objects, we `obj_cgroup_put` the SAME objcg multiple times
+- Reference count underflows → early `obj_cgroup_release()`
+- `percpu_ref_exit()` sets `data = NULL`
+- Later stock drain tries to put the objcg → **CRASH in `drain_obj_stock`**
+
+### Why This Matches the Bug Report
+
+- **Platform**: IBM Power11 (PowerPC) - weakly ordered memory
+- **Trigger**: xfstests generic/428 - creates high filesystem activity with many allocations
+- **Crash location**: `drain_obj_stock` → `obj_cgroup_put` with NULL data
+- **Pattern**: Stock has cached objcg that was prematurely released
+
+### Proposed Fix
+
+Add a write memory barrier to ensure stride is visible before obj_exts:
+
+```c
+slab_set_stride(slab, sizeof(struct slabobj_ext));
+smp_wmb();  // Ensure stride is visible before obj_exts
+
+if (new_slab) {
+    slab->obj_exts = new_exts;
+} else if (...) {
+} else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
+    goto retry;
+}
+```
+
+And correspondingly, the reader side should use a read barrier:
+```c
+static inline unsigned short slab_get_stride(struct slab *slab)
+{
+    // Need acquire semantics when reading stride after seeing obj_exts
+    return smp_load_acquire(&slab->stride);
+}
+```
+
+Or use `smp_store_release` / `smp_load_acquire` pairs for proper ordering.
+
+### Also Applies to alloc_slab_obj_exts_early
+
+The same issue exists in `alloc_slab_obj_exts_early` (lines 2290-2291 and 2308-2309):
+
+```c
+slab->obj_exts = obj_exts;                           // Store obj_exts
+slab_set_stride(slab, sizeof(struct slabobj_ext));   // Store stride AFTER!
+```
+
+Here the order is **reversed** - obj_exts is set BEFORE stride! This is even worse
+for memory ordering, as other CPUs could see obj_exts before stride is set.
+
+## Original Theory: Unconditional Stride Overwrite
+
+(Kept for reference - less likely to be the root cause on this specific crash)
+
+The stride is set to `sizeof(struct slabobj_ext)` **BEFORE** checking if `obj_exts`
+already exists. However, analysis shows this is protected by the TOCTOU check in
+callers (`!slab_obj_exts(slab)`).
+
+## Trigger Scenarios
+
+1. **Memory ordering on PowerPC** (MOST LIKELY): Stride not visible when obj_exts
+   becomes visible due to missing memory barriers.
+
+2. **Race between alloc_slab_obj_exts calls**: Two CPUs trying to allocate obj_exts
+   for the same slab simultaneously.
+
+3. **Interaction with RCU free path**: Objects in RCU sheaf being processed when
+   stride is stale/zero.
+
+## Confirmed Code Analysis (CONFIG_64BIT)
+
+On 64-bit systems (including IBM Power11), the stride is stored dynamically:
+
+**mm/slab.h:562-569**:
+```c
+#ifdef CONFIG_64BIT
+static inline void slab_set_stride(struct slab *slab, unsigned short stride)
+{
+    slab->stride = stride;  // Plain store - NO memory ordering!
+}
+static inline unsigned short slab_get_stride(struct slab *slab)
+{
+    return slab->stride;    // Plain load - NO memory ordering!
+}
+```
+
+**mm/slab.h:533-548** (`slab_obj_exts`):
+```c
+static inline unsigned long slab_obj_exts(struct slab *slab)
+{
+    unsigned long obj_exts = READ_ONCE(slab->obj_exts);  // Only compiler barrier!
+    // ... validation ...
+    return obj_exts & ~OBJEXTS_FLAGS_MASK;
+}
+```
+
+`READ_ONCE` only provides compiler ordering, NOT CPU memory ordering. There's no
+acquire barrier to ensure the stride read happens after seeing obj_exts.
+
+## Complete Fix Using Release/Acquire Semantics
+
+### Fix 1: Reader side - slab_obj_exts (mm/slab.h)
+
+Change `READ_ONCE` to `smp_load_acquire`:
+
+```c
+static inline unsigned long slab_obj_exts(struct slab *slab)
+{
+    unsigned long obj_exts = smp_load_acquire(&slab->obj_exts);  // Acquire barrier
+    // ... validation ...
+    return obj_exts & ~OBJEXTS_FLAGS_MASK;
+}
+```
+
+### Fix 2: Writer side - alloc_slab_obj_exts (mm/slub.c:2196-2223)
+
+Use `smp_store_release` for obj_exts after setting stride:
+
+```c
+retry:
+    old_exts = READ_ONCE(slab->obj_exts);
+    handle_failed_objexts_alloc(old_exts, vec, objects);
+
+    if (new_slab) {
+        slab_set_stride(slab, sizeof(struct slabobj_ext));
+        smp_store_release(&slab->obj_exts, new_exts);  // Release barrier
+    } else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
+        mark_objexts_empty(vec);
+        kfree(vec);
+        return 0;
+    } else {
+        slab_set_stride(slab, sizeof(struct slabobj_ext));
+        // cmpxchg already provides release semantics, but stride must be
+        // visible before cmpxchg. Need explicit barrier:
+        smp_wmb();
+        if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts)
+            goto retry;
+    }
+```
+
+### Fix 3: Writer side - alloc_slab_obj_exts_early (mm/slub.c:2290-2291, 2308-2309)
+
+The order is REVERSED here - obj_exts is set BEFORE stride! Fix by using
+`smp_store_release`:
+
+```c
+// For normal obj_exts (lines 2290-2291):
+slab_set_stride(slab, sizeof(struct slabobj_ext));  // Set stride FIRST
+smp_store_release(&slab->obj_exts, obj_exts);       // Then release obj_exts
+
+// For SLAB_OBJ_EXT_IN_OBJ (lines 2308-2309):
+slab_set_stride(slab, s->size);                     // Set stride FIRST
+smp_store_release(&slab->obj_exts, obj_exts);       // Then release obj_exts
+```
+
+## Why This Fixes the Crash
+
+With proper release/acquire ordering:
+
+1. **Writer** (CPU A): Sets stride, then `smp_store_release(&obj_exts, ...)` ensures
+   stride is visible to all CPUs before obj_exts becomes visible
+
+2. **Reader** (CPU B): `smp_load_acquire(&obj_exts)` ensures that if obj_exts is
+   seen as set, the subsequent stride read will see the correct value
+
+This prevents the race where CPU B sees obj_exts but reads stale/zero stride,
+which caused all objects to appear to share obj_ext at offset 0, leading to
+multiple `obj_cgroup_put` calls on the same objcg → reference underflow → crash.
+
+## Additional Safety: Bounds Check in slab_obj_ext
+
+Add bounds check to catch any remaining issues:
+```c
+VM_WARN_ON_ONCE(index >= slab->objects);
+```
 
