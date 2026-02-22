@@ -4,112 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 303EBC61DF0
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 00:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A98C61DF0
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 00:50:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B26DE6B0088; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
+	id E80FB6B0088; Sat, 21 Feb 2026 19:50:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD4A06B0089; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
+	id E5EFB6B0089; Sat, 21 Feb 2026 19:50:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E0506B008A; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
+	id D6AF36B008A; Sat, 21 Feb 2026 19:50:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A9186B0088
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:45:33 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11C2513B331
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:45:33 +0000 (UTC)
-X-FDA: 84470249346.02.E840272
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5A5B340003
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:45:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vhxgkp20;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C563B6B0088
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:50:24 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D9541B5C46
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:50:24 +0000 (UTC)
+X-FDA: 84470261568.14.BB8B759
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 55B2E1C0004
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:50:22 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SD67AAxR;
+	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771721131;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=yYGTIc7SD018JpENXhjw0YCEQOJiW9k0ZXQAJAzD2ns=;
-	b=Wc840KLSfuP40sKLRwUiiaHg9eGDZgsKm/HR0dil9HIfVmw/kSyawwlwiVisNTd9kP4lhQ
-	Y0QcTTqfkiSLLovIF6MmCFEoIGK2Wr0jbCHvnwNjmt2CLJ1qtuZC6q3cbzKSTEoJoqbIKJ
-	O/Vt5v5iRHKWybApy5WILXCh3XcEWck=
+	s=arc-20220608; t=1771721422;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YOsZ7e+n4Df/rAkGWvwEqzAHF8yQZV7IIGzEvzqRKR4=;
+	b=wROOmWXsrBuau8bUztVOKN0cer+yBiwqp59sPrnKGiTLyQvnCJvS0Rr4X6aD9VsoJw4gXA
+	xzs3mbRHL832+nWgLYOVpcCvW3d9KyG6senGfvlr3ScRdElZRJyoqxvLeEEXODUX6XJxIb
+	5AVnFq6c5T7sNP8AKnkeazdLgJCBW/I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vhxgkp20;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SD67AAxR;
+	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771721131; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771721422; a=rsa-sha256;
 	cv=none;
-	b=kEAmZcbxaKF2+Gr9A+9QxnjMbBZ7Nlzmtl8JBTuq2AcARqqMZPX+gP4tszUZ1ms8qq57bf
-	UnTv+zytFLlKmzK4eLBdaBAvF7A9iIAuM53t22shR/CSZblPGvPjDHCEUTTf5SFLM+cXU7
-	nAed+HfqH2C73+MWOBNTy8M6lqBRBcs=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8fbb24a9a9so611246066b.0
-        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 16:45:31 -0800 (PST)
+	b=cB31wUg0RMmSfxSIwIzz+mlgnoIoyAdN2j5YrU2tWiDlrqDmCLfd/R1utUnrTNz2Ikgw1i
+	u6j1WatUitN6kL9ClxncRG+jeIadrPfrPQIvdrEEvdHSfSaSZ0MdEoQHCoK0fjWOA1zadl
+	qNKW7n5tUzuU8m+01g9PKc29qyz276w=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65a36c8bcabso5272684a12.1
+        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 16:50:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771721130; x=1772325930; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1771721421; x=1772326221; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yYGTIc7SD018JpENXhjw0YCEQOJiW9k0ZXQAJAzD2ns=;
-        b=Vhxgkp203cc3e1Jtd+xwAtzuZk18OPiJdZokjwhgFoUoy89ZFKmr3UPJp174eosg0M
-         4mmgFGSXTMVb64NNbahyqyuzjN5+t63ZkbzPfiHkp+N9tUCe+Og3ljAH/VQEbIY7ySXu
-         bKgMYBO4hYF1mmWcQksGm+xtbszwOlcddb+lx0wGIOErpQ9Xl7dtXUXBmSR271lOxcyP
-         QB+ecbunak5UX2EJCC5yjNg4WxeYDXxFOQfARHPH1iJ9NRToN4w7XavYJQZYJaHlSBSf
-         ldVEb70q7SiEZLyqDqnHiOEH3MHJq6qv94HAKo4F5HA8Qr7PG5LPN0Af86JBwnrg8bub
-         VGiA==
+        bh=YOsZ7e+n4Df/rAkGWvwEqzAHF8yQZV7IIGzEvzqRKR4=;
+        b=SD67AAxRqk/rkCZWKkJGo449RlrHE5ss2H3/n8QCsSWKEJ5TfsAuZ59tLuXenBkpUX
+         M3iUJv3nevMwLVRawWW76h3SOsyQ0uiZC4IuIR98y12Cn2fjHQ8UM5Zq/TZF/mqWAJiD
+         Oio4AC/ur9vdGjtvTYNDaHpbNjJtploUjwRCh1A0d+cv0XGTJ2TZCji9Gx6u7mzLDgyD
+         d1UEhEgFBDhksrKOmWycdoppoyyQTKmLMhJTdOFC/nAiRZ8W5z4pzIvNB+oWYEpe2Mco
+         eLmIP/X1aSBAtz44qCet7tJbTrvub7x/sq/IWiZA4sAwSXON7HLVF/1trBrboZ6MpQte
+         Xalg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771721130; x=1772325930;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yYGTIc7SD018JpENXhjw0YCEQOJiW9k0ZXQAJAzD2ns=;
-        b=nDmp/9MG49ZfYNTFVbb33qWBlvihyUojAa0w9EicCTo39VnJ5lYfZEQ1o7iCa7kwcp
-         4FDqKj0krgdU8oPx+PwRJzxUWKhXzjBMlMC+eJ8um95t3uNRkD5ZPI774UCrVXW8+pd2
-         N3oSj50M/907cWJkj8cl0E6xb+o/2rhxtysh4p9VjuN5EZ2HKiykdpMnCAihzevjuRQW
-         V77mKQhBLf0QBnZ313wmnNBvgQOk4A/5hkCfV7bO9jgt4HFmhNo+oSkxo1iyPIodIbnV
-         +YyaVV8DZCnNOIN9d5D1DQWH1J2Qx7Py1iPyf//kIYb41Sk1TRCvgp92RwvjIytVrrOT
-         xOow==
-X-Forwarded-Encrypted: i=1; AJvYcCWeFQnNE4OhMAagQ40o6I1978JXafQtiJNKCT+6JhoP9Cn42dVsaTZReUwIgDyZjGMDvLD12oUOdg==@kvack.org
-X-Gm-Message-State: AOJu0Yypci4O96cQ4hGJ83tw6S8cluD3CArD5nuH/2vT0uxEyavkmhS1
-	dPC353wzWGaeDWzN3Ha0ISa+POhb1rbDQA/9n9J/PYQrg7BeiGfpZZ/C
-X-Gm-Gg: AZuq6aLvi0H9lal1wD5ip2ciovkPkVNwDaVEL73z23mtIwcEouqPMWhdlTYQN73qjUg
-	HwSVHz21Ts+55T45+GG6sUNh6+cV3wksOkouzlw9FMiX+JFdzrAQQFuQlCEWRD0eJ1T8Lu3S/Fx
-	v5nv1fIo7NoU5uNnbGLcMgpLNETmeucF2hCxH4sSdLu/N7J1QKkTCjpvdN/vxGrqMqHTVvZmZbL
-	J0Deh1wzU4wVpmDVCzPQdJZQ2io/XLzs7IxMZEdNjozvkF7qvchyLPF406gD168GLAjSvVtk6QJ
-	7a+L9dTeK+zU7ND8MlHVYB7ioEOPdvFyQB6qbebEXlz6zSrsf/9Oty5uQESJh8RGVZ/cH3JZJnp
-	Y1BpE4vNZs6nxdCHGRMGXQitjFKXzmhAmAK1zK4RGE4k+hqKCkHSt8SeQviAFQRynqyCiWn+FBf
-	86E7iT311lKaQKLZA2yP8OgQ==
-X-Received: by 2002:a17:907:1ca2:b0:b8f:e992:3fc9 with SMTP id a640c23a62f3a-b905415c02bmr661118366b.6.1771721129445;
-        Sat, 21 Feb 2026 16:45:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771721421; x=1772326221;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YOsZ7e+n4Df/rAkGWvwEqzAHF8yQZV7IIGzEvzqRKR4=;
+        b=emN0cIb4mJuHEy4GSvi1rjycZj8sCLFbf7cCJITXqBr4Viakyc3DwwIDc8UUh+GidE
+         kdibSvJqWXpC9JLxon23nw+EpifsbQQcG1Hea5Fcg4wbOSTcvrAVuqYzQKKc53uDsWgo
+         Rf8GTQrSsTLWrf9AO2TYTylkBUnv64z7eh40MHiys/flbVKfQg5ug4EnkZT9CZ9g9duu
+         zaLfYbuT33s1HjiTnROM976fnClc1iAEGuDbxhTPFMODHNrGDvsITixRGhDwA1gj5Gtf
+         QCeuwBn/2ukBBMZlsFDa0Wh212ZDm1YXzwNwoaZ3jMZJby2d3NPN0TN62CqxGxXv0o7V
+         HYAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtbLCBPYVcPISmvziD893+PeAhJiIEH67XTdHQfRTMbRYdUWXfeN+M+lnwk2nv0OuhoKUFe0OEgg==@kvack.org
+X-Gm-Message-State: AOJu0Yxj9jLTwxPvXEk2YcWMVFeXY9P+L4bX+diaR/H4oTjVvw4zQmfV
+	69FnsuOV42H/ARrhglxpqtKYIAGjjJQKGUU7CmjtQ9djuDqszJoVUbdb
+X-Gm-Gg: AZuq6aL5CYRcLmtDa1pdjAaAFYK/H3pfAOOSd7Hhpt3k6zHR98xnCMTyeXg7PCJB0A7
+	m9r3W6x5AQioiBeDmX0/qygkpxll6u3XKTnurnr6L4sgBpCyJdg9qYSfnDgdMKjswM/UBzGt93L
+	pgg994AnfeF77ZJRUZIB5r6/iPxWDtqlfSgMN4+qWcEADDB3+AqBT1WtMPFxnMbW0ZzzyA3V7wI
+	LISnFHEBMsSaRR+ME/1WNd/ETYYLXw45Yjm0tQB9z0xP2S4C9MlqupC3ybmXwtkOcIvptKAPaHu
+	/wKH42OvkJDZ6cMnwaDMxzX0pOelTRDLgoH/B81jeVXdUvFbePFujtGzRCO6wXIke04UZ7YNcbQ
+	T0vNevaYPkeRgsu6L8D82z/56eG84y4/nQE4Ne2asqYd8lcAV5ixeHd2xy0OriM/+tx5Vv4WdLH
+	FR1kyw7y8UAZBDQmMa5VurNQ==
+X-Received: by 2002:a17:907:1b05:b0:b8e:fe3c:2264 with SMTP id a640c23a62f3a-b9081b81c72mr294266366b.41.1771721420552;
+        Sat, 21 Feb 2026 16:50:20 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084c824aesm157564466b.19.2026.02.21.16.45.28
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084c5de72sm157083866b.12.2026.02.21.16.50.18
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 21 Feb 2026 16:45:28 -0800 (PST)
+        Sat, 21 Feb 2026 16:50:19 -0800 (PST)
+Date: Sun, 22 Feb 2026 00:50:18 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: will@kernel.org,
-	aneesh.kumar@kernel.org,
-	akpm@linux-foundation.org,
-	npiggin@gmail.com,
-	peterz@infradead.org
-Cc: linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH] mm/mmu_gather: define RCU version tlb_remove_table_one() in CONFIG_MMU_GATHER_RCU_TABLE_FREE
-Date: Sun, 22 Feb 2026 00:45:12 +0000
-Message-Id: <20260222004512.839-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Stat-Signature: ugho6ygwurrps55nyw815ohdo5g9e9nb
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org,
+	david@kernel.org, riel@surriel.com, Liam.Howlett@oracle.com,
+	vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com,
+	gavinguo@igalia.com, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
+	linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+	stable@vger.kernel.org
+Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+Message-ID: <20260222005018.r4xum26tfxgnnvys@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260205033113.30724-1-richard.weiyang@gmail.com>
+ <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
+ <20260210032304.j4k5izweewouabqb@master>
+ <20260213132027.wm75sh6trz7n24kd@master>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260213132027.wm75sh6trz7n24kd@master>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: ie1wcw9p419sn6bekdqf1uwafbe5ncdr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A5B340003
+X-Rspamd-Queue-Id: 55B2E1C0004
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1771721131-397791
-X-HE-Meta: U2FsdGVkX199URhRK0LHjumWIX1wsgzZAd+pWxwXM1szCenWOYUi+IbQ347dcdeuTlu7zenDfDoaMkVFPu53J8DsQSw1O2LrUZGLafquZBE77t8C5Bekfb+cFwKwBcaaP2OICKfMvqRkre9GvbBuHGdM575Mu9qso2tmbQp2ZEOem4btl6db0cPvWp42LW+rjehuMzRP1aOYcSC28BWkqUqEHqh4nOiWXGGohMIbVXZ9RH/15aOVsMyd0xaDmCNDDMHM0agEnYbqv8OWpYa+PLp/TsoEBXaFB5YVi+l4jPsk22g7i9o8VbhMSC3azccHqPodLGyaA/7XShuHXIlHQZdx1zjegcgPkbX6hh+qynaSGPNjd3hd0MRjeSF3gXqamR6evcEDz5FoAl+g0NmmWokBKPokzAKbNb8IYmFbvmefLIaPM53EK6LgtcUfWMNJSntFaCxuHlenRtDDX4t4KwbICUcfv7AL3u3tTKqd/2Blj6Je766GfAJOZ6KJo6sKy0TmckI9DIV8rVSDaTGr+69x3afCoe2YInJEjVhAO8j6Pvq+IO66iAticEQaaCbfA7DLBO02SwUKFFhc1vF1sWV/dVm0cE3yrD8CCz7HQjEIZML3RSZRpglb4CJWUA0+5jJfjMdLLi/nLc2iv9q4TDLngJNqpQTJbZ7qPmJVHa2CZZ+GhdEvn7vcq5F3iI4ouggGxyhyc2a3W4MES7GSNtybMLPCZ4e4jiyamTPhs0Dv6tJuR+y+6HuosIp4FnofEN3V2cRIKR3E+SM35V0U84stQmtT4JgE/4VVPV43aTFMJnyr6PXo9NNZQspVpYSlEcFFJDuBLgywyFWuQhRILoVVTMp5SAug1fBAxEn8eJ6+x2KWERf029a7e7CD6Y4tDbMYGGpDKON96d3AvPeD3pLSJU4g7IclGajabth55Lk4LqsUgt1DLvuDe8HxLPkTXK8qgJFo+eF7B+VZyyT
- Smg+IQ3V
- RtwahtKTkZFjyJDEPQwyGLdzpq2UFfe5uH/0n2TSenQyERgsggtALnyAkKi0JOUvXn0J+8B72v/rEsGzg9uu1leoa+ZeSzS/Ur/iTlEWh5HLNTWf5D8PXZPKuou8f2a3wj5d0s0bEW/IfRazQYvFopKR0/Xw4Kf/OINrI4TnrhCRJgExDacVvUKmENWamOrLiBcgp5eFzpPky00hOGLyDlZVYUqwq5x6rvttlMdiO/CB30+ijYkEq90llcPU8bSWnDwLVONSfHekOTzoweBj9sleIpF1cvujFJgWJUy+DpAY/CRsUVbl9bi8pQu6K7AX/MvwTom5YouknRuFLRREsS/lvt5xW0B7PSW/+9rXHMMKUgz8DHWX8KyIhMpyOidXzwC2xdnIP9HkVf5m4t2st03FMzDjNWUHOCKeX1i92cuSLqUvoncIhTkfpoOErGrWeWdvPFfIFUrJr3UmEZ46JnP5jBnbcn0IVJd63of9HIDWHnowikQfvVHXCnJsjCvXzr0cHmCvKnNcjayNgHRBlAcZM23MS+YyU3IXHXkm+aRrIvqMO5bwS0jtt580oBeOg3fDwG7sRCOrPue6cgNfz092kydlYY/3jU+FHDW42e9ZWKcGheY7MNbSDm5jv/0x0Mf3Cx2jK2iEDgpgQZoREV21H/tN2IafOym33+NY2+TBHoxH4OSTI6YyOwA==
+X-HE-Tag: 1771721422-520717
+X-HE-Meta: U2FsdGVkX18fmdgjizn1Qhc6MNINmoB5qBxzuEtslTa7KzSgOza3ktFlx/5ncgoHp4OxSJccUsgXHB2+OoBfMyxUzeQiYgIrbSd2nH01GWj5+elRE6gjnxU2B93qyCVqmLqemXyto3JBqDTBItv6ugsgs+EnAuv4s/V+Acd7EBWI/ZbDgTSaBU2MMAbBnvdgFJg8IpxKhiWB0p3+RGtlIRjzqcdid+l8hDTx3MbUUN7ly5YYtH68Ztdx19u0JqpGcvcQHEYF2kQ2aP8jFHqR/aPMRHC4qk3zSZdKqhluZzr7ziCo8vb3hDQKPnebgIeruZr2AlQLO9s8xJKGee8XbGhBMUatMgo4wTZyLXGaIrWxyaZ+E5asJhoaM5+2lQOYdo/raWJZpDUqM2bxqzYurrkQF9yNFknopNbgaNASxtx16Nab2Fc3f/KQtUlvPQoyuSkw6le+mDB38kS3lTFpPWnJpaunbTtYDMv8PkFsMn4vS4eyN4nKzVynB9nnAtPoAZqMBN5sjhtjIt+w5pmdRlBflOQbFDv61kdm1XdPIx943GYbZ3zp5t5eFdzhklee5b5B9BCldfBCT/aQpfBhKaTrvKIl9kUzB76saI7ndms5zcP3e8MmhKjpkxVeM0y9o7kNgZJNNRaEqqq+DOfD7dPd+Dvl37dVTtvaLPsgmwNVx17fPKI0rg/TqVSJY3vrZTZAsVI9/VU3jgnXE+Hlcj1EK/3AfAd3r5X2pPkarr94pJCMEu3xx+se3sPrT9RQ/ghepWoLZp68+OP0AePpJ+QoxjfwJgsHVsZ60PxTvrSxdO7q+6s/sItyJPMPOq2dz+U0Vu+071KPJ8JaIOvpCfSjYCmwxGg1wm6Rv4tMrsHvOq3/siljT935+Zze1QLC5a6T+1+FRa4tpsuS0S3oxDPyK2A2X+IvuEaC6ld9jxDscUGhZlu5SWEUhgUyWTFKFc8F/Q1PS+HhUqGtgh9
+ Z69sDb/s
+ dkPxLtrIhGgjBZWNG8KN0yk/mQXE6MFZTVarw+Mu0NmBgAVMT4oL3R6kCJXqaJ69huW+oLmaV/aJ8Di9+Z61iBawRTCfVVH9KGhiEEiC71uS1IrgtBtFc2nR6xJ3+wKW7n8D9qOyW5vslpyPvkcSJyEIAkmZYCaE4Ybh/XwrmQ1cKqEBm4Cp9MwfIkqzImkirnel8vNKtrhKrTisXZHiSG8DrocMdiIseoOVVjgubICBxcHQ+bcAx5o1HcdXA28jI5TgjUtaqPPCdy7Rwiql9FRSzuY5ZHdRc8CCoefTz3+bhA7fKrhcyLiO0STF22eXCgsvsnKf6MLdEsRskNHqOzj027g95LAc0YzeZEHZNzBB3zfQPPBQ1gjeh3r3C7kAcqC+l7UnbtDBcWU9ken01gOy4oeWHkg9PMgjfI0Moy8Mj8kmOcys4w7s5lk2udZ4uHb6xnDOqP12WmObvdjgwaKWGl59wgZhhAOcMMSm3KtjUEG7lQbh6OhqfUeB9AN1b/0U3hojh4v7Cp+fDFVBRrJLgTzNMKrB7Yo0PZCJvBlOG8rxrd+vnCEuckbfT2hD+fXbwvfmNP73jYwGVmnLHccrKo/ASL1ziE70wGsr9+Qy4dgdYEvl34DSsplYlasQHgCR91cAcnYRKPWrb6yxC8/YgMpC3KgcDnVCNz35pg8yR5HBotvjWHUqZEy3mu4yRm1pDwe3ZxGAuUtyOEOJ4CAtoSGGiEgUVXK6EgT/FTlWaMQntuM5ND1Fmzzo2wl5m1WrnZc7euNyUiOHkQ18AP5GK5a753QRduIq/AaRUS4cTDSarujJqHApxE1W8bLYK/bTJQfoS8CyT3ziPnqCWXvrnuQHpudeBKL+ZaAgCdqxNrHnA8pdzkuUbyXi1F5F/VuyG1lqBLc+3U4/QKdXGy8jgWP3mRdOr3GdJPeAS7uUNw6hH8YnNKDgRYoih/hwid2KYLvIcMKiFaN8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,106 +128,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Before commit 718b13861d22 ("x86: mm: free page table pages by RCU
-instead of semi RCU"), the page table pages will be freed by semi RCU,
-that is:
+On Fri, Feb 13, 2026 at 01:20:27PM +0000, Wei Yang wrote:
+>On Tue, Feb 10, 2026 at 03:23:04AM +0000, Wei Yang wrote:
+>>On Mon, Feb 09, 2026 at 05:08:16PM +0000, Lorenzo Stoakes wrote:
+>>>On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
+>>>> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+>>>> split_huge_pmd_locked()") return false unconditionally after
+>>>> split_huge_pmd_locked() which may fail early during try_to_migrate() for
+>>>> shared thp. This will lead to unexpected folio split failure.
+>>>
+>>>I think this could be put more clearly. 'When splitting a PMD THP migration
+>>>entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
+>>
+>>split_huge_pmd_locked() could split a PMD THP migration entry, but here we
+>>expect a PMD THP normal entry.
+>>
+>>>TTU_SPLIT_HUGE_PMD is specified.' or something like that.
+>>>
+>>>>
+>>>> One way to reproduce:
+>>>>
+>>>>     Create an anonymous thp range and fork 512 children, so we have a
+>>>>     thp shared mapped in 513 processes. Then trigger folio split with
+>>>>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+>>>>     order 0.
+>>>
+>>>I think you should explain the issue before the repro. This is just confusing
+>>>things. Mention the repro _afterwards_.
+>>>
+>>
+>>OK, will move afterwards.
+>>
+>>>>
+>>>> Without the above commit, we can successfully split to order 0.
+>>>> With the above commit, the folio is still a large folio.
+>>>>
+>>>> The reason is the above commit return false after split pmd
+>>>
+>>>This sentence doesn't really make sense. Returns false where? And under what
+>>>circumstances?
+>>>
+>>>I'm having to look through 60fbb14396d5 to understand this which isn't a good
+>>>sign.
+>>>
+>>>'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
+>>
+>>I am afraid the original intention of commit 60fbb14396d5 is not just for
+>>migration entry.
+>>
+>>>entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
+>>>unmap_folio()), exit the walk and return false unconditionally'.
+>>>
+>>>> unconditionally in the first process and break try_to_migrate().
+>>>>
+>>>> On memory pressure or failure, we would try to reclaim unused memory or
+>>>> limit bad memory after folio split. If failed to split it, we will leave
+>>>
+>>>Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
+>>>something like that.
+>>>
+>>
+>>What I want to mean is in memory_failure() we use try_to_split_thp_page() and
+>>the PG_has_hwpoisoned bit is only set in the after-split folio contains
+>>@split_at.
+>>
+>>>> some more memory unusable than expected.
+>>>
+>>>'We will leave some more memory unusable than expected' is super unclear.
+>>>
+>>>You mean we will fail to migrate THP entries at the PTE level?
+>>>
+>>
+>>No. 
+>>
+>>Hmm... I would like to clarify before continue.
+>>
+>>This fix is not to fix migration case. This is to fix folio split for a shared
+>>mapped PMD THP. Current folio split leverage migration entry during split
+>>anonymous folio. So the action here is not to migrate it.
+>>
+>>I am a little lost here.
+>>
+>>>Can we say this instead please?
+>>>
+>
+>Hi, Lorenzo
+>
+>I am not sure understand you correctly. If not, please let me know.
+>
+>>>>
+>>>> The tricky thing in above reproduce method is current debugfs interface
+>>>> leverage function split_huge_pages_pid(), which will iterate the whole
+>>>> pmd range and do folio split on each base page address. This means it
+>>>> will try 512 times, and each time split one pmd from pmd mapped to pte
+>>>> mapped thp. If there are less than 512 shared mapped process,
+>>>> the folio is still split successfully at last. But in real world, we
+>>>> usually try it for once.
+>>>
+>>>This whole sentence could be dropped I think I don't think it adds anything.
+>>>
+>>>And you're really confusing the issue by dwelling on this I think.
+>>>
+>
+>It is intended to explain why the reproduce method should fork 512 child. In
+>case it is not helpful, I will drop it.
+>
+>>>You need to restart the walk in this case in order for the PTEs to be correctly
+>>>handled right?
+>>>
+>>>Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
+>>>the bit that did this change?
+>
+>Commit 60fbb14396d5 removed some duplicated check covered by
+>page_vma_mapped_walk(), so just reverting it may not good?
+>
+>You mean a sentence like above is preferred in commit msg?
+>
+>>>
+>>>Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
+>>>that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
+>>>mention the commit msg.
+>>>
+>
+>Currently there are two core users of TTU_SPLIT_HUGE_PMD:
+>
+>  * try_to_unmap_one()
+>  * try_to_migrate_one()
+>
+>And another two indirect user by calling try_to_unmap():
+>
+>  * try_folio_split_or_unmap()
+>  * shrink_folio_list()
+>
+>try_to_unmap_one() doesn't fail early, so only try_to_migrate_one() is
+>affected.
+>
+>So you prefer some description like above to be added in commit msg?
+>
+>>>
+>>>>
+>>>> This patch fixes this by restart page_vma_mapped_walk() after
+>>>> split_huge_pmd_locked(). We cannot simply return "true" to fix the
+>>>> problem, as that would affect another case:
+>>>
+>>>I mean how would it fix the problem to incorrectly have it return true when the
+>>>walk had not in fact completed?
+>>>
+>>>I'm not sure why you're dwelling on this idea in the commit msg?
+>>>
+>>>> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
+>>>> leave the folio mapped through PTEs; we would return "true" from
+>>>> try_to_migrate_one() in that case as well. While that is mostly
+>>>> harmless, we could end up walking the rmap, wasting some cycles.
+>>>
+>>>I mean I think we can just drop this whole paragraph no?
+>>>
+>
+>I had an original explanation in [1], which is not clear.
+>Then David proposed this version in [2], which looks good to me. So I took it
+>in v3.
+>
+>If this is not necessary, I am ok to drop it.
+>
+>[1]: http://lkml.kernel.org/r/20260204004219.6524-1-richard.weiyang@gmail.com
+>[2]: http://lkml.kernel.org/r/df86ccfd-68a5-416e-81cc-02858e395b70@kernel.org
+>
 
-  - batch table freeing: asynchronous free by RCU
-  - single table freeing: IPI + synchronous free
+Hi, Lorenzo
 
-This commit introduce a RCU version for single table freeing to support
-PT_RECLAIM. While it is not necessary to limit the RCU version only in
-CONFIG_PT_RECLAIM. It is reasonable to asynchronous free single table by
-RCU if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+I am not certain on how you prefer the commit msg, would you mind taking a
+look at my question when you have time slot? So I could prepare next version.
 
-This patch moves the definition of single table freeing in
-CONFIG_MMU_GATHER_RCU_TABLE_FREE, so we have both RCU version
-batch/single table freeing if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+Thanks a lot.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>
----
- mm/mmu_gather.c | 51 +++++++++++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+>>>You might think I'm being picky about the commit msg here, but as is I find it
+>>>pretty much incomprehensible and that's not helpful if we have to go back and
+>>>read this in future.
+>>>
+>>
+>>Never mind.
+>>
+>>A clearer and comprehensive change log is helpful for all. And my English is
+>>not native language, so your suggestion helps a lot.
+>>
+>>>>
+>>>> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>>> Tested-by: Lance Yang <lance.yang@linux.dev>
+>>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>>>> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+>>>> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+>>>> Cc: Gavin Guo <gavinguo@igalia.com>
+>>>> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> Cc: Lance Yang <lance.yang@linux.dev>
+>>>> Cc: <stable@vger.kernel.org>
+>>>>
+>>>> ---
+>>>> v3:
+>>>>   * gather RB
+>>>>   * adjust the commit log and comment per David
+>>>
+>>>Clearly not enough :)
+>>>
+>>>>   * add userspace-visible runtime effect in change log
+>>>
+>>>Which one was that?
+>>>
+>>>> v2:
+>>>>   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+>>>> ---
+>>>>  mm/rmap.c | 12 +++++++++---
+>>>>  1 file changed, 9 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>> index 618df3385c8b..1041a64b8e6b 100644
+>>>> --- a/mm/rmap.c
+>>>> +++ b/mm/rmap.c
+>>>> @@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>  			__maybe_unused pmd_t pmdval;
+>>>>
+>>>>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+>>>> +				/*
+>>>> +				 * split_huge_pmd_locked() might leave the
+>>>> +				 * folio mapped through PTEs. Retry the walk
+>>>> +				 * so we can detect this scenario and properly
+>>>> +				 * abort the walk.
+>>>> +				 */
+>>>
+>>>This comment is a lot clearer than the commit msg :)
+>>>
+>>>>  				split_huge_pmd_locked(vma, pvmw.address,
+>>>>  						      pvmw.pmd, true);
+>>>> -				ret = false;
+>>>> -				page_vma_mapped_walk_done(&pvmw);
+>>>> -				break;
+>>>> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+>>>> +				page_vma_mapped_walk_restart(&pvmw);
+>>>> +				continue;
+>>>
+>>>This logic does lok reasonable.
+>>>
+>>>>  			}
+>>>>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>>>>  			pmdval = pmdp_get(pvmw.pmd);
+>>>> --
+>>>> 2.34.1
+>>>>
+>>>
+>>>Cheers, Lorenzo
+>>
+>>-- 
+>>Wei Yang
+>>Help you, Help me
+>
+>-- 
+>Wei Yang
+>Help you, Help me
 
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index fe5b6a031717..6c1cbd9c717b 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -296,6 +296,22 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
- 	call_rcu(&batch->rcu, tlb_remove_table_rcu);
- }
- 
-+static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
-+{
-+	struct ptdesc *ptdesc;
-+
-+	ptdesc = container_of(head, struct ptdesc, pt_rcu_head);
-+	__tlb_remove_table(ptdesc);
-+}
-+
-+static inline void tlb_remove_table_one(void *table)
-+{
-+	struct ptdesc *ptdesc;
-+
-+	ptdesc = table;
-+	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
-+}
-+
- #else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
- 
- static void tlb_remove_table_free(struct mmu_table_batch *batch)
-@@ -303,6 +319,12 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
- 	__tlb_remove_table_free(batch);
- }
- 
-+static inline void tlb_remove_table_one(void *table)
-+{
-+	tlb_remove_table_sync_one();
-+	__tlb_remove_table(table);
-+}
-+
- #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
- 
- /*
-@@ -320,35 +342,6 @@ static inline void tlb_table_invalidate(struct mmu_gather *tlb)
- 	}
- }
- 
--#ifdef CONFIG_PT_RECLAIM
--static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
--{
--	struct ptdesc *ptdesc;
--
--	ptdesc = container_of(head, struct ptdesc, pt_rcu_head);
--	__tlb_remove_table(ptdesc);
--}
--
--static inline void __tlb_remove_table_one(void *table)
--{
--	struct ptdesc *ptdesc;
--
--	ptdesc = table;
--	call_rcu(&ptdesc->pt_rcu_head, __tlb_remove_table_one_rcu);
--}
--#else
--static inline void __tlb_remove_table_one(void *table)
--{
--	tlb_remove_table_sync_one();
--	__tlb_remove_table(table);
--}
--#endif /* CONFIG_PT_RECLAIM */
--
--static void tlb_remove_table_one(void *table)
--{
--	__tlb_remove_table_one(table);
--}
--
- static void tlb_table_flush(struct mmu_gather *tlb)
- {
- 	struct mmu_table_batch **batch = &tlb->batch;
 -- 
-2.34.1
-
+Wei Yang
+Help you, Help me
 
