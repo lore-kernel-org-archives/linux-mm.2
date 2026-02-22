@@ -4,86 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE31CC636B3
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 19:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBA1EC636B7
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 20:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D81036B0088; Sun, 22 Feb 2026 14:42:05 -0500 (EST)
+	id 9EC3D6B0088; Sun, 22 Feb 2026 15:18:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2EB96B0089; Sun, 22 Feb 2026 14:42:05 -0500 (EST)
+	id 999C36B0089; Sun, 22 Feb 2026 15:18:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3AC66B008A; Sun, 22 Feb 2026 14:42:05 -0500 (EST)
+	id 871EB6B008A; Sun, 22 Feb 2026 15:18:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AED076B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 14:42:05 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 28F9A1606EB
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 19:42:05 +0000 (UTC)
-X-FDA: 84473113410.15.C9C300A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7AABF40010
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 19:42:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="t1KLx/Nd";
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 714FD6B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 15:18:54 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18E4B1406F5
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 20:18:54 +0000 (UTC)
+X-FDA: 84473206188.04.1F20AE8
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 045C6180007
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 20:18:50 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=OnLGwVPh;
+	spf=pass (imf24.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771789323;
+	s=arc-20220608; t=1771791532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/UFAnP9ZBaS7xnkgNUK0vVoqnc19aHstwiQa9i2pzms=;
-	b=W78lOw3kfl2dVX+MxaY6HDT2Y4P9tj361K7G/zNqYJs+jB9HW1OgrJBuWPfDTlXk1FdxQr
-	toCbKeaJ9QMhdAd/PhnPVahehnjsRi8FAOool2NEHQtOxLlAVbi+h19aMYW/bdG+ki1aoh
-	99ymQdwVwWV0qct7n2UzpKBv/mfmLHI=
+	bh=BYfTFIroNf85DTobS2svLK6WQ8ILiGnG36jHKS1GRiU=;
+	b=6jU2EqpsrFCFu7tqrwT3CRrngnEIIfcCt1LhKzvzg7VRyAj9vI/pG//uiaNq2MlltRFXtH
+	IuH0Jkl2bfTlbRfYhKIhTiWOhGS1i/MUjMH+aK+/67Rmgu7a6sim/E7cU+2ucP4wImySK4
+	6VmNYSKqff2cUFE7h5HyOuEceWraf7Q=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="t1KLx/Nd";
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771789323; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=OnLGwVPh;
+	spf=pass (imf24.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771791532; a=rsa-sha256;
 	cv=none;
-	b=Qgek4ub1gHLsZUc2NWl0musGn545FZNJLtktzQ4wyPtYEk0cc5OkyYo2Xk1aLHMmaQUfYi
-	Y8kQu5ZCKN6U9hLfQX4CHu8yeEMtaaRspzTQP0Ckgy8IwDGDwpFwFru9F2Puu0pjm0mYmr
-	nUPWQaQwQSzLfaAYEFEwC1mfmo/d0fs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC19F6001D;
-	Sun, 22 Feb 2026 19:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D40C116D0;
-	Sun, 22 Feb 2026 19:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771789322;
-	bh=WSWutob4EOAt5DkaggBIrCV8MoWbhp++zfA32xz8roc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t1KLx/NdrNsWfrGrfuTViwSseXvCj72+/EPMEMP3/KwAxs1cYn9RV823rHFgsBmi5
-	 UvvyQ/UGaVRoFpZoVzVZhpfp94aqoQABL4891Q/kvGyYENNSw36h4BjGE2Nd7vzsy2
-	 iHpAqjPkGWZyawz7rhr4NREdKl1PlOSMr44ZcnRE=
-Date: Sun, 22 Feb 2026 11:42:01 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, Qi
- Zheng <qi.zheng@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH] mm/mmu_gather: define RCU version
- tlb_remove_table_one() in CONFIG_MMU_GATHER_RCU_TABLE_FREE
-Message-Id: <20260222114201.095379dd766b68dcecbab1c5@linux-foundation.org>
-In-Reply-To: <20260222004512.839-1-richard.weiyang@gmail.com>
-References: <20260222004512.839-1-richard.weiyang@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	b=O97BB1NCjmH/pXamYDZqNekGsYnHD64khfh3LK/lKEqM8s49OL4ehfPpScwofcOpTWp6w8
+	Cv67zgzMwIEb0v058ErV46/NIaK7haDr9VO9tk/ScNu6TvZ6JPaYQ02etCJ/w1kcVCPzhj
+	whANW5B6pa4iBoG6jU4A/suzzboKDrA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=BYfTFIroNf85DTobS2svLK6WQ8ILiGnG36jHKS1GRiU=; b=OnLGwVPh2IU1P3Lug2trtYyxtR
+	wuMVFjJTH5oqzqO5d8oNzwk9iRr5oOK3nfcBvvO16DKuYAQ5eFXmdtxR2WWeXzmkba4Se84EMYGCJ
+	lUUieP7qyYWwjUMETk97/ww6lt++dagUNNL2P4G4aVJJHpQ3V2XzR2SyARl29VYR4bH/nfDdgWgWN
+	doS9TpZfS2maFkLz3gIv9dn+HQvUiXVPrnWLG0sDVFIHAjb1aenO2ENQ0VQVIDEBN2B2ISXUdmXnO
+	Xcuo5/NdPMzoCxg/oD9ESH0vQOPOiRQcsYJJ5W/GNa9P07Bj7HnZzcfFqS7MMXtVvybcgZZ/2Kr+j
+	bywa5Hyg==;
+Received: from [177.83.214.207] (helo=[192.168.0.51])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vuFuf-003xdj-5H; Sun, 22 Feb 2026 21:18:45 +0100
+Message-ID: <34de3a3c-dc04-a9a8-d90f-afa4199e0168@igalia.com>
+Date: Sun, 22 Feb 2026 17:18:38 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 2/2] mm/memblock: Add reserve_mem debugfs info
+Content-Language: en-US
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+ kernel@gpiccoli.net, Andrew Morton <akpm@linux-foundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260217195816.861684-1-gpiccoli@igalia.com>
+ <20260217195816.861684-3-gpiccoli@igalia.com> <aZlyVHwUdxg5WZBe@kernel.org>
+ <20e28221-f9c7-47c0-43fa-72bb2e868386@igalia.com>
+ <aZtWrjlAaljQ1F48@kernel.org>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <aZtWrjlAaljQ1F48@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h4gxue13k3zjkferexp1yci7nttg4m7n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AABF40010
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771789323-634792
-X-HE-Meta: U2FsdGVkX18MSh6SXvwWhE7BBlR0avHQMmztlX6h+SnRIhRCep/H4s6i66PnmoVUeedUtTvisQCI9piiLybhp2houXGmo6Yg93SlhJHrODnM7w6FIsy2W7+RiS2jxxORIBxewJXAmlSgBwQhuOPgHxMXmC4/QBt88cOSeBqZBRY84lUiNCoz0D0SQQz7pCy8NRhpp+0YXFu9J/CcGacaHkjGWn5Gi4iy+b8+MznxjiSr+KUHYi8bVQVWKVfQks82RnHSaxyVdKLIANjuZd5uQmMpVt/W3XxP2bHzS0KvfvLx8abRNNPVe5q1uYyGEk6Dna97sS8dzi5XNhwkV9l4xfY7xKqO1TsAC8W76QRx+yo31fV0x+R/7deEnKbD0nfAZQFsbDLF/WCX0aoNKqPrXMzGYc4VstFyD7xi9l+IZwnlOLzd88R12NjcwWfEtQoCnCsnHVXXp2a9SxFqcHZOsobisJ1BW7YgOzPVTD0XsSFIWQI3n7bc4GFi/rhThSoeB9FWDcrS7gKMh1HAY0j5GPECEVUYgUjY2ojUwudWs4V8f7j63zPirlu/mM1MC7VwCZKl0CWMXkL1sAl31sXyrF/+yFHIY6B+fsOdXhzTwEakyAcsBaqLrtssrbg+JDm2L5VyEIqIZGj98GBthjU6vahgj6Oxe7OK7QK+IUvwwERErIY+ZU40bEZtpH66v2ES+80y/dyoi/CFQzClmKn7wVV7sBnp5qeIOqgzL21yYq28xp4/pGaMhQzxl/h4do9LIVN+999V6OkNzlwkOuMrV5e2jT2uXRo5jcDA+Ffm6vAScVYjjw7efdyjtNnWe7gC1IypfRlpn+Lf8VmXrJW7YbLHGIr4TOwBdoekNLxbm4QxLXNnY9gBKLauH9TOLr+90nMDI9RCEBoZREKTtNtazakjgp1y2kPIUMYZT8UjAxlahiKHBOvgSooZL0G5l5DoSirGPDr6Nvq4u8r+Ilk
- WNdkxIi0
- J0ydKzq9zf3EeQYETpW+FbI5eUa4b1w346NVvy/19tx9TAwWqr1knMWsbfVW6LCfkgHFToEX50T4aPfQic6J36Zko1wVpp8unjfNPKjJJplLbFKr2AFYpLXb2BkczlZVt39Cc1Eq7illuk6zh3CdrbkIKbXe9PWLksHuUj3KPFyPN2uHj6D5YZPdYfKNYdTuH/OP3IYS0EuiG+0pW5p2tuqw+dSSOxcdOiL/qXqLZyp5WoKOshV+RSo9XU1I+CGBWB2e/V298XCBzKD9vBlo9QvO7FRx2GsdIFXnyhBgLhW1Q7XCzzeKogHCU8hOZ5u+q7tz0a16pvd6UXTGyvL+yTOXNhA47j6OvL/180u+ZoqrzkKexCPPQZhxpU31DbNxhs2Nd+l8d/41CrFo=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 045C6180007
+X-Stat-Signature: cukdp6yd5m9ircnuczqot37ra871qsyo
+X-HE-Tag: 1771791530-384804
+X-HE-Meta: U2FsdGVkX1+aEzrXCyMsZHlpqwG9uSXcvZoS4wjQIy5nmke+qWTnpZwj2FWJIp9i7JUsa0TEt/tzWKpwN8FoKxIrj9jCtjrlSMTnmo3Nx8q439KwQ9GG6XZ6G+v21yTw6Z0YDwfHVcwXTB8DJtfjiMIGWUYiv7WIMJdwGioL+20FbZfYy5RUYpFLD9PZf0yS+5WpU5rfAgXf0Meb+4i9bduHIIHRexmEsBLuB9Roa9BfCtMEn0/iD1a4hy4ECuqH8lC7HcOAQWzoobbGLPwX7O8R+RixC20Q8i1svzDhzaJrNuG2gVBQTplGgYtA4yXudowaiWFgo0yT7HuKBhuBn9ISe47MLPG8pLcM78VxmEoi2XNd+KkiTETfU0aix0tmoRv/yyEFF0fDRMcz5Y1IRjNy9WUO5UDuU7p1PxFynC0j/eiqF3aqG3gJeEByB9BPGBhggHKv6n+89/IwIw3WNSVep4zreRribL4nIUrPv5siIyx98+ANfKromkJ8m0341FC+ADnXgTQHpnzbxf4amRO+JLUvIc4HnYP1G3/LpMNx9+LDLdoCeZu0B3guRhfFk+RH21wgAIQUkLLIpHwsh9Ozwa573GeK12OJfFX+eqSPyiQNP6BAQduwOchqJQkmx0vfG9wCzmx9K9qw/1R8I3iBnXTc/BJEhueF7vDLsvWVJnvkQIMDDThVRN/6Rod7DYi8UfhaoDxY63P07uF/l0L+vdJKoweHhTS/pl6K3tvhKS1oJ6xb9uwBDfGixW2tvABbm6wigwbQ+oy6vL9etmy3DzhYsaWrsHJGaeb0ZTQ8jPn6a+Pb0TXalcbrogZP+3GIBEGVslYh6Qu/6+k798Rev0D18E7xNM0CwqcaaQINUYmU8UQGQ+IbvRdDU4pd1FLfUHc2ugqvfje5npyND/dTgrC+VxHemUJtRbXy6Mrnz8MAJIJgMpuAly0qzVA1WXlQaTV4ju/Zagfkkze
+ FLQ4UJ8s
+ wLBxtYIMyH8YRd7I8OycrfpsisH9Vmc+TBkqe18zXTFvabWDdTOypY7sQazxXJAadbXJLX9PjY6iXRoxhb6AUd98sPa+b2/G1qvIawo1H0roVPHAgHtnZvAvBWhjydXwpafreRajYaXeJbAMgZ5H5MORoqRRK2p+/Alxb14iPfNJD+5o+4Ev7Bo1KexCwh4KIegsPpEgubQCrrtbDHywvu4WpycEqmb0VxC0It3RctekRbEemw8eARPKcO1uBmKi03tvtRxwZAY9h0AM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,25 +100,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Feb 2026 00:45:12 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+On 22/02/2026 16:19, Mike Rapoport wrote:
+> [...]
+>> First of all, what should we do regarding patch 1? Should I resubmit as
+>> part of V2, even with no changes - or pick it now and I only submit
+>> patch 2 as V2, with changes?
+>  
+> Please resend both patches together. 
+>
 
-> Before commit 718b13861d22 ("x86: mm: free page table pages by RCU
-> instead of semi RCU"), the page table pages will be freed by semi RCU,
-> that is:
+Hi Mike! OK, thanks.
+
+
+>> [...]
+>> Specifically here, by magic number you mean my choice of 16, right? What
+>> do you suggest me to pick? It's the length of the string carrying the
+>> size of reserved_mem, some number must be selected for this
+>> length...lemme know WDYT.
+>  
+> sizeof(txtsz) should work :) 
+>
+
+Ahh OK heh
+I thought you were not happy with 16 as the size (this is an arbitrary
+number itself), but it's just on the func argument - cool, will fix it!
+
+
+>>> [...] 
+>> Very good suggestions here, but just let me clarify: so I could continue
+>> showing the "reserved_mem_param" inside the "<debugfs>/memblock" folder,
+>> just using a different function for that attribute?
 > 
->   - batch table freeing: asynchronous free by RCU
->   - single table freeing: IPI + synchronous free
+> Yes, something like
 > 
-> This commit introduce a RCU version for single table freeing to support
-> PT_RECLAIM. While it is not necessary to limit the RCU version only in
-> CONFIG_PT_RECLAIM. It is reasonable to asynchronous free single table by
-> RCU if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+> static int memblock_reserve_mem_show(struct seq_file *m, void *private)
+> {
+> 	...
+> }
+> DEFINE_SHOW_ATTRIBUTE(memblock_reserve_mem);
+>  
+>> I understood that, based on your (good) suggestion to hide the memblock
+>> folder if ARCH_KEEP_MEMBLOCK is not defined and there is no reserved_mem
+>> set ... just want to confirm to follow-up the implementation.
 > 
-> This patch moves the definition of single table freeing in
-> CONFIG_MMU_GATHER_RCU_TABLE_FREE, so we have both RCU version
-> batch/single table freeing if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+> Yes, that's what I meant.
+> 
 
-What are the expected (and measured!) benefits of this?
+Great, thanks a lot again!
+Cheers,
 
 
+Guilherme
 
