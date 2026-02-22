@@ -4,86 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37315C636B8
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 21:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81685C636BE
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 21:37:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1ACB46B0088; Sun, 22 Feb 2026 16:01:13 -0500 (EST)
+	id 580446B0088; Sun, 22 Feb 2026 16:37:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15A486B0089; Sun, 22 Feb 2026 16:01:13 -0500 (EST)
+	id 52D9E6B0089; Sun, 22 Feb 2026 16:37:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0595A6B008A; Sun, 22 Feb 2026 16:01:13 -0500 (EST)
+	id 402696B008A; Sun, 22 Feb 2026 16:37:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1CB06B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 16:01:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F4618C192
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 21:01:12 +0000 (UTC)
-X-FDA: 84473312784.08.A564502
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D99911C0010
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 21:01:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b3BHLLtH;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 290B16B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 16:37:04 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2285BABF7
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 21:37:03 +0000 (UTC)
+X-FDA: 84473403126.20.602242B
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 05731A000A
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 21:37:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mhBXakJj;
+	spf=pass (imf15.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771794070;
+	s=arc-20220608; t=1771796222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5/EreUI3PYEoM8W+N6LkCVXn6S5UJ4yxGlTwX9CuArc=;
-	b=o83tu8j2LUx4LCB9lem1uDU0OQAWFAyxbwAS/26ir7nmoJe1/4QSto9lq6Xtu/ldPncug/
-	wBFlhbFYxm0MzPVYPNgGl1BpJdk0hhi0rmqbbLrTCcuLBTdvE6H43UP1c2fESsQXTLQnzY
-	nvirg97jv28haMp0bjStdhCvrfdqpoI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771794071; a=rsa-sha256;
-	cv=none;
-	b=vkjH9+Q/qmyRqtULCkf1DrbWe9ASMBqLXdtOg1zG3SVGpqgGpeFRt1vQY+pzSX7HSy4uDe
-	KMP5rROzJXvxQ+HBTf3GP+wbUYdRZWWDN6orEcrzmIADXJiGGQ81uxGOFAk9z8c8/coHcK
-	34hYF2TKq3ws2eI6terHQNa973YILUQ=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YYcB3zGjT8GKDiCMJj3SvE8SHtPoZo7cQxEGocwC61o=;
+	b=NxSAoRhBEa/g5JycOjgTI1xf4x96JDP0wAzReIqwbhjWHx+XhrdBE6dnvJuOlaTmf+PkZo
+	tn1Dqe+KeF3vD5O+h0c/dRagZeiWA1XqS78wmJH5J0ApepMf5CcNE6A2PfSgIrHYnS/7l3
+	UoDVw21nXks+/JvrBxv89rtnKlwnrLY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b3BHLLtH;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25FB660121
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 21:01:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8482C116D0;
-	Sun, 22 Feb 2026 21:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771794069;
-	bh=9dgpyCU7wBH5PiWPlWORpFRzmJ+0P/zw9AKC0VdVIy4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b3BHLLtHdoAHRS264ll9CbmqPJT1gNzcglRsv7rq45LwnrTrOBUzhC0bLDgSWMit5
-	 QYuZWyIoULVi8VFIlnSY5C1ez1z2AV2XP/PlVBHfg4lhqkOosdeRzsb31hQHEcyl/O
-	 Sk/7NR8b46Yb7uKTIPH1ea2AaO+Ly1oEunqbolSDqKZBR+TCH22OLGqXsnLVgIc3bN
-	 qvHIURwWzM5Yh6M4w9XNzu4wiQbxF2rGXOgKBgn+wCBh+Yx4YOH4vtBWnBL796iWD/
-	 rmhJgqvDT+tDHbwTxsVOs/P/iKF1knFu+qiW4KPvRp7hgQZ3Ydz5PsCnGW3WPEsyoo
-	 /z4pbxTbc28Kg==
-From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Yearly Retrospect (2025)
-Date: Sun, 22 Feb 2026 13:01:01 -0800
-Message-ID: <20260222210102.153347-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mhBXakJj;
+	spf=pass (imf15.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771796222; a=rsa-sha256;
+	cv=none;
+	b=ha7KSmJPo09ec7e8M9cQYWN4x8LxH/jbrvpPn4Hfw6dVQ6UuUTM8nvsrMRBEXrHENXBOiY
+	TFbCeZlWajXRp8Ja5Wn19pLw5B4P25D9YZptWRyPKuKdcK+0JiRPijSOSteJtiiU3NRwmz
+	UoAY/WksMXfmdmDshGiJr9fLtTzcpyw=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4806cc07ce7so33878245e9.1
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 13:37:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771796220; x=1772401020; darn=kvack.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YYcB3zGjT8GKDiCMJj3SvE8SHtPoZo7cQxEGocwC61o=;
+        b=mhBXakJj3CeKM3ukV+xa+2hIFQOmjoa/71xjh4nAbGgZzGC8eQkBewWOY9RJhaDrkX
+         bcWbSK7qclQuI8jvMon1p6NWtbt5UzAmbB24n5lek1oMMMBYCVlzltcoCaJFdLQa092j
+         SLJ6H6L6bnhBZGyR3PJhJ8nBoxG6eiytf2e6qEowU4jl8Cbl+vAmOPKx9+XTL9gNKIR0
+         7T6Pro3+1OBA6EpYqxHef/GpIQZFepsLLNVjTMJWrB+zK5dk/aTEagPGxiG43Vp45vOO
+         /llRQdXuSSu4W5wSNxnuqGFkwUp8PdvSMsy9uWx2V4lPcmWFyd/5xyvMQf6vKkqVC56p
+         2b6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771796220; x=1772401020;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YYcB3zGjT8GKDiCMJj3SvE8SHtPoZo7cQxEGocwC61o=;
+        b=MXERVbvbwAKuDaXwW8umHGLegqXqNpAv2WS7kkM+cBS+KOaC3tEzfwCuB7X0t0UNNe
+         iO69unHWPJBcwNLOIYIFjscEfC+r6UwRzMICSjNcrD3lZa9N46SkrCVBIk/wB1GyYOTl
+         kcxlr1MFuuy9eJW1Txq4Bd01W1OQLCuj8numd70JKkIYQQNnBwyKT7N7xXBxf+4oqAmn
+         6Xx7IoNkUXvBJBH8hyr1no7mT0OSgOnpFn2+AQKXWMwSI4Lk+4AmrgPbkhKZjum7+kG4
+         QvOKODy7e9VSPe2gfCeaI2zrjKu8WeObE5FmRp4Yu31I1ZeeYLbjaWLRFqPxljM2IMdQ
+         64WQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUg10EZoijq2eeEn8rwcYETv2pnE9BeBkSzwRHTEB9+szSeLYFwsjtg43YScZKz+xmPsHQ1POlV8A==@kvack.org
+X-Gm-Message-State: AOJu0Yxr0CrkDe5VWJRgK64N2mARV266HT+iQbHmrMxZWD7+bbE4cbF9
+	qaxeQ1su/aviM6YOUWSEJ50rQEvb+kMDcJ76tZnCCEn3H5rdumXoLr8R
+X-Gm-Gg: AZuq6aKy448A10o7fviw09MmHjkvZ/2KDobhSyeyv8/vwu1q+KtP85TBRGp3UjmhSeC
+	qkgioI6pfQsfqtpq57pJJLAiLpw2oTEDDaaaVG7MaOT2bFUvR7ZooFys0pGAwJGRp9dXdUVUC8U
+	xZG+81wTpVwjFBNHt7lfq9n/gX7OEJy+DRlGZkjBF7lKhVemkLiCwtRhRV7Zc20VjQlSkR5VCkb
+	N/kXpoWAYoqKfNF/qS29sE1TJc2is8U1wEOXobnWNUIspwx8KXqh8cRG6EdhDSj+ssQGkTd68R6
+	QOerW0Y1wJFn+UXoS5e/boY9Uz+ysFVpmK/cajV3ypvfE27nu998LiOm6Nijk6AJxJZTFKD8WTq
+	FSPsUbWC38HbHgxEWgkS+awdqlebPS563UdlIueUJrhj4POuHkFZ/puoHObqnQ96nvU9qDZNg5t
+	5UPbgFNSee0/rcmQas9pVtfQB2xDokQlYLY+Yr228UUA==
+X-Received: by 2002:a05:600c:4e02:b0:482:ef72:5781 with SMTP id 5b1f17b1804b1-483a95f5843mr112802835e9.25.1771796220150;
+        Sun, 22 Feb 2026 13:37:00 -0800 (PST)
+Received: from debian.local ([90.243.35.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a316eb08sm246605715e9.0.2026.02.22.13.36.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Feb 2026 13:36:59 -0800 (PST)
+Date: Sun, 22 Feb 2026 21:36:58 +0000
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+To: vbabka@suse.cz
+Cc: surenb@google.com, harry.yoo@oracle.com, hao.li@linux.dev,
+	leitao@debian.org, Liam.Howlett@oracle.com, zhao1.liu@intel.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-btrfs@vger.kernel.org, regressions@lists.linux.dev
+Subject: [REGRESSION] kswapd0: page allocation failure (bisected to "slab:
+ add sheaves to most caches")
+Message-ID: <aZt2-oS9lkmwT7Ch@debian.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: 4ixp7ozenhkebgbdbou9bczn1aycx65k
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: gzzzunu1ytioa8trp3dfncdwwcf1mxax
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D99911C0010
-X-HE-Tag: 1771794070-42572
-X-HE-Meta: U2FsdGVkX181BuKdu6R4nl9h6cJzCoAEZMdgocjh5fk4LPFLnrFL7t/LMxBpsKzd3eqL2nH0nUXRBpSGiCwZv1PF0j+Rcm48Q3WB0OgM/Fg4QDD4DHGtE2EC1Ujy4ha/5FoF5tpJu5wc5qeCNQqRB3T2/+83Hrivy0ib1RHJtzzRrwyUjC/qyG9A6BmrESuuYBkIm9DyAFWjO2qV9FEyM7ORyaLI78IEJtnk4LmzEMaT7IFM56qeIxP57ErChmtOWGscKIKiEfDL9GFBwkO0ctndMoha1L5S9qV4w5KbzGW0YdU2jSwdkgGqt5+h4vBhmWiE8Bg/C1URhziX+dQMzmvKGCKup0lTfL7w8HnmpIkGExYRJtNDwjFSTIAlG7yn1z+jH4LFyd5MObXxSbMiz7MoENTecDhu2O3WwyZtuDLIIMUkCf4QOdxAHNJqntRZK2nc+BT8Q1sE7lWaBqrw4jPWWP9heZnucq5YyraArgdNOI6nP+TjCwx1RV30AJDJiANLfTzip/3lDzN2CDgvFHweCnE0T//bClLuzJHhc7jW8Ev74sDaXsmLYKLAxIFB2KY1eigofLF6ZP/Z6kc1XOMEADqDjO45wdTye1APosnWijUdRgvUSCTk2+xP2QbheEAYxMDNGHPNyQwQnyaO9teeIGeh06uZle/tJRHCnW62VkA1fZAs/yrnS0SZlLo9K1g2T8JzEDd4hi+D/2xoEMnbQ3tilSt1E+XXQ/JthkvSa+hzaaBpRkrg8Df/iDkRD6D53La9wnST2UmxAd17T1k/c4xtPVG/8gocoXm79pNZnZtDoBl7YdxwXyp6MoGxHwXLjcOhVh46IKmcZ8faX3S07RYkgl2qajnO4mm5p8RF15wbReEc39hlE/sAyqPN+yUUN7wvjLNATTCuk2n3SNfC0DgWVjmhLYU0g/lb3vMCFwoID1EllW7ElzOH5VuJ71GOQpBp3ciGiX8pbN0
- kcPFzzOD
- NE8E+X4dMuOPZorTGmcTNexjpcAgdS1TXTtF8Ptl3U1fQ1zTcgCwwpy2C4Qok19+px/JBWNv52usE+lgsZlMKSTuB7iJBloMuvCR8HKWpxivw21cExpFruiuowsjfPRsSZZ1qJi8517p4JDrgd/7TPKcttcjMLwUNIl6KCytSkioJlY+pXv7tXAHGCJM5RY9j/2CtcmFZjekZjsQ07J1pZhZ2UgdfQpelqSsjmRdsjTgz8UZZY9zZLztjmYNLvk+7OcoN7SMrYN4Rxd2mTtdKtj5mbxfHNbAKVEaEBlV5J+RNtUAI8/kRzLqpts/JQgFcOfER5afMoQgEyfvCjXZpD7jppmFWOfTKsOAxOp00/VyNb7yZBak/UDyGT0SLKyPYsBr0xTdGOrlkBTR8OMj7MRNoGkXIibWzWKpiQWWx6zylOFtJaw180gIwWbJM55lZJcw8Idvlh5a3Eh8MaieTF1YBuptLY6ujANx0tL/1OdUul2Fam9WCV8zIAKTliO9/o6JCtGvWkOObkyCcRLscIwa2HXbG+tHCyG7NNlr/NCt8FdbKJ53EYiZCWjCIz7rEhgcRDTjV/f2xj8iteXyDwCD74DVK4/ZsWutZyahLjRLPnN5NQzXBdPv0wBU7g2piHwgUTNFcuDE/W/Y9vuB1LC9tLLQMzK9Rv8AcmBwOmS1T+vFj3fG1ykdxOSCpLkVQdWoBd0ea1ZpV/l+6rg3CyH5gCb7Q+ZIDl73AcWkUU1mYU1Lx1xSLTGoLUObijN14+Vf29PJrXyKknsLQzSHT0UGhCnSvakQAad0ejBwd1O4BN62TrG0ZkRLY28wiGb1RMmQ78JioXnD97KXrc5k50GcDQXFw0Z78XfzVkEWa7Q9FI6ojPcwStFmD+1ivGk1vJXq0HifHs7f6gfPOvqL6sUd8CRfhxFjkppoA7IauosXBKk+W7Np2alBs1P/XNDQQ1HiETiXF54rYRJLEU0fKNUnAfVkJ
- 2zjMkgHe
- 8MHZf8CWhv59ovYYGjw3n1SFDDgDizxQ17fYT6MD5SWuRqixj82HgSIDgliGWVqP4scKz9KgHgbFjwooqsOimh7bkHHsEuWOgjAq5WymfcOa3+REoXNTCUYwGJ2TOV2OwPxU+3sL/vdNKGigQ6NxVgt2K1z9VB0hwWntwu1pflh7DaFSHgHgFDi/m1e2gU8s1W2TfRIB17IpQ0llJSCVkBOE5VkKb5NGk5WmBfGHMCan5ubWKfd76T9Uh9+BSzIB7/hVrIUqx7UH98hzbXLZPWu2gWsbEam/nrLAceD1pBJ4aOqwCO/RWE3+Us7kiOyJkvRkqfSbS0jfcAOmHhphoZxZoLSjDtP7HHPVvSicXvkXjFTOBkzv4Fc8xyEA8XnW/OoWIPgaDyMldJsxPZqzzp/1pYMLBJ/L2v+kZqQbb/apUB6QDk85WtzYoPZOs9sZjpo32vOz1W/hELBhq2YaeWDZfBrtkz9M
+X-Rspamd-Queue-Id: 05731A000A
+X-HE-Tag: 1771796221-26354
+X-HE-Meta: U2FsdGVkX1+6Pw/3ZIIirtpmbdBW/WXZQnTmxGhH3Y9/gKry3ujVPeltq88/3nJOujP8F/JzqFs6L3zGapzH/jQ4oYhL69yyoeenYjFcpKZNwPkF7HuRraP2bsd0T+qrArFMMLc21mXLCVco2dfjZicyrUsMaGGCpfNxRDVmKnyf4dC43jN6/BELvNLA4pH5dLTJLH6liTtXdvzEXh2HZynfzXrTMgoRlRiqN2tu1IHwc4GT2c20+z8a0p0x9AWiDZEH9C81nd3EW/M1YCFcFgEezoXuo0SIqCxppsgZVT1uO+3eox0YxygCKpSx14NKOWM653ZtMZde0dLkhukrsFWfUZogrxJWvNuiBpI4uQ0GetfBkM5qgW436adnSSZU61JaP+bx8hw1tuuQxto5YiLB8iPizCocJuvxEwz7+aXyvwqDCkntZ9EjA5p1p1g09Yv96IRnz/BdBe4bJGYTnVP0SKqSur51AqPx46haF5+UtfeX7XoJGKJjKz92lS/XQaE9oxOI2ZMRHNH7TTjLeU32+djSzjxMaf0PZEELfAWbwIuCkhdmfxxx0X4GdO6L1U2kjtXZ/NfFD+35nLcsEPdJW6mvex3Me6walNF7Brqxkv7bj2+N0aWciuO4KKbEPONft9QPHnboSCKJDvDyDaJrU8ocnZf6ZSPVq/AIOVgGft1rO2bc66ZwjSFypfuZTPp2TB0aK5FISs2xI6hKyYyNmB0n9x4sPy3fj17dcS5xffCrOby0XXiTVB8QXat5lTma16BUK9guZSfMyDvqqygvg7k1VnVMaLQG3biF+JVxoJlpraTJNNXJL4ln9LsZqG/jsCTcYA/pTEVJD+vECVeCEH8w+kY2q95bhLMfYbfpmMXz1sFCPFdc0/DRBeZq2CcOJtkmwQJgO9gx2evzOd08YTD0EuPgTSINlH0Vt7iMvFLW/KgMgs7E+U0RgBPq0Yijsz3bMtD6iSZU2JF
+ Vjy3g4Qx
+ 2y+mwYqn2VLg+9OTcjPVyd59HlIzg0P63wiWneS57SvfJ2Pl2+s9AuIC0rjJiQ4ibyN2N6A4P/u/jVzu07W4f6Y8PGCyekxKIYq71hhHJGwcMOr8yHfF7KzSxeUW/inIsjKDTTrVnGUCxjENBsjCZQkW0nudN/bFrB7Gux5h2HvSri6kjxvwb3dHTo6s6FI8r3pYMzZFOAgMZlgJ8KPSgR1gl7VaRKj3fhvxuKMWJM8rUpI0flPAXTuwFpkIEu90y/P/7J/VScEzysYYDmJl7nHGO/OdbRRGQSfuEgJVDQbUkkPYaXje7Zabr0KszEpC6zYyvnpfw2JqqDU3h5vP4/I+IJrL+zcNHcvCdFd36IJiUn+mjLjg8mo9Uv7jv1BsSce2NInr40RDlLTQfdRtGV+D2QsZ1k0o1JDowWVr6slsb+xk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,269 +117,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi,
+
+The latest mainline kernel (v6.19-11831-ga95f71ad3e2e) has page
+allocation failures when doing things like compiling a kernel. I can
+also reproduce this with a stress test like
+`stress-ng --vm 2 --vm-bytes 110% --verify -v`
 
 
-It is a bit late, but let me share my retrospect of DAMON development for 2025,
-before my memory goes away.  The yearly retrospects for 2022 [1], 2023 [2] and
-2024 [3] are also available.
-
-Summary
-=======
-
-2025 was the busiest year for DAMON development of its history.  33 people made
-390 commits for DAMON in 2025.  Those numbers are 65 % and 157 % increase from
-those of 2024.  Before 2025, 2022 was the busiest year that 32 people made 210
-commits for DAMON.
-
-Contributions from Meta except myself (observabilities for hugepages and LRU),
-Micron (access-aware runtime memory interleaving for CXL memory), Huawei (arm32
-LPAE support), SK hynix (memory tiering related fixes) and individuals
-(important fixes and refactoring) were impressive and notable.
-
-Major motivations that led DAMON development in 2025 were self-tuning,
-system/fleet observability and memory tiering.
-
-Events
-======
-
-There were many events in 2025.  Introducing only a few notable ones.  A more
-exhaustive list of events is also available at DAMON project site [4].
-
-Adoptions
----------
-
-In April, OpenSuse kernels build-enabled [5] DAMON.
-
-In June, DAMON was build-enabled on mainline by default [6], and reverted [7]
-by Linus Torvalds.
-
-In October, DAMON module for system/fleet-wide access monitoring (DAMON_STAT)
-has build-enabled [8] on Debian kernels.
-
-DAMON Feature Releases
-----------------------
-
-Many DAMON features have developed and landed on the mainline in 2025.  Listing
-only a few of those that stands out to me.  A more exhaustive list of features is
-available on DAMON user-space tool's DAMON features list [9].
-
-In February, Linux 6.14-rc1 was released, with page level monitoring [10]
-feature.
-
-In April, Linux 6.15-rc1 was released.  Usama and Naht from Meta contributed
-huge pages [11] and LRU pages [12] monitoring/operation extensions.  The
-release also introduced the monitoring intervals goal auto-tuning [13], which
-made DAMON just work.
-
-In June, Linux 6.16-rc1 was released, with DAMON's memory tiering automation
-support [14].  The feature is not only for memory tiering but general per-NUMA
-utilization based access-aware system operations automation, though.
-
-In August, Linux 6.17-rc1 was released.  In this release, Bijan and Ravi from
-Micron contributed access-aware runtime memory interleaving features [15] for
-their CXL memory tiering solution.  A module for fleet-wide access monitoring
-(DAMON_STAT) [16] is also introduced.
-
-In October, Linux 6.18-rc1 was released.  In this release, Quanmin from Huawei
-contributed [17] arm32 Large Physical Address Extension support.  Yueyang Pan
-from Meta contributed [18] huge pages observability on virtual address space.
-
-In December, Linux 6.19-rc1 was released.  In this release, per-node per-memcg
-memory utilization based DAMOS automation [19] is introduced.  Motivation of
-the feature was per-cgroup memory tiering.
-
-Presentations
--------------
-
-2025 was an interesting year in terms of presentation, since I found two
-presentations from someone other than myself that introduced DAMON use cases.
-
-In October, Asier from Huawei presented a DAMON use case for THP [20] at
-OSSummit EU in August.
-
-In November, Ravi from Micron presented a DAMON use case for CXL memory tiering
-aiming both latency and bandwidth improvements [21] at Linux Memory Hotness and
-Promotion meeting.
-
-I also led some sessions at conferences in 2025.
-
-In February, I presented DAMON in whole, at FOSDEM [22].
-
-In March, I led two sessions discussing DAMON development status and future
-at LSF/MM/BPF [23].
-
-In June, I introduced DAMON's new intervals autotuning feature [24] at
-OSSummit NA.
-
-In September, I introduced DAMON's monitoring mechanism and usage [25] at Kernel
-Recipes.
-
-In December, I led two DAMON discussion sessions [26,27] and one presentation
-[28] at LPC special-purpose memory micro-conference, system monitoring
-micro-conference, and refereed track, respectively.
-
-Statistics
-==========
-
-Like previous yearly retrospects, I ran my script [29] to see DAMON development
-statistics as below.  In 2025, 33 people made 390 commits for DAMON.  Huge
-appreciation to all grateful contributors.
-
-    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
-            --linux_subsystems DAMON --year 2025
-    1. SeongJae Park <sj@kernel.org>: 310 commits
-    2. Quanmin Yan <yanquanmin1@huawei.com>: 10 commits
-    3. Bijan Tabatabai <bijantabatab@micron.com>: 10 commits
-    4. Enze Li <lienze@kylinos.cn>: 8 commits
-    5. Sang-Heon Jeon <ekffu200098@gmail.com>: 8 commits
-    6. Honggyu Kim <honggyu.kim@sk.com>: 6 commits
-    7. Usama Arif <usamaarif642@gmail.com>: 6 commits
-    8. Akinobu Mita <akinobu.mita@gmail.com>: 3 commits
-    9. Yueyang Pan <pyyjason@gmail.com>: 2 commits
-    10. Yunjeong Mun <yunjeong.mun@sk.com>: 2 commits
-    11. Nhat Pham <nphamcs@gmail.com>: 2 commits
-    12. David Hildenbrand <david@redhat.com>: 2 commits
-    13. Arnd Bergmann <arnd@arndb.de>: 1 commits
-    14. Dan Carpenter <dan.carpenter@linaro.org>: 1 commits
-    15. Lorenzo Stoakes <lorenzo.stoakes@oracle.com>: 1 commits
-    16. Balbir Singh <balbirs@nvidia.com>: 1 commits
-    17. Swaraj Gaikwad <swarajgaikwad1925@gmail.com>: 1 commits
-    18. Lokesh Gidra <lokeshgidra@google.com>: 1 commits
-    19. jianyun.gao <jianyungao89@gmail.com>: 1 commits
-    20. Alexandre Ghiti <alexghiti@rivosinc.com>: 1 commits
-    21. Qianfeng Rong <rongqianfeng@vivo.com>: 1 commits
-    22. Stanislav Fort <stanislav.fort@aisle.com>: 1 commits
-    23. Bjorn Helgaas <bhelgaas@google.com>: 1 commits
-    24. Nathan Gao <zcgao@amazon.com>: 1 commits
-    25. Linus Torvalds <torvalds@linux-foundation.org>: 1 commits
-    26. Thushara.M.S <thusharms@gmail.com>: 1 commits
-    27. Su Hui <suhui@nfschina.com>: 1 commits
-    28. Taotao Chen <chentaotao@didiglobal.com>: 1 commits
-    29. Seongjun Kim <bus710@gmail.com>: 1 commits
-    30. Marcelo Moreira <marcelomoreira1905@gmail.com>: 1 commits
-    # 33 authors, 390 commits in total
-
-It is a dramatic increase of the amount from that of 2024.  In 2024, 20 people
-made 157 commits.  So 65 % increase of developers, and 148 % increase of
-commits.
-
-2025 was not just busier than 2024.  It was the busiest year in DAMON's
-history.  The stats for the whole history of DAMON are as below.
-
-    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
-            --linux_subsystems DAMON --year 2024
-    [...]
-    # 20 authors, 157 commits in total
-
-    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
-            --linux_subsystems DAMON --year 2023
-    [...]
-    # 25 authors, 180 commits in total
-
-    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
-            --linux_subsystems DAMON --year 2022
-    [...]
-    # 32 authors, 210 commits in total
-
-    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
-            --linux_subsystems DAMON --year 2021
-    [...]
-    # 11 authors, 75 commits in total
-
-2022 was the busiest year where 32 developers made 210 commits.  Compared to
-the year, the increase of the number of developers (3.12 %) is trivial.  But the
-increase of the number of commits (85.71 %) is still impressive.
-
-Again, huge appreciation to all grateful developers!
-
-DAMON User-space Tool
----------------------
-
-Development of the DAMON user-space tool was also busier than 2024.  12 people
-made 1,309 commits in 2025.  In 2024, 8 people made 1,031 commits.  Note that
-the 2024 statistic counts me twice.  Again, huge appreciation to all
-grateful developers!
-
-    $ ./lazybox/version_control/authors.py ./damo --year 2025
-    1. SeongJae Park <sj@kernel.org>: 1291 commits
-    2. Bijan Tabatabai <bijantabatab@micron.com>: 3 commits
-    3. Usama Arif <usamaarif642@gmail.com>: 3 commits
-    4. Andrew Paniakin <apanyaki@amazon.com>: 2 commits
-    5. Bijan Tabatabai <btabatabai@wisc.edu>: 2 commits
-    6. Wu Cheng Han <hank20010209@gmail.com>: 2 commits
-    7. Michel Lind <salimma@fedoraproject.org>: 1 commits
-    8. SeungSu Baek <ssbaek@korea.ac.kr>: 1 commits
-    9. Bijan Tabatabai <bijan311@gmail.com>: 1 commits
-    10. Nhat Pham <nphamcs@gmail.com>: 1 commits
-    11. wangchuanguo <wangchuanguo@inspur.com>: 1 commits
-    12. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
-    # 12 authors, 1309 commits in total
-
-    $ ./lazybox/version_control/authors.py ./damo --year 2024
-    1. SeongJae Park <sj@kernel.org>: 753 commits
-    2. SeongJae Park <sj38.park@gmail.com>: 264 commits
-    3. Mithun Veluri <velurimithun38@gmail.com>: 4 commits
-    4. Honggyu Kim <honggyu.kim@sk.com>: 3 commits
-    5. m8 <umusasadik@gmail.com>: 2 commits
-    6. Yunjeong Mun <yunjeong.mun@sk.com>: 2 commits
-    7. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
-    8. Alex Rusuf <yorha.op@gmail.com>: 1 commits
-    9. Piyush Thange <pthange19@gmail.com>: 1 commits
-    # 9 authors, 1031 commits in total
-
-Paper Citations
----------------
-
-I published two academic papers introducing DAMON in 2019 [14] and 2022 [15].
-The number of citations for the two papers continued its exponential increase,
-as below.
-
-    2019-published paper: 10 (2024) -> 18 (2025)
-    2022-published paper: 7  (2024) -> 14 (2025)
-
-Conclusion
-==========
-
-So, 2025 was the busiest year of DAMON development in its history.  That was
-motivated by automation, observability, and memory tiering needs.  Meta,
-Micron, Huawei, SK hynix and individuals made the major selfish ;) and grateful
-contributions.
-
-References
-==========
-
-[1] 2022 retro: https://lore.kernel.org/20221229171209.162356-1-sj@kernel.org/
-[2] 2023 retro: https://lore.kernel.org/20231231222250.140364-1-sj@kernel.org/
-[3] 2024 retro: https://lore.kernel.org/20260216210625.68098-1-sj@kernel.org/
-[4] 2025 DAMON news: https://damonitor.github.io/posts/damon_news/#2025
-[5] OpenSUSE DAMON enable news: https://social.kernel.org/notice/AtQ94OoroZhOGuGuAq
-[6] DAMON enablement: https://lore.kernel.org/all/20250610173228.49109-1-sj@kernel.org/
-[7] DAMON enablement revert: https://git.kernel.org/torvalds/c/aef17cb3d3c438540
-[8] DAMON_STAT enablement on Debian: https://salsa.debian.org/kernel-team/linux/-/merge_requests/1616
-[9] 2025 DAMON features list: https://github.com/damonitor/damo/blob/next/src/_damon_features.py#L235
-[10] page-level monitoring: https://git.kernel.org/torvalds/c/626ffabe67c2359f3
-[11] hugepage monitoring: https://git.kernel.org/torvalds/c/0431c42622612a96cce
-[12] LRU-active monitoring: https://git.kernel.org/torvalds/c/3b23a44f1f1967415
-[13] intervals autotune: https://git.kernel.org/torvalds/c/1eb3471bf5749ff3769e
-[14] memory tiering automation: https://git.kernel.org/torvalds/c/0e1c773b501f3
-[15] memory interleaving: https://git.kernel.org/torvalds/c/a2c24eae5a15f79673e
-[16] damon_stat: https://git.kernel.org/torvalds/c/369c415e60732b7c8ed333688915
-[17] arm32 lpae: https://git.kernel.org/torvalds/c/09a616cbb371e6b843e536f00e38
-[18] hugepage on vaddr: https://git.kernel.org/torvalds/c/408b299a62ec207fa5f21
-[19] memcg tiering: https://git.kernel.org/torvalds/c/d3946c5f4c1c5db63532eb433
-[20] THP use case at OSSummit EU: https://sched.co/25Vrh
-[21] Ravi at hotness meeting: https://lore.kernel.org/all/d952a84f-332e-8f7a-4816-2c1cbd8f5b00@google.com/
-[22] Talk at FOSDEM: https://archive.fosdem.org/2025/schedule/event/fosdem-2025-4396-damon-kernel-subsystem-for-data-access-monitoring-and-access-aware-system-operations/
-[23] Sessions at LSF/MM/BPF: https://lwn.net/Articles/1016525/
-[24] Talk at OSSummit NA: https://ossna2024.sched.com/event/1aBOg
-[25] Talk at Kernel Recipes: https://kernel-recipes.org/en/2025/schedule/overcoming-observer-effects-in-memory-management-with-damon/
-[26] Session1 at LPC: https://lpc.events/event/19/contributions/2066/
-[27] Session2 at LPC: https://lpc.events/event/19/contributions/2059/
-[28] Talk at LPC: https://lpc.events/event/19/contributions/2075/
-[29] authors.py: https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
+[  104.032925] kswapd0: page allocation failure: order:0, mode:0xc0c40(GFP_NOFS|__GFP_COMP|__GFP_NOMEMALLOC), nodemask=(null),cpuset=/,mems_allowed=0
+[  104.033307] CPU: 4 UID: 0 PID: 156 Comm: kswapd0 Not tainted 6.19.0-rc5-00027-g40fd0acc45d0 #435 PREEMPT(voluntary) 
+[  104.033312] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
+[  104.033314] Call Trace:
+[  104.033316]  <TASK>
+[  104.033319]  dump_stack_lvl+0x6a/0x90
+[  104.033328]  warn_alloc.cold+0x95/0x1af
+[  104.033334]  ? zone_watermark_ok+0x80/0x80
+[  104.033350]  __alloc_frozen_pages_noprof+0xec3/0x2470
+[  104.033353]  ? __lock_acquire+0x489/0x2600
+[  104.033359]  ? stack_access_ok+0x1c0/0x1c0
+[  104.033367]  ? warn_alloc+0x1d0/0x1d0
+[  104.033371]  ? __lock_acquire+0x489/0x2600
+[  104.033375]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+[  104.033379]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+[  104.033382]  ? lockdep_hardirqs_on+0x78/0x100
+[  104.033394]  allocate_slab+0x2b7/0x510
+[  104.033399]  refill_objects+0x25d/0x380
+[  104.033407]  __pcs_replace_empty_main+0x193/0x5f0
+[  104.033412]  kmem_cache_alloc_noprof+0x5b6/0x6f0
+[  104.033415]  ? alloc_extent_state+0x1b/0x210 [btrfs]
+[  104.033479]  alloc_extent_state+0x1b/0x210 [btrfs]
+[  104.033527]  btrfs_clear_extent_bit_changeset+0x2be/0x9c0 [btrfs]
+[  104.033575]  btrfs_clear_record_extent_bits+0x10/0x20 [btrfs]
+[  104.033615]  btrfs_qgroup_check_reserved_leak+0xbd/0x2b0 [btrfs]
+[  104.033659]  ? lock_release+0x17b/0x2a0
+[  104.033663]  ? btrfs_qgroup_convert_reserved_meta+0xe90/0xe90 [btrfs]
+[  104.033703]  ? do_raw_spin_unlock+0x54/0x1e0
+[  104.033707]  ? _raw_spin_unlock+0x29/0x40
+[  104.033710]  ? btrfs_lookup_first_ordered_extent+0x1d4/0x370 [btrfs]
+[  104.033762]  ? preempt_count_add+0x73/0x140
+[  104.033768]  btrfs_destroy_inode+0x301/0x6a0 [btrfs]
+[  104.033820]  ? __destroy_inode+0x194/0x570
+[  104.033826]  destroy_inode+0xb9/0x190
+[  104.033830]  evict+0x4d8/0x900
+[  104.033832]  ? lock_release+0x17b/0x2a0
+[  104.033835]  ? find_held_lock+0x2b/0x80
+[  104.033839]  ? destroy_inode+0x190/0x190
+[  104.033842]  ? __list_lru_walk_one+0x30d/0x440
+[  104.033849]  ? _raw_spin_unlock+0x29/0x40
+[  104.033851]  ? __list_lru_walk_one+0x30d/0x440
+[  104.033854]  ? __wait_on_freeing_inode+0x2a0/0x2a0
+[  104.033860]  dispose_list+0xf0/0x1b0
+[  104.033866]  prune_icache_sb+0xde/0x150
+[  104.033869]  ? list_lru_count_one+0x13f/0x270
+[  104.033873]  ? dump_mapping+0x250/0x250
+[  104.033875]  ? lock_release+0x17b/0x2a0
+[  104.033882]  super_cache_scan+0x302/0x4d0
+[  104.033889]  do_shrink_slab+0x32e/0xd30
+[  104.033898]  shrink_slab+0x7b6/0xda0
+[  104.033902]  ? shrink_slab+0x4b1/0xda0
+[  104.033908]  ? reparent_shrinker_deferred+0x330/0x330
+[  104.033914]  ? trace_event_raw_event_sched_switch+0x410/0x410
+[  104.033921]  shrink_node+0xac4/0x36e0
+[  104.033933]  ? lru_gen_release_memcg+0x3c0/0x3c0
+[  104.033940]  ? pgdat_balanced+0x15f/0x4b0
+[  104.033943]  ? __cond_resched+0x23/0x30
+[  104.033950]  ? balance_pgdat+0x739/0x1530
+[  104.033952]  balance_pgdat+0x739/0x1530
+[  104.033960]  ? shrink_node+0x36e0/0x36e0
+[  104.033962]  ? __timer_delete_sync+0x177/0x240
+[  104.033966]  ? __timer_delete_sync+0x177/0x240
+[  104.033970]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+[  104.033975]  ? __lock_acquire+0x489/0x2600
+[  104.033979]  ? call_timer_fn+0x3b0/0x3b0
+[  104.033981]  ? schedule+0x2ba/0x390
+[  104.033990]  ? lock_is_held_type+0xd5/0x130
+[  104.033997]  ? kswapd+0x364/0x7f0
+[  104.034004]  kswapd+0x445/0x7f0
+[  104.034010]  ? balance_pgdat+0x1530/0x1530
+[  104.034013]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+[  104.034016]  ? finish_wait+0x280/0x280
+[  104.034022]  ? __kthread_parkme+0xb4/0x200
+[  104.034027]  ? balance_pgdat+0x1530/0x1530
+[  104.034029]  kthread+0x3ad/0x760
+[  104.034033]  ? kthread_is_per_cpu+0xb0/0xb0
+[  104.034035]  ? ret_from_fork+0x70/0x850
+[  104.034039]  ? ret_from_fork+0x70/0x850
+[  104.034042]  ? _raw_spin_unlock_irq+0x24/0x50
+[  104.034045]  ? kthread_is_per_cpu+0xb0/0xb0
+[  104.034049]  ret_from_fork+0x6dc/0x850
+[  104.034053]  ? exit_thread+0x70/0x70
+[  104.034057]  ? __switch_to+0x36f/0xd80
+[  104.034061]  ? kthread_is_per_cpu+0xb0/0xb0
+[  104.034065]  ret_from_fork_asm+0x11/0x20
+[  104.034077]  </TASK>
+[  104.034078] Mem-Info:
+[  104.034111] active_anon:511 inactive_anon:2355672 isolated_anon:0
+                active_file:77595 inactive_file:204731 isolated_file:0
+                unevictable:7150 dirty:925 writeback:57
+                slab_reclaimable:20227 slab_unreclaimable:201840
+                mapped:121227 shmem:10197 pagetables:9634
+                sec_pagetables:733 bounce:0
+                kernel_misc_reclaimable:0
+                free:36223 free_pcp:529 free_cma:0
+[  104.034119] Node 0 active_anon:2044kB inactive_anon:9422688kB active_file:310380kB inactive_file:818924kB unevictable:28600kB isolated(anon):0kB isolated(file):0kB mapped:484908kB dirty:3700kB writeback:228kB shmem:40788kB shmem_thp:0kB shmem_pmdmapped:0kB anon_thp:8534016kB kernel_stack:31616kB pagetables:38536kB sec_pagetables:2932kB all_unreclaimable? no Balloon:0kB
+[  104.034126] Node 0 DMA free:13316kB boost:0kB min:84kB low:104kB high:124kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:0kB present:15996kB managed:15364kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
+[  104.034135] lowmem_reserve[]: 0 2862 11990 11990 11990
+[  104.034147] Node 0 DMA32 free:52184kB boost:0kB min:15860kB low:19824kB high:23788kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:2871780kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:0kB present:2997084kB managed:2931416kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
+[  104.034155] lowmem_reserve[]: 0 0 9127 9127 9127
+[  104.034166] Node 0 Normal free:79392kB boost:28672kB min:80308kB low:93216kB high:106124kB reserved_highatomic:2048KB free_highatomic:32KB active_anon:2044kB inactive_anon:6550896kB active_file:310380kB inactive_file:818924kB unevictable:28600kB writepending:4252kB zspages:0kB present:13077504kB managed:9346788kB mlocked:28600kB bounce:0kB free_pcp:2116kB local_pcp:0kB free_cma:0kB
+[  104.034174] lowmem_reserve[]: 0 0 0 0 0
+[  104.034185] Node 0 DMA: 1*4kB (U) 0*8kB 0*16kB 0*32kB 0*64kB 0*128kB 0*256kB 0*512kB 1*1024kB (U) 2*2048kB (UM) 2*4096kB (M) = 13316kB
+[  104.034308] Node 0 DMA32: 3*4kB (U) 5*8kB (UM) 5*16kB (UM) 8*32kB (UM) 11*64kB (UM) 15*128kB (UM) 11*256kB (UM) 9*512kB (UM) 9*1024kB (UM) 0*2048kB 8*4096kB (UM) = 52420kB
+[  104.034348] Node 0 Normal: 1024*4kB (UMEH) 534*8kB (UEH) 409*16kB (UME) 1301*32kB (UME) 154*64kB (UME) 39*128kB (UME) 14*256kB (UM) 1*512kB (U) 2*1024kB (UM) 1*2048kB (U) 0*4096kB = 79584kB
+[  104.034390] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=1048576kB
+[  104.034393] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=2048kB
+[  104.034396] 299766 total pagecache pages
+[  104.034398] 0 pages in swap cache
+[  104.034401] Free swap  = 8387580kB
+[  104.034403] Total swap = 8387580kB
+[  104.034405] 4022646 pages RAM
+[  104.034407] 0 pages HighMem/MovableOnly
+[  104.034410] 949254 pages reserved
+[  104.034412] 0 pages hwpoisoned
 
 
-Thanks,
-SJ
+The page allocation failures bisect to:
+
+e47c897a29491ade20b27612fdd3107c39a07357 slab: add sheaves to most caches
+
+#regzbot introduced: e47c897a29491ade20b27612fdd3107c39a07357
+#regzbot title: kswapd0: page allocation failure
 
