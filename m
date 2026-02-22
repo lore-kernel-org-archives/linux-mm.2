@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20C38C624A6
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:49:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E53EC624A6
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E57D6B008C; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
+	id E06466B0092; Sun, 22 Feb 2026 03:49:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B9F66B0092; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
+	id DDADC6B0093; Sun, 22 Feb 2026 03:49:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664176B0093; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
+	id CD9EF6B0095; Sun, 22 Feb 2026 03:49:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 549996B008C
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:49:08 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCF7859807
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:07 +0000 (UTC)
-X-FDA: 84471467934.24.6812BE6
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 091F11C000B
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="hPw7x/ul";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B97FD6B0092
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:49:11 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80BC014062B
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:11 +0000 (UTC)
+X-FDA: 84471468102.05.7E4E678
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BD9E4160005
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Q6ACNd4k;
 	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750146; a=rsa-sha256;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750149; a=rsa-sha256;
 	cv=none;
-	b=5PwiGa0Ci0Pjpwd0gOb617gpxg4V11l/JCz11ZXzgL15+ybdIfIWoQzFAA4oZ72iOa25LF
-	aCAd++Q4qDasrIbt2MmPDoRVa8LWKuzNn+aVaRAWtmUEPh8HmiKKwRObzZQ61OAnU5oHna
-	7tIcNi8xK0A6Mdb4e77aFDh2s/ljfN0=
+	b=nT+hRexv2HCJyUUYPByS4kzKWTxsPpwmTpQImqBRs05yBXJ8Y7JKU9+zm+NtvakZNIu5Dx
+	WH3WWfSmRUQyGzWG0THBlFPfBRTCj5Pu9rsJUo8yrmGUOo1EUn/AcS7MmAWDK8sCS3HtZD
+	sg7K6SXHbV0TGDrB1KYJb7H+Rz3HfUU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="hPw7x/ul";
+	imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Q6ACNd4k;
 	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771750146;
+	s=arc-20220608; t=1771750149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=84BLe7DIZgrLHIYUbF37QCRxTh9GXhBrS3ZeLS92Kiw=;
-	b=7xFNiqU2QDHDi9YVq0aIxwBxOn0rLYy5sCU7ubiebnOrN2/SRCqtSTPza6nfdDIsQSox/F
-	r8aQyqKBaMDEnV2p9ZRSAaUvmh7N3L5srHmN89+tf6KbFXK8YHM4iHFW/kCvPI2LmF/4Hy
-	tAlQe8fhnOFUHKQHH3MT+6rcmO2KuDA=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-506a747448dso28328521cf.0
-        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:49:05 -0800 (PST)
+	bh=xGcIZ9Wm+WSSeosg9CDJTkTmHYD7k8AbIJs84ojn3vM=;
+	b=XfnxDfB2AxaREmNDrhW15//SBk02k4rdzbPTYYM2LizWodU/zlCV0j01pgvXOx5H+dQw14
+	i7CkZhrMmhRMUyrwcpQkCsNFDGxmjBPRk0yFxXAZGSBC3VaypGYQEFhoTkDgwj9RNtmwe2
+	7FxywUC3FdivmLUUAhJSNgrBwBN/Ojs=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-506a747448dso28328811cf.0
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:49:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771750145; x=1772354945; darn=kvack.org;
+        d=gourry.net; s=google; t=1771750149; x=1772354949; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=84BLe7DIZgrLHIYUbF37QCRxTh9GXhBrS3ZeLS92Kiw=;
-        b=hPw7x/ulj0W5pVI6wBBZU1nlvxI1CSpk1m05vQdjgzIcOIfa4k56eqKjJkPMhNjOxu
-         HMStU45jy2Xv49fQBwi8vGVRq02ZTs3wE6VEFhYMl13Oh4WkfMnZcfoxstUSaU7HSjYf
-         9mysVWYuRGGVUmuq/KMO9PgJMVT4kpnqUSd2OLJFsvaQC6KKxMi+/qRFRD9KaPD3/1RZ
-         zxrN+mFCiVhYIyHNCvhv3OOe/6iWB5Rli+VpDNdHLixIKp1Xf7K6JyrzJuSzsAhr9ZCv
-         0rktm+xSPZ7AcNyV8Rn8+i3u0yemNQ0Mw8TbUUaT4JgKVjxuIFmcvtbxUpQ2InXh0DLc
-         odew==
+        bh=xGcIZ9Wm+WSSeosg9CDJTkTmHYD7k8AbIJs84ojn3vM=;
+        b=Q6ACNd4k4TH3EPh5W47FxxukGhwP0lkfYVPdW4ejUm/C9x9sgmPMJTF9cv1FKAcBJS
+         SDpeqxBhIrxa6C3yFigaBPTULq+tMjPS5yi6cG4+cuEngB/aay4EY8WkqX3vzDX+Vnrw
+         TTCxr1E/bB+zyFl/yBsilDzmkcxIqSr5vik1jkyH/VpepSMbH8T3wjkVOsa0h6scLkfq
+         TEqkkfH4fjanmn0PHvyOXd1wjc2gvRdrWK492yT4PXajBZpzMC2O6mHw8J2MZXJM1bKb
+         RKbIF9vmIcZcrBBWMrqHt+7sUPNtrTN7C3NmIMPcTT7SabBJ2zIAS9SZyPRro4bYvgzA
+         I9Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771750145; x=1772354945;
+        d=1e100.net; s=20230601; t=1771750149; x=1772354949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=84BLe7DIZgrLHIYUbF37QCRxTh9GXhBrS3ZeLS92Kiw=;
-        b=EPwqJ1wmephhWg9KP6BnVzPdF50hfCKCA1lrkKrzcxaKQBwt2r3Zow5UuHXJcunefw
-         MFEC8HDARpC7hsZfwSmRtKkjPbZRNuJBQc34Iwp3Yc0bBw1kRr2VEjYCoiPMDDDh1qB5
-         vmNtrhzDYq8O2oyICxRadcZtKllqzRMY4DqesVlY2vWt7WHpRM8pH+QJn/epP0ZvBKXL
-         qz7934IUWfC92MK+JKjfE4I99m8cQwkOmpCcaw2WxYA8B3kpf+zcWXBe5gcS/oyjiaG1
-         uOhBDJjEBm/3V/PHqoh+4u1iZ4N3zQ/ygFktBVh8q8be4Dp9uPSPrjEX73honPKkoQDO
-         CGbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXOYqykeK7BAc3ts5G0HIZU/1HcZmD92qYf2wdnMJhcbehV5jsnYNzOPczJs7x4TD/H+Xf0Duthwg==@kvack.org
-X-Gm-Message-State: AOJu0YyPaUjIrvIGidrgbGEFA8ZzZkmrKF4d2X/xtMCq852gtN6fDw9s
-	rmBTrTxVxKT8WnzQ2hIIXY2MzmiMErB3hJiS7V0ExseZXaXnv+z052lYNFsEGAlxOck=
-X-Gm-Gg: AZuq6aKE1ypHEoGmZcg3qe1oRba0nyD4S3glWmL/X0p3c0jBxW4//SuUHG/7nWPR6M5
-	ki49ntll0/V+DEqvnSQFm47uMAdFR05340yOFn5wSvFI42fZdmOr9sSFYoxhDkhc5n66f6D7oVV
-	2GG56IEJMzEWqOMGR7ttvER0s2g0YH49rWrh03hu0t5zJwtYw8AFIWaR3lPqqAvNyBb5U9VSmp5
-	jtPe9zE0YgldN/xOfaaUAGPDVWjYVZrJydr009gmfGJc0haeCpKva4Z8pUvQ5R+f3qYGzi2psi4
-	yUc6sKMniLmbPSB9N05pQdv5giwVcX1Sw5+OozvZrg4crBKJLMmQZeurbvlLpmKUU26Aw1ABzi3
-	dhZEwVM0xLsHdkiP5hW2sS9iJJ8WcCaUYa5x0TrZ1X7kB/Lj+UZWywYyocXGVnhBqPBpf7DTMbY
-	5kVPD9fVVI5o5LVHgJrvcSHA9TXcTEygAWpukeksthMZOkN49oe0F5cIjxAYIRQ5V6VH6+5xoVP
-	Qv2/KyO6qdOzjI=
-X-Received: by 2002:a05:622a:113:b0:4f4:a9cf:5d40 with SMTP id d75a77b69052e-5070bba20d9mr79750811cf.11.1771750145024;
-        Sun, 22 Feb 2026 00:49:05 -0800 (PST)
+        bh=xGcIZ9Wm+WSSeosg9CDJTkTmHYD7k8AbIJs84ojn3vM=;
+        b=i9po6apbJMpgeDlgjm2lZijmcQQGVCM8qpDlDAJyye6rCZyNEGJz1mfvQEPZ6+KMvA
+         QEA4hk6p0i/BBN8fU1GFOtY0T0QH4HNbBI0w0C+UL8svwUQqky+rR1ZnWnF3eRsBJaHG
+         ygD0GNaRnX399C+mrsSLQoagYdOj+0kamIDYDtcLzy209QpQy74pR7IIoxbAY8cMwh7W
+         K+2c5QZkCdaNUBBbfXP8UHShMw/vBdmcmJPGswCEUcm1bRrf7tMCWZabg2zU+usDaBLD
+         UmY5/Q6EzAlMZ2EhpWxkC6WPfCGBrY0zU0PG5cDFJzQtVvy1ohVa1qB9Er23sESCwsEX
+         I7rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQS+WYm7EphkNArNN1lwiCQLBL8PG/QQDhOqDPxQulpwYnSPgO8FQ6/Hkev/HWd7nevJd8AgYyUA==@kvack.org
+X-Gm-Message-State: AOJu0Yz3Nh7+bwA10BEzRCMspIh6AaTo3T6eaC8sNOTkUSZrKigs0FWk
+	vwqXwZhiUDE4c3sJbvS35Crcaicpn4j3u5MI8zsxyHbOC3ZSoRxsXvgBMQOb9NStwcw=
+X-Gm-Gg: AZuq6aK+kJApp1myVB0t0JwSFn8PA/IxiprI55n4kijH+QgOTU+wf70j0pjr3qgS++H
+	5QxCK1s8Yv2GCbyiOkMp7/t3TXNzQwxtFPkhqtApUsbeRmM11ZgR4fFBdJ+6Du4dOi4lR00hmiw
+	TVHJ6pI55vnl1SBxNV0pl3lYFqbls0nRBzveopt3w71Arj2eUpfLJ7d6A2lXYt2rU8G+wLA+She
+	Ko59AHfoIaj48FoqgXxCzZdzSoOT3CiTr+2AhGxBVyw1GWGhlzG2XWZeQVaIbdlc/mEwcJ/OM3Z
+	7hhvZuBipYkAIPCSiVY2ONINogg+CqK2tza/nzX9Ad1SxD4zL+QGfHAoPnxIQiEB9eLGhG5XTCn
+	2UhDPpjuTjud/duphAEMYDHZpZ/23fdWXK+J3J3SAyIBYRAU6YHBsTTY83QI5tJBjq7QTIX648R
+	C7yX3CQWyVst85KEz4VMqUBpC/9HKZubMR2BL6/XeSBS+5f4pHS7pCHSuzp48RFGlDnVKAQ5oNb
+	PIjUKTB/w5QLx0=
+X-Received: by 2002:ac8:7fc9:0:b0:4ed:1948:a8a2 with SMTP id d75a77b69052e-5070bc68c0cmr70819951cf.40.1771750148853;
+        Sun, 22 Feb 2026 00:49:08 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.49.02
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.49.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 00:49:04 -0800 (PST)
+        Sun, 22 Feb 2026 00:49:08 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: lsf-pc@lists.linux-foundation.org
 Cc: linux-kernel@vger.kernel.org,
@@ -166,9 +166,9 @@ Cc: linux-kernel@vger.kernel.org,
 	bhe@redhat.com,
 	zhengqi.arch@bytedance.com,
 	terry.bowman@amd.com
-Subject: [RFC PATCH v4 03/27] mm/page_alloc: add numa_zone_allowed() and wire it up
-Date: Sun, 22 Feb 2026 03:48:18 -0500
-Message-ID: <20260222084842.1824063-4-gourry@gourry.net>
+Subject: [RFC PATCH v4 04/27] mm/page_alloc: Add private node handling to build_zonelists
+Date: Sun, 22 Feb 2026 03:48:19 -0500
+Message-ID: <20260222084842.1824063-5-gourry@gourry.net>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
 References: <20260222084842.1824063-1-gourry@gourry.net>
@@ -176,12 +176,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 091F11C000B
-X-Stat-Signature: w99cjgryy6a4wgq4aerpx9bjpxo6dwqt
-X-HE-Tag: 1771750145-38605
-X-HE-Meta: U2FsdGVkX19+sI+JFRHe5HBLWf1wAkX0u5T7zMqlnQGm0dt4EbWzCX/lVrppewmA8r6AEe4iTHsbIiweU01vjU+gSydStDc4/zl1eDzokmPBhWWJ/mKhwPVeMFBVdM8JA5EFfpSmYEcm0dVWPRfjb3s3qbxcf7C/4MCry4HojT7ipwbOT3+j0mq14n1fQQHfxC3UXGU+BjbIFpeMGZnff5gGNTU9kBn3PpXAh0KQNCz7OtrQYk5grjhZQLGhf+ml2fzMV9rOCOstYyhGm3ZOphsPCiz6Bzb+XGr7rZL6kQm/Vdxpnl221QRPofRhgoqFHlzuxJ3WFULTomU07abwuzL9Ellln+f60v01PvR1r+zvJPoLvWjWD0VJdXvtQa2YCmM10YsHewwKxLke2oX/87bBXuNJFUQRcvYue72e1RqXmmDJ+EUpgZGqnF8y+izVXXLZHS9IHoK6eeaYZYseB3fQO50Q+G8l92tVb476xvXpDchQkt95q15gzD+2hv0n6w6vfuCqoo2/PCkjNkAdGkXUN68IyUAB9vROnEFfkuT93ViEO6LIhHrALHoXjHYxim1XTv1Ssah1jZOV7MmrFu5IA3f7Eu6U30iWJBp9XUxjV6K456gv6svY6RU9giwjCJW1KW4C2JU5qofjcZeT8quNnAoqdWqAl+7xAk0FmYYmPQ12XehYqC+hFUC6frCghVGNvR/YGrpgy6a8aEGrG4Z1/hUvQVnQTSIkzaOlskJ0XrHKArLazZTrlcfsf1Wz9ViWIIyXdaeFhWIpha7/9iar/WRNm5696yu/eLOCp6kpIPmCvaCNOhy979bmLm53UWXZS79oilE6H9qo9p46L6QGRONe0AgcHElzhcUiwH/c51Ww9q2VCZBodkV6DZiwqndlOhr26Uaef3m6dFcmvN/xaj50OhMHsEW3B/blqM2bmylXwuV55GBqx2P8H6GYE40hGS+QWPSAufT7M8T
- UBckMa/R
- JeQOcuEGd20D0lBCg25PnMtv3LoONrPkNrcS0QYn2kGwQ5n8dceU+ihTHUfjg0+5dEUao9S4UH4HAzT+Q5JWFOEQ5+hZsJW9wnJxptEi+245rzePaNG7OUpb/ACFCYG35y79Wg/X/CEmVrm8P4nSRohZLmcKpt5b266stIgdmbWbyge+/GqSuNw0DYNt0Vk1L8kBmQ9R8QTRq3tx+SsSJd2jeEIf/ZhVv8kXhe2IlQYHNggyg34OYjlcXQmKbZR5wYq3UeRQ4YZRUtjagzEFv+4+d3qUEI2610dk+qTWLub9RekIt30UUsCEJv7WYuYCub8Me0MqbYXWyDA+hydYErZ0mKbYj/ZseOVhKYIxwtvcxrRh0rVtGShazevFHKAYBERx07siPa8H0qCZrDbUffjNCqjpQkNMsFHrb9sZ3jE6tao2e7aDe4Ae7z6wKL5qWenoAESD9Zq464Yo=
+X-Rspamd-Queue-Id: BD9E4160005
+X-Stat-Signature: g7ygpjfr3y9sg45794xrscig1j63gd63
+X-HE-Tag: 1771750149-214309
+X-HE-Meta: U2FsdGVkX1+AghxcVSbFgDgaAmmMMjuGQmgPnxua//PPrMg0Akdd0oszG0g6yBxsZz1eqFvQD/6aGt0QEeejRluQw2JY2E7EuQgIVi3gNglmbtg1g0tWpHO91R2dGftOzfV8dXmN4pus0xwLJxoKNMrBhYoCm00oncisIVwsSSUJs1VQQW5pouAR9mi41oS4z9iulNSDU/cnIssOlpoSlR7J8175BRqHvXlrfHDTVwCHq+WKITJUXIcEAAP0DNPPP6fIQc3RF/Nh1yrButknugpcQTy60mP6SAmlwLtfD02j7+9GMLXPn7PhMXcR5z4ygfnBrZFkY8GmuULFEATKQRM1fhwm0cDe+raY4rM/l5+467T/5ukHcMiV0A0I2zTAQB2T0w7ZhV22vRT106slwQGlswNuV/dHfEGhSvZQ63HZiPanUAtOX3fJbjTJyG/Mdana1HlGLEcYMIj78FPaWerC8uE3x6mtdKP0qFEZ1WFfMR3lqUTOrdxJ8d9DWxmYDZe1743LnH3MetbmD/wcoPBEOnqGcAPr+zh/AYBzL1Fl7zFWR7u3KLoYxZGVeHh6cvw3BA88iszImyzHec1T5PvsJ4XEHKxs18c/6C5q4TCZ1cMwIZx75CDjHD/VKuBegh73zWz1X6CGtTuwASkUQZRO+Egp/YKhoftCivpmBua7tTRe9VaJIGsB/JLTxXMK8moR0/Ur5Vc3O63X7jkcXPn7QJMPiwLcaUPk+cbW+OpJFrzUSBos2gPa3n8UtA+UTPHbF4BseEDMkSzY1DRo0KIqDEn3WmGZVz8cFCUtOyL1CbDuc5T9ZAJ0IXa1bH6ElPyvdiIY8sfUg3+CHHJ8xmozz64tppz6didYpDUtkI9eITdhyj6+umBzcMesa2vxFYtX4GBZO3ID0oQQpTx2N8WSH7QBX4Cv2A3UjrFrEU7eb6HQTmsPcQJk6/We1GJUZZ8mLJBx6i0ISH/uCmb
+ j52i/d7T
+ GME+qDyJDuqjwmJ/HA/6/ph94GE7wl+GrCLwqshVV+CLVSK/uWTVpqzrKWbuexEryTGbJYlkt7JyPYLCKT8cvKna5c2FOmRquqH8xnvLPLnI+KNGfxhJ31RrbIQlNDLFN9cPM7r5fTBBWH0U6BH9BwhTP+l6gpHljHZftyFA3gfYMzR7CSFl15eycST/739fqnSma9/aBNvoOOCOnG03OtZM3LsXqS5fupToTzHL78j8oTE+h5PR04LEOwI1zJApkgNyJPajuE3zbYWenFKrqlW9ys1aZtBb33cyd78zzJSSTdI13gG+cluiyWc32qVrFM2SI0ZAK0foK+mSrrW12wTxp24UX+As/iQZ7URdiWsuhthS2xNcr5JvAEFe408/nlObkcQThzxnIBkz8/wGQ9A4hGQLKwkdYqrsza1GLbq/5Csk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,162 +190,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Various locations in mm/ open-code cpuset filtering with:
+N_MEMORY fallback lists should not include N_MEMORY_PRIVATE nodes, at
+worst this would allow allocation from them in some scenarios, and at
+best it causes iterations over nodes that aren't eligible.
 
-  cpusets_enabled() && ALLOC_CPUSET && !__cpuset_zone_allowed()
+Private node primary fallback lists do include N_MEMORY nodes so
+kernel/slab allocations made on behalf of the private node can
+fall back to DRAM when __GFP_PRIVATE is not set.
 
-This pattern does not account for N_MEMORY_PRIVATE nodes on systems
-without cpusets, so private-node zones can leak into allocation
-paths that should only see general-purpose memory.
-
-Add numa_zone_allowed() which consolidates zone filtering. It checks
-cpuset membership when cpusets are enabled, and otherwise gates
-N_MEMORY_PRIVATE zones behind __GFP_PRIVATE globally.
-
-Replace the open-coded patterns in mm/ with the new helper.
+The nofallback list contains only the node's own zones, restricting
+__GFP_THISNODE allocations to the private node.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/compaction.c |  6 ++----
- mm/hugetlb.c    |  2 +-
- mm/internal.h   |  7 +++++++
- mm/page_alloc.c | 31 ++++++++++++++++++++-----------
- mm/slub.c       |  3 ++-
- 5 files changed, 32 insertions(+), 17 deletions(-)
+ mm/page_alloc.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 1e8f8eca318c..6a65145b03d8 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2829,10 +2829,8 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
- 					ac->highest_zoneidx, ac->nodemask) {
- 		enum compact_result status;
- 
--		if (cpusets_enabled() &&
--			(alloc_flags & ALLOC_CPUSET) &&
--			!__cpuset_zone_allowed(zone, gfp_mask))
--				continue;
-+		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
-+			continue;
- 
- 		if (prio > MIN_COMPACT_PRIORITY
- 					&& compaction_deferred(zone, order)) {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51273baec9e5..f2b914ab5910 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1353,7 +1353,7 @@ static struct folio *dequeue_hugetlb_folio_nodemask(struct hstate *h, gfp_t gfp_
- 	for_each_zone_zonelist_nodemask(zone, z, zonelist, gfp_zone(gfp_mask), nmask) {
- 		struct folio *folio;
- 
--		if (!cpuset_zone_allowed(zone, gfp_mask))
-+		if (!numa_zone_alloc_allowed(ALLOC_CPUSET, zone, gfp_mask))
- 			continue;
- 		/*
- 		 * no need to ask again on the same node. Pool is node rather than
-diff --git a/mm/internal.h b/mm/internal.h
-index 23ee14790227..97023748e6a9 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1206,6 +1206,8 @@ extern int node_reclaim_mode;
- 
- extern int node_reclaim(struct pglist_data *, gfp_t, unsigned int);
- extern int find_next_best_node(int node, nodemask_t *used_node_mask);
-+extern bool numa_zone_alloc_allowed(int alloc_flags, struct zone *zone,
-+			      gfp_t gfp_mask);
- #else
- #define node_reclaim_mode 0
- 
-@@ -1218,6 +1220,11 @@ static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
- {
- 	return NUMA_NO_NODE;
- }
-+static inline bool numa_zone_alloc_allowed(int alloc_flags, struct zone *zone,
-+				     gfp_t gfp_mask)
-+{
-+	return true;
-+}
- #endif
- 
- static inline bool node_reclaim_enabled(void)
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2facee0805da..47f2619d3840 100644
+index 47f2619d3840..5a1b35421d78 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -3690,6 +3690,21 @@ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
- 	return node_distance(zone_to_nid(local_zone), zone_to_nid(zone)) <=
- 				node_reclaim_distance;
- }
-+
-+/* Returns true if allocation from this zone is permitted */
-+bool numa_zone_alloc_allowed(int alloc_flags, struct zone *zone, gfp_t gfp_mask)
-+{
-+	/* Gate N_MEMORY_PRIVATE zones behind __GFP_PRIVATE */
-+	if (!(gfp_mask & __GFP_PRIVATE) &&
-+	    node_state(zone_to_nid(zone), N_MEMORY_PRIVATE))
-+		return false;
-+
-+	/* If cpusets is being used, check mems_allowed */
-+	if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET))
-+		return cpuset_zone_allowed(zone, gfp_mask);
-+
-+	return true;
-+}
- #else	/* CONFIG_NUMA */
- static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
- {
-@@ -3781,10 +3796,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 		struct page *page;
- 		unsigned long mark;
+@@ -5683,6 +5683,26 @@ static void build_zonelists(pg_data_t *pgdat)
+ 	local_node = pgdat->node_id;
+ 	prev_node = local_node;
  
--		if (cpusets_enabled() &&
--			(alloc_flags & ALLOC_CPUSET) &&
--			!__cpuset_zone_allowed(zone, gfp_mask))
--				continue;
-+		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
-+			continue;
++	/*
++	 * Private nodes need N_MEMORY nodes as fallback for kernel allocations
++	 * (e.g., slab objects allocated on behalf of this node).
++	 */
++	if (node_state(local_node, N_MEMORY_PRIVATE)) {
++		node_order[nr_nodes++] = local_node;
++		node_set(local_node, used_mask);
++
++		while ((node = find_next_best_node(local_node, &used_mask)) >= 0)
++			node_order[nr_nodes++] = node;
++
++		build_zonelists_in_node_order(pgdat, node_order, nr_nodes);
++		build_thisnode_zonelists(pgdat);
++		pr_info("Fallback order for Node %d (private):", local_node);
++		for (node = 0; node < nr_nodes; node++)
++			pr_cont(" %d", node_order[node]);
++		pr_cont("\n");
++		return;
++	}
++
+ 	memset(node_order, 0, sizeof(node_order));
+ 	while ((node = find_next_best_node(local_node, &used_mask)) >= 0) {
  		/*
- 		 * When allocating a page cache page for writing, we
- 		 * want to get it from a node that is within its dirty
-@@ -4585,10 +4598,8 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
- 		unsigned long min_wmark = min_wmark_pages(zone);
- 		bool wmark;
- 
--		if (cpusets_enabled() &&
--			(alloc_flags & ALLOC_CPUSET) &&
--			!__cpuset_zone_allowed(zone, gfp_mask))
--				continue;
-+		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
-+			continue;
- 
- 		available = reclaimable = zone_reclaimable_pages(zone);
- 		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
-@@ -5084,10 +5095,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
- 		unsigned long mark;
- 
--		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
--		    !__cpuset_zone_allowed(zone, gfp)) {
-+		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp))
- 			continue;
--		}
- 
- 		if (nr_online_nodes > 1 && zone != zonelist_zone(ac.preferred_zoneref) &&
- 		    zone_to_nid(zone) != zonelist_node_idx(ac.preferred_zoneref)) {
-diff --git a/mm/slub.c b/mm/slub.c
-index 861592ac5425..e4bd6ede81d1 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3595,7 +3595,8 @@ static struct slab *get_any_partial(struct kmem_cache *s,
- 
- 			n = get_node(s, zone_to_nid(zone));
- 
--			if (n && cpuset_zone_allowed(zone, pc->flags) &&
-+			if (n && numa_zone_alloc_allowed(ALLOC_CPUSET, zone,
-+						   pc->flags) &&
- 					n->nr_partial > s->min_partial) {
- 				slab = get_partial_node(s, n, pc);
- 				if (slab) {
 -- 
 2.53.0
 
