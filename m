@@ -4,246 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9BCEC5DF74
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 11:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD6EC5DF74
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 11:57:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA0686B0088; Sun, 22 Feb 2026 06:47:24 -0500 (EST)
+	id 06CCD6B0088; Sun, 22 Feb 2026 06:57:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4E016B0089; Sun, 22 Feb 2026 06:47:24 -0500 (EST)
+	id F32636B0089; Sun, 22 Feb 2026 06:57:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB306B008A; Sun, 22 Feb 2026 06:47:24 -0500 (EST)
+	id E310E6B008A; Sun, 22 Feb 2026 06:57:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8443C6B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 06:47:24 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C5F313B25E
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 11:47:24 +0000 (UTC)
-X-FDA: 84471917208.23.05F34E0
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A62FD100003
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 11:47:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SBK0qN4i;
-	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=WGOv8d80;
-	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771760840;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CB2746B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 06:57:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C77813B61A
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 11:57:22 +0000 (UTC)
+X-FDA: 84471942324.14.DA322CD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 854D1180007
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 11:57:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Nc8mIeo/";
+	spf=pass (imf24.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771761440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wiCVo3nHVPuCmU40Aw+apER6XeAMMqaS689qnbMeAZU=;
-	b=XOHmUPK/QMsd9UkEp+V0tPk1S5L957LxOoZduNcaFL1bHIOM6AZmR1erVG3/+9daqSaIb0
-	cn0x+3FjgbH2Ficdkcwba8qdhPLkawEBjkOlCx/ihVF5BxwdUkUbguEF/e9Ax/8fbnfJAf
-	NL/mDsBkcym5SstzkVSVfMYBvJKKT2Q=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SBK0qN4i;
-	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=WGOv8d80;
-	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771760840; a=rsa-sha256;
-	cv=fail;
-	b=NRegheYXzmRD5isRSD9OLvuJ1Om8+9x9mk5Mg6w1IkoyuEP413KxjqYXOBjduXYmzPpin9
-	F+HLWVEgyG5D2NgG6SKnZGgPp8Pw34cKLnC/um/OCh1viRJZ4SvKnA6PwPwFuv6uHcx482
-	C2FMMbCELvRwo6vt/6giacg1Ho0XRwY=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61MBfTAr3537500;
-	Sun, 22 Feb 2026 11:47:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=wiCVo3nHVPuCmU40Aw+apER6XeAMMqaS689qnbMeAZU=; b=
-	SBK0qN4ifx3bOfV31zPkSSxB95wCVRyi5aNR9prFNUXjOrJg/K8od9ero/uGe3q8
-	DTlot6t/yHHJMcuopwi3JpEEAiaB9zpEcqNNCbNgdEqaWx/9X1fai5gCjmEPKjS1
-	JcF9cmSvmZsRJGGDF8FwUzF8AzpzkT5ZMKfR8T7oeOFAZPHMLTKYBZ890vPTqLts
-	tKfj89pY/pSoDZSUPZYzFyKd1yVf9iOeIzNu4SXhH0PmUZEGboGP9nLmjAVL9/88
-	Uf4EBLS1P26QMVwlvxlvDz9f3aI96MC6jJaRiVFvVLBzGpvSgz94uj3swpUwMaub
-	l1YdUzdoFoCAZP2+gzcL+w==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf3g3h3qp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Feb 2026 11:47:16 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61M99JtC012522;
-	Sun, 22 Feb 2026 11:47:15 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011001.outbound.protection.outlook.com [52.101.62.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35bnaau-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Feb 2026 11:47:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q7lVHUQFDX6EF7MSryTFKCTFZvW4p2pByYdWVGEiKpW3rKx7dzraCyf2kFo1QmBJSlYYwKueuNUD1JF8kp6PNYWO6Y24JacGlYo0JEZUpZKtE3RkASpFD8yGUvhDTfThNX6nVI3jBVmmgGqBr5yI56AQe1rkCFmMusHIDyTaVuJ5+qHtgNt0XtIApA0q9MZoTIBDOgCkjaqzmkpyy9y8P3FRjgbPXEn5b932vUnXp8YNSNKLzhhH2lVuTF/Q0SgAbREoswH1ZyoCcnVnJt6JBXDM2cfzkMB2S0hG6jNPCxcMjjp0ZuapMPo30SS5HX+WSCUI5qMfKEXXUx9xzLGfeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ptx3avVNp4XpXcdg+tsH0ha60CtQ901I1HgIHtxOAmk=;
- b=GnUamMKzp7GP1Ykd3039TMBxgwRjPnoyhh5MSRs3fK/Ex7le7dWsZRR4ZsJN49jUOMNwPK0E9tcDt9Czf3zt+A6qLR28F5btTiXNOvfEi6cjoVSf20XLv+IG5uItq/llhBKvMrBXh3xSvvnUi1EdowGlLOssBa/AgGK4NUJglg34S5QsEF3Vp2qj6zBxU1GJ+OlDgLiZhZUY4hMK7RONw6TSuoyYQzm8QhDNvzXMFiXawRZdOCIVvqAPQYj7EUswsnjP/LVm3P/SYgqvn64Gc7pK4tPK5E989zwE9rFdiM6rIMnCexZ2Ql4Q6EPDIMrLiTeDDIH5JoxijPwn1OWjRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ptx3avVNp4XpXcdg+tsH0ha60CtQ901I1HgIHtxOAmk=;
- b=WGOv8d80dfaCpQcF7YAxolp2N4imgjv4rq7wYzql9kB0KHVSnc84pJJL8drj1ItBguEOYAZF6Kb0WHqnjsZd7lxu0G+BOZvr9I/ClZKMp6wKGWf2Ul/nSbt8qtWPCirlE9bhuY37/FdveWqka9HYbRYlEacBiKmcOM/fowIPKoU=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by DS7PR10MB7279.namprd10.prod.outlook.com (2603:10b6:8:e2::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Sun, 22 Feb
- 2026 11:47:12 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9632.019; Sun, 22 Feb 2026
- 11:47:12 +0000
-Date: Sun, 22 Feb 2026 20:47:03 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Carlos Maiolino <cem@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Shakeel Butt <shakeel.butt@linux.dev>, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Ritesh Harjani <riteshh@linux.ibm.com>, ojaswin@linux.ibm.com,
-        Muchun Song <muchun.song@linux.dev>, Cgroups <cgroups@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>, Hao Li <hao.li@linux.dev>
-Subject: Re: [next-20260216]NULL pointer dereference in drain_obj_stock()
- (RCU free path)
-Message-ID: <aZrstwhqX6bSpjtz@hyeyoo>
-References: <ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com>
- <aZReMzl-S9KM_snh@nidhogg.toxiclabs.cc>
- <b4288fae-f805-42ff-a823-f6b66748ecfe@suse.cz>
- <ccdcd672-b5e1-45bc-86f3-791af553f0d8@linux.ibm.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ccdcd672-b5e1-45bc-86f3-791af553f0d8@linux.ibm.com>
-X-ClientProxiedBy: SE2P216CA0203.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c3::16) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uD8Q34JvjH8pMvt8PCVjIF4RUIZtweGW5/Eb5+0FOc4=;
+	b=293neSMJEj4zrz58+/o3hZjBGW9MN6Qpe5l6nFi7YaVemaMwr7Sshgr7ymEegupCNIcnBE
+	bW8jn64UoOd6SyMqyPtEy+ESdZUYRgI0CjQ/emZe16Hiqr+3glM4HOK9kLhadtaPe8dSA/
+	eMuruzX0DyIHgLJxVFcDojB4/CAzLbo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Nc8mIeo/";
+	spf=pass (imf24.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771761440; a=rsa-sha256;
+	cv=none;
+	b=sxvejlkHLYC7Z7Ce+x7em/6A/URDtbntk7tmAv0W9GBCUgfYChEo67llkWHgb2oNnO9+in
+	f2QJR1ksM2c4nK2LfrdsThxJ9VMccMAITqnTqpiMH1zI01b70MV7eHEvtQ+uSsD7O7aD5S
+	d+JO1DFOdfb3hFUFjmL5csEXtO2FHCY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771761436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uD8Q34JvjH8pMvt8PCVjIF4RUIZtweGW5/Eb5+0FOc4=;
+	b=Nc8mIeo/nGsH8eEfQ7/W/+PL2eZrJBy3eyRAATMB5YGvLMekyPy4o5Tri0nrJNRbCh16rU
+	0683+6xqN+q/stwYCSx0eb2pFi89hRFcj3s5FF2kr7z+pu+aucqdonYcVGDQHix5uSJygn
+	lZNRcBZoBmsLQXu+Bge76likjl2ezok=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-325-6iNyqwtzN66KrTi__tukeA-1; Sun,
+ 22 Feb 2026 06:57:11 -0500
+X-MC-Unique: 6iNyqwtzN66KrTi__tukeA-1
+X-Mimecast-MFC-AGG-ID: 6iNyqwtzN66KrTi__tukeA_1771761430
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DD4121956095;
+	Sun, 22 Feb 2026 11:57:09 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.32])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7D7B719560A7;
+	Sun, 22 Feb 2026 11:57:07 +0000 (UTC)
+From: Ming Lei <ming.lei@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Ming Lei <ming.lei@redhat.com>
+Subject: [PATCH V2] mm: fix NULL NODE_DATA dereference for memoryless nodes on boot
+Date: Sun, 22 Feb 2026 19:57:02 +0800
+Message-ID: <20260222115702.3659-1-ming.lei@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DS7PR10MB7279:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfb39344-a12b-497b-4349-08de72081df0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?0VVwip/+5cheJqo4eob5Bd+njOkMqlRjtrnivZRjdLugqWThCLNy9EBKCR?=
- =?iso-8859-1?Q?nIkwHNEByMmBR9eKwDiHTsPt6Aa6gqUX/ASaBZ84FBcnXSyDZ3bIX9/xEO?=
- =?iso-8859-1?Q?1YuMslo6wFKu2fLEh5rtNmOZXYX1JEkJPaPI5QRTN6Kjzzx8+72RU/WNwA?=
- =?iso-8859-1?Q?W1FRjUFUKsDmPG4wwIvhjbDS/H6HyleB7NvIOdofziE+6ZT+LW4jW/fTbg?=
- =?iso-8859-1?Q?jD4dnk1KCyFH2CfDpKPC9IUSlZ9elbbbxzkLZRnlb2lIk/fKKvJlfHmV3X?=
- =?iso-8859-1?Q?sOwmhqEmSbTw9PQKZcsGIaRPCihY6V8Y18dyOIk/bs/sYBjYcaY4I16NX8?=
- =?iso-8859-1?Q?EFYlIVjFICV6FN9z55PhQ3g+UCMN8jDCUZHfrXVgeP9vuJGXbwB4moSfWS?=
- =?iso-8859-1?Q?WRIQo//IJsNT+/34sdulnQJPIAIDQWmwJyGrI4L0XdRwy107+3OtX64N8o?=
- =?iso-8859-1?Q?NL1cO+2CD2+7wrjOoTk/0V6ognEe5+Ua6shcN9RlhAvE7RkYi3eHFxYg3p?=
- =?iso-8859-1?Q?Gt1QWFSuR3vgpJ5KImpLZdpOOArEgAoaaW8QxWgK/dAIcyIIkgDgtiQuU4?=
- =?iso-8859-1?Q?cELuGEIKoeX0Ya7KeWv+yIbdnIXWkAJJup4PF0nDJY/UucVYaL8vBQWOWy?=
- =?iso-8859-1?Q?jO+xfZIOT7QWo91eb28AyDDBRULeEWU/dhFUm8lX+3qRSW1RoDESxxpF89?=
- =?iso-8859-1?Q?P+GVXB1Dr4kjLxq2fb51DTS9aIiaRSJ3HkIJ+bHJt4Pe5WXkJ0ULtC3deF?=
- =?iso-8859-1?Q?qu78UDXQWffCJm/jZlUFtQoaa+rRE3MgzoY7e1jm4momriFRDSZ3gw//zg?=
- =?iso-8859-1?Q?91eJwH0ZSKGYrfJv1SBjpY5WCVWwp1BaG3U9rvcfATYz/qOT2uFO8xjfl3?=
- =?iso-8859-1?Q?x8BPFPovN81m2jHBM/exQMITe//uznR1vOkRRY9u/XSmcuMdyrff3R0tmb?=
- =?iso-8859-1?Q?dRC2estDx+4X/f8hEXKEe/LG227NfB8LC/cAPjpcGL4x36q6IafE4QRxOa?=
- =?iso-8859-1?Q?k91AQar5ZQx7ORSUYdGYCFQ4LmtrMvAQWO7Zzs3jyqafZDxLuj/Jo7p/EN?=
- =?iso-8859-1?Q?YGnInxHyWjuU0UyYfTvmQrWqOWlALtJgf/mdwLA1UlHyerpk574Hl1a/ZA?=
- =?iso-8859-1?Q?z6yQjx9YePaUAkUe38jlVADAD6KQqVRzKathMLelRSWCzyP/oWlvya+RrE?=
- =?iso-8859-1?Q?5K2EeoZR+rcGA6IzBOz9RY4zB4IsuvcMZ3tpXP2G9snjOjktG/cmR9I+xd?=
- =?iso-8859-1?Q?0+m+mWdtMl55mXX4rC3lZcuhl9GCUT7nesr2SP30iqbZyILb5AsAlyxNa1?=
- =?iso-8859-1?Q?tp+kJuCqVEXX/AhltJH+WzPBgThiisxvzvHcJ9URgLrdnCras+zKNk09P3?=
- =?iso-8859-1?Q?rZey3wRs1WPkcy5U2YtAvVtuzLhDQJL2KeKs+T2PbuzCKMsQSxE7JDdbo1?=
- =?iso-8859-1?Q?bw8iilxxHZqPQDDQiffVyVyg+nAEwPZzJ+c48bWwWAXbUGiV4Yqg0m8JYW?=
- =?iso-8859-1?Q?SrOuaU7XgMbyK5L47hryMVxVsckh5kfwi+zBOCr+QSIaAlyrWFsygpm27O?=
- =?iso-8859-1?Q?JbIfu6Nlc4Tb48KEtG3rDL5QTx9h1/TQCB5CsOsSYxGyFZ0VNXhmqC8QID?=
- =?iso-8859-1?Q?YWnYb6PtVUKNo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?27mqK7MaW1W85M8NU6QziRZoKAV9D76hLvr1Fv3/GyfI5Cu4RsmSq2V1nE?=
- =?iso-8859-1?Q?rhpZ0ZMgxsb9Hh6yLkTsJdglzkPX66N4k7rX5FaCUSf/ihVokab9+Ay75P?=
- =?iso-8859-1?Q?ANn7YY2+KozMN1WAYH1Sgcdoh3uCjaasyclzgh+17NFm6A6S5dilZ945ZV?=
- =?iso-8859-1?Q?2DHbaXOOlkhFwp6nYbrrFGAKHpw70MSpXorzi2rVr8JWkGw8cIjvODA4ad?=
- =?iso-8859-1?Q?Nc9I/hJXbH0MO+9GeTZOovwtCzwOu3EC+QVU1Itoo3nh7Dy0bKDUwe/YWH?=
- =?iso-8859-1?Q?PE3t17nkDNkRvt0U/U9jDhUiIJTqJdGY8yHGl0QvUPQXUkxbSdFqXO0CSG?=
- =?iso-8859-1?Q?dd3F5FqxG8j8aHNBITxrfUORgoPeL7rLfshyJG5Jj/fPaXYAB/43R8f2RK?=
- =?iso-8859-1?Q?QFyoWC0B76maXXl+YdqF9gybOgkjSKZxmkdOT2eapeOZQL6rFB1k947oqC?=
- =?iso-8859-1?Q?gy9sl5TwS4i2S/dNCn85wIcMnb1KlKgEdEFexeM73qgthDJusqPP4z2aFa?=
- =?iso-8859-1?Q?17SGIye7qEHLHJsyCRxXj9OLnGT4+/1IVEiwHHU/yiSGqapmVjHe/rwvHo?=
- =?iso-8859-1?Q?+lbMabaxSAaOVljiSzGXNglECArCGcn8w/BnvqvEFRE4AM/BCFiAZeGyAI?=
- =?iso-8859-1?Q?V4MWdWBpHGzHB8qvQHRZf5Gde5UDDdKRMJMUcwV7pMrQKd7OnBY9BnqdWZ?=
- =?iso-8859-1?Q?EpsyCqFUxNBa2zrTIU1EXWqyDoYx98ElGGunAWSemY1OfoRooMTwMnoR3d?=
- =?iso-8859-1?Q?/OqtXVACn187//25smAk7hJzEFSbMiJnrWhqlAnoYAmAmEqxha7mtltIVq?=
- =?iso-8859-1?Q?c2lNEBwet/ocLMv4LK6Zi+j7gIP6jzyOGjAOdt9Aq2KzSJarNP/DPWl/D6?=
- =?iso-8859-1?Q?8Xcl0t4kiQxnZUo80vHSg4WPtqKWFtixBC18kthr9ItZnJY0GXvY6lEV0X?=
- =?iso-8859-1?Q?La7EfGOf4Ztp7O/EXReSDG5HOv7y1yt1v6L+kpUJzYrllrcZX1QRaqB/DO?=
- =?iso-8859-1?Q?u8pS7IFJbOlPnccdDmfyfp1TBm6wINfGxQ84uyTJXrP6l5TcjV5awJsB7I?=
- =?iso-8859-1?Q?2gU5GtLyaIV4qi76Gag4iF5SJDgvH397JKrRxP0C5WigqBqb1PesXrdCmC?=
- =?iso-8859-1?Q?SaXuAqsL1Ah7Y5AXNrpdPvPL4hCbgOfbbb7JmanzXaoVesDWUoMs/CTs/+?=
- =?iso-8859-1?Q?t17C1j/UEIW23uzbzbX8saj6dFE18bg7GO5/en7tUcxrQZwdHiZf2CUI69?=
- =?iso-8859-1?Q?jK0LqxaFoyFho0r3x/+QPwI7S3KZblVuiWXmjuJW8rCMVkEaT7FCdeiktt?=
- =?iso-8859-1?Q?0dGCBXL96RsWTb3db25nAjkYWPeJgbqtUli+SJ1O6SIJTgSLAlV6QMJKm8?=
- =?iso-8859-1?Q?sEVFBO6GzqwYL+qYYoZIosaBqzEN19NVbsrywlKV/KfuEXG5XFHIRJ1TLR?=
- =?iso-8859-1?Q?EZR6/6oZ4/2fWocQvz60kuoqaa5gOhXSDengonlA8TPhfFjWb6q7WJmrJ9?=
- =?iso-8859-1?Q?MtU1q3G7XYVs1UiNginhRF63uDNuvpy2qtWVreK9gq9eETovLiSAeV5OZo?=
- =?iso-8859-1?Q?YWxO93c4DkC89whZYJslTPQ3XIRgJHSnNODIcxGlA7dAXVsLapmpmr6Ncv?=
- =?iso-8859-1?Q?eBbCykStMHpqHLKGpMy8LndHeHzL3yG++gA87Rp4df4Z+9Q2l6XlPiCBz0?=
- =?iso-8859-1?Q?3QQ1mjfa+Yvfktao92Ru4GTL11XdSIMYfWWiFaERAg7crg6fJdc5Dnt7BR?=
- =?iso-8859-1?Q?7t5MDfnFdo3dsI/rWxXmjrUJdpWz1roWnqB9KPG/5j7MjV5XG2RyukVGvA?=
- =?iso-8859-1?Q?Izluvfi96A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	zEnqt9j/ydR7e/cZduFoys5KjUp12QtH4k/MjzAdwCifCL043judGZRIoKxQYpkU3cqYbIj4BQAPV0bqqK/NzCEWKC8V9lD11eWSqUF8neogyeg71/q7YNWQPz6dHbPdLWvyicAfLxbXklg3nVP+w/bgvQGX+CEpESncOrfBefOCwK3jNnxQqlGu/NZsf95L6ZWllRtQc0QdPkn1uA7w9tL0HdQAcUAw4WZdGlBbBehXYM7MRPB4l1lA9WZxcnfybeh7xhvnAirhQP0BLx90fd08fLvaIUFxNE5E+7VyVX9OPAM+x084IHDvU3SQ8YwjRLTecYrAhUOfTJmukQKsJnVrV4ovM3Dk+YFVGRNWo2dRAmvue1t8mzF5bRDFerJYu8dUS9GvDED251Dfm0wGzUNJP5FcA3dGbBTMErT6eZ06pzkQw3HsHF9dz+OWTxtUiisohZCZc9eNOzjnsGCfaYKFO83rKUUKZ4uUBMYcdGrcWs0U3h3Rrv3aaY3MPY+Oj5W2oQJasZYiPa/LywcCY7v9JI5N+xgoNCjx0z5wbRNzltkpFxbmwKalIo+yajNFz69LbO9ac61q469qxud8Tov06fZ7xlpUkWPDjnJ9WH4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfb39344-a12b-497b-4349-08de72081df0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2026 11:47:12.3317
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 05iv1BQT9KjK2LpEP8GcisvVgR/QE23BGYe+eX8gWdEhurkvfDe0fa2Rc4/aOw8bbHchS1+30v5mPM2Ablvkpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB7279
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-22_02,2026-02-20_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- bulkscore=0 spamscore=0 phishscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2602130000 definitions=main-2602220112
-X-Authority-Analysis: v=2.4 cv=Y6r1cxeN c=1 sm=1 tr=0 ts=699aecc4 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=iD3yB16Oh28nB8ZgULkA:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 cc=ntf awl=host:13810
-X-Proofpoint-ORIG-GUID: g3WWvlM_Lnfmj87opSc26Y038VWMT8-Q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIyMDExMiBTYWx0ZWRfX5qhQn7yc9YkT
- /V+3lkLRMW0qYH0I1hzCWjU1cgXwwrNeCuVeoxxv4kjBNNSWMkTiT8wLL0sV1KkBtwYkCr/5cMX
- RBW/im4LJ4o7v2muHr65eUo9Nk3lbeilS8ClrLqZmx/fxyVgtwP2ibHpPB5/lL+X4AtWq0LD7Ep
- bX6gtgW0ZY3TKI8ziqsBTw4wettsq/i3kVkxRuy2JjUOGFZPIvmdtHNvPzyQR8JU3cWTYmotrgS
- rTQsbDmhU2a8IQoaGW6PKhR7w3O7qmKaS1MDeiRzcuQYH49mw7no8SCX19dgM40gKIeCnc8W3K3
- +SJfHPToI0OetTvpspB9gHkvQowVUdnfT2S9/Q3aM7iP6lwGCaxNv0uzyzVzusaqkTLtTmz0+S8
- CgDRtIUDZMQ7Cf3tVVW3aS8n/VLbXD4f93w7dghuGnWdIZK86Bdi/6vOXc/aIY/Ik9j1mV/5qen
- puhjA049uMKi5YvGOYoD7zVWCI/4YSjgWCTFvvpo=
-X-Proofpoint-GUID: g3WWvlM_Lnfmj87opSc26Y038VWMT8-Q
-X-Stat-Signature: gj6e117qw4x758yweo8qo6rqkx6w8u8k
-X-Rspamd-Server: rspam11
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: 1lo11O49tZaFZ2792JQ9GWryz79Z2GQ4a3W7Bg-LHcw_1771761430
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 854D1180007
+X-Stat-Signature: tean848k14fnftgz89yt9mtjopykn5do
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A62FD100003
-X-HE-Tag: 1771760840-538871
-X-HE-Meta: U2FsdGVkX18hBwW94ZiLZY1xWOopofZNTrp2Ev1mAid0it/15yK6TKYbf05+gT6JXTiHKcKmvW78d5gATQPvpzrcNKAK+/gQKPQApo36PUf1z2HEWZFx2fvt/i1aRY/7q7To7Ss43xrnFH9fHn8XO5qhoFX8upDhDwohDUYiwiL+P0mL98hDrQp6Eek8R9Q88jS2GXAvlDK1NFaH0mgAPJug3nd3CWUf+/vg0f1Wh2SpNtn9xR/UFWwW81pcsTycErqA+kqeslhNsKYm6SozXHJxQe9MDyLTovBzkd+7rOl1gCY+IJqLRJlTY+4ye/p186ZlwZAKgyiwC4J93LQjMplQIxe0sqSAUs4PS8nRY0pL0nmpzYmegDfBR4NCCP8fJFHI9PIHNB8O+ssG4zmbi32ev72lSuDp2t7w4VumcMGnkFHG0is7sA4YHgf7VjiVeJm+H02lPBn3EXQVMNuB+xe5kXSSLsyng019B0QkR5tAG08d+wEH7llBJfjsVyEoBt6tK9bvOjU0fEGuNtWF1IGTV8FnAjZBNkIgV6mCg7ie4+YFgLOfneQB6QSMVi9YY1OLJque78Yo1XNt3AOk+bpnRNzTC4ISg4Y4FaxDYyyZnYV9pYdqe9hixhTb5PCGaiM+bieKoMTV8AcjEj878+y80B+9Rw74rRM5lRAeioUwIZ0oPPx/i9xN1+pykJAKw56e1rJos4Ycoo/k5aM2yT2/PdHYCaddGMRStX8b/7KV+620GZM0FqQoXCGvAMlamsYpIbUVPG/UimTb1Q1oSnxAnJGvGPy4IU6OvBjNQRFjKblLgLMElNZiYyzgjM8CCTD1xS2D/qHdO2GRsrfnit1CRdMNlGVu9q5mkT1dwxCclQnoWsmsPIhogQhkingIvXT55O7T3ISegWgvZzeJPkZgcMjoGJrhRqflxIILSp7OJvHkegl5yVGVU3Tb/QPZYTFxXsibO48eh853OeQ
- ZyQ1DvSm
- lwSFAIoMPHIV2MQWLd65qEqTVr65xTT0CuXc2hk63ES+94btHVHZH3ru7xrt/XedYCVwux2dd2kUKtXmiyJKEY4vsxHYL3CigYW2N+tRnxcfyQw3KR5zxSPE3XErFB/VZcJnNrOc08joM3CNn/3hyhi+W4WjUWolS7OlzGGvC6NdSqExZqbznrrpg6vAGMe/ypjppQ/PC0jDNtw1J+UdcYCNTPx4tPGvunCcgecsbSwK0CCfnt6mAfAu7pYL/0ZBheH4oBmB68P6hPaPQpqd7Fs9inUWMPYWnQYzRken5AJrjTzZMY8rhD4g+A6O8t+ysOGzR0iudqPgbhjL4MYo9yO4AxXbfQYb834M5kGkgv320VqillKyH8G9cj+xX5pWShcAg6enBkpcnfPcbNMEAhhL7GOCsxh6Heyc0Kvs52Mu7s0gK89R3dvEFC1iYdjFe2b6+tgOPqyL2I6RhoNFVaeKWk0aMk22bzW8uxnmyDNNqcHQSeGvHkWlY+sfE8eQ/cn3W0hkiHhqh22v/Fn/yQqsj/smw9yg0Q1VUppHK2PkKHZX49hyNNP9a0XSTimJ8J6dXi+D7VuBolY3bjBCeDw9WY+oJElyiwXCmUgxZhvmoLS5gPJOYZTc74W5hEgi5y/EVaPmQ8t2E+zoZxPNWgmoIylF5b7FlIUJkZ4ta6UeVtuYsTgpJrZpgu6q36QFVASpgVzEXpu/mEGI+dEZNqNsklHGDq8u2xJuwpUscr+P+pG0uAVGBd6JyhXNWK7tycna0Xrl4JnKRcIMQWDpmqp6K2XYHYHQedKb1Ps1Rl7G4DtvTn2hidpD7D71S91h/FXxoBTkGd0zu4Scemlwz4cnEUQ891G09W0w2wRk+w/7tMZDKgEXfTnNpCG2Jwfbic5A3wTJVTZnQNEZiUU5km2Pvo+OPRlmzgziYnyMKthb2lDk=
+X-HE-Tag: 1771761439-855231
+X-HE-Meta: U2FsdGVkX1+oYxv8yvLD6QaAaNnstdas1Y2z/9mfk7prlIoqfo3Z2KpDHCU+/MnrqWPXDTFRPaAJjUkyFEV1BV8O+HkTrmmdSZaTDrf1tAN4pEegD57FMTtTC+B2eNuMip3mOhMfu5N8v1taMkOrQ8RNCCmDynTNus9rQWWfLL4EXVdhmDlO9EAYvsgXGZPfUYVAKuLUcnCrnmpsotbUgS9NRaaWuFGfmLjBhfu+JaBjm+nxAr6zaQFUM9f1KNYvJicoKNNNaUvw0wuBSGRAJ9cBNplIjnyAbmT23yohj1iS08l3QW9b7Zm0YzdIDDYUvcUwd+sTV7pDUwVOKjeeS0OqaFZQm79RWd07a7C0/T0XXT/LmiHFtCEvEBTisK9jEJptQUDP+ICw/TcOLMTKe6++KsGSLmcsGUJA3d5dmW3zFd8DP0EoSzbdzqNRKZJ17msdDJbtdBWph+kElleXXbZ78tjqGegQKpRQFsjG7h81/PeRColrSlOoSqFM3aWULxKxe5NdzA/1hhSr/CeqQLzDNglnBYbp7iyk1zXRsnmNb/jL2w5DE8KfKr9LyKALn4TcFtxJyLARQOZnz8FgaoAjN1XDnK4Dd8A3cKV7alOP4l632rUg6wJ+ePpDJu1mVLEpFZOtwpCEqDR493Qrbi7FveItqNpjjDAymTDzdP4Eg4Fn1a+6RYIoZt2CX3zM2YX3Zr70mTHYisc4ZQZyOtoxlPKazT2QGd1R1UIdNNB2zy/1Ol8VzY8edvY0y5xJ1WtxpC6tk2K/v8b21CwVKFW2v3BU58GqC/zQlaVqVjcRVWB6uYac6ChASjQr2iTqEddMP8IehOgdsNnPXc4TGTdn6wteFN8kOJgdhCEX182nNqBBYBvGYKG+OHU0LIb9kKpTbk6DZWYy2obH7BXWtz1BzwzvihX5OUPZG2w4YsNZamT5+CNN5eDME3g5V8ESrPc8vY6A7ENXapKnFYe
+ +wqEMMSI
+ TvBpASVxxNW06vk0XxWQS8WQR5alhgBDX/ffLAbAhKRj7QSYlhSAwLrmjmBqJyUVAzrLZ3fekuYLhgK2PAI6LRRqojj6PkbDOLLXHylVB5hsR2WyxytUzVcy6Da/CuAfmB0a4Fg00/yV5Gi6fcbf2t2BSIfUxMgh3WWSGHwER76eCH8st1Qf3RA64V2hlIpK+K74tCymciO8jK0MYlLWecs2zE1XQEerCdo8Z8VxMSONifsdzNgqHamUYXPwKclRwdl5QFnOduATRPCEVfpTF+KBngMbukDfe3i9hDYo2sBBpmbhy4QNXdqt+tM0LiK/76Atl0ggiZPEVsqKQUvfYkLVnyqpk5W8KMh1E6as6Drh4kcT10l77p/blenNs98qRtNKfoH99uDAgFKB4hmej2aLPK0/d+UZMEnDucAP3CSPKkDL1WcRB62KsZg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -252,168 +103,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 22, 2026 at 03:38:57PM +0530, Venkat Rao Bagalkote wrote:
-> 
-> On 18/02/26 5:06 pm, Vlastimil Babka wrote:
-> > On 2/17/26 13:40, Carlos Maiolino wrote:
-> > > On Tue, Feb 17, 2026 at 04:59:12PM +0530, Venkat Rao Bagalkote wrote:
-> > > > Greetings!!!
-> > > > 
-> > > > I am observing below OOPs, while running xfstests generic/428 test case. But
-> > > > I am not able to reproduce this consistently.
-> > > > 
-> > > > 
-> > > > Platform: IBM Power11 (pSeries LPAR), Radix MMU, LE, 64K pages
-> > > > Kernel: 6.19.0-next-20260216
-> > > > Tests: generic/428
-> > > > 
-> > > > local.config >>>
-> > > > [xfs_4k]
-> > > > export RECREATE_TEST_DEV=true
-> > > > export TEST_DEV=/dev/loop0
-> > > > export TEST_DIR=/mnt/test
-> > > > export SCRATCH_DEV=/dev/loop1
-> > > > export SCRATCH_MNT=/mnt/scratch
-> > > > export MKFS_OPTIONS="-b size=4096"
-> > > > export FSTYP=xfs
-> > > > export MOUNT_OPTIONS=""-
-> > > > 
-> > > > 
-> > > > 
-> > > > Attached is .config file used.
-> > > > 
-> > > > Traces:
-> > > > 
-> > > /me fixing trace's indentation
-> > CCing memcg and slab folks.
-> > Would be nice to figure out where in drain_obj_stock things got wrong. Any
-> > change for e.g. ./scripts/faddr2line ?
-> > 
-> > I wonder if we have either some bogus objext pointer, or maybe the
-> > rcu_free_sheaf() context is new (or previously rare) for memcg and we have
-> > some locking issues being exposed in refill/drain.
-> 
-> 
-> This issue also got reproduced on mainline repo.
-> 
-> Traces:
-> 
-> [ 8058.036083] Kernel attempted to read user page (0) - exploit attempt?
-> (uid: 0)
-> [ 8058.036116] BUG: Kernel NULL pointer dereference on read at 0x00000000
-> [ 8058.036127] Faulting instruction address: 0xc0000000008b018c
-> [ 8058.036137] Oops: Kernel access of bad area, sig: 11 [#1]
-> [ 8058.036147] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
-> [ 8058.036159] Modules linked in: overlay dm_zero dm_thin_pool
-> dm_persistent_data dm_bio_prison dm_snapshot dm_bufio dm_flakey xfs loop
-> dm_mod nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet
-> nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
-> nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set bonding nf_tables tls
-> rfkill sunrpc nfnetlink pseries_rng vmx_crypto dax_pmem fuse ext4 crc16
-> mbcache jbd2 nd_pmem papr_scm sd_mod libnvdimm sg ibmvscsi ibmveth
-> scsi_transport_srp pseries_wdt [last unloaded: scsi_debug]
-> [ 8058.036339] CPU: 19 UID: 0 PID: 115 Comm: ksoftirqd/19 Kdump: loaded Not
-> tainted 6.19.0+ #1 PREEMPTLAZY
-> [ 8058.036361] Hardware name: IBM,9080-HEX Power11 (architected) 0x820200
-> 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-> [ 8058.036379] NIP:  c0000000008b018c LR: c0000000008b0180 CTR:
-> c00000000036d680
-> [ 8058.036395] REGS: c00000000b5976c0 TRAP: 0300   Not tainted (6.19.0+)
-> [ 8058.036411] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR:
-> 84042002  XER: 20040000
-> [ 8058.036482] CFAR: c000000000862cf4 DAR: 0000000000000000 DSISR: 40000000
-> IRQMASK: 0
-> [ 8058.036482] GPR00: c0000000008b0180 c00000000b597960 c00000000243a500
-> 0000000000000001
-> [ 8058.036482] GPR04: 0000000000000008 0000000000000001 c0000000008b0180
-> 0000000000000001
-> [ 8058.036482] GPR08: a80e000000000000 0000000000000001 0000000000000007
-> a80e000000000000
-> [ 8058.036482] GPR12: c00e00000120f8d5 c000000d0ddf0b00 c000000073567780
-> 0000000000000006
-> [ 8058.036482] GPR16: c000000007012fa0 c000000007012fa4 c000000005160980
-> c000000007012f88
-> [ 8058.036482] GPR20: c00c000001c3daac c000000d0d10f008 0000000000000001
-> ffffffffffffff78
-> [ 8058.036482] GPR24: 0000000000000005 c000000d0d58f180 c00000000cd6f580
-> c000000d0d10f01c
-> [ 8058.036482] GPR28: c000000d0d10f008 c000000d0d10f010 c00000000cd6f588
-> 0000000000000000
-> [ 8058.036628] NIP [c0000000008b018c] drain_obj_stock+0x620/0xa48
-> [ 8058.036646] LR [c0000000008b0180] drain_obj_stock+0x614/0xa48
-> [ 8058.036659] Call Trace:
-> [ 8058.036665] [c00000000b597960] [c0000000008b0180]
-> drain_obj_stock+0x614/0xa48 (unreliable)
-> [ 8058.036688] [c00000000b597a10] [c0000000008b2a64]
-> refill_obj_stock+0x104/0x680
-> [ 8058.036715] [c00000000b597a90] [c0000000008b94b8]
-> __memcg_slab_free_hook+0x238/0x3ec
-> [ 8058.036738] [c00000000b597b60] [c0000000007f3c10]
-> __rcu_free_sheaf_prepare+0x314/0x3e8
-> [ 8058.036763] [c00000000b597c10] [c0000000007fbf70]
-> rcu_free_sheaf_nobarn+0x38/0x78
-> [ 8058.036788] [c00000000b597c40] [c000000000334550]
-> rcu_do_batch+0x2ec/0xfa8
-> [ 8058.036812] [c00000000b597d40] [c0000000003399e8] rcu_core+0x22c/0x48c
-> [ 8058.036835] [c00000000b597db0] [c0000000001cfe6c]
-> handle_softirqs+0x1f4/0x74c
-> [ 8058.036862] [c00000000b597ed0] [c0000000001d0458] run_ksoftirqd+0x94/0xb8
-> [ 8058.036885] [c00000000b597f00] [c00000000022a130]
-> smpboot_thread_fn+0x450/0x648
-> [ 8058.036912] [c00000000b597f80] [c000000000218408] kthread+0x244/0x28c
-> [ 8058.036927] [c00000000b597fe0] [c00000000000ded8]
-> start_kernel_thread+0x14/0x18
-> [ 8058.036943] Code: 60000000 3bda0008 7fc3f378 4bfb148d 60000000 ebfa0008
-> 38800008 7fe3fb78 4bfb2b51 60000000 7c0004ac 39200001 <7d40f8a8> 7d495050
-> 7d40f9ad 40c2fff4
-> [ 8058.037000] ---[ end trace 0000000000000000 ]---
-> 
-> 
-> And below is the corresponding o/p from faddr2line.
+Commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
+zones and memory map") moved free_area_init() from setup_arch() to
+mm_core_init_early(), which runs after setup_arch() returns.
 
-Thanks!
+This changed the ordering relative to init_cpu_to_node() on x86. Before
+the commit, free_area_init() ran during paging_init() (called from
+setup_arch()) *before* init_cpu_to_node(). After the commit, it runs
+*after* init_cpu_to_node().
 
-> drain_obj_stock+0x620/0xa48:
-> arch_atomic64_sub_return_relaxed at arch/powerpc/include/asm/atomic.h:272
-> (inlined by) raw_atomic64_sub_return at
-> include/linux/atomic/atomic-arch-fallback.h:2917
-> (inlined by) raw_atomic64_sub_and_test at
-> include/linux/atomic/atomic-arch-fallback.h:4386
-> (inlined by) raw_atomic_long_sub_and_test at
-> include/linux/atomic/atomic-long.h:1551
-> (inlined by) atomic_long_sub_and_test at
-> include/linux/atomic/atomic-instrumented.h:4522
-> (inlined by) percpu_ref_put_many at include/linux/percpu-refcount.h:334
-> (inlined by) percpu_ref_put at include/linux/percpu-refcount.h:351
-> (inlined by) obj_cgroup_put at include/linux/memcontrol.h:794
-> (inlined by) drain_obj_stock at mm/memcontrol.c:3059
+On machines with memoryless NUMA nodes (e.g., node 0 has CPUs but no
+memory), this causes a NULL pointer dereference:
 
-It seems it crashed while dereferencing objcg->ref->data->count.
-I think that implies that obj_cgroup_release()->percpu_ref_exit()
-is already called due to the refcount reaching zero and set
-ref->data = NULL.
+ 1. numa_register_nodes() skips memoryless nodes: no alloc_node_data()
+    and no node_set_online() for them.
+ 2. init_cpu_to_node() sets memoryless nodes online (they have CPUs)
+    but does not allocate NODE_DATA.
+ 3. free_area_init() checks "if (!node_online(nid))" to decide whether
+    to call alloc_offline_node_data(). Since the memoryless node is now
+    online, the allocation is skipped, leaving NODE_DATA(nid) == NULL.
+ 4. The immediate "pgdat = NODE_DATA(nid)" dereferences NULL.
 
-Wait, was the stock->objcg ever a valid objcg?
-I think it should be valid when refilling the obj stock, otherwise
-it should have crashed in refill_obj_stock() -> obj_cgroup_get() path
-in the first place, rather than crashing when draining.
+The crash happens before console_init(), so no output is visible without
+earlyprintk. With earlyprintk enabled, the following panic is observed:
 
-And that sounds like we're somehow calling obj_cgroup_put() more times
-than obj_cgroup_get().
+ BUG: unable to handle page fault for address: 000000000002a1e0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ RIP: 0010:free_area_init_node+0x3a/0x540
+ Call Trace:
+  <TASK>
+  free_area_init+0x331/0x4e0
+  start_kernel+0x69/0x4a0
+  x86_64_start_reservations+0x24/0x30
+  x86_64_start_kernel+0x125/0x130
+  common_startup_64+0x13e/0x148
+  </TASK>
+ Kernel panic - not syncing: Attempted to kill the idle task!
 
-Anyway, this is my theory that it may be due to mis-refcounting of objcgs.
+Fix this by checking "if (!NODE_DATA(nid))" instead of
+"if (!node_online(nid))". This directly tests whether the per-node data
+structure needs to be allocated, regardless of the node's online status.
+This change is also safe for non-x86 architectures as they all allocate
+NODE_DATA for every node including memoryless ones, so the check simply
+evaluates to false with no change in behavior.
 
-> drain_obj_stock+0x614/0xa48:
-> instrument_atomic_read_write at include/linux/instrumented.h:112
-> (inlined by) atomic_long_sub_and_test at
-> include/linux/atomic/atomic-instrumented.h:4521
-> (inlined by) percpu_ref_put_many at include/linux/percpu-refcount.h:334
-> (inlined by) percpu_ref_put at include/linux/percpu-refcount.h:351
-> (inlined by) obj_cgroup_put at include/linux/memcontrol.h:794
-> (inlined by) drain_obj_stock at mm/memcontrol.c:3059
-> refill_obj_stock+0x104/0x680:
+Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+---
+V2:
+	- add commit log for non-x86 arch
+	- add comment for code change
 
+ mm/mm_init.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 61d983d23f55..df34797691bd 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1896,7 +1896,11 @@ static void __init free_area_init(void)
+ 	for_each_node(nid) {
+ 		pg_data_t *pgdat;
+ 
+-		if (!node_online(nid))
++		/*
++		 * If an architecture has not allocated node data for
++		 * this node, presume the node is memoryless or offline.
++		 */
++		if (!NODE_DATA(nid))
+ 			alloc_offline_node_data(nid);
+ 
+ 		pgdat = NODE_DATA(nid);
 -- 
-Cheers,
-Harry / Hyeonggon
+2.53.0
+
 
