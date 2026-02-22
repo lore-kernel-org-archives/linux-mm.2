@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BCE2C624A6
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:50:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC57AC624D2
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:50:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E77736B00B4; Sun, 22 Feb 2026 03:50:05 -0500 (EST)
+	id 34D7C6B00B6; Sun, 22 Feb 2026 03:50:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5F9A6B00B6; Sun, 22 Feb 2026 03:50:05 -0500 (EST)
+	id 30E216B00B8; Sun, 22 Feb 2026 03:50:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0D196B00B7; Sun, 22 Feb 2026 03:50:05 -0500 (EST)
+	id 1E3796B00B9; Sun, 22 Feb 2026 03:50:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0956B00B4
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:50:05 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87899160662
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:50:05 +0000 (UTC)
-X-FDA: 84471470370.09.3D7EE27
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D763840012
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:50:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="AK1UQp/l";
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750203; a=rsa-sha256;
-	cv=none;
-	b=2hCxzUY4PWMuvLBViwoN1JwDYlsLZpvuMI6XUQiYOZY09gU7cFJivLGtI7ogKkUhl3YQkT
-	4Y8pIRsWaXQxZzMTm7FU/+Tf/WKNd5p1m1VyM7zC8VY+bZuoVK7BpEyrOhPQCfSY58Izor
-	PLZmPJp8A1YDK0xo8lmRQhijhHkMUA0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="AK1UQp/l";
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 088E96B00B6
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:50:10 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAC1A16064D
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:50:09 +0000 (UTC)
+X-FDA: 84471470538.14.BB13756
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0578480003
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:50:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cgyzok8O;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771750203;
+	s=arc-20220608; t=1771750208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1vF7vDru1wu4C4IPdmOP0dgYFxJxyuUKkceiB3IYEd0=;
-	b=q4HNmQLMnoramipMY3fsrs0bhy4dFNIee+5lpY7Hp+T0DBgIbF5LQpdO3Zb3ov4YCIEhej
-	uuuOBPRvYVDTlluiJ382e+paiz6/l3ufy8xxMqQmlLhuiAA0gjaJ5wHjrjt+/GJPzf7zTM
-	8v95JSC7V/M+vjUJDAXUyu0tERfhfpc=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-506a7bbe9d0so29136021cf.0
-        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:50:03 -0800 (PST)
+	bh=6FZckDxptwGx8klYMDL0XD8dz9+dfEviXYn1CKFqg9s=;
+	b=duzOKzJ1Lk8xcfIjqiTLvik8UGGbNdM3YdTb2Lsmd4q1IRXU2zYCteKBPaM10HsPxh5dZ7
+	VAQIEzz+BRWTxuKcGBMT2vDaXF+lIoL/Y1mKsvWV5vQPm1QG2YsCMcoh9plSj3O3s8DXWj
+	v5B2hK+6W+cCxzib0soSYxqvFc0xtcQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cgyzok8O;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750208; a=rsa-sha256;
+	cv=none;
+	b=syuQdihgzZw2bhFHYow0j0rUKDNHVhLGPJLeN3N6Dk++NZzUvuKLrwupRiLqiZFgnaORWD
+	bJML8YqC1xnYGOvoq/vXR8vhCy7Sw5OBlhMdtMVIwGtqzfMBqITBm1Mlyf+/g428izi5mw
+	NR36yOt0l2akpyWFtbwfY0xlcBifuE0=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-506a1b23c05so43290681cf.0
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:50:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771750203; x=1772355003; darn=kvack.org;
+        d=gourry.net; s=google; t=1771750207; x=1772355007; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1vF7vDru1wu4C4IPdmOP0dgYFxJxyuUKkceiB3IYEd0=;
-        b=AK1UQp/llbTdIRxVSVk2BCy2RiNkZBwmwscw0eMvFC3IVPoxHTgcIlAeeGeVYTaYY9
-         wMZ1aYHwaSRa0E8Za7zcxLR1AcLF18eHBShXGsYNmSRhgj1XaDGnQnCUrBZ4g+fjhwNX
-         VzN6busB59fK6QyrqmaloZcUvYTlPyV6cT+kjrLm6aftf7yv+MQxnMz49tjJ3fuGQbBx
-         okwYTD9BuJkMwYP7FCxdQylO2mhf9Ll1SeASmAyL9q79XeEY7xQQ3nLEl8hbj6ayES9f
-         i+52os+DAgjz2wSnQU/n0vYCixhri6JtalhLZ+jvXlMjarV0GlrmoA7Vy81OXJoC0HiW
-         ViZQ==
+        bh=6FZckDxptwGx8klYMDL0XD8dz9+dfEviXYn1CKFqg9s=;
+        b=cgyzok8OCPUebb6r6czssE0DBUoaHvQhdR4J4UX0GFT5m84oZU0tzRPK+p5Y6y9uwA
+         a3LXMXcfRmO+AOgxdhWIzwgvF+8aF2GSeBGq/g7SIaty3UOXeLylqgnKmuiar/CGC48X
+         hqDh/AklPPhXgJOQGareAU0nW/OFSDyn7owFYeaI7zokPSz0qIDjmlqghUcgXW0MCiix
+         BCxD0dAwlbkLXw0RmH5EbHpepGQkUdycRs2i8ZwEBQ+/VfIPQcZ5kY5wONKZIdb7dSsS
+         ekHl29Y2YcF5/Z08yzjrZD0lGVutlT0GLWK3x94zAPv6lsC9zVpHWYpyMtt6010ZSG7S
+         uJUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771750203; x=1772355003;
+        d=1e100.net; s=20230601; t=1771750207; x=1772355007;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1vF7vDru1wu4C4IPdmOP0dgYFxJxyuUKkceiB3IYEd0=;
-        b=SRuKeVlChx9qd2kllFlaGU3CCjzSg6nBu4Lc8UYbXyiT75ydWbOmoUGFIWDglmXTBI
-         L8sdVrdKMAfAiXRbsWXhZFcBrk8STYHTU+R/mmKGSY20m2OJBco80QF9US+/C8YYyLWp
-         QBJhQH84l9YkZNbML5VxQXpqIGw8b8G9NmQMWDlrtMtaU42SUskwRae1nIxEScBPbJhs
-         deAUtY3sTRNPoedJH/LQ0jFq3HGPwPe33Kgd/2dA5ezN9nueagCzSiKZB5qdSU7YMPTW
-         ThsXZXPmIBZq7i81q5jyhpvLmGsl/wsm8yrjdsI92+SHAO9oczQIzdfLu3+CH0VAPJ8+
-         6oaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpZTf7MyHufb4dsg4FfUxIeU01iPveQmTAOg8KIqKsV61ot7OGUmk1pEMif4G9wYIDYxPwzsxwTA==@kvack.org
-X-Gm-Message-State: AOJu0YyaA3ZBMVDPnh/LRQL0Fb4nNYVV9H1f2IrSZEqmPZ5h3TLC/lie
-	UkBWbL5NOPYioXuSEqfhRzNZuBKTueI3919y3mtuOpcsXQAmn5b3Ke33Ta2XVdKugBE=
-X-Gm-Gg: AZuq6aJ2dwCpxXPrJdjWtFjULgvTRzRtaVRGsjErnYU8ugLErQApiiSkASX1KxsZiV4
-	ikZQHF6SXDSTsw7MuO/pNW6auYjLjkZkseuJzZOkYYdoj4Q4/vg3LIGPwXC1k/68K8u4Za3jevH
-	yLUT27d4neHYf+7gX5Y0d0EfZ8YBxZDb3GYWQT2KD8b93kvJaE8bjadSPPMynaR2mFk3Q04JL4N
-	gXvx73Wzvutl8S2fAEWRK8o7RWcMeWHsZ57G40Uolet4Unsg5e0kFko+wCGrrl/HKS5w3FG/bSQ
-	rcsebMHBgLFY6ASl81ZqQK8avfmBgVcuGHDjjOsguFBgFo98YgsgFMGaIUDjgz7lka6nuZcaOEr
-	qQTokv5ixXKG80KkHTOuBKXx/YOb3ADBJF7JTQhT/W3alxQooLpByIonB2wNlWKjzxWsVMta/Bm
-	RR1313epQF9S381Nh8blqiRc4W27EckBWUBjK447gqf0/fve/b2q28jRjpBxPQ3nAlY2xq3wNnV
-	8P2JTRPbZi0LIM=
-X-Received: by 2002:a05:622a:14c9:b0:4ee:1fbe:80de with SMTP id d75a77b69052e-5070bca9b78mr73724161cf.63.1771750202674;
-        Sun, 22 Feb 2026 00:50:02 -0800 (PST)
+        bh=6FZckDxptwGx8klYMDL0XD8dz9+dfEviXYn1CKFqg9s=;
+        b=S+iX05npYrOoDpyfZqB1VQGg/IYwBGH0C+NdYOvtN5U2Hf07ljFmZgCTIPjkt1AzDl
+         eW+65CapVFnfNTAp8rNDycvMkGljrADMgs8sbQwwRsSnSNrx0p3aJZFOpTChAS1hsSSS
+         8eyW/2/BQg5MzU06A6AGl+I98+pYGg7Jm/hxhyE2eSif9KEEVPga4jNdRxvUsdLrxJBT
+         300pWUnZfYrtW1l0Pna8Dgqp/jbN6jxYiG1ZVfFzcJoIwTQWXfNk2Tla2UIu+X+hyCZq
+         vkne/sNYovx1tHlyOTmvDZUW2KPY/ciXBV27OK5MTzkqrhpaENfUZRqO0Ww9EKLzN34Y
+         FlTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAWnmMpQlPAfx/94CHP439vCcGfZfPMwoBPPwSnbtSUYNGGpZdl6ApOIeD6zS/eLMCYPufslwUQw==@kvack.org
+X-Gm-Message-State: AOJu0Yw0PwzsatDkmJncjdPETfoxHXscDok4qXDY4mSyMyXutbraOWyq
+	J3Sr8SqJfQ1mPQbUdEZ9OrPpH/S5i5D55oDcESe0QjxmHFb/PwfWgIOwTtfpAmKBmNc=
+X-Gm-Gg: AZuq6aLTTN0Uq/jWTVnO+sR6e0MCTLh39PJF0VUp/4NvKxbNgPGFCrrtluNmfQJCf2r
+	eX5eUD5/4uHuDnJW4OPW+eoBfaeFDUuQkpFyNh54sYTqheN0BDubWMBPomcEs+X6XLjKo0UtGtx
+	+qp9MtmAcV6E37D9adnY+ukQYLCDpjUGLnOtGyFokGQ07ue1We0/JkLErd7k6T6/p2tPwV/rb+W
+	LUcFzrTFErvzqhP2fqK9OH+W3kmKUEzjFcgd5KsXr9LseHr+OwJE+5DMmdwGl0csrHSKHt2lbZi
+	mn7PVQMfuFuv2y9WI7vPgu/NvcrFGl9FKUH8JCJeN7qXKQIXbcfvV7o8yQeYt+PFCVdVFcs/Xgv
+	lDnIJVpu5v02yVtnPJxD1B4M3m/H9j3LB/YMPATGsptfysu9ceFN8phC4sqFfFumgPa92no8/xD
+	K8/HBxix08xAC2IOQYfsXOYDMIRRXqu63S0NbiFHETLqQSOiT/UE85yIzlqQBvyfcOpZaM5cSL8
+	+6He+IakyDp61w=
+X-Received: by 2002:a05:622a:209:b0:4ff:4a7c:da11 with SMTP id d75a77b69052e-5070bba08b0mr86322821cf.11.1771750207039;
+        Sun, 22 Feb 2026 00:50:07 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.50.00
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.50.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 00:50:02 -0800 (PST)
+        Sun, 22 Feb 2026 00:50:06 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: lsf-pc@lists.linux-foundation.org
 Cc: linux-kernel@vger.kernel.org,
@@ -166,22 +166,22 @@ Cc: linux-kernel@vger.kernel.org,
 	bhe@redhat.com,
 	zhengqi.arch@bytedance.com,
 	terry.bowman@amd.com
-Subject: [RFC PATCH v4 18/27] mm/memory: NP_OPS_NUMA_BALANCING - private node NUMA balancing
-Date: Sun, 22 Feb 2026 03:48:33 -0500
-Message-ID: <20260222084842.1824063-19-gourry@gourry.net>
+Subject: [RFC PATCH v4 19/27] mm/compaction: NP_OPS_COMPACTION - private node compaction support
+Date: Sun, 22 Feb 2026 03:48:34 -0500
+Message-ID: <20260222084842.1824063-20-gourry@gourry.net>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
 References: <20260222084842.1824063-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D763840012
-X-Stat-Signature: ts8f8cmzdhhm5wpo9sb1o6mweg6zbkks
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771750203-129636
-X-HE-Meta: U2FsdGVkX1+9n3e3lucJpzimAMfR5soXFzaXL3Fisraw2Dd6ZgUNn0RpePOzcpiLrGVzpuzR3wPYVkAbdAcdHdJ/0mo4hSQsnhNEquzySwqr7Pm0S2aghJipbsGDkTgxACzYhtSGZM8vI+mw7ljZV0EIblfiRdECMC4kzxm4ePSeAmwSDNSBk6sAetWJAZNUCMMsO62EdBRqZpLuIPnGTe9EOL3m6q4S2Wnm5FBG4Y5zqiKRINY3Ywtx7LrLV0sgwUJtzw8cBgodgq4OjDwY5hFXtmaDlnhgg7s+fk35NAq5mARN+VHcISUTRgBR/vs2MfRMPkfKh3aGlRF16+BDn7wU51qyRXPsbVinRcCSwSqiwe7Igbgr8DyG0oSCatW5BD9KNiJVJTRLgceAKr6gT7iNfQrgImytJYuFRuR82D8ohC8u4zVpNJhUh4/bOrS0qqf4A9FHtbpIgTg4gZzY+Svm7SBr3TQwqquX4pk9NlpJFjQqwUqnIx25vhWoJ+7oDHuvhdlEIIfQ3J7bbKnFSR9fs7GngOkTPTyuX45qcDg6xTHpfYd5kAk3naquEELlqVl7UO+Xid6aTwBiS1H5ytjNNfdaCB74RxnMNAqYqQhywjBvX38njfsoWWMk48Qnx2RysPuMVyVHtOVLl9T02udzYMc4kWvtMnPZZyzo4IFHjdAUU6DNRjr2YK/WEfiJU5nC2q0scPuacscOLV88Z8sk1BMqJrsIhgBjdQiKo+8ZQgZD5tOejuGEAcOdlL/AICHaoZ9iFAK4a5jcs/GaWSzaPW2DS4JIEGQwHUEsUBJn3J6WOfcaVs/Pq34GfLDuC53Hjb5LpkXrRp3YJCpJ5IgASG8cUrasTGFFS9CGqQkxffRK6whduhtU8uWshEm5o/8KPZjBZptnPBEVEOzaZb4fb9ll9urg/XUD2/yg/JWGQkjQF9lVAI/Q75Q3Nf6qy1yBT18Uaml3mBorYSE
- n8C8yoNJ
- ltECTfLiDI8HINfvci3y5n3VFW0moXfkL9pt0p4txI4UZRSnL/prOGGqVRfqRzr3S7qgIXOHv9CNRTm5GELUt2F5ZiuH+1ftKtL3XgRynmdmqBN1xuCSOH5HwOIRn1qSW9mQbKQf8vhSy6Dv9Jzc0Brkl3g==
+X-Rspamd-Queue-Id: 0578480003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: uhym8pdqw9bbzi6qwxasqqxuy8zog8x5
+X-HE-Tag: 1771750207-772817
+X-HE-Meta: U2FsdGVkX1/gZSZr3zAgNiyAxXVb8GErn0QKnquxsDS8OLMybhbK76rzA0zIcNDIdPmG61OFlNMjQUe5SCNtiCoxzbiAU4230269P/8gFctftx66uasgxVcGPvz8wpdsq/VuAp139unQPJZCvYmt39cwXoYR1mK/4jG/lx8lAuH4h+Ckr/jmX3G10VDHCEaRHapkJp6H0KjZ+CxWE1p7RP3Epa8rfcX1zPtiK2Ej6VdivZpROZsxefNzu4DSLBBQ1e8UPtZWdtFE8/BHxqwEFWeCAT/VqVn1xyD/crA7Pn6Dp8jn1pa5LMTMBdO1uimGiw7sh7Q8+fndJgd7ZvDwueAHm3qRd3F7HYod+qSp2jECFAAGxwL3Uqwuq2SocGN4+tfxIHWjVJZh5xMA9cyolXmIvcbvaKhkX5Uo2bLV2TeA1suyZqd1L1/fvOg+HPJhOB7V746jI8UbZ1qADgVTWKKKji0+Ly9ZKtQ/GGOtpmemoBGUgH1HOGt+muGvPmAT/7OuIhw9/d/lsr2s6zi01WSSMXuKaFDVIIe5tReGSNbqFg52iOekqS1FX84EbbLEXzJ9EWGJTEzTgamUj88/qciNiiVW80PI0sb5SrkrsQQxH5r1Bs1BQhtnCrkQGsgSRi2gI6VHXa/TbFCIbJGoZjk9McfJmWVvaTjCKgipH81naISE/jl/xP77oH8eP+ZyNltKFBeH3ZUDvC4TAp26dtFhhDfMCmr6OJVnvSpPkyhTEEQoQbbynD6iHwiGs9aXeJ/BTSM9lCwPg4iH/LZB1ucV+RfCLGJRTV29usLKrO+hrLBFRsIafm023ZLN0UX3hLCkUD/irJ+76dmForF02Il2Jzk6XBqqbSo24fF88t4/lpLGe45jBRdtPnZrm2oVaafb3ln6qJxJOwUtgRJihX1M6vrsSGP1F3xGdPfdEPTFUDCAPpy3e9UxhUdQIDohZd9JyBknXvRq5fRF2VH
+ VnaF+B8q
+ VY5YECi7EfO6jOr/WMD3keA8GMxv/kAMZEPQ2PgDKFq3TJ8EMBfjSGSfJ7r9xcwe0HYOXBpVVWK1Ni70Z0L0bdSjaEbfISK3UD4izpzcX1k2jjFKdpCx786N3Y3ls+X8Q6NNjITtqXbHA2NbPCwvQLL8wb5zQ6F2W+Ce6koVzNwUJEmDLgtvpaQZPCJeyWbyqs1SJYUEAKxd0nY9YArru5+iSueD/Y4azTOVgM0qdQ3n+y3jOF/Nf9HFblr1AYBehsWQngnMZEp2nGjhv/EVeGfZWJ/81URMG7qNCBd55cw1IGrex/0dFN3xcxKej4HGKYUBnjRPr49U779OxHpT6dM+pcKu08TidI5//B9FtUEyqhw5oxoiKA6ItOl44G0XtmzPAwtuYl0T4w1gDkGWtGrNOxMBrNN1osgaG6gHhEZ2By4A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,35 +190,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Not all private nodes may wish to engage in NUMA balancing faults.
+Private node zones should not be compacted unless the service explicitly
+opts in - as compaction requires migration and services may have
+PFN-based metadata that needs updating.
 
-Add the NP_OPS_NUMA_BALANCING flag (BIT(5)) as an opt-in method.
+Add a folio_migrate callback which fires from migrate_folio_move() for
+each relocated folio before faults are unblocked.
 
-Introduce folio_managed_allows_numa() helper:
-   ZONE_DEVICE folios always return false (never NUMA-scanned)
-   NP_OPS_NUMA_BALANCING filters for private nodes
+Add zone_supports_compaction() which returns true for normal zones and
+checks NP_OPS_COMPACTION for N_MEMORY_PRIVATE zones.
 
-In do_numa_page(), if a private-node folio with NP_OPS_PROTECT_WRITE
-is still on its node after a failed/skipped migration, enforce
-write-protection so the next write triggers handle_fault.
+Filter three direct compaction zone loops:
+  - compaction_zonelist_suitable() (reclaimer eligibility)
+  - try_to_compact_pages()         (direct compaction)
+  - compact_node()                 (proactive/manual compaction)
+
+kcompactd paths are intentionally unfiltered -- the service is
+responsible for starting kcompactd on its node.
+
+NP_OPS_COMPACTION requires NP_OPS_MIGRATION.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
  drivers/base/node.c          |  4 ++++
- include/linux/node_private.h | 16 ++++++++++++++++
- mm/memory.c                  | 11 +++++++++++
- mm/mempolicy.c               |  5 ++++-
- 4 files changed, 35 insertions(+), 1 deletion(-)
+ include/linux/node_private.h |  2 ++
+ mm/compaction.c              | 26 ++++++++++++++++++++++++++
+ 3 files changed, 32 insertions(+)
 
 diff --git a/drivers/base/node.c b/drivers/base/node.c
-index a4955b9b5b93..88aaac45e814 100644
+index 88aaac45e814..da523aca18fa 100644
 --- a/drivers/base/node.c
 +++ b/drivers/base/node.c
-@@ -961,6 +961,10 @@ int node_private_set_ops(int nid, const struct node_private_ops *ops)
- 	    (ops->flags & NP_OPS_PROTECT_WRITE))
+@@ -965,6 +965,10 @@ int node_private_set_ops(int nid, const struct node_private_ops *ops)
+ 	    !(ops->flags & NP_OPS_MIGRATION))
  		return -EINVAL;
  
-+	if ((ops->flags & NP_OPS_NUMA_BALANCING) &&
++	if ((ops->flags & NP_OPS_COMPACTION) &&
 +	    !(ops->flags & NP_OPS_MIGRATION))
 +		return -EINVAL;
 +
@@ -226,98 +233,79 @@ index a4955b9b5b93..88aaac45e814 100644
  	np = rcu_dereference_protected(NODE_DATA(nid)->node_private,
  				       lockdep_is_held(&node_private_lock));
 diff --git a/include/linux/node_private.h b/include/linux/node_private.h
-index 34d862f09e24..5ac60db1f044 100644
+index 5ac60db1f044..fe0336773ddb 100644
 --- a/include/linux/node_private.h
 +++ b/include/linux/node_private.h
-@@ -140,6 +140,8 @@ struct node_private_ops {
- #define NP_OPS_PROTECT_WRITE		BIT(3)
- /* Kernel reclaim (kswapd, direct reclaim, OOM) operates on this node */
+@@ -142,6 +142,8 @@ struct node_private_ops {
  #define NP_OPS_RECLAIM			BIT(4)
-+/* Allow NUMA balancing to scan and migrate folios on this node */
-+#define NP_OPS_NUMA_BALANCING		BIT(5)
+ /* Allow NUMA balancing to scan and migrate folios on this node */
+ #define NP_OPS_NUMA_BALANCING		BIT(5)
++/* Allow compaction to run on the node.  Service must start kcompactd. */
++#define NP_OPS_COMPACTION		BIT(6)
  
  /* Private node is OOM-eligible: reclaim can run and pages can be demoted here */
  #define NP_OPS_OOM_ELIGIBLE		(NP_OPS_RECLAIM | NP_OPS_DEMOTION)
-@@ -263,6 +265,15 @@ static inline void folio_managed_split_cb(struct folio *original_folio,
- }
- 
- #ifdef CONFIG_MEMORY_HOTPLUG
-+static inline bool folio_managed_allows_numa(struct folio *folio)
-+{
-+	if (!folio_is_private_managed(folio))
-+		return true;
-+	if (folio_is_zone_device(folio))
-+		return false;
-+	return folio_private_flags(folio, NP_OPS_NUMA_BALANCING);
-+}
-+
- static inline int folio_managed_allows_user_migrate(struct folio *folio)
- {
- 	if (folio_is_zone_device(folio))
-@@ -443,6 +454,11 @@ int node_private_clear_ops(int nid, const struct node_private_ops *ops);
- 
- #else /* !CONFIG_NUMA || !CONFIG_MEMORY_HOTPLUG */
- 
-+static inline bool folio_managed_allows_numa(struct folio *folio)
-+{
-+	return !folio_is_zone_device(folio);
-+}
-+
- static inline int folio_managed_allows_user_migrate(struct folio *folio)
- {
- 	return -ENOENT;
-diff --git a/mm/memory.c b/mm/memory.c
-index 0f78988befef..88a581baae40 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -78,6 +78,7 @@
- #include <linux/sched/sysctl.h>
- #include <linux/pgalloc.h>
- #include <linux/uaccess.h>
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 6a65145b03d8..d8532b957ec6 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -24,9 +24,26 @@
+ #include <linux/page_owner.h>
+ #include <linux/psi.h>
+ #include <linux/cpuset.h>
 +#include <linux/node_private.h>
+ #include "internal.h"
  
- #include <trace/events/kmem.h>
- 
-@@ -6041,6 +6042,12 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 	if (!folio || folio_is_zone_device(folio))
- 		goto out_map;
- 
-+	/*
-+	 * We do not need to check private-node folios here because the private
-+	 * memory service either never opted in to NUMA balancing, or it did
-+	 * and we need to restore private PTE controls on the failure path.
-+	 */
+ #ifdef CONFIG_COMPACTION
 +
- 	nid = folio_nid(folio);
- 	nr_pages = folio_nr_pages(folio);
- 
-@@ -6078,6 +6085,10 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 	/*
- 	 * Make it present again, depending on how arch implements
- 	 * non-accessible ptes, some can allow access by kernel mode.
-+	 *
-+	 * If the folio is still on a private node with NP_OPS_PROTECT_WRITE,
-+	 * enforce write-protection so the next write triggers handle_fault.
-+	 * This covers migration-failed and migration-skipped paths.
- 	 */
- 	if (unlikely(folio && folio_managed_wrprotect(folio))) {
- 		writable = false;
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 8ac014950e88..8a3a9916ab59 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -861,7 +861,10 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
- {
- 	int nid;
- 
--	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
-+	if (!folio || folio_test_ksm(folio))
-+		return false;
++/*
++ * Private node zones require NP_OPS_COMPACTION to opt in.  Normal zones
++ * always support compaction.
++ */
++static inline bool zone_supports_compaction(struct zone *zone)
++{
++#ifdef CONFIG_NUMA
++	if (!node_state(zone_to_nid(zone), N_MEMORY_PRIVATE))
++		return true;
++	return zone_private_flags(zone, NP_OPS_COMPACTION);
++#else
++	return true;
++#endif
++}
 +
-+	if (unlikely(!folio_managed_allows_numa(folio)))
- 		return false;
+ /*
+  * Fragmentation score check interval for proactive compaction purposes.
+  */
+@@ -2443,6 +2460,9 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+ 				ac->highest_zoneidx, ac->nodemask) {
+ 		unsigned long available;
  
- 	/* Also skip shared copy-on-write folios */
++		if (!zone_supports_compaction(zone))
++			continue;
++
+ 		/*
+ 		 * Do not consider all the reclaimable memory because we do not
+ 		 * want to trash just for a single high order allocation which
+@@ -2832,6 +2852,9 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+ 		if (!numa_zone_alloc_allowed(alloc_flags, zone, gfp_mask))
+ 			continue;
+ 
++		if (!zone_supports_compaction(zone))
++			continue;
++
+ 		if (prio > MIN_COMPACT_PRIORITY
+ 					&& compaction_deferred(zone, order)) {
+ 			rc = max_t(enum compact_result, COMPACT_DEFERRED, rc);
+@@ -2906,6 +2929,9 @@ static int compact_node(pg_data_t *pgdat, bool proactive)
+ 		if (!populated_zone(zone))
+ 			continue;
+ 
++		if (!zone_supports_compaction(zone))
++			continue;
++
+ 		if (fatal_signal_pending(current))
+ 			return -EINTR;
+ 
 -- 
 2.53.0
 
