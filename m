@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CB9FC636B3
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 19:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFA6C636B6
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 19:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2F2F6B0088; Sun, 22 Feb 2026 14:19:19 -0500 (EST)
+	id 854FE6B0088; Sun, 22 Feb 2026 14:36:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDCF96B0089; Sun, 22 Feb 2026 14:19:19 -0500 (EST)
+	id 8365D6B0089; Sun, 22 Feb 2026 14:36:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE89A6B008A; Sun, 22 Feb 2026 14:19:19 -0500 (EST)
+	id 738546B008A; Sun, 22 Feb 2026 14:36:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A8ECC6B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 14:19:19 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5771CBA9E9
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 19:19:19 +0000 (UTC)
-X-FDA: 84473056038.03.49DC0EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E94AA40002
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 19:19:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TNuLlp54;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FC0F6B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 14:36:36 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF4451C79D
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 19:36:35 +0000 (UTC)
+X-FDA: 84473099550.15.351C475
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4A5BA40012
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 19:36:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AZCMsAWK;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771788994; a=rsa-sha256;
+	cv=none;
+	b=l5dMaXT8CtXCsRf19kq1M5gWwisLYMzs01iY2gpXBO7zCfJ2vz1+dOebsmni05o1KkGf1h
+	tfkGq7UGwS7pGjKAlo9V8AZFE9DDi+5NoAZPTuUMyUh6aHztIUOVkxa/YMzecReOsaEZRU
+	2xuuXG/8YTu6DF9pEpukxZHt6u8r8Hw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AZCMsAWK;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771787957;
+	s=arc-20220608; t=1771788994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DRP7K5NP8ROtOLY78wewCtZWCKWi4KCXd84DyV2XsS8=;
-	b=XzdtuZbEimccINvToqQH8+WqDU3vlIln/OrkRqvJpp6HCTHbMthhIrWso44XVMO03xPN2w
-	bApTtOVIyIYY2eU/zE2D1PAXgL840w0Hqg5zsmD/jRKYTsEZg4PkiHQEiW9AiHjYkZDtbY
-	Fo9Cmw2VMitLxEi/QzpyNCKH1YQpNRE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771787957; a=rsa-sha256;
-	cv=none;
-	b=UKxPpCqnUSQrMe0HypOmMNdqBqCZZJjuO8qBiniC1gsJ0qiNM0QCPSYwNyc7B4hYp2Fk9x
-	OHwMn6iib/jFP74wT4oFTN5Yip9bX0ItttPz2eG43LBdmVJu0sRE4FzzZisyh1DdMoikfw
-	Tpo6CqPqP4dzkEOcL3EKQCVlsnsiD/0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TNuLlp54;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=BLtATVfziq2NsHaixCdB92k9OFRtTqAdufX9O9CyUHU=;
+	b=Oy4GIta4eFflnkau7V8q2vVoBHxkn9Z1PVihMYfEtY3UbBL/ZGSD956jYeaU5eGixgH+CE
+	N5L4jccWVe8piI9ktHRIbCREQtCaU0h+gs/9V3kk9sxsAOU/b6moOhvMiKYFsFiHsakrIG
+	uCtJaf/zPG9qCy2oNuqIOWUBxIepvq4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A8896001D;
-	Sun, 22 Feb 2026 19:19:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B8AC116D0;
-	Sun, 22 Feb 2026 19:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771787957;
-	bh=n/zIiLwTtWDrsA7tXCS8QVerjI0mo0TWT+TuUdTwBBs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TNuLlp54ilYBBuwL0IgwinZ4vtTmJlwVmu0YGa3OrBJZbKmxfocxSAkVrYm9fSQVu
-	 5TbImw6qCGGNujQJlFPygCedUJwn9E1OGGNQcyXMGT7weSttMmz4gZfMD9fl1cLseK
-	 yrpS2Y4JRQrkxw2xuFfbRRkhm2kWqDpkSbaLXP4R5+kJWYKhws2CRuOtqPaI0O3VAu
-	 vTfxfu+Yo6SEuHBJqii873lIhyBThO5nFH94hX09HbqD1sEAR3A2NZtBtUrNQ/IVqY
-	 NKR23yRaWQSflwHyHjI51s+18yoDH0dad1UWHLQ1zHN0xIwlDN9kL4pkmIfnS/2WUh
-	 B8lf7Z2TMm0Qg==
-Date: Sun, 22 Feb 2026 21:19:10 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
-	kernel@gpiccoli.net, Andrew Morton <akpm@linux-foundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH 2/2] mm/memblock: Add reserve_mem debugfs info
-Message-ID: <aZtWrjlAaljQ1F48@kernel.org>
-References: <20260217195816.861684-1-gpiccoli@igalia.com>
- <20260217195816.861684-3-gpiccoli@igalia.com>
- <aZlyVHwUdxg5WZBe@kernel.org>
- <20e28221-f9c7-47c0-43fa-72bb2e868386@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20e28221-f9c7-47c0-43fa-72bb2e868386@igalia.com>
-X-Rspamd-Queue-Id: E94AA40002
-X-Stat-Signature: 8ys3t5fhht8b77pnn5dtqqw63qnffhb8
+	by sea.source.kernel.org (Postfix) with ESMTP id E54334034F;
+	Sun, 22 Feb 2026 19:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAEAC116D0;
+	Sun, 22 Feb 2026 19:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771788992;
+	bh=j6Aq3bLjqLlAE41T2HRH6SRYftcu10d13je1+Jl1r4U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AZCMsAWKL+/zY8NFl0Po/6EbZiGpdgS8AA5J6C27bJSt27K4bXZpGss4wAXbRL7G0
+	 txWNxp4a2TET+NfCMmAHz2Ut++fN12p+1OZEySCZc0eHUWQNTlhJ2rfBQs6buFLkdn
+	 ORFfplOCuxjoO/fR6VoOASJReEhD/6m8S9SHmYBA=
+Date: Sun, 22 Feb 2026 11:36:31 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Chris Mason <clm@meta.com>, stable@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/swapfile: fix list iteration when next node
+ is removed during discard
+Message-Id: <20260222113631.6011221e2d8d8f3973f035ae@linux-foundation.org>
+In-Reply-To: <aZpe3kD/xmz87zYH@yjaykim-PowerEdge-T330>
+References: <20251127100303.783198-2-youngjun.park@lge.com>
+	<20260220151338.3234934-1-clm@meta.com>
+	<aZpe3kD/xmz87zYH@yjaykim-PowerEdge-T330>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771787957-964620
-X-HE-Meta: U2FsdGVkX194Rn6EsXVi5D2B1WgK5AG6MgargmioMxPjbZpE+ZaYI8rvn3PS1ATVqr6uLx7ZWeN2Zm192AXoZ5jes9p9cmRFH/4t+BQN5URPLdbtKhUE+h8MolS7aSry39a6cd4/kPGyvJjoEyQiwY/74Fs5zVlrpDL2Yz3G3V9shtj+ZhFTuzASd0kw/HTrC8XA7CEq7YWLb8bur/bYGWsufCD1p6gq6U7VVWwdnf4WRcv3NoQWRCIaJ/vLOqETckdg8rBL4CVjxYK87YdBslelLB7PP0WVeX1RsX3JeUaSLMzdsXC1HVhQpO5JskdWoIH24EOmRe5wFFx428caiV3XBfVv8h2bicBj71hpYQ7YgI4I7nfK4/XGzHhO07lhpVUmUzb5xVl/Fa0wXrSXExxXIhgkOs+6VpDsRCe1DoS2/gYzHskDBNBp6yQSmHAM0tVTeOg2n4Z6E6QtLn3jTErcQioDlZZVISZqiLgK6YgqykRUOhmGSTNLQjDLKC8JtQqW68VsIQv2CNjmlSwFSqj4F72PT0Vh2CG782YwS2r5pek54TXREzNv+Y1BpCYvIFwqh7d3yoLyEv157TcQn3IkWINO09URkc36AfMm1zXSMWagD8FEC8FJS7Ng4vR7883otwOTE7JNju5W14yKGChOkRXvDm3tvyxpCnF7kWKxVmrfQ8JmRXsjylT7H/xqkDxZC6QON9lMvZ/iF021ESXnDcVr/ttVXBHlWr+6er/gXpdg1aXX+y6sfPA1Nau2ReBQEHH2v06i4dd0U8Sp0dgb+ggPf6mjH9MsJBdMZx77RnJ3tpu4lrzzYuRhqt3WfzsRhSyIdiNbSWkcGz6RJOW3kJmWdYUpatW27mr4KaiQChy37sbhwj3B9YhELP2ilVibadTDzfxXGUEsc+kCHWxWy6pF9lBxIQqANwCdKL/4hdLqyTWLI/EwkQ28y+X9SNE+hRq/RUYLIF0zXHE
- rxrJQyfQ
- L6TTN
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4A5BA40012
+X-Stat-Signature: fh5j7amtq7ar5ybkyf7b4c768br4gbc9
+X-HE-Tag: 1771788994-43460
+X-HE-Meta: U2FsdGVkX185XUmmIXfTmD0mSk9BM1sSfFCu21YP/u9F8POzzc2LqtRVoSdryU5Ee2IdP2uhP8lobOSzHj/9rEHZvlwhTomZWBNcCWhsgKMEKNNWPfQGt12UpxEqsA5S061xgxVJJ7RT/4Nam5IJA0iSy75MNdETI79lkLjDfWChZvX/EiqKoER9Fz4b1+smsveZrsbLowKDGd73FSL992LIKP7PGzgjbkOnQ9Hdo1lCo7w4h+3+9/J3T3DDnluanmihkMrKt1lU9ZwmT8IeJsKn+1qJo527bvAIjENokTFO3akZvkNU86FQ29o1CRpufYm9UN/mZ9ZFshdtNIJBZvy/kW01+yvwr+LgGAir+T3N2QiRuWI9XDE+dscEVddj72fooda5mKqyjMQSn0iBfGfSn8l/WJ6zpt6yuRaguqvOq2jDKzgp9YT5lUnVAg+j3NOwmyvSf2AWPpfi3/N2vKfS+4ww1IdqCGUZGsOHUWzdVxK3M7lW+EaEG0tfe0DKdb8CbycSJDjSiJaUEO/V9F582Rg6K6rp2GEgoqEiIdmEMsbnP9MNfuBC8XX99aSfv7C0fpBmSb5dpDI0BJdAOU0NAamqV9rNthBlJm11zCDarqpbG3iRpUS4mkikeOSKtu6vKwHIO2siZUmDZ19k90tUPlEoOh092dE1KcSdAmRgqP6+ZJS0jJ7RoXtjkrRTtYljaxDapoeHYdoZyIK9iqjMDyj3QnOCHKDqtoTCEz80IbnVG7drg1lEOc6Fqf6tZUFZPOd5dfBpWW1sLKWGc2p496veyWiTlpySvh1REtT6Qqxm+UXAb79gQPh8gWQeFev76FJJSJrkIUcWS/mPGPuSvbQqwwBo3eOwdCNe53vq3/or3OB0DLVCMwZC/73eFILRFL9L76EndiD0RsrySMycKLyzb2d/pO6BsaodZgA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,76 +93,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 22, 2026 at 10:58:27AM -0300, Guilherme G. Piccoli wrote:
-> Hi Mike, thanks a bunch for your review! Good ideas, I'll change the
-> implementation to follow the suggestions and improve the changelog, as
-> you suggested. I have some questions though, that I will comment inline,
-> below.
-> 
-> First of all, what should we do regarding patch 1? Should I resubmit as
-> part of V2, even with no changes - or pick it now and I only submit
-> patch 2 as V2, with changes?
- 
-Please resend both patches together. 
- 
-> On 21/02/2026 05:52, Mike Rapoport wrote:
-> > [...]
-> >> +			string_get_size((u64)(map->size), 1, STRING_UNITS_2, txtsz, 16);
-> > 
-> > phys_addr_t should be casted automatically to u64 IMO.
-> > And please, no magic numbers.
-> 
-> Specifically here, by magic number you mean my choice of 16, right? What
-> do you suggest me to pick? It's the length of the string carrying the
-> size of reserved_mem, some number must be selected for this
-> length...lemme know WDYT.
- 
-sizeof(txtsz) should work :) 
- 
-> > [...] 
-> > You can define "reserve_mem" attribute separately, and leave the existing
-> > memblock_debug_show() as it was.
-> > 
-> >> +	} else
-> >> +		memblock_debugfs_files(m);
-> >> +
-> >>  	return 0;
-> >>  }
-> >>  DEFINE_SHOW_ATTRIBUTE(memblock_debug);
-> >> @@ -2762,6 +2791,9 @@ static int __init memblock_init_debugfs(void)
-> >>  {
-> >>  	struct dentry *root = debugfs_create_dir("memblock", NULL);
-> > 
-> > No need to create memblock directory in debugfs if there's nothing to show.
-> > Could be something like
-> > 
-> > 	if (i!(IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK) || reserved_mem_count))
-> > 		return;
-> > 
-> > 	root = debugfs_create_dir("memblock", NULL);
-> 
-> Very good suggestions here, but just let me clarify: so I could continue
-> showing the "reserved_mem_param" inside the "<debugfs>/memblock" folder,
-> just using a different function for that attribute?
+On Sun, 22 Feb 2026 10:41:50 +0900 YoungJun Park <youngjun.park@lge.com> wrote:
 
-Yes, something like
+> > Hi everyone,
+> > 
+> > This fix landed upstream in v6.19-rc1:
+> > 
+> > commit f9e82f99b3771eef396dbf97e0f3c76e20af60dd
+>
+> > Author: Youngjun Park <youngjun.park@lge.com>
+> > Date:   Thu Nov 27 19:03:02 2025 +0900
+> > Subject: mm/swapfile: fix list iteration when next node is removed during discard
+> > 
+> > Looks like the commit being fixed is actually:
+> > 
+> > commit 9fb749cd15078c7bdc46e5d45c37493f83323e33
 
-static int memblock_reserve_mem_show(struct seq_file *m, void *private)
-{
-	...
-}
-DEFINE_SHOW_ATTRIBUTE(memblock_reserve_mem);
- 
-> I understood that, based on your (good) suggestion to hide the memblock
-> folder if ARCH_KEEP_MEMBLOCK is not defined and there is no reserved_mem
-> set ... just want to confirm to follow-up the implementation.
+yup.  I've updated the changelog.
 
-Yes, that's what I meant.
-
-> Cheers,
-> Guilherme
-
--- 
-Sincerely yours,
-Mike.
 
