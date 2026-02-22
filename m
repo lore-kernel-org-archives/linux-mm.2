@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAF48E9A02C
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 03:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE75DC5DF73
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 04:10:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C872A6B0088; Sat, 21 Feb 2026 22:47:55 -0500 (EST)
+	id 60A9B6B0088; Sat, 21 Feb 2026 23:10:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C35366B0089; Sat, 21 Feb 2026 22:47:55 -0500 (EST)
+	id 5B87E6B0089; Sat, 21 Feb 2026 23:10:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B168E6B008A; Sat, 21 Feb 2026 22:47:55 -0500 (EST)
+	id 4C45C6B008A; Sat, 21 Feb 2026 23:10:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DE126B0088
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 22:47:55 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D6A9160612
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:47:55 +0000 (UTC)
-X-FDA: 84470708910.11.5404437
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3ECDA4000B
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:47:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=maIl76bf;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771732073; a=rsa-sha256;
-	cv=none;
-	b=e+JbBjmVIeN9Fy1tDZBckEiQEd/iZBPWuGYgv8x5FKmNsToiqhIsmlAVh5bxGWpAqRFh97
-	Kf1dylEYbfaAIHOgJ+GShroYrreKQKzLBjnbLdIFO2+cbERL6+JJq12Wy12NFG5ljukmgM
-	Da36StGpR0BGTMkcd7zuReL517hXQ8w=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=maIl76bf;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 36DB66B0088
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 23:10:22 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66BD659BE7
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 04:10:21 +0000 (UTC)
+X-FDA: 84470765442.10.8857812
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5A04A80004
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 04:10:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n7McUW9t;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771732073;
+	s=arc-20220608; t=1771733419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dhGPtmSA562SEqvNHVKKEpslLeLOD8N4Ld8BbTIjOjI=;
-	b=fVKlMpO/3mg5h+So+pH+U35oG35riJDXAWpktkMJjdC4gbC1YSTR7IcMwrK/gFo/qz02Sa
-	5FeaHoURnAEKx6+ec+ekfsI7JevzWxsOraTS9EOqH7zeb2kIFUu9m6hU72xqAeyev3qSw2
-	L+QvB3YVvuv+lG2FXdqyQD8wDCmP1rY=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aad8123335so62975ad.1
-        for <linux-mm@kvack.org>; Sat, 21 Feb 2026 19:47:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771732072; x=1772336872; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dhGPtmSA562SEqvNHVKKEpslLeLOD8N4Ld8BbTIjOjI=;
-        b=maIl76bfKEa1uVEqQWAv/u7afeaZipXLk+vvx0QP8veE409IxZOUQBmL9izUE6o8AO
-         3s9O1fS6XKIBV+OE+zXfuEp878nLwmWrg+4uEoTFlrd1KNcWGvsMxDslIbSHXcr6JXwb
-         MkKpJT7b16wQeNJpiKd+842gGmeXqU9AWYTmcwIZjLb81bw6s7U0oHhhdOSLkeFf9Obd
-         VOqgOevez8dYvAq7MpTSjR/5U4+UgZh+S/B8x+eg6DFC0zmYS65UfKJNsE4eKKoW+9Hi
-         Fbb0Y9Rn2H6+SsCV04imGVR4wb8kz3WF9gVvZv6c1fguH1bxQ+Mr3o0dB41+80IFsUcd
-         Q23A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771732072; x=1772336872;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dhGPtmSA562SEqvNHVKKEpslLeLOD8N4Ld8BbTIjOjI=;
-        b=kQO+VZW7I14my6r44tkZnplJxKugYL4emCGy5rOvn0dze5F9NjTP0YWnE2sTjMTZQ+
-         /6QqObnfsvyJszP/HeIdwy1i2KxGnKxjquPZgXFwJ6fvD1VzCdXxIDqESlALcyXB9S9w
-         cI1Ej0OB1mcYwbTc0XPl9BXvC7mxlZzBLpbdEa/IA10YPUuCKHtKZ63v3kgnCBKcvR+S
-         0rxQKHD9LPbbz2me8nsG/sTrOBpBH6KHfOcE5fHRG8XMk7Fc42F1VI+ybI6XP16SL6Kp
-         vpd5HNodvtoQx+s5vZexWhUAT7vJnQ16yFhxN0+KWsFPkjTgBzbV06B/34btUGo39wsF
-         E0pw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2UewmWOH0yhrRJ+sx3kUdpuakoVp2/g22XK1coGw96PbatNCvqrTbi4bkp3w0CVTzoyeHgJFUpA==@kvack.org
-X-Gm-Message-State: AOJu0YwCS2Io8SYXabfKlrPYIXu07+8R09zzF9wZbxfCdM9I6vGXjiNa
-	8anlkMa/LG7Lil5phDn39v8seoNKzvGTxdLqyi37+tMjnfSGDW419yqFlpQkE0jJCg==
-X-Gm-Gg: AZuq6aK1OSZOXLBTJrYqsif0DicGVcCKetGAH1RsBW/rPGXlWeQzcnS6jWIAcy8/+t1
-	QqqaUSASs1CFxvvHJmcn45r/pavBMADHRmFOwA28G+IFT9vR+hZMV4kt5MrQjNSZRu8C4QMgSzL
-	0rjhUwz6ClvQIzYCFfbgsmN/Ew7SDji7HUNSkOv2OU2G0U1lnN7ZEAQVquXAAEtGLjzE01+WjJD
-	IuBi5dvxwHGnJh+HqFcWkZYG3u1wKjbRDfR29viIhSLZcazbjoVWBmkmrQoAqcsQ2JDlt0wl38l
-	dzcY+Z+At9wsIP5WfDc/2+PIpZzYLe1Ho61TTVOtqYADA7SNeWieM51JNthJqimffW7pgvh0WQa
-	g3d1PF83Q8lOF+0HJzgl1wp+LeVCVFGCGFDqResxNeTessAIGBBsNpaPesmupNNfDvK48caN9b2
-	xE350eGNLMyDh4Rv6siasrj0rVElsmw5vnY/emNqBTygO2ycmXHcEEPKL+qcgEgAItyn7tDiL6m
-	vvvWFHMs1d9kOVvqkUf+MU4Hwth715L4yb+BN5MaGhhshWxSmGYmA==
-X-Received: by 2002:a17:902:ec8f:b0:2ab:333:22d2 with SMTP id d9443c01a7336-2ad75181695mr1385005ad.20.1771732071178;
-        Sat, 21 Feb 2026 19:47:51 -0800 (PST)
-Received: from [2a00:79e0:2eb0:8:dc03:fd19:e29a:8093] ([2a00:79e0:2eb0:8:dc03:fd19:e29a:8093])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7500e189sm34537735ad.57.2026.02.21.19.47.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Feb 2026 19:47:50 -0800 (PST)
-Date: Sat, 21 Feb 2026 19:47:49 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Sanjay Chitroda <sanjayembeddedse@gmail.com>
-cc: Vlastimil Babka <vbabka@suse.cz>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: drop duplicate kernel-doc for ksize()
-In-Reply-To: <20260220124243.3264133-1-sanjayembedded@gmail.com>
-Message-ID: <00fc801f-6a11-4510-2b77-a683e5e37c77@google.com>
-References: <20260220124243.3264133-1-sanjayembedded@gmail.com>
+	bh=GaVVUXcjxIxCo1C+WnEbc4wHRZyroHOv+RROfAMIzMU=;
+	b=H2wycCagkVAvnvCNSP7WOdQdLwUnUB5RiOtXMRhsFiwT95Hv5GrhdLgnn/6D2eezGEdgWz
+	DlB2c0KDtwX6VOptyectcb5EKryBhwfybhgNkdlYYcs4zzVX/b0cBVcxFQG8thm64kpKFe
+	sMvIquuEn22/8j5OFkAn33NT+kKyWbI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n7McUW9t;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771733419; a=rsa-sha256;
+	cv=none;
+	b=rg10q2aSU5e4/NtNepY8IkL//urfGLcoqIACKAHB+oZHTsULcHaWN5D7Pqdgg1Au6Sst5Z
+	mIlTQqMrYlazF/75qdQow4Ki8wfIT/E4oOcmM2rWBTIIXnDWC8vWf0K6h/nAtQQRSkqtZE
+	rrkOvWvoGEHaTxfT5A4cGf4McIWLCn8=
+Message-ID: <448363f3-34d6-4d36-b827-9b81023230ec@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771733414;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GaVVUXcjxIxCo1C+WnEbc4wHRZyroHOv+RROfAMIzMU=;
+	b=n7McUW9tN38exYfI85ypc+GpKAIdQoL0+UyhfreVAv+vIEZNK+OfcECP8fI9N9FqicCn4x
+	o3Qsj7S+EgPhctDFdG6HHGIm1TIr4A9eizfnsy3KuZzN9Xi32TFpBrZRiXGohGNHjyrIif
+	35d8g91YmwFh4PJJWSnFZjb2WZk1Ets=
+Date: Sun, 22 Feb 2026 12:10:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: s3ofzx37rtjb16aj6tob484f4r1ioyis
+Subject: Re: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
+Content-Language: en-US
+To: Ackerley Tng <ackerleytng@google.com>,
+ Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ linux-mm@kvack.org, npache@redhat.com, linux-kernel@vger.kernel.org,
+ Liam.Howlett@oracle.com,
+ syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ryan.roberts@arm.com,
+ stable@vger.kernel.org, ziy@nvidia.com, dev.jain@arm.com, i@maskray.me,
+ baohua@kernel.org, shy828301@gmail.com, akpm@linux-foundation.org,
+ david@kernel.org
+References: <20260214001535.435626-1-kartikey406@gmail.com>
+ <b398d163-7b58-402b-a37d-9562d658a62d@linux.dev>
+ <CAEvNRgGLAnZkfPZt32-wyCaefu-tvG9WcX3zq1Xe7fsTabZqmA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <CAEvNRgGLAnZkfPZt32-wyCaefu-tvG9WcX3zq1Xe7fsTabZqmA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3ECDA4000B
-X-HE-Tag: 1771732073-851717
-X-HE-Meta: U2FsdGVkX1+gYLPl64owndDlfiusKGiBYjKz0g/AZgizl7sE5nw9CBIfuJue/PKqAA1QKfK3l0859hzFzA6ndtOwN6yTEISoV7bF//JXnre+oSpf28a0AznJd87ORuxGtiXxsXty+unQ9FtNbPVtGFhIOUllCuOZ3L2W3QDkrMbOX3eBzZ/AyaZxXcvXYdCm8NeKZi51WDkr+JnqJOlHVjPE4IZ18MmCzmG8+sB07fyQO6Ow2jl42MY0iK38jS6XOXUss6fBrJ8DOSlA5fCo+jHcaF+lYc+riZQUBDczGqKmVYMvb6NkCzNsFxHLpSA3v5kxp7CM6Eg+Rcy7Guj1tn3p/zU0a3p7UizM+llzgloz/dxa2AC/d1AaLrwQx93ccoBgn1GLTlOpDWfxLwpeKYuA5bkrfnrqdqGXodcK9c0lLVC833XzXLqtl9B/zf0jYKS6NOH+gV0bTUNBYc8BZ1GfhuinqnxaO71BBGXjhZznzdtDdMqb56ek4QrrBBgVT5vtSdwmRasKtoNFGvCjSKLKs0qFW/ZxiK5fliRJ5FX+kVRwP8QcDw16xI8akQH3POE365sehe8BHk8Y2nDEsRVTj8zmYaDlOkmiPTQ4U4VGp3K6O+m4U8EyYz+Wm2v7UJEB6H1e9N3HddOCB4p2FrNx/8JbVZXBm+cImlJX43Io8h0CwjG32Hr4rM+Z/dX4mY8Y/3NNsq7sHkoxgOske0PVDzviYIcUJo8A2RhuvuFuw1PofTOjbLTAWFtAdMWW8cL0I1w8zMSK4+XdLE2f6XLNmfke5GsKa2/i6LYK/DxZsmLeJHIMvbUadJdfDD6T59RjuG1F5qsoILhKKnfEhDYr2B8XtVTDf/rxjrMjR97xLAt+0cp6Kk6pc64c8XOi+2leODtKiqsh3nGSf+0uc91dw+rS2fEPOQCvFd3tYaRcWffTEt0B112OWOKioFjAX1PGEbGSlq6g2LMNztU
- HDhJgkqu
- 7qaRkXOMQNt8QHa7Uxy/LGznVwIdDnPbVq7+FxUp/GtLu5YtZLU8hFOEQTlUYPaChQAgW64uVfVc8wBwoZcm046wGKyZjz+PkOCkHul1wLTCQO1sFor/wd2St4K/Lur6gnTifyM9/mCHAwYZ6nqqkYAJ/LrS06iGXbJ3Dl/OWKNooba/MH48xMtBT0DBLZzwNWR7sex+gBcC2nRxDUUW37XfCsEiD/GtEct2QZEnXdJ2U7tFNGqzzqGaE65Q4KgIc4V7FbhjFNP4v+k/nX4MyEANSEzEq5MzkEVMkk9NlhcsRaOPADIguYrDR7l7KN9U9nk+v+AiqdgIxyUXLFajEVzZCp66buhN1EjFeLQy8d2BjUaaFNaAjvrAQcBhze+4GXp5hTk/N7433uDo=
+X-Rspamd-Queue-Id: 5A04A80004
+X-Stat-Signature: ajzbxtd6td8hzbdpjp7pe8yz4jfkzpt1
+X-HE-Tag: 1771733419-247871
+X-HE-Meta: U2FsdGVkX19B9I2rsPbh0hOQtGmfjNMRMcA9MZA0ES0tVN6v0mytJBDTVJZeY7eHS5pHEU8vsdqH9cz2lca6FDnjB/HMkfMn1ACsvjoN+8p2LOM1V+Z3Cn1SRoQWt+IQHXzWGKWxE948MH6lR5NjOM+7PJ1lk675Nj0CJ7dpAcoSKyM95CnlEcuPO0So+L6cYbH1PCDuwadW/VeBCEpVxRMNrlzUBaLhsCFRMbB5eLytsbWIl55c86leqPaNiNwkDsvi7E4EYAi6rGww3eWOTlorPtCxhR5TbDikT4tjt5B93JQDE6Sk2WuPopOJuZoVOrIGL/yxINd2kVHVptbNctS7qS1LP/3sIwAD8cN/d6Tda9JbR8Vq994SVGNAbwpH+pIK/ITE7dduMvGbpFCZAIBQvX3+Pi/n1XZDOlT6bYE6MLcPhjJWG1xrCavqZIXHk66MeTjjQNkkHvNkhbBv8uh8ic47uYYH2egqYcskb9pFlEPjwZXQRVEv9Rn1dt4Vzbw9YnVyP7lJ2q6tjF+AGU6blz/igfuoFri1it8Qk/qmXASDqQh8OJLXljtF3mymf59yxOVAc5beNV8YQAdzd7O9cnsuXGA382BQTPb6r7uaSeZEt8jsvGvUGwMlfAQ88I0PqIJsODWAnQ7KpRAZfenIYG5R18es6PHEXeNifRU6Q0A7o7msgK7mDoy7mGqCKL3bcjZJoOaj2LCmd0I5iomKUlG6K71UEDKSjV/FRxAPcFc9cAptppYNfRlRg71z7Jy6yMFEUZyD288hoqOMKFbRXGwVIyjs/V+zc/jJfmt61w9oedTMyuzm6ym9nmRUKgshj3LFfXJmKn0huI64pOiAF6SkKifYpMcuRiFErrXKKA0z4GiPuEphAJ0rMGLFcCUdbWEe1LIlHnaYK8OR6sHoE1dKG6drlaQv7IVmOWjvCwOmt3KT2QyYsjcxYXm1/vWKU8AQZj23Wswmkfj
+ AJ0XQF0s
+ krLxtgOdLtgBRQiYXK7okewcJQh496KNdOOEgbmPu2YCCyWOf1Yv7j40sDQVcWwjCNXlJjX/h6YOoJULUkdlyYwg5iI5MNzbo8dACpjkKxsedTKHW/JQPIAUHVLP5u3h4uX0Pe4aB7sTdjUln4ejnVNWIjjFz6HnQPjrzctSQFH47T7kUFcvVRRkWGQXPg6C643djocTkCg+1LMSdNo28NDqQy8J8q/0GpF74nXYrGwMJTR3zrDIJDDGJuBbI0kuNIj0d5z4XS6MY2a+xfE5/e7GKVfCaar8uV+AdzaqJxb8wknh9HRCGoBIGOWL+qj2VdIsfXbdqHWMB4M5Ej6TtABc1W2SGFcxFPZui
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,30 +98,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Feb 2026, Sanjay Chitroda wrote:
 
-> From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
-> 
-> The ksize() API is already documented in the public header, and
-> Documentation/core-api/mm-api.rst pulls that canonical doc into the
-> book. The kernel-doc block added to mm/slub.c by commit
-> fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
-> introduced a second definition for the same symbol in the generated
-> docs, which makes Sphinx emit:
-> 
->   WARNING: Duplicate C declaration, also defined at core-api/mm-api:521
->   Declaration is '.. c:function:: size_t ksize(const void *objp)'
-> 
-> Remove the redundant kernel-doc comment from slub.c so only the
-> header-provided documentation is emitted. This keeps the user-visible
-> API documentation intact while eliminating the duplicate-declaration
-> warning during `make htmldocs`.
-> 
-> No functional change.
-> 
-> Fixes: fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
-> Signed-off-by: Sanjay Chitroda <sanjayembeddedse@gmail.com>
 
-The header file kernel-doc looks equivalent without mentioning that it 
-returns bytes.  Might be best to make that clear in slab.h?
+On 2026/2/16 06:48, Ackerley Tng wrote:
+> Lance Yang <lance.yang@linux.dev> writes:
+> 
+>> On 2026/2/14 08:15, Deepanshu Kartikey wrote:
+>>> file_thp_enabled() incorrectly allows THP for files on anonymous inodes
+>>> (e.g. guest_memfd and secretmem). These files are created via
+>>> alloc_file_pseudo(), which does not call get_write_access() and leaves
+>>> inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
+>>> true, they appear as read-only regular files when
+>>> CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
+>>> collapse.
+>>>
+>>> Anonymous inodes can never pass the inode_is_open_for_write() check
+>>> since their i_writecount is never incremented through the normal VFS
+>>> open path. The right thing to do is to exclude them from THP eligibility
+>>> altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
+>>> filesystem files (e.g. shared libraries), not for pseudo-filesystem
+>>> inodes.
+>>>
+>>> For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
+>>> large folios in the page cache via the collapse path, but the
+>>> guest_memfd fault handler does not support large folios. This triggers
+>>> WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
+>>>
+>>> For secretmem, collapse_file() tries to copy page contents through the
+>>> direct map, but secretmem pages are removed from the direct map. This
+>>> can result in a kernel crash:
+>>
+>> Good catch, thanks!
+>>
+>> For secretmem, file_thp_enabled() can incorrectly return true
+>> (i_writecount=0, S_ISREG=1), so the mapping becomes eligible for file
+>> THP collapse ...
+>>
+>> However, if any folio is dirty, collapse bails out early with
+>> SCAN_PAGE_DIRTY_OR_WRITEBACK, as secretmem doesn't support normal
+>> writeback, IIUC.
+>>
+> 
+> Yup! In the reproducers [1] I had to try to avoid setting the dirty flag
+> on the pages.
+> 
+> [1] https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
+> 
+>>>
+>>>       BUG: unable to handle page fault for address: ffff88810284d000
+>>>       RIP: 0010:memcpy_orig+0x16/0x130
+>>>       Call Trace:
+>>>        collapse_file
+>>>        hpage_collapse_scan_file
+>>>        madvise_collapse
+>>>
+>>> Secretmem is not affected by the crash on upstream as the memory failure
+>>> recovery handles the failed copy gracefully, but it still triggers
+>>> confusing false memory failure reports:
+>>>
+>>>       Memory failure: 0x106d96f: recovery action for clean unevictable
+>>>       LRU page: Recovered
+>>
+>> Right. On my setup, that would hit SCAN_COPY_MC in
+>> hpage_collapse_scan_file()
+>> rather than a hard crash.
+>>
+> 
+> Deepanshu, were you able to trigger a hard crash on some earlier kernel?
+> I only saw this false memory failure log.
+
+On a setup where memory failure recovery works, we can trigger a panic by
+disabling recovery:
+
+echo 0 > /proc/sys/vm/memory_failure_recovery
+
+Then we would hit the following panic:
+
+[  117.608411] Kernel panic - not syncing: Memory failure on page 1024d6
+[  117.609490] CPU: 4 UID: 0 PID: 168 Comm: kworker/4:1 Not tainted 
+6.19.0 #83 PREEMPT(full)
+[  117.610817] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), 
+BIOS 0.5.1 01/01/2011
+[  117.612121] Workqueue: events memory_failure_work_func
+[  117.612978] Call Trace:
+[  117.613401]  <TASK>
+[  117.613766]  dump_stack_lvl+0x60/0x90
+[  117.614382]  dump_stack+0x14/0x1a
+[  117.614940]  vpanic+0x1a6/0x470
+[  117.615476]  panic+0xc0/0xc0
+[  117.615967]  ? __pfx_panic+0x10/0x10
+[  117.616571]  ? update_cfs_rq_load_avg+0x5f/0x5a0
+[  117.617336]  ? dequeue_entities+0x250/0x1e30
+[  117.618043]  memory_failure.cold+0x2d/0x2d
+[  117.618725]  ? __pfx_memory_failure+0x10/0x10
+[  117.619451]  ? __raw_spin_lock_irqsave+0x8d/0xf0
+[  117.620215]  ? __switch_to+0x3e9/0xb60
+[  117.620841]  memory_failure_work_func+0x150/0x200
+[  117.621621]  process_one_work+0x63d/0xf50
+[  117.622292]  worker_thread+0x517/0xd90
+[  117.622915]  ? __pfx_worker_thread+0x10/0x10
+[  117.623629]  kthread+0x369/0x460
+[  117.624169]  ? __pfx_kthread+0x10/0x10
+[  117.624796]  ret_from_fork+0x33a/0x660
+[  117.625422]  ? __pfx_ret_from_fork+0x10/0x10
+[  117.626126]  ? switch_fpu+0x19/0x1f0
+[  117.626728]  ? __switch_to+0x3e9/0xb60
+[  117.627354]  ? __pfx_kthread+0x10/0x10
+[  117.627978]  ret_from_fork_asm+0x1a/0x30
+[  117.628633]  </TASK>
+[  117.629316] Kernel Offset: disabled
+[  117.629902] ---[ end Kernel panic - not syncing: Memory failure on 
+page 1024d6 ]---
 
