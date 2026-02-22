@@ -4,88 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7D1C624A0
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 01:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29915C624A1
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 01:41:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAE436B0088; Sat, 21 Feb 2026 20:16:11 -0500 (EST)
+	id 3B2B96B0088; Sat, 21 Feb 2026 20:41:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A32466B0089; Sat, 21 Feb 2026 20:16:11 -0500 (EST)
+	id 360366B0089; Sat, 21 Feb 2026 20:41:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93E3A6B008A; Sat, 21 Feb 2026 20:16:11 -0500 (EST)
+	id 26C266B008A; Sat, 21 Feb 2026 20:41:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CEB96B0088
-	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 20:16:11 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1AAE5C219E
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 01:16:11 +0000 (UTC)
-X-FDA: 84470326542.17.890E877
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1044A6B0088
+	for <linux-mm@kvack.org>; Sat, 21 Feb 2026 20:41:57 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD296140598
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 01:41:56 +0000 (UTC)
+X-FDA: 84470391432.20.266CCC4
 Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E664840006
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 01:16:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8BAA51A000B
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 01:41:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771722969;
+	s=arc-20220608; t=1771724515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W6ZaXBqLas+cqXB6WmjDSHTHtC/lVyfPX6AjeoXFa54=;
-	b=EGx5hs8CMJmbia1VOU6v1henCqeZCb9rB+mNuV8Ne+6E+UQ/oAi7LZR/I5qFVMt8tBKRbk
-	aVVUa9Ucuripy/lGFizf3Uq8juw7RNSntrv6OziVVC5ijn5AWtV7bLs926gd2z7X30C4/q
-	toCpl2zG5JYLCIt75hIsDP7N8GvmKYc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771722969; a=rsa-sha256;
-	cv=none;
-	b=AFRoioX/apF9aXG8Fn8ej5Bs1Edi3aIOePxPsFTZv5pbbSAEYkeXmCZ3cvKspYvsrB16Mb
-	paqjaiabovR9RuziDk0mRVobboekv/WaP1/bEm1NW72RdGqtxJkTm2jZ6QexH/Jg+5OWHW
-	7IcVtLPSBCfe6lPAQLm9du7eKeqD6Sk=
+	bh=KqFhoKnkHEcPrpwAw5aTFsbCr5J2GG2+DdpE7QS3+qA=;
+	b=Qu4iNNBHkl8+NRPOnfGYZL+ZtenktK3anCqYMqqmF1BZQaJYZ6EoV/U1s9Z7bZ7/VZAigB
+	ChrLKjWvpB+TrVvIl393B1MqxDgbPRLVu+f4qIiMNczDO+khk28k09beXtja3KqoPCa0Tp
+	YZ5tILEA7Cspba/4k8o29L9y5q8rn+A=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771724515; a=rsa-sha256;
+	cv=none;
+	b=gfMez+/VClRV+mkSVZ6v+9gl4wfbZ+rmzd/r6bN6fSR5rAdAJ48dBjTp+RG2uChik5P5OL
+	ufvwKBVZMvgOa3Y7k3ivAMNaCD3oPuaAAXkFiOLp34FZDAIuuu0uWH5rnuZOVdBVWfDo7t
+	jCJZTqx9ntFWheP45XxgxszcfsKc/oE=
 Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 22 Feb 2026 10:16:04 +0900
+	by 156.147.51.103 with ESMTP; 22 Feb 2026 10:41:50 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sun, 22 Feb 2026 10:16:04 +0900
+Date: Sun, 22 Feb 2026 10:41:50 +0900
 From: YoungJun Park <youngjun.park@lge.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com,
-	taejoon.song@lge.com, austin.kim@lge.com
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-Message-ID: <aZpY1FIjYLtLdu5F@yjaykim-PowerEdge-T330>
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev>
- <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
- <aZjxP2sTavBRGC1l@linux.dev>
- <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
- <20260221163043.GA35350@shakeel.butt@linux.dev>
+To: Chris Mason <clm@meta.com>
+Cc: akpm@linux-foundation.org, stable@kernel.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/swapfile: fix list iteration when next node is
+ removed during discard
+Message-ID: <aZpe3kD/xmz87zYH@yjaykim-PowerEdge-T330>
+References: <20251127100303.783198-2-youngjun.park@lge.com>
+ <20260220151338.3234934-1-clm@meta.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260221163043.GA35350@shakeel.butt@linux.dev>
+In-Reply-To: <20260220151338.3234934-1-clm@meta.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8BAA51A000B
+X-Stat-Signature: ooo5dnefixqxbc3izy94b75a4hexmx99
 X-Rspam-User: 
-X-Stat-Signature: n3i5fk5rmb9kwo8rdueqmtoqxeyud5a6
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E664840006
-X-HE-Tag: 1771722967-830003
-X-HE-Meta: U2FsdGVkX1+pd75dz+1TAtNa6+CyF3CAQIpyHDL2OejkhDemDzhl4fvtAMWBZqbFAVvsiUu1sxMbNqViqu+DovhP3Bgf0zSwDETlyMaIr/mWIt0ipwKj8z3cMsDiqMVkiglOto+p8+78XhIg53hGlNgDrn89p0gcx+AXEuCEEDn7pVURM1kANzBpIUQOPPyJeB1bTjYliiv4mclGbi3tswd7WO+7o0Ahvm9Vjn7rOtpKWYoPsv//N50PXHAYqWudrFaeLecFOOD81wsYFopgypli+QhBXn8GwK9FDWmto7Hknt1ssTXQJg5MLGgC2UIeAf2FPX/wCEZXM2BWhJt+QXmT7zc5mWOuixwYDm+e1D0JBSqEiwodpZAwBAOqMotnlj5rFe83rZlccEcGSm0fFZ6hTm2eAH3Zth9BAkf65QtvQZ7IT9Vl3zls1oA869U5lImFG0T2grgk4IqgnV7+dRFQ2NRrvma/lPsOB9QoiQqwdoI1QPxJABsA4OJKM0pOXvWBZsY5OuR3FNnERwaUVkBUvK3DdUjs/vYKa0vgnGS55Iotsg95CL6c43rLgG3f31L4JXCsp5iUE84kFtv4cWSd7eiyDQrYTl8TcTDZ5IzaqL3dLNirGXFb3h6iR2bCzvPXDrPXN+0NPkSAtzdgy3cd+VAYzwbzMZBcuFa/evQ2auR+Ho87f0let3Pghm2uQfG/+HgLtiIjWyTx+uvU+JF2ydHKI/2cZoQqc2QZDOjCoL/UPjMfNOlPyynaw3CIXABlaMXocOaUvs6iMmrrow+pVYYHN+n9zsZcGc1sX3jV9hH0M7+oERO0ufjmsLbl6jXi5vTplwU3pgRxC/4dUPiNwwixRN2g32a03mQjVmW3iEdg1bPS7VOxhQGVxjbJbE8bIgPyKSmwzpzueuNlB79fDxvsaogIexVl1jLg2zMX6MzDXK2rWrLmo3hfsAdNwCesCr7Hy42HOKzU03w
- 6iH7TuzD
- ElH5YVUGjwozGDgcc7CcPAQ+8cxleHhsBA1oMGd8Wt7aUzQ6nzjPa9QHReGIsYIWTBsd6TOFjt22wnl34DyH0eEfX/jxkwrY1P1OaQ9G+tgneCNp9QQGvP+O1gbZxmp02f9pSbpcyviFnFSsvfU/ZPDeKsB1VeRzBbFi/rl5cfXW7RMYJeW4qSia0C0uh6QX3njEVYf6eyKkA4uvAOUrH/aTnoQ==
+X-HE-Tag: 1771724513-944241
+X-HE-Meta: U2FsdGVkX193jK3A8t7JjX36aNhya46YsmbzPmVMnIQ0GoubiejW6c9hvDRRpzFgGtImkuIkCkIvPOGjo6g9pqFcMdIhSSxU0Yeada60lHrvE0CLC6GNhHsW2Sg7m4kdUfefcxeCSjorIrhyQ3I0yleJOOdB0xG/TNSu6QGEDX9XHXyE6oSSqTgxM9OoMFHQ5jOZkXf+qOHWkHfmZEPt8HTY88Qt45IsumRJVMi0mgiJDgnAHpA3RFVVR2uSceXBabKIo/qai8svWz/DwNo/erixXQpzBeFEhKVvt221xEmvbQPZ8KYOlRZzHeW/cHH7FqCnBFvHjXDbKJKsiTiaI9JWso3rMXAP/K7eGmhIxY29OYmlNec1qW4p0EmRAGaxlw9l7JlP7WrjcwtGMFLwmyY5nnvxLtSA4gmfJzdoHDTt8TbPu73QdKdhrlD3Pbnpa7sxKl0diJIjnicS8qBV4o0IKMvZUDbwxMLbQewZQKqJ4ljg0TLWNibIDkBQrk/gX+vIWKm1G7zL3T6fItUUDWqG0+OV5+7ug+z6Bgsi1ksF+wSCUn0xksJHjWK5KN9VcAtr58JUd3pRsmMTvfWpGjKohWulUhqKyI8cR759LWtZbp3b32LswhC/VYA28V7RtE1S3XSXl9xaXBIVJDSRTPLb1wDPiISHp0vVq+F08HvZRDakiFapDfwW/AlKii64HOHD8p611Ytjb0bYyB8HW+M0WfH9n1zWicmbtcdUYyn2dD2rZGHaUBilWHb2qSEEeLq39/BpMGhK9HRT3+yHeDSlqXRXBa/aoZlIYqQHGiMwNGnXnS61LH5NDHi1yHE8gbw2/UUTJZaEInHgQaHfPrZNAeW3ini7F3Py6mKnnra7TWSF/q50Q8zGC+a2+lxczye25aLlqSGmB6p0clmfVbubGdyYQ08mCgtNLxkAaxJnx+L93BXXUyxea5rK/9x3lSigkDTPfT0jvOBIlAu
+ 2lrw98sQ
+ E4eRyb5mOVdrxCHtp0hvBpoN4lWHCP5F5dJZeigYdQvND1KNx64bTVwcb/5oqjZfX0vsKtsOmJZOIGA3KPOHEgT2IbnLMHHnbmatD6xbXX6RGBRUBXhKbFXo+7wIYxRmwtXAcJoZtrfW3jtdMWKGa/fF7+X8jFzGOJrpMOJuVxOEWbOrKpwjKqxXfW2DawasfRe30gEd/bCtdkpO1HWP2cbgjRzToXDy95mE6aio8/fk+BK1pm6WdPm0craXC2V1gfMAFS1PKYJkvcmgEZZiDQwVl7okz1TInmcYn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,119 +84,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Feb 21, 2026 at 09:44:01AM -0800, Shakeel Butt wrote:
-> On Fri, Feb 20, 2026 at 10:07:44PM -0800, Chris Li wrote:
-> > >
-> [...]
-> > > >
-> > > > I agree that using BPF would provide greater flexibility, allowing control not
-> > > > just at the memcg level, but also per-process or for complex workloads.
-> > > > (As like orchestrator and node controller)
-> > >
-> > > Yes it provides the flexibility but that is not the main reason I am pushing for
-> > > it. The reason I want you to first try the BPF approach without introducing any
-> > > stable interfaces. Show how swap tiers will be used and configured in production
+On Fri, Feb 20, 2026 at 07:13:33AM -0800, Chris Mason wrote:
+> On Thu, 27 Nov 2025 19:03:02 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+> 
+> > When the next node is removed from the plist (e.g. by swapoff),
+> > plist_del() makes the node point to itself, causing the iteration to
+> > loop on the same entry indefinitely.
 > > 
-> > Is that your biggest concern?
-> 
-> No, that is secondary because I am not seeing the real use-case of
-> controlling/partitioning swap devices among sub-workloads. Until that is
-> figured out, adding a stable API is not good.
-> 
-> > Many different ways exist to solve that
-> > problem. e.g. We can put a config option protecting it and mark it as
-> > experimental. This will unblock the development allow experiment. We
-> > can have more people to try it out and give feedback.
+> > Add a plist_node_empty() check to detect this case and restart
+> > iteration, allowing swap_sync_discard() to continue processing
+> > remaining swap devices that still have pending discard entries.
 > > 
-> > > environment and then we can talk if a stable interface is needed. I am still not
-> > > convinced that swap tiers need to be controlled hierarchically and the non-root
-> > > should be able to control it.
+> > Additionally, switch from swap_avail_lock/swap_avail_head to
+> > swap_lock/swap_active_head so that iteration is only affected by
+> > swapoff operations rather than frequent availability changes,
+> > reducing exceptional condition checks and lock contention.
 > > 
-> > Yes, my company uses a different swap device at different cgroup
-> > level. I did ask my coworker to confirm that usage. Control at the non
-> > root level is a real need.
+> > Fixes: 686ea517f471 ("mm, swap: do not perform synchronous discard during allocation")
+> > Suggested-by: Kairui Song <kasong@tencent.com>
+> > Acked-by: Kairui Song <kasong@tencent.com>
+> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> >
 > 
-> I am assuming you meant Google and particularly Prodkernel team and not
-> Android or ChromeOS. Google's prodkernel used to have per-cgroup
-> swapfiles exposed through memory.swapfiles (if I remember correctly
-> Suleiman implemented this along with ghost swapfiles). Later this was
-> deprecated (by Yu Zhao) and global (ghost) swapfiles were being used.
-> The memory.swapfiles interface instead of supporting real swapfiles
-> started having select options among default, ghost/zswap and real
-> (something like that). However such interface was used to just disable
-> or enable zswap for a workload and never about hierarchically
-> controlling the swap devices (Google prodkernel only have zswap). Has
-> something changed?
+> Hi everyone,
 > 
-> > 
-> > >
-> > > >
-> > > > However, I am concerned that this level of freedom might introduce logical
-> > > > contradictions, particularly regarding cgroup hierarchy semantics.
-> > > >
-> > > > For example, BPF might allow a topology that violates hierarchical constraints
-> > > > (a concern that was also touched upon during LPC)
-> > >
-> > > Yes BPF provides more power but it is controlled by admin and admin can shoot
-> > > their foot in multiple ways.
-> > 
-> > I think this swap device control is a very basic need.
+> This fix landed upstream in v6.19-rc1:
 > 
-> Please explain that very basic need.
+> commit f9e82f99b3771eef396dbf97e0f3c76e20af60dd
+> Author: Youngjun Park <youngjun.park@lge.com>
+> Date:   Thu Nov 27 19:03:02 2025 +0900
+> Subject: mm/swapfile: fix list iteration when next node is removed during discard
 > 
-> > All your
-> > objections to swapping control in the group can equally apply to
-> > zswap.writeback. Unlike zswap.writeback, which only control from the
-> > zswap behavior. This is a more generic version control swap device
-> > other than zswap as well. BTW, I raised that concern about
-> > zswap.writeback was not generic enough as swap control was limited
-> > when zswap was proposed. We did hold back zswap.writeback. The
-> > consensers is interface can be improved as later iterations. So here
-> > we are.
+> Looks like the commit being fixed is actually:
 > 
-> This just motivates me to pushback even harder on adding a new interface
-> without a clear use-case.
+> commit 9fb749cd15078c7bdc46e5d45c37493f83323e33
+> Author: Kairui Song <kasong@tencent.com>
+> Date:   Fri Oct 24 02:34:11 2025 +0800
+> Subject: mm, swap: do not perform synchronous discard during allocation
 > 
-....
+> v6.18.y stable has Kairui Song's commit, but this fix hasn't made it to stable.
+> Johannes noticed the Fixes: tag doesn't match, which probably explains
+> the gap, but I think we should pull this fix (f9e82f99b) in.
 
-After reading the reply and re-think more of it.
++Cc: stable@vger.kernel.org
+Thanks for catching this and pushing for the stable backport.
 
-I have a few questions regarding the BPF-first approach you
-suggested, if you don't mind. Some of them I am re-asking
-because I feel they have not been clearly addressed yet.
-
-- We are in an embedded environment where enabling additional
-  kernel compile options is costly. BPF is disabled by
-  default in some of our production configurations. From a
-  trade-off perspective, does it make sense to enable BPF
-  just for swap device control?
-
-- You suggest starting with BPF and discussing a stable
-  interface later. I am genuinely curious, are there actual
-  precedents where a BPF prototype graduated into a stable
-  kernel interface? 
-
-- You raised that stable interfaces are hard to remove. Would
-  gating it behind a CONFIG option or marking it experimental
-  be an acceptable compromise?
-
-- You already acknowledged the use-case for assigning
-  different swap devices to different workloads. Your
-  objection is specifically about hierarchical parent-child
-  partitioning. If the interface enforced uniform policy
-  within a subtree, would that be acceptable?
-
-- We already run a modified kernel with internal swap control
-  in production and have real feedback from it. Requiring BPF
-  as a prerequisite to gather production experience seems
-  unnecessary when we are already doing that.
-
-To be honest, I am having trouble understanding the motivation
-behind the BPF-first validation approach. If the real point is
-that BPF enables more flexible swap-out policies than any fixed
-interface can, that would make much more sense to me. I would
-appreciate it if you could share more on this.
-
-Thanks,
-Youngjun Park
+Acked-by: Youngjun Park youngjun.park@lge.com
 
