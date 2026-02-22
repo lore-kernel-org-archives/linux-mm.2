@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFEBC624D2
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:49:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2CFC624D7
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 08:49:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01B1B6B00A6; Sun, 22 Feb 2026 03:49:41 -0500 (EST)
+	id AEA116B00A8; Sun, 22 Feb 2026 03:49:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F10B36B00A8; Sun, 22 Feb 2026 03:49:40 -0500 (EST)
+	id A9E706B00AA; Sun, 22 Feb 2026 03:49:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF2CD6B00A9; Sun, 22 Feb 2026 03:49:40 -0500 (EST)
+	id 934F46B00AB; Sun, 22 Feb 2026 03:49:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C58616B00A6
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:49:40 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8FB9BA180
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:39 +0000 (UTC)
-X-FDA: 84471469278.05.A865761
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0CF43180008
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cHN0CjTU;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 769A96B00A8
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 03:49:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39FD01A05DD
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:43 +0000 (UTC)
+X-FDA: 84471469446.29.10845AE
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 63B6A140005
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:49:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hW+XpmDb;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771750178;
+	s=arc-20220608; t=1771750181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/yj+ZkijP1F57uDkd+kIZ1Nriaysy+Ep+EgiXsVeVTU=;
-	b=URJfOzv7hrfAHdIJ/73YIsu1pZerXgde+aSqN3Ji4kaSlIR49b7uvrf5f5H++izWNArF86
-	hNPNcH581aORHEOy40aHHZrYbbgQZerpe301naVLuXUj9VG+J3q6AZDT7Vq9Y/UXsAIx+E
-	d93qOKoq7M3DQ//4HwKTf03RTM6CELk=
+	bh=dWN/8SdZp4eQ7RQYloaf744UbOif/6lpP5ud9yJH5rA=;
+	b=hTZHaJWVh7L3SxnXV6f5eXBBQchkJ+KHKAbdukzYDf30Q39mDVsKIyJxcsTCYkHrkxOKmz
+	pd9zKd5Y5U/FAkKAMV2N5mxyX4xSHiVoOYzUkjsfEpH7sbGhORzQw+Il6YBNgMFIXKJrop
+	IkBgXIlhnTURuOw/KYTzAtf72Z14kAU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cHN0CjTU;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hW+XpmDb;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750178; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771750181; a=rsa-sha256;
 	cv=none;
-	b=FjuxmO5RVCYI1/EAqoHm8HNf1iGfmwTY9oJGnXO4TimU3P11MsK8kTTGFP4xemzuMUR3rq
-	Ks2zGeYXbkSiHhyLa+vZzisLnW9WmHCKaVsQnM9FaM859qNC11m+SGo7v/lieoX1oq6xyT
-	5kXtxci4IvtU1xLaAlKkc93mRAwKzAQ=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5062fc5d86aso33208931cf.1
-        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:49:37 -0800 (PST)
+	b=fOxbwfIATMoGI3oT8NPkuddk4Q8ZxFgUBSvceSMcegW+NAqfB6g4poZK62YoJ0lH+4yIrc
+	tsua/vkHt/j7e8XAeuMgNezuNsNUH1K9SVITWanvp4RQiKRNaqfbGeYWQDKlLXqaxhaKDm
+	5JzzF5PSNwuusdgGhlT9DXLgPRXqR/A=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-506aa68065eso29814461cf.1
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 00:49:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771750177; x=1772354977; darn=kvack.org;
+        d=gourry.net; s=google; t=1771750180; x=1772354980; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/yj+ZkijP1F57uDkd+kIZ1Nriaysy+Ep+EgiXsVeVTU=;
-        b=cHN0CjTULxXzjBxjxyuz5aRLUTPBhkkSLObv1y7DbI/HyQrAjLWi6g3SuwBjSr5iQ1
-         7DAZDb/TcRZqAc3LIJuP2qO8rBorX5Vw3zNI5JkiuXNUGJ9leLSHFK170FAkGmpTS3yb
-         +wBswVFfu+bSoyEPIf9YNZ2quIq0e2mAYeTTsCyJhHdh0nyokJE7PnVauWGGLAiZLapI
-         aTW9eVaqIqMUfbwrIzlFZQmJB3r8f4RHbIJnsi/JedRn9RRgiJUYOJ6BGor9itqJ2yYe
-         x0jCfh9kpfATQCNp98FX4x3mAYJPtb9AZYhXaMPM3GyuXT4xHA/SzKi2aFYdKCuNtFCs
-         PHYQ==
+        bh=dWN/8SdZp4eQ7RQYloaf744UbOif/6lpP5ud9yJH5rA=;
+        b=hW+XpmDbq97nDjQy/KDQAHTx5RT58HvFpTpBM1xVplYUkaTGRlzVKvv6YBuYtmlmxX
+         8dAAe7HyAtNLmmPTyeLYGK5/TbdEcItEobK7AzuUJAxSw+AV1Ta7LKc0TKznzV02CA9J
+         BpT/tDkx5Dc/Us3ad+Zt46gB3o+cB8N+qpX2RVYky270Xn+RDZREy+vXnaHEO0vQXB8m
+         MV2avDSIi7Kc7bT39WgMoR41H4BcBQzkjTZBRDmKWZ3Lk7+MBtTvbK05n6bqTpdid2W7
+         n66sEpAymIUrtZaJkII1srPvj59sWckIcY5eVs2eDFNzUpMsahBvnJOIsmaZhSXFKZoP
+         vKxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771750177; x=1772354977;
+        d=1e100.net; s=20230601; t=1771750180; x=1772354980;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/yj+ZkijP1F57uDkd+kIZ1Nriaysy+Ep+EgiXsVeVTU=;
-        b=DGADO4gvelLgCuk+Cu87lKwziWUF4zV1GDDouK7jmM6o/TvG38+RjIuJLKiXlNN6/M
-         TvdvTS1eBhY8SuB432iLSVw2uDZnagnKEX+anmO4d2KIT2qF+9hYTNAgNblCPsH1WZF0
-         BpoBaJjRFPVUDb3WttzGIxROJTI1qK8FLcZeeRqMajfRd5UozxUqrsUoITcSWuEKcY7P
-         7jDrrqY2S9EPvO1d4riEDmcvt9EDFK1I5NW5PAy9rESDaMjUwpFiYHkjSEZZTXsNVwrr
-         cVE0z3cT2G4tt9/XZ4uVS7xPjlflye1Xb/UQPWY8+mM7Cj7CFX4yemHjfluzuGqWmWtC
-         hXag==
-X-Forwarded-Encrypted: i=1; AJvYcCUTGUc3W21Ge2IbyR31+3qiVHuKj5xzRVvrwKanPazYJs7gFH6sS4gxvc/YcPafXata5ws+zgHD+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxYMTd2ke7GQAT9/XGoDQHsAaWERRz97zHqgKM2ge5VrfIRYWfQ
-	G2l40guS/85jWSJ/qaE0psNv4q5hTgowZaK8/CIDUndcLZQPYl4lb2IqsFlkPYTF4Xw=
-X-Gm-Gg: AZuq6aKuXN+4KdBPZyuWvhRDQQvfjnCl7tkZwmjHWMEEfrqJabzMIyQWr7HtrnFYi+3
-	cJ9M1NM1ozWswpea49EdUfStP8xVDlJKhxjy+MJpOxVJhQFpZ5KTa27vpGpRnneHUHgJUFkmpEM
-	8Woc4EToK5m/jXB3TRNgz7/MMxmISxgSOEMzyxUWrhr/6zD5bu8UuGxgG4uhaLjuyqdyxanIcBH
-	HC1N1yBgy+6zDIVefiLsCVgUVYBa/sewB8SQ+q5VaJurzHNiBG/skjp9rOibBCZjKjLatkEzMK8
-	83sZeG2xXsPDQFQ2XDdpRxM8QnrPyyQv+E3ttrHL2kjmsQt7GQn3Q/M6vw+Z/W7VnQswNhyQiVe
-	T0XIFsB04mRSoc1GdC++QU1LrMUdaSPmOlrpzOxJhSXf6fkR58B95hY3HsHmu93muUi/0F4xXoe
-	M7qFD7o/XQI44HiStR7Xyum+KANb7Vw6fuHTKgQJqdGmI1BhjI85z2Fk3zEl+YvEJY0rMUEx2Fr
-	mTuDiwT0MbfKNY=
-X-Received: by 2002:ac8:5f52:0:b0:4f1:b712:364a with SMTP id d75a77b69052e-5070bc84890mr75076581cf.56.1771750177109;
-        Sun, 22 Feb 2026 00:49:37 -0800 (PST)
+        bh=dWN/8SdZp4eQ7RQYloaf744UbOif/6lpP5ud9yJH5rA=;
+        b=LtSw/fmeiFnmw2//L9m8jcAJcESEAFF2t8hvyL+iFVjfBovlQNj2PtqWTbzh4oj+EZ
+         D/QHeYMBnZbTaDTXh+4DNvrssInT7ZM035i1svm5KPJmLkq402lWJi8586nGuUsRLkWq
+         9YUx+2KIVjGfMIL9E5HaMy4dV+eCgm0PzKBOLYnFmuZkvBlbJgthBpiqQrsHqpQuj1oR
+         uwMgP/ZRlOe3OE60r5IyliN5/6ijXVkAXaZMKt0a3rWAuRwR7hS2hfMltbAS57p4Piu0
+         yhmvgfKwW9/N3XPxoK7sI1f+19g+pIxkx4Waj8lXzQevc/D3VdhxSSR/Ul3jWud0/UZe
+         rBrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWA1vYwc7QJOE9zHM5utnfGBku08CDqLLx+ikWJO8LHorgHmqgFzrIYZuSrENJCVz1ac9kardJo8g==@kvack.org
+X-Gm-Message-State: AOJu0YyT8OloivUb1P1sMMek5AXYn64RsVVmb34OMkUnPKsSIJZaLfpp
+	edgtB9VGIU+SmcEQb1gdaYS/HGZLpdm1AxKs3qXtqUsNN6CUVnAifjTO5r3lHvJ0gVs=
+X-Gm-Gg: AZuq6aJ8dpv16VWTQjzQo4kCWI9uzcEmB3n4oZohaxQu0kay30jk2ferPJqTxHBaGNR
+	AuHRpo/FfFgmhO7vmyLE2bDit8A7v/T+GhafqjWFwI2kj6cuiTSULWyflcIN3K2L40BqsJ/ZC9M
+	JnBX1IBzyHWd/UU+RPh4M8Q1aIs3jrQhodRXb4vbksmpkDD4zYtWoJTRLSQzUmdMwbI6sYNdqSW
+	EGUUXD5lAs3mjtpHKbkFp/gn3exfGedlrG8OK6FbA0SXJTnd4ZPnwHlUNgwGtuOgrFLlmdqStvk
+	HZFRRjK6H6mI395hnfHmAImNnCQQ5icKmGWdLotQel6S8VkYMzmXBZRttTO/kANOKvvCLjc6bjV
+	pqHHTuxozeSMwQiDataZ9tglt2yf/sXRSZ/ZHh9oICRHwRPw0bl+Mfg3J25cNHA6avyhdG6UQrS
+	ECFk5lPR2HzqpPJHCmFvGoQWMzlfy3lPJ6rlmTxTa4y42iEhZFjZdsiGh7ZLlaKp7ZakmXjDVdc
+	3eUZjoevAs8apM=
+X-Received: by 2002:a05:622a:241:b0:506:9944:8cfa with SMTP id d75a77b69052e-5070bbe0e70mr69483451cf.17.1771750180365;
+        Sun, 22 Feb 2026 00:49:40 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.49.35
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d53f0fcsm38640631cf.9.2026.02.22.00.49.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 00:49:36 -0800 (PST)
+        Sun, 22 Feb 2026 00:49:39 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: lsf-pc@lists.linux-foundation.org
 Cc: linux-kernel@vger.kernel.org,
@@ -166,22 +166,22 @@ Cc: linux-kernel@vger.kernel.org,
 	bhe@redhat.com,
 	zhengqi.arch@bytedance.com,
 	terry.bowman@amd.com
-Subject: [RFC PATCH v4 11/27] mm/huge_memory.c: add private node folio split notification callback
-Date: Sun, 22 Feb 2026 03:48:26 -0500
-Message-ID: <20260222084842.1824063-12-gourry@gourry.net>
+Subject: [RFC PATCH v4 12/27] mm/migrate: NP_OPS_MIGRATION - support private node user migration
+Date: Sun, 22 Feb 2026 03:48:27 -0500
+Message-ID: <20260222084842.1824063-13-gourry@gourry.net>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
 References: <20260222084842.1824063-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6fhxb6xhp8kjp8tg689te49mjomhp7kf
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0CF43180008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771750177-730113
-X-HE-Meta: U2FsdGVkX1+idSn6vxv6M1BA5AZwMD3p89DEtl25h7NhH2jvh+2a6okA9K8LhCWnKWVX8YffSrOaC8K8n/Rifx6c793kftlXQOr4cobTPWsyNDPgzG2GgKPTSS+tK3U9R6Np2r3QeMMGV4+ZeoQdWyZOhdg+FEm/ZIkoJuhkxQ+Al6OAawsSVggH81MTXTQJFAELxGe/IzIFWUfH7nZblkMnXnPH0idO7M6PKFBz8JZyesGt8gO3IR3crbdSuyFc5rfaY0PDdJB4BaircGMtMIevNabTWA/oWcOVI8tlaL9D1atGRw4bUR3IJg/nwIGaMzedKBDYN6qisG52RbOcV3zPbG+9DZAL9koRrITEIaaU+aVZV7CYBfsU2uemPfA2VLj0AwgOIXXn2lneso/8ZnB7iZYrjSw/tQn3q7iHyVRvIX1o81sHUrio9YDDpYyhIvvh40NRSuuOAMerJhYmj6Ar2YcDcjVIIA5Yy9iM83rTxhL47DMGfMVd0VPXu8Qc7LEKGc2bVcGhWJ8czyxHFGDnW74FZ3O8VLLk9qUZQmY7HTuAS+EyG0eHx9Jg4KTZD9BjizCi6kOReZvTWwmWBfnEmCZE4LBbdjoDFuh7dQUQgqi1lUXlqTcp04IqE9h+5IiwiGuXKpFVMwh7FSHFrraqJC45bCw+iwpQ/pHiKE/b2T6lPel8wLjJs+YcTTLgf3t2ZRksEk7dRzNQY/Iu6U2NpeDXxGSaOd68BM7fIlauJiaVcLaERIfz2jEYqOd/oDHylznPJuJHYGmwiHGX2SM9Qsg1QWrvTfRwMMP/8E0lIUlXjlQnmNJ7pToApY6VbmzVHOnO6cCr7o7kkdXTC9bYn/achK6SX6l4PZxSgqVcCI73gniwRzvjVLQUOwe1u079WzH8Q6cKgK5n5aJXXMS2IYWCvI0athGuN3gtudIT3xVqK5E6E4+FLFpvXKvSgnvcS3QV34og5EdvcH/
- K+9bHJVf
- TnlbNZ5F6FGUXrpcRc+QZBnVklYvcHjK+3ZCOx4b29Owenv6Ee1SbyCe54sGdykvSOMrB4e8tOHaKdgJHi/De5dHjXA0Go4y/CKHAdC/YoonCCvTlXhWBoECBtvfRtM6JoctQHbzmc4oCw6tXrOVpT8cYQFsftmNVjuy5H4jNFcA6Hwmtm2bznUVlNKAQ5M1qKnHxyjzpNqQ4Ej4S098GuXCPFtnMbdDgSIM9JZCUx0NfMXuUr5rLy2LBLR8ATWFGivuL3eW2dyOG2bYEqioMGqIwiHezFWHoDncXgz44ayfyeJNiFEpw3Hj+xMQfNuCsB9l6PCTksGKL/PIFNQUsO6nheehc4gMZkTsfn5HLesW77rZ5BacyYnZy+U2BJJgugpOuOAT6kvJDzUHejPDU/RLkYUTN8qUrjYpPzukipqhj7wlnE23n8J2h4iI4BgX06JzbaE6425/YChE=
+X-Rspamd-Queue-Id: 63B6A140005
+X-Stat-Signature: dh8yrnksyzmnpsb1zx5mb5sa9r4croxt
+X-HE-Tag: 1771750181-951857
+X-HE-Meta: U2FsdGVkX1/PX/bWh4hDJ31EnFzDGVcVjzOWpPIxe6D1Ex2SLVZvrmUmS4OHhO5MSs18n9wrx0j1qEnu554R/aKoEBzbeEzEj+OqYzOCMpaRFbRqSSOWr9sqk4mdx6CpW/R4K7SiEGqeeMqMaVl6cH1+g9DLU1o41D8FQKPGEvhBfUSXarmTY1st0ULoME4ekVcjOgt5Bl6bPELBPcHa1QXb4Ne/ouIpGl24yxGIQ/D9hVG6lAGauddthwlbPt1Cr3QPkgM9IjV0bR9T3GqnI9JvYSTELQBftoRPBB0ohbUce2CFieYY5DiHKJv9upnSk7/ovg+VKUeZHKvmjLgct6mZEuHqDtPp9pUPC2XC0uhVJUmLxNOVZdZ+7UzdMsEZzLcc3d+wtvYwH0WdbBI0iF+m7KJfZuuJx0aKTFCUoBuStO6Wj6KqjU+2aE+yLDEUFtF5wVYWcbZfSKgL4cYOkgRyamDMI8FnLPXJfTfALij99NF0fG6oT63T+Z23tf3kF0oLjOcLPOXdBKGjquPikYtIAgzpshJP2YnzokQdllIdzj7Mw5eupT9ciYOGDf7QI+DYEpSihYin1OBJOKyvpBH69cz9vPUVmPDRPk4gYITBSEIaIczgjOMMIO9O+9srU+y7PmRnxIuC8jO/KvKyVlW3mp7tuFrG9js/zjqLLdZxW9DQrWhsXn3vMkqVkkFHWXvzSiXHRHRuOr5Pg2abB64Ysp8X43I4i6OCcbdArSokfMHAI7OSUeSRR6gTTsAWNgZaxNfSnYy3mZKFxRxPHBH06EaO3ylqluCaqNkV6YGx//00JWnAss3gs7fyf9P7sZT0XFqQ2w5ejx60IwrfC6A3Cdj1ZwIA/+CkU0u9geUIU6xnXfxOESG8cK2rboGgVe6HjRAS/gC22aSrzS55Ou8j0xdt4OIYogfeahSRV0CvSMx8V6GAWvbkpbwIO9GdzaCke+/VttQX5SPVNzS
+ XN0wkn0q
+ bftpFoBKGEruKzLBSVE7mNOEe1O0lV75+BNcTWxzcfRF/6oqiVwheC+RKKCV/hJ5Bk3bF2nW+K4ZVuoVuPOQ30iG0HPxYEN7WnDjMofpRgzXj4QBv1SeoVYDCncWs3bUXCeUe71O5ZRI2YkcwF4r4wj2RlCQ73n8eogL2Lf95KjAmVri0u8wnPUbJGqgh1srEXw/nQHvs2att82aJp9u/TUNweJV7SWkSDl/LNtsnt1RGdwRdUcnmZynA7+y24/iF+D8A4iPQq13Ix6nxolWchFaonAS418boXWdqgQWOs7DN3bdj2KuYtw7YFQIgKRgylyWIZTCaUg8ykUKiAC19caJ553AsC+a44muokEM3SGvcq949qUDxEKE3QygM3cnLfhF8cTGEk4WNRVwBoa0+7U8PSBOmLua7E8zH71Y9eNBrS5NAr0xxHHTGhbb/wvv+xBLijAPla3+1WTo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,124 +190,462 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some private node services may need to update internal metadata when
-a THP folio is split.  ZONE_DEVICE already has a split callback via
-pgmap->ops; private nodes can provide the same capability.
+Private node services may want to support user-driven migration
+(migrate_pages syscall, mbind) to allow data movement between regular
+and private nodes.
 
-Just like zone_device, some private node services may want to know
-about a folio being split.  Add this optional callback to the ops
-struct and add a wrapper for zone_device and private node callback
-dispatch to be consolidated.
+ZONE_DEVICE always rejects user migration, but private nodes should
+be able to opt in.
 
-Wire this into __folio_split() where the zone_device check was made.
+Add NP_OPS_MIGRATION flag and folio_managed_user_migrate() wrapper that
+dispatches migration requests.  Private nodes can either set the flag
+and provide a custom migrate_to callback for driver-managed migration.
+
+In migrate_to_node(), allows GFP_PRIVATE when the destination node
+supports NP_OPS_MIGRATION, enabling migrate_pages syscall to target
+private nodes.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- include/linux/node_private.h | 33 +++++++++++++++++++++++++++++++++
- mm/huge_memory.c             |  6 ++++--
- 2 files changed, 37 insertions(+), 2 deletions(-)
+ drivers/base/node.c          |   4 ++
+ include/linux/migrate.h      |  10 +++
+ include/linux/node_private.h | 122 +++++++++++++++++++++++++++++++++++
+ mm/damon/paddr.c             |   3 +
+ mm/internal.h                |  24 +++++++
+ mm/mempolicy.c               |  10 +--
+ mm/migrate.c                 |  49 ++++++++++----
+ mm/rmap.c                    |   4 +-
+ 8 files changed, 206 insertions(+), 20 deletions(-)
 
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 646dc48a23b5..e587f5781135 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -949,6 +949,10 @@ int node_private_set_ops(int nid, const struct node_private_ops *ops)
+ 	if (!node_possible(nid))
+ 		return -EINVAL;
+ 
++	if ((ops->flags & NP_OPS_MIGRATION) &&
++	    (!ops->migrate_to || !ops->folio_migrate))
++		return -EINVAL;
++
+ 	mutex_lock(&node_private_lock);
+ 	np = rcu_dereference_protected(NODE_DATA(nid)->node_private,
+ 				       lockdep_is_held(&node_private_lock));
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..7b2da3875ff2 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -71,6 +71,9 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+ 		struct folio *newfolio, struct folio *folio, int extra_count);
+ int set_movable_ops(const struct movable_operations *ops, enum pagetype type);
++int migrate_folios_to_node(struct list_head *folios, int nid,
++				    enum migrate_mode mode,
++				    enum migrate_reason reason);
+ 
+ #else
+ 
+@@ -96,6 +99,13 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ {
+ 	return -ENOSYS;
+ }
++static inline int migrate_folios_to_node(struct list_head *folios,
++						  int nid,
++						  enum migrate_mode mode,
++						  enum migrate_reason reason)
++{
++	return -ENOSYS;
++}
+ 
+ #endif /* CONFIG_MIGRATION */
+ 
 diff --git a/include/linux/node_private.h b/include/linux/node_private.h
-index 09ea7c4cb13c..f9dd2d25c8a5 100644
+index f9dd2d25c8a5..0c5be1ee6e60 100644
 --- a/include/linux/node_private.h
 +++ b/include/linux/node_private.h
-@@ -3,6 +3,7 @@
- #define _LINUX_NODE_PRIVATE_H
+@@ -4,6 +4,7 @@
  
  #include <linux/completion.h>
-+#include <linux/memremap.h>
+ #include <linux/memremap.h>
++#include <linux/migrate_mode.h>
  #include <linux/mm.h>
  #include <linux/nodemask.h>
  #include <linux/rcupdate.h>
-@@ -44,11 +45,19 @@ struct vm_fault;
-  *   Returns: true if handled (skip return to buddy)
-  *            false if no op (return to buddy)
+@@ -52,15 +53,40 @@ struct vm_fault;
+  *     or NULL when called for the final (original) folio after all sub-folios
+  *     have been split off.
   *
-+ * @folio_split: Notification that a folio on this private node is being split.
++ * @migrate_to: Migrate folios TO this node.
++ *	[refcounted callback]
++ *	Returns: 0 on full success, >0 = number of folios that failed to
++ *		 migrate, <0 = error.  Matches migrate_pages() semantics.
++ *		 @nr_succeeded is set to the number of successfully migrated
++ *		 folios (may be NULL if caller doesn't need it).
++ *
++ * @folio_migrate: Post-migration notification that a folio on this private node
++ *    changed physical location (on the same node or a different node).
 + *    [folio-referenced callback]
-+ *     Called from the folio split path via folio_managed_split_cb().
-+ *     @folio is the original folio; @new_folio is the newly created folio,
-+ *     or NULL when called for the final (original) folio after all sub-folios
-+ *     have been split off.
++ *     Called from migrate_folio_move() after data has been copied but before
++ *     migration entries are replaced with real PTEs.  Both @src and @dst are
++ *     locked.  Faults block in migration_entry_wait() until
++ *     remove_migration_ptes() runs, so the service can safely update
++ *     PFN-based metadata (compression tables, device page tables, DMA
++ *     mappings, etc.) before any access through the page tables.
 + *
   * @flags: Operation exclusion flags (NP_OPS_* constants).
   *
   */
  struct node_private_ops {
  	bool (*free_folio)(struct folio *folio);
-+	void (*folio_split)(struct folio *folio, struct folio *new_folio);
+ 	void (*folio_split)(struct folio *folio, struct folio *new_folio);
++	int (*migrate_to)(struct list_head *folios, int nid,
++				  enum migrate_mode mode,
++				  enum migrate_reason reason,
++				  unsigned int *nr_succeeded);
++	void (*folio_migrate)(struct folio *src, struct folio *dst);
  	unsigned long flags;
  };
  
-@@ -150,6 +159,24 @@ static inline bool zone_private_flags(struct zone *z, unsigned long flag)
- 	return node_private_flags(zone_to_nid(z)) & flag;
++/* Allow user/kernel migration; requires migrate_to and folio_migrate */
++#define NP_OPS_MIGRATION		BIT(0)
++
+ /**
+  * struct node_private - Per-node container for N_MEMORY_PRIVATE nodes
+  *
+@@ -177,6 +203,81 @@ static inline void folio_managed_split_cb(struct folio *original_folio,
+ 		node_private_split_cb(original_folio, new_folio);
  }
  
-+static inline void node_private_split_cb(struct folio *folio,
-+					 struct folio *new_folio)
++#ifdef CONFIG_MEMORY_HOTPLUG
++static inline int folio_managed_allows_user_migrate(struct folio *folio)
 +{
-+	const struct node_private_ops *ops = folio_node_private_ops(folio);
-+
-+	if (ops && ops->folio_split)
-+		ops->folio_split(folio, new_folio);
++	if (folio_is_zone_device(folio))
++		return -ENOENT;
++	return node_private_has_flag(folio_nid(folio), NP_OPS_MIGRATION) ?
++	       folio_nid(folio) : -ENOENT;
 +}
 +
-+static inline void folio_managed_split_cb(struct folio *original_folio,
-+					  struct folio *new_folio)
++/**
++ * folio_managed_allows_migrate - Check if a managed folio supports migration
++ * @folio: The folio to check
++ *
++ * Returns true if the folio can be migrated.  For zone_device folios, only
++ * device_private and device_coherent support migration.  For private node
++ * folios, migration requires NP_OPS_MIGRATION.  Normal folios always
++ * return true.
++ */
++static inline bool folio_managed_allows_migrate(struct folio *folio)
 +{
-+	if (folio_is_zone_device(original_folio))
-+		zone_device_private_split_cb(original_folio, new_folio);
-+	else if (folio_is_private_node(original_folio))
-+		node_private_split_cb(original_folio, new_folio);
++	if (folio_is_zone_device(folio))
++		return folio_is_device_private(folio) ||
++		       folio_is_device_coherent(folio);
++	if (folio_is_private_node(folio))
++		return folio_private_flags(folio, NP_OPS_MIGRATION);
++	return true;
 +}
++
++/**
++ * node_private_migrate_to - Attempt service-specific migration to a private node
++ * @folios: list of folios to migrate (may sleep)
++ * @nid: target node
++ * @mode: migration mode (MIGRATE_ASYNC, MIGRATE_SYNC, etc.)
++ * @reason: migration reason (MR_DEMOTION, MR_SYSCALL, etc.)
++ * @nr_succeeded: optional output for number of successfully migrated folios
++ *
++ * If @nid is an N_MEMORY_PRIVATE node with a migrate_to callback,
++ * invokes the callback and returns the result with migrate_pages()
++ * semantics (0 = full success, >0 = failure count, <0 = error).
++ * Returns -ENODEV if the node is not private or the service is being
++ * torn down.
++ *
++ * The source folios are on other nodes, so they do not pin the target
++ * node's node_private.  A temporary refcount is taken under rcu_read_lock
++ * to keep node_private (and the service module) alive across the callback.
++ */
++static inline int node_private_migrate_to(struct list_head *folios, int nid,
++					  enum migrate_mode mode,
++					  enum migrate_reason reason,
++					  unsigned int *nr_succeeded)
++{
++	int (*fn)(struct list_head *, int, enum migrate_mode,
++		  enum migrate_reason, unsigned int *);
++	struct node_private *np;
++	int ret;
++
++	rcu_read_lock();
++	np = rcu_dereference(NODE_DATA(nid)->node_private);
++	if (!np || !np->ops || !np->ops->migrate_to ||
++	    !refcount_inc_not_zero(&np->refcount)) {
++		rcu_read_unlock();
++		return -ENODEV;
++	}
++	fn = np->ops->migrate_to;
++	rcu_read_unlock();
++
++	ret = fn(folios, nid, mode, reason, nr_succeeded);
++
++	if (refcount_dec_and_test(&np->refcount))
++		complete(&np->released);
++
++	return ret;
++}
++#endif /* CONFIG_MEMORY_HOTPLUG */
 +
  #else /* !CONFIG_NUMA */
  
  static inline bool folio_is_private_node(struct folio *folio)
-@@ -198,6 +225,12 @@ static inline bool zone_private_flags(struct zone *z, unsigned long flag)
+@@ -242,6 +343,27 @@ int node_private_clear_ops(int nid, const struct node_private_ops *ops);
+ 
+ #else /* !CONFIG_NUMA || !CONFIG_MEMORY_HOTPLUG */
+ 
++static inline int folio_managed_allows_user_migrate(struct folio *folio)
++{
++	return -ENOENT;
++}
++
++static inline bool folio_managed_allows_migrate(struct folio *folio)
++{
++	if (folio_is_zone_device(folio))
++		return folio_is_device_private(folio) ||
++		       folio_is_device_coherent(folio);
++	return true;
++}
++
++static inline int node_private_migrate_to(struct list_head *folios, int nid,
++					  enum migrate_mode mode,
++					  enum migrate_reason reason,
++					  unsigned int *nr_succeeded)
++{
++	return -ENODEV;
++}
++
+ static inline int node_private_register(int nid, struct node_private *np)
+ {
+ 	return -ENODEV;
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 07a8aead439e..532b8e2c62b0 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -277,6 +277,9 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
+ 		else
+ 			*sz_filter_passed += folio_size(folio) / addr_unit;
+ 
++		if (!folio_managed_allows_migrate(folio))
++			goto put_folio;
++
+ 		if (!folio_isolate_lru(folio))
+ 			goto put_folio;
+ 		list_add(&folio->lru, &folio_list);
+diff --git a/mm/internal.h b/mm/internal.h
+index 658da41cdb8e..6ab4679fe943 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1442,6 +1442,30 @@ static inline bool folio_managed_on_free(struct folio *folio)
  	return false;
  }
  
-+static inline void folio_managed_split_cb(struct folio *original_folio,
-+					  struct folio *new_folio)
++/**
++ * folio_managed_migrate_notify - Notify service that a folio changed location
++ * @src: the old folio (about to be freed)
++ * @dst: the new folio (data already copied, migration entries still in place)
++ *
++ * Called from migrate_folio_move() after data has been copied but before
++ * remove_migration_ptes() installs real PTEs pointing to @dst.  While
++ * migration entries are in place, faults block in migration_entry_wait(),
++ * so the service can safely update PFN-based metadata before any access
++ * through the page tables.  Both @src and @dst are locked.
++ */
++static inline void folio_managed_migrate_notify(struct folio *src,
++						struct folio *dst)
 +{
-+	if (folio_is_zone_device(original_folio))
-+		zone_device_private_split_cb(original_folio, new_folio);
++	const struct node_private_ops *ops;
++
++	if (!folio_is_private_node(src))
++		return;
++
++	ops = folio_node_private_ops(src);
++	if (ops && ops->folio_migrate)
++		ops->folio_migrate(src, dst);
 +}
- #endif /* CONFIG_NUMA */
++
+ struct vm_struct *__get_vm_area_node(unsigned long size,
+ 				     unsigned long align, unsigned long shift,
+ 				     unsigned long vm_flags, unsigned long start,
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 68a98ba57882..2b0f9762d171 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -111,6 +111,7 @@
+ #include <linux/mmu_notifier.h>
+ #include <linux/printk.h>
+ #include <linux/leafops.h>
++#include <linux/node_private.h>
+ #include <linux/gcd.h>
  
- #if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 40cf59301c21..2ecae494291a 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -24,6 +24,7 @@
- #include <linux/freezer.h>
- #include <linux/mman.h>
+ #include <asm/tlbflush.h>
+@@ -1282,11 +1283,6 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
+ 	LIST_HEAD(pagelist);
+ 	long nr_failed;
+ 	long err = 0;
+-	struct migration_target_control mtc = {
+-		.nid = dest,
+-		.gfp_mask = GFP_HIGHUSER_MOVABLE | __GFP_THISNODE,
+-		.reason = MR_SYSCALL,
+-	};
+ 
+ 	nodes_clear(nmask);
+ 	node_set(source, nmask);
+@@ -1311,8 +1307,8 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
+ 	mmap_read_unlock(mm);
+ 
+ 	if (!list_empty(&pagelist)) {
+-		err = migrate_pages(&pagelist, alloc_migration_target, NULL,
+-			(unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
++		err = migrate_folios_to_node(&pagelist, dest, MIGRATE_SYNC,
++					     MR_SYSCALL);
+ 		if (err)
+ 			putback_movable_pages(&pagelist);
+ 	}
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 5169f9717f60..a54d4af04df3 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -43,6 +43,7 @@
+ #include <linux/sched/sysctl.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/pagewalk.h>
++#include <linux/node_private.h>
+ 
+ #include <asm/tlbflush.h>
+ 
+@@ -1387,6 +1388,8 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 	if (old_page_state & PAGE_WAS_MLOCKED)
+ 		lru_add_drain();
+ 
++	folio_managed_migrate_notify(src, dst);
++
+ 	if (old_page_state & PAGE_WAS_MAPPED)
+ 		remove_migration_ptes(src, dst, 0);
+ 
+@@ -2165,6 +2168,7 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+ 
+ 	return rc_gather;
+ }
++EXPORT_SYMBOL_GPL(migrate_pages);
+ 
+ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ {
+@@ -2204,6 +2208,31 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ 
+ 	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
+ }
++EXPORT_SYMBOL_GPL(alloc_migration_target);
++
++static int __migrate_folios_to_node(struct list_head *folios, int nid,
++				    enum migrate_mode mode,
++				    enum migrate_reason reason)
++{
++	struct migration_target_control mtc = {
++		.nid = nid,
++		.gfp_mask = GFP_HIGHUSER_MOVABLE | __GFP_THISNODE,
++		.reason = reason,
++	};
++
++	return migrate_pages(folios, alloc_migration_target, NULL,
++			     (unsigned long)&mtc, mode, reason, NULL);
++}
++
++int migrate_folios_to_node(struct list_head *folios, int nid,
++			   enum migrate_mode mode,
++			   enum migrate_reason reason)
++{
++	if (node_state(nid, N_MEMORY_PRIVATE))
++		return node_private_migrate_to(folios, nid, mode,
++					       reason, NULL);
++	return __migrate_folios_to_node(folios, nid, mode, reason);
++}
+ 
+ #ifdef CONFIG_NUMA
+ 
+@@ -2221,14 +2250,8 @@ static int store_status(int __user *status, int start, int value, int nr)
+ static int do_move_pages_to_node(struct list_head *pagelist, int node)
+ {
+ 	int err;
+-	struct migration_target_control mtc = {
+-		.nid = node,
+-		.gfp_mask = GFP_HIGHUSER_MOVABLE | __GFP_THISNODE,
+-		.reason = MR_SYSCALL,
+-	};
+ 
+-	err = migrate_pages(pagelist, alloc_migration_target, NULL,
+-		(unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
++	err = migrate_folios_to_node(pagelist, node, MIGRATE_SYNC, MR_SYSCALL);
+ 	if (err)
+ 		putback_movable_pages(pagelist);
+ 	return err;
+@@ -2240,7 +2263,7 @@ static int __add_folio_for_migration(struct folio *folio, int node,
+ 	if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+ 		return -EFAULT;
+ 
+-	if (folio_is_zone_device(folio))
++	if (!folio_managed_allows_migrate(folio))
+ 		return -ENOENT;
+ 
+ 	if (folio_nid(folio) == node)
+@@ -2364,7 +2387,8 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+ 		err = -ENODEV;
+ 		if (node < 0 || node >= MAX_NUMNODES)
+ 			goto out_flush;
+-		if (!node_state(node, N_MEMORY))
++		if (!node_state(node, N_MEMORY) &&
++		    !node_state(node, N_MEMORY_PRIVATE))
+ 			goto out_flush;
+ 
+ 		err = -EACCES;
+@@ -2449,8 +2473,8 @@ static void do_pages_stat_array(struct mm_struct *mm, unsigned long nr_pages,
+ 		if (folio) {
+ 			if (is_zero_folio(folio) || is_huge_zero_folio(folio))
+ 				err = -EFAULT;
+-			else if (folio_is_zone_device(folio))
+-				err = -ENOENT;
++			else if (unlikely(folio_is_private_managed(folio)))
++				err = folio_managed_allows_user_migrate(folio);
+ 			else
+ 				err = folio_nid(folio);
+ 			folio_walk_end(&fw, vma);
+@@ -2660,6 +2684,9 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
+ 	int nr_pages = folio_nr_pages(folio);
+ 	pg_data_t *pgdat = NODE_DATA(node);
+ 
++	if (!folio_managed_allows_migrate(folio))
++		return -ENOENT;
++
+ 	if (folio_is_file_lru(folio)) {
+ 		/*
+ 		 * Do not migrate file folios that are mapped in multiple
+diff --git a/mm/rmap.c b/mm/rmap.c
+index f955f02d570e..805f9ceb82f3 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -72,6 +72,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/page_idle.h>
  #include <linux/memremap.h>
 +#include <linux/node_private.h>
- #include <linux/pagemap.h>
- #include <linux/debugfs.h>
- #include <linux/migrate.h>
-@@ -3850,7 +3851,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+ #include <linux/userfaultfd_k.h>
+ #include <linux/mm_inline.h>
+ #include <linux/oom.h>
+@@ -2616,8 +2617,7 @@ void try_to_migrate(struct folio *folio, enum ttu_flags flags)
+ 					TTU_SYNC | TTU_BATCH_FLUSH)))
+ 		return;
  
- 			next = folio_next(new_folio);
+-	if (folio_is_zone_device(folio) &&
+-	    (!folio_is_device_private(folio) && !folio_is_device_coherent(folio)))
++	if (!folio_managed_allows_migrate(folio))
+ 		return;
  
--			zone_device_private_split_cb(folio, new_folio);
-+			folio_managed_split_cb(folio, new_folio);
- 
- 			folio_ref_unfreeze(new_folio,
- 					   folio_cache_ref_count(new_folio) + 1);
-@@ -3889,7 +3890,8 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 			folio_put_refs(new_folio, nr_pages);
- 		}
- 
--		zone_device_private_split_cb(folio, NULL);
-+		folio_managed_split_cb(folio, NULL);
-+
- 		/*
- 		 * Unfreeze @folio only after all page cache entries, which
- 		 * used to point to it, have been updated with new folios.
+ 	/*
 -- 
 2.53.0
 
