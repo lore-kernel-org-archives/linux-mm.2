@@ -4,100 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06EBBC624DA
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 12:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0455C6369F
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Feb 2026 13:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 231E86B0088; Sun, 22 Feb 2026 07:03:29 -0500 (EST)
+	id 776506B0088; Sun, 22 Feb 2026 08:58:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B58B6B0089; Sun, 22 Feb 2026 07:03:29 -0500 (EST)
+	id 7240F6B0089; Sun, 22 Feb 2026 08:58:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C1EB6B008A; Sun, 22 Feb 2026 07:03:29 -0500 (EST)
+	id 6300F6B008A; Sun, 22 Feb 2026 08:58:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E82AA6B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 07:03:28 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEB8D1A063E
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 12:03:27 +0000 (UTC)
-X-FDA: 84471957654.19.756BCA4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DCFD618000E
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 12:03:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HpRaxvcc;
-	spf=pass (imf24.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4326B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 08:58:43 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8C3D8C159
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 13:58:42 +0000 (UTC)
+X-FDA: 84472248084.07.86699B2
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EC44FA0009
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 13:58:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=UpWN701j;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf25.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771768721; a=rsa-sha256;
+	cv=none;
+	b=533BWD5uZ0uFveD4YbEszN7XTwwDJwUVqZBGraQAQijOH4JwMeYuV2sQGvMVojrg978F6r
+	xry5RkRBsLXhpDz6jcIqPFBGyzAevG6AJkOpuNwtQHV5pcfeWsytcTh6f1cPMrY46Sx0YY
+	GSysFnEroATtzzFWH/OLhUw1iKo/3v8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=UpWN701j;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf25.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771761806;
+	s=arc-20220608; t=1771768721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l+yw+qtv1w/l9LpTV1w9IMNGubX7SibUQexR33hlLcA=;
-	b=6EZKjZr8939G7aQeUU9EHPWNOLu/G1wgUSV0HrNcTHeOcLBwQIb71GeuC2argaCAb67tTV
-	1ghJvSE5TJutCEiANoGl0ev+CFoIMZ4VeA/F9E3jqAMkn+U6cgX02N8PnUmOUJSm7J4OD5
-	qFpfKb0HmAqvL2+l/AGzf2c3ou1I0Pg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771761806; a=rsa-sha256;
-	cv=none;
-	b=iq8dOM3X6aVyBH1YmQzrgmInx/5UheashQieUWYB05a+wP/92nEVhcWb7pKl7aAE7cfg3r
-	Y0/2QNnAD8SZGRDKU57iBSQ1XNFGRHny3zPIWNws4GV0eDppb7zWFy2VxVZ54YGXVN80RE
-	le/iwF3AqZEwi9vOKz191m3AFvquMKc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HpRaxvcc;
-	spf=pass (imf24.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771761805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l+yw+qtv1w/l9LpTV1w9IMNGubX7SibUQexR33hlLcA=;
-	b=HpRaxvccTBjauSGXuntIG2cewoTTT1sin/ri6q2g8BhUsn+NwJwmoAJR7QPan/DtqSZSKl
-	uk80VNYA9rWtyb9gWW4gk2cqXV0GsEkRtRbEGsT8RNAzpHrQ2rxjKfu/rdk5+xgaSzGIN4
-	XnO1QSJtquplibayZciVR/fyNc+LRCc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-leSndRU3Nf-XQVbNMtRUig-1; Sun,
- 22 Feb 2026 07:03:20 -0500
-X-MC-Unique: leSndRU3Nf-XQVbNMtRUig-1
-X-Mimecast-MFC-AGG-ID: leSndRU3Nf-XQVbNMtRUig_1771761799
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3E4E51956095;
-	Sun, 22 Feb 2026 12:03:19 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.34])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DDEAF1800465;
-	Sun, 22 Feb 2026 12:03:15 +0000 (UTC)
-Date: Sun, 22 Feb 2026 20:01:46 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: fix NULL NODE_DATA dereference for memoryless nodes
- on boot
-Message-ID: <aZrwKt8hS5EBn_It@fedora>
-References: <20260222054451.3261-1-ming.lei@redhat.com>
- <aZrmxmxyLhm_Cq0Q@kernel.org>
+	bh=CJM8LbZ9bgwxU0IPPgSVzAbIOKSeYTx/H0HDf7oWGDc=;
+	b=Bv7SnKrn9lF+uVBrNp7/MsoNEM3O6RyDWLSl2qKOKMl/a4v2kE/ezmUaEYzEGvgebxyR31
+	GoAKX8+A9pe7M3VWLoP2dK0veXgO2/LI4g4HFBHd4p7E/wZKkFmkMVYWdPm4cREqwgoSfA
+	4HOPoN3yYw0eVN3SE4oTH9QWSKrYtq4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CJM8LbZ9bgwxU0IPPgSVzAbIOKSeYTx/H0HDf7oWGDc=; b=UpWN701jvBOcd1H5YT1Hon1mag
+	+u6dLOZCSNU1dEsozENuQalcFQfVXhQsvI+XuRz9733nLjSXr0lKST4ANJy034Mni5GVzEluADn5K
+	zyWbeGaVBTQ5naFbiHXMLmi0OzaBF+Uf32bwftolJooOQWQH6KNJI9uZzWQNwNyOhWXaWbHF8WGGN
+	SR1nJdVHanoMYJ1RK46eALilvlQvNhrMfv2lcawVEbHSnjrdQ9AYPOvsjBuHaVu9Me9GUB3dMuJaQ
+	YTRoltieWJayWzGLRzOML/IU9PwsE4fZHkhaRdbc9IU/cIDC+n6SD2lMZEm0oPFUyVnfTjFm8E6y2
+	k5zXlECA==;
+Received: from [177.83.214.207] (helo=[192.168.0.51])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vu9yk-003oBA-7Z; Sun, 22 Feb 2026 14:58:34 +0100
+Message-ID: <20e28221-f9c7-47c0-43fa-72bb2e868386@igalia.com>
+Date: Sun, 22 Feb 2026 10:58:27 -0300
 MIME-Version: 1.0
-In-Reply-To: <aZrmxmxyLhm_Cq0Q@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: g22oDh-2akTKhk6-iIEiampDc1OFIeK0DQq1QkARIZY_1771761799
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 2/2] mm/memblock: Add reserve_mem debugfs info
+Content-Language: en-US
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+ kernel@gpiccoli.net, Andrew Morton <akpm@linux-foundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260217195816.861684-1-gpiccoli@igalia.com>
+ <20260217195816.861684-3-gpiccoli@igalia.com> <aZlyVHwUdxg5WZBe@kernel.org>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <aZlyVHwUdxg5WZBe@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: du3ck3dpuy33ibo636oc8uapnapcp3fu
 X-Rspam-User: 
-X-Stat-Signature: cd93ujb18reyti37ggkhh89dbu1cttnb
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DCFD618000E
-X-HE-Tag: 1771761805-840902
-X-HE-Meta: U2FsdGVkX18INhMXTaKtSUyWZ0rVhbFIpHloPw6gkp5UbrlC4HDWUIGjiIBdouHoxRMO8kKvxyKLA7hIq1kyHmhwY4iw7PPsYAeHaeqYaEutppjYhiaUJ8nV/OBp5M7bUZ0IdgEecyONKxcqkTGUqYMcypcxAWBCSWdkF+Ha0totaAR+IlmZme4+NiR1IFscflq4AE/obPtjYZHpe3/f8LmawzMdQRY4UaQE6AvtxMx9u+hUuUfTWdMBLNOc4XI5Iga9U4WDNPUxI61klrL+0zlrhCcefXV/DnXxbXKCku2LvFnT7HZ6Uuwg1YJntVrXIHkUl4TnkJa1ehSxpfdKkBcMb+Djh1DHgdqzBz5wHpZxW+ziWvwEt12hU7Tb0vgyAJ/qAhahZSwujIYZdJoQmTvD56lx6o92Xmg2D3L8jfUi17UbUZQjLN/uNNdgPeuDI8qxokWakofYtfTIUP1zQtbgoHlyfLmtV60/WoHeI+pr2drYQgztIPtj3Ast9XNZNu2oU8hXwXc4UIIKbMS7zlE1Cwg8VgSabLwjM+rKKmNDfMQWltyfAXxnZd3iDLWZrLwptxiiCwgrqdZk2AnMzT6pA4NML8Z9szjfAD58c32P5L6vslQGvt3bSGM3NvpuI0Fyu2SfKUyUjuny6pTq/6uJIPo/9+h8pZ02ZtPM4yESjdhftcs5Fxiy0HqSo3lYMeYzoPgVR5gcaV1wcEz5VO0bJFRL/qDYMXq2fyUj4kv8OS5ROJsyn/hquzbABjC1fGNhouYextBjD1iqI/D5tbMCcyMqjHp1WS0z3C2ljlZn4/cWb+8AxDMfo9UdGAsJGXeSFJOSujhNvdS30ePEgAGGflErFNSo7LeKCF2dHbOzF/amtgSmSxz7GTbyFwPjiWk3minwhCkiXSMgfg2+ZLC20tBfs4gRvQA/7DK1cHAVT5Q2z7mu937z1JAf1C37TTzxGVj/eyZpoobP1nW
- kDBin5zg
- /gKYc1af/d9rEVs0gnr00QIIX6CpoUSrtuvYID0jTxeHHFeSYhUqsuNZiJ79i9uryJx50Veh4l3AGd+DPE5sf1tbRmqq7kXu9dEF85pwNl+IDEU4SkoAWZd4//os8P0c/tC1NOpSZIgRIVegETgDSzN24KmCCtj1kgVR+5uwF5GHVpFpHpKgl0n814xne5k6sOEz8jxVr6ICrWZYoir7NiivWXUOel5DKVqtBtPxTUx3eg+fEl6mvT0WTKCIIiK3n60y0psm/d8PVc76t7nlBU7cccWRKc7QJFLEX+ekgEpnJ5avf47TZ2teGdHxbeh33DJhnhZmv6o2QN/NCcxGZsQhH8pLuQiZ1yb6TSmxVvhck9RqCpOrl/JZGRIzzAJqmwg+VIsWpuh0C4Ml65ob0qps6DQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EC44FA0009
+X-HE-Tag: 1771768720-739251
+X-HE-Meta: U2FsdGVkX194tuPYnIZsUh1sq/S4AgMGr4XeItlDnbUgC6KFCgDXgamM9t1/3IDpxP/bzoGF6jTuAx680Mp429HC42XAtARqEPPYoFA/pyPsQBqlgBVO97jh2aVfJ3wBDT6vKfCbeI82VgD+HMd4yMxNa1tuRuww85KeN4d/tT6N6KDafY4aaiv0MVWWz1g2dMVyCz5HkBpMzNLAt+bokueFQApoYOsb7XB8v5VMSrqenR70jCFsL39t0COC6V1vYkAWUhRKGEHOKOuGNSmFgxc7R+tO49bxODAf8DjisYrIYVSxi1C/vskFCko2VVzTD31eMC838C+FBTIIIAb+odhJVz7fyRqFTS46Uo+QCbU5G5UuBN6coauIoSI6km3BoH4pU9OeMIASrRvDAW+T1eJSug2UflgLm5KEWIo+GSmx3ogv/k/6eu5YDWv2KIrg4tuy6hSLyUVAhinpFJX7CWIPmROi3SR6+SfPp4P3XTVvbLe4CsBu58jWBJWC+rUAI3yRLylUAhm0B+zP4VmsMZHSK7duLKZBp/hUzOfSL/IVB80OEBVTOKiNkxgZ6HOINQ9SNw8ymemRG8ek69knX4IfNzsaSb8Q0AZxYug2XP8lsC0ypOIILqw0auPa/IpvCiU/aOARkq8J71RE0RH7acNRRPyGbd2JbOJOItQH5t1f3nPdNhcv9B6ypWKTviIMhoeZW5/8bs0L3koG8Gc5UKMe93dl4lHRuNAFQ0INdX6dVWgRy1tXOZBqoW4cqYQW6tbHV86G1tzibjv3EMCdIi5IlvzPQ927DII7mZFa9rODuMLyadakPZByNWWpLCXvie6Ic59aorDjSRMfGrSiTgihJVg+F/KwG7Cpzdk9XYshNRBfTTvfM8OWfhcRRUZ78N+qONfyTbKTs7zrn01xYj/DIaqGgQ6EZu0aE60hhc+FDgSwqvE+j1Jo4wJpQ6Je
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,85 +96,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 22, 2026 at 01:21:42PM +0200, Mike Rapoport wrote:
-> Hi,
+Hi Mike, thanks a bunch for your review! Good ideas, I'll change the
+implementation to follow the suggestions and improve the changelog, as
+you suggested. I have some questions though, that I will comment inline,
+below.
+
+First of all, what should we do regarding patch 1? Should I resubmit as
+part of V2, even with no changes - or pick it now and I only submit
+patch 2 as V2, with changes?
+
+
+
+On 21/02/2026 05:52, Mike Rapoport wrote:
+> [...]
+>> +			string_get_size((u64)(map->size), 1, STRING_UNITS_2, txtsz, 16);
 > 
-> On Sun, Feb 22, 2026 at 01:44:51PM +0800, Ming Lei wrote:
-> > Commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
-> > zones and memory map") moved free_area_init() from setup_arch() to
-> > mm_core_init_early(), which runs after setup_arch() returns.
-> > 
-> > This changed the ordering relative to init_cpu_to_node() on x86. Before
-> > the commit, free_area_init() ran during paging_init() (called from
-> > setup_arch()) *before* init_cpu_to_node(). After the commit, it runs
-> > *after* init_cpu_to_node().
-> > 
-> > On machines with memoryless NUMA nodes (e.g., node 0 has CPUs but no
-> > memory), this causes a NULL pointer dereference:
-> > 
-> >  1. numa_register_nodes() skips memoryless nodes: no alloc_node_data()
-> >     and no node_set_online() for them.
-> >  2. init_cpu_to_node() sets memoryless nodes online (they have CPUs)
-> >     but does not allocate NODE_DATA.
-> >  3. free_area_init() checks "if (!node_online(nid))" to decide whether
-> >     to call alloc_offline_node_data(). Since the memoryless node is now
-> >     online, the allocation is skipped, leaving NODE_DATA(nid) == NULL.
-> >  4. The immediate "pgdat = NODE_DATA(nid)" dereferences NULL.
-> > 
-> > The crash happens before console_init(), so no output is visible without
-> > earlyprintk. With earlyprintk enabled, the following panic is observed:
-> > 
-> >  BUG: unable to handle page fault for address: 000000000002a1e0
-> >  Oops: Oops: 0000 [#1] SMP NOPTI
-> >  RIP: 0010:free_area_init_node+0x3a/0x540
-> >  Call Trace:
-> >   <TASK>
-> >   free_area_init+0x331/0x4e0
-> >   start_kernel+0x69/0x4a0
-> >   x86_64_start_reservations+0x24/0x30
-> >   x86_64_start_kernel+0x125/0x130
-> >   common_startup_64+0x13e/0x148
-> >   </TASK>
-> >  Kernel panic - not syncing: Attempted to kill the idle task!
-> > 
-> > Fix this by checking "if (!NODE_DATA(nid))" instead of
-> > "if (!node_online(nid))". This directly tests whether the per-node data
-> > structure needs to be allocated, regardless of the node's online status.
->  
-> I believe that this change is fine for !x86 as well, but it deserves a
-> sentence in the commit log.
+> phys_addr_t should be casted automatically to u64 IMO.
+> And please, no magic numbers.
+
+Specifically here, by magic number you mean my choice of 16, right? What
+do you suggest me to pick? It's the length of the string carrying the
+size of reserved_mem, some number must be selected for this
+length...lemme know WDYT.
+
+
+
+> [...] 
+> You can define "reserve_mem" attribute separately, and leave the existing
+> memblock_debug_show() as it was.
 > 
-> > Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
-> > Signed-off-by: Ming Lei <ming.lei@redhat.com>
-> > ---
-> >  mm/mm_init.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index 61d983d23f55..9d63cab36204 100644
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -1896,7 +1896,7 @@ static void __init free_area_init(void)
-> >  	for_each_node(nid) {
-> >  		pg_data_t *pgdat;
-> >  
-> > -		if (!node_online(nid))
-> > +		if (!NODE_DATA(nid))
-> >  			alloc_offline_node_data(nid);
+>> +	} else
+>> +		memblock_debugfs_files(m);
+>> +
+>>  	return 0;
+>>  }
+>>  DEFINE_SHOW_ATTRIBUTE(memblock_debug);
+>> @@ -2762,6 +2791,9 @@ static int __init memblock_init_debugfs(void)
+>>  {
+>>  	struct dentry *root = debugfs_create_dir("memblock", NULL);
 > 
-> A comment that says that if an architecture didn't allocate node data, we
-> presume that the node is memoryless and offline would be nice here.
+> No need to create memblock directory in debugfs if there's nothing to show.
+> Could be something like
+> 
+> 	if (i!(IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK) || reserved_mem_count))
+> 		return;
+> 
+> 	root = debugfs_create_dir("memblock", NULL);
 
-Hi Mike,
+Very good suggestions here, but just let me clarify: so I could continue
+showing the "reserved_mem_param" inside the "<debugfs>/memblock" folder,
+just using a different function for that attribute?
 
-All are addressed in V2:
+I understood that, based on your (good) suggestion to hide the memblock
+folder if ARCH_KEEP_MEMBLOCK is not defined and there is no reserved_mem
+set ... just want to confirm to follow-up the implementation.
+Cheers,
 
-https://lore.kernel.org/linux-mm/20260222115702.3659-1-ming.lei@redhat.com/
 
-But miss to Cc you, sorry...
-
-Thanks,
-Ming
-
+Guilherme
 
