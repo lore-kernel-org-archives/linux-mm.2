@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB4F1EC1120
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 19:47:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C152EC1126
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 19:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E60A36B0005; Mon, 23 Feb 2026 14:47:02 -0500 (EST)
+	id EF62F6B0005; Mon, 23 Feb 2026 14:48:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0DD26B0089; Mon, 23 Feb 2026 14:47:02 -0500 (EST)
+	id EB6ED6B0089; Mon, 23 Feb 2026 14:48:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF05F6B008A; Mon, 23 Feb 2026 14:47:02 -0500 (EST)
+	id E04996B008A; Mon, 23 Feb 2026 14:48:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BB62B6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:47:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CEBD1B5C55
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:47:02 +0000 (UTC)
-X-FDA: 84476754684.21.29F59F9
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7CB0E40012
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:47:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nDZVQDaf;
-	spf=pass (imf11.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id CE2AF6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:48:25 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86F3A1402C7
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:48:25 +0000 (UTC)
+X-FDA: 84476758170.15.E959CC4
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B96A74000D
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:48:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J6JmeR1r;
+	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.65 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771876020;
+	s=arc-20220608; t=1771876103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lWGMHvSfeGqfk5XPfGtYANRC2MhPaZ/zaXsvjt5yMqU=;
-	b=cF4UCywZlAxK1ZY9jd2A+aKgg9dI4jovlvdh2esYqDD42NIkvxUfvIJFWltCyJEtMXhLXP
-	XUDNqRdecTnwTD/5okLuZzm0wNuwwycUrJJKSTM6jQ/gBzT4xscgoAxmBY0NY9c72xl5wm
-	xMiUUP9Xm6kehA0UMJ7OLxzIiiR+pVQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771876020; a=rsa-sha256;
-	cv=none;
-	b=7RdB/5t86hTjhbXS/ZTrmYagiORGQRfMbdiNaBHtbDa1Rr3Yt7uzWIIRxWEnGg2wKUSfDs
-	BOb9qgB+prrJplTYIGy6w5BmCZxyukYBewQyHcGKVulTO97ZHqTvS6ozQ5+lAG00oM8M5E
-	c9jRlc2TX8t4RgOKB56xfglo5xNCyyc=
+	bh=CfRIPVejaQzatmaR4Ji2F2t82QsJMy6YrYIwzm22g/I=;
+	b=7rHtboy8hJUV+tGoolCxus1qk96Xgc0VbM3npCxGYNyfWCXKPM7Whu/GvWeBr00P6nEGmk
+	7pCeUJAHL12b+U0NX6upvRkyFH1VllT+Q2rZl6KGGvntoUMvrpPSqjE5TzHu8wpDkLMfew
+	03LniXeuJxZKOJVoE41ltnLj0bVwzvw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nDZVQDaf;
-	spf=pass (imf11.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.221.66 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J6JmeR1r;
+	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.65 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-4362d4050c1so4970619f8f.2
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:47:00 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771876103; a=rsa-sha256;
+	cv=none;
+	b=NkozAH8rxUpzNWTZ4jklbDDQQSnScBmO5f3cQwisGKpC4234FowygVHPn7fUJH0TERvdSl
+	3qzjNy+ul7Cu2V+9Tg0xIzB6uuPzxqSnbe93HT8tkeYWMLBQ65sYBqsM6pTqwW0m9r519S
+	Fwb0w96+MwOxheBpgn+8sY/dh7VR7aE=
+Received: by mail-ot1-f65.google.com with SMTP id 46e09a7af769-7d4c3484268so3378873a34.0
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:48:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771876019; x=1772480819; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771876103; x=1772480903; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lWGMHvSfeGqfk5XPfGtYANRC2MhPaZ/zaXsvjt5yMqU=;
-        b=nDZVQDafEfteCdw5KhNVH1jckpbs3Qj7zgw1lEDwrU8DMs3KZTKQmVnuirLWP5RuFK
-         8NBQWXvAtzajbW6TUvQCvr4WE3kBNGdac9vYTVFAoE7w4APvfHhDuKnNX1wGiar8fHNb
-         vE9YGHYt7xj8JzqBGYSfJJPgjmtCl2Vet4TDKsenq40epm39GLDk+dpsNYParoUqd64E
-         K53tTFpdoLhy1ZOe/gge6WCbAe7o13bnnj38zXXM8e2D3/vdKu4tV0WPuL0xSWmqLIi0
-         kA3FVj/OvtVfjXMzuBcgDHMjnGI0WxCyZDSjbwu7FHzCwYuZJy4yJNBgQa8+clXk25ud
-         v9HA==
+        bh=CfRIPVejaQzatmaR4Ji2F2t82QsJMy6YrYIwzm22g/I=;
+        b=J6JmeR1rxhvXiBYVRN/vmxFHgkXcDBFFDXS1uvoUP1SfesrAmnJ1/j6EEB/mTcXCR+
+         ssxLM23ZRYQpXwhlzrGvkYuJzoY9DRFCc1QDrXcWT/6WN8tfpIYG0Y4sJKug613CMtVd
+         JfxlhbIU7vN4p9nr9CcamoPUU4WhDQpirJnNAICS3pYTqCnUNO78XeoH2tXXf2phl7NO
+         ioPejBdltrtOju+ZCcBO4+emiheuT8T2m0GtajIq2nhSX6qymB/e30diVVvg7H1U7rpc
+         QE4i+ct+1AyQMd43FLz7Grho5Wb+CHPHNY7e+q8hVDsC4A4TIVP77yh3O1fOFWUwOyNm
+         0NHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771876019; x=1772480819;
+        d=1e100.net; s=20230601; t=1771876103; x=1772480903;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lWGMHvSfeGqfk5XPfGtYANRC2MhPaZ/zaXsvjt5yMqU=;
-        b=IBier/GTA+nBhrWw+i8h+6PHIuCVHoEBA89IRQHMHET3Zj5YHgpbvwYQo/cuIde1Ag
-         EqyxCG3v4ct4ZNT4DsBJCsnRT5CTv3HsNUarFwSNDE8X2g+4p8p5H42jg4e9JoAB4PqK
-         UH48QLHBRBsOW1j/8PdREgFZXlASdplFKnZCo1W09tY1R2vdPKUZXKSLnjBSwYyYm4NO
-         ajkcM+mqOnqBdIlXxqO0WiTHsDFzqUU8A/ldv/5/YkCdaCvA/op5zRE/DvVwxEcxuj3m
-         pdfDIDsaVI4jNPFNeGuZI4IQqXrr5zp5pUdxBvwnBWL4P7ylqMKv0at7jdC2uASEELeQ
-         s+Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCWo6C8OwKE8qlynUKQMWA5BdSxBoTeYtLA2VKhpyy1FhWrz8JhqdwEUve1GqUpiX4QAb/GoL0OdcQ==@kvack.org
-X-Gm-Message-State: AOJu0YzibyWWjGQ9IJLD6C7h4xgyIiG1TN46Aj+SxVsRCJsTH9r0+zCF
-	8fAzrFIe3Lw97mj8Sdt2qJXR5fMBb2Ip6N1NHIDOht4GRrjYbtm1G/b+
-X-Gm-Gg: ATEYQzwhshVu+kVzihA0p1uBBhA7HOVuM423ddndEfUUKiDgW0jv7tQYOVk6bFH7ctT
-	ucl0gmKVwHDtyrBlxZQ+BhCQ1t3+laOJDu9ja2g4vZOHhsYghzTfQKo1hO6+ca8YFH7ES6AYzo5
-	48VBerL47SsjkSUhaivLYLn8/fTvQs5ADJBe3bo0yH1Tk5pN3C4pRTLZ5dE2kHKRyhA03jrNrEE
-	VkIRY08j9/kT81xxCjVnT+vwgZWOYSI3uXSwDj/Gw17/VLlIx4gct89i7ZAX93MelKM9d0zbg5D
-	Sz+vGX0/elujsJ4A8UCHwRJ6isfa+sD0EMoxXzkTraaX2nDw6+5DIXH6GpfMEGY0k5dzWWhA0kp
-	rCuWWANUPIeTNo4KEb1O8e1LVhwSGL27afwbjwk00BcKPXmOp+xgrdAJsjukfEs9QVdaQo+iXr1
-	mg/zCiDE2RL3k+7w7Sf2PrBCMByGjfl+A=
-X-Received: by 2002:a05:6000:601:b0:432:5d73:79a1 with SMTP id ffacd0b85a97d-4396f188996mr19687525f8f.55.1771876018592;
-        Mon, 23 Feb 2026 11:46:58 -0800 (PST)
-Received: from debian.local ([90.243.35.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4bf89sm20115642f8f.29.2026.02.23.11.46.57
+        bh=CfRIPVejaQzatmaR4Ji2F2t82QsJMy6YrYIwzm22g/I=;
+        b=E3zj7qTOlNchGRug4nQa3qM20FM+tZZuGSVZNYqnF+xxmy7sGUmEICK88vRjV9MiFT
+         AK48BNfp+lt04dhlINPHx1GLXDExUxPnrLLO9Mf0dibNdgxWh71dg47RBI4tp6hFNMWX
+         5y+oU8MjusKYd7fXDdOOqvcZyoAcybhhLaVLwxLf2TwXqJnBxueEyKBxwXtFbP0Dc+tB
+         dkC36qAJjGDPF1Lgmd/pllc13EYJ/EhDpdeTRJxO0nJRTmg0pMwSXtntNelUQi2h5/zP
+         zjxJ3p9OeQ97B9YFh/LVbJP0wwkUpAXs1n4JggdCq7diW2TykGpIIq3Mfxf3FrATmK32
+         2J8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXjA6kS7EvD2/2Y6+vPP3GeDnI3eFP7LLU5VXqsd25xSJO0mFo0DZ4aC/KYPQSggrym8uq4UDnSPg==@kvack.org
+X-Gm-Message-State: AOJu0Yxzp8d7uoqHWkJM+vu1uK6XOCAf1gD+kFUnjPwaEBCQ80fntpFK
+	UtV0z+95E8nUAOgHYNgz7s7loAjJD91fFmkUELimuUkh1js9n0xJ0+6J
+X-Gm-Gg: AZuq6aJMW2jD7ui2eMn9GZLaz0z98ig1Z7GaH7fl9IVesj6HkwYol3FZ329fNWybPvO
+	LKhEMbncsewbdCDT0f1J/MaEnvFkm5/s+R2aeexSpKTjWo9rrRcSkNGqzNdKIfpfWIyET2BzDr3
+	NPorHY6sR82gEVLtU/yJLuDLRlzworqqgYW/UDqhWudhQKegzflgeFrr6CzfhhYbVBRix7iIpe7
+	ltBZCaLnoF4/r8hMnrZtodUW+jHguwEutPQi3kff7cVHA6Mf+LIk72BmPPUwnZRSmOZjtluDP+d
+	K2QZxQMfdQjjOkplo6UxiLVoaF/EBNruqK80Pd7PG3Wt+W7EIGiTyfy0fFXOfBbb7ZP17a3Sarf
+	fNFuxq0L/sgFQ/yT8CXuSh5tgfmH+mw4BCeFEwhfhLTHw93WfPpT26clHcu60CQnk6JfUFzFj2q
+	mEJmVG64QmER6N1mghI0wvAjzD9Awz+blbmBvlpQ==
+X-Received: by 2002:a05:6830:6f43:b0:7cf:cd98:b3c5 with SMTP id 46e09a7af769-7d52bf535f1mr5740241a34.31.1771876102722;
+        Mon, 23 Feb 2026 11:48:22 -0800 (PST)
+Received: from fedora ([2603:8080:10f0:ab80::1382])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52d04de97sm7756698a34.21.2026.02.23.11.48.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 11:46:58 -0800 (PST)
-Date: Mon, 23 Feb 2026 19:46:55 +0000
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
+        Mon, 23 Feb 2026 11:48:22 -0800 (PST)
+Date: Mon, 23 Feb 2026 11:48:19 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Michal Hocko <mhocko@suse.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/slab: pass __GFP_NOWARN to refill_sheaf() if fallback
- is available
-Message-ID: <aZyur67rmiOT9zY7@debian.local>
-References: <20260223133322.16705-1-harry.yoo@oracle.com>
- <e4f3b873-7825-46e3-831c-d0f5d3761ce4@kernel.org>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm: vmalloc: streamline vmalloc memory accounting
+Message-ID: <aZyvA32J2RQ4z6VZ@fedora>
+References: <20260223160147.3792777-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e4f3b873-7825-46e3-831c-d0f5d3761ce4@kernel.org>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: bfsakqoe6ybxixx3y5kzrugpdqxnkebc
-X-Rspamd-Queue-Id: 7CB0E40012
+In-Reply-To: <20260223160147.3792777-1-hannes@cmpxchg.org>
+X-Stat-Signature: ffbnpc3r3wjctq6uypr9yhmbmrgkyyks
 X-Rspam-User: 
-X-HE-Tag: 1771876020-7661
-X-HE-Meta: U2FsdGVkX19xLbFUVrdl6lxkvdYXV+9GYWj77pY5slphOLocNQS1tdxTkVQIDeKeU1Gz5dIhq5UBOZTCpEiYlf2aikMkmuuqW96ddxGGnFV+FIEOjLUFxTsjK5CGQUO9i/s0WaqpxY/YjwULnTG2L7O/yoZxOvub79DRdoolRBU6YwLcXR8cOR69K3PHqGGCQKUf2y3HNwv4GFnUmpLjQQtljA36Bs2oRNlwlIAYvGweolUPxABjebkuBnf2aPchOagZNRFMgdX/ulL0GG5l0HmWHwn5XHsmUMcO8nHaVbKoUluOqtQ/dhpRG8wTa43D2WJ9kBb+4/izR685vi5Bee3C0fI2TzqT6qkt6r6nngtOuyzAXtl6zCc69OtujtR8FkyAxYeZg5ojWh6V+zLfvZuOe/iLp1fWcwB0PsWSsFuMdJn7qqeot7kyGESHr+rjVa3ZhaeJm9EtnX1Wt1H7LpRCczN/gtanQOKQ5B7NmpGrHdVzhWgSqL2pV1GsHE6blqmeKydI6zF3oCyM4mYrd6voNxVHfqrHL9+ZKvSHuMhopZxRHXpAP4qjKEaJpIWIl0wsTN09X5Me+/z1MFxj5NArZfCxIQQ1S3du6/bkcW4whEgBdwqaC/lWQN5xN9jsBYlf0qu3XsUd3oDLptvEUZ/b4FwRJbUEeTOUMCd1XrI5bZAomeEww5TlHdBwfjUgigW0lz/0rMalX0NT9kBRZ1vw+7odBE07xmYQKQ0FKwewFnq7Y8bZBrS8bBdTRRbE6UFvJGbF8g32dicvB4SZZNQ2fZ6OJ2zz5qUtAWFk4S63E1jYRu0AS+CtYKbivqHzjyHNUP/qQPnGEYPIZEdIisxjB1n0dKbhgfuj2m8UIDgBICJ5qFDdDTq0j+XBp10tg65AtsbE79+RRumpV4RrkBE4OU7M0oW0DZNUrCgXznEAxHghA9YlpmdXGgFIRLoOXdEYJ/Ns9s1Y5Ha/0h9
- m/Rg5wYI
- 78McnbqsGPdOEn+O/7EgVjrs9UJm48upFXs8oemb2UZrpe3QwTA2mo6wxFzRlF5rEEl+6mdtfoX2vRsuqQDYr19KcQu9hyJ1J+7nCznQl8Vsu8JycU5gUSiuvXsrmb7owAWIaNoZR2YAZI2q0c7HYFvLIxsR3FF9CouX3iyvoH85WDKarM6c2eF0Oj4whnUAfd1jYNEzrQi9poioD8/XfAWXIYIUJaGNzNRAqKWHb78ugXYuIZyhX7Zj/bVmj4OxNbmB7cagomxIClNa9j03mo+G6h1QyMwIe7bkjISDNaqA0emEUSB89LwzcoXa8HQces8HT+n12an4BLaCm5FGyPrRsUrSEwZJhvrK2wcCtaEEgxW9axMYZViTB6FoMgzLoCXrpEn6iCOV3oaruSCoULiFpZJB7fRofYJ2XdwaBeNLksT6g64vCEuPnkSJfxVeEmwrhAjOtBFMP327FDgmpwa5wA9mkaw+XuMdZoY4WVyd7Fo8oDdCeq+2yydcEWTlMoDH7
+X-Rspamd-Queue-Id: B96A74000D
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771876103-418590
+X-HE-Meta: U2FsdGVkX1/j2vzece/dfq9gobVMpaHafCTwLjLAZlu0QokG8NpzTjCV7NZ4zAtUbt7H5RpzYzB7wl8I2leU3TCYA3/bx2lEI7wbusJsqqGGWWULueJhhzKXFzVE3UJHN6tIjyIOOM/tKUq6Ahq8CWeullzROOj6IHuKx/dzDM7ffNHwAOmgZi40+OSIYaMDWleLUdWxXD2VszyV8QVVjcGTUgYJSAn1qnGrYu3OkBsvrpNQedlUp4vZQukKhslmVxc9Yk82Xk2S1F8HYwIMnDqBHGBS9L2EPtKUe/nXl3QrjpsGI2y5linGWf9DzSzz334OV2rfu2z4QLXET23NedFqtxJhJceeZ33aotjYpX5e2Bb0bHbs6D+hxs7X7chuAVW7qY3PMfan2FHOi1Y3b9+dxOKwyESNFyhVC8/HSnFayEF5aqcf8n9JW1s8YEDeNPZ2UCPnulCQd/km2kgi1zZ3taHFch1iSsjnLmf+07beZA9em/Ar3ZLXVdLyoTFLptnONYl66cvlAI6nj0gCUd6DEP8Irgw8VieLMWu1vYNPHtlcKZ0WW7Hfz5SPhhrFuN3iJJHylCo2d4IiIi135NB+J0IFwA5PGZJlQyawiVJgNIqwkOSloZOKpQEh/pZ/Il/2vdwpZV3Ug76nJgAWmBsv+1tenUXpxI8cLRnG1tYZDaj6BV1dadwUh++vKhoPNllHJ3VBFVljgsd/lW8CLLvOPW1pK6G8GhjvNctS1XRpE3TpMji+/GhokefqL9TQ5UY0XKw4r5P9n9ci/NWTBQjzF7JobaHLT9C09SNTd3uu5jaDqf0OU9yXHOC7euMXS7h5s/2/hzCsuixRS8XWjzLD99Q/n38tTr/iZwur8LcVSFrHGzYmK6PExb1vwqCtzlgC1DCxQyjmnr5/tbA8eipcPcDn8ky4E1QuNOa5RdQBzdlwMiS2vl2wlSQANaWWqUtXKcflryAzSGpRPQQ
+ Y1oOlDZd
+ zMfOu5YTcHuUlVk2S+MfoY16ZlnWawHJXNL15SDZkXqvMyaygfBwdaIuGDlIfsxYlrTIbrkHn1WOAid28jtcb+GvzR40SL2luepMEph+GkXHCophM5p9E3OtnLWIPuay23PeaQXZjZww2qd56fLom6Md3u83rOg0+/bkl4aV6hIe5eHRmCxyiABOs6FLjECyQ3lcj/tlstxfoxwi3DE0NJX/o0LH+mhWMrf/Xait6wLs7ewxPtJCfw02wa3O6FoGoL9hOYSqHJ2bxijYNi9pUKUinhf8siy+HFpeAPNJ3xnRmd4pjb4HnKPVTTKiBiZdm6HIu4+ZP48bCV3PKx5KGxejVyMq5Hz7GlSEBpq1NbhWZFg2xQ6YzG49rU6dU6yH8nuo0c2TBxrJzsEj4e+veg4K39GAbkmSEK2taobAu7UUGm1Ee4Ym5RNHPVpATXeqA2huwFc+AHEDSnjtHZm485IFoGDSWY/WK+l0/Hajwf6+yPTDPkOhZX0jCakK2s9F2SqXHnJcv1LeQ8KV5OEnkX8lEX2hfCm5vV4zjNAf37ByzJxEMtFf8EnmGnB00niit2IAO/S5hCuomB6PacssNMz8m/k3EGw3uwNaghhBBsz9DiazaDfLZbd2acw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,28 +123,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 05:48:25PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 2/23/26 14:33, Harry Yoo wrote:
-> > When refill_sheaf() is called, failing to refill the sheaf doesn't
-> > necessarily mean the allocation will fail because a fallback path
-> > might be available and serve the allocation request.
-> > 
-> > Suppress spurious warnings by passing __GFP_NOWARN along with
-> > __GFP_NOMEMALLOC whenever a fallback path is available.
-> > 
-> > When the caller is alloc_full_sheaf() or __pcs_replace_empty_main(),
-> > the kernel always falls back to the slowpath (__slab_alloc_node()).
-> > For __prefill_sheaf_pfmemalloc(), the fallback path is available
-> > only when gfp_pfmemalloc_allowed() returns true.
-> > 
-> > Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-> > Closes: https://lore.kernel.org/linux-mm/aZt2-oS9lkmwT7Ch@debian.local
-> > Fixes: 1ce20c28eafd ("slab: handle pfmemalloc slabs properly with sheaves")
-> > Link: https://lore.kernel.org/linux-mm/aZwSreGj9-HHdD-j@hyeyoo
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+On Mon, Feb 23, 2026 at 11:01:06AM -0500, Johannes Weiner wrote:
+> Use a vmstat counter instead of a custom, open-coded atomic. This has
+> the added benefit of making the data available per-node, and prepares
+> for cleaning up the memcg accounting as well.
 > 
-> Thanks, added to slab/for-next-fixes.
-> Hopefully Chris can confirm it works (without adding the __NOWARN to btrfs code)
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Yes, it works for my test case.
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
