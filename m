@@ -4,90 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 982BBE98DE9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 05:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FD4E98DEE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4B716B0088; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
+	id 6A1C16B0088; Mon, 23 Feb 2026 02:04:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF94C6B0089; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
+	id 64F136B0089; Mon, 23 Feb 2026 02:04:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DAFB6B008A; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
+	id 5311B6B008A; Mon, 23 Feb 2026 02:04:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 897D26B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 183BC8C51D
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:56:23 +0000 (UTC)
-X-FDA: 84474661446.05.4EE10EB
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3AAC7A000B
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:56:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VbgOO0Zx;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C3F46B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:04:54 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B7C48C61C
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:04:53 +0000 (UTC)
+X-FDA: 84474834066.21.FE9A598
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D3816100009
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:04:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3hlwkAOI;
+	spf=pass (imf05.hostedemail.com: domain of 3EvybaQsKCM0tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3EvybaQsKCM0tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771830291; a=rsa-sha256;
+	cv=none;
+	b=XxpMp9b2vSXxKvBHqQdJpq6VpgixC/V7Naio5CjunzEFtGqilT/6/Ajf/xugzbk7TI9np+
+	p4XLAtabP5artgGRmfenEhMRY4kf8MOa489lsGj89Yoy6SJY7IM3CLt728yhUeCrL+j88y
+	mlSC2ku0ETEjlx8O2D16Yg0MeuGVPSw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3hlwkAOI;
+	spf=pass (imf05.hostedemail.com: domain of 3EvybaQsKCM0tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3EvybaQsKCM0tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771826181;
+	s=arc-20220608; t=1771830291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wg/reOB9lmnxb3MajMFemuA+M9KAXqPdAYgEbnkNP+g=;
-	b=TQtN1hl5JXou4PFC1+CaOSXCka8Ufek0MwY3flrIVoS34OVfAvhRcxOgEHFHHAniOeCk+u
-	0AK3IxS2Zb/kmm0bZD0jsQzoDdlY8X6AE/aIUPPlkv0V/Tmp9H51YqKSbVvJlY491By8ia
-	VgESkV0UOBhbzyqfWBRwaOkMRHfpU/A=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VbgOO0Zx;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771826181; a=rsa-sha256;
-	cv=none;
-	b=vzrJfwqUZuBHgDbOo8WjdtxXcM7ACkRQYFf+qSuBUfmZ+fYR1S500AgqJmf6ZRkW36t+uu
-	xjd0c0oJGpaUiHrpZDJV26+ryr1J59AIr/kR1ERC9L5uL90O767kbGLQ8Jl8P7+xVPoduC
-	bbQkUYsIfa8jpnrypcm7ZDquzP3h8a4=
-Date: Sun, 22 Feb 2026 21:56:13 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771826179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wg/reOB9lmnxb3MajMFemuA+M9KAXqPdAYgEbnkNP+g=;
-	b=VbgOO0Zxqi3zFmOCdbRindOPEm/VHizRDal87YA2S6GK8GSPgqhxa3Zhj7HAOfLl2zwrHb
-	bT181v2h3lllWQx52AmZPd7XEGApFYDuKUGDTaDJn4Za6JZf8XTzIi6v8LvpBfRnVOuX0m
-	z9K1cpJ5p8VykxA0+7gW9LZLuif0VLU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com, taejoon.song@lge.com, austin.kim@lge.com
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-Message-ID: <aZvX0HZy1PDylL8A@linux.dev>
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev>
- <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
- <aZjxP2sTavBRGC1l@linux.dev>
- <aZnBo+P3ifskts9J@yjaykim-PowerEdge-T330>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZnBo+P3ifskts9J@yjaykim-PowerEdge-T330>
-X-Migadu-Flow: FLOW_OUT
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4ACR+5opE2f1Qb7L32b78WaUJ2hKK306WtP3f4Mrpeg=;
+	b=66m7A3IzUTQ9TmPzcnRKml5BJahfRO1af6vKJRlx9rGwEwV7Dvci/h/PBmd6KI2Bao8bHV
+	VLMdQnVAhZMXcg938GIZhLo0FOqlUm/sl33rennz6MPsmbKc49WW32+weeOl1vDwaO11eT
+	7nx7BUgjKyiU8zUD5qZ/m2jl+QJTTKY=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-824ae2cac9dso1806902b3a.1
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:04:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771830291; x=1772435091; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4ACR+5opE2f1Qb7L32b78WaUJ2hKK306WtP3f4Mrpeg=;
+        b=3hlwkAOIU6g6Q7YK7yaTWi0nLZW1o+BbRaYNUMCsVypxBkh1rqNsrDd/L9RyB7TGkw
+         gEE/oAyDPV4GRILriW9KTtUWIA+DaIcU8olwvhc8IjRJ1Wfz3cNc20SHkhNS3HPYHmjV
+         Z9w9Dz6WFwDX1o/q7PNKxKReH7t4MPVyD5ehw5MIDXLSpk7t+vjdqUD2DIaCepBFXsMn
+         yd3rG0WKYChU256ES6uiJVF3p3eLeM/UZvFBRjB0vwgLomcwM6G5FZr6w1KwGdzzx/9F
+         +FE4uABjFUJIlP/PV0xKhvL8NRcheFEWK+WM/4ByMj66d+3pJzlMWI6AfewRS/T2waj6
+         ItkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771830291; x=1772435091;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4ACR+5opE2f1Qb7L32b78WaUJ2hKK306WtP3f4Mrpeg=;
+        b=XNDULDHIfdjVOD/1vVhJekKrybQrLI8+v9qWVjz+cZOw3Ev8rNkQkqd5knbBU2goqD
+         l0cQl13u2PuBAOjWX9NuOMSoZZYP5fezbFkmZdLWC9XqmEY763tglfq9fdG7BwVmjOtJ
+         noyxXnw0BNyQKGfzP5Kd8Luj1Tc0JqfCl8HA1UAV2Z3CjTA3OdMCfWOBuerht1YE7ioe
+         xZs9M2PVZPtFlVezkfRP4jX/BHaSw00aTKBr/iPqzK1BWUaHfKWRreeEnZTZwCLzrPi5
+         SB3g9HqFIAbMVT00dX0LC/pwXMvkTWzCiq9TPkDvgx2RWZ2T49QK80b6ffRiNyWStZYv
+         m8Qg==
+X-Gm-Message-State: AOJu0Ywlh9/lmmwmqnrd7f4iyJeQSlrza/gJqA6WnQFITfdgzGrQruM2
+	s+4dqUwVWAd2TpxT7azm/zd0kqUcZDnUUuWfSPwoXmv9MRIgnQxKYliY9pFbGuUnj5a2IpEb3pD
+	D3okfwJQkM6rTi0tjUY9minnJq1WF5BIKu3bbykCYep1Sx1fIcLPh6UHPw1hP3d0jcqGr4ZMn1w
+	pworSXjXIktXaKfYm6QQM/4VhvNGPI8BGhFRgVDLhD100gf417Ml3phSG76A==
+X-Received: from pfbgr10.prod.google.com ([2002:a05:6a00:4d0a:b0:7b8:ac8f:27c])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:2ea8:b0:823:f04:e89b with SMTP id d2e1a72fcca58-826daa5de1cmr5219573b3a.48.1771830290192;
+ Sun, 22 Feb 2026 23:04:50 -0800 (PST)
+Date: Mon, 23 Feb 2026 07:04:33 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <cover.1771826352.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory allocated on inode
+From: Ackerley Tng <ackerleytng@google.com>
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org, 
+	ackerleytng@google.com, seanjc@google.com, shivankg@amd.com, 
+	rick.p.edgecombe@intel.com, yan.y.zhao@intel.com, rientjes@google.com, 
+	fvdl@google.com, jthoughton@google.com, vannapurve@google.com, 
+	pratyush@kernel.org, pasha.tatashin@soleen.com, kalyazin@amazon.com, 
+	tabba@google.com, michael.roth@amd.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: D3816100009
+X-Stat-Signature: 8ictyimyfjanxtkc6yt4yw5iok1hot7r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3AAC7A000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 35xyj4gczr974komzghkpa9uxrzde5oz
-X-HE-Tag: 1771826181-551247
-X-HE-Meta: U2FsdGVkX18D3/7Lp0TSbpUeLsMHQ1eNm6alxeJISqlKvPDLiyrOVtiA4FFBlXpypn/so0dfKLgjAIbj7S/3+24Gr/rOskDTeb3RH8McITyjVN4y0srcO9JacEOMEsGmIT/f4MHE7aAbtUTVg8gmT3lMCRiWI9I2LzDhrRFGiTMzlzUooNuSq8+AfVDA/tTeC/L0sTijUOyy0UGs13fm7mi0iNtINAmC+E97PypabTqJMZuvmwoNaqdUuG0PW4Z40cp4HlMu9Z7heqbPPibOkbTE0YhNtm+UL2xQ6ujKbcLeH9DB9KdIlIldJ8/AoZ5akzshG8j2Cu0o5YNEvg5N+ZMWzhOu4UriwPBbZaQnyUrEklYPqOqg4QBnOKBNg95Apt3VZr9wqEqMiRUiXX/xEbWcoAKStIu+OKvMS9iV/zSM2QV2JyKpYE1jN4ICBOsKmAxLELpDBKLKdE/dZ3Bv+xXM0tVmfqEUfqasgUzprGUtJexo1oqC439oosq0PzKGIg+HuJwHQKTBwVXVxWjDMwl3AM5EqtzhDdmhF1cAfR20DVtXhtyF9JHHNrrVsFm7ZqFlfgr9Q1kP4OegAW0tW6nQwVAxtautYQFvEThamEmmyFbVeNImi8A7/X2SmJ3QlxrC/LU+xsGMW2LvJFKuoLg2Z81dKnckBX9OJWkm/pXr1VG4LYpWyRTKp3PPTtcyyG0uK80pXyxMuowls8MS5UtTi975RiVXETAQSqN6YLVCsGfpOrDLyltKRsynma9PqGUefn4BDT/7W99DuvKiJ71b7aM8EQrKRpYkVJ68dPsoM7yvHmetJ5BIkXU4Gl/F3LbaX8PlssheVJvPGziNrwqmMCkIrsmPY1ao1AzmfoDo0ZNPUQEIskdYWk1aeDF+Gs77SsVYjUpTuvYt9LoOVS4RxBh1nP4iUcoXzn3Uigov7I0L3tUJtQM2Vty7Yyg/C0TzZhcYMoNoCSAEgXn
- Wth5ifC8
- tbpHib86z4xBFMu39YpEJPY0vXOWoJjLSxNQRGIT4870qsRRxBsXIOcDVxn+nEEcJmfTnsWJi4/ZiPiWbko0XATBEmO98uvyn+bIPeVRNqawSOI+dndjVRghls58njeIvqvh/QEZz5e7Pc163bEej5z3VUYJXG2IJnnG1PP3C9/tPMnLyKmVi0Omp+uer/HbJcjnJ/O7L9yWMbA2M/W88an7y6g==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771830291-500313
+X-HE-Meta: U2FsdGVkX18KV3JIyLWI4XDt0JqoHWs7Q1RREXuF3cYcKI+gBNacTIrdZRKaknW+n/MYQadB6YnE8Z6GXuqS835rwUs1fX8RDkUlXfaVj6vrlr9GESsxXQNKXztPgszs82c5nysFGGdPRmkUt8spdPJPWvHjJzE02T+NIVgahRvwT9qSWzchnqxqP2rZLN0Lg8rgcG/61EqcntDumgS7gO+riqaG8+cUnbou2kWnMrpH9NqIJAES6ZzddJZycThCgc3DXhJFXtsCp5b5OxXQwgvsayboTaNf9ZoB2rWo3xRMfjtBaEiCPsCAQfx++HqTA8W8ibr9bDKWb4f33RU66XOtRyrK6ZHH8E8Ia1pRpiZ2+VpBG59Q9AZ7KImOfsx2q52kWmcndrpYgTKOksvu7SXS2oeKRRWrVJMB4EcUdpv2SMd3DMQfHqWsAY6XSe4UT2qQdNylE8WEptfwp1l2HX50aXRa/y/m5de7JLiS6NYyduwtPFNb+F/0jec3P3dAUil8Xm58zRuFu8wT7Pj3CPt1Mt/CS+aYXummMpXKEJN0hgpwgIo+QyBbNKVnKxNxjIcK5WmEQrahXia9OWh4y9RK+8KTaewa7kbYmX1ak1NwvUpDw56cOKETKx0+acG5WX+5i0H60sao8kGKH9hMFi+avqWzwH508JZ4Od8w7e3Kvsz8xxIqCP0S/Xsvspv/Rlziu8n/IHmv7lJiyghDPadYmyqKx9eng/p8gMXXQ+7nxEq34f8QmvchuzbfgKWDxtnaXHsckrs2P/ROolhZHEj2ieItgOLj9bkCN8qD6/FFQGiO9wnVtDKF1S6a3nXnnhsop+8nSJ6LYH2b8J8SRQv5NWqOWm77zBn/4BCESp3mAubh3yJVHuXjC48vZ2vxzybqTBtzfQ6PYTb/T8ZxfmZeJnZGUr6Kk0hPhHuvvyykNHz/8XocZC7WqFkxKF1nvMKBqryLO4hK9te3ERR
+ HMLebGOx
+ AaICGC7CvMSLj9vO1OSLStLygFLq1KreZPf4yOvHPSLJ49xXsXBEybaOxaCjbBmQegGxh/AblPYXbxC0XOcNMsh1GynKdtURNnEWXUe95KXNUzBhk1cojuwMyaSwyB5+RDOuhgm8QlBMsv69zIO/hqGijlwtoDpcdcW/z8YDKsVKNQnE7sn9oE+ceqSMmFBnhG6HQ84ZDASs8CrbiHnHBe7G5T8GZi0ArweRdCEbLc3rjd/evJ6NcVwaeaEQdiUByxOLzREp/qEyOPWzV+CtuU4D8LhzkqcC+7dEYmU08U9gpfDdCyD7LrJwwg4YC7sGcVkVl1Bl0vddM/F2ITdeQOBgfffFLqk8oNX494UpGlEeq+kpG1vp5mFLn22FmA39s6KXiH2UN1oEyINs6kUQiCeCLojV3JRLE/s3bD3CtZVeYu+JKsmbL+17blFAHo81RBbWkaIigoUXQI127kRfKuSa0a9F8jtNNd/YEZ0eji9Ly4/KZQmhDo/mN0p34ImV5Bm5H1ZzUP0HJyGtxSLQHOv0Ia/lVJdkCc2SZ1sKw61ZFB8Zk7KknvynfrVOIlSJGsOu2GjjQfvGpeO1TqjwyjZQEgt6Q7qMJ2oSTGCOhxmdm2C5FrO6zHolEWEQ9dFsjOlX/cvPNJluhqDhzh/B/ztep69jAdzZwubS07vRvncyLqXjBZtDfGOEYm7PhnvZDb2jOkZjsm1B39JoPgsLRXGuf0+XgupzA8in7atZ6VU8pidk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,81 +113,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi YoungJun,
+Hi,
 
-I see you have sent a separate email on BPF specific questions to which I will
-respond separately, here I will respond to other questions/comments.
+Currently, guest_memfd doesn't update inode's i_blocks or i_bytes at
+all. Hence, st_blocks in the struct populated by a userspace fstat()
+call on a guest_memfd will always be 0. This patch series makes
+guest_memfd track the amount of memory allocated on an inode, which
+allows fstat() to accurately report that on requests from userspace.
 
-On Sat, Feb 21, 2026 at 11:30:59PM +0900, YoungJun Park wrote:
-> On Fri, Feb 20, 2026 at 07:47:22PM -0800, Shakeel Butt wrote:
-[...]
-> 
-> > Taking a step back, can you describe your use-case a bit more and share
-> > requirements?
-> 
-> Our use case is simple at now. 
-> We have two swap devices with different performance
-> characteristics and want to assign different swap devices to different
-> workloads (cgroups).
+The inode's i_blocks and i_bytes fields are updated when the folio is
+associated or disassociated from the guest_memfd inode, which are at
+allocation and truncation times respectively.
 
-If you don't mind, can you share a bit more about the cgroup hierarchy structure
-of your deployment. Do you use cgroup v1 or v2 on your production environment?
+To update inode fields at truncation time, this series implements a
+custom truncation function for guest_memfd. An alternative would be to
+update truncate_inode_pages_range() to return the number of bytes
+truncated or add/use some hook.
 
-> 
-> For some background, when I initially proposed this, I suggested allowing
-> per-cgroup swap device priorities so that it could also accommodate the
-> broader scenarios you mentioned. However, since even our own use case
-> does not require reversing swap priorities within a cgroup, we pivoted
-> to the "swap tier" mechanism that Chris proposed.
-> 
-> > 1. If more than one device is assign to a workload, do you want to have
-> >    some kind of ordering between them for the worklod or do you want option to
-> >    have round robin kind of policy?
-> 
-> Both. If devices are in the same tier with the same priority, round robin.
-> If they are in the same tier with different priorities, or in different
-> tiers, ordering applies. The current tier structure should be able to
-> satisfy either preference.
+Implementing a custom truncation function was chosen to provide
+flexibility for handling truncations in future when guest_memfd
+supports sources of pages other than the buddy allocator. This
+approach of a custom truncation function also aligns with shmem, which
+has a custom shmem_truncate_range().
 
-I assume this is the same swap priorities as of today, right? You want similar
-priority behavior within a tier.
+To update inode fields at allocation time, kvm_gmem_get_folio() is
+simply augmented such that when a folio is added to the filemap, the
+size of the folio is updated into inode fields.
 
-> 
-> > 2. What's the reason to use 'tiers' in the name? Is it similar to memory tiers
-> >    and you want promotion/demotion among the tiers?
-> 
-> This was originally Chris's idea. I think he explained the rationale
-> well in his reply.
-> 
-> > 3. If a workload has multiple swap devices assigned, can you describe the
-> >    scenario where such workloads need to partition/divide given devices to their
-> >    sub-workloads?
-> 
-> One possible scenario is reducing lock contention by partitioning swap
-> devices between parent and child cgroups.
+The second patch, to use filemap_alloc_folio() during allocation of
+guest_memfd folios, was written as a debugging step to resolve a bug
+found by syzbot [1], but turned out to not be the fix. I include it
+here because it cleans up the allocation process and provides a nice
+foundation for updating inode fields during allocations.
 
-The lock contention is orthogonal (and distraction here).
+The first patch was separately submitted [2], and provided here since
+it is a prerequisite simplication before application of the second
+patch.
 
-> 
-> > Let's start with these questions. Please note that I want us to not just look at
-> > the current use-case but brainstorm more future use-cases and then come up with
-> > the solution which is more future proof.
-> 
-> We have clear production use cases from both us and Chris, and I also
-> presented a deployment example in the cover letter.
-> 
-> I think it is hard to design concretely for future use cases at this
-> point. When those needs become clearer, BPF with its flexibility
-> would be a better fit then. I see BPF as a natural extension path
-> rather than a starting point.
-> 
-> For now, guarding the memcg & tier behind a CONFIG option would
-> let us move forward without committing to a stable interface, and
-> we can always pivot to BPF later if needed
+[1] https://lore.kernel.org/all/29c347bde68ec027259654e8e85371307edf7058.1770148108.git.ackerleytng@google.com/
+[2] https://lore.kernel.org/all/20260129172646.2361462-1-ackerleytng@google.com/
 
-I think your use-case is very clear. Before committing to any options, I want us
-to brainstorm all options and gather pros/cons and then make an informed
-decision. Anyways I will respond to your other email (in a day or two).
+Ackerley Tng (10):
+  KVM: guest_memfd: Don't set FGP_ACCESSED when getting folios
+  KVM: guest_memfd: Directly allocate folios with filemap_alloc_folio()
+  mm: truncate: Expose preparation steps for
+    truncate_inode_pages_final()
+  KVM: guest_memfd: Implement evict_inode for guest_memfd
+  mm: Export unmap_mapping_folio() for KVM
+  mm: filemap: Export filemap_remove_folio()
+  KVM: guest_memfd: Implement custom truncation function
+  KVM: guest_memfd: Track amount of memory allocated on inode
+  KVM: selftests: Wrap fstat() to assert success
+  KVM: selftests: Test that st_blocks is updated on allocation
 
-Shakeel
+ include/linux/mm.h                            |   3 +
+ mm/filemap.c                                  |   2 +
+ mm/internal.h                                 |   2 -
+ mm/memory.c                                   |   2 +
+ mm/truncate.c                                 |  21 +++-
+ .../testing/selftests/kvm/guest_memfd_test.c  |  32 +++--
+ .../selftests/kvm/include/kvm_syscalls.h      |   2 +
+ virt/kvm/guest_memfd.c                        | 116 +++++++++++++++---
+ 8 files changed, 149 insertions(+), 31 deletions(-)
+
+
+base-commit: b1195183ed42f1522fae3fe44ebee3af437aa000
+--
+2.53.0.345.g96ddfc5eaa-goog
 
