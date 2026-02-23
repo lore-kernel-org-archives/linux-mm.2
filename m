@@ -4,115 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D02DDEA4FAD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:12:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E8FAEA4FAD
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:13:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1254E6B0088; Mon, 23 Feb 2026 06:12:54 -0500 (EST)
+	id 4A9596B0089; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D2E26B0089; Mon, 23 Feb 2026 06:12:54 -0500 (EST)
+	id 456E96B008A; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17B26B008A; Mon, 23 Feb 2026 06:12:53 -0500 (EST)
+	id 3594B6B008C; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DFC3F6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:12:53 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 902598C746
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:12:53 +0000 (UTC)
-X-FDA: 84475459026.11.76D685F
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B3C761A000C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:12:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gBSD+9av;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845171; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 24F826B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CADD81408E7
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:13:41 +0000 (UTC)
+X-FDA: 84475461042.27.ADAF662
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D701240005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:13:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nU2Iz6hK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845219; a=rsa-sha256;
 	cv=none;
-	b=YabGCBp6+RcegGFgYZQfX08d0ELpdSe4fsfuYLIz9y+qEj5+53zAkBW5g9hB0a9LEfEYqN
-	gT1naUaohZuwyuAk/jCrDKRUqdeTDa8icq+XfsC9lE/wy4eQmszuSiTkhT9UpcvrfSkLtg
-	bptjff/7GwoHk5zRr/z+0iFeHIIO6E8=
+	b=LZhS2WIz7DhNARwjq97fSN7KP/gQEJ6fXOojCGCNwsrA7IbytZuSZ8vquMOzg/fEIENsDt
+	nCtIzp/NxZJiPg04s0STEa87UYWlLNJwYgFNr9b9+2w5UCkT3UNrRVPu4/PFhnbI7MJpKq
+	PEq2Ge2lOs8RCM3oJ0alaw2zw8XxnDw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gBSD+9av;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nU2Iz6hK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771845171;
+	s=arc-20220608; t=1771845219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6n+oxOREuT+ZoDytgRh/Y9obuCsnXSbm2faHqHT5nEs=;
-	b=x9ggxQ4ARiv6zuCpOOeoDgKG+2E0/me4o7L8duvxw15kNG8hkbNX/S/tQnfeXaMEUfgicX
-	59UOYIxVWoEDK9HUT+Anr7uFZG4MUsZXidkQG2gzqUNc0k+HrqxVuJ8uwjUF7EdbGpW8G7
-	QrlWG0nuzh/slGJ1hUCw5ILdJrrCKMQ=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-436309f1ad7so3098876f8f.3
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 03:12:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771845170; x=1772449970; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6n+oxOREuT+ZoDytgRh/Y9obuCsnXSbm2faHqHT5nEs=;
-        b=gBSD+9avkf3AhIUUkRftx/fpbhqLqbWVmBgK8vTUHmCRWwWh5ygqdtj6u5i2u89loC
-         NzKE3wh9FtkD9AvVya35mKu+nxovh81LWm6RmIa7kuSn8Py2Bg9NU7qMJAzDCiHEmT32
-         pzqzFBj3t/Z1/Um020BXrtpJhm1HnooPrblXH1wv3fc1GvUFuk9ETiWnHO5sLapsvDlc
-         o5YpoGa4MOLSYjVjCh6S6Y86n09ISNMI3W0XnJOLHWoUeEPCVknD4MIdJd5OFLM216gA
-         Xxx18lGtjrt+opXd6BTQR59zUGIx0p2Oiz4YcVQtQUmcxKuIsmYfM7HAiEdgRKpghWbC
-         2Iew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771845170; x=1772449970;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6n+oxOREuT+ZoDytgRh/Y9obuCsnXSbm2faHqHT5nEs=;
-        b=SBaMoJMyotnVjcBgk9aUZu3rI6/2oGQKnV+nSy5vqdxgaLgRkawr3YHDSW9qYOnoXy
-         pCK99BnxmE1KjHr97AzUoZBCIYjrT+hDo8EWufswX0HRVdC+8GHowe51h2b/ptmP2UBO
-         iW8daJX7oUgn0W6thtaRDokLfvQUPAArKz9ypvGM3MDJinmznuRSVLaSahvV8odsTg7B
-         C9oSBSWavMCXmgQrMcZ8RkAM8t0xu6R1NTX9Wq06Wos26jGu5fjWoYpQwiGoevOVX/Au
-         7cxExH3YwJw+SPa0MTrm6JRGsLB2IGm1VaoEAYn6pe9WC0faHOkgQsJHZ0aGr38OchWv
-         oYjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgRu8hPBpNUEq3kdQ44FlbSy4sdNQrKYZ1QfiLwuTHZmZc4jrcgWCijwqGNNKDgMfDt/Ge75FBkw==@kvack.org
-X-Gm-Message-State: AOJu0Yzjh1+f7K3uhTZwFf1YAP5Dp+ihS3dO1JDpG3LZXFbhjks2JdbG
-	xxVZGc1tXs9WJJCT7VpfXmwLh95Fq0h7Gt68jBBn2ZvwYRAfWmjHVSea
-X-Gm-Gg: AZuq6aKVo4hHuIlPIXdWegYYz1+tVyLM/cKmsC/wO4qwGxFnaeqeyx2YU3n39PwKvyg
-	BqRkKCuM18XKPq/+WJ1MWoRKE+H+Rr81qqYw+fCkdbudxXw0KxPBQ1G+Gy5Zxrfi5/2lnUzq/fR
-	ylG2unj4ZTsH6isD1A7j+XebfbIAWPQSU4bi6c9Gg+A8P/yxih+/q7BdEfgEoD/JmdOLE36rMvz
-	/iWCarrbEoB4Kxyl/PvNwWuBPeJ/qsvxk+LGMSz6DlsQkYNLNbTXnnAgabqyFmwkxzDfxCnEHmv
-	QlGVmZct8H5WOsR0thswz2c3jX68gpz/mqO5zNFNbfNQDStAie2G/7VUepUAEDrxVEQa70LSqEy
-	31SZt/SX7my+/05KaqZhuz9qMPkymTvcUShHFugqzGPvy11tuAA9xl2HDX8pwhnoWFr85YumHNy
-	lTn790N2JB+U2RjD63DJBYRTaO9gBMm+4=
-X-Received: by 2002:a05:600c:8b71:b0:480:1dc6:2686 with SMTP id 5b1f17b1804b1-483a95c63ddmr134839155e9.13.1771845169900;
-        Mon, 23 Feb 2026 03:12:49 -0800 (PST)
-Received: from debian.local ([90.243.35.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a31ff4d7sm271733245e9.15.2026.02.23.03.12.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 03:12:49 -0800 (PST)
-Date: Mon, 23 Feb 2026 11:12:47 +0000
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: vbabka@suse.cz, surenb@google.com, hao.li@linux.dev, leitao@debian.org,
-	Liam.Howlett@oracle.com, zhao1.liu@intel.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-btrfs@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] kswapd0: page allocation failure (bisected to
- "slab: add sheaves to most caches")
-Message-ID: <aZw2LyOjxMc-c3dl@debian.local>
-References: <aZt2-oS9lkmwT7Ch@debian.local>
- <aZwSreGj9-HHdD-j@hyeyoo>
+	bh=OIj7wTBQxVCdUHOQjQBsxqSl9iTGIuuCv9+rq477EOo=;
+	b=VxqFPHxhoXgg5+ofeJNaIUCa7bwKhdyDvgeInM3phgrFOtu/oIIr8FuHQhHisypKf5P73O
+	9d+sJwSTulejItTxZ7wksoONVdlCZLW6YbY/mGPr69voXCoxMSteU0Mx0PyIf2zrNDKJcD
+	dn3wrqBhYI4H9sOZ67+dODDKXhsa0WY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2347960018;
+	Mon, 23 Feb 2026 11:13:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D997C4AF0B;
+	Mon, 23 Feb 2026 11:13:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771845218;
+	bh=BZG/nWmVQJvaRxB3QpTWtxly1Zo7GKSmk5KGdklgYjk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nU2Iz6hKjL6IsT1A2j1qBAK3njQNTChQQ8T9rUSze3IvSNRt/EJP9WTkJ0DTcFmTZ
+	 H/tBYCu0ui/ox9x9NJAPXm4WuFEDRBzDh50xl1GMv7nO8fegr1pjR8ZbuhxdoU7/PV
+	 /2OxCPBTM2WTzmRkiFhzdlIW/RdEdO+r2cHItl2fx+0gaJvDwXoCEWtLtCYNq4w0WL
+	 PnIh55v3s8tlYAaO8gdhdLC4E1ebns13ha09r+utfszuZGHylzrZP1SVgLfrRNDpxq
+	 F+CMdOkFxjje3CY2T8IFV++AX9k3NESwDuDiL48t93Zervn56nmwT+veilRR/RoZKq
+	 EyoNuLrD1TguQ==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 66A16F4006A;
+	Mon, 23 Feb 2026 06:13:37 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 23 Feb 2026 06:13:37 -0500
+X-ME-Sender: <xms:YTacaUELCZurvDtD1bn7IJA1dvt_WoPXDr01Rboxw7WU1tVccQRa3w>
+    <xme:YTacaZyxccSLX4Acq8fgude8STEtXyfuKHuTc59KS1mcbk6kThnYv1xxHbD8q5no-
+    xp_mbtSJlodsyMLwwEuLDDS2eaaSfOqXvc8cXhmP3mce_q-deXWUw>
+X-ME-Received: <xmr:YTacaVYSqdihp8QFocirTlPjz4pkx7U6fnTK-gllfjXFjEIHsl-QvBTR2SduYw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgrlhgvshhhsh
+    hinhhghhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhsfhdqphgtsehlihhsthhs
+    rdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hmmheskhhvrggtkhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhr
+    tghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinh
+    hgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:YTacackuE1-0O3KUouoS4pj8BPZ-h7MkrbkfHET1CNxpq15GT-fvBw>
+    <xmx:YTacaanmYnrFUJ3p-Oc_RllBYu6dcfn2EXHVvvS2N4hyi30V_nAE7w>
+    <xmx:YTacafMCpH_dMrYhoNwz3gmDNMMtTJ--6HHdEWLhkEfGBROhK5E6OQ>
+    <xmx:YTacaUqIYfpXWEteSgSQKBTgnEWxSzlObmLtvsUY7sEZKTLtlDrnOQ>
+    <xmx:YTacaSQG_K1CmuuORbulCgxHsYFUIdA1vKnZGQGy72d8WO2L7laAS7R_>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Feb 2026 06:13:35 -0500 (EST)
+Date: Mon, 23 Feb 2026 11:13:29 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>, 
+	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Usama Arif <usama.arif@linux.dev>
+Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
+Message-ID: <aZw1DlKHaWvgOtm_@thinkstation>
+References: <aZcmlIF4bmG0twkp@thinkstation>
+ <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
+ <aZdCl8byz51Q1-v6@thinkstation>
+ <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
+ <aZhErt9DZcWI24_v@thinkstation>
+ <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
+ <CAC_TJvd=wKKnj=d3phZsAaarXUdUbZDGauxWNWkQtsFV-MTYEg@mail.gmail.com>
+ <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aZwSreGj9-HHdD-j@hyeyoo>
-X-Stat-Signature: ofzuyzyfdk7tfj5ixyqxu98ax5mgfhqr
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
+X-Stat-Signature: iy6xpig8ykd556amgpqpjit9oj73jqpi
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B3C761A000C
-X-HE-Tag: 1771845171-220795
-X-HE-Meta: U2FsdGVkX19KG1SNf2oasLLt4e7Cky5uG3mqofVxHOJzUi4gjLE3Bx/Hy9U1KWZCh06iHjwy58nQjz3BqllUcoaW5VTfo0KHrSHdXVlK0QZOdzyVNkDmLKDeaKHCwLi8djxPAbJKiLTfVN4BiDwj081rkUfvof6UYxc6AwHM8uYSBs1nzWbu1SPep/HZJ17+K0+5QF749lZIcRii0sFmhjlWnS9H8monwT2wwWZCt0ai3/XQ6BV0wnEznhBrMw6EMayvLsFqqCYC91Tnm3i+zEX+hxk/p8fddteXxcIpMZ+b2pekz7jyl1X4Ij/Vc7FcNIRrFTcANnhE682OqI9aRTuBVsEtu3x3TYNc8kOsMF7mPU2jS3xUDOQGzW4A810RphED+oB3q/gEO6Mva92mcB+qKzW41pmyBeLP4Uc4U52IjorQi5C39K+GKos0tO7iUw21zfCCwXHapev9SOdvCVQkeOXOPpPU0mmXuXnHwlMv+n6yOP/Ai3QpGJVeBKRZJX+Mk2g9eTI5fcD/gTRDthDHL73ia2l8ibisohB9PbTeYAzDU70u/7xmSquiZ746L4lrnW+1JxIboFEimt9xZyUqQVltNcw4ppEMlK9ENj+/+DvhFcjgPyrbaTVrxRIXGiJKK61qRsDIZXxGYAK2hrAlv6Xd1c3e9HDH9yRjlJLxpUN48LW426cNZwrPxjqfvXd4Zw5K39m5c4c82bGLwnBAM8RYfF96N2Zp8ocUW5Aad1TCOIYVSoya8n6KkAkAfvUvCuu1mwi0hjB+tHAyoKFscM6PFaqJPkmM56qfDCKFxIR4kTP9neZLJKb2DEJ71kwnoE5y3v27YUS+EUaRn4Wm298VHefyuK+nM1eO2U7jOAFA/JOvM2FKc2YJYHdVfkq36BLKKQDtw2NAHvf1OUSasr/3NEM162SOlSDdTagFPNbiCad2Q6teGJOzUBO10+qViiHdjDZcQXTr1Kb
- /SCjyO5h
- 7hr/bMv/A/HgDW77cTS2an7ut/sX9EEg7xetUF+t4jCodRKeooXQ+XQNKIjVQ4l23i4KQPtRCp7wTuPjp6srvY1dJplBpN37j70GidWe+FVpePwuacuajBapCx6VZyLlBgVCkJfVnStPLY0utgmu9pjBOszC0G2jlEkWcV5GNWE87j8cwMHFXoBb1t9z29SNyFZ7cEz/dKznIoOjQlBYGXgs8+vJoPlHhKYB9efHkstGuklDUYwDgO86XYv3HsYMLXP3UR4uJkoG/vrALsuk1POlhjMKksBzmNJspzrewdjpfRGYgkplvidVAIkUF+DEoLdOhf7LEhQPU4jglTSUPmRNzravBbANC077Ovk1OtRwF2+wzmcwB7y/hTXaNZu1HtE1r2BhOehzGSC8AYy8xJJ66+G7Y10sYiPr+/pqqRcVlBQo=
+X-Rspamd-Queue-Id: D701240005
+X-HE-Tag: 1771845219-157580
+X-HE-Meta: U2FsdGVkX19Eb/7Z3n4tZpHorSoLPpDFMmJDmNkI+muzkUGjUoqpGazr1PXCauOAznr987Qg66sGn6nutouP6UAMZwTmG+r0AI7gCV5aQyfloLhAbE4jcZzEsbMr0aJqLW5PT8a78yd/oh8H8gj4QfZvNyJ8f2gHm5Uy4/jm/LdYLq07I1sT/PGrO87OisvJAh/pM7DQdrLq6aeqj3Uukh7jI9Pa+x328szu46rFMQkKBrH7Txx39aNMQwaOqu91i9uxWFRMKOZBBr0uwfAmdlcqf43vEkKGpjI18VDi5oE6BcNz2fskqH5xClLHKRZMW9aIsU7w9l0LcHsSSn7Nj6YtM83O/3wb8Gg67widhxrOgFZrdiCFlDYx++z1Wtp8VJ5pMeSD4RPQs5DT4vnOP78uhAkNPOWJkXZw00HEstbHWlbA2JnO2CGvzlGIwslIVnn220i0kwT0un9eoKnWfq/ayy/WZaIdOqmW/RbLx4JBok7cGi+rVqcsUGAqjT/K+g6mWci7Tf9leqEa/igHuyiJAejYLjsgdrbYKYIqjL5T8qJVrjt2o6up8W4l7cY5zZHPRqdhL5JSkM0WGmABvtXoDT3AQiDY9GXuLJHEm+ow68SODzDqCK1bbyqaUUJNMBVxrIQnWMLLfH3WNhCH4MRAJLW05tRrVa6EnfTy0NPdBvxF40gW0SOT0019jpa4ZsvAxXlHWEagoXeln4nyvCqYz8zEEts7q5M+o73JNyQZGWrvz+6fMOxhMTcghT/ncV9VvKKXYcRd5Zgv0Qus9yPdGrJPeLRgjgon23bzEtXhWfdWjt3RNsTz2elaAiujPYRldGZ1E1uK5HNq+Fr59/i1Y+f463j4RSwYVB1gyhw0vW/NCa6ZPNpC18kYgvp1p3P+It4T4XRrPALlPxC4hTW0wiaMJ4wWzo/EizlxUDAYA0Zl7XY4naXjyL1FIyWHp90Hu7i/9FqbINsqYU/
+ rHGvmcNA
+ 9VciVpUactSO72ncH80oimZbHR3HoDyubGdcx0JzSnl3KiXSzW6W5p/kYdAD0R94qlzH3PhK7UK/wWgFC19UW0iwaged6sEiabu/me5NNMoGRsxYVQl9yZwA9rFjR7emDKciBu2UuenyZqKCum9anY0ypDba2JS/qCT127bGBE5OPqcDSkPJJkKY6K7RVKawNTJLGSXUCKpj8CWEYtQHDxGZlPQVe4WvJcfgTy56JLVP+0xcBDPQOwuYdxAFNB7IiFO3G7ndpaEwndMPnGk7Ls8NobBMldHX+WJBp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,84 +141,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 05:41:17PM +0900, Harry Yoo wrote:
-> On Sun, Feb 22, 2026 at 09:36:58PM +0000, Chris Bainbridge wrote:
-> > Hi,
+On Mon, Feb 23, 2026 at 12:04:10PM +0100, David Hildenbrand (Arm) wrote:
+> On 2/20/26 20:33, Kalesh Singh wrote:
+> > On Fri, Feb 20, 2026 at 8:30 AM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> > > 
+> > > On 2/20/26 13:07, Kiryl Shutsemau wrote:
+> > > > 
+> > > > Well, it will drastically limit the adoption. We have too much legacy
+> > > > stuff on x86.
+> > > 
+> > > I'd assume that many applications nowadays can deal with differing page
+> > > sizes (thanks to some other architectures paving the way).
+> > > 
+> > > But yes, some real legacy stuff, or stuff that ever only cared about
+> > > intel still hardcodes pagesize=4k.
 > > 
-> > The latest mainline kernel (v6.19-11831-ga95f71ad3e2e) has page
-> > allocation failures when doing things like compiling a kernel. I can
-> > also reproduce this with a stress test like
-> > `stress-ng --vm 2 --vm-bytes 110% --verify -v`
+> > I think most issues will stem from linkers setting the default ELF
+> > segment alignment (max-page-size) for x86 to 4096. So those ELFs will
+> > not load correctly or at all on the larger emulated granularity.
 > 
-> Hi, thanks for the report!
-> 
-> > [  104.032925] kswapd0: page allocation failure: order:0, mode:0xc0c40(GFP_NOFS|__GFP_COMP|__GFP_NOMEMALLOC), nodemask=(null),cpuset=/,mems_allowed=0
-> > [  104.033307] CPU: 4 UID: 0 PID: 156 Comm: kswapd0 Not tainted 6.19.0-rc5-00027-g40fd0acc45d0 #435 PREEMPT(voluntary) 
-> > [  104.033312] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
-> > [  104.033314] Call Trace:
-> > [  104.033316]  <TASK>
-> > [  104.033319]  dump_stack_lvl+0x6a/0x90
-> > [  104.033328]  warn_alloc.cold+0x95/0x1af
-> > [  104.033334]  ? zone_watermark_ok+0x80/0x80
-> > [  104.033350]  __alloc_frozen_pages_noprof+0xec3/0x2470
-> > [  104.033353]  ? __lock_acquire+0x489/0x2600
-> > [  104.033359]  ? stack_access_ok+0x1c0/0x1c0
-> > [  104.033367]  ? warn_alloc+0x1d0/0x1d0
-> > [  104.033371]  ? __lock_acquire+0x489/0x2600
-> > [  104.033375]  ? _raw_spin_unlock_irqrestore+0x48/0x60
-> > [  104.033379]  ? _raw_spin_unlock_irqrestore+0x48/0x60
-> > [  104.033382]  ? lockdep_hardirqs_on+0x78/0x100
-> > [  104.033394]  allocate_slab+0x2b7/0x510
-> > [  104.033399]  refill_objects+0x25d/0x380
-> > [  104.033407]  __pcs_replace_empty_main+0x193/0x5f0
-> > [  104.033412]  kmem_cache_alloc_noprof+0x5b6/0x6f0
-> > [  104.033415]  ? alloc_extent_state+0x1b/0x210 [btrfs]
-> > [  104.033479]  alloc_extent_state+0x1b/0x210 [btrfs]
-> > [  104.033527]  btrfs_clear_extent_bit_changeset+0x2be/0x9c0 [btrfs]
-> 
-> Hmm while bisect points out the first bad commit is
-> commit e47c897a2949 ("slab: add sheaves to most caches"),
-> 
-> I think the caller is supposed to specify __GFP_NOWARN if it doesn't
-> care about allocation failure?
-> 
-> btrfs_clear_extent_bit_changeset() says:
-> >         if (!prealloc) {
-> >                 /*
-> >                  * Don't care for allocation failure here because we might end
-> >                  * up not needing the pre-allocated extent state at all, which
-> >                  * is the case if we only have in the tree extent states that 
-> >                  * cover our input range and don't cover too any other range.
-> >                  * If we end up needing a new extent state we allocate it later.
-> >                  */
-> >                 prealloc = alloc_extent_state(mask);
-> >         }
-> 
-> Oh wait, I see what's going on. bisection pointed out the commit
-> because slab tries to refill sheaves with __GFP_NOMEMALLOC (and then
-> falls back to slowpath if it fails).
-> 
-> Since failing to refill sheaves doesn't mean the allocation will fail,
-> it should specify __GFP_NOWARN with __GFP_NOMEMALLOC as long as there's
-> fallback method.
-> 
-> But for __prefill_sheaf_pfmemalloc(), it should specify __GPF_NOWARN on
-> the first attempt only when gfp_pfmemalloc_allowed() returns true.
+> Right, I assume that they will have to be thought about that, and possibly,
+> some binaries/libraries recompiled.
 
-Is this fix sufficient to do the right thing? I tested it, and it does
-appear to prevent logging of the allocation failures for my test case.
+I think backward compatibility is important and I believe we can get
+there without ABI break. And optimize from there.
 
-diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
-index d0dd50f7d279..d2e1083848e8 100644
---- a/fs/btrfs/extent-io-tree.c
-+++ b/fs/btrfs/extent-io-tree.c
-@@ -641,7 +641,7 @@ int btrfs_clear_extent_bit_changeset(struct extent_io_tree *tree, u64 start, u64
- 		 * cover our input range and don't cover too any other range.
- 		 * If we end up needing a new extent state we allocate it later.
- 		 */
--		prealloc = alloc_extent_state(mask);
-+		prealloc = alloc_extent_state(mask | __GFP_NOWARN);
- 	}
- 
- 	spin_lock(&tree->lock);
+BTW, x86-64 SysV ABI allows for 64k page size:
+
+	Systems are permitted to use any power-of-two page size between
+	4KB and 64KB, inclusive.
+
+But it doesn't work in practice.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
