@@ -4,135 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E8FAEA4FAD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 729D0EA4FA0
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:17:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A9596B0089; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
+	id CF6506B008A; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 456E96B008A; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
+	id CA3D46B008C; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3594B6B008C; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
+	id BB0A36B0092; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24F826B0089
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:13:42 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CADD81408E7
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:13:41 +0000 (UTC)
-X-FDA: 84475461042.27.ADAF662
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A8C1C6B008A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F514C2C5E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:17:49 +0000 (UTC)
+X-FDA: 84475471458.24.C5D0593
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D701240005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:13:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nU2Iz6hK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845219; a=rsa-sha256;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4AA181C000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:17:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T+ZmlUzd;
+	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845467; a=rsa-sha256;
 	cv=none;
-	b=LZhS2WIz7DhNARwjq97fSN7KP/gQEJ6fXOojCGCNwsrA7IbytZuSZ8vquMOzg/fEIENsDt
-	nCtIzp/NxZJiPg04s0STEa87UYWlLNJwYgFNr9b9+2w5UCkT3UNrRVPu4/PFhnbI7MJpKq
-	PEq2Ge2lOs8RCM3oJ0alaw2zw8XxnDw=
+	b=YYRVqC8xXav4MW6QWNT5mETP1ftCiuEQr6DJR/C0Q+bD3Dydg3h8sSOARKtN8KjoNQSx6w
+	i1l41JEvBxuoR1hICIpBumqHujQRJOrVbToTxLfK4+mZ5DUzrEFDZuEEQk7Yb/Ib2Y+W0e
+	5QNKduST16RqvGjGyXz/UheuR2o04Is=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nU2Iz6hK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T+ZmlUzd;
+	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771845219;
+	s=arc-20220608; t=1771845467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OIj7wTBQxVCdUHOQjQBsxqSl9iTGIuuCv9+rq477EOo=;
-	b=VxqFPHxhoXgg5+ofeJNaIUCa7bwKhdyDvgeInM3phgrFOtu/oIIr8FuHQhHisypKf5P73O
-	9d+sJwSTulejItTxZ7wksoONVdlCZLW6YbY/mGPr69voXCoxMSteU0Mx0PyIf2zrNDKJcD
-	dn3wrqBhYI4H9sOZ67+dODDKXhsa0WY=
+	bh=E9Q6Q8veWSTYguy8aQ+tHLIaffULJwBQHx4dUobDY3Y=;
+	b=G1NiCMqRoF2Gv9TgshJnVKX5oOnEq26mC33Fjp0lxxrj8v0nYG/G543lZbchelNtzTn3GU
+	gIe1aCmVEOJYh867g18BuhCs3YSvXfEabgmUaMiqQDYUi/vszwCGP8FimARmH1SNKJqkVX
+	TK9G9aA7CfYFSRYElrEdzSk88yldWWA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2347960018;
-	Mon, 23 Feb 2026 11:13:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D997C4AF0B;
-	Mon, 23 Feb 2026 11:13:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B31E060097;
+	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0BEC4AF0B;
+	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771845218;
-	bh=BZG/nWmVQJvaRxB3QpTWtxly1Zo7GKSmk5KGdklgYjk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nU2Iz6hKjL6IsT1A2j1qBAK3njQNTChQQ8T9rUSze3IvSNRt/EJP9WTkJ0DTcFmTZ
-	 H/tBYCu0ui/ox9x9NJAPXm4WuFEDRBzDh50xl1GMv7nO8fegr1pjR8ZbuhxdoU7/PV
-	 /2OxCPBTM2WTzmRkiFhzdlIW/RdEdO+r2cHItl2fx+0gaJvDwXoCEWtLtCYNq4w0WL
-	 PnIh55v3s8tlYAaO8gdhdLC4E1ebns13ha09r+utfszuZGHylzrZP1SVgLfrRNDpxq
-	 F+CMdOkFxjje3CY2T8IFV++AX9k3NESwDuDiL48t93Zervn56nmwT+veilRR/RoZKq
-	 EyoNuLrD1TguQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 66A16F4006A;
-	Mon, 23 Feb 2026 06:13:37 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 23 Feb 2026 06:13:37 -0500
-X-ME-Sender: <xms:YTacaUELCZurvDtD1bn7IJA1dvt_WoPXDr01Rboxw7WU1tVccQRa3w>
-    <xme:YTacaZyxccSLX4Acq8fgude8STEtXyfuKHuTc59KS1mcbk6kThnYv1xxHbD8q5no-
-    xp_mbtSJlodsyMLwwEuLDDS2eaaSfOqXvc8cXhmP3mce_q-deXWUw>
-X-ME-Received: <xmr:YTacaVYSqdihp8QFocirTlPjz4pkx7U6fnTK-gllfjXFjEIHsl-QvBTR2SduYw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdekucetufdoteggodetrf
+	s=k20201202; t=1771845466;
+	bh=h3K7cndj4kG1iv/vNT+K90U40QryseuSg7TrHfv0p5c=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=T+ZmlUzdf/h04LkbcDyxLGknTACoTYpcBLRrq+sOPTe6NUCPhryfL6eXp5Hn6pCsO
+	 nKNDe1r2hj4mnJ9NUrjpwNSWDTDw5jZwBlM9U2Q/6ISA+C+v2hC4Bcjz6cf9pvxBUM
+	 LXpnVd0pHPSa+la12I8raghU+w28gd9gGhov8QEX2L/8ZJGd4aiCyQnmvZABfxPUwJ
+	 VQ531qrtYP4Egn+ksVB9UpHf7XMnci4saRnPBfD73m54Mk2xNjA+80PfF++ZlmPmWy
+	 bRRscgI67Dihof6svyTtwqSk8PNXuZcLVCbhkaqftqvAPOTfchQzsL9azgDOtVXod8
+	 rXpPPAPZY+rbQ==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 31E4BF4006B;
+	Mon, 23 Feb 2026 06:17:45 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 06:17:45 -0500
+X-ME-Sender: <xms:WTecaZgA8AvZpn8eSULqZP9B7hCd7CRFOEns11LlNWohktnXoMbOcA>
+    <xme:WTecaY2kZ-2lmI20rnAEUoPb7QkSU5zjaEY_sl3GTW_KcWXU5S7tgYdQw55sMX33n
+    dP1_pNudIjm1DTEWgLI0PjXNoUFeqRWy9y_hhgoYoxn7XHk8rQi3Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdelucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgrlhgvshhhsh
-    hinhhghhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhsfhdqphgtsehlihhsthhs
-    rdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hmmheskhhvrggtkhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhr
-    tghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinh
-    hgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:YTacackuE1-0O3KUouoS4pj8BPZ-h7MkrbkfHET1CNxpq15GT-fvBw>
-    <xmx:YTacaanmYnrFUJ3p-Oc_RllBYu6dcfn2EXHVvvS2N4hyi30V_nAE7w>
-    <xmx:YTacafMCpH_dMrYhoNwz3gmDNMMtTJ--6HHdEWLhkEfGBROhK5E6OQ>
-    <xmx:YTacaUqIYfpXWEteSgSQKBTgnEWxSzlObmLtvsUY7sEZKTLtlDrnOQ>
-    <xmx:YTacaSQG_K1CmuuORbulCgxHsYFUIdA1vKnZGQGy72d8WO2L7laAS7R_>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 23 Feb 2026 06:13:35 -0500 (EST)
-Date: Mon, 23 Feb 2026 11:13:29 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kalesh Singh <kaleshsingh@google.com>, 
-	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <aZw1DlKHaWvgOtm_@thinkstation>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZdCl8byz51Q1-v6@thinkstation>
- <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
- <aZhErt9DZcWI24_v@thinkstation>
- <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
- <CAC_TJvd=wKKnj=d3phZsAaarXUdUbZDGauxWNWkQtsFV-MTYEg@mail.gmail.com>
- <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
+    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
+    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
+    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
+    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
+    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
+    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
+    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
+    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:WTecaU4kQ0Cm_b0_Li1sUA8NmJUle7HisuUZoKxwRtcxYryS4qpbeg>
+    <xmx:WTecaVfIOmmR7JPM3JsNK75dtyEvFNW7fuTIZneToo94Sz5oRuQ2iw>
+    <xmx:WTecaXwKtaKlcxBU5OxWcGeOn6GnrikiNIKmx_O73BAxMHvQtLW2tw>
+    <xmx:WTecabpesWExFjmzzZts0Pp847SBQBpJXbYWZxD5rZt6c_m0IblPfw>
+    <xmx:WTecaVwC1NV6aDi1xwqlurWiCkmGRBHl52XU9LP7KjPnI438uye4kjw5>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 0D441700065; Mon, 23 Feb 2026 06:17:45 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
-X-Stat-Signature: iy6xpig8ykd556amgpqpjit9oj73jqpi
+X-ThreadId: AF0NZ4OlJH_7
+Date: Mon, 23 Feb 2026 12:17:22 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Mike Rapoport" <rppt@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+ "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Message-Id: <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
+In-Reply-To: <aZwyNAbEqb8ZwLUM@kernel.org>
+References: <20260223075219.2348035-1-rppt@kernel.org>
+ <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+ <aZwyNAbEqb8ZwLUM@kernel.org>
+Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4AA181C000B
+X-Stat-Signature: tkjggfs14qkjyhkjjpoykhqucz8b16gm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D701240005
-X-HE-Tag: 1771845219-157580
-X-HE-Meta: U2FsdGVkX19Eb/7Z3n4tZpHorSoLPpDFMmJDmNkI+muzkUGjUoqpGazr1PXCauOAznr987Qg66sGn6nutouP6UAMZwTmG+r0AI7gCV5aQyfloLhAbE4jcZzEsbMr0aJqLW5PT8a78yd/oh8H8gj4QfZvNyJ8f2gHm5Uy4/jm/LdYLq07I1sT/PGrO87OisvJAh/pM7DQdrLq6aeqj3Uukh7jI9Pa+x328szu46rFMQkKBrH7Txx39aNMQwaOqu91i9uxWFRMKOZBBr0uwfAmdlcqf43vEkKGpjI18VDi5oE6BcNz2fskqH5xClLHKRZMW9aIsU7w9l0LcHsSSn7Nj6YtM83O/3wb8Gg67widhxrOgFZrdiCFlDYx++z1Wtp8VJ5pMeSD4RPQs5DT4vnOP78uhAkNPOWJkXZw00HEstbHWlbA2JnO2CGvzlGIwslIVnn220i0kwT0un9eoKnWfq/ayy/WZaIdOqmW/RbLx4JBok7cGi+rVqcsUGAqjT/K+g6mWci7Tf9leqEa/igHuyiJAejYLjsgdrbYKYIqjL5T8qJVrjt2o6up8W4l7cY5zZHPRqdhL5JSkM0WGmABvtXoDT3AQiDY9GXuLJHEm+ow68SODzDqCK1bbyqaUUJNMBVxrIQnWMLLfH3WNhCH4MRAJLW05tRrVa6EnfTy0NPdBvxF40gW0SOT0019jpa4ZsvAxXlHWEagoXeln4nyvCqYz8zEEts7q5M+o73JNyQZGWrvz+6fMOxhMTcghT/ncV9VvKKXYcRd5Zgv0Qus9yPdGrJPeLRgjgon23bzEtXhWfdWjt3RNsTz2elaAiujPYRldGZ1E1uK5HNq+Fr59/i1Y+f463j4RSwYVB1gyhw0vW/NCa6ZPNpC18kYgvp1p3P+It4T4XRrPALlPxC4hTW0wiaMJ4wWzo/EizlxUDAYA0Zl7XY4naXjyL1FIyWHp90Hu7i/9FqbINsqYU/
- rHGvmcNA
- 9VciVpUactSO72ncH80oimZbHR3HoDyubGdcx0JzSnl3KiXSzW6W5p/kYdAD0R94qlzH3PhK7UK/wWgFC19UW0iwaged6sEiabu/me5NNMoGRsxYVQl9yZwA9rFjR7emDKciBu2UuenyZqKCum9anY0ypDba2JS/qCT127bGBE5OPqcDSkPJJkKY6K7RVKawNTJLGSXUCKpj8CWEYtQHDxGZlPQVe4WvJcfgTy56JLVP+0xcBDPQOwuYdxAFNB7IiFO3G7ndpaEwndMPnGk7Ls8NobBMldHX+WJBp
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771845467-710944
+X-HE-Meta: U2FsdGVkX19iZV/fN20lNtq39m6HAdJC12ieK3GS3CWZKaOB+611FO0H73Q39Y/6a997nivmRYsTo1LPhvb6J8LklqR06YzodHZyVBPu9GQ3MhcF+6+wFK0CJc0FGPWtCI+aBg9r3YFNexIE1Ymu+MtG6b1+V/iaqmyfuhZ4dSNFw7oyhe8acueEF7pg/E7l+LQ5t/KdLmRWp6uYas+gCfj0PDAeLz4OMrjHIvj/tLk2YDjN3cBAQUPbT1vYMwDSHBdb8SN+eBoWDVfEMePKi29/0917o5HTm6w6tOFVBgAYuGim8pE4JMF4U94CmZSMxQTUcF/3Vsj1NnEkPltg+yAckz2/U5FVWAsvRvRPUS5QKlHr8qkG3Bu7rjR92ObORKwMgxRP+lvi5OyoN+zT7q0nJomyMcMI8IO9mixK6ZL+43qIa+f3YrE1h9mIcQunfAW2P1XMtJRCeLBlh78jgTuV0M6j2kH2ETc/RfmHsRucjNSEaE6PjMJgi0FXynqQwAeIacBnFrCc0HHua2VlY/q75yvfGkI3Rmg15UV0SBbpVWgXtRBxJ7TC53N+H+QRDDUtBfZB5jSSz1u4uRcqFPB/EhYlIq3gPbCGulrpeG5E3QZZ2/I9nuPsrSVQjKL8sl8Okk5kV6kY1TFiJDFYNwB2bqA0rj9e3N2FniOWXP6RAQ0w2afSlmzQmx8XRUhzTTAsEre7WqFphMSN0zfUra+qSjbobSgXDXgdL2cQAAPsZ4Ll55LNQT0xB1DHfawCz+OHgFnkjqoaZRFzk5bI1iR5XUhd+2jAB8cW3gZHk6yqnyUIEmOe7CSJU9rYKpX7pKRTycLa9oH/W4dFruxFE22P2Ow1xi9VbvVEGeD4WKXWN4pWhEWJCFw/Llhv+YjdUNxAHflwmwi9eF/5DhZyYCGl0gKjdskpbYRfdK67S8AWIk49SL5Eo8jx07e3wZIGMP3kBBm/cBRVlr6FeNb
+ gprNYfhi
+ AevhSUukg+q08EieM2NxD7tEKv4MseOBSSTY+dkMlXaakYrGOMxk4AYEkP+dkYjevZIexWQmJsEvE7LGHZYQNSj+k3c+awUrjOkK9WXLRRjiDxGuRFF1d3JzShd73b0vtLiwl9xx+48CSrfJ/pA4pEDgpQ0iAmJGmM49Cp2r+jE/CCDP/ii4vg32xPOQZn1dUjigOZ+3mq1P41NFX6puXWQ5m+A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,39 +135,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 12:04:10PM +0100, David Hildenbrand (Arm) wrote:
-> On 2/20/26 20:33, Kalesh Singh wrote:
-> > On Fri, Feb 20, 2026 at 8:30 AM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> > > 
-> > > On 2/20/26 13:07, Kiryl Shutsemau wrote:
-> > > > 
-> > > > Well, it will drastically limit the adoption. We have too much legacy
-> > > > stuff on x86.
-> > > 
-> > > I'd assume that many applications nowadays can deal with differing page
-> > > sizes (thanks to some other architectures paving the way).
-> > > 
-> > > But yes, some real legacy stuff, or stuff that ever only cared about
-> > > intel still hardcodes pagesize=4k.
-> > 
-> > I think most issues will stem from linkers setting the default ELF
-> > segment alignment (max-page-size) for x86 to 4096. So those ELFs will
-> > not load correctly or at all on the larger emulated granularity.
+
+
+On Mon, 23 Feb 2026, at 11:55, Mike Rapoport wrote:
+> Hi Ard,
+>
+> On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
+>> Hi Mike,
+>> 
+>> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
+>> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>> >
+>> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+>> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+>> >
+>> > There are two issue with that: memblock_free_late() should be used for
+>> > memory allocated with memblock_alloc() while the memory reserved with
+>> > memblock_reserve() should be freed with free_reserved_area().
+>> >
+>> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+>> > efi_free_boot_services() is called before deferred initialization of the
+>> > memory map is complete.
+>> >
+>> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+>> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+>> >
+>> > If the freed memory resides in the areas that memory map for them is
+>> > still uninitialized, they won't be actually freed because
+>> > memblock_free_late() calls memblock_free_pages() and the latter skips
+>> > uninitialized pages.
+>> >
+>> > Using free_reserved_area() at this point is also problematic because
+>> > __free_page() accesses the buddy of the freed page and that again might
+>> > end up in uninitialized part of the memory map.
+>> >
+>> > Delaying the entire efi_free_boot_services() could be problematic
+>> > because in addition to freeing boot services memory it updates
+>> > efi.memmap without any synchronization and that's undesirable late in
+>> > boot when there is concurrency.
+>> >
+>> > More robust approach is to only defer freeing of the EFI boot services
+>> > memory.
+>> >
+>> > Make efi_free_boot_services() collect ranges that should be freed into
+>> > an array and add an initcall efi_free_boot_services_memory() that walks
+>> > that array and actually frees the memory using free_reserved_area().
+>> >
+>> 
+>> Instead of creating another table, could we just traverse the EFI memory
+>> map again in the arch_initcall(), and free all boot services code/data
+>> above 1M with EFI_MEMORY_RUNTIME cleared ?
 > 
-> Right, I assume that they will have to be thought about that, and possibly,
-> some binaries/libraries recompiled.
+> Currently efi_free_boot_services() unmaps all boot services code/data with
+> EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
+>
 
-I think backward compatibility is important and I believe we can get
-there without ABI break. And optimize from there.
+Ah yes, I failed to spot that those entries are long gone by initcall time. Other architectures don't touch the EFI memory map at all, but x86 mangles it beyond recognition :-)
 
-BTW, x86-64 SysV ABI allows for 64k page size:
+> I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+> why I didn't use the existing EFI memory map.
+>
+> Now thinking about it, if the unmapping can happen later, maybe we'll just
+> move the entire efi_free_boot_services() to an initcall?
+>
 
-	Systems are permitted to use any power-of-two page size between
-	4KB and 64KB, inclusive.
+As long as it is pre-SMP, as that code also contains a quirk to allocate the real mode trampoline if all memory below 1 MB is used for boot services.
 
-But it doesn't work in practice.
+But actually, that should be a separate quirk to begin with, rather than being integrated into an unrelated function that happens to iterate over the boot services regions. The only problem, I guess, is that memblock_reserve()'ing that sub-1MB region in the old location in the ordinary way would cause it to be freed again in the initcall?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+But yes, in general I think it is fine to unmap those regions from the EFI page tables during an initcall.
+
+
+
+
+
+
+
 
