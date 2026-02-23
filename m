@@ -4,128 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED6D8EF5862
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 04:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92497EF5865
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 04:40:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C75AF6B0088; Sun, 22 Feb 2026 23:29:08 -0500 (EST)
+	id 9B3BA6B0088; Sun, 22 Feb 2026 23:40:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C232F6B0089; Sun, 22 Feb 2026 23:29:08 -0500 (EST)
+	id 961EC6B0089; Sun, 22 Feb 2026 23:40:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04F86B008A; Sun, 22 Feb 2026 23:29:08 -0500 (EST)
+	id 86DF66B008A; Sun, 22 Feb 2026 23:40:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C3286B0088
-	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:29:08 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E372C1A0743
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:29:07 +0000 (UTC)
-X-FDA: 84474441534.05.DCCE71D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 27C2DC000A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:29:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EGbJhp6R;
-	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 72F406B0088
+	for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:40:51 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F1D45B282
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:40:50 +0000 (UTC)
+X-FDA: 84474471060.14.CE0D3BE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8BC6E40003
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:40:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771820946;
+	s=arc-20220608; t=1771821648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZHLh3cKXZKjxYpTI2A5f4Usbzkmd+cL0G7dSp1H+f/4=;
-	b=VHvlufHTmXzZ9uSsQWzlLiS6jA3qN/ttvpyfLF6/cPn/L8b/gIhsaVNZ8Yborw0JZfSbo8
-	/Gd9+Y+nXdUPofBp9Q+AIPUIQhY/cYHGQoQI7BMWDciTc3bW0BNioAwJhP3AFFcS2nfIne
-	0WfqzKknEVMyhsV75H5oUrfHpqHHti8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S9ZFDeiM6NdQcCiJ+nraBcHIfL8WQvsSeV0CrSVAofE=;
+	b=egUvg86V/esGABcH3rrff7pobuTQY3zYXKFV7+LxZ4vHp155gdyyfCASgsCaoX65c0dyP8
+	W8JH9x/COHjF3HMUegjCsV9IlZ6fOya8UjpM/kniMGPp09c9pH4myrIEIcUjBYsgmegleK
+	RsrmGYDB/eBzlQMwfVMgQA1Nyxbp1YE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EGbJhp6R;
-	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771820946; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771821649; a=rsa-sha256;
 	cv=none;
-	b=zKThhdHE7hRRgoGwHj3Y4AJUtJW11IAfe1Z7jZCHCc7cJN+LBrmwsfK3Mp72XzRY3DBR2E
-	XAuO0FhdYn6d3Rz9cR1j34TFsnMrbSmFSYZadWKFpuxTxnEY78FtDl+Uacpert4tJepREI
-	LL5du5LC2eKNjQQ8pGZnKFMZayGhd1g=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ZHLh3cKXZKjxYpTI2A5f4Usbzkmd+cL0G7dSp1H+f/4=; b=EGbJhp6RfZrjSCE2rvuy7WsEoF
-	Vned+yo1lQzDtP/c65f5E63hpbQmW6y7ucwgA36tqcLB4ihf5O1KbaWOvkp2IapQ30+AHXOFJWjXB
-	/RWGxNJjNkWwtJ2vl+0DzbR9bVX7lJX6j6a8nOhuWxbaagFLoHIZzmBvLxcDmeGhZ79DT3yuiIuoU
-	RNWPH+fe4mULAm0Y7nJRODD7d45hZJKcUrkZcuC7gBNSAFo6dq/qtqDzakWfbPlqe2ane9otf5tBQ
-	Ldl35tPIftkoei5Z3t519AT4iV+zg/Awk4rFsN6hLBbWwOB9jXkwPiv7EEbVbPCilvKeUUBH9RNd1
-	qxBZyxog==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuNYo-0000000Drlf-3eoa;
-	Mon, 23 Feb 2026 04:28:42 +0000
-Date: Mon, 23 Feb 2026 04:28:42 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-erofs@lists.ozlabs.org, linux-block@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jason Xing <kernelxing@tencent.com>,
-	Yushan Zhou <katrinzhou@tencent.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Gao Xiang <xiang@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>
-Subject: Re: [PATCH v1 00/11] Zero page->private when freeing pages
-Message-ID: <aZvXevheBMQ6LuUu@casper.infradead.org>
-References: <20260223032641.1859381-1-ziy@nvidia.com>
+	b=7k7snpkiuoLvHedASaLJljEfPHMFe+2g4tefUSC8N/nYK1PooKhpkcKYA4902PUVG4y264
+	rgdZFqYrJcjhEpWkS/ijlmdfX97cuzzvpaRPcPXptJYNNT4YSrIcmHIJBeglCAObQQ+zhz
+	f3KW4Hbn3/nDuaLaKB/N9NeZHsCg4ws=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A03D339;
+	Sun, 22 Feb 2026 20:40:41 -0800 (PST)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 118753F59E;
+	Sun, 22 Feb 2026 20:40:43 -0800 (PST)
+Message-ID: <a0b4febb-d803-4c18-9211-7286d682d705@arm.com>
+Date: Mon, 23 Feb 2026 10:10:41 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223032641.1859381-1-ziy@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] khugepaged: convert redundant check to WARN_ON
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260219054827.4111334-1-dev.jain@arm.com>
+ <20260219143327.7693e4b1474a337821e4c637@linux-foundation.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260219143327.7693e4b1474a337821e4c637@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 27C2DC000A
-X-Stat-Signature: k1ocodji788tx13yt4frht5ujxfphece
+X-Rspamd-Queue-Id: 8BC6E40003
+X-Stat-Signature: ykh9dsn4cizwr4b3bp7a1f1asjwhxqza
 X-Rspam-User: 
-X-HE-Tag: 1771820944-166383
-X-HE-Meta: U2FsdGVkX1+jdc/LumUlt6ON2GWkWyesFugvRLak+Zfbh0ozi5qwr67TnGUAdjQUse4uSaDmkw68R5z2lRJvaHLti6jHvcklB9/jTXrsNu/UUUunkrp+qwBLhkJbL+XLLdudWaITorRMR1iLmLmLcpec5e3SQx+ZRroHDkfJTitpMYaG8LSdMiYFb85xfmTKT6lVQpVybXEmIC7X+YsdFCza3G5oiEv4/kirQTNscN0v3vqosZHU/XZReHA3hAtKUdH5CUzyQHaiCuc3HFt2b3WSSBIxwVgeKzOTOdm9bvc8lx04XdTSwqKJhC8hdp/9hP83FsXCTE0arU/oLcy3o4Hjr5nGTvwKP66uqhJSNWMJtlvsxnugtqRpnN5LvL/uxMu37XJf5alGkL1tFWdoNnSFLTaHYoUpzC4nO+MsiDm0XUJ+CixJh2P8m/9awdtSbwFiPm0o2zky5ozwFLhlIcPGo28f4tfyr+W3cu1YludJlb6NrHvijTZWcqzy/Z+DC1gECvB/DuRe5llcWf0csugSionY0lcNXMNh0q/nzNqLDwa1nXPIIljN/AaE7lu6kaOotQrHjSsquWIZ86nYJJLOnMlwPT7JybRbx54udOC6nxqB9nOaPQLyC6sgOCjgyhH0rC4opW/r/F4xs/SSQrMtXe1gTLl5bz8rUNk+HRHHdbBkafP86R0QhVuVZo4SzGRHMD6LSGp4LT3mDgVn4FJgQpVH8y5mGJJSrkQoy8hYTm136cuwVTHgLU5tIxY3w95c8ip503BbmsQj1xtYl5+3BQLFfHzSy6qPymZDry3QzwMt4SzMB3V0EJoPM8TtAavzApVI/D9DFhzKaoEL015J4dygMVnjVFL9kk8itblGECV25ndwM+MnpSozljrWZ0XpsU2CwtTM0i7BoR0zWDXGntFdTaeQgCSiFD4N2Uv195xkm58kioVUjpqjwovE1jTq8K4eZXjotM9WKin
- WmwkjwJ6
- XB2CmW+r1uSTltIf0zsyudR6ub7Vx9bAgAm8l+MqlgDl5zaQdTSWqQSTHf9gtyHm9NiLD7RHGkP4iabGkP1I0wvF/mJaqbqOQ7RwQyl0gdaD2HCMl5BpWWhfGeHCOsWQP1c4gSeFKs1LJMaTltbni2rSimkgiTFY6OeK3m1aHeKwunpAEI/OD8LcYydLj4pxQCeGbSkJQkat8+WoFQjFIUxBYIGMxjcMuVi+bBuRhb5AZtVtZsdQ1C43iZQ==
+X-HE-Tag: 1771821648-656226
+X-HE-Meta: U2FsdGVkX1/0gdHgpIFwQm1wnrGSHwPj7QMeYf3WNuu3gHKR36Lwh13+J3wbqnhwpp/VHHcenJoPfDBIwuLIf1a+bRMb7H/YOxee51SF5Ff2uoqgp/ZUrkp0CFWUPSTCO4scRSu6uHrax7l4kE9Ow0ausB4Ym9Ihusk0GcXOLGm1kc9SXLW6U7VzmCUDAmZojQsu1UPbJX6TYb8AVFEbPIMfLy8zMyfnm4NByrTOgR6eI4tK2QyET5NEQCmaj1/LcdxQaoTiGZC6ZRCCiRaTaF9+AReSyBwXqeSFnUAwPDXhkSgKh+8O8CoSIuuLZwEtJl3xFXM/Pgq+Sa5+zTPwM3xWcvWozcC3AsasT1TlBCgDsk0FelsspfYTMfebHTgALwSoxl9Z0KZ93qsd9bldhUa1w4VD/kzBxsd13mXNG6WLVLo+X7KliZ8Qypwoe5BplmnkMVfzBrOnvasBWHXsJMOhw1rRgczHLAxLETGHLhbh5qj02FgvuOZ/ogioqN80OQLzDZF3v3dCJA2RvUZmbAwbz5HrXWgLqRpl3AhLmnBMaPD6cgXfhj+rAUv6+a4Sm6OD/6Ux0EjhdIz2rcfrU7EVM7P6DNFA8QWjTBRPZqDvfp2ZpCpoJ+mo6sr1Sn4W/sFFUG/TnI4lmA3/OvETnf7W1wpOEbBitmrlCXxmWtFUOekEk1UIIB+gMynGYLJPg3XBuqZe7HeSZ3kF/7TSbzDOxCnuKmeMzuY7JqNUmxdZmvPnUBuDWIXahtP3PiBG9vLn4QC6mPNo80CeclCqwVcGL70InAwegRlMPDWVbhmwy+O3yBU6p46BJL0U30WGAUcW7240cGXrz9C5jY+Gfokr/pNFdlfSdVvPyMCYugfVl+Et4IpJAhGJsQiUU/rHaUIrdgdWGRiVIb5Lidx8TtCT2Z7CnPff18tiVZI783kkAewCWSMhVeBNxxaL4DOlXzpY3nj667o7gPfZ/HL
+ QYo3SOiZ
+ 5KJudjkDsnxYq48nF9Lj10JJmFK9Ux970gJmefXBePMmDJ2puMS6hNS377dC5vSUNyYqlARkykgPd4iRAcZjpgV4Twl4MrR3NamTExwX6ikTHEkoyOSgwmse3uVfFsBpES5ppw3YdckH0DDt/TwX6rGG+wiuGhpUwT6fO7k+AquYhQpBhO0yiAehDiiATYxInCz0zzI0DkM2dMQz+7USdzvK75WptRV5nW3g/tCfxdGozIivgedgw+Is+Tw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,22 +88,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 22, 2026 at 10:26:30PM -0500, Zi Yan wrote:
-> Based on a recent discussion with David Hildenbrand on page->private
-> is not zero when a page is freed[1], this patchset is trying to fix all
-> users do not zero ->private when freeing a page and add checks to make
-> sure all freed pages have ->private set to zero. For compound pages,
-> both head page and tail pages need to have ->private set to zero.
 
-Sorry, I didn't notice this conversation.  It seems entirely unnecessary
-to me to zero out page->private before freeing.
+On 20/02/26 4:03 am, Andrew Morton wrote:
+> On Thu, 19 Feb 2026 11:18:27 +0530 Dev Jain <dev.jain@arm.com> wrote:
+>
+>> Claim: folio_order(folio) == HPAGE_PMD_ORDER => folio->index == start.
+>>
+>> Proof: Both loops in hpage_collapse_scan_file and collapse_file, which
+>> iterate on the xarray, have the invariant that
+>> start <= folio->index < start + HPAGE_PMD_NR ... (i)
+>> A folio is always naturally aligned in the pagecache, therefore
+>> folio_order == HPAGE_PMD_ORDER => IS_ALIGNED(folio->index, HPAGE_PMD_NR) == true ... (ii)
+>> thp_vma_allowable_order -> thp_vma_suitable_order requires that the virtual
+>> offsets in the VMA are aligned to the order,
+>> => IS_ALIGNED(start, HPAGE_PMD_NR) == true ... (iii)
+>>
+>> Combining (i), (ii) and (iii), the claim is proven.
+>>
+>> Therefore, convert this to a VM_WARN_ON.
+>>
+>> ...
+>>
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2000,8 +2000,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>>  		 * we locked the first folio, then a THP might be there already.
+>>  		 * This will be discovered on the first iteration.
+>>  		 */
+>> -		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+>> -		    folio->index == start) {
+>> +		if (folio_order(folio) == HPAGE_PMD_ORDER) {
+>> +			VM_WARN_ON(folio->index != start);
+> It's a bad sad to remove unneeded code by retaining that code and
+> adding even more code.
+>
+> Perhaps add a comment reminding us to remove this altogether at a later
+> date?
 
-I'm a bit confused that ac1ea219590c was needed too; I thought we
-cleared page->private in the allocation path, and I don't see why
-it needs to be cleared in the freeing path.  split_page() should be
-clearing page->private.
+But then shouldn't I remove it just now :) try_collapse_pte_mapped_thp is
+anways going to bail out if such a bug occurs, so nothing goes wrong. In
+short this check is actually useless, apart from the fact that this lets
+us spot a bug (which I doubt won't be figured out by other code paths already).
 
-Can we discuss this at the THP Cabal meeting on Wednesday?  I don't
-think that introducing this new rule that page->private must be cleared
-by the users is a good idea.
 
