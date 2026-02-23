@@ -4,131 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6811EA4FB5
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:19:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3D91EA4FB7
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:32:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 180BF6B008A; Mon, 23 Feb 2026 07:19:07 -0500 (EST)
+	id 1FA2A6B0088; Mon, 23 Feb 2026 07:32:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 151C86B008C; Mon, 23 Feb 2026 07:19:07 -0500 (EST)
+	id 17DA66B0089; Mon, 23 Feb 2026 07:32:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 054276B0092; Mon, 23 Feb 2026 07:19:06 -0500 (EST)
+	id 05F496B008A; Mon, 23 Feb 2026 07:32:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E1FFD6B008A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:19:06 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 97C3A13539B
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:19:06 +0000 (UTC)
-X-FDA: 84475625892.15.F00BD85
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9B62114000D
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:19:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7Lwt3pP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771849144; a=rsa-sha256;
-	cv=none;
-	b=cXM2VJfPsJsyqxrrjpvyrw8k6Ebn/WU9rKxO3rVyhLtwfmxw2NJanWtHA3+C7XI2UdhwxK
-	KJb7cvJ88nWIo11NOsb3IZdYfDX8isl8ud1RlalFIv/zdyMeIgY/4ixvXM36yykEv3zlFG
-	56z01iQKVKCsftWDkUDk/bbtNc2kKZM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7Lwt3pP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E38386B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:32:41 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DCB0C01BB
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:32:41 +0000 (UTC)
+X-FDA: 84475660122.20.C1D910C
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D54DA180008
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:32:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=I55Cmioe;
+	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771849144;
+	s=arc-20220608; t=1771849958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YpStkhsodFIz+r0Azfp9W9K381YnvWXkpJF0z7PC+hg=;
-	b=Tx5XdCMlLOTlHPNmcIh5VaX1E+pGTYuSZnN+8Eqm7NAt39fqHnTzQzraBkt+veDyRqbRyB
-	qjyhvmvya/ow8iOYqfOGuGfXZ8wA4WRkiQLEbr9AKVgk3/jmjbzrw8ScvuPIY23GSKBhUA
-	lVZpDI36z/n9MJJPTPCPposMwWnkq3s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E17E560097;
-	Mon, 23 Feb 2026 12:19:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AECC116C6;
-	Mon, 23 Feb 2026 12:19:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771849143;
-	bh=L4x40NTeNfhFz9DzYSHhBr5EkKnCnezdmBS5U2foQr8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=H7Lwt3pPJjskeHHj7y1s81CQC42RHRFMxaaNdWnNjdpesYy/3mkK8bpUdv4JymznU
-	 AUFkE55CltUgHIjTnJoEZdsunwj19cT5nlR2XdWSDorj+wF9iJ8LSRyv4DrwrXBFYs
-	 m3DTBt5VP7LG1/gTvP7G0swD5K7z2XZz09gheT+/+3wypcgCEG+VlkUM9h/77EEwDf
-	 glNBBOnAPdU4L/vH8aR4wnpxsynbkOkXElbf0S7nN2CDOhHrWClGttqJtaGLCKPWAB
-	 CDXfBN29Od19fdWhgK2MJIfdHc2Kp/CtMl55HEuT1oS7wWNYeq98OvcNs2D5CEz0TY
-	 pTJlgi+OHP9BQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 58BA4F40068;
-	Mon, 23 Feb 2026 07:19:02 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 07:19:02 -0500
-X-ME-Sender: <xms:tkWcaXSE1f82Q-t1qd4cdGAieY14BMDjvay_rpnhKBJvqtXTG5H3yg>
-    <xme:tkWcaTlxaFEd5VXic_TYXxW-OTIHxdkTBfcdn7krdBpzqIWim-PctdYiicamp7wxS
-    tptIyEqCuFKsL5QJhzF7-hijYF5UPuTu8fDQ7uHhA0I5Rc14uLdRQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejvdduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
-    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
-    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
-    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
-    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:tkWcaQqAeuVtoky9o6-Xnu2J8LHRL6Pq6g5NAO2-wOQpMr3HzyrpPw>
-    <xmx:tkWcaWO_hxeo9JKDIMQE6AR9_-zBhjnJYN29J3X_99V4SzfAAYXUcA>
-    <xmx:tkWcaZgCfyZa67-lDg7C8hz-eoUrTmGGwwlIWW3W9eZ5GYVr_IhdNA>
-    <xmx:tkWcaaYqafVkNhkWWtxZ9hVOMc5oHNMlFwUH7gTk6m2cmykOgzUAPA>
-    <xmx:tkWcadjd24EEtUNhXgxtCnev56ZvPCwUpPiOv8RbT4P_UI965pkvP3BL>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F04BD700069; Mon, 23 Feb 2026 07:19:01 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=rkuh8RE1SaYB5ngAVCW7AE/3ekpYQtmDHEks3VzHXyY=;
+	b=HGozEN2+LXot/mLruFdPHonDAQ5wxH/RH5CK/Kn8tU5xP09XGiT/9ryzT0CT51igV4157P
+	0PSFjK0lY/oXOwQL5gQbtyUqn5epDjL4KnVdtHbNgnkcw+x/hzHGR6q2g089etdrhz7RRV
+	e+h/qlB5Ek24SVm/VAlkEMjfPEQlMMo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=I55Cmioe;
+	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771849958; a=rsa-sha256;
+	cv=none;
+	b=L0yVPS04bR7suqv30RQ+vQ/RUE5RBH5RWReaDS3AoEsIjjROXPT53GTq6y+DwH2vY2up0T
+	l+2CiyJRl7E8YlgJ3Zhs5HJ4VACfIRQXAdU51KDqzP6tn/XKBcPV8gEz1WwbjXpK04xM1K
+	tpFt00b325cStfMAh79TBHx8NPJvIiY=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61N1F8vE2962734;
+	Mon, 23 Feb 2026 11:53:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=rkuh8RE1SaYB5ngAV
+	CW7AE/3ekpYQtmDHEks3VzHXyY=; b=I55CmioejpT6bkGdnsKvpl7K/BUjYZDy4
+	3pIr1yLzBd9JiCSbDbST/Ec9TRNItgTD9pUmD+C5Zv1Xd//jiqR5Sk/B2dE1RwYL
+	AATB5GnG6pXHa9kYl8EL+cFKQa4/EWR9vgd1SimWBdQoK2matflxO0lbBrD0fKR5
+	gZ8jwq0AsUnMmJ+qqrtf4vcEN7zQaNtlZ21JZ/3WT67KN1Vcoqzm2Yzi5qnlZC6w
+	neicizMdfM/QggAYJy4jdWsbRe4BSOu/RIOFyYwy70M2Dqmp9NY0Knxpy4GDdYyA
+	MALJANSNhseMmAQ58hSoti0FrJXgfB3W6HKk7bU3AlCGJdUN8qWtA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf24g6qap-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 11:53:19 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61NBDPWt030385;
+	Mon, 23 Feb 2026 11:53:18 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfrhk4gru-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 11:53:18 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61NBrGs731129866
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Feb 2026 11:53:16 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 83CA52004D;
+	Mon, 23 Feb 2026 11:53:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5FF3320043;
+	Mon, 23 Feb 2026 11:53:16 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 23 Feb 2026 11:53:16 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 3FCCCE0B55; Mon, 23 Feb 2026 12:53:16 +0100 (CET)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org
+Subject: [PATCH 1/4] mm/page_table_check: Pass mm_struct to pxx_user_accessible_page()
+Date: Mon, 23 Feb 2026 12:53:13 +0100
+Message-ID: <68c2f6df2955033cbf1ccbd2b5c2816e72ac345c.1771845678.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1771845678.git.agordeev@linux.ibm.com>
+References: <cover.1771845678.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-X-ThreadId: AF0NZ4OlJH_7
-Date: Mon, 23 Feb 2026 13:18:41 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Message-Id: <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
-In-Reply-To: <aZw8xSI-TM-Gz84t@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
- <aZwyNAbEqb8ZwLUM@kernel.org>
- <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
- <aZw8xSI-TM-Gz84t@kernel.org>
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=TNRIilla c=1 sm=1 tr=0 ts=699c3faf cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=pGY3QCu7MjYVx_q7SwQA:9
+X-Proofpoint-GUID: CSTS6ZcxiwQHiHahNP_pkftR7dwc7dEB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDA5OSBTYWx0ZWRfX8meC9A58lixm
+ XJ917+b0HnNVBM6bs3817+Qsqyx/N/+QJam8EoRkcPnVMeL53kLDYsNIJGlRpaPY20AkebPPBLd
+ Vmh5Ap68PCfldNzudENvaBcEBwboC2H9yra5pxDgiZ6jenFaogRJKWRxfSBEETkzhkL6wSEr5yP
+ /4sV3+CnMKF2KXlgZPkd+ThcEtB8xTTujY7veaeDFO47sWKXZouZ/L3W3h7Tu53u36Tr5gfG9+o
+ 8yxMMiqttTxxsE/mOQGbWS5zcRPP9aooSrCVszcaftwHkkbToDFa81/r1OqJFn8gWkPZ3qIWg5k
+ ScgqmcFLp8VJvHsz7j38ekPqdpY8FfUPOuTctCk/cwXlW6hRvi87xoh5BU43423SuId3uyuiTPB
+ 8MF/vGmvA/clufMlgabcPWZUqIMRBEgz+6aF8egY2PPhI2h4jivcgWDo27VUyDhfec4Excg9vMQ
+ kG2EYG1Iv+dXDVjf97A==
+X-Proofpoint-ORIG-GUID: CSTS6ZcxiwQHiHahNP_pkftR7dwc7dEB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_02,2026-02-20_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602230099
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9B62114000D
-X-Stat-Signature: gdst8coitdsct5cyeiet3ow84zhfwcfh
-X-HE-Tag: 1771849144-220412
-X-HE-Meta: U2FsdGVkX19Yf+uobAKDw2fjzdrnhjBwBI5/Ue/IfKcu20rym9d0qaz7JMjPqiIxpk71wulU3DZY2lDDnhDPZUJhUt7ZY9JHfWuW65fn08xNlcdC3efuw6zp2v99Ujqb1vAtVLRsHj59iY/YfK7bNnf+wndsKWk0Lc9cUd0aRYBYADOJGDl4msHgTwuYvPBl4/6JNAtIEwcxSyEazTaUOp6ibrXdz6JsET0SIsmGtccqpg1GAyeVLQYvAm+sCfPA6+0HLcGjVqJszj28MjDkGZBk11/wJcnvF5mfXEZlGOAqFaoCL6BdGv779qHGxWK7p1b/yojBDZCYt7lhlN9hZEH/XqGhMasCU45JU3Z8va0ttOU/fo6ZMYelLZ2oveH4GVCkWmrtdbeFL7AXl5nVnwLgjwp42J+aA4Le231PZ8S8EZwLeVR36wgdAJRCnsymxp3RFuwLN/u9UTOqKlMWBPn+Hfk06ByasTgu4gxXXrEBU1Rv3kshfKcoVNq/nVzRljikr0chO0kFqXHzbD3aDVtLIOn5BSyiw0hZp2t35oKr5GUDDfHuAlOhAPc4flCx2UqjYhcs/PT4E2zRHnlynXGkEEudzEJWzlayYIMmGHivtx8yjDih2w8GuA4vbajr+kXDucAhbl687nFEzvy0bqP0R1qhXPqKloTDMZ2YTm4oVjhdglTxEDBvN75VxxXT2Nv2gYGUqLILQdnfQPlNyagDSdJ6SwDoNd9onU/sTKnfShibwRLLnXSlfAMkhTAVulVLA9klEBooOFjNwbVWSxYpgcYyBqgLUkgAb0ieFnGT/eArvbP01R8sitE9VPeP5PBteMDo7xJznyjhRld5afO/2cazwKnu6q7L8S47wooQgM07IPAcB0VvgD417A0l7+GBypjotbzeSwP5Zxtohxha7bfRmevxox6f/k3wAKHYlCT7hCg8OUTp7bcZB8whDzXpPhONjBBxTJmAIU1
- EkfDVD/n
- 77OlZ93UITytNQ+njouI6nO9Z2Rtn1+OGQq/R2W0NuCowF/YgyZ/VoPD66N2NpcKZETNDrXgvmwv27JSaP8pEWNHhMa+9I6svC+e1cgAY8iOZKaEswmXfWc16stpAr779cnYRMVKcWqLCiq9K8TayKYw/uRdYrtCDxPIly1/9YRjgsG9p4q4/Eu/HEWrqmJNGKWh01xwFdLajJ64ud6HhstVQpA==
+X-Rspamd-Queue-Id: D54DA180008
+X-Stat-Signature: mohjswqxkmdihjsyrp4573srrjh8kmjn
+X-HE-Tag: 1771849958-560500
+X-HE-Meta: U2FsdGVkX19JpYPxmTi4jPyEhjtnAS/Kp1e1fYFUk+Y4uBqszAxqkE2WBp15PErWUL5OQNXTqYUTrANMwnuwv+dXWsPhRVSpGD8a/1D8tBcIAQpYiN71h7Fjtp5EieL9J0DLxjd10jwYOlzrJd9UISpfVk6iq5S/l204fvVsBuRpcQkntrjxSD2ElG48k0PxVne6wtbht54EnB3HnVbWSq8K+1tLwWc3yNylaTRaawZwti93tQ4JUAHHcQBaA6M9IdtFCItqlKjikTnCafJQxfiHgzgbj5LmokUOphZF+lFfIFkzSW5sA6Gyf4IaJgfsvRskjMPm+7TA5x3ofweyMi3fPAWkXeMYBZf/blt8IW7mrs03fsSUKpuYZFXrIicb03uhXa6gLc/3LHVaUMOG4vPx7viXRqZSi5AuiWXREd9z9Xs5Mhb/UNkHVvI0jSsL+ZfY8WjNpXgv046nOZQkj7WQ507rV8G424qw21KlIGKJ9VGOdtzDmXs4aJOE2C0o7CAyD3IENP0tv+kmHzoqrr4yrDC4HHk9Jrx5/0glRJJLPvB7xTsw57ZmjTfXT+EdQ9osYK8RqVMI3EdmT82UVj3cSSC2VZ7R7daoBv/HUb+Gv9upvHnt7oWNbY0rSbJ6Og4PAuxOudpuuuvSU0ADqXR6G9W2Z9BrtDvH2cgbkKWRwNskuDFXm/V69ZjUoGTSkkJyCvz/Y7AhO4hYrtuzQAItFSotLRdkuDHGGJOUdtGbWkQgifS5goLYuwV7mmMHtB75gmTdyzJiDIEMeuyoT5ADAIlUgE4ZAAvibdvalvb9fynqmHOIr3ZC0fXgEzTy8h1Kge4g3dDYSmY2XIdRKAshBciSzy3l37uEUJarIFwrGcfcZuJjyXEXIuJeEowUd4NqPgHp5/uPNSHYG6fHHz6GHdtlUpNGV5wT9ISytUpKSnIPyFO79YuXLZ7ye7LcbqaaZeF3WWLfuFdj4rx
+ cuue2HFZ
+ 34Ekt6wKBu+zLyLToeOpUzjmcyGNUgu/X+UaaZVhUXaNyv7EWx+FS7Bf9uB0ThehINB/TT84kLOxd1Zdu7I+QkHGcnfl/T9gaQ4KN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,106 +139,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Tobias Huschle <huschle@linux.ibm.com>
 
+Unlike other architectures, s390 does not have means to
+distinguish kernel vs user page table entries - neither
+an entry itself, nor the address could be used for that.
+It is only the mm_struct that indicates whether an entry
+in question is mapped to a user space. So pass mm_struct
+to pxx_user_accessible_page() callbacks.
 
-On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
-> On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
->> 
->> On Mon, 23 Feb 2026, at 11:55, Mike Rapoport wrote:
->> > Hi Ard,
->> >
->> > On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
->> >> Hi Mike,
->> >> 
->> >> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
->> >> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->> >> >
->> >> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
->> >> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
->> >> >
->> >> > There are two issue with that: memblock_free_late() should be used for
->> >> > memory allocated with memblock_alloc() while the memory reserved with
->> >> > memblock_reserve() should be freed with free_reserved_area().
->> >> >
->> >> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
->> >> > efi_free_boot_services() is called before deferred initialization of the
->> >> > memory map is complete.
->> >> >
->> >> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
->> >> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
->> >> >
->> >> > If the freed memory resides in the areas that memory map for them is
->> >> > still uninitialized, they won't be actually freed because
->> >> > memblock_free_late() calls memblock_free_pages() and the latter skips
->> >> > uninitialized pages.
->> >> >
->> >> > Using free_reserved_area() at this point is also problematic because
->> >> > __free_page() accesses the buddy of the freed page and that again might
->> >> > end up in uninitialized part of the memory map.
->> >> >
->> >> > Delaying the entire efi_free_boot_services() could be problematic
->> >> > because in addition to freeing boot services memory it updates
->> >> > efi.memmap without any synchronization and that's undesirable late in
->> >> > boot when there is concurrency.
->> >> >
->> >> > More robust approach is to only defer freeing of the EFI boot services
->> >> > memory.
->> >> >
->> >> > Make efi_free_boot_services() collect ranges that should be freed into
->> >> > an array and add an initcall efi_free_boot_services_memory() that walks
->> >> > that array and actually frees the memory using free_reserved_area().
->> >> >
->> >> 
->> >> Instead of creating another table, could we just traverse the EFI memory
->> >> map again in the arch_initcall(), and free all boot services code/data
->> >> above 1M with EFI_MEMORY_RUNTIME cleared ?
->> > 
->> > Currently efi_free_boot_services() unmaps all boot services code/data with
->> > EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
->> 
->> Ah yes, I failed to spot that those entries are long gone by initcall
->> time. Other architectures don't touch the EFI memory map at all, but x86
->> mangles it beyond recognition :-)
->
-> Heh, EFI on x86 does a lot of, hmm, interesting things with memory, like
-> memremaping kmalloced memory and I it really begs for cleanups :)
-> 
+[agordeev@linux.ibm.com: rephrased commit message, removed braces]
 
-Yeah. Sadly, all this has become ABI for kexec, so the EFI memory map abuse is hard to fix.
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ arch/arm64/include/asm/pgtable.h |  6 +++---
+ arch/riscv/include/asm/pgtable.h |  6 +++---
+ arch/x86/include/asm/pgtable.h   |  6 +++---
+ mm/page_table_check.c            | 15 ++++++---------
+ 4 files changed, 15 insertions(+), 18 deletions(-)
 
->> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
->> > why I didn't use the existing EFI memory map.
->> >
->> > Now thinking about it, if the unmapping can happen later, maybe we'll just
->> > move the entire efi_free_boot_services() to an initcall?
->> >
->> 
->> As long as it is pre-SMP, as that code also contains a quirk to allocate
->> the real mode trampoline if all memory below 1 MB is used for boot
->> services.
->
-> initcall is long after SMP. It the real mode trampoline allocation is the
-> only thing that should happen pre-SMP?
-> 
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pg=
+table.h
+index b3e58735c49b..ccf0e0638767 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1263,17 +1263,17 @@ static inline int pmdp_set_access_flags(struct vm=
+_area_struct *vma,
+ #endif
+=20
+ #ifdef CONFIG_PAGE_TABLE_CHECK
+-static inline bool pte_user_accessible_page(pte_t pte, unsigned long add=
+r)
++static inline bool pte_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pte_t pte)
+ {
+ 	return pte_valid(pte) && (pte_user(pte) || pte_user_exec(pte));
+ }
+=20
+-static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long add=
+r)
++static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pmd_t pmd)
+ {
+ 	return pmd_valid(pmd) && !pmd_table(pmd) && (pmd_user(pmd) || pmd_user_=
+exec(pmd));
+ }
+=20
+-static inline bool pud_user_accessible_page(pud_t pud, unsigned long add=
+r)
++static inline bool pud_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pud_t pud)
+ {
+ 	return pud_valid(pud) && !pud_table(pud) && (pud_user(pud) || pud_user_=
+exec(pud));
+ }
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pg=
+table.h
+index 08d1ca047104..affe46cf3bc5 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -984,17 +984,17 @@ static inline void set_pud_at(struct mm_struct *mm,=
+ unsigned long addr,
+ }
+=20
+ #ifdef CONFIG_PAGE_TABLE_CHECK
+-static inline bool pte_user_accessible_page(pte_t pte, unsigned long add=
+r)
++static inline bool pte_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pte_t pte)
+ {
+ 	return pte_present(pte) && pte_user(pte);
+ }
+=20
+-static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long add=
+r)
++static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pmd_t pmd)
+ {
+ 	return pmd_leaf(pmd) && pmd_user(pmd);
+ }
+=20
+-static inline bool pud_user_accessible_page(pud_t pud, unsigned long add=
+r)
++static inline bool pud_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pud_t pud)
+ {
+ 	return pud_leaf(pud) && pud_user(pud);
+ }
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtabl=
+e.h
+index 1662c5a8f445..f9353d5c7464 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1680,17 +1680,17 @@ static inline bool arch_has_hw_nonleaf_pmd_young(=
+void)
+ #endif
+=20
+ #ifdef CONFIG_PAGE_TABLE_CHECK
+-static inline bool pte_user_accessible_page(pte_t pte, unsigned long add=
+r)
++static inline bool pte_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pte_t pte)
+ {
+ 	return (pte_val(pte) & _PAGE_PRESENT) && (pte_val(pte) & _PAGE_USER);
+ }
+=20
+-static inline bool pmd_user_accessible_page(pmd_t pmd, unsigned long add=
+r)
++static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pmd_t pmd)
+ {
+ 	return pmd_leaf(pmd) && (pmd_val(pmd) & _PAGE_PRESENT) && (pmd_val(pmd)=
+ & _PAGE_USER);
+ }
+=20
+-static inline bool pud_user_accessible_page(pud_t pud, unsigned long add=
+r)
++static inline bool pud_user_accessible_page(struct mm_struct *mm, unsign=
+ed long addr, pud_t pud)
+ {
+ 	return pud_leaf(pud) && (pud_val(pud) & _PAGE_PRESENT) && (pud_val(pud)=
+ & _PAGE_USER);
+ }
+diff --git a/mm/page_table_check.c b/mm/page_table_check.c
+index 2708c2b3ac1f..53a8997ec043 100644
+--- a/mm/page_table_check.c
++++ b/mm/page_table_check.c
+@@ -151,9 +151,8 @@ void __page_table_check_pte_clear(struct mm_struct *m=
+m, unsigned long addr,
+ 	if (&init_mm =3D=3D mm)
+ 		return;
+=20
+-	if (pte_user_accessible_page(pte, addr)) {
++	if (pte_user_accessible_page(mm, addr, pte))
+ 		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
+-	}
+ }
+ EXPORT_SYMBOL(__page_table_check_pte_clear);
+=20
+@@ -163,9 +162,8 @@ void __page_table_check_pmd_clear(struct mm_struct *m=
+m, unsigned long addr,
+ 	if (&init_mm =3D=3D mm)
+ 		return;
+=20
+-	if (pmd_user_accessible_page(pmd, addr)) {
++	if (pmd_user_accessible_page(mm, addr, pmd))
+ 		page_table_check_clear(pmd_pfn(pmd), PMD_SIZE >> PAGE_SHIFT);
+-	}
+ }
+ EXPORT_SYMBOL(__page_table_check_pmd_clear);
+=20
+@@ -175,9 +173,8 @@ void __page_table_check_pud_clear(struct mm_struct *m=
+m, unsigned long addr,
+ 	if (&init_mm =3D=3D mm)
+ 		return;
+=20
+-	if (pud_user_accessible_page(pud, addr)) {
++	if (pud_user_accessible_page(mm, addr, pud))
+ 		page_table_check_clear(pud_pfn(pud), PUD_SIZE >> PAGE_SHIFT);
+-	}
+ }
+ EXPORT_SYMBOL(__page_table_check_pud_clear);
+=20
+@@ -211,7 +208,7 @@ void __page_table_check_ptes_set(struct mm_struct *mm=
+, unsigned long addr,
+=20
+ 	for (i =3D 0; i < nr; i++)
+ 		__page_table_check_pte_clear(mm, addr + PAGE_SIZE * i, ptep_get(ptep +=
+ i));
+-	if (pte_user_accessible_page(pte, addr))
++	if (pte_user_accessible_page(mm, addr, pte))
+ 		page_table_check_set(pte_pfn(pte), nr, pte_write(pte));
+ }
+ EXPORT_SYMBOL(__page_table_check_ptes_set);
+@@ -241,7 +238,7 @@ void __page_table_check_pmds_set(struct mm_struct *mm=
+, unsigned long addr,
+=20
+ 	for (i =3D 0; i < nr; i++)
+ 		__page_table_check_pmd_clear(mm, addr + PMD_SIZE * i, *(pmdp + i));
+-	if (pmd_user_accessible_page(pmd, addr))
++	if (pmd_user_accessible_page(mm, addr, pmd))
+ 		page_table_check_set(pmd_pfn(pmd), stride * nr, pmd_write(pmd));
+ }
+ EXPORT_SYMBOL(__page_table_check_pmds_set);
+@@ -257,7 +254,7 @@ void __page_table_check_puds_set(struct mm_struct *mm=
+, unsigned long addr,
+=20
+ 	for (i =3D 0; i < nr; i++)
+ 		__page_table_check_pud_clear(mm, addr + PUD_SIZE * i, *(pudp + i));
+-	if (pud_user_accessible_page(pud, addr))
++	if (pud_user_accessible_page(mm, addr, pud))
+ 		page_table_check_set(pud_pfn(pud), stride * nr, pud_write(pud));
+ }
+ EXPORT_SYMBOL(__page_table_check_puds_set);
+--=20
+2.51.0
 
-early_initcall() should be early enough, those run before SMP init.
-
->> But actually, that should be a separate quirk to begin with, rather than
->> being integrated into an unrelated function that happens to iterate over
->> the boot services regions. The only problem, I guess, is that
->> memblock_reserve()'ing that sub-1MB region in the old location in the
->> ordinary way would cause it to be freed again in the initcall?
->
-> Right now we anyway don't free anything below 1M, I don't see why it should
-> change. 
->
->> But yes, in general I think it is fine to unmap those regions from the
->> EFI page tables during an initcall.
->
-> Thanks for confirming. I'll look into extracting the allocation of the real
-> mode trampoline to a separate quirk and then making the entire
-> efi_free_boot_services() an initcall.
->
-
-Thanks!
 
