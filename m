@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFBF6E98E0B
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 09:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82540E98E10
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 09:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05FF56B0088; Mon, 23 Feb 2026 04:06:38 -0500 (EST)
+	id 6F04C6B008A; Mon, 23 Feb 2026 04:11:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DD46B0089; Mon, 23 Feb 2026 04:06:37 -0500 (EST)
+	id 69DE96B008C; Mon, 23 Feb 2026 04:11:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52BD6B008A; Mon, 23 Feb 2026 04:06:37 -0500 (EST)
+	id 57FE26B0092; Mon, 23 Feb 2026 04:11:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D20FA6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:06:37 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5EBCB140891
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:06:37 +0000 (UTC)
-X-FDA: 84475140834.04.C2CBD7F
+	by kanga.kvack.org (Postfix) with ESMTP id 446326B008A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:11:16 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E76285B9B4
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:11:15 +0000 (UTC)
+X-FDA: 84475152510.07.C99F4B4
 Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9B3DC20003
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:06:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=gCTIBlKR;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3960F1A000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:11:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=AlTdMOtn;
+	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771837595;
+	s=arc-20220608; t=1771837874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FRKHr4XfNyvs/GPqZkcXmlWLUOkA8rjTfDtgUabPVdo=;
-	b=IhIEiUzAF3tNQ4xDwG49VFJ6PPO+twe0GXPZlBJTTKsQMyKTW4yJc/1DggObukjBozjfJW
-	sWqOEPP9RvZyJja7ZzAESuOaXKWEOmUWgd4OsZsECyQAijBpQq2ZhOxqLZ0vZAw/6Xrjlh
-	AmDNuEksOoMe/JsZLgj5GgJHUC94x1I=
+	bh=DC3YEg3VT9TOzY2WonmsTGNTfL3zmdr5vQ17Y5LSPTM=;
+	b=7a3AG3ofEusskxMQBbpRTl1VNPSbrR9ASoI6O5/e5dDSuTKHoyyk0rI7TD7RuDEmoPUb1+
+	HLlboiCS8yWwe7cjDhVvYVrjZ3rJljy8l3kaBBzXb9dANJKbgYUwamAgCZV7nWxx5abf8O
+	Nx0Db5IPoLzudUJ5clZ+kf5MU9c4L8Q=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=gCTIBlKR;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=AlTdMOtn;
+	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771837595; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771837874; a=rsa-sha256;
 	cv=none;
-	b=dZkJVMdaUWqP0B+/IOWFMe9S85CusciZGHNhNc33zKIICabPhBwJ7DOwQ56Tk0lncEQ0EY
-	l5ahDtqdwD6GgTPpNwm4VsdaSo3KE7DlrDDYj3VjyvJVRfR/6SrPVyYirFbvzmFAP69yQ7
-	REiAvaArJoqzJOeDs9xVO3RafRYiWHw=
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-482f454be5bso45222595e9.0
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 01:06:35 -0800 (PST)
+	b=i7PRmUfnl2qLbisHJsUSW+rTrI0UsU35Cs4RFznHD8zCU0fR+x3zpwrxTlCd8eCuNp1kmL
+	JURy16oFQ4GBBy6Io5QRDum/deAtwiFv5jdcJ8ZG3W7MCgLZkUlYov2MpkRnXcycRjLqZY
+	6/Dsh0MZcAxWW6LOUI6pNtstsIA9Fsg=
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-48372efa020so31630295e9.2
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 01:11:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771837594; x=1772442394; darn=kvack.org;
+        d=suse.com; s=google; t=1771837873; x=1772442673; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FRKHr4XfNyvs/GPqZkcXmlWLUOkA8rjTfDtgUabPVdo=;
-        b=gCTIBlKRxdlf2EBz3bsge9QTIiCg/xaBfdb0jeQ26kANgSUk2WVqg40QlY5MWFB85F
-         5evqg1ppUk3xrjA7/f+iLdtnX5WesxxLViqghFS9yBch3tpZx6vASOt3WK3orkm1HKwG
-         yByRCBzAnRJ9V2mBGnOZFuMwl+xenp+oOb59RFmCfJlSSBf1rYwx0CRqpckMBVuP/OwD
-         yUYwUEF0eSH/moNKEJg6qq6KiYM+ws+4oh0JnyINO6QeTFGljk1BbZ757kgakBbQivig
-         hst1DgSY/DJaGoIf3t+E2FUEn2bft+iTG43g+6v/fYqkoX082SEHPgG7tmCBvz5OAW9c
-         N3Hg==
+        bh=DC3YEg3VT9TOzY2WonmsTGNTfL3zmdr5vQ17Y5LSPTM=;
+        b=AlTdMOtnPtHJ1fIXfOaRNIzjKd+9jH1KrKDUXNpTFTJb1x/wV1JCDc8NjUX27Vk67z
+         FMteaqx/ek6mgP9LpX9SdDc+teAFrHsz6KiLqz9pldMBcJy5LmbgTQRhqLmttZa04qbe
+         Aypwc9vXQ1H6/OtU8uxlJCl38voJ7RLnS1fU+yE639CSP+fVeNv8Rnx40Dhi5qVlFjy/
+         j++oGGWpWT4dyVH6caasAbF4DycwbDnEGc1HxEGkcKVmT8KEusk1kvks/D9WYoQ/s5Zv
+         SviWk0OKSJT8SMb6/LRYfXasZg4HyEb7XIHqOQYtEfzXwJtO5MATMSvC9LWskB9vx5BV
+         X2OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771837594; x=1772442394;
+        d=1e100.net; s=20230601; t=1771837873; x=1772442673;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FRKHr4XfNyvs/GPqZkcXmlWLUOkA8rjTfDtgUabPVdo=;
-        b=g043TQz6Pfuy81xzpst2MY5rNH1kbWPHGsth9SrIdnaz9KgSCBpnfFysJ/mTqhax3L
-         wUy+5i2RaEfiE+rTD5YfSHKfguJryqZ6gVRCeJzpHmRf/ecdIwS+P6nyqDx46q3dng1h
-         QRZKUwJMVc2UrPXNwchoF+X3NbWxc/Vpx68irVOy8XdGAoczgnALNBFS0+PO+z9WQdpR
-         exKkkaUHC1Ngsi3EziHP0y4SbSw4qun3l1wb47rPsj/DkJtjAK+JUt0vs9vY4AR8dy/Q
-         H8pvJBGk65RWeHDp3P4344H6kGNf6khIorJp1NSNnwSuZImbZkTA0lpKQXaQy3fY/Iap
-         Hlhg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcVj4HyCUpRKtoGSAqp6eU0rDcOS7D8iJhfjZ0vAcaBZ0hJnqNKInjMW3eJrTrdtn9WvE0HhKfQw==@kvack.org
-X-Gm-Message-State: AOJu0YxpC54itSEkuRajlE3Oy4SdeshfzMiHVS5JoPUIxHCw+zaz1af4
-	gs7a0K6qfm88np5Oh71azxTNiJVG8btuVOJS/w9uts7HtP9sZi7hUFYvUUMnawnsD9s=
-X-Gm-Gg: AZuq6aKy7WGb8gRQzSRtsbskQ6yt5QkwEfgSGHLFH1wQwjb7QgjWKNWMejoBPsJyR4F
-	VeqDqxLQ3TZDfE2oE6MQKCRNoLN9NPaUJpm5w0L72XvRqlFgMhHsIvRwQKWeFK+o85ZaLNsSiM4
-	Es35XJDtvArCQWHyL0s2ssbZgxIRR2+kgexLWsYcuTYjgc+3HeXIygF+v26l8fyKOKOix24LnYt
-	Q/dsU4YCnIOllqnaB9ztDj2/TG84jNREgMx7BbP/X2SvgDCyie708b2aFyRXtCYOFc2wdy24YsB
-	ZVZYaNtiH3v/sZgVsOAm5CEu0QXbfNMtSNHfPZFoUAqrZAVuiLlKJ5GOPIDgkzow/cQnTNny4P6
-	7lzYORSvfYHEon+rgV7jU9jHoWmJ0XYxwaD82tyqi7Oj9K8llEe4BKAmAr/AMvcNrQkexHvuB1+
-	yenXGFfyce6E2wxyZq4s0JZSCy2Uy9E3o=
-X-Received: by 2002:a05:600c:1c29:b0:483:6d9e:e4f5 with SMTP id 5b1f17b1804b1-483a949e5edmr131156385e9.5.1771837593880;
-        Mon, 23 Feb 2026 01:06:33 -0800 (PST)
+        bh=DC3YEg3VT9TOzY2WonmsTGNTfL3zmdr5vQ17Y5LSPTM=;
+        b=ltuHOK/aN6vouq3kWpTR9bARPEX2FGeuEO33JKtrEI0mQavszq3DeIs7+JhRduW/ay
+         5MAkU+5/rV0BASj9iM/fiKxLGTm8hdG8aCsN7nayAWBneKOfJNmf6vuoTJJT0+beaH3I
+         /fjnr216UW3WZ8iIr5JfhFQHRBzRmC5ZcPSRVl4/ZFM1o8zksukC/3f5TH4OfCMQ079g
+         44OrEs1eVY2BIIM2aCM1BxCXAhju29bBdHlc+0bhYtAlwi5SWap+gSir20XHAVoamC9I
+         5jmed1FjBcQ992jryZNSU764qxGhL7pQHQNCedQ/tSs0wJBVXlWakMrfYrMBcdNEG1Kg
+         /rtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+kHFREJjvcT5FpISGTSEk0oR0NK6SrlrhkusmhJoo+Z+SP7R2z6/mKmd9vuQkdAyy5+/+c55sRA==@kvack.org
+X-Gm-Message-State: AOJu0Yy/l30G5zEV3kc94P3RCjXqw+/VAe6odt2eOyjMFgnwiuChP6Y/
+	4pY9LjqIz6a30bsSmVY7zl/Q11guytDrBWJzyzY5OxbxNKIY8xEjhDd0JhE9W8YtPF8=
+X-Gm-Gg: AZuq6aKisRwhbJ+k3T+VQLmSGsBPo0POMPLVUlhiqhf1ZdFFq+iOMWqDcjJntbKlmUT
+	4777wj+dABpSeGyr5dCERJDilnczQsydjjymWxRLHz19QnM+YpXKM90YDB1oeJQwI9OZV416YbE
+	RTu/+M7Coq1XO6EMiCv7wQM+BzJLBd29X674Yt5B/gYWt2AnQfz/tZgidEoZX3oGMTh0aAu8faC
+	6dacsQnyCbojWku5IuBwyoY6Fdwq+3jufIdDyZbwHXkKY5ghePSV83i+bj6yZxHINLN61LxCvGd
+	E+tQjBandi+TIgzDUw89wwJ1PH76/Cm9D6aoSdZGaEZH+i4so6JtB1RmH2wcdaw+5eQ+CmE1/hd
+	Fc416Y+CRYZmM5x17GvKhVTgMUAT+Zkwky/KJaXz4/Fn4MSl/4KuBgNZIvQflo+yCH2al0Vrx+T
+	TVutDaIyTKJOQIVGrewDD6eEAeADnxktw=
+X-Received: by 2002:a05:600c:699b:b0:480:6941:d38b with SMTP id 5b1f17b1804b1-483a963baf7mr117526035e9.30.1771837872861;
+        Mon, 23 Feb 2026 01:11:12 -0800 (PST)
 Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a9b75b4dsm281117665e9.4.2026.02.23.01.06.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a9cab38dsm159620255e9.9.2026.02.23.01.11.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 01:06:33 -0800 (PST)
-Date: Mon, 23 Feb 2026 10:06:32 +0100
+        Mon, 23 Feb 2026 01:11:12 -0800 (PST)
+Date: Mon, 23 Feb 2026 10:11:11 +0100
 From: Michal Hocko <mhocko@suse.com>
-To: Leonardo Bras <leobras.c@gmail.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.com>, Leonardo Bras <leobras.c@gmail.com>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -109,26 +109,29 @@ Cc: Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org,
 	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
 	Frederic Weisbecker <fweisbecker@suse.de>
 Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Message-ID: <aZwYmNuucBspCYhk@tiehlicka>
-References: <20260206143430.021026873@redhat.com>
- <aYs6Ju2G4bm6_tl2@tiehlicka>
+Message-ID: <aZwZrw_LTilXsPd4@tiehlicka>
+References: <aYs6Ju2G4bm6_tl2@tiehlicka>
  <aYxviLoWsrLqDU7o@tpad>
  <aYywl1hdBQP2_slo@tiehlicka>
  <aZDw6xI2izFDfuuu@WindFlash>
  <aZL45yORfkNvS9Rs@tiehlicka>
- <aZjY9h3XXMNY-Ytd@WindFlash>
+ <aZcr255pGT3B/eaL@tpad>
+ <3f2b985a-2fb0-4d63-9dce-8a9cad8ce464@suse.com>
+ <aZibbYH7yrDZlnJh@tpad>
+ <a1c11a09-da88-4edd-9571-0f792b59e9c3@suse.com>
+ <aZivpwJnIGKdAMYE@tpad>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZjY9h3XXMNY-Ytd@WindFlash>
+In-Reply-To: <aZivpwJnIGKdAMYE@tpad>
+X-Stat-Signature: zssh168ywh9117antqnqcxiz4yr1a8is
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9B3DC20003
-X-Stat-Signature: jpr314j899s3pzegwfb5m7dy4oao5ezo
-X-HE-Tag: 1771837595-680050
-X-HE-Meta: U2FsdGVkX1+d0uO7QNAlOigl9tAJSbd6CVUhiX6MpmlO4CKZDPCSI0CUakbmHGoIJKSzRgPMA2DUyvfiCHrQB7okSIDNp447kspdn07MaLPisklU8tgEwJMykzfIzk6kxuU41KEvaJZp+oCraX+8i8BiOioTGSAQj6fmc8/Qhd5Dt7TLChr6Y6rMiYOnF7yBAC2+xFWbkmwJXPM6mC67qh9cZIoGarAGKB4L3DdXw5Pj72VZA7X8W8a4gORWLXLgBRqtR4r7Ai1AoBpLM8x9yH3WdeSew5BkN6PSl/PO5PU7eMNdQ1uSHcAzLKAd3m70K4jiIm6FgZiUnZ3sgg/GSzh9Sv/r01T99q28K6UGJADM/UDeios0BmLDOV1m8sB5vcFDvJmQYoitXPi8hFiyXumySjOyucaXRBgIuPCW/7rTiPcRW0P+ygfMkVaO0VEUiHuQbYO5/qwF+wZtBVzuE/O+sb45xyLvM4drhZ6K1R2IDs5Ryfm8IAFDxG71MlcjbRxRe0I+8GlyMUG4YR0cnxuFETv8sxX7m7isr4USSLGZA5B9rfUyGi/g/PyHR2px6flEBVje8c1wGZr/Oy50XZBYnLpN37i4fNe45QbVFdCFq6H3qXLhT2WhLacFOHywLXEWtrI5Bp5fyy3TDip+18WUej/klCCCgR4Xva1KqK9Nl+sIznpLer6qPR5y0xkUbEI4g6YaDv7EBXo8E0QIcCTBU33si8FhN5DRA4HJ09KX2tvp1Kf88hOtkoStsPEk1ag9ZOuur317Z2kylxybGN6dmwQwvdafoMJ+PZZ4q+LthfhwN9G9ryD7JrTNahbP6dhcL+lxlzUUZR5A06m/yBumjcYkFjP4qOkNFSlWqnWyaDbwSqMdyy04c8CgNzxTZ4+z5sx+4AmgoPUM7oSpBQ8YiQoxPmKV6mNR/ygjc0bWiGsEO8esAGESAfbXvML48o3tKHKzAVpIn+JjAwr
- V8qIKZaj
- hQU82yFjEyCQ/295Fy/AvIMqkTTpIfTfWOLPpjriEsJNZdZWERUyNYVU303hBtxxzchS20W6FkHV3w4dI6shvTjqFtffVbD77NwgigA12pz9ErtuRTSwapjBXXogzGJvYqH2mwo9o2rjANw3iqDQBvGxwxIbOR/C0sdszmRoQmgYFqXgwIJeK1LkKtbQ1SkNrO8KD8gyHxg1N4FjrrB2ugENEQw==
+X-Rspamd-Queue-Id: 3960F1A000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771837873-417214
+X-HE-Meta: U2FsdGVkX196yjtTI9UGAvSG0oIuBuxSH/tcG2KlAVg5f6MXCGVpBlVofqpUKWDctMpf+rH4MtbCrXDJmD7L3ktnCCC7vz1pIz06ljDBS+CTm43JxE8zeCfrqWIVil4IalGDz1eqS98YkViIaDUzF+sU59/nLZ3LkMoFCo9zTrI7HbpgSEEc+GKQO0/bsU+SP+5i6DL1LtBnEVTPf5hfz1o8CDGRAMaOEVbu2EImcSJJl0/XDS4g0Zx/QbQv38aHgZ42+RVZw0jv99Lucn1Zv8HV0lZgpWnysDur+OJlgBuW+X3suKGHDHWEuHg0yGwAJo6HAsYHv/dKfOyMXgtiR5kRKsYs+ZE2GV93KqcczcpuZGeRc80TXzbItUPzuBmFAWBcloE4+KJnoe+cu7LrwOxgDrbb3coSkK4CwDkhab3jdaIPoV2fkpp453QLgGEvLgTJgcZMkmL8rZ6igjn2SnXNoCzKkgWxHxbBImdwM056BfCWxVgO0sXcGhps3HJETd+IUCUukIpWzH2Jw14+vrKTBjQaKgzK7pMwwNX/tMz/YLEkOBlksU3T0DOYjzw+Vv3G90+6y7A0rRl8PF8ndzJGo0ih8xhtgm5MoQErSLFqQsqi3NSVxPuxngRzXkSWiQB1kMOi/DIOAkelnPtQZF8LlMXSqYZ+83Qc0Xu7On3ji44dWhK6gAPT6m04KzhmfvAu6sPkIA4v6mrVw8SpWCeTPzvvfIjRHHxBVKdHYKWQM/slpm7BEiafhJdBqLGmdM1JXgOeb+pCQIgUENKMP0ykfD5uHJQ098RSRoL50oFlH9zabVid4MnoMMm1pZjI0th+t7udGjqPbnthcnwD26pSLXaNI8q8fdSu0MGNneB9QmTRCK/D7Xb/ij8bSlMGuOvbSFEdY8osXEq5jbxs1utlO5+Es1FU/DS7kZtbsMGntRoB1ag11L6cDACudnSmlvu7xvhjydEfBCpKBLw
+ 3dW+nAjD
+ W69g+H/esPs0tskoOKVdH62SStp7L4KmHp/u79h2jNRAi3zkhtpO8k9JwMPRcjm565gxZ6MwRxSeoh7qd4vxYiKHMhUfhH89jfukRxzBHWBrR7X1xLLOgg6xUtZIPUD2kcInSu1rnTXlK36s7qHFBZS2jLQDWdaHi5DFH6YLivxBc8ct7l2M18Hdyq8Rfr6m3QtmiKo4KnFegBt2gGhM85I3ZZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,91 +140,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 20-02-26 18:58:14, Leonardo Bras wrote:
-> On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
-> > On Sat 14-02-26 19:02:19, Leonardo Bras wrote:
-> > > On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
-> > > > On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
-> > > > > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
-> > > > [...]
-> > > > > > What about !PREEMPT_RT? We have people running isolated workloads and
-> > > > > > these sorts of pcp disruptions are really unwelcome as well. They do not
-> > > > > > have requirements as strong as RT workloads but the underlying
-> > > > > > fundamental problem is the same. Frederic (now CCed) is working on
-> > > > > > moving those pcp book keeping activities to be executed to the return to
-> > > > > > the userspace which should be taking care of both RT and non-RT
-> > > > > > configurations AFAICS.
-> > > > > 
-> > > > > Michal,
-> > > > > 
-> > > > > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
-> > > > > boot option qpw=y/n, which controls whether the behaviour will be
-> > > > > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
-> > > > 
-> > > > My bad. I've misread the config space of this.
-> > > > 
-> > > > > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
-> > > > > (and remote work via work_queue) is used.
-> > > > > 
-> > > > > What "pcp book keeping activities" you refer to ? I don't see how
-> > > > > moving certain activities that happen under SLUB or LRU spinlocks
-> > > > > to happen before return to userspace changes things related 
-> > > > > to avoidance of CPU interruption ?
-> > > > 
-> > > > Essentially delayed operations like pcp state flushing happens on return
-> > > > to the userspace on isolated CPUs. No locking changes are required as
-> > > > the work is still per-cpu.
-> > > > 
-> > > > In other words the approach Frederic is working on is to not change the
-> > > > locking of pcp delayed work but instead move that work into well defined
-> > > > place - i.e. return to the userspace.
-> > > > 
-> > > > Btw. have you measure the impact of preempt_disbale -> spinlock on hot
-> > > > paths like SLUB sheeves?
+On Fri 20-02-26 16:01:59, Marcelo Tosatti wrote:
+> On Fri, Feb 20, 2026 at 06:58:10PM +0100, Vlastimil Babka wrote:
+[...]
+> > >> So if we can assume that workloads on isolated cpus make syscalls only
+> > >> rarely, and when they do they can tolerate them being slower, I think the
+> > >> "avoid sheaves on isolated cpus" would be the best way here.
 > > > 
-> > > Hi Michal,
-> > > 
-> > > I have done some study on this (which I presented on Plumbers 2023):
-> > > https://lpc.events/event/17/contributions/1484/ 
-> > > 
-> > > Since they are per-cpu spinlocks, and the remote operations are not that 
-> > > frequent, as per design of the current approach, we are not supposed to see 
-> > > contention (I was not able to detect contention even after stress testing 
-> > > for weeks), nor relevant cacheline bouncing.
-> > > 
-> > > That being said, for RT local_locks already get per-cpu spinlocks, so there 
-> > > is only difference for !RT, which as you mention, does preemtp_disable():
-> > > 
-> > > The performance impact noticed was mostly about jumping around in 
-> > > executable code, as inlining spinlocks (test #2 on presentation) took care 
-> > > of most of the added extra cycles, adding about 4-14 extra cycles per 
-> > > lock/unlock cycle. (tested on memcg with kmalloc test)
-> > > 
-> > > Yeah, as expected there is some extra cycles, as we are doing extra atomic 
-> > > operations (even if in a local cacheline) in !RT case, but this could be 
-> > > enabled only if the user thinks this is an ok cost for reducing 
-> > > interruptions.
-> > > 
-> > > What do you think?
+> > > I am not sure its safe to assume that. Ask Gemini about isolcpus use
+> > > cases and:
 > > 
-> > The fact that the behavior is opt-in for !RT is certainly a plus. I also
-> > do not expect the overhead to be really be really big. 
+> > I don't think it's answering the question about syscalls. But didn't read
+> > too closely given the nature of it.
 > 
-> Awesome! Thanks for reviewing!
+> People use isolcpus with all kinds of programs. 
 > 
-> > To me, a much
-> > more important question is which of the two approaches is easier to
-> > maintain long term. The pcp work needs to be done one way or the other.
-> > Whether we want to tweak locking or do it at a very well defined time is
-> > the bigger question.
+> > > For example, AF_XDP bypass uses system calls (and wants isolcpus):
+> > > 
+> > > https://www.quantvps.com/blog/kernel-bypass-in-hft?srsltid=AfmBOoryeSxuuZjzTJIC9O-Ag8x4gSwjs-V4Xukm2wQpGmwDJ6t4szuE
+> > 
+> > Didn't spot system calls mentioned TBH.
 > 
-> That crossed my mind as well, and I went with the idea of changing locking 
-> because I was working on workloads in which deferring work to a kernel 
-> re-entry would cause deadline misses as well. Or more critically, the 
-> drains could take forever, as some of those tasks would avoid returning to 
-> kernel as much as possible. 
+> I don't see why you want to reduce performance of applications that 
+> execute on isolcpus=, if you can avoid that.
 
-Could you be more specific please?
+If you can avoid that by making performance bad for everybody else then
+then it seems safer to sacrifice those workloads that are much more
+special - i.e. cpu isolation.
 -- 
 Michal Hocko
 SUSE Labs
