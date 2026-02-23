@@ -4,92 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A37E98DEF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:52:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40FBBE98DF9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 699286B0088; Mon, 23 Feb 2026 02:52:30 -0500 (EST)
+	id 585626B0088; Mon, 23 Feb 2026 02:58:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 670E26B0089; Mon, 23 Feb 2026 02:52:30 -0500 (EST)
+	id 5089F6B0089; Mon, 23 Feb 2026 02:58:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59F9D6B008A; Mon, 23 Feb 2026 02:52:30 -0500 (EST)
+	id 395886B008A; Mon, 23 Feb 2026 02:58:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 44BC06B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:52:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D11A11608BA
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:52:29 +0000 (UTC)
-X-FDA: 84474954018.17.A583744
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4694C40009
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:52:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eoffjR6f;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771833148;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2061B6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:58:40 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C91CD1C2B7
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:58:39 +0000 (UTC)
+X-FDA: 84474969558.23.D2AE9CF
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6F02F18000C
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:58:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=gBnpGlSV;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nizPIKNt;
+	spf=pass (imf24.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771833516; a=rsa-sha256;
+	cv=pass;
+	b=mfv752xK41maP4q7ho2DvaX2YpNy2ch9h1mKyRj3s3LWXFblUzlvmlDauB8ji73qx9X0zE
+	w9vEghHKQ/OhbwnKerg3jb2Oa23iOyCe83ClZnsahItvIAf0a4wP0mM9XEADHkVnqY2fSA
+	0QFIirbtKO2aoszybHlgo+LE5U7+WGc=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=gBnpGlSV;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nizPIKNt;
+	spf=pass (imf24.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771833516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FNB+eU50o/k6BmwGTAwwLc59X60+JDE6Z0SKBC+s8iw=;
-	b=pAONzVP+aSw4dVmQI+Spcrdt0+7+S2Ttczrvh15JNDTPT1J2VNmJAudCI086Y6pDR1PP29
-	0bIKejWED7dYPq8uixePdgbajts5mq9KrZ/74F+HfV+j/+zYa6WSgGZZuXEqWTkEtkXOhR
-	CfvCyMJPppGTWZh681+V5ZElUVnEyes=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eoffjR6f;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771833148; a=rsa-sha256;
-	cv=none;
-	b=3HV790VQwPzZ84b7la07GHubm3LbFrCTydzMuxwzGgFQD99u/iBl787zSL2A2xBVOVIlvg
-	uinfZloxmgmvMX+CwJ5ZRe6pbRp0PnODLgLgubchZFTQofuuv8VmA93IVGTUeHdCjbckTc
-	bDkJzUWjPTxQRsHDkUv9kr5SPP0AP4s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A369435D1;
-	Mon, 23 Feb 2026 07:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D89C116C6;
-	Mon, 23 Feb 2026 07:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771833147;
-	bh=o6m22EVDJ5DpW7NSyjzseogj16NqUne7RZedNk2eh2g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eoffjR6fi3EQW/7y4hgpBpQau0BS5xtMXVzov8ucqDKVpzKe/QOEQUQkqti9Zn9WY
-	 kOjj/NuyTtbnCuR0rFzFKGONb3W2JXUYyVriFhp9vOorb5T9WFJOoyxYYestXSSK06
-	 ZQAqkLhmBkQyKZaINchtPFGuS2lYLiqrQiVHevrwSO9wnG8AnlJOb9QPesv8LGOf4D
-	 cmSYTeK281Ft/YoVYAl1zycGnkQzvsKDVbqRl948NFfm3Pb7C5+SX3glJNMPDvBCUC
-	 joCYFzYt2fdoF/+evnelaaBuPDSl8DsAzwZLgAHZxdnCWfQQV2xwgA08CcF+WsYjKr
-	 DF+GdudoB2Bfw==
-From: Mike Rapoport <rppt@kernel.org>
-To: x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-efi@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [PATCH] x86/efi: defer freeing of boot services memory
-Date: Mon, 23 Feb 2026 09:52:19 +0200
-Message-ID: <20260223075219.2348035-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-MIME-Version: 1.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=58vGiZyVkXpRfOYoNAsnbqQXVnMvTymBcgGRjNFYIUo=;
+	b=SAlBsVjM0Z3qJU/xVJauUrOr96/FBIIO9zjYN/LuRVIk3ETaGlD30G3lICsl7UKG20qc3t
+	Y+niHSwD1r8SXGugYt9n2CQj0LChhaj2OeV/hUMtKHKgMC0QwPKH9RahQBceJOt6FLz9sw
+	Otn6yFpjqqV7biwYcUI/IoOSFtdw9l0=
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61N0u1GN4030649;
+	Mon, 23 Feb 2026 07:58:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=58vGiZyVkXpRfOYo
+	NAsnbqQXVnMvTymBcgGRjNFYIUo=; b=gBnpGlSVKCLVkNK7pMHriRU5eYuDnbEV
+	DdQgtMCwMncjYESvvNWMe2qAdrRWYulYh+iPTVrKVHR3w2UVRJnLkIAuDwD59rhc
+	kV81Tssvu7a1k82XsXv2SV+3JBu0AfgobcjgJpvA4SqNT2qTGZipzVDcTjqEWjqr
+	tQbkokyq9zC8uPWp1QYSj4hswI95Cbp9/JPPJfI/Y7UocQRy3zdMXQ/gia3+bspH
+	MYtc0lmWc67YjuMhnmceWd7aadmV/et0M7s/lyEqJGGyUWReylywRQgQtznawyqu
+	OmcvhlGd6k7d1O4xGvlRuuYyTKT6KMZ/nVhvGLenaiShEpBnTsG3HA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf3a01n96-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Feb 2026 07:58:28 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61N7j7TH028497;
+	Mon, 23 Feb 2026 07:58:27 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012059.outbound.protection.outlook.com [40.107.200.59])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cf3581nm3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Feb 2026 07:58:27 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IC1rP04pJuO1eqZKLkdHgP/IVj0Avpn7NyOY0phwJDZpoG8NrquJ+J/+m0/70fQu8ZgnoTxTs9Eiu6XNGRnUXcMAnPzX2nK0JeGsQAjoZZOFjmnbjFhmbdzym2H0RAubI40Tm1wB9vrsAhDckVntOMxlPRZ4c8mkeL1l0J1yrRGaC6JUbjlhUlu3ovQFyG9AD67zaZi8/KZmS48mLX32l7br5sbfnHNr1wGXznYOwn9DmcfPxTgx6m4dWDwn6C/Nj9G8OUQuzrUVjj/zT9ksR+3MRxzAhiLSafGyrk3hrVvUeW+xlFlwfyYL3WBxVGnGnD8+j8e07yMs/kcpwX40zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=58vGiZyVkXpRfOYoNAsnbqQXVnMvTymBcgGRjNFYIUo=;
+ b=FN6hsKkenVpcSMFvymoGmAMHwch9zGy//d4aC4Zpzq10w5EIVQI8VkJ6g+KAo+E2TkXTBwupjvOS6oYPqoYokp65e+XkfIzId6CSS6HTxMiY9IWeucpMGBGJPIzZKUmrfIoMnOWq9E4AfDIBBL4RyjfUbHRH9pgupUI/J8dD4DnF7uz0xsB3u8dj6c58XvOgqBvJ+TluLS/fQscjtJxRvmtux5lT+YtM/+BPDprgvrrT+85q75Z9OChC/plzhgjhzVQe1MuTJYNz3CS7vUnfB89NIiL//AyYf4FBUs5aX5O4/VbaAH5aaVOitiNOJV5nXP6wIdlxI7aZn8XlS159zA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=58vGiZyVkXpRfOYoNAsnbqQXVnMvTymBcgGRjNFYIUo=;
+ b=nizPIKNtyrG7jIqkGE7vdexpYqUfuVbhkUviXjlfWFwSSfHv2jvrlYB0VuHhaWJC6b50ENM/vlZgHPs3jyqyep22QilgTJOySGG3yA36LRlOm9B6iS/75Z2KronScgCQCO1nXG/1WkwI3btKZ5VXxFiOn+a1+BxG6iALkWjHiXM=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by LV3PR10MB8129.namprd10.prod.outlook.com (2603:10b6:408:285::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
+ 2026 07:58:24 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
+ 07:58:24 +0000
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Harry Yoo <harry.yoo@oracle.com>, Alexei Starovoitov <ast@kernel.org>,
+        Hao Li <hao.li@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+        cgroups@vger.kernel.org, linux-mm@kvack.org,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH] mm/slab: initialize slab->stride early to avoid memory ordering issues
+Date: Mon, 23 Feb 2026 16:58:09 +0900
+Message-ID: <20260223075809.19265-1-harry.yoo@oracle.com>
+X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4694C40009
-X-Stat-Signature: ndunorydi8baqd9cfbkjgx7fkixidqww
+Content-Type: text/plain
+X-ClientProxiedBy: SE2P216CA0129.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c7::14) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|LV3PR10MB8129:EE_
+X-MS-Office365-Filtering-Correlation-Id: db69a8a1-9de0-494c-6bc8-08de72b15214
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QD6YzvsRqL5cyCHlJmsi7h1cv/sKBNzSloZfDYjjOkmgrkERMEU4X8PrvDqE?=
+ =?us-ascii?Q?NWeEpnmN0Hb9pWcKM8VVeCYvF8WHNJP83u0B7lPrpEDtKieLJMmCEEvNMYdW?=
+ =?us-ascii?Q?D4k1lDQ/z+jybxyGMPr5O+kJXjmclvSSAxBTYv8VbB4dELY1yq3ynBaf7xyp?=
+ =?us-ascii?Q?AIXYWduG+tLhJV5iL4PFDRMyyRqaG/qQHHS10g8DgOZaMzkCLASs1KkFiXhs?=
+ =?us-ascii?Q?+6maDYkz5oMvjZkmt4bWEBZ6Gp0fLNQyRiAki3+BlswFUFnc/ji/wHRxZFm0?=
+ =?us-ascii?Q?ySRGMRwuCJKKugN0AE4rTTxU3Ko10qfRa02Gv1PPPuzKQdRQoiqUV5yyXu2g?=
+ =?us-ascii?Q?Y0uMOpi1VdnJlmzZ3URT5f8TsBB40xK2ac2Lg7Eu+jLpP+BGVG/1VnFadwim?=
+ =?us-ascii?Q?FRWUJ6tpu+BgljC2LZySzg1vF1mjYZqDkjbYGvDMJFjnIP60vUlMEJerSsiE?=
+ =?us-ascii?Q?a6tpO9YmgkdRltOcK06HcttsBvzoY1gif7Ayf8wYkR98HKTDmQLYnCCmaHGe?=
+ =?us-ascii?Q?2ardWpQ5GpxMtZX4OokMasGd5UrYYLkFyCP4K6uEvnr3rNuLmR+qN1osSIi3?=
+ =?us-ascii?Q?LWn/ezFWJddvb+N4iGchUeZ457eOoXfI6XK4n7tWO+HTkHUJdIh6/FnQDB6f?=
+ =?us-ascii?Q?BlLYKy9ziRpWUj/jjqxRcrLOvN9pbhee19ECFlWlyFkSO0S6ffqfSUH9VlGR?=
+ =?us-ascii?Q?BVJ9g3g82ribrIwDPd2Ogae71290O2JKs0to/bgacl8iOOq/dsjb49HwecQe?=
+ =?us-ascii?Q?PsLPFxlfmr0J5wzr2JikU+wC153btAcPr+QKnC+ZWJ59lKkNzYm4R5qak1fg?=
+ =?us-ascii?Q?55YYoo9f738QJ12gy24f6SkBd/qmZEmEv+vJSrest6jYd3ovsaop5jgyBGXh?=
+ =?us-ascii?Q?apWXIC3HM/PicUSCyppsSwzyBUVwByi7nxHdJg6ilJW3VrCuu5D/rskpu1kd?=
+ =?us-ascii?Q?mkXiVirdtq4oo86vxfk74OTtHCyhHoCGmpHLFK3pzZstLBxdvfaaPqZxvYNY?=
+ =?us-ascii?Q?KkD5O4ranavehFuB9rEvgKrmcXm9evwHzrVAfrzSJnj91cGOttLQ09aOE9bd?=
+ =?us-ascii?Q?Qm9xOxSy0WGjqu3mjbFbnHnVNmaotIVX86UvkXkQdjGn2cVIZwcg/w/xlwPE?=
+ =?us-ascii?Q?0gWm85hVQvPD71G6R/4s/WnHX3b0ffNXM4iFKiWKUdtXnAx2ymHlcGdCKZdi?=
+ =?us-ascii?Q?Kn6JCzs9pqs3EB1bsVV4AzzsJ5Xc/yTA91UvpjUd1bhAa4fT/bA8YktjCD6Z?=
+ =?us-ascii?Q?3+u6RS2oceNRY9mCiW4h/UCp8if+o7hzqG7dETxi8w/Xo+6jz30fHGMnZYrV?=
+ =?us-ascii?Q?Pe3ewgftbbMYtyiRF+CXMcbDdP8BBbAKn0k2Cl+Ybm6ddJSbUYQIg+XnWJq+?=
+ =?us-ascii?Q?1fF2FkqMymWMRJ5yG+mwOTkaJZtYeZjXdusnaB91wp18CNAVt6/r10YItbJT?=
+ =?us-ascii?Q?kCTYXkr1qIQtbNgT8W1YatMvIonVSR+LmW6qq/7tmgdpkkByztOQAgjZjfhK?=
+ =?us-ascii?Q?CuzTjTkUtLoqf+D5FZ8LDSBByLg5bXjHPpiWSkmFTUOH9GTJCdZp2WFDIGUV?=
+ =?us-ascii?Q?25Hpl8qQG7HdNxy00ss4mmVN0qmTYlAPgcu8Yua5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pw2VpkMKr367Ee8Bf1qM4UZg1G1tMd/OZ4UcU8pnsIc4EXPciFXz5MzltPXu?=
+ =?us-ascii?Q?j6Sxcy2YJuJJ9UZ/QGiz0tn+zc/hftn8AfI3uYSLpoX+OtZJHnORKsPcmE/k?=
+ =?us-ascii?Q?RKUfId6RdVibvC0a9k20u17FmYs5/IX/K7PNp/tpNGnUv9xZ1olK2fq8tKwX?=
+ =?us-ascii?Q?fcmWlzjgmBjt5b98Tp2OrxTzifW9jsip3F672HkRZt0rjQwCCi2sV3zmKmL3?=
+ =?us-ascii?Q?IfSJ+8Di0ifT+bHs6kJi/z6OKRNaVKEVvTteKDHsF8c2SLCSiZnv8+PcakCN?=
+ =?us-ascii?Q?/kraB0rYbjmr5GSnMQ7dU2rqf9zDf6OnXQHlAdqH8HCKXvs88QpE23J49PMj?=
+ =?us-ascii?Q?3Tyswz906mYYon1UdOlmFbHs1a56IUWN6r9IamDkcrxNmy9dwV6ZzPcjMOSE?=
+ =?us-ascii?Q?SqYIfu3/6D6WENQfOyK/tGqaBsxuouyESNxsnIT8RtK49k+ilB8zXzYxpJv6?=
+ =?us-ascii?Q?QyFQn1C4wuNdOoANuJWDJz9RvK7kRCBZ85jeZZpyO4NyhakXat2gGveZZaMp?=
+ =?us-ascii?Q?oVfSIGCf7iayRWHwmTl6tVWlpYdXA0W8+AEYHmpmabvENm4FRnHUeLq9KSzE?=
+ =?us-ascii?Q?ZqRcHdqveH5Cr8QghDtgTDGXmcr+zNyK7ptqIkdj5vo6PPXTNR+4HMZ/smCE?=
+ =?us-ascii?Q?G7g9dO7ttfRhpp/w9lRn8Krd33N5spH1vUxVqshMRrjW29W/nY4vCkZpOasf?=
+ =?us-ascii?Q?Ul79jzuPLYfOFjj7KoOn8JaZwexsY2HcDm485dIjqRnrp8Vic31V6/dkO9O5?=
+ =?us-ascii?Q?tr1XGu9qfssgWPNVhg6Qog9KWm6/t0FlfTHYyzKEaZcufCThHI3kgiIcTUr7?=
+ =?us-ascii?Q?HdXLU8U4h51gUm2S+IRcK8R2HSsLgAxBwOa6EOjWzdi2UaeZiBJVBRZ8LfHK?=
+ =?us-ascii?Q?KdID5/zEJMeDNdqdz7FcELDaISs8QCM8AIVI2NIKeUrz+K0m8Kl+ZLGGpQ5t?=
+ =?us-ascii?Q?mOC8BjwJ0pyVfG7AyyIDdFi3qL2K0NoNlDB8xh3bDKT6qtlGsvitoFf6YddZ?=
+ =?us-ascii?Q?ih6qOd8RVLsotQ+KhMh3LSiJS5AZIX0kCmIetEolyreW7MUvo9xxEf30IwJR?=
+ =?us-ascii?Q?ABRc8Qnds/tX3Z28k5o64899eK64Nk9JC3JsHDkSP8RoKSA6s12Bk13Azb64?=
+ =?us-ascii?Q?TkSzySGCWhrNkiLaKwyRVsOSRnExUKw5syNIhtWXuD2YLRzDkeArc5MNvy8k?=
+ =?us-ascii?Q?7EUkFEge8VNOv23wZYacNhkUM36nwp7MLbrfqqNPsPR5mG/N+Stvj6GjOdBL?=
+ =?us-ascii?Q?VeMaKkFSzI36VHQMSKNLXtNSgeKmlysaozEkNm6jHoEMv3ls9tx8DJATy5m5?=
+ =?us-ascii?Q?rDunUDIxdKC5JAjN5z4cDspOGd5l+ke6bT3rO7H3of5+ZyUd/PY55ueYdjGV?=
+ =?us-ascii?Q?6+oK1uTm84SQqH4TQxmkhHiIA7WfbzfYAWo7IeAAGobkAhk+yf6O3X4lvVyx?=
+ =?us-ascii?Q?ondMMkqZksALNLNIL4jz5nzRYamPD1fFQRHIb4OTLtuaj2CKhtDQjSopPbmQ?=
+ =?us-ascii?Q?BGx5WgHzhPYxZ2pHf67cKk+jm+jydpU23KsfVlB1626XX0JqUa5fSLSz4quU?=
+ =?us-ascii?Q?hKc1qGnTvFIh9VPvgv+p3SmmcSUEryxEzP6Le9wIkWv+zOilKNk5YhflsRKG?=
+ =?us-ascii?Q?kgA/pihJ7U1/ucChlwEOgcEau/k/HSILhhEOoQtDR92b6ZBxWPr9jb4+Ee+q?=
+ =?us-ascii?Q?/bS6qBDwYe+JPYMCU9cyIUcP2JyhsbY0JscqDsR9q4bA9q4F/atubs9HX9DK?=
+ =?us-ascii?Q?86hTnPSdMw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	CDdWhUCI20TfmD8ixXGx++8k5MMPwezFP+vRY9UKuBOpuqV6iBvSyj8NYfUw9YXbv2QmNI6egHR3pRXqKlxuySmbH1CcjHYLzThi30nqSAx9FTd/zluaeWCftVOyrhm9YyKEPLTRNxSV5v/dAYuEqNmMN33eBcHBuA2Pb1JoSpLDyUok+AhRRTuBnk9xFgJAJ4tFSSihBIpe30zXSIJ36GuCSGXJ9tlDaFgiSWhGcL6zSwA2sCa18rbeaXeYiNhXrmKhSaFUStfpQHLnja5ACvdLt09VPzchzveeKPCbRcy6Lim9gMiL9Du1nci3NxLOoKXzZe8vQucyFfzxxvTUthN/wc7hY4LtrZdv4tkJI6e9874istL0rvUeFN1zEJOH/P0d7M0JPkn6seJuQGEiSpSvoe1WwoPN2eF4DIUCfq/PTiqFJKfNLz0mO543obOZXxD0qnV8HK4uYsQzX96UdmvQ8qm6EZWsS55RCi4xlLbEoiWhURvTA5hVntGnRui99umMqXJcZtnJDn/olwR9i/K0eir6ipYDEkDVd6captUpXnOVnYopy0yHvJIQp3PkdoZNrkBDcd9RwBsO4iQ8fHKdzWii3k3lI4R3ZZknj68=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db69a8a1-9de0-494c-6bc8-08de72b15214
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 07:58:24.6466
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uVBWUrN4Q13Tv22Ulz0IMJjV14PdL+4UJ8GljwCqQyAEJaEtkVAVrKKLyaSnHhYEIS8c1v7OxOhP4eu79Rrexg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8129
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_01,2026-02-20_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2602230069
+X-Authority-Analysis: v=2.4 cv=IskTsb/g c=1 sm=1 tr=0 ts=699c08a4 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=HzLeVaNsDn8A:10
+ a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=yPCof4ZbAAAA:8
+ a=MeQ2rRwuPwZ-KCUY91cA:9 a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19
+X-Proofpoint-ORIG-GUID: 4l4InuSO9I2gXI4kl3xzEvyJdyyBoHTX
+X-Proofpoint-GUID: 4l4InuSO9I2gXI4kl3xzEvyJdyyBoHTX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDA3MCBTYWx0ZWRfXzAJNFPZGDGm/
+ LRQjZZLnJnp2cZGJBGKRMej6fw9gbF0ordNgpKMH4CeUKw9XRNcVTZyesTtyzZQpJpD5zXk3UCp
+ b1Vv8y9JAoVIAvcRDHyjV7o8nXgrF7vS2w77M8Rqb9C3C9V7FaaJib1Ac5ZvJV80NxweB9waq/P
+ qrxqt2MuSBmzz0Z+EpMEXRZdB5OzaMy8YVcUoq7Z4+GSXCXcYShkqynr5QTb3Yuf32MM99OF+ww
+ 7TwdsVUlnSYE8nC04fLnGCRvJ+jZ++uRE2rIQ5M+iGAAiJbpRkTyZbHn1A6DvDMeTFEEjtlft8+
+ T1P+NmMBtg+29OXu6Ye6UDIdaQuKqmC07yXLOjunh4d9tXpetrKX+6MMrpBClpvl5VAJWUU032m
+ X89lv0Qj4GFUERB877RZsGuBHwc+uaiCaCqggOped486jgW+ySGtAUKv9l6jzicsM/TPT+Ajtiy
+ 9VER4+IV+jgMjMkLYAQ==
+X-Rspamd-Queue-Id: 6F02F18000C
+X-Stat-Signature: kk5rk3b3b48ix4odeheb4z6pr13bxgdg
 X-Rspam-User: 
-X-HE-Tag: 1771833148-680066
-X-HE-Meta: U2FsdGVkX1+lkZFugWk8gWVPX3Ia+dNk6ogWWEVTMXZGZen/tOkc826yd3ejzvqibnCbmLCAVSXNJuGx53PJcprews9fJKFYfRs0PxTrMcqNR95dnTP8SeZdIqK59umsVpaBvN29kEzsg202haTNfjK9opAACQkvOcsiAyb53AQxfDivWogGoV29FJWPwa3WriYXpdlY93A9zC09bHDaT12xy2g5MtOpXjykEeVBd/98d4kObQjPCrbXCLCNyb6x3lsfPI3BZhRUVAnxZXZfl+IL4deN8MUk1QE6wJrwIDug3vWGmjSSC2HXMGSmwYNeSU/HX6SIUeFlUQWArQUIMiEtU/byKc4UIV4FID8qloXv1rsn/WI99fNS51t7n0942AzL0IIvd0S1DKOZ+s806oTd737iYAwAOMda8ifbuPOFLf3yNN7XjJEz5m1NJIhOuHjsf4/+beTq056Q9sLSSWLqMD0WzlBs6G5KPhEQUx3OiI7LFxebiGEw6BWjtoAoSyTSxNf4BfQc+gyhmAU0o6mab6TbmyMUb8yjk/c5sLeJfkn0ePayUe21Gj0DjcHUgLRBkH3v/f4jgl3CXFHxfOI+xgfjTBhbb+NOFH0nVu4Whgy2SbfRRdF1+HAk1X2OwbsYxVwfPJVuFETh0vX0rlZgXdbK45IGp5ktYYn8Xmnh8JEkIfOZYjpixff3HZiCcR4ZUyCaFi9vh3Bxf+DWZmCJh3jHiUEG80FZWLSWsBVo+naJPo7BO02jruUGZoGOyEDEuz/9eV/FKodsSDed4lXwOVtMMaSA/zci8GmatZamA+BuowcO2Iz+0wzeoel6HZhpcN7p5dmKRMBbGWhxgYEWNPGmiV8vEA0z9KaaqSfrcsZCrXj43s/dMITDNpxqyqP2nkdSZEItrB2oYh9VS3S0MgjoHF4YbKj8+rCxBGYOQ7AcKX2ZPg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771833516-570058
+X-HE-Meta: U2FsdGVkX19Y4wVZn8ZoNsPD7sKBRuw2oLci6prLU/LbAZbEkjK/x3Lveaa/LEWSJAdHDA6l4jFkQN+WnGmmuyW+ZDtYpd0hpz3o6AIZ02CAu0roeA2jciWTCxvqZnqXocjBQaHZzZEihX3D4CJ6OxaWh5jh14eNFtUq+mHckhKYu0eyH+1HNvxdyw+IVAoi1OOhRPrOWTCLxUt+NQj+tPdUsEvpvbsIk4XF8kMIZAP+4shrRLbyozCQlOcmBcAYNlpLSjQbMNz+8YIAA8gY2RnlldHuNDRXx/bjzJ2qcA85Epe2kXBHWWu/Te5MUjbyCfKT7bYa8+szS8xAP7oyVeoj1amwbcAO8iLRic8KLY2+UTtYBm1HhbBYP0zBaSbUPkpd+lqbcaOhkChLDPuAv0ChvO0HrQaRxBPwA1kPfvu2LjMhMxFfID1179QfFnvnHzZRxn5XtbEbWQrr0HRGnhWnxqzpDW5TAfBu0/9Tn0YjIAURk5ae1k4PrgTEFeSnXRIENezDutGZe0gCFe1bdJS6T0KzltevAW6VRCw2gb5u+73kcrOJuMhzs6fwvDZkU8Pu9FG5jD9mTecq18Vg4ExdAesI3z2xfZnSJNKoour7NavJmnnKVkU/WtiW2MWQI4zePtBwG2Cny6KoWTsysDuZj1e99RbgIoLHVPo6vMXtdH6Md4Il7ge67degOwWZHubc48yI77Vfznt9mcF+lcgiJcxYM1TLlt9W2PgXhXHVSHNvzIEQcYpv/Tm8tM+cxYlIAFKxr5uhCjFchOiKCanUzHhNq06Wtbzdoc8gsrSf3wubuG1NLdvT61Ff1RyUyIvCBKeQMqTHR9bDmCSFS3CMdGvWlRxSHNaXtWyllSde/35AFqGhoFknLQfHAxuqK1AYysfeKCiQda0OM0lvi5KzHhqo24z4ePng5bEr+0Ng+5Gs7sHB4HW9PqqSgnhBpqpVQqXn+9kD7q3JblA
+ 94Ih4ADz
+ aTE0b9WfSeBEltbTSMi/onPAd7XYZSxOymYFN/F4OrMYSH0sNinYtdEvOWB97J166xddlLRrGzLPN5nZKubL9T/X781CCDddAWJPctaS2JPOV3hzAJVreUoKx/F++iQAq35oFDCkrTfKEFSYxkpczLlHXutQ4NfeautdejUT+hwl7QKRNHFq7C+kV7KweelicSDiiNZXFzGENgaavVMNYk5WXz5OE+m9mLA8RoXRZBxDQshBSzCCw5OhmTh5MwIzLB07Avi9Cv986kCrl0IKj+YfwruzlRMWuzp9rGmMyoJG/k1kCoYOwTt+dZJo5aWujOrNAtsgqaEzMffr9v9Vos7dz3QcZWsP9ZRW6fJWkcIVaacmgVhwcSotlnBqhhl3oNBc5BlrvqS7X6yDmr2hnz7kCkms/abu0MlC1bkztXKB0FSgVDU+wEmhghgvWTo8YQd9WQZz8JdJrOrPwJp8nX5Brub+Y8vFuhIz+NSQxxl4LCNCjHkFXc/VVzEae/eMxYh33jZJGtocSln1Ewz43819Sq1B26tkU+iMCLz8e1OZa/+YqhuprOfZH0AERLNvG+3huAEc6icu7ZTJSpVFChOUlYkPOjm/s4NrP5SRGEJKjKa/vpu9UX9jJNHPL+Yr1n0osRCs554cX/Jq9tRFJobs7rYwLoAOsidbvkGJ04wa8SqTE1MvAU6AEDmjxX5yfIMNX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,193 +243,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+When alloc_slab_obj_exts() is called later in time (instead of at slab
+allocation & initialization step), slab->stride and slab->obj_exts are
+set when the slab is already accessible by multiple CPUs.
 
-efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+The current implementation does not enforce memory ordering between
+slab->stride and slab->obj_exts. However, for correctness, slab->stride
+must be visible before slab->obj_exts, otherwise concurrent readers
+may observe slab->obj_exts as non-zero while stride is still stale,
+leading to incorrect reference counting of object cgroups.
 
-There are two issue with that: memblock_free_late() should be used for
-memory allocated with memblock_alloc() while the memory reserved with
-memblock_reserve() should be freed with free_reserved_area().
+There has been a bug report [1] that showed symptoms of incorrect
+reference counting of object cgroups, which could be triggered by
+this memory ordering issue.
 
-More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-efi_free_boot_services() is called before deferred initialization of the
-memory map is complete.
+Fix this by unconditionally initializing slab->stride in
+alloc_slab_obj_exts_early(), before the need_slab_obj_exts() check.
+In case of SLAB_OBJ_EXT_IN_OBJ, it is overridden in the same function.
 
-Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+This ensures stride is set before the slab becomes visible to
+other CPUs via the per-node partial slab list (protected by spinlock
+with acquire/release semantics), preventing them from observing
+inconsistent stride value.
 
-If the freed memory resides in the areas that memory map for them is
-still uninitialized, they won't be actually freed because
-memblock_free_late() calls memblock_free_pages() and the latter skips
-uninitialized pages.
+Thanks to Shakeel Butt for pointing out this issue [2].
 
-Using free_reserved_area() at this point is also problematic because
-__free_page() accesses the buddy of the freed page and that again might
-end up in uninitialized part of the memory map.
-
-Delaying the entire efi_free_boot_services() could be problematic
-because in addition to freeing boot services memory it updates
-efi.memmap without any synchronization and that's undesirable late in
-boot when there is concurrency.
-
-More robust approach is to only defer freeing of the EFI boot services
-memory.
-
-Make efi_free_boot_services() collect ranges that should be freed into
-an array and add an initcall efi_free_boot_services_memory() that walks
-that array and actually frees the memory using free_reserved_area().
-
-Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com [1]
+Link: https://lore.kernel.org/linux-mm/aZu9G9mVIVzSm6Ft@hyeyoo [2]
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 ---
- arch/x86/include/asm/efi.h          |  2 +-
- arch/x86/platform/efi/efi.c         |  2 +-
- arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
- drivers/firmware/efi/mokvar-table.c |  2 +-
- 4 files changed, 55 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index f227a70ac91f..51b4cdbea061 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
- extern int __init efi_reuse_config(u64 tables, int nr_tables);
- extern void efi_delete_dummy_variable(void);
- extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
--extern void efi_free_boot_services(void);
-+extern void efi_unmap_boot_services(void);
+I tested this patch, but I could not confirm that this actually fixes
+the issue reported by [1]. It would be nice if Venkat could help
+confirm; but perhaps it's challenging to reliably reproduce...
+
+Since this logically makes sense, it would be worth fix it anyway.
+
+ mm/slub.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 18c30872d196..afa98065d74f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2196,7 +2196,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ retry:
+ 	old_exts = READ_ONCE(slab->obj_exts);
+ 	handle_failed_objexts_alloc(old_exts, vec, objects);
+-	slab_set_stride(slab, sizeof(struct slabobj_ext));
  
- void arch_efi_call_virt_setup(void);
- void arch_efi_call_virt_teardown(void);
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index d00c6de7f3b7..d84c6020dda1 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
- 	}
- 
- 	efi_check_for_embedded_firmwares();
--	efi_free_boot_services();
-+	efi_unmap_boot_services();
- 
- 	if (!efi_is_mixed())
- 		efi_native_runtime_setup();
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 553f330198f2..35caa5746115 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
- 
+ 	if (new_slab) {
  		/*
- 		 * Because the following memblock_reserve() is paired
--		 * with memblock_free_late() for this region in
-+		 * with free_reserved_area() for this region in
- 		 * efi_free_boot_services(), we must be extremely
- 		 * careful not to reserve, and subsequently free,
- 		 * critical regions of memory (like the kernel image) or
-@@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
- 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
- }
+@@ -2272,6 +2271,9 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ 	void *addr;
+ 	unsigned long obj_exts;
  
--void __init efi_free_boot_services(void)
-+struct efi_freeable_range {
-+	u64 start;
-+	u64 end;
-+};
++	/* Initialize stride early to avoid memory ordering issues */
++	slab_set_stride(slab, sizeof(struct slabobj_ext));
 +
-+static struct efi_freeable_range *ranges_to_free;
-+
-+void __init efi_unmap_boot_services(void)
- {
- 	struct efi_memory_map_data data = { 0 };
- 	efi_memory_desc_t *md;
- 	int num_entries = 0;
-+	int idx = 0;
-+	size_t sz;
- 	void *new, *new_md;
- 
- 	/* Keep all regions for /sys/kernel/debug/efi */
- 	if (efi_enabled(EFI_DBG))
+ 	if (!need_slab_obj_exts(s))
  		return;
  
-+	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-+	if (!ranges_to_free) {
-+		pr_err("Failed to allocate storage for freeable EFI regions\n");
-+		return;
-+	}
-+
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-@@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
- 			start = SZ_1M;
- 		}
+@@ -2288,7 +2290,6 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ 		obj_exts |= MEMCG_DATA_OBJEXTS;
+ #endif
+ 		slab->obj_exts = obj_exts;
+-		slab_set_stride(slab, sizeof(struct slabobj_ext));
+ 	} else if (s->flags & SLAB_OBJ_EXT_IN_OBJ) {
+ 		unsigned int offset = obj_exts_offset_in_object(s);
  
--		memblock_free_late(start, size);
-+		/*
-+		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-+		 * map are still not initialized and we can't reliably free
-+		 * memory here.
-+		 * Queue the ranges to free at a later point.
-+		 */
-+		ranges_to_free[idx].start = start;
-+		ranges_to_free[idx].end = start + size;
-+		idx++;
- 	}
- 
- 	if (!num_entries)
-@@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
- 	}
- }
- 
-+static int __init efi_free_boot_services(void)
-+{
-+	struct efi_freeable_range *range = ranges_to_free;
-+	unsigned long freed = 0;
-+
-+	if (!ranges_to_free)
-+		return 0;
-+
-+	while (range->start) {
-+		void *start = phys_to_virt(range->start);
-+		void *end = phys_to_virt(range->end);
-+
-+		free_reserved_area(start, end, -1, NULL);
-+		freed += (end - start);
-+		range++;
-+	}
-+	kfree(ranges_to_free);
-+
-+	if (freed)
-+		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-+
-+	return 0;
-+}
-+arch_initcall(efi_free_boot_services);
-+
- /*
-  * A number of config table entries get remapped to virtual addresses
-  * after entering EFI virtual mode. However, the kexec kernel requires
-diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
-index 4ff0c2926097..6842aa96d704 100644
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
-  * as an alternative to ordinary EFI variables, due to platform-dependent
-  * limitations. The memory occupied by this table is marked as reserved.
-  *
-- * This routine must be called before efi_free_boot_services() in order
-+ * This routine must be called before efi_unmap_boot_services() in order
-  * to guarantee that it can mark the table as reserved.
-  *
-  * Implicit inputs:
-
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 -- 
-2.51.0
+2.43.0
 
 
