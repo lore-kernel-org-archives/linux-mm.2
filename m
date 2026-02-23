@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F64EEC2A7
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 22:38:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 389E9EEC2A8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 22:38:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D908A6B0089; Mon, 23 Feb 2026 17:38:39 -0500 (EST)
+	id 97FCE6B008A; Mon, 23 Feb 2026 17:38:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73266B008A; Mon, 23 Feb 2026 17:38:39 -0500 (EST)
+	id 9481A6B008C; Mon, 23 Feb 2026 17:38:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C88686B008C; Mon, 23 Feb 2026 17:38:39 -0500 (EST)
+	id 86F6C6B0092; Mon, 23 Feb 2026 17:38:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6A2F6B0089
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:38:39 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6CAD8B5F5C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4246B008A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:38:42 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AB4B14030A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:38:42 +0000 (UTC)
+X-FDA: 84477187284.07.C0EB7AD
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 34947A0011
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:38:39 +0000 (UTC)
-X-FDA: 84477187158.26.6E5E145
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8E317100011
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:38:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="RRuB/760";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771886317; a=rsa-sha256;
-	cv=none;
-	b=VrUZxuBmNHXihnzSchUvXl0nyl2QiOqduQfR2ev5OYB3ou1ZRx+E9S3y3+ah6yoDYjd9gz
-	4A/MIbtxKH5wJ4bm9kNCY9+o1BhDGjui5DkoteHhgBUYgBatK8v3EEDTB+Ym5gHm85ITe9
-	MUSXLWdGybnmu8XZxVD271688kmnkdg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="RRuB/760";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SBFQz0i+;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771886317;
+	s=arc-20220608; t=1771886320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQzkmrIS51etVi0n5gq17TgjaIpr+hzH+jF14jX4sdo=;
-	b=Uu02vJNyjJ5bj2w1xXFh3aNyudBxZUaIZ5T822uyoG5NBTbprYt3DRian/MkI7Ul0nO7sy
-	9TkP/WvH5gqngt4vg9VrsQPf6SQybfzrzhgUEsX3A8Uxw8IWSaVjg1a6SGAHO9AI6uyxlk
-	zYXx6TsbLoLisXgwcz77S6hNf/LxM78=
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d4be94eeacso222471a34.2
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:38:37 -0800 (PST)
+	bh=wYuk97hSinOTQ/m7mlOvoqja3g8YulhySTVwuiXXVKY=;
+	b=DS/tSWzKEW6DZ4VwmbbviH7RzMcBZrLzlzkp0AYVhZXiGesYccr6qjbDF0qNOYWTa8wDB8
+	z/8lGHd/8PgerpsPK7QMmSsR1a+5fu1x47i2Wl3k378hxFxbrOCyCpKQK3za+lz5yrZn3T
+	fs4Ya+cac0535YWSyvk9lw1h8AntTUU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SBFQz0i+;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771886320; a=rsa-sha256;
+	cv=none;
+	b=OFEwlRDyhLRhpAYFZ9XvFV6lRJJRFn/lbOpyW5LLx2r0raIie2y2as7gUyPnsiPgNYwEhi
+	1josUmZ1tFk1fO68KlY+9qGVx9y104eauTyCTNybTkjp2r2Yb62/fBnPj5xSQHfnJsziKC
+	VITnguiLZLe43RYlh1oMxr3kproC/Uc=
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4638e6bb8a5so1757566b6e.0
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:38:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771886316; x=1772491116; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771886319; x=1772491119; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yQzkmrIS51etVi0n5gq17TgjaIpr+hzH+jF14jX4sdo=;
-        b=RRuB/760ygIJm+KTeCYKTIJP0C1277piP1vWuf5emJF341z2/EgWMNJS/IXqM8Q7xu
-         LaPa06X/bvpkPWg3b3nCBGA5db84IJ9dCyWRb6tLoZLh57FCFECgGtoLAVWlS8VerY5F
-         qyJDP8zgl63ISC+PF7oaOn9jc19dn4OQsCXiTUoLgSihQgikAdIUxTsT16OzaWj0AdRr
-         dMzBFpPoATzvPaC595tCBNdHSQfTA4LUKKaTdHX78qXzawuNDXMGbJk6XGAfNIWqcJT3
-         AKJPNdk7rjHmvC/2bDT0UhWVNkLJHFxSWngK9/yi6L7yhMd+XUi+wqYw4JeobUZPNuu6
-         /ptA==
+        bh=wYuk97hSinOTQ/m7mlOvoqja3g8YulhySTVwuiXXVKY=;
+        b=SBFQz0i+IPEshd/pShRVJXUhhMZxGs2o4h1Or55Ev2nZelG9VaorwrCzaqcGycojqH
+         loJOQ/jOTapRqKlcvdJpg48ERQ1hhWqGPD3j1u2cgwkLUQGqS7E+fvQvWZbervTSX/Ij
+         Z01ipzvR/KklEGaoptxC7l+tOvYCnbVLkSyfJGqJyo+r84jAx2KT5KafQpOr0ofL+TAg
+         iiwOD+428qfcO+BIS43/T2WKnRCJYIUAet3VcRGYMV2dzIZiSETENvVpGU1a+MnX/Oz1
+         P3qOTB1fXSY10XfwlEX5WcZajH4TOm7XPLMD3gm6T9H9wTpqWF5C02bQMhg8+JP1M2s4
+         /cmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771886316; x=1772491116;
+        d=1e100.net; s=20230601; t=1771886319; x=1772491119;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yQzkmrIS51etVi0n5gq17TgjaIpr+hzH+jF14jX4sdo=;
-        b=sjpb58ENB+9l7FDDm/XRgRP2v9yHvHritNWiETb6kc5Z8aezTENzcfblICdoMj5FLI
-         cvzVJr+P4DDO5Rlpfiv+DLQsKG/hmMAlig4oqEsdcT0862qGZY2C4gwfYEN0Uid1xGzU
-         czoB63xl8+S0q/dKHdBp+nrHtKRvN2dxpZ1vtUCL23OPNcXcmBCIRchhyyIkOtEuXBbi
-         TjkjogFmdHIPzL2xnTdlQPYMMK8NgDjPnD1qUa/1gWs+3BUBcf27i9GpABeC8cuZm1QI
-         CqsGZwCLuqMn1luFCzQQ/LPyK9ilmAMsgeXb+FEuDHSZ7HJn3TQ8buLchSQev1nNnMtZ
-         T8+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU9ns7UPYCvYmslAxHmQWSc93uTYUaH20zT4TBmycdeHW1wvUnCoMOR0E7xRx3GaNSuCI3yinLWtw==@kvack.org
-X-Gm-Message-State: AOJu0YxjZ7tzI8nQw0zyMwRz4lhFohE7BNQWukjOnVZLYuL1U4BXK5vw
-	EmvuLu9dUSVWSpiOdvP/7xw8/2s3FBHk963plUn2lCRhULQ4cscz8Sxj
-X-Gm-Gg: AZuq6aJnNBJuSTP4dgUxA8Rxh0UsnJZPM+Mjy3UT760nXmet1X3TaF2vW7B2SRIyM4m
-	J3TvVVw3CFwtP79BVovOO8psUUc9ZKnJj8WnJT2B0L595z6xvMMj/71Pl7H6SIvUxCk2DzW6TlC
-	2psFU/etCZ0MkB5kNUNsxrSkRSQDWHuWlP75aaHeO+1kcZn3ejuwso847V2gkeokAq2WLwAqN5d
-	4v0TXATfmtoBqcEr8uSAPyr2+GghBUE4ljgpOOh1OFbSuSfHlYd+Kd4YU6Zs7PpJwaoDawvptFE
-	m7TILYQOxc2VeBsrOG9V0+GWlDxh0WS7CMaVu4a4TWr1F/G9yjTO/Vzk0SYARVpZpJ2hUOD86T9
-	ANvcjq03o9sRwLdzECjARGyC4FgJKHK3NbL8k+L/Q8gxR62uoxQZTWCNgifprZIqzxn8DBMNP1f
-	z1dC+sbdg+cMKHFC0UegFP
-X-Received: by 2002:a05:6830:369b:b0:7c5:2dbf:4a7d with SMTP id 46e09a7af769-7d52c1c04c4mr6267036a34.31.1771886316479;
-        Mon, 23 Feb 2026 14:38:36 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:9::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52cfa03bcsm8389594a34.10.2026.02.23.14.38.35
+        bh=wYuk97hSinOTQ/m7mlOvoqja3g8YulhySTVwuiXXVKY=;
+        b=TGa722EF6bjHmSDJBELsrWpAToCD+RmM8S8xoXeKcb+J9pkrwa9GjV8z+7XTfzZRFj
+         W2085nJyd3Le/bjGRpHfqEOa31X3C+l+2ZUK4SPliGhPULUvb9Wh2nijkcoteS3lOSAX
+         dCZlEPufWo8XqQR8hLLrxmxd8VxNuv13AWvVCMTTDO4QmrpLoAUcFP7l/A+QOkrRoDrS
+         19hp8fSR43VCkAyiZzkDX/qB6fxMOt0Zf/QuN8CqCEYoz8bsOeFidjnsqJh/cYJ58+Dp
+         WEV+gTZmQ+F+TiqFJhaUABCS2P4twm/LlA8jkKjNRJJpQbjrTJHXUkIMkGiFqgK3cBc5
+         BLvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUC3vJwe9ckf/dgY52oOFAHH/JcMFF2p5cl3ZJCQK6fzN2QSC8apkBpcanP5KdqSi7O5S/WOm6NQ==@kvack.org
+X-Gm-Message-State: AOJu0YyCsj8R9b0pbHWU+qPtFkgGCtt7uHq14yobo05liZJCved6n043
+	aDL0K7WbjDZAUAEePHPO6YMyQTlA3J1NAyKBqK5+ueCqBnBk4OxNwuco
+X-Gm-Gg: AZuq6aKCVdfm3NlLpa8ln6vbGLZu+KUaExj+1omQtqx/HOrY9fXNohPUOGXIcgHJe7Z
+	U203u1PD/+Z1R22YXzTOIImNX4S17QHvipH9N1nEbmg3rUKsFv9FoDk3x6Oq2xfO04qNQmZX1cV
+	+cN7G0/BnpuSSy2U9bwvNdEl3lbZRH286tTm79oTiov0Dr2OuZptRnAqO6GEtDbxy68TqSf+dHc
+	P6+U8QBrcBnamx7YbssZl1exGdDA3wFZA9nRFrq//unVP/SbvZIurB1cWXeEtXnJrWTJ6NH21kB
+	uLa0124KP/HYymlpXH4B844y9bduumFgY3ZaiOD+T/GYHDmOJF/yd1Y9NG1GSY7zpqwC6OLfani
+	CkPyQ+Bg+ZQas4g3a6G6/koyNBHcKP2f0FPQu+6qT3ysdaRu5MXkRvIJaR7HJpF5Z/6pP7MbycF
+	enwFovYTx25ezw+CF78bHvfg==
+X-Received: by 2002:a05:6808:1481:b0:45f:727:8fd7 with SMTP id 5614622812f47-4644638ee8bmr5488352b6e.46.1771886318987;
+        Mon, 23 Feb 2026 14:38:38 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:45::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4157d2d7826sm8635887fac.10.2026.02.23.14.38.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 14:38:36 -0800 (PST)
+        Mon, 23 Feb 2026 14:38:38 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -104,26 +104,30 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
+	Waiman Long <longman@redhat.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH 2/6] mm/page_counter: Introduce tiered memory awareness to page_counter
-Date: Mon, 23 Feb 2026 14:38:25 -0800
-Message-ID: <20260223223830.586018-3-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH 3/6] mm/memory-tiers, memcontrol: Introduce toptier capacity updates
+Date: Mon, 23 Feb 2026 14:38:26 -0800
+Message-ID: <20260223223830.586018-4-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
 References: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8E317100011
-X-Stat-Signature: dgxszqeay4bt47jbqfq9c49pojza58n3
-X-HE-Tag: 1771886317-726093
-X-HE-Meta: U2FsdGVkX1+c3dbFcuuIP46iz6J9414wde6j/2mEnldt9MxkpWiFnQe4aHUWGinIkbDcOzGUQ7pMSdRfse7pUR8Vvdr2zRVw0TWcsfdfVbfxpK4gHgYwb/lrvuyZabn2Z+w68k4Qo7BhN2H3glDAg9Ptuy9yGjyII5h6Y0gbIMgdnjugF0rJHTfhVCvxm3wOqVqKxcx+R1RfToFQejnpTh1hyDZCP5iLJIqYX/NgETVMXWNMYYkAUUFgSjAq3gNTm4tJt6ba5LIM+hbzsDbtIniXNPrKxthrkGaRdpXsIzYyJl/qpewnf/AT8/DYPtIJSN1LWznLoQVRHV/9j5hHMJdOSe9Xec38GkPsS8gMx4wznnHL6EykhrtZd2VfaaK+ITmxPhdboOvNQiQ2YA26sc7UuwGSwu3hzmwA2YWPggyauAd4NxF9I9DPhmnrG0k9udGHhHygQUkSlB4+a330YJCVo8Nu5FsOvDQVr0lqMK9wPtvvFXtYj6r+H54vAV6ii1vLS5bNwUpucerg92RFQA5o0q25dBBEczVqcMRAqbt9dVPNZDZCuxh3PhGWhvyHQAgFsMXsqomVTNadk8IBVU96JcICfjwRhI/+Rr8AIEp5PbrbiNvjeuQxI2Wt3VzVnG7kt1L1kc6RRfUKCvaLYSHc63HLt8kgJTEQprB3tND1FFtEJs9aGq24ZR4DMRHONHf65Zs2Md3NUUS3Zjmcgoi1vEy8EuM7ZHuGVTpuv8e+QBLPDun1aglLTnegSdxsPKxuLh3uPafz3J78KQk6uQj9mGDFgVKVldM2IXTTCYXuv8Y0PtQOpqY4zws0y3A6ozdjFGvhVYelbYpVQewFxrXnanOSKVgXWD1JrRo+19Um0e1lJIvXYuqxML1ENWNVb0wNrmHJcT3nSPoQ7iffI/3BFJ+EEBRuZFapYpbc328aGSXCw15hlZE1GZlbaxdaQDzkn8gXKi5SechMpOr
- w4QYG4UF
- muLBi/j8iOrwUYilcNvBBJ+jePSjfGoAdSaRZqacSjeLwY9JIto1Ehtw5XxYlBkgcWjYrf4dD7YHByyXmdufOTbknE3GDEx+yQRk99GhuUrS4JnFbwDfYrwr+UAbw9p7vAItA7SI+C9WtK5jxNhTbIBYz/6Iyo74NbdcDyv88mT1aEcGI6lOODyYRUtTxwCf1S3nD6k3ljWN/1z9s2Ql/MLBLovPJFYf3sfxCn5OGlxwPiudYSgxRX38sXjrqFqb+BsmdK5n3Ayax8sb4uD+nGOzbX2nGMTdRMVNlfSmJ1XHUpW9T5xYrvJjmuGOTIF9GYAowTEQKydZIKde0UP8Wjf1/j5vhbtGu/fGg3cI6b9P8xTnfRsMB+wbrng/HO5Wpmtecv5CIFfnR66wVilQxlJfMWEPiyHe6quuSEuXv7kOIbdbYyx3chL+dUtElDNLW8hraRabUvc7zTXaObqzlanB/0TjF/Dt8PHG4/4yPTDoLzXu8Ixc1spgVQWHr+BXjgul+83bOZeD3vBKqmW/i6TjtXwCqZd2blzE1d1cPzqsOa05mOj2t3WZm9QGe0Sx0Y5c3V0kfL9xeGA18GeyGeKtnJTaHDY78Gqbf5BjJ3B4EwKCiDOeDfhX4RO7+Z9QS1snojRUpt5mfLaNfsYBbsnKc60F2U/1ScVi2vsifl8p4X2NAqMbQ64hoJg==
+X-Rspamd-Queue-Id: 34947A0011
+X-Rspamd-Server: rspam02
+X-Stat-Signature: gzg37r8j99uq8zw6s3dukemjn9uait7q
+X-HE-Tag: 1771886319-367399
+X-HE-Meta: U2FsdGVkX1+amaTUV3cTt+/228X/38FQ1cm7R8japN8IZdrK5Twyzkyw2r3D9vOOk57AE72eYSpVEClER0kNb3Kf4Jng8BZzYZg1A98uS1aVgop66s57s/quuGyO2LrIZ/FVr97iTRpAke6bkvr/bc/WlFwa9ztL7Djmopr8Iq5uBKOXgXCSyjyvlFumFAeddF0b5edKytMhL6p3PZEkaFCmAmV0S9zJlQ1YYMKae81ysGNASThHoqzzYH2guK2KZhNf8CL4ZEvBNFgUclghI0cJ/F0tksjKj+PgRLnmYFKrDPs954OedSYsF4dPmwMFGCAJO382hvFP64ROHa4MZmlrMu5VwkurPRJvRedArU0hlifBTSGFq5uuL/1ojSVxhevBSFVL5k+UvNEVwmA2jjJDRA08T+zUDq/NofXPC9Se8F4W543UlTSWetMAdVeOTICBkUPnYligbJPN2DAv8VDuS4buWnsOa367a56uZZ8yYBgJ/ilv1PXV3+AtJtlfkvXhC5qGfFNtWFzs9jryK4yewycziT6MK6W1ZM8vGzRtbM5b9MDrCdUzihgKZyVtfHmNXn4LZLx+r3kpJTqBayibb5U1zsUUlkJOHAI6yfDOY1kI4ninJq+J8a8ceNzKcVI+avtIJui3d1ofSw+8ogcsoJsGJ/QnJPDpBSIh5GYB7ts+qGLJ1hgy31auxc9IW0Wydme9vHZaVq1s5rLA9R2OdQg9M0NQsLgahXjtoek5kKeDsYHcAweOGBpYFuZL7N6vFScMiUqs2jZUIziWiqSpRAOwgfeHpoyBCA0SZzoCn4XsX5zX/gsOIuFIzdTD8Iy+Pcpv6qu5MHtlBuM9i9xyexsRuBaD+seQARYK9nA6fq5CzrOWR3k3jYPdVXxSL29q6H7w1bi2So8me5yFUom9C8xbd4/LtF1/dSdNPxBYiX5yXmyEOYGk/SBVK/aLpAhe443y4HtOvcMfIzU
+ PAi3KiSQ
+ YDcViG1YoILvE58L+i0vBiHHUP4eH5I4Ul33pO4qqvly2VtBy5UKkkIjcNLqdggfsmrgpoW3ObVN3YYwSED2/OUYfHpndJpWsSOVz/FuTHO7rW2Y2wdiHBdHvN5P1+5wpKZq+d6PlSnQ8dDUaOxwtBYenH0ktfMq7sn/mZ3mcVMIuAX9F8V3yMBmE+S5PEWG+ar6xrJelF3rJxaSoNyl8L5Qzk/v2Ij56qLA+WUlF1q9LMXwbf5GZgvmZGZJPmfSeDnkjj/1S/cIN98iCADZyjDmdhotPgGGPdycdYKMjVYrU3YwojoO4cDIUTHTG4RSQCA8BR7a1C7ahUo7gpsZXvp+dgFGBtUbhgSM/lLcv7T9y7WdsouVRp4q7Bz5lMDYc5XvtIrhpd+Fet4R3xW59oB/65uhIZJZzfobkqG7HH2JvLz/mIzp13Q7rf1spKsIzzGj3m7br3i3/ZRtSeJrIwwE49+4HMGAxdsr8dt//ApXE5kJr/m58WtmPOuypJO9TQW6kMHRYBAsNGMWJQVyPwLateGld2HQodmiGqa/lMmzr/VI0Is8Ok7Q7G1oXwU5LCL6xtLEPTRVm5juqon09iXSUEUfklk8JJ7WJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,126 +136,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On systems with tiered memory, there is currently no tracking of memory
-at the tier-memcg granularity. While per-memcg-lruvec serves at a finer
-granularity that can be accumulated to give us the desired
-per-tier-memcg accounting, relying on these lruvec stats for limit
-checking can prove touch too many hot paths too frequently and can
-introduce increased latency for other memcg users.
+What a memcg considers to be a valid toptier node is defined by three
+criteria: (1) The node has CPUs, (2) The node has online memory,
+and (3) The node is within the cgroup's cpuset.mems.
 
-Instead, add a new cacheline in struct page_counter to track toptier
-memcg limits and usage, as well as cached capacity values. This
-cacheline is only used by the mem_cgroup->memory page_counter.
+Of the three, the second and third criteria are the only ones that can
+change dynamically during runtime, via memory hotplug events and
+cpuset.mems changes, respectively.
 
-Also, introduce helpers that use these new fields to calculate
-proportional toptier high and low values, based on the system's
-toptier:total capacity ratio.
+Introduce functions to calculate and update toptier capacity, and call
+them during cpuset.mems changes and memory hotplug events.
 
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/page_counter.h | 22 +++++++++++++++++++++-
- mm/page_counter.c            | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 55 insertions(+), 1 deletion(-)
+ include/linux/memcontrol.h   |  6 ++++++
+ include/linux/memory-tiers.h | 29 +++++++++++++++++++++++++
+ include/linux/page_counter.h |  2 ++
+ kernel/cgroup/cpuset.c       |  2 +-
+ mm/memcontrol.c              | 17 +++++++++++++++
+ mm/memory-tiers.c            | 41 ++++++++++++++++++++++++++++++++++++
+ mm/page_counter.c            |  8 +++++++
+ 7 files changed, 104 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index d649b6bbbc87..128c1272c88c 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -5,6 +5,7 @@
- #include <linux/atomic.h>
- #include <linux/cache.h>
- #include <linux/limits.h>
-+#include <linux/nodemask.h>
- #include <asm/page.h>
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 5173a9f16721..900a36112b62 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -608,6 +608,8 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
+ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+ 				     struct mem_cgroup *memcg);
  
- struct page_counter {
-@@ -31,9 +32,23 @@ struct page_counter {
- 	/* Latest cg2 reset watermark */
- 	unsigned long local_watermark;
- 
--	/* Keep all the read most fields in a separete cacheline. */
-+	/* Keep all the tiered memory fields in a separate cacheline. */
- 	CACHELINE_PADDING(_pad2_);
- 
-+	atomic_long_t toptier_usage;
++void update_memcg_toptier_capacity(void);
 +
-+	/* effective toptier-proportional low protection */
-+	unsigned long etoptier_low;
-+	atomic_long_t toptier_low_usage;
-+	atomic_long_t children_toptier_low_usage;
-+
-+	/* Cached toptier capacity for proportional limit calculations */
-+	unsigned long toptier_capacity;
-+	unsigned long total_capacity;
-+
-+	/* Keep all the read most fields in a separate cacheline. */
-+	CACHELINE_PADDING(_pad3_);
-+
- 	bool protection_support;
- 	bool track_failcnt;
- 	unsigned long min;
-@@ -61,6 +76,9 @@ static inline void page_counter_init(struct page_counter *counter,
- 	counter->parent = parent;
- 	counter->protection_support = protection_support;
- 	counter->track_failcnt = false;
-+	counter->toptier_usage = (atomic_long_t)ATOMIC_LONG_INIT(0);
-+	counter->toptier_capacity = 0;
-+	counter->total_capacity = 0;
+ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+ 					  struct mem_cgroup *memcg)
+ {
+@@ -1116,6 +1118,10 @@ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+ {
  }
  
- static inline unsigned long page_counter_read(struct page_counter *counter)
-@@ -103,6 +121,8 @@ static inline void page_counter_reset_watermark(struct page_counter *counter)
++static inline void update_memcg_toptier_capacity(void)
++{
++}
++
+ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+ 					  struct mem_cgroup *memcg)
+ {
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index 85440473effb..cf616885e0db 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -53,6 +53,9 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
+ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ 						  struct list_head *memory_types);
+ void mt_put_memory_types(struct list_head *memory_types);
++void mt_get_toptier_nodemask(nodemask_t *mask, const nodemask_t *allowed);
++unsigned long mt_get_toptier_capacity(const nodemask_t *allowed);
++unsigned long mt_get_total_capacity(const nodemask_t *allowed);
+ #ifdef CONFIG_MIGRATION
+ int next_demotion_node(int node, const nodemask_t *allowed_mask);
+ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+@@ -152,5 +155,31 @@ static inline struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ static inline void mt_put_memory_types(struct list_head *memory_types)
+ {
+ }
++
++static inline void mt_get_toptier_nodemask(nodemask_t *mask,
++					   const nodemask_t *allowed)
++{
++	*mask = node_states[N_MEMORY];
++	if (allowed)
++		nodes_and(*mask, *mask, *allowed);
++}
++
++static inline unsigned long mt_get_toptier_capacity(const nodemask_t *allowed)
++{
++	int nid;
++	unsigned long capacity = 0;
++
++	for_each_node_state(nid, N_MEMORY) {
++		if (allowed && !node_isset(nid, *allowed))
++			continue;
++		capacity += NODE_DATA(nid)->node_present_pages;
++	}
++	return capacity;
++}
++
++static inline unsigned long mt_get_total_capacity(const nodemask_t *allowed)
++{
++	return mt_get_toptier_capacity(allowed);
++}
+ #endif	/* CONFIG_NUMA */
+ #endif  /* _LINUX_MEMORY_TIERS_H */
+diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
+index 128c1272c88c..ada5f1dd75d4 100644
+--- a/include/linux/page_counter.h
++++ b/include/linux/page_counter.h
+@@ -121,6 +121,8 @@ static inline void page_counter_reset_watermark(struct page_counter *counter)
  void page_counter_calculate_protection(struct page_counter *root,
  				       struct page_counter *counter,
  				       bool recursive_protection);
-+unsigned long page_counter_toptier_high(struct page_counter *counter);
-+unsigned long page_counter_toptier_low(struct page_counter *counter);
++void page_counter_update_toptier_capacity(struct page_counter *counter,
++					  const nodemask_t *allowed);
+ unsigned long page_counter_toptier_high(struct page_counter *counter);
+ unsigned long page_counter_toptier_low(struct page_counter *counter);
  #else
- static inline void page_counter_calculate_protection(struct page_counter *root,
- 						     struct page_counter *counter,
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 7607dfe516e6..e5641dc1af88 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2620,7 +2620,6 @@ static void update_nodemasks_hier(struct cpuset *cs, nodemask_t *new_mems)
+ 	rcu_read_lock();
+ 	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
+ 		struct cpuset *parent = parent_cs(cp);
+-
+ 		bool has_mems = nodes_and(*new_mems, cp->mems_allowed, parent->effective_mems);
+ 
+ 		/*
+@@ -2701,6 +2700,7 @@ static int update_nodemask(struct cpuset *cs, struct cpuset *trialcs,
+ 
+ 	/* use trialcs->mems_allowed as a temp variable */
+ 	update_nodemasks_hier(cs, &trialcs->mems_allowed);
++	update_memcg_toptier_capacity();
+ 	return 0;
+ }
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 0be1e823d813..f3e4a6ce7181 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -54,6 +54,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/vmpressure.h>
+ #include <linux/memremap.h>
++#include <linux/memory-tiers.h>
+ #include <linux/mm_inline.h>
+ #include <linux/swap_cgroup.h>
+ #include <linux/cpu.h>
+@@ -3906,6 +3907,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ 
+ 		page_counter_init(&memcg->memory, &parent->memory, memcg_on_dfl);
+ 		page_counter_init(&memcg->swap, &parent->swap, false);
++		page_counter_update_toptier_capacity(&memcg->memory, NULL);
+ #ifdef CONFIG_MEMCG_V1
+ 		memcg->memory.track_failcnt = !memcg_on_dfl;
+ 		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
+@@ -3917,6 +3919,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ 		init_memcg_events();
+ 		page_counter_init(&memcg->memory, NULL, true);
+ 		page_counter_init(&memcg->swap, NULL, false);
++		page_counter_update_toptier_capacity(&memcg->memory, NULL);
+ #ifdef CONFIG_MEMCG_V1
+ 		page_counter_init(&memcg->kmem, NULL, false);
+ 		page_counter_init(&memcg->tcpmem, NULL, false);
+@@ -4804,6 +4807,20 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+ 	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
+ }
+ 
++void update_memcg_toptier_capacity(void)
++{
++	struct mem_cgroup *memcg;
++	nodemask_t allowed;
++
++	for_each_mem_cgroup(memcg) {
++		if (memcg == root_mem_cgroup)
++			continue;
++
++		cpuset_nodes_allowed(memcg->css.cgroup, &allowed);
++		page_counter_update_toptier_capacity(&memcg->memory, &allowed);
++	}
++}
++
+ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
+ 			gfp_t gfp)
+ {
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index a88256381519..259caaf4be8f 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -889,6 +889,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
+ 		mutex_lock(&memory_tier_lock);
+ 		if (clear_node_memory_tier(nn->nid))
+ 			establish_demotion_targets();
++		update_memcg_toptier_capacity();
+ 		mutex_unlock(&memory_tier_lock);
+ 		break;
+ 	case NODE_ADDED_FIRST_MEMORY:
+@@ -896,6 +897,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
+ 		memtier = set_node_memory_tier(nn->nid);
+ 		if (!IS_ERR(memtier))
+ 			establish_demotion_targets();
++		update_memcg_toptier_capacity();
+ 		mutex_unlock(&memory_tier_lock);
+ 		break;
+ 	}
+@@ -941,6 +943,45 @@ bool numa_demotion_enabled = false;
+ 
+ bool tier_aware_memcg_limits;
+ 
++void mt_get_toptier_nodemask(nodemask_t *mask, const nodemask_t *allowed)
++{
++	int nid;
++
++	*mask = NODE_MASK_NONE;
++	for_each_node_state(nid, N_MEMORY) {
++		if (node_is_toptier(nid))
++			node_set(nid, *mask);
++	}
++	if (allowed)
++		nodes_and(*mask, *mask, *allowed);
++}
++
++unsigned long mt_get_toptier_capacity(const nodemask_t *allowed)
++{
++	int nid;
++	unsigned long capacity = 0;
++	nodemask_t mask;
++
++	mt_get_toptier_nodemask(&mask, allowed);
++	for_each_node_mask(nid, mask)
++		capacity += NODE_DATA(nid)->node_present_pages;
++
++	return capacity;
++}
++
++unsigned long mt_get_total_capacity(const nodemask_t *allowed)
++{
++	int nid;
++	unsigned long capacity = 0;
++
++	for_each_node_state(nid, N_MEMORY) {
++		if (allowed && !node_isset(nid, *allowed))
++			continue;
++		capacity += NODE_DATA(nid)->node_present_pages;
++	}
++	return capacity;
++}
++
+ #ifdef CONFIG_MIGRATION
+ #ifdef CONFIG_SYSFS
+ static ssize_t demotion_enabled_show(struct kobject *kobj,
 diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 661e0f2a5127..5ec97811c418 100644
+index 5ec97811c418..cf21c72bfd4e 100644
 --- a/mm/page_counter.c
 +++ b/mm/page_counter.c
-@@ -462,4 +462,38 @@ void page_counter_calculate_protection(struct page_counter *root,
- 			atomic_long_read(&parent->children_low_usage),
+@@ -11,6 +11,7 @@
+ #include <linux/string.h>
+ #include <linux/sched.h>
+ #include <linux/bug.h>
++#include <linux/memory-tiers.h>
+ #include <asm/page.h>
+ 
+ static bool track_protection(struct page_counter *c)
+@@ -463,6 +464,13 @@ void page_counter_calculate_protection(struct page_counter *root,
  			recursive_protection));
  }
-+
-+unsigned long page_counter_toptier_high(struct page_counter *counter)
+ 
++void page_counter_update_toptier_capacity(struct page_counter *counter,
++					  const nodemask_t *allowed)
 +{
-+	unsigned long high = READ_ONCE(counter->high);
-+	unsigned long toptier_cap, total_cap;
-+
-+	if (high == PAGE_COUNTER_MAX)
-+		return PAGE_COUNTER_MAX;
-+
-+	toptier_cap = counter->toptier_capacity;
-+	total_cap = counter->total_capacity;
-+
-+	if (!total_cap)
-+		return PAGE_COUNTER_MAX;
-+
-+	return mult_frac(high, toptier_cap, total_cap);
++	counter->toptier_capacity = mt_get_toptier_capacity(allowed);
++	counter->total_capacity = mt_get_total_capacity(allowed);
 +}
 +
-+unsigned long page_counter_toptier_low(struct page_counter *counter)
-+{
-+	unsigned long low = READ_ONCE(counter->low);
-+	unsigned long toptier_cap, total_cap;
-+
-+	if (!low)
-+		return 0;
-+
-+	toptier_cap = counter->toptier_capacity;
-+	total_cap = counter->total_capacity;
-+
-+	if (!total_cap)
-+		return 0;
-+
-+	return mult_frac(low, toptier_cap, total_cap);
-+}
- #endif /* CONFIG_MEMCG || CONFIG_CGROUP_DMEM */
+ unsigned long page_counter_toptier_high(struct page_counter *counter)
+ {
+ 	unsigned long high = READ_ONCE(counter->high);
 -- 
 2.47.3
 
