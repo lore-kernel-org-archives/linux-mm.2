@@ -4,115 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 407BDEC1122
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 19:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC7BEC111A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 19:17:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74AA66B0005; Mon, 23 Feb 2026 14:02:58 -0500 (EST)
+	id 4716F6B0005; Mon, 23 Feb 2026 14:17:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F8846B0089; Mon, 23 Feb 2026 14:02:58 -0500 (EST)
+	id 41BA16B0089; Mon, 23 Feb 2026 14:17:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6247A6B008A; Mon, 23 Feb 2026 14:02:58 -0500 (EST)
+	id 300D06B008A; Mon, 23 Feb 2026 14:17:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BBA36B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:02:58 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDA041602BA
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:02:57 +0000 (UTC)
-X-FDA: 84476643594.11.CD9A738
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 10D2A8001C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:02:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j5INVXIL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771873376; a=rsa-sha256;
-	cv=none;
-	b=6uCiHI2iPb7ZhIJQG1htTrxxZUjgI4lJ4X04aV6EoBomwawwYXfokP6zw2ulXIZjq7s5Kg
-	DD7os8Zdt0YCcVU8HewK4pTqg32h1H5ATV6DJ0CiN/v3rnFn7bFfqwZ1xlK0ktmGg5elIW
-	UBvpzXAGTwcxNhlsurAZn44DO8hpFEo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j5INVXIL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 18BB66B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:17:03 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B9821B5BF1
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:17:02 +0000 (UTC)
+X-FDA: 84476679084.12.E5CDE45
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D3C4C8000A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:17:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VKH56jk/";
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771873376;
+	s=arc-20220608; t=1771874220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1q9OIY/ja79xQZyMwDY8+lmaLB15J8cqbigUd8WTY1g=;
-	b=Syrty3IZwwYwBeJaPmbwDvgTDqM++r9LnStbODcGdNz11k62J2KYkrDU398bwWU23ltyen
-	252m7J9isBeJ5IJ+Yeh30vWa9+d3nTP3iirTE+C/XGZdmPqE2kp1tYLyH/I673BCU4xNj5
-	LyQ4xduVAnu1KYYByz7zU7L8KfM/Z6k=
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-674181e5bb9so817344eaf.3
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:02:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771873375; x=1772478175; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1q9OIY/ja79xQZyMwDY8+lmaLB15J8cqbigUd8WTY1g=;
-        b=j5INVXILE6Z4D0u3qmHDGqLsSpmHq/OgXix72dyX3Dmn4u/nnzpOuS3ohVicP2EyOg
-         0cGWnwqAr1vLK/jbC8e/frniGesZ+aSh0EMMO7/IsZkb1Z07pvdsZlvK861CZef8KrAq
-         BXYlDBRY8q5cLZ6HPkT1GdUCEien6YhPZnuQZO17Nvmy4KYWdHb77Ggb42WG03/6rrZm
-         l5DMcEiHSjKaVz0ix7EyHE5Ympp8dvXLwGkB3X62BJSgYzLfYD9gSWEmHUg08qJK5+mb
-         RWu0ov9jPzU5UVVly2LzhXRiQ2r0vE4YxqFE9ZIAVXszUbDM98Rp57scGhfj5lSdee8C
-         AJ+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771873375; x=1772478175;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1q9OIY/ja79xQZyMwDY8+lmaLB15J8cqbigUd8WTY1g=;
-        b=mq3kuD66+5rFUBZ/u9HfqF50QoyqydEz48Pmw5XwgWEyhvQAfDmDIRn1otZG1LdT7F
-         7/fyrkOqdsOTntwsHVm8Ezurg54WCBgyoOMEWfHZronbH9dTKONeOcb2j+Cg2qez2mCZ
-         RiKo2284a0N2FBmCWFUFHX+r4sTxVWS17MYP6LJf2oo5ds9DLS5NRbAR5aaux3G/SiVt
-         A1fbokBn82bk9F3Su22G1xhTbTIJ5QiAz0w+JSkYTwON73xTJ1UdiipU/Jll/RfyV6P0
-         8zLH7f5hxsMSC9rpi/t2jNYCgCr8J5kyAC7CyO55nLtvWSvPzLeVR5GCNOC7nzR09wwi
-         jLuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQf4zjtwhGXuuco8hSYmtAFLIFB5VI/ryXXZjNnDGh64261XYl8OfJsJELt07CVsi1K/1BIASSXg==@kvack.org
-X-Gm-Message-State: AOJu0YxXMHAtt2pz2M0x0Ef4Brfss8TEmfkF4VacML0+D2O4rglyKKrS
-	LlmTlso7fboKa/v7/BwZbEQELg94ELdZ7RTUjC0NPCiWdlo37D9Z3v4V
-X-Gm-Gg: AZuq6aIAi13Y+EgfLP69pCD9jSSEsgEMqBGa5t44IOvwunNizN82mjTDIPEp+F7gWV1
-	JEbK2E9Id/97hhX4aTXNYk0iC3XB+j/RJ1Z4ROEqtj+eoC/qNQCBj1UWHaa93XHoejhtjyFEiPI
-	5AkxILwQlAmiAJP8ZhAuxwf/G+PLX2HWckkFfAfxhaljt6QK2Xpih0oumc2N3u89WKtLJCadSXW
-	PJe0MvJKc0EMkrADWrLk5kX1tvv9hufSqO9o+do1FXT0mRP+rEk9rFbAGOQ9N0XXFqgVlmYZ0k5
-	xlQnkC7IzPjYOAUD0R2DGzuBmtXiP8NT93PZnfjLwWGyRVEHyeK/Uln+WE3CK/onskh7zcxg/7p
-	GLztjGq/behk0plRcZrdPpob12jTch8wbm/f9d/kVf+nF7WNeRKuMrPnvPaSvkTnHDafrNNizdP
-	dbcB1EhfVZB8PWkdAM7Ug+8nFAOy7p4uhzs/X+kQ==
-X-Received: by 2002:a05:6820:450c:b0:663:56f:1ac with SMTP id 006d021491bc7-679c424dd9emr4009371eaf.6.1771873374840;
-        Mon, 23 Feb 2026 11:02:54 -0800 (PST)
-Received: from fedora ([2603:8080:10f0:ab80::1382])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679c5630a56sm7024190eaf.1.2026.02.23.11.02.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 11:02:53 -0800 (PST)
-Date: Mon, 23 Feb 2026 11:02:51 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
-	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
-	dm-devel@lists.linux.dev
-Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
-Message-ID: <aZykWyxLy34o7PKr@fedora>
-References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+	bh=pW9/rztysEsKQP4BwEVSRhDgWZqG1r5zaI+0B7PY8bc=;
+	b=OTRlC7xj4h/jIes6wr0OKq5/+e+Y1KDrySJ8zWPpDonTtGg4IELCI8EjNj1PjsWjMJO80Q
+	sxbTdkC14B6id7pu8lGCv7u8HBAdSiIKyhnFn/O2FLhJE3JZho089fobuF7HJlWKDZJtYB
+	ZF6EkAXp/gT51O/kY2doxkjfXrlFmsQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VKH56jk/";
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771874220; a=rsa-sha256;
+	cv=none;
+	b=z7pflKfDKfGcHOQdptN0J0eDLCPi3VqRPZNEyUXufNOidiRzPUcYiLnvbt5ix4/9WaMg/n
+	gBrFRohESj6qEZ8eGx8EtZUSIVL4aglsOMe2/1aeZnGYO1VYKMypsWi675bkBFZDr//lW4
+	yzs6s4jGNpEk/8/MLRjPMyIUi7aRpEY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EDF1460141;
+	Mon, 23 Feb 2026 19:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52399C116C6;
+	Mon, 23 Feb 2026 19:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771874219;
+	bh=QoLi5Ji30jg6+9EIkK83WuAw9m8Ump5BIlaU2i6pUmM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VKH56jk/9sGgHun+FC5oPBfjXO+gF2v1895vNaw2i5skZ+VXV82v2KHOh6B8wUVWq
+	 wT1SFhGyC4SDVnFsSFOcTCCjg+uzfw0qzYs3Nx/tkTy5RpRx0sd3DC+uBMGyroG9Uz
+	 M/0ITMM7q6lm/eF6y434ojIJ2d4fuAOXuIaNHdKWuHR0t6efZMBfuQVeyXIag35ZDS
+	 ovgVd37o931o+qzt1N2PwrJXMFrCOBpBD/sQHf15fhaPN/T/cO5kHg7DP/fZ3fw5pO
+	 oW+6viPFd+2/wMkU/+4eiK83yMDY8UHVKp1FdnigKgAvbTYPLOlBGvLWm/Wx1qc3r/
+	 yXZH7M2dWVajg==
+Message-ID: <45b78153-262c-43b4-acf6-7e3f153fbcc0@kernel.org>
+Date: Mon, 23 Feb 2026 20:16:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: centralize+fix comments about compound_mapcount()
+ in new sync_with_folio_pmd_zap()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Jann Horn <jannh@google.com>
+References: <20260223163920.287720-1-david@kernel.org>
+ <aZyVVl5qcJsfhKuE@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <aZyVVl5qcJsfhKuE@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o8tdphgh8n93mb6dz98hkiux8ga8yg5i
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 10D2A8001C
-X-Stat-Signature: s4f9bekwkk1eufhhcoqxpmzf4gb7kupo
-X-HE-Tag: 1771873375-893802
-X-HE-Meta: U2FsdGVkX18ZWNxOZjsSz1GTuEM+Vw+jkZmJCS7mEqpef3WB9qJ9QCFJw8nviHcBCo2EJ4RWHxCiG5pt7xhmmAshSPimTAGovUIdz0Da3WKesmycp2S7tmOslPvHZs9tFhBhlU1kaioM5LYQguJShk3mrd1NzSHdFWBIfOu98LqrJOQPew2oNA7vz1FK4vrjFmFiFlU+nt1mAKBfg4ZJ55YHXJvS6vHqOwyuz8e2ebKTS9gcgfujv9a5ImYrklVr5pCjJp10vEs39ZzRcwyOmmpr8gogiDao1YutSK+wTo61csAHlWc+iK1yHFvDlEv8JkT/5iISBa5prWGWVpETBmWNiKEyVX+eFAUZ3FdcCVoVknikzNPRj2Oz8GiBdA+2OHXIBA2pX+GpmBoyczJedzxuCMD1rHzXY2tD0QhGH2sOxamp087HRKMLp87D/OH9oyTgCX9CgxqN0KxHSwSBOp8KvI76OR37ntAquHfduYcEfLz4E9Hsm2Y+noJzrmwAmSqvbK8mUn8eGKw2it85bG0NyDBEGiVx1ifV0YOkq51H0FkU4jOdNspZyl0Mwjea+ZHq5yugsRTrflB8EqahVFiAQiGsOzmamwM1TLLe2SViHDxJCrWEZPKqAFzKjQaz+j188DvpVSzxdKOKTMwJ9n8sYIie6k9F29EI1FYBFlwAvWPPCWh43UrHZckw1W4XLVoqNNFzV/RXhsRVKRykV5m81GtIH/BqRm4Lk9o0L7gUWmGPbfBElS54y3ANPEN1NDAT1Yfl+r4GMfI+xenVYoewq4J1NXF8B7owx5pZODyo3KGM0Mm7neYbscZYajKp+fePlfQmROMmKZqix39WPQi50qfAwzxF04JJIZGYpNJnbNiRKD0u2PoCEh9A0xVcaUGuQvKUKZ/adauIJchTCvSaCRe+o1pr5ZTUpdCbhqndGduqwvJ+j+XcKSykgNUo1GEBNGYmSNMHouNrc+0
- 9d1DtKt9
- W0x9NmdBtXXMDgvJAVcexT0tGZGZjI4Ep0hmZ8bjaNgr/8XTo6FB+wolJS30H1o6Cc8E6VGoUyeujJlXJOPSGXPw6RF1lo6xlTXfXKmf/Jg35jOFoxcRvtX+yvagPbObOLBYj4dviJKOhDWPrUBhBxAitOqEIzryENa7vht6dyNVHziJ6v74pqINeNDqKAcz9vuWT3XBe9grLddJDSDm+fDD11TLRI5ZEMl2UCbYKjFdJ6LoKX+uv46C4MA1cVIncjlz5o6UmKFe8Pch0qqc8QaQW39eJsiEE9jDgfPdTX02NnnfJdDPHoGLvWMLRZS7d9/T1N82hRKzmKjFZIEtMT9gtCs6pSwLf0X6aOaex4u/1nX2htBeoopAF1xyRN26rIT1tA5ZEUaaGqxmXQ2/lKz3eYYcRDJ6ks3zz/5yvldTDybf7CwXsIr8+m2ncBhsdZNV09aWQ51hbFNz3Xz0e4Zd/lLNyMsrMuqd4F2wtHCkHP5UVNxm4pkiLM0RkuXVpUzmsVYdGxtpgtIBcN1y0a9GHxhoKD0AYVK1f17X3h0AQuH0R9Eb4M5j4++YNRG1EdIKUXpqekYyupHBQWCc0Tims98F/QmC3v7qdZg/ilC+IP00JbY163CwvbcjUqCE9y/E9
+X-Rspamd-Queue-Id: D3C4C8000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771874220-18138
+X-HE-Meta: U2FsdGVkX1965ILxwzYtFDrZJ/OZFySYh3Zwk22TqyYVjxR+hHioYWqCkGphX7C95T/XjSukHV1bkMfeuB0GH8N1FZrlfwIpV/5LKK0FlHW6B+DwNcOyKFL8eW32go+798uvucd+oicfwC1wny5WLF8aaZSvW+DcjDsj4SM9/5r5eZQ8Bg6iV1ZZg+4qFEcWaOJd0rupUKQVVGA1iY8LfinjxiUIAYV8KXaUaZHCNF5gTeSfioqR0FNWofeWp/uWVKJ0td9CDHf64lNQ9Mv7U2g+VPEKJ8UvFsp0apycNLBR+kVSrAIzL/Dv+IK4uboXKPNuhBMxOnw5LDiRbWIt0mQq4q9DeMQMkjOBbMZyv6ubklyfD7LUXAAD3kN92dQwGxkeSIWIYf4Aw1NxwG/B1U7TgnbsACJYBCAH9m/zpjidJQXTqo9dPNVswrldiuEeeuhAOYWvtm9zgOvCnW96dasLkhaRB1I8vwBA/uwGMEWbVNOiRAlH1u3OPkqzJiICnCX4uWz0zFt2jJ+iKWv1DHc0TURDr9LPJnWg8BBjbBTpEbsvNT1w+KfMLSOjpXUwKlvKoRCqzpipaTVUdgvnZrQyulLdhDuCTHyuqqXhQvbWDF64H8LmOSpwStpEbPopie4kDWw45VnLy78w7DBtKjfBfRvFGkKekdSXlbL6LK1ieDPzqvLkZwhxxjxlvqlFPOnHZJtFkjDqIaZVcOS1i7TqbFksrJwgeI7J08+y6spPijSo7c9ckz64QAYtJCqn2uWa2NpOuGfBXNh26H6UMgyHy0N4ToI6aiVemG/naCejg9YWu02kKCysdP29tcIqOfOZT91S8okBgex6j2CmZ7TJ0RHNJgK4T9tynrgKWyXitN3rgHj6AsTG8gv3ggESb6qtAWxifJCgMXVuzz+hIAIMzr+/kzeRwA4otTZug3SXl0yJ2PLc5lP6gcZA4yty2kuz4WOog+lRNsU6Ygk
+ Z1T8GIj1
+ +2TiETiV9lyrmZzrLs5n26nUsWJAEmiwNdDG0/htYxxb1Nn55zRvteaFk6CyWGpa68ZFMe9scUv9rLcLkjmXSVb+F+BIYPWM1HBzPitBx5RbMF6ev7BMK5H7994F+y11T5y5hp9hMxe4WMEyFCtiq5yIwovei6czpki+rsWASwmpprMIWMItn+ZpcZXbfKgp6GEegVRbkcp61bjgqWJzYmTtNsBlJc0BJd9tuS9guxqmciDKO/YYkLM0kARWqRi8CgIqFNIxSmiGqzuTylJfw5wL96WQJbXiwqqSith6J71BrpWoq6696DTc6bQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,42 +146,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 12, 2026 at 05:33:30PM +0100, Mikulas Patocka wrote:
-> The commit 07003531e03c8 ("mm/vmalloc: warn on invalid vmalloc gfp
-> flags") breaks the device mapper VDO target. The VDO target calls vmalloc
-> with __GFP_RETRY_MAYFAIL and this flag is not in the mask of allowed
-> flags.
+On 2/23/26 18:58, Matthew Wilcox wrote:
+> On Mon, Feb 23, 2026 at 05:39:20PM +0100, David Hildenbrand (Arm) wrote:
+>>  void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+>>  
+>> +/**
+>> + * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
+>> + * @mm: The mm_struct.
+>> + * @pmdp: Pointer to the pmd that was found to be pmd_none().
+>> + *
+>> + * When we stumble over a pmd_none() without holding the PTL while unmapping a
+>> + * folio that could have been mapped at that PMD, it could be that concurrent
+>> + * zapping of the PMD is not complete yet. While the PMD might be pmd_none()
+>> + * already, the folio might still appear to be mapped (folio_mapped()).
+>> + *
+>> + * Wait for concurrent zapping to complete by grabbing the PTL.
+>> + */
 > 
-> There is no reason why vmalloc couldn't support __GFP_RETRY_MAYFAIL, so 
-> let's add this flag to GFP_VMALLOC_SUPPORTED.
+> I like this.  The one thing we've lost is the name of the function which
+> does the zapping, which I think was a helpful detail.  
 
-My only skepticism about this comes from the line in the
-vmalloc_node_range() doc: 
-"and %__GFP_RETRY_MAYFAIL are not supported."
+I dropped it as we seem to have a talent to rename functions but to
+forget about updating comments.
 
-I myself don't know why that may be. Could you elaborate on if/why the
-doc is wrong please?
+This very patch is an example of that :)
 
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
-> Fixes: 07003531e03c ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-> Cc: stable@vger.kernel.org	# v6.19
+But well, I used folio_mapped() ... so ...
+
+> Perhaps not to
+> someone who's deep in "how page tables work", but I wouldn't know where
+> to look for the counterpart to this.  So how about:
 > 
-> ---
->  mm/vmalloc.c |    1 +
->  1 file changed, 1 insertion(+)
+> Option A:
+> + * When we stumble over a pmd_none() without holding the PTL while
+> + * unmapping a folio that could have been mapped at that PMD, 
+> + * zap_huge_pmd() may not be complete yet. While the PMD might be pmd_none()
+> + * already, the folio might still appear to be mapped (folio_mapped()).
 > 
-> Index: linux-2.6/mm/vmalloc.c
-> ===================================================================
-> --- linux-2.6.orig/mm/vmalloc.c
-> +++ linux-2.6/mm/vmalloc.c
-> @@ -3928,6 +3928,7 @@ fail:
->   */
->  #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
->  				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
-> +				__GFP_RETRY_MAYFAIL |\
->  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
->  				GFP_USER | __GFP_NOLOCKDEP)
->  
-> 
+> Option B:
+> + * When we find a pmd_none() while unmapping a folio without holding
+> + * the PTL, zap_huge_pmd() may have cleared the PMD but not yet
+> + * modified the folio to indicate that it's unmapped.
+Let's do a slightly longer B:
+
+* When we find a pmd_none() while unmapping a folio without holding
+* the PTL, zap_huge_pmd() may have cleared the PMD but not yet
+* modified the folio to indicate that it's unmapped. Skipping the PMD
+* without synchronization could make folio unmapping code assume
+* that unmapping failed.
+
+Good? If so, Andrew can you squash or should I resend?
+
+Thanks for the review!
+
+-- 
+Cheers,
+
+David
 
