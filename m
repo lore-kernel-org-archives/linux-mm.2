@@ -4,134 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273A1EC1120
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 18:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77BACEC1120
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 18:55:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46B586B0005; Mon, 23 Feb 2026 13:53:19 -0500 (EST)
+	id D85B86B0005; Mon, 23 Feb 2026 13:55:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4190E6B0089; Mon, 23 Feb 2026 13:53:19 -0500 (EST)
+	id D33416B0089; Mon, 23 Feb 2026 13:55:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ED666B008A; Mon, 23 Feb 2026 13:53:19 -0500 (EST)
+	id C151D6B008A; Mon, 23 Feb 2026 13:55:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 16D116B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:53:19 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1A0057946
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:53:18 +0000 (UTC)
-X-FDA: 84476619276.15.A098894
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 57FE11C0012
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:53:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L+w5Kce1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9EOx8Pr+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L+w5Kce1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9EOx8Pr+;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771872796; a=rsa-sha256;
-	cv=none;
-	b=jkKG0HjhW2aNEpJQGtRKCeU3s3gCTee6nej1suwnZ+BrgewlGB1/NeIyFpBfaf+Qbr0Gai
-	IuHnEb51/IqT1YnmlABLEBpP3Z/+/iPqNXNJ7Zk87QwvYzrTfsBtdE0q68dyM2zkfzLN3p
-	4laAVhwKVR4Mlqkbnnzmq7p/7lKhMzE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L+w5Kce1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9EOx8Pr+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L+w5Kce1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9EOx8Pr+;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3486B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:55:52 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 658661A025E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:55:52 +0000 (UTC)
+X-FDA: 84476625744.08.1D749EF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CE3E2180008
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:55:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jgvBta5f;
+	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771872796;
+	s=arc-20220608; t=1771872949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O5IKO/z1H8Y7JnYsBwyBZT2Ey2CvL7xnIixrsqqWxhA=;
-	b=NaxFUM0cACAjiTZ1vuy/7qQHSRXoJgpLaN82EqxfUPxRyCZcO6oOY3fGT7WDrWQHtE+uwB
-	exEDn8PdrOAcH7VOPjof2bG7UaA8wFd06sjNAG5j9nRgTyWM8/h6P4NJKK6SRemnY4b2Vm
-	UYtiY2WdxRpMdPooC6Cn7MKWrsxC/dQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8FD2A5BD27;
-	Mon, 23 Feb 2026 18:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771872794; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O5IKO/z1H8Y7JnYsBwyBZT2Ey2CvL7xnIixrsqqWxhA=;
-	b=L+w5Kce1AzQA4e75QekwbZKTG9XVtsdJjtOG3wHEn93OeZlxUpsY/FsRfKMokJilnJ77PG
-	59roE1lcPpC3hAO5YhcTvGeTQYjYHvDVkIOhCk/kEPqMdpyPfRPKwSa7Kn5F7ZtIxN8Sdg
-	TrTPGgW/egq+XiDCgjEpRDhTkGxQHs4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771872794;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O5IKO/z1H8Y7JnYsBwyBZT2Ey2CvL7xnIixrsqqWxhA=;
-	b=9EOx8Pr+Rs6qgrD5NYATs35vIZFfN3eo7z+yMGBk+IVJuepaet6tbA/7meP7KvbYSrd8pZ
-	gfTHLO2kMuEFlXAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771872794; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O5IKO/z1H8Y7JnYsBwyBZT2Ey2CvL7xnIixrsqqWxhA=;
-	b=L+w5Kce1AzQA4e75QekwbZKTG9XVtsdJjtOG3wHEn93OeZlxUpsY/FsRfKMokJilnJ77PG
-	59roE1lcPpC3hAO5YhcTvGeTQYjYHvDVkIOhCk/kEPqMdpyPfRPKwSa7Kn5F7ZtIxN8Sdg
-	TrTPGgW/egq+XiDCgjEpRDhTkGxQHs4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771872794;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O5IKO/z1H8Y7JnYsBwyBZT2Ey2CvL7xnIixrsqqWxhA=;
-	b=9EOx8Pr+Rs6qgrD5NYATs35vIZFfN3eo7z+yMGBk+IVJuepaet6tbA/7meP7KvbYSrd8pZ
-	gfTHLO2kMuEFlXAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F85F3EA68;
-	Mon, 23 Feb 2026 18:53:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rEQrBBqinGk4CwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 23 Feb 2026 18:53:14 +0000
-Date: Mon, 23 Feb 2026 18:53:12 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, 
-	YoungJun Park <youngjun.park@lge.com>, lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org
-Subject: Re: [LSF/MM/BPF TOPIC] Flash Friendly Swap
-Message-ID: <jvbthrkxombekk4bbmdqrwvik2qnd5btafb6q7guimxnioaqom@7kjexmbfuzxx>
-References: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330>
- <aZiKQwT7KjWDLspH@infradead.org>
- <CACePvbW6uT5OKDg0RWS3ZBGcppBkz+MREDVXdwSat_qM=Nc5CA@mail.gmail.com>
- <aZxUtFaVaJbkAM8Z@infradead.org>
- <CACePvbWkGk5Z+QueOBNCdrr1mzGxQZbRbfeskOrLsmWEvF5ToA@mail.gmail.com>
+	bh=puGVxrTUkFvnPtmEDiLABXTCpqtFGLbD0oVrmyrxZLM=;
+	b=SrJTIesH+KbZ2HFrgJj8C96J0dFSpK4tc5Kkt3fWXgohMqEK8th/WIuNWOFX5I7RMr24H6
+	KqvyVmLWy1ZVsUXLxAKA9kppguoEC1uAvhsApJAdfDKDwGADVWWOSg9qXioBXsevjmgNdo
+	dTknEZRMhNCbroe9KrExXdW62GLKcLk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771872949; a=rsa-sha256;
+	cv=none;
+	b=JfHjPu5GJVjImitqaHTYpqKaLyQwS/6WDfSs11teWFrzo888DX5pVInISj8YYQXzgqavll
+	dE5z3LnziMpiJNuVofigXEk/xz4K33x/XRbSo2hvVsTUasvsk9Tj/1bvDQ/EpQiTO1gHZs
+	UsPjrr2qO5vXj4l6mn3mjHzWnMhhZ9c=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jgvBta5f;
+	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4942360145
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:55:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11E8C2BCB0
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771872949;
+	bh=Q5Hf8PxTn0HsGWdzSmEeJ1AOfzBulg5cuO6xu0xbVbA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jgvBta5fF6oTtUxBugCo6U48aWTpJgEYPrQABIMLhnToYkJWLK3YLLhPIUiLYY8BP
+	 nFp74m5H9qOyEu4uhQICLo+5YgUyNiv/81noRzH0M9rmTj3NNE0rdYSsnJXSHezpDq
+	 HtLhbCVkln3vwyT6rVrFbsburQevDdv1JJC8SCBxQRjhnUTm7Wztcr/WoYL4H4I5pD
+	 TV4UeLYm62LVyephhT/cZ4gri/HJsKeCee544FpuUNEbF7iXfFkZOffriaxXFTyYSs
+	 50mTxnwxS9dQgtlsFoPVy9HWi8Z3PURF6hpDkkhJ/aby608tMMRFIxRWddo78kFHSI
+	 6jVi2VmPIRS7g==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b884a84e622so704113166b.1
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:55:48 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXAO9XzV7FtSzPMAwquuW/1VxpKj3B5tBmW29Gb6n2b1xOWO9x4DADOaXR5rKPnO7ckpVwISgk8vw==@kvack.org
+X-Gm-Message-State: AOJu0Yz4TFfw3BZfM1xXk+VHZu5lvEA1WRFVu1Lk19b+fRmqiij6l1Hi
+	+KKsRg4NUrXPG6trFJRs2ty+s3mORFZOvleBLa3yz/CegqcgDEfFhE4qd83xgb7Syt+fDDZMJvt
+	usAvCp76Zzdb4YR5mahMRKeFPB80iyjI=
+X-Received: by 2002:a17:907:7201:b0:b8e:14cc:9197 with SMTP id
+ a640c23a62f3a-b90819a0ff0mr716527666b.15.1771872947772; Mon, 23 Feb 2026
+ 10:55:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbWkGk5Z+QueOBNCdrr1mzGxQZbRbfeskOrLsmWEvF5ToA@mail.gmail.com>
-X-Rspamd-Queue-Id: 57FE11C0012
-X-Stat-Signature: gzi7hytz1i6ycbut5p8wun5q7ehb5x3f
+References: <CAMgjq7CCcsh2twG-Ud2b4U0hZrAMV8zmvLaM=NBDvmoaWziPqg@mail.gmail.com>
+ <CAKEwX=O4ishgvhhZ1ssgbDUQewFamkyFT-uCpEWecWfe8SzwGg@mail.gmail.com>
+In-Reply-To: <CAKEwX=O4ishgvhhZ1ssgbDUQewFamkyFT-uCpEWecWfe8SzwGg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 23 Feb 2026 10:55:36 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zOZYuQWmEvSPSmBs6gz3HEWi1-MJZ0=xxV2GkQVRpMMkg@mail.gmail.com>
+X-Gm-Features: AaiRm53lLxybs3hbYWn6dZ-mzt-lSQcIYrW1MZyGgQycAcCVbcmDKxVOUPOd5so
+Message-ID: <CAO9r8zOZYuQWmEvSPSmBs6gz3HEWi1-MJZ0=xxV2GkQVRpMMkg@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Swap status and roadmap discussion
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Kairui Song <ryncsn@gmail.com>, lsf-pc@lists.linux-foundation.org, 
+	Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Barry Song <21cnbao@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	linux-mm <linux-mm@kvack.org>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: CE3E2180008
+X-Stat-Signature: znpepxwgjqh5sgx9rywwz7ecyt6e8ukf
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771872796-232576
-X-HE-Meta: U2FsdGVkX1/44O4LHJjZbqF4xgLEFwPRNQvwHbHi8dhcL9Nvp8RRwjmmFzpmhw0GaP7b5M8u5ckA33z0/MJaxZOWa7d7R6tUQJCtKscHpIwewxfmO04TmBGWwzIINk8880S9pJzpg7Ig7okBn1a1DNtiLMri0ji5U6TWu8bCRg+abcGOou+kR2BTR1QexLs3IWHAxV/Zs4gwYFiEQ9jq9Luz6zNuv2nCk3iDLL1uTdMw/LjNq3gTnOX7cKg50PjUJISMCQcRf/XmXVTLmsV+PStcSQMfJVJ4JU4FdEqrE3MJs8Xz1uPu3ooU3yzJdRyT0Zgi0GRFcXg+0yydtR9tvrDnvbl0xLArannEkDttUwYWxCDrqkpss+4jdliD7YJjyPC+XX46MvzCTJW10/wAjcC+VuOXD3Z5+ZJJ2deecYV/s+2rQgs9OD3jB+Dp1rn/AZ2e/zAvipywVCrpW/SLGrUwe7Z+7ZjViEj2x6Zc1uZNto4tnlL8D6DsvmAaUzeu286dufTT6cyQm7LjffM9RKwm7CVz0CH7ALvFSiaI1phbCWVP8Dh1rSpJEdHOUMhOZwmusHqmnnRny/T8C23tB09hBWy+Y2KdiDw6G50fO+rGn+ghCwuwRkk7xwSlXiPAwxfxbn6YYo19cTUTTUMKAupx3YQrhYJPav4kpzPtW/0EWGASuVHcSldaUC01N1IcysB1eRHZieOC36+5VBSFVO7SBgMJz7xblCEJR6Jse84uKSZrCTUEPejBPwmYrPhWK3jOm4ZBvIAZNew/qxmL3iIGd2XCY5n6EIMH+E1MYwJ8H6Pi7y0w4/jJwBc5ntkpM2lhm5jAwjyxWnML82Hw4BW3/NBM+Bo0iPHe6nYCtHjdMUfrBkfrPpAle8oqrcc+YUBoWhbtPQGTTAkYfVh75aH9HZeiunbTLH83fyAFdBU+F6+Y1wlRNpJ3JqFucTsCr+ry4vax2dt2guvIXuj
- CSFrV+C6
- pSe2IHsyPv3psCQP4QhMrs2dE2pDTcS5f/FVk9xxflB7AAHvebfu/hqbNpiFI/9jPYT39W9v73E9hmL6JLTa7344cq9j7tBiylDlDjzAXcXVtEh0A3K6LtSDkd2KieIYDCr5VQlGHHCB9cOBJpLNVzT9dRjUHzU+yZTkJFCmS/X1SJEw4UkUASiEKIhxNSJxEbiH81ddESmY+QTxhi/DGnsl7p524v7dYftHztV75O+dGGWAptN6IwcAZnmiul4GOKKCf2ioWvIevKg7B2UuDoHRyp6PUN1ZzovZhCJ8QaeV4ZDaWXvE+x3scW7/y0msP4W7MvW0rOa1x+S38D88+KVhnahUvDzW6V2wdi+w1glkfkKdvjFW0GsT3pn98Ssej9KrW
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771872949-177775
+X-HE-Meta: U2FsdGVkX19/kbOZYY7lFSsMQiyNBE+LLxdbNR0cqu/MHmXbhuDhjseIYLEw+GC7C/mx/QLXC78T+HTMdiuLrumZZIYKV1Sf8HIwAgSNaWIJpq7tbcf8gjLqGUavNbNUQT36h4WcZtmazlTQhdRWgjiQ08bOF3RgZBLhzbUB+L0N8Gp1zHXEWck20oQv9c6FeeH8bHg+9ZLau5lvXgY+q8FjAppL/il5ctYwE3vA8cXi8rynRV+tSQYxCiaSK5kygaoAKiZ+kn3ImvqOin9+Edwg3aCwFymsr5Dlq9wG029SVR4QbD+ndpG7Z0k74oBvT8JSRkLjunx88lElimo/VuDzk9/26XQYjMOunVWy+T7XA0m2lcDp1P19Efsi2tMXikqTzATZm+XE6v89MPi4DHZr3BXj39roQbq/g3wnEqk1zDFWmR85Q8GOqs6qTKrczkbIvE0ED+lCJDt+hwOuw4Wa7tFHteuxKheHMEMV6ws4KOgICnz1rVo+B68gvf2LfaptU5z//L0z6KDnsM/l8s8dt0vDcgbLsdyxI+3litl9cgMROFjtDCc/jwB17MTkDQBYuEPCcVkeIGcjmqpgLkBFXRbUhaq8Vcson5MzSpOMCnv3g4feRDP3dmwO1ajvtmS4OxCj3CxFBsoCQDYo/c4ykUyVSIqgtLJPsInk98fS94/AjLQS70GlsowQwe1BUNDdbI26sx/jPhE6ULsCcYbdxxjPUwsN0pqKAwyNFxrRzX4bU0xpfKgvXLlE+jzlAmcbaDsUhba9FesTvGJuCGha8f18eaUdM6dBKWL37Vk9XXKk4Ce24VUTfrHkDOdi5s7+QJRfFMMhoNAqFZ2Z5k9Y/binArme2S3TdROHxQuEl7r5e3zJsBxIWW8NnKb29mkOzSJnXgGoE3A4aNHIYN1k0YeLdnS51yi1QMOFsK5trnQYBln7m4iVjcwM4bbu4ODNgAHF21M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,59 +102,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 10:15:14AM -0800, Chris Li wrote:
-> On Mon, Feb 23, 2026 at 5:23 AM Christoph Hellwig <hch@infradead.org> wrote:
-> >
-> > On Fri, Feb 20, 2026 at 03:47:18PM -0800, Chris Li wrote:
-> > > Hi Christoph,
-> > >
-> > > On Fri, Feb 20, 2026 at 8:22 AM Christoph Hellwig <hch@infradead.org> wrote:
-> > > >
-> > > > Honestly, I think always writing sequentially when swapping and
-> > > > reclaiming in lumps (I'd call them "zones" :)) is probably the best
-> > > > idea.  Even for the these days unlikely case of swapping to HDD it
-> > >
-> > > For the flash device with FTL, the location of the data written is
-> > > most likely logical anyway.  The flash devices tend to group the new
-> > > data internally to the same erase block together even when they are
-> > > discontinuous from the block device point of view.
-> >
-> > Yes, but that's not the point..
-> >
-> > > It is easy to write
-> > > out sequentially when the swap device is mostly empty. That is how the
-> > > cluster allocator does currently any way. However, the tricky part is
-> > > what when some random 4K blocks get swapped in, that will create holes
-> > > on both the swap device and internal write out data. Very quickly the
-> > > free cluster on swap devices will get all used up and that you will
-> > > not be able to write out sequentially any more. The FTL layer
-> > > internally wants to GC those holes to create a large empty erase
-> > > block. I do see where to pick up the next write location can have a
-> > > huge impact on the flash internal GC behavior and write amplification
-> > > factor.
-> >
-> > And that is the point.  The FTL will always do a bad job with these work
-> > loads.  You should not do overwrites, and can do much better
-> 
-> I am not sure I understand "You should not do overwrites". Can you
-> help clarify it for me? Let say we always prefer to the write to new
-> clusters while some swap entries has been free. What happen we run out
-> of new cluster to write? Wouldn't we be forced to overwrite the
-> previous free swap location? It seems to me the "overwrite" is
-> un-avoidable if you keep swapping in and out. That is the part I am
-> missing.
+> > - Is 64 bits really needed for reverse mapping? For the context, reverse
+> >   mapping here is a swap entry recorded in a lower / physical device
+> >   pointing to the ghost / virtual device.
+>
+> I think you can compact this a bit. Swap space itself is not fully 64
+> bits right?
+>
+> Just not sure if the juice is worth the squeeze to save a couple of
+> bits here and there, especially if the reverse mapping is already
+> dynamic :)
 
-See log-structured fileystems. I suspect that's close to what we want for flash
-storage swap.
+I think we should actually revisit the need for a reverse mapping to
+begin with. For swapoff, we can probably scan the virtual swap space
+looking for entries that belong to the backend being swapped off. Not
+as efficient as a reverse map, but still better than the status quo of
+scanning page tables. I don't think optimizing for swapoff is worth
+the consistent overhead.
 
-Also, FWIW: the cloud vendors have fake SSDs that while have negligible seek
-latency, have extremely low IOPS values (e.g AWS gp2 can do 100 IOPS on its
-base setting, and scales up to 16K IOPS. gp3 can do 3000 up to 80K on the
-maximum size). I suspect swapping on these is a huge slog, and we would also
-like to write out as much sequentially as we can here (though I hope no one
-is *actually* swapping on these things). Also mechanical drives. Log-structured
-filesystems were originally invented for these too :)
-
--- 
-Pedro
+The other use cases are probably cluster readahead and swapcache-only
+reclaim, and I think both of these can also be revisited.
 
