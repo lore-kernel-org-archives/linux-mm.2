@@ -4,144 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D82EEC1130
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:47:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDE63EEC285
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 21:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E99786B0093; Mon, 23 Feb 2026 15:47:06 -0500 (EST)
+	id 8D81D6B0089; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E477F6B0095; Mon, 23 Feb 2026 15:47:06 -0500 (EST)
+	id 87ACB6B0092; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCA816B0096; Mon, 23 Feb 2026 15:47:06 -0500 (EST)
+	id 72EEF6B008C; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B57BB6B0093
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:47:06 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 76A058ABCC
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:47:06 +0000 (UTC)
-X-FDA: 84476906052.03.DDA387E
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7114F40012
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:47:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sVmtgA2Q;
-	spf=pass (imf27.hostedemail.com: domain of fvdl@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771879624;
+	by kanga.kvack.org (Postfix) with ESMTP id 5DB336B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 178C51B5C28
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:50 +0000 (UTC)
+X-FDA: 84477033900.20.8435549
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2D9EAA000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=oXibkeaw;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
+	spf=pass (imf25.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771882668; a=rsa-sha256;
+	cv=none;
+	b=3F6bMpA9qZAwt+IsROpZbIwyDEZD7YybD3qd8+Z8PlKbc/NF3rLUHd2GF0B2bzfW233o1u
+	5D1rygqjatkVioUs5YSCKuITYmyJtVxtIws3Z03wiuadg6B/VoBjF54m62ZEFPqHDbfYTS
+	MPKSp6foLAACHkcEcFsMWTGOpzE2gzQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=oXibkeaw;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
+	spf=pass (imf25.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771882668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LLvPmAWJUbvsu9W27Db/ZOo45wfaEQF3rbARD4LQ3sw=;
-	b=eY31VEDYdj/HWkypnZXseQc4uzx26XPRaXWS6E3VJNC+MlJ6KLbQKxh0Wb0v8j5Lt6Vn6L
-	8qvPRc6cKIgSCylCHwGUgJX6D/VofFjAqluG3HW2viEFLgWZFc0IB1HkqezWQRDWcAo0u+
-	LAiVFtGWm/OHvyrqoLBJPxwj70Bwnuo=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sVmtgA2Q;
-	spf=pass (imf27.hostedemail.com: domain of fvdl@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771879624; a=rsa-sha256;
-	cv=pass;
-	b=yh/r5OmkyjDh5kppw0/Ms/OW5eaRzE/w5iVQqMon+wUaXDZkSvaNjUc6sacH5/nj7mhFnO
-	74Bt2pHDJF1r1v3Yg3h/mlcduEPP8kHN8u0QcfOs5uK4cwnSXZrnZ8BkmmSR02dCsbTUfR
-	Jq0+Dk0fP+C9RDtRfOJLJfw13tYmMaA=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48371d2f661so555e9.1
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:47:04 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771879623; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Cg0sjfR9pp0GXdv7ypb8vmmlqqUkSjllyzXZr+RqsQDlDPMcXViL1chotTbEAH7pka
-         WajAmL8uIcPWTd+fJKfWAllBr6RUh812dCl+h2O9kpDg3kgedKyWDaGrablG282OaIpW
-         KdELduhlMsQmtTfTvI1nHM1VApVuaX8Cgz1Z983eKec0j7FgxkikhQymmtL13qRJu8XY
-         bovdbJxwKqd1BP7foKDrQIeZEVja1dCpTr5Yc9EZSMI0g9vni1IR46b4Fq1vmxYMHfat
-         N95YtGgo1QcSZnC/BuAob3+EWIrmK8K8d47YUO0uY6hwxTekEpM0ilu3hz9gqMW18HfK
-         vJbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LLvPmAWJUbvsu9W27Db/ZOo45wfaEQF3rbARD4LQ3sw=;
-        fh=PN9Af/qwa/tEApiPOYIa6yR+ALUl1fxDUZaMqsHMra0=;
-        b=fPJfZVD/b7zWEZhAm8htUkyy+DIqefOOWJIJqFPiJQuiBgd8Lr1a8MC4oH4diRs8V/
-         xHZYl82VqnCPIeOe9CnV1n74Jii1KVtf40NQUqoMcDIFxXw9rvaaPYx3lEbrlGdxyRqU
-         8IlK63VbwhcxNWExpZhSudsFuLk0PzhefUxMjymqhXtHwtFVYCx/HtSNTsOuvLDv+Mr+
-         DP1re86B9GU29+lB5eAaC3rgXa7nkxhbHKXhcbyoCkqOvEqz6bftcznkvv56nuBNxmTE
-         AxFLCHJT9MOQJDnYEgphbWWthv+AhRimOn+6pIfQKVaxEnGtzEyUAZqaVsh5Ub23+Dw9
-         h9+w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771879623; x=1772484423; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LLvPmAWJUbvsu9W27Db/ZOo45wfaEQF3rbARD4LQ3sw=;
-        b=sVmtgA2QxX4zfgYC1io00nBQjF/6D/tsODX4dN8qkiOsA3b15R3mktHmwvHzyV6KuQ
-         sIRGhoGBbwVyrbAHi5llYgEJnqJkycXmPmDVAQ6sHeLYSOyvcVNp4pZ9Oy7jdCcLI3JT
-         vpD0x5B0u+k4WP4AhnjcyZGqNyxwKQI1Kq67hEGIEK/HTckk4g7U8xBUnYGmJmpNsHlM
-         WfPn5G11g26KDfaWqXfhYdGMtLLWt4EjpPiLK9JmDCO6hAxp8fGs3HXGg87HB2UXM+pk
-         sMbjiN10SThXoKiRxW1Kg6z9wlchLuh4cAqIPZ7xHNCrK8bL3VfQyY86mJQSgDIrBirj
-         a2sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771879623; x=1772484423;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LLvPmAWJUbvsu9W27Db/ZOo45wfaEQF3rbARD4LQ3sw=;
-        b=rdO9tgS1Nkqfnp4+kavZVcdTAdrWsuWng+0hXR/+HYAKZaVim701ylKRESY9VyA+pA
-         iDZUL4fBdKrZ1NKPl8lcPjHIlcWoN9CT6jbSlH/G1pYPaNimVilO2Z9YHqDkSVj2Rkwz
-         itrhrNW7PgXb3rlCGhL7t992o2cH4dgOYZz1OekV8OjaX6iReIBHjPPE6xMEXvLPnjKD
-         YAK1cx6OK2xbXIugVCuHJK/g2exQgYt7mki3RDDzQiB4yLpahYuw04NLNy3y+6+WlC4G
-         es/qNnrTxXIu4Rt08b8otl2h3dOclUnxIJVMO0xgid1MHd/+LvLErqlEM4+QmlKakhMy
-         Hl/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVv20KQnynbebrWOeCbkAKLJ+Qxc8TuWgVGSrmmTnrHiSB3dp7d4gTpGSl3Ez0jBgIrjRsJLOoppw==@kvack.org
-X-Gm-Message-State: AOJu0YzEf+6wj0IMlo8+FKEsgai6XxhAi0FyWsxwKADJapnwOP9gwMOX
-	tHPtHsmCBR/AN+eq85Qc+lh03rQs/1U5HU0ckF1WjGNj2dsYhZUhxGLFWKnxX1MJs8iUH15a49F
-	FTCSVQSf6x947sE+KHWbCe7F1l3YQFIvkJQENUd9W
-X-Gm-Gg: AZuq6aLzBYYVOZAoansyQ7c4HPfzrqah2vAQBrezxCTFyCocBivoGdxk9KGYM6Dgi33
-	Q0uuLOA5TffBUvF2nUTkQIBGAefAD/7vAbRC4Vq0ePNe+t+yyKo3OTU862w7EActKFEqm+j9vaH
-	cKU/bEBr3cR9+zRq068eGapU9Ex/nGWRbT2kkwkgZuduyb+UWrsphgoTsT7n4Q5aKCY04hMkipU
-	elEOiifN/cL3W/sHIK0YHd4qvlSnn8m78TmTA2MVrg+Mm3mFOU5ahsmMwRLRAuySosN0PbsLe4C
-	xy2W9fA=
-X-Received: by 2002:a05:600c:4454:b0:477:86fd:fb1b with SMTP id
- 5b1f17b1804b1-483b878837emr163415e9.11.1771879622202; Mon, 23 Feb 2026
- 12:47:02 -0800 (PST)
+	bh=ga3gT5t1zT7cApDJCtbfMkDZL1jlzDzDdU28dSqvl28=;
+	b=hAUJsgEs8goSqAXpL3FStV7H7NIKXxLpBJRPbPBtNvmneteQPa0c8ASgJWIXUzYIjmNzod
+	+G2dpv2jvL1t9f/kyaDM01uj7QMC8Fbo76750Cghn2MQntLUpbO0kVBFm1ylNJn4vXAT4x
+	DNP/DU/+Wo1yT998rVBiPkp3sKL2AmY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1771882665;
+	bh=jCJGZ6yUGTwLfNQ0j3wLPG2oxfk3xdLAhlgEKrJztzo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=oXibkeawTtBhdCgkokKZVvCDClIoBZw74G+NRsqO3JeF2CvkX7TfLu/XPPikJkq5U
+	 O7BGyjFjyYlamI+I9UAT10MxcWExb2o40skLZ0D7OlSKLtyB/MqVmPM2zpae9yCUVh
+	 M7KB9Wz2+JVb5JDJjaua8Z3Nk6Bj5fyOiqqMfdV8=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Mon, 23 Feb 2026 22:37:44 +0100
+Subject: [PATCH 2/2] mm/slab: constify sysfs attributes
 MIME-Version: 1.0
-References: <20260202155634.650837-1-kas@kernel.org> <20260202155634.650837-9-kas@kernel.org>
- <aZJTLwV2SaaKu1k_@casper.infradead.org> <ec4a9a1e-8c08-4879-a787-3b9e0bc38160@kernel.org>
- <aZyZ2-7Xr-zUnInC@casper.infradead.org> <9a972701-00b4-440d-8bc2-24b8dc469843@kernel.org>
-In-Reply-To: <9a972701-00b4-440d-8bc2-24b8dc469843@kernel.org>
-From: Frank van der Linden <fvdl@google.com>
-Date: Mon, 23 Feb 2026 12:46:50 -0800
-X-Gm-Features: AaiRm53V0083kx17uKl1QJe6iH0-QHdntImophIuh0y8aAfRVd2RH3p-ebZ7RBQ
-Message-ID: <CAPTztWbr7y0myXB17Vz5HEZTw8a3PJ4qaxRKgtZmt-qXx1ofeA@mail.gmail.com>
-Subject: Re: [PATCHv6 08/17] mm: Make page_zonenum() use head page
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Kiryl Shutsemau <kas@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	Usama Arif <usamaarif642@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260223-sysfs-const-slub-v1-2-ff86ffc26fff@weissschuh.net>
+References: <20260223-sysfs-const-slub-v1-0-ff86ffc26fff@weissschuh.net>
+In-Reply-To: <20260223-sysfs-const-slub-v1-0-ff86ffc26fff@weissschuh.net>
+To: Vlastimil Babka <vbabka@suse.cz>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771882664; l=2029;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=jCJGZ6yUGTwLfNQ0j3wLPG2oxfk3xdLAhlgEKrJztzo=;
+ b=u66knv3q+Wk6YoFvrfVTHgsEMtuKPgGFNrimyxL8rKC6zLqhYkhgiqCP5J7DFYujF86ynB+sN
+ ez+/dKQObdECJ94JBYGfrubVSOrUWYXy1NBZccpdpsCCo5daeFAhHDB
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-Stat-Signature: i65bfmt7d9sb4br4agc3jyxs8wjyd755
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7114F40012
-X-Stat-Signature: xs81nnw5w5sgk7ms44arewdxmjtyhem6
-X-HE-Tag: 1771879624-347038
-X-HE-Meta: U2FsdGVkX18tkdwVMbiNCT1B3f1zpwtnXuBdmrsOMtY77cnvtm5cngAfNNxIsAbUhLmnMFrOy9U45h3ndQNke6JmU+DI8f+Q8Gvl92ttS1C5VSJPPGEa+MDa7/FggA3xrKwmZjKiU/d+j7IFxm7IuyX5HIfCK5MwIrDLtdV9QMGYFnwj+RwHCYcGs7wVAxG3d3T77FAFbsIT59Jj7ZNWYqGSrwukYO/LCVMEDgSp4QdEq/hFta3/DHeFrhJetZJzICzXa+7oTlMxVh/K/3lEq3gw7vbr9UkigRnRxC5hYLiCWLrQLpP4uCyCPpeovz5MTBhzhMuVCnUzgHPVV9KSEgkduRapeeAUEDco8qtphK0niB1RNwjX2f2U7PRxxbwED3wapt2il7mc0kPmWJ/3A/wYD20k3o80M/FyAP/q6trhIxDr3700kDxrLVNFdz3SAJXZAmqdHd2TjVSzlGq6IW4L5xZugzJ3mIMjjqY4YuK1iws/9qJtlIQZMrCURLaxSOVINFex2adHdsydAgSohfRWJfkN8EfSIPFaiCOHpkpMYaDEweCFvPTtEadd02NmpPIVIKZh//q2vY5Wn45PUVUJtw7TJzZEKy4wFwApW64LAAujlgDKPUwROJWWlYyneZN/o5d6uVfFOP75NkT8S4Wd0ZL1mqikrV1WxLgYHHPOCkg56UCHY95L3cowQwn0rXiiHqy35K1mafZHM4Ol9B+/Gqw1pdIqDv0bOvl2LPkyfXp0ReDqCpri4AOmWZxh3qPh5hlwQ9E++0Y0bM6Pj57kpJhF6ey+Aevvfj+OkbQCIeQJvCCqvyQytJQn4SDB7adSIjtWyDT6116WuqFnHeQh1krJj3mGVQESyB5HPszAJD10s37aM+9eZA56DTP9inBg7B5OOMa6Xny3dhC4F+KCfavJqL66FOT08uV8n+/SX/ThVzx8+PVLOTQghgSfbPSqj/mdSgwrBKPZe3w
- tqTQVPLv
- ped5g4RHwqEEXdS8VABXmViTjuc47OguP+iXfX9Ld7KkFYWQ/EEEg9WsveWhsW6ZFTXoq+2YG4CP5Nmiqz9M72qJoLO9qAWAo+nD1WhPDfLG7Zz8+o0o6gnDqYB5E2yT1ZdptSkGRLyy/ZV5TjspQ9+viS3icj68rGPqI+yjBRG0pXSLWKmgDLuJ5qMhL6+A87Fv1foJqoAniEfkmPLBmpA1Ge0Y4BzszGkDMFFDpv+ogSW5gYDpZjaZPcsDH/+FQVcjIuqVgGROWKSsPj2Qh5pJQnnx6GKwKJj0nrop8LUC/WiPzQwfydTuPZg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2D9EAA000B
+X-HE-Tag: 1771882667-824098
+X-HE-Meta: U2FsdGVkX18QuXfmjVyBixcfhuZfchPMp9BBt0RD0EyxHR2tU34YKiSejS7bfcEwHoY3PtyDI7SDGmOKLc28dv0M8rYMRbOoNUQJWcyr36gnnPV3P6Sil4EPgBjmyO7k8VfEyGEnZgfNpRPkxIIpZT2MLJ+EaL6eNnQLCIvsXzjLOm7t7Ah8RdsmvMw89APBCHYOFBmdl39pFK/xqXh51hiXBuI2xyUD7Sm72DNzAaqesGoKwunzivp780ueP9kgRZDPufeYTpGSNP52O47vTptKgRD0yW2/xGv/BVWVLo63tYSdE6z9bdRG+4CMgnDNjj6j6AmCgBUf0/BweeLsFoMbgRUCqucrSgPfNkk7OVKags5DwzSCJX6OflhtBT3wT7eVeeVed3mUu15tYXtd74p1Bhmveb1pSRoZVTLDzgwQS1a1wn1ltBZl9cdaw9qY/wKXV61wWjLYDDt2HwiUZMYRKKHPDQkuLnPSwfUVvX70QbVP9vkTln5GsJE84NbYBSbdCWehozh4LMu4dJ/fvlQkY3J2P3mRwODJ24rV2m8YLPNv5TkjiOH8hLKeyr6HiXG1fUECV4rpJLB/gGeMaphuXdmKz0RNYDgCFpP4TlhtHikr+ZVnaZQNLuK3WVMiULECAQT+llRG5j5Pzy7fx0Vx4dV8QiE29ZCeMEafOmiCrW0f9ucl8Y0dDix40uO59MvAloeloBDzD/dPbhzH6DoKwyFDMl98aQzS04ONWFHSTM6y7yOT3d0Q9686yNS3qTJ96Lrh1b4VzqwfPLR5oxZGdIS9CYDk1vuq0Lkenyua36K1J+/sfsElcWg6hdSZfdz+L0XQLbuiRXKSGCRNOQxoqFN9jM6uotn/Y/lUlvfT3jXWzVlnPWpGVVkDgWrOFTn6f151OnTxfyiovqKyW6/1oAnydUIH72dgHJxCkN8jrA/GAf7hXcHOTb4fufssfbetk8lvOujIAkqJbcM
+ UAJ9SaTG
+ i8XagWN/x0SKjiErgNG9nezy+MjRZSkdgc4ojZ48718aKES8y0ElUMT9wDKDA++wR+xQCiEf/r5ULsqrD8evi8LvIzYCkplpc6bW0m33M1X0yZ6tGF3xisccpJvduQPgDvAc2VEBMBlpJroLZ4u2M1BliFbVOu+s3QKhKoIqXz7kGWtx8u4iRFYDKxpDaToJbbmWqZma8Vme2E/o0HjkzwHhHsF0BeLElbiODyD10MwMOIWBSpFsjwhnxHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,51 +95,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 11:32=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 2/23/26 19:18, Matthew Wilcox wrote:
-> > On Mon, Feb 16, 2026 at 10:06:57AM +0100, David Hildenbrand (Arm) wrote=
-:
-> >> On 2/16/26 00:13, Matthew Wilcox wrote:
-> >>>
-> >>> You're right that different pages in the same folio can have differen=
-t
-> >>> zone number.  But does it matter ... or to put it another way, why is
-> >>> returning the zone number of the head page the correct way to resolve
-> >>> this?
-> >>
-> >> How can a folio cross zones?
-> >
-> > I thought 1GB pages in hugetlb could cross zones?  Maybe that used to b=
-e
-> > true and isn't any more, or maybe it was never true and I was just
-> > confused.
->
-> I recall that 1G folios could end up in ZONE_MOVABLE (comment in
-> page_is_unmovable()), but my memory is fuzzy when it comes to crossing
-> zones (ZONE_NORMAL -> ZONE_MOVABLE).
->
-> Freeing+reinitializing the vmemmap for HVO with such folios would
-> already be problematic I suppose: we would silently switch the zone for
-> some of these pages.
->
-> When freeing such (boottime) hugetlb folios to the buddy, we use
-> free_frozen_pages(). In there we lookup the zone once.
->
-> Likely also problematic :)
+These attributes are never modified, make them read-only.
 
-HugeTLB folios weren't supposed to cross zones, but they could do that
-in some cases for bootmem (memblock) allocated pages, causing the
-issue you describe.
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+ mm/slub.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-I fixed that with 14ed3a595fa4 ("mm/hugetlb: check bootmem pages for
-zone intersections"), so they won't cross zones anymore. The other
-allocation methods used for HugeTLB folios, alloc_contig_pages() and
-cma_alloc_folio, won't return anything that crosses a zone boundary by
-their nature.
+diff --git a/mm/slub.c b/mm/slub.c
+index a48ea23b1728..73051cf77353 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -8833,7 +8833,7 @@ static ssize_t show_slab_objects(struct kmem_cache *s,
+ 	return len;
+ }
+ 
+-#define to_slab_attr(n) container_of(n, struct slab_attribute, attr)
++#define to_slab_attr(n) container_of_const(n, struct slab_attribute, attr)
+ #define to_slab(n) container_of(n, struct kmem_cache, kobj)
+ 
+ struct slab_attribute {
+@@ -8843,10 +8843,10 @@ struct slab_attribute {
+ };
+ 
+ #define SLAB_ATTR_RO(_name) \
+-	static struct slab_attribute _name##_attr = __ATTR_RO_MODE(_name, 0400)
++	static const struct slab_attribute _name##_attr = __ATTR_RO_MODE(_name, 0400)
+ 
+ #define SLAB_ATTR(_name) \
+-	static struct slab_attribute _name##_attr = __ATTR_RW_MODE(_name, 0600)
++	static const struct slab_attribute _name##_attr = __ATTR_RW_MODE(_name, 0600)
+ 
+ static ssize_t slab_size_show(struct kmem_cache *s, char *buf)
+ {
+@@ -9240,7 +9240,7 @@ static ssize_t skip_kfence_store(struct kmem_cache *s,
+ SLAB_ATTR(skip_kfence);
+ #endif
+ 
+-static struct attribute *slab_attrs[] = {
++static const struct attribute *const slab_attrs[] = {
+ 	&slab_size_attr.attr,
+ 	&object_size_attr.attr,
+ 	&objs_per_slab_attr.attr,
+@@ -9323,7 +9323,7 @@ static ssize_t slab_attr_show(struct kobject *kobj,
+ 				struct attribute *attr,
+ 				char *buf)
+ {
+-	struct slab_attribute *attribute;
++	const struct slab_attribute *attribute;
+ 	struct kmem_cache *s;
+ 
+ 	attribute = to_slab_attr(attr);
+@@ -9339,7 +9339,7 @@ static ssize_t slab_attr_store(struct kobject *kobj,
+ 				struct attribute *attr,
+ 				const char *buf, size_t len)
+ {
+-	struct slab_attribute *attribute;
++	const struct slab_attribute *attribute;
+ 	struct kmem_cache *s;
+ 
+ 	attribute = to_slab_attr(attr);
 
-So I think that's all good.
+-- 
+2.53.0
 
-- Frank
 
