@@ -4,108 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5A6AE98E0F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 09:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 761E3E98DFF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 09:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF6566B0088; Mon, 23 Feb 2026 04:36:56 -0500 (EST)
+	id D3CC06B0088; Mon, 23 Feb 2026 04:38:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA3AE6B0089; Mon, 23 Feb 2026 04:36:56 -0500 (EST)
+	id CEA9F6B0089; Mon, 23 Feb 2026 04:38:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5B206B008A; Mon, 23 Feb 2026 04:36:56 -0500 (EST)
+	id BECD06B008A; Mon, 23 Feb 2026 04:38:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C35F36B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:36:56 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E73E13BC0F
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:36:56 +0000 (UTC)
-X-FDA: 84475217232.20.0BB1BBF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ADA896B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:38:58 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 619111608FB
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:38:58 +0000 (UTC)
+X-FDA: 84475222356.05.EB0123A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B2ECA100003
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:36:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="OCS/Oxe+";
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id A3C5240003
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:38:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WCIbS6Uo;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771839414;
+	s=arc-20220608; t=1771839536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gT5iInjxDhSQB4omwEw633TVDuZHS7fTWQCIfSqEbeE=;
-	b=6OtxSxZyXbPkAvuWS0Cb5g/xwpJwgbRMmRDVAhbZwhFHrkkv7xYCWw6wcP85zz1VAh0il6
-	sdg6YgGdl1uEn9yrho+RSWSZ87n35ZOoMYUmIm9M87KxLgD4NTGuRmqcYZpyEQuUO7cktk
-	M8h6bZbFr/fldH5/qTZqa2xZcI3QSMs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771839414; a=rsa-sha256;
+	bh=Kr+1nly6HjwRHjmm0DS7mR6q6FMVSK4aJ9zM17O0MqM=;
+	b=Y2P2OHGmoQ7Uedfi2UeiUY0Jm3Uaep0ay3krwFhfvjXYYlWSFkT/e6OhqjiRGdl4gTTcRS
+	15BAnzxJewpTX8VWb+qelYeI4ybM92Om03GV7IoIuBLnBad9gwc+jQSPlx72ONmmiiVNED
+	hc0QlmhyPwL/9VjOqB0tDFkAfauA3Mg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771839536; a=rsa-sha256;
 	cv=none;
-	b=zhSS4KdNrMcXbVrsnAR6/1pX6KPLbh6DjbsUF4ffLPF7IxiegzxHdz8swmPTkgS6tj3l+a
-	xdyzt4t22DxpLzbEt+0n/W1LtaUOhUeq+go4fzrcgnwx1zllbD7wDHLfL6kjyUDMjL4hQb
-	Pa4g/AQva1VgmfTGz7PXkNPmhzcVoi8=
+	b=KiIIMQ4U7WuHR1trJ/1UGrZ1roEbbZUTbDxOrdPlgeQltVr7GX2IxRH3JhPxBE0gX+YfK+
+	kjdR0Ug5Sm0vSdu5DuDs0qvxPfLiaa2unUFd6TpEXJvjhieLsZ6XvJEZ9Xy3ksCEq3sIlg
+	L2Ch5nwSIofysv+467NS//zyUYOqdkE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="OCS/Oxe+";
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WCIbS6Uo;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A65D960054;
-	Mon, 23 Feb 2026 09:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB8EC19424;
-	Mon, 23 Feb 2026 09:36:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 07D866012A;
+	Mon, 23 Feb 2026 09:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8289CC116C6;
+	Mon, 23 Feb 2026 09:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771839413;
-	bh=0jMHGP/ybufSz9lSb0ZxZMotoqEwnfv1L084yPjko08=;
+	s=k20201202; t=1771839535;
+	bh=5WaSHOyxf8o8JIkYIHNkBbYYfMUiu9f8Sn5n8UMdebE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OCS/Oxe+Dxgz+x+xdUK/MYBO0KYN9A8SZFhWmTCCYz09A6lLOmm0uN5o6h7jMzG2Q
-	 jRFenKp9st0gV3TjgABTQgDrtgQ4hthtQYeoS8BvjHkxFb9TZa+DzTqltblbK0bnZj
-	 PTURObvt0rZihgvX4BA4ptBpDGCg21GZiA8k6fRayqylGJCXCLs+FligqQjx4JlxJ8
-	 wtf6nUlUn96LYP8M84pt9Zs2vz1o92hBGuSRYaOBpe7yA9Nxf547jnW90lIsB1uO9R
-	 TW30TzjPUMgqMt/5wwjjya/3hUZIk5rkroJnbqCWY1RiILUhVwYeJVt9SE06Rrnl22
-	 BMoG/sCdcY2zA==
-Message-ID: <492f2fdd-3f1f-4303-b512-ef90b649910a@kernel.org>
-Date: Mon, 23 Feb 2026 10:36:36 +0100
+	b=WCIbS6UofZDuAMyv34cd6s4hI/RdQvV9x7WgYKKNb2dhDS11pnMvTdGdZZd/I5m30
+	 Ny6CRUBEmG8iMK2Vg0sJPGpScgn6H7zOrODdBRQlMAGNm4KpETpibYDV7nP3ROin/1
+	 ZOONuE15dArk4LlkVFm3aiYdLlLc9+eyoCtqGIbuo8NWESXwFhztcHP3truTOoJIht
+	 Y2jKwsgtLGI0G+T/9KyZFrPcLEqwr3dHG1rY2Gp/1fnxUcTmtIl7WxXGLwo2KVHAvs
+	 p3Ns2RhXSYWLxI4nmB7dCTWuzIzbkRbHYTEwLqxS2ZuEcLEvSSPp7kvndFFAt95L6/
+	 H1JqsLdMXuCFQ==
+Message-ID: <efddf2e4-15b0-4fa0-b9eb-99b72c9b014f@kernel.org>
+Date: Mon, 23 Feb 2026 10:38:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 00/11] Zero page->private when freeing pages
-To: Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-erofs@lists.ozlabs.org, linux-block@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Jason Xing <kernelxing@tencent.com>, Yushan Zhou <katrinzhou@tencent.com>,
- "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
- K Prateek Nayak <kprateek.nayak@amd.com>, Davidlohr Bueso
- <dave@stgolabs.net>, Eric Sandeen <sandeen@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Carlos Llamas <cmllamas@google.com>,
- Alice Ryhl <aliceryhl@google.com>, Damien Le Moal <dlemoal@kernel.org>,
- Johannes Thumshirn <johannes.thumshirn@wdc.com>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Gao Xiang <xiang@kernel.org>, Yue Hu <zbestahu@gmail.com>,
- Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
- <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
- Chunhai Guo <guochunhai@vivo.com>
-References: <20260223032641.1859381-1-ziy@nvidia.com>
- <aZvXevheBMQ6LuUu@casper.infradead.org>
+Subject: Re: [PATCH v2 1/2] KVM: selftests: Wrap madvise() to assert success
+To: Ackerley Tng <ackerleytng@google.com>, kartikey406@gmail.com,
+ seanjc@google.com, pbonzini@redhat.com, shuah@kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: vannapurve@google.com, Liam.Howlett@oracle.com,
+ akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ shy828301@gmail.com, stable@vger.kernel.org,
+ syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ziy@nvidia.com
+References: <cover.1771630983.git.ackerleytng@google.com>
+ <455483ca29a3a3042efee0cf3bbd0e2548cbeb1c.1771630983.git.ackerleytng@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -152,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aZvXevheBMQ6LuUu@casper.infradead.org>
+In-Reply-To: <455483ca29a3a3042efee0cf3bbd0e2548cbeb1c.1771630983.git.ackerleytng@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B2ECA100003
-X-Stat-Signature: xycxyiodg96164mmjewjc8qe3f8x3qdz
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771839414-565192
-X-HE-Meta: U2FsdGVkX18EAH49YVhK2Jfbdqfxr1R18+Xx34Q0+XE3kGuF9JCdeXsv5jau5GIE3ghXJ/O1ObI7nXkRXUyPp9hwlb3/unrrWLxfTWyRuYcZ2ZWu1feyuxN8Cho92Ez5krkR5qxt+0FA9CMVNKuIVDn4yhtjPV1rBACZNN9YeWdombSMKmradMzgEp7pTmopshDoIXtvnBBh/4POAuWH2zhun5hfp+Oku/2Ngwz2dp+klcWgxpauqSfzh3DHcU7/HZd8REVnub01sJV36t5LfJShgR5ABN/KfovEa73Ma+OM4wSKP4naSujYheLf0TlwORGW0/7L+CaKLnwh8ZUS5Zyj4IUUFd00+46NluxsMQSg0TOw04FjRFI/uZfbduOr27f027+LD/vn4DdG4rBm9aoVUcisxgdvgdHkOGVfUF2ykWvP+0GWax9dMVlYHM7hmvlsd9/2+guW/913OT21syTcmDpn6HfByFH9Pjq3KGXU/Cra2N2Cidm/eQgM9Bf0DfokrUww043Gjdyg2gNteopONlvIj1i5pH+jrKXCBXMe7ffTBfERvjDzWN3e6Nb729Q0uDDgbcmIUkiuoGwnVxTq9Itos5pjm0dW+1xloREs9UAqbJurElDqavhA/jD6qaVceNHpzjA+I9tI4vu346dY+ckGaHETJflEWykXxpwYSVF4jnu4tnqWeMTaxgRqJPXMN2IXMdV6aAdHoVg2oymRnCc1n63nBUJ5DFy6Wjai5xYOECVVCrgtzEHE0yWA2h2Egoh0gX4xFkxzwdBmXXJNsKlt11HsjY7chXlp+pu6q38VcWaWZfDbiYeGYNmJa+k8jrS7I0xhTGgZswFUstbasw/QMQ+sd4aloFtOaNTwNLek78WcIQsinbqYFQRCn3z1uILxXaDrv1vMkiY5kGWV1ahD2f2He/wmXvlhZYHnojOCPKkXj/iOtsyiG8t7ZTzk7aIDGuloV8vk5bG
- VLH1BUE9
- 1vKpkaPUHKWOU539TJtyiSma9AaTLTtbEZxyhnxb3wYURaOHVKxgHgQGyK+dlpvAJBSAMrboyecg53jxq2J4stqWEQjlOzsOeebOZTMUF0xUaZ/VDAD5wur9iTuIXIIq0eZDAlG66id+rO1npeRO9DjWDVoN0Lv4eqwO8qQJuF8EsOV7/QSZxpnRbhBdU0ZKlFkYa1TPZZz6KG5qi5UDsRp1azGb4GWyl+5SMhWbimirqxshgtn2wXgT2QwG4AGaN4bc8dshcb7YT2Kk0YJYECcY+yg==
+X-Stat-Signature: j5ud1bhpht6rhsesd5k3np4qnte7gqeg
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A3C5240003
+X-HE-Tag: 1771839536-884439
+X-HE-Meta: U2FsdGVkX19aT9pxjSS4J1LlP8HVIKaxJo/Ke25yvdoAqpFf2qnt3VaLehrXDLDAbje8EXj++3qE0sRN2ljNjRNRnx7/gtC4j6U2AoqZitXCagRr9rDuUeEm1CO929/uPr9LOFjMornPIQ/aiqIRdW+OjBR+PxWQxhAXrPnUlSawnW2UL2hJ6PhSlV4iFQhcIeDpJg254yH7MOGqQmYcWUC5j7Px9OvLfME9pR8X+t1KwN5RDVFCkwjNxJnGbYWeDDZlnMCGG7ES85QSxqLbB8HYmrrGiprq6NVq6tb0Y8uN6zpETUPtZDYjj/FMU879GpjlndaJc1VKM03VZHVjdK9BOPYUa8LHFVqiLOBYW3iH7FfQ8pWxfxVdocZdEB/oVDaZuYyo8/BhAH8LGw6oKXbX9uNAqtV+4xWb3kZ83vyS2mWbJGb4jEZMTm+uLQ73oMG+Y0wczsHarbKoy1pyA8UAemnspylRuVUTODS2iUTcpTn3rEe2Sl9nQeTDmYeXkF1L4lgcKB74s7G+wHnMmn1l99BBj9HLZ1w7/2M6I7WbawzBZSzQGllbkYPQ+rOSRIxeGL06kviNR07zS40O+XffzIRIBkGVau/ZL7nahVz0bHkbHCFlJS7thUtuX6aEUhwmqUx436Z+1Bg3elVJK+73RKAeAAFgbinAdGLFu7dmicbeAz7+Zv7WYhu43Nsv4pM+DNfh9Ff89ItPR2YzCx1ull8lvIHXX+VJ6r1U3vLqz+bH9PCg0Lt3gHTM3TrZdGScHtEgMK0oJ1FJhQZeKWqP+dcy/UAkoMxO2TYi37MP2Ao3rrj2VzJpHA4HhVJ5m6P6tHFYw6QfFL9nggyG6LugYW54A23pMSpatOBb9BRlhyiN+89mV6mUKavF9Aenxz5Kcpk1o5OLuumiIe96/+vejR+gPLJ1/ptQpRgmEouOOF+VUANcESZIbCBi9XH8vj1OR9gpdHUhDePPOKz
+ FSy83tG7
+ 9Eq9PTXjYdiHAV/3rvx7U/Xlst/ahYgPaSVSwBOtBlQia+U82n/BN0hRtFcG5ja6UlHkk1COeEXmNFfA066cRwsoXX8PEmg3GeudNYy7U8gs4u6gVpp21e9WCr0s1FU0p1t+0FsbKrjjTpFQJZLtWu2uGz6cfuNLWtQHgOwkQePuAyCKj75JdzbXK4tdhNDxgZo0K7tB9z3+iB1My1T6/3RSHb6La3MeK7gGQdcN+tgkS8JZgrXKVpbkTGcF729mkdfx+ctflGM87zkNPc5QJl3GGaFt2yRgw5o381ZplVEmpuzl0B+xXoSIanZMLAg0s56FyNCwdQx7GqKSX/phHKaqk59oelCacweMeHG7m6/cC2504FIUJgkVQkapphFpcx0wmZ641xR52PRigULy4ZRiIm01PaZdhLVqB2z7tVS4IqjU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -171,52 +146,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 05:28, Matthew Wilcox wrote:
-> On Sun, Feb 22, 2026 at 10:26:30PM -0500, Zi Yan wrote:
->> Based on a recent discussion with David Hildenbrand on page->private
->> is not zero when a page is freed[1], this patchset is trying to fix all
->> users do not zero ->private when freeing a page and add checks to make
->> sure all freed pages have ->private set to zero. For compound pages,
->> both head page and tail pages need to have ->private set to zero.
+On 2/21/26 00:54, Ackerley Tng wrote:
+> Extend kvm_syscalls.h to wrap madvise() to assert success. This will be
+> used in the next patch.
 > 
-> Sorry, I didn't notice this conversation.  It seems entirely unnecessary
-> to me to zero out page->private before freeing.
-> 
-> I'm a bit confused that ac1ea219590c was needed too; I thought we
-> cleared page->private in the allocation path, and I don't see why
-> it needs to be cleared in the freeing path.  split_page() should be
-> clearing page->private.
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
 
-See discussion at 
-https://lore.kernel.org/linux-mm/cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org/
-
-> 
-> Can we discuss this at the THP Cabal meeting on Wednesday?  I don't
-> think that introducing this new rule that page->private must be cleared
-> by the users is a good idea.
-
-The benefit is that only the users that really use page->private will 
-also zero it out.
-
-This implies that all pages that enter+leave the page allocator will 
-have page->private initialized and we can also likely do:
-
-diff --git a/mm/internal.h b/mm/internal.h
-index 9e0577413087..4ecdae78e0d2 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -724,7 +724,6 @@ static inline void prep_compound_tail(struct page 
-*head, int tail_idx)
-
-         p->mapping = TAIL_MAPPING;
-         set_compound_head(p, head);
--       set_page_private(p, 0);
-  }
-
-  extern void prep_compound_page(struct page *page, unsigned int order);
-
-
-Which is rather nice.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
