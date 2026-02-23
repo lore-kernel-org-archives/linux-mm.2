@@ -4,94 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DFCAEC1112
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:15:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D60FEC110E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:18:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D29A06B008C; Mon, 23 Feb 2026 12:15:56 -0500 (EST)
+	id 8189A6B0095; Mon, 23 Feb 2026 12:18:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFF5A6B0092; Mon, 23 Feb 2026 12:15:56 -0500 (EST)
+	id 7ED036B0096; Mon, 23 Feb 2026 12:18:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDFF26B0093; Mon, 23 Feb 2026 12:15:56 -0500 (EST)
+	id 6F91E6B0098; Mon, 23 Feb 2026 12:18:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A5A6B008C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:15:56 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AD3D1C1C0
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:15:56 +0000 (UTC)
-X-FDA: 84476373912.04.14D3257
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0316910001F
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:15:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=BzGSn2Me;
-	spf=pass (imf14.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771866953;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A3276B0095
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:18:02 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 19FF614020D
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:18:02 +0000 (UTC)
+X-FDA: 84476379204.01.F3EBD8B
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010025.outbound.protection.outlook.com [52.101.201.25])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA4F3C0006
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:17:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Hmx7zPfz;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 52.101.201.25 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771867079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pUplvb9mcjCqtiY4Vc6bwCc2M5ZxKW2qp6OYjQZvxDk=;
-	b=wSUDE6NtF444dYST8bQ54IXB5olPCe0iX4FbjTDRAouFMz/UQCKuJFFKV6RmdNHtOrTYY9
-	GZnTv2Gqv02WtXiYareVr4RaHWjWf23vF7JWfqFGZMhVL0Dhg7up/VLwTxr41ZMn7N/B1g
-	D+ER24TesHmg/XH0sx3IVKrj1lkGQD4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=BzGSn2Me;
-	spf=pass (imf14.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771866953; a=rsa-sha256;
-	cv=none;
-	b=5SMSiQHqvhuetLpTXWXDAg6Ge6Q2GyUnqVYtdCwdL/XwYCYBuTtjvk3gTQx6vkv/sInCwt
-	W/RM/89RMHzoLygjaYU02EPcbHPxSFiVYauMmIVn6OSD8AhJGky2k7q/pF5u0opElMRB16
-	4lWkvaPSyWpcaynJNtTAnCuk0j8ISXg=
-Received: from LAPTOP-U3CCR7C6.lan (unknown [20.236.11.185])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2FD2520B6F04;
-	Mon, 23 Feb 2026 09:15:51 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2FD2520B6F04
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1771866951;
-	bh=pUplvb9mcjCqtiY4Vc6bwCc2M5ZxKW2qp6OYjQZvxDk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzGSn2Mea1DCzUaQX4FnGBzWF8V5Zb+5TqtiFyyZOu2Rip3k1NG8/90nE2PRZ6HAk
-	 B7N93NH0/n36AO1V0NJSIPDz94+O7wlPUiW+Yyak+iy8U8F17P72m5JIMp1DkxhX+v
-	 R6AFMzz37t3hbdktYgoIW+WsmBvofT4r3oNp77Ww=
-From: Thomas Ballasi <tballasi@linux.microsoft.com>
-To: tballasi@linux.microsoft.com
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	mhiramat@kernel.org,
-	mhocko@kernel.org,
-	rostedt@goodmis.org,
-	shakeel.butt@linux.dev,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhengqi.arch@bytedance.com
-Subject: [PATCH v7 3/3] mm: vmscan: add PIDs to vmscan tracepoints
-Date: Mon, 23 Feb 2026 09:15:44 -0800
-Message-Id: <20260223171544.4750-4-tballasi@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260223171544.4750-1-tballasi@linux.microsoft.com>
-References: <20260213181537.54350-1-tballasi@linux.microsoft.com>
- <20260223171544.4750-1-tballasi@linux.microsoft.com>
+	bh=RAzWJbM7OQaueOQ+W03t4HPDZjEwxYkzgxpnswl9i+k=;
+	b=Kv9JIF81b1ePpmt8s73oPowfmHEfR9bXjc1v1b5k2nQEyM/Hks+6A06J5DdgN6xp9YQHGJ
+	1Vqr2wBtpe0wTIFWjt20imLHqpDokF3LWJisSuDz3BBXkj3MdGMul1H+ElJADYA05cTUpl
+	5Eso+lT88YYcpWBP9deysHWDIumWCtw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771867079; a=rsa-sha256;
+	cv=pass;
+	b=bRpjoBH0iSBxJd7lTMz9Xu31cZHQlp5uzPyM0jw8XjYSdeMoG59VUCGLHcSIxvArbjOsIJ
+	mJJtm8z9e1OIWttztvi2JqIah6KIOmh1h3TRGALjUWds8774L0hp7+lxIwi2YrXfY1b3vG
+	a/JQ2p1o3jOq7blolIWtJ39avuV8WwU=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Hmx7zPfz;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 52.101.201.25 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KsXCg/GxpmB6Gh5NAUmHU3KcNBQ3USyXk8twZyX+ySS+cgXMtbhqnVqBk6ctPSkYg1ccNx1rYiW2oQaIpqdpWcCWcHeCBbec8j2oel0021VQBa2xhMZe7l2i8jxMoMGCDbDmXnO7qkV1Mbx8IlasWaF2mVLfLXmWhl/qO0FuUnhrIEnxTFXd7q3dMqmjoyBn71j9U7T+Fhl4siy+LwbjAHjfbeCUCNqRklkgc1qWwElhnYpDObJbGrtWQYgrYeG+JBkDnLwHkHAvKpHQXB1jIk7u3Poeollw9VZHi6GVM/Lwa515dFUudQFxBdube/tkzLeciqpn1uBbzUxCRS6WAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RAzWJbM7OQaueOQ+W03t4HPDZjEwxYkzgxpnswl9i+k=;
+ b=o8cBXgBBzNnmxlAvkSm2soDPNVsUsf5cYsMK20G/jrtKzFvNKZSifc3ehkMwh6mbK4ubU+K5k9MlMAOOSlcIQPPDCCSTBaIpthmcqBpfvGcLKIc3/hZnCIY3hdbyUr78sbsy9mO6aQHi0hh87UujNle8vp3vqOBITiqM+A1lEVLiYv0UX+PB8+FJF1iPBO97w/SMkLh07hHeOmmwdATbU3NQfdJls/fCq0jXRZXxzqlF6zQUKzkAmsVy/4Ze2DjLhIJO1j7SxB5l9DDMyduiu78a/6oWX1YOxsjKI8HBGcTUjXpqi9trLEvfsA3ljxW3uOj1wGGOuSgeLEVlRoVS1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=ilvokhin.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RAzWJbM7OQaueOQ+W03t4HPDZjEwxYkzgxpnswl9i+k=;
+ b=Hmx7zPfzSEeWrIlhzIkTfEV6c9VocLTaGscRw0UFUCIMoRsrWaBacmXFR2tqMIJxQZle7CJZwjNcYV6lYIU6XpmUJdWno6jzkS8vwceZtSj1QHcqYl4V0gJ8JjH9EfeQkRbLQKTtGcsOqQVWxW6ukJtSL7oQJENwg8oLGp7zQVI=
+Received: from SA9PR13CA0044.namprd13.prod.outlook.com (2603:10b6:806:22::19)
+ by CH3PR12MB8972.namprd12.prod.outlook.com (2603:10b6:610:169::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.20; Mon, 23 Feb
+ 2026 17:17:51 +0000
+Received: from SN1PEPF00026368.namprd02.prod.outlook.com
+ (2603:10b6:806:22:cafe::cf) by SA9PR13CA0044.outlook.office365.com
+ (2603:10b6:806:22::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.20 via Frontend Transport; Mon,
+ 23 Feb 2026 17:17:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF00026368.mail.protection.outlook.com (10.167.241.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Mon, 23 Feb 2026 17:17:51 +0000
+Received: from [10.31.207.109] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Feb
+ 2026 11:17:49 -0600
+Message-ID: <c13e340e-74f5-4a66-8fa0-d307ee5ea0eb@amd.com>
+Date: Mon, 23 Feb 2026 11:17:48 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] mm: zone lock tracepoint instrumentation
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<kernel-team@meta.com>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+	<surenb@google.com>, Michal Hocko <mhocko@suse.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman
+	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+	<ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Qi Zheng
+	<zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, Axel
+ Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
+ Xu <weixugc@google.com>
+References: <cover.1770821420.git.d@ilvokhin.com>
+ <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
+ <aZyEctoThn0anlz8@shell.ilvokhin.com>
+Content-Language: en-US
+From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+In-Reply-To: <aZyEctoThn0anlz8@shell.ilvokhin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00026368:EE_|CH3PR12MB8972:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a21cfff-da7d-4d91-0965-08de72ff7980
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NXZBNGRnNGp2c2haaHZlTGNEcWU0cDBFTzcxNFR6bmhWZjVEOG9hNXhUMmxN?=
+ =?utf-8?B?SWNOMDlTOXBCSWVKaFZPelRzdUJ5RlRLQWNpaXYrbVBaamJ2eXQxb0lWcS9L?=
+ =?utf-8?B?RzA3VjFDMW5uYVdtWVZ3VkFOV1NheWJaUG5CQko1c0gyUlRLYjl3WHBrSSt3?=
+ =?utf-8?B?WTRpZFdjN1lxVWVOMEg0OTRtaWpocVMzclh3K2trSWRHVEE1YlE5WDhDdzdx?=
+ =?utf-8?B?bG9WbUZWWDg2WHRWZTVKZGRTUmU5S3VYb1J1RlJEZXh3T3BMcHpxejlHeVZx?=
+ =?utf-8?B?ZWRUQzFYbWs5ejhIUEZzdGcyZE5PVlVGZE5NTUZpK25NYWVuODZtMFlWMy8y?=
+ =?utf-8?B?bEh1aXBVNjgvMGlUL3pBc2txMlMxSG91NWV2Y1VKVldxa3YvS011ODluckxw?=
+ =?utf-8?B?R0t2UTBqVmdUSE5jOEVMZngyZEpxRW1nTnFFTlZ2Nm90ekRUdURSRkozK2gy?=
+ =?utf-8?B?bzdrRUlUajhsdmlTRmkxV0Z1WXRTdGRaRUNrUE0xclpuNmVXaWNYRHNoY2hn?=
+ =?utf-8?B?Q1FGbkFuejdFZEJiZFYvaENvRVdxdWVpVXNreE9xRVhONXFmL2dIZmwyTDFj?=
+ =?utf-8?B?U3JVQ01BSXF2NnVQdUZnKzA3Yjlna0FSUlQ2aTgyZGJBVVRrQnVHYityTnZI?=
+ =?utf-8?B?ZXVBdGR4RUdFNkRmcjhuQVFiOUpLN0ZINVNBZVdFV0pMZE5ZL05oQXBxaTh4?=
+ =?utf-8?B?b1JSeXVoSUc5NHp5WWVvampLQ0JHa1BzVDhXT1ZCSGg3a280UTZ3NUtkVzVt?=
+ =?utf-8?B?WWtoYXpqd1I0KzI5WXVveGNLL0pldWtDODBDTFJVaGRBcndxZiszYzQ2UkFF?=
+ =?utf-8?B?WmRmRGNJamFBeGU4VkU5SlBFT1cxclNVbDlZMjNIUHdINzh1VUcyUG9DcWRO?=
+ =?utf-8?B?UTl4RGZTVHNJQ2xITGFGSG1ZMXVnUE9NMUs0YTgxcG1HZjBCSlhmaVhsbTQ2?=
+ =?utf-8?B?U29mc0V4dlY1cWMvUVVSQ0NtaVpqdnVRUnFLSExET0t3Nm9rcTZBRytReDJE?=
+ =?utf-8?B?dVRWVXU3ay91cnZrbElQZ1JuWStYOGlwdGgwcWgrZzVOSDlxZ2RTeVh1d2Zp?=
+ =?utf-8?B?ZXVYblJJcnFLbmtGYWZEZUFGZHpTTWIwcytJS1QvVEp6UDlpQmpST0ZBb083?=
+ =?utf-8?B?S0FCQ0Y5ZjhCbjV5ZVRrT1dOZHE2dTljeDYxc2FkbHNzcS81bUhMSEQ4ZUxn?=
+ =?utf-8?B?NGZ6aC9ZSEJjOE1uOUlRZFdaK3JhdlFMYmtNZ1UzWXpIQVNzMUFGRWI4R3hM?=
+ =?utf-8?B?UnF6Q1dxTUhNa0NqdEhxaXQxbWY5d3ByM3ZxdG5FSG9BQVNnYkoybFdOL05J?=
+ =?utf-8?B?bjJVaTh2TmJHamxOeEFleVBNRUc1bzNrMjFCckJENVhGSFVBYzVqRlZkYlFT?=
+ =?utf-8?B?WUFZbVZpRFJpSVBGM1pncVByUUNGeWdZUmhGRitJRGpPV0EyRDQ2azhMbFRW?=
+ =?utf-8?B?cjVyN3hHNFBOelh1MEM4Ti9GODI5OGZBL0w1ZE5zc3UxdXNGdDFIZE4xd1g0?=
+ =?utf-8?B?WHRPQmNDd0d4NGthUlpYY0dzNGdoTGd1bVIyeGV0WlhMaktTSHBhampPWE4w?=
+ =?utf-8?B?a0Y1QWNQbWZ5eVIwYVRob2E3ZzluUjFSaWpDSmlsWDhSUWxWVXhGQzVQT3FU?=
+ =?utf-8?B?OEVVMVJuSk1PNGVBcHRSSlNDQnMzRmZqcVRoQWtoU0I2WGRiUklXa1NxQmN1?=
+ =?utf-8?B?Vkp6dnFXZ0lrM1YxOC8rSnUyWTdpNmpkU0JHVzE3S21HQlJTTERWUEEzZWNi?=
+ =?utf-8?B?SlJ1dDVMTnpsK3ZRaWVTcEsxWkFZZktTY2RmSFp2dS9sZXBxemNtcm93Z1F4?=
+ =?utf-8?B?ekttbjRISk1UM2ZFUk9nZUZzanN2ekg2bnN6QnVBVHVnQ3Nuc2VjMXlBbFZT?=
+ =?utf-8?B?Y2pyZ3hzOHZJNG5ibHgwR05HVmVta0hpd3JnQkFLT3NMMU9SZFhROU9QeVV2?=
+ =?utf-8?B?MG1pQ240Rjl1QXZkTEQ5SmhYYlg1eHJYVW12aklnY3JvNWFNazROUW44Z2pG?=
+ =?utf-8?B?andxTnM0cWg2VFJzT0FCUCt4U0FtdWZ2SWpzYXQ5TCs1QzA3R1ZWZ3h0elRU?=
+ =?utf-8?B?U0lhK3FuM3R3Tm9CWENXRzN0d0hJbW9oWXVJejVWMWNHVWRhenVuZTg3c2FP?=
+ =?utf-8?B?L2trRHNLbUhxOTVncFFHTWIzVUhSdXFxVkcwUTExWDJwenBubnFqSmU2YXBT?=
+ =?utf-8?B?UlVvY0lESlJJVXcyaVVYUlJuWGxVQlhqangzUDA5MjlXTTFWTTJmUkxUQVZt?=
+ =?utf-8?B?TGlLbXNuaXVWS3dzRCtCMm9HTHJRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	z8eCtQadELFLqs16nLk6HRRSxLjUrK2Wzl/FYyIM/HtlOPq8UnXH0Rr/kjIlXlC6YH1orH6YopkI3DJbFtrnOERsIVI0DDgWqVeIO20VGhF6D/1JVp0/ODpJViAjnJ1PDnj4f1YLOQs9g4VSuIFiI3smlAqlFVsV16WnE33auU6bNYHhEibR6gtUjXAfrxKDBaxI7N0+YjpORXHAxY3ZJannCnw+Lut9BbVElvfvDlSVm/mavzosLvETd/8Cc+wKuJHqpWk3wVHjfOccSzWeH+bC5ER1iadsDusfvunOu5EX/gIDpDwuGuzS+BOu2/k8BuDMYdT59fArVqu6tYGrftJWxrXPi7Y4jr+bAHKIGrdEJ8+LOxD8M/QL3ipkXkmsAoy8KY1OURj72eWa2UVStEb9+Aq0Q+cxKiKWiG0uNSO4RnvmbPMBI3gB+HzEEPCd
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 17:17:51.3437
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a21cfff-da7d-4d91-0965-08de72ff7980
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00026368.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8972
+X-Rspamd-Server: rspam09
+X-Stat-Signature: u177snrioya6wha9h1j6r8cxcio8xymd
+X-Rspamd-Queue-Id: EA4F3C0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0316910001F
-X-Rspamd-Server: rspam02
-X-Stat-Signature: k6mufb59h4zyg7ii3797s3qdut5m11ba
-X-HE-Tag: 1771866952-268345
-X-HE-Meta: U2FsdGVkX1+c7TUR1nFTiPQuhf2fhpfY6tBBrgvX2O22SvoXb8fLOv7MxpvsczzWNOXWteeGMars6T0ZH9VGWdO7MC0CIINIBV/ZJtID/IyIZ+b+F7xdHewoHNWCpfet3l2TL5UCJ5cyRyOCVHMNI40gCjQwXzjXjc+mOzodYD4CQCkmVxl5IiJEmzS4Xzr0lV+2D8cUv8IkJmW/7gVTl4ikRrAU2qOce2W37r0p/+75hvkuawVR3sYIDl9To0a3Rfk9JXZbb2VpfE0lU/wX2vvNyFXWmbJREsaaH0vhAKJmweItGpAkkhejzbiB/xezJW5Kc1ue/Ky0nuy+8Xvh948DJsKNWUMp+n37TjVpnXlz9vM+x9fKsCuo1yiIVBJG/vcfWMRhg5BMqvRGbwU1Fintxs+yo9CMkZgzw1eyV5PhuDIqBOYIxBDh1EWEYvL9zUViaDJrdZvBKEXSVVBk4KU8nTMvMOgqwmZL5ae/w+nhId943AVi57+EZ/Kedy/lAoQtX+CpGGcvm/rBKkukEypHEXGsl6za+KEFYI1xuA5uIUb1rZwHw+QBFebGcENwCQcP7vfi/90qO4xPDQUgkYMAFApSGapHR3Gk1ciBBSi7dqIvpxaQNWzyZVBONHRXWEKVxLY1T3Q9OtbjgMY4FanfZbp7ZeMENPUWugGrHjhekxpov4WU4cUtMdcUcHnj7L/UTxyIbevgMZrPQs6W3b4bruel8TxMechVrSHs+kJH9Al9/7APDtk8zNTr67VPIxPmsX+/8wuZpL0rQBx6SYJNvkvf/PEbP641VDNUydzVm8xXFx1T/jYwb7LmuJ472R79RLkeyUoxoJR/wy2YEsPTnLDjlURekkqLV8C/ueOFqHUfo3kyqyORldcaDbj7SmUpTlmqezCFFtdjpqa1ZOm2rlaGlt5IY0C9ycoR2Up6dkwwa6X0LJwEzjyaOM0zMkRS+zfl7F9L4iggG3m
- uv1gLAOt
- P6c4Hq72pIlP9lx3TDqVTyUb8wdOqfDkODD/W2OeMhb3eWyPsSWyN6BnwZzDRXz7opJkEePUUug90pl9cgj3M2uPOBGsfOPTIpwG0Xq8FmpfWYDy+QxAFW09WwxJ+SblDMIAAQVCxGL30CccmN1yuwtCpg3FFimseuipSUTcHFY4Yjfdr/nR2qN7RHdaY1D31s0zDvntkF6ovXXxZZzE0GF8bzVRjsb/z2jmREj4FkHk8DP+0y+ObRHgbRT/TOQOBsx0ZO71px64fYTfYI91526j+tHg/B13pZI3ZzKIwtu9Oizw=
+X-HE-Tag: 1771867078-96188
+X-HE-Meta: U2FsdGVkX19Aj1XjbGZYzf2LrmpP6HbSBRKJoW/ztgl7RgVzRIG3d3ft/sq/n951ys5psJoO4oqxXEU5zvLdLXvXs3kCc4UtsE3U0ymc4H7MGsyXHj8l96ZuufDzn+LsTGvSMRw+rOM60XuP6EGIox8Yytm/DRTG5gd6MLTLxUeng6pkgzFdKaMDEWhhgFZgQ/nez+SPfud2/K3v5WuJHeXIurTaOSdgnYt6sfi/ERjzCzIMNNeI8AShgZzlkA6Nxlc1QMguFuF4TFWVnNwDZ9R82so/qKGxIMxmDe95E0gl213N2QZ+1OAxD7XnixZLfqqgB0rJWOZmR/gJT63yk4SB74ILHzcf9XdAMl7pxjMIwhuT+iqAcvr46TB5O8ibPMPy0ioZPCpEIj6aR/XDurwEf3oOVws3Tg5g6XeCYb7mfv52aNACpHWcNrrw6a0q+MRIRDhP+HONYkuW7lr3e1+9jkqV6l2SNoKlL7H2Y1RJ4aWw0RWR032Fd7fxtSS8U6qEeM3i+llBt5JeO65azolDfY5YpCIQ/KklfrFtleTBz6FtHgHUq6a349jq3N0IHfQlhoGc4/7kVl9gToNFubjH0ROARoeT2TfDahtQlmIYnRLR7hL1lZxg6YPlqF6F4G3u6Y+utwmloKhtKZneg8F47t2+O0Dtcd8frzUAf9GvCvXMZ10XHB0H4c2lvQRh8jT0IiMNWtCxLSMu/FoUVv1hTJA/u6rp7+GKAWLv68DW3M8kZ1aQsMoAXIotdAhNXaveV0N7h2GWDGiL6C2vo8E1BwyTh+G429ndhp4jRumtHmtZ6MB7O0TBVmdnHBRyRxScXYwm3kwEgxLcXIOZGWEQ+wfZ8JW3juMXGD7fYd9UB4SBhFAjnTgYbsWef0G63gATGI4uk8A8R8DQVbdlLqJNBBLc3S9gAvbQs+N13II4d7YjU1k110+ll5UH9ns7jvRnOYaGPJrp3eV7Mzx
+ Llx84flM
+ 09MYNwaPYyP29WNCtvtgExAYo+I8Yyhxic6hRd3t/0ay3c0ayQYZsoU4FcLfCy4DmhRO2528RV3EEByctpDgF6DXxJbU/8YnoEYW3S9fekJO2iJVIFW1O7rnrILkYnUVvmQe/yHi/nv4aDKNVZrJnTwJ39d5QQj+louuc/1aiY2sARh2xiB3GP/cOc2kS5hJo+77pbOE2CmCFezJF9R1S6wi1iuAUxMerrc7R+qwv++k2BsIEQB/1UUU4YASxDwdsR56MzZEE0VWqrMgPr940ZaMgPECCYB++twkDTCOFVesztW7BZMqLZOQv0RIQZSIMxK8t0LDGojPPgQVcyouu2aj4Fx2UeuDZcrUd232xpbeQCqC6X3wp9tVV+kTUqin4xZml9xhcOGuXydZ+zCzCHaMwcQBxHXfbF/WUlrmGst2PzEGlROAI3k5T0vj0amteqCQ9zxcv7Exu3AlmqepFf8yGSKVLD3Pums7MueYhmzhbtUvs6mXgsfVzDU9lNh0EO+yFz8/r30Jn1lO+crKvko9PUFXtxU9m+lCrk2UAETTBEU0U4iv9fBBX+KP7gj5Tib+N6RZiAvDdbO6QS0Xk7kvWifvJcjAFwUK03DPgvkGxRbE4Pla7eFrluQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,141 +200,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The changes aims at adding additionnal tracepoints variables to help
-debuggers attribute them to specific processes.
 
-The PID field uses in_task() to reliably detect when we're in process
-context and can safely access current->pid.  When not in process
-context (such as in interrupt or in an asynchronous RCU context), the
-field is set to -1 as a sentinel value.
 
-Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
----
- include/trace/events/vmscan.h | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+On 2/23/2026 10:46 AM, Dmitry Ilvokhin wrote:
+> [You don't often get email from d@ilvokhin.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On Fri, Feb 20, 2026 at 01:09:59PM -0600, Cheatham, Benjamin wrote:
+>> On 2/11/2026 9:22 AM, Dmitry Ilvokhin wrote:
+>>> Zone lock contention can significantly impact allocation and
+>>> reclaim latency, as it is a central synchronization point in
+>>> the page allocator and reclaim paths. Improved visibility into
+>>> its behavior is therefore important for diagnosing performance
+>>> issues in memory-intensive workloads.
+>>>
+>>> On some production workloads at Meta, we have observed noticeable
+>>> zone lock contention. Deeper analysis of lock holders and waiters
+>>> is currently difficult with existing instrumentation.
+>>>
+>>> While generic lock contention_begin/contention_end tracepoints
+>>> cover the slow path, they do not provide sufficient visibility
+>>> into lock hold times. In particular, the lack of a release-side
+>>> event makes it difficult to identify long lock holders and
+>>> correlate them with waiters. As a result, distinguishing between
+>>> short bursts of contention and pathological long hold times
+>>> requires additional instrumentation.
+>>>
+>>> This patch series adds dedicated tracepoint instrumentation to
+>>> zone lock, following the existing mmap_lock tracing model.
+>>>
+>>> The goal is to enable detailed holder/waiter analysis and lock
+>>> hold time measurements without affecting the fast path when
+>>> tracing is disabled.
+>>>
+>>> The series is structured as follows:
+>>>
+>>>   1. Introduce zone lock wrappers.
+>>>   2. Mechanically convert zone lock users to the wrappers.
+>>>   3. Convert compaction to use the wrappers (requires minor
+>>>      restructuring of compact_lock_irqsave()).
+>>>   4. Add zone lock tracepoints.
+>>
+>> I think you can improve the flow of this series if reorder as follows:
+>>       1. Introduce zone lock wrappers
+>>       4. Add zone lock tracepoints
+>>       2. Mechanically convert zone lock users to the wrappers
+>>       3. Convert compaction to use the wrappers...
+>>
+>> and possibly squash 1 & 4 (though that might be too big of a patch). It's better to introduce the
+>> wrappers and their tracepoints together before the reviewer (i.e. me) forgets what was added in
+>> patch 1 by the time they get to patch 4.
+> 
+> Hi Ben,
+> 
+> Thanks for the suggestion.
+> 
+> I structured the series intentionally to keep all behavior-preserving
+> refactoring separate from the actual instrumentation change.
+> 
+> In particular, I had to split the conversion into two patches to
+> separate the purely mechanical changes from the compaction
+> restructuring. With the current order, tracepoints addition remains a
+> single, atomic functional change on top of a fully converted tree. This
+> keeps the instrumentation isolated from the refactoring and with an
+> intention to make bisection and review of the behavioral change easier.
+> 
+> Reordering as suggested would mix instrumentation with intermediate
+> refactoring states, which I'd prefer to avoid.
+> 
+> I hope this reasoning makes sense, but I'm happy to discuss if there are
+> strong objections.
 
-diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
-index 1212f6a7c223e..15b31281f0955 100644
---- a/include/trace/events/vmscan.h
-+++ b/include/trace/events/vmscan.h
-@@ -122,18 +122,22 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
- 		__field(	unsigned long,	gfp_flags	)
- 		__field(	u64,	memcg_id	)
- 		__field(	int,	order		)
-+		__field(	int,	pid		)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
- 		__entry->order		= order;
-+		__entry->pid		= current->pid;
- 		__entry->memcg_id	= mem_cgroup_id(memcg);
- 	),
- 
--	TP_printk("order=%d gfp_flags=%s memcg_id=%llu",
-+	TP_printk("order=%d gfp_flags=%s pid=%d memcg_id=%llu %s",
- 		__entry->order,
- 		show_gfp_flags(__entry->gfp_flags),
--		__entry->memcg_id)
-+		__entry->pid,
-+		__entry->memcg_id,
-+		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_direct_reclaim_begin,
-@@ -168,16 +172,20 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_end_template,
- 	TP_STRUCT__entry(
- 		__field(	unsigned long,	nr_reclaimed	)
- 		__field(	u64,	memcg_id	)
-+		__field(	int,	pid		)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->nr_reclaimed	= nr_reclaimed;
- 		__entry->memcg_id	= mem_cgroup_id(memcg);
-+		__entry->pid		= current->pid;
- 	),
- 
--	TP_printk("nr_reclaimed=%lu memcg_id=%llu",
-+	TP_printk("nr_reclaimed=%lu pid=%d memcg_id=%llu %s",
- 		__entry->nr_reclaimed,
--		__entry->memcg_id)
-+		__entry->pid,
-+		__entry->memcg_id,
-+		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_direct_reclaim_end,
-@@ -220,9 +228,10 @@ TRACE_EVENT(mm_shrink_slab_start,
- 		__field(unsigned long, cache_items)
- 		__field(unsigned long long, delta)
- 		__field(unsigned long, total_scan)
-+		__field(u64, memcg_id)
- 		__field(int, priority)
- 		__field(int, nid)
--		__field(u64, memcg_id)
-+		__field(int, pid)
- 	),
- 
- 	TP_fast_assign(
-@@ -236,19 +245,22 @@ TRACE_EVENT(mm_shrink_slab_start,
- 		__entry->priority = priority;
- 		__entry->nid = sc->nid;
- 		__entry->memcg_id = mem_cgroup_id(memcg);
-+		__entry->pid = current->pid;
- 	),
- 
--	TP_printk("%pS %p: nid: %d memcg_id: %llu objects to shrink %ld gfp_flags %s cache items %ld delta %lld total_scan %ld priority %d",
-+	TP_printk("%pS %p: nid: %d pid: %d memcg_id: %llu objects to shrink %ld gfp_flags %s cache items %ld delta %lld total_scan %ld priority %d %s",
- 		__entry->shrink,
- 		__entry->shr,
- 		__entry->nid,
-+		__entry->pid,
- 		__entry->memcg_id,
- 		__entry->nr_objects_to_shrink,
- 		show_gfp_flags(__entry->gfp_flags),
- 		__entry->cache_items,
- 		__entry->delta,
- 		__entry->total_scan,
--		__entry->priority)
-+		__entry->priority,
-+		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- TRACE_EVENT(mm_shrink_slab_end,
-@@ -266,6 +278,7 @@ TRACE_EVENT(mm_shrink_slab_end,
- 		__field(long, total_scan)
- 		__field(int, nid)
- 		__field(int, retval)
-+		__field(int, pid)
- 		__field(u64, memcg_id)
- 	),
- 
-@@ -277,18 +290,21 @@ TRACE_EVENT(mm_shrink_slab_end,
- 		__entry->total_scan = total_scan;
- 		__entry->nid = nid;
- 		__entry->retval = shrinker_retval;
-+		__entry->pid = current->pid;
- 		__entry->memcg_id = mem_cgroup_id(memcg);
- 	),
- 
--	TP_printk("%pS %p: nid: %d memcg_id: %llu unused scan count %ld new scan count %ld total_scan %ld last shrinker return val %d",
-+	TP_printk("%pS %p: nid: %d pid: %d memcg_id: %llu unused scan count %ld new scan count %ld total_scan %ld last shrinker return val %d %s",
- 		__entry->shrink,
- 		__entry->shr,
- 		__entry->nid,
-+		__entry->pid,
- 		__entry->memcg_id,
- 		__entry->unused_scan,
- 		__entry->new_scan,
- 		__entry->total_scan,
--		__entry->retval)
-+		__entry->retval,
-+		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- TRACE_EVENT(mm_vmscan_lru_isolate,
--- 
-2.33.8
+No that's fine, I figured as much. I just wasn't sure that was more important
+to you than what (I thought) was a better reading order for the series.
+
+Thanks,
+Ben
+
+> 
+>>
+>> Thanks,
+>> Ben
 
 
