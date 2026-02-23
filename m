@@ -4,76 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF179E98E0F
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 09:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF09BE98E0F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 09:30:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38C556B0088; Mon, 23 Feb 2026 04:23:18 -0500 (EST)
+	id E6AC86B0088; Mon, 23 Feb 2026 04:30:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30FD46B0089; Mon, 23 Feb 2026 04:23:18 -0500 (EST)
+	id E184D6B0089; Mon, 23 Feb 2026 04:30:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F15C6B008A; Mon, 23 Feb 2026 04:23:18 -0500 (EST)
+	id CFA4F6B008A; Mon, 23 Feb 2026 04:30:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 091F26B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:23:18 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B8B3A13BC0F
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:23:17 +0000 (UTC)
-X-FDA: 84475182834.17.BDF0EA3
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BA5C26B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:30:03 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A5CE5B938
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:30:03 +0000 (UTC)
+X-FDA: 84475199886.07.44C2580
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E1A241C000D
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:23:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sxrhJdMr;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id B0B55180002
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:30:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oMu/GVUU";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771838596;
+	s=arc-20220608; t=1771839001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbJL/WjWGchHlPd38HRu8YDMPbDAwgKsLbliZ3IOFsU=;
-	b=uHPBLkKtc28oqvbBQRj2HGrSU9zxsKsoEFDe7igrFoprmW4IoMaRMeldXnuZvjPq8Fu8aQ
-	8fBUthk3Y7UNuxBsiMtTKcYA2bw3L2Esub/FYd304SU2OCFZS2be4rDp0wRIjpJVixeySZ
-	7L9BcSyMl3ibdM1d7M9wj4d+2RpMlgI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sxrhJdMr;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771838596; a=rsa-sha256;
+	bh=UoKeWIMpI1rLpwJK3iBnTrFPqrBJctfIQPjBUc0gh/M=;
+	b=Zjh0difIdEXAme7AaoJXz9nEBQAMV/WWWywiUZUI0zW27Uh955pJitvbLipdWire3W/J1J
+	EnpTPn+vbprWr8CSoP7ssBXBDJqYEarrLhTA64M3v2LCKMbjpExD2PqqhQYXYWEXpaYshL
+	B4FHqD6EQFZAVXSppoDhx9ASRoZB16U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771839001; a=rsa-sha256;
 	cv=none;
-	b=bfNRwvOoqrf59QQ8IZ9GmhLLDX8gixmRaI1JKD8rFCMHFhbccGaTOQ5UhsoWSe8zYCflTw
-	O2R5YIGgXCBpItC00T4ytZk+ZoAnAPmC2IihxgNYlwzUg4hzFZB8QiiE7FafM+mW+oSHkT
-	uJVeh1YRIGV4VsKLtzV5URzT+LBcUFc=
+	b=qGs1jXQlPJDcQrl423ai3BzL4KDqvCyGoEZKiolGdv41snLzr4vU3GOFqamxGic6zuE61L
+	WFgN8MAhP94Tz8Aypx2tnC4dcvOCtGqXOlcB0LXtD+a3QMjYKNeG8fDKEqi27G/4Wjkrwh
+	vXnKPuzcG2uYFh+pZ/o334obwANB9Ac=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oMu/GVUU";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE2C4434B3;
-	Mon, 23 Feb 2026 09:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15CDC116C6;
-	Mon, 23 Feb 2026 09:23:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0B5C416BD;
+	Mon, 23 Feb 2026 09:30:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CBCC19424;
+	Mon, 23 Feb 2026 09:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771838594;
-	bh=zmArd5S/gEW4hij1YFSxLiedM3qW9vaE6iDa8imNBi4=;
+	s=k20201202; t=1771839000;
+	bh=7xweq4QPzkHbowTO2WGH3oP2m634ztmNkQ98oA7FLfM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sxrhJdMrDyvNGTo2+4rLETjfE3dSl3etSx39sar1MHn9UM3puwDLAAYVuFvnHHrj7
-	 3K2ia82nNjfJ+0hf3CtQNK+C5QxJIyoeQGKobkC9Tsyev08aH6sYR1rTmpvFKB8+D9
-	 aMpxVzuVTsnUHOuldO/nX13qdxjX7wIbTfmDvWiDX8kWzEzosKeXJCPSYVnQqDta07
-	 o8JzYHMLIAI3YFxDJ5oevmZFojSd4UcKqKlEaQtKJ2gRdSfRfNEDbfkvegE9B0TXg0
-	 kg93WwDpwOARQVfRsFiQ/9Zc6AcK5LKDaM3/HfdUyEH8TbsuBtqNIAh/ZPN0Lokul2
-	 r8H7j0kY6N2kQ==
-Message-ID: <3e22afe6-ecf7-4180-9287-c48fea7b8be1@kernel.org>
-Date: Mon, 23 Feb 2026 10:23:11 +0100
+	b=oMu/GVUU6uQTbTnA3N5QZm1YoJdWSwp2y2Ppr3BjSDBcgiarwHhEPTKnPq4pD2aDL
+	 wAU2NvoPEaawuI0ElZdzfBm6lxouNgaks13uuiAa8uvMPmHi5lypzmDf7tpROoh/w5
+	 WQeiSvTp1jwNgsqOJCVp3+ITBKxQgjamnHTOL8CJHeEZNJTCbXePq82/jeZHMu90rF
+	 qalNBfPvrytS1Wv+AMPRdGxRxiFOpTXMs+xCOPghWFk8vRevnikM2YIaiM4/iT1g2g
+	 iYaNuoNUVqKZcOhu6LZhIQF4nYyxnnFpFW/m1F2wYyDUT1j53NcyBSrjgS3zJCURGt
+	 GNQ03kjrHUfTw==
+Message-ID: <2a6c4e62-1663-4a98-9adc-406a6a1ebfd3@kernel.org>
+Date: Mon, 23 Feb 2026 10:29:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: A potential refcount issue during __folio_split
-To: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: Linux MM <linux-mm@kvack.org>
-References: <20260222010425.gbsjzhrew3pg4qrw@master>
- <20260222010708.uohpmddmzaa4i4ic@master>
- <6346656B-7518-4A55-8DEF-C2E975714C8B@nvidia.com>
+Subject: Re: [PATCH 1/1] mm/mmu_gather: replace IPI with synchronize_rcu()
+ when batch allocation fails
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
+ peterz@infradead.org
+Cc: dave.hansen@intel.com, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260223033604.10198-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <6346656B-7518-4A55-8DEF-C2E975714C8B@nvidia.com>
+In-Reply-To: <20260223033604.10198-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3wrcjehfe6fekezcei3qphyca96sx7m3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1A241C000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771838595-619798
-X-HE-Meta: U2FsdGVkX1/YalBzN1oFEF4ft/qavatD7T4TFiKeU60GEnsP4d6F1ORqT1doghJYABtsxA8bKXa6huyqh+CFpGXSMYxfflakj8ArCe8q3oVk1X1Wgagz81bqbX6oPbUm0uYVJudf79t+Tm+eYpoG+rtwH+zGrMNXOF5iF/hUJzdmIIEC3XsSC6Kt7dst0PzqBp+3PMRRp99xCidxz7mxWrhC3WqF3Gfk1a3AfyaDJsqDQSOGfm3G2odmx1pQZNOQWmj+u91X7Zu235z4l4H894Bd4aPntt2Wf6kXotfbyzDintWPO/0kz+k8q+AscS69M7VDG9tAhuIzr0DOJzHAt/3Vhe/la5pOL9cLJARF+6tngyrcGJdYRigEbgb9obd7m4EyGALIhdJmt16iQ3kFPpdFMN4CQ81aFgXbsD6IULEmrwKY0bT9OZfHnwcyRd3xm1Gv4LO9x96MkGfqiznjUwLv1PUtvznzYzGaB/4vD1iv8+f5BCgSPiB3HwHbIbz2k0mkFU0FKOE4mZOQY2PA7ZQ39W7vHUx2GjaC3RaeJ5LSC9U7PXW3Vn2hiwVAg/RyRJXAXljHsmi+SWiGaSlVhaKXIRWVbBZ+lfGVoaiYqJ1ztnTCMD6XY8UAPgZ7W2BO3CAxLGuMmoioznyU0cCpgkpxE1FJquhQFXJ0wCVN2NdnpSQRR7blRhpm3OchE6AePS/S6j/oa6vfG/lYXVqF5l/ViwSvy5Lu15KlQ2FitG4BaN+0EoZOQejzHYJHjn+g2MYOeLwtGYUH1IMws3remDUsOAnAUh7DY3/C2bTc1u3Y998YLvezQ/MYEFpHYqFfM12wI68tYEFLwbNxoOFLHwsEcPjyFSOcUsVR98LQei74+Y1rJrT0C5WToxu7/TfBMOTXD6u+I5KaH4orBL/trnSSghEFEQ8nLJZf/jv6qCI5sXSSxD/lWwUSEaEt+M0nObmBApbL9RHhRfx0HTC
- 8Sz4ksGo
- D4CIRxsucJ90xFTe7L6LgoIdSIT3tjTrorlHfWzwqsTvpaCs1T/NdlAVB27d5bnhct0JWM3weS09SgE9PBNjJ7YCIekz9OVLn/qx6yrExh8f+kmaRKGjI2Fh9mGrLob91RoXkIs9uX9rLzzeOcrqWeCHJKsVDVwBLj3iMlX982VJlN31FbQfOhajnl1LRb9uCovC0Uj/4aiglJhruYeIvPfBk5H2+4yR00hLVp6gJAiEMCcWUdohHfSxe6IXGzUGiH6bE/YJX4YX+UWvpRmN6PSe/L8LRScwSCEjFYZC5d9/sn7pdDSYzImZ5Q3jNiLlZbOoZ+g4DLSSY8lZvkpGQ/u88BTk/xL2IDdY5B4D/EhuPbEg=
+X-Stat-Signature: 5ej11tcipxwnaiwshrzaa6cwr9axugy5
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B0B55180002
+X-HE-Tag: 1771839001-641998
+X-HE-Meta: U2FsdGVkX1/OQVglm7w9NIOW5Er8c7jbWOhR/u/QQE3wwJaYuc0fkC2mfEIUOEqlgO/wFZUggVrnGtO5ZygUHIoIl42fcwDS9+2Yb1D0LZjz8ZqesYvAHXX9xWncXJpzS0OqqwbFZM2fygSSmP162GxVxWMP/WzX5d+nvHsNR9MptBs52O9M2To9m+xJgsjcUykiKI9EK7GqOxn2X6X4+P7gHyWfln02zM1E/J+qvYVcBAOOplzV3UV9cotCtcsQPFBTVxi0rs3BMwwBncDjhXQ+c30Xc1ZDNbiNHqEBO4Gmu0pPBsLmcJnRyd/gMsoHzT8sUQABNXaVkNJcNZ+ciCEUT8IphiSeqi88tT4HfjSe56jEFWVAF8cCpstvJJGp/OamrOFfq1bIJHr8hmZWswVFgVnVQL6zh5K+vNYwQ9102lXZXPxv+FIdaA4vMMsFuCmnX7g2XG5HboXxT8qLV24zTfZgFu29DgMInL0tVRawrd4B/zY+EmFGhpkzN1psQvvL6zSiXQLPc5I5RASGTVOiO3xpWAePqTQiOik6qhtoBfEBUo8BYFMMIrr9VT1j8q/RkZutv9CsHR/4+WQFfwNYnIUNRUP2CQwm7Ef9pNKcL8KVTd2Zklk7Bg6Vr2LNGPv7j8xvHgXetIMil42jHp2DedvAp/LhmJxai9fHRrO0ZnPrSb4GroBJGtLtuf5eNPml4DvcFd2wiRQ+V54SrBG8GTV5YmZfXOe1Kvn06cT4qwt8TcOZJzr10Lfj1dBG6I/QczKVMvr7NKdxmqnLK3IRaBlE1XO9vGU6Wu9T/Mmg7w23r58BEJEpI0ug8dLcOsupbKIzzK4fCYVfuPdcpFoU9tOnH9z0MGaEH58JLANXp0xPKCY8fKHLcTY/Dp03Oc+ToHw2a6cQNNTMCtBjTfHRRhbEruItjWNkVTZGzcimVABWSgKd2qiGymZiDeLMuD+5YSrCtxhza0UEUMF
+ qcNwYt2A
+ pbuWo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,31 +141,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> BTW, in the folio world, I do not think it is possible to perform the aforementioned
-> split_huge_page_to_list_to_order() pattern any more, since you always work on folio,
-> the head. Unless there is a need of getting hold of a tail after-split folio after
-> a folio split, the pattern would be:
+On 2/23/26 04:36, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 > 
-> tail_page = folio_page(folio, N);
+> When freeing page tables, we try to batch them. If batch allocation fails
+> (GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
+> batching.
 > 
-> folio_get(folio);
-> folio_lock(folio);
-> folio_split(folio, ..., /* new parameter: lock_at = */ tail_page, ...);
-> tail_folio = page_folio(tail_page);
-> folio_unlock(tail_folio);
-> folio_put(tail_folio);
+> On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
+> tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
+> process is unmapping memory. IPI broadcast was reported to hurt RT
+> workloads[1].
+> 
+> tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
+> (e.g. GUP-fast) that rely on IRQ disabling. These walkers use
+> local_irq_disable(), which is also an RCU read-side critical section.
+> synchronize_rcu() waits for all such sections to complete, providing the
+> same guarantee as IPI but without disrupting all CPUs.
+> 
+> Since batch allocation already failed, we are in a way slow path, so
+> replacing the IPI with synchronize_rcu() is fine.
+> 
+> We are in process context (unmap_region, exit_mmap) with only mmap_lock
+> held, a sleeping lock. synchronize_rcu() will catch any invalid context
+> via might_sleep().
+> 
+> [1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+> 
+> Link: https://lore.kernel.org/linux-mm/20260202150957.GD1282955@noisy.programming.kicks-ass.net/
+> Link: https://lore.kernel.org/linux-mm/dfdfeac9-5cd5-46fc-a5c1-9ccf9bd3502a@intel.com/
+> Link: https://lore.kernel.org/linux-mm/bc489455-bb18-44dc-8518-ae75abda6bec@kernel.org/
+> Suggested-by: Peter Zijlstra <peterz@infradead.org>
+> Suggested-by: Dave Hansen <dave.hansen@intel.com>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Agreed. Maybe it would be even nicer if the split function could return 
-the new folio directly.
+I think it was primarily Peter and Dave suggesting that :)
 
-folio_get(folio);
-folio_lock(folio);
-split_folio = folio_split_XXX(folio, ..., tail_page, ...);
-if (IS_ERR_VALUE(split_folio)) {
-	...
-}
-folio_unlock(split_folio);
-folio_put(split__folio);
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
+>   mm/mmu_gather.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index fe5b6a031717..df670c219260 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -339,7 +339,8 @@ static inline void __tlb_remove_table_one(void *table)
+>   #else
+>   static inline void __tlb_remove_table_one(void *table)
+>   {
+> -	tlb_remove_table_sync_one();
+> +	if (IS_ENABLED(CONFIG_MMU_GATHER_RCU_TABLE_FREE))
+> +		synchronize_rcu();
+
+That should work.
+
+Reading all the comments for tlb_remove_table_smp_sync(), I wonder 
+whether we should wrap that in a tlb_remove_table_sync_rcu() function, 
+with a proper kerneldoc for the CONFIG_MMU_GATHER_RCU_TABLE_FREE variant 
+where we discuss how this relates to tlb_remove_table_sync_one (and 
+tlb_remove_table_smp_sync() .
 
 -- 
 Cheers,
