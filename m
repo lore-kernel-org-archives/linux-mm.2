@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF66EC110C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CCD6EC110E
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:15:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 708166B0005; Mon, 23 Feb 2026 12:04:21 -0500 (EST)
+	id 885706B0005; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5E56B0089; Mon, 23 Feb 2026 12:04:21 -0500 (EST)
+	id 85D646B0089; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B81A6B008A; Mon, 23 Feb 2026 12:04:21 -0500 (EST)
+	id 7B1706B008A; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 477176B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:04:21 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE3311A027D
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:04:20 +0000 (UTC)
-X-FDA: 84476344680.29.14D33EA
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BAE031C001B
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:04:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OeO+YoS1;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=vbabka@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 68DC96B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 252F21C187
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:15:52 +0000 (UTC)
+X-FDA: 84476373744.06.7255D96
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4861F180008
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:15:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=G4AnjSCv;
+	spf=pass (imf16.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771866258;
+	s=arc-20220608; t=1771866950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3hVv3QCLGsJuEhotPXR1ko5+3s1oxPI+IoPnj0WO/I=;
-	b=AjSVWyOV2h59zaPRhT9+dGbgsOk9bFAEQ4vXE5NRf3sV211XDx5Otj0mFVcdMlnPVUhdDm
-	DVhxgcqucO1yU9Kox9zWOd+2qEd/SXqMdETpTcOeu/7nAmOIffNY1E4rSTatcz1nB8CwKK
-	0VvABGk4jLEWou7P3VzUz1Jxi4ScIaY=
+	bh=TEmmWiaUSN6agFOfmjMt3TuPh72lriTqjOKcZSmRRGA=;
+	b=6nNw1aqe48b7Mvc9cCGSVT5eUmDupL5NedmA2ki0iVolMg9ca0X8RU/Sct8A/y5nImIrhL
+	xI4QxxM0MgFBYDxMYvMzEpxHgc0tNe8zqnC20m6puuYNhycPNNmbBbLpBreUridvt8Fl+3
+	wyHcjbHaX+fjhr5dGYznSjbxMMaO+NU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OeO+YoS1;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=vbabka@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771866258; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=G4AnjSCv;
+	spf=pass (imf16.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771866950; a=rsa-sha256;
 	cv=none;
-	b=CWqNJjdxiSshjajBE6ZCIIhQANvUOge0lcaEGFW8rJGtevYP3oFki1gtuylKlTOMbV+aS9
-	kqHAO40c3IUf/+aK7sBsL8e1SGTs6a/urzfVGHggiuK0ceYDwIFXgdQYGcljFrfKXN3kZ5
-	wT7p6LpaZip7Y+spYCO7KP1UsysphRA=
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-4836cd6e0d4so5824915e9.3
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 09:04:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771866257; x=1772471057; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G3hVv3QCLGsJuEhotPXR1ko5+3s1oxPI+IoPnj0WO/I=;
-        b=OeO+YoS1omwkKoCpjFUGB0aSrb23Ms/Bmur1t5wgHwBhxR3/15qX/9WKY/ix8uUk17
-         jcYWqNYVCZIRHzYqWZ7ngm/KyXPnvGxY+bmB6kWSvWzGeYdJACE45h2vftjrGT6FqR9k
-         fPjuPowGodKFF2WjyK8750TIOJdTqATerJMvcuxQVXlubawNrcoI2ZpMEsITX2XsYQvn
-         e9PYDXU2YzOWbq86Niy9VFh6x0BL1WwcWCgEgYpfkyRqE5BV6m3hOFIKzdqUjf7ZXdVa
-         YaCdspnwtSpxcTj09X6LBV+frPdnA9N2J30x96bU/F6geimOXrf8btotDR3t31SbDyyo
-         rJZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771866257; x=1772471057;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G3hVv3QCLGsJuEhotPXR1ko5+3s1oxPI+IoPnj0WO/I=;
-        b=e9tdGxAVD/yfOH5LdBXbjGrnIZvJoS9jsb252815eNMUmfPA+31Dc6TwZajpMROcKl
-         QVxcKFCb6grcT31ddwhtjOM5Pr77it7av5qLN6HnW9F3+tBUntG0rE4aX02qQ10hD/Wy
-         Uj/ZKRygDkOZjxZD6MsTf7EDuvzy7RQb1xNMI+lJ/gpgnFqu7WKXs6zRb2Fz9we97UV3
-         qdA3dX0v24GWX7VVWizPYmvjVc18/QmCUo1bwgXJVuJg91R+IOstKYbwxG/SnMp6Dyp5
-         M95quKqZpzcByHJ5a/6hq6Csl1a/IMlYPlfxyMgKy4oDfkjYcVleBheqSRfyBfbsI1Fp
-         LWeg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ2yAmyw4gnt9EAqS6O9IxpnYRZi/S4CoDkr8RIiw1cLYLBP1Y7I9lUxCCxrw9nIXwNJLBmH7p6Q==@kvack.org
-X-Gm-Message-State: AOJu0YxX+4Qhqp1uqF0J2HQuvJjB3pCDSoofhkFpfD4RrW2XPqiJdK7Q
-	qv6hMvNEcWKguyEXmpTsupopOXuPA8gj/4vY5xwSxgzZH6s48eUvKtXZ3zI1HX3aYeU=
-X-Gm-Gg: AZuq6aKLHdx7JB9yxQTegDouBdj3CMgQrDN9CbKczQiU70mX/v7YEnPc7/B+rNNuZID
-	DL7UOuhXNSB5WLE+XdrjRPuSkNnkPEmiwQuwqaCUqktQY3BKtq9YLgSj7+Hn6vNrgoo/gH10P4a
-	tY9Vbu7vzloqeCboIcNcNZNnTR2jVUm4bmVfGF8gIhpXjbsSmsP3NXs72cu5yLamWEdYLcQkUrY
-	ne9b4wKpkz4jGWSHXvwrzAcUdApfn1Y3mwo0kcSc6glkZKy2+XCRSB56AzJ6/fUqbgsC5kmnfdA
-	VxirqVWvrFdzqDSTsggwQJgh9Ghi4IwX1N/4VZO2fSZcgebRmFTRZ+1w9arWVhh4LtvtgWX74iY
-	hHc3FnKvZazWumWdynifUC8xGYnjl2675bdMTvu/lM2is4wOYjHYZPcc4nSLjd+YDxOKk3N3ig8
-	935LWcTpo2k9Gz37ePeg==
-X-Received: by 2002:a05:600c:8b12:b0:483:8f10:4bc5 with SMTP id 5b1f17b1804b1-483a962e47bmr82220545e9.4.1771866257122;
-        Mon, 23 Feb 2026 09:04:17 -0800 (PST)
-Received: from ?IPV6:2001:1a48:8:903::e14? ([2001:1a48:8:903::e14])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a31c0779sm440631645e9.6.2026.02.23.09.04.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Feb 2026 09:04:16 -0800 (PST)
-Message-ID: <a0c9449a-26be-4afa-bef8-4b78315fc6d1@suse.com>
-Date: Mon, 23 Feb 2026 18:04:15 +0100
+	b=c20chWoyFm3OnFitKV1cDIJH6V/SeK/omF/EHti8vZ3XaVfPRJU1XOHoswHHXiBWBEI25E
+	hhu2tELVDfA8ukuw6glm8MfcJAWgstT672N0AjQDGuVU0wB7XLxKm0Ea5mbCe/p7qmm3q5
+	TYjulRrIIGnwXGMnA9B20L69AIb7G5I=
+Received: from LAPTOP-U3CCR7C6.lan (unknown [20.236.11.185])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5B10220B6F00;
+	Mon, 23 Feb 2026 09:15:48 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5B10220B6F00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1771866948;
+	bh=TEmmWiaUSN6agFOfmjMt3TuPh72lriTqjOKcZSmRRGA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G4AnjSCvhK+QilqO6lHm9BE5gW327yQdZFGR5MnNZjx88Ctx3k9JhpRvpgWk+kSSN
+	 8+WgBm1+sioqh+0+poPZunyr0xgOIDDuvPGs4/rbYleoqdBzXwa9QfcfG1X3bV6nSy
+	 zxSGxUJJHdGB5V03MsBlEzqVMtdrfD8WXgb0wl0I=
+From: Thomas Ballasi <tballasi@linux.microsoft.com>
+To: tballasi@linux.microsoft.com
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	mhiramat@kernel.org,
+	mhocko@kernel.org,
+	rostedt@goodmis.org,
+	shakeel.butt@linux.dev,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhengqi.arch@bytedance.com
+Subject: [PATCH v7 0/3] mm: vmscan: add PID and cgroup ID to vmscan tracepoints
+Date: Mon, 23 Feb 2026 09:15:41 -0800
+Message-Id: <20260223171544.4750-1-tballasi@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260213181537.54350-1-tballasi@linux.microsoft.com>
+References: <20260213181537.54350-1-tballasi@linux.microsoft.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: initialize slab->stride early to avoid memory
- ordering issues
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- cgroups@vger.kernel.org, linux-mm@kvack.org,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <20260223075809.19265-1-harry.yoo@oracle.com>
- <aZw9sIb5yyhwZKek@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.com>
-In-Reply-To: <aZw9sIb5yyhwZKek@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4mpw38ua5zbuxhjxox6dhkhrpab6m43g
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gk7xbfyr118ywbphf9zudydfd5azo4ns
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BAE031C001B
-X-HE-Tag: 1771866258-617461
-X-HE-Meta: U2FsdGVkX1/b8XlJHFg+SnM4zKNBIrN/H3tOLLrtNcp+IJWqiQ4+3gILU+uuW71fMOxy1Z0TQNXOkBMtm/tdop0ktgvvKllc7R3iUW8jyTWESvom6u4RuMvARZ6vt4cgSlRy1i0NlRgFRavUaAj5XaO2b2G5dWWc3+ngDRntiwdCP6XLas2QyopTACac4QHu3k4gpMC5A63b1K4PHkEVuTikWCCp1NuJ7jBiOVSE73vM1lcmKK070FLouPS79rBJUnMyIgGbldGFdPIajgHDvZ4bqrtYNvlbgSBye2rUcKx2/HDCCdcwIG+q1gdjJFudybnUJp4ybHgYVr958np7UtU+lAHHjc8KONGyvJYofYwOUbOMH/Pd9I1es5j8j0oSRTPforPodAMoO8PasvJoYqUkknarQQb14MIEYGqfLlcHU33tyPnpoRa36ImWggM921YGNfmVgg5chKidVHXK5RFMbrvQsxx/DMxv1uoGPT4MbMZEB5rVVQ98EhfaZA0cigOWQYhSU/+fhPnVF48sWEMyajxaknTld50ZIHfzLEknasOT2mf2LXE9cIVTqbLGI/yL0+Oz5PvvRYhAlmtFeuEtwERqijGLaXSwXbt8ce5EOZ1YxXcD7hIY+3D9Q1hz5eR+yB4EdkY8aPp4NKUXOKfUFsfpn6Z5EGZJoeENrApCxwITkjDVb9msaGlfV33Oahyuq0hgFula4W5hQ0ACTJwo9FEgcwg413+S9ZY9LFOcWxKlTzTowNwwy8BvZJ3ASKmzfRsdT1UQDIr/LtBvf2Mr6s3VsGTRe2ZdSqx8oP6AxrjJ7+n/BzSR700AFvQz/Hvdsdq1wzWb2EaWUjiaJK1ZXg/7k2BqxONtQN2Tt++08q/fN3zRoXoAa1pQNpRUiGOqWdoNuLKHF8ebf8u299FkQfpcw5CMLkaGLAHY5i3SHAv4UiBlMc4DhE8IhRqiJFNwq0NZKQLTGZ6UNrI
- SgXQ/glH
- POd0M3xDg2NPCTk2fUEO7Mz4aw0sR8gm9KSQ8mlz1xb+LSRyqqCXkpimyNkcAHE4dsXOoHbXXl9cRHwCnCEB0JziS47ibbQTmjngWkfVn+tR4GwJkcE8MyDhJsnA+A833nnkOWMlwp/7NEazFSc6R2Rxa8+s4vY2YvqWbAer+FWDR7ATpPDAVvXnUaIxmdlcSTPfOzsKo2ZJ/JA294xDLH+WzCbW9remN7PC+pKfSuW+nHgyCtTJRic/Px5o2WY4WTDAyQ35QO8n8xAn+b7b3RAcXEikEZX2AFoIqEfvhqtQ59Izhz7wUUnjRrGdJfyvYpynqAOifuEMxwIF3oc4yarX1XcDXpsrWefWCpFZHGlHk0Vy2LMpKfqCeSiSI69ksfsJrGsvW2QyX22tFCooznPIUQ2YamTjpojeCtYKHZOOcOxwhxyv1y26ECDZpc9qC4pU/pteABp/R67qe6N+Cso5d75Zu/DbpGNkwNVqSlws4GQOYormPkJEhJlznjZvWER/YvC3sIkGppHo=
+X-Rspamd-Queue-Id: 4861F180008
+X-HE-Tag: 1771866950-666079
+X-HE-Meta: U2FsdGVkX18dXWsvce1XVVS/WuI6QIlG+D7zh39dNoQb+DqBMGK8BEQQPRLGHJDRB2KcgxnhSfmz0B77tbs/HtJdabmFZWvdqWwrv1femjR7MfGwRwEpG+WN9P6A/kdunCmgyzbIWDlhvjHeo5qx2qOy/p+oPHewKVPm5NRa+W39lHbR2yIwLp/FustwhZ+Xslv9yUGUM+AcMOWNZt2lOmAyaHLA0bHXWalpZfZdvY9XrmCI9em89D6jZdu5BPydN5DXxF5eyYcZ1U/HE2IeqM4i63WGAQuQbk7uudncsxQP/hvQhSGAw17cjKR6dY66rlKQLazYf8vEGBsuGBWqaKTypwOqM4Kt5TV5oMt7kH/cNBTxt0qO+9VEgMNHRGCIpuz5hbnjlTjk8u0gbqot8uOHz9AroGwszdVmAbc3miUyiLBiN82t78/50JrQBtEcA6VdNXmcpr6rOyXBogrAvYW92x7XCNvX19vldvjlRSyjmILS3fXodnP9rSkUYAjSFuABDElYlVI139GpOoBPrlffD5ngn/QtIVkIMkxnFTS3oHe1cDvSoCD93pwKMYHCaX82D0kHpFrmj+2RiBxSS0UJb9jDepejZCdYoQ97aptpS5J8va0BpG1F/WOcGoi/EqMR9uWzjJft8SUgMYN+FwXTXrYyRE18r9lHWWjgxjXu6QLDU7UZAjpSzB/t0Z/HZrEWA++nhkDE74Ol154RKT5roOfmyfl0MabfkVC7sFevHELCEB7napytK0YvVuTb8bfLePMmWmawGRspKXMZQPdnXGwt4xUY6GKOg1fcnNta/jKVZ/9zIgsPsk8RQNM/OyolnC5qyk+w1226uT0juoeRuLZEkLJpfYfwCQzuTVmFBeCH4K7eL3fBDluCOLDC0zb03qJRc0k2BD2Y0JrgtCkWID/3TPDmsl39CH1jmiIiuRE8joZxPJjqBUGeKMlc9djbsynG20ks/Z74yeG
+ phi39d2c
+ t8oFYDyBTk6mIE7bvqS7TAwhKiDNQ4/RBk0J2mfD4DnWj0K5Qm8Civ3RQJlZ0I/JGGhkMZnN/Px3XYr+rTiUOrTQznTrmZilzVxF0H7CuRheo9Shj17NHzvTONI2E6H0ZJm1cOl0sMH9bsAaQ3DQSVEzH8aPbYM/IFisVTu20PYGt65D80tUux6uKfopOnHIWppYtrjlS1VlN02d0NFCiPzvdbKG22NWCgkJOAkZjN/DDIb+QR/grmJQGfv8pacxNzVT0Y40EQ8ydQWFREpJ+LgdRt+lYL1o4vS7usif3XqmvOxiTLn/LZYXD3Ya8MfF/ZB5o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,83 +99,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 12:44, Harry Yoo wrote:
-> On Mon, Feb 23, 2026 at 04:58:09PM +0900, Harry Yoo wrote:
->> When alloc_slab_obj_exts() is called later in time (instead of at slab
->> allocation & initialization step), slab->stride and slab->obj_exts are
->> set when the slab is already accessible by multiple CPUs.
->> 
->> The current implementation does not enforce memory ordering between
->> slab->stride and slab->obj_exts. However, for correctness, slab->stride
->> must be visible before slab->obj_exts, otherwise concurrent readers
->> may observe slab->obj_exts as non-zero while stride is still stale,
->> leading to incorrect reference counting of object cgroups.
->> 
->> There has been a bug report [1] that showed symptoms of incorrect
->> reference counting of object cgroups, which could be triggered by
->> this memory ordering issue.
->> 
->> Fix this by unconditionally initializing slab->stride in
->> alloc_slab_obj_exts_early(), before the need_slab_obj_exts() check.
->> In case of SLAB_OBJ_EXT_IN_OBJ, it is overridden in the same function.
->> 
->> This ensures stride is set before the slab becomes visible to
->> other CPUs via the per-node partial slab list (protected by spinlock
->> with acquire/release semantics), preventing them from observing
->> inconsistent stride value.
->> 
->> Thanks to Shakeel Butt for pointing out this issue [2].
->> 
->> Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
->> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->> Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com [1]
->> Link: https://lore.kernel.org/linux-mm/aZu9G9mVIVzSm6Ft@hyeyoo [2]
->> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
->> ---
-> 
-> Vlastimil, could you please update the changelog when applying this
-> to the tree? I think this also explains [3] (thanks for raising it
-> off-list, Vlastimil!):
+Changes in v6:
+- Edited __entry_in_irq() to __event_in_irq() in corresponding commit
+  message
+- Restore an entry that was removed inadvertently
 
-Done, thanks! Added to slab/for-next-fixes
+Link to v6:
+https://lore.kernel.org/linux-trace-kernel/20260213181537.54350-1-tballasi@linux.microsoft.com/
 
-> When alloc_slab_obj_exts() is called later (instead of during slab
-> allocation and initialization), slab->stride and slab->obj_exts are
-> updated after the slab is already accessible by multiple CPUs.
-> 
-> The current implementation does not enforce memory ordering between
-> slab->stride and slab->obj_exts. For correctness, slab->stride must be
-> visible before slab->obj_exts. Otherwise, concurrent readers may observe
-> slab->obj_exts as non-zero while stride is still stale.
-> 
-> With stale slab->stride, slab_obj_ext() could return the wrong obj_ext.
-> This could cause two problems:
-> 
->   - obj_cgroup_put() is called on the wrong objcg, leading to
->     a use-after-free due to incorrect reference counting [1] by
->     decrementing the reference count more than it was incremented.
-> 
->   - refill_obj_stock() is called on the wrong objcg, leading to
->     a page_counter overflow [2] by uncharging more memory than charged.
-> 
-> Fix this by unconditionally initializing slab->stride in
-> alloc_slab_obj_exts_early(), before the need_slab_obj_exts() check.
-> In the case of SLAB_OBJ_EXT_IN_OBJ, it is overridden in the function.
-> 
-> This ensures updates to slab->stride become visible before the slab
-> can be accessed by other CPUs via the per-node partial slab list
-> (protected by spinlock with acquire/release semantics).
-> 
-> Thanks to Shakeel Butt for pointing out this issue [3].
-> 
-> Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com [1]
-> Closes: https://lore.kernel.org/all/ddff7c7d-c0c3-4780-808f-9a83268bbf0c@linux.ibm.com [2]
-> Link: https://lore.kernel.org/linux-mm/aZu9G9mVIVzSm6Ft@hyeyoo [3]
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
 
+Steven Rostedt (1):
+  tracing: Add __event_in_*irq() helpers
 
+Thomas Ballasi (2):
+  mm: vmscan: add cgroup IDs to vmscan tracepoints
+  mm: vmscan: add PIDs to vmscan tracepoints
 
+ include/trace/events/vmscan.h              | 103 +++++++++++++--------
+ include/trace/stages/stage3_trace_output.h |   8 ++
+ include/trace/stages/stage7_class_define.h |  19 ++++
+ mm/shrinker.c                              |   6 +-
+ mm/vmscan.c                                |  17 ++--
+ 5 files changed, 106 insertions(+), 47 deletions(-)
+
+-- 
+2.33.8
 
 
