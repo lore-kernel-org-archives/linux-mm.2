@@ -4,143 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8EBCEEC2AE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 23:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 363E1EEC2AE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 23:43:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B8786B0005; Mon, 23 Feb 2026 18:42:30 -0500 (EST)
+	id 8818F6B0005; Mon, 23 Feb 2026 18:43:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 865FF6B0089; Mon, 23 Feb 2026 18:42:30 -0500 (EST)
+	id 82B996B0089; Mon, 23 Feb 2026 18:43:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71DD26B008A; Mon, 23 Feb 2026 18:42:30 -0500 (EST)
+	id 72E1A6B008A; Mon, 23 Feb 2026 18:43:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0E86B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:42:30 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9BE58140344
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:42:29 +0000 (UTC)
-X-FDA: 84477348018.19.33D89F2
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 944D4C0007
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:42:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IXv8T62I;
-	spf=pass (imf28.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D81B6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:43:51 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7B045701F
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:43:50 +0000 (UTC)
+X-FDA: 84477351420.23.4F629E2
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 088BF40003
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:43:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ntGrcAIh;
+	spf=pass (imf12.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771890147;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771890229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G1G7Co3UGLp29oZTzIMMy89dawTZvG8ZKLFe9M3O6sY=;
-	b=yr6Vt4Jn6xZmRS44ZJVo3yHsczxpmY83OawhE/tK0cindMwUI0pNQzIHn0kegVZlaBvyPG
-	ERIOFu1Q/GHeIFG78mpvjKPTO4mMK2LxPQNjNl3GgdkLTpesUibO8/2X5xko3wKqN2Fymr
-	eezeoD7+Ysg3pTLMIqbbBgpZWPz62uQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771890147; a=rsa-sha256;
-	cv=pass;
-	b=0O4E3PfElxbHFF4UoGjG33z9ukEey8D08XOFfHpdkmNwzbwh1SmXLEFOV204LmJimPJhAa
-	ZmSLrvKinYTiiGw0c0YGGCBub/Raryf/mdU5Rp/O57AUHpo+eGhxUY0vYvWF2afURDaUYC
-	ZjJdORKMk+EyhEfN48G31EhIbrb2wq0=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IXv8T62I;
-	spf=pass (imf28.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+	bh=/Nz0fZa7S09a21wJlX7cSiDYFAmJR+w6WbxCWC6v114=;
+	b=Ftk4LvrI3H9+WBpTnYwHTqD14SSDc08dKAYa/h2CLqcKmBoLwNrDvIjK8NVjcXgOLaV4gS
+	2c7S/m9T5CIMpRK2Osy0S/mZ7CjWRvRj8yK6srdvJVyp487UiWgbYjbLS6guc6GQbdviNH
+	jvz5p5a4cbjcMDViNdE8BYALwOhIQbQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ntGrcAIh;
+	spf=pass (imf12.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5688c221fd3so2134189e0c.2
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:42:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771890146; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VjK6t8ydhDFezF7ZpfuS9Vl2fBxDKtbACiTfnEW+r8V5EghOuJTh3PtZ/vhJue4HMc
-         oLewwa2Xg2xlWU4S12zd1MxeHSB7/gwPSlx6rCHGTttRALD37JSkTrA/pqCTN7zw8b2s
-         C75x2wb88SIjMzjWcycAAtOVCxxp0EDDjWX9A9JD84kYjK7IzAu0CxHH0Tdlb1bS8S3x
-         JYEO2D3XbqO6B9g+2lgjHdElyu+3zyJ+m5lJ6PRxguBDV58H5F3obiPMT9tXTYzKGVCt
-         kBx+D0ucKDGgNWSOO9ZgFEJqXhuKqlmIe8J9T9pf+S+6NgVCu4pqRJwZB8+8VWqkBuHI
-         pYWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=G1G7Co3UGLp29oZTzIMMy89dawTZvG8ZKLFe9M3O6sY=;
-        fh=30S5uRSsyT3y1vBFjd/6a57gK4hcADppYi7nI+yb0Tc=;
-        b=eSkiPhrQHGEA/kDMvfQQVEivXDZZEm2oAGsAEWFvHOApcV1WghyCpPWZsHbh1gxlk2
-         kiqkzUyPheUUlVcOZRi95gQw175Vg6hFyUwhuz95jG67UqjFjjSKWpJW1EiErXR99Hju
-         S2MQLY7zDMs03blvELOWTwTBzaffoJwG1F/cudpUzLbckgFWmIkZzW7gW95Wyg2P1068
-         +l07tGSgJlxsz6b1GOweqSVW6JVUrdr/sRAc7VpOW8foQyjBTu2dXv/vhZl5L0AcB+eF
-         UAN7r4DZxFXvVCaqhyksu46g7eI5HINrkJhOlyzOwV/EQqDPJ7pUB590uPVXrg+7krlz
-         P5Gg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771890229; a=rsa-sha256;
+	cv=none;
+	b=g17FITrQchfRRSqvICGqLhLvA1ZgUme0xxyhhkUOP/XvS9Rvr7Z3VMW4SVVrJ1DmiV16Jy
+	Fr02nuzafA9zR1Mbhjgw+LjX0kBGGleX65fUdya//Q2LwR3tdeMCnPdPzZyCs2JhiqqIZg
+	aEg7Yxr2lUgI4awk3LW7xkrzohn+sFc=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2aad8123335so12945ad.1
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:43:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771890146; x=1772494946; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G1G7Co3UGLp29oZTzIMMy89dawTZvG8ZKLFe9M3O6sY=;
-        b=IXv8T62IXDfLNErHyM1Ig5mNTpsg8BvV2JbCIiZ1mGc7JABg1b31XRDEsPpVNOtqRS
-         snFZSRuE4w72w4USKpCMCu2TMtLsUEMX7imlcvKkZXDaJcx1L4frfAgsGIXgOT//StRQ
-         U+V1018yzLa9ipS5Vpbd60QjoihMNKcNpaNWq3SFNloeZJg7lBWVXM5ezbfU1djIWXG9
-         wnM4T59UjYND99Kf3EVk2Zf7zfgtooVYtlT0Mo1/YS5OkgpC4wO0vvDTdXNM8JmSY13v
-         EFQxhbGG6SAunz0KuqW1upmcNw6+XcdkV3jl5TUzPKJ19nSkZ1JcyDrhAoE+0v3qjBoh
-         4clg==
+        d=google.com; s=20230601; t=1771890228; x=1772495028; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/Nz0fZa7S09a21wJlX7cSiDYFAmJR+w6WbxCWC6v114=;
+        b=ntGrcAIhbeNSALoYZAbirY/UqmaohLANCcj8jX+X3nuUHZbRjryTWvx+Oq6tGbjqQU
+         89CWiWFSGx5ekPspXnzQKsR90bi0DxcFIL9kgQrws15PJ1D1oW7UnX7pAR8h/S2ueBxB
+         DFVa63O5D5XYrCALHb2DF9aW/zsOGWPm5f1ObeEoCwE3OwaS91tDIqv4oAWyGznG63qt
+         mXK3xgpxl8GZCIEHE8dilOCDH9H9rcjCnXmI9z5q08vF1vQ1TWXOT5VPzKXYH3L7/4VT
+         o/HgHCuBybvQC46BKnCGkHKKpJ1XNp25Sf81OD0Y2C6g3NI6Plvw8oNZZLXjQfMvz6vW
+         2Xtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771890146; x=1772494946;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G1G7Co3UGLp29oZTzIMMy89dawTZvG8ZKLFe9M3O6sY=;
-        b=P6KtXo57R9gSqGQlnfbjfvS5Xx8yMzm2JIk+/jag+iWLmweQr91a8cTq67l1L1h7Mv
-         r5niaLG3C6uUeS1CAQ8iwjKAB6p83qmqyeA0sU5TXlaiOo7FDNvtHT4TJPUbomNehhNt
-         fc8fF9GYGfVNel+RvQdMgoRZ6GgsVlu+9QjwgkfYnFHVJG7NgUWqv7GhnE2KZ4wbRt0i
-         kphXbHgiMUFou1cCmE1f8FoougpxpEvih6EvhvD9HI3wgTrpg/x9crQIo38wSHjE0xgo
-         NDc4lFCx9NysCNhVND7Su9pdh8VAZoMcJTY6ExREkUZLeCNDv/d8z3/PY3G/aZsfldfT
-         UWQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXACi1isZAdFH4mfrpeYvQOmbhvSbW3TpkTVFrSC1dGPgE6WQ1imcxCYeSxDzeIuuiOFQG2kMsTA==@kvack.org
-X-Gm-Message-State: AOJu0Yzwj8HNMAwS+ul4ON0QZp2Jovt47oOF6KN6CCu847qbNFyFaDor
-	co/RrhlY8XGEZmtPqjSCX1zLLCKAlhFW540Cg0gQhA4DwIHMpECBAXPl82XOt8JvxYOxrJoEKZE
-	Mcyh1tBZSY7sSH+01TpDz/pttqpYRBqI/oUcDnMI3
-X-Gm-Gg: ATEYQzySqBEvrHrKqAAkCheW2j7aYzzUA3ZOLvwkuc8vXDXzXcY1m/1hJu8Wb0ZG+cf
-	viUWqNKjA6U/6eQC0O0AHBvid6lniiEPtNrBJhnfZt5siJolo2qlxZJbBTC+bVrNQfa6Ow8Oq4E
-	6VIRTOH97Z75VEDb5sk9NDx4OLn0dA2DKfBpH6bs0DHLP4WhJHL/fKezLoilMgpjykd5WSzFzX2
-	+PaW4a/sqLVSJsC4N63b/WDZHgkaM7vcUx8fV1RFqbnqmVFE8NAE1II+aDvMVMxdhG9uqHc5f28
-	MYMkTlx76YassZARWldgx09e/4yuats3vcB0nBQqlQ==
-X-Received: by 2002:a05:6102:3053:b0:5f5:32e2:5ea2 with SMTP id
- ada2fe7eead31-5feb30fc3a8mr3035084137.37.1771890145956; Mon, 23 Feb 2026
- 15:42:25 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 23 Feb 2026 15:42:25 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 23 Feb 2026 15:42:25 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
-References: <cover.1771826352.git.ackerleytng@google.com> <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
+        d=1e100.net; s=20230601; t=1771890228; x=1772495028;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Nz0fZa7S09a21wJlX7cSiDYFAmJR+w6WbxCWC6v114=;
+        b=RXcdVZ3iaGNcxFIiTn9fqBhyaRqdCLHw5f3jTv694tAI2UwdU9HW3sUy+dGMYbdmb/
+         ntQHmyXT2Yt5yk57QIbH5QAhUkyjG3V3Hguw2NO/0n0HUT7R8cdt8o8avDvLUj/S91uX
+         MjjHW/KinusZuLBtw9mBrH8d0TZNebvYWP/o+cZRDUXuu47fH52tmZr+hDBVo3V8OTg+
+         oZskvR/AHLWqxbemNDygjoeoRzZ1ZXWO2Exc9iIonwrY2/iN96zV2EmzR4LdZepLKS4B
+         yvd4CE0qwm24d0+zwA4qxVif1KF2f1UCs3Rx/exziGejcHsKsMZP/2M29IhoN5sFYVyb
+         y27Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUoGnpj1MfMuRmeS+0kitwJrah2L5yRoRvamdth2X+nmJDN9bcuckXUJwOYtjgoFuSr81IJgu8SrA==@kvack.org
+X-Gm-Message-State: AOJu0YxFN3K4PF9yGkiJThxRB9m9Bw0ZZWD6Y5Kt3TDdY8NOE2+z18yr
+	rLFVcDAJyZpz6VbtcPKXJa03zJz1Y1qfdHEz4i+8ztpHhz/1BFGFDFp6XZZw8dlxvA==
+X-Gm-Gg: ATEYQzzjCHVwnrnhwLMB0Vg13x9kh0jCDzdp7OY6MvO5S+sgK85b0IwHQNVE3z5tCW+
+	X6dMbTPVwVH56kOKJsSj/WSowwpu3x/TbcfVMzZJivfaZ5hDnkoHp+8azW5QcfJplZrYJxOMUd/
+	t4cnDi7PFz7IY3OQQXUj/3k+qVywNG0Tvi7LKPDf1j4oeangz1nKlldjSN5o9ywJnGOBExXM3Tl
+	Vhs0Lz9/FhIieqsBmdX99qRiB/dnAU4REDR8JuSfGt5YQvnSLzQjrbh1NArnEwqf9j1rJOk03fE
+	yThQfxNQPmtmTVCyfo6z26X07A61UVHCiagsu9o88H/2khTT1FCSMYtucVQsr85UfmmRtgioNwu
+	sQuzF453Tj5PNRxbxj6pxTfLXrBrWEEcz6empZtJlQkS85+fQR8Mi2h+cYFw5cb6rLz1PlKXgG4
+	bzjFVnuIe3A2OPtDkoYU8r9bsrFba1s0p5KaPXfrphynXoCAYP8S9XWV1H5/zHLw==
+X-Received: by 2002:a17:903:41c3:b0:271:9873:80d9 with SMTP id d9443c01a7336-2ada3483c30mr271955ad.7.1771890226940;
+        Mon, 23 Feb 2026 15:43:46 -0800 (PST)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7500e1c0sm90833575ad.45.2026.02.23.15.43.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 15:43:46 -0800 (PST)
+Date: Mon, 23 Feb 2026 23:43:42 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>, 
+	Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
+ across Live Update
+Message-ID: <574e4wq43zm5tyfvvtjfvzqlhoyijcgvvk7gptghrx3ofq5ck2@l2q7xbmtibbq>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-3-dmatlack@google.com>
+ <4mbhcmimhin2ulz57mbzpe5p5dkhfziiyep5k3vgls4zmom3sb@g6jlouyvmpuz>
+ <CALzav=eXY=ZBshmpi9axt+_0SxaAm0Xbo7w==nCWJwKK3xcThw@mail.gmail.com>
 MIME-Version: 1.0
-Date: Mon, 23 Feb 2026 15:42:25 -0800
-X-Gm-Features: AaiRm52aDnZI9CEbv5M2DeAz_Eaea7Sv4JJPWItwl1wMCqksqqJ4XC4LTodyGY8
-Message-ID: <CAEvNRgFF0+g9pmp1yitX48ebK=fDpYKSOQDmRfOjzSHxM5UpeQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory
- allocated on inode
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org, 
-	seanjc@google.com, shivankg@amd.com, rick.p.edgecombe@intel.com, 
-	yan.y.zhao@intel.com, rientjes@google.com, fvdl@google.com, 
-	jthoughton@google.com, vannapurve@google.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, 
-	michael.roth@amd.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=eXY=ZBshmpi9axt+_0SxaAm0Xbo7w==nCWJwKK3xcThw@mail.gmail.com>
+X-Stat-Signature: 57p9axkoc7stre6ocnyeap49toxn6isr
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: cibpqfdjd54miqyspnjpnscyawkhcgs3
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 944D4C0007
-X-HE-Tag: 1771890147-83040
-X-HE-Meta: U2FsdGVkX18D7cTb8CrTTqmPczOOKqFeXb8pimtYOMQAThzc6qohG7NDVF2YDPw62b0Epuub0YmYo33NyXR7a2Xe1UbH6HsPunmWk4VWbq6M1LVZKgS1e89a6B/tTvbBsLy2t+3TWubO9TwvGfBTJWxLAcQfhCzuWGyUxdlF+LMKYgyhVDjA8L8HL8MdtldIvDssmGLToKoHTk/oFwAiCthAElTLTJkEBm4SzX1upjkPGeXBEljK3VBX9frBkn1JznRTKL2THYSbAX4pBzf3EkIpjxGk8t+tGxT15PZ5HCuhJ4D7oOP1xy7gviF4HyABIP+Z4kk4ZIQsjv+N8MKCYc44IJO0pXNBrWUAZ5Bsiz9wG97i93Ve9mpVM2Hhc4+K8xX2XCXS7C8moyjfTXV2x21bOAP4WrSLvDSi9j7rzmKYfvv5qpCIwaNCaXjkmYwnP33kbkanPpG5whovCqOvEei5hI3+LCzpu/cuKDf0xtzpJNMykZufaEMjPefeptO194jnL00rC6VcDp8wVShXLtsKRvFYlETaYrMJKWuGpUCjWYYpJN6f2ND6vmzMXveQGTRt1REtzFlus1q9mQsCyaJv8hHvmx8RSJGqKn7jliOXgTeT9VzxjGyAqIynGQr5dwUai0BZeGbKihAKwZzF9rRcbXp7nMWDXt3HzEYsB2aeAsm/S85OiEiyyqwVC97URyum8XTdkvlc/voBqxSEa8SViFtMpYgqLEyPgVwYZqZjXfI5QfRqitjKFw5N9azswPiQdF62fCP5N8hmve9tmDHR5T2WWdUs67OmTF+7X9WH4g6rGkUZGn9CClUGDHUqj+YFzIqhMh4Cz7NvkqZ/Bq2y3NQi2t3M1wwqtLDoN5dwWijTTK/y/ohvBa2oWyLO3KDDCqynkxX0XyvwgSEf84tkBXhHrLDAItabiHxL9LqW6zB9oGQE/VVQFerAmEbWNth1JE3wLUaJ/TmgWCv
- ZbprtqaA
- UrQFBJ4ZfrwGURbCnFWzVJYq8FrZlIk8pBuUxbtCul7Jl97RrxNRrjSVlk2E3dWmDlpx9PyICqi0X0GfKD01n04dcN86bfhAIPBanklormiMa6cPgywdfQccUUC1Ll7IyfxVS2CdSraeeuOa2F8wMjzIKI1dtFzyPeLhHYOxo1zw10ddjhtEsbhiK60Sd8KvFiTC2cmawpEb6yvIAqoMX0zfb97G9FAJxku7oQoyXf0oPn1MELVfy+H1g4pXRM6JJ89evsV848EPGGD+wdQbLWT49mHJiixaWzx5qC3+193WIhxhVi9u+bu4hgEV878n+8Mn3FyQ88G9abOEO6sjXll8ecFHD3HVmws4Z4Z/2l+KxhY2odOPjCUeLRGIRZYVZp7zGnFXvSDoluT4=
+X-Rspamd-Queue-Id: 088BF40003
+X-HE-Tag: 1771890228-579482
+X-HE-Meta: U2FsdGVkX19snc8UsqseiBJ8R3W+2Vdu9WJOSHkO3tf2jvQp/V3cBqmINP40w5y1uAs52cjNC6arD5O/rPjSgVBJkqoKTu+1afTZBGHrE5v+/dcQ9M64r8U5Pk1BasZ8tu/Tbc+i5tuo7i+oCIUPr86exXXC8+8GRfFS0fo8t7vPMhTmliuXaDVba3yfCU39dCiIX8vMWXWzZXbPQXO/vEfyX6v01ylqYrGWjzjAROUaETGM1Fxare3nOK4kbgUI48BuUhbjOBtFjTuqu3m9MwA7GeHYSuSQC2FM5Hy3Sk7Kz26uDMzHmiUTnhDBvBJVMaM7oHe6kCEkxKdJRZvCtqUDG0FVlOlFB0Z7MEG8pT1iq40ZRE//um72jJdsqfd1yJGu3nOcM12+gzgeaJO+nbIqSXJIkxgOY8Kt0R0zmvHjE91N3HtRdwpj0MbAoUFRSRReYiUwx1z/WUnaR2RdYW1H2q2pfXegnvJA0rTJbayS/dIC9SKs5iimBJEuFjjX4KD9E1clN/KBa1xH3ZQULgTJHwIYAixiBfosAqdmTb3mL5ghtbkykGlThu3No53VkLBY92NfKabBMK06WjhBwBSJCWHmRqSKaFlplxCcj3p/TlLzUIg8U9aotNY2zHnV/WkwF+XL/z2wyDIKoVmkXLENy77pJ4bpwBxJDhaH/IwgPQyEKXhMHPVdfyrZ2eXX5oGLc0pBlCAntGkmcIDiLZ2yiUru0E6WQQL75sNWQ6gCBGAU9D43bqOEuH1PqKKiO+nnBxXrc1nEwv6hUdBxxNQbqLhuo0VjGigTB4dG7qM/257752cdRtq9FGTZtetUloWuMo1PG9qDR0aBSEjZKmSA8/mc6Umt+PfqslZInHfDqbcwI1aLVEBvUMQsnN9J1AlCjBIAItHEA2LNB5q6SklylFnHy0s3QuhUdFR7fOIHFUPQJFxBc40a/N8boGGJA0b/MnK/XnkAuMhYBs2
+ Y3+0ymF7
+ Yp3g87+VokWvte+fRLMEcvmISTYjrq6ufrmh5Ke2NkyTWNkaNve0/2SoNQdk+UY7EiAgSZfgXw3RuDHGI+wFIa7PJIVPiGSEARv8+qhIU3wy2dI8tHUEdUjyu12FgrK4C5jJ3CAenW13oobb9AOkO0ugi1OoJYZiD2Rx4snsf0tr5yp5tJKKxhyRuwEOXqfb3o/0nlmGcUbJ1mP++dmnc3CV0FFL8qDO41VonSWNuR3V7ZV8p3R4rSQeyRl+XbpMO+WoeyXLq8oAin5fQjnAJbO8pO65IrFvdsmQ6u4oSoJFA61WA+z2W9P4bP+TVNlUe8FvCnNN0PbWaAn7trxvStyjkiAGwlSINc3s1c0SD3K6Bx4o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,63 +141,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
-
-> On 2/23/26 08:04, Ackerley Tng wrote:
->> Hi,
->>
->> Currently, guest_memfd doesn't update inode's i_blocks or i_bytes at
->> all. Hence, st_blocks in the struct populated by a userspace fstat()
->> call on a guest_memfd will always be 0. This patch series makes
->> guest_memfd track the amount of memory allocated on an inode, which
->> allows fstat() to accurately report that on requests from userspace.
->>
->> The inode's i_blocks and i_bytes fields are updated when the folio is
->> associated or disassociated from the guest_memfd inode, which are at
->> allocation and truncation times respectively.
->>
->> To update inode fields at truncation time, this series implements a
->> custom truncation function for guest_memfd. An alternative would be to
->> update truncate_inode_pages_range() to return the number of bytes
->> truncated or add/use some hook.
->>
->> Implementing a custom truncation function was chosen to provide
->> flexibility for handling truncations in future when guest_memfd
->> supports sources of pages other than the buddy allocator. This
->> approach of a custom truncation function also aligns with shmem, which
->> has a custom shmem_truncate_range().
+On Mon, Feb 23, 2026 at 03:08:19PM -0800, David Matlack wrote:
+>On Mon, Feb 23, 2026 at 2:04 PM Samiullah Khawaja <skhawaja@google.com> wrote:
+>> On Thu, Jan 29, 2026 at 09:24:49PM +0000, David Matlack wrote:
 >
-> Just wondered how shmem does it: it's through
-> dquot_alloc_block_nodirty() / dquot_free_block_nodirty().
+>> >Drivers can notify the PCI subsystem whenever a device is preserved and
+>> >unpreserved with the following APIs:
+>> >
+>> >  pci_liveupdate_outgoing_preserve(pci_dev)
+>> >  pci_liveupdate_outgoing_unpreserve(pci_dev)
+>>
+>> nit: Preserve and Unpreserve can only be done from outgoing kernel, maybe
+>> remove the "outgoing" from the function name.
 >
-> It's a shame we can't just use folio_free().
+>That's reasonable, I can make that change in v3.
 
-Yup, Hugh pointed out that struct address_space *mapping (and inode) may already
-have been freed by the time .free_folio() is called [1].
-
-[1] https://lore.kernel.org/all/7c2677e1-daf7-3b49-0a04-1efdf451379a@google.com/
-
-> Could we maybe have a
-> different callback (when the mapping is still guaranteed to be around)
-> from where we could update i_blocks on the freeing path?
-
-Do you mean that we should add a new callback to struct
-address_space_operations?
-
-.invalidate_folio semantically seems suitable. This is called from
-truncate_cleanup_folio() and is conditioned on
-folio_needs_release(). guest_memfd could make itself need release, but
-IIUC that would cause a NULL pointer dereference in
-filemap_release_folio() since try_to_free_buffers() -> drop_buffers()
-will dereference folio->private.
-
-From the name, .release_folio sounds eligible, but this is meant for
-releasing data attached to a folio, not quite the same as updating inode
-fields. This is also not called in the truncation path.
-
+I should have added it earlier, but the same applies to the
+pci_liveupdate_incoming_finish() as it can only be done with incoming
+kernel. Maybe we can remove incoming from it also for consistency?
 >
-> --
-> Cheers,
+>> >+static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
+>> >+{
+>> >+      struct pci_dev *dev = NULL;
+>> >+      int max_nr_devices = 0;
+>> >+      struct pci_ser *ser;
+>> >+      unsigned long size;
+>> >+
+>> >+      for_each_pci_dev(dev)
+>> >+              max_nr_devices++;
+>>
+>> This will not work for SRIOV as new devices will be registered when
+>> sriov is enabled and the max will increase. As we are not handling VFs
+>> with this patch series, this can be fine?
 >
-> David
+>That's right. Since this series does not support VFs
+>(pci_liveupdate_outgoing_preserve(VF) will return -EINVAL), I dropped
+>the logic from v1 that included the maximum possible number of VFs in
+>max_nr_devices.
+>
+>Once we add support for preserving VFs, we can update this logic.
+>
+>Another way that pci_liveupdate_outgoing_preserve() could fail due to
+>running out of room is if hot-plugged devices are preserved. But I
+>don't think that's an important problem to solve right now.
 
