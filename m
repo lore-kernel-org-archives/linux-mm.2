@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B9EE98DEF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:25:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5212FE98DF6
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:25:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8AB16B0089; Mon, 23 Feb 2026 02:25:37 -0500 (EST)
+	id 7EFCF6B008A; Mon, 23 Feb 2026 02:25:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0AD56B008A; Mon, 23 Feb 2026 02:25:37 -0500 (EST)
+	id 7C1BD6B008C; Mon, 23 Feb 2026 02:25:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93B7E6B008C; Mon, 23 Feb 2026 02:25:37 -0500 (EST)
+	id 5853F6B0092; Mon, 23 Feb 2026 02:25:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 83B476B0089
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:25:37 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38A2513BC0A
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5D16B008A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:25:38 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA0B71CA68
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:25:37 +0000 (UTC)
-X-FDA: 84474886314.07.9147EA8
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6DABA2000A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:25:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="l/fheoFb";
-	spf=pass (imf13.hostedemail.com: domain of 37QCcaQsKCLISUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=37QCcaQsKCLISUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com;
+X-FDA: 84474886314.14.F4ECA05
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E30D240011
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:25:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=o2vrWDx8;
+	spf=pass (imf07.hostedemail.com: domain of 37gCcaQsKCLMTVdXkeXrmgZZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--ackerleytng.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=37gCcaQsKCLMTVdXkeXrmgZZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771831534;
+	s=arc-20220608; t=1771831536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hidpuNttSwZHxHCys+Rdwk1AShkIe4ps5Ps0hErcBKQ=;
-	b=DsS2nNF89yKV1vuMjFWhV/rOErUHdqXqoBEAmL7tkv7LCeFvYuktno88xxKaxbYphDdB3U
-	6Dmos3Tks/5hnxWKjU0LlNTo5a+/4SKv7+4ghb/cst6QJrNTbmuJQ0qz4lkvHeMiMUONnb
-	lX94/NUgxCvowaJany39Kb92gS0Dg40=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="l/fheoFb";
-	spf=pass (imf13.hostedemail.com: domain of 37QCcaQsKCLISUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=37QCcaQsKCLISUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771831534; a=rsa-sha256;
+	bh=QO6T3Hywklu95Q2Lh4PbmzrawpSi1ul2o5nH7XzPx2M=;
+	b=Miph7LplP9P4W297tLpDtX+Y2Lr8CgO86XT0ECXagWp8MjM3sg3lmnlo7FSfZeOvvwgFyV
+	i7ZyvhpHneWscMt52mQ31i4nQQcr1xF9xd6+rxRkA3kbAbUME6TD7EnRn+5SGGeLjmcaB0
+	E1n6CcDsIVJrZpnVATDDxtXAZQXPTY0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771831536; a=rsa-sha256;
 	cv=none;
-	b=BteSd2gqvd+qzqDiqVHE9FQW4Y5dtj7fFZzx4ho6+Tg21iTGofJCXy6kod3zDj2cb7BZxE
-	lIMxS316ovySYNhR5ACVP8hnv7c+gook4T/URozwnf/fShWkQJIH1lwRwvsHw/xD1iaT/g
-	MVljeR2w7PVlrSf1OWqqM31PtJpPcSE=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c44bf176so4031617a91.0
-        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:25:34 -0800 (PST)
+	b=RdaFsjXtldvFVqMpOgpdfcqgoJSYjlBjkX83qXhyGYP2Rlyt0cMkTVcr7HcaJq48qQx0PC
+	FDh/tn4e08igAPqH+hJ5S8AL/Pw6TvSVZY8MbliXJG4CL+uLOuPM5jQyJgMoULgDy8mmau
+	cBtTAe4Ioi74CVcRTMun7z2uqfowOY8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=o2vrWDx8;
+	spf=pass (imf07.hostedemail.com: domain of 37gCcaQsKCLMTVdXkeXrmgZZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--ackerleytng.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=37gCcaQsKCLMTVdXkeXrmgZZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2aaf2f3bef6so41656765ad.0
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:25:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771831533; x=1772436333; darn=kvack.org;
+        d=google.com; s=20230601; t=1771831535; x=1772436335; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hidpuNttSwZHxHCys+Rdwk1AShkIe4ps5Ps0hErcBKQ=;
-        b=l/fheoFbYEMRzwhxgKZK2062Xfvks+B0AMvNb8tbkwDV7fDRFh24+qwLVNevZykdSG
-         D7FwZdyI4ldeu/uoUpPM8SGKvevwKFOSdTlFtPJpg2fLurwRtew4hf95bP4JhhuoA0VT
-         CAGa08c0k5Cz/1vJ/lhocqjn7Bz1kUNSVvHrkUhZW7PVwofAbEQL/h9AoBu7GqApkZnY
-         0w6u0jNCNYu/jcYpvqWBraRrBHC/fK6+toZjVkgNb/VOPf8mJxQjyUnVwSSgJFYbXowD
-         KcoRDY7Ury3x8KpgUc5XA3sBJVMi3QhDadB/LaNa5yAjlbJzgWAt7Dc7y6C4U9a/exG3
-         jW9A==
+        bh=QO6T3Hywklu95Q2Lh4PbmzrawpSi1ul2o5nH7XzPx2M=;
+        b=o2vrWDx8lqDv12KHqT5jhEDcpBeWbT+XeFKoSzVbl66BKnXv58Sj/Cu7pXVqeCYtTD
+         DEPTgP1H2mHnrHOq3esUA34OPRq0rri/ZaC0OZsrU68hAL1WUWOQdMhtApjkCVSfV9RH
+         8jkyhZU7Dee5EL922FkmUWlk24yEvRCB1iSz+5s35vEIP10kQqeVT6INS4urEhvzIv6f
+         rysLWg4orLKEfxYvYC2+tWyVE+7/XY3iaP/IORznf+PZA4cEXGc9lC3veB9Q+AD7WZg2
+         ZE9Xgw5hrddXf6AOqJNyxysw+3eCXOX1nCCOAX7o7tKjaiyfZKgC3dAla3pYj1dmcxKH
+         iVCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771831533; x=1772436333;
+        d=1e100.net; s=20230601; t=1771831535; x=1772436335;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hidpuNttSwZHxHCys+Rdwk1AShkIe4ps5Ps0hErcBKQ=;
-        b=bQCXfFQGE1YKD7II5tw3q2EQ6VTLV0YwKVR9NGV1oiAwz3PEgMtgudXcjFNPI3dH/s
-         umE8Gj4D4Sg8sPUTdN7hGx4isD5JxMkM6KIGOghPU6s8RAzNkNR7h5QMap8HxJlNbsqs
-         7f2Mw4smiuopxQGu1WW2iol/Zne9mQEGDOv55DI33U4m/ciYvxupf3FMKK6O63ohS0Ue
-         nw1Z+vloXQ3xMAJgE/adQ5AUPHILTCP7pIIUXgIixFKFGcfU0czYA309vLTpZCXuI+oe
-         2G6l/gWI576Bn5MGwquLpxUC8ZO5oTbUuzScCyK7MiJhj86l+1FX7B+4OsKliS3CNcn6
-         HH8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVm7D0gs5fRfieXrBZup4pRzqnJGnCmytvW2gmeF9sK6kR0yUK3ryipaO2XlzGB33fUEkemYUF9Pw==@kvack.org
-X-Gm-Message-State: AOJu0YzN0IV2+VM+nu0Ag0ETPswgnhUvj/JbXYWEupCY9EMNOP0GCWz/
-	mPRFqQhQxGSIHqsBfKyKPsTGVGPqp0aKrHv5hD1MHeed4e5L45vBJYlSUy8a0nvnmHU/tsCiQ+B
-	0IMLUdZ3tg8KRPK52sj7xUmgXXA==
-X-Received: from pjbjs16.prod.google.com ([2002:a17:90b:1490:b0:32e:ca6a:7ca9])
+        bh=QO6T3Hywklu95Q2Lh4PbmzrawpSi1ul2o5nH7XzPx2M=;
+        b=waaW/WjLRHF95Gt6a//5Ge6+ScKYl0fQvgK+O2kSq5Ay2yb+mqros97XGtQiyW+iDs
+         3ZZ2kgOpCUlklgTE+ZExWGqD2dm4upsVEY1ORX/7rmAjSJBQZSQqUkiezw0IxgYkDRoY
+         AZP77McHs+zKFW2P3DYw5tALyatR7SdZhMxMmIdyA0lQBdurqIzO1D05333z8XSczxKB
+         oO3Y0UIlKBe6296rfae5EbNSB3VVjqSbatqCexhceKUx3hZXAtln5IzWq5fduLsECnHP
+         AE0rr1owNWzoP6gT+C4iA3VgrESFF4LKQ4igsWjcYjaT8nmFR1Hnvrgw8zDKfz1M0FPK
+         3U/A==
+X-Forwarded-Encrypted: i=1; AJvYcCVjHxLgFpUvfmEb30dpF1sbMbRuHxkdSO0NTa22OscIpSHSAu85C64ThshKL/mIkM2voioY+X09vA==@kvack.org
+X-Gm-Message-State: AOJu0YzFVVGp7HhM6mqdVYzrRrSL43/4B2PeeGeTY1xucazEMZ0AhPnW
+	RE/VEovWEJBC+YVbQTM2KuPqpa8K/3Ln0z9xXrljvEkSSDqxv9ALOQVJyKRFI5iPeXhOtIJCzH0
+	HJvZanvb8xXtnxgZKBqhMTGTsKA==
+X-Received: from pjbbp12.prod.google.com ([2002:a17:90b:c0c:b0:34c:2797:7072])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3c43:b0:340:bfcd:6af8 with SMTP id 98e67ed59e1d1-358ae7be0b3mr6177609a91.4.1771831533175;
- Sun, 22 Feb 2026 23:25:33 -0800 (PST)
-Date: Mon, 23 Feb 2026 07:25:27 +0000
+ 2002:a17:903:4b28:b0:2a9:43a9:d367 with SMTP id d9443c01a7336-2ad745a5e98mr58917065ad.51.1771831534600;
+ Sun, 22 Feb 2026 23:25:34 -0800 (PST)
+Date: Mon, 23 Feb 2026 07:25:28 +0000
 In-Reply-To: <cover.1771831180.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1771831180.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <3d698e6fcf052628629d9bd928fcef5fea049a76.1771831180.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 RESEND 1/2] XArray tests: Fix check_split tests to
- store correctly
+Message-ID: <bad1921421199c3009a773d006c1f8782e90452b.1771831180.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 RESEND 2/2] XArray tests: Verify xa_erase behavior in check_split
 From: Ackerley Tng <ackerleytng@google.com>
 To: willy@infradead.org, akpm@linux-foundation.org, 
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
@@ -96,13 +95,13 @@ Cc: david@kernel.org, michael.roth@amd.com, dev.jain@arm.com,
 	vannapurve@google.com, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6DABA2000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ukdgbuaon1ob8qt5m6y38ew6xsozfowt
-X-HE-Tag: 1771831534-19445
-X-HE-Meta: U2FsdGVkX1+msmtTSPAY500nb8PZKovXKAI5QU7QvLxRkhmwZI7nJf/bpH9AIW2q4/MmxV+auEAQmlpSjHQzIoR8jveB6xsJ62MXf7RX95DmZo5XGUYkFvr4oYE7ceplO/FJhzWmUVyV8ckvxSl3cgW+qdGqD6hC7pzPsIYvIv+Z3bZdE983krhcSxaBR9VHJEfj4+hWzAyUcsTk57j08DHKOgoVpqgxcrV6W0GqevzXMx2z8ZCP6x7lDSI2i+nqBW3HJGOnTMZoSSSaX+6MzrIdVXD3xHvcMAgh95oGLEm9PgeYLnFHNsz+JdUj222QV60egmIn5uUf25CorxekXWeRtDJwHmawWv6509ySCbEHjWC5sy3QPrjZFAqw+9SL9W/WElDc2lz0ParGbwzBnLyAP/QjyT0FGTHlbWkCY+3hIi16fnqc1xykO+iLZVP4uOg3s8u/z1mkUV0z5hx0+Weg2oLHuCw46/PRzDm/LwBSDzdItd4TUD5RcSDazKlDh7bcn1fMYLZto/fVt8PjsFJ0bwr22VSGYOT67JE/m5ghH2kVl6KWvgte89kZn/Ubiwv65vwuKeVOdit4u+PzNClgNjRNj4Hap723M3JU8brMCIrU2kc2gUwaIt7co1Zum7YJzmYY7wsMLccjp87iFR4UFoJ8CHZdW6xj94Pt7QIH87hi+wl+KMrl9O//O2qtr356f9JvgXuT0ZCR8tkFayTeEeAfIDCx2XK6LAUhUKLPYRUNXxaCuFYHWwk+5MNPRAIDxsSPEe/aBoEZkYYy2LNYk9DdRotec0jOEi8r3N3XKQHJHuKp1TZ1MnBAWrtAT2b3sQuM2JtAIz9BVJ/QMVolYVTLkZFi3Cr1xt/nSYS/IG8MUC320Tz50t0bFS+y6Iubz9ozrEvRNM78fZYtLdBKFCFRWKReHdoHTmwlqXVlzvJJkLAPHS2b5YCYG1XmQhghl5/GkkpUvnWM/YY
- e+euz2/7
- 2rLfA+exuW9u6BHa01OReEAWCjPFGtDJn54VvCy8/2L28P6WBVki1r2KgPpp7YFZj+ThhDJtD97lQFzL4H+Pk37qA98saIEGNXvsFHgufB/0DaXTZXOp6qipgOGEqleAxKNIfN3Liyy+z3mWSr7mBJDWoOxAF8c7EcOqD+hGUW9DB4zlzugwYo3iphVKO9Sd9exOa9y8p2r9YRT4Alcl2mN9Q+Tf9uveUw/OsFWkRm3p7iCsANcptIP6cJnu9/lYuUbM0/3wIRIcRpuYgOR8/M+A+PDsm2FNu8c9qflJ260lvP8L6mgQSvHiehUc6s7biAir9+EXxExK5YJuvaz2IsV7MviAgRZRaK6PAXgFH5t/zEt8ylGM8wdZXeswPisty0D4C/Ai6XcTjBgn09S5zTrgytxYUDbqGq3VGNgDH9jXXL800r6nx+qmK6lL5eCx3yOSLmZQ5drYEcknZsGasLx+M0l3fUqiNFo28UviHyWiiuZUrKkJckFFEQEc08NqOEmwC0KuPJFSJjWProQkhk4sSdYF+QGkMt/G4vrWwwYHx7oPzXnmnaXS53jVlCs7nC1xSHiSaYkOP2RssnPBUQSkaPiIPUtutEOY4zEZKelRNyI8ERwFlB90NIp0zgzEwXtky2S5olSxi/VDN+H1jSjqlqIaAVkjSJ4H5IDk/xUk3sLU=
+X-Stat-Signature: 3jse8449fjkdk1mfp4mdgtsrbxh4sofp
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E30D240011
+X-HE-Tag: 1771831535-906468
+X-HE-Meta: U2FsdGVkX19k1jrwjs8lalQKNh0Xw+H9/D5tyZ93HRyyiPcmNpTMRMzlcY2s4lB8n3t2wyAkCpGZFMuF2dHEe+L9DJNJsK6GaLStiqA3C3TP5CESNX6vBjsEpoUHSMbY5hRYbM7bBrMieHp4PaurmZ/R7jvIqtvrmzAJ8hNrtXTdq1bKp5zSlZCUqY+nGyg8xfaq/YSN6lFIgaPqjRvkt056ZZYK18rEKcC3kYziHQ1AzYs5ndR76nlffJfbgKZlJqMK7x6S+cn2mhSr/I4VMXMX075bSzBP0ka6mdke9oAUDoJU5VpmwYmO4ge+G/ZLeaJbUO5rxidbwtl1RZmfVQKv2O4uXFhYMqM4UQRmrcxmnizxzmQhQMGhku/kZFUYdQKgdldq8+y5FNyuBJtnBbWtTJ7QRyrmiRosIq4zsrN4oOa+q2rmvOrlAUBPaw53zcX9UruLpSUmvp9xRgd1cUzm+qVRQ1LULrarCeaT7XycdnMufJBLk+XwDTA2Q44K+yBhCId/PKCLcRstNFkNBMXmcfIac4toE4P1h2W34RtMHngWBse4CQnTAcS4EoqOjdO1KQlXIhfnSk1x/s10HAsukufHCbxrPjR7SjzJs0uATUNHznBrF7Ff9xI/rpIHjtNQu6nuqBxbN0K02WoZGZWPaHzLsdwX4oQJHPTlxx9Q4ZzS2eku+g8HDbYibzj/amZFSBNSh4RbedXg77YctDCbwLY2pCnVSG5gM1wV8kWmf+84mBqmAXtWeH4huUZmTQJVXCNAeD3a4aH3fM+NYnMFBQPok94DKXgHqqYQFxX6h7uCuetsUd1zy5JGGK7jH8n0FVHeOQfThMmkpiQ9Zz1oXMdzBtNHKFpzsHYg0MshWXmwmB8qz60sn4mucVk6jXvt5Dg2dYFB5iLJP4iX6IPI9ZcRn3MlH12M/eOKxk/Wjl2yG1aP1g7EvHqhSQzeBQBsZKcfqwq5yY+kke7
+ jPIkPYAT
+ 9BHQ2fgnZmHClhMB19HREO1zR1gQy0Z2l2mZGjb9s/gQAOucMVKsqbTOEF0WsHFlEP3hPNjJN8SJh6MVysd76w6rwCDCYYKPd5KUO2jUVSFWTupiTzgKCslZzG0d+OjBIIMY56fb3ddLqHUXWCI66Kod0rmEr5CHITg1kKKfH/+pZm84AxWZXSUK/l002JTtvhYThOteHF+HGLjv3ABk2QEDHtiHdWiO/7tWGULvy4AMml1ucm8yxuGRcLHP92VmnslgsnDexhJSg8fkTG2HOqn76S/U+2LsmsiDz1axQdcqA6Pz6RynPqO+0P2cLmfOpWGwvCGnebbvJMCyyESEBvjzBSnSYvNoKVjOvqzIYczO7nxUM/G3dLDBk9AtPeS/hs+a3c2vUyAeuLOQv8k37QWArOuL/L126DQh8XjIBqTdKuLnTqUf4L6Fn0UkBFZRM/OwJpuSsv9n7GvLzrn4PxNs2zFBA0u6lqzOQ8zr/yKaT7pyr35ajyyeNJ2miQT0gIMGJiMnsD98y/PWtdaGKgCc0txljcxpcFJcPKBwybcyDVQUgQdTIvm3/pJwvvZU5jR/75OgUuK5WAAGF+r7Kr2bTjZ3SzQTxE8pUxvg5v0wXT4amoPKwDTMx9fyPj2kPhdP7LUUhWVv9vk/vnvA/zAhWimrYFLy7EazWrfpAa8Ii7qvIyxom9Gx4gghbWhpZTyXpZCykAOH8StQMMOoaw55taw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,58 +110,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__xa_store() does not set up xas->xa_sibs, and when it calls xas_store(),
-xas_store() stops prematurely and does not update node->nr_values to count
-all values and siblings. Hence, when working with multi-index XArrays,
-__xa_store() cannot be used.
+Both __xa_store() and xa_erase() use xas_store() under the hood, but when
+the entry being stored is NULL (as in the case of xa_erase()),
+xas->xa_sibs (and max) is only checked if the next entry is not a sibling,
+hence allowing xas_store() to keep iterating, hence updating
+node->nr_values correctly.
 
-Fix tests by calling xas_store() directly with xas->xa_sibs correctly set
-up.
+Add xa_erase() to check_split tests that verify functionality, with the
+added intent to illustrate the usage differences between __xa_store(),
+xas_store() and xa_erase() with regard to multi-index XArrays.
 
-Change-Id: I144b96b8724c27ac4a6d53be1e74125bf8d3aebe
+Change-Id: Ibbbae5e6339b46203f22658cc84ea9f16025fa14
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- lib/test_xarray.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ lib/test_xarray.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/lib/test_xarray.c b/lib/test_xarray.c
-index 5ca0aefee9aa5..e71e8ff76900b 100644
+index e71e8ff76900b..bb9471a3df65c 100644
 --- a/lib/test_xarray.c
 +++ b/lib/test_xarray.c
-@@ -1846,8 +1846,14 @@ static void check_split_1(struct xarray *xa, unsigned long index,
- 	xas_split_alloc(&xas, xa, order, GFP_KERNEL);
- 	xas_lock(&xas);
- 	xas_split(&xas, xa, order);
--	for (i = 0; i < (1 << order); i += (1 << new_order))
--		__xa_store(xa, index + i, xa_mk_index(index + i), 0);
-+	for (i = 0; i < (1 << order); i += (1 << new_order)) {
-+		xas_set_order(&xas, index + i, new_order);
-+		/*
-+		 * Don't worry about -ENOMEM, xas_split_alloc() and
-+		 * xas_split() ensures that all nodes are allocated.
-+		 */
-+		xas_store(&xas, xa_mk_index(index + i));
-+	}
- 	xas_unlock(&xas);
+@@ -1874,6 +1874,10 @@ static void check_split_1(struct xarray *xa, unsigned long index,
+ 	rcu_read_unlock();
+ 	XA_BUG_ON(xa, found != 1 << (order - new_order));
  
- 	for (i = 0; i < (1 << order); i++) {
-@@ -1893,8 +1899,14 @@ static void check_split_2(struct xarray *xa, unsigned long index,
- 		xas_unlock(&xas);
- 		goto out;
++	for (i = 0; i < (1 << order); i += (1 << new_order))
++		xa_erase(xa, index + i);
++	XA_BUG_ON(xa, !xa_empty(xa));
++
+ 	xa_destroy(xa);
+ }
+ 
+@@ -1926,6 +1930,10 @@ static void check_split_2(struct xarray *xa, unsigned long index,
  	}
--	for (i = 0; i < (1 << order); i += (1 << new_order))
--		__xa_store(xa, index + i, xa_mk_index(index + i), 0);
-+	for (i = 0; i < (1 << order); i += (1 << new_order)) {
-+		xas_set_order(&xas, index + i, new_order);
-+		/*
-+		 * Don't worry about -ENOMEM, xas_split_alloc() and
-+		 * xas_split() ensures that all nodes are allocated.
-+		 */
-+		xas_store(&xas, xa_mk_index(index + i));
-+	}
- 	xas_unlock(&xas);
- 
- 	for (i = 0; i < (1 << order); i++) {
+ 	rcu_read_unlock();
+ 	XA_BUG_ON(xa, found != 1 << (order - new_order));
++
++	for (i = 0; i < (1 << order); i += (1 << new_order))
++		xa_erase(xa, index + i);
++	XA_BUG_ON(xa, !xa_empty(xa));
+ out:
+ 	xas_destroy(&xas);
+ 	xa_destroy(xa);
 -- 
 2.53.0.345.g96ddfc5eaa-goog
 
