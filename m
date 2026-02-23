@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14368EEC287
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 21:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A50EEC296
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 21:56:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD53B6B0088; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+	id 22B9C6B0088; Mon, 23 Feb 2026 16:56:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B75D16B008C; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+	id 1E2956B0089; Mon, 23 Feb 2026 16:56:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A76ED6B0092; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+	id 10FAF6B008A; Mon, 23 Feb 2026 16:56:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 839DF6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4156689140
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:50 +0000 (UTC)
-X-FDA: 84477033900.08.13ED54B
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 76E8040004
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=Mh95Bbw6;
-	spf=pass (imf17.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771882668; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id EAD616B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:56:21 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CB911602A8
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:56:21 +0000 (UTC)
+X-FDA: 84477080562.20.95AB65D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B632640005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:56:19 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SiAryGDr;
+	spf=pass (imf07.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771883779; a=rsa-sha256;
 	cv=none;
-	b=WfZV6oQo6wzFQaEcPgtpRDFh4MbYYYjjL0spv/I/dm76fCzWfnIXd6/kvYW8ZuDIPWegx0
-	S5HRMlsBBsohwrzMF36dYS2mrvEI0nRGPq84+pfdXBmjKBX4vWMwLhmZIF7oQDbWqVBLbf
-	7lhl0rB2VQ9abPt6S+s/jPznIz6En6U=
+	b=W68A0R5nTtB57z3A3al8syojWysVhOWnwt5CjKjnzAuEiWCCh2bPWKD267ePsnFv2Fr7v6
+	NzIdbylS7Dsv9om+N3CqIH8KZFqDyNk6E9SG5JnRpt5EdossxaBXCiQY1lNTZf1cy6HKX4
+	9bxGLxATci6vITJxaeMdxjqmPXUZxYM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=Mh95Bbw6;
-	spf=pass (imf17.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SiAryGDr;
+	spf=pass (imf07.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771882668;
+	s=arc-20220608; t=1771883779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=tOOO+7UkvOP8Ofk6vSKLcQwQC3rue4XRieND4PdhQfk=;
-	b=epQIVyxOK23C3OJ2kFovboJgqcvVMoBXiaNhJIXXCWYvc4pQzilIqfvXdDfR+CFJKIVSDl
-	/fTfUJ9CQ0zci8Pq+yhhuuVKmPigQe2fbcbnVhmJrhDXyC6uHUGqsijvTDXsgKTVlVEtGE
-	zNNdn9ChHS0Xr9qVJFi7CukUKEJiDDg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1771882665;
-	bh=wgq0klt1PqWmfH9WDO6I8fbaaUMhCQRjjwtiK16rPKk=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Mh95Bbw6HhcXAfl43BAod/s/Ke1ZZ6cGQI6urO8ikZHOFQCiZ43HRzA22AOToPfYF
-	 cUuYIRvI6dAsyDKVc+e5HPHALRAWl3ekYAuXrVV8OzQ91uA2RKdAbE56YDVU51lyvX
-	 gaNKCXhXjJPHJUfTB7CRgwAFEw8ppqZMQ3A8xnJw=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 0/2] mm/slab: clean up and constify sysfs attributes
-Date: Mon, 23 Feb 2026 22:37:42 +0100
-Message-Id: <20260223-sysfs-const-slub-v1-0-ff86ffc26fff@weissschuh.net>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IMYKf0q3pNRXedO9tJdf88tZfkkLocSrnc6sVlK/UVI=;
+	b=DMpSXYoVR0hfLKSe4QJAMqRf38olywE6De48IRUrp60bbVYZhnWJM4F3BE0Hx/3PXRjbGi
+	2sDxou9BA+XqARglp/YPEJGtGikG6T+lDNMhflKCoGbWXiOQyg6nyKPNyMDcZHv/YOmTbF
+	5M1lSu0jIqTFCwTuSMxOSHxJ5D8XfGI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77E26419C7;
+	Mon, 23 Feb 2026 21:56:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057A9C116C6;
+	Mon, 23 Feb 2026 21:56:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771883778;
+	bh=fQIHqy1M3EnBsPkSeluvFe+CzPVvJ3xbr05GGxDh4vI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SiAryGDrkCovEn2j4uohrVDXWPiJmV5sCYkegexSkKYuWS7Yab9U+c2yQqqySi1JH
+	 2NH6LIJtP4os/QTlmf6YFUQh54Spl58Pu3l46yBCu06ZnvYyJ0YrZKh+QRk8lzd5xz
+	 VsdkZXiJJ6JE8Qot2esjDx2JlBqtXQLNg1DzTZBwR1SVM7ATEbSFyFr83t+gaYcfA9
+	 QcHHQNoEWnnCN//JfpsBuAlpojl35ab99z4OTP6BCVNEXqL+3LEgRix9DdCf+cldgC
+	 sN9lkIDZYIAEqs5csxHzG5yfxJukTaUYLnpjn8Ss+xHvjKtgaE5uflauArFrZecsvD
+	 HZIjIX4/x7wlg==
+Date: Mon, 23 Feb 2026 22:56:15 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>,
+	Leonardo Bras <leobras.c@gmail.com>, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aZzM_44L1vKzcOCy@pavilion.home>
+References: <20260206143430.021026873@redhat.com>
+ <aYs6Ju2G4bm6_tl2@tiehlicka>
+ <aYxviLoWsrLqDU7o@tpad>
+ <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash>
+ <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZcr255pGT3B/eaL@tpad>
+ <aZdk19MqYhWK90Do@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBswDYWuEi3SphoIC6eiiO6et
- HyL/x8QSkwCTfFAopOF15hRlQWEuY8TIQ/ZoJW2SmuDcssoGNYoO8pyeDR+cLYOxnnrIWdbopG
- vf9l27/sB05KPCWIAAAA=
-X-Change-ID: 20260223-sysfs-const-slub-3bd764c37b6b
-To: Vlastimil Babka <vbabka@suse.cz>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771882664; l=513;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=wgq0klt1PqWmfH9WDO6I8fbaaUMhCQRjjwtiK16rPKk=;
- b=c2iZ0bv/+uVXeyeR+jtp48+/b6rvacLASC/2T32r6ddVtKtUdchncEHargcqajKNKn265gZ0U
- 4vD40rflyyuDRROtLkbjsBuNKdHwAgELfsXoSFkG/t3s2l7VcCdqmfN
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Rspamd-Queue-Id: 76E8040004
-X-Stat-Signature: id7axbpose68c4itb6ihq3pnxiof8hd1
+In-Reply-To: <aZdk19MqYhWK90Do@tiehlicka>
+X-Rspamd-Queue-Id: B632640005
+X-Stat-Signature: jbx7twmez6zndbykfwmrb88ixkqniu84
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1771882668-368554
-X-HE-Meta: U2FsdGVkX1/e6h6hwB7gf01mz3I4cxGUK4Ga0WRy1JGLejoCSkaLItMHBN6Q5DLDZKgRbOkSU6BmtcHYUHdn7vGkVUptT1INb14bOvQ5/bY7l610id9jhwDFQJHAFA7uykZGJAOgc9RkCdelutIdfmpuTHjsaQNYrr38ijwppm0ULZFW1w6LvW0wilkPuFnFIa5O4OZOxG8fs8HuVMMtVFjuKNwRQfrnTfATVkeJggV6UnSSSb4UCnqMIbxOWgpUOjFr4LPgRr/b3Oi12kPEJOXcXIPo4sC9MwVqYC8HFgM8KtmI6C3HAUSwshqwaKvPTn7ocKDoCvVmC5HLUXJGIzyblBWzPhMa6G1veOl1nNt5zrSfcMfE7AbQx7OCaCwBcDCAEPCNVr9oQB8aHdIPh/WUbgH19wyn/J/3eaeh8AxgeTWEshYL+fWxMk//aHve2fHEbAR31KB90ZWsEw85N8xp9h/4uFaDBduk9qPoQwCqBkYwRgLTi5soX9/AN2x9vyAcEy3A4/0nBOGSE1IqrawDepxm4inYE8ll7uoQq+tCXAMbL6q0mrOviD0WNVMHGHZSzea4T0JY5FGMVEyKsjKoLVHoveDnD6EJjLDfz9U760ne4VhQNVwqTzo45zZBgIDAeLtCGLlQluH1E2qVo1nzmEv8phz5TUrAEl+D50bv+ElcU2SNrrzoX3g5V5li4uOFhdQ0KDM6RsBYMWvOAsz3ReYFRMyw8TSpFru95uZt+VHIntXU4BF/jS3zJ2VkZE4Pwl9TqhUbe85HX3lKqtYUNYFsq/74an0pQveJyl/E3v1xrCUgpLTYtFPyWmC5xF2BbWBjNVNPG750B/O0x0cMXQ4cWY6iI5MHVbTPHozKBtdzPVF+S91L6/Vhuk+F3zZY1cSliqM+Z67wCM0xV59umi9A3l7L3VuJscfobi9O03e5CX1S+NJhmeajFeiiOEAuUJM3I51oY1q66xt
- CQUknig2
- sHBnGyHTQru/kB8ltB7XbyN2iH8TbPb6yA+OiqGw4Z4AvKooka5DIqYY03jIbJSZHZyV/wic+VGhniEjNYCtpUbdtQTxtHno3aUGfrZIsszCWAm/p31e3bHDAxlpOCUZY26QL5ulakSB7Y3WyFFFQ+lTyiiBaNfwMJ/jvyUrXNXoYhccOFBmfeCNbhC3FtvSPGckfREmGSzbTVk0z8Jloizn/xuT+f4uHNs5L4vFlQxGnXRMWwqkF6eMbiw==
+X-HE-Tag: 1771883779-417788
+X-HE-Meta: U2FsdGVkX1/cE2W4AL7MvXlY2oq72tw0elcSFizs1NMZDrGtpQ5/fYDEcnvEdy0XIZIKSYbDYVgMj/mEXZqHKD7KNyGLmiZzytiVfuxSPSpzUV3yiacP0gqtWTWiAxGnXPWEaQdfKFyTMKVNn1hEUYGKxwuPL23zMdnbioW8vv+19unPGXmwy6X0h78CGsDtwmpnVtMPWzira8+3Dk2+I457Gig2116zljjDtVa2RAQ0eIXRkSIZFwPByZbBCYI3VjbYxZvBBVafWvsNRm6QGj0o2+ig+HySPrgcLgMkQeOcvUBEJkbQn3rR1BJvCITrcqTxvpgmxU0RniatBFMpzfnJd2t2FPncQcoS3+jh2NH0RlejflfHonR/W7ZvQWn7FDXBzogyQVSjfJoS4sYDXs4NjLs88gOYgguzbAbOPTpvSMF16byP5/mBw/oIL1bGPBR5WzQPIzKM1cToKiGVPswdlsTDesg5Emd2w3wLSLJPUYXm7v8JgcjL9lmlH81yfe+G3pg4/JYVjgcZi2EyIm9JvvoChf8Fkgnc60zLvikZ7Vznn03561FXfUrhtVuZQE2pwN34D5GcAtaoFa6+9OyhSI6e7ninIQyPCvBIFz75F4116HHzPi9OkBCgYksrSq9GUUJa4eCLVpmNQxPzsT9T0gJWby1h2M+rWT6ig6oUbgE4mrSdZHob/PyrYfGvpTNYKP8h7qSJfWinKPRFlRP0oHh5SkJOPzB6xP3n2ptjHGxsgZkRCGiB/0TTO8511W9npKmWk/wBqSIf3ATPiVGl5vq/Y65B/1MZe71ZwB37i1tDgle8C1xM966skYNRrjFuRpCwG9rEekLaq6+XfjXDKKIArWMk1CM30kL0IcqWMHvoUxWva5hVsoK1kZvBHIqvQwrffYIdy9C7t5WUPZBR1eXXqwpl0CCPzuBkpyoGE+hz+t+JxfayiJ8/O88FyqqRv9GE2ytQ4ts6Wal
+ uVZxAkJa
+ UCsq5OXAzDaZg6QubcdFOquzKgnIM/b1MVLvwsTMBOwBSbtEYbKE7DYH4JC6qdM9NuElz3ajlkUbdTJ/unhDjsFdbCoL6mZ7fSGljtELAqUeWHnYsSUsOEj1cmd8Qxkz7iuKtRXr+oo/dwr3vsPPOn7jLW9Z8DLV3EKriWWIcWp/N9vOJsjTmFrJBXb6qVHTgQ3HqualAWC65BCDT0KqXWDHK5MbtvvcJuXUUj7dapOl+CRVCK0poM2eqzbCqt7V1YOZ47TjzUZLxRUvbVcHdaWlhX9zeGspmkLKUmGI79hKAPoRN6l+TyEaH2K2us/CAaUTFWU/vuxYXhG0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,22 +115,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some small cleanups to the slab sysfs attributes.
+Le Thu, Feb 19, 2026 at 08:30:31PM +0100, Michal Hocko a �crit :
+> On Thu 19-02-26 12:27:23, Marcelo Tosatti wrote:
+> > Michal,
+> > 
+> > Again, i don't see how moving operations to happen at return to 
+> > kernel would help (assuming you are talking about 
+> > "context_tracking,x86: Defer some IPIs until a user->kernel transition").
+> 
+> Nope, I am not talking about IPIs, although those are an example of pcp
+> state as well. I am sorry I do not have a link handy, I am pretty sure
+> Frederic will have that. Another example, though, was vmstat flushes
+> that need to be pcp. There are many other examples.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-Thomas Weißschuh (2):
-      mm/slab: create sysfs attribute through default_groups
-      mm/slab: constify sysfs attributes
+Here it is:
 
- mm/slub.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20260223-sysfs-const-slub-3bd764c37b6b
+https://lore.kernel.org/all/20250410152327.24504-1-frederic@kernel.org/
 
-Best regards,
+Thanks.
+
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
-
+Frederic Weisbecker
+SUSE Labs
 
