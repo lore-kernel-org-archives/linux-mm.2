@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB202EEC287
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 21:37:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14368EEC287
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 21:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1326B008A; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+	id BD53B6B0088; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982786B0093; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+	id B75D16B008C; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D9106B008A; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
+	id A76ED6B0092; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 61F1D6B0089
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 839DF6B0088
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:37:50 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 034ADC0900
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:49 +0000 (UTC)
-X-FDA: 84477033900.24.C81D475
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4156689140
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:50 +0000 (UTC)
+X-FDA: 84477033900.08.13ED54B
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 370E3140005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=B2O+We8Q;
-	spf=pass (imf23.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 76E8040004
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=Mh95Bbw6;
+	spf=pass (imf17.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771882668; a=rsa-sha256;
+	cv=none;
+	b=WfZV6oQo6wzFQaEcPgtpRDFh4MbYYYjjL0spv/I/dm76fCzWfnIXd6/kvYW8ZuDIPWegx0
+	S5HRMlsBBsohwrzMF36dYS2mrvEI0nRGPq84+pfdXBmjKBX4vWMwLhmZIF7oQDbWqVBLbf
+	7lhl0rB2VQ9abPt6S+s/jPznIz6En6U=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=Mh95Bbw6;
+	spf=pass (imf17.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
 	dmarc=pass (policy=quarantine) header.from=weissschuh.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771882668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yn1eVPmUTQjmVmfZXESvM+rhWqpDOYbvQsk2y4pTMKo=;
-	b=M+miJcZdGK8ltPqyQl4zBZAh/WCdDuGC2tEYvne79yhAsK2K0pBjovpwox73oDSFBDMFr/
-	JAo4/sJj3wwoZSPoAHl5KvG7UgK4gegyHvmy+sgxptAfOoEuszjpG7nnOyk/SYq0k6GFA1
-	4+MM5pgY6vNP2FjCtzDRa8nBOpy1bI0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=B2O+We8Q;
-	spf=pass (imf23.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771882668; a=rsa-sha256;
-	cv=none;
-	b=KJy+XXkjYXishmOx5lfYQ04fY78TtqFkCEtRuDdMwF0PcZ4H+w87++FNmHqcilfK1RU7qJ
-	zEQzPy7AKe6e90GYpB7edyBACRgwOqs9G+uRfU+oRfSzQXYnAMXEmkM1olL34VfOe8EEKQ
-	SVwEoHiSgs4PvIRS5GTJXeXXkDOiZnQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tOOO+7UkvOP8Ofk6vSKLcQwQC3rue4XRieND4PdhQfk=;
+	b=epQIVyxOK23C3OJ2kFovboJgqcvVMoBXiaNhJIXXCWYvc4pQzilIqfvXdDfR+CFJKIVSDl
+	/fTfUJ9CQ0zci8Pq+yhhuuVKmPigQe2fbcbnVhmJrhDXyC6uHUGqsijvTDXsgKTVlVEtGE
+	zNNdn9ChHS0Xr9qVJFi7CukUKEJiDDg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1771882665;
-	bh=MYpqUxMpYwkhOju+gnYcw1HvuKIFM971ic1B7jd/Brw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=B2O+We8QVKlqiwrYw1bgfyEGqJ3qyfEPJj6t6ORYSOU4opLdaD4SmhZzbeUd1bXTb
-	 PKhx3eHWL/P9cZedfnY6wTvmg13gqacE2zrpXvzNYlRAV+1AB/pvEVYRUsC+1jMDD2
-	 PpKPMZ9rW2xRULSw87FSAuBhPcyxfvFRXiBD6qT4=
+	bh=wgq0klt1PqWmfH9WDO6I8fbaaUMhCQRjjwtiK16rPKk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Mh95Bbw6HhcXAfl43BAod/s/Ke1ZZ6cGQI6urO8ikZHOFQCiZ43HRzA22AOToPfYF
+	 cUuYIRvI6dAsyDKVc+e5HPHALRAWl3ekYAuXrVV8OzQ91uA2RKdAbE56YDVU51lyvX
+	 gaNKCXhXjJPHJUfTB7CRgwAFEw8ppqZMQ3A8xnJw=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 23 Feb 2026 22:37:43 +0100
-Subject: [PATCH 1/2] mm/slab: create sysfs attribute through default_groups
+Subject: [PATCH 0/2] mm/slab: clean up and constify sysfs attributes
+Date: Mon, 23 Feb 2026 22:37:42 +0100
+Message-Id: <20260223-sysfs-const-slub-v1-0-ff86ffc26fff@weissschuh.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260223-sysfs-const-slub-v1-1-ff86ffc26fff@weissschuh.net>
-References: <20260223-sysfs-const-slub-v1-0-ff86ffc26fff@weissschuh.net>
-In-Reply-To: <20260223-sysfs-const-slub-v1-0-ff86ffc26fff@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBswDYWuEi3SphoIC6eiiO6et
+ HyL/x8QSkwCTfFAopOF15hRlQWEuY8TIQ/ZoJW2SmuDcssoGNYoO8pyeDR+cLYOxnnrIWdbopG
+ vf9l27/sB05KPCWIAAAA=
+X-Change-ID: 20260223-sysfs-const-slub-3bd764c37b6b
 To: Vlastimil Babka <vbabka@suse.cz>, 
  Andrew Morton <akpm@linux-foundation.org>, 
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
@@ -72,21 +73,21 @@ To: Vlastimil Babka <vbabka@suse.cz>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771882664; l=1444;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771882664; l=513;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=MYpqUxMpYwkhOju+gnYcw1HvuKIFM971ic1B7jd/Brw=;
- b=2eAT+dOKGjcpux56nH0MXkeFoQtqbS2Y00d00OObMhUZobtW3Q17HQO1d+0UoK6pohgLM3RAL
- xEwsxVXTZVuC8J+T90hT6NavcrMaO9vogEZZm4Iu3QQNfwZb4gITgPB
+ bh=wgq0klt1PqWmfH9WDO6I8fbaaUMhCQRjjwtiK16rPKk=;
+ b=c2iZ0bv/+uVXeyeR+jtp48+/b6rvacLASC/2T32r6ddVtKtUdchncEHargcqajKNKn265gZ0U
+ 4vD40rflyyuDRROtLkbjsBuNKdHwAgELfsXoSFkG/t3s2l7VcCdqmfN
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-Rspamd-Queue-Id: 76E8040004
+X-Stat-Signature: id7axbpose68c4itb6ihq3pnxiof8hd1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 370E3140005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: udw13kb4p4jbkuyqx8ox8hkame658sep
-X-HE-Tag: 1771882667-173625
-X-HE-Meta: U2FsdGVkX1/oam8X4879XX0F13HZPTjksHX2/HxhlBaCPTlgv/tNkpCaTbISHZHTHo8ejzV0GZrflbatLzF0CX0fuL5eFEhGNJwRhWxNsREf2sfRGUaKKv1NHbIxbJcMDrUQ6sdtKW9wgFxPb16MwYUFt2JSHdlabTPeWFNfnzRRix/kKaP/CDWc+u9OdIGXr00/TQ2h0/IqQnq192qWSR2KRuxCHRa+erpJpTOBPlTVN1Wfm1PlYIk+eH55nGAoVPlPHXrVBpMZLetFvIElNubBceG/zywDZYed1FwzrEwU/+OiwQLB9umOYcXb3OKA1liJBrYYjcEk5WQsm+k8J7y5WLQJEZKVZccCOZDmYyaRsdL5/+6/RI3Ee5d6WXNAr/Hq+FQiEoqI4MML09gWT7bD84YJnH32R2BXP2qYf6aD2c47dndqtd7x1XEcYvjPaDHYc61rYnCLgoVd9OWmWMxTj8fSYez7WbsRNmzAJKo+E9+Zjx45E0huyxlHeF32e04t86OPfyAa1QnP60lLIHM8MGm5W+SLMvB8ERKT8afLe7b3hyYzAXjOYLMffdDTC4ewMVodIjHDNWC6XAu9AWhicQmFrnrFnC6bzz21LivhT8zrSAbPg8hFnQ7W/rN1fowyL4wzmcqCwHDuf7WSv4bvqUtvYhbO+uR4+uHzJ8Al7M0XRC2kQ3YZANLgi+xSuSSz9BH/c48bk8c2BjFeIPZ/QEtMczQXTSlbLG5DVMTyh6PcGjqhf1Vzdk6VcfyBG2zDgOjRvZC/Il5ZWJTTlEuKZT+e9HpGukSKP89/KY3qT8FELUdfo0r+s8/HGYi+k6PFuiqd6QZfmEufcW9AqsMA7ofvoxPOS3I/F2A5BJmKMTpj6U4/1hfj7eAo8VSxURmjQzCDr+GmIeXDuVYQhj2Z/AFTIMdFiBD6SKIPP1fjL09nin/M8rCFca8uyau/bWJj3AAG8qrRPprl8TV
- Z43rwBF2
- nJ0bTCGq4WsOZWeuxIa3DlapDVK+cEESgFwJJVrz55X9+vtuP/D/jbQBWWbw50GFXXGXeWwYPbSwWi5fGkWaCNk9RKWgYnV2e8k22KnPqqaI3qSrRilPZECsCiY8Z6T7JcQf7qUidwAaohB9SiQXdPZ1q9UQXPONXNw+8Tc1k7Xbtuf0wuSNgm7qqPVpUTEimR85XnoOtVWqENtqg1ytYnfPBj+XYql6Ta3PG+/kHB0QKFo796aa0Dv3l5bCwDkWb8lxYycTMmGUV55UeHfITZMOo9oL0e6K0hJHfkHX6x9ApcRE=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771882668-368554
+X-HE-Meta: U2FsdGVkX1/e6h6hwB7gf01mz3I4cxGUK4Ga0WRy1JGLejoCSkaLItMHBN6Q5DLDZKgRbOkSU6BmtcHYUHdn7vGkVUptT1INb14bOvQ5/bY7l610id9jhwDFQJHAFA7uykZGJAOgc9RkCdelutIdfmpuTHjsaQNYrr38ijwppm0ULZFW1w6LvW0wilkPuFnFIa5O4OZOxG8fs8HuVMMtVFjuKNwRQfrnTfATVkeJggV6UnSSSb4UCnqMIbxOWgpUOjFr4LPgRr/b3Oi12kPEJOXcXIPo4sC9MwVqYC8HFgM8KtmI6C3HAUSwshqwaKvPTn7ocKDoCvVmC5HLUXJGIzyblBWzPhMa6G1veOl1nNt5zrSfcMfE7AbQx7OCaCwBcDCAEPCNVr9oQB8aHdIPh/WUbgH19wyn/J/3eaeh8AxgeTWEshYL+fWxMk//aHve2fHEbAR31KB90ZWsEw85N8xp9h/4uFaDBduk9qPoQwCqBkYwRgLTi5soX9/AN2x9vyAcEy3A4/0nBOGSE1IqrawDepxm4inYE8ll7uoQq+tCXAMbL6q0mrOviD0WNVMHGHZSzea4T0JY5FGMVEyKsjKoLVHoveDnD6EJjLDfz9U760ne4VhQNVwqTzo45zZBgIDAeLtCGLlQluH1E2qVo1nzmEv8phz5TUrAEl+D50bv+ElcU2SNrrzoX3g5V5li4uOFhdQ0KDM6RsBYMWvOAsz3ReYFRMyw8TSpFru95uZt+VHIntXU4BF/jS3zJ2VkZE4Pwl9TqhUbe85HX3lKqtYUNYFsq/74an0pQveJyl/E3v1xrCUgpLTYtFPyWmC5xF2BbWBjNVNPG750B/O0x0cMXQ4cWY6iI5MHVbTPHozKBtdzPVF+S91L6/Vhuk+F3zZY1cSliqM+Z67wCM0xV59umi9A3l7L3VuJscfobi9O03e5CX1S+NJhmeajFeiiOEAuUJM3I51oY1q66xt
+ CQUknig2
+ sHBnGyHTQru/kB8ltB7XbyN2iH8TbPb6yA+OiqGw4Z4AvKooka5DIqYY03jIbJSZHZyV/wic+VGhniEjNYCtpUbdtQTxtHno3aUGfrZIsszCWAm/p31e3bHDAxlpOCUZY26QL5ulakSB7Y3WyFFFQ+lTyiiBaNfwMJ/jvyUrXNXoYhccOFBmfeCNbhC3FtvSPGckfREmGSzbTVk0z8Jloizn/xuT+f4uHNs5L4vFlQxGnXRMWwqkF6eMbiw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,60 +96,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The driver core can automatically create custom type attributes.
-This makes the code and error-handling shorter.
+Some small cleanups to the slab sysfs attributes.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- mm/slub.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+Thomas Weißschuh (2):
+      mm/slab: create sysfs attribute through default_groups
+      mm/slab: constify sysfs attributes
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 862642c165ed..a48ea23b1728 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -9317,9 +9317,7 @@ static struct attribute *slab_attrs[] = {
- 	NULL
- };
- 
--static const struct attribute_group slab_attr_group = {
--	.attrs = slab_attrs,
--};
-+ATTRIBUTE_GROUPS(slab);
- 
- static ssize_t slab_attr_show(struct kobject *kobj,
- 				struct attribute *attr,
-@@ -9366,6 +9364,7 @@ static const struct sysfs_ops slab_sysfs_ops = {
- static const struct kobj_type slab_ktype = {
- 	.sysfs_ops = &slab_sysfs_ops,
- 	.release = kmem_cache_release,
-+	.default_groups = slab_groups,
- };
- 
- static struct kset *slab_kset;
-@@ -9453,10 +9452,6 @@ static int sysfs_slab_add(struct kmem_cache *s)
- 	if (err)
- 		goto out;
- 
--	err = sysfs_create_group(&s->kobj, &slab_attr_group);
--	if (err)
--		goto out_del_kobj;
--
- 	if (!unmergeable) {
- 		/* Setup first alias */
- 		sysfs_slab_alias(s, s->name);
-@@ -9465,9 +9460,6 @@ static int sysfs_slab_add(struct kmem_cache *s)
- 	if (!unmergeable)
- 		kfree(name);
- 	return err;
--out_del_kobj:
--	kobject_del(&s->kobj);
--	goto out;
- }
- 
- void sysfs_slab_unlink(struct kmem_cache *s)
+ mm/slub.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260223-sysfs-const-slub-3bd764c37b6b
 
+Best regards,
 -- 
-2.53.0
+Thomas Weißschuh <linux@weissschuh.net>
 
 
