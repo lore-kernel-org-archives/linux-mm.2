@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A59ACEEC2AD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 23:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14D84EEC2AB
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 23:30:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12EC26B0005; Mon, 23 Feb 2026 18:28:31 -0500 (EST)
+	id 72FD26B0005; Mon, 23 Feb 2026 18:30:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 106AF6B0089; Mon, 23 Feb 2026 18:28:31 -0500 (EST)
+	id 6DDDB6B0089; Mon, 23 Feb 2026 18:30:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F34E46B008A; Mon, 23 Feb 2026 18:28:30 -0500 (EST)
+	id 5E0406B008A; Mon, 23 Feb 2026 18:30:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF6856B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:28:30 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AA6C57FC3
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:28:30 +0000 (UTC)
-X-FDA: 84477312780.15.902F3D7
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1CD3E1C0010
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:28:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=U9I3TT8y;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 496D46B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:30:24 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA993B83EF
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:30:23 +0000 (UTC)
+X-FDA: 84477317526.11.648A155
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1A3334000E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:30:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XQplAEaz;
+	spf=pass (imf11.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771889309;
+	s=arc-20220608; t=1771889422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GLOdiaqX3yPW7m0nfesCXj4Mjr6o8vyaIg3hDRZrwfg=;
-	b=3wThLq5VW734cDZPdSbN/ghhPW2QUgV9Qqpov9w9rbqJl7+1IImIODHW2tOfTa/KCJkcTh
-	D2vEhszrH1jvlr/3w900I3/+thd05b+RgXMmknTMLcVUTfZwWvtfz9bqUcKMowK9OfY1Zq
-	C1ia+uceaLDBZCAhAFxiW+D16fPPkEw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=U9I3TT8y;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771889309; a=rsa-sha256;
+	bh=ye756R42gxexSJRqGTZDTSp1gOBoqFlZTvzzC7NQ+/o=;
+	b=3+58sMBdaiLhKazEP619f77NVdmM9BmC9LfUyjZgTezSvCGUw6JzJBeqxAqBYyu9Dr31aO
+	qRHdxHhpWIc3B4mRlopnHuRuhROvqMT19ayuRth8fOa51V5+BlqLih6IRPzCNBgo59bsiC
+	9wJgeYuybvoP9f0ZHd+DQ5ZNSfwxXd4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771889422; a=rsa-sha256;
 	cv=none;
-	b=07wopyC3xqlZ/K3JmDo+R8yu6jcGJ1No5vEGoq58GqbYkaEr0rBCRIK2BmW5e65lP3/Yx7
-	gzLsUm/X64Slmn9gDB2C/zmD6MZCoZIni4oe6xRwe+wK/KtdgaYjXLSJ3GXEIqApBjJZXU
-	OEY5mgXdMdDtgxKNcj3kxLDjryYvjjY=
-Date: Mon, 23 Feb 2026 15:28:11 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771889301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GLOdiaqX3yPW7m0nfesCXj4Mjr6o8vyaIg3hDRZrwfg=;
-	b=U9I3TT8y7+uV4deYZUwpc4lIdgTCMA8gOEmXftR1Fmaq+hNfql6+1u3cYtPTi8xDkpb/8y
-	UZpwFxw/9s7pc9xorCwqzRuZJawv6q/Xjd3SQ4PubC1AuBd9EVXJc5/ZQNf6ZH4rDlxEU+
-	Q97zILbWyMtZuFl4NOxk2bX9/BQBdtg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 2/4] mm: convert zone lock users to wrappers
-Message-ID: <aZzicQS19G_WeL-J@linux.dev>
-References: <cover.1770821420.git.d@ilvokhin.com>
- <7d1ee95201a8870445556e61e47161f46ade8b3b.1770821420.git.d@ilvokhin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7d1ee95201a8870445556e61e47161f46ade8b3b.1770821420.git.d@ilvokhin.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 18rjwwyoe7aa6pfa8mskmaaqn5nmjbxa
-X-Rspamd-Server: rspam11
+	b=6plSgZfTE2NGMvayIsQfoaS1cvIoRoVxJNGR7YGnkwqZ72AyA/tbABnqz0LMOZCUYGjnRX
+	Umko1tufp9vxqhCWM3eXMSCO9hJJOufnv4eztWEmVQ2EgfQOB02049QMkllQN609x1FN1c
+	q2KzLMca9TDlq/d4ps7GUGK+YrU+jJs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XQplAEaz;
+	spf=pass (imf11.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D646D43B27;
+	Mon, 23 Feb 2026 23:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A74EC116C6;
+	Mon, 23 Feb 2026 23:30:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771889420;
+	bh=Glie2dDdb0rtYRRJaB/UrvAAGXrFPRVG05iXdt9Zf5g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XQplAEaznmMrCJ6SgkIq5wf0WtoJXumBiFEkgJe3OJQ3oqPctce0aW2nZYm4W0EV9
+	 EVEO6T6DZvaJkJgtRoQyey8sILh+2X1ppdtZjMdrzAGFlgVw5d/v3kZMlYTHDgsN+p
+	 e8XlPGTWv/0KH1oAVE/w9LK0MVoGRmZer55PopAVjX7qKAqIHUVX2QEaYZXvWA6hb3
+	 LGby9WFIxqBZGFQxusZvD7q4PWlHUViAjzwCThkhysUMWQ2dJMEPFGZAw6T2f3z+o1
+	 XLiPlOrX5K+2qxV3cSreRHlukrKItI+ujzkNpCxKnQDEVXgfm/L3e3nH6lJi7uhNqu
+	 PUuFrnPj9xacQ==
+Date: Tue, 24 Feb 2026 08:30:14 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Thomas Ballasi <tballasi@linux.microsoft.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org,
+ hannes@cmpxchg.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, mhiramat@kernel.org, mhocko@kernel.org,
+ rostedt@goodmis.org, shakeel.butt@linux.dev, weixugc@google.com,
+ yuanchu@google.com, zhengqi.arch@bytedance.com
+Subject: Re: [PATCH v7 3/3] mm: vmscan: add PIDs to vmscan tracepoints
+Message-Id: <20260224083014.66bf222ffd81a3ebaa57a0e0@kernel.org>
+In-Reply-To: <20260223171544.4750-4-tballasi@linux.microsoft.com>
+References: <20260213181537.54350-1-tballasi@linux.microsoft.com>
+	<20260223171544.4750-1-tballasi@linux.microsoft.com>
+	<20260223171544.4750-4-tballasi@linux.microsoft.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Stat-Signature: gi71s7b1fbusy14cr8wdh38arsfy1pr1
+X-Rspamd-Queue-Id: 1A3334000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1CD3E1C0010
-X-HE-Tag: 1771889306-901349
-X-HE-Meta: U2FsdGVkX1/t50R5HxgDvmbCZQt2MtEZR71WEQvJaAKcat1u7ImsGvFHWeRVKeXK7MdSvdQ0bhKtl6ftGQfSkdV+LRZmqpBUK087ay5HiIKV4p8kTP5ZNNlwu77DA/D+Vs8GHKVNE84Br9ioIbXFgik9D4CIo8cN80uE8chmsm9L8MepgThlIvTk0y7JrT08ExeZhik/gzavltAbabZ8qAem+djPjxo8+wfu1sNZz0h/ChDmpl3WdsgYA2M2L0+6TXWuiTKcKz/NNZwv2w7H/wOEpjvWPzuIPKEHWx2YdD79NAuICPqMDS7W+KGnQey5YYi8SxOcyqCt+/OeY3DxVcmdxBv3OH35VM1kZeMAD6cnxBmM3QAR72r64IaMv8hANHpkWOJN65gIXlsBhI7/5nB01b3IejLLjrtByy5dT83EBR0Gtr9Ka3CJU2qtuEwvObv06XE5ve8FirGd8J+HT23/FCT2/3lceLZ8YHPenCtc4/IOcR+xkPGVrgp3B12pq68Mk9rJiT7Y6HC2aRpON8WreB9CmLbvVfNYJ2VP9T+sXuUMU1kPPG3SqisMCUh2IxeS34IM0LpO2YLkHhnk1J2w4XEnH0UlaJRBVEZbFyb0Gn6649Mg72tGK51/YyvJn6IxIaQLvYBr6/1b6C4HChew7EVCvqLe43wijBiCpJOhnb/WyRxzGxF45wbkmW+nX1+F8WAsVWTSV680ZADc40ctLriPsNQgEXdzVb/s7Lj9wUWYceLmUsRXEYoQklPN0OvSCp/j1Ru5mKjbkVZaovNv5Jy3U0STlQ9G6I3VFKlcRS6TLo5Kzyp+6+roWLXwoxoJMMd/od7lIvhwJ+zVyG0nKUFFHQf5/skIJZmK5HlKjF5eLVbGzQ==
+X-HE-Tag: 1771889421-553515
+X-HE-Meta: U2FsdGVkX1+/x6WQ3+MunQR/VSJ3FS9yJPaztuT3lCO9hMvndzr8/9GiO9F4hbe6KSi85qmir8GO79Di/kBLG0cfmygmwvNbgQsTgkI/o+KOs0FPMqa9yHlspaFKv/CICU/nXcpcpYyP1buaMfbaPqkf9/O8cgXXOA52v3+OJD795KoU4SbpK7w0gcoZs6w0kFf6k7lLoi+nxDSkuJgZzbEfbQ7vAsqxorficZQnXw5HRrxaW8MafV/94Frp15MX+bv3M+v8GWB5DBWh40ZJRKE4NeozKfCkjVynKQBAcn55PQZp1aiPeUaI10Zp4htVVdpXwcLyJoWGq2HlHr6fjX378B2DT+h+HDm+4c4una1IS9Ub/p+vA6gung4HJygO9PFRDGQUjiG395PEFFWED1SJcF47mtuQYi3S44fBrt8ycomaka4VApXbOUtzwOyPqOsEBgssbbLDaiVwhJORWe2qJzlbdENsuz0kVWbWiEtVZv152nlHJr8b2DDEUepWVymc/ejHx1MS6I+fO6JTvQdaURJKpsN9cU32BGz5IO3gQqDlr0koUrhgOr41+FigkxSQ5BEjS5LYr1lME/rseX+csui9yzmrdi48B4F0Vxv/JQelj4qMnanUX1ZnLjRVR7/0C1CjdamByYyLXXKEkrneZzyQe3d2JkFtb3w5rJEgLsvTpRZjHMOyWCTFwKs30cArZqpgjMilTEctQNn77eaZRwMvvlEQTN7MbfUN/DAokoU39yc2hIw4wK4A+25YfeHzXF6Io0A45+FpTszCga7+m2HtcjO77OTXa/NIXO3W3gI/k3NYTtFIiynKD2o++f8W5BRGoRLYEFkMDQdmp+oPMekY6B7tF7HvUF8eI8x571Bfl+4KTZj2Cko4gVwFLZQ3pYJzDQd+Ou4LA8g57mi6x+SkO80IftUEuIS+e+FgwZN8H6WgaHxvM1PL8jnfknbf5zKUPH+ROLPG72P
+ g92bMMD8
+ bxOAK0c7lMa8NyP0ve6DOAzYdEbey7xK89gOhHC2kZHa6iKVLuJ2Qpcwl9elXm4RIyT6NaJNSsWQ9LBMlYGOenIKefDxpgfQnDP4lRoCzEhJvXiVG9pgGc5ZQLh42OdH2aDAc+Sok0JA3dbnZMhZfHJNiahk5oaNAjOG5aFiYNxtMNeeAAlzDio1ftl324sY407kl5EFajWdPakE+0h6MaXAVTFi6DzppPMCuBaYTu27Bao8ZFN5x9eMo7Oewd+aEJz3D1pS10+RXfmkAOq/m9/zusu4hH86E45NzmaUMQB7A638=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,18 +98,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 03:22:14PM +0000, Dmitry Ilvokhin wrote:
-> Replace direct zone lock acquire/release operations with the
-> newly introduced wrappers.
-> 
-> The changes are purely mechanical substitutions. No functional change
-> intended. Locking semantics and ordering remain unchanged.
-> 
-> The compaction path is left unchanged for now and will be
-> handled separately in the following patch due to additional
-> non-trivial modifications.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+Hi,
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+On Mon, 23 Feb 2026 09:15:44 -0800
+Thomas Ballasi <tballasi@linux.microsoft.com> wrote:
+
+> The changes aims at adding additionnal tracepoints variables to help
+> debuggers attribute them to specific processes.
+> 
+> The PID field uses in_task() to reliably detect when we're in process
+> context and can safely access current->pid.  When not in process
+> context (such as in interrupt or in an asynchronous RCU context), the
+> field is set to -1 as a sentinel value.
+> 
+> Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
+> ---
+>  include/trace/events/vmscan.h | 34 +++++++++++++++++++++++++---------
+>  1 file changed, 25 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+> index 1212f6a7c223e..15b31281f0955 100644
+> --- a/include/trace/events/vmscan.h
+> +++ b/include/trace/events/vmscan.h
+> @@ -122,18 +122,22 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
+>  		__field(	unsigned long,	gfp_flags	)
+>  		__field(	u64,	memcg_id	)
+>  		__field(	int,	order		)
+> +		__field(	int,	pid		)
+>  	),
+>  
+>  	TP_fast_assign(
+>  		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
+>  		__entry->order		= order;
+> +		__entry->pid		= current->pid;
+
+All entries saves current->pid in common_pid field. Can you use
+this common field?
+
+# cat events/vmscan/mm_vmscan_reclaim_pages/format 
+name: mm_vmscan_reclaim_pages
+ID: 590
+format:
+	field:unsigned short common_type;	offset:0;	size:2;	signed:0;
+	field:unsigned char common_flags;	offset:2;	size:1;	signed:0;
+	field:unsigned char common_preempt_count;	offset:3;	size:1;	signed:0;
+	field:int common_pid;	offset:4;	size:4;	signed:1;    ## <------------here
+
+	field:int nid;	offset:8;	size:4;	signed:1;
+	field:unsigned long nr_scanned;	offset:16;	size:8;	signed:0;
+	field:unsigned long nr_reclaimed;	offset:24;	size:8;	signed:0;
+	field:unsigned long nr_dirty;	offset:32;	size:8;	signed:0;
+	field:unsigned long nr_writeback;	offset:40;	size:8;	signed:0;
+	field:unsigned long nr_congested;	offset:48;	size:8;	signed:0;
+	field:unsigned long nr_immediate;	offset:56;	size:8;	signed:0;
+	field:unsigned int nr_activate0;	offset:64;	size:4;	signed:0;
+	field:unsigned int nr_activate1;	offset:68;	size:4;	signed:0;
+	field:unsigned long nr_ref_keep;	offset:72;	size:8;	signed:0;
+	field:unsigned long nr_unmap_fail;	offset:80;	size:8;	signed:0;
+
+Thank you,
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
