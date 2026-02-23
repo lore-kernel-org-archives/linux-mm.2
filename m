@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2177EC1109
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31AC0EC1109
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:46:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAFC76B0005; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
+	id 8EC316B0005; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A917F6B0088; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
+	id 89A676B0089; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 993EB6B008A; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
+	id 77B466B008A; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88DA46B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 367D3B61DA
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:42:10 +0000 (UTC)
-X-FDA: 84476288820.28.A08EB7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B10201C0004
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:42:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLHfNXig;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 623FE6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10A83139C2F
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:46:50 +0000 (UTC)
+X-FDA: 84476300580.10.6AFC9B0
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3B35D4000E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:46:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ez5r3CS0;
+	spf=pass (imf04.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771864928;
+	s=arc-20220608; t=1771865208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IQlEyFeS7mQPu3mtkCE7tCcJ7fcl6nNXV+8pqsgrVkk=;
-	b=hgLWFJ8EyjQT5BCoTy5bG4xNqW2OGRK6rOnepWgo0B+yUBzMvFcQvF5hDLasyqSLoPhePJ
-	5+aQ93idyrp2xpBtFPvZe59EkqsqNpOfaBkZak5z+yJEvTAGsROHtJNZkxW4PwIga5ZMNK
-	VqW5EZWd4Qp4ORGpbHGjO86rP51iNeU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLHfNXig;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771864928; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TJU/c2ANGiupnU+sNCDAu4d01p6h+HYD6nV72nQ/8io=;
+	b=uHXj3TlXXnG9tPkMyh1DI5/S6aC4XbkuxC2IQyFL9CuOOi0NLL7mpNiwfZWmJrflT7SHgh
+	SLM7fNLvXc3JLjP5+0WLxaoQELXI0mjdsCvQRIDDZ6MFUYQy4mOqWYDjCxu1FSmcepFJvQ
+	yrFKqO6oQtNYNCvj4oyrS0rfY1pGGY8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771865208; a=rsa-sha256;
 	cv=none;
-	b=YlXtsfNMHTlnUoDE2aGYVHrAsCjjdhZm52eZNGrw0wZbTz4KWBSwjcR+W9TfMN+8oqKCAC
-	H3ODSghjPlntDemCahHcrGZyC/6dpQHe9NOWjw/icShqaHkek9cYNEUiHD0o4eb9bYs/b+
-	NRl2XCODB9Dvmlc/JP3LtUXYMGdz7l8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF4D76013A;
-	Mon, 23 Feb 2026 16:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27663C116C6;
-	Mon, 23 Feb 2026 16:42:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771864927;
-	bh=AmIef53ET5UNsIt0ynl/BhGBHCMTtv/CuWlgjEBgi58=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NLHfNXigO+VeoRtLpSAQ4qS+vR0aga2R6gXWVYEYm71fWRfYJ6+kFaVXFNxXgm8Bs
-	 jd6Zr1ijCryiiOHfMqUyvHBufHtarhbpO8/lzm3khYezPELSvyPgHD6RB6EKHKA1+g
-	 wF20HGvWYSHusCkffngqv4zhr7HkB2yJlZWsDTuT4tWyMMKKP+KVV+bnrNro1gDC2U
-	 56ze33Z+CL7qaEYENwGJTZ9lNy4HU2CoksBjHQmFbqyN3cfEXbKqzZpGVrAOVXPca2
-	 qKLRoK4J0p6OibyHk0FUksWphP9jfILomVlP+o6cIMonKCAhji3ofK6Iu9CRQ3SUlc
-	 5O0NDXxWwDi6Q==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	b=0vOkayyn38NA6Sv0L9/kVkkXzTJKELi7vQUHtfl3crm0TgLZAanEDQuVaaJMDXFrX+oz7X
+	AvOzv+mZvOjHBCqDYjtNd0KiJdtNSFWM0/+ep/hi185YKUpmwV5jPdjno/j/RO73PjHUu2
+	RPjKBYdcUfYllxViSnXAqJ54GkJ2wE8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ez5r3CS0;
+	spf=pass (imf04.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 306DCB2B38;
+	Mon, 23 Feb 2026 16:46:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1771865206;
+	bh=TJU/c2ANGiupnU+sNCDAu4d01p6h+HYD6nV72nQ/8io=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ez5r3CS0SktKVrjI5VhlqUZ/251A3OUIM41kfLezdKCG2T+l+22yDhHSpHd407S1t
+	 eIOzh1MKKab9MJFHEvCVc0pbOEePdKuMGxRWCD+kXVKL8nmM8Zk4iEGuKOcXo61A8S
+	 iPkEJrq7iki2d0E/l7SJ15+1J/j6+hxGHSxWGJHs=
+Date: Mon, 23 Feb 2026 16:46:42 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH v1] mm: centralize+fix comments about compound_mapcount() in new sync_with_folio_pmd_zap()
-Date: Mon, 23 Feb 2026 17:39:20 +0100
-Message-ID: <20260223163920.287720-1-david@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+Subject: Re: [PATCH 0/4] mm: zone lock tracepoint instrumentation
+Message-ID: <aZyEctoThn0anlz8@shell.ilvokhin.com>
+References: <cover.1770821420.git.d@ilvokhin.com>
+ <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
+X-Rspamd-Queue-Id: 3B35D4000E
+X-Stat-Signature: euitrczhy4xdbu5stf9fn45cpr7ep446
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B10201C0004
-X-Stat-Signature: burpe71ot57zfoxkbw65m699zmmk768o
-X-HE-Tag: 1771864928-39161
-X-HE-Meta: U2FsdGVkX180lrWqUTmg7Tx1f2HCXYw7Ipr5g56roMEf6hPrp92MHPBfHuwSHPobzv8KYFgpVxgiVY1AfpiBBUMmqdBLZMk+U4/cCAeg3WzPDOvGQlCjHrnCpkEQV3Q2Pz/u6sV3B7Mnw8coLWsnjRfouXtH3oZL/ZdW3ydtJY29FAFSXQ7LXcDu/jXIQEN4FgAWodSIriun+neKCCS3oie0QJX83yrggognNMdgxFVZZdNRcg1Ev/Q+6/o2rXWphBAtNZtwZsiMMJd23mSrAntPxfO9VT1BF2Ysz8XnkxQFcBC2DoB33gYNeh4o8JIcVLrP+jxUUSNVvXvtbcgCgeHuex+jFf3DeUhlGePSHQkE1Nfeh9JxXYpp408y0oNXXT2k4cS/fu3xDg7u/x3TR8awoGT4PmqzOR8GkgEM/h013DVRoPK4RYKsXVINns1NBnSC0rICzproy01nRrb/t9nU8h0UhvjCAOuvmX/yn/A+LNSMTkSBxkR7ogOFCZHHnbAhCEg/ncAIIzwiAyFP7zw3NkxQ4HEa5xCyLgrV++RdbHeQ+wDHmDpBrgHDC1ZQh+hweE83DIQJY+xggziKb1vVQFXyTEaelJROixYuVngTeKnH9u8K2VCp2DAhujplZirc5qxNPCmHKLQBXszu+d1T6ZUIPv9P+PYS7WVixSKCApoxQNfT/MCafVAF9vYwsEwYh7qHKJ+M/dSuKEi45IxLAsgRAOjQfuhikGy25IHBxLuuL7BNi22yutVKgcZuVT+Rdz32ViWa1PxHfmwYOksVyiT8dxPuyL0l934s8NYNyku/IJX9orjtoL69cyXBT9Emqi39/IribBsC1J1Vs6lYR1OdzUcFKG/wEYBLOFBeGc+10M5N27pD/FC+IMN8Z3nWYpdvn89ZVshfuqOQFdOP8IELXei9QDy59bI07cJLjVMjQwN7QOhMDIczq+lzfY4BaHBUquHhGx+UWJP
- yYjteJRs
- /Y+Djgdfua/gvjNoMKqoJTRpcSgmp0TdIEiPd672bn7211eQEVGccA/jPpW+xU0LUsk7WrTzpaKldoGjnget1CJN9aTo12QXIl1TLVxv3oV9q3SrDPz7NJFKgeQa2O3ZFHwHrZmnNcT9X6szNOn8NTuVjbLV3buDu0fW/Y9iLjSC9pI4DwrwqjVWNvDDWbJ+U5fGGG3vVeaMCzcl5h7Lnf9/VqIr7uLZVtSGRNZ/ycHafZz3wEVVqda+JUm3WVxtGjbbTTd+RqO+3IrLnqtLljm3yW8n6x6nVFNaJ9q/Dv8hZZTctxrDyyTVHIKdk/mLbP65hRe0IgGyh6RS73IHELNWz27oHG/A5r3hOuZRit57gpxY20oFk2sdLXCxUntSgpl2nwY5Grv9J+o+T/lpp6VImekqBFrv8vTPzcAHqB4ePkO2KmwgZaugTD5dI45p9tn1OWLe49Oqb1V/PiWHsvyZzvwGRe0tifXCQsbtuxhxVmZAMb4iwpvX65C+qO2BQaTGge1mnu1X2KyTEdenwL5DveROKdM6g17D6
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771865207-32744
+X-HE-Meta: U2FsdGVkX1/ZX9iCYPLCdU4I7bjH043eNrbmIvY9WvOYr+O9im9aaoPMzjro1d6PODOQP6jqd+fcOTOf5xF+QLhibNXzCWm2XzJMthUcbrZ39i0MkpEPF31sOis33QZk/fx/qNq8LWi4xLuGxuQXZ0j/wZqJEeSGAhuJEgXdri0wHiDfywKZ01AJ3w+YTOAm+McpZFhrOmgljX08iZmlw3/1Q1DoRrt7BDsWTY17hbGLUNFLtp1eAxn14bKraZ85taPEsw6IEBT90SbhBeh7ZwCGwJRe0epN/iyw9su/s+LzeCUwbGGKftXkEYfIo+nemmxTLqHlHT957ng+88MaMgwzzB61IOql6V+zzaajcawY+nCzfPhNLXeQ1FpYGhwxaKh6B8h+CC++i7lg4oHoo7BmKGi3BulEk+D5GvI3F0Us6onJWb03L2pNUVFJvRVhyjY/xdlIQx8eK8Y6hj2aWc63OE4EAdjB7BgFZpv2JMhebCLJYl1i/VXFUNnZ+6TbJbWL5ZYoi+LtQV3QtOkzRpdDlkPF/QUs8JbPAYLoA3bUVT08UkKzmJfTZNA6Ds5TKQNpRy0mkqbxzpw2c5x9EyYR6k40YyboHItCmMtSikazJlG9Hksg6QdeL8fwDVIzlH/7Nkg+w/mrAQsMxb7c6kJjnTWZHM6xFM+RsMDWeA5iK5b43+L7bmUWyPJnORVTDOD0R8tQJ7H1YWnwEWLdqR6l6/Oue0e18j9k6E3o3TABYzvHMsdpOdqdwNvXgNFsjqvQMoENXYRPbtIc2qmIymreVVvf6zc79l6BYttzsY32q7WxwuuJisHN2Bi8Q1uu6dkozwDdKqENTHsfEJBwyHr8Nm4qq6gFKbNRdzm5rW/hpAr7B3b5oUdk/3TPnVNy+OpDrklcE9+21g8yRzSS49CDCOmU6Mu4RVWlwCxDK5QEar7CG0FWELa6HwfCzk+inTHPU2MY2RSZRmAA7wO
+ 2r4Pzc1G
+ 2JcNnmD1bUbrwyKbeEWD06WarZgBKeEJ+udCm2USsKUc2hjd2ZnkaQArR9dld+oTl6btr4O7ND5PON/KXW3m3+OmebzSCzXeXm5EFl+JGBPPpp2wz39uLzSAIHZUf+V8WEv1pFKTLt+Ky+6lzG+BvceP0oSoIATIZcEig8EvQ8wjX/qZnnAdHHX/BfgCcYF14ioJk1389mVuqCe18YUYtKK6FYhy3VyuTanYm/XfWAZeHywM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,109 +105,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We still mention compound_mapcount() in two comments.
+On Fri, Feb 20, 2026 at 01:09:59PM -0600, Cheatham, Benjamin wrote:
+> On 2/11/2026 9:22 AM, Dmitry Ilvokhin wrote:
+> > Zone lock contention can significantly impact allocation and
+> > reclaim latency, as it is a central synchronization point in
+> > the page allocator and reclaim paths. Improved visibility into
+> > its behavior is therefore important for diagnosing performance
+> > issues in memory-intensive workloads.
+> > 
+> > On some production workloads at Meta, we have observed noticeable
+> > zone lock contention. Deeper analysis of lock holders and waiters
+> > is currently difficult with existing instrumentation.
+> > 
+> > While generic lock contention_begin/contention_end tracepoints
+> > cover the slow path, they do not provide sufficient visibility
+> > into lock hold times. In particular, the lack of a release-side
+> > event makes it difficult to identify long lock holders and
+> > correlate them with waiters. As a result, distinguishing between
+> > short bursts of contention and pathological long hold times
+> > requires additional instrumentation.
+> > 
+> > This patch series adds dedicated tracepoint instrumentation to
+> > zone lock, following the existing mmap_lock tracing model.
+> > 
+> > The goal is to enable detailed holder/waiter analysis and lock
+> > hold time measurements without affecting the fast path when
+> > tracing is disabled.
+> > 
+> > The series is structured as follows:
+> > 
+> >   1. Introduce zone lock wrappers.
+> >   2. Mechanically convert zone lock users to the wrappers.
+> >   3. Convert compaction to use the wrappers (requires minor
+> >      restructuring of compact_lock_irqsave()).
+> >   4. Add zone lock tracepoints.
+> 
+> I think you can improve the flow of this series if reorder as follows:
+> 	1. Introduce zone lock wrappers
+> 	4. Add zone lock tracepoints
+> 	2. Mechanically convert zone lock users to the wrappers
+> 	3. Convert compaction to use the wrappers...
+> 
+> and possibly squash 1 & 4 (though that might be too big of a patch). It's better to introduce the
+> wrappers and their tracepoints together before the reviewer (i.e. me) forgets what was added in
+> patch 1 by the time they get to patch 4.
 
-Instead of simply referring to the folio mapcount in both places, let's
-factor out the odd-looking PTL sync into sync_with_folio_pmd_zap(), and
-add centralized documentation why this is required.
+Hi Ben,
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/internal.h        | 19 +++++++++++++++++++
- mm/memory.c          |  8 +-------
- mm/page_vma_mapped.c | 11 ++---------
- 3 files changed, 22 insertions(+), 16 deletions(-)
+Thanks for the suggestion.
 
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d9..e0ef192b0be3 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -516,6 +516,25 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
- 
- void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
- 
-+/**
-+ * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
-+ * @mm: The mm_struct.
-+ * @pmdp: Pointer to the pmd that was found to be pmd_none().
-+ *
-+ * When we stumble over a pmd_none() without holding the PTL while unmapping a
-+ * folio that could have been mapped at that PMD, it could be that concurrent
-+ * zapping of the PMD is not complete yet. While the PMD might be pmd_none()
-+ * already, the folio might still appear to be mapped (folio_mapped()).
-+ *
-+ * Wait for concurrent zapping to complete by grabbing the PTL.
-+ */
-+static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
-+{
-+	spinlock_t *ptl = pmd_lock(mm, pmdp);
-+
-+	spin_unlock(ptl);
-+}
-+
- struct zap_details;
- void unmap_page_range(struct mmu_gather *tlb,
- 			     struct vm_area_struct *vma,
-diff --git a/mm/memory.c b/mm/memory.c
-index 876bf73959c6..c87d796050ba 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2006,13 +2006,7 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
- 		} else if (details && details->single_folio &&
- 			   folio_test_pmd_mappable(details->single_folio) &&
- 			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
--			spinlock_t *ptl = pmd_lock(tlb->mm, pmd);
--			/*
--			 * Take and drop THP pmd lock so that we cannot return
--			 * prematurely, while zap_huge_pmd() has cleared *pmd,
--			 * but not yet decremented compound_mapcount().
--			 */
--			spin_unlock(ptl);
-+			sync_with_folio_pmd_zap(tlb->mm, pmd);
- 		}
- 		if (pmd_none(*pmd)) {
- 			addr = next;
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index b38a1d00c971..a4d52fdb3056 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -269,11 +269,6 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			spin_unlock(pvmw->ptl);
- 			pvmw->ptl = NULL;
- 		} else if (!pmd_present(pmde)) {
--			/*
--			 * If PVMW_SYNC, take and drop THP pmd lock so that we
--			 * cannot return prematurely, while zap_huge_pmd() has
--			 * cleared *pmd but not decremented compound_mapcount().
--			 */
- 			const softleaf_t entry = softleaf_from_pmd(pmde);
- 
- 			if (softleaf_is_device_private(entry)) {
-@@ -284,11 +279,9 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			if ((pvmw->flags & PVMW_SYNC) &&
- 			    thp_vma_suitable_order(vma, pvmw->address,
- 						   PMD_ORDER) &&
--			    (pvmw->nr_pages >= HPAGE_PMD_NR)) {
--				spinlock_t *ptl = pmd_lock(mm, pvmw->pmd);
-+			    (pvmw->nr_pages >= HPAGE_PMD_NR))
-+				sync_with_folio_pmd_zap(mm, pvmw->pmd);
- 
--				spin_unlock(ptl);
--			}
- 			step_forward(pvmw, PMD_SIZE);
- 			continue;
- 		}
--- 
-2.43.0
+I structured the series intentionally to keep all behavior-preserving
+refactoring separate from the actual instrumentation change.
 
+In particular, I had to split the conversion into two patches to
+separate the purely mechanical changes from the compaction
+restructuring. With the current order, tracepoints addition remains a
+single, atomic functional change on top of a fully converted tree. This
+keeps the instrumentation isolated from the refactoring and with an
+intention to make bisection and review of the behavioral change easier.
+
+Reordering as suggested would mix instrumentation with intermediate
+refactoring states, which I'd prefer to avoid.
+
+I hope this reasoning makes sense, but I'm happy to discuss if there are
+strong objections.
+
+> 
+> Thanks,
+> Ben
 
