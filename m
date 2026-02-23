@@ -4,132 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9210EEC2A8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 22:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16423EEC2A7
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 22:38:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67C6C6B0092; Mon, 23 Feb 2026 17:38:45 -0500 (EST)
+	id DF6CA6B0093; Mon, 23 Feb 2026 17:38:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A226B0093; Mon, 23 Feb 2026 17:38:45 -0500 (EST)
+	id D62856B0095; Mon, 23 Feb 2026 17:38:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CA2F6B0095; Mon, 23 Feb 2026 17:38:45 -0500 (EST)
+	id B38CE6B0096; Mon, 23 Feb 2026 17:38:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B1486B0092
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:38:45 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E68A9C17FF
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 971936B0093
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:38:46 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68085160307
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:38:46 +0000 (UTC)
+X-FDA: 84477187452.19.6CB8E6E
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8F2BD20004
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:38:44 +0000 (UTC)
-X-FDA: 84477187368.11.EF39698
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 06ABA1C0010
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:38:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S7YkKJYa;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771886323; a=rsa-sha256;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=l2aezRd6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771886324; a=rsa-sha256;
 	cv=none;
-	b=vUPYeNIqCsHp4owlrZLLwdFPAlUqiu0/KrCB2Yv7YvMsCUYzVGWmegn10XAs6lE1rN69Xc
-	epJxZVOkmLcuA8yxrYOkDtngfwLX06bXm8opRoiKcwZmle2GY7WL2VnIVRTzp/rYrLICKr
-	zyfpbbxLVcU4N1KrS9wjOrPtYu0LatI=
+	b=Gv6xyNqESRfbMT+9PMaBHzQOM12UFYJXhm6HzfAtGv8SCrO5Tm81TZBlG2PA9Mpf6T3j0P
+	ndlBwUAngexI3LapbyyMG/vbG6lsIO3862cztzZues0qrC/QXg8Oq0pkHO0DBd/XCpsaA1
+	P0lL5XGWiddKYtljFpv7Nf1RMuXzdws=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S7YkKJYa;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=l2aezRd6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771886323;
+	s=arc-20220608; t=1771886324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FkAGKD7Y1lByzW5ZH+EADePeSZfMfZz07pF+iYnM/14=;
-	b=j9x/B6hZ5GWUbXkZkWbgVLUoD5kyaO98+khqtUD8fu3ofjYVjOmPATm97bWIqm21J6R46+
-	PyzErsP6id0/h0XqPCZanw/o4AwQVHjrRRBivon4ve54BpBVVYwYGhErn9fYkCKWUOpFzU
-	MCWwm/mTv9zXFs8ScjbH81jePS7JKxk=
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d4c4b494fcso2784951a34.3
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:38:42 -0800 (PST)
+	bh=1/pi4GMyqfUzxedG8y+xzMj5Pky+ci5h56Uzs52BODo=;
+	b=gQDVkb7oeC71HZ8ct3Wfa5NdLTi3QvsQ37uH5MIksBdzzq58Z/TKHObfCcDuOI589uHelN
+	uaYx0D62VKNzaUYV7sL6ze1NyP0dT0m1/8VaZDJFEG/oFc6qMmo3K/rwpsT09CPSFB7tO4
+	XyK7tLbapG6UWih6+NaPNE5oFzhR2yo=
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7d4c68f0e47so2859268a34.1
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:38:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771886322; x=1772491122; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771886323; x=1772491123; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FkAGKD7Y1lByzW5ZH+EADePeSZfMfZz07pF+iYnM/14=;
-        b=S7YkKJYalxRDsy5sBjaGyEn1DiNJhUtfAc3x4N4B9FiZTjTl+Qj1pC/b9k8JzEkOV9
-         EbnafLpfjOiv7+el27H5uh7XsaufAr3nGhUjj9hF8x1AM40MSKOkoCtcONb8IFDXPKGR
-         Pe8bnvaUGmaOtBSM3r5UzMHrdHe77/kW1vixoH0QrZ+ygF7bMd+1oEEspYqbekSTT5O1
-         43hbfKXvhkY0570HIE/r2p17e3iMhLkZe5pe3HuPO7y7U6M8Sgy4HRujNqazByuDG4+3
-         H7TBa3qthDsY8lF7coHTinTbHE4anTg0E4VseTI61Y8YkWiHOL/kClr3Q6FDtDAxWXoz
-         UJmQ==
+        bh=1/pi4GMyqfUzxedG8y+xzMj5Pky+ci5h56Uzs52BODo=;
+        b=l2aezRd6/Qy/3bNAlNLYTlld6H3O+YNFM/z1wcYm0/m/d+BjgKr0IO+k2c1Wg5KS1q
+         qP4ludVjRH0ixRpVCVrqR3pi/WuS38Gsp7UI01QQWEvyK6sX4aYfghBoXhw50ZWQQtkJ
+         MpARYnYsJfO8IHSj41nwWVLabxfusC+bbNVfPXlnSXz5WalPgUfTn5XH8Nirko6B33H8
+         uZzl4q6yydu3+Ch6BOJ6lZZWDsxWxVW4MF2sciG7jCL0K5DLXEcN1U+M5CRnvnBA+cmT
+         dTAfbTvCbd//RGr+WaUMBf9O2bL4PS61iCTK/Y1Cp2y48+KVJXOU+S8eCbIk5D2scuAZ
+         bd1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771886322; x=1772491122;
+        d=1e100.net; s=20230601; t=1771886323; x=1772491123;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FkAGKD7Y1lByzW5ZH+EADePeSZfMfZz07pF+iYnM/14=;
-        b=ThvY+u9xk8ZIELNufaDCHxk4Z79yHt7AIUYiiRsXvSErmzjBlVmfEAGwmQXOCas3kB
-         dvqiQ3ws/vXYsS9m8NoAkXunjUIpuFlD2za0Sd3cr1yt8NRX5TmD5jv8V776d85RddI2
-         If9bFC26H0DIZFtPBDa11EOzkb9EO8WaEJiFCpnPVZ3bmzdVQi73EKe7Y4K2xqOKAfbx
-         quIzJmOqt4jyd8G4B3vf+oNpWhtBL9Ms1hzM/qRBsuTPPONXgTKv36bc8GcOk40qFtyc
-         qWvt/PCJmT8t+2xkuGaUpgy8YL9OBzKmdtwX12H+3pn+T995NlQ8v2eeaQ0O+YRcAmiU
-         ztUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMGCoBbPJAsS0/6UMHxTrRGfzpu/GqRnhCT2D9IL+B44QPv12rUUiKEzJG6iQLpzKksBF6V+/I4Q==@kvack.org
-X-Gm-Message-State: AOJu0YzqrrPNyF4CFaY1t69rbBJQ+i2hKuLoHDe3wf8uw/bPfHZGf1eS
-	Zt13BPjDwhXEHBYjTJzqddf0dSXS1Qix8Zxs79LA0QWToaHiXE6J4c1S
-X-Gm-Gg: AZuq6aLq/VNRLTkxSteBvnGV/sTyMJDTTFgKSI5sBmALTsXpNlYAaJQMFe+tb/r84cF
-	q4arsyZSAqDpSRUmjtBmKUQXez3wLk/HG+u82S97ZjSdks5ih4J5vwEzcKm8BHEkihYRE3oPHXP
-	iYcCxhktGLwzc6YIPuqVrnpnqeB3ikBJ6IAOlOd91Q5ndDghGmtlCi3YkKM5krTvdXPZhILY53o
-	H6iUrocSfLkJWmGfWU2k4AyVGdJqYNDOJy7fLJTNcaRT4dTt7cpoHAes3zFhrY3UJYjyWfjCHkw
-	AlAnHItCzmacfOPoC7eSBnqaeobCgQ5o59WZlQT23vMMM/59j3IK59+Vtby++b8oz/4uITNAC/k
-	UsnLAz78xZndEp/Eqe59oodh019tH7R0BSGG86ON+DIZJ6ai44EwmfxtrGpkGzPmNRVuUUlgNPs
-	1GnlxejFhj+0I+HBV3TQWk4w==
-X-Received: by 2002:a05:6830:4709:b0:78a:5183:8f6a with SMTP id 46e09a7af769-7d52bf6f7ccmr8378736a34.28.1771886321962;
-        Mon, 23 Feb 2026 14:38:41 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:41::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52d0386c6sm8952995a34.13.2026.02.23.14.38.41
+        bh=1/pi4GMyqfUzxedG8y+xzMj5Pky+ci5h56Uzs52BODo=;
+        b=vx8pkj6fd5VPx39dytbNN5DxBNgojtWWbncfPXb4+U7VnFrlwKS6gEHWw36EMcrLBd
+         0dpnvvvh0OQ4x3G/uk4rqPuVgD7/R8bOIrzed6gjO8L3PpTplOqjfKQe3G0kpqmPwHtO
+         4vvuN707n0K0g3ye9Ozpz7CP+8AozbGwMWgHLZTIKceEoquhykKUg2qv7BJ18jyP02Cm
+         aEKOr3Kkht7Q9/Sm6JEibvRUxrdrCw7LUEudxdBNhCJ/xdUMe/snaIy674r1TyOy99fP
+         OIanDEuwgok4hNyGqzOaUWEzBAMjmMWAy+s21mM0V7uxYmS+JjhKi7NXDgDW1wK+ZF96
+         kc1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUy88r8slhgj7dIy0eeQabJ+wAr56nkN3feQ8V3B+EGs/1N3PSK3d0QeKdoQpu8TldYjkPwif4Dpw==@kvack.org
+X-Gm-Message-State: AOJu0YyZYGCP+QCjx7sW2p1vFYUfhx0/tnmpfbI53CJ7a22SQPDl5YMk
+	OeCgQFLCgdkQ0ytVaCgnZFMV0HdCzKzeOjWZ/Cf7w9b7rC35beNIyP0t
+X-Gm-Gg: AZuq6aJ8HJX1/HGH/n9YqJF1W+RaiCKf3Mx+FwiWjsgyp7U3q06o3LNn+INRMthNYt7
+	KLVaYON8x/Fb0O6U+DnmvNXOiuvgSlfR3yaLsROAPcF61pQl0PiSw/ijlfV0P/GnLvzd2NHNgkd
+	kBv11Ygsp8FTJAktSLjIVlDvnYY17Bythq96e3CCaOlK1qGU+HFvlm5L78tQmbIo8fhEAC/hoSO
+	VZUXTZLX9yNomGrWsn0kp/W7u01asmxovTcE767YWY2hF0s+k9zsGoRLwU6pF8XZPtwSTWSNry7
+	1OgZGRylql8YcfVz4TcyKqcsctCezf9oFSunUcu+jG7HUpLkhyi3OrzOPyMHXqXwqFiDG+YLFm6
+	Rv+vZf22IRLUs7zkqOEqraVlo2O+cWa5ldWgK/61jAo1cNEqcBSxk9AQvMYCMJh9qC4FWQpynWO
+	REa9ymLiaeabZjGVjfnrXhAJe5M8dHPxz2
+X-Received: by 2002:a05:6830:6610:b0:7d1:9da9:c6e with SMTP id 46e09a7af769-7d52bf6bb20mr5168975a34.25.1771886323539;
+        Mon, 23 Feb 2026 14:38:43 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:71::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52ce63069sm8952812a34.0.2026.02.23.14.38.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 14:38:41 -0800 (PST)
+        Mon, 23 Feb 2026 14:38:42 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Michal Koutny <mkoutny@suse.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Wei Xu <weixugc@google.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH 5/6] mm/memcontrol, page_counter: Make memory.low tier-aware
-Date: Mon, 23 Feb 2026 14:38:28 -0800
-Message-ID: <20260223223830.586018-6-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH 6/6] mm/memcontrol: Make memory.high tier-aware
+Date: Mon, 23 Feb 2026 14:38:29 -0800
+Message-ID: <20260223223830.586018-7-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
 References: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 06ABA1C0010
-X-Stat-Signature: zr41rkhftx3oni3p9n3c44a4e3nfu61o
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771886322-259094
-X-HE-Meta: U2FsdGVkX18kfuYpBIF2KA/FX5NwB9wInjelKoACQluqbrH4FHvTlsvyGxkG7/jQPO8QIwSld1do+O8f0gj8aE+AkyfpZexISlVAxz/QU+eApt7sBLRC+YTORBLsg6Do6/HD6cZf+pBnMPMn1y0HNKaRBB63KviOe9SvIATcmHCaxc1ZmpMIhtzZAour4c67nPYs6z7Jeh/BNvsQlUUda+RzJylTfhIqc2qqy7jDDobA60jEMDbPy7pBjjJsRIAb2m9CvIvG3wmqh3mCt5syTXd75YeRize94Y8F32UBV0roAdCgkPfepvZ0lb6QucrnMBV0Mi0vpb38RKIni2qBAg6IajypLn6LZXIFz30lvIbPd4Fy3WPmrTARLld0B8j0aNBoRVYFZORiy+xGt6aqMuDBQFZXDRYtBNQSlLUSp4RjHFduOTw5JXNP4AuSri6YyKRDAUgALco07whcDVrOVs/B9O7RK1QA+NYllFVIZZ0LQPq3Yh1PCsdjzZZBawjsBxgncbQ6ScY6pKBxfC2cK9+um+TiENQhPuJs1YQvQKfpe4AdH+0UEZq7Asu4sCU9Mh7fTeJCvBjP7QxoL7jhyXOOa8mNnVm5I/lLEWF31tSxo4PKmeqmELGdTkBIR9e2ZLPq1O6eE0+cQBxNASqaG6mlOgVGiBzmbBYfdkkmUTJCFX1pqFUtOYATmR+8bCF6CdllF1loV3IGLwJ56Ry6u4/s8bZtFatw/5BebUcKKUc95eos6j5CVMkR89BRi8vQcjh2Ww6rs64XaYLO3B831W8lyafRhtqShyAlQzY7Rd21HUeTHBjdjLy9SrkTrgkGxKdAaN01j+LXtRJXr/oik74eyn8e3eqBGLb2Xp5oL6UEfFk7A1+MMpY7p3gVuKdBv62yFCsmyIIawQJM9r4UD8ACHu7lU3iyqOnGx+KLv14j+TVnERhYwH/LtukXKMOBIyht+MDmQ7rDvcpW8D9
- 9JS+CTUY
- v8br3KlpXIAVMis/unIynphv2EEv1HN0O1qwednmYDiMWOQJTvph0qUcPVRNHNAm2d7tfHnVquEFyW2BdXH9/4sLMpPitS6enS3L2CK0RO4eXrg+jG8efHywLDDV4yVPqKefGpGVU8YLMnSYfDHk9I7GvYpFXyfQszwL1pD2SMYTXc01UYxukX8MgRntYo+9Fi8qAG9g+GGuA09lIhZtwVFhqUHgrHLJF11jX2A8rbFHyBEUan0mATy/N0BFcI4Xew7erXaeIYy/1CghezpOzz19WiYJXbqheeZjQRKURUv+vTA70N4l56sbCX+BPHCGOFA9T6NxpF6tdtoVgCe0IL+KzBlvCmxUlHENevrplhH4MkIG7LikHqYySOCn6LDH5FRRSUf/0bpVBEBWacP/mgAtB+6YfPlK63tlVOBEie5xc4Yxbz2k56VJQvWmFzUDTovnr2z3PdMrlo3POmblHXpOjyD9VrG5b1lcuZa/OQzUV4/lF0Vvv3cop49AObzW97Jb8Ba9tVUH9OBXJpQLf9i4z8KM9hFmirSiOPdNf/a/riAzB8m40LdW+DUSVslGFpN7WFieDwpWVNSucBJmtMXVNGIdkfuSs7adH98j4CVPyoxhS5anzRriwa8iGijVk0XUloCQGTVf1uu2CG6V5rVTYNQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8F2BD20004
+X-Stat-Signature: ixdxxbsxz49rwdayb45enza6xr7aoica
+X-HE-Tag: 1771886324-571271
+X-HE-Meta: U2FsdGVkX1+QH4IU1S0mRx31376iK1sWKqcZ6FnLuMmRyEtEtppe7Q066cDOcrFQB3z6UFBiVzJvzCqV60ja0OshY8kROgeRdl7wVM75Uz91zGvit/bX7HZb6FOs88Q0H1ob808o5VxOmM5u0E4FBf2uwTx3kHPr3R8lNs6MdtGZHYXb3xogkd9ZkuExJbfey5rzi3UAZcxcQH0NfKXK0/g5P2lZ+rW2gMEJ2PTcJFq0XdMwXuKRq2YIKbGhYqSjWMU4YImoBvDtcyBDb+oBhani1HlCkNH7MM3SSvzooE0OFK3M4y3uo2SrvbaZFLgIW5hgY2jGhdBXXSEuCHgJCzgVr9/McAZwuEEeTBUybbtL5qaVc7EF6ZC8o/YaOt578ZAb0xmFdee69QOy19QK2oZRWOMPEMlQyUchh0InAjQt0TWRJT7ejRBKrojVhV67775r2b3m6OemO31O4AlU5q9sHLoa2A/302KHL14lTH7RQxWIBPeS16qGu2lDbfdjZ5kHXXgAJpCq5HeIoYLuH7bZC1UClbsJsPTzkW8XrT4tHbblREKlNihaU6xxXKhMxqsvykifAQZom2aQNzRBRPMBPl0pIPjh66ZGPa4XW0tJqSQpFY9xWc/OwaToD0uTrljQYX/eBKXLwlGKlZZ1wlGv51m+UvJNRKGir8Tyj+0vAw4RV97s4hhqTHFkV5cYl2FsZR+09+I+bFG27hnDWkO0TyFA0SsytjbabySLAG7BlpvZNqHXNLI7SQXbYNIkO+uhMZR61xnS6MhKixETZ+66TK+n1JgqG06D96dDdajtEGTxbfZyxdk8z1pOeI9yE0ENFf+ioXoBR9AtD7BtWvP5vj3K6VdS55X23IgTxHysofNVTNWAr5C6No7td7IJPBgqI7OkOpsIHbVHqZVu1W2W9y8eFuNE5efHU4m834DBkFDuv9/rzPLWjyLFUc7p3jQFEeA5oz19l2ivI81
+ VJvFgGo1
+ EYnYzE83fh5rYfjOi4Dre2k2Nmq87L6fjDRaXTcAxtX/Bd7rk9l7hvx8NdvbZktKIgp+ArIkch4Amq0liOQXgYnjovicfIHTvIUTIPmN51Mw0gtwVeoAA52pCKDKoyNdkgLoWHTkTFiHxF5IfLqvqaUdDeZvNZjfdjrKkICrQj5N6jhKmGM/Tw0l7XPOa2zsXo2SKVLRlZVz63RmzIi5yC0F1d5kwB/ho8Gw/CWVM+TUSuOzGDS8+JxJrFELlWfwf34emzS4C3PqHVIBMGqJCEaCFVoQzDwbiWi1CrOX8u0sjsS0aRNYoP2D4nG/xRah2K/GTWE3LxsjJ+WkfMkYhl/CKFiQN4POTiANBhBPr3owhyStSI74VyylwZiY2AqFPJV7nmxxljBUyCrFqxzMcxVUbsg6OdXawcZYkW8RqlSTyEWdARi6AaTjnl7DJVYG8a8V0O6EqgCHjDBmUdLU4F/Q8DImoTYzIF+xSIixdz6A2/rKANFGr97e6E8K5s+oZSXwL+0UJAZKVM/46B5c1uJ07ezQAFXrXLIaUm+StRdr6VbWoHHcLnBR4HLO6U8teYXvC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,299 +132,295 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On machines serving multiple workloads whose memory is isolated via
-the memory cgroup controller, it is currently impossible to enforce a
-fair distribution of toptier memory among the worloads, as the only
+On machines serving multiple workloads whose memory is isolated via the
+memory cgroup controller, it is currently impossible to enforce a fair
+distribution of toptier memory among the workloads, as the only
 enforcable limits have to do with total memory footprint, but not where
 that memory resides.
 
 This makes ensuring a consistent and baseline performance difficult, as
 each workload's performance is heavily impacted by workload-external
-factors such as which other workloads are co-located in the same host,
+factors wuch as which other workloads are co-located in the same host,
 and the order at which different workloads are started.
 
-Extend the existing memory.low protection to be tier-aware in the
-charging, enforcement, and protection calculation to provide
-best-effort attempts at protecting a fair proportion of toptier memory.
+Extend the existing memory.high protection to be tier-aware in the
+charging and enforcement to limit toptier-hogging for workloads.
 
-Updates to protection and charging are performed in the same path as
-the standard memcontrol equivalents. Enforcing tier-aware memcg limits
-however, are gated behind the sysctl tier_aware_memcg. This is so that
-runtime-enabling of tier aware limits can account for memory already
-present in the system.
+Also, add a new nodemask parameter to try_to_free_mem_cgroup_pages,
+which can be used to selectively reclaim from memory at the
+memcg-tier interection of a cgroup.
 
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/memcontrol.h   | 15 +++++++++++----
- include/linux/page_counter.h |  7 ++++---
- kernel/cgroup/dmem.c         |  2 +-
- mm/memcontrol.c              | 14 ++++++++++++--
- mm/page_counter.c            | 35 ++++++++++++++++++++++++++++++++++-
- mm/vmscan.c                  | 13 +++++++++----
- 6 files changed, 71 insertions(+), 15 deletions(-)
+ include/linux/swap.h |  3 +-
+ mm/memcontrol-v1.c   |  6 ++--
+ mm/memcontrol.c      | 85 +++++++++++++++++++++++++++++++++++++-------
+ mm/vmscan.c          | 11 +++---
+ 4 files changed, 84 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 900a36112b62..a998a1e3b8b0 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -606,7 +606,9 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
- }
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 0effe3cc50f5..c6037ac7bf6e 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -368,7 +368,8 @@ extern unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 						  unsigned long nr_pages,
+ 						  gfp_t gfp_mask,
+ 						  unsigned int reclaim_options,
+-						  int *swappiness);
++						  int *swappiness,
++						  nodemask_t *allowed);
+ extern unsigned long mem_cgroup_shrink_node(struct mem_cgroup *mem,
+ 						gfp_t gfp_mask, bool noswap,
+ 						pg_data_t *pgdat,
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 0b39ba608109..29630c7f3567 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -1497,7 +1497,8 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
+ 		}
  
- void mem_cgroup_calculate_protection(struct mem_cgroup *root,
--				     struct mem_cgroup *memcg);
-+				     struct mem_cgroup *memcg, bool toptier);
-+
-+unsigned long mem_cgroup_toptier_usage(struct mem_cgroup *memcg);
- 
- void update_memcg_toptier_capacity(void);
- 
-@@ -623,11 +625,15 @@ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- }
- 
- static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
--					struct mem_cgroup *memcg)
-+					struct mem_cgroup *memcg, bool toptier)
- {
- 	if (mem_cgroup_unprotected(target, memcg))
- 		return false;
- 
-+	if (toptier)
-+		return READ_ONCE(memcg->memory.etoptier_low) >=
-+				 mem_cgroup_toptier_usage(memcg);
-+
- 	return READ_ONCE(memcg->memory.elow) >=
- 		page_counter_read(&memcg->memory);
- }
-@@ -1114,7 +1120,8 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
- }
- 
- static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
--						   struct mem_cgroup *memcg)
-+						   struct mem_cgroup *memcg,
-+						   bool toptier)
- {
- }
- 
-@@ -1128,7 +1135,7 @@ static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- 	return true;
- }
- static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
--					struct mem_cgroup *memcg)
-+					struct mem_cgroup *memcg, bool toptier)
- {
- 	return false;
- }
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index ada5f1dd75d4..6635ee7b9575 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -120,15 +120,16 @@ static inline void page_counter_reset_watermark(struct page_counter *counter)
- #if IS_ENABLED(CONFIG_MEMCG) || IS_ENABLED(CONFIG_CGROUP_DMEM)
- void page_counter_calculate_protection(struct page_counter *root,
- 				       struct page_counter *counter,
--				       bool recursive_protection);
-+				       bool recursive_protection, bool toptier);
- void page_counter_update_toptier_capacity(struct page_counter *counter,
- 					  const nodemask_t *allowed);
- unsigned long page_counter_toptier_high(struct page_counter *counter);
- unsigned long page_counter_toptier_low(struct page_counter *counter);
- #else
- static inline void page_counter_calculate_protection(struct page_counter *root,
--						     struct page_counter *counter,
--						     bool recursive_protection) {}
-+						struct page_counter *counter,
-+						bool recursive_protection,
-+						bool toptier) {}
- #endif
- 
- #endif /* _LINUX_PAGE_COUNTER_H */
-diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
-index 1ea6afffa985..536d43c42de8 100644
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -277,7 +277,7 @@ dmem_cgroup_calculate_protection(struct dmem_cgroup_pool_state *limit_pool,
- 			continue;
- 
- 		page_counter_calculate_protection(
--			climit, &found_pool->cnt, true);
-+			climit, &found_pool->cnt, true, false);
- 
- 		if (found_pool == test_pool)
+ 		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
+-				memsw ? 0 : MEMCG_RECLAIM_MAY_SWAP, NULL)) {
++				memsw ? 0 : MEMCG_RECLAIM_MAY_SWAP,
++				NULL, NULL)) {
+ 			ret = -EBUSY;
  			break;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 07464f02c529..8aa7ae361a73 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4806,12 +4806,13 @@ struct cgroup_subsys memory_cgrp_subsys = {
-  * mem_cgroup_calculate_protection - check if memory consumption is in the normal range
-  * @root: the top ancestor of the sub-tree being checked
-  * @memcg: the memory cgroup to check
-+ * @toptier: whether the caller is in a toptier node
-  *
-  * WARNING: This function is not stateless! It can only be used as part
-  *          of a top-down tree iteration, not for isolated queries.
-  */
- void mem_cgroup_calculate_protection(struct mem_cgroup *root,
--				     struct mem_cgroup *memcg)
-+				     struct mem_cgroup *memcg, bool toptier)
- {
- 	bool recursive_protection =
- 		cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_RECURSIVE_PROT;
-@@ -4822,7 +4823,16 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 	if (!root)
- 		root = root_mem_cgroup;
+ 		}
+@@ -1529,7 +1530,8 @@ static int mem_cgroup_force_empty(struct mem_cgroup *memcg)
+ 			return -EINTR;
  
--	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
-+	page_counter_calculate_protection(&root->memory, &memcg->memory,
-+					  recursive_protection, toptier);
-+}
-+
-+unsigned long mem_cgroup_toptier_usage(struct mem_cgroup *memcg)
-+{
-+	if (mem_cgroup_disabled() || !memcg)
-+		return 0;
-+
-+	return atomic_long_read(&memcg->memory.toptier_usage);
- }
- 
- void update_memcg_toptier_capacity(void)
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index cf21c72bfd4e..79d46a1c4c0c 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -410,12 +410,39 @@ static unsigned long effective_protection(unsigned long usage,
- 	return ep;
- }
- 
-+static void calculate_protection_toptier(struct page_counter *counter,
-+					 bool recursive_protection)
-+{
-+	struct page_counter *parent = counter->parent;
-+	unsigned long toptier_low;
-+	unsigned long toptier_usage, parent_toptier_usage;
-+	unsigned long toptier_protected, old_toptier_protected;
-+	long delta;
-+
-+	toptier_low = page_counter_toptier_low(counter);
-+	toptier_usage = atomic_long_read(&counter->toptier_usage);
-+	parent_toptier_usage = atomic_long_read(&parent->toptier_usage);
-+
-+	/* Propagate toptier low usage to parent for sibling distribution */
-+	toptier_protected = min(toptier_usage, toptier_low);
-+	old_toptier_protected = atomic_long_xchg(&counter->toptier_low_usage,
-+						 toptier_protected);
-+	delta = toptier_protected - old_toptier_protected;
-+	atomic_long_add(delta, &parent->children_toptier_low_usage);
-+
-+	WRITE_ONCE(counter->etoptier_low,
-+		   effective_protection(toptier_usage, parent_toptier_usage,
-+		   toptier_low, READ_ONCE(parent->etoptier_low),
-+		   atomic_long_read(&parent->children_toptier_low_usage),
-+		   recursive_protection));
-+}
- 
- /**
-  * page_counter_calculate_protection - check if memory consumption is in the normal range
-  * @root: the top ancestor of the sub-tree being checked
-  * @counter: the page_counter the counter to update
-  * @recursive_protection: Whether to use memory_recursiveprot behavior.
-+ * @toptier: Whether to calculate toptier-proportional protection
-  *
-  * Calculates elow/emin thresholds for given page_counter.
-  *
-@@ -424,7 +451,7 @@ static unsigned long effective_protection(unsigned long usage,
-  */
- void page_counter_calculate_protection(struct page_counter *root,
- 				       struct page_counter *counter,
--				       bool recursive_protection)
-+				       bool recursive_protection, bool toptier)
- {
- 	unsigned long usage, parent_usage;
- 	struct page_counter *parent = counter->parent;
-@@ -446,6 +473,9 @@ void page_counter_calculate_protection(struct page_counter *root,
- 	if (parent == root) {
- 		counter->emin = READ_ONCE(counter->min);
- 		counter->elow = READ_ONCE(counter->low);
-+		if (toptier)
-+			WRITE_ONCE(counter->etoptier_low,
-+				   page_counter_toptier_low(counter));
- 		return;
+ 		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
+-						  MEMCG_RECLAIM_MAY_SWAP, NULL))
++						  MEMCG_RECLAIM_MAY_SWAP,
++						  NULL, NULL))
+ 			nr_retries--;
  	}
  
-@@ -462,6 +492,9 @@ void page_counter_calculate_protection(struct page_counter *root,
- 			READ_ONCE(parent->elow),
- 			atomic_long_read(&parent->children_low_usage),
- 			recursive_protection));
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 8aa7ae361a73..ebd4a1b73c51 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2184,18 +2184,30 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+ 
+ 	do {
+ 		unsigned long pflags;
+-
+-		if (page_counter_read(&memcg->memory) <=
+-		    READ_ONCE(memcg->memory.high))
++		nodemask_t toptier_nodes, *reclaim_nodes;
++		bool mem_high_ok, toptier_high_ok;
 +
-+	if (toptier)
-+		calculate_protection_toptier(counter, recursive_protection);
++		mt_get_toptier_nodemask(&toptier_nodes, NULL);
++		mem_high_ok = page_counter_read(&memcg->memory) <=
++			      READ_ONCE(memcg->memory.high);
++		toptier_high_ok = !(tier_aware_memcg_limits &&
++				    mem_cgroup_toptier_usage(memcg) >
++				    page_counter_toptier_high(&memcg->memory));
++		if (mem_high_ok && toptier_high_ok)
+ 			continue;
+ 
++		if (mem_high_ok && !toptier_high_ok)
++			reclaim_nodes = &toptier_nodes;
++		else
++			reclaim_nodes = NULL;
++
+ 		memcg_memory_event(memcg, MEMCG_HIGH);
+ 
+ 		psi_memstall_enter(&pflags);
+ 		nr_reclaimed += try_to_free_mem_cgroup_pages(memcg, nr_pages,
+ 							gfp_mask,
+ 							MEMCG_RECLAIM_MAY_SWAP,
+-							NULL);
++							NULL, reclaim_nodes);
+ 		psi_memstall_leave(&pflags);
+ 	} while ((memcg = parent_mem_cgroup(memcg)) &&
+ 		 !mem_cgroup_is_root(memcg));
+@@ -2296,6 +2308,24 @@ static u64 mem_find_max_overage(struct mem_cgroup *memcg)
+ 	return max_overage;
  }
  
- void page_counter_update_toptier_capacity(struct page_counter *counter,
++static u64 toptier_find_max_overage(struct mem_cgroup *memcg)
++{
++	u64 overage, max_overage = 0;
++
++	if (!tier_aware_memcg_limits)
++		return 0;
++
++	do {
++		unsigned long usage = mem_cgroup_toptier_usage(memcg);
++		unsigned long high = page_counter_toptier_high(&memcg->memory);
++
++		overage = calculate_overage(usage, high);
++		max_overage = max(overage, max_overage);
++	} while ((memcg = parent_mem_cgroup(memcg)) &&
++		  !mem_cgroup_is_root(memcg));
++
++	return max_overage;
++}
+ static u64 swap_find_max_overage(struct mem_cgroup *memcg)
+ {
+ 	u64 overage, max_overage = 0;
+@@ -2401,6 +2431,14 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 	penalty_jiffies += calculate_high_delay(memcg, nr_pages,
+ 						swap_find_max_overage(memcg));
+ 
++	/*
++	 * Don't double-penalize for toptier high overage if system-wide
++	 * memory.high has already been breached.
++	 */
++	if (!penalty_jiffies)
++		penalty_jiffies += calculate_high_delay(memcg, nr_pages,
++					toptier_find_max_overage(memcg));
++
+ 	/*
+ 	 * Clamp the max delay per usermode return so as to still keep the
+ 	 * application moving forwards and also permit diagnostics, albeit
+@@ -2503,7 +2541,8 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 
+ 	psi_memstall_enter(&pflags);
+ 	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+-						    gfp_mask, reclaim_options, NULL);
++						    gfp_mask, reclaim_options,
++						    NULL, NULL);
+ 	psi_memstall_leave(&pflags);
+ 
+ 	if (mem_cgroup_margin(mem_over_limit) >= nr_pages)
+@@ -2592,23 +2631,26 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	 * reclaim, the cost of mismatch is negligible.
+ 	 */
+ 	do {
+-		bool mem_high, swap_high;
++		bool mem_high, swap_high, toptier_high = false;
+ 
+ 		mem_high = page_counter_read(&memcg->memory) >
+ 			READ_ONCE(memcg->memory.high);
+ 		swap_high = page_counter_read(&memcg->swap) >
+ 			READ_ONCE(memcg->swap.high);
++		toptier_high = tier_aware_memcg_limits &&
++			       (mem_cgroup_toptier_usage(memcg) >
++				page_counter_toptier_high(&memcg->memory));
+ 
+ 		/* Don't bother a random interrupted task */
+ 		if (!in_task()) {
+-			if (mem_high) {
++			if (mem_high || toptier_high) {
+ 				schedule_work(&memcg->high_work);
+ 				break;
+ 			}
+ 			continue;
+ 		}
+ 
+-		if (mem_high || swap_high) {
++		if (mem_high || swap_high || toptier_high) {
+ 			/*
+ 			 * The allocating tasks in this cgroup will need to do
+ 			 * reclaim or be throttled to prevent further growth
+@@ -4476,7 +4518,7 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
+ 	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
+ 	bool drained = false;
+-	unsigned long high;
++	unsigned long high, toptier_high;
+ 	int err;
+ 
+ 	buf = strstrip(buf);
+@@ -4485,15 +4527,22 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+ 		return err;
+ 
+ 	page_counter_set_high(&memcg->memory, high);
++	toptier_high = page_counter_toptier_high(&memcg->memory);
+ 
+ 	if (of->file->f_flags & O_NONBLOCK)
+ 		goto out;
+ 
+ 	for (;;) {
+ 		unsigned long nr_pages = page_counter_read(&memcg->memory);
++		unsigned long toptier_pages = mem_cgroup_toptier_usage(memcg);
+ 		unsigned long reclaimed;
++		unsigned long to_free;
++		nodemask_t toptier_nodes, *reclaim_nodes;
++		bool mem_high_ok = nr_pages <= high;
++		bool toptier_high_ok = !(tier_aware_memcg_limits &&
++					 toptier_pages > toptier_high);
+ 
+-		if (nr_pages <= high)
++		if (mem_high_ok && toptier_high_ok)
+ 			break;
+ 
+ 		if (signal_pending(current))
+@@ -4505,8 +4554,17 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+ 			continue;
+ 		}
+ 
+-		reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages - high,
+-					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL);
++		mt_get_toptier_nodemask(&toptier_nodes, NULL);
++		if (mem_high_ok && !toptier_high_ok) {
++			reclaim_nodes = &toptier_nodes;
++			to_free = toptier_pages - toptier_high;
++		} else {
++			reclaim_nodes = NULL;
++			to_free = nr_pages - high;
++		}
++		reclaimed = try_to_free_mem_cgroup_pages(memcg, to_free,
++					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP,
++					NULL, reclaim_nodes);
+ 
+ 		if (!reclaimed && !nr_retries--)
+ 			break;
+@@ -4558,7 +4616,8 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+ 
+ 		if (nr_reclaims) {
+ 			if (!try_to_free_mem_cgroup_pages(memcg, nr_pages - max,
+-					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP, NULL))
++					GFP_KERNEL, MEMCG_RECLAIM_MAY_SWAP,
++					NULL, NULL))
+ 				nr_reclaims--;
+ 			continue;
+ 		}
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6a87ac7be43c..5b4cb030a477 100644
+index 5b4cb030a477..94498734b4f5 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4144,6 +4144,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
- 	struct mem_cgroup *memcg;
- 	unsigned long min_ttl = READ_ONCE(lru_gen_min_ttl);
- 	bool reclaimable = !min_ttl;
-+	bool toptier = node_is_toptier(pgdat->node_id);
- 
- 	VM_WARN_ON_ONCE(!current_is_kswapd());
- 
-@@ -4153,7 +4154,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
- 	do {
- 		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 
--		mem_cgroup_calculate_protection(NULL, memcg);
-+		mem_cgroup_calculate_protection(NULL, memcg, toptier);
- 
- 		if (!reclaimable)
- 			reclaimable = lruvec_is_reclaimable(lruvec, sc, min_ttl);
-@@ -4905,12 +4906,14 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	unsigned long reclaimed = sc->nr_reclaimed;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	bool toptier = tier_aware_memcg_limits &&
-+		       node_is_toptier(pgdat->node_id);
- 
- 	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
- 	if (mem_cgroup_below_min(NULL, memcg))
- 		return MEMCG_LRU_YOUNG;
- 
--	if (mem_cgroup_below_low(NULL, memcg)) {
-+	if (mem_cgroup_below_low(NULL, memcg, toptier)) {
- 		/* see the comment on MEMCG_NR_GENS */
- 		if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_TAIL)
- 			return MEMCG_LRU_TAIL;
-@@ -5960,6 +5963,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
+@@ -6652,7 +6652,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 					   unsigned long nr_pages,
+ 					   gfp_t gfp_mask,
+ 					   unsigned int reclaim_options,
+-					   int *swappiness)
++					   int *swappiness, nodemask_t *allowed)
+ {
+ 	unsigned long nr_reclaimed;
+ 	unsigned int noreclaim_flag;
+@@ -6668,6 +6668,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 		.may_unmap = 1,
+ 		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
+ 		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
++		.nodemask = allowed,
  	};
- 	struct mem_cgroup_reclaim_cookie *partial = &reclaim;
- 	struct mem_cgroup *memcg;
-+	bool toptier = node_is_toptier(pgdat->node_id);
- 
  	/*
- 	 * In most cases, direct reclaimers can do partial walks
-@@ -5987,7 +5991,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 		 */
- 		cond_resched();
- 
--		mem_cgroup_calculate_protection(target_memcg, memcg);
-+		mem_cgroup_calculate_protection(target_memcg, memcg, toptier);
- 
- 		if (mem_cgroup_below_min(target_memcg, memcg)) {
- 			/*
-@@ -5995,7 +5999,8 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 			 * If there is no reclaimable memory, OOM.
- 			 */
- 			continue;
--		} else if (mem_cgroup_below_low(target_memcg, memcg)) {
-+		} else if (mem_cgroup_below_low(target_memcg, memcg,
-+					tier_aware_memcg_limits && toptier)) {
- 			/*
- 			 * Soft protection.
- 			 * Respect the protection only as long as
+ 	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
+@@ -6693,7 +6694,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 					   unsigned long nr_pages,
+ 					   gfp_t gfp_mask,
+ 					   unsigned int reclaim_options,
+-					   int *swappiness)
++					   int *swappiness, nodemask_t *allowed)
+ {
+ 	return 0;
+ }
+@@ -7806,9 +7807,9 @@ int user_proactive_reclaim(char *buf,
+ 			reclaim_options = MEMCG_RECLAIM_MAY_SWAP |
+ 					  MEMCG_RECLAIM_PROACTIVE;
+ 			reclaimed = try_to_free_mem_cgroup_pages(memcg,
+-						 batch_size, gfp_mask,
+-						 reclaim_options,
+-						 swappiness == -1 ? NULL : &swappiness);
++					batch_size, gfp_mask, reclaim_options,
++					swappiness == -1 ? NULL : &swappiness,
++					NULL);
+ 		} else {
+ 			struct scan_control sc = {
+ 				.gfp_mask = current_gfp_context(gfp_mask),
 -- 
 2.47.3
 
