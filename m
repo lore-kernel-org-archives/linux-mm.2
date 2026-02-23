@@ -4,98 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008A3EEC2A3
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 22:29:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E38FEEC2A0
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 22:29:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C76E6B0088; Mon, 23 Feb 2026 17:29:03 -0500 (EST)
+	id C1E326B0089; Mon, 23 Feb 2026 17:29:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14AEA6B0089; Mon, 23 Feb 2026 17:29:03 -0500 (EST)
+	id BC8926B008A; Mon, 23 Feb 2026 17:29:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056CB6B008A; Mon, 23 Feb 2026 17:29:02 -0500 (EST)
+	id A8D6D6B008C; Mon, 23 Feb 2026 17:29:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E38306B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:29:02 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A3D65139F9C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:29:02 +0000 (UTC)
-X-FDA: 84477162924.15.C7D5E35
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E60A7140007
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:29:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y0AE6S8S;
-	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 921336B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:29:11 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35FF3138385
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:29:11 +0000 (UTC)
+X-FDA: 84477163302.05.C8235A6
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5740CA000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:29:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zLa6lUY0;
+	spf=pass (imf25.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771885741;
+	s=arc-20220608; t=1771885749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8FniOJfMqck5NjV3XUREjoWtodA5PQ+Kik0c/wR3Gsg=;
-	b=AfYdyKCR3LsgC8n4VkSph4ZjKY6yOw7S0xVSpF1vZBC1fu5R5SN9/aF8gIR5998Z2+pDOi
-	axwgXVBF3vcbltqQhAfOLS9J+gP0XOJTxX7IN7uVWALVMWj153SvctCylCQWSX5Dvc+E1D
-	wLAE1e0l641V1fI8zzZFWBC9HdkwXeI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y0AE6S8S;
-	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771885741; a=rsa-sha256;
+	bh=C8f6dXcdZJeSJ2qE0ghvpNFkqtAaZ6dotEKElaryP78=;
+	b=c5RaoNMKAv1CdtnMnfhxxG69PsofT2ZX/UHXEnaZ4RrqR4koq+HA65EJC9w/pYDVjKY1by
+	zA9aCb1Orp0pt1kptul/58JQA0cqAUbrIN27dKgcbRPx+ArnSlqDSbUj1yomM5xyGulzv1
+	IiLSxzXEoqeUTYTqFimiXOEO9TumGE8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771885749; a=rsa-sha256;
 	cv=none;
-	b=7FVlKG/xKP54MD+6ELQdSz8ONR89C1dRGNGCgV+31WzA4oW7Enkx20xgE03GdLzcHTc3jA
-	2+CjD+8wXQc3tJtoDL3U/LHgQBaiMxSDCXWO9o0g4ztlQAsie0VRXoJwmGo3VYwUMcAc0O
-	84IkkT02u8W7VQGqb9LfaKYa4cAULak=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC21E43D92;
-	Mon, 23 Feb 2026 22:28:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79C3C116C6;
-	Mon, 23 Feb 2026 22:28:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771885739;
-	bh=9rMeHiSNAtJk2NgmJptISn2xhvOOSYJ3+ZDMUHV0gRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y0AE6S8SLcePt2dotW2vBCvk7LcxEiOCdweEhNwBS2jfdGn8FCo0Tm20b43MsUoIN
-	 I1oZIH17J97MQ5hINoxSpHoirGgVXyeQhgB+tRkM22EjBb+xYksPnlENl/TYp4ky7e
-	 MuRamCV4itnPJSpEPDB1OyTKQrlOpQMUCWoRrMI+GgNvaNMUOK05h01Iwq8I7kHpWD
-	 8O55s2Lo5H+vcux4HozO0MKos86b8AFw0oNDkoMRQbIIWtDmHDge+kGfi2YzspBNOZ
-	 wjQ/l4CZW/pUscPF+mLtcdQ0OlwrFuoYTpdj+v4iMicAHx16ZlzMg/nKXw8CNiNQdC
-	 t+EnzsBT0kK5w==
-Date: Mon, 23 Feb 2026 14:28:59 -0800
-From: Kees Cook <kees@kernel.org>
-To: Andrei Vagin <avagin@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Koutny <mkoutny@suse.com>, Andrei Vagin <avagin@google.com>
-Subject: Re: [PATCH 0/4 v4] exec: inherit HWCAPs from the parent process
-Message-ID: <202602231428.CAF9D1B913@keescook>
-References: <20260217180108.1420024-1-avagin@google.com>
- <CANaxB-wNJWhyM7JUKT3y0Wp73=+8XZRnSkdudxqDwEo2FaJpwQ@mail.gmail.com>
+	b=cNOF7tQwd2vGuSZ25+/fCQlRYhqXs0tK/IEcVC4pf3Fv/VdZCTo4OuIgo0hqH2/VoiBlRW
+	AZ/z7luDMnDjsq4pIL3GpPKKrrtTtXK4fpGiA/LHC3Ef9fvI8JKPnrdqUP/wy9J08vv4WM
+	NSYxp1eMS0Uu737pjYOlw+YMVyAK62c=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zLa6lUY0;
+	spf=pass (imf25.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a76b39587aso30125ad.0
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 14:29:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771885748; x=1772490548; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=C8f6dXcdZJeSJ2qE0ghvpNFkqtAaZ6dotEKElaryP78=;
+        b=zLa6lUY0Wfk84sCGIuNK6XvRq6q3nXi57NYd4+yvaAr1+Nn6kFm31qFyF2CmOV68XE
+         zqgj9aC3DJR/C2Q+TXJxCQqPwhY0PZGpglNS6atJT1F1PybbZRssfaxz84HXCmRUzeVG
+         HHzr63lZIp4ZJRaeH1lSVS96WvGHiqlp9ZZg4+Oo23PR2VHkLSmv1MwpqPRJUTBBKGrl
+         KbPZYQZMHSeexvUOcVqcKrhxCIJ4m03lWRTm4QgDUBnwC6MSEPahiABuWTgSI538F43T
+         kf2fLtuENYfvtcwmCqKgHFU1RpE7Bi0BdcL0F6Afn4p777acwmRX1JPqo+JyBj+oc7E2
+         9/HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771885748; x=1772490548;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C8f6dXcdZJeSJ2qE0ghvpNFkqtAaZ6dotEKElaryP78=;
+        b=Fm9Jx1PdPdWtebbwIYmVMOKwps5oTrwIqPjeLLU1r8kiIamJyStMHNMXDKjdUU5UEq
+         FR+77TZie44y6JDHXJAHEpH+JQh5g12FHcl6f+7ZWd9BIjOWLSVExIu85SfB14CsBi3s
+         nS1XmQSNJXJKEYZ0KG9MJ5YVGJWnalb4Rzcfu3XjxY4nJjE4ifWK/KiSdqjSacav3CPj
+         SxDru9xMUfGbbOtrSbQjYZqtcrIp7MAckmPWEZ7De5q2+ztiXLZbf+0Ulm/2UBqp/AKE
+         UenWAEuz6ei89ebZEbhI0+rrn89+uXgJu+q53cFUgUyIoWjinq6WFDnzt81SxhKYD+qo
+         bpqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWn1tH0AlEbEeBXifhKj92V60wdRz6Et7R7iWENteDC+qoZVOklpHHFXVm6Tamgb3hEVhSAeSvEug==@kvack.org
+X-Gm-Message-State: AOJu0YzL7gEijJm5Q72RrQp/574tPMzBhQdu6xnWsImvv81HlJCkB56j
+	tSBrE51RnOiwjOEb3+dkSWGGFW2cK9//Yn3e23lirXWPFro1xK3BttWSAwzPweByvg==
+X-Gm-Gg: ATEYQzznz+BVRC4RNedll4axXpR31b5T2LMMEy9HkR2mMEnVgTLtH7wEhjHhbcV4c17
+	assY8y0N8G0gGc00JXZp9b+W9GVykQ2l+RiGcvThMkp2+R4Kavl89iUq4/jGbglyRQOt0LstO7m
+	yPde/93yj5Bd0oyYUk3DKmVUJhpl/U4NJxpJ71EZkg0RjY7mP2SRF2pSjZc4GCgjBTTWlhUtEtH
+	kOttU+XWYpQgtvtyOWjB9SHZx1oQC0+t/u8j6C1BtibIlEygCOAQOJDj9hnGU4YYew9DpP7IL5n
+	GE/AlY6rl+fq35hvmTexRMyn6dRcgXDoUeOLFMyK+1wiyV1VxK0eYQCcz5tdoSltxPTlv36J1x5
+	KoJvrjBGLZEZ6FEthve2qgur8UmC3Edxu+QqnI+bopsF5kVx0+BOCXtP0nS0fwM6U9YJ0l9pxXK
+	baBdIRm+MXBCEsUa8pWIiJ8TsKwkLYNMuOlko0QXHLjTJaruZ8Lwt+KSe3VSO7AA==
+X-Received: by 2002:a17:902:ec89:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2ada3497c30mr138295ad.19.1771885747713;
+        Mon, 23 Feb 2026 14:29:07 -0800 (PST)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8ba11bsm8507152b3a.50.2026.02.23.14.29.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 14:29:07 -0800 (PST)
+Date: Mon, 23 Feb 2026 22:29:03 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>, 
+	Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 05/22] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <qshnqqtfg7clbcqoq45ei55wt6xt4z4xtwv5ehjyjxwq47cwng@n3vd3lxigcs6>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-6-dmatlack@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANaxB-wNJWhyM7JUKT3y0Wp73=+8XZRnSkdudxqDwEo2FaJpwQ@mail.gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E60A7140007
-X-Stat-Signature: 6sek11dt1tey1o6aazfqo11ytiujq9ys
+In-Reply-To: <20260129212510.967611-6-dmatlack@google.com>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 4kbt85q4u39q1c7j88o6cue174c18o14
+X-Rspamd-Queue-Id: 5740CA000B
 X-Rspam-User: 
-X-HE-Tag: 1771885740-10640
-X-HE-Meta: U2FsdGVkX1/Rp5fQaXVZNErBKhu41p09Y3B4XP5haLcNX8EMV+1JqSt7ncqtg7CGsA+AiUtbMzzkvRtgZuucXclgl+eE0BgiT6XuP3mAlipXKA17zKGADu6zP+1F1ezEUKxkv4TBaGjyJak+UfC/GHNTiPYkYocGZB06PAtnqm0gGUsxKYTrC0Wj0JfcR8jCuQ6lNXhoGXcFYdQ9D6O3B3Hj22rWCAA9B35Nj7pBH1cTWw3uMZkh0E1Yh0LE8vXRqfbqMdO4EKLLr+uMi4cYjQGwqIz9uhiGAOGUsxqubCMKGETjvfPjgzfpntkHNjGMFPlzp0VXGtMMdeEVzG7rnBK+stUPRXBwzlfQsHXgt7sN8/P0y0f+xMdl8489YNDu8sQ7cSInjdY00rtI7bOxt0GKPuPeqWCNR7Vs0s+37q5S/2aN0sZ5eSe3GOfMy95IPHnkqsMECTE9waDgD3lC/RSB2DYseBKRklEeLXCs5AmjIhqgV9cHJZk3PJSGRKSfCL3cClpXeuSU0P3cUXiik67Snc3liUVTsbNNxKxZHDAC/ttF+uMCO5flQv1Zh9hoCt5pR4HrTiDIDKp4QrQrhQbXSqPgWlFisNwreS23WItpZ/DLgqxRI3IMcDhvg2jEJDz3PlHYw6J0tpCoTLQgxs3b+fNs8M+NSmocR+cPEpxr8f0vr2IHUPUiUNcwYjn+o6k56PJwgdS/+pd4tMeXb3qnYHNN14USVJex41hrTLTmvHlDd+1l/cjjl220GiKbbPcIwpR7JDsT4Gq0iKyNgiZzHlpePw4aiWYcyEaERpdy8dYi3g6BvKqKdok4YuerBbJhAk2o2N2rEvZM5rk9QuE8xek7X84jLxHYgOmzQ3vds68NIu3MRJKFQHbJvhC2lj5tgnWhlNUtXpANCr+qwK6tMbP0uhSiph6fB8C3UIY3qFHbgSCPzjKbdWTHY5ENAwjQxh72mvey3hxd786
- igOF75CY
- /9jxSXWL29qh4emUVA5Bfc5AHiGqRsp68x3frXn5xcxNguaUrsIGn503Q80lxCzTg0EYfttI4Ia8r9z2zA2mBjKTARdQKfy2MAsy0UAmjdSCNCPgfLDUnSK/Bv1lVyL5/6/jtukHq3CCEUNq7ChjKTfAtYLt3YH+kmIGQXWnUeCL92XkJ58Oe95AMu+cA+VFOmU9W7ZECqHHvvDY6HirXjFJVxK5IgedwYjlMKpwXnFtRTJ2KqkjwRJaAJcLJcZ9eD+IXXJapWBJbjwWkU/rh7jV7aXxY40iMhr3dfeE4weTTSa8=
+X-HE-Tag: 1771885749-221335
+X-HE-Meta: U2FsdGVkX18XVAqQ/9JfYQdXCW0rIbHzG6o5vlJGiLmi3XYI1X7YabkOO54v9inI4sVTLQSYAohTWJO0YLvrmv1K7KDDKENP2EN25SN4cAUAR3hlgVeA46ort+AdYU+lXKV/xrhS9pQ3Ej4czOQMGVcQ+9kUyvs8qslaNoOZg+6//wiiEkHdjqceKWqGJSHdKohwMYQ6TRrHSTwDwpsZv0pLCoUl2ItnifwpQpsT3LweDLZQslkRy1YoiJDwQ90N7f7iFzcBjl9CMiIDOdxIWrNC7NypTcHV7X1mzVNh8QZBSQQ2ojc4ImsFkGhQZ/bRaAX6TM4Oa+vP6XuLVtvPzD9b9GGZblSmnrcKxGJJPqbjga7jrjyusUMyOURLVuezhwg0jhVVPuJCglqnEc6HXFBY23hb9iPXSmdZzVJz7pcL7qtnC0SNEN+RE3wKKvDNJh6FaPXwEi+l5SjoASGQvvp4XhHIBj1vsK4QYnK3y/9yfBHQtaxUcLEiNQt5W6ubPi9l3ZEl+Q/Ae3w0E8uDCmC+Tab78pAxgTMg0XxqA/790Z7AELg0HFGvTBQb4GfpFbo0CE5Hi1kB7fdHCiNbSrk4Mo8e3d51kQ3+ooF4taHOatX/lnTBKQWSSHlusuFeVE0QwHG3OPgiyTFikoi22TTLh+k6GNdpepxFadDwVqKBqvB0qQUZwGHYkGlu4UM6BChW/L4nIKmjSFC8kPb9Q/vuCB1Bi2LX8U0cIoxjtOc6m48FIv14DD3cQHoEieeMpJP/kSwDlOglDgINj6tSMPQa/PVul/rEnbdhMcvrNeontSg8GfMbWywVR0syrGiFlpjk+5ClUDre/y6GbcnkrWLWpsmKEksGvHd6qA+j2cy1r323uO1JMA/ck7SHKXxrRP/9q/dErMyfjIJNFsWIm7PKeYyy5VvbH9mXa2NPH5syUYZVwIGoyRjhSfqhK0owddOXAPTOgdOjEHWfKZp
+ QpXmHNTO
+ LwJ3PhLIe/ThE8EWV9kpPEidLJoXHUfLOjYQQE/lgETdte5GoGjNm1Znn3+Q0IF3bhZ3UZyi9TgO+lIC/uXoQurTLY0scMKrpuPKjxW7TUvhTI/9rSh96x2T8APJfknpCO7ZG5KIkfwfWB0xtkY3dCudshbCE3A/etuGjjJQD40RvuonmfoiqAIMMjG6E562anQLdjtP6bpW2wa2E0B+JMoCLyMwybb+ov7ilVwTgrIs22+rZB0wGd1mLBNVn3w0vM8FNKfmfS8P8s4BhYq6X0z60fU3q/a64Nojo4GvVXGUtbnJOA8bJR33VmkI/9zA2+C9lkP4C/LtBAw31FbgNW0/7Dw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,47 +136,324 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 10:29:00AM -0800, Andrei Vagin wrote:
-> On Tue, Feb 17, 2026 at 10:01 AM Andrei Vagin <avagin@google.com> wrote:
-> >
-> > This patch series introduces a mechanism to inherit hardware capabilities
-> > (AT_HWCAP, AT_HWCAP2, etc.) from a parent process when they have been
-> > modified via prctl.
-> >
-> > To support C/R operations (snapshots, live migration) in heterogeneous
-> > clusters, we must ensure that processes utilize CPU features available
-> > on all potential target nodes. To solve this, we need to advertise a
-> > common feature set across the cluster.
-> >
-> > Initially, a cgroup-based approach was considered, but it was decided
-> > that inheriting HWCAPs from a parent process that has set its own
-> > auxiliary vector via prctl is a simpler and more flexible solution.
-> >
-> > This implementation adds a new mm flag MMF_USER_HWCAP, which is set when the
-> > auxiliary vector is modified via prctl(PR_SET_MM_AUXV). When execve() is
-> > called, if the current process has MMF_USER_HWCAP set, the HWCAP values are
-> > extracted from the current auxiliary vector and inherited by the new process.
-> >
-> > The first patch fixes AUXV size calculation for ELF_HWCAP3 and ELF_HWCAP4
-> > in binfmt_elf_fdpic and updates AT_VECTOR_SIZE_BASE.
-> >
-> > The second patch implements the core inheritance logic in execve().
-> >
-> > The third patch adds a selftest to verify that HWCAPs are correctly
-> > inherited across execve().
-> >
-> > v4: minor fixes based on feedback from the previous version.
-> 
-> Kees,
-> 
-> I think it is ready to be merged. Let me know if you have any other
-> comments/concerns/questions.
+On Thu, Jan 29, 2026 at 09:24:52PM +0000, David Matlack wrote:
+>From: Vipin Sharma <vipinsh@google.com>
+>
+>Implement the live update file handler callbacks to preserve a vfio-pci
+>device across a Live Update. Subsequent commits will enable userspace to
+>then retrieve this file after the Live Update.
+>
+>Live Update support is scoped only to cdev files (i.e. not
+>VFIO_GROUP_GET_DEVICE_FD files).
+>
+>State about each device is serialized into a new ABI struct
+>vfio_pci_core_device_ser. The contents of this struct are preserved
+>across the Live Update to the next kernel using a combination of
+>Kexec-Handover (KHO) to preserve the page(s) holding the struct and the
+>Live Update Orchestrator (LUO) to preserve the physical address of the
+>struct.
+>
+>For now the only contents of struct vfio_pci_core_device_ser the
+>device's PCI segment number and BDF, so that the device can be uniquely
+>identified after the Live Update.
+>
+>Require that userspace disables interrupts on the device prior to
+>freeze() so that the device does not send any interrupts until new
+>interrupt handlers have been set up by the next kernel.
+>
+>Reset the device and restore its state in the freeze() callback. This
+>ensures the device can be received by the next kernel in a consistent
+>state. Eventually this will be dropped and the device can be preserved
+>across in a running state, but that requires further work in VFIO and
+>the core PCI layer.
+>
+>Note that LUO holds a reference to this file when it is preserved. So
+>VFIO is guaranteed that vfio_df_device_last_close() will not be called
+>on this device no matter what userspace does.
+>
+>Signed-off-by: Vipin Sharma <vipinsh@google.com>
+>Co-developed-by: David Matlack <dmatlack@google.com>
+>Signed-off-by: David Matlack <dmatlack@google.com>
+>---
+> drivers/vfio/pci/vfio_pci.c            |  2 +-
+> drivers/vfio/pci/vfio_pci_liveupdate.c | 84 +++++++++++++++++++++++++-
+> drivers/vfio/pci/vfio_pci_priv.h       |  2 +
+> drivers/vfio/vfio.h                    | 13 ----
+> drivers/vfio/vfio_main.c               | 10 +--
+> include/linux/kho/abi/vfio_pci.h       | 15 +++++
+> include/linux/vfio.h                   | 28 +++++++++
+> 7 files changed, 129 insertions(+), 25 deletions(-)
+>
+>diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+>index 19e88322af2c..0260afb9492d 100644
+>--- a/drivers/vfio/pci/vfio_pci.c
+>+++ b/drivers/vfio/pci/vfio_pci.c
+>@@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
+> 	return 0;
+> }
+>
+>-static const struct vfio_device_ops vfio_pci_ops = {
+>+const struct vfio_device_ops vfio_pci_ops = {
+> 	.name		= "vfio-pci",
+> 	.init		= vfio_pci_core_init_dev,
+> 	.release	= vfio_pci_core_release_dev,
+>diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+>index b84e63c0357b..f01de98f1b75 100644
+>--- a/drivers/vfio/pci/vfio_pci_liveupdate.c
+>+++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+>@@ -8,25 +8,104 @@
+>
+> #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>
+>+#include <linux/kexec_handover.h>
+> #include <linux/kho/abi/vfio_pci.h>
+> #include <linux/liveupdate.h>
+> #include <linux/errno.h>
+>+#include <linux/vfio.h>
+>
+> #include "vfio_pci_priv.h"
+>
+> static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
+> 					     struct file *file)
+> {
+>-	return false;
+>+	struct vfio_device_file *df = to_vfio_device_file(file);
+>+
+>+	if (!df)
+>+		return false;
+>+
+>+	/* Live Update support is limited to cdev files. */
+>+	if (df->group)
+>+		return false;
+>+
+>+	return df->device->ops == &vfio_pci_ops;
+> }
+>
+> static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+> {
+>-	return -EOPNOTSUPP;
+>+	struct vfio_device *device = vfio_device_from_file(args->file);
+>+	struct vfio_pci_core_device_ser *ser;
+>+	struct vfio_pci_core_device *vdev;
+>+	struct pci_dev *pdev;
+>+
+>+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+>+	pdev = vdev->pdev;
+>+
+>+	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM))
+>+		return -EINVAL;
+>+
+>+	if (vfio_pci_is_intel_display(pdev))
+>+		return -EINVAL;
+>+
+>+	ser = kho_alloc_preserve(sizeof(*ser));
+>+	if (IS_ERR(ser))
+>+		return PTR_ERR(ser);
+>+
+>+	ser->bdf = pci_dev_id(pdev);
+>+	ser->domain = pci_domain_nr(pdev->bus);
+>+
+>+	args->serialized_data = virt_to_phys(ser);
+>+	return 0;
+> }
+>
+> static void vfio_pci_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
+> {
+>+	kho_unpreserve_free(phys_to_virt(args->serialized_data));
+>+}
+>+
+>+static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
+>+{
+>+	struct vfio_device *device = vfio_device_from_file(args->file);
+>+	struct vfio_pci_core_device *vdev;
+>+	struct pci_dev *pdev;
+>+	int ret;
+>+
+>+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+>+	pdev = vdev->pdev;
+>+
+>+	guard(mutex)(&device->dev_set->lock);
+>+
+>+	/*
+>+	 * Userspace must disable interrupts on the device prior to freeze so
+>+	 * that the device does not send any interrupts until new interrupt
+>+	 * handlers have been established by the next kernel.
+>+	 */
+>+	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
+>+		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
+>+		return -EINVAL;
+>+	}
+>+
+>+	pci_dev_lock(pdev);
+>+
+>+	ret = pci_load_saved_state(pdev, vdev->pci_saved_state);
+>+	if (ret)
+>+		goto out;
+>+
+>+	/*
+>+	 * Reset the device and restore it back to its original state before
+>+	 * handing it to the next kernel.
+>+	 *
+>+	 * Eventually both of these should be dropped and the device should be
+>+	 * kept running with its current state across the Live Update.
+>+	 */
+>+	if (vdev->reset_works)
+>+		ret = __pci_reset_function_locked(pdev);
+>+
+>+	pci_restore_state(pdev);
+>+
+>+out:
+>+	pci_dev_unlock(pdev);
+>+	return ret;
+> }
+>
+> static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
+>@@ -42,6 +121,7 @@ static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
+> 	.can_preserve = vfio_pci_liveupdate_can_preserve,
+> 	.preserve = vfio_pci_liveupdate_preserve,
+> 	.unpreserve = vfio_pci_liveupdate_unpreserve,
+>+	.freeze = vfio_pci_liveupdate_freeze,
+> 	.retrieve = vfio_pci_liveupdate_retrieve,
+> 	.finish = vfio_pci_liveupdate_finish,
+> 	.owner = THIS_MODULE,
+>diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+>index 68966ec64e51..d3da79b7b03c 100644
+>--- a/drivers/vfio/pci/vfio_pci_priv.h
+>+++ b/drivers/vfio/pci/vfio_pci_priv.h
+>@@ -11,6 +11,8 @@
+> /* Cap maximum number of ioeventfds per device (arbitrary) */
+> #define VFIO_PCI_IOEVENTFD_MAX		1000
+>
+>+extern const struct vfio_device_ops vfio_pci_ops;
+>+
+> struct vfio_pci_ioeventfd {
+> 	struct list_head	next;
+> 	struct vfio_pci_core_device	*vdev;
+>diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
+>index 50128da18bca..6b89edbbf174 100644
+>--- a/drivers/vfio/vfio.h
+>+++ b/drivers/vfio/vfio.h
+>@@ -16,17 +16,6 @@ struct iommufd_ctx;
+> struct iommu_group;
+> struct vfio_container;
+>
+>-struct vfio_device_file {
+>-	struct vfio_device *device;
+>-	struct vfio_group *group;
+>-
+>-	u8 access_granted;
+>-	u32 devid; /* only valid when iommufd is valid */
+>-	spinlock_t kvm_ref_lock; /* protect kvm field */
+>-	struct kvm *kvm;
+>-	struct iommufd_ctx *iommufd; /* protected by struct vfio_device_set::lock */
+>-};
+>-
+> void vfio_device_put_registration(struct vfio_device *device);
+> bool vfio_device_try_get_registration(struct vfio_device *device);
+> int vfio_df_open(struct vfio_device_file *df);
+>@@ -34,8 +23,6 @@ void vfio_df_close(struct vfio_device_file *df);
+> struct vfio_device_file *
+> vfio_allocate_device_file(struct vfio_device *device);
+>
+>-extern const struct file_operations vfio_device_fops;
+>-
+> #ifdef CONFIG_VFIO_NOIOMMU
+> extern bool vfio_noiommu __read_mostly;
+> #else
+>diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+>index f7df90c423b4..276f615f0c28 100644
+>--- a/drivers/vfio/vfio_main.c
+>+++ b/drivers/vfio/vfio_main.c
+>@@ -1436,15 +1436,7 @@ const struct file_operations vfio_device_fops = {
+> 	.show_fdinfo	= vfio_device_show_fdinfo,
+> #endif
+> };
+>-
+>-static struct vfio_device *vfio_device_from_file(struct file *file)
+>-{
+>-	struct vfio_device_file *df = file->private_data;
+>-
+>-	if (file->f_op != &vfio_device_fops)
+>-		return NULL;
+>-	return df->device;
+>-}
+>+EXPORT_SYMBOL_GPL(vfio_device_fops);
+>
+> /**
+>  * vfio_file_is_valid - True if the file is valid vfio file
+>diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
+>index 37a845eed972..9bf58a2f3820 100644
+>--- a/include/linux/kho/abi/vfio_pci.h
+>+++ b/include/linux/kho/abi/vfio_pci.h
+>@@ -9,6 +9,9 @@
+> #ifndef _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+> #define _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+>
+>+#include <linux/compiler.h>
+>+#include <linux/types.h>
+>+
+> /**
+>  * DOC: VFIO PCI Live Update ABI
+>  *
+>@@ -25,4 +28,16 @@
+>
+> #define VFIO_PCI_LUO_FH_COMPATIBLE "vfio-pci-v1"
+>
+>+/**
+>+ * struct vfio_pci_core_device_ser - Serialized state of a single VFIO PCI
+>+ * device.
+>+ *
+>+ * @bdf: The device's PCI bus, device, and function number.
+>+ * @domain: The device's PCI domain number (segment).
+>+ */
+>+struct vfio_pci_core_device_ser {
+>+	u16 bdf;
+>+	u16 domain;
+>+} __packed;
+>+
+> #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
+>diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+>index e90859956514..9aa1587fea19 100644
+>--- a/include/linux/vfio.h
+>+++ b/include/linux/vfio.h
+>@@ -81,6 +81,34 @@ struct vfio_device {
+> #endif
+> };
+>
+>+struct vfio_device_file {
+>+	struct vfio_device *device;
+>+	struct vfio_group *group;
+>+
+>+	u8 access_granted;
+>+	u32 devid; /* only valid when iommufd is valid */
+>+	spinlock_t kvm_ref_lock; /* protect kvm field */
+>+	struct kvm *kvm;
+>+	struct iommufd_ctx *iommufd; /* protected by struct vfio_device_set::lock */
+>+};
+>+
+>+extern const struct file_operations vfio_device_fops;
+>+
+>+static inline struct vfio_device_file *to_vfio_device_file(struct file *file)
+>+{
+>+	if (file->f_op != &vfio_device_fops)
+>+		return NULL;
+>+
+>+	return file->private_data;
+>+}
+>+
+>+static inline struct vfio_device *vfio_device_from_file(struct file *file)
+>+{
+>+	struct vfio_device_file *df = to_vfio_device_file(file);
+>+
+>+	return df ? df->device : NULL;
+>+}
+>+
+> /**
+>  * struct vfio_device_ops - VFIO bus driver device callbacks
+>  *
+>-- 
+>2.53.0.rc1.225.gd81095ad13-goog
+>
 
-Yeah, I think it's looking good. I'll land this in for-next/execve after
-rc2 (a week from now).
-
-Thanks!
-
--- 
-Kees Cook
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 
