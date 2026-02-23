@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31AC0EC1109
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64DDFEC1106
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:48:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EC316B0005; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
+	id A32766B0089; Mon, 23 Feb 2026 11:48:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89A676B0089; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
+	id 9DFF76B008A; Mon, 23 Feb 2026 11:48:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77B466B008A; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
+	id 8E2636B008C; Mon, 23 Feb 2026 11:48:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 623FE6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:46:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10A83139C2F
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:46:50 +0000 (UTC)
-X-FDA: 84476300580.10.6AFC9B0
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3B35D4000E
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:46:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ez5r3CS0;
-	spf=pass (imf04.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7972C6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:48:32 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F04E139A95
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:48:32 +0000 (UTC)
+X-FDA: 84476304864.07.4D87EFA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 81BC08000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:48:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QpiREUdB;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771865208;
+	s=arc-20220608; t=1771865310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TJU/c2ANGiupnU+sNCDAu4d01p6h+HYD6nV72nQ/8io=;
-	b=uHXj3TlXXnG9tPkMyh1DI5/S6aC4XbkuxC2IQyFL9CuOOi0NLL7mpNiwfZWmJrflT7SHgh
-	SLM7fNLvXc3JLjP5+0WLxaoQELXI0mjdsCvQRIDDZ6MFUYQy4mOqWYDjCxu1FSmcepFJvQ
-	yrFKqO6oQtNYNCvj4oyrS0rfY1pGGY8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771865208; a=rsa-sha256;
-	cv=none;
-	b=0vOkayyn38NA6Sv0L9/kVkkXzTJKELi7vQUHtfl3crm0TgLZAanEDQuVaaJMDXFrX+oz7X
-	AvOzv+mZvOjHBCqDYjtNd0KiJdtNSFWM0/+ep/hi185YKUpmwV5jPdjno/j/RO73PjHUu2
-	RPjKBYdcUfYllxViSnXAqJ54GkJ2wE8=
+	bh=fznxlvbrO8SySCVr9rX4eaFSR3ztbvN2q/M2Q4XwxYo=;
+	b=BD8ddttSN8u4BJ429zUd9qh/rOSEJcY9+wHJMIeY1PJJ45RVX48HLD7nujCZl2wMi/N+00
+	nBnzGijdgG+KizeSSDWJbhojwIIujly9yq0HcsVi4tIzmnXEOpBJkSUeSKKOwpPaHUOymp
+	fPLUQrY47jpyaSHBurszOg6BGFjGils=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ez5r3CS0;
-	spf=pass (imf04.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 306DCB2B38;
-	Mon, 23 Feb 2026 16:46:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1771865206;
-	bh=TJU/c2ANGiupnU+sNCDAu4d01p6h+HYD6nV72nQ/8io=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ez5r3CS0SktKVrjI5VhlqUZ/251A3OUIM41kfLezdKCG2T+l+22yDhHSpHd407S1t
-	 eIOzh1MKKab9MJFHEvCVc0pbOEePdKuMGxRWCD+kXVKL8nmM8Zk4iEGuKOcXo61A8S
-	 iPkEJrq7iki2d0E/l7SJ15+1J/j6+hxGHSxWGJHs=
-Date: Mon, 23 Feb 2026 16:46:42 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
-Subject: Re: [PATCH 0/4] mm: zone lock tracepoint instrumentation
-Message-ID: <aZyEctoThn0anlz8@shell.ilvokhin.com>
-References: <cover.1770821420.git.d@ilvokhin.com>
- <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QpiREUdB;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771865310; a=rsa-sha256;
+	cv=none;
+	b=dDa/ibdkfcNec9mGRY5DCVLj9ieMHMmocL5351tqDzLPlFWhesIRxmengcGbCPdm8sV0z/
+	8z9uTVKK4Tyv25yMQmnxAwIzsvS5bV7EG4DfPAk1fIGf3a9NQesrkgjq1bf/sOEVDz5byW
+	0vglyxkrCl3rJy2r986aCSylaSHfenw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E6E116013A;
+	Mon, 23 Feb 2026 16:48:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D324DC116C6;
+	Mon, 23 Feb 2026 16:48:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771865309;
+	bh=weCpl+lZBhZ/LV1iX/bp8GJFaKaSB09aF8w1UCFzyLM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QpiREUdB6lYUmHAJPgwXeRaN+Gy+bUrQKbfvQHImDodRXHOR71W4pk4DGEGuTFNbv
+	 lRBRuQP2JSSTJJhwGur3aGJKeAjEhtVrWaFm3yJFpd/HCbJgCfZJAH5oCp7AOl/sUj
+	 58klYWV6MYgqVd+9PWEiIwRkgGrZOPy/MO9cF0sziBvjdFCI8Z441ScY2xbtxlVS+s
+	 aWqZZLh1ZlUAhV3ywK3n1RB9gwNhmd1YsUqfnVM8+y8lzLju4kLstfogH8UdfxoOC7
+	 tpx8zAFcNnvtljhq0SddX/oZqIBLeR6KVfxaP5deWui2d7E4PacZUlgMgpNuGJ2Wn7
+	 Km1PkF011LcJQ==
+Message-ID: <e4f3b873-7825-46e3-831c-d0f5d3761ce4@kernel.org>
+Date: Mon, 23 Feb 2026 17:48:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <06b2a2b6-d5c8-4522-8e22-10616f887846@amd.com>
-X-Rspamd-Queue-Id: 3B35D4000E
-X-Stat-Signature: euitrczhy4xdbu5stf9fn45cpr7ep446
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: pass __GFP_NOWARN to refill_sheaf() if fallback
+ is available
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ linux-mm@kvack.org, Chris Bainbridge <chris.bainbridge@gmail.com>
+References: <20260223133322.16705-1-harry.yoo@oracle.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260223133322.16705-1-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771865207-32744
-X-HE-Meta: U2FsdGVkX1/ZX9iCYPLCdU4I7bjH043eNrbmIvY9WvOYr+O9im9aaoPMzjro1d6PODOQP6jqd+fcOTOf5xF+QLhibNXzCWm2XzJMthUcbrZ39i0MkpEPF31sOis33QZk/fx/qNq8LWi4xLuGxuQXZ0j/wZqJEeSGAhuJEgXdri0wHiDfywKZ01AJ3w+YTOAm+McpZFhrOmgljX08iZmlw3/1Q1DoRrt7BDsWTY17hbGLUNFLtp1eAxn14bKraZ85taPEsw6IEBT90SbhBeh7ZwCGwJRe0epN/iyw9su/s+LzeCUwbGGKftXkEYfIo+nemmxTLqHlHT957ng+88MaMgwzzB61IOql6V+zzaajcawY+nCzfPhNLXeQ1FpYGhwxaKh6B8h+CC++i7lg4oHoo7BmKGi3BulEk+D5GvI3F0Us6onJWb03L2pNUVFJvRVhyjY/xdlIQx8eK8Y6hj2aWc63OE4EAdjB7BgFZpv2JMhebCLJYl1i/VXFUNnZ+6TbJbWL5ZYoi+LtQV3QtOkzRpdDlkPF/QUs8JbPAYLoA3bUVT08UkKzmJfTZNA6Ds5TKQNpRy0mkqbxzpw2c5x9EyYR6k40YyboHItCmMtSikazJlG9Hksg6QdeL8fwDVIzlH/7Nkg+w/mrAQsMxb7c6kJjnTWZHM6xFM+RsMDWeA5iK5b43+L7bmUWyPJnORVTDOD0R8tQJ7H1YWnwEWLdqR6l6/Oue0e18j9k6E3o3TABYzvHMsdpOdqdwNvXgNFsjqvQMoENXYRPbtIc2qmIymreVVvf6zc79l6BYttzsY32q7WxwuuJisHN2Bi8Q1uu6dkozwDdKqENTHsfEJBwyHr8Nm4qq6gFKbNRdzm5rW/hpAr7B3b5oUdk/3TPnVNy+OpDrklcE9+21g8yRzSS49CDCOmU6Mu4RVWlwCxDK5QEar7CG0FWELa6HwfCzk+inTHPU2MY2RSZRmAA7wO
- 2r4Pzc1G
- 2JcNnmD1bUbrwyKbeEWD06WarZgBKeEJ+udCm2USsKUc2hjd2ZnkaQArR9dld+oTl6btr4O7ND5PON/KXW3m3+OmebzSCzXeXm5EFl+JGBPPpp2wz39uLzSAIHZUf+V8WEv1pFKTLt+Ky+6lzG+BvceP0oSoIATIZcEig8EvQ8wjX/qZnnAdHHX/BfgCcYF14ioJk1389mVuqCe18YUYtKK6FYhy3VyuTanYm/XfWAZeHywM=
+X-Rspamd-Queue-Id: 81BC08000B
+X-Stat-Signature: di5eqyuzuihsoge6q9j94mhh66yjmboa
+X-HE-Tag: 1771865310-809605
+X-HE-Meta: U2FsdGVkX1/k5qXvvds1kUHeGSVQO/wr/nmkaVJXx6Hm4r4t28Oz4IWb/+LlX5h6OO5P47tgKAe7Dt5hATkmVho99z1Eqxyud2+M8tte9O4PWNwutlS0IOLbDyzIGebOpA83sxP7LKiIdL8npSCuf/LhCxBCkwVAf3tx4njdhiez3m8Nvs1Q654tXgpdHfCXNiJH9K5sLG7xv3c5IpJrKN8RpSpd0iI0JWICHb6vM9mhMVOdQ5ruzWlfe7Cwh/ycFS9yOVHo6V4dk3OJwbCiJQtq41NlnNeK1LBzEun4cemc7+8goYHjmnXIzqzZi+/ZKZaxictM2QbaTm6T2w/flsoi49agC3yi1Wpe/4SqdlBZc2YYK25cjnLU20QhProyxXNcXFrh9AYQw1POOrpeo2nIR2I9ZdojL82MmRCgvWbxTM68wDESCa0Oc/B1yP0jQ5EPu0sGD9sM388G3/XPr2dTyNL4kbWzR9bCz2idArPhDngDe4myGpX0yM6Ljyyqzs9eb/7/VMDJA6ThC6SgJMsonymweNKBiEcnz/4iKQQ2XDOurs7DMmFTPrL7h/5x7mr9zUKbftlXAmSeTqjx+qdu4qlQTDVk2BtEndQ08Plr4P1prG6lEQFpDV+EuiJRU4jB/G3QiIXqenHRV2EN4ENibQJmy6d9tAZTtVD466wqrNhGD01HOw8p1AQBANVG5XUUYXcSMCXTjuGT4zu87sWLz8LomF2H38RX0utCGzQQu9CsulMnFlmOkbW1Qj+a1V+YUcOHQ8rdiBH1kG8RzQtRKqCFNYj7joXx4PWB+xGDkOCpv4GVGVspGPLtpusnTD5OgalgTrBGl++J/O3v6B+ORVdVE7WQJwuJJW+NW4/8/o+Qk8QWLwLaPqwj5VIKxAZYtj1NtKpnAZot0K23a6gP+DigQlTOT0cUatk2vZgcVktze7RPXC4NpGaibdCRO6QEyxCoxAryCe4v0n1
+ zQz6dKvW
+ JvL5PA4/oeSNqbWaXiyDBX4/OvkhkWmRdcx0lsc8EADFMUbEfsikZ9UEeFnO3IK0gNPa4z8Vi7vccVhmuiOWZetdh2+HB7JsjBwXDvNUxgeOGaGqKIAI9sY2SyAZA7bdzBoZU0wUCBwqFHj8jkj956fTqsOiEqoDXkF1j+ICXyBwvIhnYSBDKhmvESjWnXasz6Enx6CRp7nFpLWDVaxNtsZuVQxO9g728nkf6+VVE299JIGS5lN+R+OsNlIno18Jd6b1TuKSqSWnJZfsGC9Ui7j+ii78qDjmubEFopVB9qDhTzsED2otOHAv00Y6VO8KM1Nsx0pZw46pJC5TtfEsg7Q7V6yQNU+4L8btwG0KgMF3TcK8nIezGhxO8cWuvL1RDV9pWonhPxyz0GeqrsHs+bR2PazguIwDLqQlnsjqCtOUfgEW28qgpvt3xuO9Hnh0030kW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,72 +97,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 01:09:59PM -0600, Cheatham, Benjamin wrote:
-> On 2/11/2026 9:22 AM, Dmitry Ilvokhin wrote:
-> > Zone lock contention can significantly impact allocation and
-> > reclaim latency, as it is a central synchronization point in
-> > the page allocator and reclaim paths. Improved visibility into
-> > its behavior is therefore important for diagnosing performance
-> > issues in memory-intensive workloads.
-> > 
-> > On some production workloads at Meta, we have observed noticeable
-> > zone lock contention. Deeper analysis of lock holders and waiters
-> > is currently difficult with existing instrumentation.
-> > 
-> > While generic lock contention_begin/contention_end tracepoints
-> > cover the slow path, they do not provide sufficient visibility
-> > into lock hold times. In particular, the lack of a release-side
-> > event makes it difficult to identify long lock holders and
-> > correlate them with waiters. As a result, distinguishing between
-> > short bursts of contention and pathological long hold times
-> > requires additional instrumentation.
-> > 
-> > This patch series adds dedicated tracepoint instrumentation to
-> > zone lock, following the existing mmap_lock tracing model.
-> > 
-> > The goal is to enable detailed holder/waiter analysis and lock
-> > hold time measurements without affecting the fast path when
-> > tracing is disabled.
-> > 
-> > The series is structured as follows:
-> > 
-> >   1. Introduce zone lock wrappers.
-> >   2. Mechanically convert zone lock users to the wrappers.
-> >   3. Convert compaction to use the wrappers (requires minor
-> >      restructuring of compact_lock_irqsave()).
-> >   4. Add zone lock tracepoints.
+On 2/23/26 14:33, Harry Yoo wrote:
+> When refill_sheaf() is called, failing to refill the sheaf doesn't
+> necessarily mean the allocation will fail because a fallback path
+> might be available and serve the allocation request.
 > 
-> I think you can improve the flow of this series if reorder as follows:
-> 	1. Introduce zone lock wrappers
-> 	4. Add zone lock tracepoints
-> 	2. Mechanically convert zone lock users to the wrappers
-> 	3. Convert compaction to use the wrappers...
+> Suppress spurious warnings by passing __GFP_NOWARN along with
+> __GFP_NOMEMALLOC whenever a fallback path is available.
 > 
-> and possibly squash 1 & 4 (though that might be too big of a patch). It's better to introduce the
-> wrappers and their tracepoints together before the reviewer (i.e. me) forgets what was added in
-> patch 1 by the time they get to patch 4.
-
-Hi Ben,
-
-Thanks for the suggestion.
-
-I structured the series intentionally to keep all behavior-preserving
-refactoring separate from the actual instrumentation change.
-
-In particular, I had to split the conversion into two patches to
-separate the purely mechanical changes from the compaction
-restructuring. With the current order, tracepoints addition remains a
-single, atomic functional change on top of a fully converted tree. This
-keeps the instrumentation isolated from the refactoring and with an
-intention to make bisection and review of the behavioral change easier.
-
-Reordering as suggested would mix instrumentation with intermediate
-refactoring states, which I'd prefer to avoid.
-
-I hope this reasoning makes sense, but I'm happy to discuss if there are
-strong objections.
-
+> When the caller is alloc_full_sheaf() or __pcs_replace_empty_main(),
+> the kernel always falls back to the slowpath (__slab_alloc_node()).
+> For __prefill_sheaf_pfmemalloc(), the fallback path is available
+> only when gfp_pfmemalloc_allowed() returns true.
 > 
-> Thanks,
-> Ben
+> Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/aZt2-oS9lkmwT7Ch@debian.local
+> Fixes: 1ce20c28eafd ("slab: handle pfmemalloc slabs properly with sheaves")
+> Link: https://lore.kernel.org/linux-mm/aZwSreGj9-HHdD-j@hyeyoo
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+
+Thanks, added to slab/for-next-fixes.
+Hopefully Chris can confirm it works (without adding the __NOWARN to btrfs code)
+
+> ---
+>  mm/slub.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index afa98065d74f..0c986c240bf6 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2823,7 +2823,7 @@ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+>  	if (!sheaf)
+>  		return NULL;
+>  
+> -	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC)) {
+> +	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+>  		free_empty_sheaf(s, sheaf);
+>  		return NULL;
+>  	}
+> @@ -4576,7 +4576,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>  		return NULL;
+>  
+>  	if (empty) {
+> -		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC)) {
+> +		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+>  			full = empty;
+>  		} else {
+>  			/*
+> @@ -4891,9 +4891,14 @@ EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
+>  static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
+>  				      struct slab_sheaf *sheaf, gfp_t gfp)
+>  {
+> -	int ret = 0;
+> +	gfp_t gfp_nomemalloc;
+> +	int ret;
+> +
+> +	gfp_nomemalloc = gfp | __GFP_NOMEMALLOC;
+> +	if (gfp_pfmemalloc_allowed(gfp))
+> +		gfp_nomemalloc |= __GFP_NOWARN;
+>  
+> -	ret = refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC);
+> +	ret = refill_sheaf(s, sheaf, gfp_nomemalloc);
+>  
+>  	if (likely(!ret || !gfp_pfmemalloc_allowed(gfp)))
+>  		return ret;
+
 
