@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 654D9EA4FB7
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60E5EA4FAE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:33:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B97FB6B008C; Mon, 23 Feb 2026 07:33:01 -0500 (EST)
+	id 458696B0092; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B452F6B0092; Mon, 23 Feb 2026 07:33:01 -0500 (EST)
+	id 4308E6B0093; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3E2E6B0093; Mon, 23 Feb 2026 07:33:01 -0500 (EST)
+	id 305BE6B0095; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 923E86B008C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:33:01 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5295614015C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:01 +0000 (UTC)
-X-FDA: 84475660962.11.DFCB05F
-Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8C23820008
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:32:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LpMgsz4f;
-	spf=pass (imf03.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2FB6B0092
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63C921B2B86
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:06 +0000 (UTC)
+X-FDA: 84475661172.30.14D9213
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7F42CA000C
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cHNQ1IAe;
+	spf=pass (imf15.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771849979;
+	s=arc-20220608; t=1771849984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m9zxhRiY07QYTGDQv6Cv2204Go1scw2vYwkAtxLUmkI=;
-	b=BjMAxWHjL1ZoLiXWGoDD9CniKmXOp2qwfaVA608QabzXdkN7AQeh5sDLBV1XT/kaJUVG4L
-	/sB8X0DAiC0oVKnNC0thuYhhDnnb1Vt+OEeESKiGgf1Ir2jpj9F62kQ9ttocxn5MLlVxF3
-	BJ7dSPp1rTaZynqooZL3VHxdRh9VZBE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771849979; a=rsa-sha256;
-	cv=none;
-	b=u/H6TNQgD25kL8DZekSHUTLeCNJUNOh4mEdwnqX3La9H8eT7veC6m+QhTjSQIuhVftXP6J
-	s7ehpwErqGvWCgkEaFOeOIK1nTq23QKbjA7nNqzB8QbAESZ02talauNX0qnnL6s0t/thEE
-	V+mpFfQqUTYV5YbfnIfnenbueHvfIqw=
+	bh=GYNB6/pZb33YeAKubCBWRXUx4k4dpplKbNpn3dWK4iI=;
+	b=AW2IRl2vIcfHoMG2aVE/k5efuAW5u9P6T4ySV3zCgh0X7ZYL7R2W4aLahTZv3QuevYU3Op
+	R9Jyl1ucGWxW4Z9QxSWMzs9xzWg0o7hvXWcbyVjaXiPy0QyBG12JnXv7u6Rnvo0g7TVYmz
+	M3iPGg3UpRPj0diDU1XzR0bTeIOC45M=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LpMgsz4f;
-	spf=pass (imf03.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cHNQ1IAe;
+	spf=pass (imf15.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-c6dd5b01e14so1439141a12.0
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:32:59 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771849984; a=rsa-sha256;
+	cv=none;
+	b=T+h6AeBE6TP4qoIM8D+VZk2i0FKsqJsQ7Os5Zl3AoHi+XX/VBNvO7553sZQ8t/pcaH2XZL
+	hQZyM3lxm+h3Gd4Pu5OZhKqK1MkV1g25MYLaVDoa9dXmrd1k+NHXdv5WSvzMfQHFLx1P3/
+	3wtr6CvuV0gYiIMG9pMzWctznrL0Edo=
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-c6c444e89bcso1510439a12.2
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:33:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771849978; x=1772454778; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771849983; x=1772454783; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m9zxhRiY07QYTGDQv6Cv2204Go1scw2vYwkAtxLUmkI=;
-        b=LpMgsz4fwH4zgacCwfRD/rKOlTihQVpl/J+BEpSKGe+8d7GB54XB55vhH6wTNzsjCu
-         /G0a6Ez+3qeSnYoePr+mknaULzBa42Oorwj7HBXy+qY8lSU1cZP1v3wTomlBEzLGvFVL
-         3J8unz1fRLVp/NHaER2CDkye38vwFzXFKjB6ItcJy7UCLnJqx0ciPxZT9g0zTFSKO3WS
-         O/Ie8LOh3CAy17v/S8dhqCwpV+bqhzY7cCh+GEJRiFBNTL5PBWLuW6PedoQYPONWisQk
-         zhlcZvIJ1sVYC2YNXc20JFtGEsgu/P1tzIaIhEXeZn78hmDmMHLJExQnp2TF2M8fILn4
-         meYQ==
+        bh=GYNB6/pZb33YeAKubCBWRXUx4k4dpplKbNpn3dWK4iI=;
+        b=cHNQ1IAetJFuDRNum5Jg5SJLRkGozyvS24odWYULWcLusS4xvkbAKolPZPTFtH6CCo
+         /cQTK0DcWnU0Ojp7S+4c10aFtQyAnpg5JGqRh8KTuBabEUB7buwUPA6geLAsOFvvGD/q
+         GRtBkofIHOAIELSrCY8Bg5BikBF+7m2ET+wE83ZBxEYG2cFT2UZ+7ZbZlxZZCOHRVDDh
+         M2qUgB7TMIz4T0UGYApo1fuQFdtASq7bMzb0qrCUjcVxX+46Xq7ddCWsccEDGVcvzrTa
+         3olm06ii89xcZC5qhhme4FiA7ys0z3nZjDDsuzotWcIz6gx5rBKP99S180//IhutRlqb
+         uSAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771849978; x=1772454778;
+        d=1e100.net; s=20230601; t=1771849983; x=1772454783;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=m9zxhRiY07QYTGDQv6Cv2204Go1scw2vYwkAtxLUmkI=;
-        b=f3DhducgClA0oBXtjpQJH4Z2q6IYEqsOTMs94wsuwyNr5XXv8H5Day8eKsGG1QwxpT
-         9E+4x0EEecNcszekz8iNvU6FrAa3KViR3jKCBhr4LRQj+hGCAWSWFcEYHMXZDj/5M77a
-         DzHCSBGPFWarHp53ApofvAOsECsZvCIxzXnqhRZ4bE22NoyHsjLnhQpgv2NPuGut2H1z
-         S2H8B50OqQPhc2fJySyGY4+5M9/hUqchLId2wGTrv12pnwiwe4ueg9ii8BkqDhuNKBZg
-         MwkpdZyOpiY0wDI92SbHkgTZDy4386ifzgY4D0KrycNP8FKbMH9IXzKbwaOvPKPjiu97
-         +JbA==
-X-Forwarded-Encrypted: i=1; AJvYcCXI6skRXrcSdx1uN1F8Ks2Sec3KaCno1vs53UyKLyHYgmtG6otuhdE/CBQO3B3hOqAh9yeBLDo0VQ==@kvack.org
-X-Gm-Message-State: AOJu0YyNGpXRqxT6CM6+dfxFvqwDKxvO3kbtmR+rAni6iNhNGhubHdrr
-	nq5sJNqX8ZCOJWK7bmenEwNHLUneSPtbYCYprBVbb0qt9GCciu5x5Ng=
-X-Gm-Gg: AZuq6aKDhpXhztUm7DiUQQep4TWaCx9AQeeCWnnWqKkrDfgAeDDSCHLPY4ABwP5qZZT
-	ybbOmPYxfENzOUJ4Y8INNDqA4WsijpByf9orydGQTQuW/Zz3gHW88G8YQU7fuSQmiIOaonJ2EER
-	oLjqekVOjAW0mPdvBJh8z6FDg5ydv8vHTkrrMYxN6o0skc9D1ETpz4LP104IsCm2wedG318+Bjm
-	1liDPM0PgNUVmNUBb0hgLokrhSh1zt80UHu71FrRlUZvXnW6HtEqmqOyCfi+aaRWpHmxupmFh8K
-	SzFr0Q+FrFAvyurindINeanINKLIWdtRysVypGPT8sxlBguy4s3tAcztVOa191xlfBG5JMjYqSP
-	WK+F52EIyXYF7g4bQq9DFYm+eFNmjxzhQKOhdrfjN1SJCdTTWEWwBKCQglLkVNsSYrRai5U9npb
-	gxF9iYkj4UBFXxQsqlf36twyYChaW/jiNr4SE+GmjwTj/I
-X-Received: by 2002:a05:6a20:439e:b0:394:6023:a0fd with SMTP id adf61e73a8af0-39545ed05cfmr7352911637.29.1771849978382;
-        Mon, 23 Feb 2026 04:32:58 -0800 (PST)
+        bh=GYNB6/pZb33YeAKubCBWRXUx4k4dpplKbNpn3dWK4iI=;
+        b=iX2lgBR/FcmSIVEA1hnacScNLnhy73MVz41WKcH1/JienYrMASAobrrewZypWJNGvV
+         NMo2hZTkz0zlhyTvCaLsG4OtL388LFC4TwDdo+me171/NFpUdiH7PCegsxQO9VgBDYYS
+         xODUS6I9JQ9XEG5R1CSceTIZkx8x7OziA26HSoi9M1NLWadsxOORjOGuh/zAeNHdkMIq
+         8CC5ARNxd7hlqzokCqxagrilmnDVvmuvHGLBZH6hsczYnRjj4v0x+RXiVRsRlYH4NSPh
+         fXOnXUbIs5viRanJotRrjI2JDrwhOVsYCUBItGOD9dUk2Qd7WxqehL8vtvjJR7Auw5ml
+         AxxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXH4+J02C7gO9yHORUSrsromumsJ4yj397UcSB08ttqijsXWAuUaXV7vNVhFHEB3uDkyMpbW+ydXQ==@kvack.org
+X-Gm-Message-State: AOJu0YxQ1qPKjmeQ8rq7lh1DftIAPA4Losrtypekc4MgiMMVd/NYMyky
+	GHNfCb2GAttjgLax8FmKB0rmYeQA02mehN1mIPPThNkEU+koAMFUEgI=
+X-Gm-Gg: AZuq6aKJEDmFgN8dBNVJWzpBvhUZBeykDRZxtKM4NID4Kjg0hL6Wv5xff+8qUMIiHS0
+	dUvgfGYSXWRFt14StU7Z5OQWx8USPI6n9/gFEW7NYCuNIqwtrwjfNn6YQnlCXUvhZfDtOMgL4um
+	+SXo+iqMGNoJKGgwW9jas4oNALSegI5pFvBhCPiPt1Y+bMQ3hK4s6BVk4WYODkZzoJegcJS386W
+	C69YdB60xtsQEZDgUo7dopAbyHcOSC+VHAVotFzdXbdo5WVbeAPWqcsqjYZ+gTypfQZR79K1Cme
+	zfT/lSpxwdICMhSMGAyP0h+9pI8fdP+K7KVRyXVdvpVKQXxVY3kRVaN/GRr/+RxO7VWZ4FTlXoL
+	lp3ffqtKTV8NOYPh4TVaoum0VAijYYINW6+y120oO1kFiJY9EkXLQ65L1CXyhRdEl2qteS8EvDx
+	X/GK/43KJSThbuqhVWkqwRtlTxH6mDZWxmKaJSYbJMRj79
+X-Received: by 2002:a05:6a20:cc97:b0:35e:11ff:45c1 with SMTP id adf61e73a8af0-39545ebee1cmr6462789637.18.1771849983299;
+        Mon, 23 Feb 2026 04:33:03 -0800 (PST)
 Received: from LAPTOP-FDBL0TVI.localdomain ([49.37.157.71])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b71a73e1sm7454739a12.13.2026.02.23.04.32.53
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b71a73e1sm7454739a12.13.2026.02.23.04.32.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 04:32:57 -0800 (PST)
+        Mon, 23 Feb 2026 04:33:02 -0800 (PST)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org,
 	damon@lists.linux.dev,
@@ -103,23 +104,24 @@ Cc: akpm@linux-foundation.org,
 	honggyu.kim@sk.com,
 	yunjeong.mun@sk.com,
 	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Subject: [RFC PATCH v3 2/4] mm/damon: fix esz=0 quota bypass allowing unlimited migration
-Date: Mon, 23 Feb 2026 12:32:30 +0000
-Message-ID: <20260223123232.12851-3-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH v3 3/4] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Mon, 23 Feb 2026 12:32:31 +0000
+Message-ID: <20260223123232.12851-4-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260223123232.12851-1-ravis.opensrc@gmail.com>
 References: <20260223123232.12851-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C23820008
-X-Stat-Signature: 59o7uqsd5ngapp96skxzszhy39rzc6w7
+X-Stat-Signature: kk7qwq7x51q6sehg84ps77mi89m77tp3
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771849979-835420
-X-HE-Meta: U2FsdGVkX1+njJ5WNdJ4AK0DsyBcKKlZ9naeSRwwfdMMNcaFhAkfggqUZWIlE8CVZED78dFDcWwxyl6UbuDqlDz228lySuXp1Dhl4VIQYeQ0W5lOLDIym//xjpjT9yVLsDvXE+IVa3T/sB3YjPMbpya0MjuDYCdwy/fqSuihg7bzuk4O3CbTjyNl7sg1qXEafnCL+1yvgLeY7UrTys8nrb8Ps1YBicDurMbx/lKV2vxB3K+T4DTfMMOnFdOmQBrHub4i8SEiXWBd0C+VQJDIE7PZuRiU6CJ6w7Rt5C57OIH2+0BBSP2HTk9ak28a8zFAF8046tx6fLMqp+Etv8RgvjRfH6iDm1DRkizJuDmbsYrHaFRt1MaOFlc9IYmy5HyNd1wvnYpBeq15ovYqVymLWKIzhQDstWcpobpjt8FwVKE/LjDsWolPV0sEk4lmfJ8mH0GeAbCcE9N/lfE7gFyoubVDeEgwwmoc4ijd6W994qpBA/Zty9ocxmgOXgFYgvRyaXNFJ+NZuYH1ZDIaTl9Whh2hNQ4xSy86VmylR3mkU1mStCGlSOvFQy7NLyOB7/JOXkZNhldHCa5TLufDCQeLAN5tdVyuygPymDT4yJ4NulQ2KybgCexkSoVFXe8mCYjVOJXpX/CqIDI1zQoyB3eiMV3N1W5KLhUopVZIFxHADnFbJfCYhUklyK1ezaGiKfjzJ9W2+6QjAg06l8Q9Bh15dz/OPH5y2gbn0NoKKFUM+RC2eWyU2XNdwrGBuZeT1bjG5NRHnzPiRH1G8zezsoBu1gN8eLHaNH3Xx3tyYpvPzezfggAwFczUyIXYtJGKEw2CXlXeKrl0p6VWwXar4PFbKYsScuzoJTml/JW7HOQucdi0oZp0gD0dioXygs0GwQfpUUpyilrDMvZnA8ogjKWwhwvFIJ5onu9Bqda7DNoFN14nR0JopBCdVw4id+ikMuNfhLJtdc1ABkDburdZ7J5
- uRDfkQVv
- dhJZjzGgHIFirG1C4hnaqcla7bRh5WP9EZKJGub+d0ZLxeEnaolbZbknKC7ePJYBk9hrKq/eNaX8L/no3ocejYWYxO9uLNj2K0pOfTv+FT40aEpEP9Z1FRBw6PmNuG0YjRbFV9D0CXNZVoxY7oV7IsWxoM/y116PEh+AAlOFVA09NBb+ZM3lOtHAgXGM5ThTs034OU0zcS/NBX8cKPh8fqXqw7KBA29s+AIauyxJlDCOmgXdggsZL9qD7yPI2JSnPMqkA03KuHDhaQaG8Xor2kPJkG44TDcMaZb2OUtrQrcZ4KCAEjjR/6/W7r6PUcYdJ4fSJVFCocig/R2Af+IB81sdiDtskYbME++gt6KfnlZt8PQiNqv52KPk3PlqPhjXMQXTxIi2Cd/qsLGAvy1jCanZ7c5c9TJt1ik2UN0b/QDOYdC+hgcOwbfvuLcdZgDiNpIFaz4ZHndFKjLiJhO6c+weR37GOmDiSIZPKCVzBe4eyXy9HhqLyOyQJzd8AEnDBHyiIzG52+WQ9DBk=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000011, version=1.2.4
+X-Rspamd-Queue-Id: 7F42CA000C
+X-HE-Tag: 1771849984-558674
+X-HE-Meta: U2FsdGVkX19NLdRjSeCS0l1msd3YYXNkH537WAqzWyu7xLNFGXjcUF9WXPIR4RiDGSZfk+KFRMQv0iCYe6tm65Ptkp4aQzt7ZwgPUaHl7LGMEcLmDWgK3mB41ZzbgSdqkfHFNQMmonFvdx/FLnRsn1h8A78ZJtAvVxQBBtjFw2rpw8isRt9NeUvT2Vmjyvrlwphl3QO3nvErpulMlcixmdQxXEutGPHCEuARJh3BV9vjVe+xzC5oBloiatfgzdzhnZt+A/g/xP2arCwrpy6uJgYFqzrWtRx/QFSWsLQjd8RzURkWa/b/8LpshbDrrV568JroY9DUWC1EYg3hSaxyN8JDdjlkPbFbw83ZIy2ikN2R97eW/rgGos03UQD9UvPtZia3buOaHz/hKG1CKlsCXkQyFeOIDIhYeYInbMWS0LOgJ0jVH61nRvNACCx2FlRHMFCLuYAtL0YvYEMjxWOzD3zskDGGfDDmgwC/IrULKZqc8Raid/tOzql8GeybyhYWSq1Ibd4KbwSMHBGnwma5O35Ve/7lleMy9Vf+iUnknedFZWzu6PA9ykuzDsNU0pMnR4YtHh2of2vRZeuYhyc37A0zlHoa69svl/VGn+cjPKn1IAxSgZHZvrmgt552QcupbZj9KvgzcyvxvSPgG7vwyJNERXmKoHUKqnrBNwc5PCLNULMDZ9oFnEuIBPkpWhtViJHFK+f7j0+fn/ZuHr9oaDUOhIOXWkSB2EkQEgxB3lSMX6/8dkCEVMuKIUQ6SJy9dWxlSDlvedNWeZ5jx8PTh4rP+OH/sWVjOVModgrd6L0YArE+CRSB6iICSjiymQwi8Vl8blyNsdW+pzRWIp2DFbA0NvJAQKpTz2kemR2qI5CNJDw7PmRe0xrvIYeNEvacpczLPzcRxy24y7qu1a+UbXonhV/ME7ML1bIpNFogaoqFp5hxPKsSZRJKX3wZpuoBeK+ThPAM3A3T3mYSf3o
+ WQ9kU9il
+ T3A4LiFrwTGSYIQEHtZ/XXXhNqmZo7pdM4YqhZOuB5ERbcdppLbA/9SbXxsH26RrNloyOxDPz46+I46uHPSj1U88NfB6pwRKpSvwzSV/VeNGlSoAS3dyxsEPrzXS9ePiU07D9GqNehfyhMNfFvD5G4nTCMwK6v26P8v4TO6Muy9+juImYwsK/KC2a/gumIiZApXku2cdBdnf1c05PUkTMfWdVT8lpWUX6oFVLcr/YJ/teVT+OGs4nmok2eojQlt+xb5sCQo/0NqOiU4LJQqfBOnvopwmUoyZBMi0HlUeuTHLn0BPRR1bVeIzK1QOZ5O0ID4EF5FqBHNA7+mGNGGMW+sHtiZq57iL/2qlHD7ZDGFmq+Pi1KUMU0WzX5MrE7+P43rQryaF/v/Jw65wepMKTUfwZAwsxak+wQGDBRdhfkUv3d+x4j/uViqy4Hfb7nM4QN0JFRrEJ2RTUFYq+NaDUi73l0omfTmDku/PDBGKe63wN/HArtuL5KsRLxGUTHKBOCfcT/jQg1M1gLXitqeomvPvYisp5PrqLYeYTMWWYK6i7dyVO8vUBrPvAYTTTx0DjaV6iP0ouOjqvgzWhPbQDagMjswgh10O7p9JBW38SjF3CpCb5Lp1f476H0Q==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,45 +129,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the TEMPORAL goal tuner sets esz_bp=0 to signal that a goal has
-been achieved, the quota check was not actually stopping migration.
+Add new quota goal metrics for memory tiering that track scheme-eligible
+(hot) memory distribution across NUMA nodes:
 
-The condition:
-    if (quota->esz && quota->charged_sz >= quota->esz)
+- DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP: ratio of hot memory on a node
+- DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP: ratio of hot memory NOT on a node
 
-When esz=0, this evaluates to (false && ...) = false, so the continue
-is never executed and migration proceeds without limit.
+These complementary metrics enable push-pull migration schemes that
+maintain a target hot memory distribution. For example, to keep 30%
+of hot memory on CXL node 1:
 
-Change the logic to:
-    if (!quota->esz || quota->charged_sz >= quota->esz)
+- PUSH scheme (DRAM→CXL): node_eligible_mem_bp, nid=1, target=3000
+  Activates when node 1 has less than 30% hot memory
+- PULL scheme (CXL→DRAM): node_ineligible_mem_bp, nid=1, target=7000
+  Activates when node 1 has more than 30% hot memory
 
-Now when esz=0, (!0 = true) causes the continue to execute, properly
-stopping migration when the goal is achieved.
+Together with the TEMPORAL goal tuner, the schemes converge to
+equilibrium at the target distribution.
 
-This is critical for the TEMPORAL tuner to work correctly - without
-this fix, setting esz=0 has no effect and migration continues until
-all hot memory is moved, overshooting the target goal.
+The metrics use detected eligible bytes per node, calculated by summing
+the size of regions that match the scheme's access pattern (size,
+nr_accesses, age) on each NUMA node.
 
+Suggested-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- mm/damon/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/damon.h    |   6 ++
+ mm/damon/core.c          | 123 ++++++++++++++++++++++++++++++++++++++-
+ mm/damon/sysfs-schemes.c |  10 ++++
+ 3 files changed, 137 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index ee2d0879c292..6df716533fbf 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -191,6 +191,8 @@ enum damos_action {
+  * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
+  * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
+  * @DAMOS_QUOTA_NODE_MEMCG_FREE_BP:	MemFree ratio of a node for a cgroup.
++ * @DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:	Scheme-eligible memory ratio of a node.
++ * @DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:	Scheme-ineligible memory ratio of a node.
+  * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to total LRU memory ratio.
+  * @DAMOS_QUOTA_INACTIVE_MEM_BP:	Inactive to total LRU memory ratio.
+  * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
+@@ -204,6 +206,8 @@ enum damos_quota_goal_metric {
+ 	DAMOS_QUOTA_NODE_MEM_FREE_BP,
+ 	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
+ 	DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
++	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
++	DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
+ 	DAMOS_QUOTA_ACTIVE_MEM_BP,
+ 	DAMOS_QUOTA_INACTIVE_MEM_BP,
+ 	NR_DAMOS_QUOTA_GOAL_METRICS,
+@@ -555,6 +559,7 @@ struct damos_migrate_dests {
+  * @ops_filters:	ops layer handling &struct damos_filter objects list.
+  * @last_applied:	Last @action applied ops-managing entity.
+  * @stat:		Statistics of this scheme.
++ * @eligible_bytes_per_node: Scheme-eligible bytes per NUMA node.
+  * @max_nr_snapshots:	Upper limit of nr_snapshots stat.
+  * @list:		List head for siblings.
+  *
+@@ -644,6 +649,7 @@ struct damos {
+ 	struct list_head ops_filters;
+ 	void *last_applied;
+ 	struct damos_stat stat;
++	unsigned long eligible_bytes_per_node[MAX_NUMNODES];
+ 	unsigned long max_nr_snapshots;
+ 	struct list_head list;
+ };
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 614f1f08eee9..b438355ab54a 100644
+index b438355ab54a..3e1cb850f067 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2394,8 +2394,8 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 		if (!s->wmarks.activated)
- 			continue;
+@@ -2544,6 +2544,111 @@ static unsigned long damos_get_node_memcg_used_bp(
+ }
+ #endif
  
--		/* Check the quota */
--		if (quota->esz && quota->charged_sz >= quota->esz)
-+		/* Check the quota: skip if esz=0 (goal achieved) or exhausted */
-+		if (!quota->esz || quota->charged_sz >= quota->esz)
- 			continue;
++#ifdef CONFIG_NUMA
++/*
++ * damos_scheme_uses_eligible_metrics() - Check if scheme uses eligible metrics.
++ * @s: The scheme
++ *
++ * Returns true if any quota goal uses node_eligible_mem_bp or
++ * node_ineligible_mem_bp metrics, which require eligible bytes calculation.
++ */
++static bool damos_scheme_uses_eligible_metrics(struct damos *s)
++{
++	struct damos_quota_goal *goal;
++	struct damos_quota *quota = &s->quota;
++
++	damos_for_each_quota_goal(goal, quota) {
++		if (goal->metric == DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP ||
++		    goal->metric == DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP)
++			return true;
++	}
++	return false;
++}
++
++/*
++ * damos_calc_eligible_bytes_per_node() - Calculate eligible bytes per node.
++ * @c: The DAMON context
++ * @s: The scheme
++ *
++ * Calculates scheme-eligible bytes per NUMA node based on access pattern
++ * matching. A region is eligible if it matches the scheme's access pattern
++ * (size, nr_accesses, age).
++ */
++static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
++		struct damos *s)
++{
++	struct damon_target *t;
++	struct damon_region *r;
++	phys_addr_t paddr;
++	int nid;
++
++	memset(s->eligible_bytes_per_node, 0,
++			sizeof(s->eligible_bytes_per_node));
++
++	damon_for_each_target(t, c) {
++		damon_for_each_region(r, t) {
++			if (!__damos_valid_target(r, s))
++				continue;
++			paddr = (phys_addr_t)r->ar.start * c->addr_unit;
++			nid = pfn_to_nid(PHYS_PFN(paddr));
++			if (nid >= 0 && nid < MAX_NUMNODES)
++				s->eligible_bytes_per_node[nid] +=
++					damon_sz_region(r) * c->addr_unit;
++		}
++	}
++}
++
++static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
++{
++	unsigned long total_eligible = 0;
++	unsigned long node_eligible;
++	int n;
++
++	if (nid < 0 || nid >= MAX_NUMNODES)
++		return 0;
++
++	for_each_online_node(n)
++		total_eligible += s->eligible_bytes_per_node[n];
++
++	if (!total_eligible)
++		return 0;
++
++	node_eligible = s->eligible_bytes_per_node[nid];
++
++	return mult_frac(node_eligible, 10000, total_eligible);
++}
++
++static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
++{
++	unsigned long eligible_bp = damos_get_node_eligible_mem_bp(s, nid);
++
++	if (eligible_bp == 0)
++		return 10000;
++
++	return 10000 - eligible_bp;
++}
++#else
++static bool damos_scheme_uses_eligible_metrics(struct damos *s)
++{
++	return false;
++}
++
++static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
++		struct damos *s)
++{
++}
++
++static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
++{
++	return 0;
++}
++
++static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
++{
++	return 0;
++}
++#endif
++
+ /*
+  * Returns LRU-active or inactive memory to total LRU memory size ratio.
+  */
+@@ -2562,7 +2667,8 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
+ 	return mult_frac(inactive, 10000, total);
+ }
  
- 		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
+-static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
++static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal,
++		struct damos *s)
+ {
+ 	u64 now_psi_total;
+ 
+@@ -2584,6 +2690,14 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+ 	case DAMOS_QUOTA_NODE_MEMCG_FREE_BP:
+ 		goal->current_value = damos_get_node_memcg_used_bp(goal);
+ 		break;
++	case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
++		goal->current_value = damos_get_node_eligible_mem_bp(s,
++				goal->nid);
++		break;
++	case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
++		goal->current_value = damos_get_node_ineligible_mem_bp(s,
++				goal->nid);
++		break;
+ 	case DAMOS_QUOTA_ACTIVE_MEM_BP:
+ 	case DAMOS_QUOTA_INACTIVE_MEM_BP:
+ 		goal->current_value = damos_get_in_active_mem_bp(
+@@ -2597,11 +2711,12 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+ /* Return the highest score since it makes schemes least aggressive */
+ static unsigned long damos_quota_score(struct damos_quota *quota)
+ {
++	struct damos *s = container_of(quota, struct damos, quota);
+ 	struct damos_quota_goal *goal;
+ 	unsigned long highest_score = 0;
+ 
+ 	damos_for_each_quota_goal(goal, quota) {
+-		damos_set_quota_goal_current_value(goal);
++		damos_set_quota_goal_current_value(goal, s);
+ 		highest_score = max(highest_score,
+ 				mult_frac(goal->current_value, 10000,
+ 					goal->target_value));
+@@ -2693,6 +2808,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
+ 		return;
+ 
++	/* Calculate eligible bytes per node for quota goal metrics */
++	if (damos_scheme_uses_eligible_metrics(s))
++		damos_calc_eligible_bytes_per_node(c, s);
++
+ 	/* First charge window */
+ 	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index fe2e3b2db9e1..232b33f5cbfb 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -1079,6 +1079,14 @@ struct damos_sysfs_qgoal_metric_name damos_sysfs_qgoal_metric_names[] = {
+ 		.metric = DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
+ 		.name = "node_memcg_free_bp",
+ 	},
++	{
++		.metric = DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
++		.name = "node_eligible_mem_bp",
++	},
++	{
++		.metric = DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
++		.name = "node_ineligible_mem_bp",
++	},
+ 	{
+ 		.metric = DAMOS_QUOTA_ACTIVE_MEM_BP,
+ 		.name = "active_mem_bp",
+@@ -2669,6 +2677,8 @@ static int damos_sysfs_add_quota_score(
+ 			break;
+ 		case DAMOS_QUOTA_NODE_MEM_USED_BP:
+ 		case DAMOS_QUOTA_NODE_MEM_FREE_BP:
++		case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
++		case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
+ 			goal->nid = sysfs_goal->nid;
+ 			break;
+ 		case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
 -- 
 2.43.0
 
