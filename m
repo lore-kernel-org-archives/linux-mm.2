@@ -4,207 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C83AE63C8B
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 10:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008B6E9A02C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 10:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC9CE6B0088; Mon, 23 Feb 2026 05:43:26 -0500 (EST)
+	id 3A4096B0088; Mon, 23 Feb 2026 05:56:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C778D6B0089; Mon, 23 Feb 2026 05:43:26 -0500 (EST)
+	id 326F96B0089; Mon, 23 Feb 2026 05:56:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B59926B008A; Mon, 23 Feb 2026 05:43:26 -0500 (EST)
+	id 233796B008A; Mon, 23 Feb 2026 05:56:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A35956B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:43:26 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5403513BD8B
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:43:26 +0000 (UTC)
-X-FDA: 84475384812.17.4FD600B
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012061.outbound.protection.outlook.com [40.107.200.61])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5D8BD1C0004
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:43:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=m330Eq5J;
-	spf=pass (imf21.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.200.61 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771843403;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C98B6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:56:00 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE3D91A08FB
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:55:59 +0000 (UTC)
+X-FDA: 84475416438.24.E6AC51C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F00B71A000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:55:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PhToeSxe;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771844158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2rZ5oiLoMmxHQdwIw2AP0PYICAXTfvzy9m/W/yUJzcg=;
-	b=kL480rOhf3p3eLvDPfenVEzIuCIfXyGc/lBIEWDO6jpngo6PLSHF5vNoQLbF97SNiVY8ay
-	ewzgZhGw/8nAdBYfqd9A3a/0MSxMIx2tMWdSK5Rk7g/W1eOeXd+IuibEKQSg7Was09PgG/
-	IuYxYGfh5SQdJy0CmAnYekcoNLpc44g=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771843403; a=rsa-sha256;
-	cv=pass;
-	b=TaQVS2ZM9syqNpmvr6ft54SkUOKl/MmgfrX4/diHtc7DQ6bmk/Lkm0fMSqwO+V9t2UxVaQ
-	PCu0rSiE2nzEVAxfXDTPI7RnY/Q0FkinNMUmXQqT+HxoC/2Cu0gSJHELwGwUomVQ08z7SD
-	llqLCj0PfiSt6SDYUO33JqIqiwBvBe4=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=m330Eq5J;
-	spf=pass (imf21.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.200.61 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eRssqR5fzA98hFjo/IbImrmUDxOYTeRnNf8rccUNJnvX5B/Y5rkz3EZ5bcWicVBaq3rIno2YTmQKD4hbgyTMUqCD0UORAi7h6tO5f2z1+p4773gSAmNtu1Sw08G3mLPck3J1jth5CYeyonIu6b0obOt0gMPYtXtLpP/iI0CHUwLWX+yVBk73Hxyxg3LcbfpL/8MMvcWwNFPaUvIIjj9rp+kXx3CMVnNUnY67F+WVbcsJn0O/O7BJtSI1jl9KC3ZVteUoQtVwFZpRU7qLA87ljdIbTgB4RjeoAYUHIrWNG+Q0IXStW7cY2kI546Pfqdea2Nst2EGNgxoi0TS1HfwMeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2rZ5oiLoMmxHQdwIw2AP0PYICAXTfvzy9m/W/yUJzcg=;
- b=L7KNusf5/t364oF4rP+wZ73Qs2aXTBoVXA7X8p7ctJOzQ9SQNKV/cVL9wsWoQX3fNHjNdobBvmnBcXgSKDGAwyAg44lNCRUnppbPX7qGM1gkaNHvIvLShSGENjk6LwcAWmNDorpP760Nud3Q0Wq/CK7M5NPX/OXR9K3L23N0zjm0miSVyMZIzx7B4ILRwF38IyX/gjJHymZ3FW3JoNSZUMFULA+yRzQMG/BntnRZU1cnztnIT3OksXbuFg8Oa72zA9nIkIIYTQzszGoVkkK6rDcHJullbw5n5wSi8ZI3ulEnegaUb5Mgm8e9N9txPajHExEgofmJZsJysZEEqSxQdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2rZ5oiLoMmxHQdwIw2AP0PYICAXTfvzy9m/W/yUJzcg=;
- b=m330Eq5JrkT+rAbyisLpS0rFn0JreHnOFd8q/RBJV+yXg73pHX47AvyrhQLz1/RJh8NWhVbwnfq71pm6C1EK41VaX2wi8PmLyEcoOfLAmZ2ukjhwLQZybc+Wp5PKBj+1wdLX+yxtJGxS7k5rqfIewjnkvfZMz3tqO9q2I7UOfR4=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by BY5PR12MB4290.namprd12.prod.outlook.com (2603:10b6:a03:20e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.19; Mon, 23 Feb
- 2026 10:43:19 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
- 10:43:19 +0000
-Message-ID: <6035523b-c14f-4e79-9d35-c045aa659456@amd.com>
-Date: Mon, 23 Feb 2026 11:43:10 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 03/11] drm/ttm: zero page->private when freeing pages
-To: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-erofs@lists.ozlabs.org,
- linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-References: <20260223032641.1859381-1-ziy@nvidia.com>
- <20260223032641.1859381-4-ziy@nvidia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260223032641.1859381-4-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0927.namprd03.prod.outlook.com
- (2603:10b6:408:107::32) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=BEtwd+R5s7gDlTvXvHKOwL3ruNVsU6UKzF/BlCX75FU=;
+	b=Dqb7VgtaEvp/2+YLuw1NetXQUK0CaYrm/R6ESKS4N2nJzJ7fKOhKn+ayAXCdtg/ZtCk7oB
+	wvQP/v4rciVJ867jzC5NiA5PN7nV3Bqd2y4+FgJq3e3QfrWCFmkfuE2jPO//W7KK5mvZUH
+	ffdmfH4dl/dH2Lphubpx+FY7FKrNpZ0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PhToeSxe;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771844158; a=rsa-sha256;
+	cv=none;
+	b=Y+cYc4HX7FDOuM4aFb0HsZc5g7kL0NVYFAhIXBkeL8H1b24Igex9hhIrfVrBN10ByUx93H
+	ukjSljQzVYGgqymjaQiuuoWtCFfBZMBpNaIFi8U3Rv6eZ/8n6fVbsmP0YDbBAn/RO/BuFd
+	XCQ1TRsei20gPFD1hWNOX5n9TA7eGng=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C2CAD40C3C;
+	Mon, 23 Feb 2026 10:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAF1C116C6;
+	Mon, 23 Feb 2026 10:55:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771844156;
+	bh=Hp/G5bM2cfDXr9AvMTGry72qv+5k5dlSxt17AJXUjBQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PhToeSxeGI/AfzEciOrUYiCwaquvOzKdmUQQxyn/pTX37XJjk0l/22SEwRHvGkA1b
+	 6uAreg1DXjppT4wPUy+qDmRPKjP8B4WBdgTHA1h05TaDiOCb1/SqAFGapOfBitjYmR
+	 /u+Mtmwr2YJkjAAv069cIgmvOoOoDdxoH6CAxdp982qevVQGunRNTkmCBidYz3Nce/
+	 plSnr8T+21sxGn33f3cEo3D2I+LEldHT4G+nbYUIWh3iAuvttW73gnBvbwKwCIllvK
+	 FzoDZHO5onuHwH5vGcqU+1EjxesnP78VJ2b5nfK8+6sSaaBCPcDjf550/imijYvFCB
+	 I3HhD7AwiozWQ==
+Date: Mon, 23 Feb 2026 12:55:48 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Message-ID: <aZwyNAbEqb8ZwLUM@kernel.org>
+References: <20260223075219.2348035-1-rppt@kernel.org>
+ <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|BY5PR12MB4290:EE_
-X-MS-Office365-Filtering-Correlation-Id: 078fce53-9ae1-444e-1c92-08de72c85bdf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eENzemJ3RHVrWDF5TjNSZ3NKMlptaGNIK05hYkFsQ0hCMWhyUzdaam1jT3dI?=
- =?utf-8?B?TytyT05zcjM0Qy9XUmtqd3JPOWs0R0ZYSzZoV1Z4bGIrbDVQak9XVVA5cE1N?=
- =?utf-8?B?L1VibFRLNUZFblBpTlNncTJzZVU1U2tCRzc2cEprd2V2dExGUSs1V1Fwa1B5?=
- =?utf-8?B?RFFSTlVDQ1RGYlNTMGNMOGljL2FCQ0R0R0FGSzNVTUxlYnJZLzlraEdkVVB4?=
- =?utf-8?B?MTBLdC9DYU94ZFVwR2d0c0wwQWxpNnRnc1VCQkN4MElFMS9Nd1hDRS9MVVd1?=
- =?utf-8?B?MXNWR3U1b1NRbkY5b1NtZE1WS2phODQ1YWxacUJZOVZWVGQxbTN6OEppaFls?=
- =?utf-8?B?ZmhZQjM2Q3R6U0wrS0tBazQwMFdEN3ZNd0g4SS9saC93QVRzLzJwd3p0Tkp2?=
- =?utf-8?B?c0NYamlQZUZkVS80aHRQUlVWR29GbE9uZy9HWWdmVXJndWFTS3h6UEpVTnIy?=
- =?utf-8?B?OStNazNZc1B6TWJKWUk4cFFDV2oxVDdINXJ4UDVESDVLRzFsTXkyYzI0aFNi?=
- =?utf-8?B?SWZIb2Vnbmc2WGd6b25ZVlRpYXBsSEhhWHlabDNKNDA5VE1ocWhIRVBTbTBC?=
- =?utf-8?B?Q044RlBjZVNQUkgrV3pwY0NuVHBiZ0ZFTlJZb3NxaFUvcEN3SUhvZXh6V1ZG?=
- =?utf-8?B?U1JBV0lKMzNVYndSaTFxODhkcGltV29QaXY4MTZEMFA4cG9uTjR6VG1EU3FR?=
- =?utf-8?B?Z0pwYnFYU3k0d1JDSGpzWDIva1lnMkw0eUNMTW1ra2o2NFRQOGNCcG44RjBE?=
- =?utf-8?B?cmxDSjUxdnBjbnh2YXhUUjlEMkltdzdvbGxYTU96U0NPbGpGYnVNU09qRjhE?=
- =?utf-8?B?S2F3SFo0Q1lnTWZMS3JzaUFLcE1TN1J2dHhERTNKdVpQeWoyYzBqYWo0aVk1?=
- =?utf-8?B?UlE5TVhja3ptV21GN0N3YlcxMGNYQVVWOUdWRUQzdTU0S2QzdXl2NlVVdElJ?=
- =?utf-8?B?d2xiTVlnaWN2K0NsdVpmb0p6MExGWGVrdUVRSm5QWVpLZEludmNUQ3lQdWFL?=
- =?utf-8?B?QmxrMENaTEpMSXFkVm9YQkFmTVBuaTVLdmg4Y3ExOVZoVHJLbWppMlJXSldT?=
- =?utf-8?B?cGtUMmRBUDg0M3BhQ28rNVpxWjhLbC9HZ2djUXI1ZCt0TktLeVg2UUxOc3Iw?=
- =?utf-8?B?d2p5UDdoZ01HeVE3QzVFT3BleXhGZkh4SFFYSVNLdm9PTlY0M0VHa0l5eFQv?=
- =?utf-8?B?UTNQMzVRTHV3aWc4cDFUbitrWDIweERXWVBUd1k1aWZRQzVzalN5STVVckpX?=
- =?utf-8?B?TlloamYwNG5JU3JiRUw5M0Y0cG1oL2RlTnltUWJuVWNCeUtweUVnMzY0QmNU?=
- =?utf-8?B?bnY5a2k0d0xCdUJCbmoyNkgvNW52TDZQSjE5UE9ZOGVOMkRaa3hHcEtyRUY0?=
- =?utf-8?B?cHNSRzJNU0xsYWxPSjEveWlLZzJNSHBLd3hhb3Jqb3ZXWDJhaVkrSWZEdGMr?=
- =?utf-8?B?S2tQcXFGbjN5enU4QVZGM0JGSVVBK1N3UWkxVkZKZHlHMWVwSVNTMmRuTDhl?=
- =?utf-8?B?STk5MEJJalorY2R1MExtMXRDUEx1bnl2ckFkTHUzbENuUEhXTkFQWmtxQnU3?=
- =?utf-8?B?YnBwZHVqS0YxRGY4YXJ1SVlxTHRmRVZyNXZLdjNxamgwdlovcGx1Tk9LbDBX?=
- =?utf-8?B?OVFEWGM3Ym5GZnpKUFdHaFBzaUhNSzhiQ2lmdWxBZzRBLzlpV0Vxck9lWm8v?=
- =?utf-8?B?TWZrTTVpamFmeWNEVlRKc25vMUNYRHBUMUJKNGlCM1huMmI1a1RJaDB4czJx?=
- =?utf-8?B?VFpQamFGelRzYWs5N3VvOTlmcFFhais1K0JvTEh3ZzhXZjlXU21JM0kwWnlT?=
- =?utf-8?B?WjRDUnl1QmFxR2lKZ2ZFeVNraGxPbUlScWQvU0NRZ0FmU1Q1QXdsczhVeGhu?=
- =?utf-8?B?TVA1ZlJhZERIbS9pTHJuRjNlUGMwdmQrQUJWemswUjI5TE1CM1IrdW1aUHh2?=
- =?utf-8?B?d0lKbWt4TVgxSnhneDA3cGpMUUZXb3lCYjVyZE43RGliZTB1T0pqcVhuMjJp?=
- =?utf-8?B?ZjF6NlVSb1pLRUxOV1BlNlRLWmFPYm53bmk2OUc4ZzU5TllnSGRKcWhqY2VF?=
- =?utf-8?B?K1QvNHZTWDB0U3ZXaldqUmszaGVnMDVaRnhBYVFpV2VEL0cwZVFpM1pBUEFj?=
- =?utf-8?Q?eexE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a21zVDNjYTZtMk5EejJNTzBNcDNPVFprS2lCU2VqOHFOUzdvZUhwSSs4bG8y?=
- =?utf-8?B?Y2V3RFF5TWtaajJYWC92QlVWMTVXSnRoNUJxQUxSQ3VpRWZ3WnVOYnRDRytk?=
- =?utf-8?B?TktiR1EwZ2htdmUwd2wrclE2cHNodzBzRE9GbzdxMWxyT2VtVzZlZmljRlJl?=
- =?utf-8?B?dFpKcCs2TlhyZlpUNGlyNW5sZ3NodEh0Wk1CdGNOK0h6YkRVRHRPdU4ybzcv?=
- =?utf-8?B?eXZ2UDZNVDdZand2MHY4Qkdkd0pjcXNRdUJ6emZWRHdTQXg1MGVKUGdRdWsv?=
- =?utf-8?B?WXY1NE1VdE1lVE1WZU1FcEl1UzYzdm5hcUpSbHJBUTZIbU1DY0swSGRvTWNQ?=
- =?utf-8?B?N3JlanpSN0EyQjZlMkN4ck5KTG5HUEJJWm9ET3kwY0p0ek5qTzJFLzZIRUxO?=
- =?utf-8?B?VjRyMS9yQWM4bzYyWEFJeVpVY2NsN25qb1ZXYXFENzBtQ25UeDdiUXRyNis0?=
- =?utf-8?B?MjRiWnJBemhnaHdiVkk3L2FiZzdqV05hSWdzWmxlZFlRUi91cjFlSVdGUXRU?=
- =?utf-8?B?ZDZHTk9JcEprNkJzK0lYek9jcHlDaGtac3E2SUtuWTQ3bFVjQzZLMVJZZ0hu?=
- =?utf-8?B?YlJiazl0cTg1ejE1K2xEbXZsZVBJVFNtSndLRVpoaHV5b0lvNFJ1T2NzcmR1?=
- =?utf-8?B?RHB1eGZGOUNUOW90eVZGZlcwMjV2cm5yTzZRRUxHSnhibUdlTHNDdHBhT1Jw?=
- =?utf-8?B?bjkvZWwvZW1ITnRBMzgwelB3OTRvaWRlQlArQjlpTG9UMGY1T3ZJRVdTbWMz?=
- =?utf-8?B?ZENPK21GS2ZoTG11NU9LVkRYMTJZcnhKWWg3QXY3QnJSQkVtYW9nVXV1SE9B?=
- =?utf-8?B?M08xY0FPcUxsQmNlRE5sUWxNaXBVaDJDSjVnNEgydkgvRkZxV3JncTZ4MUdS?=
- =?utf-8?B?Zm1BSlFxWXZLZnpsWWswcWplSml1ZWVBOVdENXBoWjkxd0QxREFiTzFFTS9z?=
- =?utf-8?B?UDRTQ3BuTjZqZTV5YlhVT2Exak5Fc01JZzNXSWwxNkw1czF3b2gxMTdKRGFh?=
- =?utf-8?B?QjZIMTJKQ092b3dMOWFYdzF6SGI4QVU1UEdwZktBWDhiWG9MaHBGSW1aUTk0?=
- =?utf-8?B?amlkd1JSOVJNbWV6a0ZxMnNZRnhpMnM4TWtVNkdtWFd6UzBnSHFHbFhUTlVP?=
- =?utf-8?B?MUZBaDY2Z2I0NzgyYWt5d2ErV2ZsMGpVeG5IUHl4QlhQYkR5RXJaTmNYZG1T?=
- =?utf-8?B?cWlyRzVQZlpmbGliWXdRMXptZllpNHB5V1k1YTFyYlpYeEgzaHVQNTJTcytQ?=
- =?utf-8?B?akRncno1Yk5ZYXhVeDNnc1dSTmNtQWhrL0NZcjhjVE5XL0xQWHNsMGhGZFRN?=
- =?utf-8?B?bHdZQVBVQ1pDRVluTnoxdm5VMS9uTlVxdHhmakNVZi81UzNWVjVCdHJkTzBq?=
- =?utf-8?B?MHA1QUQ3OUZ3bnoyYXI2KzdaTEsvNW4xa2pVZ0RtMVA0TVFlUlREU2dIOU5m?=
- =?utf-8?B?dE1MYnZWRkgydE8rN3pkTklQcFlEWldTYnRNSGJhSHJRSXJBbDZuc09IM2Rs?=
- =?utf-8?B?RU50SmgvY2hJd3U0dXJ4b1Q4ZzhnaWFwU0M5d1M1UnByQzJuUmdNNGI5VDI5?=
- =?utf-8?B?czBwREMxSWdZOVcvd1FXY09udXZMZFNKR01JaEZTbzhheXo5U2VkT3BId0ZZ?=
- =?utf-8?B?bXJDRjN3S3BZU2NzY1pXODJrd0JWWWZFZE5ZU29uOVZnZ1JudUJVSHBJVlpv?=
- =?utf-8?B?S3FLc0lpTTlpeklHeU9TMTVsLzdYbkIycEFSV0t4SUJWSmNSTzhFTC9rSWhq?=
- =?utf-8?B?V21OS1k3c3Q1QnI3Sjh2cWI2d0ZFcGJoU2l0ZWZlL2ZNeStkU0ZubmJJRmdy?=
- =?utf-8?B?NzFFVTgrblVuM014TDd6d3B3MVllc3VBTGZJdlQ3OXZqZHBjeHVhWHN0Vm9m?=
- =?utf-8?B?MVg5eGdwU2d4STdCSUJ2Ukh0MWFSRkhnZUtYOWI4TVhrQmVzRXdKNlN3Lzdu?=
- =?utf-8?B?ZnJLRnFWYnQvZ1dTTzl0Vmh1dDFvZ3J2SGV0V3dpWGdUR3BVTFMySnQ2WFpN?=
- =?utf-8?B?SUEzMmpLWUVoYm14MHZXbnc4M0NkazJIV3VVYnFQb0RqWHZzQXVLcEtxRjZk?=
- =?utf-8?B?Y0wycHBqdXc4MDJhQWVzUWZBUkNBYjR1OHlnYVdVL2JjSysrWUFSYzdudEY1?=
- =?utf-8?B?alB4bVkzeFdMWVlwUTBpM2ttSjJ1MW1XUUVUYmY3Y2txZnBXKzZSVmd6WlZC?=
- =?utf-8?B?azNjSVNPdFRFWk92Z0NmSGprS1ZVbUt0MkpIS1dOMW1IM21YVVB3ZC96ZmNV?=
- =?utf-8?B?bFJvMlBTNXBvRDQ2eFVTMDROUUJ0ZjQwK0dvbHQ3cVdkUGttZkw0TWV0Z2lo?=
- =?utf-8?Q?vbVlUndyGL59d2L/lJ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 078fce53-9ae1-444e-1c92-08de72c85bdf
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 10:43:19.5733
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l6QvF/Po8I0MMqGs3x+Uyblag890a7QrADX1NUDra4w43mubpG3P0IjKi9uq8UPe
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4290
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+X-Stat-Signature: rqiktdbzk9bygwg7bcqb1pcxtthi4rcu
 X-Rspam-User: 
-X-Stat-Signature: coebp85djzxdzsos9ro76i9nho4m48yw
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5D8BD1C0004
-X-HE-Tag: 1771843403-431526
-X-HE-Meta: U2FsdGVkX18p8JFwYQMDKban+winnB+hooa2Ke9WoUSZkb9OdkREd8rT9l0fTEIt2MBguOYRWlbZmCAa1Ti2inkYP18JgNnaUDRI6Yjz8CEJweuilDVr8xT1VzcDPrtb9vmOJQy2RClqSyigR6SWNsEVMmc+9LWSJNIA9N8oZBFaOMwvd23nbUBnIg0AlvB1aYmbIIkjRiL2+Jc+4+rt+v+4EVPW0rGarOPbzVW80Ot06OLN0mzxrraH101nO7yBh2ezt4Sce8U9NHSI7FDxIin9ZuVbVHDMPmdijzmjAKwRx6zoo9bYqpkWlG1185W2HIqmxkoE4ZHimTQgeqKnAVeKv+fWOzLzIlaX3ri/YnTrnfs5EsSPcroUg7/VxCJbuQsFKZ6W70xhH0U9DojZjFXBYOJMHGT5TG3IZcY8sX13rKAmAZtnMtHY3TxD7jl9Jkb2NcNVC3ooHugafLqoMOGHjgaGWnpDpBLKY6BhpYnAxSAn4vB46VRtJ6v7WkDHeHA7p9cR7uTzL4YSHDk7lg9yfWgs5+o+LbHVSChW6HPfSZTPGzThiemd2VZ0RViQYFNM1kvarGqNOulgADp33zJUdhAlL2Tja1zClszxHeXfYEn2wTljMe9GErVH9HpPRsFv2Dzs1M8pX0r8mQXGj9DI8Slsr9sRCICb8keJTAyyXvzLCrneYXyH7MTNq2k7K5ohb3nL3Nib5bw1gAjSfi0qBYVt/G3h+eRgotuPmm9E6NTKLNU0KiBXenWrd4TTbpVC1761UsqSu3RXcNBIEdYhGzfOuQdD8+E6hGAN539NLoBCUkxOmlqqkw/va1BOpMcyLSBlXaojZj3Rtv0rEWBkcVpB5dTjIbZ8O9jY4PSxvszXibZlvM3RuWJ617S1IkYIU3NP6w+0sE2OYFR7YSdaRNW0RYV9shFC8O0ipOSsSU3/bB2PV2fYwAoJYoW8IbX5DbwpoyJqIGzh83K
- ZxsQc+8Q
- KrblMWIAnk0TJgofittgrbExNBlawBAyQCyVSDAE8JgqmFq/8LT/rXAhbvVoTd4/sB2Yvz3EQS0+bOi9j0kZ/jhhQdflqPEqrD6wDLHoZLQn1doCsH/ej1wABnKrl5esdn6JlzOfxwpwhhDudzC5My5KrSWbxefJJiuRNbqi9UFVFoaQRUp/HLlRWk9JR5IJnSK/QumZhf0LJZwGbj7+SRixS7R6U/zRUwCnje8L0a4nCCXM8xCO2oD+Rov0MUTZWdBcskDjs+R88DwSpbToRUFo2EgJjFCvPLW02cDm0//vJF5HM62h0uOLgm71Sw7X8LzD9nxXdD+FzW6Zo99vxgYdB/ul8efIGK6WEq/JpmdSlkFBK+GLLQ8WU9rIIe/ErrFtdxTkfJTGMQLMg/3O0/jqGJp67BaDNbeozLfW0lVElxlHFSjSr0LU8ZYjfsfzlyzeYcSo+fkGfacdmjPOPTELTdcql8/AjvWiehoxqiyE/XJ+IaJNVdIeWvhBU1vimV3kOO7JEMsI8BCev7+/FZE7oex1x8abQLcb1qqEg3mDywHIjPisVp87/3vvXg8iL7MTp/QvQW4+1CUgHK1YiIJeqLr3poAxey7akOzopxlEWVZuYIvlR2OlLtmx2DlL3Ugs7
+X-Rspamd-Queue-Id: F00B71A000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771844157-513441
+X-HE-Meta: U2FsdGVkX19X0KA7SmkTebUOPoOEU/0kdtT9AIsjB6NZ1VDpKf39P4NXLEc2NHKvnp1B5xjKSCNe0UGCig+laHA+qInZgdITyavsdgSzwWNwcNxdeN/hMxbAWhVR2bLLAsPaAfOnw4pcC4mSVJmo9Ft0GoORzv6IlV3G4yZIGj9g++r3vQt/jH8IW2xIexpEMTeo8hWWUnmNOLIUyhLRs6vQ7BTRbClNkn9Q4x1VtaoAjjQci+GtbD915/Aj5TDxVLTC8/XCHruf05ey1zcJsagQIEcaHxFnwqvANXQlwCc2ha/4z3d7zhUNREcpKaQA+vYyaD6NqPz87T7VcY7PJLIulMprXv9JopuqIKBISufUVI9Ex2By6qat3LY8SRRdQ8Cix6ZkFqn5mpqFK6K5PnbMH1c0f6eCmXeKQ0eGoA4XItoGAfqeNT1Uab9FUtES/0t24c21hRxosQ4ovWjOfVp0TGeLPpU8YFiPHtP4rg4L1LwArmyYdKycQ4Rwq5Fm6qkHJM0tsr/CFzR9nZ26EeDT61Y4Eu/qb1ld9mo1kdg86OpARpid9LxoM6EaA/ULS3BakvRt1BzJbuCp42KUEhSekYbAPQb9N/sCdgFytuHi9vzlhQKzj01mPh5PJe2yTdb2DsU3uw2zzYp2s8Si2BlLRVWUj389SC0+r31/otmDLxKruwPrET8KwCiNuS2O4mQd/cSRi8C5qJyxTse5JurIt4tVnppczCT07rwyAeRpRfHWBLZII5PiHiJ6NHYiqrofVp5GGeDScDH11h+hj8Zy0yq1QFO3r4xIeSLXzLDbc6kFNH0FzuUeeyBndZUghY47azDzwcP4avCDCnLxBxhrrvxJ9TZILQ4ymvY1CoSnH6Nd3C++w5lNjNgnsKtDZalj6iK5+ge6clOgZtI6yb2jINWdMY6oJfMiOA0YcACy6pLA6cx1Xkzs6NZSy+ZGtlRTVHh4cYhI72OtK/1
+ IEFJoR/M
+ FTr0Y8efBAwrPYF3869kyAuEqX70av+xlidNF05RUxggXJbeLVx/ygepbDp2SR7hq5CsJLpOeXtdsZG+Ycn6dHOIY6tV/984+6LXYGbzOdyAqbkxOuF6a6VWweCqp5EKiT/sWgXv8wLmtOTD/FCm5pEqZdoTA7ipE/ZeUxlOkazJxSjje/zbb2BKywIhbEDfc8Gf0bEaIqMsPn9B2ErTjeIXZo2sqjAC72cBow+s5gTZgqMBJvZsB1zlywA5jO25PqUJl+VtgLZYAD1W16rKXuQiunW3QVcwkSHq3MI3ED/kwhDr5CBDTb7TyGNbr3PXdf4qEK8e/m87BS+JXGjgUfyg9bg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -213,43 +98,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 04:26, Zi Yan wrote:
-> This prepares upcoming checks in page freeing path.
+Hi Ard,
+
+On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
+> Hi Mike,
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Huang Rui <ray.huang@amd.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: dri-devel@lists.freedesktop.org
-
-Acked-by: Christian König <christian.koenig@amd.com>
-
-Question (which was potentially already discussed) why isn't __free_pages() doing that?
-
-Regards,
-Christian.
-
-> ---
->  drivers/gpu/drm/ttm/ttm_pool.c | 1 +
->  1 file changed, 1 insertion(+)
+> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+> >
+> > There are two issue with that: memblock_free_late() should be used for
+> > memory allocated with memblock_alloc() while the memory reserved with
+> > memblock_reserve() should be freed with free_reserved_area().
+> >
+> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> > efi_free_boot_services() is called before deferred initialization of the
+> > memory map is complete.
+> >
+> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+> >
+> > If the freed memory resides in the areas that memory map for them is
+> > still uninitialized, they won't be actually freed because
+> > memblock_free_late() calls memblock_free_pages() and the latter skips
+> > uninitialized pages.
+> >
+> > Using free_reserved_area() at this point is also problematic because
+> > __free_page() accesses the buddy of the freed page and that again might
+> > end up in uninitialized part of the memory map.
+> >
+> > Delaying the entire efi_free_boot_services() could be problematic
+> > because in addition to freeing boot services memory it updates
+> > efi.memmap without any synchronization and that's undesirable late in
+> > boot when there is concurrency.
+> >
+> > More robust approach is to only defer freeing of the EFI boot services
+> > memory.
+> >
+> > Make efi_free_boot_services() collect ranges that should be freed into
+> > an array and add an initcall efi_free_boot_services_memory() that walks
+> > that array and actually frees the memory using free_reserved_area().
+> >
 > 
-> diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-> index 217e45958099..a85cf1582dc8 100644
-> --- a/drivers/gpu/drm/ttm/ttm_pool.c
-> +++ b/drivers/gpu/drm/ttm/ttm_pool.c
-> @@ -210,6 +210,7 @@ static void ttm_pool_free_page(struct ttm_pool *pool, enum ttm_caching caching,
->  #endif
->  
->  	if (!pool || !ttm_pool_uses_dma_alloc(pool)) {
-> +		set_page_private(p, 0);
->  		__free_pages(p, order);
->  		return;
->  	}
+> Instead of creating another table, could we just traverse the EFI memory
+> map again in the arch_initcall(), and free all boot services code/data
+> above 1M with EFI_MEMORY_RUNTIME cleared ?
+ 
+Currently efi_free_boot_services() unmaps all boot services code/data with
+EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
 
+I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+why I didn't use the existing EFI memory map.
+
+Now thinking about it, if the unmapping can happen later, maybe we'll just
+move the entire efi_free_boot_services() to an initcall?
+
+> > Link: 
+> > https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
+> > Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after 
+> > switching to virtual mode")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  arch/x86/include/asm/efi.h          |  2 +-
+> >  arch/x86/platform/efi/efi.c         |  2 +-
+> >  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
+> >  drivers/firmware/efi/mokvar-table.c |  2 +-
+> >  4 files changed, 55 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> > index f227a70ac91f..51b4cdbea061 100644
+> > --- a/arch/x86/include/asm/efi.h
+> > +++ b/arch/x86/include/asm/efi.h
+> > @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
+> >  extern int __init efi_reuse_config(u64 tables, int nr_tables);
+> >  extern void efi_delete_dummy_variable(void);
+> >  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
+> > -extern void efi_free_boot_services(void);
+> > +extern void efi_unmap_boot_services(void);
+> > 
+> >  void arch_efi_call_virt_setup(void);
+> >  void arch_efi_call_virt_teardown(void);
+> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> > index d00c6de7f3b7..d84c6020dda1 100644
+> > --- a/arch/x86/platform/efi/efi.c
+> > +++ b/arch/x86/platform/efi/efi.c
+> > @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
+> >  	}
+> > 
+> >  	efi_check_for_embedded_firmwares();
+> > -	efi_free_boot_services();
+> > +	efi_unmap_boot_services();
+> > 
+> >  	if (!efi_is_mixed())
+> >  		efi_native_runtime_setup();
+> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> > index 553f330198f2..35caa5746115 100644
+> > --- a/arch/x86/platform/efi/quirks.c
+> > +++ b/arch/x86/platform/efi/quirks.c
+> > @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
+> > 
+> >  		/*
+> >  		 * Because the following memblock_reserve() is paired
+> > -		 * with memblock_free_late() for this region in
+> > +		 * with free_reserved_area() for this region in
+> >  		 * efi_free_boot_services(), we must be extremely
+> >  		 * careful not to reserve, and subsequently free,
+> >  		 * critical regions of memory (like the kernel image) or
+> > @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+> >  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+> >  }
+> > 
+> > -void __init efi_free_boot_services(void)
+> > +struct efi_freeable_range {
+> > +	u64 start;
+> > +	u64 end;
+> > +};
+> > +
+> > +static struct efi_freeable_range *ranges_to_free;
+> > +
+> > +void __init efi_unmap_boot_services(void)
+> >  {
+> >  	struct efi_memory_map_data data = { 0 };
+> >  	efi_memory_desc_t *md;
+> >  	int num_entries = 0;
+> > +	int idx = 0;
+> > +	size_t sz;
+> >  	void *new, *new_md;
+> > 
+> >  	/* Keep all regions for /sys/kernel/debug/efi */
+> >  	if (efi_enabled(EFI_DBG))
+> >  		return;
+> > 
+> > +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
+> > +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+> > +	if (!ranges_to_free) {
+> > +		pr_err("Failed to allocate storage for freeable EFI regions\n");
+> > +		return;
+> > +	}
+> > +
+> >  	for_each_efi_memory_desc(md) {
+> >  		unsigned long long start = md->phys_addr;
+> >  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+> > @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
+> >  			start = SZ_1M;
+> >  		}
+> > 
+> > -		memblock_free_late(start, size);
+> > +		/*
+> > +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+> > +		 * map are still not initialized and we can't reliably free
+> > +		 * memory here.
+> > +		 * Queue the ranges to free at a later point.
+> > +		 */
+> > +		ranges_to_free[idx].start = start;
+> > +		ranges_to_free[idx].end = start + size;
+> > +		idx++;
+> >  	}
+> > 
+> >  	if (!num_entries)
+> > @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
+> >  	}
+> >  }
+> > 
+> > +static int __init efi_free_boot_services(void)
+> > +{
+> > +	struct efi_freeable_range *range = ranges_to_free;
+> > +	unsigned long freed = 0;
+> > +
+> > +	if (!ranges_to_free)
+> > +		return 0;
+> > +
+> > +	while (range->start) {
+> > +		void *start = phys_to_virt(range->start);
+> > +		void *end = phys_to_virt(range->end);
+> > +
+> > +		free_reserved_area(start, end, -1, NULL);
+> > +		freed += (end - start);
+> > +		range++;
+> > +	}
+> > +	kfree(ranges_to_free);
+> > +
+> > +	if (freed)
+> > +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
+> > +
+> > +	return 0;
+> > +}
+> > +arch_initcall(efi_free_boot_services);
+> > +
+> >  /*
+> >   * A number of config table entries get remapped to virtual addresses
+> >   * after entering EFI virtual mode. However, the kexec kernel requires
+> > diff --git a/drivers/firmware/efi/mokvar-table.c 
+> > b/drivers/firmware/efi/mokvar-table.c
+> > index 4ff0c2926097..6842aa96d704 100644
+> > --- a/drivers/firmware/efi/mokvar-table.c
+> > +++ b/drivers/firmware/efi/mokvar-table.c
+> > @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
+> >   * as an alternative to ordinary EFI variables, due to 
+> > platform-dependent
+> >   * limitations. The memory occupied by this table is marked as 
+> > reserved.
+> >   *
+> > - * This routine must be called before efi_free_boot_services() in order
+> > + * This routine must be called before efi_unmap_boot_services() in 
+> > order
+> >   * to guarantee that it can mark the table as reserved.
+> >   *
+> >   * Implicit inputs:
+> >
+> > base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> > -- 
+> > 2.51.0
+
+-- 
+Sincerely yours,
+Mike.
 
