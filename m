@@ -4,129 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 729D0EA4FA0
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:17:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47BBAEA4FAE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:18:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF6506B008A; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
+	id 65E8C6B0088; Mon, 23 Feb 2026 06:18:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA3D46B008C; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
+	id 60BAC6B008C; Mon, 23 Feb 2026 06:18:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB0A36B0092; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
+	id 52EBB6B0092; Mon, 23 Feb 2026 06:18:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A8C1C6B008A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:17:49 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F514C2C5E
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:17:49 +0000 (UTC)
-X-FDA: 84475471458.24.C5D0593
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4AA181C000B
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:17:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T+ZmlUzd;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845467; a=rsa-sha256;
-	cv=none;
-	b=YYRVqC8xXav4MW6QWNT5mETP1ftCiuEQr6DJR/C0Q+bD3Dydg3h8sSOARKtN8KjoNQSx6w
-	i1l41JEvBxuoR1hICIpBumqHujQRJOrVbToTxLfK4+mZ5DUzrEFDZuEEQk7Yb/Ib2Y+W0e
-	5QNKduST16RqvGjGyXz/UheuR2o04Is=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T+ZmlUzd;
-	spf=pass (imf21.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3E3496B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:18:18 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 073428C7B6
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:18:18 +0000 (UTC)
+X-FDA: 84475472676.11.6C1F888
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 457C140004
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:18:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L9pKHQoL;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771845467;
+	s=arc-20220608; t=1771845496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E9Q6Q8veWSTYguy8aQ+tHLIaffULJwBQHx4dUobDY3Y=;
-	b=G1NiCMqRoF2Gv9TgshJnVKX5oOnEq26mC33Fjp0lxxrj8v0nYG/G543lZbchelNtzTn3GU
-	gIe1aCmVEOJYh867g18BuhCs3YSvXfEabgmUaMiqQDYUi/vszwCGP8FimARmH1SNKJqkVX
-	TK9G9aA7CfYFSRYElrEdzSk88yldWWA=
+	bh=HQsMvmVHP1EOw2tuC1g88mDSpi0AiJpDN7qfPwL0emM=;
+	b=FUYLIehbZM6ngmO4Mp+jgFp8qnZKZ5LHm0N6+B/OfLA8cogqNPf+ze2um0fYdmwdF+ScxA
+	sXte01/Ss1LgGO01KrWJG/vpaYDPau2OSU1+7Bd0TL3Pr95uI06KOP9seDeL/meVoWSuWy
+	KL0dnlvT3r1sHpGDE3UxyXXneRBbank=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845496; a=rsa-sha256;
+	cv=none;
+	b=5MJoimEwbvpncWBB6rg8Ddqhwz2MOZl9xAYECeB2s7wT4W43wb7r1Yf+fcwWj4kXZ7dGbx
+	7xQKp/GV8PWcPp0EjJpZYmHuEdslx2M6hXOPNeszDeip++ktwZm0WNEPtkD/nFeu5ID/62
+	KqjOUXNBz/zE3H1SX4pWi8h9FMWvUWg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L9pKHQoL;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B31E060097;
-	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0BEC4AF0B;
-	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BB2D419E1;
+	Mon, 23 Feb 2026 11:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEB7C116C6;
+	Mon, 23 Feb 2026 11:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771845466;
-	bh=h3K7cndj4kG1iv/vNT+K90U40QryseuSg7TrHfv0p5c=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=T+ZmlUzdf/h04LkbcDyxLGknTACoTYpcBLRrq+sOPTe6NUCPhryfL6eXp5Hn6pCsO
-	 nKNDe1r2hj4mnJ9NUrjpwNSWDTDw5jZwBlM9U2Q/6ISA+C+v2hC4Bcjz6cf9pvxBUM
-	 LXpnVd0pHPSa+la12I8raghU+w28gd9gGhov8QEX2L/8ZJGd4aiCyQnmvZABfxPUwJ
-	 VQ531qrtYP4Egn+ksVB9UpHf7XMnci4saRnPBfD73m54Mk2xNjA+80PfF++ZlmPmWy
-	 bRRscgI67Dihof6svyTtwqSk8PNXuZcLVCbhkaqftqvAPOTfchQzsL9azgDOtVXod8
-	 rXpPPAPZY+rbQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 31E4BF4006B;
-	Mon, 23 Feb 2026 06:17:45 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 06:17:45 -0500
-X-ME-Sender: <xms:WTecaZgA8AvZpn8eSULqZP9B7hCd7CRFOEns11LlNWohktnXoMbOcA>
-    <xme:WTecaY2kZ-2lmI20rnAEUoPb7QkSU5zjaEY_sl3GTW_KcWXU5S7tgYdQw55sMX33n
-    dP1_pNudIjm1DTEWgLI0PjXNoUFeqRWy9y_hhgoYoxn7XHk8rQi3Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
-    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
-    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
-    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
-    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:WTecaU4kQ0Cm_b0_Li1sUA8NmJUle7HisuUZoKxwRtcxYryS4qpbeg>
-    <xmx:WTecaVfIOmmR7JPM3JsNK75dtyEvFNW7fuTIZneToo94Sz5oRuQ2iw>
-    <xmx:WTecaXwKtaKlcxBU5OxWcGeOn6GnrikiNIKmx_O73BAxMHvQtLW2tw>
-    <xmx:WTecabpesWExFjmzzZts0Pp847SBQBpJXbYWZxD5rZt6c_m0IblPfw>
-    <xmx:WTecaVwC1NV6aDi1xwqlurWiCkmGRBHl52XU9LP7KjPnI438uye4kjw5>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0D441700065; Mon, 23 Feb 2026 06:17:45 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20201202; t=1771845495;
+	bh=gTMAzkNvvCdzk2jvSyT1hq/hY5rJCtn4E+HGOBjo+ys=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L9pKHQoLD0smM5Y95VqNZA8Dm+zB+CZoNuQysK0Oe0AZTerohXQ4D6ekrtrVWclRh
+	 MrHapjS3eoeObS4fEzmR6hd8hCsPPP4hs68ILm/9Xr0SBvB9k4fE89lbrmLY1Gb40t
+	 vrncgjMEMRud/WuMRl/Ix8y/CsLxHz/re3yL8boQF6/6YQRNF4U/0N8LKAfzBk0crd
+	 2rNlLaBE+G2pG8yA8y+swOddxu+DRI5lMid18nfOF0yFZrrNR4gGYlHMQRkW3z1Wyi
+	 ok8nArgm3j0VLhB6Y2Cf02iL7GvFdbpPpvR9ImHYzA3N251Lv/F45Ek2tp+aEJwT5y
+	 76itplpdzMe6g==
+Date: Mon, 23 Feb 2026 13:18:09 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ming Lei <ming.lei@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2] mm: fix NULL NODE_DATA dereference for memoryless
+ nodes on boot
+Message-ID: <aZw3caxKhZtmJCUj@kernel.org>
+References: <20260222115702.3659-1-ming.lei@redhat.com>
 MIME-Version: 1.0
-X-ThreadId: AF0NZ4OlJH_7
-Date: Mon, 23 Feb 2026 12:17:22 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Message-Id: <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
-In-Reply-To: <aZwyNAbEqb8ZwLUM@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
- <aZwyNAbEqb8ZwLUM@kernel.org>
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4AA181C000B
-X-Stat-Signature: tkjggfs14qkjyhkjjpoykhqucz8b16gm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260222115702.3659-1-ming.lei@redhat.com>
+X-Rspamd-Queue-Id: 457C140004
+X-Stat-Signature: kpgmqdb7ejqi4qmbeqxwheqxhxd7zm96
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771845467-710944
-X-HE-Meta: U2FsdGVkX19iZV/fN20lNtq39m6HAdJC12ieK3GS3CWZKaOB+611FO0H73Q39Y/6a997nivmRYsTo1LPhvb6J8LklqR06YzodHZyVBPu9GQ3MhcF+6+wFK0CJc0FGPWtCI+aBg9r3YFNexIE1Ymu+MtG6b1+V/iaqmyfuhZ4dSNFw7oyhe8acueEF7pg/E7l+LQ5t/KdLmRWp6uYas+gCfj0PDAeLz4OMrjHIvj/tLk2YDjN3cBAQUPbT1vYMwDSHBdb8SN+eBoWDVfEMePKi29/0917o5HTm6w6tOFVBgAYuGim8pE4JMF4U94CmZSMxQTUcF/3Vsj1NnEkPltg+yAckz2/U5FVWAsvRvRPUS5QKlHr8qkG3Bu7rjR92ObORKwMgxRP+lvi5OyoN+zT7q0nJomyMcMI8IO9mixK6ZL+43qIa+f3YrE1h9mIcQunfAW2P1XMtJRCeLBlh78jgTuV0M6j2kH2ETc/RfmHsRucjNSEaE6PjMJgi0FXynqQwAeIacBnFrCc0HHua2VlY/q75yvfGkI3Rmg15UV0SBbpVWgXtRBxJ7TC53N+H+QRDDUtBfZB5jSSz1u4uRcqFPB/EhYlIq3gPbCGulrpeG5E3QZZ2/I9nuPsrSVQjKL8sl8Okk5kV6kY1TFiJDFYNwB2bqA0rj9e3N2FniOWXP6RAQ0w2afSlmzQmx8XRUhzTTAsEre7WqFphMSN0zfUra+qSjbobSgXDXgdL2cQAAPsZ4Ll55LNQT0xB1DHfawCz+OHgFnkjqoaZRFzk5bI1iR5XUhd+2jAB8cW3gZHk6yqnyUIEmOe7CSJU9rYKpX7pKRTycLa9oH/W4dFruxFE22P2Ow1xi9VbvVEGeD4WKXWN4pWhEWJCFw/Llhv+YjdUNxAHflwmwi9eF/5DhZyYCGl0gKjdskpbYRfdK67S8AWIk49SL5Eo8jx07e3wZIGMP3kBBm/cBRVlr6FeNb
- gprNYfhi
- AevhSUukg+q08EieM2NxD7tEKv4MseOBSSTY+dkMlXaakYrGOMxk4AYEkP+dkYjevZIexWQmJsEvE7LGHZYQNSj+k3c+awUrjOkK9WXLRRjiDxGuRFF1d3JzShd73b0vtLiwl9xx+48CSrfJ/pA4pEDgpQ0iAmJGmM49Cp2r+jE/CCDP/ii4vg32xPOQZn1dUjigOZ+3mq1P41NFX6puXWQ5m+A==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771845496-851828
+X-HE-Meta: U2FsdGVkX18NXkQjgESb6KSNOdML4+xTVtcRSnAghgjctR3d9lwSZsSIFeoUwnofnPWnDx5d3+b7zqwhKMw6tC8lYZfIZ36c4HdT4RlMj+LlNYTbCbOkLmuvLhxTlX1UObaJdSO/JnmB/dN/hQXftVKozhL4zeuls1uYikTpZ3zZ5QmNOtGCQOLVVlgIOn5XBu1HvJCFliSJWqq7yXEQnKLhRY1XE3bYHk4WxT5T+YpT1SPrhhawS4kOIDNXdrJcB96ZbDsQwHbozJyLPsEbx2IkLiIb3cOzd3t7OH+IirmVjHNyuJ/3esA/VIXbgdM2n8h4X9bf59sTH4BXIEOVtmdgr90yyTH22/MPpm5DjGYx00WW8k21w3rAbk59ThvgG1Mweci0zx1h07Mbk8UrwpE76nZa8Y08bCL93wMQXqhLf6mdWU8s5PJddUl6y6bY3EykinL1bpt0wtYDCivpLuoBjYGdyGv+OlxY5zgm/Rp5rXcaNYz85Qde4P1uzJ+1r9GoGaYB40JCu7XpxZaXEMh8smbQ8Jpul6XjWGTyq8/5LqfPXLiE6kHZulXpV71d8zyY1FjlPnbZOH4PjhTHprg0wqYMTURDzNaOM5fIueJLCwQW9PYy97vRY/hiaEHjSKshLS6QGNSYi2f6APtcN8QXF+1Ix/m6VMkQdBn399sKcK1uRThuX7fFJr1ryb+RuVljHJVRITPKsvOW9utPJHtePN7cbj3HUSnTTAqGFMzPLusQLLdxIhiMk4HUNnNVtK5p+QXudSCK6KZONYYrj9wvPGwyXgmRDa1wZ03MAjsEylA0YIgUqrmZVw6RSnpOE5k0NqQsJtC4m64BmfbDecvyNyHyWZjEnRM16PW43eYlaEQCeT31Y3/rMYizizTKczsEsNRFcTRbaAqVv6RGW9PqyQWfgfG5tU2Y1Or4KtqVwGI+ZsNsb7RjCRRuBjDeD2i5M9x4x+kzhNI34uy
+ uDXmZmu5
+ 5Vef4eq6NqEN14m4GC9r0UrSdb3rNWzKTcoVvbF8aWshtZ46PNLHoTPGK44K3LtzaLNlnt7YsnoG01S9jTO7OPaQ2Uhg8Mm6uVaxZPNFRwHUNcZWe1G864pfPCnx/9XdmQ1NC13ePT9gGQKsSqhmnhY8vooKRdSMO/9mRZKrsbIm/KBDBHtnvbqtluzrlIu6H2B+5wtpiCsbr+7vZYDYdnhfEl3mADp5MVD3vJr9p8YkKeEF9pGI9vBIXNREajexA/VapHuJmB/FkbYo8Q4aPTw9Z1pYzzHSjrdy1Y0+rGfJlwkfDC7YRUPibupMMqM3NGE9hz2UcBYBKeitbcZbZUNZ0RIu3cwFINvq4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,80 +92,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On Mon, 23 Feb 2026, at 11:55, Mike Rapoport wrote:
-> Hi Ard,
->
-> On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
->> Hi Mike,
->> 
->> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
->> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->> >
->> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
->> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
->> >
->> > There are two issue with that: memblock_free_late() should be used for
->> > memory allocated with memblock_alloc() while the memory reserved with
->> > memblock_reserve() should be freed with free_reserved_area().
->> >
->> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
->> > efi_free_boot_services() is called before deferred initialization of the
->> > memory map is complete.
->> >
->> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
->> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
->> >
->> > If the freed memory resides in the areas that memory map for them is
->> > still uninitialized, they won't be actually freed because
->> > memblock_free_late() calls memblock_free_pages() and the latter skips
->> > uninitialized pages.
->> >
->> > Using free_reserved_area() at this point is also problematic because
->> > __free_page() accesses the buddy of the freed page and that again might
->> > end up in uninitialized part of the memory map.
->> >
->> > Delaying the entire efi_free_boot_services() could be problematic
->> > because in addition to freeing boot services memory it updates
->> > efi.memmap without any synchronization and that's undesirable late in
->> > boot when there is concurrency.
->> >
->> > More robust approach is to only defer freeing of the EFI boot services
->> > memory.
->> >
->> > Make efi_free_boot_services() collect ranges that should be freed into
->> > an array and add an initcall efi_free_boot_services_memory() that walks
->> > that array and actually frees the memory using free_reserved_area().
->> >
->> 
->> Instead of creating another table, could we just traverse the EFI memory
->> map again in the arch_initcall(), and free all boot services code/data
->> above 1M with EFI_MEMORY_RUNTIME cleared ?
+On Sun, Feb 22, 2026 at 07:57:02PM +0800, Ming Lei wrote:
+> Commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
+> zones and memory map") moved free_area_init() from setup_arch() to
+> mm_core_init_early(), which runs after setup_arch() returns.
 > 
-> Currently efi_free_boot_services() unmaps all boot services code/data with
-> EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
->
+> This changed the ordering relative to init_cpu_to_node() on x86. Before
+> the commit, free_area_init() ran during paging_init() (called from
+> setup_arch()) *before* init_cpu_to_node(). After the commit, it runs
+> *after* init_cpu_to_node().
+> 
+> On machines with memoryless NUMA nodes (e.g., node 0 has CPUs but no
+> memory), this causes a NULL pointer dereference:
+> 
+>  1. numa_register_nodes() skips memoryless nodes: no alloc_node_data()
+>     and no node_set_online() for them.
+>  2. init_cpu_to_node() sets memoryless nodes online (they have CPUs)
+>     but does not allocate NODE_DATA.
+>  3. free_area_init() checks "if (!node_online(nid))" to decide whether
+>     to call alloc_offline_node_data(). Since the memoryless node is now
+>     online, the allocation is skipped, leaving NODE_DATA(nid) == NULL.
+>  4. The immediate "pgdat = NODE_DATA(nid)" dereferences NULL.
+> 
+> The crash happens before console_init(), so no output is visible without
+> earlyprintk. With earlyprintk enabled, the following panic is observed:
+> 
+>  BUG: unable to handle page fault for address: 000000000002a1e0
+>  Oops: Oops: 0000 [#1] SMP NOPTI
+>  RIP: 0010:free_area_init_node+0x3a/0x540
+>  Call Trace:
+>   <TASK>
+>   free_area_init+0x331/0x4e0
+>   start_kernel+0x69/0x4a0
+>   x86_64_start_reservations+0x24/0x30
+>   x86_64_start_kernel+0x125/0x130
+>   common_startup_64+0x13e/0x148
+>   </TASK>
+>  Kernel panic - not syncing: Attempted to kill the idle task!
+> 
+> Fix this by checking "if (!NODE_DATA(nid))" instead of
+> "if (!node_online(nid))". This directly tests whether the per-node data
+> structure needs to be allocated, regardless of the node's online status.
+> This change is also safe for non-x86 architectures as they all allocate
+> NODE_DATA for every node including memoryless ones, so the check simply
+> evaluates to false with no change in behavior.
 
-Ah yes, I failed to spot that those entries are long gone by initcall time. Other architectures don't touch the EFI memory map at all, but x86 mangles it beyond recognition :-)
+This kinda means that x86 does something odd, but that's a matter for
+additional rework and audit of node allocations.
+ 
+> Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
 
-> I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
-> why I didn't use the existing EFI memory map.
->
-> Now thinking about it, if the unmapping can happen later, maybe we'll just
-> move the entire efi_free_boot_services() to an initcall?
->
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-As long as it is pre-SMP, as that code also contains a quirk to allocate the real mode trampoline if all memory below 1 MB is used for boot services.
+> ---
+> V2:
+> 	- add commit log for non-x86 arch
+> 	- add comment for code change
+> 
+>  mm/mm_init.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 61d983d23f55..df34797691bd 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1896,7 +1896,11 @@ static void __init free_area_init(void)
+>  	for_each_node(nid) {
+>  		pg_data_t *pgdat;
+>  
+> -		if (!node_online(nid))
+> +		/*
+> +		 * If an architecture has not allocated node data for
+> +		 * this node, presume the node is memoryless or offline.
+> +		 */
+> +		if (!NODE_DATA(nid))
+>  			alloc_offline_node_data(nid);
+>  
+>  		pgdat = NODE_DATA(nid);
+> -- 
+> 2.53.0
+> 
 
-But actually, that should be a separate quirk to begin with, rather than being integrated into an unrelated function that happens to iterate over the boot services regions. The only problem, I guess, is that memblock_reserve()'ing that sub-1MB region in the old location in the ordinary way would cause it to be freed again in the initcall?
-
-But yes, in general I think it is fine to unmap those regions from the EFI page tables during an initcall.
-
-
-
-
-
-
-
+-- 
+Sincerely yours,
+Mike.
 
