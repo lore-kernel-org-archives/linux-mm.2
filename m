@@ -4,127 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17521EC1109
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:37:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2177EC1109
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79D966B008A; Mon, 23 Feb 2026 11:37:03 -0500 (EST)
+	id AAFC76B0005; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73DB76B008C; Mon, 23 Feb 2026 11:37:03 -0500 (EST)
+	id A917F6B0088; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 640716B0092; Mon, 23 Feb 2026 11:37:03 -0500 (EST)
+	id 993EB6B008A; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D2C36B008A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:37:03 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 88DA46B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:42:10 -0500 (EST)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 065DB1A0242
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:37:03 +0000 (UTC)
-X-FDA: 84476275926.28.6E9B87C
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E903D40003
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:37:00 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=gWGWOcv3;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 367D3B61DA
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:42:10 +0000 (UTC)
+X-FDA: 84476288820.28.A08EB7E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B10201C0004
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:42:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLHfNXig;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771864621;
+	s=arc-20220608; t=1771864928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WzArJKlU+ASYCguYb43+yRgFO3yBr9sECL/9qGjk+Qc=;
-	b=OpiS8k0n37RMCCOs/mDEphjPV3OQPmxQWjjI7LpFx6XXU8OYVGZJ8DRJRp7XwQKIL1QKD5
-	jxm1aZmedZl1j5ICTcwnhGrsBjYQoOoZEgZOLkQmJL+ZYQXBA6x4cGZ/skeuvqaTrHavdv
-	y0X5ILNQg9JSM7xe9Q1WQiMTRTvvPKU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IQlEyFeS7mQPu3mtkCE7tCcJ7fcl6nNXV+8pqsgrVkk=;
+	b=hgLWFJ8EyjQT5BCoTy5bG4xNqW2OGRK6rOnepWgo0B+yUBzMvFcQvF5hDLasyqSLoPhePJ
+	5+aQ93idyrp2xpBtFPvZe59EkqsqNpOfaBkZak5z+yJEvTAGsROHtJNZkxW4PwIga5ZMNK
+	VqW5EZWd4Qp4ORGpbHGjO86rP51iNeU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=gWGWOcv3;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771864621; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLHfNXig;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771864928; a=rsa-sha256;
 	cv=none;
-	b=Pw9UXy5ol5OV9HSAkNJPugFT/IBYL0LUweIvt1gF+jT3c5Uy3nmEqaPK7yv7te+EKAJ0Po
-	6bRK7KJcBqf1pm51uRJockA37N4jqXkaQhxS9jKSMZTG9fbs90l0a5ZGRsEfR76Gi/gULN
-	lfrxXGORVJ2wJrUYgy1CR97qljRJhVg=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8cb3e22435fso451167185a.1
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 08:37:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1771864620; x=1772469420; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WzArJKlU+ASYCguYb43+yRgFO3yBr9sECL/9qGjk+Qc=;
-        b=gWGWOcv3UhyMv8IYW3dD1Glcrq4a0486M/uDTGtZlwrZBR8b9QjNctxONssLgis0di
-         Ad7S+HtmjeKjN4WhBy3goMtdEAY3kheXWNSlHjJeBfNldAseg8HHkcE/hlb2tfabqE+K
-         Fq1SfepNvqrTT/nntbjZT9mJ1Vk61c4Pe1dtEZR/3xQFlvYPBENIju7zq3wzgASPsSM4
-         Z7owVTsSu7gWrmBvZMOk1ZjxfEQ14UaZ2wLS0BrcaqxbZ0ZGvDu2edUQUG7OzJtJTeyn
-         +mOBGoJ0D0tyfbneX2EaHMZ24+BjJtCGRm9SW0tiOHjGMiOX2bOb/xGFVSD9jhjTfI1P
-         pb5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771864620; x=1772469420;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WzArJKlU+ASYCguYb43+yRgFO3yBr9sECL/9qGjk+Qc=;
-        b=u9UGT/oOwzIZecTWYrydZtfhBwtZVioAQOQW1nZhVTs1bU+qVfzcdMcZJr5hhos3k5
-         4yH0lohZ7HmlWHwoONl91hz+jk0H1JtzMSRWyWo4GARJW8qxXTZTUjWWJpx+Xw4a1BK1
-         EcS3w7z1ns3FbmfzqBoRNjuPukie1v5nZiEWnHHoq/GlGow1/QsJKd+qFeXrIeKEF41k
-         UALFmVSpIxQhaFvVPsKCW1gyUkGBb8yPrtNtuhGaipIfkA1Hh/dmv9+NYOT/Q5AbJtbo
-         UiDvD2dXeTZpC7ELPWoUvNDSlKA3+JXnxWTwm48TdVZHgdZYtKkkgtPSQdI2U3OrrSk8
-         TdTg==
-X-Gm-Message-State: AOJu0Yz5dF3QWZAjjfjsE8V+MtI1JTopVndIwrOItjHcgK8HBE4kDpkJ
-	MrHvrYny0OOZGJ8DDInAefVEkXZKMSJktDM1f3wW5kUL3GMMIl3YSpag5HOF632zmeg=
-X-Gm-Gg: AZuq6aIGXNvnfoZ3BVLlJGcZvY57Uiqfu3/+jm57ttjKwP5QFmZ9ZsKZN+6XyqkAfSR
-	EldhFd4S/skZM9vwoQ/NtWRywe+ec8qD7UeBuyQfFbY9qLcxWtZqAZjji+XHNIMrhevEQgMduzy
-	nIxLQRfo5s1D7t1ZzzlRyllDxHc6ahIaqKd644MlSkoOQ1/bQs6bmVcCrhFyVr6HG0kTvZb7Nx3
-	64mdf866PQF1Bx2qdQTpXoVtapIJdoPVYsGakKfJi8DrNqxxV2XwHKR4GPqYIk8TjTUUzyDdV9D
-	JrDg0VOUp8j6dSnn1/RMlKFgq0WWqV/edfFGClg9MW4iLbnnJCnfKZK9/n3wDQbDkvhIsPwybk0
-	jm+ckzxtoK6UZpmKMhzfJdeib+g0IGwuyyRlwgGVkpn0+axwUgtWCNyM5E7QIvveCfHkaZyVQvc
-	h/MYDn5jLsS4WlwbjrjhO5LQ==
-X-Received: by 2002:a05:620a:472b:b0:8b2:e17a:17e3 with SMTP id af79cd13be357-8cb7be3b84fmr1746011685a.1.1771864619752;
-        Mon, 23 Feb 2026 08:36:59 -0800 (PST)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8997e7747f0sm72340136d6.51.2026.02.23.08.36.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 08:36:58 -0800 (PST)
-Date: Mon, 23 Feb 2026 11:36:55 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
+	b=YlXtsfNMHTlnUoDE2aGYVHrAsCjjdhZm52eZNGrw0wZbTz4KWBSwjcR+W9TfMN+8oqKCAC
+	H3ODSghjPlntDemCahHcrGZyC/6dpQHe9NOWjw/icShqaHkek9cYNEUiHD0o4eb9bYs/b+
+	NRl2XCODB9Dvmlc/JP3LtUXYMGdz7l8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF4D76013A;
+	Mon, 23 Feb 2026 16:42:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27663C116C6;
+	Mon, 23 Feb 2026 16:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771864927;
+	bh=AmIef53ET5UNsIt0ynl/BhGBHCMTtv/CuWlgjEBgi58=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NLHfNXigO+VeoRtLpSAQ4qS+vR0aga2R6gXWVYEYm71fWRfYJ6+kFaVXFNxXgm8Bs
+	 jd6Zr1ijCryiiOHfMqUyvHBufHtarhbpO8/lzm3khYezPELSvyPgHD6RB6EKHKA1+g
+	 wF20HGvWYSHusCkffngqv4zhr7HkB2yJlZWsDTuT4tWyMMKKP+KVV+bnrNro1gDC2U
+	 56ze33Z+CL7qaEYENwGJTZ9lNy4HU2CoksBjHQmFbqyN3cfEXbKqzZpGVrAOVXPca2
+	 qKLRoK4J0p6OibyHk0FUksWphP9jfILomVlP+o6cIMonKCAhji3ofK6Iu9CRQ3SUlc
+	 5O0NDXxWwDi6Q==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH RFC 08/15] mm, swap: store and check memcg info in the
- swap table
-Message-ID: <aZyCJ6pH4hey-ZoU@cmpxchg.org>
-References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
- <20260220-swap-table-p4-v1-8-104795d19815@tencent.com>
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH v1] mm: centralize+fix comments about compound_mapcount() in new sync_with_folio_pmd_zap()
+Date: Mon, 23 Feb 2026 17:39:20 +0100
+Message-ID: <20260223163920.287720-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260220-swap-table-p4-v1-8-104795d19815@tencent.com>
-X-Stat-Signature: zwgk78antgetiuw99symgt14qhpqj8ea
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E903D40003
-X-HE-Tag: 1771864620-325484
-X-HE-Meta: U2FsdGVkX1+otcK4Lk0qPuOZIP3WDE+bXCBGO/9cvWhd7Rb0cPqMdG9yFb5Qx6trTqVO0Q1zmR5OHZxgdtBum4mo2FWlJTLErTbvmOA/16ZfFfMUWgjW+h81sF88ESTCipYPkB44PJbcwMKxtoP+N2rbU+t2TL44W3LLGnmywNC/WwrPHfYZILqGxJWZg6l4tj4oCXybeERotk6w9t2bdliqFHdcB8b59pkG//5P5RNdgRhRO62JQSt9fSGgPGMQkIyXM99FY91cwBIUYWFcOwuUNq9faEQkpk40DunW8JZ+n0F88uArceDAWvqMYdW6VNCp0vuAnAgTVHqn5M0fgX2+VyFbnqlFg9fBBQsBFNLUyLXJA/BScndURg23Ow7TNLnAYS2g8DfGEE76KZHD3Ao1900d6yuArBTBcq20BhiV2vv+YHxSXEA/qT2/B4rIE+hGkWlBuWoOYm3Z11Z9p2kf86amSH907bF7mLfLR/cWZANI8qb73HEnXdBbKu+qM7RtIXLotAO7HPe05wJGiLMZUMXdKK90Ji34Kz8eYi9Ix19CDY+GRlEbGcV2LtmQpEITq7lnMUICFjBNZKabr9BWrwuCSsEqHpywaba51ejS8l72fMNiZ7PEnqZKJzJSSzVlZugyBjVBvQj2NM0+yCuyA8kC0xhZtdTLv9mpOP/4TEgDHOMVBC8AZLCsTG6E8NrztMwXOiwly6Ddl5fihP+AFSA07OnWrZfKTrDwnskaVlPAd5ZAZ7e9GNR4srho14TA/wJsgCvgjqZqt4/GORXM0zypkHwojSEr6wrHAdU3368Qg//wIyzN9jJiRlA1lfTxWGgMeK+h0yrgnIMv/kUrGtKthmOy6DZUD2LwyXyXiQvr18l/rKfPF9iFMogxZHGAW+wzHDMisJMXQjmBbxkDdQHR4CR0ITroRmZoRDdIQzfxGno+AOThzlLPIfqvzMwE8oB9eVj+qsvykxV
- qLTtHawN
- Sn48d4PfW+sr3EHHjZM22FR0FBXqRvoI7QmbRb3MJxPHz0mTWpVkiH4maaBqlAXz9cGTuk3g0sd1NDXnJRCY9nGVPNox18zHMq9v0kGBPwaa4jF57bt/83nHpzXlsjbhrOfJxWS///nfDc9Ya5NVqDLvO8k5lhml3YGEBm1PMxjGiSMtOcT2Yc3LuQCi90YYFfDsw4Ak2ksNrXBW16JQagnnpde5v3p5U3SubLQWSdj8z7HIghlHfTJ6wiZNr5bgENikDNLSgw07f+bnkU/qK9/9Zon3m8f1IyitN75xzJ7O2hzgosMk58xnnXEEHAWgzuGrZNWC5o3qUgSguT2YZcLCXMvsfO1vHF3NAjyoGsR7wojFNeXRyS1Lu9Li79cuUOSxz5zug8e2YSsCEwdx2G6C3PQKgqlt8mAZeAIDkueorlI1ZXqU8GH18j7LhmSyyE8XvBMjgMakgrpHqsbtAnk8UPjtlWTxskMOCAuxVd2SwqkX/y6YrwmXQImfEC/uvrVKjS6WA7hcToA4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B10201C0004
+X-Stat-Signature: burpe71ot57zfoxkbw65m699zmmk768o
+X-HE-Tag: 1771864928-39161
+X-HE-Meta: U2FsdGVkX180lrWqUTmg7Tx1f2HCXYw7Ipr5g56roMEf6hPrp92MHPBfHuwSHPobzv8KYFgpVxgiVY1AfpiBBUMmqdBLZMk+U4/cCAeg3WzPDOvGQlCjHrnCpkEQV3Q2Pz/u6sV3B7Mnw8coLWsnjRfouXtH3oZL/ZdW3ydtJY29FAFSXQ7LXcDu/jXIQEN4FgAWodSIriun+neKCCS3oie0QJX83yrggognNMdgxFVZZdNRcg1Ev/Q+6/o2rXWphBAtNZtwZsiMMJd23mSrAntPxfO9VT1BF2Ysz8XnkxQFcBC2DoB33gYNeh4o8JIcVLrP+jxUUSNVvXvtbcgCgeHuex+jFf3DeUhlGePSHQkE1Nfeh9JxXYpp408y0oNXXT2k4cS/fu3xDg7u/x3TR8awoGT4PmqzOR8GkgEM/h013DVRoPK4RYKsXVINns1NBnSC0rICzproy01nRrb/t9nU8h0UhvjCAOuvmX/yn/A+LNSMTkSBxkR7ogOFCZHHnbAhCEg/ncAIIzwiAyFP7zw3NkxQ4HEa5xCyLgrV++RdbHeQ+wDHmDpBrgHDC1ZQh+hweE83DIQJY+xggziKb1vVQFXyTEaelJROixYuVngTeKnH9u8K2VCp2DAhujplZirc5qxNPCmHKLQBXszu+d1T6ZUIPv9P+PYS7WVixSKCApoxQNfT/MCafVAF9vYwsEwYh7qHKJ+M/dSuKEi45IxLAsgRAOjQfuhikGy25IHBxLuuL7BNi22yutVKgcZuVT+Rdz32ViWa1PxHfmwYOksVyiT8dxPuyL0l934s8NYNyku/IJX9orjtoL69cyXBT9Emqi39/IribBsC1J1Vs6lYR1OdzUcFKG/wEYBLOFBeGc+10M5N27pD/FC+IMN8Z3nWYpdvn89ZVshfuqOQFdOP8IELXei9QDy59bI07cJLjVMjQwN7QOhMDIczq+lzfY4BaHBUquHhGx+UWJP
+ yYjteJRs
+ /Y+Djgdfua/gvjNoMKqoJTRpcSgmp0TdIEiPd672bn7211eQEVGccA/jPpW+xU0LUsk7WrTzpaKldoGjnget1CJN9aTo12QXIl1TLVxv3oV9q3SrDPz7NJFKgeQa2O3ZFHwHrZmnNcT9X6szNOn8NTuVjbLV3buDu0fW/Y9iLjSC9pI4DwrwqjVWNvDDWbJ+U5fGGG3vVeaMCzcl5h7Lnf9/VqIr7uLZVtSGRNZ/ycHafZz3wEVVqda+JUm3WVxtGjbbTTd+RqO+3IrLnqtLljm3yW8n6x6nVFNaJ9q/Dv8hZZTctxrDyyTVHIKdk/mLbP65hRe0IgGyh6RS73IHELNWz27oHG/A5r3hOuZRit57gpxY20oFk2sdLXCxUntSgpl2nwY5Grv9J+o+T/lpp6VImekqBFrv8vTPzcAHqB4ePkO2KmwgZaugTD5dI45p9tn1OWLe49Oqb1V/PiWHsvyZzvwGRe0tifXCQsbtuxhxVmZAMb4iwpvX65C+qO2BQaTGge1mnu1X2KyTEdenwL5DveROKdM6g17D6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,39 +99,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 07:42:09AM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> To prepare for merging the swap_cgroup_ctrl into the swap table, store
-> the memcg info in the swap table on swapout.
-> 
-> This is done by using the existing shadow format.
-> 
-> Note this also changes the refault counting at the nearest online memcg
-> level:
-> 
-> Unlike file folios, anon folios are mostly exclusive to one mem cgroup,
-> and each cgroup is likely to have different characteristics.
+We still mention compound_mapcount() in two comments.
 
-This is not correct.
+Instead of simply referring to the folio mapcount in both places, let's
+factor out the odd-looking PTL sync into sync_with_folio_pmd_zap(), and
+add centralized documentation why this is required.
 
-As much as I like the idea of storing the swap_cgroup association
-inside the shadow entry, the refault evaluation needs to happen at the
-level that drove eviction.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/internal.h        | 19 +++++++++++++++++++
+ mm/memory.c          |  8 +-------
+ mm/page_vma_mapped.c | 11 ++---------
+ 3 files changed, 22 insertions(+), 16 deletions(-)
 
-Consider a workload that is split into cgroups purely for accounting,
-not for setting different limits:
+diff --git a/mm/internal.h b/mm/internal.h
+index cb0af847d7d9..e0ef192b0be3 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -516,6 +516,25 @@ void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
+ 
+ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+ 
++/**
++ * sync_with_folio_pmd_zap - sync with concurrent zapping of a folio PMD
++ * @mm: The mm_struct.
++ * @pmdp: Pointer to the pmd that was found to be pmd_none().
++ *
++ * When we stumble over a pmd_none() without holding the PTL while unmapping a
++ * folio that could have been mapped at that PMD, it could be that concurrent
++ * zapping of the PMD is not complete yet. While the PMD might be pmd_none()
++ * already, the folio might still appear to be mapped (folio_mapped()).
++ *
++ * Wait for concurrent zapping to complete by grabbing the PTL.
++ */
++static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
++{
++	spinlock_t *ptl = pmd_lock(mm, pmdp);
++
++	spin_unlock(ptl);
++}
++
+ struct zap_details;
+ void unmap_page_range(struct mmu_gather *tlb,
+ 			     struct vm_area_struct *vma,
+diff --git a/mm/memory.c b/mm/memory.c
+index 876bf73959c6..c87d796050ba 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2006,13 +2006,7 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+ 		} else if (details && details->single_folio &&
+ 			   folio_test_pmd_mappable(details->single_folio) &&
+ 			   next - addr == HPAGE_PMD_SIZE && pmd_none(*pmd)) {
+-			spinlock_t *ptl = pmd_lock(tlb->mm, pmd);
+-			/*
+-			 * Take and drop THP pmd lock so that we cannot return
+-			 * prematurely, while zap_huge_pmd() has cleared *pmd,
+-			 * but not yet decremented compound_mapcount().
+-			 */
+-			spin_unlock(ptl);
++			sync_with_folio_pmd_zap(tlb->mm, pmd);
+ 		}
+ 		if (pmd_none(*pmd)) {
+ 			addr = next;
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index b38a1d00c971..a4d52fdb3056 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -269,11 +269,6 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			/*
+-			 * If PVMW_SYNC, take and drop THP pmd lock so that we
+-			 * cannot return prematurely, while zap_huge_pmd() has
+-			 * cleared *pmd but not decremented compound_mapcount().
+-			 */
+ 			const softleaf_t entry = softleaf_from_pmd(pmde);
+ 
+ 			if (softleaf_is_device_private(entry)) {
+@@ -284,11 +279,9 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			if ((pvmw->flags & PVMW_SYNC) &&
+ 			    thp_vma_suitable_order(vma, pvmw->address,
+ 						   PMD_ORDER) &&
+-			    (pvmw->nr_pages >= HPAGE_PMD_NR)) {
+-				spinlock_t *ptl = pmd_lock(mm, pvmw->pmd);
++			    (pvmw->nr_pages >= HPAGE_PMD_NR))
++				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+ 
+-				spin_unlock(ptl);
+-			}
+ 			step_forward(pvmw, PMD_SIZE);
+ 			continue;
+ 		}
+-- 
+2.43.0
 
-workload (limit domain)
-`- component A
-`- component B
-
-This means the two components must compete freely, and it must behave
-as if there is only one LRU. When pages get reclaimed in a round-robin
-fashion, both A and B get aged at the same pace. Likewise, when pages
-in A refault, they must challenge the *combined* workingset of both A
-and B, not just the local pages.
-
-Otherwise, you risk retaining stale workingset in one subgroup while
-the other one is thrashing. This breaks userspace expectations.
 
