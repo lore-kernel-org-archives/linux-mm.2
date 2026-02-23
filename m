@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 857DAEC1126
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D69EC1126
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:30:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7C076B0005; Mon, 23 Feb 2026 15:24:00 -0500 (EST)
+	id BD4A06B0005; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFF806B0089; Mon, 23 Feb 2026 15:24:00 -0500 (EST)
+	id B8C2A6B0089; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2C356B008A; Mon, 23 Feb 2026 15:24:00 -0500 (EST)
+	id A98516B008A; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7BF6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:24:00 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 395DA13A124
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:24:00 +0000 (UTC)
-X-FDA: 84476847840.25.FB59872
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5DA7A180008
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:23:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LZORV9g8;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 967AC6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 440A714031E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:30:27 +0000 (UTC)
+X-FDA: 84476864094.20.C245AFE
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E9A0C40011
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:30:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QAV9pkvJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=guiWv8G0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2IaIncf1;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="bRh/AN1Q";
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=dsterba@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771878625; a=rsa-sha256;
+	cv=none;
+	b=MP3a/eNCrNy5FVnSz+62ESQ2YoYYB6DbTzYC0caQDkyJrS0XPMwaFsCqvhJw+wxhfWC4TI
+	YlBQaO3hGWdG1W7OkZ5uRjDMoUXFCxLC/mMe4L4VrxCKHCbPl31sKVWjHf3hyf6eOfG3Vj
+	zT5VUhJY7SMzbgFbg6LX1J3xjLjM8ZU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QAV9pkvJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=guiWv8G0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2IaIncf1;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="bRh/AN1Q";
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=dsterba@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771878238;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771878625;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNvomJRDzKYDBuDBzLOEEqO4is1h/8XYWfpUrymqly4=;
-	b=RGJ6ZvoNBP6ZuQleK34Gx2hQrwodC9tH8n3pHAdOMPFBDDwJkYDubYWz6iec4vQ7dfLGNM
-	z49MfS2Y5aifNT1W+hHpyPCnTwtG1KkT6TbqHi1DdFwMduAzStz06G/uMI+MgwuFxkeeYc
-	+hZd0NEc7AAWexaJ4sZxpj3kSTjdDo4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771878238; a=rsa-sha256;
-	cv=none;
-	b=i7c10W/3zGHSnyjO5HyQ6P9E9NFmjh8EdlBZ95j3x/4cdi7KFRlV9KTbEBmo0k6baL5pn9
-	V9HWpxtq8Vu7Paj9k9muKb+61rYYIzLiBLMStrFXk/Bol1BAGFfykeUMjls39bBOfGB827
-	n+Le5+Nfu2Sv0L5EQdPw694mRmV0Kg8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LZORV9g8;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Mon, 23 Feb 2026 12:23:48 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771878236;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
+	b=EfN8SAf+P+swIUmiOp4LsSmH8PFwr31hrM4WodXAP7Hr5fLliwmi1CJVKEs6l1kGBvny5W
+	nkFqQxM/gEX8AMXIWALUqOZALMsSFOiDhW6T8hJND/RYBWW2suc+DYH3zis9rZIlN9BDSG
+	sNNAUShDCX/OfBhAd1md84H1YWKmecE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F17295BCE9;
+	Mon, 23 Feb 2026 20:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771878623;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RNvomJRDzKYDBuDBzLOEEqO4is1h/8XYWfpUrymqly4=;
-	b=LZORV9g8xqhHSpLuPZ7ZD6V3kX11yA8PbWI0FhROUlo2tk75m0eEDrveWRmwIYtoPY2mlw
-	zUupYzowXMd/nMquPwB+McK+Gy307vVza93iB+iCDurVWLwk25tLdIY1pBV8jMWBlXNfHg
-	Gs9D09m5aTx7GynWG9R5x6EYqzCPnFU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
+	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
+	b=QAV9pkvJql9fL7yW44dlolX4+jS1z/3WsTgUbesIZr8oNqj4+BMS7VN6b1Tnmkh71X1hc9
+	U2/7rYFytw7kRo8L0X/HCzua07CsWYdICkpIwopRgjrO8DDIE6M6qpTY5tC1kCNBdW9FoU
+	k9E3dkGCrd6ZbOECF8PLvhyKdTtcIXk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771878623;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
+	b=guiWv8G0AUeUlj7FQ8EXfhJhO6E56kb35pTggmzdd5ZmPzdZ+tsVyTSBJug+JbQVIo/SC1
+	ZcNnJzrN3OEh+zAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1771878622;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
+	b=2IaIncf1pj3NpuLUVH2W6JCsQ+uRZ2aTJE7JwSVPzb2J+oYpWbE4T1+NzViMLkoZNqbwkC
+	Za8PwwD9YqUs+DO3Op2hVzLkasW/+WoJviko/ei9FBBf+TYFTjsqYJ7BDVLWOm/3EwpW/s
+	dD8OvByWrzrZAOj39xxKiWqTkZDeIaE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1771878622;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
+	b=bRh/AN1Q6THpJGY3Yl0Hyoxeq/og2JhaiqD2yt2nRhyMxeNlVq8gadSOV07NeGzJDVpZu+
+	LHD4lYAuRHiZsrAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA8A23EA68;
+	Mon, 23 Feb 2026 20:30:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HIJfLd64nGmybQAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Mon, 23 Feb 2026 20:30:22 +0000
+Date: Mon, 23 Feb 2026 21:30:21 +0100
+From: David Sterba <dsterba@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Muchun Song <muchun.song@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [PATCH] mm/slab: initialize slab->stride early to avoid memory
- ordering issues
-Message-ID: <aZy3O2qcULFDoDU1@linux.dev>
-References: <20260223075809.19265-1-harry.yoo@oracle.com>
+Cc: Chris Bainbridge <chris.bainbridge@gmail.com>, vbabka@suse.cz,
+	surenb@google.com, hao.li@linux.dev, leitao@debian.org,
+	Liam.Howlett@oracle.com, zhao1.liu@intel.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-btrfs@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [REGRESSION] kswapd0: page allocation failure (bisected to
+ "slab: add sheaves to most caches")
+Message-ID: <20260223203021.GP26902@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <aZt2-oS9lkmwT7Ch@debian.local>
+ <aZwSreGj9-HHdD-j@hyeyoo>
+ <aZw2LyOjxMc-c3dl@debian.local>
+ <aZxBIpE8R8DxO4eJ@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260223075809.19265-1-harry.yoo@oracle.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <aZxBIpE8R8DxO4eJ@hyeyoo>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 X-Rspam-User: 
-X-Stat-Signature: wctnfcobputdesnhqz5zbf488jpmfrhz
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5DA7A180008
-X-HE-Tag: 1771878238-480338
-X-HE-Meta: U2FsdGVkX1/rCEWDZ4oGOxItIRNkLo5QF/QOF5QL/daYeDlToRhU53/zD3jiPxzuaoT0qV+9oEiy1FvKsS2gSyCfGZN5TIke0y/1WxohBajm2qYkC0neJzBrvVB6xm5IqfVTIDS9IuC/09geOkq2G3451uONHl1yHFwwOKmiMCTaMChJe8yYcYQfz4IA2rN8eumOyG3XTuU5leNNvpOW6HYaNfNltaspjYy3AVCk6HrS0CNRzLPCcLhRRF79Wkesd7Qu5VHBpkwyxRLvlTx3zQHz9d+lrIi4JHLB0qJVbkYGhRYxmz6pqRLqe99elbRipEdXuq0fLAM8LaO8AZFKNy0jvlXDipGJYlQ7qeL8p0qGwjvEvWw0k+X4RIpCmoFHfDDnCSHdWSIwZ3b5IrifO0w77L3mPlEr67xpaTm6K/2dqW7+KlPolCqc8ST1RfXqvUtC82oSZiKstBdVxDgoGy2pq7GNVV4sw4IGpFyS+o7rXJPWCqbGgdOG6U+Q+24iRYAmuYoRlbTVw3DrmlXAy5z3ak3NjUH6JqIgOBVpvsp2fmAjT2yngtL//n0HJdiQHllfBtVQuVNMBdYFRdlUxW4KnTDOIxqv0iHAb6M2Kblm0MdmPpww1E+/Arz10I2gHmfNxyEEPVf8wsFSHBouBGOPALcQNYvp5JstaJceIhNrfRHS/xdtB6wpZdg/ZvXjf+v+pNE+5E/oRlJuppgmOUiEZ8j+roL87BZUC9ZjI9bYK7h+XjJtYnhgmsl4NGpeHAbjXz++tAEli9zYiXDEc1p1GjYJrnNZWfWL7DVKYWGluDbhWuhLMlqr8CnRl9WD5dYIIKkISG5JP21KoNTbOmxKtwSOWUGcbVi+f12DuKiitR0SiKh/5e4kSykh20/fGOMNBYEMAmiMkmiYtA2QyA8Ns6aDqWAYtdWNQj0Sq1sSEquSUge2bBT+bkaCN1h/hSLm1ZQyOCwhoNcnc0W
- W7UPEsE9
- E4DWLwUIYHqMKyjH4mzb0pOM2cRMa8VA76Ryy1IEF/HGyEqbhCnL7vihHbhOzHd6qJqCX9glfsOjBLHbXQz3mBG/SmuqCRA9WugFJ0kZXCCbCmOm/ujKo/tHrCmOEAGiwR/8aIgb7PcOOlqhfP1aRo+4tpFwFTkTqkEARFfcIwq8CImOYrfmutDIF0kgFKGOF1OBHPrmGXOzja+kE6LkQxG0MzJMSSIvYpwRY9gZ0t11V4XxPzqAw8rT4+RdFKoWlTxSp2Mp89flMNAF36DwDihTihkQl31/lXWSO
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E9A0C40011
+X-Stat-Signature: wuwuowd6zaniymchzo7b87rzqa5y5dbh
+X-HE-Tag: 1771878624-741205
+X-HE-Meta: U2FsdGVkX19p9yiD/eLBGF0dQjwV3Xy5SOhsx33o4VwKgnCvqTv2KI3dhkgmjKXvkK8XZjeBLRo8C/6bGGxVlfRKO1sBQ9Hd4quGNBNSPFzu8p2gxFhVCrpi3XcBEWIBBplUt/l/o8OpJqHXMf6DCsgmlOULQoLsb+aIXAJ8J+BSBdnzzo16YRCNaF8Y3Q9Eza7orK1XO3EwtNl0LxFkq9q2zhFmY0SfO4RFgTHFLcs8ce0I+OnURrQqqB2qOuW/VOBs/c7DHl0dhimmlhWf7we4HVs2S+arPYcMiooHrKCWbwjXFNjHBfphCTNbE0YN9765eTWhK8YSmhOAULXdsv0RSuHdf0kEcA8OLaS1cdkPEn7JcH81tIhCDOwXU7U3TeXCjJDTE/maAm6pJURi7TiAVP61xOXDqQlop2nJzFRcvfzAj0rC2wnfUoWYtEnLeYNa6PdfQ6eMaKDwEvr7fZa1pK1ePtwFU6PxgQOMCFX5aqy4vfQUMOivcxD/mde676ZrIqLzk8XdtqO+51E1+dsbSFX8EyqN0GN6hZZ4Rs2og88gHwnv5dDoBtCtUQ0Hdw2mdZTJQAH+f40N/TSHxHTvMqEv2GRBP8uEZuG1ydaBZv1ZzcnPROJz0oTe8mHZezqCVmxQnd9wB5MwWWF12GmHww/+kO+x7PzdmS/AGcptIX6S25nsnKiROUZQBtkexw23uI9VxfbMfjGLAaY+FqVxlZg7idXY9QESfsFs1joOEBQ7UDzY3JnB+pmGOZ/4QZSwyiUkPLMGH9+jP2lbp9l65Ybj9dZYnjHnV2vuTziI8YZZipJcCu8Qo4SoxoRiI7/zvP65oOZn+0pCCLVJskIlUELnt5fAszTeiKuWNlmYt+UzxkzgaBPboD8XVf2DBBBs+DzsscxNCoKSe2fbSz9yqaUL1BMuO8lqtsge3TFMmfJjXR+wqRqzePbToxOL5aIPggBoKb2FOr3om3E
+ zG8xAUvB
+ n1jOw4WPbBQlolnuUAwe7BausCSCvGD/6DgspJnj4PGmyPUuoaAeMalvoviHzPcDwXISCXGEzz5VG1pAJz9ilJuxE9E/+vJRLiiBO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,37 +141,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 04:58:09PM +0900, Harry Yoo wrote:
-> When alloc_slab_obj_exts() is called later in time (instead of at slab
-> allocation & initialization step), slab->stride and slab->obj_exts are
-> set when the slab is already accessible by multiple CPUs.
+On Mon, Feb 23, 2026 at 08:59:30PM +0900, Harry Yoo wrote:
+> On Mon, Feb 23, 2026 at 11:12:47AM +0000, Chris Bainbridge wrote:
+> > On Mon, Feb 23, 2026 at 05:41:17PM +0900, Harry Yoo wrote:
+> > > On Sun, Feb 22, 2026 at 09:36:58PM +0000, Chris Bainbridge wrote:
+> > > > Hi,
+> > > > 
+> > > > The latest mainline kernel (v6.19-11831-ga95f71ad3e2e) has page
+> > > > allocation failures when doing things like compiling a kernel. I can
+> > > > also reproduce this with a stress test like
+> > > > `stress-ng --vm 2 --vm-bytes 110% --verify -v`
+> > > 
+> > > Hi, thanks for the report!
+> > > 
+> > > > [  104.032925] kswapd0: page allocation failure: order:0, mode:0xc0c40(GFP_NOFS|__GFP_COMP|__GFP_NOMEMALLOC), nodemask=(null),cpuset=/,mems_allowed=0
+> > > > [  104.033307] CPU: 4 UID: 0 PID: 156 Comm: kswapd0 Not tainted 6.19.0-rc5-00027-g40fd0acc45d0 #435 PREEMPT(voluntary) 
+> > > > [  104.033312] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
+> > > > [  104.033314] Call Trace:
+> > > > [  104.033316]  <TASK>
+> > > > [  104.033319]  dump_stack_lvl+0x6a/0x90
+> > > > [  104.033328]  warn_alloc.cold+0x95/0x1af
+> > > > [  104.033334]  ? zone_watermark_ok+0x80/0x80
+> > > > [  104.033350]  __alloc_frozen_pages_noprof+0xec3/0x2470
+> > > > [  104.033353]  ? __lock_acquire+0x489/0x2600
+> > > > [  104.033359]  ? stack_access_ok+0x1c0/0x1c0
+> > > > [  104.033367]  ? warn_alloc+0x1d0/0x1d0
+> > > > [  104.033371]  ? __lock_acquire+0x489/0x2600
+> > > > [  104.033375]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+> > > > [  104.033379]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+> > > > [  104.033382]  ? lockdep_hardirqs_on+0x78/0x100
+> > > > [  104.033394]  allocate_slab+0x2b7/0x510
+> > > > [  104.033399]  refill_objects+0x25d/0x380
+> > > > [  104.033407]  __pcs_replace_empty_main+0x193/0x5f0
+> > > > [  104.033412]  kmem_cache_alloc_noprof+0x5b6/0x6f0
+> > > > [  104.033415]  ? alloc_extent_state+0x1b/0x210 [btrfs]
+> > > > [  104.033479]  alloc_extent_state+0x1b/0x210 [btrfs]
+> > > > [  104.033527]  btrfs_clear_extent_bit_changeset+0x2be/0x9c0 [btrfs]
+> > > 
+> > > Hmm while bisect points out the first bad commit is
+> > > commit e47c897a2949 ("slab: add sheaves to most caches"),
+> > > 
+> > > I think the caller is supposed to specify __GFP_NOWARN if it doesn't
+> > > care about allocation failure?
+> > > 
+> > > btrfs_clear_extent_bit_changeset() says:
+> > > >         if (!prealloc) {
+> > > >                 /*
+> > > >                  * Don't care for allocation failure here because we might end
+> > > >                  * up not needing the pre-allocated extent state at all, which
+> > > >                  * is the case if we only have in the tree extent states that 
+> > > >                  * cover our input range and don't cover too any other range.
+> > > >                  * If we end up needing a new extent state we allocate it later.
+> > > >                  */
+> > > >                 prealloc = alloc_extent_state(mask);
+> > > >         }
+> > > 
+> > > Oh wait, I see what's going on. bisection pointed out the commit
+> > > because slab tries to refill sheaves with __GFP_NOMEMALLOC (and then
+> > > falls back to slowpath if it fails).
+> > > 
+> > > Since failing to refill sheaves doesn't mean the allocation will fail,
+> > > it should specify __GFP_NOWARN with __GFP_NOMEMALLOC as long as there's
+> > > fallback method.
+> > > 
+> > > But for __prefill_sheaf_pfmemalloc(), it should specify __GPF_NOWARN on
+> > > the first attempt only when gfp_pfmemalloc_allowed() returns true.
+> > 
+> > Is this fix sufficient to do the right thing? I tested it, and it does
+> > appear to prevent logging of the allocation failures for my test case.
 > 
-> The current implementation does not enforce memory ordering between
-> slab->stride and slab->obj_exts. However, for correctness, slab->stride
-> must be visible before slab->obj_exts, otherwise concurrent readers
-> may observe slab->obj_exts as non-zero while stride is still stale,
-> leading to incorrect reference counting of object cgroups.
+> I think we should do both both 1) setting __GFP_NOWARN from btrfs side
+> and 2) making slab try to refill sheaves with __GFP_NOWARN when
+> there's a fallback path.
 > 
-> There has been a bug report [1] that showed symptoms of incorrect
-> reference counting of object cgroups, which could be triggered by
-> this memory ordering issue.
+> I'm writing a fix for 2) and I'll send it soon.
 > 
-> Fix this by unconditionally initializing slab->stride in
-> alloc_slab_obj_exts_early(), before the need_slab_obj_exts() check.
-> In case of SLAB_OBJ_EXT_IN_OBJ, it is overridden in the same function.
+> > diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
+> > index d0dd50f7d279..d2e1083848e8 100644
+> > --- a/fs/btrfs/extent-io-tree.c
+> > +++ b/fs/btrfs/extent-io-tree.c
+> > @@ -641,7 +641,7 @@ int btrfs_clear_extent_bit_changeset(struct extent_io_tree *tree, u64 start, u64
+> >  		 * cover our input range and don't cover too any other range.
+> >  		 * If we end up needing a new extent state we allocate it later.
+> >  		 */
+> > -		prealloc = alloc_extent_state(mask);
+> > +		prealloc = alloc_extent_state(mask | __GFP_NOWARN);
 > 
-> This ensures stride is set before the slab becomes visible to
-> other CPUs via the per-node partial slab list (protected by spinlock
-> with acquire/release semantics), preventing them from observing
-> inconsistent stride value.
-> 
-> Thanks to Shakeel Butt for pointing out this issue [2].
-> 
-> Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com [1]
-> Link: https://lore.kernel.org/linux-mm/aZu9G9mVIVzSm6Ft@hyeyoo [2]
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> This seems to be a right thing to do to me, but as I'm not familiar
+> with btrfs, I'll let btrfs folks leave comment on it :)
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+I agree the flag should be added, as the comment explains allocation
+failures are not fatal at this place. There's another call to the
+alloc_extent_state() with GFP_ATOMIC so we cannot simply sink NOWARN
+there.
 
