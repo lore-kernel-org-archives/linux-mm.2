@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3781FEC1136
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68ECCEC112B
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:44:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C75F6B0005; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
+	id 75E656B008A; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58A786B008A; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
+	id 719656B0089; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44CCF6B008C; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
+	id 4F5826B0092; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CD9F6B0089
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C73B6B0005
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC54A583E9
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD1171A034A
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:44:23 +0000 (UTC)
-X-FDA: 84476899206.19.FBFA132
+X-FDA: 84476899206.18.AC1274A
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 17B214000E
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1AAC6160003
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:44:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=aoGj60zs;
-	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=g58SLHS1;
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771879462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KyTEEaoXAAyCQz7ZsgcVYW88Dh1Bs2/KiZ/NYa4dnJE=;
-	b=7jIIWyTKL35+x8NNYdmkBcVbta1+SaUsTPG2yrBGoz7r7W7LApH094aQpCPvbCBV57vtQm
-	J/MrYFCEqDjVi0Un/VhY2DXUxCBiaWnonE4VBzga1QmaUerIf+GPhNr4vOGnFKkC98AJhi
-	c5omlCZf12efT6jqqPh0Xs3jKrUW4XI=
+	 in-reply-to:references:dkim-signature;
+	bh=LzrTBUBA9Xan0G/6dErkCnhzk9YByLdnZjMaMmM4OD0=;
+	b=QhwyvgX+y6B7kJhFErXOZUpTO/hfQyop+/2IYp6XnoLmL0I6m2ouyRX1dT+MPIKfYtpURh
+	+bsfOZGg0E06MVFv7E0uMTcvbicO331hirLAGgEJomiv9hBwn3HwLjv96075FwIwiYiM2G
+	m5H7QzdvsXaiBQgSeBhfr81CwV3joNs=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771879462; a=rsa-sha256;
 	cv=none;
-	b=2CdE2/X/mqNqxpiXtjBP5B8mfIXzSSJE73aZ/5Eto6KHnsjfWGOSEN8pIbUC9MpgFo0T/i
-	tr91+3IOkfKo8XEaQebmK4DtpcFZomRF6elI2I8+PkAOcXdzunpmkniYGamqzss6gtoUPG
-	UQQLfQWDq765d+gbLMm43Cp/tj7/Q4M=
+	b=I4XpRqU7Io/W3n4hwYjYq6Pb9UiSdJZaatShe2sneFn4KbXxOdb/Y3dnjQWjj2l0qnFNIp
+	lidV3W99zImzdykKJx/QnyFRTht21DotbqkxuzK/Eg+f5JQnXsKpCV7uTuVzRu0TK10qt/
+	6DbbF4cXUfBU94nGOt/AYYEEkoRDK9g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=aoGj60zs;
-	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=g58SLHS1;
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1771879461;
-	bh=KyTEEaoXAAyCQz7ZsgcVYW88Dh1Bs2/KiZ/NYa4dnJE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aoGj60zs4KFIYxAUrRWU6lEvNVCe3z+VyrASWTHF+XgH58FbnH/OrB8z+3vOzmvP8
-	 JMsxujoo9dt8RcFHa5fxdRwn80Lc9s9Y93bCTENVz/WqCwliCOiQDS0bXovc2us1FV
-	 ncGIF3lsVuR2iLlwm2pya7s+JXnESfpkoeQo3DIoWcyQgHF+ZKJUM0DUae8Qz8Xxm1
-	 XH2sQ0IA4rSLNY4uksDZ/2lh2aUOL4orhYx8pXWyy/rEfJBkZ5vequihw1xAFNy3WK
-	 7RKqWoXx8Z4GXP6xaS36EzKG2f4eVdTVa3RmO8LNcOl69uV07hUyUEoEOTS6e05rDo
-	 +XtYiSzPTdszw==
+	bh=LzrTBUBA9Xan0G/6dErkCnhzk9YByLdnZjMaMmM4OD0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g58SLHS1WmcC/+tCAn/vwRtUYUR4EZ2G+eGA0Mm7zzs/IussNdmSyMeyLoFZ8Kn5F
+	 XUB8ixuMvQDjZaYpxqzzezrqkImKDTttx9YQoKIjKaKPjnGjs5uzSDK+YAQkiC71GY
+	 BmOkvqpJ3JwovwqCqCS2uQv3mEuylEA9nRYly6n8Bmnes8Tvn8rDlkdNhws98NBd1A
+	 RTiIB4o0E7k8/t1nxbZRt3EbxASXbrj5kyNFLitbO/fv0kggeeqvHQUSvk4hXXoRI8
+	 1UbdHbXT1gXNPgJS7Q6xvrSwmo9FU/uz2qS4XZRnF1HL2GRcQJeGbT7pKzYWa/yEl+
+	 T1yceLaLrW/jA==
 Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4fKXs12rh7zHyx;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4fKXs10WhhzGXN;
 	Mon, 23 Feb 2026 15:44:21 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: Boqun Feng <boqun@kernel.org>
@@ -94,22 +94,20 @@ Cc: linux-kernel@vger.kernel.org,
 	rcu@vger.kernel.org,
 	linux-mm@kvack.org,
 	lkmm@lists.linux.dev
-Subject: [RFC PATCH v5 2/2] hazptr: Add refscale test
-Date: Mon, 23 Feb 2026 15:44:18 -0500
-Message-Id: <20260223204418.1429025-3-mathieu.desnoyers@efficios.com>
+Subject: [RFC PATCH v5 0/2] Hazard Pointers
+Date: Mon, 23 Feb 2026 15:44:16 -0500
+Message-Id: <20260223204418.1429025-1-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260223204418.1429025-1-mathieu.desnoyers@efficios.com>
-References: <20260223204418.1429025-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Stat-Signature: owbexs9449whtz6yx6znx6pmyafq8txr
-X-Rspamd-Queue-Id: 17B214000E
 X-Rspam-User: 
-X-HE-Tag: 1771879461-724098
-X-HE-Meta: U2FsdGVkX19fLukkoHpPOofrrPSbIUOGG9REQwthSmIYqI2xc5C9bohGjrFpCn7YbcUjWAg6vc10vMAGI2eZb/MdiAu6i9gRMb13p9S9jycd9/JjA30mqjDXbG8z39cGoeAJS/toexZXDPTBn8ZICoJamFJWtWDTJ4FXxU3JmDDlDmU7uUuGW4BjITwSEMzPKt4wtA6CaPDpJ5VcueS8nsb1A3+cQL28Fi04qgMwo3YlZbwEbb9X444g2P1lqJpt2XUSo1vzGwaQd9IXdRYXH6q8RO5fqn+JiacK47E+EzVV9o5DzUInzlzdi2K/Rsj8EWZGAgPfur264kD3fxNv+c0gpPiDY9BgNTq7AskjSfZXb5Ytz03EKcGPM3Of+CQqF/5o9g630oSSy15+I39l/a/FHM4x+JgvPP8e8EQxTXqJK9o5PDelLJvvlzAvmbZ9kZ3ZO8ogSRf2B/vfBTog0GEgC0X8WQRB/Ga1heBQ9dOzYBpRsVY/ZTpyQkL5NNJn9ZXWS6HbKiBBN0gQp2z1r/VWXqADl4TNx1MMFv4Fwwi4YJF3T+3T3JguMRlsbIBzgYq2nmab9eWHm/mZ2VTZWxQWams48P7GrQQgHX6aTIh0Wv0kk8CdzC2fmoRnqtJIr7lxvHjlfSpZcaTgqV5OOAQf9ofROQIvL3wwc2VJ4pj9xnnPkPM01dVhDwgEs3snEA8bq6ouZrVx0xdkcZtbRypN6VMbi+/Cfw+BKp8wU0PcKvKK47S5hvL23Rj96cr1zWufcXKIE0q/3B/ciLvcLhz1IkzkZRbxv86soxFn60VF9Ln3u+EIgaFylvZJhkeGoQ9/4W+VInE3D5nEXHP9PncFwFCM0ebJ/bARrxs7DFylCf5aVvAymkflAlT8FKxvL/XuByb49z2UYeZdWfFlL3I9pqBiAqwrjYyARsExhfEXX/R1fW65yExUXYGixWcAYfbNdH9mlG3sV+QsYDh
- J6m66YsC
- 4OypJ+fwddCD5Ph9pjOrVOsSepam1Nwm1TjhRg2R15rxFE7mFvxbVEJEaFruwqWyLB+fuSf5BINBobi1yUC3hz8WVE2PduK5ZWQ7v6AR1jbcO9tapi9l0DQZTOdzSxEaI8RSYLq0+zvj5EzbxC1fa9ZZ2wUGPsqvGxgy4vzePrE7zU6t2GBMmTPTNWxKwwY97VDuolBu5QuOrU//F7MQVkBYchZCMTmWdUvVtW/eb+gkKI1amQ7X4Vg0r/3xiQmUAkkYJri86OnuuQcsUThcXT4q6IRXhTsnn3lBahd9/NfB2LaAbtc15SSG4r2PCL82FhxgCUOx7UCLMm0xUnq0WtyLyJD+/xyhI83wD2PXeRRFfW6CKlAWfti/DnY8ooqWY2nLsOZpr+QNOUSJMB9GzO3pYacFX6NjYz3dDSWEJEFj3YIffflh9YI68Fw==
+X-Stat-Signature: tsz4n5fz46qjhw3shmc99wkzbp79kt9t
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1AAC6160003
+X-HE-Tag: 1771879461-692863
+X-HE-Meta: U2FsdGVkX1+XDTIQS9pnM8dFQEP+5HQVCbdw6+GFiJQCO7pBv7paXfRLNsEcb5J748h9PigzpUU7cHdyv38JPUo7uxH4pMR2G7sRTAHrcm55zhCD6m1G3uXh9MhRr19kPd2h+3YxHvwOQKkm5pioOrTYsNnl5UBFTYIZoe0dcSwvVYK9vn6l9y8r2izjb7uaiHciGVlwrsOu06fBrnDIYPKN+Gwm1PVrGmRsM/vBkSr3vBn/1qBpeFke0DDW+C8UHEDc8T3AZfvErlpgvGOr0ehz2hiqZuM2pRgIKwZoklnJVU77DomgXuipxi+xyOV+pkjK0Ew2BxrTdruOvkcxzAiOvwZE/AZUKbEJoZuT33/jF1OSuZqvpyT8QT5JTMevrI5SJLHx4d4J/ZQowT+SuPQNpMSV6KeQtbn8l9iS0NH5FlynB8w5flhIsUyzok095HwssIejyxkPkWSTug3Eve0gzesLsBe/S3aa9g+LHYqZgZz8X1Vz05FV3S9t/OYlTO3+WdJQJq2pB1MLHgjoNliQ0Cl1xEI2SNv8BOtQnmVelDonsptIXkFKMKFJe94KURw8ggeL6C0BdkVgfjIzNSPXRb7TqhLCgSR2BJRkMY1oowWs1HzxcWsQBGxcv8fElHABpBEg+SfYJ3vJLHXF1pMBqe19rJAyPpExiwcGi5+xijdxhGMTFT0BJf6p24qUIDOiQAf+oGJgOGU8v1AOUwGXL55x3BHVSu9ino+AmZ6KdeQd756HUCy8wLUNtjRfDFre3mes5o1Ukaz7NYmyySoS2MQUIsBTkPiMGZtwMJKgtWDP+ZAnFIqU/w0EdnRieNI8hcf8rCrwuV7FpJCRXTAJPQ5Kraw8Pvhh/YpS5tKK+SAoSHkVjICvhY5i3W0udn7Q6ch0ktkw1Q/cB0a8hX5d4kKp+iJNVjWwoBoda1uXqH1dKwtPh+HDZRCH+xkMJJKvK8yjvhbzprFOqTu
+ PJNFxU6P
+ +LHemPf+Ez3fdEICS2ZzrvcEWA7WEbMB9xWsCNHTX9VxWpbSLFRn8gFpH7mMCf8IzHT90VPbZNAEVzrGIDIf7c/1MeOaMctVijAhsktHWjQbj/V9+/xrpzVixmdPkvncoeGXwrtgDfoCVY54TmRfRQjcmuBa/uH4A8HGdzBhzVEAQsiKl3dCKGCKn5ESiHucAl6sZr0wDWZYjhrkeJDKRKUIWHM9VnT127Bkw76HzTvHveyhE3IYNknqqKfcLYlnpnNLjL56PROfHpoUjz3mEEHk/u4qW0Cy9YDDmebmoB0tQ2I7XiScWbO3/gmLE2C4K49VJXf2C459luMUc3W62+aYlDN93IR6+0RoJ2aa06LQdJoge1vE9dux0/bxbxWU+LyQqiChCW1KGT7poJeO/JqZ0+Y+lRn1fFzK5p3KLqnws15d71xmhTmCQM9EjVuJcHb9fHHyvXEayZn7uoul0PqtPQ9YFq+fxqF8uufxXIKtFToV5xqwTH7EwS/Tgj7sPt8LjiGjhMUE8tfP3Qq+cqNX35wyY4NMjiaVbWvz8I6iowmOpfDjBTSmQQW0T5mp516Q388wBajkwY49nCkHFO6Y53E/wr3IbrUzQHDuTl7wPqJ/R7oDjJomFd4w+JGfa+h4Isw4cOSxx6wc3dCjepzheaRAkxwXMskTbQr7g0qzHdSGJohZnNFJOI5Ip8a/gt3FMnsNTBYFDfFc9tzgdqVvy5hZK0zqGSFNc+B53HtMm70SZbmBGglN4nbj7e1blxrD+i/t4cJCjg4JgDlX56/vaA3zIS8g8BrZxbcLpYxjbBzH+sNQ8iUB3ZBCQwj4NRHWWQHWT9Q2s4EGYaHyUfsLF715Yy4Qec2rUVENOWFPaWbOLZUcEuHVKpz/Td1XIK7wlojwirW68/wKb+Gvbf3sAdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,84 +116,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the refscale test for hazptr to measure the reader side
-performance.
+Here is a v5 of my Hazard Pointers series. I know Boqun has a use case
+for it for lockdep.
 
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Co-developed-by: Boqun Feng <boqun@kernel.org>
----
- kernel/rcu/refscale.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+This new version has those significant changes since v4:
 
-diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
-index c158b6a947cd..7d64dfe78327 100644
---- a/kernel/rcu/refscale.c
-+++ b/kernel/rcu/refscale.c
-@@ -29,6 +29,7 @@
- #include <linux/reboot.h>
- #include <linux/sched.h>
- #include <linux/seq_buf.h>
-+#include <linux/hazptr.h>
- #include <linux/spinlock.h>
- #include <linux/smp.h>
- #include <linux/stat.h>
-@@ -1210,6 +1211,47 @@ static const struct ref_scale_ops typesafe_seqlock_ops = {
- 	.name		= "typesafe_seqlock"
- };
- 
-+static void ref_hazptr_read_section(const int nloops)
-+{
-+	static void *ref_hazptr_read_section_ptr = ref_hazptr_read_section;
-+	int i;
-+
-+	for (i = nloops; i >= 0; i--) {
-+		struct hazptr_ctx ctx;
-+		void *addr;
-+
-+		addr = hazptr_acquire(&ctx, &ref_hazptr_read_section_ptr);
-+		hazptr_release(&ctx, addr);
-+	}
-+}
-+
-+static void ref_hazptr_delay_section(const int nloops, const int udl, const int ndl)
-+{
-+	static void *ref_hazptr_delay_section_ptr = ref_hazptr_delay_section;
-+	int i;
-+
-+	for (i = nloops; i >= 0; i--) {
-+		struct hazptr_ctx ctx;
-+		void *addr;
-+
-+		addr = hazptr_acquire(&ctx, &ref_hazptr_delay_section_ptr);
-+		un_delay(udl, ndl);
-+		hazptr_release(&ctx, addr);
-+	}
-+}
-+
-+static bool ref_hazptr_init(void)
-+{
-+	return true;
-+}
-+
-+static const struct ref_scale_ops hazptr_ops = {
-+	.init		= ref_hazptr_init,
-+	.readsection	= ref_hazptr_read_section,
-+	.delaysection	= ref_hazptr_delay_section,
-+	.name		= "hazptr"
-+};
-+
- static void rcu_scale_one_reader(void)
- {
- 	if (readdelay <= 0)
-@@ -1524,6 +1566,7 @@ ref_scale_init(void)
- 		&sched_clock_ops, &clock_ops, &jiffies_ops,
- 		&preempt_ops, &bh_ops, &irq_ops, &irqsave_ops,
- 		&typesafe_ref_ops, &typesafe_lock_ops, &typesafe_seqlock_ops,
-+		&hazptr_ops,
- 	};
- 
- 	if (!torture_init_begin(scale_type, verbose))
+- Fold scheduler integration.
+- Actually set ctx slot to backup slot on context switch.
+- Remove CONFIG_PREEMPT_HAZPTR config option.
+- Use per-cpu ctx pointers for context switch slot tracking
+  rather than per-task lists. This accelerates the hazptr
+  acquire/release fast-path.
+- Guarantee scan forward progress with two-lists scheme.
+- Reimplement the hazptr acquire with a temporary wildcard
+  to eliminate a dependency on the addr_p load, likely to
+  cause a pipeline stall due to the needed memory barrier.
+  This simplifies the algorithm, removes the need for pointer
+  re-load + comparison, and is expected to be faster on some
+  architectures.
+- Reduce number of percpu slots to 4, introduce a hazptr_slot_item
+  struct to contain both the slot and ctx pointers. Reducing number
+  of slots to 4 makes sure all the slot and ctx pointers fit in a
+  single cache line.
+- Rebased on v7.0-rc1.
+
+Feedback is welcome,
+
+Thanks,
+
+Mathieu
+
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun@kernel.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: John Stultz <jstultz@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: maged.michael@gmail.com
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
+Cc: rcu@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: lkmm@lists.linux.dev
+
+Mathieu Desnoyers (2):
+  hazptr: Implement Hazard Pointers
+  hazptr: Add refscale test
+
+ include/linux/hazptr.h | 197 +++++++++++++++++++++++++++++++++
+ init/main.c            |   2 +
+ kernel/Makefile        |   2 +-
+ kernel/hazptr.c        | 242 +++++++++++++++++++++++++++++++++++++++++
+ kernel/rcu/refscale.c  |  43 ++++++++
+ kernel/sched/core.c    |   2 +
+ 6 files changed, 487 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/hazptr.h
+ create mode 100644 kernel/hazptr.c
+
 -- 
 2.39.5
-
 
