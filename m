@@ -4,108 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF96BEA4FCF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:01:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAE4EEA4FCE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:02:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AFCA6B0092; Mon, 23 Feb 2026 10:01:26 -0500 (EST)
+	id 4C1206B008C; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07EB06B0093; Mon, 23 Feb 2026 10:01:26 -0500 (EST)
+	id 4B61D6B0098; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF6D06B0095; Mon, 23 Feb 2026 10:01:25 -0500 (EST)
+	id 3C1A26B008C; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D92166B0092
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:01:25 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A7AC559C0
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:01:25 +0000 (UTC)
-X-FDA: 84476034930.13.AA65D3C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 745521C0032
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:01:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OaigYStr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771858883; a=rsa-sha256;
-	cv=none;
-	b=Wv+O87s13bbDChDLQcb/FP+Nw3O0gqNnvDPZDxXjBSOl5WbhbMJyYlIeOdn+ku/b6+lZgq
-	uOs0HZmnIqiCuavADsCylC8iy8ecbg39AaYh/van5u9YroKtPRxhRf/OMUeCXz369x9Qfn
-	R5qtkrPXGZZsaeHZo+7r2BkyU0nJWHU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OaigYStr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ACF16B008C
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47C13C104E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:02:38 +0000 (UTC)
+X-FDA: 84476037996.06.F20A150
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 561E680027
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:02:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=QIURQUyI;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771858883;
+	s=arc-20220608; t=1771858956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b4ITcFsBb3mWAjtJBgA+NWDk2XDKe5cxIpGg9zFoLVA=;
-	b=LcChWEcsMW3mpE7TkSypr1L84Z68awfAiciGMAUsjEsr1mwUtFqIgILDD/dFUtS/4Nkdir
-	4HA+CpLE4WAsX6EH+9wjcUWjGxur9+9PHx6ymOlNMG71D11yw9KhyogP9SvNHmkymKRfst
-	WGO+Cam2WSMYlEmMzbzhVHTRaG+qUfg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 97584444C3;
-	Mon, 23 Feb 2026 15:01:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40292C2BCB2;
-	Mon, 23 Feb 2026 15:01:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771858882;
-	bh=e5c5b74M3vTmffrZkxVqf33SIGqWmbbti+5cabgqU30=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OaigYStrS0H58RnK9jYWZCcHDiqSEdAX7xgm52ZiTIH2hOr6lFz0pfIeHqnXSx22c
-	 fPLAmdIje8wpwT3qgmVJaXPsnkaS7NB7FwbUnfh6uL4pw4ZkNksgkgpQj1U9soOJP3
-	 I8zQ06tXZJNH9bmYxdwifxd2hS8ZyCjhPsUEDM0WvensrAB7wgg+ERxBdKJP20LcBg
-	 JyDzx8ODMtCb6QkuTBbIFDF1X1wLOYFev6Eyzhc0eMwdUu/PVzCaS4BJW214un6Gfw
-	 oem2r/xcNVnvVt1I21kKCGINo2ZynGSWPrRf7980RO65Ev+qkS2YfdT/tsiM9Vv5jR
-	 s31T8kd8QKH0w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Tamir Duberstein
- <tamird@kernel.org>, Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
- <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
- Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
- Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin.linux@gmail.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen
- Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Boqun Feng
- <boqun@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v15 9/9] rust: page: add `from_raw()`
-In-Reply-To: <CANiq72myc+tCEHm0WtZspZHWwsSzvesxsmUvk31=GCdUN_zVNA@mail.gmail.com>
-References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
- <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
- <CANiq72myc+tCEHm0WtZspZHWwsSzvesxsmUvk31=GCdUN_zVNA@mail.gmail.com>
-Date: Mon, 23 Feb 2026 16:00:02 +0100
-Message-ID: <87sear33pp.fsf@t14s.mail-host-address-is-not-set>
+	bh=ghG8qmEThMaE8eplIbNQocnDJznDcsD/X7rOwcgRZdU=;
+	b=DAhl0quLt5NhBsZSAHmJLkdp5Autq1RfbnZcy2lr0t6ovEdZ1TT7cRpLuY72aQOhspj9Ch
+	iJRH91Isr/0dtRHmKNhUoztuxf70ZYNiU6NuZPqb2iLvnucQfFE0qpkEDilVDh/CHwO5al
+	Aj0gZWIDy9SPZoA2zYp2lsUUYtcSu0E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771858956; a=rsa-sha256;
+	cv=none;
+	b=TZFFNQuxL747Zr/AyWKFWTuj03gUect291Abro+WYjsKTcirkVXwbncNEAcpqtBNq3Tn8I
+	j0pMk/hqM/mIuhF9EiBEBeZOrUSDdTcGbs4Tct87ufe08hDhg9SctKFAWNrba3PoM6c0RO
+	U387AK3PbIU70cBxdR5Lh6AoLdPeS24=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=QIURQUyI;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-89577f866d6so56455996d6.0
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:02:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1771858955; x=1772463755; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ghG8qmEThMaE8eplIbNQocnDJznDcsD/X7rOwcgRZdU=;
+        b=QIURQUyIo0dmcog0aHNrZr3+FDJfe8X+zxPsgtX/Og7Er+jHzJa8OH20s/izZH7A+I
+         s/qbcI5HYMp08pHpQw6OtAqIC+kKWX/Cm4Hv5nt1KI8FUEg5v2GF/ntZG+RcvI0I/TT7
+         sfBIaZ+3F3zNij6I72joe/0Rhg+kN4EUM9gP+ETLvwI7yZp9hDCGin31f/0yhB0RCA89
+         NOM5zJ+4jLmE0AGVWyL11wyqUtQxQBbobhUEpJBWTfcbVUi6CJ1BbH6Ubu87LUxZk+10
+         vLNzvBhcNFyjjf61vtQKp0IIi4m9yvA1cohDiB4II6Rl67zrEwj78ZQYQiLi3qe7vK68
+         ttXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771858955; x=1772463755;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ghG8qmEThMaE8eplIbNQocnDJznDcsD/X7rOwcgRZdU=;
+        b=uj+xbcwjzjZBPkWtKzbtMMM/f9V9ngv5IIftES3TdpShZX+N6RZ2ShnZCQs+cr0Au/
+         lgpBpYtkfS9tfXvyexhly5/PnHIrAALX79ZQqHQXUEuEbHH2yhnuj0YuZ/ixH2TOJvu7
+         7+LyKZY3S4nRM9e1mbEG+wQyQ0N5iMlRroidGSSgu8dBhaggMetB3C/XWWobTpCmTxFF
+         J2Sl3iSxu1kSfX2MFWr3LC/kWgmq9E4LG4kBTyzvvb4AM/c7pKO25ldenefc1f8Yrsaq
+         Yqzz5aZGmVy+lzC2ymKMga3Ah4CmBkbiADKfjKXTNpq5rmiuWdmWvOrM19+s93h69z4u
+         VAxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX64HPFTqTDHxBZoNfFbfT8yX07NdW38QVjJR+QmgpxY2RXTrFxDbs24qd4o7VaPeTun2toFLA4/Q==@kvack.org
+X-Gm-Message-State: AOJu0Yy2PgPEYmN+sAt+xdVVJkPVtym5omkiHpJPtkCxBvESrhklYGIt
+	6czfKpbzOBzbgwNfyDYhU4b92BlAztTNsdDmz8l3xX9brlkqrYdTjQydaldpqpqXHIDF385g6F/
+	wuGC2
+X-Gm-Gg: ATEYQzxTAhQjjrmvUkYGlRQ5Q8kWF31P+jbO2w6oV37EbfgUjILo4SAe2KPcRBfbRun
+	ADCS4gNoqFnYQo6zEEAO0+qZdP5wnNLPdlZ6EOtWIfDtRBskEtRA3M+/nmej2/4x5crZxMdydbc
+	tuiVtaLhXxIAIc8/llN3x7+5kcLwx3cV2fIqQs7EwVDPSzmzO5CP/ufYj34NVK4LWEeSvvjbjvN
+	OqVxhrSDnyHSqvr6Li3WzAPDSkRjZe8DUQFqM3BShpqm0HhTtaC2Urgi2XGY9GitPRRi+OZ1ugW
+	L6Vaxz7YmAFIeVrWw/0WVRgFgbruq9w4NOlC+sYf2OYCIaL0XXCe5dLlAqbh+7gKQYADI2gs/Us
+	pxFfN1XbZN8OFqox5zreR8hldclaarSCcGq97AR2bMpXdYesw0Cm5vZUMz3sgkCNlIyDJAONp32
+	O+pvVrS9JyQc+jjBh2z9XBEZVTO76NiwBfuL5l4AiSqTWxqfXyAMYKm4JYB6/5aMID6l4WL+18E
+	HVbGH7IwJa0hQrVR7Mb
+X-Received: by 2002:ad4:5d46:0:b0:894:73dc:a7f6 with SMTP id 6a1803df08f44-89965acd626mr202346166d6.2.1771858955076;
+        Mon, 23 Feb 2026 07:02:35 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8997c6bba49sm78730156d6.15.2026.02.23.07.02.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 07:02:34 -0800 (PST)
+Date: Mon, 23 Feb 2026 10:02:30 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+	sj@kernel.org, weixugc@google.com, willy@infradead.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
+Subject: Re: [RFC PATCH v5 00/10] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aZxsBifRchLn2m42@gourry-fedora-PF4VCD3F>
+References: <20260129144043.231636-1-bharata@amd.com>
+ <a8d1efd6-2ca4-4f1d-9c0a-c8aa17732ee9@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ifx74er68us3r6kauwasjdh4apo95ztb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a8d1efd6-2ca4-4f1d-9c0a-c8aa17732ee9@amd.com>
+X-Rspamd-Queue-Id: 561E680027
+X-Stat-Signature: 1htygq7663u159up77ks8uwn8j69u6er
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 745521C0032
-X-HE-Tag: 1771858883-704708
-X-HE-Meta: U2FsdGVkX19q/b4pDu0GMGZeZO9UpjvsO/FFGn9uqejw3QdntN5/hjrzvZ08zHHifgGpHYi+MNxwMmEn54AC8abh3LRMukuh6SmCHMlBZcOSGxXpuEjpOqU76LIxWwbvPEuc9QcxShcIr2x+VCUHecfa44i9J4lAn8rdQdMmrhmwWbQC1Bq7ys/Yl7uxw3TNnd4EGnXiOYh8VQt7dlZXgoZ92EuDRmMPSxE82r7uZFTvIgRETM0Eeq0nSeFW0qJLG3WmdSq6q2G121nKYDSeu5XaT4uqptVWhAzFiAAspIS53G/M4tDy3Odu0dis8u03g7TmCnnvgoH+OPdksa0M295l7Yb0/QciIkC9csmNNFPo6xxZ/HTzYWZRYdj3xjbS5RY4CGZ+wH4/gJuFOdW1e97EmAxllOGhn8tdTrz6dOhHo46yMo4V8hk6hZC+0OlcSPfq9VOwLyyrB+4F/hR9HGvcKX+CHlZWtI5n1WqhB98QRv9CbsvBufBGKmrtGNWHDA22k4fZxFo6Mfqj6wVHdcbD0M8ZC2/QalpIjgUBA7Gzom8L4CY5j2KSquoNMeMSEdZkddkGR/eaJIjlGLVV7lfjY+sxdfMl9xf6G89ycY7UKqkmWDQfTowdN653kdzBob4UAYYh1A8V05By1/g1vAxHYC7VFbagCuMyEfqluQvwqpUJ3Z+1w9N46r/bnvSktC6xwAKl0qanSs/xEU53859LCdWPmLsszNTUOQHYDW3C+Ln11L2Qqef1Y7etF1cQSXhlTfeLKcpxm2lTposyRIKKJJbh/tkuRH02ddNznfr102tBrK0lxxpVy+AA1GuDuOdSVWIoiEN/yufzC0dTeCnjuzbGZh0Ry4Ca7boxBda/9uAqGm20A9df7znG+9e4AS3/G1m1+1H6FE0tYv95bx6MNLAnMkqlQkKFmhQ1/XVjix+4VwmZeqaeJcfo4EtNZCaRwODlYdLItgjuX/5
- TpWTycw7
- oM2wFS2FXEGc0SJI5WQnGOAoxnSPyqjJgGhhmxzJCAoP6kxrz57ZTE4msAqNK4WTr3Kf1oz+95oqP90jod76cIh5hA6ejnXAd4Thz1dQPnNmjaXE+2AC5UZaapiEBkmNU5wP0Unvt/KxgwVcC9zlSnx+VpwXeTgO982wywk5Q21Vdt2Bnpjl9O0dYrbWHjrn+G5Ag4Tda1JEkXqH+NBf8oRPLoRwVcTQ0m30xdeauBSTVyFiNq/WmeYhNQ6RZwf+v9875BLH4ViKaPWUulGT715ctei3jN7PiNLoW1OepFDrw85LH/V9q7Z0EvkG8S93pEbDKrvIxAYMY6iNWffwdY3v+kh0GD0eg9qlOQbbyuq+17jRXtDeV1WBPIqBQZaBPsExJcsTcWPQzEwjMQLpOZDFFfNRxXmD2ksy4J4bcMwU+/ZGGxgelD7NT9g==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771858956-370788
+X-HE-Meta: U2FsdGVkX19WQKer/7Dh6aOjYqX902TOyix669GrHYUyJe7guUgRiu1qUok19+7WrljzI5sKo/cx83dlo0wfw46C8nrwkl8SmZnxHwIW3mvZTESYY+X38K4Y1wVcq2iLFvKqUHJkwrTi/JPxJg0XmypLmOmNOJ5rz2YZvPo2Aioc91CE2aV481WNGQvhgFvU6QBqIzwlnYukv29bUIkdBwAud0dVJKrrgvGZ+kK4l6KG+47B/4o+zbHp+0UicnDUWvgVUE30wMUAxYM6I5o13uIvT+Orbnj07YNibgl5ZR/U4+jdV4Q0PKvJQXhs1T+TV+3ykYg7+bvW8nQIJC2OxvA8UJpLytwpUem1dfu9gccB5aqtMN+WrqFr1ENCkiEWb0oS53YBxmMNQsaHRQyBEFwYdQ5zirb6QJr84s2po7EF5n0VYstciusQnL9k3Tf3BGUAM/9Vw6ritJ5oIe2YnT/syc2bazOk/6PumkiFRS8nfEnZtWQhERQV3Hgr6+GANOwl7VRQfyFrZ0exSJa9iX2yOmbbiDwiLPq44NeSt6jJhVi/pQfI+EfjmD+FrgDecMprOQS8gN6r66+BbQLs+R4n6GhCHM7kx0WfEO12fZHDtFGtDCLziB74Rkjt9NAAA4CTDDC4kumJkGB2qCb5Uhgt1QbJiXWhuGcveVYOkUZO/UaHoHG/wGwDT8WmmjBI8y50Wy8nhBqvMjQ42cJplwWZNyljwZPazeT5Bf7juoEneTyl7DB9LlUsRvx8vhSjOGhLIsQlhjHwFuV8gaXUllF9ef8gZ49w5R1j3HAOV8xS9Gi0bvRfncmLPC4LYpn9zC7i/Dykd2buvY/3i2oHQKgmd49pOODOh/sQhwkFRPT6kA0JPO4nR9Pr7UlTE/x/iCoD4gvMQxpBY9eyQAjl9xTJWsdorMeJGkeKz2+rdc0HJ+Alm5/mxzU0P0wcY26169tWQNlzazosWsLg3U5
+ o6/upwhF
+ ObFgH7Wh7DjxBcVjV28oK8CLb0D0I4LaMjAbnYuUa0tXw8IUu2OtPKXwrjIi8JHq9scn2L0+VMWHnbEi5xsRT7pAoVooXLVgPNGp3KKW0YHskVvOYkejFwUtsEaCKi8MMhoZ2JnHsDTeBoqxjbgytmKcNVFAQRRlUEnu0KD0LxLPfJfsyPejLrDzN5C0/4Bh5EYTh6Th9G2l3jWLktBB6gcvxsNXMoiBfUJ01QO1ny5BPPzLlF7OF/CJGdkOdAxe06j63K9AYChCCvFqFg5hxOqwt8gNoBlJKa6AUzyFJE8gHkCP/ZM3ZwHT3vbrAf022EZilg7DMkc7Ig4O6f/uNnciPHo6Bn0iVIWVWrp5ZZmDJDq4Vic0PwbOtYoBBh7I6CNZBGX2RVG3uttrlHvFZaFRK7g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,51 +129,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+On Mon, Feb 23, 2026 at 07:57:39PM +0530, Bharata B Rao wrote:
+> 
+> Time in seconds - Lower is better
+> Mop/s total - Higher is better
+> =====================================================================================
+>                         Base            Base            pghot-default
+> pghot-precise
+>                         NUMAB0          NUMAB2          NUMAB2          NUMAB2
+> =====================================================================================
+> Time in seconds         7349.86         4422.50         6219.71         4113.56
+> Mop/s total             53247.66        88493.630       62923.030       95139.810
+> 
+> pgpromote_success       0               42181834        248503390       41955718
+> pgpromote_candidate     0               0               577086192       0
+> pgpromote_candidate_nrl 0               42181834        29410329        41956171
+> pgdemote_kswapd         0               0               216489010       0
+> numa_pte_updates        0               42252749        607470975       42037882
+> numa_hint_faults        0               42183772        606540729       41968150
+> =====================================================================================
+> 
+> - In the base case, the benchmark numbers improve significantly due to hot page
+>   promotion.
+> - Though the benchmark runs for hundreds of minutes, the pages get promoted
+>   within the first few mins.
+> - pghot-precise is able to match the base case numbers.
+> - The benchmark suffers in pghot-default case due to promotion being limited
+>   to the default NID (0) only. This leads to excessive PTE updates, hint faults,
+>   demotion and promotion churn.
 
-> On Fri, Feb 20, 2026 at 10:52=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
->>
->> +    /// Create a `&Page` from a raw `struct page` pointer
->
-> Please end sentences with a period.
+Wow, this really seems to justify the extra memory usage.
 
-Ok.
+Is it possible for you to change pghot-default to move the page to a
+random (or round-robin) node on the top tier instead of NID(0) by default?
 
->
->> +        // SAFETY: By function safety requirements, ptr is not null and=
- is
->
-> Please use Markdown in comments: `ptr`.
+At least then pghot-default would be correct 1/N % of the time (in theory).
+I'd be curious to see how close it gets to NUMAB2 with that.
 
-Ok.
-
->
->> +    /// `ptr` must be valid for use as a reference for the duration of =
-`'a`.
->
-> Since we will likely try to starting introducing at least a subset of
-> the Safety Standard soon, we should try to use standard terms.
->
-> So I think this "valid for use as a reference" is not an established
-> one, no? Isn't "convertible to a shared reference" the official term?
->
->   https://doc.rust-lang.org/std/ptr/index.html#pointer-to-reference-conve=
-rsion
->
-> In fact, I see `as_ref_unchecked()` and `as_mut_unchecked()` just got
-> stabilized for 1.95.0, so we should probably starting using those were
-> applicable as we bump the minimum, but we should probably use already
-> a similar wording as the standard library for the safety section and
-> the comment:
->
->   "`ptr` must be [convertible to a reference](...)."
-
-I'll change the wording to the "convertible" one.
-
-
-Best regards,
-Andreas Hindborg
-
-
+~Gregory
 
