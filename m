@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBB9EEA4FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9567CEA4FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4B936B0005; Mon, 23 Feb 2026 10:00:59 -0500 (EST)
+	id 01C5B6B0089; Mon, 23 Feb 2026 10:01:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF97C6B0089; Mon, 23 Feb 2026 10:00:59 -0500 (EST)
+	id F16296B008A; Mon, 23 Feb 2026 10:01:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD14E6B008A; Mon, 23 Feb 2026 10:00:59 -0500 (EST)
+	id E360A6B008C; Mon, 23 Feb 2026 10:01:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A5B1C6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:00:59 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D8491601DF
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:00:59 +0000 (UTC)
-X-FDA: 84476033838.13.6FE5194
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 774BDC0028
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:00:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ubEKdO1F;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CE0C46B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:01:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66D32139919
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:01:07 +0000 (UTC)
+X-FDA: 84476034174.15.B54F713
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D620A80014
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:01:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HOrhgw47;
+	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771858857;
+	s=arc-20220608; t=1771858865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o9iGI41G7eak+IdmIyouaoIfuO0S/0MYVm41DxHn2KI=;
-	b=myR5kHduYCYGZICPvC+PWKMTg3PYz0r6uxDB25yPGU6LUp8EKWQp4JS6MT1BNHTJNraQ3X
-	rIzjTGnhlv8c5C8x8l5+iMAGXxdjGNDQTn5ZWEWoRKH16Zo62E1zX0whOb5EdswMCd4df2
-	5veghqOJ/CgOB1fraXS+C/wKTjugSOA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771858857; a=rsa-sha256;
+	bh=2C1A7OwNYuJrMSDy9hYxiHNioYIgYf1CuiO+Ailav6Q=;
+	b=ndC3X/jrCv50DAKWeOjaXHk5qpfC6+BUYgkDMu5jRgnhLQqNYChGtwfJLrJaaaSb9YWxJc
+	fHw1A4T5j9YDjHRkR/4ivAp8f3r3CwHPzEyNkENUXO323STWDT7XUhDpZ1fqOT6L0UAroT
+	Gh7j36OE9P1oZz1ZUC3y8rEND629sA8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771858865; a=rsa-sha256;
 	cv=none;
-	b=Z5tJnJyVZ4fIpOnajgqtpifa155OBTcdxvy/Lhvy+VGFv4XCtd6b1F4gf6isJZUl3lFrkb
-	Bow1x0+o+sCKY5k9DezTVxCE2Bmh0eC/H62Q1/g6fc1Akoi15Gp6qsnZwoaXTaq7x49ESr
-	/SvR5+HIE1ZEN8pWyK1xooHZlravmhE=
+	b=Tff2zAcVEfui+fe3pfSMTUvCRtJm+mFfLG1XsNpFZabCDcYk0NOpfXHM2W/DkxL1lKWoj7
+	LwPFfbDSMJIeEvaoCchX295VCVxp0nsj4JeRC9Bnp+YyUsLchRviXHYgl9XtJQupa5Piqv
+	8dJqoygX/XUy8QkunUpEpcSJAD2Q0vs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ubEKdO1F;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HOrhgw47;
+	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84CBB419B7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 46A1A600C4;
+	Mon, 23 Feb 2026 15:01:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36122C2BC9E;
 	Mon, 23 Feb 2026 15:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B72C116C6;
-	Mon, 23 Feb 2026 15:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771858856;
-	bh=LZJWPyqc7zRDNeLJ/kaMnDCbQKW6iC+a3VJo41M3xIE=;
+	s=k20201202; t=1771858865;
+	bh=B2xz+fKywOWEPJTQNuZF8b8xXnGtl74+wA7wAJ3QkxY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ubEKdO1FeQU4KehKkk4Ha+sWn8rhfohWnTzrm5CQTdxfLOh0UTSboTY5F7p1nHvdb
-	 c9CXLVWjqNOPyM3IFuKtP5z1azU7USMNNrUpB7SeVFwk3RoAJYzLxs1vztVb8aZ0Dg
-	 +JUgamzo3UrhAJN82wQ+cEgtBc6YV+GtEuO3fPoqKYljQW/zE+0q9rjOMZyhojRUaX
-	 oaVPUfn3nyPnD1VlIIcPzhKN1gu3nthfg40z8QQBwjBa2qQIklIls4ZYFZ4SJgFW3H
-	 mMimssaZEdP8xcE7negFA4+KTvkjEOlgRnMa7kVg1pSO+AhJHvtIApe4ftxUg+oYUJ
-	 HNgCcU376zbaw==
+	b=HOrhgw47XKZDmMg5MWkMID+V3NSTRD5aXf9oLJqWATirxNXAGLX+AzBhK9DL7ue6Y
+	 iRjkFN9I3/9860PJ7I96Gu5l3xhG1Pf/AKFbkpRbHcrSIXFHoNB2OEEWs7mRRV6Izi
+	 HGpZclyGYgQs7dVfpAkVYQmkKnaPs9hGG65AGpFxST0PIg6b7LxgokRWLq1Eyxa+Qx
+	 wvlDVZdEUlxqyvh9oRaiOrQTzUfjRfh9ud3uQ439zrysDb8s9wZeSTo3VZTKm0OqNO
+	 aZ8Uj8uN/cy91LRX9q+l6LK/lc2Rx6W9BDqezQ1KFQv/BIP+k1F/EXHMQMxLhbwijq
+	 B35CWCvsJpVnQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
@@ -86,27 +86,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
- Oliver Mangold <oliver.mangold@pm.me>
-Subject: Re: [PATCH v15 3/9] rust: Add missing SAFETY documentation for
- `ARef` example
-In-Reply-To: <CAH5fLggNjCZ3AvHnhO8O0cmd33B3zMbfq+hhNvonznTsLLtgYw@mail.gmail.com>
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v15 9/9] rust: page: add `from_raw()`
+In-Reply-To: <CAH5fLggNQD+TbA7rXVB5w+O+qHcJcYC4u0b3W+mHR2DZiUe4eQ@mail.gmail.com>
 References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
- <20260220-unique-ref-v15-3-893ed86b06cc@kernel.org>
- <CAH5fLggNjCZ3AvHnhO8O0cmd33B3zMbfq+hhNvonznTsLLtgYw@mail.gmail.com>
-Date: Mon, 23 Feb 2026 15:59:52 +0100
-Message-ID: <87v7fn33pz.fsf@t14s.mail-host-address-is-not-set>
+ <20260220-unique-ref-v15-9-893ed86b06cc@kernel.org>
+ <CAH5fLggNQD+TbA7rXVB5w+O+qHcJcYC4u0b3W+mHR2DZiUe4eQ@mail.gmail.com>
+Date: Mon, 23 Feb 2026 15:59:59 +0100
+Message-ID: <87tsv733ps.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 774BDC0028
-X-Stat-Signature: 81kzxntaopw6sc5j4fgjij8q49nhn4c1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: rq57z5t9ig88ewu6nb3h6sezgfjdh9j5
+X-Rspamd-Queue-Id: D620A80014
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771858857-119053
-X-HE-Meta: U2FsdGVkX1/BCqMmgzJ3YIbwZSEVFiLGemQRhz2OpZIWMFRuaE/j+pl4emo6TSetCyI7ylfTL+5K9LGK4gqVVQrk0ZAlYnMYDm6h7FLCebYdWbN91q5ELA09c4pbFsI3X5CPwX+7+zcDd9ntde70p70i1ixia5Uhy/9D/4vtwBK1s0lMeG+J5V8SOux9ntsHOBatW0srTrwV24O1i/o+ssVBdv99arehBRXRKqi+2K8aA8yiO8tODUH7Y6egsxOX/DGbGb/EzUxC1Yv3Ar9V1ScsapEMbbFSbX+RB66V7p97NOJ1BCTzZ6Rjg9myvdaLCfEmh3JQCM8zhYwU9BI7ZoxPmlYbNfOvd/BulyXQKu6WrEnX3Uypw49ljDKxtX5nXH6ZnrfTPL3j6N2sUnUeAkRPulN0OJdL6r6QsiwNKWzY5FBPU+qtpiFGh348UiO9FEGsO2PVFZyeUq9qctVbAaIc/4LK2T0jGYBLKGZk5xnq4KsssKTHOcnOtSp8l/F1L/6jmiLiP+8Ci+Igacuqc4BIgyOqmZddlgsryfbd666/VtcRIaOxUET6wR4ycsOkB5fB5Ds84pCfT/bbYnAe6VMnRaT4fjdVwBDnZ+wu/OApHSmeGCbaJc3cgSA1LYGmRnw6nzEdXNQCxyx4hd4M7Ev38bRRPl3/kaimJmeFUGUID4OOcUZ2Ud9h//ZTN35Sq2cxFVC5zCCBlVoiDD/lwGtZUtebAHLdAMNzW1C7aUd/Rzu6fzG0yTeJHyC30jcBhs1Q7L1psqZc9PDXubUbwJDTLMGgcVayRJMT2YSxnicsfZ4dagShs3BX8WK5B8WQvIgcskPROyKw6+UcGSUdaR8n7GwwR0Nc39nXkrrcxoXafDZ+XmNGmuFAgqBTAxoIS/VNLA5jUCQpGBNLz6TMvz7KoSg28kn6ieMk/kDtF5NciVZOcgCGDb0OiGjZhBHDtb+5sHL6X6IgJ+v6URG
- E3N6KPA+
- 21o2nxdn2CCmxZ6EJ8RKuTY+8vvxSnYc27RY8WyYpjpAuhwCFxm8ma97bx1H1tiDFpssOE0nvCAiUiaB5IZx06OA00+ztGpH6jvRTMdeJ7BuU2Oznx1jaVQcCPnh71a39B+ar4MGmlnqSQbae2Fp9Uf9yoZ6g8/wQroTh+DjZxT5CBMYjl4r530f9fGmGjaUhBU3F5WnrHF5pRgt4Si96Hk9l/hLTWsgdXxRP+GO1NAPSFU7gfM/f8Jgy0zSBAWRTleVGhMlGj9XcSbgrH2Vic1zCdejDuhIG9aykciftH4A7PdxwFqYHkkXQmZWtSsdpUBt6RbBnH1ME5Z3WNUpr1YEHwgitFHMaKH96+HDKIcvyrxCeC1Ej+dKxOd0xb6bvYy3lDg2+iQ/fKmg=
+X-HE-Tag: 1771858865-439283
+X-HE-Meta: U2FsdGVkX18+1vKA6UptzXXcE6e/iGra+Zr8R/tvdeUZmO1u1WLjimFstOHxWG/4YgwzZNXL4xbXV6J1B6K2q2rAEOMplRoA4m9OJDKEt/jqqK9MTT8JR8fkcd9hQYMb/CJYRduTMIVBNUKRdefE7jmB3UpdMaoRWhU6ISGiUII2Ie+GnzWQ4UK3yQhEUyYPRCyBBpKt/lNUYkAyZ91pZFfvGbrNl17sbUyn3YviUwZyF1NWxkLk93MlwPzAIdcC0414Mo1BRM/B4G5JWdZcSgqiCq76qAo+0ivIXMTHD+QWqyc2S91nIPsBQZQ1jHZNKbgGoxEMe840W77EXeSWpyOVNdQTz+DISMf6guGYNaqBlBDnEi4AUN6QE+2/JPw1M5S5J6tsuywAbDbFJMuuxAR4QByiIB60C2WuZX5/1k4OXfYSUtJ6Qh9A64Z3IVfJhqdVBbYxE2k1MiqwFjAOfi1qU7zRN/6+1lWDAemjkRRYMTN47mj+kZlwoJoA6iblIRowjd9P80svGhY2RPw5tEx1+xQMumSZ+lMejBv4ZMf4VfKJ4OWHrK0rSdumUI1RJmgS+Splub8Yf9RiSXgPKxk8YKs8GB8adxdqQpGZ83h9nYvbrGMzS9ulbQYe6mx5bkYuoJ7smBpLEIHMBJaBoG56N3391xFOLNfpMxOPvFL2+E8rd4/mq3MsitumjA2mqhQBge9SuVY/L9i1SocCUmB8SXizBkDm0iEN0aZT0XhT8UrSuym7vdQcLvPezUWBF2EuKlTQ8e6MoOCiUPYAf50ZvCSi8voeLLDhFfF9p/SWJRmQncBrh26HtwPeAYOe9trU5hRrZkrG7VTuxLgsZmjG4KxI/wwjMnXf0zqRGvjhb3V8ZXxNXavKXaXo9RGpW0tPNuAd6VYb4FZG/hmeXvKnTTWX4Ub6bFkPa/eByixjfC+qxlcHDM31Aj8ihSbxHXPrvp+p5L8nsUBPtCM
+ kGWZzaio
+ /exClRo7Dfyw6Oq8J1shaGlK3YZ/0tTD/d1vV7qV6JaYoP2JaskDgazgVDcNfwzGTWGhmt5hjC7y9u7gT2bH+RbmIlnir8Sit09EU7A6WU9phm7Si+rQDqQ2eezKLUG30bB9LmlSWee9hAqn7AK6N1MNAoQ6+4VRGJpWghu/cbIn0QSo2FMSVB66W9youHyCYBzx9kfao6HkpU0f0Ou/PkTHBLONeBN0OPvBtYik2AHtBLH/UaGDCRVBqGKl1FWopRon+KPX3tTGgb56ZZGVAM6NWl4uV+7nC7+RpD0cUveTD027KbcnlkN/M8tdJhzlhXXjK33YW/wpozDs61ka9Va9A6O75KGShD19fqxjtm9hIlh3IMHRw4U8lgDT3qZiQXV2b5dkIbA8tM3/CHlUH1ZVuug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,36 +118,39 @@ Alice Ryhl <aliceryhl@google.com> writes:
 > On Fri, Feb 20, 2026 at 10:52=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
 nel.org> wrote:
 >>
->> From: Oliver Mangold <oliver.mangold@pm.me>
+>> Add a method to `Page` that allows construction of an instance from `str=
+uct
+>> page` pointer.
 >>
->> SAFETY comment in rustdoc example was just 'TODO'. Fixed.
->>
->> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
->> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 >> ---
->>  rust/kernel/sync/aref.rs | 10 ++++++----
->>  1 file changed, 6 insertions(+), 4 deletions(-)
+>>  rust/kernel/page.rs | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
 >>
->> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
->> index 61caddfd89619..efe16a7fdfa5d 100644
->> --- a/rust/kernel/sync/aref.rs
->> +++ b/rust/kernel/sync/aref.rs
->> @@ -129,12 +129,14 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->>      /// # Examples
->>      ///
->>      /// ```
->> -    /// use core::ptr::NonNull;
->> -    /// use kernel::sync::aref::{ARef, RefCounted};
->> +    /// # use core::ptr::NonNull;
->> +    /// # use kernel::sync::aref::{ARef, RefCounted};
->>      ///
+>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+>> index 4591b7b01c3d2..803f3e3d76b22 100644
+>> --- a/rust/kernel/page.rs
+>> +++ b/rust/kernel/page.rs
+>> @@ -191,6 +191,17 @@ pub fn nid(&self) -> i32 {
+>>          unsafe { bindings::page_to_nid(self.as_ptr()) }
+>>      }
+>>
+>> +    /// Create a `&Page` from a raw `struct page` pointer
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// `ptr` must be valid for use as a reference for the duration of =
+`'a`.
+>> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
+>> +        // SAFETY: By function safety requirements, ptr is not null and=
+ is
+>> +        // valid for use as a reference.
+>> +        unsafe { &*Opaque::cast_from(ptr).cast::<Self>() }
 >
-> Either keep the imports visible or delete this empty line. And either
-> way, it doesn't really fit in this commit.
+> If you're going to do a pointer cast, then keep it simple and just do
+> &*ptr.cast().
 
-I'll drop this for this commit.
+Ok.
 
 
 Best regards,
