@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AA95EA4FAA
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:07:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D02DDEA4FAD
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83E9D6B0088; Mon, 23 Feb 2026 06:07:51 -0500 (EST)
+	id 1254E6B0088; Mon, 23 Feb 2026 06:12:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C2386B0089; Mon, 23 Feb 2026 06:07:51 -0500 (EST)
+	id 0D2E26B0089; Mon, 23 Feb 2026 06:12:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4796B008A; Mon, 23 Feb 2026 06:07:51 -0500 (EST)
+	id F17B26B008A; Mon, 23 Feb 2026 06:12:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 58AD46B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:07:51 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F37E513BD56
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:07:50 +0000 (UTC)
-X-FDA: 84475446300.05.ACFE9F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6C4748000B
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:07:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T1Qj9fQS;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DFC3F6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:12:53 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 902598C746
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:12:53 +0000 (UTC)
+X-FDA: 84475459026.11.76D685F
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B3C761A000C
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:12:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gBSD+9av;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845171; a=rsa-sha256;
+	cv=none;
+	b=YabGCBp6+RcegGFgYZQfX08d0ELpdSe4fsfuYLIz9y+qEj5+53zAkBW5g9hB0a9LEfEYqN
+	gT1naUaohZuwyuAk/jCrDKRUqdeTDa8icq+XfsC9lE/wy4eQmszuSiTkhT9UpcvrfSkLtg
+	bptjff/7GwoHk5zRr/z+0iFeHIIO6E8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gBSD+9av;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of chris.bainbridge@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=chris.bainbridge@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771844869;
+	s=arc-20220608; t=1771845171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WPriieVDmKWqMBFR4G9YtxqzqfHaNSD1dKKcY0qJxAU=;
-	b=1zDNVZYXZBL0UO79dSt+o3m4Cx+2eiQ5CxuyfzJuV6jytKDHbeckKJ41P/YLggWkCIvnQb
-	RpBazyOvcSLWSGFvd7cQ2rcQKUF6JYbm5ZuCVwsWOXPbW26IuUsYgWxupAgjFD5kSEIFR/
-	/cLkmbhsKw3fPtpt4HxwrOPzKs1iry0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T1Qj9fQS;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771844869; a=rsa-sha256;
-	cv=none;
-	b=uFHtC3EAPI7p7gk4PzKW3wh9ygaM7t8p/CV48RxcJSkUEiSPiz3p9TjjbN+YcC1uaEpqlQ
-	pETsOpzqTHuSdxHBZP7PEJvZRXMj1Vfd8OyP3YtWGDN+qFNOwLhOpONePIX/RRhZ5SkfpK
-	3uKocCcyG4en3Gs6etGA5OZCiDgmmYE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43FEA43BAD;
-	Mon, 23 Feb 2026 11:07:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FDEC116C6;
-	Mon, 23 Feb 2026 11:07:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771844868;
-	bh=0YsJWHREax0w0K2fWlItFC0pBFK8dqhoeUM0EkuZNKY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T1Qj9fQSaAfU7lAymctvQoNk2F6nxLXKeGFXUzGa3OO5BJumvXl9nHd5HYD3gxpb2
-	 EvtVD+tb2FDM2BgQnih18J9vjvEC3dwW21vHqthFbS7cyLJ29+hjaecdg9sOfOBDz8
-	 cBtfsOYn5qAH8XU5dtoSYb1p2sDlpLK9dg47n2FjY+QBqeXhRnpyTYFPNTyWHYh4Zw
-	 h9aWqpagWz/lZSDmnPj1zHzIGnCMNHqnqKUZVRp71M0bxqgJAaBv3E49eW5kKco+V7
-	 BtA0/aBjJh5OhW50YIDXyGGaMwX8RNJl7/CLh7pWuRwDHSWpP+PdBPRJNAnQptYgFN
-	 32FwwBT/ir72A==
-Date: Mon, 23 Feb 2026 13:07:41 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v4 1/2] kho: fix deferred init of kho scratch
-Message-ID: <aZw0_c8TdTYvm2SV@kernel.org>
-References: <20260220165203.3213375-1-mclapinski@google.com>
- <20260220165203.3213375-2-mclapinski@google.com>
+	bh=6n+oxOREuT+ZoDytgRh/Y9obuCsnXSbm2faHqHT5nEs=;
+	b=x9ggxQ4ARiv6zuCpOOeoDgKG+2E0/me4o7L8duvxw15kNG8hkbNX/S/tQnfeXaMEUfgicX
+	59UOYIxVWoEDK9HUT+Anr7uFZG4MUsZXidkQG2gzqUNc0k+HrqxVuJ8uwjUF7EdbGpW8G7
+	QrlWG0nuzh/slGJ1hUCw5ILdJrrCKMQ=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-436309f1ad7so3098876f8f.3
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 03:12:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771845170; x=1772449970; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6n+oxOREuT+ZoDytgRh/Y9obuCsnXSbm2faHqHT5nEs=;
+        b=gBSD+9avkf3AhIUUkRftx/fpbhqLqbWVmBgK8vTUHmCRWwWh5ygqdtj6u5i2u89loC
+         NzKE3wh9FtkD9AvVya35mKu+nxovh81LWm6RmIa7kuSn8Py2Bg9NU7qMJAzDCiHEmT32
+         pzqzFBj3t/Z1/Um020BXrtpJhm1HnooPrblXH1wv3fc1GvUFuk9ETiWnHO5sLapsvDlc
+         o5YpoGa4MOLSYjVjCh6S6Y86n09ISNMI3W0XnJOLHWoUeEPCVknD4MIdJd5OFLM216gA
+         Xxx18lGtjrt+opXd6BTQR59zUGIx0p2Oiz4YcVQtQUmcxKuIsmYfM7HAiEdgRKpghWbC
+         2Iew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771845170; x=1772449970;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6n+oxOREuT+ZoDytgRh/Y9obuCsnXSbm2faHqHT5nEs=;
+        b=SBaMoJMyotnVjcBgk9aUZu3rI6/2oGQKnV+nSy5vqdxgaLgRkawr3YHDSW9qYOnoXy
+         pCK99BnxmE1KjHr97AzUoZBCIYjrT+hDo8EWufswX0HRVdC+8GHowe51h2b/ptmP2UBO
+         iW8daJX7oUgn0W6thtaRDokLfvQUPAArKz9ypvGM3MDJinmznuRSVLaSahvV8odsTg7B
+         C9oSBSWavMCXmgQrMcZ8RkAM8t0xu6R1NTX9Wq06Wos26jGu5fjWoYpQwiGoevOVX/Au
+         7cxExH3YwJw+SPa0MTrm6JRGsLB2IGm1VaoEAYn6pe9WC0faHOkgQsJHZ0aGr38OchWv
+         oYjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgRu8hPBpNUEq3kdQ44FlbSy4sdNQrKYZ1QfiLwuTHZmZc4jrcgWCijwqGNNKDgMfDt/Ge75FBkw==@kvack.org
+X-Gm-Message-State: AOJu0Yzjh1+f7K3uhTZwFf1YAP5Dp+ihS3dO1JDpG3LZXFbhjks2JdbG
+	xxVZGc1tXs9WJJCT7VpfXmwLh95Fq0h7Gt68jBBn2ZvwYRAfWmjHVSea
+X-Gm-Gg: AZuq6aKVo4hHuIlPIXdWegYYz1+tVyLM/cKmsC/wO4qwGxFnaeqeyx2YU3n39PwKvyg
+	BqRkKCuM18XKPq/+WJ1MWoRKE+H+Rr81qqYw+fCkdbudxXw0KxPBQ1G+Gy5Zxrfi5/2lnUzq/fR
+	ylG2unj4ZTsH6isD1A7j+XebfbIAWPQSU4bi6c9Gg+A8P/yxih+/q7BdEfgEoD/JmdOLE36rMvz
+	/iWCarrbEoB4Kxyl/PvNwWuBPeJ/qsvxk+LGMSz6DlsQkYNLNbTXnnAgabqyFmwkxzDfxCnEHmv
+	QlGVmZct8H5WOsR0thswz2c3jX68gpz/mqO5zNFNbfNQDStAie2G/7VUepUAEDrxVEQa70LSqEy
+	31SZt/SX7my+/05KaqZhuz9qMPkymTvcUShHFugqzGPvy11tuAA9xl2HDX8pwhnoWFr85YumHNy
+	lTn790N2JB+U2RjD63DJBYRTaO9gBMm+4=
+X-Received: by 2002:a05:600c:8b71:b0:480:1dc6:2686 with SMTP id 5b1f17b1804b1-483a95c63ddmr134839155e9.13.1771845169900;
+        Mon, 23 Feb 2026 03:12:49 -0800 (PST)
+Received: from debian.local ([90.243.35.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a31ff4d7sm271733245e9.15.2026.02.23.03.12.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 03:12:49 -0800 (PST)
+Date: Mon, 23 Feb 2026 11:12:47 +0000
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: vbabka@suse.cz, surenb@google.com, hao.li@linux.dev, leitao@debian.org,
+	Liam.Howlett@oracle.com, zhao1.liu@intel.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-btrfs@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [REGRESSION] kswapd0: page allocation failure (bisected to
+ "slab: add sheaves to most caches")
+Message-ID: <aZw2LyOjxMc-c3dl@debian.local>
+References: <aZt2-oS9lkmwT7Ch@debian.local>
+ <aZwSreGj9-HHdD-j@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260220165203.3213375-2-mclapinski@google.com>
-X-Stat-Signature: rse3oyxo7fbiqzt8tjetys637byocr4a
+In-Reply-To: <aZwSreGj9-HHdD-j@hyeyoo>
+X-Stat-Signature: ofzuyzyfdk7tfj5ixyqxu98ax5mgfhqr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C4748000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771844869-355550
-X-HE-Meta: U2FsdGVkX1/RSWvnsvLAdbq1LxgwMPBhELYjqcEf4AJQ7vt+tvwRhO6Edy9wO1wH+BPtt3KaWog4XzGIyGVvejifGXmCzCJX6e2fyzYSaNOvQVidgiYu0U1faQKIx0xBgg3Msh9wzEBgcS76hLehArakok6zZXQDK1HTq17tUwpPTW+nAKv63TxTiqGK/+aeNWOqoORn8QNujUB+IHO3wLYwEVHbYAllC35eBkrPC8e45yEkjV7L4KnWTTURA+fkvFIBzbmnXXZGdUlhCfTRC9zAoeC2AfHjUF7JI0LtU6oP/vd5v+gdCv+nM8By9f8TkDgY3ecQKEVSFiRP52aCtngHbG67Ag1BgzXU/GnffMY2Rx1mxNeAlJtCfjcHGI4Ysy3gQPEV09LtEmooHGJlT8uD3QH41fEb0c0+83hOGMHnrutB+4qgY+BGW4rHOnUrfP+KqYt+74WrpFgsk+mwU3rPw+dQ63qhYTqS96gPpqjQB56MuOE6L98/LMRrRwFP9CcTNLcfdH3662yfA+IwFqGuUwXSDmqrW8k0r5ZGe+x/rRxkliXygqbiidgqZHWoM/AN4aTqICCHgwa+VH2PhKW7l4NJjbnxMxZl86t0ilzseyK4vZeg1XfyadM2vYgayXu8mAOCpZgjZ6Cq9Dt2mc3acohwltOnrfIW/hGAqkmzfFFXAM4fEo0jK9uZ5cOOY3ZGZvUst2lRfGuDY4MQYZV+2jcGbIoF/J564fhq+lci4C1INJtPxHip72G3a4/ygSuMZgJMDrsCGA8EFyAcwhzzYgwWzuqcaRHga63DPK4FZHmJqzCuVjlUp6RLOSRUsgPKeSEtFVJ6FDbI3pjdp0DqMBHk9TEL/oKtqu1VPVHK58cUSbkf2BWFdf4xaLVp7d7txhpMieiRydds1jKo9BdJ4yemXrEFXiQcTgmFJeLa5Ufnu7LKFIy6JC+WpW3XEe3NBoHc/2lmS1ZMgJh
- A1A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B3C761A000C
+X-HE-Tag: 1771845171-220795
+X-HE-Meta: U2FsdGVkX19KG1SNf2oasLLt4e7Cky5uG3mqofVxHOJzUi4gjLE3Bx/Hy9U1KWZCh06iHjwy58nQjz3BqllUcoaW5VTfo0KHrSHdXVlK0QZOdzyVNkDmLKDeaKHCwLi8djxPAbJKiLTfVN4BiDwj081rkUfvof6UYxc6AwHM8uYSBs1nzWbu1SPep/HZJ17+K0+5QF749lZIcRii0sFmhjlWnS9H8monwT2wwWZCt0ai3/XQ6BV0wnEznhBrMw6EMayvLsFqqCYC91Tnm3i+zEX+hxk/p8fddteXxcIpMZ+b2pekz7jyl1X4Ij/Vc7FcNIRrFTcANnhE682OqI9aRTuBVsEtu3x3TYNc8kOsMF7mPU2jS3xUDOQGzW4A810RphED+oB3q/gEO6Mva92mcB+qKzW41pmyBeLP4Uc4U52IjorQi5C39K+GKos0tO7iUw21zfCCwXHapev9SOdvCVQkeOXOPpPU0mmXuXnHwlMv+n6yOP/Ai3QpGJVeBKRZJX+Mk2g9eTI5fcD/gTRDthDHL73ia2l8ibisohB9PbTeYAzDU70u/7xmSquiZ746L4lrnW+1JxIboFEimt9xZyUqQVltNcw4ppEMlK9ENj+/+DvhFcjgPyrbaTVrxRIXGiJKK61qRsDIZXxGYAK2hrAlv6Xd1c3e9HDH9yRjlJLxpUN48LW426cNZwrPxjqfvXd4Zw5K39m5c4c82bGLwnBAM8RYfF96N2Zp8ocUW5Aad1TCOIYVSoya8n6KkAkAfvUvCuu1mwi0hjB+tHAyoKFscM6PFaqJPkmM56qfDCKFxIR4kTP9neZLJKb2DEJ71kwnoE5y3v27YUS+EUaRn4Wm298VHefyuK+nM1eO2U7jOAFA/JOvM2FKc2YJYHdVfkq36BLKKQDtw2NAHvf1OUSasr/3NEM162SOlSDdTagFPNbiCad2Q6teGJOzUBO10+qViiHdjDZcQXTr1Kb
+ /SCjyO5h
+ 7hr/bMv/A/HgDW77cTS2an7ut/sX9EEg7xetUF+t4jCodRKeooXQ+XQNKIjVQ4l23i4KQPtRCp7wTuPjp6srvY1dJplBpN37j70GidWe+FVpePwuacuajBapCx6VZyLlBgVCkJfVnStPLY0utgmu9pjBOszC0G2jlEkWcV5GNWE87j8cwMHFXoBb1t9z29SNyFZ7cEz/dKznIoOjQlBYGXgs8+vJoPlHhKYB9efHkstGuklDUYwDgO86XYv3HsYMLXP3UR4uJkoG/vrALsuk1POlhjMKksBzmNJspzrewdjpfRGYgkplvidVAIkUF+DEoLdOhf7LEhQPU4jglTSUPmRNzravBbANC077Ovk1OtRwF2+wzmcwB7y/hTXaNZu1HtE1r2BhOehzGSC8AYy8xJJ66+G7Y10sYiPr+/pqqRcVlBQo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,157 +121,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 05:52:02PM +0100, Michal Clapinski wrote:
-> Currently, mm_core_init calls kho_memory_init, which calls
-> kho_release_scratch.
+On Mon, Feb 23, 2026 at 05:41:17PM +0900, Harry Yoo wrote:
+> On Sun, Feb 22, 2026 at 09:36:58PM +0000, Chris Bainbridge wrote:
+> > Hi,
+> > 
+> > The latest mainline kernel (v6.19-11831-ga95f71ad3e2e) has page
+> > allocation failures when doing things like compiling a kernel. I can
+> > also reproduce this with a stress test like
+> > `stress-ng --vm 2 --vm-bytes 110% --verify -v`
 > 
-> If DEFERRED is enabled, kho_release_scratch will first initialize the
-> struct pages of kho scratch. This is not needed. We can just let
-> page_alloc_init_late init it.
+> Hi, thanks for the report!
 > 
-> Next, kho_release_scratch will mark scratch as MIGRATE_CMA. If DEFERRED
-> is enabled, this will be overwritten later in deferred_free_pages.
+> > [  104.032925] kswapd0: page allocation failure: order:0, mode:0xc0c40(GFP_NOFS|__GFP_COMP|__GFP_NOMEMALLOC), nodemask=(null),cpuset=/,mems_allowed=0
+> > [  104.033307] CPU: 4 UID: 0 PID: 156 Comm: kswapd0 Not tainted 6.19.0-rc5-00027-g40fd0acc45d0 #435 PREEMPT(voluntary) 
+> > [  104.033312] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
+> > [  104.033314] Call Trace:
+> > [  104.033316]  <TASK>
+> > [  104.033319]  dump_stack_lvl+0x6a/0x90
+> > [  104.033328]  warn_alloc.cold+0x95/0x1af
+> > [  104.033334]  ? zone_watermark_ok+0x80/0x80
+> > [  104.033350]  __alloc_frozen_pages_noprof+0xec3/0x2470
+> > [  104.033353]  ? __lock_acquire+0x489/0x2600
+> > [  104.033359]  ? stack_access_ok+0x1c0/0x1c0
+> > [  104.033367]  ? warn_alloc+0x1d0/0x1d0
+> > [  104.033371]  ? __lock_acquire+0x489/0x2600
+> > [  104.033375]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+> > [  104.033379]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+> > [  104.033382]  ? lockdep_hardirqs_on+0x78/0x100
+> > [  104.033394]  allocate_slab+0x2b7/0x510
+> > [  104.033399]  refill_objects+0x25d/0x380
+> > [  104.033407]  __pcs_replace_empty_main+0x193/0x5f0
+> > [  104.033412]  kmem_cache_alloc_noprof+0x5b6/0x6f0
+> > [  104.033415]  ? alloc_extent_state+0x1b/0x210 [btrfs]
+> > [  104.033479]  alloc_extent_state+0x1b/0x210 [btrfs]
+> > [  104.033527]  btrfs_clear_extent_bit_changeset+0x2be/0x9c0 [btrfs]
 > 
-> To fix this, I removed the whole kho_release_scratch.
-> Marking the pageblocks as MIGRATE_CMA now happens in kho_init, which
-> runs after deferred_free_pages.
+> Hmm while bisect points out the first bad commit is
+> commit e47c897a2949 ("slab: add sheaves to most caches"),
 > 
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
+> I think the caller is supposed to specify __GFP_NOWARN if it doesn't
+> care about allocation failure?
+> 
+> btrfs_clear_extent_bit_changeset() says:
+> >         if (!prealloc) {
+> >                 /*
+> >                  * Don't care for allocation failure here because we might end
+> >                  * up not needing the pre-allocated extent state at all, which
+> >                  * is the case if we only have in the tree extent states that 
+> >                  * cover our input range and don't cover too any other range.
+> >                  * If we end up needing a new extent state we allocate it later.
+> >                  */
+> >                 prealloc = alloc_extent_state(mask);
+> >         }
+> 
+> Oh wait, I see what's going on. bisection pointed out the commit
+> because slab tries to refill sheaves with __GFP_NOMEMALLOC (and then
+> falls back to slowpath if it fails).
+> 
+> Since failing to refill sheaves doesn't mean the allocation will fail,
+> it should specify __GFP_NOWARN with __GFP_NOMEMALLOC as long as there's
+> fallback method.
+> 
+> But for __prefill_sheaf_pfmemalloc(), it should specify __GPF_NOWARN on
+> the first attempt only when gfp_pfmemalloc_allowed() returns true.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Is this fix sufficient to do the right thing? I tested it, and it does
+appear to prevent logging of the allocation failures for my test case.
 
-> ---
->  include/linux/memblock.h           |  2 --
->  kernel/liveupdate/kexec_handover.c | 43 ++++++++----------------------
->  mm/memblock.c                      | 22 ---------------
->  3 files changed, 11 insertions(+), 56 deletions(-)
-> 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 221118b5a16e..35d9cf6bbf7a 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
->  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
->  void memblock_set_kho_scratch_only(void);
->  void memblock_clear_kho_scratch_only(void);
-> -void memmap_init_kho_scratch_pages(void);
->  #else
->  static inline void memblock_set_kho_scratch_only(void) { }
->  static inline void memblock_clear_kho_scratch_only(void) { }
-> -static inline void memmap_init_kho_scratch_pages(void) {}
->  #endif
->  
->  #endif /* _LINUX_MEMBLOCK_H */
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index b851b09a8e99..de167bfa2c8d 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1377,11 +1377,6 @@ static __init int kho_init(void)
->  	if (err)
->  		goto err_free_fdt;
->  
-> -	if (fdt) {
-> -		kho_in_debugfs_init(&kho_in.dbg, fdt);
-> -		return 0;
-> -	}
-> -
->  	for (int i = 0; i < kho_scratch_cnt; i++) {
->  		unsigned long base_pfn = PHYS_PFN(kho_scratch[i].addr);
->  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
-> @@ -1397,8 +1392,17 @@ static __init int kho_init(void)
->  		 */
->  		kmemleak_ignore_phys(kho_scratch[i].addr);
->  		for (pfn = base_pfn; pfn < base_pfn + count;
-> -		     pfn += pageblock_nr_pages)
-> -			init_cma_reserved_pageblock(pfn_to_page(pfn));
-> +		     pfn += pageblock_nr_pages) {
-> +			if (fdt)
-> +				init_cma_pageblock(pfn_to_page(pfn));
-> +			else
-> +				init_cma_reserved_pageblock(pfn_to_page(pfn));
-> +		}
-> +	}
-> +
-> +	if (fdt) {
-> +		kho_in_debugfs_init(&kho_in.dbg, fdt);
-> +		return 0;
->  	}
->  
->  	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
-> @@ -1421,35 +1425,10 @@ static __init int kho_init(void)
->  }
->  fs_initcall(kho_init);
->  
-> -static void __init kho_release_scratch(void)
-> -{
-> -	phys_addr_t start, end;
-> -	u64 i;
-> -
-> -	memmap_init_kho_scratch_pages();
-> -
-> -	/*
-> -	 * Mark scratch mem as CMA before we return it. That way we
-> -	 * ensure that no kernel allocations happen on it. That means
-> -	 * we can reuse it as scratch memory again later.
-> -	 */
-> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
-> -		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
-> -		ulong end_pfn = pageblock_align(PFN_UP(end));
-> -		ulong pfn;
-> -
-> -		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
-> -			init_pageblock_migratetype(pfn_to_page(pfn),
-> -						   MIGRATE_CMA, false);
-> -	}
-> -}
-> -
->  void __init kho_memory_init(void)
->  {
->  	if (kho_in.mem_map_phys) {
->  		kho_scratch = phys_to_virt(kho_in.scratch_phys);
-> -		kho_release_scratch();
->  		kho_mem_deserialize(phys_to_virt(kho_in.mem_map_phys));
->  	} else {
->  		kho_reserve_scratch();
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 6cff515d82f4..3eff19124fc0 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
->  {
->  	kho_scratch_only = false;
->  }
-> -
-> -__init void memmap_init_kho_scratch_pages(void)
-> -{
-> -	phys_addr_t start, end;
-> -	unsigned long pfn;
-> -	int nid;
-> -	u64 i;
-> -
-> -	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
-> -		return;
-> -
-> -	/*
-> -	 * Initialize struct pages for free scratch memory.
-> -	 * The struct pages for reserved scratch memory will be set up in
-> -	 * reserve_bootmem_region()
-> -	 */
-> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> -		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
-> -			init_deferred_page(pfn, nid);
-> -	}
-> -}
->  #endif
->  
->  /**
-> -- 
-> 2.53.0.345.g96ddfc5eaa-goog
-> 
-
--- 
-Sincerely yours,
-Mike.
+diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
+index d0dd50f7d279..d2e1083848e8 100644
+--- a/fs/btrfs/extent-io-tree.c
++++ b/fs/btrfs/extent-io-tree.c
+@@ -641,7 +641,7 @@ int btrfs_clear_extent_bit_changeset(struct extent_io_tree *tree, u64 start, u64
+ 		 * cover our input range and don't cover too any other range.
+ 		 * If we end up needing a new extent state we allocate it later.
+ 		 */
+-		prealloc = alloc_extent_state(mask);
++		prealloc = alloc_extent_state(mask | __GFP_NOWARN);
+ 	}
+ 
+ 	spin_lock(&tree->lock);
 
