@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14ABCEC1113
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:39:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68EF5EC110C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:39:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E4AD6B0005; Mon, 23 Feb 2026 12:39:46 -0500 (EST)
+	id B676A6B0089; Mon, 23 Feb 2026 12:39:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BCE66B0089; Mon, 23 Feb 2026 12:39:46 -0500 (EST)
+	id B3F1E6B008A; Mon, 23 Feb 2026 12:39:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413EB6B008A; Mon, 23 Feb 2026 12:39:46 -0500 (EST)
+	id A768B6B008C; Mon, 23 Feb 2026 12:39:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CFF56B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:39:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2673C1382
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:39:45 +0000 (UTC)
-X-FDA: 84476433930.19.5A41F91
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 94B516B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:39:48 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5BC7C1C0DD
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:39:48 +0000 (UTC)
+X-FDA: 84476434056.03.451D332
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6178820005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:39:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qUv4S4TD;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id C625C14000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:39:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gwZPMv2o;
+	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771868384;
+	s=arc-20220608; t=1771868386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0yyVS3OZcTZbAz6bBfGWyMJG4inPI9BuGVo6g165Ous=;
-	b=lRXAb1H6Ifu8+02Fx0MlLiD3uqQ8Xsc9BbrV93PnjPeAIwSf+2QehP0BT9+ObfN+jcnS3X
-	Jcj0jXDJWhhKUIXlehXOQbxTKaJ7if4dtp4Xv5wphwmptZfNQYXwRZJiwhnT5DCDtN4eph
-	TcgpqE930/8zc5f8lIXvBzIntJvVl40=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771868384; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MHcCb2HsJLijQLFR6u7ODO3T63bB2yOAHEVWHTJ3SbQ=;
+	b=jjd1wWwNnAR6jQaTyqB+bp97Bkm0g3xvFuft4LgcSxguWTmU3oYdV+5jTbGfz/nvaPmN/Q
+	7I/1QcPw3a0tvhvDxjAmUYZ8bYdtE6XyUjrBuAuOwCOIXP4jW6zA14JtxHuJOtsDG3i/yJ
+	MRdmCoGEcytfY0qvkeCXodbaQk8oHII=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771868386; a=rsa-sha256;
 	cv=none;
-	b=3fynvYUrIEg/+LtHXPsqrXt41cEeygwB5pnK1VmK+XXn0E03MesPsNlcm500OAIzBq5Yax
-	gEyH4PXVbMRdH7tsPJr2SKV7oknC3+K+ms2pzGxDAuHgy9w5ekpe+83mLwq2RTG/1dGjTX
-	5BRURex/kp6qV0xb0Hi+HPaJChS97Lc=
+	b=qsX8V6u+W67SAdwSIEAAY1GhaYjLy1j01Irr09W45rdtQyxBSKK8L5+Rwzom1rgSswlJs1
+	Uzg5+sNpb9oFWNn3yzpg+b7wul44jmlp0fzI1vX9nv9+wg3VSuEXGfLENU7AVQ7AmDzeQJ
+	SOVpSn16eRso6pEcL+v7IAjqQWgc9j0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qUv4S4TD;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gwZPMv2o;
+	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD48C6013F;
-	Mon, 23 Feb 2026 17:39:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7A9C116C6;
-	Mon, 23 Feb 2026 17:39:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 34B9061118;
+	Mon, 23 Feb 2026 17:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9C9C116D0;
+	Mon, 23 Feb 2026 17:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771868383;
-	bh=1609qBNCFT64/6Ur2waJiWhfmIJVYp2lmLTA0HMQLO8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qUv4S4TD/2QP47A0z2Zydcj7HQU9+B22YONNft7F8OPmrXfoWTEwHRFFSfjn0A6bG
-	 5lN62eNjaSx71rwo0ri3px8bClLxdKrvNsPedRYg983bW2pHIJxqBIydZpBfPhFujE
-	 JmJ0Yq+xUPfvQ2+Nl1eTBc2lR8Hlj4s3+sp8BPz+IbaXYE+PqlZW3BG1viokZL6JeE
-	 VON1XoeCR21pQUBMvVsAhAZ6OB5sjpDow2zQLZB5ElcO3qjZrYQ8a3upfVarnwCNMK
-	 gNA6J+SoopfwExe07mWlYgVqpt8PzXfqhCr0JlZvEaQJOpIlTgqDRE1cJ2k7rxHlt4
-	 /VpZ06rebBg7w==
+	s=k20201202; t=1771868386;
+	bh=KPLMRqJNulMdw70KhDZpgFoKTEgDZfxf2vi2hDqk/Bg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gwZPMv2oaRXv+q25/D5x6vlZzXflUJmjGV4pALpQJgz46CHbsuieJUiHTSaROAbnm
+	 u7pmDRkPoqTELwyN5p5AbHtMTBjfrilOMgqbApDyxACq46wf1nYixFbyN9gYQdcmaP
+	 VQqSgbKN1Y0UT/mklqsSts0sqKX0785iCigbgnDRLxdU7qcPyMh08y0uchYRV+2VON
+	 yCIztLlF1sGjQHylJ+ueQAr0tIt1R4fnKDZq+g1VT2rDE2AkQbW9VIhB3yy0v7sgtn
+	 1omxvKDF1Xt2WYMBOknNyu27Z0nuIP3JYPdG+qQ8XvqYyK6u2mpUVPn6S6C86Wsbp5
+	 6dJL1sbClyTDw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 0/2] mm: memfd_luo: fixes for folio flag preservation
-Date: Mon, 23 Feb 2026 18:39:27 +0100
-Message-ID: <20260223173931.2221759-1-pratyush@kernel.org>
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] mm: memfd_luo: always make all folios uptodate
+Date: Mon, 23 Feb 2026 18:39:28 +0100
+Message-ID: <20260223173931.2221759-2-pratyush@kernel.org>
 X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
+In-Reply-To: <20260223173931.2221759-1-pratyush@kernel.org>
+References: <20260223173931.2221759-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 9kjykdojsrnjjw865iy9gmtq47gauosa
+X-Stat-Signature: mmw6ahp7qycwyf6win9qeq5ayayuds5c
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6178820005
-X-HE-Tag: 1771868384-432670
-X-HE-Meta: U2FsdGVkX1+z/AJYmN4t70tVkHSMrzvdludnv5lxH/AwTT7yQxd32UveSrHKZDFpLwJPOAraaF/OjGVzHzOrimPZVSsuyn1Y5jidyeHjKGYKpDVGkFQ8DFvxmtcceeEgj0IRdVRw7KmDNV0Wq7RmuDnHqEPBpDGjfmxFadRhQ8Ye8B7s8cXWRjSeCMIoOh/fIOVseyURhWjKTxDFbGPKU4BuYp40LkBToRhQaHhENSZj3Elqt1rbRBkNrzpoPxmXHnb00RMw36NhhcPar0/ZIJ65CvsX6HFVutiRBMqvIo8YFtAjopWuII6qAYLP5p8+6K1HHjOD/x5YUJ9rB4FQaSAjOVDZwUPMFKK31PwuhYKqsa/jiJsgoUofTk0LpuNxssc/KqwgsWhIW6LyfWxCs1+D6XGvMS1qIMpEQZMoHb321sReHf7sP8pmfs4f+kQnOFfrKgdDv8pv9KrWIlkoJZuLtAiK+gSAltNPutViAfpbhy8CCrRdL1iDU3HbSR5EdTo+kaMOxxgwO50iu7SAx5/ULj//qa3/FmUX656Pxb7beB1LRPgTNJkxGhqP3ORNhro66n8GWgBi8sNk0mqj7aSkYEidADJtQfbL0D1LJkF5oH6WbAzlRrwMuz87ixdH0h8RbBk2z0pOMIBshB2zSnhlHq6KGayfzY5kQLc+1wgGK/QVbZXM//wRGbXGpCxl7cZisaeBSgmqEH+vgUE72gdfs8E8Onzplk5M8sGC7JfQMg9FD3ML/JWqRQG31PKZnD9jQiSsznPclYwaWacj8I1JO+76OIOUvaD4R4dBc7dVJKoxZWs77WBa44KauOhKSPxwJloJCWbIDlzmHRRYRA5C3m2GWA0bQblXpf97mQu2QFXNfqAeHgXwNqkudZ3h39ehZjAP5iuuvlmqaXYkogCTU66brDq0RW+8f0hyPXV2KPpjly1trsnBxDttCpCN8x3tsz3DcFCGw0fK4Eh
- 5woBazCx
- mfZ6c0HedbIX2I8hKvDaBT7Bh4yoD2zB/RrYg8RR1Zv4HBH98dSTSPDz6ty7ZdjliWkXmW77RUkUJ28YcNLD2C6/mlLv6g5EQKDtUKzSTaCXL34hOPaT/mAHjhIMhk/7Gq99Yv21hbSOmjv5MyQtkUxIachBUISkA9yXJW363D5hwTEuchfbPQGKJ56lk2K+3fxEweFhI+8gKmzhc/vzf0BvH139dWYEPcHXnr//zEAhkMahpee0dgcGiOFjsFOLCulpCHpJjtwoxgNHg+iA1Z3494w==
+X-Rspamd-Queue-Id: C625C14000B
+X-HE-Tag: 1771868386-328782
+X-HE-Meta: U2FsdGVkX1/UbBXulT+Obnk/ZKhdinH2rCquN1rQpSMQMvKnzBKEvTgL9sQ5kCHmANJtuCIp9Twl8V6eDKsMFJcQlTzKcn301Eko15OM/r3I9fi1U3bUDtslL1ryeFkGxt7F9F3LnSPj0Aso07C3rWYlNE+xor8rAgobPh4li+lMUGedSrkXP3Qvlh4i9unJPHuuCZNLbxvVWNt65diyF0zCNB33r9jf6oeMBlec7X5uJUNvlWMqPB4czabec6bo7IaRgoGI7IhowBRW/ZDl3Q35cWl5mkSSn9XlOVA5/hp1Rs/a/X6k6Nbs9vE6KuGpbWPUTPuDIpsZR44M9fUVM2ImvxfQOy3DLhauTZWvTii6OK8fuaoWt+ZtbXykEYL4oVoThpQbEDkr6XPuD43+gTQZOBhg/xJlv0xI/PS638KSDhvGiK6iirzwLSWQflJQaSNdymHc5cjf0xzI3eLyZzZZoG+zOJmDcibh+UDXmV77QVmjyuVFbDulocwtLu9x5D6CaDTaCGBCEZBQ4soGJSqOCsw1iakQASYXQSc047VRpTBEvCznQuvvgPFXkwWoS1S+CLElpy5+lwEOdqtdhwSTrl+h/hiMunf5OOadR4xMPRkRO84CO6lGeDGtVzL6Tt3jD7PQqrTCxRLWDeoJEwmD7TIt2YaytYhkr1MMWTpnlTlAWGYCTokqDqXaisFdmKHrlEWayzCKg7qat9cW3tNq0IYKFbZBCitV0BvXDtpG1eEkXPBuw+ek2vgRirpBIiBQkMnWa8z24vdiX6v5zDcUhirZY3C9RTxeYPYKo1mghks6utqjdlspCm0copTFXCKuEqrM3eF8F1uxKA/8BqH+GpS8LctOAbjSZCEJDtaGfIlxUp6FZ4PQUUqHF85ubfzluZptQdAcE5UupQtRCs6oj6wo/7TMUVvC6/0m18f5z2zZd3Oew4IK5BOBxxxuqiUQFjae/b/F6z4JHLU
+ aPSkLwje
+ Z+Ck2/Nun0ILbALP2UPzc9a1aKkCB/9eazcuRGIW6uOQ/sWfrWe/wly5nWV+StlDeoCfnIx0kJAgC8WbkeJ8Shtuv2lIZAD0crNG3PignDDyWLy/r0QudePxn+tnXNqiUoVFNoZmOML3svAA+p6STTsfs1khMlzjXK21+hmoFX11bT9xZhIFlLtDPVq4l/qgCoBjpaCp717vVYJgAghQosi2hu37wK/h+EFzeHLPToqHBYCyYtWhRxlky9A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,32 +97,77 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hi,
+When a folio is added to a shmem file via fallocate, it is not zeroed on
+allocation. This is done as a performance optimization since it is
+possible the folio will never end up being used at all. When the folio
+is used, shmem checks for the uptodate flag, and if absent, zeroes the
+folio (and sets the flag) before returning to user.
 
-This series contains a couple fixes for flag preservation for memfd live
-update.
+With LUO, the flags of each folio are saved at preserve time. It is
+possible to have a memfd with some folios fallocated but not uptodate.
+For those, the uptodate flag doesn't get saved. The folios might later
+end up being used and become uptodate. They would get passed to the next
+kernel via KHO correctly since they did get preserved. But they won't
+have the MEMFD_LUO_FOLIO_UPTODATE flag.
 
-The first patch fixes memfd preservation when fallocate() was used to
-pre-allocate some pages. For these memfds, all the writes to fallocated
-pages touched after preserve were lost.
+This means that when the memfd is retrieved, the folios will be added to
+the shmem file without the uptodate flag. They will be zeroed before
+first use, losing the data in those folios.
 
-The second patch fixes dirty flag tracking. If the dirty flag is not
-tracked correctly, the next kernel might incorrectly reclaim some folios
-under memory pressure, losing user data. This is a theoretical bug that
-I observed when reading the code, and haven't been able to reproduce it.
+Since we take a big performance hit in allocating, zeroing, and pinning
+all folios at prepare time anyway, take some more and zero all
+non-uptodate ones too.
 
-Regards,
-Pratyush Yadav
+Later when there is a stronger need to make prepare faster, this can be
+optimized.
 
-Pratyush Yadav (Google) (2):
-  mm: memfd_luo: always make all folios uptodate
-  mm: memfd_luo: always dirty all folios
+To avoid racing with another uptodate operation, take the folio lock.
 
- mm/memfd_luo.c | 49 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 43 insertions(+), 6 deletions(-)
+Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ mm/memfd_luo.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-
-base-commit: 8bf22c33e7a172fbc72464f4cc484d23a6b412ba
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index a34fccc23b6a..ccbf1337f650 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -152,10 +152,31 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 		if (err)
+ 			goto err_unpreserve;
+ 
++		folio_lock(folio);
++
+ 		if (folio_test_dirty(folio))
+ 			flags |= MEMFD_LUO_FOLIO_DIRTY;
+-		if (folio_test_uptodate(folio))
+-			flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		/*
++		 * If the folio is not uptodate, it was fallocated but never
++		 * used. Saving this flag at prepare() doesn't work since it
++		 * might change later when someone uses the folio.
++		 *
++		 * Since we have taken the performance penalty of allocating,
++		 * zeroing, and pinning all the folios in the holes, take a bit
++		 * more and zero all non-uptodate folios too.
++		 *
++		 * NOTE: For someone looking to improve preserve performance,
++		 * this is a good place to look.
++		 */
++		if (!folio_test_uptodate(folio)) {
++			folio_zero_range(folio, 0, folio_size(folio));
++			flush_dcache_folio(folio);
++			folio_mark_uptodate(folio);
++		}
++		flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		folio_unlock(folio);
+ 
+ 		pfolio->pfn = folio_pfn(folio);
+ 		pfolio->flags = flags;
 -- 
 2.53.0.371.g1d285c8824-goog
 
