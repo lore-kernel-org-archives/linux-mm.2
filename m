@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04462E98DF1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:05:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BC15E98DF0
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 07:05:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75C786B0093; Mon, 23 Feb 2026 02:05:01 -0500 (EST)
+	id 124F36B0095; Mon, 23 Feb 2026 02:05:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C5246B0095; Mon, 23 Feb 2026 02:05:01 -0500 (EST)
+	id 0C54D6B0096; Mon, 23 Feb 2026 02:05:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E8B26B0096; Mon, 23 Feb 2026 02:05:01 -0500 (EST)
+	id F1DEA6B0098; Mon, 23 Feb 2026 02:05:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7DC6B0093
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:05:01 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DA4EE6B0095
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 02:05:02 -0500 (EST)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 061C0140827
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:05:01 +0000 (UTC)
-X-FDA: 84474834402.15.D041E49
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4AA0EC000E
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:04:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HyK7CYUV;
-	spf=pass (imf28.hostedemail.com: domain of 3GfybaQsKCNQ02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3GfybaQsKCNQ02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 762261C2B7
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:05:02 +0000 (UTC)
+X-FDA: 84474834444.15.3EDB29C
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BBF81C0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:05:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kccQBUf2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3G_ybaQsKCNY24C6JD6QLF88GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3G_ybaQsKCNY24C6JD6QLF88GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771830300; a=rsa-sha256;
+	cv=none;
+	b=H/nCH3agjVW/ULuqx51FUiVo8+639kj1EMsZ4h8pRd5vKQhiQaYyTfLWjogpWEhfnLsuCu
+	Tja1sDtG5I54PSjMaUi4WSwk0rfebhGgSee9EQNsV/MfGfcE8mUQhe9AYm4Zn3t1aNzs+k
+	kDLMEJheq6UuyLwB84pIba3SCCMLjJY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kccQBUf2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3G_ybaQsKCNY24C6JD6QLF88GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3G_ybaQsKCNY24C6JD6QLF88GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771830299;
+	s=arc-20220608; t=1771830300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tZVo84a8gYXfxb6fQudIUthBz+u2OhxnqcpBYF66SVE=;
-	b=XVcy10GLqbEDSVjfkvbkz0fPVcapat2bPMTVcUYCCDcMgzUnUSAydVWuYorLlaUsR8GJSB
-	1TUv619Ehk1tVR4PcOgLPRhuTZHV/MFS+LhCAHJYgmop2FlvpNG8e2hZC1f/rtLIHIQiSi
-	HDZMuplvkmajE7WxrYHqqwQ0/avJfxs=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HyK7CYUV;
-	spf=pass (imf28.hostedemail.com: domain of 3GfybaQsKCNQ02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3GfybaQsKCNQ02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771830299; a=rsa-sha256;
-	cv=none;
-	b=LkX5Eg9259p/re99pKV2rFHxGt1rnW/mA77aivFyqkAq0Jbw8J9DAAazPhaLW2faDHYB1L
-	95S4RfB9QGm5YVkdPCQL9J0GQRvPpwzbg0kyHMrkppXq5+sS/jxi8bwyh1yfgLoLXT/3O+
-	MIYIBv3XQOVNjSaasCVPpEGdM4+f5pY=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8244d786b23so1534189b3a.0
-        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:04:59 -0800 (PST)
+	bh=W8EPkBYTIogg/WcIy2FNnZriREPEXUqsGjhG96y07ko=;
+	b=FmEI0eGW9S1rqmc7t8425bC2wsnyuus+gtP2Ce9eSqEkxUdKxzqCYYq3aJHaY/wAAD7BUq
+	xnsTMt2uD/exMCCkoCRWDdTZ0O8HqbKkgwx4Q9LzNA3ncARThylxaatnnDfFYk9mnIKL+j
+	5Ugzd8z/Ku0jQwuft3V3sbo48OU1trI=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a77040ede0so48548115ad.2
+        for <linux-mm@kvack.org>; Sun, 22 Feb 2026 23:05:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771830298; x=1772435098; darn=kvack.org;
+        d=google.com; s=20230601; t=1771830300; x=1772435100; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tZVo84a8gYXfxb6fQudIUthBz+u2OhxnqcpBYF66SVE=;
-        b=HyK7CYUVQO22O4s71h0W2PPPz2qdtiEQfRbpx8oQQQvT9cv46WHuRxKFxtSSq9W0CU
-         w3roJGxy1TBxkT+Xmk+dCzM6q+K/WIwSanG53p0geTRWljliTY6zT+j5KraR3Aptu9Cx
-         SRDSmHMV3kqo8iImLLc8kwFokddsJhpS4iO35GwiTuZKwjf8ZPFr8WyG0KByKNKnE55f
-         nZUksO+WQ3b2hwkPrIh0VWRRx5109sXcl1pweMILMFJcwJyBfSn+rxz8jNFdNdjslC7S
-         MUd7uKz/27hehKJZZ5hN0MhZJA7zJgN+vsrABOwMgsUbEehfDCugF2wsXyipY85QHYNL
-         qReQ==
+        bh=W8EPkBYTIogg/WcIy2FNnZriREPEXUqsGjhG96y07ko=;
+        b=kccQBUf24OOLN/o/duH6++GZo1A8Kl7GeAgzz/LwfMPP/dg/yYjpvL8cvXCLqmWLCl
+         gX7ZCMfIhFfOr6qSwfWbQPM9VTNZISGnHrmpu5XyhPp2dbFVOnnc0IkAXRt7E1by/7ax
+         9tqhIrD1y0kcb5eMgFOnCrSWOpiRfRAgLL6pAKH7tXVoZ/j4n43xx6cvCLqusD42vHqU
+         yiJ36PUSII2/57KPod9LbRpSI5d4fu/FLG/dfX59BR5gQferNbT2xC4V2IlC3OS/hIq4
+         k4dqRA6n63CCEjO9Y7Ex5RNIFidVYwv8jBP6nh04MblsKDwHr2kXLiJzphc9eBUK5D/r
+         FKlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771830298; x=1772435098;
+        d=1e100.net; s=20230601; t=1771830300; x=1772435100;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tZVo84a8gYXfxb6fQudIUthBz+u2OhxnqcpBYF66SVE=;
-        b=DLYeWx0TpRidbjXJGrMppYx6JDyn9LyseJdYpk+psdtdxhaeEOyz9v3eRtkDPOJ+bE
-         IVwgYKK+zLrWIwrb9Vfjy+zojLGqyMZUsuR6b+jOMXvlJSXi/Jg/RiCUipjlGysaSnIg
-         njVhh3RBVnvhyhMHyPxTdSCWKjOsxVr1AVDDP+wF8Mu9ewpFAZGqjIBOQ851zlXeWcru
-         Y93G+pEMNKsScBKYISNYLamimJVxPkuBzV042pM6sBR+HcCTcpGj4+jmCwrLmsCHjSDt
-         fww1DUJSqRXnRlG0F3CglSU7jcVJiMGw6rfQn4tawk42QqgyDMmeT0NelUMc09whCWm4
-         /frQ==
-X-Gm-Message-State: AOJu0YwC/UnSEehqAP5B6kAICvoUJtebAnZ5u8h37qD/J9k5D3xY3TRb
-	D6OcR3Vtwittw3fUm9Az/Zykz1K7eAjOyZ5JffSImT4xloylfoQ/Y3PqjHFGA/sdDmFw4X0MR5P
-	38l6bv68XZUPU+vcBFAR0tRwUBDoiJMFAaX2K7Eq7AYawlOLWXRHUXk26owGgVgWYv8C1p2IKBR
-	2282oZYdmgnPbgHJOmgL4obZVGZkjCDrEjrCKVfmEL0ChfADtRMwSSWEfl+g==
-X-Received: from pfbdf2.prod.google.com ([2002:a05:6a00:4702:b0:824:b56e:1181])
+        bh=W8EPkBYTIogg/WcIy2FNnZriREPEXUqsGjhG96y07ko=;
+        b=rcPiDWxZ4tisjEBpT9q+U6+7xcuehCE0Oh9VH0/zbI4DLX7Cskff+vMJNWekNzJo05
+         xqr3ABthGshLlbr5kfz1DUcPQqfpbOwPHnnqPAZOCjmnvBHwJRKnUaQChX+A1o6CxUS3
+         MzppBODk/ZPryXp/k8xWaZn3D9EvZXg1HQzHRoXHJxnfiWq8zG+W5li6RiZ/JuPOg+in
+         Jhqs6HwkFmZHnPWnPE0NvLa1xXbjTb4Q2t8s8sAHe/pNwMj4Zbsabub8JH8PVbWkz5XG
+         6VOGi/aG75wH18lJH+eDd+YxxKkQyEGHMPqNdnQkHTZKOKp/ggB3FoHFtPja5+aGLr9+
+         0qmg==
+X-Gm-Message-State: AOJu0YyZqmsjeTi94u8zuNugnDnMg30lBypJIwEzht5MO5Q3hHF+lIIh
+	C6v67M/pA7uO065T0Kqm9LsH3RF90whjs1G0QMDFktlFsdUKWvP+0ReoAy6ELnqzBjy5fpDvmTZ
+	0PetyTcwQ1Vo8TURu7zXwgEOjUZQQ6pDbDELmo0Njo3jXdjojmz7R3T99cpCCTq3yEnz7Oi99b4
+	i7QtCxDqzvY5ds2n9VCkO5210ll2cm8IcDlW+wMZHcsFEE0pSKgsXcyLqZYA==
+X-Received: from pjbx30.prod.google.com ([2002:a17:90a:38a1:b0:356:3562:569c])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:4ac1:b0:823:ad3:4ff4 with SMTP id d2e1a72fcca58-826daa0521bmr4935965b3a.37.1771830297745;
- Sun, 22 Feb 2026 23:04:57 -0800 (PST)
-Date: Mon, 23 Feb 2026 07:04:38 +0000
+ 2002:a17:903:248:b0:2a0:a33f:3049 with SMTP id d9443c01a7336-2ad743fe006mr64180505ad.4.1771830299282;
+ Sun, 22 Feb 2026 23:04:59 -0800 (PST)
+Date: Mon, 23 Feb 2026 07:04:39 +0000
 In-Reply-To: <cover.1771826352.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1771826352.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <45a3e4c00f4494c5f91aa1ccd9c400525a55ed45.1771826352.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 05/10] mm: Export unmap_mapping_folio() for KVM
+Message-ID: <e08ed6869b9f555169476d220d7e8112e7163cee.1771826352.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 06/10] mm: filemap: Export filemap_remove_folio()
 From: Ackerley Tng <ackerleytng@google.com>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
@@ -100,14 +100,14 @@ Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
 	pratyush@kernel.org, pasha.tatashin@soleen.com, kalyazin@amazon.com, 
 	tabba@google.com, michael.roth@amd.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xoija1tfbwny1nkbqxgdgm95ukm577df
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4AA0EC000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771830299-850907
-X-HE-Meta: U2FsdGVkX1/TrIuYwSB8gNh+deQ24EMHYFViuNMTSRdREVl8sIz8vKpUl9+v0K8lj4ZWa6OqlM5Gk3pq074EMXz17LfDXfegbQH0OrxQS0xqlCwkwZirVlSoi05S8gO6u0zHiavMSD1hs5/imXRyAPDcURJELF4cJk2MvV8V8DE7HugEMjublGGCS410Zkd4m//F+cxJesjfZvkK8wXiDnU78zEnRxwc8bVzTYo6jpbEQ5FtrGnyoCnQbwK29NGlbLujx7nKigKNDXnG9+lH9x2W+JbolH+kzNQGlwafopxD5k+maozxacsZNdK0bh4CxPRr9W70GBzVLEGQXABmKlq1Bwd/VRLN7pTSZYyKtb+W7qpHFY90Pz+3GuGjjILO6tjdOvix9pWg0VevVFp1DL6lsJEwguCHJVijuXm5ho3i+Pcxhamy0+FW8kd5e9HIcJy/9dPn4d0jEccYT4nawQGbp7G69soZfHxcBomC5cxlxZfPhcpbhrl2SXynFYX/D66pjD6dgUat+n0WaehMaIGC/8osIajA2SilMuL1Lw3h5QrFv5RmPHtXH8xeoTLoo+7IWxqV2zHgSoUkoQrgGCYo5bd2aRuV+mgTn/WEHTOKi8v91tcOhxGgtnh9C9e6wixlj72nj2fakKuAhcVONBuzKho2rpnCUIKFHD6O88DIpcpNLrOhCmEZkYlhb9sDnnRJv1N5Z4WNdx7Qg6n2OtK5eS6okhA+A4HOwshoXKa92kw9IUIYGTvNDiZH78h8Cm5cm8P6j9vIyg42R5CE1y2atZNYG3uW39cCRs8ty+x6cVg5zHp0w5SmD+YIaLcdbPQp3Kn0y7ElMkZflBGI61jVntxrD3fTBpLlO4RtXR1n8UdBUBazbd77JD9BxCQFw3k0zgFRMjAe+nQtM7BxpodLSgcVevt0sjnH8ug0CMq39aGYtORIBZOb2oLi9eMNAHgfueTco6cXYFTcMlR
- m/QAh7gD
- ynZIC8wr4eWmuJ5KW5hQPYp+89kxp5IjQxVEWVjrC7JoTSDR7Fz2qoQMh82oV81mgFEemDJCpkLTjMnhNkjVuZKtz14VpVZ0uJIB1cw1Pch70eDRFGEt3qZ3L7as4NGmtQWpf3o56jTIDqLs4NL/qxAXY0/bdtzI0F7w3Rakd+zpldBsLsF4vH8zqc9JDi1Iq3mhBPbMcWckl2iCg3ecN02MgswWVOaQYQrsj4PSu3oouTjzJ0ZqBbLY+AbAX5RBJStlTAqkrKFqUfVyX2fzVEyXM+ZHxujE8GZlShlVZSeNabP7dqnGWpe9jfk1j6hLnus91sh2qNZMbUKPVVoMcg3C6l/YRqeEdocAAaN0Hl+qewiqZwea/jqGBcyOQyfPq9iLFznN/6QxInstHeptvEGcCHUXA47/6fkZz+hn/sqaZWNj+mQNRK3N23VZJijjq/o8dBRL//HrvJlifV30e4ZUDs4yVq8WxO48v8Z25GVK/AXCPtvuXmIbCGFKChIItzOTdBuya00DFVwqPIfBH8yilvNC6VZLc4iK7NK0i7an+sj/KyLwzP9M3Wyj/t9Zo/5pzB30NvtcLVtkKkWGCYn79AmmMrgUq/rXK/ZUHj027k8lYsWR6dGxrIKhJbNs3sCI6Gsr8XHKHj2E+xAsTWw4rQi773FNJiais8l5aNS7ihxBl+7KjYujLIPCEIi0Tu01tzJRb8oiN4CkICTqz9/1Y9Xm43d9nyex2Pf9Tg5UfYrakh4vw8WmSQw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BBF81C0005
+X-Stat-Signature: d6ddyz71pds3j19u1tzyquxa35rxr9gq
+X-HE-Tag: 1771830300-625248
+X-HE-Meta: U2FsdGVkX1/BU7kIBGKxtgvYcSR7rU1aKn0fAdYeiAA7dZt3ODBRVcmiHAeW5rLI6a+ARvfByIhsddERsU6j29rGlFh/UT2PQbxORb36zbjg63N+5wP6ByprJPeNZRJjzX5ugzYi85xk7EdCMgasIsRxA9KhEew6efB91CIEQTqwc063Eac4peOpY37IITs0+ZoSyT+ZqJyPFLD7ivt8mBn6QXcWIOiYxUp2+c/YDFqnoANLHof8A5pjKhYjvGdrjo20bkiSCAU+FEsfiElroxGCFluAlncjUl0XXcHadWZcQ49Nb3uNplVkA38ZMVILiYglJDxbL/feLn1KzUJBwYa0h8if8lADtmcOK7i+JKZ+wD6sXxgjuKwooCrsolbvEeG9u6PS+iAqCUKAq59vgMg56BBXc6l/PpX8O47njagHKBWpxWy3BK/I0pwr3UMwSUMqZJ2/Y4PhyvVa6Wp1BMP9kemzpKxJ0VVdkyWYAUb1x59mKHzpzHSyPeLaocDhDuubwUhSCGYiXADy9YiqCj1G5wvyTm6zbXZRJQhDl90VckFGUJq+FDB/BOTAj57IjWH6WmlJ26yIO4rdU7F0B+TP+voSlfNg9D17JrLBKpHcM8cm94q6kucpkH+RetziVtZl8BC+slyUR1kOS7vz+wQgzBTuM5uAxYualBCO4kU/J75eCPYJX52EItYfvPNp4xuA0liMlmMFdW9Gl5QPVa1QNfQdfU3cTPeI/bWeLysF9ZZ8mPKtJzLtilZVm2Ks1ly4Ons/hSYYEYSV+taoIbCgF7V5HqxlQS8ETiB4sIBCykbIX8gkic9YzSA16KbxbC3STB2NvGfqOwHs+ye13lwuHuxr0pIPl28Pe3nKl4lEVz5ZB5KNNyaQ6Ba9/r1Mqm2mkvoUxtJI1Hg+CW5n8Ev7FKH+RDzRbru+3roChDG21LJthdtQft+MaK/6UHwVEdFn/unDYp8Radbc3mG
+ VAsrnSIc
+ tOhghD7TtjVrZfQlJaIot+T5/3qRkd+ql9HSTzBR9lBbrPCZWGD+gLuOaHin2JC59aaAgTROiy+7jSjjO5GkqCo/Vophq70uKwXOSPFij3rFDzJ5/p6xGBm+u5NWeBy5oztZo20p2Vc8piitxhz7R3a30Wt6MI6KTl9ySNp8oEHzOA71tu3r0kIJ9R45bXGo4OoGZRMGaOX9uKtvUXu9vQmvUL4Fyhhebtdi6wjmVYYI4o+xJvVqWJGT1YrZEn8z1Q1WqeAf9wdkVgKcK0Shz+0hBISBCv0OTXaAgTixb5g0yQDk0sOXTUnlO9TGMYASIQwET7vJmQafFr67bnFIXN7QtQjKNMkDq/C6xtaykZV3cVwUy5kugu6MX8ROhDiBpDO+wUKZrO5ZVOyWgM/J+ecKQbnufy7r1R9790jSOnAAJ0wgH6a5vy3UoYpaoHMVi2WCFS28AYolkaFAte7tje1G3VkDrDflUFOyMsoW0sp/4LagX+3+PbVO9M32YnwAjAUtkirQJK5MuNSYGsdX+6ZRBvYdPpxaaGMiHha6aSXGp5fOKOoQJWYEVCTBlbpCieJ4xj3XgLODFRQC3QzuFRieKBM2yN/n/VT+4sFhVvS5kmL82nsw5XlnB+BGWTJYxQQzsdxgZQra1e99rnPZTVuwqrQnHl/W/WzhE2+1Yhoef5QJvnANJxVRRMBqMQk/Hrudm3ylVU6uMC75v27mRoci5Ep9G+ScwkFJm1E590dofgqhPwcyJjltawA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,85 +116,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-guest_memfd needs a way to unmap a folio from all userspace processes. This
-is required as part of a folio's truncation process. The function
-unmap_mapping_folio() provides exactly this functionality.
+Export filemap_remove_folio() for use by KVM.
 
-Move its declaration from the internal mm/internal.h to the public
-include/linux/mm.h and export the symbol.
+KVM requires this function to remove folios from guest_memfd's filemap.
 
-unmap_mapping_folio() will be used by guest_memfd in a later patch to
-implement a custom truncation function.
-
-No functional change intended.
+guest_memfd used to rely on higher-level, exported truncation functions. To
+track memory that is actually allocated (i.e. i_blocks, st_blocks),
+guest_memfd will need a custom truncation function to do accounting cleanup
+and will be using filemap_remove_folio() for truncation.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- include/linux/mm.h | 2 ++
- mm/internal.h      | 2 --
- mm/memory.c        | 2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ mm/filemap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7f04f1eaab15a..97fa861364590 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2690,6 +2690,7 @@ extern vm_fault_t handle_mm_fault(struct vm_area_struct *vma,
- extern int fixup_user_fault(struct mm_struct *mm,
- 			    unsigned long address, unsigned int fault_flags,
- 			    bool *unlocked);
-+void unmap_mapping_folio(struct folio *folio);
- void unmap_mapping_pages(struct address_space *mapping,
- 		pgoff_t start, pgoff_t nr, bool even_cows);
- void unmap_mapping_range(struct address_space *mapping,
-@@ -2710,6 +2711,7 @@ static inline int fixup_user_fault(struct mm_struct *mm, unsigned long address,
- 	BUG();
- 	return -EFAULT;
- }
-+static inline void unmap_mapping_folio(struct folio *folio) { }
- static inline void unmap_mapping_pages(struct address_space *mapping,
- 		pgoff_t start, pgoff_t nr, bool even_cows) { }
- static inline void unmap_mapping_range(struct address_space *mapping,
-diff --git a/mm/internal.h b/mm/internal.h
-index f35dbcf99a86b..98351be76238b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -953,7 +953,6 @@ static inline bool free_area_empty(struct free_area *area, int migratetype)
- struct anon_vma *folio_anon_vma(const struct folio *folio);
- 
- #ifdef CONFIG_MMU
--void unmap_mapping_folio(struct folio *folio);
- extern long populate_vma_page_range(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end, int *locked);
- extern long faultin_page_range(struct mm_struct *mm, unsigned long start,
-@@ -1131,7 +1130,6 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
- 	return fpin;
- }
- #else /* !CONFIG_MMU */
--static inline void unmap_mapping_folio(struct folio *folio) { }
- static inline void mlock_new_folio(struct folio *folio) { }
- static inline bool need_mlock_drain(int cpu) { return false; }
- static inline void mlock_drain_local(void) { }
-diff --git a/mm/memory.c b/mm/memory.c
-index da360a6eb8a48..983bb25517cb7 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -78,6 +78,7 @@
- #include <linux/sched/sysctl.h>
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ebd75684cb0a7..379d62239fc5f 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -49,6 +49,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/sysctl.h>
  #include <linux/pgalloc.h>
- #include <linux/uaccess.h>
 +#include <linux/kvm_types.h>
  
- #include <trace/events/kmem.h>
+ #include <asm/tlbflush.h>
+ #include "internal.h"
+@@ -262,6 +263,7 @@ void filemap_remove_folio(struct folio *folio)
  
-@@ -4244,6 +4245,7 @@ void unmap_mapping_folio(struct folio *folio)
- 					 last_index, &details);
- 	i_mmap_unlock_read(mapping);
+ 	filemap_free_folio(mapping, folio);
  }
-+EXPORT_SYMBOL_FOR_KVM(unmap_mapping_folio);
++EXPORT_SYMBOL_FOR_KVM(filemap_remove_folio);
  
- /**
-  * unmap_mapping_pages() - Unmap pages from processes.
+ /*
+  * page_cache_delete_batch - delete several folios from page cache
 -- 
 2.53.0.345.g96ddfc5eaa-goog
 
