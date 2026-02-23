@@ -4,116 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60600EC1103
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD2FEC1101
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:08:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EBCF6B0095; Mon, 23 Feb 2026 11:01:56 -0500 (EST)
+	id 61DCB6B0089; Mon, 23 Feb 2026 11:08:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BCD36B0096; Mon, 23 Feb 2026 11:01:56 -0500 (EST)
+	id 5CBD66B008A; Mon, 23 Feb 2026 11:08:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC15F6B0098; Mon, 23 Feb 2026 11:01:55 -0500 (EST)
+	id 479206B0092; Mon, 23 Feb 2026 11:08:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CFCAE6B0095
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:01:55 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70F3BB6FE2
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:01:54 +0000 (UTC)
-X-FDA: 84476187348.11.3CBF4DE
-Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B64411C0018
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:01:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=VYvxJk7g;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.196 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3090A6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:08:45 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA77414024D
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:08:44 +0000 (UTC)
+X-FDA: 84476204568.12.27444C2
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D15AB40003
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:08:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Gl8DA67o;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771862512;
+	s=arc-20220608; t=1771862922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=OE3e/mRY2hQ14eIolnufoTqQ/7nanRq+a9D/btXLD44=;
-	b=vHPhVjPLt7ErQCoMb+NSsf4nPnlQYBNTEbiJGft/VmvLAZvZjE+0IZxTBRZPYHX/nhmvth
-	076YN/lxp+AjF6A8e7WUuVxB19HS+pCPoVjw3n6Rkkjrl0BXNomYDAca+YocEzExrIp8zh
-	6jIdjBYCFP7X30lbEhtEkhlwUSGA1jE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=VYvxJk7g;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.196 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771862512; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hp6xyKYDxr6lXYQA9JHTZDh6ckgrNYb0tSD8kTJSDxQ=;
+	b=my8teLvzTqfclI5dfwiBmeDQb621bFrvRal+v28HVYfpCDCjPeKCMBeIqUmiGHbSGzH+fR
+	lru271aBRQqYaTPBwAlJ7nK6HIQwtp9hpwYcVT37dAnqf0ZImGoixF9gU/mPlcgJFnHeiX
+	Wqsu+UmjtSk7Cvysz96BOK3R23ECOpE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771862922; a=rsa-sha256;
 	cv=none;
-	b=kfqeSAW7AMaMVaDY32hLjnTJHHiB8m3k63eJ/DrrLjKw2+LrmpboEkUs0AXQmtjgOD3cIc
-	1OkKkWfwhHFK5UfqH2DjIDUGSCe3h2XGQG6qrn1FPNlLXpzYRd1UkNSTsqK+ZvAf7Tm1Uh
-	RL/sIuGzJz+WH5JLKObcW5EBXrcKH6Q=
-Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-8cb3fd71badso424548885a.0
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 08:01:52 -0800 (PST)
+	b=Hu3v6WO85MKTws/rL8+Ex8qfq4nQglibbByWNtW4QSU7xFKVlSBgRrp2PHg0pcW3eMK2Zw
+	E+u8mDnigaPJxANPM81XYOPVzTRMzmblVzlkp0TtAglDNzNrCrRlaI1kwGCqZ1w2hen3dL
+	JrNvzgYEoAnD7uz78LYcAphs7ccvtPE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Gl8DA67o;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-895071c5527so54028946d6.1
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 08:08:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1771862512; x=1772467312; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OE3e/mRY2hQ14eIolnufoTqQ/7nanRq+a9D/btXLD44=;
-        b=VYvxJk7gsjF1/rUIWOJeNuJEH0QYlIS+SWUlGqyi1PXlMQvZRpFssEZrxn0YQ2OraU
-         DRUafcPoo5sW+m0nAq15P0g92nAdZJ9mDm2CVDPpM9hVtjYvmRTiEIXGDXIOMOPlS3Kh
-         NaUuWMe9cRofQgtPDYsKnwK8b+c7AGqnbMgzlD19+fCyikmNqq4m446nnFwM/ywHASu9
-         uJM9+gbUk5rvswSGx2mEeZ2a/oglqmQqjDi7BRgm1hQgg3aBgdJZEkG9jZutf3uGQtcr
-         AeSZaXHq9oROJKONwv48k1u2lSY6JRp8MWIuHs6JGpxUGSniuZL5/z/MUbc0xePSK0pP
-         c4eg==
+        d=gourry.net; s=google; t=1771862922; x=1772467722; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hp6xyKYDxr6lXYQA9JHTZDh6ckgrNYb0tSD8kTJSDxQ=;
+        b=Gl8DA67oaRZryeClk69ib+qgrNhZXvMsNLvJLJzEbAKHi71Evx078aGvtBI53K3uIZ
+         TeGLlBL3kT7w5tsPMTlIr8SfiHzn284WFjELyek7TVWQvRoJTBhOISqN1N3+i7dgorid
+         guCDBXZ1lKt25KDbZAF1I1MIL+WytWPqq6S98vh1euxzuDeosyUAtgrrCqdDtxavW5ug
+         L0uk/gjpU2vbNih/iYFpFK+SRh5drXsw9kuGnHMCUoJDJY+d97xcIuUv4nJBgrRCjY3t
+         KI9fFsd/s23IYcxut7jgJiQcfQYB0EV2xVZEXgwhNz7VJRWI3DW9Gs7DeTxBaZoamF2x
+         cWbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771862512; x=1772467312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OE3e/mRY2hQ14eIolnufoTqQ/7nanRq+a9D/btXLD44=;
-        b=mpf06vg3YaFCcq3TQ4q9j91bG8CWhHbRXZiymP3V9YvN6JMs6q2AEU6QHYvstylwLK
-         AaWSUsYRGePJYRp6t4E3KFUJ1swhGbwLqPknDOdxg32z2liQ5+9DYmXiXITwfvpNeej2
-         WEXPlrS+G2QAjuQJ3C7FU62S1rjr70DlQhV/HYSGR84bq5PoZipBfWd9uFJSPN+1C6H+
-         kERJ8f+NxO4WTdsKXQPUFL8wvikefzN3PpSf/K6Pr4IhcamkZDvNX2B8KOMPpdOkytsF
-         3vlRF93ZaaQf/f33gYXjDT6g83VkptNasyZktU7vpSWSaRJEkjRRpnC2cVgBJBk9//JX
-         2Gqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkSkhrNuQ7FA2NwS5TZxpsPFRIZKdbaHMmWOvy9IZG2NeWhEeeSzTPW0X6p3i5JR4JiauGTVC9vw==@kvack.org
-X-Gm-Message-State: AOJu0YzDZVCIPnl4WhhtDXUPxj55748zf7U0bylGbpHhzdQVa4s2y6OE
-	IetXQg2LbecElIBfsQT8etn+EIYqWiIGhmKAFwLdZTalL58ZbZNxJCjY1wGG9hOKQkg=
-X-Gm-Gg: AZuq6aJ53Efw2nZgI3v4gXaLlZ31t24+JLx12WzwVnH1mY/saBAH9jTwfiYdXpfTTWs
-	BnwOQHxxvdFcLcOtJwEn9B7NLzdbSiB0XM4+0wg8WuO9wf4vE1fqMzVNBMSAbrMjO06p70RBpCg
-	4htdHNcitz0myrq5wgs+B73up/lGWymFaJH9nZUU+SHKXAhcJ3nHUz8vAmUtNfrmqv647S7v8Q7
-	uGpx87ZaNJuPKI5T4imXs5P9cTMdZ5o9nsWM7d5gxayQx5hj+621hATsIouK0zr4b2zc/yjXXWU
-	WIZn9SRyxDJNMg0u5e2PInHqICF9Qv7TndD+kmhJjFK6PN4JT+alDzOITT/f6WyvEcOxYH88TGt
-	95aWyKzu/LBrWAcZvEVU737onWPlc9UsX6Kz+r9yC73JobD7XXdl702m6kNETx1ob0Xtl3oXaWY
-	zlRgRFwErubsOMs2j55ubqnA==
-X-Received: by 2002:a05:622a:14:b0:502:9a98:34b6 with SMTP id d75a77b69052e-5070bbde388mr116096171cf.19.1771862508740;
-        Mon, 23 Feb 2026 08:01:48 -0800 (PST)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d6c9de8sm70140001cf.26.2026.02.23.08.01.47
+        d=1e100.net; s=20230601; t=1771862922; x=1772467722;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hp6xyKYDxr6lXYQA9JHTZDh6ckgrNYb0tSD8kTJSDxQ=;
+        b=P3E133Wplpl+ZKonnwZV5qnau5ADJugEb6m3P+VPCAFxxjp7CBxngcIASKGM5rY2sE
+         dTKXv+p3cqMX9G5qWDtbo8+azRlefGRliJ3ISU17f4pps9o7acja209ptOCMjsdo509m
+         I+1JwFPfPzV7HHKy1oUq5+YeL3grOZrwX9pePecwhugFzh9Odnl6Vh7pXKtUa0yI8R/Z
+         skQOQ3uen0QDK1sEv7YB8SZeYcWXPgRFqd2wlEzGjZam7O+yymVSCKzIO4o4IICifzp2
+         qUxauTzT8shzcsVL4R0K6xec/E4lHdgEz3y1+Jo5u9OskKH4rtOPBeKGVck6CSvl8kfP
+         4GGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZEfUcfOgrBd7qXCD741ylRt57/jZ/UHTjZ2i0Piqom32KbLCW7+97r6XPXi5j6tbP0buqi7zFUg==@kvack.org
+X-Gm-Message-State: AOJu0YzdKI0tlgtHKoc154oid23Yre4rGBScKDXH9uMdMcQB9bz1hFOr
+	CXSTmKFw/fvZ1vwd3/Wyzjf4UH9jDAwElDouJHJlesJ3f1ybfg1UfI3w/aB0tBbJ3BI=
+X-Gm-Gg: AZuq6aLlRRCfZOBe94is2bLSgdcYDavSo9yIHGlfrhS5A89hzidQp0X459pnoKqhqAA
+	FL2nV9GsLYCfb1wYQOE4CUDHu4/mrXJRA+x0wDPQCZVPa1ws8THn8m73c8hQp1kHEtc7kf1k3ur
+	yk/Zy/pgR88tgEuIjvod86SfpdyoVlgqzf5urjK7/HlQPZZXA1eHHFKZ6bvw6360e3p/h3No1as
+	SUhUPKScI3CdpK465r1pYscTp7RDiMvbk3OAQOZGiouLZJQmpvKajPAkMEyuSFIoKShb51+cAGR
+	Yqq7Hu5lS5u2viIuIqtNWd2x7xkIHAU3myhM+OgslYQdn7Q29UrVsJ8DFsRxwkThfO5kHNdcdjj
+	tz2pWG0jWddRfHr7hNh/4VuGTuE15tPh65MD7akQ0dmvvngnSVMwul25c2PuXy1kOOnrap69cWu
+	2ETNUrozhyjJWZGZvxI+Z0RhKfeHeZCVdatSO53j71Q/w3e/MncWJ4fqh83uWL5OHozemy6Fltc
+	Vn35LEp0I74cb8NsXKK
+X-Received: by 2002:a05:622a:1922:b0:4f3:5835:e946 with SMTP id d75a77b69052e-5070bca9868mr136790871cf.55.1771862921369;
+        Mon, 23 Feb 2026 08:08:41 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d54000fsm71259831cf.10.2026.02.23.08.08.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 08:01:47 -0800 (PST)
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] mm: vmalloc: streamline vmalloc memory accounting
-Date: Mon, 23 Feb 2026 11:01:06 -0500
-Message-ID: <20260223160147.3792777-1-hannes@cmpxchg.org>
-X-Mailer: git-send-email 2.53.0
+        Mon, 23 Feb 2026 08:08:40 -0800 (PST)
+Date: Mon, 23 Feb 2026 11:08:38 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, osalvador@suse.de,
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk,
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, tj@kernel.org,
+	hannes@cmpxchg.org, mkoutny@suse.com, jackmanb@google.com,
+	sj@kernel.org, baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <aZx7hsVNU0XOCCiG@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <c10400db-2259-4465-a07e-19d0691101a4@kernel.org>
+ <aZxqP7J1kOClQUPQ@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uc6y6b1ao6s36hjgd59c3xzsa6faq8eo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZxqP7J1kOClQUPQ@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: iz1b63886kuk39u65xmp5ty1fj6aud3j
+X-Rspamd-Queue-Id: D15AB40003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B64411C0018
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771862512-98097
-X-HE-Meta: U2FsdGVkX19l3Iv+er7wrAUPYSr1i0mwGKoq2/fIucyS8P9RmNNxnXbPl5lsLs1uGRBUy2LH6JAogqqfWvbuL/BltXwBO/FXmzj1OzPdp5vC6+iOqC+QkdBRbQShY/w3LJPyPy7naTtdQI1QU/TamMiQ3yz9KnEE2QztLEaanSsTJDKuFsy3a8nvJWBUEB6mCMbAE7HidCeAkDPugvDEPTG03T0ExqlWzrrwv4A9iLouwZBMRUH33V9fMOIqi89f6iyRgAWJ8zxzpjzx+6iGuoOQZ6jX2ErsJs2nHLzh5ees7F9H8m2cKSJkfc7YyN6Pj8CaEZH6naCOlLkGadjCG361Fj3bBUtrTn6LLmqxvuYrTw0lFZWQ/HSpZTI3J/pu7AqMmiVu8MgmajBFuynateNwPpAc59nCY8JFMTjIzj/6w9FMn/rAwyBqPUUDGJNv5w2lCLJQcHY8zEbgh1/Tyt0cFrMjXJkTYPePVt2ZD20r2Udas6E5Dr30dB2TDAU+pT5ehcoIhrfaqrYl6pQ1gr25LO+EdgK1MQA46J9F+sHi7ib9bqjikBB5jnfFCQ+GWMINwL3Ib+cCdkQxaBDe4XWsvxIPpySK5Kny+7cNVSknZBHqgYlB7jOqo0G4aA1Us+dJ2QoY9Dm5ZFVQJoTF8GSwVuwEv/2vcWHvV9VDLp/cBRjFjAsekWTUuq0Dfvci7LlY5uHGjJ0neFS1CnlqAF6VjBat3abAyAu6KYQn8NVn6Q3OtzjmCm4Iai0cjHIQkCHanqqnWWb38eYgXDVE5lvtohDr/XuBFi5zqH6fxbTtFtFHD9Kyls2BICXRHCV2kii/hCjVqAODpRoNxoV10scWdUIgSODWgwxaKyRd8aCUrSe4WadrqMVQKQ0ZmbPy1AFPnLbgSsqhX/D+IYbFnJVCe7PjVj5JyvjXzg5VZuZOzPCBM7jLDBJnHqizLCIHDBBAXZkIWC/7olkH94/
- 20pzP28X
- AJp4xDbnSfIkIrZjhco7aA3UC3ebZBFre6s9e6PDPBeHFA2+MbQbTRnDlKQLpkkeeYaNcmEEFgtWv3ziWJhZW4EbG5ra6elI/gxM0htGuQbh9zFt+455Ku6zLVC3uebKLV2UxEkqDJX9f8p+mtef8Zrkd44Fa35eQMbYnPJ6N0tlDUMs=
+X-HE-Tag: 1771862922-193910
+X-HE-Meta: U2FsdGVkX1/1VIdZQmuzX/NUIaKeHWhp9qs++TPIFc+ykAMXZ1tqqYlJzDHJXcPm/3QJqlNdCPyPUwxpNcQUB4exInaqFgpASGrufg2pkuiQDy3e0wxjraa6gRvj13sIGDyWdyrFd//yC9dkicfvFjj2LBRC+owagfBzxojWILSmmzRE5+mcYCfrEf0+CBc6GeN6LCURc4/Wi0FXucQlKwdOj41pjeOM+evuvUsIf+CtWC7lFTS+0rH0AYdk4hBNDcjgJ49quv7gdfK+suvKwWcmM8nqz+mvFFAeD5HaXB/FN3NR5djstn/d9sxEm84Z27FspCHJrwSqfwxvuQ+9aAWU0MUJo4iD9tG4LNWqUZEOvquoqp+cHd1hOb4UYGBQWzb1ZcMQuXZZEfcw5i8IXU2Xte1kPfc1qhWFit2w3+OU057IDp+2Bd0AoMD8LnbczTj2aUjOb9gx2jDKjEtjIqgcYRsG+REZ+dfk0EmfF5i8MkfjS5efxwNfAJM4ljsabNQW8uy2hW8YfkZLQg5XkqbPeH5GEyRZVm71XQXqj7LblO9yWDHFC5tTFDIcq6r2N3iIOIKxIIuNuwIWyMrPw9Q6dhi80fjOvic7VXhZeaZGVO34MyCtT85wNvBsD4+onow0/D2sgzJTLSnvSOGaKEklJT0hWYml8RtTVoHexplN6tPiYcGYJYVt9i6uD/IlCc2SvINERLWflIyha9X15NuzgSSY8rG1UPCS0O/bIWw/zdKk7eYleHKiwsscxukzaJZQl0YjE2xZZMOaPG4tt9dEoS65N6SfxRLMn3XJTKmb1Joe+xCPzcSIO9VLGOrxxmwOBjhzzQ3gJfG4acd0A5VP6stdz6Tj1Wnza+tH1kJhV3Aozznxdbs9LVXcUXi+Flo1YsizvDPVD+EI+RnVNA08pwZU03QMhZ/L4H4Q4o9p/UPJI0U0gnNWMFaIZ/BJiCMR5sWGUGs0mzu6/cd
+ AuY7t9Df
+ RxyMVRBT92Lp9EUMFcgxYUGRIx1dMMNP5tEAB1kIDUDjwgHZLmJs05WRlxcyquVIRz1rPL04C6IkmLWH501ZPQvsWHN40csN1A3tKxY5e+oSvWmBN6+d0btoP8CzcWIKkKZfWHfr9Ilr0a/XRt+lGI8jv5/IWwkO1JRgCgZ6je87NYU6uusU4Mcb2tkMROC0nzHJhfqFRrDDfp9pjjwUhzhIp/NABwablFRC9uplAXs1ZAfHW0M0QANvEroRYvjRDyYKL4hfsPf+cmVukMMuQgDz6Gl+istbXxrWRh+E9xNiVFKU7JikxXPQnEgEzs6o8ahpaz4z9oEpYGOWe+KriIKpaaW8GlA3IdTx3Lh2lKYZWHlwL+4jQHFW3LUMvxluE5D/AefkSY0zIhS4rPzk4ThzKpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,160 +145,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use a vmstat counter instead of a custom, open-coded atomic. This has
-the added benefit of making the data available per-node, and prepares
-for cleaning up the memcg accounting as well.
+On Mon, Feb 23, 2026 at 09:54:55AM -0500, Gregory Price wrote:
+> On Mon, Feb 23, 2026 at 02:07:15PM +0100, David Hildenbrand (Arm) wrote:
+> > 
+> > I'm concerned about adding more special-casing (similar to what we already
+> > added for ZONE_DEVICE) all over the place.
+> > 
+> > Like the whole folio_managed_() stuff in mprotect.c
+> > 
+> > Having that said, sounds like a reasonable topic to discuss.
+> > 
+> 
+> Another option would be to add the hook to vma_wants_writenotify()
+> instead of the page table code - and mask MM_CP_TRY_CHANGE_WRITABLE.
+> 
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- fs/proc/meminfo.c       |  3 ++-
- include/linux/mmzone.h  |  1 +
- include/linux/vmalloc.h |  3 ---
- mm/vmalloc.c            | 19 ++++++++++---------
- mm/vmstat.c             |  1 +
- 5 files changed, 14 insertions(+), 13 deletions(-)
+scratch all this - existing hooks exist for exactly this purpose:
 
-V2:
-- Fix mod_node_page_state() pgdat argument (Shakeel)
+	can_change_[pte|pmd]_writable()
 
-diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
-index a458f1e112fd..549793f44726 100644
---- a/fs/proc/meminfo.c
-+++ b/fs/proc/meminfo.c
-@@ -126,7 +126,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
- 	show_val_kb(m, "Committed_AS:   ", committed);
- 	seq_printf(m, "VmallocTotal:   %8lu kB\n",
- 		   (unsigned long)VMALLOC_TOTAL >> 10);
--	show_val_kb(m, "VmallocUsed:    ", vmalloc_nr_pages());
-+	show_val_kb(m, "VmallocUsed:    ",
-+		    global_node_page_state(NR_VMALLOC));
- 	show_val_kb(m, "VmallocChunk:   ", 0ul);
- 	show_val_kb(m, "Percpu:         ", pcpu_nr_pages());
- 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index fc5d6c88d2f0..64df797d45c6 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -220,6 +220,7 @@ enum node_stat_item {
- 	NR_KERNEL_MISC_RECLAIMABLE,	/* reclaimable non-slab kernel pages */
- 	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
- 	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
-+	NR_VMALLOC,
- 	NR_KERNEL_STACK_KB,	/* measured in KiB */
- #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
- 	NR_KERNEL_SCS_KB,	/* measured in KiB */
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index e8e94f90d686..3b02c0c6b371 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -286,8 +286,6 @@ int unregister_vmap_purge_notifier(struct notifier_block *nb);
- #ifdef CONFIG_MMU
- #define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
- 
--unsigned long vmalloc_nr_pages(void);
--
- int vm_area_map_pages(struct vm_struct *area, unsigned long start,
- 		      unsigned long end, struct page **pages);
- void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
-@@ -304,7 +302,6 @@ static inline void set_vm_flush_reset_perms(void *addr)
- #else  /* !CONFIG_MMU */
- #define VMALLOC_TOTAL 0UL
- 
--static inline unsigned long vmalloc_nr_pages(void) { return 0; }
- static inline void set_vm_flush_reset_perms(void *addr) {}
- #endif /* CONFIG_MMU */
- 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index e286c2d2068c..a5fc7795aafd 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -1063,14 +1063,8 @@ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
- static void drain_vmap_area_work(struct work_struct *work);
- static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
- 
--static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
- static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
- 
--unsigned long vmalloc_nr_pages(void)
--{
--	return atomic_long_read(&nr_vmalloc_pages);
--}
--
- static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *root)
- {
- 	struct rb_node *n = root->rb_node;
-@@ -3463,11 +3457,11 @@ void vfree(const void *addr)
- 		 * High-order allocs for huge vmallocs are split, so
- 		 * can be freed as an array of order-0 allocations
- 		 */
-+		if (!(vm->flags & VM_MAP_PUT_PAGES))
-+			dec_node_page_state(page, NR_VMALLOC);
- 		__free_page(page);
- 		cond_resched();
- 	}
--	if (!(vm->flags & VM_MAP_PUT_PAGES))
--		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
- 	kvfree(vm->pages);
- 	kfree(vm);
- }
-@@ -3655,6 +3649,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 			continue;
- 		}
- 
-+		mod_node_page_state(page_pgdat(page), NR_VMALLOC, 1 << large_order);
-+
- 		split_page(page, large_order);
- 		for (i = 0; i < (1U << large_order); i++)
- 			pages[nr_allocated + i] = page + i;
-@@ -3675,6 +3671,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 	if (!order) {
- 		while (nr_allocated < nr_pages) {
- 			unsigned int nr, nr_pages_request;
-+			int i;
- 
- 			/*
- 			 * A maximum allowed request is hard-coded and is 100
-@@ -3698,6 +3695,9 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 							nr_pages_request,
- 							pages + nr_allocated);
- 
-+			for (i = nr_allocated; i < nr_allocated + nr; i++)
-+				inc_node_page_state(pages[i], NR_VMALLOC);
-+
- 			nr_allocated += nr;
- 
- 			/*
-@@ -3722,6 +3722,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 		if (unlikely(!page))
- 			break;
- 
-+		mod_node_page_state(page_pgdat(page), NR_VMALLOC, 1 << order);
-+
- 		/*
- 		 * High-order allocations must be able to be treated as
- 		 * independent small pages by callers (as they can with
-@@ -3864,7 +3866,6 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
- 			vmalloc_gfp_adjust(gfp_mask, page_order), node,
- 			page_order, nr_small_pages, area->pages);
- 
--	atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
- 	/* All pages of vm should be charged to same memcg, so use first one. */
- 	if (gfp_mask & __GFP_ACCOUNT && area->nr_pages)
- 		mod_memcg_page_state(area->pages[0], MEMCG_VMALLOC,
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index d6e814c82952..bc199c7cd07b 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1270,6 +1270,7 @@ const char * const vmstat_text[] = {
- 	[I(NR_KERNEL_MISC_RECLAIMABLE)]		= "nr_kernel_misc_reclaimable",
- 	[I(NR_FOLL_PIN_ACQUIRED)]		= "nr_foll_pin_acquired",
- 	[I(NR_FOLL_PIN_RELEASED)]		= "nr_foll_pin_released",
-+	[I(NR_VMALLOC)]				= "nr_vmalloc",
- 	[I(NR_KERNEL_STACK_KB)]			= "nr_kernel_stack",
- #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
- 	[I(NR_KERNEL_SCS_KB)]			= "nr_shadow_call_stack",
--- 
-2.53.0
+Surprised I missed this.
 
+I can clean this up to remove it from the page table walks.
+
+Still valid to question whether we want this, but at least the hook
+lives with other write-protect hooks now.
+
+~Gregory
 
