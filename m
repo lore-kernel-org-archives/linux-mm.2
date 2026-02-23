@@ -4,84 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F32DEA4FCF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04CF9EA4FD8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:27:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 710506B0005; Mon, 23 Feb 2026 10:23:34 -0500 (EST)
+	id 23E746B0089; Mon, 23 Feb 2026 10:27:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 690DD6B008A; Mon, 23 Feb 2026 10:23:34 -0500 (EST)
+	id 21FD86B008A; Mon, 23 Feb 2026 10:27:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 592E86B008C; Mon, 23 Feb 2026 10:23:34 -0500 (EST)
+	id 0F8676B008C; Mon, 23 Feb 2026 10:27:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 475946B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:23:34 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A5B5E56E23
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:23:33 +0000 (UTC)
-X-FDA: 84476090706.27.ABFC67E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED22A6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:27:34 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 996A11A01F1
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:27:34 +0000 (UTC)
+X-FDA: 84476100828.30.B39F126
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E94E64000F
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:23:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V7+HQvRw;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id E985C180004
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:27:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RhxvaE8n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771860452; a=rsa-sha256;
+	cv=none;
+	b=nYa5FqZITHBWQUClFfvSM3v2D2NDXLTKRuc0KlNL+fA8ZjWdqw9JsKgaOx+cAc5jvGqk7o
+	OXy0g7klazhDawRADx95HHsbh9cUnR2dlngn8Id9CjU56w3pQAkRBl5PXSkWEJYIuQwzLW
+	CPZAj3QFMCRRHkpcn9rX3kNJjWRjnlg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RhxvaE8n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771860211;
+	s=arc-20220608; t=1771860452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1RoF47py/q8y8DrCz6K/90Xii9aAW3toxFuuv1XpBRI=;
-	b=62snJxtzlztOnQm+lzZco+jswaQK4/GAQ0yl8FziMvwP1bhUfp+9oDo+QnBAiB4dBMB0O5
-	ps3pwapEH3VSRNDDZmTdDxcA9kqdGqp0KnH0Fr1+OB0Y3s2+0sGLE7n7QrRWpVQeHXYjuJ
-	SfL1Joh9SLq9oCF89tBYWVZYWOna/kY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771860211; a=rsa-sha256;
-	cv=none;
-	b=rSWHS2AQn0fZd7k3A+iztL/JH83gOlVGJnWEXeuaGX9iKICfIvzyQrsiLvmaMQBm9JAJ12
-	m7Onn5M73TYw7puBf5NJfY4xPAN2G3TvcYEPwT0uX0qkMfc+nu3EM9XbRJQANNpOf15n7x
-	b9VT6zzutR+RCAmZ+Ni1+o81sGK+5J8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V7+HQvRw;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=6QAWYQ8UpQenLZ0aHy8uXkQiFgVTozlWWowgolKIqhg=;
+	b=fydidcuD+G/eeDKXkbZcufC126I3lgj9Sx7BBrEx4HYGiPGy/N9MPbhNazlxwdRv9EDYhw
+	2wqQh9HAbKaPB/KDXa09/Bk2D8rsRhtoz3mLnnglHjOITElhlRBsdMHvK+RauhEaVJfUi1
+	FtH77tRk9iYwBIhPd0z6bm8hDCT63ko=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 39AC260018;
-	Mon, 23 Feb 2026 15:23:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B05C116C6;
-	Mon, 23 Feb 2026 15:23:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D9D2E60051;
+	Mon, 23 Feb 2026 15:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5437C116C6;
+	Mon, 23 Feb 2026 15:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771860210;
-	bh=bALHuEZfqz05Bg8MqVkjA0pxJVc6K09SZOdZ92Wgj68=;
+	s=k20201202; t=1771860451;
+	bh=sNIFAxdhsfczXp0u6khA1iIW4G427nJP4aj8xANK8vo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V7+HQvRwM9bPb0Rxkkv5aHO99w3TUgqWDsppu0UG6MQTNDMsPwzNKNIG2rQPEJ6LX
-	 1tVgVAI/NI6k2O3UX6ZxwITvnJwIN794QtGOMz6rSEu6I4kSc68W+gn1B9MzhmSUjK
-	 lxUbOGRzV0jEHIwzfhiCpwaV4slLgVJYSJeE7Rqygrv0lA8tEw7Rk6Vt4ZQH7cgKP7
-	 yYXhPFFickcwkFwVw9Omcj7Ze/yFW1kNeeVLq8WuQN/NfkM55kr9v7Bveup3cyx/il
-	 cX6zxqy072LUeqbhFrMk72NeBYauAgvZVTdERArq2xQcocEJ4gheOB475fPltfsFzH
-	 v6g3P8mdHQibg==
-Message-ID: <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
-Date: Mon, 23 Feb 2026 16:23:21 +0100
+	b=RhxvaE8nn/UMV0eGCQCN6bn3AFU1O7cE1NrNBD8N6is7e063xjThYwogLjKdFJpZD
+	 ebgIqwodFIJ+4KeMFIny2fwDvixKBYpFJsgYAQDliELDxoz9p+fhiwfUDbNhkB8waw
+	 p8eG9KFgN95UWQsqVzDMKndJgRm5J1xgUKy1IlwS6q1YzHNZb9KJTOSc0uYgJPYNsI
+	 8aW0w51Zw0KGVuipNQgBzopbnZuKVbxGgLCSsqb5fNQkktOVlsRD77I4/XyzyzEss/
+	 qQr0MqF/zzAN2DuA2QWeqREmuBOhDFiqADJhUZua6bZDN5d1kKCZ6XX5SVA4N1gOTO
+	 qYsSQ7b5JSZFg==
+Message-ID: <61e2acbc-d3c7-424a-80da-3c34a593c9ad@kernel.org>
+Date: Mon, 23 Feb 2026 16:27:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory
- allocated on inode
-To: Ackerley Tng <ackerleytng@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org,
- seanjc@google.com, shivankg@amd.com, rick.p.edgecombe@intel.com,
- yan.y.zhao@intel.com, rientjes@google.com, fvdl@google.com,
- jthoughton@google.com, vannapurve@google.com, pratyush@kernel.org,
- pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com,
- michael.roth@amd.com
-References: <cover.1771826352.git.ackerleytng@google.com>
+Subject: Re: [PATCH v1 00/11] Zero page->private when freeing pages
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Christoph Hellwig <hch@infradead.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-erofs@lists.ozlabs.org, linux-block@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Jason Xing <kernelxing@tencent.com>, Yushan Zhou <katrinzhou@tencent.com>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, Davidlohr Bueso
+ <dave@stgolabs.net>, Eric Sandeen <sandeen@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Carlos Llamas <cmllamas@google.com>,
+ Alice Ryhl <aliceryhl@google.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Gao Xiang <xiang@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+ Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
+ <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
+ Chunhai Guo <guochunhai@vivo.com>
+References: <20260223032641.1859381-1-ziy@nvidia.com>
+ <aZxaIEFZr2NvO2eQ@infradead.org>
+ <cb8d6ee2-fd1d-436a-b934-aff87adf5dcb@amd.com>
+ <5105764a-8313-45bd-8b91-8c0ea8cdf077@kernel.org>
+ <da2f5f7c-0252-4085-a490-a505d0169bc4@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +155,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <cover.1771826352.git.ackerleytng@google.com>
+In-Reply-To: <da2f5f7c-0252-4085-a490-a505d0169bc4@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E94E64000F
-X-Stat-Signature: 5yrnz37qgrw96pbz5594qfd6astwsjmp
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771860211-85254
-X-HE-Meta: U2FsdGVkX1+2bTLx8rgRmKSgg3CafmYlsTFQWXAgeR2L1ACh+YTsG/f2yRFFnwN2dt1NMgHACPAJ7yBk93/806aOwpn8m4FZhyeeNcD5jAznLHcPD6GQrDioVZzmt1p8/6DJ8d7e1Bj5EzaZh1UxYHDzv22U2mXYEm5YWizQiQtn1XfwOGdEu2Xq9R/v9fMyx+77bOa2/cv4RjhsuTkTukPppnVJx+tQajQO/O8DPmdkzTCIPrO0HddLKjTUmMbIdcmAcLO5QvQQSo7CDUwYiBizJwpfYttQ68jMszygTa21o6xeax5DgolDqO/RCBhpdMdm07g3npaHRsKdZsivYY7FyWT/Cp/G0GXCPYavl1XpC+BmXG5j6Py397t7tjNfLUuVQcVY7DhQJPC+E+qUoCRZ4OGStvJzu5hDwExHk7zYDN6Rk9W5i6Ngyt+xSOcdOcSoq0zcNvwc/3TP3ma0U+LW8EwlrKXUJFWIUe6KlcOtd1h4sLATeZLTmOb97zyAKjm/pmB0nxtq/t2hF215cd07qZRnzDws2JFiV4q7xMVCnq/b0QnE6XZz4ooAg1gqyYVJn4NQUTm1fT0/KkS9L9v/B8mb3B6+/6w18BlOMdl+iOaOgHFXoeWvs19P88Jp6v8ZRRw7GoF12BtpN6wxkXWbqDYiB441t/WOag7ZeiBaIQl64XVRqapxXLm0JCnpH2UG23Ez/rXDCJsg82zMuqGYsT54nGKtaSoMnDe+Ayx0yl1kVoaGYZeAznm078qfPEbIvufMPv9MKw3SnUkmrUE+GoFEWVcdrsEsbv4oeW3zB8vb8Vu12I9m4RyQCHTW4hFknuQAfu9f9sx9n/ru7Y6HyKtF+qV9FtkNsqmxttgDkczXAcIFl6Qj1Ve+Rry247GsHmfuTHsqvQssNaJ+mgXCNsqycKzQpuEkJz3hlqce1RtRMsNixKnxG44Vr+dI+CnGlWlPr443eqE+CQ3
- 9ifWHmmV
- Y4gNpgprLFnw5oFGRLiZov7MpSy2x/APhNnvh7+/wWzRr9LUrowybcDihagtGj5F4i+WG7PpV6tY0OZuGeqpVpk90h/U4EH7A5dxWafv5iQwb1aQMw2lbaaLz2vqC8nq42Fdws376EfF7j9STKZH/+WFWIY3h8BkR+D4R7YC7BJfeTY0Ic9CbRiEpk+3nBSzrAva4Ne6qy7Jse34Jv23+09Q0Me683NvVkXk8PYaY7iKqG2YyXpPjBH5zOzXXTnNFBydqJP9ZYindOPrVhWqHNVJ22AZPFDDM+CK/3Dvfd46qSilvMmcOQMYHFw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E985C180004
+X-Stat-Signature: icharj3bwaib77ciutbqch8sd3nak5p3
+X-HE-Tag: 1771860452-798699
+X-HE-Meta: U2FsdGVkX1//w8vZNx6SV9bumcS2HmrCQnECjpfgCXO9BHFbKpdSL19mZ+ZO7DCBm68o88fW4Ctqn+dWRt/f1oUUZJU5kzsSuMblQEgXkgChBRuOnbh8dJPi5CpKmF2QHEPQ9RaBrIS5TnJ9UinUcfI5/G0V9F9A69vj/d9OKLuk7mOHoUsOtnHTvto+3gCYhFt2F5kSNnUlhl5lpGaLCr+u2o+PtiumXhgw+2GSg6Sr047NQrxhlST33SrcnsjWqvHHh+YgJ3p4kb2wCWa42Me22PFwrmtlf00EdJoaSLELJT2k5e31zkipZHqqxea9NFyhAJY9dKDDiXLCWT8zGLLjq4aQJpX3ccr02ZE6vDPwKaiMS4sTsBHwcW+6awtruV4PktxNil54pBlDxbmTI076b70SIhyzuiSdjdc3a010rQ0GyMKS2ZIft5rhboY5iyYrLpbgcOeTGQTBj51YTW2F3qZPYTRppT7MSdq744eIoX0p46gMUrXZOYlxvUaKv6xrlSYa4gnMuwuj3LjigdjNdQowk+tGTW14CSZRkjEP+X45QlolzEEeVYiBnHLTYOxry431w47xQpWfv5JB4oB+uSvLRajuKlo19+q6BwWMrbfWJqWaDe/AJCuriMwtaCEknxNu0aMEMmxMDNRho6IwaJhQ9DKmDuE5F7zEHkoLJa6bRy4iM600Er+oDumo0NWJC21+/ZxriOzYFXHovPQbW2hIHj44H2wUbAFA1NlJG8EeIBxot4I37d5Msml6QyB2qAnGbdWBrHIXIju+SHb37O0OuMyVkwT1Qr9oU4SnGX8WVS9gJlOZFtQwJejDnPxm41YNUq/ky2DOz4qT+HBR+IoElOgWO5UOKcgKGlFGrykCYLRoKOsp6fo+jCRwfxrg0+Erah388P3/XqloL0d7cWSeAP40xSCugpTIQqueXG9HrPiWDPOW6gU69bGjkQckViV6Nh0EDYcYVtA
+ VVPUUGMI
+ kyz/wyE3EfaPvOODdkOBozGMHZGyumPxrvvf/IYH4nd15zmc5ss1BCzGyegggzxFksB6mvaqKkkHUqxUmDRg9Yfv3SSacNaiRW9fVI574KETYQ2Oh8BmPHmLj63mrgyCH48o6NKxJPkuGK9TV5inanDXrAXNBSIpv6RuA69wpI/HxfroQoyt2RhF2MIqcljkwXUp9XSZD3n0q+XXDR7MIfFfe6Uh/TFBs85moJtky5mv7MWzSAinImfLOEiHIY0/WyDrvl+2sADkndWD9/vRwBwlH6w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,36 +174,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 08:04, Ackerley Tng wrote:
-> Hi,
+On 2/23/26 16:22, Christian König wrote:
+> On 2/23/26 15:14, David Hildenbrand (Arm) wrote:
+>> On 2/23/26 15:06, Christian König wrote:
+>>>
+>>> Completely agree. This is just asking for trouble.
+>>>
+>>> The cache line(s) backing this struct page are most likely accessed anyway on free/alloc. So I don't see much extra overhead.
+>>
+>> I think the question is more around handling non-head pages when freeing larger orders. But maybe the overhead of zeroing page->private it there as well in __free_pages_prepare() is tolerable.
 > 
-> Currently, guest_memfd doesn't update inode's i_blocks or i_bytes at
-> all. Hence, st_blocks in the struct populated by a userspace fstat()
-> call on a guest_memfd will always be 0. This patch series makes
-> guest_memfd track the amount of memory allocated on an inode, which
-> allows fstat() to accurately report that on requests from userspace.
-> 
-> The inode's i_blocks and i_bytes fields are updated when the folio is
-> associated or disassociated from the guest_memfd inode, which are at
-> allocation and truncation times respectively.
-> 
-> To update inode fields at truncation time, this series implements a
-> custom truncation function for guest_memfd. An alternative would be to
-> update truncate_inode_pages_range() to return the number of bytes
-> truncated or add/use some hook.
-> 
-> Implementing a custom truncation function was chosen to provide
-> flexibility for handling truncations in future when guest_memfd
-> supports sources of pages other than the buddy allocator. This
-> approach of a custom truncation function also aligns with shmem, which
-> has a custom shmem_truncate_range().
+> Good point, sounds like that is a bit more than I thought it would be.
 
-Just wondered how shmem does it: it's through 
-dquot_alloc_block_nodirty() / dquot_free_block_nodirty().
+Right. We already iterate over all "tail" pages in 
+__free_pages_prepare() to clear page flags
 
-It's a shame we can't just use folio_free(). Could we maybe have a 
-different callback (when the mapping is still guaranteed to be around) 
-from where we could update i_blocks on the freeing path?
+	(page + i)->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+
+Maybe zeroing page->private there is not too bad.
+
+> 
+>> I'll note, though, that we already require page->mapping and page->memcg_data of pages to be zeroed by the caller, so it's not completely crazy. (see page_expected_state)
+> 
+> Well that's not defensive at all, basically everybody which forgets to do that can cause hard to debug trouble. Maybe that practice should be reconsidered.
+
+Right, we do have check_pages= to activate the page_expected_state() 
+checks, where we will detect such problems.
+
+(including the mapcount being -1 etc.)
 
 -- 
 Cheers,
