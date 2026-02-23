@@ -4,79 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E90EEA4FB8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 13:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB23EA4FB8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 13:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5246B008C; Mon, 23 Feb 2026 08:02:59 -0500 (EST)
+	id 8FA916B0088; Mon, 23 Feb 2026 08:07:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55F156B0092; Mon, 23 Feb 2026 08:02:59 -0500 (EST)
+	id 890BB6B0089; Mon, 23 Feb 2026 08:07:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 423BF6B0093; Mon, 23 Feb 2026 08:02:59 -0500 (EST)
+	id 769496B008A; Mon, 23 Feb 2026 08:07:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 31B6A6B008C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 08:02:59 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8E27140143
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:02:58 +0000 (UTC)
-X-FDA: 84475736436.23.41FBEE0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DC226B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 08:07:40 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08095C047F
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:07:40 +0000 (UTC)
+X-FDA: 84475748280.01.F26E8C6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 077FC4000A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:02:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jkG6/V+6";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0B6A580018
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:07:37 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OCI5hPTN;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771851777;
+	s=arc-20220608; t=1771852058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a53a4jiZX+4siH/+N7ov7PbqbJocA0mCy0U0f6hjhgY=;
-	b=QY+6uMDfU6OcyFWW2WHEDL/xKszu4eaXraQBU5AWMbpD7Dkdfo98FzRdkrG4dedTQCJJtp
-	akVpGMcwnLqDqvd/8jZcKq7QDoRKfRxikvQkobi6ZStGSay8TQtYYFKZepKlm4zbCwiib6
-	xfL+t8U2b65qfJBhUMKKlYxk4au4LAw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771851777; a=rsa-sha256;
+	bh=NvaonF8X6BaO44cOkGCWmfmZHFP9yBGZgn5gms7pSms=;
+	b=jr4JRLvW2lFBYFrek52j+ErOURwqYs0Ks316yAdYQrm1u7Xk7BDMhWrhLcTm5XEbK3Myt7
+	LsYRCeh5SYoTBghoF7xFDrGkMrsV52Kni6zdt2nItuCmXAzZtgz0f1a7RYjo5n1NYwBneL
+	UH1fm6sYDCISu5XvZ+45akhFr41CmUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771852058; a=rsa-sha256;
 	cv=none;
-	b=2cZsAXErYTRS6g8OqqKQTGmPDAeWoPFxrceLhurLJ48EcyYZejdzb9c41ralkz8BCQBC4m
-	5KE5UvsxP1RhHjb1fhse6jEpyDQlYnhujHxJAzfwxH3rHUv0XZXDSzP4dZmcBGHdgVJ2Fq
-	V8SNoa7NLqg08yFhbtmkeshexJqvqgI=
+	b=l9316mJtu7jKKeW2rbIQd1U8r/AmeqmvSudqyE0TFWnJQUK45EW/Lo3vmLho5nPy0W2uU4
+	Onh41nVDSqJ+3MI+ivVhKbCKVE33DeP58dOWetO6BJQoVEJDEoWMvkDUygcmGw2rkZkFAL
+	XwueSWL2/CvuGk04rKO+deBnN/qqgks=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jkG6/V+6";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OCI5hPTN;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14D5544454;
-	Mon, 23 Feb 2026 13:02:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE70C116C6;
-	Mon, 23 Feb 2026 13:02:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D003443AFF;
+	Mon, 23 Feb 2026 13:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E37C116C6;
+	Mon, 23 Feb 2026 13:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771851775;
-	bh=ptRUSre2ZAhwCRyTmqafxxaRaPN+lKYGNkEB7a3hP9U=;
+	s=k20201202; t=1771852056;
+	bh=Ika/JAp4pU1JwzWcIf5dvk3cuyOWvlaomAbjRNXGRsk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jkG6/V+6CCoPx7QwGGY9LjtWnT3Cx0CYRQlMmmzR0dlwY85ydB5NBfBqJVlsQ8Jvo
-	 XnmHrTgR0m8vGgr7+JNzCaSi7tYRFoi2oP8HfTjyNa3gBkJawjebb3bfRm0zwDUaYq
-	 xUGP4O3sa5d5ql/2minx/yt1S8tJRHns70MApU30iiXLsCH6Rt+b1hgtq3AfvYdqmM
-	 139yVFJe9vUKEZZDk0wYn9uf4oc1GUhfL5cMWtOI0bz/qu5KGof0Ftw8khjLBb5TJz
-	 T33weFbOYqqoVo0JDNfsSX6DzyOPSuqG/eY48ouFCRQgSM/94O5XwTwCKK68kDPNb9
-	 snkjHk91pLUaA==
-Message-ID: <b7570a41-9bad-403c-b2c8-108393589079@kernel.org>
-Date: Mon, 23 Feb 2026 14:02:49 +0100
+	b=OCI5hPTNqBuWhoQsLkcOdy4X8soFNRBZcphXi9R2/EfkNGkZsuLPAOekSv7BLgygC
+	 g/eE7DHVevX1XY4BUIPDj44B9rlSTt0wsi/CI+I57iDUF3qtpRle31Wf2fanzIlLtD
+	 7GmKM0FZJ2JNu8atgOAAobJMHSx7Ao6Vn/ts+Wg0gfJzMx+8wypStI3Vua/Beay8Hu
+	 0tbRYWYLTQYiNZoQfv71O8SXWVHGSSqcw2/LxQKtpLwZkUh46kzNUo2miXjcR8v8VW
+	 hXzQGnwRpHaPXp6pDLvHuXcmuQRYQXszTNA45jrHfbPPhyRi4rdxBYKi3iRTswDdp3
+	 RxKaBDzytW06g==
+Message-ID: <c10400db-2259-4465-a07e-19d0691101a4@kernel.org>
+Date: Mon, 23 Feb 2026 14:07:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/mmu_gather: replace IPI with synchronize_rcu()
- when batch allocation fails
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, aneesh.kumar@kernel.org,
- dave.hansen@intel.com, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, npiggin@gmail.com,
- peterz@infradead.org, will@kernel.org
-References: <2a6c4e62-1663-4a98-9adc-406a6a1ebfd3@kernel.org>
- <20260223125826.28207-1-lance.yang@linux.dev>
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+To: Gregory Price <gourry@gourry.net>, lsf-pc@lists.linux-foundation.org
+Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+ kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+ dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+ ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+ linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+ mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+ pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
+ riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
+ roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+ zhengqi.arch@bytedance.com, terry.bowman@amd.com
+References: <20260222084842.1824063-1-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +143,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260223125826.28207-1-lance.yang@linux.dev>
+In-Reply-To: <20260222084842.1824063-1-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0B6A580018
+X-Stat-Signature: seeme946mby117544tndyhobc3h8gmms
 X-Rspam-User: 
-X-Stat-Signature: sbw1njftibmjm6xdmtwto16e6f777c34
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 077FC4000A
-X-HE-Tag: 1771851776-116651
-X-HE-Meta: U2FsdGVkX1/TzJslM9D/LNe8WnyLbaVsVk3pEF4MgnXCYw7vNaWF3ci/xTBkLswZv0Ej0lSKtBvZsqx/JJY6IueoMAuMF7YQUpXLkP2vlhCP/9e/XN6rrF50bDkBGPROt55m9WX73+3MBB6S42+6Qj+Y8TUIiXybOr3HTw672RBQcMQc8f0ImsLJdX8r+jKxEpzhlC4Jre2VOl2dyyeuDESW/BovSvtGvDRWarMeZ6/ctLtMpRzdvb7I62Z+am3oIm4mzqvduC2tK9IZlSJ66ISesot9xxJZtoPIaDG/yyKQXCqXJVKBjeJBlAl2ehgxopN6kRkqruONG7Eqzl9Udf+3Ou/+qudnlbhK4nrCMI1n3UNVZDqLA5GG90o874HUR90Un2QSfzYoe6Vr3+PalBQZZFf7yMRQEmxIah6JL46JtTzoPoypVTe/S8ERbLSeeMyyij63fRCwzY4KcWqT1w2l9PSWsmMY0RRGVImQy8St/CG0PTEf5Fc72I9a7yLPIIzI7LU20u+a/rrGE9DJYTSOJJ8sfRjzWa9qJrgYfXjZkOjI2+ZYI7G816lUGtKV+q5crEQ+UGBefB/EjFsjsJEUHmY0LCYW1iPoJvMoLVr+UlGNL8uLl8NFhNPKv4uhcj/Pa2lNRHKa515Ejl+5SfWNKepjOBSvekcITsRdNwS9OFebNThjZDayHqbYt7P2UMCs7Gi/k5/qxXkrAlJGZEuFuN42bP2nusc6NVPfQyHb4JxxmaikH3QMeZQ1CnM1VVi6JzZNwJSPLmEGtD2yWOHoTguqDG44zN7jEnyvVVph7w6r/MLh13anJ9f/7PaZYOD/koeZdInXDaL5YbybzOAEn36Jmgds/GPXyR15Vr41drSWDF0SLXy149cjalGFbj1wKEPZMLgVjlmUW5nCYMwoFh5jk4994j0WGP6W64vh2h7HeQW1J9QwMpgRTe/0ena1EuRyWezA+q98iMJ
- uezprIxr
- 6CWPz5yEd8FcGr41MaZUkdDpFLCuSkEWuayY7WsLZl5rlriEF8SdcaLYVU4onUH5mAz4b4qLrQnWLCkvpvcsolqxTHjHSXW8LtEaFGDgHHFuvn/gv44zSj+CxdaqD1o/7mvkOi0LiK+yqvEp7tLYN2n8uoksh9VqUbdbRzgAzA/5dPaYl39IF2Bp+xEgwuiXkhM94C6J2C0/1fj5CffxDXM2/357h0jHtJsKYX05L5/9yfaE7vb39RMjIMkwCqdIFoniA5d1ebFOHSqzQCOdcZ+MOvv5zSNviKGhCCT0rBNcfiVftfBUHhcG3IB5V6nM45YfSs6nMolYvY1sCaIR1964j7XvPBoOj6fz83BOy8zXiT9JsbMnYychfFwbDNvzVzOONOVPtxThpCZKHmfUK+F+Y+lyMfinv6VNhBBoolPwEhxk=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771852057-372181
+X-HE-Meta: U2FsdGVkX18wPYwqN5qKo6zZThOdtll+rfwMSbuvMtMzJSxcHLnCr2pb5LgdNuLnmLK1R0t30vuI//cF1cw2SawMsY68klTBxcaQCL/pVmA2YQ8PMcDKZoHgUOoJg9dhCrxzLzPG1aT1dFVf8RgUnlngfHOyZdUyWgxVw+ZtxtUZJPVHu+LM7/9IpVfdSaXjt6dXBaUrvIC8wht94v4zhoqO3v/sjuYyL//oDQT81w+hUHiEv3YiveIR+S6rOtfQkudngQP/fROwe1bHlbVfWcfsi/GDgEwL/gnSAea5tKqnwUF7vNsjSAO8wmrEn7/kruh0aGW50a3JGIxiVdn7TB3qbxRvfqkP06tiQx/bw37GrXZ7xgMxkjNbRRl8BSF+WrU/1qaTHqpElXCZCRWyc9SDrUqv8LhmLZm81JbAam9NXEj7d5k3lnGutfMKhRHw/ogkG5ddJDuwutZAnbntenw8Si8Boa/PT+3qzSjkUOipfZdFqSfhlrZsXMuw9Kyqy9YK9dLm1QHTXf08QMYYsBbk2oc+3Jcaf5gIIgnWK+Sm8KwVF6Ds+WRTpxHidcqfARvQv6thu1GiCsk+VdRSbdxj7eFMDMMPm2BPmdTpgZIbAsmHQIpO6vfOenKjmcYjBs5fp01oYbczbO6TZEMq651bp1PacbZsvxm0a5V6BWpjNb1shHLRxwjvxQ6TAz0mNTlpB8eKcLr2zKFb29BrCsXg83TdToMWpKGoRf1B/tArQSZcGxGrvcSPi9KWr97eVXRV+ApN/EgEqmO9e2JQC+NT3fAUJcy1Bk3mGjpJcwakbH3uori4Uqg2UQi1j9jkZeV/RkD92kk9N1bZGe5Q6BycOz3XjVXI0f2aYqfpH1uluwkGvc0hVFMS7MWXRZxMe4uHv5M0WNli0u6NDYe+X9gQWPZy+U9a6pSKx24pDHU4Bmr4FcptRO3K9BXAFUFF48GsZSi9sRNuOuypds9
+ upRNfjrH
+ 4xPOqRSiBvmqgFh0gw266VwCxVvofvUoG9EndYd6HAEtMWnmbt7a9PsSHNSmWgfMFPqNP3LoemFGPxmBDLTfRwFOR7wHrZlyX5pq4piKkk3BEO5q92+JYzbupk2XC6CcH9u67EqlCAIHOk9q5hi1nkFHi6eAZLRPOzHlSsBjPgUuGRBvqYltxvpDYxMuEqr9qE+SfzsGcTYO0arAfCQuj251uwqS2a4wEX6Aq3VRxUuJ21HBjeVhsXI2SyqcXmerYfjSmzwUHZp8VosUCKOMuZxl4PKJzAhdvvIZx7Rb2mEGsAei5TCgd9Y58/DGQtnuRP/JUQIvegBuLEQJnSXJUFEcWy6yG8G8BD/doDHCxDdEGb1lXZquMhCTZiCgkAfKjWTZiEGbLPJK1eRk40eJvdk+bQgZj9Kcf4ucr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,133 +162,478 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 13:58, Lance Yang wrote:
+On 2/22/26 09:48, Gregory Price wrote:
+> Topic type: MM
 > 
-> On Mon, Feb 23, 2026 at 10:29:56AM +0100, David Hildenbrand (Arm) wrote:
->> On 2/23/26 04:36, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> When freeing page tables, we try to batch them. If batch allocation fails
->>> (GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
->>> batching.
->>>
->>> On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
->>> tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
->>> process is unmapping memory. IPI broadcast was reported to hurt RT
->>> workloads[1].
->>>
->>> tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
->>> (e.g. GUP-fast) that rely on IRQ disabling. These walkers use
->>> local_irq_disable(), which is also an RCU read-side critical section.
->>> synchronize_rcu() waits for all such sections to complete, providing the
->>> same guarantee as IPI but without disrupting all CPUs.
->>>
->>> Since batch allocation already failed, we are in a way slow path, so
->>> replacing the IPI with synchronize_rcu() is fine.
->>>
->>> We are in process context (unmap_region, exit_mmap) with only mmap_lock
->>> held, a sleeping lock. synchronize_rcu() will catch any invalid context
->>> via might_sleep().
->>>
->>> [1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
->>>
->>> Link: https://lore.kernel.org/linux-mm/20260202150957.GD1282955@noisy.programming.kicks-ass.net/
->>> Link: https://lore.kernel.org/linux-mm/dfdfeac9-5cd5-46fc-a5c1-9ccf9bd3502a@intel.com/
->>> Link: https://lore.kernel.org/linux-mm/bc489455-bb18-44dc-8518-ae75abda6bec@kernel.org/
->>> Suggested-by: Peter Zijlstra <peterz@infradead.org>
->>> Suggested-by: Dave Hansen <dave.hansen@intel.com>
->>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->>
->> I think it was primarily Peter and Dave suggesting that :)
+> Presenter: Gregory Price <gourry@gourry.net>
 > 
-> :)
+> This series introduces N_MEMORY_PRIVATE, a NUMA node state for memory
+> managed by the buddy allocator but excluded from normal allocations.
 > 
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>>    mm/mmu_gather.c | 3 ++-
->>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->>> index fe5b6a031717..df670c219260 100644
->>> --- a/mm/mmu_gather.c
->>> +++ b/mm/mmu_gather.c
->>> @@ -339,7 +339,8 @@ static inline void __tlb_remove_table_one(void *table)
->>>    #else
->>>    static inline void __tlb_remove_table_one(void *table)
->>>    {
->>> -	tlb_remove_table_sync_one();
->>> +	if (IS_ENABLED(CONFIG_MMU_GATHER_RCU_TABLE_FREE))
->>> +		synchronize_rcu();
->>
->> That should work.
->>
->> Reading all the comments for tlb_remove_table_smp_sync(), I wonder
->> whether we should wrap that in a tlb_remove_table_sync_rcu() function,
->> with a proper kerneldoc for the CONFIG_MMU_GATHER_RCU_TABLE_FREE variant
->> where we discuss how this relates to tlb_remove_table_sync_one (and
->> tlb_remove_table_smp_sync() .
+> I present it with an end-to-end Compressed RAM service (mm/cram.c)
+> that would otherwise not be possible (or would be considerably more
+> difficult, be device-specific, and add to the ZONE_DEVICE boondoggle).
 > 
-> Good point! That would be cleaner and better ;)
 > 
-> How about the following:
+> TL;DR
+> ===
 > 
-> ---8<---
-> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-> index fe5b6a031717..ea5503d3e650 100644
-> --- a/mm/mmu_gather.c
-> +++ b/mm/mmu_gather.c
-> @@ -296,6 +296,24 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
->   	call_rcu(&batch->rcu, tlb_remove_table_rcu);
->   }
+> N_MEMORY_PRIVATE is all about isolating NUMA nodes and then punching
+> explicit holes in that isolation to do useful things we couldn't do
+> before without re-implementing entire portions of mm/ in a driver.
 > 
-> +/**
-> + * tlb_remove_table_sync_rcu() - synchronize with software page-table walkers
-> + *
-> + * Like tlb_remove_table_sync_one() but uses RCU grace period instead of IPI
-> + * broadcast. Should be used in slow paths where sleeping is acceptable.
-> + *
-> + * Software/Lockless page-table walkers use local_irq_disable(), which is also
-> + * an RCU read-side critical section. synchronize_rcu() waits for all such
-> + * sections, providing the same guarantee as tlb_remove_table_sync_one() but
-> + * without disrupting all CPUs with IPIs.
-> + *
-> + * Context: Can sleep/block. Cannot be called from any atomic context.
-> + */
-> +static void tlb_remove_table_sync_rcu(void)
-> +{
-> +	synchronize_rcu();
-> +}
-> +
->   #else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
 > 
->   static void tlb_remove_table_free(struct mmu_table_batch *batch)
-> @@ -303,6 +321,10 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
->   	__tlb_remove_table_free(batch);
->   }
+> /* This is my memory. There are many like it, but this one is mine. */
+> rc = add_private_memory_driver_managed(nid, start, size, name, flags,
+>                                         online_type, private_context);
 > 
-> +static void tlb_remove_table_sync_rcu(void)
-> +{
-> +}
-> +
->   #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+> page = alloc_pages_node(nid, __GFP_PRIVATE, 0);
 > 
->   /*
-> @@ -339,7 +361,7 @@ static inline void __tlb_remove_table_one(void *table)
->   #else
->   static inline void __tlb_remove_table_one(void *table)
->   {
-> -	tlb_remove_table_sync_one();
-> +	tlb_remove_table_sync_rcu();
->   	__tlb_remove_table(table);
->   }
->   #endif /* CONFIG_PT_RECLAIM */
-> ---
+> /* Ok but I want to do something useful with it */
+> static const struct node_private_ops ops = {
+>          .migrate_to     = my_migrate_to,
+>          .folio_migrate  = my_folio_migrate,
+>          .flags = NP_OPS_MIGRATION | NP_OPS_MEMPOLICY,
+> };
+> node_private_set_ops(nid, &ops);
 > 
-> Thanks for the suggestion!
-> Lance
+> /* And now I can use mempolicy with my memory */
+> buf = mmap(...);
+> mbind(buf, len, mode, private_node, ...);
+> buf[0] = 0xdeadbeef;  /* Faults onto private node */
+> 
+> /* And to be clear, no one else gets my memory */
+> buf2 = malloc(4096);  /* Standard allocation */
+> buf2[0] = 0xdeadbeef; /* Can never land on private node */
+> 
+> /* But i can choose to migrate it to the private node */
+> move_pages(0, 1, &buf, &private_node, NULL, ...);
+> 
+> /* And more fun things like this */
+> 
+> 
+> Patchwork
+> ===
+> A fully working branch based on cxl/next can be found here:
+> https://github.com/gourryinverse/linux/tree/private_compression
+> 
+> A QEMU device which can inject high/low interrupts can be found here:
+> https://github.com/gourryinverse/qemu/tree/compressed_cxl_clean
+> 
+> The additional patches on these branches are CXL and DAX driver
+> housecleaning only tangentially relevant to this RFC, so i've
+> omitted them for the sake of trying to keep it somewhat clean
+> here.  Those patches should (hopefully) be going upstream anyway.
+> 
+> Patches 1-22: Core Private Node Infrastructure
+> 
+>    Patch  1:      Introduce N_MEMORY_PRIVATE scaffolding
+>    Patch  2:      Introduce __GFP_PRIVATE
+>    Patch  3:      Apply allocation isolation mechanisms
+>    Patch  4:      Add N_MEMORY nodes to private fallback lists
+>    Patches 5-9:   Filter operations not yet supported
+>    Patch 10:      free_folio callback
+>    Patch 11:      split_folio callback
+>    Patches 12-20: mm/ service opt-ins:
+>                     Migration, Mempolicy, Demotion, Write Protect,
+>                     Reclaim, OOM, NUMA Balancing, Compaction,
+>                     LongTerm Pinning
+>    Patch 21:      memory_failure callback
+>    Patch 22:      Memory hotplug plumbing for private nodes
+> 
+> Patch 23: mm/cram -- Compressed RAM Management
+> 
+> Patches 24-27: CXL Driver examples
+>    Sysram Regions with Private node support
+>    Basic Driver Example: (MIGRATION | MEMPOLICY)
+>    Compression Driver Example (Generic)
+> 
+> 
+> Background
+> ===
+> 
+> Today, drivers that want mm-like services on non-general-purpose
+> memory either use ZONE_DEVICE (self-managed memory) or hotplug into
+> N_MEMORY and accept the risk of uncontrolled allocation.
+> 
+> Neither option provides what we really want - the ability to:
+> 	1) selectively participate in mm/ subsystems, while
+> 	2) isolating that memory from general purpose use.
+> 
+> Some device-attached memory cannot be managed as fully general-purpose
+> system RAM.  CXL devices with inline compression, for example, may
+> corrupt data or crash the machine if the compression ratio drops
+> below a threshold -- we simply run out of physical memory.
+> 
+> This is a hard problem to solve: how does an operating system deal
+> with a device that basically lies about how much capacity it has?
+> 
+> (We'll discuss that in the CRAM section)
+> 
+> 
+> Core Proposal: N_MEMORY_PRIVATE
+> ===
+> 
+> Introduce N_MEMORY_PRIVATE, a NUMA node state for memory managed by
+> the buddy allocator, but excluded from normal allocation paths.
+> 
+> Private nodes:
+> 
+>    - Are filtered from zonelist fallback: all existing callers to
+>      get_page_from_freelist cannot reach these nodes through any
+>      normal fallback mechanism.
+> 
+>    - Filter allocation requests on __GFP_PRIVATE
+>      	numa_zone_allowed() excludes them otherwise.
+> 
+>      Applies to systems with and without cpusets.
+> 
+>      GFP_PRIVATE is (__GFP_PRIVATE | __GFP_THISNODE).
+> 
+>      Services use it when they need to allocate specifically from
+>      a private node (e.g., CRAM allocating a destination folio).
+> 
+>      No existing allocator path sets __GFP_PRIVATE, so private nodes
+>      are unreachable by default.
+> 
+>    - Use standard struct page / folio.  No ZONE_DEVICE, no pgmap,
+>      no struct page metadata limitations.
+> 
+>    - Use a node-scoped metadata structure to accomplish filtering
+>      and callback support.
+> 
+>    - May participate in the buddy allocator, reclaim, compaction,
+>      and LRU like normal memory, gated by an opt-in set of flags.
+> 
+> The key abstraction is node_private_ops: a per-node callback table
+> registered by a driver or service.
+> 
+> Each callback is individually gated by an NP_OPS_* capability flag.
+> 
+> A driver opts in only to the mm/ operations it needs.
+> 
+> It is similar to ZONE_DEVICE's pgmap at a node granularity.
+> 
+> In fact...
+> 
+> 
+> Re-use of ZONE_DEVICE Hooks
+> ===
+> 
+> The callback insertion points deliberately mirror existing ZONE_DEVICE
+> hooks to minimize the surface area of the mechanism.
+> 
+> I believe this could subsume most DEVICE_COHERENT users, and greatly
+> simplify the device-managed memory development process (no more
+> per-driver allocator and migration code).
+> 
+> (Also it's just "So Fresh, So Clean").
+> 
+> The base set of callbacks introduced include:
+> 
+>    free_folio           - mirrors ZONE_DEVICE's
+>                           free_zone_device_page() hook in
+>                           __folio_put() / folios_put_refs()
+> 
+>    folio_split          - mirrors ZONE_DEVICE's
+>    			 called when a huge page is split up
+> 
+>    migrate_to           - demote_folio_list() custom demotion (same
+>                           site as ZONE_DEVICE demotion rejection)
+> 
+>    folio_migrate        - called when private node folio is moved to
+>                           another location (e.g. compaction)
+> 
+>    handle_fault         - mirrors the ZONE_DEVICE fault dispatch in
+>                           handle_pte_fault() (do_wp_page path)
+> 
+>    reclaim_policy       - called by reclaim to let a driver own the
+>                           boost lifecycle (driver can driver node reclaim)
+> 
+>    memory_failure       - parallels memory_failure_dev_pagemap(),
+>                           but for online pages that enter the normal
+>                           hwpoison path
+> 
+> At skip sites (mlock, madvise, KSM, user migration), a unified
+> folio_is_private_managed() predicate covers both ZONE_DEVICE and
+> N_MEMORY_PRIVATE folios, consolidating existing zone_device checks
+> with private node checks rather than adding new ones.
+> 
+>    static inline bool folio_is_private_managed(struct folio *folio)
+>    {
+>            return folio_is_zone_device(folio) ||
+>                   folio_is_private_node(folio);
+>    }
+> 
+> Most integration points become a one-line swap:
+> 
+>    -     if (folio_is_zone_device(folio))
+>    +     if (unlikely(folio_is_private_managed(folio)))
+> 
+> 
+> Where a one-line integration is insufficient, the integration is
+> kept as clean as possible with zone_device, rather than simply
+> adding more call-sites on top of it:
+> 
+> static inline bool folio_managed_handle_fault(struct folio *folio,
+>    struct vm_fault *vmf, vm_fault_t *ret)
+> {
+>    /* Zone device pages use swap entries; handled in do_swap_page */
+>    if (folio_is_zone_device(folio))
+>      return false;
+> 
+>    if (folio_is_private_node(folio)) {
+>      const struct node_private_ops *ops = folio_node_private_ops(folio);
+> 
+>      if (ops && ops->handle_fault) {
+>        *ret = ops->handle_fault(vmf);
+>        return true;
+>      }
+>    }
+>    return false;
+> }
+> 
+> 
+> 
+> Flag-gated behavior (NP_OPS_*) controls:
+> ===
+> 
+> We use OPS flags to denote what mm/ services we want to allow on our
+> private node.   I've plumbed these through so far:
+> 
+>    NP_OPS_MIGRATION       - Node supports migration
+>    NP_OPS_MEMPOLICY       - Node supports mempolicy actions
+>    NP_OPS_DEMOTION        - Node appears in demotion target lists
+>    NP_OPS_PROTECT_WRITE   - Node memory is read-only (wrprotect)
+>    NP_OPS_RECLAIM         - Node supports reclaim
+>    NP_OPS_NUMA_BALANCING  - Node supports numa balancing
+>    NP_OPS_COMPACTION      - Node supports compaction
+>    NP_OPS_LONGTERM_PIN    - Node supports longterm pinning
+>    NP_OPS_OOM_ELIGIBLE	 - (MIGRATION | DEMOTION), node is reachable
+>                             as normal system ram storage, so it should
+> 			   be considered in OOM pressure calculations.
+> 
+> I wasn't quite sure how to classify ksm, khugepaged, madvise, and
+> mlock - so i have omitted those for now.
+> 
+> Most hooks are straightforward.
+> 
+> Including a node as a demotion-eligible target was as simple as:
+> 
+> static void establish_demotion_targets(void)
+> {
+>    ..... snip .....
+>    /*
+>     * Include private nodes that have opted in to demotion
+>     * via NP_OPS_DEMOTION.  A node might have custom migrate
+>     */
+>    all_memory = node_states[N_MEMORY];
+>    for_each_node_state(node, N_MEMORY_PRIVATE) {
+>        if (node_private_has_flag(node, NP_OPS_DEMOTION))
+>        node_set(node, all_memory);
+>    }
+>    ..... snip .....
+> }
+> 
+> The Migration and Mempolicy support are the two most complex pieces,
+> and most useful things are built on top of Migration (meaning the
+> remaining implementations are usually simple).
+> 
+> 
+> Private Node Hotplug Lifecycle
+> ===
+> 
+> Registration follows a strict order enforced by
+> add_private_memory_driver_managed():
+> 
+>    1. Driver calls add_private_memory_driver_managed(nid, start,
+>       size, resource_name, mhp_flags, online_type, &np).
+> 
+>    2. node_private_register(nid, &np) stores the driver's
+>       node_private in pgdat and sets pgdat->private.  N_MEMORY and
+>       N_MEMORY_PRIVATE are mutually exclusive -- registration fails
+>       with -EBUSY if the node already has N_MEMORY set.
+> 
+>       Only one driver may register per private node.
+> 
+>    3. Memory is hotplugged via __add_memory_driver_managed().
+> 
+>       When online_pages() runs, it checks pgdat->private and sets
+>       N_MEMORY_PRIVATE instead of N_MEMORY.
+> 
+>       Zonelist construction gives private nodes a self-only NOFALLBACK
+>       list and an N_MEMORY fallback list (so kernel/slab allocations on
+>       behalf of private node work can fall back to DRAM).
+> 
+>    4. kswapd and kcompactd are NOT started for private nodes.  The
+>       owning service is responsible for driving reclaim if needed
+>       (e.g., CRAM uses watermark_boost to wake kswapd on demand).
+> 
+> Teardown is the reverse:
+> 
+>    1. Driver calls offline_and_remove_private_memory(nid, start,
+>       size).
+> 
+>    2. offline_pages() offlines the memory.  When the last block is
+>       offlined, N_MEMORY_PRIVATE is cleared automatically.
+> 
+>    3. node_private_unregister() clears pgdat->node_private and
+>       drops the refcount.  It refuses to unregister (-EBUSY) if
+>       N_MEMORY_PRIVATE is still set (other memory ranges remain).
+> 
+> The driver is responsible for ensuring memory is hot-unpluggable
+> before teardown.  The service must ensure all memory is cleaned
+> up before hot-unplug - or the service must support migration (so
+> memory_hotplug.c can evacuate the memory itself).
+> 
+> In the CRAM example, the service supports migration, so memory
+> hot-unplug can remove memory without any special infrastructure.
+> 
+> 
+> Application: Compressed RAM (mm/cram)
+> ===
+> 
+> Compressed RAM has a serious design issue:  Its capacity a lie.
+> 
+> A compression device reports more capacity than it physically has.
+> If workloads write faster than the OS can reclaim from the device,
+> we run out of real backing store and corrupt data or crash.
+> 
+> I call this problem: "Trying to Out Run A Bear"
+> 
+> I.e. This is only stable as long as we stay ahead of the pressure.
+> 
+> We don't want to design a system where stability depends on outrunning
+> a bear - I am slow and do not know where to acquire bear spray.
+> 
+>    Fun fact:   Grizzly bears have a top-speed of 56-64 km/h.
+>    Unfun Fact: Humans typically top out at ~24 km/h.
+> 
+> This MVP takes a conservative position:
+> 
+>     all compressed memory is mapped read-only.
+> 
+>    - Folios reach the private node only via reclaim (demotion)
+>    - migrate_to implements custom demotion with backpressure.
+>    - fixup_migration_pte write-protects PTEs on arrival.
+>    - wrprotect hooks prevent silent upgrades
+>    - handle_fault promotes folios back to DRAM on write.
+>    - free_folio scrubs stale data before buddy free.
+> 
+> Because pages are read-only, writes can never cause runaway
+> compression ratio loss behind the allocator's back.  Every write
+> goes through handle_fault, which promotes the folio to DRAM first.
+> 
+> The device only ever sees net compression (demotion in) and explicit
+> decompression (promotion out via fault or reclaim), and has a much
+> wider timeframe to respond to poor compression scenarios.
+> 
+> That means there's no bear to out run. The bears are safely asleep in
+> their bear den, and even if they show up we have a bear-proof cage.
+> 
+> The backpressure system is our bear-proof cage: the driver reports real
+> device utilization (generalized via watermark_boost on the private
+> node's zone), and CRAM throttles demotion when capacity is tight.
+> 
+> If compression ratios are bad, we stop demoting pages and start
+> evicting pages aggressively.
+> 
+> The service as designed is ~350 functional lines of code because it
+> re-uses mm/ services:
+> 
+>    - Existing reclaim/vmscan code handles demotion.
+>    - Existing migration code handles migration to/from.
+>    - Existing page fault handling dispatches faults.
+> 
+> The driver contains all the CXL nastiness core developers don't want
+> anything to do with - No vendor logic touches mm/ internals.
+> 
+> 
+> 
+> Future CRAM : Loosening the read-only constraint
+> ===
+> 
+> The read-only model is safe but conservative.  For workloads where
+> compressed pages are occasionally written, the promotion fault adds
+> latency.  A future optimization could allow a tunable fraction of
+> compressed pages to be mapped writable, accepting some risk of
+> write-driven decompression in exchange for lower overhead.
+> 
+> The private node ops make this straightforward:
+> 
+>    - Adjust fixup_migration_pte to selectively skip
+>      write-protection.
+>    - Use the backpressure system to either revoke writable mappings,
+>      deny additional demotions, or evict when device pressure rises.
+> 
+> This comes at a mild memory overhead: 32MB of DRAM per 1TB of CRAM.
+> (1 bit per 4KB page).
+> 
+> This is not proposed here, but it should be somewhat trivial.
+> 
+> 
+> Discussion Topics
+> ===
+> 0. Obviously I've included the set as an RFC, please rip it apart.
+> 
+> 1. Is N_MEMORY_PRIVATE the right isolation abstraction, or should
+>     this extend ZONE_DEVICE?  Prior feedback pushed away from new
+>     ZONE logic, but this will likely be debated further.
+> 
+>     My comments on this:
+> 
+>     ZONE_DEVICE requires re-implementing every service you want to
+>     provide to your device memory, including basic allocation.
+> 
+>     Private nodes use real struct pages with no metadata
+>     limitations, participate in the buddy allocator, and get NUMA
+>     topology for free.
+> 
+> 2. Can this subsume ZONE_DEVICE COHERENT users?  The architecture
+>     was designed with this in mind, but it is only a thought experiment.
+> 
+> 3. Is a dedicated mm/ service (cram) the right place for compressed
+>     memory management, or should this be purely driver-side until
+>     more devices exist?
+> 
+>     I wrote it this way because I forsee more "innovation" in the
+>     compressed RAM space given current... uh... "Market Conditions".
+> 
+>     I don't see CRAM being CXL-specific, though the only solutions I've
+>     seen have been CXL.  Nothing is stopping someone from soldering such
+>     memory directly to a PCB.
+> 
+> 5. Where is your hardware-backed data that shows this works?
+> 
+>     I should have some by conference time.
+> 
+> Thanks for reading
+> Gregory (Gourry)
+> 
+> 
+> Gregory Price (27):
+>    numa: introduce N_MEMORY_PRIVATE node state
+>    mm,cpuset: gate allocations from N_MEMORY_PRIVATE behind __GFP_PRIVATE
+>    mm/page_alloc: add numa_zone_allowed() and wire it up
+>    mm/page_alloc: Add private node handling to build_zonelists
+>    mm: introduce folio_is_private_managed() unified predicate
+>    mm/mlock: skip mlock for managed-memory folios
+>    mm/madvise: skip madvise for managed-memory folios
+>    mm/ksm: skip KSM for managed-memory folios
+>    mm/khugepaged: skip private node folios when trying to collapse.
+>    mm/swap: add free_folio callback for folio release cleanup
+>    mm/huge_memory.c: add private node folio split notification callback
+>    mm/migrate: NP_OPS_MIGRATION - support private node user migration
+>    mm/mempolicy: NP_OPS_MEMPOLICY - support private node mempolicy
+>    mm/memory-tiers: NP_OPS_DEMOTION - support private node demotion
+>    mm/mprotect: NP_OPS_PROTECT_WRITE - gate PTE/PMD write-upgrades
 
-LGTM, but let's hear other options.
+I'm concerned about adding more special-casing (similar to what we 
+already added for ZONE_DEVICE) all over the place.
 
+Like the whole folio_managed_() stuff in mprotect.c
+
+Having that said, sounds like a reasonable topic to discuss.
 
 -- 
 Cheers,
