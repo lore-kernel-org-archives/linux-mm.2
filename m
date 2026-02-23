@@ -4,91 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E707FEA4FB4
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E090CEA4FB3
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 291606B0088; Mon, 23 Feb 2026 07:13:23 -0500 (EST)
+	id 263D06B0089; Mon, 23 Feb 2026 07:16:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23E976B0089; Mon, 23 Feb 2026 07:13:23 -0500 (EST)
+	id 211CB6B008A; Mon, 23 Feb 2026 07:16:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 141E16B008A; Mon, 23 Feb 2026 07:13:23 -0500 (EST)
+	id 0F3AB6B008C; Mon, 23 Feb 2026 07:16:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F38BE6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:13:22 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71108B50FD
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:13:22 +0000 (UTC)
-X-FDA: 84475611444.28.C277050
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F07CB6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:16:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C29BB2DF3
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:16:15 +0000 (UTC)
+X-FDA: 84475618710.20.AD11D84
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B282180016
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:13:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KtTqWE5d;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 81F712000F
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:16:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AnKNXr/g";
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771848800;
+	s=arc-20220608; t=1771848973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3vZHOqBOJ38Wgi36sClM04EJW5ffo5Qu4rlkP5Uc3c=;
-	b=s7TTkjEyiMgt69DnlskCIjSyJm7q/g1crIH1/L22zp8xPIsjuDKS23YfN3rw012eZN2/il
-	yVT+rUEd/ZrQx0WqkdPWfujmj3wTGMTMR6jI4s5ifpYdn65WctQGxjvoklu/OW3Hj9lh27
-	D6/nn03SOyxc0zGW6y82EYXFPMULHD8=
+	bh=efjFtIPt4Ps4MfEO7d1agn4Edh2fwbMMFBWjRDjmaHc=;
+	b=sTia27XgQs/KhIvIXKwwFGqc1rJGdD3o+gmttft13vkhRZdPpflMFn13zwq2tzrcwGWI0b
+	6xfd4X06hb1zy6+k2N3hxlb1m0l4dLQr5qHDja9179GZdxUGLlegNcO+78z5M4pOvtXYhl
+	g4vxBR+vfMDP4ELk9Ga8U3ImtGfHf9U=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KtTqWE5d;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AnKNXr/g";
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771848800; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771848973; a=rsa-sha256;
 	cv=none;
-	b=jzWGea+6yvagXhv+MRsn9pGLMM3nfdFmB0EYAycStjjjWaEayE9pMv0jhm1tGdGefrApJE
-	na5fFmEddCEOEFec48iy8zbcxfVQDiUgDbgj6RBuQ8DpUssV7qAh3VsVWJWNj5zHSHWk7a
-	RAru3HeByiUdWsGd9ODbRxCUMUr00yw=
+	b=UH5qdE7NZQwJtruQPCTF6Y0/AKcHVmPGReUZ6+Q0NEzLMP/vnCFmjvSXLTGP7TkOlLxKhk
+	GiltpxsmEckYd8O7QfmhUC+zfIvPt3GFUWckjq610lzInvfJse98tZR685AkPEhLPaEcwv
+	YcOeQUL1Kn5OVAzk3X3aJ7USL5d3CQk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B48D435BC;
-	Mon, 23 Feb 2026 12:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E94DC19424;
-	Mon, 23 Feb 2026 12:13:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B15F43585;
+	Mon, 23 Feb 2026 12:16:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CD7C116C6;
+	Mon, 23 Feb 2026 12:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771848799;
-	bh=oNuEDnFMo14V4sgwK5Ij+zwpbNPaHLPS58OsUoBe754=;
+	s=k20201202; t=1771848972;
+	bh=9iO7p5jg3rewS1pOAtzAVmxybx20UVJaapbeUxgXQSk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KtTqWE5dYnAKYm1Lzxcfk5B3SJEF2jpuy7dXe44+UUXXVmswqzuxUybUR4b18V0PE
-	 iMMSo6bdz6JL9jCDC3VtDzNkd79KuE893ALD5dXsZby5fMDNzZPrz5WC40YHThssx8
-	 aXR/GE4MqagmYqxWOQowsMdXtxYKAFPYHVxgYPCvfrAMUgMpMpn94S+7weovfYNAsq
-	 2TTRtYQe7wLjMONEBfaEsmB+ARZAsRRneTjQ2lNDMD34Igp12uQzCH57MmaUWXydDS
-	 RGXJYtx8/ECXVruWFyBFXPg8CkSgWT+F2glsw9fUXP4L+/XOSUvqaGXysUsLpPnanT
-	 FemHaUl4Ap/6w==
-Date: Mon, 23 Feb 2026 13:13:13 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 09/14] xattr: move user limits for xattrs to generic infra
-Message-ID: <20260223-gewollt-tropenhelm-fbcdfb6b5a17@brauner>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
- <20260221000326.GB11076@frogsfrogsfrogs>
+	b=AnKNXr/g8SOiAEQ7iFEoVxky9iLTyzle0GbrxihA80NU1Em9Y+1tUN6LemjqRRW5v
+	 VWtZ/sQgG7bBiItGF1u1UniBiVwkRBMmpOJBMCGIBQHrS/0WWthZkJ0BEqIc8YGom6
+	 g2tyf7qZsjdaX53WpW6T/0i5JiumL6lT//4FJEC5E2acdEZWIdP7116rTd+9+ybexU
+	 oDF8FqnEOMvlMgaB2R1gy0rtvQ5HfELwPHLtvCSIB/fp9MDNFmmBwV4M82cLVSeizg
+	 ANPVu5Y/ZNp6DkLcd0f4ekgEMBXc6Q80PMDPWGaM6iC1XQQL+XcRziATnaQ7r1Q0aq
+	 RZiROc/LZkvlQ==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A8DA7F40069;
+	Mon, 23 Feb 2026 07:16:10 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Mon, 23 Feb 2026 07:16:10 -0500
+X-ME-Sender: <xms:CkWcaQicdiyGa9JCDbRfK6uCZlSEhl4Dy_tmu4ybFDjNOrRCQWo16Q>
+    <xme:CkWcaVcgnymP7YoU0IdGkdKRbG0YnYkIEJH26WqMB4jBzcVzVUKmMdOvdA3aweoAS
+    Vg3le9O80GSt5K6Kcooni7cZR9MhGt_gf1fRtTzgx6k2LVgpvQtxAw>
+X-ME-Received: <xmr:CkWcafU54fyMeUZEJqXSzBNlh9vo5lIwxYXf96bPrb_bqVOTMmKQuo0MsdzuiA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejvdduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgrlhgvshhhsh
+    hinhhghhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhsfhdqphgtsehlihhsthhs
+    rdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hmmheskhhvrggtkhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhr
+    tghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinh
+    hgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:CkWcaXznKKez8FFu1hQfMKEN64DuuaN9scrUE9UFbLw8EWHw1g54YQ>
+    <xmx:CkWcaeBcly4qs5cqiHPRcd1ca2V_AUYLYCRLW_Qsv2SozqlUr43JMg>
+    <xmx:CkWcaV7C4wjVf37QPoaJ-Gs0ZK7wfz3CS5wQOh-Bm0_8LI343EbwLw>
+    <xmx:CkWcadkqJPFb1fCJVgmEMxdAlvT9t1j8h4U6RKERPGXcy8l_keOG4w>
+    <xmx:CkWcaQe3u3oLGA7uI2fG-H3fCcaWkIniMy7smYbGbKB-JNZy0oZ8QE4w>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Feb 2026 07:16:08 -0500 (EST)
+Date: Mon, 23 Feb 2026 12:16:03 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>, 
+	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Usama Arif <usama.arif@linux.dev>
+Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
+Message-ID: <aZxEKdXTXoI0BZYJ@thinkstation>
+References: <aZcmlIF4bmG0twkp@thinkstation>
+ <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
+ <aZdCl8byz51Q1-v6@thinkstation>
+ <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
+ <aZhErt9DZcWI24_v@thinkstation>
+ <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
+ <CAC_TJvd=wKKnj=d3phZsAaarXUdUbZDGauxWNWkQtsFV-MTYEg@mail.gmail.com>
+ <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
+ <aZw1DlKHaWvgOtm_@thinkstation>
+ <06684dc4-3902-4452-824a-ee2064314d24@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260221000326.GB11076@frogsfrogsfrogs>
-X-Stat-Signature: 7w3dcseeaoigaqz586pujksdushct59b
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <06684dc4-3902-4452-824a-ee2064314d24@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 81F712000F
+X-Stat-Signature: xmfdfj9yqetear1ewe9g57dn7j1yztd8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B282180016
-X-HE-Tag: 1771848800-138484
-X-HE-Meta: U2FsdGVkX18M+m/yTN3M0TQ4IcUEtVk6uM6WIDNuO2h+UBZVLb4s3O6W0J1IwvTYEm1cNZ3tY1bFbZDnLumwQgew4JBLgHFu8y0zZN+9+A4SCdF97mXCG6B6iIsLB/FR2VYc2JteJejvOy2+2cTOIeVmL3a49FH+xGInvUJRx13KGOuU2ZtDkNuhaxbtau0g8gB1VXlgP6A36UGxXlASrQK0K3AABb9+7zLwCm4/jxdgvbKWei/aTf20bP50Tm1o6dJeVF205qg9+nj+VKN5e807ILZON89nK0PROoEJaPMlRk8Lt/upXFL0KA4hkeRTlMlcuFdceJPGhGgJXmDJgGBDaVVCLcPTU5PL2KePbg7PD/DVKsBjTIRslmduSBH4dmF+sa5z7QtKcYPs/C+XViWieTDx4u7LFpBxuE5YOF1DzFz/q4BuSonEsa40vHq97ar40BkJiQo8ZivvzfLs/ZjwgFHH2/QLpMMf+j4DL9KpHi96gCwDYKXZgXcPLPVTBgnyUotkNg18e13Y+AV0PHa4TI/oN4SkfgLM7wsW9YAQ5Hz38jkodXo8fiRkuEZafWgDfOBhIA2ZRmuPALoWzj0W44IDYjfsZosRI71P3YIIl4+81wnh7k2pSkrlCwmGZ2PJeV5DqNUbuFp7PYwBAy3fS3cDTPd7HpEAcCWAGhHYKpNbjGm7bPAYonBXPusagAfWtmaRgWO0RxmdD0/JsyDfT71Z6epv1CrIFW4CbYCejyels4/xVrswbe6A6yzhMldDT0iJWyUPEeLwgTFsVS0/yu2iG8axuQD83PxEensEZgopUTOLq+Dn+PacQOB8LCspPXIlxWavsbznF3BAeIffE3gmIdKcTLAish6hl6ZT7ro5mruoJkjBD76D7X2kXc86d/cWX2Ulgn5AD7vWt7hwUQxONMZq/WZdRPE98KBEVQjqi/rzNKXcMVjeImhnL4P1fa1S22PGX5Pf6pK
- Aj+iZCN6
- 3WYLSkQ2bdQezMlnSxEJPRzYs/JsW7flb8upZ3uaGZAM29oQ76v41nvdcMvjJI5WbeCrOZqhh9E0Ue9Ja2N0pIRV/eel7CB8LNFglnPn4gQYnyfPX/c/ub9QQFblc2zMg/PgmV5IDYXLeppdelQ9dCLQZT2BfLyHWdp7VhmdDwsOT9osB5ZBlsDhUEIzOA1ughcgi91slkSC8RNRMlkn9y38KQUd29Da/sm1r1bRa46bbXf7zJPlnqTn3MJJ0cMuk9eYvZ9FqUKSO3JMNChbajglkm2RWCx3M5LUg
+X-HE-Tag: 1771848973-285977
+X-HE-Meta: U2FsdGVkX19PzD8mXPnHWRCJajlxAxXqLdl2Tr9RnyiaQVYW9Is+Gu2kQHsL3sLqffDTYCcC6FMpamo0EQp9C5qZmcLWqQ6WhVBkhUN2DY0IFyesfwKfET1Gh3BFfUGTn3IK2UuHAyyk12ateZPfWv4MKKgOdyEoAuazraWfc+WAw2zJttPLV8HQRPkZA3JOTCl93FtYlrRxglhe4Q1Dpcb+My8wXyJ6sqfuVwo5KvaOLVKPaqUwdW9494tAVFHBFxTdb754rkX0OZfk4iA3kxWQ9WXzwtTK0Dzw94Oapg2cq64B3WUsDAQOyJTMMlTqFeQrREIupqtmPJ8VjD47jma0cSxC4/nXRCluWDn5RQ/K4BRx65qKT0jEpWvfpznDc8mUaOAP5qdAGA96XvyTVHRHKPJTmQevrBtfk8c9eXXTzpTS5cJo4ADQWT3tcWlkKR8ki5WSKrdLnf6zI1ktvtsECfsO+VAfR/4r6A/xE8lm7+KSkGQdI55K1KJxMsT7iwtRBTJGMwnAUcPP91zyY7tVck2AA13Kb3C/QrMiOuXcHkwxdN9OVqVqSusXQ9EF/5CWr9NvIuotL2FMosoYBpKccWSujlt3MVWd6F2WxafhXVNdApNEQJbDJxBGQQHGdhXYA75zCQEc+1B2SIf6URDhKUgYyhNYW4B5P9ArNHh36wlVslzbRCF6t1Rk9x6Isiy09KNKWLBYndAX9yT/hWfGdPb+ZCzV+W6lEavJq+2n6SZ3h3B74tMpeUeajw27MPR7zqAXbq5/2bArxtX+3Z3atvMfW3d8Uj/wifArHVVqdtCJQZu+n9VAzWzLh5hM1ib8RrGlK4nW8Eu0Nz/H+tCTaD3HkIomvI6vNiiB0x4n2QJclFS7kdjXQ85XTxxPOYUPNj2A+ocrt3ekiagZB/tQk2hIQYgq4/+7SKHhLFwZ+W433yf6GJmV8fyrNDwMcX7daIcOzusYp9k6sHO
+ bURS0WMu
+ 3xlYflKUupZr9SBgJYeYSjyoev2KFkOlwNKxT4bIFLilpMGnOum0VZy1ntavm4gF/FOcFztuksZ32TAtAeVRa63ScvsUUx7bzdUsZnYEwTLESp+RW/DFapsMswNaenUBVNyBLWO0iC0mAKgwEutaAEstYUUe2F0qbY4bjjc5jrt4DyLbegFmjRbeKTJLIPC+EiCxVDm2AswrePlxr3rF/yn4l8XJP7mWrj2Hu3Vv7ld6pl53Axqkr3i+WdEPMRQbuCYkkZBenxakOdTx/DVmrCSbjt5HmQYr4LZd7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,41 +143,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 04:03:26PM -0800, Darrick J. Wong wrote:
-> On Mon, Feb 16, 2026 at 02:32:05PM +0100, Christian Brauner wrote:
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > ---
-> >  fs/kernfs/inode.c           | 75 ++-------------------------------------------
-> >  fs/kernfs/kernfs-internal.h |  3 +-
-> >  fs/xattr.c                  | 65 +++++++++++++++++++++++++++++++++++++++
-> >  include/linux/kernfs.h      |  2 --
-> >  include/linux/xattr.h       | 18 +++++++++++
-> >  5 files changed, 87 insertions(+), 76 deletions(-)
+On Mon, Feb 23, 2026 at 12:27:33PM +0100, David Hildenbrand (Arm) wrote:
+> On 2/23/26 12:13, Kiryl Shutsemau wrote:
+> > On Mon, Feb 23, 2026 at 12:04:10PM +0100, David Hildenbrand (Arm) wrote:
+> > > On 2/20/26 20:33, Kalesh Singh wrote:
+> > > > On Fri, Feb 20, 2026 at 8:30 AM David Hildenbrand (Arm)
+> > > > <david@kernel.org> wrote:
+> > > > 
+> > > > I think most issues will stem from linkers setting the default ELF
+> > > > segment alignment (max-page-size) for x86 to 4096. So those ELFs will
+> > > > not load correctly or at all on the larger emulated granularity.
+> > > 
+> > > Right, I assume that they will have to be thought about that, and possibly,
+> > > some binaries/libraries recompiled.
 > > 
+> > I think backward compatibility is important and I believe we can get
+> > there without ABI break. And optimize from there.
+> > 
+> > BTW, x86-64 SysV ABI allows for 64k page size:
+> > 
+> > 	Systems are permitted to use any power-of-two page size between
+> > 	4KB and 64KB, inclusive.
+> > 
+> > But it doesn't work in practice.
 > 
-> I know you're just moving code around and that looks ok, but:
-> 
-> > diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-> > index b5a5f32fdfd1..d8f57f0af5e4 100644
-> > --- a/include/linux/kernfs.h
-> > +++ b/include/linux/kernfs.h
-> > @@ -99,8 +99,6 @@ enum kernfs_node_type {
-> >  
-> >  #define KERNFS_TYPE_MASK		0x000f
-> >  #define KERNFS_FLAG_MASK		~KERNFS_TYPE_MASK
-> > -#define KERNFS_MAX_USER_XATTRS		128
-> > -#define KERNFS_USER_XATTR_SIZE_LIMIT	(128 << 10)
-> 
-> I guess this means you can't have more than 128 xattrs total, and
-> sum(values) must be less than 128k?  The fixed limit is a little odd,
-> but it's all pinned kernel memory, right?
+> Even in well controlled environments you would run in a hyperscaler?
 
-Yeah, it's all pinned kernel memory.
+I have not invested much time into investigating this.
 
-> (IOWs, you haven't done anything wild ala xfile.c to make it possible to
-> swap that out to disk?)
+I intentionally targeted compatible version assuming it will be better
+received by upstream. I want it to be usable outside specially cured
+userspace. 64k might not be good fit for a desktop, but 16k can be a
+different story.
 
-First time I've seen that. Very creative. But no, I've not done that.
-cgroupfs has been fine with a fixed limit for a long time no so for now
-it's fine to assume sockfs will be as well.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
