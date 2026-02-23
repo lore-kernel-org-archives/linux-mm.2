@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80DD4EC111D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 18:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D986EC1118
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 18:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE0566B0089; Mon, 23 Feb 2026 13:13:39 -0500 (EST)
+	id 9694B6B0005; Mon, 23 Feb 2026 13:15:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C93A46B008A; Mon, 23 Feb 2026 13:13:39 -0500 (EST)
+	id 941426B0089; Mon, 23 Feb 2026 13:15:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B99F36B008C; Mon, 23 Feb 2026 13:13:39 -0500 (EST)
+	id 84DB26B008A; Mon, 23 Feb 2026 13:15:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A44FA6B0089
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:13:39 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 553B01C1D5
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:13:39 +0000 (UTC)
-X-FDA: 84476519358.11.A82AF43
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7AD8B20016
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:13:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=B3HQ7V1C;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70A356B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 13:15:33 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 240298AD0E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:15:33 +0000 (UTC)
+X-FDA: 84476524146.10.34A282F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1C2AB40010
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:15:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDg3qDNg;
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771870417;
+	s=arc-20220608; t=1771870531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UEfSeQ6hDc1YK0/wiSGwFxZAJb7vn8LhWPtGYkKI3Vk=;
-	b=O+untqR2jtC3pQus/+GYbw4NJmkstiPvEv7pJZPN6yjGk7HMqxzI0ij9r1kpRt/wK0HoIy
-	mM/V8J85xHzjtO5euzM4u2BiXHS8Q54URofAUZB3rg0YbkpTMqxh4D44PTsbW0NDK7yNKT
-	zBqhrHACuk3/oJ29P2AgzT4IMKerydE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771870417; a=rsa-sha256;
-	cv=none;
-	b=nNxIbg79u647iQ6LdNbOxpiBCKrwBwRrBYJtal2LZXjIxyQdEnK4zrPAvkQugb11hFrnWE
-	jd8Yubb+NXbJuRkvP8KNf0UvTz5UahTBZEEu4TCHBMkNwtZI5+4lusLXUGkAs4RNlot9pV
-	tZNG2kkfrWl/drM68WSv/xpLBkDmNKc=
+	bh=7hCkgYWja+Rs04C1655JmfwFrULUIzYVBwxAKqMgVDA=;
+	b=mEOyaMSDIgpMnDbTjaoOjoB5cQTOdcruQNadlWKpkAHtT63pG0rjd5bQPMD21193LcaW62
+	6ZHQAa6LPvKGilpQB/Tn6KBExCRn62jM8ETa/L7/GTEhjkMMkqpQ0LtlOwOYjAWsxTXVK3
+	eUU+A4UoxSTVi30/NyxNm/avm3zoqHo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=B3HQ7V1C;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDg3qDNg;
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771870531; a=rsa-sha256;
+	cv=none;
+	b=rJ/tdP5Gj/470Lphnn0CVFvJZn1AN2DLGp/Wr1oj2Ub1O60awng1MW5TN6DOWYYKjlEyK6
+	B3WTSmB3ZHyPiYlmxQV0Hu6oRM6LDGuv/UoO7gVAYumF6X4MY8AjKZC7nTvkzbfTNJZ+1Y
+	cMRQYHbVrVOMejm0eJyVBRM8PGXfIEI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5A656013A;
-	Mon, 23 Feb 2026 18:13:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378FAC116C6;
-	Mon, 23 Feb 2026 18:13:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771870416;
-	bh=pQshwKNqTCLj/FvhtbZgOYNC+VNMTBvEaSSSD2wSuHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=B3HQ7V1CoKgaBIoteEnZFo//C1eOjQmBzA363dlSZJSPGnKwrPagzWWRWHEyGkx/1
-	 6MhwDWWeaCOz0KllZsOTIWSRv2FTaTTuUgO3maOmVNlVD3xKMqbal2bskvscPZ+Bhx
-	 31nhkKYtbH0jAtANiQoO7gCBg3ymcBqFZCfessdQ=
-Date: Mon, 23 Feb 2026 10:13:35 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- x86@kernel.org
-Subject: Re: [PATCH 1/4] mm/page_table_check: Pass mm_struct to
- pxx_user_accessible_page()
-Message-Id: <20260223101335.aa3696d86341260e03989ac0@linux-foundation.org>
-In-Reply-To: <68c2f6df2955033cbf1ccbd2b5c2816e72ac345c.1771845678.git.agordeev@linux.ibm.com>
-References: <cover.1771845678.git.agordeev@linux.ibm.com>
-	<68c2f6df2955033cbf1ccbd2b5c2816e72ac345c.1771845678.git.agordeev@linux.ibm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id F2C0D417D9
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DCCC116C6
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:15:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771870529;
+	bh=87PJ9eg6meuLZO9kE2Fe5OcHqyxOzh7ZTDW3lwCq018=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dDg3qDNgCO8izKpxPO6U0bI0ubn2XcLwe7g2/75seBNMrOqKwIftGk3cpWLTMyPw3
+	 G61NyOAAzIMQ8/LmOpyX5nuYom5lNtk3865Ra60hWR7lMFzPcI3eNi5wg9No9do8PS
+	 +Ou/SGQwV30t9Lq24z4WRzzjl3LselO8r1IrSj+S0wnGrxRUMoqD6vYGY/GGCTy7/E
+	 /P08YmkBNfU27ZyWXAXHZB8V45aQTtNsWlIoQf07NE1IykwB858lHDZvlSFoHEol5P
+	 fEa3BLprBHgXSoiB5E+EgNKjD+Xhp9/Ko4pnoMKj5RHvxdBK+aH4eUvZhcesMt4AWe
+	 ONbLF5kZi9OfA==
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-649b1ca87ddso4035262d50.3
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:15:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWDIk1sVBrV81fLHfoDjV48xqun2vihTwbcUu4fC18X8XShXaHU/IbXHW4lx5heyzCtKExMVAL8nA==@kvack.org
+X-Gm-Message-State: AOJu0YwPodg6FaxWD/iCmYveKqebWvh1ehSPX46fW91xvdb1rFpkQGNq
+	vUN+zQnPVxjLiJXLNKtwdr9FzY3h7a4gAoRNu/ReNWlJM6EVN62FA79kiiinSUME00ZZcsxSXs9
+	/eTjynCkX2xr6YUsyHA42iLVB7bCJVy5W3FiLUrRhgg==
+X-Received: by 2002:a05:690e:203:b0:64a:d1ef:d135 with SMTP id
+ 956f58d0204a3-64c787d739bmr5783740d50.31.1771870525934; Mon, 23 Feb 2026
+ 10:15:25 -0800 (PST)
+MIME-Version: 1.0
+References: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330> <aZiKQwT7KjWDLspH@infradead.org>
+ <CACePvbW6uT5OKDg0RWS3ZBGcppBkz+MREDVXdwSat_qM=Nc5CA@mail.gmail.com> <aZxUtFaVaJbkAM8Z@infradead.org>
+In-Reply-To: <aZxUtFaVaJbkAM8Z@infradead.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 23 Feb 2026 10:15:14 -0800
+X-Gmail-Original-Message-ID: <CACePvbWkGk5Z+QueOBNCdrr1mzGxQZbRbfeskOrLsmWEvF5ToA@mail.gmail.com>
+X-Gm-Features: AaiRm51k6fvUc-a7pGrBYKPMrgKmuCM7xhusy1pgi4-MOGyFAdv40P1WvazwQ_Y
+Message-ID: <CACePvbWkGk5Z+QueOBNCdrr1mzGxQZbRbfeskOrLsmWEvF5ToA@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Flash Friendly Swap
+To: Christoph Hellwig <hch@infradead.org>
+Cc: YoungJun Park <youngjun.park@lge.com>, lsf-pc@lists.linux-foundation.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 3zjd8kdzrhitjs9zhu7unc4ncod177au
 X-Rspam-User: 
-X-Stat-Signature: 4xbxcj1d3spx4a4jd8pb4qo5hfufgzrr
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7AD8B20016
-X-HE-Tag: 1771870417-788195
-X-HE-Meta: U2FsdGVkX1+V7nTyKTrBDenemBZpyZtLzVdMX0RBL6mNCKxX38gnbtLuqmavUr8N6L8QZCGo5gpWKsaizEH6FX9685CI2JrK/qDjcAj/u8ajhAtverXSNP3BkU4AzOsvKEryW+YS2xcfrxtEsLduBkPgcYasJkcbqU7AQqUmdE4rP4GudH/05P3Sns5oe+uDEwMPBiNjtpGSxSCgeZc8umzOwSlZx9vSJUY5Irxf0pxAYYwyHaNAPlILrtFujG77L6wDFDOpHYFxJCTar2B1Kk7SLcJsdlxBZ5f4y+klf6Uyse++oP8XgiKRkwby5S7Lt4hUHOWnEnnXdRgzW0b6+gnHoMAORnyUF8M+Rsjf6vPLst9iNE+RMw3s9xiLrhyLaMucBX0iMAAusximqDAkYLs9pGl5irgShb+zDLw5AmrbTYDULE/NiNNDLpqECDX3sZI+m+TkH8epdYoS4Bo8WUdiD/D+7fkSGVkhLQ/ovhfSBu+mh9HBDCswOCr0+ZuYLn0Qe+fYjHlc3gOxhHERfCSHRqVlqSw5ZawM4D/EeL47lMKPuQ5S8V76XV1HDwt67XAsLXZkOw39sb6S+royUMfuVpSH6XV3ioSFTGthw+IoZiyX7jQLKtZcZPso/CMC9+4jkKRtVJxbD85jxbgH6mPXlHg8AbE0EhTLgomnIKKKHoYhVlreqE0yPNo0NDKrjLp4xq7obDfKdBUyl1R8QxcgNv2u6nRYGGGRhkl0GKFvYnhLl/khfjtjRKdQp+TaYqS7LaAkmZjesdZ1MIuVBhKMKl2GvpFskCtH3eT8EaDvwdxedfT7nh7V01C7eyLdigpK8Qbh8gIzkqTr6plUhbCcmwkXriyymYI/votS05S1FTLPHEem+Fjf+1HqtcSLUyXvcL4Vr8c8FoQ4tI07l9HrNvrMMBT9TRGz0xOnmoMfBCZPDZdV/88qhMWElaPbbrl7AonW6xrlxzNl2Hx
- /ZjjakwH
- QJnbB0aYi19c2hF26ZVh5n1/BRa7zfUF+iiL7MwUNE7P5TXCvM9oc78CtlM1H7P44A48JfN4tScY+745XrkvF2ymrWALFqT3ck/vRqLNNuoQN+3k0SS6JQ6v9TU4R9tqVvNJD7szraVvrNNdRwSSegYlRbZX7u6weADAwAzwZ2aXkLQRtuMb56j1ILhoiGDldlmItjgf7Ml8JlQtl26TXYZt9pa+3xFIra4qRZTzfbbZ2BYI7V9yEJXVA9WGswA/fX8u8U9NcZlHqS8+cXgyv2etLPaxX2G8LSzupnGEWDReBNnbzFhgipA/mp9BoCosI9HqAoo5g70vvgg4Rwm4EjYh2zKaS4IcrQT4a94Ox2br6+/r42f3zkoPJlBKIawZbzGp8
+X-Rspamd-Queue-Id: 1C2AB40010
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771870530-20507
+X-HE-Meta: U2FsdGVkX19WmEXvzq9XKX+WIMUm2drnBq33V5dQJbOzUTzKrh14IXTtWhnDlvz4AJQ/RVuBc/7VXvajkjbisooNNPo2fWUlcNDGqBdmS1iXm5bDP5jwuZUE35KfOCWb/oQEzDMB9QpdRcLHRx1b+6nnFdAo4bsERQR4AQsbpAHaiPtpLh9xqkHW7gsIi53QVUQglwxkgLp4CPnBtea/0t/h4sKshSl3hPG+Y+NkYOo5hbEZPrrs8nXGRvWEyjnVMcPn1BmhV3h734kU+S1Zd65tX7bwxc4rSehIsJaAr3sdB7/5UUlkbRikr5MY2b0HYfCYqiaym5zRaIC0B79KMhtB47w2vhfk93m9lJmW28G+6N6kuhItDzwfEQ+C/ih4Tx28uotNyKWus83zI2jFbRbmvQKgMTeUS6N3ROLENYZ0no/SBAcsWLt5WRhkILP5qGQ1MpFzqHZ6wZd81tJnzSKkJXrkYNjf9eKTMaNKDhcxt54VUsexZ++ezbEiovnuXKR4Gz0gGM71VZ1HCALHr+McWu5lhgpMxjOIntqsE48gFVJYCmOdPavf5Tg11WbQC3fDM7eTRSZHpBsYmQ6/77MISVWbhDbcZRNkSZrxUDyz0faguNE+tmroNoCDYQOjFIuxUtBNMaqjjWU7SEuYaMl3EuhUZtt61VCpi4+eTX3qmzmvKWJKi5TtQqtjjMUOFfArgL43UrlnTZc3vqcU0wBI/ht987ZbQKjxxYWpGo+g+eX0zcbmH3XgiYVjUxEdCDSOeHBFLVij4sJKEjhbOG5mtj7Hq7Qws7egq9L+mstFkAOGp3jdjsRH4lkHdmlzxA+V88Y00tI6JCUTJ5097tUrWmQODROgpXCIi/3W98kwHrZanCBNSJTYe+vD0MNyrYPQ9pkXn43qhib0wTy7tCowO9hkW2asGXKmT9iMM4b1ejVpePTLvKLbwLIwwQ9ZfH2MlkW6bWPD42sSETN
+ paumoqGw
+ ob7AZgw5MbxA4OEeysFZWO6hqCYqWO/mW+6tsk9oQa3QqILPDi0b2Z8RXYtpw4QqiOKelkklbgV8JalLX/wJk6ptND8ANLRvECAblG+1YIuK5E9TthVQquGAV/3lePuwxQkmSssCCFvdk/xhxkUhau8Fu6UoYFNTTvpGounP7Pd+pCuVUUn4bI7jRYJQeJOUcColGeUseEEMAuV+r/Xs7yT8aeOm4AJS57WysDOZB6TupgUmoU/Woe+BUS0JaTaeCIFsrn1Op33f+H8LHfjqGE5JHQNg8RpcZ3fwGXA3/Ad/lWUxBpxojJclfZ0v+ClKy9hkLE4zzuoTbTD5uXwh9L/qCe5Ky2tRBVQTIig57fLc4Eo4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,26 +104,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 23 Feb 2026 12:53:13 +0100 Alexander Gordeev <agordeev@linux.ibm.com> wrote:
-
-> From: Tobias Huschle <huschle@linux.ibm.com>
-> 
-> Unlike other architectures, s390 does not have means to
-> distinguish kernel vs user page table entries - neither
-> an entry itself, nor the address could be used for that.
-> It is only the mm_struct that indicates whether an entry
-> in question is mapped to a user space. So pass mm_struct
-> to pxx_user_accessible_page() callbacks.
-> 
-> ...
+On Mon, Feb 23, 2026 at 5:23=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+g> wrote:
 >
->  arch/arm64/include/asm/pgtable.h |  6 +++---
->  arch/riscv/include/asm/pgtable.h |  6 +++---
->  arch/x86/include/asm/pgtable.h   |  6 +++---
->  mm/page_table_check.c            | 15 ++++++---------
->  4 files changed, 15 insertions(+), 18 deletions(-)
+> On Fri, Feb 20, 2026 at 03:47:18PM -0800, Chris Li wrote:
+> > Hi Christoph,
+> >
+> > On Fri, Feb 20, 2026 at 8:22=E2=80=AFAM Christoph Hellwig <hch@infradea=
+d.org> wrote:
+> > >
+> > > Honestly, I think always writing sequentially when swapping and
+> > > reclaiming in lumps (I'd call them "zones" :)) is probably the best
+> > > idea.  Even for the these days unlikely case of swapping to HDD it
+> >
+> > For the flash device with FTL, the location of the data written is
+> > most likely logical anyway.  The flash devices tend to group the new
+> > data internally to the same erase block together even when they are
+> > discontinuous from the block device point of view.
+>
+> Yes, but that's not the point..
+>
+> > It is easy to write
+> > out sequentially when the swap device is mostly empty. That is how the
+> > cluster allocator does currently any way. However, the tricky part is
+> > what when some random 4K blocks get swapped in, that will create holes
+> > on both the swap device and internal write out data. Very quickly the
+> > free cluster on swap devices will get all used up and that you will
+> > not be able to write out sequentially any more. The FTL layer
+> > internally wants to GC those holes to create a large empty erase
+> > block. I do see where to pick up the next write location can have a
+> > huge impact on the flash internal GC behavior and write amplification
+> > factor.
+>
+> And that is the point.  The FTL will always do a bad job with these work
+> loads.  You should not do overwrites, and can do much better
 
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+I am not sure I understand "You should not do overwrites". Can you
+help clarify it for me? Let say we always prefer to the write to new
+clusters while some swap entries has been free. What happen we run out
+of new cluster to write? Wouldn't we be forced to overwrite the
+previous free swap location? It seems to me the "overwrite" is
+un-avoidable if you keep swapping in and out. That is the part I am
+missing.
 
-I assume this can go into the s390 tree?
+I think if we gain insight into the FTL GC behavior, we can design
+swap to be more friendly to flash. That is why it is great to have the
+flash storage vendor provide some inputs. Some of the optimization
+might be vendor specific as well.
+
+> optimizations in the MM based on that.  I'm pretty sure YoungJun can
+> explain all what they did.
+>
+> >
+> > > would do the right thing.  So please no conditional version that need
+> >
+> > I agree. There is another LSF/MM topic related to this, the plug-able
+> > swap ops backends. I hope that the flash friendly swap layout can
+> > implement the swap ops framework without conditional versioning nor
+> > stack block drivers.
+> >
+> > https://lore.kernel.org/linux-mm/aZiFvzlBJiYBUDre@MiWiFi-R3L-srv/
+>
+> And it should just be the default block device (and maybe file backed)
+> swap.
+
+Let me repeat what you are saying just to make sure I get it right.
+You want the flash-friendly swap to be the default block device swap.
+How about zswap and zram swap? The FTL shouldn't play a major role in
+selecting the swap location. I am not sure it will be the right
+default for them.
+
+Chris
 
