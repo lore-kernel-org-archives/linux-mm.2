@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C838EC1103
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 492F4EC1106
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7768B6B0095; Mon, 23 Feb 2026 11:18:41 -0500 (EST)
+	id 845396B008A; Mon, 23 Feb 2026 11:20:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 725866B0096; Mon, 23 Feb 2026 11:18:41 -0500 (EST)
+	id 81CF06B0095; Mon, 23 Feb 2026 11:20:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DBC66B0098; Mon, 23 Feb 2026 11:18:41 -0500 (EST)
+	id 72FBD6B0096; Mon, 23 Feb 2026 11:20:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B7346B0095
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:18:41 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 167E81A022F
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:18:41 +0000 (UTC)
-X-FDA: 84476229642.20.2EFB48B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BC646B008A
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:20:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A01F1B5522
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:20:29 +0000 (UTC)
+X-FDA: 84476234178.24.62BE4DF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3AA0D20003
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:18:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YEnC/BJ7";
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 34A6E4000F
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:20:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PvSQrdeo;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771863519;
+	s=arc-20220608; t=1771863627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UWTCm6YVB1RWkZzGvZBcjmH6CX1vnsWpzDMoxYrQQUc=;
-	b=hm1qhGvTc5goHH5IDnmfTV0ftCHMrtXVuM5kpyFRtEbA+yYJdj7lAXi+qUNIfHCAgg4lOa
-	tan8rFNzBWdQG+vqPrctr1oBFbIF4IMzGq83xiZkAAulyPHLwL8NXZszAvlZFDlp9OKU6p
-	StqEfDIeFbLv4o3RA6QCM1eX6Xijdro=
+	bh=NVI0Y7WWrko3nhGx2NU9ZJ8Sd9AAcRODnva0eiUT/8w=;
+	b=GWuIPbUU4HuBK/55FWhhtkDjDRlzaoQw7YwBZEhmGd+DzFH2IRWeD80KSqUPLsh17du/y3
+	Z2MjbY0xYFMk/aelSsGzcM39oR7y9oZmmok1qa+pnGID9ZPsyuaos7sJU5Fv751KvIhNFj
+	OOnVXTcSCVRti1c9YkIyoWA+u4/DMW0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YEnC/BJ7";
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PvSQrdeo;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771863519; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771863627; a=rsa-sha256;
 	cv=none;
-	b=vNuxaADrq7LKINU3Lq9V6vvGM4eb0n6oRfyVSyYB44gtTN2J1YwfEr+Tp98rs+VTQbBZMx
-	G/y6LEHo5t+GW7cwaXK8mJ+z1ldk2NER+7vVRzLqRqNzx3Dzyslv0e0EGfI2EYPxsiS+tN
-	qAVWgot5GxsGWKxrrtgpMQ0W0ouW2PQ=
+	b=xrDyYlHe22yEG0qJOYgYRmvYuV9HK6/LRjF3IjeYxHh08+4K1rqWpoZeB54YFwq/wXNtYi
+	kc4LHWup4CZ5j9d8xwVcH2WP6DohGSeVhp+aZE1NEAiSWsl+99UqEBc3n5ybZ3t/K26gV7
+	6CLOPH27jXMhPBbIpui9w6z2uOX0FWo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 751A660137;
-	Mon, 23 Feb 2026 16:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217A4C116C6;
-	Mon, 23 Feb 2026 16:18:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C6BF6013A;
+	Mon, 23 Feb 2026 16:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491D5C19421;
+	Mon, 23 Feb 2026 16:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771863518;
-	bh=ENSbuCfjK9K9qz+F1QE9v10noBk4EeAtynmQ7eTgJA4=;
+	s=k20201202; t=1771863626;
+	bh=r8mDeUpeW8tBUm82rtc4kcjK4ONsKrxt6c1CNArIpvE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YEnC/BJ7YyhFoowsZI0FWuJYftp2IbxDrX+JOlaVZIHCtTRK5H9iLszRJLsbUYdWy
-	 lwnLrg/i2lYRCQUZXxXOfkqACPnRrHK04HIY78DlzO55W80Ad5w7OrCsTc9ZD6YVVA
-	 CmqcCx111G1GJBl5B5fHXG+JLWAawS3moQ4hJaMzSXr+wlqgwZyy2TLDr6pplVvi+f
-	 PIRQMwh1ICqFnlhi6xEgSOf6uQu+A9gGbvdqi2qzB6lpzlA1YqgtgdKtu/4bh4tl3V
-	 AA4v53sz8w4BAOuORtdceaoP/FiSfypya0e3/QxPQWcqKNMQ4w5Tb7f8UhrX3TaP13
-	 161hEcU36My6g==
-Message-ID: <c5db6944-37fc-401e-bd06-68140f59c6e7@kernel.org>
-Date: Mon, 23 Feb 2026 17:18:24 +0100
+	b=PvSQrdeocpoNN0p9MaK3sggyEhP6bDqgKlYc4yggH5rAQfcrJSEuKTtELQhVIOkjx
+	 27RQ0W9Om2jLvItanmN74NXkqDRCxLkjXjaCXz5bEKdFVStFxL1rlOWFSZbj8akEiQ
+	 RTIy9lvApB5TO1WlSYuX4YYlQUEqNRrOHfiiFgYlCTl+BgTe7OSrlqkia9urvm4gfH
+	 wEnzHCtCVlI5CNU0NW15/hd1zgUBBwRbdtJjTdH3whUnlSskR3W3fdLulPBddBqTd9
+	 p/zoAG/hQZwKDfywAO//6WYOrm1PgrTL/1tu0We8q3IF+9vQhWyrE7DidGdwP4gezC
+	 Z3Nfs3HSc7qbw==
+Message-ID: <4bbe1b83-da01-4226-9a86-1bf6194c22e4@kernel.org>
+Date: Mon, 23 Feb 2026 17:20:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] arch, mm: consolidate empty_zero_page
+Subject: Re: [PATCH v2 4/4] mm: cache struct page for empty_zero_page and
+ return it from ZERO_PAGE()
 To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
  Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
@@ -100,7 +101,7 @@ Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
  sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
  linux-mm@kvack.org, x86@kernel.org
 References: <20260209144058.2092871-1-rppt@kernel.org>
- <20260209144058.2092871-4-rppt@kernel.org>
+ <20260209144058.2092871-5-rppt@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +148,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260209144058.2092871-4-rppt@kernel.org>
+In-Reply-To: <20260209144058.2092871-5-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3AA0D20003
-X-Stat-Signature: tcfdqdqr5zkaiw478hmkwpw1amqatyo1
 X-Rspam-User: 
-X-HE-Tag: 1771863519-153195
-X-HE-Meta: U2FsdGVkX18MrLu6/ihVq19ilzoIjkzi8EuLDyCbJvxt+VqrjgWCXGOX7XVK1dXDMSCsTxvgZnDT9R5/CG6DiazbKM2yi6swt8M71aJmdvcveo0geftZi98/4g40SXy/L2jHHj74Cnq6LGgNRNWluEsyQi5E6UD336r+VaJhEV5T04YLqJKGcRuHPb5uS84k+AxXlgPpBTgJxXJHM+h7Wb7smmjAxoNhtAjfmw4mLJekHYT/9d5CKrOd1zRO1leU/drEfCoaV06D10RpbWwbGlPicBxrH9GouyEA2oiEZ/aV9kDcn7mSH8zE2fmK6pERV2haJxyc2QjMvTp6yT/3knM5tqcaMMagoVVV8Ipcaj7tOT//3X+wyAg6MnGFYEdtz9vDhlnqziaIOF3LKQz9IBkzPMFFy2mJouTpsMht7r27J/46HsoWoeJpRWvLdHnHH0utuXAzQG31LmXiARJ+6TmOblVCh0u3sWNH22g6VosSDFT/Paw8Qekwqg3P8WW7ljqDPWTlBQ88YoV3kX6XDJp0KD5PYXw8+HMY81RxUb1dpkK9rIEtgHwYqcV8kbWiopDc0cmp5oHomL5hu9DqDWjDHOldV6LMV/WEiORbgTfJUxMV619eNzo0XwyC9j1+d03xVYaM5GVHMSFrDwWD38rbvyoI8nYdf9afBWE0EFJ8kLTJryGgzFwccQ7D21MTA0nHZz0LyQLP0bBKYN10SzQJnAKVAb6lcdG4vfbEW3RMuNOhbIBRPDeZNKXMQrr/nFyHySIJ3fKaX3CQrZc8cC/ZtRwKcTlVBUISjABNqQsj8YrHksUHTa+26LcTA8tM6PrMLQ7h0QpNaHcRIhobROfHBMRpbGL700Bk/jFEaL+imgFHqyyuwHSUSJ802L8IVP7ehJYmr0c4n9SjdBvD9uPYK9YB1HOsGSKT1MJocIIZs3ZwblhXc0P26h45IF9Djg/zVebt1OZy8u/GFP1
- m/UkxCj6
- J3AjgyQGlKxvsXMC/FFPzS9cmXcSItR9sO9mepvyIgr/l8CA8YpfPindea94b5ZgdVJhAjX+1pbfslXV3QwEcCTghrUwsGcv79t7EcX2S+IaiYzaAzPXjiBj27InDKywg36LnZRvBMXpbZ83xjGplDWZ3Hlz652N/Ii52J0KbrszLrnbAGo1e4eqAju9NsKdaVOvY6gS0acadXlGO1mGyOBNqniCLN4tsUg+5R0fMhYCdqC30674rLAqn8Pi09IyV3ca1k5nFM3QnnhgI3Yrf2Vgw0sroh7WTmLkSYa0w8d71RvNTZFEZ+k1o6Ty7jk3h/RYzQlyHsmuIVXbDJeTzjdCblLlY+ZhnyOjxvRQMYC4DtCU=
+X-Rspamd-Queue-Id: 34A6E4000F
+X-Rspamd-Server: rspam02
+X-Stat-Signature: dhea7cgap439dyfmpqmzabfgqwkmsqsy
+X-HE-Tag: 1771863627-442329
+X-HE-Meta: U2FsdGVkX1/yLNETqO7XtiGzBk7McrsYGoEn/zMmPfvM7QpEyZxoRI5V0T68bTpQ+8fODvSasiLz0HMbceXSgVzhic3eEbkhRj4gDp94XmiVyHKRzIzeUM607ulEw4RuSPGfwmEuDMEjLmBhEpiu0SYGhRqXYHK2JHXR8qP54njHw1PwgJddHVz75WZDnS0yh6nxD7vuBT29l22UetBm8INg0a5nUzfg7WvYR8v7eSj7cUWxR3e6KBpOncYv2kSCT5UQu8fmWzFHcEJkrZTlabGfCkQdWNAzRpwRpYvjj6gUATHZSzUe5wY0pyeTe+Q6g4khjV4bGkTGErfdZX2FV/wLeH5f3c5Rj0Z/WQwimFoEHvcvQILhDr/xS6hm8yxH0BxCi/LoBlwA3UFOCxQqcC6bAeJxI9F7jw5c5G3SUhSKC/goTNhD2vgsJ+TtZDRujBuj4uGASRHojhRl5Z/IFMGYJjE7D1OgotpWzB7T7eg+mADpvugYc+DBgQGmdL+lYI9NtQ5GOIMdzJqSnRY4NaWY2umpBVYAlS+1rSCn/8mLZpP7iZYIlRUyJB1LlzaUflkyKGHz+fYIelfYaGwMRM8NTO2v8NhVxJ1eH8s8lTAQLz1uJB999199R2Z1yuTCdv3FNU4sbMnu/aVs1wvZUcSG2Ju34kL+qyyB4fmD+I9/Cve8ybzoFV2Tob9pSJPpbV942L51ksTj7delw6G1X+MY6yqQD3UJSGF9jFYE9fpBONU/JEq40vZpfPoh9k6St3mb1AJ/FuCAsi4SVljpuPVlMcN0MfvnZsTpgSyGC5h2DxuAx5OlxEGQR6O7QRe0AqVZKwy+HN2PgQxDE/or6+BqLPlPBfTBCmpAO159/5lG1BHTZ6Tnd/buxQ4vp9zQtn9tZA3GV53dd7ucs/bCGlTts5UrYMlWqvQ/5yEK9A0gemlHQevymQcKtPleiiB2/cgp44lVk4K2J4zaigI
+ ZRcLshCd
+ 8oNQ/KHF8haUhjpnh3+oRA1qIJsAVq3OlL3TEGtNKo8dv1sri7acdvtjX+ILzDLS8qYdN+FCM/cxNrsqfyrlmvtTvCo7FyIKq+OAttl4b0XwqUP9u08lKtYqnyjiEZdsvcC7fPP9kN3LpBmSAL0OD5AmFM+FCi2VrJkARCIvNJdLeeDFl+SciOeymt/dgZNGMnA8rSHJ6wQpgEcEj1RVI0YCdoWg79GrY2H3xdcGM3sZYKcLmsINJZzcOdIE/VxVW3Hrst6ibBZ1O4Hc4es3VoCXQhqIqVZPMk+SFfx5wvY4mNTVekszXcVb8O8bNuw3VvqsceagAtsXqZpg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -169,48 +170,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2/9/26 15:40, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> ZERO_PAGE() to 4.
+> For most architectures every invocation of ZERO_PAGE() does
+> virt_to_page(empty_zero_page). But empty_zero_page is in BSS and it is
+> enough to get its struct page once at initialization time and then use
+> it whenever a zero page should be accessed.
 > 
-> Every architecture defines empty_zero_page that way or another, but for the
-> most of them it is always a page aligned page in BSS and most definitions
-> of ZERO_PAGE do virt_to_page(empty_zero_page).
+> Add yet another __zero_page variable that will be initialized as
+> virt_to_page(empty_zero_page) for most architectures in a weak
+> arch_setup_zero_pages() function.
 > 
-> Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> core MM and drop these definitions in architectures that do not implement
-> colored zero page (MIPS and s390).
+> For architectures that use colored zero pages (MIPS and s390) rename their
+> setup_zero_pages() to arch_setup_zero_pages() and make it global rather
+> than static.
 > 
-> ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> inline causes severe pain in header dependencies.
+> For architectures that cannot use virt_to_page() for BSS (arm64 and
+> sparc64) add override of arch_setup_zero_pages().
 > 
-> For the most part the change is mechanical, with these being noteworthy:
-> 
-> * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
->   parameters. Switching to a generic empty_zero_page removes the aliasing
->   and keeps ZERO_PGE for boot parameters only
-> * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
->   ZERO_PAGE() is kept intact.
-> * m68k/parisc/um: allocated empty_zero_page from memblock,
->   although they do not support zero page coloring and having it in BSS
->   will work fine.
-> * sparc64 can have empty_zero_page in BSS rather allocate it, but it
->   can't use virt_to_page() for BSS. Keep it's definition of ZERO_PAGE()
->   but instead of allocating it, make mem_map_zero point to
->   empty_zero_page.
-> * sh: used empty_zero_page for boot parameters at the very early boot.
->   Rename the parameters page to boot_params_page and let sh use the generic
->   empty_zero_page.
-> * hexagon: had an amusing comment about empty_zero_page
-> 
-> 	/* A handy thing to have if one has the RAM. Declared in head.S */
-> 
->   that unfortunately had to go :)
-> 
-> Acked-by: Helge Deller <deller@gmx.de>   # parisc
-> Tested-by: Helge Deller <deller@gmx.de>  # parisc
-> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
