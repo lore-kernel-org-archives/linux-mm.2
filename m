@@ -4,135 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D69EC1126
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:30:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3781FEC1136
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 20:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD4A06B0005; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
+	id 5C75F6B0005; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8C2A6B0089; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
+	id 58A786B008A; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A98516B008A; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
+	id 44CCF6B008C; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 967AC6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:30:27 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 440A714031E
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:30:27 +0000 (UTC)
-X-FDA: 84476864094.20.C245AFE
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E9A0C40011
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:30:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QAV9pkvJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=guiWv8G0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2IaIncf1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="bRh/AN1Q";
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=dsterba@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771878625; a=rsa-sha256;
-	cv=none;
-	b=MP3a/eNCrNy5FVnSz+62ESQ2YoYYB6DbTzYC0caQDkyJrS0XPMwaFsCqvhJw+wxhfWC4TI
-	YlBQaO3hGWdG1W7OkZ5uRjDMoUXFCxLC/mMe4L4VrxCKHCbPl31sKVWjHf3hyf6eOfG3Vj
-	zT5VUhJY7SMzbgFbg6LX1J3xjLjM8ZU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QAV9pkvJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=guiWv8G0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2IaIncf1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="bRh/AN1Q";
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=dsterba@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CD9F6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:44:24 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC54A583E9
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:44:23 +0000 (UTC)
+X-FDA: 84476899206.19.FBFA132
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 17B214000E
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:44:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=aoGj60zs;
+	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771878625;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771879462;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
-	b=EfN8SAf+P+swIUmiOp4LsSmH8PFwr31hrM4WodXAP7Hr5fLliwmi1CJVKEs6l1kGBvny5W
-	nkFqQxM/gEX8AMXIWALUqOZALMsSFOiDhW6T8hJND/RYBWW2suc+DYH3zis9rZIlN9BDSG
-	sNNAUShDCX/OfBhAd1md84H1YWKmecE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F17295BCE9;
-	Mon, 23 Feb 2026 20:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771878623;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
-	b=QAV9pkvJql9fL7yW44dlolX4+jS1z/3WsTgUbesIZr8oNqj4+BMS7VN6b1Tnmkh71X1hc9
-	U2/7rYFytw7kRo8L0X/HCzua07CsWYdICkpIwopRgjrO8DDIE6M6qpTY5tC1kCNBdW9FoU
-	k9E3dkGCrd6ZbOECF8PLvhyKdTtcIXk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771878623;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
-	b=guiWv8G0AUeUlj7FQ8EXfhJhO6E56kb35pTggmzdd5ZmPzdZ+tsVyTSBJug+JbQVIo/SC1
-	ZcNnJzrN3OEh+zAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1771878622;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
-	b=2IaIncf1pj3NpuLUVH2W6JCsQ+uRZ2aTJE7JwSVPzb2J+oYpWbE4T1+NzViMLkoZNqbwkC
-	Za8PwwD9YqUs+DO3Op2hVzLkasW/+WoJviko/ei9FBBf+TYFTjsqYJ7BDVLWOm/3EwpW/s
-	dD8OvByWrzrZAOj39xxKiWqTkZDeIaE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1771878622;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SC/IaqixQPdjviB9CgBRZcLmSGCPDAzf3cSg7lkDBoM=;
-	b=bRh/AN1Q6THpJGY3Yl0Hyoxeq/og2JhaiqD2yt2nRhyMxeNlVq8gadSOV07NeGzJDVpZu+
-	LHD4lYAuRHiZsrAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA8A23EA68;
-	Mon, 23 Feb 2026 20:30:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HIJfLd64nGmybQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Mon, 23 Feb 2026 20:30:22 +0000
-Date: Mon, 23 Feb 2026 21:30:21 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Chris Bainbridge <chris.bainbridge@gmail.com>, vbabka@suse.cz,
-	surenb@google.com, hao.li@linux.dev, leitao@debian.org,
-	Liam.Howlett@oracle.com, zhao1.liu@intel.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-btrfs@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] kswapd0: page allocation failure (bisected to
- "slab: add sheaves to most caches")
-Message-ID: <20260223203021.GP26902@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <aZt2-oS9lkmwT7Ch@debian.local>
- <aZwSreGj9-HHdD-j@hyeyoo>
- <aZw2LyOjxMc-c3dl@debian.local>
- <aZxBIpE8R8DxO4eJ@hyeyoo>
+	bh=KyTEEaoXAAyCQz7ZsgcVYW88Dh1Bs2/KiZ/NYa4dnJE=;
+	b=7jIIWyTKL35+x8NNYdmkBcVbta1+SaUsTPG2yrBGoz7r7W7LApH094aQpCPvbCBV57vtQm
+	J/MrYFCEqDjVi0Un/VhY2DXUxCBiaWnonE4VBzga1QmaUerIf+GPhNr4vOGnFKkC98AJhi
+	c5omlCZf12efT6jqqPh0Xs3jKrUW4XI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771879462; a=rsa-sha256;
+	cv=none;
+	b=2CdE2/X/mqNqxpiXtjBP5B8mfIXzSSJE73aZ/5Eto6KHnsjfWGOSEN8pIbUC9MpgFo0T/i
+	tr91+3IOkfKo8XEaQebmK4DtpcFZomRF6elI2I8+PkAOcXdzunpmkniYGamqzss6gtoUPG
+	UQQLfQWDq765d+gbLMm43Cp/tj7/Q4M=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=aoGj60zs;
+	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1771879461;
+	bh=KyTEEaoXAAyCQz7ZsgcVYW88Dh1Bs2/KiZ/NYa4dnJE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aoGj60zs4KFIYxAUrRWU6lEvNVCe3z+VyrASWTHF+XgH58FbnH/OrB8z+3vOzmvP8
+	 JMsxujoo9dt8RcFHa5fxdRwn80Lc9s9Y93bCTENVz/WqCwliCOiQDS0bXovc2us1FV
+	 ncGIF3lsVuR2iLlwm2pya7s+JXnESfpkoeQo3DIoWcyQgHF+ZKJUM0DUae8Qz8Xxm1
+	 XH2sQ0IA4rSLNY4uksDZ/2lh2aUOL4orhYx8pXWyy/rEfJBkZ5vequihw1xAFNy3WK
+	 7RKqWoXx8Z4GXP6xaS36EzKG2f4eVdTVa3RmO8LNcOl69uV07hUyUEoEOTS6e05rDo
+	 +XtYiSzPTdszw==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4fKXs12rh7zHyx;
+	Mon, 23 Feb 2026 15:44:21 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	John Stultz <jstultz@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	maged.michael@gmail.com,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
+	rcu@vger.kernel.org,
+	linux-mm@kvack.org,
+	lkmm@lists.linux.dev
+Subject: [RFC PATCH v5 2/2] hazptr: Add refscale test
+Date: Mon, 23 Feb 2026 15:44:18 -0500
+Message-Id: <20260223204418.1429025-3-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260223204418.1429025-1-mathieu.desnoyers@efficios.com>
+References: <20260223204418.1429025-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZxBIpE8R8DxO4eJ@hyeyoo>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Stat-Signature: owbexs9449whtz6yx6znx6pmyafq8txr
+X-Rspamd-Queue-Id: 17B214000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E9A0C40011
-X-Stat-Signature: wuwuowd6zaniymchzo7b87rzqa5y5dbh
-X-HE-Tag: 1771878624-741205
-X-HE-Meta: U2FsdGVkX19p9yiD/eLBGF0dQjwV3Xy5SOhsx33o4VwKgnCvqTv2KI3dhkgmjKXvkK8XZjeBLRo8C/6bGGxVlfRKO1sBQ9Hd4quGNBNSPFzu8p2gxFhVCrpi3XcBEWIBBplUt/l/o8OpJqHXMf6DCsgmlOULQoLsb+aIXAJ8J+BSBdnzzo16YRCNaF8Y3Q9Eza7orK1XO3EwtNl0LxFkq9q2zhFmY0SfO4RFgTHFLcs8ce0I+OnURrQqqB2qOuW/VOBs/c7DHl0dhimmlhWf7we4HVs2S+arPYcMiooHrKCWbwjXFNjHBfphCTNbE0YN9765eTWhK8YSmhOAULXdsv0RSuHdf0kEcA8OLaS1cdkPEn7JcH81tIhCDOwXU7U3TeXCjJDTE/maAm6pJURi7TiAVP61xOXDqQlop2nJzFRcvfzAj0rC2wnfUoWYtEnLeYNa6PdfQ6eMaKDwEvr7fZa1pK1ePtwFU6PxgQOMCFX5aqy4vfQUMOivcxD/mde676ZrIqLzk8XdtqO+51E1+dsbSFX8EyqN0GN6hZZ4Rs2og88gHwnv5dDoBtCtUQ0Hdw2mdZTJQAH+f40N/TSHxHTvMqEv2GRBP8uEZuG1ydaBZv1ZzcnPROJz0oTe8mHZezqCVmxQnd9wB5MwWWF12GmHww/+kO+x7PzdmS/AGcptIX6S25nsnKiROUZQBtkexw23uI9VxfbMfjGLAaY+FqVxlZg7idXY9QESfsFs1joOEBQ7UDzY3JnB+pmGOZ/4QZSwyiUkPLMGH9+jP2lbp9l65Ybj9dZYnjHnV2vuTziI8YZZipJcCu8Qo4SoxoRiI7/zvP65oOZn+0pCCLVJskIlUELnt5fAszTeiKuWNlmYt+UzxkzgaBPboD8XVf2DBBBs+DzsscxNCoKSe2fbSz9yqaUL1BMuO8lqtsge3TFMmfJjXR+wqRqzePbToxOL5aIPggBoKb2FOr3om3E
- zG8xAUvB
- n1jOw4WPbBQlolnuUAwe7BausCSCvGD/6DgspJnj4PGmyPUuoaAeMalvoviHzPcDwXISCXGEzz5VG1pAJz9ilJuxE9E/+vJRLiiBO
+X-HE-Tag: 1771879461-724098
+X-HE-Meta: U2FsdGVkX19fLukkoHpPOofrrPSbIUOGG9REQwthSmIYqI2xc5C9bohGjrFpCn7YbcUjWAg6vc10vMAGI2eZb/MdiAu6i9gRMb13p9S9jycd9/JjA30mqjDXbG8z39cGoeAJS/toexZXDPTBn8ZICoJamFJWtWDTJ4FXxU3JmDDlDmU7uUuGW4BjITwSEMzPKt4wtA6CaPDpJ5VcueS8nsb1A3+cQL28Fi04qgMwo3YlZbwEbb9X444g2P1lqJpt2XUSo1vzGwaQd9IXdRYXH6q8RO5fqn+JiacK47E+EzVV9o5DzUInzlzdi2K/Rsj8EWZGAgPfur264kD3fxNv+c0gpPiDY9BgNTq7AskjSfZXb5Ytz03EKcGPM3Of+CQqF/5o9g630oSSy15+I39l/a/FHM4x+JgvPP8e8EQxTXqJK9o5PDelLJvvlzAvmbZ9kZ3ZO8ogSRf2B/vfBTog0GEgC0X8WQRB/Ga1heBQ9dOzYBpRsVY/ZTpyQkL5NNJn9ZXWS6HbKiBBN0gQp2z1r/VWXqADl4TNx1MMFv4Fwwi4YJF3T+3T3JguMRlsbIBzgYq2nmab9eWHm/mZ2VTZWxQWams48P7GrQQgHX6aTIh0Wv0kk8CdzC2fmoRnqtJIr7lxvHjlfSpZcaTgqV5OOAQf9ofROQIvL3wwc2VJ4pj9xnnPkPM01dVhDwgEs3snEA8bq6ouZrVx0xdkcZtbRypN6VMbi+/Cfw+BKp8wU0PcKvKK47S5hvL23Rj96cr1zWufcXKIE0q/3B/ciLvcLhz1IkzkZRbxv86soxFn60VF9Ln3u+EIgaFylvZJhkeGoQ9/4W+VInE3D5nEXHP9PncFwFCM0ebJ/bARrxs7DFylCf5aVvAymkflAlT8FKxvL/XuByb49z2UYeZdWfFlL3I9pqBiAqwrjYyARsExhfEXX/R1fW65yExUXYGixWcAYfbNdH9mlG3sV+QsYDh
+ J6m66YsC
+ 4OypJ+fwddCD5Ph9pjOrVOsSepam1Nwm1TjhRg2R15rxFE7mFvxbVEJEaFruwqWyLB+fuSf5BINBobi1yUC3hz8WVE2PduK5ZWQ7v6AR1jbcO9tapi9l0DQZTOdzSxEaI8RSYLq0+zvj5EzbxC1fa9ZZ2wUGPsqvGxgy4vzePrE7zU6t2GBMmTPTNWxKwwY97VDuolBu5QuOrU//F7MQVkBYchZCMTmWdUvVtW/eb+gkKI1amQ7X4Vg0r/3xiQmUAkkYJri86OnuuQcsUThcXT4q6IRXhTsnn3lBahd9/NfB2LaAbtc15SSG4r2PCL82FhxgCUOx7UCLMm0xUnq0WtyLyJD+/xyhI83wD2PXeRRFfW6CKlAWfti/DnY8ooqWY2nLsOZpr+QNOUSJMB9GzO3pYacFX6NjYz3dDSWEJEFj3YIffflh9YI68Fw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,97 +118,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 08:59:30PM +0900, Harry Yoo wrote:
-> On Mon, Feb 23, 2026 at 11:12:47AM +0000, Chris Bainbridge wrote:
-> > On Mon, Feb 23, 2026 at 05:41:17PM +0900, Harry Yoo wrote:
-> > > On Sun, Feb 22, 2026 at 09:36:58PM +0000, Chris Bainbridge wrote:
-> > > > Hi,
-> > > > 
-> > > > The latest mainline kernel (v6.19-11831-ga95f71ad3e2e) has page
-> > > > allocation failures when doing things like compiling a kernel. I can
-> > > > also reproduce this with a stress test like
-> > > > `stress-ng --vm 2 --vm-bytes 110% --verify -v`
-> > > 
-> > > Hi, thanks for the report!
-> > > 
-> > > > [  104.032925] kswapd0: page allocation failure: order:0, mode:0xc0c40(GFP_NOFS|__GFP_COMP|__GFP_NOMEMALLOC), nodemask=(null),cpuset=/,mems_allowed=0
-> > > > [  104.033307] CPU: 4 UID: 0 PID: 156 Comm: kswapd0 Not tainted 6.19.0-rc5-00027-g40fd0acc45d0 #435 PREEMPT(voluntary) 
-> > > > [  104.033312] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
-> > > > [  104.033314] Call Trace:
-> > > > [  104.033316]  <TASK>
-> > > > [  104.033319]  dump_stack_lvl+0x6a/0x90
-> > > > [  104.033328]  warn_alloc.cold+0x95/0x1af
-> > > > [  104.033334]  ? zone_watermark_ok+0x80/0x80
-> > > > [  104.033350]  __alloc_frozen_pages_noprof+0xec3/0x2470
-> > > > [  104.033353]  ? __lock_acquire+0x489/0x2600
-> > > > [  104.033359]  ? stack_access_ok+0x1c0/0x1c0
-> > > > [  104.033367]  ? warn_alloc+0x1d0/0x1d0
-> > > > [  104.033371]  ? __lock_acquire+0x489/0x2600
-> > > > [  104.033375]  ? _raw_spin_unlock_irqrestore+0x48/0x60
-> > > > [  104.033379]  ? _raw_spin_unlock_irqrestore+0x48/0x60
-> > > > [  104.033382]  ? lockdep_hardirqs_on+0x78/0x100
-> > > > [  104.033394]  allocate_slab+0x2b7/0x510
-> > > > [  104.033399]  refill_objects+0x25d/0x380
-> > > > [  104.033407]  __pcs_replace_empty_main+0x193/0x5f0
-> > > > [  104.033412]  kmem_cache_alloc_noprof+0x5b6/0x6f0
-> > > > [  104.033415]  ? alloc_extent_state+0x1b/0x210 [btrfs]
-> > > > [  104.033479]  alloc_extent_state+0x1b/0x210 [btrfs]
-> > > > [  104.033527]  btrfs_clear_extent_bit_changeset+0x2be/0x9c0 [btrfs]
-> > > 
-> > > Hmm while bisect points out the first bad commit is
-> > > commit e47c897a2949 ("slab: add sheaves to most caches"),
-> > > 
-> > > I think the caller is supposed to specify __GFP_NOWARN if it doesn't
-> > > care about allocation failure?
-> > > 
-> > > btrfs_clear_extent_bit_changeset() says:
-> > > >         if (!prealloc) {
-> > > >                 /*
-> > > >                  * Don't care for allocation failure here because we might end
-> > > >                  * up not needing the pre-allocated extent state at all, which
-> > > >                  * is the case if we only have in the tree extent states that 
-> > > >                  * cover our input range and don't cover too any other range.
-> > > >                  * If we end up needing a new extent state we allocate it later.
-> > > >                  */
-> > > >                 prealloc = alloc_extent_state(mask);
-> > > >         }
-> > > 
-> > > Oh wait, I see what's going on. bisection pointed out the commit
-> > > because slab tries to refill sheaves with __GFP_NOMEMALLOC (and then
-> > > falls back to slowpath if it fails).
-> > > 
-> > > Since failing to refill sheaves doesn't mean the allocation will fail,
-> > > it should specify __GFP_NOWARN with __GFP_NOMEMALLOC as long as there's
-> > > fallback method.
-> > > 
-> > > But for __prefill_sheaf_pfmemalloc(), it should specify __GPF_NOWARN on
-> > > the first attempt only when gfp_pfmemalloc_allowed() returns true.
-> > 
-> > Is this fix sufficient to do the right thing? I tested it, and it does
-> > appear to prevent logging of the allocation failures for my test case.
-> 
-> I think we should do both both 1) setting __GFP_NOWARN from btrfs side
-> and 2) making slab try to refill sheaves with __GFP_NOWARN when
-> there's a fallback path.
-> 
-> I'm writing a fix for 2) and I'll send it soon.
-> 
-> > diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
-> > index d0dd50f7d279..d2e1083848e8 100644
-> > --- a/fs/btrfs/extent-io-tree.c
-> > +++ b/fs/btrfs/extent-io-tree.c
-> > @@ -641,7 +641,7 @@ int btrfs_clear_extent_bit_changeset(struct extent_io_tree *tree, u64 start, u64
-> >  		 * cover our input range and don't cover too any other range.
-> >  		 * If we end up needing a new extent state we allocate it later.
-> >  		 */
-> > -		prealloc = alloc_extent_state(mask);
-> > +		prealloc = alloc_extent_state(mask | __GFP_NOWARN);
-> 
-> This seems to be a right thing to do to me, but as I'm not familiar
-> with btrfs, I'll let btrfs folks leave comment on it :)
+Add the refscale test for hazptr to measure the reader side
+performance.
 
-I agree the flag should be added, as the comment explains allocation
-failures are not fatal at this place. There's another call to the
-alloc_extent_state() with GFP_ATOMIC so we cannot simply sink NOWARN
-there.
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Co-developed-by: Boqun Feng <boqun@kernel.org>
+---
+ kernel/rcu/refscale.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
+index c158b6a947cd..7d64dfe78327 100644
+--- a/kernel/rcu/refscale.c
++++ b/kernel/rcu/refscale.c
+@@ -29,6 +29,7 @@
+ #include <linux/reboot.h>
+ #include <linux/sched.h>
+ #include <linux/seq_buf.h>
++#include <linux/hazptr.h>
+ #include <linux/spinlock.h>
+ #include <linux/smp.h>
+ #include <linux/stat.h>
+@@ -1210,6 +1211,47 @@ static const struct ref_scale_ops typesafe_seqlock_ops = {
+ 	.name		= "typesafe_seqlock"
+ };
+ 
++static void ref_hazptr_read_section(const int nloops)
++{
++	static void *ref_hazptr_read_section_ptr = ref_hazptr_read_section;
++	int i;
++
++	for (i = nloops; i >= 0; i--) {
++		struct hazptr_ctx ctx;
++		void *addr;
++
++		addr = hazptr_acquire(&ctx, &ref_hazptr_read_section_ptr);
++		hazptr_release(&ctx, addr);
++	}
++}
++
++static void ref_hazptr_delay_section(const int nloops, const int udl, const int ndl)
++{
++	static void *ref_hazptr_delay_section_ptr = ref_hazptr_delay_section;
++	int i;
++
++	for (i = nloops; i >= 0; i--) {
++		struct hazptr_ctx ctx;
++		void *addr;
++
++		addr = hazptr_acquire(&ctx, &ref_hazptr_delay_section_ptr);
++		un_delay(udl, ndl);
++		hazptr_release(&ctx, addr);
++	}
++}
++
++static bool ref_hazptr_init(void)
++{
++	return true;
++}
++
++static const struct ref_scale_ops hazptr_ops = {
++	.init		= ref_hazptr_init,
++	.readsection	= ref_hazptr_read_section,
++	.delaysection	= ref_hazptr_delay_section,
++	.name		= "hazptr"
++};
++
+ static void rcu_scale_one_reader(void)
+ {
+ 	if (readdelay <= 0)
+@@ -1524,6 +1566,7 @@ ref_scale_init(void)
+ 		&sched_clock_ops, &clock_ops, &jiffies_ops,
+ 		&preempt_ops, &bh_ops, &irq_ops, &irqsave_ops,
+ 		&typesafe_ref_ops, &typesafe_lock_ops, &typesafe_seqlock_ops,
++		&hazptr_ops,
+ 	};
+ 
+ 	if (!torture_init_begin(scale_type, verbose))
+-- 
+2.39.5
+
 
