@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60E5EA4FAE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFA12EA4FAE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 12:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 458696B0092; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
+	id 5E9BD6B0093; Mon, 23 Feb 2026 07:33:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4308E6B0093; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
+	id 5A0D26B0095; Mon, 23 Feb 2026 07:33:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 305BE6B0095; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
+	id 46CD46B0096; Mon, 23 Feb 2026 07:33:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D2FB6B0092
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:33:07 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63C921B2B86
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:06 +0000 (UTC)
-X-FDA: 84475661172.30.14D9213
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E5436B0093
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:33:12 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D6FB5877FD
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:11 +0000 (UTC)
+X-FDA: 84475661382.05.3E817F8
 Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7F42CA000C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cHNQ1IAe;
-	spf=pass (imf15.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id E7403140002
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:33:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b5VtNGNX;
+	spf=pass (imf23.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771849984;
+	s=arc-20220608; t=1771849990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GYNB6/pZb33YeAKubCBWRXUx4k4dpplKbNpn3dWK4iI=;
-	b=AW2IRl2vIcfHoMG2aVE/k5efuAW5u9P6T4ySV3zCgh0X7ZYL7R2W4aLahTZv3QuevYU3Op
-	R9Jyl1ucGWxW4Z9QxSWMzs9xzWg0o7hvXWcbyVjaXiPy0QyBG12JnXv7u6Rnvo0g7TVYmz
-	M3iPGg3UpRPj0diDU1XzR0bTeIOC45M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cHNQ1IAe;
-	spf=pass (imf15.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771849984; a=rsa-sha256;
+	bh=LF0oh9yEhb6fIvd4fp6llRGtP4hadGxZKoLp3XCPu6I=;
+	b=p1qy3oK54IfpPS44ysnow9S7gPHBEjxtqKjKigkOszHqPQVZZ8oJ2M6Ct7pPGcF3eUx0p4
+	i0rlw54GyGnWpK7yNXIk64sIxts0yqT4Un6xoYkMTyOWfR9s7FV46Rggq7r+agaq4C0Xau
+	Qt4Yjq4Z7XtrIRuIX2fsGKijxGYyZ8o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771849990; a=rsa-sha256;
 	cv=none;
-	b=T+h6AeBE6TP4qoIM8D+VZk2i0FKsqJsQ7Os5Zl3AoHi+XX/VBNvO7553sZQ8t/pcaH2XZL
-	hQZyM3lxm+h3Gd4Pu5OZhKqK1MkV1g25MYLaVDoa9dXmrd1k+NHXdv5WSvzMfQHFLx1P3/
-	3wtr6CvuV0gYiIMG9pMzWctznrL0Edo=
-Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-c6c444e89bcso1510439a12.2
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:33:04 -0800 (PST)
+	b=kHghAstCEUJrRLwKbly5gsbVlLCI/QuQSRlSViM5K/A487xbUwz2GnmT8wniOiTWGZYJGK
+	HEBBFr8ctmfbRQIHaLqX2ajTAmYO2EiALV0GO/e5/PP+1eIjGdpTfyHhV6fe9U0XMnfSi0
+	IkoLcl1tstIRXuv1PR5EsfENFCuKnPE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b5VtNGNX;
+	spf=pass (imf23.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.215.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-c648bc907ebso2526889a12.3
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 04:33:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771849983; x=1772454783; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771849989; x=1772454789; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GYNB6/pZb33YeAKubCBWRXUx4k4dpplKbNpn3dWK4iI=;
-        b=cHNQ1IAetJFuDRNum5Jg5SJLRkGozyvS24odWYULWcLusS4xvkbAKolPZPTFtH6CCo
-         /cQTK0DcWnU0Ojp7S+4c10aFtQyAnpg5JGqRh8KTuBabEUB7buwUPA6geLAsOFvvGD/q
-         GRtBkofIHOAIELSrCY8Bg5BikBF+7m2ET+wE83ZBxEYG2cFT2UZ+7ZbZlxZZCOHRVDDh
-         M2qUgB7TMIz4T0UGYApo1fuQFdtASq7bMzb0qrCUjcVxX+46Xq7ddCWsccEDGVcvzrTa
-         3olm06ii89xcZC5qhhme4FiA7ys0z3nZjDDsuzotWcIz6gx5rBKP99S180//IhutRlqb
-         uSAw==
+        bh=LF0oh9yEhb6fIvd4fp6llRGtP4hadGxZKoLp3XCPu6I=;
+        b=b5VtNGNXTp268lICjdyfVkSk4oLifgpTtJcGSUCMoCDt6rstsrkDU/gTn/5NxzAV8+
+         RG3ASqZqi5x2V6UCQbGxtgJ4ARazeGuPQceAzlKNhqDws8rsk/pt32p1yAs/R9/v422B
+         z/Uy/cDnmkcYsNpJd5E0rIMsoK1SwuLnUVWm0/AmXQca8wGYrGYv+qqOVuaYdOJM/1fT
+         YoA/tHMIHDY/iBF4uhT+q3Dn+qk5vpjRL+RAsI/8VtZLrqcdN7f0S/K8Dss+nDub+UN5
+         9vJqZ25ihNxxjxNBDnJct5HEfjDTn3mR+cgSBJS+L66JQuEZTXq38m5YUvSet6XrxBCo
+         cZ4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771849983; x=1772454783;
+        d=1e100.net; s=20230601; t=1771849989; x=1772454789;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GYNB6/pZb33YeAKubCBWRXUx4k4dpplKbNpn3dWK4iI=;
-        b=iX2lgBR/FcmSIVEA1hnacScNLnhy73MVz41WKcH1/JienYrMASAobrrewZypWJNGvV
-         NMo2hZTkz0zlhyTvCaLsG4OtL388LFC4TwDdo+me171/NFpUdiH7PCegsxQO9VgBDYYS
-         xODUS6I9JQ9XEG5R1CSceTIZkx8x7OziA26HSoi9M1NLWadsxOORjOGuh/zAeNHdkMIq
-         8CC5ARNxd7hlqzokCqxagrilmnDVvmuvHGLBZH6hsczYnRjj4v0x+RXiVRsRlYH4NSPh
-         fXOnXUbIs5viRanJotRrjI2JDrwhOVsYCUBItGOD9dUk2Qd7WxqehL8vtvjJR7Auw5ml
-         AxxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXH4+J02C7gO9yHORUSrsromumsJ4yj397UcSB08ttqijsXWAuUaXV7vNVhFHEB3uDkyMpbW+ydXQ==@kvack.org
-X-Gm-Message-State: AOJu0YxQ1qPKjmeQ8rq7lh1DftIAPA4Losrtypekc4MgiMMVd/NYMyky
-	GHNfCb2GAttjgLax8FmKB0rmYeQA02mehN1mIPPThNkEU+koAMFUEgI=
-X-Gm-Gg: AZuq6aKJEDmFgN8dBNVJWzpBvhUZBeykDRZxtKM4NID4Kjg0hL6Wv5xff+8qUMIiHS0
-	dUvgfGYSXWRFt14StU7Z5OQWx8USPI6n9/gFEW7NYCuNIqwtrwjfNn6YQnlCXUvhZfDtOMgL4um
-	+SXo+iqMGNoJKGgwW9jas4oNALSegI5pFvBhCPiPt1Y+bMQ3hK4s6BVk4WYODkZzoJegcJS386W
-	C69YdB60xtsQEZDgUo7dopAbyHcOSC+VHAVotFzdXbdo5WVbeAPWqcsqjYZ+gTypfQZR79K1Cme
-	zfT/lSpxwdICMhSMGAyP0h+9pI8fdP+K7KVRyXVdvpVKQXxVY3kRVaN/GRr/+RxO7VWZ4FTlXoL
-	lp3ffqtKTV8NOYPh4TVaoum0VAijYYINW6+y120oO1kFiJY9EkXLQ65L1CXyhRdEl2qteS8EvDx
-	X/GK/43KJSThbuqhVWkqwRtlTxH6mDZWxmKaJSYbJMRj79
-X-Received: by 2002:a05:6a20:cc97:b0:35e:11ff:45c1 with SMTP id adf61e73a8af0-39545ebee1cmr6462789637.18.1771849983299;
-        Mon, 23 Feb 2026 04:33:03 -0800 (PST)
+        bh=LF0oh9yEhb6fIvd4fp6llRGtP4hadGxZKoLp3XCPu6I=;
+        b=KvGJLg8Lm++ho+YwK2S29rbcCk0x4HmxSsCOjFLih9EeioIVHate7kzCAKXRAyOjQ/
+         9164BrtDFRZO5t8+w7xT375C3HKjlNMK5SZo4EgXZSezFENTcdvj0GpYeMxYlS/bXxw/
+         tkcJy46tJrCGa6e1PA5qbN1/uik8CuUOIgI9kmX5TthMAQLkdh0o2pz08yoYYcXPf1lx
+         /48YNICdqlwjkbVyftA1ojHXgOxlu1qTejRFKpmTplosA80Ji4U59fp0VbrZ7ffwEeve
+         BJxQjUNjFzrFa6Xgbu0KP8AOKmlgWMJPHFJtbCN/c2hYjK7hlPiTrmfUQ2o/Wp2FJGD8
+         kgbw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5eM4gk9umDvJ2zr5oJ4anmTW12CpjE1txeWpEhBUGMx4HOxKdcVR1EzSDXQxkEsZb0I5exz3bcw==@kvack.org
+X-Gm-Message-State: AOJu0Yz5VIUKVUqJijQG2wPpRcPDp5qsOjCgR0262QZbzwQlmR9fYzit
+	frEnsUWQFKpLUiLjAE+63IBRDzaWCE8RoXJBejBHVHSPEWka/MlQWIc=
+X-Gm-Gg: AZuq6aJHesM5dG6ZQYPibCERkArJoelV5rOPL0oslZcIiTIdyIJs+16Z6goK2iq1j2R
+	UsTSQ0HQ36LS7fhcwDGShXw5G9I/o1pQv7mUfUIzPXnWbT58ZxSXtWa2MKkWnAngqUZM6SyGs2L
+	HqFhSJxzsfPSL42IFJU9KFQ+tsegqzemfs+Z3NsLR13DvXf6M1lGPJ1U++SC1AK1tcckW+E2r9I
+	ObYR5AwLeICTlg4Id3E6NwV3gTm/HmFkqurxw+1m902x+UN4xCUGw9CSfEGorE0A+jSyRV2TSY/
+	y5GNYc5ZuQ8UhlwChNuQu9762kN3BQTCYznZxh0yzXkq4GmcpXv2A438lpCaU7ar9BlqZSTFu/4
+	SiNyMdsC3YLVw74YvLDO+8zdqHXvQeE4gpC4IoifVswbGajA8DhQlOvBtTwSRhEBm2whSLR6Yz6
+	qyVo890USq0kIYkL6T0FlKmzNCtB/VAr/m9QqzQafiADCp
+X-Received: by 2002:a05:6a20:9d90:b0:390:ca32:da2c with SMTP id adf61e73a8af0-39545ed46fdmr7373188637.24.1771849988581;
+        Mon, 23 Feb 2026 04:33:08 -0800 (PST)
 Received: from LAPTOP-FDBL0TVI.localdomain ([49.37.157.71])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b71a73e1sm7454739a12.13.2026.02.23.04.32.58
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b71a73e1sm7454739a12.13.2026.02.23.04.33.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 04:33:02 -0800 (PST)
+        Mon, 23 Feb 2026 04:33:08 -0800 (PST)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org,
 	damon@lists.linux.dev,
@@ -104,23 +103,22 @@ Cc: akpm@linux-foundation.org,
 	honggyu.kim@sk.com,
 	yunjeong.mun@sk.com,
 	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Subject: [RFC PATCH v3 3/4] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-Date: Mon, 23 Feb 2026 12:32:31 +0000
-Message-ID: <20260223123232.12851-4-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH v4 4/4] mm/damon: add PA-mode cache for eligible memory detection lag
+Date: Mon, 23 Feb 2026 12:32:32 +0000
+Message-ID: <20260223123232.12851-5-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260223123232.12851-1-ravis.opensrc@gmail.com>
 References: <20260223123232.12851-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kk7qwq7x51q6sehg84ps77mi89m77tp3
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F42CA000C
-X-HE-Tag: 1771849984-558674
-X-HE-Meta: U2FsdGVkX19NLdRjSeCS0l1msd3YYXNkH537WAqzWyu7xLNFGXjcUF9WXPIR4RiDGSZfk+KFRMQv0iCYe6tm65Ptkp4aQzt7ZwgPUaHl7LGMEcLmDWgK3mB41ZzbgSdqkfHFNQMmonFvdx/FLnRsn1h8A78ZJtAvVxQBBtjFw2rpw8isRt9NeUvT2Vmjyvrlwphl3QO3nvErpulMlcixmdQxXEutGPHCEuARJh3BV9vjVe+xzC5oBloiatfgzdzhnZt+A/g/xP2arCwrpy6uJgYFqzrWtRx/QFSWsLQjd8RzURkWa/b/8LpshbDrrV568JroY9DUWC1EYg3hSaxyN8JDdjlkPbFbw83ZIy2ikN2R97eW/rgGos03UQD9UvPtZia3buOaHz/hKG1CKlsCXkQyFeOIDIhYeYInbMWS0LOgJ0jVH61nRvNACCx2FlRHMFCLuYAtL0YvYEMjxWOzD3zskDGGfDDmgwC/IrULKZqc8Raid/tOzql8GeybyhYWSq1Ibd4KbwSMHBGnwma5O35Ve/7lleMy9Vf+iUnknedFZWzu6PA9ykuzDsNU0pMnR4YtHh2of2vRZeuYhyc37A0zlHoa69svl/VGn+cjPKn1IAxSgZHZvrmgt552QcupbZj9KvgzcyvxvSPgG7vwyJNERXmKoHUKqnrBNwc5PCLNULMDZ9oFnEuIBPkpWhtViJHFK+f7j0+fn/ZuHr9oaDUOhIOXWkSB2EkQEgxB3lSMX6/8dkCEVMuKIUQ6SJy9dWxlSDlvedNWeZ5jx8PTh4rP+OH/sWVjOVModgrd6L0YArE+CRSB6iICSjiymQwi8Vl8blyNsdW+pzRWIp2DFbA0NvJAQKpTz2kemR2qI5CNJDw7PmRe0xrvIYeNEvacpczLPzcRxy24y7qu1a+UbXonhV/ME7ML1bIpNFogaoqFp5hxPKsSZRJKX3wZpuoBeK+ThPAM3A3T3mYSf3o
- WQ9kU9il
- T3A4LiFrwTGSYIQEHtZ/XXXhNqmZo7pdM4YqhZOuB5ERbcdppLbA/9SbXxsH26RrNloyOxDPz46+I46uHPSj1U88NfB6pwRKpSvwzSV/VeNGlSoAS3dyxsEPrzXS9ePiU07D9GqNehfyhMNfFvD5G4nTCMwK6v26P8v4TO6Muy9+juImYwsK/KC2a/gumIiZApXku2cdBdnf1c05PUkTMfWdVT8lpWUX6oFVLcr/YJ/teVT+OGs4nmok2eojQlt+xb5sCQo/0NqOiU4LJQqfBOnvopwmUoyZBMi0HlUeuTHLn0BPRR1bVeIzK1QOZ5O0ID4EF5FqBHNA7+mGNGGMW+sHtiZq57iL/2qlHD7ZDGFmq+Pi1KUMU0WzX5MrE7+P43rQryaF/v/Jw65wepMKTUfwZAwsxak+wQGDBRdhfkUv3d+x4j/uViqy4Hfb7nM4QN0JFRrEJ2RTUFYq+NaDUi73l0omfTmDku/PDBGKe63wN/HArtuL5KsRLxGUTHKBOCfcT/jQg1M1gLXitqeomvPvYisp5PrqLYeYTMWWYK6i7dyVO8vUBrPvAYTTTx0DjaV6iP0ouOjqvgzWhPbQDagMjswgh10O7p9JBW38SjF3CpCb5Lp1f476H0Q==
+X-Stat-Signature: cnstak8ds1whwr4gxmqzhyeri8gcs1oi
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E7403140002
+X-HE-Tag: 1771849989-49553
+X-HE-Meta: U2FsdGVkX1+zCMrJxwpZZUzU+mOsPXiwoTz9j/Cd2QOZatL/dhY4PqlsI78eAW6uLzGBD9cRrBGHG4PkzoqpucazRp3tmNPlxJBa5iSiQxdrNXS0i//EIiRUBzJoaei3nV1fmu5bKyWDqwxiRJvqr4QfIYHrQMMr7kyxtLL86wwNFxAnPE9/B3CERwDzswrf3DpFEmsFdBlDkgPMIqPhb9bZ3XOZnGvOCiDFNLFYVlLrB2KvbzoYIJJMEPJc1jZFHKGS47hulGlhtzqcGEvQaTVlJ68Gk5sI6JExkw8M4dK1fBApvgMqCMULYXUuGUm8XR0tzHuTKjAd2MvZvrOZS01tt/WcJK/aF3YtlLM1A/OHH11N6sZYVGxfH2RBsSJ7zZtMLO07FpNkCtpMeCDNDtaZxgHd9UeqUFb+EONHA2ixluEnfjQ/xQyKMKjUx0fZzYD4IETWzT/97R1GDcxUs1A1DqOM7pTUlZQs0N+RZg3GMHg8jDkiZj6hzQGvKEQ6fqa7IGwGUmXiyPKVUcPlU9qpyzVVIuj3rkRrRoloA1y7sHKNKPlApf0mhrSK3ZkRaWH360kEzt7u+X6594vxEJfNtOz19RweQ0i/7SqtoFvPVnFf4GRsMt+slM8uplotsoYnI149QzQnswj9kFKRaF+sCTAp2UFv1g6cKoPOyZNPn7tX7GB/VwVzu23Q7lcFhA9emhoY1AaO6qm/xOBEbcaaxBfjyf+aSO31pNOeZcq+HnzgIsgWIfpoCTZFR6qoVM07ylbdRp7HzJFV/MP4SMxOd1CQ7swe0V82lFRZpHv7k2Wt/Hb4DYtI12pImJ70FgoHHXVtltvSGeQlusT++M0atnVhUTIMXH26HAuomAmYenJPhVB8tMjt6vwpRz6JSsxb2gMUFR5OfygqOGoOvNrCJpXtAkeQbHcO7KYf7i2ee/ycrakM1FSr1hG0sH3BI08RtZbKqTfdM4ZXcKL
+ CvwdcPLr
+ 4uj+zSmAnE04xS+X00j80NKT/IC4uCdCFPPrBgkRTVvWpgDDtddO9PbfVuS+xwlDEg+Fd7lCNU6at75/MkeTezYjLFBMdxgIrWYbkKOHMR3BsSJ99TizmJwI+V1XpP/phMzytT4W8FovcxG5vzDJ56ye3ynFg3tsqXfww0ZqOCPVbKXMci0vlUgpsbOu9+r4l5SbzHUWHtbuI2+3yuWAYuK515OeJlIEPKB5ZOkHHgkb4xz/6zXZLwgR8ZnNYYqJAPM2Mbhw4INNobmyfTfonVlORQD4yV+2WKvgneoUx8ksyst56Bn8+IvG9VGEmQi8YSNY4thGbwZlEomVkvaKku67rSPC1kJw2dij7brR7j0FZOBmiJvGnufdeoxiYoDF//uorV2yR8rzfwb9zb6/F2tvbolTQWBclRtG2z4GfPbBRjvK0p25Vb0+mTsmc6eJj/tk7W21gTUuI+Tu5pLPdvZvIE8BxxMd2tyJOsltLEeF/GyJRsqwbHCf3I1Z47x5+bS3FORb15TGrJ0E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,268 +127,750 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new quota goal metrics for memory tiering that track scheme-eligible
-(hot) memory distribution across NUMA nodes:
+In PA-mode, DAMON needs time to re-detect hot memory at new physical
+addresses after migration. This causes the goal metrics to temporarily
+show incorrect values until detection catches up.
 
-- DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP: ratio of hot memory on a node
-- DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP: ratio of hot memory NOT on a node
+Add an eligible cache mechanism to compensate for this detection lag:
 
-These complementary metrics enable push-pull migration schemes that
-maintain a target hot memory distribution. For example, to keep 30%
-of hot memory on CXL node 1:
+- Track migration deltas per node using a rolling window that
+  automatically expires old data
+- Use direction-aware adjustment: for target nodes (receiving memory),
+  use max(detected, predicted) to ensure migrated memory is counted
+  even before detection catches up; for source nodes (losing memory),
+  use predicted values when detection shows unreliable low values
+- Maintain the zero-sum property across nodes to preserve total
+  eligible memory
+- Include cooldown mechanism to keep cache active while detection
+  stabilizes after migration stops
+- Add time-based expiry to clear stale cache data when no migration
+  occurs for a configured period
 
-- PUSH scheme (DRAM→CXL): node_eligible_mem_bp, nid=1, target=3000
-  Activates when node 1 has less than 30% hot memory
-- PULL scheme (CXL→DRAM): node_ineligible_mem_bp, nid=1, target=7000
-  Activates when node 1 has more than 30% hot memory
+The cache uses max_eligible tracking to handle detection oscillation,
+prioritizing peak observed values over potentially stale snapshots.
+A threshold check prevents quota oscillation when detection swings
+between zero and small values.
 
-Together with the TEMPORAL goal tuner, the schemes converge to
-equilibrium at the target distribution.
-
-The metrics use detected eligible bytes per node, calculated by summing
-the size of regions that match the scheme's access pattern (size,
-nr_accesses, age) on each NUMA node.
-
-Suggested-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- include/linux/damon.h    |   6 ++
- mm/damon/core.c          | 123 ++++++++++++++++++++++++++++++++++++++-
- mm/damon/sysfs-schemes.c |  10 ++++
- 3 files changed, 137 insertions(+), 2 deletions(-)
+ include/linux/damon.h    |  45 +++++
+ mm/damon/core.c          | 421 +++++++++++++++++++++++++++++++++++----
+ mm/damon/sysfs-schemes.c |  30 +++
+ 3 files changed, 460 insertions(+), 36 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index ee2d0879c292..6df716533fbf 100644
+index 6df716533fbf..230f95910aab 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -191,6 +191,8 @@ enum damos_action {
-  * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
-  * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
-  * @DAMOS_QUOTA_NODE_MEMCG_FREE_BP:	MemFree ratio of a node for a cgroup.
-+ * @DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:	Scheme-eligible memory ratio of a node.
-+ * @DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:	Scheme-ineligible memory ratio of a node.
-  * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to total LRU memory ratio.
-  * @DAMOS_QUOTA_INACTIVE_MEM_BP:	Inactive to total LRU memory ratio.
-  * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
-@@ -204,6 +206,8 @@ enum damos_quota_goal_metric {
- 	DAMOS_QUOTA_NODE_MEM_FREE_BP,
- 	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
- 	DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
-+	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
-+	DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
- 	DAMOS_QUOTA_ACTIVE_MEM_BP,
- 	DAMOS_QUOTA_INACTIVE_MEM_BP,
- 	NR_DAMOS_QUOTA_GOAL_METRICS,
-@@ -555,6 +559,7 @@ struct damos_migrate_dests {
-  * @ops_filters:	ops layer handling &struct damos_filter objects list.
+@@ -541,6 +541,49 @@ struct damos_migrate_dests {
+ 	size_t nr_dests;
+ };
+ 
++#define DAMOS_ELIGIBLE_CACHE_SLOTS	4
++#define DAMOS_ELIGIBLE_CACHE_COOLDOWN	3
++#define DAMOS_ELIGIBLE_CACHE_TIMEOUT_MS	10000	/* 10 seconds */
++
++/**
++ * struct damos_eligible_cache - Cache for bridging detection lag after migration.
++ * @base_eligible:	Snapshot of eligible_bytes_per_node at cache creation.
++ * @max_eligible:	Maximum detected eligible seen while cache active.
++ * @migration_delta:	Net bytes migrated TO each node per slot (negative = FROM).
++ * @current_slot:	Current slot index in the rolling window.
++ * @cooldown:		Intervals remaining before cache can deactivate.
++ * @active:		True if cache has recent migration data.
++ * @last_migration_jiffies: Timestamp of last migration for time-based expiry.
++ *
++ * For PA-mode migration, DAMON needs time to re-detect hot memory at new
++ * physical addresses after migration. This cache tracks recent migrations
++ * using a rolling window, allowing goal metric calculation to account for
++ * detection lag. The rolling window automatically expires old migrations
++ * after DAMOS_ELIGIBLE_CACHE_SLOTS intervals.
++ *
++ * The cache maintains zero-sum property: bytes subtracted from source node
++ * equal bytes added to target node, preserving total eligible memory.
++ *
++ * max_eligible tracks the highest detected eligible value seen while the cache
++ * is active. This provides a fallback when both base_eligible and current
++ * detection are 0 due to detection oscillation timing.
++ *
++ * Time-based expiry: The cache clears all slots and deactivates if no migration
++ * occurs for DAMOS_ELIGIBLE_CACHE_TIMEOUT_MS milliseconds. This prevents stale
++ * delta data from persisting indefinitely across test runs or after migration
++ * completes.
++ */
++struct damos_eligible_cache {
++	unsigned long base_eligible[MAX_NUMNODES];
++	unsigned long max_eligible[MAX_NUMNODES];
++	long migration_delta[DAMOS_ELIGIBLE_CACHE_SLOTS][MAX_NUMNODES];
++	unsigned int current_slot;
++	unsigned int cooldown;
++	bool active;
++	unsigned long last_migration_jiffies;
++	unsigned long timeout_ms;	/* Configurable timeout, 0 = use default */
++};
++
+ /**
+  * struct damos - Represents a Data Access Monitoring-based Operation Scheme.
+  * @pattern:		Access pattern of target regions.
+@@ -560,6 +603,7 @@ struct damos_migrate_dests {
   * @last_applied:	Last @action applied ops-managing entity.
   * @stat:		Statistics of this scheme.
-+ * @eligible_bytes_per_node: Scheme-eligible bytes per NUMA node.
+  * @eligible_bytes_per_node: Scheme-eligible bytes per NUMA node.
++ * @eligible_cache:	Cache for detection lag compensation.
   * @max_nr_snapshots:	Upper limit of nr_snapshots stat.
   * @list:		List head for siblings.
   *
-@@ -644,6 +649,7 @@ struct damos {
- 	struct list_head ops_filters;
+@@ -650,6 +694,7 @@ struct damos {
  	void *last_applied;
  	struct damos_stat stat;
-+	unsigned long eligible_bytes_per_node[MAX_NUMNODES];
+ 	unsigned long eligible_bytes_per_node[MAX_NUMNODES];
++	struct damos_eligible_cache eligible_cache;
  	unsigned long max_nr_snapshots;
  	struct list_head list;
  };
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b438355ab54a..3e1cb850f067 100644
+index 3e1cb850f067..4d39b5da2865 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2544,6 +2544,111 @@ static unsigned long damos_get_node_memcg_used_bp(
- }
- #endif
+@@ -488,6 +488,8 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
+ 	scheme->migrate_dests = (struct damos_migrate_dests){};
+ 	scheme->target_nid = target_nid;
  
-+#ifdef CONFIG_NUMA
-+/*
-+ * damos_scheme_uses_eligible_metrics() - Check if scheme uses eligible metrics.
-+ * @s: The scheme
-+ *
-+ * Returns true if any quota goal uses node_eligible_mem_bp or
-+ * node_ineligible_mem_bp metrics, which require eligible bytes calculation.
-+ */
-+static bool damos_scheme_uses_eligible_metrics(struct damos *s)
-+{
-+	struct damos_quota_goal *goal;
-+	struct damos_quota *quota = &s->quota;
++	memset(&scheme->eligible_cache, 0, sizeof(scheme->eligible_cache));
 +
-+	damos_for_each_quota_goal(goal, quota) {
-+		if (goal->metric == DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP ||
-+		    goal->metric == DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP)
-+			return true;
+ 	return scheme;
+ }
+ 
+@@ -2311,6 +2313,11 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+ 	mutex_unlock(&ctx->walk_control_lock);
+ }
+ 
++/* Forward declarations for eligible cache management */
++static bool damos_scheme_uses_eligible_metrics(struct damos *s);
++static void damos_update_eligible_cache(struct damos *s, int target_nid,
++					int source_nid, unsigned long sz_applied);
++
+ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 		struct damon_region *r, struct damos *s)
+ {
+@@ -2375,6 +2382,19 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 	if (s->action != DAMOS_STAT)
+ 		r->age = 0;
+ 
++	/*
++	 * Update eligible cache for migration actions. The source_nid is
++	 * derived from the region's physical address before migration.
++	 */
++	if (sz_applied > 0 && damos_scheme_uses_eligible_metrics(s) &&
++	    (s->action == DAMOS_MIGRATE_HOT || s->action == DAMOS_MIGRATE_COLD)) {
++		phys_addr_t paddr = (phys_addr_t)r->ar.start * c->addr_unit;
++		int source_nid = pfn_to_nid(PHYS_PFN(paddr));
++
++		damos_update_eligible_cache(s, s->target_nid, source_nid,
++					    sz_applied);
 +	}
-+	return false;
-+}
 +
-+/*
-+ * damos_calc_eligible_bytes_per_node() - Calculate eligible bytes per node.
-+ * @c: The DAMON context
-+ * @s: The scheme
-+ *
-+ * Calculates scheme-eligible bytes per NUMA node based on access pattern
-+ * matching. A region is eligible if it matches the scheme's access pattern
-+ * (size, nr_accesses, age).
-+ */
-+static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
-+		struct damos *s)
-+{
-+	struct damon_target *t;
-+	struct damon_region *r;
-+	phys_addr_t paddr;
-+	int nid;
+ update_stat:
+ 	damos_update_stat(s, sz, sz_applied, sz_ops_filter_passed);
+ }
+@@ -2530,21 +2550,7 @@ static unsigned long damos_get_node_memcg_used_bp(
+ 		numerator = i.totalram - used_pages;
+ 	return mult_frac(numerator, 10000, i.totalram);
+ }
+-#else
+-static __kernel_ulong_t damos_get_node_mem_bp(
+-		struct damos_quota_goal *goal)
+-{
+-	return 0;
+-}
+-
+-static unsigned long damos_get_node_memcg_used_bp(
+-		struct damos_quota_goal *goal)
+-{
+-	return 0;
+-}
+-#endif
+ 
+-#ifdef CONFIG_NUMA
+ /*
+  * damos_scheme_uses_eligible_metrics() - Check if scheme uses eligible metrics.
+  * @s: The scheme
+@@ -2565,6 +2571,10 @@ static bool damos_scheme_uses_eligible_metrics(struct damos *s)
+ 	return false;
+ }
+ 
++/* Forward declarations for cache-adjusted eligible calculations */
++static long damos_get_total_delta(struct damos *s, int nid);
++static unsigned long damos_get_effective_eligible(struct damos *s, int nid);
 +
-+	memset(s->eligible_bytes_per_node, 0,
-+			sizeof(s->eligible_bytes_per_node));
+ /*
+  * damos_calc_eligible_bytes_per_node() - Calculate eligible bytes per node.
+  * @c: The DAMON context
+@@ -2572,7 +2582,8 @@ static bool damos_scheme_uses_eligible_metrics(struct damos *s)
+  *
+  * Calculates scheme-eligible bytes per NUMA node based on access pattern
+  * matching. A region is eligible if it matches the scheme's access pattern
+- * (size, nr_accesses, age).
++ * (size, nr_accesses, age). This does NOT apply address filters - it shows
++ * all memory that matches access patterns regardless of source/target nodes.
+  */
+ static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
+ 		struct damos *s)
+@@ -2587,6 +2598,7 @@ static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
+ 
+ 	damon_for_each_target(t, c) {
+ 		damon_for_each_region(r, t) {
++			/* Only check access pattern, NOT address filters */
+ 			if (!__damos_valid_target(r, s))
+ 				continue;
+ 			paddr = (phys_addr_t)r->ar.start * c->addr_unit;
+@@ -2596,38 +2608,352 @@ static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
+ 					damon_sz_region(r) * c->addr_unit;
+ 		}
+ 	}
 +
-+	damon_for_each_target(t, c) {
-+		damon_for_each_region(r, t) {
-+			if (!__damos_valid_target(r, s))
-+				continue;
-+			paddr = (phys_addr_t)r->ar.start * c->addr_unit;
-+			nid = pfn_to_nid(PHYS_PFN(paddr));
-+			if (nid >= 0 && nid < MAX_NUMNODES)
-+				s->eligible_bytes_per_node[nid] +=
-+					damon_sz_region(r) * c->addr_unit;
++	/*
++	 * Update max_eligible tracking when cache is active. This captures
++	 * peak detection values during migration window.
++	 */
++	if (s->eligible_cache.active) {
++		for_each_online_node(nid) {
++			if (s->eligible_bytes_per_node[nid] >
++			    s->eligible_cache.max_eligible[nid])
++				s->eligible_cache.max_eligible[nid] =
++					s->eligible_bytes_per_node[nid];
 +		}
 +	}
 +}
 +
-+static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
++static void damos_refresh_cache_base(struct damos *s)
 +{
-+	unsigned long total_eligible = 0;
-+	unsigned long node_eligible;
-+	int n;
++	int nid;
++
++	for_each_online_node(nid) {
++		s->eligible_cache.base_eligible[nid] =
++			s->eligible_bytes_per_node[nid];
++		s->eligible_cache.max_eligible[nid] = 0;
++	}
++}
++
++static long damos_get_total_delta(struct damos *s, int nid)
++{
++	long total = 0;
++	int slot;
++
++	for (slot = 0; slot < DAMOS_ELIGIBLE_CACHE_SLOTS; slot++)
++		total += s->eligible_cache.migration_delta[slot][nid];
++
++	return total;
++}
++
++/*
++ * damos_get_effective_eligible() - Get cache-adjusted eligible bytes.
++ * @s: The scheme
++ * @nid: Node ID
++ *
++ * Returns eligible bytes adjusted for detection lag. Uses direction-aware
++ * logic: max() for nodes that received memory (target), min() for nodes
++ * that lost memory (source). This prevents both over-counting and under-
++ * counting while preserving the total across all nodes.
++ */
++static unsigned long damos_get_effective_eligible(struct damos *s, int nid)
++{
++	unsigned long detected, predicted, base;
++	long delta;
 +
 +	if (nid < 0 || nid >= MAX_NUMNODES)
 +		return 0;
 +
-+	for_each_online_node(n)
-+		total_eligible += s->eligible_bytes_per_node[n];
++	detected = s->eligible_bytes_per_node[nid];
 +
-+	if (!total_eligible)
-+		return 0;
++	/* Cache inactive - use detection directly */
++	if (!s->eligible_cache.active)
++		return detected;
 +
-+	node_eligible = s->eligible_bytes_per_node[nid];
++	delta = damos_get_total_delta(s, nid);
 +
-+	return mult_frac(node_eligible, 10000, total_eligible);
++	/* No migration involving this node */
++	if (delta == 0)
++		return detected;
++
++	base = s->eligible_cache.base_eligible[nid];
++
++	if (delta > 0) {
++		/* Target node: memory added, detection lagging behind reality */
++		predicted = base + delta;
++		return max(detected, predicted);
++	} else {
++		/*
++		 * Source node: memory removed, detection may show stale values.
++		 * Use base_eligible (snapshot at cache activation) for the
++		 * prediction to maintain zero-sum property with target nodes.
++		 *
++		 * Note: We intentionally do NOT use max_seen here because it
++		 * would break zero-sum. max_seen captures the highest detection
++		 * which may include memory that has since been migrated away.
++		 * Using it would prevent source reduction, making cur_value
++		 * unable to reach the goal.
++		 */
++		unsigned long removed = (unsigned long)(-delta);
++		unsigned long max_seen = s->eligible_cache.max_eligible[nid];
++
++		/*
++		 * Use base as the prediction anchor. If base is 0 (cache just
++		 * activated), fall back to detected as a reasonable starting
++		 * point.
++		 */
++		if (base == 0 && detected > 0)
++			base = detected;
++
++		predicted = (removed > base) ? 0 : base - removed;
++
++		/*
++		 * If detected is 0 or significantly below predicted, detection
++		 * is at an oscillation trough due to PA-mode sampling noise.
++		 * Trust the prediction rather than the unreliable low detected
++		 * value. Also use max_seen as a sanity check - if detected is
++		 * below max_seen but above predicted, detection is recovering
++		 * and we should trust it.
++		 */
++		if (detected == 0)
++			return predicted;
++
++		/*
++		 * If detected dropped significantly below what we've seen,
++		 * it's likely oscillation. Use predicted to smooth it out.
++		 */
++		if (max_seen > 0 && detected < max_seen / 4 && predicted > detected)
++			return predicted;
++
++		/*
++		 * If detected has grown significantly beyond base, new hot
++		 * memory has appeared since cache activation. The cache
++		 * snapshot is stale, so trust detection over the stale
++		 * prediction. This prevents grossly underestimating source
++		 * memory when the workload creates new hot regions.
++		 */
++		if (detected > base * 2)
++			return detected;
++
++		return min(detected, predicted);
++	}
 +}
 +
-+static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
++/*
++ * damos_get_total_effective_eligible() - Sum effective eligible across nodes.
++ * @s: The scheme
++ *
++ * Used as denominator for goal metrics. Zero-sum property of cache ensures
++ * this equals the true total of hot memory.
++ */
++static unsigned long damos_get_total_effective_eligible(struct damos *s)
 +{
-+	unsigned long eligible_bp = damos_get_node_eligible_mem_bp(s, nid);
++	unsigned long total = 0;
++	int nid;
 +
-+	if (eligible_bp == 0)
-+		return 10000;
++	for_each_online_node(nid)
++		total += damos_get_effective_eligible(s, nid);
 +
-+	return 10000 - eligible_bp;
-+}
-+#else
-+static bool damos_scheme_uses_eligible_metrics(struct damos *s)
-+{
-+	return false;
-+}
-+
-+static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
-+		struct damos *s)
-+{
-+}
-+
-+static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
-+{
-+	return 0;
-+}
-+
-+static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
-+{
-+	return 0;
-+}
-+#endif
-+
- /*
-  * Returns LRU-active or inactive memory to total LRU memory size ratio.
-  */
-@@ -2562,7 +2667,8 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
- 	return mult_frac(inactive, 10000, total);
++	return total;
  }
  
--static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
-+static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal,
-+		struct damos *s)
+ static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
  {
- 	u64 now_psi_total;
+-	unsigned long total_eligible = 0;
++	unsigned long total_eligible;
+ 	unsigned long node_eligible;
+-	int n;
  
-@@ -2584,6 +2690,14 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
- 	case DAMOS_QUOTA_NODE_MEMCG_FREE_BP:
+ 	if (nid < 0 || nid >= MAX_NUMNODES)
+ 		return 0;
+ 
+-	for_each_online_node(n)
+-		total_eligible += s->eligible_bytes_per_node[n];
++	/* Use effective eligible which compensates for detection lag */
++	total_eligible = damos_get_total_effective_eligible(s);
+ 
++	/*
++	 * If no eligible memory anywhere, return 0. The caller
++	 * (damos_set_quota_goal_current_value) should skip updating
++	 * cur_value when total_eligible=0 to avoid incorrect adjustments.
++	 */
+ 	if (!total_eligible)
+ 		return 0;
+ 
+-	node_eligible = s->eligible_bytes_per_node[nid];
++	node_eligible = damos_get_effective_eligible(s, nid);
+ 
+ 	return mult_frac(node_eligible, 10000, total_eligible);
+ }
+ 
++/*
++ * damos_get_node_ineligible_mem_bp() - Get ineligible memory ratio for a node.
++ * @s: The DAMOS scheme.
++ * @nid: The NUMA node ID.
++ *
++ * Calculate what percentage of total scheme-eligible (hot) memory is NOT on
++ * the specified node. For PUSH schemes migrating from N0 to N1, this metric
++ * with nid=0 represents "what % of hot memory has been pushed away from N0".
++ * Uses cache-adjusted effective eligible bytes to compensate for detection lag.
++ *
++ * Returns: Basis points (0-10000) of total eligible memory NOT on this node.
++ *          Returns 10000 if eligible_bp=0 (all hot memory elsewhere or no data).
++ *          Note: Caller should skip using this when total_eligible=0.
++ */
+ static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
+ {
+ 	unsigned long eligible_bp = damos_get_node_eligible_mem_bp(s, nid);
+ 
++	/*
++	 * When eligible_bp=0, either:
++	 * - total_eligible=0: caller should skip (detection failed)
++	 * - total_eligible>0: all hot memory is on other nodes (100% migrated)
++	 */
+ 	if (eligible_bp == 0)
+ 		return 10000;
+ 
+ 	return 10000 - eligible_bp;
+ }
++
++/*
++ * damos_update_eligible_cache() - Track migration for goal metric adjustment.
++ * @s: The scheme
++ * @target_nid: Destination node
++ * @source_nid: Source node (derived from region)
++ * @sz_applied: Bytes successfully migrated
++ *
++ * Updates the rolling window cache when migration happens. The delta is
++ * zero-sum: bytes subtracted from source equal bytes added to target.
++ */
++static void damos_update_eligible_cache(struct damos *s, int target_nid,
++					int source_nid, unsigned long sz_applied)
++{
++	unsigned int slot;
++	bool was_inactive;
++
++	if (sz_applied == 0 || source_nid == target_nid)
++		return;
++
++	was_inactive = !s->eligible_cache.active;
++
++	/* First migration after cache inactive? Take fresh base snapshot */
++	if (was_inactive)
++		damos_refresh_cache_base(s);
++
++	slot = s->eligible_cache.current_slot;
++
++	/* Update migration delta (zero-sum) */
++	if (source_nid >= 0 && source_nid < MAX_NUMNODES)
++		s->eligible_cache.migration_delta[slot][source_nid] -= sz_applied;
++
++	if (target_nid >= 0 && target_nid < MAX_NUMNODES)
++		s->eligible_cache.migration_delta[slot][target_nid] += sz_applied;
++
++	s->eligible_cache.active = true;
++	/* Reset cooldown on every migration to allow detection to stabilize */
++	s->eligible_cache.cooldown = DAMOS_ELIGIBLE_CACHE_COOLDOWN;
++	/* Track timestamp for time-based expiry */
++	s->eligible_cache.last_migration_jiffies = jiffies;
++}
++
++/*
++ * damos_advance_cache_window() - Advance rolling window at interval boundary.
++ * @s: The scheme
++ *
++ * Called at end of apply interval. Advances to next slot, clearing old data.
++ * Uses time-based expiry: if no migration for the configured timeout (or
++ * default DAMOS_ELIGIBLE_CACHE_TIMEOUT_MS), clear all slots and deactivate
++ * cache to prevent stale data accumulation.
++ */
++static void damos_advance_cache_window(struct damos *s)
++{
++	unsigned int next_slot;
++	unsigned long timeout_ms;
++	int nid, slot;
++	bool has_delta = false;
++	bool timeout_expired;
++
++	if (!s->eligible_cache.active)
++		return;
++
++	/* Advance to next slot */
++	next_slot = (s->eligible_cache.current_slot + 1) % DAMOS_ELIGIBLE_CACHE_SLOTS;
++
++	/*
++	 * Time-based expiry: if no migration for timeout period, clear ALL
++	 * slots and deactivate cache. This prevents stale delta data from
++	 * persisting indefinitely when migration has stopped.
++	 *
++	 * Only check timeout when cache has been used (last_migration_jiffies != 0).
++	 * When last_migration_jiffies is 0 (initial state), the timeout check
++	 * would always be true since jiffies is typically much larger, causing
++	 * immediate cache expiry before any migration can happen.
++	 *
++	 * Use configurable timeout if set, otherwise use default.
++	 */
++	timeout_ms = s->eligible_cache.timeout_ms;
++	if (!timeout_ms)
++		timeout_ms = DAMOS_ELIGIBLE_CACHE_TIMEOUT_MS;
++
++	timeout_expired = s->eligible_cache.last_migration_jiffies &&
++			time_after(jiffies,
++			s->eligible_cache.last_migration_jiffies +
++			msecs_to_jiffies(timeout_ms));
++
++	if (timeout_expired) {
++		/* Clear all slots */
++		for (slot = 0; slot < DAMOS_ELIGIBLE_CACHE_SLOTS; slot++)
++			memset(s->eligible_cache.migration_delta[slot], 0,
++			       sizeof(s->eligible_cache.migration_delta[slot]));
++		s->eligible_cache.active = false;
++		s->eligible_cache.cooldown = 0;
++		damos_refresh_cache_base(s);
++		return;
++	}
++
++	/*
++	 * Normal operation: only clear slot when cooldown expired.
++	 * During cooldown, preserve deltas for accurate compensation
++	 * while detection stabilizes.
++	 */
++	if (s->eligible_cache.cooldown == 0) {
++		memset(s->eligible_cache.migration_delta[next_slot], 0,
++		       sizeof(s->eligible_cache.migration_delta[next_slot]));
++	}
++
++	s->eligible_cache.current_slot = next_slot;
++
++	/* Check if any delta remains in any slot */
++	for (slot = 0; slot < DAMOS_ELIGIBLE_CACHE_SLOTS && !has_delta; slot++) {
++		for_each_online_node(nid) {
++			if (s->eligible_cache.migration_delta[slot][nid] != 0) {
++				has_delta = true;
++				break;
++			}
++		}
++	}
++
++	/*
++	 * Deactivate only when no recent migrations AND cooldown expired.
++	 * Cooldown keeps cache active after migration stops, giving detection
++	 * time to stabilize at the new physical addresses.
++	 */
++	if (!has_delta) {
++		if (s->eligible_cache.cooldown > 0) {
++			s->eligible_cache.cooldown--;
++		} else {
++			s->eligible_cache.active = false;
++			damos_refresh_cache_base(s);
++		}
++	}
++}
+ #else
++static __kernel_ulong_t damos_get_node_mem_bp(
++		struct damos_quota_goal *goal)
++{
++	return 0;
++}
++
++static unsigned long damos_get_node_memcg_used_bp(
++		struct damos_quota_goal *goal)
++{
++	return 0;
++}
++
+ static bool damos_scheme_uses_eligible_metrics(struct damos *s)
+ {
+ 	return false;
+@@ -2647,6 +2973,15 @@ static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
+ {
+ 	return 0;
+ }
++
++static void damos_update_eligible_cache(struct damos *s, int target_nid,
++					int source_nid, unsigned long sz_applied)
++{
++}
++
++static void damos_advance_cache_window(struct damos *s)
++{
++}
+ #endif
+ 
+ /*
+@@ -2691,12 +3026,21 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal,
  		goal->current_value = damos_get_node_memcg_used_bp(goal);
  		break;
-+	case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
-+		goal->current_value = damos_get_node_eligible_mem_bp(s,
-+				goal->nid);
-+		break;
-+	case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
-+		goal->current_value = damos_get_node_ineligible_mem_bp(s,
-+				goal->nid);
-+		break;
+ 	case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
+-		goal->current_value = damos_get_node_eligible_mem_bp(s,
+-				goal->nid);
+-		break;
+ 	case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
+-		goal->current_value = damos_get_node_ineligible_mem_bp(s,
+-				goal->nid);
++		/*
++		 * Only update cur_value when we have valid detection data.
++		 * When detection fails (total_eligible=0), keep the previous
++		 * cur_value so auto-tuning continues based on last known state
++		 * rather than making incorrect adjustments based on no data.
++		 */
++		if (damos_get_total_effective_eligible(s)) {
++			if (goal->metric == DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP)
++				goal->current_value = damos_get_node_eligible_mem_bp(
++						s, goal->nid);
++			else
++				goal->current_value = damos_get_node_ineligible_mem_bp(
++						s, goal->nid);
++		}
+ 		break;
  	case DAMOS_QUOTA_ACTIVE_MEM_BP:
  	case DAMOS_QUOTA_INACTIVE_MEM_BP:
- 		goal->current_value = damos_get_in_active_mem_bp(
-@@ -2597,11 +2711,12 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+@@ -2709,9 +3053,9 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal,
+ }
+ 
  /* Return the highest score since it makes schemes least aggressive */
- static unsigned long damos_quota_score(struct damos_quota *quota)
+-static unsigned long damos_quota_score(struct damos_quota *quota)
++static unsigned long damos_quota_score(struct damos_quota *quota,
++		struct damos *s)
  {
-+	struct damos *s = container_of(quota, struct damos, quota);
+-	struct damos *s = container_of(quota, struct damos, quota);
  	struct damos_quota_goal *goal;
  	unsigned long highest_score = 0;
  
- 	damos_for_each_quota_goal(goal, quota) {
--		damos_set_quota_goal_current_value(goal);
-+		damos_set_quota_goal_current_value(goal, s);
- 		highest_score = max(highest_score,
- 				mult_frac(goal->current_value, 10000,
- 					goal->target_value));
-@@ -2693,6 +2808,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
- 		return;
+@@ -2725,17 +3069,19 @@ static unsigned long damos_quota_score(struct damos_quota *quota)
+ 	return highest_score;
+ }
  
-+	/* Calculate eligible bytes per node for quota goal metrics */
-+	if (damos_scheme_uses_eligible_metrics(s))
-+		damos_calc_eligible_bytes_per_node(c, s);
-+
+-static void damos_goal_tune_esz_bp_consist(struct damos_quota *quota)
++static void damos_goal_tune_esz_bp_consist(struct damos_quota *quota,
++		struct damos *s)
+ {
+-	unsigned long score = damos_quota_score(quota);
++	unsigned long score = damos_quota_score(quota, s);
+ 
+ 	quota->esz_bp = damon_feed_loop_next_input(
+ 			max(quota->esz_bp, 10000UL), score);
+ }
+ 
+-static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
++static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota,
++		struct damos *s)
+ {
+-	unsigned long score = damos_quota_score(quota);
++	unsigned long score = damos_quota_score(quota, s);
+ 
+ 	if (score >= 10000)
+ 		quota->esz_bp = 0;
+@@ -2748,7 +3094,8 @@ static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
+ /*
+  * Called only if quota->ms, or quota->sz are set, or quota->goals is not empty
+  */
+-static void damos_set_effective_quota(struct damos_quota *quota)
++static void damos_set_effective_quota(struct damos_quota *quota,
++		struct damos *s)
+ {
+ 	unsigned long throughput;
+ 	unsigned long esz = ULONG_MAX;
+@@ -2760,9 +3107,9 @@ static void damos_set_effective_quota(struct damos_quota *quota)
+ 
+ 	if (!list_empty(&quota->goals)) {
+ 		if (quota->goal_tuner == DAMOS_QUOTA_GOAL_TUNER_CONSIST)
+-			damos_goal_tune_esz_bp_consist(quota);
++			damos_goal_tune_esz_bp_consist(quota, s);
+ 		else if (quota->goal_tuner == DAMOS_QUOTA_GOAL_TUNER_TEMPORAL)
+-			damos_goal_tune_esz_bp_temporal(quota);
++			damos_goal_tune_esz_bp_temporal(quota, s);
+ 		esz = quota->esz_bp / 10000;
+ 	}
+ 
+@@ -2815,7 +3162,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
  	/* First charge window */
  	if (!quota->total_charged_sz && !quota->charged_from) {
  		quota->charged_from = jiffies;
+-		damos_set_effective_quota(quota);
++		damos_set_effective_quota(quota, s);
+ 	}
+ 
+ 	/* New charge window starts */
+@@ -2833,7 +3180,9 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 		quota->charged_sz = 0;
+ 		if (trace_damos_esz_enabled())
+ 			cached_esz = quota->esz;
+-		damos_set_effective_quota(quota);
++		damos_set_effective_quota(quota, s);
++		/* Advance cache window at end of apply interval */
++		damos_advance_cache_window(s);
+ 		if (trace_damos_esz_enabled() && quota->esz != cached_esz)
+ 			damos_trace_esz(c, s, quota);
+ 	}
 diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index fe2e3b2db9e1..232b33f5cbfb 100644
+index 232b33f5cbfb..bf68c3157c19 100644
 --- a/mm/damon/sysfs-schemes.c
 +++ b/mm/damon/sysfs-schemes.c
-@@ -1079,6 +1079,14 @@ struct damos_sysfs_qgoal_metric_name damos_sysfs_qgoal_metric_names[] = {
- 		.metric = DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
- 		.name = "node_memcg_free_bp",
- 	},
-+	{
-+		.metric = DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
-+		.name = "node_eligible_mem_bp",
-+	},
-+	{
-+		.metric = DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
-+		.name = "node_ineligible_mem_bp",
-+	},
- 	{
- 		.metric = DAMOS_QUOTA_ACTIVE_MEM_BP,
- 		.name = "active_mem_bp",
-@@ -2669,6 +2677,8 @@ static int damos_sysfs_add_quota_score(
- 			break;
- 		case DAMOS_QUOTA_NODE_MEM_USED_BP:
- 		case DAMOS_QUOTA_NODE_MEM_FREE_BP:
-+		case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
-+		case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
- 			goal->nid = sysfs_goal->nid;
- 			break;
- 		case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
+@@ -1501,6 +1501,7 @@ struct damon_sysfs_quotas {
+ 	unsigned long reset_interval_ms;
+ 	unsigned long effective_sz;	/* Effective size quota in bytes */
+ 	enum damos_quota_goal_tuner goal_tuner;
++	unsigned long effective_bytes_cache_timeout_ms;
+ };
+ 
+ static struct damon_sysfs_quotas *damon_sysfs_quotas_alloc(void)
+@@ -1675,6 +1676,27 @@ static ssize_t goal_tuner_store(struct kobject *kobj,
+ 	return -EINVAL;
+ }
+ 
++static ssize_t effective_bytes_cache_timeout_ms_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
++{
++	struct damon_sysfs_quotas *quotas = container_of(kobj,
++			struct damon_sysfs_quotas, kobj);
++
++	return sysfs_emit(buf, "%lu\n", quotas->effective_bytes_cache_timeout_ms);
++}
++
++static ssize_t effective_bytes_cache_timeout_ms_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_quotas *quotas = container_of(kobj,
++			struct damon_sysfs_quotas, kobj);
++	int err = kstrtoul(buf, 0, &quotas->effective_bytes_cache_timeout_ms);
++
++	if (err)
++		return -EINVAL;
++	return count;
++}
++
+ static void damon_sysfs_quotas_release(struct kobject *kobj)
+ {
+ 	kfree(container_of(kobj, struct damon_sysfs_quotas, kobj));
+@@ -1695,12 +1717,16 @@ static struct kobj_attribute damon_sysfs_quotas_effective_bytes_attr =
+ static struct kobj_attribute damon_sysfs_quotas_goal_tuner_attr =
+ 		__ATTR_RW_MODE(goal_tuner, 0600);
+ 
++static struct kobj_attribute damon_sysfs_quotas_cache_timeout_ms_attr =
++		__ATTR_RW_MODE(effective_bytes_cache_timeout_ms, 0600);
++
+ static struct attribute *damon_sysfs_quotas_attrs[] = {
+ 	&damon_sysfs_quotas_ms_attr.attr,
+ 	&damon_sysfs_quotas_sz_attr.attr,
+ 	&damon_sysfs_quotas_reset_interval_ms_attr.attr,
+ 	&damon_sysfs_quotas_effective_bytes_attr.attr,
+ 	&damon_sysfs_quotas_goal_tuner_attr.attr,
++	&damon_sysfs_quotas_cache_timeout_ms_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_quotas);
+@@ -2822,6 +2848,10 @@ static struct damos *damon_sysfs_mk_scheme(
+ 	/* Set goal_tuner after damon_new_scheme() as it defaults to CONSIST */
+ 	scheme->quota.goal_tuner = sysfs_quotas->goal_tuner;
+ 
++	/* Set cache timeout, use default if 0 */
++	scheme->eligible_cache.timeout_ms =
++		sysfs_quotas->effective_bytes_cache_timeout_ms;
++
+ 	err = damos_sysfs_add_quota_score(sysfs_quotas->goals, &scheme->quota);
+ 	if (err) {
+ 		damon_destroy_scheme(scheme);
 -- 
 2.43.0
 
