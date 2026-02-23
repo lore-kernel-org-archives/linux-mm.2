@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CCD6EC110E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:15:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7181FEC1112
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 17:15:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 885706B0005; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
+	id 420786B0089; Mon, 23 Feb 2026 12:15:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85D646B0089; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
+	id 36E656B008A; Mon, 23 Feb 2026 12:15:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B1706B008A; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
+	id 0D7F56B008C; Mon, 23 Feb 2026 12:15:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 68DC96B0005
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ECA996B0089
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 12:15:52 -0500 (EST)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 252F21C187
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 794921A0295
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:15:52 +0000 (UTC)
-X-FDA: 84476373744.06.7255D96
+X-FDA: 84476373744.06.CD62A9B
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4861F180008
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9F5AD120016
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 17:15:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=G4AnjSCv;
-	spf=pass (imf16.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=dlccHxcU;
+	spf=pass (imf29.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
 	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771866950;
@@ -34,31 +34,31 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TEmmWiaUSN6agFOfmjMt3TuPh72lriTqjOKcZSmRRGA=;
-	b=6nNw1aqe48b7Mvc9cCGSVT5eUmDupL5NedmA2ki0iVolMg9ca0X8RU/Sct8A/y5nImIrhL
-	xI4QxxM0MgFBYDxMYvMzEpxHgc0tNe8zqnC20m6puuYNhycPNNmbBbLpBreUridvt8Fl+3
-	wyHcjbHaX+fjhr5dGYznSjbxMMaO+NU=
+	bh=9tDG0Vqu0L2dWt0Ah3NuZCNTihscrZOnULxwzHOcg9I=;
+	b=JWGGCaWwVwSI6Q9if3I+ekfKxTTX6/MeZJ0hj6uQPiSsxEajh8CtaZ+Iln9Gz3W/MgfqE8
+	afS6MS6V56G899E732fG9eyCU6c0Qq0wwI/p4Q2CZBaH5u+W4BXG1Akwfk6mvTmQ1vTEze
+	f+uVI9kxoVVDOFCv6Qw4+UB7NtThjns=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=G4AnjSCv;
-	spf=pass (imf16.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=dlccHxcU;
+	spf=pass (imf29.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
 	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771866950; a=rsa-sha256;
 	cv=none;
-	b=c20chWoyFm3OnFitKV1cDIJH6V/SeK/omF/EHti8vZ3XaVfPRJU1XOHoswHHXiBWBEI25E
-	hhu2tELVDfA8ukuw6glm8MfcJAWgstT672N0AjQDGuVU0wB7XLxKm0Ea5mbCe/p7qmm3q5
-	TYjulRrIIGnwXGMnA9B20L69AIb7G5I=
+	b=S4XAGhDQFxrAAeGAdX/lU1p9MgJsNGegpcroPPHk1KO4p5YcPRxjxXIuuOulqzr3XdLomw
+	AK9zrE1lvemtKj0pZHZufPsDf3FM12f6keEWi2hgp+T7lZ958iix+JZXBBZFz9glP3MPtV
+	3oC7OAszmY1VPR5Fb/dpGRRZkUoAJZI=
 Received: from LAPTOP-U3CCR7C6.lan (unknown [20.236.11.185])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 5B10220B6F00;
-	Mon, 23 Feb 2026 09:15:48 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5B10220B6F00
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5002120B6F02;
+	Mon, 23 Feb 2026 09:15:49 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5002120B6F02
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1771866948;
-	bh=TEmmWiaUSN6agFOfmjMt3TuPh72lriTqjOKcZSmRRGA=;
+	s=default; t=1771866949;
+	bh=9tDG0Vqu0L2dWt0Ah3NuZCNTihscrZOnULxwzHOcg9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4AnjSCvhK+QilqO6lHm9BE5gW327yQdZFGR5MnNZjx88Ctx3k9JhpRvpgWk+kSSN
-	 8+WgBm1+sioqh+0+poPZunyr0xgOIDDuvPGs4/rbYleoqdBzXwa9QfcfG1X3bV6nSy
-	 zxSGxUJJHdGB5V03MsBlEzqVMtdrfD8WXgb0wl0I=
+	b=dlccHxcUudJ52u0UKNF+Do4qyYCdpGUxzQFy66W9ztmYk39jEurfuQzYLBB0bxV35
+	 r7d8yi4B8w6LgoTCXTsjtu7CnDSwagHRnDqWwOB0dYdmNiRhhQF6Rr2MUqf8xGiOjf
+	 CdAF2Gs/lSBYozs+SJOV5M2fCjS/iOXKGbs7i6wk=
 From: Thomas Ballasi <tballasi@linux.microsoft.com>
 To: tballasi@linux.microsoft.com
 Cc: akpm@linux-foundation.org,
@@ -75,22 +75,23 @@ Cc: akpm@linux-foundation.org,
 	weixugc@google.com,
 	yuanchu@google.com,
 	zhengqi.arch@bytedance.com
-Subject: [PATCH v7 0/3] mm: vmscan: add PID and cgroup ID to vmscan tracepoints
-Date: Mon, 23 Feb 2026 09:15:41 -0800
-Message-Id: <20260223171544.4750-1-tballasi@linux.microsoft.com>
+Subject: [PATCH v7 1/3] tracing: Add __event_in_*irq() helpers
+Date: Mon, 23 Feb 2026 09:15:42 -0800
+Message-Id: <20260223171544.4750-2-tballasi@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260213181537.54350-1-tballasi@linux.microsoft.com>
+In-Reply-To: <20260223171544.4750-1-tballasi@linux.microsoft.com>
 References: <20260213181537.54350-1-tballasi@linux.microsoft.com>
+ <20260223171544.4750-1-tballasi@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gk7xbfyr118ywbphf9zudydfd5azo4ns
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4861F180008
-X-HE-Tag: 1771866950-666079
-X-HE-Meta: U2FsdGVkX18dXWsvce1XVVS/WuI6QIlG+D7zh39dNoQb+DqBMGK8BEQQPRLGHJDRB2KcgxnhSfmz0B77tbs/HtJdabmFZWvdqWwrv1femjR7MfGwRwEpG+WN9P6A/kdunCmgyzbIWDlhvjHeo5qx2qOy/p+oPHewKVPm5NRa+W39lHbR2yIwLp/FustwhZ+Xslv9yUGUM+AcMOWNZt2lOmAyaHLA0bHXWalpZfZdvY9XrmCI9em89D6jZdu5BPydN5DXxF5eyYcZ1U/HE2IeqM4i63WGAQuQbk7uudncsxQP/hvQhSGAw17cjKR6dY66rlKQLazYf8vEGBsuGBWqaKTypwOqM4Kt5TV5oMt7kH/cNBTxt0qO+9VEgMNHRGCIpuz5hbnjlTjk8u0gbqot8uOHz9AroGwszdVmAbc3miUyiLBiN82t78/50JrQBtEcA6VdNXmcpr6rOyXBogrAvYW92x7XCNvX19vldvjlRSyjmILS3fXodnP9rSkUYAjSFuABDElYlVI139GpOoBPrlffD5ngn/QtIVkIMkxnFTS3oHe1cDvSoCD93pwKMYHCaX82D0kHpFrmj+2RiBxSS0UJb9jDepejZCdYoQ97aptpS5J8va0BpG1F/WOcGoi/EqMR9uWzjJft8SUgMYN+FwXTXrYyRE18r9lHWWjgxjXu6QLDU7UZAjpSzB/t0Z/HZrEWA++nhkDE74Ol154RKT5roOfmyfl0MabfkVC7sFevHELCEB7napytK0YvVuTb8bfLePMmWmawGRspKXMZQPdnXGwt4xUY6GKOg1fcnNta/jKVZ/9zIgsPsk8RQNM/OyolnC5qyk+w1226uT0juoeRuLZEkLJpfYfwCQzuTVmFBeCH4K7eL3fBDluCOLDC0zb03qJRc0k2BD2Y0JrgtCkWID/3TPDmsl39CH1jmiIiuRE8joZxPJjqBUGeKMlc9djbsynG20ks/Z74yeG
- phi39d2c
- t8oFYDyBTk6mIE7bvqS7TAwhKiDNQ4/RBk0J2mfD4DnWj0K5Qm8Civ3RQJlZ0I/JGGhkMZnN/Px3XYr+rTiUOrTQznTrmZilzVxF0H7CuRheo9Shj17NHzvTONI2E6H0ZJm1cOl0sMH9bsAaQ3DQSVEzH8aPbYM/IFisVTu20PYGt65D80tUux6uKfopOnHIWppYtrjlS1VlN02d0NFCiPzvdbKG22NWCgkJOAkZjN/DDIb+QR/grmJQGfv8pacxNzVT0Y40EQ8ydQWFREpJ+LgdRt+lYL1o4vS7usif3XqmvOxiTLn/LZYXD3Ya8MfF/ZB5o
+X-Rspamd-Queue-Id: 9F5AD120016
+X-Rspamd-Server: rspam02
+X-Stat-Signature: fk1e5y3dg6p6yh669zy43tpyifiq3kky
+X-HE-Tag: 1771866950-193460
+X-HE-Meta: U2FsdGVkX18lO+58qUMPJnQzO2q4AlFgyKb3w27LkT15quwL4kqdjFx9j+JltxhhUwhQnt/EQXGRgewIy28LKtWE8QBR3l9S83VEaeKQW8+k71kIQLjewZ0J2MB/VenvRBtqUuy5pMZbShL+O9fhrnVBTTe32ldJuIy84RnJl3/BlWcgckxv3eMBEItXQzFjOvMjCVfpZSCBPLJKcKG5Py+UXbkN3dcpe4N/NB8L73a8CzWBeN9V8JMbRyvQudJD0xlDpI06k7JhCspN0Tw9EBnHHEcc13KaPnnsDcgvrWQBGBkGYtOe6Gt3yX8DRD9sI6o5pRLBwiE3o/B7glxwrXp+gG7XVZHtXjWTmQ/bOPreY1iSKL8t3HHzJy51IlfCYDUZMtXOsQ7jgd8zDZhsMEqmQzYybOw8m6sQd6yj7MA5OAWczl2A0Qy9Mn4nTJWkOmpD6btACfCIbiAcCit3E3FL3y9FzpgZjKuoodzWPCBX7mzGWfCUyw6y4I1aLoiWSHZ5yQloVA9f+J85/kv47yu6DyIy0oYAngiapWN6cVGIo1vfp1YLUQNtruj6crVBDInzemm31LnfPJrnGjrzH93wUM9hkdfDd4je2+HIMcFX/I+6TVwsJvkAJDb2VvMR6a1xlaipKvlgBp/4CW55etB5B5doPV+Akd4AAtRoB2dioX+55lby/rPowS8GMJMnGKl8MspEn4F4bCgZkWFTx889gzmHfe2Xza+RQ5k3qCXnJRAnBRXcIwClKlvEnyags1PWwGoUOh/knFYOOfAhJ2oAnrsyV/gEJnIetD/DcmhWmMKP2lYfQZcUOwQrPKwupg9IvFKcDtofAHszo26mj4a3vewOXkW26gqt3HPe8+xjImN27Br/ApERnWvDoPmxxCxpxKOVeEVIgotDdq/aGVD9rtNYa1i+JYLy2ibr7zHGnKpQsJydl0Fj0wpMCRRtTv3RfE6qiSLvT3GCmx+
+ k2hW9gmg
+ pfplfXUvshV6+9rZwG4ZiXHKIJ8yJTTG80TWYmSqkHewfrDBxy7YelL0PMb7k3BAPQzo71pe2LQx1bPLqm9LflnEod8R5QqGrHcsqiycdrK7bHPfPWvgXa3AVbl6J8V1yeI9mwylffy7YFZ/cd4y/MZYvBidT1eUGMn8VEaYyHGRDh7fm0I08YGNWHpOPV2lUpIjN/z/3RF+mqtN5PcmKnY3aV+mT2PJ9bltwt4BtTnj9mjso/oB1TZ8NRROMHLm+yM5w/RzTSZjrZ1HeXriosk7yOHdP8xkkZKM4kz9hwaWXgxoZYak0W8wGyLiqxOjtqs91+sdkl0xh+9d/ppFEenk+88xOR4XwRrHBQXxZ0DzAmZledub3mBiKcG5EOjShP7AyIUaFda9e3trt3tlrutjLBglf55PXt0Zf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,30 +100,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changes in v6:
-- Edited __entry_in_irq() to __event_in_irq() in corresponding commit
-  message
-- Restore an entry that was removed inadvertently
+From: Steven Rostedt <rostedt@goodmis.org>
 
-Link to v6:
-https://lore.kernel.org/linux-trace-kernel/20260213181537.54350-1-tballasi@linux.microsoft.com/
+Some trace events want to expose in their output if they were triggered in
+an interrupt or softirq context. Instead of recording this in the event
+structure itself, as this information is stored in the flags portion of
+the event header, add helper macros that can be used in the print format:
 
+  TP_printk("val=%d %s", __entry->val, __event_in_irq() ? "(in-irq)" : "")
+
+This will output "(in-irq)" for the event in the trace data if the event
+was triggered in hard or soft interrupt context.
+
+Link: https://lore.kernel.org/all/20251229132942.31a2b583@gandalf.local.home/
+
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
+---
+ include/trace/stages/stage3_trace_output.h |  8 ++++++++
+ include/trace/stages/stage7_class_define.h | 19 +++++++++++++++++++
+ 2 files changed, 27 insertions(+)
 
-Steven Rostedt (1):
-  tracing: Add __event_in_*irq() helpers
-
-Thomas Ballasi (2):
-  mm: vmscan: add cgroup IDs to vmscan tracepoints
-  mm: vmscan: add PIDs to vmscan tracepoints
-
- include/trace/events/vmscan.h              | 103 +++++++++++++--------
- include/trace/stages/stage3_trace_output.h |   8 ++
- include/trace/stages/stage7_class_define.h |  19 ++++
- mm/shrinker.c                              |   6 +-
- mm/vmscan.c                                |  17 ++--
- 5 files changed, 106 insertions(+), 47 deletions(-)
-
+diff --git a/include/trace/stages/stage3_trace_output.h b/include/trace/stages/stage3_trace_output.h
+index 1e7b0bef95f52..53a23988a3b8a 100644
+--- a/include/trace/stages/stage3_trace_output.h
++++ b/include/trace/stages/stage3_trace_output.h
+@@ -150,3 +150,11 @@
+ 
+ #undef __get_buf
+ #define __get_buf(len)		trace_seq_acquire(p, (len))
++
++#undef __event_in_hardirq
++#undef __event_in_softirq
++#undef __event_in_irq
++
++#define __event_in_hardirq()	(__entry->ent.flags & TRACE_FLAG_HARDIRQ)
++#define __event_in_softirq()	(__entry->ent.flags & TRACE_FLAG_SOFTIRQ)
++#define __event_in_irq()	(__entry->ent.flags & (TRACE_FLAG_HARDIRQ | TRACE_FLAG_SOFTIRQ))
+diff --git a/include/trace/stages/stage7_class_define.h b/include/trace/stages/stage7_class_define.h
+index fcd564a590f43..47008897a7956 100644
+--- a/include/trace/stages/stage7_class_define.h
++++ b/include/trace/stages/stage7_class_define.h
+@@ -26,6 +26,25 @@
+ #undef __print_hex_dump
+ #undef __get_buf
+ 
++#undef __event_in_hardirq
++#undef __event_in_softirq
++#undef __event_in_irq
++
++/*
++ * The TRACE_FLAG_* are enums. Instead of using TRACE_DEFINE_ENUM(),
++ * use their hardcoded values. These values are parsed by user space
++ * tooling elsewhere so they will never change.
++ *
++ * See "enum trace_flag_type" in linux/trace_events.h:
++ *   TRACE_FLAG_HARDIRQ
++ *   TRACE_FLAG_SOFTIRQ
++ */
++
++/* This is what is displayed in the format files */
++#define __event_in_hardirq()	(REC->common_flags & 0x8)
++#define __event_in_softirq()	(REC->common_flags & 0x10)
++#define __event_in_irq()	(REC->common_flags & 0x18)
++
+ /*
+  * The below is not executed in the kernel. It is only what is
+  * displayed in the print format for userspace to parse.
 -- 
 2.33.8
 
