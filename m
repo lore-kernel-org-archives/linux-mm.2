@@ -4,83 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FF74E98DEA
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 05:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 982BBE98DE9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 05:56:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C423C6B0088; Mon, 23 Feb 2026 00:48:57 -0500 (EST)
+	id B4B716B0088; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF05C6B0089; Mon, 23 Feb 2026 00:48:57 -0500 (EST)
+	id AF94C6B0089; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF2316B008A; Mon, 23 Feb 2026 00:48:57 -0500 (EST)
+	id 9DAFB6B008A; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1C86B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 00:48:57 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EF311B6760
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:48:57 +0000 (UTC)
-X-FDA: 84474642714.12.0AC14F0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1839D1A0006
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:48:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 897D26B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 00:56:23 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 183BC8C51D
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:56:23 +0000 (UTC)
+X-FDA: 84474661446.05.4EE10EB
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3AAC7A000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 05:56:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VbgOO0Zx;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771825734;
+	s=arc-20220608; t=1771826181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l5xUgcMpGHoie23ripczefgJb2Wz/2ocYQjJUeDPxiA=;
-	b=U8tw5P9jZkRlYpp4C25Z7yN1SSfB+Q6dH459xkExfmzMzIWXsy2PJkWUUh24U0DzoVN7jo
-	w1rYACjnPm2CGXkbdHNihToX1kAtgznM41tijr2yczS0wF/gWmlkEbfhJ96c3+1rno+R8R
-	YGzLt5zKTj/adAMGP2uxwlJjUSH7+eI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wg/reOB9lmnxb3MajMFemuA+M9KAXqPdAYgEbnkNP+g=;
+	b=TQtN1hl5JXou4PFC1+CaOSXCka8Ufek0MwY3flrIVoS34OVfAvhRcxOgEHFHHAniOeCk+u
+	0AK3IxS2Zb/kmm0bZD0jsQzoDdlY8X6AE/aIUPPlkv0V/Tmp9H51YqKSbVvJlY491By8ia
+	VgESkV0UOBhbzyqfWBRwaOkMRHfpU/A=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771825734; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VbgOO0Zx;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771826181; a=rsa-sha256;
 	cv=none;
-	b=eG4mnDddNcIGJbx1Q3dGlrmcM1HXJ6bPeLrAUBUEuzi1FgVQUjy4U5MOj3zy1BKtRZ3JUz
-	sm3U80XYtTSz8Zg67zV86da8bUd82P4nFZj/Id+3Ww6sKYrs3tY5u9iYLjb2deIMTIB2GB
-	WzgZ3LvrjY/7HvhSmKmNk7CYhCGfC2k=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91A33339;
-	Sun, 22 Feb 2026 21:48:46 -0800 (PST)
-Received: from [10.163.170.234] (unknown [10.163.170.234])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D1F73F7BD;
-	Sun, 22 Feb 2026 21:48:49 -0800 (PST)
-Message-ID: <f486ff76-7c98-4b93-985b-69cced5ba00c@arm.com>
-Date: Mon, 23 Feb 2026 11:18:46 +0530
+	b=vzrJfwqUZuBHgDbOo8WjdtxXcM7ACkRQYFf+qSuBUfmZ+fYR1S500AgqJmf6ZRkW36t+uu
+	xjd0c0oJGpaUiHrpZDJV26+ryr1J59AIr/kR1ERC9L5uL90O767kbGLQ8Jl8P7+xVPoduC
+	bbQkUYsIfa8jpnrypcm7ZDquzP3h8a4=
+Date: Sun, 22 Feb 2026 21:56:13 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771826179;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wg/reOB9lmnxb3MajMFemuA+M9KAXqPdAYgEbnkNP+g=;
+	b=VbgOO0Zxqi3zFmOCdbRindOPEm/VHizRDal87YA2S6GK8GSPgqhxa3Zhj7HAOfLl2zwrHb
+	bT181v2h3lllWQx52AmZPd7XEGApFYDuKUGDTaDJn4Za6JZf8XTzIi6v8LvpBfRnVOuX0m
+	z9K1cpJ5p8VykxA0+7gW9LZLuif0VLU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com, taejoon.song@lge.com, austin.kim@lge.com
+Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
+ cgroup based swap control
+Message-ID: <aZvX0HZy1PDylL8A@linux.dev>
+References: <20260126065242.1221862-1-youngjun.park@lge.com>
+ <aY4bQFvpPRWgnOTM@linux.dev>
+ <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
+ <aZjxP2sTavBRGC1l@linux.dev>
+ <aZnBo+P3ifskts9J@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
-To: SeongJae Park <sj@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>
-Cc: Vishal Moola <vishal.moola@gmail.com>,
- Christoph Hellwig <hch@infradead.org>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
- Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
- dm-devel@lists.linux.dev
-References: <20260221011952.59323-1-sj@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260221011952.59323-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZnBo+P3ifskts9J@yjaykim-PowerEdge-T330>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1839D1A0006
+X-Rspamd-Queue-Id: 3AAC7A000B
 X-Rspamd-Server: rspam02
-X-Stat-Signature: sisb7fyodpc839xmmeqfuz4ncz5uub18
-X-HE-Tag: 1771825733-374014
-X-HE-Meta: U2FsdGVkX18SfZ/ZBRTEOZ9GA5ODSCCdbFqKx/+MOrThk/xNi5swNsltz2f2SWMWu9+jaA97t5je+7pCfwKBrIgtdVPqFlCJQngRuuyp3uerVbRVBb2JDJYOah2dFeq4mS4+4QYGMCMt+mPQHucKRIx9ssmNMgT4eOSTr0PmAialRzMSuhp7dN5ZgKIBXHoCVMLmgt3RwlzdyBU+El+ZocYadvnmqzdqd3dSH9w9JPTcQ6ogguGiwbD7U3b67wEF+w2/fHmSXR0HDFa9wwM3wHMyeyIYlw6emd6OW7/im2/BNQgHe10lircTU0RY6mSZQLVqyGPgOu4FPkpodmRPZoEyzFOudTIbi0OaYfamWCGBAwCszmhbKhRFy1Knrpq80LYdCv/d3c1mfIIuZItjiiST8VL/efJ0/RWDv8Hdu9VIjTXL6mmxhhjR+TLOdfAkSJ3g53ZwY1W/AFrAdyq4kqFBsf/2CZzgXte6Z3D505p+p1pYTNgURTUhs/RljfXWyx9jKqVsPU2s8vFNhasnV93H+XjnGFtsEOqVhuZThTq9B+9l71xPgDwFNmpzQ5Dhjx+NDm6z4wV39pDTO0Wxbao/b/iZrdjneXarxvsy3JMSAb9w6AG6TEXolC1RF5H9mQh700nQjUyKSNZpSN93sbAVOXzmyX36oKTrFKi5vGcvXlTjPcEG1JN8LN6LQJREYtc0dQr4ykWPVOwEtOFe6qu6nkZ09BbnlZC6D/mRHA5SMCMmppSxZZN9YzmTUJZXVncj9KT2q8WEV0zdic3RD3QyPN4A+rIJKXSSOqcvia7nnHnDQ6HjZ6ICtCNbcpKSzo41A3t/oXyyplMvmVi66HvgHvsZ6/yqrP38/Y+wT+CVhFKJeJNMdQi7RvgBhrKn+UFaSsKhV4KnhVDPnrV5gP2jPchDYgLpSPb4ax6EuRj/CtBVPHj4USRWiKsaY2q7W2C99uJL03zKCR/9Ofy
- GaWp33gD
- WmyHYNRKiDfjD5X4S4VGfr4dQnfhY3JGj5G+6eD7U2XW13lONhnWR+HdbXP+/yFd0ivR5xTWJSL4GFsFucZYXW8nm7Ima/IdKs83I25sn3qUJab/rCv+D3E7TsJRCFWaWvNmpQkjW9+JnBhfAFq4zZJm+OsiSB+zW+GuGir+6fpAj56YRu3KERepKGQAjaKHXGHCQ/NXPTXj1iYs8rMLT+zV10Qy76Ymn6S+XloEE7sExgCFE4MTrEXxXxH4HdgdcWokDoVO70NLJ6ihQCh4NtdSwVhPyjhxLTF4sENah7x6hqyGHOy8F+GgYi3/v1kqkfjl/aQWBymPzJ7k=
+X-Stat-Signature: 35xyj4gczr974komzghkpa9uxrzde5oz
+X-HE-Tag: 1771826181-551247
+X-HE-Meta: U2FsdGVkX18D3/7Lp0TSbpUeLsMHQ1eNm6alxeJISqlKvPDLiyrOVtiA4FFBlXpypn/so0dfKLgjAIbj7S/3+24Gr/rOskDTeb3RH8McITyjVN4y0srcO9JacEOMEsGmIT/f4MHE7aAbtUTVg8gmT3lMCRiWI9I2LzDhrRFGiTMzlzUooNuSq8+AfVDA/tTeC/L0sTijUOyy0UGs13fm7mi0iNtINAmC+E97PypabTqJMZuvmwoNaqdUuG0PW4Z40cp4HlMu9Z7heqbPPibOkbTE0YhNtm+UL2xQ6ujKbcLeH9DB9KdIlIldJ8/AoZ5akzshG8j2Cu0o5YNEvg5N+ZMWzhOu4UriwPBbZaQnyUrEklYPqOqg4QBnOKBNg95Apt3VZr9wqEqMiRUiXX/xEbWcoAKStIu+OKvMS9iV/zSM2QV2JyKpYE1jN4ICBOsKmAxLELpDBKLKdE/dZ3Bv+xXM0tVmfqEUfqasgUzprGUtJexo1oqC439oosq0PzKGIg+HuJwHQKTBwVXVxWjDMwl3AM5EqtzhDdmhF1cAfR20DVtXhtyF9JHHNrrVsFm7ZqFlfgr9Q1kP4OegAW0tW6nQwVAxtautYQFvEThamEmmyFbVeNImi8A7/X2SmJ3QlxrC/LU+xsGMW2LvJFKuoLg2Z81dKnckBX9OJWkm/pXr1VG4LYpWyRTKp3PPTtcyyG0uK80pXyxMuowls8MS5UtTi975RiVXETAQSqN6YLVCsGfpOrDLyltKRsynma9PqGUefn4BDT/7W99DuvKiJ71b7aM8EQrKRpYkVJ68dPsoM7yvHmetJ5BIkXU4Gl/F3LbaX8PlssheVJvPGziNrwqmMCkIrsmPY1ao1AzmfoDo0ZNPUQEIskdYWk1aeDF+Gs77SsVYjUpTuvYt9LoOVS4RxBh1nP4iUcoXzn3Uigov7I0L3tUJtQM2Vty7Yyg/C0TzZhcYMoNoCSAEgXn
+ Wth5ifC8
+ tbpHib86z4xBFMu39YpEJPY0vXOWoJjLSxNQRGIT4870qsRRxBsXIOcDVxn+nEEcJmfTnsWJi4/ZiPiWbko0XATBEmO98uvyn+bIPeVRNqawSOI+dndjVRghls58njeIvqvh/QEZz5e7Pc163bEej5z3VUYJXG2IJnnG1PP3C9/tPMnLyKmVi0Omp+uer/HbJcjnJ/O7L9yWMbA2M/W88an7y6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,49 +96,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi YoungJun,
 
+I see you have sent a separate email on BPF specific questions to which I will
+respond separately, here I will respond to other questions/comments.
 
-On 21/02/26 6:49 AM, SeongJae Park wrote:
-> On Thu, 12 Feb 2026 17:33:30 +0100 (CET) Mikulas Patocka <mpatocka@redhat.com> wrote:
+On Sat, Feb 21, 2026 at 11:30:59PM +0900, YoungJun Park wrote:
+> On Fri, Feb 20, 2026 at 07:47:22PM -0800, Shakeel Butt wrote:
+[...]
 > 
->> The commit 07003531e03c8 ("mm/vmalloc: warn on invalid vmalloc gfp
->> flags") breaks the device mapper VDO target. The VDO target calls vmalloc
->> with __GFP_RETRY_MAYFAIL and this flag is not in the mask of allowed
->> flags.
->>
->> There is no reason why vmalloc couldn't support __GFP_RETRY_MAYFAIL, so 
->> let's add this flag to GFP_VMALLOC_SUPPORTED.
->>
->> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
->> Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
->> Fixes: 07003531e03c ("mm/vmalloc: warn on invalid vmalloc gfp flags")
->> Cc: stable@vger.kernel.org	# v6.19
+> > Taking a step back, can you describe your use-case a bit more and share
+> > requirements?
 > 
-> Acked-by: SeongJae Park <sj@kernel.org>
+> Our use case is simple at now. 
+> We have two swap devices with different performance
+> characteristics and want to assign different swap devices to different
+> workloads (cgroups).
+
+If you don't mind, can you share a bit more about the cgroup hierarchy structure
+of your deployment. Do you use cgroup v1 or v2 on your production environment?
+
 > 
->>
->> ---
->>  mm/vmalloc.c |    1 +
->>  1 file changed, 1 insertion(+)
->>
->> Index: linux-2.6/mm/vmalloc.c
->> ===================================================================
->> --- linux-2.6.orig/mm/vmalloc.c
->> +++ linux-2.6/mm/vmalloc.c
->> @@ -3928,6 +3928,7 @@ fail:
->>   */
->>  #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
->>  				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
->> +				__GFP_RETRY_MAYFAIL |\
->>  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
->>  				GFP_USER | __GFP_NOLOCKDEP)
+> For some background, when I initially proposed this, I suggested allowing
+> per-cgroup swap device priorities so that it could also accommodate the
+> broader scenarios you mentioned. However, since even our own use case
+> does not require reversing swap priorities within a cgroup, we pivoted
+> to the "swap tier" mechanism that Chris proposed.
 > 
-> By the way, I think this list might better to be alphabetically sorted in
+> > 1. If more than one device is assign to a workload, do you want to have
+> >    some kind of ordering between them for the worklod or do you want option to
+> >    have round robin kind of policy?
+> 
+> Both. If devices are in the same tier with the same priority, round robin.
+> If they are in the same tier with different priorities, or in different
+> tiers, ordering applies. The current tier structure should be able to
+> satisfy either preference.
 
-Agreed.
+I assume this is the same swap priorities as of today, right? You want similar
+priority behavior within a tier.
 
-> future.  Obviously just a trivial and random thought that never required for
-> this patch.
+> 
+> > 2. What's the reason to use 'tiers' in the name? Is it similar to memory tiers
+> >    and you want promotion/demotion among the tiers?
+> 
+> This was originally Chris's idea. I think he explained the rationale
+> well in his reply.
+> 
+> > 3. If a workload has multiple swap devices assigned, can you describe the
+> >    scenario where such workloads need to partition/divide given devices to their
+> >    sub-workloads?
+> 
+> One possible scenario is reducing lock contention by partitioning swap
+> devices between parent and child cgroups.
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+The lock contention is orthogonal (and distraction here).
+
+> 
+> > Let's start with these questions. Please note that I want us to not just look at
+> > the current use-case but brainstorm more future use-cases and then come up with
+> > the solution which is more future proof.
+> 
+> We have clear production use cases from both us and Chris, and I also
+> presented a deployment example in the cover letter.
+> 
+> I think it is hard to design concretely for future use cases at this
+> point. When those needs become clearer, BPF with its flexibility
+> would be a better fit then. I see BPF as a natural extension path
+> rather than a starting point.
+> 
+> For now, guarding the memcg & tier behind a CONFIG option would
+> let us move forward without committing to a stable interface, and
+> we can always pivot to BPF later if needed
+
+I think your use-case is very clear. Before committing to any options, I want us
+to brainstorm all options and gather pros/cons and then make an informed
+decision. Anyways I will respond to your other email (in a day or two).
+
+Shakeel
 
