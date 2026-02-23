@@ -4,75 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24149EA4FAE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCAEEA4FAE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E0A56B0088; Mon, 23 Feb 2026 06:26:17 -0500 (EST)
+	id B0E806B0088; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58E8C6B0089; Mon, 23 Feb 2026 06:26:17 -0500 (EST)
+	id AB8056B0089; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4703B6B008A; Mon, 23 Feb 2026 06:26:17 -0500 (EST)
+	id 9A7286B008A; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 310436B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:26:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA25BC2BF7
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:26:16 +0000 (UTC)
-X-FDA: 84475492752.25.4E58D00
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 878496B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D79D8C2E48
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:27:43 +0000 (UTC)
+X-FDA: 84475496406.04.E35658A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DA785C0011
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:26:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UFgvymcp;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 024648000D
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:27:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WxomJKx5;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771845975;
+	s=arc-20220608; t=1771846062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGqf2qwi7NORHRV6israjwuD6PzQni0n4UJJYcY2V5Y=;
-	b=kyKZ5SZ+ZSWrYEOmGq0xYas0xlniT24CAHAUus/LpuaGgHRZiC61RmFf9p5XAfZCiuoEbr
-	w5asoNA5istix0KrteXwd2qXTtkUOCxuHXqLGDQJ/s1NFl8QzLjyl8XI1mN5eeALphTS4O
-	C2FWIuPywq6oxdaE3No/UTholM2YbfA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771845975; a=rsa-sha256;
+	bh=rjdW17GJScJnMJuXkzBJzMqfXGV5x8IXtFVhpJFR8pc=;
+	b=YAD+y6KYT12yntBmSzl0X+5VxXwp1lYG+GDdVvcDaqbW+wpcPH7vfORhXzGMDITf4WEYVC
+	ZbYqLjrd0KWl4jfOzzE+AW2NZjhtjBTnPqVnjKZW8YSbAiwnV778HiMQdZvuTklih0JunB
+	9X6O87pwNiMtjhNE9Od319W/+jy8kG8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771846062; a=rsa-sha256;
 	cv=none;
-	b=L26Srpptmw03tpyTzbiFNPfWCOLKYQqUXkIfC6HwAlllzNwd18XOH/KebnGvOsKBevG3Oi
-	Yqktdojdi908EZhmgrEwgS0QxpEzoAkpmUlI3xDK5uhGm/PMpBIdnW0VoSKPQyTqdGCJoV
-	qS5f+nWSnEm42hfI9mFw9PLJuGZBcEI=
+	b=dXZHL7hiBu+l+U7RlrJOh7qtRu3c2TsuLB19zxFs85wipbxBsLa91IK8Qiw7j3qnPf2AfC
+	SRtD4uFN/nCILUJz4CZdzSwkfMLXf/tNErB0mhpEZ1OFd/miE14+K6swG21wzQFaxoV0VJ
+	UB/R3VqkGqnVSTgr8+u4iyORF+831NQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UFgvymcp;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WxomJKx5;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DDFBB43556;
-	Mon, 23 Feb 2026 11:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C5DC116D0;
-	Mon, 23 Feb 2026 11:26:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E29AA444B1;
+	Mon, 23 Feb 2026 11:27:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EF1C116C6;
+	Mon, 23 Feb 2026 11:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771845973;
-	bh=aDs0xpDI+vbrKdBiEdrMpXir+Hl+rfLlF3frhe5ZXOk=;
-	h=Date:From:To:References:Cc:Subject:In-Reply-To:From;
-	b=UFgvymcp0RVrTIuY7ko5yNeNvUrMjuwgZ0vqGTrFO2CKK1OCuYxFHel9s5ZS29euX
-	 Y+9XRwHjmGaZNlZ13uEEgJsvtB4qcMIBnNBYmOjjY1oj+0vSuqsIj6Kt7t5Ey8+yC+
-	 /XHeKhfg3np7MaRo8JaW31RYzK0kl27mVTJvHeSPlin93nQJm97GoUpQCwBE7OcnJp
-	 IIOLEUjzZ4T+mt4IO59RzjZq9LbdJBez/cLAf9jib5lVWU+2CfcAETAqqfwPyW14Nd
-	 UGdhnVNUNWWaAgINjnNCMYLEGZbzocnr11HP0dedcjL9v+DyhacLEi34t7wtu1MChy
-	 v6Y1+twzPT2pA==
-Message-ID: <71247244-73fe-44ce-ab05-69c852f3aa1a@kernel.org>
-Date: Mon, 23 Feb 2026 12:26:10 +0100
+	s=k20201202; t=1771846060;
+	bh=IgbWkQ4+Vmc2cDQbjDQKwhY3CckSl6nKs7C1cc1tLS4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WxomJKx5GCBhAw6iv03KC7KELLRBQjZZ4iTcKmVM7F0U0FBjpdevI4tb30MZEcRwh
+	 OEe4feh//Jb6Z0HyNAulHjENW6/E7B98CStPLQi5HJbO51xGJrntHK512lDFeGlVTj
+	 hW4ebQQ/RKN6sdh5/Q1blFYy/keK5GPVhDHpFgrR8Vcq7VomhUeQVVpdVRKZ9PWF52
+	 7s+3RqbmSb1XwgnNDEWXwB6207/RwtDO7HKRzMCMG9c8nBIks8OhxlUDRKrTXtraJm
+	 AicG6oOFhmD8TiW/M35/bTQgqcU6D2UC1nlGmqtcbzYqp5Tp4SpHX1g6sOqulRJi4h
+	 GYlm/KyAa9MYg==
+Message-ID: <06684dc4-3902-4452-824a-ee2064314d24@kernel.org>
+Date: Mon, 23 Feb 2026 12:27:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>, lsf-pc@lists.linux-foundation.org,
+ linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
+References: <aZcmlIF4bmG0twkp@thinkstation>
+ <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
+ <aZdCl8byz51Q1-v6@thinkstation>
+ <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
+ <aZhErt9DZcWI24_v@thinkstation>
+ <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
+ <CAC_TJvd=wKKnj=d3phZsAaarXUdUbZDGauxWNWkQtsFV-MTYEg@mail.gmail.com>
+ <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
+ <aZw1DlKHaWvgOtm_@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: lsf-pc@lists.linux-foundation.org
-References: <9d5af75e-e41d-4052-bade-8e51c9622523@kernel.org>
 Content-Language: en-US
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -117,18 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-Subject: LSF/MM/BPF TOPIC] Deferred folio splitting: extend or remove/replace?
-In-Reply-To: <9d5af75e-e41d-4052-bade-8e51c9622523@kernel.org>
+In-Reply-To: <aZw1DlKHaWvgOtm_@thinkstation>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DA785C0011
-X-Stat-Signature: 5a5w8u76qxouh74jbcxe4m4jan6z5te8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 024648000D
+X-Stat-Signature: awxht3rbcbigm85e4u4aoj5u3s3baq83
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1771845974-640154
-X-HE-Meta: U2FsdGVkX1+ynqxMOoeeOE+DxdvwKxo+9FuW5eMp6hxEmoGTjnYtLKxu55TX6zmB7qdRAQXJqMV1pGoDFSDwQIwTxR2b9/4WmdFgW9NCQD1Qdjf7gCn/iFTT6yg4kd1+zKKgS+VCMM+VuxPylGUb+CHMAwDuMb8/PX+l0FMjQJVoBN80LtnKYzHe43WSllUlUKMFqN4HmmxttCeQTbIT83HVia/L/hKgymLRVMzfQGMp4Ulowgr9zea75HDRWBkdQnXSJoC/tYwlXXH9jZ0oiWeDVqre56+005hhKhqU44F4zuuB0OxyrV2e04t6lef4YTyBjMayNAe/IzxAV3+IaA5rcjSPm6OQmrHkGTlFXAZaZfQs55J7MVvmxChjySYT2L+BDjKUrWE4Qjz1TAxTqoMHiBS2jenwcYR1fS4a7l0nJNr4FgFT3qksWUo/A2/HbltUpKKr3iSAIDEchKYo1IVQpZBG2AVNwSlp1fgw0+57PnFgWHVBA5bwEnLfSM5lwo1pcQhexdbB/0bVqncI59QgqNaUTJhtImiheNlCcffNbJqujDf5pXPDNDBvJ2pfpG9HMTyyEPam57AiPduQNN31AH9oA4f6KWlbTQ34IW3Uy0tgGM3EpRTZ10/7k4mYASmR5bFv0iMhv6zGeGzbS0IViAN1FFutys2X0Nf0oGZGS6YaTAQEbJKQNcMDY6FDw8JPa7dsybkiR36XsXRoDqzV/ePfNXxOWYu+/BpHTbzkFz4A/7inrEtD/CaFI8OKqHX58G1yTY8rsV8NxFxtNj/fngyFq8FMt68LMKXV9H7QXTrM+kB1P7yJ1Lp7foz+CDxVUrZsUIaMdRjUhhP0Uk4gMwSPKeKm4LvzecCdw9z1lDDfsndKWYpOqueXiLZW4wGfjtC74vSzPcSGUbnAc/BTYu4gplj0++V9zay4+C3b9YGYvbD+P6Db/FsSpTWB88LW28/0JnBrBzcqMoO
- xfrZa5NF
- Nu8YKyR/dGk2mKEME32wrYtdgnyCK0dOkTj2ZevwRt7zs849w0zVEG/jwdZoZLoJUHxpDrLCjxvsDWkI3zjFRnG+WVxNLeYOXx4ryq5j4EF5WaEKMnnoWPweG9LS4vXTVymqjfAUJU80kFT1Wwm4EPenH6STmp6Xw0l/FWC7SDg64eXquNST+oQyv1NDs/um4KTv32bRJyWIIfi5nn9YEY1jjck2KIEPnCTPH4z9iyPXlYT9euTMBNV0+3u87Obja1hjmgrSx0/FS02S4ssk4Tq+gt6pILV20IO82z8kjWp3jZHXW7jkxu98Krw==
+X-HE-Tag: 1771846061-704558
+X-HE-Meta: U2FsdGVkX197iZX//eQsUeed4sIuwzWNc7tbXBpiCsooM0hRCscaK3xkDY9tfspC6up6EiyBSRS+Ei9C+8biIQh43Zk+6HPjxn2eIx1jnGIkmR1HHO0+S/man1RlFQMziJFsdgDAf4ocHcGsYYHSnT7HNev7g3ArT2FVHdJ9QiomcSdFFSK8oK8mgIUsh/nmcyIs545vpWr1F6pZrB9Z8ziTTVbfozE3raC6hGkQ2b3vUefoRELZl8sJuPbiN99FvWWODqdfmrl8mBVCm4UPYWZ67VWw+yWRad3GpCeoYG7PtzyRdFyfpcCm2AVzn4yJjKysTkmHd7PtKWTvkXTbVcs4cAnDN+gapTH6eskOlfpbvVXMC4Bfk7JYn7u3p7c2PUXO3nRYFe8gDe06PZtBWMZWbfGYJKTi1OoCvfMARuTHm6C1bhqePlFbCCoyYkEFb7S7ccKB+6AR0Li7yfLe3If0KjjF2TeXb0FYIt42RrlyVHPvcITtV7kj8MqqaGvQXZfY1rPEcnKSP55dosjKGPV/tnfId60g3wb67pMvBDt/QFN+hCHkn+/W53xkYJswawPAFduC8hNo0EODZt9w3AK4Ihp9yOfg1Msrw+wc/vJEvr7TlhDpH0ydp/v6aHFHZnX1+rHPQSilGDhP7A8FQR6bg+rj2hS89bvIVjv5De8F3KEr66S4h7cAvOrLQtgYy631xQJTYR38XNihl/p5rB98778Y9XCj7kuUR+HA6MX8ZtlTNwguiFUBYzQiH2R0fp6fqFHCqxRjt1YedbN8f1/mGBFhnmhjJhwoiAxIhqh6DapsUt1FcF/roF0xeu14sEO3t3Tgs62nUg9bdF7pQ/ByzmPLyc3bfFZ1B8ZV9kOYUtFtfNDj3urV0B/q3DwxYu2utR87r6IIezzXXccqBTOGoUdUeUnQvx0aa1DNzu6sfSPMdGfszuUfi9KLW5G3qnxb7YEIQiho1RKXwKP
+ kADk6Y7K
+ DPBJCE0a12Qf2ay+toMe7MmKH4NeqbJDTtPqxDvVP17CAH3BcYUFXHgCmFa65ju/beJ7HBK82x/lCA3oAkdSUurBXwqm5z4yiCLim8qI60Hihlww9RZ1UbEM/5i18Q8geJLkwptF1mYpvkBcC77sh87KlHbV6lnGXR8p4yFsZj5xaGZUDIiSUllUvX4rfOkuEJ3VQfwlYPdK7lVZZx2+s5AgE3+kG6aEWC2Y1cS6oUeGTqwq20lFP0BGKvpkMH2AJY4ORzHMq/Q1FKUI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,46 +153,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 2/23/26 12:13, Kiryl Shutsemau wrote:
+> On Mon, Feb 23, 2026 at 12:04:10PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/20/26 20:33, Kalesh Singh wrote:
+>>> On Fri, Feb 20, 2026 at 8:30 AM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> I think most issues will stem from linkers setting the default ELF
+>>> segment alignment (max-page-size) for x86 to 4096. So those ELFs will
+>>> not load correctly or at all on the larger emulated granularity.
+>>
+>> Right, I assume that they will have to be thought about that, and possibly,
+>> some binaries/libraries recompiled.
+> 
+> I think backward compatibility is important and I believe we can get
+> there without ABI break. And optimize from there.
+> 
+> BTW, x86-64 SysV ABI allows for 64k page size:
+> 
+> 	Systems are permitted to use any power-of-two page size between
+> 	4KB and 64KB, inclusive.
+> 
+> But it doesn't work in practice.
 
-the "deferred" folio splitting mechanism was originally introduced to 
-reclaim memory from partially-mapped anonymous THPs under memory 
-pressure. Partially-mapped anonymous folios (often) guarantee that at 
-least some memory can get reclaimed easily.
-
-Ever since, we extended it to also handle smaller large folios (mTHPs),
-but also to scan for mostly-zero-filled mTHPs that can be reclaimed by 
-replacing them with the shared zeropage.
-
-Nowadays, each and every (m)THP we allocate gets added to the deferred 
-split list as default, as "split_underused_thp = true", which is rather 
-suboptimal.
-
-Historically, handling deferred splits has been rather complicated and 
-error-prone.
-
-So I've been wondering whether that complexity still warranted. Could we 
-instead just let LRU scanning deal with that and get rid of the shrinker?
-
-Or could a shrinker instead use existing LRU lists?
-
-
-We could flag folios for being
-* Partially mapped (which we already do)
-* Possibly over-allocated (unscanned for zero since added)
-
-To prioritize processing them.
-
-One of my motivations for looking into this topic is that with 
-CONFIG_NO_PAGE_MAPCOUNT, we can sometimes not reliably detect "partially 
-mapped" folios and only know that a folio "might be partially mapped". 
-To figure out whether it is actually partially-mapped, we have to walk 
-the RMAP.
-
-While I could extend the deferred splitting mechanism to handle such 
-partially-mapped folios as well, it would imply taking the deferred 
-split locks more frequently when unmapping pages ... not having to mess 
-with another list might simplify things.
+Even in well controlled environments you would run in a hyperscaler?
 
 -- 
 Cheers,
