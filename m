@@ -4,126 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D905EC110C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0BF2EC110C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 16:54:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE3376B0089; Mon, 23 Feb 2026 11:52:28 -0500 (EST)
+	id 062076B0089; Mon, 23 Feb 2026 11:54:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC49F6B008A; Mon, 23 Feb 2026 11:52:28 -0500 (EST)
+	id 022716B008A; Mon, 23 Feb 2026 11:54:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC7B86B008C; Mon, 23 Feb 2026 11:52:28 -0500 (EST)
+	id E71406B008C; Mon, 23 Feb 2026 11:54:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C6C8A6B0089
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:52:28 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 123DF1601D2
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:52:28 +0000 (UTC)
-X-FDA: 84476314776.27.64C8B8F
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DAA801C0002
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:52:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ah5rVmZb;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D4D176B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:54:17 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8663CB61BA
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:54:17 +0000 (UTC)
+X-FDA: 84476319354.09.9F0AE7A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6D67C140005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 16:54:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KDElEk2t;
+	spf=pass (imf23.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771865546;
+	s=arc-20220608; t=1771865655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9p76BczVPf+ipMBZjWxZMf67W68G0E63s5eoAZ2wq80=;
-	b=orI6+7arXKoGIbQGQZd3Xcpw8IM2bQ1OmdoXQgbIgIvoVbIJ06oo02JXiaz0i/R7nTgj24
-	S644Hmao8Htrcc+Cv2qzBVA824UDjd+qSmCjazVODYeNrvoBfE+51Ir8evRSvbt3HU8Qt6
-	sKDijG5/AVylCB3m9TOMHUaSszT4Inc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ah5rVmZb;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771865546; a=rsa-sha256;
+	bh=XtLhSSxvhi++dL0VgIH0FuZDa5E5v5PoHVrBVy5/dm0=;
+	b=n95Q8dWXoCKi4PGpdE2TFWsIWUVR1+6TtN5gdfDNZSyg1v1njiEn9Mr/YCcJk+Z0It1gbH
+	gZkjSdxuvx8iKLTKNNC3533vITEa0KjB0ng91B45/2bOpiWlAWGNY78Xv+gRRfdJtFcMf8
+	f109MV5HniJjp9Qz92w1DaJ84GYo8tI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771865655; a=rsa-sha256;
 	cv=none;
-	b=QALEgEEzkb0nqkir+z1BA3GdTQOa5wtfqh5nIEkGtr8Lhh+sTVX5ks5m2IMA2NwAE1uCEX
-	wBsrtK+9/CGZXexd2D+R/9A5u7Byzc2YPLh0EZuFG7MwsSVQeOplqv5l/dtkB3P6ojab1/
-	DQHGT9dZV5HOjOQDDbJ2G2/gHkfJXus=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5062fc5d86aso43845281cf.1
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 08:52:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1771865545; x=1772470345; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9p76BczVPf+ipMBZjWxZMf67W68G0E63s5eoAZ2wq80=;
-        b=ah5rVmZbgvSckRhX73qdwW+3uLP2TY6b9INz1jh9OMW9n32Xv19HWtxmB0rKAIdRJY
-         iZCGCHcJwqvadxr65Mjv+ZjVlSdHywno5I+blaD9V2n4kl4fWagkpEnVAY66ZWzFqTnL
-         vW0S7xKeo6VzfAY0NSs9kT3gQuGU4Tk4yTdKF3oT4Lm4ymHj0J2rl334kSVU8TIlJN8P
-         rnCpuQ8C8oqnswChJTfWfGGfC7ypk3OcG6RWA0V1LVY8+dtiBaLBqDmaZsjsfGlkoew1
-         mQUcVjbFeyegRiGvMD8sjYSWN6GcZtNuFxMwvPmwGU4TwAIh0CmSqFYqChbQs7026i2d
-         6w1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771865545; x=1772470345;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9p76BczVPf+ipMBZjWxZMf67W68G0E63s5eoAZ2wq80=;
-        b=adi3CUk9WFQwMbSPLEznW0oWBArcZ/WW0rc5fShCZukV++UxSIJ8ZCEc5INTZs829w
-         jJK4NRpgipVbWc88awcc4TUMp3Ku0nHdUODw7qm3JWvIMSiNCASsDvCURNGBleo+BXuq
-         wR4WuAKnl5m7GeTxs6L/XvnV1Bxve/dW9zM8c9XRHUncfFha0epraR1JVoOUpXhMV2HD
-         ju9vfYCRhsvlHgpPhAe2ujz6bYOQ347bZ+SXm8uV1MiIVZbCIRsAzhpV4d3DpRY5wIuO
-         2JO4CsZlIgAQxwGmsT47c4qUVMytNgb/3/pUR2eRddiMGtj4EoAXqaTeLox8gA7v3IGr
-         YA6A==
-X-Gm-Message-State: AOJu0YyJMLG2z/XKhf9/qTywLnDErVv3j9R4ffodq/0aiHfuBfzdj62V
-	6VB5fSkprdFVeUEI9YEUNJnszC4H+/y6hL2Ytk5EIAzo4q8H7Z2FmOWa8w2hoTgjV84=
-X-Gm-Gg: AZuq6aKHNs8oe20/FdCSYzdzsq5gPclKOVJ/AX8L9p7uLchf7JM2Yh2W8kU+zoFdI/I
-	gyW0b515K9Ns0jDy74PBylO5iG9qPBd7klphZp+B5gvTELWonkUTdZ8izAr42Z5FdPpnfnQk+W/
-	gApf9BH3wFpL8gCH4n7yZptpyHF2GVKb3OZi/L5fcf2+vnrM4YUfOKZhoWHd/37zJDc5C2qkBln
-	B4DnN8jN++l8Cy7A2HotEAtmBVOMwm7qhqnEueDL58tJBSMVXNLoPWqe6JLvbHGR4zma0I4MrCw
-	PB23CbQ369B/5OlaUYr+RvhQmCvxu7KIcO4hez7y2wQ4P545kENitKWJ+0beD3f0o9+ng0t0p0L
-	LpDJlTKIiaZyrydHB3QjngULByTr0iaZsTMqtmrnncHripjq2z3t65T963mrcrc0mWRTQ5eeHN7
-	M3EFONFKw+TBrF67i5zs/F2A==
-X-Received: by 2002:a05:622a:11ce:b0:501:4859:c7aa with SMTP id d75a77b69052e-5070bbab6a2mr133092191cf.20.1771865544833;
-        Mon, 23 Feb 2026 08:52:24 -0800 (PST)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5072afdef0bsm4637311cf.16.2026.02.23.08.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 08:52:24 -0800 (PST)
-Date: Mon, 23 Feb 2026 11:52:20 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH RFC 00/15] mm, swap: swap table phase IV with dynamic
- ghost swapfile
-Message-ID: <aZyFxKGXc8J6PIij@cmpxchg.org>
-References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
+	b=w0yi2OL2Yh+BA8Ra85AwoXuNNSM1NKEkEKBdEPLQ8fymheDiEJA0N3c635MatXiNE+0uG9
+	3Yi1xm20v+gl0nApLhN0vq+wpO5GsLN05nOaPAtCE+JyycO5p+8eec3cdtlA+THVUsPt/s
+	QFZvOcBOh/19ixVc1Zp+Q1+n1CpmHUo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KDElEk2t;
+	spf=pass (imf23.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29BDD40B02;
+	Mon, 23 Feb 2026 16:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43055C116C6;
+	Mon, 23 Feb 2026 16:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771865654;
+	bh=YodYJnZuKSlNBlkEnj7GRn/UmmZhwjmLQMUg4OcMz2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KDElEk2tgBble4V5qOG+eLKPjopDoG4X+CBVoR8V9XhR8/HLyxKZQty0THX36Ut42
+	 jzmhdIxEFGFx6DzpFQyt0fyAeL5U7MkYTL1aeMS5s74jb/e3WuByeANvvRyditqAoj
+	 FfdPY1t10cRvRLIiRO/1LaJqJUd0tByErLU4z38zg96JCBGLIG26bXLnKVwtaZdbsP
+	 E+pvk00UzTthSf4/iHoupYKd3mGg8X4FRm8u2OsLn3ABGWNc3Pw1+GfNpFkGh9uKH+
+	 6D1twEY9OOTfE/7NBlQAmQqh42KmloYHrPBcmHL9c88XuLBJLt7Zv3nA8aeJDDuGhg
+	 q5G/gCjcK8ySw==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4A523F4006C;
+	Mon, 23 Feb 2026 11:54:12 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Mon, 23 Feb 2026 11:54:12 -0500
+X-ME-Sender: <xms:NIacaW-0c_GL8CxtGfoiTvMtllLSmxRvaBl_uhNP7cKRzYaVaM8q2A>
+    <xme:NIacaa9Z2yyIPRd8b5rQk3mKa673utXlRCxEg_QuEt44CkhcF8fRohy5wu56GaumI
+    RxBCTfpE6O0uniO40fX10eqQAaYlUrTmjnY94s2jtdBY1Fw6mTNfg>
+X-ME-Received: <xmr:NIacaY8hNKUE-pozWwlhzpGzMy9J_Mzwn-YRtmkhKwWiA184p1Rl-6Vf_Ogsvt83-bPVIQ-5BrK4ooeu1kDFGQIcHwfqsJkr>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejjeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    etvdevfeffgfffhfeuvdehveffudeivdehgfehhedvvdefhfefkeehjedukeeuhfenucff
+    ohhmrghinhepkhgvrhhnvghlrdhorhhgpdgvfhhfihgtihhoshdrtghomhenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
+    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeejkeehhe
+    ehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpdhnsggp
+    rhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrthhhih
+    gvuhdruggvshhnohihvghrshesvghffhhitghiohhsrdgtohhmpdhrtghpthhtohepsgho
+    qhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjhhovghlsehjohgvlh
+    hfvghrnhgrnhguvghsrdhorhhgpdhrtghpthhtohepphgruhhlmhgtkheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepnhhpihhgghhinhesghhmrghilhdrtghomhdprhgtphht
+    thhopehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehgrhgvghhkhh
+    eslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegsihhgvggrshih
+    sehlihhnuhhtrhhonhhigidruggv
+X-ME-Proxy: <xmx:NIacadJEvAILUhzzKaws0NcoCWso-5Uwot8IHehp5Ikkj4MSide9sQ>
+    <xmx:NIacaVREdOgjBP5kDk-jxqHqdrwceEoLMijswym8B09p55OUCxg4lA>
+    <xmx:NIacae-rqQHO55EVn2jo-qXbrk0AsKq_ROVRRQ6uS2xSkb8bjW0CqQ>
+    <xmx:NIacaddT7jvmL1F32UIWqjcnsgi8KuT5KzHq1UiAfOzH4qQztKuGaw>
+    <xmx:NIacaYnTgLbvGZhudsjL7qN9ONhXPFqntFdQH9MKK09qiWxJcmfXG91S>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Feb 2026 11:54:11 -0500 (EST)
+Date: Mon, 23 Feb 2026 08:54:10 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,	linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Will Deacon <will@kernel.org>,	Peter Zijlstra <peterz@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,	John Stultz <jstultz@google.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Vlastimil Babka <vbabka@suse.cz>,
+ maged.michael@gmail.com,	Mateusz Guzik <mjguzik@gmail.com>,
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,	rcu@vger.kernel.org,
+ linux-mm@kvack.org, lkmm@lists.linux.dev
+Subject: Re: [RFC PATCH v4 4/4] hazptr: Migrate per-CPU slots to backup slot
+ on context switch
+Message-ID: <aZyGMp7JbXPfp8Kd@tardis.local>
+References: <20251218014531.3793471-1-mathieu.desnoyers@efficios.com>
+ <20251218014531.3793471-5-mathieu.desnoyers@efficios.com>
+ <aUR9RfVChdcDncwX@tardis-2.local>
+ <bd86f598-97f9-4fc7-b426-01f08974b945@efficios.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
-X-Rspamd-Server: rspam05
+In-Reply-To: <bd86f598-97f9-4fc7-b426-01f08974b945@efficios.com>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: amgak7p47e6tc5zjeag8sx54x977x1ng
+X-Rspamd-Queue-Id: 6D67C140005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DAA801C0002
-X-Stat-Signature: a66zb565pjc5ghd8nuwrwpb5okjyfd1z
-X-HE-Tag: 1771865545-159275
-X-HE-Meta: U2FsdGVkX18+PNvzWzOEpnR98nQGK05xEt//fAJdzvRoyfislAFbiIImllC6lxQpDDX106yuC899zpQpXp6ZZwH3QuYs5DF+NfkxO9FcM+YwQFKFO1WYpF8yEZOf8s7I1f9uOpeBvf7J1SVXy03t8aYywCvDgsIQ7fNeQngw73NHeJ+xxPjgQnpD3Iujfne6k2FUjgVydHDCrlyqAMCEAGrL8uY4L6mWuQ4D94Gx1GzaZqnJQDdStGhMOslbqi/D9lB/x0d7qp61NCx9TZYSrTFK/6UOT+hFwSvs4O8lvVL9GH1xLwAcEX9SoIDn0rQxD6wucdHy7GZfsfHDmLbPy/zLRKoogePgsyWuQRgqZwyxPBKTmhNKdUmBtrezkfINsH+3BUN53TYk32DNCZmQWCCNrN+ygMAi6V0g4ehoKT5vLm1nNeBWRTH059m3uhbDToMBa+U2GK4UnVfEWTtpyiG49Hzu5x8IijYbVhJlllRLX11GWXoeK1VUvKsR/W0urw2HSgG8G/+NHGGScmGgmWmIwLWd3tcRHEzmsYlA0vS4XQxF5kdXU3UfAwoMeGyjOrTZf6incbJPoZAPDDNtz+6e0iW0dhkdRjpe7l87sktS8439GUa5d0qh2HN+tKKTnrvIci1db/F3z6TZpEM+1J1wcV8+oebfSL61w9SzPGdlmhSUZsgcE0QT2GNLxIHA3qOhLsttg5nuJ4h7ik39rix/5HV+h68rckeiO2yI556bVSQ9TL7UasW5tOmuRiYe4LwuNV3Ur2+LFGOyWnZxSeqYnQTj2nW7C8rUIWZQYaN0V4kWzolHlUlxN8vOLsi2AviA8DBRQ1yUYHEu5C26iD6EEKMoUykcuarm7qRj7Uq64UktSQO23B8l3jpHJoZNXegIe2pwtoEhXXwJz/E/08+YliFdr5Flk1cvEY1oCKiFr0Y49rMCY0kVxaRcgXfZVKVsygcGPJuISMvpe5u
- uZi9I6ej
- t4JM/lspLw6oUzMRrsVfa4VKLi3TlTJ/nhXuwOLZb18g2f09zHyeqzk1Fl5nQahk8Fp1NpSBdVe+2E2XGWTWopTz/nfiWRq8b9hx2GhtHFRGfMtQu1nn3mA9QiJU0Ki3a17T/DDRnD+QIHTiiG7rTnd1IQx/Y787C0n+tIEZlZWelqu1Pa5x9st71FTqyZgsPtqDOuLGX2dERSazobBbSEWtz2iJWJFgZQfAtYZ8czj4AmU6pfblShqTxtIlV2rqL/E8e+lwTThQNSgKe7qsJXQuTDL2O/4Z+qAzMGjBSLgMirdeRxagSqi+KpAl4FvQZvee76vOZ7qBIA/0aDYcrY4Dc27c6JeTunsXoCpuC8Ep/oeThQQt/kGT579SXxsRNmmzY06aBXA22rqs0Y1akfkI0APoloaJBdm88hjkQY6XCJxytljyc/l7eF/ex8VsyMJc+VTxD41BVpTVLjD23mgC46D3sXMdyrR4rAvZmKogOubNNYMIeVZ6Q6A==
+X-HE-Tag: 1771865655-274986
+X-HE-Meta: U2FsdGVkX19q9u8qexDLwvi+m72BVwSlIg50SLG7oqTS/eMKxI2IPHAlsS5z4o7dhjLhphN9bhJB54CLvzLNwGN5G8CaMjD01SNYJxmlmDbmutQiqfzafhkmgUCETbSghDkIhaWVqQBqSPnzFyAV/FrIUvsxs3aIMuL6tKYQIJhDwi5TZURpegxx7+V1ebemOgPV0sKTDd514USTq/3BNMlEqe8k/4gHQH2QI0BOOi5qqX+xHB3c+57VQ1c8Kd2Tu/t3RN5nnanhXLpAhaiQUFtZFXzew+/IcjUgALbpB0CNqwyJJAa+jMjUxgs0oyOztropjyj4zLfaXVRdxAEgsb7ggs8RQMWOFjXaZWZ2GEkfK3jUjiRrfWGXBHXCEsy1U7PfLhsTMP7iBiKtOge/J57LSoIBPjZroLb/AIvL1xGU5sbDeHuQlBZDVEMisOoEIIjmcGrYPNtzAemgMQdHWWEbUB8J4kxadhKJ2mSohZBKZmhgi79l3LLWa9ytxa4vA+IBSL4ll3Z0rY/NpX5otbWhsSauNGQstaUKRVFYvu/auRg0/6m9Ae7AOC2ttyLgQDi2cvDjKlFpMy695pOZiMxXz73cTNkPhBYk0Zwwum/PJb6BUg2IpB4kuxDq4ZTKsnczadQioe3WBQtynekiUFDmaFyPDRS7vtpyB/pHj4I+kM90POzXWsC8D1PD56kCVlGPxCsCsVt9E09PNFyVN5ZVwqambUBioDPrY0gmElfvjGth/BwZ/DMZASbI7fl5FMYa+SMJRwqEbW82DFFN2MCDYRU5Ucc2Pspr7wLFxyfMIvu4nxShdufdb703vN3gERsL9jKDKF9JIAyzEv+Aa2OPv65XpvqyvApyVZKq/GnKJV4tctRvNdSsEy55IUss1SH+Prtj3kTJcgG3ENDHhKppwUWkcA49Qp1M3mnXn21VjEGTZr2Peqy6s72T+M6Iu/52NTYV+BpnWfOVCo2
+ yisDZ7cT
+ TGUZMx9xV6vS3QS0uNtqS/GihCQmghS31M7/6B9fs1AmVg+1uT5O34X99XT7JUIOCnXL46eQp7yKzDOVpUfRMiTruyd4LLs/6ayIVbrb8ZaX1HCaEUXHl6EoDqmLm87SVIOCnG77HsJEQdoq5KYuIx3KCyW+MH5CUaBRJDTBtOMHV0TnWu70mNPMPksX2k5X+g8plLBF5Qi5/8YC8xBLOfXzuG4XhUQWGcEAzZ72v9zb9OUfGiq2OXg1enK5jCJ4t68QlyegwZ0sDdM36EJ6UnTBYelpq52Lo3AOFzCkeJNgsw32pgQs+d99+k9yuvjU3Cup8ph1oh9lm7mPtWf+OA1E8lbFpC/48GLF4XcHMrqFPCfO3FN2BlMvZ+Ach97WqT6n4ldwKJ+b/cg2TfkTNekEFdlrvHHGo7NSH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,54 +152,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 07:42:01AM +0800, Kairui Song via B4 Relay wrote:
-> - 8 bytes per slot memory usage, when using only plain swap.
->   - And the memory usage can be reduced to 3 or only 1 byte.
-> - 16 bytes per slot memory usage, when using ghost / virtual zswap.
->   - Zswap can just use ci_dyn->virtual_table to free up it's content
->     completely.
->   - And the memory usage can be reduced to 11 or 8 bytes using the same
->     code above.
->   - 24 bytes only if including reverse mapping is in use.
+Hi Mathieu,
 
-That seems to tie us pretty permanently to duplicate metadata.
-
-For every page that was written to disk through zswap, we have an
-entry in the ghost swapfile, and an entry in the backend swapfile, no?
-
-> - Minimal code review or maintenance burden. All layers are using the exact
->   same infrastructure for metadata / allocation / synchronization, making
->   all API and conventions consistent and easy to maintain.
-> - Writeback, migration and compaction are easily supportable since both
->   reverse mapping and reallocation are prepared. We just need a
->   folio_realloc_swap to allocate new entries for the existing entry, and
->   fill the swap table with a reserve map entry.
-> - Fast swapoff: Just read into ghost / virtual swap cache.
-
-Can we get this for disk swap as well? ;)
-
-Zswap swapoff is already fairly fast, albeit CPU intense. It's the
-scattered IO that makes swapoff on disks so terrible.
-
-> The size of the swapfile (si->max) is now just a number, which could be
-> changeable at runtime if we have a proper idea how to expose that and
-> might need some audit of a few remaining users. But right now, we can
-> already easily have a huge swap device with no overhead, for example:
+On Thu, Dec 18, 2025 at 07:21:28PM -0500, Mathieu Desnoyers wrote:
+> On 2025-12-18 17:16, Boqun Feng wrote:
+> [...]
+> > 
+> > I would suggest we make CONFIG_PREEMPT_HAZPTR always enabled hence no
+> > need for a config, do we have the measurement of the additional cost?
 > 
-> free -m
->                total        used        free      shared  buff/cache   available
-> Mem:            1465         250         927           1         356        1215
-> Swap:       15269887           0    15269887
+> Removing the PREEMPT_HAZPTR brings read-side performance
+> from 13.1 down to 5.1 ns. So there is a surprising amount
+> of work that goes into list_add/list_del.
+> 
+> I just noticed that I was running a kernel with CONFIG_LIST_HARDENED=y.
+> Reruning refscale for PREEMPT_HAZPTR=y with list hardening disabled
+> goes from 13.1 ns to 12.4ns, so not a huge win.
+> 
+> I did not notice much difference in terms of scheduler
+> performance with a quick hackbench run, but I cannot
+> claim it is an extensive benchmark in any way.
+> 
+> > 
+> > I think you need to add interrupt disabling for chain/unchain because of
+> > the potential readers in interrupt and then you can avoid the preempt
+> > disabling in hazptr_release() I think. Let's aim for supporting readers
+> > in interrupt handler, because at least lockdep needs that.
+> 
+> OK, I'll look into it!
+> 
 
-I'm not a fan of this. This makes free(1) output kind of useless, and
-very misleading. The swap space presented here has nothing to do with
-actual swap capacity, and the actual disk swap capacity is obscured.
+Gentle ping on this. I want to make some forward progress on this ;-)
 
-And how would a user choose this size? How would a distribution?
+I suggest we make PREEMPT_HAZPTR enabled by default and support readers
+in interrupt handler. The rest missing part is an async thread, we could
+utilize some code in my previous patchset [1]. Let me know whether you
+think you have the cycle for this, otherwise I could add this into your
+series ;-) Thanks!
 
-The only limit is compression ratio, and you don't know this in
-advance. This restriction seems pretty arbitrary and avoidable.
+[1]: https://lore.kernel.org/lkml/20250414060055.341516-1-boqun.feng@gmail.com/
 
-There is no good technical reason to present this in any sort of
-static fashion.
+Regards,
+Boqun
+
+> Thanks,
+> 
+> Mathieu
+> 
+> -- 
+> Mathieu Desnoyers
+> EfficiOS Inc.
+> https://www.efficios.com
 
