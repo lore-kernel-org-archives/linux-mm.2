@@ -4,123 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAE4EEA4FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16649EA4FD2
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 15:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C1206B008C; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
+	id 38BC46B0005; Mon, 23 Feb 2026 10:12:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B61D6B0098; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
+	id 33A086B0089; Mon, 23 Feb 2026 10:12:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C1A26B008C; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
+	id 21BAB6B008A; Mon, 23 Feb 2026 10:12:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ACF16B008C
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:02:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47C13C104E
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:02:38 +0000 (UTC)
-X-FDA: 84476037996.06.F20A150
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 561E680027
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:02:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QIURQUyI;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CAA56B0005
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 10:12:56 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84765C0BE6
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:12:55 +0000 (UTC)
+X-FDA: 84476063910.05.B17098E
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8401DC000B
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 15:12:53 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QMfnDH13;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771858956;
+	s=arc-20220608; t=1771859573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ghG8qmEThMaE8eplIbNQocnDJznDcsD/X7rOwcgRZdU=;
-	b=DAhl0quLt5NhBsZSAHmJLkdp5Autq1RfbnZcy2lr0t6ovEdZ1TT7cRpLuY72aQOhspj9Ch
-	iJRH91Isr/0dtRHmKNhUoztuxf70ZYNiU6NuZPqb2iLvnucQfFE0qpkEDilVDh/CHwO5al
-	Aj0gZWIDy9SPZoA2zYp2lsUUYtcSu0E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771858956; a=rsa-sha256;
+	bh=ztMTHoPevsynxwNBJLriX2EMDeNpsudFj4ZJFPjQr+o=;
+	b=VXYmojXqUmqtsNoSMZtpQmD27hRMcXekhNc5kN08hO6Nng7t3uvHMHmIJGgn2o0CCAPuKj
+	evsAO9K933Wyqlt2tpaYYSiEeyV1bANSWHtge/Z3fyKFCQVDjguzyzoxAk/grTQMrR5j/q
+	LfToaB5f3QjXQNHf6P8zNhyDIsDmzrw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771859573; a=rsa-sha256;
 	cv=none;
-	b=TZFFNQuxL747Zr/AyWKFWTuj03gUect291Abro+WYjsKTcirkVXwbncNEAcpqtBNq3Tn8I
-	j0pMk/hqM/mIuhF9EiBEBeZOrUSDdTcGbs4Tct87ufe08hDhg9SctKFAWNrba3PoM6c0RO
-	U387AK3PbIU70cBxdR5Lh6AoLdPeS24=
+	b=uc6aqvPzoleRDa5Z3oQ7pMHTzxYxy4N4SrIlqNASeHMra4X1+jNKdyqnJ7RphvB2lt7uno
+	s8N3ie8TQA25o8hTCVrgmGq0Q37cGyjs5DB0Z+0ccdLhJMdXeKlpdjIBJkQRzb/8CeOsvn
+	dp4nlHtueDoQw6tRQDk8+P4HYqpWZPs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QIURQUyI;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-89577f866d6so56455996d6.0
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:02:36 -0800 (PST)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QMfnDH13;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-59de66fda55so4989975e87.3
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 07:12:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771858955; x=1772463755; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1771859572; x=1772464372; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ghG8qmEThMaE8eplIbNQocnDJznDcsD/X7rOwcgRZdU=;
-        b=QIURQUyIo0dmcog0aHNrZr3+FDJfe8X+zxPsgtX/Og7Er+jHzJa8OH20s/izZH7A+I
-         s/qbcI5HYMp08pHpQw6OtAqIC+kKWX/Cm4Hv5nt1KI8FUEg5v2GF/ntZG+RcvI0I/TT7
-         sfBIaZ+3F3zNij6I72joe/0Rhg+kN4EUM9gP+ETLvwI7yZp9hDCGin31f/0yhB0RCA89
-         NOM5zJ+4jLmE0AGVWyL11wyqUtQxQBbobhUEpJBWTfcbVUi6CJ1BbH6Ubu87LUxZk+10
-         vLNzvBhcNFyjjf61vtQKp0IIi4m9yvA1cohDiB4II6Rl67zrEwj78ZQYQiLi3qe7vK68
-         ttXA==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ztMTHoPevsynxwNBJLriX2EMDeNpsudFj4ZJFPjQr+o=;
+        b=QMfnDH13ulgWM63xEn3tMvHA+wf2Hk+COEem2NtPYiTfoxCjGOd9DHlFSrlJ7cXpFL
+         IUIIyEFhJnnXMhho7+jwXV14mRBxHCI4pgLrSIhIIfGRTaaSN0WCW6mzL5lFNTnkNZhJ
+         eu0Rv5PJlAzBQHvRPhrmklk19nI96+V7Hxg0E80dH743ZiSV5ARGGO8eOwrrf6SD6cZ5
+         wAL7Ma2trCJuOFqRR+DizaCbrUOgzpeW0c1YPfhjatdq7E2VMC1HQuNQhmd7B0nj3nHD
+         olI6d0Y5zEBxhxatlFX9IdkWaIP/r2r5QKWWMb32nxFpYzknrZneKmlmPAZn97J6nj18
+         ww+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771858955; x=1772463755;
+        d=1e100.net; s=20230601; t=1771859572; x=1772464372;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ghG8qmEThMaE8eplIbNQocnDJznDcsD/X7rOwcgRZdU=;
-        b=uj+xbcwjzjZBPkWtKzbtMMM/f9V9ngv5IIftES3TdpShZX+N6RZ2ShnZCQs+cr0Au/
-         lgpBpYtkfS9tfXvyexhly5/PnHIrAALX79ZQqHQXUEuEbHH2yhnuj0YuZ/ixH2TOJvu7
-         7+LyKZY3S4nRM9e1mbEG+wQyQ0N5iMlRroidGSSgu8dBhaggMetB3C/XWWobTpCmTxFF
-         J2Sl3iSxu1kSfX2MFWr3LC/kWgmq9E4LG4kBTyzvvb4AM/c7pKO25ldenefc1f8Yrsaq
-         Yqzz5aZGmVy+lzC2ymKMga3Ah4CmBkbiADKfjKXTNpq5rmiuWdmWvOrM19+s93h69z4u
-         VAxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX64HPFTqTDHxBZoNfFbfT8yX07NdW38QVjJR+QmgpxY2RXTrFxDbs24qd4o7VaPeTun2toFLA4/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy2PgPEYmN+sAt+xdVVJkPVtym5omkiHpJPtkCxBvESrhklYGIt
-	6czfKpbzOBzbgwNfyDYhU4b92BlAztTNsdDmz8l3xX9brlkqrYdTjQydaldpqpqXHIDF385g6F/
-	wuGC2
-X-Gm-Gg: ATEYQzxTAhQjjrmvUkYGlRQ5Q8kWF31P+jbO2w6oV37EbfgUjILo4SAe2KPcRBfbRun
-	ADCS4gNoqFnYQo6zEEAO0+qZdP5wnNLPdlZ6EOtWIfDtRBskEtRA3M+/nmej2/4x5crZxMdydbc
-	tuiVtaLhXxIAIc8/llN3x7+5kcLwx3cV2fIqQs7EwVDPSzmzO5CP/ufYj34NVK4LWEeSvvjbjvN
-	OqVxhrSDnyHSqvr6Li3WzAPDSkRjZe8DUQFqM3BShpqm0HhTtaC2Urgi2XGY9GitPRRi+OZ1ugW
-	L6Vaxz7YmAFIeVrWw/0WVRgFgbruq9w4NOlC+sYf2OYCIaL0XXCe5dLlAqbh+7gKQYADI2gs/Us
-	pxFfN1XbZN8OFqox5zreR8hldclaarSCcGq97AR2bMpXdYesw0Cm5vZUMz3sgkCNlIyDJAONp32
-	O+pvVrS9JyQc+jjBh2z9XBEZVTO76NiwBfuL5l4AiSqTWxqfXyAMYKm4JYB6/5aMID6l4WL+18E
-	HVbGH7IwJa0hQrVR7Mb
-X-Received: by 2002:ad4:5d46:0:b0:894:73dc:a7f6 with SMTP id 6a1803df08f44-89965acd626mr202346166d6.2.1771858955076;
-        Mon, 23 Feb 2026 07:02:35 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8997c6bba49sm78730156d6.15.2026.02.23.07.02.33
+        bh=ztMTHoPevsynxwNBJLriX2EMDeNpsudFj4ZJFPjQr+o=;
+        b=fouqznpNSAl54ncKpjx57cK4i6wXeVDs8vvLNZFJcRf+qqrUzLc+X/xp6FLdShMy7L
+         Jb280TxeeQgrGglBmRmmeNQ72auQAbiErD+yK+zOIXJxTpPb+jTnmrPzcoq4ahtHmn8O
+         /g0eTVWCsVKhMStE+L/buOceKScCpLeBAnGEPvHiDSfeU5FuvmqpbymcExmRxeI1krcY
+         nafbdLIqlo20DQO7EqwgNSxvafv1pVhO2Yja4+WnJrnC5L/YEWZOxu0TN3XETJcLPzLm
+         FL0Lg41TqBwOgbA+nE0CPd5BuBGcd5ejiqqUWyOVGS9cuGZqorXpLOLEX6a5FngcSGVS
+         dV6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUBzmp9bDqhHvkRGoj2/4BuarBgYnuqE2AfrGt8REtFau+BaSqu6hag5bSZCrmKbOx7CHw+LOSCbA==@kvack.org
+X-Gm-Message-State: AOJu0YyBD5Zh1k7Lxmi+6KhXsQ/jNftJKDrFjDBtMFsJqGV2rGHPf77L
+	jFXKmpp1FJAoC9Zug4kntnP5ouDOCgzmPzeONeerPBukfoqkRQzcLQUy
+X-Gm-Gg: AZuq6aKwqi+petmxUcbkpvLS6X2FncY6vqz415B7yYmuUGVQj4qOzUzV04rE9MIXiU1
+	JsKCqcKXRVzNlWjR1OzoHDodmRnNErf8Sud3a6Hh+7FrNGnNo3WOtkIM+iqJXNlXE71bnFVDhSY
+	raPgX7udueOkkO/q8uq18sqD0JXAPgbKJxuAYrE6P73o6IK/nsR+NOeBGOycUFYu1dQeJghbX/k
+	ZPPWdxcrC+o0HUYqAoTLvobEoZm6ENI2xfC3RzPwAnscJbnxlF0/Waa6V6NyFkKD/wC54NZj/ah
+	Y6odQ0vPuhzs89D8xC/pHeZBYE+mS6DncSz5DPeSEkxoLlmAPK+eiRcbV70KGLY1lvpSLOxvHl4
+	lMqjXhtHsHBU2CwPNUQa3gBOIkRLhn4m75x3jsMGxchVcsMgs7TE6vvvqEbDtGuz4zre8RkVu5n
+	SRV8EojFJRQxa7bZGZURsWbrRfI3jmRP5RhCxQt1a7JLEhA09z+Au0
+X-Received: by 2002:a05:6512:3a96:b0:59d:e589:c973 with SMTP id 2adb3069b0e04-5a0ed9b038fmr2771294e87.48.1771859571444;
+        Mon, 23 Feb 2026 07:12:51 -0800 (PST)
+Received: from pc636 (host-90-233-215-147.mobileonline.telia.com. [90.233.215.147])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a0eeb458bcsm1610898e87.62.2026.02.23.07.12.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 07:02:34 -0800 (PST)
-Date: Mon, 23 Feb 2026 10:02:30 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Bharata B Rao <bharata@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
-	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
-	sj@kernel.org, weixugc@google.com, willy@infradead.org,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-Subject: Re: [RFC PATCH v5 00/10] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <aZxsBifRchLn2m42@gourry-fedora-PF4VCD3F>
-References: <20260129144043.231636-1-bharata@amd.com>
- <a8d1efd6-2ca4-4f1d-9c0a-c8aa17732ee9@amd.com>
+        Mon, 23 Feb 2026 07:12:51 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 23 Feb 2026 16:12:48 +0100
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm: memcontrol: switch to native NR_VMALLOC vmstat
+ counter
+Message-ID: <aZxucOEcpJDzSBgg@pc636>
+References: <20260220191035.3703800-1-hannes@cmpxchg.org>
+ <20260220191035.3703800-2-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a8d1efd6-2ca4-4f1d-9c0a-c8aa17732ee9@amd.com>
-X-Rspamd-Queue-Id: 561E680027
-X-Stat-Signature: 1htygq7663u159up77ks8uwn8j69u6er
+In-Reply-To: <20260220191035.3703800-2-hannes@cmpxchg.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771858956-370788
-X-HE-Meta: U2FsdGVkX19WQKer/7Dh6aOjYqX902TOyix669GrHYUyJe7guUgRiu1qUok19+7WrljzI5sKo/cx83dlo0wfw46C8nrwkl8SmZnxHwIW3mvZTESYY+X38K4Y1wVcq2iLFvKqUHJkwrTi/JPxJg0XmypLmOmNOJ5rz2YZvPo2Aioc91CE2aV481WNGQvhgFvU6QBqIzwlnYukv29bUIkdBwAud0dVJKrrgvGZ+kK4l6KG+47B/4o+zbHp+0UicnDUWvgVUE30wMUAxYM6I5o13uIvT+Orbnj07YNibgl5ZR/U4+jdV4Q0PKvJQXhs1T+TV+3ykYg7+bvW8nQIJC2OxvA8UJpLytwpUem1dfu9gccB5aqtMN+WrqFr1ENCkiEWb0oS53YBxmMNQsaHRQyBEFwYdQ5zirb6QJr84s2po7EF5n0VYstciusQnL9k3Tf3BGUAM/9Vw6ritJ5oIe2YnT/syc2bazOk/6PumkiFRS8nfEnZtWQhERQV3Hgr6+GANOwl7VRQfyFrZ0exSJa9iX2yOmbbiDwiLPq44NeSt6jJhVi/pQfI+EfjmD+FrgDecMprOQS8gN6r66+BbQLs+R4n6GhCHM7kx0WfEO12fZHDtFGtDCLziB74Rkjt9NAAA4CTDDC4kumJkGB2qCb5Uhgt1QbJiXWhuGcveVYOkUZO/UaHoHG/wGwDT8WmmjBI8y50Wy8nhBqvMjQ42cJplwWZNyljwZPazeT5Bf7juoEneTyl7DB9LlUsRvx8vhSjOGhLIsQlhjHwFuV8gaXUllF9ef8gZ49w5R1j3HAOV8xS9Gi0bvRfncmLPC4LYpn9zC7i/Dykd2buvY/3i2oHQKgmd49pOODOh/sQhwkFRPT6kA0JPO4nR9Pr7UlTE/x/iCoD4gvMQxpBY9eyQAjl9xTJWsdorMeJGkeKz2+rdc0HJ+Alm5/mxzU0P0wcY26169tWQNlzazosWsLg3U5
- o6/upwhF
- ObFgH7Wh7DjxBcVjV28oK8CLb0D0I4LaMjAbnYuUa0tXw8IUu2OtPKXwrjIi8JHq9scn2L0+VMWHnbEi5xsRT7pAoVooXLVgPNGp3KKW0YHskVvOYkejFwUtsEaCKi8MMhoZ2JnHsDTeBoqxjbgytmKcNVFAQRRlUEnu0KD0LxLPfJfsyPejLrDzN5C0/4Bh5EYTh6Th9G2l3jWLktBB6gcvxsNXMoiBfUJ01QO1ny5BPPzLlF7OF/CJGdkOdAxe06j63K9AYChCCvFqFg5hxOqwt8gNoBlJKa6AUzyFJE8gHkCP/ZM3ZwHT3vbrAf022EZilg7DMkc7Ig4O6f/uNnciPHo6Bn0iVIWVWrp5ZZmDJDq4Vic0PwbOtYoBBh7I6CNZBGX2RVG3uttrlHvFZaFRK7g==
+X-Stat-Signature: 8d4c43fzgtz1db8c6bueoc5nyr5eoo8q
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8401DC000B
+X-HE-Tag: 1771859573-240838
+X-HE-Meta: U2FsdGVkX1/X6Zc8VLNAVkclWuZtzq3DvpH7fjBEoe4N+xCW2yExVq2bbkoMm2u4F2go43dLrcb8qeE7i+z4qwnS+tkTSh/XlJqav/IvKpCIk+Q3iwhXnIGpTrMbwvrRetT5AysMSWidVpl3KEdqKnoHMfcIjMYhGH3KI6/4NcueYa9j3x534TDKYllubfRNwZ7oU6hYktBcUxx0gAEvqv5vRXlHKYGuwhY1x5TWPVyOn0AgmlS8jwPamZu8LuC7m4VzMxKNHpyqSXJrGZ3Qq8abv1rzL+dhVtPuVNQ5G1iCkerSd/BwCiaWe+Z3UdPx+GQpSp+KO+h7pyqwYI5EK4q3Kd89aNtDvjWkW20hmkhG9U7PIJAhz3d/RPdpBJxv3GYq3r+GMlHE3T6ImJfTGHCv3Ikc6iRLeXx6Fg2TTdYsgFnvzgVpG2vx+xO6s1NbfwJwrgrvTVDD/vvUdAtOMbDiur/lzVC6zZ2TuaiMY1ZJFHNkEURy+phki/nqhoiCnD65aKL0lIPElCdxZZWBHl9C32kZijBsV3Th2eNVjlEqFlfbbQNgXfkG+qNRznQypviRmQzSuaWzDkbu720ktW2BroNR2IW0GSXc3mnYN/LlpREIaSSY4t8LWbsmKYJNdVoF/xSpmuFzMe3hPZf4qoYq4MAp67lBAZxLT4UTkWedl6INxQzIfH5wHOHz80SteJnLIrmGlONBhiaWnldZ1LQ2ESEIawAsb7tM8w5kriHPZTBQSvefNhLr7nj7IYnjEa8HaR/IjdR4GvB+G9CcLLvw3VJ+vb4GIpX6wfXJFk6lUUKNo+s68JFuDj4THsRu0NsUeE99UjpIY1EdwJiWgh+MHhwCt/AR7IPEdNpNq30/6jTyVSL/bzGsXnXHEj3j3O47jeh5TdbJeGHdmHLmF/8i4XaxAk3LQumFzzWjkfPbkK6VNaVNmC/8iMywkR5CfyiZ7ZRh5WjjsvI3BT6
+ 7hsp+Zvx
+ 9X+1g5hotYGuY3Y9uMLT8lhOQrZbrD0EI10YqRc7fnBtR5B5y9Y3DLlEGZhe/+qeikiNAF0POU4XoJnP2kXzAUUe9rlJz6o7sa6bholJZKdGW42dhbVL4NOuStF0Z5P0TmsvfsNEqnnQYrcF2Cc3ba2A0827VWuPgGBAotkRF0iQ4ey7Ni47gd4/tlQhILJ+9W087Edj5rYIjI8z6JgB82ndksiQaekJxguHMZnV8U4mSjn3Ct4y47W3RczlKkRVz/iux89zacEV2xX6isXiPTdxPxlHLoK4MZ0HHhD5pgzQpWN6+BF6AO7gdgxw66WOFTgfwHWiptF0JtR/rct2q4II2sfGr2czYA3LXqm0PUKY8B9GBeobBEGdJPGl7kwRotQQoKo7sb9PLD0/CgX456LkfYvrb7FNjRcmLueO27AI3M7ceqK39XKtA6PpKmApUzoGR+gZ+7LipcCN9iWwFexx2xYmpEHKpHJGIhwvqiymkznKZC7HK3O1uNYE4VwU4fEql/9d1QAQx6Q1nPv8GYGzF5hU49jIohaHXf2/a2pmCc4c5HpNrrWqTkBIELLeEjusDO71INHmWd6sA0TirPC6LTVAs5wrWl2KrtfrN61forUbfNRpmuSKb+kkhLSJ5kapZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,42 +126,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 07:57:39PM +0530, Bharata B Rao wrote:
+On Fri, Feb 20, 2026 at 02:10:35PM -0500, Johannes Weiner wrote:
+> Eliminates the custom memcg counter and results in a single,
+> consolidated accounting call in vmalloc code.
 > 
-> Time in seconds - Lower is better
-> Mop/s total - Higher is better
-> =====================================================================================
->                         Base            Base            pghot-default
-> pghot-precise
->                         NUMAB0          NUMAB2          NUMAB2          NUMAB2
-> =====================================================================================
-> Time in seconds         7349.86         4422.50         6219.71         4113.56
-> Mop/s total             53247.66        88493.630       62923.030       95139.810
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  include/linux/memcontrol.h |  1 -
+>  mm/memcontrol.c            |  4 ++--
+>  mm/vmalloc.c               | 16 ++++------------
+>  3 files changed, 6 insertions(+), 15 deletions(-)
 > 
-> pgpromote_success       0               42181834        248503390       41955718
-> pgpromote_candidate     0               0               577086192       0
-> pgpromote_candidate_nrl 0               42181834        29410329        41956171
-> pgdemote_kswapd         0               0               216489010       0
-> numa_pte_updates        0               42252749        607470975       42037882
-> numa_hint_faults        0               42183772        606540729       41968150
-> =====================================================================================
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 67f154de10bc..c7cc4e50e59a 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -35,7 +35,6 @@ enum memcg_stat_item {
+>  	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
+>  	MEMCG_SOCK,
+>  	MEMCG_PERCPU_B,
+> -	MEMCG_VMALLOC,
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 129eed3ff5bb..fef5bdd887e0 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -317,6 +317,7 @@ static const unsigned int memcg_node_stat_items[] = {
+>  	NR_SHMEM_THPS,
+>  	NR_FILE_THPS,
+>  	NR_ANON_THPS,
+> +	NR_VMALLOC,
+>  	NR_KERNEL_STACK_KB,
+>  	NR_PAGETABLE,
+>  	NR_SECONDARY_PAGETABLE,
+> @@ -339,7 +340,6 @@ static const unsigned int memcg_stat_items[] = {
+>  	MEMCG_SWAP,
+>  	MEMCG_SOCK,
+>  	MEMCG_PERCPU_B,
+> -	MEMCG_VMALLOC,
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> @@ -1359,7 +1359,7 @@ static const struct memory_stat memory_stats[] = {
+>  	{ "sec_pagetables",		NR_SECONDARY_PAGETABLE		},
+>  	{ "percpu",			MEMCG_PERCPU_B			},
+>  	{ "sock",			MEMCG_SOCK			},
+> -	{ "vmalloc",			MEMCG_VMALLOC			},
+> +	{ "vmalloc",			NR_VMALLOC			},
+>  	{ "shmem",			NR_SHMEM			},
+>  #ifdef CONFIG_ZSWAP
+>  	{ "zswap",			MEMCG_ZSWAP_B			},
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index a49a46de9c4f..8773bc0c4734 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3446,9 +3446,6 @@ void vfree(const void *addr)
+>  
+>  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+>  		vm_reset_perms(vm);
+> -	/* All pages of vm should be charged to same memcg, so use first one. */
+> -	if (vm->nr_pages && !(vm->flags & VM_MAP_PUT_PAGES))
+> -		mod_memcg_page_state(vm->pages[0], MEMCG_VMALLOC, -vm->nr_pages);
+>  	for (i = 0; i < vm->nr_pages; i++) {
+>  		struct page *page = vm->pages[i];
+>  
+> @@ -3458,7 +3455,7 @@ void vfree(const void *addr)
+>  		 * can be freed as an array of order-0 allocations
+>  		 */
+>  		if (!(vm->flags & VM_MAP_PUT_PAGES))
+> -			dec_node_page_state(page, NR_VMALLOC);
+> +			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+>  		__free_page(page);
+>  		cond_resched();
+>  	}
+> @@ -3649,7 +3646,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  			continue;
+>  		}
+>  
+> -		mod_node_page_state(page, NR_VMALLOC, 1 << large_order);
+> +		mod_lruvec_page_state(page, NR_VMALLOC, 1 << large_order);
+>  
+>  		split_page(page, large_order);
+>  		for (i = 0; i < (1U << large_order); i++)
+> @@ -3696,7 +3693,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  							pages + nr_allocated);
+>  
+>  			for (i = nr_allocated; i < nr_allocated + nr; i++)
+> -				inc_node_page_state(pages[i], NR_VMALLOC);
+> +				mod_lruvec_page_state(pages[i], NR_VMALLOC, 1);
+>  
+>  			nr_allocated += nr;
+>  
+> @@ -3722,7 +3719,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  		if (unlikely(!page))
+>  			break;
+>  
+> -		mod_node_page_state(page, NR_VMALLOC, 1 << order);
+> +		mod_lruvec_page_state(page, NR_VMALLOC, 1 << order);
+>  
+>  		/*
+>  		 * High-order allocations must be able to be treated as
+> @@ -3866,11 +3863,6 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  			vmalloc_gfp_adjust(gfp_mask, page_order), node,
+>  			page_order, nr_small_pages, area->pages);
+>  
+> -	/* All pages of vm should be charged to same memcg, so use first one. */
+> -	if (gfp_mask & __GFP_ACCOUNT && area->nr_pages)
+> -		mod_memcg_page_state(area->pages[0], MEMCG_VMALLOC,
+> -				     area->nr_pages);
+> -
+>  	/*
+>  	 * If not enough pages were obtained to accomplish an
+>  	 * allocation request, free them via vfree() if any.
+> -- 
+> 2.53.0
 > 
-> - In the base case, the benchmark numbers improve significantly due to hot page
->   promotion.
-> - Though the benchmark runs for hundreds of minutes, the pages get promoted
->   within the first few mins.
-> - pghot-precise is able to match the base case numbers.
-> - The benchmark suffers in pghot-default case due to promotion being limited
->   to the default NID (0) only. This leads to excessive PTE updates, hint faults,
->   demotion and promotion churn.
+LGTM:
 
-Wow, this really seems to justify the extra memory usage.
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-Is it possible for you to change pghot-default to move the page to a
-random (or round-robin) node on the top tier instead of NID(0) by default?
-
-At least then pghot-default would be correct 1/N % of the time (in theory).
-I'd be curious to see how close it gets to NUMAB2 with that.
-
-~Gregory
 
