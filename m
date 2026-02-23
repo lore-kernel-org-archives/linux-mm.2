@@ -4,147 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCAEEA4FAE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6447EEA4FB1
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Feb 2026 11:28:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0E806B0088; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
+	id C617A6B0089; Mon, 23 Feb 2026 06:28:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8056B0089; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
+	id C0B906B008A; Mon, 23 Feb 2026 06:28:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A7286B008A; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
+	id B459C6B008C; Mon, 23 Feb 2026 06:28:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 878496B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:27:44 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D79D8C2E48
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:27:43 +0000 (UTC)
-X-FDA: 84475496406.04.E35658A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 024648000D
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:27:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WxomJKx5;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A1CD26B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 06:28:23 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C48831CBC3
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:28:22 +0000 (UTC)
+X-FDA: 84475498044.15.8223D75
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3401440004
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 11:28:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=glp3ybLc;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771846062;
+	s=arc-20220608; t=1771846101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rjdW17GJScJnMJuXkzBJzMqfXGV5x8IXtFVhpJFR8pc=;
-	b=YAD+y6KYT12yntBmSzl0X+5VxXwp1lYG+GDdVvcDaqbW+wpcPH7vfORhXzGMDITf4WEYVC
-	ZbYqLjrd0KWl4jfOzzE+AW2NZjhtjBTnPqVnjKZW8YSbAiwnV778HiMQdZvuTklih0JunB
-	9X6O87pwNiMtjhNE9Od319W/+jy8kG8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771846062; a=rsa-sha256;
-	cv=none;
-	b=dXZHL7hiBu+l+U7RlrJOh7qtRu3c2TsuLB19zxFs85wipbxBsLa91IK8Qiw7j3qnPf2AfC
-	SRtD4uFN/nCILUJz4CZdzSwkfMLXf/tNErB0mhpEZ1OFd/miE14+K6swG21wzQFaxoV0VJ
-	UB/R3VqkGqnVSTgr8+u4iyORF+831NQ=
+	bh=M9hL7aEbrF0zMIhwoLG2NMCtTgK/IN768MTVSzplHBs=;
+	b=p8XhHvXNWsNFc8dBK53pemdoIASYQNSl+tRpON/uez5BAOTF+VsSohD5mooZi5rB+TnkYS
+	gJHDXdZz+KKbJrwuUkGfzBQpYF9JEGEQytbu9XTBQSQUiqYSPNx85Tx50xPdskPKMgWtUo
+	zfyYOk3HGDJBQXFC6fUWhF+qpAxQWNQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WxomJKx5;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=glp3ybLc;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771846101; a=rsa-sha256;
+	cv=none;
+	b=UN8qB8YuY1dWYgk+f1F6jn54fs6oq4Z0CdQUKfLxhix5YntEswffJGILTxUVVvB0Rz+W0L
+	HoU4Kpt/WDHc9x5ERsCkyJODqO7mQGceRPu4wYCPZVshPM27Ln+a2mTrVEZUaicrRcNE5K
+	7i1rFhVH+wHvZRta4GmqBH4f8Vo4SHw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E29AA444B1;
-	Mon, 23 Feb 2026 11:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EF1C116C6;
-	Mon, 23 Feb 2026 11:27:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9CB6C60053;
+	Mon, 23 Feb 2026 11:28:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC328C116C6;
+	Mon, 23 Feb 2026 11:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771846060;
-	bh=IgbWkQ4+Vmc2cDQbjDQKwhY3CckSl6nKs7C1cc1tLS4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WxomJKx5GCBhAw6iv03KC7KELLRBQjZZ4iTcKmVM7F0U0FBjpdevI4tb30MZEcRwh
-	 OEe4feh//Jb6Z0HyNAulHjENW6/E7B98CStPLQi5HJbO51xGJrntHK512lDFeGlVTj
-	 hW4ebQQ/RKN6sdh5/Q1blFYy/keK5GPVhDHpFgrR8Vcq7VomhUeQVVpdVRKZ9PWF52
-	 7s+3RqbmSb1XwgnNDEWXwB6207/RwtDO7HKRzMCMG9c8nBIks8OhxlUDRKrTXtraJm
-	 AicG6oOFhmD8TiW/M35/bTQgqcU6D2UC1nlGmqtcbzYqp5Tp4SpHX1g6sOqulRJi4h
-	 GYlm/KyAa9MYg==
-Message-ID: <06684dc4-3902-4452-824a-ee2064314d24@kernel.org>
-Date: Mon, 23 Feb 2026 12:27:33 +0100
+	s=k20201202; t=1771846100;
+	bh=FlPT/7GGS+XIajjjQrmT/D1mHnYUeSClTHVFCrrM3/U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=glp3ybLcWrNVVpiXP6omArESTxpT0GsOck5RiZ4fv2H2sieTa4HyqKPDAebPrKW3T
+	 EXi9cg8luEqQXlxMJv0D7dVcg7cYG4kUC6I6XFks0PzSdd2HVdY47/O5uWd/ZLxk6I
+	 2Xtd7x1CkUGPbWDX48XIC1KJvdcVXUKYqaOoprINBCpQxKQl3xlYocyPSW2oMIVrzC
+	 Eo/wLVFo8xFI90f45Hd7NkgzHyI4zX8xAMo6++0Xf06t0bdT5FyN+iaARkFH/S4gH4
+	 Ruo4kkUWu6LmIj8k8zVUFGzaUtxK5MNnkflrXygGhW0pqJIsAoZJhuFHxJeehw7k9U
+	 BoMwBKmk/Ss/w==
+Date: Mon, 23 Feb 2026 13:28:15 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org
+Subject: Re: [LSF/MM/BPF TOPIC] A pagetable library for the kernel?
+Message-ID: <aZw5z5Ti-gH3bDUL@kernel.org>
+References: <20260219175113.618562-1-jackmanb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Kalesh Singh <kaleshsingh@google.com>, lsf-pc@lists.linux-foundation.org,
- linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZdCl8byz51Q1-v6@thinkstation>
- <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
- <aZhErt9DZcWI24_v@thinkstation>
- <d7c7ef63-e40c-40c5-8ce5-a4ca411da832@kernel.org>
- <CAC_TJvd=wKKnj=d3phZsAaarXUdUbZDGauxWNWkQtsFV-MTYEg@mail.gmail.com>
- <32ed82dd-62c3-4a5c-8bae-9465afd7e75f@kernel.org>
- <aZw1DlKHaWvgOtm_@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aZw1DlKHaWvgOtm_@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 024648000D
-X-Stat-Signature: awxht3rbcbigm85e4u4aoj5u3s3baq83
+In-Reply-To: <20260219175113.618562-1-jackmanb@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771846061-704558
-X-HE-Meta: U2FsdGVkX197iZX//eQsUeed4sIuwzWNc7tbXBpiCsooM0hRCscaK3xkDY9tfspC6up6EiyBSRS+Ei9C+8biIQh43Zk+6HPjxn2eIx1jnGIkmR1HHO0+S/man1RlFQMziJFsdgDAf4ocHcGsYYHSnT7HNev7g3ArT2FVHdJ9QiomcSdFFSK8oK8mgIUsh/nmcyIs545vpWr1F6pZrB9Z8ziTTVbfozE3raC6hGkQ2b3vUefoRELZl8sJuPbiN99FvWWODqdfmrl8mBVCm4UPYWZ67VWw+yWRad3GpCeoYG7PtzyRdFyfpcCm2AVzn4yJjKysTkmHd7PtKWTvkXTbVcs4cAnDN+gapTH6eskOlfpbvVXMC4Bfk7JYn7u3p7c2PUXO3nRYFe8gDe06PZtBWMZWbfGYJKTi1OoCvfMARuTHm6C1bhqePlFbCCoyYkEFb7S7ccKB+6AR0Li7yfLe3If0KjjF2TeXb0FYIt42RrlyVHPvcITtV7kj8MqqaGvQXZfY1rPEcnKSP55dosjKGPV/tnfId60g3wb67pMvBDt/QFN+hCHkn+/W53xkYJswawPAFduC8hNo0EODZt9w3AK4Ihp9yOfg1Msrw+wc/vJEvr7TlhDpH0ydp/v6aHFHZnX1+rHPQSilGDhP7A8FQR6bg+rj2hS89bvIVjv5De8F3KEr66S4h7cAvOrLQtgYy631xQJTYR38XNihl/p5rB98778Y9XCj7kuUR+HA6MX8ZtlTNwguiFUBYzQiH2R0fp6fqFHCqxRjt1YedbN8f1/mGBFhnmhjJhwoiAxIhqh6DapsUt1FcF/roF0xeu14sEO3t3Tgs62nUg9bdF7pQ/ByzmPLyc3bfFZ1B8ZV9kOYUtFtfNDj3urV0B/q3DwxYu2utR87r6IIezzXXccqBTOGoUdUeUnQvx0aa1DNzu6sfSPMdGfszuUfi9KLW5G3qnxb7YEIQiho1RKXwKP
- kADk6Y7K
- DPBJCE0a12Qf2ay+toMe7MmKH4NeqbJDTtPqxDvVP17CAH3BcYUFXHgCmFa65ju/beJ7HBK82x/lCA3oAkdSUurBXwqm5z4yiCLim8qI60Hihlww9RZ1UbEM/5i18Q8geJLkwptF1mYpvkBcC77sh87KlHbV6lnGXR8p4yFsZj5xaGZUDIiSUllUvX4rfOkuEJ3VQfwlYPdK7lVZZx2+s5AgE3+kG6aEWC2Y1cS6oUeGTqwq20lFP0BGKvpkMH2AJY4ORzHMq/Q1FKUI=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3401440004
+X-Stat-Signature: mf4g46488xmih4h9b5pyi87hb8ejunjg
+X-HE-Tag: 1771846101-916565
+X-HE-Meta: U2FsdGVkX1+KRrgQ83AkdfHD4vtNnX/MfcE0GmlUWRTqsHoCnyHF6VdBMS5u72Jsa1TzBKQf+NKJFR9fsLQllzugx9Q5DlHemBpve2v6q0+TXt1j3eEbPK44iIS1d3ACPZ7aIaxBKFxvB1KhbbE0pOG4XjrY03DlK+mcMvSbCpLVs2XyPLemWhUhwDCdhrnQWKQicfSBFxqFFpvQKTuHLeC36wQq7Keh9WP+zOV+l/h/ctlYTIxD92b3yTs5pcqiN1yD01SqB92Y2HcmVVeBb2n7qQyElNc0kfHJ6DeQMcoXSa/tmuKiYRcxvXqPSwxRHvVlFhO34bEXS4tprxtBTQyaGSiSdhEmXlFeTTGEVztg7Owh6JbJv8POfC3B9xJbjRFni3cCCeJswYeFE805o9OIWWdEJMghPkTSQG7xMPBV3mH09q0xh4E51HqICCl4mBVO2ITgDtB8dIt0G/PEDPT+uAvYkGfbDRuwOT77b0dmPkVtJuFO8xBCWWdkHTYHVEIiswjVokTQ755aZRRVpk19rN3I2EBeejMsYtpDgX0NYaUKKMq/zvvP5FHHeUcewXdRYBAPqYWftA0hULiZ6HOLFcwgG1lyrHciu657a0HlqY0HLB62LFZRyeAGlysIxJAGH0bZqEqXHD8ydBh37C0Em5EIfrja42XoWDKfcyCS0phHUD2Av9plNLfTEJMZ95R3C3z0sF5dlSBSHAPHvYNWraruWuzV8BPU7b/0RO8Ay/Wbsf3HUBziwZpUQnNRlwupNkudA5mWgLmaeU7ZpPi4u7VRmU/Ed3x0r5mJvHIotjNr4qF8oL42AuyWRL9yCOJ8hTdnLc0ia6oF5BcenU/vDxyBcsf/3yrMadHUUEjRR3tTU9CH9x7I+DvRNCvDl1VCOJyphWTcrwEnx7wl1rWzqd7I7lvV8jH6Iuj6yqEHC0cQSZFBRLQ1NREr6IJ509GsyZuY88MvaKEU2Tg
+ utXSa+Xp
+ 4POHZujS++5Px+qpc46HdVSoxqAyCHSv7JHPZtgAqMuBpUoxz9lcPujRKsjevhn7gxl5l0U1bF+dTo8Z3YTZyH1E9dVYulR5N4s/aFjtPgwzYJ4+j/NH9UIPevQtw0Gj2HYq2QRgeP9UrOWT6/wU0gA1oCB54AWL/pZqfIMWpjR3s5XDfK2tWrqRgvSRHJahs8qJ4f/MenR71VhQdG/lavqUQA4DtREPfdeS/C4rP8GmMjmA+g7CROKDkmQsQxqMcyoH9vckTNICmn6dkr8nzgQdt+/zHTlPbkT9gS3C6zpXzqgX1FaJDmm2Vzxcxg1EcmDcn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,33 +92,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 12:13, Kiryl Shutsemau wrote:
-> On Mon, Feb 23, 2026 at 12:04:10PM +0100, David Hildenbrand (Arm) wrote:
->> On 2/20/26 20:33, Kalesh Singh wrote:
->>> On Fri, Feb 20, 2026 at 8:30 AM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
->>>
->>> I think most issues will stem from linkers setting the default ELF
->>> segment alignment (max-page-size) for x86 to 4096. So those ELFs will
->>> not load correctly or at all on the larger emulated granularity.
->>
->> Right, I assume that they will have to be thought about that, and possibly,
->> some binaries/libraries recompiled.
+On Thu, Feb 19, 2026 at 05:51:09PM +0000, Brendan Jackman wrote:
+> As work on Address Space Isolation [0] trudges slowly along (next series coming
+> soon™... I promise... some details of the plan are in [0]) I've been running
+> into a common issue whenever I try to do new stuff with the kernel address
+> space: We have too many sets of pagetable manipulation routines, and yet we
+> don't have one that suits ASI's needs.
 > 
-> I think backward compatibility is important and I believe we can get
-> there without ABI break. And optimize from there.
+> Similarly, I'm currently working on support for efficiently unmapping
+> guest_memfd pages from the physmap (an extension to [1]) - in this case I've run
+> into very much the same issues as with ASI.
 > 
-> BTW, x86-64 SysV ABI allows for 64k page size:
+> Here are some areas of the kernel that manipulate pagetables:
 > 
-> 	Systems are permitted to use any power-of-two page size between
-> 	4KB and 64KB, inclusive.
+> 1. The collection of APIs that are specific to userspace pagetables: mmu_gather,
+>    mm/pagewalk.c, some vm_fault logic, all that good stuff.
 > 
-> But it doesn't work in practice.
+> 2. The set_memory_* and set_direct_map_* APIs. (Which are implemented per-arch).
+> 
+> 3. Some non-userspace-specific APIs in mm/memory.c, such as
+>    apply_to_page_range().
+> 
+> 4. mm/vmalloc.c
+> 
+> 5. Highmem logic such as kmap_local_*
+> 
+> 6. Boot and memory-hotplug support code (your architecture's version of
+>    arch/x86/mm/init_64.c).
+> 
+> 7. x86's KPTI
+> 
+> 8. x86's LDT logic
+> 
+> (At LPC I started enumerating these off the top of my head and multiple people
+> spoke out with more examples I hadn't thought of - please join in if you can see
+> more!)
+> 
+> By and large, these components are designed completely independently from one
+> another. This is made possible by the smart design of the low-level helper API
+> (pte_present() and friends), and it does lead to nice explicit coding style.
 
-Even in well controlled environments you would run in a hyperscaler?
+By and large, lots of functionality that deals with kernel page tables was
+added ad-hoc, like e.g. adopting set_memory() designed for DEBUG_PAGE_ALLOC
+for protecting kernel and modules code.
+
+I think it's a good idea to have a generic abstraction that can deal with
+kernel page tables, like the one we have for the userspace page tables.
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
