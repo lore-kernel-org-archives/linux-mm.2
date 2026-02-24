@@ -4,96 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2745EE9B262
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 13:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7475FE9B265
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 13:53:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 877B86B0088; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
+	id 94C1C6B0088; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FAF16B0089; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
+	id 8FA386B0089; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 707306B008A; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
+	id 805D16B008A; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DE3B6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16395B4CC2
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:45:52 +0000 (UTC)
-X-FDA: 84479473344.19.1C603E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 656A4140004
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:45:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3PWQj5X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771940750; a=rsa-sha256;
-	cv=none;
-	b=wywohREmTx5WtHOr7wCT2M5D14xDtpB+AMFT5xwK4ldtCP8diZHlvQ+aGYB0mSt996K3iL
-	3v9FiDrwBm31SPNIYEn3ovO6Ov/DAxBCjZSUY8Zw0cGr63uoom2Q/Aq+5S9gCe2pSUeGKZ
-	UN+alGnVDY9b6BBFcq3Z1Tmwg6oJy+Y=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3PWQj5X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 693246B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCD5AC02A5
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:37 +0000 (UTC)
+X-FDA: 84479492874.15.E18EE53
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DA0F214000C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f4V/mmed";
+	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771940750;
+	s=arc-20220608; t=1771941215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSnlCyH4rTNrPJxlNYcPb4w/qdzhR5A8COqBFwcBV2g=;
-	b=gyNQUSGX8YpJ+exNc2RkGPWrTHXFuzt0KxE0w/7/YOgBb6bWY3tEtuFvoKOuE/8FIQZ8eV
-	dLEBSRZz82WLBoVLqFBCG5W1d3iH1ARFnufDCwytrgnJYqVeYDtWvPjpudq9fOsaK4RZQh
-	uiV8s9wA+r+Xy+2pMU8y/gecqcl8GtA=
+	bh=lo0YVxtwprKCO+MnaksFDjiprBOpofZ2Ot8QFS6XBR8=;
+	b=wan6jcxHc1sPZUOHIUeWtG3NY+/6BxC1t2asqYgncmM2NFm52CGJ5nW0YQ1kq82HtkjvpU
+	eBJtXOIllmu90o9KpNGiUZKelfpbnAAiodMt+Q/BgaHLqlP8m1EiNc6R7WvUrsecKndHjC
+	s/txZt4/SDF+KN6LnzudpPR3o5q4mSk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f4V/mmed";
+	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771941215; a=rsa-sha256;
+	cv=none;
+	b=Xtm6Ok4XLPWw7AvfOq/Ke+ib+2dJCp7h0B3ieXxqHrNYxbtuAndKgSB6yCXXAa+nKp4gyW
+	mqwBBNCp/+G7Qjex1KUxZIZ6W+jc9XKXxz00uYSfBB7AW2w0009icmG8Ij+G758jGMP/hF
+	eAoLVFyKWw5w0vN+3ez0g4cuQTkDXHs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35EBD400A8;
-	Tue, 24 Feb 2026 13:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2B2C116D0;
-	Tue, 24 Feb 2026 13:45:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 61D3461119
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1582FC2BC86
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771940749;
-	bh=ftgYAotQSHbWTiHfbL9ahOild9zaBZJQ665pJX8FUag=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=E3PWQj5Xg0ZKXjljQSo9YxUra2ZFOKsb95geu8r6aMG2SCYcVsH5bcakASrtcOVnQ
-	 5lY9rS6Vqd4awKWgBIejvLJn1u0Q0AU3M7YkfbS/Io2PGuh33Cv7ZtQFxoAxfOCqi2
-	 k0XU81DOOcJ7SsuROqtJ5OipdFZyqUIHVozEwi5hn/cLBkHu1gmSVXFdytLaanaXVx
-	 +fq+3ImTGCBCX1MpAN8Vizkg1ZK0J2E9SE7PKkWNIZ2tN4zJVB/CrRfQ9CnFfgwfiq
-	 HCmyEd+q1O4ETUJX+btFWe4ZC0C0KFEzL15bGvyHle0IbiTCI0IId4n0pTJ2KrTFnG
-	 2u9xwhRCvyceQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Daniel Gomez <da.gomez@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Andrew Morton
- <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
- Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-In-Reply-To: <aYtW-Hg-ItQI7v9-@macos>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
- <aYtW-Hg-ItQI7v9-@macos>
-Date: Tue, 24 Feb 2026 14:45:37 +0100
-Message-ID: <87seaq1chq.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1771941215;
+	bh=mnNXV620h0OKRr8Zj1ngtQ6TG6CiqwVdzW1hGrqlM1o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=f4V/mmed9e0YDLLfKFUI3gTfxXB+JpN3LMoEqFnAC7hyVjTHQrCGunNiHXub4D6ij
+	 sqo6cmx5ENyWIptgpIEDkDumf6RZI6ZpznLpBppwlfWIsXF701XkUacB3hS5YBLjJH
+	 uiGS0hn9qFDnBqZNfb12me35OHPWH2AuvWNKbx4bKPrwsx8yrDmt88Rke6ysw3cqrL
+	 2TAoNGiSIQtknqHBm+plM8WaPMd3Y4+J33fLDFotZhb3iOVtYmTTevVYBf/GS5wfPg
+	 ZJKkRT5vZZgaMF5xeH2t2VQa6T7nTa1l0sHOqZ36JilBgzEvXvw5Gj5NEbhcb7bj2t
+	 eIC1YI88wpZNQ==
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64aedd812baso5084913d50.3
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:53:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVYjwKfXxHDgf2FGZ7T00nnfMRRijHRwA13D5PaNZ5FNLfIcHdscheP+pCJpPzEywEL062uQu85zg==@kvack.org
+X-Gm-Message-State: AOJu0YxROHHSffDxknAeAZsbnhW2DwOrCFFYVKGztVYYt41n3C3mt0mI
+	3Bk6KYdpCE5cg2H5AeoD17QhRsmT9KZkeszdUjm7kJr/NgeCRLUzTYOOqnvklmDAHSaJW8ueQAg
+	BNuuvMnU1kje4ffqIdvW2wGoeU5E6eVY=
+X-Received: by 2002:a05:690e:d5a:b0:64c:973e:874a with SMTP id
+ 956f58d0204a3-64c974dca95mr3429415d50.42.1771941214411; Tue, 24 Feb 2026
+ 05:53:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: dkbnq1483ybstnwf51aw1ammicrgibs6
+References: <20260224-mm-fork-clear-pages-v1-1-184c65a72d49@kernel.org> <2553a75a-6dc8-4295-96b3-58367879751c@kernel.org>
+In-Reply-To: <2553a75a-6dc8-4295-96b3-58367879751c@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 24 Feb 2026 14:53:23 +0100
+X-Gmail-Original-Message-ID: <CAD++jLm6iyeFuGoC2zfHDOu6gYdb2L1gsjQhT5a4qS-CBWia9Q@mail.gmail.com>
+X-Gm-Features: AaiRm53tb2rvqaot7mvXTxtm6mGGNPobUyruddK7Z4F9nhs9QdcbYdTorcT5uzM
+Message-ID: <CAD++jLm6iyeFuGoC2zfHDOu6gYdb2L1gsjQhT5a4qS-CBWia9Q@mail.gmail.com>
+Subject: Re: [PATCH] fork: zero vmap stack using clear_pages() instead of memset()
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, Mateusz Guzik <mjguzik@gmail.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 656A4140004
-X-HE-Tag: 1771940750-317247
-X-HE-Meta: U2FsdGVkX1/d7TwrYIhCxiI5oyFKLZhTzpqTw5jnVNJ00nCR31uqvYdbNOGSvy79viuvJnUmDvRD9rHCJV7hbuBKVETmkRZF6ciQzTSTXCx1yHHPvYCL9n3DKQL7wt0xJXeYUIXpU1z819G2kOIBFvn0NhBfIQeblAEqkn8cCSTbnXqA3xEbftfcuHoo4oloay52B7miuvZaWEqtDNKccDTBYzI+4R9j2y4NXBU6LyAiZXGGQDz6fYhcM2b6409iENxSD3vl99P22diNGWbZVCc2BZD6WcLHFpJiO4g5UcU/ZOP5I/vK6HbfmdYM/xafWANeCUXWjErgrpoQbccMpLJngJRyqJvf6nsDodBqadqxJVGhHbTE4FhEOtUHz8LLS13UXl5uGqm9I6zj2Ge/9ofLTCv2e285tomlg1hbuILVMmwr+8wFN3KPZZ2hkzSxY05b15VLE/BhjQ6xV3AUbHlvDlvr/kuyEQUkQTILeMsKQ40liTWAmJB8rKIQ1ywzgWGOB4qzgR699IbEz8b6RQxE+bNU4QAcdQsQANNRgov98zwJndIbr20nLrPIyqeEopIrUMvamuLHcuTKbVehHdoRkfhxjwcBIg2599I3eivKWKMLED2+7o3ZqG+BF9xRvEGFPfbYfb6babzyHC4GC475N5gw6iFxYdGaMfRmSM2tBJ014fGr4wzMIz0kgyqEgCpK5Xq33Sxc7no4GA1x5ihAIxEdrykwGUdztSYZlCvyFKFso9NVi/vsY6euN9giXeEBG9VYnlByFTKq3Cqat2tjBkm21PFbYLCKlnEdMOU2Wgm755Shp205Jhgz3QImdo3NSn6HObnRZ4tM+1icPjAxoKuvFtq3aeUfgQltfqkdQ27xVKX5bAs/4cg+0RbzQs1tMEyHFvOT5EQ9Ztn4btmioyg1cwAFrx+S61AydEaoY/2fiB/pGDUmYG9lu5Wl9BU0dtS8b+0bgsgt6iY
- umXNUWJt
- Roa6h9AENAjf9kbqH9Dqij3XzRRUS36ycASQeZl3cD22XNEL4M8tpw/IJ/E6Ml00jYD+qpS0VCDg94vTQMEAQcDozW/ilwHvPpCIflLX1vZXNbxEP2KKPRFzJpHwDv7ezvWftkVZ6FNlnCO9r+LtJ/PhYOjKYmUAwRDsRRNKahXzPlkkuqIEUkSNj/1M5t4SwcvvHto7jrqzBTswY/NOu9AThR5CBJr2C/kCuarYkWND59xYwP8zyCKjV9AmKT9vnWoVOwIEyIuIoctvnIge16wDp88VaETGj0uI3USIvSjyMy2ZYtskZCZDqUmHy7jgkB7tBX/RgDvNEyxY=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DA0F214000C
+X-Stat-Signature: qqk5wdqeggy84i8wd3oed7zci7ysg54k
+X-HE-Tag: 1771941215-841089
+X-HE-Meta: U2FsdGVkX1/cO/N2Hz5+12D7sjU7O1g9Vf3qMEwXL4NaArqm0b+aqFQKRs0TWoMATHTWvuT0Q7fCskjWEz6p19P6rD1eUlQRbqWRICKWi/NpEoVGqHLzFqJELGJpVDA2pNULgOEu9AgYUaUBtQyDOrbHnKuqlP4uOghF8E3gsFgpMin56IZbyGg/XLPJ1T4xjZJjr/cjn0zxoN6mf9+b8Ay6Ml4+xya8zMGYJrnmkJinAeGSmu0vmlYRAr4d2mPRjfC68+T+MXIn1Gl2G9Ox61/SaASGZyW0MFJyly3t5RUXiqfIBZMS11Mtj0Lk2gByzEJkW4azyRPywEuHlUKPQbn83eu0IaBo+4ri8zO5a7xdrv0bDpW4HqJ/rZ9rGYr5r5SCkS8+LzhHBjLH9YZwK6OjYPGJDi66MdG0v+eJM8j6UXj7sZspBxJ2u51UezEr/pFMDjjg1yp90J7AAl2sM7ykf+DjpkE48KX+tRQPkBwAOngvNlM3qZywNp0gNSjHy+jP7KaskIC0lYVRl6LTK0QRiINsE8J2wANOFTnZLNriE5KJJry2gUoCPvBwSWes1xRIstjrgvTyISI9h2ykSBX4YnnjgLC05MF4ELH/EepD4pMJc50l5M2u0P1ju0cB4BPK6tRCSieu7BI8ZS7rM7F87jLmFg016RZ0ySAgu88H9Ix7NyOP6rVM8h3oweL9qZqIsNCYY1cDOpSnhCj/H1ge5lOo2C7Yr6X2S2Y1J+K+WJO9vPLW+KV38Zz7/kIyzCTie4qp6g3/Mo7rMjTSAgVQ1CF6k9z/Gxehp4jfKJplkz59bEEqFLySKO/UaIXUeBRRWPMexAsoqFXuA8tCtZ04tBs5mLVlUxwHK0LTAV+mlqJsaY5H0jgpJhi4hJTt9I9vHjXj6S9/vw90skRVStJlah2FuQEUIQxCgBPBLatRXNF6mGVJ3c/VxerZC5xyf0+HOMQaVKYGnmntPm3
+ VAF83/dN
+ vM9EplNXBLAzSISPzUiiSChgFaLb9cSTrmg2uPaXYIeETD01jRTCzwe00sr+HTvwd7GbwvIZZ/1JfC/teSsqdKr1UW8ZGk28WBh5GbJuYfn7rQO9++RMgYKRNsY7gDl6qY4wHjp6aIP3IvxbN4osRtXFGktqu9fptlwAcwlD/13x8pw9cVO+Q8UuRQAB6gxomDpcfwSw+cOY9fSAeNMwE0ifwrYXQMZQ+FeGh62U1oi9R0l+7t4XhiQwSSBak10p+IPttPzMEuPa91fK7ML2+TK0vGLKVOi/v/EMBp/+4vctBy0lRk640016FW5PM9OhvQWBrk4gHLivWRIerVS7VV1LuUL6b7XNwzpi5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,65 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Daniel Gomez <da.gomez@kernel.org> writes:
+On Tue, Feb 24, 2026 at 2:21=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+> On 2/24/26 11:26, Linus Walleij wrote:
 
-> On 2026-02-09 15:38, Andreas Hindborg wrote:
->> Add a convenience method `contains_index` to check whether an element
->> exists at a given index in the XArray. This method provides a more
->> ergonomic API compared to calling `get` and checking for `Some`.
->> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/xarray.rs | 21 +++++++++++++++++++++
->>  1 file changed, 21 insertions(+)
->> 
->> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
->> index d9762c6bef19c..ede48b5e1dba3 100644
->> --- a/rust/kernel/xarray.rs
->> +++ b/rust/kernel/xarray.rs
->> @@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
->>          Some(f(ptr))
->>      }
->>  
->> +    /// Checks if the XArray contains an element at the specified index.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// ```
->> +    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
->> +    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
+> > After the introduction of clear_pages() we exploit the
+> > fact that the process vm_area is allocated in contiguous
+> > pages to just clear them all in one swift operation.
 >
-> Side comment: I'd also update the examples to the new coding style. And it'd
-> probably be cleaner in the first commit.
+> The pages are virtually contiguous (vmalloc IIUC), not necessarily
+> physically contiguous. For clear_pages() that should work.
 
-I'll switch to the vertical import style.
+Yeah that's what I meant with contiguous, sorry.
 
+> >               /* Clear stale pointers from reused stack. */
+> > -             memset(stack, 0, THREAD_SIZE);
+> > +             clear_pages(vm_area->addr, vm_area->nr_pages);
 >
->> +    ///
->> +    /// let mut guard = xa.lock();
->> +    /// assert_eq!(guard.contains_index(42), false);
->> +    ///
->> +    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
->> +    ///
->> +    /// assert_eq!(guard.contains_index(42), true);
->> +    ///
->> +    /// # Ok::<(), kernel::error::Error>(())
->> +    /// ```
->> +    pub fn contains_index(&self, index: usize) -> bool {
+> LGTM.
 >
-> Nit. The method name may imply there's a contains_*() variant. I'd rename it to
-> contains() so we are consistent with the rest of the API.
+> Do we have any idea about performance impact etc?
 
-I disagree with this one. `contains` might cheat the reader as it is not
-obvious whether we are querying for a key or value.
+I have a pending patch for implementing clear_pages() for arm64,
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator.git=
+/log/?h=3Db4/aarch64-clear-pages
+which is in a performance test loop, once I get baseline data from that
+I can test something fork-intensive (hackbench, I guess) with this patch on=
+ top.
 
->
-> Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+So making that patch made me remember this one code site...
 
-Thanks!
+If someone has a good fork performance test running on x86
+and can give this a spin, it'd be great!
 
-Best regards,
-Andreas Hindborg
-
-
+Yours,
+Linus Walleij
 
