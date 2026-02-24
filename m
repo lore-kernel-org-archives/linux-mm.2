@@ -4,104 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7475FE9B265
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 13:53:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC50E9B269
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 14:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94C1C6B0088; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
+	id 1622B6B0089; Tue, 24 Feb 2026 09:03:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FA386B0089; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
+	id 0E6166B008A; Tue, 24 Feb 2026 09:03:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 805D16B008A; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
+	id F27116B008C; Tue, 24 Feb 2026 09:03:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 693246B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:53:38 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCD5AC02A5
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:37 +0000 (UTC)
-X-FDA: 84479492874.15.E18EE53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DA0F214000C
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f4V/mmed";
-	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB2B86B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:03:20 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9454C1BFF6
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:03:20 +0000 (UTC)
+X-FDA: 84479517360.03.6EF9B26
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3166A80008
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:03:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=mvBU86ky;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf30.hostedemail.com: domain of BATV+12cee3dda5acdc8daf7e+8220+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+12cee3dda5acdc8daf7e+8220+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771941799; a=rsa-sha256;
+	cv=none;
+	b=iq3scGcwY5F3XClJ1ypzNPscDTaOeuoH5tybUnXyERAHndT/ER0arKE1dFnQxh5S6Hvuc3
+	v1RRERzRXEnRir2N/5Mp1dgzhka/t5IEJxLi3G53QyIyG4E+gArgs1JFt9J6Fwn6tN2Kyp
+	rbY0z1QWXesNfbjdkcTnDUXnll+ygJU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=mvBU86ky;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf30.hostedemail.com: domain of BATV+12cee3dda5acdc8daf7e+8220+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+12cee3dda5acdc8daf7e+8220+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771941215;
+	s=arc-20220608; t=1771941799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lo0YVxtwprKCO+MnaksFDjiprBOpofZ2Ot8QFS6XBR8=;
-	b=wan6jcxHc1sPZUOHIUeWtG3NY+/6BxC1t2asqYgncmM2NFm52CGJ5nW0YQ1kq82HtkjvpU
-	eBJtXOIllmu90o9KpNGiUZKelfpbnAAiodMt+Q/BgaHLqlP8m1EiNc6R7WvUrsecKndHjC
-	s/txZt4/SDF+KN6LnzudpPR3o5q4mSk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f4V/mmed";
-	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771941215; a=rsa-sha256;
-	cv=none;
-	b=Xtm6Ok4XLPWw7AvfOq/Ke+ib+2dJCp7h0B3ieXxqHrNYxbtuAndKgSB6yCXXAa+nKp4gyW
-	mqwBBNCp/+G7Qjex1KUxZIZ6W+jc9XKXxz00uYSfBB7AW2w0009icmG8Ij+G758jGMP/hF
-	eAoLVFyKWw5w0vN+3ez0g4cuQTkDXHs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 61D3461119
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1582FC2BC86
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:53:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771941215;
-	bh=mnNXV620h0OKRr8Zj1ngtQ6TG6CiqwVdzW1hGrqlM1o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f4V/mmed9e0YDLLfKFUI3gTfxXB+JpN3LMoEqFnAC7hyVjTHQrCGunNiHXub4D6ij
-	 sqo6cmx5ENyWIptgpIEDkDumf6RZI6ZpznLpBppwlfWIsXF701XkUacB3hS5YBLjJH
-	 uiGS0hn9qFDnBqZNfb12me35OHPWH2AuvWNKbx4bKPrwsx8yrDmt88Rke6ysw3cqrL
-	 2TAoNGiSIQtknqHBm+plM8WaPMd3Y4+J33fLDFotZhb3iOVtYmTTevVYBf/GS5wfPg
-	 ZJKkRT5vZZgaMF5xeH2t2VQa6T7nTa1l0sHOqZ36JilBgzEvXvw5Gj5NEbhcb7bj2t
-	 eIC1YI88wpZNQ==
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64aedd812baso5084913d50.3
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:53:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVYjwKfXxHDgf2FGZ7T00nnfMRRijHRwA13D5PaNZ5FNLfIcHdscheP+pCJpPzEywEL062uQu85zg==@kvack.org
-X-Gm-Message-State: AOJu0YxROHHSffDxknAeAZsbnhW2DwOrCFFYVKGztVYYt41n3C3mt0mI
-	3Bk6KYdpCE5cg2H5AeoD17QhRsmT9KZkeszdUjm7kJr/NgeCRLUzTYOOqnvklmDAHSaJW8ueQAg
-	BNuuvMnU1kje4ffqIdvW2wGoeU5E6eVY=
-X-Received: by 2002:a05:690e:d5a:b0:64c:973e:874a with SMTP id
- 956f58d0204a3-64c974dca95mr3429415d50.42.1771941214411; Tue, 24 Feb 2026
- 05:53:34 -0800 (PST)
+	bh=XgaqhpWFYGvROue4gL/TfoePBW3Q9dTD+bwqL6WL7RM=;
+	b=fVIksqUMAb6pDPlf30rc/PjHVkZO59AUlUt8JJcNgsEyN3I8D/jlgi5mHjjKpzZdOeI0lf
+	AWrQhmktjqV5ehF4JinBLuXXRxaK7WcU7dw8KTJP2O7Q/FqMELRhIpu46/hM+7Dzo7hBuo
+	Gkj5p6tMaHIzWT6QAxSjKeG5h41vNqY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XgaqhpWFYGvROue4gL/TfoePBW3Q9dTD+bwqL6WL7RM=; b=mvBU86ky7lcd6I5HRE6fGvlYXJ
+	uwBfVXfU5HIZuac/qboBp11jZkMJwtoEOsB5UP/9IC7UeHSvym5KoL7DGmOoZZhtSOSSoFbfc/UOc
+	ToSEnISXcBFvarBZCGLFzZU07L0IqUOqIVTsB3DSwui1xXhb7yTEbpt0SfC+5Cv1DiQb/LZelx8W2
+	/uJGEl4W5I/CXwx/E5qUcSpKUEBBHsyB7NZZyoHOJKjCNrEgGlFnxitvXO4EDty5jBl6MXKtLlJJ8
+	o74PfH29QMfgyEc79fLI4lcPCOlYkCVqg3lkXNJ8D9hHD1Mfonx/i+Sm9gxfKQibqMpT8juPeGEOT
+	G+fLUUIA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vut0L-00000002AsL-3V9s;
+	Tue, 24 Feb 2026 14:03:13 +0000
+Date: Tue, 24 Feb 2026 06:03:13 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
+	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+Message-ID: <aZ2voRA5VJytcfLp@infradead.org>
+References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+ <aZykWyxLy34o7PKr@fedora>
+ <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
+ <aZzPwsBp-Z4XM58U@tiehlicka>
+ <aZ2N9a4XgxnurOhz@pc636>
+ <aZ2YDD_l5JN78DJC@tiehlicka>
 MIME-Version: 1.0
-References: <20260224-mm-fork-clear-pages-v1-1-184c65a72d49@kernel.org> <2553a75a-6dc8-4295-96b3-58367879751c@kernel.org>
-In-Reply-To: <2553a75a-6dc8-4295-96b3-58367879751c@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 24 Feb 2026 14:53:23 +0100
-X-Gmail-Original-Message-ID: <CAD++jLm6iyeFuGoC2zfHDOu6gYdb2L1gsjQhT5a4qS-CBWia9Q@mail.gmail.com>
-X-Gm-Features: AaiRm53tb2rvqaot7mvXTxtm6mGGNPobUyruddK7Z4F9nhs9QdcbYdTorcT5uzM
-Message-ID: <CAD++jLm6iyeFuGoC2zfHDOu6gYdb2L1gsjQhT5a4qS-CBWia9Q@mail.gmail.com>
-Subject: Re: [PATCH] fork: zero vmap stack using clear_pages() instead of memset()
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, Mateusz Guzik <mjguzik@gmail.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ2YDD_l5JN78DJC@tiehlicka>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: wbaojbkt5jje4mawbppumx87x71winb5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DA0F214000C
-X-Stat-Signature: qqk5wdqeggy84i8wd3oed7zci7ysg54k
-X-HE-Tag: 1771941215-841089
-X-HE-Meta: U2FsdGVkX1/cO/N2Hz5+12D7sjU7O1g9Vf3qMEwXL4NaArqm0b+aqFQKRs0TWoMATHTWvuT0Q7fCskjWEz6p19P6rD1eUlQRbqWRICKWi/NpEoVGqHLzFqJELGJpVDA2pNULgOEu9AgYUaUBtQyDOrbHnKuqlP4uOghF8E3gsFgpMin56IZbyGg/XLPJ1T4xjZJjr/cjn0zxoN6mf9+b8Ay6Ml4+xya8zMGYJrnmkJinAeGSmu0vmlYRAr4d2mPRjfC68+T+MXIn1Gl2G9Ox61/SaASGZyW0MFJyly3t5RUXiqfIBZMS11Mtj0Lk2gByzEJkW4azyRPywEuHlUKPQbn83eu0IaBo+4ri8zO5a7xdrv0bDpW4HqJ/rZ9rGYr5r5SCkS8+LzhHBjLH9YZwK6OjYPGJDi66MdG0v+eJM8j6UXj7sZspBxJ2u51UezEr/pFMDjjg1yp90J7AAl2sM7ykf+DjpkE48KX+tRQPkBwAOngvNlM3qZywNp0gNSjHy+jP7KaskIC0lYVRl6LTK0QRiINsE8J2wANOFTnZLNriE5KJJry2gUoCPvBwSWes1xRIstjrgvTyISI9h2ykSBX4YnnjgLC05MF4ELH/EepD4pMJc50l5M2u0P1ju0cB4BPK6tRCSieu7BI8ZS7rM7F87jLmFg016RZ0ySAgu88H9Ix7NyOP6rVM8h3oweL9qZqIsNCYY1cDOpSnhCj/H1ge5lOo2C7Yr6X2S2Y1J+K+WJO9vPLW+KV38Zz7/kIyzCTie4qp6g3/Mo7rMjTSAgVQ1CF6k9z/Gxehp4jfKJplkz59bEEqFLySKO/UaIXUeBRRWPMexAsoqFXuA8tCtZ04tBs5mLVlUxwHK0LTAV+mlqJsaY5H0jgpJhi4hJTt9I9vHjXj6S9/vw90skRVStJlah2FuQEUIQxCgBPBLatRXNF6mGVJ3c/VxerZC5xyf0+HOMQaVKYGnmntPm3
- VAF83/dN
- vM9EplNXBLAzSISPzUiiSChgFaLb9cSTrmg2uPaXYIeETD01jRTCzwe00sr+HTvwd7GbwvIZZ/1JfC/teSsqdKr1UW8ZGk28WBh5GbJuYfn7rQO9++RMgYKRNsY7gDl6qY4wHjp6aIP3IvxbN4osRtXFGktqu9fptlwAcwlD/13x8pw9cVO+Q8UuRQAB6gxomDpcfwSw+cOY9fSAeNMwE0ifwrYXQMZQ+FeGh62U1oi9R0l+7t4XhiQwSSBak10p+IPttPzMEuPa91fK7ML2+TK0vGLKVOi/v/EMBp/+4vctBy0lRk640016FW5PM9OhvQWBrk4gHLivWRIerVS7VV1LuUL6b7XNwzpi5
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3166A80008
+X-HE-Tag: 1771941798-584339
+X-HE-Meta: U2FsdGVkX19HqNRtIZ5NH76S0ZY1UpZacy/dpOomgKEk4h5PqdyExw53fhWcPqxwoBHcbwbIBHzjG80W7snV5DLXTxHKvDR2mZETiyFdL4ZyOWwyLJv9XNpiwVlAUY/NNYbQqaNs2ziYbpoPgMZZYGbDaO+q0X6l5ZwhJh3tjrlx79pkH1QoXZjC0Z8/MdCjI138BHKp06ooTXc/RaziyPn77BU5bREuF2ZoDnJklyguNUTt0vEOsBZb3MK6OLTKw31Z/lJ7LmvGXSNJiFKRGjFh5H3DIfQl6qMb2zkn+QYvSI6PdtuAPtQlbYU9EvMMKtJlRj5bYMBqgeffQ3sovD7OFgfAgOg5XVf2fYba2Ga6BXsVSFlzA1rM56VrbIgdCn+xZTaV3mwCyLpjGSl19hpGI4kvgJQkA2hu9tMen9eiFV+YAmF8PHY+XwHw+nl21MXdeMrCThTtwn3zxYVEeyjZMc5tX8x6SZ02OgBgpWiRBgawd+zNiq1VNIQK81h4TumjHlwx1/ywPdF5FWdciJmOxPbDGjpkMWG4uZOsSUd1L7h4xORCWZjljmHsuHshTzxN1IdLEAXInY9fLJuj7j9iplFNNS3bg9g6/RhnmbnvEIDaFEoHbtBlyccCnA/wAM0L15i4ZtCV2Palq3PTdsXHd6kY5Q3CZNL7FO9IZWs82BktaCTOmiA2rZTIua1bU07TojAiIeKOBGhiBwaPP8v3g9zr/bAnRMTqdiucVQA/h6THSgujHvSe/lsQN0Vo2MnhJfdYQGzMtOa6Z7YMc3v8MnOMMrP1Pofgh34cF1MR6NYhsBMd1bkVA4Q/F4sXvNweTRzerQGsepdQlaWxmbM4zRbvmFADNQSprBbsWXJFGa7JsYCjix9IJFyvaixFvj+jl2wg6dPjiMLqNKqzrQc1r5MYqAxh4PNSgCrB0S4TZh76GQnBwYaTPClwfgyQ6pfyBv/qHjWCv1qxkFE
+ GL8HHy7T
+ ojoiybpUcreWER6CtD25js94aHmFt4f9vG55G4AKOBg6PbEgn28q6qdgYg0QwPJoa5C3UL6lsswpM+0DBoVxP42O880zI6TwcPHvtW5caOkBJICQHBX4EZ0klkPg9anFIP8L4HilslqV2DfrfW8k4rSmbPpwqEJ7yTTgjVWid/vCAQB08GiipxdRRi4I9JiJtqs2ExapDpq/oh5CBmSHSApSAoM5pEUgNB1/bCqAbUd8E0VT324fIJRGre/QgG4UwWTLk29V1x5kzpfbLk3H3pWasu7EIP2WJ0WgTvK3lF8H149r3M2JL1iJyhnpq0E2MnpTfpbriVr06ng5T1SWxCnWorhfXkPjyqJYJtCx0Juz/PD5elsNzW2ZMi5yZxBEYKIF9+GrU389rte34UnPrOsmbMWSCVMnLNDYyYxyF959wdZGRwDBKaOSHipCw2cLh8lJi/pc7bMCVnuLK/3YlmDKYnFNtwjO4DARUELpxQU5iHd8CXoeg8OViS0j9NRw4+fw0ZirYg+ES0W/ZpeSgpd1pqVjX15cy0BlJ5675Gte1CSYmdGeAXGAEMiLFaPgPTw8KLTZFCG5d3uEMISxYyEFoOMFUZcmDQI3q1IhiMYU/t3aeEjnpmnh78w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,39 +101,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 2:21=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
-> On 2/24/26 11:26, Linus Walleij wrote:
+On Tue, Feb 24, 2026 at 01:22:36PM +0100, Michal Hocko wrote:
+> One thing that we could do to improve __GFP_RETRY_MAYFAIL resp.
+> __GFP_NORETRY is to use NOWAIT allocation semantic for page table
+> allocations as those could be achieved by scoped allocation context.
+> This could cause pre-mature failure after the whole bunch of memory has
+> already been allocated for the backing pages but considering that page
+> table allocations should be more and more rare over system runtime it
+> might be just a reasonable workaround. WDYT?
 
-> > After the introduction of clear_pages() we exploit the
-> > fact that the process vm_area is allocated in contiguous
-> > pages to just clear them all in one swift operation.
->
-> The pages are virtually contiguous (vmalloc IIUC), not necessarily
-> physically contiguous. For clear_pages() that should work.
+Why bother?  __GFP_RETRY_MAYFAIL has pretty lose semantics.  Trying
+too hard to allocate PTEs is not breaking the overall concept.
 
-Yeah that's what I meant with contiguous, sorry.
-
-> >               /* Clear stale pointers from reused stack. */
-> > -             memset(stack, 0, THREAD_SIZE);
-> > +             clear_pages(vm_area->addr, vm_area->nr_pages);
->
-> LGTM.
->
-> Do we have any idea about performance impact etc?
-
-I have a pending patch for implementing clear_pages() for arm64,
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator.git=
-/log/?h=3Db4/aarch64-clear-pages
-which is in a performance test loop, once I get baseline data from that
-I can test something fork-intensive (hackbench, I guess) with this patch on=
- top.
-
-So making that patch made me remember this one code site...
-
-If someone has a good fork performance test running on x86
-and can give this a spin, it'd be great!
-
-Yours,
-Linus Walleij
 
