@@ -4,139 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68CD2E9B24C
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870FBE9B24E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC2E96B0088; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
+	id 8CE2D6B0088; Tue, 24 Feb 2026 05:27:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B70B06B0089; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
+	id 87B846B0089; Tue, 24 Feb 2026 05:27:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A52646B008A; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
+	id 7873F6B008A; Tue, 24 Feb 2026 05:27:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EB786B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B9F0C1EBD
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:10:26 +0000 (UTC)
-X-FDA: 84478930452.05.5000674
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6094F6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:27:03 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CE8E59393
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:27:03 +0000 (UTC)
+X-FDA: 84478972326.25.7A166F7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6C90240010
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:10:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUuT//x3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771927824; a=rsa-sha256;
-	cv=none;
-	b=IdR3w0pDomOkJ+QWOdMeH/FI0abATT1MGzl2Mrha+r9km97PsyDjOcCg4b7W5od9yrGiFp
-	I5PxCp+Lpl+s2gmP5wbluDMFroLJ5enno/1Vp5ZwqFx/pt/hKDRrqbp8ZwaKwgVNOrVeco
-	KpDFD1nHDl29+9zESwEzb+64gijOj4A=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUuT//x3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 62306140003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:27:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ejpxER/+";
+	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771927824;
+	s=arc-20220608; t=1771928821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kc91CIIl41xh+9K1iSPxDe5Eo1+2Wvj25AcgOtUzf2s=;
-	b=W+r5QWjtSbPg85agY1AApvYDmKCArOBFtAViELjiKlZR4fgeL50B2ojhcHKTMD4ReuRruN
-	o7BbnEVK6pjJLDlyegPkHnCVNIQWhDZEwBhXoy2jrDbH4PpmRTMfbu8RJVtCBja3tp1wEm
-	Mfk4NOCqy4Ly9b0YSAPH/X76hm00RTk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jHsoRn8mf0kk7BSshtORn/F3LNvNF0XlphgxASSHP54=;
+	b=rN485JuUnzJc3xBAHGH8WtN0O+sSv+YyaXnu5AxsPYFaMN5OC/nget67I252GJPszcAWgh
+	ezJd0NYRN0o28jfkeHShsWxX9oC8G1C5NAIIdgctu0hEQGhoJ3U0wawFxzL9o5IUEjOfPr
+	/ezMsd7sR6E/TfrdmdDIyeBTMrxD1X8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771928821; a=rsa-sha256;
+	cv=none;
+	b=PVS87uyLT6JbYMslgHbmqvRcevIk0L9ZslmI/dtzN7hwywGFyBO515QdyfaJcABKo3hnX8
+	p1eIrCe0YcvV2//t8GGN7H0l4YmQHFqidx+hX0cqn1qcWCUu0Lpmlby6aUo0oGEq5HBtA4
+	1oCh+jfdDjos7qUvmgyM0pDjm+jinY4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ejpxER/+";
+	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4D6C6132E;
-	Tue, 24 Feb 2026 10:10:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A64C116D0;
-	Tue, 24 Feb 2026 10:10:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AD1956132E;
+	Tue, 24 Feb 2026 10:27:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F631C116D0;
+	Tue, 24 Feb 2026 10:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771927823;
-	bh=HLl0s56QthgFvq5ounX7gaoVLceVUg13LF70lAn+VcA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eUuT//x3T18L5U+IYW4yhBmaBd1Hs2QpYgo5OmQczVfNVug3MUE6iNZOvDyCDeD8g
-	 gC5xNPPkbEHkCXbqejzoqOW7jwa5C31ubtGYhOFUmDH+BPZxhqMvHjxdNvtkFu7jJx
-	 1vnTa9atEQN4TvD+WtyLtsy0vCv3GWgDnoMWpdxFxbDlwmyN9Qe5U0SeHTgrSm3TCS
-	 GrcBvsCxn1SgvRRq/3L/7oK5mA+S3CdhoGpd7VtBgrCZIYF/A3GCF2cEIHcjYhy7hb
-	 muv5pUvzmiIBvv5v6RcD8Dt6o5RIwsxzDuAB7IzgEzBpvMSmNwsgM3/0A/RjVz4Fhj
-	 ZFWRHqNAfA1KQ==
-Message-ID: <f73ced77-1dc9-450a-93c1-c7f5b58b6aa3@kernel.org>
-Date: Tue, 24 Feb 2026 11:10:19 +0100
+	s=k20201202; t=1771928820;
+	bh=EqK3SWnzbadzwJnZx0FShfZ4p+4sCY9R1N3ORwnDK94=;
+	h=From:Date:Subject:To:Cc:From;
+	b=ejpxER/+k/oyPgHcAzOqgOscY6cIE7HXwBie6jkweLEqcvV4rSFqyUY7gjPZ2hA3z
+	 pDYAgZZgZ2tWeeIoibs12oVDYcBmvGZAUK2/vuv0n82W2V+Jfnvop2AL3DUvu/L9zQ
+	 3hXzl3W6pId+fV/Y4q/ogo4YeNJKpJtuVDt6Cw6e36gp0srFoxIpXjqhF5HHHdN38A
+	 hPmsXVxKsJ0H+AmVYuj6WBskhWcedLFm0GJlcthhFZqgHwTGq4rMzyKDCw9cAp+M2v
+	 DsdBUloGhQMlzBJp1fjGuBHf5eVeZNwOBJ5O+RnGst7v3zXQAPwUZDweuD4gePof6Y
+	 lUmBQwnhKOxYQ==
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 24 Feb 2026 11:26:32 +0100
+Subject: [PATCH] fork: zero vmap stack using clear_pages() instead of
+ memset()
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v8 4/4] mm: khugepaged: skip lazy-free folios
-To: Barry Song <21cnbao@gmail.com>
-Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260221093918.1456187-1-vernon2gm@gmail.com>
- <20260221093918.1456187-5-vernon2gm@gmail.com>
- <CAGsJ_4z1twdSNrAVR_vZRnLW4xtsfi+vegNMCwht+RPCjy=E4w@mail.gmail.com>
- <xbej7d3uc3xzlx53djgg3to3ejcgrxotxwxvrdppqxfsgieife@5moeg6x2vutg>
- <658903fb-cf3a-43c3-b8c0-d47b63d10782@kernel.org>
- <CAGsJ_4xwTDAs-=WETGxj=dUTrvu_1oYaXZOk-r_yzJ9p2tVOXQ@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAGsJ_4xwTDAs-=WETGxj=dUTrvu_1oYaXZOk-r_yzJ9p2tVOXQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: c8zawcs9x94b955jezqdmeoyzpfu4uyj
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260224-mm-fork-clear-pages-v1-1-184c65a72d49@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MOQqAQAxA0atIagMaN/QqYhHGqMGVDIgweHcHy
+ 1f8H8CLqXjokgAmt3o9j4g8TcAtfMyCOkYDZVRnRCXuO06nreg2YcOLZ/HI0riKxpy4LSCWl8m
+ kz3/th/f9AFfW8mhlAAAA
+X-Change-ID: 20260224-mm-fork-clear-pages-ae7c52d12a93
+To: Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, Mateusz Guzik <mjguzik@gmail.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: 62306140003
+X-Stat-Signature: frjam9ap1k5emtssagyzmfcst5zmtcon
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6C90240010
-X-HE-Tag: 1771927824-689966
-X-HE-Meta: U2FsdGVkX1/IGXi+/cZC/UCZs0rfjKWV9OZCcjwcg/tx0PhoEkT/zJWf39JVhaDBX/1U129vRXKfuucM55mINUV0UIWKWQEST/OYfYv4nedeKNtd1tGABEtd/VQxJDisAmQ0CRhWnXmlc1KVNeaREJqNvi7B7I+802eUsXG7j2kh/zM5YqzBkyUWqq99wEVXd2rm/R3XnGFV4ehSNKmdXg1gh0pLtbwyhSJ4qwn0MyfW2dsn3LJAXBfFQAoQj74wckXJr2kBjszgB+pB3wzW1mdLSkWK0IMlReCCssRkVJ33sN8igZuSrd0Ja30YZqrRBAqTQOx6qGxk6TCzQWn2jAS1xUlqH2nDq4LQ0WhXXIXKjdX/tsgeP+ToqTAhtcG0lsOfNVHzBJYzjJ10tNMdzJoPlYkVThWVlio/YhF/1M3z5Z/exxSWFy6bq9MeWM98p19IzAdYfWaJrg59jDcYYnV+q9asHR5x8a92Inz7UBd58R8gkhspWi2xUVRDBL39j0WRHB4JaZA2GHMz1kxMqw7NnzN4MK5s593ynbSNS3S+zrYevDy84DqgMmCBSPuLK3hZgI2rDeTG7Khxf/NdBZq3owp0QK2yw3KslI2DeSvcLuAfGHmPjC4SE4d9NF+XEbwuzSKEtOd3TzIzDJQYhxhZwPjUe/RHLqNDMe8Or/yDKfZNbhfCwEzJshRfP4EIgR3V3Ka4mq/c8An2czgoSVTPijJ6cfomobPGkuDIKZfXb1l27QVBi7/07iHmoktUGX3oy0u/MDfNmOcC5dix7zUEcuNMbrelLVFd9PwZS7a/l/4CdnTJChpDtz6RVvC/FvdYR87Dk2zv6jWztQ4jMv8GPN3420VSpei8yaLpFDl9giKKkN6CcgU5nKbGTZkhP8YoD+acgRTow1nLBZJKSq0ELO/mYlhFdi7p5kd4tpe4BPblv19zDA8OuhfERweM6E0YIfzLlMfrpK/6XKF
- cMjKWcBn
- Z2qumq8qBtQuOA8MdXf7BXXsGo2+GEbQXI7HV0SRSt91P3kA65PzK4B6hTLgsmmzR0lxWkvcHRzJpXPaw+k9WzhorH4hswdqKSEDrMo7XUmeHztiJjNKSyih0u7gG9XdJSU6FeQGTkIsl7zxCmf6tmn6g7JJD5dMAaR9/9qhA/Av0TZ1j/n463cHQ8swxK947I591PiarRnYMIMsIJU1X536l3Ukc+HyIrxjS3hlnQyt/kjz0Wka/CqUulofElsW8UXXQEv89WSyWEFwcgYnJ6XIR4mgTCBT+Q/Lao5pT1hq5+1DZsqfbwOEr8Q==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771928821-166627
+X-HE-Meta: U2FsdGVkX19lXNGjMzDvc6eH7OnzGQd9KY9+A9jki0fKb9vYyNRkHwzs82D450qVcClddliAVTO27L1bFgp0mXjcrcsAZZbdSAx9y63n+Ew8FU/xVa0ZV4B6VwKs3v0jh/3cLdcxDodZ1se2McvPGvPsTnMC96ZHZTRxp+LEarHbNWgNyb2A+IZq7JKnBjZc8CtJUI+ye5iR65XJUfDosU+OkjoX4Min5zk6SvT1F2ggPnl4Lqa2mXqjF/LQScvjkxzIJDvi9E7UY4/uznvhvRScYopFXVxizZUMp/pQGDES3Y4WPXqxv2sT/Y+V5OZHEYC+002qOba9nkqMbC/hGFlD5XAPbDtmg217rNy4+DvZg6bOGlOLNEkTgASEVolq/6HasMglutRnLeMPQuCuPE3gsvO6zW8BUjJl+apfid0dXPwx1fFki55duLxRbSq5TMzchWEYblv0l5YK2ar40YJV8TI5Xvic4gHKpxLhdRry7oW1cNAPaY4Zn4ymT/URtZnjKTj8X2iDL2PTv6Rcadk55sLCH0kDsB7crgdeDI2aGLeJmG2+28eS51reL4rpLdtt27M8VEn29GAQoB3pedgCNWTTd5diMtyj3FNEd8XtcqYtsIuB7iJOARpnd8Zmh6fnXBs28fEglHOoUXaNaJhGUMUh+DB03G7RPi7c/wg/pHr+RZFwkkgTQST01C6sFsf7sJGEYyh0Sw478V91cXABsa3VOelW3Ac2mB65Kd51d2US/NXE1JYiakizTy68nHDh6e4MzDHRrEnvtch/ITNFNBax1bPk9bu6XSwhyXEm8drGB9JlNaay8v9Y1uhuDCIr6Ys/tFMQ/mGh1U2XngJdyTzKi7lGRED6SfZ+hKJu84EqCzJ4fo5k0zZOaENcp+7IJZK1ME95ZKugQt2H/nfn3cDOC45dZ1V/TtL5afsR404eVdKCa+veyJ1BMUFWdvtgCG9Mcn0q6hqWZmS
+ PANX2Eal
+ F/NMqoMUzN8vx5/dstpGS7lsyoEoxgzZIIHF/tRrux1otfSVRyT4SHF+R2k6CNQFYoXaMu/3EQz2MZXF0rQ+7u4fzxKqaa7rYgJhjnNIWbtEuAx+puCM8vYh9wwPeTqyeJ3PXAqqRmr/Knm5y/pxe76Sj46TASlJzxM9qYHvUGtEVf8imUpxTpGLh0QygbX2+ZhMiAc18GcosKTqkT8+9Vhjrf8DBk4GnY6jfE2KYIpSvcfvBYkbnV+dmdKcdOT0/HydJOUVIMkQXhywY1+kMQfe5GBho8HmYbnt8g17ETTpVvFkKAAE+ItfI3sEQcfrwfGOUKCngSqxrRLVtLZ/JBPl+yZrquUG0dEfqu+no5IQxWuEbq/04acV5eJjNrmIcffQI/3iWizQefRP1NNS6H2amjg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,47 +107,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 21:08, Barry Song wrote:
-> On Mon, Feb 23, 2026 at 9:16 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 2/21/26 14:38, Vernon Yang wrote:
->>>
->>> In folio_add_new_anon_rmap(), we know that the vma has the VM_DROPPABLE
->>> attribute, which is the root reason why Collapsing maintains that property.
->>> The above commit log clearly states "all folios in VM_DROPPABLE are lazyfree"
->>>                                                  ^^^^^^^^^^^^^^^
->>> (the "if" is redundant and should be removed), not "all folios are lazyfree".
->>
->>
->> Exactly. folio_add_new_anon_rmap() makes sure that all folios (except
->> the shared zero folios ;) ) in VM_DROPPABLE are lazyfree.
->>
->> In fact, MADV_FREE should be a NOP on VM_DROPPABLE, as
->> folio_mark_lazyfree() doesn't do anything.
->>
-> 
-> Maybe we could do something like the following?
-> 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index c0370d9b4e23..173b0e5308b5 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -817,6 +817,11 @@ static int madvise_free_single_vma(struct
-> madvise_behavior *madv_behavior)
->         range.end = min(vma->vm_end, end_addr);
->         if (range.end <= vma->vm_start)
->                 return -EINVAL;
-> +
-> +       /* All folios in the VM_DROPPABLE VMA are already lazyfree */
-> +       if (vma->vm_flags & VM_DROPPABLE)
-> +               return 0;
+After the introduction of clear_pages() we exploit the
+fact that the process vm_area is allocated in contiguous
+pages to just clear them all in one swift operation.
 
-We could, but it feels like optimizing for a case that likely nobody
-triggers :)
+Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
+Link: https://lore.kernel.org/linux-mm/dpnwsp7dl4535rd7qmszanw6u5an2p74uxfex4dh53frpb7pu3@2bnjjavjrepe/
+Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Link: https://lore.kernel.org/20240311164638.2015063-7-pasha.tatashin@soleen.com
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index e832da9d15a4..88d78ccef245 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -345,7 +345,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 		stack = kasan_reset_tag(vm_area->addr);
+ 
+ 		/* Clear stale pointers from reused stack. */
+-		memset(stack, 0, THREAD_SIZE);
++		clear_pages(vm_area->addr, vm_area->nr_pages);
+ 
+ 		tsk->stack_vm_area = vm_area;
+ 		tsk->stack = stack;
+
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260224-mm-fork-clear-pages-ae7c52d12a93
+
+Best regards,
 -- 
-Cheers,
+Linus Walleij <linusw@kernel.org>
 
-David
 
