@@ -4,83 +4,243 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2755EE9B250
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D93E9B24D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17F46B0088; Tue, 24 Feb 2026 06:09:54 -0500 (EST)
+	id C0C6D6B0088; Tue, 24 Feb 2026 06:10:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE2AA6B0089; Tue, 24 Feb 2026 06:09:54 -0500 (EST)
+	id BB97C6B0089; Tue, 24 Feb 2026 06:10:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C19346B008A; Tue, 24 Feb 2026 06:09:54 -0500 (EST)
+	id A0E806B008C; Tue, 24 Feb 2026 06:10:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AE0E66B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:09:54 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63CDF1C458
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:09:54 +0000 (UTC)
-X-FDA: 84479080308.01.20807C1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5D4044000B
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:09:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771931392; a=rsa-sha256;
-	cv=none;
-	b=C9I2DZB1X0DXgiR8Uvf/B1QBabacs0HfWpSw9XK0h3soTaWaed8boIYBAAGrkBghqpbIOf
-	36+gwjgUJsIH7HFJTMtTS3Uh8uSaeeu5SVAQ/45kGmpCYFAQ4Fug2Fa2xvVWidAku4E6bq
-	pnNtptOzM8bKW40JKi3ZRQB7qRn/7HA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771931392;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 861776B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:10:44 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A47F58BD83
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:10:43 +0000 (UTC)
+X-FDA: 84479082366.21.43BF9AD
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 142E5A000B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:10:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=iBPyq7yU;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=U0W0MJf0;
+	spf=pass (imf25.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771931440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=o0oBOTjqTrrzki2MBdlf2XBLpm/SnnSZruUWuBU033I=;
-	b=NPwgVsAzXbiAaOkrfw4dyBtoFwkCBSHgKLcXf8hb1rdimRylWw5Use8A4VvxEa1QOUEdUn
-	JklJCIl2lqKJAWmcYIJacV0iCa/nlPF/7cgUXWg8/YhBUVlqY4bu6miriP+vFen1xPyi/v
-	hkQrQa7sIwr5IM8y35zSAkOQnvF61Q4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC93F339;
-	Tue, 24 Feb 2026 03:09:44 -0800 (PST)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4C0213F59E;
-	Tue, 24 Feb 2026 03:09:47 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com
-Cc: riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	baohua@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree folios
-Date: Tue, 24 Feb 2026 16:39:34 +0530
-Message-Id: <20260224110934.881360-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7VSiuuhiwucQgwmmJlz/qLCzTKjQx+eJpcbCDA++WqY=;
+	b=FlGtEcWM9OPQ48wX8XlKe/6LqGyDp3PViqsnYUtcjkjoDEHF7E709ZHwtYZfrKEbnraYAx
+	BjdhIR85cFrwoGjGqrPTRUuDV1XdTb9A5yTe0rLDsitjVjyInGWGzXEUegYySlAipMsYi2
+	Q37b/QovgAo5O9n6Mq/wQ4vIvuu8jU4=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=iBPyq7yU;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=U0W0MJf0;
+	spf=pass (imf25.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771931440; a=rsa-sha256;
+	cv=pass;
+	b=SbO0rnsSW8TIJlQ6BBOMhdgR0ATSH5PsWxyIF5TufOFV5WQmxXChzezSI/TV1166MxvCL5
+	3wPJagVvHrG6uA4hnuQQUKLu78xbdq8OecUXHjcDrtLociAEH1WyEPQz/XfvNkw+aPq0c2
+	zDguYaaZqmnz5OZDeaPXh+VPxbaO+xo=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NMvMOB2590015;
+	Tue, 24 Feb 2026 11:10:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=7VSiuuhiwucQgwmmJl
+	z/qLCzTKjQx+eJpcbCDA++WqY=; b=iBPyq7yU6CFDgprSu2mkZk1D0VKIkNhe2q
+	Dn6dZbkJ076VBzOHLvoYt6ukZOQEjNuXNjxO41gVD6pcAT1DYUK32nKH7/h74ME/
+	pwnU0gkHbdA+R6hJ6pFSZ9FXARXHvTDIW3M9TDKdQtGX0nvI37rJNtTM1Jfa4MpB
+	hrzER1Vd2l89czaB9e/po6zT/Hq+nwH6O8Jf9ao/hjib8998ReMesAkE+v4DsCjf
+	G9BBap9eB/hysdlR2YWnE0FR7dngGRJGOZe3ggeAbFoO0fUC3zPGStuKichOMG4t
+	KVHPYR0UocIAxyrPpIZQYjc9MBxCvcVJXVXe5WAAC1GR3IQVxFKw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf4k5uysr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Feb 2026 11:10:33 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61OB05Fw027848;
+	Tue, 24 Feb 2026 11:10:31 GMT
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011013.outbound.protection.outlook.com [52.101.52.13])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35ek7dv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Feb 2026 11:10:31 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bfQHUdF+HsTbLZj+P/YDW+E2HfqERCSQKD7ZUrxCK+junONMEthyVTKCAgqNc0P596ozoM7lrBKckguGBMOWZiCwo+NKTFKcfpLvxmTGxjsAmXj7Ub8qsmnUPWVNdqkjcAjkMUlP9sKSBPonCSl1vZlLjKC7779vIs32+CLjrqomPMoAJ+rhZDJeVVWYUIbb8oy/cqL80DonmPeSnwFr4npY0DDVQD5COBih7Y8WKyvG5jImkeH7CfzXxMzm2sUe2NzSvvB3RQIqIjmQtRKAT7rz+igtGxmzYMegLwPgllU6Bx408g5x4ih1lZ0eyUlqlNPlGUBdxurHw9EvScPI2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7VSiuuhiwucQgwmmJlz/qLCzTKjQx+eJpcbCDA++WqY=;
+ b=vXdT77MNADqAL6SjVOcJo1mw4DtASKwU+YQbU+kOgkZOilMK66bMC5LuJb+95ZRvFAOez1V9vkvs6yaQrCFRsULXflMco6F9CP16PrueSxo/LP9wZG04iCu9l3TGdTk2AWFJmNj3oV+dgQ+26t10SCwiRcunh7olP3065FbynFb81WIaJ+vmSTyhqw28MfF/sG17JHYSu3ndoN4VzluITs7E96zbfjm1w/adpfnUNXHaYWQYhoE0kTZBrQQkNv5qPeLW5nZwTn6NlYyQaW8rCnJv67DNleVziZmZacQuIyNbcassUigjfEco3n2Ac6QizpXi8Qcg+zUc1PYOSCCK9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7VSiuuhiwucQgwmmJlz/qLCzTKjQx+eJpcbCDA++WqY=;
+ b=U0W0MJf0HhQmdPQPeS4sQnmv/Rfba5l3AKKwDTXhy02M5VDozxbd8zeI0cKv6Mk1Z8Hv5JyPs3o4XYEtcuG8bBnXjMfzleH113RR8af2+bsy7ka64fO1DgbpyFXzS0+KUPF0gHjSp1d8nLAmbuIl8nBx23q0kmE0iaF4EWGOtCc=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by SJ0PR10MB6327.namprd10.prod.outlook.com (2603:10b6:a03:44d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
+ 2026 11:10:27 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 11:10:27 +0000
+Date: Tue, 24 Feb 2026 20:10:18 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+        cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/slab: initialize slab->stride early to avoid memory
+ ordering issues
+Message-ID: <aZ2Gwie5dpXotxWc@hyeyoo>
+References: <20260223075809.19265-1-harry.yoo@oracle.com>
+ <2d106583-4ec6-4da0-87ea-4ecad893b24f@linux.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d106583-4ec6-4da0-87ea-4ecad893b24f@linux.ibm.com>
+X-ClientProxiedBy: SE2P216CA0104.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c4::8) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5D4044000B
-X-Stat-Signature: eeysmzdjjq3o4fqkqnjxzewo9ty6agxh
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SJ0PR10MB6327:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84542164-7404-40a4-cc99-08de7395507d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6Irv2H54Pj3oTKe0TwAWvuywY8DwRwAv2X451x+jeo2sm+DiOIPL3NHOG+AY?=
+ =?us-ascii?Q?c6oCMlKCDc5hnlVRFt4i298sk1cGltOKd7NsqhECYCHDt1thdWm+k03oDEsV?=
+ =?us-ascii?Q?pEJjHeDQMiLrFBbS3/g5r80VdrBzLicvIAS1oGjP7rtrRQkrmA5WXFuaGlqg?=
+ =?us-ascii?Q?cNSLzb7vqrzUrRINXW4NFHnz5iZldYXr072IV/Gx0I2YCi3IMkTtmQOTi0YZ?=
+ =?us-ascii?Q?a9I7dBHe2KOPPAgWRZfwRbXBu5N6boCMTI9zSg40/0aQdBEqwWOOxtijlAnY?=
+ =?us-ascii?Q?0RFHcHEY1Bin2e08zadbHSLUK8U7MJUgbTp5ZWua+RI0TYqEgmPEpjbcA7Ue?=
+ =?us-ascii?Q?P09T+z4KkVefstREaEQR+OWbQrv3vx0E9o32/DSpFVotxFFAOlQGZ4AKlxmL?=
+ =?us-ascii?Q?qCNDFmx6czAp3kpa+b5f6D+/IXs4zL7C6VlQLptEN9zcKdoCUHnnQiY6J4W1?=
+ =?us-ascii?Q?B6XDN1Dkj5X13lA0Kq296bCRWkPgDiibL/xDrnCUHqnkf9XPNcPLIfi5SX+x?=
+ =?us-ascii?Q?kEBJbEU6fnGvuGfAUZp+9nY6q8BZBbhEpQBazb5d1yHwW6fI8oUoH5th/Nf3?=
+ =?us-ascii?Q?T9RiMBpAWMpr+zjxmzvdMu1srdEmnlTFIjEQiMmO93ucl5h4Dk3UA3rUhJs+?=
+ =?us-ascii?Q?jir8R7g7hIzGlyvK55bCwhBMDBpO6GGKS9uG4Ni7t2HA9/Wg/6v0QRmc/0d8?=
+ =?us-ascii?Q?xwWqhdul1LOcdtUboEltW56kCaNFnGHlbGuD+rvp4I2GT5C2vkUxOghZi9j3?=
+ =?us-ascii?Q?J+78qfcZ3bAvI4XUd6hbwQk3H1zdB9vOXhkM51LwyFJQJ9MxbA5mdC1WDM9Y?=
+ =?us-ascii?Q?kMmM4G2GWdtNLm2Lkg7pUqla0elNBacgdzvcomFjhoMn83aD53mFHf3Rkika?=
+ =?us-ascii?Q?U5GAODL7H0MuBGyf6EGn43C6LO3ddeMlMV5+h37zlTFPjnD86q6NVcfeclLQ?=
+ =?us-ascii?Q?y/9CIdihehmojSzF2lc+0O4hJVYY2DVe0Q3YVSkhHk4H4Fd7xxVgqbavD6le?=
+ =?us-ascii?Q?8pHPRhps6bV1lKN93M47rKCdq4A4hgNVARGHxnCnKjTJfvvFJJaklMuyTYDX?=
+ =?us-ascii?Q?ddM8TK3SWU0zH/knLjUKkSQYyJPuuO37Wkaci5XcZi5aTw5wNbjlniTqMYrr?=
+ =?us-ascii?Q?20kXAgJPhA3BBNl7NrtgSydFwaY209Lt5O6BG/j0lGoZFweudYRmkacgN7OQ?=
+ =?us-ascii?Q?XabdAWxFtjyGgD4uN92o4H2CRoBxPar9dYa9/FFg8i6nSxbp7IuCSH5PmZGS?=
+ =?us-ascii?Q?Q3MsOUJmKF6WVK1RFkRVxFs8o7DGH9P0QzVDS+0hYpAz6Lcfoyadh5VPi30n?=
+ =?us-ascii?Q?2J3dGHZ7miC0439TYAezxxjGHj1miKbbn5REdr2WRYg9kdhlUBh8e75ZyYU5?=
+ =?us-ascii?Q?gVorS4EfPw6XqegKYniit09373lo5FLR1ZDt3qxtyixEX16UJyh7Sopa7Z4Q?=
+ =?us-ascii?Q?fKIcyIKQPmDjVfKyyhI7IfeoWZWeHwbrYtJIhETh/uhODnspeOArJJs4IW4D?=
+ =?us-ascii?Q?SB7gS/B3/Me4BW57Zau6rgxVTAQxtiDX2GUQ3NC2saXkzSfHp8mgzNajHgob?=
+ =?us-ascii?Q?7sM1euct7bClyZAVpAfSTIjDJSs00ik3PkXruURf?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a7OsvGSqpNqtQHID9IikW1sGQfXvyWVVvMTEMy/wr+EsmfkJfUPWh+GP4emM?=
+ =?us-ascii?Q?wnp3wNE6p7dpTJ4fRfcUQXHWEcBzPAVLhd6FBhuBs7r74Fs75DiCkha7r7/l?=
+ =?us-ascii?Q?GWESkK8uXebDyNBvAYeHbg04JBJ+43zyenBTsio+P/ZQF5CNFKKukOsdIVVB?=
+ =?us-ascii?Q?biHk4lwLLc32ATJI3S8lJ9EuV1LKGtqJJsil9ZsOvR3Y8JbEtsCI/X3w396t?=
+ =?us-ascii?Q?yWlnBlSs5B1NfX92kuprHVeQ+bEkgAiIekleNa/GI7QDyQfRjb1rtkz83cCg?=
+ =?us-ascii?Q?Nyh3MHciOqTjJdob0XOR1R66eAg26I+jNWrpkHub+bSVmvhsHxEpzTNI06Tt?=
+ =?us-ascii?Q?OY9bRf/1Wk9c844LcgA+66VhkMpzLO/IM/ZNuPHRjLK+9iSRH5/wjBPZm3eC?=
+ =?us-ascii?Q?8X3DUFoWWAU5s8p5bTjLVKs9X6pSg9THTZQd6LjKVUkXXo4IGWsoPNo+KXiU?=
+ =?us-ascii?Q?P065wxHDci6mM1dceq49cNYOMzDlZYivoFKYx5iGhdoN59ZU+fL3kOSmWeCL?=
+ =?us-ascii?Q?Sqt6EqFVUpsXHvPOMpYszoUu6bLpneqPt3Ag++88obPFtbo6ZeZEuAKP38cq?=
+ =?us-ascii?Q?1yKByLwbFHU1ZE5j3TX1wFcqXlr5je5ZFRI9SFjMJx7ECGlbtMotfNKc1ogD?=
+ =?us-ascii?Q?CNazane8Rm9HIymVEH+Pf8/0wGBfloiE0uSsKixYEaOWjYSe7j+K3MOz+b34?=
+ =?us-ascii?Q?DvAg9+m3WJdIA+0b4+TMn3CWegL/NE0Fdj/0GcLSuPxmlZoX7E2qBcWS5LiN?=
+ =?us-ascii?Q?DKLZO1Z6xPDNPvuYbqhcmoQbPadyHLowxHDnSoSbvcleVyK4cIeNowAxSsEO?=
+ =?us-ascii?Q?agSaBnI87+uRtlzlgoiXEL4dENp7tusKBhZvYOUCEJ+W38GWhKk9/k1YVKHs?=
+ =?us-ascii?Q?zhDInWUzMm2s1cBKa84yz1EiTYnW4abSCmLZc/oRklQyWDrjBpYQ7SV3lfgi?=
+ =?us-ascii?Q?p15Of4ytgKBI3Z4W0py6EoLo0UQa+HcPwjkXELoFdeUguoZ55V64KFr3RyvB?=
+ =?us-ascii?Q?RC9gIACq6sP8vhWKcFt0EYcHNxaqbGgpiD4I/tT5UDeV6aSdzXJu5bEX/Owr?=
+ =?us-ascii?Q?rVmfX0caJICwXhYCuNwLHHE+BNjZa1heOsOk/C163iIi/A2coxLLzpjZkE8w?=
+ =?us-ascii?Q?4Q0jvHhe5orylYLmdGX6uh9U4aOM+ShzKk81Hxtsw2mxmr70TnIg1Rc+AedD?=
+ =?us-ascii?Q?TSlnFDMN5wXjT3/M+P13qXlkfS+xeEVrGl2Rs5Xh5gM8dLaj8E33JWZ/Rr3S?=
+ =?us-ascii?Q?6rX7Tt15NebFqXHM7ki/0BZgnG91gA06gCTTSaS+hXyBdjnEJ+YdteWkka8P?=
+ =?us-ascii?Q?1kf7Msrv4tc4uj1Ngok4vWClfCd70YCyIJdARVN7qdMIldzavWrVNlpbSgPx?=
+ =?us-ascii?Q?9THeI1q3gVAwKjvmFMQ4ZDtBsOWyNybdn+aLIY3OGpetnr0kXr12DyPGoJ0a?=
+ =?us-ascii?Q?gRa5bNKAXzmO2Wqg6uxTqvpObOzJ9+5VzOTSnTLD0NNI+dKEkSunRu0gp/hH?=
+ =?us-ascii?Q?Poch0uRGR82w5acMRIE2cAWroTvjN8M/G1NbkuiO7wBsgs/lSVTmIWNkVrKV?=
+ =?us-ascii?Q?dB+oHjcuBzpe3t1iHCUyWhsheMN1ShfRUjrNbgoD+T+JIyE+1WP4/wZDMM7g?=
+ =?us-ascii?Q?t8vMD3HsnlCfslQr/PgZrYUNdYT+Hk/JSer6lyWTIKN5wGgk2hrvsAdxeaed?=
+ =?us-ascii?Q?PWXqpasPf9WL4bKXIng4dJS/2JunKhJVu03iYJQpm9z51yBJU3/hepjoO7FY?=
+ =?us-ascii?Q?oW5neZ/ZrQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	ZcH6FY5KVOEsQq4JhWlfpggC5fH6bfn2VrljZPtOMpZJcY3z8qTyfzFjGyAbLoX+xYW6mY52etR5jFzrkpSamW/C4TZHNdfFBf31mh9F27sHlogoCrciawjfMyhgdgpdnDRmHkSsPBwtMPMQ4e8VVF7+8J8FNtNiN4qRvtB9jhoUaRUqHlnMYgheodcAGxk1NBJL7T3N/v/zUs+c7R0T8W7csvZbX3eQcguYHAKFJHMDblQNH7+jiBW0zc838uZhIhnLz+h0nIU0LUvOlCZS9C1rXD7uGdo+aqxbZWpFApi2ENYUb2G9LrXAIC0tvREtG2hyER9JyqQoMNTm1l4GGZQhYQfl97vQkL9dp6l7lm6nn22Nd4oyLIe+rc5Zx2t3skYvux9xdQPG+ZElSUl0OGSL1e+Mwb61T2zjdxiw1Gw/Np5pUqU8EACcDqIH+wob31AOHixbbF2QkCbVstENlscboIMMi6Bi2J/zd2p6vE79kbZJubc9RWUe0D45JFJmUyEVS/aO549O8ih8lx+dIRh+Uo4u037VzfrJGMPtDwgPaD6vH6Ughduku22XbkLrW5UHVP0MugbgsFyVrzuE4pELiZJo6/wYp0s84UKB6Fs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84542164-7404-40a4-cc99-08de7395507d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 11:10:27.2103
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Il7GwREjbw8zEj+wVWZucUBZpFusxYxll0oEK19dtsffbDD8u6u+b6kyrUPqCiDEcwF2XlsN/oBKJYTO/aHAQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB6327
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-24_01,2026-02-23_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 mlxscore=0
+ phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2602240090
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA5MCBTYWx0ZWRfX1TchxaMfmZhY
+ i5RdHTwluSihHmlS7Dv5pygAXwcw1Ni4QpUm/0dWkkVej6S9uASNDXxFEng/Cs3PNFXG7RFw60g
+ 1Rpbw8iXP/q8krb6SbDTJMQb+3yQbvLeXXMNZcJnSl8y+5zpdnuwDahkP8nwgoiN0yc2YotOunt
+ MMv13+Eo+8SuIOD6yMN2HNVZYI2K6msqcsSxTv5pujeEvj9wR+eTWL9s/cUCKxHpHLPGfC0vpmp
+ avwsHVuBs0lj2e711UuJky/0P8Q7m+fc0preQw85ykGLjn+f0Qh0GvHUGbiyd4pn4vzMtGxXnN2
+ aRUot6vX6GIyhtEIq53lxg0d216JToRXaZMaSutqFl6kdP5u2EcOG72MN6yG3r/VF9Le+bSTAWR
+ s465dvgAu/ZX081HHjwazLzEIedpefiI5ZyopEabbqGtJFbtX3Enl8UGHUW1gbZLXCC3Ple3nC6
+ 3PNbSmd7UfOXc/xValY/GUSkepn/qgLU1ryyhOCI=
+X-Proofpoint-GUID: xCjH2QyvbPNFCo62fOCCrAITIuGKLCDA
+X-Authority-Analysis: v=2.4 cv=b9C/I9Gx c=1 sm=1 tr=0 ts=699d8729 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=yPCof4ZbAAAA:8 a=BrOIIaLph3aAxMYrsNMA:9
+ a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12262
+X-Proofpoint-ORIG-GUID: xCjH2QyvbPNFCo62fOCCrAITIuGKLCDA
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771931392-960533
-X-HE-Meta: U2FsdGVkX18GwF44+/YMAp8b06NdSLN6OebxRBlFRE0AqEqttPTvegPtZD5xOlKC7A5gnhYi9Q7csGMTTOnX/GjPpKWZVmAtDDsTHIoS7/APvdi40BnQVQ4+4iGcr+WmS+eB7kKQWQTTq7EhQmAyOOTBL1sXRz3ZeJc/aC0Ex3AWvVU2xBP4F91VIw4KhoEVH0RwYpnexIbq3zAZF924H/SZsg5jVnKoMkj76mwmh6pAIXm7lkTCWb5trWWn+padAz62rW9YKI84gJ3jgxpDBQPLzglzsiibkt3TwiLdQQXstloT1av/AnhRPON0+1U0hfoDBnhPcjZohfqRk8JiwfZIlTwhYUYCyw9iSofLEyhcLpIxBGwkd4YWUDHxnpW8tbuE84MpMyF0dEmk1WZY5C9/fONjYXQB0R2ZmFMZNhOyTiiHmuvc/ndfgs/YWuYLTL7fSBCyWyzfEwPQFOuRI4Xe6WIZ4CJNOIfqfGtpYeCrwuN5+AjxBy7sRgAhh5HNVaakbm80oKATzE8/mWM0W6UQr2Au1ILXD3tGXrBxJd/aUap1t3xXOecRWxB9HMD7SAIT9Ldikg151dEQ2FcyootVZnuAawICZ1EIygM/XVUj5cXmYLoeBAt/JlMF9j7imyjaE52ecz7g4uDmtTae53LmO1S5aK5h7fdMBjMS9lkqALuOP6Y63q9/a0YLNBpGk+FMgd9BDzXE5k2n/sSutmZgnWsPubpKaZvvXcEyQnP95tR76Y83xQlvpzPRwx+Qx6z9NJC0OEr+jLqbWgk9cL3gSVL1wjBRhSDkGu8bMffrNGscTE2rj9T47UEV1I9oySachsbAUr2XtOLUB/Lz1+VwxyNnTrwrIeUX+DI4Ze46grHGFGPjBD3aP75VPrGViU33tMUGZ966IPcS24WeYZrBel+UhCJtWJdyoHCh2PhpUzyUCiAflQAezU/SHsatDexB3cBExftyW/ZEvDY
- 9s623vAB
- x+7D09tp4pv/WqO8WBDAtKt2+dJ7YN5Qq8K5fHG0FfrDXgPhHGIp153yNHkqeBTQM7rCrAxEo9iUbvBNwjiLSgEINonfvOIvxEm4xiFz6up13N5l6Pvgi+wID1G3danBWWuPVPlFzYnxujazfs+O3HMkIV0FaHT6c3JAimCxRB7Iuo68=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 142E5A000B
+X-Stat-Signature: e8tr5p7774s1iw37gyb9ej7668g9e366
+X-HE-Tag: 1771931439-638984
+X-HE-Meta: U2FsdGVkX1+9dQXSbTYQepSRS0XI8hmgIxjU6ZPfkPqxKG3wg0kL/0Wobg4PgkBkNk77kpZvf+H3KxMQad1YnjKw4vFR9wHGBqVB28vDIIH5OKTGhrXal9DGjX4GsszdZboWRRnLnUEIb+FzdND2h1CFePSovfJLjRm0AFJSYeHqBqiBbiiBk0wKK4QjQXWhP2sROOPNDGYqqBG7F2Oi55JHQWZtnKX+AAJMcMxt13ZAsHrr4C0Zq6IGoWEF6ENgJu1Uarz6IEHVjF1CLEx00K/GsmfAZCuGYux5iypo3X7DkBSDN6+OJiIzsMQzi2NaOtgGQIzVHszZ/29e8sz2V8cXkFB2y3wAIfo3FYuwN3NazvwDAdalG47pB/ZnInzH3TsXL0ynyzjkctoovk6/GRxREkel9QZ0gp7BJ9bfanwtNMRObqmEPA0hiXfQBeZSP/ng4A3Aq5cw33iMauJy+YHh4q4QLFc2PAZ2TOgIH+dkPzlXi/kBdGf/xKrjBSzJc+oUUkGLIGNwYClnHBoIDjDI8Wcfg8/QPkjV+nD+6YG35MSavIERCKJb9HVHGn6YopyG6JzOqT+XXQy/9Zo+FJPt6wLB9aRcIhHIlm6t4jrOuq49jQjSj2EAUmFWeDxXNPBjzyVLxScu+p8dVF692aIN3jb/Djq0bTFcWlkfNNehUiwABRHxKdSFLxoKg0zSYGpvaXkZ1Mw4AgJnOEPjO994mVoyOraxH8JuzHcJgBse2P4Cg76PWCZiBbsuzH3vfL6TK2wadhG/xPwTbyTUbx+Oc5Elw7i/NjJkqNmqXmaOSbjw+2UfB/e4JdEhHQ/6VsoTxq9UZUDNEM2BFFxrSIwTWHlub1Il2S9WizZ0dIdw0NeQLm62m9DFPdRRqsMKvYQxuyYhEYQnmYx6MbkSIErpJhsJhUlI7Ydt7ivFxDeQxrYtJGjRlbrKenfzxkHVqOr+dt6pLFZhLuuRpIK
+ 7Dmvx7qS
+ WH9rD9XQXmTaAxMne9viMU6OrPend+xlmYj7Jp6m6LbnCJWy6926nWwBC12OV8OS5ujThBOgwDDZVMt+glzgVp/D9/FX75tyRnWVy2bKp0QWaTp3QZa7IDMI81kNf87utSr0jdCN1K2ilknjWp4XBtQVH7XGEYKrctbQ/k4hh8W+1Znbtkpns9+zWc40hZSG6PRsrOOEtS6oiyks4ZO8vqHl0/CRJw15V/PxVImr3HvdjTi81XWHoxAS+XBEUqsVhlyOvAO9tx6kBwA427mShEj7UPjGRQ9HKLEI+lasC/nAhUZ1eFjfP63IQHbrHiSTwIra+m/p9iynmDMG+cjnwJ4rkrq+zr/ahaey5Tl5W/aZj7I611LacpDTARbC0C1MBXmeCNiLh2zJ00BZQzc3XOU6kvbTcYpx8NvXkgIkUoBTHUOBZKE97vQjGE0q84pRUC+ikYBgxBNbDzRz+rous9Mu2+DuctH+4HzoMXN56PQ6f1XZTYmiw0sMxboouf2lUriNBkXK7R7zZPC/Paqx80f18ySxjBypo8/DUwd6oJf8roSGFIUkNHoxZUpvJvneb323kForc6x9YsE5HF/70uSPexPjrbjxJSkGUBVX2REQcOKo8QyCKO9ILCx0oeZv1t9GFeSd0tntiyU1jIZOMdVVdTAm4BYaRBcBlD7JAaO0xzkZn3/5xy8Op52MKjd6BX042eNRZWs44pKKaatdTuO3zJnDjeJamcQuMzvRGoZv1uC/ONRPZEtIvFYe/17/MupEnBP+iPshSbgVs1WBoov3XXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,187 +249,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We batch unmapping of anonymous lazyfree folios by folio_unmap_pte_batch.
-If the batch has a mix of writable and non-writable bits, we may end up
-setting the entire batch writable. Fix this by write-protecting the ptes
-during pte restoration in the failure path.
+On Tue, Feb 24, 2026 at 02:34:41PM +0530, Venkat Rao Bagalkote wrote:
+> 
+> On 23/02/26 1:28 pm, Harry Yoo wrote:
+> > When alloc_slab_obj_exts() is called later in time (instead of at slab
+> > allocation & initialization step), slab->stride and slab->obj_exts are
+> > set when the slab is already accessible by multiple CPUs.
+> > 
+> > The current implementation does not enforce memory ordering between
+> > slab->stride and slab->obj_exts. However, for correctness, slab->stride
+> > must be visible before slab->obj_exts, otherwise concurrent readers
+> > may observe slab->obj_exts as non-zero while stride is still stale,
+> > leading to incorrect reference counting of object cgroups.
+> > 
+> > There has been a bug report [1] that showed symptoms of incorrect
+> > reference counting of object cgroups, which could be triggered by
+> > this memory ordering issue.
+> > 
+> > Fix this by unconditionally initializing slab->stride in
+> > alloc_slab_obj_exts_early(), before the need_slab_obj_exts() check.
+> > In case of SLAB_OBJ_EXT_IN_OBJ, it is overridden in the same function.
+> > 
+> > This ensures stride is set before the slab becomes visible to
+> > other CPUs via the per-node partial slab list (protected by spinlock
+> > with acquire/release semantics), preventing them from observing
+> > inconsistent stride value.
+> > 
+> > Thanks to Shakeel Butt for pointing out this issue [2].
+> > 
+> > Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
+> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> > Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com
+> > Link: https://lore.kernel.org/linux-mm/aZu9G9mVIVzSm6Ft@hyeyoo
+> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > ---
+> > 
+> > I tested this patch, but I could not confirm that this actually fixes
+> > the issue reported by [1]. It would be nice if Venkat could help
+> > confirm; but perhaps it's challenging to reliably reproduce...
+> 
+> 
+> Thanks for the patch. I did ran the complete test suite, and unfortunately
+> issue is reproducing.
 
-I was able to write the below reproducer and crash the kernel.
-Explanation of reproducer (set 64K mTHP to always):
+Oops, thanks for confirming that it's still reproduced!
+That's really helpful.
 
-Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
-fork() - parent points to the folio with 8 writable ptes and 8 non-writable
-ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
-determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
-the folio as lazyfree. Write to the memory to dirty the pte, eventually
-rmap will dirty the folio. Then trigger reclaim, we will hit the pte
-restoration path, and the kernel will crash with the following trace:
+Perhaps I should start considering cases where it's not a memory
+ordering issue, but let's check one more thing before moving on.
+could you please test if it still reproduces with the following patch?
 
-[   21.134473] kernel BUG at mm/page_table_check.c:118!
-[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[   21.135917] Modules linked in:
-[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
-[   21.136858] Hardware name: linux,dummy-virt (DT)
-[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   21.137308] pc : page_table_check_set+0x28c/0x2a8
-[   21.137607] lr : page_table_check_set+0x134/0x2a8
-[   21.137885] sp : ffff80008a3b3340
-[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
-[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
-[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
-[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
-[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
-[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
-[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
-[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
-[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
-[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
-[   21.141991] Call trace:
-[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
-[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
-[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
-[   21.142766]  contpte_set_ptes+0xe8/0x140
-[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
-[   21.143177]  rmap_walk_anon+0x100/0x250
-[   21.143315]  try_to_unmap+0xa0/0xc8
-[   21.143441]  shrink_folio_list+0x59c/0x18a8
-[   21.143759]  shrink_lruvec+0x664/0xbf0
-[   21.144043]  shrink_node+0x218/0x878
-[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
-[   21.144763]  user_proactive_reclaim+0x2a4/0x340
-[   21.145056]  reclaim_store+0x3c/0x60
-[   21.145216]  dev_attr_store+0x20/0x40
-[   21.145585]  sysfs_kf_write+0x84/0xa8
-[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
-[   21.145994]  vfs_write+0x2b8/0x368
-[   21.146119]  ksys_write+0x70/0x110
-[   21.146240]  __arm64_sys_write+0x24/0x38
-[   21.146380]  invoke_syscall+0x50/0x120
-[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
-[   21.146679]  do_el0_svc+0x28/0x40
-[   21.146798]  el0_svc+0x34/0x110
-[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
-[   21.147074]  el0t_64_sync+0x198/0x1a0
-[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
-[   21.147440] ---[ end trace 0000000000000000 ]---
+If it's still reproducible, it should not be due to the memory ordering
+issue between obj_exts and stride.
 
+---8<---
+From: Harry Yoo <harry.yoo@oracle.com>
+Date: Mon, 23 Feb 2026 16:58:09 +0900
+Subject: mm/slab: enforce slab->stride -> slab->obj_exts ordering
 
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sched.h>
-#include <fcntl.h>
+I tried to avoid unnecessary memory barriers for efficiency,
+but the original bug is still reproducible.
 
-void write_to_reclaim() {
-    const char *path = "/sys/devices/system/node/node0/reclaim";
-    const char *value = "409600000000";
-    int fd = open(path, O_WRONLY);
-    if (fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
-    }
+Probably I missed a case where an object is allocated on a CPU
+and then freed on a different CPU without involving spinlock.
 
-    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
-        perror("write");
-        close(fd);
-        exit(EXIT_FAILURE);
-    }
+I'm not sure if I did not cover edge cases or if it's caused by
+something other than memory ordering issue.
 
-    printf("Successfully wrote %s to %s\n", value, path);
-    close(fd);
-}
+Anyway, let's find out by introducing heavy memory barriers!
 
-int main()
-{
-	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
-			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if ((unsigned long)ptr != (1UL << 30)) {
-		perror("mmap");
-		return 1;
-	}
-	
-	/* a 64K folio gets faulted in */
-	memset(ptr, 0, 1UL << 16);
+Always ensure that updates to stride is visible before obj_exts.
 
-	/* 32K half will not be shared into child */
-	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
-		perror("madvise madv dontfork");
-		return 1;
-	}
-
-	pid_t pid = fork();
-
-	if (pid < 0) {
-		perror("fork");
-		return 1;
-	} else if (pid == 0) {
-		sleep(15);
-	} else {
-		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
-		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
-			perror("madvise madv fork");
-			return 1;
-		}
-		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
-			perror("madvise madv free");
-			return 1;
-		}
-
-		/* dirty the large folio */
-		(*ptr) += 10;
-
-		write_to_reclaim();
-		// sleep(10);
-		waitpid(pid, NULL, 0);
-
-	}
-}
-
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
-Applies on mm-new (commit 018018a17770).
+ mm/slab.h |  1 +
+ mm/slub.c | 10 +++++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
- mm/rmap.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+diff --git a/mm/slab.h b/mm/slab.h
+index 71c7261bf822..aacdd9f4e509 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -565,6 +565,7 @@ static inline void slab_set_stride(struct slab *slab, unsigned short stride)
+ }
+ static inline unsigned short slab_get_stride(struct slab *slab)
+ {
++	smp_rmb();
+ 	return slab->stride;
+ }
+ #else
+diff --git a/mm/slub.c b/mm/slub.c
+index 862642c165ed..c7c8b660a994 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2196,7 +2196,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ retry:
+ 	old_exts = READ_ONCE(slab->obj_exts);
+ 	handle_failed_objexts_alloc(old_exts, vec, objects);
+-	slab_set_stride(slab, sizeof(struct slabobj_ext));
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index bff8f222004e4..501519844f290 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2235,6 +2235,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 				smp_rmb();
- 
- 				if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-+					/*
-+					 * The pte batch may have a mix of writable and non-writable
-+					 * ptes. If the first pte of the batch was writable, we may
-+					 * end up restoring the ptes incorrectly by setting the
-+					 * entire batch writable. Avoid this by setting the batch
-+					 * non-writable; this is not optimal, but improbable to
-+					 * reach by virtue of being a failure path.
-+					 */
-+					pteval = pte_wrprotect(pteval);
+ 	if (new_slab) {
+ 		/*
+@@ -2272,6 +2271,10 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ 	void *addr;
+ 	unsigned long obj_exts;
+
++	slab_set_stride(slab, sizeof(struct slabobj_ext));
++	/* pairs with smp_rmb() in slab_get_stride() */
++	smp_wmb();
 +
- 					/*
- 					 * redirtied either using the page table or a previously
- 					 * obtained GUP reference.
-@@ -2243,6 +2253,9 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 					folio_set_swapbacked(folio);
- 					goto walk_abort;
- 				} else if (ref_count != 1 + map_count) {
-+					/* See comment above */
-+					pteval = pte_wrprotect(pteval);
-+
- 					/*
- 					 * Additional reference. Could be a GUP reference or any
- 					 * speculative reference. GUP users must mark the folio
--- 
-2.34.1
+ 	if (!need_slab_obj_exts(s))
+ 		return;
+
+@@ -2288,7 +2291,6 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ 		obj_exts |= MEMCG_DATA_OBJEXTS;
+ #endif
+ 		slab->obj_exts = obj_exts;
+-		slab_set_stride(slab, sizeof(struct slabobj_ext));
+ 	} else if (s->flags & SLAB_OBJ_EXT_IN_OBJ) {
+ 		unsigned int offset = obj_exts_offset_in_object(s);
+
+@@ -2305,8 +2307,10 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ #ifdef CONFIG_MEMCG
+ 		obj_exts |= MEMCG_DATA_OBJEXTS;
+ #endif
+-		slab->obj_exts = obj_exts;
+ 		slab_set_stride(slab, s->size);
++		/* pairs with smp_rmb() in slab_get_stride() */
++		smp_wmb();
++		slab->obj_exts = obj_exts;
+ 	}
+ }
+
+--
+2.43.0
+
 
 
