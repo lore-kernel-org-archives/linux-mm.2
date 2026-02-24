@@ -4,100 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37BFDEF5862
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 16:52:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C537EF5862
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 16:55:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B7186B0088; Tue, 24 Feb 2026 11:52:56 -0500 (EST)
+	id E88C46B0089; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 777B86B008A; Tue, 24 Feb 2026 11:52:56 -0500 (EST)
+	id E0D266B008C; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 687EC6B008C; Tue, 24 Feb 2026 11:52:56 -0500 (EST)
+	id CE17B6B0093; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 53B766B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:52:56 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 043C5C0A39
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:52:55 +0000 (UTC)
-X-FDA: 84479944752.24.CCB0A83
-Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3F8A340011
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:52:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Fzil1/5x";
-	spf=pass (imf11.hostedemail.com: domain of 3ZNedaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3ZNedaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BB26C6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73E7A1A0252
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:54:59 +0000 (UTC)
+X-FDA: 84479949918.25.865FDF9
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8871C140008
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:54:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nBjl7c6d;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771952097; a=rsa-sha256;
+	cv=none;
+	b=wSb+ztEdKRGg9T1IZnNt18OpwwlAW/GHBPp4eFBnHA9cu6VY7n8KYNyOXnaFeAswLfGLRZ
+	F9gtZSX4Feq5lccnZgzz313MLXYCF8brGsejL3b8pL3A2tDGgzr5M8akgtd0gODmmc71Qb
+	9Ifs0HteLbfj2uzpvxn0N9tuY6E1DlI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nBjl7c6d;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771951974;
+	s=arc-20220608; t=1771952097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=RMuxXmIqP2+dssDx1Vj46Iwohxm9R1VZEsldkCoK/jY=;
-	b=HhAPDIiHsDhKxHQpVLZ582j8/iJqjlTxpko1Zjd/TrjfuP8jrkc/x+8pYMY7UqpkPZ0+uT
-	ceUnUl0ylrsMu6aTZFAWeMZiMXo0PYROAyaObh/YEC0c1ObuWnHEWAxrRKAjvOA2SKrJpA
-	MaGei6U6wgNPx/pSYJsT3CA1U8eg16o=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Fzil1/5x";
-	spf=pass (imf11.hostedemail.com: domain of 3ZNedaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3ZNedaQYKCN0RTQDMAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771951974; a=rsa-sha256;
-	cv=none;
-	b=LqqcWCbVhsIWvDyieyhV7X+Kl0xdMTdUxP8EYy07caS0xbPbnF8LQjBYrEp+xFQnL6E5Bu
-	O7XCMasmtQn5yLS9pC8WNSzKGF7ch1qxHy/l8CdF4cKviWAl1ZPvokeIV2rUtLa8f/jWMI
-	KpMSKzD4ruqo1zWYKTamsROAlu6s/dI=
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-12711967e0eso7989107c88.0
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:52:53 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/u4GoWFznFuQrqLlGOUj7jRuDM2CBLv4iVo/JzLKZig=;
+	b=8gOX0TWDyxzAUrTxLqTg4srKE7fIcP5bw3vrkeJt007fcUumLO2lV/FVB9V+njAotYrhfs
+	u2PeSn+pX9EITfKjVvOP1ojbDbWituAvzH4TfVMcS8ASbob/dGVhdpdxG3gHgwdy+9E7Sx
+	tXumwzS78iVnvmd0uT+pQEo1g+Iub1U=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8954c9daaeaso72513836d6.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:54:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771951973; x=1772556773; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RMuxXmIqP2+dssDx1Vj46Iwohxm9R1VZEsldkCoK/jY=;
-        b=Fzil1/5x6S+z3F4Xrdfb86UBXUmlUCbEhSOpyRs0YQMP3ebp2JXOlLm59y+XLwGqGH
-         KzGc6nPsUJYQv+HJwy35ew9g/faaIxaF1Q/kAX47NIE4D2Mm8t7+KwUsP5RjD5cAzXFJ
-         eTtbe1QPMFDTrxI4UsdCocvpBsaiiW1uVu3Z02NK9EyxVq9vzrg/bfYlhN1WPJZ8aDKC
-         7ricB0MEO6ksVqh47ui0L3eZZzv8CvTR6Wqwmf3rMEcOP/cEjwgRxeyRsqvgedIvlE8o
-         +1xkYAaNKvcdhK427gVRIg8+4eSdqG4MRfYPnpY6jcpL7w4WRC6aXmjmVUMVzg2ye8xm
-         Xphw==
+        d=gourry.net; s=google; t=1771952096; x=1772556896; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/u4GoWFznFuQrqLlGOUj7jRuDM2CBLv4iVo/JzLKZig=;
+        b=nBjl7c6dol4dsbMfE8OffP5OPA4Klhoi5gNY+9RSaDKpAo8IAp4rIgc8qA0AXHZl9j
+         SCRis5sEKfuLfT523wCtp+vpa37LlwGE+tQitlvgfwNUbtBohTb+p0NzOEovrOonFHYQ
+         /d/ge0eJq8myY4NL7shxroew8K3rqNb0bzgb9tNChMLSQktz6Rt0NXnTSrK2LGgZb0By
+         USWKlpOsI+sBSdCbLfajKIY46FnN8tZ7z0hN6xJSHOpRftchy4mPXF+8aPCHXfr6RwVH
+         +vSBLc+jZgU0wDg1nHL08EAtEbvr/HZRORN0xgOmjh7i/pcTv5tYPywmAfG01lFi2UfF
+         Eb9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771951973; x=1772556773;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RMuxXmIqP2+dssDx1Vj46Iwohxm9R1VZEsldkCoK/jY=;
-        b=qJaMeE/jQMfrdE7ZdiNPc7LY5Pfi8esqLu+OQo7JNoizPQlS/y1jyaBaD2diKHMCCL
-         15UFsZ5DrESdFJ8u9ateSIyzb6iFv1AFkFkCn5JWh4VMZJ1X9GpgnA0o2slLP7DzKniB
-         GpH9/qpUyk0PggYv++MDbP9ep0rB0zX8oYTR/7aS+zXuWHmj+jHMWH1IP2VZTafiVlGS
-         qbDdAUWbCQakx7K+8GYsKQMOivKLy50K+mEvkhbFJ1+cGwRWZu99/8hhM4NYhLsBxP+N
-         qH1HMxEneOiAX/pS/eL1Y8D6/9ucrWMYCzAyVYZ+hWuiwqH8nXVd692vuOWaxQk85Q8t
-         +kvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLictaxKeiRGbuFxuA4swBdFwX45kamfSWxsf/T/KPNweI2G0F6P+IWrP3cvHQYWIzb5Gi/51/qA==@kvack.org
-X-Gm-Message-State: AOJu0YyQX7gUt3pyReXiGpQHUgboKkuPv5rQx2IyI9MC1NTpO8TzgkLw
-	lFdCn1fSViehuBmXCUtHP/gwBi267KOTv6HSu7j8QDda/ckvdzfqzJ8UCB0O+d+k/NHk7zPEscb
-	wxYOMZg==
-X-Received: from dlbcy2.prod.google.com ([2002:a05:7022:b82:b0:124:7188:93da])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6291:b0:126:fddf:3d86
- with SMTP id a92af1059eb24-1276ad511e1mr5280312c88.39.1771951972810; Tue, 24
- Feb 2026 08:52:52 -0800 (PST)
-Date: Tue, 24 Feb 2026 08:52:50 -0800
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
-Message-ID: <20260224165250.1322946-1-surenb@google.com>
-Subject: [PATCH 1/1] mm/slab: mark alloc tags empty for sheafs allocated with __GFP_NO_OBJ_EXT
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: vbabka@suse.cz, harry.yoo@oracle.com, 00107082@163.com, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3F8A340011
-X-Stat-Signature: 4c155gz95btwpnjfziwzg8i5gjmkd679
+        d=1e100.net; s=20230601; t=1771952096; x=1772556896;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/u4GoWFznFuQrqLlGOUj7jRuDM2CBLv4iVo/JzLKZig=;
+        b=oFMP3hYDSn5BPiPIfoxwR6lg6fR5ykgGH9mINmgKru5SROruM6jZOmZHWlkJja8EKb
+         N5g0rCJD5gfp5elSyzRQTl31AxeACBTD5xSBdj+IFEPTa0JMAcy2F+cyH0y0APvsn1WO
+         1Tas2f6v9XGZm+pQFVpWY1iyT3zYSAmsce5p10gby2b0woIukk18SkH2vBgutdynD/rM
+         E/GitHrdTxDiqOaavR9/asuBaL3GTFg0+BJFZc2ILpsF6ri4y4LOb6cGA0FMG7S2CLps
+         QH79ielnTIDnPwfHI24feVmpl7/8gukVuXoLNnMaY4A7HWKIoiCgWBl3Q/hh+n5QWNDM
+         0WoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSt4SSKOaOSZ6v5bOyKdoay+++1OL2W1MwI+mGE7f6CLP+mcl3LQ315A/AUCT2iF/og0rx0xTh+Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz4XryfWRJ/VvQZCXUKKJGqsLXZ4Kzgl9XMWm8/losKZol3qYI+
+	JVcOc5FBwuyR1KsBH38XMAF5mv/FbdI/368QUD6FjHXzXCDaecKJTDE1XrADYWXgMXA=
+X-Gm-Gg: ATEYQzwso4H5EEddhyx8E9Rt3jBxz5F2AAc48jQav7QOXCPBHAqqqRQwtbRzk6ZsGt/
+	o974uAosol9FJb/tMNIOsnFucj1w5qTi1EqUhqHRyj3uIpB1PKyIioSi/oSaRqOAGasI4SXRH/4
+	5c8c+TImHIv83M6GGIS9EDGb+8shuL7PF0MwR/u+i/us3p+xtu3HdSxH8Ob//4eZwuVUxEW2km0
+	5UVOkodenTHWUXWTI8wkeAGo7NL39tpbvRVdY6VOSGZ5hOq3iDVXjndjXHXKBxCKMS0hye3fT8+
+	Jn4OBK00+X8WrB6+f+FxPYy+PH2E9q0dXBtrbRmtHF4k28XuymUdTr0kjHOQaacYlyK6CkBHnTF
+	9/IPC3F22BSXxg/Tj+aagzsceUx1DQ36KzKumbA2lSvgTIMGzE07KHQOaUUR5QXJ5TRTQPsSBor
+	9ppF1hgO1e8L9fm5WE4sQfFMu1Ofj0Fj0Z9vDlF4Ze3VxEwfuDI4B3gfCrlErc8c1j6jHh2HvLt
+	VDAqfcZTg==
+X-Received: by 2002:a05:6214:1bcc:b0:893:4efa:e8aa with SMTP id 6a1803df08f44-89979e317cbmr188639836d6.9.1771952096264;
+        Tue, 24 Feb 2026 08:54:56 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d0ec694sm1029766685a.29.2026.02.24.08.54.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 08:54:55 -0800 (PST)
+Date: Tue, 24 Feb 2026 11:54:52 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	damon@lists.linux.dev, kernel-team@meta.com,
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <aZ3X3Jni0HZXZMVl@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <fzy6f6dpv3oq3ksr2mkst7pz3daeb3buhuvdvcw4633pcl7h6u@mxjgiwpg5acv>
+ <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
+X-Stat-Signature: pjnfuf17ieemuua17apr9gssrcyu4rxn
 X-Rspam-User: 
-X-HE-Tag: 1771951974-191240
-X-HE-Meta: U2FsdGVkX1/h7XxVwXXcoF0kSu2gA1c3dNCaeiHPwi7ZqeAxuH5N5v/H7lHzFbBH52vCy0k4d9ossKDvbE64PML1WhtrYCwE18rqckPDhyJT8Wb+OFg0dZAcVevogrptzHde3lQJjsPvHnnd4luCtp/j5YhyoNXKTjlylTkN61vqrF29GsiTfZd9HlRw+XvNG6pgDeW5iSTKPaPtrW1zueS2TZgP+SA5jVnv7TSL1bkQLucn5wWY2nc8SFULQ5hWvxl1KCWSJCiEfeFT0s0ZsvjXDh0mIz8gND14xGcWXj5dT+xu7+ZDRNKBZTWlT6ra/PdxeK7btOyzkb7UVdDCzvV0IwFda4Z5hVhDl7RTbljRw0dhD2vgrDldr5Oy17AiF1Srt1wXaYec5Rt1XKgxo0iUPfaPGX37xHVg1f6ZWMeF8HOtjG1RDhTJLr+FVcilGEAe01FRqNvzOiBXP5t8ilRD7SIDKV8yPKtkiNuYqsC144dDPxRQm/h6xajwboF/pzSkKNfj/4L49ONBQv32DSdsSazY+L2t4XUPMaAFNA70fxOVTwBLCQs4T7j2bx5sYM1uK7LNsJOXSn6q64Kou4c9BUxYB6h6wqaqC+dFXYd/BqURSv2O0gdKa01YRE4bcGIrsGd14lHGCm40xD/38pOBivLTVQBBxT7zJFO4yXT04xAnEbk/F+BFw5t6qTMZ6gQsqJ+Q8WOBLnBp4ITFbDOR6h+IhdGuQIiAK+/UmXXQkxKebnU5ezXUntVlZSV9FlPHZ9QYtStd3S14qaUuwlXcYOPLfRkuG6IsUcSCxHKKwzyDD+rNYNh7VklrsnRWRKzodn74Wn5uFcu0IBYy7Q1VIzQiQV7QMMOZarHML7J87qD4oJYkDnOhGyfYgpoYzG3jV0MUpA/982RPgVC4vVEyGWcdIYIhPmonzYQM2hSRCpcImnl2nRdKpe8txsqpLYSdZrVyZ++jIyc+j7x
- VUlv4kLL
- v8EkrVqvwtV7WVbMXYMh/RHVYXLGqAA96VyzPalhDRlAZ8hEw5z+oIOBcPaDdymZfPr/v/rTXADzgftu81eSnyR3RRpaHVllNoEmBGTa4OPc8vByQKcReXJmjArrGzXsvT7G/A/NDfCwjp7cxbW9YZhU+Bu+53CSFomlAqg81j1worXYj0tj1GzP875SRivqNGBMbU1HPFWkrhxSQqZ+xVDAc2bxCn33Qub566o693zTWX6eE+TaK0RWeD+eTU18WYt7j62YTS+3dlMcR+0nkUDA96H8qbVgh+6neU+onDZa0HNj7tBP2vYBowF1RRkRuO24ZrrIscfqYyt22G8+2EAbOo9Fq+KIUUkgw1NXogTJ/0FQzD+Qnix5OE4h3lw2PUq1ZLhLlODft7CRldgewFyHRGrP+53Myfx8uRGDRr2bftBqTyx7sNHdyv8ZwJQScl/STXGp0E46dHo3E5vJ4j5AmavnAk0dtHlXB8T3r9szSZKqBCh67vwV3g/pZhiNj7zbZPW8DRLpDFsXxW9v/AfqdH5BAr3NR0cX74EnEljipP2qgI5R1X2K65ZTpYYrPevsPx1j951A2fkzgC6fRdbRmMXwcFe3EKFQlplIMeO/8/Cq9sHCtbZ2Af5mm6NSPD3EWN7FvGSVj8vHeiaPqOTrOlsxAdSRRfhGe6snB5b3fJzWbLql0liEWjb0aveCOBnjTkO4clhdlsSOukxUNYixW+66stKYaDDtEdrzdb/zi/7Q=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8871C140008
+X-HE-Tag: 1771952097-59499
+X-HE-Meta: U2FsdGVkX1/VkNPncRwPlKKZvIT3ZODbrkn90OXh2Djt6fVuxT9byu/W7o4R2EGcaE0HPzQFKJBm3rqyLmvdtMUP3bUle6HcbKVYIA+EpDgwUIulGj+J4ejcvUHbtSxVWAiuFqKy5X/SNVcLKZvREJfaUcquYB7Nn3zqMjvo/gzuCIQhblhrWN3qt4rG3uZlN4MhHmBQBhnmYTp4KvHFdF7+EAn6c286mnVt/yEBsiJ2or0X+kgtDdxMJD7VDDbzHAaas5Zw/0YpydcUGYqSNxpB210RPme5oY56dY7NE28jSPb6NOHFp9L1eiE8bn84Hsf/2KzUkznTibb2/BA/N+aUL/ogravQSJPKry9yYScLC+jSwSnDmb6lRShehb7uNql3aQEpdby2Iwww0pc2Zdk7F3qEF6x+9rjDl4ae6pTnqJQAFe6nlJlLewxht8PGDpy4WSMua9uL9RqOaNOv1zK3kjokyKuHDveDJIGIoLfzH+Djbzu+fho9k5g1Avqj8I4ALWB7821JxuK5cVHXiX1dE8AIXPrkFoKK0ZOZF4Nju1ekZsN2kiJxvZdXnFF7JfPBWKPYp7MW5s8ZKvb44Tp2/1hzmyJkMlHSLNawzocLpOJEo+1yw2qAhLSpGFw3hpO6PwiZtRUjsBynr9aI8PYGz7vLvjy/8iLGDQHKcG6XO4S4gqSSZGPgPztz66ApFUbsRo5NdWq3+hMinYkbSXTo/Ig6qEFCG/X33mX2VyMBpL15/nH48MsIFeBCjDoFNzLRce6JwAtygjsqkEpUguwNz4M8pAeEfJJE1xbNJm+whmfyauypu8ArcHmmjWrcJR578u+PGEGqox2TQRSGuY9B6KSTbBv5obbkcIVd+LTe2ICvWHdyAVVkdJUmZ7vvxbhgP+I5sefww/MLT8/hIvifA8k2Kd9mH5JkorEvBlQJ7o70EDeN6gxS0+9FZ5vhG1Ldw0nA6Kt6EpkCYkH
+ Rd+LH5oJ
+ zPu6VcysRswmH5Wxm61oAyuEULw/DkmJ8CM17+jsjkjDPwCjOaAAexlyEXZWrhZ6mqekheUXUxPghA9czi0DRaid2bFiOJ1HaEV25u2IkVTKlaZxrem+aTxAy0PO9lP4Q5Cvm0m3e71lgQ5sG0gkUhW4pGtfIkZlt1r+9/AuoyHNJVLX07DUbooeQgaxAvb/ItR4fNcEDx2iwZvkDNFEJNdDZusYj5pIZFntp6/W7UD75pT2nBY0yaXTWYmYRIYrI74+8KZtJ3EDlL/DJemB19b2713kMPLQNz7MXEAOYetvAbSxVNsPLB3qIrCbZYAyZ7utqjjZZkN1FdUMsqasLebF54T8RWlseGtoh86jMSP483TfC+hp6cIxSxnzVT2R7k9HP0NE9IocTy82QeVHtbh+XQ+3GMik7VtQcBtOIV1N/rck=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,85 +147,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_empty_sheaf() allocates sheafs from SLAB_KMALLOC caches using
-__GFP_NO_OBJ_EXT to avoid recursion, however it does not mark their
-allocation tags empty before freeing, which results in a warning when
-CONFIG_MEM_ALLOC_PROFILING_DEBUG is set. Fix this by marking allocation
-tags for such allocations as empty.
+On Tue, Feb 24, 2026 at 10:17:38AM -0500, Gregory Price wrote:
+>    - Changing validations on node states
+>      - mempolicy checks N_MEMORY membership, so you have to hack
+>        N_MEMORY onto ZONE_DEVICE
+>        (or teach it about a new node state... N_MEMORY_PRIVATE)
+> 
 
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/all/20260223155128.3849-1-00107082@163.com/
-Analyzed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- mm/slab.h |  4 ++--
- mm/slub.c | 17 ++++++++++-------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+This gave me something to chew on
 
-diff --git a/mm/slab.h b/mm/slab.h
-index 71c7261bf822..f6ef862b60ef 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -290,14 +290,14 @@ static inline void *nearest_obj(struct kmem_cache *cache,
- 
- /* Determine object index from a given position */
- static inline unsigned int __obj_to_index(const struct kmem_cache *cache,
--					  void *addr, void *obj)
-+					  void *addr, const void *obj)
- {
- 	return reciprocal_divide(kasan_reset_tag(obj) - addr,
- 				 cache->reciprocal_size);
- }
- 
- static inline unsigned int obj_to_index(const struct kmem_cache *cache,
--					const struct slab *slab, void *obj)
-+					const struct slab *slab, const void *obj)
- {
- 	if (is_kfence_address(obj))
- 		return 0;
-diff --git a/mm/slub.c b/mm/slub.c
-index 862642c165ed..3ddbe654cd56 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2041,18 +2041,18 @@ static inline void dec_slabs_node(struct kmem_cache *s, int node,
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
- 
--static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
-+static inline void mark_objexts_empty(const void *obj)
- {
--	struct slab *obj_exts_slab;
-+	struct slab *obj_slab;
- 	unsigned long slab_exts;
- 
--	obj_exts_slab = virt_to_slab(obj_exts);
--	slab_exts = slab_obj_exts(obj_exts_slab);
-+	obj_slab = virt_to_slab(obj);
-+	slab_exts = slab_obj_exts(obj_slab);
- 	if (slab_exts) {
- 		get_slab_obj_exts(slab_exts);
--		unsigned int offs = obj_to_index(obj_exts_slab->slab_cache,
--						 obj_exts_slab, obj_exts);
--		struct slabobj_ext *ext = slab_obj_ext(obj_exts_slab,
-+		unsigned int offs = obj_to_index(obj_slab->slab_cache,
-+						 obj_slab, obj);
-+		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
- 						       slab_exts, offs);
- 
- 		if (unlikely(is_codetag_empty(&ext->ref))) {
-@@ -2783,6 +2783,9 @@ static inline struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s,
- 
- static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
- {
-+	if (s->flags & SLAB_KMALLOC)
-+		mark_objexts_empty(sheaf);
-+
- 	kfree(sheaf);
- 
- 	stat(s, SHEAF_FREE);
+I think this can be done without introducing N_MEMORY_PRIVATE and just
+checking:   NODE_DATA(target_nid)->private
 
-base-commit: 7dff99b354601dd01829e1511711846e04340a69
--- 
-2.53.0.371.g1d285c8824-goog
+meaning these nodes can just be N_MEMORY with the same isolations.
 
+I'll look at this a bit more.
+
+~Gregory
 
