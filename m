@@ -4,91 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DA78EFB7EF
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84785EFB7FA
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:12:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3686B0088; Tue, 24 Feb 2026 00:04:16 -0500 (EST)
+	id A18A56B0088; Tue, 24 Feb 2026 00:12:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D91206B0089; Tue, 24 Feb 2026 00:04:16 -0500 (EST)
+	id 9C6916B0089; Tue, 24 Feb 2026 00:12:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9CF16B008A; Tue, 24 Feb 2026 00:04:16 -0500 (EST)
+	id 8C5076B008A; Tue, 24 Feb 2026 00:12:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B39606B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:04:16 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5B19E1C2FA
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:04:16 +0000 (UTC)
-X-FDA: 84478158912.04.3A3B215
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3F0172000A
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:04:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fpnezLB/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771909454; a=rsa-sha256;
-	cv=none;
-	b=udfacFYQx5Pcmtse3jm+6BqA3BotidFyZFAo+dFe7aEykoq4bAMPpElXDA0Q9lCmCD2/Bq
-	wo/5iCHK2CD3QInwOy96KRXjs+l9JGEZWfw+R6njEimYjqecmvSBkdLONoSj9//isU5GlN
-	gryEfFSc9PTK+PPd7X+bU0m4BVf00jE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fpnezLB/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 76C006B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:12:28 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 220ACC1AD0
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:12:28 +0000 (UTC)
+X-FDA: 84478179576.15.3008C29
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7FE6640002
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:12:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771909454;
+	s=arc-20220608; t=1771909946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EG8whWiscX+B+atpuuBm8IAdBUH2FBl3rjbNgVwiCQI=;
-	b=NLUewcg3xF+o2FDjX1JCZDRw7UEI4qEN2aj704LExz0a7OM6wNZQl2I6UX3LOHPSb5i2KS
-	2BtkveKVpy+CZbl6ZlgycnUlMOVaS8iPk3hmbPYHxMNWeCcD/B48EV4ThEwuk4UoBrENuq
-	4v0jfrLb/GRM0tdbc7r9AmiW6RhZIc8=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771909450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EG8whWiscX+B+atpuuBm8IAdBUH2FBl3rjbNgVwiCQI=;
-	b=fpnezLB/XGUs1JAM3+ddrRnJ9xrr9MqSXJr6joVN4tUkuXpMbxNU//ZvvhigHKYRtrvL3C
-	k4tYbq8Okd0O3pirzfHrohzOikxBRrx87cyE8xysynb3fs70Eks5nxS3E1r9RTB0TMMPlf
-	nrr2DS5vuEiB9Xd8kAYPJCHttdSbxkw=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: update outdated comment
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260224022840.1936-1-kexinsun@smail.nju.edu.cn>
-Date: Tue, 24 Feb 2026 13:03:23 +0800
-Cc: osalvador@suse.de,
- david@kernel.org,
- akpm@linux-foundation.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- julia.lawall@inria.fr,
- xutong.ma@inria.fr,
- yunbolyu@smu.edu.sg,
- ratnadiraw@smu.edu.sg
-Content-Transfer-Encoding: 7bit
-Message-Id: <B36C46B9-28EF-44FF-A06B-2B736BFA9C64@linux.dev>
-References: <20260224022840.1936-1-kexinsun@smail.nju.edu.cn>
-To: kexinsun <kexinsun@smail.nju.edu.cn>
-X-Migadu-Flow: FLOW_OUT
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=7gNEbc28FnhE+qvo3ZUlRepOk3rzAuT09rgN9l47M/4=;
+	b=SlkpHSi28TwM722hBr+sGFF1AZ1f0MEJvUlr+n7IK3zsZ4DRiNUSN8HxEuSkxQvKVI4FLq
+	2g5CD6rWltBPmlIpw1W3tmJDxlWl80ZER/Vw2EgvRjVNDCFMKNQikSgKKYzS90rMpOTApD
+	P8bPnVlNIb9VlsikjhKj+KYW1AL+NLo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771909946; a=rsa-sha256;
+	cv=none;
+	b=jOrYPDfy0hJA1+b+HKBoFufJd1nH8qAFzBvmoRL8iN3/gQi/Q0nPQWA/s6FN5AE+rGts5r
+	tPiLTDqbNFKl6P55fVJ0rJktqjpNZp82O2n30ZQRa7SFqCQhQqtMxQh8OsG6qcyiI0dSf+
+	Q9zTtBc7vpzv1ZnydywK+XDZ+iSPPzs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C37E339;
+	Mon, 23 Feb 2026 21:12:19 -0800 (PST)
+Received: from a085714.blr.arm.com (a085714.arm.com [10.164.18.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 380143F7BD;
+	Mon, 23 Feb 2026 21:12:20 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
+Date: Tue, 24 Feb 2026 10:41:37 +0530
+Message-ID: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xbbfx75jo96cjgd6o6q8e74pa4hps91g
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3F0172000A
-X-Stat-Signature: w8e3dcccwschsz999ucscdsoff6kos9k
-X-HE-Tag: 1771909454-157804
-X-HE-Meta: U2FsdGVkX19r0KTqeO9Xb5V5iwpQOAYm7IclPIaRXeQxSUjMdLDLKBQ+dOxKIGDRrsx/ZsPRiyVEGCGj2OxPHDWsacmWnguU60eYJp1AGrILb88Ho8qgGfUbPIIzkx8rcu5P3wT71ja3QTKvSUSHb6G2OWEsE+7KMPIMJ81+OztQ1RneScczHmZUlrTDQUZkYELLLwK6c5ySmKzD/hhtL5lk7O9Sejc7UnTGwsmb4BB5k+MPYys4pw5GYfd32Qq2etlH6yEG+pe2Ni+PKSUy6J1tv53S7Nv16Q0yiBp34DP8Oa8WQ2APRSoj4Ko0FsWlLVfalewl+TboAth2k/uDehTtcSge/u56jKZo1OlRFa3ENxVvKhGAtrV3b/p5DJE2BIXFGkw0t4Mm7lsWti1Rqkh6MDRBsRNDBviLUHr0DC6tgoEYQpSaoOTS2KZ8WMYRNuSXgcQRHGo+LHbXgzmFu/AWSj1HeZpjF5EpDENIbUgDbzp3x2vKGtsd4vy3P0aEkFpn6nT+r0d70LpKlooPY3ptGWEJT2x3CNd3/iZ5LLUyVNE2+hhU1sWVFWyn2fi5E5r2fzCNEeVAh4BVYFKxWQ3TQxv5G5he8bM+5WY410P2CRL5zJuILdgV+/JJHl5jOFIK3ssVWTANAGL2sZ4Ig6ONrYCEubqfV6ig6n0ewbgny/J6h8yNArvQFTP/D8ynABz8mSBFjsBr9Vuox0t+vSm3wlPQdrPSENisn897W1dFgHUK4lHBxCfTjX0Uva+z0Z8Huziczi50KsZq0rnQ2TQjhnnIXsYb9gFWOyjoQ1msagf2tv1BfOp0cJI+ID6rELZfWkvpVD0ZmTdsLgb4ERH0rNJi/KfQuej1z+aycyKYfAarVmFbJdudVIByYUD42BKe25oH9njfa8BFvd3Lh8MUSx+K4FszpWnzDHEPnOz0tC3nuUI1jSZVXKyTeX3JbEfmgdBVnqIQMxprXcX
- PMvTU5Mr
- q6DCfjgrL/Qas0+9Xjku/sQDFOm2Ly03c4n4JIs/9CzTuiLtOumidt85J2UUAFCQjqqLC08+IOgIfrqN2BytLYgqS4z0L4X7FGK0Vo3UIk6sH7Y7RZqu0FER/bGWc4tJF/UqtZlWRrA5x7AkKY3y+45dWAStVGna6LExA/I7TDHB51MUJiUYu4TTdV3Y03MyPxV2bZBULNeFelvpRbLdGTm/3m9nsVgpEbvRLnqf4oavm5sVe3tYk3DyezYCvJHJiw92VAHNEwQGE40u9cjX24ZET9IezOM/APyHF
+X-Rspamd-Queue-Id: 7FE6640002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771909946-111106
+X-HE-Meta: U2FsdGVkX19Oadm6y+HPLTvxXXB5dlU6arYWXKiHbQABlDemlOEKw0nlYYpHY5Opf/+VwUJ78cBay/8TknS1180YuetJE5kc7jxHHbzk26OsFP4IeQhK4linxsrnVJQjO2SflklpJy1lkMYfVDSNZC1vD8H+9I3lh6MtAXV/XcBt2iq1T1HP66Or/cOPfXyR8dQQ5Ut2Tu3j+/kBRSX5wEhxhHtGAUo9KDdblI9Zurq6htc2EWwgxcnCOHNBFyfVnV8n7SQbm7YCiW8js5TTnFl6BMgIlwR2Ni3PnXrgPAa9nuGKnlqdXSL50nuITRSNGA7P1WZ0YDQYnglCWL0X9/gs02fONSkbstGbeT8GSUBa8HZHbZfs+E+ApJWrDMo1m58Z2zW/g4fuytgm3QPyql3YgXBP4EubZrFFk2KMtxjrmlC4X1z257kwCbBaETN00CEbwM+P8xT6+N53lel80mT3RUvA6wVpEBbt4lgI2xk/AcCD10Zjul22anjWwJeLJ1aIWnMeDDrPGVDhEfOyc0EzRa/IxcVp9wvyCFF3fwxv8f20CN6oSwLhOi+zALV2VXlEjImbo0Nwdb2wV/A5LGx0mEbkywaomEc1cmnmPOxw3yYRhhJnR6nAeKMuWczdEPspmKtFCGlpBVAItRWxb80u5ENlcdRA7VxOPaVf9G2TH4TzjNrl8R5r43B29VxEFX8nMHrF8ZGhNvPsBG4IyBTsBARGkM1Jd5ePVhnSjIjaZ4X4QHD6cyiWGxE6i76zLu2hIU29ktghknJ+pd4r6n+Wd3nqjFkcdlVpOVQ/nqIB2U+JB67l4coTJEWHpncPdJiLjE62krQht5XGUirINlS3EDEYYKydD0JbOQGRl7ZeXh3LZ5cvuJM5hOw32nyhrHrsWiAvML12gXcCH5qEocCiZ237V7pqKtwzxqnNWPkWL6keOkP3Sctiw1XbF1yMoO/MaTEmETWkV8oK6kl
+ TaM8ICKi
+ BzorRrrIASBW/2Ar6BSyBO1iDC3roQe4ruxRH9dyrXvmUS5/I8WTg9WCLuyK+7YOsGurd+hGf9jcZ3lJk/+CLzw9dxqnHQLo/2XT4+HWgpuu55knhTRgwXMUjMrkLdF3WR/X7K1ltnrV5YelcJIrQvIONFBUCcdd0mWg4WIunALSyWjRpLqvX1VrTT8WEJuhhN2Gl6BkUlgvNWd9WEQkFWtPST3YjrY7/elELE8Zx8CnH3zCe8nN/vvM1BzR1vAIPzEvRIz1eLmBO8WeHM2NPdY5tCesEgP9e7LJFjMyGFsbS5jK/cc9TV3AYK4cw/FTefcG2DsQ2sL1sM8cSCCGHU3UAe4q9Cny9btz4bFvzNBZvuNP8tFnUde3jMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,19 +89,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
+translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
+So with this feature arm64 platforms could have two different translation
+systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
 
+FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
+and virtual address range while also expanding available room for more MMU
+management feature bits both for HW and SW.
 
-> On Feb 24, 2026, at 10:28, kexinsun <kexinsun@smail.nju.edu.cn> wrote:
-> 
-> The function vmemmap_pte_range() was refactored into vmemmap_pte_entry()
-> by commit fb93ed63345f ("mm: hugetlb_vmemmap: use walk_page_range_novma()
-> to simplify the code"). Both functions share the key behavior that the
-> reuse page is identified first before remapping begins. Update the
-> comment accordingly.
-> 
-> Signed-off-by: kexinsun <kexinsun@smail.nju.edu.cn>
+This series has been split into two parts. Generic MM changes followed by
+arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+READ_ONCE() on page table entries get routed via level specific pxdp_get()
+helpers which platforms could then override when required. These accessors
+on arm64 platform help in ensuring page table accesses are performed in an
+atomic manner while reading 128 bit page table entries.
 
-Thanks.
+All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
+supported both on D64 and D128 translation regimes. Although new 56 bits VA
+space is not yet supported. Similarly FEAT_D128 skip level is not supported
+currently.
+
+Basic page table geometry has been changed with D128 as there are now fewer
+entries per level. Please refer to the following table for leaf entry sizes
+
+                    D64              D128
+------------------------------------------------
+| PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
+-----------------------------|-----------------|
+|     4K    |    2M  |  1G   |    1M  |  256M  |
+|    16K    |   32M  | 64G   |   16M  |   16G  |
+|    64K    |  512M  |  4T   |  256M  |    1T  |
+------------------------------------------------
+
+From arm64 kernel features perspective KVM, KASAN and UNMAP_KERNEL_AT_EL0
+are currently not supported as well.
+
+Open Questions:
+
+- Do we need to support UNMAP_KERNEL_AT_EL0 with D128
+- Do we need to emulate traditional D64 sizes at PUD, PMD level with D128
+
+This series applies on upstream kernel v7.0-rc1.
+
+There are no apparent problems while running MM kselftests with and without
+CONFIG_ARM64_D128. Besides the series has been built on other platform such
+as x86, powerpc, riscv, arm and s390 etc.
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Linu Cherian <linu.cherian@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+Anshuman Khandual (15):
+  mm: Abstract printing of pxd_val()
+  mm: Add read-write accessors for vm_page_prot
+  mm: Replace READ_ONCE() in pud_trans_unstable()
+  perf/events: Replace READ_ONCE() with standard pgtable accessors
+  arm64/mm: Convert READ_ONCE() as pmdp_get() while accessing PMD
+  arm64/mm: Convert READ_ONCE() as pudp_get() while accessing PUD
+  arm64/mm: Convert READ_ONCE() as p4dp_get() while accessing P4D
+  arm64/mm: Convert READ_ONCE() as pgdp_get() while accessing PGD
+  arm64/mm: Route all pgtable reads via ptdesc_get()
+  arm64/mm: Route all pgtable writes via ptdesc_set()
+  arm64/mm: Route all pgtable atomics to central helpers
+  arm64/mm: Abstract printing of pxd_val()
+  arm64/mm: Override read-write accessors for vm_page_prot
+  arm64/mm: Enable fixmap with 5 level page table
+  arm64/mm: Add initial support for FEAT_D128 page tables
+
+Linu Cherian (1):
+  arm64/mm: Add macros __tlb_asid_level and __tlb_range
+
+ arch/arm64/Kconfig                     |  39 ++++-
+ arch/arm64/Makefile                    |   4 +
+ arch/arm64/include/asm/assembler.h     |   4 +-
+ arch/arm64/include/asm/el2_setup.h     |   9 ++
+ arch/arm64/include/asm/pgtable-hwdef.h | 137 ++++++++++++++++++
+ arch/arm64/include/asm/pgtable-prot.h  |  18 ++-
+ arch/arm64/include/asm/pgtable-types.h |  12 ++
+ arch/arm64/include/asm/pgtable.h       | 193 ++++++++++++++++++-------
+ arch/arm64/include/asm/smp.h           |   1 +
+ arch/arm64/include/asm/tlbflush.h      | 112 ++++++++++++--
+ arch/arm64/kernel/head.S               |  12 ++
+ arch/arm64/mm/fault.c                  |  20 +--
+ arch/arm64/mm/fixmap.c                 |  24 ++-
+ arch/arm64/mm/hugetlbpage.c            |  10 +-
+ arch/arm64/mm/kasan_init.c             |  14 +-
+ arch/arm64/mm/mmu.c                    | 113 +++++++++++----
+ arch/arm64/mm/pageattr.c               |   8 +-
+ arch/arm64/mm/proc.S                   |  25 +++-
+ arch/arm64/mm/trans_pgd.c              |  14 +-
+ include/linux/pgtable.h                |  21 ++-
+ kernel/events/core.c                   |   6 +-
+ mm/debug_vm_pgtable.c                  |   4 +-
+ mm/huge_memory.c                       |   4 +-
+ mm/memory.c                            |  31 ++--
+ mm/migrate.c                           |   2 +-
+ mm/mmap.c                              |   2 +-
+ 26 files changed, 674 insertions(+), 165 deletions(-)
+
+-- 
+2.43.0
+
 
