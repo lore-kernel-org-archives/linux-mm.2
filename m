@@ -4,149 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C6DF4BB7D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 19:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA1A3F4BB7F
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 19:08:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7397B6B0088; Tue, 24 Feb 2026 14:05:55 -0500 (EST)
+	id 1F1EF6B0088; Tue, 24 Feb 2026 14:08:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7078B6B008A; Tue, 24 Feb 2026 14:05:55 -0500 (EST)
+	id 1C9396B0089; Tue, 24 Feb 2026 14:08:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D786B008C; Tue, 24 Feb 2026 14:05:55 -0500 (EST)
+	id 0D5C06B008A; Tue, 24 Feb 2026 14:08:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E6926B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:05:55 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 227F31A02ED
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:05:55 +0000 (UTC)
-X-FDA: 84480279870.13.9108568
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 322E64000B
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:05:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KYdasP7X;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of praan@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=praan@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771959953; a=rsa-sha256;
-	cv=none;
-	b=s3snvCFONDel+tYrFxnZKFcknaTwZw9+J/URC6hqdGCZzYOm1hyNZlBCBeotV7OJPrx30I
-	IAvtByG6Igta7qlrq0/AGFEIkJ4ecehDOmuNReO67xy2/4ol2renYKk9vsCZmu2KwnaEOX
-	zlLxTXptiaCGvsE1pSYMXNw6sj66Irk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KYdasP7X;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of praan@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=praan@google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771959953;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EF9ED6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:08:40 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87717577EF
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:08:40 +0000 (UTC)
+X-FDA: 84480286800.12.A0A6890
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010004.outbound.protection.outlook.com [52.101.193.4])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B84AB1C000A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:08:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iPykqQNo;
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771960117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y+nxktJgrzlaK8SQflM75E9Ffs6HGnnvzkBNJC6O+O8=;
-	b=2Hy3ZA97w1V337bz8s94zq5MONFZaRXFQ1OUjOXC7Ei3TJyqAFVt247mheRcSgwr/Z/La9
-	KBz+xBV14zazoFA5TV7gFgjZJE8sDqkrHo2kyldYP6bP+zSL1hOcubcCQzdDgJsvBkdyP8
-	0Q0cCpvuaP1FbNRk+RngzoTUjLMP8nM=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ada9e4ea32so8475ad.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:05:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771959952; x=1772564752; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=y+nxktJgrzlaK8SQflM75E9Ffs6HGnnvzkBNJC6O+O8=;
-        b=KYdasP7XnPATKUemfoYOw8QG1cJyFWxw869zDdGjX/+KR5ZOxQpeMzEwUsDUWb+BlL
-         xpXBmtsOOQWb1l37OT5txbCEfA9kcKeFULewllvPQmMFG81Vke/PxTPxdaJfkwPA+1Vw
-         UwnG+OxtD9tcPunggzGMNPSD4fU5AYjj0Au2Frz7rdDnPBZ8LLG8sBaAnkyTUm132pr8
-         V5U4/XF6LfZCeKwV+qxpL7UGuKZYBOkYAOvFZzz8MpoW26G3MjM0TNIT21QlKykF7RuH
-         +sNgX1b9wGTZy2TRBc+rYgY+RRi4JVbGTDAICXe0fiasgAcMZ6KuezAJ5z0oSF7v+IDI
-         vrXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771959952; x=1772564752;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+nxktJgrzlaK8SQflM75E9Ffs6HGnnvzkBNJC6O+O8=;
-        b=b7QC5ZlNsXmALc6B68hBwWs/RhaO2YbqhJRzoviUrkcpMteY8mznT/sDfT1dZSaDp5
-         3cOUx0GagW0HoA0dKtenLTBBh9e0C+uMxWBsPVZL1M4XLVApPuFj+ywIB15mwgq/gDAJ
-         tusuLHDxwrb0ULRUJ9iY/rZme3gY0QizlXPJjmOn09k4HBeYdWQLw3YvAW0SwRK1Ua2v
-         U92z8fCdr0JqWLz3GcE+d8ukR/sC2UXkDHUt5cv08MucwrgRqPPdVGMRBetOBUFzSAUi
-         T1RI3R6oLBqJJechtfkgvyWOjHXnhsTet+aNN6Ld39+ntyE7H6cObGuPQe2MGYWrodbt
-         JyYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWefz9SEB8VnwC1RFboPv5+NcqZpaoQbHULdbBmnaH/BF2B34eMDdNg2oesdTdv5jRJvZ3JTJ4Iw==@kvack.org
-X-Gm-Message-State: AOJu0Yz3f/BzK67EeZunDzvZ+kZqhSpPacG47+rdQqeCIvLlIlB9FhYd
-	pPJYnP296BypHWeieNEq5ioF7yWJtOKBCd8oLBpVF91yqeu4u+kRsWS3G8p41iu+cw==
-X-Gm-Gg: ATEYQzzbyZitui/J29Bm7N7Qb4MvtHpvT+Y+PlHMGB0Uh9gTBpssztdNpwV9eoWWfjb
-	aizunE0n2XaozPg5k6/N5qIJyBbsAKM9y9LeyrA4N6IdPCug2oJPpCh+Nd0ozPN0i8aJVTJD3K3
-	kukEIYGyrGZQCTQzhjd+6bGpTJ8pCKhkZb/0EFl8+xF5ln+mLll0QTiIIHS9Uhkzunyi7UNAZYv
-	+IisMcJrLvP7p6w83o1gwfwjJ7H8CTGvnMpxa0DjiV/UOAz4zfZaGHAemLGV+EmEwRk2RYLQuHG
-	aJPOQyGpF7Fj/Wd4A34XdfqmJqcDcSTv0t010zSmOr0gptJcB/HLIKzvv5yBmfraxz/uTIhUIRS
-	ZuTIUJCuX6T/roBflYvoNrfNAHe8GiBzCaoTTX7QDnG08litg+xQdzdpQTm/3K+RrJSGc6s6Tco
-	hCATiZWFl2V0w8kbHXxe55YG0V10Hcr9GrQgEvKvbCOWsht1gQ7uslrhFRJWsM
-X-Received: by 2002:a17:903:3d0c:b0:297:f2a0:e564 with SMTP id d9443c01a7336-2adca83b652mr139205ad.11.1771959951330;
-        Tue, 24 Feb 2026 11:05:51 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3590241e8a2sm595715a91.12.2026.02.24.11.05.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 11:05:50 -0800 (PST)
-Date: Tue, 24 Feb 2026 19:05:41 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
- across Live Update
-Message-ID: <aZ32hf3dHibfb4B5@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-3-dmatlack@google.com>
- <aZ1svGur9IxQ7Td2@google.com>
- <CALzav=fSpd6H5pQNtJoFHdNtWVO11vffhWQFsMFkM+osGuE0wQ@mail.gmail.com>
- <aZ314HSRnYtGinTU@google.com>
+	bh=pIM5fTZMrcKiFmpV+4QqUBqm1Sh2aF/8uWQQDVIEr98=;
+	b=vq2ZA1XHUA+RdnoCvpGrhIqQYgYWhBB1TbWPYdt4Fdv5nlXwfL/p5hQye+yZMDRN7jhZCr
+	5tecWXAO91bU/gKYJSxC36TRfbDTSumopDdI9oYfcnbrhp6GDHZb/f4gxyMuEt4Gff0Wa7
+	ILdaLfJ2mNa8hvHRPeABlUxm6NFJ8fA=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iPykqQNo;
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771960117; a=rsa-sha256;
+	cv=pass;
+	b=wdnK9wOXaQ1yzGcYnYXLK9fWH1+y4OZm5zdma+0Zn5XOeKsjBHr79G2Vb4sGT3Jv4NI6Jj
+	OFfJnt6DbwRM0ApMt9A5frsnKEILAomWlfp/bV43uxTm67AgwophgmqK+OhivRhLBuOI7y
+	OV0yhP//KkSxmojLUUFXsRarAm1KsFo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YXJxaKp6GGzHA0CTN4p3I7IaZn9JzwAqExfrkydww5ZH9UbIzea1b4O6K673oTrhCIo0FDaJioZioDj8bvc66Vmfm6/6NRPVezUZ+xaTh9X/N1fm3SeLnjFHTYz+brT8IPBalmyyS+SdjNWCICrrYYA4Sy5X3tL+giM9eAe9AAxA+t2W+PI3Zc41JsBDSBu4WQaGLkppVPyxzSgBStgxPQMxlKCzuKSnQfWGLfII7AlXsjv2Ad9s1MqJLsIzqMZrBBDaSeCbqSvjSp9J4w78ucGcSwcD70W4rfN9NAZ09es3DnFGDSowDxDNV/brMr42xpdFYn3Ay3XFsp3QfPBYxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pIM5fTZMrcKiFmpV+4QqUBqm1Sh2aF/8uWQQDVIEr98=;
+ b=sVY/3fW/BuPYfMVBg+dMY+7p9mEF6FZp48IbEzZNeLPopSSMz64U8d3iLr/0sYfssghUPxYr6xuq8HYOwvdWQmOBFRWu1s3RTdx0+9HsKsKhUkvYQDi6msavVxGJn6rIVZ0o0CQjMMA1TslVxdVJ5vWskMJULXUO6oDIG7aYK7HLFDMLmBghiPjtBDZbUInnM8/hrxPjYuNIf6qrwu208v8F5DvWK78/BqoW5oSyywWInkfbFL8CPYYpADpOW/zKtSUvzX50ymY02n3QgVJhfNGWkboEHBOQZen4lZ+g1bYqSMdRnOqzylqV36YtZLRKLD4mi+WUG9SSOhSNS2RTeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pIM5fTZMrcKiFmpV+4QqUBqm1Sh2aF/8uWQQDVIEr98=;
+ b=iPykqQNovzxYl9yU92CfpsYzLHWlntM48atbnutmkC56dPp1iMuuDWfz8NFwgxSAIEcHhqeNfGKIluqVptNnbDQW+ZGLZbe0DpKBUqO5tNr32ranOj0claeSf7cg9p2/zti6BU37ea9ucChMzv3gotQaEzJPuxwCj7fHEYPFiXAD657qCfyZ66D4fw9aiECfZflzfKdFbfqBxmQZdEEVICShO+K3dekjNk4fThgGllqrUL60XrlHSUywb52DvnnqRNmcwFGdr393+E9LweuRWoCIJ5wzB+mOMppiOZv57uvv9K8cV9+jc8Pg/ISmVrarSP0YdhRjjSthmdjuujwKqA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH0PR12MB7472.namprd12.prod.outlook.com (2603:10b6:510:1e9::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.22; Tue, 24 Feb 2026 19:08:31 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 19:08:31 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Usama Arif <usama.arif@linux.dev>, David Hildenbrand <david@kernel.org>,
+ willy@infradead.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, lsf-pc@lists.linux-foundation.org,
+ linux-mm@kvack.org, riel@surriel.com, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Lance Yang <lance.yang@linux.dev>, Frank van der Linden <fvdl@google.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need
+ 1GB Transparent Huge Pages
+Date: Tue, 24 Feb 2026 14:08:26 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <42CCC4AB-EE32-4279-BB50-EE72756B5137@nvidia.com>
+In-Reply-To: <aZ318PoxdAZjqnLX@cmpxchg.org>
+References: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+ <aZ318PoxdAZjqnLX@cmpxchg.org>
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR05CA0095.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::36) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aZ314HSRnYtGinTU@google.com>
-X-Stat-Signature: mhmfecadrdttwkjwq8njgjz7gujzxnng
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB7472:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1dcbb9bf-4818-4626-4ea5-08de73d819b1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9xFxFc4bTLe2oCLDZm/uq/etKUoCr3CIse0Dc3e7/1DXVbH3JT9UfN4NQAHl?=
+ =?us-ascii?Q?rCHjW5LfKKHlIewH0MFcJi6xA9McnlUqS0Xt2CxZr4/YEkxMqrivLQ7iSDvj?=
+ =?us-ascii?Q?uhPg5vjNKGQaWz6wJsjI3FVgOl5Mpuy8Cbgt6cdEEK85uM/iYD/WqZOlqOJA?=
+ =?us-ascii?Q?DTUUiT2mcxnq4702KfHFUBaW7cGLgidwtJQLYLcv3mvwSowBLk/FvSYWsnYC?=
+ =?us-ascii?Q?xgkpkIXGTCh2LUdgmelLXkeARAqNcDYcwcZBGHGNrHIEi3h+WJ7oWLDyRabd?=
+ =?us-ascii?Q?6m7zoq4rUXccBYJDOhJI71EQf4NIG8sPsucbT8abUzx7x1O6K6FfbzPXnFSO?=
+ =?us-ascii?Q?qTFriN6Lx8HA3ZR/7jHcDQLzI7kkUdkFN7sx6nJNbgBxtdnfzEDQJjQ28+Hv?=
+ =?us-ascii?Q?GIZSr1cALwO0bEuePB2vD+NvSYpUpLjR4ZYUe+LbG4JLAudM1DPSLVlNRE6G?=
+ =?us-ascii?Q?XhC2I7kWWToR3xepuZ754c13nfx0EPOtiU9BiFVRRjjQI09HyhQJegotuv7/?=
+ =?us-ascii?Q?6Xb1F++4F/JshAkBUrb0Beoa/lRbb3AEXW6rW8Yl7RQ+1dW2n0itFuEHEQVw?=
+ =?us-ascii?Q?lbr4NWuszmdeE/yS6pY8NC+UlajYApDtBfnLC1cM0+Sdr8dc7nxvrdjAKnBQ?=
+ =?us-ascii?Q?CZ7PWVxcwS0lJqq+tVwt2SjlklmOQy2WX9lYzd9qiF3ZkV5kBM96KQCupkBu?=
+ =?us-ascii?Q?+Fuh+TcE0QUINyH5FUDFUEJTfbzYOqBvE9NEfETkA0SuK4T8h2I1adwX35T9?=
+ =?us-ascii?Q?ZsBhKXEKUUX4D2OXqMHoyCcdkEP0zne4cVV1Q3g10atiIlTosfnQ7H989FFX?=
+ =?us-ascii?Q?Gd+mpXbzfInZqCaMvOsOYtujVQKVfKpzgMocsFmjy8kvpvAXPrqZcErf9NtB?=
+ =?us-ascii?Q?EjjFAanOsk75+XhcEIOJCcip2I+A0L0W/qtDaIt9+2my19jm5FqWfP83eHzM?=
+ =?us-ascii?Q?cH3kAJUvTq3gYgybJMviuD3GLKKk0w/PXrRgLnPxkSKYtgl8fL5+I9tv89BV?=
+ =?us-ascii?Q?DaBLtdYcvK1J4xrtPnvERbRtX6Y8KEHt0USzYuEUAPCnIf0e31dN6n++2UQ3?=
+ =?us-ascii?Q?PYzY6ca83pyfTHsXOP5oYsjywN1BDqfpmAT6kpxxUngjWCr+/5gXbvejYFhb?=
+ =?us-ascii?Q?qP6eJ8kZ9DvdVwYxn7Ae/bEqBDivKlitvcGaMi7Bb5rsb/FNVPDu/HW58QzH?=
+ =?us-ascii?Q?9GW4saAXZckj+rxIBCZdG6oTw5zFLL/N84JNFp8CUeMZTS/WGzw5gza0HQf/?=
+ =?us-ascii?Q?tVoAro9TJGxpiwVu+wuVf4d0IbDoprfUIUMJqZV8uDNrATBOo9u8gKUkdw0E?=
+ =?us-ascii?Q?Jd4fBozw9Sg9XG9tQEC34i0B8MV4yNNMZxNjgP4+Dc0jrCmQEeFNuNA68Co9?=
+ =?us-ascii?Q?3GSEKE+t3arxoJIqboKnGBD2jJdzF3UmFOS7nmGeVmPaD3R771Jj620sSzUu?=
+ =?us-ascii?Q?zLt8D+GI3pVg1MXYd+sopiArN/Nktm8sDJ0GbxCv9z68gfCTatQAxaY3AXR5?=
+ =?us-ascii?Q?m1r4ciB7QrkRkOk6J+01kM9468FWlaGQlY8RWpB8soF3r8/YVuL1pgxiJoBH?=
+ =?us-ascii?Q?dPSpOXTm/Xht0lVIaso=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OAn3VcIlbawgOlIJ9O7FHbotpS8e9Wuk/qGzq4jqq5SssXkVIeISbVNuWlv/?=
+ =?us-ascii?Q?EBgZ60zqoD7CWN7bSvQtdq8IOq5wzpmHetjEmwqc/Ne0rw279Nmb/CyaAy7C?=
+ =?us-ascii?Q?kBLJc5OGtyvjielWCFEmF2MZqKdC350XT/ZamT10ASBXWloOoFX5AWT10ocp?=
+ =?us-ascii?Q?somHmFdkbrIXazuw/c/YvEi8ttDR4Ip9Z6vuQDZA34aJpQSms3zJAawY5bVh?=
+ =?us-ascii?Q?iSTQL7S2ise9UsetLvmhNkyDPeUNP+is2vhHBUX9kR7SEkaivmswFEaE7F1q?=
+ =?us-ascii?Q?JBX0NZGXk2xEF0/CSEKIhwBD0DYOZsWNP0x2I00BBbIcbrB+IjHZDQfvNWpW?=
+ =?us-ascii?Q?w2vGtrPd3zxrAI5LnSJN864MGSm+fUwpYKuAQT9ht9bzNUNqOO5nauTsjh3J?=
+ =?us-ascii?Q?WeuywNZtZ2qElktqJVmf4/MqP+Bq6KuSlIxBDiWGEF9EfwWce4qy1+Wb/apg?=
+ =?us-ascii?Q?KyAdbuGNMtgKhveS4yieCZHKGx0cL2QNdyOr5jPXTCjKkei2oZwQIPhB+PJ8?=
+ =?us-ascii?Q?3Nkm2U6JS9odGpfkYMN2vdgFKSTWU8NuwFd88PPGFP/YRXB+82z4isweZAK0?=
+ =?us-ascii?Q?7TgtO3BrCwpTEryM3X1iiB35ojnMwN6e10QxFIqz92Cwb9ryxd6bYRrjZMKS?=
+ =?us-ascii?Q?5K8BWmGvFz42uKNdg2sh9F54toyh00GbskgMPJZubqbuKd3aL0xXIfNhaXRA?=
+ =?us-ascii?Q?4Hb82qfZwl+AMkJql1aGxqqjz9KafJ2zDcBmXH4bnNQ2Lqvx7eyxVWvy4PaF?=
+ =?us-ascii?Q?xMIYomgUj156HHB2m6YbDU5FWxzIiKhIcER2wrByAIMMn4z/Bc+uCmu7EEUH?=
+ =?us-ascii?Q?v/IW/G49dFZCtB3nh0Z8FW4aiWV4Qcuy5wOcj8YHSz/UuYloxNtB2daSzc+m?=
+ =?us-ascii?Q?8SBl0xgOvuppfqYIBmzTlk53e6r8GhzL+zFDpp49fusyHGENdk0yjJW3tVy4?=
+ =?us-ascii?Q?URUWyl89PJ5pyloJl5HQuZpd6phRCOAtZBbQjXgfOinPZqOsv2kbO7i5tjkc?=
+ =?us-ascii?Q?DzHA7NOyc/39aG11xmdmseY9uMqOrxC/Y6ui2jqr6EDetA08v11ELWHxyrWM?=
+ =?us-ascii?Q?r0LcSB+yvw/GVAixPh3ypDE24Mokgak7RinKoEJA/jq8iWT6TrNmu7v+eg6N?=
+ =?us-ascii?Q?ArMBbMSRPWu0ZBPo873TOi31BdND9Y9dybkhIR98nrAN4dYpYG4egfrfg4hq?=
+ =?us-ascii?Q?h34pYxXbj85TEazaHQxNEYe/dNTAYWNmvRE47WHmKyRfHRD/gosLzPUFfQWm?=
+ =?us-ascii?Q?B2ipwlnwD5gbAx+B8CxKtELfJRj0s2exFo9D/7eBf7bcAFxuRf6CEl9ySe85?=
+ =?us-ascii?Q?FOVNuAkqzmjDNp3xITPJ5Bu4NYHGPvOTdoVytv58+ej0nj6jnePrEImQyceI?=
+ =?us-ascii?Q?T1O57NNTdtdmqEaUvrH+GbDSrTl2+LBlUUsP1rSQLx4nr5IyLe8u3/zPfOH6?=
+ =?us-ascii?Q?6FDlcHIESp4Yo96EaSsTdRaA4phHmdJyEVl+r/EFCMLv6mZYjnud5CUJn+TV?=
+ =?us-ascii?Q?xfwMh9JasVLcYZisHZxCSnSM6NjUPIkGyaWBql+UFKa4vXK2IcVqLs5mlBuS?=
+ =?us-ascii?Q?LTIvua5IhccmLbsGpn4uA/zR8MuEufyelBhBbeVeABsMhDJLG3tCm5xWNtUO?=
+ =?us-ascii?Q?deM/T+CIqy6IWQbSGwRelcstOHODwVyczgg4F39IQ3CxCeEZUuEiAS0E2lSS?=
+ =?us-ascii?Q?p8wP9ETFk+9N3Ffatv5BPWIEW5T/fDsJ9FH0ZxWoKl5P+/zTO5P5jOQs/leZ?=
+ =?us-ascii?Q?sTjYBbKCYw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1dcbb9bf-4818-4626-4ea5-08de73d819b1
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 19:08:31.6604
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bp1QI2v8ybb4nzWcS3Hey59seWDDHMKVPB3ZfCIvY1/oZKs+hB+vd9iBUBtkFDXA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7472
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 322E64000B
-X-HE-Tag: 1771959952-917758
-X-HE-Meta: U2FsdGVkX1/UBb1ZFgI2e7+5pT8U1y7i49qvTZtYGDNBHSoYkCHFhJC8lcNMa6ksdCOvtYrITOZHzHhHk5w/BD+T9Fqx0331U73WqwUsNret8Mnc5nJocFYLCzAHqzp7V/NnCFitypo3KaIvGrmeedIHYUEH3C8dJjcEjoOkhcqNXUnt/Q3o3PAkT8D41tAz98zss9bqAQmwy8fMTGGUCNw0UojJiZQC5AhCXhP/gZ/t3nyCvdTimCesIEnDsjKBPZEmqYXKFkg7xen7onAs2og3GP1svTkG7SMSarZlVG2J3i32RMEHg5gf4ysxGIrSTEddy6IceQQZPGfI+HEIxu67+xDSsW5BJJDLXq2KC7wy6lASH5f77JxyPcL7xkzwg3LOCaVV9TEsR6nsn+KCWPKCuNqX3e8y9DENogcDDNWsBR27Y/Hp41sMscIvFW7maaSn0AGTr/O+yJlNYnBdEN7JRj3OKDATwznN5LjReD4E6h0+ANLUF2nh2+BGIx+/TayiBYEpma/NUduQVZAXNcmtjo0sXo1wnBjGv3Pm5d4Wq0wNjH3LT0skAslnCxnuI3rcCyiawFu1OBfpNB7zhNI5/B6DkcQQX34LHpKBuLz0iz6MlUN4zU0mEHnUirEmbS1C/SE6dqQ8O92vFoUw7yNFHiJlqYiEI/LORNIjtyrMjx6Y2DL+qpkDubTOfDAvL/atvovxnKuGlSVdhBXxO1mKRPmO4VjyzM4Tb6DtigxfkFXGM68d2uMcd23itpr+gidgMDYFXoRRayqOPox/dOQj7qy9WkKOSzrCxqGuRS5o+M1IZQycC4fdyHCAOQqKQwKZtA4U7fmopkD3TRw/oK0zkb8dS7pKMZXxdBivXO1/piAiPKXbpA5B8GAHvW5CKfTRaEhl5m4Vyl9dqCw+185/33s6z0qhR7zqqsJ8qMyaoiFRxRJoByoWWgTp9M0ZyNffHhnTKcrncI7zSPJ
- hUzDeLzo
- tKzgVY4GmUPDmsXwZeikcrm1nlbIH/VxjKQ99GxWVKmbBagiXl95LirbeMTkrQBs3CTrwJOStRtOmrvkljSJcU2uYRrUIVF0CEgvuC3I47MQNYZu5ApltKS5oQqYGagzgIKd13s+KM1Eijdxe9mWfe2EarwnMlYU5f0J6CMPEdQ41Q2ikCuBoK6VeCJHj5iFc48+voSNv09RzckBgO2jTQZMH7KUY6B8OXhG5uroNhcO/TFv+U639j9CU3N91mgjHFHIC59kI/hqeYvDovYKW+M7oEO5lcwWOaX39eJvRSm8G3Dsji6cZv1Z1OliagVKfsyFQFpcuQqOji5kb6vDDcZvenJwXjH2D1hBgHGw+abWIqu3HgTRNKFzqrA==
+X-Rspamd-Queue-Id: B84AB1C000A
+X-Stat-Signature: 5wubk8gcar1sfh3ray35z4s84f1nf4rp
+X-HE-Tag: 1771960117-111870
+X-HE-Meta: U2FsdGVkX1+PDhG21QNd+SQ61jfCWG55SRw1Gm3rvcVbA1o31CXCv3EMAoGEfyIz0EL0ovgbskLeR/fKKZUt+uaD4yt1kdg1y6GTlemF+x8H8+Pn2LC1Tlzc/BYKexMRqTCHcRmoJrt8DfdoJRAbmJv3/NAlTQf8RQFvlcYfxYwsH7LmIuEdoSSVv+bd6ryoLWu4RO6Ze/MRmIdH06jibcJ/lB4XtTjZL+5oITaMHghxS/ulV4rnzIrdvK04E0ScIyiD37ihfTA89ll9a80bgrKm2rLriaK/P9ZHuc+LByOJVWficx8CGI1VDI8Hpd+J2IX5Y0KdyzHEhZaIpePdR8ZNoG8h2A/2A3Ep+nmtjP8ZFBlOALMJpJJDVAgOxrzXYrKJP4+MzRaGaKoifvgu58YzU0XGDl7Fh7q9xMSYUfrsTbPzsIiqkcHXEgu0a8/SK9hNAx0s00VefEjo0SN881T59xJZODMA1lUlT+X5dH8jgt5do7tPfvpJap6dcbmfaVrwx7Yi09yxSylHaiFjAHQ1gE/ip9xwZFyBszk08bfommFtN/QmZhTq7cB4fesc6/fnzfr1pJe2zZ4VrJS+gmCdJi7+/Eoy+yjS7o8Et4CHDOYDU+MXGMWWbo0h6ISgS+wH158Hrh48C66gUTHZ6BxAsH7XnwyxhR0lJw5f287kC5o6EuEFGd727/pFHO0EDTXlziU3uf2nsYCV7eBXne/UbY53diA7M4dk5wCkMMPom5Sf8wsLOYdzN5eafqyB42N9C36dg+zxWHh5klE4CtwPkViFLRBNQnIYh1kBwXMhm3jULND1KyKByI0u4i40sYqDnSZNbb3Az1pKL3aiT2u+sLfaKAwmPEEWMfpqI4KgMMbq0guhxWPQimWcyWi2qqdQG7i+zuGs6BAeVhZxQzN19417uy64Nv6CcP0MAO6hGCHANm+dvTxB50swOCXOAEqCfnk8jQVwmVtEfsT
+ Y87LdDtB
+ nUgwSVnJ0XpQRID6z8DDwQCZqEZlEmMxpd6acwz/RK1wDovhx4jqenjI0zItD5G4j4xjd79vrR1KHVvO/bPSn6vpws0yKKyKb8aLcQUp+NBHuqCk4JL9pXKGdjf2kGKv8goag+TEZiggN8auzr6+1h13QbxZJI+ImCvPthdi2P8LtuDBsCVEsNKPCB5VW3bYnQjiZ92KJyZi8WpTQ1YqNgWV6YksBKni64sZ9Pr4C9G0PT8tFy4iFn0iUgzlAOO6IC8cxS1hrdgXvo4DuQ7lb78iemP8+nT/8hU86nfpnjo3OdtUsXUZoWwCJcv2xWYIMfXbU5KTnNC32mT4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,172 +192,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 07:02:56PM +0000, Pranjal Shrivastava wrote:
-> On Tue, Feb 24, 2026 at 09:33:28AM -0800, David Matlack wrote:
-> > On Tue, Feb 24, 2026 at 1:18 AM Pranjal Shrivastava <praan@google.com> wrote:
-> > > On Thu, Jan 29, 2026 at 09:24:49PM +0000, David Matlack wrote:
-> > > > + * Copyright (c) 2025, Google LLC.
-> > >
-> > > Nit: Should these be 2026 now?
-> > 
-> > Yes! Thanks for catching that.
-> > 
-> > > > +int pci_liveupdate_outgoing_preserve(struct pci_dev *dev)
-> > > > +{
-> > > > +     struct pci_dev_ser new = INIT_PCI_DEV_SER(dev);
-> > > > +     struct pci_ser *ser;
-> > > > +     int i, ret;
-> > > > +
-> > > > +     /* Preserving VFs is not supported yet. */
-> > > > +     if (dev->is_virtfn)
-> > > > +             return -EINVAL;
-> > > > +
-> > > > +     guard(mutex)(&pci_flb_outgoing_lock);
-> > > > +
-> > > > +     if (dev->liveupdate_outgoing)
-> > > > +             return -EBUSY;
-> > > > +
-> > > > +     ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
-> > > > +     if (ret)
-> > > > +             return ret;
-> > > > +
-> > > > +     if (ser->nr_devices == ser->max_nr_devices)
-> > > > +             return -E2BIG;
-> > >
-> > > I'm wondering how (or if) this handles hot-plugged devices?
-> > > max_nr_devices is calculated based on for_each_pci_dev at the time of
-> > > the first preservation.. what happens if a device is hotplugged after
-> > > the first device is preserved but before the second one is, does
-> > > max_nr_devices become stale? Since ser->max_nr_devices will not reflect
-> > > the actual possible device count, potentially leading to an unnecessary
-> > > -E2BIG failure?
-> > 
-> > Yes, it's possible to run out space to preserve devices if devices are
-> > hot-plugged and then preserved. But I think it's better to defer
-> > handling such a use-case exists (unless you see an obvious simple
-> > solution). So far I am not seeing preserving hot-plugged devices
-> > across Live Update as a high priority use-case to support.
-> > 
-> 
-> Ack. If we aren't supporting preservation for hot-plug at this point.
-> Let's mention that somewhere? Maybe just a little comment or the kdoc?
-> 
-> > > > +u32 pci_liveupdate_incoming_nr_devices(void)
-> > > > +{
-> > > > +     struct pci_ser *ser;
-> > > > +     int ret;
-> > > > +
-> > > > +     ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
-> > > > +     if (ret)
-> > > > +             return 0;
-> > >
-> > > Masking this error looks troubled, in the following patch, I see that
-> > > the retval 0 is treated as a fresh boot, but the IOMMU mappings for that
-> > > BDF might still be preserved? Which could lead to DMA aliasing issues,
-> > > without a hint of what happened since we don't even log anything.
-> > 
-> > All fo the non-0 errors indicate there are 0 incoming devices at the
-> > time of the call, so I think returning 0 is appropriate.
-> > 
-> >  - EOPNOTSUPP: Live Update is not enabled.
-> >  - ENODATA: Live Update is finished (all incoming devices have been restored).
-> >  - ENOTENT: No PCI data was preserved across the Live Update.
-> > 
+On 24 Feb 2026, at 14:03, Johannes Weiner wrote:
 
-The flb_retrive_one seems to call:
+> On Thu, Feb 19, 2026 at 03:53:35PM +0000, Usama Arif wrote:
+>> Why 1G THP over hugetlbfs?
+>> ==========================
+>
+> I know this isn't your intention, but one interesting aspect of
+> supporting PUD mapped folios natively is that it could open the door
+> to simplifying hugetlb as well.
+>
+> We currently have all kinds of huge_vma checks scattered over the page
+> table code, and entirely parallel paths for unmapping etc. With native
+> PUD mappings, this could allow pushing the special casing out of the
+> virtual memory layer and into where we deal with the page objects.
+>
+> You might be able to take it as far as the only thing left of hugetlb
+> is the reservation pool. Such that a naive application does mmap() as
+> per usual, and it comes down to a separate allocation policy how the
+> backing pages are served (buddy, CMA, boot-time reservations, ...)
+>
+> Approaching it this way could help separate out the discussion on code
+> impact and tech debt of PUD mappings, from the allocation technique
+> question, which in itself is a fairly large topic.
 
- err = flb->ops->retrieve(&args);
+I agree with this 100%. Adding 1GB folio support first, we then can think
+about what other THP features, e.g., split, migration, PMD/PTE mapping, are
+really needed and add them one by one. It is also going to be a good way
+of retiring hugetlb special code.
 
-which could be anything honestly.. since the luo_core doesn't scream
-about it, maybe the caller should?
-
-Thanks,
-Praan
-
-> > None of these cover the case where an IOMMU mapping for BDF X is
-> > preserved, but device X is not preserved. This is a case we should
-> > handle in some way... but here is not that place.
-> > 
-> > >
-> > > Maybe we could have something like the following:
-> > >
-> > > int pci_liveupdate_incoming_nr_devices(void)
-> > > {
-> > >         struct pci_ser *ser;
-> > >         int ret;
-> > >
-> > >         ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
-> > >         if (ret) {
-> > >                 if (ret != -ENOENT)
-> > >                         pr_warn("PCI: Failed to retrieve preservation list: %d\n", ret);
-> > 
-> > This would cause this warning to get printed if Live Update was
-> > disabled, or if no PCI devices were preserved. But both of those are
-> > not error scenarios.
-> > 
-> 
-> I agree, the snippet was just an example. What I'm trying to say here
-> is, what if the retval is -ENOMEM / -ENODATA, the existing code will
-> treat it as a fresh boot because it believes there are no incoming 
-> devices. However, since this was an incoming device which failed to be
-> retrieved, there's a chance that it's IOMMU mapping was preserved too.
-> By returning 0, the PCI core will feel free to rebalance bus numbers or
-> reassign BARs. For instance, if the IOMMU already inherited mappings for
-> BDF 02:00.0, but the PCI core (due to this masked error) reassigns a 
-> different device to that BDF, we face DMA aliasing or IOMMU faults.
-> Am I missing some context here?
-> 
-> > > > +void pci_liveupdate_setup_device(struct pci_dev *dev)
-> > > > +{
-> > > > +     struct pci_ser *ser;
-> > > > +     int ret;
-> > > > +
-> > > > +     ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
-> > > > +     if (ret)
-> > > > +             return;
-> > >
-> > > We should log something here either at info / debug level since the
-> > > error isn't bubbled up and the luo_core doesn't scream about it either.
-> > 
-> > Any error from liveupdate_flb_get_incoming() simply means there are no
-> > incoming devices. So I don't think there's any error to report in
-> > dmesg.
-> > 
-> > > > +     dev->liveupdate_incoming = !!pci_ser_find(ser, dev);
-> > >
-> > > This feels a little hacky, shall we go for something like:
-> > >
-> > > dev->liveupdate_incoming = (pci_ser_find(ser, dev) != NULL); ?
-> > 
-> > In my experience in the kernel (mostly from KVM), explicity comparison
-> > to NULL is less preferred to treating a pointer as a boolean. But I'm
-> > ok with following whatever is the locally preferred style for this
-> > kind of check.
-> > 
-> 
-> No strong feelings there, I see both being used in drivers/pci.
-> 
-> > > > @@ -582,6 +583,10 @@ struct pci_dev {
-> > > >       u8              tph_mode;       /* TPH mode */
-> > > >       u8              tph_req_type;   /* TPH requester type */
-> > > >  #endif
-> > > > +#ifdef CONFIG_LIVEUPDATE
-> > > > +     unsigned int    liveupdate_incoming:1;  /* Preserved by previous kernel */
-> > > > +     unsigned int    liveupdate_outgoing:1;  /* Preserved for next kernel */
-> > > > +#endif
-> > > >  };
-> > >
-> > > This would start another anon bitfield container, should we move this
-> > > above within the existing bitfield? If we've run pahole and found this
-> > > to be better, then this should be fine.
-> > 
-> > Yeah I simply appended these new fields to the very end of the struct.
-> > If we care about optimizing the packing of struct pci_dev I can find a
-> > better place to put it.
-> 
-> If you have pahole handy, it would be great to see if these can slide 
-> into an existing hole. If not, no big deal for v3.. we can keep it as is
-> 
-> Thanks,
-> Praan
+Best Regards,
+Yan, Zi
 
