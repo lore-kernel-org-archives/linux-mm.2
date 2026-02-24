@@ -4,121 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76CFCE9B251
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E12E9B252
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:42:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEEA26B0093; Tue, 24 Feb 2026 06:39:41 -0500 (EST)
+	id BB47B6B008C; Tue, 24 Feb 2026 06:41:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A724B6B0098; Tue, 24 Feb 2026 06:39:41 -0500 (EST)
+	id B81D26B0092; Tue, 24 Feb 2026 06:41:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94A3E6B0099; Tue, 24 Feb 2026 06:39:41 -0500 (EST)
+	id AC2246B0095; Tue, 24 Feb 2026 06:41:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D91C6B0093
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:39:41 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3573E1A057C
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:39:41 +0000 (UTC)
-X-FDA: 84479155362.22.53562B5
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3F60DC0008
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:39:38 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eNNNqGxj;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AA9C6B008C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:41:59 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB4B7C1F5B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:41:58 +0000 (UTC)
+X-FDA: 84479161116.07.FA529E5
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7F82CC000D
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:41:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=JdOZ20r4;
+	spf=none (imf22.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771933179;
+	s=arc-20220608; t=1771933317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7KthUXIGMkC3Ch7vQnkMN1zxx/VHydxO2+xjM+lwoS0=;
-	b=ePIv3JEmgTzXZYYBlRI3OaPIo0IiOuzkYeGD4K1zaU8eXLiJGAmRyPbN9+V6BJa3mF6XEY
-	W2xQHM9Efww1T/8fsqFnNhXy9j0iOn4fuBj7X8ek71+ACv5l/b7pvs8myu/ahe8JqIiE1a
-	UjOlkqZFoGu1PRdZe9dKCVoGkKQkaIM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771933179; a=rsa-sha256;
-	cv=none;
-	b=mPJxVj8A/vvRFLo7qeMayXxjEGbJ0tISUI/gdzej2q0vz31pfDI723x/nS8YG3AV0+Mhw/
-	3n5Zz/yq6TurFtiFGgrtGzW2SvPBCWITbAe/Zfzg++2vGN/+JZVCMyvfndiGPGBMqxb94t
-	mVkWYxZXD7jSxq4Iaoh4WkI2wX7mIw8=
+	bh=qTft1lZXxmebOkNzKC0YEuK2LVQvuuq00qby+pSHF1Q=;
+	b=gR60g3j5syKeH4sXJQh2tuakqpnl2OwI2m/mUEwRs7BjAasEEhKcid/TtC4KqyjhAcInRA
+	/5qf3XqshnVdS2DsYnIYE1xtd1ZtDBd/n885XP+J2rNs1OR4/ZbIjcisswKOCxSKitmgFo
+	yukLo0GqGpP73HWsYWMaVDHflMevqBU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eNNNqGxj;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38706b10b3bso53518551fa.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:39:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771933177; x=1772537977; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7KthUXIGMkC3Ch7vQnkMN1zxx/VHydxO2+xjM+lwoS0=;
-        b=eNNNqGxj1HX8Yj4dYogMD2xZauRLfkqZq8kRqzmjVaPfN/GzA218ebj5NYxSXhiSan
-         oMOBhRX4f6Xpl3h1Yc61QAMc8/CV2yyBHDlWvwtlmKo8Zptuw9tw7g5gdO0bO+TXL2eE
-         /3Y0yaUhqWJ7WmL31RBv7p0BBNNsxoq4HsGHe9RUycE/6Kd/1jCWusZu46V0kHuoYAjZ
-         E4yMxckRC7+vlZS2HEX9GDYuzUiTHtjL7FwTCFn8mZ6nHUHSgMQ514TDh0WelUmhjQHy
-         1AYCIqquHLMMbS66kIQw6G+W4AlxLZvzbf68qWaRmtxDGrLrGOLE3jMQ56FvNIihDTHy
-         rFKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771933177; x=1772537977;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7KthUXIGMkC3Ch7vQnkMN1zxx/VHydxO2+xjM+lwoS0=;
-        b=T8ZDHZpyUdEQ67WkNlNwcV9rNAx9TrPf/VYoUCXMoZgVMng+9cgN62FfI0jQbm1Mfo
-         Gt0b2TcrrMIDCl/iaAHEcy00R8HfclTyWmMwsa1ABqVjeAH1997cRv0P53fryfxAUaTp
-         xqhjTGBm5TmN2BCx624IsUJXdQPpKKAt8tZHW5cZiTLZYnJhvE1z9XdLTzaxasurCPpf
-         Bg6fYN4ZNNIxUSeOCTWuqxRVuAzk+jR3GOam9rJkoMp4u6+r2saalcmE6NxMKNDqEoFy
-         ykimyJ2Ld3smEA3ZmWU1x0XoWUIOPAYe+jPTX6+SHrNMVdHXHYtJBJt661B7M/itma63
-         HY2g==
-X-Forwarded-Encrypted: i=1; AJvYcCW9XmpEQYJpuJXT+t+kCTeplmAMMmdJPb1JdQWnayOw9hUDSCd9d9Xjw406InRB/5kCHdTmKrdjSQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywl2IKJt13zrbW5ecFeTG/ipOdv2G13YriTF9YfqASS69PamKoL
-	G7nHj4sffY0Xyo9+Py/wexZiWTpmEqq/4+7NSXR+iCAHMM6dYkAeq4Vj
-X-Gm-Gg: ATEYQzwRna/3mQD1CJxjpv16dVBHixVYLV5EfddA4BKjXGy5Gst8BUHqriU+uq9mub+
-	40yyYCdLertRNSt6TCAFP5UsljHozgH9c5eF+MA/dVfHXXLW4qyLEK3c4HGBjIveabQ14dhBl5X
-	qbP1qO08i6O2x7PUoIxc5ZzX96yVj9NKyO4U8DRPr2p1jK7ZaAhXsetrQmR4Mb30GzBLZ2Jp/KS
-	oVVu85y56RinWREnCr5HN8m+jlPFY6JCVMoKUX3pB95FB1gk9TjH+2mwshfoTi4zaK+ttbiRRYW
-	LMRcPsmoGpdWZATpqmVFKu1mLle/IWEwe7tdJaJ+xJ3YDU3HM+9UYp72+yElAcW7OA7KBz7i+Nw
-	2+ctjW7DVoMv4Rf2IYtiesvSPYoj8tPLKIw/09J7ol0erB7+V3AMwvKhJbAFGJuDx/Trg6hWGS6
-	4WkWSxt/Q3NSRrpoUsAzvBkEnSiiVTb2VGQLdE43p+LjOpPaYPJ+av
-X-Received: by 2002:a05:6512:1306:b0:59e:6447:f520 with SMTP id 2adb3069b0e04-5a0ed99d856mr3918854e87.37.1771933176950;
-        Tue, 24 Feb 2026 03:39:36 -0800 (PST)
-Received: from pc636 (host-90-233-215-147.mobileonline.telia.com. [90.233.215.147])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a0eeb0b8f0sm2106563e87.14.2026.02.24.03.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 03:39:36 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 24 Feb 2026 12:39:33 +0100
-To: Michal Hocko <mhocko@suse.com>, Mikulas Patocka <mpatocka@redhat.com>
-Cc: Mikulas Patocka <mpatocka@redhat.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
-	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
-	dm-devel@lists.linux.dev
-Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
-Message-ID: <aZ2N9a4XgxnurOhz@pc636>
-References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
- <aZykWyxLy34o7PKr@fedora>
- <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
- <aZzPwsBp-Z4XM58U@tiehlicka>
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=JdOZ20r4;
+	spf=none (imf22.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771933317; a=rsa-sha256;
+	cv=none;
+	b=FoSBM24MLp51LNaOJWzowrEO77VLxShsgAfl/uPgzcb1HzyOxL6chlEkGaJsxz2iM5snw+
+	GTEtK3Bo4OOKAqVJgSgicnyXghrVjcVqQ902yMKkMP3xHNDIBeTqaQ50VjnzEdsbzzQRwo
+	bRPwqcsuKR9m5cp+wy8devfr+VNZ/3g=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qTft1lZXxmebOkNzKC0YEuK2LVQvuuq00qby+pSHF1Q=; b=JdOZ20r4MlSjK7rMTiMJ2OxC+7
+	L2QAHh/fh5IduAwQCQBSIHDC4lkRFmoJtRPLftyP7wBq8snDn8UwnlNuKsagN+6NMw/G1GbmIRh76
+	heIKGuT8XwFLv9n/nkI0nyt+dThDtZ5QAl8dsAsyKmjNV7sJub48t1ABxAx15PvgGNb6XfROkaAOk
+	n7g4vh2ej0iMT1alyh4Ilo4rsdVo97S6+AdJt718qtB7Uiv6ZGeLwLN58Cq1tCkZiIpot84xL9cjh
+	XubLC1xIzTucthiO94ACfjipcj5A16oT9qO+GiiPqARxSzJNhDTWkixK9HTOKTG9FdtWg9e0+V1Hz
+	xu33W8Dg==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vuqnZ-000000071Hd-2rZQ;
+	Tue, 24 Feb 2026 11:41:53 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 3DEC9300BDE; Tue, 24 Feb 2026 12:41:52 +0100 (CET)
+Date: Tue, 24 Feb 2026 12:41:52 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
+	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] mm/mmu_gather: replace IPI with synchronize_rcu()
+ when batch allocation fails
+Message-ID: <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
+References: <20260224030700.35857-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZzPwsBp-Z4XM58U@tiehlicka>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: dh77d39r7ycktohjtooreuwjt9itut9i
-X-Rspamd-Queue-Id: 3F60DC0008
+In-Reply-To: <20260224030700.35857-1-lance.yang@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1771933178-696268
-X-HE-Meta: U2FsdGVkX18zryjPaP+/Tne6t7WFQspb3azTzW1FmR2RKnvb/l5Vmq1zzIQyptQUl9sZicWtH0ofT5+lNl0MnaTgN+vQtGpE8ZObIdXekIXiHQ2DxH5nxStDPPk4Lg6RZ9Fmyawr6vvgB8F7dyZGcI06C4O5UE+4UtmaRuqc/ON0QmMRaFRMmBzJ+LvHN7r6/z0TUEZDVBaubsYfi2IS811Uo1gRXQnLez7HV/Q3j8/NyXZBkf2CLOHDOTv3KNwMDAOMQ5rIdYVDa8ZYJ9azK/PoCSISoHbbTQeoFhXLclGqqeu89ugFssApJxyftv6qzKK6/1oKQHWBI2BoQaZCGqi4wWzmChbVNsy0XcoXhUt3Wl1Nd/zAlLeBU53VPCT+uNlVTSAJ+cZg+n2NAOHmBTtkKbvcAAuUbr+iDtwLi5BlU9KjGaYcW8Zp+EEOncmp50me1NsN+jxMuQX214ROdV2Ol3t/duSlqiDZwRyBeYyWxghefmoiWzkNj201iy3HOmOriuPWtAEwWm7TI4/gsbVH1/Sadr+1BcROiby1bghNj5hCn09jHfTLMVfUwJ7L4F2704cIigJ/U8z7w05JUqQotYTNzsX6vLnRmWTpK4/BmCZCJO33TaOjBIcLlRH3rGQPvAN0NuG4Sl/EprN0pwVbZHALzVeVp5urZz5HKu3KcnaGxybN9XS6vJ/u0bnarAqvV7m1+vGgNrex/PLS3wOaV8VniiyKxe2ernuGAozCodSG3KyNrKjMEfQawq7se8J5WJU/ur72ywQvkXSdlYXFHiXyaXPFOzJegEOw+J64mryUXurkf4bc/VKVKozsNm3MZrSZkV1/lcW+lDSPpxnU1R8j3twj4vYtd1Xe/eCcPaHudL2loSnf1T2Uk+OjAC4XfYjDr5eKD5RYo9JFd8wVLoLlxQ9TtWSa8bbKb7AfpkFJ5357TvvO41nDhwz7qIyXP0NG60GKNAECOJY
- gNonzqF0
- lZfIS2D04ww6LfsmSzrY0Y6A89QBWamBLyTuyCAT7wCI3QU7y5RH/MaOD1NhUAKXst+ovEB3cvyB1tb8DKIE+a++UVs+CpFys66y2vHxMO9qn6YIPX0mtODxNQ+v0lQAgokVx+JkqvheFn35x513QYptzjsfN4bgJScUIY0HgKPOwmMmWz3zPh1cS9bSXIk0GqC42Lnii+Jr9yzY2amQ+vIZcufQmNYwGpwH2yeT9gpQgAKr456ER0l5I9ClLW1qT6/sfzMT1D0M8FJoMyi3far5PjJwWA3j2Yjcy1KsvqhbhBlwT+/6nBNKlnwN9G+7qkcawh9OflQdxTV8NmNYtZ93JtOWtvoa6wUtiOe6BDavP8AzGL6xkJGQl/q1jx1fpmVUGaQc6F/EBPYNWoiOBqurn3Oa75gFIWgP08MWg5mYFhBeNHaGQaaZ2ZABZQqxvgwgSs8s0OZC0i34x9Ngl3kcCDZQt7Sax133BGah7dNoMy23WMowKfuLDUhDlZXuQLtgvfCCM8ioLJ8OiigtQRGx4oPwqjpBM3YTgjL9YRBJ8jcs=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7F82CC000D
+X-Stat-Signature: 4ao8as5tkzq6many31d1ty3jcnftrsbk
+X-HE-Tag: 1771933316-662192
+X-HE-Meta: U2FsdGVkX1/3E2ivu8dBTN/g+6R4qKPtZDv0PSBZnaXpX5TRaqvdTWdXLSC3qNuM09OY3w5roZIkXy1jKgCMZl1JYgNoB9CLGWoTBkMtWyUgDTcaRgsU1Com2R7TI2z7U9Xw9W3EEaCRTpSg9/0ElsgHQ59yD3Aa+o6F+ZeosuJU7UGbUL7wsavZfN8C3Aqawk6r1n0JiBWVPrAjH777Ee3L4VxpElLwSUAbhSwxd+09lwxZuVpRLAJa3jZhAb2BeDMa3WZoVr0bVUZkwo3h9c8oaN9WH6x1ERf//ph7oui+hF1xg4nFcSicutqd7G5ADtD0cZcxrI0J8oPo1AN1mD6H8i0ssiSxUcq6ibIPa4oPd7EnsZfyjQh+wrwAeqSB1YTuAFznOOozOueuRW/Q/uzXPyB/2NGvx929B8BDCvi1h0dCeS5MQwuane9E5xf5KbsYEhFWrdxuUQCCN1aas8xkEibTB5onm5ZiVuH0Yo3tC8a87RwrAi+WWoNrfVvSTg+ge7ZmcxWjWWwIi/C6cKT+Uy0+lyBvvu5Tt9TVZIXKmDs/bSmMk6777ADuKhrbg1SLM4FZsAg4PphGo93Ai35Dt9wiqk9/adeshhs4v/LUViz3hmXUEVsBolNKBQ+HbQhQC0omGYd6IahLHFvh42n4fsSdD0w44hMctPVD+Ep+hbz8IbPG6zW7sZw4MUdj0mqZIXdDqNqBC5rnFnEypEVglMGaO6TN7arjf06MnQnrHYgnkMvO5NAaDkJWDLqnzeSSb9WNfBD9qlhvhNXVl8NN1VxO2jRi8fGXoVzwgj0GDyO3qBkAzIvxog1VUs/duK8olKwonpBR60JpfdxRL/pyuysmUItxvvlA0BxrT6Y0F+SNnV5y1oRnRMpXjo9JomgfRDQqzmboXT56m7FrBgM4gF0AYDuuzlqrNOoo5qvrO1GuIgs4Yk2JgfuimVPto88f2AVakOpIQjU/nvt
+ hjw7YGB1
+ yNyXo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,56 +95,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 11:08:02PM +0100, Michal Hocko wrote:
-> On Mon 23-02-26 20:25:38, Mikulas Patocka wrote:
-> > 
-> > 
-> > On Mon, 23 Feb 2026, Vishal Moola (Oracle) wrote:
-> > 
-> > > On Thu, Feb 12, 2026 at 05:33:30PM +0100, Mikulas Patocka wrote:
-> > > > The commit 07003531e03c8 ("mm/vmalloc: warn on invalid vmalloc gfp
-> > > > flags") breaks the device mapper VDO target. The VDO target calls vmalloc
-> > > > with __GFP_RETRY_MAYFAIL and this flag is not in the mask of allowed
-> > > > flags.
-> > > > 
-> > > > There is no reason why vmalloc couldn't support __GFP_RETRY_MAYFAIL, so 
-> > > > let's add this flag to GFP_VMALLOC_SUPPORTED.
-> > > 
-> > > My only skepticism about this comes from the line in the
-> > > vmalloc_node_range() doc: 
-> > > "and %__GFP_RETRY_MAYFAIL are not supported."
-> > > 
-> > > I myself don't know why that may be. Could you elaborate on if/why the
-> > > doc is wrong please?
-> > 
-> > This statement was added by Michal Hocko in the commit 
-> > b7d90e7a5ea8d64e668d5685925900d33d3884d5. Michal, could you explain why do 
-> > you think that __GFP_RETRY_MAYFAIL is not supported?
+On Tue, Feb 24, 2026 at 11:07:00AM +0800, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
 > 
-> The problem with __GFP_RETRY_MAYFAIL is that it cannot be fully
-> supported. While pages that back the allocation can be easily made aware
-> of this failure mode there are page table allocations which are
-> hardocded GFP_KERNEL and there is no sensible way to extend the API to
-> change that (as we have learned several time over years).
+> When freeing page tables, we try to batch them. If batch allocation fails
+> (GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
+> batching.
 > 
-> > The VDO module needs to allocate large amounts of memory and it doesn't 
-> > want to trigger the OOM killer (which would kill some innocent task and 
-> > wouldn't solve the out of memory condition at all), so I think that 
-> > __GFP_RETRY_MAYFAIL is appropriate.
+> On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
+> tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
+> process is unmapping memory. IPI broadcast was reported to hurt RT
+> workloads[1].
 > 
-> Understood. But as said the very page table allocation could be the
-> trigger for the unwanted OOM. The same applies to __GFP_NORETRY
-> unfortunately as well. vmalloc has just recently gained support of
-> GFP_NOWAIT allocation mode, though. This will make the allocation
-> failure much more likely though so I am not entirely sure this is a
-> proper solution for your problem.
->
-Yes, the page-table manipulation entries are hard-coded and it looks
-like it is the last path which is not wired properly with gfp-flags.
+> tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
+> (e.g. GUP-fast) that rely on IRQ disabling. These walkers use
+> local_irq_disable(), which is also an RCU read-side critical section.
+> 
+> This patch introduces tlb_remove_table_sync_rcu() which uses RCU grace
+> period (synchronize_rcu()) instead of IPI broadcast. This provides the
+> same guarantee as IPI but without disrupting all CPUs. Since batch
+> allocation already failed, we are in a way slow path where sleeping is
+> acceptable - we are in process context (unmap_region, exit_mmap) with only
+> mmap_lock held. might_sleep() will catch any invalid context.
 
-Since we grow PTEs and never release it might not be a big issue for
-the __GFP_RETRY_MAYFAIL usage. But it is still not valid in noted path.
+So sending the IPIs also requires non-atomic context, so change there.
 
---
-Uladzislau Rezki
+What isn't explained, and very much not clear to me, is why
+tlb_remove_table_sync_one() is retained?
+
+
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index 4aeac0c3d3f0..bdcc2778ac64 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -251,6 +251,8 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+>  
+>  void tlb_remove_table_sync_one(void);
+>  
+> +void tlb_remove_table_sync_rcu(void);
+> +
+>  #else
+>  
+>  #ifdef tlb_needs_table_invalidate
+> @@ -259,6 +261,8 @@ void tlb_remove_table_sync_one(void);
+>  
+>  static inline void tlb_remove_table_sync_one(void) { }
+>  
+> +static inline void tlb_remove_table_sync_rcu(void) { }
+> +
+>  #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+>  
+>  
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index fe5b6a031717..2c6fa8db55df 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -296,6 +296,26 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
+>  	call_rcu(&batch->rcu, tlb_remove_table_rcu);
+>  }
+>  
+> +/**
+> + * tlb_remove_table_sync_rcu() - synchronize with software page-table walkers
+> + *
+> + * Like tlb_remove_table_sync_one() but uses RCU grace period instead of IPI
+> + * broadcast. Use in slow paths where sleeping is acceptable.
+> + *
+> + * Software/Lockless page-table walkers use local_irq_disable(), which is also
+> + * an RCU read-side critical section. synchronize_rcu() waits for all such
+> + * sections, providing the same guarantee as tlb_remove_table_sync_one() but
+> + * without disrupting all CPUs with IPIs.
+> + *
+> + * Do not use for freeing memory. Use RCU callbacks instead to avoid latency
+> + * spikes. Cannot be called from any atomic context.
+> + */
+> +void tlb_remove_table_sync_rcu(void)
+> +{
+> +	might_sleep();
+> +	synchronize_rcu();
+
+synchronize_rcu() should end up in a might_sleep() at some point if it
+blocks (which it typically will).
+
+> +}
+> +
+>  #else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+>  
+>  static void tlb_remove_table_free(struct mmu_table_batch *batch)
+> @@ -339,7 +359,7 @@ static inline void __tlb_remove_table_one(void *table)
+>  #else
+>  static inline void __tlb_remove_table_one(void *table)
+>  {
+> -	tlb_remove_table_sync_one();
+> +	tlb_remove_table_sync_rcu();
+>  	__tlb_remove_table(table);
+>  }
+>  #endif /* CONFIG_PT_RECLAIM */
+> -- 
+> 2.49.0
+> 
 
