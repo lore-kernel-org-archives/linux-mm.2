@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB69EC112B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6CDAEC112B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C64F16B0088; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
+	id 3F08D6B008A; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C25FC6B0089; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
+	id 3B7696B0092; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B52F06B008A; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
+	id 28FBD6B008C; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FA3B6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A28814017F
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:30 +0000 (UTC)
-X-FDA: 84477685740.08.7F0458C
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 26FE5100004
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uNtkKh1o;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 157316B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B43C01C39B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:33 +0000 (UTC)
+X-FDA: 84477685866.19.FF3A15F
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8C9EC80003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=r2dEz0LG;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771898188;
+	s=arc-20220608; t=1771898192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iJQ/3IUSXREjv6iEZ/pBqdTwKOa9f+25GyeUUpRX5oY=;
-	b=MVRUlsom8Eu2BvOW+0h0ODlKPI7HH++e8vSaB2ReDqQzMbp7njcdLPKQ+wCkT6I33St0bR
-	KJ1x2Hx4enG0G/WJYHehdfFzSA5vRUiUUiwOFB+2qkx6dXVTcLBchqbbegLDl5+QCZEeTg
-	vJTx9IIRwVnZFTf4AJl8JQDQqcplqo4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5/IX7vo5n7nkNpK4VJsc92/3nwHLcPZ/ZOCy2a+g4eA=;
+	b=007OP2/SexNBcA8PTVYHxlfq5Fsi3trtc65tVyM3yPaWRNmMgV7O9a87LwKg4AfMse890Y
+	os0QC05Y2gEvkIaPVzgesemfnIHyxsdgmddOKGyLUbu2M6uakflWXGe6HbTa2ecxwtMahr
+	n7p3iqULxeKbSLaCNZuXpIOhRmuJclU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uNtkKh1o;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=r2dEz0LG;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898188; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898192; a=rsa-sha256;
 	cv=none;
-	b=HSTgm5N4Mf0UIFq0R5UEFMdUsvM5MUISQsYYmIHFO6WJope0loiHsykdAHKiG5sATJNNlY
-	ZxG19v0vVnUne9kFNkxfltktdvKNDc9L+EBZ2vUV9+K1f5l5/HHCQUbcJjNIM00j0n9QbI
-	qgeccaUerk6jtFjQ/lNAjdMr82oLXUk=
+	b=fy/IvmQM2/qIwS3oM5y6hOxYPxX4dhWMbKNdRU1FGYP0wLBnrK2bjnbrcIXkNiOWPKO5Of
+	F+0EVAdAXXZ3BjxF4ZK2QvsK5bu9RqpWotvWLG1jBpYFrl7p9xlRwa1uX0VgNltJYGwxpd
+	n5MuC7h0QW46480R9qZnq9lsR8ieOpM=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1771898183; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=iJQ/3IUSXREjv6iEZ/pBqdTwKOa9f+25GyeUUpRX5oY=;
-	b=uNtkKh1oVXE7EEHuKt2xoJ+eUBj8srH7EhPvt2ZymcGmbF9wwl3qaBopM8YmoFMD67wN3tZgesLKBP2v1K+BxRltS96vn4ESZFBMS3lOCU3/HdBr9fyye6qMSWuWPkMQq40tudrQYi/g65/Q0FnqnzmYcFUWWxXzIcza4IxfhPc=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzhndj1_1771898181 cluster:ay36)
+	t=1771898186; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=5/IX7vo5n7nkNpK4VJsc92/3nwHLcPZ/ZOCy2a+g4eA=;
+	b=r2dEz0LGrR0beWHBtnVONVfP/E+jM/7OPxe/jK8TAbPv5oVjr1HgeSbsR+rhOn13XMB7vFyOvrPb8wF3Q7xe+8TaSa11t0xdLDAUCzNHNyEoHiWlwPdOIvmn9/pULvKVl8x79WA3YnfK6AAQl88qcvMQMFAW6TbAXbCEvzj+HAs=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzhrds-_1771898183 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 24 Feb 2026 09:56:22 +0800
+          Tue, 24 Feb 2026 09:56:23 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -84,20 +84,22 @@ Cc: catalin.marinas@arm.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/5] support batched checking of the young flag for MGLRU
-Date: Tue, 24 Feb 2026 09:56:03 +0800
-Message-ID: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH 1/5] mm: use inline helper functions instead of ugly macros
+Date: Tue, 24 Feb 2026 09:56:04 +0800
+Message-ID: <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 26FE5100004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: okaxpr81udzfm6rhf6wmhgcqdqeg9ean
-X-HE-Tag: 1771898186-695044
-X-HE-Meta: U2FsdGVkX194yKNG3C4EVyvk2KDdKp9PhcugO0cxU7MiPyt0J88lWf1AGeMyAA2wbNdNFzSrft3UZmscbx4bQP8dF5WThcSv5OaGMb+w4XEJuIJ/uq1euhyD3ZzOJk7p1I3uKlh1SWXFk15pqn1N6S1aP3VPNkxo6y+5QC1eXWKoN9d5y2ztlclUYIqn6yyB/LCFE65GqaSHn01NBdECnTQZIOllrJPNFVuJte0JguSlLhDt9jRiZPtFvZ+M7VTE3gOGKxrJeU0ERsSj0GuuaQ27h2SSXCZrlwMnKvHKxnvEEdkQhnBDcFP+fkz9ijVGvi7+WnnsvD0EdFmMRFXWziB0WLtUxvS2WueE+XOAg2PdqTnB1jlZTG/7+eM5ib8H9SUiN6MidB68LIDQy7Ygy3rENRCr3w/y2A7XsDSuWQld2Fl/ScU0A75Op39bKTcbVGCavs+/1zff80Q1It+1noKOUXGMitQnst8stzjljEzb5WIk8BPTJrThDcQsPqVxck6v/Arqdk9kQSqsK7GP1VgzO4wvc6uPlnRDwiQnPXrjjZLxZMIer+arcJVjTWQLgjxPkzVBWnE495BiYo8sJvV8OmJ8kJuZRldSwYD7DNoyloNPAosCHTGd0q+UuD+WFgDCY/TZGinqma6kFl2CnaOTMq/w6gQSjsaUckv0zUCjtj8IOT81XGH04uQdGn2s4NIiiVzDvSqWs+zsvrf0dtDJwIDVgHTgnplxkuDjjyWkDE/LifAWp2f5KesuFnOkUJPrh9Fgj2z5gp1iuqhd8FcSYeQ2+kaXwnimNEBFEWfUNYvYufjmI+ioebINTPzgdp5VcXOfi01fJ/sdatTQTouFihMQhgNJHk0+DHJKTs3vHAyYNmT055dsXZ1G+pMXGSRVW36Xunpr/RRaLIbNwMx3SjwnKUruYzC9b8X3WCtNRnakIMIFmdYDvBywfi9nPujNB5zL+QNLGf6UIJP
- 2KGPaou8
- Mx4t93rOfDkVAq3cWgoCvgnbB1YiFPF1+wsJMLy0aLJ7RN5mZniYvZIYbdPglX0iNy6dQ85viXXk6jG5yuW3Gbwz2iwbLTL/+6bzIloqUX7iO5pmjKXdMiiXfOR26zIDqPWRDModJf3M/v1BUi9z3F3AUdnpbBh7SvDOmxcGa5eQBPBXh7NJG+pxIpOAt7xYQUMHe/YMf1l4KbZRHFYOydiiLlWN0u0S+A0jroabLcxKxglRnGYr9r1m0svw0DJBslac71NwKhTAEYC1JBk012bkGSw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8C9EC80003
+X-Stat-Signature: niqweue83ph4hmrk83bbhk1hdijmjz35
+X-HE-Tag: 1771898191-636010
+X-HE-Meta: U2FsdGVkX19/f7A5YEhFP55QA1jbyJ2gRsYG74udYkHPb5ueAFE9u4cBGu8tT94Z5qEsfyivRKZGHJ/UFWcmeAUEDbahTvhYA5BHU0kvHTn3La/W8xj/CBNyuOU27gsVtwQ7G+NMYue5dq3ysZe40xo2TS95hS056DZX92hTjqAFnZ5yi06jzItIDi8SKCGSU6Zsopa4vCxwEYhabDa6it+4++EVkAkEBWvlwJc8aPS1ssa0V1NGAR3f5iksjvQgDqcmYYbuyKSvcBF9e+299M2uU5n+t16ALOhGDIl7oYEhJ4eddTqE+JQjxvR4XGQJ/FyZT+uDaGV+X58hxfE3hFF2LrN5fTwORunlFv7mO3aB956+hbrEzSB45Id5EDu2ZZtnbxWEHb0IBXCcVZMTMKc/WX+PwHoqUuOH27LbIaV/9VezymoLEC0B4Nn8xqmPKfr4ceXHOqPBJWaF4zK2e1FWC4TMWkUoj4+yg+WUljCSIKPARXrUp23g6jPat3ARg4BdYXYAC5ZPlkjOZeoaNTyjRbcYPH6CVk4CEI8wfP7yiW9kaCDo3JzWic3xr4XJLmuVq69TMAGG3dou4/DHScMQ4VnNJH6jCgY7imSyvwt7t8t69L33gdNScn1saLX6qR2xKl6/9gX/7z+hmYS9X1bE2GtANu0Nk+Bp0uL3/yO2ghMHqXudo7w4927i0UDDxIm/3Hbzy7abYWJelRCga6TkSd46irbdrqqJJODtMiZ29Rnv4nuGvfPhjw4sMx/ogK4gR8KTAFfs8A4wU0v2tBgt5nBFS29qVuumFPRVTyAjv0DhEGIri3nak+0iDwdR+QkSjbdmHkiIRj+4sqjW3MVXCKLG6pxA/4w/f4S9poCGX0Tr9VXvvB8aFMKqNqx3bw073JJeoxr217tNncY0nLSqrIxyEJ68QElbiVjbG10IqB3zfTBzs6zWqCc8/uSV0Jj2UMfPzOHd/V9YdIo
+ OIt6Iv95
+ UzZitNzRDo2tHi3QkFa08kv96w+o1YpeKxsQLTZ3OMeQrcYtlb5ob75oxvYZe7xS3N80PjoKJt+DvnNhaATGr4mQjdyZ6MkQSqRoC72OQgvDtvAWVQ+Y5dp5tcIgQ3cW2RFsBUS8UEl6wCPCMsX//z45l1sZK8vZOiw0Nkh2sAgf185V7VjIOkV5nXVdVVobxmbK+6M53VpTL6wvPrMruxiKQEbuy7vudbqZvlF1rwvcvAQYvHlT0IcOkrpMEE8zUXv5PoD7fwQWSS5eRC3y9t/rc+HybRVFz9wVOMoZqTAa6RVZ9+ygKUDaTjmiMrFYiPXQN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,38 +108,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a follow-up to the previous work [1], to support batched checking
-of the young flag for MGLRU.
+People have already complained that these *_clear_young_notify() related
+macros are very ugly, so let's use inline helpers to make them more readable.
 
-Similarly, batched checking of young flag for large folios can improve
-performance during large-folio reclamation when MGLRU is enabled. I
-observed noticeable performance improvements (see patch 5) on an Arm64
-machine that supports contiguous PTEs. All mm-selftests are passed.
+In addition, I cannot implement these inline helper functions in the
+mmu_notifier.h file, because some arch-specific files will include the
+mmu_notifier.h, which introduces header compilation dependencies and causes
+build errors (e.g., arch/arm64/include/asm/tlbflush.h). Moreover, since
+these functions are only used in the mm, implementing these inline helpers
+in the mm/internal.h header seems reasonable.
 
-Patch 1,2: cleanup patches.
-Patch 3: add a new generic batched PTE helper: test_and_clear_young_ptes().
-Patch 4: support batched young flag checking for MGLRU.
-Patch 5: implement the Arm64 arch-specific test_and_clear_young_ptes().
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ include/linux/mmu_notifier.h | 54 ------------------------------------
+ mm/internal.h                | 53 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+), 54 deletions(-)
 
-[1] https://lore.kernel.org/all/cover.1770645603.git.baolin.wang@linux.alibaba.com/
-
-Baolin Wang (5):
-  mm: use inline helper functions instead of ugly macros
-  mm: rmap: add a ZONE_DEVICE folio warning in folio_referenced()
-  mm: add a batched helper to clear the young flag for large folios
-  mm: support batched checking of the young flag for MGLRU
-  arm64: mm: implement the architecture-specific
-    test_and_clear_young_ptes()
-
- arch/arm64/include/asm/pgtable.h | 18 +++++++----
- include/linux/mmu_notifier.h     | 54 --------------------------------
- include/linux/mmzone.h           |  5 +--
- include/linux/pgtable.h          | 36 +++++++++++++++++++++
- mm/internal.h                    | 54 ++++++++++++++++++++++++++++++++
- mm/rmap.c                        | 31 +++++++++---------
- mm/vmscan.c                      | 37 +++++++++++++++++-----
- 7 files changed, 151 insertions(+), 84 deletions(-)
-
+diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+index 07a2bbaf86e9..93894b90c8c1 100644
+--- a/include/linux/mmu_notifier.h
++++ b/include/linux/mmu_notifier.h
+@@ -515,55 +515,6 @@ static inline void mmu_notifier_range_init_owner(
+ 	range->owner = owner;
+ }
+ 
+-#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
+-({									\
+-	int __young;							\
+-	struct vm_area_struct *___vma = __vma;				\
+-	unsigned long ___address = __address;				\
+-	unsigned int ___nr = __nr;					\
+-	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
+-	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+-						  ___address,		\
+-						  ___address +		\
+-						  ___nr * PAGE_SIZE);	\
+-	__young;							\
+-})
+-
+-#define pmdp_clear_flush_young_notify(__vma, __address, __pmdp)		\
+-({									\
+-	int __young;							\
+-	struct vm_area_struct *___vma = __vma;				\
+-	unsigned long ___address = __address;				\
+-	__young = pmdp_clear_flush_young(___vma, ___address, __pmdp);	\
+-	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+-						  ___address,		\
+-						  ___address +		\
+-							PMD_SIZE);	\
+-	__young;							\
+-})
+-
+-#define ptep_clear_young_notify(__vma, __address, __ptep)		\
+-({									\
+-	int __young;							\
+-	struct vm_area_struct *___vma = __vma;				\
+-	unsigned long ___address = __address;				\
+-	__young = ptep_test_and_clear_young(___vma, ___address, __ptep);\
+-	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
+-					    ___address + PAGE_SIZE);	\
+-	__young;							\
+-})
+-
+-#define pmdp_clear_young_notify(__vma, __address, __pmdp)		\
+-({									\
+-	int __young;							\
+-	struct vm_area_struct *___vma = __vma;				\
+-	unsigned long ___address = __address;				\
+-	__young = pmdp_test_and_clear_young(___vma, ___address, __pmdp);\
+-	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
+-					    ___address + PMD_SIZE);	\
+-	__young;							\
+-})
+-
+ #else /* CONFIG_MMU_NOTIFIER */
+ 
+ struct mmu_notifier_range {
+@@ -651,11 +602,6 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
+ 
+ #define mmu_notifier_range_update_to_read_only(r) false
+ 
+-#define clear_flush_young_ptes_notify clear_flush_young_ptes
+-#define pmdp_clear_flush_young_notify pmdp_clear_flush_young
+-#define ptep_clear_young_notify ptep_test_and_clear_young
+-#define pmdp_clear_young_notify pmdp_test_and_clear_young
+-
+ static inline void mmu_notifier_synchronize(void)
+ {
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index e0ef192b0be3..1ba175b8d4f1 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -11,6 +11,7 @@
+ #include <linux/khugepaged.h>
+ #include <linux/mm.h>
+ #include <linux/mm_inline.h>
++#include <linux/mmu_notifier.h>
+ #include <linux/pagemap.h>
+ #include <linux/pagewalk.h>
+ #include <linux/rmap.h>
+@@ -1789,4 +1790,56 @@ static inline int io_remap_pfn_range_complete(struct vm_area_struct *vma,
+ 	return remap_pfn_range_complete(vma, addr, pfn, size, prot);
+ }
+ 
++#ifdef CONFIG_MMU_NOTIFIER
++static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
++						unsigned long addr, pte_t *ptep,
++						unsigned int nr)
++{
++	int young;
++
++	young = clear_flush_young_ptes(vma, addr, ptep, nr);
++	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
++						addr + nr * PAGE_SIZE);
++	return young;
++}
++
++static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
++						unsigned long addr, pmd_t *pmdp)
++{
++	int young;
++
++	young = pmdp_clear_flush_young(vma, addr, pmdp);
++	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr, addr + PMD_SIZE);
++	return young;
++}
++
++static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
++					  unsigned long addr, pte_t *ptep)
++{
++	int young;
++
++	young = ptep_test_and_clear_young(vma, addr, ptep);
++	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
++	return young;
++}
++
++static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
++					  unsigned long addr, pmd_t *pmdp)
++{
++	int young;
++
++	young = pmdp_test_and_clear_young(vma, addr, pmdp);
++	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
++	return young;
++}
++
++#else /* CONFIG_MMU_NOTIFIER */
++
++#define clear_flush_young_ptes_notify	clear_flush_young_ptes
++#define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
++#define ptep_clear_young_notify	ptep_test_and_clear_young
++#define pmdp_clear_young_notify	pmdp_test_and_clear_young
++
++#endif /* CONFIG_MMU_NOTIFIER */
++
+ #endif	/* __MM_INTERNAL_H */
 -- 
 2.47.3
 
