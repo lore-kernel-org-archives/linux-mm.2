@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26DB2F3C99E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 15:50:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB3CF3C99E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 15:51:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F74F6B0088; Tue, 24 Feb 2026 10:50:46 -0500 (EST)
+	id 89F716B0089; Tue, 24 Feb 2026 10:51:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A5326B0089; Tue, 24 Feb 2026 10:50:46 -0500 (EST)
+	id 843806B008A; Tue, 24 Feb 2026 10:51:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3862E6B008A; Tue, 24 Feb 2026 10:50:46 -0500 (EST)
+	id 723466B008C; Tue, 24 Feb 2026 10:51:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 244AD6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:50:46 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BC4D6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:51:41 -0500 (EST)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B76811396FA
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:50:45 +0000 (UTC)
-X-FDA: 84479788050.29.182D9DF
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DD07718000E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:50:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=aNEnycGi;
-	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771948244; a=rsa-sha256;
-	cv=none;
-	b=bFWEfwBmvo6YsqGTTIaouZOZ4BVQHTtsiFHOkOpOLgNkUpiObWLKwnUyBCI4uo5h4yaRc6
-	3is9AnvbBQ0lZqXQ8rd3ywKV5osg9xOdGmrTgHWdhGP3b9TWulfivwzuHuxnb7uW9jgjZv
-	++nQbGBJ6u+FLjwgMOTyuzVJ3DRJASw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=aNEnycGi;
-	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EAA901B5DE4
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:51:40 +0000 (UTC)
+X-FDA: 84479790360.29.B71ADF8
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CFB3440016
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:51:38 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=dAX8Owhm;
+	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771948244;
+	s=arc-20220608; t=1771948299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Afmea4/5yCr+RWfrWvynSjvo68B8NHavl3Ss2MT9/VQ=;
-	b=j+j0bqnpz0ZU/I8j9S9eCov5+/4Vzm8DY7YzdnSWvrWdxza5BeTOeScR8Cn4jXLZbSPiR3
-	AR72SRhYxlCo1zZb0tAHeoCmqwchAjPKN1SGgoDXfGIatQJqTbS56NevajHHaUrKak78rn
-	B5qeyRqIwY/l/qnM5ywWTXxMnQk9Hvc=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id E929EB2BBD;
-	Tue, 24 Feb 2026 15:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1771948242;
-	bh=Afmea4/5yCr+RWfrWvynSjvo68B8NHavl3Ss2MT9/VQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aNEnycGipuTvB2eFYUNi+YkjU7B1iN2zSAv5L2GpcFd4CIkpEfhb2xvGYXuJLJ4T5
-	 H68tjkaI9ypOxNFtEqKRUfIN6qN3VyZvOUvCF70KRM1KYbJTEE4ZX/zTlI5MWMJ5hG
-	 KNdFnNRD+v/8PyWc+lCMPO1pp1WLhsioXMoBUIRA=
-Date: Tue, 24 Feb 2026 15:50:40 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
-Subject: Re: [PATCH 3/4] mm: convert compaction to zone lock wrappers
-Message-ID: <aZ3I0ADTAdCN6UmN@shell.ilvokhin.com>
-References: <cover.1770821420.git.d@ilvokhin.com>
- <3462b7fd26123c69ccdd121a894da14bbfafdd9d.1770821420.git.d@ilvokhin.com>
- <74fc1f28-b77e-4b9c-b208-51babae9d18e@amd.com>
+	bh=Z5ETdepbMQNUMnuhr2VD2neSs42BrkDotrEf8tSgUw0=;
+	b=piZpYGs1ozKe5ed05uvz9BcvIxZblMUPNh798Uwz3uhdR3w2GHdn12X7sijQUlx6vGd0yb
+	hILx8AVa/0AouPHa3zk39aI8Ycjex5OMvQRzThThkWWlwf9ObwGk0uWGMetXeZ1XEmAwbk
+	nx5ZdqwLwWv/Pwe4oGhig6j5jFKUMyo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=dAX8Owhm;
+	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771948299; a=rsa-sha256;
+	cv=none;
+	b=fskpy69jFRT5I6XyuDv9F0NpKm3FfbBbsMVApuJyapD2xYWZVy8u+BYTYArvymm5ouK73p
+	MNdj17hcjHeTbO3e3Y+GHTtO9JFueIsscFKTNlY0QSvpT2nNaMbojpROYdGnCnlDgYSxIf
+	lvpA8F8ghLsY8IDs0z12sJSCR93NR0Q=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4833115090dso55110565e9.3
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:51:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771948297; x=1772553097; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z5ETdepbMQNUMnuhr2VD2neSs42BrkDotrEf8tSgUw0=;
+        b=dAX8Owhm1dFPs4BJWkFb1q5qjRz6GouwZ2Rhs7zQwxrTTwn6zdV4K3U/EJabr0bfP4
+         3Do7+VQXVoEs47lG63oyHfky0GAnAbBbRGzKmI7j+MB71d5SLougWTmFThcxI9Dcqmhg
+         E3hFF1YF7gz/icrRd6p2+xup3d9XRUmvLOZJ37nASitk7PKD2gaqyhU9+WmiNS1FjE9v
+         GtohHB7KVgZYu5cx8AmeVgyQ1+J5PSqt8VNRI6AI7h56ul9pyXf6XKq9pnbZizytd6Fq
+         eWxRuHsbD47TeMmBOrkuvzdxtT8YSvIdfTF000HHCoSYn9Ow3+XuMi895p/PzEbNNNTm
+         PSLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771948297; x=1772553097;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z5ETdepbMQNUMnuhr2VD2neSs42BrkDotrEf8tSgUw0=;
+        b=ItzMQPtnugP4RjRTo3Zg5sbIwCZ2omA46BdcuAT5FqLRnbqGXeVVZUMjYCqskJm/6U
+         +7o5AOHpvmCu9OxnKtVxT/ZO1efYSmG06Yu6P2EBaMUwIv4taasEGGCSYF9GzEQVjFNm
+         QciEZ5ca62sXOG/FAUnRrlP5hg66YbLweiHLcKdrQlG2/j6Y0y1TNn3027CchXpNq3JC
+         VfZcciv4Tc2I1HWScHowT850g0Y1TSMmlEqp2EtLxV5hSygEup6srno2BG1CSXctHO9A
+         +vAbgthCTc953fnUNdDFOoOBxQolXqKFJqjmt3lnAPshqMMOc1ETv3yJVVTgGZfGr2lP
+         dP/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXZdsaDwBChg5DpwF5ZbxEsfmkhFMickVVQL7Kd09q+OX6AsKIo9KCPv/t7Q8RXFSq7SXOs4/LPvQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxwm5DJ2MsN823ZcyHVDK8cHQhTEkWz393ROm8RS5ytX96viAYU
+	+OI4eS/bqMzIlI0mCm7+RD+BHlCveLawGIznx13NQ23N/V4cUvXyHM9J2qDmIj/Bo5A=
+X-Gm-Gg: AZuq6aL1y194toJQMVfJhjfCjbGgsN9N2gpwYTKLAWoKMFCSKpTOWRJBwMxnQeCLnn3
+	A5/S6d5N6+7LaraKmigMj5N3g4pEn8Y02BohNFdPZ9KRTGiyT6SbqFfiH1F7uYrELpwH3XvzJZV
+	LM2L5q5OjmjqUMROfhIrge/F9gFA1E/OGkLl1jp7YPmpQ+8jgan3Ae4NL8/VIs2eYn1oTvnYaoy
+	13Y4kOnd8c7YAnDBq8HKCGZc54JrIZWwmjSuHFlzetAcYop+lmlzHLkMKprhfpTzTIyoD2L4qM6
+	Tw+fzM1hCLma8/UApZdFSQoVL9US2A9DwO48hEpScqIaE8gjqRsEhDXzZvcfOhPIAbG2RxE2MSM
+	fcL2+4J6W4eKF1EHEDh/Lr/PlsbvgXTHcWloixFyQHnBjCq61kwiHpC4YtFkrTluEFpulgGl4nL
+	7sNhBnX6+Xh1UlPsjmRLLE9eAjZPSlhoU=
+X-Received: by 2002:a05:600c:468d:b0:480:7162:fa48 with SMTP id 5b1f17b1804b1-483a95c8f2dmr230149145e9.13.1771948297024;
+        Tue, 24 Feb 2026 07:51:37 -0800 (PST)
+Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d54760sm27459593f8f.35.2026.02.24.07.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 07:51:36 -0800 (PST)
+Date: Tue, 24 Feb 2026 16:51:35 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
+	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+Message-ID: <aZ3JB5Xm3SCmJW95@tiehlicka>
+References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+ <aZykWyxLy34o7PKr@fedora>
+ <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
+ <aZzPwsBp-Z4XM58U@tiehlicka>
+ <aZ2N9a4XgxnurOhz@pc636>
+ <aZ2YDD_l5JN78DJC@tiehlicka>
+ <aZ3F2cghZpqBi1Mk@pc636>
+ <aZ3HaVuIA4Ezu1uY@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <74fc1f28-b77e-4b9c-b208-51babae9d18e@amd.com>
-X-Rspamd-Queue-Id: DD07718000E
-X-Stat-Signature: acxmwymtprjkjz6ac5dfoqdbnyzxisj9
+In-Reply-To: <aZ3HaVuIA4Ezu1uY@tiehlicka>
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771948243-943878
-X-HE-Meta: U2FsdGVkX1+b+X+aLLpxFZ6EICNSwIMScmWQ1U/7mHKwu95feBn5gWAyS2EOOR0DiwoRcwDsQSp2zLWHafi1upv5CvPeRJNg4wzQVNfWedGbLSSIgiJiqnMwr+hk/QTFPe7WGDh6fbQzMlyu+LOaDGeDyc1yHF3ApDbiXT8+EyNJu4vzek4SsDg198VInvlEx+mJ1AeDocGCBHcXONE9ZAn4aqyXOzb2z4U++FfrFmNMGoVjGHnUBJ/h1HAkVTDqCNwgY2vUfLJSUQc6w16tf1QWKQxLpC82GplN/vpJRzcipmFm8PDrkRQjym1KglKuM/BJb3nJ/hwnVTZSfdyvguWsCdlDT37vJqaVLGwmcnS4aK87euEbAUkJIgnM+hHKSEMCOU/fd4IwmrKXkrzkBN9OSBmseleRxRAwZvUKqLNVoT3M4xvAR9B92mcKCsYae8A1iWIWlbyeg8SiZpItF230ZvYmRr4FXEwyHJz9hvng7RYbrnJIS67XdVaH/Pf9hLALtLt4v5hyZ42yQk54cu/cdGfISKrGqgQwlDERmDeQPTloE2i4Ztis0El4hIV284VQiheCp8Qdu0BgW3Nr4IIaVrRpnplIxG5QS3fKT4EMjMtVaMEa3vW9+DsVm3hHxNl0DZrT+AsPsAodVgkjyDF7xgxxZBbIo7VHerBCwES5b+CV2phVhrhnuGTjTc2TmU+IVk/udvA3iMI0uoJhS0MCpK228tP5zaE1XFnX0vzwTw6yyfPgLsVyOQA74m8ABINPlB7p9a27KybWPJsr95L3XO9RDJuNbUGSJfmn7CiFxkBX2Fa6k8p7YeYRntzQ9OPwTf+baiimYTSTaVr21w45TgG04u0bLjnKbrS4GKv0j0MrIm9BXUgYovjEsBUxVMwq4ERQxEqkHpbQhGaSQc92aee4/FjoZUKUrRvhgDpSWgEVzkr3nfwwDEerSPI2drEnDgbr6CZvMBTCT4k
- YZClbUWo
- 1YdDUR/M6s6yCTCdacLKYsi8cDdowH/gcH51boIq49KDhO+uW1HWBOUkb1Vi5iMPmsOUAsEkTqRT9Hohl9PbVwMTwfmNeSLjjxgZzDb09pYc6nQuve9dABQXev9RODnJktPf6PvNxxcRZmwBeAyXqf7ZURL8Su9HaqHG13F9Zo7MeAbypsLCwPj3YDyG/iHN32fcG8poyQa4yjx6BPUrCYBsOfrxoWtoE02iHfCHSbFHJMRD3fyZpgJNrhf+cg4CaveFTE3P59jzwzKBDOoDY4hrJ8PBZie83Dev7
+X-Rspamd-Queue-Id: CFB3440016
+X-Stat-Signature: fea4wcxhbiw5fdfxrnbori6f1hqorgjt
+X-HE-Tag: 1771948298-255011
+X-HE-Meta: U2FsdGVkX18m3efJS/GVrFx/be8IekyLp697eRu71xV1mRRIkDZz57NI3X5WwaSyC++vzDjNtpuKv3xrhCtZUt++G8vCCb/4/zVHBV0oYVd4gsti+zVV/rOztWHIeSmpbQMI4pvvV9hSYGZ/lS/qxC9YrYDSviZ0dqUNshE4On+9BI4fMw2VzpgOKtHn8RWIth4Hp4Z8s97InRNgc0a4+QH/s9Yr0TIvfAJjkU1X4sTbsdSYf06ANWxcGKSm/0ynz/ta2s993H8XsM33hNqz1oQ0o2kYGb4WUjSsgMl6l2HSqS8/drck50vODPj7l1NT8feu6ixTBHbsBr2P4uO2Jk7CGOEeFAts3JY8xmd82ZkT/XiPRYt0ralxgCaDHnWv4sPi9WcEkYmKmBgQHXS6uQ+Jm8pzQrixbV5crkZYHYbjJDwYGexfNbNIyH4Lrn2ApqS2KcCm2uJzmO0LTNr62N3G6MAPKs60+wBxRQlnEbdDZSI3lE70AFyKT1DjYj65vZHjqcBMSzXbTun6tWC+3d7fB/s3okHIUSAhuY+tbMkoGcgnW6OlbbS2PjX4Lh8LwquVNbmtZ6Qg1UJFaQ/FiRqotxMG33/pudN22C6R+x/MvXgHae/5+2q4ndOjFPFuhDdrXmap06jHoJO9lAR19qguQDOxTh6o1undCtV+xaTffP9CgWGN0rTySfW9uAtFmsiyjHHG2midWdOyN+VlA4e6Smd2BkfngHUKN+8Bl4IOIAPeNBeMhfzDN3fksH8cIV4CnkdVkSi8e6v6IRBKw495AEAKSLbJuSV9CX8SUzbJH33FN+JFIMlft/sAjKGj3smogaiZ9vNfttXwk45Yp3cyFONjlrGGogyjKAkW58NzJDi6nozyOCmmkbsN9CQsWfkMIP8pgasWUFp4SHAsgKI5eEH3vTVqYS2h8rIgsXFd4x5rDz6zkSkEPccKudG7WES9+MAAtJdQOXyE45t
+ ClhJQuGV
+ M+Weq3F1eGwcSsZembn3ExWa9Lokqkhveni65aMIa6WEPa9ZRkYHor/+43cRdLsf1AWHQ8AJNqv6z9TNpQ5XbIbdqmN7EYmrtuNxob46VwVk3ujmSg7O5iZs9pQTnS8T7JelD8KZsLOJ1/QRfcJNf5NkYYWPY2VAy9jbnzqH1cUyu1ZDdCNIraSYqVitumtW8piyNSh3sXORGFss+AbZpi6k8vWAtvx7C43j5QV1uZGqAM98JxQIjZKvAFs6BqNDYNonjLc0XskuDz7jTjRamFKrDXbN4Y0hedaZ1sdrYHglp/xjcUzX7Lp1kHjXkXI4todWPq9+XP0VP7qTi5Ra/FGHbDjB/yB2rf7CLFvfuGpjMVCvGyfib4CX1KsJiWC+wGXlWX4+aT8YuN5dzVqo14/qGTJ+BMBD8vSbonMB6yTvCLiImwHGek0Yl1MZd0SorMTVeJDP1sK531Hagzcj/FU+Ew5G921Kd2tyF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,258 +129,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 01:10:05PM -0600, Cheatham, Benjamin wrote:
-> On 2/11/2026 9:22 AM, Dmitry Ilvokhin wrote:
-> > Compaction uses compact_lock_irqsave(), which currently operates
-> > on a raw spinlock_t pointer so that it can be used for both
-> > zone->lock and lru_lock. Since zone lock operations are now wrapped,
-> > compact_lock_irqsave() can no longer operate directly on a spinlock_t
-> > when the lock belongs to a zone.
-> > 
-> > Introduce struct compact_lock to abstract the underlying lock type. The
-> > structure carries a lock type enum and a union holding either a zone
-> > pointer or a raw spinlock_t pointer, and dispatches to the appropriate
-> > lock/unlock helper.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> > ---
-> >  mm/compaction.c | 108 +++++++++++++++++++++++++++++++++++++++---------
-> >  1 file changed, 89 insertions(+), 19 deletions(-)
-> > 
-> > diff --git a/mm/compaction.c b/mm/compaction.c
-> > index 1e8f8eca318c..1b000d2b95b2 100644
-> > --- a/mm/compaction.c
-> > +++ b/mm/compaction.c
-> > @@ -24,6 +24,7 @@
-> >  #include <linux/page_owner.h>
-> >  #include <linux/psi.h>
-> >  #include <linux/cpuset.h>
-> > +#include <linux/zone_lock.h>
-> >  #include "internal.h"
-> >  
-> >  #ifdef CONFIG_COMPACTION
-> > @@ -493,6 +494,65 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
-> >  }
-> >  #endif /* CONFIG_COMPACTION */
-> >  
-> > +enum compact_lock_type {
-> > +	COMPACT_LOCK_ZONE,
-> > +	COMPACT_LOCK_RAW_SPINLOCK,
-> > +};
-> > +
-> > +struct compact_lock {
-> > +	enum compact_lock_type type;
-> > +	union {
-> > +		struct zone *zone;
-> > +		spinlock_t *lock; /* Reference to lru lock */
-> > +	};
-> > +};
-> > +
-> > +static bool compact_do_zone_trylock_irqsave(struct zone *zone,
-> > +					    unsigned long *flags)
-> > +{
-> > +	return zone_trylock_irqsave(zone, *flags);
-> > +}
-> > +
-> > +static bool compact_do_raw_trylock_irqsave(spinlock_t *lock,
-> > +					   unsigned long *flags)
-> > +{
-> > +	return spin_trylock_irqsave(lock, *flags);
-> > +}
-> > +
-> > +static bool compact_do_trylock_irqsave(struct compact_lock lock,
-> > +				       unsigned long *flags)
-> > +{
-> > +	if (lock.type == COMPACT_LOCK_ZONE)
-> > +		return compact_do_zone_trylock_irqsave(lock.zone, flags);
-> > +
-> > +	return compact_do_raw_trylock_irqsave(lock.lock, flags);
-> > +}
+On Tue 24-02-26 16:44:43, Michal Hocko wrote:
+> On Tue 24-02-26 16:38:01, Uladzislau Rezki wrote:
+[...]
+> > I do not have a strong opinion about workaround you noted. Maybe Mikulas
+> > can switch to NOWAIT flag instead.
 > 
-> Nit: You could remove the helpers above and just do the calls directly in this function, though
-> it would remove the parity with the compact helpers. compact_do_lock_irqsave() helpers can stay
-> since they have the __acquires() annotations.
+> using NOWAIT for the full vmalloc allocation would be just too easy to
+> fail under moderate memory pressure.
+> 
+> The real question is whether we want to provide some sort of backoff
+> early but not way too easily allocation semantic for vmalloc. If yes we
+> need to get creative in the vmalloc internals rather than expect callers
+> to be working around that on their side. History has proven that this
+> just leads to tech. dept and more work later on.
 
-Yes, I agree, there is no much value in this wrappers, will remove them,
-thanks!
+Just to make sure we are on the same page I mean something like this 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 61caa55a4402..791366fe44e2 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3798,6 +3798,8 @@ static void defer_vm_area_cleanup(struct vm_struct *area)
+  * non-blocking (no __GFP_DIRECT_RECLAIM) - memalloc_noreclaim_save()
+  * GFP_NOFS - memalloc_nofs_save()
+  * GFP_NOIO - memalloc_noio_save()
++ * __GFP_RETRY_MAYFAIL, __GFP_NORETRY - memalloc_noreclaim_save() to prevent
++ * OOMs
+  *
+  * Returns a flag cookie to pair with restore.
+  */
+@@ -3806,7 +3808,7 @@ memalloc_apply_gfp_scope(gfp_t gfp_mask)
+ {
+ 	unsigned int flags = 0;
+ 
+-	if (!gfpflags_allow_blocking(gfp_mask))
++	if (!gfpflags_allow_blocking(gfp_mask) || (gfp_mask & (__GFP_RETRY_MAYFAIL|__GFP_NORETRY)))
+ 		flags = memalloc_noreclaim_save();
+ 	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+ 		flags = memalloc_nofs_save();
+@@ -3940,7 +3942,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+  * GFP_KERNEL_ACCOUNT. Xfs uses __GFP_NOLOCKDEP.
+  */
+ #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+-				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
++				__GFP_NOFAIL |  __GFP_ZERO | |\
++				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
+ 				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+ 				GFP_USER | __GFP_NOLOCKDEP)
+ 
+@@ -3971,12 +3974,15 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+  * virtual range with protection @prot.
+  *
+  * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
+- * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
++ * %__GFP_RETRY_MAYFAIL, %__GFP_NORETRY, %GFP_NOFS and %GFP_NOIO.
++ * Zone modifiers are not supported.
+  * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
+  * by __vmalloc().
+  *
+- * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
+- * and %__GFP_RETRY_MAYFAIL are not supported.
++ * Retry modifiers: only %__GFP_NOFAIL is fully supported; 
++ * %__GFP_NORETRY and %__GFP_RETRY_MAYFAIL are supported with limitation,
++ * i.e. page tables are allocated with NOWAIT semantic so they might fail
++ * under moderate memory pressure. 
+  *
+  * %__GFP_NOWARN can be used to suppress failure messages.
+  *
 
-> > +
-> > +static void compact_do_zone_lock_irqsave(struct zone *zone,
-> > +					 unsigned long *flags)
-> > +__acquires(zone->lock)
-> > +{
-> > +	zone_lock_irqsave(zone, *flags);
-> > +}
-> > +
-> > +static void compact_do_raw_lock_irqsave(spinlock_t *lock,
-> > +					unsigned long *flags)
-> > +__acquires(lock)
-> > +{
-> > +	spin_lock_irqsave(lock, *flags);
-> > +}
-> > +
-> > +static void compact_do_lock_irqsave(struct compact_lock lock,
-> > +				    unsigned long *flags)
-> > +{
-> > +	if (lock.type == COMPACT_LOCK_ZONE) {
-> > +		compact_do_zone_lock_irqsave(lock.zone, flags);
-> > +		return;
-> > +	}
-> > +
-> > +	return compact_do_raw_lock_irqsave(lock.lock, flags);
-> 
-> You don't need the return statement here (and you shouldn't be returning a value at all).
-
-Yes, agree, will fix in v2.
-
-> 
-> It may be cleaner to just do an if-else statement here instead.
-> 
-> > +}
-> > +
-> >  /*
-> >   * Compaction requires the taking of some coarse locks that are potentially
-> >   * very heavily contended. For async compaction, trylock and record if the
-> > @@ -502,19 +562,19 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
-> >   *
-> >   * Always returns true which makes it easier to track lock state in callers.
-> >   */
-> > -static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
-> > -						struct compact_control *cc)
-> > -	__acquires(lock)
-> > +static bool compact_lock_irqsave(struct compact_lock lock,
-> > +				 unsigned long *flags,
-> > +				 struct compact_control *cc)
-> >  {
-> >  	/* Track if the lock is contended in async mode */
-> >  	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
-> > -		if (spin_trylock_irqsave(lock, *flags))
-> > +		if (compact_do_trylock_irqsave(lock, flags))
-> >  			return true;
-> >  
-> >  		cc->contended = true;
-> >  	}
-> >  
-> > -	spin_lock_irqsave(lock, *flags);
-> > +	compact_do_lock_irqsave(lock, flags);
-> >  	return true;
-> >  }
-> >  
-> > @@ -530,11 +590,13 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
-> >   * Returns true if compaction should abort due to fatal signal pending.
-> >   * Returns false when compaction can continue.
-> >   */
-> > -static bool compact_unlock_should_abort(spinlock_t *lock,
-> > -		unsigned long flags, bool *locked, struct compact_control *cc)
-> > +static bool compact_unlock_should_abort(struct zone *zone,
-> > +					unsigned long flags,
-> > +					bool *locked,
-> > +					struct compact_control *cc)
-> >  {
-> >  	if (*locked) {
-> > -		spin_unlock_irqrestore(lock, flags);
-> > +		zone_unlock_irqrestore(zone, flags);
-> 
-> I would move this (and other wrapper changes below that don't use compact_*) to the last patch. I understand you
-> didn't change it due to location but I would argue it isn't really relevant to what's being added in this patch
-> and fits better in the last.
-
-Thanks for the suggestion. Totally makes sense to me, will do in v2 as well.
-
-> 
-> >  		*locked = false;
-> >  	}
-> >  
-> > @@ -582,9 +644,8 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
-> >  		 * contention, to give chance to IRQs. Abort if fatal signal
-> >  		 * pending.
-> >  		 */
-> > -		if (!(blockpfn % COMPACT_CLUSTER_MAX)
-> > -		    && compact_unlock_should_abort(&cc->zone->lock, flags,
-> > -								&locked, cc))
-> > +		if (!(blockpfn % COMPACT_CLUSTER_MAX) &&
-> > +		    compact_unlock_should_abort(cc->zone, flags, &locked, cc))
-> >  			break;
-> >  
-> >  		nr_scanned++;
-> > @@ -613,8 +674,12 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
-> >  
-> >  		/* If we already hold the lock, we can skip some rechecking. */
-> >  		if (!locked) {
-> > -			locked = compact_lock_irqsave(&cc->zone->lock,
-> > -								&flags, cc);
-> > +			struct compact_lock zol = {
-> > +				.type = COMPACT_LOCK_ZONE,
-> > +				.zone = cc->zone,
-> > +			};
-> > +
-> > +			locked = compact_lock_irqsave(zol, &flags, cc);
-> >  
-> >  			/* Recheck this is a buddy page under lock */
-> >  			if (!PageBuddy(page))
-> > @@ -649,7 +714,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
-> >  	}
-> >  
-> >  	if (locked)
-> > -		spin_unlock_irqrestore(&cc->zone->lock, flags);
-> > +		zone_unlock_irqrestore(cc->zone, flags);
-> >  
-> >  	/*
-> >  	 * Be careful to not go outside of the pageblock.
-> > @@ -1157,10 +1222,15 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
-> >  
-> >  		/* If we already hold the lock, we can skip some rechecking */
-> >  		if (lruvec != locked) {
-> > +			struct compact_lock zol = {
-> > +				.type = COMPACT_LOCK_RAW_SPINLOCK,
-> > +				.lock = &lruvec->lru_lock,
-> > +			};
-> > +
-> >  			if (locked)
-> >  				unlock_page_lruvec_irqrestore(locked, flags);
-> >  
-> > -			compact_lock_irqsave(&lruvec->lru_lock, &flags, cc);
-> > +			compact_lock_irqsave(zol, &flags, cc);
-> >  			locked = lruvec;
-> >  
-> >  			lruvec_memcg_debug(lruvec, folio);
-> > @@ -1555,7 +1625,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
-> >  		if (!area->nr_free)
-> >  			continue;
-> >  
-> > -		spin_lock_irqsave(&cc->zone->lock, flags);
-> > +		zone_lock_irqsave(cc->zone, flags);
-> >  		freelist = &area->free_list[MIGRATE_MOVABLE];
-> >  		list_for_each_entry_reverse(freepage, freelist, buddy_list) {
-> >  			unsigned long pfn;
-> > @@ -1614,7 +1684,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
-> >  			}
-> >  		}
-> >  
-> > -		spin_unlock_irqrestore(&cc->zone->lock, flags);
-> > +		zone_unlock_irqrestore(cc->zone, flags);
-> >  
-> >  		/* Skip fast search if enough freepages isolated */
-> >  		if (cc->nr_freepages >= cc->nr_migratepages)
-> > @@ -1988,7 +2058,7 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
-> >  		if (!area->nr_free)
-> >  			continue;
-> >  
-> > -		spin_lock_irqsave(&cc->zone->lock, flags);
-> > +		zone_lock_irqsave(cc->zone, flags);
-> >  		freelist = &area->free_list[MIGRATE_MOVABLE];
-> >  		list_for_each_entry(freepage, freelist, buddy_list) {
-> >  			unsigned long free_pfn;
-> > @@ -2021,7 +2091,7 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
-> >  				break;
-> >  			}
-> >  		}
-> > -		spin_unlock_irqrestore(&cc->zone->lock, flags);
-> > +		zone_unlock_irqrestore(cc->zone, flags);
-> >  	}
-> >  
-> >  	cc->total_migrate_scanned += nr_scanned;
-> 
+-- 
+Michal Hocko
+SUSE Labs
 
