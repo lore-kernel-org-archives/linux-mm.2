@@ -4,114 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E2A1E9B250
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 12:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA21EE9B258
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 12:19:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE036B0088; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
+	id D9E6F6B0088; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A1276B0089; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
+	id D6F686B0089; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3628A6B008A; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
+	id C9CB56B008A; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FF3F6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B2567140572
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:09:29 +0000 (UTC)
-X-FDA: 84479230458.10.94F8B38
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 851F92000D
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:09:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X0b/NGlz";
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771934967; a=rsa-sha256;
-	cv=none;
-	b=NKyuwSgrRy8LoovaxKp23W6k1E3sdyJJlB/QeZwyY+Mvjt7JNWpd/4+A6LzwedGBg2nPcP
-	70ylMFIt+nz77YjQntRqHTSXfUZ9JFAPf3T5LjzMBYrOG8XS+kxTqaCBXh5aVrOUCDKpn1
-	dHPGcqYJ4LGi7cpUVX/PkVAp7cGahb8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X0b/NGlz";
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B6B966B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CCFE8BE52
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:19:00 +0000 (UTC)
+X-FDA: 84479254440.20.76D6983
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3725F40003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:18:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=skyN0xnR;
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771934967;
+	s=arc-20220608; t=1771935538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PTr9nXa9KbUpiMsj0WnWMiP0h7dOygixjZL8t8aHz0g=;
-	b=NoqcTQVYkn0DtBMMFvr9q+TH8h4JfjJOqmdW1cfTsNjNbQ31WaLunEEH55Nzp4/m08cMS4
-	IYh5F7JJ6E+0jtM2Is/aP6vgPXF5HDh5ON6ETVhCnh9Xn4k9Wb6NbzniuV0YPBtzK9wdrq
-	PW0k90DBy+KDggPIZ96ezGGTqPPLgFI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771934966;
+	bh=EwzxsqX59s+nykKGKsV+/BFhtEGlW2DTi98NYRGnb4k=;
+	b=Yr1qO5c2c0rbiiYz1l85Nsl3SFo3frgmqKCnmElqS0CBpqmr/P7b+wZtRCf6JOxEdn0nmz
+	MRf2KZ7k9hZVYfvcNQhtS1S7lv0PFvT+NFUQuEaopKwxSaupLVpzvTvbjQ8XGn4jqd00q4
+	Q7aqhP6caMgYQB8vl1O3Nef6KnE6ToA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771935538; a=rsa-sha256;
+	cv=none;
+	b=G0KxVMux3E339b2CpU1KRHa0aSs8CNpvlIgh0hWjAyDvAViiB8ZNHKXm+UB09cfNKAeuPu
+	vAXi7BCZyOfAYWjxVMDtay93EyWHujf4+suco+SxPuPnpha1OssueO2KRZoS05MfGdEosl
+	jU/nGV+ZUfGQ4xVxcWwKgq/0I/Ul0F0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=skyN0xnR;
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <5cc90e7a-ae32-4352-8e0b-2eee5a5ee122@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771935535;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PTr9nXa9KbUpiMsj0WnWMiP0h7dOygixjZL8t8aHz0g=;
-	b=X0b/NGlz4AmwIeahIYcz9Qr961jpjhWLXEO6599719LiYPahLZ5yldkvTEFg6gHyiRxf3w
-	YRaBHjpeRKWrvDJlYR7yQ6exMKmXy3JSDZW2+P9Zlai0HbsF3TOdeX+xbKkCvSzy7CBKxJ
-	tCxtKCCyuix7K03VrgngVrV16734guQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-2sEWge5BN8--rE-jKOcfZQ-1; Tue,
- 24 Feb 2026 07:09:25 -0500
-X-MC-Unique: 2sEWge5BN8--rE-jKOcfZQ-1
-X-Mimecast-MFC-AGG-ID: 2sEWge5BN8--rE-jKOcfZQ_1771934963
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E2F241956067;
-	Tue, 24 Feb 2026 12:09:21 +0000 (UTC)
-Received: from fedora (unknown [10.44.32.38])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 2484830001BB;
-	Tue, 24 Feb 2026 12:09:14 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 24 Feb 2026 13:09:21 +0100 (CET)
-Date: Tue, 24 Feb 2026 13:09:13 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Jan Kara <jack@suse.cz>, Aleksa Sarai <cyphar@cyphar.com>,
-	Andrei Vagin <avagin@google.com>, Kirill Tkhai <tkhai@ya.ru>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	Mateusz Guzik <mjguzik@gmail.com>
-Subject: Re: [PATCH v2 1/2] pid_namespace: allow opening pid_for_children
- before init was created
-Message-ID: <aZ2U6TwK7rQtkTvT@redhat.com>
-References: <20260223200254.4104651-1-ptikhomirov@virtuozzo.com>
- <20260223200254.4104651-2-ptikhomirov@virtuozzo.com>
+	bh=EwzxsqX59s+nykKGKsV+/BFhtEGlW2DTi98NYRGnb4k=;
+	b=skyN0xnRjwRgE04aLNLlLTrPx8oL4jHzrR0//J5EgUt8UGZeWhbyo6JsPyzz7fgoYbBl+q
+	tmcEamzE/HoZRWqgxEyscc1vh59cFCapGF5WwILOMLW/SWiPe2yExbx5gWCfIPXoqn1tEB
+	XgjVifKLg9ce4HG6BA34Phgl+hyuXjQ=
+Date: Tue, 24 Feb 2026 20:18:46 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260223200254.4104651-2-ptikhomirov@virtuozzo.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: FtsweDEL-Qlz03bh16_xZkYyMuPTA3Ezd0qHSewGpo4_1771934963
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 851F92000D
-X-Stat-Signature: 4a5coupu5yaixqr73t86gi7gtpdhwf3c
+Subject: Re: [PATCH v2 1/1] mm/mmu_gather: replace IPI with synchronize_rcu()
+ when batch allocation fails
+Content-Language: en-US
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
+ will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260224030700.35857-1-lance.yang@linux.dev>
+ <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Stat-Signature: kwaqm7g4s4qe4xt3az6oo3xix33jrws3
+X-Rspamd-Queue-Id: 3725F40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771934967-70072
-X-HE-Meta: U2FsdGVkX1+Q0D0Ei+GmOESiOO2pJHWORxuMIeQu/R3+fmMUB8srbOpKjBFow7fdYOWBFkUb9iYX9qvWeuUchmhvB/mHuIQ/iegqpgypaI1YZlY+x46ibDIT9FotIY+U7K2AGTYUmA8aX1pCxPYJ7EQKSZD5BXyg777nLgh7J+eyuel+Bkn5gaXs4gzwkt+dEBx+gVqTKBR3h+zCKq8DjnSS8HgT3P1EZ1shiP72MpWJ7guDuO+sgew7W4rFoB2ee4oCjbyniLHuK4nDt7mw72gRceNwmEq3+GHXONNezgWfnMY4FWLuXTWba0v+4PqhYdqlgzKx8gF5fGz4Mlicbb9KkCTt12Jb1cMJB106pgAELZr7yX7MkZ3p3RTMThzfm/EL24GFMuoN+MVRWInEz+b0FRfdvLgbEXQh7S77B01uShat86GyrCKzeJADAvldXfxRi15y8luFOjgCP8DO59AaZffqRT+FjQwZuhNRFwHkvrD8LhL7WEsECtcyIJTxaVYoynE4xYArs1A0vsXOf9URH0Tt5v5OC7b5r7YOCWIY/tnefZzt477CLngvi1jMZJbRV/X6MIhnDKm+2jXJIQEpkX5nS3yDWj3Pcbd1agL2FFm3GjEUcZO83eCZwZYdyOC5RWHOZousCrvYulmOELFgKfftBJkCyUC9MYSws5+BfcYE8ZnNVLdX+vWwEcX8BbIjeoZOHlgOvLWmpZuuFnkvjCDCDja0MrUvIeDHBlEksEKmhhv9h4xamu/b8rgGhnJ/UbDx4jamYPrJqwfG0XFzRxi3ROV9kQtNYEeOiYpmNr7Kv7dOrred+w3VSafmdBLfePlSGTJ9j8c6Pq4iWib2MvNNFDT6iiXJn2mJy0yqfo3volJ37kk5GYnzxlGthPa6SM86TdfRCjt2TxqVoQZp5il+6vCHrpZJASsH6RlEqwmI2ltaNUJ2dDKDrcwP4fNMj00NE6Ngqs/g+HK
- T9TPk0a3
- ylpxIzCBp7cMA/fmb9ChPQDc/FrkGKevpn81Yp7drN2HQGxoeuvGC39gnCsRhB/Wn5Ca2/yx92bVH+JrNZ9nyhUbvV9Qin/ASH+6UfORbeDuTBSFH45fcuY9j7muG0lfPDC8/RTaKea2SWdOFnECtZxdfsCatXGhW9RobwCvH0hirdLKJk2QMovC3To13IajM03pAzB8nkC6KbC+V3Rv/umeAx/8Lpo68wbL/NQ4nkKhyDunEUxoF3YN6eAdiluuBWzgMMv6sVgZLcC5KvcYcxBgn85LDJllYrbY/qzCme+Cm+MfGQ7XuXBe4o4xOjNAylfFqKB2Ll/NHldVvAEkNIdR5YLbe7YOqNktdDhr0pVnysAb7bJScZcugqnjMeM2KnJ3DS0mLkeoRPLoU5rPHd3A2wg==
+X-HE-Tag: 1771935537-89240
+X-HE-Meta: U2FsdGVkX182y/1g4AyczlkpTAlZDgmNR+cYOzoT0oAFeMZOkHVbzJ7BDrxNcEr9TOl1se1KZ7NR0fvq0FXvs8NoyfxDmf9HF6/iuG3f2BhlK+UXwXSE0S5ouhXyiRqD0LKVOQPhmrtjaeHdCHjpcOQOrdbVnfYkIviHsfKhsKtKRmQ72T89CZ1u9jWCmaVAcCmtiB+CSKLZNymdGOsPhW0RPs07M3tERZciG3tagRVRi8U6UuFCUoJfd12b1jQI2lYmjMIGNXE1Ywbfm5DaEgcNUwJ0ESN334eoFRGgrsE1nKZSVIUfledYgwriB4x3+GU3sdXqydAIPMctp4szrXymwsOoHNmJlrfZZF12/iwI0zTDf9T4Ad1amevb1XUjVARylaO+JVPNDdqDgeHOVp7CA0inTcraEX5y1lqseV5R79Zf9fR+uiF8aQZIcMvuqkuA741TcXfYnfMRNxvZa0vOyDnfXU65zVaM5XhV970LeTD6uc1lrIlpbp3Qy+Sb6LvwII5+JZq6zCnxachsTPMEwwwBNvcI4wgan5sXFZ+vllMU+vjIWwf+CVUcQuzUp0C1vu30q1O/GTuEmqgOMrDATNX0v87m7fsb48slm/k/NtsCEm75ZUqINuHurkEVxIGdnExzd1sbr+SQ7wUuv6xiQvteILSrWHXwBwDrGl6sBeqNDrh9L5Y9U6DBbZXlnFuEo7UvUpldPaG9twhcyS1d1OgeOa5h37FHPb90lbg8/e+p4DE8lz1fq7fL66oNpLy99HBbjb1eTMpE+FydEqMtJ5rDZ4vEe7VgobncbtJBUDp3pCkZDPV0lVULDJWNps7qY2amDvYyMUhcQ/uTeptpBOgH6BB+dtxZF5XM36YYLEYmu//QI2DcXyEUuUU4t+9uXlAz4qa+6XwP//itmeWW7ltMgB4mPZs2Dk/D+JEaP1gIXL5iknX5ggdlWGZEM7O9ul3NvtdnnGQ5+gG
+ WHb/JLro
+ 61smdA3ZSpPfEgAsFjv7srP2yJM/ZlfVEkeSKAEeakMAZbraJV3DFeNwpfFILqGtdJUUsHkZxTTH2tc2ahgCOxR8EqsUj3opBefP6HossGv1/Ok1b5HtOwByUEvuVeyXILDUntnz7SlFmZRt4T8OlGxtL+ft+aGnfOy/0ZtnL5MQEvM23Kw0jsvtKKGXO/i1TC18vo93Cey48X/xOcSNVOVAm7PRJ2Tjdzl7xuFRWo9XtQ5o/8FpTY+fkvE6t6RAu9CuU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,65 +93,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02/23, Pavel Tikhomirov wrote:
->
-> To avoid possible problems related to cpu/compiler optimizations around
-> ->child_reaper, let's use WRITE_ONCE (additional to task_list lock)
-> everywhere we write it and use READ_ONCE everywhere we read it without
-> explicit lock.
 
-Yes, this is what I meant... but I can never recall if READ_ONCE() alone
-is enough to make KCSAN happy...
 
-I won't insist, but I think it would be better to do this in a separate
-change for documenation purposes and for discussion.
+On 2026/2/24 19:41, Peter Zijlstra wrote:
+> On Tue, Feb 24, 2026 at 11:07:00AM +0800, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> When freeing page tables, we try to batch them. If batch allocation fails
+>> (GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
+>> batching.
+>>
+>> On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
+>> tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
+>> process is unmapping memory. IPI broadcast was reported to hurt RT
+>> workloads[1].
+>>
+>> tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
+>> (e.g. GUP-fast) that rely on IRQ disabling. These walkers use
+>> local_irq_disable(), which is also an RCU read-side critical section.
+>>
+>> This patch introduces tlb_remove_table_sync_rcu() which uses RCU grace
+>> period (synchronize_rcu()) instead of IPI broadcast. This provides the
+>> same guarantee as IPI but without disrupting all CPUs. Since batch
+>> allocation already failed, we are in a way slow path where sleeping is
+>> acceptable - we are in process context (unmap_region, exit_mmap) with only
+>> mmap_lock held. might_sleep() will catch any invalid context.
+> 
+> So sending the IPIs also requires non-atomic context, so change there.
 
-> @@ -247,8 +247,9 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
->  			 * alreay in use. Return EEXIST in that case.
->  			 */
->  			if (nr == -ENOSPC)
-> -
->  				nr = -EEXIST;
-> +		} else if (!READ_ONCE(tmp->child_reaper) && idr_get_cursor(&tmp->idr) != 0) {
-> +			nr = -EINVAL;
->  		} else {
+Yeah, you're right!
 
-Oh, this doesn't look clear/clean... This even looks racy even if it is not.
-Can you move this check into the "else" branch which does another get_cursor
-and unify this check with the RESERVED_PIDS check?
+> What isn't explained, and very much not clear to me, is why
+> tlb_remove_table_sync_one() is retained?
 
-Either way, I don't like the fact we check ->child_reaper != NULL twice.
-Perhaps something like the preparational patch below makes sense ? Not
-sure this is actually better...
+Good point. tlb_remove_table_sync_one() is still needed in:
 
-Oleg.
+1) khugepaged (mm/khugepaged.c) - after pmdp_collapse_flush()
+2) tlb_finish_mmu() (tlb.h) - when tlb->fully_unshared_tables
+3) ...
 
---- x/kernel/pid.c
-+++ x/kernel/pid.c
-@@ -215,12 +215,6 @@ struct pid *alloc_pid(struct pid_namespa
- 			retval = -EINVAL;
- 			if (tid < 1 || tid >= pid_max[ns->level - i])
- 				goto out_abort;
--			/*
--			 * Also fail if a PID != 1 is requested and
--			 * no PID 1 exists.
--			 */
--			if (tid != 1 && !tmp->child_reaper)
--				goto out_abort;
- 			retval = -EPERM;
- 			if (!checkpoint_restore_ns_capable(tmp->user_ns))
- 				goto out_abort;
-@@ -299,6 +293,11 @@ struct pid *alloc_pid(struct pid_namespa
- 		tmp = tmp->parent;
- 		i--;
- 		retried_preload = false;
-+
-+		if (!READ_ONCE(tmp->child_reaper) && nr != 1) {
-+			retval = -EINVAL;
-+			goto out_free;
-+		}
- 	}
- 
- 	/*
+These are not slow paths like batch allocation failure. This patch only
+converts this obvious slow path first.
 
+I'm working on converting the remaining callers as well, but not with
+RCU, looking at other options (e.g. targeted IPI).
+
+> 
+>> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+>> index 4aeac0c3d3f0..bdcc2778ac64 100644
+>> --- a/include/asm-generic/tlb.h
+>> +++ b/include/asm-generic/tlb.h
+>> @@ -251,6 +251,8 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+>>   
+>>   void tlb_remove_table_sync_one(void);
+>>   
+>> +void tlb_remove_table_sync_rcu(void);
+>> +
+>>   #else
+>>   
+>>   #ifdef tlb_needs_table_invalidate
+>> @@ -259,6 +261,8 @@ void tlb_remove_table_sync_one(void);
+>>   
+>>   static inline void tlb_remove_table_sync_one(void) { }
+>>   
+>> +static inline void tlb_remove_table_sync_rcu(void) { }
+>> +
+>>   #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+>>   
+>>   
+>> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+>> index fe5b6a031717..2c6fa8db55df 100644
+>> --- a/mm/mmu_gather.c
+>> +++ b/mm/mmu_gather.c
+>> @@ -296,6 +296,26 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
+>>   	call_rcu(&batch->rcu, tlb_remove_table_rcu);
+>>   }
+>>   
+>> +/**
+>> + * tlb_remove_table_sync_rcu() - synchronize with software page-table walkers
+>> + *
+>> + * Like tlb_remove_table_sync_one() but uses RCU grace period instead of IPI
+>> + * broadcast. Use in slow paths where sleeping is acceptable.
+>> + *
+>> + * Software/Lockless page-table walkers use local_irq_disable(), which is also
+>> + * an RCU read-side critical section. synchronize_rcu() waits for all such
+>> + * sections, providing the same guarantee as tlb_remove_table_sync_one() but
+>> + * without disrupting all CPUs with IPIs.
+>> + *
+>> + * Do not use for freeing memory. Use RCU callbacks instead to avoid latency
+>> + * spikes. Cannot be called from any atomic context.
+>> + */
+>> +void tlb_remove_table_sync_rcu(void)
+>> +{
+>> +	might_sleep();
+>> +	synchronize_rcu();
+> 
+> synchronize_rcu() should end up in a might_sleep() at some point if it
+> blocks (which it typically will).
+
+Right, will drop the explicit might_sleep() and "Cannot be called from
+any atomic context" from kerneldoc since both have the same requirements.
+
+Thanks,
+Lance
 
