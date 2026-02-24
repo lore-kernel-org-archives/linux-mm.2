@@ -4,101 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC4EF4BB8E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 22:11:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3728DF4BB8E
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 22:13:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C08896B0005; Tue, 24 Feb 2026 17:11:39 -0500 (EST)
+	id 6ED0F6B0005; Tue, 24 Feb 2026 17:13:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB6296B0089; Tue, 24 Feb 2026 17:11:39 -0500 (EST)
+	id 670196B0089; Tue, 24 Feb 2026 17:13:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB5196B008A; Tue, 24 Feb 2026 17:11:39 -0500 (EST)
+	id 53E816B008A; Tue, 24 Feb 2026 17:13:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 93BEE6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:11:39 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2085B16035F
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 22:11:39 +0000 (UTC)
-X-FDA: 84480747918.07.5739C6E
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5A006A000B
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 22:11:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="h+k/sJrW";
-	spf=pass (imf25.hostedemail.com: domain of 3FyKeaQYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3FyKeaQYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5D76B0005
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:13:36 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2C1514038C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 22:13:35 +0000 (UTC)
+X-FDA: 84480752790.01.2CDB59E
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2874140004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 22:13:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=DnAV39yO;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771971097;
+	s=arc-20220608; t=1771971214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=qycKKgU6VgldoipiskPTW54PIVBltJjFeFRiKOAJQio=;
-	b=QnbslEudfoKB9s7wpyqeCtVq5mbhwhLGgNYO/sOpsvejK8JVplDsHv5vLRdV+EkkOqaaFP
-	BNTj7JtAHXi2+9zFgtFfiNzwLsEtsl5ECu79t5t6VBq9p+aba3nF0pYMeOUg9ZLE+wP6X/
-	mjc/LCbuV811Z+LTvWF8REZsKZkmKj4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771971097; a=rsa-sha256;
-	cv=none;
-	b=jDSooD/fJb8ZRRx6O9V6FTcmNLOlv8l9Ek3wjp3Vw19qbG11zydlPlMjjBQZ08H0/1q5nS
-	ioV94if1LPEDpoehSuuEUY/T2ks+1C9Zx6ko/CqTDhBHACv9T3YtKJl+O1A1J4aAggWraa
-	XK8U6lKrCwMJUF1iGM+HVsY/CVxd0dc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9vdsZ7c66kxSJS77MhnvjUWXFjLQcIllMEpQahfYWsY=;
+	b=eq9Mnh3OXacoSibrdrKEIqZv926pEt15kSaFv01EpiA7UfN1l89cSOZyKA6/hGQQxfNtgh
+	1OtOb5Kqp3eV1Buiom3B+qMqiLP6H5lSzOH+Mm/0keufGBHm+NWRoPdFHXxCdZU5yEQo8L
+	9mUbfbjYLNoiwFbKXNO1U1fH1cb8+WI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="h+k/sJrW";
-	spf=pass (imf25.hostedemail.com: domain of 3FyKeaQYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3FyKeaQYKCCgWYVIRFKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2bdc1b30ac8so1968631eec.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:11:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771971096; x=1772575896; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qycKKgU6VgldoipiskPTW54PIVBltJjFeFRiKOAJQio=;
-        b=h+k/sJrWDTR9X2zlekyRXlaxevNGwK/V7RUkSntcCaYuNi/1SugMuSFUjFabrsVFpg
-         J/odZbpHT7HP0LITIXGvlWwQkQ4KlBVrJlkZmMWUA1PPyAfw9wPiebOTKdXMLGcNTReQ
-         bsBP+Ol9atebViiPAau0zoyDNZz8QpFM1neKZbUHaYYR1u50d5CC7lJZXYQ/VAi80vWb
-         ii6P3gnyOkVOteTA50QgtacfrOHVgFWy34KNR/krWGjU9Re6scFIgRDymkinvEIqw9gq
-         F2a2HMaeYwUzirYpTmYqrStxTpuON0MKvVLFrIVYqlrD+WSF5Zsf30gidRE4SNEc0aFn
-         qa7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771971096; x=1772575896;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qycKKgU6VgldoipiskPTW54PIVBltJjFeFRiKOAJQio=;
-        b=ZDVTqKoL2CqOYvzqhsh2dXJAvUxgfhMStmioCfOq+I0edNkAYEy3SYKYe/Q8xv6QGI
-         VHY4v6OkLg6NpWBCNCP4zoObrUsiq/U8ftYfjTMDbuItD+s3NvmqpZyKGLn5++iqlln3
-         ZP61Hyl2aoWikY65EOWBw/amD54pwpv6Pp8q/wAb7hWcBENMo7HLE46HWbG9PhZ359hn
-         rTHQbRQQbrQirpK2Mk+9FAzBWcSypsuT5mq0xfH8vdcP77GQ+YyRGjiNtYGysXLtFDl3
-         +ukaubyNVqi/oqvI7GZrQAYnRAMMmKKWvMkOkKYNcXkjGk0ULxKjoLLvt6Eqld0yeO7z
-         AbMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9eXoKTYEuWk1UcgdBXy7DJaIDISD1kXoPxZHbft9GqajyJ8a6bEgYNCfEnLAnX1D+3gthzy/RQQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy9VZ29Stq1IOiOOV2E4vib1EM1NhIsBWW0ypJAHpu96xakpBZY
-	eR1ry8IBMH5skTED6w9HiWRjNj0UzKyTTRltPFjPDAO/7t1NAMUWxz/w4J1t6VXrxyh8cBo+WOc
-	I8o02mQ==
-X-Received: from dybcy37.prod.google.com ([2002:a05:7300:b725:b0:2b8:6bda:d37d])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:6085:b0:2b7:f33:34e7
- with SMTP id 5a478bee46e88-2bd7bd711c0mr6268330eec.35.1771971095833; Tue, 24
- Feb 2026 14:11:35 -0800 (PST)
-Date: Tue, 24 Feb 2026 14:11:32 -0800
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260224221132.1702713-1-surenb@google.com>
-Subject: [PATCH v2 1/1] mm/slab: mark alloc tags empty for sheafs allocated
- with __GFP_NO_OBJ_EXT
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: vbabka@suse.cz, harry.yoo@oracle.com, 00107082@163.com, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=DnAV39yO;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771971214; a=rsa-sha256;
+	cv=none;
+	b=iZvdyo0HvUsLUfZcUAKIliB0cKDUhWTBnlN3qKD+Ytm+rUvYWfboIyDytzrk7ToruA5v53
+	R8gZ0n51IVidnYGkz5vpx9FyvUcSVSGvV6lEmhYjkyBbn8SD+YouknhR7QnBx592SvXOKh
+	5WWcv//XAIqwjQdgAza0QEp+Ig5ZTDE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=9vdsZ7c66kxSJS77MhnvjUWXFjLQcIllMEpQahfYWsY=; b=DnAV39yOY7CJliBslPyEC31aYv
+	+8Yzh1c9Wnm5dntWIJ4qVBPIStPn+9knYABublhPpVxSZVGs5/kQo2WcRBYapP68Bo2Unm5zvX9M4
+	pWwdTQtnpoSQXGhUAiO9+kP8k8U/A/E2g2OXNzLDN6FXBXKlcMnjnbTxXYW43JwLdbCUaaZTCdfH0
+	tmf9rCH0W+gnJh8o7E0vh5Nn+3SrgR04Q5dypiuRAnpdB3/e1DBHSNKsRkGxWSF1nAL+cy+lQAbi8
+	uiJawMwHttmxTgdNfWfAzhVl1Tw+aT6MpOmFGdU+emXgUYvjjigMZLSAPQakNqMVccfJ5efOqI23v
+	K8c88EsQ==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1vv0e7-00000000227-2GgT;
+	Tue, 24 Feb 2026 17:12:48 -0500
+Message-ID: <5957cdb584cad9007a58f43fb5a1c3b737fb0159.camel@surriel.com>
+Subject: Re: [PATCH 4/5] mm: support batched checking of the young flag for
+ MGLRU
+From: Rik van Riel <riel@surriel.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, 
+	david@kernel.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com, 
+	ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, 	surenb@google.com, mhocko@suse.com, harry.yoo@oracle.com,
+ jannh@google.com, 	willy@infradead.org, baohua@kernel.org,
+ dev.jain@arm.com, axelrasmussen@google.com, 	yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, 	zhengqi.arch@bytedance.com,
+ shakeel.butt@linux.dev, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 24 Feb 2026 17:12:48 -0500
+In-Reply-To: <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+	 <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5A006A000B
-X-Stat-Signature: jmenine9ciyhiudybz8jadx3dqw78qg7
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771971097-510789
-X-HE-Meta: U2FsdGVkX19dnTzRQlcTC0yaqavlxYs30Y3RlMvXEdpMVkTwg7pJ8aWwpFEMg6QijsTg70F/PmAcFxJD4te38MS9MdZoCddYv4NynrYMZkUPn8A35yXM/yK1Ti3Z3SoAiE4I7KDjIq4w880Uk6CMGT/d8GD2WmzF0ifql4g1ImBVF5X0mjJWiGXAadRmqp2dxKseKygF6z9/2zf8vG4nFPbx0F+GOVe7XT07U1ARbaBLoZqB3JEeow6KlWnX6gDB9bqOFbOrreRoCUBsvkN3Z72RNBuHSBnTy+PMZnxrradmfBjmDNwXKrmhwEWmxx6bAdNITDoTRXrMXhb3m4ELrN+qY5r9FUbPjvZUSLNl0tSSnwL+CtYyRri4JSdup1ZiI1bY1wHwqpXtlwJCHpfOks6xWkKx7X6yfIpRy2UUWAZjvvqdDCJJQ6viZB81TC2x3AgzxoU/1sUuPpbIDWUs9ilL7nKeoe5g4qKQ+SiP2DcWEHrBVipC0Xpg+NasLm01lW0b0Rmp8tYz1LePliutomSPLCe+wU6kaNCxRQExLIJEB/D+HdGzuktnRKZAmf5mgCdvEapi4GOctvRW+Ws2d6g+U2B/JIxQSCdocN/tb5KGPJH6yHPPnDDEUjOW5pSOYWXaCp0ZIobygl9R+MP17Bhao4CDsTDnofELGM6RWy6alZH+MpxyuNAA3+1KhQ/ZfL0yzFb9C7ohy7qOutGLjx0hZJCb0cQeBtxMJHJHWUqT3tYMIa3z2cNTlNkmnMGgNT8Iq/KQQjdPi/jjtjk9wepZPoRkSC0RUzvQZ1nQtX9yXpXyjd6LWM2pGjXs1HrmF4UH7AI1z8caorsFRFms8RK82Vo9OWmqQp0ONaawB+SXQkFqt6eKhb0LH8q1RTFFdzLRdsnOYpqfPs0ZjzP+k+K5q/780lYqBFcLlS/GB7cHjNj66HbF0nVZJA3cvuD4QosYRrpSI58qGl1Hycv
- WGRMgrzk
- HtPdzM7QA5albKf75pHXa9Sq3t824gWywROho402KicN8lObXeJWkZkfmUHuTH+V4b7Zpqs2idT9pMD72/mfOCx3y2RLFCwKI6Ds8b8rB5JL8Eh8CrzAvp+gfLq2CwH4K6QrlUC1MFwe1wQT4tNjHnjamT7f7J4rY0phLbvXx6qzcRCTLwPz5VyTyIAilR63nggLyx55otmuT+mcgIsWAA7EAOO36zCziGzA1Gftw5HbxuKYRl1zvWfZcuO/ttDecRriV1kTtZfJD/dZ+vmil2URfmiPFX8GVcIsJTNlUA76xP78ExzoqfLfjaoyejBR32n2B8V+X+z5PtUp7lqczOir4emJayEIDUsdF8qoSmnI7Vt/ZdbGId7svBDTXTxCIaae2exKZKTlwDzfKUOGsDZ3XOoRn9MFsHmT1NHBajZuj5iKiB3Yj6o9Xd4fEqcMJBjZ99mIIruTK/o8oQbRBVKzveVkfE6/ljLyQcMnWXTAUGkXk/046vKKn9BzxVS+wbn1NXR11gfvQ32N384dHHO+XGHeMuPOq4fxTD6juaVq+OCewvOOc9Di94YjXpqgXJALqqDkwvauwBUg2i95Eq43x6FeiJTh3bMMIag0n49XW5st361o9jwDWIQ7PMzxI81urBt5smLfcdiBjzmCwcjtoq9vgT9VAkj7jOe137riewZ6vOO6RdoUdFe4gKicQUHb5MOanScrjMLtA2NIf/vCnXd7E7iUgvzw1vKcTlvw7a54=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2874140004
+X-Stat-Signature: 98idca5td8u7ngr4wfw6aecwcj4jcmiq
+X-HE-Tag: 1771971213-713631
+X-HE-Meta: U2FsdGVkX18WQ3JAcjIDzY6leDE1zY0dE9Z086Dl8q9kOh+cLaWk4Fy5+2Ng995OqyD/zNBWsV+mpm2pf6Gw2xMa/iIJ2U3sdia3RBA3xmeVyDlkIbtq/gXF293HLba2tlr5PN5hpNaDt8cR6OS70wdjKhWrozKSAkZkNDLUC64ifZxx4LYbvJcf5yEQJxcDJ5Py3cVtzRgLrtEcP/fxlXNGsJZJtwdATBFAF/GPI6bTJHhoZqmtNA4W4M3wm7IgkPTMeeItSOM/5WA4L3Wjrn+3hO693Fc48EbtFhJDgDUSdOoJvO+pnGRrC9QHYiFkY4B14wP7UPyKq7SUmAMb5MLqhYPrA5jR4RQBG8f23CiJ3MFskWrxGyaKpGbtqzf0ncWo5bq62Yy0Tn21tLNbi7nP7ef9Hgy1DvCgu6junl6MF23roGxDcgzKGbbiQtNpGtM6VSn2DzimdXBxF1QS4o6pvBK26dmvpkGurYW8GeOK21E5YLXd+snZIq/qEZ7ACoNpPlAnZvj5/wG7f13WyHEwBXt/txMKqYeFVD1ESizTqqhtz8tF2W8nCldcDkdbCGdrgYTgDXxPTSLHTlw7yL6Bp8xd4DIk3CriWa1GOAKO1KVakFmbCRXi27X+K/zOg4tQfucuHPcnZQh/mYpSBG6/3RoUIE9IRxYuqxCC/6ghNUwXcvgzrw09QAZ7NTRz+kT+8chQ8nrigm6eSJraqv4DTOhVraLsg9envMI9opTabidwESwPc0g86eadnrZ7USu0SCnQKHFr7xw3e5xODjWT4oMMwk/q1pV99LwufCqrHlBeG4V+XomeaYqvv9Q32X4gu/gBMf1ntbZhln/OeVj4gfwowsqRQ5WE0uIioyK00N2Trbc136JbhuT43pk9goA8KySg0Eeb+faa+2AcS8dx9nvTah3FENrEz0gC0QFQyJPwbCng6lIOWiCZRtXRsnEknZVBt1+5QlF0N1e
+ ZsUJoGF+
+ HdffsXwYveS5HA0e/57p9lALa/DtrB4AcnF9bVOHvFUrXxWljagerBHtsszvhwNK+nUqVXTk4WH31GQoa18ORv3zs0eu8aMILVOfcQbeiovqereUIG87Wv15pc5kWIeUO5Hp1K2NsnGTYICsJnVgrkcgqf/YZtbcuOxeEoE3tDcGjHUKrNbIb3sFHpuCSaFy+PRCAD+hATXtclLrdVeqoClxb7twygw7oo+bWrBnf8VpU3JuRhojc+r9efGzgFYJZdKk/w2HCTvLoyjMKbEm9tBa2BaNmf1uS0yak2MzPXk2VLhLwfknH1220qfc5ZQzDngSrms5U5CMv9fU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,105 +128,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_empty_sheaf() allocates sheafs from SLAB_KMALLOC caches using
-__GFP_NO_OBJ_EXT to avoid recursion, however it does not mark their
-allocation tags empty before freeing, which results in a warning when
-CONFIG_MEM_ALLOC_PROFILING_DEBUG is set. Fix this by marking allocation
-tags for such allocations as empty.
+On Tue, 2026-02-24 at 09:56 +0800, Baolin Wang wrote:
+> Use the batched helper clear_young_ptes_notify() to check and clear
+> the
+> young flag to improve the performance during large folio reclamation
+> when
+> MGLRU is enabled.
+>=20
+> Meanwhile, we can also support batched checking the young and dirty
+> flag
+> when MGLRU walks the mm's pagetable to update the folios' generation
+> counter. Since MGLRU also checks the PTE dirty bit, use
+> folio_pte_batch_flags()
+> with FPB_MERGE_YOUNG_DIRTY set to detect batches of PTEs for a large
+> folio.
+>=20
+> Then we can remove the ptep_clear_young_notify() since it has no
+> users now.
+>=20
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>=20
+I'm not entirely happy with how much code is duplicated
+between MGLRU and classic LRU, but merging duplicate
+functionality seems like a thing for a separate patch.
 
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/all/20260223155128.3849-1-00107082@163.com/
-Analyzed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- mm/slab.h |  4 ++--
- mm/slub.c | 23 +++++++++++++++--------
- 2 files changed, 17 insertions(+), 10 deletions(-)
+This one looks good to me.
 
-diff --git a/mm/slab.h b/mm/slab.h
-index 71c7261bf822..f6ef862b60ef 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -290,14 +290,14 @@ static inline void *nearest_obj(struct kmem_cache *cache,
- 
- /* Determine object index from a given position */
- static inline unsigned int __obj_to_index(const struct kmem_cache *cache,
--					  void *addr, void *obj)
-+					  void *addr, const void *obj)
- {
- 	return reciprocal_divide(kasan_reset_tag(obj) - addr,
- 				 cache->reciprocal_size);
- }
- 
- static inline unsigned int obj_to_index(const struct kmem_cache *cache,
--					const struct slab *slab, void *obj)
-+					const struct slab *slab, const void *obj)
- {
- 	if (is_kfence_address(obj))
- 		return 0;
-diff --git a/mm/slub.c b/mm/slub.c
-index 862642c165ed..5c76e55eee7d 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2041,18 +2041,18 @@ static inline void dec_slabs_node(struct kmem_cache *s, int node,
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
- 
--static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
-+static inline void mark_objexts_empty(const void *obj)
- {
--	struct slab *obj_exts_slab;
-+	struct slab *obj_slab;
- 	unsigned long slab_exts;
- 
--	obj_exts_slab = virt_to_slab(obj_exts);
--	slab_exts = slab_obj_exts(obj_exts_slab);
-+	obj_slab = virt_to_slab(obj);
-+	slab_exts = slab_obj_exts(obj_slab);
- 	if (slab_exts) {
- 		get_slab_obj_exts(slab_exts);
--		unsigned int offs = obj_to_index(obj_exts_slab->slab_cache,
--						 obj_exts_slab, obj_exts);
--		struct slabobj_ext *ext = slab_obj_ext(obj_exts_slab,
-+		unsigned int offs = obj_to_index(obj_slab->slab_cache,
-+						 obj_slab, obj);
-+		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
- 						       slab_exts, offs);
- 
- 		if (unlikely(is_codetag_empty(&ext->ref))) {
-@@ -2090,7 +2090,7 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
- 
- #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- 
--static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
-+static inline void mark_objexts_empty(const void *obj) {}
- static inline bool mark_failed_objexts_alloc(struct slab *slab) { return false; }
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
- 			struct slabobj_ext *vec, unsigned int objects) {}
-@@ -2312,6 +2312,10 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
- 
- #else /* CONFIG_SLAB_OBJ_EXT */
- 
-+static inline void mark_objexts_empty(const void *obj)
-+{
-+}
-+
- static inline void init_slab_obj_exts(struct slab *slab)
- {
- }
-@@ -2783,6 +2787,9 @@ static inline struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s,
- 
- static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
- {
-+	if (s->flags & SLAB_KMALLOC)
-+		mark_objexts_empty(sheaf);
-+
- 	kfree(sheaf);
- 
- 	stat(s, SHEAF_FREE);
+Reviewed-by: Rik van Riel <riel@surriel.com>
 
-base-commit: 7dff99b354601dd01829e1511711846e04340a69
--- 
-2.53.0.414.gf7e9f6c205-goog
-
+--=20
+All Rights Reversed.
 
