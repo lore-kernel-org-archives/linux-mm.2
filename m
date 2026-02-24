@@ -4,243 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DA03EFB7F9
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 07:15:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDDFEFB811
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 07:30:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99A766B0088; Tue, 24 Feb 2026 02:15:21 -0500 (EST)
+	id 1D1236B0088; Tue, 24 Feb 2026 02:30:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9481E6B0089; Tue, 24 Feb 2026 02:15:21 -0500 (EST)
+	id 17F596B0089; Tue, 24 Feb 2026 02:30:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F2746B008A; Tue, 24 Feb 2026 02:15:21 -0500 (EST)
+	id 08B9C6B008A; Tue, 24 Feb 2026 02:30:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 668FA6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:15:21 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1706A59084
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:15:21 +0000 (UTC)
-X-FDA: 84478489242.30.0BED699
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf03.hostedemail.com (Postfix) with ESMTP id EBD2E20013
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:15:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WUHcKgkI;
-	spf=pass (imf03.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771917317;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E5E256B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:30:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FC045911E
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:30:46 +0000 (UTC)
+X-FDA: 84478528092.18.CBE7149
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 16ADFC0009
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:30:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=DvkZMD8B;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771918244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RHQYUPbizOZty3jCuV/Vg+1w3Svtue5nrNwQvTaRtN4=;
-	b=7lpPqxVWbN6Fr5CzBBmRmgkIYilugFmlzck+JnhTd8rUPH2BY+GESYk6Ms4t6Vbe+rLBxI
-	hgHfvoYZLrk01lf3PXqNUzoWxryQQo1JAUOKuHivBU8D7m1s4IqVR07w0dzHrqAeqtgASH
-	xPL/i1WJ8EH9bDrAaGw4V8mxWuv7Yik=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WUHcKgkI;
-	spf=pass (imf03.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771917317; a=rsa-sha256;
-	cv=fail;
-	b=XaHx/WfbnJHnsZ31FS08dP5qin41JFFs5CLC7S2gnnuq0oncQw+u0PhCmh+YcEMBXyzc/A
-	8gdD8uor8wv+qQMiiIbgCYCCOYdmD/B85A4pGOMLYEaClI/aBgyCc1VZPd3TYtPUeJNDI7
-	DeNxVuwziVfOK0ueH/lzO2mlmT9QIJE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771917316; x=1803453316;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=BOoATmsiBoXmylnBCpGJ5TB4N+PlCBH+nNpvQLgCDfE=;
-  b=WUHcKgkIgQWYowwFN0445Vkmaj49lgyRy9GeKCZ/uqsdu3rVn6eqoDyS
-   YImhWKIYwCTtY6xnrAtZiaUIuurMNEXABXgNdVanyCrJkxW7eDs41bQOA
-   OdqWj89Igmob6PH34RpWNZtv/vVn8FoomcBtfgteZ7uBIx4uRyVuzgTK3
-   tGSNOSW3Pxo0giQCgnKSCLCmsyba1VCmzULNH4g5dBMY/0mvOWcjgEzPb
-   K2ALy2OuM2gCoxDvG9WTUOSA0rVbF2vHzY5B0H0vkr49WAT+RPgCXJppk
-   GFqM3St04oCMh8SHAfK8HJmOUsIB+6tpty2h6df9qHp8jpGfynvFVSJnK
-   g==;
-X-CSE-ConnectionGUID: zfZ3RME5SQCgZYyvw3/ehA==
-X-CSE-MsgGUID: kPd0vFtuQWmY9ibwHHGYLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72629016"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="72629016"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 23:15:14 -0800
-X-CSE-ConnectionGUID: 9ykEDPAAQkutd7QOqoCa+w==
-X-CSE-MsgGUID: iuMQuyIqSl2ON9xrSBpr1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="243823258"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 23:15:14 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+	bh=i852AmhqQepEcJU2Va19clWIwPgPW2TCtS0BPtURAUM=;
+	b=Pw/8ElGRC/T01AiBfrZ4AQZf6qQDL9BrohTBZ/DYfzEWK2dSeK24m+XsKN3WTFNZfbeFnr
+	2uh6D8Pu3WspHyMQB1UJWIumYShWVBut8PC3uS9ehp9JJPCgl2vpffYn04r0IzgnGC8elb
+	+1wV6Myooj7VRzhY4j6m7O/Fghr8fwg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771918244; a=rsa-sha256;
+	cv=none;
+	b=LfKoMogQwBAeNMeTPbP+UIB3u3l3vjAk0PG3K4VXTd8HmYdH6Fgqp628GO0oTJPLooR9tI
+	G6vePCBuxkE9wCme7QwFcnVuKGEPEj3TudMMqwGSs6YBjM7Ommb9SgthUlye9yiXS115aH
+	23iF785frQfWPPSxzJ7wcBU8X4URIj4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=DvkZMD8B;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=i852AmhqQepEcJU2Va19clWIwPgPW2TCtS0BPtURAUM=;
+	b=DvkZMD8BSj1hsYu58fxaLMlH2uV1F8QRDojhe6UKHLneR0msxa0kENmLjyOpvc3+/Sp+Lr5I5
+	BBw+gETiMokMwmuBSMZAbkdtmNf+fsSJyCW0zpyV6g81/TBvGenHZmxtUpCFII8HW3/rqqsblhv
+	yU7MdpjWCBW/x6VAndWH/3k=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fKq5B6prfzRhSd;
+	Tue, 24 Feb 2026 15:25:50 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 75F66404AD;
+	Tue, 24 Feb 2026 15:30:36 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 23:15:13 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.2.1544.11; Tue, 24 Feb 2026 15:30:36 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 23 Feb 2026 23:15:13 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.29) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 23:15:13 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DwwQ8/XEnouQSKuLpDQPmVrVaeARhEkumuR7tHaHrA/GCpdeajmvb0BYXxJIXuvUvY3/zGvV3bEX9l4xj6ESKLWxUnA20LsICIWQzOazFDk4hWg9JN6U7kHFY1MZiIW4Ha6wbOryzhdksbtgNZxAVPGTEHnZ4aAs/NXB3K6WSlSvL4AjEPFIM9XdoU2jMSm1F5PPP3ramaYRycMRIfYnQPoK0sMpYPi+a4J9N9Eonp5pJB56UGi9lqw84NhVpSLd2XnI7jq7xEJkcgmOf/38KlYELejxzUpFTLgyPw0lWaIHGDY+iHgpm10vlxyJhlvGr3HHdKWuccVMH9HQfM1N4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RHQYUPbizOZty3jCuV/Vg+1w3Svtue5nrNwQvTaRtN4=;
- b=bamrVN+XeG+1RYgDLkzHJq25BSmz8UEEs3X8DYRJffqi3dATc6tWrjgymlG5R2Moo2b+sru9MG4gWJwUBia0o9z2raK9P/CD2n0fXo+D+N5f3Oiko1HQ4iiuuf7we6i8mzY34NdbBb7q+n6aexunbgLlSNVi3WiEHMPvPVpG3Yys42UeojFrC/mffmv/IwU56zafI13Dv7/c9FsEhmP1sNuzOTJt3Z2w8qrVUWr/pNYe0H4b/cVtofwdo3TdxkPNOLoCXFstkE/2KlslcXxkjQlWtbtwoa236Xyt4/4/GMe2m0V5psxVvC2EXZVkABu8KmoE3Q53NPA1dXT7YgqfoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
- by SA1PR11MB6663.namprd11.prod.outlook.com (2603:10b6:806:257::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 07:15:11 +0000
-Received: from MW4PR11MB8289.namprd11.prod.outlook.com
- ([fe80::e4be:8608:3d70:c1a1]) by MW4PR11MB8289.namprd11.prod.outlook.com
- ([fe80::e4be:8608:3d70:c1a1%3]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 07:15:10 +0000
-Message-ID: <de501b65-6d02-4eeb-b50e-bfe5ab9b8d00@intel.com>
-Date: Tue, 24 Feb 2026 15:15:02 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
- zone->contiguous update when changes pfn range
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>
-CC: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
-	Michal Hocko <mhocko@suse.com>, <linux-mm@kvack.org>, Yong Hu
-	<yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu
-	<yuan1.liu@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo
-	<qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>, Pan Deng
-	<pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	<linux-kernel@vger.kernel.org>
-References: <20260130163756.2674225-1-tianyou.li@intel.com>
- <20260130163756.2674225-3-tianyou.li@intel.com>
- <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
- <aYjmcZ4hg9bNbmiY@kernel.org>
- <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
- <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
- <aYsaBkMecDG595Xg@kernel.org>
- <b3777d0e-0b25-45bc-b387-e67fe5a0d328@kernel.org>
-Content-Language: en-US
-From: "Li, Tianyou" <tianyou.li@intel.com>
-In-Reply-To: <b3777d0e-0b25-45bc-b387-e67fe5a0d328@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TP0P295CA0005.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:2::8)
- To MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
+ 15.2.1544.11; Tue, 24 Feb 2026 15:30:34 +0800
+Subject: Re: [PATCH v3 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
+ MFR policy
+To: Jiaqi Yan <jiaqiyan@google.com>
+CC: <nao.horiguchi@gmail.com>, <tony.luck@intel.com>,
+	<wangkefeng.wang@huawei.com>, <willy@infradead.org>,
+	<akpm@linux-foundation.org>, <osalvador@suse.de>, <rientjes@google.com>,
+	<duenwen@google.com>, <jthoughton@google.com>, <jgg@nvidia.com>,
+	<ankita@nvidia.com>, <peterx@redhat.com>, <sidhartha.kumar@oracle.com>,
+	<ziy@nvidia.com>, <david@redhat.com>, <dave.hansen@linux.intel.com>,
+	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<william.roche@oracle.com>, <harry.yoo@oracle.com>, <jane.chu@oracle.com>
+References: <20260203192352.2674184-1-jiaqiyan@google.com>
+ <20260203192352.2674184-2-jiaqiyan@google.com>
+ <7ad34b69-2fb4-770b-14e5-bea13cf63d2f@huawei.com>
+ <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
+ <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com>
+ <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <a0d25caf-a18b-e3d8-e74f-fc18fa85252e@huawei.com>
+Date: Tue, 24 Feb 2026 15:30:34 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB8289:EE_|SA1PR11MB6663:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c4197ec-b39f-48cf-3b6a-08de7374724e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Z2QyMmJvakx0SUROUmUvSDAwOHBaUUxndkpJb3JVVHV1V05zTGsva1BxbElr?=
- =?utf-8?B?OVloTGVRbk02Z21GK2FNY3Z5Uk15NnI1VDF5OUp3N3piQ3M2QzBUdjhyemFq?=
- =?utf-8?B?eGxCZ2t6d1dOUVNYc0ZESDRFUU5tanBaMFlJQWprTmlURS9oaTdUTjdBTU1y?=
- =?utf-8?B?WWZyNjBHUHMxU1pOM3AzZXl1OWxaNk5jZDhzdUQ3TjhTbjV6b0djSGFLSTZ0?=
- =?utf-8?B?WEwzZmgrcE0yb0tjKy9xdjJ0SmQzNi8vWGs2aURTU2tPWFNaS2FHcFRvK0tm?=
- =?utf-8?B?elFnT3JRRHhHTkViMDBnenFYSnRvQXN0U2FyU1diK3pFMFBMZFlZSW1OS0hY?=
- =?utf-8?B?YlpOcG9YOWlkVjVpSGp5R0RobUQzTWluVWV5ZnZTM1hkT1VSWTJsaWxtR3BJ?=
- =?utf-8?B?aDkvUVV2RVFmRVh3blQ4QW51NXV1ZjZ6Ujg1L2E0dzhsRHMvckQxRElhQVhG?=
- =?utf-8?B?Z0pYYllpbXBKNGhZN3lQSkZ4b1R1bXhIZ2pDVTd4TzJzV28yanMwM29TNG42?=
- =?utf-8?B?RDhMa2dYWE9qZGlxSXNEQUdTalNZN0VDdW53bXBWbUwyV3ZzSVB4bC8zREt6?=
- =?utf-8?B?NXRsdGw4WHI1ZFlWRVhPK1BKcWhjRVdXbjBNRWU2QXA0dXUyZzRpTlhiNWpE?=
- =?utf-8?B?UUFGZ2VYYWtHUVkwVWhySW5OWWxyY1VwRVk0dnNXeVRNTldqalEwUS9xQ1hR?=
- =?utf-8?B?aFhhM0JmQnVvTm96ZWRhMVpGUUJJYlJOMTMxV2hMREJoRkJVSWpoLzRxY2Q0?=
- =?utf-8?B?VkQvNnEzZjNXcnVzZHZmL1pCZ2dLSlU3VE9rQmZyS3JSbGQwSTBOODBvRDVv?=
- =?utf-8?B?RkRqVXhIT3FKMUduV2VVaVhFdmw4S3BqTGQxUXVkTHFWRjhLRktOVjA0ejcr?=
- =?utf-8?B?SWlaT1Y5OUdReE0rLzZGM2JZSW1GTTN3T2pSSTJkN0xCdkRnQTZlV0MxS2Qz?=
- =?utf-8?B?S0prM2IxOStMRWNva3M4WCt5d09SVzdkd2pJU0JQaC8zdTdjVnFSRkQ3T3Zw?=
- =?utf-8?B?OXI4MDFQMDVYbEJlMTZ5THRkS210R2cyT2c1OHV6ZmNDTmE5Ym1rWktiZkdh?=
- =?utf-8?B?dVlsc1VudkpSMXk1NXduMVlEWEQ2Lytla3A5bFBmYTVIUlFyNVA3TVhkSDBi?=
- =?utf-8?B?MkkyTkdGL3EvVVdJNSs5bUkydFRBMUlqTlUrVXZieFIvK05CTC96QW41NTdW?=
- =?utf-8?B?dSs1QllBKzU1VnVkQSsyMXZlNEpkdFpLbm9nNjFONWFDclFBNHhjS0xQVjhP?=
- =?utf-8?B?M0VYYVRKWTBXQ25uM2RNdm5ib2swQVh0SGJ4ZTRtdjhZZUd3SGxQaUdFSkFD?=
- =?utf-8?B?QjRtNldlVGFBWHROYnNRZit5SnBSaWszK3NsREw3NnhZSzFFS3pQUFpocEF1?=
- =?utf-8?B?SGtZZ1NFWmdFWmZkODEvWUI0SVZSazNrenIyL1dzcG9MN25nTjIva3lKaVhm?=
- =?utf-8?B?aGxlaVhZY3JKYU1EZ2lQMkZmK3lKaTRNUm1jY1hLenpBQ1J3dWZ6OW5WcjZu?=
- =?utf-8?B?QnAxUVZxVzRGYnpZazRza1FKdFZsZ2lRK2ZaMlRkUlZod1JYVXd6NW80eHJC?=
- =?utf-8?B?bUpWQ2crV2FsczVNUk5JSE5Bb3I5SXMvV3M5UVI2c0tnT3AxL2RrZnB3WWV5?=
- =?utf-8?B?bmlXL2I0VW41dEJKY0ZjcWRxdXFIbmU4SDRuUEZXdVZhOUl0WXFySE16Njll?=
- =?utf-8?B?eldHNlh2NUkxcE0ybTJlTEZrcnJ1RXczeUhXdWhpdk1HUlQ0YjBtbUJkNitD?=
- =?utf-8?B?SHFNUWIvT0czOXpCcVdTYi9ackt1eG52VHE2Rkt6bUQrVXFiQjdFTEdJQUJC?=
- =?utf-8?B?MHNPdm81a09NeVc3ejFsd0wwR0dvNjZXTDNWTjAxc2NvbFBBeERMQ3c3N0oy?=
- =?utf-8?B?TTJwR2dpN0JiczRIK1VqVXROcmhaWVVMSFV1L3Nkd25wYzRZYUcxTzRmYXZX?=
- =?utf-8?B?R3pJekEwKzRjT0FpRGM3WU5KYVQ4UkNmUGErMEJzV0Z6R1BDdGIrdzFQYTk1?=
- =?utf-8?B?czA2Tllsb1lZcUdqbnlFMGVXRmJ1QnY3RG55Z2M3bXNJVnJhWlFjY3BlenI4?=
- =?utf-8?B?MU9vZDd6VFhWbW9Nbk40UEF6bHRWQVlCQ20ydnJtS25oYU80UTRIQ0dQU3Y0?=
- =?utf-8?Q?Fk88=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB8289.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?THZ5TjBnRmxyMWlDaGFjaEtoMmlMbEk2NDBoYXd5UkJyL0xFWE5ZNEVOOXM2?=
- =?utf-8?B?ZHh1anJ3ZHFsNEZSam5xM3BhRk5RTWZGeWJmdkE0akpuNktWZGFsd1NjVXE3?=
- =?utf-8?B?d29HeE44UDh0OUVNZ2JnaVl5UUZNUnozazU3RkpYUGoyb0MxbGw1UDk5eUZK?=
- =?utf-8?B?OCt0TTZaaGY1YnBTcExpTEdKUUZMR1c2VkFEamhPTFF6MXV5SzFFS0krWkoz?=
- =?utf-8?B?bkdlOTVmZVU2VXdVNEd5Z25wS2RBdDRTOEJ1Zkpybmc0TlI2R04zL1ErbFZO?=
- =?utf-8?B?d2dWWGNZQTU1T1FmN0k1NFhqbWp2MXBNeWo4N25FeXVmK0dyaENGUWxpUk8w?=
- =?utf-8?B?V0VHaitYKytJRTZuRk1XcGNBa1JOTHNkN1NISElObzRPMUI5QnNjTTlVclho?=
- =?utf-8?B?bUtGVjhIc0V3OGFwNldqa0ZaZlJiWlBYRXpoMlVxVUN0ZWU5cXk3bXI0NzRZ?=
- =?utf-8?B?ci8xM3FkckQvcmNzdEp5TThlT041QkMxdWQyeitzSnQ0dmF2Y3BWSkRNMWFO?=
- =?utf-8?B?MVdRQWl0YTVQYitoeUhlOGRKOWNUVEs3VU9JNXJVVnhSWWxEbjRJSU1vRmUr?=
- =?utf-8?B?Mm5qZU1VZVVwRzRPNVZZS3FJYndkRFBxZVoyblFYWXFOT1doUUJhVFFuLzZ3?=
- =?utf-8?B?VnpaUU1hQjF5ZmF6em1sMmhGZzF5aXNHZldwWXFJMktUcXRFNTJVbWs5cVpC?=
- =?utf-8?B?bjFrUk9WUWQ1N0V3Vkg5ZDc4ZVRxSGJONDJFRVlnUkhpSyt3dHcyRm9SaGE4?=
- =?utf-8?B?ZyttakZFS0czdGR2YlpZaHdMRDdkazl3YXE0VTB1VHJIQ0JHWWxZTWxnbXpv?=
- =?utf-8?B?VFlybWRTZHMrTGFKV1Fzb09JTDNhWUZGdGFSTXMydkhvZGhxZEFzR2ZCTVJF?=
- =?utf-8?B?S2xPaUJMdjIxUEt1OWZ3QXFTYStNbzN6dEVwSUN0cDdXcjd0dHMvOHFqTVVo?=
- =?utf-8?B?eVVsQnlCNjRyRmNtUFFHWEpEa1RMcFowVm90cTcrS09iYm4wajhxM1RFUUpx?=
- =?utf-8?B?OFV4TUY3US8yRUJLb0dEaVVNNTRObHZlbk9JNXM5MmhBQnpIOTl6Um1FNUlG?=
- =?utf-8?B?d3VDNkVraDNTRmtlcXMvNldIRVpoNGI4VkhwRXlUYWhNNU5rMXYzTFNJUjFV?=
- =?utf-8?B?N3VHVlo3RzdkU0EwZUpBZ1ZiY0phenE0V1o5RmQzZVpuQ1RYUXh3MkIwbTJV?=
- =?utf-8?B?b2prZ2dJUkFsMkF4aDJkVXZKaHFzazFCOFFLbEk4NUNvclRsSWdqQkh0aEtN?=
- =?utf-8?B?UXI5OG5Md1RGM0VUQ2UvZzFOOExzbytOWmZyR0F1MU9OdkJlbnNUVlVtZVNO?=
- =?utf-8?B?TGlOcXFvQzhQOXVGOUNocEhyTC8zcXZoY21rd0hmOE9SVE8xVm9yOFRIM1Ba?=
- =?utf-8?B?bExIOEhsYzFhMlo0c2NwN013elFkYnRmY1F1TW1zb3JQQXVqd3ZlWUZndHpi?=
- =?utf-8?B?V2hPS0xYNVhKMHlsZW0xdGExZXNsSnZPZ1hCSE5KK2NTOTBrbHVQaVh4VWJO?=
- =?utf-8?B?SHVta3dLdGxlcHBKN0YxRlYraUkxam5wcDd1TVM3SjVVMC9WVWZiS2pVRkJv?=
- =?utf-8?B?MHJISFdkMitWenIxaEFYOU5DWmRiRGRYdHR0d0VtSE1QdlFqYldabHNLYnVV?=
- =?utf-8?B?UVJ6Mmc4RmE5clFpd1RMRjBoU1QxV3FFTCtNUmE4bm50b0taKzJOeFU2bmlq?=
- =?utf-8?B?TUEvM1c5TDdFT3o1UVczWGg4WUVMbXVuVk83SXJHUzB3YTFYTDB4R0s4M2RP?=
- =?utf-8?B?ZzNtbE1QcjRpNlJ2Zk5xbFliSkF1TndXQmdBUmZ0Q0R5SlZlUE5TVEdGelFO?=
- =?utf-8?B?QzRJWWxIZUIvTUROSTZyT1lFRzQ5VERhUFRBNmJOWVkzc0t3RUtleFdrMTNB?=
- =?utf-8?B?WkltWFJ0VEZXcEE3VDNqOGFmL2dnSjlLTTdyN28wZVg0dFVaV1BiREg2SjVB?=
- =?utf-8?B?dXp5emRtcENFZyt2QlVWRXdkTldZNVkwdkl2OUQ0MHFVSmNLUGszZkVhZ0pD?=
- =?utf-8?B?S0RGdThGOHMrMGFsalNNN29Ya2Ftd0Q2SHNEWWpxS3JLano1R1BNejZxbzdo?=
- =?utf-8?B?Nk9RMmhGL09SQ3UyUlVCWnlpNy9LTi9Td0Nsb0QycDVmNWhzaFZ5SmpERExO?=
- =?utf-8?B?ay9Fb05TU1JCczEzekdBWGdvL3BJZEhqZDVpWmNYRDJVSGdnVkcwVFEvNko5?=
- =?utf-8?B?MVQ3THB3QkxtSEtIVXFjTjl1WDk3MUVOUll0dWVMc0R2NDZqN0JGRU15cUV0?=
- =?utf-8?B?RGhtaWFLR3JNR01aT1VTaVZReGtOaTVmSXYwVnpnOTNSQnBKbGtFdVJVVnVM?=
- =?utf-8?B?WUwwd3RIeG10Qjk4R24rOGNVdG5GdFZnTXhWNmJ0UDJIeUt0aXJKQT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c4197ec-b39f-48cf-3b6a-08de7374724e
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB8289.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 07:15:10.8335
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MniG2nyAcmQydFqaZX/Tvw87NjwJyPKackV2e2wpl2VlJ3iVe5vjtCn40Z9k22OZl8nMmQ0cx+knqEIWsJM50g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6663
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EBD2E20013
-X-Stat-Signature: h6a15z4rc6dz9k93h1hjbd9mecbk8age
+In-Reply-To: <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam09
+X-Stat-Signature: iyyy3ymj4o5g17f154s34bdxduptsubx
+X-Rspamd-Queue-Id: 16ADFC0009
 X-Rspam-User: 
-X-HE-Tag: 1771917315-13022
-X-HE-Meta: U2FsdGVkX1+Ub4dQiooswlO48EuNAJWrkxi/Gg+AEBkaVbij5DpKKaDpcJr8MHBSJ73QF8AQ6iYnGc7699K8t/fPhvBcNKmpDVDZs4aTIb6zGr2tRg7b55NjJhGWaE8QFTodi4YwXUO9CmwID2Pncs6y7IOLymHCAttjIg1iYxM06wZfF32Dm30QbkbuVzw6FZe53K6Bq2eQEZK1Ux/prpOsJoX8hMw7HYErnSsXnePh6UIhWZxE12IgnwIPTcQoR6k3WS6Ctyi3rQaNbcKuhOLEicQPgxsinIKOPxepJZgAOpIor+QWMOBd03clduJU5esZ5BFTQThLK2YOr8Ka5YwI+n/amJ9fwDuEeHYBFEGHh9Hey1rOzznsQfZdMzKnGyrdymvRnUN+FUZltTiRcQSog3QXh9gMg3jTeX7MS21ailDaBhWamXwRRhiDx9X752xeiunvWnpb7MJpemhV1fUu/pGRDPPLi1bU9G+jHIUZn0QmcQG2l9jxoHhW4cr4G8PaAL5rTi7VJD0lWeDv9cq70ah6Lp9AAY4mc7A71VJkDxSoLkrps6WV0zBP7YGUqYEwoz+O+8+JNITGiiitpE3kR5Lmw32Th25cBHZiKNg+mIQPeVIyBkOkK3WpTfGqs0LAX5+u9Ex0RRnXOYMsutl5lRZddgSdm56s4Q+JZlPJuL6U36ePFudEzffKopoIbOXb83FdslpJ2mS+4cvBgKxeVUzNzag8Un8iNkU9PTSli9XuTJRdLPlbj3KASb71LKGv0nSAdHsaZB1RRj+KRLybQcXOWwKzO4Fu6Q891wwO9lz0JwP694uIqyB5Vf5N6/vu1jzZV4zM2K6NWddocxQbnv8V6U9Q2q1rjqydn9VeHJypQb4F4FFRwQS44A4aa28nEiSsv1ujn3tM02nqJSIBibjpLxQpGsve7ezB/3Ry/8H40G7uOBNckams6l+zIDCeMWWSABInhvnMT5n
- XaFhzV6w
- GiuJhLAtLgr3MKjn7Zv1nXJrfMsLFUzlRkuhmT3hMx2KhueWsk2/2XrhIJGESqnXOfSSCbzrNeS8M+ny5PmPxMUAgZnstYjBRvXLa1PmCqGRgjaMPmRzX7p0QILSfb9dylFXkZyQjq4plv7QquBKb1SfYISdplnNK6CufCNgUGQA5fpIccfQiZWV0sthKZ5WP0uKlnM1wm1eLxVmK55lMFc/mSuqOyMSxwSdHiBu9ds1EH/KtVRCPB7JAQlnDAz0S6x2QEW1p66aelH8zhAGQVuD8RX1yfHcVrPKJuHf/GFqHJsFCBrzAMZiuuNlQe9f7M24zxC5J6jI37F0RRAwhR0EZdwUw3L6osw33MS7+B0cDSToZ5OEKWsNkk4XA9Kg12BjnK3ZRLjhiARa9PyJRHPeh+i6dpSdXPWxTUXS7kP2O1p8hg1IyO/IgdzIlosOsoD74u6iKQFWAqHD9hTgyLRxjTZ2NPuYM961XiQYhVd078UJr1Fb4HpsDYL4biGt9KXleq+KB1IxIGvxDXhBj/7Tmy1CSqj6TSfmgbCGlNQ4IuaCQoFC3O86s84t3yvhp9qf0
+X-HE-Tag: 1771918242-575681
+X-HE-Meta: U2FsdGVkX19SRVh5vqqeiZKw+rt7pQPQbcoCKzTIYyOAlRMQqip25tNL7U9XKOtVd46eX8B+9jpBgafokHisA98t4x/KKrSaN78YqmPCHx9Xudximeap9z8ZV/KU6a0fQdpjH5kAWMUZOpRDo0NAoBT6tu9ziXHnarcYb3w88ul8xY6u6xjU/QFf9G40jDsLmXCr7om3NF5z0y7YhJJyNN15V3ggmXSTafRfY0ScDH2PyPrN80BOu1+/k2lpNvsIoFx2I07TbqD5EduXkcR7Fv3VKzzDTvIziVAiCfVWwyCZw3ydm2KXI61AgE+IJ34VW7nt9MexDafAVmxlfgB/ZqaoBgfNStVt1hRFMf02LUNq8Hagzp/M6S2rn80WH/vweJrbxkf30WYxAUGkCOQESCUVoLTXDk7D351tlGOfWiO9k8KFzGLyegMLNtSBsrE/YdSvbgqVZQ8GfZJIIeeVz7HQbB2b9NNMFfEwXqUebDPvg06I23KLV56g1prQOpWB7bDOIqzVjMh38+TyaF84nNlnCh9z4tww2yp+9Q7C2EoimnAO9YfKZ6+qGDKFyQ1X/sN140g47ApQxbsqf9drHOBwTjoduBS5KZmMozrdWEvDjYKtz7L4TyoDWRCrGMhswWhHsBs+PG3RPGHMa+TM9XUTMLvSticC4hZRFpbEvel5Ad2wgJuWVqxMGgH97THJcdI7JZIceynAHIYgotZ+VgHeb+fndigVgZLBIl+t7i+5qPl8xeUbGrnjm4VvJpBw2nPUfETQV9m/yJRnzfr/P269NzSwfM3frZq2lS7Z1BlFsqYBKEDTV5ewOrvqDd7kj8M/m8DhCaeilYJFv5MQSo7S/4Udx8vbX+xbm3WYPX+2LU8Mt0IVwx+dHndF9apfl10weo38FRTaBl4/U2gCO2pd+K4T8gIDEw3V1Gc7xGp1LHMjLIMeVoRzTGdijZBBydELADQdt6HDTRZZ+S0
+ VlDfg11X
+ /rEqLLX1agUNvD7adtmxRy66TvX0gAY2DTlmCrCmUKokKLniAAG/zsd3czFFKXf6xJksJv7mpM1VXz24ztevLHNSFHeSEbft2lPY/PFA59ICR6E1EOAZBGN4ZZm+JwnvzVYtoH5GYWEsdz0Fe6FJGkdgnFSPGDsnKUg3OlkNSqfQQss+nrhx6jyvDPlLkHT4hj4NV2EL6r8LLgw1lODidGbWa3UqtR/mrI6BEPG/YABu3DZKM0+AAxTlpwT6gyJFTSNEX6Gdt98fBb4TzdRzSDzE7a+TyBFBgRdfJLhcEyeDYU5AEvxobYpG5PL8z+pRmva3Jr5wEBWrIjUrAK/8rtnIh575fLHasbPe6mDHhrB+9RJ4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -249,272 +117,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 2/11/2026 8:19 PM, David Hildenbrand (Arm) wrote:
->>>        *
->>> +     * online_pages is pages within the zone that have an online 
->>> memmap.
->>> +     * online_pages include present pages and memory holes that have a
->>> +     * memmap. When spanned_pages == online_pages, pfn_to_page() 
->>> can be
->>> +     * performed without further checks on any pfn within the zone 
->>> span.
+On 2026/2/13 13:01, Jiaqi Yan wrote:
+> On Mon, Feb 9, 2026 at 11:31 PM Miaohe Lin <linmiaohe@huawei.com> wrote:
 >>
->> Maybe pages_with_memmap? It would stand off from managed, spanned and
->> present, but it's clearer than online IMHO.
->
-> offline pages also have a memmap, but that should not be touched as it 
-> might contain garbage. So it's a bit more tricky :)
->
+>> On 2026/2/10 12:47, Jiaqi Yan wrote:
+>>> On Mon, Feb 9, 2026 at 3:54 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
+>>>>
+>>>> On 2026/2/4 3:23, Jiaqi Yan wrote:
+>>>>> Sometimes immediately hard offlining a large chunk of contigous memory
+>>>>> having uncorrected memory errors (UE) may not be the best option.
+>>>>> Cloud providers usually serve capacity- and performance-critical guest
+>>>>> memory with 1G HugeTLB hugepages, as this significantly reduces the
+>>>>> overhead associated with managing page tables and TLB misses. However,
+>>>>> for today's HugeTLB system, once a byte of memory in a hugepage is
+>>>>> hardware corrupted, the kernel discards the whole hugepage, including
+>>>>> the healthy portion. Customer workload running in the VM can hardly
+>>>>> recover from such a great loss of memory.
+>>>>
+>>>> Thanks for your patch. Some questions below.
+>>>>
+>>>>>
+>>>>> Therefore keeping or discarding a large chunk of contiguous memory
+>>>>> owned by userspace (particularly to serve guest memory) due to
+>>>>> recoverable UE may better be controlled by userspace process
+>>>>> that owns the memory, e.g. VMM in the Cloud environment.
+>>>>>
+>>>>> Introduce a memfd-based userspace memory failure (MFR) policy,
+>>>>> MFD_MF_KEEP_UE_MAPPED. It is possible to support for other memfd,
+>>>>> but the current implementation only covers HugeTLB.
+>>>>>
+>>>>> For a hugepage associated with MFD_MF_KEEP_UE_MAPPED enabled memfd,
+>>>>> whenever it runs into a new UE,
+>>>>>
+>>>>> * MFR defers hard offline operations, i.e., unmapping and
+>>>>
+>>>> So the folio can't be unpoisoned until hugetlb folio becomes free?
+>>>
+>>> Are you asking from testing perspective, are we still able to clean up
+>>> injected test errors via unpoison_memory() with MFD_MF_KEEP_UE_MAPPED?
+>>>
+>>> If so, unpoison_memory() can't turn the HWPoison hugetlb page to
+>>> normal hugetlb page as MFD_MF_KEEP_UE_MAPPED automatically dissolves
 >>
->>> +     *
->>>        * So present_pages may be used by memory hotplug or memory power
->>>        * management logic to figure out unmanaged pages by checking
->>>        * (present_pages - managed_pages). And managed_pages should 
->>> be used
->>> @@ -967,6 +972,7 @@ struct zone {
->>>       atomic_long_t        managed_pages;
->>>       unsigned long        spanned_pages;
->>>       unsigned long        present_pages;
->>> +    unsigned long        online_pages;
->>>   #if defined(CONFIG_MEMORY_HOTPLUG)
->>>       unsigned long        present_early_pages;
->>>   #endif
->>> @@ -1051,8 +1057,6 @@ struct zone {
->>>       bool            compact_blockskip_flush;
->>>   #endif
->>> -    bool            contiguous;
->>> -
->>>       CACHELINE_PADDING(_pad3_);
->>>       /* Zone statistics */
->>>       atomic_long_t        vm_stat[NR_VM_ZONE_STAT_ITEMS];
->>> @@ -1124,6 +1128,23 @@ static inline bool zone_spans_pfn(const 
->>> struct zone *zone, unsigned long pfn)
->>>       return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
->>>   }
->>> +/**
->>> + * zone_is_contiguous - test whether a zone is contiguous
->>> + * @zone: the zone to test.
->>> + *
->>> + * In a contiguous zone, it is valid to call pfn_to_page() on any 
->>> pfn in the
->>> + * spanned zone without requiting pfn_valid() or 
->>> pfn_to_online_page() checks.
->>> + *
->>> + * Returns: true if contiguous, otherwise false.
->>> + */
->>> +static inline bool zone_is_contiguous(const struct zone *zone)
->>> +{
->>> +    return READ_ONCE(zone->spanned_pages) == 
->>> READ_ONCE(zone->online_pages);
->>> +}
->>> +
->>>   static inline bool zone_is_initialized(const struct zone *zone)
->>>   {
->>>       return zone->initialized;
->>> diff --git a/mm/internal.h b/mm/internal.h
->>> index f35dbcf99a86..6062f9b8ee62 100644
->>> --- a/mm/internal.h
->>> +++ b/mm/internal.h
->>> @@ -716,21 +716,15 @@ extern struct page 
->>> *__pageblock_pfn_to_page(unsigned long start_pfn,
->>>   static inline struct page *pageblock_pfn_to_page(unsigned long 
->>> start_pfn,
->>>                   unsigned long end_pfn, struct zone *zone)
->>>   {
->>> -    if (zone->contiguous)
->>> +    if (zone_is_contiguous(zone))
->>>           return pfn_to_page(start_pfn);
->>>       return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
->>>   }
->>> -void set_zone_contiguous(struct zone *zone);
->>>   bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
->>>                  unsigned long nr_pages);
->>> -static inline void clear_zone_contiguous(struct zone *zone)
->>> -{
->>> -    zone->contiguous = false;
->>> -}
->>> -
->>>   extern int __isolate_free_page(struct page *page, unsigned int 
->>> order);
->>>   extern void __putback_isolated_page(struct page *page, unsigned 
->>> int order,
->>>                       int mt);
->>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->>> index a63ec679d861..76496c1039a9 100644
->>> --- a/mm/memory_hotplug.c
->>> +++ b/mm/memory_hotplug.c
->>> @@ -492,11 +492,11 @@ static void shrink_zone_span(struct zone 
->>> *zone, unsigned long start_pfn,
->>>           pfn = find_smallest_section_pfn(nid, zone, end_pfn,
->>>                           zone_end_pfn(zone));
->>>           if (pfn) {
->>> -            zone->spanned_pages = zone_end_pfn(zone) - pfn;
->>> +            WRITE_ONCE(zone->spanned_pages, zone_end_pfn(zone) - pfn);
->>>               zone->zone_start_pfn = pfn;
->>>           } else {
->>>               zone->zone_start_pfn = 0;
->>> -            zone->spanned_pages = 0;
->>> +            WRITE_ONCE(zone->spanned_pages, 0);
->>>           }
->>>       } else if (zone_end_pfn(zone) == end_pfn) {
->>>           /*
->>> @@ -508,10 +508,10 @@ static void shrink_zone_span(struct zone 
->>> *zone, unsigned long start_pfn,
->>>           pfn = find_biggest_section_pfn(nid, zone, 
->>> zone->zone_start_pfn,
->>>                              start_pfn);
->>>           if (pfn)
->>> -            zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
->>> +            WRITE_ONCE(zone->spanned_pages, pfn - 
->>> zone->zone_start_pfn + 1);
->>>           else {
->>>               zone->zone_start_pfn = 0;
->>> -            zone->spanned_pages = 0;
->>> +            WRITE_ONCE(zone->spanned_pages, 0);
->>>           }
->>>       }
->>>   }
->>> @@ -565,18 +565,13 @@ void remove_pfn_range_from_zone(struct zone 
->>> *zone,
->>>       /*
->>>        * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
->>> -     * we will not try to shrink the zones - which is okay as
->>> -     * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
->>> +     * we will not try to shrink the zones.
->>>        */
->>>       if (zone_is_zone_device(zone))
->>>           return;
->>> -    clear_zone_contiguous(zone);
->>> -
->>>       shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
->>>       update_pgdat_span(pgdat);
->>> -
->>> -    set_zone_contiguous(zone);
->>>   }
->>>   /**
->>> @@ -753,8 +748,6 @@ void move_pfn_range_to_zone(struct zone *zone, 
->>> unsigned long start_pfn,
->>>       struct pglist_data *pgdat = zone->zone_pgdat;
->>>       int nid = pgdat->node_id;
->>> -    clear_zone_contiguous(zone);
->>> -
->>>       if (zone_is_empty(zone))
->>>           init_currently_empty_zone(zone, start_pfn, nr_pages);
->>>       resize_zone_range(zone, start_pfn, nr_pages);
->>> @@ -782,8 +775,6 @@ void move_pfn_range_to_zone(struct zone *zone, 
->>> unsigned long start_pfn,
->>>       memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
->>>                MEMINIT_HOTPLUG, altmap, migratetype,
->>>                isolate_pageblock);
->>> -
->>> -    set_zone_contiguous(zone);
->>>   }
->>>   struct auto_movable_stats {
->>> @@ -1079,6 +1070,7 @@ void adjust_present_page_count(struct page 
->>> *page, struct memory_group *group,
->>>       if (early_section(__pfn_to_section(page_to_pfn(page))))
->>>           zone->present_early_pages += nr_pages;
->>>       zone->present_pages += nr_pages;
->>> +    WRITE_ONCE(zone->online_pages,  zone->online_pages + nr_pages);
->>>       zone->zone_pgdat->node_present_pages += nr_pages;
->>>       if (group && movable)
->>> diff --git a/mm/mm_init.c b/mm/mm_init.c
->>> index 2a809cd8e7fa..e33caa6fb6fc 100644
->>> --- a/mm/mm_init.c
->>> +++ b/mm/mm_init.c
->>> @@ -2263,9 +2263,10 @@ void __init init_cma_pageblock(struct page 
->>> *page)
->>>   }
->>>   #endif
->>> -void set_zone_contiguous(struct zone *zone)
->>> +static void calc_online_pages(struct zone *zone)
->>>   {
->>>       unsigned long block_start_pfn = zone->zone_start_pfn;
->>> +    unsigned long online_pages = 0;
->>>       unsigned long block_end_pfn;
->>>       block_end_pfn = pageblock_end_pfn(block_start_pfn);
->>> @@ -2277,12 +2278,11 @@ void set_zone_contiguous(struct zone *zone)
->>>           if (!__pageblock_pfn_to_page(block_start_pfn,
->>>                            block_end_pfn, zone))
->>> -            return;
->>> +            continue;
->>>           cond_resched();
->>> +        online_pages += block_end_pfn - block_start_pfn;
+>> We might loss some testability but that should be an acceptable compromise.
+> 
+> To clarify, looking at unpoison_memory(), it seems unpoison should
+> still work if called before truncated or memfd closed.
+> 
+> What I wanted to say is, for my test hugetlb-mfr.c, since I really
+> want to test the cleanup code (dissolving free hugepage having
+> multiple errors) after truncation or memfd closed, so we can only
+> unpoison the raw pages rejected by buddy allocator.
+> 
 >>
->> I think we can completely get rid of this with something like this 
->> untested
->> patch to calculate zone->online_pages for coldplug:
+>>> it. unpoison_memory(pfn) can probably still turn the HWPoison raw page
+>>> back to a normal one, but you already lost the hugetlb page.
+>>>
+>>>>
+>>>>>   dissolving. MFR still sets HWPoison flag, holds a refcount
+>>>>>   for every raw HWPoison page, record them in a list, sends SIGBUS
+>>>>>   to the consuming thread, but si_addr_lsb is reduced to PAGE_SHIFT.
+>>>>>   If userspace is able to handle the SIGBUS, the HWPoison hugepage
+>>>>>   remains accessible via the mapping created with that memfd.
+>>>>>
+>>>>> * If the memory was not faulted in yet, the fault handler also
+>>>>>   allows fault in the HWPoison folio.
+>>>>>
+>>>>> For a MFD_MF_KEEP_UE_MAPPED enabled memfd, when it is closed, or
+>>>>> when userspace process truncates its hugepages:
+>>>>>
+>>>>> * When the HugeTLB in-memory file system removes the filemap's
+>>>>>   folios one by one, it asks MFR to deal with HWPoison folios
+>>>>>   on the fly, implemented by filemap_offline_hwpoison_folio().
+>>>>>
+>>>>> * MFR drops the refcounts being held for the raw HWPoison
+>>>>>   pages within the folio. Now that the HWPoison folio becomes
+>>>>>   free, MFR dissolves it into a set of raw pages. The healthy pages
+>>>>>   are recycled into buddy allocator, while the HWPoison ones are
+>>>>>   prevented from re-allocation.
+>>>>>
+>>>> ...
+>>>>
+>>>>>
+>>>>> +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *folio)
+>>>>> +{
+>>>>> +     int ret;
+>>>>> +     struct llist_node *head;
+>>>>> +     struct raw_hwp_page *curr, *next;
+>>>>> +
+>>>>> +     /*
+>>>>> +      * Since folio is still in the folio_batch, drop the refcount
+>>>>> +      * elevated by filemap_get_folios.
+>>>>> +      */
+>>>>> +     folio_put_refs(folio, 1);
+>>>>> +     head = llist_del_all(raw_hwp_list_head(folio));
+>>>>
+>>>> We might race with get_huge_page_for_hwpoison()? llist_add() might be called
+>>>> by folio_set_hugetlb_hwpoison() just after llist_del_all()?
+>>>
+>>> Oh, when there is a new UE while we releasing the folio here, right?
 >>
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index e33caa6fb6fc..ff2f75e7b49f 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -845,9 +845,9 @@ overlap_memmap_init(unsigned long zone, unsigned 
->> long *pfn)
->>    *   zone/node above the hole except for the trailing pages in the 
->> last
->>    *   section that will be appended to the zone/node below.
->>    */
->> -static void __init init_unavailable_range(unsigned long spfn,
->> -                      unsigned long epfn,
->> -                      int zone, int node)
->> +static u64 __init init_unavailable_range(unsigned long spfn,
->> +                     unsigned long epfn,
->> +                     int zone, int node)
->>   {
->>       unsigned long pfn;
->>       u64 pgcnt = 0;
->> @@ -861,6 +861,8 @@ static void __init 
->> init_unavailable_range(unsigned long spfn,
->>       if (pgcnt)
->>           pr_info("On node %d, zone %s: %lld pages in unavailable 
->> ranges\n",
->>               node, zone_names[zone], pgcnt);
->> +
->> +    return pgcnt;
->>   }
->>     /*
->> @@ -959,9 +961,10 @@ static void __init memmap_init_zone_range(struct 
->> zone *zone,
->>       memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
->>                 zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
->>                 false);
->> +    zone->online_pages += (end_pfn - start_pfn);
->>         if (*hole_pfn < start_pfn)
->> -        init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
->> +        zone->online_pages += init_unavailable_range(*hole_pfn, 
->> start_pfn, zone_id, nid);
->>         *hole_pfn = end_pfn;
->>   }
+>> Right.
 >>
->
-> Looking at set_zone_contiguous(), __pageblock_pfn_to_page() takes care 
-> of a weird case where the end of a zone falls into the middle of a 
-> pageblock.
->
-> I am not even sure if that is possible, but we could handle that 
-> easily in pageblock_pfn_to_page() by checking the requested range 
-> against the zone spanned range.
->
-> Then the semantics "zone->online_pages" would be less weird and more 
-> closely resemble "pages with online memmap".
->
-> init_unavailable_range() might indeed do the trick!
->
-> @Tianyou, can you explore that direction? I know, your PTO is coming up.
->
+>>> In that case, would mutex_lock(&mf_mutex) eliminate potential race?
+>>
+>> IMO spin_lock_irq(&hugetlb_lock) might be better.
+> 
+> Looks like I don't need any lock given the correction below.
+> 
+>>
+>>>
+>>>>
+>>>>> +
+>>>>> +     /*
+>>>>> +      * Release refcounts held by try_memory_failure_hugetlb, one per
+>>>>> +      * HWPoison-ed page in the raw hwp list.
+>>>>> +      *
+>>>>> +      * Set HWPoison flag on each page so that free_has_hwpoisoned()
+>>>>> +      * can exclude them during dissolve_free_hugetlb_folio().
+>>>>> +      */
+>>>>> +     llist_for_each_entry_safe(curr, next, head, node) {
+>>>>> +             folio_put(folio);
+>>>>
+>>>> The hugetlb folio refcnt will only be increased once even if it contains multiple UE sub-pages.
+>>>> See __get_huge_page_for_hwpoison() for details. So folio_put() might be called more times than
+>>>> folio_try_get() in __get_huge_page_for_hwpoison().
+>>>
+>>> The changes in folio_set_hugetlb_hwpoison() should make
+>>> __get_huge_page_for_hwpoison() not to take the "out" path which
+>>> decrease the increased refcount for folio. IOW, every time a new UE
+>>> happens, we handle the hugetlb page as if it is an in-use hugetlb
+>>> page.
+>>
+>> See below code snippet (comment [1] and [2]):
+>>
+>> int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>>                                  bool *migratable_cleared)
+>> {
+>>         struct page *page = pfn_to_page(pfn);
+>>         struct folio *folio = page_folio(page);
+>>         int ret = 2;    /* fallback to normal page handling */
+>>         bool count_increased = false;
+>>
+>>         if (!folio_test_hugetlb(folio))
+>>                 goto out;
+>>
+>>         if (flags & MF_COUNT_INCREASED) {
+>>                 ret = 1;
+>>                 count_increased = true;
+>>         } else if (folio_test_hugetlb_freed(folio)) {
+>>                 ret = 0;
+>>         } else if (folio_test_hugetlb_migratable(folio)) {
+>>
+>>                    ^^^^*hugetlb_migratable is checked before trying to get folio refcnt* [1]
+>>
+>>                 ret = folio_try_get(folio);
+>>                 if (ret)
+>>                         count_increased = true;
+>>         } else {
+>>                 ret = -EBUSY;
+>>                 if (!(flags & MF_NO_RETRY))
+>>                         goto out;
+>>         }
+>>
+>>         if (folio_set_hugetlb_hwpoison(folio, page)) {
+>>                 ret = -EHWPOISON;
+>>                 goto out;
+>>         }
+>>
+>>         /*
+>>          * Clearing hugetlb_migratable for hwpoisoned hugepages to prevent them
+>>          * from being migrated by memory hotremove.
+>>          */
+>>         if (count_increased && folio_test_hugetlb_migratable(folio)) {
+>>                 folio_clear_hugetlb_migratable(folio);
+>>
+>>                 ^^^^^*hugetlb_migratable is cleared when first time seeing folio* [2]
+>>
+>>                 *migratable_cleared = true;
+>>         }
+>>
+>> Or am I miss something?
+> 
+> Thanks for your explaination! You are absolutely right. It turns out
+> the extra refcount I saw (during running hugetlb-mfr.c) on the folio
+> at the moment of filemap_offline_hwpoison_folio_hugetlb() is actually
+> because of the MF_COUNT_INCREASED during MADV_HWPOISON. In the past I
+> used to think that is the effect of folio_try_get() in
+> __get_huge_page_for_hwpoison(), and it is wrong. Now I see two cases:
+> - MADV_HWPOISON: instead of __get_huge_page_for_hwpoison(),
+> madvise_inject_error() is the one that increments hugepage refcount
+> for every error injected. Different from other cases,
+> MFD_MF_KEEP_UE_MAPPED makes the hugepage still a in-use page after
+> memory_failure(MF_COUNT_INCREASED), so I think madvise_inject_error()
+> should decrement in MFD_MF_KEEP_UE_MAPPED case.
+> - In the real world: as you pointed out, MF always just increments
+> hugepage refcount once in __get_huge_page_for_hwpoison(), even if it
+> runs into multiple errors. When
 
-Hi David,
+This might not always hold true. When MF occurs while hugetlb folio is under isolation(hugetlb_migratable is
+cleared and extra folio refcnt is held by isolating code in that case), __get_huge_page_for_hwpoison won't get
+extra folio refcnt.
 
-Sorry for the late response, just come back from CNY holiday. I am 
-willing to explore the new direction. Will sync with Yuan in a day or 
-two to confirm the overall implementation and testing plan. Thanks in 
-advance for your time to review the new patch set once ready.
+> filemap_offline_hwpoison_folio_hugetlb() drops the refcount elevated
+> by filemap_get_folios(), it only needs to decrement again if
+> folio_ref_dec_and_test() returns false. I tested something like below:
+> 
+>     /* drop the refcount elevated by filemap_get_folios. */
+>     folio_put(folio);
+>     if (folio_ref_count(folio))
+>         folio_put(folio);
+>     /* now refcount should be zero. */
+>     ret = dissolve_free_hugetlb_folio(folio);
 
-Regards,
+So I think above code might drop the folio refcnt held by isolating code.
 
-Tianyou
-
-
+Thanks.
+.
 
