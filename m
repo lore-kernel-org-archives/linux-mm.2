@@ -4,144 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 306E3EFB810
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 08:34:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21A35EFB818
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 08:38:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691576B0089; Tue, 24 Feb 2026 03:34:41 -0500 (EST)
+	id 426386B0088; Tue, 24 Feb 2026 03:38:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63F696B008A; Tue, 24 Feb 2026 03:34:41 -0500 (EST)
+	id 3C9B16B008A; Tue, 24 Feb 2026 03:38:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 520A76B008C; Tue, 24 Feb 2026 03:34:41 -0500 (EST)
+	id 2B64C6B008C; Tue, 24 Feb 2026 03:38:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B2406B0089
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:34:41 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA4A01C39E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:34:40 +0000 (UTC)
-X-FDA: 84478689120.02.76B1642
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1421940003
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:34:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MkbEaysQ;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771922079;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 167496B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:38:41 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8715F8BA5B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:38:40 +0000 (UTC)
+X-FDA: 84478699200.11.D79EAD9
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CD114180002
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:38:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=w6rz.net header.s=default header.b=QyGDhfmd;
+	spf=pass (imf06.hostedemail.com: domain of re@w6rz.net designates 35.89.44.37 as permitted sender) smtp.mailfrom=re@w6rz.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771922317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=znXHW9n/+MokWp37xWDCKYppH1hLZZhDTU4jhuelsIw=;
-	b=DEmiHSqZQiiauE7N6XZtzJGPy8klFE4Ub29l3H/G/jMSlrNyQPAQZUwpXBD2tRsiSoRNoy
-	EqDElZ5rbI3Lp1VRCQDrxgo6+mk//NX/xmc22xTNWXGq5/mXPljLIczxqFvdgZmkg1Bkvn
-	vBhXcFL3Ant5tzcAqtLCKD7Lb33T+1o=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MkbEaysQ;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771922079; a=rsa-sha256;
-	cv=pass;
-	b=pDYktKvztDToHKxz0DJyIIjJcl8E2TcRYY+fda7UjdYdLPma5yXb9yE7Lp8d8QS9SyM2TP
-	ztjjbCDMzDQudk190sg7QrvwH0RO6/p+zdVkfAsz+TNouw2ueP2vIi4+RuxyRX8dwmftwo
-	o0Y//4X98kmCROxNai4BvzV7dnH4M9A=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8860d6251bso697580066b.3
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:34:38 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771922077; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fMBSedHiSblluZAEDe3Iqmyei6JCNyWayeRtvkdb38h9d7i+V1GxQZ8cZySkElexIJ
-         9X14XV0JOEWO39JJrBfv3XZabUX5MnkrHMBxMtHdfWgWfG+x2t3p2LzFsFephPKw8JLL
-         4B1Qw7a+qVj4cZ3XH+VAq9fm4g6CS/Y0f11vtghzQGt2RQZIimvtQalPMUI1ZdOqRBvw
-         gzbPZtPcmj+IxMKcjPAE7PpzybZ6WtBabZHBMtYe0+qKho2LrOcEfsbKNbDJ8E7EaFep
-         +Lak0U78uZfzaCRBeIqgq6eudFUWiyWOxmPQF/eTYP1KUYQtWC0xMDASqZIuNXdG9Aav
-         omfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=znXHW9n/+MokWp37xWDCKYppH1hLZZhDTU4jhuelsIw=;
-        fh=1yXP9AGbIpWvpU+iCA5O+gTlqsQWrOM/8LFyy7EjhmQ=;
-        b=aqbgNFZlqbWZz6OpIFbnftwh4Q16a2dA6A/lunI3FeDJhlojdmOrsgCBSjVC2lHV1h
-         KcjJxq8wZ2DovVfc4EwSjnQ49EOJ8ntr0XWALUGui/hENnqNm5RgILRDlaA14b7MbGG1
-         uAAp0Xp10ET26S6nngwaYbcTse3XvUDNMKy8+RzAVteQ68bWo91oqPxDXNRhNYPCatwY
-         xIqWSGr5WscGi5CRjMgKR1AwyyxFrDLb86ugJLJtpk+frNh/sc2USpDfVaYi0q/TUWXD
-         HDxJ2cBpZoe9tTHdMQYcVTPAfZQEgAHp8U5UBB+jD3r1BCwh5vEfs2L5k/dwf+7aZOsS
-         4Glg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771922077; x=1772526877; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=znXHW9n/+MokWp37xWDCKYppH1hLZZhDTU4jhuelsIw=;
-        b=MkbEaysQu2cGJKRVRhFNPmg0NaEItWBwTMzSeJU84cHuG5vW+6JWwJ6bk+YCw3+Luz
-         GMRFv6yAWp8C8z+RlnQ+YH1aXe/B2UpFMbMiMu6lWjNf4hHwd33xMESmYs2G6p3N8ORf
-         CcAcqH7uJwcU+VKzOu3oigCwAn3BDzfZPiK1PIU2DjpSDsKwCdcAvBWLvkwMWqTp4lXt
-         wVR6ur9ArwDHP03jf3ubzhIXdKP3zkbHk/Gk5T2Ms0L4K7TgvXTvW9+BmwfOgMNFa+b6
-         5zZItYADpsfCRBcFnlveqLaXME0P8Oy0hRpYTGa2yJWi7BTY5/ZvG2fm5vAz15vVGoZP
-         3unw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771922077; x=1772526877;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=znXHW9n/+MokWp37xWDCKYppH1hLZZhDTU4jhuelsIw=;
-        b=XVKUYTTVllssTmrR4YyFkC5Dia3Jp21CeJLBZ7cyNc4BgIXE0jXXs4z56ewMQjudCR
-         4FShgUcUeJ55UKTd7Cjur8ODCeBIcEVsk6pHjJVok5SOl2IIx9tfjTai4tPI4IGRRvUq
-         rQdggHviRpu89vuDu/392PFexrv8bqoZxozF7cEwVb5elbTLszrYN28c+bE4WjZPiQma
-         EU9K1o3UZTnADuzX79x0KWmQl7VKcy++g702jGGYgUP3UPclAQIRwBGSaKS75JCTdEkZ
-         3Ed7fpUimcGE1YCB5Ys7Jen6ulu4EV5oCZZ9mz3bL01Pwbr0Zg7sn/4WKWPusNI/Sam+
-         TnhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0HNwAw8EyS3HkaZGE2M96iJCv+/5DV6e9cEMfVuacIb/RHEXczt+J7le5/CgMQNe+L4IK3np2eQ==@kvack.org
-X-Gm-Message-State: AOJu0YzF5Vdffg1iV8cWYzM8Bea5zJurvjUg4tQwgL7ROKmEJV1+tR0Z
-	x6ylTSQX1TKnirjdgXKZX8Z2PT//eNNdNcqLKAqXQu9dfxSnuwW3EMfgTziVqSPGYa+cmYGvGSH
-	qlnPMjeWCsPBrTFU84MHjCXY8ly6t3zc=
-X-Gm-Gg: AZuq6aLyWbF0kVy3vbc9ZQXm6HXIxoDvFLM/4KyiJUMy7SsLm0fwGAeK+A3Ihqy65cv
-	OE3B+xwtKIN544eMufsrb9tyuaR2jU02NPvxGd3LFDaWuOetWnatclJYsnr7n14pM3Co/TOhKfx
-	Ts0MOPBYk4aLUwhgjvQWmx4cHYbHoel/Tzo4t0miyCSce6R1ycKlMvq0HmAkwcwdAa+Dd03orYy
-	wJYkIX0Zw9sVs3USXvhdEip04E1QwC+ZgMVWhvkZU+skGOkAcx+Y0jYzNKL5edCZ7m4+eR3MJnB
-	P1NTItECzaKH58sXrlglIcewna4IkS0Cx+YFI/dpDkP8zD1vA24=
-X-Received: by 2002:a17:907:5cd:b0:b86:f999:15ba with SMTP id
- a640c23a62f3a-b90819bf271mr738575366b.18.1771922077181; Tue, 24 Feb 2026
- 00:34:37 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OQlmPat5vODZcMekhvrzC3F3DNNMoFwwYGwvlTT3A4k=;
+	b=dGu0U2gzIC0Dak2BtzIQiHVnIxH2w2IY2jV4cqb+q/pkHVL1VQSq5DW/AIa3AkTtr3yG5N
+	9BChqx9WgE934W9k636r3bfYrekhI0Fa5SSBeaRUFVYGuS9W56FzmOQiXvyAUKToOjjsur
+	OQMrfBx/Nc1hYXXuqoxE2gIRmQj2pB8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771922317; a=rsa-sha256;
+	cv=none;
+	b=xVyL+AQCghZ3Mz8ODd2iwVvJeV9rb51MVGtgYP5fzbAea9K2oJGB3MfgG8RDPXrdkyzMyU
+	LuNfMVuDBPD3d5m9If5xJ0I7P/2kB9A0lXUw/fGrgbW4TLx4RctiOET2IS7VW6z3hUNjkZ
+	cDmJmTLqxWXahR7X24fIeokJULzeu+A=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=w6rz.net header.s=default header.b=QyGDhfmd;
+	spf=pass (imf06.hostedemail.com: domain of re@w6rz.net designates 35.89.44.37 as permitted sender) smtp.mailfrom=re@w6rz.net;
+	dmarc=none
+Received: from eig-obgw-5001b.ext.cloudfilter.net ([10.0.29.181])
+	by cmsmtp with ESMTPS
+	id ud2GvBqIPipkCunujvWPSx; Tue, 24 Feb 2026 08:37:05 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id unuhvfAmUSqlVunuivmoW4; Tue, 24 Feb 2026 08:37:04 +0000
+X-Authority-Analysis: v=2.4 cv=I7FlRMgg c=1 sm=1 tr=0 ts=699d6331
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=fXqMav8GDGqUIRHTLxgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=OQlmPat5vODZcMekhvrzC3F3DNNMoFwwYGwvlTT3A4k=; b=QyGDhfmdE2Q/i5RuXLZlVfHoYi
+	YTFBup6shNXTkBdnz9zvECke+jX7tyxq0AeRqZA8NkpDrdodSUpq4RU6COiJAn83J3o744fECubo8
+	vg7JQcJ7kKFxq7T/NQH6E1lF06Weorv1emWwMKICJ/sROy2WU1DZXdeSFPqHTtM4UbtRYYxGeTY1i
+	hc9fg9oPXM+Ufavb9YvZR5ahnDClUvrQ9rV9cW/6JAPZKe2RDJQZJIBBt+Jm88+EV4KKHRECiZusu
+	x01HkfQ0vS3gFQWcFoqkIZV9YhLdXV2YmLUmeAFKGrvlbFOA2dhLBKuDOBIKk82rDpQ0mCsmLT1Ud
+	Uw+e3TWA==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:50818 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vunuh-000000048SZ-2Ff3;
+	Tue, 24 Feb 2026 01:37:03 -0700
+Message-ID: <1b17c38f-30d3-4bb4-a7e1-e74b19ada885@w6rz.net>
+Date: Tue, 24 Feb 2026 00:37:01 -0800
 MIME-Version: 1.0
-References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com>
- <20260220-swap-table-p4-v1-8-104795d19815@tencent.com> <aZyCJ6pH4hey-ZoU@cmpxchg.org>
-In-Reply-To: <aZyCJ6pH4hey-ZoU@cmpxchg.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 24 Feb 2026 16:34:00 +0800
-X-Gm-Features: AaiRm53rAvIIoLImS2kI3nJgno-CbLxDv74dTHqbZXtKN15KdUZ64c26Zb5nj1k
-Message-ID: <CAMgjq7Aq5ckraKtNtet8+1ANuqnitFsXxefbDJQZpBxNmaW7Cg@mail.gmail.com>
-Subject: Re: [PATCH RFC 08/15] mm, swap: store and check memcg info in the
- swap table
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8bb4fmromt1gkmzwq7pfpamiyc67dki4
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+Subject: mm: Regression with v7.0-rc1 on RISC-V
+To: wangkefeng.wang@huawei.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Cc: ziy@nvidia.com, jackmanb@google.com, david@redhat.com,
+ jane.chu@oracle.com, hannes@cmpxchg.org, willy@infradead.org,
+ muchun.song@linux.dev, osalvador@suse.de, sidhartha.kumar@oracle.com,
+ vbabka@suse.cz, claudiu.beznea.uj@bp.renesas.com,
+ Mark Brown <broonie@kernel.org>, akpm@linux-foundation.org, pjw@kernel.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - kvack.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vunuh-000000048SZ-2Ff3
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:50818
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 17
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDkWfd/gD4JvflUMqeFYQw6Jbkx7EQh4KazWnfLP3OF7QF2arlZOJa9IJqEt6i+0Zct/7EEgYu1hDGfDpXryjD9S0YyIMWo3e35NF8CUb3RilN0O5y2R
+ VjYLDpVPYqJMdET70AU1hzihTasuZODPVBc8EJNmQl70FhVRPZtdxA437XqNgagxXnkwx8T7mbSQow==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3huk4tm43fuywjqizqccfpru46acuzho
+X-Rspamd-Queue-Id: CD114180002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1421940003
-X-HE-Tag: 1771922078-92138
-X-HE-Meta: U2FsdGVkX19LKP47wbl3JmQdQKDuSXgYT+BChI4dC3dLiaXtbDO5jo/O3IezOF4OvtuBJol07110aRLSFj/9BqAck3oZjAHX54dWJ7xtWlWCVf3O6CN5zC+hokfx4CvZwJYZ/PvPDfJMPSvUZLaD9MJDr4NHzV+f0WTgQNMOTTK8SX45ELN79ByvVvXev3GG1E8m2V2WDMLju7LdV6KZ62/5QBTGHuoP6blEqJSKr4PO7i5cy2l/ONnOHBpq+k0RElY+lNSwJarqmCEKSa+t/ylrbR1Gkt6rJ9/ZnEtsZrM8Zu/1eShFB1Rb4WyTUSYskHcccuhV+sTeCpQWGLbQDoaobZ46s5t42kPgm99U3Ubs9MqsZZ4E3jRko3gV1sS8YA4IuIj6a4dI6mq5txhkZyIOFwKnnKy2oUQUhy47soD7C5FKlcZDKx3PKgcvHD1LjliWD3T1jKIRlaIqXMYM8kIHmFqwIqQwy80gIU1IdWkuzKDVa3vtplmSNUU/bvoHQcqYGWe8/9Ui0C3foY2g6Jx/ngYDuwCoccBzltFQdEzcHO5uL/sbw/E2y1oBiHc/CvD6FGdB+c6wQXEyRszrOgQgBxojpqElqzu6WcAf2/+e9CNExcS/sRXbD02zsLnQbW3csNtOyJqmQ44DvseuCuu/hpsTOBet8UehBb8GBhxNY4GxexGqXkMFbO9RGN1i4AVTCgCmYHxwVnm9mS3XF64x9RtPkZhq3TTzqA6gTlwIk6RYE3EkmkzUkmaFYnYbCX/rvB13+yNX56zxDo2ExQzk6/E4OWIgxNNhx3/JO5KGEhxXaNCOFFp6giRm3r90pHsgN+i7DgXqQ81Bv/Pji6klQkBF0OBEpuD1+/fFsmNR5WPExvskHZgk3E8gpziwULNh4hkJP3rCpUBTBPRs6kgkyHqaH1gcY7a8FNjizOjCge15v73258yyKj0XPagY10IIcVIkFTqGSnwQeTv
- q/uNeNrU
- rSrDpPi2Qc51eEqsYUS0BWIiJ9yKratoOT2+S5cmP3OR6HBnITG8d0++SUYfmyFupbbKDfOW/DjpzY02876wXwyS4n3YQUmvLiDOHIsMSnU0eBnaMov0y/CEum1c8xbcuHuSBEk3tP93uI3UM5G8tRVb2ow==
+X-HE-Tag: 1771922316-521478
+X-HE-Meta: U2FsdGVkX1/Qudfm+BHTL+HxbEAnt66SCWdTqceVxEmM8eyxp/bi9mJBJ2m2UnAX8+8ACKkJrE5MGCJWEPmdoiPP9mZ56XUHaTryeBtJXB1YqfYM7AWuWJIwcFHCuXvaYc/pikrgMQmnrV7poLfUm6oAJ0za6Ez3aywlxaFVY5QYjgPlecuVVIROg/y3xuJe16xznd+8SNI9VjRhrcrg0ypejyQB6KAe531xJZqYpXPL5PcrUSVk9Qnknu1wbYuPOWgJWKHS5RmxDC8wPrsBG6htpw832HWlnqWE7JVbksxlNNxkpa4trQGV14tzoQG2QI2LFWqu5m5+AIt7YyMw62nFnoHjDfQjPcye36wtzBzHB/NjmozsnwnTOoY2DrHVA1J8x7u0sJ8c9AZ1ePPkwyO9itthY/GrQ/nehrKxWV+D4i1IUX578Q6a/SQioSWqjHTotY+PKOCmWt2ukgVxndh/Xnq5StizamfPDZuz8akz3Ah3PhSx2BPQdkMSsNUmEPblk7nrRJbhW9I46HwxGqS1eRAbdpgmZBblxfltwUi35/7WEpSTBLE+2haEqxJI3wAkLgzrUd1kzCZj3MjF/9Ev/y9du9zN1dAp+MBiK9wVTTCbupqjpMGGbCmo8d115EYD4zE+OZ1t9XpCzs7WIwKNNZkXsExu+lYwt0Im8uEuVUkxnehbMgTV0cO58fZ1Dah91qBsl0JWSPrerHoabHWQ+F2fJl7ghf3m7VRvB61ywKby1Rt/Ip57tM6LPYXl71jj/mbc01R8469kvKq70Ot8Uw5soYJHHsr/k+lQSAbNyNsY1syb4wJnJkvFJKCMFDE1osMP917qllDjf/3ac56eRqpzSMDHKqCBOtNOjXC0gZjBBBqxllXa5toZVxoLPA6+M1dNbQkUNZqT+AVEVwAofMLe7q+XTsoXwm+mIcsxx4GZTgy7lMX+2Frvvh/I1RfrmpOrosI4VevW80j
+ vYxeBVFA
+ oygwPpgH7YU3jokhqZdksr41R11szNa5Ow5EL6IGN+erBk3yBaf1YZ6nxgboa5b1dX50bwpxKLShWZj7w1mgTqRGxHlAhb2XyHhA4qQB92vLsvmrBig119u82yXy/uUOBp5AF3wj7krNiPH3oTLD266ATadz7OGTi6x4uEy/jG2jJN/omzh47B/+5ygYHhF4ZsbJqEDp4HkSHj2+vgGYi3Dq9LhjWNglXrgV1VGmHehdY7QhCKnYqx5whKfDpJTRNolRmTJ04n2RK9q5wtvHlEtmufjQahFviBk6nD6Qo92eqyYK36ti7aH3VXuG+a71sXOHojzjNTYMkC7cNK/XX8/HPNijBHGzCUjxfBLpKZ7aQiTOZmgWgb7Yrzf8cb3Lfp4174l4IxHOC3enstprQUH++kXYJwnFoYGEljCmfv9whwjXaFZWK/55uL43jl6BPbMOIjPUshBLMDUrL1eABmHZmwg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,67 +129,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 12:46=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.or=
-g> wrote:
->
-> On Fri, Feb 20, 2026 at 07:42:09AM +0800, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > To prepare for merging the swap_cgroup_ctrl into the swap table, store
-> > the memcg info in the swap table on swapout.
-> >
-> > This is done by using the existing shadow format.
-> >
-> > Note this also changes the refault counting at the nearest online memcg
-> > level:
-> >
-> > Unlike file folios, anon folios are mostly exclusive to one mem cgroup,
-> > and each cgroup is likely to have different characteristics.
->
-> This is not correct.
->
-> As much as I like the idea of storing the swap_cgroup association
-> inside the shadow entry, the refault evaluation needs to happen at the
-> level that drove eviction.
->
-> Consider a workload that is split into cgroups purely for accounting,
-> not for setting different limits:
->
-> workload (limit domain)
-> `- component A
-> `- component B
->
-> This means the two components must compete freely, and it must behave
-> as if there is only one LRU. When pages get reclaimed in a round-robin
-> fashion, both A and B get aged at the same pace. Likewise, when pages
-> in A refault, they must challenge the *combined* workingset of both A
-> and B, not just the local pages.
->
-> Otherwise, you risk retaining stale workingset in one subgroup while
-> the other one is thrashing. This breaks userspace expectations.
->
+I'm getting a BUG dump during shutdown with Linux v7.0-rc1 on RISC-V.
 
-Hi Johannes, thanks for pointing this out.
+[  OK  ] Reached target shutdown.target - System Shutdown.
+[  OK  ] Reached target final.target - Late Shutdown Services.
+[  OK  ] Finished systemd-reboot.service - System Reboot.
+[  OK  ] Reached target reboot.target - System Reboot.
+[  173.985249] BUG: Bad page state in process shutdown  pfn:f8850
+[  173.985311] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xf8850
+[  173.985336] flags: 0xffff80000000000(node=0|zone=0|lastcpupid=0x1ffff) CMA
+[  173.985365] raw: 0ffff80000000000 ffffffc501e21448 ffffffc600f2ae88 0000000000000000
+[  173.985386] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+[  173.985403] page dumped because: nonzero _refcount
+[  173.985418] Modules linked in: qrtr cfg80211 da9063_onkey binfmt_misc at24 lm90 nls_iso8859_1 pwm_fan sch_fq_codel dm_multipath 
+nvme_fabrics efi_pstore nfsd auth_rpcgss nfs_acl lockd grace sunrpc nfnetlink autofs4 btrfs libblake2b raid10 raid456 
+async_raid6_recov async_memcpy async_pq async_xor async_tx xor raid6_pq raid1 raid0 linear mmc_spi crc7 of_mmc_spi rtc_da9063 
+crc_itu_t da9063_regulator mscc nvme macsec phy_package nvme_core nvme_keyring nvme_auth hkdf macb phylink spi_sifive i2c_ocores
+[  173.985802] CPU: 3 UID: 0 PID: 1 Comm: shutdown Not tainted 7.0.0-rc1 #2 PREEMPT(full)
+[  173.985814] Hardware name: SiFive HiFive Unmatched A00 (DT)
+[  173.985820] Call Trace:
+[  173.985827] [<ffffffff8001bfd4>] dump_backtrace+0x1c/0x30
+[  173.985850] [<ffffffff80002522>] show_stack+0x2a/0x3c
+[  173.985861] [<ffffffff8001395e>] dump_stack_lvl+0x46/0x6c
+[  173.985877] [<ffffffff80013998>] dump_stack+0x14/0x1e
+[  173.985886] [<ffffffff80317fe4>] bad_page+0x12c/0x170
+[  173.985905] [<ffffffff8031bb14>] __free_frozen_pages+0x634/0x830
+[  173.985919] [<ffffffff8031bd88>] __free_contig_frozen_range+0x78/0xe8
+[  173.985929] [<ffffffff8031bec0>] free_contig_frozen_range+0xc8/0x1e8
+[  173.985940] [<ffffffff803a15a0>] __cma_release_frozen+0x60/0x1c8
+[  173.985959] [<ffffffff803a27c6>] cma_release+0x26/0x40
+[  173.985969] [<ffffffff800fcf96>] dma_free_contiguous+0xde/0x178
+[  173.985981] [<ffffffff800fbba4>] dma_direct_free+0x104/0x198
+[  173.985990] [<ffffffff800fa19e>] dma_free_attrs+0x66/0x1e8
+[  173.986002] [<ffffffff028780ec>] macb_free_consistent+0xbc/0x160 [macb]
+[  173.986132] [<ffffffff02878274>] macb_close+0xe4/0x120 [macb]
+[  173.986169] [<ffffffff80cae9fe>] __dev_close_many+0xa6/0x1d0
+[  173.986184] [<ffffffff80caeb94>] netif_close_many+0x6c/0x118
+[  173.986193] [<ffffffff80caec98>] netif_close+0x58/0x70
+[  173.986201] [<ffffffff80cbab84>] dev_close+0x6c/0x98
+[  173.986216] [<ffffffff02874518>] macb_shutdown+0x48/0x68 [macb]
+[  173.986254] [<ffffffff809bc9c6>] platform_shutdown+0x16/0x30
+[  173.986277] [<ffffffff809b7126>] device_shutdown+0x11e/0x208
+[  173.986287] [<ffffffff80070f26>] kernel_restart+0x36/0x98
+[  173.986304] [<ffffffff80071276>] __do_sys_reboot+0x14e/0x230
+[  173.986314] [<ffffffff8007136e>] __riscv_sys_reboot+0x16/0x28
+[  173.986324] [<ffffffff80f26d6a>] do_trap_ecall_u+0x1aa/0x578
+[  173.986339] [<ffffffff80f37c58>] handle_exception+0x168/0x174
+[  173.986359] Disabling lock debugging due to kernel taint
 
-I'm just not sure how much of a real problem this is. The refault
-challenge change was made in commit b910718a948a which was before anon
-shadow was introduced. And shadows could get reclaimed, especially
-when under pressure (and we could be doing that again by reclaiming
-full_clusters with swap tables). And MGLRU simply ignores the
-target_memcg here yet it performs surprisingly well with multiple
-memcg setups. And I did find a comment in workingset.c saying the
-kernel used to activate all pages, which is also fine. And that commit
-also mentioned the active list shrinking, but anon active list gets
-shrinked just fine without refault feedback in shrink_lruvec under
-can_age_anon_pages.
+I've bisected it to commit "mm: cma: add cma_alloc_frozen{_compound}()" 9bda131c6093e9c4a8739e2eeb65ba4d5fbefc2f
 
-So in this RFC I just be a bit aggressive and changed it. I can do
-some tests with different memory size setup.
+Here's the bisect log.
 
-If we are not OK with it, then just use a ci->memcg_table then we are
-fine, everything is still dynamic but single slot usage could be a bit
-higher, 8 bytes to 10 bytes: and maybe find a way later to make
-ci->memcg_table NULL and shrink back to 8 bytes with, e.g. MGLRU and
-balance the memcg with things like aging feed back maybe (the later
-part is just idea but seems doable?).
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [cee73b1e840c154f64ace682cb477c1ae2e29cc4] Merge tag 'riscv-for-linus-7.0-mw1' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
+git bisect bad cee73b1e840c154f64ace682cb477c1ae2e29cc4
+# status: waiting for good commit(s), bad commit known
+# good: [8383522821c6fea6bbb4bc0317056c433a482a95] Merge branch 'net-mscc-ocelot-fix-missing-lock-in-ocelot_port_xmit'
+git bisect good 8383522821c6fea6bbb4bc0317056c433a482a95
+# good: [37a93dd5c49b5fda807fd204edf2547c3493319c] Merge tag 'net-next-7.0' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+git bisect good 37a93dd5c49b5fda807fd204edf2547c3493319c
+# bad: [4cff5c05e076d2ee4e34122aa956b84a2eaac587] Merge tag 'mm-stable-2026-02-11-19-22' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+git bisect bad 4cff5c05e076d2ee4e34122aa956b84a2eaac587
+# bad: [fde8353121aa304ee88542f011dd5dc83ced47e4] selftests/mm: report SKIP in pfnmap if a check fails
+git bisect bad fde8353121aa304ee88542f011dd5dc83ced47e4
+# good: [743758ccf8bede3e7c38f3f7d3f5131aa0a7b4a6] Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
+git bisect good 743758ccf8bede3e7c38f3f7d3f5131aa0a7b4a6
+# bad: [2f5e576598c915db18b7ccd0003be52458959ce7] powerpc/mm: implement *_user_accessible_page() for ptes
+git bisect bad 2f5e576598c915db18b7ccd0003be52458959ce7
+# good: [6c08cc64d194dc5cc3dfc785517098d3b161c05f] mm: cma: kill cma_pages_valid()
+git bisect good 6c08cc64d194dc5cc3dfc785517098d3b161c05f
+# bad: [4bdd692291275eaaabe993e1c4a7b5b01cd6dc37] mm/damon/lru_sort: add monitoring intervals auto-tuning parameter
+git bisect bad 4bdd692291275eaaabe993e1c4a7b5b01cd6dc37
+# bad: [fbec8a1e4fa4daf2611c9a3e3b29d03a73acbd0c] mm/damon/sysfs-schemes: support DAMOS_QUOTA_[IN]ACTIVE_MEM_BP
+git bisect bad fbec8a1e4fa4daf2611c9a3e3b29d03a73acbd0c
+# bad: [14f270761d3374db24c84630f2aa7a3c732fed4a] mm: hugetlb: allocate frozen pages for gigantic allocation
+git bisect bad 14f270761d3374db24c84630f2aa7a3c732fed4a
+# bad: [9bda131c6093e9c4a8739e2eeb65ba4d5fbefc2f] mm: cma: add cma_alloc_frozen{_compound}()
+git bisect bad 9bda131c6093e9c4a8739e2eeb65ba4d5fbefc2f
+# good: [e0c1326779cc1b8e3a9e30ae273b89202ed4c82c] mm: page_alloc: add alloc_contig_frozen_{range,pages}()
+git bisect good e0c1326779cc1b8e3a9e30ae273b89202ed4c82c
+# first bad commit: [9bda131c6093e9c4a8739e2eeb65ba4d5fbefc2f] mm: cma: add cma_alloc_frozen{_compound}()
+
+It doesn't revert cleanly, so I couldn't try that.
+
 
