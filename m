@@ -4,212 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CEA2E9B24D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4469FE9B250
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:38:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599096B0088; Tue, 24 Feb 2026 05:32:27 -0500 (EST)
+	id 7CE766B0088; Tue, 24 Feb 2026 05:38:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5465A6B0089; Tue, 24 Feb 2026 05:32:27 -0500 (EST)
+	id 77C326B0089; Tue, 24 Feb 2026 05:38:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F03E6B008A; Tue, 24 Feb 2026 05:32:27 -0500 (EST)
+	id 633E26B008A; Tue, 24 Feb 2026 05:38:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AB096B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:32:27 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD3D0C1E20
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:32:26 +0000 (UTC)
-X-FDA: 84478985892.22.FEC1BDD
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013070.outbound.protection.outlook.com [40.93.196.70])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0F928A000B
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:32:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=eOf1sCHu;
-	spf=pass (imf25.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.93.196.70 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 486FA6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:38:08 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ECE331604FE
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:38:07 +0000 (UTC)
+X-FDA: 84479000214.20.1446A25
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021134.outbound.protection.outlook.com [52.101.70.134])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8C998C000C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:38:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=Im+rD9dA;
+	spf=pass (imf10.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 52.101.70.134 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771929143;
+	s=arc-20220608; t=1771929485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=McHP4EbfknJIFR04iPYf1l9yNqjeo/ecvTpxqQk2St8=;
-	b=NrwFeyM/RUUoZsVhg6FOLKOKNbKL8jUo5SC2cJZTqsbSmQfR7v/kE3RUMTBRcF7go2xpAr
-	T6nHARGiupDnGnA5amqHJgQEh9bZ5wCkkoz7IOgOboLyMzWfEfN3POKjc9Xm4DyOrlwDZD
-	KqAXJGtPwVG2lG2HmH7GQAumX5OzXi4=
+	bh=43DjbiYj2NuaHikNngdHiT2Hgn4A/psYKLkYn5WUkT0=;
+	b=aTqk9sunM5bsQN7UWT9iCAADtk/A77tTbv0UCFK/ptB4y7b+Wgpb94V89YutQpHLkOwf2T
+	BSgWWcSml3I+3ntPmECzSb8thciewVEmU8dHnPakuMhxNWHbgFkTTcBm9URV76pFPecGLF
+	bcO/Zb6IruqqcS+DEzyLEZ3N0wTNwm4=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=eOf1sCHu;
-	spf=pass (imf25.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.93.196.70 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=Im+rD9dA;
+	spf=pass (imf10.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 52.101.70.134 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771929143; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771929485; a=rsa-sha256;
 	cv=pass;
-	b=GmmkUdjnTaiMiOjQ9yIdJm5neQD5jsAjcJ0dyQU/jd8vvYx1c8UzVwQyDmz+lfXHxSW0jC
-	NK8BDpl0b/85JToSS3QJU1cuWC0nbyaX/w+66fA+777fb2UZQPzojr6s2bh7KLzvyT4FHC
-	c1cX5sYlVxiAtbrACiEzYWBqyLSL93Q=
+	b=1YGO+5nBUbUADX4Lsva9t3Y/lASgqjGqPXQBqOKYsk/81PJMLTDrGN9zUyTgSNn0ve653h
+	g4BO7MNhSdNHUSwMg5Xjdn9pV2OQsbxFDHEj51V063+EQP5pRlkN53fmN8sQb8/jV7E5RU
+	9Rj/ep8ErjDSh8uJRuquf6yRaE/S4EM=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F9W3+2xvV9j8CankmCX0Rj3YWWv6UdJuRYETedVIGQXDURoL7azgmUf0vdX4a5xl4ymVL6KOgFyvjIGZorfXTdNqPykNZD21WyJ/F0KRD3wXpAHVjudMSXyvxCS2pnwY3Z914f7jDo7YVQGkxx++musJZM8XJBkgfI6/t9AqYnPZnqhUtB1G/S0a6CQOOA/gORUQWCoft2G7s/SEkgRZ6YZBh8RmU2FE07kEt0kq+Uj/hJA1ygOjVMH7oFJE16np8HPK7psYhdSmH6Ida+pLVJH+MZJ9MdB1b0EWsPzZYe7Qc5haHZ5nTnSsv8dGCUm8BQiICCivgmi+NniKrTF9ZQ==
+ b=bRYPPlSCoPLzZ55amJK8n7RECdpOkGL8WDta+hFLLbk363BH1cKzIdQ/pgl+2BQ+ejuF8glQ0/wkVZT+ndsxORx1xh76rgbptN22xTyoU0wetSzYJaeeL4PcEE8lyDq82wibvsu621VZykf4RVe8mOZtvPrtwjxozpgXoblXyiE+KM/4l/kfs7uLj7mNzB7lFXhFByuOw0nhC7PbiwPVs26YYxn7QBix+PNGO8ui34PZbtFtUb8tXQgA5U52ARIPuhQ/X8lO9vfpTln3HImtGKn9sayeDvwnJsNpfoavvHoh+SV3EhxsDahsBtvwzeCmLFv2+NhCvgtqm2Hu+MkNnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=McHP4EbfknJIFR04iPYf1l9yNqjeo/ecvTpxqQk2St8=;
- b=DYtCmgXvrdkhNhYKXX0B2j+hfYBT5A933T93YDBg69gYSCwX6B4asbMlYp7hJDT8D468ch2Y4vgjykj/tTgcyT1hkD0MxK1b8t+jRL6zfYP18Vi4HoucWy+SHzurCuThoJHiYKYJTnaFxHZHx0Za0Im6gaa/np1+WTWm1E+z2obZbfGZRIEWRgIMaH4ezN3A5SaVcNqFqXopftyy1qgGkItAZILI1Ure3QWweHrvTOxN4z4okBMF/usiEDfGjQqsS0WPUViJtkkw3NuVR+JEBQ36KJ7NZy3u1mEr8/njij5JK8jTyy45JHFsbCencJwt3uR/6f6h9Z2p2dumZP6QzA==
+ bh=43DjbiYj2NuaHikNngdHiT2Hgn4A/psYKLkYn5WUkT0=;
+ b=e7ZFKbQrCJ7Ey0+nXBoFq3MQermGZ8U84xrc+BrRU76CrbetUq8jv36k/HT6A1NJ8A5XHJQnCX1CgDxGrq0yNw5+dHcM2fWfpsB3cfFLK1Oy1/LZiiRmHb0AOj3jSwenAWeM+1nznI2buVJT2ZrXCEfocvfQN295LPHj7KGvNiQYrQ2Aov1lBCvwLwoRk8YO8QZ7+T9fmZyLV/HYxLXEu6wvV5RkV8vBpjAPuNS66eQfU+6dTL3hx0GNJS8tW/3e6CMFT5L71EiHZUI1Sd8IiOj3xnntrv7ycqriwzxyScc/1iDos02BkDpql8apLFVE9vJ8O8a1NndQWAexmiad+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=McHP4EbfknJIFR04iPYf1l9yNqjeo/ecvTpxqQk2St8=;
- b=eOf1sCHu9YnAy+dSP8OSKXCbbVxdk3nRKoEBwc2eVMO4JiNKEfcB1E3qbh4qN4zXq1YixsQvSfrs8NEeFkrkYKaWimwFdeOkyXaG6GszsQMtBkMTUL/WJ6QSQhuLXRtvu+ofubpvsrZyp50SkrMKopd3p1LnePGQGm0CkZoLOXQ=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by IA1PR12MB8517.namprd12.prod.outlook.com (2603:10b6:208:449::8) with
+ bh=43DjbiYj2NuaHikNngdHiT2Hgn4A/psYKLkYn5WUkT0=;
+ b=Im+rD9dAfkYxxYP8a/gCJ6IZerhwA6IzUiASOBA0E0Bj15I7P/Xz7MQ9ur6FFK6i7Wqw6PonzDLsBfNrxu/FjelEvj7/jI0f7EFtUmJDACr65EcVWl8Lgp7VKdUh6+RWddK5R/vFG2quANiD2JCozJ/aC9G83jysA2rpiw1nAATcrz7RapGJxWBxfWAci8YkIf7WfwpArPiOPlfc/bkmoWxRktpxsQzW4tpPA0eb0FfZ3fXGQXbZmrwBUQyWLVSJApXMptqGx5/rQFOy5ud+22XBfMo4hskKpTWC5MNYfLe7O5wjoKDX55wH9dYSIC7Ggl6ROgpwYLC/LI0CfrzP4w==
+Received: from DU0PR08MB9003.eurprd08.prod.outlook.com (2603:10a6:10:471::13)
+ by VI1PR08MB10007.eurprd08.prod.outlook.com (2603:10a6:800:1cc::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
- 2026 10:32:19 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 10:32:19 +0000
-Message-ID: <56400505-8a13-4cb2-864c-cb785e4b38d4@amd.com>
-Date: Tue, 24 Feb 2026 11:32:03 +0100
+ 2026 10:37:55 +0000
+Received: from DU0PR08MB9003.eurprd08.prod.outlook.com
+ ([fe80::3470:51d7:36e4:36d2]) by DU0PR08MB9003.eurprd08.prod.outlook.com
+ ([fe80::3470:51d7:36e4:36d2%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 10:37:55 +0000
+Message-ID: <4de06792-d8ea-4f2e-848d-0dfccdb64253@virtuozzo.com>
+Date: Tue, 24 Feb 2026 11:37:30 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] dma-buf: heaps: cma: enable dmem cgroup accounting
-To: Maxime Ripard <mripard@redhat.com>
-Cc: "T.J. Mercier" <tjmercier@google.com>, Eric Chanudet
- <echanude@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
- Albert Esteve <aesteve@redhat.com>, linux-mm@kvack.org,
- Yosry Ahmed <yosryahmed@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- David Airlie <airlied@gmail.com>
-References: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
- <CABdmKX0LpKJ9tw48oQh7=3CF0UR5uFtgo0OMwQhHBB40LnijyQ@mail.gmail.com>
- <a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.com>
- <20260224-solemn-spider-of-serendipity-0d8b94@houat>
+Subject: Re: [PATCH v2 1/2] pid_namespace: allow opening pid_for_children
+ before init was created
+To: Andrei Vagin <avagin@google.com>
+Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Jan Kara <jack@suse.cz>,
+ Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
+ Kirill Tkhai <tkhai@ya.ru>, Alexander Mikhalitsyn <alexander@mihalicyn.com>,
+ Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260223200254.4104651-1-ptikhomirov@virtuozzo.com>
+ <20260223200254.4104651-2-ptikhomirov@virtuozzo.com>
+ <CAEWA0a63QxMRqCwpCUqb5iKih31LY-2zX+--SkMGcP-Y19PqpQ@mail.gmail.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260224-solemn-spider-of-serendipity-0d8b94@houat>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+In-Reply-To: <CAEWA0a63QxMRqCwpCUqb5iKih31LY-2zX+--SkMGcP-Y19PqpQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0151.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ba::17) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+X-ClientProxiedBy: BE1P281CA0486.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:7e::29) To DU0PR08MB9003.eurprd08.prod.outlook.com
+ (2603:10a6:10:471::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA1PR12MB8517:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec36f7f1-21ea-4d0a-875a-08de738ffca0
+X-MS-TrafficTypeDiagnostic: DU0PR08MB9003:EE_|VI1PR08MB10007:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca31c4a4-22cc-47ab-3894-08de7390c538
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NHVvQmtFcmhJM1plZGRtUTdzOFYvUmNpT05GZnNDTkVQYUxsOHdNRUFsbU8x?=
- =?utf-8?B?bXhpckpMZGlDZms1NUdIODdQWm5NYjQ3Ui9iblpuKzF3Y1l2K2k4dDNKelA3?=
- =?utf-8?B?cEE0b0FBVFQwR3lQOUpoV2pqS2lqaldSeUZvSGJLS1RmUTg5NndaMTV5L21W?=
- =?utf-8?B?aWpuNE9wMllDcUJvaEJ6WHM3aFF5bklCTGNiV2hjdVZKNmFUM2NHNUh2Y3Uz?=
- =?utf-8?B?YVZzdTY1b1piU1A4TE8vSkU4dDdSd3dNQ2dnWHFHVzEvT0pqUkt1STBGeVhW?=
- =?utf-8?B?ZnpHbk1DN2kvYjAyMnBjVGoyOWhoWUZFbFNTT3VtOHhITW5rNjk2OFBHL0Mw?=
- =?utf-8?B?d1Z5SzRxb2djSklMaXFtNEtJK3Q1YkJ6K2dmS2VQSWtTQ1QxWXU3K3luVjc0?=
- =?utf-8?B?WVp6bG1OSWNzd25JaCtiTUtqNFBzcmtnTjQ1N1FUdDB2TnE2S3krQkVIenVQ?=
- =?utf-8?B?d1lsbXNLSFRWOW01MHJXYzhrVlB4ODZEcHEzNXFiM0RObjZVd0pqa3ZHdFpV?=
- =?utf-8?B?ZHNDcFRSK2l0UDBxdllTNWJCTmhaWitERUJlb2VyS0FTeVY1MVZtdDdJMis1?=
- =?utf-8?B?VW13MGtvVk9kZ01NS1BRcHJkamdZTUtLU2JyanB1Y1NhNVA1TXdEYTcwWmRp?=
- =?utf-8?B?TVh0Z3IvZExZSE1XKzd6bFJub1Z2YXZOcGhxY0dta1FDNWJlc0JXVkJVMEw2?=
- =?utf-8?B?cnV0WVE2VmFTUmc3S01QQW16eGdzb1pHRG0xcHlBSkZXVUdWMWhERlhlUlBn?=
- =?utf-8?B?TUpNaEhiN1Z2aWZ5Szhoc3FDalJyTHh6ZnBIZmRMWUtCdXhSSTN4NW03QzZF?=
- =?utf-8?B?eGpVdkZ2dkhkRkQ2M3FnTHl4QXJMUjFRUHZUT2NXeVVseXJKWHVTUFlGdHA5?=
- =?utf-8?B?S1RLTEwxZGVreHVxNXdDSEd3WkJubGovcGY1cVpIbnpSSzlwWDcyR05XTVpv?=
- =?utf-8?B?bUt6YS82cm1Udi8vYWpQSzM3eWRZSEtqUHdtWXhVVVdwNU1wVFp3TGRFSjJK?=
- =?utf-8?B?UWNzUThRbnlFOFdZeExGcHo5WGxzTmVpOGxLRElqOWlWZGRJUVNrbFV5SW9m?=
- =?utf-8?B?SWJaZ2NtWldyWDRSbUc0Wm53MWpVU2FiMnpjWmJIUldlZzZRdTlibDVLdjdL?=
- =?utf-8?B?Tnc2OGpBR3VLV3Zaek56Q25sRUR2Q0FvS2h3YlNmdGIxRjlYUEExcDUvWlph?=
- =?utf-8?B?UVlrWWVwVkNVU1QrdnExQ2ErdTJCQ1ZEYmZyblJBOHRPbkNqRDhNMEg0OWp1?=
- =?utf-8?B?ejJ4cHBBeXRma3F0WjJka0MvSmI0UU01N1ljTWxkTFQ3UTh2WTdpMkErdUJB?=
- =?utf-8?B?eVI5aVkzYVR0alNtVU4zUGx1SDhuL3UwSVVpdDVkVC9VdjNnZ255YnZSSFpx?=
- =?utf-8?B?NVJnNVMxd1VtS095WENNSHc2SUxPWWJoRktCWTY4ME9vLzdlUzhIM3E1U0RT?=
- =?utf-8?B?LzJYRkxpalpjUFZHbFlJdVdIZTVuY3F2cWE5cVNJUXJLVndtVEhibG1IZUt4?=
- =?utf-8?B?N3FobExMNTMrZ3FQSFpLbzFlVlF0Sk14UEpYMGJyM3ZzZVNSeDZHMmx2NmhZ?=
- =?utf-8?B?bW83ZCtQWkpzMzJya0lnck4rRGk3YVVrbGFTWlFiL24va2dzTzJjUEhhaXhB?=
- =?utf-8?B?UTZ1Qm9scDh4SWMwZ3lBS2pBeDdrOTc4NHFpRHd2TnJpS3JNcjcxaHU1SjAz?=
- =?utf-8?B?UHVkRVljWGtXRlVHS0RCdDJHdElIN2RWSlMxNENhWnd5MFIrQkJYVjZPTjhR?=
- =?utf-8?B?VTFTVGJpK3AzRGttd25pYlZBSkhTeUwwVnpkRVI5MENjYnFVOU02U1lmSFk3?=
- =?utf-8?B?dVgrU21rdXExTnU5SzdPUkMxYms2cXZ4QzB0ZitqT00vWVlDS09RajVTemd5?=
- =?utf-8?B?bno0K1Y5dndRWmRkZTBjM1pjYnFZODZnSlVnS2VmWnVaMWUzaUVvMnlibzJo?=
- =?utf-8?B?bVhGdXlNL3ZIWnN5R0ErbzRaSVQ4SThFWWtzbDNud0RETmJNV0hUVk12SFJh?=
- =?utf-8?B?QkVvTGl4K2pRYWI0RTNiZWd5WEQwTytQZmhITStQaW84d3h5dFB6Z08zRm0w?=
- =?utf-8?B?SlhUNzJMcHpXQjJyemZlRk91YXhha1QvWFhpbUNOUnhXVG1YMzRjamV5b1F4?=
- =?utf-8?Q?XUQc=3D?=
+	=?utf-8?B?cG9KR2UrL2xEMjIvZWJ3UEdWUDNzSUt0RERMWEVPNW5ncWYvNmoxRHR0RDhu?=
+ =?utf-8?B?eENTbS8xd214MDlCRzB1dzRrZUZCamVSTkEvWE1uTVNjQm43anZ3R0lqaVRn?=
+ =?utf-8?B?NVRmTnQ3M3VVVHcvNTQzWGhvY2pRTWZtQ1lHeTF6WFhIS0k4RTRHZlJ6QTZT?=
+ =?utf-8?B?MXkycUQrem1YZzk4YnUwNTZCZnZVZlpaWjBaWjMrc2dXNCtPbHFaK01BOTFM?=
+ =?utf-8?B?TmlTTXlzWnJhMzdBTVJKR2NUQ1lFQWZ0cER5QkJ3eGpGdHBTbkZubjQ2ZHRu?=
+ =?utf-8?B?Q01CQnNuc2pSWDloYTVvNFdWK1dDbk93a2lDMU5Kd1RYQ295Z3Y4UUhTTGxE?=
+ =?utf-8?B?TWM1YkNTM3psbXFrOXVvSGVoZlJjWW5tZzRBVzFrakUrVjRFd1J1MEhZWk8x?=
+ =?utf-8?B?ZUxGZTdZaVpBQTN4aXB3OGNQNHZJVWw5WUF6Zy82S21sN3hUaGVyQzVJY3Ay?=
+ =?utf-8?B?U09DUGtabVRNZ0ZJMUlKRWhMMU1ORzN2d2pNQ0VoMmtqdFVEV01xM3ZTQ1Ro?=
+ =?utf-8?B?S3g4cHRYaHkwaVNzRTNFbnFIOWd2c1FKWkt5VWhNdElmVW94WUVLQUZWU2dE?=
+ =?utf-8?B?UXNkK0ZxWHdWdzFDS2tFVW1GSEhBbnZLY2NoNzJsVEZvMk5YN0NVVXNTei9r?=
+ =?utf-8?B?OG5pQjZBVVExUXlCK1VNcTVtNXZialZzRjdlWEhVVjR3WDBKeGZYOEkzcVlW?=
+ =?utf-8?B?VVVyVjZFa2lSMkdWK3VQR1hCZEdsamROaEthZ1paazNQa0lIeEJ4L1RseGsx?=
+ =?utf-8?B?dXdXbnN5ZGN0K3BCNHZMRGZhL2dOeVg1bEttZ2QvS2Vic1NiWnduK1VQOTZ6?=
+ =?utf-8?B?SmV5MnpUaXVVYkRFbUUyK0V5akt4TG1TMDlqTFdmWnl4aUI2ZUJJdXMrai91?=
+ =?utf-8?B?OG9vQ1pzTnc5VVY5eTVyaDNDbHI3YWtSd040cGVOeXdMQm1nVWYya3ZnQUpC?=
+ =?utf-8?B?SWlKSlM4UDZhQjJ5Ymt2Wk4wMjVhaWIyZGJrWmRZclgyVitFYzNJOWpNc3R5?=
+ =?utf-8?B?YS81UXFtS2V1QVg4dTVIc21hK0Q3dG54WjF0RGxpS1ZqZVBHOXowZG50ZDkv?=
+ =?utf-8?B?ZTdaUW4rdXRYQ2IxcGNLc2VMRnhReW1YQVRKSHBjMExPVXV2UFdkcktmVDlW?=
+ =?utf-8?B?U0ExdEkyREFOS2xCOFRZV3FueVlpdjhQcklxTERkbEhxZkd0VmZCUFFyZHJw?=
+ =?utf-8?B?QWYrVGsveDdPNmUzVWlwVklpUTdFaXpLMlhDU1ZXK3Mzb2lQYytDQkRQL2M5?=
+ =?utf-8?B?cU9kR29tKzU5bHhCelc0WTZENFRtK1pudmRhMTdIREllekQvTmkwZExJc2x0?=
+ =?utf-8?B?d0p0ZHptcXptSFB5Y1A2aUQyN1ZmUVZZdnhzeU5wb1F0NDVVc25JZGxiUEYw?=
+ =?utf-8?B?R0dIeDlXNTdKQlpyVW1mNDI2TWttUjRHSFhhb09BL2h1NHo5K1pDS2Jtd1A1?=
+ =?utf-8?B?cUZEVW5xMG5HMnY3RW54WjNjYlhhbDFhOEg0RStIUzBVL0liSkF0OURua2JN?=
+ =?utf-8?B?WVhJSTJiMVlVYjJ5QjZZZHU2SGxVTlQ4QVdXcTEyWG1jSXdkcE1GU2piZW4y?=
+ =?utf-8?B?dlFMTVV2YTAyNHYxWGQ0MmFrN1Q5WnNpSXZ3d25uanRDdzBRSENqUFRyOTZU?=
+ =?utf-8?B?aTIyQVNXd1JhV2JFZFNrcDBBZjFzWU5UZkdkaVd3YU4rMWxTeGxNZ2ZobHM0?=
+ =?utf-8?B?Y0RyaU5PdUJ1Vk5YN3piWmF4Vm5EMUhZYnJXTHBqSGZIRzJjVVprOURMY0pF?=
+ =?utf-8?B?eGRiRXplY3ZmVWhuQ25aVTNpRUl3N2ZkVGYyZVhRR1dLSWtzTEVlNFFKd0tR?=
+ =?utf-8?B?M3BIdzRibERLSit2MFpNcXc3cm9NTmJjaStIYy9IeWhwNkR5QnN5b1IvQzVC?=
+ =?utf-8?B?TjI4MUFWc3pJQU5Vakp1UWVvMzFVb0VXVERaamQzWWI2K3JGMXBiU1hLL296?=
+ =?utf-8?B?NUNlWFhwbUJWWGhzWlFBdFB1NVFmRFFHVnM1UWV3VlV2UStUWG1QdlNxTjlG?=
+ =?utf-8?B?VFdpNDlrYk9nZ3JmR2RBOU5lU2R1bkNqV2tPenhwVHJZMnlQN053VmhUUTZG?=
+ =?utf-8?B?S1M3MThMVlM3bjhPazl0TUJaMXIxNVlhL01ua29reHpORkJNdXZ2MzVMbmwx?=
+ =?utf-8?Q?JNC4=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9003.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cEs3LytDK09nUTF3em01NHBESW9iOVVXZGI2RHdsb3ErNHpvbEtDT1FmYm1O?=
- =?utf-8?B?SENoNEsyUnBnKzJLcXN5VFpyd01GSmo3RHdRSHllSlZTNStxc051QWl3L1Jr?=
- =?utf-8?B?YmxadDkyN3NoekFLMzFJZWF0MjlCa05DbnJPMVhheWJVWEErNUMra2lnYnNm?=
- =?utf-8?B?SmpGZThURUlXamhydEhaODBWWFpRODlaV0FoSWJBdHpPMTFIWDhPMW1oYVVr?=
- =?utf-8?B?N2NJME5KRWVrV0RwazBweXdnemdmQjR4VWdqTzBIL2VoeDd3UUEwSjdYZTgx?=
- =?utf-8?B?Wjg1Qk8rWGhpSjFqWXNnUUdVVXdMcmd0aW5FU3JFNHVxWWRmTUVQSnhNMThL?=
- =?utf-8?B?Rm1PY1ZWbTdsREh1NFVhUlI4eWQ0UzhDNWdQaVVBa2JpRWREdzBwVWprdnht?=
- =?utf-8?B?WGhuUTNreHA1RTJqUHNvMGZvQmg0NFZjYXZBbStlWldzOHovT3p6Nmx4dkxo?=
- =?utf-8?B?VERyUFNTTDE4bEVDbmZjTnZnWm9rYjFWRFdpc05xSnhkYjZxYXhCNWRxZG9m?=
- =?utf-8?B?WmJmN1VaaWRNdWpBcmdtN1Qwb1VEVnorcWpKc29SVWVaeldOcXQrTEN5QWxx?=
- =?utf-8?B?QXowSTBIWWlHZUJJbTk5N1BqTWlCdHZuMDJ1ZGQ0eDVNcWg1VzY4T256MzR0?=
- =?utf-8?B?ZXU3d3JZY0FrWXFQTVZ6VHFleU16Y0tDdnNReVhGQWZJNGFybnJVNEFpODE1?=
- =?utf-8?B?RXBZc293bk1rZGpEdVV1WE1KWml3MW0zcmJSaWo5elY2YmVSNnZEQ0t1aDl3?=
- =?utf-8?B?b1VKd1ZncU8vckg3SjlGVGRKSFdSbXNGN0s1aVMxMFMvaW9RY280U3Zxbjg5?=
- =?utf-8?B?TlhzY2NIdUdLSjU5dXRKNVpuNmNXOHhsL0gzNis0SC9DYUR6RkZ0a2tCSFhY?=
- =?utf-8?B?QXVXUithd21WaVc4eW9jUm91cWlPZnBCREtCazJzay85aXl0eTdMczZPQitG?=
- =?utf-8?B?QnVhTTNIZ29ENnNzRHV2ZDVCYWoxMWFtZDFLVGp1SnF4MXBFUU02cC9mYTJj?=
- =?utf-8?B?eVQ2QkJrd2dsYVpsV2VjVWQ4dStrckZxUjRURlRYQjVtM2VhTGRVMTQ2UWww?=
- =?utf-8?B?d21jOWMyQTM3YmUveXk0NjlIM1M2dFhKUUF6ZnVKZjdTZGJld2lrUzZwMXVH?=
- =?utf-8?B?QXRQbjhKTm9COXpjK2wyMTRGR0FXRm4zUnpDMk43TkRuY2lJTnJFUEFnbXV3?=
- =?utf-8?B?VXpEVk1PTEdWNUxSUVd4ZlFoTk9aNnVvSE5RWFJ4SmF4bk5qMTdYUHlZK3lS?=
- =?utf-8?B?ejNIM0VQVG1iUmNkZFdRbG1PcUdMMjZVenhQSk1qVlpESEN4ZnRPbEk4MGZY?=
- =?utf-8?B?Zjl0cGkyQ0tYYW9PNDF4enRLcTJJalphN1RNclJXS0VCWjRiQ3MwaXQvUzh3?=
- =?utf-8?B?UXl6Z040Y2xpSlE0d2JFd0ZtS3NmR2VsVEZkcVBnUFdtVHJTUjlGbmlmTWVS?=
- =?utf-8?B?QmpKSDRkUC9IZWQrNitRSUhUckhhL0ZFTzRkTEJsS3hvSUFHbzJKSkErMnVk?=
- =?utf-8?B?REx5TXlYZm9VaG1wVXFjcGFpUDFvY2hLV2dlNHZzSVNFbXAyZWhMOS9MRzh5?=
- =?utf-8?B?ZnRlYXBOWkhuYmJlVEEyREZaekpZOG1HbUk2MjVtejgvOXNndlJnOGpiSDVy?=
- =?utf-8?B?c2s4U2s4TnZsQkFmTDBUVS9RVFZYVjlaQWxBa0swSTZkdWwvb1VBMlNsNEJh?=
- =?utf-8?B?OG5FSTdzQ09hMnNpVk83MTBTVkpUVXhQVi9seEtPQ0hQR3QrSXlIZ1BmMk5O?=
- =?utf-8?B?c3lacDdzVXVpSnZ5Z3h2SFFueHVRekJIaDR4N0l5bW5RNUtTRDJ5RHdaNHFE?=
- =?utf-8?B?V2p5Q1kxVFE0SURVNEpxSnpMclRnL0ZPNzhHay9pSmQ3VFNjWXV5TlFkd0lr?=
- =?utf-8?B?anNzUnEyRDVzWEdkQzI0bHp5N1lyK1RYNk44RGswN1JwbUdlcm5lREFHbEtU?=
- =?utf-8?B?OUlPSnFjNnRVTDRYNVFoK3VKWENZOEV6VFJJNCtya2JPZUpxSXFSMks5SFZ6?=
- =?utf-8?B?UjB6YjZQQ3E4cHZQWitncitpMVd3cVIwbldJRmdpMzluaHFjenpGa3RHUElO?=
- =?utf-8?B?NnNIVEliVzJHRERvMzVSakpPZHNNcTF4M1k3NXI5MVNWa0MyMjduR2M1MGQ0?=
- =?utf-8?B?Uk1EMmZWUzZSeElRS3FJYU93WE05czVnMmhUM1VJeDBQakx5ZTNwcTFjekZq?=
- =?utf-8?B?LzVDaDYzSjZzR2ZLbGdIRk9FWkcydlpMQUNDbjRGc0d3K1F1TG41WHY1K0Vk?=
- =?utf-8?B?L1p5cmhkVXM2NUFoVTM1eGQ1WjIvVEswVTVTN3Q4UWVpQlUrU056dGhIeW9z?=
- =?utf-8?Q?pzhqCfcqisxbajHhzm?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec36f7f1-21ea-4d0a-875a-08de738ffca0
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+	=?utf-8?B?Uk93a0VLTHB3VklBZWY0K3I2MXQwMVEwMW1Fd1NqRzVSNUsvSkVmYkFJNGhE?=
+ =?utf-8?B?OUp6eEF4TWQ0eElDRGZ1MFNvQTVlUFJSTTZmYjJEL3AwM1U5b2MrbU4yZ3pi?=
+ =?utf-8?B?cW1mamw2WWZ0ZTd6R0l5TEY1YThRWWRqOS9CQ0xkT2FrYXZtdmFaMFIzdldZ?=
+ =?utf-8?B?R1Z0N0FBZVhDMmtPRG9jelBKMFNENUozT2drb21GaGEveVVNeGs0ZTJ0amlr?=
+ =?utf-8?B?a3dWVWt5M1N4dTdFZXM5OU5FdTRNUEowK0tUZEJvbnBVaWJ1VmNZYVNMNDBH?=
+ =?utf-8?B?VFF1b0FzMk95N0cvTlBWQXRoV3VkVnBsN0dzYTAwbC9TWStSeVFxaWppTlFE?=
+ =?utf-8?B?aytlbVhLeVpjaGhWS1hkdjdveDZMV1A4eUQ2WEFIN3d5R2pJWXByVS83akJw?=
+ =?utf-8?B?ZXcxN2JlRC9tck15SytLbm1MditUTy9ZOUlCbjhZNlliOTdiMUFYTXNucjUz?=
+ =?utf-8?B?eGd3aGZPazR3cTdkajVTSXQzeHFacGJzTFlBWjhKcWlSSWlhdmhLWTdoN2Ev?=
+ =?utf-8?B?VGEySjhMdnVxaE9CeVhadlh1Tm4yYm1qQllINEIvNXZwZmRWNktUbS8rT2Nn?=
+ =?utf-8?B?M1NOTXdERTZoQy9WY2crZW9DUVQ1Y2M5ZUJkZTZEemZZdzkxYVQrK0hicmtH?=
+ =?utf-8?B?azZ3OG9MdGxrdVI4NEsvb05JZnFqZ2szcFNJL2x5clMrUElCYlF4MjFnRGQ4?=
+ =?utf-8?B?dmkwNDFVZmd1eHgxWHhMNy8yb0RQZEtNVDRWVWhzdUlmSm1EblJMNzRWOUM5?=
+ =?utf-8?B?K1pSNVN0QjZuTE5wV3FreGlWeVBEMlN0Q2RsNzZLbjRpV1VNMENzekIxUzlC?=
+ =?utf-8?B?OGpaR1U0RGlJb1BNU3pGb29sUXlVVnp3bk9WOXNyZHlUOG91VW5ZWWVuK3Ra?=
+ =?utf-8?B?QnJHcThVNndrdWlteTZkZ3VZNmZJWFp2VXBkd01IS2pQc0tGanpyczM0Zlp4?=
+ =?utf-8?B?K1JpT3dsMVUwSklDVGxwQnRXT2hZMzdodU9TK25iTTJrVXh3N0RaK3E5bDBa?=
+ =?utf-8?B?cDJVZGtMcldWS2g0Tmlia3R2dzFuSDd0YXpUQk9taExiZXhnT1BvejBXZzBy?=
+ =?utf-8?B?ZXEzanUydVlFaU12UklyRWFsWW5ySHRnM1dIZUJDaVd0aldmYitsNVNkQXBs?=
+ =?utf-8?B?aXEybEhMeTM3OGVvM0QvcjJCckVWWjljVkFDdGdiSFlpSk91bHBUYUVzdnhi?=
+ =?utf-8?B?L3owNWdmcDkxU1ZvNS9GL3FEMHJJMFVhSlVWc2hMRzZORkUvci9xS2d2enk0?=
+ =?utf-8?B?Nlp6clEwTWQxVk0ydUtVMThnY2xpb0sxZ0dCRXJnc2hNRTRtY3hhVzJ6cWxD?=
+ =?utf-8?B?V0Rzbjh3dW8yeUxqcjFMMUEwa3hGQzNMclhpbDZaWjdVNklZM3lMV0FVcHpq?=
+ =?utf-8?B?anVxcDgzTjhJM0hwSDRGVGVyR3lEQ1MrUS82TUZTTW1zTWVMZmFNcEdvamt4?=
+ =?utf-8?B?eFIzNzVYeDZMVzJSblQza0Q2RnNqMDFWN3pRM2hlckd3U2l4bjEwMzJ1Wkpv?=
+ =?utf-8?B?cUxWNkorUFVRMEZ2VWpjYjNKbGdjc1MvdVJnL1ppbS85NEFkNCthWnVTY21E?=
+ =?utf-8?B?Nk5jeG9nbkJrY2FDemxvWlRGa1NscnIvV2pza0Ztc2pGSGNRSDRNTE1FNldR?=
+ =?utf-8?B?Y1M3U0h1bHJRd1JZV1Z5NC9rNzZ0NkRJczFZS0FtNXlpaDNqaFpQQTB4QUNC?=
+ =?utf-8?B?YjFPY2I1L0hnYXdnZWNQMXlSWGt1Tk9uZ21zcmg2bXA3U0NWREpSZlI3M3gr?=
+ =?utf-8?B?K1lOdEo5RDJDOWltOXg4d2dtMTlORVA5bWZON1RJa2FPY1V3VVhMM0l5YTkr?=
+ =?utf-8?B?U2NsZXF3K3NFWUVuLy9PTFNDS3NxUUlOVS9HZC9QZU8wK1dUdkxsNVZES0hH?=
+ =?utf-8?B?L0sxVkV0Rm9mZ3lEc0JrMmU2QjUybUd2Y2pIQW9FeWNDOHpsSWphekN2TVlR?=
+ =?utf-8?B?UUZ0QmRpMERJaTBtcnEzc1lMSUJkRzhwSDB5RlM0cXkrMWFCbHljcXlrSXFi?=
+ =?utf-8?B?KzM0dGJhYW1JZHZVVTNsRzZwTU9FTllwM1pxK2x6MldXZ3RHOGg5Wm10TnJP?=
+ =?utf-8?B?eDNjaXRyVElIazVFUnF0amRNTmxkZ3VOSk5vTklraThFenIzc1JnSVcyemY0?=
+ =?utf-8?B?b2FJalZEQytmREhZZDVpazRzZFh5TU84MXRCdENPZW1VNEcvbUIrNndERTNz?=
+ =?utf-8?B?RGE2bkVXTkg5d0FoODJKbEs1VHpwS3ViMEZJR3c4akVESC9JajFuaDJFeUph?=
+ =?utf-8?B?cmp5SUVHclhjb1YveXF6OTBIVFl4WkMwc0doNk56QU5ScTc5aHc4alN1Sjd3?=
+ =?utf-8?B?QVpObXdYWXhOeG9TS1RLY0h1cURBcm5jOC93ZElrcHdOdWtxWVBvTDY3N1lB?=
+ =?utf-8?Q?8EwGlNQpPmvpAiaFLH+mbhqntjtQvV6u0A2G6b7u/Fl2W?=
+X-MS-Exchange-AntiSpam-MessageData-1: stBc9JqybZjJ9B87AG4/YPVQEa6o5YL9nYU=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca31c4a4-22cc-47ab-3894-08de7390c538
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9003.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 10:32:19.2701
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 10:37:55.6207
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B36yyBM7aw0tnVL7ehrP9A69zcryfct5MbEKM/8Bgbb4yDHsBzpe/tLqCIZNENGJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8517
+X-MS-Exchange-CrossTenant-UserPrincipalName: WPtCvISDmR/64NNfS327psDw3+TEo/Wa/NZpwZpRg1JGwsTObbM7+Ug112QeRmuDyr4kaghjTiUad+cH24nci/U0AZwTT7x6MoogsRUJvOo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB10007
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0F928A000B
-X-Stat-Signature: wp5kk9a13udt3xtchcyyuujohws9br58
-X-HE-Tag: 1771929142-658946
-X-HE-Meta: U2FsdGVkX19XCxLCYZlsvVx5QqZsayI1N2Mtueh4r29fV/nXtjmWGu+ydIJBZPuDBeZDvqLPlXOGvOZRon+G9B4PUs+edxlJZbebrnTRpu7B3tBNmDH3jYtjtx6FosKVpAHADIsYvvHSLVQTn/xCRwKCAx4dS2T8SqCX1mortn6PlElcJmvpTBAZjTP4+fh1psZBk6tdwqE3EfK8Orwr7iKx1qbr/eUeHBUVxN+duqJ3wzHePxB93blmOhs984nODa559vuLaz0c/BDnWkSTeszG/BaRsQR/mgcpJJwtC2/5Hv0VJ2IH44137xVGO4eDvdjnBTdqWXFAuMa7Pem7qiJF7+UhWlJrqCYg/SdZGaKwf2MXnqy9Xo3J3vUHbmmVNWRUNMQUuC4M3IxoQ1D1R8Tn3JAnZcJgjrpPalRWeZUmIJDtXKpeQ+cbIMSFsHk7StV+u/tYF18L2nmNIBGcyLykbLZLh3FTFJFtL6Mbxb7oi8rHfCLzMwilliYTXr80DVta0Py/h0Jix1ZSlNTPVRsn1DUpRT0vPVfdlfMFK3l7gW0C2D141vD06sR0ijKmqDq+yFZHUzJHYwppIlZ2A+CQSByDDoQspe8n40I5UkAsvRQ0U7KRgF3LWgdt2UL4aH3MTlQ5iJvRucsfEG20KBTlA5sCWiVtUrbX4T+78hLOilKgoZxrH0HeNNXkGMGNiIkyitCMDq6+4dm97LE0+pvGrexap8TRrqW5DeINHGFM8rhUXGWIuyYMJ6xuAlOU+hBEOHx1buiYXSBWIX9VZzrYTwvAS5L6vcTBGgjtbUBSVnm4QkRktf3pILYyLW8QcaWSgdvFywcws8eUalTF8CdxEjduVSOSI/DJbiqcJe9HMKAicmwukB7elZ5hcBEFO16WoR4NuFHtljOPUQ8hAPxtYgUmDVZ7YPwFYyh+tvD7r2WsUClhCg==
+X-Rspamd-Queue-Id: 8C998C000C
+X-Stat-Signature: bp8yg1q6jyzs1prhe1pnii1asrxnf34e
+X-HE-Tag: 1771929482-302993
+X-HE-Meta: U2FsdGVkX19B0QTO/Q0AdLRh44Cpt2AWeiocv32DJZyNAK/drf2sHPxJTJLCUSqn4QAm0mR6GhYb6cD5k3vrj7IXmBOWbEJLujBbFx5bdF1h6ELjBSRF+qYVuVnR+nCGt/uTW4V2L6OIoGc1NgydwoIbVG5MVjp6c+EoswTJrdxW1iQfaQuDnES03e04Kf1R12rvLE2Wv35wKOtrGUZHFIj4l4sYWOLVxHVGpo0nCDkn9EL1Wp+q847Q1lQhi4s8Z+TPZRgGf+ZJn5UX6mpQNqpfF/PjO2TdTqx+7/y3MiLRZJmmZRjM7va5SHFOm9O2cpXhoIJFuhoSpGPM1rFSKs3rf3ludg+7rb3WbvdRs7nb0l2s8BruDcDBL7+DRzZ+ELjfETb6iEoTDNKI4my39Lqn8uWZaBoSvadBrimMoSgdq3huu53F2QOR433TiHgXS06hP78sYhSg7m1AxdgNY16grr91ksTTaOCzM6+JFNVuUY2rR8z1VXDJFEA082s9FJdb+VbaeoEKs1j84QX9lGVnuNj41ssH6oMMuaKrYjNRBAevYBLFNgmHJ0zuLokKEQYAKveKzGI8XejBem9GbLYDUNzqoeqToJ2VuwlkQQ4Majz5gksw4o3S8SS5+xS59/s7/FjADwXOPOlwKSt5ac/cAZngkAb51wZEujE2KpXhol24gV05N5UZ9LLEn4kEaIeartYGfbZLB/LlekfizO5hOoaH+5atWnlxFRIxs7uZsEZZfzkwmsOPo+TCIw2xBFzhDGII3Q14IC6I/uLhD3YzzPzUj3GEcm7PUJNBUmwr+0bHoC4eHc188GLpM96KWbNCBMZUtcmCfTxKZSZNgTLbpf7Y+XvFLgwRMHnRfCD1U2AnvNbXRbYA8oANvTE9YgdCPaljNv9XnidxeatgIy+uhBpeZ0OWDQ71ocbO41WPE2Mq4kghAB7DLBtUDPT4jq2wqI2taMkvnLuOkF0
+ Tz0eZtSb
+ 1LTgQSkV3ojOK3MN0CgYilICAxlHr5Zf+jvRukPdu6R5rpSFwp1RPn3J/lcu6Nnb9lxbakcwUrkTWkmHejTqKeeSiupL0F8jttK+7XToR9uZZUwX2/VZ/nNsHg6N4mKGlqcG7CKOyYklTzhJPvUv13nWQ93adlV6UXPfvEtIyRDt64l3IyI3FPcTKJE0L/dWvhWaVcYr7viz+qeAX9KyomlEre29/G14ajaJ0SLoa2SWM2QBbp5WlsyhYaqYAL23tAiJ09VOXujiUUc5rsusT/ETlvuqLJL35bqjcdVE6bPr9ux1uv7Fd8uDYXOKa8FeulaofhPl09/OLBiIKaCtl44sLljJpmqhh3VVnfpSopdD/Qo6SfKcwk1pQZLzaVqntf4xcs3XyNoshyOqX0r4jAQh+Lge18aSWsYdgSybP2zUN5vAUmhjeahVRzobz5bIgHWTzTRTwF7IJU+2aHw8sobsDUQs8wzQ+7G1j/qLAnozvk7l8wwOdPJ/jPFXigqAyXGEOr7puXUoJx0CEfHFu6N+vw47tRymRLRQixgUwriycHzgpMpt9fNIyTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -218,66 +218,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 10:43, Maxime Ripard wrote:
-> Hi Christian,
+
+
+On 2/24/26 08:02, Andrei Vagin wrote:
+> On Mon, Feb 23, 2026 at 3:03 PM Pavel Tikhomirov
+> <ptikhomirov@virtuozzo.com> wrote:
+>>
+>> This effectively gives us an ability to create the pid namespace init as
+>> a child of the process (setns-ed to the pid namespace) different to the
+>> process which created the pid namespace itself.
+>>
+>> Original problem:
+>>
+>> There is a cool set_tid feature in clone3() syscall, it allows you to
+>> create process with desired pids on multiple pid namespace levels. Which
+>> is useful to restore processes in CRIU for nested pid namespace case.
+>>
+>> In nested container case we can potentially see this kind of pid/user
+>> namespace tree:
+>>
+>>                             Process
+>>                           ┌─────────┐
+>>     User NS0 ──▶ Pid NS0 ──▶ Pid p0 │
+>>         │           │     │         │
+>>         ▼           ▼     │         │
+>>     User NS1 ──▶ Pid NS1 ──▶ Pid p1 │
+>>         │           │     │         │
+>>        ...         ...    │   ...   │
+>>         │           │     │         │
+>>         ▼           ▼     │         │
+>>     User NSn ──▶ Pid NSn ──▶ Pid pn │
+>>                           └─────────┘
+>>
+>> So to create the "Process" and set pids {p0, p1, ... pn} for it on all
+>> pid namespace levels we can use clone3() syscall set_tid feature, BUT
+>> the syscall does not allow you to set pid on pid namespace levels you
+>> don't have permission to. So basically you have to be in "User NS0" when
+>> creating the "Process" to actually be able to set pids on all levels.
+>>
+>> It is ok for almost any process, but with pid namespace init this does
+>> not work, as currently we can only create pid namespace init and the pid
+>> namespace itself simultaneously, so to make "Pid NSn" owned by "User
+>> NSn" we have to be in the "User NSn".
+>>
+>> We can't possibly be in "User NS0" and "User NSn" at the same time,
+>> hence the problem.
+>>
+>> Alternative solution:
+>>
+>> Yes, for the case of pid namespace init we can use old and gold
+>> /proc/sys/kernel/ns_last_pid interface on the levels lower than n. But
+>> it is much more complicated and introduces tons of extra code to do. It
+>> would be nice to make clone3() set_tid interface also aplicable to this
+>> corner case.
+>>
+>> Implementation:
+>>
+>> Now when anyone can setns to the pid namespace before the creation of
+>> init, and thus multiple processes can fork children to the pid
+>> namespace, we enforce that the first process created is always the init,
+>> and only allow other processes after the init sets
+>> pid_namespace->child_reaper.
+>>
+>> To avoid possible problems related to cpu/compiler optimizations around
+>> ->child_reaper, let's use WRITE_ONCE (additional to task_list lock)
+>> everywhere we write it and use READ_ONCE everywhere we read it without
+>> explicit lock. Note: we already had READ_ONCE in nsfs_fh_to_dentry().
+>>
+>> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+>>
+>> --
+>> v2: Use *_ONCE for ->child_reaper accesses atomicity, and avoid taking
+>> task_list lock for reading it. Rebase to master, and thus remove
+>> now excess pidns_ready variable.
+>>
+>> Note: I didn't find anything in copy_process() around setting the
+>> ->child_reaper which can influence the pid namespace, so it looks like
+>> the pid namespace is fully setup at the point when init sets
+>> ->child_reaper to receive more processes. Thus tasklist lock looks
+>> excess in pidns_for_children_get()'s ->child_reaper check and it should
+>> be safe not to have it in the corresponding checks in alloc_pid().
+>> ---
+>>  kernel/exit.c          | 2 +-
+>>  kernel/fork.c          | 2 +-
+>>  kernel/pid.c           | 5 +++--
+>>  kernel/pid_namespace.c | 9 ---------
+>>  4 files changed, 5 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/kernel/exit.c b/kernel/exit.c
+>> index 8a87021211ae..567fc3b7b0f9 100644
+>> --- a/kernel/exit.c
+>> +++ b/kernel/exit.c
+>> @@ -608,7 +608,7 @@ static struct task_struct *find_child_reaper(struct task_struct *father,
+>>
+>>         reaper = find_alive_thread(father);
+>>         if (reaper) {
+>> -               pid_ns->child_reaper = reaper;
+>> +               WRITE_ONCE(pid_ns->child_reaper, reaper);
+>>                 return reaper;
+>>         }
+>>
+>> diff --git a/kernel/fork.c b/kernel/fork.c
+>> index e832da9d15a4..27d0cdbca67e 100644
+>> --- a/kernel/fork.c
+>> +++ b/kernel/fork.c
+>> @@ -2423,7 +2423,7 @@ __latent_entropy struct task_struct *copy_process(
+>>                         init_task_pid(p, PIDTYPE_SID, task_session(current));
+>>
+>>                         if (is_child_reaper(pid)) {
+>> -                               ns_of_pid(pid)->child_reaper = p;
+>> +                               WRITE_ONCE(ns_of_pid(pid)->child_reaper, p);
+>>                                 p->signal->flags |= SIGNAL_UNKILLABLE;
+>>                         }
+>>                         p->signal->shared_pending.signal = delayed.signal;
+>> diff --git a/kernel/pid.c b/kernel/pid.c
+>> index 3b96571d0fe6..e6116e131d8d 100644
+>> --- a/kernel/pid.c
+>> +++ b/kernel/pid.c
+>> @@ -219,7 +219,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+>>                          * Also fail if a PID != 1 is requested and
+>>                          * no PID 1 exists.
+>>                          */
+>> -                       if (tid != 1 && !tmp->child_reaper)
+>> +                       if (tid != 1 && !READ_ONCE(tmp->child_reaper))
+>>                                 goto out_abort;
+>>                         retval = -EPERM;
+>>                         if (!checkpoint_restore_ns_capable(tmp->user_ns))
+>> @@ -247,8 +247,9 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+>>                          * alreay in use. Return EEXIST in that case.
+>>                          */
+>>                         if (nr == -ENOSPC)
+>> -
+>>                                 nr = -EEXIST;
+>> +               } else if (!READ_ONCE(tmp->child_reaper) && idr_get_cursor(&tmp->idr) != 0) {
 > 
-> On Fri, Feb 20, 2026 at 10:45:08AM +0100, Christian König wrote:
->> On 2/20/26 02:14, T.J. Mercier wrote:
->>> On Wed, Feb 18, 2026 at 9:15 AM Eric Chanudet <echanude@redhat.com> wrote:
->>>
->>> Hi Eric,
->>>
->>>> An earlier series[1] from Maxime introduced dmem to the cma allocator in
->>>> an attempt to use it generally for dma-buf. Restart from there and apply
->>>> the charge in the narrower context of the CMA dma-buf heap instead.
->>>>
->>>> In line with introducing cgroup to the system heap[2], this behavior is
->>>> enabled based on dma_heap.mem_accounting, disabled by default.
->>>>
->>>> dmem is chosen for CMA heaps as it allows limits to be set for each
->>>> region backing each heap. The charge is only put in the dma-buf heap for
->>>> now as it guaranties it can be accounted against a userspace process
->>>> that requested the allocation.
->>>
->>> But CMA memory is system memory, and regular (non-CMA) movable
->>> allocations can occur out of these CMA areas. So this splits system
->>> memory accounting between memcg (from [2]) and dmem. If I want to put
->>> a limit on system memory use I have to adjust multiple limits (memcg +
->>> dmems) and know how to divide the total between them all.
->>>
->>> How do you envision using this combination of different controllers?
->>
->> Yeah we have this problem pretty much everywhere.
->>
->> There are both use cases where you want to account device allocations
->> to memcg and when you don't want that.
->>
->> From what I know at the moment it would be best if the administrator
->> could say for each dmem if it should account additionally to memcg or
->> not.
->>
->> Using module parameters to enable/disable it globally is just a
->> workaround as far as I can see.
-> 
-> That's a pretty good idea! It would indeed be a solution that could
-> satisfy everyone (I assume?).
+> I think it is better to update pid_ns_ctl_handler to prevent setting
+> ns_last_pid in a pidns
+> without init. Otherwise, figuring out why fork returns EINVAL can be tricky.
 
-I think so yeah.
+Hm, I think pid_ns_ctl_handler(), as it uses current active pid namespace can 
+only work if current is already fully (ns/pid) in the pid namespace, and thus
+the init is also already there. So it's implicitly protected from change
+before init creation.
 
-From what I have seen we have three different use cases:
+This check here is more for the concurrent alloc_pid() case. When one process 
+in alloc_pid() successfully allocated the pid and than, for instance, hit the
+pidfs_add_pid() error and is going to free_pid(), but the pid 1 is remains yet
+allocated from idr and the cursor is on 2 at the moment. At the same time the
+concurrent process may get to alloc_pid(), and will see cursor on 2, it should 
+not be able to create a process as this process will get pid 2 and will be 
+created before init.
 
-1. local device memory (VRAM), GTT/CMA and memcg are completely separate domains and you want to have completely separate values as limit for them.
-
-2. local device memory (VRAM) is separate. GTT/CMA are accounted to memcg, you can still have separate values as limit so that nobody over allocates CMA (for example).
-
-3. All three are accounted to memcg because system memory is actually used as fallback if applications over allocate device local memory.
-
-It's debatable what should be the default, but we clearly need to handle all three use cases. Potentially even on the same system.
-
-Regards,
-Christian.
+And in general (non concurrent case) it makes sense to only allow allocating 1,
+for the first process.
 
 > 
-> Maxime
+>> +                       nr = -EINVAL;
+>>                 } else {
+>>                         int pid_min = 1;
+>>                         /*
+
+-- 
+Best regards, Pavel Tikhomirov
+Senior Software Developer, Virtuozzo.
 
 
