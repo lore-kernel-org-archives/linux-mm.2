@@ -4,123 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BD71F3C99B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 15:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90686F3C99B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 15:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81906B0088; Tue, 24 Feb 2026 10:38:08 -0500 (EST)
+	id F40016B0089; Tue, 24 Feb 2026 10:38:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2EC26B0089; Tue, 24 Feb 2026 10:38:08 -0500 (EST)
+	id EEDC06B008A; Tue, 24 Feb 2026 10:38:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A27EC6B008A; Tue, 24 Feb 2026 10:38:08 -0500 (EST)
+	id DF09F6B008C; Tue, 24 Feb 2026 10:38:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EB046B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:38:08 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1DB4E564D6
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:38:08 +0000 (UTC)
-X-FDA: 84479756256.05.09FA40F
-Received: from mail-lj1-f193.google.com (mail-lj1-f193.google.com [209.85.208.193])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 11F7214000D
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:38:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RxUdlFfv;
-	spf=pass (imf23.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.193 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771947486;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CAA3A6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:38:58 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7C99689526
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:38:58 +0000 (UTC)
+X-FDA: 84479758356.24.D5BCF43
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6B7EC40019
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:38:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4lKfUfvh;
+	spf=pass (imf07.hostedemail.com: domain of avagin@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=avagin@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771947536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1d3HoreSzqInLLmkALJG0kLsfv4b9J4eqo5ttaXel6U=;
-	b=ZedwJfhgl1I5xDPsu88rHrziNt4D/+TCwpA1iNjJrmmOtQgIE1NqQqm93ZMF3kSz00yx7N
-	fN9uOHqhJHqiLRMzUk0iXbCQndGvbSkcX2cbbuY5uvqFtJThWFytz+FYa7psGEulO2MN60
-	TLegNF2SZM6eeSA1w1CPR6iilKfNFqE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771947486; a=rsa-sha256;
-	cv=none;
-	b=UiEvUh5aryTfT1exhlf3wTV+A1wh4vxN/lQMP49yb+F9A0lG7JWTnjK9H5EF+ZPr2tL0EY
-	aWpXudVp/Oynv4pWA1yzHMbyqStKmnA/lSdteHinI1byHyNo+sGAiuEoCxVePJrRy4mssS
-	amL6Xd07BGsGJLir05fCGO0GzwyR1tY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RxUdlFfv;
-	spf=pass (imf23.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.193 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f193.google.com with SMTP id 38308e7fff4ca-385cfc572f1so44615471fa.3
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:38:05 -0800 (PST)
+	bh=X8FKYJ3J0ekbbk4xcl7+J9bdYsFozs7WVni5ylJT0VM=;
+	b=QdjlMNA+m++X3cnIplxGsi1S3pfLVhM+S9TbuXTyRzpOaSL3LTuXrjki/sem0p76Us9bxD
+	fqJDeP8NmHwyQDwnx8aIMFPjkQYjerrd6irRd+n7SAJytHc0uASqp8DUzsO8t/6RSgVZ+T
+	7twDDREfFkgC6l+MVika6UVjK7krkpQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771947536; a=rsa-sha256;
+	cv=pass;
+	b=dcRxYgD5I0j3D+Q/gm5INrbO1vbH2ZE28ZEi3e2OhLaRqsBTCPQ55Zbh6gptTaxer451e8
+	6RYqDKbyg5EtZ1r0kHA8Xog/iLP9FGUCuThn5RLuowrRtRs7LEZ5HlkWR+YCeJ6dqtY1zl
+	IrZYmNHRlymtGSYpS3sAWIJLNAMGnBU=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4lKfUfvh;
+	spf=pass (imf07.hostedemail.com: domain of avagin@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=avagin@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-505d3baf1a7so12741cf.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:38:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771947535; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AtN4UEqBiqxv4NGkV1G0pjlwvdQCfnNEJvdw1kOk0gp2JSe7ZCdiaUJeDqbozyud3s
+         aT7J4kSFjAqEvKKATIZgAs0bZQv3Ygy+PczrU89OZKN24HtxEBKHw3NgY0bFc/E+W11M
+         Y9cjONWM3G/HIOg3bjQMWOnlwsMyt5n/fd1LHS2nrSHVD8TrwvGhJ2J7mOLp7DNbcXiL
+         izXATcfb3V0j6obeQJS51lsci+N+8zXGW6K969vM27xAqlnep+H3Jka7mMynv5yIkfgJ
+         TtP5vqG7bX1m+1iAG1C99VXLexgFW1WMhAgWrLYMvZcYZ3C88Hf6I0N4nUfaLhffxc9I
+         19Sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=X8FKYJ3J0ekbbk4xcl7+J9bdYsFozs7WVni5ylJT0VM=;
+        fh=4tlC4HxjNmWj0pXgIQTYckrsuWqDRGgm6OAL6PKJs1A=;
+        b=ZARqB8KDQlYrLGaxWNk0mYFaCsm3G4iKQM4qbLGcKK3SEMWkBUm1Bc5FWmL46fz8In
+         A4LpDO1eFhfuXnsjBrA40w34j2kGLhIpGFUWvL8ty4rWqlVHGp2oS36D24G9FNrHFTyZ
+         J5a6KffXTg5CxNEk37r9oUfTNnCErT1dXTXdH2f1UusAqPm9rcGPy67tlav5V6UrfW4A
+         Qb0NKOUSF1mll8/0K/xblybiHdMNqrcYuGhpGz2/mmOf+mYpg2OpCUgeShcFY3QHPlR0
+         OhbYNVEGTCgQud8uCZSdobO0HU07lxaeXSmesCU9Xfeeb49d1fwuI0eRqPt2HUSEPPaN
+         mXjg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771947484; x=1772552284; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1d3HoreSzqInLLmkALJG0kLsfv4b9J4eqo5ttaXel6U=;
-        b=RxUdlFfvkxZpLtIwqGhB+UHHeYO3TF20rwv/R5aAKVxd4RESnzrAJbfgU3QpOygOx6
-         sL6PEPHW9GCMxQ8eH6ukP/E/9ZQ3HgnnCgE/ZIplZOusLhCEM6Svj4jYUzQhBiRYqzAK
-         1rUuRmDNCHtAFO/7iTxoOS5TjaWCSHF/PO4RLT9VVjfqr6AfcEmzFojjRj8Ov7sGyNp1
-         Vb6bzjeEqG1FWMqkIEwTU3E3qljollieP36ORxoC7W7exiZzBXDxmblbt1l/Ep0s6WgE
-         d8mRYhnba9X5Q7tf6iFpNODQwS3Hwq3KetJw+fXRIvw1Hui7tXSpN74RevcIB3ECKzUW
-         WyBQ==
+        d=google.com; s=20230601; t=1771947535; x=1772552335; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X8FKYJ3J0ekbbk4xcl7+J9bdYsFozs7WVni5ylJT0VM=;
+        b=4lKfUfvhMvjGeqMfFHhbS3g11KXhBeVeaBP71B4fqm3FOgUP+xKcfNzqboJdpC99zM
+         k4r9bgOG4eI0sHiQxTBA0WKQbUHmAMKA/s51Eb/l0xhvvbVvAQYAupWvt6LeiATxD8uc
+         Cc2MueBYRSreZeKpfIFilQihKtKwIsKYd2ac/i8LZ+Hi3B+Pkr80ZCgz2EZV2HH2P4M1
+         CGEdggkdk3bLXU6yZJj60IdbH81QkzZmn+kU1KHgB5o00qiKakVyVH10ji0r10rA81tC
+         1zCrf9ORB8q73/Ph/ELe6Aoyz+LqfJN9piVzJXwOTFhbDQGeCYRnhYNTNwpIeUlMyIyr
+         FKFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771947484; x=1772552284;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1d3HoreSzqInLLmkALJG0kLsfv4b9J4eqo5ttaXel6U=;
-        b=tvQ3o2jXZCqFNNBMNKSjO7RGz7hmYO9EqONpjGhmk01Y7GoQDG2wCzz6cFIa40mqnn
-         KNEIhvKqEgUYQkpyh33VNt4liyza/jp3V6Wl19hDUHs42Xfi4JrdwnAUCJV5zezz8KsM
-         aMWzPQe3yeUfK5Yvp5SuK5b7+Oi6EGxu6iNBs57kCGoQAErZkdpAxdRqcBhbkTEhwXCI
-         LMiQMEWGJgmCV5qFJ+7OrnendiUdXb1YRlfjd9fjuUW8Xc/iLmLjmH0q19N0G5htgEe7
-         K4WlCQ2dj5c5lCjeQCNgBa7Qgrd650ze3EWUDG1bxDlYst65zt6OW3IQNGKwoXaYIb7n
-         GveA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNL/efRo09A80HeYyKq8CT6wJkGrP6Li66ceRoL5zzNndjgNXNr3YvLE/joYs7k+J+KkqKnYlvSQ==@kvack.org
-X-Gm-Message-State: AOJu0YxOfqkbXuq5atHS6wjvBlk2HBTewIij3ifYd21DqFw12s8qweYO
-	JV1QAS+UJRzlW0CuSrp8pfiDfnlKMDiPmz9qgQfTbNNTB1wG9Frz/+/5
-X-Gm-Gg: ATEYQzytDQXfTG/x1hAdXsGX0bfcw62xqmuuuhv47xBudSjI+I63aZi+BdeuW733Hv/
-	o+im1rrKEvmJ+yQuuL/XWEiqbkEGA5GmTTBAlFxZdUiQkhPImzsSpyHwxDGTPc5lrforBsjI/HA
-	bgBjKP5NBSLEHcppB2O6PxZg4yGX+NONiIYTWPzzLr3WFV3IJhLy65s1+C7Of2j+dnu842M4HLX
-	aokVjJY1s85T843g9Ip/F6weN0qTU+ETr0P71VVic31JIBEK5yn646K6rwN10spUaCYfKkKg0qZ
-	mr6MXO5OHwwAEudYzLh9g4UlzjoG8rWKQPg8/Me5wfsSuvFCukHI+jTUb3l0lTsqJicnY5M+v+r
-	lVT8uDrjQJ1ZiunXyHjUoesmj0pNVITzTUiKKb+SeGhNRLyRZAGAjjxM2lIcSVwt4b4glWzQxeH
-	okwvIyrHKF19Wzwa6epTArYf1ctvLwLCDbsCcSAN6T0KAPItKuzy/8
-X-Received: by 2002:a05:651c:324e:b0:385:fbff:ab2f with SMTP id 38308e7fff4ca-389a5d4ec51mr35490151fa.17.1771947483965;
-        Tue, 24 Feb 2026 07:38:03 -0800 (PST)
-Received: from pc636 (host-90-233-215-147.mobileonline.telia.com. [90.233.215.147])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-389a7a71271sm23396621fa.31.2026.02.24.07.38.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 07:38:03 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 24 Feb 2026 16:38:01 +0100
-To: Michal Hocko <mhocko@suse.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
-	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
-	dm-devel@lists.linux.dev
-Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
-Message-ID: <aZ3F2cghZpqBi1Mk@pc636>
-References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
- <aZykWyxLy34o7PKr@fedora>
- <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
- <aZzPwsBp-Z4XM58U@tiehlicka>
- <aZ2N9a4XgxnurOhz@pc636>
- <aZ2YDD_l5JN78DJC@tiehlicka>
+        d=1e100.net; s=20230601; t=1771947535; x=1772552335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X8FKYJ3J0ekbbk4xcl7+J9bdYsFozs7WVni5ylJT0VM=;
+        b=s1l0tSsmWpCvteC6jmxmdt2UKskw2p8q9QdjdRbaZS9ly+yPJ1iU9CmdwLyg8lfPjt
+         dlpsvS6iUChG8oED67fWmni5HGZD84U3JdsDI3gVQlMb8AEsxaE2/3Lz0Z4twNfimVye
+         +hq/rJADh7AJmiV++aZm26geyua18axk81Uoqe0dNgnIG4SsWhJ5uFZFk+GOpI7+662F
+         qWakGSZWk8isABiE6gMnxgAPg9vtnK9ILNeqYBox7PG9ROUsrkTrwCf1fbME8lPIJFXC
+         1yxtaDvkIA+wBRt5Sed7I5pJUQCIviwcsAz6sJz59hnP09asn0J3rXd8t5O0REX1D9gv
+         DMqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUglK7QGJrDFeCn08H4MBw9llSEOUlmK0xneYAzHSivjmx9uOwGA4VMguU28Cfh4E7n7c5h2BD4pg==@kvack.org
+X-Gm-Message-State: AOJu0YyiuBAaSkPnnT+sMYT7TnXEL7ULdjF9+5/B3zugAXcLGBwQQf9f
+	2PydtULZd0bPZd7gXHJOeRuFBtts2b/ENPXHH/7s4h8S0W5U6tVmCJKUuz5/4dEQlIYqeZZNU0z
+	mJyWTFh5lr3MPsSMOcKy4OgjXY7J63DrJGTBMgJOf
+X-Gm-Gg: AZuq6aLgJTYO3PoprAsUljdSSCHgDbS8TW+BxRHSaVh30xCcAyZqhDPzsy0fAy8Oa9U
+	+rfgDCb9CU6nTaC8XpC3p1s0FawRzF5jcsMQDhwjlChYhmalh7lRsq0tpjOx5GpqrCB8P23L+Le
+	TvdQzmiJea7OzePqhKeohj4g6zxg75O4qiFooXsDI1PYfKqAcUuhppVmr6xPLy1ss3ST/vSsiaO
+	YB0ukZtIUXD1+s9MN7RoVyK0ywPsildq7CC5bRonHeP7eGkabzIEuVTPJtStEi+F2P8waze49o3
+	uvwPZNE=
+X-Received: by 2002:ac8:7fc9:0:b0:506:1f23:e22c with SMTP id
+ d75a77b69052e-5072c945f63mr13855391cf.6.1771947534197; Tue, 24 Feb 2026
+ 07:38:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ2YDD_l5JN78DJC@tiehlicka>
+References: <20260223200254.4104651-1-ptikhomirov@virtuozzo.com>
+ <20260223200254.4104651-2-ptikhomirov@virtuozzo.com> <CAEWA0a63QxMRqCwpCUqb5iKih31LY-2zX+--SkMGcP-Y19PqpQ@mail.gmail.com>
+ <4de06792-d8ea-4f2e-848d-0dfccdb64253@virtuozzo.com>
+In-Reply-To: <4de06792-d8ea-4f2e-848d-0dfccdb64253@virtuozzo.com>
+From: Andrei Vagin <avagin@google.com>
+Date: Tue, 24 Feb 2026 10:38:41 -0500
+X-Gm-Features: AaiRm52_3mgUzdXl_m6MyGgb0dC1GRQ33mHZxHL8f5gge7x-9SdxQdJcgRbqcA0
+Message-ID: <CAEWA0a61jLQxULDMXLcpZn2M-cJXxzSMyCS8C4y=YkFfHAEYng@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] pid_namespace: allow opening pid_for_children
+ before init was created
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Jan Kara <jack@suse.cz>, Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Kirill Tkhai <tkhai@ya.ru>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, Adrian Reber <areber@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 1m9k13n8wiumhde8dxpzpmcssf5ckcyf
+X-Stat-Signature: 3qdfd6wyc1aihx3me13uqryxzskimya6
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 11F7214000D
-X-HE-Tag: 1771947485-740495
-X-HE-Meta: U2FsdGVkX1/VHZx3lCC8eurHMU9kcA81S4LWAm631DsSOn1LVGJvoF4qUW+bC6m+RW0hq3DLvn6psNjPbgjIIntriwVUIf6ZeZJZHsnyf8EoI1mmK8z5ZjZP6x9pMohu2fMfR8IBFTz3HcVnwtK+Nogw8yFAmEi/AedGWokWyGMQLzchjhQLhcYlZHhF+pVQnUmPdzM6XotbpkM06TpLBf5qPrH0/v6uaJuc05LoqCaF2KRhBZGtAiuZLgGIlbT7S7VkQ0n/QST93aT16brFt5cT3nQu0IG9JhuziN6dMfdGtRlmFaGeB9RtUSd4+NAm+6LMfiAt1TOc+zKQil/TvTggWFQ9l/youYCNSdajnrVjAxT59vrK4PxyRxqAHlscNZ7Jdr2q0LzhuZvABCeW6d0yl/EEFC6+JuLGcQGw8XnCY1qegDWYAAn1GSwd9fWYJo6/Er5xfdsJJ0ZRPUPb5jrLbf7homso8Ha8NGkg49/LB+eSAKeg4wm7BsrTI44G8mJjWSXwpAwmMQwUIeGkTPxUnaLmbneGLbo13NQvGA8VFMOoKEfCiwpS7OZffIaeIz0zEH4oQXjtIktEJIzAv+ONJuxfMsWoBHesPyGv1ym5JPILAHwSd5/r8qxPWlTCeye3//2+eEUvypAGqZr1nmbCY4/LmBYs0ejDMh/11NhDC6o6CAbBzYsUvzMIZnCT84seefqAbb1j8qObkpFjcjWNvDuQrObjaa8Q02BLmq5IAOu0YV5f9KxkD/cIXYgJ49tdxhtyw0IbW2vqvlDrIwKAy6SRmTrhh3eqgZhcXoyUDv+YdexVwcfTPgSxLTFilD+WiV5NIvOUcF68cgqpQIlS7ZkxrYewWe53ztMXyUorAgEuRmEVqqVfU3aAPgGD3zbnF3nqFrfyY/IQp9zSgQR67UvV1jCEP39SP+tAmla801h7zcMDPES+mXkeqqf8YcSvbx1yPtJUPxVmyUI
- Kk+R9SJ3
- IsUUvIuYU/jwWc4UXIEv9Qe7Jzy5d24aJl4LZdWPKpMFZkVEzhzSUdSFwNuB6Ho6zGDmZr5TztcY94afZ0+SLtO9yNEYFhKEpZUdn1LOYoZdNZz7oCi/ZbVsmgPPnyY8rZoZzUowDvIV/ST5noiZknQgfhQFCMxr2svE5e5339z3n8wGL2VQmOkAd5rkz2Fk8MWkeTqmDA93odhIIqflC5Pv/fwYAhaRhxCvzLXpSkgQcIjZObDccFD+OPCPH5gs/jpkOvfGQ/ResM8dbcnhg/Uy+f9caHJb0oNk8v+Leh3+3V2AvQE6dvn56ACeD1AZ9AmgJOMZP+0XqwCVKcuHDJrDxq37R8E/csAa/5AvUph+kNnj7kPb1doftd9KAFn/3vgvz7EXGBwxQ49rmHhkTNVJFh3iyGVagmg64pu2MPmoL6ABKm8BWUifPMAFWtXjhczYMG2JA0H7EpEI/jviAuh8NyVBiso6LYXIIxowgwnIVDtas6z481ADEUDI77Ju5uJhLcBk5nXEIhPv1+beT561UnY/vDXAjNQOMyzME4xir3TA2cGYVKPOTWuKCanotoE1Tf2kaimcvyKkaT4Pb7w550lCI2k3WBG61e5JEnjgaMbdpXCG3PyIgmab9L3XenJ5/If6Mt+DHDYc=
+X-Rspamd-Queue-Id: 6B7EC40019
+X-HE-Tag: 1771947536-76642
+X-HE-Meta: U2FsdGVkX1+K59ACdAnoKQ3OlyobrvQf63CKZa7inZKpgHYrkQ223s9DzYSxupwyAu3UGrhzJJ3l6uS0zwqANO3iYET3X+EdwxtuSQ87MZVoHSrgXI7yP1MaOqOvx0LeNbwy8VcT7/oW2/pIH2l5L2tarMMhNxUYAuJanGC8t7UiuCOx8AMpZ9KNwwTnWz3XNqiOHI+X9Ht0WbH7Xd0wuIl/Cj70sOqUdbJRebSA7hydjhsHxyWqJGfj5l7qv+cSyC48ggZSlUNDD2WDbY9HFJEOeVBxO0T98IDyiR4f5ud9pu0VXS9WOBrRXJ0Khe+cMbjTpDWjY/3XV/vUviRj9f4MlHEjenjH308VI+u/wKRZAtsfZHLM6OTM906mHDU44tiCrUfzIBrUvNxBx5J/t7h5yTvc+vFaqtRCeK9DBI4qmabSHV/53ulk7wp9Yjd57hJDm1o9lGExYgfkEBbScDuLbKvO9cxGthjjrNJUryoZB/DV5B4NOtPu7l/3WUOkfeHWsLi3A7ZPSdlLZvUzLD2NvXmJYaFE0+f/FB8ugx+WCicINS/FKDZu9OkkK9T7KI/a9ipMktZBGM+etoHZ+aXVcCFjcfkgidwsVq0Ii75kT7rHcKyn7Azov/M8dbW4UZmKf2PMd8IhM45I+szYpxJCqIQ2aMhOLfpF9aqARcTZZddq2fTjp6a5VSnygMCqn1c4R3c5bBi2gYT20/foh76brm/E2QGKPDnECCO7IlPie/J5eZKuvuPwUaPTPyH4rdCQZ/CYf5NWofTIciJ7h4YtGqxMgjh9I8FFAOy/s8mKYgc0N0ekuK8s8cu7KvM57PYhLdyDfcpTXuTwrFgdbX1JDLR0uCUSMClLfxqiRv/78Etk4ejcCTlxkZAYyEqOVCijDry30QyQIMjVXoBACM4u7IpQEzV/o+5EWS4z/8YXMpuQStLZBO2Ex9URVcg8OTXs4PDkwBXu0zYRvDR
+ B0Jum6jg
+ b0bCRTxzsMhqburei6mm4AwE8ZL+4jn9KiGHFLb5U7WsUYui9297yURLpPevW3N5rSIuiyO8V4LuIIunFwTYwf+wy1/8vsxS98mES7iPFc2xnkLf6C4vLrIop57uousmhBX/Q2c3ksOCVJowu7QyhCo5jQEWyyzNHA9OwseSuwwPKOM//FVzFkfZ8+vqaNDPVKJGSi4xQYgP6VXudYl2nPoBUaAL7t7PFNFLn9Bv1VZukwecCGEMkmpI0ETQ6+KxdfwPOGjbCD/usKMxeuR8/oT0CIgSS+HPpO/dV4SVs43b0yrEN+lhq7/tImbNuQDm9d5pLQMOb5mzkNaoVkKbpRYSSOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,74 +148,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 01:22:36PM +0100, Michal Hocko wrote:
-> On Tue 24-02-26 12:39:33, Uladzislau Rezki wrote:
-> > On Mon, Feb 23, 2026 at 11:08:02PM +0100, Michal Hocko wrote:
-> > > On Mon 23-02-26 20:25:38, Mikulas Patocka wrote:
-> > > > 
-> > > > 
-> > > > On Mon, 23 Feb 2026, Vishal Moola (Oracle) wrote:
-> > > > 
-> > > > > On Thu, Feb 12, 2026 at 05:33:30PM +0100, Mikulas Patocka wrote:
-> > > > > > The commit 07003531e03c8 ("mm/vmalloc: warn on invalid vmalloc gfp
-> > > > > > flags") breaks the device mapper VDO target. The VDO target calls vmalloc
-> > > > > > with __GFP_RETRY_MAYFAIL and this flag is not in the mask of allowed
-> > > > > > flags.
-> > > > > > 
-> > > > > > There is no reason why vmalloc couldn't support __GFP_RETRY_MAYFAIL, so 
-> > > > > > let's add this flag to GFP_VMALLOC_SUPPORTED.
-> > > > > 
-> > > > > My only skepticism about this comes from the line in the
-> > > > > vmalloc_node_range() doc: 
-> > > > > "and %__GFP_RETRY_MAYFAIL are not supported."
-> > > > > 
-> > > > > I myself don't know why that may be. Could you elaborate on if/why the
-> > > > > doc is wrong please?
-> > > > 
-> > > > This statement was added by Michal Hocko in the commit 
-> > > > b7d90e7a5ea8d64e668d5685925900d33d3884d5. Michal, could you explain why do 
-> > > > you think that __GFP_RETRY_MAYFAIL is not supported?
-> > > 
-> > > The problem with __GFP_RETRY_MAYFAIL is that it cannot be fully
-> > > supported. While pages that back the allocation can be easily made aware
-> > > of this failure mode there are page table allocations which are
-> > > hardocded GFP_KERNEL and there is no sensible way to extend the API to
-> > > change that (as we have learned several time over years).
-> > > 
-> > > > The VDO module needs to allocate large amounts of memory and it doesn't 
-> > > > want to trigger the OOM killer (which would kill some innocent task and 
-> > > > wouldn't solve the out of memory condition at all), so I think that 
-> > > > __GFP_RETRY_MAYFAIL is appropriate.
-> > > 
-> > > Understood. But as said the very page table allocation could be the
-> > > trigger for the unwanted OOM. The same applies to __GFP_NORETRY
-> > > unfortunately as well. vmalloc has just recently gained support of
-> > > GFP_NOWAIT allocation mode, though. This will make the allocation
-> > > failure much more likely though so I am not entirely sure this is a
-> > > proper solution for your problem.
-> > >
-> > Yes, the page-table manipulation entries are hard-coded and it looks
-> > like it is the last path which is not wired properly with gfp-flags.
-> > 
-> > Since we grow PTEs and never release it might not be a big issue for
-> > the __GFP_RETRY_MAYFAIL usage. But it is still not valid in noted path.
-> 
-> One thing that we could do to improve __GFP_RETRY_MAYFAIL resp.
-> __GFP_NORETRY is to use NOWAIT allocation semantic for page table
-> allocations as those could be achieved by scoped allocation context.
-> This could cause pre-mature failure after the whole bunch of memory has
-> already been allocated for the backing pages but considering that page
-> table allocations should be more and more rare over system runtime it
-> might be just a reasonable workaround. WDYT?
+On Tue, Feb 24, 2026 at 5:38=E2=80=AFAM Pavel Tikhomirov
+<ptikhomirov@virtuozzo.com> wrote:
 >
-As far as i understand, Mikulas uses __GFP_RETRY_MAYFAIL with vmalloc
-for some time already. I have not seen any reports about that a PTE/xxx
-alloc path triggers OOM killer thus i tend to say that it is not easy
-to trigger.
+>
+>
+> On 2/24/26 08:02, Andrei Vagin wrote:
+> > On Mon, Feb 23, 2026 at 3:03=E2=80=AFPM Pavel Tikhomirov
+> > <ptikhomirov@virtuozzo.com> wrote:
+> >>
+> >> This effectively gives us an ability to create the pid namespace init =
+as
+> >> a child of the process (setns-ed to the pid namespace) different to th=
+e
+> >> process which created the pid namespace itself.
+> >>
+> >> Original problem:
+> >>
+> >> There is a cool set_tid feature in clone3() syscall, it allows you to
+> >> create process with desired pids on multiple pid namespace levels. Whi=
+ch
+> >> is useful to restore processes in CRIU for nested pid namespace case.
+> >>
+> >> In nested container case we can potentially see this kind of pid/user
+> >> namespace tree:
+> >>
+> >>                             Process
+> >>                           =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> >>     User NS0 =E2=94=80=E2=94=80=E2=96=B6 Pid NS0 =E2=94=80=E2=94=80=E2=
+=96=B6 Pid p0 =E2=94=82
+> >>         =E2=94=82           =E2=94=82     =E2=94=82         =E2=94=82
+> >>         =E2=96=BC           =E2=96=BC     =E2=94=82         =E2=94=82
+> >>     User NS1 =E2=94=80=E2=94=80=E2=96=B6 Pid NS1 =E2=94=80=E2=94=80=E2=
+=96=B6 Pid p1 =E2=94=82
+> >>         =E2=94=82           =E2=94=82     =E2=94=82         =E2=94=82
+> >>        ...         ...    =E2=94=82   ...   =E2=94=82
+> >>         =E2=94=82           =E2=94=82     =E2=94=82         =E2=94=82
+> >>         =E2=96=BC           =E2=96=BC     =E2=94=82         =E2=94=82
+> >>     User NSn =E2=94=80=E2=94=80=E2=96=B6 Pid NSn =E2=94=80=E2=94=80=E2=
+=96=B6 Pid pn =E2=94=82
+> >>                           =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+> >>
+> >> So to create the "Process" and set pids {p0, p1, ... pn} for it on all
+> >> pid namespace levels we can use clone3() syscall set_tid feature, BUT
+> >> the syscall does not allow you to set pid on pid namespace levels you
+> >> don't have permission to. So basically you have to be in "User NS0" wh=
+en
+> >> creating the "Process" to actually be able to set pids on all levels.
+> >>
+> >> It is ok for almost any process, but with pid namespace init this does
+> >> not work, as currently we can only create pid namespace init and the p=
+id
+> >> namespace itself simultaneously, so to make "Pid NSn" owned by "User
+> >> NSn" we have to be in the "User NSn".
+> >>
+> >> We can't possibly be in "User NS0" and "User NSn" at the same time,
+> >> hence the problem.
+> >>
+> >> Alternative solution:
+> >>
+> >> Yes, for the case of pid namespace init we can use old and gold
+> >> /proc/sys/kernel/ns_last_pid interface on the levels lower than n. But
+> >> it is much more complicated and introduces tons of extra code to do. I=
+t
+> >> would be nice to make clone3() set_tid interface also aplicable to thi=
+s
+> >> corner case.
+> >>
+> >> Implementation:
+> >>
+> >> Now when anyone can setns to the pid namespace before the creation of
+> >> init, and thus multiple processes can fork children to the pid
+> >> namespace, we enforce that the first process created is always the ini=
+t,
+> >> and only allow other processes after the init sets
+> >> pid_namespace->child_reaper.
+> >>
+> >> To avoid possible problems related to cpu/compiler optimizations aroun=
+d
+> >> ->child_reaper, let's use WRITE_ONCE (additional to task_list lock)
+> >> everywhere we write it and use READ_ONCE everywhere we read it without
+> >> explicit lock. Note: we already had READ_ONCE in nsfs_fh_to_dentry().
+> >>
+> >> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+> >>
+> >> --
+> >> v2: Use *_ONCE for ->child_reaper accesses atomicity, and avoid taking
+> >> task_list lock for reading it. Rebase to master, and thus remove
+> >> now excess pidns_ready variable.
+> >>
+> >> Note: I didn't find anything in copy_process() around setting the
+> >> ->child_reaper which can influence the pid namespace, so it looks like
+> >> the pid namespace is fully setup at the point when init sets
+> >> ->child_reaper to receive more processes. Thus tasklist lock looks
+> >> excess in pidns_for_children_get()'s ->child_reaper check and it shoul=
+d
+> >> be safe not to have it in the corresponding checks in alloc_pid().
+> >> ---
+> >>  kernel/exit.c          | 2 +-
+> >>  kernel/fork.c          | 2 +-
+> >>  kernel/pid.c           | 5 +++--
+> >>  kernel/pid_namespace.c | 9 ---------
+> >>  4 files changed, 5 insertions(+), 13 deletions(-)
+> >>
+> >> diff --git a/kernel/exit.c b/kernel/exit.c
+> >> index 8a87021211ae..567fc3b7b0f9 100644
+> >> --- a/kernel/exit.c
+> >> +++ b/kernel/exit.c
+> >> @@ -608,7 +608,7 @@ static struct task_struct *find_child_reaper(struc=
+t task_struct *father,
+> >>
+> >>         reaper =3D find_alive_thread(father);
+> >>         if (reaper) {
+> >> -               pid_ns->child_reaper =3D reaper;
+> >> +               WRITE_ONCE(pid_ns->child_reaper, reaper);
+> >>                 return reaper;
+> >>         }
+> >>
+> >> diff --git a/kernel/fork.c b/kernel/fork.c
+> >> index e832da9d15a4..27d0cdbca67e 100644
+> >> --- a/kernel/fork.c
+> >> +++ b/kernel/fork.c
+> >> @@ -2423,7 +2423,7 @@ __latent_entropy struct task_struct *copy_proces=
+s(
+> >>                         init_task_pid(p, PIDTYPE_SID, task_session(cur=
+rent));
+> >>
+> >>                         if (is_child_reaper(pid)) {
+> >> -                               ns_of_pid(pid)->child_reaper =3D p;
+> >> +                               WRITE_ONCE(ns_of_pid(pid)->child_reape=
+r, p);
+> >>                                 p->signal->flags |=3D SIGNAL_UNKILLABL=
+E;
+> >>                         }
+> >>                         p->signal->shared_pending.signal =3D delayed.s=
+ignal;
+> >> diff --git a/kernel/pid.c b/kernel/pid.c
+> >> index 3b96571d0fe6..e6116e131d8d 100644
+> >> --- a/kernel/pid.c
+> >> +++ b/kernel/pid.c
+> >> @@ -219,7 +219,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pi=
+d_t *arg_set_tid,
+> >>                          * Also fail if a PID !=3D 1 is requested and
+> >>                          * no PID 1 exists.
+> >>                          */
+> >> -                       if (tid !=3D 1 && !tmp->child_reaper)
+> >> +                       if (tid !=3D 1 && !READ_ONCE(tmp->child_reaper=
+))
+> >>                                 goto out_abort;
+> >>                         retval =3D -EPERM;
+> >>                         if (!checkpoint_restore_ns_capable(tmp->user_n=
+s))
+> >> @@ -247,8 +247,9 @@ struct pid *alloc_pid(struct pid_namespace *ns, pi=
+d_t *arg_set_tid,
+> >>                          * alreay in use. Return EEXIST in that case.
+> >>                          */
+> >>                         if (nr =3D=3D -ENOSPC)
+> >> -
+> >>                                 nr =3D -EEXIST;
+> >> +               } else if (!READ_ONCE(tmp->child_reaper) && idr_get_cu=
+rsor(&tmp->idr) !=3D 0) {
+> >
+> > I think it is better to update pid_ns_ctl_handler to prevent setting
+> > ns_last_pid in a pidns
+> > without init. Otherwise, figuring out why fork returns EINVAL can be tr=
+icky.
+>
+> Hm, I think pid_ns_ctl_handler(), as it uses current active pid namespace=
+ can
+> only work if current is already fully (ns/pid) in the pid namespace, and =
+thus
+> the init is also already there. So it's implicitly protected from change
+> before init creation.
+>
+> This check here is more for the concurrent alloc_pid() case. When one pro=
+cess
+> in alloc_pid() successfully allocated the pid and than, for instance, hit=
+ the
+> pidfs_add_pid() error and is going to free_pid(), but the pid 1 is remain=
+s yet
+> allocated from idr and the cursor is on 2 at the moment. At the same time=
+ the
+> concurrent process may get to alloc_pid(), and will see cursor on 2, it s=
+hould
+> not be able to create a process as this process will get pid 2 and will b=
+e
+> created before init.
+>
+> And in general (non concurrent case) it makes sense to only allow allocat=
+ing 1,
+> for the first process.
 
-I do not have a strong opinion about workaround you noted. Maybe Mikulas
-can switch to NOWAIT flag instead.
+In this case, there is likely a race condition. Two alloc_pid() calls
+can run concurrently,
+where idr_get_cursor() returns 0 in both instances. Consequently, both
+will attempt to
+allocate PIDs, but only one will actually receive PID 1. I think this
+check needs to
+be moved after idr_alloc_cyclic() to verify the actual value that was alloc=
+ated.
 
---
-Uladzislau Rezki
+
+>
+> >
+> >> +                       nr =3D -EINVAL;
+> >>                 } else {
+> >>                         int pid_min =3D 1;
+> >>                         /*
+>
+> --
+> Best regards, Pavel Tikhomirov
+> Senior Software Developer, Virtuozzo.
+>
 
