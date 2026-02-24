@@ -4,86 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48147EFB7EE
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 03:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2060EFB7E5
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 03:10:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4845D6B0088; Mon, 23 Feb 2026 22:07:30 -0500 (EST)
+	id 59FCD6B0088; Mon, 23 Feb 2026 22:10:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45CBF6B0089; Mon, 23 Feb 2026 22:07:30 -0500 (EST)
+	id 54D506B0089; Mon, 23 Feb 2026 22:10:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 368F96B008A; Mon, 23 Feb 2026 22:07:30 -0500 (EST)
+	id 44F7F6B008A; Mon, 23 Feb 2026 22:10:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 247EF6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:07:30 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB039B945E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:07:29 +0000 (UTC)
-X-FDA: 84477864618.04.4DD2414
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 38FA4A000C
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:07:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=npAXx+JU;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EB006B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 22:10:27 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA2D1160411
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:10:26 +0000 (UTC)
+X-FDA: 84477872052.13.1CFD658
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 923E08000D
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:10:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TJE7WvVW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of sanjayembeddedse@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=sanjayembeddedse@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771902624; a=rsa-sha256;
+	cv=none;
+	b=MYCWJYY4TMo50PT7v9UoTDbQFQP/T5luwmjQSUFDkXnOYxPCg9729+nzQDZEG5ztmMQnQv
+	W+N0W0/Ma0zfvrGrhQ45PTe6MLnzXjU/u6ma+JaMS7mh5aLxVdzKOV/GiTLL1Metlco+a/
+	IJ8D/RW0QqQDxhat08DR0reK5kgxStE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TJE7WvVW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of sanjayembeddedse@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=sanjayembeddedse@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771902443;
+	s=arc-20220608; t=1771902624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WLwpQj7UEW24aRTF++A/SJR0UpFf3Vw3VaJ5uRvm9iQ=;
-	b=qZO5uiLToWWt8c3nj+E1MaUumcRthSy3JwsFyC+eWwACmPIbir/iHjhjJEsEY1swRA/ne7
-	raB1T3EMQZX0sQ2oapPi7C7C4UEF6HPDcZ5GPjQEzG87sY0pqJoZ3yOlZCmHtnDmXhVrms
-	LNj0hOXw2XiyLe5Zmslytr9uB/kdY38=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=npAXx+JU;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771902443; a=rsa-sha256;
-	cv=none;
-	b=fvXQySqhXc5XorwLq8D+tBtlN8gfGR8AFF4NXStvOrcGnFd2xktftNfWGXmdxUMBkbCtVX
-	cxnkrOa1O/xTnW8qshYzoeZJMhzZiwqs1Gl6noczKS5WyZ1eu2irRv3z7e9P6HJdsPzl5p
-	6XYhEOVMsRe6xDV9BbVOEsZPYDPUs5c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771902441;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WLwpQj7UEW24aRTF++A/SJR0UpFf3Vw3VaJ5uRvm9iQ=;
-	b=npAXx+JUUm50z6mE651FPHlsI2aPQv88d1OpSNpjsJfKXvI2mWkSc2vDWrYqTaz3IgFAfK
-	eEP5pkox612VAvAMGNmnHjbhHW4UdCAWITXqCogKUz9sbg3dyvF3D7h3o+aN3xx5lwNAWZ
-	aAlX17jWbftH4w6Fg3O9xcUNGWNr4KU=
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org,
-	peterz@infradead.org
-Cc: david@kernel.org,
-	dave.hansen@intel.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v2 1/1] mm/mmu_gather: replace IPI with synchronize_rcu() when batch allocation fails
-Date: Tue, 24 Feb 2026 11:07:00 +0800
-Message-ID: <20260224030700.35857-1-lance.yang@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3NP+Kkkg36cikM6o6RU/ylaPgoFm+nRow4PTjcisMu8=;
+	b=7YGLLWbHU3gs7hcfcAPZKx7wQvl0OQ0MboYmDGFPw9SmGCMZtScg6QRMp4Cpe8r7h1Gi61
+	CtzxaxE6jRy6zxVOBp6y68JdwBrinm2xbdLc9I0w4uOxTZRsFK/2PUqgQmbf1ywWjseZ+i
+	8fjTe92EyjJbDU/TFveceMPJFocOAQ8=
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3870acaf78eso39958091fa.2
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 19:10:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771902623; x=1772507423; darn=kvack.org;
+        h=mime-version:content-language:accept-language:in-reply-to
+         :references:message-id:date:thread-index:thread-topic:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3NP+Kkkg36cikM6o6RU/ylaPgoFm+nRow4PTjcisMu8=;
+        b=TJE7WvVW9myXuEKj3GpQMTni1uJPFcyQIsBS896yefsq+pSZswVWcREFmCLHPQUbRD
+         YRV8VscAGqSyMLSXkR1Z6+mQtbULjlK14wXxPLQTn+5b0GZ9wcVK5A5zLUQDJm3q/Qg2
+         TxHnKwddMVq7ZBmI9aGiT958+avVer5OZWMKbiCabukJKIS6x74TvrywceGgtCcMZ9Ip
+         MtgJj2KZ/PmnX3U5h5ITxq/xTZBDvze7FbL4M++l75k7VH7FK1n5bRlHk+RY7qCYwtOZ
+         M109oUASD4K5xihZQdQB0TP45IWx7IWz75nj6rGYD3N5FGPXrsYY5D+NzdFkEEBVnKKj
+         C8QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771902623; x=1772507423;
+        h=mime-version:content-language:accept-language:in-reply-to
+         :references:message-id:date:thread-index:thread-topic:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3NP+Kkkg36cikM6o6RU/ylaPgoFm+nRow4PTjcisMu8=;
+        b=lCpHO5h+mwgAshhxnaiKWizTEyCaV+aTB9cmY6KKbXfzCmV5Yn8ArSVt+nKzuhZL8H
+         FMsf6NcX4iW20sznHQnPT1N5bQ/brRlGQdG2VPbRRt6xBupp3Z5axI1WPFFy5mjrnhHG
+         nuItCPBHWTP7fNVKI2O0W7cSRHdggJcGiLQ8kS45AR4aOa6L7U+moMER6SLepgCF5jQ0
+         BjmzmuWXDkQ9DiHTsmfHFEWLlg2j4Yi/qSkOAT7p1+CTl8jU66zPr41bguG4wJ2ad+HC
+         uI56Yu0jkssEO7tMzrzqz/IvGGZKQgu2mpbMDnWEq8uZlSBemZVvC0ZvuNNnPsIuDzF6
+         Ow6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWVUqC7/IIZL7QAeTxfa+KmWvjCRd2zem2i78d/VNLbsl6FcRGXCMwiM97nNVX7nAJ3y2vSmvJjyQ==@kvack.org
+X-Gm-Message-State: AOJu0YzzEqYzVywsr9CKds3R4s1S1Yaf0uCrubyhkrpkxY3UiohQ1HHh
+	V0LuC+mMQA3TWRlfs8UyDdLU1bnSuxgT5yLSOL50tOGETib5ye6sBNkd
+X-Gm-Gg: ATEYQzxWsLhz0s/UtoI893/kFpHPrE8qxENHO+DwjMWimqtJPnHTiVevnd3F+jM/hqA
+	iaZUbRw/NjeJV3yX4CtcswNV74PLe0groVXRkIEAIfgc3O8QHKM2IfLI/J3gE3wdYlP0e5/CJm/
+	FArUfn9SMIdlcyi6UIkml1u9CaSEIAuhZ2VmO9LEseB2eYxcNIhLhIBiO/UALQI4dgouJ1NrXQf
+	wfC5rX91vkv9F5CGefOO775UXln4mFNEa9ryhDKSn5I75qvOEK+TH8hXY31ZC8GcCtczhRKloGB
+	toR6pDkxmLFj1oOfM5hTPPN90Eq1d2k7hrqN/NUqiGddhJ5mfpYEdDOy3tP21GBmwB+l15sQ+PC
+	iZxcp/EZQjjk+RTq+Dzfy6eMVC5FKLlJSy3k93qg95MA40sv0yZFpGtVIMl0yWe09INdxCd4Zn7
+	QfMEqS0z/mE6d8w7FTUDzAQMPG1npQtNOtedSSh7UNzUnECa3KAUb2SI0LOam1Ri0vQn82a+gZa
+	SmHPN8OqDmNqkhP6IZWZo/J
+X-Received: by 2002:a05:651c:f09:b0:385:d0b6:6c44 with SMTP id 38308e7fff4ca-389a5d4e888mr27362121fa.18.1771902622347;
+        Mon, 23 Feb 2026 19:10:22 -0800 (PST)
+Received: from GV2PR04MB12295.eurprd04.prod.outlook.com ([2603:1026:c11:cbe::5])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-389a7af4da9sm19778791fa.43.2026.02.23.19.10.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 19:10:21 -0800 (PST)
+From: Sanjay Embedded_SE <sanjayembeddedse@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+CC: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton
+	<akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
+ Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/slub: drop duplicate kernel-doc for ksize()
+Thread-Topic: [PATCH] mm/slub: drop duplicate kernel-doc for ksize()
+Thread-Index: AWRlLTY0JThdV17bDOAK2El/oPGAYVhXZXN27b1fYGo=
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date: Tue, 24 Feb 2026 03:10:21 +0000
+Message-ID:
+	<GV2PR04MB12295091C5D832887CBC4C17EAA74A@GV2PR04MB12295.eurprd04.prod.outlook.com>
+References: <20260220124243.3264133-1-sanjayembedded@gmail.com>
+ <aZxvWlsrueUgWuOX@casper.infradead.org>
+In-Reply-To: <aZxvWlsrueUgWuOX@casper.infradead.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator:
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+x-ms-reactions: allow
+Content-Type: multipart/alternative;
+	boundary="_000_GV2PR04MB12295091C5D832887CBC4C17EAA74AGV2PR04MB12295eu_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 38FA4A000C
-X-Stat-Signature: rqtwro5g7gsaq4usoiuj7431zy9jy888
-X-HE-Tag: 1771902443-234530
-X-HE-Meta: U2FsdGVkX19mZfwKU+uTA+/zM+jR4uzIlQL1aVkKQHSnCukJuRz2SUPaVL9YB1VoaYdqhDuBESQIR16kNDTXOCUfEw5OuZUnG/dV6IuAZrHI8p1l7LlBX7S+k1yHqdwt7QFqO+l6vCtUtxnVpVyY6hFZC+1Sxq6hklNul73OpUjUpxSutyyV6LvAqrcM1eJjwopxObYZvDokaqR5GmdIWn+zUvOnmYw48lT69vfmgbPQEmO75agHnAmsikAe0MveMT7zz5/+RkYUBhJLL1m4GvgxUriE5az4uFBoMtqYSvxsQiXUgr3+6Mfw6BqFm5FajYJ90OOaa901OL5RT3ygLPooUIzZ48+BIqpcjEwu334OtmIMfSPSoSF8Jovcd25sSej/q84PuTYNtL/U1WIb4j75D2Xw7eqWL1Yh8Ngsk7Mfjm00jlBjkVpk9ma0SeFPIgZ5i2IUDz/5vOQy+ubYdbNFYCiFvIG5GR1VGEgGpvcKhFcZVVI11hGJQJRULTRov35sa2AxWnMnXOiy+dVGgqBNT3BSKmYaYvyBcG73L1UNczMSeT6CJohyNku1MxyHxltqGUFgNdb2WxTd1c2ebBS6irv7CV3JkdsCuqnme25xA1n+43amNFHEoKQwA/H6XcXqDVjpsr35mmIRLlZHtcwryXJQt2VNGkufH8f2NnFxMb7TR4qY15NTsb9fg98bDL2xcOly3Ns1RlXq0mmEhGNb1pyYdn7+jVjw3FpBmrWwcFABLi5Q3/O2hwXhmzI5deB/yqHWpuEGTu7X8HNXx5/mk9eIpKnlR5D9izxXwhoOFj2ogn2i0U8ZU6ZHsujRM8WHIUmr4B/KB9Y53hQpBHV0KaAFgcC1AkN3kgDyUzgTdeeDc+KZ3EQi808QBC4dwg6gfbgKSrQAXt3iQ0PjlrI3qSymtpdfqgd0Wxru4divt8IF3a1uBqjn7hlX4H3JbwrYm+Dw64FevslAJyy
- UNd9hzlr
- zqg4Q1xuVSPYzkhskj+7fflB7vMLcZMuzYB7LXxS/bK3ifVJiTn1YKEXhZxcoAJf0e81/3nRbuXSPLwz9Mjj948Vr8Tx1vf/BoFYNINuvLdICSpl2AesotQgY2D+AtTNlBGoPh6h7WTU0K+mpdJSiLF2lkvL3SrweOFOCoiLD+Riycy3nFJdKTq3YEUjlktIxq3GThDJnch4bfZHqGGClemjRx0ftlyRKPWbRL+imtT35UQL4fxs4rmAu4RC4XnJ51ymJPbj6ywCNjiCcaYFglsCkT2zdRab/06dWfANqBzwEI/rJwYXumrkVlW1tkVRo4HRVlaQoHBPNPmzF0fkAG4MU574mT0UC0vuEw6Kyk09IspNAkA5M7wjuZA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 923E08000D
+X-Stat-Signature: eakzh8ccb1aj4tpcdytknjw8yoibig6q
+X-HE-Tag: 1771902624-773442
+X-HE-Meta: U2FsdGVkX1805f7FGQjHqlmxaFmaTVegb9o+ZWdslgdH8IXU8sdQbAno0AnYFquwwMrP+4WqYu3y4en65aLG572+lyMr+u86H62e2UBHK5cst4Bk+HWfuGBjaBfsLl99l4dycaE5VEAVnTsjl0Xv6EI7/7LsoXfswWANKmgeaeEH1rnwed01x5MTyofQC41QEXgO6fjY2AiJSc8Oc+lx8wi/chQ8Vg40J/iTuMHDLUtAXZtu02CxB57Dpxuxz7ZlofmjVfFFmH3qamdmo9u2Nh41+ZK0PyZ0vK9Eh1SaeRlMQmy1zOiutkDC+McdD+Jghei3JuUWtIXPB1RpxwJdcbQB5a3Rz/3HLOFWJjCXwfFlix7fkSXCr7cNH9Y4+td7WIsUZZZXZAjb4zFyzHCm35kH4wX2jn4fNrZSnhCpz6Psc3pg7g2yOtbcl4JAgb0DV1BlTTKueVwDzN76IDJk1w6jk5uCdIpZHOSlf8Z1SBQUukQvihTXZ7vIKOm4X4qExwzuim1eEa/tu9HPCPjgIzCxi8xf5cx9jilZF5OL1z7cq/Hir6TqQSAX4kPgGqyvjPQk16004ZLQy1GQsZ7VNKcuQS1O/p75ip6SrfvFg2S2M5nUScB5HeaNB3vegH35Gi0NmYhQ2ABmShRNdeYfSdpNi/nB1xll/kwS32vQX+s5dLJqWKm4SQgL7fVGYXMNf8CXtq8SFzaqsV3Ce+1H0gUHeZh7UZE0D0UWfuQz93Z7zazIBPrLprwz3y9ZfksPyHBQ9x/m0JVCIjrR07eVdYWiwVn5cLo4jaKKZ2zhS0DJLaVcvH1eh9sMhIq8HeF4ZJXpjEiJ78FYmbEOworgA04oXCp8A3xgQrJch7dC4ToeEuhDan8gbhKxRRO4+wd58cbjD5VKG/2WnDYYY0OJ7TR3xX23g9tNjwjT10I6gadnU40w8yPEkZAnp/0OPgwaKW9eS+jRhbceRHMQvl2
+ bJz4HkNF
+ x1EqNs3grBVzHTxYcXQSTjxuzz6m75xgQMFAIvjP1h9pM/KoQqGErXYpSHedp0FgBgQCQjIZQUVyyqXfsdglpRW/bMyhPnBi4/JSdRokwC7QfdqZ3PsdnyzCGswJ1ia9pujEsFEAQVfnDfhKVdRwhqsSQ6/HMwrzrAWAHMUpFvdVW6EKBfIVf6MOfLF7RSdOTYP1MHBhSfjQmyPm1RflX5M0wGOOy2DfdPbUeDXO8R/3ycLf3UZSChqzWJrmH8mBM2/1CdnlnqHdIvk8fcNMMIgYRqNi6tcXraFAOr/nfKhOnpzzkggwuWHjMEV2B2mIjyGnD6X5IPhD0By3x51/YiTXQf1VfufiNfXKKilGkglkCtTuZsHxRKMjvkgw2X9qQ0FBkKTMd9xSB1HLbXKoNDl+VazluYTWbHeAoZR9U2AVXiNjq/4l02f071iHlvXnuQuEgXQbrZ69JLlO6MOvXnAKfDm2lNd+8Gm6bW4DoIOuv7Dnv7GGxTBW18/p/Qo/Wd7Malqw+qOvr89LFbQRHYdPKVRApT468aQp3KMYFTfeVa5tYDzt1A8Izc3f+TqXGso6f2biQwQiBR9FqNQPOS/t/gGhGC1Mbv5uuU0/DHEyb5TAEhfABN5wwXa0Zvn13x79n6mwnNXQT6kkPJOB9whOyQdZgtzYoedBm6MkPC/51dqYTosmYUvmsEwV+cS1/U025V37wFvD1Whc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,112 +135,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+--_000_GV2PR04MB12295091C5D832887CBC4C17EAA74AGV2PR04MB12295eu_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-When freeing page tables, we try to batch them. If batch allocation fails
-(GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
-batching.
 
-On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
-tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
-process is unmapping memory. IPI broadcast was reported to hurt RT
-workloads[1].
+> Usually we keep the kernel-doc comment with the > implementation, not wit=
+h
+> the prototype.
 
-tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
-(e.g. GUP-fast) that rely on IRQ disabling. These walkers use
-local_irq_disable(), which is also an RCU read-side critical section.
+I agree with you, Kernel-doc comment should be present with implementation.
+I have observed that multiple kernel-doc comments are there in slab.h with =
+prototype, would you suggest to replace all possible at once ?
+Or with reference to reported warning; we can keep kernel-doc with implemen=
+tation and remove from prototype and rectify commit message to highlight id=
+eal kernel-doc practice along with existing commit details so context would=
+ be better clear and relavent.
 
-This patch introduces tlb_remove_table_sync_rcu() which uses RCU grace
-period (synchronize_rcu()) instead of IPI broadcast. This provides the
-same guarantee as IPI but without disrupting all CPUs. Since batch
-allocation already failed, we are in a way slow path where sleeping is
-acceptable - we are in process context (unmap_region, exit_mmap) with only
-mmap_lock held. might_sleep() will catch any invalid context.
 
-[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
 
-Link: https://lore.kernel.org/linux-mm/20260202150957.GD1282955@noisy.programming.kicks-ass.net/
-Link: https://lore.kernel.org/linux-mm/dfdfeac9-5cd5-46fc-a5c1-9ccf9bd3502a@intel.com/
-Link: https://lore.kernel.org/linux-mm/bc489455-bb18-44dc-8518-ae75abda6bec@kernel.org/
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-v1 -> v2:
-- Wrap synchronize_rcu() in tlb_remove_table_sync_rcu() with proper
-  kerneldoc (per David)
-- Add might_sleep() to make sleeping constraint explicit (per Dave)
-- Clarify this is for synchronization, not memory freeing (per Dave)
-- https://lore.kernel.org/linux-mm/20260223033604.10198-1-lance.yang@linux.dev/
+--_000_GV2PR04MB12295091C5D832887CBC4C17EAA74AGV2PR04MB12295eu_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
- include/asm-generic/tlb.h |  4 ++++
- mm/mmu_gather.c           | 22 +++++++++++++++++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+</head>
+<body>
+<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
+system, Roboto, Arial, Helvetica, sans-serif; font-size: 11pt; color: rgb(3=
+3, 33, 33);">
+<br>
+&gt; Usually we keep the kernel-doc comment with the &gt; implementation, n=
+ot with<br>
+&gt; the prototype.<br>
+</div>
+<div dir=3D"auto" id=3D"mail-editor-reference-message-container">
+<div dir=3D"auto" class=3D"PlainText" style=3D"font-size: 11pt;"><br>
+</div>
+<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
+system, Roboto, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(3=
+3, 33, 33);">
+I agree with you, Kernel-doc comment should be present with implementation.=
+</div>
+<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
+system, Roboto, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(3=
+3, 33, 33);">
+I have observed that multiple kernel-doc comments are there in slab.h with =
+prototype, would you suggest to replace all possible at once ?</div>
+<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
+system, Roboto, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(3=
+3, 33, 33);">
+Or with reference to reported warning; we can keep kernel-doc with implemen=
+tation and remove from prototype and rectify commit message to highlight id=
+eal kernel-doc practice along with existing commit details so context would=
+ be better clear and relavent.</div>
+<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
+system, Roboto, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(3=
+3, 33, 33);">
+<br>
+</div>
+<div dir=3D"auto" style=3D"font-family: Aptos, Aptos_MSFontService, -apple-=
+system, Roboto, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(3=
+3, 33, 33);">
+<br>
+</div>
+</div>
+</body>
+</html>
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 4aeac0c3d3f0..bdcc2778ac64 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -251,6 +251,8 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
- 
- void tlb_remove_table_sync_one(void);
- 
-+void tlb_remove_table_sync_rcu(void);
-+
- #else
- 
- #ifdef tlb_needs_table_invalidate
-@@ -259,6 +261,8 @@ void tlb_remove_table_sync_one(void);
- 
- static inline void tlb_remove_table_sync_one(void) { }
- 
-+static inline void tlb_remove_table_sync_rcu(void) { }
-+
- #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
- 
- 
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index fe5b6a031717..2c6fa8db55df 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -296,6 +296,26 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
- 	call_rcu(&batch->rcu, tlb_remove_table_rcu);
- }
- 
-+/**
-+ * tlb_remove_table_sync_rcu() - synchronize with software page-table walkers
-+ *
-+ * Like tlb_remove_table_sync_one() but uses RCU grace period instead of IPI
-+ * broadcast. Use in slow paths where sleeping is acceptable.
-+ *
-+ * Software/Lockless page-table walkers use local_irq_disable(), which is also
-+ * an RCU read-side critical section. synchronize_rcu() waits for all such
-+ * sections, providing the same guarantee as tlb_remove_table_sync_one() but
-+ * without disrupting all CPUs with IPIs.
-+ *
-+ * Do not use for freeing memory. Use RCU callbacks instead to avoid latency
-+ * spikes. Cannot be called from any atomic context.
-+ */
-+void tlb_remove_table_sync_rcu(void)
-+{
-+	might_sleep();
-+	synchronize_rcu();
-+}
-+
- #else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
- 
- static void tlb_remove_table_free(struct mmu_table_batch *batch)
-@@ -339,7 +359,7 @@ static inline void __tlb_remove_table_one(void *table)
- #else
- static inline void __tlb_remove_table_one(void *table)
- {
--	tlb_remove_table_sync_one();
-+	tlb_remove_table_sync_rcu();
- 	__tlb_remove_table(table);
- }
- #endif /* CONFIG_PT_RECLAIM */
--- 
-2.49.0
-
+--_000_GV2PR04MB12295091C5D832887CBC4C17EAA74AGV2PR04MB12295eu_--
 
