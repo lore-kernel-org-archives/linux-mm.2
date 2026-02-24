@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB888E9B243
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B962FE9B243
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:43:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 102E96B0088; Tue, 24 Feb 2026 04:42:21 -0500 (EST)
+	id 27C416B0088; Tue, 24 Feb 2026 04:43:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0D46B008A; Tue, 24 Feb 2026 04:42:21 -0500 (EST)
+	id 254776B008A; Tue, 24 Feb 2026 04:43:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF54F6B008C; Tue, 24 Feb 2026 04:42:20 -0500 (EST)
+	id 1570F6B008C; Tue, 24 Feb 2026 04:43:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCA126B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:42:20 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 712978BB92
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:42:20 +0000 (UTC)
-X-FDA: 84478859640.06.C80CDA2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 019326B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:43:45 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFD8BC1E05
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:43:45 +0000 (UTC)
+X-FDA: 84478863210.19.2ED9078
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 34CB5120005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:42:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AXG+c0Jz;
-	dkim=pass header.d=redhat.com header.s=google header.b=P8LBZVZU;
-	spf=pass (imf29.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 79EC14000D
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:43:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RAYzSEBu;
+	dkim=pass header.d=redhat.com header.s=google header.b=oQaImNWa;
+	spf=pass (imf27.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771926138;
+	s=arc-20220608; t=1771926223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qFXRiyap5BrRiey8XcKRTLPgUy6tRvIlHZrT7O+t8rM=;
-	b=EWIpNyJKti14cZfDagZZ8lcINU/82D8Lptm1ZvJ0R6nHfnV+g0HIGN0voogbzVXt6RvMq8
-	Flas9GfBojT49LAxGj+v3VPTv2JcQ037GbRMegM3vRJfd5RqZiHG6c8hn+/+Ct7KIAzY62
-	AeUY7ByaDXo6Dh0FDgW/Pw1dCBm5VAQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771926138; a=rsa-sha256;
+	bh=GW7PmuG1ndcDHaBwm6NFGZKZ71cFJAjRs457FXMTnxM=;
+	b=h91W7nRcDJXHtC0lmrYEOJCutQgb+eOkISOoaglNv6aVWua51z8PFwIWL/l5DGtranuzWY
+	+wOZSBx0pL//W9XRDzlkMHxvcPHiVutkf/+1TvLFV+zjyjdazKhpZGpm1QDXHE9GYiDAvA
+	onK+pfgUbjrzjln6FXyjQqRYzOxG2fU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771926223; a=rsa-sha256;
 	cv=none;
-	b=4JVYhxU+NgolHKRvPpUDK7yRK0h+Y9mQ3HvDQhm5+sfX3EQGMupjTc0Cqb31aoB35tlqG/
-	8LzUM45QYupTsR7V7xyVIKt3hQuYyb3k/uoT1Z3FwcQPEQrhysTpx0qbYfrJomKuoszBSx
-	jhfTHziItXhJOeMV2jvUt6KiKUMHGbc=
+	b=5yBsXOaXrV9oXOCofliCKyeI/pRfeFfhDYfrMdQ6QL9ntlTnkdl5RA59Ne5O13ZttcpDOo
+	UFFx7OPoabhC2rFslKDT3vNM28vz8quyIbYs6xt/EpPG1d/nT+MKHnJ7Oe9TW3yxOZJ6MH
+	jz78WuqkQ1iNCmghvKa/dKMMqrpg+HU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AXG+c0Jz;
-	dkim=pass header.d=redhat.com header.s=google header.b=P8LBZVZU;
-	spf=pass (imf29.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RAYzSEBu;
+	dkim=pass header.d=redhat.com header.s=google header.b=oQaImNWa;
+	spf=pass (imf27.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771926137;
+	s=mimecast20190719; t=1771926222;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qFXRiyap5BrRiey8XcKRTLPgUy6tRvIlHZrT7O+t8rM=;
-	b=AXG+c0JzrpIYpVv4X+ilfAWMx3MP2MdQA5AD7kKX1uPg0W33Ms2+sFq8wiwS6bJxTGNEEg
-	h+TtxVhl5bFBrx2lpYO8fcrNi4COu9OFxCtN1eHSD0tND8EF43MDMY/xJRH21kHjvbztOf
-	auDF7VjUqkuxmeCTIVJGVMk9+BtGWg8=
+	bh=GW7PmuG1ndcDHaBwm6NFGZKZ71cFJAjRs457FXMTnxM=;
+	b=RAYzSEBudNaJRBuL3PlbMRjQX9UnKjMaRmF2dJbz5rbB1kPIY+Kh42caLJ1eQSiJ2m/mmM
+	TkgV4OT12+xfF9P9jKyEgewscj+87andWrUHxc/C1Lu3kaPtCwmNX+ypwxU8yx3mPMMWcJ
+	fLScCZ/LNxXeQTYcnhHqPPEsJuSxNHg=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-ZbCVfGoFM4aywcP3scfagQ-1; Tue, 24 Feb 2026 04:42:15 -0500
-X-MC-Unique: ZbCVfGoFM4aywcP3scfagQ-1
-X-Mimecast-MFC-AGG-ID: ZbCVfGoFM4aywcP3scfagQ_1771926134
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4836cc0b38eso6769605e9.2
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:42:15 -0800 (PST)
+ us-mta-660-EvqBQyrZO3GI7dzC10Grlg-1; Tue, 24 Feb 2026 04:43:39 -0500
+X-MC-Unique: EvqBQyrZO3GI7dzC10Grlg-1
+X-Mimecast-MFC-AGG-ID: EvqBQyrZO3GI7dzC10Grlg_1771926219
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4837107e0a9so38766275e9.0
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:43:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1771926134; x=1772530934; darn=kvack.org;
+        d=redhat.com; s=google; t=1771926218; x=1772531018; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qFXRiyap5BrRiey8XcKRTLPgUy6tRvIlHZrT7O+t8rM=;
-        b=P8LBZVZU1lxrp+uRUid+l02MDmanjLewxGThrxM3s8wJCfSIBmhnJQLT2RIw1Y7P4R
-         7hdjxTlMJ4OjD2WHs4hZ8AXgPNAX5sFbYLj+fTt0nx5BSjM8Srv75tJDgp6Jskd3pVqb
-         nGHSJ/P7i5ETJph+auduP51tkbc4RO6lKIyctZdCU3c7MsQ/W0r2j3TbpQ3VKQbshqJ3
-         vIaC5OekXapPg5ksu9M9x/QeFJuO+VWKtQXDXMzUuDY1BXWjOU7RnhtIW95yPlCSXDfM
-         tAO5OxpXsX8B4dirXtk9C1ZSa55hY4AtVTRGWswtIu7HeSx1dfF9855dGyeALM1dSrma
-         jB0g==
+        bh=GW7PmuG1ndcDHaBwm6NFGZKZ71cFJAjRs457FXMTnxM=;
+        b=oQaImNWa48BK8GTueKd3Kb8XmTmKuCYtGcPcPuevm+xXkSk3zir8fe0n7hQ7u35Oxb
+         LT6HHOkRju45GnFwyQ6FtE78IqHtnrwZjN4sXs06sHwXZm11FBs3HwwA7/qzxb1yzAmW
+         j0P8H9cOmP1zX9/+B9oxz4fFFzGpexF9poZxmEHBCiG2vtvTRFMKSLhT9cu6TRTV5GfJ
+         3VVvHFtMBBaAPI67ZNyz4DJPwY4ImS/vi4KFzbDepI5W5ANEztH2AUV2v5h47E0Gl30L
+         VXAqPW12RCdiUnSafXbgXa1ZBLQeTOTiZFFfjM/ayAKwn+q2FooYY/b5V6ML7bpoYx4q
+         NLKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771926134; x=1772530934;
+        d=1e100.net; s=20230601; t=1771926218; x=1772531018;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qFXRiyap5BrRiey8XcKRTLPgUy6tRvIlHZrT7O+t8rM=;
-        b=gMyLFY6/Q+tAoFAdgo2NkFPw7/WiLWNaQQDfbORJBvwiV4KYMZsDoqjVPqEHeL0e/d
-         lcCGhrcqG5Ngt9nUE0sXfaxCfeXdRtV+Q7NCRAphWdDYbSRTBt69QJNF8rdIEsiiwiLq
-         LJJR83gKcRQLm48gKwDYPPhjNAiWsYhemZ/Hgs39XDY+mNfEz52P6Ar54E4DOZZDOvsb
-         EGbntWf/6Z/YOZwgmLlVz2clMOehG0O4KeETwm3QBaNWKffCOaS34bZATEJ7W1nHGAFm
-         ywES7IEyWijDXUj8kXTmJoXZuemjzGyEBh4nKdHZWaENfiW2bSeNF2TWCI8cXhjaGml7
-         9BmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcUqXz37Ikg1GjZ5KBpQpQvD/hlWY1ZoWB7Oo7SWLXcr3lviUMUjde3hu6kbahRfYR1+Y6JW7Tzg==@kvack.org
-X-Gm-Message-State: AOJu0YxuDabG7Mh8RMVNMzgAfIaJP52J2lVKHyserUXPZKCwdj4WNMUR
-	pTqDI+HshzfkskxdhnR7x7nsFXcGioyW9hKytNSIiucX8kpr4NyOEWEqqd/njVK/1ubxU+j6pP/
-	xAt4Ws+es/hGqWcXz/gvQqq+uidPT3nnIOYDstYv/A/CfSdpGLG4A
-X-Gm-Gg: AZuq6aJFJf4NRj/GdKZreadsRrgtwKGKVfdSxgczLxRV5W3Hp7I+UMsl0HGIqAZbfJW
-	CrPbLmBnqDR18mumoCdEYf6zKKVvZNdufH8BRLS5dcZkTa1QNFKf3LyEtlLUZfVVdfNOJnqyD0C
-	+l+7gJpoWJHS/cW3yhNrRpqzy5nY7UAKHi/oiP+CBSA8R86CwpbRdeKhZ2D930fxazZAj5bFRsJ
-	SOhhLA4eG/vUi5yaxbcShSMKwGvwGfmS/c27ccWuZNZC5OYofA8Lyf7/Y4P8q0/jGGlr3LJYKxD
-	73Jkpg0IB0CtRtpUUCiuKeFWOhMwlvAP72wFLycZFsmq0PtoGOZVzr2IJ1sKBrOR4NGIVCboyw=
+        bh=GW7PmuG1ndcDHaBwm6NFGZKZ71cFJAjRs457FXMTnxM=;
+        b=vmGBbE7tuND1DeyC8ANwkJdBh89JvLUdhWKIP2JKobL6toMs5/1FqrVPIsoMnpOmuv
+         kUqPxQAq6zrpFM96SoJFtjhbPUJw3aQRSyy0T7Yup08Fv5urLjFrg0MNBynicRryyuL3
+         wB6HQ2Ifi5J0ciZLFHr/TDNjjfrJ3C4Hc5gJ5rgG1uS2dcrEhGnWQ6qJsTZoeCrIu2L7
+         SLEO2OY8pXYuS3dISjeO6hHfh/3q0eNxxDrCUiLFW68ZI0Ut6HM6jwlWXX3fpXdsPXLK
+         dXqko+j2Q5ClFfMYRQXrfQeJjl7onHtGlwFLnO8dGaDYlHPuZxgvJbByxZdr1zPx5+jG
+         MK8g==
+X-Forwarded-Encrypted: i=1; AJvYcCViAZqX3yzssXrjfyCFe426Qjy1Y7+GR6U9KgmxUAjOg/OlRYLElVtWWrgUCCyLgb1PElJtcsMIcA==@kvack.org
+X-Gm-Message-State: AOJu0YyTuHn3ZYAEcnZNyBQO/nfMkhhDXi5jwE5OXDDDjv1d4N4pOFMT
+	9swIXTIrNOoeAvSEQ8EcrejYJ6oyxc1FKyAKNiKsSwrYE/kDh93NFp8U7MXR1MQ3rG+vOEZHwkD
+	PzS2FqwSxp9uTo34GPQAdBbQDjimRv7SlKP6uODfUbDYlOa94UTkn
+X-Gm-Gg: AZuq6aJki37mVUdAtllRZVwGfnM2B3RloqV73Jw7vbL8q/5PrTsLe07GBzCblvmLXPf
+	u8WRwewo+LisjOYx4FLlYiG3pbxFydDVczq+hv15mgkiUVToOc5AQs3k89DxzdKvqJst0AwefXQ
+	Isdsu8bYEwShoNM19sp2sbmOzUS+hPzwzCWCDBlYggwpbLjcm6lDA6zolQiXvn4uGGkEW6Kj/65
+	yz2SVTmsHX0797mkvsb+hlhHvRHLC+xhc/JXwajIKbTaKk7yYalcG9tib3Bg+Sg87c1lajlmNMo
+	jKJ5PlDF32GJv+gwGzHVE9kuDGfZ4/bdIbpFkLLQYmzAg/QH59YZdtJzhMM0TbMEj1EV6oloPw=
 	=
-X-Received: by 2002:a05:600c:3e05:b0:483:78e1:784 with SMTP id 5b1f17b1804b1-483a95aaeb9mr191397925e9.4.1771926134365;
-        Tue, 24 Feb 2026 01:42:14 -0800 (PST)
-X-Received: by 2002:a05:600c:3e05:b0:483:78e1:784 with SMTP id 5b1f17b1804b1-483a95aaeb9mr191397375e9.4.1771926133815;
-        Tue, 24 Feb 2026 01:42:13 -0800 (PST)
+X-Received: by 2002:a05:600d:8444:20b0:483:afbb:a086 with SMTP id 5b1f17b1804b1-483afbba1e8mr88663335e9.29.1771926218460;
+        Tue, 24 Feb 2026 01:43:38 -0800 (PST)
+X-Received: by 2002:a05:600d:8444:20b0:483:afbb:a086 with SMTP id 5b1f17b1804b1-483afbba1e8mr88662945e9.29.1771926217928;
+        Tue, 24 Feb 2026 01:43:37 -0800 (PST)
 Received: from localhost ([2a01:e0a:b25:f902::ff])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a9b7fddbsm253006935e9.8.2026.02.24.01.42.12
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483b88f9584sm14864105e9.12.2026.02.24.01.43.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 01:42:12 -0800 (PST)
-Date: Tue, 24 Feb 2026 10:42:12 +0100
+        Tue, 24 Feb 2026 01:43:37 -0800 (PST)
+Date: Tue, 24 Feb 2026 10:43:36 +0100
 From: Maxime Ripard <mripard@redhat.com>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Eric Chanudet <echanude@redhat.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: "T.J. Mercier" <tjmercier@google.com>, 
+	Eric Chanudet <echanude@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
@@ -123,22 +123,23 @@ Cc: Eric Chanudet <echanude@redhat.com>,
 	linux-mm@kvack.org, Yosry Ahmed <yosryahmed@google.com>, 
 	Shakeel Butt <shakeel.butt@linux.dev>
 Subject: Re: [PATCH v2 0/3] dma-buf: heaps: cma: enable dmem cgroup accounting
-Message-ID: <20260224-terrestrial-jaguarundi-of-influence-e3ccf1@houat>
+Message-ID: <20260224-solemn-spider-of-serendipity-0d8b94@houat>
 References: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
  <CABdmKX0LpKJ9tw48oQh7=3CF0UR5uFtgo0OMwQhHBB40LnijyQ@mail.gmail.com>
+ <a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="zryjcv333aysdxbr"
+	protocol="application/pgp-signature"; boundary="yylhp6jgdgqsuz5g"
 Content-Disposition: inline
-In-Reply-To: <CABdmKX0LpKJ9tw48oQh7=3CF0UR5uFtgo0OMwQhHBB40LnijyQ@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: areaggcgemduu6x5i6561q6nxykab979
-X-Rspamd-Queue-Id: 34CB5120005
+In-Reply-To: <a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.com>
+X-Rspamd-Queue-Id: 79EC14000D
+X-Stat-Signature: 1cror1fztr7anta88knjrdu1nkhitpdk
 X-Rspam-User: 
-X-HE-Tag: 1771926138-306358
-X-HE-Meta: U2FsdGVkX19/zXk2Fgg3ZQlwtyybgtw9nddK6HAPefZ+cvRnQQfp+9ScV8mU+2zWMpMebTkVur1OcGAYZC9SkiaIW0b7TO6VWkAYlRux4osM/v8B6z6gjOrmHPrVDz1lpHr4WYvxG5MhRjyB9lMPemtRn0E0gjXyRfPwhT/lREQAg4BPLziVojWPgCQ8NR726MGN2jFWpptaxpIUBt0mrr1q0mSGvO7+4mbpxxT0ZzmM/5AVe/bVB1DEZQQJPnB5SH2TrRdxY6ifo0Ng9A8xuEl2SxOzFMwdPZA0jSaN+nPNeFaG15AWU7K56yvK+UUkq09O4aGohoJTrPGZHIooqIzyVY6YeYlOeb+lkfvB6K3EMfHAb9wNbOHQjmMY8thOYrpn9Uzq2s67ORPTzSdkKQPN1adOWcHEz/k1BUD/Aj+wzGNMxlk/+ILwsxnLOTGK7lm2H1Zhc7zRrvXOrnbGoOVdgaDoQMHEXMApV7+1Fh78eae1M0yPbbG1xN4OgzyBLs37YCLdErZwqgsITqJpSj3SRy8s7+NsXBdy2RU0OW47wSlXtCkOuJqHml506BnShhmOan61/DST7hVe9Glq/54ECSql1fvtqJoLMUYdemaZHp5KJhf3Y7IuMiMHGNWFBLevJ3B4jpHi7qU56GthLnoDzedkWcagh6GCZJeATf3M9VELVkQ6YE482JS2ZJbyWTkgnwzjaTMVOvnVH3wwdwv6wfO8uUWqVaVeRd/iPX2lGVBECym7DQnC0Nq36TbeAD8fsENkrfqRCQdjQUDz/lC3fBvm7y1xsd1f74+jXjPHtAIqt3l1qk7dqtuKy3m92h7DgkpZOtFx+0IB9ri9mbNAb6Pnmrupuc6grITWXJcYNynKLpKG/Od/DpansXqaA/cgUF920/vukXeFvbbWF28z8eCcuVvVUtM66mP2tuA9ZsRnffaRqYm3wLpLhgZpzzCUALvJAObvNrpEJUA
- m83j7LMQ
- /P4tdJs0sbXy6CziQ8mmVRjbT9X/MV35waFBahim9comqTvY7Ezc1mwy817NFe/bfy7IMqLdCr8FAWLMtdvLpJGJ1nJp4FcBTIGXt38C18Z5F8baP3STJzjJaG9q0Lp6GHuXpHmxsDbtJNxAkqHgfC0/TZj/R7SKBL7SyHRlflnvzX/irYCm9RgjF5SgLYPquoxrthrmZ9NiD1wnWYCEZ+HV/m+CUC8zEupMCqza3OXsuc6Ph+bdA8ghhK1FTjGMEPcemWc04YE4ZyDIRZvdUohQLTZn4B8myTZb+/ZKu9WI1t5tdJRc1KmTmSyIT7z8MvJgPIjGbcBHqIDLz2I8xXJl5ZUW/b3YQogLwJOkcBveSAklO/cyHvTB2Te9Z6yHGh7BRD2MfdOUWUpVzSAx6ZiVZmIhR/tMX9FCeaop06nkOFeFkFGjuchMvF5HHE1vsPYGW7FbVIs7QnG7uYKUTuZeDXe1p8X3vU+0jqJK6xcEmBtyunjmF9rxXf7wXoJHKliqdZVyXlD+me+VWoUMgJ7Epch46WFJXhpp7
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771926223-529538
+X-HE-Meta: U2FsdGVkX1+02WwSkMn4aoV95I5rmav92lQ9dld2BPBBN2U4w62ipVjImJN1A2+fUK4pUQUEQctaK+4FcNLD6dDF3Y7Z+UHEfQeSlyeaa5B8nzLtszpGByudxLKY4+++N4OgjQjts5O4ejXs1WgLD6FHt6d2wlcd/oL3uOEPdD60gzXM5LsJ01nWkIyiTpGYYlAV0h2nI7ni1tBt994IX1UwVz/bFEHkl6EfgofhMNeoUhljOBrCsreHCffU3QYrzeYhgq+7O/ZmG2u+nozN8Y60DbM9H+1MDSJXK6Ob/W7Ve/qdlrra/uyZKU6n3x+0AdKTKUkZOGU/3jObyX16K7MRMoKjsby+nnaJrxRnmnuSB3av6e2ivj9nI0xi6WcA3+3kjje/5mlta/UOzqy7e9MeD46gEmMZHeFggVb/Mn6+e9xxNPAQzcpUZ0draXc4p3YchfcIF4rOYE4OjbpwdqbVgJ404ZecN+4Zp71I5pXX26NHB9pzDxMtbd9pAPS3vidELMKNasfH1WnYOS4wK6dmeEc337ToqdlJFYQcDwXvwmBnk5X9kSYH1KNjAtGQSFs+DNn6xxGrch0ADtPthR8W+teoJR5H2Fx+vgSrr+8hikVlgzWLB3SYU5+WxVFEjJywrB2JbBRUnV1g2C52id8TPSjRF6MDPaIcMTzLCTLcIAfnqYTzVmpmlM8UfLUAzC6+2/40g4sxDE90p2yl3JUALfiVw5g0IMbmgXNXbIzl/PSbxWDkt9lK7nAks7a35HoNCPc6AWpqZlAuxcVdD/18BXg0CrAHYQfYhNDvpqiSh8nDAc6gM93+jYWW7pQn13hkcpamHOL21LJOe1OmcTcFkAckVKWaLWGiX9mAhIhIgLUvSOjODfFfyOfsenflW1CP/W0m8Pz1wlvRR/5KlIBpGaRpyrfTFJnaqT99zoHkSUZ7KOZWDODOND8lIS5RUgHxM4OgGr0C2p3Ojts
+ uUdqiWpN
+ J8Xm7Fqec/BQvzpaAMflDtJ403BvmraCzGDcczssGOYeHb1d09EDaBIZTSYOAvVULxeUTR1DO1WqG7mOgjHU5uscKZ5b3EFpnIpWGUdVBGaOTJF9Ktsa1F8msb3tet8zRpPdsOKQupnCL+IbNMstLkvONIoJc1TkF63AHdPr3r2EtyGGlXy8LAIybPSUXCuaLM+9HGV/isAq/0cjrpjb5IV45yO95jvHDL9OwWPvn/PoIO3Ed+Hjvc8Ncnv5iymntwSotlLsUPFJq/dvglIIGoWv1BNLqb9VZSVtPcRo/fL/RIM+GDUzmZab8+fuPtzB8by1kboWYlvNIb9qgw6+wU/fq/i2lPgHhOELJO11Z0XQCYh78rRwnrJV2wJF0A0cIjfeqV1FhRjyUsWECvS9KaEvGTgun1B9FXPdBau6BcU8MoM0pSqwC489eFJ44MU0UBLYZWJ6JFuUped4NN++Tf4lTqH5EFt+bMhEJvHzFWj9cPSO4Z4aqEJk06uya3K6F7B6SBQBPCZ0LHQ4w/c0RK4QZC/AvqJMjaAGq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,60 +149,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---zryjcv333aysdxbr
+--yylhp6jgdgqsuz5g
 Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH v2 0/3] dma-buf: heaps: cma: enable dmem cgroup accounting
 MIME-Version: 1.0
 
-Hi TJ,
+Hi Christian,
 
-On Thu, Feb 19, 2026 at 05:14:42PM -0800, T.J. Mercier wrote:
-> On Wed, Feb 18, 2026 at 9:15=E2=80=AFAM Eric Chanudet <echanude@redhat.co=
-m> wrote:
-> > An earlier series[1] from Maxime introduced dmem to the cma allocator in
-> > an attempt to use it generally for dma-buf. Restart from there and apply
-> > the charge in the narrower context of the CMA dma-buf heap instead.
-> >
-> > In line with introducing cgroup to the system heap[2], this behavior is
-> > enabled based on dma_heap.mem_accounting, disabled by default.
-> >
-> > dmem is chosen for CMA heaps as it allows limits to be set for each
-> > region backing each heap. The charge is only put in the dma-buf heap for
-> > now as it guaranties it can be accounted against a userspace process
-> > that requested the allocation.
+On Fri, Feb 20, 2026 at 10:45:08AM +0100, Christian K=C3=B6nig wrote:
+> On 2/20/26 02:14, T.J. Mercier wrote:
+> > On Wed, Feb 18, 2026 at 9:15=E2=80=AFAM Eric Chanudet <echanude@redhat.=
+com> wrote:
+> >=20
+> > Hi Eric,
+> >=20
+> >> An earlier series[1] from Maxime introduced dmem to the cma allocator =
+in
+> >> an attempt to use it generally for dma-buf. Restart from there and app=
+ly
+> >> the charge in the narrower context of the CMA dma-buf heap instead.
+> >>
+> >> In line with introducing cgroup to the system heap[2], this behavior is
+> >> enabled based on dma_heap.mem_accounting, disabled by default.
+> >>
+> >> dmem is chosen for CMA heaps as it allows limits to be set for each
+> >> region backing each heap. The charge is only put in the dma-buf heap f=
+or
+> >> now as it guaranties it can be accounted against a userspace process
+> >> that requested the allocation.
+> >=20
+> > But CMA memory is system memory, and regular (non-CMA) movable
+> > allocations can occur out of these CMA areas. So this splits system
+> > memory accounting between memcg (from [2]) and dmem. If I want to put
+> > a limit on system memory use I have to adjust multiple limits (memcg +
+> > dmems) and know how to divide the total between them all.
+> >=20
+> > How do you envision using this combination of different controllers?
 >=20
-> But CMA memory is system memory, and regular (non-CMA) movable
-> allocations can occur out of these CMA areas. So this splits system
-> memory accounting between memcg (from [2]) and dmem. If I want to put
-> a limit on system memory use I have to adjust multiple limits (memcg +
-> dmems) and know how to divide the total between them all.
+> Yeah we have this problem pretty much everywhere.
 >=20
-> How do you envision using this combination of different controllers?
+> There are both use cases where you want to account device allocations
+> to memcg and when you don't want that.
+>=20
+> From what I know at the moment it would be best if the administrator
+> could say for each dmem if it should account additionally to memcg or
+> not.
+>=20
+> Using module parameters to enable/disable it globally is just a
+> workaround as far as I can see.
 
-I feel like it can be argued either way, and I don't really see a way
-out of supporting both.
-
-Like you pointed out, CMA can indeed be seen as system memory, but it's
-also a limited pool that you might want to place arbitrary limits on
-since, unlike system memory, it can't be reclaimed, will not trigger the
-OOM killer, and more generally is a much more sparse resource.
+That's a pretty good idea! It would indeed be a solution that could
+satisfy everyone (I assume?).
 
 Maxime
 
---zryjcv333aysdxbr
+--yylhp6jgdgqsuz5g
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaZ1ycwAKCRAnX84Zoj2+
-dm9VAX9JuCh6S7GJf/wUUY2RPjeN5/Hr5cmqHNDJmY78HFfnpCUW4mFYqDeZaoeP
-aK99/MkBf0bRStrApFYWF5JgHSK2oeVEEzJ9MxforcaAQ09KVjoG4RckJH53I57/
-PQy+P4+J5A==
-=fLNZ
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaZ1yyAAKCRAnX84Zoj2+
+doacAX9OV+qF5kysBD7VpKcr5kj6qlD3tVyHVcMdeBEkYAtzN36MFGozyNSliCjA
+/lA6uL0BfiAOlFg02H8ElnCXHrx1z+Noa4YFNUJ9SeZZcTsz4JPvSJFejlvUlYrT
+iKqij7gXqQ==
+=qfni
 -----END PGP SIGNATURE-----
 
---zryjcv333aysdxbr--
+--yylhp6jgdgqsuz5g--
 
 
