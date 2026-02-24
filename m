@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DAA5EFB7FB
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE79EFB7FA
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:12:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F18806B008A; Tue, 24 Feb 2026 00:12:37 -0500 (EST)
+	id B5F266B008C; Tue, 24 Feb 2026 00:12:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAF016B008C; Tue, 24 Feb 2026 00:12:37 -0500 (EST)
+	id B36926B0092; Tue, 24 Feb 2026 00:12:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEEF46B0092; Tue, 24 Feb 2026 00:12:37 -0500 (EST)
+	id A97486B0093; Tue, 24 Feb 2026 00:12:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDF176B008A
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:12:37 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68586C17E2
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:12:37 +0000 (UTC)
-X-FDA: 84478179954.16.E8072EE
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 974EA6B008C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:12:42 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5AE368B67B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:12:42 +0000 (UTC)
+X-FDA: 84478180164.27.EC20A11
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C12ABC0007
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:12:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id B866F8000C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:12:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771909960; a=rsa-sha256;
+	cv=none;
+	b=tOmu+NsrTrsMtUxNnSoWXG3TKH5VnhtgqoNEO+7j7r+ORDH9yfesbbyNTIrErFyZOgET9W
+	NqXZxlMFXbfb60aLq7IhdA8rGo1hOXxfXX9lo3Pyr2d7IJq7PKvKBXi3ZNFdSssG0KJfQk
+	c/LsyssXXJ9V17AvGS2cRK9SAxihxpU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771909955;
+	s=arc-20220608; t=1771909960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6CnmJdYzNBH6v1gLDDRgLYkrgcpHli5wtReFHoAMMQI=;
-	b=zQ2eS92kPqiuqH4kGmV1xeMrWZXsh3FVncZDTUaoLOzi9PhS+xDSvxpAA33ZPYSLc8Dk2G
-	if7ECO8St7Dzs+BqK8zslOXOWnHT2w/CF7ULjc8egtV8jezCKZV75ZgljAkAj/5mNfU47W
-	utQtgT3znw8sjIN5pOCU/6uD+AmH7IY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771909955; a=rsa-sha256;
-	cv=none;
-	b=lsGw1Kty+7lfGGpzcJiTp4mWfFz59kxi8Z9x/YIZygQQpPvyBleuUqlqZtDMIaSAKS287R
-	t5YhheK79c01K4YHm+BuhUnC/yDHEWTHxo+ta/ItzVyPCtLDcy+xOYDeTv9bS9je49T+17
-	w8MjeIlI7LX1uZgdjK8ItNEzwjx7OIU=
+	bh=qLhTzKtdbXIm/8qAUkJLODhrMb/B50HEdj961gOEOsw=;
+	b=RRZRoj7pv3lSkvxtK3+tN68RiWzFrWIJFq3oNf6P0sSv7hLqH7kpcPSYppQX/7G/Ii1KlP
+	NL7PetUXrgDgvBi4MhTgNFzPsvit3nQb82QNVfUsaA2cBGGEmCLIUwwlbA8KDrWfCayjSX
+	wHNOG/IR40mSVboibTYX1UbKRpujTXo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3E3B339;
-	Mon, 23 Feb 2026 21:12:28 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7AE95339;
+	Mon, 23 Feb 2026 21:12:33 -0800 (PST)
 Received: from a085714.blr.arm.com (a085714.arm.com [10.164.18.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C4D163F7BD;
-	Mon, 23 Feb 2026 21:12:30 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8FBEC3F7BD;
+	Mon, 23 Feb 2026 21:12:35 -0800 (PST)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -68,22 +68,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC V1 02/16] mm: Add read-write accessors for vm_page_prot
-Date: Tue, 24 Feb 2026 10:41:39 +0530
-Message-ID: <20260224051153.3150613-3-anshuman.khandual@arm.com>
+Subject: [RFC V1 03/16] mm: Replace READ_ONCE() in pud_trans_unstable()
+Date: Tue, 24 Feb 2026 10:41:40 +0530
+Message-ID: <20260224051153.3150613-4-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C12ABC0007
-X-Stat-Signature: 4a7kpw3enj4hi48gmzg8nqtb8mb95bqy
-X-HE-Tag: 1771909955-925715
-X-HE-Meta: U2FsdGVkX18oAYJBEWp1bS+v66bSt/yx6ADlJr+/s4mIy9BMEKEqQGDoMcbh5ZZBV2+KPgRje3kcEcJYTxrYg/n2TK0YJnDqFopIGUj4qm7W/G7GnNCSrZ5fsLTUYi5QRRWTXT4GI7cQSaoDT7rkXl9qLcvyVwJCEzMA5/4l5BQ8HuPsg/JF7cPPkdOz6v6JDZHTQHLxXzzn2Ualg6eR8pcqidGZi7po13lm1+9R3ZpNh1HL0ztmO3tokcy8Te6Qwy1FGx9p6ky+rtpzOx39PhyTCzrC0DRN+6dpyiDVRTb0UqfkyBZEVuHi/yIQFg6tNcZuoQONDy5cm2lJwTJN7NKNdO2Ko5gmqGGrRd0vKRN6RsUae4BdqlPnD4HdBz5ZgNQZzGHCJJLOtgBlq0YVq/K2Ploii1kn2OSJV6AB133eJFLxBVebe4/M3SO/Dc9wAah3SgJfOnV5gQnm1M3VXDfAjli1mQNR9cHdTtkjGGfuuh5wzKD/iGXak39OJM8RHwkBiAQ0rLsW9H0UFqULC+Es78VncOyd8z+LxGSd3qinUO2LjMjILaEK+TmSyuUMnJwhTM/V256ZaijJz7ykwE6laVd9eG6LzEz5BqHUb4dqDP1DCuQ1fdgp/n1vH9wu3vSdFRQUVRj+W8wW54usFf94euGtfF9twTkj+Wtid9obLJEyI0ts5COdbE1PMfnpP354kRxrq8j+xaLauXV0AXLhokGEMQEMgYfl8HWCgPoYb35bCXWZKuOJ8EBVChHco0qeVgbQCWbfm+1MJPdFDV+rHepuZTqSJ2S94NLxWS8UZSFVT7wP1wUyItfLguQEinsv17gA63yKQdu/GSQY2DNGnkm51tVisYc6+UgclIWtTNOgvP+USvoxnnndpvZdWfhTzzKX+m6Q7x6Lxs1KdxzBKDLTJPdJSQkZ+gBLREfNUmcy+f4Lgt2AouPB/s3KZDt4P1aBQTgG65csQM8
- LKCpS2mY
- OJFNqLfKf7ysXXpzPUb5g6+3XkjeAtueYDNmKdXX8ypOhPtxLYlH0tg79PZoMH5tLe4QhKsY3yEMeJg7IRbzMuTdwQxdlA9tsG6axsqV51agpoTLWhqCvGU8ZvnXef7fSLv3r9srq0bezQx2pvwu2IlGz0XsfrYLTOXPLzdimu9Y5/WPb9IW0iLQeabQqEMEiGC11jZLxep9OkIc6KBXjehch/F7Lj4cCbaNxus6oksG9Gn+oFmDfdmHob38Ulq8G6socQl4rjogRtY4IZFgCvmNM0Q1eQ3+KMWqIavV3yvrum5ijZu2IElI7IIHuHEp75F/fTgCYzxwtyMsDXk8wISx47jPg1KEsaak2AIjENrQhc1uBYaFYhKD1Y7yfWaqQsO4cAHGSl63nJLrkKrjymSkPYA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B866F8000C
+X-Stat-Signature: x65oazu95fsao1g5dyb4gnayzynxhje3
+X-HE-Tag: 1771909960-75363
+X-HE-Meta: U2FsdGVkX18hJbf0S9v/jJ5hGHUoMRrDUivqBg5OgREodi7lzD70d/3Yu7IXcKI+V7EPJIMB+ssDF4SFXcJ9K2fBl9yC4zkhvZK6ascpQwl4lk6fOIOJmNN7Lx/QETbHsK+OkFpK6WYZKCGj14Y7L8QjhU0Baty1WEoAEsPj7WcFs0RdZnkEHbUAKjLt6Q8STmD3pjlI2rlreyuxqXoKtiB6GjeHfodSwEIruQMWw4pLKtQwwz4vXwC/hB7gVR67hnhv/iwAhBphN0zr/7psVjUp6Rq2xXF+W9XJdWsbXVGu+rz0n+EYzoByP4XN+6uibbD6hg1U5KeKHHB8suNFFx+0p7FjAbfXcIP0I9KwFPItozG+6OrvIa2Y3+Xj9fty18o1XLv/GLCz8Qgt47N4jtn+ivKT4cDvz8H81OWu9ABjne8o9GBOSn3/H8gMlxCfjQVRBguDLwJCRIhn2dSA5bPHsGt1U/hy+FJv14ju+N08/fIKlw7VVYssYVBejPeRHx7nXnqizyZ8EH1fZvhcqQ5cvhhnsBLWNeVZnsbMRTbX9Tc/JrXiXwVwPRvEU9J9Cn2Zy3pmALf/gzzVgZxNKYuHvhBEMuubAmUPSHiwe2Khzwi/M1PnhIgpI4Xp4SnEmfL4lu+tBS0brUC9WCE8BTqaZW7FwOq8hbBYJFEMt9HkUGMlCFDI6BBhArJxFGRNfzhJBOMSKR79HQ6LoqqFLtPm/AhBoEMK1g62cGEILC3SzbM2YQ8daVe8XeeZRJQYxYEk4giZDuwQd6Om9jHj48Mk1xFvfPne/3j49by4tHfGF62s8S2cedaKyLiS3TptISIRzRUj6rwRuWit5Sr2DdGY4OM2777Z5SaO0f7DpLwF3FMs92rL22zQJHGb033uAhEFJxqDuRHqOgyhF0FRj5RfZRa6zruCoEV5M+pTvNikp14LtPvgb/6cRYy3qEsQfhl817/Hno5HkC7HrTU
+ Iql80WzB
+ GMzqcWqf2qCRoNGW3d5SO4i3b02wkdSu0IHDNLTNyGR81KUxoYuZ3a3RkLneMTQswAjv+4GwVQj+OAAu8mwGGAqk17+FLGmPUoxzQ8JvAfmD0dOA0toICd2tLxyUhHlVNvDSgV1dHi2WPfNa3BXPrOJG4JaFP3jCY/49sUwX7JzPsKKPx8qqyIENj/T2c/gXRC7J80d03BXSVhrEyZFAHUo3dhXyC9PoI/iW7PdRrM/NJ4uOsI4oex1O8u2+SsBtTqvdLpwN9CvhinI8rEVjv21TMzWJyzzGrpixqr4rx8D2MoG+20TCgaBrK4Kof6Vkn5NThM83FR2A8LwDjiJ3evM+5Hvl0HaNL8TXTDSrRQ+pyuMUSN3nbOh03wyyPlJeva4ilxAYlLP5nFf2+6UhQGTZSmg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,14 +92,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently vma->vm_page_prot is safely read from and written to, without any
-locks with READ_ONCE() and WRITE_ONCE(). But with introduction of D128 page
-tables on arm64 platform, vm_page_prot grows to 128 bits which can't safely
-be handled with READ_ONCE() and WRITE_ONCE().
-
-Add read and write accessors for vm_page_prot like pgprot_read/write_once()
-which any platform can override when required, although still defaulting as
-READ_ONCE() and WRITE_ONCE(), thus preserving the functionality for others.
+Replace READ_ONCE() with the existing standard page table accessor for PUD
+aka pudp_get() in pud_trans_unstable(). This does not create any functional
+change for platforms that do not override pudp_get(), which still defaults
+to READ_ONCE().
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>
@@ -109,99 +105,22 @@ Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- include/linux/pgtable.h | 14 ++++++++++++++
- mm/huge_memory.c        |  4 ++--
- mm/memory.c             |  2 +-
- mm/migrate.c            |  2 +-
- mm/mmap.c               |  2 +-
- 5 files changed, 19 insertions(+), 5 deletions(-)
+ include/linux/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index da17139a1279..8858b8b03a02 100644
+index 8858b8b03a02..397a0cd99ebd 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -495,6 +495,20 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
- }
- #endif
+@@ -2008,7 +2008,7 @@ static inline int pud_trans_unstable(pud_t *pud)
+ {
+ #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
+ 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-	pud_t pudval = READ_ONCE(*pud);
++	pud_t pudval = pudp_get(pud);
  
-+#ifndef pgprot_read_once
-+static inline pgprot_t pgprot_read_once(pgprot_t *prot)
-+{
-+	return READ_ONCE(*prot);
-+}
-+#endif
-+
-+#ifndef pgprot_write_once
-+static inline void pgprot_write_once(pgprot_t *prot, pgprot_t val)
-+{
-+	WRITE_ONCE(*prot, val);
-+}
-+#endif
-+
- #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
- static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
- 					    unsigned long address,
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index d4ca8cfd7f9d..0d9d6569367e 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3233,7 +3233,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 	} else {
- 		pte_t entry;
- 
--		entry = mk_pte(page, READ_ONCE(vma->vm_page_prot));
-+		entry = mk_pte(page, pgprot_read_once(&vma->vm_page_prot));
- 		if (write)
- 			entry = pte_mkwrite(entry, vma);
- 		if (!young)
-@@ -4918,7 +4918,7 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 
- 	entry = softleaf_from_pmd(*pvmw->pmd);
- 	folio_get(folio);
--	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
-+	pmde = folio_mk_pmd(folio, pgprot_read_once(&vma->vm_page_prot));
- 
- 	if (pmd_swp_soft_dirty(*pvmw->pmd))
- 		pmde = pmd_mksoft_dirty(pmde);
-diff --git a/mm/memory.c b/mm/memory.c
-index cfc3077fc52f..2d99c9212883 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -895,7 +895,7 @@ static void restore_exclusive_pte(struct vm_area_struct *vma,
- 
- 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
- 
--	pte = pte_mkold(mk_pte(page, READ_ONCE(vma->vm_page_prot)));
-+	pte = pte_mkold(mk_pte(page, pgprot_read_once(&vma->vm_page_prot)));
- 	if (pte_swp_soft_dirty(orig_pte))
- 		pte = pte_mksoft_dirty(pte);
- 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 1bf2cf8c44dd..9db1e6ed9042 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -377,7 +377,7 @@ static bool remove_migration_pte(struct folio *folio,
- 			continue;
- 
- 		folio_get(folio);
--		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-+		pte = mk_pte(new, pgprot_read_once(&vma->vm_page_prot));
- 
- 		entry = softleaf_from_pte(old_pte);
- 		if (!softleaf_is_migration_young(entry))
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 843160946aa5..af6870115a9d 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -89,7 +89,7 @@ void vma_set_page_prot(struct vm_area_struct *vma)
- 		vm_page_prot = vm_pgprot_modify(vm_page_prot, vm_flags);
- 	}
- 	/* remove_protection_ptes reads vma->vm_page_prot without mmap_lock */
--	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
-+	pgprot_write_once(&vma->vm_page_prot, vm_page_prot);
- }
- 
- /*
+ 	if (pud_none(pudval) || pud_trans_huge(pudval))
+ 		return 1;
 -- 
 2.43.0
 
