@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6CDAEC112B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A08EC1133
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F08D6B008A; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
+	id 688486B0089; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B7696B0092; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
+	id 633246B008C; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28FBD6B008C; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
+	id 4AD1D6B0093; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 157316B0089
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A96F6B0089
 	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:56:34 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B43C01C39B
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4DB758CA9
 	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:33 +0000 (UTC)
-X-FDA: 84477685866.19.FF3A15F
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8C9EC80003
+X-FDA: 84477685866.23.B5A1D7A
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6E338100002
 	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=r2dEz0LG;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nqMyR9g2;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898192; a=rsa-sha256;
+	cv=none;
+	b=z9GtDYhS4AeQhbpx13uNiM+txeD0GBGSU+pLvGGsUecEwO9i02Ljm19KhiXRh0oCqcQaH7
+	DYG5u+Oza7+E8gPwi0vLMmspGtbFJ79D61QQ+tZ5i02CqRRhZb+AayOvh9L1om/J03dKCk
+	Jp0uzHB4Fdkw2ALxXMANzX7mZIMLC6U=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nqMyR9g2;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1771898192;
@@ -34,28 +44,18 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5/IX7vo5n7nkNpK4VJsc92/3nwHLcPZ/ZOCy2a+g4eA=;
-	b=007OP2/SexNBcA8PTVYHxlfq5Fsi3trtc65tVyM3yPaWRNmMgV7O9a87LwKg4AfMse890Y
-	os0QC05Y2gEvkIaPVzgesemfnIHyxsdgmddOKGyLUbu2M6uakflWXGe6HbTa2ecxwtMahr
-	n7p3iqULxeKbSLaCNZuXpIOhRmuJclU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=r2dEz0LG;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898192; a=rsa-sha256;
-	cv=none;
-	b=fy/IvmQM2/qIwS3oM5y6hOxYPxX4dhWMbKNdRU1FGYP0wLBnrK2bjnbrcIXkNiOWPKO5Of
-	F+0EVAdAXXZ3BjxF4ZK2QvsK5bu9RqpWotvWLG1jBpYFrl7p9xlRwa1uX0VgNltJYGwxpd
-	n5MuC7h0QW46480R9qZnq9lsR8ieOpM=
+	bh=5kr4nT2BT8PGK/D1Q43aMJ3TWsyAUzb25RqrNR5DsqQ=;
+	b=ouMc7JgqJ9VaC+vGIBUh4AARSAfCCPMrGAt1sLU1eUKXMUKmRMHa+pj9JDjwtW5M+/NAs9
+	rZZ7/6NSJIBiBcsdkKSeSYvGW7Od2PV7dpqmWfFeTpZ+W5fhNMf9D6Ch27zlbtRBQTDeXE
+	Kifc53uu3OGGv3j/IcTekQGJZNIyzbE=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1771898186; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=5/IX7vo5n7nkNpK4VJsc92/3nwHLcPZ/ZOCy2a+g4eA=;
-	b=r2dEz0LGrR0beWHBtnVONVfP/E+jM/7OPxe/jK8TAbPv5oVjr1HgeSbsR+rhOn13XMB7vFyOvrPb8wF3Q7xe+8TaSa11t0xdLDAUCzNHNyEoHiWlwPdOIvmn9/pULvKVl8x79WA3YnfK6AAQl88qcvMQMFAW6TbAXbCEvzj+HAs=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzhrds-_1771898183 cluster:ay36)
+	bh=5kr4nT2BT8PGK/D1Q43aMJ3TWsyAUzb25RqrNR5DsqQ=;
+	b=nqMyR9g2+ZxnqKu0j6vojLAf4GhDwioR29jfqRoafJgaicLTmTBSHHH363E7W8OjNqZVAsq7H0v4JY9jeLVyy8LPAk11JooeQb3EqXezM4IM4LZarN42mkfYxxEr9nztde1uN3HXZNTQMseKW1K3e0+7LjP0cHeujjfFHsjmKJ4=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzhpS27_1771898184 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 24 Feb 2026 09:56:23 +0800
+          Tue, 24 Feb 2026 09:56:25 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -84,22 +84,22 @@ Cc: catalin.marinas@arm.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] mm: use inline helper functions instead of ugly macros
-Date: Tue, 24 Feb 2026 09:56:04 +0800
-Message-ID: <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH 2/5] mm: rmap: add a ZONE_DEVICE folio warning in folio_referenced()
+Date: Tue, 24 Feb 2026 09:56:05 +0800
+Message-ID: <e91eaa86a6fbb0682b4e308082048c688a57c035.1771897150.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
 References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6E338100002
+X-Stat-Signature: 56b555tsj6ncro6hp7opxn3edpuen7fr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8C9EC80003
-X-Stat-Signature: niqweue83ph4hmrk83bbhk1hdijmjz35
-X-HE-Tag: 1771898191-636010
-X-HE-Meta: U2FsdGVkX19/f7A5YEhFP55QA1jbyJ2gRsYG74udYkHPb5ueAFE9u4cBGu8tT94Z5qEsfyivRKZGHJ/UFWcmeAUEDbahTvhYA5BHU0kvHTn3La/W8xj/CBNyuOU27gsVtwQ7G+NMYue5dq3ysZe40xo2TS95hS056DZX92hTjqAFnZ5yi06jzItIDi8SKCGSU6Zsopa4vCxwEYhabDa6it+4++EVkAkEBWvlwJc8aPS1ssa0V1NGAR3f5iksjvQgDqcmYYbuyKSvcBF9e+299M2uU5n+t16ALOhGDIl7oYEhJ4eddTqE+JQjxvR4XGQJ/FyZT+uDaGV+X58hxfE3hFF2LrN5fTwORunlFv7mO3aB956+hbrEzSB45Id5EDu2ZZtnbxWEHb0IBXCcVZMTMKc/WX+PwHoqUuOH27LbIaV/9VezymoLEC0B4Nn8xqmPKfr4ceXHOqPBJWaF4zK2e1FWC4TMWkUoj4+yg+WUljCSIKPARXrUp23g6jPat3ARg4BdYXYAC5ZPlkjOZeoaNTyjRbcYPH6CVk4CEI8wfP7yiW9kaCDo3JzWic3xr4XJLmuVq69TMAGG3dou4/DHScMQ4VnNJH6jCgY7imSyvwt7t8t69L33gdNScn1saLX6qR2xKl6/9gX/7z+hmYS9X1bE2GtANu0Nk+Bp0uL3/yO2ghMHqXudo7w4927i0UDDxIm/3Hbzy7abYWJelRCga6TkSd46irbdrqqJJODtMiZ29Rnv4nuGvfPhjw4sMx/ogK4gR8KTAFfs8A4wU0v2tBgt5nBFS29qVuumFPRVTyAjv0DhEGIri3nak+0iDwdR+QkSjbdmHkiIRj+4sqjW3MVXCKLG6pxA/4w/f4S9poCGX0Tr9VXvvB8aFMKqNqx3bw073JJeoxr217tNncY0nLSqrIxyEJ68QElbiVjbG10IqB3zfTBzs6zWqCc8/uSV0Jj2UMfPzOHd/V9YdIo
- OIt6Iv95
- UzZitNzRDo2tHi3QkFa08kv96w+o1YpeKxsQLTZ3OMeQrcYtlb5ob75oxvYZe7xS3N80PjoKJt+DvnNhaATGr4mQjdyZ6MkQSqRoC72OQgvDtvAWVQ+Y5dp5tcIgQ3cW2RFsBUS8UEl6wCPCMsX//z45l1sZK8vZOiw0Nkh2sAgf185V7VjIOkV5nXVdVVobxmbK+6M53VpTL6wvPrMruxiKQEbuy7vudbqZvlF1rwvcvAQYvHlT0IcOkrpMEE8zUXv5PoD7fwQWSS5eRC3y9t/rc+HybRVFz9wVOMoZqTAa6RVZ9+ygKUDaTjmiMrFYiPXQN
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771898191-834108
+X-HE-Meta: U2FsdGVkX1+v6JquaknxmxsTGcwnSf9gOcKN4LrtNGbdzvEJXelfet4o18CPdlbagEHP4jPN2ULDG04Dj5r2mMcDRWuUgXBvf8Tv68Y1wbK1B7GBmiDgiYjArJ+6+jEPT5luxUYXifQAvd9pI+M8rGAmfQWhGf3Rjn1+CwuH56e34YVEUqsCoz2ilWF5q+ljRrh4my7ciECY5xG+VGyZ4ZoyUE/hFd8ObtMJ/FPcarvCHswfq9reB5Wq9vgnjrJpVfGOZP7kHTsMB087x6XCxOh/zuZP6WF4go+T4IHOSWiKyQnaWAHzVU+SlIcDXf0+6Xsfdw6KuqNWDGDFD+HLEoJG2FIA66qqVjj1+xLYCCMh/iOT+bdpRkKHTdlPUbKquKf85ryiox5whl0hFjhvRAhHqUL5kWSi9hL3sKdsPGITNSVXH/rXBUVQQZ2nPxoHMmwipJ/kFu9PlkyYbM4ZBhfAOswySYP6fXem5xbhmxIiTDrbtzPcQE+kNvZogd9L2FgFusq20X/d2vM7vvsjju1YXDIVIcLCXGeYVhMCi/0Wa331Q4dxGsd6W+RIdh3YqlvhyA6Z+fF5fICulLCYMgYLKL7COycUumdhYtUcQ6hIkaKH6QRL0RPRfZ0M9o4n+KKuFJOWuaJg15j2E85Mo1QtiBlkdqViNwZFdscrk3zzCgnlXGG4e24sZCHni44iJxallTcpLbXi2r0UnmJ3YywajYOIQOtKM2Qghha0TPsUqZiZAIPDlgBK6+XVbeQ3UvC6EP+2fy3yMXSw222ZSZaFA66cwxUkbXzJ+97jazxZnEZi5kJKTSGwQCsR+fVxcRkcvBif3uHOQObBfHUC7Vtz66YJo62clbWviOE7WOEsI2gkOGVDu+UWJIh6GCUa5fH7X9Zy1srK0WjCl59MhyH6E5lk2br5V8W4G5kgBCXtJnRHEfc5uKX+ysca6w5uU7AILPCphX6uT7pPhbP
+ ChN/Sxfu
+ P1V6SkOjC/xrzpKXoj5QZA8b8tThVHP8hxvL0su4krbenFtvAVXWZ5MaVmK5RkKvUcUOm8pgGO9l9YH95vyh4gr8KhKmeTWAKeoW0tX0QTIL6fE3xwdwpdEnDj9ZxLvB0YyZ9m1D74idIfZ4FkDb2km/+OzqRhzZucnEMR5rrzLAbAscfF3OaHOrBPSxuUUyFhDULnXRUNO5R15hYx2Afq7g4xuViaCsYhIhSSE3HJv5Z4tdjrPqJ6NrL5f8Rqw/BGJJs/vFQu/FflRbuh/B25gT5Spax63qb2ipGW57ZDKTadjPwgD0NC53YXUTqkZHVPkOmsDKewgs+QPflSK+kXUlq+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,163 +108,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-People have already complained that these *_clear_young_notify() related
-macros are very ugly, so let's use inline helpers to make them more readable.
+The folio_referenced() is used to test whether a folio was referenced during
+reclaim. Moreover, ZONE_DEVICE folios are controlled by their device driver,
+have a lifetime tied to that driver, and are never placed on the LRU list.
+That means we should never try to reclaim ZONE_DEVICE folios, so add a warning
+to catch this unexpected behavior in folio_referenced() to avoid confusion,
+as discussed in the previous thread[1].
 
-In addition, I cannot implement these inline helper functions in the
-mmu_notifier.h file, because some arch-specific files will include the
-mmu_notifier.h, which introduces header compilation dependencies and causes
-build errors (e.g., arch/arm64/include/asm/tlbflush.h). Moreover, since
-these functions are only used in the mm, implementing these inline helpers
-in the mm/internal.h header seems reasonable.
-
+[1] https://lore.kernel.org/all/16fb7985-ec0f-4b56-91e7-404c5114f899@kernel.org/
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- include/linux/mmu_notifier.h | 54 ------------------------------------
- mm/internal.h                | 53 +++++++++++++++++++++++++++++++++++
- 2 files changed, 53 insertions(+), 54 deletions(-)
+ mm/rmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index 07a2bbaf86e9..93894b90c8c1 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -515,55 +515,6 @@ static inline void mmu_notifier_range_init_owner(
- 	range->owner = owner;
- }
+diff --git a/mm/rmap.c b/mm/rmap.c
+index bff8f222004e..be785dfc9336 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1065,6 +1065,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+ 		.invalid_vma = invalid_folio_referenced_vma,
+ 	};
  
--#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
--({									\
--	int __young;							\
--	struct vm_area_struct *___vma = __vma;				\
--	unsigned long ___address = __address;				\
--	unsigned int ___nr = __nr;					\
--	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
--	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
--						  ___address,		\
--						  ___address +		\
--						  ___nr * PAGE_SIZE);	\
--	__young;							\
--})
--
--#define pmdp_clear_flush_young_notify(__vma, __address, __pmdp)		\
--({									\
--	int __young;							\
--	struct vm_area_struct *___vma = __vma;				\
--	unsigned long ___address = __address;				\
--	__young = pmdp_clear_flush_young(___vma, ___address, __pmdp);	\
--	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
--						  ___address,		\
--						  ___address +		\
--							PMD_SIZE);	\
--	__young;							\
--})
--
--#define ptep_clear_young_notify(__vma, __address, __ptep)		\
--({									\
--	int __young;							\
--	struct vm_area_struct *___vma = __vma;				\
--	unsigned long ___address = __address;				\
--	__young = ptep_test_and_clear_young(___vma, ___address, __ptep);\
--	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
--					    ___address + PAGE_SIZE);	\
--	__young;							\
--})
--
--#define pmdp_clear_young_notify(__vma, __address, __pmdp)		\
--({									\
--	int __young;							\
--	struct vm_area_struct *___vma = __vma;				\
--	unsigned long ___address = __address;				\
--	__young = pmdp_test_and_clear_young(___vma, ___address, __pmdp);\
--	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
--					    ___address + PMD_SIZE);	\
--	__young;							\
--})
--
- #else /* CONFIG_MMU_NOTIFIER */
- 
- struct mmu_notifier_range {
-@@ -651,11 +602,6 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
- 
- #define mmu_notifier_range_update_to_read_only(r) false
- 
--#define clear_flush_young_ptes_notify clear_flush_young_ptes
--#define pmdp_clear_flush_young_notify pmdp_clear_flush_young
--#define ptep_clear_young_notify ptep_test_and_clear_young
--#define pmdp_clear_young_notify pmdp_test_and_clear_young
--
- static inline void mmu_notifier_synchronize(void)
- {
- }
-diff --git a/mm/internal.h b/mm/internal.h
-index e0ef192b0be3..1ba175b8d4f1 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -11,6 +11,7 @@
- #include <linux/khugepaged.h>
- #include <linux/mm.h>
- #include <linux/mm_inline.h>
-+#include <linux/mmu_notifier.h>
- #include <linux/pagemap.h>
- #include <linux/pagewalk.h>
- #include <linux/rmap.h>
-@@ -1789,4 +1790,56 @@ static inline int io_remap_pfn_range_complete(struct vm_area_struct *vma,
- 	return remap_pfn_range_complete(vma, addr, pfn, size, prot);
- }
- 
-+#ifdef CONFIG_MMU_NOTIFIER
-+static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
-+						unsigned long addr, pte_t *ptep,
-+						unsigned int nr)
-+{
-+	int young;
-+
-+	young = clear_flush_young_ptes(vma, addr, ptep, nr);
-+	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
-+						addr + nr * PAGE_SIZE);
-+	return young;
-+}
-+
-+static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
-+						unsigned long addr, pmd_t *pmdp)
-+{
-+	int young;
-+
-+	young = pmdp_clear_flush_young(vma, addr, pmdp);
-+	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr, addr + PMD_SIZE);
-+	return young;
-+}
-+
-+static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
-+					  unsigned long addr, pte_t *ptep)
-+{
-+	int young;
-+
-+	young = ptep_test_and_clear_young(vma, addr, ptep);
-+	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
-+	return young;
-+}
-+
-+static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
-+					  unsigned long addr, pmd_t *pmdp)
-+{
-+	int young;
-+
-+	young = pmdp_test_and_clear_young(vma, addr, pmdp);
-+	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
-+	return young;
-+}
-+
-+#else /* CONFIG_MMU_NOTIFIER */
-+
-+#define clear_flush_young_ptes_notify	clear_flush_young_ptes
-+#define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
-+#define ptep_clear_young_notify	ptep_test_and_clear_young
-+#define pmdp_clear_young_notify	pmdp_test_and_clear_young
-+
-+#endif /* CONFIG_MMU_NOTIFIER */
-+
- #endif	/* __MM_INTERNAL_H */
++	VM_WARN_ON_FOLIO(folio_is_zone_device(folio), folio);
+ 	*vm_flags = 0;
+ 	if (!pra.mapcount)
+ 		return 0;
 -- 
 2.47.3
 
