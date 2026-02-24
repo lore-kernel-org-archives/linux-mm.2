@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13EDCE9B245
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9FE8E9B248
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EB726B0088; Tue, 24 Feb 2026 04:53:53 -0500 (EST)
+	id 348CB6B0088; Tue, 24 Feb 2026 04:56:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56EB86B0089; Tue, 24 Feb 2026 04:53:53 -0500 (EST)
+	id 2F6496B0089; Tue, 24 Feb 2026 04:56:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4845E6B008A; Tue, 24 Feb 2026 04:53:53 -0500 (EST)
+	id 1CE026B008A; Tue, 24 Feb 2026 04:56:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 325DC6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:53:53 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D73B01C3F4
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:53:52 +0000 (UTC)
-X-FDA: 84478888704.02.6415F31
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3BF49C0005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:53:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZhbfiEy6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771926831; a=rsa-sha256;
-	cv=none;
-	b=l7LXoQb7+0SJWgiFqxBLU6v5vA+fiElAxNsqsThvKqrzBaWLFIhhvCLM1aS0W77ymh0OMQ
-	LcfjusOJHg3LlJmA9c8dPB5RBMaD20moFqupicXdyg7z4sB+hX2luiCqIghrHVyu3qb7zv
-	SzP0JJwfdSZIE9aELKkE0jl1bIrU4BQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZhbfiEy6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 076206B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:56:26 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A16061C560
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:56:25 +0000 (UTC)
+X-FDA: 84478895130.21.448A243
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1881F1A0002
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:56:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kklVnf5U;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771926831;
+	s=arc-20220608; t=1771926984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7SBxP4HKY2Hrtzl0yHvjoiYsW/u5QB397Jjw9XWqAQ=;
-	b=F9mFHjGzfSE4ZL13J7LxfjTHRgt6RfGEyZ+8eT/q6+b/q0cUEFjqXMAURcv8pB7EfY1+Ig
-	Vzh5QNLGtmnF8QkkfD9Q1Jw3nC+m++NqxUARimc1GQvsV5BNG2Dn79ncp9oSXNau3rtpXv
-	iwXJfX7yPs9dmODhUQwdF9tSvNnv4W0=
+	bh=+J/nfHAwLJIj12vEQKINU2E0xiPLAx7XDfHih55tjpM=;
+	b=Vq4MggK1Smk/YoofKatTv92Sh7nRF/vyKYoZtsXExX3TKJE89V+grxrbrZpwhMiO9r7rpa
+	8BPPwhobyvj2v/QMHXZdgoXoTvUopbdOGVEyKGKt8Tv5y3bLayspDCkdRMtqohIHxqcqhp
+	YS+bcsWYw5QQmoBNAf3hnN38b+edH4k=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kklVnf5U;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771926984; a=rsa-sha256;
+	cv=none;
+	b=wqcWi++GTA8h+WEtEiLHJPoIjR6J6Cg1YSlab7SlSdjyybXYbnodrh45UwSwjp6Xw70jrN
+	NJzOPSS6BnDDGKfgLdJe4Ow7flcEp2KCFZ84iWhhu94LZOTOCFtcwlRAubvNPA/yvsU/52
+	wiKSkZbjC5AK01RE76Ty/bAe2I/iaGg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 54FCB40C4A;
-	Tue, 24 Feb 2026 09:53:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292E7C116D0;
-	Tue, 24 Feb 2026 09:53:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F6FB6132B;
+	Tue, 24 Feb 2026 09:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C49C116D0;
+	Tue, 24 Feb 2026 09:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771926830;
-	bh=r7eHhH2PfG5WZuFexz3hpA8FZFXdMilcr/EoFqc7eI4=;
+	s=k20201202; t=1771926983;
+	bh=K3RDjAlZowo+4rYvPnOOa5kXWHplgjhbrLLqCtnsTA0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZhbfiEy6gxAbMMC5gQAl8nQMiG1ZfhDqZvjCWmBDhYebQHskLcLix/joSge4RXZbK
-	 TlruXp01XKOQKUi7btZZj6jI4t7TivvALbCIwgmiSfVsiKDiOeaLF2RCG+WMVEzVx0
-	 ehCsE+SR2qKI1icKwegdje4HpM326V61a0vODhnm+5oS/dO/fUgLQZP0XK92xOmeDr
-	 Sh/oUd24MLkkHgCGgcqvCicXygmoZT/LLNHxZe2anEfjfJNJgz3KTNGWhinOigT7Lf
-	 /Y84R4XjZXxVAIEQxX336X6niiGiVFR1eZNg2Vv/uhLmHzYJJjni3g37pjOHHqa7P7
-	 7USnqOtLdchJg==
-Date: Tue, 24 Feb 2026 11:53:43 +0200
+	b=kklVnf5UCe2Ljmnyt2i0NloaCbFvUnJlmKMizwcQtrZT2U3zTmCSy0VgOmSjjCtHZ
+	 j0EIcKGW8lRtqwzfV+vEUJdLu/o7sB++sXBQpJNjPNRQHG86G+NopNAzT77MGSLTTq
+	 JABx/8iY8+nQV4ke9Pv1Cukb2sFTn6RShrkSmkuDfik2mQSXFJH7rX7n60klv0bZSV
+	 w+VDtLyROzo48mj+8gmH2mg4drUHk0Q/a9kxitZC3Bia1/BzgWj1Npx+urRr6LYk8q
+	 cW50O4U1pO0pKs4E3E/rwW+BwD69hP+4qVU9ZRZy2MJ5xJFjf9bvNY1nDAf9RnsYZM
+	 k5/s+FtOHhu6Q==
+Date: Tue, 24 Feb 2026 11:56:15 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Ard Biesheuvel <ardb@kernel.org>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
@@ -75,7 +75,7 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
 	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
 	linux-mm@kvack.org, stable@vger.kernel.org
 Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Message-ID: <aZ11J7D_iBuG_qjC@kernel.org>
+Message-ID: <aZ11vw7mYmX1onEL@kernel.org>
 References: <20260223075219.2348035-1-rppt@kernel.org>
  <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
  <aZwyNAbEqb8ZwLUM@kernel.org>
@@ -84,18 +84,19 @@ References: <20260223075219.2348035-1-rppt@kernel.org>
  <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
  <aZ1vWEgJNwc2nrrA@kernel.org>
  <3a01d817-e08c-45ec-b5a7-4a8d9ecd0fc6@app.fastmail.com>
+ <aZ11J7D_iBuG_qjC@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3a01d817-e08c-45ec-b5a7-4a8d9ecd0fc6@app.fastmail.com>
+In-Reply-To: <aZ11J7D_iBuG_qjC@kernel.org>
+X-Stat-Signature: 8mhwbpuxhqo7nus1epzcrboo7jw4ijbz
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3BF49C0005
-X-Stat-Signature: sbk17sq3ma9chq64h6qngj4dbqcghxqq
-X-HE-Tag: 1771926831-204963
-X-HE-Meta: U2FsdGVkX1/apXwcQ762vCVe1mYAKNaDLRuvCPnDQxTxZOrSr524i4FvAmvG9gvmUcLk0hi2VQUVeU3lJgKFUuxNb/dgogQ+pGaNz9Gl8bF137YY+mcGObOP+o6bPIy1Hpz3dmDilYCWTxhelCb6ucJ873Jrj/EYEHs4VOHMkOC+gYFAcysmF4mKcfUPIOJ3ZAnUAKVjFpc8oVBl73KD1pI3wbqaW+myeqatK/APpOFW5UIxNxKV2SrtqelXA2DItZlvkkI09yZlerHeeXUE7+jwIFp+LwfWWt9TyEv3m1bPz/E1VDx6Je+6Bumzk4rvk9im2ndE2mo3xal34cZRdJYqK3mk42/u1BlxiwQvSK588de17LEb3ZmwjZ3aJV4U2H3bPVSSquSRniK6a/1WAmwbibydHuFe/JkFRnqOLxgxbZ9Sxtb2tIn/0RgYEvybojWY50XPTOtntw79VRIZBvVqlTyGXTI9k57aqaE8UdWCilk70HGaWQvHf3/xtCUACpYakL5iBRUrx36zI1xJ7PvA+YAmM3tWYaIyynEV9z4vGTJkKKk6OUjQnTK8b9vEBtTKxskgWSgrc2IQjw/aJahiQR4L48VZUzm9+Zx5WIEzyx7LmQPLyAqLhu+hIIZCNTWMGrKSgRhe3/F/TSq3rLUTE5FXvc8sw7TBlQ7Ko5K/TMko/J/fLKkf+SE2h2YHRKhOjJad5xvxZbOXujpcXMhMsfzcI2tTjdmauey0sQK8U+cRvB3uW79qe6B289ZF8+ZBGNgb7JZcZjKNEwMe3jx2GxHUwpd2h5bkgtMC5brgkEvb/LkF+mqYq0HhRgzayDzAXGsPP/n0CnaA+TWnuhRQ5Gwzp+RsM8D4B4npNPvgOyxL6C3mUql2tBJdjkGbDxyQFZcCeidATLnlbBDz0fT1DXh5cP/dQKtWFM0zJLTDOq5lHUkupkLG+YbfP62oNW3nBUQZ7Lx/0tJ0cnc
- rfqVq+J/
- pLjGB2Wp64NV302WxjPkCMYrWYi+wbUGBecISPzivQUeqZ5hs9edPzU+5XwfYhwrYlzJLVACIdwYkUQTKU9IIBoBARkrZ4iCsdlwLKl1bwyC9oslyYDgi8dY/JhoMq6rVMiLe44cO40bE0oLf21+f7xiyv7W+4HEmGhZiE+R38E2Jx7Lk9yikm47Uh7inyNukdsjjNgBkqwgzOFq06Z1TkMmxq4BEKFwNW5u4pg6tq4BPnDB6ZaGa4sQAKAN4mI4oF3Ce
+X-Rspamd-Queue-Id: 1881F1A0002
+X-HE-Tag: 1771926983-458453
+X-HE-Meta: U2FsdGVkX1/tv50ZcASkIWPH337yTWKhmTGrQmPG4Dc0gno9FS6qKFsz1wjfF+XzxcpLDDvMOh99Zcx5Uicrb9ruhamZ1SejAIxcS4sXuB8Gg30TOPFTxZjqPGC2GJeMa/3xx1+YpvLV7HEuDAcgjdKDL1pvSFK7ElluIaHUwZBj1cbgvDLvG4SBAlJafzfHACY6nWcQ4VqiQOquDtJA6G5+DGgDHtkVqTKQopd7kuAYJr3cQhy/Rcp6YNOzR7y1JwzWYSyrPi8C10TjiW1UYXfNlwqDhK8Vff0qzSRb1oSzIaobFNXad3VLtc7GbU5AePjSLyQABOoytsH2I/0wN+0WdgXCZAfh4rAK5Kpb/h2t+mG9yuhndodIjBu8vQbUPrYlmxp2p4Wo6D5EtUoISGDB1nd7HEZfK+9I1ms0VW7ub0VZjiR6mFJsyVORZ/k6jT7RlEzvP3HbmV+PbGXsYwJrd7v8yqtWy1yKe9sOXAAyz7RuXiHmcX7MWAHVmruPDzPLvw9juTmZ9h2ZK/L3ABriMf52lCtlkuB//9BV3ya8R7Ld3OPrdlhabYuEQ9SmRw3M/ESicM5gViUyMZxSvJBhN4ixW/XssoMxm3cmcUSwjTcm+L6lbEQ4wE5kma6yh80dfpgbq9RIrmbchgW34CYBSj2IDj5K6UVavwYZIhXe8Gf/EKTGiDyUusJK5u1oM9Pk4v85VZY6t9bYrqbgRkjPoZtETWeiRGjfNFW5dytlSRoEi4QiU9CAudVf7FRwrRJlH491OiPH2WWMCQsGfgR5rCU+mScEg6py1ANiUFGUbrVBwbTZJtfvCbfwb+qpHzla7Yx2xdlVH7YdDxNe6APYxsjM9zSjmSaPc99h1606yVzfj32TJx+CHC4Fy5l1jGvCTXULLXXvSO/SQ5o99Inu4ToivuQ8jgfI0OINJ/4ec5BIH3quMf74IM8dtgHrkogruLGGmfPMwSCPgqP
+ /iO8laXJ
+ hSYMoVSmgOKuDnTawA63eUPdJSwBsTe/Qa983R2zcxghLXysYswTzbcpJBkVV8Omk+1iZITQTJm+LoEye1TDi8+EbuIyCc/kjgesu1511gzASs7/ykyAT/oNBrFexT340Jf4C5J2GXGcrv9BokJ+05ZQRPoFkF4lCVQ6jlOm3lT6v/Z8sEoWnrE1FUmMZKvZNZB2JST+4vh2UvPubbuq1Q7zQML0v89Fdzsw6N97JKqfKfzjKEtUwOI4wg4iedwqPbZLv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,36 +105,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 10:29:59AM +0100, Ard Biesheuvel wrote:
-> 
-> 
-> On Tue, 24 Feb 2026, at 10:28, Mike Rapoport wrote:
-> > On Mon, Feb 23, 2026 at 01:18:41PM +0100, Ard Biesheuvel wrote:
-> >> On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
-> >> > On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
-> >> >>
-> >> >> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
-> >> >> > why I didn't use the existing EFI memory map.
-> >> >> >
-> >> >> > Now thinking about it, if the unmapping can happen later, maybe we'll just
-> >> >> > move the entire efi_free_boot_services() to an initcall?
-> >> >> 
-> >> >> As long as it is pre-SMP, as that code also contains a quirk to allocate
-> >> >> the real mode trampoline if all memory below 1 MB is used for boot
-> >> >> services.
-> >> >
-> >> > initcall is long after SMP. It the real mode trampoline allocation is the
-> >> > only thing that should happen pre-SMP?
-> >> 
-> >> early_initcall() should be early enough, those run before SMP init.
-> >
-> > I don't think so. All initcalls run quite late in boot, early ones just run
-> > before the others.
+On Tue, Feb 24, 2026 at 11:53:50AM +0200, Mike Rapoport wrote:
+> On Tue, Feb 24, 2026 at 10:29:59AM +0100, Ard Biesheuvel wrote:
 > > 
+> > 
+> > On Tue, 24 Feb 2026, at 10:28, Mike Rapoport wrote:
+> > > On Mon, Feb 23, 2026 at 01:18:41PM +0100, Ard Biesheuvel wrote:
+> > >> On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
+> > >> > On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
+> > >> >>
+> > >> >> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+> > >> >> > why I didn't use the existing EFI memory map.
+> > >> >> >
+> > >> >> > Now thinking about it, if the unmapping can happen later, maybe we'll just
+> > >> >> > move the entire efi_free_boot_services() to an initcall?
+> > >> >> 
+> > >> >> As long as it is pre-SMP, as that code also contains a quirk to allocate
+> > >> >> the real mode trampoline if all memory below 1 MB is used for boot
+> > >> >> services.
+> > >> >
+> > >> > initcall is long after SMP. It the real mode trampoline allocation is the
+> > >> > only thing that should happen pre-SMP?
+> > >> 
+> > >> early_initcall() should be early enough, those run before SMP init.
+> > >
+> > > I don't think so. All initcalls run quite late in boot, early ones just run
+> > > before the others.
+> > > 
+> > 
+> > It is documented as running before SMP. If that is no longer true, we should fix the documentation.
 > 
-> It is documented as running before SMP. If that is no longer true, we should fix the documentation.
+> Ah, my bad, it is running before SMP. 
 
-Ah, my bad, it is running before SMP. 
+But then it also runs before page_alloc_init_late(), and it's too early for
+free reserved memory with CONFIG_DEFERRED_STRUCT_INIT=y :(
 
 -- 
 Sincerely yours,
