@@ -4,90 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24B86E9B24E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E2A1E9B250
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 12:09:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 831BD6B0089; Tue, 24 Feb 2026 06:56:04 -0500 (EST)
+	id 4FE036B0088; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DC326B008A; Tue, 24 Feb 2026 06:56:04 -0500 (EST)
+	id 4A1276B0089; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DF1B6B008C; Tue, 24 Feb 2026 06:56:04 -0500 (EST)
+	id 3628A6B008A; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AA1C6B0089
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:56:04 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5D17C2002
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:56:03 +0000 (UTC)
-X-FDA: 84479196606.13.BE3FCC4
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 53A2740006
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:56:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=frg9bYUz;
-	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FF3F6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:09:30 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B2567140572
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:09:29 +0000 (UTC)
+X-FDA: 84479230458.10.94F8B38
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 851F92000D
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:09:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X0b/NGlz";
+	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771934967; a=rsa-sha256;
+	cv=none;
+	b=NKyuwSgrRy8LoovaxKp23W6k1E3sdyJJlB/QeZwyY+Mvjt7JNWpd/4+A6LzwedGBg2nPcP
+	70ylMFIt+nz77YjQntRqHTSXfUZ9JFAPf3T5LjzMBYrOG8XS+kxTqaCBXh5aVrOUCDKpn1
+	dHPGcqYJ4LGi7cpUVX/PkVAp7cGahb8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X0b/NGlz";
+	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771934162;
+	s=arc-20220608; t=1771934967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZbApCE7aKfGQAJ5QYtHKFYfwUek4AYedGrEYuPbu4o=;
-	b=4qvxpwm7MfBn1Gqw8RjKT13NyGmWbCMPDaDGvRRC2cji/l4rVRa0VSsFrKBgqTcH1kW83T
-	x2WlIwVDiF4zemSiF69D9Xe9CKxsbxvb9OQvhbH3ASwX//i1mFvA+V0gvCTTSAiY+rfviy
-	Xlh+i+bv7KLsVBgbv8C6zxR3oKdKybU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=frg9bYUz;
-	spf=none (imf17.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771934162; a=rsa-sha256;
-	cv=none;
-	b=h3iDORra6aSkC4repzgvmKYGWr5dLhtSSF0nH72wt3IgE1k016oIlHnmSDj2snDxn8OL2N
-	aKch3xHi/SeIizD0J0SQoqqLPOtPCbwpHhLtdWg8BsQJk9ocRMJaiPlTDwK9RBmNeWdfZE
-	HYQ17vBLV4zhu3ueSvBty1Cd5jsiL/8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jZbApCE7aKfGQAJ5QYtHKFYfwUek4AYedGrEYuPbu4o=; b=frg9bYUzHcb76/JI/1FsMqNH4K
-	pLRGr2stwD4MXQEu+8ZXB0ZgGRK7ykCXStgirFWMsUYzmhWv5PJw1WOkwyqHeWDcbY45mmOEei5TO
-	LLHVst7OZ5GAC7fWSbYGK2UxhvrUNUleXThNDbd2EAfL326rPapEkBZhkUUhISa+8yUUN9XsOstey
-	Z3cijP6YBgzO0gUHizujJx8+k7V3yfpzOhAunvqnRXjoBTi5wdJDzSbyJrgqG1oR3B1rLqZnpqOf/
-	/Sr3B9GfELbkHD0O4NjJcWAVp5HR+6cvnHHcJOApF87C8PfhOYo+B29nTd6gnQbdjbsTnTpYafdUy
-	ZkxuiH3Q==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vur1B-0000000GmLl-41uX;
-	Tue, 24 Feb 2026 11:55:58 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 811F930095A; Tue, 24 Feb 2026 12:55:56 +0100 (CET)
-Date: Tue, 24 Feb 2026 12:55:56 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm/mmu_gather: replace IPI with synchronize_rcu()
- when batch allocation fails
-Message-ID: <20260224115556.GU1395416@noisy.programming.kicks-ass.net>
-References: <20260224030700.35857-1-lance.yang@linux.dev>
- <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
+	bh=PTr9nXa9KbUpiMsj0WnWMiP0h7dOygixjZL8t8aHz0g=;
+	b=NoqcTQVYkn0DtBMMFvr9q+TH8h4JfjJOqmdW1cfTsNjNbQ31WaLunEEH55Nzp4/m08cMS4
+	IYh5F7JJ6E+0jtM2Is/aP6vgPXF5HDh5ON6ETVhCnh9Xn4k9Wb6NbzniuV0YPBtzK9wdrq
+	PW0k90DBy+KDggPIZ96ezGGTqPPLgFI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771934966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTr9nXa9KbUpiMsj0WnWMiP0h7dOygixjZL8t8aHz0g=;
+	b=X0b/NGlz4AmwIeahIYcz9Qr961jpjhWLXEO6599719LiYPahLZ5yldkvTEFg6gHyiRxf3w
+	YRaBHjpeRKWrvDJlYR7yQ6exMKmXy3JSDZW2+P9Zlai0HbsF3TOdeX+xbKkCvSzy7CBKxJ
+	tCxtKCCyuix7K03VrgngVrV16734guQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-2sEWge5BN8--rE-jKOcfZQ-1; Tue,
+ 24 Feb 2026 07:09:25 -0500
+X-MC-Unique: 2sEWge5BN8--rE-jKOcfZQ-1
+X-Mimecast-MFC-AGG-ID: 2sEWge5BN8--rE-jKOcfZQ_1771934963
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E2F241956067;
+	Tue, 24 Feb 2026 12:09:21 +0000 (UTC)
+Received: from fedora (unknown [10.44.32.38])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 2484830001BB;
+	Tue, 24 Feb 2026 12:09:14 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 24 Feb 2026 13:09:21 +0100 (CET)
+Date: Tue, 24 Feb 2026 13:09:13 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Jan Kara <jack@suse.cz>, Aleksa Sarai <cyphar@cyphar.com>,
+	Andrei Vagin <avagin@google.com>, Kirill Tkhai <tkhai@ya.ru>,
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
+	Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	Mateusz Guzik <mjguzik@gmail.com>
+Subject: Re: [PATCH v2 1/2] pid_namespace: allow opening pid_for_children
+ before init was created
+Message-ID: <aZ2U6TwK7rQtkTvT@redhat.com>
+References: <20260223200254.4104651-1-ptikhomirov@virtuozzo.com>
+ <20260223200254.4104651-2-ptikhomirov@virtuozzo.com>
 MIME-Version: 1.0
+In-Reply-To: <20260223200254.4104651-2-ptikhomirov@virtuozzo.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: FtsweDEL-Qlz03bh16_xZkYyMuPTA3Ezd0qHSewGpo4_1771934963
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
-X-Stat-Signature: dqnrh9msarb7cwk43ykxkgirj97zoswj
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 851F92000D
+X-Stat-Signature: 4a5coupu5yaixqr73t86gi7gtpdhwf3c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 53A2740006
-X-HE-Tag: 1771934162-102902
-X-HE-Meta: U2FsdGVkX19Bx/oiJ7L16HXADXgQzCmyEYtvkku8JkQjmROnRsIYUF2GfDKeIU9kxfSUg7QyM8LNw9iuyBJDRvsUQh0LI/XrGPpxN9kV6GI9YuebQG67KBw7+KXXZj0PDUuLX7m/PyrOe5qyFwAWtUTK0i9A6/q1H2kwk0mV05eKba7Wh6Tjgg958yGP6s7f0/eA78GourCJgf2Yytcpstip6gWBstuNnD1MR3iAaJeGo0UW3yNDmnhI9PyohuWWtROtTMruDx1lbx5XKKYIiK9d/lzFFra1R52TGqLGNP7OlSs9Kv8CnAwI4+KMe5mD/decw6Gobq6Q239mbxwm31KGmTO7/njaAfsmIT/UJEwhTfWWZZTgrISM7iJHg9YbEBdA+neGaoCqc4TYO+JbpMbCsXGPsepkAfdkIkLXVAWskL2CERub3Sav+Z3rI97283CxnFjyRDuOtSeT21wmuKGCHgujHANk06tk6sAf2T20wJzPoNdHixNYtI4IdXuzkuZnpQutvi6u0moczX3fszj1GEVE1Ccm2JcWiagQzywjN5PD8PBhrPYOn7jX/tkdXH8PSm3JfqstFasUHmwGRi9kZ8gFdfrI53J323bNmICQ5XIBRaJsX5c7KBtpI9w9P7gN3zu3lwfBoFky32A7Uc0NfuvCdX+dUdN4/4oAxBfw1N698EHmHN1SgVUxaY6pzQlrd8ORMCzHjJfKx3+eOnJfYRmn1wSovEFWL1rqRzuTWtHkjlSQ2IgG7hAVxOjVm9bHLf8L8DsyZA5tVanUmSU1A8Bkkyyl4WJrc2pZ7kfNG25VyVuEVeGkzpodxGes2tg8NC/KCOrYDMESqpViWb+izYMCqRWb3lncJzIbQKjXO0XFILQtKEbZLCnHBts91h57ugBmUiLdPul70Tu7XQvrEoOCb5XXTW7udCKlYYP+UHk2eoc0ahwhUTQbHHmhO3Aia7xPZE4oIPG081+
- ioQ/Wae0
- dmJ5nMT5LZ24apl1u2qLutcXU28n+ElAYguku1xukuYsSHLqdH0keXtW7BSuP54JUP3+xY/OAoSenAXV1aSfjQEoWx2pKpyJ7tLrdqL92I0lprhBZiCn3fL0aTCTtcqO355nGq8eTBVWWg93v8ohyBj2+Jc9sOBEHGGCyzfibaZaTVkGCU7yJdXjcoX9ZzY0zzIoUIC8+49tV5W9Ba5Mo/j2M7fJZSFWokS4y/aJAByR3vldVEv4NuMUTJTeFNTJmls/MdReamJs6DbBqrnGjHEhVnz8XwKpYu2eS
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771934967-70072
+X-HE-Meta: U2FsdGVkX1+Q0D0Ei+GmOESiOO2pJHWORxuMIeQu/R3+fmMUB8srbOpKjBFow7fdYOWBFkUb9iYX9qvWeuUchmhvB/mHuIQ/iegqpgypaI1YZlY+x46ibDIT9FotIY+U7K2AGTYUmA8aX1pCxPYJ7EQKSZD5BXyg777nLgh7J+eyuel+Bkn5gaXs4gzwkt+dEBx+gVqTKBR3h+zCKq8DjnSS8HgT3P1EZ1shiP72MpWJ7guDuO+sgew7W4rFoB2ee4oCjbyniLHuK4nDt7mw72gRceNwmEq3+GHXONNezgWfnMY4FWLuXTWba0v+4PqhYdqlgzKx8gF5fGz4Mlicbb9KkCTt12Jb1cMJB106pgAELZr7yX7MkZ3p3RTMThzfm/EL24GFMuoN+MVRWInEz+b0FRfdvLgbEXQh7S77B01uShat86GyrCKzeJADAvldXfxRi15y8luFOjgCP8DO59AaZffqRT+FjQwZuhNRFwHkvrD8LhL7WEsECtcyIJTxaVYoynE4xYArs1A0vsXOf9URH0Tt5v5OC7b5r7YOCWIY/tnefZzt477CLngvi1jMZJbRV/X6MIhnDKm+2jXJIQEpkX5nS3yDWj3Pcbd1agL2FFm3GjEUcZO83eCZwZYdyOC5RWHOZousCrvYulmOELFgKfftBJkCyUC9MYSws5+BfcYE8ZnNVLdX+vWwEcX8BbIjeoZOHlgOvLWmpZuuFnkvjCDCDja0MrUvIeDHBlEksEKmhhv9h4xamu/b8rgGhnJ/UbDx4jamYPrJqwfG0XFzRxi3ROV9kQtNYEeOiYpmNr7Kv7dOrred+w3VSafmdBLfePlSGTJ9j8c6Pq4iWib2MvNNFDT6iiXJn2mJy0yqfo3volJ37kk5GYnzxlGthPa6SM86TdfRCjt2TxqVoQZp5il+6vCHrpZJASsH6RlEqwmI2ltaNUJ2dDKDrcwP4fNMj00NE6Ngqs/g+HK
+ T9TPk0a3
+ ylpxIzCBp7cMA/fmb9ChPQDc/FrkGKevpn81Yp7drN2HQGxoeuvGC39gnCsRhB/Wn5Ca2/yx92bVH+JrNZ9nyhUbvV9Qin/ASH+6UfORbeDuTBSFH45fcuY9j7muG0lfPDC8/RTaKea2SWdOFnECtZxdfsCatXGhW9RobwCvH0hirdLKJk2QMovC3To13IajM03pAzB8nkC6KbC+V3Rv/umeAx/8Lpo68wbL/NQ4nkKhyDunEUxoF3YN6eAdiluuBWzgMMv6sVgZLcC5KvcYcxBgn85LDJllYrbY/qzCme+Cm+MfGQ7XuXBe4o4xOjNAylfFqKB2Ll/NHldVvAEkNIdR5YLbe7YOqNktdDhr0pVnysAb7bJScZcugqnjMeM2KnJ3DS0mLkeoRPLoU5rPHd3A2wg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,31 +120,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 12:41:52PM +0100, Peter Zijlstra wrote:
-> On Tue, Feb 24, 2026 at 11:07:00AM +0800, Lance Yang wrote:
-> > From: Lance Yang <lance.yang@linux.dev>
-> > 
-> > When freeing page tables, we try to batch them. If batch allocation fails
-> > (GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
-> > batching.
-> > 
-> > On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
-> > tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
-> > process is unmapping memory. IPI broadcast was reported to hurt RT
-> > workloads[1].
-> > 
-> > tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
-> > (e.g. GUP-fast) that rely on IRQ disabling. These walkers use
-> > local_irq_disable(), which is also an RCU read-side critical section.
-> > 
-> > This patch introduces tlb_remove_table_sync_rcu() which uses RCU grace
-> > period (synchronize_rcu()) instead of IPI broadcast. This provides the
-> > same guarantee as IPI but without disrupting all CPUs. Since batch
-> > allocation already failed, we are in a way slow path where sleeping is
-> > acceptable - we are in process context (unmap_region, exit_mmap) with only
-> > mmap_lock held. might_sleep() will catch any invalid context.
-> 
-> So sending the IPIs also requires non-atomic context, so change there.
+On 02/23, Pavel Tikhomirov wrote:
+>
+> To avoid possible problems related to cpu/compiler optimizations around
+> ->child_reaper, let's use WRITE_ONCE (additional to task_list lock)
+> everywhere we write it and use READ_ONCE everywhere we read it without
+> explicit lock.
 
-s/so/no/ -- typing hard
+Yes, this is what I meant... but I can never recall if READ_ONCE() alone
+is enough to make KCSAN happy...
+
+I won't insist, but I think it would be better to do this in a separate
+change for documenation purposes and for discussion.
+
+> @@ -247,8 +247,9 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+>  			 * alreay in use. Return EEXIST in that case.
+>  			 */
+>  			if (nr == -ENOSPC)
+> -
+>  				nr = -EEXIST;
+> +		} else if (!READ_ONCE(tmp->child_reaper) && idr_get_cursor(&tmp->idr) != 0) {
+> +			nr = -EINVAL;
+>  		} else {
+
+Oh, this doesn't look clear/clean... This even looks racy even if it is not.
+Can you move this check into the "else" branch which does another get_cursor
+and unify this check with the RESERVED_PIDS check?
+
+Either way, I don't like the fact we check ->child_reaper != NULL twice.
+Perhaps something like the preparational patch below makes sense ? Not
+sure this is actually better...
+
+Oleg.
+
+--- x/kernel/pid.c
++++ x/kernel/pid.c
+@@ -215,12 +215,6 @@ struct pid *alloc_pid(struct pid_namespa
+ 			retval = -EINVAL;
+ 			if (tid < 1 || tid >= pid_max[ns->level - i])
+ 				goto out_abort;
+-			/*
+-			 * Also fail if a PID != 1 is requested and
+-			 * no PID 1 exists.
+-			 */
+-			if (tid != 1 && !tmp->child_reaper)
+-				goto out_abort;
+ 			retval = -EPERM;
+ 			if (!checkpoint_restore_ns_capable(tmp->user_ns))
+ 				goto out_abort;
+@@ -299,6 +293,11 @@ struct pid *alloc_pid(struct pid_namespa
+ 		tmp = tmp->parent;
+ 		i--;
+ 		retried_preload = false;
++
++		if (!READ_ONCE(tmp->child_reaper) && nr != 1) {
++			retval = -EINVAL;
++			goto out_free;
++		}
+ 	}
+ 
+ 	/*
+
 
