@@ -4,89 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EE0CE9B24B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68CD2E9B24C
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:10:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81F4E6B0088; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
+	id BC2E96B0088; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CCE76B0089; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
+	id B70B06B0089; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FAE36B008A; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
+	id A52646B008A; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 59E416B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2F221B678B
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:08:31 +0000 (UTC)
-X-FDA: 84478925622.12.DCB9887
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E3ED41A0004
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:08:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EB786B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:10:26 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B9F0C1EBD
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:10:26 +0000 (UTC)
+X-FDA: 84478930452.05.5000674
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6C90240010
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:10:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUuT//x3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771927824; a=rsa-sha256;
+	cv=none;
+	b=IdR3w0pDomOkJ+QWOdMeH/FI0abATT1MGzl2Mrha+r9km97PsyDjOcCg4b7W5od9yrGiFp
+	I5PxCp+Lpl+s2gmP5wbluDMFroLJ5enno/1Vp5ZwqFx/pt/hKDRrqbp8ZwaKwgVNOrVeco
+	KpDFD1nHDl29+9zESwEzb+64gijOj4A=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eUuT//x3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771927710;
+	s=arc-20220608; t=1771927824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fZQZhFCQRs3FRpnRYHy4Ear07Y00uoEUsCQ9F2s8RQ0=;
-	b=i/sKAbgQlL1sLrn+RIUCaOLURBH1HvtS3FD3afqS9dpkQOM8HbsePqd8lD3819LWNOOH+i
-	dgg4EA5Wo5T35wnuQpodgp0n+G4wEtvUxd2lP+qiCRTdJ3YO5/ocFlJYqfFNdqZz+Aa7Tk
-	nVqWq1gE9L4z43U0rEpydAQUkWZF4kU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771927710; a=rsa-sha256;
-	cv=none;
-	b=TF/cJlyXYAq8BCEGVOLD+Ji8x28BquL1Mk7ROBTbZSmuLUmbfzNzeZwe7IvSDyOaFdBcw7
-	RE9nTtOnovfKKofClJ1SFlX6359tYYq/BFBonYBnI8hLiYqGfBlqrFHkwujuTslG0rslTt
-	PcyJY/8cRASrt9GxIKsj4YCDJIeOrXo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96CE2339;
-	Tue, 24 Feb 2026 02:08:22 -0800 (PST)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9AF0B3F62B;
-	Tue, 24 Feb 2026 02:08:26 -0800 (PST)
-Date: Tue, 24 Feb 2026 10:08:21 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [RFC V1 04/16] perf/events: Replace READ_ONCE() with standard
- pgtable accessors
-Message-ID: <aZ14lUwuA86aiOH-@J2N7QTR9R3>
-References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-5-anshuman.khandual@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Kc91CIIl41xh+9K1iSPxDe5Eo1+2Wvj25AcgOtUzf2s=;
+	b=W+r5QWjtSbPg85agY1AApvYDmKCArOBFtAViELjiKlZR4fgeL50B2ojhcHKTMD4ReuRruN
+	o7BbnEVK6pjJLDlyegPkHnCVNIQWhDZEwBhXoy2jrDbH4PpmRTMfbu8RJVtCBja3tp1wEm
+	Mfk4NOCqy4Ly9b0YSAPH/X76hm00RTk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B4D6C6132E;
+	Tue, 24 Feb 2026 10:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A64C116D0;
+	Tue, 24 Feb 2026 10:10:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771927823;
+	bh=HLl0s56QthgFvq5ounX7gaoVLceVUg13LF70lAn+VcA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eUuT//x3T18L5U+IYW4yhBmaBd1Hs2QpYgo5OmQczVfNVug3MUE6iNZOvDyCDeD8g
+	 gC5xNPPkbEHkCXbqejzoqOW7jwa5C31ubtGYhOFUmDH+BPZxhqMvHjxdNvtkFu7jJx
+	 1vnTa9atEQN4TvD+WtyLtsy0vCv3GWgDnoMWpdxFxbDlwmyN9Qe5U0SeHTgrSm3TCS
+	 GrcBvsCxn1SgvRRq/3L/7oK5mA+S3CdhoGpd7VtBgrCZIYF/A3GCF2cEIHcjYhy7hb
+	 muv5pUvzmiIBvv5v6RcD8Dt6o5RIwsxzDuAB7IzgEzBpvMSmNwsgM3/0A/RjVz4Fhj
+	 ZFWRHqNAfA1KQ==
+Message-ID: <f73ced77-1dc9-450a-93c1-c7f5b58b6aa3@kernel.org>
+Date: Tue, 24 Feb 2026 11:10:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260224051153.3150613-5-anshuman.khandual@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v8 4/4] mm: khugepaged: skip lazy-free folios
+To: Barry Song <21cnbao@gmail.com>
+Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+ <20260221093918.1456187-5-vernon2gm@gmail.com>
+ <CAGsJ_4z1twdSNrAVR_vZRnLW4xtsfi+vegNMCwht+RPCjy=E4w@mail.gmail.com>
+ <xbej7d3uc3xzlx53djgg3to3ejcgrxotxwxvrdppqxfsgieife@5moeg6x2vutg>
+ <658903fb-cf3a-43c3-b8c0-d47b63d10782@kernel.org>
+ <CAGsJ_4xwTDAs-=WETGxj=dUTrvu_1oYaXZOk-r_yzJ9p2tVOXQ@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAGsJ_4xwTDAs-=WETGxj=dUTrvu_1oYaXZOk-r_yzJ9p2tVOXQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: c8zawcs9x94b955jezqdmeoyzpfu4uyj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E3ED41A0004
-X-Stat-Signature: 713gtdqk1jmgogbtrwd5h46wpmf1i56r
-X-HE-Tag: 1771927709-81174
-X-HE-Meta: U2FsdGVkX18OPqGGxMPZYSKqQMGVZ1plcGSHvKwiYRoR+F8QsJCyvXq470Oi04FHc1iI5GUDxU1L+61Lxmf73v6d7E/+bv171gLhP1K0pgN230YUDtzFttghpUUy4TAXvsK1opyyyq5H+Gwg9quy8IM/lGdU75DAJ7PlSVAE2L3dhqa5z8Z2YU4UPAA+YHQt/20UjV7uZJ6eJbXwr2MSpODaa3JDbr6h/ElAZ6SsmHihZOyZ1UYc+GFf1Bwo7Di+me6R9SkOdLegi47mtoHbO9cnv0XveCZ3NP3ASI0izx8++RkF0NBDCqQfaep+7lOikR4DQR2krTqfMEoTyiiEo/msFSTAzfFfcFCn9a0W3g8mJF9jbFzGmrLp5MJairZ5OajEKhpxAkom6IhJM4iGan0bYVquw15vkCWleAcs8E3Ke0rruFZJiXCUhiqzhQjPpULnu33Pq8NacuU6PuQ1Qpk3vXDtr2jxVD+TUFzC7htvsbBCtIbPZrGAtCEo+ztBEusEVj9Af48gA3aMBoLgXfVE9AliZsVuztwhD+lxhh2MrlEDb7jjGBzJis86/8hBVbkW6CYej/jx7M1viz/U9cGWD7mj7pZwTiEQII771XzXYWy4N4R50M5lYRQe7cHlF5MlTGieyRWedGRotG/RTwRxRgVHWJFmQprRY8Saxo89mqi6LYJsbI4P5o1qD3YOhWHPbrx9fYBsuYBEV56/+/2mklsalh11CO0tOf54VrnOERfsCcUls1zLc5BYuxKEQ7k9GbhBk6g7bXHrhB1jKtl4rZGKU3IVG6IfdEcn1Hl5L8vLpKXak80QHLoXDV8ZXuRYiu7UIK1giV/59vIWoYM6suBsKvJYBYhvoTFfXaZirQSJiJBXvVuLbVMKjMA5+aXSgF8RMY7+TnABaQ7yIPmyBjjEvaDDpzx4v3CO/37jtTWV4c3sOOl2+GbZVgZyu1+Yb/v0P+ecP7GpJT1
- gtZHXpEh
- pXEPKLvwIbmPYBizcB8F7OG4KEeqo7RBBkeZyc3ScA5EzdmKo1k6nmJL6gmGPaBSLDHcvZNoBxvDt7G+KNi0qtREfXrY9Ws1zDuvhfrs7aqDnxKB7lLKRRfUEV5oOlzhTpQyF0W9OkfuSBi5TflHV3jRN8kT7zhMJc1KSwoi61OpClU1hR1d4LxTQawzHm/SVb0eCWnD7wvt0Ng5s0yc5JsP9I3DKlXOh5ZVGVTKN0/wlRUEhu6uKxErk8edGKx3eetPJhVAeP1H4hPqc1BWAFVfOqJbYXHLqz5qyLkNPV61EEqfxHfHmX2aIzgHrbOqDRDzCoHu1SQCqPYGA07B2jwYwYTGrsyFX8q2i
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6C90240010
+X-HE-Tag: 1771927824-689966
+X-HE-Meta: U2FsdGVkX1/IGXi+/cZC/UCZs0rfjKWV9OZCcjwcg/tx0PhoEkT/zJWf39JVhaDBX/1U129vRXKfuucM55mINUV0UIWKWQEST/OYfYv4nedeKNtd1tGABEtd/VQxJDisAmQ0CRhWnXmlc1KVNeaREJqNvi7B7I+802eUsXG7j2kh/zM5YqzBkyUWqq99wEVXd2rm/R3XnGFV4ehSNKmdXg1gh0pLtbwyhSJ4qwn0MyfW2dsn3LJAXBfFQAoQj74wckXJr2kBjszgB+pB3wzW1mdLSkWK0IMlReCCssRkVJ33sN8igZuSrd0Ja30YZqrRBAqTQOx6qGxk6TCzQWn2jAS1xUlqH2nDq4LQ0WhXXIXKjdX/tsgeP+ToqTAhtcG0lsOfNVHzBJYzjJ10tNMdzJoPlYkVThWVlio/YhF/1M3z5Z/exxSWFy6bq9MeWM98p19IzAdYfWaJrg59jDcYYnV+q9asHR5x8a92Inz7UBd58R8gkhspWi2xUVRDBL39j0WRHB4JaZA2GHMz1kxMqw7NnzN4MK5s593ynbSNS3S+zrYevDy84DqgMmCBSPuLK3hZgI2rDeTG7Khxf/NdBZq3owp0QK2yw3KslI2DeSvcLuAfGHmPjC4SE4d9NF+XEbwuzSKEtOd3TzIzDJQYhxhZwPjUe/RHLqNDMe8Or/yDKfZNbhfCwEzJshRfP4EIgR3V3Ka4mq/c8An2czgoSVTPijJ6cfomobPGkuDIKZfXb1l27QVBi7/07iHmoktUGX3oy0u/MDfNmOcC5dix7zUEcuNMbrelLVFd9PwZS7a/l/4CdnTJChpDtz6RVvC/FvdYR87Dk2zv6jWztQ4jMv8GPN3420VSpei8yaLpFDl9giKKkN6CcgU5nKbGTZkhP8YoD+acgRTow1nLBZJKSq0ELO/mYlhFdi7p5kd4tpe4BPblv19zDA8OuhfERweM6E0YIfzLlMfrpK/6XKF
+ cMjKWcBn
+ Z2qumq8qBtQuOA8MdXf7BXXsGo2+GEbQXI7HV0SRSt91P3kA65PzK4B6hTLgsmmzR0lxWkvcHRzJpXPaw+k9WzhorH4hswdqKSEDrMo7XUmeHztiJjNKSyih0u7gG9XdJSU6FeQGTkIsl7zxCmf6tmn6g7JJD5dMAaR9/9qhA/Av0TZ1j/n463cHQ8swxK947I591PiarRnYMIMsIJU1X536l3Ukc+HyIrxjS3hlnQyt/kjz0Wka/CqUulofElsW8UXXQEv89WSyWEFwcgYnJ6XIR4mgTCBT+Q/Lao5pT1hq5+1DZsqfbwOEr8Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,67 +145,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 10:41:41AM +0530, Anshuman Khandual wrote:
-> Replace READ_ONCE() with standard page table accessors i.e pxdp_get() which
-> anyways default into READ_ONCE() in cases where platform do not override.
-
-For each of the patches where you make this sort of change, please
-explain in the commit message *why* it is necessary to do this.
-
-IIUC the entire point of this is that in subsequent patches, arm64 will
-need to use something other than READ_ONCE() for all pXX levels in order
-to support D128 translation tables.
-
-Spelling that out in the commit message makes it much easier for
-reviewers to see what's going on, and to focus any discussion/questions,
-e.g. *why* won't READ_ONCE() work?
-
-Mark.
-
+On 2/23/26 21:08, Barry Song wrote:
+> On Mon, Feb 23, 2026 at 9:16 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 2/21/26 14:38, Vernon Yang wrote:
+>>>
+>>> In folio_add_new_anon_rmap(), we know that the vma has the VM_DROPPABLE
+>>> attribute, which is the root reason why Collapsing maintains that property.
+>>> The above commit log clearly states "all folios in VM_DROPPABLE are lazyfree"
+>>>                                                  ^^^^^^^^^^^^^^^
+>>> (the "if" is redundant and should be removed), not "all folios are lazyfree".
+>>
+>>
+>> Exactly. folio_add_new_anon_rmap() makes sure that all folios (except
+>> the shared zero folios ;) ) in VM_DROPPABLE are lazyfree.
+>>
+>> In fact, MADV_FREE should be a NOP on VM_DROPPABLE, as
+>> folio_mark_lazyfree() doesn't do anything.
+>>
 > 
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-> Cc: Namhyung Kim <namhyung@kernel.org>
-> Cc: linux-perf-users@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  kernel/events/core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Maybe we could do something like the following?
 > 
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index ac70d68217b6..4ee151cd2c6d 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -8422,7 +8422,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  	pte_t *ptep, pte;
->  
->  	pgdp = pgd_offset(mm, addr);
-> -	pgd = READ_ONCE(*pgdp);
-> +	pgd = pgdp_get(pgdp);
->  	if (pgd_none(pgd))
->  		return 0;
->  
-> @@ -8430,7 +8430,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  		return pgd_leaf_size(pgd);
->  
->  	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
-> -	p4d = READ_ONCE(*p4dp);
-> +	p4d = p4dp_get(p4dp);
->  	if (!p4d_present(p4d))
->  		return 0;
->  
-> @@ -8438,7 +8438,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  		return p4d_leaf_size(p4d);
->  
->  	pudp = pud_offset_lockless(p4dp, p4d, addr);
-> -	pud = READ_ONCE(*pudp);
-> +	pud = pudp_get(pudp);
->  	if (!pud_present(pud))
->  		return 0;
->  
-> -- 
-> 2.43.0
-> 
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index c0370d9b4e23..173b0e5308b5 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -817,6 +817,11 @@ static int madvise_free_single_vma(struct
+> madvise_behavior *madv_behavior)
+>         range.end = min(vma->vm_end, end_addr);
+>         if (range.end <= vma->vm_start)
+>                 return -EINVAL;
+> +
+> +       /* All folios in the VM_DROPPABLE VMA are already lazyfree */
+> +       if (vma->vm_flags & VM_DROPPABLE)
+> +               return 0;
+
+We could, but it feels like optimizing for a case that likely nobody
+triggers :)
+
+-- 
+Cheers,
+
+David
 
