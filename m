@@ -4,99 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6BDE9B262
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 13:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2745EE9B262
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 13:45:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94AA16B0088; Tue, 24 Feb 2026 08:43:58 -0500 (EST)
+	id 877B86B0088; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 918D36B0089; Tue, 24 Feb 2026 08:43:58 -0500 (EST)
+	id 7FAF16B0089; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F916B008A; Tue, 24 Feb 2026 08:43:58 -0500 (EST)
+	id 707306B008A; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E3946B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:43:58 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D0FD1A0128
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:43:58 +0000 (UTC)
-X-FDA: 84479468556.10.1730F0B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8728580011
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:43:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b5abUyVu;
-	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DE3B6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:45:52 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16395B4CC2
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:45:52 +0000 (UTC)
+X-FDA: 84479473344.19.1C603E4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 656A4140004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:45:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3PWQj5X;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771940750; a=rsa-sha256;
+	cv=none;
+	b=wywohREmTx5WtHOr7wCT2M5D14xDtpB+AMFT5xwK4ldtCP8diZHlvQ+aGYB0mSt996K3iL
+	3v9FiDrwBm31SPNIYEn3ovO6Ov/DAxBCjZSUY8Zw0cGr63uoom2Q/Aq+5S9gCe2pSUeGKZ
+	UN+alGnVDY9b6BBFcq3Z1Tmwg6oJy+Y=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3PWQj5X;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771940636;
+	s=arc-20220608; t=1771940750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TIwZbWDQIuP6v7yy+7hParJ/5dFiqLCUMBjdEBG4ZJ0=;
-	b=jA1nirM6VpfyeXFcAom5kao6EyP7Z7K1Cmr0Eu0mnHF3i3Fex/iI7X9uesZFVrHlol4toa
-	IkKcAlfvzZlQmvYGi/7mAVo5ysf6ve1oBgog6XWPsInThB8JwHUxnuZv6OSnmgzJnzxCwJ
-	jaOe/JCQ+MMKcX50EUDOQwjsR0V5Ljk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b5abUyVu;
-	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771940636; a=rsa-sha256;
-	cv=none;
-	b=U8YmMuSuX4n78juvoXgd8ahpWri5+uzboqlANdv2jzrfPc1/y4ryn4ys7r6feHhKIVI/zS
-	57cA1TY1crTTyI7Zcq4ixCvOdMU+RDiitSXkg5J+Ic1cYsa27AoKX0TqjEwFaCVq6hAA1i
-	JxDAYiWOiokXfWTRDK+RABPXaJRagVA=
+	bh=eSnlCyH4rTNrPJxlNYcPb4w/qdzhR5A8COqBFwcBV2g=;
+	b=gyNQUSGX8YpJ+exNc2RkGPWrTHXFuzt0KxE0w/7/YOgBb6bWY3tEtuFvoKOuE/8FIQZ8eV
+	dLEBSRZz82WLBoVLqFBCG5W1d3iH1ARFnufDCwytrgnJYqVeYDtWvPjpudq9fOsaK4RZQh
+	uiV8s9wA+r+Xy+2pMU8y/gecqcl8GtA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E615C6111B;
-	Tue, 24 Feb 2026 13:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEA2C116D0;
-	Tue, 24 Feb 2026 13:43:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 35EBD400A8;
+	Tue, 24 Feb 2026 13:45:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2B2C116D0;
+	Tue, 24 Feb 2026 13:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771940635;
-	bh=cf5jR5VnxDpEVpRWGkRobwj32v0PB+NedyrQEUkzTY8=;
+	s=k20201202; t=1771940749;
+	bh=ftgYAotQSHbWTiHfbL9ahOild9zaBZJQ665pJX8FUag=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=b5abUyVuheZDAu6Ntgt3cKF1vnkvDOnrmp/gIwHIkSLBTcI1OfhuN3xc2RwVsKcZZ
-	 ykgGKgHKgWXC4VtH+4hXtiwfbjdmdyHW16aYcbhvD4ZG5xmgUW933XxU6Sl44OznyV
-	 J3rBRIlm3BGXeB25hv4VMPj4u6FbsKk1HF7W9C0yWuNmT50iw9LgCfrRp4nQGpnQkp
-	 sEpzIKEWLSsukHB+ZmZ9SgYKjEWBwAwH5dhopKXq4oew19UpKnM7rDJD589x+AYK4b
-	 jehMZ5sWor44SN3T3In6liByiLbb32F5wd6HgHTDhhLDtCoBd4BrRPZc/62nf+EWZ0
-	 82Iwar1/ZthWQ==
+	b=E3PWQj5Xg0ZKXjljQSo9YxUra2ZFOKsb95geu8r6aMG2SCYcVsH5bcakASrtcOVnQ
+	 5lY9rS6Vqd4awKWgBIejvLJn1u0Q0AU3M7YkfbS/Io2PGuh33Cv7ZtQFxoAxfOCqi2
+	 k0XU81DOOcJ7SsuROqtJ5OipdFZyqUIHVozEwi5hn/cLBkHu1gmSVXFdytLaanaXVx
+	 +fq+3ImTGCBCX1MpAN8Vizkg1ZK0J2E9SE7PKkWNIZ2tN4zJVB/CrRfQ9CnFfgwfiq
+	 HCmyEd+q1O4ETUJX+btFWe4ZC0C0KFEzL15bGvyHle0IbiTCI0IId4n0pTJ2KrTFnG
+	 2u9xwhRCvyceQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Tamir Duberstein <tamird@gmail.com>, Daniel Gomez <da.gomez@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, Christoph
- Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman
- Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v3 02/12] rust: xarray: add debug format for `StoreError`
-In-Reply-To: <CAJ-ks9k5=jGFWRsTmHbsvzJF3YTYzbDTQ43-uUNe8gaZfsnc8w@mail.gmail.com>
+To: Daniel Gomez <da.gomez@kernel.org>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Andrew Morton
+ <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
+ Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
+In-Reply-To: <aYtW-Hg-ItQI7v9-@macos>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-2-f777c65b8ae2@kernel.org>
- <aYr-gyQN_AaIJkSH@macos>
- <CAJ-ks9k5=jGFWRsTmHbsvzJF3YTYzbDTQ43-uUNe8gaZfsnc8w@mail.gmail.com>
-Date: Tue, 24 Feb 2026 14:40:51 +0100
-Message-ID: <87v7fm1cpo.fsf@t14s.mail-host-address-is-not-set>
+ <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
+ <aYtW-Hg-ItQI7v9-@macos>
+Date: Tue, 24 Feb 2026 14:45:37 +0100
+Message-ID: <87seaq1chq.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 95werxco3uza7qrbyj4izz8rf7wburao
-X-Rspamd-Server: rspam11
+Content-Type: text/plain
+X-Stat-Signature: dkbnq1483ybstnwf51aw1ammicrgibs6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8728580011
-X-HE-Tag: 1771940636-794093
-X-HE-Meta: U2FsdGVkX19NYuRaaMctjmMCek32IwFhmp171zxc7f5saNT0zj3BrHV4+VZBUNSbxYVgFF3u3PSyCKs5AthZxQvsksS3mfi2UJvd+wSuK3dbyrrEOUoHxs6ylbrjHpMdO4d1ITxHn/CUdajRe5cA9vo2PboXXIqM3tUe9ahZWDi/44APgswU2J98UZ4TCH+0Es8rcfa9kuJzeNSKTran9lQJDC9Fa6OYwJtE7YwgzwP0zEhSuhD6FLPRR+8CA8kwGtnxVoOLs9sw3JIYfiJLNRWwKrTwNf6eMbfTfzEmtPKhoPVHEsO7XFX7U7papM3PWzmpf9m8s3iJa3ob5AZXaN6oCAaT2NrEuYTRKOvDgS1jbeZ1Z3MxJf2j6Ct8TJUDb9LQgR457eZUsGt7ripBTMPh0WwR1lT7pqaQlw3XF2zHSHmS117l5soqM2b816yT/4wLgcpH4xbwPOpVkpdqXQqz49svkkAG4/noZttYhcEODtD5kXk9ovO72ALUxq15Ve7teiwyX0g/VyAIUbeU19FCgKf7x9MpDq7bywGpMAltxl44r9lkvi2mVCNETnaLJ5x9U+RZsx9wdKloEfluAQ3MYk0LnvdgIZzKHcASW+MUehOG0nh8blbi3Ii8A83KESz497mHcoZQ0E3069fd0jibwSt5V/u+VoYdDCIhnWXKgCwy5pP+6LRICGE23L1vSXKhSSEt9AWesest0Aw0BNtF5arc+zf6OWrM9SKVZXji2jJ1URt0RisQMCC2D72Gz/ICRI6TeIH4/s4LNVM+uPc94wrolIp9eDY7KFEjgKnngFaOAd8E7w/TtfnG9YfQSDdB8baP+cAhY6sf63I3uKXxRM8X44201FSieu8aTEi863RhkT+ZZrmlMkcKdRV/bYxkxZ9TxxZzwyHgHMuaCMl4zdy5hwEFyV1yrCTZZORfhBYPqcOtMdG0fSQhsLgg2WgEOJTUBwbDEvc1sMo
- 3A8gfRT/
- nde4YW8EDB6pBEozuDvtMVTm7srGqz8AYboRmoyPckRV4al2ndoQZSKboq5Q7u0euc666Pnf9z5cRpcp3WT16HC7R2A/a7QYOh5DCc6MNgfx4SdBtlvRtvC/7cVMX8KDQjaUP6aM/8NuGl6DfAQki0IehPfwZOTG5dnqVT73VTz0mAJjjkzp9bMiZUKACfnI47QvRdlLKZnx6/p70uBQvuM2zaSQpLaFTE60Qpvlom7QmQvgIX55W/LJW93SVPipxzpv7R7d7wxBy7Htp8dBDMFmlPSC6kKizn4Uf6u/+WksX3PufSBXE9OGC9TcT9ppPPh3F46vNE1UUuH58jz1hoBZqCBWeuphXVUiPxtwxb1aBUDLS8yoqTk6DwbdEGq68XYWkx0aBqfpuXGw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 656A4140004
+X-HE-Tag: 1771940750-317247
+X-HE-Meta: U2FsdGVkX1/d7TwrYIhCxiI5oyFKLZhTzpqTw5jnVNJ00nCR31uqvYdbNOGSvy79viuvJnUmDvRD9rHCJV7hbuBKVETmkRZF6ciQzTSTXCx1yHHPvYCL9n3DKQL7wt0xJXeYUIXpU1z819G2kOIBFvn0NhBfIQeblAEqkn8cCSTbnXqA3xEbftfcuHoo4oloay52B7miuvZaWEqtDNKccDTBYzI+4R9j2y4NXBU6LyAiZXGGQDz6fYhcM2b6409iENxSD3vl99P22diNGWbZVCc2BZD6WcLHFpJiO4g5UcU/ZOP5I/vK6HbfmdYM/xafWANeCUXWjErgrpoQbccMpLJngJRyqJvf6nsDodBqadqxJVGhHbTE4FhEOtUHz8LLS13UXl5uGqm9I6zj2Ge/9ofLTCv2e285tomlg1hbuILVMmwr+8wFN3KPZZ2hkzSxY05b15VLE/BhjQ6xV3AUbHlvDlvr/kuyEQUkQTILeMsKQ40liTWAmJB8rKIQ1ywzgWGOB4qzgR699IbEz8b6RQxE+bNU4QAcdQsQANNRgov98zwJndIbr20nLrPIyqeEopIrUMvamuLHcuTKbVehHdoRkfhxjwcBIg2599I3eivKWKMLED2+7o3ZqG+BF9xRvEGFPfbYfb6babzyHC4GC475N5gw6iFxYdGaMfRmSM2tBJ014fGr4wzMIz0kgyqEgCpK5Xq33Sxc7no4GA1x5ihAIxEdrykwGUdztSYZlCvyFKFso9NVi/vsY6euN9giXeEBG9VYnlByFTKq3Cqat2tjBkm21PFbYLCKlnEdMOU2Wgm755Shp205Jhgz3QImdo3NSn6HObnRZ4tM+1icPjAxoKuvFtq3aeUfgQltfqkdQ27xVKX5bAs/4cg+0RbzQs1tMEyHFvOT5EQ9Ztn4btmioyg1cwAFrx+S61AydEaoY/2fiB/pGDUmYG9lu5Wl9BU0dtS8b+0bgsgt6iY
+ umXNUWJt
+ Roa6h9AENAjf9kbqH9Dqij3XzRRUS36ycASQeZl3cD22XNEL4M8tpw/IJ/E6Ml00jYD+qpS0VCDg94vTQMEAQcDozW/ilwHvPpCIflLX1vZXNbxEP2KKPRFzJpHwDv7ezvWftkVZ6FNlnCO9r+LtJ/PhYOjKYmUAwRDsRRNKahXzPlkkuqIEUkSNj/1M5t4SwcvvHto7jrqzBTswY/NOu9AThR5CBJr2C/kCuarYkWND59xYwP8zyCKjV9AmKT9vnWoVOwIEyIuIoctvnIge16wDp88VaETGj0uI3USIvSjyMy2ZYtskZCZDqUmHy7jgkB7tBX/RgDvNEyxY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,58 +102,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Tamir Duberstein <tamird@gmail.com> writes:
+Daniel Gomez <da.gomez@kernel.org> writes:
 
-> On Tue, Feb 10, 2026 at 8:45=E2=80=AFAM Daniel Gomez <da.gomez@kernel.org=
-> wrote:
->>
->> On 2026-02-09 15:38, Andreas Hindborg wrote:
->> > Add a `Debug` implementation for `StoreError<T>` to enable better error
->> > reporting and debugging. The implementation only displays the `error`
->> > field and omits the `value` field, as `T` may not implement `Debug`.
->> >
->> > Reviewed-by: Gary Guo <gary@garyguo.net>
->> > Acked-by: Tamir Duberstein <tamird@gmail.com>
->> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> > ---
->> >  rust/kernel/xarray.rs | 8 ++++++++
->> >  1 file changed, 8 insertions(+)
->> >
->> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
->> > index 88625c9abf4ef..d9762c6bef19c 100644
->> > --- a/rust/kernel/xarray.rs
->> > +++ b/rust/kernel/xarray.rs
->> > @@ -193,6 +193,14 @@ pub struct StoreError<T> {
->> >      pub value: T,
->> >  }
->> >
->> > +impl<T> core::fmt::Debug for StoreError<T> {
->> > +    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Res=
-ult {
->> > +        f.debug_struct("StoreError")
->> > +            .field("error", &self.error)
->> > +            .finish()
->> > +    }
->> > +}
->> > +
->>
->> Is there any best practice for when to include use core::fmt::*, so you =
-can
->> avoid being verbose here?
->>
->> I see other cases like this, but I couldn't find anything in the code
->> guidelines.
+> On 2026-02-09 15:38, Andreas Hindborg wrote:
+>> Add a convenience method `contains_index` to check whether an element
+>> exists at a given index in the XArray. This method provides a more
+>> ergonomic API compared to calling `get` and checking for `Some`.
+>> 
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/kernel/xarray.rs | 21 +++++++++++++++++++++
+>>  1 file changed, 21 insertions(+)
+>> 
+>> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+>> index d9762c6bef19c..ede48b5e1dba3 100644
+>> --- a/rust/kernel/xarray.rs
+>> +++ b/rust/kernel/xarray.rs
+>> @@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+>>          Some(f(ptr))
+>>      }
+>>  
+>> +    /// Checks if the XArray contains an element at the specified index.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
+>> +    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
+>
+> Side comment: I'd also update the examples to the new coding style. And it'd
+> probably be cleaner in the first commit.
 
-I don't think there is a best practice here. I feel that if we only
-invoke a path a few times, we might as well write it out at the use site
-rather than clobber the name space of the compilation unit.
+I'll switch to the vertical import style.
 
 >
-> It would probably be better to use kernel::fmt::* rather than
-> core::fmt so that we can interpose our own trait in the future, if we
-> want.
+>> +    ///
+>> +    /// let mut guard = xa.lock();
+>> +    /// assert_eq!(guard.contains_index(42), false);
+>> +    ///
+>> +    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    ///
+>> +    /// assert_eq!(guard.contains_index(42), true);
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn contains_index(&self, index: usize) -> bool {
+>
+> Nit. The method name may imply there's a contains_*() variant. I'd rename it to
+> contains() so we are consistent with the rest of the API.
 
-I'll change to `kernel::fmt::*`.
+I disagree with this one. `contains` might cheat the reader as it is not
+obvious whether we are querying for a key or value.
+
+>
+> Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+
+Thanks!
 
 Best regards,
 Andreas Hindborg
