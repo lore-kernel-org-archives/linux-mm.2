@@ -4,144 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF2B7EFB7FA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD7CEFB7F9
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:36:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B6056B00B1; Tue, 24 Feb 2026 00:14:10 -0500 (EST)
+	id 9BD6E6B0099; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1729B6B00B3; Tue, 24 Feb 2026 00:14:10 -0500 (EST)
+	id 96ADE6B009B; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081F36B00B4; Tue, 24 Feb 2026 00:14:10 -0500 (EST)
+	id 84C576B009D; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E83FB6B00B1
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:14:09 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 848F71A0188
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:14:09 +0000 (UTC)
-X-FDA: 84478183818.30.F82257F
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf30.hostedemail.com (Postfix) with ESMTP id ED54A8000C
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:14:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 717ED6B0099
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E8AE1B6736
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:36:39 +0000 (UTC)
+X-FDA: 84478240518.10.9AC7744
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 50E87C000B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:36:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FP0RhfiG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771911397; a=rsa-sha256;
+	cv=none;
+	b=4v+07i3PV1mzvqiLvzyg14JaMSd8QyVVvi++P7mJaafILGh6bUvxmuTSZJAnm01JG0r8Go
+	UmWEUH6jeu3cEXVn93SZWh/zMRgBi8QVaEMPZKKSvBOBejJmaKnjJ/ZpPQMAGibwjaqkjc
+	TmGMpLoErvSWObaeTx1gRjYcYDutEKw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FP0RhfiG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771910048;
+	s=arc-20220608; t=1771911397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=MWKFlKXrwSAb89a6XDhELQ9ecOC/iVuebXOW1g5kwGA=;
-	b=6gceOKVSCcADbOt5GxIcZ+cP8t76SxLNyhh+adGT8xQPpRfB1ndOa7JHiTaDgIHAeEOhrq
-	FbIP89hAvdWs6gnKTCOgDUtijorVYVzzNU4/q8SeKRnG04i2bic4T/Fte4/NmbTykRkVPl
-	T1tMS4ToTuTuQ0Trbf2tmcvygpZbrmQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771910048; a=rsa-sha256;
-	cv=none;
-	b=6DBQfKYTjYykevT16MBee3CgOKZzP2DElMnvy7U0W+3ea/ZARVTuStELtwUBsRGX6nOYjg
-	CPyKxyu5kLanKIjZWP/J9zgIxyPvjnUsiYqziLiIGBc+M64ttefhlql/dpNtj/ncHZf0oy
-	P2jp2JJokR+wMA8G/b9b1eLL1wnQg64=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-77-699d3398a6b8
-From: Byungchul Park <byungchul@sk.com>
-To: linux-mm@kvack.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B/AK/n/39PGf79cuvwoF/1WDhJvO0+emi0ESpq0xjhA=;
+	b=5A3ZSb1SzMHaxZTBpRTYVgzu4kjh6AdLoZjIZ8g4EWcFCTWBqVM/BnWWCoqCGEMD2xwtuN
+	aigKp2YoGZIZ5TNIkDH8jnpDeXXbPulDZi84Q5Y1UykyYuiT193faC7RKh39I3jl7c/8hZ
+	PPr3DwUAIWILFuUD1ZAkG0zaCitszn0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 303C3405CF;
+	Tue, 24 Feb 2026 05:36:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A405DC116D0;
+	Tue, 24 Feb 2026 05:36:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771911396;
+	bh=bCkiAOs8zg+h4YWw2lU5IsN8hUlomxIStRc2ZuJPKjY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FP0RhfiG2oH64sS1x2NbtAk24gVTqWaDJR4xr+OZpTM4ggZWcj+AVWxZrIsEM9HpO
+	 4cG+jYpP3yUkzSgP7C1C/lm96Vpr7c7DYA43EQHarkJDkhLwhbv7w7UZ1nL8293cXV
+	 UkRqmD6PUK54Pqh17aROGLONBLzFS2LYfGVv0hcgyhELCWpWtBACBLJzNQ5Sg6Gwgb
+	 cc5BTGJj+LI4wlKgqy4SV9kUcKL89d2YE+nkG65FjfTB/Kh8L2CQYW9naAQBCUNXcx
+	 t8NrRoyV4NhG/1xZPC+xZ1SuElkj81faS+l9TT55Not5s31ZH37wpj+3jO/8HJP8gn
+	 RISMGhTeKXiCw==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
 	akpm@linux-foundation.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com,
-	harry.yoo@oracle.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	horms@kernel.org,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ilias.apalodimas@linaro.org,
-	willy@infradead.org,
-	brauner@kernel.org,
-	kas@kernel.org,
-	yuzhao@google.com,
-	usamaarif642@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	almasrymina@google.com,
-	toke@redhat.com,
-	asml.silence@gmail.com,
-	bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au,
-	dw@davidwei.uk,
-	ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: [PATCH v4] mm: introduce a new page type for page pool in page type
-Date: Tue, 24 Feb 2026 14:13:47 +0900
-Message-Id: <20260224051347.19621-1-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH v3 0/4] mm/damon: Introduce node_eligible_mem_bp and node_ineligible_mem_bp Quota Goal Metrics
+Date: Mon, 23 Feb 2026 21:36:33 -0800
+Message-ID: <20260224053633.58448-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260223123232.12851-1-ravis.opensrc@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRjG+XbOvnMcLk7L8mRQNIrIyrQsXiGiC8EXJRhRgRU58pCHnMUs
-	00LQsouWppXg5hQz0nkpa142TTOneanosszWxdssBatZZk5dUdOQ+u/heZ/f76+XpRRGqQ8r
-	Rh0TNFGqSCWW0bIvnvkrtKtzRH+7wQf0ZaUYSsZiobDHLIXx0gEJ6IurEIyMv2Pgd10zgu9N
-	LRg+NQ4juHF9lAL9syQafpRNUFBdM4BgMOsWho/NdgZKjMHQXdBPQ+15EwX2y60YUpNcFNSN
-	Oxg4bTa4xeUJDDyvSpPCtYmbFJgSehh4WaPH0FX6Wwr9llQa2nRFNHzNbKKgO20DNOfNgdHH
-	nxE0lZkkMHopB8MrbY0EKuteMXDVmoehL6kbgbXRTkPmzwsYshPTELjG3EpH+ogUsh92MRv8
-	SKLNhknj5yGKVBS9kZCOrAya2O4/kpBqXSdD8ozHSbnBl6TYrBQxFidjYhy+wpD3HbWYtGa5
-	aFLdG0Sqzd8lJPWMA4fMDpWtCxcixRhBs3J9mCzidprX0aHQ2Ir8RpyA7FtTkAfLc4F8a2Y9
-	NZ3vJ1royYy5JbzNNj7Ve3HB/O2qdpSCZCzFORi+tt6JJw+zuO382JeOKYDmFvMNjgdTgJxb
-	w7+1djF/pQv4kjvT/Uy+TfvBvWfdoiV8Wa5isqbckzOV2dSkn+faWf5J4gj+y87lGww2Oh3N
-	0P2H6/7huv/wPEQVI4UYFaNWiZGBfhFxUWKs38EjaiNyf1JB/M+9ZjT8fKcFcSxSesrD9utF
-	hVQVEx2ntiCepZRecpdLJyrk4aq4k4LmyAHN8Ugh2oLmsbTSW75q9ES4gjukOiYcFoSjgmb6
-	KmE9fBLQSm282f76co82daFr8JrnuiHz2RTn7me95ecC/DPyzx3wN29clLs4qEhn+mVKJ23J
-	yVnO9TWWLW13M5Y7rd/WvP3Uvcm5ozfsRV3nhT71xYrAbUWbX0+cunrjqW9MvKeisDJk59PQ
-	rfWiR/m9ff17vAfNPf27JC2Ghvlrly4LUj8eIEo6OkIV4EtpolV/AKMgQPhFAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+Z9zds5xOjgtqZNG0SgUJS1s9XYliPJfZAR9KLLIkQc9NLW2
-	FA2KmVYmurQUdM7SLmZeY6Zu81abmdaHxErWTc1KqWxFmjlX2DQkvz087+/5fXpZUp4n8WPF
-	+JOCJl6lVtBSSrpnY9rKgrBicZW5UwnG2ioaKieS4faAWQKuqmECjBUNCMZcrxmYaulAMNr+
-	iIYv9h8IbpSOk2B8mk7Bz9pJEizWYQSfC6pp+NgxyEClKQL6y4YoaL7QSMLgpU4astPdJLS4
-	nAycNZd7xHU6BuzFXRLobtBLIG/yFgmNugEGnlmNNPRVTUlgyJZNQZfhDgXf89tJ6NdvhY6S
-	BTD+ZARBe20jAeNZxTS8KLQSUN/ygoErPSU0vE/vR9BjH6Qg/3cGDUWpegTuCY/SmTMmgaKH
-	fczWUJzqcNDYPvKNxPfuvCRwb0EuhR2tjwlsMbxlcIkpEdeVB+FMRw+JTRUXaWz6cZnBb3qb
-	adxZ4Kaw5d16bDGPEjg7zUnvXXBQuilaUItJgiZ0S5Q0tkbve/zbweR71+20Dg3uzEReLM+t
-	4VtTbdR0prkA3uFwkdPZl4vgaxqeo0wkZUnOyfDNbb/o6cN8bjc/8bV3ZkBxK/gHzvszAxmn
-	5F/19DH/pEv5yruz/Ty+q/CDh2c9ogC+9qp8uiY9SFp9EZmDvA1zKMN/yjCHKkFkBfIV45Pi
-	VKJaGaI9FpsSLyaHHE2IMyHPr5Sd/p1rRmPPwm2IY5HCRxZ12CjKJaokbUqcDfEsqfCVud0G
-	US6LVqWcEjQJRzSJakFrQ/4spVgo27VfiJJzMaqTwjFBOC5oZq8E6+WnQ4skN61BpZe83254
-	vc10vs07cDiL5ZTLI9MiX0UvPmOPEy9uRsZqrDhUduD7olCnaJEnlrYF123f8YerO0d0LBsI
-	X1eVVSPfoE4IlAbrwsxN2vF9n5m1zdeeHzqxpF3p8mODh7t9yhMVPwn/Jv166yd7yGjfEC+N
-	8YpyphdlNCgobaxqdRCp0ar+Atxkpu0nAwAA
-X-CFilter-Loop: Reflected
+X-Stat-Signature: icqy6xzj7snn4ma631ihxykzimdqctr9
 X-Rspam-User: 
-X-Stat-Signature: 61qqh93kmerttzdwkkfp3e49izgqmi11
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ED54A8000C
-X-HE-Tag: 1771910046-329445
-X-HE-Meta: U2FsdGVkX19myC0Zw+KyPw8XWzbwcZ7clsc9c3BztwMjnNH6i0b6nBtBnqmHJlIMQgy0+M6uhCD5koiVClYUo9l62YBu80I5VUhYKFbY47ApVrniJgGDMEGpn2jyhKl1fLABJNGQwK3VeJMR9lEUmdVFdOiZIN9F4s9MZPx+GN1s/IlVJwpsfpB6/z6sBxwO6wgdzQgsr19x1Ar2rllWjQuahBRrfO8pXpXkum0rzqnN8SA/ORDlGwXmnIJCxyno3e8sObvVVeoQ+qx3J6eVfhTLSmiIriID5ZnS/AN9eWsxcIId5I6feDI8UINcQjb9z3t842opQGQYS058oEhZE6GPX4Xm3uYLWasmjHefeWHGc87u6Wqa13cvKTC9Z+QzyWuMXksR+Fp5YCIRN5KregDfefyC5admc6fio7LxKNjW3ZpFzG+Cz/GMNLNTBYFqRDe0g6Bxr0neJFBFskqSdFWHbZ63aqTBvFigJjXqTu14GBri4/jNygf8ha7TYwdKeT8VXpvsjYJTVQUCnaqP8xlsbS7sn0H7IJGIJFhyhZvWTOojMke2lknwTpsyxGYMkoavI4BGSRq32oASV5Vfbo5PHYTfuMuddIh60eNPb/EDd5De9yukrnNJd60OjvNggZICy+/WglB1yb8UpAs3MIR1rVYgDXpyReVTV4+z2WD0MxpZFCQIZuFKvQAMpg3V1cX9YIWHbjQ+zTHTWC7D8jEUwTnxsQ6Acx9q0DsjXx7jCGrw/bpk/q9IH2ZE4s8OgU+Br+OfI/I612cudhCHJjY+eEAnL1RaUJhv9dl8uI429aUocOjHhX9Lir3TbYBcfBFH0ba1GqbqxtFDzrl0s8EFEIxvOcudq8SkSmpM58RztiH/Y2wYRYaeDeZS7pj1ljATEsu1l7DDuHbxytMZhOljTMcsO3NGsH6shnU2YPpHrdZAqtG/3kW+7UjSPal5HM7fGe7QUMkt+g+nYe0
- jkrgxx5w
- ckcwpxzOtF6+0mlJ37qW9haCIIvEbGNr0bC9q4USjXMKxDhyKG0UERrm0QYAxETzPdCdWoYkkrSvnit9jJScm0Tr1spLyuzKeVzYLH4wFUQmIjVdgdI/2+lYPszkwLXVpPOERRn9eE2s7Vk1H8yBlMO89x+CwOOIn3iYLO4B+eKCLiW2uqc9f32/g1y1T8BXq0FMVUID14zAw5gtlyhapMwQoZIkqKozZi85AeRgWIbBOimA=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 50E87C000B
+X-HE-Tag: 1771911397-732731
+X-HE-Meta: U2FsdGVkX196myEQ/jLNINpfGIG+MsEmvEsWlEfOPnRODFfDE7pzdA4eBchuhEWc5zqL+yFM6bbQCx1QL+7veYSw15wu70jw4mgkmKkZwEvCAArraZVd7C3KvyLo8AJUbiK+Z8rD2l/EhBrm0KoIT4Kbw0XmTAKJtiOwyHxtwNDcDMp7mEILaH0Xi4oGlZItGV+TXEwRak0mLI1Jzg7kSPwKPuOqHrMplyodVFEIJM6+rgtBtZjAUWBDKK50WPHbrTaYVLOqPScF0BILGX9vOsPVZewqUkXwdO6rxj32CdKR8Mc13dl2o3r7qqC0wdvDWN97//PD6Qw/ZTI0Z93mCJi/48YGsZYLW7iRuWTlVEUdl5e0wfsdK53FobT4wwuAwHsiiit1ikLO+JGzdLrGalml3x4G8GQjyYiVZx9fqUXWOf/MF8+biEAIpMXmGyCsE9ajqYPLkxjrLQQ1Rf7Gfg9qQ6TsxMRr3vXKl7KE313EQiks7rIffwbOLA2JEKhVlEHsO6aUUo6UqOEymy2OemE0loX+7WaoRetDYRS5k1HNLS7+2XHuWBjpm5JpG11XosDEo6y0sX7z47n0UGGjRgTU+ZoaNvfzQel3H/MwpUQjS9tg181yNc4JRK0RL6vbWZ7LVoZs+68oPXUttrX0ODmRVTZzL93GGnn1dfH/rcv+ZaCzy8IcvyOV/qAdrZ6M2YULjUqgE5jgDs1wtghqNoMrIBAmRddCtX5jX49KDBo7m3F2EYtZQOqclRWoLCMTJ256UtGI1rRTezyyFyN4q5kzD4ixhNGgwp04M4sSkaZI/coyppx6owB71Jd7ZHanWUcklWLbpZruh+Z5TnJHDdulWu4sdqlp7dry9V6TD6NojbHY47yZtgh/gEu1VBDJhxYQZZYiYzdWjIfnJ5t9GzOyw6OFvK6fa+eK6OwwGtfDq3V8x6bpBX/ggHvAmYsPdyyzyaFEin5aBXpvcui
+ RzbN6n7W
+ h7Xng2dFOM5ejV9UxPRd8eYaLlbuiuN5D+Qhq4kjgMxLCvH2dd3Jf38vwrqTmPtFTnwz7p69CV1WGWtOB4b+4V0OlFL5Z3qusDlT37ckcnkPMCG59MEMphxYuyUEp4WZFPGgz/lcTeDOsEegQ4COH1E92jA4R4RXouGTFBBs56j19flT8qrlO7YxTsHFM34JSW9m2fTpH6Y4Ugd1qwOq6ZR8VebXZGCFQEFNLfQvTsTENTpIK21FocVCsTOL+i8DYxMcmIwloQaPJ2ppy82G7gcA28GxMkWv+X8HiDxYO6gDKR889ystdLEUj+LBBK/VAmAFmpyMCJunQ5e/sY3fBRri8ypDSQEJ7nw0/TmIs+xSw2vvj8JmKW2WbAw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000296, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,309 +100,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-determine if a page belongs to a page pool.  However, with the planned
-removal of @pp_magic, we should instead leverage the page_type in struct
-page, such as PGTY_netpp, for this purpose.
+Hello Ravi,
 
-Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-and __ClearPageNetpp() instead, and remove the existing APIs accessing
-@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-netmem_clear_pp_magic().
+On Mon, 23 Feb 2026 12:32:28 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-Plus, add @page_type to struct net_iov at the same offset as struct page
-so as to use the page_type APIs for struct net_iov as well.  While at it,
-reorder @type and @owner in struct net_iov to avoid a hole and
-increasing the struct size.
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
+> 
+> This series introduces two new DAMON quota goal metrics for controlling
+> memory migration in heterogeneous memory systems (e.g., DRAM and CXL
+> memory tiering) using physical address (PA) mode monitoring.
 
-This work was inspired by the following link:
+Thank you for keep working on and sharing this :)
 
-  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> 
+> v2: https://lore.kernel.org/linux-mm/20260129215814.1618-1-ravis.opensrc@gmail.com/
+> 
+> Changes since v2:
+> =================
+> 
+> - Split single metric into two complementary metrics:
+>   * node_eligible_mem_bp: hot memory present ON the specified node
+>   * node_ineligible_mem_bp: hot memory NOT on the specified node.
+>   This enables both PUSH and PULL schemes to work together.
 
-While at it, move the sanity check for page pool to on the free path.
+This perfectly aligns with the direction we agreed on the previous discussion.
+Sounds good and reasonable to me.
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
-The following 'Acked-by's were given only for mm part:
+> 
+> - Added PA-mode detection lag compensation cache (see dedicated section
+>   below for design details).
 
-  Acked-by: David Hildenbrand <david@redhat.com>
-  Acked-by: Zi Yan <ziy@nvidia.com>
-  Acked-by: Vlastimil Babka <vbabka@suse.cz>
+I'm not very sure if this is really needed, though.  I'll leave comment on the
+dedicated section below.
 
-This patch changes both mm and page-pool, but I'm currently targetting
-mm tree because Jakub asked and I also think it's more about mm change.
-See the following link:
+> 
+> - Added fix for esz=0 quota bypass that allowed unlimited migration when
+>   goal was achieved.
+> 
+> - Added fix for goal_tuner sysfs setting being ignored due to
+>   damon_new_scheme() always defaulting to CONSIST.
 
-  https://lore.kernel.org/all/20250813075212.051b5178@kernel.org/
+Thank you for finding and fixing these issues in my previously shared RFC patch
+series!  I left a few comments to the patches.  In short, the second fix looks
+good and I will add that to the next revision of my RFC patch series, if you
+don't mind.  For the first fix, I'd like to take more time on thinking more
+cleaner solution.
 
-Changes from v3:
-	1. Rebase on mm-new as of Feb 24, 2026.
-	2. Fix an issue reported by kernel test robot due to incorrect
-	   type.
-	3. Add 'Acked-by: Vlastimil Babka <vbabka@suse.cz>'.  Thanks.
+> 
+> - Rebased on SJ's damon/next branch which includes the TEMPORAL goal
+>   tuner required for these metrics.
 
-Changes from v2:
-	1. Fix an issue reported by kernel test robot due to incorrect
-	   type in argument of __netmem_to_page().
+Thank you for clarifying this!  This kind of context is very helpful at
+revidewing patches.
 
-Changes from v1:
-	1. Drop the finalizing patch removing the pp fields of struct
-	   page since I found that there is still code accessing a pp
-	   field via struct page.  I will retry the finalizing patch
-	   after resolving the issue.
----
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
- include/linux/mm.h                            | 27 +++----------------
- include/linux/page-flags.h                    |  6 +++++
- include/net/netmem.h                          | 15 +++++++++--
- mm/page_alloc.c                               | 11 +++++---
- net/core/netmem_priv.h                        | 23 +++++++---------
- net/core/page_pool.c                          | 24 +++++++++++++++--
- 7 files changed, 62 insertions(+), 46 deletions(-)
+> 
+> Background and Motivation
+> =========================
+> 
+> In heterogeneous memory systems, controlling hot memory distribution
+> across NUMA nodes is essential for performance optimization. This series
+> enables system wide hot page distribution with target-state goals like
+> "maintain 30% of hot memory on CXL" using PA-mode DAMON schemes.
+> 
+> Two-Scheme Setup for Hot Page Distribution
+> ==========================================
+> 
+> For maintaining 30% of hot memory on CXL (node 1):
+> 
+>     PUSH scheme (DRAM->CXL): migrate_hot from node 0 -> node 1
+>       goal: node_eligible_mem_bp, nid=1, target=3000
+>       Activates when node 1 has less than 30% hot memory
+> 
+>     PULL scheme (CXL->DRAM): migrate_hot from node 1 -> node 0
+>       goal: node_ineligible_mem_bp, nid=1, target=7000
+>       Activates when node 1 has more than 30% hot memory
+> 
+> Both schemes use the TEMPORAL goal tuner which sets esz to maximum when
+> under goal and zero when achieved. Together they converge to equilibrium
+> at the target distribution.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 80f9fc10877ad..7d90d2485c787 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
- 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
- 				page = xdpi.page.page;
- 
--				/* No need to check page_pool_page_is_pp() as we
-+				/* No need to check PageNetpp() as we
- 				 * know this is a page_pool page.
- 				 */
- 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 13336340612e2..0db764b3d6b84 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4824,10 +4824,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-  * DMA mapping IDs for page_pool
-  *
-  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
-- * stashes it in the upper bits of page->pp_magic. We always want to be able to
-- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
-- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
-- * (since it overlaps with page->lru.next), so we must ensure that we cannot
-+ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
-+ * arbitrary kernel pointers stored in the same field as pp_magic (since
-+ * it overlaps with page->lru.next), so we must ensure that we cannot
-  * mistake a valid kernel pointer with any of the values we write into this
-  * field.
-  *
-@@ -4862,26 +4861,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
- #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
- 				  PP_DMA_INDEX_SHIFT)
- 
--/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-- * bits used for the DMA index. page_is_pfmemalloc() is checked in
-- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-- */
--#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
--
--#ifdef CONFIG_PAGE_POOL
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
--}
--#else
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return false;
--}
--#endif
--
- #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
- #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
- #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 0426cac91c0bb..30c4eb24e4edf 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -939,6 +939,7 @@ enum pagetype {
- 	PGTY_zsmalloc		= 0xf6,
- 	PGTY_unaccepted		= 0xf7,
- 	PGTY_large_kmalloc	= 0xf8,
-+	PGTY_netpp		= 0xf9,
- 
- 	PGTY_mapcount_underflow = 0xff
- };
-@@ -1071,6 +1072,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
- PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
- PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
- 
-+/*
-+ * Marks page_pool allocated pages.
-+ */
-+PAGE_TYPE_OPS(Netpp, netpp, netpp)
-+
- /**
-  * PageHuge - Determine if the page belongs to hugetlbfs
-  * @page: The page to test.
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index a96b3e5e5574c..85e3b26ec547f 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -110,10 +110,21 @@ struct net_iov {
- 			atomic_long_t pp_ref_count;
- 		};
- 	};
--	struct net_iov_area *owner;
-+
-+	unsigned int page_type;
- 	enum net_iov_type type;
-+	struct net_iov_area *owner;
- };
- 
-+/* Make sure 'the offset of page_type in struct page == the offset of
-+ * type in struct net_iov'.
-+ */
-+#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
-+	static_assert(offsetof(struct page, pg) ==	\
-+		      offsetof(struct net_iov, iov))
-+NET_IOV_ASSERT_OFFSET(page_type, page_type);
-+#undef NET_IOV_ASSERT_OFFSET
-+
- struct net_iov_area {
- 	/* Array of net_iovs for this area. */
- 	struct net_iov *niovs;
-@@ -256,7 +267,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
-  */
- #define pp_page_to_nmdesc(p)						\
- ({									\
--	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
-+	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
- 	__pp_page_to_nmdesc(p);						\
- })
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d88c8c67ac0b7..cae9f93271469 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1079,7 +1079,6 @@ static inline bool page_expected_state(struct page *page,
- #ifdef CONFIG_MEMCG
- 			page->memcg_data |
- #endif
--			page_pool_page_is_pp(page) |
- 			(page->flags.f & check_flags)))
- 		return false;
- 
-@@ -1106,8 +1105,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
- 	if (unlikely(page->memcg_data))
- 		bad_reason = "page still charged to cgroup";
- #endif
--	if (unlikely(page_pool_page_is_pp(page)))
--		bad_reason = "page_pool leak";
- 	return bad_reason;
- }
- 
-@@ -1416,9 +1413,15 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
- 		folio->mapping = NULL;
- 	}
--	if (unlikely(page_has_type(page)))
-+	if (unlikely(page_has_type(page))) {
-+		/* networking expects to clear its page type before releasing */
-+		if (unlikely(PageNetpp(page))) {
-+			bad_page(page, "page_pool leak");
-+			return false;
-+		}
- 		/* Reset the page_type (which overlays _mapcount) */
- 		page->page_type = UINT_MAX;
-+	}
- 
- 	if (is_check_pages_enabled()) {
- 		if (free_page_is_bad(page))
-diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-index 23175cb2bd866..3e6fde8f1726f 100644
---- a/net/core/netmem_priv.h
-+++ b/net/core/netmem_priv.h
-@@ -8,21 +8,18 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
- 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
- }
- 
--static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
--{
--	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
--}
--
--static inline void netmem_clear_pp_magic(netmem_ref netmem)
--{
--	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
--
--	netmem_to_nmdesc(netmem)->pp_magic = 0;
--}
--
- static inline bool netmem_is_pp(netmem_ref netmem)
- {
--	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-+	struct page *page;
-+
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
-+	 */
-+	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-+	return PageNetpp(page);
- }
- 
- static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 265a729431bb7..877bbf7a19389 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -702,8 +702,18 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
- 
- void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- {
-+	struct page *page;
-+
- 	netmem_set_pp(netmem, pool);
--	netmem_or_pp_magic(netmem, PP_SIGNATURE);
-+
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
-+	 */
-+	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-+	__SetPageNetpp(page);
- 
- 	/* Ensuring all pages have been split into one fragment initially:
- 	 * page_pool_set_pp_info() is only called once for every page when it
-@@ -718,7 +728,17 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- 
- void page_pool_clear_pp_info(netmem_ref netmem)
- {
--	netmem_clear_pp_magic(netmem);
-+	struct page *page;
-+
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
-+	 */
-+	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-+	__ClearPageNetpp(page);
-+
- 	netmem_set_pp(netmem, NULL);
- }
- 
--- 
-2.17.1
+When this kind of complementary setup is being used, in my opinion, CONSIST
+tuner might be better, especially when the access pattern is dynamic.  But it
+is up to user's choice.
 
+> 
+> What These Metrics Do
+> =====================
+> 
+> node_eligible_mem_bp measures:
+>     effective_hot_bytes_on_node / total_hot_bytes * 10000
+> 
+> node_ineligible_mem_bp measures:
+>     (total_hot_bytes - effective_hot_bytes_on_node) / total_hot_bytes * 10000
+> 
+> The metrics are complementary: eligible_bp + ineligible_bp = 10000 bp.
+
+All make sense to me, so far.
+
+> 
+> PA-Mode Detection Lag and Cache Design
+> ======================================
+> 
+> In PA-mode, when pages are migrated:
+> 1. Source node detection drops immediately (pages are gone)
+> 2. Target node detection increases slowly (new addresses need sampling)
+
+I agree.  And this is not what I clearly expected during the previous
+discussion.  Thank you for sharing this issue.
+
+> 
+> This asymmetry causes temporary underestimation of hot memory on the
+> target node. Without compensation, the system keeps migrating even after
+> reaching the goal.
+
+But, is this really significant?  I believe people may use complementary
+auto-tune setup especially when they expect dynamic access pattern.  In the
+case, even if we can perfectly compensate this kind of gap, some of oscillation
+will happen.  You also mentioned "eventual convergence" could be acceptable.
+
+> 
+> The cache addresses this by remembering how much was recently migrated.
+> When calculating effective hot memory:
+> - Source node: reduce detected amount by recent migrations out
+> - Target node: boost detected amount by recent migrations in
+> 
+> The cache uses a rolling window to track migrations over time, and
+> expires after a configurable timeout (default 10s) when no migration
+> activity occurs. It also detects when its baseline becomes stale due
+> to new hot memory appearing in the workload.
+
+I will leave more comments to the patch implementing this.  But this seems too
+much at the current stage, unless there are clear test results showing its
+needs.  I'd recommend proceeding without this, and later revisit if the problem
+becomes clearly significant.
+
+> 
+> Dependencies
+> ============
+> 
+> This series is based on SJ's damon/next branch which includes:
+> 
+> - mm/damon/core: introduce damos_quota_goal_tuner [1]
+> - mm/damon/core: set quota-score histogram with core filters [2]
+> - mm/damon: always respect min_nr_regions from the beginning [3]
+> - mm/damon/core: disallow non-power of two min_region_sz [4]
+> 
+> [1] https://lore.kernel.org/linux-mm/20260212062314.69961-1-sj@kernel.org/
+> [2] https://lore.kernel.org/linux-mm/20260131194145.66286-1-sj@kernel.org/
+> [3] https://lore.kernel.org/linux-mm/20260217000400.69056-1-sj@kernel.org/
+> [4] https://lore.kernel.org/linux-mm/20260214214124.87689-1-sj@kernel.org/
+> 
+> Patch Organization
+> ==================
+> 
+> 1. mm/damon/sysfs: set goal_tuner after scheme creation
+>     - Fixes goal_tuner initialization order in sysfs scheme creation
+> 
+> 2. mm/damon: fix esz=0 quota bypass allowing unlimited migration
+>     - Ensures esz=0 stops migration rather than bypassing quota entirely
+> 
+> 3. mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+>     - Adds the two complementary metrics for hot memory distribution control
+> 
+> 4. mm/damon: add PA-mode cache for eligible memory detection lag
+>     - Implements rolling window cache to compensate for PA-mode detection lag
+>     - Adds configurable cache timeout via sysfs
+> 
+> Testing Status
+> ==============
+> 
+> Functionally tested on a two-node heterogeneous memory system (DRAM + CXL)
+> with PUSH+PULL scheme configuration.
+
+Glad to hear the functionality is tested.  Looking forward to the next results!
+
+> 
+> This is an RFC and feedback on the design is appreciated.
+
+I'm yet to further reply to the fourth patch, but I hope my comments be worthy
+:)
+
+
+Thanks,
+SJ
+
+[...]
 
