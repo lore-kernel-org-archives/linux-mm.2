@@ -4,121 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FAE1EFB7E1
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 02:39:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985E1EFB7EB
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 02:52:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17806B008A; Mon, 23 Feb 2026 21:39:45 -0500 (EST)
+	id BF0016B0088; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDEBF6B008C; Mon, 23 Feb 2026 21:39:45 -0500 (EST)
+	id B905E6B0089; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD7A16B0092; Mon, 23 Feb 2026 21:39:45 -0500 (EST)
+	id A71CF6B008A; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD6466B008A
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:39:45 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5CAA81603FD
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:39:45 +0000 (UTC)
-X-FDA: 84477794730.09.E734826
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E39F240009
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:39:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="gi542/F4";
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 927D66B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C2431C379
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:52:47 +0000 (UTC)
+X-FDA: 84477827574.03.596CFE0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3E3671C000A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:52:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DksMoPFT;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771901565; a=rsa-sha256;
+	cv=none;
+	b=PqeJjVRoOC4y9pHzEnetYpL3C5qPjX9OkP8cw5neByg7RYHkNGBkO3CdMxdExMXU1yZllv
+	oCfnsQ6/7wwqrKlICMjtypG6DnIoVa2Cb6Jf5PWUbo5/GKDRXWJLKc9pKP+KrMlBWaTagm
+	LjnmIcbchU+tfsQUjRr7vG7faaRR718=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DksMoPFT;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771900783;
+	s=arc-20220608; t=1771901565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pAYOHuNWQcJjW8QWbfDChldfD3kGn4KOZM9BL41wwa0=;
-	b=mgZ7yQsiI1vC2og7W5dYwxW8GuK1l7xrRcJITB2oXhiVLjfY1KTRRsdvAMsE50ZahjfY6y
-	I/WDejumLv8GX5hp7ejHfYF42Sb+kTYMitpMbOOwAYSasnzqzCFkUnxNAP3m3hdV+sEkAb
-	Jo/Uqi6LeBvL1dTiI9xXvKB1X/OkBO8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771900783; a=rsa-sha256;
-	cv=none;
-	b=e8dUTtKqGIEHI9jh02e1nF9551Wuix5/87/JkA64tiCFnH4zsSC4k/BAfi6mJEb2stK7Ss
-	qb46Xypu8iR1dKrChVaQvyOSrNl9NZBQT9fBQwBxgngmAvGwQ1pmIMPm31BV7Mud+5WIbk
-	MP7yWB8OU5IryRQBbbAEgbm9xMRTQ/Y=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="gi542/F4";
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=pAYOHuNWQcJjW8QWbfDChldfD3kGn4KOZM9BL41wwa0=; b=gi542/F4jj60Bhoqxv/W7avl1o
-	EFbf2EZddQ8rkSOux7kxVSLN5ExsG+mpIAOm+clzibP9tRE5knUYLMf9EnaYiOZPXz86gqdSKmPPy
-	s+MLB/Inj90OlbquOFbpjEYQKgWyHtvGPkU4tlGryvUp/bRgideMqExjhgtglAwAiKHOeOlzPyTbr
-	+Pqpq10pWU1CnX4uAwmE9a5Y6ACrVb6Uj0sEVN+c9GWbH6rrv4JDo5W37RwFck1IktMzO+keaST3w
-	+8SxGe76KqhGee43F2B4CSQXQFN03fMV5Qfb2ZL4P8gS2fhbmrsWQpB1SU0N6lIcISWdt5JLuOZTv
-	eZO1s8fA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1vuiK8-000000000dq-0e8p;
-	Mon, 23 Feb 2026 21:38:57 -0500
-Message-ID: <b3c1c739c233ccb32945ccaffdaf25fd3f96dd59.camel@surriel.com>
-Subject: Re: [PATCH 2/5] mm: rmap: add a ZONE_DEVICE folio warning in
- folio_referenced()
-From: Rik van Riel <riel@surriel.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, 
-	david@kernel.org
-Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com, 
-	ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, 	surenb@google.com, mhocko@suse.com, harry.yoo@oracle.com,
- jannh@google.com, 	willy@infradead.org, baohua@kernel.org,
- dev.jain@arm.com, axelrasmussen@google.com, 	yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, 	zhengqi.arch@bytedance.com,
- shakeel.butt@linux.dev, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Mon, 23 Feb 2026 21:38:57 -0500
-In-Reply-To: <e91eaa86a6fbb0682b4e308082048c688a57c035.1771897150.git.baolin.wang@linux.alibaba.com>
-References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
-	 <e91eaa86a6fbb0682b4e308082048c688a57c035.1771897150.git.baolin.wang@linux.alibaba.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KvdK4bKlV9p8CtqWIClX1h0DPFMJUXzNU1SYA1FO1bk=;
+	b=B6i1zv4f2AZnWYbdIw8G7E/USdxBcz9/PfdFjY48Puq+kSZYBGecnGpP8BJqU7UXHKnE8n
+	4UKhKJDIpUrDbFjIL54lgzl1rjmYhiilS/26653eVy5Cv8RP6Zz/nv/f4KM6RSLYxpEmqw
+	ehruF0Bhzprsr1rivbZVfBf2NGZboW0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771901564;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KvdK4bKlV9p8CtqWIClX1h0DPFMJUXzNU1SYA1FO1bk=;
+	b=DksMoPFTLFU0MDZcEIzQTMuVlJdopLxuf5S0TW4dlLogHatVHeyfS+uCEOb/gjZZWzViSn
+	SpxqMkZV4rLWyMCLGNbOkWLvFVExfkcvH2ZqhdcV6pfKaFWW9BdGbA04EFAnxajc2FdhZz
+	P04F4GmOFsceotb1MvbMfR8XFNL9U2c=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-VLMHYQwwMwi9CxWQW8Ft8g-1; Mon,
+ 23 Feb 2026 21:52:41 -0500
+X-MC-Unique: VLMHYQwwMwi9CxWQW8Ft8g-1
+X-Mimecast-MFC-AGG-ID: VLMHYQwwMwi9CxWQW8Ft8g_1771901560
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5E321800473;
+	Tue, 24 Feb 2026 02:52:39 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.18])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CC1241800348;
+	Tue, 24 Feb 2026 02:52:34 +0000 (UTC)
+Date: Tue, 24 Feb 2026 10:52:28 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: ming.lei@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org
+Subject: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <aZ0SbIqaIkwoW2mB@fedora>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: hvFk0IvQkeFunq1lElMj6jec6j37LeEC6Jg8iSEC3HI_1771901560
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 96tirgu5cxr6px3upp8ecr3dn7cgs4np
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E39F240009
-X-HE-Tag: 1771900783-333987
-X-HE-Meta: U2FsdGVkX18xPmjSZ11N7+bnrrAm/AJrCgxqghnQ8rRYNF+mjDBZVrYQAfdzQh7bNVnMyZdS7DyU78NmS2LhnSVhWa4m7T9iOIrhCC9SZ0KFHaMo8mzN8FgAwFPBR7R6zGOReJLz30+EGHrVKfCN2/ldPcrf5UJTmSABpEsYmRFM7s9//CKvrPeUgSduC0qnCAKfN3PRrqlhKYQfw+0sdz5Oofo0g4/x+3RAWjhkVTN15ZqRXL9ha5vilcfyhqQkIy2DBc+sofoAbWgbr21ErnuVZtzI4xHu8HEAgO7MrtW8VuXBb5/Oj+UBRRgUEb+No7x2x2YEn50hweGxEuSJZcCsHE3tBEQBATMG9OOrAgxjeOe77KiZi61YVMiFQpd4T0ESwAGz9X0kMqEU3fmbPshEakXpMEysyIaCJ/BvNNrHtCmBPlQEOlq/O3HASFP7DEXMFwLsEpxbi3wWIovCGyI03JORCGfL1Wg2D+by7/sUz4K+yJY2IGhBI9ntmduURQOLlqI+F9yjqortnRqNx/qkTbzdF3XSh8pqWRaAgC8O/Z4shoS/HSnv5HxqO9H8wMQFGHfb1GOrrM7/twoOeqJtrSSXh5UDME8dk8AumD6U1s4b31bflWQQmyAumbSpaNXB785YOrZ8j+BRmQ8Q7dIIIvWwAmD0yvSgkZF6DIMB5bBWdVrEw8Dq240aA7wYe7+LcnvS9yr73Rfk1vqtdZx42D3Pz6NXUglLef5Tls4DCT82mLC02PuIXj2do/WyGa6EPPGfv3hWHwJ+FEDHLsYHOATz9sBQkm7BLV7LOBGAtP7C7XD4CUVcB+kMdmrA7wOmXhDc21WWKfCSclp3xIz9aA48Yu2nyKezxr4iDYInV7559qhdApcVBh3PFkRWMQbljCg28/7gJfXGPxpwasRzJ5NB6yvngXToKWRcsU/sqe5vyjTV64ms/mELU4HE
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3E3671C000A
+X-Stat-Signature: ibqqjjikskj3cbetbxkumtco8d959fdo
+X-HE-Tag: 1771901565-896646
+X-HE-Meta: U2FsdGVkX18MbLmgzBtXa6Gp5K90V3gUBNzOwq5wtwxu8352WmtANAfV1mGyWHZ9Qyb8FjqxUuDnk5JHIRKDHXjO00N38NAMxBCKRW6FYYu0qA/xrrtQGhwiFEg96YW/lkqSejgEUqJGjB2KQ+IMA4ho3qo7jC4QwVojlJC6sZM/VAsxendM4d9/u+qG8xIt+VkMVDkcm951Q2LAkiHfqhy1sAIxvZhFDmgF4YjyMbXxecs2zyEYnn9blufMUyZBLKO5D2EiL39MTuYYadLNalsFT2XUxQj9oFBFWL4ri/1m7s1BxbltvOVBWGx2BCgAbwNq/hAJDlDHNrOq0sFDRkkbFwby2D5CW9RTHCNRRXg3JeCDKYcROvPAgeMpaaEdKq0ChYhdkJoQBNcUjm8bp6qSP9Sv8K/IvTKtKLBXn2R0LUvm///HBskcYxb9qtQJUqKQ8T2m2kiIWe3VD4PfPhfRZkyCGylAw3i8Vnew0hRJBQ9LitUCd02CduHP5sHVOzQGhCtivOE0Pv6IDFV1j4r0DxRtere0YEwD26ZYYqpJoDHtb2/kk5MPgMI4LxpdRQA345S/1wP/+LnHbJecyZKzN/Doq2Dr3Gj06m0ooTuaPwZS8vOrNel3Cs0cJEcrs/oSBeObl+gvc4PNPzC93CZpjKtVnF9P/XQNkKzJSpFLw+P7ofQHc0a2F6AsGpuXpaXOpqE22oEAS4lLVaURfrZg9lz8rrySZdJWbI3WztNwKZnGe69+fk67Izr0dp7m7OR6f9hh+Cd+otWx1E4YKTdFPFOMx9JxdDvEgxq4aRSoO1QxY8mb2SI0EeCo+GiRZb+ahSJiguPsMWP8FHuqW7V8ltZ60gOVaiDz/VoeZUczFj0Zde6WjmFvQkRKpSgUOzL8vRI2PTA37l5autiFTuzf9HQzelEQIDb7jR48BoB0bdNDX7LhtbIHkCULNb0YIxK3PdskfZz4XygcwJ+
+ RIWiOc01
+ fVUz1on8BXYyOowZU1wYglzaVYSRT3qo+98Equv/dRZfrx9LiFpRP/1sfD9x+rpr5MOUX6/vmirJkGdev18+ORMcEHygMi+fhHkpTAeR3GoSQ8m73uZBLC1m9OJ3olDGlbGnfLKrqmY6JoPZf1kpNlPkeSNkxJ2uTfanLBO/IZP0SqArl8RU6S5isN7OT3oJufjjjPHpxTbSTIjtfTbi4xE612EWsjzXkNHlZA7WcpV1T3ysN1UCaBTO2fht1ZySTNnMtjFNTERbErJP8t3BDYiEURJfDhSBtJw/vUXQEaXbgj1UP936Y5eFCc78yDv+5CzhimLkHlBGs2hyDiKRn8mJ7GA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,26 +105,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-02-24 at 09:56 +0800, Baolin Wang wrote:
->=20
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index bff8f222004e..be785dfc9336 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1065,6 +1065,7 @@ int folio_referenced(struct folio *folio, int
-> is_locked,
-> =C2=A0		.invalid_vma =3D invalid_folio_referenced_vma,
-> =C2=A0	};
-> =C2=A0
-> +	VM_WARN_ON_FOLIO(folio_is_zone_device(folio), folio);
-> =C2=A0	*vm_flags =3D 0;
-> =C2=A0	if (!pra.mapcount)
-> =C2=A0		return 0;
+Hello Vlastimil and MM guys,
 
-Should be a VM_WARN_ON_ONCE_FOLIO so we do not cause
-a softlockup if we try to print information about a
-million ZONE_DEVICE pages?
+The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
+'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
+performance regression for workloads with persistent cross-CPU
+alloc/free patterns. ublk null target benchmark IOPS drops
+significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
+drop).
 
---=20
-All Rights Reversed.
+Bisecting within the sheaves series is blocked by a kernel panic at
+17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
+paths"), so the exact first bad commit could not be identified.
+
+Reproducer
+==========
+
+Hardware: NUMA machine with >= 32 CPUs
+Kernel:   v7.0-rc (with slab/for-7.0/sheaves merged)
+
+    # build kublk selftest
+    make -C tools/testing/selftests/ublk/
+
+    # create ublk null target device with 16 queues
+    tools/testing/selftests/ublk/kublk add -t null -q 16
+
+    # run fio/t/io_uring benchmark: 16 jobs, 20 seconds, non-polled
+    taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
+
+    # cleanup
+    tools/testing/selftests/ublk/kublk del -n 0
+
+Good: v6.19 (and 41f1a08645ab, the mainline parent of the slab merge)
+Bad:  815c8e35511d (Merge branch 'slab/for-7.0/sheaves' into slab/for-next)
+
+perf profile (bad kernel)
+=========================
+
+~47% of CPU time is spent in bio allocation hitting the SLUB slow path,
+with massive spinlock contention on the node partial list lock:
+
++   47.65%     1.21%  io_uring  [k] bio_alloc_bioset
+-   44.87%     0.45%  io_uring  [k] kmem_cache_alloc_noprof
+   - 44.41% kmem_cache_alloc_noprof
+      - 43.89% ___slab_alloc
+         + 41.16% get_from_any_partial
+           0.91% get_from_partial_node
+         + 0.87% alloc_from_new_slab
+         + 0.65% allocate_slab
+-   44.70%     0.21%  io_uring  [k] mempool_alloc_noprof
+   - 44.49% mempool_alloc_noprof
+      - 44.43% kmem_cache_alloc_noprof
+         - 43.90% ___slab_alloc
+            + 41.18% get_from_any_partial
+              0.90% get_from_partial_node
+            + 0.87% alloc_from_new_slab
+            + 0.65% allocate_slab
++   41.23%     0.10%  io_uring  [k] get_from_any_partial
++   40.82%     0.48%  io_uring  [k] __raw_spin_lock_irqsave
+-   40.75%     0.20%  io_uring  [k] get_from_partial_node
+   - 40.56% get_from_partial_node
+      - 38.83% __raw_spin_lock_irqsave
+           38.65% native_queued_spin_lock_slowpath
+
+Analysis
+========
+
+The ublk null target workload exposes a cross-CPU slab allocation
+pattern: bios are allocated on the io_uring submitter CPU during block
+layer submission, but freed on a different CPU — the ublk daemon thread
+that runs the completion via io_uring_cmd_complete_in_task() task work.
+And the completion CPU stays in same LLC or numa node with submission CPU.
+
+This cross-CPU alloc/free pattern is not unique to ublk. The block
+layer's default rq_affinity=1 setting completes requests on a CPU
+sharing LLC with the submission CPU, which similarly causes bio freeing
+on a different CPU than allocation. The ublk null target simply makes
+this pattern more pronounced and measurable because all overhead is in
+the bio alloc/free path with no actual I/O.
+
+**The following is from AI, just for reference**
+
+The result is that the allocating CPU's per-CPU slab caches are
+continuously drained without being replenished by local frees. The bio
+layer's own per-CPU cache (bio_alloc_cache) suffers the same mismatch:
+freed bios go to the completion CPU's cache via bio_put_percpu_cache(),
+leaving the submitter CPUs' caches empty and falling through to
+mempool_alloc() -> kmem_cache_alloc() -> SLUB slow path.
+
+In v6.19, SLUB handled this with a 3-tier allocation hierarchy:
+
+  Tier 1: CPU slab freelist         lock-free (cmpxchg)
+  Tier 2: CPU partial slab list     lock-free (per-CPU local_lock)
+  Tier 3: Node partial list         kmem_cache_node->list_lock
+
+The CPU partial slab list (Tier 2) was the critical buffer. It was
+populated during __slab_free() -> put_cpu_partial() and provided a
+lock-free pool of partial slabs per CPU. Even when the CPU slab was
+exhausted, the CPU partial list could supply more slabs without
+touching any shared lock.
+
+The sheaves architecture replaces this with a 2-tier hierarchy:
+
+  Tier 1: Per-CPU sheaf             lock-free (local_lock)
+  Tier 2: Node partial list         kmem_cache_node->list_lock
+
+The intermediate lock-free tier is gone. When the per-CPU sheaf is
+empty and the spare sheaf is also empty, every refill must go through
+the node partial list, requiring kmem_cache_node->list_lock. With 16
+CPUs simultaneously allocating bios and all hitting empty sheaves, this
+creates a thundering herd on the node list_lock.
+
+When the local node's partial list is also depleted (objects freed on
+remote nodes accumulate there instead), get_from_any_partial() kicks in
+to search other NUMA nodes, compounding the contention with cross-NUMA
+list_lock acquisition — explaining the 41% in get_from_any_partial ->
+native_queued_spin_lock_slowpath seen in the profile.
+
+The mitigation in 40fd0acc45d0 ("slub: avoid list_lock contention from
+__refill_objects_any()") uses spin_trylock for cross-NUMA refill, but
+does not address the fundamental architectural issue: the missing
+lock-free intermediate caching tier that the CPU partial list provided.
+
+Thanks,
+Ming
+
 
