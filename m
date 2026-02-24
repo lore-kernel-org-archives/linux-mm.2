@@ -4,154 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D82F4BB67
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 17:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F6AF4BB65
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 17:54:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 654596B0088; Tue, 24 Feb 2026 12:37:30 -0500 (EST)
+	id 770256B0088; Tue, 24 Feb 2026 12:54:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62B8E6B0089; Tue, 24 Feb 2026 12:37:30 -0500 (EST)
+	id 71C6B6B0089; Tue, 24 Feb 2026 12:54:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50D336B008A; Tue, 24 Feb 2026 12:37:30 -0500 (EST)
+	id 625ED6B008A; Tue, 24 Feb 2026 12:54:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A4996B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:37:30 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2F671C1AD
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:37:29 +0000 (UTC)
-X-FDA: 84480057018.09.2A7E113
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 03E1AA0009
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:37:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=d2CWFYXU;
-	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771954648;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0DF6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:54:50 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03D3C1601C5
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:54:49 +0000 (UTC)
+X-FDA: 84480100740.01.D7DA259
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2845414000A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:54:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NANhPXCH;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771955688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WVyG+GjslObEPoiorlcEtEb0lbImQuwl2+xBSlYjPvU=;
-	b=FTeMopM8rW+WfGvRU4NkjESN87bZQD3ac8Gog+BqGKPWxTf/+M0l3ByPSjw8RO2oWlsZ6L
-	YHj4GLCLWQ3oYRQKmNwDwIUqlYxMA+M6kXaWp2pV9MlFXtRHZcLHTh3dVufEh2YwTxPVsl
-	WUd3JpeUUocYEoeXqhMLqU3aBixNpdg=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=d2CWFYXU;
-	spf=pass (imf15.hostedemail.com: domain of dmatlack@google.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771954648; a=rsa-sha256;
-	cv=pass;
-	b=d5bWhynxANnLNuUYV8eiaABPiSkbKXJCSWM1cSMl463QjtDWrXxRa3mwA1dulr8wZW+/ub
-	U3+UOPGpHOVjtTtnJXPC2x4XlaGVZqDMcvLmzx+JqmwuPLVzcVbSsLdSxH+SpkoQDjZp+y
-	b+/9h2gZjHOlL5KU5pNjZQFq8JdI3W8=
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56641b5a471so4990191e0c.2
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:37:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771954647; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ghxLRKwJy9hMiyaUGe73Pd1oNENkwHNdU9VEel5cNMr4RHiNS+SbDUpPjhtHtWX1hE
-         AXWNTffO7T7iDxKZciV8EKhmxRpNZ4UwxL3YPRrp45D4za9c1X+pBSCVTHygztDUcapc
-         tC+tyY86KV3Jpr+cZ0+Lq+KRu4rtkLh8aX/Oy5GkAQT+TCD5i7jtVWXbopFKxCMhRr6V
-         HJ8ugaCD8MKPFqi66qGsE2wdNocHvxx/gNAvm5802edM0ueCCRwF9xa3zM+vg9OAG5gl
-         BXQZ97I4MZdcib45PKBIciH2qbOstPWE1/bxG8sWYtX/fpRAjZBLCI8yMtHPhvZo8xBC
-         DYxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WVyG+GjslObEPoiorlcEtEb0lbImQuwl2+xBSlYjPvU=;
-        fh=9rbl/omNmj+Y9MYqhP6lmZL8Hh0v/rVsRkaMzQ+pMBQ=;
-        b=LwWgTPTLzDFRff6yOAfRMDBQA7iGzP4yRRZJNi/yJLNTrhyEEwY2dZTGja70JaEfT/
-         Qw73t03J84i/Aty/kR53ig6yoz4rabOIRnD/CItgUwPA1rWaiM0Ujo+t/wIyVkR9sVZ+
-         93gcGUUmdHQUWbQ050/lzh4DDxsMcMytPDS+J0qlagp1GH0MJpVOhHLYltthKTnmxqiS
-         JgDAtowpMFVusGowmuprNfiRpkN7I44C04g1Xiuklk6Yr+iFpm92xtlqCh5THfbsalVO
-         Ilr6CML/dBpRMMIZc6fRJTkHRpjoi9dYWkKYRR8pDNgp9EghcocnIz+5iEpsrJKjVkdy
-         4wCg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=CS+j2puaAGsOcTjJlK5nBHRn9fQdF++IjhODBwlsIys=;
+	b=sud818zK5IyCqMkb9DAWAybyvZDrr7fEdswdh9XI9JtxscY+XwksMrtlZXwp5N8tckqwPv
+	his2Ru5pNOmrisbm85YoHzpAeUUvAzQWMKJQg7tKmHfn/NjlDjlA2ghKuQsWLji6tqPnOw
+	KTx6nU3uEDdCS3eu7FkF8NaGu7ew9/I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771955688; a=rsa-sha256;
+	cv=none;
+	b=haFnGx1NzA2EWEvrZFtkTVqqw5aL9A3OU5dsdFg5QLnwAnimzop0UJK93leiy4s/Va1Dkj
+	d6sCS8OWx2vw55ufo+X9kvKDDzDozMMKtaUvtogpD9iLuie5qFXufKOJEaggPy/jP17Emi
+	KEzpoVj5b3ytzlBckH3xUkeAf8dEO14=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NANhPXCH;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d4c65d772cso5396621a34.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:54:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771954647; x=1772559447; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1771955687; x=1772560487; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WVyG+GjslObEPoiorlcEtEb0lbImQuwl2+xBSlYjPvU=;
-        b=d2CWFYXU4QwGroRVpkcqiu75oH1PX1KaOE/iYmR7mLwXEwRTLdMmQ5gAracjDtRvne
-         u+Ke9bUR/UCB7hvlqS2CVVahcdPUC+jjg6sVlfDej+eocljfjLf84HsXMb7I9WOzMZWv
-         rCuWGxiI+TLVBsv8hnTy1sTHuRymNhoaP6WwL8Xlk5K44vH1yW3NWamBDsIPKvG43lL3
-         lsXrGNG9MkcctTLzVOa5Kh2ZUvx5nVy9YgLhnOyNNDVa41HpFk+Xrcksp80e27gy+Abx
-         NUuRiPDq+W7rfDpIW1dqq9N2hPldJ93srSa717rQPfGzJCcVntVJbAusne1Ymn5cWRfB
-         wfhg==
+        bh=CS+j2puaAGsOcTjJlK5nBHRn9fQdF++IjhODBwlsIys=;
+        b=NANhPXCH2fvFQ568MBhkJ+nvDgubxOXi0eIFLkAqmPxXF8gv/G+BY0QLiKwWiZDEiM
+         LIv3tnKlbgVYnyx4VypFEA0zwtsN6PJS8061p6VZaHI9NJhm4U8xnDZqi8+WdJlNVADc
+         vuqxP7Kfeh0Qo/yt/NCs8uC6YBenKMFR16DnA7TZVjOm/aDuBPp3tp38xfxbJjHNfZPC
+         7e5yminl/hWxlelLKnfvgQPWCYi/+Arp0pSF+vakJnenF/nJEFOgie5lGJiV9tEQprC8
+         H4ppogrdKUoykOQ0/5sl/qHCWUJ7hPqsl9dXrt9iABRl1FtpHXYSx5DC52WaPYcnRXOG
+         DdQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771954647; x=1772559447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1771955687; x=1772560487;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WVyG+GjslObEPoiorlcEtEb0lbImQuwl2+xBSlYjPvU=;
-        b=HYjidBv3BatwYQkbw/33YCWAcDWjWADqd4e7hMpc/b+h/yqND0na5cEyWrSR97TUkm
-         ZRfnv/fzRiPTUujcrVaVW9WHRRz2yIduu3ugRhIn8y+k0BiTYE5sW2tcWrXjW1FTcZyp
-         EE/a0Rd290Ni3E99GGm7fchSi8wGMEysGpmmW2e1ZX6MBUFmJVahEJVC1OG2cdHwz2iY
-         XY/H/+N1dF7ton6LVn1u19/uZfC17XbQ/KNYbnQI04PTY1dAiWMQOkVuL/1zQ6M+R/bz
-         3Yx5hS2ben9nPFDaj3mURXAouk808toW4SnTGuWZ7xg31SgScig6k4QD6SbY+UG++AdO
-         kvlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXv196NP5TRuxWXdgtPnDHLPSojz516mbIsx45rM99ubVylNpJmKW/HmZBECNrVQkgVK+2bdQbM8w==@kvack.org
-X-Gm-Message-State: AOJu0YwELfKuNMPu2GgFEHV5Yvn7d331cnNxoz3x1Zz8y3HEKlk1aGpM
-	h4LX8RJBfANuQ5zPY0ZV3ES7Xs6ZgyrNXLC2jG6XskPXXoiHBUzbqnjB9XS4NLS4aO29VVXNrv+
-	5oTq0eLAJXmu3fDt6yWmr9VrBTuFOvnIae9qhiRjy
-X-Gm-Gg: ATEYQzxmUVFVmmbKFKS0ZCzjx3QaWIQSOEwPfyqDqsGilcfaG2G1g9zQflKzHmqE7yq
-	5dRBExsOV2UdZsBiuBPojK1DN2KlIshCzVqkU1q26qb0MHFsvlSagrjts4WU2Z/hd4AhfXQsGnJ
-	aWvnaKcn/S0KaMbmUkQ99pahLW2ARcRb1PDx6oLBr1qHQz1odhsSibbAZwgX5pHnrNsVzGnqT2Y
-	kXPTdB4t9Lhfxx+tA9tmrTY7Jvgg88fqTf4vlfdvVoPDWVztkhdxhD+ePcfPYlB38j+764VSv0+
-	ZpJVFW8=
-X-Received: by 2002:a05:6102:e11:b0:5f5:3835:4796 with SMTP id
- ada2fe7eead31-5feb2eebe4fmr7234443137.15.1771954646379; Tue, 24 Feb 2026
- 09:37:26 -0800 (PST)
+        bh=CS+j2puaAGsOcTjJlK5nBHRn9fQdF++IjhODBwlsIys=;
+        b=Ef6qv6TZMZeFmzA0ONAK35FauAK35sG9fz5IPn+NcQQchrYYcZGLoQOXDHqUtLjPc4
+         QEU0MmZ5SlY1chXJ0/BthIM0DwUMq7Pi8y9MWhZnPlZ/kV+9IshtchKAyzgYyt8u/UaZ
+         1xr9fZW87mvwIaIajl+Wht7cyfBU23MIKSi9ljiXs1K147rE/E+bPNjUHFRr5atw6pdU
+         bGR/l7rVbF41DJ+pwrWjc8mSVq5P8+k6YvePIQN1vmJf66ozJ9CJWCZqKigjVVeyspG7
+         4M16xYbjDp/aCvN3ARHkS4rOVDyoJNREA5ZSprLXDraD2w3Z5Dai09y1TXXBVdvHzGkl
+         BSAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwq/wIJ+qgmmzR1/YBapBnA5KHT49/3Uxez0sECDIJhJH6uFAH/uGT1GyT3493WKEj36MmBQHMIw==@kvack.org
+X-Gm-Message-State: AOJu0YyBkElxRgLEEvG0esQa8AUf1d8bhAvDNkaDmISmkL8UTiLZO+R2
+	b2WprsL7QQTKFFfyyt+QyHKQ70KkAUyJhr7X+jsaAF+VO0nw38M9IWt+U34V/w==
+X-Gm-Gg: ATEYQzyVQ/DfG094uDbu7CLX+LpTsalrQ/7hIE3ktXO1h/u8lm5de7OU3t4S6Cfp/ek
+	iOtuEL8WhyBR+RpsH82ABL8CavcyvSS3Pbycur6F0MwkbMHK9yttLx1EKRdxx+ivfHVh2myMe1r
+	N/TKAMsDBtkGx6+QYYJN4C0S9l0rAr8GBxX5+/USeY6meuGp29ifL0Us/C0CUAhmKKvvSnLleQz
+	n7JYULJehqvekuGrXpM3yaPoT/Vxxm9zEMQzPUjXj7NINFYGL8dsS7h/DoV1HvUCcMJwzu3UV2G
+	2pUoXyeDLgG+nINUiNOk29dQJHzJYWLuXe2GWRtMeUR5b8whUL8O8EsLsbV0gavFn1VmIqy5jSi
+	HYmzKTNE3xTJEnLBiyvq47MsRg40oO/ISMsbLVRC9I2ZeGVrZKs3GLAn+qc+IQf13TEAXLdhvEy
+	8kF5itCB6p5tLcf0AZMJRfTzY3gSt4A63R
+X-Received: by 2002:a05:6808:1b21:b0:45c:9936:10be with SMTP id 5614622812f47-46446387894mr6818660b6e.42.1771949639421;
+        Tue, 24 Feb 2026 08:13:59 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:70::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4157d2d320fsm10358387fac.11.2026.02.24.08.13.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 08:13:58 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Gregory Price <gourry@gourry.net>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Waiman Long <longman@redhat.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [RFC PATCH 0/6] mm/memcontrol: Make memcg limits tier-aware
+Date: Tue, 24 Feb 2026 08:13:56 -0800
+Message-ID: <20260224161357.2622501-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aZ2LC0KPF0xsAwAL@tiehlicka>
+References: 
 MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-4-dmatlack@google.com>
- <aZ1xAyN0vgLWIi5y@google.com>
-In-Reply-To: <aZ1xAyN0vgLWIi5y@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 24 Feb 2026 09:36:50 -0800
-X-Gm-Features: AaiRm51zYRUGqNlquBQBjZ_Ao68Y3fgUdHKViouV8m9qg-AcIptaKIFOE6taQzc
-Message-ID: <CALzav=cMsDyUrOPgkr5ouROPmsEAN2icsL266M4FxY3P6BNd1w@mail.gmail.com>
-Subject: Re: [PATCH v2 03/22] PCI: Inherit bus numbers from previous kernel
- during Live Update
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Raghavendra Rao Ananta <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rc31putd6g4i4g88zdck1xn1ag6rf6h3
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2845414000A
+X-Stat-Signature: q6unn6iwa9xnti34uibhriomprkb6mrt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03E1AA0009
-X-HE-Tag: 1771954647-270191
-X-HE-Meta: U2FsdGVkX1/v3RB25ykH0f2+NMswDc8rwVfNVNEs73f2xG/bUat+bL5ly2GC4pA3AGQ1e2MgXt/pCgt7jUJERzsWa7hGjUJAI66pSRydW5cSoLuuDt0LawfqoAZbEXroaVxc6gy2Fqhs97EsLxcXVOoeExN4Bol9RJF/erR7bauFKfPhGo7P9dyW+yg8MNE+XFK00yO9nc5fGanPPx+Vti97DuWSla2W8avnHKaFv0P6wOzALgczTMfiQo32VFukNRPQrjTOd+hTJO4elAI/i6DVC9E9FIALOYutzyOjXxZUlHbe9OK7nrVNN+nUCZiJrof6+7n3SXwFafDFLw8FTNT6LZzK8qPlmX+D4aqPfRGEj+9kIeQznxPSJZLYlyXVGG5Dpd6VlTeU/tsfy2ytb6O0CyQd/0IL3Rt20g7La2UZQljf51+YBn4g9A6Fnx93vwiq/6FUEdcf2q/xPKND9Htu37xE+EStiNLtHagp8xDtyxDv+8ADZCkQmwZBWfQurj+px6k17MYGKo9Kqut4r8S9IS4qHLF6DvjmT3VC0Qc5gC0JUBWyYpUGVhJbBOqQMwTyBYXi2L44Rpo0cXlHbPGg/Q2V2PbMpPz6VSdNRJ/lcEJYSGPYXstqw5GZfHmHntvOnk/4fnNY0uy2y4bhrXGadRnD/qPUEAvJ4Eke/r3kbJ5FyBvN7yYHZSHoLLu+rGfNYWXFbVvmzTWM+CqMX7bav5r5+ZrN4HqPEh2HBt+c+j9yCVfVs62F3wCPnYUZcr87RM5ckDPQeQpA2M9l19uD6DSdm1Mrq2tn4jWcl5ejR2wIKwDhhD3dQ4nsv8DO22OkBjo+SqoA4M2w9weBkCsQQSMxl805hE1a/w8cFe95eBFmEWTdQ7udixNs0aChYFGnCTm0RDUIDYJZVQ/THlRUEIc0J4Foo0YScjsvTRExF/CtlCg2eNQuTcbwG/49Xj6AeHBYiU2uyY5m7XI
- dsshvuOW
- FI0Z4mkgJeZqViu+nw9JU5ipio1RFA2YfiDfuejXT2gPVqRJR1DYeAnH+m+0JXCIEDxGL3/B9BH/rpdFFPpm79Xz80e5C0VIpHssNlFNOhkdAyJ8VzMlUdfkB0hHXB6VXapc68VuKc3VcW1R6elSd/0leO2r1UO4vI2w34dw1O9ww2aHe5OpFJOiUQpIB1YdVILdOjCdPelNrYtin+Cw4Xj5JiEPtJE6U0bBNq7tkzweKEPjyC8HZA9KVBnjmJes/S5/0MOo2ZUuvTLU=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771955687-609482
+X-HE-Meta: U2FsdGVkX18afpk3tQudM2kpbeGzK04ophX1xiRzQKwXpkWboHMqXlgV3T9j/5bUJyMlUxzbGwMaAVUEKgj0OIkDqAJrbdqLqHkIOOGdOHV0RM1S6/US1iJT5K9AQ3T8IyvGPGE1i6wJ9y4N9ERgeKZyl5ibONJohrck6BrHXVg1ka+P+C9lhzv2dUOBI9w9pe3KgBDJfRO4hcRzm7QcE2QV5TL3i6SrlzPiovtQp9gdW85v4ef0rCIWQA+FRKqS9BcTIma05+IaFWMogvGaADRJgebo7ER0S7BAuwkClJUfMB8aV1kSqeyLbnMdTUtzz4cu8LclKwK8JGmEGerCR4IghsJX4TB2fhJiskvse3x7YcOdiqt3rly+TuJI50NUNtFAc4Eqb3mMfht5eTv5y5gjn9gaVUI21H83IputgKCNDuDqrlrpCUrPDBMFzkRJi85uLHu+pA5Vzrfu3dt7juhz8BCcMzxvgrBidaOx7lG1oYynfBegL7n5InMdg946/Xnf6P9RnjmYDnHPKh+sDIjt2jwm4Mms/OvJk9u7p6xG4RyRfxZyccualB28Qnk84fOeBkRxapD4Sqr4IMN3vq4KbyShlAhTcPOiuFGyGQMFVfa5YL68e22vCNVvkSnIIYrPS65pN2QaqMzrfA+vBQ/1vOHA0kYCrUhCeiO3yvPU4GfIRRjSkW//65WmPSRC9bQbYGcBsgJLXWMAD5/TdwAGohJ9N4VB0pnKtVfGLPhQrwJJwqmOBQ8E/ee5nGTZHNhrVzOZSP7Hvyao1/0Pnpo30qDdgQzpSZejzw7G59cRRWZIc4gmaXTV2lZvYwl36saCw2laMPFN9xlXNZt0NqYFDiNPF2tKRes9l+Bb1QU8XbDed4UXQHGCZxQcu6fO6n5CGaBv4k6LXnKXk60ZqklyKrvJmYcb1G1NnwAuo0FA0S4VvWwN9yWaerr0g66cNqH/6QJKGIDWIiQIei6
+ x6ZDPAxM
+ jNbMyDFmGxdjyhbB2DH8/7g2fD1NRZ/ATP1AdqfAB98DZpjyL7DIqUAwBr4bYMo3cVOmCn1Z6OaK/TkRsGh5srm8cA5xRKFihKSGiJDL086BeZt/oJqyy3finv2c3YrzKEd3kWVrCd8cYz7hA2RRMmkwbR7dD9bXTjYsdgswC2rxzANNhQDFCGhkk/br0/QqG3Wbo8EcA38RALzAJGnga23KlG+7skkl+pQEjDl6pc1bVV/iBdDh9LSX/DTKqgDo1b+4HvaGZFHB6vs7oJyIeuRSau399QvOpBTyCwU8fONooHKVFpGruX/XKpECauj7uItFkvyMBQlxEXoQUOyo2UeSKopTzNeliB1rsSBfbZTLJJY0P8LbkF4mxOtLFNry4f2aSUumCn5kphH5AWmVOn1Vt7JH5Nc6srzx7OhW5v8E+KuSRd30Ov4IYPmUQ5ey2p00aubbNjNfIzmM2aPQXhnrexMLcmZi5EhD29wunOXcIF+P57FRadekzVRgdQjdUWme2gTK3TvhJJbdvGr7yt1j+JK/Bwf6eogUFwfE7q0p8cQp388uoGvHxSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,35 +141,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 1:36=E2=80=AFAM Pranjal Shrivastava <praan@google.c=
-om> wrote:
-> On Thu, Jan 29, 2026 at 09:24:50PM +0000, David Matlack wrote:
+Hello Michal,
 
-> > +     if (pci_liveupdate_incoming_nr_devices())
-> > +             return false;
->
-> Following the comment on Patch 2 regarding propagating errors, the check
-> if (pci_liveupdate_incoming_nr_devices()) should be made explicit to
-> distinguish between "Preservation Active" and "Retrieval Failed".
+I hope that you are doing well! Thank you for taking the time to review my
+work and leaving your thoughts.
 
-As mentioned in the previous patch, the errors mean "no incoming
-devices" rather than "retrieval failed".
+I wanted to note that I hope to bring this discussion to LSFMMBPF as well,
+to discuss what the scope of the project should be, what usecases there
+are (as I will note below), how to make this scalable and sustainable
+for the future, etc. I'll send out a topic proposal later today. I had
+separated the series from the proposal because I imagined that this
+series would go through many versions, so it would be helpful to have
+the topic as a unified place for pre-conference discussions.
 
-> >                               while (parent->parent) {
-> > -                                     if ((!pcibios_assign_all_busses()=
-) &&
-> > +                                     if (!assign_all_busses &&
-> >                                           (parent->busn_res.end > max) =
-&&
-> >                                           (parent->busn_res.end <=3D ma=
-x+i)) {
-> >                                               j =3D 1;
->
-> Looks like we over-ride the pci=3Dassign-busses boot param here.
-> We should document how this change affects the pci=3Dassign-busses kernel
-> command line. If both are present, the inheritance required by LUO would
-> likely take precedence to prevent DMA corruption, but a doc update & a
-> warning to the user would be nice.
+> > Memory cgroups provide an interface that allow multiple workloads on a
+> > host to co-exist, and establish both weak and strong memory isolation
+> > guarantees. For large servers and small embedded systems alike, memcgs
+> > provide an effective way to provide a baseline quality of service for
+> > protected workloads.
+> > 
+> > This works, because for the most part, all memory is equal (except for
+> > zram / zswap). Restricting a cgroup's memory footprint restricts how
+> > much it can hurt other workloads competing for memory. Likewise, setting
+> > memory.low or memory.min limits can provide weak and strong guarantees
+> > to the performance of a cgroup.
+> > 
+> > However, on systems with tiered memory (e.g. CXL / compressed memory),
+> > the quality of service guarantees that memcg limits enforced become less
+> > effective, as memcg has no awareness of the physical location of its
+> > charged memory. In other words, a workload that is well-behaved within
+> > its memcg limits may still be hurting the performance of other
+> > well-behaving workloads on the system by hogging more than its
+> > "fair share" of toptier memory.
 
-Good call, I'll add a log message and update kernel-parameters.txt in v3.
+I will split up your questions to answer them individually:
+
+> This assumes that the active workingset size of all workloads doesn't
+> fit into the top tier right?
+
+Yes, for the scenario above, a workload that is violating its fair share
+of toptier memory mostly hurts other workloads if the aggregate working
+set size of all workloads exceeds the size of toptier memory.
+
+> Otherwise promotions would make sure to that we have the most active
+> memory in the top tier.
+
+This is true. And for a lot of usecases, this is 100% the right thing to do.
+However, with this patch I want to encourage a different perspective,
+which is to think about things in a per-workload perspective, and not a
+per-system perspective.
+
+Having hot memory in high tiers and cold memory in low tiers is only
+logical, since we increase the system's throughput and make the most
+optimal choices for latency. However, what about systems that care about
+objectives other than simply maximizing throughput?
+
+In the original cover letter I offered an example of VM hosting services
+that care less about maximizing host-wide throughput, but more on ensuring
+a bottomline performance guarantee for all workloads running on the system.
+For the users on these services, they don't care that the host their VM is
+running on is maximizing throughput; rather, they care that their VM meets
+the performance guarantees that their provider promised. If there is no
+way to know or enforce which tier of memory their workload lands on, either
+the bottomline guarantee becomes very underestimated, or users must deal
+with a high variance in performance.
+
+Here's another example: Let's say there is a host with multiple workloads,
+each serving queries for a database. The host would like to guarantee the
+lowest maximum latency possible, while maximizing the total throughput
+of the system. Once again in this situation, without tier-aware memcg
+limits the host can maximize throughput, but can only make severely
+underestimated promises on the bottom line.
+
+> Is this typical in real life configurations?
+
+I would say so. I think that the two examples above are realistic
+scenarios that cloud providers and hyperscalers might face on tiered systems.
+
+> Or do you intend to limit memory consumption on particular tier even
+> without an external pressure?
+
+This is a great question, and one that I hope to discuss at LSFMMBPF
+to see how people expect an interface like this to work.
+
+Over the past few weeks, I have been discussing this idea during the
+Linux Memory Hotness and Promotion biweekly calls with Gregory Price [1].
+One of the proposals that we made there (but did not include in this
+series) is the idea of "fixed" vs. "opportunistic" reclaim.
+
+Fixed mode is what we have here -- start limiting toptier usage whenever
+a workload goes above its fair slice of toptier.
+Opportunistic mode would allow workloads to use more toptier memory than
+its fair share, but only be restricted when toptier is pressured.
+
+What do you think about these two options? For the stated goal of this
+series, which is to help maximize the bottom line for workloads, fair
+share seemed to make sense. Implementing opportunistic mode changes
+on top of this work would most likely just be another sysctl.
+
+> > Introduce tier-aware memcg limits, which scale memory.low/high to
+> > reflect the ratio of toptier:total memory the cgroup has access.
+> > 
+> > Take the following scenario as an example:
+> > On a host with 3:1 toptier:lowtier, say 150G toptier, and 50Glowtier,
+> > setting a cgroup's limits to:
+> > 	memory.min:  15G
+> > 	memory.low:  20G
+> > 	memory.high: 40G
+> > 	memory.max:  50G
+> > 
+> > Will be enforced at the toptier as:
+> > 	memory.min:          15G
+> > 	memory.toptier_low:  15G (20 * 150/200)
+> > 	memory.toptier_high: 30G (40 * 150/200)
+> > 	memory.max:          50G
+
+I will split up the following points to answer them individually as well:
+
+> Let's spend some more time with the interface first.
+
+That sounds good with me, my goal was to bring this out as an RFC patchset
+so folks could look at the code and understand the motivation, and then send
+out the LSFMMBPF topic proposal. In retrospect I think I should have done
+it in the opposite order. I'm sorry if this caused any confusion.
+
+> You seem to be focusing only on the top tier with this interface, right?
+> Is this really the right way to go long term? What makes you believe that
+> we do not really hit the same issue with other tiers as well?
+
+Yes, that's right. I'm not sure if this is the right way to go long-term
+(say, past the next 5 years). My thinking was that I can stick with doing
+this for toptier vs. non-toptier memory for now, and deal with having
+3+ tiers in the future, when we start to have systems with that many tiers.
+AFAICT two-tiered systems are still ~relatively new, and I don't think
+there are a lot of genuine usecases for enforcing mid-tier memory limits
+as of now. Of course, I would be excited to learn about these usecases
+and work this patchset to support them as well if anybody has them.
+
+> Also do we want/need to duplicate all the limits for each/top tier?
+
+Sorry, I'm not sure that I completely understood this question. Are you
+referring to the case where we have multiple nodes in the toptier?
+If so, then all of those nodes are treated the same, and don't have
+unique limits. Or are you referring to the case where we have multiple
+tiers in the toptier? If so, I hope the answer above can answer this too.
+
+> What is the reasoning for the switch to be runtime sysctl rather than
+> boot-time or cgroup mount option?
+
+Good point : -) I don't think cgroup mount options are a good idea,
+since this would mean that we can have a set of cgroups self-policing
+their toptier usage, while another cgroup allocates memory unrestricted.
+This would punish the self-policing cgroup and we would lose the benefit
+of having a bottomline performance guarantee.
+
+> I will likely have more questions but these are immediate ones after
+> reading the cover. Please note I haven't really looked at the
+> implementation yet. I really want to understand usecases and interface
+> first.
+
+That sounds good to me, thank you again for reviewing this work!
+I hope you have a great day : -)
+Joshua
+
+[1] https://lore.kernel.org/linux-mm/c8bc2dce-d4ec-c16e-8df4-2624c48cfc06@google.com/
 
