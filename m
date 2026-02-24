@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F2BFEFB7FA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:13:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 378D4EFB7FA
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:13:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A14B76B00A8; Tue, 24 Feb 2026 00:13:32 -0500 (EST)
+	id 92ACA6B00AC; Tue, 24 Feb 2026 00:13:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A96E6B00AC; Tue, 24 Feb 2026 00:13:32 -0500 (EST)
+	id 8E84C6B00AD; Tue, 24 Feb 2026 00:13:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 893F46B00A8; Tue, 24 Feb 2026 00:13:32 -0500 (EST)
+	id 821DE6B00AE; Tue, 24 Feb 2026 00:13:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72CDD6B00A8
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:13:32 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 411EB1A02B9
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:32 +0000 (UTC)
-X-FDA: 84478182264.25.2BA0894
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1F06B00AC
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:13:37 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 258EF1B66C7
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:37 +0000 (UTC)
+X-FDA: 84478182474.15.AB115DB
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D2E22180007
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id B1F504000F
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771910010;
+	s=arc-20220608; t=1771910015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FOEwIWusDbe8S1uUS1OdbREcgKoyemqsvN0/9H335jE=;
-	b=pvE/V9oPTTHi+aOMO3G6sBMPsqbx6PIY2Plj8Dh6HDdCa/H8oLRGgcQwxFvGERidf23k8g
-	hYAx7fKJ6hKLRsJZ+P3f3fT4HOtzsklwDgGNGWxHdJrPUbqGirurAgc7GFasxYo2VS2cbH
-	R2SA/9EbJ4m2bO0eEhou5pfGSLvWSgo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771910010; a=rsa-sha256;
-	cv=none;
-	b=f/DioaRlK+5EGsGe+V+tKgQ3IS/gBPysV9Xtwsw8vYaeErVygoY6nrWCHCAaPpfkaLWNYu
-	P2wSYxVg3kF5XFRR5Vs1ECQfL+KBJ6Nn1Zo2NYqT34PwGHL4vvJ+FgvgSeA1Db7A1uTPId
-	ZznbF0QSNU6ViZfWDQJDfS20CEB9dUU=
+	bh=/iOanRqAvmBZ6t7e5+d2gSDFoEw2c/cmC+d03palG3s=;
+	b=nqrJPAt2M8BgokPFtF0BvpGXhuXMUv9Vcbg4nBFuISblegtbDzszZV51TODrLLzQRirNDl
+	ChAUcjYyQl4zJZqml9/XKlsOVYIMa/wgyD31BwDDJD1VknSYc8urTjKolvhiwhbO1szubi
+	rXFgWaqcQiMET93kpSpOFbIkrf72wVs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771910015; a=rsa-sha256;
+	cv=none;
+	b=dYg9K787lQT8jQX9dsIH6qhRIHMuGLprGofZvtS5jdTugg5Tmxd8/2N90jlUtdeYrAzb3z
+	uY51euZtbiL7k2pNJf++WbbibxeywuWFzEAJ0V3dGshU40wfxKcrkgMfFifXxQZfW2yV+u
+	8WQtBYPfdjCZic/U6L2ZHdP8MUKbyEs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E431A14BF;
-	Mon, 23 Feb 2026 21:13:23 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0077497;
+	Mon, 23 Feb 2026 21:13:28 -0800 (PST)
 Received: from a085714.blr.arm.com (a085714.arm.com [10.164.18.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 032283F7BD;
-	Mon, 23 Feb 2026 21:13:25 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CC3BE3F7BD;
+	Mon, 23 Feb 2026 21:13:30 -0800 (PST)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -68,20 +68,20 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC V1 13/16] arm64/mm: Override read-write accessors for vm_page_prot
-Date: Tue, 24 Feb 2026 10:41:50 +0530
-Message-ID: <20260224051153.3150613-14-anshuman.khandual@arm.com>
+Subject: [RFC V1 14/16] arm64/mm: Enable fixmap with 5 level page table
+Date: Tue, 24 Feb 2026 10:41:51 +0530
+Message-ID: <20260224051153.3150613-15-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: bmxeciq8hgyoymdro4otanffzyw39efk
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: mzcp875b3okuazs1r7ozfzg84fqrnuzr
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D2E22180007
-X-HE-Tag: 1771910010-397633
-X-HE-Meta: U2FsdGVkX1/X5IO1s/Upx2HyTKq5Evg7qbYJrBDO5NMG/0uJccliHHhoZpjQ+2OZCbUpuDmiHzUBHJRHFN7c5uPFj3nTn/4dsngKpzDVJL8BW/U6WpWACvz8GC6jA1Q0pQh4pytmKDBW8WuuO2F8dXWBV3+sZM4J6k6OdofzKp3H21nzqKZDgtaqmwPhVRvAFRVWp4rfqW6XByQBHlq2A5oe5nggq4UNt6f8SIT3tPXTHcWTn1Ee/yM6WbiOBlvzu6K0tFON896QS5ko+Yee+z2CSEov5YqJb7hefxxVyICod35zRqfavIikJ/5dQzjLbniTFtchdv+QrTzQkkS8isx6twwkvUzXF++uJ1FHHTuwaqvzHGLfOgaX0RXB+QJeFEK8WM1sK5pj4W7vf/IwZ++qm5vBkZ7I4+1B0P23vl1jDJkgbgPVwgZn4GMIEaN0Y51zbxNlWBG8jh2SOU2TENKE++MnrnkEs2fpnMTzDJNDKCdjBGgB5iV6YOTD0NcrC6SBlcR40Utz2a3l9egMH+cYlEZBLde3Akcf1AtFY6vrlgfpSjE+b6HeX2EHVsZ6UaJf4D7/UHFpHjw6m47frw6JAC7Aiyw8u6hKgUOtiCokL+RUo//0NrWALdra5coHvBvX8ZRxsvxkUVg6oJQ+v4h+MY4qDk75WrwVtqES+GaY+moDl696PY01eeKPFw1aEybGOgGPbm9NRNEyQNRDNVet7naxXaJ8GNcFYqJRK76PygmwnLMB/nYKSFeOMF3YldJ5lPrHJXmUlFsILWO9HmHK+i3/DSdYNV+W/5sE5N/m0EkLmRzVUC04dXb6wHFuxG8ofTk9LigvY/B6YqchH3Zh/Vt2SUSD2oJLnu/yEWvwvO4s2K1SZOZFCC1z1Ofv8wL/rihBTDA=
+X-Rspamd-Queue-Id: B1F504000F
+X-HE-Tag: 1771910015-88409
+X-HE-Meta: U2FsdGVkX18TjDK/wjJIv5+MovSAaNDIpCOhft6vbCJTXTAwvSDPNcDq0gWRNy8hIAtMz5TRuYszetxK2pavuZXGCEsgjEhURRZj0DhGik/Xkz750bqKK1ZmvMILz8Q2YMXfHEtVaCl9Bt9wjlHDdUNW8jrIe/ijkn1bg2NMbQHFGHYmltHDMGEjFcDDkTeIGDsi9wLB1NaaWu4SfRLbaUA6Skqy/axeVWO5rKFO5dMDKRpPYmo2Qbk6KOKXywKY6ElVTtIXzXjMtrKFqcpaMqngIiRWplfIcTGV6Mu84XGXOBmCrEbj7o5jivmLIOuyBeGOrXmSkcRs4Tt4ZK4hdc4DnPqhZ507CCmw/QN7SGvZdaNEuhjV3RPh9/pkd7EYapb+d7fSAgv7wnIROm2Mh3bpGbs0W+suhkmrbjFH1OsCKi6CzMKVtzN2JGEtUOQtYX0b2xP+B9SYkO87jYIAPgWqpHbdGt6xKeSjxd+gQn0qBUPWrgvyjNWMkskYe9iKgBlJGgqHUVITnzQTjr4bD7V7+KChLXRIfXGqwKFiwdLSUOWZycHoHiKIXcxZAJhA6AHVAl3aaGYYzY9JlBO3UjDB+gO329L9XuXQmquOmbdmIkAm2uviqdxxjhXT8wjD/347I5Od88IoZFRdqf9nycmelXMoFmsxCgzKdADeinGC32p1WJt/xB9r+cWjkTauJ2XLssZuSySx6NOP01+nzODbcXrlbT5zqebtxpS8rsKrhw8Pv6O5aJUPh23PkQKZbvdrlnozYaN9hWUytpagvr84KNQ5Jgq6RvA1LHUT9a0dT/2ilF0uw7Rkff4v4BTh/DaaLWbkJjMpE7yHhofLrQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,8 +90,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Override pgprot_[read|write]_once() accessors using ptdesc_[get|set]()
-providing required single copy atomic operation for vma->vm_page_prot.
+Enable fixmap with 5 level page table when required. This creates table
+entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
+(PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
@@ -101,32 +102,65 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm64/include/asm/pgtable.h |  1 +
+ arch/arm64/mm/fixmap.c           | 18 +++++++++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index c4142b734112..b39d3d3c5dfc 100644
+index b39d3d3c5dfc..0f262a97e320 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -122,6 +122,18 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
- 	return ptdesc_get(*pgdp);
+@@ -1215,6 +1215,7 @@ static inline p4d_t *p4d_offset_kimg(pgd_t *pgdp, u64 addr)
+ #else
+ 
+ static inline bool pgtable_l5_enabled(void) { return false; }
++#define pgd_page_paddr(pgd)	({ BUILD_BUG(); 0; })
+ 
+ #define p4d_index(addr)		(((addr) >> P4D_SHIFT) & (PTRS_PER_P4D - 1))
+ 
+diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+index 4c2f71929777..d6209aff31d0 100644
+--- a/arch/arm64/mm/fixmap.c
++++ b/arch/arm64/mm/fixmap.c
+@@ -34,6 +34,7 @@ static_assert(NR_BM_PMD_TABLES == 1);
+ static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __page_aligned_bss;
+ static pmd_t bm_pmd[PTRS_PER_PMD] __page_aligned_bss __maybe_unused;
+ static pud_t bm_pud[PTRS_PER_PUD] __page_aligned_bss __maybe_unused;
++static p4d_t bm_p4d[PTRS_PER_P4D] __page_aligned_bss __maybe_unused;
+ 
+ static inline pte_t *fixmap_pte(unsigned long addr)
+ {
+@@ -95,6 +96,19 @@ static void __init early_fixmap_init_pud(p4d_t *p4dp, unsigned long addr,
+ 	early_fixmap_init_pmd(pudp, addr, end);
  }
  
-+#define pgprot_read_once pgprot_read_once
-+static inline pgprot_t pgprot_read_once(pgprot_t *prot)
++static void __init early_fixmap_init_p4d(pgd_t *pgdp, unsigned long addr,
++					 unsigned long end)
 +{
-+	return ptdesc_get(*prot);
++	pgd_t pgd = pgdp_get(pgdp);
++	p4d_t *p4dp;
++
++	if (pgd_none(pgd))
++		__pgd_populate(pgdp, __pa_symbol(bm_p4d),
++			       PGD_TYPE_TABLE | PGD_TABLE_AF);
++	p4dp = p4d_offset_kimg(pgdp, addr);
++	early_fixmap_init_pud(p4dp, addr, end);
 +}
 +
-+#define pgprot_write_once pgprot_write_once
-+static inline void pgprot_write_once(pgprot_t *prot, pgprot_t val)
-+{
-+	ptdesc_set(*prot, val);
-+}
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+ /*
+  * The p*d_populate functions call virt_to_phys implicitly so they can't be used
+  * directly on kernel symbols (bm_p*d). This function is called too early to use
+@@ -107,9 +121,7 @@ void __init early_fixmap_init(void)
+ 	unsigned long end = FIXADDR_TOP;
  
+ 	pgd_t *pgdp = pgd_offset_k(addr);
+-	p4d_t *p4dp = p4d_offset_kimg(pgdp, addr);
+-
+-	early_fixmap_init_pud(p4dp, addr, end);
++	early_fixmap_init_p4d(pgdp, addr, end);
+ }
+ 
+ /*
 -- 
 2.43.0
 
