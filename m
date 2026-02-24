@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE11E9B249
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63012E9B24D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:00:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9C46B0088; Tue, 24 Feb 2026 05:51:33 -0500 (EST)
+	id 952746B0088; Tue, 24 Feb 2026 06:00:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 287B66B0089; Tue, 24 Feb 2026 05:51:33 -0500 (EST)
+	id 8D6336B0089; Tue, 24 Feb 2026 06:00:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 168F46B008A; Tue, 24 Feb 2026 05:51:33 -0500 (EST)
+	id 7B7B46B008A; Tue, 24 Feb 2026 06:00:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 02A766B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:51:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8ED681604F1
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:51:32 +0000 (UTC)
-X-FDA: 84479034024.05.7A765A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CEA7820004
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:51:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cq9o+qdK;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 61D706B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:00:27 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0493D1B6B1A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:00:26 +0000 (UTC)
+X-FDA: 84479056494.22.1441241
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1BCDA1A000E
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:00:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gN62UtsA;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771930290;
+	s=arc-20220608; t=1771930825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3FjK6tv04VG4ushX3Pg50HaYPXAO2Kg9HcVPjLjFAYI=;
-	b=02d+nc0zDXn8JMQbh3QfIERcOuVWLHfvGSwXBFO6AmfYLaBG9rUx42Yc1vf9ft3nsAQ/MW
-	um2LSoVCUTcHO8TBTTriXCVVjH6q/7hRB/TXdmE4pLmIiwKQqj1KCSr6MBlNHrw1DaBcHb
-	9nJRBg9Z9BKI42Uy5wHyoyRurVymXkE=
+	bh=A+uvFa96vF2l0eXcTMLbxDoAgQrSe5kC1UJsYooRRsk=;
+	b=dUA2fSPd0zuULgFjmuHOczpOg/r0f7CS3JCaRmOtXa7da5girSO29NEh5EJt8TQn66U1ao
+	qIzWYgXgtBDSVty+5iY6TS8xRWXlD1zgtpiABpdwnvnfTIzu2iUC8AqG4sLG1T/l3EjoS0
+	e3b1j5L34/pDsdCvwlKBgXrEX7wXZu0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cq9o+qdK;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gN62UtsA;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771930290; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771930825; a=rsa-sha256;
 	cv=none;
-	b=qNdvqJVJRyHbCsS6k2Hulpr9o+zkKyQ3zVOg8mz4r81P83IyPk7B3WGNFOGsZX+UsV+0Z0
-	+HAIQhgYOfb6Kg8X3xvZV83w0y2lURDZ1zZj2UJMLTTGII0nueFugoqK5bzlDIUDPOH/cD
-	RQetftyDMwkfQzkw/40TXXUEAjOAMj0=
+	b=gOW4xTQXSvXRhH9vta13DR8qfFzvu9bHx4EcjI9xX6fwxgTPzQZtSuJFK6DDBltPx31t4M
+	XmI06VTcVKvHw6bhuOzl5WZiIhDZw2/x9LroZyJkttVlCfnkrQKhNK76jAsr0wGpWQt2D+
+	D75/PhSFPGxnzj5gkNYH5DUc9N2Cz7s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DB3F6132D;
-	Tue, 24 Feb 2026 10:51:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A148C116D0;
-	Tue, 24 Feb 2026 10:51:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BAB9B416D1;
+	Tue, 24 Feb 2026 11:00:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEEDC116D0;
+	Tue, 24 Feb 2026 11:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771930289;
-	bh=A03/tUSiCw6xZ8+K7F5L6Id7MoV0WTpL2e0TYPyMyNA=;
+	s=k20201202; t=1771930823;
+	bh=sp1M4Ecc7+UyoVNV1sWpueKrBy61exxNm/nEsh4CawY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Cq9o+qdKB669g0wfM0rojSPXacwLxsqfRMHKYCuNnN4YUTImI/Y0eqN6flYTL+L4U
-	 bU74vNyexoGx61OsHBjsjmJDH6fNHMLsnw0W/rNjKb2Rzp56XvlpZ14OAlB/Z3m62W
-	 6LeVcrFrf1IepTPiAQmEGaU66PY3knjLyIAfet6pbi0YrktGqp94k85g13m7ob5HSz
-	 yKDdkGNA7wAwWqqnTuQs1S4pzXDTJrjF1L4KwmJ41sPjDJq9dzYq+8BtU6xGdcsJyO
-	 Jjxlur43LTFIyCyRN/SGCCZpQfwBtxAJ21QU1r76Uv5TCOvF34TZLXZ0lZQlj8B6qk
-	 Gb0lMFlTxEOtg==
-Message-ID: <24b7829b-aaf0-42ac-b91c-916754f95046@kernel.org>
-Date: Tue, 24 Feb 2026 11:51:23 +0100
+	b=gN62UtsA6LT4fYW6UioynrJkR2jF1vx72Sxb4EktxYCQz/zxjx/HO1ha2EMV/7sDK
+	 +0NB0gB8lOBEu4loFmQCQxGpmN+7aneDObggIC4edrgt8DWDGweEEehPLen5nFEhaT
+	 CUL6Xixlwz2wUYr/ootObaPXd7N1WAxIQcK2f8LragVSfwtCcGkUbYuK69EnCipb2j
+	 uehBhQK6QDOMZelnhk4WsWgMfx/v8IaVKdVi/lvgAUIorRPwN03QpE5pNLzlZk+ayo
+	 3MszTbK4fMkTuPeOxLnRxJOFAlhvtnchTF8TUBuDwSh/bc7NXLf6fv5sFbG+oIMp6L
+	 nwFKYnQu6lT5Q==
+Message-ID: <13b8d60d-1209-4650-9fa5-982381c53512@kernel.org>
+Date: Tue, 24 Feb 2026 12:00:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] khugepaged: convert redundant check to WARN_ON
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260219054827.4111334-1-dev.jain@arm.com>
- <20260219143327.7693e4b1474a337821e4c637@linux-foundation.org>
- <a0b4febb-d803-4c18-9211-7286d682d705@arm.com>
+Subject: Re: mm: Regression with v7.0-rc1 on RISC-V
+To: Ron Economos <re@w6rz.net>, wangkefeng.wang@huawei.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+Cc: ziy@nvidia.com, jackmanb@google.com, jane.chu@oracle.com,
+ hannes@cmpxchg.org, willy@infradead.org, muchun.song@linux.dev,
+ osalvador@suse.de, sidhartha.kumar@oracle.com, vbabka@suse.cz,
+ claudiu.beznea.uj@bp.renesas.com, Mark Brown <broonie@kernel.org>,
+ akpm@linux-foundation.org, pjw@kernel.org
+References: <1b17c38f-30d3-4bb4-a7e1-e74b19ada885@w6rz.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <a0b4febb-d803-4c18-9211-7286d682d705@arm.com>
+In-Reply-To: <1b17c38f-30d3-4bb4-a7e1-e74b19ada885@w6rz.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: u1ktx33ot57bi6dsuoahc9medy9zz5my
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ucktw5y37qnb1h8djjiotpu4yfem5or1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CEA7820004
-X-HE-Tag: 1771930290-866401
-X-HE-Meta: U2FsdGVkX19BGv5M6sUdtYuiNgF+T1WA1uRhqoz80vLST/1kRDHzdo8OzNT4L+EboR/UmSpIHwbMBaQqJghA1qlZRh+uKvEib+60M5Lj/ZfGSguDZAas3qimVM5ySqOcnpwzNWW0rQGh+mFcOY0Jv8EIkeLTjFbk1P5EOlQ8e13KrwHs7xWQvEqz/rIoISZVVafnNYPVMosHOxqdwj+bVZHkodarCqW7eiu78zJLfpduud3PgRN+kXrzoEB/OqQz9EDZoPHwu0HF24WXmuEL+FevxiyamdsXVJxNFyQ6qrSomuCs99vhcbcK9G2v+GpNVJV0N3AuMDxHTVNeAY1WcdSeBrmtV5n5KXUiTzuAOmYPpRvYk8KNZHM47pjS3Di94kGujwY3DhP1ErHhy2vVTxElwyXXOcYryU0+GX+2eJpCnO8/50DUgqWtoThNMiZp+WSTppT5/jNjO7nAZGrk+Ba5AzhOZ7xtXfz0r4eYposQzegSeJNzlFRLv4uEAnd7I0RfnOvWpwUw/fXCjbVaenl5VMl1p8bztSi/y+2r+7Z5O4/CbEFoCNiNT92RDYlC1W0omRyGJsSqz3gXNyzNoY8fb0prHya1m6XFW/VKLnW0SGj0N+GRg+0opiBUP71dLYkrHuClZN4JICrY/GGOfTNIOOnF0eQ5QN7rqLGef8CT3yEFBuw+Nm1rhEV2bZsi7QKZwsl4Ui43KzN/vDlHknmTy7tOp5/s7W/ZHEjl/WejMu/m3fUJWU0Cgb58lyCA3Z8yP5DGNud280AMCHng2noMcWtHwFhOkwJsfgQYTSCtTlSyBmY2XMrHOKM0Rr0m8/f3wkG9KPsW8NYQ8jz5PiqAr7Wiemr+t6sF/PWLaGZ5HbL2PaQb/u+aTIIyR5bIVrU1WjV77tiztnID4BlUw1H/k5tg85lcD/9iceZ7jxhTW5V8M7X/Hw226OPrM23pDpUs9nHMAGqGD0Qfy/D
- I4tmCZ6K
- 4ZLKCcq79iIvTiVE9UN4+qm5SsWJxDBVTB3AuMsN1VyTeX0nwl+sPJV+vWFwyB0uqvbnjdZHe2cEs3sM7ZbaujdpVZ53o2FdegiJ6sAeAlOUF65+OOAveAJMPW8BOIE22tKucByGzkRq3On1+VXlWxmFOYTbnexKKkYGIT/0wVhsqAajsJNTQ6nG+vtibGoS4B4e8Cn7yCsiNO+pQtPX0f581RK7q0oVtlFZXChBt6phkWb8X2k/E0i4VLBVe9OX8DftwEK1xXEV/a+0Rdim2fT6WJhLCt0Xq4vEK76muOKdDPeeWpUGasboaYVBAOGId19Ink96sSwjNQ+05vC1XjhmqwPxZtkUgZOOyOiBxXJPpoD0=
+X-Rspamd-Queue-Id: 1BCDA1A000E
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771930824-387727
+X-HE-Meta: U2FsdGVkX196WbJWNxCsoyj8whdZvxUd4qzGXcFTTP3dPTh/17ExrK7DVbqUoxwHJSPrcJQ/OVRZoFQx3KAEUIoKBagE/+vU3py3gcccJNY5CsHfWODqY7Fb/P11LZFIdU8kQgIFWpA9wJXB2rI6mG73iZ+sN/BeQw0/xhnE/kT2zMRRr6+vKVm+KEhuTO/+dJlEP70Tw+lrJFpyTYNZHhKsRu0VS0U1js2Ob3kLSmHtZ2ahM+dlGNJayVhGRA2m0lggq678Gv3N+5BvIAB0NyPFtfjvFI/riyed/JGgpROkx2NBJFx6Ssbh8bZo4yVkEZ9et7VbJlyv9XiSeQgx2e8KgA2ea2N1gGs24CyOiPd4iNCMNzy5srtZEEqoxU4l5I5c5OKidJHzHRZk/Otl40aZVE6GMWwTGWk25Pek4FVnq59xWAm7oOwe5tWY6l/AtxlGS5IiDMpmZWiePLPz51+WGbzuMfHyvWOcSJoIL/kapaNFdTZl66zzfJNnr7Q26TG4vfcZxossIWCY/edKG2IcMfIFnMpPcJ1rqyE5jeQykES7wsKZ0SZ0VYhT6IrhNfk86NPAuVlw3Ddc31Dfr2zYUZw64W3P9q2jGuI0OyET/aqlPGVU4f1bFoeL/lUuW0xROVzL4Tt8j5BtUg6e6BYVFrZUTp7y4BXjQEYppTx+XlBhVyBFD3mDx8Jrzm0mSFo7kqINnfEeRp1grrtXp4lB5E4Layw0HU3gP5cvKQ9vDaLrN7HAMYkN3opcHnD7uHABsxVoaWkjvuKdKEEO6W3YaIMYOXsBuLUk5YrP3p0WamVVpYQdmnKE6mpk32ZruI+D6qCc/Xp3PRAht5u/mWCQ6pShrTvc6KoAvl263po/ZqV8JPzbAe08zzLQNbMo+Z0MMTm4edrRsO4QQpOwRk4TGCDZjb4RvrpptkFGVHmle10/H6h0wHS6bTcWE+W6kKHLRi5e4792ESRXrxW
+ zz/MaDtR
+ VME68WWnERp/Jxm3Er0TvGj9YQn+YVal3AKqCkurGATAQW4PZNRv57wCOWuhPFcamxuKV3LV+iZSDmWAFao+AXbJKHywtV1rYVuCrj9dGwVVyQlsSZmZFLX6hbi9l3MbIQTZGujB+Qlmcf+CjzI1F/S9sXUY7ppn77hyg/JXsAPtFMcdt5Vnj2ludkhgRVbx0RaLTEV6C+7q4ogPOBiMNL4XAE+rIzHqVP2PWVlBCGc/vnvj+GwdOVWq8exAjRrwiCTlo65i3KQZeKoGauDnWFrzzf/G6+MHLhJ18
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,53 +143,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 05:40, Dev Jain wrote:
+On 2/24/26 09:37, Ron Economos wrote:
+> I'm getting a BUG dump during shutdown with Linux v7.0-rc1 on RISC-V.
 > 
-> On 20/02/26 4:03 am, Andrew Morton wrote:
->> On Thu, 19 Feb 2026 11:18:27 +0530 Dev Jain <dev.jain@arm.com> wrote:
->>
->>> Claim: folio_order(folio) == HPAGE_PMD_ORDER => folio->index == start.
->>>
->>> Proof: Both loops in hpage_collapse_scan_file and collapse_file, which
->>> iterate on the xarray, have the invariant that
->>> start <= folio->index < start + HPAGE_PMD_NR ... (i)
->>> A folio is always naturally aligned in the pagecache, therefore
->>> folio_order == HPAGE_PMD_ORDER => IS_ALIGNED(folio->index, HPAGE_PMD_NR) == true ... (ii)
->>> thp_vma_allowable_order -> thp_vma_suitable_order requires that the virtual
->>> offsets in the VMA are aligned to the order,
->>> => IS_ALIGNED(start, HPAGE_PMD_NR) == true ... (iii)
->>>
->>> Combining (i), (ii) and (iii), the claim is proven.
->>>
->>> Therefore, convert this to a VM_WARN_ON.
->>>
->>> ...
->>>
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -2000,8 +2000,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->>>  		 * we locked the first folio, then a THP might be there already.
->>>  		 * This will be discovered on the first iteration.
->>>  		 */
->>> -		if (folio_order(folio) == HPAGE_PMD_ORDER &&
->>> -		    folio->index == start) {
->>> +		if (folio_order(folio) == HPAGE_PMD_ORDER) {
->>> +			VM_WARN_ON(folio->index != start);
->> It's a bad sad to remove unneeded code by retaining that code and
->> adding even more code.
->>
->> Perhaps add a comment reminding us to remove this altogether at a later
->> date?
-> 
-> But then shouldn't I remove it just now :) 
+> [  OK  ] Reached target shutdown.target - System Shutdown.
+> [  OK  ] Reached target final.target - Late Shutdown Services.
+> [  OK  ] Finished systemd-reboot.service - System Reboot.
+> [  OK  ] Reached target reboot.target - System Reboot.
+> [  173.985249] BUG: Bad page state in process shutdown  pfn:f8850
+> [  173.985311] page: refcount:1 mapcount:0 mapping:0000000000000000
+> index:0x0 pfn:0xf8850
+> [  173.985336] flags: 0xffff80000000000(node=0|zone=0|
+> lastcpupid=0x1ffff) CMA
+> [  173.985365] raw: 0ffff80000000000 ffffffc501e21448 ffffffc600f2ae88
+> 0000000000000000
+> [  173.985386] raw: 0000000000000000 0000000000000000 00000001ffffffff
+> 0000000000000000
+> [  173.985403] page dumped because: nonzero _refcount
 
-I'd say, remove it directly. Even if "folio->index != start", both
-functions should do the right thing.
+So, we're freeing something from CMA in cma_release().
 
-While at it, we could heavily simplify the comments to "If there is
-already a PMD-sized THP, we can only try collapsing the PTE table".
+In cma_release() we iterate all pages to decrement their refcount
 
-Or sth, like that.
+	VM_WARN_ON(!put_page_testzero(pfn_to_page(pfn)));
+
+I would expect that this would fire already if there is still a page
+referenced.
+	
+Are you running with CONFIG_DEBUG_VM=y ?
+
 
 -- 
 Cheers,
