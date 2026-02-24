@@ -4,99 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985E1EFB7EB
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 02:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05250EFB7EB
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 02:58:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF0016B0088; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
+	id 3F2CA6B0088; Mon, 23 Feb 2026 21:58:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B905E6B0089; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
+	id 3A0326B0089; Mon, 23 Feb 2026 21:58:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71CF6B008A; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
+	id 2A2776B008A; Mon, 23 Feb 2026 21:58:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 927D66B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:52:47 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C2431C379
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:52:47 +0000 (UTC)
-X-FDA: 84477827574.03.596CFE0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3E3671C000A
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:52:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DksMoPFT;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771901565; a=rsa-sha256;
-	cv=none;
-	b=PqeJjVRoOC4y9pHzEnetYpL3C5qPjX9OkP8cw5neByg7RYHkNGBkO3CdMxdExMXU1yZllv
-	oCfnsQ6/7wwqrKlICMjtypG6DnIoVa2Cb6Jf5PWUbo5/GKDRXWJLKc9pKP+KrMlBWaTagm
-	LjnmIcbchU+tfsQUjRr7vG7faaRR718=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DksMoPFT;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 155616B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:58:01 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1B06B925D
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:58:00 +0000 (UTC)
+X-FDA: 84477840720.18.6D6F0BE
+Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8BEFB10000E
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:57:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R6ww9mt6;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.66 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771901565;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771901878;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=KvdK4bKlV9p8CtqWIClX1h0DPFMJUXzNU1SYA1FO1bk=;
-	b=B6i1zv4f2AZnWYbdIw8G7E/USdxBcz9/PfdFjY48Puq+kSZYBGecnGpP8BJqU7UXHKnE8n
-	4UKhKJDIpUrDbFjIL54lgzl1rjmYhiilS/26653eVy5Cv8RP6Zz/nv/f4KM6RSLYxpEmqw
-	ehruF0Bhzprsr1rivbZVfBf2NGZboW0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771901564;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KvdK4bKlV9p8CtqWIClX1h0DPFMJUXzNU1SYA1FO1bk=;
-	b=DksMoPFTLFU0MDZcEIzQTMuVlJdopLxuf5S0TW4dlLogHatVHeyfS+uCEOb/gjZZWzViSn
-	SpxqMkZV4rLWyMCLGNbOkWLvFVExfkcvH2ZqhdcV6pfKaFWW9BdGbA04EFAnxajc2FdhZz
-	P04F4GmOFsceotb1MvbMfR8XFNL9U2c=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-VLMHYQwwMwi9CxWQW8Ft8g-1; Mon,
- 23 Feb 2026 21:52:41 -0500
-X-MC-Unique: VLMHYQwwMwi9CxWQW8Ft8g-1
-X-Mimecast-MFC-AGG-ID: VLMHYQwwMwi9CxWQW8Ft8g_1771901560
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5E321800473;
-	Tue, 24 Feb 2026 02:52:39 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.18])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CC1241800348;
-	Tue, 24 Feb 2026 02:52:34 +0000 (UTC)
-Date: Tue, 24 Feb 2026 10:52:28 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: ming.lei@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org
-Subject: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <aZ0SbIqaIkwoW2mB@fedora>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FLzgA1VpSKBM/CA/w+qS/GgqnqDkMavIXnIRIWRQ7uA=;
+	b=KGzjXQxSHF/yc16/xY7n7IuPeagCazg/+wAskqlDmhvKaDCT/6xT3QUbu0/BSO+jZhelz+
+	9xetGLPPZxbq8oeycGaBMHWmcxxXA0M4cA8vZk/Tcf0vZYPoVKLBFZvYN6Bhm7a04dyVEN
+	cg5rG311m4xGiBNzqRqIH1kAnKkmOvw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771901878; a=rsa-sha256;
+	cv=none;
+	b=Ijn+JFkk5VBoBq5l52+umwl6NK/TJ7XHTbf//FGrL4JdKpb8YXTTqcNj+MAKk5JoPpe46u
+	ygRyuoJj4/9uAEIKoDQ5apQiUw7DjH5BeRjvzvIeDJ3J/Lud4rHl3c7VKDL7lWfbsyKMeZ
+	TOnSpO3t286vGLRb8A9+LojnP7FcoC4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R6ww9mt6;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.66 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-65bebcbffe8so9477989a12.1
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:57:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771901877; x=1772506677; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FLzgA1VpSKBM/CA/w+qS/GgqnqDkMavIXnIRIWRQ7uA=;
+        b=R6ww9mt6gt+PAR4W3wEUHIpyBpk88ViblpPCcic71j3F1K18+sz0FPkCbIwVf18bwB
+         MNg3ZiAWjHqKYtPc3vC1AMR7+w9c5KCkG2+N+5VZD09rJRu3RlvEu/iRed7g1cVt73b9
+         9OkUpuxI12lmb2qhqxr/p0euElCo5KSDxqXQikMf90TLpExRQB0lPEOeBexvGEO9GK1I
+         aEBFTvRM8v1myFaxNKyMq3oQOLTwDYN8wi0g+3yBWZwptFqUAi7luf6A88h/WwcK15tO
+         izlyYF0M71EPqKcYXK8sPnWeNE4OlSJI+S3H2DEJOaYpNrawuJZB6i3kH0X8AHJrdjtX
+         WVhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771901877; x=1772506677;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FLzgA1VpSKBM/CA/w+qS/GgqnqDkMavIXnIRIWRQ7uA=;
+        b=TEEEVcCVi59cPPlbrasAo3wHAGowU1eD1kI/s51TsdDV/5C4L1d/Zffg4Ib5m6f9c9
+         OyAT15CMiedd6jp/OuDXb3gJ6Y64FitT0u/HJQhd1lylQyhTURLQbxLBl55Qvz9UuxBW
+         rDyuG+peybn9S5d4tA+h3OlyBf0v5NyAOaorVxlf+tR0MPh0HerZJZInskKIPJC4eMyr
+         iK/C9lZ/S/O3NpCOyL66QcJpDtjzcztIFqtq5lrYs5PezicN/qiwZgIFfvk/FKj74Ofb
+         NAk9lqZbbsKoHdGC4ZRF1zXi+Zuf0e7bJnNfuB+dKOixxl/KP7WqKnB+I4Oe8L6fSoeW
+         3LjA==
+X-Forwarded-Encrypted: i=1; AJvYcCW48f/Bfe/YdKD4hQbFBg5yKFAJ88zY1Ni1U0R72dIqsYi+sA61f59Je4zPPbBqEgyV3Gge1muS0w==@kvack.org
+X-Gm-Message-State: AOJu0YzZUSepgp5RON9iD25qU6/U5Sv3umgWIXEqDThzqKvp+P++Y4ho
+	jBv4LnEDkJbL8N9L0pvcA0a0o6unCTfWSzsrTVpKdIQg8je8oYWPnIGb
+X-Gm-Gg: ATEYQzx6NzH0SmAGI5eaWj41+Why7+sahChGCS59A/NmA2PN96ViZ1jESWyzQTm/SNe
+	1ARsqnhagMY3pudU0r2+LWskss8jNBnfC+sCz5Ih5KSER1YZ/cRn9epn7f8Ug3cE+ygPBuXjUx2
+	mwTwtmNzseuflbLQ4xU13Aw0EaQZLemdI9BcomhOfF94NltPGP83CU0SyzymNCiyzfgfYQMAI5B
+	wH1PRsaAaLWyyW/LtqkWfsXli8wdA/KPP02HIxcKXrvIT1FvdIHYXhgug2BVpoMzyxBWaLs+EPI
+	c/dWZyztqg3zvZZRrg87ttyb0lDNP+d0oVBhz8hHH0PAvVkLb9eQ+Gd7UOxOooVrrcIZ0gkLqXl
+	7+BZyxqk9O3sMp4GRBdWTFzhChjJyeXgZ8yNjqeXwKa+wvns9SSIJyGcE92fUABWq5DXKRt/1DU
+	LvvMA6FptiXiYJiRDTtmuBEg==
+X-Received: by 2002:a05:6402:40d1:b0:658:e665:766c with SMTP id 4fb4d7f45d1cf-65ea4ed18e0mr5724958a12.8.1771901876946;
+        Mon, 23 Feb 2026 18:57:56 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65eaba13871sm3195624a12.22.2026.02.23.18.57.55
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 23 Feb 2026 18:57:55 -0800 (PST)
+Date: Tue, 24 Feb 2026 02:57:54 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>, will@kernel.org,
+	aneesh.kumar@kernel.org, peterz@infradead.org, npiggin@gmail.com
+Subject: Re: [PATCH] mm/mmu_gather: define RCU version tlb_remove_table_one()
+ in CONFIG_MMU_GATHER_RCU_TABLE_FREE
+Message-ID: <20260224025754.z3g6sbq2huuk6fwo@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260222004512.839-1-richard.weiyang@gmail.com>
+ <f44fac08-771f-4619-b8a4-6ea740df424f@linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: hvFk0IvQkeFunq1lElMj6jec6j37LeEC6Jg8iSEC3HI_1771901560
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <f44fac08-771f-4619-b8a4-6ea740df424f@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3E3671C000A
-X-Stat-Signature: ibqqjjikskj3cbetbxkumtco8d959fdo
-X-HE-Tag: 1771901565-896646
-X-HE-Meta: U2FsdGVkX18MbLmgzBtXa6Gp5K90V3gUBNzOwq5wtwxu8352WmtANAfV1mGyWHZ9Qyb8FjqxUuDnk5JHIRKDHXjO00N38NAMxBCKRW6FYYu0qA/xrrtQGhwiFEg96YW/lkqSejgEUqJGjB2KQ+IMA4ho3qo7jC4QwVojlJC6sZM/VAsxendM4d9/u+qG8xIt+VkMVDkcm951Q2LAkiHfqhy1sAIxvZhFDmgF4YjyMbXxecs2zyEYnn9blufMUyZBLKO5D2EiL39MTuYYadLNalsFT2XUxQj9oFBFWL4ri/1m7s1BxbltvOVBWGx2BCgAbwNq/hAJDlDHNrOq0sFDRkkbFwby2D5CW9RTHCNRRXg3JeCDKYcROvPAgeMpaaEdKq0ChYhdkJoQBNcUjm8bp6qSP9Sv8K/IvTKtKLBXn2R0LUvm///HBskcYxb9qtQJUqKQ8T2m2kiIWe3VD4PfPhfRZkyCGylAw3i8Vnew0hRJBQ9LitUCd02CduHP5sHVOzQGhCtivOE0Pv6IDFV1j4r0DxRtere0YEwD26ZYYqpJoDHtb2/kk5MPgMI4LxpdRQA345S/1wP/+LnHbJecyZKzN/Doq2Dr3Gj06m0ooTuaPwZS8vOrNel3Cs0cJEcrs/oSBeObl+gvc4PNPzC93CZpjKtVnF9P/XQNkKzJSpFLw+P7ofQHc0a2F6AsGpuXpaXOpqE22oEAS4lLVaURfrZg9lz8rrySZdJWbI3WztNwKZnGe69+fk67Izr0dp7m7OR6f9hh+Cd+otWx1E4YKTdFPFOMx9JxdDvEgxq4aRSoO1QxY8mb2SI0EeCo+GiRZb+ahSJiguPsMWP8FHuqW7V8ltZ60gOVaiDz/VoeZUczFj0Zde6WjmFvQkRKpSgUOzL8vRI2PTA37l5autiFTuzf9HQzelEQIDb7jR48BoB0bdNDX7LhtbIHkCULNb0YIxK3PdskfZz4XygcwJ+
- RIWiOc01
- fVUz1on8BXYyOowZU1wYglzaVYSRT3qo+98Equv/dRZfrx9LiFpRP/1sfD9x+rpr5MOUX6/vmirJkGdev18+ORMcEHygMi+fhHkpTAeR3GoSQ8m73uZBLC1m9OJ3olDGlbGnfLKrqmY6JoPZf1kpNlPkeSNkxJ2uTfanLBO/IZP0SqArl8RU6S5isN7OT3oJufjjjPHpxTbSTIjtfTbi4xE612EWsjzXkNHlZA7WcpV1T3ysN1UCaBTO2fht1ZySTNnMtjFNTERbErJP8t3BDYiEURJfDhSBtJw/vUXQEaXbgj1UP936Y5eFCc78yDv+5CzhimLkHlBGs2hyDiKRn8mJ7GA==
+X-Stat-Signature: yf1i8tmjqkods4ep4yq6ok6yt7tpghdb
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8BEFB10000E
+X-HE-Tag: 1771901878-561238
+X-HE-Meta: U2FsdGVkX18cKxxwIB4X/HTH5QcGpNW/dTkjgpZ6q31E9dq3A9aC9u/ef1cSpSD25pt4npq8lfBXcUEg8i+kS5+ZruJPzCxtAQCMM7FZ5b2y2jJAJ9TzcU/h6XPjkl2K9jP0vGr+c/NUKGfsRZ8z3ozXGwzMzULhxQHX9hUpSk87NB7a1m20Va2n+qMc6rplDViqofbYAKrOKd5wMrskb0ze29g9bRTCO58OZBb32Qu73FactF60mYyCNKi/Dt+pUqfnjpMt0sutuwYVSJeXPsTp0/wZSFV27TUz3WQLQfd881jbZEo4c5YOdP0LNAKgtGlRXi6IfOFWYRbCDZW/tQGpuACHbw2Gc5JJcfAhBFYWUxeloUpEA33ZlQ81cvcIc/7XFF8OwgBoWfcYGhDCG7BG7SBI/xtP0EsCPTyCZJe6i3VpiYhMMrnQqjjZRW/xjUaoougVNnt/B0olO9kf3sIcfR3YY5qBkicu9B3dFolAHFlKt6ygF219SYxrnSefiYAJq6DIJSyQ50PmxRQhxbtbjhtbr0GqobCSKSJuzPZe+Im+haaIBTV0Un0VYX+4IkCVI2Q9YoZritPceuDXRjxpRhdLDG/yJVpHOibIbTnspPOP7vFmXUlCgfKVhyacQAW7hlKWV2/CA7Xc9TCid28GNsBlPlZRRSNQX0geDW4Y5J/cSvVeWv/bHS4kNXCDta41m/QRJD+NauwsnnzBxusnsoY1xR5Av5w/debKV+bMNYWchzVGzP1+iOEBlMQQkH9LybJQPm/1f+kuTvE1sZD+GSLJTQB2iLMzVoJheRwSljBrMrd7QIagm6g0sYthMc3Rf+kCrSeT8rWnn0lQaAPz79autw++yMVGGxq5JlaerISTs3NUiBxH3b9hiMsWWVglPmoUYIt0kJG4EGAxoXpzBUuId/flZAq4tOK8zhOhx4F7T5MMcXtJJXuTzu8/PMXOJ2D/tFWGLS9UHgy
+ SMgzlg/h
+ XnucyVLs/d1P+akcG4m5UeALLNH3OKVZ4q3MK197YEI9jcxU2vFHoCjFAnuCn7Swkdce07BaFVcVXR/dAmA20TgL6Udi9MFZAdYwBwg6Y4o4HPd6A4yX1MAhfEF83OP+TMJzgOj75QhvRIGUBDA3fS908atwqXwA7QQag3D3iQIzEfcpZ29GEsTKlS8oRzAcimi6RbyvlN9SIjlANXkSyWilLaAnU96PZKbc4C8V/uFkI4Oei1pRtZyDnm80tH5JNSO644TWMXyfbl8oynJUyiRALhbhoxcPI+9kum6+0iaSDMRM6Sknvj3XLHlK/V4Ztjd2oDDgn28QL0uJFIQmsBktS+xhpZlBPoMt1bZvAQsqFJAGqVeGERqatxocKVtTqD05ZYdXMZbVaEWuPLVy5We/Pvl9/FijVPtPF76LVgX4Qv5yiPrUv2HFNm1W7FlZF9mYQjXd7Lqr/jiGMVe/OkXovhMD0fT/rqsDXhE56H5otLOXplw8kAklItTVqgfhKCYvHR7UwhaGqEo+WyAa1Pso8ZLEFqu8QMitACnCbVaEGPBD+PisSQrAG+ChK74T7IEEwLcZGpHgCVu8UhdjqubOKPvmElkh4m2SORX1qZoxIKLTsb25e4InrJ/P+xitbjtclYE43QqQ8snFwtQTm4AAXN8TsbWbO7KhXx/9PJDWZGtv55oedIDZrGdHhtuMFLts2eqsgvlxW+Wn01yqjw352zeHbG5GSClVB523U0W9+Kkj1RX2mPpzP9oqzA96Q4JF0+TPDSC0d8sPArSYA9WY7RqwizzGudL6ERY+s+ARzfZfkne135hoqEfR5SrWmMCd3L2bCd2XdJai70LEqCzTSN9fKRAvk8TGTq/OatEClAbY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,129 +124,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Vlastimil and MM guys,
+On Tue, Feb 24, 2026 at 10:09:18AM +0800, Qi Zheng wrote:
+>Hi Wei,
+>
+>On 2/22/26 8:45 AM, Wei Yang wrote:
+>> Before commit 718b13861d22 ("x86: mm: free page table pages by RCU
+>> instead of semi RCU"), the page table pages will be freed by semi RCU,
+>> that is:
+>> 
+>>    - batch table freeing: asynchronous free by RCU
+>>    - single table freeing: IPI + synchronous free
+>> 
+>> This commit introduce a RCU version for single table freeing to support
+>> PT_RECLAIM. While it is not necessary to limit the RCU version only in
+>> CONFIG_PT_RECLAIM. It is reasonable to asynchronous free single table by
+>> RCU if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+>> 
+>> This patch moves the definition of single table freeing in
+>> CONFIG_MMU_GATHER_RCU_TABLE_FREE, so we have both RCU version
+>> batch/single table freeing if CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+>
+>Thank you for doing this, but we can't do it right now.
+>
+>See the latest version: https://github.com/torvalds/linux/commit/9c8c02df3f8742f6db927e787ab971fd0b5ac08a,
+>when the
+>HAVE_ARCH_TLB_REMOVE_TABLE is selected, the pt_rcu_head member
+>cannot be used.
+>
 
-The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
-'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
-performance regression for workloads with persistent cross-CPU
-alloc/free patterns. ublk null target benchmark IOPS drops
-significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
-drop).
+Thanks for point out. Don't notice the latest change.
 
-Bisecting within the sheaves series is blocked by a kernel panic at
-17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
-paths"), so the exact first bad commit could not be identified.
+Andrew,
 
-Reproducer
-==========
+Sorry for the bothering. Please drop this one.
 
-Hardware: NUMA machine with >= 32 CPUs
-Kernel:   v7.0-rc (with slab/for-7.0/sheaves merged)
-
-    # build kublk selftest
-    make -C tools/testing/selftests/ublk/
-
-    # create ublk null target device with 16 queues
-    tools/testing/selftests/ublk/kublk add -t null -q 16
-
-    # run fio/t/io_uring benchmark: 16 jobs, 20 seconds, non-polled
-    taskset -c 0-31 fio/t/io_uring -p0 -n 16 -r 20 /dev/ublkb0
-
-    # cleanup
-    tools/testing/selftests/ublk/kublk del -n 0
-
-Good: v6.19 (and 41f1a08645ab, the mainline parent of the slab merge)
-Bad:  815c8e35511d (Merge branch 'slab/for-7.0/sheaves' into slab/for-next)
-
-perf profile (bad kernel)
-=========================
-
-~47% of CPU time is spent in bio allocation hitting the SLUB slow path,
-with massive spinlock contention on the node partial list lock:
-
-+   47.65%     1.21%  io_uring  [k] bio_alloc_bioset
--   44.87%     0.45%  io_uring  [k] kmem_cache_alloc_noprof
-   - 44.41% kmem_cache_alloc_noprof
-      - 43.89% ___slab_alloc
-         + 41.16% get_from_any_partial
-           0.91% get_from_partial_node
-         + 0.87% alloc_from_new_slab
-         + 0.65% allocate_slab
--   44.70%     0.21%  io_uring  [k] mempool_alloc_noprof
-   - 44.49% mempool_alloc_noprof
-      - 44.43% kmem_cache_alloc_noprof
-         - 43.90% ___slab_alloc
-            + 41.18% get_from_any_partial
-              0.90% get_from_partial_node
-            + 0.87% alloc_from_new_slab
-            + 0.65% allocate_slab
-+   41.23%     0.10%  io_uring  [k] get_from_any_partial
-+   40.82%     0.48%  io_uring  [k] __raw_spin_lock_irqsave
--   40.75%     0.20%  io_uring  [k] get_from_partial_node
-   - 40.56% get_from_partial_node
-      - 38.83% __raw_spin_lock_irqsave
-           38.65% native_queued_spin_lock_slowpath
-
-Analysis
-========
-
-The ublk null target workload exposes a cross-CPU slab allocation
-pattern: bios are allocated on the io_uring submitter CPU during block
-layer submission, but freed on a different CPU — the ublk daemon thread
-that runs the completion via io_uring_cmd_complete_in_task() task work.
-And the completion CPU stays in same LLC or numa node with submission CPU.
-
-This cross-CPU alloc/free pattern is not unique to ublk. The block
-layer's default rq_affinity=1 setting completes requests on a CPU
-sharing LLC with the submission CPU, which similarly causes bio freeing
-on a different CPU than allocation. The ublk null target simply makes
-this pattern more pronounced and measurable because all overhead is in
-the bio alloc/free path with no actual I/O.
-
-**The following is from AI, just for reference**
-
-The result is that the allocating CPU's per-CPU slab caches are
-continuously drained without being replenished by local frees. The bio
-layer's own per-CPU cache (bio_alloc_cache) suffers the same mismatch:
-freed bios go to the completion CPU's cache via bio_put_percpu_cache(),
-leaving the submitter CPUs' caches empty and falling through to
-mempool_alloc() -> kmem_cache_alloc() -> SLUB slow path.
-
-In v6.19, SLUB handled this with a 3-tier allocation hierarchy:
-
-  Tier 1: CPU slab freelist         lock-free (cmpxchg)
-  Tier 2: CPU partial slab list     lock-free (per-CPU local_lock)
-  Tier 3: Node partial list         kmem_cache_node->list_lock
-
-The CPU partial slab list (Tier 2) was the critical buffer. It was
-populated during __slab_free() -> put_cpu_partial() and provided a
-lock-free pool of partial slabs per CPU. Even when the CPU slab was
-exhausted, the CPU partial list could supply more slabs without
-touching any shared lock.
-
-The sheaves architecture replaces this with a 2-tier hierarchy:
-
-  Tier 1: Per-CPU sheaf             lock-free (local_lock)
-  Tier 2: Node partial list         kmem_cache_node->list_lock
-
-The intermediate lock-free tier is gone. When the per-CPU sheaf is
-empty and the spare sheaf is also empty, every refill must go through
-the node partial list, requiring kmem_cache_node->list_lock. With 16
-CPUs simultaneously allocating bios and all hitting empty sheaves, this
-creates a thundering herd on the node list_lock.
-
-When the local node's partial list is also depleted (objects freed on
-remote nodes accumulate there instead), get_from_any_partial() kicks in
-to search other NUMA nodes, compounding the contention with cross-NUMA
-list_lock acquisition — explaining the 41% in get_from_any_partial ->
-native_queued_spin_lock_slowpath seen in the profile.
-
-The mitigation in 40fd0acc45d0 ("slub: avoid list_lock contention from
-__refill_objects_any()") uses spin_trylock for cross-NUMA refill, but
-does not address the fundamental architectural issue: the missing
-lock-free intermediate caching tier that the CPU partial list provided.
-
-Thanks,
-Ming
-
+-- 
+Wei Yang
+Help you, Help me
 
