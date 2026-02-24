@@ -4,141 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C537EF5862
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 16:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8ED6EF5862
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 16:57:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E88C46B0089; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
+	id 410006B0088; Tue, 24 Feb 2026 11:57:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0D266B008C; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
+	id 3BDF76B0089; Tue, 24 Feb 2026 11:57:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE17B6B0093; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
+	id 2C0386B008A; Tue, 24 Feb 2026 11:57:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BB26C6B0089
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:54:59 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73E7A1A0252
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:54:59 +0000 (UTC)
-X-FDA: 84479949918.25.865FDF9
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8871C140008
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:54:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=nBjl7c6d;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771952097; a=rsa-sha256;
-	cv=none;
-	b=wSb+ztEdKRGg9T1IZnNt18OpwwlAW/GHBPp4eFBnHA9cu6VY7n8KYNyOXnaFeAswLfGLRZ
-	F9gtZSX4Feq5lccnZgzz313MLXYCF8brGsejL3b8pL3A2tDGgzr5M8akgtd0gODmmc71Qb
-	9Ifs0HteLbfj2uzpvxn0N9tuY6E1DlI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=nBjl7c6d;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771952097;
+	by kanga.kvack.org (Postfix) with ESMTP id 1878E6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:57:04 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D02C51B608A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:57:03 +0000 (UTC)
+X-FDA: 84479955126.29.7FB92AB
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C3BA71C0015
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:57:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZEk3o3EX;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771952221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/u4GoWFznFuQrqLlGOUj7jRuDM2CBLv4iVo/JzLKZig=;
-	b=8gOX0TWDyxzAUrTxLqTg4srKE7fIcP5bw3vrkeJt007fcUumLO2lV/FVB9V+njAotYrhfs
-	u2PeSn+pX9EITfKjVvOP1ojbDbWituAvzH4TfVMcS8ASbob/dGVhdpdxG3gHgwdy+9E7Sx
-	tXumwzS78iVnvmd0uT+pQEo1g+Iub1U=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8954c9daaeaso72513836d6.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:54:57 -0800 (PST)
+	bh=a0eCB7dwrJeHLLRN+P+/uPGe09CSkD3LNrenach9kEw=;
+	b=Usd9XFoLQ50jSWNsT41+Wo0kuMTpCwK6WV63Kk89r7Dxorm6lrw9sO1ySuJMhKikYyfUM0
+	XY0MPayo0Zr6n04XYQ4nBRcSQc6KqEeMkxqXLAy8ujhUUSPsKhr6wVnW9axNc5GwhNg3r+
+	5tz2D5z8Y/4mGFeShFHUpzXsUtj/JjQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771952221; a=rsa-sha256;
+	cv=pass;
+	b=W4GxOgG7OCrlaKhDW00pdL7UuIt+S8a8g68gVEKV4fEJwY2g1DGfeHjICYx5u+brbZlgbq
+	s/4Af1Y9iooSg/2oQl5ErY3Qn6vcwtxo3zcWo4+si2+b6WJgieGABu8vZ4Y3GtOx1/5xoy
+	TBdWnSWoW2ckgv2U9y04UcNH5PSsSuo=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZEk3o3EX;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-506a355aedfso75461cf.0
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 08:57:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771952221; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KsoXim/z1i1qz2aWD71wJYiqHAPWivEMUjP8lr4l3XwPknnOcQzmbfgbHaoedgG6lT
+         RZ0fRjLKTRTg8/y7i4DdnldN8SNP3BPPRGhaZgk6d5fjTYqNOpVpdDA7ZSOHn1Rdkp6N
+         4bCpJIqNAhtDlk/5neF4EwW6+nUoBxcDOZbLDrxP/GYKP3kOrmVjCnWVcF5tRKjF2qBc
+         1wmUAHAcjh0F56zCiduaBTxKCt8z9tADQGJ7/wDalde4j34XZjNIqKL5Gols/D4aoHpR
+         AqTKnAd/yZcMZ9uaM5mO/GmzwTaXbNz8dHBctlp6SKPcnBPITTGwNamLFx3YPiGTFyCj
+         rTwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=a0eCB7dwrJeHLLRN+P+/uPGe09CSkD3LNrenach9kEw=;
+        fh=UWazug6ENWueRCmukqKKyg8ksrm6JLl09Lfqag7eWZA=;
+        b=aDRIDc/42qKxVEIXQkMZw+XTjRdIOYOyg+mkdtepkUqqyT1EOXQ47KAz2KX1fjShcO
+         0RumKCEgQPR6LrIvAo3IrWLg+akFP8mAplUPhCfrSOnbYAgjQjM8h6ld4B9PNhpZsemr
+         RtkrdhvT6l8DqxbnqdEsGxSzieye1F1dppGa981bThokEvtkiSpW6PB+qJK6Cb7cR4Hg
+         0nKRkcfpdPyb4SmG0F/VVjrJIChiSzI++t3WLlQ75eodanntXJJCU9y8oy9NiL2HImJl
+         bDqr3jaqG4q3/A4ZAzdXMHcJKRFffKFLuQyLNzhDK8C6OrdxVe7jNTg1LXNB8FeK8S4b
+         W42Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771952096; x=1772556896; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/u4GoWFznFuQrqLlGOUj7jRuDM2CBLv4iVo/JzLKZig=;
-        b=nBjl7c6dol4dsbMfE8OffP5OPA4Klhoi5gNY+9RSaDKpAo8IAp4rIgc8qA0AXHZl9j
-         SCRis5sEKfuLfT523wCtp+vpa37LlwGE+tQitlvgfwNUbtBohTb+p0NzOEovrOonFHYQ
-         /d/ge0eJq8myY4NL7shxroew8K3rqNb0bzgb9tNChMLSQktz6Rt0NXnTSrK2LGgZb0By
-         USWKlpOsI+sBSdCbLfajKIY46FnN8tZ7z0hN6xJSHOpRftchy4mPXF+8aPCHXfr6RwVH
-         +vSBLc+jZgU0wDg1nHL08EAtEbvr/HZRORN0xgOmjh7i/pcTv5tYPywmAfG01lFi2UfF
-         Eb9Q==
+        d=google.com; s=20230601; t=1771952221; x=1772557021; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a0eCB7dwrJeHLLRN+P+/uPGe09CSkD3LNrenach9kEw=;
+        b=ZEk3o3EXrYkEcaRrUJC7lIeolmpISsoqQDeRxTf+kQofmc+MHI2uiPFbJRtZVDyoed
+         wUKfVrovcAsljVrsMotOLtWWx39zB5QIE+6OigGVNqx6PBGLLS4znvWG2zz4xxmgNRVk
+         DTlpUmzFL3sAGLzEx4lL88R1KnVVtvYRhG8ddyq2cK+msr8Um2TzitECDwJI9Tzzl9uH
+         wldDY41HIy3Sv9881oT6yvO4AwbPkeomqtz1C3TsDr/FqhA0CK2CNpGR2nrR10OfD3Nr
+         iMYfdjto0pioCnxz8GQPa8fDk26/niOKenMDwM8YcTR1Q1N3mKaEAgB5gyKyIqN0roW5
+         bXBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771952096; x=1772556896;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/u4GoWFznFuQrqLlGOUj7jRuDM2CBLv4iVo/JzLKZig=;
-        b=oFMP3hYDSn5BPiPIfoxwR6lg6fR5ykgGH9mINmgKru5SROruM6jZOmZHWlkJja8EKb
-         N5g0rCJD5gfp5elSyzRQTl31AxeACBTD5xSBdj+IFEPTa0JMAcy2F+cyH0y0APvsn1WO
-         1Tas2f6v9XGZm+pQFVpWY1iyT3zYSAmsce5p10gby2b0woIukk18SkH2vBgutdynD/rM
-         E/GitHrdTxDiqOaavR9/asuBaL3GTFg0+BJFZc2ILpsF6ri4y4LOb6cGA0FMG7S2CLps
-         QH79ielnTIDnPwfHI24feVmpl7/8gukVuXoLNnMaY4A7HWKIoiCgWBl3Q/hh+n5QWNDM
-         0WoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSt4SSKOaOSZ6v5bOyKdoay+++1OL2W1MwI+mGE7f6CLP+mcl3LQ315A/AUCT2iF/og0rx0xTh+Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz4XryfWRJ/VvQZCXUKKJGqsLXZ4Kzgl9XMWm8/losKZol3qYI+
-	JVcOc5FBwuyR1KsBH38XMAF5mv/FbdI/368QUD6FjHXzXCDaecKJTDE1XrADYWXgMXA=
-X-Gm-Gg: ATEYQzwso4H5EEddhyx8E9Rt3jBxz5F2AAc48jQav7QOXCPBHAqqqRQwtbRzk6ZsGt/
-	o974uAosol9FJb/tMNIOsnFucj1w5qTi1EqUhqHRyj3uIpB1PKyIioSi/oSaRqOAGasI4SXRH/4
-	5c8c+TImHIv83M6GGIS9EDGb+8shuL7PF0MwR/u+i/us3p+xtu3HdSxH8Ob//4eZwuVUxEW2km0
-	5UVOkodenTHWUXWTI8wkeAGo7NL39tpbvRVdY6VOSGZ5hOq3iDVXjndjXHXKBxCKMS0hye3fT8+
-	Jn4OBK00+X8WrB6+f+FxPYy+PH2E9q0dXBtrbRmtHF4k28XuymUdTr0kjHOQaacYlyK6CkBHnTF
-	9/IPC3F22BSXxg/Tj+aagzsceUx1DQ36KzKumbA2lSvgTIMGzE07KHQOaUUR5QXJ5TRTQPsSBor
-	9ppF1hgO1e8L9fm5WE4sQfFMu1Ofj0Fj0Z9vDlF4Ze3VxEwfuDI4B3gfCrlErc8c1j6jHh2HvLt
-	VDAqfcZTg==
-X-Received: by 2002:a05:6214:1bcc:b0:893:4efa:e8aa with SMTP id 6a1803df08f44-89979e317cbmr188639836d6.9.1771952096264;
-        Tue, 24 Feb 2026 08:54:56 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d0ec694sm1029766685a.29.2026.02.24.08.54.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 08:54:55 -0800 (PST)
-Date: Tue, 24 Feb 2026 11:54:52 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <aZ3X3Jni0HZXZMVl@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <fzy6f6dpv3oq3ksr2mkst7pz3daeb3buhuvdvcw4633pcl7h6u@mxjgiwpg5acv>
- <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
+        d=1e100.net; s=20230601; t=1771952221; x=1772557021;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=a0eCB7dwrJeHLLRN+P+/uPGe09CSkD3LNrenach9kEw=;
+        b=v5lRZ6UeBGmLIk4zzkuvcGunMqg3lP1OgbNxeH6p1TCkKbAgFJROnY2Eit23BVIvTX
+         7q3imSHHhxpU7kDIzytPUXfC0peF3IWbRXLHclTSdz1hFpGRl/lzGtpsVLynhe42EEQy
+         sukXQO9UDlgwvBqXGOu1AF46LoiTfT3yNATeiK2mgQRBBEXO2XpYxTf5d+dI+/O/d/hR
+         eTL4Ym05tcRL3F6U4V4WykZBV58ChZjxv92hXzNKwUrDhxI+fxYcj4yQp5S5FUeDTgnA
+         6v88i4qZN/ZZGXoa+kO5DSZTzIYd0SNgDnzwKKMOSvV9AnhSCQlXe8F8Tnm0EAqFy/iL
+         MiPA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/oTOohxKjverJGVEeNT1z1m8U9RtYGyOf9MuRHrApm2Fj5/M0RyLKAazczb++JpxI46bvjr3OPA==@kvack.org
+X-Gm-Message-State: AOJu0YwhRdry/Xrs8GKPUMLs2TgID9rt9ABns2tcaj0QpnvvWQxkZm6S
+	qHXv5di3JPeZJelW6rQglL96c/onlF7RT6hwIilbnRFNWyrcYDhcr6mbr1tNsU7xo9RKf+fewCe
+	6dY+SuKa39y+XOLHGaMLWJozDlDV2O1Vc4qj9v+xx
+X-Gm-Gg: AZuq6aJTBHDd14fRvn6a5YRF4dZfK17qWoKVTdAyY9GLaJUmD1/CsuiiLQSvOrYP2hC
+	oNuwNCIdFX5Pf++mLCyRD0TO7zDX+dYFFWFbq8cSm2pY3LSkqO55vPMS3iMPac1Hu07okHZKjAS
+	ZsCLgIHrKsm+YsbgON4U0YB360QASNUkewJj0DGcV5VQyuyc/9jDn9gqxpGfuLIrdSZ8+yFA2WO
+	K26kDlxdXcn3/lmfBxjULC/J+UkL1mBfBHVWTO+g3S2vfYIuY+0yYzSKQHtxneMWdMC3FWh+HMn
+	2od6kDN8FOB6iu8utUsvFKmTh9OAlj1yhrQJYcip2HE51L59
+X-Received: by 2002:a05:622a:254:b0:503:2e98:7842 with SMTP id
+ d75a77b69052e-5072c94608bmr14236601cf.4.1771952219705; Tue, 24 Feb 2026
+ 08:56:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
-X-Stat-Signature: pjnfuf17ieemuua17apr9gssrcyu4rxn
+References: <20260223155128.3849-1-00107082@163.com> <6ca5f70c-43c5-4ba3-bdc4-8c48607dbe7c@suse.com>
+ <37bbaa9.1831.19c8d7a2cac.Coremail.00107082@163.com> <CAJuCfpEsykCarj6_k5T9EeLDfsA0fFL182g1hQ+tb-7EM=izsw@mail.gmail.com>
+ <aZ2yrEz2ZVggT7UL@hyeyoo> <aZ21CP0d-RRAjUCX@hyeyoo> <CAJuCfpHjeFW3xJii3ZcHD_CH8iagHaGGG35wv=ErU7Z8j1vbtw@mail.gmail.com>
+In-Reply-To: <CAJuCfpHjeFW3xJii3ZcHD_CH8iagHaGGG35wv=ErU7Z8j1vbtw@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 24 Feb 2026 08:56:47 -0800
+X-Gm-Features: AaiRm52mzjIVo8S1mNzF48jjAa0qsc9gWoXygaWGOMkzSAYsrNjGdAE634OqFIg
+Message-ID: <CAJuCfpGGyrmmtKXK7jOhz-=6+J9D7En3RNwNGFP18Stvi3j2Rg@mail.gmail.com>
+Subject: Re: [7.0-rc1] codetag: kernel warning "alloc_tag was not set" during boot
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: David Wang <00107082@163.com>, Vlastimil Babka <vbabka@suse.com>, vbabka@suse.cz, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Stat-Signature: dmiac7ojbzfuqzapy38t8qq5orpfus4a
+X-Rspamd-Queue-Id: C3BA71C0015
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8871C140008
-X-HE-Tag: 1771952097-59499
-X-HE-Meta: U2FsdGVkX1/VkNPncRwPlKKZvIT3ZODbrkn90OXh2Djt6fVuxT9byu/W7o4R2EGcaE0HPzQFKJBm3rqyLmvdtMUP3bUle6HcbKVYIA+EpDgwUIulGj+J4ejcvUHbtSxVWAiuFqKy5X/SNVcLKZvREJfaUcquYB7Nn3zqMjvo/gzuCIQhblhrWN3qt4rG3uZlN4MhHmBQBhnmYTp4KvHFdF7+EAn6c286mnVt/yEBsiJ2or0X+kgtDdxMJD7VDDbzHAaas5Zw/0YpydcUGYqSNxpB210RPme5oY56dY7NE28jSPb6NOHFp9L1eiE8bn84Hsf/2KzUkznTibb2/BA/N+aUL/ogravQSJPKry9yYScLC+jSwSnDmb6lRShehb7uNql3aQEpdby2Iwww0pc2Zdk7F3qEF6x+9rjDl4ae6pTnqJQAFe6nlJlLewxht8PGDpy4WSMua9uL9RqOaNOv1zK3kjokyKuHDveDJIGIoLfzH+Djbzu+fho9k5g1Avqj8I4ALWB7821JxuK5cVHXiX1dE8AIXPrkFoKK0ZOZF4Nju1ekZsN2kiJxvZdXnFF7JfPBWKPYp7MW5s8ZKvb44Tp2/1hzmyJkMlHSLNawzocLpOJEo+1yw2qAhLSpGFw3hpO6PwiZtRUjsBynr9aI8PYGz7vLvjy/8iLGDQHKcG6XO4S4gqSSZGPgPztz66ApFUbsRo5NdWq3+hMinYkbSXTo/Ig6qEFCG/X33mX2VyMBpL15/nH48MsIFeBCjDoFNzLRce6JwAtygjsqkEpUguwNz4M8pAeEfJJE1xbNJm+whmfyauypu8ArcHmmjWrcJR578u+PGEGqox2TQRSGuY9B6KSTbBv5obbkcIVd+LTe2ICvWHdyAVVkdJUmZ7vvxbhgP+I5sefww/MLT8/hIvifA8k2Kd9mH5JkorEvBlQJ7o70EDeN6gxS0+9FZ5vhG1Ldw0nA6Kt6EpkCYkH
- Rd+LH5oJ
- zPu6VcysRswmH5Wxm61oAyuEULw/DkmJ8CM17+jsjkjDPwCjOaAAexlyEXZWrhZ6mqekheUXUxPghA9czi0DRaid2bFiOJ1HaEV25u2IkVTKlaZxrem+aTxAy0PO9lP4Q5Cvm0m3e71lgQ5sG0gkUhW4pGtfIkZlt1r+9/AuoyHNJVLX07DUbooeQgaxAvb/ItR4fNcEDx2iwZvkDNFEJNdDZusYj5pIZFntp6/W7UD75pT2nBY0yaXTWYmYRIYrI74+8KZtJ3EDlL/DJemB19b2713kMPLQNz7MXEAOYetvAbSxVNsPLB3qIrCbZYAyZ7utqjjZZkN1FdUMsqasLebF54T8RWlseGtoh86jMSP483TfC+hp6cIxSxnzVT2R7k9HP0NE9IocTy82QeVHtbh+XQ+3GMik7VtQcBtOIV1N/rck=
+X-HE-Tag: 1771952221-863770
+X-HE-Meta: U2FsdGVkX1/Oww5xEuAZZOXYtD2bY6AR8nd3stZAupbYtZozDk++MWpqWfXm0i8zqwkpcH53Fshc0m1CxFJ1v869Tzlhd+GlXytsMydoDQ8X58wABs9ohgsDJtsNuBsbF4QVTxh5A8hYAYIqYmLPmUD1mPGkCdSI5vbzMIIbXTBNnX5qBOLk6sMhudvzyzG6CvJOTzLisCEiv1GAswTsniLdg1Jxsh8KuSjEJFFdtCo+s3x813dMb2X++Y1hjRfBE61cmoqNQ1mmeoaCWvTXdoDPSgT6LGYR9XgaR9Z62V2XKj0IizCTwGltxfLEAiATHV4wQX7XhMKL6J2aYv5ygNTSgvJcsCwULgI3/vesQ9vgdQo+UfgC/0V9CmrQqTuPDE0Vi5rrIEkVrm7nNo6DmthEkFNx03P2LIlMSGqqttz2NGCSOPAUk+r2totfKDlMux1cbuXCPhKbgonYfe/yXDBv06skNSaSP6MESp9ZWz5HPlOBavh6JEX9zjK6ZSW5dKcSxylKkIDG6rh8GWJ5Upby62LCWIDLvO0T82cKj2SaGXycozS3frSZ5IyUw61MktNLw5pSSd71UFUuLtTZQ2nzbspYNZtDTiUnjrBBCpM8cX1l2/lHG9FOa8KHzyOJviGANX9etgJDeBFzzVG+5Y1eaopui9O+6Nh2uYOIex4ayCgnaVfXd8b4bjiSb0N1Hn/KAWgRFO/KEyp6Pjf0ycbzGOAmihSIzXYofji375H9P7Yw1yvox2v61fyZhSWA2PHsBmK6TPaYxcMbYSI1y0TvkzsWZVrNVIA8vYWuHZ6B69r6dAqZl78+fwOhvjYMVKluGwVMwNjikUbkpfClFhViQn0OZTzAmPOolme4a5HMHNmfnH/P68PDL/c4bi1hiCQ4MxWJTkPriEwbgImMkXfGZrED3w3waNvEtWAYWzdbgZhEOOfy3T9/EQiYDFXgCVBOB5hMzyTDsv50QWz
+ Uioms2F8
+ as2WV+hA7Uy1StPUAS2ZaAo8QUpoC7ba9MOsr/o9OEW/iK4+thd9diuM9TXimt5w2x02x5gNqH3HSEeX/KK4k7Ft7uQURv7clJUZow6OrCaGoWE1/l0sp2WLmNNtXbpkyMor8d+efyLYdcwrChFBkNYnPcXsCEtsWU9vCWPFYJjJEI831EKh4Ibfs7bu3jt4AN6bEFp/hVYDDv1/X+P9O5P+EyFw/Gmbgs1fUx1xABHHMjUBNdaxUgSnc6hFI7GdSIATY0+37JjpiNOTjGQ3rWVBPu8M6xei4iLLXKMk9T1ClDlcJ9+BGVazK6B36Pc8vUBL/R72HwHkp8QUckUFBsQfgcRzm+6YsAklC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,21 +141,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 10:17:38AM -0500, Gregory Price wrote:
->    - Changing validations on node states
->      - mempolicy checks N_MEMORY membership, so you have to hack
->        N_MEMORY onto ZONE_DEVICE
->        (or teach it about a new node state... N_MEMORY_PRIVATE)
-> 
+On Tue, Feb 24, 2026 at 8:15=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Tue, Feb 24, 2026 at 6:26=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> =
+wrote:
+> >
+> > On Tue, Feb 24, 2026 at 11:16:12PM +0900, Harry Yoo wrote:
+> > > Just sharing updates on this before going to bed...
+> > >
+> > > I was able to reproduce it on my machine I have a working fix
+> > > (nowhere close to upstream quality, though)
+> > >
+> > > The reason why we're seeing "alloc_tag not was set" is
+> > > because SLUB allocates empty sheaves for kmalloc
+> > > with __GFP_NO_OBJ_EXT and it doesn't teach memory profiling
+> > > how to handle this when such sheaves are freed.
+> > >
+> > > When __GFP_NO_OBJ_EXT is used in alloc_slab_obj_exts(), it later
+> > > avoids this "alloc_tag was not set" warning by marking alloc_tags
+> > > empty in free_slab_obj_exts(), just before freeing obj_exts.
+> > >
+> > > And we don't handle this when allocating freeing sheaves
+> > > that were allocated with __GFP_NO_OBJ_EXT.
+>
+> Ah, thanks for the analyses! So, the fact that __alloc_empty_sheaf()
+> sets __GFP_NO_OBJ_EXT when allocating the sheaf leads to this issue
+> later on. Makes sense. I only wonder why I could not reproduce this...
+> Will try to find out later.
 
-This gave me something to chew on
+The reason I could not reproduce this is because with my config
+free_empty_sheaf() just happen to never been called with SLAB_KMALLOC
+caches. Once I remove SLAB_KMALLOC condition in both
+__alloc_empty_sheaf() and free_empty_sheaf() I can reproduce the
+problem.
 
-I think this can be done without introducing N_MEMORY_PRIVATE and just
-checking:   NODE_DATA(target_nid)->private
+>
+> > >
+> > > Passing __GFP_NO_OBJ_EXT skips 1) allocation of obj_exts,
+> > > and 2) alloc_tag_add() even when obj_exts is already allocated,
+> > > and this confuses memory profiling later.
+> > >
+> > > I'm adding the fix I have now. (I guess Suren might have some prefere=
+nce
+> > > on how to solve it though)
+> > >
+> > >   1. mark obj_exts allocation failure when slab has no obj_exts and
+> > >      gfp flag has __GFP_NO_OBJ_EXT, so that a later obj_exts allocati=
+on
+> > >      will mark alloc_tags empty.
+> > >
+> > >   2. Set alloc_tag when obj_exts is allocated available,
+> > >      even when __GFP_NO_OBJ_EXT is set.
+> > >
+> > >      Because it's already allocated, we don't have to worry about
+> > >      recursive allocation.
+> >
+> > Wait, isn't it much simpler to just do mark_objexts_empty(sheaf);
+> > just before freeing sheaves, if s->flags has SLAB_KMALLOC?
+>
+> I think that's the best fix and it makes logical sense.
+> alloc_slab_obj_exts() allocates obj_exts with __GFP_NO_OBJ_EXT and
+> then free_slab_obj_exts() does mark_objexts_empty() before freeing
+> them. Similarly,  __alloc_empty_sheaf() allocates sheaves with
+> __GFP_NO_OBJ_EXT (for SLAB_KMALLOC objects), therefore
+> free_empty_sheaf() should also call mark_objexts_empty(sheaf) before
+> freeing them. mark_objexts_empty() currently accepts only slabobj_ext
+> but I think we can change that. I'll take a stab at it.
 
-meaning these nodes can just be N_MEMORY with the same isolations.
+I posted a fix at
+https://lore.kernel.org/all/20260224165250.1322946-1-surenb@google.com/.
+David, please give it a try.
+Thanks,
+Suren.
 
-I'll look at this a bit more.
 
-~Gregory
+
+>
+> >
+> > /me goes to bed anyway
+> >
+> > --
+> > Cheers,
+> > Harry / Hyeonggon
 
