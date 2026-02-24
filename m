@@ -4,147 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0910EE9B248
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EE0CE9B24B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:08:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F3A76B0089; Tue, 24 Feb 2026 04:59:09 -0500 (EST)
+	id 81F4E6B0088; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A15E6B008A; Tue, 24 Feb 2026 04:59:09 -0500 (EST)
+	id 7CCE76B0089; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 178DF6B008C; Tue, 24 Feb 2026 04:59:09 -0500 (EST)
+	id 6FAE36B008A; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 044626B0089
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:59:09 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B136F1B69E9
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:59:08 +0000 (UTC)
-X-FDA: 84478901976.27.0EE0025
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C606340008
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:59:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vrMu1Cfd;
-	spf=pass (imf01.hostedemail.com: domain of praan@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 59E416B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:08:32 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2F221B678B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:08:31 +0000 (UTC)
+X-FDA: 84478925622.12.DCB9887
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E3ED41A0004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:08:29 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771927146;
+	s=arc-20220608; t=1771927710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eblwuyUmTR+DmwKKXt5BlH8l1BOeREzivs7XkohPLYU=;
-	b=G04waCquSQyY98QUl090ENtn9eDR/5XYVUsmWjvSHlitI/ZSidlPEBR4PTt4VyWzJso1Et
-	qS/q1074SjD9R0zHd+HjD6rPYA6WAkK/PW5mSGC4pbNb9Hb+qfzSK7keno8DZE+rpUO8Iz
-	FFSPLE5iuPGbUurdaSnhtUAy5Z9NR5Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771927146; a=rsa-sha256;
-	cv=none;
-	b=7qjwxvgVQTsbo1ZjONRcIirQsyDujp1yEFoZmhcRLtxtD4UnGydcRM/fQkjIr+zNuV0Pnx
-	3/1WDdwSpmX6qhSbJ4KaPA6ZcHzHpKkkuGepjqG11hMSQgW2Oue45lrnuHjHnzIn5SdRxS
-	hz1jaW/N+igRXgbjsBWgL+yHNh9cxdQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fZQZhFCQRs3FRpnRYHy4Ear07Y00uoEUsCQ9F2s8RQ0=;
+	b=i/sKAbgQlL1sLrn+RIUCaOLURBH1HvtS3FD3afqS9dpkQOM8HbsePqd8lD3819LWNOOH+i
+	dgg4EA5Wo5T35wnuQpodgp0n+G4wEtvUxd2lP+qiCRTdJ3YO5/ocFlJYqfFNdqZz+Aa7Tk
+	nVqWq1gE9L4z43U0rEpydAQUkWZF4kU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vrMu1Cfd;
-	spf=pass (imf01.hostedemail.com: domain of praan@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2adb1c1f9d4so17265ad.0
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771927146; x=1772531946; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eblwuyUmTR+DmwKKXt5BlH8l1BOeREzivs7XkohPLYU=;
-        b=vrMu1CfdvpT9lF0+yb8hPDjPyTIqwu+tuPZgXfyb9EfRmk/m1T8BU2VbVWzuI8LjC9
-         CNDNhdMSyG+u0r50E0FO/xQMSJGUHClK8bomhvjkB2+sDXFVOZ+s6zNJ8jWsMWgneT8l
-         9cBL4yGCvaNmaopnslWgBo94U2KvScLeIVM5l9VZAfxzzMxIUUQVQtzrxIMueCJ9jkbK
-         I5ilezmGvjW5It+XgleohYf/p0LvbOiTztQ10JsczEpO1wYuMWkR8+C8OIvAgEAWWOcA
-         tH4o2LwneGGjb8KWyZbZEEMv/ZUPDK9UEpK2NKxQrnLvyzKwGEuktc3fPWqUPokITQVa
-         N2Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771927146; x=1772531946;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eblwuyUmTR+DmwKKXt5BlH8l1BOeREzivs7XkohPLYU=;
-        b=HcEz612GW9T/UKYWYFcBYSeLJwxn0DRM/Mgn0WD2+FbkOTajcrNK01po4uoLCAVoBw
-         o780P7vfjP0Go/5KA22XiUrpgiv+HWugWyTBqT62cT8EcHfl2/weF2OfX4HtvQNgv2AG
-         FPr3fvQcKRKZXTPH9ilW/+RiN09jOxuBGvwsoPQZHnbzmR+eqPOJxU3GgMxcj6V+CMMv
-         OP/GiC4VxgBLDqvL2MuH7kcEatlO1AYmFTQSCee07D2+zDgotgiGLyrATwfnO2dJOlu/
-         jh+q9W8l1yT+S1765VdfEKeuF1oyFXl3DTjIEL1awHoe2xufcuGZot52ace+OZCFlY98
-         pcnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ89xhW0v3gYD5Aw12TJ4hZon6KI0rZhNyH/1bASiSLufmtr3L6jf0gYfbYlvA+Qvm/+f3rF7yNw==@kvack.org
-X-Gm-Message-State: AOJu0YzkSh2FHgjyBRdllrqLhmeMTQs8kLOtsCWCiOV4ZnUKB76wCOJU
-	sA2kMVvQjtt5YhAhbVWRslxc4ZnBRNu7ZX/gNhrJ7+hkDOVyvzYGaWl2bYuHD0DD/Q==
-X-Gm-Gg: ATEYQzzccpy79T9lNF8Nk5Zp32+uDgxDZNUw/H4S/Cu5ReZzF6C8nbt1zCevfAhwuhd
-	hm37wKbou8viCYMwaGOTr/wGF5a8+QM53wmTXyFJCBdwBp4oztnBMv8IwQDpGwqCceVFurD3/0d
-	B+adDJG8VMcgkXzcFXCLbLYLi01DE+iRUWLR2Kdi5QqLsbvbMl2ep6GTVaysc2lOx1L3H3Pa7g8
-	xlSYrHYZyCzLWuiqEQTtacyEd03dk9M3GZiZrJj/DhL866rvN1/0isx5ww382o2gMV5Yc2lias6
-	FXBjCeGiCgbQ2/XFQQuLuN8rBSAzYiLKRBQ/yPXmwSQrHG0D8EQJSJR/3abomzTtoKFSY0fxxZX
-	lCxu5AmKNvFLFE+oQFLJJ5R/Xk4xJlMluWTGBHK+iTIqJEB/JHjKanetKnY57zYK7lq6kleSJM3
-	UkN/8SDRAXG5A6UWEZb5ozfq7EtgFF6pc3qKt/S/W0I33p+Nf7CGx5Xalmj6s+SBfdYDjvOac=
-X-Received: by 2002:a17:902:ec89:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2ada3497c30mr1333915ad.19.1771927145136;
-        Tue, 24 Feb 2026 01:59:05 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd47c737sm9949341b3a.0.2026.02.24.01.58.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 01:59:04 -0800 (PST)
-Date: Tue, 24 Feb 2026 09:58:55 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: "Yanjun.Zhu" <yanjun.zhu@linux.dev>, Alex Williamson <alex@shazbot.org>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771927710; a=rsa-sha256;
+	cv=none;
+	b=TF/cJlyXYAq8BCEGVOLD+Ji8x28BquL1Mk7ROBTbZSmuLUmbfzNzeZwe7IvSDyOaFdBcw7
+	RE9nTtOnovfKKofClJ1SFlX6359tYYq/BFBonYBnI8hLiYqGfBlqrFHkwujuTslG0rslTt
+	PcyJY/8cRASrt9GxIKsj4YCDJIeOrXo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96CE2339;
+	Tue, 24 Feb 2026 02:08:22 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9AF0B3F62B;
+	Tue, 24 Feb 2026 02:08:26 -0800 (PST)
+Date: Tue, 24 Feb 2026 10:08:21 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
- Update Orchestrator
-Message-ID: <aZ12X3tGn3W7YP4I@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-5-dmatlack@google.com>
- <6dc423bd-36e6-4f97-b2b2-c7030575a3a1@linux.dev>
- <aYZ15u120FEa8Qw2@google.com>
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	linux-perf-users@vger.kernel.org
+Subject: Re: [RFC V1 04/16] perf/events: Replace READ_ONCE() with standard
+ pgtable accessors
+Message-ID: <aZ14lUwuA86aiOH-@J2N7QTR9R3>
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+ <20260224051153.3150613-5-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aYZ15u120FEa8Qw2@google.com>
+In-Reply-To: <20260224051153.3150613-5-anshuman.khandual@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: gco6bh9smfbx4qiewm1kdeogtik83p59
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C606340008
-X-HE-Tag: 1771927146-663858
-X-HE-Meta: U2FsdGVkX18r8E6dbFvN7tafXQRYz9gNjJFwxU7zznrc3nr8IVGYeECw3rKZSMh/oCU6CRvdOIR7cYlbCRHc2fjmL1MMXsedD22a+yTAfIYSu/qPXMMoSggSWaLMiumNVBJ44K1X0uYNvRWGkb4BxfRB2RBxYDwPhbRNPhBrkar1qjpYimm1jFVl3VyhiTHOkvgu1jCkoNyTl7ltOvSJEq2eAqMTOAd78c4hbiDopxDV7ZC1FhHYf0SeWm45TACq1TG8tJhpE+ygC6dPZwNlGpXjjR1P/Zc2g32z5lB8POlRM2MOXjP/rLyo1cNbDYpJMVjGCFgYkfXzs4ZMnV6+rorZJR/fUpZbtUBbuJUKwbX3z8IpTZqlbU/ZH0jvQmLo5l3Cip87gsP8EubWeJlkA3nuI0BqqWHMWVPKNoPfDQ7hFfdVonwhp4EEvV2lFhDPYI3BQ2DziGPu5PSJYb8N7AK8dGCbJ6yp62x+RYmTs3Ig6T1vRHkXrCLLhX5bkWlB/6ojKLG9e+5r+oLlDpFxrwXyrX9CMigcaAbhIwUVnW284ZyO0WLF9S4l+QbRBQJFn9OUSZ8hSLbP0SIc00/oH0Ia4I2VTYGA2VpmqX+l4Az0G5pneJKhN+F4nz8v2N8W68L0lW0VzlN7o5wppeOql75rSZly2C56QpNYIsfIrePbH1o3o55254f79ljNnNL8AgzpylEjH1Ll47dOpv/J+QyqwyKisVtz4DzYNNO5FurGX5TInMe70tkMqauBszBfhNZHwCvlcnujLEGMAchifjP8+oraV0ZU4q+YE2hmrtiSev05gPCaMqEHgVGWSQQzII6R//a0ccuV8WFf5BjzClwVsC4lTc+nD2LQiE7dHu5Dy6vbQFDUMLR1rsxadpSwxqCOxr+YEyRuYWY1iBgZTUvJpaDCp5DOu+fecT8vsAApKDr1OlaRm0FSBxWjjbM4p9+0iU4LjeM47LQEaLY
- BB01KsDa
- 0UpTbeT9vCuj/F+/QIHkxcRv960C3xrIz9MXzMC2irKidPYBz0BDGMmJboael4iFrn8GLsQuQmHyL4paR3q6bKWFN5nrGmakEB17JrnbKpRcZJDN5ce0U4y+crQNal+rWpFmchI7y7ltA6CNtpg0DO+/+4ZGFE4cqWHxr5ihgDI1fzmDIoua80XC8VF0ARSeaxHFFyzaJ/zl/77W0zhDKRCvO9JxJfQF0cNyG841pMdGbMG2FjGdLpf8PTPjlhsqMQpUfliHkoDtr5oGz7kpQ0ysBTUTsRyHUEPrpfTIR6DAUoX8WnYjfc0mzDw+qwjc53mdo+F9GYOgqI86op4Or2iR3ENC+WVDygy6silEV0AGnLr1Em0xNOjXotQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E3ED41A0004
+X-Stat-Signature: 713gtdqk1jmgogbtrwd5h46wpmf1i56r
+X-HE-Tag: 1771927709-81174
+X-HE-Meta: U2FsdGVkX18OPqGGxMPZYSKqQMGVZ1plcGSHvKwiYRoR+F8QsJCyvXq470Oi04FHc1iI5GUDxU1L+61Lxmf73v6d7E/+bv171gLhP1K0pgN230YUDtzFttghpUUy4TAXvsK1opyyyq5H+Gwg9quy8IM/lGdU75DAJ7PlSVAE2L3dhqa5z8Z2YU4UPAA+YHQt/20UjV7uZJ6eJbXwr2MSpODaa3JDbr6h/ElAZ6SsmHihZOyZ1UYc+GFf1Bwo7Di+me6R9SkOdLegi47mtoHbO9cnv0XveCZ3NP3ASI0izx8++RkF0NBDCqQfaep+7lOikR4DQR2krTqfMEoTyiiEo/msFSTAzfFfcFCn9a0W3g8mJF9jbFzGmrLp5MJairZ5OajEKhpxAkom6IhJM4iGan0bYVquw15vkCWleAcs8E3Ke0rruFZJiXCUhiqzhQjPpULnu33Pq8NacuU6PuQ1Qpk3vXDtr2jxVD+TUFzC7htvsbBCtIbPZrGAtCEo+ztBEusEVj9Af48gA3aMBoLgXfVE9AliZsVuztwhD+lxhh2MrlEDb7jjGBzJis86/8hBVbkW6CYej/jx7M1viz/U9cGWD7mj7pZwTiEQII771XzXYWy4N4R50M5lYRQe7cHlF5MlTGieyRWedGRotG/RTwRxRgVHWJFmQprRY8Saxo89mqi6LYJsbI4P5o1qD3YOhWHPbrx9fYBsuYBEV56/+/2mklsalh11CO0tOf54VrnOERfsCcUls1zLc5BYuxKEQ7k9GbhBk6g7bXHrhB1jKtl4rZGKU3IVG6IfdEcn1Hl5L8vLpKXak80QHLoXDV8ZXuRYiu7UIK1giV/59vIWoYM6suBsKvJYBYhvoTFfXaZirQSJiJBXvVuLbVMKjMA5+aXSgF8RMY7+TnABaQ7yIPmyBjjEvaDDpzx4v3CO/37jtTWV4c3sOOl2+GbZVgZyu1+Yb/v0P+ecP7GpJT1
+ gtZHXpEh
+ pXEPKLvwIbmPYBizcB8F7OG4KEeqo7RBBkeZyc3ScA5EzdmKo1k6nmJL6gmGPaBSLDHcvZNoBxvDt7G+KNi0qtREfXrY9Ws1zDuvhfrs7aqDnxKB7lLKRRfUEV5oOlzhTpQyF0W9OkfuSBi5TflHV3jRN8kT7zhMJc1KSwoi61OpClU1hR1d4LxTQawzHm/SVb0eCWnD7wvt0Ng5s0yc5JsP9I3DKlXOh5ZVGVTKN0/wlRUEhu6uKxErk8edGKx3eetPJhVAeP1H4hPqc1BWAFVfOqJbYXHLqz5qyLkNPV61EEqfxHfHmX2aIzgHrbOqDRDzCoHu1SQCqPYGA07B2jwYwYTGrsyFX8q2i
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,35 +95,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 11:14:46PM +0000, David Matlack wrote:
-> On 2026-02-06 02:37 PM, Yanjun.Zhu wrote:
-> > On 1/29/26 1:24 PM, David Matlack wrote:
+On Tue, Feb 24, 2026 at 10:41:41AM +0530, Anshuman Khandual wrote:
+> Replace READ_ONCE() with standard page table accessors i.e pxdp_get() which
+> anyways default into READ_ONCE() in cases where platform do not override.
+
+For each of the patches where you make this sort of change, please
+explain in the commit message *why* it is necessary to do this.
+
+IIUC the entire point of this is that in subsequent patches, arm64 will
+need to use something other than READ_ONCE() for all pXX levels in order
+to support D128 translation tables.
+
+Spelling that out in the commit message makes it much easier for
+reviewers to see what's going on, and to focus any discussion/questions,
+e.g. *why* won't READ_ONCE() work?
+
+Mark.
+
 > 
-> > > +int __init vfio_pci_liveupdate_init(void)
-> > > +{
-> > > +	if (!liveupdate_enabled())
-> > > +		return 0;
-> > 813 int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
-> > 814 {
-> > 815         struct liveupdate_file_handler *fh_iter;
-> > 816         int err;
-> > 817
-> > 818         if (!liveupdate_enabled())
-> > 
-> > 819                 return -EOPNOTSUPP;
-> > 
-> > In the function liveupdate_register_file_handler, liveupdate_enabled is also checked.
-> > as such, it is not necessary to check here?
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> Cc: linux-perf-users@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  kernel/events/core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> Yeah that is a bit odd. I see that memfd_luo_init() just checks for
-> -EOPNOTSUPP. We can do the same thing here.
-
-If we move to checking the return value for -EOPNOTSUPP, we should
-ensure the pattern is consistent for the upcoming PCI registration in
-Patch 7 as well. With this addressed:
-
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks,
-Praan
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index ac70d68217b6..4ee151cd2c6d 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -8422,7 +8422,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+>  	pte_t *ptep, pte;
+>  
+>  	pgdp = pgd_offset(mm, addr);
+> -	pgd = READ_ONCE(*pgdp);
+> +	pgd = pgdp_get(pgdp);
+>  	if (pgd_none(pgd))
+>  		return 0;
+>  
+> @@ -8430,7 +8430,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+>  		return pgd_leaf_size(pgd);
+>  
+>  	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
+> -	p4d = READ_ONCE(*p4dp);
+> +	p4d = p4dp_get(p4dp);
+>  	if (!p4d_present(p4d))
+>  		return 0;
+>  
+> @@ -8438,7 +8438,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+>  		return p4d_leaf_size(p4d);
+>  
+>  	pudp = pud_offset_lockless(p4dp, p4d, addr);
+> -	pud = READ_ONCE(*pudp);
+> +	pud = pudp_get(pudp);
+>  	if (!pud_present(pud))
+>  		return 0;
+>  
+> -- 
+> 2.43.0
+> 
 
