@@ -4,237 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FEB8F357BA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 17:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A816CF357C5
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 17:11:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA7E86B0089; Tue, 24 Feb 2026 12:10:49 -0500 (EST)
+	id 13D306B008A; Tue, 24 Feb 2026 12:11:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A55F96B008A; Tue, 24 Feb 2026 12:10:49 -0500 (EST)
+	id 114D66B008C; Tue, 24 Feb 2026 12:11:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 904006B008C; Tue, 24 Feb 2026 12:10:49 -0500 (EST)
+	id F38E76B0092; Tue, 24 Feb 2026 12:11:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 764556B0089
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:10:49 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 230D11B6315
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:10:49 +0000 (UTC)
-X-FDA: 84479989818.08.A411EB4
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B21A5160004
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:10:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=PfGc9183;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PBjq0sNO;
-	spf=pass (imf08.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E182D6B008A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:11:01 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92C31140225
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:11:01 +0000 (UTC)
+X-FDA: 84479990322.19.28B8EAA
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 98C9E80016
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:10:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="JgbE/PFq";
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771953045;
+	s=arc-20220608; t=1771953059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=odPDyswV0BwJJJa8X1yi6II+j62heL9JGS7dcRErY14=;
-	b=ry3GxgZ/DWc64SBDdw9kyxloWerny/qGVVz2ULcx816fOK+0NWOPptk3mu+12Koxtsyd7F
-	6cWB5IYx14bmuZU5QL59Ijr3hEjc93hZsbx53tEEHVtiAXuD+MgTCjMYyRGRDbCvztQgMv
-	OW1PHFv3oY13ymNGueoCuAfdRMeCfZY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UG99rsaRgJbLzDIGBIBYqn0yFl3SYVfB0ArseQHsWSU=;
+	b=zH9PZ9phVIZ/qPaYgjqHzjBeUuLUMpS3a+UU9hpUAvdcNYP7FGhSvZoI+341D5imGzw3PQ
+	zNUdbyIl07+7JwDwJ3xNcbYY41q3RzeYHyT1g5sRPFshqdXugCZHe/aPy7zGR1MxW+blQ1
+	tKbhTW3fVnx1CoXx3n2ZfguiKAkPjxc=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=PfGc9183;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PBjq0sNO;
-	spf=pass (imf08.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771953045; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="JgbE/PFq";
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771953059; a=rsa-sha256;
 	cv=pass;
-	b=bBwYXLjab08mtwHW5FzWIM+8lLEnWd2Opq6xsY5KwkLlgBIlgE7zFUduxB50ccu5dhOaMR
-	xnbXdMFlhwzM6MoGyqmdvXoxtfGBxf6ysjrEbANqvIEyqRn4EP94zZ3VtnG6lskDb6oAQG
-	zZc/hq5/pynCZfBNgjeErELhEVAktzI=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OEMlA7351755;
-	Tue, 24 Feb 2026 17:10:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:message-id:mime-version:subject:to; s=
-	corp-2025-04-25; bh=odPDyswV0BwJJJa8X1yi6II+j62heL9JGS7dcRErY14=; b=
-	PfGc9183TEw71/M07e3NpvDEpuk9wLuPzAsivxJic4Rf/5qrCBWFad3afv52MA+r
-	BPq48OUMsJwTLw4ycIlOBNY5mJHknTo3IheQLLzICLFzMBQ0wKylkhDjfre3VF9D
-	4YDs6ZmskhFsiP9ZgzTLRmZXIvYCfazbL6rC3PyBtli3NvpW+yk63RnGKeRG+54l
-	L32WsQty63n9IQxut1p60YMjs4zotaH9kCDHu0gB6LQ1EqpFHPDa68FQ70AZGg9Z
-	XC99igJ6YXRcSx+Lb1xmM3B4KahkzV401W4GrVt0V0m1Fq6gG41z1cYr5Kb+4w0s
-	z5dkfHYUjAWBTSQ2SL4L5g==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf4arcn36-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Feb 2026 17:10:34 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61OG8eQR006268;
-	Tue, 24 Feb 2026 17:10:33 GMT
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012048.outbound.protection.outlook.com [52.101.43.48])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35a7syu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Feb 2026 17:10:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Le5w0/3xF/rC7Awt+eEBOk6CWAITf+r2+A/daUgrIqW/g2J6LGXPB8GcMisOJBjOAiMvwr7PCWE9/ZA1d6C4YPvFNiPPjIu/ceQc9qWN2KYVuQpeJST7XfjNXOK5ADKEPABWotukqk4tecU/hDWUaGXVSjcg1T5ajkc3KNS/AaW/FmHRG6h1z1CSPue6LSc5LVvEOZ2KbtxDQ5CNsakNPdKtD2x6G5XfeLL/qmGhH42qyafKgNo+EvXmOtPLvs5zMyaW94/7q2vIMC6wbLjb99dHLUmaelANWtClhBC+7cVYvHB0d3RCj7/7/gNV/UkQQq7pgp4uHraTn4sZlXrG0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=odPDyswV0BwJJJa8X1yi6II+j62heL9JGS7dcRErY14=;
- b=X3sjb8/n3TVk92BVaqhMo/6+zyg/B01FIys6i5uhvVqz6aYbGVeHnrX42S+KhUov0mbnkUDa5ETbfGQCkEjIeuOMLbl/LNB2jw+lKnvwxYDGH3lMMpMdxPfGBA3EChw4hmHoGsL/p68ZBBnDSxtIcEev9S1uIUdDciD02gkcHb71ZWt7ATZBpAITOOQH5H0NzBKfZ4PJvL9O4TJ6R36DUdPBFgk0wiwNL2JMUkbT2BvbsSoEnOPWIJ1oKzSuR/tD3LQwAP3JJcWOVFv5BoVDBbV7brrNAXWVAGV6VvKijDgd6Uc1562WlxmZwazlQMG3oyvKZNq5T32kB/QZbNDUMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	b=eXIpfurt+R8+NMaLUy5zyXKI3tVkUMbUxZE1bAHLv3hS6k+AFV2U+XGW4E6iK9/UzePvQW
+	0NXH/f2mLUW853UiRyKgu5rmlNurOhhJkY74A4j89ayTLeEcSXku7w1liXK9imzmjmdd7Y
+	b96POKijC6XblrveZQInlu/H6xe/zW8=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-505d3baf1a7so76271cf.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:10:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771953059; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jfgpsQJC+WbtdndNvTtEzrmebQL1zs4SKQOmn8Kb0OaJJ+BOxNMH+dBVswtRalIEL0
+         4jSb3rzDbw9F4wehtGkK/8IOIyyERor0bgbkKb0lgg+cKQOiJD6TttMvxLAICNPNkgie
+         0i8rYqZzZgmw36nNKHG+KiSZf6NK8rPj9CilkRX9ZuLqlUSI2ctERuRN+IDLGu3LP1Us
+         4C9iyKW3Fe7ReX73JlKWb8kZOySnHrTHoLgqcAFeGi5gNIR7+g7eVA57JMCnmMrtu7yH
+         zCblKUODhuQNPFO9XZlHlq0fkh5WCXb2j5u9em2NY6HxPj7JyGl3qnXtNY7cLViKzJ5t
+         u68Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UG99rsaRgJbLzDIGBIBYqn0yFl3SYVfB0ArseQHsWSU=;
+        fh=Oyvdj++l02xzm5BNZ74dRtFiEuSJw6kdWkAlXBwcaes=;
+        b=HRV04ZkORwmKSHRL+Vir6mtAdMtH7DeDIhHaNRALSM+JNUQQH0nDpzUFKwwzDjOhpf
+         sx1K3flU3N7u7UmMHFTILnvNMYNa57XH7mWWGcA14Anor4J2IKGkqQbqAba5+t3ae3QQ
+         q3OCYdIWjCZYx5+Q8SCddzOt9NpvijKcCLOTHP2A3RnUjabDX7hwvNkLfeE72fSlgu5O
+         i4Dn/WnpBoUzjVIBWkoH8AL+FhH50tVconUHsyXXiaVxYrIDDBy7eQibq8ipjXDJxDPV
+         1erbH8TH8cLJhwDNUzo8Cyd+86QYhfcvNv1KO3dhxXhK1B5ldJKPEaRxDxAvrw3xHO7N
+         xSfQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=odPDyswV0BwJJJa8X1yi6II+j62heL9JGS7dcRErY14=;
- b=PBjq0sNO2hqNZXMB/RASAaUO969t8RCDHb4wAg9sgUMUi5tPwpetiMVF8zz6VuXM9G5T8JCxZmO5HQLELNbGPj52VNr0TZYl9MXtKPBKvhnDje8bbtuW4I7aUO657Yl0VqTJJO89/ew/x5uqBZSPbBTwZt/H9Kn861KLqrOLQqw=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by CH2PR10MB4295.namprd10.prod.outlook.com (2603:10b6:610:a6::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 17:10:29 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 17:10:29 +0000
-Date: Tue, 24 Feb 2026 12:10:26 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org
-Cc: Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>,
-        David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [LSF/MM/BPF TOPIC] Page cache tracking with the Maple Tree
-Message-ID: <biynsvpcamct5fva5nxxdvc3q43dqi72jotpyasvrk3pumdz2w@7okprmuwznlo>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT4PR01CA0485.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10c::17) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=google.com; s=20230601; t=1771953059; x=1772557859; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UG99rsaRgJbLzDIGBIBYqn0yFl3SYVfB0ArseQHsWSU=;
+        b=JgbE/PFq9OTP+ufqNjNNOHBlP+Rvlbxey5s1yvEDwvvLCo+KU9Ek1+TDzL5gkXu7Tx
+         ICQ9V385g6VHQJIDqtXxEpG0aGKvC/VKroIrUEr3jGRaAyzrai3xMZ/GAGZ6aTzRnp2E
+         nDXuzPGJDWyniv94qlFDwqdo/X3xTV6R36T6gtBAN0myMtToZLZ5g+xHUk1WKTp58Oae
+         I2pbJE9YxUMq6PRq+eFjOxbekKgGRef6kCxZdkuiwqWoAQ9fROQrILRq59qI5PcBZGSl
+         GddH2nuCigeLYScZO3JKObJTjdb96juH556pmV0KMHwjSLlidxnJ/TLcmjIJpfKzqDUT
+         OUVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771953059; x=1772557859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UG99rsaRgJbLzDIGBIBYqn0yFl3SYVfB0ArseQHsWSU=;
+        b=uV8j77aZTwP4O3lM26injgW1RjjGUBatcauSxY2Q/0aFW5HwX1QkoIJB9Q7Jlje6At
+         2XuKTpFkB1XYnL9CqaQIV1MptL6n8/WuhLlZ5pi1KjIGvJ5efmh3t3iSyqdyfwAcTGWF
+         ciWz8mprWhZGTFu3a1FDoyEdvmujcp3ihM8Gf+90TaI4nwqG+li7SPlOP+XZRhKkChfp
+         Ws/HwbSFqyKmHSq8dDCtRbVq2+deMlSGKEs/7Z0PYQv9ZoTXCBC3O8nMdAaj1Wlosac0
+         A1sBuq2VOGN6O71Z9gksqpxM5z31gj11iP0irRb8RT1nmCF/TRIiFZwPrUJrSmn8Lp6u
+         1tqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNV/gs7VPIFaCLk/MeCOSlvuCxRGC2r8JksOi9Gx9ivHxg+AKasY5761yLa4gEbFekdLNjD612eA==@kvack.org
+X-Gm-Message-State: AOJu0Yy4nrhx7PYNq0RXNNh56pDa5lwvZZEMbW2Vkj0Hfc0nj/XgCVkA
+	VBIsDXOm7Xq3jg3U3Zkq1fvakXMZo+Sw0vue2qtpaMHYRHv3k0PbBy819w402+xk5erVFqsTnPq
+	cik4iP0r0LcCjMQfZa+7+EQTanD+KKgKffq04vzPM
+X-Gm-Gg: AZuq6aJJtAqcuuvxGXMVJc+YaXtHJneXB/e7hbh0h5S9zvAMOFAVJFyE8x76cW0psx9
+	1zBQ3dBu8JFyyiLvg0L57PtorNj+Xwb8Ogva9qaxyaWe2e4eEE8gv8LdOGmyIJ61HLEpZgbiil0
+	iQySjNO0qyhg+KXCDjgI29d/NiRrbtyVjiNXGjgZIEzVsuk+hLxh3pfQSb8U9XUTCKRCrKXr4wZ
+	mjAxLo3nQhJkUXSYXHFkEYyzN5rJi2dGwmTcj6pbLjWN+bP5RzBszPEm6BFATbdxxmuqHncihS2
+	XPtA0nhkITidL/jQ3FUGQBLdyJ8XldhS6HmM7w==
+X-Received: by 2002:a05:622a:650:b0:4f1:9c6e:cf1c with SMTP id
+ d75a77b69052e-5072df2149emr11811881cf.17.1771953057504; Tue, 24 Feb 2026
+ 09:10:57 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CH2PR10MB4295:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e951484-6a56-45eb-19b1-08de73c79c1d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Z327lOSuOFYagJMJdaKHsT0cfDcFLrTmCapper8pkVWirhvCPdfzHi6pCM9T?=
- =?us-ascii?Q?lptSjTRGlQLfyEUQgcrC5ZqZTJd45ItcQM+JC650bLCVlCBzv+gxodiPCy11?=
- =?us-ascii?Q?rq4zZzP5+/5SK5EKz4gXu82jQMgs9yBmiFcI2gcGBFCDBiffOrKWBO5jPVbQ?=
- =?us-ascii?Q?M0UeygQnAt/D+5uPWBIty5hnuiem3YdvMVbvUiLr+VQLZw8R68jj7JmqU+w/?=
- =?us-ascii?Q?RTKfSNkW+RaB5+zJM7awISj7Jg4dAgwhbRKd2+RJ9IgVka2Ktx2E/pMiF3lF?=
- =?us-ascii?Q?gfcaq7KxATZwFRucTjnIcBeuJUrCVcvayAcVRI1La9laaGZn+lIx/fqc4sfj?=
- =?us-ascii?Q?S++ixwfn5K4VkhCZfDq9Y6IWDwbkX47wrtycvId/aV7siSJFQIDbFxH7yYdp?=
- =?us-ascii?Q?Z4uEUM6dXJa/igYxhF++pzhmoCzuqmqFwjhXrsxf/5hndHk1hjLgGqwFCQu3?=
- =?us-ascii?Q?0byzQZ0LEJSiq2Z4k29XDV6YXCpQmfcss+QenvsifN4W79H/uspdDh2xy2uf?=
- =?us-ascii?Q?HKn0LmeTH+aTEhJZJS15uqH2BCV360xoji4ve56nX9up6LJIDr4uVQABPtoD?=
- =?us-ascii?Q?RY6UfXVLn+myo1Zq+wrihIgYRxu5pvth6XLt7quN/O+Ue3zgEXVf9FXgr/70?=
- =?us-ascii?Q?Xq/2GpdrZikBnz8U6VlYio1HQokMyhqmFWjbzMfD1o0wrFKHJ19A9WuYRQ5x?=
- =?us-ascii?Q?orHjGw1/wo08uJ6lSp7UCxgd8aL1ZfTTQhU/QFAZ6RbvLMXX7rztYdTnICHn?=
- =?us-ascii?Q?0du1G2lF2bC//Ci1S0CXM8MdujbYHd0CVwI/zv72slk3NXFXmHlYwdUap2b7?=
- =?us-ascii?Q?waFYEGSTVtDWyPsgIfZ3ubcUev7sHhvQ3kXEhbsSyxT1mkPxKbTqqK5bVjCB?=
- =?us-ascii?Q?gRRranzPjJ7QY9O8vBugiQ2xQpGvlb26CC+DFvdmUYPBl4+z5H0qNWcx70/5?=
- =?us-ascii?Q?xC+CxRSSlCLl2Kz5DJYeYmD01OuX/mscY//3I3/Ui0yuyZB2JpZW2PhZUyu7?=
- =?us-ascii?Q?xlQuQ43HyBq4TD5Vy9oq/kT/nP9gA6vMWWkl71QaDOU+qdarTzxMVTGn/DBU?=
- =?us-ascii?Q?5ZjpR/9M2j5YVudf6om7Eu4ojO+zlbnuXOAFhr6ehTHh2cnMZPKGSTSrdqBo?=
- =?us-ascii?Q?pl0hKf+70wk50RoPjgqfMOFoHA98OlirCEbtCaU+JBZh9qKpP2we+3oLL2Td?=
- =?us-ascii?Q?9qlvFY7n0/Ya7LZCTwOMhe3qWrjN7iSv5FJGEyVN/PPRDMNwqeRIh+RmMUkt?=
- =?us-ascii?Q?FCv08MokynZcfQvaqIWpJizo7tEsZxMvb92GXstQa/CM7XdJPRHr+u+Lxa3G?=
- =?us-ascii?Q?y/T8X5d9NE7gAWv/pQBq1rEvjgFl8Z+AqoxA0AcTfVlE80EjhZYmdLKkV9mh?=
- =?us-ascii?Q?JfBz4/dZ67Gy43JNgKacoPvR7ZGLc4wLQyDDHrC+ypdVqDC2natNQdr3vhq/?=
- =?us-ascii?Q?DluQ2oTPN/5/3wVVvSjGCAApz13TrRzq6xJSs7G1rTzu1Q1QpvNjcBlV6/lR?=
- =?us-ascii?Q?B2YCAaUHSV6+NItThzYQptQ2irvnvhP3m9cl2sTyHk5TH7UFomm+FvPz31pE?=
- =?us-ascii?Q?meKpya7LPyTJVdF2s3c=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Wi9o9DROVpHO9wiTdzJLBVQ3/jwXTNBk5nTMFm+vm+lskb/1Mjj6h9lGZz6l?=
- =?us-ascii?Q?5e9OT0vFY7j06WhWHCnObzZLNdyU0vo0ksMRsmp2PTaLFdeqVLqfhaVqg/Po?=
- =?us-ascii?Q?2+2IpfUBicoKsARBMCbbeyoZtPvNgLmyoVhXUG3ydMd8lCh8NHRO1v2iNmMO?=
- =?us-ascii?Q?hzFGALDRYtI28v45IFQ9KM8ayvWQKrZzAt8eQ96eKT1uGtBeoFJdGDH+I+zj?=
- =?us-ascii?Q?CgwRevLVSgYnNADIveYBaSacYOf0PeQAhWolY2xv5Di9AKrOSSQnpa95SSQj?=
- =?us-ascii?Q?w5YlOfYG5SvcG8vLZLt/+M+takszFeji2Ps7jXYIY/jwfbeOOJ9UHkoEEZpF?=
- =?us-ascii?Q?8jRNNVhqz8WOrb38Rfr0je/njOxp3pGGMjRU28yb+Q06Ku3BrvykEqsx+uez?=
- =?us-ascii?Q?RMMYIqmAxu2SSTQViDvuSCRDTPyc9Y+RUI89Nfn7rrQZIKJwNq5Z7xBcyc7V?=
- =?us-ascii?Q?jFEoUSQcw2TtYQfUVcgeYiEAr12+M2BNJC6irpzxBmckKJcSxALEeZtIzHPW?=
- =?us-ascii?Q?aZytJ8QxfTMNl/xy4sY7zHnsfnZZCIAUrZjjG2RnQ/i4by0XELPcu1um035+?=
- =?us-ascii?Q?eiyALiTjmR1SMHwOSnk7AAymYrRdeSIv20XDb9dqj0z6qaA1/SCkya+/26eT?=
- =?us-ascii?Q?VZPLQuNsHd7qhcrCwMNIY9Tl9uXZA0TNx9DqhtBj3icE3D7FaeQZkRqy24u8?=
- =?us-ascii?Q?6uHROmNc/Xb8+6hivY7ypj3B2szyi6PLv4M9GuOquBDpZfXNgIgc4akh7Hff?=
- =?us-ascii?Q?v9DjqW6ZFxe58bwsppCqToODefocYCRQNXrpLYmpH2Eca8i44rez49xxX/Sc?=
- =?us-ascii?Q?uyhkfr/JcZPSTtKfCNVKfk8wxrNcoYAhHaHnpM03FIC0Fx8e6wWi8JnPGY/k?=
- =?us-ascii?Q?UprQ8LeKn46DBHQ3RVgVvpTYSIbG3+6ZlHguilCKnv0JO1wlxfthmhwRblEb?=
- =?us-ascii?Q?Xe8CuCo0dN2LmJdaNBXeH6cCrt66CIvEWAWjjINAF5/HbpbLfr+NT6SBcWlL?=
- =?us-ascii?Q?8fzYQIBAClfR2pjJMA4oALSFsuwk6hqkXYEIVE+eTOOYw5xzkZUKtOjILnpm?=
- =?us-ascii?Q?juhzCkVKfZ/6felR79Jm0GpS/hVp3XAezPlRVOJl5dbKvlb6WCQOWzhxE18M?=
- =?us-ascii?Q?O2YuQSbEtHWBtXov6C9WGVB5gQmlz5q3sfyJHDD2ffZJG0VH4FhnQbZ0EyDF?=
- =?us-ascii?Q?QcZ/3+NP9OruKdUUXumKYjqBLKKQlhxoPs2vwYeh83t97kqVOp5U2gJoavRr?=
- =?us-ascii?Q?RfT6GTfrwCL+JUTgIx8Y7Omg4MrGOKbsHOP7atTdlGr4crK98TzZr9RNieVt?=
- =?us-ascii?Q?S2qlQUFCSz+LZQ9SWrRHLOpHNHJlScMSM6CNHG/DMaGCIZrhGn8h28SSYEiW?=
- =?us-ascii?Q?Wv9nSyivfyvLlMwykd+ypw4jCvoEIW8nUlT0IJ2BTnnlAX0N0sjmsvt0+Pfd?=
- =?us-ascii?Q?HVJm4hHxVSzWUChU9VBFE4wrhbpgFgVAdEZU6RLQoPX7qxgHSls6Mb/NJgrR?=
- =?us-ascii?Q?MOENnozJsyooUmz/QQFG+lHt1m/z7JWpt48te0TgHngdAgctgm0b6QHEn53n?=
- =?us-ascii?Q?BMD16esfacix8nel0lezKc0A2EnYK7TUgPV7Coa3HH34TGXBojAU/d57Y283?=
- =?us-ascii?Q?q9yib2F4tYbv1U5R6/8T8uka85MStTm0EBu29ri3gKtunwf0Dwj7zVc03/nb?=
- =?us-ascii?Q?2mLaaxqP+nZ6jFjPA1HKaKAggiBiLqEclSH8izBom8tcidon0B2x9tNWtmkD?=
- =?us-ascii?Q?dn/HPBO0zg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	t92105ZdVVqRm6w9sDSDz/iFe/ZbE9ZRNzCAR+9wGDSLZgisKmoTai3zHrXoKIjxAsdtV6aIweWwnEYRs+4ZkT3lW1pAFEGnmclaDQ7ZpF2O3P+Zx5HGpDTbUC3m3Xm0lKZ14/6H1s4XjKbnWa3vAgP/XyoYuLj4QDlRVZ/QmM+uXu098MDaDgc3FKQKeseImj2atqJp1gfZavUAWujm+qsna5HbeFzttkBjiaL89z57d7CLhhEGAfn8VSQKetBKfmVGRGT2KZE7znMbn1SrnfKwAv1jpVQv2xH2sWlR7KFWRS1BvAkHgRkUH/mXvgt88x86l+dow8FC3SyTav6nw9C8yK8/m4w6D1w9ki0c9EnB/VdTMTuiVvTvEEUVIRPjgYrwxUCla0QDU+YE8O5BIau7wMWXTFuPCjylRO1tq8m9YPdFvtMRgs8fUDFmPFA7A/nL0/RL08MOoLcDBTeUTdhEAaHizQyyIc5KJfQH+Wweq94mMZgKjWS2B2kROwCBV666SNVM+0j9aNajpeIFJxEj+Ufh5EX4x3HmIEn2fPAFXHphmTsINBgvqc+MLRPHtuSLqKiUmusPmZg9dbIYzxOGfv4Evqid+ln7hRtWfok=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e951484-6a56-45eb-19b1-08de73c79c1d
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 17:10:28.9894
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wvQZMgNNIW2RhqiDGwYxw47eoZ10Dl2/Swk0ZGCzq6KYRSeSED3XULDtc4SEDSxaL9CGfrpc2m6ieLX3u4VabA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4295
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-24_02,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 bulkscore=0
- malwarescore=0 mlxlogscore=961 phishscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2602240144
-X-Authority-Analysis: v=2.4 cv=La0xKzfi c=1 sm=1 tr=0 ts=699ddb8a b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=2PjZT2aeU3qLgVbkA2EA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: jHd2wlG12CB-zoXVp7X0hCVzOoMcHnH-
-X-Proofpoint-GUID: jHd2wlG12CB-zoXVp7X0hCVzOoMcHnH-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDE0NCBTYWx0ZWRfX3YZJd47GAPkw
- 0ZsX/SFt/5GMGcNoZuuxwiYqpwO2mL/sADt0dtsqLXoS29iWrf/LlmP5uh92GTWuOFcl2QR2f12
- brinV3/axjldsDdICK07q15g/gt6sQ5wD8JWI54Bq69wYstDXEoP1mlKDTmiCnQM45s5KBdSXe1
- 7CX++K2yRKqWNXiEge9YaeVCzVEUVfwiWlYogDGdw1U8c8s+1vUQ+/ydAnzlMtmRJNn8Gz6NBNP
- PIKw7DOsR7uSeO8CNpeuYe0+QDF+4CjAko78DTef/rZVfT7DRx/JX7VMQGGU6O4sIaJsTYmlhkW
- DeSFfHAuo7jaPdRQp5+pTwElo1AM+D2+enG4Xx9pm7wZ5wTjuUbcZn3FUebDJ2jtU1Vjwcvz3oi
- UUIZKWMx9XrjjC0GVOrf05SJvU8jpLvEiXKCon7e2AU+Ukk9dc9AmLUJQHiGDANeWziU+Q5Svkl
- iFD+CWHAfYM2MUoWkeQ==
-X-Stat-Signature: ou4woq16wirhgesirf9h31camjgrwu4w
+References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com>
+In-Reply-To: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 24 Feb 2026 09:10:45 -0800
+X-Gm-Features: AaiRm51arY2kpYRFEEBmZsncUFuYZcjm4HWopA4t3Yo2217J1VEhgALCoVmrzvE
+Message-ID: <CAJuCfpHzTdwcGh8wXetEcAy-93-WqPmoyDnbC8UhzGttpcm_Cw@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and Challenges
+To: wangzicheng <wangzicheng@honor.com>
+Cc: "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>, 
+	wangtao <tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>, 
+	zhouxiaolong <zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "yuanchu@google.com" <yuanchu@google.com>, 
+	"weixugc@google.com" <weixugc@google.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "willy@infradead.org" <willy@infradead.org>, 
+	Kalesh Singh <kaleshsingh@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B21A5160004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1771953045-119525
-X-HE-Meta: U2FsdGVkX1+ZEk1UE95+rTvSfxT+42gqeM0BWisc2kaLiOQY/XhnDSOLKibeCOd05l7lgTE2P3l7JoHMeYYJQACshGfNrwQNJieHFkFjTlV/iBjuwUJg6QyFMTUub7i65nEsmVDgwfUDQjVL8H163Yzs2tFa/AqhjK1mQsISlrgKgLdICKPKmq3JGoJ/sl5LtSr6/ZjnNlUovw9A/b0kUVfdlfTfh+Vtkg6DSOEsb/SyXfAqHEJiV+dHj14TdwfMqU1FUhBtPz4qAuPE5JfHJ/UXeJq0tAHQ192+uUI1NYwz7rsEOFQEWeY6LebpTKtdyXlJyOAmKLlHI+k4xLUxREDglGUIVisyFE/O9psrivetkwhC1ReVN/WRulEfx6JjgZcQCTPpiKujiCgyzDAEztWbDvuRa1bANjRUs3pWi81AJ2mCKuGqncK3em5UUYcLrc/Dd99T5XBWww4xGfepKK0tt++hzKMTjDwbjGCGUXM+tLYjOMo6OjnWXX6AkQkdbeUy6jjhhKtZlH9P7pTVEpPwwJzXSUlGS/xHT77viFxDLhhW3hR0gD6maZdUnGBUc04Lx4zh6/7loEWKJRdTt6VIvxVzCo8GYi6MJKK0G4bdx1tT2Z+HxU6VTrwORt6i9WfJP7ggIGwz/mFSjlQXmmSGyRS7W9Oehozrf5J1jHLzDyk4EVa4w7VUeqpm5VQmHhMTlhYuCFG4MlZMMBOqJrUqMQHj/8g1Ebiv2hI/HyqHNqKVDl+iJA31245vEx0uTCRk1BO8MvC+fMB6FxzydUesZXVeS8ZBLZiHQcwGGOgQo6XxAMhBMK1xUmTC9/Rbpx2w0ekH3t8eOz5Wo6oLDK0nbPixXS3yFE+5LQTYJpKFYss8MLpZh5lyCmn8F9nTYI6393zZsMQz9ds3/VXLV9kDvI3I/Nivm6pyzMZKCXjo1JEZGyANNqqVH4lx9aWY3WBQ/Z4PIXF1klFFezD
- LUdVU5E4
- /281uHA6M+feoYjj0u7io2TpfGleP7nUYHvj+NQ5UzWAaos1A9ynSBX3b4BfsxKngQXcrpxGsqQLj7RMxRzBAsGTAIv1e/nN26LnPMyGYUMMKqAJ/Z7QUgnEPP8t8KAUCPMbXyXTGLcJ67SdJg6K9DC0zezcm7sTKBb5wS4TDwLVvcR6uuFKpOVuhv53g22F1ZxXvza7CU05Tns1sLWstYNqGdEBl/hZM2zWZKcRrZdahPtAz+Yu/sGxHpDU+OJX/08hJbEsVv5+t745daJvMW30rOP+03ysqAkscuVx/+XiJIBHvJF7XmYu2iILyj/AdxJuE6TJhhu+1vaM4+b3gK3ZDbgXIuL1eqMtnUlNPZlsDa1YmHwfiQi3EnGTfgZBcqNSAImnytgqdho5i/YwBF2DWQFoV8XkqB7/rsx9COc0Cvu03uFDceUpVIAvKClqSdAMxUfG08NHh1WQxEC3ntYd3oW1DCEvsGmWwCGWjbn7U5YgKkqQU0K42opl42g1nFFZHn0WcHOv3PyY5fl5Su6px3lnZcnZ0HfCL/E7Bm/JhhLf5o2crT2FV/ecOdYl5l+BIIZwx9SAEbBW81FZasOCLs/gJYSLLV8sMO8NABEkXEpqf0N05v69bFQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 98C9E80016
+X-Stat-Signature: 7pr5fxi3xbi7wc6sc1f65bhkd1ks535q
+X-HE-Tag: 1771953059-879746
+X-HE-Meta: U2FsdGVkX1+C1X1x+iRe5hk8yhvXS0J5CTkbLBnOvrcnykdlkKSjMn7lTN4QfsCIDFPlpLD0nA0f+RsPFkSV3rexC3Kh1u8ofxRjDZl7tgXIvbbHPVLypTzkBRkp0vdI8Z52EsqqPwt/vlwHOtLYc54bqnplvv1jKE8x5973G/WRyPUzhRvanmBk+rztx2jgW1JSxEr+a2oWdTIcKqD5teTz4O+jYxtOuWURZDSJXOg7c0oOwX0krQ1+UDSSDRH3SUJ39LRbRsdOOQAfnjgfbInsySwPLDG+ASkz6nCtcakXTWcyeUkDDCKXCDi1Q1xkCriyR2Oor8fTF74NMe8P4WcR4S8kZp9BrMBvN3n18+1WFdjlKj+MVXMzee/VngsGIJBqXKGkxER7Io4oDiNrzr5lz+pnKn74ViRPYeBRENwGFUjlQG8kYu0dHLLmOUiU1nyzjKMRCANEjsI3BFt6H0sAqa6Q8GWldu2PaRx53OuBZd74IDyBGmFHKpIGzFg253ICtVNX3LG5D9UWMKjaa984JXx50Rlux9NANOaA/WZVVV8wDU/4a8b0GWO9rHHG/slSODoRJLdZ8GFHzwzCAFtTyaiwdvhAIyxk7YjyHfulwEZ3gW1Vbp7198qAOkZQnnV2f5px+bSogaHr2idOqqyx9uXyL2Xtk6ACiYUxpm/Lqmj5eI15k2GJrfJ0l3qLY3yZ9KFRln56owxMvEm03RXRcy8M4+wq86EHSpJEQV/xuZ/QqJ+vqIZkx6293q5ls9YJSU2mqWm6O4KnS5NX/tat+fYAH0h3kIPHU32JyPl558j+SwRv4hKt+Y4AQxwLfpTYRrb+mCMaXdsWydgO4nhSdhnfxjKE14ceWnbLZz8ckAx3QhyOhoKcIMZ7XTbWnjy1TbYk9eO9eceIlE/Cra0Wj7EomXnZ7aigERiY3qoa1B8t03dWhqdVTNgXEs+a8nz+0Fa4STdUJ4BewEg
+ +faU/F60
+ bY3r1hXfkLmeuiUDK76iIiCXfM6+wCZXiB2NVbjIkmjqUg7DN5j2F2oT73FzR6CQk6Pnbg7H4nhpUj9+jkD4i+hdMkcYqVxxFYbLgJUX6vVUm4Ak/YjyLaVCzuf6v8Hn1YYovnip46+BGxyX1IO49j6NzPm+tqnvSegS/SwPUnvoV87xsE4XRkHBQRBunHvzhJ7DfF68uvAmbq1hcRrn+0dBuFbbYS8ngfALbkB6YG34gnRoZQQ7fy1rLlNFYxKyzYSYX6nMGYHxo6qj34jYl6AUnKAKdQAiHfYr/toopE5Tozu+/mIZw0mZ/f9aGmtqX6MKgamGSUulNdXatMGTRpXZQb99kdJGq04bbfhZ7QyJO+7qH2i/f4Zh4ezeeyVNezrtrBeMariv1AKvRkvAI6Hb+3SBRwqAU0L0FHgkkaQEJtrJ2k9rnFk2vaP4pBAU9KqxE0GCSy/sVMszXq008+h7n5B50ABOd7i+i
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.014233, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -242,28 +147,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Mon, Feb 23, 2026 at 7:17=E2=80=AFPM wangzicheng <wangzicheng@honor.com>=
+ wrote:
+>
+> Hi,
+>
+> I previously sent a similar email which unfortunately had encoding issues=
+.
+> I'm resending a cleaned-up version here so it's easier to read and discus=
+s.
+>
+> MGLRU has been available on Android for about four years, but many
+> OEM vendors still choose not to enable it in production.
+> HONOR is a major Android OEM shipping tens of millions of devices
+> per year, and we run MGLRU on all our devices across multiple kernel
+> versions (5.15~6.12) and RAM configurations(4G~24G), backed by
+> large-scale beta and field data. From this deployment, we have identified
+> four concrete issues (Q1-Q4) and current workarounds, and would like to
+> work with the community to design upstream solutions.
+> Also we would like to discuss MGLRU's future direction on Android.
+>
+> Below is a short summary of what we see.
+>
+> Q1: anon/file imbalance and drop in available memory
+> Android apps workload show a persistent anon/file generational
+> imbalance under MGLRU:
+> anon pages tend to stay in the youngest 2 generations;
+> file pages are spread across multiple generations and over-reclaimed.
+> Tuning swappiness to 200 and ANON_ONLY does not fully fix this.
+> On a 16G media workload we see:
+> MGLRU: MemAvailable ~ 6060 MB
+> legacy: MemAvailable ~ 6982 MB (differs by ~1G)
+> Today we mitigate this via explicit memcg aging in Android
+> userspace [1], which is a vendor-only workaround.
+>
+> Q2: Hard to control reclaim amount and stopping conditions (memcg)
+> For memcg reclaim it is hard to stop near a target reclaim amount:
+> kswapd can continue reclaiming even after watermarks are met
+> (e.g. to satisfy higher-order or memcg allocations);
+> reclaim via try_to_free_mem_cgroup_pages() lacks clear abort
+> semantics and can overshoot the intended reclaim amount.
+> We currently use OEM hooks [2] to early-exit or bypass reclaim under
+> some conditions
+>
+> Q3: High reclaim cost and long uninterruptible sleep on lower-end
+> devices
+> On lower-end devices, reclaim cost and latency are harder to control:
+> throttle_direct_reclaim can make tasks wait for kswapd instead of
+> doing direct reclaim;
+> sometimes the target generations in many memcgs have very few
+> reclaimable
+> pages, so the CPU spends time scanning with little progress.
+> We observe tasks staying in uninterruptible sleep in try_to_free_pages()
+> We haven't find any proper ways to fix it.
+>
+> Q4: Lack of global hot/cold + priority view with per-app memcg
+> Android uses a per-app memcg model and foreground/background levels
+> for resource control. root reclaim lacks a cross-memcg hot/cold and
+> priority view;
+> foreground app file pages may be reclaimed and reloaded frequently,
+> causing visible stalls;
+> We currently use a hook [3] to skip reclaim for foreground apps.
+>
+> Discussion
+>
+> - Vendor-only workarounds -> generic mechanisms (Q1-Q4)
+> Our current fixes (userspace memcg aging [1], OEM reclaim hooks
+> [2,3]) are Android/vendor-only=E2=80=94what parts should be turned into
+> generic MGLRU/kernel mechanisms vs. kept as Android policy?
+> We need guidance from community.
+>
+> - How much control should MGLRU expose to Android? (Q1-Q3)
+> For Q1/Q2, Android has strong fg/bg and priority semantics that
+> the kernel does not see. Should MGLRU provide more explicit control
+> points (e.g. anon-vs-file / generation steering,
+> "target amount + abort condition" memcg reclaim) so Android can
+> safely trade complexity and risk for better performance and bounded
+> reclaim latency (Q3)?
+>
+> - MGLRU evolution without memcg LRU: global hot/cold & scanning (Q4)
+> If memcg LRU will be removed [4], how should we maintain a cross-memcg
+> global hot/cold view and per-app priority on Android?
+> Given that much of the power benefit seems to come from page-table
+> scanning while generations are complex, is it reasonable to decouple
+> page-scanning functionality from MGLRU and make it a seperate kernel
+> configuration.
+>
+> We are happy to share more detailed data and experiments and to help
+> with PoCs and large-scale validation if there is interest in
+> pursuing these directions.
 
-The page cache currently uses a radix tree to store folios.  There are several
-well-known deficiencies to this approach:
- - Inefficient representation of large folios
- - Inefficient representation of sparsely accessed files
- - Poor cache locality
- - Supports 3 search marks
-
-The Maple Tree solves these problems more efficiently than the XArray.  In this
-session, I'd like to discuss what needs to happen to change from using the
-XArray to the Maple Tree for the page cache.
-
-The Maple Tree needs some enhancements:
- - New node type to efficiently support entries of length of 1
- - New node type to support marks
- - Searching and iterating over marks
- - Support for purging shadow entries from the page cache
-
-The motivation, beyond potential performance gains and memory footprint,
-is to support more features natively in the data structure.
-
+For obvious reasons I'm interested in this discussion. We also notice
+some shortcomings of MGLRU and would like to collaborate on resolving
+them.
 Thanks,
-Liam
+Suren.
+
+>
+> Reference
+> [1] https://lore.kernel.org/linux-mm/20251128025315.3520689-1-wangzicheng=
+@honor.com/
+> [2] https://android-review.googlesource.com/c/kernel/common/+/3866554
+> [3] https://android-review.googlesource.com/c/kernel/common/+/3870920
+> [4] https://lwn.net/Articles/1051882/
+>
+> --
+> Best regards, and wishing you a prosperous Year of the Horse,
+> Zicheng Wang
 
