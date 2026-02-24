@@ -4,144 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9BC8F55425
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 23:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357E7F55431
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 23:45:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 867AA6B0005; Tue, 24 Feb 2026 18:08:35 -0500 (EST)
+	id 5ACB86B0005; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81C046B0089; Tue, 24 Feb 2026 18:08:35 -0500 (EST)
+	id 55A746B0089; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CCA66B008A; Tue, 24 Feb 2026 18:08:35 -0500 (EST)
+	id 43BF96B008A; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5997F6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:08:35 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CCAF71A02D5
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:08:34 +0000 (UTC)
-X-FDA: 84480891348.22.30BC9F1
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D70D31C000E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:08:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HB1XIzkP;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771974512;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 29ABE6B0005
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BA0E8B1FF
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:45:16 +0000 (UTC)
+X-FDA: 84480983832.13.28F98BC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F408940003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:45:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="i/UCxPaF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771976715; a=rsa-sha256;
+	cv=none;
+	b=emKhVsdsFDgkWqY3FOKtsZ3lo8mphkiPlfU+NX1Lt5RGkcCLepKoyLvZd9N5oexK0kb5ee
+	g5GzQFZR6hdM86wsnQpAvMSf8wNza/b6F/KZmpB0IRtR2ziv0Tq/efT1l09PHKrx4kxGP/
+	MUaoHCY0QH+pdapKuyGwJNjv3Sb2f+g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="i/UCxPaF";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771976715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xux2sJMsRceAq4Wg5BBVEZwRPNSVyPqjLyJ8Turb9tM=;
-	b=JSh9tDEcfTNqbj/HV2VjcMBjbjKtfmfhtICoq0evegAHfGD8MeaCAG+Ys3rXXzRjftZebK
-	Xg1FAaNLbXG3HkXlyk2vOJ7Oyoiy4rYKUvj3UfqZjgHWH37CQZ+kFzC8yTRpxjQxOSYABA
-	EI4xIe1TAjw0I5k11v82NHm7P7xkkaQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771974512; a=rsa-sha256;
-	cv=pass;
-	b=6UnWB3dxPzcZYYKDsY+6zG1KagE6N7H5BQpXF5EXXu0ymYJaGbxOAUYz5H9YXvWtQt3/p4
-	HmjuX0rcvBM/7sXEmTvV+XigDgS7ong0M2Tjt2m9LxLG6R6n88PaTeQY2br7BdyGqGFRj4
-	KiLJfDGR1EWXhcRec78raSutu5iKw9g=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HB1XIzkP;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-948029fb1f2so1683732241.0
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:08:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771974512; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GEOaCs3vEgZWkGov+9Se0AGLTwmr5aQ1WPOcPSKm81nIHm99ny5c4wXCOIzAddcQBo
-         YLaQxZ8wdHNeifdjEif93JLZwuvjPbioDNcI/mNsEIHzkfoG4IHolUYAmVAyuP2g39nx
-         A3Sy4H6vymSETVtlGDOVuGM//Y/WLCspoBbAAKNwpnQw41jWDCDrvRZmdwr/JwVqFCtI
-         6lzHLl5do/TXijQ8Uog5hquH8JSSxFBKAXLHxRpTU9/5xTI7Ip/EF5+0ibXEDRZ5oQar
-         JBJ0VDRZUp2ogsAMD0RcmQwxfV2AXz8sVum14GIW8OOyne5pBuariehYnu8Wi1nSVqV8
-         JxIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=Xux2sJMsRceAq4Wg5BBVEZwRPNSVyPqjLyJ8Turb9tM=;
-        fh=QlDrjT5KCAd8szMlFrk7MdesC7dOkfvyHeeURWgu2XU=;
-        b=Yb1lDnw3Oa9mgxV21NczvPkbYf06szEJypGB3WwDIExN5EU79cZDbyhLODlCdpVJXJ
-         jGM8HBLG6rKt1XfCOw1v0E6mQ8ccpeNiJvcgNkJktPf0c5vZURkNupYcN+ovw//CE0zH
-         D7XtGz8qHb6FFskNI3X4+VoByvFTgeOwadrlyBXO2IfBubLTm3TqqbnhMOKRokEKi9Ax
-         IP3s4m7+XoTKrpmRZoOjAFdAjmG+ou/+yitEdKQPqvz189YW/KR5iKejMyReI2+5OOts
-         OTo9WG0NWwe3KW6C2tGB/auztSfV3shN+9qMrhMQj0PAbTwB6N/I/IWMYjF49EFJHmRF
-         x8fw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771974512; x=1772579312; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xux2sJMsRceAq4Wg5BBVEZwRPNSVyPqjLyJ8Turb9tM=;
-        b=HB1XIzkPCIgEzwPKk6kJluMhVgC5ByL1/HF3v35q72hedJ/PHaPzI94e3euc/H1b6j
-         dQ+EtUdHqLAX8OVwMXmDbPHx8Jr8m7SFNGLAOSEqB52MKVQX2WleSEovokfNmZ3WPzm/
-         lZGXxe3U/4J3s0WXEVCAVPlhNR9vaxXdANNQMiNr8JZbCkwbpPv3cPp27uqdAtqgNUah
-         DMbV1cclF8h/CQeQmZOFpwtjgKV+UrqcKNgYZlJSfArNJqTrn8kL+ttXhjhThciZywmX
-         gKJYt854+VTMOMPhWU47X06rKEryHoNDCIOlI0jjcNYkWBp9/AAqCuawEtL63gFxyZAW
-         7/aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771974512; x=1772579312;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xux2sJMsRceAq4Wg5BBVEZwRPNSVyPqjLyJ8Turb9tM=;
-        b=KqfnitsW7GvgZSEDP4E/6mTvRpO8MsczCH+JGQg3tX2f0/pnl6kX12eM1WlwCWKfgK
-         CMfoOTjt89mBYVDW5nz7JOrgbCGvLYLlD2F+koWT6oVR9IY0UiH42RukDOnh+Id2+fRK
-         Wc0nOV7Yw3sSKQ0k2DBO2M05g/m9OpsILHoJT1NVyFfHnOSj/ms+1NolkyLNqQKoElPF
-         eRaX2GIVL540x0sY0H/tC5ZU0nwiSVSNdEEzk3rBcImVrWEYyIkNReCV2+pizcHvIwSg
-         X1FIBfdQ3s+ESRdNFhBOtalbC5tTH8aSgLHkTmwLMGsYj7HY2LNLrX1FWp3cX002hc1G
-         R+yA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCH/LtqdoiVL7A8XbSk17kh2TlZbsB3i1PredJVBLqkoDAUYmJr3MYPb1rDVoHg+krZUmNIG15Ow==@kvack.org
-X-Gm-Message-State: AOJu0YylJ/Fi2ccvhbg2x1VAePdpkTO/mi6Z3srP3qBCdZVyOrYLKX45
-	uM6nunpSnMYbbwDSxhnLuqUqNfhHHGNkINqWr+XPyLtJegBl9+oF7z2toFVi9BlhC6OVVONGJe/
-	I0iGzed88GPVZEl4V+u/1Ll8mr4C+wwfs/vEKUZAN
-X-Gm-Gg: ATEYQzxLpkpK578/ynWIWuYdf2xFbyZCDDVror0m/uRbtALwhIgYtsPXvqt0IWB4YWI
-	Pt7YZhXbb++spS8bgpC5UNorc64nBGdd7FFdNbIUSqGJPKjENpGFm+UXRRCxpS+IFFTCnsPXJw8
-	trIzKe0gfKmxEy3kSrSe9G3FyI43FkO2hIMSFlay1SljyWGLH54oPAQszBTQR3Dl6/17VTGKJn9
-	NAnDrLVToW5fMyTRK5IrCK1vkeKRuoN10NynG10RFjHW6cmuHoZmkv8XsW2PgD9sg7qUzcZl2rp
-	/5TanrlLHlvs8d+HwkcGBdiL3YSzPDKayyzqclI/mQ==
-X-Received: by 2002:a05:6102:3591:b0:5f1:c4d3:5b37 with SMTP id
- ada2fe7eead31-5feb2f08b48mr5246678137.16.1771974511231; Tue, 24 Feb 2026
- 15:08:31 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 24 Feb 2026 15:08:30 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 24 Feb 2026 15:08:30 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <9ef9a0bd-4cff-4518-b7fb-e65c9b761a5a@kernel.org>
-References: <cover.1771826352.git.ackerleytng@google.com> <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
- <CAEvNRgFF0+g9pmp1yitX48ebK=fDpYKSOQDmRfOjzSHxM5UpeQ@mail.gmail.com> <9ef9a0bd-4cff-4518-b7fb-e65c9b761a5a@kernel.org>
+	bh=ezX10oK5/u+NTgYSFdiQ6Hdd1Z6R4dOgw7jwXcbCAZ4=;
+	b=AYUQ7c9Xrn3GhDjo8pDITWC/wK2jIHFBCtcDPTCDPOlL/9YZTFAo2FsnVqw5/dZkwxylQa
+	VF5axR4C6dKRp1vcleaqbRqkVaJE5I5KJAVDrfawYWh8im3GkJtn1eHyj/JmLxzlhfRy3C
+	Q8kLUHhF4yTq6Gzwrma+46Ykfnw2dAw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 44E6860053;
+	Tue, 24 Feb 2026 23:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2756C116D0;
+	Tue, 24 Feb 2026 23:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771976714;
+	bh=5uvJhF5LDkPTld+1CeJL8wog5w0F76/q9pZPlIbrTVo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i/UCxPaFsPqa+xdPI+yB+vtq/dghbqe5ao7qw2QhsssZyTjiJFZoRDeDg0C+V+F6D
+	 btqHA6Ce0RsaFpsCG0phcfSDCWCGHEtDFifDJ/fGz9vUe9gQb85sktY/zDkOUPRBTy
+	 lbVlB+mAMllViQm2yDW0sYPLNKChX2FtIXxjXvIByDit8prF0wE8RrNrSPE9aDHfgE
+	 /YkMvY/DRKm4lF/LlPMBpgYCpc9dabq0AC3SjzEkhdpBRp5qYxa87cFPqpyTwx4z0d
+	 AL8uxuu9jRkVzCPb3IiX2g9AHxWa9hGVNE1d39cKrtH4CXqWb6u3ZcbXuDyWwQtmbo
+	 IitiGV/DnD/+A==
+Date: Tue, 24 Feb 2026 15:45:13 -0800
+From: Kees Cook <kees@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Jonathan Corbet <corbet@lwn.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, linux-hardening@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	John Hubbard <jhubbard@nvidia.com>, Joe Perches <joe@perches.com>,
+	Christoph Lameter <cl@linux.com>, Marco Elver <elver@google.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Alexander Potapenko <glider@google.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v6 4/5] slab: Introduce kmalloc_flex() and family
+Message-ID: <202602241541.65DBBD8CB@keescook>
+References: <20251203233029.it.641-kees@kernel.org>
+ <20251203233036.3212363-4-kees@kernel.org>
+ <675ec547-dac8-465f-b3c9-a0f97c5bdef7@lucifer.local>
 MIME-Version: 1.0
-Date: Tue, 24 Feb 2026 15:08:30 -0800
-X-Gm-Features: AaiRm50613GkBCc5TY4oG7cVnbM-cLi0tM-0c-2O0j598MHU_6zRLimq98-hNZ8
-Message-ID: <CAEvNRgESctVm9CcEyK36hY8Ta=DEDOS1oW5w0qRDoNfdd=470g@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory
- allocated on inode
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org, 
-	seanjc@google.com, shivankg@amd.com, rick.p.edgecombe@intel.com, 
-	yan.y.zhao@intel.com, rientjes@google.com, fvdl@google.com, 
-	jthoughton@google.com, vannapurve@google.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, 
-	michael.roth@amd.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 188an6mqtxk5dk3bna7gxs7dginsrqmu
-X-Rspamd-Queue-Id: D70D31C000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <675ec547-dac8-465f-b3c9-a0f97c5bdef7@lucifer.local>
+X-Stat-Signature: korjnst49c7as7ceha1qpwnii54nm4uw
 X-Rspam-User: 
-X-HE-Tag: 1771974512-838719
-X-HE-Meta: U2FsdGVkX18EybJZRHd0YLnWGRIifPqESz3uxNJUxYJAqC3hvuWhRF8X04jYta++tLS3orLPw4hDBGekgzn7U44NUc7OyO9m3+tuuGdFjbnVlIYdTjm98PuPM6dtzYhBUSBuwUZVrYIx0ws6XdEpxzAOum1vasIW38zDuopg/HqA1zRMij8ntyr3DELWndBG4Zw59F4YyWnItP54CCziefK8PrQFEjwY4K4jqaT0GNIfIB1BdB70Rdvj6O8aqq+QdJrHw9Iyi2Sbor0S4u9jpkDAWpTKNSwZj2QTblZhDQjIeIFQ62a/LjNgJ7jRWr0fyC1qGKbL+5fZepF40N57y28ThvWo194GMu5bhH9FEaQdR8HqtD/Zf6+k22C/vnpBjxNHctZPOTacWiT7DL37VAg2zslfELu9o1T658GhH9tv9vlkUxqFcQYrw6XdmKma5bluEO76WlbT/RfFupwF8leWH9OvbzdbT8oF5QdmatTI3YXKY7qvjbsGjNuhp9YhBLy63jIxBJlkyJGmZyzx8H76KMz++cmzLw5EtYV00nnc3m8UJfRIRvfW609umnxmw0we5PSCEtj5nMiqixJFGYdgxdOiZ1Mkp3lQ6jse7+Y3AKnJK89FD69nFWluPEWtkqilvII6nPhdpUAIBISY2JliY85WlaNEpBGD1/3fY9lNRWNxpp8gBFlCqv/ImJuxeqSUFm5Myq9ipPR/ue4cLJSPUIoLy3THBADMD54r/03iyFjf5g4tOjQ4gngAdHLSBa8pUcwm8hZ1YrSRpy3BL+X9oOM4ZW6HwmFahgVHW9wquXIggnpueFQ5LZZ/Sd77FA0C4SrDUFGKSipiZBs0YKkFTeY+h3saiDcYHHBnaWkXl2OMt3baFsEXpHSC9cJZaG7zrgvTSE+UmOpgLr3pkvQsWKYEhQVuuwo5jvfXOhv68aMfeLI3QXdx0WnLGmJXh1Enj1YifH/QrPT8MoY
- DxLhPcTR
- rnj0kk5xmzf86HKW5sfwmAB4tcq7AtjV3mvKkRZE7j8eq31HOYF+moaVG6vyfrfvelIV6qx+Tk8fXhLpdQexbryIbjcbyneai6GfbuWU2IB2svBx0UiP1DXpgrdSZXUnimOoazDNtUuwu4oqeDnCD1k8JMLgrlNUapvJkov/FzqR+Jx8hr9FIkaA669UEsJ04EDAwv5PzLKXeMAFD4jj3MqENm4eKaW7LuR96RLFj/FdGtbioSYOEWLmUKK4xc4ylqwUqR6niDJIZBoGT2A4JwOXnh1DdDcqR3o9nnJ+Ge8CsAWdCSlD+jMoFMMwdyk/qBdPaAkkaRZSw00rBagrZh1ub5lr890Ye43pAnUxKYYLvuzx+sq5UROT+KFaznZwEsoY+LoV0VYxdREjjkdGNL+T3tP3hU1JMfRVS
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F408940003
+X-HE-Tag: 1771976714-253063
+X-HE-Meta: U2FsdGVkX1/XEJMkeHEZHXxzz7AA70VAi9cBR6MKRIbkO938CadSZaKiV0hqTuzjUF3nQfYzE6EpmwTmy8BdDHwI5Imf9TvMSaGSc/+gOHGZqgFoTgRf+QmSOkxsREjck1VgQy3mKaSCpBJam2+b90baOsuCB3M+yeJwH2dXRe5nNHjfEiQxqkOoaczsXij5reIhbH3hU8fyMZogkEPCGAyVVoNo7Aq0/ik0Z/qp7bQqcpalFSLiAuI7K+cPHq4wYnXAOlylwoA2WXpvTuBFU4Cv0u0pln4nUPLmOrbt3lb2Pf/0nTL7AfkIcNvh1kd4cJvDC4gQykmGmdZwUzq30Flrblcnt5NTQzPqi1LSHC/Korn7bva+R9MV6zXQhToMxFTL50fQHdas7S+zMig0vgGFmzBLax4dYxGQ4PdZllZDs6UwJPuKDtNkDs6cxPJu+G7b1mietxaR04FHyDmRuQ2HuYfh7ARY50McczuADKgPM87RHUFCzYZjjsrtzwEzD7U1DOOynEtagCBHeotpSAlQEkFMeYSjbcwrrOQbUE79OGN9xwGnzvkCHKyYfSoO4kll/sMYgD5s1u33gY1mNqAxGkeKvkKMK6+j7Q6w7bVo/Mpv23Ym2zfSQWMWBTITDCDvsYUof7/xIBNydeucvFi2HxqxbI2sAS3nmBa6k7a51nqsNLm1n5qK2ODjOK5yn0GBkfBwVuwsDKfpB0D4ZPTvGazJX21HhtmwDqUMQZW5DMC9uxQ6mUW9rLZTsGOCnscUmu2pjJHX26u+19l6ioQRRgLla6w9N0cfo4zttow3BdeSwVTkEdiOf1meaqBoNDnWVOo78AwHwTppXcSmnwTyT/Xr1IQlZejDVsgu2Eaa7d69SfD1g+RgSetkq/rSPIiv23Fxz5N+H8O4pnFzPObBWfirtV2WhOTMaIf7kIITygE0WtYGTXvqni1yzg5C0c/x6NSjXGIS6k0M5I7
+ 7CMQY5oZ
+ Fx2uz6tFMXOwKGc0qYW7Qtec6smVcjPUWwQjyHefZzoTMNIvF09Nonhyqpu4jvOYUEbltINhqs/mSMjIDkxOh8TzpwlEHTuS2Ntx3J91wlySOJqniG5yntjwRiNzf4Lw7BpNcAVPaxC6kQP4/ZHX4dMViv6QnuDPavFCnIzy0AOBXcLUpcbPBInR1fy8EVQQUmklZR8l9bfzS3qLMB3loBV/ptempB4h1HM8rh79EVcxoM59R4eRUV3S28Wx4EI/fFItTURL4PpX8eKcvvEWVPhkb4HB/MTVywAYiWmqsu07Ix2ekWqwl3LUh66MxIKVkVue0BaUEIDJejYSBVcCGTFsRAirf/TRRLmcapiNDwlG9llZ3wG3EKkWLEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,91 +123,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Tue, Feb 24, 2026 at 10:26:36AM +0000, Lorenzo Stoakes wrote:
+> Annnd now I typed that I realise that Linus fixed this up in mainline and I was
+> working with a stale version of this file :))
+> 
+> Anyway, I see that the comment isn't fixed up, so I think that's something we
+> should patch, like:
+> 
+>  * Returns: true if @COUNT can be represented in the @FAM's counter. When
+>  * @FAM is not annotated with __counted_by(), always returns true.
+> 
+> ->
+> 
+>  * Returns: true if @COUNT cannot be represented in the @FAM's counter. When
+>  * @FAM is not annotated with __counted_by(), always returns false.
 
->
-> [...snip...]
->
->>> Could we maybe have a
->>> different callback (when the mapping is still guaranteed to be around)
->>> from where we could update i_blocks on the freeing path?
->>
->> Do you mean that we should add a new callback to struct
->> address_space_operations?
->
-> If that avoids having to implement truncation completely ourselves, that might be one
-> option we could discuss, yes.
->
-> Something like:
->
-> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index 7c753148af88..94f8bb81f017 100644
-> --- a/Documentation/filesystems/vfs.rst
-> +++ b/Documentation/filesystems/vfs.rst
-> @@ -764,6 +764,7 @@ cache in your filesystem.  The following members are defined:
->                 sector_t (*bmap)(struct address_space *, sector_t);
->                 void (*invalidate_folio) (struct folio *, size_t start, size_t len);
->                 bool (*release_folio)(struct folio *, gfp_t);
-> +               void (*remove_folio)(struct folio *folio);
->                 void (*free_folio)(struct folio *);
->                 ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->                 int (*migrate_folio)(struct mapping *, struct folio *dst,
-> @@ -922,6 +923,11 @@ cache in your filesystem.  The following members are defined:
->         its release_folio will need to ensure this.  Possibly it can
->         clear the uptodate flag if it cannot free private data yet.
->
-> +``remove_folio``
-> +       remove_folio is called just before the folio is removed from the
-> +       page cache in order to allow the cleanup of properties (e.g.,
-> +       accounting) that needs the address_space mapping.
-> +
->  ``free_folio``
->         free_folio is called once the folio is no longer visible in the
->         page cache in order to allow the cleanup of any private data.
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 8b3dd145b25e..f7f6930977a1 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -422,6 +422,7 @@ struct address_space_operations {
->         sector_t (*bmap)(struct address_space *, sector_t);
->         void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
->         bool (*release_folio)(struct folio *, gfp_t);
-> +       void (*remove_folio)(struct folio *folio);
->         void (*free_folio)(struct folio *folio);
->         ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->         /*
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 6cd7974d4ada..5a810eaacab2 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -250,8 +250,14 @@ void filemap_free_folio(struct address_space *mapping, struct folio *folio)
->  void filemap_remove_folio(struct folio *folio)
->  {
->         struct address_space *mapping = folio->mapping;
-> +       void (*remove_folio)(struct folio *);
->
->         BUG_ON(!folio_test_locked(folio));
-> +
-> +       remove_folio = mapping->a_ops->remove_folio;
-> +       if (unlikely(remove_folio))
-> +               remove_folio(folio);
-> +
->         spin_lock(&mapping->host->i_lock);
->         xa_lock_irq(&mapping->i_pages);
->         __filemap_remove_folio(folio, NULL);
->
+Yeah, I'm working on fixing this up correctly. I think Linux is right
+that we need to put the overflow checking entirely within the counter
+setting. That way the checks will only happen for the cases where
+counted_by is actually in use.
 
-Thanks for this suggestion, I'll try this out and send another revision.
+I am, however, still pondering that the size check (as I _intended_
+it, not as it actually manifested), would catch negative sizes (i.e.
+negative can't be represented in a size_t -- the default type when the
+counter type is unknown) and refuse to allocate, though honestly the
+allocator would probably also refuse to allocate them since they would
+be very very large when cast back to size_t for the allocation itself.
 
->
-> Ideally we'd perform it under the lock just after clearing folio->mapping, but I guess that
-> might be more controversial.
->
-> For accounting you need the above might be good enough, but I am not sure for how many
-> other use cases there might be.
->
-> --
-> Cheers,
->
-> David
+-- 
+Kees Cook
 
