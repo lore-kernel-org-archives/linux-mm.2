@@ -4,110 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47EBE9B250
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:42:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE11E9B249
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 10:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB9EF6B0088; Tue, 24 Feb 2026 05:42:23 -0500 (EST)
+	id 2D9C46B0088; Tue, 24 Feb 2026 05:51:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C39C76B0089; Tue, 24 Feb 2026 05:42:23 -0500 (EST)
+	id 287B66B0089; Tue, 24 Feb 2026 05:51:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12A66B008A; Tue, 24 Feb 2026 05:42:23 -0500 (EST)
+	id 168F46B008A; Tue, 24 Feb 2026 05:51:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2EC6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:42:23 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5014CB9B56
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:42:23 +0000 (UTC)
-X-FDA: 84479010966.27.15CE047
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 02A766B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:51:32 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8ED681604F1
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:51:32 +0000 (UTC)
+X-FDA: 84479034024.05.7A765A8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BDF6140006
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:42:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GAU2pdQX;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id CEA7820004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:51:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cq9o+qdK;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771929741;
+	s=arc-20220608; t=1771930290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l1lazE3GeLspSJ5klzlH6zh+sozmUgtioWY6hynkkqY=;
-	b=3Xo4Ald29hR0vMryp4+xqe9GUVMudrA9qUVkP5xBFXLosVIx/uYmBjau91N590C8SFHTj5
-	/XKUmwlBKBSkVb5PEGcPxSWnbI8Jg1TBh0keUJ11nffPCqUwvkQqWZ6ndg88Dm7mxZ3aBD
-	9NgLJ8ZV4p12A8TclceGQoR2zRlmTN0=
+	bh=3FjK6tv04VG4ushX3Pg50HaYPXAO2Kg9HcVPjLjFAYI=;
+	b=02d+nc0zDXn8JMQbh3QfIERcOuVWLHfvGSwXBFO6AmfYLaBG9rUx42Yc1vf9ft3nsAQ/MW
+	um2LSoVCUTcHO8TBTTriXCVVjH6q/7hRB/TXdmE4pLmIiwKQqj1KCSr6MBlNHrw1DaBcHb
+	9nJRBg9Z9BKI42Uy5wHyoyRurVymXkE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GAU2pdQX;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cq9o+qdK;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771929741; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771930290; a=rsa-sha256;
 	cv=none;
-	b=5FEA7CBngbrZv7ULYnhKlaeEMgqjTHDn/IluvwOKORVjoY9EqJZIc6wjcBWacyyR9vP/83
-	55zXMqcbljViFNxZQKvdD5aSVBoXvlLQW5KxdvxlIhHocMuXwUq1+a9OrfmLBDvOJj5hRm
-	TJ1B1NhsqG3zJmxE8zVe/C+E3SPXEdM=
+	b=qNdvqJVJRyHbCsS6k2Hulpr9o+zkKyQ3zVOg8mz4r81P83IyPk7B3WGNFOGsZX+UsV+0Z0
+	+HAIQhgYOfb6Kg8X3xvZV83w0y2lURDZ1zZj2UJMLTTGII0nueFugoqK5bzlDIUDPOH/cD
+	RQetftyDMwkfQzkw/40TXXUEAjOAMj0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E8F761335;
-	Tue, 24 Feb 2026 10:42:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158D2C116D0;
-	Tue, 24 Feb 2026 10:42:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DB3F6132D;
+	Tue, 24 Feb 2026 10:51:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A148C116D0;
+	Tue, 24 Feb 2026 10:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771929740;
-	bh=EdYMSneYGYWOu2MY/gnpVM4ln8olb1RiXGDKI2avrXU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GAU2pdQXeucHDr93YOJlBQA+9WyQyiqX3XUv0GPdy5+63ewH++MkxyrNYQumwLA4W
-	 YPvSJkU9bCvwg0PQISCbL7pQ53LDJwxCiV6mlupfv3XGnYbITTh1piGzZ+A4mlBMuk
-	 4BLlREPZdKFZhle5va0yKY3MgMD1Ru8Hzm9tCf+z8+JaypVhehj82iMeu/g36i61cS
-	 LOK6GF96u2rd6HmI4kigzcpkbtJ/Mu3uUKlP3KL6U4B3ccmjM1712HCHbTYCUdiqco
-	 kxP5N90jQc3VZcobz2Hi+vK6uI3CzGRjwp0bzDuDcBOAuwMIDp5V4VWUl94VWRudG1
-	 gdUVkzkXXqWYQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: aliceryhl@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave
- Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
- Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
- Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Igor Korotin
- <igor.korotin.linux@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen
- Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Boqun
- Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Asahi Lina
- <lina+kernel@asahilina.net>, Oliver Mangold <oliver.mangold@pm.me>
-Subject: Re: [PATCH v15 1/9] rust: types: Add Ownable/Owned types
-In-Reply-To: <aZ1VQmtapuoerpVo@google.com>
-References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
- <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org>
- <aZg44EmMWKK-z5KP@google.com>
- <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
- <IFU05rWmgywK-tzaInc7eF2Kmy1zf-BDkCrQZfRI_2JN6E0-p3zFaUMu3V6T1YTeQG9xC1hHzXThLCORJqpoWA==@protonmail.internalid>
- <aZ1VQmtapuoerpVo@google.com>
-Date: Tue, 24 Feb 2026 11:41:45 +0100
-Message-ID: <87a4wy2zkm.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1771930289;
+	bh=A03/tUSiCw6xZ8+K7F5L6Id7MoV0WTpL2e0TYPyMyNA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Cq9o+qdKB669g0wfM0rojSPXacwLxsqfRMHKYCuNnN4YUTImI/Y0eqN6flYTL+L4U
+	 bU74vNyexoGx61OsHBjsjmJDH6fNHMLsnw0W/rNjKb2Rzp56XvlpZ14OAlB/Z3m62W
+	 6LeVcrFrf1IepTPiAQmEGaU66PY3knjLyIAfet6pbi0YrktGqp94k85g13m7ob5HSz
+	 yKDdkGNA7wAwWqqnTuQs1S4pzXDTJrjF1L4KwmJ41sPjDJq9dzYq+8BtU6xGdcsJyO
+	 Jjxlur43LTFIyCyRN/SGCCZpQfwBtxAJ21QU1r76Uv5TCOvF34TZLXZ0lZQlj8B6qk
+	 Gb0lMFlTxEOtg==
+Message-ID: <24b7829b-aaf0-42ac-b91c-916754f95046@kernel.org>
+Date: Tue, 24 Feb 2026 11:51:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: nik83dx8chstxd71rij66orqzr8i3doa
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] khugepaged: convert redundant check to WARN_ON
+To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260219054827.4111334-1-dev.jain@arm.com>
+ <20260219143327.7693e4b1474a337821e4c637@linux-foundation.org>
+ <a0b4febb-d803-4c18-9211-7286d682d705@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <a0b4febb-d803-4c18-9211-7286d682d705@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: u1ktx33ot57bi6dsuoahc9medy9zz5my
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BDF6140006
-X-HE-Tag: 1771929741-44912
-X-HE-Meta: U2FsdGVkX1+32/WPVTq1X5cfEbT+E6HbcFKuevF1Klei7fGJronT92wueye1tpe2oOJ7ukAj66vZSVZxDdFLma31TzhkV7avsnXQFrsE6Lnfj+6xTlIhqk46yw5g/kR5eCoojp+dT0u21skdQJNzsCHR5hPsFzlPnnhnXdGM1spzdHRkKOpgh5bBOnmkx2MYwayw6GZQBWdHEK4MXOy5STdKVWx3/aNfTyEU2EIlxt3NotL56cK3Uv3Zatbc++dambX4AeIBWRors4CMorGU+OjHPBdEi8AnsWD7555I78/Al6KKXXqqtZ80uRBVMCC+OkgAQ0UP65jl/chhTnF0soxGprJSx+7BCpuyNiHYxDIf8CTtAxTHVEjkw52Z3jpaob21pmNSpn+vYKyiQ4UyS1DqPVXQCgWGvVFD3ICKV2grkE0JYcT/sYNxFUIZFOkCR2Kxh1MEiV92ywX4fBb/3AUQYBkc2Lg8ZVJRjfBv5rBlyqnLW2vemWDRBcEd6rYjUy/dhuy5Q5R8NY5nCZvy+oCbG/zBxMr4iMwrDZjzbQt/kvaaxOXkh/+EGVa6PodlwOsgoP6g66bGmvZvLWCC7S0KqMBcljWNQ1AFiMHIoeClB2oBLAGxeB42klmtKgu6OoCoysxxg2xZSwZJlPWnVkLR4CEe5uAF5IvZ2+tnFV1PJgHM5MEPotsdSG/5KYMASdTBiuXD6UknPvLlNT5KIIWNkAB1EbmVafS9keLNFW/s3SZi0OEF6SGm0LIvmcrGOY3Ipkb9p1Z25+Y9+PhngtFoNug38xyD9iYGOa6H/C4TIeYMq4eMCPbEHelso9Ynn/FcuyykBUsAh0nakibLnHJdsHWakVR/l0CG9qhJu26/t5xmRUPu9l9DeP8vFm92P4L44qEB6kAuZxfmHLyTUrzXZmY3fiFLjRqbDNyJ8AVvD5STNdrOxW78MNJn/C+4YhNxdJOBOSA9lV6qhMP
- TeP3W8Vw
- /dnFZSbI5mDtAyrQG3vMWQqq0BTIZCnJJARm+L3aPUwLykHjYsmAmzzb3mC+kqrxoDKkaxH4dqr4BzX1vfa6BssJKn+4rRP6Av0y6XJeGnrzftQtlwBB91kwiwtZ7/j4ouPd6vBcS0vmYKVVKjsJYkcG1euHsiolle/j6Y4c79ws9TcTygJdhorWZSOF2aWKwyGC4piMuMXLyFnvlo2ouCDKFqUfABIQ9b/yA/d3U+S9cupgdq93MV39KNAD3B+B4z3TQ33z7JFxA0hgm9+l6oCN6aHKJavMEh40M0kyyYGuH9lDsg3z3w/OvamvB8gkP6x1P1P0Nbi8zgegP3Ja5I/k8qMb2LDBJkGeulMb/MkVYBaQTbZq+Opa0K43rSR72kwZCRjLrKpm9eM86rgL9iSpJljIFOf4MgYIy10B6nLxhbJ8BqsyCnT3jWrF5GxqEh4auWaiQSYZ9d4rfueNRF92t/qZTvinR3q1SaN2HedCOAFY=
+X-Rspamd-Queue-Id: CEA7820004
+X-HE-Tag: 1771930290-866401
+X-HE-Meta: U2FsdGVkX19BGv5M6sUdtYuiNgF+T1WA1uRhqoz80vLST/1kRDHzdo8OzNT4L+EboR/UmSpIHwbMBaQqJghA1qlZRh+uKvEib+60M5Lj/ZfGSguDZAas3qimVM5ySqOcnpwzNWW0rQGh+mFcOY0Jv8EIkeLTjFbk1P5EOlQ8e13KrwHs7xWQvEqz/rIoISZVVafnNYPVMosHOxqdwj+bVZHkodarCqW7eiu78zJLfpduud3PgRN+kXrzoEB/OqQz9EDZoPHwu0HF24WXmuEL+FevxiyamdsXVJxNFyQ6qrSomuCs99vhcbcK9G2v+GpNVJV0N3AuMDxHTVNeAY1WcdSeBrmtV5n5KXUiTzuAOmYPpRvYk8KNZHM47pjS3Di94kGujwY3DhP1ErHhy2vVTxElwyXXOcYryU0+GX+2eJpCnO8/50DUgqWtoThNMiZp+WSTppT5/jNjO7nAZGrk+Ba5AzhOZ7xtXfz0r4eYposQzegSeJNzlFRLv4uEAnd7I0RfnOvWpwUw/fXCjbVaenl5VMl1p8bztSi/y+2r+7Z5O4/CbEFoCNiNT92RDYlC1W0omRyGJsSqz3gXNyzNoY8fb0prHya1m6XFW/VKLnW0SGj0N+GRg+0opiBUP71dLYkrHuClZN4JICrY/GGOfTNIOOnF0eQ5QN7rqLGef8CT3yEFBuw+Nm1rhEV2bZsi7QKZwsl4Ui43KzN/vDlHknmTy7tOp5/s7W/ZHEjl/WejMu/m3fUJWU0Cgb58lyCA3Z8yP5DGNud280AMCHng2noMcWtHwFhOkwJsfgQYTSCtTlSyBmY2XMrHOKM0Rr0m8/f3wkG9KPsW8NYQ8jz5PiqAr7Wiemr+t6sF/PWLaGZ5HbL2PaQb/u+aTIIyR5bIVrU1WjV77tiztnID4BlUw1H/k5tg85lcD/9iceZ7jxhTW5V8M7X/Hw226OPrM23pDpUs9nHMAGqGD0Qfy/D
+ I4tmCZ6K
+ 4ZLKCcq79iIvTiVE9UN4+qm5SsWJxDBVTB3AuMsN1VyTeX0nwl+sPJV+vWFwyB0uqvbnjdZHe2cEs3sM7ZbaujdpVZ53o2FdegiJ6sAeAlOUF65+OOAveAJMPW8BOIE22tKucByGzkRq3On1+VXlWxmFOYTbnexKKkYGIT/0wVhsqAajsJNTQ6nG+vtibGoS4B4e8Cn7yCsiNO+pQtPX0f581RK7q0oVtlFZXChBt6phkWb8X2k/E0i4VLBVe9OX8DftwEK1xXEV/a+0Rdim2fT6WJhLCt0Xq4vEK76muOKdDPeeWpUGasboaYVBAOGId19Ink96sSwjNQ+05vC1XjhmqwPxZtkUgZOOyOiBxXJPpoD0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,110 +142,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-<aliceryhl@google.com> writes:
+On 2/23/26 05:40, Dev Jain wrote:
+> 
+> On 20/02/26 4:03 am, Andrew Morton wrote:
+>> On Thu, 19 Feb 2026 11:18:27 +0530 Dev Jain <dev.jain@arm.com> wrote:
+>>
+>>> Claim: folio_order(folio) == HPAGE_PMD_ORDER => folio->index == start.
+>>>
+>>> Proof: Both loops in hpage_collapse_scan_file and collapse_file, which
+>>> iterate on the xarray, have the invariant that
+>>> start <= folio->index < start + HPAGE_PMD_NR ... (i)
+>>> A folio is always naturally aligned in the pagecache, therefore
+>>> folio_order == HPAGE_PMD_ORDER => IS_ALIGNED(folio->index, HPAGE_PMD_NR) == true ... (ii)
+>>> thp_vma_allowable_order -> thp_vma_suitable_order requires that the virtual
+>>> offsets in the VMA are aligned to the order,
+>>> => IS_ALIGNED(start, HPAGE_PMD_NR) == true ... (iii)
+>>>
+>>> Combining (i), (ii) and (iii), the claim is proven.
+>>>
+>>> Therefore, convert this to a VM_WARN_ON.
+>>>
+>>> ...
+>>>
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -2000,8 +2000,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>>>  		 * we locked the first folio, then a THP might be there already.
+>>>  		 * This will be discovered on the first iteration.
+>>>  		 */
+>>> -		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+>>> -		    folio->index == start) {
+>>> +		if (folio_order(folio) == HPAGE_PMD_ORDER) {
+>>> +			VM_WARN_ON(folio->index != start);
+>> It's a bad sad to remove unneeded code by retaining that code and
+>> adding even more code.
+>>
+>> Perhaps add a comment reminding us to remove this altogether at a later
+>> date?
+> 
+> But then shouldn't I remove it just now :) 
 
-> On Mon, Feb 23, 2026 at 03:59:22PM +0100, Andreas Hindborg wrote:
->> Alice Ryhl <aliceryhl@google.com> writes:
->>
->> > On Fri, Feb 20, 2026 at 10:51:10AM +0100, Andreas Hindborg wrote:
->> >> From: Asahi Lina <lina+kernel@asahilina.net>
->> >>
->> >> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
->> >> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
->> >> `AlwaysRefCounted`, this mechanism expects the reference to be unique
->> >> within Rust, and does not allow cloning.
->> >>
->> >> Conceptually, this is similar to a `KBox<T>`, except that it delegates
->> >> resource management to the `T` instead of using a generic allocator.
->> >>
->> >> [ om:
->> >>   - Split code into separate file and `pub use` it from types.rs.
->> >>   - Make from_raw() and into_raw() public.
->> >>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
->> >>   - Usage example/doctest for Ownable/Owned.
->> >>   - Fixes to documentation and commit message.
->> >> ]
->> >>
->> >> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
->> >> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
->> >> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
->> >> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
->> >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->> >> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> >> [ Andreas: Updated documentation, examples, and formatting ]
->> >> Reviewed-by: Gary Guo <gary@garyguo.net>
->> >> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >
->> >> +///         let result = NonNull::new(KBox::into_raw(result))
->> >> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
->> >
->> > KBox should probably have an into_raw_nonnull().
->>
->> I can add that.
->>
->> >
->> >> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
->> >> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
->> >
->> > Use ? here.
->>
->> Ok.
->>
->> >
->> >> +/// }
->> >> +/// // `foo` is out of scope now, so we expect no live allocations.
->> >> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
->> >> +/// ```
->> >> +pub unsafe trait Ownable {
->> >> +    /// Releases the object.
->> >> +    ///
->> >> +    /// # Safety
->> >> +    ///
->> >> +    /// Callers must ensure that:
->> >> +    /// - `this` points to a valid `Self`.
->> >> +    /// - `*this` is no longer used after this call.
->> >> +    unsafe fn release(this: NonNull<Self>);
->> >
->> > Honestly, not using it after this call may be too strong. I can imagine
->> > wanting a value where I have both an ARef<_> and Owned<_> reference to
->> > something similar to the existing Arc<_>/ListArc<_> pattern, and in that
->> > case the value may in fact be accessed after this call if you still have
->> > an ARef<_>.
->>
->> I do not understand your use case.
->>
->> You are not supposed to have both an `ARef` and an `Owned` at the same
->> time. The `Owned` is to `ARef` what `UniqueArc` is to `Arc`. It is
->> supposed to be unique and no `ARef` can be live while the `Owned` is
->> live.
->>
->> A `ListArc` is "at most one per list link" and it takes a refcount on
->> the object by owning an `Arc`. As far as I recall, it does not provide
->> mutable access to anything but the list link. To me, that is a very
->> different situation.
->
-> I mean, even Page is kind of an example like that.
->
-> Pages are refcounted, but when you have a higher-order page, the
-> __free_pages() call does something special beyond what put_page(). For
-> example, if you have an order-2 page, which consists of 4 pages, then
-> the refcount only keeps the first page alive, and __free_pages() frees
-> the 3 extra pages right away even if refcount is still non-zero. The
-> first page then stays alive until the last put_page() is called.
+I'd say, remove it directly. Even if "folio->index != start", both
+functions should do the right thing.
 
-I see. We currently only support order 0 pages. I think we can handle
-this situation later, if we need to handle higher order pages.
+While at it, we could heavily simplify the comments to "If there is
+already a PMD-sized THP, we can only try collapsing the PTE table".
 
-In that case, we could hand out `Owned<Page>` for the head page and then
-provide some way of getting a `&Page` for the tail pages. Obtaining
-`Owned<Page>` for a tail page does not make sense.
+Or sth, like that.
 
-More likely we will build an abstraction for `struct folio`. We can
-still hand some kind of page reference for tail pages from an `Owned<Folio>`.
+-- 
+Cheers,
 
-Best regards,
-Andreas Hindborg
-
-
+David
 
