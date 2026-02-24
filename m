@@ -4,95 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD7CEFB7F9
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2FC9EFB800
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:37:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BD6E6B0099; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
+	id 2D8A96B0099; Tue, 24 Feb 2026 00:37:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96ADE6B009B; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
+	id 2C0D46B009B; Tue, 24 Feb 2026 00:37:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84C576B009D; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
+	id 1CD766B009D; Tue, 24 Feb 2026 00:37:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 717ED6B0099
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:36:39 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E8AE1B6736
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:36:39 +0000 (UTC)
-X-FDA: 84478240518.10.9AC7744
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 50E87C000B
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:36:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FP0RhfiG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771911397; a=rsa-sha256;
-	cv=none;
-	b=4v+07i3PV1mzvqiLvzyg14JaMSd8QyVVvi++P7mJaafILGh6bUvxmuTSZJAnm01JG0r8Go
-	UmWEUH6jeu3cEXVn93SZWh/zMRgBi8QVaEMPZKKSvBOBejJmaKnjJ/ZpPQMAGibwjaqkjc
-	TmGMpLoErvSWObaeTx1gRjYcYDutEKw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FP0RhfiG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A8516B0099
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:37:46 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8360CB855C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:37:45 +0000 (UTC)
+X-FDA: 84478243290.21.D918233
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5C601C0003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:37:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GadiJVsg;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771911397;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771911463;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B/AK/n/39PGf79cuvwoF/1WDhJvO0+emi0ESpq0xjhA=;
-	b=5A3ZSb1SzMHaxZTBpRTYVgzu4kjh6AdLoZjIZ8g4EWcFCTWBqVM/BnWWCoqCGEMD2xwtuN
-	aigKp2YoGZIZ5TNIkDH8jnpDeXXbPulDZi84Q5Y1UykyYuiT193faC7RKh39I3jl7c/8hZ
-	PPr3DwUAIWILFuUD1ZAkG0zaCitszn0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 303C3405CF;
-	Tue, 24 Feb 2026 05:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A405DC116D0;
-	Tue, 24 Feb 2026 05:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771911396;
-	bh=bCkiAOs8zg+h4YWw2lU5IsN8hUlomxIStRc2ZuJPKjY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FP0RhfiG2oH64sS1x2NbtAk24gVTqWaDJR4xr+OZpTM4ggZWcj+AVWxZrIsEM9HpO
-	 4cG+jYpP3yUkzSgP7C1C/lm96Vpr7c7DYA43EQHarkJDkhLwhbv7w7UZ1nL8293cXV
-	 UkRqmD6PUK54Pqh17aROGLONBLzFS2LYfGVv0hcgyhELCWpWtBACBLJzNQ5Sg6Gwgb
-	 cc5BTGJj+LI4wlKgqy4SV9kUcKL89d2YE+nkG65FjfTB/Kh8L2CQYW9naAQBCUNXcx
-	 t8NrRoyV4NhG/1xZPC+xZ1SuElkj81faS+l9TT55Not5s31ZH37wpj+3jO/8HJP8gn
-	 RISMGhTeKXiCw==
-From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v3 0/4] mm/damon: Introduce node_eligible_mem_bp and node_ineligible_mem_bp Quota Goal Metrics
-Date: Mon, 23 Feb 2026 21:36:33 -0800
-Message-ID: <20260224053633.58448-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260223123232.12851-1-ravis.opensrc@gmail.com>
-References: 
+	bh=qNr8d1nrqZZDfnro4iFgBQlAdVfxjJDLWxz4pVReYn8=;
+	b=T2Eq8PtBZuxeE2hEz61uSjlCpncvc/9G6HbTzx6ziPm3B65eePIawBcw8uIyNGq9JkWqai
+	SfpNqqI5mHgL1O8m7L7T+7ZD7kQspQSVi0CLbz40o7P/q/rRiBo9rLR+PBSJD2T44hVeCb
+	dnngggjlZm5fEGQxjEgb3riePR+R/e0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771911463; a=rsa-sha256;
+	cv=none;
+	b=4Mj2NHdifPRcmC0hAdyKn3HguZxp+hu1fP191P3q4aslqkydA9DfDu7IGv/rkoxS0xwAth
+	Xnhf44L4VEq6/b+5SzEFHK/TCxSjV3iDKmxErkmaOrxHPFtXKtgVVEtWptzi0zYrnffPO4
+	iWOL/B5Re7o84as6Ra+sCEeD05rZJP0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GadiJVsg;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b884ad1026cso792777066b.2
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:37:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771911462; x=1772516262; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qNr8d1nrqZZDfnro4iFgBQlAdVfxjJDLWxz4pVReYn8=;
+        b=GadiJVsgvisI5277IggdWeWWzBI2GnbmXb3mIClsrRyzuw1JAZK3r+jDM9pve5RLSn
+         f5HT13TBxzaWS53suDK0giCyYSOCXRXWOhm0M8OeLfUfbUjerJE1YkWIaeab43sHcAha
+         DrtNJDFOnyKGDglPq7s3CFpZZah8btVf4hcMCwd609JkP/2SUdcnULsy51gOK27FqOdw
+         bpoBkzAYXdkGGkk3sa2DvtambypBAhaCksYj/M5fTC8fw//dF0sO59mK8CLC0VGsjnzl
+         R8VpRzZ41vHdXwSXcgMhHo5DFgCu8Trx21Nq7n4dPPRydhlEA1IIywhfFLZrWlcIDFLH
+         9qUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771911462; x=1772516262;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qNr8d1nrqZZDfnro4iFgBQlAdVfxjJDLWxz4pVReYn8=;
+        b=sz/WqZnuMhLlxGGMBPt7QHZ7Qr4uQ8uf//6MsHQHuJdzhtU/f7z7mbjKt/4iOyTjA0
+         jlJB9jQljYWWBI86LUXUmxNJjHEXid7wTk6S2y0yeuitrgQaTuk5mpHxNBWPC/lB8KVx
+         RMrDbmBOQKwIRwfIEcEfZdILCBnSi+wtXnOv3xdbv8uWrjwn5FJtO+danG/+OudM0X4T
+         ChrX/lXe+qVNvyUSIAbdcMleYgaFs///bsV41AItbT46GRkuowNhK6L/fsvIk5rvbMjo
+         wcYykJxL7hGoWCCyD+L7QkemS9Hn+skq7DxOmAvWuvKxUB/vwXnxSbSF6kekRclUAJji
+         aETA==
+X-Forwarded-Encrypted: i=1; AJvYcCXuZhW+B5PdMeJY04omYhILRXa9U46Xt5haKM9NVLCVVpk3h6aHWuOcQPjs8ggauCFVgpy9q+dPJA==@kvack.org
+X-Gm-Message-State: AOJu0Yxt/0JlLew/qRCKz4PaHIWhw7MGZ5LEXfUYkEtaS4J0yfKIQfOn
+	tHx/5fe5kpaSEGJPv5bl9hdJOZamyZYxhQqcZDhAvhDd8pSIkzrcW2UXbRfUXQ==
+X-Gm-Gg: AZuq6aLpKaJsvmIcgfOS6y+gq1FmqakqFVpwgN22Qne7UKZdBxQERFNhCFGP+aMKAVk
+	z2yESko6s/PoyQwfVFl9VbrrMyOF7rLir5I7QF+B9ByaFtIiF8uhmrko0BnNjf0/FTvaYRD6cyG
+	gQTZbWAJrVan4ldVOcACiqn1iNuzMzV3W97iHWIG6yv6w08H2UM0U+57JOpphDHQSzHI7RvkA8h
+	YtRGAQzL792+rA07rd5pmQsU/rCI010MFE+gTp9Tx5FatC2aIxoEUx06DzSq6fAuKeuU3DMKUJQ
+	/UDS/VTbgNzJhG4rspiut6yHVwa4cqV+W29VsLbJsUOssjg80zi6n1rPPQQdjDq3ivXb9rMliVa
+	4lSfpfAJ4opQvYxO3pYnzqR+UbLjwQxe7p7C11GbK2RoWO+8wZrdtxHVoVxFqvMIMUOvBI6eNax
+	VpZq84U9U0IDVsBUwO6Sigww==
+X-Received: by 2002:a05:6402:274c:b0:65c:972:7073 with SMTP id 4fb4d7f45d1cf-65ea4f16218mr6808405a12.28.1771905169453;
+        Mon, 23 Feb 2026 19:52:49 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65eab9a077asm3269354a12.4.2026.02.23.19.52.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 23 Feb 2026 19:52:48 -0800 (PST)
+Date: Tue, 24 Feb 2026 03:52:47 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
+Message-ID: <20260224035247.r6mxsfcpiev4wnce@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+ <20260221093918.1456187-3-vernon2gm@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: icqy6xzj7snn4ma631ihxykzimdqctr9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260221093918.1456187-3-vernon2gm@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 5C601C0003
+X-Stat-Signature: d1n884mtbays35dnrsy4qebamo865zsf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 50E87C000B
-X-HE-Tag: 1771911397-732731
-X-HE-Meta: U2FsdGVkX196myEQ/jLNINpfGIG+MsEmvEsWlEfOPnRODFfDE7pzdA4eBchuhEWc5zqL+yFM6bbQCx1QL+7veYSw15wu70jw4mgkmKkZwEvCAArraZVd7C3KvyLo8AJUbiK+Z8rD2l/EhBrm0KoIT4Kbw0XmTAKJtiOwyHxtwNDcDMp7mEILaH0Xi4oGlZItGV+TXEwRak0mLI1Jzg7kSPwKPuOqHrMplyodVFEIJM6+rgtBtZjAUWBDKK50WPHbrTaYVLOqPScF0BILGX9vOsPVZewqUkXwdO6rxj32CdKR8Mc13dl2o3r7qqC0wdvDWN97//PD6Qw/ZTI0Z93mCJi/48YGsZYLW7iRuWTlVEUdl5e0wfsdK53FobT4wwuAwHsiiit1ikLO+JGzdLrGalml3x4G8GQjyYiVZx9fqUXWOf/MF8+biEAIpMXmGyCsE9ajqYPLkxjrLQQ1Rf7Gfg9qQ6TsxMRr3vXKl7KE313EQiks7rIffwbOLA2JEKhVlEHsO6aUUo6UqOEymy2OemE0loX+7WaoRetDYRS5k1HNLS7+2XHuWBjpm5JpG11XosDEo6y0sX7z47n0UGGjRgTU+ZoaNvfzQel3H/MwpUQjS9tg181yNc4JRK0RL6vbWZ7LVoZs+68oPXUttrX0ODmRVTZzL93GGnn1dfH/rcv+ZaCzy8IcvyOV/qAdrZ6M2YULjUqgE5jgDs1wtghqNoMrIBAmRddCtX5jX49KDBo7m3F2EYtZQOqclRWoLCMTJ256UtGI1rRTezyyFyN4q5kzD4ixhNGgwp04M4sSkaZI/coyppx6owB71Jd7ZHanWUcklWLbpZruh+Z5TnJHDdulWu4sdqlp7dry9V6TD6NojbHY47yZtgh/gEu1VBDJhxYQZZYiYzdWjIfnJ5t9GzOyw6OFvK6fa+eK6OwwGtfDq3V8x6bpBX/ggHvAmYsPdyyzyaFEin5aBXpvcui
- RzbN6n7W
- h7Xng2dFOM5ejV9UxPRd8eYaLlbuiuN5D+Qhq4kjgMxLCvH2dd3Jf38vwrqTmPtFTnwz7p69CV1WGWtOB4b+4V0OlFL5Z3qusDlT37ckcnkPMCG59MEMphxYuyUEp4WZFPGgz/lcTeDOsEegQ4COH1E92jA4R4RXouGTFBBs56j19flT8qrlO7YxTsHFM34JSW9m2fTpH6Y4Ugd1qwOq6ZR8VebXZGCFQEFNLfQvTsTENTpIK21FocVCsTOL+i8DYxMcmIwloQaPJ2ppy82G7gcA28GxMkWv+X8HiDxYO6gDKR889ystdLEUj+LBBK/VAmAFmpyMCJunQ5e/sY3fBRri8ypDSQEJ7nw0/TmIs+xSw2vvj8JmKW2WbAw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000296, version=1.2.4
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771911463-118866
+X-HE-Meta: U2FsdGVkX1/Y++ysXmLh2DlkeCFf4ganugU8LKdC6Uw3/TrDMqrvErOaal3vHaUOqhGhs+mItiknOyZbH54OgVjD8HRiTKbnAwFsEviEsf7jAHIfyTJVfPE+8oVWWbI9o/W6OYWGoZTbmPjTT3So28mTY4WFBI5aXfS4QOlniSpbptM6jurjEU6wjiwxYVU3kcs+tZpoF6t3BGvbRqSy4mCfNzjAo5IUxYCItyrEnoL6c6U7VTnLerYMF4ic+UD16z8xLqyS+wDJcqdUJ3GJFIJpyzZxlWm2Xmr/Odxyap9ix/H+ny9FmdnjfHlbyEZors0cBpfYD/JdfQKLNY3dVhfQkdavzp0f+bv1yioUwfoNmqVS/VU4TIXPH3Ye99F9CBil6QJjmbuHq7bkhKlMHkQZgcFiYB7FgGrsMgd0uCbB3BfeXW2GQqrtf2Jsko3Se+74eNU7wgbFjYlG1ctejvNZRmj5V7R/6VzyrbSMVa/HCq/GdY5WXd7DV/xLJ7AJydOeKA+BYOh3aDK5Lhc/YIIK7XEOPatKnfOUDKrqdplGRRFWvE0xUkDs6xu2h9kkSCzAlhumgfg/cOpcrJxSB9g/+VNHkKUd0Ice754d6DgKKidaOHWPgUbZXWKPvkSG0kp9oD1dsOOd1aIg82wpYJCkEkImzf8kWYn6GFfnlB48umVzQzIBTKs6ENrb6TQlDaZiYv81SHwodmv/crC5SDp2Rqsrxl8lZPyGdJTUE6FeCTHVZQ+MCYJMG8nwcRzS6MS5TuSAeukxvhXc8z0gFFRd0NWb4DB1ebdO7RZ0OEQcfrO5aiFLfKiXfe/4tqD6ksnI+Wn0ldCN/QBaVcU89BJpSMlsHe+nrzudCi7YudxaZzDQ0ePEfgjKHSQMSfXzg2b7clbdf87QebVJfoWkelppMHZLfzj8tcYnkiX4X8ooH9s6WNOkXkwfoPT41wiOYXmWUdLm4OQeLckwAdX
+ OBhuO+cq
+ V+6N5WbloCzVX0h0AbXQDKOukA4M1xmu4SpvjxZQoDcsYP/wOymXI1/m2qYKLE+aOp/uM5t3wL/kV6RDWeF1Urfc4d5p6AKnK5TZbJrT6uZQm2zEe1nepsQQE+qUNFuaSw9nb5uUgmIjnE07NyzAX9+34rnS+F8dJdEA4cKJsNjVIo/FjYkYqRSBlfi/aZQVnYhFxBTO6zkTH3Vzl2U2uhU5k/hI5py4nrUbX+f5Eb45dDm6a8savLDTZgoOvgECBiEQwxAyRIz5dymkSn67wXUlB2riqV3sypj4+tL2L0sgB8OQjd0grXL4USr+U2Wuj0pBJtrTACC4eR6ltZ6gEkbavVXa7MP+62gJ7D/pwAxoSwVTacU5QZFvRgGh0ELWGxZbrYzlaQXjIIStjysy5angjy5GmX6+LZa63i4+SaKWst06gaq65Yqlfca6Vwr7JdwobqmBkjDHz0MVWH+Tm6z6Y7Dx6Ls5hlLT3ZZg8EICeP8Nre/6SUK9pO487Pln8uu8CKzUKr/AziMclT2MqzkTR9Ho8jRZzahDQBRfmSSvnU3kEZLRuPs/ivQKB/p08kbVDZiG0ul0DQMw0ASOM0p2Rg84sLiJaotzqAJpHvg43ziwiq0BYdrLjumDaB7J6B+mrYUB/3sjUpXOs7TmEBB4BAzl+foMDLeGViT6iAuY/EG2D/+oKaBrONCwROtKFEzZcWowz7RLv7cintblrdgKm7Q==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,191 +123,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Ravi,
+On Sat, Feb 21, 2026 at 05:39:16PM +0800, Vernon Yang wrote:
+>From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+>Currently, each scan always increases "progress" by HPAGE_PMD_NR,
+>even if only scanning a single PTE/PMD entry.
+>
+>- When only scanning a sigle PTE entry, let me provide a detailed
+>  example:
+>
+>static int hpage_collapse_scan_pmd()
+>{
+>	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>	     _pte++, addr += PAGE_SIZE) {
+>		pte_t pteval = ptep_get(_pte);
+>		...
+>		if (pte_uffd_wp(pteval)) { <-- first scan hit
+>			result = SCAN_PTE_UFFD_WP;
+>			goto out_unmap;
+>		}
+>	}
+>}
+>
+>During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
+>directly. In practice, only one PTE is scanned before termination.
+>Here, "progress += 1" reflects the actual number of PTEs scanned, but
+>previously "progress += HPAGE_PMD_NR" always.
+>
+>- When the memory has been collapsed to PMD, let me provide a detailed
+>  example:
+>
+>The following data is traced by bpftrace on a desktop system. After
+>the system has been left idle for 10 minutes upon booting, a lot of
+>SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
+>by khugepaged.
+>
+>>From trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file, the
+>following statuses were observed, with frequency mentioned next to them:
+>
+>SCAN_SUCCEED          : 1
+>SCAN_EXCEED_SHARED_PTE: 2
+>SCAN_PMD_MAPPED       : 142
+>SCAN_NO_PTE_TABLE     : 178
+>total progress size   : 674 MB
+>Total time            : 419 seconds, include khugepaged_scan_sleep_millisecs
+>
+>The khugepaged_scan list save all task that support collapse into hugepage,
+>as long as the task is not destroyed, khugepaged will not remove it from
+>the khugepaged_scan list. This exist a phenomenon where task has already
+>collapsed all memory regions into hugepage, but khugepaged continues to
+>scan it, which wastes CPU time and invalid, and due to
+>khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+>scanning a large number of invalid task, so scanning really valid task
+>is later.
+>
+>After applying this patch, when the memory is either SCAN_PMD_MAPPED or
+>SCAN_NO_PTE_TABLE, just skip it, as follow:
+>
+>SCAN_EXCEED_SHARED_PTE: 2
+>SCAN_PMD_MAPPED       : 147
+>SCAN_NO_PTE_TABLE     : 173
+>total progress size   : 45 MB
+>Total time            : 20 seconds
+>
+>SCAN_PTE_MAPPED_HUGEPAGE is the same, for detailed data, refer to
+>https://lore.kernel.org/linux-mm/4qdu7owpmxfh3ugsue775fxarw5g2gcggbxdf5psj75nnu7z2u@cv2uu2yocaxq
+>
+>Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>Reviewed-by: Dev Jain <dev.jain@arm.com>
+>---
+> mm/khugepaged.c | 42 ++++++++++++++++++++++++++++++++----------
+> 1 file changed, 32 insertions(+), 10 deletions(-)
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index e2f6b68a0011..61e25cf5424b 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -68,7 +68,10 @@ enum scan_result {
+> static struct task_struct *khugepaged_thread __read_mostly;
+> static DEFINE_MUTEX(khugepaged_mutex);
+> 
+>-/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+>+/*
+>+ * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+>+ * every 10 second.
+>+ */
+> static unsigned int khugepaged_pages_to_scan __read_mostly;
+> static unsigned int khugepaged_pages_collapsed;
+> static unsigned int khugepaged_full_scans;
+>@@ -1231,7 +1234,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> }
+> 
+> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>-		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
+>+		struct vm_area_struct *vma, unsigned long start_addr,
+>+		bool *mmap_locked, unsigned int *cur_progress,
+> 		struct collapse_control *cc)
+> {
+> 	pmd_t *pmd;
+>@@ -1247,19 +1251,27 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+> 	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+> 
+> 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>-	if (result != SCAN_SUCCEED)
+>+	if (result != SCAN_SUCCEED) {
+>+		if (cur_progress)
+>+			*cur_progress = 1;
+> 		goto out;
+>+	}
 
-On Mon, 23 Feb 2026 12:32:28 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+How about put cur_progress in struct collapse_control?
 
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=UTF-8
-> Content-Transfer-Encoding: 8bit
-> 
-> This series introduces two new DAMON quota goal metrics for controlling
-> memory migration in heterogeneous memory systems (e.g., DRAM and CXL
-> memory tiering) using physical address (PA) mode monitoring.
+Then we don't need to check cur_progress every time before modification.
 
-Thank you for keep working on and sharing this :)
-
-> 
-> v2: https://lore.kernel.org/linux-mm/20260129215814.1618-1-ravis.opensrc@gmail.com/
-> 
-> Changes since v2:
-> =================
-> 
-> - Split single metric into two complementary metrics:
->   * node_eligible_mem_bp: hot memory present ON the specified node
->   * node_ineligible_mem_bp: hot memory NOT on the specified node.
->   This enables both PUSH and PULL schemes to work together.
-
-This perfectly aligns with the direction we agreed on the previous discussion.
-Sounds good and reasonable to me.
-
-> 
-> - Added PA-mode detection lag compensation cache (see dedicated section
->   below for design details).
-
-I'm not very sure if this is really needed, though.  I'll leave comment on the
-dedicated section below.
-
-> 
-> - Added fix for esz=0 quota bypass that allowed unlimited migration when
->   goal was achieved.
-> 
-> - Added fix for goal_tuner sysfs setting being ignored due to
->   damon_new_scheme() always defaulting to CONSIST.
-
-Thank you for finding and fixing these issues in my previously shared RFC patch
-series!  I left a few comments to the patches.  In short, the second fix looks
-good and I will add that to the next revision of my RFC patch series, if you
-don't mind.  For the first fix, I'd like to take more time on thinking more
-cleaner solution.
-
-> 
-> - Rebased on SJ's damon/next branch which includes the TEMPORAL goal
->   tuner required for these metrics.
-
-Thank you for clarifying this!  This kind of context is very helpful at
-revidewing patches.
-
-> 
-> Background and Motivation
-> =========================
-> 
-> In heterogeneous memory systems, controlling hot memory distribution
-> across NUMA nodes is essential for performance optimization. This series
-> enables system wide hot page distribution with target-state goals like
-> "maintain 30% of hot memory on CXL" using PA-mode DAMON schemes.
-> 
-> Two-Scheme Setup for Hot Page Distribution
-> ==========================================
-> 
-> For maintaining 30% of hot memory on CXL (node 1):
-> 
->     PUSH scheme (DRAM->CXL): migrate_hot from node 0 -> node 1
->       goal: node_eligible_mem_bp, nid=1, target=3000
->       Activates when node 1 has less than 30% hot memory
-> 
->     PULL scheme (CXL->DRAM): migrate_hot from node 1 -> node 0
->       goal: node_ineligible_mem_bp, nid=1, target=7000
->       Activates when node 1 has more than 30% hot memory
-> 
-> Both schemes use the TEMPORAL goal tuner which sets esz to maximum when
-> under goal and zero when achieved. Together they converge to equilibrium
-> at the target distribution.
-
-When this kind of complementary setup is being used, in my opinion, CONSIST
-tuner might be better, especially when the access pattern is dynamic.  But it
-is up to user's choice.
-
-> 
-> What These Metrics Do
-> =====================
-> 
-> node_eligible_mem_bp measures:
->     effective_hot_bytes_on_node / total_hot_bytes * 10000
-> 
-> node_ineligible_mem_bp measures:
->     (total_hot_bytes - effective_hot_bytes_on_node) / total_hot_bytes * 10000
-> 
-> The metrics are complementary: eligible_bp + ineligible_bp = 10000 bp.
-
-All make sense to me, so far.
-
-> 
-> PA-Mode Detection Lag and Cache Design
-> ======================================
-> 
-> In PA-mode, when pages are migrated:
-> 1. Source node detection drops immediately (pages are gone)
-> 2. Target node detection increases slowly (new addresses need sampling)
-
-I agree.  And this is not what I clearly expected during the previous
-discussion.  Thank you for sharing this issue.
-
-> 
-> This asymmetry causes temporary underestimation of hot memory on the
-> target node. Without compensation, the system keeps migrating even after
-> reaching the goal.
-
-But, is this really significant?  I believe people may use complementary
-auto-tune setup especially when they expect dynamic access pattern.  In the
-case, even if we can perfectly compensate this kind of gap, some of oscillation
-will happen.  You also mentioned "eventual convergence" could be acceptable.
-
-> 
-> The cache addresses this by remembering how much was recently migrated.
-> When calculating effective hot memory:
-> - Source node: reduce detected amount by recent migrations out
-> - Target node: boost detected amount by recent migrations in
-> 
-> The cache uses a rolling window to track migrations over time, and
-> expires after a configurable timeout (default 10s) when no migration
-> activity occurs. It also detects when its baseline becomes stale due
-> to new hot memory appearing in the workload.
-
-I will leave more comments to the patch implementing this.  But this seems too
-much at the current stage, unless there are clear test results showing its
-needs.  I'd recommend proceeding without this, and later revisit if the problem
-becomes clearly significant.
-
-> 
-> Dependencies
-> ============
-> 
-> This series is based on SJ's damon/next branch which includes:
-> 
-> - mm/damon/core: introduce damos_quota_goal_tuner [1]
-> - mm/damon/core: set quota-score histogram with core filters [2]
-> - mm/damon: always respect min_nr_regions from the beginning [3]
-> - mm/damon/core: disallow non-power of two min_region_sz [4]
-> 
-> [1] https://lore.kernel.org/linux-mm/20260212062314.69961-1-sj@kernel.org/
-> [2] https://lore.kernel.org/linux-mm/20260131194145.66286-1-sj@kernel.org/
-> [3] https://lore.kernel.org/linux-mm/20260217000400.69056-1-sj@kernel.org/
-> [4] https://lore.kernel.org/linux-mm/20260214214124.87689-1-sj@kernel.org/
-> 
-> Patch Organization
-> ==================
-> 
-> 1. mm/damon/sysfs: set goal_tuner after scheme creation
->     - Fixes goal_tuner initialization order in sysfs scheme creation
-> 
-> 2. mm/damon: fix esz=0 quota bypass allowing unlimited migration
->     - Ensures esz=0 stops migration rather than bypassing quota entirely
-> 
-> 3. mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
->     - Adds the two complementary metrics for hot memory distribution control
-> 
-> 4. mm/damon: add PA-mode cache for eligible memory detection lag
->     - Implements rolling window cache to compensate for PA-mode detection lag
->     - Adds configurable cache timeout via sysfs
-> 
-> Testing Status
-> ==============
-> 
-> Functionally tested on a two-node heterogeneous memory system (DRAM + CXL)
-> with PUSH+PULL scheme configuration.
-
-Glad to hear the functionality is tested.  Looking forward to the next results!
-
-> 
-> This is an RFC and feedback on the design is appreciated.
-
-I'm yet to further reply to the fourth patch, but I hope my comments be worthy
-:)
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Wei Yang
+Help you, Help me
 
