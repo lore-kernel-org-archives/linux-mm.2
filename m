@@ -4,102 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F476F3C99B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 15:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B5B8F3C99B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 15:44:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41A326B0088; Tue, 24 Feb 2026 10:43:26 -0500 (EST)
+	id CB9E56B008A; Tue, 24 Feb 2026 10:44:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FB656B008A; Tue, 24 Feb 2026 10:43:26 -0500 (EST)
+	id C79AA6B008C; Tue, 24 Feb 2026 10:44:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 327D76B008C; Tue, 24 Feb 2026 10:43:26 -0500 (EST)
+	id B999C6B0092; Tue, 24 Feb 2026 10:44:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D6896B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:43:26 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ABBCD56581
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:43:25 +0000 (UTC)
-X-FDA: 84479769570.14.B69A267
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 032B6C0011
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:43:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DUA/AIrg";
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A73526B008A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:44:47 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3858414019E
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:44:47 +0000 (UTC)
+X-FDA: 84479773014.02.932E311
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1656180004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 15:44:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=gVC6Vgx6;
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771947804;
+	s=arc-20220608; t=1771947885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sxQtv1uCPlkY/Cl0eOvXynVYDeQwO+q6e8rMdbg/8Wo=;
-	b=Ah4Nmfy4TwJuiriOcrMobJ2lpF6Qq1pSvnuBcVPHJ3JsX2f/uEm8YTtGqpT/XRiM8WHY1Z
-	niFDKSsaaI49t4Yw1sNqULt+WlqQDJwqrxto2ZJ6O2zl3bNRJFx/HMZB614TVmOHvCGxSZ
-	smMpMzcvEccP6vTeefPq57Zl3zNhmo0=
+	bh=mjHfY2lLGnUeJNju8+7/gahIG0wuIDcc4ZAP6X6I1uA=;
+	b=BxI6D9N3BoZWvRv3ZSFyyMvoz3waEjgmpXYvICQpPRlCfxVcRfxPHGbnmCTAZUYcOswr7y
+	EtS2UdvaHV/sKAqPz1IMRUgutglRl6AgxhVZUbZ+qEq8CB5YfLMfMgw1Ws1qPN5g21NvvW
+	hf2pKwWGV8jnthQMrJQH1E1PoQHXpbc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DUA/AIrg";
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771947804; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=gVC6Vgx6;
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771947885; a=rsa-sha256;
 	cv=none;
-	b=45IhHYRYXl9XeRcQIRnkFKhtW9MvWPswoXWg66Gee2XByPwsPmEXhSAbPMVmMmMdE14+20
-	JDqN0bKAlbjT6A+9ppmqkggxVgmkpdP0NC845tIa1aNOYVpSaltxbIcFLNFveFgu73677P
-	M8tI7Bc7JYY32Cav3QPw8P5+UE9Ad+s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FE5661118;
-	Tue, 24 Feb 2026 15:43:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A26DC116D0;
-	Tue, 24 Feb 2026 15:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771947802;
-	bh=iRZC6waXaSyGTg1hlX1XWHKiFbNvR501T87XQTbp4n8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DUA/AIrgxR7k3FnJJyTi+5evvX6Reg7BYI9fTQkvua1sozXzRqKFFLgpOZlxxE9mm
-	 2nwS2J79qmsDcq0Jhb8SFzgIrFJLZ7JAzTUBVLzdoKh9r49gNsNsZAzIWThDiUyNnp
-	 LkmYsWTusEIyM4rPVD6rMEXxfhB75OLqaZUlpdjGCHi6v1WR5Vohm2ArLxKVWKFJ9/
-	 rr7nO6FJFWla+Gb/dNXMt/geN8+B/2RSjwsUU4x1ajxgfXrE43J8dpnuj17yzzlyTT
-	 on4AhSwayhjlmXEfCdfiX4Lt+OfldYwdBFbdeZ0sPdMgLcD8dLtXUQEg+noodaiwcQ
-	 9JSAZaOENEfnw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, Christoph
- Lameter <cl@gentwo.org>, David
- Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Harry Yoo <harry.yoo@oracle.com>, Daniel
- Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
-In-Reply-To: <CAJ-ks9mtwo6eAvmT6qbL+Mg_=A+-zdtiBw6BtsfO2eZ8HbkXWg@mail.gmail.com>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
- <CAJ-ks9=hWB2eFcEj1obfsoLvK15=YR9y=hifxVyeB=mJOz+gXQ@mail.gmail.com>
- <87ms0y1akt.fsf@t14s.mail-host-address-is-not-set>
- <4V-olEAuXuPUO6t34rF2sn2KT3zYNdPHxGclD7-fJjKJNoXQPZNDJfc_ukQ3VyGVnbbdbCasUteYnH3U97s2zQ==@protonmail.internalid>
- <CAJ-ks9mtwo6eAvmT6qbL+Mg_=A+-zdtiBw6BtsfO2eZ8HbkXWg@mail.gmail.com>
-Date: Tue, 24 Feb 2026 16:43:08 +0100
-Message-ID: <87jyw2171v.fsf@t14s.mail-host-address-is-not-set>
+	b=Q7CLA4FNU39I9LsF0ExYhp7TsmVH7cRWDOj1JO196NcM/ntYH1AZ6AgsjRz8hDgG/Ag4GG
+	WliiKoyAOegVM2deRK9+4EnHbkcA0REDIdpSIuWj9dw8up9dkb5eER8GeaO2pPABSxnzQO
+	q8nxiVIDPfq8/W+nORRT450Cm9GJIdQ=
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-482f454be5bso61104505e9.0
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:44:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771947883; x=1772552683; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mjHfY2lLGnUeJNju8+7/gahIG0wuIDcc4ZAP6X6I1uA=;
+        b=gVC6Vgx6aXzThl5MspfIqFhuEqoHe8QzQNxh9UjyOuLARrM0BWi33qZspIIrIxr1nD
+         lxwSpD0566vY006/I4HatgMDPH/aUYnyBlqE+b0yag2ML5n4EPYP3Rag9I7qNi528JAG
+         f+OvWChTXVUNc65s7jjjfw9TOwgVFgi3PEsrKxylbrnnXA/FZdX8ka1jDZgNUo6d+j0T
+         jfUr6x9UNx7lj/te3i9ph1QjYtXdr3X/xjsZLE+I1GJ8kywQzWv7zwpn0+spjXfU1tE+
+         Bq5GFId/7bvEmbPrLP+WOJb91j6dc2qmvZjIkcBnga7kh5vbteChZ4KqTNwlnbegk9Zn
+         1ufQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771947883; x=1772552683;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mjHfY2lLGnUeJNju8+7/gahIG0wuIDcc4ZAP6X6I1uA=;
+        b=dS9irHfTbHB0LxrAKCt144/8Oajj9ZmRIjZSaz8n4JQoaBBnw7l8In6fCFA/LyQwlD
+         Js8H14RFA++cn0v9UzRPyShLcxhRissqSCn4lbLjQS1lE44myW1W3UIFw2qSV9GBLA9P
+         mXBwC9CuDXcJ5fwe56S2n1QSwHU4z2ETKf8Ualadr03OEk9lu0Ap/wMi+IMCanF4tFJ4
+         2/MR1D8MVZXsmHWKKsIZ/h67lICpgSuvroJl90vOpXBUkrfJ1VSftSH5eXQYlu0PLioE
+         PRYQLRoL3vzWcNAoWIJMaYlmZ4B0l04/gbJAQ7gh8TD/9bvkSGEjTHdFPy5+J7SCVkX0
+         0Pfg==
+X-Forwarded-Encrypted: i=1; AJvYcCVeHxcR2dTlO/LpgaF4yBQWa1A35LHURwKJVojqijuZFfZNe6kQObORYxlG0PDTWJQK4coNvLpRTw==@kvack.org
+X-Gm-Message-State: AOJu0Yypk6cIX76WlQUEnIYNQosnhr2YvBP7F+TN48pJARQ2Y0T6byCh
+	nZnxDPxNeyfFamFfJjMHtQiGLgSwpF512W42VbeZsG5plmlAAXRciDuGEbNiEPqQaDA=
+X-Gm-Gg: AZuq6aLpV0qButcg1oA50fTVQl3I8t8inB+GLvXI0MBhDybHXjxgBjJmUxyJIFWdmkP
+	9PVbTlQURwtRiDvNvhx1/rowA5o3aImetJeqqmqTKuCofkljG3VINOv4dE4h4dg//ETRcT+Z+Yf
+	SBnp+7C27tLmHtrFE8OutdyvNPA80NIuKQdD1p6NB0P31KexOG98zJgK3D1xCzzdQ0+g4Kmi9Bo
+	Bb2acAou6AIzYd9gb2J/3nI06MSSXh1LJHiJb8SXoXIc0Snd2J/1mV4yxr81OeoeqoW8q6u4Bfp
+	sNaiJtH/Uc4HmokVOnNiMjs9D4lYlKVxnaaecxGM87LW1Hm+kKPGP33IcFhltWdF4KxNNQMFB1f
+	6PYUTqH0/dGhGN411M8tN5TJ1Df3ZR7WG4NspIzcXzrLflPzFrQJIk9hxVtZcweIBwU8fWVOFAs
+	qi5pACH8mlVoamIk7BkUsdyEvgRFJFRuY=
+X-Received: by 2002:a05:600c:4812:b0:47e:e0b3:2437 with SMTP id 5b1f17b1804b1-483bd726b00mr4761635e9.5.1771947883174;
+        Tue, 24 Feb 2026 07:44:43 -0800 (PST)
+Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483b87db57fsm38737105e9.3.2026.02.24.07.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 07:44:42 -0800 (PST)
+Date: Tue, 24 Feb 2026 16:44:41 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
+	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+Message-ID: <aZ3HaVuIA4Ezu1uY@tiehlicka>
+References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+ <aZykWyxLy34o7PKr@fedora>
+ <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
+ <aZzPwsBp-Z4XM58U@tiehlicka>
+ <aZ2N9a4XgxnurOhz@pc636>
+ <aZ2YDD_l5JN78DJC@tiehlicka>
+ <aZ3F2cghZpqBi1Mk@pc636>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ3F2cghZpqBi1Mk@pc636>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 032B6C0011
-X-Stat-Signature: d9n49pe5rmnszx4gb8zqcxazppmcksnh
-X-HE-Tag: 1771947803-97977
-X-HE-Meta: U2FsdGVkX1/V+4viEO1jGiK2yxQFbE2tKKVjYrUawuQGpn8fhd/mGAUFfxWupvuvMFLQgX14VpLITBXOOuFT4p68dJq+thBSo2QfkxyJIv8goIYzVqoC3qAhNlugMEaB+wHDT1fPI1KBfoMPXogMfW0uiPbobO+8BjLFkmcIEgpXdA/iwU9FHHVD6uRc/QIAPU/k4lVBDmi71R2bV39Kzg2naO/DJR1T8JI5R1wFM5PyJSM+xoiEjeU955WiFvgNj1s3GE4z5tdMWzlz5z+hdniATc/1XBxhoFmvA7xXD8ui6T1rUdsyiutIa8CV3OFrJnib25rlaBQfORSntMYNPb+KWEpr1w4Pj+t1YUUVc+vpBGbfTyrdabQWrfCOPmdtRgrtwaORfXkAc4xkM+3yCyiNe6srhisu+AXtB8H1CcqEk45a5fyxfa0c8R5rhzYtabWPxn6kdj9whrunzN5/cHwQaPiaXd0s/5fGh1xXWtSY0OOAV3IGVmt+Zrq2i2dC09XaTbCMVvsTv/xdk9W59V6mOi6yI0kosEGpljgESlJ7cjq7YwZkMUrC3/VBS8VUOx9i6dWflF//OQ3nJCaDNy/ErCL/P2ncErsxYN/SZ+Wz06QB7/V7IxcDkcTVSb+4/wWhY9JU2chlCTUhMPxq4ag6QpaMPq6mqli1DSWNyowOkb06BnBVLGkGR/OAG+OUXXep90ULOvKQ8U34KbTuF5rrvF/qOleY6IL3yOgqFWotO7HpJNbxQl/adw8YBAlP1k7FDo709lu3k255XjofRVHs0wuBGANA5l4i+pLWnG35fFF5Qdj+3UCsGSnF4a4bP4FLM/DDrzmdNczLZUzv5djbrUmhCKz72rALViSUSUnCMkmns1ujPqaRG38I5P4HPwe8QkFoQEPaMsON4SbSfI5eWvDK1lcbduweu3BeGdqdk0JlfxM2LjvOoWKZTBHEAhzExfbNIc2osE32Eik
- oM5gi+/4
- 1bIW7TP1YC9U2k0mpD2sp66PODEtHh54g8OTMSKliSXxHKYEi1OXkzdyDEZpkgBKWmd3sbocYl1WeHqS4tt5F+Q/A0+Fp6tziH0Xz/PKv+JgP8wNBwppNiu8m10/FB6bj3mf1MSHVOWjPxQCR0FwRTzCjsqE276mtLc0i//GVcZrYnShk8Kqi2pLOVuXfamlGY5jnMREoXug9oApF54AFKtpcBD3w52mKnflzItQzviDvZlRpDk/te90mLequSVih71dOWTp3tz2XgJrUG880gTI6vLlTfCG8BsBC8oFW+r+SJrEYKaSvSMnh+J57MjT/rZXZrcGEb9LGbZc=
+X-Rspamd-Queue-Id: 1656180004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: p1rhixro1xzk96ux5eu93hn9d9ycsg8f
+X-HE-Tag: 1771947884-954150
+X-HE-Meta: U2FsdGVkX1/AYBB7i244IStDnl1G1zLT9L5FV/Na1Fp2UhGJNXcHRXda/ixgvNEMmwb4F11e3Vi8PVmtOHmx+5lkzk9WaS2ooWxZe4u7hQss80TiOUHDFGQCWwnQTPtqGyjpYD9HoCsP2euAkSRAZFwT4Bu3Gngr0MUcNIFlw+0avhlN1L42RE/UNukWK+JQG1eCMERDinENstSZt4EeCjmCcaj6QGYEfSCjFZxNx7Ryd6hOFjlpluz4Vr5ktKf0GL0NgFX38Jb9xOdFoBO7+Lzdb+FwEDMT4xE/tncoZ2Nt+x5ik/ZFoh8jTwJfQCHN9lhDgixiAKBA2tZlxllhMxQdfHjdsL0Bu3sD3zViif5GD66E9Ab0NbT1ArQW4v7/uyOuKh11HJi8lOYY0eerGp5Bs78v4SdRAjd5XjsfBzOXGH/hj7NHAOKtwx6AJnpJ7IGNOvN5SSUoSm8BAUY3vVbiasrGnsB1U2C81WdljRSIq3ZYggL9QK9KeJscWhFf42lnK0b4SC8kdM0gMGFZbGU7BEV6xaWVLGcM73FJitxu5w4rG5lR765sMnFCOSRzGoatZBAXT7muZbq2mBNRF44sg8lDvTmSjG2OGoYI0hr1X/ZbGvc3uitUmlDSzhHRHMI2DmR2XwIHGvSqRYdsvKq6GkydasuaZypItSBw2G+Y2aI6gJXiuYDVBKhWobLHnGv8bHb6iWdAK+8Z4D/sf63aYQhQmyIw293rZJtpe8F6XZZdkitUjOWXDbkorimqLpjrXTSY36L59F/zzZYi8Gor2Sx0vlxWDnFMxnxRCdZsLjU5/LdSleYSHqPwbBKRCsQZWOon9Tr24GPxSSWK+5h05f4cVGCp+RwUHkfgascn5E+QkVOg/ZXIsD+5vHPVQy3Lmpa9THmB2C0iQouIkdOQ0DKeOO+3fR79Hrju70+ZXaYdT184n7jE3AKryfWuYp8zGmbsowe26zNLVri
+ nszN3ERY
+ pqvOktQ+oqag8DqWQj0nVJdQxCFNAj+wd0p85KvI22CdFJ/RvO+XT5JLK2Yk6kM15WZMi8UU0YLEgy6/4RW/5p+EViyQvcIUpmuLAI5a9NIVPodVbd8KJeqwpbByFE5z5IBlXfGNS1jbpeyLjIfi+xIEtLWH47eyTGZSVLfaF0BqfWy5/VcQ1TySeksXDlu8ks84O1osiEHpbuh6jS7snDb/HSNz2dFcW7hW/fuXk1v4tTEivs5dy4fxNq9MO9eS0oBm5ydEJnrgExip/wDK6khwNHQsHnJjPAWXdoBksZTxSkq/LkOhf9I2ROzgXiWX27bBFnMBpDdh9s0LfU9FSfQOe2vGyw4YLjeOn27OC5AGEG9GzOjXzmHYX4uXCaeBxbUUsPYQunA/KMGnYV/fqtqawXE9JkKz41upXozOwHYjxqNI1Ke1Cer5NNuiobHjMW3URpVdvoMSGcZCprJlO0KgbaUo+PtijiN1L4u1Hh0fsCqiU+ia8AXupcXbGlEGzFOqAZVECbpr9kp+iSqPQKApbFJvaYKPwsgTepw3YK5PtPvIkhmr4kH504Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,63 +128,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Tamir Duberstein" <tamird@gmail.com> writes:
+On Tue 24-02-26 16:38:01, Uladzislau Rezki wrote:
+> On Tue, Feb 24, 2026 at 01:22:36PM +0100, Michal Hocko wrote:
+> > On Tue 24-02-26 12:39:33, Uladzislau Rezki wrote:
+> > > On Mon, Feb 23, 2026 at 11:08:02PM +0100, Michal Hocko wrote:
+> > > > On Mon 23-02-26 20:25:38, Mikulas Patocka wrote:
+> > > > > 
+> > > > > 
+> > > > > On Mon, 23 Feb 2026, Vishal Moola (Oracle) wrote:
+> > > > > 
+> > > > > > On Thu, Feb 12, 2026 at 05:33:30PM +0100, Mikulas Patocka wrote:
+> > > > > > > The commit 07003531e03c8 ("mm/vmalloc: warn on invalid vmalloc gfp
+> > > > > > > flags") breaks the device mapper VDO target. The VDO target calls vmalloc
+> > > > > > > with __GFP_RETRY_MAYFAIL and this flag is not in the mask of allowed
+> > > > > > > flags.
+> > > > > > > 
+> > > > > > > There is no reason why vmalloc couldn't support __GFP_RETRY_MAYFAIL, so 
+> > > > > > > let's add this flag to GFP_VMALLOC_SUPPORTED.
+> > > > > > 
+> > > > > > My only skepticism about this comes from the line in the
+> > > > > > vmalloc_node_range() doc: 
+> > > > > > "and %__GFP_RETRY_MAYFAIL are not supported."
+> > > > > > 
+> > > > > > I myself don't know why that may be. Could you elaborate on if/why the
+> > > > > > doc is wrong please?
+> > > > > 
+> > > > > This statement was added by Michal Hocko in the commit 
+> > > > > b7d90e7a5ea8d64e668d5685925900d33d3884d5. Michal, could you explain why do 
+> > > > > you think that __GFP_RETRY_MAYFAIL is not supported?
+> > > > 
+> > > > The problem with __GFP_RETRY_MAYFAIL is that it cannot be fully
+> > > > supported. While pages that back the allocation can be easily made aware
+> > > > of this failure mode there are page table allocations which are
+> > > > hardocded GFP_KERNEL and there is no sensible way to extend the API to
+> > > > change that (as we have learned several time over years).
+> > > > 
+> > > > > The VDO module needs to allocate large amounts of memory and it doesn't 
+> > > > > want to trigger the OOM killer (which would kill some innocent task and 
+> > > > > wouldn't solve the out of memory condition at all), so I think that 
+> > > > > __GFP_RETRY_MAYFAIL is appropriate.
+> > > > 
+> > > > Understood. But as said the very page table allocation could be the
+> > > > trigger for the unwanted OOM. The same applies to __GFP_NORETRY
+> > > > unfortunately as well. vmalloc has just recently gained support of
+> > > > GFP_NOWAIT allocation mode, though. This will make the allocation
+> > > > failure much more likely though so I am not entirely sure this is a
+> > > > proper solution for your problem.
+> > > >
+> > > Yes, the page-table manipulation entries are hard-coded and it looks
+> > > like it is the last path which is not wired properly with gfp-flags.
+> > > 
+> > > Since we grow PTEs and never release it might not be a big issue for
+> > > the __GFP_RETRY_MAYFAIL usage. But it is still not valid in noted path.
+> > 
+> > One thing that we could do to improve __GFP_RETRY_MAYFAIL resp.
+> > __GFP_NORETRY is to use NOWAIT allocation semantic for page table
+> > allocations as those could be achieved by scoped allocation context.
+> > This could cause pre-mature failure after the whole bunch of memory has
+> > already been allocated for the backing pages but considering that page
+> > table allocations should be more and more rare over system runtime it
+> > might be just a reasonable workaround. WDYT?
+> >
+> As far as i understand, Mikulas uses __GFP_RETRY_MAYFAIL with vmalloc
+> for some time already. I have not seen any reports about that a PTE/xxx
+> alloc path triggers OOM killer thus i tend to say that it is not easy
+> to trigger.
 
-> On Tue, Feb 24, 2026 at 9:27=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> Tamir Duberstein <tamird@gmail.com> writes:
->>
->> > On Mon, Feb 9, 2026 at 6:39=E2=80=AFAM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
->> >>
->> >> Add `XArrayState` as internal state for XArray iteration and entry
->> >> operations. This struct wraps the C `xa_state` structure and holds a
->> >> reference to a `Guard` to ensure exclusive access to the XArray for t=
-he
->> >> lifetime of the state object.
->> >>
->> >> The `XAS_RESTART` constant is also exposed through the bindings helper
->> >> to properly initialize the `xa_node` field.
->> >>
->> >> The struct and its constructor are marked with `#[expect(dead_code)]`=
- as
->> >> there are no users yet. We will remove this annotation in a later pat=
-ch.
->> >>
->> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >> ---
->> >>  rust/bindings/bindings_helper.h |  1 +
->> >>  rust/kernel/xarray.rs           | 41 +++++++++++++++++++++++++++++++=
-+++++++++-
->> >>  2 files changed, 41 insertions(+), 1 deletion(-)
->> >>
->> >> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings=
-_helper.h
->> >> index a067038b4b422..58605c32e8102 100644
->> >> --- a/rust/bindings/bindings_helper.h
->> >> +++ b/rust/bindings/bindings_helper.h
->> >> @@ -117,6 +117,7 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT =3D =
-XA_PRESENT;
->> >>
->> >>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC =3D XA_FLAGS_ALLOC;
->> >>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 =3D XA_FLAGS_ALLOC1;
->> >> +const size_t RUST_CONST_HELPER_XAS_RESTART =3D (size_t)XAS_RESTART;
->> >
->> > Please add a comment to explain the cast.
->>
->> How is this:
->>
->> // `XAS_RESTART` is defined with type `struct xa_node *`. `bindgen`
->> // cannot generate pointer typed constants, so we cast to `size_t`.
->
-> Can we include a citation or explain why bindgen can't generate
-> pointer typed constants?
+Yes, triggering OOM killer is usually not all that easy. But rare OOMs
+are likely even worse because they are harder to test for. So I can see
+reasosning to avoid it as much as possible and rather fail early.
 
-If you have one, I can add it. I don't know why this is the case. My
-guess is that it's just not implemented yet.
+> I do not have a strong opinion about workaround you noted. Maybe Mikulas
+> can switch to NOWAIT flag instead.
 
-Best regards,
-Andreas Hindborg
+using NOWAIT for the full vmalloc allocation would be just too easy to
+fail under moderate memory pressure.
 
+The real question is whether we want to provide some sort of backoff
+early but not way too easily allocation semantic for vmalloc. If yes we
+need to get creative in the vmalloc internals rather than expect callers
+to be working around that on their side. History has proven that this
+just leads to tech. dept and more work later on.
+-- 
+Michal Hocko
+SUSE Labs
 
