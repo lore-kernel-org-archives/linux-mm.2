@@ -4,148 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB1F8F4BB6F
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 19:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6491BF4BB77
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 19:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D64786B0088; Tue, 24 Feb 2026 14:03:11 -0500 (EST)
+	id C70776B0089; Tue, 24 Feb 2026 14:03:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3B916B0089; Tue, 24 Feb 2026 14:03:11 -0500 (EST)
+	id C51D56B008A; Tue, 24 Feb 2026 14:03:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3DFA6B008A; Tue, 24 Feb 2026 14:03:11 -0500 (EST)
+	id B67716B008C; Tue, 24 Feb 2026 14:03:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF6406B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:03:11 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4A93C57BB6
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:03:11 +0000 (UTC)
-X-FDA: 84480272982.03.8D868F4
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 46A8220015
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:03:09 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=stks3CI6;
-	spf=pass (imf03.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id A2D936B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 14:03:20 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C3D51C1F3
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:03:20 +0000 (UTC)
+X-FDA: 84480273360.06.D1DAB9C
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2489B40003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:03:17 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=WWTp0uid;
+	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771959789;
+	s=arc-20220608; t=1771959798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X93b96xDCWqbNSn/Osk0k6D0QiHzoDXCBhSgmB8C344=;
-	b=CH7m8NPbDbdq9PRx9/OYlklT+TrEaJ/ppZEZSQn6sYSsdxSgsoYUVJYDAUkzZAO+lkfUqr
-	HG03Xfy3VwfM8vCEVG9lw10K+eqRAotRg/RaS/4iD95hIlFdv+f4mbtQuvet05LXSTDPOd
-	6Cw6Qqis5sH++152Yn0PJCyqFMoIiLo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771959789; a=rsa-sha256;
+	bh=7dVBeJ+Qt9DB0d6jjabtcjm7Ck09D2CLqlPHoylpiSI=;
+	b=IQnzkU7nZmAdkQQFLCUW+UIMrmY4ExOc1a0fDFTN6r1VcT8SoR61gA3Tlg1x/bRm57ljvx
+	QKaJ19Mop+iVb0lVql77xnAzxR+x8oIsR2yeH+DVXVAczw1N7SIAJHqCX/MxeLKx4MBfoL
+	qpocoPnb547nywQDj+ppeoi7hLauFPo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771959798; a=rsa-sha256;
 	cv=none;
-	b=u9GS9UxnxdDnXQj+VhQzkk4t0B/EVVZO62gLvQO7YVgrZpm4/NwnRYke2p+3ewGG7IpHAX
-	ONflsup/MFlXp2l74uaG7pQnVRALVIRFkFMuG+Khn8T3JXDe1CTRMezHpWSvgtPWJa+K8V
-	jwpfxs9+8qvIGwgCbjq/FIsBdatXsms=
+	b=5mYA+XkP0R3G6PBjx3mNJWiMLMhealWMdy7AkrTJsGmQWVcPLr9sNgmltb7v3f30RVOMic
+	xjVQJjlgUdWfC3RxIXkkL0kbao6CfIZ+m0gLwCZImDsG1KSFKjiUiEwAYklDXbsyxXGex+
+	RXn+BVAGajeXVC2IeAMgXLl6GxD/rDs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=stks3CI6;
-	spf=pass (imf03.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a964077671so10585ad.0
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:03:09 -0800 (PST)
+	imf11.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=WWTp0uid;
+	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5069df1d711so54307191cf.2
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:03:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771959788; x=1772564588; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=X93b96xDCWqbNSn/Osk0k6D0QiHzoDXCBhSgmB8C344=;
-        b=stks3CI6OjhkChsF0kVAC+/HQK0lK3dxHL4AeSDcNjVo6tq2PLucZYw1OSoZt6o2r8
-         ERmKpsEOR6Ycro1eWhndIWpQDqsIssFnUTkBtNtYraUI/U7dmF0nHMS/jpebUKbrECZp
-         8YamSIRxQi+0vcn9OxTpBkKp/1mV4fbXg1UOP8IJdqPkdpVTQbGi0NQYxeGUV5hYgxI7
-         nQ384/xbDQkO0j4G5VYRaQjI0xvw6c6fMFuOUmVvOWQi+a1yQB3CV1IL8LotFGkx+ZwI
-         HYnfe0AIRKIytSJFvvY4zwLa02Dv/U6BmZloBqeG5yEdjYrENHGCOci1vnZe5W7FXtv4
-         9yDQ==
+        d=cmpxchg.org; s=google; t=1771959797; x=1772564597; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7dVBeJ+Qt9DB0d6jjabtcjm7Ck09D2CLqlPHoylpiSI=;
+        b=WWTp0uid2S458sC1KkW2uCPKvFldOyOC4hwmAEiZbVvEkHUMCioUISWPZCYjfFJUum
+         t2SBA5VsWW4ziS9te25zXnuwxq1zjOpFOfB7C8NCUW2GwozYvbNtuQHiAyGSJtz+YTSL
+         PwH5wYWBE+V7gjyXLfzhRXcf0AzXIl8bFr9hoCCmvJDjcnFQZgwW39cC7/w1Pok3BM+P
+         /qGKFM9lNJTD4UChuVWqekJS1Ez4gbtozeq15tesqNxqq0QH1lgJKSzR+ISKhe1Wv0K+
+         xumIAa74awcRnvk5qmb23KcoYbpJtqamTYWkoaprP7p8v9XoTxQFC9ZSyYoCEREGoSCq
+         B9/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771959788; x=1772564588;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X93b96xDCWqbNSn/Osk0k6D0QiHzoDXCBhSgmB8C344=;
-        b=sC5vRIMdwIN7mKrDAk7XhrrqqPKE33SbEvbqdiNXlSDEVN5XiPH060Q7lNOeK9fkAn
-         VmppacvSXJ07JCtHOxMmuceqzr6F7PHMnIgo+Gx4xwQ4ECB/AGKuw8RcKC7AjaI28xK8
-         1DtcZHyAbGJUhmh6dL7Ml4eGEWnO0BFwbOrE2U25HhLC6YVBBfzJsUfY7oOevmdgFttc
-         sOVTBtiAHKir3/x4yJuUricmafCn5GoKi9NRk4NjmRLHbOjj5W7FVq/daQE1cmwXWvIT
-         QE5Vop3MvJ/w0liePNonbX8jqlcp0p+l9i510LFY4WJuki5TqlHFVk6z7OUk2mfi0XPi
-         IVrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNBmZ5pdmlZJ0EFnrwJl+Dg6R7U1wyckVbwIaYu9CsssrSsUU+lwGCx4sqMc1XPY2toNafh/xx2g==@kvack.org
-X-Gm-Message-State: AOJu0YwBQyw2cNvbcbylLJD4DTgP3rpW/rsH20wCVLoKGrN38iPGYA4q
-	pl5stYMb8HG9EVmcD0ngCvhYW6xyQ+B32tds1MvyhAgbWISd7dinL08mh2iO47nPjw==
-X-Gm-Gg: ATEYQzyULqpo3diS9gF7NuOVITmt1bxiv/MCdVAv87Oto8FCZM6SqSGaoS+48P/kguC
-	xzwrlm8N5IKCE4aUQBrUUwLptIaTt4SZcLxfUvWPdwSXQwx5SLPbfB6QKTwc9YT8iNqI79fMoMg
-	Vbr299x8DSMcQ41G3zTqDK+YQq5p3kBOPKwMBNqQE9ODBcDAMj/RW/zqEaHhYyXnZrhAslRfMLO
-	+7qBCYcFKIRaRO9GXNFWLjntrSouwuvxLKzUCYlMWzV3d8J5CnWKiIUb4903Eo8VCumGQoCpFfI
-	6N8FZtTvu+N5ZDkfpS7SuPZMaKBLR3QEuc9RrXUdzcydf45XvuzI4IGgCFUztFNyWk227GceB/l
-	RAY7CqTc7yEAyt4YZyAGof0r993fyKkYw0nGrCB/dQZAFwG1XXwETeR/dGA+1JLoPd0nB/IfCwW
-	Q1S9UfeV6XppXOxlMiWUgp76OhsTcXBdMjQo8U1wOtwfr1d6swCnH/97zRoiDK
-X-Received: by 2002:a17:902:c412:b0:2a9:5bfa:54ef with SMTP id d9443c01a7336-2adca6c8e0amr234085ad.10.1771959787309;
-        Tue, 24 Feb 2026 11:03:07 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74d36911sm114902575ad.0.2026.02.24.11.02.59
+        d=1e100.net; s=20230601; t=1771959797; x=1772564597;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7dVBeJ+Qt9DB0d6jjabtcjm7Ck09D2CLqlPHoylpiSI=;
+        b=FR1rUKYl1df+iMg28rT5oEuKaOVjHIEfYZs6W9o5O3FABlpWUU8Oj1Ni7KuyoPqfzK
+         QxuvXvUT3TdDDBnlKhrWQUxuqY//6i4f+JYDeNw2Z7OWCqrXuHj/zPot09TpZFPl1Hkb
+         ce4GRC4GsyKj7pBXxKtiV5ooPVUkkkUk7TrS4DZkZvyt/rZlHWrEdPnk/6rI3hW+RNDX
+         ak2/YnwK+qqjKvC1DXAxYcz+vNCDLwrd/S/T727jiGF3OjyLaT8OpVKWXOMLvESSQUO2
+         ZzpPOgEWDlZyBEiuQE+k7hM8drb4hi6NT2AgmQMDUBA6xAcBp3a1DRp7e5vrqGEJo8AF
+         flsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtgg/zNpBUmqqXVPnT4I88LYIwPzRv2l7kDgX1HN9JY2Myctq+0S0SAoAh0ymqBExj3iG4VBUflw==@kvack.org
+X-Gm-Message-State: AOJu0Yz7LQjjFEzflpYBvlndwnuk8B1gMAAPtr0Z5KwUKfzhZfhPmbKP
+	jaFF7vQvRjl9yPFbDna+Uyw3XeR3ViLwFiA3+VtH7cRpi4ANIRfd9n+v9GMldtLnPzk=
+X-Gm-Gg: AZuq6aKO4yzstWMx3LsrHqVpN3KccxkYdkrSsZdGISxd/PwsYzH62C6DtEdejhZh+jg
+	RZlLNDYa0YGD2wOcpWHk1VJ3ZWyUJifMvrLGI/XzIK5o4vxPggbugGYaH/erbqLwL4YRWw7VI44
+	bFRwQNhEEo3lkmGC7Jfhx7d6/sbncjLmpvFR+PBkpwqsUAGFpdSUsvSw8giOV97LG0UC+Z7QEY6
+	PyCibb2ON9+XLTDrPcYkBDzZJVDg+ectl0oK6VdLpeORVYC4UVua4x1p2pgSqlLlxdKRSWWZ57T
+	vc3bPngkA4MGuIfahyCIAakW8NIwnlT2DkzBoktVmMwjVuPXDJ6Th8XauGu3hLjqT8OLcHuiE54
+	QqOozFpbPPIsEJh/cjX2MY6KKYPqw3D7v2tH3fydHJ0deAMdNW2AFgAMsrAeMzp5kTUaG2KqTv+
+	nKZn3WZg5HBj43dhYpjxbtTQ==
+X-Received: by 2002:ac8:7f82:0:b0:4ed:b06b:d67d with SMTP id d75a77b69052e-5070bc4c219mr182745301cf.45.1771959796861;
+        Tue, 24 Feb 2026 11:03:16 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5070d6a1ddasm104697141cf.21.2026.02.24.11.03.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 11:03:06 -0800 (PST)
-Date: Tue, 24 Feb 2026 19:02:56 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
- across Live Update
-Message-ID: <aZ314HSRnYtGinTU@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-3-dmatlack@google.com>
- <aZ1svGur9IxQ7Td2@google.com>
- <CALzav=fSpd6H5pQNtJoFHdNtWVO11vffhWQFsMFkM+osGuE0wQ@mail.gmail.com>
+        Tue, 24 Feb 2026 11:03:16 -0800 (PST)
+Date: Tue, 24 Feb 2026 14:03:12 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>,
+	"willy@infradead.org" <willy@infradead.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+	lsf-pc@lists.linux-foundation.org,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"riel@surriel.com" <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Lance Yang <lance.yang@linux.dev>,
+	Frank van der Linden <fvdl@google.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need
+ 1GB Transparent Huge Pages
+Message-ID: <aZ318PoxdAZjqnLX@cmpxchg.org>
+References: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=fSpd6H5pQNtJoFHdNtWVO11vffhWQFsMFkM+osGuE0wQ@mail.gmail.com>
+In-Reply-To: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 89bp4ym14gmyqy4wjte7ryd5xip9acxj
+X-Rspamd-Queue-Id: 2489B40003
 X-Rspam-User: 
-X-Stat-Signature: rjxhkyim4ffg451naishyyyatrftyzia
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 46A8220015
-X-HE-Tag: 1771959789-958779
-X-HE-Meta: U2FsdGVkX189MtdbGw0NImQPaky4w0uBozfhpC87Z1iEwHBWe6VYTCHdXwea+4WoFtZ/Lxr3jUsThwZAo1eT9072LI1CWsETK1MYsXBKFQFEA12QkCmOlWUal7wjPs9NW5lYQ4lRXUdyyNxVkyi2rsg5Q0dOZcpRdRWL1eAGX5i/ZL3ngNXyhGxUTF9lkkEWaKBhBsILhHYMzMfOGA6iK5+nk2h85lQZdXSC5t2BL7Tb4WpLl4B855t0rz5Wuda0hi23r9k0ltCLvaNwnqyGNnRmkz6VwuZelPGPq7uzfCYJFKpYV7WyvJQDJ4vMB+1cAMTE/QjJs8kgkO3/7PHIklTmnsRu2ysnNrzjQ+Z8iA5TUtiJYMh+C+lIxELLhBWLsuhgGi8z1aBoi5j6NFNTFQ9zxY6pVgYw+0zRr28usx2P1tnXI0gs1wo6vcrfKntHv//fkGV/FcJVQNCVIlNyaX9FquwVNKzfbrN2wjJf6cHBpkh7H79QrbsUEpGLBVOfFkKSl/Tj58t//enjlbzGUYkr/Ts0JLgUnAAz9C/2nGlXtbH9xxIwIRkIica+QdGmf6B70VCtv2OGfoZ9QX/ZfEzCOf+BelHsrteg2j73zm2p694p0dI8X5bn2YgeW6Vma8wB4VG6JCoFtvNCuqBKRNOUYNn/zGlpg6wAto3bCjPTrgbEIGX+OAb33c+zVMaS0g/7g+DImryBNaV7s8TYQBOakjVxC/Z7nZBGm5Q9hbgXrAz6xxBTYDriMyoZRkgX9gLV3TaQew9rj6bHnvf8X9kCVCa6L3htC93hnN5NPT2+LXHgZL1rmiOOSxLHIm8Ve5edYl1zW5RLbDnmuyYtrPNcOh48X7PUXxfbcajBmwryVwl6vOrDOqcEOSmXqFZ+x3rM9y4+QxkV04Zv/OmRHWo02tkAcSB2DYGRaO/ihvzjBTZWeTZ9+OPHJTECiDkuE39ZHOM8qrAH+Sjfqv9
- V5c+POEd
- WDrA8x6dMSFIIKk8ISqmWofxujCGUJ3f0KdYpaSkNOJd/xAIYy4bjVQOn5tqrntQ2Cp1AfxOxlpI3A1GbXBwZVHLUm9J6RKg3DemonIUeK7Iam4bN2Bg2aBMa/tdbqfTQfAbJ+d+W1LQu0/UxUlVo3AU7Q79gXc+LMl9Oz/OPGltoNch2USUKDB5e2Ed2M65tcQrQL336ohzRKYAQLl3KqY/r9q37uUaTAp/gejrG8DM4od0YVpCoWv8o77MHa4lqrQE1DlbDBDQjVomMvF9SROyPu9m9CY+lBYqr9lmaArMYEh8sOuOanmy1tfBth2zCv0ZPNuy9iK052mHsKXYfJzZGrrpatTrxa584NPsTf522gan8PsCwlSvshdkLPhoaI2POexFRdd49Qpa7I7KanFzYmWvEC46v7KRBZuGBgUxv7uVtsG8fgsTRmD/RvcrWyQihE9vAHG7qZW8=
+X-HE-Tag: 1771959797-755729
+X-HE-Meta: U2FsdGVkX18PFC04+RGn+ySKgwUUCygnuo1KQVrbH/Kwfky+N8Qx1sOsIflGCwupEAF4294EmF7WSwPjXoHig7UaErSAEuRdi8hf4AbUVm2SbqqgLAJjdx3ot65x1pZc9QaflcYm9bWyOSXWjFbwSEf/Auo9mKotPH+kOFZCOW/uXgiqRnMu51h/ACFUqK2uEvPjnIhoBUVhMjOL/m23/lyLHDNE5Y4herkn7JK6XIA66e1svgBURD3BN8GDRJha2v0fpX+6wfQtSGD7m+ClLtW8ZmMeEwuPbcLgNgOsb31vV1XS4kP72+892372hvO7ZFoqVQu+WJxDsHUAflardTDvk4cD0WgHYgD0iWvitGHHrJq3+0Aupa72Jqqt4D6GtJoeSJohy/H5DkD2EUxAu5R09JUvyOwxlgbwAicAWOH3NBchopIZft8eQijQ17BstiCl8cwlTewfhi6ykCmivMqgiNKr0L7uYIXdcnVB59OeSsXLOacyZdxWlPQQqm7a6l9tVIC9NOe0cXuShFZQFuuLqcSCpgzAE4HEwy1uZBwDvd06T9lL/+WbYc/69+HWbEsFO5oQziKtz0/mvyicKkxbrrIrTbguc4MG+KxaJlp7pT1jCF9mEjdBdgIb6lwOAfrMAw9agfoSKRiw+Q3PYYAZg6rsTkc+bIQw7AyN2jW2QbqijZ5Dv4cqmX59Ce3eAJ+JulGJnmGNH+aeRCbLxaC3dqcm582rVCrfsr/i7btb8tE7btgfXPW49bx8gWvd76AWOcdAJnxoiXQIdeNqpum/JvUlScI6UN2wMknefXfk6Wmlbph+zgwUEjVvVZsLFDFR9Vuy35lobCEf30yUs839qwib1twGGwGN5/s0c4P5k0kgsAkyhXigESnEFZaVZevYTu1eiW0iqC3t72uGfWJk5ullXjQTKSMja/0p+3zcTASCZG1IfMgxQvrp52CsYyxZo7XWrMsa50slyrP
+ Il4zJ+Jh
+ XUvXINKgzB+54Rbl7SfiIvQ/ngAgZxZGS5eMoOskqDgUOLJp31FVQJOZS51/G6H5xcPFf3TVZxSXI21WQtcJ7Rj0zZnEhnyIVO+uHVbiVve5drpqjzhM+va3Ri7Dzx1nnfvTLeg0AXu1z/Grc5TJNS6U9zn3Lk/roY6M2KRGvMHWRjmAKgt9ZOyAhecd1vVviEKQZrolwvr4ALDpkdpayMF2ztk4zu+KCyqBG5W6j4NMBiqa+aBDDQUwO90dNZ0fUc3juTNd5y+Ehf6vwEWA3nHuCkSNoE02qdGVCXGAl+NFhgTi5jHL+EQdZAGYzZ9VLeHG4VPoSZGS454Tze9FTKtBSevJA1O9d3rgLtLnpSJL065zmOSF4wi4+9/BABJU6K4w8Y1R4VLP7ABI7l2ZaytQISZCUOkLuUQaj0IkUdhixp6SF5EVWcCjs3Me6syqi1YS2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,160 +132,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 09:33:28AM -0800, David Matlack wrote:
-> On Tue, Feb 24, 2026 at 1:18 AM Pranjal Shrivastava <praan@google.com> wrote:
-> > On Thu, Jan 29, 2026 at 09:24:49PM +0000, David Matlack wrote:
-> > > + * Copyright (c) 2025, Google LLC.
-> >
-> > Nit: Should these be 2026 now?
-> 
-> Yes! Thanks for catching that.
-> 
-> > > +int pci_liveupdate_outgoing_preserve(struct pci_dev *dev)
-> > > +{
-> > > +     struct pci_dev_ser new = INIT_PCI_DEV_SER(dev);
-> > > +     struct pci_ser *ser;
-> > > +     int i, ret;
-> > > +
-> > > +     /* Preserving VFs is not supported yet. */
-> > > +     if (dev->is_virtfn)
-> > > +             return -EINVAL;
-> > > +
-> > > +     guard(mutex)(&pci_flb_outgoing_lock);
-> > > +
-> > > +     if (dev->liveupdate_outgoing)
-> > > +             return -EBUSY;
-> > > +
-> > > +     ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     if (ser->nr_devices == ser->max_nr_devices)
-> > > +             return -E2BIG;
-> >
-> > I'm wondering how (or if) this handles hot-plugged devices?
-> > max_nr_devices is calculated based on for_each_pci_dev at the time of
-> > the first preservation.. what happens if a device is hotplugged after
-> > the first device is preserved but before the second one is, does
-> > max_nr_devices become stale? Since ser->max_nr_devices will not reflect
-> > the actual possible device count, potentially leading to an unnecessary
-> > -E2BIG failure?
-> 
-> Yes, it's possible to run out space to preserve devices if devices are
-> hot-plugged and then preserved. But I think it's better to defer
-> handling such a use-case exists (unless you see an obvious simple
-> solution). So far I am not seeing preserving hot-plugged devices
-> across Live Update as a high priority use-case to support.
-> 
+On Thu, Feb 19, 2026 at 03:53:35PM +0000, Usama Arif wrote:
+> Why 1G THP over hugetlbfs?
+> ==========================
 
-Ack. If we aren't supporting preservation for hot-plug at this point.
-Let's mention that somewhere? Maybe just a little comment or the kdoc?
+I know this isn't your intention, but one interesting aspect of
+supporting PUD mapped folios natively is that it could open the door
+to simplifying hugetlb as well.
 
-> > > +u32 pci_liveupdate_incoming_nr_devices(void)
-> > > +{
-> > > +     struct pci_ser *ser;
-> > > +     int ret;
-> > > +
-> > > +     ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
-> > > +     if (ret)
-> > > +             return 0;
-> >
-> > Masking this error looks troubled, in the following patch, I see that
-> > the retval 0 is treated as a fresh boot, but the IOMMU mappings for that
-> > BDF might still be preserved? Which could lead to DMA aliasing issues,
-> > without a hint of what happened since we don't even log anything.
-> 
-> All fo the non-0 errors indicate there are 0 incoming devices at the
-> time of the call, so I think returning 0 is appropriate.
-> 
->  - EOPNOTSUPP: Live Update is not enabled.
->  - ENODATA: Live Update is finished (all incoming devices have been restored).
->  - ENOTENT: No PCI data was preserved across the Live Update.
-> 
-> None of these cover the case where an IOMMU mapping for BDF X is
-> preserved, but device X is not preserved. This is a case we should
-> handle in some way... but here is not that place.
-> 
-> >
-> > Maybe we could have something like the following:
-> >
-> > int pci_liveupdate_incoming_nr_devices(void)
-> > {
-> >         struct pci_ser *ser;
-> >         int ret;
-> >
-> >         ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
-> >         if (ret) {
-> >                 if (ret != -ENOENT)
-> >                         pr_warn("PCI: Failed to retrieve preservation list: %d\n", ret);
-> 
-> This would cause this warning to get printed if Live Update was
-> disabled, or if no PCI devices were preserved. But both of those are
-> not error scenarios.
-> 
+We currently have all kinds of huge_vma checks scattered over the page
+table code, and entirely parallel paths for unmapping etc. With native
+PUD mappings, this could allow pushing the special casing out of the
+virtual memory layer and into where we deal with the page objects.
 
-I agree, the snippet was just an example. What I'm trying to say here
-is, what if the retval is -ENOMEM / -ENODATA, the existing code will
-treat it as a fresh boot because it believes there are no incoming 
-devices. However, since this was an incoming device which failed to be
-retrieved, there's a chance that it's IOMMU mapping was preserved too.
-By returning 0, the PCI core will feel free to rebalance bus numbers or
-reassign BARs. For instance, if the IOMMU already inherited mappings for
-BDF 02:00.0, but the PCI core (due to this masked error) reassigns a 
-different device to that BDF, we face DMA aliasing or IOMMU faults.
-Am I missing some context here?
+You might be able to take it as far as the only thing left of hugetlb
+is the reservation pool. Such that a naive application does mmap() as
+per usual, and it comes down to a separate allocation policy how the
+backing pages are served (buddy, CMA, boot-time reservations, ...)
 
-> > > +void pci_liveupdate_setup_device(struct pci_dev *dev)
-> > > +{
-> > > +     struct pci_ser *ser;
-> > > +     int ret;
-> > > +
-> > > +     ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
-> > > +     if (ret)
-> > > +             return;
-> >
-> > We should log something here either at info / debug level since the
-> > error isn't bubbled up and the luo_core doesn't scream about it either.
-> 
-> Any error from liveupdate_flb_get_incoming() simply means there are no
-> incoming devices. So I don't think there's any error to report in
-> dmesg.
-> 
-> > > +     dev->liveupdate_incoming = !!pci_ser_find(ser, dev);
-> >
-> > This feels a little hacky, shall we go for something like:
-> >
-> > dev->liveupdate_incoming = (pci_ser_find(ser, dev) != NULL); ?
-> 
-> In my experience in the kernel (mostly from KVM), explicity comparison
-> to NULL is less preferred to treating a pointer as a boolean. But I'm
-> ok with following whatever is the locally preferred style for this
-> kind of check.
-> 
-
-No strong feelings there, I see both being used in drivers/pci.
-
-> > > @@ -582,6 +583,10 @@ struct pci_dev {
-> > >       u8              tph_mode;       /* TPH mode */
-> > >       u8              tph_req_type;   /* TPH requester type */
-> > >  #endif
-> > > +#ifdef CONFIG_LIVEUPDATE
-> > > +     unsigned int    liveupdate_incoming:1;  /* Preserved by previous kernel */
-> > > +     unsigned int    liveupdate_outgoing:1;  /* Preserved for next kernel */
-> > > +#endif
-> > >  };
-> >
-> > This would start another anon bitfield container, should we move this
-> > above within the existing bitfield? If we've run pahole and found this
-> > to be better, then this should be fine.
-> 
-> Yeah I simply appended these new fields to the very end of the struct.
-> If we care about optimizing the packing of struct pci_dev I can find a
-> better place to put it.
-
-If you have pahole handy, it would be great to see if these can slide 
-into an existing hole. If not, no big deal for v3.. we can keep it as is
-
-Thanks,
-Praan
+Approaching it this way could help separate out the discussion on code
+impact and tech debt of PUD mappings, from the allocation technique
+question, which in itself is a fairly large topic.
 
