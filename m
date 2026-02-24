@@ -4,123 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9D46EFB7E5
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 02:38:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0CBEEFB7E1
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 02:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ACA46B0088; Mon, 23 Feb 2026 21:38:07 -0500 (EST)
+	id 51C7C6B0089; Mon, 23 Feb 2026 21:39:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25A6F6B0089; Mon, 23 Feb 2026 21:38:07 -0500 (EST)
+	id 4D44A6B008A; Mon, 23 Feb 2026 21:39:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132CC6B008A; Mon, 23 Feb 2026 21:38:07 -0500 (EST)
+	id 3DFFC6B008C; Mon, 23 Feb 2026 21:39:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0185A6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:38:06 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D8CE1C3B1
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:38:06 +0000 (UTC)
-X-FDA: 84477790572.03.3430A5A
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C199B2000C
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:38:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=N0fPBP0Z;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771900684; a=rsa-sha256;
-	cv=none;
-	b=5ubfp4nEHvdVYWsW1bE95w1PHQKdWg5OTVhktaeVF/ykdCunSbrkFAw7guA7Qc9BXC38SA
-	MxFBuCNG1Yhhusl7mnHLNixKkIBk/bf8GOnccTK/ihl0JXyKGrScP4O1LqUvjDSB4Ji7+D
-	tJyrsv/q/aOKMl0ntIeyv7WvBHfPtJ0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=N0fPBP0Z;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 294F06B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 21:39:00 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D25AD1603FD
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:38:59 +0000 (UTC)
+X-FDA: 84477792798.16.9C612DB
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D49821C000A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:38:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bk1rw5MH;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771900684;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771900737;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G24I7Ff/etxg0a2wqzeI/LH7DTsK+u1io5dvhJpjM+c=;
-	b=6CDC1aia+wR8q8ojrQgMoy68GuQ4QMUox+RyranyUDFD1qjsLCFEiLh6ylmm6SOJIU1usm
-	SvDBsK2s5ogfxfDWbSer3VDj8d+HE3540yABclNS5qbedTGVGQTy3Zz7M+ck6GyVrt3k2Q
-	l9VtQ1WNnu7iRZLrsi66/CaD99a69ck=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=G24I7Ff/etxg0a2wqzeI/LH7DTsK+u1io5dvhJpjM+c=; b=N0fPBP0ZX3nff+uESHr5dr836B
-	DFRdCMf3GvEX6pucye5mFXvdon/1RMquIa2SWyCAt0OtILzFqh4mEeh7zI8UA7ryKKGO4+iMj9ecA
-	4od6s2TJAoWRl98Eoo42SaRd0JZ12d/CtajA0lU5UMRMyBH8zTiuHfInBt60A9z/kHOSge9KZgVCG
-	1D3NSnr8x0I4U1n/A4lXRDShJrK7H4PI6xiFd2SQSHxs3OzNLyHC4MVR8cxNc72jq6aCNTobtHBJO
-	uFa9pu7zX6chMGPqbq6ckUfYkygRP75MlToC6N1m7Jdatdi6apM4AOTzmNGS2u+45GJ77yZfhShiA
-	vwEVG3Og==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1vuiHl-000000000cE-3D2J;
-	Mon, 23 Feb 2026 21:36:30 -0500
-Message-ID: <01f4ffab0da9e4326a78f8b6eedce23dfb115e7a.camel@surriel.com>
-Subject: Re: [PATCH 1/5] mm: use inline helper functions instead of ugly
- macros
-From: Rik van Riel <riel@surriel.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, 
-	david@kernel.org
-Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com, 
-	ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, 	surenb@google.com, mhocko@suse.com, harry.yoo@oracle.com,
- jannh@google.com, 	willy@infradead.org, baohua@kernel.org,
- dev.jain@arm.com, axelrasmussen@google.com, 	yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, 	zhengqi.arch@bytedance.com,
- shakeel.butt@linux.dev, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Mon, 23 Feb 2026 21:36:30 -0500
-In-Reply-To: <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
-References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
-	 <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	bh=Co5jOQY5Xwt0Q19IYGp0vH59NTwhi1RMjwKAltkdA4c=;
+	b=FYFptmrtyp35985BMQUOKMLVT7cBTUzoyN05yraQh2RCKjhI8nu6QSeRzZpZyV5qyowXi2
+	lWEU3miF7+Q3Jkkc1NMwuw3R4V5Sbt/kZz8LC8Pi3xa7b/NDw2WVTEEbrW6PHIao5JLtWV
+	Ygin62R0e63NHkK15yVlB0igwFdlm5I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771900737; a=rsa-sha256;
+	cv=none;
+	b=MfpkNmSUvT+q0ejejjRt8+/nM07WccGEBKQcoJoBg37WrGeBYYKaNED3k0qjSByxzcjzRC
+	+bnCKDQxux25WjMMAGVmEXD4hLWDwT+BRgoIgFVf0Fveb9pTf7mW2sj/iIZkxkhzvgk8Zc
+	ZA7FRJiVT9v8Th7dC23gxqrMLETSnCI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bk1rw5MH;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-65807298140so7470436a12.2
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 18:38:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771900736; x=1772505536; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Co5jOQY5Xwt0Q19IYGp0vH59NTwhi1RMjwKAltkdA4c=;
+        b=bk1rw5MHV8zerKXvFIgn71TslRYjgfKHfIux7b8Lmyi16gmVqhim2nxOryDh07SmJY
+         qp9EvubxJFzNIIQ3TyH5IId4x74cvhCC0H9nrWpPlhJxw2zWmAZADcx9907LKU/CoaP+
+         YlkhwAEXc9nlhgFdXOZHT+lYVDDBQW+4zHKun9lGmonIWHgqgHdsiLNVKWrj9ydKQjaC
+         VcEzhv7FbG+Jpk47r2T+Zdms1Y/XYnX72JKlOWXuea+agFKMj4vVhR3w22+Nuz3V7Lyr
+         UYCNbCtrqUMqrsA457VWnHrbO0iVKfHWq3KPpVhqG+VbfoiodrBGLyAamGbLPv4WYm74
+         PUdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771900736; x=1772505536;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Co5jOQY5Xwt0Q19IYGp0vH59NTwhi1RMjwKAltkdA4c=;
+        b=QStt8lljNVBK1ATIgUwL2mEsWptCNx3yCgzcyFFHepOjxbfuD1VzZYQj0vr/csVAmV
+         FJ/61SMpIW+JcUtRo2jMEMpcYro/PIxnjUqhsrt2L1yHzBiOMX2G3LP0KDKz8/mmnxBX
+         LiEf0Sb3dQpYLf0i6MnFrgi7OP2KZ0XeQpXdE+acB+jk2biu0MpCoQj/cb93vj5plxNY
+         WegwYqNObBqSB9S9x8ohP1ApbkXJ+HLlJIa2UfGiOJa4OXaEClb6Q/mQrshHmMNX2An3
+         JeL84TAk4TU/qkUI1FAIZzC7uUfVlGBmRWs8nbSc1RuhAzkqeCQEkeUAFY/bcR49DjWx
+         Hb7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWLZh5nVl7Jvr80It7TbdBA7Y808DVkYFRB9T3v9Jqdh/Qft6IDGh6gAKfChGXzclXExP4tQS5x6g==@kvack.org
+X-Gm-Message-State: AOJu0Yw8RjZdxEY0jNAp4HLvCZAWce5v69Fcs0vC8QxnIblmTx93ZjpO
+	8MYGH5IHPOeeHdkQZsfNyMucL1M1ZW8bbn4Ipcz0V+OkvlMTkWBy0JJr+5JjIQ==
+X-Gm-Gg: ATEYQzxzjkwuDeuKKoemIIp+H6Ar+7dQxwUoS2zzrni7EhZOdtcdxQcy7ydIK1phK2M
+	M4OHIXbwCNIy2VfhNHZotwOV7s0LXBCULMLZTTJ8EW1DjUUwj5dLilqCKu8WtHRArUFAJvm4zTl
+	krKYZXrkZlCiodDbLj9o0nmLw6/jGG1n8FcTRY+DcbpVG+L2/ettta7AdfXq8ay/IR+BkY62kvW
+	nj3ehfM7EkP5pN3sw0z3xFFHEJN0mUV68UWYYTZGjy2fFqm5dw1fqNmnh5exKG4jRWkdn3pTpJ2
+	sOTuFNdJEUcZj53cppuH2ClaJ5iK0klXi0Ixsjv4Bf9xkiKZp0oiTbsvjBRBaEW3NzkNCKS//OF
+	MjnyAky/NE7V6uv2yIkrAIXHtFKdpmK3MRAQBFQNZ/+peTTtOW1BnqNdU3zDyVgA5WO0dtNfUPE
+	AK6E+D+M2/4XpE1jNMlvMERA==
+X-Received: by 2002:a05:6402:1e8f:b0:65c:5af2:902e with SMTP id 4fb4d7f45d1cf-65ea4f0c81bmr6681492a12.30.1771900736113;
+        Mon, 23 Feb 2026 18:38:56 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65eaba2e183sm3151381a12.26.2026.02.23.18.38.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 23 Feb 2026 18:38:54 -0800 (PST)
+Date: Tue, 24 Feb 2026 02:38:53 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
+	akpm@linux-foundation.org, anshuman.khandual@arm.com,
+	apopple@nvidia.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, byungchul@sk.com,
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+	dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+	jackmanb@google.com, jack@suse.cz, jannh@google.com,
+	jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org,
+	lance.yang@linux.dev, Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com,
+	raquini@redhat.com, rdunlap@infradead.org,
+	richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+	rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+	sunnanyong@huawei.com, surenb@google.com,
+	thomas.hellstrom@linux.intel.com, tiwai@suse.de,
+	usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com,
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com,
+	ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
+Message-ID: <20260224023853.if2yxew3ylkhfim3@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260212021835.17755-1-npache@redhat.com>
+ <20260212021835.17755-3-npache@redhat.com>
 MIME-Version: 1.0
-X-Stat-Signature: 7qgp81wtue55ppuern8pgfewdszj8c5o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260212021835.17755-3-npache@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam09
+X-Stat-Signature: inid44xjnu8wjp9mo993nckse7891t71
+X-Rspamd-Queue-Id: D49821C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C199B2000C
-X-HE-Tag: 1771900683-41265
-X-HE-Meta: U2FsdGVkX19sa/161bd6muk41oyNSXA9XfbdazBnODOjZB9pRHF3dh70/a8c1r7ovPDHmNUEF19HLq381YhbMhAtBAwODuN3pLPoc8dv43m8/UHbcM/9UDbV4UFP48ZzB3wsRXLspuY2dTxnN5DYtVGmxl9dGk8Ec12ZEe0HqyRzaskrYQQe7sLXsnc0Q/uJmRWZacJ6tUpeBQECedtz/218UutpqsLYRJenlN20gRJY3P3AnYd4N1lpWv2jXW6LSqzAFXa+JLdjiHFsidyxq8sZRlsJVjh59T08wtnlbRa50ce8L1OFr3MtdP7M8U/ViIs0Ye79qof4NI6+o07efD3mPJPvOo4EpSQVnbca7DYsY+j9MsLMB7gHF0zBVZhOWkWIhLWpxQzsCSAV4XYMq3e8J2F4OHYIjhw1cH2obrwnvyRCnZbqvIPZT7px/e1Ai+38FsCv8gR3eKyNVUU0whjQcmXpE/Y12GeJS8qeoInu0kyPJ7TqVhS2+3EbK4vltv4zt4hYhv06ofNzIY49dDfFCG3EYNWAWxc6lOsCYupIklp+3JSDbQpR0XYXxFzZyWIeU5BWSxH3HjugD2bferL2rmojxeEPbKWCfyHMlSrq/NrqYcnvRQzEe7zx5m70V/0/MC9xb5EXDbr3nHOO5pnSYqduVh3syxlsQ9PUqhAFvFhRMThQ61SHHbZpBXibqoVkIlpj+p/CK/ZMyfajgdBMGshIIkB1HaFCJM1pFpOgNsJjJ0zqtqdXHVU71WChZeUD4mpN93LMBLf4a2wenfkzq6XcWpsr/uzLDLbrZsxrTeO3kRDKn+/qmWbz28FTV/+/cKv+N+cAu8l/dTEMisqgKNW6vasjmPNbvOwqPb2344qyhutyrPoIFevJMGjojM+VJQe/AptuR7+rusq5/u+HLQ06FQIklQVvfrNCo98Ag1JdKouSBNuiKFcl35Ys1rC9bC/HZGzpYCyHc+b
- IZ23s/Uq
- LsSUnkLibvZ0ABjohXNpZV6EahjaUCd0Wb6Hb50SEP4CX5KEAv6rLT9i9iwppYGQuZiTOH8BNTX9P35Y0Gy16MMENfig5RHd2Fugikxw47m/uVQS+DhgIYtFzi9gV2YqteGmnWLhEEm033gHuOK0llopuwOlTKqpyVNlhVjtYWZLkbsjeV+fuRiOSz0wqB1/eLq2l/UyXdSCL2fo5w1R7XSlTR8MTNZa+gxEzYcjmsdcK/LTSDnLCVKtJu7mx8oGA4foCDQYw1wsWQJtrv1Q4aqXUNN7O/2aljCYntaXXaRbJf+POm5HuhxZsVQ==
+X-HE-Tag: 1771900737-641842
+X-HE-Meta: U2FsdGVkX18kpbUz/16pUBReQF1/Y3zEfcKtKDOARpRZtw2jQ20pXmw7DJ3JRE+HsbrBMJgALznfDNbsvEuQC3AlpfZ5xzCvmeX0K3OmwFyhccFJSFLPgWzEvKVUC4pxAMAq6eWYrEYoWLsNsgWkxjUkBoVcPEqWN5m+Wae7Fm3sdM7h3mi7WY16eSzMGqAFOo8+qD3A8qHvYwuLCEpklGYCKuUGkkz94ikvvetjttT7BqptZZN3DokZlGSu6FOFMiATSYFq8J+923UpvZ9IzJeHv5AX0LhBw/kAzaHz4QNR/lWGw3KB8ii21O9qPGq0oki4M65atwx++FaI9LmTVKBSTXHFrBmAHW9BcQj+E1N1xsjRZN1cLrPw8JXmo/stCAP3oYjF2/W3HSW8tfKRnV5sIKT/BaTgiiMYfb6cH0gEwThODdQAsFh+1YSNinIwuiYLc2GSsHJfm4yPJ+X9l/sKoHG+2zQ6smLlKfcOVKDPUrXw5ObGcxJG8FlkHZCxDja7bHyQBNwIWjLdIMbQ03A+vcGYv3M77ZwORqH+yhdHytt9tIse+KmZF7Qyd2ING0isOfiR0aNTqX8YAzYDBpZpx2ja+MlcGOt4QkNAH/D+UR9ocnnpHiVmvTUe28hug6AcDTf6ZCT417u+RMu5KwgakTaXK4j2PWGUI53gahaHidrglqLnSCt+N113a5CFwCFByMN197xUp77Nl9WWl/VDCPFOTiN9nh54Tob70msmlVDc6cJu2X4dGUKPcrN3vdb7OYwAKBr0YaCbDOu8eW8pDdIOzR9/JaBqzvtzyEaMQBRKsI0n7TuDGbJn5OU+TIad3QjyZXcPs+SnC4d3kn9bfSBacUzq7PkmvVzREccMXX2Ly/zg7iRu7Tf3FbTH2FrAQjGAT4qAJAFn0XdXxn+NJt//va6/xntXYP/3ejDkkzcNKFjWsiBrEOgXlkBZ/BL47lJJJlR11/Pdx12
+ slm3Obyf
+ sFvQKJTpCL58/O0GZuTrL3Jhg5X5UhQt1usxQhDJFS3kaKltwW4JMSxm0dorinqxfzhm0JH0ygDn+XZTvQZnQ2iCO0aRy46bE+zkhvBBf7cYqb3XvnQQ+6ciPkgoA4VG763qFmP3wL+ag9ZTk1xoe2ANJ6ppRmjayfoWdOC80Rsq9/rtj9YvfB1OhB22vrmRoqVllr7PfFsSnMTmLGxCCUl0IG9FUCveynCw36HhaBc6IXtMd3dLCrwwGFcCwDoNCL2S+Efxms1yLS+zWqGwz/NorxQYULBPLeP1c1TlYC87nyd8iU3OE9ampowEn2FCSg4WFPCpP83cfW/2XolU9Lwc0iqKe4WBvVQPORIdIUvPlshvGrbSEmXbCtgcuc1XJrSs4pGhhw7iaBVwPlM5ofIEIdTO4YZC41NeUEJuTA7yBMdFSNVG9RHy2RMvgRH5764ZNq8mLu032OkUHHyXr3eeKzc3meIcipxc0fjHcM6wdJL4nnUqqMUPczO3i0ek+/btYeGFrxcPw0JVl+MoG+Hg+mFKtuXYJAKEtjrWW/QbodVpWVL4wuUebG6zruoCrTbme0rOlPoZCJOC2Sz9DChRaksNkpLl1hzmlI8JJILdxyJdq6Wi+8Sp6+4mRhNOtnoasRPcLcxyruR5/1s+SolOh3tJzrI+ZGoiZKWPzzFQ6P7NYufSq6dHrmBgCZHFyWO8X8CktiidYYU1v/q8+HeSGe06D4WvsKTHfOaS1nlwRqEwxq32hnbOg6h9lRm8IJF8obBq6u/FnTtuEfJogPcpg7qfp9ZZ7ieXa6dBAZpip/wfnI3Pwb0a7Ztqb6dEqOp1xxtrSrMF2sjz70rePin3QYWoa53Odht7Xyms3WpGMQI2StVPLY20jjQkwlTbSI+V8uJtL/fG6h0LAl2STI1MpGDYB+27ZeA6wjGKcS/zmbrZtUGTwMCJhrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,27 +141,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-02-24 at 09:56 +0800, Baolin Wang wrote:
-> People have already complained that these *_clear_young_notify()
-> related
-> macros are very ugly, so let's use inline helpers to make them more
-> readable.
->=20
-> In addition, I cannot implement these inline helper functions in the
-> mmu_notifier.h file, because some arch-specific files will include
-> the
-> mmu_notifier.h, which introduces header compilation dependencies and
-> causes
-> build errors (e.g., arch/arm64/include/asm/tlbflush.h). Moreover,
-> since
-> these functions are only used in the mm, implementing these inline
-> helpers
-> in the mm/internal.h header seems reasonable.
->=20
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+On Wed, Feb 11, 2026 at 07:18:32PM -0700, Nico Pache wrote:
+>In order to add mTHP support to khugepaged, we will often be checking if a
+>given order is (or is not) a PMD order. Some places in the kernel already
+>use this check, so lets create a simple helper function to keep the code
+>clean and readable.
+>
+>Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>Signed-off-by: Nico Pache <npache@redhat.com>
 
-Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
---=20
-All Rights Reversed.
+-- 
+Wei Yang
+Help you, Help me
 
