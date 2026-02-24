@@ -4,120 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C74ABEFB7F3
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 04:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E17EFB7EF
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 04:27:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E95C6B0088; Mon, 23 Feb 2026 23:25:42 -0500 (EST)
+	id 5C9AF6B0089; Mon, 23 Feb 2026 23:27:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 896BB6B0089; Mon, 23 Feb 2026 23:25:42 -0500 (EST)
+	id 54D1B6B008A; Mon, 23 Feb 2026 23:27:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 778C06B008A; Mon, 23 Feb 2026 23:25:42 -0500 (EST)
+	id 42ED76B008C; Mon, 23 Feb 2026 23:27:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 623AA6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:25:42 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9FE413ACF0
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:25:41 +0000 (UTC)
-X-FDA: 84478061682.23.6C2B246
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B862F14000F
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:25:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FGDhRSZm;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CBDC6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:27:39 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B12A1C1C40
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:27:38 +0000 (UTC)
+X-FDA: 84478066596.29.133B5D2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0A7EF100003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:27:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JO+TCFPW;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771907139;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1771907257;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rVibhLURJoqVyfZNYNQL1uzOVVbJJoolZJlIL8V1kQU=;
-	b=xhArElCMs9koge3NkXfzxm2V96JOqG3Cl6zFlQNbU9PeH7gLJCXAkzxJGK5FgtSK1b+VwM
-	2TdBRApPUicjtQpQtaYrmNTA6qqR8GW7IprNy3fjTiXTEsAiTQwkyLdzFdwF6qHk9pu8me
-	A3XZwbENXj9TKW3anunQLfAaClOYnw0=
+	bh=k/WlqwD5WKIJ1smOGzPXcyUKpW0wyUvuh74vuCBUfuQ=;
+	b=X40USPYJO0CmuNj1DjyHwfmr+/o7Z6Wb+1P1nxoyWmLOMqFjBaQpsmYeC/8eK35aWCmmF6
+	XbXLUjJgaOCSL1E2e8pZXkil4+ZIoGltGBG3gZLUQtu4ptUqu/X5MIAlk3mtFcYEg490A2
+	Xi/4BNkS1M7DIfVjTClYNOA0dAGYoAg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FGDhRSZm;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771907139; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JO+TCFPW;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771907257; a=rsa-sha256;
 	cv=none;
-	b=Kh1xD0fN+8G6sZtZtQMgQ44P00Am7uoFueLlxS8TcRz3yom9IU1bQFMQkxvyPRnjPrIMOg
-	zi7oLcbc7ArxCc2Oe9TQGBvIpxSzVNhog3cVnWmIuD6cRLdFj9/HY10GpPXLYU/wapwb4Z
-	UkKlW268QuKRcBIz4Vj52Dhqjlk3M7I=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b883c8dfb00so870385866b.1
-        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:25:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771907138; x=1772511938; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rVibhLURJoqVyfZNYNQL1uzOVVbJJoolZJlIL8V1kQU=;
-        b=FGDhRSZmBxOaEm4MY5xYRHkOzSIRfxJLBcN5HPaiyAGRbrh/tirdFn46e/Ji8/w+Qm
-         fSnfRw4eUJ9qPae/7lWheboEJdICUBhvxbBSVDQnn0/ekGzgUTQX/Wy6ZZPX7PfSTCKP
-         qFjta2eUPmJkI2kvCj2zf+3jaPWZI1y/wwYjc8ME2unbDXvY26iipJQLOJK5IVPhzoCI
-         W3GGgKV4Bk9O6OebY1golZLu9/BwWyoMMr1gLcVgPy3L9cX7qXKqdy2vU+MwR2S4ChJu
-         2MAeEc5Sa8wrnZG6dssroR2b+MNGKXgoabfjZhCAXsgVVOVIAcLe/Ox4ICMDflVQrlvq
-         4H6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771907138; x=1772511938;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rVibhLURJoqVyfZNYNQL1uzOVVbJJoolZJlIL8V1kQU=;
-        b=qLA3jiIBrKejoE45rn2oOCPFxma/cW6AJqB4K0lNmLXmhpkHfvMoHzwFgaIGfMxoyd
-         jnyuFbiPKEV7B1gCiInVHa1J5JItHWP9+qV0E75gNrG4RAIRJWC2pUnldwhJxKIqxYYh
-         XXh5GerMjxEpfLplW/397VPMK1fiSFtxOt7hA1mnmFFmJ9Wi/+h5YtQGCg94HU5uCo2j
-         DBm4Cqj/SebOxyvODHV/4WSlkHpOPzXEfr+J2JOLYq8lpiziB38evekThVz1uEYvDGdt
-         ovY76z6was8wBA8wlsWKSfXZjnDJ/g9K54G+FbHW6UF76sOjL+splm4eNJzv7HygoJkE
-         dxtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyLUEhbSvDnZUXBk6yKoec/v02Xvf6LxhjsP5GYRNFsp2lc0mtHIYMtkh0THq4tWmHjy24MTZUdA==@kvack.org
-X-Gm-Message-State: AOJu0YwWvC5ELuvrUW0+hNuKmh0TwmSlO66na7HUMeL+iL3C3E57+VUM
-	kP0KXpFqI4BzOML1KadgMFT1pTLxXe6i5zurSpKmK/LzhKhyookCUB0OI4O7FQ==
-X-Gm-Gg: AZuq6aJgxws7ikA/p4qf+nC/npzNWG1eGMSuTEOtHXYl0S4GHdW+YY7iA3wNFeyJSju
-	3CSIKAYTUbX0PNw9hbC+pwmjc+ItyG6HLkndcQYnt0THKs6OzNAjYCd5t/+s6JGMCaMiN1Nc0M0
-	4XWncUZrQPBEV5055b/93REv/8Yx2KL4Hna1aoNY3dsFmy4GcQjT6exTm9asUNPvIqAtjS+0agD
-	/0lxBOS9ybp/0TgT1hLUmV7yxIOjP9KOXm45p14/XOQM9Rttiy9l/+knBJF3yPKlPAJTXzvfTp1
-	Jq6ZvqPTdRsK3cNvSAihArVS5ifi69A+xcJtLNYlYYQp4eug+A9SsFfOooWUlyjySszumFlLgIZ
-	h2mfK+yshVq0WuXJxEKEyvzC/zx+3e4DeyE3UCvyCUAXXoajPHV1Rji/JbhV+fY6YrwnFNUhkZ9
-	lhlJV5lSZX3x33dvkbl2RIaA==
-X-Received: by 2002:a17:906:fb1a:b0:b8d:e79c:906d with SMTP id a640c23a62f3a-b9081bd74fbmr493403966b.52.1771907138030;
-        Mon, 23 Feb 2026 20:25:38 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9084e892fcsm377131266b.47.2026.02.23.20.25.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 23 Feb 2026 20:25:36 -0800 (PST)
-Date: Tue, 24 Feb 2026 04:25:35 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Linux MM <linux-mm@kvack.org>
-Subject: Re: A potential refcount issue during __folio_split
-Message-ID: <20260224042535.l3ss2w2jvfv22ddl@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260222010425.gbsjzhrew3pg4qrw@master>
- <20260222010708.uohpmddmzaa4i4ic@master>
- <6346656B-7518-4A55-8DEF-C2E975714C8B@nvidia.com>
- <3e22afe6-ecf7-4180-9287-c48fea7b8be1@kernel.org>
- <20260223115948.sbylmtqhznmabcth@master>
- <097A507A-C60A-47AF-9590-1D6CF712B1FE@nvidia.com>
+	b=3q6QYy6KGSFYbL5acg1dRbuQlXy+fQ0AtRVw9AOLmD5CrwwD3GvKq6FCRsxYaMZmDSK0iJ
+	pOtP/PmH83kcy7jy/CgOdh/n6BvSFIebv9n9GRI8977uGuAjp/y2YsL9mHGJZ6qOq5pbPS
+	ixF8jvaq3N+2n5hJz7MZkOTX8MvT7l8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 58D0B60137;
+	Tue, 24 Feb 2026 04:27:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6A6C116D0;
+	Tue, 24 Feb 2026 04:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771907256;
+	bh=DKH9P+2oEkKzIDD+rEyDOYCwldBWz2XgQi305D52RZE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JO+TCFPWhl6YiJlSRDSrDIV9dFZrhjh0X+a4Kva+2ros/0Qx+6Tu/Ww70xy+ShN/H
+	 hS/9ev1JC3qdqnQ6z1mU6OhtHLVQb66tL/VG8nSu6MpGsz1KCxyjHOO1ZNzDnv4RiL
+	 uGb2MoVAsc65FouuJOSaLQwqmAmaMISrqHPiWJVkxjal2kEGLcJvvu3MHN8lUZGZgh
+	 b8irlvIuqQ5Y/xcbsxpZtTeFmwTomp6Ye70yEiJcxN+yo+VDMnM6wJNqGbQ6x6AzZg
+	 KyvjulmX2IKQuULm4LcdgKUqD8ZTkKwM87ns39WPHGRRqwfM3oCFCx6yGw5xgUw9YT
+	 Bxaf2qCRUCuAQ==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH v3 3/4] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Mon, 23 Feb 2026 20:27:33 -0800
+Message-ID: <20260224042734.57666-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260223123232.12851-4-ravis.opensrc@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <097A507A-C60A-47AF-9590-1D6CF712B1FE@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B862F14000F
+X-Rspamd-Queue-Id: 0A7EF100003
 X-Rspamd-Server: rspam02
-X-Stat-Signature: hz31d8966ninbj8aphfnf6aify69pd9m
-X-HE-Tag: 1771907139-23635
-X-HE-Meta: U2FsdGVkX181SHoMXZjA0JMXXgreSnO2+3D26VbdAGKEmSjEv4OlYbCzwvwKRHD49rz0U6kJ1W2JTGKecQQoDMpzvT++DS+PJNzqkLlx2JcccX2LltgX1aYuZoeitzTl2zWfgy4C+VrL51knwDAUSYu6P5bL8xYzLTXf1mCHNfmuAaO55bkBhSuZactZ+Fn/tIO6IZgQz7cznJe48orE47GFEVDhkqvM0CLOqNtD4BT0PcFIBIzNIAbf9tud9JMhqgaYOFxGyq4Em+61OiGjw3hqEIp2Qj8c+OKJzSSlwpNLEsn5l4yBqAFWcccIc1jLfWnQ0vwszfL//8ILkqw6FbjyYMYSLiPoMdJ42eiSTLYXDxhXYwE/4VeNd7TlPwSOw+XLVVFRxgtxo3JZTiWAJn6NTgIy98dVqO4J6wAIYbr06LgaJ3FtpnhETzEmSrxZqF/2BTl8Gw+TYmPtPm9to/pLGpkvEdwkquK9QsSviZFPplrCVM+dSMZBCdJ2b8OnlnaHHd5Q4FAJ89/MY0a7iDbOrN2RewYwNk69HuqS1r/wbJxLXtB29KoVvmP7IDjS5KBxIpglmHaTP0iA/xMN0PCew7lRffjNNvgO5w3oma2fIb3qlyI9Sf0tZFuyt26P2eA/qKsufdsypqxRp0b22uRpO1k0Jqca7QJFSxLReN5HabsT1FE7Gtd7BeErD+2uKIJXq8w4/a/emAs5iwZPN959rX5xnTYBPOp8TtpRWDgftirUgyHeE65utoAzTqvkckYYZX+awH6Cm7HXihqUr720jXh2Uju4t0npJdrXhrijGv5lVrB4I7J3ZHyoMv3ZW5woGnS3vbv+mnUli2d5/+xAoRciEaqfiMpFtEg+/XY6rC6V0CJvvty/WaujQT1yLqetsqOx1SqeUnYhui/43hNp1eyqAcBjTsbJGPMeP9MPIXYicCpmZuTLPMIKFKfkR8/sTjzyd5zidFzQlIn
- OmPv1//7
- txVf+g8Iuva1i970mrSQIMgPKZsDCzaG5gA1tz25BZ1QpZWAzXiPESgIGxiqCk8SRj1cNe6ziC+6zqNkQPn3Cz3hmm6PVABWv/HNmQ0N6cljCdI1Oy+1o6DjLBVx9DDmpDQagWvHL+9BDc41Us9kJSBRKVc+/VLf7aPC18kCZz97cIiT99FGsa+pHgTRYJHK+0obAhi3gAKSSB9cf3NgHUMbBDV2D+MdTXMnBswKbsVjxK336ucs5b2zEUc3mcoREHD3CHGh8yQ7Du8MExEExCscqUd10cAnPCywAR2TQ9TBUwU4Fr/kKFVbaCdSXX51OTNoQOrQXKTxCVIHvUCG5L552Y2WdFIHqzEnjdzEnOrvEkEmT08NNroCA3ALZyroDKd+GGYsUmhUCuJFy9EWqO3iqcvCdBClI4kjmr4C7TfIRIrJCksnH6XzxqWYT36Ewbp1k1TSsh6GUX2FCc/IcRK3BH9J5jsOoSLposFl336BYgczF06/vhlQgK1ufpwMEC+bg+dDFuVpZgFiJXzmtUlBjBJLkaon9p3p1iA2AurVLKVYXzjLaUtXPiJi2rcMehXGd5aRhEl+g0UqZpGJlVI/zBwoNZRyBf4wdxFKxWvtol4cCgSWVlqpiB2O3B8YXNSQ9qngl7y72pQUzLoYDeh6sz2M6iR/m4YEvHEsnK+6h3LMzdR4NQpRYYBt6M4roW5qdlHp+DVX+n08Fc5CHImyIA/0ckEiS2ouZxhSFBKAqX4gnLWUVgc2UnHJM3IMgmtYiCY9Z5NIIdhpIxQLa6TcCXgm+L0ZkV0GzdnYfsBeybNno8dwO4njOFQ==
+X-Stat-Signature: ocrpnqkwqo16oh1zh1tbkswhqo7sng7s
+X-HE-Tag: 1771907256-383265
+X-HE-Meta: U2FsdGVkX19+weQeGB1DZ9LwXuUVRQs45a9E4IV8pEow63E6Yz9k2nw1/EFiIwuilAqG4MbuMbfU4c1t9La5rharm8syD/NsaONqarTBD+BZYpV/WOXjWZAFCzUiJeD+EceJNthdjiOO71tfccWPiWRsKUdR0+dHPTawhK55y/NfJZJsL1g7o9Tyok7oJKRKByKzruiTLYHYqf2KOdPMjNfq0p2nkxn5twP1aw3biJUJYklB56KtavZBq9lfvLSdzU4oIIA9Cb/3p3rCzoX3FG/G3vwqp0ztRZ1N/l46Dsnxs1LxtLMZ2iqkioWJTiFnh5aEEZj1XjB6dKvruDOuBQz+MQOhod3+yRiFXTOmFa8KVfY6BUU9TNfD9IvmyWAQzrGkxAFW+zsdWwcY7kqgCxjLwbC/MWM5ellNb5YiabyRYZtK5x6AlsvfE3VvaesPoBtwGKa6lfVGSGPYWqRupXT526I9vYVeI8xwrSbbF0vGWBH0k+Mp0qmbsqCullzt0EhSoWH88ZpfCxgLjnEp5atZRTIrSb/UkBqAul56Hsvd0SQS745cC9HyGftY8NM8LPpMvB2sGOhbEpD3X4QawUddlmcqO8AwfFG/vaZmpcJ+EkcJE7izuuYPfM1hrpxWLwwd3z9cEnPsuOqd6xJImOQLxuZNWLQo44HwU+clakL2X1yNj5K3HqZ/j2Ds1oO7ZvakJbMgm3CvA1Qqi+dv9BmN0O4xeRSXUtTN/U5aXNKiCgL+r7o1x3F24wuX7y82yAGVzuq8W1aWOtd+sz8ne88YmoD7wbQBwR7yOnKkgXLQhXsgYSd1GgWDTZcFAGnobdJjqBx99Z0Vlxoa7DCBVuevw7hwZ2hGhJip4pMWc8CLmWCgOlfwOnlGuoUEhq1mIoauYgM4NJ3tLIGYBtNhKSRo4fhZBFIutVCrzl3UkPzR+i0Z3qqG9XXMLGKFMhVMp7qunWSLTvu79PxK9CL
+ EF8ftU/N
+ KONBRj8hsbYXSKjBpYYg+33KG2ydmTGd1pUHwv1LJZTCY3I4nW0yVzPaYYp2IB84+j1lrG48ilCtwndDuqXHl+siPpwOTUBp8OuFcXcodLNZlaA1cA16Pow8cglo8psMOWYDboi0jb96A6rXHWOOGMtTihPW6IWYvNMv7lMByIQoPckvMdVf3/4Q0Aia2hLDVEnGG7WkNoT9LR57pzFoyntDFWVgRpoTeu7UqDcohdqcto818SZSFiLb6sbS02AA+PtTo+Cq3DKZDErsI6A0U92NbRoSXRo1hbZ7n19n7x8EmPE/E1M+RBycYvsf282bqXFWHXS6iAyQDnVwHixpYOHk2pCG2+1idg51LliqAY6J2yB6IksWuVNtKYMCc8b61/ebd51mKNG0gBMNWhcvYBkxXU6EZMkbh55Mh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,223 +102,310 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 11:00:01PM -0500, Zi Yan wrote:
->On 23 Feb 2026, at 6:59, Wei Yang wrote:
->
->> On Mon, Feb 23, 2026 at 10:23:11AM +0100, David Hildenbrand (Arm) wrote:
->>>> BTW, in the folio world, I do not think it is possible to perform the aforementioned
->>>> split_huge_page_to_list_to_order() pattern any more, since you always work on folio,
->>>> the head. Unless there is a need of getting hold of a tail after-split folio after
->>>> a folio split, the pattern would be:
->>>>
->>>> tail_page = folio_page(folio, N);
->>>>
->>>> folio_get(folio);
->>>> folio_lock(folio);
->>>> folio_split(folio, ..., /* new parameter: lock_at = */ tail_page, ...);
->>>> tail_folio = page_folio(tail_page);
->>>> folio_unlock(tail_folio);
->>>> folio_put(tail_folio);
->>>
->>
->> Missed this. Agree.
->>
->>> Agreed. Maybe it would be even nicer if the split function could return the
->>> new folio directly.
->>>
->>> folio_get(folio);
->>> folio_lock(folio);
->>> split_folio = folio_split_XXX(folio, ..., tail_page, ...);
->>> if (IS_ERR_VALUE(split_folio)) {
->>> 	...
->>> }
->>> folio_unlock(split_folio);
->>> folio_put(split__folio);
->>>
->>
->> I am afraid it would be complicated?
->>
->> Well, we don't have this usecase now, could decide it when we do need it.
->
->The patch below should work, but for now, since we do not have any user,
->it is better to update the comment and add a check to make sure @lock_at
->always points to the head page if @list is not NULL.
->
+On Mon, 23 Feb 2026 12:32:31 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-Agree.
+> Add new quota goal metrics for memory tiering that track scheme-eligible
+> (hot) memory distribution across NUMA nodes:
+> 
+> - DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP: ratio of hot memory on a node
+> - DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP: ratio of hot memory NOT on a node
+> 
+> These complementary metrics enable push-pull migration schemes that
+> maintain a target hot memory distribution. For example, to keep 30%
+> of hot memory on CXL node 1:
+> 
+> - PUSH scheme (DRAM→CXL): node_eligible_mem_bp, nid=1, target=3000
+>   Activates when node 1 has less than 30% hot memory
+> - PULL scheme (CXL→DRAM): node_ineligible_mem_bp, nid=1, target=7000
+>   Activates when node 1 has more than 30% hot memory
+> 
+> Together with the TEMPORAL goal tuner, the schemes converge to
+> equilibrium at the target distribution.
+> 
+> The metrics use detected eligible bytes per node, calculated by summing
+> the size of regions that match the scheme's access pattern (size,
+> nr_accesses, age) on each NUMA node.
 
->From 66e24e6cc4397caa134f5600d22d77fdb9b58049 Mon Sep 17 00:00:00 2001
->From: Zi Yan <ziy@nvidia.com>
->Date: Mon, 23 Feb 2026 21:59:18 -0500
->Subject: [PATCH] mm/huge_memory: allow caller to unlock any subpage of a folio
-> after split
->
->Transfer to-be-split folio's reference to an after-split folio that caller
->wants to unlock and put.
->
->Also let __folio_split() return the folio containing @lock_at for caller to
->use.
->
->Signed-off-by: Zi Yan <ziy@nvidia.com>
->---
-> mm/huge_memory.c | 65 ++++++++++++++++++++++++++++++++++--------------
-> 1 file changed, 47 insertions(+), 18 deletions(-)
->
->diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->index 0d487649e4de..d051d611c6e5 100644
->--- a/mm/huge_memory.c
->+++ b/mm/huge_memory.c
->@@ -3768,10 +3768,9 @@ static unsigned int folio_cache_ref_count(const struct folio *folio)
-> }
->
-> static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
->-					     struct page *split_at, struct xa_state *xas,
->-					     struct address_space *mapping, bool do_lru,
->-					     struct list_head *list, enum split_type split_type,
->-					     pgoff_t end, int *nr_shmem_dropped)
->+		struct page *split_at, struct page *lock_at, struct xa_state *xas,
->+		struct address_space *mapping, bool do_lru, struct list_head *list,
->+		enum split_type split_type, pgoff_t end, int *nr_shmem_dropped)
-> {
-> 	struct folio *end_folio = folio_next(folio);
-> 	struct folio *new_folio, *next;
->@@ -3855,7 +3854,11 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
-> 			folio_ref_unfreeze(new_folio,
-> 					   folio_cache_ref_count(new_folio) + 1);
->
->-			if (do_lru)
->+			/*
->+			 * skip @lock_at since caller wants to unlock and put it
->+			 * after split
->+			 */
->+			if (do_lru && new_folio != page_folio(lock_at))
-> 				lru_add_split_folio(folio, new_folio, lruvec, list);
+Looks good in general!  I have some comments about trivials and the design
+below, though.
 
-This makes me thing whether we need to always grab lru lock.
+> 
+> Suggested-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+> ---
+>  include/linux/damon.h    |   6 ++
+>  mm/damon/core.c          | 123 ++++++++++++++++++++++++++++++++++++++-
+>  mm/damon/sysfs-schemes.c |  10 ++++
+>  3 files changed, 137 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index ee2d0879c292..6df716533fbf 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -191,6 +191,8 @@ enum damos_action {
+>   * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
+>   * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
+>   * @DAMOS_QUOTA_NODE_MEMCG_FREE_BP:	MemFree ratio of a node for a cgroup.
+> + * @DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:	Scheme-eligible memory ratio of a node.
+> + * @DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:	Scheme-ineligible memory ratio of a node.
 
-If the folio has already been removed from lru, it looks not necessary?
+Nit.  Let's wrap the line for 80 columns limit.
 
-Well this is another thing.
+>   * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to total LRU memory ratio.
+>   * @DAMOS_QUOTA_INACTIVE_MEM_BP:	Inactive to total LRU memory ratio.
+>   * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
+> @@ -204,6 +206,8 @@ enum damos_quota_goal_metric {
+>  	DAMOS_QUOTA_NODE_MEM_FREE_BP,
+>  	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
+>  	DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
+> +	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
+> +	DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
+>  	DAMOS_QUOTA_ACTIVE_MEM_BP,
+>  	DAMOS_QUOTA_INACTIVE_MEM_BP,
+>  	NR_DAMOS_QUOTA_GOAL_METRICS,
+> @@ -555,6 +559,7 @@ struct damos_migrate_dests {
+>   * @ops_filters:	ops layer handling &struct damos_filter objects list.
+>   * @last_applied:	Last @action applied ops-managing entity.
+>   * @stat:		Statistics of this scheme.
+> + * @eligible_bytes_per_node: Scheme-eligible bytes per NUMA node.
+>   * @max_nr_snapshots:	Upper limit of nr_snapshots stat.
+>   * @list:		List head for siblings.
+>   *
+> @@ -644,6 +649,7 @@ struct damos {
+>  	struct list_head ops_filters;
+>  	void *last_applied;
+>  	struct damos_stat stat;
+> +	unsigned long eligible_bytes_per_node[MAX_NUMNODES];
 
->
-> 			/*
->@@ -3898,8 +3901,17 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
-> 		 */
-> 		folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
->
->-		if (do_lru)
->+		if (do_lru) {
->+			/*
->+			 * caller wants to unlock and put @lock_at instead of
->+			 * @folio, treat @folio as other after-split folios
->+			 * by either elevating its refcount and putting it in
->+			 * @list or putting it back to lru if @list is NULL.
->+			 */
->+			if (folio != page_folio(lock_at))
->+				lru_add_split_folio(folio, folio, lruvec, list);
-> 			unlock_page_lruvec(lruvec);
->+		}
->
-> 		if (ci)
-> 			swap_cluster_unlock(ci);
->@@ -3925,14 +3937,13 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->  * preparing @folio for __split_unmapped_folio().
->  *
->  * After splitting, the after-split folio containing @lock_at remains locked
->- * and others are unlocked:
->- * 1. for uniform split, @lock_at points to one of @folio's subpages;
->- * 2. for buddy allocator like (non-uniform) split, @lock_at points to @folio.
->+ * and others are unlocked and the caller's folio reference is transferred to
->+ * @lock_at's folio. @lock_at can point to anyone of @folio's subpages.
->  *
->  * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
->  * split but not to @new_order, the caller needs to check)
->  */
->-static int __folio_split(struct folio *folio, unsigned int new_order,
->+static struct folio* __folio_split(struct folio *folio, unsigned int new_order,
-> 		struct page *split_at, struct page *lock_at,
-> 		struct list_head *list, enum split_type split_type)
-> {
->@@ -4052,8 +4063,10 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-> 		}
-> 	}
->
->-	ret = __folio_freeze_and_split_unmapped(folio, new_order, split_at, &xas, mapping,
->-						true, list, split_type, end, &nr_shmem_dropped);
->+	ret = __folio_freeze_and_split_unmapped(folio, new_order, split_at,
->+						lock_at, &xas, mapping, true,
->+						list, split_type, end,
->+						&nr_shmem_dropped);
-> fail:
-> 	if (mapping)
-> 		xas_unlock(&xas);
->@@ -4100,7 +4113,10 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-> 	if (old_order == HPAGE_PMD_ORDER)
-> 		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
-> 	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
->-	return ret;
->+
->+	if (!ret)
->+		return page_folio(lock_at);
->+	return (struct folio*)ERR_PTR(ret);
-> }
->
-> /**
->@@ -4138,9 +4154,10 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
-> 		return -EAGAIN;
->
-> 	local_irq_disable();
->-	ret = __folio_freeze_and_split_unmapped(folio, new_order, &folio->page, NULL,
->-						NULL, false, NULL, SPLIT_TYPE_UNIFORM,
->-						0, NULL);
->+	ret = __folio_freeze_and_split_unmapped(folio, new_order, &folio->page,
->+						&folio->page, NULL, NULL, false,
->+						NULL, SPLIT_TYPE_UNIFORM, 0,
->+						NULL);
-> 	local_irq_enable();
-> 	return ret;
-> }
->@@ -4196,9 +4213,14 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
-> 				     unsigned int new_order)
-> {
-> 	struct folio *folio = page_folio(page);
->+	struct folio *ret;
->
->-	return __folio_split(folio, new_order, &folio->page, page, list,
->+	ret = __folio_split(folio, new_order, &folio->page, page, list,
-> 			     SPLIT_TYPE_UNIFORM);
->+	if (IS_ERR_VALUE(ret))
->+		return PTR_ERR(ret);
->+
->+	return 0;
-> }
->
-> /**
->@@ -4228,8 +4250,15 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
-> int folio_split(struct folio *folio, unsigned int new_order,
-> 		struct page *split_at, struct list_head *list)
-> {
->-	return __folio_split(folio, new_order, split_at, &folio->page, list,
->+	struct folio *ret;
->+
->+	ret = __folio_split(folio, new_order, split_at, &folio->page, list,
-> 			     SPLIT_TYPE_NON_UNIFORM);
->+
->+	if (IS_ERR_VALUE(ret))
->+		return PTR_ERR(ret);
->+
->+	return 0;
-> }
->
-> /**
->-- 
->2.51.0
->
->
->Best Regards,
->Yan, Zi
+I understand this could make it time-efficient.  That is, without this, you
+will need to iterate the regions for number of node_[in]eligible_mem_bp goals
+per scheme.  By having this you need to iterate regions only once per scheme.
+I'm bit worried about the increased size of 'struct damos', though.
 
--- 
-Wei Yang
-Help you, Help me
+Do you think the overhead is really significant?  If not, what about making it
+simply iterates the regions per goal, and add optimization later if it turns
+out really needs?
+
+If this optimization is really needed right now, I'd like it to at least be
+dynamically allocated, for only num_online_nodes() or num_possible_nodes() at
+least.
+
+>  	unsigned long max_nr_snapshots;
+>  	struct list_head list;
+>  };
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index b438355ab54a..3e1cb850f067 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2544,6 +2544,111 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  }
+>  #endif
+>  
+> +#ifdef CONFIG_NUMA
+> +/*
+> + * damos_scheme_uses_eligible_metrics() - Check if scheme uses eligible metrics.
+> + * @s: The scheme
+> + *
+> + * Returns true if any quota goal uses node_eligible_mem_bp or
+> + * node_ineligible_mem_bp metrics, which require eligible bytes calculation.
+> + */
+> +static bool damos_scheme_uses_eligible_metrics(struct damos *s)
+> +{
+> +	struct damos_quota_goal *goal;
+> +	struct damos_quota *quota = &s->quota;
+> +
+> +	damos_for_each_quota_goal(goal, quota) {
+> +		if (goal->metric == DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP ||
+> +		    goal->metric == DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP)
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+> +/*
+> + * damos_calc_eligible_bytes_per_node() - Calculate eligible bytes per node.
+> + * @c: The DAMON context
+> + * @s: The scheme
+> + *
+> + * Calculates scheme-eligible bytes per NUMA node based on access pattern
+> + * matching. A region is eligible if it matches the scheme's access pattern
+> + * (size, nr_accesses, age).
+> + */
+> +static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
+> +		struct damos *s)
+> +{
+> +	struct damon_target *t;
+> +	struct damon_region *r;
+> +	phys_addr_t paddr;
+> +	int nid;
+> +
+> +	memset(s->eligible_bytes_per_node, 0,
+> +			sizeof(s->eligible_bytes_per_node));
+> +
+> +	damon_for_each_target(t, c) {
+> +		damon_for_each_region(r, t) {
+> +			if (!__damos_valid_target(r, s))
+> +				continue;
+> +			paddr = (phys_addr_t)r->ar.start * c->addr_unit;
+> +			nid = pfn_to_nid(PHYS_PFN(paddr));
+> +			if (nid >= 0 && nid < MAX_NUMNODES)
+> +				s->eligible_bytes_per_node[nid] +=
+> +					damon_sz_region(r) * c->addr_unit;
+> +		}
+> +	}
+
+Seems the above code assumes entire region will belong in the same node.  But
+the region might be laying over a nodes boundary.  In the case, miscalculations
+could happen.
+
+What about getting start/end addresses of the node, and checking the crossing
+boundary case?
+
+> +}
+> +
+> +static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
+> +{
+> +	unsigned long total_eligible = 0;
+> +	unsigned long node_eligible;
+> +	int n;
+> +
+> +	if (nid < 0 || nid >= MAX_NUMNODES)
+> +		return 0;
+> +
+> +	for_each_online_node(n)
+> +		total_eligible += s->eligible_bytes_per_node[n];
+> +
+> +	if (!total_eligible)
+> +		return 0;
+> +
+> +	node_eligible = s->eligible_bytes_per_node[nid];
+> +
+> +	return mult_frac(node_eligible, 10000, total_eligible);
+> +}
+> +
+> +static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
+> +{
+> +	unsigned long eligible_bp = damos_get_node_eligible_mem_bp(s, nid);
+> +
+> +	if (eligible_bp == 0)
+> +		return 10000;
+> +
+> +	return 10000 - eligible_bp;
+> +}
+> +#else
+> +static bool damos_scheme_uses_eligible_metrics(struct damos *s)
+> +{
+> +	return false;
+> +}
+> +
+> +static void damos_calc_eligible_bytes_per_node(struct damon_ctx *c,
+> +		struct damos *s)
+> +{
+> +}
+> +
+> +static unsigned long damos_get_node_eligible_mem_bp(struct damos *s, int nid)
+> +{
+> +	return 0;
+> +}
+> +
+> +static unsigned long damos_get_node_ineligible_mem_bp(struct damos *s, int nid)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  /*
+>   * Returns LRU-active or inactive memory to total LRU memory size ratio.
+>   */
+> @@ -2562,7 +2667,8 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
+>  	return mult_frac(inactive, 10000, total);
+>  }
+>  
+> -static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+> +static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal,
+> +		struct damos *s)
+>  {
+>  	u64 now_psi_total;
+>  
+> @@ -2584,6 +2690,14 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+>  	case DAMOS_QUOTA_NODE_MEMCG_FREE_BP:
+>  		goal->current_value = damos_get_node_memcg_used_bp(goal);
+>  		break;
+> +	case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
+> +		goal->current_value = damos_get_node_eligible_mem_bp(s,
+> +				goal->nid);
+> +		break;
+> +	case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
+> +		goal->current_value = damos_get_node_ineligible_mem_bp(s,
+> +				goal->nid);
+> +		break;
+>  	case DAMOS_QUOTA_ACTIVE_MEM_BP:
+>  	case DAMOS_QUOTA_INACTIVE_MEM_BP:
+>  		goal->current_value = damos_get_in_active_mem_bp(
+> @@ -2597,11 +2711,12 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+>  /* Return the highest score since it makes schemes least aggressive */
+>  static unsigned long damos_quota_score(struct damos_quota *quota)
+>  {
+> +	struct damos *s = container_of(quota, struct damos, quota);
+
+I'd prefer passing 's' from the caller.
+
+>  	struct damos_quota_goal *goal;
+>  	unsigned long highest_score = 0;
+>  
+>  	damos_for_each_quota_goal(goal, quota) {
+> -		damos_set_quota_goal_current_value(goal);
+> +		damos_set_quota_goal_current_value(goal, s);
+>  		highest_score = max(highest_score,
+>  				mult_frac(goal->current_value, 10000,
+>  					goal->target_value));
+> @@ -2693,6 +2808,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+>  	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
+>  		return;
+>  
+> +	/* Calculate eligible bytes per node for quota goal metrics */
+> +	if (damos_scheme_uses_eligible_metrics(s))
+> +		damos_calc_eligible_bytes_per_node(c, s);
+> +
+>  	/* First charge window */
+>  	if (!quota->total_charged_sz && !quota->charged_from) {
+>  		quota->charged_from = jiffies;
+> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> index fe2e3b2db9e1..232b33f5cbfb 100644
+> --- a/mm/damon/sysfs-schemes.c
+> +++ b/mm/damon/sysfs-schemes.c
+> @@ -1079,6 +1079,14 @@ struct damos_sysfs_qgoal_metric_name damos_sysfs_qgoal_metric_names[] = {
+>  		.metric = DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
+>  		.name = "node_memcg_free_bp",
+>  	},
+> +	{
+> +		.metric = DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
+> +		.name = "node_eligible_mem_bp",
+> +	},
+> +	{
+> +		.metric = DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
+> +		.name = "node_ineligible_mem_bp",
+> +	},
+>  	{
+>  		.metric = DAMOS_QUOTA_ACTIVE_MEM_BP,
+>  		.name = "active_mem_bp",
+> @@ -2669,6 +2677,8 @@ static int damos_sysfs_add_quota_score(
+>  			break;
+>  		case DAMOS_QUOTA_NODE_MEM_USED_BP:
+>  		case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+> +		case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
+> +		case DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:
+>  			goal->nid = sysfs_goal->nid;
+>  			break;
+>  		case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
+> -- 
+> 2.43.0
+
+So, the overall concept and definition of the new goal metrics sound good to
+me.  But I'd prefer having less optimized but simpler code, and nodes boundary
+crossing regions handling.
+
+
+Thanks,
+SJ
 
