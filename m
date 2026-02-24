@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 700A7EC112B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA074EC1133
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D6606B0092; Mon, 23 Feb 2026 20:56:37 -0500 (EST)
+	id 76A626B0093; Mon, 23 Feb 2026 20:56:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A72E6B0095; Mon, 23 Feb 2026 20:56:37 -0500 (EST)
+	id 688A26B0095; Mon, 23 Feb 2026 20:56:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E7C6B0092; Mon, 23 Feb 2026 20:56:37 -0500 (EST)
+	id 58D906B0096; Mon, 23 Feb 2026 20:56:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1AC96B0092
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:56:36 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD9ABC1AAF
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:36 +0000 (UTC)
-X-FDA: 84477685992.16.09B2828
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6906112000E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pf2ZUw06;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4590F6B0093
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:56:38 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FA891403E6
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:38 +0000 (UTC)
+X-FDA: 84477686076.24.54A158C
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EE10CC000A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K4WcqISW;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771898195;
+	s=arc-20220608; t=1771898196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vUAU3X7Xx15v27pYap676B43gvtts/Dbo0nCLQJ/8ZQ=;
-	b=2v1GFvSAbERCA3DBMwHIlGo7/wpRXuUPAUGSgoT8W+VmfiG/SmGoHlANQZnOehfLcqUwwI
-	2fqVDjHxS+iMDAGvQUSyn+ydIi1CjNN+opB323A0/CG42GzIgPT/7lu4nBSaI1+1eam+/F
-	gLQD/mhsyOWLQa0dWuDYeZ0TRCrSDvs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898195; a=rsa-sha256;
+	bh=l/n42tr+9IlpOp5hFur4DBL69XJ1P8BtXGTtcSlF0LE=;
+	b=BZCoQUnK+4yFMpmt4xqowgSlig+Bzw7FRuP94oQ+6vMD7PnwBOHz5TIaeTDUXdV2Z7NuUD
+	0oM5meCoAGj47RBJ05fj0OOS9oFPiLpCIs5RtRjJM8GvNoxMg3jTYk+o64syofIOv+1tx0
+	RxOZjs0Us6wLtMauQjJ0SVS94/ebSX8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898196; a=rsa-sha256;
 	cv=none;
-	b=uU18GXYngUjlNA5KfEGnn7E0v2JgmVPMuv0eHl8wJxvzDAMlAskueIF2+doRyuZ3bggK7r
-	y3r2LrEvvXNAPPmM06Lvg55tcXyyi0M9jXzlo/A+nLaJTp4PgLAhY6TBxhNvVkhmwjBCcr
-	V1xr8siZzlkUkiGYcni2xqJqCw0Zq3c=
+	b=Y9ooGvofQj/xdh+YNOUM4cfE+KfJZc2srrye0w0GpYVZOFvjqm/cpHoTET4R5xVYOMzeMJ
+	jMhGpdAXvG9oegMje4KRUTTKM9KKwloLp3W2w1vUiVIlRh57pRMjYO+aTENSqJ3E2Leo1I
+	PMa15uEigBYS2vVgwfL87GLbLn6Sc4w=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pf2ZUw06;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=K4WcqISW;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1771898189; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=vUAU3X7Xx15v27pYap676B43gvtts/Dbo0nCLQJ/8ZQ=;
-	b=pf2ZUw06lvXyx+NTLcAqjuBzg1PjRJypi4+2r6eVrc1bkMr4+cjbZx5DQvVasXRCihdQDQXxw7hTfyZuJ1ZEfphtrfqytw+V0yNWUOo6p8zJ/EEUzIghCng1ISiNBKVvWo5Fa0rUnpwFwI0BT+aFxojIkG7Aqm7ZBY83C2V0tzg=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzhs.qI_1771898188 cluster:ay36)
+	t=1771898193; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=l/n42tr+9IlpOp5hFur4DBL69XJ1P8BtXGTtcSlF0LE=;
+	b=K4WcqISW1qVJlDyB4fuMzBzEZhg9kSKoUaULhoFo38Dt3FWY+Sa3H+FLfvVotouGeRm9otDJfz5iVg1O821QjtxzVPCXaHatHyXxW3lZoKBsfTvNNAunILBubGHwVDAjXiERmrd9xXeRx3hXY/P0H2IQiidOmTfFgDDUsCXzhnk=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzhpS5._1771898189 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 24 Feb 2026 09:56:28 +0800
+          Tue, 24 Feb 2026 09:56:30 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -84,22 +84,22 @@ Cc: catalin.marinas@arm.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/5] mm: support batched checking of the young flag for MGLRU
-Date: Tue, 24 Feb 2026 09:56:07 +0800
-Message-ID: <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH 5/5] arm64: mm: implement the architecture-specific test_and_clear_young_ptes()
+Date: Tue, 24 Feb 2026 09:56:08 +0800
+Message-ID: <5933ff4d7124cf972bb2474666b4699580fbc334.1771897150.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
 References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6906112000E
-X-Stat-Signature: 4wneoiii8xa16cbz6og6bq5655tjm4ps
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1771898194-204151
-X-HE-Meta: U2FsdGVkX1+2zr2JVdAgeBUuXCbUrsQrgw0xEGy73RMDoEYAfgqDsvWKLpcDmiwm55qo0PJZpXqra7HTs16XuxEI2fNRgiiummA58DwnjLglxDUzh8v07X4FJ9fKwPHd5KVG16KBl4QYIihMAPI1HD04LtsvFnXchR0nUBzwb1ShbcI0QiKZVHGBdnsH8bsMHI2GFR+7HUNxcZAAgUmDmH/UTZHz4umUG8LQK/4MNpukoG3OqyznnT9ZPoFEJcCoDkIaMIJ8pPu6+r+jHRPXJD8TOrZrfqWPSJ1Ku7lfOe1GbDypMEafqq0PC79HnZ7ETKRapviDPuwuRqBeye3zQzDskzFK7aCw4lBp6fc9aghK2k2z3TnhJseGSnJ53OCxBJ8SuRuKaC1jHDfSg4D3z/m8Cb0gWbIgQGoH3EiiLle+Dej0P84ZCY3iFGW0HmXTk44ZERRP6v437GQXgTs5N1pf9FBHHsnDCDsmM80aY4Mbhu8BlxKGoFEJ3h+l+uLkWy0yE6+3Y3Dj1U/ibUAjrbmgO6QxMf2x5GvYaIgPLjirlLGKusegaYdSwqkRn4gqbKBgOILykaGoIoc7wCVPgq2+YRKl8OyX3I6S26Wjqp29pK3V6nsxkYZfBIlEONy8wQS9TaW9Mjv/aByWif2rnHAQ07NORU6JsTtVZoYbH5nhuez1q1eCh5qEFQHSsnCNmFKGGn2WuNCw6CsjtBoLwPja+H4z3im+peWpWZE0uyVQmf1ATjOYLwq+DqOhQQX5mYSlE0ON/QT/mLNOucDE+iEPldAnE0ZNEn7Ix5XkZMrJ0O8Tl2P8U4vlFMmaoKooruiCTzaHAGsYc4bacPMmdqPmsEB3a/gw+ko5xs2L/GjIN0/BW3a/mLQroKEVGvuwAY5cKsJ8ydFEttN5t6nsUi4W7uYGnRtYg2HhCFL58GqJ5H5sEshP4O0NCiG2RPj7IhgfZsRHI6k/PYlHw7n
- g8enjrOg
- kYu/Lz6Y90SCvApvdSBW/0XiNC7hAzEZkH1dogV60e/3L+lQJ6O2c87zonM5MCqopXPhBk/Bzx1KXZiqNqovbYQC/HxQTTs2B5Tz8bOJf+KkHyvLJ71HvLUbikfGXoDtbe0Ma3lGaScaPdwuT53Z5EDTkXlYJQ8xaxJabpRH38+Y+5f4v8iMs4cOJS312H3AM3T0puUaQVl5zVXjyReqHhJRrgOveqkecmaWDKNGoBDmwn+4sYzln6A1c2EtJr3eNxIvob4CeHxSOYPbLeaqT+7EjbO6ywgfv+RhX
+X-Stat-Signature: 9d86ri9b6r4knyq8khc65twtcxo1zix8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EE10CC000A
+X-HE-Tag: 1771898195-397143
+X-HE-Meta: U2FsdGVkX18nIDnMLBq0pGg4ZL/F5l1mtjay/ycdxmLRsgh6wLkApm1sLgJhFUnqPTuby6otKntgMp/XOlzCsdjwQdDz2NJklUkyH9jW0XZpvGJrYAv1Nbr5I4tHrFcfKBkykbkHslnMZ70wHw4yU4E5tDya8gWpu8vJPBKWQd3Dgqfs1Sx7pzNIpuFKwVFtzQJdB1/P+ExLN3q//BLDvZsSG3Kv/Obp0uxb4tLBAztBEhmCISyW7Nk9f7DjVWi69ImRBxJkmaP+zJ1u6Nfo92yrc/LMc0VpA0z5t+JKNUQVjxMMLXowrPaaFHoPiX/FqgTC0fxKWcZev3CfyxefZO9wTI7EdyH64UBUuwxAIEfbEbIlvR1ah2T+lxxO2Jokh4Wx/X2gMfd7fbcMisWnJbi+LsrrkoT/6M11tOlbwu3XliE6FI0GjcIOoJFsU6v4HX/KmCRwBJUxq0iE2mVTh/GvKnCYQ1nmJahmyaMyJ2c+kEtXMk36+ldOXtoyCWN/lW7fbAtCGqXnvyENNe+Og/IR/NGqIhoZsMUG7SeonRsqZnIa41UGTRX+1gqxDjTj5g/0T20Ra2vkFdTwBpVZHllfeg6AmiImc3GYT6sZvOlL7PaDs4X+vyFu6IMAHyEQRnklLX9H7DCAUo1OA94yb1HleAdvl1ji1GN5VDgqywpVoeWW//LY0tRfV4jmusEuK8Nt/on43ZXC/T53MThIrIVux+a+RrTV4Nn00Mvrs9uIKi3xJlaU+88cXbCL6MlhKfflwcuBqkttXETOaY/DaxMSZGZ0ROKn/s7qDfdmPqFHbfYCWiQJru1+7xBh8b7GEmkMiYUC9lK5AxIK+rh9d/Yc+Vpd1aPBkANHzeiaC/rUd76PBfoMlv5b9QZ4G+oRXIYtEAijdJdys1ymHIkoDlJTC+XDwIsbdkD93Wa7+gqnvxAAWRsnRDRGf2IaRdM8Ywtnag3hTDyHfuESAq0
+ reGuzHh1
+ 60Ls8aHXi5KVnXJJkDi5lLc6i+g4yLZoGud9ni/r7f6L7fCjXDyA7lo2ScaBgYg0TNM4PXYPpeIcO/26N4MvD59+PFmkx7WA0z6YZRLvaDrMmkf6qwbzqDv+1kRvKFl33myXO61j4Oexji5lLcSesjfe6eS3mJoEcntS4evT+aDZXFV6QxVM5PMoLLr47kO8GJgBPQVl1//NS3vzRKP3qr6Dw5oCaGHHQ/X1th7PSWwR0blu0Jz3r7hsFTdlf/28n0e5DfoiUQYvzevK92RoaA9X9xBM4jK/orJWFNATCN9GNQwM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,230 +108,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the batched helper clear_young_ptes_notify() to check and clear the
-young flag to improve the performance during large folio reclamation when
-MGLRU is enabled.
+Implement the Arm64 architecture-specific test_and_clear_young_ptes() to enable
+batched checking of young flags, improving performance during large folio
+reclamation when MGLRU is enabled.
 
-Meanwhile, we can also support batched checking the young and dirty flag
-when MGLRU walks the mm's pagetable to update the folios' generation
-counter. Since MGLRU also checks the PTE dirty bit, use folio_pte_batch_flags()
-with FPB_MERGE_YOUNG_DIRTY set to detect batches of PTEs for a large folio.
+While we're at it, simplify ptep_test_and_clear_young() by calling
+test_and_clear_young_ptes(). Since callers guarantee that PTEs are present
+before calling these functions, we can use pte_cont() to check the CONT_PTE
+flag instead of pte_valid_cont().
 
-Then we can remove the ptep_clear_young_notify() since it has no users now.
+Performance testing:
+Enable MGLRU, then allocate 10G clean file-backed folios by mmap() in a memory
+cgroup, and try to reclaim 8G file-backed folios via the memory.reclaim interface.
+I can observe 60%+ performance improvement on my Arm64 32-core server (and about
+15% improvement on my X86 machine).
+
+W/o patchset:
+real	0m0.470s
+user	0m0.000s
+sys	0m0.470s
+
+W/ patchset:
+real	0m0.180s
+user	0m0.001s
+sys	0m0.179s
 
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- include/linux/mmzone.h |  5 +++--
- mm/internal.h          | 12 ------------
- mm/rmap.c              | 30 ++++++++++++++++--------------
- mm/vmscan.c            | 37 +++++++++++++++++++++++++++++--------
- 4 files changed, 48 insertions(+), 36 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index db41b18a919d..de9fee4244d9 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -630,7 +630,7 @@ struct lru_gen_memcg {
- 
- void lru_gen_init_pgdat(struct pglist_data *pgdat);
- void lru_gen_init_lruvec(struct lruvec *lruvec);
--bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
-+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int batched);
- 
- void lru_gen_init_memcg(struct mem_cgroup *memcg);
- void lru_gen_exit_memcg(struct mem_cgroup *memcg);
-@@ -649,7 +649,8 @@ static inline void lru_gen_init_lruvec(struct lruvec *lruvec)
- {
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index aa4b13da6371..ab451d20e4c5 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1812,16 +1812,22 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+ 	return __ptep_get_and_clear(mm, addr, ptep);
  }
  
--static inline bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
-+static inline bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw,
-+				       unsigned int batched)
++#define test_and_clear_young_ptes test_and_clear_young_ptes
++static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
++					    unsigned long addr, pte_t *ptep,
++					    unsigned int nr)
++{
++	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
++		return __ptep_test_and_clear_young(vma, addr, ptep);
++
++	return contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
++}
++
+ #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 				unsigned long addr, pte_t *ptep)
  {
- 	return false;
+-	pte_t orig_pte = __ptep_get(ptep);
+-
+-	if (likely(!pte_valid_cont(orig_pte)))
+-		return __ptep_test_and_clear_young(vma, addr, ptep);
+-
+-	return contpte_test_and_clear_young_ptes(vma, addr, ptep, 1);
++	return test_and_clear_young_ptes(vma, addr, ptep, 1);
  }
-diff --git a/mm/internal.h b/mm/internal.h
-index 1b59be99dc3f..4e8d37570f46 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1824,12 +1824,6 @@ static inline int clear_young_ptes_notify(struct vm_area_struct *vma,
- 	return young;
- }
  
--static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
--					  unsigned long addr, pte_t *ptep)
--{
--	return clear_young_ptes_notify(vma, addr, ptep, 1);
--}
--
- static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
- 					  unsigned long addr, pmd_t *pmdp)
- {
-@@ -1847,12 +1841,6 @@ static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
- #define clear_young_ptes_notify	test_and_clear_young_ptes
- #define pmdp_clear_young_notify	pmdp_test_and_clear_young
- 
--static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
--					  unsigned long addr, pte_t *ptep)
--{
--	return test_and_clear_young_ptes(vma, addr, ptep, 1);
--}
--
- #endif /* CONFIG_MMU_NOTIFIER */
- 
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/rmap.c b/mm/rmap.c
-index be785dfc9336..1c147251ae28 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -958,25 +958,21 @@ static bool folio_referenced_one(struct folio *folio,
- 			return false;
- 		}
- 
-+		if (pvmw.pte && folio_test_large(folio)) {
-+			unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
-+			unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-+			pte_t pteval = ptep_get(pvmw.pte);
-+
-+			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
-+			ptes += nr;
-+		}
-+
- 		if (lru_gen_enabled() && pvmw.pte) {
--			if (lru_gen_look_around(&pvmw))
-+			if (lru_gen_look_around(&pvmw, nr))
- 				referenced++;
- 		} else if (pvmw.pte) {
--			if (folio_test_large(folio)) {
--				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
--				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
--				pte_t pteval = ptep_get(pvmw.pte);
--
--				nr = folio_pte_batch(folio, pvmw.pte,
--						     pteval, max_nr);
--			}
--
--			ptes += nr;
- 			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
- 				referenced++;
--			/* Skip the batched PTEs */
--			pvmw.pte += nr - 1;
--			pvmw.address += (nr - 1) * PAGE_SIZE;
- 		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 			if (pmdp_clear_flush_young_notify(vma, address,
- 						pvmw.pmd))
-@@ -995,6 +991,12 @@ static bool folio_referenced_one(struct folio *folio,
- 			page_vma_mapped_walk_done(&pvmw);
- 			break;
- 		}
-+
-+		/* Skip the batched PTEs */
-+		if (nr > 1) {
-+			pvmw.pte += nr - 1;
-+			pvmw.address += (nr - 1) * PAGE_SIZE;
-+		}
- 	}
- 
- 	if (referenced)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 728868c61750..d83962468b2e 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3494,6 +3494,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
- 	DEFINE_MAX_SEQ(walk->lruvec);
- 	int gen = lru_gen_from_seq(max_seq);
-+	unsigned int nr;
- 	pmd_t pmdval;
- 
- 	pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
-@@ -3512,11 +3513,13 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 
- 	lazy_mmu_mode_enable();
- restart:
--	for (i = pte_index(start), addr = start; addr != end; i++, addr += PAGE_SIZE) {
-+	for (i = pte_index(start), addr = start; addr != end; i += nr, addr += nr * PAGE_SIZE) {
- 		unsigned long pfn;
- 		struct folio *folio;
--		pte_t ptent = ptep_get(pte + i);
-+		pte_t *ptep = pte + i;
-+		pte_t ptent = ptep_get(ptep);
- 
-+		nr = 1;
- 		total++;
- 		walk->mm_stats[MM_LEAF_TOTAL]++;
- 
-@@ -3528,7 +3531,14 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 		if (!folio)
- 			continue;
- 
--		if (!ptep_clear_young_notify(args->vma, addr, pte + i))
-+		if (folio_test_large(folio)) {
-+			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
-+
-+			nr = folio_pte_batch_flags(folio, NULL, ptep, &ptent,
-+						   max_nr, FPB_MERGE_YOUNG_DIRTY);
-+		}
-+
-+		if (!clear_young_ptes_notify(args->vma, addr, ptep, nr))
- 			continue;
- 
- 		if (last != folio) {
-@@ -4186,7 +4196,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
-  * the PTE table to the Bloom filter. This forms a feedback loop between the
-  * eviction and the aging.
-  */
--bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
-+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int batched)
- {
- 	int i;
- 	bool dirty;
-@@ -4205,11 +4215,13 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	struct lru_gen_mm_state *mm_state = get_mm_state(lruvec);
- 	DEFINE_MAX_SEQ(lruvec);
- 	int gen = lru_gen_from_seq(max_seq);
-+	unsigned int nr;
-+	pte_t *ptep;
- 
- 	lockdep_assert_held(pvmw->ptl);
- 	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
- 
--	if (!ptep_clear_young_notify(vma, addr, pte))
-+	if (!clear_young_ptes_notify(vma, addr, pte, batched))
- 		return false;
- 
- 	if (spin_is_contended(pvmw->ptl))
-@@ -4243,10 +4255,12 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 
- 	pte -= (addr - start) / PAGE_SIZE;
- 
--	for (i = 0, addr = start; addr != end; i++, addr += PAGE_SIZE) {
-+	for (i = 0, addr = start, ptep = pte; addr != end;
-+	     i += nr, ptep += nr, addr += nr * PAGE_SIZE) {
- 		unsigned long pfn;
--		pte_t ptent = ptep_get(pte + i);
-+		pte_t ptent = ptep_get(ptep);
- 
-+		nr = 1;
- 		pfn = get_pte_pfn(ptent, vma, addr, pgdat);
- 		if (pfn == -1)
- 			continue;
-@@ -4255,7 +4269,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 		if (!folio)
- 			continue;
- 
--		if (!ptep_clear_young_notify(vma, addr, pte + i))
-+		if (folio_test_large(folio)) {
-+			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
-+
-+			nr = folio_pte_batch_flags(folio, NULL, ptep, &ptent,
-+						   max_nr, FPB_MERGE_YOUNG_DIRTY);
-+		}
-+
-+		if (!clear_young_ptes_notify(vma, addr, ptep, nr))
- 			continue;
- 
- 		if (last != folio) {
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 -- 
 2.47.3
 
