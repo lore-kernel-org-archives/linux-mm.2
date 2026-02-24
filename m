@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D3EDEFB810
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 07:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD756EFB811
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 07:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD9C06B0088; Tue, 24 Feb 2026 02:42:06 -0500 (EST)
+	id 42D966B008A; Tue, 24 Feb 2026 02:48:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87906B0089; Tue, 24 Feb 2026 02:42:06 -0500 (EST)
+	id 405876B008C; Tue, 24 Feb 2026 02:48:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A93426B008A; Tue, 24 Feb 2026 02:42:06 -0500 (EST)
+	id 2DD5E6B0092; Tue, 24 Feb 2026 02:48:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 941A66B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:42:06 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5576758F8D
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:42:06 +0000 (UTC)
-X-FDA: 84478556652.13.C9CBBE1
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 81E6D10000E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:42:04 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FVIy3nip;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771918924; a=rsa-sha256;
-	cv=none;
-	b=VqMr7aUOtjrc/Buu47B6MlHFU9lYBK9QYQP8nniBsmdS7c7M+IQ2CeKjNgwZV4hHPUII+5
-	EHOseF+V8H5WN+TGzIQUtkz1hmREqsHcXf9n+5qWMDXdPaWgMqM4Oj9hsjl2pjSdzONRm7
-	BH25971IfFas5Em9UaBhT/OV437s8/8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FVIy3nip;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 17F496B008A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:48:45 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B330C1C4D7
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:48:44 +0000 (UTC)
+X-FDA: 84478573368.29.965173D
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 341971C000D
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:48:40 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771918924;
+	s=arc-20220608; t=1771919323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zT9YzPCoksVoJcqmXd6fTgUCdxBZDV84wumpFiQtY6k=;
-	b=zopzwAf/qyEuiu008nkkjpOuQp5wWqqyGqY6SQgbTAn7wrHB2/u394hPmpJkLGkTrXyRGM
-	w+lI8q6bDUHzRniFyWEfYrXXNsixJoP+eISSS4FUeMlQCwthlXxBK4fwoD3GvzG1ecpIvi
-	ZRHuSCLPi4tAjCVY7eWjsYb9fKuuvS8=
-Date: Tue, 24 Feb 2026 15:41:48 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771918922;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zT9YzPCoksVoJcqmXd6fTgUCdxBZDV84wumpFiQtY6k=;
-	b=FVIy3nipedxexE5diClbl4ElzKAAtZOOa1jRM+QOouuy4Ila/wvTpxKTG6+lnXW0BSIt7B
-	S91FgziUudYDj92WoD7yogBCTn4fDNL/3zgUGaN7yMQV0/odGXTwmeC+czdT9arBC5ikEr
-	bSWQ/jPqm4si68QkDREomezQfgFf7lE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <3efkqez23cmbwusugq34u5culryyi5emvocrxxdhxsgphqhx6y@e6kw4t3w3n5o>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <wprja2flkybpsmdpnihtxp4usbl4fdsayarg4sitnyn3leis5e@vdqas3zhqndw>
- <aZ1O82QsjwZVTvzc@hyeyoo>
+	bh=2WAjskGqB9628fznyGO9lB+1gzxmnIE6adtDnm1O7Vw=;
+	b=7EVRGGJ66swKzXl7d7BCw68I3wwip49ITTworsZUPPYealBSZOvPoP2oicNVZzutkNrC5O
+	7QByeFLmru/YIwIWx0s9Kw3haZkjeVk9I9cQ5cIAVeOgdVgVKHCoZfzj77mPcWvTLspC05
+	KeQKOxvoRkcqdldPZT+z1X1pg/Qu+t8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771919323; a=rsa-sha256;
+	cv=none;
+	b=abPsQeLcPwWd6e7MxfFtTR4fEMskgqqL5n8F0DgUk9okr/XysFDqM95HX/nxWsyCE8+0ra
+	0vjdBtUYIa4/zNEkA1sm/WVKJZbBwVQyFDKarjO+86p91EBAy+n1HDXMyUjGhCbQ1we43n
+	XPhFnsVuI7pe6hagicYZbUaf6EH3P+w=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 24 Feb 2026 16:48:36 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Tue, 24 Feb 2026 16:48:36 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Carsten Grohmann <mail@carstengrohmann.de>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>,
+	taejoon.song@lge.com,
+	"hyungjun.cho@lge.com Carsten Grohmann" <carstengrohmann@gmx.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] mm, swap: speed up hibernation allocation and
+ writeout
+Message-ID: <aZ1X1OwbAUq1k+C6@yjaykim-PowerEdge-T330>
+References: <20260216-hibernate-perf-v4-0-1ba9f0bf1ec9@tencent.com>
+ <20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aZ1O82QsjwZVTvzc@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 81E6D10000E
-X-Stat-Signature: p9e81xk4mhezixuazca4o3bknhnf8p7c
-X-HE-Tag: 1771918924-454121
-X-HE-Meta: U2FsdGVkX1+XkUEDWmIQIKGkV7vo9wmdg3wj+XoV2/Mu8KNVBNZkzhSnYiyWfCIozxFpWjWHEJJJKz8cbCYgs3BVx13rxrJVcburSNbJVcvdWKZdE3lP2nPgR9JJnRO+qTUSiIgwUeGbZdG0ncI4Sbw/6tOV+QeEOv31pJdB4NecJTX3PljCkjkMx5rHHVIZIQIdw6De1nll8HvddKI2jIcosZBkWb2gLomuvWP4+8GclsQExNkMOmL2NlhalWDvyeiL2ItvBUQbnDvjLrYq6J6xZmbEZ6EzY9OxT8FRG63xTE6BMHoe+7s/rTfubEWlxxij+lm/6W2oCFV+74cNiGpewhxtyrXC8EvXZzI8Ejq+tpLD/DzGdGePaCKB3cFZgQhVuFDGDuHxHs/7V6uydfN5Qf1+9mhFXHJPw0E/knAWf/cVCs6ww/GxNA7h2kSTj9noDAJ2vTBArZ0sLH6OwIgcPj1ZUbWnLgYj9jVIPHvI280d+x8OY7AoGfj72HhX8eeXGRNGb5mY5PQ57KAMBIwPKUFl20Wq2fEjoRDvtau1yknOViWOj3MK4q8LT4L3FUiUb2h3GtbA5Kgnw0RTecRcVRDp4RtG6H+dAi8kozz8Jz1/3MRIROqlziKjKPM06g71ymmOmijEPt/j44GUkYf7HyFtbNiF6WT9Mr8/uaJVNK+hh+lB10xPYqmfpHFls1fI/XE6mnfSW+hH89+RjJfK9maxitmzO4bk1g+c6Rub6HYcS0OUuszcazmd8mT13iE0EsCrvfTDKUuVqjDQdWAlSzybODBhqrFrmXTkASr+AG9/TWVLcyhEvngoUr8Wb0BRfBKeOi8UsKzePFgzGcQ9mLygwpLrPTd2a7Mtnqgz/eTMck7ZqTUb7dbJEzRNaJqaDnTnBEZvr5bfT2693xGYhI3vv/xw2w71ofT6ZCJSOIuP0ta1Zhro5WVl+5LkCl65uLY1+3juCbCVDtA
- LMbidJcw
- 7wVezdNBfFiZrgPWQC5P5zzealjXOsEUVEexbU91uyae8uRAlMvS/zgvyP2qCqsk+q37vD+OThSrehpEc6vsVkZOPvGQf2FxRwJAGUY6706UAIkozxOtmWH+I20gQ/D5qf5NTLaUenjf8+6PC5mCUQgjl0C482M909LAHspxBaKysYbYZxhcuginoXQxZWLPXff7B6tlnfGn9J8A4XoZTcQ5jdwCbP5JI5GurKDaL+5SKKRaauzY2w3dlWd8OSY6jNdkN
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 341971C000D
+X-Stat-Signature: u8dnopwjrqaqpuskjsngxgzfsgzb43ep
+X-HE-Tag: 1771919320-463102
+X-HE-Meta: U2FsdGVkX1809LTfhv2fvUFZnmtzw3mTX9asQODOBxAzxm8SIyvGxxHtlGRAkj58XY9+WTijTsJycfJfeK+8353LJvZfyK62d0Ajx1+YV/UuK8crsAdQCTEZKwJYxSNO10ST2QyGVEzvNbj2Pw08rjKukuznlK34xcdS0Ka/EX/jLo3igJuAqDJRgj/lnKPnZcADbVIS9j8ki8ENW4FTIncLObUuIlfc+jy+caEkwrpW6idvdA75/jmt0M2MC87SzdjiIuyTva1KNZlrxkME4XfM+hXCIhcIwcPL0tRUqsXrNTmiHfXicRES2Xj8YWIi8sljoTe7lqhxw2Yntlyq20cujWmL0D/pNXZO2ZH3vSgzB0RdN7hz7ee9ZphGE2RuJo5xY41EP3XO2pgU9HKiTu3d7E22KHhPhgCnLZTnWKKKv4xrNJ8QGaB9RRuMUBN6quMn/+13Wqq+p/84FKVC7CEoNaUV9kBttjQ1/5KeJbWQlKswnkex92uMcexTxikLjcM+HqusaRwxvj2m3gG16sCqPtKK45ujKEhr4FvjQBoe/RRp7HH2XTKxjKKm0J1Rxjrk3gWX3nq9gOuvaOqdgavR7op12thIXqf2YOfBaLkhosm56vxZ7wbWedWiY9x1yTgHwDSDUxu/M0ok81vwPGy7A510CiGxGzyG/k2V7+zCjwLMvmeaa1CR+V8CmjdNOVfgjCttdBVUbEqKMgb1jfkv7cEZoavS8JdKAuNBloUhAl0iUFIuf1CLy/mQWqeAqIJntPoABC56LzyP4ZcaaGy1cMdjo9LvAAbnU3Ef+OubeIHc9o70D6PNMkV+tVYolzqdngnXNDpBGRBsYgE4U8SRMyZCSzN+1s9S1zTTw0qKcsgNxfcaZpfXPojbxdw5qfSQgawHX+MEM7G7ihllWJwgDrAWB4IM8jH+GXeysK+SZrSuveicLhDbEYQbSfoaF/8IBWyRH2MtUN/H2ql
+ eqhPwOcc
+ D0sJGm0Hhj/kpBr3xbTrI5PlqryreKhLC8K202i1oCihbpvY5G4CzMkXdIobwZ88Ahy7u9/di48K2TnRMVVSceA7nrO8DZOVwCzE9c/YSeVSpQadVOTwH+Z4PJVt8fZ2nDR5ya337nS+NsqgvE8MvdoITxgqqQrttaPztm/oMnfuqjl3vfp+SxHeSi4uFH3skXSQYb9RtKxIAlvXJek2eBkPnQ7RCw40yM6XOMkzFF7B+Lr0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,82 +92,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 04:10:43PM +0900, Harry Yoo wrote:
-> On Tue, Feb 24, 2026 at 02:51:26PM +0800, Hao Li wrote:
-> > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
-> > > Reproducer
-> > > ==========
-> > > 
-> > [...]
-> > > 
-> > > the result is that the allocating cpu's per-cpu slab caches are
-> > > continuously drained without being replenished by local frees. the bio
-> > > layer's own per-cpu cache (bio_alloc_cache) suffers the same mismatch:
-> > > freed bios go to the completion cpu's cache via bio_put_percpu_cache(),
-> > > leaving the submitter cpus' caches empty and falling through to
-> > > mempool_alloc() -> kmem_cache_alloc() -> slub slow path.
-> > > 
-> > > in v6.19, slub handled this with a 3-tier allocation hierarchy:
-> > > 
-> > >   Tier 1: CPU slab freelist         lock-free (cmpxchg)
-> > >   Tier 2: CPU partial slab list     lock-free (per-CPU local_lock)
-> > >   Tier 3: Node partial list         kmem_cache_node->list_lock
-> > > 
-> > > The CPU partial slab list (Tier 2) was the critical buffer. It was
-> > > populated during __slab_free() -> put_cpu_partial() and provided a
-> > > lock-free pool of partial slabs per CPU. Even when the CPU slab was
-> > > exhausted, the CPU partial list could supply more slabs without
-> > > touching any shared lock.
-> > > 
-> > > The sheaves architecture replaces this with a 2-tier hierarchy:
-> > > 
-> > >   Tier 1: Per-CPU sheaf             lock-free (local_lock)
-> > >   Tier 2: Node partial list         kmem_cache_node->list_lock
-> > > 
-> > > The intermediate lock-free tier is gone. When the per-CPU sheaf is
-> > > empty and the spare sheaf is also empty, every refill must go through
-> > > the node partial list, requiring kmem_cache_node->list_lock. With 16
-> > > CPUs simultaneously allocating bios and all hitting empty sheaves, this
-> > > creates a thundering herd on the node list_lock.
-> > > 
-> > > When the local node's partial list is also depleted (objects freed on
-> > > remote nodes accumulate there instead), get_from_any_partial() kicks in
-> > > to search other NUMA nodes, compounding the contention with cross-NUMA
-> > > list_lock acquisition — explaining the 41% in get_from_any_partial ->
-> > > native_queued_spin_lock_slowpath seen in the profile.
-> > 
-> > The purpose of introducing sheaves was to fully replace the percpu partial slabs
-> > mechanism with sheaves. During this process, we first added the sheaves caching
-> > layer and only later removed the percpu partial slabs layer, so it's expected
-> > that performance could first improve and then return to the previous level.
+On Mon, Feb 16, 2026 at 10:58:02PM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song &lt;kasong@tencent.com&gt;
 > 
-> There's one difference here; you used will-it-scale mmap2 test case that
-> involves maple tree node and vm_area_struct cache that already has
-> sheaves enabled in v6.19.
-> 
-> And Ming's benchmark stresses bio-<size> caches.
-> 
-> Since other caches don't have sheaves in v6.19, they're not supposed to
-> have performance gain by having additional sheaves layer on top of cpu
-> slab + percpu partial slab list.
+> Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+> hibernation has been using the swap slot slow allocation path for
+> simplification, which turns out might cause regression for some
+> devices because the allocator now rotates clusters too often, leading to
+> slower allocation and more random distribution of data.
+...
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index c6863ff7152c..32e0e7545ab8 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
+>  /* Allocate a slot for hibernation */
+>  swp_entry_t swap_alloc_hibernation_slot(int type)
+>  {
+> -	struct swap_info_struct *si = swap_type_to_info(type);
+> -	unsigned long offset;
+> +	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
+> +	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
+> +	struct swap_cluster_info *ci;
+>  	swp_entry_t entry = {0};
+>  
+>  	if (!si)
+> @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+>  	if (get_swap_device_info(si)) {
 
-Oh, yes-you're right. That distinction is important!
-I think I've gotten a bit stuck in a fixed way of thinking...
-Thanks for pointing it out!
+Hi Kairui :)
 
-> 
-> > Would you mind also comparing against a baseline with "no sheaves at all" (e.g.
-> > commit `9d4e6ab865c4`) versus "only the sheaves layer exists" (i.e. commit
-> > `815c8e35511d`)? If those two results are close, then the ~64% performance
-> > regression we're currently discussing might be better interpreted as returning
-> > to the previous baseline (i.e. a reversion), rather than a true regression.
-> >
-> > The link below contains my previous test results. According to will-it-scale,
-> > the performance of "no sheaves at all" and "only the sheaves layer exists" is
-> > close:
-> > https://lore.kernel.org/linux-mm/pdmjsvpkl5nsntiwfwguplajq27ak3xpboq3ab77zrbu763pq7@la3hyiqigpir/
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+Reading through the patch, I have some thoughts and review comments regarding
+the hibernation slot allocation logic. I'd like to discuss potential
+improvements. (Somewhat long... lot of thoughts come up on my mind)
+
+First, regarding the race with swapoff and refcounting.
+
+The code identifies the swap type before allocation, so a swapoff could
+occur in between. It seems safer to acquire the reference when identifying
+the type (e.g., find_first_swap). Also, instead of repeating get/put for
+every slot (allocation and free), could we hold the reference once during
+the initial lookup and release it after the image load? This avoids
+overhead since swapoff is effectively blocked once hibernation slots are
+allocated.
+
+>  		if (si->flags & SWP_WRITEOK) {
+>  			/*
+> -			 * Grab the local lock to be compliant
+> -			 * with swap table allocation.
+> +			 * Try the local cluster first if it matches the device. If
+> +			 * not, try grab a new cluster and override local cluster.
+>  			 */
+>  			local_lock(&percpu_swap_cluster.lock);
+
+Second, regarding local_lock:
+
+It seems mandatory now because distinguishing the lock context during swap
+table allocation is tricky (e.g., GFP_KERNEL allocation assumes a local
+locked context). Have you considered modifying the swap table allocation
+logic to handle this specifically? This might allow us to avoid holding the
+local_lock, especially if the device is not SWP_SOLIDSTATE.
+
+> -			offset = cluster_alloc_swap_entry(si, NULL);
+> +			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
+> +			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
+> +			if (pcp_si == si && pcp_offset) {
+> +				ci = swap_cluster_lock(si, pcp_offset);
+> +				if (cluster_is_usable(ci, 0))
+> +					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
+> +				else
+> +					swap_cluster_unlock(ci);
+> +			}
+> +			if (!offset)
+> +				offset = cluster_alloc_swap_entry(si, NULL);
+>  			local_unlock(&percpu_swap_cluster.lock);
+>  			if (offset)
+>  				entry = swp_entry(si->type, offset);
+
+Third, regarding cluster allocation:
+
+1. If hibernation targets a lower-priority device, the per-cpu cluster
+usage might cause priority inversion (though minimal).
+
+2. Have you considered treating clusters as a global resource for this
+case? For instance, caching next_offset in si(using union on global_cluster or new field) or allowing the
+allocator to calculate the next value directly, rather than splitting
+clusters per CPU.
+
+Finally, regarding readahead and freeing:
+
+Hibernation slots might be read during cluster-based readahead. Can we
+avoid this (e.g., by checking for a NULL fake shadow entry or adding a specific
+check for hibernation slots)? If so, we could also avoid triggering
+try_to_reclaim when freeing these slots.
+
+Thanks for your work!
+
+Youngjun Park
 
