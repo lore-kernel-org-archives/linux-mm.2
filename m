@@ -4,131 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6247F4BB75
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 18:49:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B597AF4BB73
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 18:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30E846B0088; Tue, 24 Feb 2026 13:49:28 -0500 (EST)
+	id E71286B0088; Tue, 24 Feb 2026 13:54:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292076B0089; Tue, 24 Feb 2026 13:49:28 -0500 (EST)
+	id E1EBF6B008A; Tue, 24 Feb 2026 13:54:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16AB36B008A; Tue, 24 Feb 2026 13:49:28 -0500 (EST)
+	id D44106B0088; Tue, 24 Feb 2026 13:54:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F3D416B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:49:27 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 965301A02C0
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:49:27 +0000 (UTC)
-X-FDA: 84480238374.28.BD1DED4
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 685B740012
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:49:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=DToD0e2x;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771958965; a=rsa-sha256;
-	cv=none;
-	b=tUGY2ftk2YfByXjQyBLTXr+wsHlsL00+6apCYkgbKg2kSElvFz8Hmy09FNf2/nuxP2yNX2
-	yBDVyAFZexx8Erl5NefRLbofVWtUN0VJyZ2byxMCjCLp4KqbWOsfHRkk6BSML8C0UgvlQZ
-	gwhvZZPIZ0pD8ybyXy09mbK/HgXyYKo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=DToD0e2x;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C0B626B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 13:54:12 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57B7D1401BE
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:54:12 +0000 (UTC)
+X-FDA: 84480250344.10.185EBDF
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0A382180002
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:54:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=La9gLvfa;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771958965;
+	s=arc-20220608; t=1771959250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jVC2sVLMOxnBh5X5m0M42esgcaqLVi1+yt0xbhnz3dk=;
-	b=v9oqoeiFK6ya2RBr6ya6OCc9+AO2TCCkyf8xcV+0bBaSPzgbh/QtnKNbrnYNUaelKboYEV
-	5xzGsd5sKQqWEHYr8mvU6MPt3SDGuXxSDP52O8M1vQJeXwFD8kK/BZEjEltvOd53GRw9RW
-	jVXdnD1jfJ8f9nk/S/2UxQwNXPk7x70=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cb38e6d164so718527185a.3
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 10:49:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1771958964; x=1772563764; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jVC2sVLMOxnBh5X5m0M42esgcaqLVi1+yt0xbhnz3dk=;
-        b=DToD0e2xirVj3EI1YX8XubSxWcwgUXnIFWDP+/ZnF1gnX+3sdUvsv9Yg1zdjUCTFc5
-         G18RFiLjEdD8g1V3OxZ/lK0ZZK/1u6yAaOe1/uAmU6aKMX7epkZRteh/f2A/jNuid3Jz
-         S3iIJVRE1QemGcrU8RCQdq1K8099sEKhwwz9BtnonoHeL0koYj7hmfrRgl2O8d8DKPYW
-         R5NXptCyWElH1vxTsTeppfZH13pkZvqJpzjnit0S5ONJxMT/TZX4k3nz5PVcVTfpwkvD
-         vhLVW7XcqwveXJkAfPa2sq3wjUggQAl+GAdFx5HdQj5pK3wSs5ACrYxX9oHuXmnJjUud
-         5IYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771958964; x=1772563764;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jVC2sVLMOxnBh5X5m0M42esgcaqLVi1+yt0xbhnz3dk=;
-        b=o9RS5VsvL7T1WFbUCUWM6B8LgKywzk2QEcv26FLau+z0rEr0v1Zy96oOOE3VMn3zNe
-         lSBpGCeY9I20NezbL3XGhpn05obehEOCAZZBiA0SCOMsH0t93Nx1+MMoCx01+WHiBEl0
-         vvh3t66EKYqFhhCqBq9Jib/ThfpX9xoh1h93VBTsDRe7dMshKrmBpPma/alrZxvVIyOk
-         dtsgqOmSiLQwFIxkRzPmtm13OpZzbbSzt8tlyPbSx+O7GGc8vc5SCpdFbQlQIjDCB9N9
-         z/yRwngZ63+rgJBq/t2ITMGo8MOS7eYqhjflgHWAeq7iMvBPQwwfrs53uxClLUsaLlOU
-         S+ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXJtmM7wdBvvXxphQD9Y+0t+XQHcUcNpPwiyAq7IM+inFZIsNX0RYx6q2seupuSuareuQfkSueXoA==@kvack.org
-X-Gm-Message-State: AOJu0Yxdc6QuT1EnRwT5Wlk87A9HvcCqpWO2qLrHrpnJ/RVicIuYR1Qy
-	Ax4oH4Btfs5bqaVLFIifwkx6Lfpp4ovtIN1U8zID5u6HYPmx1ureRua1wwqMUdTrhXo=
-X-Gm-Gg: AZuq6aLds9zyp9jp13Qi66E5o3MWeU2musO4Mg1Mbf0iKQcuu8W5QdhS/hhc71tLsZM
-	KAw27gYvV2oXk3YeclgEB6owtArwTit5WCZN5XEiZWLetvxf5nfxtVhtbLSr5pGNMXNZEAoMg/N
-	F8uamKi8HYPogb38r0hWuUpiJ2ArXH/LNIvV74+0rmni5Xctfc3Qg40mIZmPZ3re6szq0GKumBX
-	J2EKmX6HnTlerCNTszFL1Pw5v+g7U8VaPwJ91e5iwXJ/JK2ziUVMXUR/uxMmmviBTnD7BvA+VV7
-	uj1ctvbqkdnhEWt6Z3PwhOnZF0W3hptrmtwroCuhVsyjPMzkC4JORSsO3loXYNF0J74C0wGG8wD
-	A5wSlvL86ROUKp35hxtHFhsVw/3zfbiT8AoQKoRAjTzcHPHC8KRyDu+MwrNAzmMPee5tRcuRRSF
-	GYZroSvkB+ZA3UuipwoXUE4NVzwwkeMgY3NYjcT66x2fUb8CWgtbXKu75hmrLAYkzqqtaNbuRAd
-	GoiVQsJyg==
-X-Received: by 2002:a05:620a:280c:b0:8cb:5442:d537 with SMTP id af79cd13be357-8cb8c9e005dmr1650957585a.12.1771958964121;
-        Tue, 24 Feb 2026 10:49:24 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d122906sm1023135085a.51.2026.02.24.10.49.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 10:49:23 -0800 (PST)
-Date: Tue, 24 Feb 2026 13:49:21 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Waiman Long <longman@redhat.com>,
-	Chen Ridong <chenridong@huaweicloud.com>, Tejun Heo <tj@kernel.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 0/6] mm/memcontrol: Make memcg limits tier-aware
-Message-ID: <aZ3ysV-k1UisnPRG@gourry-fedora-PF4VCD3F>
-References: <aZ2LC0KPF0xsAwAL@tiehlicka>
- <20260224161357.2622501-1-joshua.hahnjy@gmail.com>
+	bh=3Oa1KzXnkF7xmNHvrWFtHyV6rmQKfhjodK7mykEUJTk=;
+	b=j/pLguwYRLTDLv3s1op+rHLysmVkIvGuqiJxFL6tWOomMTMUQPUmZl/nNHa1QfVCcOqMRY
+	HV5YpvrCmTlI4ys1FJZz/HfdH6Bb5BRHwwtRaiSALij0A3QxHGRUBnAC/wRyJ8+KNr9lUh
+	TtxbZBQNlnTCD4aCq7Xh4zDS0A8BgNc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=La9gLvfa;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771959250; a=rsa-sha256;
+	cv=none;
+	b=MrdXt+JgoIiCM+leA9+lLKnmKUNK0AcVtV4vRcw8oBdUB/8QcWkL4ZqodrXlAck70daEKA
+	Nulwe++nK0EJ+HA3I6+9I6xUqme62Vv+VmnxbXBK1mHHbNWBCIvhbOot1Nsa9l2ljY4GkS
+	gu/vqN03iKBZgOVQTKd2VMvGCISYgv4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771959250; x=1803495250;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pA3DPEAcwnPXpmcsvOzdGsmazxFwvvrygWXsa6rpajk=;
+  b=La9gLvfa4EP9uK6RWPYXbqpTyqUdUTzcZTnjpIxY7/O6v3jOEmcw1HKm
+   y+7F8lHobtN/rYgcpx4EqogsdBk3Tft24B+dt6+aYKC8OGa1o4tHNaPlR
+   hcMTU5QsT37jnZkNp56Z0cFMlz0HX87iSgjTZXr6CLNUmjK82QrG5Yh1L
+   0KID4fXwVbfVowt3D/e7R0yjWf19OsWotLINcy6HNQW2m6hwZ0H1Ceu8y
+   +aXtsKql8KQ5qbEMI1f286c/TlHsushkKbkt0tFqbPgK6c3B0GR+5RzZR
+   FYKwOzF9oO6JJldXeVAISA9xBgWMej8wZ/q3NXcwz3l8sM3G98ppyLoY8
+   w==;
+X-CSE-ConnectionGUID: z5eyju/AQZWogPFowk5EIg==
+X-CSE-MsgGUID: CUHdpb4WSyW73lMgArDwSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="95600908"
+X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
+   d="scan'208";a="95600908"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 10:54:08 -0800
+X-CSE-ConnectionGUID: PZ0PD4OjRaGO0XoD1U21dg==
+X-CSE-MsgGUID: oOuji2MwSO6qVUbEwY8SOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
+   d="scan'208";a="219455954"
+Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 24 Feb 2026 10:54:05 -0800
+Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vuxXn-000000002MX-207S;
+	Tue, 24 Feb 2026 18:54:03 +0000
+Date: Wed, 25 Feb 2026 02:53:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, vbabka@suse.cz,
+	harry.yoo@oracle.com, 00107082@163.com, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 1/1] mm/slab: mark alloc tags empty for sheafs allocated
+ with __GFP_NO_OBJ_EXT
+Message-ID: <202602250250.n38q74JK-lkp@intel.com>
+References: <20260224165250.1322946-1-surenb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260224161357.2622501-1-joshua.hahnjy@gmail.com>
+In-Reply-To: <20260224165250.1322946-1-surenb@google.com>
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 685B740012
-X-Stat-Signature: e1nf8ia8731rm9ns8fm4p3a8fg7cj91p
-X-HE-Tag: 1771958965-768836
-X-HE-Meta: U2FsdGVkX1/4VdDpHe3jwa3672yWJ0JEedG57cwBQDDNqoB5QKXENorO5Xo8HKPxjkToc2iYXvine0oc63pTOvUGFmldYWSoTxtvEdQHaVZDzMfD/MJmi5vAbxpRk+q5aPskia251PKbZtoeI4NLUhWcauMhoECIJwa/Fxd8GbjN9xuKjM4aMOzfEi7OKDVlAqBA9rOGsdlwDFPrjIioVB/fAxQuSkm26iDv0mJx12Fn2gePIWTYh/W11BSCXfOTtjgouOs6KA/4nSbtDZskZIir4b6xBdbNPGJK1dd+3BVtjH6/ZmLcH/RvjUpG7JXAPqNmie4ky/YeWCL6zv642kClIf3mMoOGeyfTwObqS/31DqNbgYnYg5AaWAwUmgPNzYkGKNkqwuJm5rs1e9hqeq6rh2/5TGC50SuK1vue+5qkQJ0E8QDOLRjOVUEoLR/pOCAvDHwnMvoboy1N1vOEn03iQQlCIfrVe4cj4fpcYFsWZ6kYnIDmqeng7lEiCITgggH2JQDfh11I9BB6KZrzQsiRUg+//vyv7Azhsgk8Vv8QBivLCNsTj0nyBX08dVgyA9Ki3wrrPisnpCV+jDNmfkofaSmNMjBxtqq/wERAlc6rA7kkiU+e1/kfctJABCpr5ZFsPPdLtETo2zL6JrntTQ8zSFKB0R9s7ACXabIhwkF2D7QBaSdZtiauhIxIdCI9yK+15maDAfOfvzVkVbxQ2mGXvxOZmPzow7uXUO2SUjV7qK4fU3QpEiqBwwdiaFfRHwBQeUNwrtF4UG9b44ni8Bth55cwKaoU0zmGbA4DgPqQtu8L4g3cbqhGgoDZSsOgg65JkCh27hIsbP7pqA90taPftypTeujruDdRxqw4xZ0sGyjdyPMgDG2Zw/qYefzI1G3IwkdsnzEFx8+hzRpYPefCfEP77Y/g8p52kGI2nZ1Q1UDIfLXfAflN0WO5TqaQA+Dl8/eBsSVw2A16+/0
- XhDwZszX
- iFicGnh0BVOrpZv9/M3eGz4DoM9AEkOI9BULF67ABcnpZh+PIKtL/aenXdMoa5Xj4EifykilOIySmopUG8oliCD4bQqSJEntazGbW5pdEGCNUXodNTdNWLxXreSjBuQldjKfkyZoTd6dxmPk/X2AANiAPRPKX+b/Ki7w7gMRKBGvW1xZXQTvqYhmIT2+Xtu65RU4EHztdGtc2ZxSpTusyWG1HQYa57qRCYLnlVURy55xiY65htE3uvqkGBTqBCYnYykoaE8t6PfD9ZbcpLBYi8gJ2/XKZNW/CXzg4BxdocpHEwHVotfAcK5xrVBtLHlNRkv/anUVa7opsef0SVyNzSg8arrgxw5zIagIeYAHSbEAIOnVTwQJeOS9pWk5VxeX5mxutPnrLkoM/ydHLffhq8+yLRA==
+X-Rspamd-Queue-Id: 0A382180002
+X-Stat-Signature: 9so4axk8fq1keh4e3eff9p1exm67pfg6
+X-HE-Tag: 1771959249-569763
+X-HE-Meta: U2FsdGVkX1/rduvvwKfpG9yAfEUruXDDr8YfRmi9L7h/LbWnlcJ/ypuTeCLv7NI72e1UIM1Gv5NFN4IJviuCQrcH8Ff2ZdUS8Mba8yYL1KJNE2OnNrnteT45QbTr7bmz+N1qHxXR4W0rpjqss1qcwgJDsV+aado8hr0tH281Kt20Xf3W/uRlbdNHWZjBIik08uxs/Sldh99z5EkYTZycIiXj4v6MI4Wn2U75ZdpIX4nyZwcFATqaO1XqDtaommzQwsXH037z1EvWVTqeUOj2GW9pTpc+ryXfUORhz5xdtM4/3j00xxLm9L9WoccruO0avDSFaBQFH68jWtMhPUYhzaexYgbrNbY7d/RomjJFS2mRYLqqVYTaPDIxCjtZhqZYUBuZ29W5V7FiVo4rZzk/hwG1tUGg1LO6DWLi2MqWKuM+ZLv6uAUXjI1rTRNZdVuABO+xPSA3PSc/m4TeL2wP17KuZef/70sZZniqZxInfiqpWAMOgwYydMK7MQ412Jo35PCSFPybLWYX49jgq3QT4EsO1NJm1vixKubxYPcRCutv2WZf/UWYsm89Vp8bRqruLiel1EaBrjNdDwwtDBY5+C4Efmvil9o4jpgOR3qiFAF5ND1CeDPwT7/mA7i5j31ul7BIYtASns2WVrukYs/sqaPPVt0vvDoa0JodQ6BJT7/cS/MhM1DZ03+dn0UGalYEm8jJM/hnrLceK7SPS9EIyntVFKG+33hdZrJubEAm2C+ZufXQwDxU1OZkJcsPSl2S3RvQtdiqF+UvgIp76TIYjlT2GgrQMma1IBblYf2B9PSgnZkAi5k9yvittG7j8eNOsIiN9/oAdWO/ZBjRvjdymM8i0amalz6yxD5thGBjmbYHRomvdpSwO9FYkBe5g8QGeSVZomIl/Yg+iLa4PdtErks0Qm5EZRGhGSG5fhfMD+Je/H5B50x+MaYtXZVHbPCudl66Zh0BxkC7Gme6C7X
+ ALG2bZQO
+ RTkXxaBslf7BxdaVbot8mvaSlnlNQvMPofwrJla/+eOKxuS0rAEJxDr0eYPo+SRI0+8fHr8lCRpM6/W+lJ3lFNGPpD45bNfdfyr1ew2Un7q1g6lxwhITl/37pkjaCFuWlf/RryN9E3PEQLBlVlaKgAad+5v4LK4uKy2ESS+0ZbOxtXdiYNgaPnwB6oiEftvLt8bgvvzWPQzM+D2hQSvfvWkmyGA1TlFYjLvDXzr4ldwrvnQB1i73gnSWgH8z6MmhVt5wD3AX/Aj93CjlCQ9hupc3nq7xdVlRdHYgK9bRsZJCXm1IuigtGDLydbvdUQIsvXBChX86I4+j5mSYbqNO4oKQHai8t3GfLD6iYDZb6pBXMwXLgfiwQigNZaDamDeHNGptgjKe+HqrKts4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,42 +111,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 08:13:56AM -0800, Joshua Hahn wrote:
-> ... snip ...
+Hi Suren,
 
-Just injecting a few points here
-(disclosure: I have been in the development loop for this feature)
+kernel test robot noticed the following build errors:
 
-> 
-> > Otherwise promotions would make sure to that we have the most active
-> > memory in the top tier.
-> 
+[auto build test ERROR on 7dff99b354601dd01829e1511711846e04340a69]
 
-Yes / No.  This makes the assumption that you always want this.
+url:    https://github.com/intel-lab-lkp/linux/commits/Suren-Baghdasaryan/mm-slab-mark-alloc-tags-empty-for-sheafs-allocated-with-__GFP_NO_OBJ_EXT/20260225-005422
+base:   7dff99b354601dd01829e1511711846e04340a69
+patch link:    https://lore.kernel.org/r/20260224165250.1322946-1-surenb%40google.com
+patch subject: [PATCH 1/1] mm/slab: mark alloc tags empty for sheafs allocated with __GFP_NO_OBJ_EXT
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260225/202602250250.n38q74JK-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260225/202602250250.n38q74JK-lkp@intel.com/reproduce)
 
-Barring a minimum Quality of Service mechanism (as Joshua explains)
-this reduces the usefulness of a secondary tier of memory.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602250250.n38q74JK-lkp@intel.com/
 
-Services will just prefer not to be deployed to these kinds of
-machines because the performance variance is too high.
+All errors (new ones prefixed by >>):
 
-> 
-> > Is this typical in real life configurations?
-> 
-> I would say so. I think that the two examples above are realistic
-> scenarios that cloud providers and hyperscalers might face on tiered systems.
-> 
+>> mm/slub.c:2787:3: error: call to undeclared function 'mark_objexts_empty'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2787 |                 mark_objexts_empty(sheaf);
+         |                 ^
+   1 error generated.
 
-The answer is unequivocally yes.
 
-Lacking tier-awareness is actually a huge blocker for deploying mixed
-workloads on large, dense memory systems with multiple tiers (2+).
+vim +/mark_objexts_empty +2787 mm/slub.c
 
-Technically we're already at 4-ish tiers: DDR, CXL, ZSWAP, SWAP.
+  2783	
+  2784	static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
+  2785	{
+  2786		if (s->flags & SLAB_KMALLOC)
+> 2787			mark_objexts_empty(sheaf);
+  2788	
+  2789		kfree(sheaf);
+  2790	
+  2791		stat(s, SHEAF_FREE);
+  2792	}
+  2793	
 
-We have zswap/swap controls in cgroups already, we just lack that same
-control for coherent memory tiers.  This tries to use the existing nobs
-(max/high/low/min) to do what they already do - just proportionally.
-
-~Gregory
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
