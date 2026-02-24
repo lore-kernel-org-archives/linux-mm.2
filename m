@@ -4,143 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC2E3E9B243
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E2F5E9B243
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 09:40:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E04546B0088; Tue, 24 Feb 2026 04:36:17 -0500 (EST)
+	id 0B4C26B0089; Tue, 24 Feb 2026 04:40:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB23E6B0089; Tue, 24 Feb 2026 04:36:17 -0500 (EST)
+	id 08C9A6B008A; Tue, 24 Feb 2026 04:40:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C94636B008A; Tue, 24 Feb 2026 04:36:17 -0500 (EST)
+	id EFB606B008C; Tue, 24 Feb 2026 04:40:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B3A146B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:36:17 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59DE18BA05
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:36:17 +0000 (UTC)
-X-FDA: 84478844394.21.6359402
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 941A140006
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:36:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jFjVn+ko;
-	spf=pass (imf12.hostedemail.com: domain of praan@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC8496B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:40:45 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73FD91B67D7
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:40:45 +0000 (UTC)
+X-FDA: 84478855650.11.27287E1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9F945C0007
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:40:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KqtuYhtv;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771925775;
+	s=arc-20220608; t=1771926043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=24cju2hDHQ+kbJrPkzmdwVRuKgiC4K6oV6u1w7p/OMI=;
-	b=yKQome64Kz8rC7HjXEPPPDTmeCjYZfc1mKwgJEDtkcHMtTDL/fK1vHZ0IneHWYylIWrrrz
-	8ITQ5GcKqd+pBAAyByxzAuCz5o/bC4rnw7CoiHyPnngs/WE1hKvXvlzyPZxhstXJbZsW4A
-	pQLuqp06vooaBQ8aA4o1MxoUBNMrkMM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771925775; a=rsa-sha256;
-	cv=none;
-	b=oYdlIgjcmPMHeyK7lqFJd0hjzT0O4O3FsljJFx4ZgSHXodc4Io8tz1ouURkZFieI4VPDsm
-	rtUJ+C1TgJ2sLWi8lT6akGCATzASYOlY6zocF1iMuW3+7yu3ZTHNJFJNweXNFVJWylujrG
-	nSW2kOgYI5OcofuBz18NyG8fwTL1EVU=
+	bh=u+AXKNanKGjupdxi/2gEXD1hmmFwH6IALmX/jtMIV00=;
+	b=ldSxqAsC1oqi5Bh+EqKdEka2iPuW84ZjIBkKEx4VQ+HIPs66APdJigu596KddqZc1rlOKa
+	g/yQlx6daKFDTo5xoqMH6oSBxPwPlWLTXDCr31pPqn35Dv78axoCsZtU0m8hRNWG3U4IU6
+	Y7tXxiC5GkDljDJSqUzzQFS4582vYbU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jFjVn+ko;
-	spf=pass (imf12.hostedemail.com: domain of praan@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ada9e4ea32so39785ad.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:36:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771925774; x=1772530574; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=24cju2hDHQ+kbJrPkzmdwVRuKgiC4K6oV6u1w7p/OMI=;
-        b=jFjVn+ko+sf2u62esjKQH+XU+Jioj4Kdsvj+LoYDpJxtBTMefu/+SmX5vqkzl/Weli
-         rpea2EKYhWRw8/C9AoMMBnKJjc8quqSh9z7ilesBbQZV9w8bVhxdoaB4m7TDI4PCgfv3
-         SCry8AZXPAKrMyCBbS53O+BHC6iV7h+rXAOWYBtJmSFcDc2xxFlXm8csYNzMTTHFkKw4
-         okCT014Egs0M9Ae23DRQ6PFUlL49On/kYXtkBeCE9qlEuC1xZ+dSGu6RdQ7glGn9dyOu
-         rsKmNMRxdhdEwfXMStuFbEvgEIJCDu3XqEjSRdWKkj8AVuPthfvpppFD61Uphwf+a+kV
-         Ot5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771925774; x=1772530574;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=24cju2hDHQ+kbJrPkzmdwVRuKgiC4K6oV6u1w7p/OMI=;
-        b=W2+7ZtyWUHwOOGSPoPBpvnn92NjqTkLJKj3Aq60WSQlhvPxYYRei2l2iwloH6vYPLZ
-         7f0dOD4vWnjMXirRpKHmsXuUkR7FXqbi5XL/3RnhfaBMLNiQBsGECA3hTQhGoK1LV3Gw
-         23H8DmKdKc5828VwyNrI3/ml4dv8pZjn9v53JqRAgMZe/EW6djHWI+tVziTCxvpYmsOw
-         Yc6UtGOQW1t8j10wEuHf8EWU0yaJWz2TF/cQI3J9c8tnLrI4Wa/T3sJToCl6NN8byzuc
-         19qD/YQJ84YVBGtIsbfWfkBTa/etXbtAO7Ai+gjW18Bv6jEggLRtPMf8pSXo1s4+28qC
-         W3Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCV670alB517J55zKrPrkbEKsUieYrfcyhHUufs83EnCWiOVb5lTq20ubbI6Lqe0NV+sCiQ3yeymnw==@kvack.org
-X-Gm-Message-State: AOJu0YynDlso0Sjr+5lECuwdxEVwaTRbAqDgojio8yergYA/Ebc6T8rS
-	TvaVNfuI5lN6Cyc0g1faM3o/RC+89vrW7u4K0zS0tCTu3W5km2xSNFaDV4HnDFIwXw==
-X-Gm-Gg: ATEYQzxKELZlC/4aMjV32CuTint9BGJ2G9W9ByQe//muVx0P27cxNIF2/k9vXwhHdyt
-	GyTMheUbY8K+r+7LgM8VuOE36XIGKa2UEV3t2Ewm+xImakMk7TQ2+kq2h0HHJaNAtaHgMP+Dp0g
-	2OUGy+6Qb/qzZjYEQFgPHvmF3XdZIlit8BprjCbFnXpbaa8WDoZAa8gR7Lqx5jkres+N+VAeuVr
-	raUquXEjiuIMinsdeuoz2Je3mjEtQH3HHhYAWG37qTN/si9Y+mWiUjGnjexfhRUdo9nVBD/GrMa
-	plvTFf3Ki986Y+ziiWgp04ZtzHuq0De3eYZnexS8Kcyi+VeD8DmeROVf9ow3kAPUpndarx9Zl2H
-	neVvxevlLpHmJ33qhlBUrcwf7WsSXw8SISZEaAu2uAYQ/OmqpKDtQlROaHpBqeJaTgEPSKt1p/3
-	G9qztNarTp1XJflk2sL0qvXf+T8RK26IsT2O3zEE6ukMMWSI5vjn0H4489uZ5W
-X-Received: by 2002:a17:902:e78f:b0:2a7:7f07:340e with SMTP id d9443c01a7336-2ad993a510cmr1492795ad.4.1771925773665;
-        Tue, 24 Feb 2026 01:36:13 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b71a7351sm10754939a12.8.2026.02.24.01.36.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 01:36:13 -0800 (PST)
-Date: Tue, 24 Feb 2026 09:36:03 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 03/22] PCI: Inherit bus numbers from previous kernel
- during Live Update
-Message-ID: <aZ1xAyN0vgLWIi5y@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-4-dmatlack@google.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KqtuYhtv;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771926043; a=rsa-sha256;
+	cv=none;
+	b=G4HssFGDTZPDDGnMGBCBCPrx1YU1dBmYpKPakdbibGpfhty5nzTleily8U7hzBYFgw7BSs
+	tHZWJzEx2GxgC0845H8XoZNqi59nLD/HBY+4XVm0pHQSQ/x0Vr2LkZOmVw4ZBixF5cx7H4
+	GklpAbP3ZrtPJ2TS6g3iScfymlEXVSQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB6194092F;
+	Tue, 24 Feb 2026 09:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24845C116D0;
+	Tue, 24 Feb 2026 09:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771926042;
+	bh=j+2+godUz1XAh8cwg0aK4PoIjaBvri3SjlK5kyMt8lY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KqtuYhtv25KWFt6vqVb9KtRrmUdRt6EEg5OQl4q+pvTgATUNZ66VOxtY2VR47AeRM
+	 o8FMb4uxot39FFZZEEA4224SjOLKPfdXtYw81PiDATKN7UyiG0chazjW4Z/HeomrPZ
+	 qSEK7sPV97gfZuaSIBXTph461EQ+rZKA0v4Jlv83IMMhFDQjDohmtfmwvmfJ4xmjTw
+	 jqCrGKe+YGKYSzCMVdHOJ3zi/9j0Z/niaRdjU8yxDquV1Gz9Za2OLsaEqdwPaKMAkl
+	 mUr9dkQZ1HOPPV/4Q3GsljzzK1IkAF/RMQkIVSJFUr+6Ul1y+GYtIX9tgvjJNo8eKQ
+	 Ke3BDGZSWKWaA==
+Message-ID: <b82a5ac3-33e9-4cbf-892a-f0c7f6fe0c20@kernel.org>
+Date: Tue, 24 Feb 2026 10:40:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129212510.967611-4-dmatlack@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+To: Kalesh Singh <kaleshsingh@google.com>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, andreyknvl@gmail.com,
+ arnd@arndb.de, bp@alien8.de, brauner@kernel.org, bsegall@google.com,
+ corbet@lwn.net, dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
+ ebiederm@xmission.com, hpa@zytor.com, jakub.wartak@mailbox.org,
+ jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org,
+ liam.howlett@oracle.com, linyongting@bytedance.com,
+ lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
+ maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+ mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de, osalvador@suse.de,
+ pcc@google.com, peterz@infradead.org, pfalcato@suse.de, rostedt@goodmis.org,
+ rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
+ tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz,
+ vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com,
+ willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ttq3ema3aqdi7rtzw9timdcw1d9og7ix
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: nqtfjdco3cddrjbpx3cby7pcjrdd1kod
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 941A140006
-X-HE-Tag: 1771925775-732941
-X-HE-Meta: U2FsdGVkX1+H6VkUDF9HOlGrBcgSnhltWHFbZ5qToZn6bM+gd0npNd3s8bB0Z5PJ+7oOZbPc4aFqitFJEkRq/W71wvnK+CGgIG5xgRPcb0n0+q7G+2/ze7OOiPxAGcThe1HvTN/+yEUYgZ9OP7TGUkgdhrFBaO4JMfHYrX63bTZh9wIKlJ2g9Qci6Dds8Y8Go+/reVUuU1aCbU6wtCW6S3jyauiw3NuOProyArs1n174GUhtB9iRgE73FgOlJZ8dDQWcSGiuSErMag6UkCr2Cxz+h1lNe0C/Ao0Yqmqo3GBXIReOhL6jFyDzws0Ulzdua/6b2zN9DThPxdCqu3867OICw0LeOhi+aVTZiN5bMvVo9o8s26TbobsLr7SJIT0nWbMbUdT5q+1/FHsiXEtprVgRkUk0xrfoIyc1VGl/qoBg0KUN1kRmvf7R/kRb7j0lF/ARtt+B0X2dicsFzGmcy5KvU2BpQYxJfuYOZmP4p5Ok2nu2ciT/fQH/k9J86KzjllO+JwFodHoZPtWRQXNae9c5k14+hvr2XpoMrVY/LVoA4g3K5okj9ECEerz4b7VdB2xtUQUH2br3uKQsyNA1Sompmtcrtxs4yAMViqQLziVTR/8ILGIudtn1tGhPa8c2fiwgHYkNGkNqdHRka20qvUM3ukqCoTfVPGKvIaKzfKQySjrXHbYjncQ4PX2VQ0vXcQP69qVnR1kxa9P5RPVJtV6ExyfiCxazWwJJCqPI+ObfcDp5T2Y85gDx9XlvpS0ISF8kOgFJnOjMVeH/csjq0VD/yeMuonVVIyFHwOLPQIAPsBFNMEQz0ttbQzG+fYXNvpWJVdyUaSC+JfE/b7j9K1Ql7dcLKCaPU4NWgCBXhubSyKF/42dbU2fEOsPGfyXfQXxoyqQAHODjG3cMQIr+heAmnMRiQ5JDYHNpHeyWn17M/Rkc2FS4PP4J1RBstuXsgmm6/ZYHbzlcxDXdH+V
- gDIGWrQJ
- XYREv9QayqMxg8xdrQZ2uQWCxrg==
+X-Rspamd-Queue-Id: 9F945C0007
+X-HE-Tag: 1771926043-631910
+X-HE-Meta: U2FsdGVkX1/y4Ve+Triwu3SAN7D9wnGZ7cMv/lNhdi+VOnePNDsugB6KEQzybh7gqLIyFDUpJzFH/ta7VbQ44jTDzSbJWgu4f/hjLg17dSo+REF92kPN4p/OUto9VxrRRRs2uqhtJMC9q7ZaMYD8bpmbJEs9W7oHQMroV/QYVfT5gPxkYBVxkIDiBFGB1Gtdv6CW0fFn1nh1UU2VbLe4uzNTfX8qgxfRsBkVvfnkr58TuF6rGlWUCfBCoFcvfGlQ6gmudxJRCdYGg6JSQ7VOlDwtMCjA/cIzzTLJ70E26BvZrGbQFW64sqq5yH4aTCCQk2GK+1IJy3wHMGbSrvAIwSEySjZ6qgZuS6bcn9e17yNWNIU0Umd3hDMTS52HbcrgngUxD/9VXu0R6qzIIxSMBZc4D0VKALv1Y3sZxPVHBdxnJA/AV0NxrjiAapjC2Bbq6/uXfR+LzjfEIporbUVt0ngH6udew27tTNhuQ6WD1jy8YOMcY74szxo6colHR1hihrzcRAHutmgp4LJCIFc4bhRJliApmr5bOkMyxqn7/+Clh6wQCNhEi5HZojru+aMmOB1lHe/q7CoDrmRAPrT3SPIBWKyiHBFRKqOegbzz42HSlcd1HX3/gS+sTfCYrNAlglH8y9KJiPiBfr+SjVFBM3m4krq2l3+bkzvFKSj5EK2KgpOjAKhFdkv9tgZoXe/sOYFttVb9QCI5S0g/w+Xu5Z3V7DDp9H/W1Jo2IUAkWXjNiEV5MqDapzwShWUL5gviz8FzUO98YmVK5Np5r1Gb30GBYfLCqxZbH2PuzzQ1t3W9RH2T2w9uEiNWRLUgw9nAEr4lzSsqoTQOhSfDoN19p98VgRD/4vCbT6wOMlalGgx7qNXzXvWvN5WXpEv6vH6eUfxo1k5b2HIFx6WYnt98MAmWj8uI5xNygVtkUERo46RlhIis+CKLx/i60GFHikLfPnlKFilA2qknt4X8wir
+ wz1D2yFm
+ 48bQ1W/3Kxmh4EFnxNPfUdsm7ZTpKYAQBae12d3FtE428/fUDYexxvXWnw7YPR+zlugnLh1DGIfcW8cHoVeycWFwqfuUWXn21m2/HKU1YsBDn1dCQD7G6vyvxohsQBlnE5dQwpPu/ACQ24Yt/twwqKK5EYTqO4VOqvree/kyrPm5aigOtND4x09E2fj76GmzlW274F9M7GRkzsKnj1VSHWoQp1w9xnrtjRSO2TGObX67BCDS06eOGQ4+pyoUzehtmsdbS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,89 +154,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 09:24:50PM +0000, David Matlack wrote:
-> Inherit bus numbers from the previous kernel during a Live Update when
-> one or more PCI devices are being preserved. This is necessary so that
-> preserved devices can DMA through the IOMMU during a Live Update
-> (changing bus numbers would break IOMMU translation).
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/pci/probe.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index af6356c5a156..ca6e5f79debb 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1351,6 +1351,20 @@ static bool pci_ea_fixed_busnrs(struct pci_dev *dev, u8 *sec, u8 *sub)
->  	return true;
->  }
->  
-> +static bool pci_assign_all_busses(void)
-> +{
-> +	/*
-> +	 * During a Live Update where devices are preserved by the previous
-> +	 * kernel, inherit all bus numbers assigned by the previous kernel. Bus
-> +	 * numbers must remain stable for preserved devices so that they can
-> +	 * perform DMA during the Live Update uninterrupted.
-> +	 */
-> +	if (pci_liveupdate_incoming_nr_devices())
-> +		return false;
+> I believe that managing a pseudo-filesystem (msharefs) and mapping via
+> ioctl during process creation could introduce overhead that impacts
+> app startup latency. Ideally, child apps shouldn't be aware of this
+> sharing or need to manage the pseudo-filesystem on their end.
+All process must be aware of these special semantics.
 
-Following the comment on Patch 2 regarding propagating errors, the check
-if (pci_liveupdate_incoming_nr_devices()) should be made explicit to 
-distinguish between "Preservation Active" and "Retrieval Failed".
+I'd assume that fork() would simply replicate mshare region into the
+fork'ed child process. So from that point of view, it's "transparent" as
+in "no special mshare() handling required after fork".
 
-> +
-> +	return pcibios_assign_all_busses();
-> +}
-> +
->  /*
->   * pci_scan_bridge_extend() - Scan buses behind a bridge
->   * @bus: Parent bus the bridge is on
-> @@ -1378,6 +1392,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  				  int max, unsigned int available_buses,
->  				  int pass)
->  {
-> +	bool assign_all_busses = pci_assign_all_busses();
->  	struct pci_bus *child;
->  	int is_cardbus = (dev->hdr_type == PCI_HEADER_TYPE_CARDBUS);
->  	u32 buses, i, j = 0;
-> @@ -1424,7 +1439,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  	pci_write_config_word(dev, PCI_BRIDGE_CONTROL,
->  			      bctl & ~PCI_BRIDGE_CTL_MASTER_ABORT);
->  
-> -	if ((secondary || subordinate) && !pcibios_assign_all_busses() &&
-> +	if ((secondary || subordinate) && !assign_all_busses &&
->  	    !is_cardbus && !broken) {
->  		unsigned int cmax, buses;
->  
-> @@ -1467,7 +1482,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  		 * do in the second pass.
->  		 */
->  		if (!pass) {
-> -			if (pcibios_assign_all_busses() || broken || is_cardbus)
-> +			if (assign_all_busses || broken || is_cardbus)
->  
->  				/*
->  				 * Temporarily disable forwarding of the
-> @@ -1542,7 +1557,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  							max+i+1))
->  					break;
->  				while (parent->parent) {
-> -					if ((!pcibios_assign_all_busses()) &&
-> +					if (!assign_all_busses &&
->  					    (parent->busn_res.end > max) &&
->  					    (parent->busn_res.end <= max+i)) {
->  						j = 1;
+-- 
+Cheers,
 
-Looks like we over-ride the pci=assign-busses boot param here. 
-We should document how this change affects the pci=assign-busses kernel
-command line. If both are present, the inheritance required by LUO would
-likely take precedence to prevent DMA corruption, but a doc update & a 
-warning to the user would be nice.
-
-Thanks,
-Praan
+David
 
