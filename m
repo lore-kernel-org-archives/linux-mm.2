@@ -4,111 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDDFEFB811
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 07:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6B2EEFB812
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 07:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D1236B0088; Tue, 24 Feb 2026 02:30:47 -0500 (EST)
+	id 17FB16B0088; Tue, 24 Feb 2026 02:37:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17F596B0089; Tue, 24 Feb 2026 02:30:47 -0500 (EST)
+	id 103F36B0089; Tue, 24 Feb 2026 02:37:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08B9C6B008A; Tue, 24 Feb 2026 02:30:47 -0500 (EST)
+	id F26CE6B008A; Tue, 24 Feb 2026 02:37:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E5E256B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:30:46 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FC045911E
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:30:46 +0000 (UTC)
-X-FDA: 84478528092.18.CBE7149
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 16ADFC0009
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:30:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=DvkZMD8B;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA9376B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 02:37:43 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 89A818B994
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:37:43 +0000 (UTC)
+X-FDA: 84478545606.17.BBA2584
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B0175100003
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:37:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1jLkFrgk;
+	spf=pass (imf14.hostedemail.com: domain of 3Q1WdaQkKCLYWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3Q1WdaQkKCLYWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771918244;
+	s=arc-20220608; t=1771918661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i852AmhqQepEcJU2Va19clWIwPgPW2TCtS0BPtURAUM=;
-	b=Pw/8ElGRC/T01AiBfrZ4AQZf6qQDL9BrohTBZ/DYfzEWK2dSeK24m+XsKN3WTFNZfbeFnr
-	2uh6D8Pu3WspHyMQB1UJWIumYShWVBut8PC3uS9ehp9JJPCgl2vpffYn04r0IzgnGC8elb
-	+1wV6Myooj7VRzhY4j6m7O/Fghr8fwg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771918244; a=rsa-sha256;
-	cv=none;
-	b=LfKoMogQwBAeNMeTPbP+UIB3u3l3vjAk0PG3K4VXTd8HmYdH6Fgqp628GO0oTJPLooR9tI
-	G6vePCBuxkE9wCme7QwFcnVuKGEPEj3TudMMqwGSs6YBjM7Ommb9SgthUlye9yiXS115aH
-	23iF785frQfWPPSxzJ7wcBU8X4URIj4=
+	bh=Ccaw3Qp4EtXU0xb2rrWk95YgoDmXX+bj8GIv5SpCaTk=;
+	b=vd0NKmhdiQg2Tg1tbeO1YDNvfJ9zOkVmOja1e8g5BerecbAyayC5I6vF6J1cicmRgI8DpB
+	PsYtimvQD9HW26rtuQ6sFDA/mv1ZEAvtYgF1zgdp41I8nzkF9uhZ0OV1MBnX/YEp4rnck6
+	3mG3QpTs/pblmsI4HgFPbAMr4rxJz7M=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=DvkZMD8B;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=i852AmhqQepEcJU2Va19clWIwPgPW2TCtS0BPtURAUM=;
-	b=DvkZMD8BSj1hsYu58fxaLMlH2uV1F8QRDojhe6UKHLneR0msxa0kENmLjyOpvc3+/Sp+Lr5I5
-	BBw+gETiMokMwmuBSMZAbkdtmNf+fsSJyCW0zpyV6g81/TBvGenHZmxtUpCFII8HW3/rqqsblhv
-	yU7MdpjWCBW/x6VAndWH/3k=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fKq5B6prfzRhSd;
-	Tue, 24 Feb 2026 15:25:50 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 75F66404AD;
-	Tue, 24 Feb 2026 15:30:36 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 24 Feb 2026 15:30:36 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 24 Feb 2026 15:30:34 +0800
-Subject: Re: [PATCH v3 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
- MFR policy
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <nao.horiguchi@gmail.com>, <tony.luck@intel.com>,
-	<wangkefeng.wang@huawei.com>, <willy@infradead.org>,
-	<akpm@linux-foundation.org>, <osalvador@suse.de>, <rientjes@google.com>,
-	<duenwen@google.com>, <jthoughton@google.com>, <jgg@nvidia.com>,
-	<ankita@nvidia.com>, <peterx@redhat.com>, <sidhartha.kumar@oracle.com>,
-	<ziy@nvidia.com>, <david@redhat.com>, <dave.hansen@linux.intel.com>,
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<william.roche@oracle.com>, <harry.yoo@oracle.com>, <jane.chu@oracle.com>
-References: <20260203192352.2674184-1-jiaqiyan@google.com>
- <20260203192352.2674184-2-jiaqiyan@google.com>
- <7ad34b69-2fb4-770b-14e5-bea13cf63d2f@huawei.com>
- <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
- <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com>
- <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <a0d25caf-a18b-e3d8-e74f-fc18fa85252e@huawei.com>
-Date: Tue, 24 Feb 2026 15:30:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1jLkFrgk;
+	spf=pass (imf14.hostedemail.com: domain of 3Q1WdaQkKCLYWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3Q1WdaQkKCLYWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771918661; a=rsa-sha256;
+	cv=none;
+	b=yo94xKnr/x9jKnBdT7o2snmN/76hZqkw90fzo9caMLmF8vQ/Xp/6+Xk7x3POLrcfr1Fa1d
+	A5DlStDGlGXZY2ISCGWT85hxMFhgcQWFSwelH9ebGh6C5GS9BwLzp6RvisoySKZN5nZMXd
+	ZFDWmTfXNdOFlDRg6tGECaN53Ud2gA4=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836e35292cso42944275e9.1
+        for <linux-mm@kvack.org>; Mon, 23 Feb 2026 23:37:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771918660; x=1772523460; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :f2079rom:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ccaw3Qp4EtXU0xb2rrWk95YgoDmXX+bj8GIv5SpCaTk=;
+        b=1jLkFrgkMfDGtq0oexOecyr2mtvgT/OhN5Wji4khTLgFI520Bx9JOUNsUs2D0zRjLv
+         DSDGIxLu4t3XYZfbpFtGN5As+mt38I7I3oJsOUzcDByLBU3DI7Tkdv/vs94wCLnr7MTp
+         rO+26dMARQIFISg1BXjooiMgmwVvXVRgfgkXGVIWmPY38BGqsiAOFaid0QPbEpGDZ20X
+         nK7IvvafFKO0nGvUAjPswAJQIWlDTvRiUI49IVx5NsvJoCZ0m+AzjCnLyyKlx0VoQJLl
+         veQLPIEOeSpYEYrHbng21LzMnehSO8US0LhG134GbHCZjyoS/KYHuztwnflhelATmIvL
+         kalg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771918660; x=1772523460;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :f2079rom:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ccaw3Qp4EtXU0xb2rrWk95YgoDmXX+bj8GIv5SpCaTk=;
+        b=wS/xR/0Jfs2NIdns4RyexWgEEx8DfKXtJ6G2iFLGnP9KwY/HUTdMyIpSI1za4vuNnA
+         2qktCIz7GMHLqXTcWb20aBd87oxyonrSmu3rGBC+p98kQ+07ElAvZ9gsfSffMDYJ7U+3
+         4lNk2atSTamwFrcgGMR7HILyhMNNvcFjEdXM1Ca1cpQFvker9vYiBDeJpWhZ1i6PPkdA
+         mWIVNnJ7r2kK/jmVvS25DWlqoWEoDruO285W0bLNQhFvMt9Z75MZOLW19HRGFYsfCeSd
+         jvQgkTS8uIypnAkBiXmvNiRyIbjRJvJNrunAKtU2CuZoP9IKBgXaqTb8oHFfq4SwCyAX
+         +ENg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQXftlv+zGwtv5blTn1njeKbDRtQsk6rmc0cOXbCIauRxoPJNLeVlZI65UnrrcP0hGCSYC+7Cwmg==@kvack.org
+X-Gm-Message-State: AOJu0YwWNAXzGO+i4+D/A2gEuNfm/smXF8t5NPkRYscGUiR4o2qlkn+C
+	MR0ebQAjJWIDu9BalJGfpSOqm56JcDhwgFLHGkyJ+H9VgkRhz9C2YGA4WbJwqD+nm2DYsua4CGP
+	5udhG/B5rraymt+iusg==
+X-Received: from wmxb5-n2.prod.google.com ([2002:a05:600d:8445:20b0:483:43dc:999f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:674f:b0:483:6ff1:18b with SMTP id 5b1f17b1804b1-483a9555bafmr189459985e9.0.1771918659820;
+ Mon, 23 Feb 2026 23:37:39 -0800 (PST)
+Date: Tue, 24 Feb 2026 07:37:38 +0000
+F2079rom: Alice Ryhl <aliceryhl@google.com>
+In-Reply-To: <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
+Mime-Version: 1.0
+References: <20260220-unique-ref-v15-0-893ed86b06cc@kernel.org>
+ <20260220-unique-ref-v15-1-893ed86b06cc@kernel.org> <aZg44EmMWKK-z5KP@google.com>
+ <87wm0333qt.fsf@t14s.mail-host-address-is-not-set>
+Message-ID: <aZ1VQmtapuoerpVo@google.com>
+Subject: Re: [PATCH v15 1/9] rust: types: Add Ownable/Owned types
+From: <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>, 
+	Oliver Mangold <oliver.mangold@pm.me>
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam09
-X-Stat-Signature: iyyy3ymj4o5g17f154s34bdxduptsubx
-X-Rspamd-Queue-Id: 16ADFC0009
+X-Stat-Signature: 86b9tbjnmenjzy7smhugxqimouwjf8hf
 X-Rspam-User: 
-X-HE-Tag: 1771918242-575681
-X-HE-Meta: U2FsdGVkX19SRVh5vqqeiZKw+rt7pQPQbcoCKzTIYyOAlRMQqip25tNL7U9XKOtVd46eX8B+9jpBgafokHisA98t4x/KKrSaN78YqmPCHx9Xudximeap9z8ZV/KU6a0fQdpjH5kAWMUZOpRDo0NAoBT6tu9ziXHnarcYb3w88ul8xY6u6xjU/QFf9G40jDsLmXCr7om3NF5z0y7YhJJyNN15V3ggmXSTafRfY0ScDH2PyPrN80BOu1+/k2lpNvsIoFx2I07TbqD5EduXkcR7Fv3VKzzDTvIziVAiCfVWwyCZw3ydm2KXI61AgE+IJ34VW7nt9MexDafAVmxlfgB/ZqaoBgfNStVt1hRFMf02LUNq8Hagzp/M6S2rn80WH/vweJrbxkf30WYxAUGkCOQESCUVoLTXDk7D351tlGOfWiO9k8KFzGLyegMLNtSBsrE/YdSvbgqVZQ8GfZJIIeeVz7HQbB2b9NNMFfEwXqUebDPvg06I23KLV56g1prQOpWB7bDOIqzVjMh38+TyaF84nNlnCh9z4tww2yp+9Q7C2EoimnAO9YfKZ6+qGDKFyQ1X/sN140g47ApQxbsqf9drHOBwTjoduBS5KZmMozrdWEvDjYKtz7L4TyoDWRCrGMhswWhHsBs+PG3RPGHMa+TM9XUTMLvSticC4hZRFpbEvel5Ad2wgJuWVqxMGgH97THJcdI7JZIceynAHIYgotZ+VgHeb+fndigVgZLBIl+t7i+5qPl8xeUbGrnjm4VvJpBw2nPUfETQV9m/yJRnzfr/P269NzSwfM3frZq2lS7Z1BlFsqYBKEDTV5ewOrvqDd7kj8M/m8DhCaeilYJFv5MQSo7S/4Udx8vbX+xbm3WYPX+2LU8Mt0IVwx+dHndF9apfl10weo38FRTaBl4/U2gCO2pd+K4T8gIDEw3V1Gc7xGp1LHMjLIMeVoRzTGdijZBBydELADQdt6HDTRZZ+S0
- VlDfg11X
- /rEqLLX1agUNvD7adtmxRy66TvX0gAY2DTlmCrCmUKokKLniAAG/zsd3czFFKXf6xJksJv7mpM1VXz24ztevLHNSFHeSEbft2lPY/PFA59ICR6E1EOAZBGN4ZZm+JwnvzVYtoH5GYWEsdz0Fe6FJGkdgnFSPGDsnKUg3OlkNSqfQQss+nrhx6jyvDPlLkHT4hj4NV2EL6r8LLgw1lODidGbWa3UqtR/mrI6BEPG/YABu3DZKM0+AAxTlpwT6gyJFTSNEX6Gdt98fBb4TzdRzSDzE7a+TyBFBgRdfJLhcEyeDYU5AEvxobYpG5PL8z+pRmva3Jr5wEBWrIjUrAK/8rtnIh575fLHasbPe6mDHhrB+9RJ4=
+X-Rspamd-Queue-Id: B0175100003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1771918661-51350
+X-HE-Meta: U2FsdGVkX195HDwYfB9YzuU9mcp73nG3617x6pT2Cd9i1uMnAJmEd2WAN8BB1rieK5NYBM6wvNkiDOdbCGI34vo8IaleTF+8oPqCC+fAwp3t88gkaGbBRrq+eKqNaKnnah4FQHx0bs199D8BfOtP6E6OFG+bX5LDED4AwUg6U2t0iCYBLqMeJYjiVqS96aza5W+VyNE1EYy2d/UaBdsmJbXbJEG2x87yZd9l1+WIwRwxn/m12lC2aekk+/NEMoBlMTMd0OA5RegLdbKsBzdKZ8v5zYSoZF7K3fZNPqpAbR8d48KK2a8mxYrD9wEQzMfgYOwetJa6D1jQH6Fp3QoFrZIVhadleNnLLzF6cp1a5VJ8Pixjd5PeBXz6FTFERa8K/W8QMAdilYo4n5sRdJNB+fDKrjwoj54RAt85lSzQxpN0bUGjE/KiRlSTeNt2g/Hx5z6980RTu8k3loi72078a9bU75wkI/VQ68u4Tgi0zDhUtEFa6Oo3p6IhismDAWyHdyCm2tDfstu2/uy/zn9EyEgxnH09z7soSnlxL8NAFhJpns1hnBuk3F/P8yqy1skXOOfAJf+fVMx9aCUQgOGu4+nAUqRFYj2TE88faILxDtUrh8uS/x2LA60/JLwE5J3VzdWqBGwjHeI8GzgVilEv2+zPcpLfvSNLy5AYsXJC8FuErk1/k9D7CXYbk970C33KJQIHMuOQyR3iDnyJhsQeMi+zlW54zQ/gCK65s7py566FkS1dVCWYehfRndi3Wzmvc3X8J714yxsbOrUwar824eD2gA1WozjWl7Xd83cAszU56uNMjxoHP3ucncO4d2m2N9sgzzuWl6vvai56tR0OrdJLvKaqltGOw4PtHUrXFK7yvFct6p467ERJHgPvXddTF0hbp0/z6CJ4rIUwsxaPEx9xH2LrjnZeZ128Nl97pwkoMixOF67FeHbLpEpVt5l2q4ceNenb4kIZdZn7gOP
+ kwmDEmY8
+ tXKsR0CPXseFIn19Bv08Bm2qks/Ma2NT1YbQzpvTG8JjMwjT/XawhiJ/IV7rDkNb3TdHTpfq2B3WEqTQZPOJLHKZfVm1kE5yTWGo+/2XPk5JfOeKSfcj9oyQXn5dF2VhN3NtZkw11a6DwfKwYzbcsdklY6LEZ8rhfu2jPxZr3OMDF3iJNrkOui/K8NEO3vRjkDt71gGDk+YS+7BX5R4kNMEIJ7W5K3lTcIBXVa7gFfTZEuOPM2KtmM4iPbo4xAPGGIeaiZEDcxRjarYZkZV5o3uYLQ/8AwxoIldQ0g34EQQnPa+716wapX9Uj54ADHsKRHfonrOrhFEigoxzTmGvX96HwSrvGJBld7JMHgoiPJTavCbSDqCwPjXOOB2HH3muHCpXepLkHsQs4P6BXJ6INbSpZjnURGntzW7QyPF/iqmrnkj/9Ms/+A42Fg0tKLvCewU3V7eFm8jWiOCOytsZACTP99jt0Z8cFdYN6sP4t8kt3s2n5iVuoshhngF3/xMDLyqj7aYNt12RQFLud+utVL4QteAl5YN2Ed0bj9P24uGkqDkxPYKw+fvOiZc3PhXE0WyNCnXSqVMZDVVN4vN9Vv0wKQMExtHSh72rtFYJ39t6aH410zua9CYQObpkLy8YbN0qf6Wl36GjqS68ojK/cnndfcMueNrl9N36MZZC7w3ysUmpauu1j5e1ERsI6YQ/HvTt0QSCynFrJc5z9cUpdYuuiwLTLnukqQLSh5lYjurlL9++R7zpKilDB63FAz57koCr2DNA+PeM9/nedPeHfdB2zc3SgDHaFzXzBYOzLadCkUQbYIWTe3kfJAsj3O309Whs1rW8YCzS2fck5cwoy0W5H3zANmIbj7JHI2elZbIO0SGY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,221 +127,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/2/13 13:01, Jiaqi Yan wrote:
-> On Mon, Feb 9, 2026 at 11:31 PM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>
->> On 2026/2/10 12:47, Jiaqi Yan wrote:
->>> On Mon, Feb 9, 2026 at 3:54 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>>>
->>>> On 2026/2/4 3:23, Jiaqi Yan wrote:
->>>>> Sometimes immediately hard offlining a large chunk of contigous memory
->>>>> having uncorrected memory errors (UE) may not be the best option.
->>>>> Cloud providers usually serve capacity- and performance-critical guest
->>>>> memory with 1G HugeTLB hugepages, as this significantly reduces the
->>>>> overhead associated with managing page tables and TLB misses. However,
->>>>> for today's HugeTLB system, once a byte of memory in a hugepage is
->>>>> hardware corrupted, the kernel discards the whole hugepage, including
->>>>> the healthy portion. Customer workload running in the VM can hardly
->>>>> recover from such a great loss of memory.
->>>>
->>>> Thanks for your patch. Some questions below.
->>>>
->>>>>
->>>>> Therefore keeping or discarding a large chunk of contiguous memory
->>>>> owned by userspace (particularly to serve guest memory) due to
->>>>> recoverable UE may better be controlled by userspace process
->>>>> that owns the memory, e.g. VMM in the Cloud environment.
->>>>>
->>>>> Introduce a memfd-based userspace memory failure (MFR) policy,
->>>>> MFD_MF_KEEP_UE_MAPPED. It is possible to support for other memfd,
->>>>> but the current implementation only covers HugeTLB.
->>>>>
->>>>> For a hugepage associated with MFD_MF_KEEP_UE_MAPPED enabled memfd,
->>>>> whenever it runs into a new UE,
->>>>>
->>>>> * MFR defers hard offline operations, i.e., unmapping and
->>>>
->>>> So the folio can't be unpoisoned until hugetlb folio becomes free?
->>>
->>> Are you asking from testing perspective, are we still able to clean up
->>> injected test errors via unpoison_memory() with MFD_MF_KEEP_UE_MAPPED?
->>>
->>> If so, unpoison_memory() can't turn the HWPoison hugetlb page to
->>> normal hugetlb page as MFD_MF_KEEP_UE_MAPPED automatically dissolves
->>
->> We might loss some testability but that should be an acceptable compromise.
+On Mon, Feb 23, 2026 at 03:59:22PM +0100, Andreas Hindborg wrote:
+> Alice Ryhl <aliceryhl@google.com> writes:
 > 
-> To clarify, looking at unpoison_memory(), it seems unpoison should
-> still work if called before truncated or memfd closed.
+> > On Fri, Feb 20, 2026 at 10:51:10AM +0100, Andreas Hindborg wrote:
+> >> From: Asahi Lina <lina+kernel@asahilina.net>
+> >> 
+> >> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> >> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> >> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+> >> within Rust, and does not allow cloning.
+> >> 
+> >> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+> >> resource management to the `T` instead of using a generic allocator.
+> >> 
+> >> [ om:
+> >>   - Split code into separate file and `pub use` it from types.rs.
+> >>   - Make from_raw() and into_raw() public.
+> >>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+> >>   - Usage example/doctest for Ownable/Owned.
+> >>   - Fixes to documentation and commit message.
+> >> ]
+> >> 
+> >> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+> >> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+> >> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+> >> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> >> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> >> [ Andreas: Updated documentation, examples, and formatting ]
+> >> Reviewed-by: Gary Guo <gary@garyguo.net>
+> >> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> >
+> >> +///         let result = NonNull::new(KBox::into_raw(result))
+> >> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
+> >
+> > KBox should probably have an into_raw_nonnull().
 > 
-> What I wanted to say is, for my test hugetlb-mfr.c, since I really
-> want to test the cleanup code (dissolving free hugepage having
-> multiple errors) after truncation or memfd closed, so we can only
-> unpoison the raw pages rejected by buddy allocator.
+> I can add that.
 > 
->>
->>> it. unpoison_memory(pfn) can probably still turn the HWPoison raw page
->>> back to a normal one, but you already lost the hugetlb page.
->>>
->>>>
->>>>>   dissolving. MFR still sets HWPoison flag, holds a refcount
->>>>>   for every raw HWPoison page, record them in a list, sends SIGBUS
->>>>>   to the consuming thread, but si_addr_lsb is reduced to PAGE_SHIFT.
->>>>>   If userspace is able to handle the SIGBUS, the HWPoison hugepage
->>>>>   remains accessible via the mapping created with that memfd.
->>>>>
->>>>> * If the memory was not faulted in yet, the fault handler also
->>>>>   allows fault in the HWPoison folio.
->>>>>
->>>>> For a MFD_MF_KEEP_UE_MAPPED enabled memfd, when it is closed, or
->>>>> when userspace process truncates its hugepages:
->>>>>
->>>>> * When the HugeTLB in-memory file system removes the filemap's
->>>>>   folios one by one, it asks MFR to deal with HWPoison folios
->>>>>   on the fly, implemented by filemap_offline_hwpoison_folio().
->>>>>
->>>>> * MFR drops the refcounts being held for the raw HWPoison
->>>>>   pages within the folio. Now that the HWPoison folio becomes
->>>>>   free, MFR dissolves it into a set of raw pages. The healthy pages
->>>>>   are recycled into buddy allocator, while the HWPoison ones are
->>>>>   prevented from re-allocation.
->>>>>
->>>> ...
->>>>
->>>>>
->>>>> +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *folio)
->>>>> +{
->>>>> +     int ret;
->>>>> +     struct llist_node *head;
->>>>> +     struct raw_hwp_page *curr, *next;
->>>>> +
->>>>> +     /*
->>>>> +      * Since folio is still in the folio_batch, drop the refcount
->>>>> +      * elevated by filemap_get_folios.
->>>>> +      */
->>>>> +     folio_put_refs(folio, 1);
->>>>> +     head = llist_del_all(raw_hwp_list_head(folio));
->>>>
->>>> We might race with get_huge_page_for_hwpoison()? llist_add() might be called
->>>> by folio_set_hugetlb_hwpoison() just after llist_del_all()?
->>>
->>> Oh, when there is a new UE while we releasing the folio here, right?
->>
->> Right.
->>
->>> In that case, would mutex_lock(&mf_mutex) eliminate potential race?
->>
->> IMO spin_lock_irq(&hugetlb_lock) might be better.
+> >
+> >> +///    let foo = Foo::new().expect("Failed to allocate a Foo. This shouldn't happen");
+> >> +///    assert!(*FOO_ALLOC_COUNT.lock() == 1);
+> >
+> > Use ? here.
 > 
-> Looks like I don't need any lock given the correction below.
+> Ok.
 > 
->>
->>>
->>>>
->>>>> +
->>>>> +     /*
->>>>> +      * Release refcounts held by try_memory_failure_hugetlb, one per
->>>>> +      * HWPoison-ed page in the raw hwp list.
->>>>> +      *
->>>>> +      * Set HWPoison flag on each page so that free_has_hwpoisoned()
->>>>> +      * can exclude them during dissolve_free_hugetlb_folio().
->>>>> +      */
->>>>> +     llist_for_each_entry_safe(curr, next, head, node) {
->>>>> +             folio_put(folio);
->>>>
->>>> The hugetlb folio refcnt will only be increased once even if it contains multiple UE sub-pages.
->>>> See __get_huge_page_for_hwpoison() for details. So folio_put() might be called more times than
->>>> folio_try_get() in __get_huge_page_for_hwpoison().
->>>
->>> The changes in folio_set_hugetlb_hwpoison() should make
->>> __get_huge_page_for_hwpoison() not to take the "out" path which
->>> decrease the increased refcount for folio. IOW, every time a new UE
->>> happens, we handle the hugetlb page as if it is an in-use hugetlb
->>> page.
->>
->> See below code snippet (comment [1] and [2]):
->>
->> int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->>                                  bool *migratable_cleared)
->> {
->>         struct page *page = pfn_to_page(pfn);
->>         struct folio *folio = page_folio(page);
->>         int ret = 2;    /* fallback to normal page handling */
->>         bool count_increased = false;
->>
->>         if (!folio_test_hugetlb(folio))
->>                 goto out;
->>
->>         if (flags & MF_COUNT_INCREASED) {
->>                 ret = 1;
->>                 count_increased = true;
->>         } else if (folio_test_hugetlb_freed(folio)) {
->>                 ret = 0;
->>         } else if (folio_test_hugetlb_migratable(folio)) {
->>
->>                    ^^^^*hugetlb_migratable is checked before trying to get folio refcnt* [1]
->>
->>                 ret = folio_try_get(folio);
->>                 if (ret)
->>                         count_increased = true;
->>         } else {
->>                 ret = -EBUSY;
->>                 if (!(flags & MF_NO_RETRY))
->>                         goto out;
->>         }
->>
->>         if (folio_set_hugetlb_hwpoison(folio, page)) {
->>                 ret = -EHWPOISON;
->>                 goto out;
->>         }
->>
->>         /*
->>          * Clearing hugetlb_migratable for hwpoisoned hugepages to prevent them
->>          * from being migrated by memory hotremove.
->>          */
->>         if (count_increased && folio_test_hugetlb_migratable(folio)) {
->>                 folio_clear_hugetlb_migratable(folio);
->>
->>                 ^^^^^*hugetlb_migratable is cleared when first time seeing folio* [2]
->>
->>                 *migratable_cleared = true;
->>         }
->>
->> Or am I miss something?
+> >
+> >> +/// }
+> >> +/// // `foo` is out of scope now, so we expect no live allocations.
+> >> +/// assert!(*FOO_ALLOC_COUNT.lock() == 0);
+> >> +/// ```
+> >> +pub unsafe trait Ownable {
+> >> +    /// Releases the object.
+> >> +    ///
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// Callers must ensure that:
+> >> +    /// - `this` points to a valid `Self`.
+> >> +    /// - `*this` is no longer used after this call.
+> >> +    unsafe fn release(this: NonNull<Self>);
+> >
+> > Honestly, not using it after this call may be too strong. I can imagine
+> > wanting a value where I have both an ARef<_> and Owned<_> reference to
+> > something similar to the existing Arc<_>/ListArc<_> pattern, and in that
+> > case the value may in fact be accessed after this call if you still have
+> > an ARef<_>.
 > 
-> Thanks for your explaination! You are absolutely right. It turns out
-> the extra refcount I saw (during running hugetlb-mfr.c) on the folio
-> at the moment of filemap_offline_hwpoison_folio_hugetlb() is actually
-> because of the MF_COUNT_INCREASED during MADV_HWPOISON. In the past I
-> used to think that is the effect of folio_try_get() in
-> __get_huge_page_for_hwpoison(), and it is wrong. Now I see two cases:
-> - MADV_HWPOISON: instead of __get_huge_page_for_hwpoison(),
-> madvise_inject_error() is the one that increments hugepage refcount
-> for every error injected. Different from other cases,
-> MFD_MF_KEEP_UE_MAPPED makes the hugepage still a in-use page after
-> memory_failure(MF_COUNT_INCREASED), so I think madvise_inject_error()
-> should decrement in MFD_MF_KEEP_UE_MAPPED case.
-> - In the real world: as you pointed out, MF always just increments
-> hugepage refcount once in __get_huge_page_for_hwpoison(), even if it
-> runs into multiple errors. When
+> I do not understand your use case.
+> 
+> You are not supposed to have both an `ARef` and an `Owned` at the same
+> time. The `Owned` is to `ARef` what `UniqueArc` is to `Arc`. It is
+> supposed to be unique and no `ARef` can be live while the `Owned` is
+> live.
+> 
+> A `ListArc` is "at most one per list link" and it takes a refcount on
+> the object by owning an `Arc`. As far as I recall, it does not provide
+> mutable access to anything but the list link. To me, that is a very
+> different situation.
 
-This might not always hold true. When MF occurs while hugetlb folio is under isolation(hugetlb_migratable is
-cleared and extra folio refcnt is held by isolating code in that case), __get_huge_page_for_hwpoison won't get
-extra folio refcnt.
+I mean, even Page is kind of an example like that.
 
-> filemap_offline_hwpoison_folio_hugetlb() drops the refcount elevated
-> by filemap_get_folios(), it only needs to decrement again if
-> folio_ref_dec_and_test() returns false. I tested something like below:
+Pages are refcounted, but when you have a higher-order page, the
+__free_pages() call does something special beyond what put_page(). For
+example, if you have an order-2 page, which consists of 4 pages, then
+the refcount only keeps the first page alive, and __free_pages() frees
+the 3 extra pages right away even if refcount is still non-zero. The
+first page then stays alive until the last put_page() is called.
+
+> > If you modify Owned<_> invariants and Owned::from_raw() safety
+> > requirements along the lines of what I say below, then this could just
+> > say that the caller must have permission to call this function. The
+> > concrete implementer can specify what that means more directly, but here
+> > all it means is that a prior call to Owned::from_raw() promised to give
+> > you permission to call it.
 > 
->     /* drop the refcount elevated by filemap_get_folios. */
->     folio_put(folio);
->     if (folio_ref_count(folio))
->         folio_put(folio);
->     /* now refcount should be zero. */
->     ret = dissolve_free_hugetlb_folio(folio);
+> I don't think we need the "permission" wording. How about this:
+> 
+> 
+> /// A mutable reference to an owned `T`.
+> ///
+> /// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
+> /// dropped.
+> ///
+> /// # Invariants
+> ///
+> /// - Until `T::release` is called, this `Owned<T>` exclusively owns the underlying `T`.
+> /// - The `T` value is pinned.
+> pub struct Owned<T: Ownable> {...}
+> 
+> 
+> impl<T: Ownable> Owned<T> {
+>     /// Creates a new instance of [`Owned`].
+>     ///
+>     /// This function takes over ownership of the underlying object.
+>     ///
+>     /// # Safety
+>     ///
+>     /// Callers must ensure that:
+>     /// - `ptr` points to a valid instance of `T`.
+>     /// - Until `T::release` is called, the returned `Owned<T>` exclusively owns the underlying `T`.
+>     pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {...}
+> }
+> 
+> pub trait Ownable {
+>     /// Tear down this `Ownable`.
+>     ///
+>     /// Implementers of `Ownable` can use this function to clean up the use of `Self`. This can
+>     /// include freeing the underlying object.
+>     ///
+>     /// # Safety
+>     ///
+>     /// Callers must ensure that the caller has exclusive ownership of `T`, and this ownership can
+>     /// be transferred to the `release` method.
+>     unsafe fn release(&mut self);
+> }
+> 
+> 
+> Note `Ownable` not being an unsafe trait.
 
-So I think above code might drop the folio refcnt held by isolating code.
+It looks ok but see my above reply.
 
-Thanks.
-.
+> >> +/// A mutable reference to an owned `T`.
+> >> +///
+> >> +/// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
+> >> +/// dropped.
+> >> +///
+> >> +/// # Invariants
+> >> +///
+> >> +/// - The [`Owned<T>`] has exclusive access to the instance of `T`.
+> >> +/// - The instance of `T` will stay alive at least as long as the [`Owned<T>`] is alive.
+> >> +pub struct Owned<T: Ownable> {
+> >> +    ptr: NonNull<T>,
+> >> +}
+> >
+> > I think some more direct and less fuzzy invariants would be:
+> >
+> > - This `Owned<T>` holds permissions to call `T::release()` on the value once.
+> > - Until `T::release()` is called, this `Owned<T>` may perform mutable access on the `T`.
+> 
+> I do not like the wording for mutable access. Formulating safety
+> requirements for `from_raw` and safety comments for that function
+> becomes convoluted like this. I'd rather formulate the
+> access capability in terms of ownership;
+> 
+>  - Until `T::release()` is called, this `Owned<T>` exclusively owns the
+>    underlying `T`.
+> 
+> How is that?
+> 
+> > - The `T` value is pinned.
+> 
+> I am unsure about the pinning terminology. If we say that `T` is pinned,
+> does this mean that it will never move, even if `T: Unpin`? Or is it
+> implied that `T` may move if it is `Unpin`?
+
+Values that are `Unpin` can always move - pinning is a no-op for them.
+
+Alice
 
