@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D577EC1133
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:54:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB69EC112B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 01:56:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA4246B0088; Mon, 23 Feb 2026 20:54:58 -0500 (EST)
+	id C64F16B0088; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B27BE6B0089; Mon, 23 Feb 2026 20:54:58 -0500 (EST)
+	id C25FC6B0089; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A33CD6B008A; Mon, 23 Feb 2026 20:54:58 -0500 (EST)
+	id B52F06B008A; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7336B0088
-	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:54:58 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21FBE1603D1
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:54:58 +0000 (UTC)
-X-FDA: 84477681876.30.9812AE3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 812044000F
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:54:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MiBDSnKh;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FA3B6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Feb 2026 20:56:30 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A28814017F
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:30 +0000 (UTC)
+X-FDA: 84477685740.08.7F0458C
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 26FE5100004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 01:56:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uNtkKh1o;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771898096;
+	s=arc-20220608; t=1771898188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=053QcXJC/uQlfXZjQIgtZ/z27bhpKCuDgtj1qJalpic=;
-	b=FGoN9wl+FTJtUfubPKyZDS29NIINnwE1NdxH533que0Ki8lFAupezRAQTnWAwohwXnvn9r
-	dSsOSrin2uGbcdmBmZXreW5Dyw4eYJ9q3ZCkI+zZ2Zamd4XJVB0U5KzocWZri6RoP9xu+7
-	xSpUdWAq+vOUyetrpEM1xLfjLdofXtE=
+	 in-reply-to:references:dkim-signature;
+	bh=iJQ/3IUSXREjv6iEZ/pBqdTwKOa9f+25GyeUUpRX5oY=;
+	b=MVRUlsom8Eu2BvOW+0h0ODlKPI7HH++e8vSaB2ReDqQzMbp7njcdLPKQ+wCkT6I33St0bR
+	KJ1x2Hx4enG0G/WJYHehdfFzSA5vRUiUUiwOFB+2qkx6dXVTcLBchqbbegLDl5+QCZEeTg
+	vJTx9IIRwVnZFTf4AJl8JQDQqcplqo4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MiBDSnKh;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898096; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uNtkKh1o;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771898188; a=rsa-sha256;
 	cv=none;
-	b=fL21MJiAnuDEnqJG6Ou/MBu8oCera2/FUE7/ZITAP/fQsc7ESUmjO++7toRa1ZLsLvJKK6
-	ViPGtMXoB+Y7mxzKBQ0ti1g/UEmTxt/qDLefokL7dnOMHi1LMB0g2/LAOdm4+LLyaX8Mwm
-	GsOdmfXpEHj1vK7b6/k+smrKhv1e40U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B91F6600AE;
-	Tue, 24 Feb 2026 01:54:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1202AC116C6;
-	Tue, 24 Feb 2026 01:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771898095;
-	bh=ShmNycpJjFAr5FPie2HkibrMbfPM533UhWG1r/u6bq4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MiBDSnKhOK5Qq9mmcTFXukIsQdfDvtLh8mSQqgt9uK3OlV8LqQDSBys2Z735Ss7e+
-	 GcZScbjOca8l0KHbX4je9tDYvzulXti1ltBnOL6JktwVd8/QHMkFxC7c26w1f7ZnVn
-	 2ISU0ekUzUtFLBZUmj6aS7jYWZ1K3JRMZSHSAvqlowuDVuAGhWCPi2AcBGFADhqjGQ
-	 kuj2uUv8u0s8Zvo8day3Z1/fv+EFYFL8Kc2lRX34dCq3bNRrecNQeW4l/D3oe97au0
-	 QlUAQ7mSqQhBQcb7cqK5P9IOTMaDKK0FPWLJrPX/OGf6HtyBoSyKclkJ6V34WYhpW+
-	 eaPmTs2kheVtg==
-From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
+	b=HSTgm5N4Mf0UIFq0R5UEFMdUsvM5MUISQsYYmIHFO6WJope0loiHsykdAHKiG5sATJNNlY
+	ZxG19v0vVnUne9kFNkxfltktdvKNDc9L+EBZ2vUV9+K1f5l5/HHCQUbcJjNIM00j0n9QbI
+	qgeccaUerk6jtFjQ/lNAjdMr82oLXUk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1771898183; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=iJQ/3IUSXREjv6iEZ/pBqdTwKOa9f+25GyeUUpRX5oY=;
+	b=uNtkKh1oVXE7EEHuKt2xoJ+eUBj8srH7EhPvt2ZymcGmbF9wwl3qaBopM8YmoFMD67wN3tZgesLKBP2v1K+BxRltS96vn4ESZFBMS3lOCU3/HdBr9fyye6qMSWuWPkMQq40tudrQYi/g65/Q0FnqnzmYcFUWWxXzIcza4IxfhPc=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzhndj1_1771898181 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Feb 2026 09:56:22 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: catalin.marinas@arm.com,
+	will@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ryan.roberts@arm.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	riel@surriel.com,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	willy@infradead.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v3 2/4] mm/damon: fix esz=0 quota bypass allowing unlimited migration
-Date: Mon, 23 Feb 2026 17:54:52 -0800
-Message-ID: <20260224015453.56879-1-sj@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] support batched checking of the young flag for MGLRU
+Date: Tue, 24 Feb 2026 09:56:03 +0800
+Message-ID: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260223123232.12851-3-ravis.opensrc@gmail.com>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 812044000F
-X-Stat-Signature: 3fah7zn48chgusoaxj99jdjp9s1auy4g
-X-HE-Tag: 1771898096-507133
-X-HE-Meta: U2FsdGVkX1+uycyxBP3UoDoIabXbj6SJT3lm+5j+WtE1al0W1cwP115P/WsMBLNPHic5SakOzdMB7rkCkZdZl66xQiIqCRg9TmCtWO4IzamBXHhTmN5uIUJ9bnNJjVewecYRHu4gm3KBOoYEvVPRtcvNOgSIROZ/DpS4D/j3MR9hy0b2wqt7MvdV7uVAGd1y/vKk46MQqL/WKtT8bvkF85dBEDklirCHiON0h2i9mVn1cMELVv0OXKZhen2I37QpB+X6SzV3Zhe7sTZmqS2Lb+skdFdMQ5+LOCtZNCfq34fbIfNqG9YdcmfdjU+irOUBWtCeDKa1w8XlELGrFNtMUNUDAKcUTqSZpERRjpBV6POmWPfw6CgFkssQJWA60QrjkaLb/q0q0EHfxljpZLUj5q2pE3APQy+aRU5dEUqsOuvdyK0TJpyamaZE7Z6ea0aJFw+C9aRcWNUmZYvADKFwBiDNVjgJdSXN4iPKVqzrr8COHKtbHVEGFAxJAzOrdoac4V64DvdLfN8HsWIvfQJsEb/yL3/jR9xMxnUd4Tck91O0EZSRKTvUZAbrEMUeog5/cTz0Wu5DdnykzjcGYMWvRvgHlyNSRdmw+k25o0BL6Ym3ceKt/6VVnyubJc1SBFG3LY1bZS2i8soPkPpWCMWVSecsoQU5UaGa3o5EbDQE4MEJI4cbdKuizLT/32+CU8/mapZv92BhXogCgRGgdbV9NQTgk+RcmZlaRlQfT1hwVEllz3AbTQizlIpB4eh+rmuUvCxfPfWCnGCYUt2F2hvcVZQBoM8nkMWhU3XqrnKjlzRH0SqEfznERRWn1eJ3YrCM7viW4GWwOs+/aGgLYDcrEl10TxO9d14gM6efRCZYC81pNJCjiYUaJ8HR4uwQ6MUdsi/pEAne7LgLVikSpcZKtT84uWt2sUGAgf/w1cO6ZonglnauhSdYk6yCTB1ACLWODpO4S/UHe1U2a0D9yyE
- q1L9+l20
- TZCdpuxHsQFsrE9IYLuCo1BInNRZSW39b6Y4txZUc8sUl9QNk3JL4Vxksgl5MUsd+dYY2lHHD1qQWgimdZWswkKox+1o/g/PEFr3q5LiYyEdxvO1GRGJfLww7Dkn6W8HncCuabMuyp0uJKgs+dMjyZKqdHdcy1uxdcdedPLGvMVxL7YtmSkwqdXG9paoUtDspXM8rHgRlYMGSVjtKMxcZXZ5YjRfe9cd44jWU1Pt2PTSQAjNbhipXVL3Lx58kptHHLoES1LUYTa0ybVu50VBdm7OO+cRTOiSlJ/xxYViWtd3/Y/W5R3fDIc0u1w==
+X-Rspamd-Queue-Id: 26FE5100004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: okaxpr81udzfm6rhf6wmhgcqdqeg9ean
+X-HE-Tag: 1771898186-695044
+X-HE-Meta: U2FsdGVkX194yKNG3C4EVyvk2KDdKp9PhcugO0cxU7MiPyt0J88lWf1AGeMyAA2wbNdNFzSrft3UZmscbx4bQP8dF5WThcSv5OaGMb+w4XEJuIJ/uq1euhyD3ZzOJk7p1I3uKlh1SWXFk15pqn1N6S1aP3VPNkxo6y+5QC1eXWKoN9d5y2ztlclUYIqn6yyB/LCFE65GqaSHn01NBdECnTQZIOllrJPNFVuJte0JguSlLhDt9jRiZPtFvZ+M7VTE3gOGKxrJeU0ERsSj0GuuaQ27h2SSXCZrlwMnKvHKxnvEEdkQhnBDcFP+fkz9ijVGvi7+WnnsvD0EdFmMRFXWziB0WLtUxvS2WueE+XOAg2PdqTnB1jlZTG/7+eM5ib8H9SUiN6MidB68LIDQy7Ygy3rENRCr3w/y2A7XsDSuWQld2Fl/ScU0A75Op39bKTcbVGCavs+/1zff80Q1It+1noKOUXGMitQnst8stzjljEzb5WIk8BPTJrThDcQsPqVxck6v/Arqdk9kQSqsK7GP1VgzO4wvc6uPlnRDwiQnPXrjjZLxZMIer+arcJVjTWQLgjxPkzVBWnE495BiYo8sJvV8OmJ8kJuZRldSwYD7DNoyloNPAosCHTGd0q+UuD+WFgDCY/TZGinqma6kFl2CnaOTMq/w6gQSjsaUckv0zUCjtj8IOT81XGH04uQdGn2s4NIiiVzDvSqWs+zsvrf0dtDJwIDVgHTgnplxkuDjjyWkDE/LifAWp2f5KesuFnOkUJPrh9Fgj2z5gp1iuqhd8FcSYeQ2+kaXwnimNEBFEWfUNYvYufjmI+ioebINTPzgdp5VcXOfi01fJ/sdatTQTouFihMQhgNJHk0+DHJKTs3vHAyYNmT055dsXZ1G+pMXGSRVW36Xunpr/RRaLIbNwMx3SjwnKUruYzC9b8X3WCtNRnakIMIFmdYDvBywfi9nPujNB5zL+QNLGf6UIJP
+ 2KGPaou8
+ Mx4t93rOfDkVAq3cWgoCvgnbB1YiFPF1+wsJMLy0aLJ7RN5mZniYvZIYbdPglX0iNy6dQ85viXXk6jG5yuW3Gbwz2iwbLTL/+6bzIloqUX7iO5pmjKXdMiiXfOR26zIDqPWRDModJf3M/v1BUi9z3F3AUdnpbBh7SvDOmxcGa5eQBPBXh7NJG+pxIpOAt7xYQUMHe/YMf1l4KbZRHFYOydiiLlWN0u0S+A0jroabLcxKxglRnGYr9r1m0svw0DJBslac71NwKhTAEYC1JBk012bkGSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,55 +106,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 23 Feb 2026 12:32:30 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+This is a follow-up to the previous work [1], to support batched checking
+of the young flag for MGLRU.
 
-> When the TEMPORAL goal tuner sets esz_bp=0 to signal that a goal has
-> been achieved, the quota check was not actually stopping migration.
-> 
-> The condition:
->     if (quota->esz && quota->charged_sz >= quota->esz)
-> 
-> When esz=0, this evaluates to (false && ...) = false, so the continue
-> is never executed and migration proceeds without limit.
+Similarly, batched checking of young flag for large folios can improve
+performance during large-folio reclamation when MGLRU is enabled. I
+observed noticeable performance improvements (see patch 5) on an Arm64
+machine that supports contiguous PTEs. All mm-selftests are passed.
 
-Nice finding, thank you for sharing this!
+Patch 1,2: cleanup patches.
+Patch 3: add a new generic batched PTE helper: test_and_clear_young_ptes().
+Patch 4: support batched young flag checking for MGLRU.
+Patch 5: implement the Arm64 arch-specific test_and_clear_young_ptes().
 
-> 
-> Change the logic to:
->     if (!quota->esz || quota->charged_sz >= quota->esz)
-> 
-> Now when esz=0, (!0 = true) causes the continue to execute, properly
-> stopping migration when the goal is achieved.
+[1] https://lore.kernel.org/all/cover.1770645603.git.baolin.wang@linux.alibaba.com/
 
-But this code is written in the way because the current code assumes zero 'esz'
-means it is not being used and therefore be ignored.  This change should be ok
-for your use case, but could introduce an unexpected behavioral change for
-other users.
+Baolin Wang (5):
+  mm: use inline helper functions instead of ugly macros
+  mm: rmap: add a ZONE_DEVICE folio warning in folio_referenced()
+  mm: add a batched helper to clear the young flag for large folios
+  mm: support batched checking of the young flag for MGLRU
+  arm64: mm: implement the architecture-specific
+    test_and_clear_young_ptes()
 
-One easy workaround would be setting esz_bp with a value smaller than 40960000
-instead of 0.  That is, esz_bp is the bytes in bp, so setting it smaller than
-40960000 will result in making it effectively zero, e.g., like below.
+ arch/arm64/include/asm/pgtable.h | 18 +++++++----
+ include/linux/mmu_notifier.h     | 54 --------------------------------
+ include/linux/mmzone.h           |  5 +--
+ include/linux/pgtable.h          | 36 +++++++++++++++++++++
+ mm/internal.h                    | 54 ++++++++++++++++++++++++++++++++
+ mm/rmap.c                        | 31 +++++++++---------
+ mm/vmscan.c                      | 37 +++++++++++++++++-----
+ 7 files changed, 151 insertions(+), 84 deletions(-)
 
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2623,7 +2623,7 @@ static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
-        unsigned long score = damos_quota_score(quota);
+-- 
+2.47.3
 
-        if (score >= 10000)
--               quota->esz_bp = 0;
-+               quota->esz_bp = 10000;
-        else if (quota->sz)
-                quota->esz_bp = quota->sz * 10000;
-        else
-'''
-
-But maybe there is a better way to cleanly fix this.  Let me take a time to
-think more...
-
-
-Thanks,
-SJ
-
-[...]
 
