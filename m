@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ABC5EFB7FA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3583FEFB7FA
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 05:13:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04B276B00A4; Tue, 24 Feb 2026 00:13:19 -0500 (EST)
+	id 92DA86B00A6; Tue, 24 Feb 2026 00:13:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011676B00A6; Tue, 24 Feb 2026 00:13:18 -0500 (EST)
+	id 8F6AE6B00A8; Tue, 24 Feb 2026 00:13:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D3E6B00A7; Tue, 24 Feb 2026 00:13:18 -0500 (EST)
+	id 821816B00A9; Tue, 24 Feb 2026 00:13:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D38E46B00A4
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:13:18 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 768978993C
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:18 +0000 (UTC)
-X-FDA: 84478181676.13.B30BFBB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B6456B00A6
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 00:13:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3CE571B5D5B
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:23 +0000 (UTC)
+X-FDA: 84478181886.20.97C775C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B75E41C0014
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 815001C000E
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 05:13:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771909997; a=rsa-sha256;
-	cv=none;
-	b=aCWMrm/gsWwPGQx/NLialm+/gd4BQmFkOf6+4h1z0yGKmXbxTjDKaFiWEELmtMXNKp7/UC
-	0sgo+aW1orTO31zPIEZw7bIKnRjtTxJlv89W0BRQGEAwOrU5XTbprePKb9e5db9k4yskc6
-	DrlPCSbe/6y2RoSyh3DxEvLlm7tS4Fc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771909997;
+	s=arc-20220608; t=1771910001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=al0CxO/T+3Vzo6bAStDPqo5GOdTHNtQ67l/V+ahAuFM=;
-	b=ONi23ILgO6pLEAg94QeZyiqwwSPxxVaDCi6l1YYJ2os8MiNHrVsTXiGGQJITTeJcPXb6nR
-	dtExF3HTXGPRpEpzm2FhwxJAeJ9z1ckvackVndA0arNt9adqjLfnRrluyy2tdQbfzSmcFH
-	ujs30NfVTOeZmNCdshk3XfCnXl/iM/c=
+	bh=2ayvpnHYj4EbJddjYMjzafBC+RiccfjiA2UiMgNEX2Q=;
+	b=bmK4Al+6cTh37q5fwVzVNQhvtIs4y4/qnZiFTXaAq3EHCjiISjnhcoCa2qIxz9dCSMSkej
+	spBNywsc2pMY2+Y0V3d4dMdQQj4Pe6VcnzHD/82vwCClok9e1bc4/qRhzZGy/ASW2TZonW
+	Kd4Qkgi92uAHlpMYkApickb6Uz+hiWM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771910001; a=rsa-sha256;
+	cv=none;
+	b=mVeRgYzU7H1n4+O5jH+POg5AELUvv9Up/tmpSs5dmV9dG2idLQ9ZXrJMDwpSnfWe5wiNCD
+	VyNhuzBxvYpUnQ88npojjQlfIM7poQ161R8TAsSnEIByamZ4/eu7KJ5zRknyUpRLwuxBMd
+	fkuAbqFZ1ETAC1isilYyGsTx4H37kos=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8440B497;
-	Mon, 23 Feb 2026 21:13:09 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EF02497;
+	Mon, 23 Feb 2026 21:13:14 -0800 (PST)
 Received: from a085714.blr.arm.com (a085714.arm.com [10.164.18.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A0BB83F7BD;
-	Mon, 23 Feb 2026 21:13:11 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6C87D3F7BD;
+	Mon, 23 Feb 2026 21:13:16 -0800 (PST)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -68,22 +68,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC V1 10/16] arm64/mm: Route all pgtable writes via ptdesc_set()
-Date: Tue, 24 Feb 2026 10:41:47 +0530
-Message-ID: <20260224051153.3150613-11-anshuman.khandual@arm.com>
+Subject: [RFC V1 11/16] arm64/mm: Route all pgtable atomics to central helpers
+Date: Tue, 24 Feb 2026 10:41:48 +0530
+Message-ID: <20260224051153.3150613-12-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5kp3a43kyfui6ctw7cn7w77zdw857y64
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B75E41C0014
-X-HE-Tag: 1771909996-68888
-X-HE-Meta: U2FsdGVkX191d0bAFXdJ4TTm6ifZp4jYjRyUojZ0A9aTZ9VQHpTeA432QC73C9Wk93MQZbEm6n3YIWnymLC6MD9RVlvYU1CRSRst6x/zkoeVu8B3Bne7oQviJXFYxcWWG50Ze96zZG4FTfpK4NUBoCOnRvD1eBwLHh4fZlvFB7JiCvhzdzE0Ouo2F2fl/c8wqiRfU2QsLqPYXx2uJ9+d7xOVEZV8wA8kBZVJCXgs9xkgmDSo7i/Wg+QifAC7vLsYzRyLlfhBP5v0koSjfPzlOpnySM6wmjOzXihI4TJUhvEiygX+S6Sa8UjdL0MjFN4K85ILZk991bZZYrMYMtzCK1/NiOYL2HgDNK9Y6fCkI52W3nJoYCsktqn/EqBKE5MIRq307XqfX7eRXBktQ6iqablV3mz/Yl8H3NRBnmbl01OL9TyFlaNueQur4RDN/is/safvoDvCdmxglHGgpTmBy+4z1CPfSalf5O+mMaEQP2wssZZE6m7QpWcMX26ah5SDvArukGRUgJgppGYIfMOcYeiPGPA2K3PRrwdvxQxfFf9wxXOlU1AF8mHpoiK5WaSNqdxINeVIwdugsvkZQx19JKmkW9miDo//EW50ivwzIooTo1O2HLTFwrznOxO3SgSdiiDOBtFy+Ca8HJOM/z2ESNW6RgXHB3mCl5E84mDWoe0S1xACSL5VJNiQ3y05nwX+fal8bWSTmzregk3LmxBxHpMkg0UX4ZKcLhHFX5sVCC9j1q+Ljfoy23XpZ+xzCmcJy6Z64IWxOpHHdyxAHIQSSVgxyU9mXr9wz+3+IO2ilwojRjHFE1HEYVp98LlJyJOfjFNZhHeBHyISrPOevdHnwIKwN6tQ6mB87twABcXhhPF5LfFEqqbIHeOTPQ/UzQ+lz149T448TXVffm/0/2cME+oSWY6Znn2dnCUiIyb69MxHzSKz3VTkabmpZwccRrMetnSUYvMQQ3Tyag9CAV6
- rb8TMBYR
- hTS5YYCPzhOzRyyDaC9lIgC/PM9EqPu/R5bq0XAONdx0uRdJN4UQbuXzSYtlI4q1BsUZ9POy22K3el8XmZgykFUm/OWkzR01HgHpUW0Ifd5p+thAZPpD3ccIgL08itBvsYn3M4tz4XjQ2hMPxawCmuc0s5VellEUenjI9hAitWipA+HJfJJ/2rFQc1BJ0dW0kFBs+c+8ePbP5rgRHotf2Pee0SmbGyQRExv9f3G22hNYG92thRc2LuSYUYPTRC2C/5O3z2uHFXnlVdX+LmGVokecBasY4V91oslo4
+X-Rspamd-Queue-Id: 815001C000E
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 4tn4gyr45ejhq9oufuer3nj7r5h1icq7
+X-HE-Tag: 1771910001-282268
+X-HE-Meta: U2FsdGVkX1+6LoZkN6hcCFxTWrqEGc9198HZJ97OhRpQBsPpK2LCjajhu4CjuARHhHdKn9/JmgLmGGBp+g0XCugFYQpIFyxN5NwXapbvlufJ63Z9vSIRGNzlSynGyIMo2/o6sgaACSBpQauw6H+oT2BflkFL79s+JbgYiHVDie9Oc7/BqJ0WZbRxJnCZ0VNorX+yr7o+hAuFEkEAORMcOGPf5LBNrJ34U0egC2FCSvgrZWrpNpjuT9jNFrDCjXKnxt6VoecnX1r7KrLcf7ub/WP2O1qoCnMAS+EavAaatKkaAR29daN0FkR34Bh3Bm+W5A8YL8jfgVj6jPKu63FeWaT0ipw9FLoEUc8hd+2aVJbPeKVTxU/jo54gp9+VYBX4RoO0fbYc80+NToawqPWrChG1QO2/I4UHhqcSbvr4X6c36vhNoIDOVOpKJi4WFbzOFZKM917W6kJljPM+OrpxtF/Nz3iNbBqO2ygfZtxp0bjg6zO7GksM/iweA5uBHE+cLctUNmaOnwpqGQ9cmTF9Iq1XNHmNf/ac9+LS/FtZRPmTZDXwwC3ii1m/kLGxPfOSwruS50j5mmOsMby5UXZxQg2LaXrsayJT0rsNKV18fD9FD+x0TE/FYO22KNgwHVp1AXpZvNUXqWTUCdkjHb2j3Qzk9XTjcLJ/wef/77B5szJVWLJUVRfTK8vO1pXaxZzn3QKhtV/PU+tiIqrdtmHbNm2+z+PL+ISKGluUqaZxYKZiXTRwyCkrDF7TTaqHRdgxAX+n1Cq2j4A7NnEcloeke32CEOEsqYG49aT1aQMe3kHO0bzkqypOjp/C2hTeUxyHEG30BOhRb6A6b0U2ne9O86+3UlV4AEiBNr3rF1e23nwGH53GvRyfbebNRiBHrpVyH9hYQQm24beIonUE3AJbvsPLVlyE5C3DpLyo9XayJbwqa2iy6tbFKlwXV0JPAF4iOEkxfzm0ZiOSQZ/2kQs
+ mTyb7pna
+ ga6CrqlSkLLWaqel/Spg9yZdaLmHFbJ/Oh7oOnwj5MFTJ9odWl5ZiB6VO/vq0xFAHFs9QjgCIp7frdQXFiUMorezq5WbcD9tMu4J/DmxNxPp9DE86ePzDQc3IrYkqWvehwR5LjjfW73TPzyqOtyFBW9QTLpbvccM+ApaGyBM+kyZZ4wTz7KF1Lh/XWogUcDAC0vpV3Dz9X9aLhFYPmZEvjH2kcNmkd/bF5pRbtIJrmbafb10=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,12 +92,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently ptdesc_set() is defined as WRITE_ONCE() but this will change for
-D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
-copy atomicity.
+Route all cmpxchg() operations performed on various page table entries to a
+new ptdesc_cmpxchg_relaxed() helper. Similarly route all xchg() operations
+performed on page table entries to a new ptdesc_xchg_relaxed() helper.
 
-In future this infrastructure can be used for D128 to maintain single copy
-atomicity semantics with inline asm blocks.
+Currently these helpers just forward to the same APIs that were previously
+called direct, but in future we will change the routing for D128 which is
+too long to use the standard APIs.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
@@ -107,112 +108,92 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 11 ++++++-----
- arch/arm64/mm/mmu.c              |  4 ++--
- mm/debug_vm_pgtable.c            |  4 ++--
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 23 +++++++++++++++++------
+ arch/arm64/mm/fault.c            |  2 +-
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 804ef49aea88..42124d2f323d 100644
+index 42124d2f323d..cf69ce68f951 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
- }
- 
+@@ -87,6 +87,17 @@ static inline void arch_leave_lazy_mmu_mode(void)
  #define ptdesc_get(x)		READ_ONCE(x)
-+#define ptdesc_set(x, val)	WRITE_ONCE(x, val)
+ #define ptdesc_set(x, val)	WRITE_ONCE(x, val)
  
++static inline ptdesc_t ptdesc_cmpxchg_relaxed(ptdesc_t *ptep, ptdesc_t old,
++					      ptdesc_t new)
++{
++	return cmpxchg_relaxed(ptep, old, new);
++}
++
++static inline ptdesc_t ptdesc_xchg_relaxed(ptdesc_t *ptep, ptdesc_t new)
++{
++	return xchg_relaxed(ptep, new);
++}
++
  #define pmdp_get pmdp_get
  static inline pmd_t pmdp_get(pmd_t *pmdp)
-@@ -389,7 +390,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
- 
- static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
  {
--	WRITE_ONCE(*ptep, pte);
-+	ptdesc_set(*ptep, pte);
+@@ -1313,8 +1324,8 @@ static inline int __ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 	do {
+ 		old_pte = pte;
+ 		pte = pte_mkold(pte);
+-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
+-					       pte_val(old_pte), pte_val(pte));
++		pte_val(pte) = ptdesc_cmpxchg_relaxed(&pte_val(*ptep),
++						      pte_val(old_pte), pte_val(pte));
+ 	} while (pte_val(pte) != pte_val(old_pte));
+ 
+ 	return pte_young(pte);
+@@ -1350,7 +1361,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+ 					       pte_t *ptep,
+ 					       unsigned long pgsize)
+ {
+-	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
++	pte_t pte = __pte(ptdesc_xchg_relaxed(&pte_val(*ptep), 0));
+ 
+ 	switch (pgsize) {
+ 	case PAGE_SIZE:
+@@ -1426,7 +1437,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
+ 	do {
+ 		old_pte = pte;
+ 		pte = pte_wrprotect(pte);
+-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
++		pte_val(pte) = ptdesc_cmpxchg_relaxed(&pte_val(*ptep),
+ 					       pte_val(old_pte), pte_val(pte));
+ 	} while (pte_val(pte) != pte_val(old_pte));
  }
+@@ -1464,7 +1475,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
+ 		if (flags & CYDP_CLEAR_DIRTY)
+ 			pte = pte_mkclean(pte);
  
- static inline void __set_pte_complete(pte_t pte)
-@@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
- 	}
- #endif /* __PAGETABLE_PMD_FOLDED */
- 
--	WRITE_ONCE(*pmdp, pmd);
-+	ptdesc_set(*pmdp, pmd);
- 
- 	if (pmd_valid(pmd))
- 		queue_pte_barriers();
-@@ -917,7 +918,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
- 		return;
- 	}
- 
--	WRITE_ONCE(*pudp, pud);
-+	ptdesc_set(*pudp, pud);
- 
- 	if (pud_valid(pud))
- 		queue_pte_barriers();
-@@ -999,7 +1000,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
- 		return;
- 	}
- 
--	WRITE_ONCE(*p4dp, p4d);
-+	ptdesc_set(*p4dp, p4d);
- 	queue_pte_barriers();
+-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
++		pte_val(pte) = ptdesc_cmpxchg_relaxed(&pte_val(*ptep),
+ 					       pte_val(old_pte), pte_val(pte));
+ 	} while (pte_val(pte) != pte_val(old_pte));
  }
- 
-@@ -1120,7 +1121,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
- 		return;
- 	}
- 
--	WRITE_ONCE(*pgdp, pgd);
-+	ptdesc_set(*pgdp, pgd);
- 	queue_pte_barriers();
+@@ -1503,7 +1514,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ 		unsigned long address, pmd_t *pmdp, pmd_t pmd)
+ {
+ 	page_table_check_pmd_set(vma->vm_mm, address, pmdp, pmd);
+-	return __pmd(xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
++	return __pmd(ptdesc_xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
  }
+ #endif
  
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index bcf32d1a92de..ffd307c546f5 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -83,7 +83,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
- 	 * writable in the kernel mapping.
- 	 */
- 	if (rodata_is_rw) {
--		WRITE_ONCE(*pgdp, pgd);
-+		ptdesc_set(*pgdp, pgd);
- 		dsb(ishst);
- 		isb();
- 		return;
-@@ -91,7 +91,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 7bb14765a98d..21964a387bf8 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -230,7 +230,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
+ 		pteval ^= PTE_RDONLY;
+ 		pteval |= pte_val(entry);
+ 		pteval ^= PTE_RDONLY;
+-		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
++		pteval = ptdesc_cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
+ 	} while (pteval != old_pteval);
  
- 	spin_lock(&swapper_pgdir_lock);
- 	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
--	WRITE_ONCE(*fixmap_pgdp, pgd);
-+	ptdesc_set(*fixmap_pgdp, pgd);
  	/*
- 	 * We need dsb(ishst) here to ensure the page-table-walker sees
- 	 * our new entry before set_p?d() returns. The fixmap's
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 83cf07269f13..faf6a19a89a1 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -445,7 +445,7 @@ static void __init pmd_huge_tests(struct pgtable_debug_args *args)
- 	 * X86 defined pmd_set_huge() verifies that the given
- 	 * PMD is not a populated non-leaf entry.
- 	 */
--	WRITE_ONCE(*args->pmdp, __pmd(0));
-+	ptdesc_set(*args->pmdp, __pmd(0));
- 	WARN_ON(!pmd_set_huge(args->pmdp, __pfn_to_phys(args->fixed_pmd_pfn), args->page_prot));
- 	WARN_ON(!pmd_clear_huge(args->pmdp));
- 	pmd = pmdp_get(args->pmdp);
-@@ -465,7 +465,7 @@ static void __init pud_huge_tests(struct pgtable_debug_args *args)
- 	 * X86 defined pud_set_huge() verifies that the given
- 	 * PUD is not a populated non-leaf entry.
- 	 */
--	WRITE_ONCE(*args->pudp, __pud(0));
-+	ptdesc_set(*args->pudp, __pud(0));
- 	WARN_ON(!pud_set_huge(args->pudp, __pfn_to_phys(args->fixed_pud_pfn), args->page_prot));
- 	WARN_ON(!pud_clear_huge(args->pudp));
- 	pud = pudp_get(args->pudp);
 -- 
 2.43.0
 
