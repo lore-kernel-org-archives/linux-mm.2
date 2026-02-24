@@ -4,87 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA21EE9B258
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 12:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1053E9B25B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 12:22:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9E6F6B0088; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
+	id 1781B6B0089; Tue, 24 Feb 2026 07:22:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6F686B0089; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
+	id 0FB8B6B008A; Tue, 24 Feb 2026 07:22:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9CB56B008A; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
+	id F1ED86B008C; Tue, 24 Feb 2026 07:22:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6B966B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:19:00 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CCFE8BE52
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:19:00 +0000 (UTC)
-X-FDA: 84479254440.20.76D6983
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3725F40003
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:18:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=skyN0xnR;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DA10E6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 07:22:42 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A30D1A048A
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:22:42 +0000 (UTC)
+X-FDA: 84479263764.06.1C8D4D9
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 61A52100002
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:22:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Mkwx1q53;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771935538;
+	s=arc-20220608; t=1771935760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EwzxsqX59s+nykKGKsV+/BFhtEGlW2DTi98NYRGnb4k=;
-	b=Yr1qO5c2c0rbiiYz1l85Nsl3SFo3frgmqKCnmElqS0CBpqmr/P7b+wZtRCf6JOxEdn0nmz
-	MRf2KZ7k9hZVYfvcNQhtS1S7lv0PFvT+NFUQuEaopKwxSaupLVpzvTvbjQ8XGn4jqd00q4
-	Q7aqhP6caMgYQB8vl1O3Nef6KnE6ToA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771935538; a=rsa-sha256;
+	bh=CITHtR2qBTJvAFbBU67H6Y2kGo1f8+Vk17lQYkH3FlM=;
+	b=1zQIJgkht9hQg53H4WhOoWgQkm7s1T0zNHyEKg8mdpqQZBKGnkrSZHFe3bYwexacdVQppB
+	EBW1fni4Hqq73fBx3jntCCm/3YnKYf0mpmkJJRiDx0E3B4BPD2kmx2I0C1jLrVjz+bSAl3
+	9EIRsesZlws+JyTmevPkJeq+t+mOl6s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771935760; a=rsa-sha256;
 	cv=none;
-	b=G0KxVMux3E339b2CpU1KRHa0aSs8CNpvlIgh0hWjAyDvAViiB8ZNHKXm+UB09cfNKAeuPu
-	vAXi7BCZyOfAYWjxVMDtay93EyWHujf4+suco+SxPuPnpha1OssueO2KRZoS05MfGdEosl
-	jU/nGV+ZUfGQ4xVxcWwKgq/0I/Ul0F0=
+	b=jovlaNdoAH+9bVmgWi8vmuV4qCBaCXPOWh6gL7TXxdkaDB/xYhehuihJvSQ3M+t7sXVI7v
+	44t0JOzfvUTjFgMJxmG1FQnnojPZ2PMoBW7aBBl/NSIr9gzzQ9pUfeM5YiGpcm7Nj7PcJQ
+	bwL5Tj1GQ+9dQWdZxf8YR40PZU23KNg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=skyN0xnR;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <5cc90e7a-ae32-4352-8e0b-2eee5a5ee122@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771935535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EwzxsqX59s+nykKGKsV+/BFhtEGlW2DTi98NYRGnb4k=;
-	b=skyN0xnRjwRgE04aLNLlLTrPx8oL4jHzrR0//J5EgUt8UGZeWhbyo6JsPyzz7fgoYbBl+q
-	tmcEamzE/HoZRWqgxEyscc1vh59cFCapGF5WwILOMLW/SWiPe2yExbx5gWCfIPXoqn1tEB
-	XgjVifKLg9ce4HG6BA34Phgl+hyuXjQ=
-Date: Tue, 24 Feb 2026 20:18:46 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Mkwx1q53;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-483703e4b08so43440515e9.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 04:22:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771935759; x=1772540559; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CITHtR2qBTJvAFbBU67H6Y2kGo1f8+Vk17lQYkH3FlM=;
+        b=Mkwx1q53Yz1X7WiqVvs2AG0sojH0VlRReFQBidAq020CnwL5oN1cBaANj8ZvL7LCU1
+         p1o9gudt8TFZU02PSG4a3EfnDTu3w17cJxckfVdxojxlHmBxIB8eFicU9yIKC0ZcNICn
+         kuIy3lrFXymCZGq7QVHafprUMOtvomchIGH/IrS7Hi0ofFl+yOtF/utf4e4mi0KCHQAF
+         NJP3P29mbzOJo8MeJ7OQLLiud+VGdZmlFI+9mq3CgNX5n4QBTAg7J7v6zXoAHg9Dr+OM
+         k1SVJYUMTEIXolv9DYU+K/Q0fDN9HSnJ++X6Jbvmu/hafywQ1WJujuw/L3dtmNy2XN8z
+         GHmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771935759; x=1772540559;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CITHtR2qBTJvAFbBU67H6Y2kGo1f8+Vk17lQYkH3FlM=;
+        b=MbEHtv28KjCYe9JXgiZcAzpm8FBTBCImHfzVq/MZXhErXWqqmxkYfhYiXb9uusiVOW
+         NhT5WA7BX3pFRy2o9T2Edm02ucNuGrSqpYWbN98Z1DKNA6KBl4YqvwoL89lQKM5n/lez
+         KmNt/+FX51f6jqTb8BeaXLZM0enR5DKvf7NeHBYKLDDCLiXHvN32bj5mdR3CCDueIVrO
+         M4Sp1Lk/Cm/LzckBCR4yZB46btF0ZGMjRXNwsNoecU4WQSpw3i+qRCiCDhD2mkMIGiSO
+         9YUBPMvt9DEh4hWktIBiu4dcPARvd6d7QHNcL0u4Df5rssIPLJVMYIp8tVdTWY0bB6V2
+         fvjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjttFXB/Zov403WVQ6WwvFPoWtTI2FjcJWevepUAXBnFv/y1mvDo05hH9EYPFCsTJNHn6bj5FJxw==@kvack.org
+X-Gm-Message-State: AOJu0YyWxR7ceM7TGT/hKIYKzdRZWwdzYE+mdVxQ+YuVDE/h3FN3jwj6
+	CnmcRVlSSmXxF3YQEaXxyNH+32UBh8Ay0FJ446gCLM8Hee04LMDKXClXl2QalgV0koY=
+X-Gm-Gg: AZuq6aKBv5ghiDhZQS4DJ8f6YSbAr0PlwN9N4ODjQTyVUefWrZuDui3zSPPVWOrE5lN
+	zLtSYk80ntja+x6YevMJxG2+LCH953sN1ZC4/cl8NBreD+UIoKj3JrHVlkmkzm5+aOt5ZHGMrsQ
+	LFBQWlxd5qJvJ7meZ2FjjBrI83IjRmw3D9G4D1SiWFmvisZGSLeNFYpdXY9HxIdoMhgzfBErenL
+	NmMFc+JfbLG9dxkHc3U8PJIwbzEctjGizPyeyH9ou5m+y72DHSUivPzoFew9dDrx3MV9PbjhfRg
+	+xaz5PWrdT23xx12tkZSPPK6IWOj+hfRcNdVXOQnJ3jNNy88kAzvG0+kWN8rh2RI3meje4g/yqM
+	nrIKtGYptRsndy/jytwHrX90No5vp8B7hwPFs4YPoqvcASfVjya+RKNALXtrX1Zgqjsc1QgJ4zE
+	EiUqANbuNy7rDyQr0etGkkgPpBgheXfUw=
+X-Received: by 2002:a05:600c:4e14:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-483a94d1479mr185540435e9.13.1771935758583;
+        Tue, 24 Feb 2026 04:22:38 -0800 (PST)
+Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483b88f97acsm17442695e9.13.2026.02.24.04.22.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 04:22:38 -0800 (PST)
+Date: Tue, 24 Feb 2026 13:22:36 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
+	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+Message-ID: <aZ2YDD_l5JN78DJC@tiehlicka>
+References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+ <aZykWyxLy34o7PKr@fedora>
+ <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
+ <aZzPwsBp-Z4XM58U@tiehlicka>
+ <aZ2N9a4XgxnurOhz@pc636>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/1] mm/mmu_gather: replace IPI with synchronize_rcu()
- when batch allocation fails
-Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260224030700.35857-1-lance.yang@linux.dev>
- <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260224114152.GX1395266@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Stat-Signature: kwaqm7g4s4qe4xt3az6oo3xix33jrws3
-X-Rspamd-Queue-Id: 3725F40003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ2N9a4XgxnurOhz@pc636>
+X-Rspamd-Queue-Id: 61A52100002
+X-Stat-Signature: 3h8yk81int9w5imdsr5zgmrkfntcj61r
 X-Rspam-User: 
-X-HE-Tag: 1771935537-89240
-X-HE-Meta: U2FsdGVkX182y/1g4AyczlkpTAlZDgmNR+cYOzoT0oAFeMZOkHVbzJ7BDrxNcEr9TOl1se1KZ7NR0fvq0FXvs8NoyfxDmf9HF6/iuG3f2BhlK+UXwXSE0S5ouhXyiRqD0LKVOQPhmrtjaeHdCHjpcOQOrdbVnfYkIviHsfKhsKtKRmQ72T89CZ1u9jWCmaVAcCmtiB+CSKLZNymdGOsPhW0RPs07M3tERZciG3tagRVRi8U6UuFCUoJfd12b1jQI2lYmjMIGNXE1Ywbfm5DaEgcNUwJ0ESN334eoFRGgrsE1nKZSVIUfledYgwriB4x3+GU3sdXqydAIPMctp4szrXymwsOoHNmJlrfZZF12/iwI0zTDf9T4Ad1amevb1XUjVARylaO+JVPNDdqDgeHOVp7CA0inTcraEX5y1lqseV5R79Zf9fR+uiF8aQZIcMvuqkuA741TcXfYnfMRNxvZa0vOyDnfXU65zVaM5XhV970LeTD6uc1lrIlpbp3Qy+Sb6LvwII5+JZq6zCnxachsTPMEwwwBNvcI4wgan5sXFZ+vllMU+vjIWwf+CVUcQuzUp0C1vu30q1O/GTuEmqgOMrDATNX0v87m7fsb48slm/k/NtsCEm75ZUqINuHurkEVxIGdnExzd1sbr+SQ7wUuv6xiQvteILSrWHXwBwDrGl6sBeqNDrh9L5Y9U6DBbZXlnFuEo7UvUpldPaG9twhcyS1d1OgeOa5h37FHPb90lbg8/e+p4DE8lz1fq7fL66oNpLy99HBbjb1eTMpE+FydEqMtJ5rDZ4vEe7VgobncbtJBUDp3pCkZDPV0lVULDJWNps7qY2amDvYyMUhcQ/uTeptpBOgH6BB+dtxZF5XM36YYLEYmu//QI2DcXyEUuUU4t+9uXlAz4qa+6XwP//itmeWW7ltMgB4mPZs2Dk/D+JEaP1gIXL5iknX5ggdlWGZEM7O9ul3NvtdnnGQ5+gG
- WHb/JLro
- 61smdA3ZSpPfEgAsFjv7srP2yJM/ZlfVEkeSKAEeakMAZbraJV3DFeNwpfFILqGtdJUUsHkZxTTH2tc2ahgCOxR8EqsUj3opBefP6HossGv1/Ok1b5HtOwByUEvuVeyXILDUntnz7SlFmZRt4T8OlGxtL+ft+aGnfOy/0ZtnL5MQEvM23Kw0jsvtKKGXO/i1TC18vo93Cey48X/xOcSNVOVAm7PRJ2Tjdzl7xuFRWo9XtQ5o/8FpTY+fkvE6t6RAu9CuU
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1771935760-657926
+X-HE-Meta: U2FsdGVkX1/u+1m1s29P+7xQGrEcUkjr6fQ5TXouja22sEaxfBv3wYAJ0H49jMbHEOoO4U3rl+llSwjJEAGAzdWd3OSm05rKnmdsjhnheRVkq7LGbXNku903dkYPM8W4KwDj8Z2WIEO46sev/yRLZaTjgRIPS9K4YE4TmMA8j+RrP+gXjXixaBl9j/W5X9zbKWV/X2RmBuI6wpNJ3z6AYtDyzXuiVsELOeuK0j2OB73SaCdkqXrCou09Pxg3ndWlzqnoyZ/P0xEvoaALspG6VVjgzhCrdk4d/0wxgCu3hT8J4DIVa/yOaMfp1qQxCEFNoLw2bDPx7e4xWbjr0pAIeCM+YDgCKzrGCJ2WwHyIf4/gBR9M95ZuWC+X6YO4cLG9GFetyOwyxeOlXAuUTw20X1rAY/1pW2Y0pL4ltlIG07e3eZ3D+1nHnmIpBYb8WSXaj6uHXy4Nr0K0IyDZwCBym9It+LBhkW42cmPYA8NOjC9Ni+h7BRZbp4ro1h+wsL78xSEIteJAe6Bs5ZV0z3RgO5jvpaNbvdgiu9kYO1OwIODtmaD+vyNS8gZR8HjLmDw6Qa08PQ56uYviXVz2vkqbGWEPJkBLltzUJTvsWS1MrZjYJPVfqXo8AfTD0J9PAObB1Z3Kvoh7dbPYwAKBUqV5Job19nnT6N66nbdb2Yjf8+BALg9T62aUsSHOYD+FMQliVhf3/zJzcB4ja1ZKh3T/s3UhQkNT01Byxh42pckRVyU7UA9YFrSXUo2jPOmXKmRotKgRv3PxhTe5rBld5zWYbp/Fl8yg/NsCOBCvFHinyXltFi4yqRHHsCv6aPvhPeKlK7C+Qc8ELUVrzOH6/dTXDks1tFcngzETWLx49jZoWue8sCGqYarpKCMmjIJmNegn0rVbh7SI+7EMi8eAGTMkw2y8f5Xz4SAQvFMtG4OVjx/29PP0m6cZjImsWSbXYoTtU1JRyCfDm2hIYX5VKq+
+ PMoc4c+O
+ ze1NdCBPLUjqHmCsTYeGUWYbCM38YLl1Fphz+uN+6Ee+MsuLCXTtejvfwTYn/JHE8t2Xi3jEZ0xUjRoUXs/rFi/siCpRuf+SQb5+JcLCivaUTrAoZzKjTmdcwkyTGT7hzZtzKk8r+/lSzXJDT4xYO9sWUFSjPon1ALepbzUsglCA2UyOrbgOuDpNApUJveWhkpw44UWJgnrq5dGR+HvAA3y4Ol0CjOhEMQWWco/9McCV9W3d2m0DzcTiw+v8HXp/vB5DOMISokk/SH+M/rL+9jpasLlYVDrQnfp2Q2mZs4D/rkFrtctwHdxnweAGJAlb7wkfkan0dgISq5JAlxerNnyi7906J5e6Vrm6wK3IsXCmeSmCVBcpNVXWQN1dJXOC7A7Oy//yxf+aopCYlYLEDNqJ7/I0EYzhF/iKMxIPqi55OsicAHuE/nmcnnnvFrH+6j9gVuE73GD4tWpLYbEePx6pbtORFxeGcBz2v7eBrPQH9dx3l/ap3+Yu4qcWoN0GRBuBO6RKDjOvPLpJodixTdkPQF160XEf9Poa897kXco6o61WX0NhjannKyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,107 +126,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/2/24 19:41, Peter Zijlstra wrote:
-> On Tue, Feb 24, 2026 at 11:07:00AM +0800, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> When freeing page tables, we try to batch them. If batch allocation fails
->> (GFP_NOWAIT), __tlb_remove_table_one() immediately frees the one without
->> batching.
->>
->> On !CONFIG_PT_RECLAIM, the fallback sends an IPI to all CPUs via
->> tlb_remove_table_sync_one(). It disrupts all CPUs even when only a single
->> process is unmapping memory. IPI broadcast was reported to hurt RT
->> workloads[1].
->>
->> tlb_remove_table_sync_one() synchronizes with lockless page-table walkers
->> (e.g. GUP-fast) that rely on IRQ disabling. These walkers use
->> local_irq_disable(), which is also an RCU read-side critical section.
->>
->> This patch introduces tlb_remove_table_sync_rcu() which uses RCU grace
->> period (synchronize_rcu()) instead of IPI broadcast. This provides the
->> same guarantee as IPI but without disrupting all CPUs. Since batch
->> allocation already failed, we are in a way slow path where sleeping is
->> acceptable - we are in process context (unmap_region, exit_mmap) with only
->> mmap_lock held. might_sleep() will catch any invalid context.
+On Tue 24-02-26 12:39:33, Uladzislau Rezki wrote:
+> On Mon, Feb 23, 2026 at 11:08:02PM +0100, Michal Hocko wrote:
+> > On Mon 23-02-26 20:25:38, Mikulas Patocka wrote:
+> > > 
+> > > 
+> > > On Mon, 23 Feb 2026, Vishal Moola (Oracle) wrote:
+> > > 
+> > > > On Thu, Feb 12, 2026 at 05:33:30PM +0100, Mikulas Patocka wrote:
+> > > > > The commit 07003531e03c8 ("mm/vmalloc: warn on invalid vmalloc gfp
+> > > > > flags") breaks the device mapper VDO target. The VDO target calls vmalloc
+> > > > > with __GFP_RETRY_MAYFAIL and this flag is not in the mask of allowed
+> > > > > flags.
+> > > > > 
+> > > > > There is no reason why vmalloc couldn't support __GFP_RETRY_MAYFAIL, so 
+> > > > > let's add this flag to GFP_VMALLOC_SUPPORTED.
+> > > > 
+> > > > My only skepticism about this comes from the line in the
+> > > > vmalloc_node_range() doc: 
+> > > > "and %__GFP_RETRY_MAYFAIL are not supported."
+> > > > 
+> > > > I myself don't know why that may be. Could you elaborate on if/why the
+> > > > doc is wrong please?
+> > > 
+> > > This statement was added by Michal Hocko in the commit 
+> > > b7d90e7a5ea8d64e668d5685925900d33d3884d5. Michal, could you explain why do 
+> > > you think that __GFP_RETRY_MAYFAIL is not supported?
+> > 
+> > The problem with __GFP_RETRY_MAYFAIL is that it cannot be fully
+> > supported. While pages that back the allocation can be easily made aware
+> > of this failure mode there are page table allocations which are
+> > hardocded GFP_KERNEL and there is no sensible way to extend the API to
+> > change that (as we have learned several time over years).
+> > 
+> > > The VDO module needs to allocate large amounts of memory and it doesn't 
+> > > want to trigger the OOM killer (which would kill some innocent task and 
+> > > wouldn't solve the out of memory condition at all), so I think that 
+> > > __GFP_RETRY_MAYFAIL is appropriate.
+> > 
+> > Understood. But as said the very page table allocation could be the
+> > trigger for the unwanted OOM. The same applies to __GFP_NORETRY
+> > unfortunately as well. vmalloc has just recently gained support of
+> > GFP_NOWAIT allocation mode, though. This will make the allocation
+> > failure much more likely though so I am not entirely sure this is a
+> > proper solution for your problem.
+> >
+> Yes, the page-table manipulation entries are hard-coded and it looks
+> like it is the last path which is not wired properly with gfp-flags.
 > 
-> So sending the IPIs also requires non-atomic context, so change there.
+> Since we grow PTEs and never release it might not be a big issue for
+> the __GFP_RETRY_MAYFAIL usage. But it is still not valid in noted path.
 
-Yeah, you're right!
-
-> What isn't explained, and very much not clear to me, is why
-> tlb_remove_table_sync_one() is retained?
-
-Good point. tlb_remove_table_sync_one() is still needed in:
-
-1) khugepaged (mm/khugepaged.c) - after pmdp_collapse_flush()
-2) tlb_finish_mmu() (tlb.h) - when tlb->fully_unshared_tables
-3) ...
-
-These are not slow paths like batch allocation failure. This patch only
-converts this obvious slow path first.
-
-I'm working on converting the remaining callers as well, but not with
-RCU, looking at other options (e.g. targeted IPI).
-
-> 
->> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
->> index 4aeac0c3d3f0..bdcc2778ac64 100644
->> --- a/include/asm-generic/tlb.h
->> +++ b/include/asm-generic/tlb.h
->> @@ -251,6 +251,8 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
->>   
->>   void tlb_remove_table_sync_one(void);
->>   
->> +void tlb_remove_table_sync_rcu(void);
->> +
->>   #else
->>   
->>   #ifdef tlb_needs_table_invalidate
->> @@ -259,6 +261,8 @@ void tlb_remove_table_sync_one(void);
->>   
->>   static inline void tlb_remove_table_sync_one(void) { }
->>   
->> +static inline void tlb_remove_table_sync_rcu(void) { }
->> +
->>   #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
->>   
->>   
->> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->> index fe5b6a031717..2c6fa8db55df 100644
->> --- a/mm/mmu_gather.c
->> +++ b/mm/mmu_gather.c
->> @@ -296,6 +296,26 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
->>   	call_rcu(&batch->rcu, tlb_remove_table_rcu);
->>   }
->>   
->> +/**
->> + * tlb_remove_table_sync_rcu() - synchronize with software page-table walkers
->> + *
->> + * Like tlb_remove_table_sync_one() but uses RCU grace period instead of IPI
->> + * broadcast. Use in slow paths where sleeping is acceptable.
->> + *
->> + * Software/Lockless page-table walkers use local_irq_disable(), which is also
->> + * an RCU read-side critical section. synchronize_rcu() waits for all such
->> + * sections, providing the same guarantee as tlb_remove_table_sync_one() but
->> + * without disrupting all CPUs with IPIs.
->> + *
->> + * Do not use for freeing memory. Use RCU callbacks instead to avoid latency
->> + * spikes. Cannot be called from any atomic context.
->> + */
->> +void tlb_remove_table_sync_rcu(void)
->> +{
->> +	might_sleep();
->> +	synchronize_rcu();
-> 
-> synchronize_rcu() should end up in a might_sleep() at some point if it
-> blocks (which it typically will).
-
-Right, will drop the explicit might_sleep() and "Cannot be called from
-any atomic context" from kerneldoc since both have the same requirements.
-
-Thanks,
-Lance
+One thing that we could do to improve __GFP_RETRY_MAYFAIL resp.
+__GFP_NORETRY is to use NOWAIT allocation semantic for page table
+allocations as those could be achieved by scoped allocation context.
+This could cause pre-mature failure after the whole bunch of memory has
+already been allocated for the backing pages but considering that page
+table allocations should be more and more rare over system runtime it
+might be just a reasonable workaround. WDYT?
+-- 
+Michal Hocko
+SUSE Labs
 
