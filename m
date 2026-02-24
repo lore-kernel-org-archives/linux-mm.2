@@ -4,91 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C42E9B24D
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5526CE9B24D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 11:27:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 818AD6B0095; Tue, 24 Feb 2026 06:23:01 -0500 (EST)
+	id A308A6B008C; Tue, 24 Feb 2026 06:27:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6526B0096; Tue, 24 Feb 2026 06:23:01 -0500 (EST)
+	id 9DE1C6B0092; Tue, 24 Feb 2026 06:27:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FCB96B00A3; Tue, 24 Feb 2026 06:23:01 -0500 (EST)
+	id 8C0186B0093; Tue, 24 Feb 2026 06:27:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5866A6B0095
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:23:01 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20F1558F1F
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:23:01 +0000 (UTC)
-X-FDA: 84479113362.28.C730FCF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 459321C0006
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:22:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771932179; a=rsa-sha256;
-	cv=none;
-	b=ZZlHcrqAeD4E/KU04gsl4oI/wLiDhha37wbv+Wvq5omYrjDqTSwE5+DqHH1EXbMlTaeKJy
-	kXsuvSZ52zAOnh2F6yDrxVu6KpaFoFL9SqfEBXfx0sgvtEVN3Y7HKyJRuxYg9chf9N/rLH
-	nim/o665YuDg7HxYHZ6G7N984KoMKT0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 766616B008C
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 06:27:13 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F4BFC1F88
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:27:13 +0000 (UTC)
+X-FDA: 84479123946.19.57D2FAD
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0660B20008
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 11:27:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Q57f35vH;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771932179;
+	s=arc-20220608; t=1771932431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uWLnwguFh/2yx9Hsj0UD2t4BCds3VUsYZdpbJu1VQSk=;
-	b=jWwmOdS1YOfQziPraPcWbosxnbbc1M30A3LbEZnOsZoXHwB6yefaFMLahp+Z8M/Ribb/la
-	3NnbPyuSq3iRxzUQ47nvcFqTgegj5Jks1AuGzgvEou35AjQjrhW+z8++DaAsayxWQqbQFC
-	uReAN9j6NwXSuRjYjVxBH+uL8PLegdw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D00B1339;
-	Tue, 24 Feb 2026 03:22:51 -0800 (PST)
-Received: from [10.1.31.217] (XHFQ2J9959.cambridge.arm.com [10.1.31.217])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C6ECA3F59E;
-	Tue, 24 Feb 2026 03:22:55 -0800 (PST)
-Message-ID: <6812706f-1ea3-416d-8ba1-da522238e040@arm.com>
-Date: Tue, 24 Feb 2026 11:22:54 +0000
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e4wckwVW0b3X1g/PGVWHQbxmb/kww/W4UTrCJT/v/yM=;
+	b=8CER7SQplzzeJ5g4au/1r8njSXDYJhkWD8x78u0cs+6xoKwbwmSNdPvGYzFO02+KGOrwdn
+	ge60WOaqhPbjTCTB4lfwCQHV3hhmiulrDE/iUh0uT++O1YQNPkGaeroPoHUystAZQFVC1s
+	dZl3bGq5gpSK1LiuXvrdtH61GHdAX6k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Q57f35vH;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771932431; a=rsa-sha256;
+	cv=none;
+	b=PB4tw2vTnqPIKV+CNS695+qz+T2N+99zNRDxdGfArDXBY4UqM0/xQLNZ4lKiov3JkTTdiT
+	jeIp6eh+HfWnNZtSW10qegxjtE4klJSFdcaHXXUmNlDMiL58ZE7Q69pd8sFgvfnQGZyZKU
+	k8uw878eaXAAbkEYZ6F2CrPIbDbGm6c=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43984d7e49bso557997f8f.2
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 03:27:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771932429; x=1772537229; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e4wckwVW0b3X1g/PGVWHQbxmb/kww/W4UTrCJT/v/yM=;
+        b=Q57f35vHoDFNoaXUDIleCz3zvI/onjSZJMbUW3uc5KvlM0f4YCpSh/DsKf2YUawR/q
+         MV3gT+X+f0nEVvDuC9nlhBWu8puwGFkRInqdJkVrKOLkEPM3SOBJmPswNNviwnJuUkpl
+         V+RN1BuIruI+kZih5G3lyB8dju/WLy8cvDnGKjygWII+2gxe0UoaUyqm4Cg5r41qAnoD
+         0SYoo8dhansrVeWofEuRPTzSlPLK/C5uGRncGiaGfnlbyqDFFzhfpQHrIxGTfRVOS5pG
+         MxzWGIcz93M6HhPLTGCfiqERhrPOuo8kdo7D8wdbAwnJtteWrEAAP+M56s8bYgscRR3x
+         L28Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771932429; x=1772537229;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e4wckwVW0b3X1g/PGVWHQbxmb/kww/W4UTrCJT/v/yM=;
+        b=AEcLoGUD62G9nVImoXjtAYgrjyOTS0vzzOKcd9Uqn4+/UbWBOX1WYzcbsioC5spt3E
+         /6gsmCZRIFMAm8zRqB2/rq0NKp3o1x1RDHLfD5oEUMksTWzyot4g5TbtAayqToVOhNFi
+         bTvwAQ3InBxT7StQkIys24uEg1TiK1myl2/M5Nre8VoFUGg/Y3Np6MMt5+HM9Xy6hRT0
+         qMfT4slXMeHWY497ZVb7xgIRpO2MhbQPwJAqp6Uc7k6uUXICKdIyymUQRtyw/d2NtfnM
+         QXQg+jGysKIiDJ+1i/5WhUDc7JMdhi9CGpmi/Dw2t8hDHcYTgvkcvVR13122I+MddTuZ
+         OaJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPKVc73Cke21/7yJFyyKJUAV3VRO6EiznhHnlV6emAFBFPjhNrBmv1PvbkETEEOEE660KbNX9zZg==@kvack.org
+X-Gm-Message-State: AOJu0YwchC+RL63vwNlmwN9ixg4UkOMvj4Rp4m5fkdMzcZa1ySvfDlTm
+	CfEs/iqcpGe8qx44sVro/EPSu74p7fPZceojn03LNXMXIAP7q1fPBV1mj2F66rp7rzY=
+X-Gm-Gg: ATEYQzyhA/7oFyVKTZ0EDJE6CGbgZ+OpfxuI1eOtJeaATTi/iz5exOlnEoWHRJ9pC6W
+	KfxUJHVcxGxTdX/GB+QGb8G7WnUZNPjZsR8XEYb+d+3BHWjN3Q1gF7sQqFzHqG0tdsFqx5xB+1b
+	jEWfyNIzYZunP5MK3q8VUl5SEdE8IAYSeSPkRVWyI9VqeTihVYG49wTJz1B4vFGPcJRDEYf23uv
+	OEi10VU1KX6H8h1LCoYGWxEWi0HOWfRsULgQKrLff9JJJZW6IUjdX4epKU1GW/5ZrTGMEW9ds8w
+	5zIgNO5nDj/EvPA3V/EHwWyQbvGg/pY82FcY0zNwayOUmNeVIHqrfNr6i4SieQsNqxykWRqKj0b
+	KwTZBPU4EpxJhS4ZtWX63pCIJCztEKKHQsUqR3NkHBeG8HijIq6fjB0RY782TTxXI7TnCgNb3jp
+	1ytmvtoREcLhLZJcVaHVYr8PaNPOpiE8s=
+X-Received: by 2002:a05:6000:26cb:b0:439:872f:b496 with SMTP id ffacd0b85a97d-439872fb5b4mr2656294f8f.59.1771932429230;
+        Tue, 24 Feb 2026 03:27:09 -0800 (PST)
+Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4c977sm27358404f8f.32.2026.02.24.03.27.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 03:27:08 -0800 (PST)
+Date: Tue, 24 Feb 2026 12:27:07 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>,
+	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Waiman Long <longman@redhat.com>,
+	Chen Ridong <chenridong@huaweicloud.com>, Tejun Heo <tj@kernel.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [RFC PATCH 0/6] mm/memcontrol: Make memcg limits tier-aware
+Message-ID: <aZ2LC0KPF0xsAwAL@tiehlicka>
+References: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 04/16] perf/events: Replace READ_ONCE() with standard
- pgtable accessors
-Content-Language: en-GB
-To: Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, linux-perf-users@vger.kernel.org
-References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-5-anshuman.khandual@arm.com>
- <aZ14lUwuA86aiOH-@J2N7QTR9R3>
- <20260224104134.GW1395266@noisy.programming.kicks-ass.net>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260224104134.GW1395266@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 459321C0006
-X-Stat-Signature: f6i1bnqzf8d44iup77rpsguqp6f8pmjd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771932179-859371
-X-HE-Meta: U2FsdGVkX185k1CDnWRJClCpq31Ej9N3GvwU3OvlwCuP4qQxZUv0Ji2u+00ea7+XQclfboxuLsrMJroNdMdrtwhs90t35FvAcFsCBsGyUFG7pMs37Ti8TsuDT7atydyAHsYRE+fQ8zT4Wzh7ccYgXuGU281+sSm6GWFkuCMEJ1UusxQ3DIPw0SbZ/sC0bJg4f2/u8lP7q4uiIypcgUbufipDukJjyBKtgWlgMSMGkVUJ58k5CMBqzK5Phnku0A8D7B0QrLJWvz8r24Og7OpDCUWRgNb8ihMPwZ45OPPbmQVnBE97xkv7Jtch01rrKz6oI3axi5yKARnJ6oQ78At8kd0lNmxbR+Ff7D22ohagL7/ZBx8XCFa6DVE4sWpsUHjhOlmBYclr9vpAjAlVqenD6ChxH+F0iLUZgfw/KSIuIImsiZ6F4HUZ/o0OpMnPNY//eoWynIFmdi2q6NGIa6uk2NSrkgVi4HI1tSMdRBx4gJa5qqO06Bf6qMSlZmDnWzEOwLZ8ul5hsTBqpHycBmVa0FuWY4w3Sd10x5xX5Dy77tRl/Mz2xuuMx9EpJ1saI2prc5aaIIIQb00DMUWWpvtrkOLILQbt0aT6H0egqXk2Q6yXXUzT5PPgKPK5FmFYyx1MY6oAp7jVBLti567l6XGbLS0nMm6/sdWZ2Ft5DrXJDDiexuCrDKNPaCa6pc5WPKAOpB9qjX+evtoCBqf0KbvFygooM698/+g8i+S3vZ4RUcqS2OX9x6bCtrhoVOTxu3R4OiOzauyMMwUUCnLFWvUcGTiPoHffZarxFUy9C0f+z77q3a+/czz8cDEu1KAGk1WjHMrSP8GJUTLbUZx9te9j/e2puhGizojDtdhYe1v2znNqTjzzX+53l0aUi41OA7J+r3RknxBg6qNCdNVA9dvDZwytxcYfH8xaO5hDMuJSgaWiDMcnsNa170CnmPaMxWc8v6J2e6I1rBIQsSZGXqM
- BlXvz/bs
- b3NHbW4J5td18LmsaWCkt9PbEiRNHSK85NXE8Y/iMhwVfBzE5xkgPZ6uW34TfkW+mXshpxOIgX89eCibpbxuIzlU7OSka0qJA1JfUg35HLxgFKoWI1orkYCoIgbUIqd0WTXsLa6acIFDLsKsU4IfxIwqzFDfDrFCoQkdBlJ6l/Uny+JTlkbmgmY7oEWefzFziLFxQ8lZzfyijFiuo0kXygVLwfHSTA6nK/Ntegjrm+P5LNll/Jo+ZNvF5DZyjoxuR+/8EpZgc+b39NMw=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0660B20008
+X-Stat-Signature: bgc37q6urwxn6ffydt4xy4qgtjix317t
+X-HE-Tag: 1771932430-66022
+X-HE-Meta: U2FsdGVkX1/3Ny7oPuhB2mkJpGL9+mgP9Me3KlDmgl81hqIEEtCVeZ6WCql4jXuCmkCQBNGxDx1lRz8+tJYp/zNAIJZodGX25JeSlB+ju6uiQVbP5nUPI3ji/bpQ9NEQjV4/WXp5VMdpGXxNP8L4KVbecLUpLks43y3suZKY1oJTlSvd6iRqv+QHxbC+dHMYN7yVVXhRYTk4jzX8/MdhjZSFXlSRs3acG4blIc+rL2vxH3HKKShI5oAtyn38X0sSCLUMpUb+bcKIPjdmjVxxVsf1/s9vioBaGud2gzskO8i7u7OJ/9ZjyvFxPMoJay3lJbKnKkBLQfumdAl+09bvDGgdyt+k9iqq0fsH653yab58NdOe1OVMLE/vQ+NjzoDXZk5NO+TXJlZDD78Glly3VNvplGthSg1gtXISIry3ZcwSqNql3XXMU7uRvnyrs+aeBwHigP07l+6F599k3WcQO+Jn8fplzyXmPH/LhPkFdTxDMfFbgmrCnl8Cj1P5G4aXcS89afrDxpgbXwcQO7pkWfiyrDLJZa2K73iB9gcIDm7EPFqyYfBFccZHtcObzknGkCM3U8Yr8HrJb3uy9fY/qtRKFEs0uHgG9pHrA5UDHe1ROb/dr+cWKSZ0ckNBFXkyL5kOFUjOukn8PfbZ0sBXbYrssXplrmkpULvcIiQ8bLaJ/jDeqOVHxe1Dx2d1/N/EEUsyMMfHwWOxBrRzShy9ZfcZ1p4k7jMlWiWNg6TtBT6vcunRa4qFpsDaT9wNn+vUQqkXc48aVPsogD9mQRM9dUditJCDFfKSjOUempTK+/vBMW1/z+O3Q5nTRTYdflMKtB8nvS/ZvUsjfrxPCjjmn6oNR0fVlb15/ZWA723mHKRfLn+Cw7o7zbxuRmLwOizxmpUmHoPdoVkgOykYPax+DpU1iJPzoaSOzguXoJW7Khj7G4Py7tC3u5oOG2PzAMLLJCsVbubAzBhXv+ynnXy
+ plGlbrRn
+ 82NKNFEDVT3cDF5L/6fJ7TDdEfmejTTxMI+o4EX7BXfV8jzCkSuTVQOHWHhLJETW6n31ve9ript/qVyml+wKZO9Gd7vbMcvOkH32negYb7xT21VYcjQBGWfuv6ip+Ja4wobtFEldZJwzWpXkfSlWW0SEKaS0yXW86Z8qkqmR0YCGVEGBGbD52FNg/LoYWLqJL4CFfbREjn447AWlUKy5RufZMNw4pznmWxdVr0N1w8Xw9tKqrQWhHOW9SdT75r40CVmvV0xSje4tLJZ/xnCNG259X+SF4kfbYIv8L+wO+5kwNy5D6uD2qQjOpAkocJCennS40uvoDPyeNY82mavL08DjLUpAPPcI0SNu4PlUPHis7omM8AfrlP9C+HBhOnypxokWTDmTaCMJPeE9rMk52XpysYauJU0QQ311CezZl0DSMOhA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,53 +135,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24/02/2026 10:41, Peter Zijlstra wrote:
-> On Tue, Feb 24, 2026 at 10:08:21AM +0000, Mark Rutland wrote:
->> On Tue, Feb 24, 2026 at 10:41:41AM +0530, Anshuman Khandual wrote:
->>> Replace READ_ONCE() with standard page table accessors i.e pxdp_get() which
->>> anyways default into READ_ONCE() in cases where platform do not override.
->>
->> For each of the patches where you make this sort of change, please
->> explain in the commit message *why* it is necessary to do this.
->>
->> IIUC the entire point of this is that in subsequent patches, arm64 will
->> need to use something other than READ_ONCE() for all pXX levels in order
->> to support D128 translation tables.
->>
->> Spelling that out in the commit message makes it much easier for
->> reviewers to see what's going on, and to focus any discussion/questions,
->> e.g. *why* won't READ_ONCE() work?
+On Mon 23-02-26 14:38:23, Joshua Hahn wrote:
+> Memory cgroups provide an interface that allow multiple workloads on a
+> host to co-exist, and establish both weak and strong memory isolation
+> guarantees. For large servers and small embedded systems alike, memcgs
+> provide an effective way to provide a baseline quality of service for
+> protected workloads.
 > 
-> That, and only being sent *one* patch, I have no clue what the rest of
-> them are doing. Didn't even get 0/n.
+> This works, because for the most part, all memory is equal (except for
+> zram / zswap). Restricting a cgroup's memory footprint restricts how
+> much it can hurt other workloads competing for memory. Likewise, setting
+> memory.low or memory.min limits can provide weak and strong guarantees
+> to the performance of a cgroup.
 > 
-> I hate people sending me just one patch; just send the whole series
-> already.
+> However, on systems with tiered memory (e.g. CXL / compressed memory),
+> the quality of service guarantees that memcg limits enforced become less
+> effective, as memcg has no awareness of the physical location of its
+> charged memory. In other words, a workload that is well-behaved within
+> its memcg limits may still be hurting the performance of other
+> well-behaving workloads on the system by hogging more than its
+> "fair share" of toptier memory.
 
-Perhaps Anshuman can forward you the rest of the series, but FWIW, the cover
-letter is here:
-https://lore.kernel.org/all/20260224051153.3150613-1-anshuman.khandual@arm.com/
+This assumes that the active workingset size of all workloads doesn't
+fit into the top tier right? Otherwise promotions would make sure to
+that we have the most active memory in the top tier. Is this typical in
+real life configurations?
 
-High level summary is that we are adding support for 128 bit page tables on
-arm64. Existing places that use READ_ONCE() to read PTEs now require 128-bit
-single copy atomicity guarrantees, which READ_ONCE() doesn't allow (on arm64 at
-least) - it fails to compile if used on anything over 64 bit.
+Or do you intend to limit memory consumption on particular tier even
+without an external pressure?
 
-load pair/store pair (ldp/stp) are only single copy atomic if FEAT_LSE128 is
-supported (which is required if FEAT_D128 - 128 bit pgtables - is suported).
-Currently 128 bit pgtables is a compile time decision so we could have chosen to
-extend READ_ONCE()/WRITE_ONCE() to allow 128 bit for this configuration. But
-it's a general purpose API and we were concerned that other users might
-eventually creep in that expect 128 and then fail to compile in the other configs.
+> Introduce tier-aware memcg limits, which scale memory.low/high to
+> reflect the ratio of toptier:total memory the cgroup has access.
+> 
+> Take the following scenario as an example:
+> On a host with 3:1 toptier:lowtier, say 150G toptier, and 50Glowtier,
+> setting a cgroup's limits to:
+> 	memory.min:  15G
+> 	memory.low:  20G
+> 	memory.high: 40G
+> 	memory.max:  50G
+> 
+> Will be enforced at the toptier as:
+> 	memory.min:          15G
+> 	memory.toptier_low:  15G (20 * 150/200)
+> 	memory.toptier_high: 30G (40 * 150/200)
+> 	memory.max:          50G
 
-But worse, we are considering eventually making D128 a boot time option, at
-which point we'd have to make READ_ONCE() always allow 128 bit at compile time
-but then it might silently tear at runtime.
+Let's spend some more time with the interface first. You seem to be
+focusing only on the top tier with this interface, right? Is this really the
+right way to go long term? What makes you believe that we do not really
+hit the same issue with other tiers as well? Also do we want/need to
+duplicate all the limits for each/top tier? What is the reasoning for
+the switch to be runtime sysctl rather than boot-time or cgroup mount
+option?
 
-So our preference is to standardize on these existing helpers, which we can
-override in arm64 to give the 128 bit SCA guarrantee when we need it.
-
-Thanks,
-Ryan
-
+I will likely have more questions but these are immediate ones after
+reading the cover. Please note I haven't really looked at the
+implementation yet. I really want to understand usecases and interface
+first.
+-- 
+Michal Hocko
+SUSE Labs
 
