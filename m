@@ -4,204 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B75F4BB60
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 17:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59674F4BB60
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 17:19:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1837F6B0088; Tue, 24 Feb 2026 12:17:36 -0500 (EST)
+	id 823D66B0088; Tue, 24 Feb 2026 12:19:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12D3B6B0089; Tue, 24 Feb 2026 12:17:36 -0500 (EST)
+	id 7D1A26B0089; Tue, 24 Feb 2026 12:19:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F29D46B008A; Tue, 24 Feb 2026 12:17:35 -0500 (EST)
+	id 6A9826B008A; Tue, 24 Feb 2026 12:19:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E005A6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:17:35 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5239B6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 12:19:41 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E4918978F
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:17:35 +0000 (UTC)
-X-FDA: 84480006870.14.B49BB8C
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013047.outbound.protection.outlook.com [40.93.196.47])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D0796C0009
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:17:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KnAjfZe2;
-	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1554D1B6129
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:19:41 +0000 (UTC)
+X-FDA: 84480012162.14.5E1F102
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1D52E100004
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:19:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3BLdnXtV;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771953452;
+	s=arc-20220608; t=1771953579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uvfjp38n/FdC5fXRhGJKHM8e25Ollxx5cKJMGTpTias=;
-	b=JWOR+fmi8XzNB/QDpOW3LFPvfnfHQ7X6yE110Obl6bprHu1SYHWUCSdtgwP6IDFjmAnILj
-	OqAi4iulT8YyUFFfbaBHY1isVCXucNo/Y5XX/MKpkmWzDtA+1PsSDTQD4MletVWOjGx3Id
-	Vui4o+8ElImIOKRrGeuit70Jnk9QjOQ=
+	bh=oo2St6ysvTgZpChRDuzcMsdyLl7YApmz4u51eboQAbY=;
+	b=43H2pn31tgq/2l1xRQmVWa2YE1YZY2C/rEIOSnSe3Nk1H0cueV+TCCY+eguKtbg/mpm3Dd
+	rYEisir801YQxIqH0iyvpm/7eZbFFcXIBXhsFx501M0OOqWuQD18+E0yIf8iR/0Ws2cbTJ
+	TJ9QoCEP+1AHC3++T5a1u+d0h25lvg8=
 ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KnAjfZe2;
-	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771953452; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3BLdnXtV;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771953579; a=rsa-sha256;
 	cv=pass;
-	b=o4SKFuBxkgQg6PhXOWRjx9CbXniV/ctTXALa8q0j5JWhGMpofabNJRfS0yI/hoilVefSTt
-	4NmM5KDebmdS8OT3fryFqtigoANg8liZ5lhVs95247F2CJq1KtUasz8HPFJ7jIDSkMYGue
-	wXF9G7JlaKZapgOruYcRbiJf6QV3nWI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rsJ221TMYt/IplAC1MEqyq1XtIeiTkdT+biQBPzc4QmnER9SvpgJAZDAKc9DsDGGrI4nT5kf3RhfDQep7SPt2nKWBVd8Pqe+ANnpn9bcaRr74Ut7N0VBMTs7nYEFdYOeo/r3QMuGH+faDplgKlZcuLbCjdlP3SdUmxW7os6iUg9emLDKE3d7qECHyULX7KlqGQTa1TUEc8uBB/JFrLXUlj19KrDkXGXDSvSBAhx1pRGKKHn5um5MtZ8VvmhSs3x6i7tD7I72bgSAI3VIeFiCWyCLmfOFhl6j/H+oCfeiSvX5bd0yja08nbj3p1OpcY/2XOIAs4uXbipLcwjM0fSW+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uvfjp38n/FdC5fXRhGJKHM8e25Ollxx5cKJMGTpTias=;
- b=k9d//PnfPuASD+j1HTGGjcMkDsgBdC7gBXbtzk2sxlq7NgcKJGNnAzJpsQe9qPUz/WBUz0ymoehLkS//a/FT+BrzB97dwSKc1+HTPLoN4dYo/02NbfWLXIN/AewhoaSv+U1MLGdILB4IVzW+he74wCTOwKBPcOZe33i6GrUufSoDaQnQi77vPezY/FwsJhrIwyRyYnHRv/PNYAda1Mw3kPNPt1gZuiFCjYEq6ep54gvKigNque5XDHUH9b8lD7sna697CzSx97I4L4TW7lgmtzlmx/us73uU2aSw6dLDOmOSmlXilqZOrC2kHUwAoJ09Wy/UM3p1d9wdBvToUA2wog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uvfjp38n/FdC5fXRhGJKHM8e25Ollxx5cKJMGTpTias=;
- b=KnAjfZe23Y5l6oMN+4TkcNBCOzntO6bhMCi+5oJzPhst5N0NdVB1dTEVnxtccpDMxhcgeHHpA/ZSADAR6/zLUdwdK8Zlwvsm4n0u95NnNIJjcBuHCjumlHbEiCw5inbcgz6Q7NEt7P+EhAuRrVw1ZTLbsrgYtboKDWoD5kYEDqlC0dSNyYaznCEZ8U01ALfLX93kM/GdPNrdwMAAU6lS0lXThJt+l7IwoI/xmcT0JsOlDALc3skyRM78kUvqbxn8c9F0T4QnM+/knytZE8WRo1Bb7E9rh16qadJx+LM3hIAXDrbp/bmdeyGV43IF3mBTSSn9A5gW1NqmZx9xKqmeog==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CY8PR12MB7097.namprd12.prod.outlook.com (2603:10b6:930:51::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.21; Tue, 24 Feb 2026 17:17:26 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 17:17:26 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Ron Economos <re@w6rz.net>, wangkefeng.wang@huawei.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, jackmanb@google.com, jane.chu@oracle.com,
- hannes@cmpxchg.org, willy@infradead.org, muchun.song@linux.dev,
- osalvador@suse.de, sidhartha.kumar@oracle.com, vbabka@suse.cz,
- claudiu.beznea.uj@bp.renesas.com, Mark Brown <broonie@kernel.org>,
- akpm@linux-foundation.org, pjw@kernel.org
-Subject: Re: mm: Regression with v7.0-rc1 on RISC-V
-Date: Tue, 24 Feb 2026 12:17:20 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <1AB3E96B-F4CA-4B00-9078-2AC20A1A60DC@nvidia.com>
-In-Reply-To: <78D36EC1-2596-448A-A939-0A1AC7B3D1BC@nvidia.com>
-References: <1b17c38f-30d3-4bb4-a7e1-e74b19ada885@w6rz.net>
- <13b8d60d-1209-4650-9fa5-982381c53512@kernel.org>
- <1966378802.577797.1771952827516@app.mailbox.org>
- <78D36EC1-2596-448A-A939-0A1AC7B3D1BC@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BY3PR04CA0004.namprd04.prod.outlook.com
- (2603:10b6:a03:217::9) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	b=zT2MD1BAkdM2xiKsPbDgrb77aLxIe7OeAYuxnfEGvttZRrwGy/2hgzw7cRqjmQ0MIHP4zD
+	R3q3ctSJ0Nzu7DmoA0Uz1P9bZVx0tro2Gg4GnsuKaD8hD94lmLlkoEHTtnW+Hx0bJXLfBv
+	iw+5ysAw1ltQCyXSSY6DfS1yNuUJCbc=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5069a785ed2so97041cf.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 09:19:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771953578; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JbO+B8YrjytNcs/IsUQbmh8uz/H51bx8hUDeDQ2LhDvkR/oWeZgAhVUi7OVRB8sazd
+         v6QvjkTLLBLgai/g0RNl2ffkviblfU7TKcAAjMSdAk+pbbQl2AV5Bnz1UrU2SdtcKlsE
+         NRJGKU8YLQLvzH2psivuvyQjST2l0jRsrzVnke5TW5b66AFM+HqZiR1nE2qHniz9z/6Z
+         0GzLe3KqQW18lvJpymt3zSmSpg9nJ9txv8m+8aXvIHiXhWcEUlmsXRTzp8JA2ii0qQJb
+         1uFHrMcTuElgX6J5F2ODrTQiYHMOA7ptP0pBtOGFVk5n0x1rAtEoPowK5Drn62XVNS31
+         97wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oo2St6ysvTgZpChRDuzcMsdyLl7YApmz4u51eboQAbY=;
+        fh=Z7irXyPwE+HXnPi+anBEae7U+/H25LV0i74tl6f1ohE=;
+        b=RfRoxoiq3HuM+dEi1TJUlnRa5EAkdIGSuK7HHw6hX3E69nHH3U6e5SPuwLAKz521Gp
+         h6q3OS4tLMt/BH7t+VRruQIahAqzs+a7raZFh6fG5O5s4aXFkMmkvmm+ZPZJBXnEa1J+
+         y+rUM1YjjZZJ5w27y16RqnSuWTdv/PhXh5/lK8pwRBPPLk5gExaeEqG/Wej9skwxdqMh
+         kKiJH/73oXIwjfwXzHmLV/Dz6Zx1LKh7Xm1ZGHPYPs0aLTv558IZcVh2fz3Fu2i69DLZ
+         Sat0LEyEedATzY3gHYaej3yeDPaG9saxKxefjpvKIUV19rTzRIiOPtb+TqqWDjUdTQas
+         XuRg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771953578; x=1772558378; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oo2St6ysvTgZpChRDuzcMsdyLl7YApmz4u51eboQAbY=;
+        b=3BLdnXtVzDxPRXmUyTWuCmZjj7LB57ifmag07bazyp6F4WgB+r1cFVcYTcMJgLhj6F
+         TNhmJDRRURiuv1bCiQclCmt1zvJgzkYLJ45SMf9k2NqX2BaMm+vFVLLMi+k4BAJrz9Vj
+         +eKldNBIhxY1OwC5seBWtSm35g5MWVnMJmABCKOMnVP0YFgkmlwU8CDEgzY5ayLo8Apz
+         btkZF0uS/8MVpHzcjSJ90yhp/dWdav+EfU2EcRQONaR0aL2qiKJeXlFIOwoLZvutDpr1
+         hXk4Z7CzByKm5E1E+AMExXuJ0mvEZXYogfpcgkkE9dHF2vlGO1Jk4qVljQAw2ISII3C/
+         FTNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771953578; x=1772558378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oo2St6ysvTgZpChRDuzcMsdyLl7YApmz4u51eboQAbY=;
+        b=KeAUoq+A1IpsDLTTZURWgOkuYpVHBmbnLh9hvTpa3315e5eD6TJOw3pwLBiYywFCpS
+         SYhegu0C5pgn7MAK0cPTzghO9RJPuCZc9piQcFLdSrRVNjD7rocijsNO8OfFbxK/WfaN
+         iWj5LBpXoPIITf2RQXGrMIHROOHm3a4cH2Zoca7EicR6u97fLcGvtL9niaQEQUmuipKU
+         rnk39ja6HjYO3anbr4Qggs2ZYzkxdwwRBkPfAB5VyUc98dmzJqb4j/yDve2RjhnuYJUm
+         5o5mGAHjnLf4fmVxKL5zEU+YvtqN9krV+DeuxDaCDSfg52lj7OJxxzddG4vmmOE4VzMQ
+         uqFA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+7PQk6OSJ/OqbgtjYwxG9JVgA05GScnOJRI+RNmf174l8WZPCSqmS2jaCY7I158DolXY7/Tb7VQ==@kvack.org
+X-Gm-Message-State: AOJu0YzNmz2G2EkHPjmReG+qiRKTnUaico0ZQt84ZfsO7aT8W182upfr
+	6gQJPz03KFZumuTFUrCZAy4XqLzAPVXkJhx/0JgaZWZwSTeD4rEoIiaibY2PvkZ7KZ25InkDwRQ
+	Ks8cnZORYYWs/bXWt/rIMQlgq/s/gb21WClmMiZvv
+X-Gm-Gg: AZuq6aJSE8PrTwEzW+rvrQrf4GHYwzw9Zvm+TS8sEmie1i3ae6Yz7pJv/kgjzG+j8N6
+	rwSpGi5yXMgTtiiV+1YzIhGD6VnMSZVPTzYy2VRKR4CGrO2YpWN/bqzaDod6n8zQoeWc5CSUHsy
+	9Gy2uaMlycB377wTybuLUs6b5r2tqBBrsGHOQFLzBizfFeYFq3s8+hIFEDk733ZwVAY4PF1tf9I
+	QH4ZtStERO+uiKTfBDdpCgp13KRNROyzZIp8Nz+sepRJDYkC+w6iveZBCsaQcmHIn/3FJPaxgwB
+	mkiua+aAuy7deUCVB0212E7otaTGhbYelswyGw==
+X-Received: by 2002:ac8:7c4d:0:b0:4f3:54eb:f26e with SMTP id
+ d75a77b69052e-5072de9fe4bmr11229721cf.1.1771953577485; Tue, 24 Feb 2026
+ 09:19:37 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CY8PR12MB7097:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3816b643-4ac7-40d5-43af-08de73c894d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T0U3NVNmYVFrME1QcW41S0dFRk5UNHZURDg0RXU2N3hUSWZtYkhWZkUrYnU3?=
- =?utf-8?B?bVJSNUo0UkJkVTVCRkIwVlBxT2h5YW16eVoxenFyYmlDeERhUzNudzgxUTVy?=
- =?utf-8?B?cVd2SC9lZDQzK1Q2Y1dJSXFjalFIYWF4dnFxWkxKcnFjSWU5L1phU1dGNXZU?=
- =?utf-8?B?Zk1OZGNrMms1cWk3Zmd2U3p5NlZDRHZ0U0t3ZkVFYjNDRmtPRTFDZy9IeEdp?=
- =?utf-8?B?MWZrVjhCWDBsMVpRckR4OE1BM2hkaWlHL253dnV0aXRTcUN3ZFRnNUVYZ1py?=
- =?utf-8?B?Z2J4RVI2R2EzSHJkRDBsZDZOYlc3QkJPM3Y5UFErVS9kNkY4RjV4SXVaa1BS?=
- =?utf-8?B?REtLQXN4dm9WQkJJWEhJWCtYUDFXclpKNENQNXU2Nk1malNySmZUaThLeHU3?=
- =?utf-8?B?UlRib09NNEI5ZmdYN2NkemhSNFFOSTNUNkV6cG9VRHR3a1VYZ3pRU016Rk1I?=
- =?utf-8?B?MWpQa0NEb25ianJ5RGNnVnlzWlNBZXlBV2g5VkVjSEhxVzgyWGZKb0JJUGdz?=
- =?utf-8?B?S3pZcFdyUDdKM2pVdjJvZ2VJNjVibUZPNjZlWXRDdE9UbTFCQ1o0a3luVEY1?=
- =?utf-8?B?blRBRFlJVEp2Lzdmd2V4NkRMUHh1dWQ5UEQrbkk2emFzWjBKUXFOSWZhRWl3?=
- =?utf-8?B?Y1V4NGI0UWM3TTZzdjdBRkZOMjhTRHpWVkoxWHpsNjBvRXNwblhKclZEVDVy?=
- =?utf-8?B?RmhhZXpoeVJmV3lvbDZyaFVlN2tNaDJQTHZDcDZyZHpDQUNWNk9hRkpzcG5X?=
- =?utf-8?B?T1hlWGNBa3JISGNWYlJvM09XNXQzY0xoblY1US90QzlZVnA2V3l3TjdVZk8z?=
- =?utf-8?B?ZndLNDJRMjd1dXVEZTNxcjNhT2ZhQ1c2Y0sxWVZwd2NHeVJ5cXUrS2gyaVlU?=
- =?utf-8?B?STQxOWhXWm9sYkNkU1FCZ1Fqc1IzZVJsMnhWSnJiaUhoY2k0bXlJTHhERUNl?=
- =?utf-8?B?U2VtWGlncXRJeEJnQktST1ZXWnQvV3B4bG0wMEd3WlFHbzBVYWNJUEpTamZU?=
- =?utf-8?B?NFNLeGJJeFBUQUNMV2ZSeVZ0S0NDVEV1NE0wQ2pEYTU5QzhnTnZmN0paMTR4?=
- =?utf-8?B?bmdaYWFBWDFaTHdzRmhsZHp3Rm9MUzM3SlhUcVZyY2RrRE8rU2FKZU1XSFJ5?=
- =?utf-8?B?TGNmTmZPR2NOTE9hNTRBYlR3MWhLcUlJTHltMWU5YjQ3Wm9BU2JBWXRUMy9K?=
- =?utf-8?B?NENqK05WdVhxSkRMWVN6NkcrZ0pKZ2w3UWNiR2ZITXl0SEZ2S1QzMVFpZk5O?=
- =?utf-8?B?S2lKRnZYQW02S1ptcTNEWUM4dWhReU05UDU5M2N3MEhjb043cGUrMFpacVR5?=
- =?utf-8?B?WHVvRzE5ODdFb2dxM085RGZ3R2NZS1RxL2xLd0xLTG9pTFprWWlQRWI0L2tj?=
- =?utf-8?B?TGVhWWFad1RPRUdrUEtKaWZCdTJETEkwUkk0a3NUU0tQVDlwb2NlMDcyQ3lI?=
- =?utf-8?B?S2R2YjFtYnN0OFhXOXJLT1ZUdXJvRnV2anp2WndsT1cxQUI1VmtNYlcwTTE1?=
- =?utf-8?B?aml2aGt2bmpTS2l4dVEzTkVKZ1M0WndZTmJmTHBPUlU0d3JONWJpRWJhNEdv?=
- =?utf-8?B?bm0ybTlmU044Q2x4L1FUK3VJdmgycnFaZHp3bTdNZmFDOXQzVnZFZG1rV3JK?=
- =?utf-8?B?OEJsc1JJNXVQVEJQVWIyM09hQVgveVczK1piVGxkdkVMYmNKcWZmLzVLL3pB?=
- =?utf-8?B?VkdqV3NXaVdhQUFJYzdGejI2cEN3dStLNkJCN2dUeEtSakNBZ0dTVGZ2aE1W?=
- =?utf-8?B?ZDBLQ1ZIRmFXVGprRjlmVURFektpdkV1dnEwKzB5L2JucWFSQm1ETUlUZnFz?=
- =?utf-8?B?ZjlyOEQ1N2prVlZFRzZnRTFpMnlMbzVQTXBrTWhzYnpNNTFjTERnYzVtOG1w?=
- =?utf-8?B?ZlIveXQzZU00a2NyRXVabUJkbkxJSjJMbzVNNW9XOW93emJWL2VzWXJyNURF?=
- =?utf-8?B?cm50UTlWQU5NbmRVSjZUbER4Z2dqbHlrZmdUWWd1UG0xZHA4dDhhRjllaDlL?=
- =?utf-8?B?cjJDYTB0SXJCTEo2aDVwOU5YVVZxcnJlbVdJZTNpN1VxSG1tUU9HZGJDRnl1?=
- =?utf-8?B?cDdBYlVRdFI5ZWVIU0xWb0ZxQWw4S2ZoOUNDUHFQNm9VblVXa2lycGlZN2lo?=
- =?utf-8?Q?/ymM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cTFDS2hLNWgxeUlRNGxSTnJMUktLRzVBVDluMklEa05Odk1OblNrMEg0ME5l?=
- =?utf-8?B?RnlKdlVJc2dtcFZtOGtPY3BtdUJhL1JYTm9ONG05STZIRnh5Zy93bHB5ZlBv?=
- =?utf-8?B?V05PNHBiaW9VME1tSWV4VFMrcGZYWmYvaE8welRhZnc2TFBzSStKN0FJTVNa?=
- =?utf-8?B?bTZYUGJlUXNlekZGZHo3MEx5Nm5zdUpjK1hWL0RUNVMvbXljeHRtMmxjVUxD?=
- =?utf-8?B?UGZSU00rR2tmMTl3NWNFKzJVd0FKN1RQMXRBSlJzblNwSVZhMEFpWjhvc2p4?=
- =?utf-8?B?bHVacFFMbWFIOTc4NzZaMi9pZmVSV21LOVpsWHIxSGxRUWVDbnF3Wm5oeEVU?=
- =?utf-8?B?WG5zekhydHJBeXg1T28zaC9zcUFoTEdRNlh2WDJOT1FUdzl0NzZPRjJqbVI1?=
- =?utf-8?B?ejlGU1dxYXV0MHVjblpRY3pMRXZvV2w0WXhab0h3NWdobkIwK1d3eDJkZlV5?=
- =?utf-8?B?Wk5pK0N3Vzg2VkYzNEFPWERhQmhTeVdkS0ZySTVWemRqbUNIanZkTDlSZEpa?=
- =?utf-8?B?ZXNIazgzYUIzOVZ1ekZIVnh0akhiSkE0OUR0aDIwcXBKdFVlWHZVeUlVWWhk?=
- =?utf-8?B?eG5ob0tZS0lUQWZ6TGNjTmJzZ2FvY2hueHlnb2ZrRGQ0NUVjYUwrVTVaVEdq?=
- =?utf-8?B?SWJJVkVBOEllYkVnMHFtMUdIcVdhQTRKazNISUdxM2x4UTdwRUk3Q1JSdXNl?=
- =?utf-8?B?eUNiWHJ2bjhSMHFYVHJpVW5Nc2tHMkhuc1NDeVd5YnZncWhMMzBUanZYSjU4?=
- =?utf-8?B?eGUrS3JOYXNvSHNDWlZMUTZpckhkdjF3aHh1d1IzV3djTlhLZ2J5ZTBIMjRy?=
- =?utf-8?B?WW1Ec2pQdWVmL3cwTnRsTTkySnNhOTk4aWhmajdJd0F5YmcwNlhoL1dnQ3RG?=
- =?utf-8?B?cVVES3I1M2haY2luTVlIVUF4N09nakVsY0x1NHFNZzVSVlhyUnMwWUt4b3Jn?=
- =?utf-8?B?NlZJdE8wNXEwd3hIblF6dno1dlpYRnJyZGJ6TUNJWkpXOWg0MVhvd0hyYVRi?=
- =?utf-8?B?Q0UwNnJRcmtTM3IxbFpyNG92bFFObzNDbkpuVExXMllpVHZnWmZhZFI2L1Qr?=
- =?utf-8?B?cStQbmVNNGU1cERNd2sxZkMyQWR3UEdha1FyNitNZmZCVnl3YjQ0WUg4d0Za?=
- =?utf-8?B?anZZcld0eUdRak9hUDFnc3lHckVZNHZaS25ZTGVHSlhyTG1rMW9TTXNEeS9U?=
- =?utf-8?B?RUhra1lpY0lrb3dDOWFNeVZkMVZTYjEzMmx0eCtVcTV6NUV5VTFYRHZRSGZi?=
- =?utf-8?B?am94Q0pJQm0wZlFhNnk2OEpxRGVLekppaHFNR3F0ay9wSUx6VE1CUWlObitV?=
- =?utf-8?B?aFR2eHpub05HL0o2Vm05VU9vOEQyLzlMdTl5UzdDMis1RXBheloydnliaG5W?=
- =?utf-8?B?T0FZREhIZTM4MGIxTkt1ZFhiTElSVDJnVEdsQzlHZ3ZxVDFUa0hsWTRGUU9P?=
- =?utf-8?B?SVk1cXJKd1dlYlV2K0o3Y0p2TDlFa1psVE8xNFdhSFVGMmdJRDI2cktjZjNq?=
- =?utf-8?B?bnAzTGVnNmpIRGxSVjFvelp5YTNuTUJsWndKOWZ0OUxZeXhXM3ZmRHR4ak05?=
- =?utf-8?B?clc3eVpiZXZNdzF1U1E0MG1ScDgxMnRRYWVxNy8vNG1KeUlLNEIrb3R4c2x5?=
- =?utf-8?B?UlI5Z0pMTnkyU3VVWDVEcTZFcmFXQ0pLOGRObmRKeGYyNGZMQVdCVS9kN2Vp?=
- =?utf-8?B?V2JtenpXRi9JSlVsWnpPTzc5djRMa2hHYnlIVWRWbjVlS09wYkR0UzA4LzlY?=
- =?utf-8?B?ajA5NzMxYzJPdlVKVlZMMmYxOW9JTmIvbFBVbEdGQkp0UXFqaHFsTlRka2lq?=
- =?utf-8?B?Qlk3WWhnR1hRQ3hZNU5qbis3UGxPRzB6Nm81RWxaZWFMenVKeWVoNmdQVWY2?=
- =?utf-8?B?K1paZ2xveGlZQVJ2emNVcFFQUU1kY3g5Z0R5bTBxc1gxUnRSZ1pFVmpWNFAz?=
- =?utf-8?B?LzBRcTJ6cnJraXRJRlNCbHR3dzR3M012QXE3dG5EbTNZWGJuMkVmdStmd29D?=
- =?utf-8?B?RDBaL3gya2lBZzEzeitneGlJb1FYYUN5OHdReCt0YTNZSHlHTFJNMEg2bU9s?=
- =?utf-8?B?S2gzYVQ1VE13S20zbjM5TmR6YWlENytTenc2U0ZTZUFuSEZjQVpOZ3p1SUd0?=
- =?utf-8?B?MU9taTJzU3JEbDk2aExkNXNyRktDbWE0eE5NbDhGWlIzMGI2TUZiajNXQVp4?=
- =?utf-8?B?L3JUVjRxR3dGUStvYkZQSWk0cnl3cmI5SGtLc3R6Mkh5NHhVdGtHcEFXTFJJ?=
- =?utf-8?B?Um9Wd3ZXZGFiN3VrZjBVOEFDTlhFV0xpYzNaM3M3V3hNMWZQcTZzWmNUSDlC?=
- =?utf-8?B?cnJLOWplSGoxSzhoV3Y1ZHZWQkZUY3dXWTUzUWpBZHEwd0V1NHJnUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3816b643-4ac7-40d5-43af-08de73c894d4
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 17:17:26.2100
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IdlH5+rqiww3I5ScflpoLW6N3FTdiboLY03MNMu5TEzM4a9NYLB4s7y5rZeQRrOj
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7097
+References: <CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com>
+In-Reply-To: <CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 24 Feb 2026 09:19:26 -0800
+X-Gm-Features: AaiRm52Qx_Z1xpVX42eHRt7WYq1HVwzQEKnwk1V7rPiT_3xK81wWyaGP0DoeldA
+Message-ID: <CAJuCfpFb7opwBdm9fzSeFguCCsq7CAiBY1C4J2o07LR6J74E-g@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF] Improving MGLRU
+To: Kairui Song <ryncsn@gmail.com>
+Cc: lsf-pc@lists.linux-foundation.org, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0796C0009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 1my8d9d4x7wbtoq1tr185run1dwnu88u
-X-HE-Tag: 1771953452-912626
-X-HE-Meta: U2FsdGVkX1+SsgeXRzxY3c40ErNi3htZChwFSUmLICjtWTF1CX5/oGoLqHfBE8PKUP13L4jDw5TcCO4BC6mPDklBH29VwNFgby3aY+YXuGW4ZSoJ5rfE5PkuAQc8YJN18oQXlg/AYbeNvNeoCzIkfYa7lIiPQTcxzLJLCJNxJnbsBlsMfIOs5ZAuQfeZfG53OGmb3UScinL+eWZV8RcToECT7RqEuvpew36UvZD7abUx/NHkHt8zzDzg3rz9KaDUNeqGK+MixppuJjGsPHLpFgpdxFobz2lJWbbFPRV6PPKQk2iZF9Sz2FTU33x/1bvBwm8IcYDs186YlfixGwGkmSO4QNsp2z8Pd/vIZp551oV00T4avq2jQYbgA5LDQ2FB1gFq667IxsSa4O6oOS/AtVjk1/ckISgf8f3oNRl2fPBbFQKlZkut6vNwf1kNKA4xl7LcJizDXsUyX46ps9ZU2FQ5DF4LKSRrrd/spvYbETcgJQxgblLgXPv14LBDtAmcn97DoTuyD4olEo3ULuBahtTfOnDVacEE28+3ZGc7RloBeFEopg7xC6rb6ewIua4eP9i1P3XZxEU4bNKWKeyjbAC5sQEnh8xt7StvSHiQZfoUIhrY3a8Ts/aNLguUgu7hyEwlLUXQ8qGNcPq4Yz+cLiAdOV3ewZpsBVX1n5eG/9VDO9l4dRhN6g2j9sgDQ5BVWwwLY+HxfdO0YsUy3LtN9PN9xJEX9uREq+xWU/mhBGhi8BxjkvqEHiQijGhk7+2IkQlD62+PxGqWQ8GB9OQ8KMqlTCXQWGmoQ9R9gaTrxj+tPE816fl+M332pilKdSKAexkCCX0fsWeOt81uvy4BaH2lIJMI89bkjUz6ReMe6hRU7ZV9IjrotxX2NeWdbd7E4klKdlzKDdTxnynnYQuFlw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1D52E100004
+X-Stat-Signature: 1xeogt8muzw4urh83rtwc7icej5khru5
+X-HE-Tag: 1771953578-869576
+X-HE-Meta: U2FsdGVkX1/umnqw9CHHs7C4LFcb9g51pGsKRL1tBhiCNKPb+IgzQoE3VOP8pUJcK7MM2mNEUt9h0pK5/lnwjyY6vkt3Kq1qRB+yVBG2j/yq3la5v02bmf2Zg+/GsgPSMlh2Wb932oTp+59DRfKqW0njrOBXlLZj7rHiXSHZlqAiwp1HBrz9OIyIaIgY/vn7SGHqe727cvCBHZ4ZFELlf5wv1tdLpCkT2bV+H/PPuO+6Vt+zuKVrX3CiawDw3R6zy+hplFXvDbPcYUqfAh6/oet2a+n8qgY0foBKmEHv/t5r1jIgLo2PVXUyZXNGRUE9iovhMzTaCp5WQqQLTx1Xp7oJVfo5DpKN6Ue/vnzRoe8d+ta9GEubjN33gpFkK1iF62U2Cbx0nbLIPsAgHjSmwoEDTuDMnkx9Awq4gQq1u9yzadJuJ8sNuF6Mh3pX65ggMzJffBP7Agm7HcvGxQKVhxI9SpoF0Ka8VH/MqZ3BNX6yN7ifD82uTs8xc9qdxwy0y9e69y4wRrfrPzjSar62cTn1+MZ99YRik+DkaIlVoK/NTDX+NhAz2gfX71yCtUCH13GpZtEYUPVl3C2luKOYg0dBx9zqDSLquAQJtCjMq5KnSQZG0hiqxac03L+oy9jf1OnC9M/vTkrFfHSSoyCLqjVAFVnpaQo/4HY8Z1jlGNwpYgwqZwYqS1GIAU+m+qLnmOlwNxh1j7D5L8sla3D7FYzIOVvFU1jS/VYZZnQWj4N88xJoiHQkYCF/9IXBek3oMX+k2XIconLAgPjp6yRU8hONs/BJ2bqvU3lvGzMe1xv+GtbmVuR+e3ei6kuc8rhBUoRNQI8MrLQT3QnuCTcJSC4qSmlwxGm1QIDU37qgIxp6VpU/s8pVivmcT02aKwwsDwUiGhhwlVlZbKmYgZ0GaBXerDnhSU1YRG27AZnVLkjOvLWIwGORHWvBUB7YXfrw/iUOcU8NpLymMt+JWe5
+ 8CQBuZeH
+ gFtgKsiaES9BgA6SMX0apFuUUFGQKDtz0jaWKsvfwHKkwj8DX6cUQm+vCDpo1jzpA6Y55oVSKEwPduJOzEvbZlEyDLdGgXcrXKslodmHebOc1putqyWZPCXTgnNwjD3am/v1oMbkPLH4OHhppkzyZqpXTQ/ZT1H5kAiIQHwO/FCHwOnTSoV2dAhUUG3caFqSNOFQpayFAdOEtH43wSSVuDFAKFJOa6oP+FpCzre437RZ3RrKp/Q0U79NDl+WG2G27I0zITdC8q96nBBd3P51vcEuchzAijwtAXh3d3m/ej6VmnzN1qa3VpQlz01NyuyQdi+6ZzndIoYe4/y7Un2aNjnpzQp8cv0btycdjJTJImG5ZhI06ajrZ2Isx9kC10DdzRsGZUUJKEQuQ+DMMtP8B4mJWl0krRkj8//CbFtHzh08lS9IPPkNRwK2Y9lcdU90N97qZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -210,110 +140,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24 Feb 2026, at 12:14, Zi Yan wrote:
-
-> On 24 Feb 2026, at 12:07, David Hildenbrand wrote:
+On Thu, Feb 19, 2026 at 9:10=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
->>> David Hildenbrand (Arm) <david@kernel.org> hat am 24.02.2026 12:00 CET =
-geschrieben:
->>>
->>>
->>>
->>>
->>>
->>> On 2/24/26 09:37, Ron Economos wrote:
->>>
->>>> I'm getting a BUG dump during shutdown with Linux v7.0-rc1 on RISC-V.
->>>>
->>>>
->>>>
->>>> [  OK  ] Reached target shutdown.target - System Shutdown.
->>>>
->>>> [  OK  ] Reached target final.target - Late Shutdown Services.
->>>>
->>>> [  OK  ] Finished systemd-reboot.service - System Reboot.
->>>>
->>>> [  OK  ] Reached target reboot.target - System Reboot.
->>>>
->>>> [  173.985249] BUG: Bad page state in process shutdown  pfn:f8850
->>>>
->>>> [  173.985311] page: refcount:1 mapcount:0 mapping:0000000000000000
->>>>
->>>> index:0x0 pfn:0xf8850
->>>>
->>>> [  173.985336] flags: 0xffff80000000000(node=3D0|zone=3D0|
->>>>
->>>> lastcpupid=3D0x1ffff) CMA
->>>>
->>>> [  173.985365] raw: 0ffff80000000000 ffffffc501e21448 ffffffc600f2ae88
->>>>
->>>> 0000000000000000
->>>>
->>>> [  173.985386] raw: 0000000000000000 0000000000000000 00000001ffffffff
->>>>
->>>> 0000000000000000
->>>>
->>>> [  173.985403] page dumped because: nonzero _refcount
->>>
->>> So, we're freeing something from CMA in cma_release().
->>>
->>>
->>>
->>> In cma_release() we iterate all pages to decrement their refcount
->>>
->>>
->>>
->>> VM_WARN_ON(!put_page_testzero(pfn_to_page(pfn)));
->>>
->>>
->>>
->>> I would expect that this would fire already if there is still a page
->>>
->>> referenced.
->>>
->>>
->>>
->>> Are you running with CONFIG_DEBUG_VM=3Dy ?
->>>
->>>
->>>
->>>
->>>
->>> --
->>>
->>> Cheers,
->>>
->>>
->>>
->>> David
->>
->> Thinking again without my computer at hand =E2=80=A6 isn=E2=80=98t the c=
-all completely optimized out without CONFIG_DEBUG_VM?
->>
->>
->>
->> At least that=E2=80=99s what I remember.
+> Hi All,
 >
-> Right. Without CONFIG_DEBUG_VM=3Dy, VM_WARN_ON(!put_page_testzero(pfn_to_=
-page(pfn)))
-> and is_check_pages_enabled(), which leads to free_page_is_bad()=E2=80=99s
-> =E2=80=9Cpage dumped because: nonzero _refcount=E2=80=9D, are disabled.
+> MGLRU has been introduced in the mainline for years, but we still have tw=
+o LRUs
+> today. There are many reasons MGLRU is still not the only LRU implementat=
+ion in
+> the kernel.
 >
-> It seems to me that someone else bump the page refcount between
-> VM_WARN_ON(!put_page_testzero(pfn_to_page(pfn))) and free_page_is_bad().
+> And I've been looking at a few major issues here:
 >
+> 1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/Inac=
+tive
+> LRU.
+> 2. Regressions: MGLRU might cause regression, even though in many workloa=
+ds it
+> outperforms Active/Inactive by a lot.
+> 3. Metrics: MGLRU makes some metrics work differently, for example: PSI,
+> /proc/meminfo, smap.
+> 4. Some reclaim behavior is less controllable.
+>
+> And other issues too.
+> And I think there isn't a simple solution, but it can definitely be solve=
+d. I
+> would like to propose a session to discuss a few ideas on how to solve th=
+is, and
+> perhaps we can finally only have one LRU in the kernel. So I'd like topro=
+pose a
+> session to discuss some ideas about improving MGLRU and making it the onl=
+y LRU.
+>
+> Some parts are just ideas, so far I have a working series [2] following t=
+he
+> LFU and metric unification idea below, solving 2) and 3) above, and
+> providing some very basic infrastructures for 1). Would try to send that =
+as
+> RFC for easier review and merge once it's stable enough soon, before LSF/=
+MM/BPF.
+>
+> So far, I already observed a 30% reduction of refault of total folios in
+> some workloads, including Tpcc and YCSB, and several critical regressions
+> compared to Active / Inactive are gone, PG_workingset and PG_referenced a=
+re
+> gone, yet things like PSI are more accurate (see below), and still stay
+> bitwise compatible with Active / Inactive LRU. If it went smoothly,
+> we might be able to unify and have only one LRU.
+>
+> Following topic and ideas are the key points:
+>
+> 1. Flags usage: which is solvable, and the hard part is mostly about
+>    implementation details: MGLRU uses (at least) 3 extra flags for the ge=
+n
+>    number, and we are expecting it to use more gen flags to support more =
+than 4
+>    gen. These flags can be moved to the tail of the LRU pointer after car=
+efully
+>    modifying the kernel's convention on LRU operations. That would allow =
+us to
+>    use up to 6 bits for the gen number and support up to 63 gens. The low=
+er bit
+>    of both pointers can be packed together for CAS on gen numbers. Reduci=
+ng
+>    flag usage by 3. Previously, Yu also suggested moving flags like PG_ac=
+tive to
+>    the LRU pointer tail, which could also be a way.
+>
+>    struct folio {
+>        /* ... */
+>        union {
+>                struct list_head lru;
+>    +           struct lru_gen_list_head lru_gen;
+>
+>    So whenever the folio is on lruvec, `lru_gen_list_head` is used instea=
+d of
+>    `lru`, which contains encoded info. We might be able to move all LRU-r=
+elated
+>    flags there.
+>
+>    Ordinary folio lists are still just fine, since when the folio is isol=
+ated,
+>    `lru` is still there. But places like folio split, will need to
+> check if that's
+>    a lruvec folio, or folio on an ordinary list.
+>
+>    This part is just an idea yet. But might make us able to have up to 63=
+ gens
+>    in upstream and enable build for every config.
+>
+> 2. Regressions: Currently regression is a more major problem for us.
+>    From our perspective, almost all regressions are caused by an under- o=
+r
+>    overprotected file cache. MGLRU's PID protection either gets too aggre=
+ssive
+>    or too passive or just have a too long latency. To fix that, I'd propo=
+se a
+>    LFU-like design and relax the PID's aggressiveness to make it much mor=
+e
+>    proactive and effective for file folios. The idea is always use 3 bits=
+ in
+>    the page flags to count the referenced time (which would also replace
+>    PG_workingset and PG_referenced). Initial tests showed a 30% reduction=
+ of
+>    refaults, and many regressions are gone. A flow chart of how the MGLRU=
+ idea
+>    might work:
+>
+>    =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D MGLFU Tiering =3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+>    Access  3 bit    lru_gen  lru_gen |(R - PG_referenced | W - PG_working=
+set)
+>    Count   L|W|R    refs     tier    |(L - LRU_GEN_REFS)
+>    0       0|0|0    0        0       | - Readahead & Cache
+>    1       0|0|1    1        0       | - LRU_REFS_REFERENCED
+>    ----- WORKINGSET / PROMOTE --- <--+ - <move out of min_seq>
+>    2       0|1|0    2        0       | - LRU_REFS_WORKINGSET
+>    3       0|1|1    3        1       | - Frequently used
+>    4       1|0|0*   4        2       |
+>    5       1|0|1*   5        2       |
+>    6       1|1|0*   6        3       |
+>    7       1|1|1*   7        3       | - LRU_REFS_MAX
+>    ---------- PROMOTION ----------> --+ - <promote to next gen>
+>
+>    Once a folio has an access count > LRU_REFS_WORKINGSET, it never goes =
+lower
+>    than that. Folios that hit LRU_REFS_MAX will be promoted to next gen o=
+n
+>    access, and remove the force protection of folios on eviction. This pr=
+ovides
+>    a more proactive protection.
+>
+>    And this might also give other frameworks like DAMON a nicer interface=
+ to
+>    interact with MGLRU, since the referenced count can promote every foli=
+o and
+>    count accesses in a more reasonable and unified way for MGLRU now.
+>
+>    NOTE: Still changing this design according to test results, e.g. maybe
+>    we should optionally still use 4 bits, so the final solution might not
+>    be the same.
+>
+>    Another potential improvement on the regression issue is implementing =
+the
+>    refault distance as I once proposed [1], which can have a huge gain fo=
+r some
+>    workloads with heavy file folio usage. Maybe we can have both.
+>
+> 3. Metrics: The key here is about the meaning of page flags, including
+>    PG_workingset and PG_referenced. These two flags are set/cleared very
+>    differently for MGLRU compared to Active / Inactive LRU, but many othe=
+r
+>    components are still using them as metrics for Active / Inactive LRU. =
+Hence,
+>    I would propose to introduce a different mechanism to unify and replac=
+e these
+>    two flags: Using the 3 bits in the page flags field reserved for LFU-l=
+ike
+>    tracking above, to determine the folio status.
+>
+>    Then following the above LFU-like idea, and using helpers like:
+>
+>    static inline bool folio_is_referenced(const struct folio *folio)
+>    {
+>     return folio_lru_refs(folio) >=3D LRU_REFS_REFERENCED;
+>    }
+>
+>    static inline bool folio_is_workingset(const struct folio *folio)
+>    {
+>     return folio_lru_refs(folio) >=3D LRU_REFS_WORKINGSET;
+>    }
+>
+>    static inline bool folio_is_referenced_by_bit(struct folio *folio)
+>    {    /* For compatibility */
+>     return !!(READ_ONCE(*folio_flags(folio, 0)) & BIT(LRU_REFS_PGOFF));
+>    }
+>
+>    static inline void folio_mark_workingset_by_bit(struct folio *folio)
+>    {    /* For compatibility */
+>     set_mask_bits(folio_flags(folio, 0), BIT(LRU_REFS_PGOFF + 1),
+> BIT(LRU_REFS_PGOFF + 1));
+>    }
+>
+>    To tell if a folio belongs to a working set or is referenced. The defi=
+nition
+>    of workingset will be simplified as follows: a set referenced more tha=
+n twice
+>    for MGLRU, and decoupled from MGLRU's tiering.
+>
+> 4. MGLRU's swappiness is kind of useless in some situations compared to
+>    Active / Inactive LRU, since its force protects the youngest two gen, =
+so
+>    quite often we can only reclaim one type of folios. To workaround that=
+, the
+>    user usually runs force aging before reclaim. So, can we just remove t=
+he
+>    force protection of the youngest two gens?
+>
+> 5. Async aging and aging optimization are also required to make the above=
+ ideas
+>    work better.
+>
+> 6. Other issues and discussion on whether the above improvements will hel=
+p
+>    solve them or make them worse. e.g.
+>
+>    For eBPF extension, using eBPF to determine which gen a folio should b=
+e
+>    landed given the shadow and after we have more than 4 gens, might be v=
+ery
+>    helpful and enough for many workload customizations.
+>
+>    Can we just ignore the shadow for anon folios? MGLRU basically activat=
+es
+>    anon folios unconditionally, especially if we combined with the LFU li=
+ke
+>    idea above we might only want to track the 3 bit count, and get rid of
+>    the extra bit usage in the shadow. The eviction performance might be e=
+ven
+>    better, and other components like swap table [3] will have more bits t=
+o use
+>    for better performance and more features.
+>
+> The goal is:
+>
+> - Reduce MGLRU's page flag usage to be identical or less compared to Acti=
+ve /
+>   Inactive LRU.
+> - Eliminate regressions.
+> - Unify or improve the metrics.
+> - Provides more extensibility.
 
-Merging Ron=E2=80=99s reply from another thread[1]:
+There might be some overlap with this topic proposal:
+https://lore.kernel.org/all/cb0c0a0bfc7247cf85858eecf0db6eca@honor.com/
+but either way I'm interested in participating, especially on the
+topics of regressions and reclaim behavior as it's very relevant for
+Android.
 
-=E2=80=9CSomething strange is going on. I enabled CONFIG_DEBUG_VM by itself=
- and
-the issue went away. Let me try CONFIG_DEBUG_PAGE_REF.=E2=80=9D
-
-Looks like something is racy, since it is reproducible reliably.
-
-[1] https://lore.kernel.org/all/30dd1efc-9bd9-4664-999e-610d181600f9@w6rz.n=
-et/
-
-Best Regards,
-Yan, Zi
+>
+> Link: https://lwn.net/Articles/945266/ [1]
+> Link: https://github.com/ryncsn/linux/tree/improving-mglru [2]
+> Link: https://lore.kernel.org/linux-mm/20260218-swap-table-p3-v3-5-f4e34b=
+e021a7@tencent.com/
+> [3]
+>
 
