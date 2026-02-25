@@ -4,137 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 431FAFCEE8A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD68EFCEE8F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:46:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81C5A6B00A7; Wed, 25 Feb 2026 06:43:13 -0500 (EST)
+	id 268A66B00A5; Wed, 25 Feb 2026 06:46:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CACC6B00A8; Wed, 25 Feb 2026 06:43:13 -0500 (EST)
+	id 2163A6B00A6; Wed, 25 Feb 2026 06:46:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A2766B00AD; Wed, 25 Feb 2026 06:43:13 -0500 (EST)
+	id 122EB6B00A8; Wed, 25 Feb 2026 06:46:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 553C86B00A7
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:43:13 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 015E8C1FFD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:43:12 +0000 (UTC)
-X-FDA: 84482793024.11.6E86C1F
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7C06B20004
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:43:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ry5+cxk3;
-	spf=pass (imf03.hostedemail.com: domain of riteshh@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=riteshh@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F2E476B00A5
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:46:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A52C78BDDB
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:46:52 +0000 (UTC)
+X-FDA: 84482802264.03.EC29C4C
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BEF4D120006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:46:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Gx2PD43K;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772019790;
+	s=arc-20220608; t=1772020011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9c89aL6Vynh2oMQeP45uCaFbeh0Mb7xFQnDGPw1iVpU=;
-	b=CI11EYnjwMSVgToY+7Iu+eGGhEO4DBj3ILaHZnEvY1dJRU8Sdag32S+yFumMbc1999GOty
-	JDBEOgZYvc+5Xq/fOG+xH34aLsRYUwkJKb46InC3xZkC68xfiWwIX7RLWnxdS0O8M7Ezuy
-	eVuuKwLIGpVurQe82MFMib4fupIWy+I=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ry5+cxk3;
-	spf=pass (imf03.hostedemail.com: domain of riteshh@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=riteshh@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772019790; a=rsa-sha256;
+	bh=cNc9GIaPSTJl+nOh/VY47x5Qb0/LB38ox3wV8xU//DI=;
+	b=ZTdkGPXkaa2fmAlE3TisF2Fum7ScUfeMSeaDVBapepo/UFfA6rJDC6e8jVKCvKbCYCG7aZ
+	whUk4S2tBkaxhauRoqierLpt+yM3yfHczyrd85bj1YuYifdnzDNt9ZqI+Gj77CFVuK4Rlm
+	dEX+M18tR70LMjeMmwu0GxH5NSmlKJo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772020011; a=rsa-sha256;
 	cv=none;
-	b=X0WrinmNSCrAr3uJlG07kjcmQbaJ0Q18pSt15/PCqU5xEUSa7jtTc8IHXLkSmFi7/zEULt
-	CSk8DJaFXl6+1ODgQRB/wB/NZBGHejigTYtxYjMtFlZFgulDYp5WWkRmhdTA+8bYLS6AjK
-	ysgSZ4S17v4Sbh7HzmtAo/GYQyReXME=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OM9OXN2753620;
-	Wed, 25 Feb 2026 11:43:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9c89aL6Vynh2oMQeP
-	45uCaFbeh0Mb7xFQnDGPw1iVpU=; b=ry5+cxk3bBvrU3Z295lLC2941Q43qO0f5
-	DbkvE+FRz8pUVUDxYF9/eOSecnZUeF7D0ZDMKsWkXQwf+DD++LfrOR1X0H4l/jdh
-	otGgFMkYMRNjt+LLd5eQriZrNFMIxrgQ5ggc31FO5YSmu5V/RA0QNRCkXus7OFey
-	GdXXj99K2fovVKA3bM4EjcZLIQK2303xRI7xJM8vjyRDKZJniBpd9racrcGmif/2
-	/Pqw8+TFXB0wMbQ5oEeJeYYt7ngAead3rAjiB8wNkWz2LdIxbJifM45G6J0URJZy
-	HbMalq4pnmrZ+rk1YCKH7PdZQbY/W0ItI/WeXitZgiE6wNcpVL5dg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4cqyy43-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 11:43:03 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7PZAg013478;
-	Wed, 25 Feb 2026 11:43:02 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfqdy56s9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Feb 2026 11:43:02 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61PBgwJi43450696
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Feb 2026 11:42:58 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B113C20043;
-	Wed, 25 Feb 2026 11:42:58 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B4D4B20040;
-	Wed, 25 Feb 2026 11:42:55 +0000 (GMT)
-Received: from dw-tp.ibmuc.com (unknown [9.124.209.31])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Feb 2026 11:42:55 +0000 (GMT)
-From: Ritesh Harjani <riteshh@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 01/10] powerpc/pgtable-frag: Fix bad page state in pte_frag_destroy
-Date: Wed, 25 Feb 2026 17:12:45 +0530
-Message-ID: <62dfff55a7f4f465ac1f8077cee93e6e87ebddd0.1772013273.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
-References: <cover.1772013273.git.ritesh.list@gmail.com>
+	b=xHTUdTJaFmZajtyLN3mYyphwAJ8ubdc6WlJUZ0a1VjwyhM15EujGfG/zGWqugnNT2D/fcO
+	jrO/aoL1yhSj2pKiFxR9dBJ/8V14FLyRxsLYJumCzbhhy97DpBCfJ3WNOhr20K1E2j+X9W
+	BK4N+aLaJtPY6A3duinifU5HOsjyvJQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Gx2PD43K;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-4837584120eso45744745e9.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:46:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1772020009; x=1772624809; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cNc9GIaPSTJl+nOh/VY47x5Qb0/LB38ox3wV8xU//DI=;
+        b=Gx2PD43K+oavVkWokAPGs2/xLGX0rvXhfwXhUmzgjCLQtsQowozwrz9RtMzDLpC5bA
+         oX0K+ar4/O5HXv4VXzjh9Gg7mOynf8Btj7PcbUusG6xWYThfPKTYqbzi/TIfoYv0RV1L
+         eRZdYP7pRiyLmkXojnFxmhd3UQYQhDNsf0kqpGiWbK5TnAzkYJ/GK+w7DnrR0CeMXDz1
+         75mnJLKRnV5CnU3TqHeZXOpn7YXIHPD/Rik5uH7j45+m20IfwMirVVWLACFCIf0VdRFg
+         mmEgYB9CEW2i5jBcllIIWVMufZHJch++YRTZ2voAccr7Ix/I1Ce6b2Y2uzIBR4VucOnA
+         m23w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772020009; x=1772624809;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cNc9GIaPSTJl+nOh/VY47x5Qb0/LB38ox3wV8xU//DI=;
+        b=xB+9wkfgb56iA5h/Kq5ExeJggpI7PhlhqkDbS9dk16SstA/AeJgC+U3e3GLu/XW9jl
+         SbGJZ5OYPmacR5Hqt43H1QI5tDx+QRQ57UbMnsStnFNTHTWHY9eCZXC1ColTO0l9/8DS
+         /ahACTcEODbG4BXxlyfrcVfelEW56PDadNNSxJ1/Ea/sXEo2hCW8jfr8yzj10tgmYpga
+         s+o34K8lN/n9vQ6Tlekjy1y6/3bLeEf9LiI3sU6ksx4YKTGXY07+UJBFzU+rCa/iOJs7
+         r0QgvncMtBcpIhOnpFx6FqLgyhR84vjc4JCwU1EAPJ0IqqC/PUPWkrGtc6eJqjhjm/HA
+         MliA==
+X-Forwarded-Encrypted: i=1; AJvYcCVN7F/ZwPtJtIQzkNxL/wPY/bWrmQFEYbmW8p+ntJ8avDIyGznuTptXG/gkmgkTx/zhkRd+xlmFOQ==@kvack.org
+X-Gm-Message-State: AOJu0YyxLeZJupalFC1dhfXdsCSP3b/0lBn8cQDO+L5sI+dO0ix5L+VL
+	pa1f1XKdi/oYOIxElZLDpBKtQSUFtQD7Ei/dMaVEsIuqXBK+pfutRbH4VSPF5KJoufQ=
+X-Gm-Gg: ATEYQzy/rGImEkagmsIcUlRFE3QoX/4J0PEbmT+wG5d4eZmGa/jJ/2XMMbRvcxj1lJD
+	HSGkZy8SGwUtlcu/X4bQPpOEa5aeqPrdT+3oIK5chYGmdbFrL8STT4krbPTIWIYLwz5Xg6iR2HD
+	yy+sr281DVU411P8n7ZwS/uvRkfJk/CHwUE4ySlohfxmbuem3tmeytIjrVqYSB9ievnNFNJgzgf
+	qazNXS2Uk20Bs7E9NQkSONLPmXGKDOKuElqlE7rF2Y3Sdy1tvL7bjW+n9a0dGDg8yg9YDBENs1i
+	uQAPkX+kKMUn1AyDSIbJdNLDIv+4L0qiGNSv84fIXyxMskR/FQw/a2Et5Xme1Im1FI4d5LM6Y4T
+	2tt3KEx/Pk0HAAKMP+kxUA/LFFnw/eEaJSwSKPgbZ4uh25KKbtBQ2hLPl0KT3MAn7jrYNlFvc3A
+	qaYrVaYmeFWoIvpR5rMW3aiyAgfFVMLCY=
+X-Received: by 2002:a05:600c:4f93:b0:480:1b65:b741 with SMTP id 5b1f17b1804b1-483c21793d2mr1738195e9.15.1772020008975;
+        Wed, 25 Feb 2026 03:46:48 -0800 (PST)
+Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfcd0818sm10055605e9.26.2026.02.25.03.46.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 03:46:48 -0800 (PST)
+Date: Wed, 25 Feb 2026 12:46:46 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
+	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+Message-ID: <aZ7hJi2-iATBD6GL@tiehlicka>
+References: <aZykWyxLy34o7PKr@fedora>
+ <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
+ <aZzPwsBp-Z4XM58U@tiehlicka>
+ <aZ2N9a4XgxnurOhz@pc636>
+ <aZ2YDD_l5JN78DJC@tiehlicka>
+ <aZ3F2cghZpqBi1Mk@pc636>
+ <aZ3HaVuIA4Ezu1uY@tiehlicka>
+ <aZ3JB5Xm3SCmJW95@tiehlicka>
+ <aZ3MzxtMp2OykAQq@pc636>
+ <aZ6zwMQIj-3JFQZq@pc636>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: lRJVb9BDkAFUVcJLJAstUx5gTsmgr1p0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDExNCBTYWx0ZWRfXzgYw1EnrC6Qa
- mSexlTWBru7Lmci8dY6bHbgdfDpdOLlItKxXojYJZuPtsz8VHaDc5zPohASQEhW7czhZf83DUU/
- UqceQ6gU1Hvct3f48xoaPMCaU123alKN7DiYsZdCSQqU71IepY05+TgqW4eZJI5DQF6N/mjK0gb
- 7X8pWQcDNFxvLqCieWSYlO5EUnnbJNbe2xQor0WFfC3one/W+0uk34fykS1s1K6vzZ4jWlwJAI7
- gdd3CpraEdXxFJiE/nbmKjHRXcSV9bb7FPHshlDoiA0nJxP46T1xCrxK2tzjgRvlbvQ8D6nldal
- 3+LGs0n6eXKo5/upKc13c+I1KcY+V+R5ly/++pSkIbajD/fMxgfenJbEgjEhfO779e/2EFyIY4R
- Q+ktvgMQV3ASrVP9aJlr9qvoQXiM3rtjK+kzIMcUicZ3TWj8pH17JpFCqlYJYED4Db8HqPZiIST
- UJJA2rr6p8xhs9DuF4w==
-X-Proofpoint-GUID: dyNhNz11mFhZj01lY9gkExyGYPFHfo-T
-X-Authority-Analysis: v=2.4 cv=bbBmkePB c=1 sm=1 tr=0 ts=699ee048 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=pGLkceISAAAA:8
- a=kiRESG9uuu1a7uI29B8A:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 clxscore=1011 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602250114
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7C06B20004
-X-Stat-Signature: 3rom5rs4r4yctdntq147age3wbgdru53
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ6zwMQIj-3JFQZq@pc636>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: fm68dmajmb4z91fdtpp85bny7dh3whig
+X-Rspamd-Queue-Id: BEF4D120006
 X-Rspam-User: 
-X-HE-Tag: 1772019790-223413
-X-HE-Meta: U2FsdGVkX19xeGwrslYPFXXcfCA4Sf1rdHGs3pxxBgQ9nwHoSfUZR02A7jMzx7aZuTxS3QTjRjnlcJRzcPc2KHzpN+wEwY79eQ6yD3TxzCiLep9lcCFoC3luTpvzBXRGgWcu8HZuaakxzdrg4SIgJ1yX5HFSI+rplQeqcP/zluWPoq3cGIv2VdxVVvRIU9gqPbASUbYjYhpvoKqYOxVsbN/z6TqQiS0ZXlksVX36I8qfUPlrOxoS/gSE2cFIshUiyC3zh7gtYvQDJR0g+KJhOcHHE0dSPzJBNuc/jrmQku4gvQVW2aE0H572k0po9EdkP1c1ediRoTmXFTkN5P4poL83ZVm0V3qYaele4R2Dd+VNX3UtYpcGWoZbYINtohSam/TUcvNJOCXBAZBIaUJ574xupQwWGviVRe/Nvl8IaXNftsAeaqp/85bWoA9c/KeEWCAMGMYdwR6RHqQzCBDhCwvwDkd9WbmFbhPIGdjwDPQSf5h8hynMTOjplIL35XYGGlMKvvQNF4cx7nndBeNizBENyWarbUbG1+/KtyA5S+q0VHY2cqAdsMBQ6EVA5EH7tFKhKjujlM0iJTkdEccWBXICbHMBlwcSDxbSO7SBbFTroSQ22dy06gZelpTc27pQVmz7eY/5XJjvtQQp5y+8GlD2ARvM+f+kw79FViBe+yFp3a8nxkBmbp31sVrpn/D+xIZXnqohPPHnmdISHwEuOulTc1UU1CTrB2o4AfW9l7xeVsh3AwjjoS4Sv3g6h0OL+OKEFls8pL34Ui/lmIxAA5Dw2nKb+XaiUec1hOO9ulH0nZHIHtcUEdktoYJoqyHksIjrNxQ+t6kJm/vj8ZKA/QdrfJ5iIXteGPMsaf3s2S5bgTAxWjTI7F6AIP3NIsjbp3+0sIOGkwlexojeH/Hfu3uEdGhPQQQBDqkR/1qPn4vi49SQzjGHL3HVB1TmJMUpYI44DqI7MUkbdtor94M
- BUBKN0rN
- wU5uRJ6tWg6XNKtUlItR8yfzv5k/s+3NXM0n6V68FMQS3iogF12Z/TVpwQW/X3iXYLxl7N5yqO289y9Yf3ml+Og/r/M64onhSR9TLGZplNRkKz9WUnLHd+vdLza+hvxBfqBAqrjG7xut1IheEbJEDJrnePtMX93P+vaVwr0BOPcY3mvjLlyg1DYm5EXkZ3BWN0fykbv+X5Jcz9DR5ztH2yt3QkT1yOF7g/OWarlXawXj9wzjI7D30/HsAXU7SJ6NPe18xtSzcN+J/tPi+hI4KYUwwTyWGdIlkEEg19I7yupkN8rUHvNspt6s5zSl8VtBpVDTk
+X-HE-Tag: 1772020010-402774
+X-HE-Meta: U2FsdGVkX1+Xc1Ot1mOhuUIILE2ix/mVEefjbNr164hTX8S47TFnOHUnWWXAykbTPDxpurTfgLKF+mCNu50ruQh9c4gvKzG847uVt7vGabOVYBuYLsI7FbGy6uFfWOuej8rOPzKAeq/Cd1pqsebqZnOn9/Fq6iEl71dAFxcDi+2J+0zlvxgwhbpPsk7GSKCUgPdfvxvWJjEh2uPQWavOxL732dTy0L7rSrslCGzZg1vBv+6m7vXfUuylq9v9jM6bc8pm3Rd0/f915CAe20R7YIJaiON72NRNmFvTd6KnnP1ZM9JCLYTGc26Ur6iss/GhehB8Tat9PRw3SUdTzXb5zdFda9HtN/g43J0Zf3pLfb8teiAkvqFsqDEPWtQKpWAMapmQ87yukw0hw6r6CqH1Q+uPuGBgyEgcBoYeEXW1Rg78uvJhO/r0SzAqqWbHazXJYTgizN+oOvL9FzrwSmTppihPX7WjCF5DlDZFVwczXkweXB4eSHwMcoJAalpWZSfyaRBV1Qt7/tFCLfEI2a1cijUSOJ9Ys6MsrLG11VTf8WyjFi9haoOerABEG8I6VsQSZrGeR/TNEx1L8JdHuIgtODtFkdfCbRB6B+XlT6f4ROPf0NQCqQ5xYy/ZnHx0CJzM0kvjqgQf5EhC492ApFg9rW+11WBosoKj2BNaBRDYcEh5JLtxNMpJpML+tdzJsYE0/cQGV4Sz1sx3viUo64nsjCztwPrEU/P+pyYZKjCtz0dM99IEOKLjyYRoymy3RoDhpzruOBqXDfjpU2XWGlwtykFYMjw6hjxW38ixTgYYyJfNRilhpGn+c5+ZNe6+X5rFfXqd7j41MWkto9KC/AC+vhz/wLgopx56cGjxUCVph07IlmzvFzb02eBWk/2dMipSaCEywh2vW+t4ygzI919QieEch3kYaT9iMrffuNBYTAbwd3uuryDlKSa/ktobog35r+d7sIzNcFCJnpA2LWH
+ 9ADlQI0P
+ PEj4WpOJ93/NqfTZzK3PmrYYy/GdPNqFAF4n92hKvOHZO9tkOm90bEPe0cTvGo0wDVpG+4HEZr7tAVVr10MX6vcuUvg2hI6qDixjhLChOpnEhFkgovLqd4Qc6RN84rkaxISO/ona0n/BLUi5yTLAjJPSOjSUoJD/nTxAYiaC8LuVRZoXkPoktebG0CSj5ssu9RISWsHsRLzEW/iBfPoRK2nRmof4qSU9Q5ZIQxgp6JXUjCsprpS9iFIlFI2jgaVOxTqF7ld0ntJ6z9X4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,81 +130,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Feel free to use this patch. But please note that I do not have any user
+so I couldn't test it. So make sure this is tested before posted for
+official inclusion.
 
-powerpc uses pt_frag_refcount as a reference counter for tracking it's
-pte and pmd page table fragments. For PTE table, in case of Hash with
-64K pagesize, we have 16 fragments of 4K size in one 64K page.
+--- 
+From ee94ade23655dac7e239c1dfd2b04c0db3d10298 Mon Sep 17 00:00:00 2001
+From: Michal Hocko <mhocko@suse.com>
+Date: Wed, 25 Feb 2026 12:38:28 +0100
+Subject: [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
 
-Patch series [1] "mm: free retracted page table by RCU"
-added pte_free_defer() to defer the freeing of PTE tables when
-retract_page_tables() is called for madvise MADV_COLLAPSE on shmem
-range.
-[1]: https://lore.kernel.org/all/7cd843a9-aa80-14f-5eb2-33427363c20@google.com/
+__GFP_RETRY_MAYFAIL and __GFP_NORETRY haven't been supported so far
+because their semantic (i.e. to not trigger OOM killer) is not possible
+with the existing vmalloc page table allocation which is allowing for
+the OOM killer.
 
-pte_free_defer() sets the active flag on the corresponding fragment's
-folio & calls pte_fragment_free(), which reduces the pt_frag_refcount.
-When pt_frag_refcount reaches 0 (no active fragment using the folio), it
-checks if the folio active flag is set, if set, it calls call_rcu to
-free the folio, it the active flag is unset then it calls pte_free_now().
+There are usecases for these modifiers when a large allocation request
+should rather fail than trigger OOM killer which wouldn't be able to
+handle the situation anyway [1].
 
-Now, this can lead to following problem in a corner case...
+While we cannot change existing page table allocation code easily we can
+piggy back on scoped NOWAIT allocation for them that we already have in
+place. The rationale is that the bulk of the consumed memory is sitting
+in pages backing the vmalloc allocation. Page tables are only
+participating a tiny fraction. Moreover page tables for virtually allocated
+areas are never reclaimed so the longer the system runs to less likely
+they are. So it makes sense to allow an approximation of __GFP_RETRY_MAYFAIL
+and __GFP_NORETRY even if the page table allocation part is much weaker.
+This doesn't break the failure mode while it allows for the no OOM
+semantic.
 
-[  265.351553][  T183] BUG: Bad page state in process a.out  pfn:20d62
-[  265.353555][  T183] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x20d62
-[  265.355457][  T183] flags: 0x3ffff800000100(active|node=0|zone=0|lastcpupid=0x7ffff)
-[  265.358719][  T183] raw: 003ffff800000100 0000000000000000 5deadbeef0000122 0000000000000000
-[  265.360177][  T183] raw: 0000000000000000 c0000000119caf58 00000000ffffffff 0000000000000000
-[  265.361438][  T183] page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-[  265.362572][  T183] Modules linked in:
-[  265.364622][  T183] CPU: 0 UID: 0 PID: 183 Comm: a.out Not tainted 6.18.0-rc3-00141-g1ddeaaace7ff-dirty #53 VOLUNTARY
-[  265.364785][  T183] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
-[  265.364908][  T183] Call Trace:
-[  265.364955][  T183] [c000000011e6f7c0] [c000000001cfaa18] dump_stack_lvl+0x130/0x148 (unreliable)
-[  265.365202][  T183] [c000000011e6f7f0] [c000000000794758] bad_page+0xb4/0x1c8
-[  265.365384][  T183] [c000000011e6f890] [c00000000079c020] __free_frozen_pages+0x838/0xd08
-[  265.365554][  T183] [c000000011e6f980] [c0000000000a70ac] pte_frag_destroy+0x298/0x310
-[  265.365729][  T183] [c000000011e6fa30] [c0000000000aa764] arch_exit_mmap+0x34/0x218
-[  265.365912][  T183] [c000000011e6fa80] [c000000000751698] exit_mmap+0xb8/0x820
-[  265.366080][  T183] [c000000011e6fc30] [c0000000001b1258] __mmput+0x98/0x300
-[  265.366244][  T183] [c000000011e6fc80] [c0000000001c81f8] do_exit+0x470/0x1508
-[  265.366421][  T183] [c000000011e6fd70] [c0000000001c95e4] do_group_exit+0x88/0x148
-[  265.366602][  T183] [c000000011e6fdc0] [c0000000001c96ec] pid_child_should_wake+0x0/0x178
-[  265.366780][  T183] [c000000011e6fdf0] [c00000000003a270] system_call_exception+0x1b0/0x4e0
-[  265.366958][  T183] [c000000011e6fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+[1] https://lore.kernel.org/all/32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com/T/#u
 
-The bad page state error occurs when such a folio gets freed (with
-active flag set), from do_exit() path in parallel.
-
-... this can happen when the pte fragment was allocated from this folio,
-but when all the fragments get freed, the pte_frag_refcount still had some
-unused fragments. Now, if this process exits, with such folio as it's cached
-pte_frag in mm->context, then during pte_frag_destroy(), we simply call
-pagetable_dtor() and pagetable_free(), meaning it doesn't clear the
-active flag. This, can lead to the above bug. Since we are anyway in
-do_exit() path, then if the refcount is 0, then I guess it should be
-ok to simply clear the folio active flag before calling pagetable_dtor()
-& pagetable_free().
-
-Fixes: 32cc0b7c9d50 ("powerpc: add pte_free_defer() for pgtables sharing page")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Michal Hocko <mhocko@suse.com>
 ---
- arch/powerpc/mm/pgtable-frag.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/vmalloc.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-index 77e55eac16e4..ae742564a3d5 100644
---- a/arch/powerpc/mm/pgtable-frag.c
-+++ b/arch/powerpc/mm/pgtable-frag.c
-@@ -25,6 +25,7 @@ void pte_frag_destroy(void *pte_frag)
- 	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
- 	/* We allow PTE_FRAG_NR fragments from a PTE page */
- 	if (atomic_sub_and_test(PTE_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
-+		folio_clear_active(ptdesc_folio(ptdesc));
- 		pagetable_dtor(ptdesc);
- 		pagetable_free(ptdesc);
- 	}
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 61caa55a4402..86b912d38bd3 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3798,6 +3798,8 @@ static void defer_vm_area_cleanup(struct vm_struct *area)
+  * non-blocking (no __GFP_DIRECT_RECLAIM) - memalloc_noreclaim_save()
+  * GFP_NOFS - memalloc_nofs_save()
+  * GFP_NOIO - memalloc_noio_save()
++ * __GFP_RETRY_MAYFAIL, __GFP_NORETRY - memalloc_noreclaim_save() to prevent
++ * OOMs
+  *
+  * Returns a flag cookie to pair with restore.
+  */
+@@ -3806,7 +3808,7 @@ memalloc_apply_gfp_scope(gfp_t gfp_mask)
+ {
+ 	unsigned int flags = 0;
+ 
+-	if (!gfpflags_allow_blocking(gfp_mask))
++	if (!gfpflags_allow_blocking(gfp_mask) || (gfp_mask & (__GFP_RETRY_MAYFAIL|__GFP_NORETRY)))
+ 		flags = memalloc_noreclaim_save();
+ 	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+ 		flags = memalloc_nofs_save();
+@@ -3940,7 +3942,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+  * GFP_KERNEL_ACCOUNT. Xfs uses __GFP_NOLOCKDEP.
+  */
+ #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+-				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
++				__GFP_NOFAIL |  __GFP_ZERO | |\
++				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
+ 				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+ 				GFP_USER | __GFP_NOLOCKDEP)
+ 
+@@ -3971,12 +3974,15 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+  * virtual range with protection @prot.
+  *
+  * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
+- * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
++ * %__GFP_RETRY_MAYFAIL, %__GFP_NORETRY, %GFP_NOFS and %GFP_NOIO.
++ * Zone modifiers are not supported.
+  * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
+  * by __vmalloc().
+  *
+- * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
+- * and %__GFP_RETRY_MAYFAIL are not supported.
++ * Retry modifiers: only %__GFP_NOFAIL is fully supported;
++ * %__GFP_NORETRY and %__GFP_RETRY_MAYFAIL are supported with limitation,
++ * i.e. page tables are allocated with NOWAIT semantic so they might fail
++ * under moderate memory pressure.
+  *
+  * %__GFP_NOWARN can be used to suppress failure messages.
+  *
 -- 
 2.53.0
 
+-- 
+Michal Hocko
+SUSE Labs
 
