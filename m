@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F2A3FD374E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:22:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF924FD375D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:32:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E2E86B0005; Wed, 25 Feb 2026 08:22:55 -0500 (EST)
+	id 20EF46B0005; Wed, 25 Feb 2026 08:32:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 966A46B0088; Wed, 25 Feb 2026 08:22:55 -0500 (EST)
+	id 1BCE76B0088; Wed, 25 Feb 2026 08:32:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8721F6B008A; Wed, 25 Feb 2026 08:22:55 -0500 (EST)
+	id 0BFC56B008A; Wed, 25 Feb 2026 08:32:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7253A6B0005
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:22:55 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E9BE113B35D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:22:54 +0000 (UTC)
-X-FDA: 84483044268.01.172A8E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E6E14A0011
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:22:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAOi4prY;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E926C6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:32:06 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 912401405C9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:32:06 +0000 (UTC)
+X-FDA: 84483067452.28.CF72690
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 243EDC0007
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:32:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p4sgVw56;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772025773;
+	s=arc-20220608; t=1772026325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KQVIfOU0aomW1O6CTNFUv1H8TudXDduXYh1xZsuypsQ=;
-	b=AlyldM5YrtoaUDXO+Prdw88LLvt9eTGge/KdLMwtk25ehGC8DCGqXiLWYqa9mEdHHqRGwB
-	T/KjcP/Z4Um/PTfETGjd03ss5xbuHYIa/7aYUa/7mv/RC2RCwJ/VW+PQqex6ZpwbpBf8bv
-	lgcQSUcfcxXWGbf+Mgh8VUJrOzUF+WI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772025773; a=rsa-sha256;
-	cv=none;
-	b=ecAqOH8l46MH6I3jGTuqtgGgFSu3bYBfZChgBqewahDeWrQ17j9BmlrNDwjtBz7dfV98Hv
-	zUAr4gcNjYihaZWueDZ8FlXc/h2sY7bVHnBUCHbDRAh3/D/Dnry+Jk6ocOb47zHKNIyW8x
-	3+IAGWdvehmx3+xgJ9dTSI1xRgxreas=
+	bh=efkMVajN2N/IRF7C076bX4bMjtWcB2gLayz3FuAnYog=;
+	b=cu0Iz+kPJNNx0fHFaGNuzNjZ/ZvNHaIvqQQPPFc8IZdG6ta0U5CxIJnnSAAi+gHU75nJZb
+	T9ByTmuMIB9PZA/v2NiB0uwxWIcVOFQWLEXNuXu2kNwnLa/HTB4kBWaBojstrsy+mZMCrP
+	PnADsGhb9k7CEKmLBzGvW6BNY+2s9I4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oAOi4prY;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E66514444E;
-	Wed, 25 Feb 2026 13:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A45BC116D0;
-	Wed, 25 Feb 2026 13:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772025771;
-	bh=RZBsUf0X02o3bPMs3VTOdahnvXKTjjrWfCtDKcZKalg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oAOi4prYTzY0Ql6MaV7exYfYmjbmobHpo3I+e4JwPKf3lrttu5b/es42Zie+xxfu6
-	 1ekF39MXArTWtm2iyfk7U3LDuMSW2tO7qEWKnYHOCxH/ta1+faUl/V0ZjKZoKuQiTm
-	 ThHyTyi6XE/wwfBlbtPQDv4Z7E1SoN0RHtq2B9hecciys5ZNxY293Q9NqCCzy/MAum
-	 ZWaGTVbna6IlKmzcLYm+GmMPWLd+Z3njTvZHQA034x5skL5xhLFZsINLcICHvGKoFv
-	 IDuP8WPhSRCp6xjb0tX41+BFoo8ehpYamIqejHkM4waigd/6geL3Ssucrzc9iheSab
-	 xF7kEIr4W60ZA==
-Message-ID: <f68663b4-3ff9-43dc-8a61-c2a36c8f4d14@kernel.org>
-Date: Wed, 25 Feb 2026 14:22:48 +0100
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p4sgVw56;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772026325; a=rsa-sha256;
+	cv=none;
+	b=dx8jK89CRDucU5DqtA0fupfnUMfHJQOCrFX2iPKDHLyWkwoocszKg6wu3tWa91k1TTniah
+	wChTXPpxN9c5zTn/xhFnRBHPBRiSyrmRNsBwr/CmU+OY2xI1ubDb8mdZJ7ewf4DvQCmkJE
+	naVdEd084p+swBsFB7R/7lT8h0Y9PzM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=efkMVajN2N/IRF7C076bX4bMjtWcB2gLayz3FuAnYog=; b=p4sgVw56jKhFiBT0NU54IU0xN9
+	l8s6oNEoxRsjPSG42mZKlNVuypYcJM4WSP5AB5swbLjl5vPtGYV5aUvSv+l3K4BsqBkt2qhAkOTBT
+	I59DDp8pNjJd1hF2J8in0hds/h5u/8In66y0h7+K+aM/ITPX57hp3zKdma20COg0Lg1z8L98f9ENv
+	IxWRczBkvII7uM/8NXbikDLlStecRsMyUAjoClg3GC5JQoJz2JxoheOqKUN02JT8H7fHTdtczMELB
+	iqGSyEtAai8OaBVo+6khCUWuQh3Z4TvpJhiVLI0WulwVCcVU+Bzf/keaVfKOjlUZwr3qSdH+chUgW
+	UUrTAljQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvEza-0000000172N-0p6Q;
+	Wed, 25 Feb 2026 13:31:54 +0000
+Date: Wed, 25 Feb 2026 13:31:53 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ankur.a.arora@oracle.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Avoid calling folio_page() with an out-of-bounds
+ index
+Message-ID: <aZ75ydx-FKaFvygT@casper.infradead.org>
+References: <20260225092628.11687-1-lizhe.67@bytedance.com>
+ <cc08424a-22d9-422c-90dd-54893bda1213@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Content-Language: en-US
-To: Ming Lei <ming.lei@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
- Christoph Hellwig <hch@infradead.org>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
- <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org> <aZ7BbosIr2FvZFAe@fedora>
- <f3a26a8a-a3db-4133-83c0-7a70faacee9c@kernel.org> <aZ7p9uF8H8u6RxrK@fedora>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <aZ7p9uF8H8u6RxrK@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E6E14A0011
-X-Stat-Signature: 1h1qw1q1wbqbe69oi5ap4ey5yqdzhmsq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc08424a-22d9-422c-90dd-54893bda1213@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772025772-105310
-X-HE-Meta: U2FsdGVkX1/if9RMMB5Xpb6NOAVslhIyEFl2QPMpkUjgdH0ESuc1RaZMdsX1p19pd/cuJZL2dJe/aIzI5ZtyJnoaE6vOGNC8h+TkBqKsudjSOJ1DWfJ6erQHb0lqrh5wacMVookmecnKGVGH4ZEVQqtueeKbrKjA5BaVm+FAgLOX/29/TtDvJq+QrcYX5MglfeYtOqy6QLxeHHzEusMh4hnIa04Hy05yLTthrlsUkVxl0KsdXnEeQjtqKzgakK7A9ospQqJWI9JlZFlcDjWl3vhFebYTcdoEyDlw84sT6h1QLzj34ALv3NwYxcOLFzbC+/KtDKalhqOSeMrFYRyUGyjYmDz/Lf8c4wokNuJ9duaebhraKxqaO19ZjIDUiv24gdxsXK5BDMp6hHyRwySCETYreYA27DorHh413ibyoLMgJMDLJqVMxFJPyAQ67wPR2G7gRBKpKjvApjGtP1xnL/T349oZQ7rf8EIjSsauYd4h+N6HMGbB7tvnFkHKx+4LftO7iZTnnxdQx8dPc9w2IVhXwetOTHt05bvtsIKlkwVL1LiLVZAK272j7TrrHqMglWoKTWtJFUfkbda4uli4btcMK7KKfjm6Bn17AgnTP7PMePpViSZy7CEsjidcUSft3MczkehUB7G/28muM5fuv2JOp3EMUJFmqjYkqeXuijQs+XzFraSxMqjQJgQ2pQ+2o0ojXIAW1TfZIvajy7CFA+QExQj5JDloPtOZFYMfDuTBfiwPaGSUa+bYjyUxCaQaun5nQbNxZG6ZUr5OUb1R/uc8XpNP3gMvVrZefTbiGmOP3MmDEUpuyCg9LJ6EiW0ElWJbNhjNUdsDVFpfx+66FAb9i1hxJPaKSJjUmgEofwvhAYZ41YTlIRrQI4UMii+baxWQMQjaPW1pRdmLTVqgWiQLrHzyGlVJcW+yi+c+cQSWPeyivo91GkcvdCmO9F0E81Ouf3rJPdy91C/oHCg
- FFovgF0Z
- TqKO+tpT9yb1f6LXb4VLIrgPTANsjL0wCJjc4s/Iutb1gqk7d9XJhpiwW1AI4phuLHJ5wub3qnQ3/b2/wPVR6TLuCxq2n4Pw+UXI72YKOcG03Jkk4dOuqNi33HVy5jXrb3Z69qzvS0+czSrVGLvr0NsGRa/Ey7mX1xs5IX7w1nfoc84T52MBhZdqiqpF1T4ZxFFN5fbUWQrdyezJhnvpJWTz/3Au2AUiZGCWW
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 243EDC0007
+X-Stat-Signature: 8trkew5eh14zwep6a75sdzn1nxttoqux
+X-HE-Tag: 1772026323-190472
+X-HE-Meta: U2FsdGVkX1/uWtAFXluEVUog79HGOw187sy83+nuun9S/gV01Umf6nrgygHmv6NMaJrNfcXHdXq+4nEtNDqFlriYXh9A75ZkHQ1mXKfkikvzkdmZLcVZ+GSmnDySPnuvlRIZOIdqbDtr1smRpfjKf8jAw9uGWCG19oMs+MuX+y9wgnXhiYYafOn6jnB+6HKjpcUV70iGPb3y02Ub5k3Kw9/seH3QCSOmETNE6leFFiX08lQXTN4dbdG0kJ3AXQj6evtsB10nvOrkJFDbIhgKV747yAT+u1yCvvGLi+BWRPmD1hYLRhZhfsMnSzmDlPVyeIH1HagTcEMQhl+jsrOBkPFywXlOL85L53651Z3MJ82Bd1seTpHsGhMOW0TZ67BST9K8UCRbjlm8HZ2P2hd/8/JKCbS6kpN9jTpPwJVfs3kl3S/SgInlHZ+QdTXuTpAJ3ajGJ0YauXuXpRir+ujvHorAAh+Ct3Hy8ETANg2zfGxJmbQTFoqlh8yMBv4fRfCG9AqFjdqrJLXtU0PyomlpDyxY1Cfwjl2FDelWThLyXS+OMEA/KurDYUvLxO23cZR8maCkr0oNBrDicku+bUbKhYyS5MVHuLNqaUiFiv3woChuA5K8Fx8kbvBnBI3U2+9+fnw3hz9+yaSEm2pySYBgLSz4NOCl24tIvwTg3t0sPm6bVDNsOSmHw7enRIdCX+Sv69PjUm/S+em+WO4gi/vl8+qi3VjOIIHcIxj2EMelBJ3EMP2lph8/+D/LNanUuQIxtL2SkXpUxVIAoXM/13wtd+WkI+NgWsWLh7/TKOp08h9OHR9ox+gEnXtUaaVdcsYd8awNuF6nYriCUOY6MvxZP9nqPB2x/Kauyi8Y8uhiIttjl90zsHIALThHKzyTmq19AfHBQkt/M92pjM99k6gUwDJfa8Ch6onx39/hOGOL9fFXyHzn4CPdmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,92 +91,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 13:24, Ming Lei wrote:
-> On Wed, Feb 25, 2026 at 12:29:26PM +0100, Vlastimil Babka (SUSE) wrote:
->> On 2/25/26 10:31, Ming Lei wrote:
->> > Hi Vlastimil,
->> > 
->> > On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUSE) wrote:
->> >> On 2/24/26 21:27, Vlastimil Babka wrote:
->> >> > 
->> >> > It made sense to me not to refill sheaves when we can't reclaim, but I
->> >> > didn't anticipate this interaction with mempools. We could change them
->> >> > but there might be others using a similar pattern. Maybe it would be for
->> >> > the best to just drop that heuristic from __pcs_replace_empty_main()
->> >> > (but carefully as some deadlock avoidance depends on it, we might need
->> >> > to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
->> >> > tomorrow to test this theory, unless someone beats me to it (feel free to).
->> >> Could you try this then, please? Thanks!
->> > 
->> > Thanks for working on this issue!
->> > 
->> > Unfortunately the patch doesn't make a difference on IOPS in the perf test,
->> > follows the collected perf profile on linus tree(basically 7.0-rc1 with your patch):
->> 
->> Hm that's weird, still the slowpath is prominent in your profile.
->> 
->> I followed your reproducer instructions, although only with a small
->> virtme-ng based setup. What's the output of "numactl -H" on yours, btw?
+On Wed, Feb 25, 2026 at 03:35:32PM +0530, Dev Jain wrote:
+> On 25/02/26 2:56 pm, Li Zhe wrote:
+> > In folio_zero_user(), the page pointer is calculated via folio_page()
+> > before checking if the number of pages to be cleared is greater than zero.
+> > Furthermore, folio_page() does not verify that the page number lies
+> > within folio.
+> > 
+> > When 'addr_hint' is near the end of a large folio, the range 'r[0]'
+> > represents an empty interval. In this scenario, 'nr_pages' will be
+> > calculated as 0 and 'r[0].start' can be an index that is out-of-bounds
+> > for folio_page(). The code unconditionally calls folio_page() on a wrong
+> > index, even though the subsequent clearing logic is correctly skipped.
+> > 
+> > While this does not cause a functional bug today, calculating a page
+> > pointer for an out-of-bounds index is logically unsound and fragile. It
+> > could pose a risk for future refactoring or trigger warnings from static
+> > analysis tools.
+> > 
+> > To fix this, move the call to folio_page() inside the 'if (nr_pages > 0)'
+> > block. This ensures that the page pointer is only calculated when it is
+> > actually needed for a valid, non-empty range of pages, thus making the code
+> > more robust and logically correct.
+> > 
+> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> > ---
 > 
-> available: 8 nodes (0-7)
-> node 0 cpus: 0 1 2 3 32 33 34 35
-> node 0 size: 0 MB
-> node 0 free: 0 MB
-> node 1 cpus: 4 5 6 7 36 37 38 39
-> node 1 size: 31906 MB
-> node 1 free: 30572 MB
-> node 2 cpus: 8 9 10 11 40 41 42 43
-> node 2 size: 0 MB
-> node 2 free: 0 MB
-> node 3 cpus: 12 13 14 15 44 45 46 47
-> node 3 size: 0 MB
-> node 3 free: 0 MB
-> node 4 cpus: 16 17 18 19 48 49 50 51
-> node 4 size: 0 MB
-> node 4 free: 0 MB
-> node 5 cpus: 20 21 22 23 52 53 54 55
-> node 5 size: 32135 MB
-> node 5 free: 31086 MB
-> node 6 cpus: 24 25 26 27 56 57 58 59
-> node 6 size: 0 MB
-> node 6 free: 0 MB
-> node 7 cpus: 28 29 30 31 60 61 62 63
-> node 7 size: 0 MB
-> node 7 free: 0 MB
-> node distances:
-> node     0    1    2    3    4    5    6    7 
->    0:   10   12   12   12   32   32   32   32 
->    1:   12   10   12   12   32   32   32   32 
->    2:   12   12   10   12   32   32   32   32 
->    3:   12   12   12   10   32   32   32   32 
->    4:   32   32   32   32   10   12   12   12 
->    5:   32   32   32   32   12   10   12   12 
->    6:   32   32   32   32   12   12   10   12 
->    7:   32   32   32   32   12   12   12   10 
+> Not only the correctness, but even from a perf PoV (folio_zero_user is a
+> hot path) it may make sense to initialize the variable only when required.
 
-Oh right, memory-less nodes, of course. Always so much fun.
+But now calculating 'addr' and 'page' is dependent on calculating
+nr_pages instead of being an independent calculation.  I'd be *VERY*
+wary of saying this is a performance win without actually measuring it.
+CPUs are far more complex than you seem to realise (which is ironic,
+given your employer).
 
->> 
->> Anyway what I saw is my patch raised the IOPS substantially, and with
->> CONFIG_SLUB_STATS=y enabled I could see that
->> /sys/kernel/slab/bio-248/alloc_slowpath had substantial values before the
->> patch and zero afterwards.
->> 
->> Maybe if you could also enable CONFIG_SLUB_STATS=y and see in which cache(s)
->> there's significant alloc_slowpath even after the patch, it could help.
-> 
-> Patched:
-> 
-> /sys/kernel/slab/bio-264
-> ./alloc_slowpath:83555260 C0=33 C1=6717992 C2=9 C3=6611030 C8=128 C9=6802316 C11=6934363 C13=6721479 C14=66 C15=6694472 C16=96 C17=7286868 C18=128 C19=7369091 C24=128 C25=7288673 C26=51 C27=6800502 C28=129 C29=7095073 C31=7232628 C43=4 C56=1
+Now, maybe the compiler is smart enough to realise there isn't a real
+dependency and it can hoist the calculation out of the 'if'.  But then
+what have we achieved with this patch?
 
-Yean, no slowpath allocations from cpus that are *not* on a memoryless node.
-Thanks, that will help to focus what to look at.
+Honestly, I think this patch is worthless and would not include it.
 
 > 
-> Also config.tar.gz is attached.
 > 
-> Thanks, 
-> Ming
-
+> >  mm/memory.c | 8 +++++---
+> >  1 file changed, 5 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 07778814b4a8..6f8c55d604b5 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -7343,12 +7343,14 @@ void folio_zero_user(struct folio *folio, unsigned long addr_hint)
+> >  	r[0] = DEFINE_RANGE(r[2].end + 1, pg.end);
+> >  
+> >  	for (i = 0; i < ARRAY_SIZE(r); i++) {
+> > -		const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
+> >  		const long nr_pages = (long)range_len(&r[i]);
+> > -		struct page *page = folio_page(folio, r[i].start);
+> >  
+> > -		if (nr_pages > 0)
+> > +		if (nr_pages > 0) {
+> > +			const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
+> > +			struct page *page = folio_page(folio, r[i].start);
+> > +
+> >  			clear_contig_highpages(page, addr, nr_pages);
+> > +		}
+> >  	}
+> >  }
+> >  
+> 
+> 
 
