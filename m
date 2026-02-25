@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F844FD375D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:33:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C83C8FD3758
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:34:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90AAF6B0096; Wed, 25 Feb 2026 08:33:23 -0500 (EST)
+	id 336936B009D; Wed, 25 Feb 2026 08:34:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DE876B0098; Wed, 25 Feb 2026 08:33:23 -0500 (EST)
+	id 2F78B6B009E; Wed, 25 Feb 2026 08:34:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB366B0099; Wed, 25 Feb 2026 08:33:23 -0500 (EST)
+	id 1ED376B009F; Wed, 25 Feb 2026 08:34:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C84C6B0096
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:33:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 094816B009D
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:34:29 -0500 (EST)
 Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33E2F5948C
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:33:23 +0000 (UTC)
-X-FDA: 84483070686.03.49BED7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 70F0EC0007
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:33:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qJCkpZ0c;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C4B6C1A05E8
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:34:28 +0000 (UTC)
+X-FDA: 84483073416.03.B7F5CBF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F066D1A000B
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:34:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M2raHCHF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772026467; a=rsa-sha256;
+	cv=none;
+	b=7IEwdNkCUuUBs0ngRkzjT5wABqISI5aAMHecIe4PZ0q0/6gnX0xjtH8nEQKHRxReKK+djx
+	VtIGW+mjvSwajdXoxHVT9vyOLeOSxxbQjKZHLeip9VUyTGbECxoetrp0JvOwFu9i7Doxe7
+	lcJ9UNMtx/SSuHkKIfLK/zHxpQM8paU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M2raHCHF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772026401;
+	s=arc-20220608; t=1772026467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r/BIt0AkrHzZfy8VWEHWcN0h4Kur1kjxpemvkiH5QGE=;
-	b=C6hOI0N3Q5q6m16SvfZkMTsChMUzzq5rK2cOIuIPwkRt8aqsH3bQBhdoOUP8JW/LZ+CcZ2
-	CJEMyvVXl3gD1UY5qTTknZk3L22vC1DWAr2SkgeobYxtUMHHI5CrPSUIOaLZ+tpK6Ody5F
-	EEmevO/tYSheNgPlwjpkiA7KdDP39Oo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qJCkpZ0c;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772026401; a=rsa-sha256;
-	cv=none;
-	b=V9/e6ttzNVM+arUBHMI+OaSTz+GR2xqVnBWtu79rZkWddkAxW697zyQkP50H8H33X5omNw
-	5hSn2PZwO+LdYSJL/MaZntWPXatQ0daRQ8Sv7TeMBdzE5qff8mvuaf9TtmC7yyoWWmhiFm
-	Fc4e8QRsGXzVl5svzqxeRil0wTsh8OI=
+	bh=9RsTWDf14QtNv3DKRjlmmqkSfCmRVGn4apdp3Oe3I5A=;
+	b=vGt88zdBBBGzKFuUGsjysKqyAyEWokIUCCyVoLVmPTkgSebWLTwOWlR8NhoyOb+eDrvNEo
+	knbYSUiwizQExktejoa9iBL59kMIXuauydaPJ/mCzHXQ561WKVX07YqPEI2fc8TtGQUGLZ
+	DSleUfmw7wpQn+jq6QHAhkMPuNuh6lI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D67CD60054;
-	Wed, 25 Feb 2026 13:33:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58BEC19421;
-	Wed, 25 Feb 2026 13:33:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DD242409BE;
+	Wed, 25 Feb 2026 13:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA12C116D0;
+	Wed, 25 Feb 2026 13:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772026400;
-	bh=ZKEw1M2s7XFotvUcCDiETx2C3JnnIOtIpjsC1zCO9VI=;
+	s=k20201202; t=1772026465;
+	bh=I4BmllZon4wXTUwY4iaEDQa03sd3XDaHKo3rrTsYu58=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qJCkpZ0cc47LpObHi0ME+D+ssjzGR+srEweXb4I3/4hNUqYO3ivvqSYoLaTgWlu4Q
-	 SOOTLCCloxOVhAf3rKNOpaEZSDPQMp15xzjtNYjyA86ykO7vouTKUw04YJ80+rz7V/
-	 l0HYvmOpo1MCbQ9OpjnJ72iDP9+bvb6gcEQffzWvf2yLTEddhtC9VYnvvamRSAbbZR
-	 qcMFiI2SVb116plOcQo8ASLYucYpI6HsAabTgocn/PGVKVMmLuhxnrOavEEXvgkrs5
-	 l0zss6Li/KWG610eDCmUBAhLUe23uhKcKHt9pXIvA/54i0h0oAbFkB45RCMM8YUxqe
-	 mtBBUPx8BQeYQ==
-Message-ID: <5200f32b-6212-4ba0-ad6d-f8b30ae455e6@kernel.org>
-Date: Wed, 25 Feb 2026 14:33:14 +0100
+	b=M2raHCHFjbQuoKN+1JJ1ithXRJ/YlzK5Ob/8MKCToeVRYCT8YDXNPeJ8k2WgICu03
+	 ufOVHoUR3FIRjOIWBF23a1EvEvFuORCt3Una+Mv+xUf0677TKWEmhmiHcGp+ElYZyO
+	 xhessAvmAdb0RpW5u1m0cx9TKai5n7wDD0eUuoJwA2oCWdrQKTty1voqTXmUTf6rus
+	 UXX9Xuoxu3WAYvzPK+Dl4vRDykQBY07Yn83bTzUEAOUHb5kGuqwKKulSAzmZJi1ypa
+	 JUVvUUAz4mFtlHAgVyK9mkufEorz/9T0+UsBATDLdiz2GCFK9he3uaGkEXkf0gjV8H
+	 SLUaGvJQT+tsw==
+Message-ID: <01f4a679-bc4d-484b-a019-0e07fe520363@kernel.org>
+Date: Wed, 25 Feb 2026 14:33:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] riscv: shstk: Use the new common
- vm_mmap_shadow_stack() helper
+Subject: Re: [PATCH 4/5] x86: shstk: Use the new common vm_mmap_shadow_stack()
+ helper
 To: Catalin Marinas <catalin.marinas@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Mark Brown <broonie@kernel.org>,
  Deepak Gupta <debug@rivosinc.com>,
@@ -82,7 +82,7 @@ Cc: Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-riscv@lists.infradead.org, linux-mm@kvack.org
 References: <20260224175800.2500729-1-catalin.marinas@arm.com>
- <20260224175800.2500729-4-catalin.marinas@arm.com>
+ <20260224175800.2500729-5-catalin.marinas@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260224175800.2500729-4-catalin.marinas@arm.com>
+In-Reply-To: <20260224175800.2500729-5-catalin.marinas@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qbcwagwngmmir6sje5dr7he59z6bhuqh
-X-Rspamd-Server: rspam11
+X-Stat-Signature: 3u3rh68gcegakdjbbuk9w8k3q5a6hm7y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70F0EC0007
-X-HE-Tag: 1772026401-100294
-X-HE-Meta: U2FsdGVkX18C0XCtvtWWZvARMlJA+AuCgC4xqoQx0fv/D602jsAwLSV+EPHBIJF6PimLB4S4kzugQFdbTQgDdUDPSmVpQQD7Dah/1Kc8R2sWTnH8K/sFlJw7PDoG5xLdmnWdgNBpHkwRqB8RClCu1zzMasZSkLmQvVMuAqUzjtpd+M8wdrzbtwxPc1EJNzetXfSRLiZpu05GmKtnqy1LpSl/iGbTz2QaR74NylFQxkTwQCLoWsXbmoeB78b1qkYvEqQqKn9QPNfGQVXF0VI11GINM4rrdHTIeIRJy0bF2ar3r8CaP6bwGmzXfOU+ZZxYs9ckUo3Grc+TF0xaMRFRsXQLlIVpC3xFZNbvtRCrtoW+vY8226oXM45kVtcZVjEoUNLWW+QrN8o0B8hPgnfOiO8tsmDHtd6/8ocGSRqRMFUniYjDgaT58yV6Ugqde+K2u0w0X36EPuw2okku+9DxbAKj8uadWCPNChzKrj7XVpSrmh4ujOMhFTvToEI2wnWPfhBSQQyYE+XK9f6NUVAu0q0LHNPWZ2PlN9duTVW10eJRdeP1DihkhwaajzGP1LuRTLGDz0m4f+6v/DrS6hmacCkoRmQOSHUcLAXHdVYJYqkA96X17zJ077JH9Qmf1QNpxotFshuuZbstuMO8rE5M7C+rlhkXEUWsBpT5ObqevbLL874xAGqHiMTDngjXtbpOL2W3Pxu90eRW4EOmGV40nSI+OfixtlQOcaQD4llaLwl/Q+mX6Mum8UEfxuSH790YqO08FI8RYfQf80XgvJjRpi/dbZDs2JfNhgEbanFP4Wvro0DBEIe8sA0Wr8yCEzp1axLmByWLizoIwTmpdTUZYZ+QqDc5CLOIpA//p8jhDaxkzplS1nP6t0chK1RoqkqG7tQXFU8JxYtsQ6jUT8r7rhLoDTlmYQur7pLtnqMGlkcV46M5Qj/W+Hdtp0I8yPh2MbX0uUHqMux9t4Bjy/Z
- /xSPv6mZ
- 2/Qy1IINbcWg1cRBdRagfMcMLk8v9C2mOB4VeA5j6MIay4BpYjiicHPWV54SNyLP2GMMl2eaWlAXgQiY1fMQZb1QZ0Dj3EoX0bWOSw0p2T0l/2GwSNNSbuJPq/AWH/+EMYdB/prIRN5Kz8SGFDEcq+D7mWTcUj2XnrcHJ9qMBYBjN00UbLeA9s865YeQFunOQZOGU71yxXl70kY6GxiIM/lEYALbGx8wvl1BtHsFiVvZuX89+kLUmpTEm37Vd2fbOQZxcyOsc3yty1rqryIZGHeLhCzKnxlrK6EodECzMEBdBpBQ18ni2LTiyDkR95X1a/l1PIyyANSDVGoqlngANEfKP5qorO2O0KpcSSyCC2j09H4yBknfqX1DBKbQyvp8rJ9OWQr5TWlsdz5bfej8Z/pkvk+uw8ALCKZS3uBq6WOnZDHhZeCSkeR7yY73jxqQW+xZ5M7kgHSJ5VwONnGnwl8MsueJ8s1DhEL1Qa5UwlFUDjLCh5ARj8Jvjvc38WnUS0viL
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F066D1A000B
+X-HE-Tag: 1772026466-251627
+X-HE-Meta: U2FsdGVkX19+QWL+XqTim0xQVFgttSYq06TDHk/DZtGfSEiHsJTxc80B6hvmLg19qSyG8eXDwpCpyjIchD6xDc77HcEXBjnGn3TgD/a7Zt2AAwgShC/ym7Zbju7N+GX85HBBgJiQz2luZnHRy/EXVcMosa9EDVj4qFIJS3tg/VL80hiWtHLKb5M7MyQKo69qKY5W/tNQ7v4gM5gCwi3DTC+8ytMlyTabJHgxt5nso8VHoyYjdp5+QaBAMeRHNygULCWndEcnbBd1suVptHyePAOmSmsRToGNjMEj/RIzCS32lpt+0HPHQIgX1kiCb5exmaAdGbaQfTxnAsYUmizKSTxjOY+XcGSgL7jP0qjxY44ySoYnEK8LgQH9Mx4fOdx4FS0edRSfAURkXB+vIGbV6Uw0XLD6drfGDm+mWY6t4Ta5bW2QpOV7CQkBY7KWWv/raYYc4dsak7p1JKpdIzEOTH1fgpW4XUoMovdW4MjTZTXFUSANBh9VCsPNgD3eduewMk69gtP/QRueSNYoVE91/ysOVTkZHAovG0uiFcXMNMeONElXV2ume/oaca88jLjnWxS7xmCa+i6GBifFUU0n3RBJLOtmSWJEDLvbCrFMFxHdT60YuAtyIxCg8YHNAGG0e7HYe+Mk3/CqXT1gDrS+K39FzBYIPVn2qZdLiF3pxz4xKq7tpyn0rVbvrGj9vu+GD7dmspNvhmnNiN54Z6t1TrFmpD95BAz9+VIErvBn1JBiP4+pDzr+/GQnOrd/HLxJJYFk0L3QLGiXweYM9XtnLMpuNiTHBInGalhYISHxrf+czqHkW7mxoPrdF3o+SsEM9AXymSWKTcA7pZ4MsEGmv9OosXujREhY4J/0ClifY/MIs5Uey4j8iPaNAGw7NRYIJQnu6fNH9IcxGF/+qmFR+u17ZwxnodktaYg9OXWpebMpJ0vB2WnlY+d35DhW3nIzPTCOZPFVhzE7aSOx7jA
+ rW+QZuCe
+ fZQZiFBFCAQULFVZq8sRybjDHEI7ZxNUgY1b9NlhTTXAP/HEViYHlTBYztxlOYqhz/+3t9OLIptShLl+Ifhc2JVbEu3JN6xGPCmR4trCD+DPJYpNBAKGevQ8mwFGInkjSb0AoXl6NpMY6gWMXN9lFEY+aLuL4n4lS5X+2P/kJLXK3i7fQknP9NQKDh7QcBnKWbuy472VF2QC1pLCpFBOdg9WbysccjGyy6d2FhysOE9hq2gqs2ZiSfK3xUtc+OkyeqO8fw3NK/5MIunj9Xo1SjPDUEQf3b//GKMbcY0QazuH1/Ah++gc6V63WhQcUw1zumeTq4fofVhqnoSyoDYGyCuIxLYPmNISgFcLBNUS3u/wB9jrLvv47agq6A12b2ppYjsXYdw9fOfnC4ixWAyW2WauDWnda4VKgxG15HfsfHRIqyiHfXSr1U9i1AOI8hdOsiDOlaWHLjSRRIPbpYivQUv7EYTHFQH2NXw76wdfaZ4j1GG884wjhU64SwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,15 +148,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/24/26 18:57, Catalin Marinas wrote:
-> Replace part of the allocate_shadow_stack() content with a call to
+> Replace part of the x86 alloc_shstk() content with a call to
 > vm_mmap_shadow_stack().
 > 
 > Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Paul Walmsley <pjw@kernel.org>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Alexandre Ghiti <alex@ghiti.fr>
-> Cc: Deepak Gupta <debug@rivosinc.com>
+> Cc: Thomas Gleixner <tglx@kernel.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > ---
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
