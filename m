@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17A78F4BB9E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58C95F4BB9F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77BD46B00AD; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
+	id B941F6B00AE; Wed, 25 Feb 2026 06:05:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 750496B00AE; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
+	id B68886B00AF; Wed, 25 Feb 2026 06:05:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6666C6B00AF; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
+	id A88236B00B0; Wed, 25 Feb 2026 06:05:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 547066B00AD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EA811B6F72
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:15 +0000 (UTC)
-X-FDA: 84482697390.28.4DB8885
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2FDDA140019
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kBSnuG4j;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 95A236B00AE
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:19 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 531D78BFE0
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:19 +0000 (UTC)
+X-FDA: 84482697558.23.5903D69
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 747DC80003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=f5jQQLOg;
+	spf=pass (imf02.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772017513;
+	s=arc-20220608; t=1772017517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5Rw321CUbGq2CWBlWTI6x0JAHGQZPTv69nPcT78KGw=;
-	b=3vE5l3x+ekp1Zy/dM5fr3EpiSmt6fDC0BCof81F8botUsRnbdpd0KdimGCGpvm94FnUGIr
-	KvH4HO3WQcc4zNE+b24QikGDadFO3cND8LmleuybjIFO+nGyUoyBHQoznyowPCcQ+y9p4o
-	zgdAykVH6mpDNkSJH63aSTvcaijEpWw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kBSnuG4j;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017513; a=rsa-sha256;
+	bh=IYLULRhfZbKBR4o+fRX9v875nH1I/a89WdoHn6t4e60=;
+	b=rMsTx1l3ylLd/yCrLVsRJaxi2RWVioMFUfI0UOnwLyPt/xfb7G46tsFnmOp73rU/uefjyM
+	Mhs6sm8rMk3tvNGS5vudulLZ8/9QgUc/M4YD7ybIOHQoCfU9OrvvWxFI3Wg9nKVqaqsLFs
+	Qsz/9BnvI+elYhNEdvoQk7UTqPBRFTg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017517; a=rsa-sha256;
 	cv=none;
-	b=CLjztjVekBgR6z6K1AddWuiThTjm8KWWiQY5NkCHp9DX2x7kbazSx2xXRGp8burdSIDc74
-	wKAthk7pTCC8D1EAKtsKMI19B5SRS1mQ1rxMsJORXA0NVzuIZXfMyjWOpeE+ah2ONgaLb0
-	xumVoTbt+xvDymchUVwv0JLCcwDQsDA=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2aaf5d53eaaso44681505ad.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:12 -0800 (PST)
+	b=U0basUNgSRWdqOtFdg/5i/6ReaEK04XTdv1dPFtzpL96qHgNjWI5MYiloaI8N8rGHXdkeo
+	hxRdw/ytH38d7ka5OiSESGn/S4N9slGwMLjz4hRiyirEe/A8xFIHtWrTA9fEXtz6C7nLd4
+	Bna8yDdSthh/2Tb9LhMWNAj6I0vOKy0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=f5jQQLOg;
+	spf=pass (imf02.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aae146b604so46026305ad.3
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772017512; x=1772622312; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772017516; x=1772622316; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I5Rw321CUbGq2CWBlWTI6x0JAHGQZPTv69nPcT78KGw=;
-        b=kBSnuG4jG/izo35c/ZGFWfil/liiJ+3Y6VzzNnMWGAYfQjwWeQMn1Q4G4Nt+XqP+zk
-         IXj5jFeP5yYzuN4xtJmyXe41ZCDowqEEWph5mHQkf4XN3biPOUEG9sixEtO2tnQYUJOE
-         t1ZK2i5JWPvwjG7GYDcCqf1QenTkF0gn1Iui+pJARx5uCB5FHW5pTyu1UC/5dHc4zSlD
-         +8XB9KPg14yVUKlZ1Yi4xsKPOD81nMG0mzFrCiGA0t3ishWTEXy6XrvbYPywcveeS6Pe
-         G4TEUuzAceZnAgqODHYnqqTpOeVF407r2P2knsPoi/w8cLnlmJeA3N14a1yx4DMG5INh
-         PvvQ==
+        bh=IYLULRhfZbKBR4o+fRX9v875nH1I/a89WdoHn6t4e60=;
+        b=f5jQQLOgKM67CZOBneKwoBZmuYIPbsK/a+WbusVwt5TwLm8gefCTUn33LwbrXrDltm
+         02OgCG49rnNGVdeUFp5i01GB4jACmIfAr9gEZTjvnzKVSMiPivf71Tj6A8yA1MQgKm3S
+         PZ4twcrCRI85vsunK08PX9luN77Ul/40bH8WEy3T3V6WDpZ1TK3uOv9uQMfWFAHpERhM
+         qCk7K/y7vC8pbnuE3LBrCqRL7KcOyFzS+lABNG/mK7yulF/sDbiU9Z9ydeMkma0PSUif
+         YCKN1p7A5d3tU4hcNGrXVfSBp8y4nonP5G7LlNXy+SDg+s5fyv6f+80AjRSn2UL+EWYV
+         8Ghg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772017512; x=1772622312;
+        d=1e100.net; s=20230601; t=1772017516; x=1772622316;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=I5Rw321CUbGq2CWBlWTI6x0JAHGQZPTv69nPcT78KGw=;
-        b=LtTirgJ/y/4NavfcE1isaaIZvUYa0seOkkRaw6b6HC+miFETIRdmPQU1RCnF6M4TbH
-         33W3blm43jjXfPL6/+jrM7vD17BWoUCvNNEEYTatJoBkfkT3JWzrQ4cmzFzc57vUh34c
-         6ftnlJKuyPtjYV10EXP+R8pjAFqgg4FTv9CcVBhtD+baNA23tq1RqLECe2Gt9mBp29bg
-         5NmSSg9SmLjd8YQyyzsS7XnidZrDGUqYDjVlzbD8DfdxdjZpoEsGib9eQtBp0pYwD+Sa
-         iPn9GSrk4QSFcfI6c/s75qCMvsur5WY7a9qneKQFawh4Fw2wLcGB6zpXrIeoAHn1fS7f
-         UNGA==
-X-Gm-Message-State: AOJu0Yx4JxyM7pH8HYbDsSbFs4WHjvIS0JQSPtNooVcUfUTJ7qNiWgyF
-	JBhXMCKHJog5+hyk9sSdn0c6zA/Oaki7Bo7P2SjkCmWJhhhupd1/VsFD
-X-Gm-Gg: ATEYQzw6bmM/gYfd6r1NrCD+AzQHqBQNDM16gRdlJjlY0m+A8N42C7MloCA9lIZT4f1
-	ykymaJG8mlKZlUfgRKgvjDG70qQOEwshIPO8O0yeCNI7uQiGtkRedPcET72quTVaEvdH0eqH/e+
-	xtkido9Ruyp9/7ZaKEeXdmaOy5/Yy9CSLLa+uuS64TmJ1JQROBc6P0DuEb7bmBnbrz+LlILRjlG
-	EYBfzxcbKScrXqGBYeDu0AQEPGLxRuXfkJQva4dAzpj+TeSN49ef0CVKs5TsDo46kHpAtLaKO+z
-	0AOWecA6y6d0OpS7nTCWrd0YqkYmrZccpS/ZOkIyBeR3ufiDK0YzvM4w71ou8qQL5oOx6lJvF5t
-	/XWSR5GpdLoW9FdynvP9qBwzE5zWYREB6Qv7jS8v5RMMqy3XVUCSrrEHLHSnZcNQcdru0MAWysC
-	CH/8RNRVNWYENm6/tkc0ccs0+yF7g85Qg=
-X-Received: by 2002:a17:902:ea0c:b0:2ad:c66d:ad00 with SMTP id d9443c01a7336-2add13fbfe1mr20563975ad.50.1772017512011;
-        Wed, 25 Feb 2026 03:05:12 -0800 (PST)
+        bh=IYLULRhfZbKBR4o+fRX9v875nH1I/a89WdoHn6t4e60=;
+        b=Bx+oNew/ktLdTC7frGzLuyneBfoEluz5WOcBwwE1JlFQ+1PbGYmZaf3QFTcgx3e509
+         JqabujNlGGzYYcLGc3yJ2s2pDxxUwe9wcHP/yLEAz2B0La8oRR7zvG/VNf5KPm8v7iq3
+         u+5vZBkmd+hQ/lsc1UMm+Qywzdn9Zm5/e9QAiWQKrzM/rhsByu8Eb8lEnMq7j4+8C+AZ
+         5qpsweJH87O/OqVO5p5Ym+8CXR1a/kviMGSXvSU5z8FJMMSH9aFSKmnZ3JKjtsh/twuR
+         +ZM0uCyOqNnwkavw6kRAwXEaO/SxamD2c9h+384p8tE4LkdjpBUuVJJmkjMkPh2R/u8d
+         C8ag==
+X-Gm-Message-State: AOJu0YzIKM7Os8tjvx/47aHu02QsdzGHPV9MKWoU86uTCBBZ9hBmXmZQ
+	h5FZzZCWPOqjg/C5VwXzF04Au0Vw/+t2rch9vorSGjw/UEsXOeFDrZ5M
+X-Gm-Gg: ATEYQzyaQDzLMRNYZ+Lj9NF+7DkVV0qqE9X5NaGY4jU4PLoVYEPliKN83u83MCjYXMh
+	0GOKMKSDYpeWzp7E4ZwcHF4gfP2zz1ZkW3qYY5ANxeVOsnK+c5ssSpyQYA4trqUM6Y0mZjrqaMK
+	2yMhuxay0BzmAmTPhGv0cI8If3LelwlhUqtmYneuXxf5VwaWjs5dzMv2gc35hrsnlRh+kDJ64bY
+	pOKC9/c3W3fbxHFr6YUeWZY/OrDFDI2BRYX0a53nGsmYO5oTKGFtFSApxnlB4J/iksB/vIaYxCZ
+	mW5ZnmR+rhBpN9WSu2OJl9DDuURctaydPR/YU2+xxQDmJrqasVMcKbgxFhozE7ywTnVkO9QVbrc
+	px0MxKyc1VM3zcEQ5X0RFSvnmQC54Dor392CClZhZ+T/RLroq037sy1RA1p/+eIN5d2jTJwybyS
+	u9keZQHycSiqOMQtLZXHOZHU8L1PIyKW4=
+X-Received: by 2002:a17:903:41cb:b0:2ad:b957:e7fd with SMTP id d9443c01a7336-2adb957eeacmr39272785ad.50.1772017516378;
+        Wed, 25 Feb 2026 03:05:16 -0800 (PST)
 Received: from dw-tp.ibmuc.com ([203.81.242.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.07
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:05:11 -0800 (PST)
+        Wed, 25 Feb 2026 03:05:15 -0800 (PST)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org,
@@ -100,22 +100,22 @@ Cc: linux-mm@kvack.org,
 	Christophe Leroy <chleroy@kernel.org>,
 	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 06/10] powerpc/64s: Kill the unused argument of exit_lazy_flush_tlb
-Date: Wed, 25 Feb 2026 16:34:27 +0530
-Message-ID: <9385e4fbc4bb99ba47ea6070fd82233e6576c228.1772013273.git.ritesh.list@gmail.com>
+Subject: [RFC v1 07/10] powerpc: book3s64: Rename tlbie_va_lpid to tlbie_va_pid_lpid
+Date: Wed, 25 Feb 2026 16:34:28 +0530
+Message-ID: <465a2aac31f00d395be0d551574de37786ace094.1772013273.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2FDDA140019
-X-Stat-Signature: dszrfctd9aecoayrhfj5xjaag9cxjrxz
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ncmy7xsryaptuyyywqzpk8xdc3jsacnu
+X-Rspamd-Queue-Id: 747DC80003
 X-Rspam-User: 
-X-HE-Tag: 1772017512-829387
-X-HE-Meta: U2FsdGVkX1/2Xf39uDoyVI2KHgHEfZ0AkBsOrT82nda7L1rprGfJjbXhSfQZ0v4mfgG1uMoK29ldH5IwjPc6zkk5fntsjyFbYAd4L5C0E7Ez2loT70UMAtaQfFG5ha9InOPyODYc14/ugsKXcGxWX6gptdHQ2IUTAwZ+1PqRwotHWX7EIpmn4TgV2Bmk6KvwjZ7+hHjnNjFSF9ahNeTkDbRL6Zf97VF3EW9oLkxSZIhbBjGWORD1DVeURwc5NyhV86g4BUT9//byxcPe4818SfZGF7r4Zjd3DRs/plzKJDWZcy/KRokof2OVtAAh2witrKQk8vjXPTC7Mtm60eIssbqlgGx0XYm66Xw7BsQOqENDLD447veHOidcQTYNDsCz2rC7uglYhQM1Hb6FQZEaltREJCRCcTaTMt8vxgQyBHrHwkKH3hQqkrp4f7AFuzUzjrMYcsOTlWYyqQ/yS94GEmXmjBgr1vpwD+GYNytmQgNiuzq9nU5cbN2LdwCa40oMeNvSB+K9gqChD8r/WsnWUpDHJkpF/9zTw5u95lf5bj+0yETKeXGOWyWH3hHAQoznXzlaA8G8hjBZlHw6+3doypvanmKbwYYiNZ/XK+G9iiTv2fSqnJ5p78gOm+MGaspTqpLfSAKKMBpmJ9PG9Z41DWNY7JdId2unAK9MofZaNYr/JOmRfR4ysn/ex1n9s4ff0AzJO7n1PGYZmf0X7oQMpLCsEo/MpWREsbAosAPXRr29vORePKaTJE3ASeO52dE5i4qT1lr32WXHebUKiZHgT1WF1eNkM7uFViqzYhf0UfYoYAH7XwnzuJDyalhG/oqyFAiitqOFuMwLXMSvUDvTpXLYTdBl9ll0WXROLUI/tS5yvP8pS51sFOClMh7v6yNVX0j/rAxdDiWI3GHHEQl0Z0s/pAxQHQReRoLGX567kmktg/KiWayRdsLeJNpDqtcU00xF4n4FpV/4ZZgA6o6
- qp8QzZTm
- LzpSimuW++XdQI4aElp8IiiS78FoEQXC+/l5+b+gQUPfxDz9XsEJ5yUVkZjEjzHJxdEd6ZzUzs38SJr1I1VXQgUjpd57ssu8BfnDQbWgJBZvpBPAjXK8ntWv1E89uWMmOPebBG8lWxPbYpB7WSxvmSwb18IYnyax9tQcb/BxzabtamrFD3QFmLS+A2havfmMfwf6p3twvvGL/LOss1iPr8TDs6yugXe4bU2DzaOpyV5FmwdpyWf9u3lZ5Ajl2pPC/YCzG0WOv43vTwDxxZJ57eK+MNj9AW/R9CRbg/TatBcJ2OwlB27me0yZmQwQf79pm1hWI+XlCfFG+mXbpaz0PSKpvEUXo/XKaL85QfdyDfDvN8ew8hytaNgG9ozS0BUP2yQ2L0k3rObhgwNMq9MWSA7lnDyK2QXWTkCLqMrgCuStDgg5YS8FLuZmovl8Mt8kFFm1EpZyUlcQa0bGFESMQfNQuROdfPFoOqqwIO8L5iOUspg7Od1BI44NiSKoAq0YwiSE9gBd8ojcJ1RNK8KtfYKQTFKbJaD3VXc4IoNMYn2VoJKGZj2/R9mmE3ndtoKeXsWOBMi3zaHxUyp08mBw+bcLKZTE73ilK4YQ0abTBMQZtNUq9QMUDaQZ6IqOFguuCFNJZ80ONl2wI13l2pFgHkNnmLu3JRCEM/TLSAYQACaGvBJptNRuqJ2xt9A==
+X-HE-Tag: 1772017517-508046
+X-HE-Meta: U2FsdGVkX1/fWyTcTQ8HL33SBSz+DnPMMKFqWaQDMlp7uywnzlQMsBYl5NKsEuQKqrrSKvlXTiSa7qaZ24N7mjiCIzSgYpOa0tHIhp5eP8WA7xxKPLy96tB1rX+HSBE62XYnBpKt3ZRZvuk6lOYYgC041uEjqmzGRfAWgm1AG9msZ+6VvtINrIldUDi+UnG5IR6HNi2E2cw8N5i3XgMPplOwsWH6Hasgrt97M/vg4zjQySOlBeaonW700mr91ycHLzx2r/+cNgvyl3yG/S6ssPkW5uO4G6sdtMZj/+n/3nxC38wlPecyO3vXV3aTmeSGMhBmeEZiRUxtMAbAxqMIkRZloOl6jG+4YX0etpNReIUke38+1n1GB/gLw/yLak3+UWrGr5H3qQxAfzLiL9vi8EXLocSkCgkLLvj7KQkW9Xd9+U4sXODsgVYiCSkP8SQPQTvsoX4t1UzpiCzhcYfGdxpdKT0TF497qHynt11M7I70VGXjVGg4LCkjQMQSsucsbnfBencW5S5JLlhE2dx9hEorWjvr1iHY0NpVpy+hMDM+kMS6+lCJog6bJmTvNnRZ3oF8qKihlPR9UwI1SMIQnb1Hd0Ph3LiDJ7ZzKYxVrwRBJESHal1yP3y1vaWTvaQ2HqcRLXp1qrZw7b1/4wgY5CBEkdjlke078WvzBo13gV3Uu5NMaECzUuRXAgC5jcDslGk5lWtJmYuCuCnht8UPotlQgWa0hqTjFoC6Ta/nKRfJZuHGDzdyz7q+d5FItxbJuYx4cjp94MCOF8Atkk7k+O2bPnwwSRDxfUtTgtuIqkzohwhkL6U9rGdQo/ZZNkTMhPpShbepHgEjkADpROO4Q7f3U8Yw16E7ZGD3CSUACE7qBGeerJoPRQkYJzvf/oG8LxLWxfvpo/Ydx5Wpz+MLQpF0oD6PZ+vLNqMkPVDwnZiZYhcYqRFYhdSfcDZM1wcbulleVqjmedFayAhMCEb
+ FHWwnJEt
+ pcZRcCEU4Hnl+GDmL6KzriSC5mW7JXa+v6d4KWfrfNpF2+Dn3Xh7X8XKSDtFI/i0ZNafteyqDf1heoSer/o2T+KwVZhqJ/fLV9GrPiPbhzviQ4Rx3WYJd1b/9h0Zjzv0v8OyVkxc5XCBMbOKGCxEtHM520ng6KYolQGNIDTvkaUDm7dUhyPqBfHo4RAD/2k9b147hivchL3rRFyQIdQgUsPhdMHEOw8Rfq+RQKk1/hOrW6xArAyof7IpixG4n1vR3T+k0TBPMlZDpJDJ7G9nQJMKPUyVbogZ8Wtmyga1OJON/2dxYNAU8kxb8TG4BW9AxioxPllvK+XDCc5kPmRK99XVJI9KRYtIrZlfMWKpKVuUkMLbduFylGBfg+8d+mk2cuyHE60hoVxBfnUjiWGy0AgfOqPAxtHu0GKlwNV4MB1KrglQgOWCHZ4jzXCywr4DGhEldphEdHrfxdfJtcpP6XzoUz6Aas/JqHpNbOodpDMHoFyg5AvPystG8fk0rB3CU/bb0RauP49Uvk5PRu7xOqOnvk/w4MBbH+TeJQKXpfztNEArTp6LqXaXYwGkZrC17F6+XbQ5rpvgM0m/HYZHXZF9WPEPZS3wW0xUVDib/5xZJhPf4aUnJ+5FQyJ6mcmsrLOsW31choE2bILU5I5BLTykOfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,108 +123,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In previous patch we removed the only caller of exit_lazy_flush_tlb()
-which was passing always_flush = false in it's second argument.
+It only make sense to rename these functions, so it's better reflect what
+they are supposed to do. For e.g. __tlbie_va_pid_lpid name better reflect
+that it is invalidating tlbie using VA, PID and LPID.
 
-With that gone, all the callers of exit_lazy_flush_tlb() are local to
-radix_pgtable.c and there is no need of an additional argument.
-
-This patch does the required cleanup. There should not be any
-functionality change in this patch.
+No functional change in this patch.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/mm/book3s64/internal.h  |  2 --
- arch/powerpc/mm/book3s64/pgtable.c   |  2 --
- arch/powerpc/mm/book3s64/radix_tlb.c | 14 +++++---------
- 3 files changed, 5 insertions(+), 13 deletions(-)
+ arch/powerpc/mm/book3s64/radix_tlb.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/internal.h b/arch/powerpc/mm/book3s64/internal.h
-index cad08d83369c..f7055251c8b7 100644
---- a/arch/powerpc/mm/book3s64/internal.h
-+++ b/arch/powerpc/mm/book3s64/internal.h
-@@ -31,6 +31,4 @@ static inline bool slb_preload_disabled(void)
- 
- void hpt_do_stress(unsigned long ea, unsigned long hpte_group);
- 
--void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush);
--
- #endif /* ARCH_POWERPC_MM_BOOK3S64_INTERNAL_H */
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 84284dff650a..52d3e0c4a030 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -23,8 +23,6 @@
- #include <mm/mmu_decl.h>
- #include <trace/events/thp.h>
- 
--#include "internal.h"
--
- struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
- EXPORT_SYMBOL_GPL(mmu_psize_defs);
- 
 diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 9e1f6558d026..339bd276840b 100644
+index 339bd276840b..1adf20798ca6 100644
 --- a/arch/powerpc/mm/book3s64/radix_tlb.c
 +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -19,8 +19,6 @@
- #include <asm/cputhreads.h>
- #include <asm/plpar_wrappers.h>
+@@ -1411,7 +1411,7 @@ static __always_inline void __tlbie_pid_lpid(unsigned long pid,
+ 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+ }
  
--#include "internal.h"
--
- /*
-  * tlbiel instruction for radix, set invalidation
-  * i.e., r=1 and is=01 or is=10 or is=11
-@@ -660,7 +658,7 @@ static bool mm_needs_flush_escalation(struct mm_struct *mm)
-  * If always_flush is true, then flush even if this CPU can't be removed
-  * from mm_cpumask.
-  */
--void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
-+static void exit_lazy_flush_tlb(struct mm_struct *mm)
+-static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long pid,
++static __always_inline void __tlbie_va_pid_lpid(unsigned long va, unsigned long pid,
+ 					    unsigned long lpid,
+ 					    unsigned long ap, unsigned long ric)
  {
- 	unsigned long pid = mm->context.id;
- 	int cpu = smp_processor_id();
-@@ -703,19 +701,17 @@ void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
- 	if (cpumask_test_cpu(cpu, mm_cpumask(mm))) {
- 		dec_mm_active_cpus(mm);
- 		cpumask_clear_cpu(cpu, mm_cpumask(mm));
--		always_flush = true;
+@@ -1443,7 +1443,7 @@ static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
+ 
+ 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+ 		asm volatile("ptesync" : : : "memory");
+-		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
++		__tlbie_va_pid_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+ 				RIC_FLUSH_TLB);
  	}
- 
- out:
--	if (always_flush)
--		_tlbiel_pid(pid, RIC_FLUSH_ALL);
-+	_tlbiel_pid(pid, RIC_FLUSH_ALL);
+ }
+@@ -1474,7 +1474,7 @@ static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+ 	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
  }
  
- #ifdef CONFIG_SMP
- static void do_exit_flush_lazy_tlb(void *arg)
- {
- 	struct mm_struct *mm = arg;
--	exit_lazy_flush_tlb(mm, true);
-+	exit_lazy_flush_tlb(mm);
+-static inline void fixup_tlbie_va_range_lpid(unsigned long va,
++static inline void fixup_tlbie_va_range_pid_lpid(unsigned long va,
+ 					     unsigned long pid,
+ 					     unsigned long lpid,
+ 					     unsigned long ap)
+@@ -1486,11 +1486,11 @@ static inline void fixup_tlbie_va_range_lpid(unsigned long va,
+ 
+ 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+ 		asm volatile("ptesync" : : : "memory");
+-		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
++		__tlbie_va_pid_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
+ 	}
  }
  
- static void exit_flush_lazy_tlbs(struct mm_struct *mm)
-@@ -777,7 +773,7 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
- 			 * to trim.
- 			 */
- 			if (tick_and_test_trim_clock()) {
--				exit_lazy_flush_tlb(mm, true);
-+				exit_lazy_flush_tlb(mm);
- 				return FLUSH_TYPE_NONE;
- 			}
+-static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
++static inline void __tlbie_va_range_pid_lpid(unsigned long start, unsigned long end,
+ 					 unsigned long pid, unsigned long lpid,
+ 					 unsigned long page_size,
+ 					 unsigned long psize)
+@@ -1499,12 +1499,12 @@ static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+ 	unsigned long ap = mmu_get_ap(psize);
+ 
+ 	for (addr = start; addr < end; addr += page_size)
+-		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
++		__tlbie_va_pid_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
+ 
+-	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
++	fixup_tlbie_va_range_pid_lpid(addr - page_size, pid, lpid, ap);
+ }
+ 
+-static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
++static inline void _tlbie_va_range_pid_lpid(unsigned long start, unsigned long end,
+ 					unsigned long pid, unsigned long lpid,
+ 					unsigned long page_size,
+ 					unsigned long psize, bool also_pwc)
+@@ -1512,7 +1512,7 @@ static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
+ 	asm volatile("ptesync" : : : "memory");
+ 	if (also_pwc)
+ 		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+-	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
++	__tlbie_va_range_pid_lpid(start, end, pid, lpid, page_size, psize);
+ 	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+ }
+ 
+@@ -1563,7 +1563,7 @@ void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
+ 			_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
+ 			return;
  		}
-@@ -823,7 +819,7 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
- 		if (current->mm == mm)
- 			return FLUSH_TYPE_LOCAL;
- 		if (cpumask_test_cpu(cpu, mm_cpumask(mm)))
--			exit_lazy_flush_tlb(mm, true);
-+			exit_lazy_flush_tlb(mm);
- 		return FLUSH_TYPE_NONE;
+-		_tlbie_va_range_lpid(start, end, pid, lpid,
++		_tlbie_va_range_pid_lpid(start, end, pid, lpid,
+ 				     (1UL << def->shift), psize, false);
  	}
- 
+ }
 -- 
 2.53.0
 
