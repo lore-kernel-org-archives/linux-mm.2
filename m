@@ -4,101 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2471BFD376A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:10:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2FCFFD3770
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:14:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6559C6B00A6; Wed, 25 Feb 2026 11:10:29 -0500 (EST)
+	id 4E36F6B00A8; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6079D6B00A7; Wed, 25 Feb 2026 11:10:29 -0500 (EST)
+	id 467236B00A9; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 539776B00A8; Wed, 25 Feb 2026 11:10:29 -0500 (EST)
+	id 36FF46B00AA; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BA786B00A6
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:10:29 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 313FA1C8CB
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:10:27 +0000 (UTC)
-X-FDA: 84483466494.04.B0185F8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 75A2140015
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:10:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lzYcXM9w;
-	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 25A956B00A8
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA74A1B6F18
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:12 +0000 (UTC)
+X-FDA: 84483475944.19.0F94CBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 61BA040008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772035825;
+	s=arc-20220608; t=1772036051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0FjuV88iRjgFVMdtMmS1Y20Wa2wwD46YoxrvPNRD4JU=;
-	b=hHW2t6gbu0Gc2GBFE3mkM6wXZnGXrRI34LyDcGdCNdDHxX8t3nerqgePb1Z8rjCfNJDM9O
-	KpJqU5glKx/bv3y1hvlzS2mdRsufQI9DEobfUdieaXvk3VbSy+YuvR7WGdHjBt8gCE1yer
-	sVcElLq00O9WcGx012X6IDsJf2smqfo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=jiEHsHfMpWlRl7bljrHmdd+gJcFtALSCg3Y7Z7VxAHw=;
+	b=dGAoek1+DLYZtmSioXq29/ifiEUmjnis+LcS6YL5ZbNwH3az4ILjQex6rXKkJoVobcPKLG
+	9VDHM4625V45KPqBT8N73kFnoG5OlT7DTCMg8X/XqwvfvhvZl8kHuzWNfAIJ8Q1jyCfCAO
+	MfgXUxzj5f1diAZ7uHh+xFPcKzJzCzg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lzYcXM9w;
-	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035825; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036051; a=rsa-sha256;
 	cv=none;
-	b=PVKEydCqxtw+f0VqDfDCNZBgMpj0YkprQ+LYurVVLvAd8Il1ISyAlEwUER/Qa18d+lPlU+
-	qDGRLIAYfT2rtC1AV93RXw23PoWQKXpqNfm7kOktrB0JVOeNhuhop++Nhsy04sOYq8+IBt
-	yYtt64oXr3j2vYAtLR+EhbDmeJhBgZg=
+	b=4oe34RNtPfpKLtNfH6w7JZ/5hrF0EJJw3SQ0EQ7I9t1RQrdfm6CrbepH7yvUTUBsvyBlGL
+	32SS2QGK4OdMRpI/zQjWL9QeMd8qtKNVW4MYNx4Utj+7wOV+9uAt3gt+9BILM9qtakyQCL
+	TUNWW6P1Arg8PR5S5SkFTxOqF5BfgEY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 772E4414FE;
-	Wed, 25 Feb 2026 16:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98AEC116D0;
-	Wed, 25 Feb 2026 16:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772035824;
-	bh=0FjuV88iRjgFVMdtMmS1Y20Wa2wwD46YoxrvPNRD4JU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lzYcXM9wRwlqudnoyVaHi/I55B8Xy8UCCoz6ezH1IOtdpPvMR/sQA2F7Wrw/UjTL7
-	 7qLIasgQVHpUrs9qghinkXJl463QSjytZOQuzRSoKz99Wn+M4+NT9yjxjiKrh8PGyL
-	 hzd9Gs77pCf9e2fpSuPXoc5s9UfPMygz2Wvnyg7aZX68rW2tJ3pokAo/eCFMyG8zgk
-	 WaypuvLE8XBEE7iRt8goVbdKWheQOUt9Wj3tNNgLx5GYaaIrt5BvuoUlalFevJXpQn
-	 y0D1Ecw/aTJQAe0ibzeaN7ozxgHclMwRRrA6Ts9XzeK4ni3QX0NGqYeayIkY/QOhIf
-	 qGB9IFWip9LaQ==
-Date: Wed, 25 Feb 2026 16:10:18 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+	by tor.source.kernel.org (Postfix) with ESMTP id D443B600AE;
+	Wed, 25 Feb 2026 16:14:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38738C19421;
+	Wed, 25 Feb 2026 16:14:07 +0000 (UTC)
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Deepak Gupta <debug@rivosinc.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Will Deacon <will@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 5/5] mm: Do not map the shadow stack as THP
-Message-ID: <a44708a8-ec02-41fa-b870-a649f13072f4@sirena.org.uk>
-References: <20260224175800.2500729-1-catalin.marinas@arm.com>
- <20260224175800.2500729-6-catalin.marinas@arm.com>
- <5570c06d-fbc1-42c9-9b27-26211e8b033c@sirena.org.uk>
- <aZ8aeHpn_KElP2jm@arm.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/5] mm: arch/shstk: Common shadow stack mapping helper and VM_NOHUGEPAGE
+Date: Wed, 25 Feb 2026 16:13:57 +0000
+Message-ID: <20260225161404.3157851-1-catalin.marinas@arm.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JCpLj7aWj71R06c/"
-Content-Disposition: inline
-In-Reply-To: <aZ8aeHpn_KElP2jm@arm.com>
-X-Cookie: From concentrate.
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: owzjcz6cr9x34ezc78imhqe1ykwq91xp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 75A2140015
-X-Stat-Signature: cbj7pbfkz6ye3ae97muye8tiwpebyx1t
-X-HE-Tag: 1772035825-518615
-X-HE-Meta: U2FsdGVkX1/TGwayGtmGm/UlUpNwV9HJ9nYMLcJ3YMgEPYkJRPU1PB3NcfUiYwY1E2b27ykeaKpEV9/mQik/d7ps4te5f14Zn+gKxBz5uhkQ56r/5i36E646AkSM2DdW2yixGpr/S572RBJ9MjjcE1tUYf+xk0bGy17uJJYNO8SJGtEaAiD1AgIddVnP7Q6jowyXMoAJoc+K3SiRAQXewBIAj8vwnx0hdE13HI/SH0kv8XVMX4G9SKgPvpuTGIjcw18kBAmNoYJNy5peDEFOSchdgKZez84fr7QVx46hFjeOP5p6CX0Gp/RgSfLi8oNUqP88tJQ3YpWzmbe7vk5SW824vPgPo75kvcRHPj9r65So4qk9QaNC2kqsfgfCaD736z5e9hetGnc2U0dMD/PrwVJcHSAnj0HzijGS7JCtRxsw2kQtTf8H8HpGtgKK7oaEdnYSeGvv80nAMnolRkU433I9abgaXFIlL9qxdg2DC5mtw3HO40EHgsZ1OsJfgvjg4/Wg5+zqEWeetU+wqPSanPyvaMLVtGLtucoSC9Zr1xeaLDus1Y36sVXMhM0N/dzGcTOYP9p88TCyuyEeUcuys6ojmfaFyWqygMjS5PCqSyUQkde69SOvmtynBj1AHRs0dX5t2ElA1fPoMEc8v1OE9A6aD35x31SHhgB7cOba1MmHMsIQtUkoC4BZjRtkpRjO6rnpakpz30nZrUeEWoXgSFTWzNXluenaSxqKKoznzXOMxApTjUgm0++BgyukHkMCHo5J03FiZAfVrsEsNpam9f41sjud6+kS7GY01rfAO8a3PIqs7Q7Q1XifMg6RDpNY+3QgCo/Rqkuxfelx6xHlV/+o659pZqHYMfFwCwl65nnqxUTKuEs/pqxxyY48XzZGa0zpogeFA3sBRNnOZlzIapxyr9MO3enVITAYgP6bsc8hW9HsYUe1hXqU2nQ1ouDbtGe3uJUJot1TCNPHl2A
- gYcmvGQy
- dzEmCJ8Dgct9tcs8YkREMXpjrF00FLx3IlHuQt4QS1gPKYFe3qzyy/W47i8W7jsS+MZAcaj4eDkehfkZVWOxtbzJFoK+qOzvoTXOP+hFMEH3RS00fqrQKlVFk7Wh19o6EwibO0K2AGbOjDEIu8aZZcQ22u09LLsO49EOqpLp1MrCUl1IqPjKWjW4Oz87E82EL7kNWxooex/9lsxif8+b96ckrTo5K+rq1n71A0y5LSEkJZI5hHF0C5gG+0aisd2grIW5FmYBBuQ5uEeGJLPip8SHGEmjrFwToO7yFO8anjxzbU/ASv8x5bYEh3Gm9S5sQVpPKnd/oFUSkB4pI5x6xyI4Q051NORMY+9/9eYJh1UWcY+E=
+X-Rspamd-Queue-Id: 61BA040008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772036051-573169
+X-HE-Meta: U2FsdGVkX1/NOUP1osYaHYgW1YkA3nn9Oy3PLzvS5WG3tzNznZrlQVtF443U9Y+HACWI2jU0+QbdiSds/Lug9gPFFGhkfrIbfheuGNW3FDiPTOrvktfh5lnQxuM6sdsfW+rBRkBI7Ewu3Pcj0sDfZvG4Ie0w6A2cp47SlHlpXB0yMO3lPfUgbDBsux32KFyDirKU7irp2bKsPFrIH+DVIhzznUmCbKej0RStv9s5U6YPTnXnwuRSMRDl3tZbtDjFHEdUohpChuyDzuK6Jx7wHzUAszF5Ejy2lM8D6GUydbQSJwUI79NiRHohkpPuWX/F/NV2WRTvqndVRdREE4KouPXbU2Bun7SG7EYn99XbZi0sO44idbM5aZ40mSo3GP6rLoQrUsj0+JczG4kzzOUvjObeeb2Pc28Ab7RUebcEL62O/AielvMTWdsUH4tdToqKSYsn5QlPtD6uta3pb33xhqAp+YB2IGmaaIfm+LSeHRQrz1U3nAm3B4ftkfFRHa/JyXUYtp3MrllGhgQi6P4fR/YHYWRf/xbjlRcU6HCKPgzF2n3fSdG2PJMYodzXD0y2TV7Y1+iHyQUtapiGWe48UEUEt/6eVYVodH1AwEbeKIo1EH9jGLKWtcWiNAYBgUUNUNJuOdZlLIGavcRTN4vKwSj25K/9bYaPxCmXupbuMwimZW1paFgI+XKNd6X5ii6BLq+6oMDRHQl899mraZpedASLgy2NmgjqXZQEwrkPQVFFszFUwmXEmoVbrF6aFO5Gmu6PtCN4PA9wn6X6y5hvriqGbAfdpWOowyqY/9Zp22E7whh48Es7uYCBSALJYUAvYg3E7Ljdb0tMLYoyTfUM6o0tBny39kVUZ/DR03FzHwSzz8IRtJerpJnjNHmW7OW/zgJU4FiXClb4HdiCrhLQo6gjC9CLD0x94aXHailpabUw08ywfc03kuTciTCMdA3J7WK4EsHaIwZmwrHXKOy
+ 7bb7qPaI
+ GAaM8s7M7rsf1jQMdIxRh/E2KqKJSf8qEl53ic6/TVw83Oi1YKB1dbXrPzIIOmLAmKDCKywYUJEjMbibG/7K2ZgucdRWfch0FudB89InESALmTUMQowSju0ZzaYF1zKHKZ6cTr0+P+iatkhSuh3kmevoNyD1WrzwdwiG1e1NEiTvBDfOGP2wTSXSNGI/938aCflXqIiBFSwJO3phuApRU/rVEmh7BFvgBHyynwaRUwXpTYFljfq96zzEn206u1t/N6a8y956K9LGS56N3X2V1XggxWmBgDlXuHJBb23x3myvVhwEcaRHJXFo61edZemFCNrMKlZJ6PizSf31z0KYoGrmEC0ya/4fb7/xENWSnRzqksXCFQ35mTmdJcKxSl0OjkJ6Pu+iQOojweClBt7k3lDjoKmqRfLap5n0AEmEgo8Gu8PqZ93A7JLIyLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,44 +93,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is v2 of the series extracting the common shadow stack mmap into a
+separate helper for arm64, riscv and x86. Thanks for the review.
 
---JCpLj7aWj71R06c/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Andrew, if you are happy with this, I think taking the patches through
+the mm tree makes most sense.
 
-On Wed, Feb 25, 2026 at 03:51:20PM +0000, Catalin Marinas wrote:
-> On Wed, Feb 25, 2026 at 01:02:36PM +0000, Mark Brown wrote:
+Minor changes since v1:
 
-> > The create THP and immediately splitting it pattern is very clear when
-> > checking the mm behaviour on new GCSs, this should help performance.
+- Removed #ifdef from the helper function declaration
+- Used two tabs for the alignment of multi-line function arguments
+- Added "There is no functional change" to the arch patches log
+- Collected ack/review/test tags
 
-> If the first access is a write, the kernel allocates a THP from the
-> start without subsequent splitting. Also since 6.13 (commit 1ced09e0331f
+v1:
 
-Ah, it seems this has been optimised since I looked in detail - it was
-something I was aware of as needing some work.
+https://lore.kernel.org/r/20260224175800.2500729-1-catalin.marinas@arm.com
 
-> "mm: allocate THP on hugezeropage wp-fault"), we go for another THP on
-> write. It's still wasting memory and time to zero the full 2MB when
-> it's highly unlikely we'd ever use that much for a shadow stack.
+Catalin Marinas (5):
+  mm: Introduce vm_mmap_shadow_stack() as a helper for VM_SHADOW_STACK
+    mappings
+  arm64: gcs: Use the new common vm_mmap_shadow_stack() helper
+  riscv: shstk: Use the new common vm_mmap_shadow_stack() helper
+  x86: shstk: Use the new common vm_mmap_shadow_stack() helper
+  mm: Do not map the shadow stack as THP
 
-Yeah, for a shadow stack I'd be surprised if it wasn't cheaper to split
-than do all that.
+ arch/arm64/mm/gcs.c         | 14 +-------------
+ arch/riscv/kernel/usercfi.c | 12 +-----------
+ arch/x86/kernel/shstk.c     | 12 ++----------
+ include/linux/mm.h          |  2 ++
+ mm/util.c                   | 29 +++++++++++++++++++++++++++++
+ 5 files changed, 35 insertions(+), 34 deletions(-)
 
---JCpLj7aWj71R06c/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmfHukACgkQJNaLcl1U
-h9BAtwf/eJiuRiBLDlc1QhGdxyYX5xad4l0NQG+kUJtFKdtf8uirsqJnCujt51Qr
-oi3hYyDUFz4O/Z2t1tz7HZEzqsNg7qqSTquQry5J/pz+GNx68119fyq6YT5f17cW
-KKZ6KgWRGOfLhml3l2nCxrXQRZ/tLSx1EHnN/k7n1ZufpMUFxYwRJQhY57kNKZ9y
-mml970ixYEC23p4sl5MJkjWi2zFgLaBDs+aIrz/Sg+4Ge6VIh6FMFqVMuuHQJGJJ
-3tfqiXcu6E2oCNv5uBt4XDKdDpxODdmi4GZfK9k6A5LdzZltcIxpv8PM+Lwc9pps
-o5lAL+DVMVgg8sUCGoEI7MwS7QqF9Q==
-=6VDG
------END PGP SIGNATURE-----
-
---JCpLj7aWj71R06c/--
 
