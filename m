@@ -4,144 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F94FD45F8
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259C7FD45F8
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4086B0089; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
+	id 484186B0088; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 461536B008A; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
+	id 431A96B0089; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36E396B008C; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
+	id 35E956B008A; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 219886B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 254BB6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2BD28C3A3
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:06:31 +0000 (UTC)
-X-FDA: 84484363782.10.9D0AB59
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F3A2A100011
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:06:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LI7Nut8j;
-	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C58BF1A03DD
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:11:15 +0000 (UTC)
+X-FDA: 84484375710.10.55403CC
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DD45040010
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:11:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="DnStfq/t";
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772057473; a=rsa-sha256;
+	cv=none;
+	b=6XdbjxKR+8hHiDOzJDgtg9rWjVEt34ZWmjyRN6BiT63Qd+MXwjXT1BEui1QPRVI2Z10QGa
+	QhG2FUGuguNAAofUs4NhodAiMjewA37isMRYhYUQEHcEdDvUbl2SlJSyeCd6rH7LEgD34h
+	QSPNbvcEBYJj7Ba7TM/gTJFAdj2jc9E=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="DnStfq/t";
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772057190;
+	s=arc-20220608; t=1772057473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yKxFO5jbcj0n3yx3uCDHTRhkwPsNZ/ADjqKpvoexazc=;
-	b=Tc4RCqQJVQ0PYRKYqJn0lux6jiwe6NdEbDlwLXySLhayOUhPlaNAlmbxy/i9NwhlIaGdNy
-	JRu7EMp8H7IQExT+8+2dsMWR/KtcS2WX3RpDRvnVzUZdc5l0dmCuNPPUga9nnXbfGgJztY
-	TGwU15S1iWVo+NuPhK+KcMKcLN7yT40=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772057190; a=rsa-sha256;
-	cv=none;
-	b=jrT5e0VU/7XbkoIX8TE4ldLUUw/LSPi2KrHFrSaKBGTwUxQYlgp1yOS4rthezt6F6kWvMp
-	6SDa5fOEqeuxcOQKLJ+j7YPbCZIIA7H0ImITmBi49YQjEcd6+FYuCGVtQf2bFC7oXVSqQ+
-	LB8aCRU49p9ThXFOvPHkEDPu7rcQvuA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LI7Nut8j;
-	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ada9e4ea32so11255ad.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:06:29 -0800 (PST)
+	bh=vU6GlShc4/RKkhIbjvbyyJHXZFOxo4/Rb7lB1rnFGYI=;
+	b=E8jluA0i2mGstJvJJLJIu4jvlF44nl1hHAL6bURpgnsjGY0wc+iCUemMS81ER6b/aeQJ92
+	amHxe9VFpLSTrzU0LlP+4PR2cThLKJe6DqtHySRfzOdQYo4JO9hkdJ/6Q2CcRpeRr2V+vG
+	S8zmFonuHTwKvEWBr7VZZs+gmln/Cyg=
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d1890f7ee4so75209a34.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:11:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772057189; x=1772661989; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772057473; x=1772662273; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yKxFO5jbcj0n3yx3uCDHTRhkwPsNZ/ADjqKpvoexazc=;
-        b=LI7Nut8jc1fwfR0WAGkb6rRTFf8VKGqI4zAN1AnEM9repobhhcPA/VGbB36Jzy4yKW
-         17otl8d1/AzUc9584gP3ihoZPbrZBeqkiiB9f+/UMDpjW4FUQqUmdu9xoMmOvp5KHCUz
-         pJVo6UZW1rOpl8BZrVRVx86IhccLLfJEh45kfPIJeoiMkNpFMmcvotdyMxhE1X0RyTlw
-         8f9jR4XLzpaoFG3JYSyhZqTwNSYfPfvY3IBsjEycZ1JGkgCTSsjznE7vNSap8d3uqa3A
-         yvjSIaLJPk20MtGJkvUCr+6TPPZhGjfrqNo2RaSjC6I2DXymtqqJygMyvlAV9rpSAiuU
-         ARdw==
+        bh=vU6GlShc4/RKkhIbjvbyyJHXZFOxo4/Rb7lB1rnFGYI=;
+        b=DnStfq/tp8veVAWTEvdehhPZTZwQYLAOLtC3EZy2dWigg5pyGtyOPThuvPGqY57y0F
+         DGKf4v6pPRAaRWPbUCCeJ+wOIJGTFUeDnxVptdXrC0flQueVfkzvQZQ4EcXxEXEreaq7
+         BSUpfTkRhx+H+hFiYaKW46qxfG8+tRAzKj5lNWTcyYSBeeY9pHX4G7wxNykAMKqTJG1l
+         YNFjG9UEvcqsAGoXqxxtfTQDnpsbt1hlZuI2mlGaEn2K9bzpdwtRe9v1qPtfHtjr3QHD
+         dqraCBXbeb2oT5qb39WskTvcj7peSyym5VhqlwqtcrUFJHwQ2wECu/BCuAJU9ykQQ14N
+         kVeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772057189; x=1772661989;
+        d=1e100.net; s=20230601; t=1772057473; x=1772662273;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yKxFO5jbcj0n3yx3uCDHTRhkwPsNZ/ADjqKpvoexazc=;
-        b=RGXcmue/KQbbl/a4YBcTI9V9Hgy+MtQJRNFt101BsYHFKgI8oIiKdl8B2gZnIomEYg
-         ZJrCzl2pLJaoffgpFx6CTjJqwzqUH3yYOe4ghce7bBlmutBZtVEbdAzKqZXHLLmSfiRC
-         Okp2iCjhUJOoT2Xe9eBu1zSb+EoVBAQfti8+lsS7VOqbMnnUFFMnClHdGfobFfDUeaIR
-         xqkBPjdb/OgKImixxHXNqAsd36Sb7+P6I2cS+F3BAcClP6kZStWmMpUF/4jS8tEolfg8
-         Q2EjYYXkPSOG6iSJ1zGEK7KwlaDylDgzVrQerJhrB6B3U+wXdsLhPjIp+hn5pS2YWwXp
-         eIJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGEi8ppAd7BqLvi3qcII09G2qe18QOMXagXxGvdVStQl4UZi0wv5Llru0YU2j6dCP58iPivcU9dg==@kvack.org
-X-Gm-Message-State: AOJu0YzRutl3TINvse7+6c95IScJcNotGYXCYTH8KbMN/HsZSqCN/eqx
-	tnEBy8nSyPJ6bpN0fM9F3bj930WHi9LxPz/mkAtX1N0Q7NiP6lgLobeo+hZFKkMQzw==
-X-Gm-Gg: ATEYQzzbf/bfsCdcgsPSdO898STw557osLyXG0Znhceda6Bi56vPSHBm2eFQpbqJ21G
-	63V+Vceb5OagR2Wbp8m9UJKkwt9CrSvHGj4SA3b9ZSlMLlEftWpwkIfEi9koZ8k4vapCR5PbeBu
-	xmdC3OQiB5VeGo2xsjQloK9gu6g9Ba9HO23jWNdzd2waptVItpPoj7e6KZ8CYg/xFPJkVonKaoi
-	qjUp1FQrCKt6u413qbb21MeXqwSdgZcOmAJfrPgmorNpTpsyjNvKathnidhSwxJfuxFVN2QuWN6
-	9CYETM172EnHFuX4JAleXcGP2dRKjXa5V/IdFQ9iNmBwC/c1FKxtlxVQ+RcMzDMSsMbGbaDWkPY
-	xWvjgi+RF1RWHCMHvwh6QR8q4C1y4/8v0T7NoA8mRTFyXZ7JRnQzf4wGadG4JOTRDia+/c5orIK
-	ED8rtkgkpcKEx6fezxbm96jL0FVIxNgQoyqzxry3s07TGywArP5/eEjZ/Me9XEZsZM/1owVIs=
-X-Received: by 2002:a17:903:2a86:b0:29e:27f4:bac0 with SMTP id d9443c01a7336-2adf77c692amr672495ad.16.1772057188344;
-        Wed, 25 Feb 2026 14:06:28 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8273a05e831sm236247b3a.58.2026.02.25.14.06.20
+        bh=vU6GlShc4/RKkhIbjvbyyJHXZFOxo4/Rb7lB1rnFGYI=;
+        b=A/RqRlJCE3EuODXNZnWdcRocCMJsosWbTd2w7GW9uo23F449PoPVR7VVKWxpU6qMXR
+         ARb8hVEayYU8LRxuSOPtgcGNMwWanEV9sPIinXLb57GDolLxIPKu1pKJiXqoyDFAo+cm
+         204q7e2nYGvQoam+kkH115gID9Cfv6QkFmnNqCrxRLxxt6MDoR7hJzuWGwKSDuYjZYGu
+         l7QhAN8VwsDIWVAGOkw0RLXYMc5V41RVNGRENQE/cTP7XDpvdV8EnbZ67ZB5qYG8i/2H
+         JfQoyYg7T66K/eodoQlHMi/uLz70N2K6sE0e/Q3/y+ufghgWNHhjJ2m1VVIrXpx0+HyU
+         PzMg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+h3tSneCsH8YHW9iD0Y30NLCJi0NhjqtU9fbRzWXuEwJYE5Fjf5w/ERR0ejcB1/DT0a5kqKKOLg==@kvack.org
+X-Gm-Message-State: AOJu0YxUTdVdvkeK1VB7eYKlkeZlFTpHbltW76VLC9/IA6V69sJ3flBl
+	M0BZiV30RuYlI9b4DpUazsNIGiA0IaySK3EGWmnwhZN3dkWJsZT8vF8w
+X-Gm-Gg: ATEYQzxfnex6MpO8HPlhoGF9tEOvBrOMSWFu3YUIpxkv06rqWZWBA2J2Q6qAMngE+Ec
+	rs4tTfW8yy1mpIUTU10k8+i9tJXH/GXTU+hiEBSix5V/ux4lZAjy1Id9xYJSTHvpqOko68+f2A6
+	5fDz7YPPuNrTFABFgL9QXOwc2lTnnUPqoYcaO92o4uv0xO8vKpoDyPqEYHM3ovrIzGidSMHZm/p
+	50T7HbQSWN14qRYVJBbWH+mfebG+Vtll94Ab86N24N3PAfnRItrdv8SMUgp63sDab+uhpY5d9Kl
+	f6nEgQP9TtsoceodukOxMQ6o3YJ+ivN8SGLYpZgzVJBRyoaPoqnVt3nX5hpa+fVDLdp+pWf0ujs
+	qqZ7AHbQme4c6QQ17jHxincC7JDRsSv5eSyCy80Bjx7y7PzwKOIEnnXBykj+meoEbyQiqj96RBI
+	7MmyJMf7YPyQaGJBAu4gpHXByyNZV2guFUE09r9A==
+X-Received: by 2002:a05:6830:1b78:b0:7d5:2c30:9fba with SMTP id 46e09a7af769-7d52c30a246mr8551076a34.24.1772057472770;
+        Wed, 25 Feb 2026 14:11:12 -0800 (PST)
+Received: from fedora ([2603:8080:10f0:ab80::1382])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d58666f30esm175108a34.26.2026.02.25.14.11.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 14:06:27 -0800 (PST)
-Date: Wed, 25 Feb 2026 22:06:18 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: David Matlack <dmatlack@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
- Update Orchestrator
-Message-ID: <aZ9yWlcqs2b6FLxy@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-5-dmatlack@google.com>
- <20260225143328.35be89f6@shazbot.org>
+        Wed, 25 Feb 2026 14:11:12 -0800 (PST)
+Date: Wed, 25 Feb 2026 14:11:09 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
+ __pagetable_ctor() and pagetable_dtor()"
+Message-ID: <aZ9zfQU6xeTQyt2T@fedora>
+References: <20260225002434.2953895-1-axelrasmussen@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260225143328.35be89f6@shazbot.org>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: bau39y4rss8mqaoz7pnmhmkwtcp4ras8
-X-Rspamd-Queue-Id: F3A2A100011
+In-Reply-To: <20260225002434.2953895-1-axelrasmussen@google.com>
+X-Rspamd-Queue-Id: DD45040010
+X-Stat-Signature: xpxmpsqaw8mr5qx1qotjk6qbnxmr8u7k
 X-Rspam-User: 
-X-HE-Tag: 1772057189-884197
-X-HE-Meta: U2FsdGVkX1/oIYi987kkivNPXbbGatr4bG/idqk5mX9uU8IPHyA1QvHDlRXRY1qOg7eIaVPwl5xZ2Jx8/8O7DeDCh2wU+dKxuTQYuCMbIpx42HcGIaVYmqinGAC1oLo1FJ8W5uotC+OI/cAhCbZXuXCrtiAnpftOEC5DuAYzphedYSdP9TyJlnOGtWYmUQRhCrCnTFZ8QK7wcN0TmjJfNTxm4nozXlFWT/37pb0fYBKivhHoaL+uWW1UtckWj8fVb41+GIBCsGGlDusg3JbyNtnbUDOkDS4bV1dSop0CxHBe9zZ1PhxxC2K4LL/W3d2Ff4Xb10zON/3K2ucjsLlsAQ875qjYx3L26OfaqEAwHfZwlProJ8wFzY+t0r+S3AdYQkariTDZq1MhObedmIa5fEAnAq09TuHvxfeUgnako2BsTjY+Re/7Jr2ElUDiLb7OjUS8vjejwPDeOMtJPXaqSOTu669h8xSLqP5/C7qQXuID2cYBTPy7T1eSJCiX/651yYLiGY3/wJuLmX5S8BQ7tC+emh5PxBAgB0yGe3ETgwh1FO2hPqmrDNl20iuvSJVSDgjLGmJIL+XsJERRuZmLBX4DGwRoC1zpMdrvkWU24nPHesHsLmaWixAWGBz3E5pniMplt2YkXTFm/YJDiQ0syk3F9ZFrhX8rPUXWEIWeMdy8H33Dl1OdWLJMzALYjgeqynUJV+dnWqHsgxLV7XA4S7xtZE7unbWFlrTjUnDPJmFXS1rXIia+YSJ6T3SVYt9BN2ATvODwKsPrAGQRiL5yezrmvxhcu6BkobsziMNGQaRGoATN/N91joWJYWyjT7yVi+SzL/IAnuL76w+24QQAJfMrdvH2JG9l4Gqy2RFzssUuj/Q9UCuwVEJhCLpnKQW2e8NbGDYM95SkumZQeCUXO1yvLqZUcImrNPHf0+h0tpxVLmf+eqU61xhXrmlsDZEigkikiPaEp35Lip0ZTN2
- pq6Gmi41
- Z0SFW9DDcPHM9dDB0vnJKe7mcUIQymkskccTwE6nHly4eHQDrUCbD05MmPwoCGjgHeN2Ks6Ds4aES+R3kl8d91TQcCo/kcPGXRAQloeiICJ24C3tCzOkXZHhRGwIm0+OCu0uXI0+wvYfx6o5Zg+TW2UhEX9o6KjsFrbxoP16Z8ubiMlvCjWwEBcrZs+/8oM1t/pM6D7nboVyV833FBM195UZ8/xzGQdXIFRE651q1em++j95Ywlt8BQB7s6mskgUEc7g4cCzJRPmU1/TzX+12VyiA17eZpHmluI2QCVVPm/QZ1x4HB0jWHg4BAl1/gt+CoBjoezt+h8T1CLQQd1wQTHa8kiGiiU3Mo8AH
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772057473-437052
+X-HE-Meta: U2FsdGVkX1+JOKP5stLqPffKesV4Q1XW5rG6ZkNwDzPEbK0IUnorJDJba4CktQ/+wm9F7DIofViJixrqce+gIr/kg694BoSghyolDsUGxw+YgHyY/8aAP7/JobL3zhIo+s6jcJyRaIZPMXmg0W9ZC60uND9wYMWS+Ai5iOupkN91VbbhMd0JglyXIlcUvd7aW6xyF3N1O2klJQADByydO9DFySKTC3ppoZi2hVGFnUhBzPW0I8F3nw93ivQ/2rGo0FpjRZYaPxnMmuITP7LKHh9TyCForFYU+O+Q8gCkrQcMNu1f5OY0bPVUvt/kYUNbcbdOxBJenRgkyqBuhAPpQ76e3iG+qCCeH428yv0uyNuhVBoKrWqyCnRYtqCKG9JOrDgq3J5tILb+KhGgpYaljuu3atGXaXiiN3oZuQk4i+YVgx5JVitt+NYqx4rr3Fv83kHsQChBuQzDh36LcIdba/jrGz1gJ/zNnrFdwXfLMXDDDuiXMHI/XlP/Wy6Ao7TH9J4KjREVAMMGF2dBM0Z0QEISttw5x/GuK8TnvifxKJQp5s3OZfRYMSvkmzJHkAhXEGiZwNq/M3lwtv4cVcQuOHYoOF6iScG/qUw6qRU3mgJZ405Ao+MJJipI0rvVHWXXGvs03PVtDYBbVN9UXSQkIcMtRDWs4oy3jBReF65TkjB+b595d6aSP7e//9yEMOLCKUQTQCjnPGlvM6Yx+I7U0TRFeKtagyRVLQkEXUcm4TjcgAh/LM0piYBakGS8iaOOag8zFi0tILAgepk4cFsQbyjTXcABzqACjkPO6Xz2JtTtK+lzNgFVwFa/U6lWo0E/wBlXmbsaf0LDDIOnoMUXK5tAh9hJ5hxVEcllEbc4+Q7+pxt1DsS16yR61o+blhiS7c/jcCG7ml7Zi88ZokbzKj+rsKglrcFxVQJfAB3L69jxgOSqD7tb2BtDmxWCCVij6f1KJ/xIt/TuA3z5Gvx
+ gcciUPwn
+ fdGE+HPokgcAzuI7lrT5kdnKbt266jt7JnYbqC3BBwBsWEk7Drd3cbHQxq0MVDXbLA9ODyiuuhlJwEc0yhF9f+FXW9wLv1Opwy759J/j7QuczIEtS/+YICuHzEeuUWopYT2XxwrMJjralaq59BHhLAEHP0pNQ1hTY35h54Qyd5uT4RNfoFYk0cfezjZ55Cazp5x4bSjfKxa0LEU5Gbsxve9gyDrt1MbqK1n8FkkDrqWftkju3x18UDUEp2gDLRdekg4imk8G6cdgDqFYSN723+YmFrd/ZKuqLJjm97MJqODJXdKZqdrKj/L6kSdv2GdOtdSxY2L13T6aeG5vTbYVdpp3vSTOdQ7PM3mDUdFXu9S4R9t1zT0xB2RMVOOxv7OrqnZiwUm66VcNBOJk237ctqP/vQQPsFGcZ/zJKBHCuoTklgC9Q5Ui7c/A24izUsT/qAhaGPuy0PXSDA64SHwX7KGj/Ca3agXFakLsMtpJwUyJrx+9DrLtm2Hv0VsddSbGDkVzGxAUEkL7U19bYppEKzl08kJsJ0g36MCZQMCC1tT1loB9t0HwtPQB7dbIj4CS/JW+ShlugopMcCHntKBSk0iFHWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,105 +124,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 02:33:28PM -0700, Alex Williamson wrote:
-> On Thu, 29 Jan 2026 21:24:51 +0000
-> David Matlack <dmatlack@google.com> wrote:
-> > diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-> > index 0c771064c0b8..19e88322af2c 100644
-> > --- a/drivers/vfio/pci/vfio_pci.c
-> > +++ b/drivers/vfio/pci/vfio_pci.c
-> > @@ -258,6 +258,10 @@ static int __init vfio_pci_init(void)
-> >  	int ret;
-> >  	bool is_disable_vga = true;
-> >  
-> > +	ret = vfio_pci_liveupdate_init();
-> > +	if (ret)
-> > +		return ret;
-> > +
-> >  #ifdef CONFIG_VFIO_PCI_VGA
-> >  	is_disable_vga = disable_vga;
-> >  #endif
-> > @@ -266,8 +270,10 @@ static int __init vfio_pci_init(void)
-> >  
-> >  	/* Register and scan for devices */
-> >  	ret = pci_register_driver(&vfio_pci_driver);
-> > -	if (ret)
-> > +	if (ret) {
-> > +		vfio_pci_liveupdate_cleanup();
-> >  		return ret;
-> > +	}
-> >  
-> >  	vfio_pci_fill_ids();
-> >  
-> > @@ -281,6 +287,7 @@ module_init(vfio_pci_init);
-> >  static void __exit vfio_pci_cleanup(void)
-> >  {
-> >  	pci_unregister_driver(&vfio_pci_driver);
-> > +	vfio_pci_liveupdate_cleanup();
-> >  }
-> >  module_exit(vfio_pci_cleanup);
-> >  
-> > diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> > new file mode 100644
-> > index 000000000000..b84e63c0357b
-> > --- /dev/null
-> > +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> > @@ -0,0 +1,69 @@
-> ...
-> > +static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
-> > +	.can_preserve = vfio_pci_liveupdate_can_preserve,
-> > +	.preserve = vfio_pci_liveupdate_preserve,
-> > +	.unpreserve = vfio_pci_liveupdate_unpreserve,
-> > +	.retrieve = vfio_pci_liveupdate_retrieve,
-> > +	.finish = vfio_pci_liveupdate_finish,
-> > +	.owner = THIS_MODULE,
-> > +};
-> > +
-> > +static struct liveupdate_file_handler vfio_pci_liveupdate_fh = {
-> > +	.ops = &vfio_pci_liveupdate_file_ops,
-> > +	.compatible = VFIO_PCI_LUO_FH_COMPATIBLE,
-> > +};
-> > +
-> > +int __init vfio_pci_liveupdate_init(void)
-> > +{
-> > +	if (!liveupdate_enabled())
-> > +		return 0;
-> > +
-> > +	return liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
-> > +}
+On Tue, Feb 24, 2026 at 04:24:34PM -0800, Axel Rasmussen wrote:
+> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
+> But, these two APIs are not interchangeable: the lruvec version also
+> increments memcg stats, in addition to "global" pgdat stats.
 > 
-> liveupdate_register_file_handler() "pins" vfio-pci with a
-> try_module_get().  Since this is done in our module_init function and
-> unregister occurs in our module_exit function, rather than relative
-> to any actual device binding or usage, this means vfio-pci CANNOT be
-> unloaded.  That seems bad.  Thanks,
-
-Hmm... IIUC the concern here is about liveupdate policy if the user 
-wants to unload a module which was previously marked for preservation?
-
-AFAICT, In such a case, the user is expected to close the LUO session FD,
-which "unpreserves" the FD. Finally, when rmmod is executed, the __exit 
-(vfio_pci_cleanup) calls vfio_pci_liveupdate_cleanup() which ends up 
-calling liveupdate_unregister_file_handler(), thereby dropping the ref
-held by the liveupdate orchestrator which allows the module to be
-unloaded.
-
-I think we should document this policy somewhere or have a dev_warn to
-scream at the users when they try unloading the module without closing
-the session FD.
-
-Thanks,
-Praan
-
+> So after this change, the "pagetables" memcg stat in memory.stat always
+> yields "0", which is a userspace visible regression.
 > 
-> Alex
+> I tried to look for a refactor where we add a variant of
+> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
+> folio, to try to adhere to the spirit of the original patch. But at the
+> end of the day this just means we have to call
+> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
+> accomplish much.
+
+I recall making sure we had a memcg_data member in ptdesc so that ptdesc
+could directly reference it. Until we have a generic version, reverting
+this patch should be the right way to go.
+
+> This regression is visible in master as well as 6.18 stable, so CC
+> stable too.
 > 
-> > +
-> > +void vfio_pci_liveupdate_cleanup(void)
-> > +{
-> > +	if (!liveupdate_enabled())
-> > +		return;
-> > +
-> > +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-> > +}
+> Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
