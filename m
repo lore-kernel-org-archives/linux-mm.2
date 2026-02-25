@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1C72FD3769
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 15:51:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 570B7FD376C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:04:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CBBF6B0093; Wed, 25 Feb 2026 10:51:29 -0500 (EST)
+	id 48BA76B0095; Wed, 25 Feb 2026 11:04:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A3F66B0096; Wed, 25 Feb 2026 10:51:29 -0500 (EST)
+	id 455F16B0096; Wed, 25 Feb 2026 11:04:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F12D26B0098; Wed, 25 Feb 2026 10:51:28 -0500 (EST)
+	id 396846B0098; Wed, 25 Feb 2026 11:04:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC2E6B0093
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:51:28 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8704EC2431
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:51:28 +0000 (UTC)
-X-FDA: 84483418656.21.6401D3B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E5E50100015
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:51:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 24AAC6B0095
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:04:03 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5593C080A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:04:02 +0000 (UTC)
+X-FDA: 84483450324.01.F62E245
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BE6EF14001F
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:03:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dj9Dk53q;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772034687;
+	s=arc-20220608; t=1772035440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w5wd1fZsmh9UNN8+BLmZOG2AsYoZQcf+cyz1/pxL0Ec=;
-	b=sjPBD/y6FVVKz7GvOkSnRSEGxU2H5HsM0FeZGMoE0w0zepQlJ15Tydf1vsFobywNrtdcaM
-	Z5SwOVickfzOdxaLJ+nRUyyuRlbaMxWHRSR5JYtQwbT9iQFzV0OLKjNP9B3dQR+MhsBaHw
-	Ar0DN7wxazBRGjzGDi897D3lWAnX/4s=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0J9g8glZ+C9CG7kUr9i2GkA6jzB/Q/+QP9Ox+/ZoIEo=;
+	b=Z08T1/1vGJRvOefaynxlshsxpm5R89nGkX5TRbaLftL6zTvpM2USmEFtUmmxs7Akd4lIg0
+	gnIMEE4TeRgrLjUc/QIJh//djLYcDITX0q/s+SWo77D6gxltsYibKff2DaeKcmuv/KliGe
+	T2vsXMbNyYu9GmBcO8SsciFLHBADPYc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772034687; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dj9Dk53q;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035441; a=rsa-sha256;
 	cv=none;
-	b=IZNy39cpR7rkCYexGewppjvIIWv3E+TVUoS6veklAvWDWDliAcSIlFwEB85Q1ErFIbjLzi
-	iRZF/k4pm4VM0et9AtIpF3Tf0w2X4cwjp9cOM82BINWjSjhlJDJhrZM4w+WmeNJoayJ20A
-	wJsJzyY70JBykVeVTY3V8L77zuTduLo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6415B165C;
-	Wed, 25 Feb 2026 07:51:19 -0800 (PST)
-Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE9613F62B;
-	Wed, 25 Feb 2026 07:51:22 -0800 (PST)
-Date: Wed, 25 Feb 2026 15:51:20 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Mark Brown <broonie@kernel.org>
+	b=x0qLLXAeugb7knInZKgGlzsZyH6+rmwrP7V1eiQoa2X611iFBtbnE3Tblz+S5piFMlsbfs
+	9Q2mQxdP9pYBFS8buYp3ArVS12qoCE9Nw8CPdhjrfs5qhZd7NV5pbyqiqfUtqXkLBMKoqh
+	Sis1HlmGuIiUBeJ3cpgvZChsWEH7AZA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0J9g8glZ+C9CG7kUr9i2GkA6jzB/Q/+QP9Ox+/ZoIEo=; b=dj9Dk53qD1T3gEZZjGN45q0fZD
+	rQKifH55s16xa+rDffcwJr9feocDEB0brkJJxpJwJgJQ9uv9xFTbIPNpSTgDz+lEWJHXEPyVJC7nD
+	Y2DD3D+KwdFRDllP8yehqZYVfq2nIVjT4R9wLmXdivXqDf6olo23/DmmW42AVwx//Bs4pk3iPQ4qq
+	vhk+23SLbevluYXNxnWvXg/TVqyScR8gOXssjFU/rG3rP8QtQtriv5rst9CbUvCK2I7r8MrLvYWHH
+	bqsXwasdupeD2FfwhB3yeJ9LKc9Prz2LUsLCTRSa40+Ui9Q7jx+fTtBLfAUpPN1moyrGTMpNyeoZH
+	N4lDa15w==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvHMg-00000001Icb-2aQy;
+	Wed, 25 Feb 2026 16:03:54 +0000
+Date: Wed, 25 Feb 2026 16:03:54 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Axel Rasmussen <axelrasmussen@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Deepak Gupta <debug@rivosinc.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 5/5] mm: Do not map the shadow stack as THP
-Message-ID: <aZ8aeHpn_KElP2jm@arm.com>
-References: <20260224175800.2500729-1-catalin.marinas@arm.com>
- <20260224175800.2500729-6-catalin.marinas@arm.com>
- <5570c06d-fbc1-42c9-9b27-26211e8b033c@sirena.org.uk>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
+ __pagetable_ctor() and pagetable_dtor()"
+Message-ID: <aZ8dasxUYuuWF9M1@casper.infradead.org>
+References: <20260225002434.2953895-1-axelrasmussen@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5570c06d-fbc1-42c9-9b27-26211e8b033c@sirena.org.uk>
+In-Reply-To: <20260225002434.2953895-1-axelrasmussen@google.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BE6EF14001F
+X-Stat-Signature: 79tjganzdw1gf3bkfrp4dbi89njxr8k1
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E5E50100015
-X-Stat-Signature: aj7je7y61s4ssmnn4mps9rrwbhqgdm6q
-X-HE-Tag: 1772034686-486307
-X-HE-Meta: U2FsdGVkX19UaZ/8DPyp2TlIeQed8RrvWvJqLK8gxMwBQyPZwkJq92oB/ESNl4rZ4r9C7gWi1yhwY51mkoJ+J2cOH1K/L7KDCzTDN86LXVJH8taRu4WJUz1GRNOkW+AUVZZS9Aqf8eHYTfgH9x5IhOBxCSfy+5ZxADXznwyPi8nCprpMFH5HbCVt1xkfF4b+jKKiDcGyAmGlPg9r4MSsq7xC4BDqv3cDOrbSZt6RM+0d04Txf64zVpRnk2w392l5OMKRrMov/r/6Q4FIfCiOQAmxnpJdK1aEp+x+GgONzAEULGHiPj2SK+KMVoYd/kP9Zwn0dmtnmghQJ8j2unGaQ0PxD91x6ilsvML6VvsQBSYIczBWxvmGVO4bQfgiLep037SP4XPuZd4tqDT5YNiPM90F8jjMCoU4SdZVOMzBqWNiKT2SqvHmvbz4QPqoXjz5c/JnfzANX8m5syCB1GfSJu9lSe2xjzfHTKQCHG9mgsX3JXuXfkyiYOotnxxoZ/oUvpL2wvc+0TTLD4iPX1etYjn2I7jQzPcRbCO88vdVGu0p5+v4QbUGZ7IDg9sIQW+gLGAeIfY01vUWxjcUoXSrcR+LXcXvMgjO/OuvsVH6zljDQ0rW9ACGbYIHEX9jFqpSsqx61fe7698McOVM5D+GMi05TsKDUX0J2VaGS6cuNVllkvTovtwf63P8eZuF/p6V1k031t0U5USguwBv5/ijXb4PNbMXT0P6yCfyfh5Adm8XukoT8KzrT7NP6NG4TJYSR1F/YInj/DnFjUQXz60hdYRkkOclipr8yy7AZIGr8wZ42zf0StbcOrBB6d6amfRFgpE3LPhDxjsjlbNTvyhl5/ABSriDRy5/NGiweEKymImbks/OYdvzVnqe4dzZiP8RX+JstFbyXOA2NcoFb4Sm1rxx56M690gCuxOp9gna/fqN7gStAzy0Db8ueXupeTt8jaSYtPBlozzf9pLiG2s
- eqpDZ1HA
- iatNYCUP7MV+faUjRWX4l3hVSm/gpvTrdKZqFHT5L3Lx5xTwiHMPsJEXwhY9WIIw7zRf1UtOstyNlsfBz2mhdHeCvG4OGv8/AaKJ+yZCZJn3gUnBHJJHOBsCs5H+e2WskPXPhJNAFdxhiT1+5NKsBwSLzZygnrU/vG/Dy
+X-HE-Tag: 1772035439-310137
+X-HE-Meta: U2FsdGVkX18LDedTmeQ+6uP2xu159FRnwpEr0ubjyju6HpX2y/jgN2aDyeqOZMLFajLBoEx9CkkpolappSkf5ydFLzUUitBXuSwkN2s5asiXh6uvsPG9bJCyf8UCx7YWyFVqMhRtg0813sKPB2tLhYJ9JzhdRL5jM8lOZcbqpXjSp+rTMevWpP5NmWNnhIS3XlKaX/J5xr3uPKHeapXD/hmjDPWcU7Rolz1EejOXNRxRp18axowCMm2ZDRXystkzpypROJafLDzxHGpm2YCqAyFaJH3QOukDBIO4TAHTUf6zofJOfNwJ/XYw7baIhr+vsozrq2HV+Rpu7kSd+F8Rh1HUESuKTpLw+iXSTpfrEB5PhquvHHwokIHlpu0OhcEw/WaGINVHLDr9bJIQidrhzcMX6grHSXKVMKPghAAw+HXTQGsWvtJJk3LMvMxYO0hhEcqi8YXBIvWBp41h6cwBFyFh2VYVmgXvAoW08xfBp/b9+CEoYEIBim6vsZ2s0UoQFlBk++NZHxBx0P2I4jTyx6Q4kZK/KZolEbTL7fKivh3cfIWx89d1cdADoeRrK9dlUr7DGdBYNC2l1nPAa3WBrJ9CtnG/8UDMlz0XLMbEtg4oGfvUcOWdzda2c3/8oVn+kpECGmeXmfOulU2eQd68Gli6DUHnmCRbZGa7XJsf38lluGLpepHaohxFAPcpxpLVToCkyQFaRTf9DrXq2akb45YI3dX5P8Ta3hieK0lGrHEtjPlNScSUhaxT0X/RY23fJ8w6EUOBgRqitrcdu068UwjmSobbqavWjhmK4ixuNTsDkAuSJ0+0Nl2O3OXz5VlYfTqcsGGyUnohT4O/7ad2QA7PoFYHhe/5naOSXm4B9NKQxRqEeaPfMHkN6kB+I6tV03qktgovoaMMb5Kh2v1wJos1o9ZJjs5Pz1k7GOFDfrFeWhL8OiugRDBbXSkXeShuhI6dZ3buidkcGADM52T
+ vPth91aG
+ B7i5NIbnX/+6HLyIidGpabRptVfo3CIlr6sXQfjSy7gWCmRYve0aoD0Ayfy4pA68rLyUVnpUPZ5Q+X87i8bqETQTK2vLcguZC7G1HCFW1wHesQVz4X7NH1xUdPw1oDMCK5VQOW/m4MpqQ/nVhGfBdCEuAtCIr+KTw6cdfL6MKhnsuZlNjPMi7AvJ3DetnS5XwSiRPK+KC0JHeEu98stBn+k15GBA/TuBvbvOcEglXeRXix5xliyEm+CcD2r+kvZZnNlH9IjGnW92tV+Qb1qkBoC3FWd7xwAmiwN/vX6dKk8yoeFY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,29 +95,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 01:02:36PM +0000, Mark Brown wrote:
-> On Tue, Feb 24, 2026 at 05:57:57PM +0000, Catalin Marinas wrote:
-> > The default shadow stack size allocated on first prctl() for the main
-> > thread or subsequently on clone() is either half of RLIMIT_STACK or half
-> > of a thread's stack size (for arm64). Both of these are likely to be
-> > suitable for a THP allocation and the kernel is more aggressive in
-> > creating such mappings. However, it does not make much sense to use a
-> > huge page. It didn't make sense for the normal stacks either, see commit
-> > c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE").
+On Tue, Feb 24, 2026 at 04:24:34PM -0800, Axel Rasmussen wrote:
+> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
+> But, these two APIs are not interchangeable: the lruvec version also
+> increments memcg stats, in addition to "global" pgdat stats.
 > 
-> Reviewed-by: Mark Brown <broonie@kernel.org>
+> So after this change, the "pagetables" memcg stat in memory.stat always
+> yields "0", which is a userspace visible regression.
+> 
+> I tried to look for a refactor where we add a variant of
+> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
+> folio, to try to adhere to the spirit of the original patch. But at the
+> end of the day this just means we have to call
+> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
+> accomplish much.
 
-Thanks.
+Thank you!  I hadn't been able to get a straight answer on this before.
 
-> The create THP and immediately splitting it pattern is very clear when
-> checking the mm behaviour on new GCSs, this should help performance.
+You're right that there's no good function to call, but that just means
+we need to make one.  The principle here is that (eventually) different
+memdescs don't need to know about each other.  Obviously we're not there
+yet, but we can start disentangling them by not casting ptdescs back to
+folios (even though they're created that way).
 
-If the first access is a write, the kernel allocates a THP from the
-start without subsequent splitting. Also since 6.13 (commit 1ced09e0331f
-"mm: allocate THP on hugezeropage wp-fault"), we go for another THP on
-write. It's still wasting memory and time to zero the full 2MB when
-it's highly unlikely we'd ever use that much for a shadow stack.
-
--- 
-Catalin
+Here's three patches smooshed together; I have them separately and I'll
+post them soon.
 
