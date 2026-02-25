@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ADA4F357DB
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B4AF357DA
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D99D6B0088; Wed, 25 Feb 2026 02:20:48 -0500 (EST)
+	id 421536B008C; Wed, 25 Feb 2026 02:20:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9836B6B008C; Wed, 25 Feb 2026 02:20:48 -0500 (EST)
+	id 3EBFF6B0092; Wed, 25 Feb 2026 02:20:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8936D6B0092; Wed, 25 Feb 2026 02:20:48 -0500 (EST)
+	id 321FD6B0093; Wed, 25 Feb 2026 02:20:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 75F016B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:20:48 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22F0DB9150
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:20:48 +0000 (UTC)
-X-FDA: 84482131776.25.187340D
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 220544000D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:20:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SSsSFA3e;
-	spf=pass (imf11.hostedemail.com: domain of 3zKKeaQsKCN8BDLFSMFZUOHHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3zKKeaQsKCN8BDLFSMFZUOHHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--ackerleytng.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CEF36B008C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:20:50 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA3431A03FB
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:20:49 +0000 (UTC)
+X-FDA: 84482131818.13.CCCD84F
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B7E21180008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:20:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=dNmoPCpV;
+	spf=pass (imf16.hostedemail.com: domain of 3zqKeaQsKCOEDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3zqKeaQsKCOEDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772004046;
+	s=arc-20220608; t=1772004048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=d6TXtnvwLicbHQpLQAZLl5+hwl+mc9lbUmp9ZzO2MHE=;
-	b=pqxknAtdvJIzgvPd3I/IPmooVwaOe+eFd8VS1oumU7cDqE+ggTa6lP6KgMh5WrD5j0qkBj
-	mkcgKOyWjq3uVg2oziLyGYv1xd2zaqc3nI/CfjoIP27vxa0cML6E3YFo+uQuTx4Wzjbwqd
-	kpLaDgl930OAA+iEoy64YWZpvXvjv1U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772004046; a=rsa-sha256;
-	cv=none;
-	b=EvK38YWwcL6aywao/OGHMc2VR/HTsBhiAd3+aYWvfrr0aaFbXmBr3hFlzJBxBrAf5awGL3
-	lukLIFOihoI/gPEVMK75WE5n4EJ/Fcldu6ehW15oLcZJSZPg5QPy5GsEQ+LpQSzcIz8R8t
-	Lt/gkaWLH10DmmlH3NUHM6NeaGEGe9I=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RxvzdHDHaSHLdjnOnYt7Pz8oF0XFcbFcMtFEzYFn1AQ=;
+	b=nq4PKtr0xvhbXZ2I7pzsS5tkUkC0ZytRLOxNdmgzUPh2/7PJ6MJ4ierGfDYOrJ014DPqAu
+	1sGahEptoveqQjd5y1A95gcLNL4e7a+tTs9S6LH78rvMMSeCCaaYINacumMEZ5Xjmzlq1X
+	lMMVDpkvPVFIgDUdx2t01HSMKwZYco8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SSsSFA3e;
-	spf=pass (imf11.hostedemail.com: domain of 3zKKeaQsKCN8BDLFSMFZUOHHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3zKKeaQsKCN8BDLFSMFZUOHHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--ackerleytng.bounces.google.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=dNmoPCpV;
+	spf=pass (imf16.hostedemail.com: domain of 3zqKeaQsKCOEDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3zqKeaQsKCOEDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70eb4d56fcso169525a12.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:20:45 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772004048; a=rsa-sha256;
+	cv=none;
+	b=CnssaBc6h40LPG4CteGPx7Rnywilc7N0+Xehwbbi7cZ4vD8cuDg4LrWnNmFEcekHB/1jcS
+	OIEwJTJKP1ou2xwKWtjLSKkPW5B+eiZ/tpk2Fzk4Oz4dyc+dMk/FvrA9js1wZJmIo1UX94
+	zFcti13MZIFQ/9gaPMtROz1XGYicRnw=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aaf0dbd073so77078115ad.3
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:20:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772004045; x=1772608845; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=d6TXtnvwLicbHQpLQAZLl5+hwl+mc9lbUmp9ZzO2MHE=;
-        b=SSsSFA3eFCAk/N6cj3PwvxxwoFkDIrDNXke/PNjdNk3cvhLdGcC/LYvlUbQoYhMpjI
-         IuBoVtzJIEQuP8Jtjptj5fo+joCSSx7MxdW878SFGaqKZTK52h0hu8IICB6bSWSWUCJv
-         d8hHSSUqEZR4yDg3CvKo5GKEasVzaWtiilcitKp/YhIPBQT9liwn1irusbxJI/F4FWTe
-         cGoxab+AMmtd6nTzMYBhVdvmylNoAizlCoVOp6imI0xmEtnUje7+sOsuywn+Jft0QrDT
-         iPwI0DaMAUXZDGPfnY7m84v0ZY3beIDVLPNwrTTM0GLWBjTL5cBKG0DsrZX8tnXwqJfs
-         QwfQ==
+        d=google.com; s=20230601; t=1772004046; x=1772608846; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RxvzdHDHaSHLdjnOnYt7Pz8oF0XFcbFcMtFEzYFn1AQ=;
+        b=dNmoPCpVgE+9Ma//EDbICkYTMwlBenH7mSihlDfOTBXQMA0Y+g54MILwGu08qEC3X+
+         npNprRyTL3OYYhPgSTOa96LBESr4uUI3exYn4ZIGSyeHl9eAfcit65kWPcCYPf7tnnLk
+         bcKR5UNJdQxU9cAquSeK1vUepU3Q6eg8k/YlHcdjd1+SioCxg/CSCnny2jpiAMDsF6GS
+         aSxSO0gG3LshUt6cHadN2cYYCZHYeqVwI3RTUg38LEL8w7TYgg5BXSTzmohqjmZdphYb
+         f8fS2Jou10TfXL8erremqmuBwhIK6CkMU6uJYhpHNZCKfq1wHDBsZQQjjS0/z5EixG3F
+         4yCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772004045; x=1772608845;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=d6TXtnvwLicbHQpLQAZLl5+hwl+mc9lbUmp9ZzO2MHE=;
-        b=Utum/JPRSg7nA15KWQ1WA0zIcxam8c6bMLJokVGeiazY+5g9qppQysBa/eafmcNJT6
-         95/2l2oOZx4qccsN0rkiYhIFuBDe1DwwES/gMeTp5kH1cL3DqDCarLYbzDExu8VdcPry
-         x4JKJV+mbpWP3DqpcxjPKC8Sbf+huWbFDC2lkidAwgWtwWXuIVTXSakc2TFMCgC3Qrzu
-         51seXtw30qWLifP+jKGEA+/asYrhiqC1wXthiOjVlH5qircEWsWdSRn9F7UoqFU5WdzA
-         AmLWYY5k/UrEmmdMjBrt8GcqoPNMgq7SJSU4/PPB8tt/YsPHF3RXSpoV5xXiEXibv41b
-         f+FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJW4trGuvLBeVjLS4tQwCgDPWDirU151vH7K/zLsUWHUfXtxJPGAf7OKboPtdLTKNmC2+WPeRsUA==@kvack.org
-X-Gm-Message-State: AOJu0YyGH5ShavR2I5nydk2sm/w9RLuWq7nBALYRKW/CzTCwp1acQyl8
-	RUnXdHGvod1GAZk0VlGH2he5HXcOTwEujjIr9fBK6VD5MOnCM4zQBYrGQnLa2QwJXLQlV97q4od
-	Qd2VemYN4PVwnzLheMUQ9pjG/vA==
-X-Received: from pfrd8.prod.google.com ([2002:aa7:8e48:0:b0:7dd:8bba:63ae])
+        d=1e100.net; s=20230601; t=1772004046; x=1772608846;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RxvzdHDHaSHLdjnOnYt7Pz8oF0XFcbFcMtFEzYFn1AQ=;
+        b=f/GHyfj456V+1c/XlRBSMFcy0tFHhxKUOc68HrI9E8ZtTLDR+IatNWAU+6RIEfZhZb
+         SYExzbWFcp8ej04FpP4Zm4AEMzHy3QTQ7iJnsBvb5OV+lJ4OLTFz7W7nTejGxTcCCh+I
+         13QKhWHwyMbaIk1V/cv+FLylXngyUSplo+GX34e0HgtRJxO7p20UQcj9G8XzKLZT3lNS
+         kNXMM7/2oya81JNUOG8US+OlTs6Hcztgp/slPhZ5Kq/MZJGyOmtcDpG1hcMvJz2VICn/
+         uFTGNVWV4m5N7vunSXJvXVRf73bXLJ3e4QrLvcTs6V91aYFvhHZq1JfnlsMR6Fc6K9ZC
+         ljwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVQ7zoIKM/6pgqcSq6qx+TvxCl2Au0ZlkgzdPe1ru5jfQe6NdGecQS5694wYKmuX7uxGnRkjNVog==@kvack.org
+X-Gm-Message-State: AOJu0YxgrhKrisD1nrK+eQyROZvRojUK07p3w6mwUiVdYEuqGheVPY8a
+	i0l5K0iNUpWkmJW/cTJgVyPQdWKSabIRJess3AnD6BSFNx9TI8xrWCvdD8+O7iq5UWm/puVdGqU
+	uvimuaoAqYf+8aZLsJnN50LCPXA==
+X-Received: from pjbjs14.prod.google.com ([2002:a17:90b:148e:b0:358:df96:881])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:4b48:b0:824:3cf6:3fb4 with SMTP id d2e1a72fcca58-82724ad3d76mr1244872b3a.32.1772004044566;
- Tue, 24 Feb 2026 23:20:44 -0800 (PST)
-Date: Wed, 25 Feb 2026 07:20:35 +0000
+ 2002:a05:6a21:2982:b0:35d:53dc:cb61 with SMTP id adf61e73a8af0-39545ed4ecbmr13199551637.24.1772004046254;
+ Tue, 24 Feb 2026 23:20:46 -0800 (PST)
+Date: Wed, 25 Feb 2026 07:20:36 +0000
+In-Reply-To: <20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAMSinmkC/x2MQQqDMBAAvyJ77tJkgy30WugDei0ekrhqsImSF
- RHEv5v2OAMzOwjnwAKPaofMa5AwpQJ0qcAPNvWMoS0MpOimiGrsI0eUBd138qPg3ZjO1K1WpDW UaM7che0//MD79YSmSGeF0WWb/PB7jWu8Jt4WOI4T4brp3IAAAAA=
-X-Change-Id: 20260225-gmem-st-blocks-733f35d10211
+References: <20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772004043; l=2746;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772004043; l=1374;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=1KBuBd+iCF9NBYsLqHZsB0ZWhDlklDnzPDb6M6VWVQ0=; b=Zz87QRaHSCeDiOsHB8ebvN65q32EcPSJmRS6Ln83VHPYZkFWp0MlXR9c101r0+U45Euo2bPtx
- hkGErWsyijFCg09E6FZl6oFb5HuZujG5xLp0UOWWG/tslIKNb5ZEzQL
+ bh=ZMQPV7Y8H88+MGQYlAsk4qj1ohZaV8k9fkkraEOtToU=; b=UnVR/uLYP7ieBpWEAadpA6sROUIT4SgE39FHR7vRTz9HvHgkz8Qjcpq+AL3FU4w88yU1gGUOS
+ sJFEPjg87ZGArJKumnOvSjc+SZz2h+qBgaWpg2xkrvCz9aXcDFKM56w
 X-Mailer: b4 0.14.3
-Message-ID: <20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com>
-Subject: [PATCH RFC v2 0/6] guest_memfd: Track amount of memory allocated on inode
+Message-ID: <20260225-gmem-st-blocks-v2-1-87d7098119a9@google.com>
+Subject: [PATCH RFC v2 1/6] KVM: guest_memfd: Don't set FGP_ACCESSED when
+ getting folios
 From: Ackerley Tng <ackerleytng@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
@@ -108,14 +109,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
 	linux-doc@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B7E21180008
+X-Stat-Signature: i87pekq3xnqf19n8irnb3b31q3e1hh8k
 X-Rspam-User: 
-X-Stat-Signature: csgs86eee7x896kftgfx8j73to1apw1x
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 220544000D
-X-HE-Tag: 1772004045-833674
-X-HE-Meta: U2FsdGVkX1/xRAHRRoaCAU1oLTT2cWi0LuEb6/CSq6sON5E6jTQk2SjUWDzwo9yc+4NQyGSR0IfJtgy3+f3AIST7X8HTVCfXIiFw81aSqYNlH8SSxLRGeWud5NGijFl3cW0GHeO/eNHnpUg6cy1L5Ni1xF4CFUEX0Etv2347/u+R0Hvm7QLBmt1CdOi+WvrxNG+HkGf8enza6d9fi9iltVgwhFMa7zgDuFZVFN5LHKgnB/mJL0JtvZUxpafbFd96QxNcD7NsKurUyr/8WMpqXC82D9Og7k2kKASTAjXl+Z5xg7eXUN+xhyOXenrOkY7zLwq47qRBDb0sDinbvxQ4u3a+h3vrY3LWrmvZfG30UpjFk8TZVf84v7KhRMHAXO31KQKHaSjAarV2h3ik2OrpclVA+dK8MeDHqE+7TV0x4Wb3f9EgMwThbz1i2dL9UHQMcPL1BH0BAX7lUM3eVg2VYvLo3MhH70nOC4ZfFQN8UrzMv/NyHpXlxTBEN2AfZsRXZnbk8mZE5WUVE9NE3gr5b9X21sVRvavn+ZyLu7kHuYnOWFlucZRdhABWZ4kRqKbd2kAGSNzu/TtQeTteeb+JlMFgVT2AvYDSJmP78na3rZDpZOrDZAxeznSC6RFrhQbxS3+TaZs0+yzkLeej8WQcSSQPYJQr7LUXUDdAvKnTqga5fbloQSlBOvOlRZn3F1Nmj3ppo4YzVYd7zLLplCOyzs1+3ztr3uAfEEWFhUevKD/1hYfKPv9dmGV4s9WVS4vMRKz5h6JjqZGMNX2MYousMQzNNvgz702YdpQIxOAoZZYzk5rAZxhiFKr8lYpGH2UyRH0ZN0jZbmF4LtVg8X+xDic5u9WDBOATV8jlYeknDty99dvXudY7kd63ahixEIpZz8Jyp3bdyuO61JAZ29wPCyk4teESU6LiA5bYHw7B/ex+ki9vBKqCtRTQBoMsBk3DLNTJepJlJJBH+chkKbS
- h0J/oKBP
- SRveblMpmVZZHLY44q9sOIT6GpMGGMNRAAJez/+SIoR2gp2PMQ10s3OOnkaWj4lH5bqBa++7f96CoWhKa2KXJNOg4TNww8JMLyNMQkV9+y64EDEkxsu3UY73NSWrNUwTTs49LfPKJdPNYgsu/5ur8fsknYxL03gt64u7yKn/YsMqaJ1QvsSOAa3lHtnJEJpF3sSg+OvJxXhbyZ9nxlxuep3guK7GKZicZuxPX0VsJez8Rf/uKTi6mtRZDp/I2tzIL34qwLIopk+LEoKiVNan4n860DuZ9SMnI8zvWH51AMjxA4CIwAuDRym05u8SbAo+ZPzIA8QJvR7NeS0i+acKrYQW8aglDAa4Ac/N/pucfamfU9iTm0Q49Ik9nlMZ+w1Ph9A6Itl2RWOhyWLfLGAUqD7+A4fQEEPzz49YVkgzTErm3LTJYBrlJK49GqINnjpw+os4YkqNeJ4aX7cz9bNksexMFLOubwfFjCewnIMb5Hyg6bD6B9sygbsGUEhzg9vxqLv/56SjZB6pv9t1Klg5a3M+hyi5stlbeO2HtX0jCyLewr+X2niPrJCrvhQ2ZyxXO8cYJqcUbO3bwOd2aS9KVN9v9KzLUgWmISSseUeqBrYmhJy7XcGC/88UBZHYE4ZXDKAVCI3b2ktSEIRSfbM7sjb0iosXrhqQKU/tptKacCFcaKq4qlg1dSQnPHUendzTc8Lysd+K7wmPGetzDzkYiUhczURfQK6mtWB2RjQCbEO20GPM=
+X-HE-Tag: 1772004047-201198
+X-HE-Meta: U2FsdGVkX1/RrknYG0dMAc4/rWnyfSo4OrS76rqEe+0Eni2nZ6iCIXi9k4TGM5ErvNV/2hwch9EPI9rv8uNPD9CY8BepiTtBbspR7aq5R0oroNVpaZ6OqGvUOVEePB0ui2bA7KuV/Dn47LUTpIT5giIay6tA9eDUhCO1sSqqdjcL93DjnYhoj4d0exuRfSJTiRHVjQbGOkJaj3O2VI61wNmy71xT7FT0dMNT4TVj/mMp1W9cy7GAG8w52A4QFdGgpXwsjucwkHJAQjjNYHFEvlv/DEUQi6es77lHNOgCdb/ZM0qACVYsz7Zi4piyxnTtpZeE8SZ3wvZIy0vRyNtX7WhXQsrg5btxqcM0zo9xx/NeRtCPTRDRooNbxdoNkcSvhvuvrCbq65E7bSIrrabHVSO0iyxQ8EJ7WyNK2FbiGklo3prZLnXeS7AI2o4SA+gJ0uBzwhsDbZN+dyUSksMSB83SpB0dFMikv9DSEDs1nErRUsr0fiGLQ9SXbaMcdwEtqXc8hvgKrZ0PWkeLIL/gYmMtZZS1codzX+udgHq+c8fAmUTJJAAUIbAEns9wptauE+LbNWtX4XU9EdlH24szOJ1j1Xx2z3ZKCyFXPF6Bnm20NZv1uYRz8fD8D8eLs9GHYU6jPXptXVq33QetFXEVf83JNM7vv1w5jDnt1hkaIv4nZfkA6RVrx7uFI0qkf7ugjne4pd98R8kI0lZ45yKJkNXckCpUO2AQ/aS34dx/cVVWGgcQrDs7Zy6AEe0TC3ewfnCBMyVyqIVT4sveZf3oXbwDSuPjCcNytI+QHgBFUBj5ToYAxeqRp4pCB26Uj1tz24Ey7UxokwECK7PUye1845aVuLliDEjIuSnzbLd5d4I8U6b4JoE0UnAn82XWWVzcXEjZ4hwc9UdLXQ4Lx7+6P3p5EOgrinonDSbnWbkXBNVgk43Tk8BARaydVSLmC9OoWnhgKN4e0IneKxDdVei
+ cfZFMgUE
+ BC1F0zfecWg/WhExMOQVPxtI8y0v0UkS+vaWO12uavf4glk2cVk9uR+Ts7LHnmIWS6uKuUZdn0UbV6yazvOvHOKrZqv04jBOOp9aUld3f+zLDahzBBAcYp4AOY5RIt0jUnlyXux/al8UBW8a21lJbAlEtRvQuISC3InNTe6Au+BDeXcFsLiiR1CuvfJdJOVfDR8UiKw+8gNZ8bTPYz158x3WjNM/AydZ8zWwmOMyrrudtQUfa/GWoFmMM4rsAcnVLOFy9B2gUHgzTpWASLXEfGchzm7a1qoIRWpDShsFDjyfe6VrJ9aeWmojzur2jhKZt23KigthOci3bzy9tHN/EMz3yjhslO0c1r1dMCEkPH/gbKWpqVwiKVlDmV13DI27EuS78qi3ttIFCJjZVfoG6AtOlMMFIctm9UsBav8Zoy3aR0tQXWckPdARqt37yPKVyJxM9DDmYykWDNHST4yf1exekSEOL7hfpTepyvSGM1infAL4DWdMD17TGc22HzkfEGQ9gE1yqbcnCJrw8Z17JmqAk8lSQYLClJddM/MGvJQPSjATnIH44QKiNY13Ek5c/DaQetizAQyoErZhEKesH8woPyHqQwKPHvDaCu8sOGOHixfgUw76RzzGCFkRyLgnOVELqvCktPUxH0e8S1cR4CaHM9DfH28SnStPCYMaAjxUdLQ3dc0oLn1z1dFQBzvMcmNk+8rK1WZFMtp1NxrbApSK0FkFXpOX+TfDHysHau8Qo9d4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,65 +124,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-Currently, guest_memfd doesn't update inode's i_blocks or i_bytes at
-all. Hence, st_blocks in the struct populated by a userspace fstat()
-call on a guest_memfd will always be 0. This patch series makes
-guest_memfd track the amount of memory allocated on an inode, which
-allows fstat() to accurately report that on requests from userspace.
-
-The inode's i_blocks and i_bytes fields are updated when the folio is
-associated or disassociated from the guest_memfd inode, which are at
-allocation and truncation times respectively.
-
-In RFC v2, to update inode fields at truncation time, this series adds a
-new .unaccount_folio callback to struct address_space_operations, which
-guest_memfd uses to deduct the folio's size at truncation time.
-
-The second patch, to use filemap_alloc_folio() during allocation of
-guest_memfd folios, was written as a debugging step to resolve a bug
-found by syzbot [1], but turned out to not be the fix. I include it
-here because it cleans up the allocation process and provides a nice
-foundation for updating inode fields during allocations.
-
-The first patch was separately submitted [2], and provided here since
-it is a prerequisite simplication before application of the second
-patch.
-
-Changes from RFC v1:
-
-+ Removed a full custom implementation of .evict_inode for guest_memfd
-  in favor of adding .unaccount_folio callback.
-
-RFC v1: https://lore.kernel.org/all/cover.1771826352.git.ackerleytng@google.com/T/
-
-[1] https://lore.kernel.org/all/29c347bde68ec027259654e8e85371307edf7058.1770148108.git.ackerleytng@google.com/
-[2] https://lore.kernel.org/all/20260129172646.2361462-1-ackerleytng@google.com/
+guest_memfd folios don't care about accessed flags since the memory is
+unevictable and there is no storage to write back to, hence, cleanup the
+allocation path by not setting FGP_ACCESSED.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
 ---
-Ackerley Tng (6):
-      KVM: guest_memfd: Don't set FGP_ACCESSED when getting folios
-      KVM: guest_memfd: Directly allocate folios with filemap_alloc_folio()
-      fs: Add .unaccount_folio callback
-      KVM: guest_memfd: Track amount of memory allocated on inode
-      KVM: selftests: Wrap fstat() to assert success
-      KVM: selftests: Test that st_blocks is updated on allocation
+ virt/kvm/guest_memfd.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- Documentation/filesystems/vfs.rst                  |  8 +++
- include/linux/fs.h                                 |  1 +
- mm/filemap.c                                       |  3 ++
- tools/testing/selftests/kvm/guest_memfd_test.c     | 32 ++++++++----
- tools/testing/selftests/kvm/include/kvm_syscalls.h |  2 +
- virt/kvm/guest_memfd.c                             | 60 ++++++++++++++++------
- 6 files changed, 80 insertions(+), 26 deletions(-)
----
-base-commit: b1195183ed42f1522fae3fe44ebee3af437aa000
-change-id: 20260225-gmem-st-blocks-733f35d10211
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 923c51a3a5256..2df27b6443115 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -126,14 +126,13 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 	 * Fast-path: See if folio is already present in mapping to avoid
+ 	 * policy_lookup.
+ 	 */
+-	folio = __filemap_get_folio(inode->i_mapping, index,
+-				    FGP_LOCK | FGP_ACCESSED, 0);
++	folio = filemap_lock_folio(inode->i_mapping, index);
+ 	if (!IS_ERR(folio))
+ 		return folio;
+ 
+ 	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+ 	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+-					 FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
++					 FGP_LOCK | FGP_CREAT,
+ 					 mapping_gfp_mask(inode->i_mapping), policy);
+ 	mpol_cond_put(policy);
+ 
 
-Best regards,
---
-Ackerley Tng <ackerleytng@google.com>
+-- 
+2.53.0.414.gf7e9f6c205-goog
 
 
