@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 444D4FD45FD
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C477FD45F1
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 986136B0092; Wed, 25 Feb 2026 18:44:55 -0500 (EST)
+	id 76C616B0088; Wed, 25 Feb 2026 18:44:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 941B66B0093; Wed, 25 Feb 2026 18:44:55 -0500 (EST)
+	id 720346B0092; Wed, 25 Feb 2026 18:44:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 768256B0095; Wed, 25 Feb 2026 18:44:55 -0500 (EST)
+	id 5C4486B0093; Wed, 25 Feb 2026 18:44:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 644986B0092
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:44:55 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3313A1C24C
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:44:55 +0000 (UTC)
-X-FDA: 84484611750.04.D1999AD
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CC6111A0006
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 458046B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:44:53 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3412C2307
 	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:44:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="b/yB3FO8";
-	spf=pass (imf19.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+X-FDA: 84484611624.02.020A95B
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6DBDC40005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:44:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=KoW+Dwoa;
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772063090; a=rsa-sha256;
+	cv=none;
+	b=abbpqXYlHCWhDNWizPVeypGjTCSm505ZpeEEv9ZNkQTRzGeTpKufJJFbyQUQf9eofVsUXh
+	mekG3YREo5IKT9yW50iDwszNt3LkImXskfe/kyEVqfdB02rH/Kl2XHZAh5ObUaqhwr2zqU
+	/f3xjXCbjFlsDS1uQzG6NLgbD2PWDdQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=KoW+Dwoa;
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772063093;
+	s=arc-20220608; t=1772063090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TE8ZhYBQf9fiNswnOLiD0snqyySTRxN7Ufk+GD8fw6E=;
-	b=o33+PRLY6/7h4c7ugPQDdrqWFuPVDnKjd26cl0ifEgtBamv3YZO5NFNPQmHSsbz17/evdg
-	WEf0Nu+l0CLZLzdzPZtYcmdO0NqNv6zDgyO32K4dJO8hIAp877F8/aEjnaslRq2Cu5UTss
-	HtknfVqNpgapXng8eH0NSkAdymxnEKc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772063093; a=rsa-sha256;
-	cv=none;
-	b=2L40Mrt2NL3Vc3zJalT8ZbwB2K9Be1QhCo8FsqCKS6NvPzZipjUdLIgr3cviTSUrE+o2Af
-	1FBpdv56JFUKcQ2xUVavJ7b3mBoKwxC/A7+GqTJDUoFfw/Gv7IMD+Vccy5H6T/u/LH4fIH
-	R+v8687aGUdhod0d8uimd3QNoYW+Re0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="b/yB3FO8";
-	spf=pass (imf19.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PNNMkC1400023
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:44:51 -0500
+	bh=aPwSt3hNTFLah6XnifhLIiPsp4G0eC4H6I7+g5VD+/A=;
+	b=HPt2Rv4plDiz1p45gR9ca0dPvIB+6sWW1YXygFnwtTzPmk3s8voBwrUNxKx2yrcJwt6QoX
+	q6nR8Z62OkpC9ZwuZXtLN+0bEBLhZKEQy7gym9r5fdxB3a+x7NreR6pKew4DQDmbhxha5e
+	stABbi8n8w8BSqcvnFuzc4rqsY61wj0=
+Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PNN9Mx1757003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:44:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=TE8Z
-	hYBQf9fiNswnOLiD0snqyySTRxN7Ufk+GD8fw6E=; b=b/yB3FO8kwgXmET281Jv
-	XP+tAXlRZIOQ6OAFR2YSS+792EIr83nP+nakYz8tKWh86IL9kbOyLkg2yn8b3g/q
-	S5VPNh8sAcmAlprkg2Cw/wyQbawj3NLSALIkGLq2K8V4kIRt4aYXHS/DHlGsM8fs
-	H8cCC3+JhbwQsrjnzdcgeRxONcJg4TG6TN/qWF72MSX7O8ZGhKSU3I2BfZEDoisK
-	t1LvqQr0puhEkmBwjqopiEjNDjB9vH7tXsjnfmo+oQfclWfz01qggxeWH6r8fgsq
-	rZ0/3X3DzNuyvGFcD+vq2Q7XNExoHO+FQm1lfYBwrgA16DwNSuwMZae97gH/dVl+
-	jg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4chx6v6bcd-1
+	:message-id:mime-version:references:subject:to; s=pps01; bh=aPwS
+	t3hNTFLah6XnifhLIiPsp4G0eC4H6I7+g5VD+/A=; b=KoW+DwoaLBgIKKp07zkU
+	w6LYikbpCWQdrh8W1nzdyxYpkzLEcclQRcT7hkkJaTTe33MpHaIr+E7mV91Tq/bL
+	SSiXdSa+Gguo6I/AW/mctmElGMAmkjDC+H2jI36BoHDA7GKVhEHL7OJPnGLlvEtT
+	4BTdKWrcZuavMXt9r5oc/wjjaziypL86FswUmtKMi7y6Z6HU9iS0yuI9a8I+b0P6
+	C+9RwDMULkiKD/iD9k3Sj1JnVFSLbkH0d37CIXOpEzab4zAj7ZLAs5c42CcZAvY/
+	y6VP7ocVtll9BIBDwonFGbm0jimM+NTHDOvcuRroLMGuOZKT2Zb5ZQ5D6pO86jQn
+	BQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4chxa0pea3-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:44:51 -0500 (EST)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-506c0231e63so29612581cf.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:44:51 -0800 (PST)
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:44:48 -0500 (EST)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c881d0c617so125048385a.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:44:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772063090; x=1772667890;
+        d=1e100.net; s=20230601; t=1772063088; x=1772667888;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=TE8ZhYBQf9fiNswnOLiD0snqyySTRxN7Ufk+GD8fw6E=;
-        b=W8KKvtOq0RmX+aIsu4HHXyEOFlbncJIKmU8kzc9Hqffi2M5HMgheq83FeztSkMnZWQ
-         4Iwbu3gDV5Un+e0hSMGMvw/T6oTEZEgRzDQ70COjyljLHvPcyiUfUROacOaOTb/UolaQ
-         z/9YUUIG/sXAKky0aCch0RZFYT/yKFv65qxwNgmqcJJNnBih2K3Ik2V9yReX4CGnOEzS
-         GQ0bAQ3u23nL2GEYeu9y/VGFEJWsRzuS9fvC4Jd4zG3cNKAYeXc/m0cj/Aezz9lR6u3z
-         QGz+O8uwuao5lQSku32PHGdZrgWRueQbnpn8H3RvJRRiIhjMpySA7NXT7JDdnav+M3j3
-         ZaFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWV5uOtMsgIyDnZNSYjWkKKJ16qEqRphe3Oig4puKDJ6maRoXA2n0wulnOfZpZzOorEsaoOXd6mwA==@kvack.org
-X-Gm-Message-State: AOJu0YykRwWKwJDYJOrrIWHl9YCX3ns2hET/l1nZIyOjzNhaGr9EOpdI
-	bDXdTv4L9we1eoIkvpRtcF6GZ7ZeWsY/tMCOw15nLhNHEcQFtf/ujs5LkyXCFtaJ/gylUV/ywhQ
-	qxWFUDw709RY/g3987LD6SqXBD2RyW3/O80g52/LdZgszEyAC
-X-Gm-Gg: ATEYQzy7chZ91za5k9/iq565LDTTiT8soWDTM3adxK9iNkeQO3hdEVx9CxBmjc05EFV
-	iAft1miH9obov7k669Dh1rnrTw4lq0J3KlniqXlvtWvj/SAdZftzjR1rG1mkvrcmpHXsACb840E
-	eeA8+mBBwj6DQrRhen8xzKOhOLR+FTqbec3pnGwLDy/GcFQrJtCNNSP3wxfhDcshzsy4lSqF/Wh
-	D8RvX7igTVAT2m4SUwCbo0+tuYU3I8+ivf1BEkpOMjcbdd8sWwg0dmlHSVtLe8Z6B49TQ3FLF1Y
-	xsDokJhL9qCvO1uSilvyXVMRkyXyHgoge9Bdn8g9sODGtMn39yBiGvRdkm/dCpyrxbaoMqOWBge
-	fkgiQFFsjC4CXTqsgYWQ5TkvboxtTF/bs
-X-Received: by 2002:ac8:5ac5:0:b0:503:2fe5:f380 with SMTP id d75a77b69052e-507441df64fmr13263521cf.0.1772063090057;
-        Wed, 25 Feb 2026 15:44:50 -0800 (PST)
-X-Received: by 2002:ac8:5ac5:0:b0:503:2fe5:f380 with SMTP id d75a77b69052e-507441df64fmr13262341cf.0.1772063089401;
-        Wed, 25 Feb 2026 15:44:49 -0800 (PST)
+        bh=aPwSt3hNTFLah6XnifhLIiPsp4G0eC4H6I7+g5VD+/A=;
+        b=geH12e3LHnLfO4mJGVMoieuNIhGLy/Jr98lHGXb3US3OqK1mIUjfplzZqMpBzDS+65
+         1/7Bvmnwc95AUs2l8Lb6+xh7u5m1Fi9NuB83KFRxTtNLDwYQHsZBfDI65ry9/GSBohLF
+         4b7JO4NpsXHzfXu/EO5lsdPayUJNo58MnpJljulQovBafp8PzBUlEyE7nY0c0YpYDNMg
+         TQD3VgUkjzIiVyqiSi/guKsJ2PixCQkH8njxtMoC+KPKnXpWAzAt0F0r1YKFAfJpIZq5
+         mpUefxk4Pqgx6E5ZjFcKNuEtxf4H/o33GppCJ4iuBONZ41kDtU36NbFC2Exf4T3Y+LeF
+         /q0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVdvJktTrTHN1wHQpBN2c2B5/82jcLfRCV6A6JU04Ttk6M7SkjjO2mdQkr98sDtvwbXZ8KCNcltqg==@kvack.org
+X-Gm-Message-State: AOJu0YyYhWEsTv67BSvqWPutdiDhYBT6Ja/PT8AYH+KhQadaixqjeDwn
+	YvyjZ7MurF7Q/B4qbvlzqDr9IP1KSpYAnR+aqO06W+lBDHLyIEWom+cRDl48nrK5sbGry/b5mA8
+	7AuJkRVJ7WfiX3A4JMzvyVpHShaoZgcZMB1sPW+jxsnKvZ/HN
+X-Gm-Gg: ATEYQzzYYRfGXErWXvhJVtwDRe+FtvBh4hxKg7W30P8A14a2vHgYk8xODHX1SXzz/Pn
+	dvFaelI7PS0NPCpB2Z1+EAFIr12rALMeZt0TRjhqPIBciGa1cVYHLpZ0maciPl5R5Js0PJw8kqD
+	0y+urcLcd1hEADQv+hBlgJ8AIkWFhqdl+kI401Hw12v5gYAtZHt6fPvQERPAJQIv6R2WTvatoen
+	v4chZ/ns2FQa3XNJxtABdGZoSNEW0jJO1FVqJJMuqzy8l3EID9UE21ISQAFQvwaZ7AHhyfFjeS+
+	bzqcJZHQVl/MKEDNrSCwwd8G5j2mwSimyuZMPQdE/5YAATqwyF8JPqtKkd+442Bzjseir3VslHv
+	DWXzuHWBSxXkjpMBV63R0mNB3ViLt4Hk5
+X-Received: by 2002:a05:620a:298c:b0:8ca:d5cb:6844 with SMTP id af79cd13be357-8cbbcff7196mr323693885a.49.1772063087680;
+        Wed, 25 Feb 2026 15:44:47 -0800 (PST)
+X-Received: by 2002:a05:620a:298c:b0:8ca:d5cb:6844 with SMTP id af79cd13be357-8cbbcff7196mr323686785a.49.1772063086986;
+        Wed, 25 Feb 2026 15:44:46 -0800 (PST)
 Received: from [127.0.1.1] ([216.158.158.246])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c738d80bsm3357606d6.41.2026.02.25.15.44.47
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c738d80bsm3357606d6.41.2026.02.25.15.44.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 15:44:49 -0800 (PST)
+        Wed, 25 Feb 2026 15:44:46 -0800 (PST)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 25 Feb 2026 18:44:28 -0500
-Subject: [PATCH v2 4/4] folio_batch: Rename PAGEVEC_SIZE to
- FOLIO_BATCH_SIZE
+Date: Wed, 25 Feb 2026 18:44:27 -0500
+Subject: [PATCH v2 3/4] folio_batch: Rename pagevec.h to folio_batch.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-pagevec_cleanup-v2-4-716868cc2d11@columbia.edu>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260225-pagevec_cleanup-v2-3-716868cc2d11@columbia.edu>
 References: <20260225-pagevec_cleanup-v2-0-716868cc2d11@columbia.edu>
 In-Reply-To: <20260225-pagevec_cleanup-v2-0-716868cc2d11@columbia.edu>
 To: David Howells <dhowells@redhat.com>,
@@ -174,43 +173,45 @@ Cc: Andreas Dilger <adilger.kernel@dilger.ca>,
         linux-nilfs@vger.kernel.org, linux-xfs@vger.kernel.org,
         cgroups@vger.kernel.org, Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772063077; l=5814;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772063077; l=17408;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=zO7GBjiuOn5Q+h+zA8UgP1+Klsw8MQQTt1O0svxg4WA=;
- b=KCL19WgRUDAqH63IGvAc3KncLR0mQnluCE5DMTx+wx8s1EMvm5gWiID7it4982lNgTaHXaECH
- ClIpdW+IjPxAETpUADJ+80YGkvu3AQ4uNneZg/M0Lj8/3I89nOh73yK
+ bh=89ejBUbJAbl9gMJxu0YjzDjYEINzrXDJ4zlC90ZjW70=;
+ b=DZR7t8/xTD2RV8IcGDVSrVRbyHqSjvi+mmPKtQKoMAq7YXgwLRBOLtA12ryjIBbsZ8xRvPgOR
+ iq+s155nXzBDa4/nkNXPNn2pWi+s7DCbvZYs9/y3NwEhX5dVRbKSlDM
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-GUID: uRUSDYTOysqO3QqMHbfPglnH6jqId8VH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIyNyBTYWx0ZWRfX1inlIkPBqWeR
- YFe6RX1ekX5m4Xw8Rg04+6p8++oMBKvhQyo1T3VdfVjdUA8ICm784mVJ+V8/XUlMWlIDwQBQHWR
- BoGNY/lrLDA4XBpJ9YMrpv+VRM92wb9EjBcSsynfOn3Hbx8Ay2hkPIF4EhCalpgGIDwOj3GyWK/
- /vaF1DVDWovhQppX+2IHGJa3HfL8P21t8eulyc/weurh2AuZclDx5YU/yhGWs01+aqwO4qzEiny
- 03/2saFCxTa/3ixCJBaDe8AWaZKNIjuly4Hx/uSdaCUaZ0z1nmNl3zW8vJmZWHUnD9arZ8kBvqX
- gXrY8zldvaMY3E9sSYnvzYcSGepTmoi011RA/M/FC27j4uaPncHC+ig4Jmd/NQ8XHDhBLUM1zaO
- 49WryA+XuCLalIe7xBCt24FZV3MYgsA4gCHyJigW/Z7F14hnWPFZFVY4ryAxFFmgf/X+e5Y5gnX
- 6jpG36/IdF3efJaJ8Fg==
-X-Authority-Analysis: v=2.4 cv=FqMIPmrq c=1 sm=1 tr=0 ts=699f8973 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
+X-Authority-Analysis: v=2.4 cv=Csiys34D c=1 sm=1 tr=0 ts=699f8971 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
- a=960X5KZuJcz03JLduyoA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: uRUSDYTOysqO3QqMHbfPglnH6jqId8VH
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22
+ a=1-S1nHsFAAAA:8 a=37rDS-QxAAAA:8 a=VwQbUJbxAAAA:8 a=_gStYsYcyfV-qr5JuIkA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
+ a=gK44uIRsrOYWoX5St5dO:22 a=k1Nq6YrhK2t884LQW06G:22
+X-Proofpoint-GUID: VsdAD_j5P0oqpN4USiTqVte70M67IrMk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIyNyBTYWx0ZWRfX7jUoZSZM6xXA
+ EEKY2V+lQkVj8jxDxfNhDBh6V63MQ4uAxA65yfiQKm5MzGQDY9Ori+HtgXSkPtQz5a70N5FIHAQ
+ dwzV0iFcMPkEg65UB/siNoWG/U/gcYh6Iq4Wh5eVW2uDKwV3S/+ibY4PaIIccKYcIutpjIPFjob
+ YADnf7UTkGqfra+q/5nARGKpY4SaDG/tcKp3LD2TOEG++9quM4GEKv/5NB0BNWoE8yHzeOlvHFR
+ e312r6U3UzqW/PvWma3aul6ZCasbYrlakj8etLRK7kJiIVrTWWjsRbsVvYtZHuLh2aYZEIEKI2E
+ ZTW3I7VmD3jHStCZeAU1/NxsLdDtE8ME5fmVnIH0MxQk01cGfJgIDydmG5MFppq0dGeI6+JLAFj
+ WkhpInO8pcWrCeOGTtTlsc/91D03vWE2dwMyYodaZ591z/NzIDn2EahcrhX51JLyfKJF2Ez5xzU
+ s1Xa9xNGHVgB/b7LppA==
+X-Proofpoint-ORIG-GUID: VsdAD_j5P0oqpN4USiTqVte70M67IrMk
 X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11712
  signatures=596818
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=10
- spamscore=0 bulkscore=10 lowpriorityscore=10 clxscore=1015 suspectscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 lowpriorityscore=10
+ impostorscore=10 phishscore=0 suspectscore=0 bulkscore=10 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602250227
+X-Stat-Signature: 7upmekwmm145gypch73xjxng8wrfigde
 X-Rspam-User: 
-X-Stat-Signature: nedrx9nf4dmbs1mo9sh7ojr7b4pwrnwc
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CC6111A0006
-X-HE-Tag: 1772063092-834119
-X-HE-Meta: U2FsdGVkX18wxhsadnTR7gxPBtJokJskrBQnjCgTlT7rFEo8+JLW+l9ViHNamD2nKiWTaeGPuxDaEqtII7twkheU/S94NtNbs1LVf/YhpvadTygMqaqD4649UBg0OXYuAEs50+AYUGCOJs7yGwpbCbJ5Vycfdj7n0MUsF4k3NM3ZpYqDImfotaSxB/SHLtEZ8Q91Y9dJ088CehkkgMf71QyoDhS1eRiI3f5Cmf3BekMJdBzkjRZgH1HgY6X4V+wzyvaz5I6DPfsPIpibCv4smeDQobSvxytP7IrseqYlorg6nQ4Wdlss2CxOaOEaJrP1w3Ad806wyt7JxJyZB95tRQMyEtDPp0Rw8OLLKDMOpG7pBElaLrpMG7YHe+92lSw72HvfmaecqvMs+L/mWQFlU3Crm3LWC/qtuFO5sbQjrBICK8tJui6T6K5yQ1oWrmx7ooj/T0HUZmLBlOdH9n9PRSYWWj5C2nB8ZiMlb6taMpAGnbVxAIeZZV7vrDBdNGDZGHH11OcuA6oJO3iSzJGRLUBzV5lQRE+8LN3kKVIvkCW9S+NPNv1qm029SYHKOF9IaJoGuvLcSnqWeC9NgiAub6biodNkv7FDCCsEJZblO6RvXwgTDdjTuK7+hckfROK9tnLqFsRIe4fqdl/a0lZHtDzSmJ8XJrrCIeme2ykSQpH05ZVax8JfHBAjG1HAdju7snZ2CTaOsvnDudaSXfQ4MAP5lCgLYjoL4v5qHY/cn+ut+PsV/8slYP7zZ/r4HuZjX3NhYAtC1AhLrpQCs8d/USgs+iP/Lwq8un5HlIBtcQ0vB0Ad9t/KwenyBQSSeIWktCT8eiMGw98EIWPOU0njS3s+7kDBLW4tBdER6n5GRMu/XFIi5pM8wteIBYibK89MsxX4J59P/GO/bWu4zwn7OINFI8eBIG2ZXHLZ3ZOGgfqu+VEF5Gh7+qz96f4MxOL+FT/4KtgCG150DrM+wYj
- o5kuGy8V
- pY9A9q3UrGVKVydSF4C1+jAWkNi9+2sS0+JWlB5i+FI3B+vIc2nJgNcnnNPKOrgx3xGLJE+6UAn+7Pk1ZNj1jwjcj4IKZej0ByXReNQczEKNQbOk8aJWJE1Bv+oY56P9ABsAfGbjch0+34nkhKQo9/bSCxiMGhhdW7PcUfCA7rRlKO78CaqwwBpCli6gjKxbbp59QnTF31FLUyiY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6DBDC40005
+X-HE-Tag: 1772063090-26936
+X-HE-Meta: U2FsdGVkX1/BhjN8nDLaFJgvzH9wa2BFUOpJp1QDeK0Nj8mQ1DTno1yjjioeLaQftjb6KYR9rxOJZ/rB48G7TLJMBxmmALJ6oyXxh0/umJkA8OnOiEvHRXUhcC/1e3pMUX2v/dathxBwDPAQ5i+Ay3Aukl1FIzp6UaLnN4OyM8awcWARNg+dCNa3i7KnsGp+4T70tATizwbSrqDmgbTTY+H6fmT2Xdjinx1irWFAdPyM9LA96XnS/TVVTGFIWUJNzyvV9HMOaRnC8jdu8SmhIMGLVpvaSx75P5JUhYjHSGWQ93PVGtX94+CzkrEAOy8unt/a4SPHeyfkZlnlx6qYc63wQSCDAwKOtvCKKRmQ5+JfVxLWCAeVcsuW9tD0t7o+cF/7NOKhbctJnPuHzKiRF1m+j4q7hFSHCTzsfSVoy5nR4Wqf6E6AZTEJkYuJ+MzhPQ9cOBcXM1T636Vl2zwWNN6hg2N8eSsrzjMY3fsvu+ErKU4vzrL/GR/h4ANflDgK0OF7GAY91BmjKNts//ZHNSqNtfBMWYlUwTDaYxDVDpP670egKP5FkN0/VTcn9A/qFdsn/nGBh+PYcJxv9KPPbwdCgZhm+XgWjuiV3ed+HuYPNxQEUtCsyU7gxbhiUYUTYvGRBpJhwosj9R1VlLlX2Y3+BmEyUMF/x5W0R2Et0hJsGXRAPYqrSua2/4mSPfZoIpwct5LPk3yK35ZwnIZjDUnPzslHB7YvxoCas/7kedPZjmK7ZIJnd3qTgMopltDZrGloNhGyGGS496Znd2/UZh5Kp/TghlYFool743Oa1ghpsDb4yi07a8QvpuJ32SPQQIatP4+ECpan9FTVRb4epFPE3rtPhFMISSYqoD1iM6AZt3MBzVpb43EP06Zy/cdbPaZY5dU37WIldkLLyPSQw8sejaZZlYKFGnf7UoT59U5G3f7mVz7H+5Dgnf0ej0JSmia7HCIWdDC9lqAAvNn
+ 3vhR18L7
+ xS6cwmU6qsqKXv144z1Jr2BlsGGEh80MFYJcYZfnASksyx793JQPvx5BY6DqvVXVXfpCI6LZqEF00k9DjvaESruE4ph9ljnOS4cuoOCwbeJFMrEKqJo+j8Izi6wV+v0nTidXj4lEOqH03X++Xw+MZOOXUADWadmUKHbzBdng/W0BWtrzuAje4ag4TL19l6nHdsDYX2nW2TA9yahaNYUHkexDNc0+kXEoPKYX7in2cwbPtT+DKQkHnlpn82ZtOm8WZGz1Al5nZOZyF7H1gP5wBDqUJFssymUYq6fQyIlubB1Kh8XOciT/nieZUkyI9UgokLusPjUbLRIahfvOmk/S/GQH1ZqIbAKP0bbYkGijT6pcpQV+Vh5DbVx/es6hquaagQU9fDDhEpXV14lBWJke7C/ULNSsOMG2Zf0koNvIKjZd+ieuGCzd3xkUyGQMPCCjdqyqWGYRhfXPvzkp4F+dio/mG0G4VzxmnfiKLLOMVkhqBv5Gt3e3HXummulfxgLr5e1F7v/KjXEh/MthZ9Uhgq/6DESEbKJRz2KL5FeTXDX7iIqGSDPw+j4KXJmR1a/+ZD1dM2yp12zRzSnf8NSlxXXLUP0GdXG+9PBy3UhJWGuI6iM8uXmCiHaRuIV+7N5OfPSdycB2J19Mlz0KtjPWeaof3a9fDIOZ0ihV/7yrOBJRbwlpl6YwFZXAHOEYe46Q+YcIwXQhGowb051P0oSN9Bh0q+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -218,177 +219,550 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct pagevec no longer exists. Rename the macro appropriately.
+struct pagevec was removed in commit 1e0877d58b1e ("mm: remove struct
+pagevec"). Rename include/linux/pagevec.h to reflect reality and update
+includes tree-wide. Add the new filename to MAINTAINERS explicitly, as
+it no longer matches the "include/linux/page[-_]*" pattern in MEMORY
+MANAGEMENT - CORE.
 
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- fs/btrfs/extent_io.c        | 4 ++--
- include/linux/folio_batch.h | 6 +++---
- include/linux/folio_queue.h | 6 +++---
- mm/shmem.c                  | 4 ++--
- mm/swap.c                   | 2 +-
- mm/swap_state.c             | 2 +-
- mm/truncate.c               | 6 +++---
- 7 files changed, 15 insertions(+), 15 deletions(-)
+ MAINTAINERS                                | 1 +
+ drivers/gpu/drm/drm_gem.c                  | 2 +-
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c  | 2 +-
+ drivers/gpu/drm/i915/gt/intel_gtt.h        | 2 +-
+ drivers/gpu/drm/i915/i915_gpu_error.c      | 2 +-
+ fs/btrfs/compression.c                     | 2 +-
+ fs/btrfs/extent_io.c                       | 2 +-
+ fs/btrfs/tests/extent-io-tests.c           | 2 +-
+ fs/buffer.c                                | 2 +-
+ fs/ceph/addr.c                             | 2 +-
+ fs/ext4/inode.c                            | 2 +-
+ fs/f2fs/checkpoint.c                       | 2 +-
+ fs/f2fs/compress.c                         | 2 +-
+ fs/f2fs/data.c                             | 2 +-
+ fs/f2fs/node.c                             | 2 +-
+ fs/gfs2/aops.c                             | 2 +-
+ fs/hugetlbfs/inode.c                       | 2 +-
+ fs/nilfs2/btree.c                          | 2 +-
+ fs/nilfs2/page.c                           | 2 +-
+ fs/nilfs2/segment.c                        | 2 +-
+ fs/ramfs/file-nommu.c                      | 2 +-
+ include/linux/{pagevec.h => folio_batch.h} | 8 ++++----
+ include/linux/folio_queue.h                | 2 +-
+ include/linux/iomap.h                      | 2 +-
+ include/linux/sunrpc/svc.h                 | 2 +-
+ include/linux/writeback.h                  | 2 +-
+ mm/filemap.c                               | 2 +-
+ mm/gup.c                                   | 2 +-
+ mm/memcontrol.c                            | 2 +-
+ mm/mlock.c                                 | 2 +-
+ mm/page-writeback.c                        | 2 +-
+ mm/page_alloc.c                            | 2 +-
+ mm/shmem.c                                 | 2 +-
+ mm/swap.c                                  | 2 +-
+ mm/swap_state.c                            | 2 +-
+ mm/truncate.c                              | 2 +-
+ mm/vmscan.c                                | 2 +-
+ 37 files changed, 40 insertions(+), 39 deletions(-)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e4572a36afd2..f50421e65cb1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16664,6 +16664,7 @@ L:	linux-mm@kvack.org
+ S:	Maintained
+ W:	http://www.linux-mm.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
++F:	include/linux/folio_batch.h
+ F:	include/linux/gfp.h
+ F:	include/linux/gfp_types.h
+ F:	include/linux/highmem.h
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 891c3bff5ae0..dc4534fb175c 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -38,7 +38,7 @@
+ #include <linux/mman.h>
+ #include <linux/module.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/sched/mm.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/slab.h>
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+index c6c64ba29bc4..07025b547c94 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -3,7 +3,7 @@
+  * Copyright © 2014-2016 Intel Corporation
+  */
+ 
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/swap.h>
+ #include <linux/uio.h>
+diff --git a/drivers/gpu/drm/i915/gt/intel_gtt.h b/drivers/gpu/drm/i915/gt/intel_gtt.h
+index 9d3a3ad567a0..b54ee4f25af1 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gtt.h
++++ b/drivers/gpu/drm/i915/gt/intel_gtt.h
+@@ -19,7 +19,7 @@
+ #include <linux/io-mapping.h>
+ #include <linux/kref.h>
+ #include <linux/mm.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/scatterlist.h>
+ #include <linux/workqueue.h>
+ 
+diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
+index a99b4e45d26c..ffe5f24594c9 100644
+--- a/drivers/gpu/drm/i915/i915_gpu_error.c
++++ b/drivers/gpu/drm/i915/i915_gpu_error.c
+@@ -31,7 +31,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/highmem.h>
+ #include <linux/nmi.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/scatterlist.h>
+ #include <linux/string_helpers.h>
+ #include <linux/utsname.h>
+diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+index 790518a8c803..dbc634d10ad3 100644
+--- a/fs/btrfs/compression.c
++++ b/fs/btrfs/compression.c
+@@ -8,7 +8,7 @@
+ #include <linux/file.h>
+ #include <linux/fs.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/highmem.h>
+ #include <linux/kthread.h>
+ #include <linux/time.h>
 diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c373d113f1e7..d82ca509503f 100644
+index 744a1fff6eef..c373d113f1e7 100644
 --- a/fs/btrfs/extent_io.c
 +++ b/fs/btrfs/extent_io.c
-@@ -2095,13 +2095,13 @@ static void buffer_tree_tag_for_writeback(struct btrfs_fs_info *fs_info,
- struct eb_batch {
- 	unsigned int nr;
- 	unsigned int cur;
--	struct extent_buffer *ebs[PAGEVEC_SIZE];
-+	struct extent_buffer *ebs[FOLIO_BATCH_SIZE];
- };
+@@ -11,7 +11,7 @@
+ #include <linux/blkdev.h>
+ #include <linux/swap.h>
+ #include <linux/writeback.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/prefetch.h>
+ #include <linux/fsverity.h>
+ #include "extent_io.h"
+diff --git a/fs/btrfs/tests/extent-io-tests.c b/fs/btrfs/tests/extent-io-tests.c
+index a0187d6163df..b2aacf846c8b 100644
+--- a/fs/btrfs/tests/extent-io-tests.c
++++ b/fs/btrfs/tests/extent-io-tests.c
+@@ -4,7 +4,7 @@
+  */
  
- static inline bool eb_batch_add(struct eb_batch *batch, struct extent_buffer *eb)
- {
- 	batch->ebs[batch->nr++] = eb;
--	return (batch->nr < PAGEVEC_SIZE);
-+	return (batch->nr < FOLIO_BATCH_SIZE);
- }
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/sizes.h>
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 22b43642ba57..f3122160ee2d 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -45,7 +45,7 @@
+ #include <linux/bitops.h>
+ #include <linux/mpage.h>
+ #include <linux/bit_spinlock.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/sched/mm.h>
+ #include <trace/events/block.h>
+ #include <linux/fscrypt.h>
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index e87b3bb94ee8..2803511d86ef 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -7,7 +7,7 @@
+ #include <linux/swap.h>
+ #include <linux/pagemap.h>
+ #include <linux/slab.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/task_io_accounting_ops.h>
+ #include <linux/signal.h>
+ #include <linux/iversion.h>
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 396dc3a5d16b..58f982885187 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -29,7 +29,7 @@
+ #include <linux/string.h>
+ #include <linux/buffer_head.h>
+ #include <linux/writeback.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/mpage.h>
+ #include <linux/rmap.h>
+ #include <linux/namei.h>
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 6dd39b7de11a..0143365c07dc 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -11,7 +11,7 @@
+ #include <linux/writeback.h>
+ #include <linux/blkdev.h>
+ #include <linux/f2fs_fs.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/swap.h>
+ #include <linux/kthread.h>
+ #include <linux/delayacct.h>
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 8c76400ba631..614e00b8ffdc 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -13,7 +13,7 @@
+ #include <linux/lzo.h>
+ #include <linux/lz4.h>
+ #include <linux/zstd.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
  
- static inline void eb_batch_init(struct eb_batch *batch)
-diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
-index a2f3d3043f7e..b45946adc50b 100644
---- a/include/linux/folio_batch.h
+ #include "f2fs.h"
+ #include "node.h"
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 338df7a2aea6..90e8ef625d82 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -10,7 +10,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/mpage.h>
+ #include <linux/writeback.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/blkdev.h>
+ #include <linux/bio.h>
+ #include <linux/blk-crypto.h>
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 74992fd9c9b6..ba0272314528 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -10,7 +10,7 @@
+ #include <linux/mpage.h>
+ #include <linux/sched/mm.h>
+ #include <linux/blkdev.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/swap.h>
+ 
+ #include "f2fs.h"
+diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
+index e79ad087512a..dae3dc4ee6f7 100644
+--- a/fs/gfs2/aops.c
++++ b/fs/gfs2/aops.c
+@@ -10,7 +10,7 @@
+ #include <linux/completion.h>
+ #include <linux/buffer_head.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/mpage.h>
+ #include <linux/fs.h>
+ #include <linux/writeback.h>
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 22c799000edb..2ec3e4231252 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -25,7 +25,7 @@
+ #include <linux/ctype.h>
+ #include <linux/backing-dev.h>
+ #include <linux/hugetlb.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/fs_parser.h>
+ #include <linux/mman.h>
+ #include <linux/slab.h>
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index dd0c8e560ef6..b400cfcdc803 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -10,7 +10,7 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/errno.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include "nilfs.h"
+ #include "page.h"
+ #include "btnode.h"
+diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
+index 56c4da417b6a..a9d8aa65416f 100644
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -14,7 +14,7 @@
+ #include <linux/page-flags.h>
+ #include <linux/list.h>
+ #include <linux/highmem.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/gfp.h>
+ #include "nilfs.h"
+ #include "page.h"
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 098a3bd103e0..6d62de64a309 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -19,7 +19,7 @@
+ #include <linux/freezer.h>
+ #include <linux/kthread.h>
+ #include <linux/crc32.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/slab.h>
+ #include <linux/sched/signal.h>
+ 
+diff --git a/fs/ramfs/file-nommu.c b/fs/ramfs/file-nommu.c
+index 0f8e838ece07..2f79bcb89d2e 100644
+--- a/fs/ramfs/file-nommu.c
++++ b/fs/ramfs/file-nommu.c
+@@ -14,7 +14,7 @@
+ #include <linux/string.h>
+ #include <linux/backing-dev.h>
+ #include <linux/ramfs.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/mman.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+diff --git a/include/linux/pagevec.h b/include/linux/folio_batch.h
+similarity index 95%
+rename from include/linux/pagevec.h
+rename to include/linux/folio_batch.h
+index 007affabf335..a2f3d3043f7e 100644
+--- a/include/linux/pagevec.h
 +++ b/include/linux/folio_batch.h
-@@ -12,7 +12,7 @@
+@@ -1,13 +1,13 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * include/linux/pagevec.h
++ * include/linux/folio_batch.h
+  *
+  * In many places it is efficient to batch an operation up against multiple
+  * folios.  A folio_batch is a container which is used for that.
+  */
+ 
+-#ifndef _LINUX_PAGEVEC_H
+-#define _LINUX_PAGEVEC_H
++#ifndef _LINUX_FOLIO_BATCH_H
++#define _LINUX_FOLIO_BATCH_H
+ 
  #include <linux/types.h>
  
- /* 31 pointers + header align the folio_batch structure to a power of two */
--#define PAGEVEC_SIZE	31
-+#define FOLIO_BATCH_SIZE	31
- 
- struct folio;
- 
-@@ -29,7 +29,7 @@ struct folio_batch {
- 	unsigned char nr;
- 	unsigned char i;
- 	bool percpu_pvec_drained;
--	struct folio *folios[PAGEVEC_SIZE];
-+	struct folio *folios[FOLIO_BATCH_SIZE];
- };
- 
- /**
-@@ -58,7 +58,7 @@ static inline unsigned int folio_batch_count(const struct folio_batch *fbatch)
- 
- static inline unsigned int folio_batch_space(const struct folio_batch *fbatch)
- {
--	return PAGEVEC_SIZE - fbatch->nr;
-+	return FOLIO_BATCH_SIZE - fbatch->nr;
+@@ -102,4 +102,4 @@ static inline void folio_batch_release(struct folio_batch *fbatch)
  }
  
- /**
+ void folio_batch_remove_exceptionals(struct folio_batch *fbatch);
+-#endif /* _LINUX_PAGEVEC_H */
++#endif /* _LINUX_FOLIO_BATCH_H */
 diff --git a/include/linux/folio_queue.h b/include/linux/folio_queue.h
-index 0d3765fa9d1d..f6d5f1f127c9 100644
+index adab609c972e..0d3765fa9d1d 100644
 --- a/include/linux/folio_queue.h
 +++ b/include/linux/folio_queue.h
-@@ -29,12 +29,12 @@
-  */
- struct folio_queue {
- 	struct folio_batch	vec;		/* Folios in the queue segment */
--	u8			orders[PAGEVEC_SIZE]; /* Order of each folio */
-+	u8			orders[FOLIO_BATCH_SIZE]; /* Order of each folio */
- 	struct folio_queue	*next;		/* Next queue segment or NULL */
- 	struct folio_queue	*prev;		/* Previous queue segment of NULL */
- 	unsigned long		marks;		/* 1-bit mark per folio */
- 	unsigned long		marks2;		/* Second 1-bit mark per folio */
--#if PAGEVEC_SIZE > BITS_PER_LONG
-+#if FOLIO_BATCH_SIZE > BITS_PER_LONG
- #error marks is not big enough
- #endif
- 	unsigned int		rreq_id;
-@@ -70,7 +70,7 @@ static inline void folioq_init(struct folio_queue *folioq, unsigned int rreq_id)
-  */
- static inline unsigned int folioq_nr_slots(const struct folio_queue *folioq)
- {
--	return PAGEVEC_SIZE;
-+	return FOLIO_BATCH_SIZE;
- }
+@@ -14,7 +14,7 @@
+ #ifndef _LINUX_FOLIO_QUEUE_H
+ #define _LINUX_FOLIO_QUEUE_H
  
- /**
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/mm.h>
+ 
+ /*
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 99b7209dabd7..4551613cea2f 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -9,7 +9,7 @@
+ #include <linux/types.h>
+ #include <linux/mm_types.h>
+ #include <linux/blkdev.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ 
+ struct address_space;
+ struct fiemap_extent_info;
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index 4dc14c7a711b..a11acf5cd63b 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -20,7 +20,7 @@
+ #include <linux/lwq.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/kthread.h>
+ 
+ /*
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index e530112c4b3a..62552a2ce5b9 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -11,7 +11,7 @@
+ #include <linux/flex_proportions.h>
+ #include <linux/backing-dev-defs.h>
+ #include <linux/blk_types.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ 
+ struct bio;
+ 
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 6cd7974d4ada..63f256307fdd 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -31,7 +31,7 @@
+ #include <linux/hash.h>
+ #include <linux/writeback.h>
+ #include <linux/backing-dev.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/security.h>
+ #include <linux/cpuset.h>
+ #include <linux/hugetlb.h>
+diff --git a/mm/gup.c b/mm/gup.c
+index 8e7dc2c6ee73..ad9ded39609c 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -18,7 +18,7 @@
+ #include <linux/hugetlb.h>
+ #include <linux/migrate.h>
+ #include <linux/mm_inline.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/sched/mm.h>
+ #include <linux/shmem_fs.h>
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index db59fad3503f..51508573963d 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -34,7 +34,7 @@
+ #include <linux/shmem_fs.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/vm_event_item.h>
+ #include <linux/smp.h>
+ #include <linux/page-flags.h>
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 2f699c3497a5..1a92d16f3684 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -13,7 +13,7 @@
+ #include <linux/swap.h>
+ #include <linux/swapops.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/pagewalk.h>
+ #include <linux/mempolicy.h>
+ #include <linux/syscalls.h>
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 601a5e048d12..1009bb042ba4 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -33,7 +33,7 @@
+ #include <linux/sysctl.h>
+ #include <linux/cpu.h>
+ #include <linux/syscalls.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/timer.h>
+ #include <linux/sched/rt.h>
+ #include <linux/sched/signal.h>
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d88c8c67ac0b..74b603872f34 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -31,7 +31,7 @@
+ #include <linux/sysctl.h>
+ #include <linux/cpu.h>
+ #include <linux/cpuset.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/memory_hotplug.h>
+ #include <linux/nodemask.h>
+ #include <linux/vmstat.h>
 diff --git a/mm/shmem.c b/mm/shmem.c
-index 149fdb051170..5e7dcf5bc5d3 100644
+index cfed6c3ff853..149fdb051170 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -1113,7 +1113,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 	pgoff_t start = (lstart + PAGE_SIZE - 1) >> PAGE_SHIFT;
- 	pgoff_t end = (lend + 1) >> PAGE_SHIFT;
- 	struct folio_batch fbatch;
--	pgoff_t indices[PAGEVEC_SIZE];
-+	pgoff_t indices[FOLIO_BATCH_SIZE];
- 	struct folio *folio;
- 	bool same_folio;
- 	long nr_swaps_freed = 0;
-@@ -1510,7 +1510,7 @@ static int shmem_unuse_inode(struct inode *inode, unsigned int type)
- 	struct address_space *mapping = inode->i_mapping;
- 	pgoff_t start = 0;
- 	struct folio_batch fbatch;
--	pgoff_t indices[PAGEVEC_SIZE];
-+	pgoff_t indices[FOLIO_BATCH_SIZE];
- 	int ret = 0;
- 
- 	do {
+@@ -61,7 +61,7 @@ static struct vfsmount *shm_mnt __ro_after_init;
+ #include <linux/slab.h>
+ #include <linux/backing-dev.h>
+ #include <linux/writeback.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/percpu_counter.h>
+ #include <linux/falloc.h>
+ #include <linux/splice.h>
 diff --git a/mm/swap.c b/mm/swap.c
-index 2e517ede6561..78b4aa811fc6 100644
+index bb19ccbece46..2e517ede6561 100644
 --- a/mm/swap.c
 +++ b/mm/swap.c
-@@ -1018,7 +1018,7 @@ EXPORT_SYMBOL(folios_put_refs);
- void release_pages(release_pages_arg arg, int nr)
- {
- 	struct folio_batch fbatch;
--	int refs[PAGEVEC_SIZE];
-+	int refs[FOLIO_BATCH_SIZE];
- 	struct encoded_page **encoded = arg.encoded_pages;
- 	int i;
- 
+@@ -20,7 +20,7 @@
+ #include <linux/swap.h>
+ #include <linux/mman.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/init.h>
+ #include <linux/export.h>
+ #include <linux/mm_inline.h>
 diff --git a/mm/swap_state.c b/mm/swap_state.c
-index a0c64db2b275..6313b59d7eab 100644
+index 32d9d877bda8..a0c64db2b275 100644
 --- a/mm/swap_state.c
 +++ b/mm/swap_state.c
-@@ -385,7 +385,7 @@ void free_folio_and_swap_cache(struct folio *folio)
- void free_pages_and_swap_cache(struct encoded_page **pages, int nr)
- {
- 	struct folio_batch folios;
--	unsigned int refs[PAGEVEC_SIZE];
-+	unsigned int refs[FOLIO_BATCH_SIZE];
- 
- 	folio_batch_init(&folios);
- 	for (int i = 0; i < nr; i++) {
+@@ -15,7 +15,7 @@
+ #include <linux/leafops.h>
+ #include <linux/init.h>
+ #include <linux/pagemap.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/backing-dev.h>
+ #include <linux/blkdev.h>
+ #include <linux/migrate.h>
 diff --git a/mm/truncate.c b/mm/truncate.c
-index df0b7a7e6aff..2931d66c16d0 100644
+index 12467c1bd711..df0b7a7e6aff 100644
 --- a/mm/truncate.c
 +++ b/mm/truncate.c
-@@ -369,7 +369,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
- 	pgoff_t		start;		/* inclusive */
- 	pgoff_t		end;		/* exclusive */
- 	struct folio_batch fbatch;
--	pgoff_t		indices[PAGEVEC_SIZE];
-+	pgoff_t		indices[FOLIO_BATCH_SIZE];
- 	pgoff_t		index;
- 	int		i;
- 	struct folio	*folio;
-@@ -534,7 +534,7 @@ EXPORT_SYMBOL(truncate_inode_pages_final);
- unsigned long mapping_try_invalidate(struct address_space *mapping,
- 		pgoff_t start, pgoff_t end, unsigned long *nr_failed)
- {
--	pgoff_t indices[PAGEVEC_SIZE];
-+	pgoff_t indices[FOLIO_BATCH_SIZE];
- 	struct folio_batch fbatch;
- 	pgoff_t index = start;
- 	unsigned long ret;
-@@ -672,7 +672,7 @@ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
- int invalidate_inode_pages2_range(struct address_space *mapping,
- 				  pgoff_t start, pgoff_t end)
- {
--	pgoff_t indices[PAGEVEC_SIZE];
-+	pgoff_t indices[FOLIO_BATCH_SIZE];
- 	struct folio_batch fbatch;
- 	pgoff_t index;
- 	int i;
+@@ -17,7 +17,7 @@
+ #include <linux/export.h>
+ #include <linux/pagemap.h>
+ #include <linux/highmem.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/task_io_accounting_ops.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/rmap.h>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7effd01a7828..7e921dbe2373 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -44,7 +44,7 @@
+ #include <linux/sysctl.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/oom.h>
+-#include <linux/pagevec.h>
++#include <linux/folio_batch.h>
+ #include <linux/prefetch.h>
+ #include <linux/printk.h>
+ #include <linux/dax.h>
 
 -- 
 2.39.5
