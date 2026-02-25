@@ -4,92 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 944AAFD45F8
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 21:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FECFFD45F1
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:02:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B557E6B0088; Wed, 25 Feb 2026 16:57:11 -0500 (EST)
+	id A4FE76B0088; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B02996B0089; Wed, 25 Feb 2026 16:57:11 -0500 (EST)
+	id 9FDA66B0089; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0EA86B008A; Wed, 25 Feb 2026 16:57:11 -0500 (EST)
+	id 8DF096B008A; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AC366B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:57:11 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C4B31607AD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 21:57:11 +0000 (UTC)
-X-FDA: 84484340262.08.D775064
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 426F2140002
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 21:57:09 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G/Vq1kfz";
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772056629;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CiFwMFnRC66EdvVEka+nTnJQSeLox1cNdW7WVtL5m2w=;
-	b=DqR4mD14z0bSXfiZej66H0oRKzBbH0D+KKHzzf0NtoH0/oxn7z9LhVOe2ud+0kOmX+sax3
-	XbAzfO7XEBqG7JH0f29M1ZJXGbTZEwbS+VuSBFzeTT/N3W4whxQHjxTKTvBJHMbVLQsQKw
-	w9Wd9bIcCrqh0dKet/Q/ua8UTDy/JV0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G/Vq1kfz";
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772056629; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B5856B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 29AF01607AA
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:02:31 +0000 (UTC)
+X-FDA: 84484353702.21.A4DB1C2
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 62C0B40009
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:02:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VkGc+B1E;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772056949; a=rsa-sha256;
 	cv=none;
-	b=SGo09upO/yttRqtU8WmXPKCTp379qhi4Aje7Xws3JDZXPqa5u2f8bnriuyPuxKcX/cOcln
-	Oe/r0W/4HcDRfqktNS12FQHFNJ5rE9elxsB5bSScbHyaa2Cc0CHri9HhdLbooycq1PAE0o
-	ddtU5tTS+q8IOpf3KqrYFjr1gjyfDvI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8ABDD60053;
-	Wed, 25 Feb 2026 21:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2780DC116D0;
-	Wed, 25 Feb 2026 21:57:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772056628;
-	bh=CiFwMFnRC66EdvVEka+nTnJQSeLox1cNdW7WVtL5m2w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=G/Vq1kfzJAALm4ICHrgT0kZkyQY57Mgf9BP/lWZgfG/fCEURrkmzKL+YInLwxzY/R
-	 WXrmUDnN2kHOEsREOKro5+So877c0l1gmR7lBm8biLCHtXYl28JRcFoO9w4wq2rFC4
-	 egjuwp8w+JwTvAJUnBP2yzl6gYH06fgJkR4U89yY=
-Date: Wed, 25 Feb 2026 13:57:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v5 00/32] Eliminate Dying Memory Cgroup
-Message-Id: <20260225135706.28a93fd5817e0939387275b6@linux-foundation.org>
-In-Reply-To: <cover.1772005110.git.zhengqi.arch@bytedance.com>
-References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 426F2140002
-X-Stat-Signature: 3811rmakn4jizkmmj1r8h6jx9yiek6qq
+	b=wKSlJogm72bGriHDWzwUgaoTDZisnlmlx201/TYm1udIdAdfax3NexRatdS0Xe49ZDvkOq
+	mjB7X/PKKar+034MI34DeybmPCpnHv05OHCQbHCRumqAiQiKcTJ6EeDoeD8UTHkQryw5cM
+	l+O50JIcd7ZE0jm+siHn80b1BTXwEYE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VkGc+B1E;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772056949;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=67P+JH09J2cm5qxmBeSmD51+Qk6Cs1f/aDxhT8sdTsA=;
+	b=YBjlOYS+V9ZslCuQ4qZX3n2a0HAa50HpGD6Dk9E7HC1QRQWKpoVhv+2WOHoZB6WHpylKGW
+	8t1S+tiC9MMer52RCt2DWFnblVSrMYpdiO+z3i/u6yOpEe15IjHYyyHZ6m1Mw5U8q96dMu
+	cdM6yd9Rl/L363LK/l0PM27SIYXY5sA=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7986e538decso960777b3.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:02:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1772056948; x=1772661748; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=67P+JH09J2cm5qxmBeSmD51+Qk6Cs1f/aDxhT8sdTsA=;
+        b=VkGc+B1E3P2VLYq1+9SqFxJDUnXj8A2o6PTy3ZEOJ7uVCLOSD52PQPBlaRnfn0oocl
+         hd2VbTCMEW2LIVG5Qop+fyBi+L2XzAVYA9ADvMzFfHe8pH2VDthYPdDXYm4EwXgOndk/
+         v3MHp38FqCW9D3DBi/sYf9AWycnoaaCmiq25cOQC2nT+VRG3PTIEVV6Egtctn7wt2UVW
+         WA4hgS3dXvtZNNcptGJbeCCQHXr7gvyY/5vfuzvAkoJUijXoMW7jM/YVvURmNVkgcJL0
+         c9nzVdZ6Z15Q6gdI9/hqfXJHxF4+xl8sHkfx8ekzkQVOFamVTVo4DWgA5sUS7IabQvH/
+         LgHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772056948; x=1772661748;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=67P+JH09J2cm5qxmBeSmD51+Qk6Cs1f/aDxhT8sdTsA=;
+        b=mJ5F695Wl9l1kAtlXB+TzuAsTwceJIz/fOkTGUxaJnOw77Hox1aUa+P2dDmBJqND1X
+         JbRnJfXMdjlOmzykg4bxKhPAiKoI2KMq8NPAAahIX8ajCF/r6neqGUV1QYQi1aldsZeR
+         70uwfccdg4QaPLsZs8UDaHBiSWjgAvXqDUzesnJ+5SmS6+PJyTRIru0RnQ8yXtGhuxjy
+         xMozrcmhS+hxsp711O49m7dfj0pe8rj8dts0I1xChRkDzK1NqkLGa3P3EYlMgbbAm8Ds
+         rkh/pGlpJbyoYAepMmgDAyyBhldsVHRD9hqwMxbXE7D3UIWbNxawtm225INcTa7HyotD
+         q0TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGB5RPxFL11g/WsaN4kCjD7wL2qwwEMw35gkzKG94iOmi4P9JyQc6stgSs3sOFDc/SvekILJiVRg==@kvack.org
+X-Gm-Message-State: AOJu0Yxn40A9gKF2G5wCCL5Wf/kiUA3LA+ELjRpomaquUYEKrxzzhrns
+	8vhU2134zkjY1aCZ2faOHZ+jVpOONMOxcYTEIhSgqmXAWzuL9S3KT1C2cJQ+FL8vpHU=
+X-Gm-Gg: ATEYQzxE0qOsTIGBjszEFKFTEjb7gjzwWv6C5YAKL21waybG+cEMvO8MHYRBCx4u9GB
+	i27OZz7FMXHr8jpTIDC+wDk36tChHDQYs6PzQAj8YVXylTHPb9R/uLgcRGzMh9kX50BSBo2DcL2
+	28Bzkp9XqFploqhoWrChOsX89san8OcfYVqcs9CjBKXBdpGEAvfef1Mr6RhwE2HfKrZzPlFacU8
+	QPuYf8bZr7H1a0okpipP0JWhEVkxPHuaksHwo7LF6YgAUVV7x35iix/lKn0Jpctu9w3uUsnLPb/
+	oYoE7K3LMHhR2QE6Txrm7GFi6CjOGElw0qQaGlvl9q8zsSa1zmbyfeLpNEM11X6kpPcNcoCm+K4
+	7+thkLplwc4+hDxeLFlj5Xr8JmBkEzxFHVx01xabnJXEK87OUsOHu8lAnkIOn6IoayFaZd9B3aq
+	eAXDwubg46+4mGAiZbnOOFMRtbqDVWiWxyG/Y+E3/wCdFWpPFySUwyFiABIHxsyG6d55IymYCXk
+	KobG3OPD0TfF2rDEapu5TJXLL6hr75zwGC1iN1pJ+yzGEZXow==
+X-Received: by 2002:a05:690c:60c2:b0:794:e839:ad76 with SMTP id 00721157ae682-7986ff8a362mr18639447b3.44.1772056948232;
+        Wed, 25 Feb 2026 14:02:28 -0800 (PST)
+Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876af20ebsm703617b3.22.2026.02.25.14.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 14:02:27 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: pratyush@kernel.org,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	graf@amazon.com,
+	pasha.tatashin@soleen.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	urezki@gmail.com
+Subject: [PATCH v1 0/2] Fix KASAN support for KHO restored vmalloc regions
+Date: Wed, 25 Feb 2026 17:02:21 -0500
+Message-ID: <20260225220223.1695350-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7xphmw1s8eg45w9op348duetkssuokyr
 X-Rspam-User: 
-X-HE-Tag: 1772056629-259167
-X-HE-Meta: U2FsdGVkX1/oSG+9PHpy7zEo0h4auzT4pb+GBjYuSV4osVbMD+wsbCQk2wvS9PdScvTEmJ39xWOdyZa7PlcXbvZMRkS6sHSOAMph0OFreq0An5oMnSC3fAMnOMjJdMtjWZBJjsBF7T/nC6+VXdci2233XyH3NBLpl4r46jqPGVEVWWrTpqgk4GvhGD0B7Ve9r6At6xR91NpqshtSxGz5s/HctY5xesDD1t6P8KyWJphRZs8TsXTZJ2oraJoCDmdzgkEXBSc8jQlUEzCVoIUVhQsxLMGbVl8l9G0hikYIeIbrnSMSw/CBnFzK1F/eJ3doi14oo9hQEbH3WNi3rVF/RNyElk+lRUKJAdpFCKYVtVUpF4qAhnJMaALsksTx2IC3VQxPvS+j2it9ulyFhKzNb5r3M7NBz4cDlX7UHYAV+CdHQZk/lcLuLZGYuEqaMoTJKv/0F0sfN1JMhTQ2YRS4vHEIlDuCGn4xtECnvPZnq9/YuqlQIjFN8u+6/M3I4EjYoI0ht3ISwmkfgjQnh7oHu04v49vBrvQtcxpg8Ngwodg6vvtxVfrG9yp+vICGq4lc5A37qMgRFD4t1R3ZjLWVeAXAoyh7p5Cwjx2a48yhdXpvmZQiLN0VnlFhzbByE1+IpnQFGhJLkHpTj7ZTt5NjO65g1Ne6lF7oBO9pYNY6WVUo6ndlXzvtXAcyOX+vz6U0Plbee/Cw4vxWUQx8lXL2eISf+6B5T3k9qTq8yB1ulpj27iDycCK13oxn6rilTbKDY8/X3j074ujST9U4VLhqWCW5kSeB/eqTr6X35SYx/94xy4wNWWzdMl3+++ETMMbY0kYY7lBy0sRKHah3Bh+THTG+mwCa+oH+oEAD9t6gDysqS6uVnyD2OAxdtd4cuUeVHJdDFLsAeZJxQckrKxTKQFwTBJfzBCjf2KLNcNvGfpUKOd1jeJUMbSpPfS7Lecb+DzxZtYhnf+iEUtk+3V5
- I3U0CvYv
- tbuxQxNoeW9zF34L+zzkQGc/wsAAW5OZZ0M8Wl7PISQkzMDZhba+eZxtDn//wyGuUVtN3uRlO9uvkM1sHfym9Pu2oSPUtyJQ6G1cVaOne78cWKjxxa71iGYASzh6Jk02d4Ke+2ptYytm3gsZsn2zGtLsRg0nWNVc/MRLeKCgrcjSh7Seuzm8NrhCrDz6SDU2wcEZDMzGwsrtCgt3Eg+8LK+meCB/Xc5cNJuTtMDzaOrDRByJom0ElQfTLBKlYSJiIShgdi0Yrue/eWWGOYRmLjWib2Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 62C0B40009
+X-HE-Tag: 1772056949-162871
+X-HE-Meta: U2FsdGVkX19379PqB3klUaYSFvlB5S9tSmYd0cm5hTjYMAzvv6dGTCGPGA1gOW3paE3+/y8MMdOlGmTY3Zu8e5G6xwXoPqRLIKi9g2Njk0ati8oe+QycHA5qbKU7tmWazHAAj7TtxRMGncnn/5sdKetgqTdPAhjd2ZzbFmr9OFO4FMXamwT4GhHH891ZH1XvhAaJAKP4ye3RO51HQvthghgbioMpgbe+dwEoqySr8BRjadb559l3PdiU4R84lortN0DvtKYXP+Vvb5qNlH1LJrVa485T7klKrPDRdrGlngy00mbJA5qga6hOrtBzSeZAN2vyn7pGPsXrFgm35fr+LE48951tu3uEKFVbt3h09cgUrEAtg4fSmPpE6rXrErZphHJKH+Kdww46GlC46FvfgjMW40hfz70TFNOEy4RE2qwjKhVV0V3s2/3bcmJAj67j/dvvnsleFQZN8MeNCNTJjVffwVZKcvfsWmYVBh3RoIQCrL9GAa3XLhkeJYdV2pZlX9LX7lMlVjmKHeHo9siynBpYenBBtBkvhoaFJ3bMxAIvEFc/58MJbkn7lA8TWs+nX8UKc77q5zy2tg2RbrUgnOGrSDjuQ9F09HScCuv7j+YGIy5QjKINDKmCHaZXQhfFdXZmVnjQR451xgjcDewJu57cjBC0Vf8U4GGCWCrWo5omrf/ZGCvALpzVQCSexQQQ74FnxIIeB6PvaUaF7jWbrucz7mR3nhyqzwNJv8jJJvzuIYhxXVg9nHrOXtdK9ly75Swqu2u07D9Ci/pu8DoDGG28qNKGUURKG7WqBZqAkQ7LT8aPVPntYoqeDxlzqQ9F9G0XsmKOFpeNG5dWyj5KiDEx0hxfSGfYU0PlIVAJZDUKTtwU1X3mG0lig50+O7i3fVS0VBKdDbxpE9v9NQNiPx2K4fl/Lrv82SBQ8KId2pi3WvFm6Jb5WmpAZAi9ZFS5U3XnCgELaRD5MrhUU+7
+ aIUc1Jqa
+ JEIMk41viu1qncnU+Z4Z1zGUzZbAHA2MuAn7Bn+LIbKNkL9tam33w1KszlH60FnInR/kGMZKPHzCM5GcA8GO1npLB1IgBWD6h75/Fr8Hn1Tq2eEPFRj5aGqeSqaeXH6GFsw5SqRj/+/db8Ol461HU8erbs62qAo0bJGIXaJdwsuOYnp+x2EoKkX93lhxGGsSSFgCUkZIL8+atCgGDBSUdRg8jAhU3X67hDZRpGZdj6q6hqemWud0HBzkAMtrsqm8aK/Zqmx8XkpEaZjBtRbcmxxIMPpMjC3+kNB2V3kPhFoPSu+c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,18 +125,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Feb 2026 15:48:33 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+When KHO restores a vmalloc area, it maps existing physical pages into a
+newly allocated virtual memory area. However, because these areas were not
+properly unpoisoned, KASAN would treat any access to the restored region
+as out-of-bounds, as seen in the following trace:
 
-> This patchset is intended to transfer the LRU pages to the object cgroup
-> without holding a reference to the original memory cgroup in order to
-> address the issue of the dying memory cgroup. A consensus has already been
-> reached regarding this approach recently [1].
+BUG: KASAN: vmalloc-out-of-bounds in kho_test_restore_data.isra.0+0x17b/0x2cd
+Read of size 8 at addr ffffc90000025000 by task swapper/0/1
+[...]
+Call Trace:
+[...]
+kasan_report+0xe8/0x120
+kho_test_restore_data.isra.0+0x17b/0x2cd
+kho_test_init+0x15a/0x1f0
+do_one_initcall+0xd5/0x4b0
 
-Thanks, I've added this to mm.git's mm-new branch.
+The fix involves deferring KASAN's default poisoning by using the
+VM_UNINITIALIZED flag during allocation, manually unpoisoning the
+memory once it is correctly mapped, and then clearing the uninitialized
+flag using a newly exported helper.
 
-All being well I'll move it into the mm-unstable branch a few days hence.
+Pasha Tatashin (2):
+  mm/vmalloc: export clear_vm_uninitialized_flag()
+  kho: fix KASAN support for restored vmalloc regions
 
-Then into mm-stable around -rc5.
+ kernel/liveupdate/kexec_handover.c | 12 +++++++++++-
+ mm/internal.h                      |  2 ++
+ mm/vmalloc.c                       |  2 +-
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-Then into mainline for 7.1-rc1.
+-- 
+2.53.0.414.gf7e9f6c205-goog
+
 
