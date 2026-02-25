@@ -4,154 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97A5FD45FC
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:55:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C1C3FD45F9
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2DFD6B0089; Wed, 25 Feb 2026 18:55:02 -0500 (EST)
+	id AB6C26B0089; Wed, 25 Feb 2026 18:58:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEF1C6B008A; Wed, 25 Feb 2026 18:55:02 -0500 (EST)
+	id A8D746B008A; Wed, 25 Feb 2026 18:58:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFAA66B0092; Wed, 25 Feb 2026 18:55:02 -0500 (EST)
+	id 990736B0092; Wed, 25 Feb 2026 18:58:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBA356B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:55:02 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79ABB140134
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:55:02 +0000 (UTC)
-X-FDA: 84484637244.10.F7F8094
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8704140006
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:55:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gQuZFizt;
-	spf=pass (imf17.hostedemail.com: domain of skhawaja@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772063700;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 883876B0089
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:58:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21EC91B6E9E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:58:29 +0000 (UTC)
+X-FDA: 84484645938.06.99A74E5
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 396361C0004
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:58:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=r+tOENyP;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772063907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/+d/kouLLf9iKHdyjkzWOU+gVjFz9R5tJbv1KqoUtQs=;
-	b=yISMe1WRjx9wjI1roBhTPB6siyQ+zWs+BYzMHxYn7rSHMHvEcSiXssgIsX1UhpA5fwsNqL
-	chmQufKjUbdfCYX9af4jud8AvOx3K6XkeGIAS92vA86JWjW9ZAueP9gCZcX8BrnpCyw+xC
-	ZqGHQCgKIJTSMKOwFckOBYHfjlPdZFk=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gQuZFizt;
-	spf=pass (imf17.hostedemail.com: domain of skhawaja@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772063700; a=rsa-sha256;
-	cv=pass;
-	b=mm+SPPiV1U20TBcmUe761KQ2BMC2I+4KkKyubU1iOMzy6F5OobJflxls9VF1kI1+F8XTNx
-	4/BGLRLYNL/1prYDeT0gp0Dc8L5h+hwV1tBW1ddfVTLMXONgK4GMfR396qxdfiwprCFdnP
-	NK9rTWUVhHaTTCzh/gAs2d7vowr782E=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5069a785ed2so125891cf.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:55:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772063699; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PI9yBwGEc8jprOt8oC5aBg5IWq8MSkVnejeHe0WyLMzHnbElpXtRTxzAC5Kd5EO5t7
-         bYRUkmUg2izNS2OiS3f7Rzp7YP8oUTm4rwAEItkTWRoAegL0QNzFCXOQLhBVDFGO0i1l
-         G8Vu+pFcqsysOW87/ZkhxaOaG9P2XLIYqdm7pCzFgj7+kSLxVhNenPL6uC55Ywfkxd9S
-         GhyTKXu85n7P2GZhzq0nnvc0Va/kSt2MaegSizg1SR2qGjvgudWZHBIYqFVGErtYLLEi
-         CjmhlNfR2Rxlf0fRrzjkTPQ6OTlvNp6MxfI0S/U9kg0BEwYY4GEIepILQ6e7vJISOcka
-         ou5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/+d/kouLLf9iKHdyjkzWOU+gVjFz9R5tJbv1KqoUtQs=;
-        fh=IEFLtxIQdQLftT7lFi0yr2LSI8sp85/F9QDpPKxpoJA=;
-        b=d1ELa1GBKhiOh7vdJTZQmUy2C7Zq/7xePOQfM+EOBpftTqhbVRoBZcyCLYZTPzJylH
-         azUlhnHCKogbYZYgtzcz4JO+VUKJZ9pl/wtX/l1gZhBvw05jmkYAKP0zhWJPGwc0AQOW
-         5fsglZmuCjieZsevib4gS3+yXPZxZJWUYXdqck5KF4wokffRoG0ScOn07866Nnfk7fDw
-         dK+Xv78WbsUUoubrqzj8u46jsX8OouwKLgb18t9sxMdHSgMMfoGdVegm1V6I+5qUr8OK
-         8oo0raZa0ZuoJ89S/KmLLBMmyUS2WwljhspEc3Mkz73oFPfAczDxarpr85mRK6tRORHR
-         XLeA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=QQWBXTWhdLgoq7OluVHAAR5bDFt9biBm7m+9/q6MXhA=;
+	b=rifmF9XHyz4Q5RJZ/JSpQHp1iBWheFbSmxMEsUT4nnUZZcD3h0f59qjUzL1i0l+dG1iqnr
+	bGbjL9JvRWag4zfO36Vmgafg7UR0kgFxymuYKQuZDyFyiqu3WbWl4D0PMTdMngn9cRJZFZ
+	StLn5Z7q4UWhrZpCRNujZ441tgbYIOw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=r+tOENyP;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772063907; a=rsa-sha256;
+	cv=none;
+	b=V8Kl2dZR7O7+osVNQRP52JoWwR42SDFkRwqLf1zVg8hljUnVScGFF690MpM1HZK63Pj123
+	YUz3Jpq4OoiPYS9BNtljC6cZl0uGwD1iL9TRw01PU3lq0ZAQLynNo3iYpSAlpNwm4ecfDe
+	DvfLdqNIijfkC0TENurIq37xWIOzOio=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8cbad8e6610so20281985a.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:58:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772063699; x=1772668499; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/+d/kouLLf9iKHdyjkzWOU+gVjFz9R5tJbv1KqoUtQs=;
-        b=gQuZFiztUvACMfUDuxDjv9YSzx1bzXllbPnSQOQN2K1oXqU07xG3QGVVWjgaXbbVHt
-         XGLgZcxkdr0VFaPQuzr64/8Z+pfKXA7KuKeSm2m5IrLxFUnhXvqs41o4yBpLG7isFyex
-         jq22DKT471szDOVS4n6g6SSH7O7bShT/knCWFzMgljwaEpTamTA2Qn2WRviLk2zHqnIz
-         JJqhTLkVU0unFJkNbHUxrw31swW+eWwKO6uewfC+ExXFQGyJX82dANp2ZcBCaKGh/JsA
-         a/t80XAThP7djn1+zOYyypv53YJbRzSf4ykEHgisgQ+Lc1GmKORa0TdhFw6+EesOYIe1
-         BtoQ==
+        d=gourry.net; s=google; t=1772063906; x=1772668706; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QQWBXTWhdLgoq7OluVHAAR5bDFt9biBm7m+9/q6MXhA=;
+        b=r+tOENyPQOoGGYLKuy2S5QW9hGzytCin5SNWKWcRpnIBYWT/HcAA02aVvuqseT8gGd
+         0RRoG2uG1OX4QbTWDDQ+VYtPLNQALZaqZt1A9CJcF80rFQ4twUtpv9hU1eYXkQqaC6LV
+         Sv0j/iLjmq5Yenm1fDCzZ12Bt4GxLlkMY+IL4ScGPp3wKwue1xTxuSDGZhxE5wEo6+Vo
+         OkOmA5+wQzpW263IMdjPbMoJPVUhcWy70GkbfyXvzMTmlsYyUAiFzECDDGWvFmvY+HLK
+         +Zv61Lz4/D2QXQg7UkrTjgOqjErhaM1Sg6Xpncdchcc55GV/q8GQhZ2ME8aIpul6j45a
+         gmAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772063699; x=1772668499;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/+d/kouLLf9iKHdyjkzWOU+gVjFz9R5tJbv1KqoUtQs=;
-        b=kIJHTNJKG214nTzycRXQsD9xUVdecvWrj3adVd7Ht7GVU8ZEfS2lY6mBN+8gTCkmKO
-         920IppHgIOGZe9WcDIo/Oq1rROf0M44JloP3vqGE3KuXI0CHqUGJeEuYCL/h1h5gnhKT
-         O/zcQFXY3B9YgnMY8g4J2vFPARxRxD0VqzjWCANx8aXPGS938Tpbn9miQpLbsxbFlY1A
-         nLFJoc3GOunyt9cChkD97+6iZuwQLJZDxys6XAkNYMPeyasDmDgWsL46/JZpCnHMjsYT
-         OH6PCpcECm9r/Lv04hbkiZ4t7QrpCwjNQgmouA8cJrZRh5arh7bkRRlk/flhKHOmt8aj
-         crvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIllNeRWVBMWgj9yvFZY7tv5uBVgk8hXUmBehVB8HjAwrgMhQQP6spCp7dZVf5KXmBKjGahdl8oA==@kvack.org
-X-Gm-Message-State: AOJu0Yz6gcwzQsUGhdQwPcwWpkb9XZbINK+FvirMEFVAVMKxGsq5Knsz
-	Qk59aNxNg6zvKiWoo0pn2jSTCT2UM5Sy8qI/KQ2oT9lH/rH2u04Lxzvq0ODjczdNEfTpl+tH4h5
-	9k/aqI9KxISbxlKAzkcLrlnZwcmjy/hYXn/KXHo8F
-X-Gm-Gg: ATEYQzygLJrfUs24+Q5X3cAUWr9vk3y5rWXal40VoJykGQ8hwhnqPJkvbB2jsMRM1bT
-	NDMaOKbJVnDlcZfPdPpShrjj14PiFRuwLTgVYB0c/NLYsFjXSsnyRSXuRcJzA8IvHf6qM4vU0U+
-	UlC+fGvbBB2xx2d4f3sblJ9YKhpwQDOecv5ehRV07boIF0SJwvzWVibn9OgCuIDycyzKHT02fF2
-	te0hz3V4raPz+q/ybL0WUhAulugDTRAFKSFh7hNE7FPN0DEbLnNgLB642znqukoJ4BlurEu5WRZ
-	etx9SyvAmgAWeGGXLp8XIqThHWlGsBFaj8W42EkT0Q==
-X-Received: by 2002:a05:622a:4c:b0:4ff:cb25:998b with SMTP id
- d75a77b69052e-507441e2d95mr4895751cf.12.1772063699005; Wed, 25 Feb 2026
- 15:54:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772063906; x=1772668706;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QQWBXTWhdLgoq7OluVHAAR5bDFt9biBm7m+9/q6MXhA=;
+        b=nLMhI9JwoyGCheInulobMlHHjB5JZWOR+KbjLHX3a/Pe1nm4ycxHTFpOaPGbHNUAuG
+         j8DPJz0qnH4JfTqX7EWIIIXyuNQzdOc4rcYXIzE8A7vHEtn+6aGWa2mxTzinfi2BfTR6
+         hA7vUujo2dXo77avP4KpruKgHFCeohazh7lM9pjzyjusqxj4OeTprTnIRD2z++SllWJl
+         UMlZQwZ0Ol22EVYzmvALPeUlSPri1znWJ08cfDMkxqIz6OGDzcCmE7wlCodCacrk23x/
+         Q0IIAiQ5p8H1eb9fMk6s1aMbcMnogfpZJORqYuwSrc4dr+QwUdxsMsffd+akp9Gt0HCh
+         BmRw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwo+SvisixNosSiMXHdQKmJFWXTOcxmUYQVqDfp61t7TZSggQrvFjChS9ecE4/QRcmJpy+yZw2Jg==@kvack.org
+X-Gm-Message-State: AOJu0YxAZ8WTNRnri6hWI6YLY5spIR6+j51hP8i955rbTG4M/SIjlD+r
+	cwZkT5Vgq5Ev8PPRnEFxW364icULAwdPWIkBwjCFQnfIE1iVXCA6mBQq9/TnP+6Y1Cs=
+X-Gm-Gg: ATEYQzwlXzffkW8Y5VmAH6x/NWNUs4n8wPv1lwG0xLyokUdaKrndtYpjPxMSY2bWr20
+	bWGtW14Q/rUJT5RNB8tQCfm/06szxPQMJbgRk6FxGdEZJy7rvY9vgp60GHSHCl1fXPPrdbXiNyJ
+	qs14GzBMwZCFOr4SIKwFSMpn9F3VO7m4T3l+MqqejykcAoo6ETtO51j5dJxaaUd69sF+p9VD05g
+	Gx3uY3Bm6L95Qhrp63YBzmEWi+Sd4UuTUZBacApmc4DSZCjdfA/ZJ+qZL/rc/BSW8rknneZBRZs
+	H8sgckUSyaeUXOO+QLANJXb1DDi+cfOTfI7Mu+UouMfgoJeGIUKf0PeZMmw0gNIGF+FOY2s/KPI
+	bKSkWEXf0uUFHv7e64CK0ALplt0i4i57pH191Qur087CO5zO0uLGNZzsT/ROXo6Us6e7QLmRPLx
+	enWU+GjpoZ8OEK2dNIoWdTZ/jUbxSgl1X1J3txt2l4wh8XaUOAjxjcOuDn945QBBeoRdi1Y7rqD
+	nl/l1qhxg==
+X-Received: by 2002:a05:622a:314:b0:4ff:8da6:2289 with SMTP id d75a77b69052e-50745f165famr3302881cf.27.1772063905968;
+        Wed, 25 Feb 2026 15:58:25 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50744ab3f52sm5660571cf.22.2026.02.25.15.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 15:58:25 -0800 (PST)
+Date: Wed, 25 Feb 2026 18:58:21 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>, lsf-pc@lists.linux-foundation.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	osalvador@suse.de, ziy@nvidia.com, joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <aZ-MnVVNGG_cOvxE@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <fzy6f6dpv3oq3ksr2mkst7pz3daeb3buhuvdvcw4633pcl7h6u@mxjgiwpg5acv>
+ <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
+ <aZ92AvAg5boiSVw1@lstrano-desk.jf.intel.com>
 MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-5-dmatlack@google.com>
- <20260225143328.35be89f6@shazbot.org> <aZ-CnywNgMnr6f1k@google.com>
-In-Reply-To: <aZ-CnywNgMnr6f1k@google.com>
-From: Samiullah Khawaja <skhawaja@google.com>
-Date: Wed, 25 Feb 2026 15:54:47 -0800
-X-Gm-Features: AaiRm51g4hX409PKMap5bNDNnG0XAykqCRndojsQbHHI9mzip6hP9-Z2S9ohyZI
-Message-ID: <CAAywjhR4Azqx8hXRap0eLUrwetYRiX8TALEM=b+1BorPc3eJdQ@mail.gmail.com>
-Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
- Update Orchestrator
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZ92AvAg5boiSVw1@lstrano-desk.jf.intel.com>
 X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8704140006
-X-Stat-Signature: y9yx8cu541i556bx448ys4u8q93647pr
-X-HE-Tag: 1772063700-136851
-X-HE-Meta: U2FsdGVkX1854ld+KM1A3E+Xij0UW4kLb2e3Bi44Z/dgNSHy7+TmPxdVjaADw9UvCX7Qemy13lRUjU/N+S45uRcVzkWIJhkzcnO7yhC5c4qJh87jtoN+GjON3rCIO5H1hwc65qlyA982hKMsG2y6iQelN6ccwJ/D0vHQMy+A0x5IEk/ibYEUhwYbIHVwLvye60kNWFQV8DSVVZt3TmCfawuj6uFi7SGfbVDoK6Mha0qbTuAHbdDbK7xXsm7exGPXOYO6jH6grmjdACPvIshComvuo/G4LYTCQcUKU4Zprbpcc76/3qBBmHSAr4gLOK5RHc67eeBC8P6Y0gNNn5SWYDsq2fwDeWgfd8bw4BBHTM6xBXTdcIVX/vMf4P/SkISpj/rKc/mWWbmhK58WHd6QT3/OEqFidZUgaHVrzitLUnKG81CvIXx8mTwFCFhppJNh0UAOLe3FZq3csnP491L893/I9LEXiZREFxG9p6j9ihmOQeKPQ8e+Qj3gwHzBz6DH6+8JzW3mim3YhQw5k9ElQBDdOG1UIPIONI20Gq8mV8k/FhBiCJNxi5uDbsdYGV/5626UwBgI/Y/dXrNSOXmLfKjHpIsYN0Ex0VTn7ogMZ7woqfvnQVmfAAdW/T5i7KELs7sfHKY4K+aTpZQmjgblV5JlcH1dKfjWZBn6DRDKnUq3648B4wjP3pfd1G/ToIuyhDfkMwYgJuyXIYaUjJIeWP34EKhQhhnHB3dcMx/ytAmjHmV+Hyi6LkvrGlH4lE0fDt6eD4Y/Ou7BxTgzTYMW7Yilz0+xDL25eixgdx1pchV7wfVpbkWRwxgxXhMOyUwj+Hg7km3PXnm9iwiYYuv4G2eZy9jUQpDBOt4ajjvOOzWpLWtIN0iIo78J6rRnCGlGvXnV1gmAsP0za9S++xe1yb24FDt92tRUgPGKWx+cY5Ha88TIAMyRz5rYHZjzLBdb1F3vTBQRI8saFdVt3Uw
- 69O5KInx
- jggeA7QRiO5r101+FT4LaeB13un0hFTsSlJZ9EA1hHxOroec93yjsLiW3JrcLQDDvCsb6//1asJZHS1ZXcTbFHclSeOurA6ZKhPfCzvZT5UCklMi5bepBP/TrdGtGLLH3jHDKvM2DnpsXVAfqDU5TcZWHE2J8oHMC+ejE6ot26UCoDW4edkxp/cPweu9Gm0yB0VNr0XEVxraUkbN7Pwq6/6VGBMK7eQ/smIbIw2nV7RlSBNzxI9hiPyJrjImJAHBjUQ1H2m13aLuIcq4=
+X-Rspamd-Queue-Id: 396361C0004
+X-Stat-Signature: d8ytbijscyn1njsocardw7bomm5o4era
+X-HE-Tag: 1772063906-460513
+X-HE-Meta: U2FsdGVkX18hFZZx0s48FOtA0xg4DXYkxtLKCHUuTUahxJZ3k9VrnE/oNfYguh1yTiw8bDIghrs2jsrC0AmYg352/CqgfDbRFNkLnFT9K03LlCX1KmUuFWXUiE+MqIh4Oxjug3PqTPXX5uj0ptzMUqXraHNfDd1xykk/WYIsvf90+Om0FKxypkUSzlCUiJfWqKfaMMye8WRctqZsfuFEPiT7BbXtw3i2NLFHRaju5AAJK4+KkVlK/yTowmjUb9Fz9g9Ubpzso089X4oXeVAlLwRSxd+XaEhdiq2mNet3i9tvalRtM2CcE23x7Q6/dtjjPNeqGGWJJXHR77JkWRAzsprg2pLPiVAdNH+M1m7EZVV/URjQUp4i+D+1B3CS5Fpg7i5a3DlB4h/qKUCttqWe53UzHrTdTyvUswyy8bcxGPjEd0BkZwSmacV2khbXj1wQ4UsWSQWnKa3yDH8UkbO0uHDvLY2vX2Ga8MjShrStYEUIYmAo5JTTnM2aFNGB9uq8pvH5+pyce5IcFUwi75GjLmd9O8VeE8CgvI4/KxlmTLaXZzG34HLNOKSwmi0vuoqV1/niiQzwaLF2GLwZ+0O83gQCUIbss2wAA6MLQjNIlW+dERGHavxEmYHxkHTjlUYptnPpAHfn27rG6hxGsnyURORIlJj09t8lQ9tMIZquVKv+idrG7WTBE+SRW6Q5G56bPGVdsThg/GpTboqBW3GkNz1cpYpUk1QkTMMzqiWuiTOQKjz+un3O5lp2cgckSLLQ8XEC4ghpIDRrglT62oGIBIkm/LVs8CAKPxg1cGaALr12aUJpRO1hvjaIMIgV3jNarB4KQeitpw8xT3opo4d2kDZa8nKXBpOQ449dfZNu03xlc4SbpZ27hmJoyfPnFTP5WE6zqyLpB+7ALOhqMu5Tf3LIsu9+e1vmcqCGw8totTvtrcvW+ZXPT1d/kUB1HiauIyR2B1acrKNENQXnQJz
+ 4D6USSIu
+ 5AQOgp8wLNk9qqWQ74F+rKF9YRuq2FFwewNTpv/3ZWuFeaLaqcFtL6jwCyDhreNwqjC2tMrnEDVjpVX+QRvzF+ofQZ+MiHRlsVRTzDPBELQYspE+p6Xdg+LlE+diK10nhbodem7Jj2p39FpoF/PGT5v7pfnOLzRa5OWJBKT0UijM1AEk1bTjqn3zxvloSYBgx1Gt6WD0Ebuk3FdON0GHjASrM/Y3WXFt4k1YAetmn6NNc2kI2TUISOj+n+nGNl/Z+QwZkttlcTeg95Ywj7kvsfHpza/tlU7mLA7aoU3fdnSmZ32PNXFAvFRBLSXq6AJDMcsnggGe9nF7E2IFh6g24mIk1ULHjNbfU1c+56g1vIgoYPwgfUfGWhN8bCyINR36DNMkGiXUo5UT4blwcdVKogLqdjtCNm4XbnkFAg5jvMl7OCqY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,36 +149,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 3:15=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
+On Wed, Feb 25, 2026 at 02:21:54PM -0800, Matthew Brost wrote:
+> On Tue, Feb 24, 2026 at 10:17:38AM -0500, Gregory Price wrote:
+> > 
+> > The idea that drm/ is going to switch to private nodes is outside the
+> > realm of reality, but part of that is because of years of infrastructure
+> > built on the assumption that re-using mm/ is infeasible.
+> 
+> I was about to chime in with essentially the same comment about DRM.
+> Switching over to core-managed MM is a massive shift and is likely
+> infeasible, or so extreme that we’d end up throwing away any the
+> existing driver and starting from scratch. At least for Xe, our MM code
+> is baked into all meaningful components of the driver. It’s also a
+> unified driver that has to work on iGPU, dGPU over PCIe, dGPU over a
+> coherent bus once we get there, devices with GPU pagefaults, and devices
+> without GPU pagefaults. It also has to support both 3D and compute
+> user-space stacks, etc. So requirements of what it needs to support is
+> quite large.
 >
-> On 2026-02-25 02:33 PM, Alex Williamson wrote:
-> > On Thu, 29 Jan 2026 21:24:51 +0000
-> > David Matlack <dmatlack@google.com> wrote:
->
-> > > +int __init vfio_pci_liveupdate_init(void)
-> > > +{
-> > > +   if (!liveupdate_enabled())
-> > > +           return 0;
-> > > +
-> > > +   return liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
-> > > +}
-> >
-> > liveupdate_register_file_handler() "pins" vfio-pci with a
-> > try_module_get().  Since this is done in our module_init function and
-> > unregister occurs in our module_exit function, rather than relative
-> > to any actual device binding or usage, this means vfio-pci CANNOT be
-> > unloaded.  That seems bad.  Thanks,
->
-> Good point. So a better approach that would allow vfio-pci to be
-> unloaded would be to register the file handler when the number of
-> devices bound to vfio-pci goes from 0->1 and then unregister on 1->0.
+> IIRC, Christian once mentioned that AMD was exploring using NUMA and
+> udma-buf rather than DRM GEMs for MM on coherent-bus devices. I would
+> think AMDGPU has nearly all the same requirements as Xe, aside from
+> supporting both 3D and compute stacks, since AMDKFD currently handles
+> compute. It might be worth getting Christian’s input on this RFC as he
+> likely has better insight then myself on DRM's future here.
+> 
 
-Yeah maybe a kref that gets inc/dec in probe/remove. I have a similar
-problem with iommufd preservation, but I think I can handle it based
-on the number of iommufd open.
+I also think the usage patterns don't quite match (today).
 
-I am wondering whether this file handler registration kref stuff can
-be moved into LUO by adding it to LUO file_handler and the modules
-only call get/put?
+GPUs seem to care very much about specific size allocations, contiguity,
+how users get swapped in/out, how reclaim occurs, specific shutdown
+procedures - etc.
+
+A private node service just wants to be the arbiter of who can access
+the memory, but it may not really care to have extremely deep control
+over the actual management of said memory.
+
+Maybe there is a world where GPUs trend in that direction, but it's
+certainly not where they are today.
+
+But trying to generalize DRM's infrastructure seems bad.  At best we
+end up with two mm/ implementations - not good at all.
+
+
+I do think this fundamentally changes how NUMA gets used by userspace,
+but I think userspace should stop reasoning about nodes for memory
+placement beyond simple cpu-socket-dram mappings </opinion>.
+
+(using mm/mempolicy.c just makes your code less portable by design)
+
+---
+
+As a side note, This infrastructure is not just limited to devices,
+and I probably should have pointed this out in the cover.
+
+We could create service-dedicated memory pools directly from DRAM.
+
+Something I was exploring this week:  Private-CMA
+
+Hack off a chunk of DRAM at boot, hand it to a driver to hotplug as a
+private node in ZONE_NORMAL with MIGRATE_CMA, and add that node as a
+valid demotion target.
+
+You get:
+
+1) A node of general purpose memory full of (reasonably) cold data
+2) Tracked by CMA
+3) The CMA is dedicated to a single service
+4) And the memory can be pinned for DMA
+
+Right now CMA is somewhat of a free-for-all and if you have multiple CMA
+users you can end up in situations where even CMA fragments.
+
+Splitting up users might be nice - but you need some kind of delimiting
+mechanism for that.  A node seems just about right.
+
+~Gregory
+
 
