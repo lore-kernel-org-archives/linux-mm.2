@@ -4,149 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D418F55436
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 01:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA629F55438
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 01:40:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA4FF6B0088; Tue, 24 Feb 2026 20:04:36 -0500 (EST)
+	id ADAAB6B0088; Tue, 24 Feb 2026 20:40:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A52C46B0089; Tue, 24 Feb 2026 20:04:36 -0500 (EST)
+	id A9B266B0089; Tue, 24 Feb 2026 20:40:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 934806B008A; Tue, 24 Feb 2026 20:04:36 -0500 (EST)
+	id 9B23C6B008A; Tue, 24 Feb 2026 20:40:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8184D6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 20:04:36 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 00EC6B8C47
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 01:04:35 +0000 (UTC)
-X-FDA: 84481183752.25.D98C8A6
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 104CA4000E
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 01:04:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nfX7JTYO;
-	spf=pass (imf11.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771981474; a=rsa-sha256;
-	cv=none;
-	b=Men0EgAMftIOZR2qVEitAME6fUCZEOIjH9xNPoDjpwfv8k4Pfd73DsVdKl3eVnejm4xoe3
-	sUSr5fO7UI3Tgti4pmfSaJpYX1VhLBVgA/2yrQIcAziBv/MIdJRxWu0WtD89A2S2UlJ0ra
-	6/89T6DKDlKuc51rMZVjmn9CNS0fhFs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nfX7JTYO;
-	spf=pass (imf11.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 882096B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 20:40:07 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 250B41603A1
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 01:40:07 +0000 (UTC)
+X-FDA: 84481273254.27.B66274C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 58FC2A000E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 01:40:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r+Vj8Idc;
+	spf=pass (imf25.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771981474;
+	s=arc-20220608; t=1771983605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=91/bJkQNN7qyadQSoaiseSGTAeJs7mqrmAw5bCkfU7E=;
-	b=EbsiDkRjCymlX1J8d3G/EPpQih0dyRuUu0M79pVUJd1WOUWl8mY7iPlD4BwSQ0I91uViv9
-	kpsSpQpVZKkIMUctwYjtIrzSZW66BK9laS9lYyY88O4xVS/EIILi+8V8I3nQHRhUKafJ3J
-	cJH2azvPZbxihQbZGWRaoeeFY5etRaA=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48371119eacso71761425e9.2
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 17:04:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771981473; x=1772586273; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=91/bJkQNN7qyadQSoaiseSGTAeJs7mqrmAw5bCkfU7E=;
-        b=nfX7JTYO72J11juWuAln7oKYYMJmhUd6ZNYCit2/vU+g/N5l9Em282PD6rRWSbiNFl
-         7lMw/dbQwEaYK9DwaNnv9ueu6F3URNdesNGlAnOzYVEANufFJQiqx62a0HqoYkpcO0sf
-         zXcWSkgEPLb6cKUufh8C0ky2MGjxCddHULjEQ/PsH6Lm4bLz5HioKis+imRM0uyv3umR
-         X46NHmXEsGuZQZoSOR7KpFN/qjoz0021hPH0YLrtxXzfOuJuo4TfDFDiHsS0BYBzOqlF
-         +0UPhCoubD3kN1GrIBjVeIcUH65oQdZxEL0coK1S6bmuLnxAa0ExSw+CsQf1YBVxHZBf
-         fhqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771981473; x=1772586273;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=91/bJkQNN7qyadQSoaiseSGTAeJs7mqrmAw5bCkfU7E=;
-        b=s1B7BHGbgZqrxKtmQqq9+1goxNSdbvjk11pvZCde/sGoln9JMPtR2Ssq2WAMKPh8ta
-         fc3/+jar03Mz6WdFUCMfvrxXy1GHQLb1AR7heoDAEfr21an7wgguWYLGC2zNjHcCMSXJ
-         1SR00/MTS/JMAnJhR7odnqVnHEDC0aSAJ6ISDCcraGxAldMlfOTCwxK7jY7guyddWZUQ
-         xGenJcLDOttRRh7998pA9i6tIqV8GudmM8FvqKx+FCr78bC/g6IGqZnPVES7ray4X5J6
-         R7AZiD7Dr7tkvHZV3VpM2cmeZN2H/iH2dq9pZKVqW0n66NkvPXCLyLGCJuEllMokZEHY
-         Mthw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVJYjLIJ9W9QveVGci7w50tkXJ06Upk77VDhCnG2twHDFflNEqaZ7F+qNxHu2sHR0XO8cULkxq8g==@kvack.org
-X-Gm-Message-State: AOJu0YzfiVC8P6xTcL6Ih2t6tSCM/dodvIrZTOzO8+RuTRqyMNjiU6s8
-	e0Oo9+OFlTJL0MHjXlXvHHdf/kH+6ZT9faYpwL3kzeDjKopjtKPusDdz
-X-Gm-Gg: ATEYQzyhqVq2cz9PZB3QH+aGtZedfaWMI7mt+hqsH5S+TAf9MxS5ci01lNcY+leBiwj
-	BpIKEZfoYUwJv6bbekpq+13dI1ZNhimUK08FBfiWSwOHiHYMmeWYvkbR74muvmurfI63wWYTg85
-	ol0WZ7mO2Gz2RotlejOgDaZX4R4h0TLRKGS2vqcj6rX9LV/AFfM6hfAjx/6Hekqu2K+SCzuTxim
-	pwcEN70tMgTkBTCUZmTrZ8Dxet52YmUiwubpnvZfLJao4PpWTa/JHcYfuIHJBhQ7/EGofCHHaDR
-	7U8rIUQ9MnCqyf6q15o2DNpHTydwLZF+DVagC9ccsGpTmbUvDLfXdU4rrC9e5PGGAmWbbACcqvM
-	ttxuFyxVOxvAwoPKAzs1VqKhwNF+VmZfDabl+9WUgqeKyRzc6Is4qbf0hzo5OfxQLdwd5Y8HSdz
-	HpdS7qXuhg75zAfs/YtMMPer0O1KmFrA==
-X-Received: by 2002:a05:600d:640f:20b0:483:9139:4c1d with SMTP id 5b1f17b1804b1-483a9607e3cmr199650505e9.14.1771981472242;
-        Tue, 24 Feb 2026 17:04:32 -0800 (PST)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-483bedda2d3sm4976455e9.21.2026.02.24.17.04.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 17:04:31 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: nphamcs@gmail.com
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	bhe@redhat.com,
-	cgroups@vger.kernel.org,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	christophe.leroy@csgroup.eu,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	huang.ying.caritas@gmail.com,
-	hughd@google.com,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	kasong@tencent.com,
-	kernel-team@meta.com,
-	len.brown@intel.com,
-	linux-kernel@vger.kernel.org,
+	 in-reply-to:references:dkim-signature;
+	bh=2lrtnCoSoNwjyL4LqElnlh0t+81G2x+kNbA8gOHQzuU=;
+	b=yHTMRhPhSywjqqTgWEkK29r2TD+w2FSC0bHCy9yhzhqNM9Dd2WCNo+cX2CCpKMsWp6yQ/e
+	eEZy8MzxSUgvmS12kIvs9a4/CrPKNrRu52lLT21uwp5AMYpREuaC03WWuED+F3RItTJ7Lh
+	jNQoaQe7HdbIVIl27m749lkh25q06TU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771983605; a=rsa-sha256;
+	cv=none;
+	b=iNEPzJLIp5XyTP9mmTw7kiUmWn1W1Lj9BpFgGFzrrh6Cg1BKXGYl5gxyjSrA+OGbqpB3Al
+	fy1Cjh+PVhA5INJTHNMdeynyKpFwcEFkfXfsNGRt08CblT4pbXJajEhWhrmbiI2CeGhbqi
+	l8E7sE1j4JjpX7bZ1ulb54AzAePafJY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r+Vj8Idc;
+	spf=pass (imf25.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3743341726;
+	Wed, 25 Feb 2026 01:40:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15146C116D0;
+	Wed, 25 Feb 2026 01:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771983604;
+	bh=/vhqQFuGoe48JWJKQbmTtsW8NfhyeO+Zgc9RwDLnpHU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r+Vj8IdcOLhJtUtOQzh254rqvzA3uB/Iye7mW2zJnKE1QoXEBJZwneCUmDAMQSl63
+	 7mHUl0l92fNWBWeeNR/ikW1O6FbCag2yrnh5OAlaQatcoNr3zfCK1v1vsWF0FKqA9e
+	 8dW4DoHYKeMyLD6z93jef3FZco/su92gf6Nicx2RFJvCeucfO27dUq1CzyC7hS+iqk
+	 EcdGcm2ALXOgaR4cdZ2/e2wMfGzFymM6111pCjwIosZnBu03Db/elcQmwAvLrq13b6
+	 mWFkahThS0zCNqtezFIpfYCWQwbEcOoK5zKXviU67EWgtWFgfGtWx5itFIN2XzA6KP
+	 VHPAXFFU5J6ww==
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
 	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	npache@redhat.com,
-	osalvador@suse.de,
-	pavel@kernel.org,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rafael@kernel.org,
-	riel@surriel.com,
-	roman.gushchin@linux.dev,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	viro@zeniv.linux.org.uk,
-	weixugc@google.com,
-	yosry.ahmed@linux.dev,
-	yuanchu@google.com,
-	zhengqi.arch@bytedance.com
-Subject: Re: [PATCH v3 00/20] Virtual Swap Space
-Date: Wed, 25 Feb 2026 04:04:24 +0300
-Message-ID: <20260225010425.2876986-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260208215839.87595-1-nphamcs@gmail.com>
-References: <20260208215839.87595-1-nphamcs@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] slab: Saturate to SIZE_MAX for allocation size overflows
+Date: Tue, 24 Feb 2026 17:40:02 -0800
+Message-Id: <20260225013954.work.319-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2209; i=kees@kernel.org; h=from:subject:message-id; bh=/vhqQFuGoe48JWJKQbmTtsW8NfhyeO+Zgc9RwDLnpHU=; b=owGbwMvMwCVmps19z/KJym7G02pJDJnzgj7G3faYZqv3iPHMylti0ey+N15vWpz6ovTHke3+h 5tZrvot6yhlYRDjYpAVU2QJsnOPc/F42x7uPlcRZg4rE8gQBi5OAZjI88+MDCunsujwCF3b7cWt PPPyMd6Dt4vilMQ8YxcqG4Ss/sta2sLwh2+H4YHUnGcW0Q+fx/zYL1XXriwetf+/ZkvAoY4MVi5 jBgA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 104CA4000E
-X-Stat-Signature: npsc73ez6kbziiofofb8fnz7fk59ndp7
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1771981473-49949
-X-HE-Meta: U2FsdGVkX18YKOIZu1qUuvbSgeVjCxwxEi0c8BtB1Dqg0cKrb0B9L/kO7GkBGYwaBpY+vams85OGwlnYiVuQt+UpDl2RoOS2nAyB8JNdQxky46c8jImHEZEjyHHcU9xuG2rpgcQcwc4++EnslJb/uu5i9ve30A12NtWfKDCbVp4cRNhyZu24ayxdqC96pHkSMa+pzaLrAYRV1Mv17wMmGdDj8tRZyQxcnhBpqAZgh1/j3YBL+Byi4yMwV7QKdwNMdZmr9YptXuTG/AvL3jUuylUunBZQvxqsjlw/xT3P9adEFTHRo1XE0N7rmuGunDAH0+S3cxZ4LCbfaUz1dHecvXImErMNVoWMwpt9NzsNi1qNKcH2z2DnSE+ybm7hK7NONjcQUF/IXTbm/UpQZ23NPkaPyfOEVePaWbpAAHzRWfW2DPu/wzmk0jkSlRzgLEwu92ZIpsmfnDX+8mTm6HLQZfr2lNtsVkXV0xZYfAAsdwORLosTpZtso9d23U2kfzkxz2nfmcDUFM3duIZqzXESij1NfrdV76iUV8y7xEwD8GFmMGegEFDZvKHiTL4C0UxOQZlJTiORhl5ANN+c9Ic2dGoJUEGrbwLuuSpkspdvoC0L+fiHavS3GEirEpkPCG1l9je2n28SK3cd9jBn/9W6KiJEoVXlPDeRCjnhNSF6gDsMn+tFNRtnVF3U0oZhGkooAwCXqBHW3QKPgsdbinC+D96yiVaw+X75dnRHlZYI+U3ygV3QjDJs0Z5SMk0E3yStW+ExBmdGLYbaVs70479irfY43opl7Bkdzl90N0yKqs3b3JFuNo6EN1m1ew2qqWVcMG6A/E/fctBsYuMp9w72m8faSkeojiwK9X95Y4+9z359thkku1bq3Gg/uVrCjV/rQ5PPgX6qF6me/twPncu8hRpoEm2zC/t1fmcFGtkQmygPBnk3Yau76eaoJFNtcTc0tnw+jLJq36NWaT0Wuee
- /IcKVg1E
- f3ovHEfY8XTC5ZK4oe4cNLWu97wAetKqR6obyk7LHDU4twazR+BbSUZiPqu+otfMQWVh+HTSTUYwLRI/aan1t0IFSlV9Q+1/q7p7yE5UrkBmQrDSMVdp3fR/vTxYwYKIdjfGe1063e1Iun1B4Zpm3IrNqvGOW2ERVsD4CjY9akqHFhrjKm0VA5QqZo+Tk6o4RrggZvelxLcpu6QxQzyfcKKo7hoAy9+IZqliXNfFu8xQG0blXmshtbsTya+6JNC7Oz8Nup+LdoeK7xN6RsEuwJBcEKo/PPUjrxgA+2Uax+z2142gJavUjPMz3DOTeh6DcwE3SQiaa77OtgWl/j4M6/ctMrYdGYKtx6K4I5Xp9mfGRe5zL4NgOPuCnZYObMRloC6RolJrmLyCdaBB4wyi13zFFhzqgEPNG8K27lZnmOC0MVpiWw6wPPkH7lPW7cmb6Dt63gSh2+dJzCsIMmAzB6pH8QmRBCE6/+EsHoNzuhfCurhk=
+X-Stat-Signature: joac4uq9arf3rqdo1k7ik7txse68pm8b
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 58FC2A000E
+X-HE-Tag: 1771983605-928610
+X-HE-Meta: U2FsdGVkX1+vHB5EhlDoTUvnI6uaHiagcWD8lWPe8nT1Y5/V4AYoST3wBLoReysYfwfyBPra0Jnm6qlfzv8cnvcXjlauuRk8r6wioEaPxtQbnUd2hooxBhGjW+01PScPL2Zj5haDQaMXeh23uDoIwwPvYYAZWLeglIRC2mO3GoS244TFyI1FJP6UBJNWmZPLhUbY1Rd6Ed0VsjQ6oRUFj1z6mi1mg9GkBSifqf6Pt7ViAT+APn9QIi4GJvMnc+GrsZd4/zEZUiqfoNyTTrWAaruWY/brcOC+Jq8mKMUCz6+zpZP9H73z+yLgN/s9sqnAATOEE20T4eUo26AYsznCalXjbFpaodK3PJzzL9NqydN7isFNOJSuU1UWA+u+xaeTVzIq+oukmZsIMWTR43I4jKWgejLEbR+kKHcd+HJPO6LVD903zzCqi/8cGs5+7glDu4RB39kikxszV1K0bCIZjFtOQB+ym07Sf7vSYwEULsh81nmLl+QFsPKsCp0aMZJNpRCX7tOZb4g6qDqsMRhyX4pY8SC+QVqBx1GbqIrLlkYWfu63O0YgJdTg0ZnkXA7qqZQ7DA0KULbnURMnd74GgseUjWBaIM5nraEeZ6Y+XBK2NtmJgEAgYq+d77cvvdUHeN8UYkXsN+5UcMEJZmykEnyjJ61KJui+v6C3L2wRhBrGKmFRdcnFEyMuN18BRrYuqcT/fE7MSL3tuE78N1Ta3PR/oLSYeOKRZ3LEP/RyjQ4CDgYWy7Q6CcVqab1MBe8Lyym1w+HC+aikpHnhhim44Wj1p+M/WhAR0Bzl3n5TIBgilAKZ7VR7c95EHl1V8So61VHOHKXoZs5gRLFdvgHjb8677OkpdQI3FLAFWmEKUumUC1wHizJISxScDRZCj6bU2kf+VZOXg6wVCTPQPIYh8SO989ayuQAOQ72Ua+jxVRCgmR5kceGlDHjMsTYKVLdmu/aA+a9dKnL9nWyH/k/
+ n8Jjm3NL
+ 6vNG1mhungjR/OILLGwUQTUwqbIP/8eJxswR2qky+5bDFl3Da51TJFSfZKmbc+lIrVI0oh4pYDszxqc6BHK2WFoUHZGETuRaTxAja9UkE56nSRgP5nwpgcLEeSe1Y6XdXU0Zh75y+6kBFrFcchVHM2yS0xgc0MK8mlsBnHj7bvRI6A56jbkB6xZAZgwA2mGcvBb1c/hDvGiWFbZMcFiqysTO6sf+c15cyAxpaWxrT3jpvq5n+L3wknXB8FVpoj+9Qt2lPNyagSMcXBVNDt4e/1UEGKTabB6cbroy+Go++Zp4Ble830TCbtVSsueMM1s2OWGn/AJYRHTCVKLYTfsLGEcYYkbGrGO29f1dfb4R9B3dVIpRUqZEkYjYd/irnj3og0llsnD5neYfOvTb+yCcXwAl56eybTODbVoFtVtLePUojTFNM3TSSpZziynbHqLl4GQNv8Smri8mDnXjiY2FnkneH1Um+LCsU31PR41dciUNbLjXzhqFtLu5vFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,22 +98,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nhat Pham <nphamcs@gmail.com>:
-> * Simplify and optimize swapoff: we only have to fault the page in and
->   have the virtual swap slot points to the page instead of the on-disk
->   physical swap slot. No need to perform any page table walking.
+Instead of silently returning NULL on size overflows from array
+allocations, saturate the request to SIZE_MAX so the error will be
+surfaced to the allocator (and still return NULL).
 
-Some time ago on Linux 6.1.124 I typed "swapoff -a". OOM killer started
-and killed all my apps. And "swapoff" itself eventially failed.
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lore.kernel.org/lkml/a144cd1e-8bfc-4380-8f1b-071db0af0b2c@suse.cz/
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: <linux-mm@kvack.org>
+---
+ include/linux/slab.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-So, it seems swapoff is very destructive operation.
-
-Please, make swapoff non-destructive. Or create some alternative
-non-destructive swapoff. Such swapoff should try to swapoff without
-killing anything. If this is not possible, it simply should return error.
-
-I don't think optimizing current dangerous swapoff is right thing to do.
-
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index a5a5e4108ae5..8453c81c75c3 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -1105,7 +1105,7 @@ static inline __alloc_size(1, 2) void *kmalloc_array_noprof(size_t n, size_t siz
+ 	size_t bytes;
+ 
+ 	if (unlikely(check_mul_overflow(n, size, &bytes)))
+-		return NULL;
++		bytes = SIZE_MAX;
+ 	return kmalloc_noprof(bytes, flags);
+ }
+ #define kmalloc_array(...)			alloc_hooks(kmalloc_array_noprof(__VA_ARGS__))
+@@ -1135,7 +1135,7 @@ static inline __realloc_size(2, 3) void * __must_check krealloc_array_noprof(voi
+ 	size_t bytes;
+ 
+ 	if (unlikely(check_mul_overflow(new_n, new_size, &bytes)))
+-		return NULL;
++		bytes = SIZE_MAX;
+ 
+ 	return krealloc_noprof(p, bytes, flags);
+ }
+@@ -1175,7 +1175,7 @@ static inline __alloc_size(1, 2) void *kmalloc_array_node_noprof(size_t n, size_
+ 	size_t bytes;
+ 
+ 	if (unlikely(check_mul_overflow(n, size, &bytes)))
+-		return NULL;
++		bytes = SIZE_MAX;
+ 	if (__builtin_constant_p(n) && __builtin_constant_p(size))
+ 		return kmalloc_node_noprof(bytes, flags, node);
+ 	return __kmalloc_node_noprof(PASS_BUCKET_PARAMS(bytes, NULL), flags, node);
+@@ -1223,7 +1223,7 @@ kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int node)
+ 	size_t bytes;
+ 
+ 	if (unlikely(check_mul_overflow(n, size, &bytes)))
+-		return NULL;
++		bytes = SIZE_MAX;
+ 
+ 	return kvmalloc_node_align_noprof(bytes, 1, flags, node);
+ }
 -- 
-Askar Safin
+2.34.1
+
 
