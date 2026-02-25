@@ -4,89 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78A94FD45F1
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F1F6FD45F1
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:52:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D66AB6B0089; Wed, 25 Feb 2026 17:51:16 -0500 (EST)
+	id 641566B008A; Wed, 25 Feb 2026 17:52:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D134A6B008A; Wed, 25 Feb 2026 17:51:16 -0500 (EST)
+	id 6188B6B008C; Wed, 25 Feb 2026 17:52:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C29D36B008C; Wed, 25 Feb 2026 17:51:16 -0500 (EST)
+	id 53BE36B0092; Wed, 25 Feb 2026 17:52:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF7A56B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:51:16 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61D731B7441
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:51:16 +0000 (UTC)
-X-FDA: 84484476552.13.4311E5E
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A1187C0002
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:51:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 40EF06B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:52:48 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E148E1402CA
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:52:47 +0000 (UTC)
+X-FDA: 84484480374.06.DA8E9AB
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C4AF78000A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:52:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=gBnsFXyT;
+	spf=pass (imf30.hostedemail.com: domain of axboe@kernel.dk designates 209.85.222.173 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772059874;
+	s=arc-20220608; t=1772059966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wVXAFAgcy2s5ZideHEYBkFHH6cRRiDyS2dawlDyeGYM=;
-	b=s3zLlYr0d2DeY3kIF5eHKeX2pZYcLVrCvT40k+YLjqoeqyLA6MeUYkTQqj1PHMNfS/z4mx
-	OgPmeksCuyyaYvfL2jhDY6JQGTxmCOYaHtNlLYmq7BLryHZtRpOC5HaZkaxFD5y/A2/eJf
-	IwgpE6Q4Pfee9K+3ED/Liaar3dlsN48=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059874; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lV5yfIvdQy795zXZiEFYEcuoFYVuQqyybCf8AopsVu4=;
+	b=twivCAlPm9sR9KTr09JNuiLJdQjTt0JJRmz/OKe4hT+czkFZZ9Lc/CssuQK/jSQajERrlR
+	pePT8ICW0dZTgK9LtvwkUPpEXcKSZGkjSpUx0KrLin4oNmDxVrpK30O3lYY5b8oMdzNx6V
+	B4xd9/SHzLu/znfpHMlz5os+bdrq7b0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059966; a=rsa-sha256;
 	cv=none;
-	b=eKfRiMfTqWC5VkAwa45XR+TYNCVOX9kstz0JJ+Xekxhxn4apci8FN9OnHDCcI5LsZz1iqa
-	xPXrZkwJm2UcVDVvoVP+kdWItmyf6+Pu+k3wy1CTOh+ATRSUlJDY8q2c02T5MmLVd1fr6/
-	DLI7dGgWHBzaqhfzZwElZtDmQFuvoO8=
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F7A91C74B;
-	Wed, 25 Feb 2026 22:51:12 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id 2D6B819;
-	Wed, 25 Feb 2026 22:51:07 +0000 (UTC)
-Date: Wed, 25 Feb 2026 17:51:05 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Qi Zheng
- <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH 1/4] mm: introduce zone lock wrappers
-Message-ID: <20260225175105.7777c514@fedora>
-In-Reply-To: <3826dd6dc55a9c5721ec3de85f019764a6cf3222.1770821420.git.d@ilvokhin.com>
-References: <cover.1770821420.git.d@ilvokhin.com>
-	<3826dd6dc55a9c5721ec3de85f019764a6cf3222.1770821420.git.d@ilvokhin.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	b=hlf42IjwuKhfx+vImtYaXbWIHiTh4fkZtdaVaNFxqR1yOUTS4M4eOtQbXXyMopxUEWL9lm
+	ir1cceOFYwBwOqd8FdPqgLf/lT3BHtseOKpEnijakj9xD//AiOF7wrARENnkswNOAIIfbW
+	/FEgt3BiahZFY+Ly8A3WLdQc8AqjiiQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=gBnsFXyT;
+	spf=pass (imf30.hostedemail.com: domain of axboe@kernel.dk designates 209.85.222.173 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c70b5594f4so7225485a.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:52:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1772059965; x=1772664765; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lV5yfIvdQy795zXZiEFYEcuoFYVuQqyybCf8AopsVu4=;
+        b=gBnsFXyT/yRzIkZX3+/eaWL/O7bRr+sDBcCYr75xbFU7nvHDp5AxwvG7wr32OzTETL
+         AA117aqgH7+rV5zQEEt8G8sGUTPZ+AxlsDvTRECbI5HFZA9tBU7tPepLzXkOe115CaKp
+         Yu0Je7UEouNEz1DctwRKEVx6jzroSVKBKPdlAgBAaTxBsdRtexGEBC4cB5BPZGggk/Wj
+         /a0xpET8ouTHq2nMBf1frTQ/HfZw/fl/0OZ0RaCgfcnQejdUqWJeGyBhi5cfL0MPvU0v
+         THtp5BPxpLCUYLoIwLgTmagPiBGhB5BxnTw79rYx7hefbAe0+oKBAQAX3dhoy0mIMItH
+         nY/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772059965; x=1772664765;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lV5yfIvdQy795zXZiEFYEcuoFYVuQqyybCf8AopsVu4=;
+        b=SPMG2mPe2Pup7ZznwADylw4wlz15BQ9MjFgxHQdPP0GK2/JLkkFcJY36JC+UbOEr/G
+         PBiKot2O030/zZu5pZiM1a7ruxh3s/gl9LetaAmQRoW8CsWeHik+rF4pqtgMc+0wmCGi
+         JGJcKzo1hI9zkoj5tXIuvPowh90hG5VPEfBKEMr9mI02fSXNeU/1r8596V0e4lio/YVq
+         sQGoPfw5p4RobvDmyIeMlfgZwz85rzJpbRqh5BAX4bTTpXGmaaE6UFYKCq4eXXI06w8f
+         7um9ikOyBvuP4V0Wxdn5Rahhr1UXhOYUc6wZRY9R3hW+oWdLkJXJxpqJz/MPsOtC6Ow2
+         2neg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkOAZJz2opGKor0mSx4WldKciQOR7o2UZKsSI6jSnLf7mSxgQiQe/a8RxxRteCMJ8jnK4I8/huTw==@kvack.org
+X-Gm-Message-State: AOJu0YzNGuMtpB6u4KvZdKC0X4eh3ewyw4tC0oiHCOdNwvHKnalrge+C
+	drjdrJ/8swJjM3aIasnxvAsbK4vjMJZd7SHLF6+doGMotA6xyUa2/DWgR7wluwg51wc=
+X-Gm-Gg: ATEYQzxnmJyeDMdwx4iJoSyeaemHVe0HbyUks3eoeCItdCWsJ4w9A1iqFCjSW2ya6GC
+	s4Z32/+2HiYPtr0261ksbQahU1YAGOaF5sDDEIpl2JpNL3t4hz9T/Kpe47yyudKGK4Z3kR1j7Jg
+	GYTukViQdUJdVfr1SE07bOPHqK66ws2eJ76ECLrmh31JK2WggYaeOPpe1exKEb+jUZ9Tg9VXMvX
+	8vy2U2dlZP7ZizQE5Sm+xTIw05W4V/RLP8p1QOgO/6ckMi84800atR/THpCZFtb0diEQWJhcJd2
+	OVjT0BLqJtCE/8v7hYXOlZ/7+SgmvHMXP5HaQdQr4xyu57LaD9CfoZE3kmC4RtoXQsasrmuJ/Vv
+	ZIGKTQU3sTtabJUglkmbQHUprBsqfsCei+o9dvWPPU3u8ggynMze6D/+/7ps+0WQRMkIgEFZA7r
+	t9Ne9dQSyQwJX40OXD2mHjm+kNCFEvMcTJssJCFVR07DamOJNLeQplxtuZw4A5AWYaQAKfPUoIL
+	apEP5On
+X-Received: by 2002:a05:620a:2807:b0:8cb:2b1f:99e4 with SMTP id af79cd13be357-8cbbf3cf398mr113515285a.34.1772059964616;
+        Wed, 25 Feb 2026 14:52:44 -0800 (PST)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf652bb6sm51863585a.4.2026.02.25.14.52.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Feb 2026 14:52:44 -0800 (PST)
+Message-ID: <c8078a80-f801-4f8a-b3cd-e2ccbfca1def@kernel.dk>
+Date: Wed, 25 Feb 2026 15:52:41 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 1/2] filemap: defer dropbehind invalidation from
+ IRQ context
+To: Tal Zussman <tz2294@columbia.edu>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>,
+ Yuezhang Mo <yuezhang.mo@sony.com>, Dave Kleikamp <shaggy@kernel.org>,
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+ Bob Copeland <me@bobcopeland.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, linux-karma-devel@lists.sourceforge.net,
+ linux-mm@kvack.org
+References: <20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu>
+ <20260225-blk-dontcache-v2-1-70e7ac4f7108@columbia.edu>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20260225-blk-dontcache-v2-1-70e7ac4f7108@columbia.edu>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19bcS51kdQMJLg4y+CWNN6mKgepRI8oF40=
-X-HE-Meta: U2FsdGVkX1/tj9mqP/zexxSNbzfzJyNDn3Ikcoz9DM7IrcRLT4iJW9kifyj/zq12MlJmNIjaxAlYOyS3OVEskQGvSr6j2wOSQr4HauKmUod9p5RnvvAxrahOxlqk+oH4Ol5w6uws6FKwFTPR68+qweqED6rOryjCvuMJO2ZTATs92nH8W4R/Pp2qLAK2T2gz7rU1DQuMj9KTkr5PEKIAE3Dg4TqYHi5RHkwdlmYRJYSL6C+FSbZdN2YxvnZ+XXzK3T6KoJOVX0Se6kXSSy2fSWGEvLebKL+M3f1uz3BFWqVnjdOvNhVnNOm1AZfDO5LDRN1jNrbXoMR6wjybtI29GKMzZUrJXXUk3P3X6XVS5YFSysdNbNP41hAv7wez19mJ
-X-Stat-Signature: 8gfyis76sfgdc1u14u6tppapitasde71
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A1187C0002
-X-HE-Tag-Orig: 1772059867-798157
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772059874-276636
-X-HE-Meta: U2FsdGVkX1+CCNss2Kvr0C/LkxMicaEnyb96E5Qd1vN2vTEYK12L0Dnn8IiZqCFzOlXIahBcRPALnCTk0F/mf1/NEWW+BYNG5IgM056YNp2a+OUra0uy8C4YopXR89CCS+w1glOaKmqlyCJVjen8wB8u09mUNHXws178qxp4NwQeNDYTD3Puh/TTDRA/vu1gWbWio5Bh1hJAWcvna4oI9PHYYEvhoAVur/Iac5gl4Y84vDJMUcMQ5eYurQXElelM+CQhbm/0iA29CTURfLjmoGugO9XsL1hON/Oj9cIrRLsot5OBr3t+8CZKO1/NJTmRF2xwIs/mYo/P3al8zI7REmSJmF/WPvYzo4eKSEmZ+FB0NoyZ0umKPjFmfmM4PTaMVYAviA6RaTjfRKBgRTp+q22EXynUZ+YX5QdpthCt5GjEbcAnvqccUDZ3uRGX9NJ9mcZyOToZ+gFSV3U0ES9llFVJnKwGvI7ZmXilz6g5zkt/8PIe8WZOm7buaHSCs3y3Zhcfk35ofvwNzG0iGv5vG6XpvjAReSoP5XnSenrzKVZSeBMMMnG088janZUsHHjsU52FvmUg4XdpVA0OjccWgizBl3mHyx7TIvEp6WpkK6PjAtRvqgNgkt3ghDWLaXwYo3qgZGsSnR5jPLF3AkWjBHoY1ZSvAg4peQlN3kwAK1Ag1lL9/Xj+sD2cU6PTj4KEhxhmEXK7ph064+UaAB6Q9xc1Fh/2ec+rlE1/RSm5CzXPVGb6VpsCUxuCHtF4Yen91Nku8BUoeci86gwJ8U6Mn3aXs/bf+8t0Iiq+++9+/+Gm5BbexBXOZ+ZMjo+x7m+tP9WdZYEfxFn/gqkWJMEfriI+Vjfb2plJUmNw0c8POZvebygq9DrunKargM1L/3XXXykwPaDFHDFhWVKudiKVh1m6PC9h1ADtC/kY2JwM3rbyS3xweVrc7+UQlGxXaduEWInhYqqYk0qizxnswBQ
- xPKKQ6BI
- CO1Xwzf+/WS4/pBHVXMuvOBQcNDut1N1KVDFE
+X-Stat-Signature: 8b1755bztqr74xtisdhzzk5i3sdkicoq
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C4AF78000A
+X-HE-Tag: 1772059965-757566
+X-HE-Meta: U2FsdGVkX1/vI3HG7TWMC3dgyIMUlkk2QtXDqU5Nv5M/p6caopaTJ1BTVrDj5d8k0ubPBrWLBdU4AzdSw8LBZxpfH6jjSTs7tH0hEk4QLihRKiKiJ1HYIB5muKNfiiWT5ypnr7G4M6ddalTC5ZBS6uHLQ+mL2v/qL3fgNHR0eZ/qW05lCHV1fE0ImiizNRTBhVKARemo3OS6Yi090UzDZrZ5ZFhblPGelY9B40ELFhAXwoHlkVfPxroloaSbXyKgxGFdDIx+s3gRa4yNOPDiLhD+XTafXWIQuhEx9W85CJEsNWZs+0z14qNtclJBZUNW9m5a1I9gujvU2jvBt4cEcARheJ9x1Tr7xhwp0yGrpy2d3MV0kMNCnSXdC4y8h0314h7YB1o8aQ2vrHviUPMVGXk+12SD+8wWsFNTKDpaR4nWmhc3opWqPGDVJHxSSAmfgxNW3M5UNZq2WI56NEAFp4FtZN98mb7bQ8TKJvKB/mTb71Ay46F9Dow3jwptnh/Obwn89D0CCo+UMzgK/rkFx1shdk19qg9SC2TNuMkwJ29s395AcVoyW8+LZpr+rEmH/wDs88hMxEQXKuT6mc7wHpsz+IRB84Xpw4MveHl0K1PwlPJSLyDI0BCAuNOoAANnA6FFmZCNSfGRDFxoCdVrPDRM+tmBdR5cA5D+fuba3EQxzFB6yELF5p+WZ76HTBuo38MDbIjRmiRvMtzUK/znIjcWTBSeMOK2TrouoNsOjTBLeLXvT/Tc/fIGmQQT+X7tybr3iMJ2i0Dy3v/H0vPx5BIkckr/Fkpciza2gebr4uOuyKkV3mNtaXWfUf30Vgzc8vDVYd6eMBlj0XtGuIcs90ToJneLUm4gWTr/8wKH3ny6WWjMmLZr18707ihFnMMkzjXxKITXBu73GGnbJrTcfudSCNMWvFsY4a+aVlIgzTZFltqDX5Z7ewpOD0ie1PX+JD0Dch7x/P0Yzhp5mFt
+ Ga00U9DK
+ 2g3D4/ELwMPIltVegHTyt+hxtzL/TjhETUlzMUDgNkHm6Vmby9ZC2QJzcg3c2So+I0zfs+IP2af7PdReMHvw2O+IsBd0UJP0mH9DpXz9I6HSn6WqWWpn+DmwbVVx/XxzV18ZDK4ig9MeaOXZIJH1WIBrQao3bqdDqnUOInBLQ8mhJ1QrppjwYf614CXwz9g+RDPFyPtsLu4sB0q5iJrNEjdZZQvjy0sjR2LtorF0Vq+D9wMZe5q6PvmRN7hI0ODWfft3E9iwhvbS8X9uYkyGMMWYuaHSX3bwZcu3SU6m0zLgXbtyy2ubt8F4fuO4qa4My8rjjs/w9AvM285uGlFKFevKt7cRmZ+O1MeCncJoSVse3m2IOadhuzzrxAlhYjeEcuBlQlD2BKIt+5+nPZxRrRNIEKzurIhiI0lC5Om7aJNHO49jz5Fre/VdYf8k2yZ4LsdcKIR7QPxmJXFM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,76 +138,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Feb 2026 15:22:13 +0000
-Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-
-
-> diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
-> new file mode 100644
-> index 000000000000..c531e26280e6
-> --- /dev/null
-> +++ b/include/linux/zone_lock.h
-> @@ -0,0 +1,38 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_ZONE_LOCK_H
-> +#define _LINUX_ZONE_LOCK_H
+On 2/25/26 3:40 PM, Tal Zussman wrote:
+> folio_end_dropbehind() is called from folio_end_writeback(), which can
+> run in IRQ context through buffer_head completion.
+> 
+> Previously, when folio_end_dropbehind() detected !in_task(), it skipped
+> the invalidation entirely. This meant that folios marked for dropbehind
+> via RWF_DONTCACHE would remain in the page cache after writeback when
+> completed from IRQ context, defeating the purpose of using it.
+> 
+> Fix this by deferring the dropbehind invalidation to a work item.  When
+> folio_end_dropbehind() is called from IRQ context, the folio is added to
+> a global folio_batch and the work item is scheduled. The worker drains
+> the batch, locking each folio and calling filemap_end_dropbehind(), and
+> re-drains if new folios arrived while processing.
+> 
+> This unblocks enabling RWF_UNCACHED for block devices and other
+> buffer_head-based I/O.
+> 
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  mm/filemap.c | 84 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 79 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index ebd75684cb0a..6263f35c5d13 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1085,6 +1085,8 @@ static const struct ctl_table filemap_sysctl_table[] = {
+>  	}
+>  };
+>  
+> +static void __init dropbehind_init(void);
 > +
-> +#include <linux/mmzone.h>
-> +#include <linux/spinlock.h>
+>  void __init pagecache_init(void)
+>  {
+>  	int i;
+> @@ -1092,6 +1094,7 @@ void __init pagecache_init(void)
+>  	for (i = 0; i < PAGE_WAIT_TABLE_SIZE; i++)
+>  		init_waitqueue_head(&folio_wait_table[i]);
+>  
+> +	dropbehind_init();
+>  	page_writeback_init();
+>  	register_sysctl_init("vm", filemap_sysctl_table);
+>  }
+> @@ -1613,23 +1616,94 @@ static void filemap_end_dropbehind(struct folio *folio)
+>   * If folio was marked as dropbehind, then pages should be dropped when writeback
+>   * completes. Do that now. If we fail, it's likely because of a big folio -
+>   * just reset dropbehind for that case and latter completions should invalidate.
+> + *
+> + * When called from IRQ context (e.g. buffer_head completion), we cannot lock
+> + * the folio and invalidate. Defer to a workqueue so that callers like
+> + * end_buffer_async_write() that complete in IRQ context still get their folios
+> + * pruned.
+>   */
+> +static DEFINE_SPINLOCK(dropbehind_lock);
+> +static struct folio_batch dropbehind_fbatch;
+> +static struct work_struct dropbehind_work;
 > +
-> +static inline void zone_lock_init(struct zone *zone)
+> +static void dropbehind_work_fn(struct work_struct *w)
 > +{
-> +	spin_lock_init(&zone->lock);
+> +	struct folio_batch fbatch;
+> +
+> +again:
+> +	spin_lock_irq(&dropbehind_lock);
+> +	fbatch = dropbehind_fbatch;
+> +	folio_batch_reinit(&dropbehind_fbatch);
+> +	spin_unlock_irq(&dropbehind_lock);
+> +
+> +	for (int i = 0; i < folio_batch_count(&fbatch); i++) {
+> +		struct folio *folio = fbatch.folios[i];
+> +
+> +		if (folio_trylock(folio)) {
+> +			filemap_end_dropbehind(folio);
+> +			folio_unlock(folio);
+> +		}
+> +		folio_put(folio);
+> +	}
+> +
+> +	/* Drain folios that were added while we were processing. */
+> +	spin_lock_irq(&dropbehind_lock);
+> +	if (folio_batch_count(&dropbehind_fbatch)) {
+> +		spin_unlock_irq(&dropbehind_lock);
+> +		goto again;
+> +	}
+> +	spin_unlock_irq(&dropbehind_lock);
 > +}
 > +
-> +#define zone_lock_irqsave(zone, flags)				\
-> +do {								\
-> +	spin_lock_irqsave(&(zone)->lock, flags);		\
-> +} while (0)
-> +
-> +#define zone_trylock_irqsave(zone, flags)			\
-> +({								\
-> +	spin_trylock_irqsave(&(zone)->lock, flags);		\
-> +})
-> +
-> +static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
+> +static void __init dropbehind_init(void)
 > +{
-> +	spin_unlock_irqrestore(&zone->lock, flags);
+> +	folio_batch_init(&dropbehind_fbatch);
+> +	INIT_WORK(&dropbehind_work, dropbehind_work_fn);
 > +}
 > +
-> +static inline void zone_lock_irq(struct zone *zone)
+> +static void folio_end_dropbehind_irq(struct folio *folio)
 > +{
-> +	spin_lock_irq(&zone->lock);
-> +}
+> +	unsigned long flags;
 > +
-> +static inline void zone_unlock_irq(struct zone *zone)
-> +{
-> +	spin_unlock_irq(&zone->lock);
-> +}
+> +	spin_lock_irqsave(&dropbehind_lock, flags);
 > +
-> +#endif /* _LINUX_ZONE_LOCK_H */
+> +	/* If there is no space in the folio_batch, skip the invalidation. */
+> +	if (!folio_batch_space(&dropbehind_fbatch)) {
+> +		spin_unlock_irqrestore(&dropbehind_lock, flags);
+> +		return;
+> +	}
+> +
+> +	folio_get(folio);
+> +	folio_batch_add(&dropbehind_fbatch, folio);
+> +	spin_unlock_irqrestore(&dropbehind_lock, flags);
+> +
+> +	schedule_work(&dropbehind_work);
+> +}
 
-Have you thought about adding guards as well. It could make the code simpler:
+How well does this scale? I did a patch basically the same as this, but
+not using a folio batch though. But the main sticking point was
+dropbehind_lock contention, to the point where I left it alone and
+thought "ok maybe we just do this when we're done with the awful
+buffer_head stuff". What happens if you have N threads doing IO at the
+same time to N block devices? I suspect it'll look absolutely terrible,
+as each thread will be banging on that dropbehind_lock.
 
-  (Not tested)
+One solution could potentially be to use per-cpu lists for this. If you
+have N threads working on separate block devices, they will tend to be
+sticky to their CPU anyway.
 
-#include <linux/cleanup.h>
-[..]
+tldr - I don't believe the above will work well enough to scale
+appropriately.
 
-DEFINE_LOCK_GUARD_1(zonelock_irqsave, struct zone *,
-		    zone_lock_irqsave(_T->lock, _T->flags),
-		    zone_unlock_irqrestore(_T->lock, _T->flags),
-		    unsigned long flags)
-DECLARE_LOCK_GUARD_1_ATTRS(zonelock_irqsave, __acquires(_T), __releases(*(struct zone ***)_T))
-#define class_zonelock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(zonelock_irqsave, _T)
+Let me know if you want me to test this on my big box, it's got a bunch
+of drives and CPUs to match.
 
-DEFINE_LOCK_GUARD_1(zonelock_irq, struct zone *,
-		    zone_lock_irq(_T->lock),
-		    zone_unlock_irq(_T->lock))
-DECLARE_LOCK_GUARD_1_ATTRS(zonelock_irq, __acquires(_T), __releases(*(struct zone ***)_T))
-#define class_zonelock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(zonelock_irq, _T)
+I did a patch exactly matching this, youc an probably find it 
 
-Then you could even remove the "flags" variables from the C code, and some goto unlocks.
+>  void folio_end_dropbehind(struct folio *folio)
+>  {
+>  	if (!folio_test_dropbehind(folio))
+>  		return;
+>  
+>  	/*
+> -	 * Hitting !in_task() should not happen off RWF_DONTCACHE writeback,
+> -	 * but can happen if normal writeback just happens to find dirty folios
+> -	 * that were created as part of uncached writeback, and that writeback
+> -	 * would otherwise not need non-IRQ handling. Just skip the
+> -	 * invalidation in that case.
+> +	 * Hitting !in_task() can happen for IO completed from IRQ contexts or
+> +	 * if normal writeback just happens to find dirty folios that were
+> +	 * created as part of uncached writeback, and that writeback would
+> +	 * otherwise not need non-IRQ handling.
+>  	 */
+>  	if (in_task() && folio_trylock(folio)) {
+>  		filemap_end_dropbehind(folio);
+>  		folio_unlock(folio);
+> +		return;
+>  	}
+> +
+> +	/*
+> +	 * In IRQ context we cannot lock the folio or call into the
+> +	 * invalidation path. Defer to a workqueue. This happens for
+> +	 * buffer_head-based writeback which runs from bio IRQ context.
+> +	 */
+> +	if (!in_task())
+> +		folio_end_dropbehind_irq(folio);
+>  }
 
--- Steve
+Ideally we'd have the caller be responsible for this, rather than put it
+inside folio_end_dropbehind().
+
+-- 
+Jens Axboe
 
