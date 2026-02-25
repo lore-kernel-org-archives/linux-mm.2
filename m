@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B20DFD3768
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 15:40:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C5E1FD3768
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 15:40:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7054E6B0089; Wed, 25 Feb 2026 10:40:09 -0500 (EST)
+	id 727EF6B008A; Wed, 25 Feb 2026 10:40:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D9EF6B008A; Wed, 25 Feb 2026 10:40:09 -0500 (EST)
+	id 6D25D6B008C; Wed, 25 Feb 2026 10:40:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DCE96B008C; Wed, 25 Feb 2026 10:40:09 -0500 (EST)
+	id 5E17B6B0092; Wed, 25 Feb 2026 10:40:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D28C6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:40:09 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0DC7216065B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C20D6B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:40:12 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E094F1A0630
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:40:11 +0000 (UTC)
+X-FDA: 84483390222.11.EE01907
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 159C0140012
 	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:40:09 +0000 (UTC)
-X-FDA: 84483390138.28.1980701
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3140CA000E
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:40:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="hIZr/1nR";
-	spf=pass (imf15.hostedemail.com: domain of 31RefaQoKCNQC2B0F8DIA86EE6B4.2ECB8DKN-CCAL02A.EH6@flex--mclapinski.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=31RefaQoKCNQC2B0F8DIA86EE6B4.2ECB8DKN-CCAL02A.EH6@flex--mclapinski.bounces.google.com;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=dyEETV01;
+	spf=pass (imf23.hostedemail.com: domain of 32BefaQoKCNcF5E3IBGLDB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--mclapinski.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=32BefaQoKCNcF5E3IBGLDB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772034010; a=rsa-sha256;
+	cv=none;
+	b=wvzUPzVtEYF2pYkRW/MYpk/0eTWux1K8J5awFnbw6gEW2hU1XfByxjCq9amnHW9ya2svqg
+	iJZPllP2Zp/GHRHtbqfcTsxCLfn074gkC99qUXkU3m6P0LRG896W8ffqtJ3u424hFHF6hI
+	D2t4lHn7ASGw3cfOjouQpngmuXOgvI0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=dyEETV01;
+	spf=pass (imf23.hostedemail.com: domain of 32BefaQoKCNcF5E3IBGLDB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--mclapinski.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=32BefaQoKCNcF5E3IBGLDB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--mclapinski.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772034007;
+	s=arc-20220608; t=1772034010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ipTaz++qTtdDCBjKXU7vNcSleKIn31kyDo4+ZfAiimU=;
-	b=Va+mhERke/lD5ZzHgWY24V8HyHIC4F5ANVV6dzCs/oZkmaf4FIiCUK7thfUl8soe2sGGVQ
-	3iWWXVBAJ70sDrfIO1E3bbzAG02qOhcfux/frs3HBLAZZzTCQwBsRMGM+yB4Dot1yo1kMC
-	brCz2mSZpT+YoDUo3ooRus5XKeW1tTk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="hIZr/1nR";
-	spf=pass (imf15.hostedemail.com: domain of 31RefaQoKCNQC2B0F8DIA86EE6B4.2ECB8DKN-CCAL02A.EH6@flex--mclapinski.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=31RefaQoKCNQC2B0F8DIA86EE6B4.2ECB8DKN-CCAL02A.EH6@flex--mclapinski.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772034007; a=rsa-sha256;
-	cv=none;
-	b=JUbS22jbILGDv+ZTa6oI4pgo4DsaMjlU9DfnHmX6hJSz5MOfGWykducjNp3SY/WKWQGD3P
-	2NHPI+RKGGaMGD0eEYveS6rdRtfdHnyX9DFDZGZiLbS4Eo/RhQP0NaEVvQup3fimMHWAl3
-	fmXgXPoFaCo2Tqy5Fu9tLbeDCXSr9cg=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-65f99e631bfso841871a12.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:40:06 -0800 (PST)
+	bh=tQzAMSBymjIc7twUCIwXZitW9lygfMtcVFGOkxE5cgc=;
+	b=NLHx7+dJIlU+fDtux+g/SmKiRt32lZWNbs6tgHlp49Zyev/D7t68uTfvHeL0o5uSvx4cDF
+	mXP3w0CKGjz3k/RMCzA/fLDBoz8k+7QCzVycW36VRDbUBiZbkLiZO8ep64qpMK4c5Dt4xx
+	xwNMp3HT57GZfa9bosNB745jgN7Fwiw=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so62033605e9.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:40:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772034005; x=1772638805; darn=kvack.org;
+        d=google.com; s=20230601; t=1772034008; x=1772638808; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ipTaz++qTtdDCBjKXU7vNcSleKIn31kyDo4+ZfAiimU=;
-        b=hIZr/1nR4pTvUxCGP+qTeHBaBSCZvuaZUFGwrw3GaLsIAhhFb2y51K0lDF5uMPIGeL
-         vHPp5HC2Q+1DXJqqwfkndUIHQO3XfNboElfZZP5j6oT94ULghMP+UDMW5uj7w96KvGhu
-         tzh0q68LENbNf2DYcU1vcYIKRafIoS4HeNL9JGT79NogFZ4VkYfWFH6ajc+/sD0CPHvQ
-         IB9u6PxfwlTJEP5rVGFUqarKnuf79KW262o7A0xcuhZnBnT55uv6ZK2lnZ4/Mo2MzvZX
-         fYDoE7IYae4JvbPmNAAw7iUfGVuoFwTburkBMoIoPqqeXLGuY2YKE5oJEbryUMjghRjj
-         ufTg==
+        bh=tQzAMSBymjIc7twUCIwXZitW9lygfMtcVFGOkxE5cgc=;
+        b=dyEETV01h3+ArNm7ElnBA4cY52ELTukk5Cw0jVge1lmLT8uRTNXvre8noEWMUiBAF0
+         KhW8DVP90ymYCW1P3FBKIotJknRH0qncmQ806xXCEx91wyRb9MSOTxGEvKL4VfNQDQZX
+         JUJ0V75N3vihKn3HxtbC086kiZK1faTggrBhIq4gcE1AMtDkWygIyGcJ72MqTIinTngQ
+         5IR3DadMbBBB9aULhJnFAIo+v5yZZ+1rwV4jbgCMbdgnMaFlYc7QKrUPaCI3/VsAX8Nv
+         op/WlmWqJ3d1LoFzaDGwbsGgacP5l/8eLBL0y1Up9AlFMGm7/wFiETgcBEpa1k9U5jKu
+         0Kmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772034005; x=1772638805;
+        d=1e100.net; s=20230601; t=1772034008; x=1772638808;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ipTaz++qTtdDCBjKXU7vNcSleKIn31kyDo4+ZfAiimU=;
-        b=P4xSWqPnX4zN9NhBG1bx0+nmLUa9phg1NxNbH24dxAoQNTmruxYPe5nuep/lp84ZDG
-         R8rojMEuIWi6yOI3ut+nvmdpYm6vUpWuwF6PUYspxMISiUw3dQAHTJexAVXzayIn67Z8
-         KIfTk0S0zRnyWs6Yqpi4J+mOF6koacbSimneEVv3FT1YacA5RsjSnzBLXpr8qTMMMJQn
-         WYgmy1gzt5KUE9JLbJRzTqHZjVn5yABkOztStX8jb91aAV/cP95dcXSLH7/4HyrvXHrz
-         WZvuZWrSalba+X2Dpd9lJNA0O2HxKwoanh5vAGg7cM0Awgw0r9l3j/IQIOhAlirY60x+
-         1quA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQLsAM8lyhrFRpp0oZHonG4yJ0HUFjFWUt+NP5LNfWRVaWiWy2wU2NVy8H4+KzyQXqxAfrY/Sj8A==@kvack.org
-X-Gm-Message-State: AOJu0YynKeLDReiAeLsWtXV4POmiT9EwKYNk7pdWvEIJARO5RFShkT4K
-	JDJPlqGSm4zFp3Tbd6fCk1oBL9V0ICjN3NevCcanGp4I56XR4ssxKdkugU/TDA99GP4eXN85Zr8
-	r01XX70JuUEeG21SXkdj8fQ==
-X-Received: from edsu1.prod.google.com ([2002:aa7:d981:0:b0:65a:1eb4:60db])
+        bh=tQzAMSBymjIc7twUCIwXZitW9lygfMtcVFGOkxE5cgc=;
+        b=hTTjWz4fNZq9lquBtG6Hvk7uy48po/b2lMxLRFOQIsif9D/tcx0169Stf6hr7v92t+
+         NhmZf9bgzKO3v/tBE7Z2cNq2nxGnPp+dbsnv3zyHF7U2ikNVR/MiPw4kP8mdW9ntngyZ
+         eeQ3qOzhBQm35RkunjM5YjdBh3tC7J9spvAgZo1AF7VWsXg5BdGtfAYylGXLvsp/nyDG
+         uNoEuH1wJOM52mxha0DTCxv5SMyOCrQ6JUQ8n+6atSmVRIgXceSZRMPwZFDFWhMi453p
+         E6reSt7RazxHCIRIck/Y/ZPDNPV8vioDvHc8sjsEWfPx/TxQaGxdDZS0g3cFx69lF0Li
+         Iyqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUi+PSlBXmpbcyJNTXUBnNl+Yvb610CyZI7v/xquvWXS48e5uuRHiFdDUO1JHeuGA9SbJkr0iqhXw==@kvack.org
+X-Gm-Message-State: AOJu0Yy9igDP89j3Z4CErFd416dNcOMGyyhROEstrLFUoo1qfHjRqXeU
+	mE/7RuD/LdUb4PdZMntr9uBGwpa55vNyy693vbDudY/XmL9f9BdQmz4G8YzwUnL0kcxHIfSwPKL
+	PSe38lTzcKAx6Ca5mOVQMsA==
+X-Received: from wmjs3.prod.google.com ([2002:a7b:c383:0:b0:47e:e47f:de89])
  (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:360e:b0:65f:7000:928f with SMTP id 4fb4d7f45d1cf-65f700095a8mr3689412a12.0.1772034005339;
- Wed, 25 Feb 2026 07:40:05 -0800 (PST)
-Date: Wed, 25 Feb 2026 16:39:54 +0100
+ 2002:a05:600c:8595:b0:483:badb:618a with SMTP id 5b1f17b1804b1-483badb6355mr83029045e9.27.1772034008494;
+ Wed, 25 Feb 2026 07:40:08 -0800 (PST)
+Date: Wed, 25 Feb 2026 16:39:55 +0100
 In-Reply-To: <20260225153955.1006649-1-mclapinski@google.com>
 Mime-Version: 1.0
 References: <20260225153955.1006649-1-mclapinski@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225153955.1006649-2-mclapinski@google.com>
-Subject: [PATCH v5 1/2] kho: fix deferred init of kho scratch
+Message-ID: <20260225153955.1006649-3-mclapinski@google.com>
+Subject: [PATCH v5 2/2] kho: make preserved pages compatible with deferred
+ struct page init
 From: Michal Clapinski <mclapinski@google.com>
 To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
@@ -94,14 +95,14 @@ To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@so
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Michal Clapinski <mclapinski@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: cmuge1yfju4nyugwsa866q8z8a5pjbip
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 159C0140012
+X-Stat-Signature: 8gjxntbfiwxuba14gesu1mbjmiep9ro3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3140CA000E
-X-HE-Tag: 1772034006-324581
-X-HE-Meta: U2FsdGVkX1/Gq6aOe1jM+uvAK9UZvHZbunpGWiqPqLvzR2UoMoXi1bHsr/vb6y6T0SMS/VV1sXgeov3Pn5JaGP2J5veyU9VbRkWpgCW3u7tMDTDQI5Kog47xcu9f9IcNPcyBngyqWnv0ekB241rRktKqPuVx3lNkv+5FOZEzjA5AZJZHf55a3BTRx3O/gZER1RvlaDdRujkM7bs7egXr1RYzKYDPqREu6BG5LS0cbpgfDEalm5B5uSEqANIAjktKHLhalRmjXf5Bqhoh3iRXG+TRIqDXMUQcvIKm13j6jrSB1bM+8BWKxSRZmDH4ujWwex9mzZo7WaKtPwLcR+8fBGrnpgQq3wcH00L8ZD/+dpMV+W0oiuO4MxYLzBYcQcd7rmlgvLBa54nABf7670IMNcpXp2m9+JynKj9RMmSmktXxRZELnOqw6+dsK3ufEantXnlzdOwb8X73plIuvwLtTlV5pF+9CNx4sYlbi9pNcMwnw42Xsyj2ceQB8jLi/bTK7S52WBhVF/iJXNaa184Rlbhjpf5zdO0Ea3WrvrCCCMljsktVb0L/tPrEcJcL7LKEzuXfn1syXaCXgkruBI6vOD54YkjQjVqdv2tWMokRysHg5SYF3b/ku+uGDENEniMHacmsvzF3FzUyOKQx7mQbzP0CpJEz9BkyN2k5Xh+tsIQiS9VamZYCgQUOYDd7ptJqdMiE2wB7jrezrd8Wjx+0wWBEIxYq5NQQNMRhqYilRi/9B6ddmAoWitU8tgTgA1BjX3Lvy+6v3JUD9uDLXQLjaPFsNbouIAbHYnc3g4tIdKbZlFeevGNZEp/UG4TvYCqaiK4OaBT7xU9drBiOt1xdlBTWj5PnrbbCRxz3ziSKT5BJcfdlVnDroZraTjWA+TVwbzCWZrgm+4nZK/66JuXF5wRzoxcLGmGpr2PVNCkwW50QMxmELX9MzSYXOMr7mGGvDaI1qAPRyg3MYEPj2/6
- vU5KwNIm
- yWoN0RyeQ7lSBuPc5nESqxWtMKag0RjH5maLuY0XqqrMJaF4sqt2AdJJoFGgOHypjIh99U3bVAlOxsDxIqrEx7U/FnrRADDBw5hVHTTfs1SQajdoqJIDNBi8B4hiLJ13o+TbUJL8gwzt1VUJqw0QkejcSrOPOiPbxSYTD9z++gjZ7lXD7dn4WGBWFHo/KTz5bxhA8bfD5iO17W8823QzgTKGJEpgmoz9sK8BxwM+V8/Ok1vsllO1ovC8CZMSS9WpFWx0hYBbLePc1+teYVtm7nxY+P/rtXrZeZPKV6s1haJeGYosnqsNoZWYkJ1VgZsbzWopBHB8CvyLJmPz2s8a2plthIk6xL1qWXGhjqRHbHKnNXdLNTBtnGyQFKTR+dbc7p+QoXSJ4PnC++r0TTeHjucH4aQ44N3x1flmJEX+qGY7hISUPONCKRirMG3crHL36ShuVtSkjZXXo21Fs/r2sF8EhN+Wbr4OvIV6ZYOFiFSohbs+SN333Lg5oepqsFM5dWO6VTPh0uLO9J+XiBUIFLnsS2QWXOWdOi4Gss7xXi9Ek+4Fjs4BUX3py6GysPTYdyYstKAem8LOgZwkBn3/zjx23d0c1C/gz/AH1tGVBiMukT5tYCW9j2d2zcpDrI13gFN94VikAW61x27BzpEbQYR87QF8Ac4frKCjv+V9hEyXqFu3CWScu+e94kw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772034009-358315
+X-HE-Meta: U2FsdGVkX1+CPyC4lIXRhsA3PSMjAnrIOU7m3EaKwdBnavCx/Pi7d9G5p+7UEY54U0JvxkEIsZss7kV6UavNTh4HBqS/qhMF3O6l6VN3zbu31KMrdrFnAznRxF7162XdFpp0eH5lnTUNBA7vIzxuaNgwxQQrENm7nf7Yv2J9wUM7MQnAz9bs2L3vRoC93Q0vUpTNq4Js6ztlO4mRJvzQP2PU5kzGIIiclQCGFKFt9RMIo+RHU4i6S20k2kOl33mD3VcrAof7vI+VKy0O6bAgAGwYzuSOluID4e7ffwQqsXvdVwC64WfT6VeupP065dKtlnGo2LLQWG3SSmemlktOKhEQYLt7Xnwi++J05Tsh2eZXloK8GW+RBKP47Sg4jZIlbgQwld2h6oEiI1jGggbW3kBq4bt3tShGMIencVFJiMsaZznSra3GN56IjvMC8OcYDNghdURheihPPkcCqzuMxDBfTcjYBZotS816JaJdzZJ91YMzU7/GxRS8ohdGucgWGZq04Kj7m5d9UiGVSdzc5hdPql8tIGVoT90p7ViwKggqmIXoOz/e9/B3x5uZQqNikXtdcoZMc5nISki3/U/VijsdBKsg2Ty8SogEY7v0Vk5FW1JNH8J6EccjqKQS+CjhLh1EqnKhcO4IrQ6m2RyLKhShhRx3+Stf5fp76hw2KgHz1ogtg1o3ICPxppppsPsH5du7/zfG6oetOPRuaGv9KGJ9/hRop8rrgZfX7Xo3yRrecj9Fi5/pFNf/0dQFBDXSWC8eJgQaEiI2arGy/dOaRRSiLZei7ZnyTd7Si3bCeS4LUBUckEbsd6g4Fm/lPHXN5+YFXTs6lnoB9BWDsrSYybQCzihQRPoqHv5f6h49LrLL+eu2bsB8v5hO65OEnDuRilw7GoGbyAUgaOBWVoH72wviobEeLiJMEm7aXyc0O22NH0Jb8i23caNe+/TQi4Js2eFeSYU1vBlEsxLDrtd
+ Pd43LNcG
+ CiAHDlOk2qYI3VsEXvNIF/0Wsofs+C85I5FSx1BXsdqBlYndPks3HD88aKuqVaj4giJ0aHFgUDxu8RMwUgneYq7WHJMo/zupVlgh++CePoXuHXG0tmkVC7IEsU0O2Otqexs5/Hh9GBkPLei6upd0S9EJMGx+o0+Z/I2cV6SioyW9OkFmAzN8xFEvkJEuI1qpJOLk9MQi5eUtsf3Ogp4830xjqXMRaMi1kVaTId/V4lFN0O0JZtBeO/BXs4s9EduoRRHLSxuzrUH885E4V0ZnT7QF1vatsJBi9RN1+prOd1m6m3vwM2Riel8t/RMS+qr3eXTjK5glPkvVUFx5fcCIGmhSf1TZ2Y/WIIySM9yC4lMrDoWdzckQmlBKef3DfEzVQ0iQ9CgDqk/QNiLKomN4V7b1njnJudbxGyNVwLtLkWwhmueZC3i4FdjU2iWsPh+Ww2ao7lHyAMr5AmZ8QtKfebM5kRmZjuRtu/9Xn8iaDVYiFUZLiIFcnJUSYGLF/dazaDgaaJtPs04MAmo+v4YGknbU7HiV9eSgc0Nq4Z37IWPwIBR0TGYRR6XkKeq5PtBZQj0G2XlMKtBTWnZeoMsW/f/pC747WWrT+xlEn09SEEu275fDP/I789dSbB3Pv84Xlhw3mvOuQHV0yVJFxcZqRJyn2kHlVgNuQDXdEqTuaHWC6QaFEvxBKaHIIyUplzv6Zjm4L1jWTI5iOSLofkaT8j3eWbf2y3bY4pjuQULPG+Rg4F3A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,149 +110,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, mm_core_init calls kho_memory_init, which calls
-kho_release_scratch.
+From: Evangelos Petrongonas <epetron@amazon.de>
 
-If DEFERRED is enabled, kho_release_scratch will first initialize the
-struct pages of kho scratch. This is not needed. We can just let
-page_alloc_init_late init it.
+When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, struct page
+initialization is deferred to parallel kthreads that run later
+in the boot process.
 
-Next, kho_release_scratch will mark scratch as MIGRATE_CMA. If DEFERRED
-is enabled, this will be overwritten later in deferred_free_pages.
+During KHO restoration, kho_preserved_memory_reserve() writes metadata
+for each preserved memory region. However, if the struct page has not
+been initialized, this write targets uninitialized memory, potentially
+leading to errors like:
+BUG: unable to handle page fault for address: ...
 
-To fix this, I removed the whole kho_release_scratch.
-Marking the pageblocks as MIGRATE_CMA now happens in kho_init, which
-runs after deferred_free_pages.
+Fix this by introducing kho_get_preserved_page(),  which ensures
+all struct pages in a preserved region are initialized by calling
+init_deferred_page() which is a no-op when the struct page is already
+initialized.
 
+Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+Co-developed-by: Michal Clapinski <mclapinski@google.com>
 Signed-off-by: Michal Clapinski <mclapinski@google.com>
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- include/linux/memblock.h           |  2 --
- kernel/liveupdate/kexec_handover.c | 43 ++++++++----------------------
- mm/memblock.c                      | 22 ---------------
- 3 files changed, 11 insertions(+), 56 deletions(-)
+I think we can't initialize those struct pages in kho_restore_page.
+I encountered this stack:
+  page_zone(start_page)
+  __pageblock_pfn_to_page
+  set_zone_contiguous
+  page_alloc_init_late
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 6ec5e9ac0699..3e217414e12d 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -614,11 +614,9 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
- #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
- void memblock_set_kho_scratch_only(void);
- void memblock_clear_kho_scratch_only(void);
--void memmap_init_kho_scratch_pages(void);
- #else
- static inline void memblock_set_kho_scratch_only(void) { }
- static inline void memblock_clear_kho_scratch_only(void) { }
--static inline void memmap_init_kho_scratch_pages(void) {}
- #endif
+So, at the end of page_alloc_init_late struct pages are expected to be
+already initialized. set_zone_contiguous() looks at the first and last
+struct page of each pageblock in each populated zone to figure out if
+the zone is contiguous. If a kho page lands on a pageblock boundary,
+this will lead to access of an uninitialized struct page.
+There is also page_ext_init that invokes pfn_to_nid, which calls
+page_to_nid for each section-aligned page.
+There might be other places that do something similar. Therefore, it's
+a good idea to initialize all struct pages by the end of deferred
+struct page init. That's why I'm resending Evangelos's patch.
+
+I also tried to implement Pratyush's idea, i.e. iterate over zones,
+then get node from zone. I didn't notice any performance difference
+even with 8GB of kho.
+---
+ kernel/liveupdate/Kconfig          |  2 --
+ kernel/liveupdate/kexec_handover.c | 27 ++++++++++++++++++++++++++-
+ 2 files changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index 1a8513f16ef7..c13af38ba23a 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -1,12 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
- #endif /* _LINUX_MEMBLOCK_H */
+ menu "Live Update and Kexec HandOver"
+-	depends on !DEFERRED_STRUCT_PAGE_INIT
+ 
+ config KEXEC_HANDOVER
+ 	bool "kexec handover"
+ 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
+-	depends on !DEFERRED_STRUCT_PAGE_INIT
+ 	select MEMBLOCK_KHO_SCRATCH
+ 	select KEXEC_FILE
+ 	select LIBFDT
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 410098bae0bf..1e1f69b10457 100644
+index 1e1f69b10457..761d7c9c1ed8 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -1388,11 +1388,6 @@ static __init int kho_init(void)
- 	if (err)
- 		goto err_free_fdt;
+@@ -470,6 +470,31 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+ }
+ EXPORT_SYMBOL_GPL(kho_restore_pages);
  
--	if (fdt) {
--		kho_in_debugfs_init(&kho_in.dbg, fdt);
--		return 0;
--	}
--
- 	for (int i = 0; i < kho_scratch_cnt; i++) {
- 		unsigned long base_pfn = PHYS_PFN(kho_scratch[i].addr);
- 		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
-@@ -1408,8 +1403,17 @@ static __init int kho_init(void)
- 		 */
- 		kmemleak_ignore_phys(kho_scratch[i].addr);
- 		for (pfn = base_pfn; pfn < base_pfn + count;
--		     pfn += pageblock_nr_pages)
--			init_cma_reserved_pageblock(pfn_to_page(pfn));
-+		     pfn += pageblock_nr_pages) {
-+			if (fdt)
-+				init_cma_pageblock(pfn_to_page(pfn));
-+			else
-+				init_cma_reserved_pageblock(pfn_to_page(pfn));
-+		}
-+	}
++/*
++ * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, struct pages in higher memory regions
++ * may not be initialized yet at the time KHO deserializes preserved memory.
++ * KHO uses the struct page to store metadata and a later initialization would
++ * overwrite it.
++ * Ensure all the struct pages in the preservation are
++ * initialized. kho_preserved_memory_reserve() marks the reservation as noinit
++ * to make sure they don't get re-initialized later.
++ */
++static struct page *__init kho_get_preserved_page(phys_addr_t phys,
++						  unsigned int order)
++{
++	unsigned long pfn = PHYS_PFN(phys);
++	int nid;
 +
-+	if (fdt) {
-+		kho_in_debugfs_init(&kho_in.dbg, fdt);
-+		return 0;
- 	}
- 
- 	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
-@@ -1435,35 +1439,10 @@ static __init int kho_init(void)
- }
- fs_initcall(kho_init);
- 
--static void __init kho_release_scratch(void)
--{
--	phys_addr_t start, end;
--	u64 i;
--
--	memmap_init_kho_scratch_pages();
--
--	/*
--	 * Mark scratch mem as CMA before we return it. That way we
--	 * ensure that no kernel allocations happen on it. That means
--	 * we can reuse it as scratch memory again later.
--	 */
--	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
--			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
--		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
--		ulong end_pfn = pageblock_align(PFN_UP(end));
--		ulong pfn;
--
--		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
--			init_pageblock_migratetype(pfn_to_page(pfn),
--						   MIGRATE_CMA, false);
--	}
--}
--
- void __init kho_memory_init(void)
++	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
++		return pfn_to_page(pfn);
++
++	nid = early_pfn_to_nid(pfn);
++	for (unsigned long i = 0; i < (1UL << order); i++)
++		init_deferred_page(pfn + i, nid);
++
++	return pfn_to_page(pfn);
++}
++
+ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
+ 					       unsigned int order)
  {
- 	if (kho_in.scratch_phys) {
- 		kho_scratch = phys_to_virt(kho_in.scratch_phys);
--		kho_release_scratch();
+@@ -478,7 +503,7 @@ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
+ 	u64 sz;
  
- 		if (kho_mem_retrieve(kho_get_fdt()))
- 			kho_in.fdt_phys = 0;
-diff --git a/mm/memblock.c b/mm/memblock.c
-index b3ddfdec7a80..ae6a5af46bd7 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -959,28 +959,6 @@ __init void memblock_clear_kho_scratch_only(void)
- {
- 	kho_scratch_only = false;
- }
--
--__init void memmap_init_kho_scratch_pages(void)
--{
--	phys_addr_t start, end;
--	unsigned long pfn;
--	int nid;
--	u64 i;
--
--	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
--		return;
--
--	/*
--	 * Initialize struct pages for free scratch memory.
--	 * The struct pages for reserved scratch memory will be set up in
--	 * reserve_bootmem_region()
--	 */
--	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
--			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
--		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
--			init_deferred_page(pfn, nid);
--	}
--}
- #endif
+ 	sz = 1 << (order + PAGE_SHIFT);
+-	page = phys_to_page(phys);
++	page = kho_get_preserved_page(phys, order);
  
- /**
+ 	/* Reserve the memory preserved in KHO in memblock */
+ 	memblock_reserve(phys, sz);
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
