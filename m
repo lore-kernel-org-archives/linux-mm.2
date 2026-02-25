@@ -4,86 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62AACFD3762
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 14:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7276FD3760
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 14:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 784F06B0005; Wed, 25 Feb 2026 09:52:31 -0500 (EST)
+	id BF0AA6B0005; Wed, 25 Feb 2026 09:59:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 708336B009D; Wed, 25 Feb 2026 09:52:31 -0500 (EST)
+	id B9E516B0088; Wed, 25 Feb 2026 09:59:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 613EF6B009E; Wed, 25 Feb 2026 09:52:31 -0500 (EST)
+	id A80A06B0089; Wed, 25 Feb 2026 09:59:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FA836B0005
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:52:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05FA1C23E5
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:52:31 +0000 (UTC)
-X-FDA: 84483270102.03.CFC04E9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6D2AE140011
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:52:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KoAeoXkh;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 947596B0005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:59:16 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B0B78C15F
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:59:16 +0000 (UTC)
+X-FDA: 84483287112.07.1A3084D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2824540006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:59:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j0zibxXI;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772031149;
+	s=arc-20220608; t=1772031554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eaxgYMDu4b1CCqhGuli8mqFA6url1u1XPz3Kqvl771s=;
-	b=k9lmsA6y/CCXQp+ARYKXYUBTKaBZIb7nvEDYGHYGV0x7ICv4j7SlLy+yj+dqHKQTWjApk7
-	YGlCTZFaxcmUMJdVF7UiL7aKOUwPocpLAcnCHejq2v/WBrnd4deZz9tlFkrsJHal1+5cO6
-	qwywaDqUdzJRLUmoSa2zFFLfjcBMlV8=
+	bh=Ez+9tBSaOyYy3NJcr81pEaOLOKf656QoxRx6G2fLGYA=;
+	b=lntfIFvrWMZQESz5XwQHxr8RCHHVLEirJ3La1gRRM+dT8CRfaKQ8uhjeKy7s0NjNCrdBNM
+	jc8r6XET3ZTPXeX8Ldc7r0b1aL6u/iMb2o/xT/BP8cR/1iTZ3vZhvpki6id0Y37Cq/xUET
+	aeZP/I8W3OPPvyFOipqSSIg7jasx5R8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KoAeoXkh;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j0zibxXI;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772031149; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772031554; a=rsa-sha256;
 	cv=none;
-	b=HKJuDDHmZtYVaXuSmTcyliczhdcN7fphAvlxkF3vHWc2R94bqj+OM8vjvI4+TGmlaBd5Vb
-	67GQLL+foNDpg49fLRsfr29R6eNo8fFL7t5+eu/QmCZzIr/EE+p7vWZQ1ZWZuubZUPc4hg
-	Pwhwj7Z3lbnCbsu5HuGnNmbt3fq03j0=
+	b=IgyAu8kVX3gVTi4+NpDuSV4FvbIseAyo65sDWZVsJt6lSEkvBOVKYg7k226XIgyDk/epZi
+	ttAZ0g8lDv3s+hNzE5jTmZPR0zL1ESaj7gd4xEmyCSpdTlRiYiJC2+kuYxKz8BBQux5qfG
+	LHIEHiwHUUiVphuQRKb2Yz6qJrVqRY8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B6552600AE;
-	Wed, 25 Feb 2026 14:52:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3BEC2BC86;
-	Wed, 25 Feb 2026 14:52:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 26BC34458F
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4A7C2BCB0
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772031148;
-	bh=eaxgYMDu4b1CCqhGuli8mqFA6url1u1XPz3Kqvl771s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KoAeoXkhhl1bznc4VYkRWZlAg2ppjiWIUk0dnyKZ/zNxMFttbW7QyxEtB6pG5zQjx
-	 kRRp3jq7uA9gplfRPwbQrmmtlzahdHgrT48RPrE5hr9qEsas/hD22oR8nBpFmdJIz9
-	 nKF71nxtE2uzxbqki8A49/NOqHEKaD1UetwZWfwNEopBdyqg0SRSjMIfs1BlmAd72/
-	 S1D/QAw/CU+JLfxhBZKU86lpGi2wPVQg1fPzvTlnR/ls1nbYymevb3TDDKOiQii4u/
-	 +yj1cu91PsamtV8cHHpRoUJyc5VGvw0IdmN62fKfAcoiMma3V/oyST85F6eJ5Ymxe7
-	 N1uGyXNaHKg+g==
-Date: Wed, 25 Feb 2026 15:52:23 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, bpf@vger.kernel.org
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org
-Subject: LSF/MM/BPF: 2026: (V)FS: First Round of Invites Sent
-Message-ID: <20260225-aufeinander-kummervoll-1953a06beae9@brauner>
-References: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner>
+	s=k20201202; t=1772031553;
+	bh=3Txd1OyD3NLDVRwknS9tkgQm0Wseoy61mGvIdnnZ8lA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=j0zibxXIDvRI32Szy39t/LVN2gUqqHXwdvRH4afoVuNPGaiznP4mjnSpktY+1g2r0
+	 Bu2V8UI6xgcIzvMVSa4Xe5fJbLmo74RXISYuKPaTmMYog1KCSt7mNYZrA6cKBwjGqU
+	 p3ZE+ohuVK/7Cu38zwCh8HxzEXjyijII3BDmymSrOD6+Vp/mKuEzwFGPL8tythWN/0
+	 EuN0GBi7uFjDmWm1O+BK3174wXUrnJuWQGkiPXzSBQYgUA1ovV5JepiXP9RDH8CN+n
+	 z+QNVXNVQydLFBulIp8tI4NYdXI8p0kPbaiNBno/Um2tMaqbMx/veaIMzj5UJa25CN
+	 6p71n1ebfGfBA==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8f8f2106f1so918505666b.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:59:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUDXt1K5MknEn+LlGwXs2FSbutYwlF4nCI6ibDsodriU2Ub8KtiWYM//Jk8MNTS9niobEFzG+KMSg==@kvack.org
+X-Gm-Message-State: AOJu0YxwnGYZoEkEWHBtg39t2sgGEkS8KcHHdUcLg0Bzt0KE/ntQ+LtV
+	ggCFgRNZZIXB+4Gbv0ph0hofY7orpa4l3a4jc8g2F0gm9MvRhzbgrCCJ4NbhL3ixXrhp/lqckdU
+	HsMl9Us3lDT9R99h5zMyPWv8nbQsJ1nU=
+X-Received: by 2002:a17:906:fd83:b0:b8f:e46f:8079 with SMTP id
+ a640c23a62f3a-b93516596b6mr43482566b.22.1772031551370; Wed, 25 Feb 2026
+ 06:59:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner>
-X-Rspamd-Server: rspam05
+References: <cover.1772005110.git.zhengqi.arch@bytedance.com> <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 25 Feb 2026 06:58:59 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com>
+X-Gm-Features: AaiRm51rcgwmhy_l6lMgbqkiAK7g6vTS87LlDp6ohQJzV813HW9AeoQpr_xIsok
+Message-ID: <CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com>
+Subject: Re: [PATCH v5 29/32] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, 
+	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com, 
+	usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D2AE140011
-X-Stat-Signature: iy4hzbrtwudx3pa7ube5m8tagqcgipjr
-X-HE-Tag: 1772031149-201536
-X-HE-Meta: U2FsdGVkX1+GdqeoFxNfK+3k908JmYAYWuCmmrrXSGI/V/DN0dh6mDuXTIJXyjt4BqWAK+qgijZG/bt9m4glwgizADBDXS94Wb2XjdNrrEx0JgL6m/GfrcG6dGmYTIgsjifvr/ZcHLR3X1J1JJ1eQg3SVgPjAMaiPYNVoVkqP5jz2iGd2g0kbtZSXD7QviP9VQdvibVvNo2DNhkPL6bU7zjaqiLJgxsQGmwSkbq9p9PPIxVyar2ImTWMNtVYp9O05iAdAll2w5B9DtqKxHlhsXsGFu8R/exJxrnGh+aMg91D2ixmIRZ8+s0dXx64hu0yhlaQ2vGX4TMvQPLLxrL/8RTfZF8LPSW+aSPrW64vq99sPVHsmlB0HK8nx6cT/D0TLQGNOPV5jEptijGuBz745M9Tmf97kjPG3hpjhCBoN8318TdHTX5Xy6zcjTEBieCz+U2LsFYRzCN7vGazQy8qI8qgwq+mcxf9KzkAux52i6etbJMhdCBWTuwMk4YX1wChU+jbRi8moCvWDRzCanLpz/Jhisi90jXUOvRdWqnxprTtuPlq0IlvJ7xTYboxudXyymVwloYE1o8/E6N1neXt1NItBVyN6GNKNI4P9BZee+XwOmEdO6FalOZFnsQA8Vm2u+uTGFyGhHsDjEyCNcNkfBe0bSP5luqi4mJNS6ZChAUQWwTAB3Sm3lgC58cnAa+YQywqnTMJOtngUg2nON8iqRnW0fAl9wlTf20P0KZ8r2aCZS/uLRbcVjB3kWjsfdgQA7D6OiT5VYzhADzv9YyZeNfGlAhLnAW0edh25UMbYeJgAf44a2LdErFyWCNS15Up5UGLIciHk9dDl+HbSVDzZnaFyiEheligEw4prhXVdEmS66Nh9K/Stwz7F1U+6VSwTi5Ma5wOcO4mVlNyLKQa5ogtX85ap+nzTKzdVey7lWKlFvNSAWxR/Pg8Rjw7Wi8g4MJtzlmdnxP+/IpACN0
- qfMXyvuS
- BZyWFQ9P5MXFG3X0PlGA66j+2eLS+nj7eqap1ONJ75zNz9yzLF2kbwxoxldzodqDhzDayMYqTq0SeYj8NXeHwSaF/ajzznlsxXI3Jvk5rsEXUin1pU0BunfPvP4mb6j+h8U3WaD+cCpqtHUH46u4M+UMDJkxK9ItyWGtSD1a/yTPpBVpiEFz5jWF5vvGzJGnJ6QjmxX4T0/LJjJ68HF+jFWrl30STYzAKrmwlVr/DFAZU3OXyMyGp4SzmJATVsjdtY+7wT/qKP4DGFZTfUSG4ADoIW9k8gJCXrNi493Pw0Vt8DVc=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2824540006
+X-Stat-Signature: sge3riku3b45hpxumoopu4qjyskawhoj
+X-HE-Tag: 1772031553-431667
+X-HE-Meta: U2FsdGVkX1+uS3Eg1xcE7Kjd9KCsQMX+elX9WgoR2CUYcWyJpXPaaEnlLHyzetz7DIC+7YtFCsOGdoGVWvCI0yZG7mk4GCLvfYRdMgmHpNsZDKkoMdOuH956tZ33h1q3AvachdtPyvIFcORM4Noi6sEFEM/VIP2ApQVPcvL1tovCCxysf8rw6Q/K2zYSEI39lDPkLPsqe7Zfel3coEl/R6dyVPE+XB2bx4RFdj3shm1RoGJE55yl8/+SJFAWivGzeugeK5tBsjyiLBBWbhg5/OUqcKhMSDCQWS/QNQ9nmPjRWA/8C/jF0kjAq0tOh8Miob2N7HMvOLNPOPealImBgSHI94MMASpdg52Ji08peo1m3A0T5JFB9NLDlTlmsHhYAyqWMlqRq1al3dDZxvAGxhm9BiAlu5W0cdVGhvBOaMz2NM473VjsbRpIXo/vYbyZWo9PnCpY+LSL09+FAUJ4PTi1nQC5j1TrMFUGTMQmczOFabPL89zjo8qvQcQA/d88jc0dPo4vMcDbk2C2R9SdcRUb9iOBT+68STQ7FSybiTtN8hsvlc2KgnS9GMKYDXIcfwxKZ+Ojf+jC+sCeCoy/1tt+oG2WIgFQaOtfh3cEuS5r+VXBDEkltS8ds4op66/0i/FFPsZrQKnXPMJ7Wv/c/V3kVBdcsGgrLmum9K5IurePhAuUWb5kXOa9QXbfwJfKraWge3RU6sTTiBRwe+EBVK7z77LLbnspSN3gowIkYmx0hGqjB75apJukYmyexDtFhDy8UeB3fVooheaePCjVdA0w8mnMffRgTMahWGb7LHwqyIvQrz9+EKtbifT7QoiJaI/gDNB4yLxm/AREDRzCP5OvCx5lWugCW+BxJJvg7m58dJwVXAPqigGQEE1mwERplFK5BmYa38AHdw9SBloee5SznyP/xZdLH3nbuohYl8WiGN3ReaC1y9OGxiAfSvidV9FyWKFnp5NHINAoFFg
+ RBcC1m69
+ DZEaF6brKmEVMT87dt20TflraYVgUUwyq23S29ogWh+/4DaoXEOsZteRiTYEdLnHOSQ3AqFoM1A/p1tVaDKf2UREOYYaDA0Wx3vltSJfwzrJCZ/866xBNJQ/DGlo6bUxmA2E1TIRXRn34wWGJrCdmSGteg1/jjFjr2YRjTBNST1MT/JFcwYAaRJiqcKGtVL/A8Ng75FxaGG1BB1K9/KfuG/2+B0mJGyXFTvcFZ04jYUcd13y+mgvWajHKaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,15 +109,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey everyone,
+> @@ -473,6 +493,29 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+>         return x;
+>  }
+>
+> +#ifdef CONFIG_MEMCG_V1
+> +void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+> +                                      struct mem_cgroup *parent, int idx)
+> +{
+> +       int i = memcg_stats_index(idx);
+> +       int nid;
+> +
+> +       if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+> +               return;
+> +
+> +       for_each_node(nid) {
+> +               struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+> +               struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+> +               struct mem_cgroup_per_node *parent_pn;
+> +               unsigned long value = lruvec_page_state_local(child_lruvec, idx);
+> +
+> +               parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
+> +
+> +               atomic_long_add(value, &(parent_pn->lruvec_stats->state_local[i]));
+> +       }
+> +}
 
-I sent out the first round of invites for the (V)FS track.
-The first batch is also the largest batch. We will send out a set of
-smaller invites later.
+Did you measure the impact of making state_local atomic on the flush
+path? It's a slow path but we've seen pain from it being too slow
+before, because it extends the critical section of the rstat flush
+lock.
 
-Note that the first batch includes everyone that indicated that they
-would require a VISA.
+Can we keep this non-atomic and use mod_memcg_lruvec_state() here? It
+will update the stat on the local counter and it will be added to
+state_local in the flush path when needed. We can even force another
+flush in reparent_state_local () after reparenting is completed, if we
+want to avoid leaving a potentially large stat update pending, as it
+can be missed by mem_cgroup_flush_stats_ratelimited().
 
-Thanks!
-Christian
+Same for reparent_memcg_state_local(), we can probably use mod_memcg_state()?
 
