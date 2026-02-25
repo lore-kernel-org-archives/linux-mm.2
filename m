@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF78FD376A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78C3FD3774
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB9176B00C7; Wed, 25 Feb 2026 11:34:48 -0500 (EST)
+	id 36E216B00CB; Wed, 25 Feb 2026 11:34:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC37B6B00C8; Wed, 25 Feb 2026 11:34:48 -0500 (EST)
+	id 322F96B00CC; Wed, 25 Feb 2026 11:34:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B060F6B00C9; Wed, 25 Feb 2026 11:34:48 -0500 (EST)
+	id 1E84E6B00CD; Wed, 25 Feb 2026 11:34:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85C1D6B00C7
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:48 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4666713B53F
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:34:48 +0000 (UTC)
-X-FDA: 84483527856.01.8150014
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 58E3340013
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:34:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="KLJU9R/8";
-	spf=pass (imf04.hostedemail.com: domain of 3pCSfaQgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3pCSfaQgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 086DB6B00CB
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:52 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C1FEF1C853
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:34:51 +0000 (UTC)
+X-FDA: 84483527982.06.F62AF02
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EE315A0009
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:34:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ON7ZwqsH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3qCSfaQgKCMEqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3qCSfaQgKCMEqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037290; a=rsa-sha256;
+	cv=none;
+	b=V1Wv3NQ1d1fsoBjZ6rVn0W5CqfGuyW6P5SENung4sGpnJ6g6lmEBbAarTW0TsjCF1k0wOg
+	AuEqls4bum6Zq6AQWMK1DKuG+Y0LlUUrhbp6znhi06t5ayV3/iHSxLc+ctrtBy/IVFWuf4
+	115m8Z5JllFcIicgtAVPakbg5e5OT4U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ON7ZwqsH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of 3qCSfaQgKCMEqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3qCSfaQgKCMEqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772037286;
+	s=arc-20220608; t=1772037290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zn/sQ5//FH47xWrBpYa+2czdly0Dx/d99/N8Hn2JIac=;
-	b=vGWndyKhAGyA6RUDAoVQzm+wjQ0bZiYSyFvxccicQwK01amxijF7Nzlo19a2TxCSaPQ+cI
-	72yasVU9sShxJJOk0LY254+Gii2oCjIlVnmISKsdAxibMux6KL51qLMDvZaIT80ZwYw63p
-	G1RRKMJ/WXE5rD9exv8E4WOI+zHc60Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="KLJU9R/8";
-	spf=pass (imf04.hostedemail.com: domain of 3pCSfaQgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3pCSfaQgKCL0mdfnpdqejrrjoh.frpolqx0-ppnydfn.ruj@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037286; a=rsa-sha256;
-	cv=none;
-	b=bZDd3LJgkGXLr7r2PdwuG/okaUtsvzLgzg+OSh0NSyI+iR861im0CjAI8JeGuS9NJCCnAg
-	Xp/3UfgvhrXDPJb7YUHSrVVDMAyL92KGrA5ofrVcRC8NEqyJgKRQdSqv1DEmsVufIZIelL
-	8FGDM9NO7JDf0Srh/0FCb2G1d+u4cr4=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4376e25bb4dso4752821f8f.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:34:46 -0800 (PST)
+	bh=ZPavfHtzfndzWIXWdPBl+t2V385Pl6oyLSG23Scoa5U=;
+	b=vmDCwJvWLlnBwS+9CTe1WUsrl8xG5Ux7TIi5+kBNceB0F/UDgNkG+9jYoh5atpdvt2/WQi
+	2g6JsaUHmvvf57W2Qm2evzNLbkvk+8T+UtoTVRDeCkhrD3cdIKOJvG79iUw1elFCI0LYWT
+	wCmSMT07EPgSuBfr1MteSHOhDC06SK8=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8fc132b0b4so174530566b.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:34:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772037285; x=1772642085; darn=kvack.org;
+        d=google.com; s=20230601; t=1772037288; x=1772642088; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zn/sQ5//FH47xWrBpYa+2czdly0Dx/d99/N8Hn2JIac=;
-        b=KLJU9R/8w9n0VF3a2ILMMpFxL4hDnN00Jf0SpkIrk34KiwiUK5ajY+ZuPiRDF7r5Ws
-         gna333K1RBTdcNCMujJzHS4yTAq9sLWUGhxuM/xKNuk6q3UuPZ1pHxCDtmJtT/EcHR9q
-         vpzutxcBYNI1T04fA8wZGBPAOxUiJlsF12yWWFb0+TEsqVS9bKRpdDXJoj9l/8soqjMq
-         7W3if/WPQoQ3wVGCTYb5yQcGI3BEn8ABuDXdJPqHNW31w5nnJBSDs5IfuSuzxvJWSGeN
-         CEEvaeBtmLbnJrP4Ni2U5R2JRkKXm3+sGoYBhDjEVMcRiH+jZsmf2G/SnrS1sxAH2mBj
-         alIw==
+        bh=ZPavfHtzfndzWIXWdPBl+t2V385Pl6oyLSG23Scoa5U=;
+        b=ON7ZwqsHK3VLUsQsgkXD0VEjgM+BiuQYQ7LHm94ze366SistqA8/+hNkWT/r8zwRUU
+         mdzYNncKdMw10EZIexu2mhLX1M4+OjkpxA5JmxRNVuCAMrufbuJlrSarBRp3E9eKJwBv
+         8QwdYy7GSjiZzf0w4rMVc7sG6SzZjj1EUDqx5mxu739HpkKV+9oJdLAb8gCALnCzLEAj
+         Zfp0IUmkAJaj84K9vAXwG3txHhDSCwsc3Z7aI2ZWuNxllbQNWiqMNDEArhECJcSVhzBq
+         KgVG4dRiveS9ItVPgDIgXkaWRHcIV0/BjIJd2FJfsWHPx0fMrzQPjtdbC0tkFco2n5pJ
+         zrpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772037285; x=1772642085;
+        d=1e100.net; s=20230601; t=1772037288; x=1772642088;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zn/sQ5//FH47xWrBpYa+2czdly0Dx/d99/N8Hn2JIac=;
-        b=r18KTxQ3CqJE2ynLz+joCt1NWmPl0zRUgMKcq8VByCREBIfFjDDddjYnXYgxHjs7Ys
-         S3YyXXKmCPnA7R1vW1mG1TRBw3tafqs7MSVSa74vogjgCd8W8vBNi4j0vxZT1GNIcFf3
-         B0RHEDN131Kb896VicJQyIGkS1MUYYWFRPWLj0gC63dh6GxZ90XfB1Cky0Eg4UUXj1bP
-         K3AzaeRUpU8i6dAcY4RflKGUSHlA1k5b+r/N5gSYsiCfGzxJ7wok41LqJnrWkLm4yBNf
-         q0Fpk+AQLnZ6fOftEUId2pfcuJgfwJyF1gMJiOX7cie6Qc0EQlTrsk+o8hzko/4twwyO
-         +GcQ==
-X-Gm-Message-State: AOJu0Ywyi4kKRdgGmKIz+7qw2nFeri7M4vQYxr1Q5HRYQkyHG2hY0EIl
-	TMz1HwwPQ03wtklnSRCAp9bnnqjQn5ITOxlaV0XOrJUqDgOQ7oGOu6+x0C2AyqHK3wdJwkx/G83
-	UKe/7okuoQFRe2Q==
-X-Received: from wrbbn22.prod.google.com ([2002:a05:6000:616:b0:436:30bc:37dd])
+        bh=ZPavfHtzfndzWIXWdPBl+t2V385Pl6oyLSG23Scoa5U=;
+        b=AF5wJszDJJ0hoNEcsVkUhUlRg5ru01YfqHpvJIK90JUOtdTILR891CtHf6tluziVRi
+         95iJrokv+28VQMiCTKhZHVBhMujLgtyjCski1fNeunnbnfgJhOFuKs1up9Y06vYer2iz
+         l6afSE/mMZwusncEvzI1Thtfqc8mLQ1npsoe6BcPOm7EroNs11FcyjnXArKfQhaLhqay
+         G5MEdMO8LAMOEBxYrIlN7lYcZ9M1v/629cRmFKQ+5OU6sg/3A3M4qPswN+hsSlGdAD3t
+         0tagmjFjP5wskZyMB6V9N4F7xLWoRoKqa/qdIVeanuTmyixDm00EmIRhGgagS9Rjyhgl
+         DSDw==
+X-Gm-Message-State: AOJu0YzITxsbHl+jUX8q34cx9TtEal+oBcRn3akIcG1GLA8G1+ERI4cg
+	B9sFiWR7Q7rMdpVyItms7ouPrblPbFAKS8EEdfM6gPafWXzsBfDmUKRcMvm8mGsdGm/KyAyoZYO
+	as3ea2tD12N7LLg==
+X-Received: from ejdbx6.prod.google.com ([2002:a17:907:fdc6:b0:b93:4df6:8a2])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2c08:b0:439:94a7:715a with SMTP id ffacd0b85a97d-43994a771a8mr1769317f8f.17.1772037284432;
- Wed, 25 Feb 2026 08:34:44 -0800 (PST)
-Date: Wed, 25 Feb 2026 16:34:32 +0000
+ 2002:a17:906:8c5:b0:b80:3346:496 with SMTP id a640c23a62f3a-b9081b98d24mr912485466b.42.1772037288223;
+ Wed, 25 Feb 2026 08:34:48 -0800 (PST)
+Date: Wed, 25 Feb 2026 16:34:34 +0000
 In-Reply-To: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
 Mime-Version: 1.0
 References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20260225-page_alloc-unmapped-v1-7-e8808a03cd66@google.com>
-Subject: [PATCH RFC 07/19] mm/page_alloc: don't overload migratetype in find_suitable_fallback()
+Message-ID: <20260225-page_alloc-unmapped-v1-9-e8808a03cd66@google.com>
+Subject: [PATCH RFC 09/19] mm: move migratetype definitions to freetype.h
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,14 +100,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
 	Brendan Jackman <jackmanb@google.com>, Yosry Ahmed <yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 58E3340013
-X-Stat-Signature: agjaiegjbxje18q56wmghxk5nprrjxpo
 X-Rspam-User: 
-X-HE-Tag: 1772037286-409371
-X-HE-Meta: U2FsdGVkX19jYvAyJtiCdoNvOXJ8gPxNnXdDXKamoqFeRhE5tptqxivIAJxz34iAIevyLAtffju0b5PE/uu59+pET70FgNgdpp82RKSG2D9WeOjehJUb1kl9S8oC3Gu8lcatJfY7fHvefX5XyxG4Hu/y/Og2w5DQebo2vGdGCW78noKpLRIwUYVMO8DZTtVm+Pz70nYX9h+NTrxEANmwVULcbX+nj0Fgh4f8KsUyIABAPCkbIcwO4vKF1L9OwU1RUMqRAX/aktvUPIA9VRjJ6HUeu3RSu+kmPArOaIQRI5b+BL372XR1rV/LXkLOKDZ3mpUa6GBsPw4N81xweS6ZrcA92U8tF9Ct/o7ifeLUhQLRAmJRD9hIn2UpfYa1dozki/4b/M39c7R/VI3MqY/7qD2QSkY7ic4bSHZ+jdfZD/6ReFOQ0bm3ZyxoeiKXAj3vLe5A5lHj/XzF5n1pwpmRh/5guyi/bV6gbaBqBAZEC7t4VIjYncLfB2feWel3G89oQkLvqzSlDQbPIoGPnHxHf8oWEDRXE6cRP3bOreAhO+C4lfxdeMjNAgLP5lfk6Gp/ftXOdESf3MW8v0Jrwp6+hCTWfRfGFkPi1q0gLdWge0P4Gst4DtaqYOlbXU8uqm1gU0De71Lj+aXNJFI2j22mSKSjclEqpeTFOVsITyn6sh2winYQqo0ZOWvJGECg/tSeOOTJOSgl9GlwrhZXzHPuC2cLC+gQ7I1P2+LDZ1ZUhJxcZWNvQDt9AIXUSNk4Sj4ufF6PLo/oHJgy1BSR1GhyqjfBEt9dieNjZI9HQato6o6PHE9a1koyRJiW24GQ+xkjb8o8Q2HdZLn+2l2v7wMPfZESoV81m8UOpYeGwtnxnbg3TIHfV4Z4GPbKa+vxuWbNNiKxTiI4PxtosnO4BOitjM3aEtSAOQPM/ZVIPJ/+jdAX1IQWsqfOAkJg4kih0m+VxBhZEBv566gTS+CXfGF
- KFJCoKGJ
- iLritt4M8YA25BGnBRwpDE+dI885JriooijC7PWEwCts1LQ35aZPSrYtxLfdiTCVUUcHUntuXv+sicaGuO9g7sbGuNsSxMtOG9gFgf00vmgm26bPsj1zPRc8e8ZxKFGnm08vqxeCaltxpEgJHJNf7RJ3OeDRufiOJJIY86EW/781HlH6DrKoZ3sZX9CGnTVuX72GQoRht1so78tWvELqGJgfX4XMMo2aFXziv+/NhWTBbHzX7RD78st99sN+K9wu/8lTC0u1pLWPIbm6e0Rft3/vhxGyqWaOFA448K5ib9WZGNSnmA/b/A41ZzEOqKAfasXPVU8hhZxo8/WQdgVAlncILhPAin0koQyyZSz4xNe+R2/oAKOcpSApLTiRFVogexu15meQ5yrM/4Q2HrxVLL4VgdOi8n2xJZl8biBhLj1m2ScsWfjEzwfTeUXaeUBNtM0PQ93SjHdKH02P5cqi9NoUI7COdb/UlVBNadB7MJMStet/9B5C5fGohNfoEH+GyTXCCMQNKXVuPbekcTA5tz1H+iXqOPn2yZpD5LtHG5Ns51hNmVYWRSEUnlOPlsvhzcqxl9VXn4N0O+/5emaAxqB+9kCphzXJ+FmNip9wKXyQloduZtViHDuNEP2zZot3Q9sjsYVeIH/E4sDC1ho+nRo92126/2Y78Sq7l5YtyvkleO0FMzJjMNVhG0Jkbnp0OLp8s
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EE315A0009
+X-Stat-Signature: fuj7rw3tipiej8zwqh4org37tm73btjq
+X-HE-Tag: 1772037289-622512
+X-HE-Meta: U2FsdGVkX1/jYrPUF96b01EcX8dWEBrOkpc+sn8IVo0OgBY3xUqwluPmQdCClm1Gh+Y3gmfiUDnE/kmo3c3eQ62/BiORHlgHssnt6ajKMhejTao4uo7VyiJc/UCdRCwpayx78JvG5sdtmFtPFojD9Z6hs0I++JB2crqbyLAQkcA+b/+aG0oXG/3uIFYwL9CxsVoYDuRKgj6blPRyOgAd9Nd10xGuR1gZXqNhYuU33k0nkUl/xr3j3QG3MEIx+mOvXNX2NH2gaCjg+nrgPqVSkEg+p1piw98fOF4K/dYmyDraXas/HveXniv1xBCgpWbDqWpaCxbrROpPoMwj7CXleBSvcpdey8wEZQTWfEVlwo2bJYgpY6dz8mW+hlbh6QAkLONMTlzvgxEzOV1HxnxK6IEH+zMXof/3IEtmM7CpkLh15ifDsxaCY88Sh0DVImnBNTpwadhd0Ms2wX5gV4DV+/CE9eHnLDP8a4oUN9K3ASeIXe3xC34SlJeB1mtDkw3GpLwCxmGONvBocUG8vxtwiBNhkEqq0xAntXwDjcLje8/xaWxW0nh+yS7f+mKRTsmvPyIRNoTx8WDNCk/M68ClvWA8yptVrMI8CnyjEvIsgGfO0EotH06eG3+DZckKK2tkcv+cTA8e6YH1XE9ommwPIZ/50nAHFsbjAaStxY+77QEiT9U/1PiexFfb98A8fxOemiMhkvI1cfnp6qWLtWIOR1WyaGt4+fSqwISvZzscCaqplBTuVu+N6Nz78bJboANil7dpPS6aTRivuaURYV/cJUSi4e9mFUEbsVro/AoVtYoKCaK5bkEaOUpM5aZ+YxlaJcNR7qMQ5pqEe1jjCPizv07xDMqIjzfqjXWHbDYUFAssTviDWkCJ40uYSsDEL1vai9bOWQ8XI7Op9O4VpmBWXFcdtDpmQMv4iIBCrRU4aYP9iAXyI69Nh2V6pfZBqVj9kLvNdevsyl/qF0C1ICo
+ ren9byO+
+ df4DN2iNHAQRBkk9qRDuhiFBjMCSBUGRk9hXtCZukaSuTUiikVOM0rXOKIBGtJS1UvGmYcI3NzMFE3fuKBAOgMtxTRq+ClEOcGdqt7wrDfvWcc4om+EYdKS0uZ63bzNLNZlC1VphHOX2th7rB19Wtfbc7Jva3ZXmcftknECn1g0hRpRwTmH3QTRMY+U+6zs/S1kmUX5xYFlAL6F3HZ0suZTLV+bpRfmZRVjR+Iz5PMrh8McDkbFZrDfQ9N9JLCBaYkSZGUYT4Il+/bYoKt+WpqYTGIgfw/bGUa9mQU3V560EeGdu5okoJ3RT/PfyUwyMo/HtM0imkh3UQ4cwQ+MLAbagsz6ADkulT5coJZCO7yvGOdo3QFZM6CiTukVs0CIIr/RsMV+bRHaea28ODnoqae0IC3/c9+5fBhAE46HhiI9MjIWf9Uwa6HZo0DvRCEdfO3PzllO5PByVvmqtZgseLpG9gFIXuhnxvPjNnpDLEZ+mAEiqlO5tPaO11vt/aKt6FNHLxtTndXsNCUB6PLXIMP/LeWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,146 +115,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This function currently returns a signed integer that encodes status
-in-band, as negative numbers, along with a migratetype.
+Since migratetype are a sub-element of freetype, move the pure
+definitions into the new freetype.h.
 
-This function is about to be updated to a mode where this in-band
-signaling no longer makes sense. Therefore, switch to a more
-explicit/verbose style that encodes the status and migratetype
-separately.
-
-In the spirit of making things more explicit, also create an enum to
-avoid using magic integer literals with special meanings. This enables
-documenting the values at their definition instead of in one of the
-callers.
+This will enable referring to these raw types from pageblock-flags.h.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- mm/compaction.c |  3 ++-
- mm/internal.h   | 14 +++++++++++---
- mm/page_alloc.c | 40 +++++++++++++++++++++++-----------------
- 3 files changed, 36 insertions(+), 21 deletions(-)
+ include/linux/freetype.h | 84 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mmzone.h   | 73 -----------------------------------------
+ 2 files changed, 84 insertions(+), 73 deletions(-)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 1e8f8eca318c6..cf65a3425500c 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2323,7 +2323,8 @@ static enum compact_result __compact_finished(struct compact_control *cc)
- 		 * Job done if allocation would steal freepages from
- 		 * other migratetype buddy lists.
- 		 */
--		if (find_suitable_fallback(area, order, migratetype, true) >= 0)
-+		if (find_suitable_fallback(area, order, migratetype, true, NULL)
-+		    == FALLBACK_FOUND)
- 			/*
- 			 * Movable pages are OK in any pageblock. If we are
- 			 * stealing for a non-movable allocation, make sure
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d99..1d88e56a9dee0 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1028,9 +1028,17 @@ static inline void init_cma_pageblock(struct page *page)
- }
- #endif
+diff --git a/include/linux/freetype.h b/include/linux/freetype.h
+index 9f857d10bb5db..11bd6d2b94349 100644
+--- a/include/linux/freetype.h
++++ b/include/linux/freetype.h
+@@ -3,6 +3,66 @@
+ #define _LINUX_FREETYPE_H
  
--
--int find_suitable_fallback(struct free_area *area, unsigned int order,
--			   int migratetype, bool claimable);
-+enum fallback_result {
-+	/* Found suitable migratetype, *mt_out is valid. */
-+	FALLBACK_FOUND,
-+	/* No fallback found in requested order. */
-+	FALLBACK_EMPTY,
-+	/* Passed @claimable, but claiming whole block is a bad idea. */
-+	FALLBACK_NOCLAIM,
+ #include <linux/types.h>
++#include <linux/mmdebug.h>
++
++/*
++ * A migratetype is the part of a freetype that encodes the mobility
++ * requirements for the allocations the freelist is intended to serve.
++ *
++ * It's also currently overloaded to encode page isolation state.
++ */
++enum migratetype {
++	MIGRATE_UNMOVABLE,
++	MIGRATE_MOVABLE,
++	MIGRATE_RECLAIMABLE,
++	MIGRATE_PCPTYPES,	/* the number of types on the pcp lists */
++	MIGRATE_HIGHATOMIC = MIGRATE_PCPTYPES,
++#ifdef CONFIG_CMA
++	/*
++	 * MIGRATE_CMA migration type is designed to mimic the way
++	 * ZONE_MOVABLE works.  Only movable pages can be allocated
++	 * from MIGRATE_CMA pageblocks and page allocator never
++	 * implicitly change migration type of MIGRATE_CMA pageblock.
++	 *
++	 * The way to use it is to change migratetype of a range of
++	 * pageblocks to MIGRATE_CMA which can be done by
++	 * __free_pageblock_cma() function.
++	 */
++	MIGRATE_CMA,
++	__MIGRATE_TYPE_END = MIGRATE_CMA,
++#else
++	__MIGRATE_TYPE_END = MIGRATE_HIGHATOMIC,
++#endif
++#ifdef CONFIG_MEMORY_ISOLATION
++	MIGRATE_ISOLATE,	/* can't allocate from here */
++#endif
++	MIGRATE_TYPES
 +};
-+enum fallback_result
-+find_suitable_fallback(struct free_area *area, unsigned int order,
-+		       int migratetype, bool claimable, unsigned int *mt_out);
- 
- static inline bool free_area_empty(struct free_area *area, int migratetype)
- {
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index fcc32737f451e..1cd74a5901ded 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2280,25 +2280,29 @@ static bool should_try_claim_block(unsigned int order, int start_mt)
-  * we would do this whole-block claiming. This would help to reduce
-  * fragmentation due to mixed migratetype pages in one pageblock.
-  */
--int find_suitable_fallback(struct free_area *area, unsigned int order,
--			   int migratetype, bool claimable)
-+enum fallback_result
-+find_suitable_fallback(struct free_area *area, unsigned int order,
-+		       int migratetype, bool claimable, unsigned int *mt_out)
- {
- 	int i;
- 
- 	if (claimable && !should_try_claim_block(order, migratetype))
--		return -2;
-+		return FALLBACK_NOCLAIM;
- 
- 	if (area->nr_free == 0)
--		return -1;
-+		return FALLBACK_EMPTY;
- 
- 	for (i = 0; i < MIGRATE_PCPTYPES - 1 ; i++) {
- 		int fallback_mt = fallbacks[migratetype][i];
- 
--		if (!free_area_empty(area, fallback_mt))
--			return fallback_mt;
-+		if (!free_area_empty(area, fallback_mt)) {
-+			if (mt_out)
-+				*mt_out = fallback_mt;
-+			return FALLBACK_FOUND;
-+		}
- 	}
- 
--	return -1;
-+	return FALLBACK_EMPTY;
- }
++
++/* In mm/page_alloc.c; keep in sync also with show_migration_types() there */
++extern const char * const migratetype_names[MIGRATE_TYPES];
++
++#ifdef CONFIG_CMA
++#  define is_migrate_cma(migratetype) unlikely((migratetype) == MIGRATE_CMA)
++#else
++#  define is_migrate_cma(migratetype) false
++#endif
++
++static inline bool is_migrate_movable(int mt)
++{
++	return is_migrate_cma(mt) || mt == MIGRATE_MOVABLE;
++}
++
++/*
++ * Check whether a migratetype can be merged with another migratetype.
++ *
++ * It is only mergeable when it can fall back to other migratetypes for
++ * allocation. See fallbacks[MIGRATE_TYPES][3] in page_alloc.c.
++ */
++static inline bool migratetype_is_mergeable(int mt)
++{
++	return mt < MIGRATE_PCPTYPES;
++}
  
  /*
-@@ -2408,16 +2412,16 @@ __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
- 	 */
- 	for (current_order = MAX_PAGE_ORDER; current_order >= min_order;
- 				--current_order) {
--		area = &(zone->free_area[current_order]);
--		fallback_mt = find_suitable_fallback(area, current_order,
--						     start_migratetype, true);
-+		enum fallback_result result;
+  * A freetype is the index used to identify free lists. This consists of a
+@@ -35,4 +95,28 @@ static inline bool freetypes_equal(freetype_t a, freetype_t b)
+ 	return a.migratetype == b.migratetype;
+ }
  
--		/* No block in that order */
--		if (fallback_mt == -1)
-+		area = &(zone->free_area[current_order]);
-+		result = find_suitable_fallback(area, current_order,
-+						start_migratetype, true, &fallback_mt);
++static inline freetype_t migrate_to_freetype(enum migratetype mt,
++					     unsigned int flags)
++{
++	freetype_t freetype;
 +
-+		if (result == FALLBACK_EMPTY)
- 			continue;
- 
--		/* Advanced into orders too low to claim, abort */
--		if (fallback_mt == -2)
-+		if (result == FALLBACK_NOCLAIM)
- 			break;
- 
- 		page = get_page_from_free_area(area, fallback_mt);
-@@ -2447,10 +2451,12 @@ __rmqueue_steal(struct zone *zone, int order, int start_migratetype)
- 	int fallback_mt;
- 
- 	for (current_order = order; current_order < NR_PAGE_ORDERS; current_order++) {
-+		enum fallback_result result;
++	/* No flags supported yet. */
++	VM_WARN_ON_ONCE(flags);
 +
- 		area = &(zone->free_area[current_order]);
--		fallback_mt = find_suitable_fallback(area, current_order,
--						     start_migratetype, false);
--		if (fallback_mt == -1)
-+		result = find_suitable_fallback(area, current_order, start_migratetype,
-+						false, &fallback_mt);
-+		if (result == FALLBACK_EMPTY)
- 			continue;
++	freetype.migratetype = mt;
++	return freetype;
++}
++
++static inline enum migratetype free_to_migratetype(freetype_t freetype)
++{
++	return freetype.migratetype;
++}
++
++/* Convenience helper, return the freetype modified to have the migratetype. */
++static inline freetype_t freetype_with_migrate(freetype_t freetype,
++					       enum migratetype migratetype)
++{
++	return migrate_to_freetype(migratetype, freetype_flags(freetype));
++}
++
+ #endif /* _LINUX_FREETYPE_H */
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 66a4cfc2afcb0..301328cbb8449 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -62,39 +62,7 @@
+  */
+ #define PAGE_ALLOC_COSTLY_ORDER 3
  
- 		page = get_page_from_free_area(area, fallback_mt);
+-enum migratetype {
+-	MIGRATE_UNMOVABLE,
+-	MIGRATE_MOVABLE,
+-	MIGRATE_RECLAIMABLE,
+-	MIGRATE_PCPTYPES,	/* the number of types on the pcp lists */
+-	MIGRATE_HIGHATOMIC = MIGRATE_PCPTYPES,
+ #ifdef CONFIG_CMA
+-	/*
+-	 * MIGRATE_CMA migration type is designed to mimic the way
+-	 * ZONE_MOVABLE works.  Only movable pages can be allocated
+-	 * from MIGRATE_CMA pageblocks and page allocator never
+-	 * implicitly change migration type of MIGRATE_CMA pageblock.
+-	 *
+-	 * The way to use it is to change migratetype of a range of
+-	 * pageblocks to MIGRATE_CMA which can be done by
+-	 * __free_pageblock_cma() function.
+-	 */
+-	MIGRATE_CMA,
+-	__MIGRATE_TYPE_END = MIGRATE_CMA,
+-#else
+-	__MIGRATE_TYPE_END = MIGRATE_HIGHATOMIC,
+-#endif
+-#ifdef CONFIG_MEMORY_ISOLATION
+-	MIGRATE_ISOLATE,	/* can't allocate from here */
+-#endif
+-	MIGRATE_TYPES
+-};
+-
+-/* In mm/page_alloc.c; keep in sync also with show_migration_types() there */
+-extern const char * const migratetype_names[MIGRATE_TYPES];
+-
+-#ifdef CONFIG_CMA
+-#  define is_migrate_cma(migratetype) unlikely((migratetype) == MIGRATE_CMA)
+ #  define is_migrate_cma_page(_page) (get_pageblock_migratetype(_page) == MIGRATE_CMA)
+ /*
+  * __dump_folio() in mm/debug.c passes a folio pointer to on-stack struct folio,
+@@ -103,27 +71,10 @@ extern const char * const migratetype_names[MIGRATE_TYPES];
+ #  define is_migrate_cma_folio(folio, pfn) \
+ 	(get_pfnblock_migratetype(&folio->page, pfn) == MIGRATE_CMA)
+ #else
+-#  define is_migrate_cma(migratetype) false
+ #  define is_migrate_cma_page(_page) false
+ #  define is_migrate_cma_folio(folio, pfn) false
+ #endif
+ 
+-static inline bool is_migrate_movable(int mt)
+-{
+-	return is_migrate_cma(mt) || mt == MIGRATE_MOVABLE;
+-}
+-
+-/*
+- * Check whether a migratetype can be merged with another migratetype.
+- *
+- * It is only mergeable when it can fall back to other migratetypes for
+- * allocation. See fallbacks[MIGRATE_TYPES][3] in page_alloc.c.
+- */
+-static inline bool migratetype_is_mergeable(int mt)
+-{
+-	return mt < MIGRATE_PCPTYPES;
+-}
+-
+ #define for_each_free_list(list, zone, order) \
+ 	for (order = 0; order < NR_PAGE_ORDERS; order++) \
+ 		for (unsigned int idx = 0; \
+@@ -131,30 +82,6 @@ static inline bool migratetype_is_mergeable(int mt)
+ 		     idx < NR_FREETYPE_IDXS; \
+ 		     idx++)
+ 
+-static inline freetype_t migrate_to_freetype(enum migratetype mt,
+-					     unsigned int flags)
+-{
+-	freetype_t freetype;
+-
+-	/* No flags supported yet. */
+-	VM_WARN_ON_ONCE(flags);
+-
+-	freetype.migratetype = mt;
+-	return freetype;
+-}
+-
+-static inline enum migratetype free_to_migratetype(freetype_t freetype)
+-{
+-	return freetype.migratetype;
+-}
+-
+-/* Convenience helper, return the freetype modified to have the migratetype. */
+-static inline freetype_t freetype_with_migrate(freetype_t freetype,
+-					       enum migratetype migratetype)
+-{
+-	return migrate_to_freetype(migratetype, freetype_flags(freetype));
+-}
+-
+ extern int page_group_by_mobility_disabled;
+ 
+ freetype_t get_pfnblock_freetype(const struct page *page, unsigned long pfn);
 
 -- 
 2.51.2
