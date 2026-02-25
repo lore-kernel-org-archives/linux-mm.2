@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6B84FD3774
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3980FD3776
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:42:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 272D66B0092; Wed, 25 Feb 2026 11:42:06 -0500 (EST)
+	id 44A226B0093; Wed, 25 Feb 2026 11:42:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AABB6B0093; Wed, 25 Feb 2026 11:42:06 -0500 (EST)
+	id 4288B6B0095; Wed, 25 Feb 2026 11:42:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01A206B0095; Wed, 25 Feb 2026 11:42:05 -0500 (EST)
+	id 355B96B0096; Wed, 25 Feb 2026 11:42:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E31EE6B0092
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:42:05 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9212C13B464
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:05 +0000 (UTC)
-X-FDA: 84483546210.11.D4D654D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D82C0C000E
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=csGKWkXe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037723; a=rsa-sha256;
-	cv=none;
-	b=JK7p4ch7tke7v9AuXsWVOsXlPAo9g3aBnzRi1pNZFe1hail3NTbxerzZYiqSqvRrJm7voc
-	pXQau7GGpFTJt8fVLnVCquLplKfEHa1znj6uPDaTFcChzKsz5ZJvmbD1ZBcsgToc8fpjd9
-	we020NInLbq0b1P/8q/q9oW4xyBgOrU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=csGKWkXe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DD696B0093
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:42:09 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4CB3BA74D
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:08 +0000 (UTC)
+X-FDA: 84483546336.29.65ECCF8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0762D100011
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ur3A8vqq;
+	spf=pass (imf14.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772037723;
+	s=arc-20220608; t=1772037727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aqMXwWF1PSl0oG41JdQ6BGCGrRACleMUP5VdrlwJO1U=;
-	b=HapHHoTA2z5b3RzqSjiXaj3/TrnlYYlXDYLaVVnGGJSJvBnsfnBZZoBTNYCJ+6e62nc1LG
-	mUUUroRxZYw+9oE2Ud2a2/ns7s/pl3uLNxVKVl47cWW/MB+xTQwryZ/n7N41P/+eLupHzU
-	c4qoAqaDu51QFyG8L0PZKOI6AjYV8Bo=
+	bh=5Lz6omm1zf9neDrR0XQl7/sWPc337BLzrKcRUeufyEE=;
+	b=qH0aVnxTPzaqpmxMZR0zTvc47U/nbChYhUfsjmCbX6wayQXcUcZh7wVB13dDxsEEjk3qSy
+	ZQ/d+ZjLGtt+mvXcgMJ5I24KhPmdlmvghrD/kvzIz7oJc+k3qX4dCKHLndeKHxIkYacqgW
+	hgLvDNsFjn6Qat4jQDtaIiG/wWf08mE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ur3A8vqq;
+	spf=pass (imf14.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037727; a=rsa-sha256;
+	cv=none;
+	b=UWsrAYvKRNpBftvFglTv3ASrbGfeXhTxiPcB72uxOiyZ7/ue0ZGPJmjdH6eqxsthzliWmi
+	WudzEHES+uUiC+1Hv9zH8DHaWQHF57g2W5Cu9TnkSbXLhz1Ob3bMO+2n8LSsPwFSG8Xq/G
+	Pypyo0McYLru5u6r9O0fM77A2WRL3Tk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B8FE60126;
-	Wed, 25 Feb 2026 16:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83989C116D0;
-	Wed, 25 Feb 2026 16:42:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 35AA940573;
+	Wed, 25 Feb 2026 16:42:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA20C19421;
+	Wed, 25 Feb 2026 16:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772037723;
-	bh=rfgqTaniyFcFynC/obpaUFFlyjqqthgGha52ltIUlUY=;
+	s=k20201202; t=1772037726;
+	bh=1ksolxmHKnKMAAkcEvTBTRw073bmw9i+dhSGaMAVL9Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=csGKWkXeguSQ37zJjf0IB2wvQOQl3/WLcW4dmFDzDbdcBjbHPT1zkBKm6J29MSeg6
-	 xhGvtq3bNTlGh6/EGDE2aTQtaxs4VsiOO8ohZ2uB4qEil0ou0qeDg8Zr7kAe8TBQWh
-	 /ZNRi1fKctGSLW4gpZYseuHiM9psy8MQJNSqh/2n2F066mlBVd0PXwhBTZTDlLzCCd
-	 6cO4rjPG9kIAF8nlnZMXKsmji5AT5/nOSZdCE576FJIIzyETNCdF3hir5mY3Hafts+
-	 qB6j6M+QC+Pyc8JmQdhe60ULJfAb5mmiK2sCdYE4YEMtxEM9uE86j2SXH3mADgDoZA
-	 frH/OyTpRyjqQ==
+	b=ur3A8vqqGdciMpqU0VUtudg622/fzXcoMXTJl8MBdRsa8x8pVSrAXd1E9yCTkyXp6
+	 iVXrS7SNdy75slH60+tXplIkB6t/1o7nxFWsyWf/4oxul8cFq6YbEGc52bvJAzibxR
+	 BvjAMCMLrr3/tiFzUSV00wGbR8t+6DooLQJ5JpnNlHpE3i0UIaRtkNB+rccVdHIWrt
+	 XC6A9aksZBx05/izc6qF3cGGmMQBGAb5VbwkipsNYcdeMD23sOXEaYaJtchHNc8GIJ
+	 IVW12BkW/qEybgdzq+HbWDDkD9wZBUItYEI5/ngCNGrV0rqIEz3XE307ulKBuLLv5K
+	 tUgyzFlBI4Xwg==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Wed, 25 Feb 2026 17:41:50 +0100
-Subject: [PATCH 2/7] mm: cma: Export cma_alloc and cma_release
+Date: Wed, 25 Feb 2026 17:41:51 +0100
+Subject: [PATCH 3/7] mm: cma: Export cma_get_name
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-dma-buf-heaps-as-modules-v1-2-2109225a090d@kernel.org>
+Message-Id: <20260225-dma-buf-heaps-as-modules-v1-3-2109225a090d@kernel.org>
 References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
 In-Reply-To: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
 To: Sumit Semwal <sumit.semwal@linaro.org>, 
@@ -91,22 +91,22 @@ Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
  iommu@lists.linux.dev, linux-mm@kvack.org, 
  Maxime Ripard <mripard@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1196; i=mripard@kernel.org;
- h=from:subject:message-id; bh=rfgqTaniyFcFynC/obpaUFFlyjqqthgGha52ltIUlUY=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJnz1fxfHNsUEn3B2H5a+v+PEQp7p6W9/xnC8syK+dSd1
- jP7uFa1dUxlYRDmZJAVU2R5IhN2enn74ioH+5U/YOawMoEMYeDiFICJ+OQyNrwRDNz268/LgH9P
- 9faUbHvhyCZb/z7vtFLTNmaVGbExClx7qz9r8xUdaLklcuJigejvLYwNfdXrtpw+nXW/t5v7yV3
- 1jSov2r2+t+V/2ejWE/CpN/ax103GSc5iU9vnm62Im7lg1bpvAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=859; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=1ksolxmHKnKMAAkcEvTBTRw073bmw9i+dhSGaMAVL9Y=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJnz1fwnx849earviNBCCet3bOc1zpe7uW7U3Wz8x/jtU
+ kPTxgeBHVNZGIQ5GWTFFFmeyISdXt6+uMrBfuUPmDmsTCBDGLg4BWAi/AcY62Nq/RlO7bqgoKgi
+ uWX9Eu8FKk0HHSbUvZ1qw2udpZF4WLmCq/pPatK1K8e79n64Xq4az9iwXMwi0n7FB4W7jc/2Pbh
+ yIus746Trrs81HTbOqLTs8Ixmir8d+tG94N9f2VizxOz5p9YAAA==
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
-X-Stat-Signature: pikogenrs7eof17k869pug4mewmgqrwx
+X-Stat-Signature: c3watnhet9zrkgmbthpife81xis1ugq6
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D82C0C000E
-X-HE-Tag: 1772037723-172416
-X-HE-Meta: U2FsdGVkX1/pCKSGgwuXqBh9XpM5RNKsXfTBdhAqMKW/z8flg6uHsa11C924gm301vlDm32kfyaxHnezgPp71JzF6CmAu2fUeh0pPPXUdYXMEl2qbk8dYGAlud5UNx0Y6QWU9aPSmuuL80ijo5Kbbu6d9heX4tQCnggFZmpoK4q/waWbwMH8Y3ZRdGzG0+P4CPWnJI4lrOb/DCPi/L5MP9DbBoyEgJpLwZURBLFVb5JmynCUUEGdSRsU/ydcCj0ZLiNliAgZt++fZfl3DOAmX7igK66sYb7/xuaOEMEtjHITWlSGiOt6JmhROak96+pkeKZHYzDNN9hb91bQKBI7WLNhZBhyu7qixJXI4k6C32Vv/nlimh8c6irfQesqv0q3U9QtMz5fM9CpgGhAxLd6zkmnKIMhx4vPmP2Qu8CvyBVSAQJzg/vb8n796UjrRQ3F2rEm51pTuXXWzuS/O1/2D/4G4D8Kmjs1NVW4OPwWSCeg/NwFfZ7rjRz7w8PPGVNXWzIvwPW5UN6DZXcO2jWt1mUoKtcrN5bVxPw1XVNWyKeXxujXvSG5A6oxeYpmXSjjmvSnITEpcdxvAWb+A7y9/yowBC2gSl49D3WOPhOCWJXQZ4vqofbnjsmC7mQVDf/WJiPoUa7YpZIpjlH58pmzd4sTmfovVGkHDe6dRc0Q6FMvbLc3we40i/W+xeswC0UYsmfOafI55X0vmAT5sTUV9mud7SjgRxBXwNAvcPQl6ERJxuangN+tNSspcWqdNsVa+PeMM27bAeQsqc7lKX7ODB2hZ4bSFDZpV9xZfKhNY0odS+hG0Ypq8s4J/4aZX0k97rFWDtKG9s0GGZu1gwqQcRDmWUDwvEl0fm4Qqwtapqcpf5iu87bMQPGFpQ1CD4Fz/qyLvOSi1L52cwNfTEm1HiGDSwDvYnLkNULndrPlwWQ6/nyecHjJ6Qb/svaBrodbs2hm8ayJOaVpUclsDVv
- rbM8+MSK
- sCxDXOnOPIz+fNt98TugTqf+YwWBF25YUftV1z1i/PmL/TQTyAvEAQLWczQu03YyhsM8+c69BVBSEhaiZKP2fe7oPxqdcqrRYOPjNuO11uY6L51R7AbWAYR0mSnqjmWrLKwaY7zpKs9evH8EXm6Lvt5PvAKyFQFnJEpEpr14lGrjCWa9bN4L28GTccpXnUmk9QmhU2szxQTbKXzVGSosohr8bjSGMDw4T0OL6AGA2xtRaQrjxHDIiQTLxRLoXIFqF4hmwgqw9Uhu6GaAyqVHx8W3m1KzkP0R+5KpR
+X-Rspamd-Queue-Id: 0762D100011
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772037726-992535
+X-HE-Meta: U2FsdGVkX19d5iF2V6rhPHfm2tAp6C6B+/VAE8agNqP5qPBYbqXMyd7/Id6mIR8Qa5ol8fMs0Dk0kQIpjhlpIazbKVKb8Ro29WUadobB1+Bwg30ic6IWrjxGlcOJGMSDNX1G/SlB7+Jtyygj+8iCDpzjYAYTewM3kxH66JWvRAI+85Tc8lifbpbneYGLjVDX9hBBFqpqd6QAcx3OUuC/2eERB2y0DBdfx/F3HgtjyhMkHfvhCSt5AORoVwN3K0rhhTHVSCIHfOEN8UORwj8RgAEG1yv8X+wbNAaT+pVZN031tWcR0k8AhUD6JHaY35IOA14MKFQoxnUg6IKYC1ZqwMULbfVw2LV5XshZTfnc8hjkQYSdvQdDIIEEjw0LnPK7q4QceIGxEjWXg0ExhlYoUBSwLYsxPD7Axl3+xfbh1OgOba1sonrugYQfh8giWNxR70MDsNHz4h2Reng144b1BpAHpRSbTDoOhTg5zLqD/aWD7ZPjSwBLzBSsrftbt4NxyhOh6xhf83f14fKy80weLRQKWOZ56Dc3oHq3X650wfss/E50ID33EchFlTEHpEE1pcHUBPnJtk5dRuDrRcTeBuXn9QP6oAQbQsQh7a6Yfv0qW220HqKXoLE4dAaXnUJ8BT67ovf1NVHrvQPGb85fHA1S8kUAf/jRRFq13cwXThxgcaeKtq5XhCWBObzL5S4Bc5OkfBOZytlDMrUD8/RrJu2kiLdtqIdABnddHqOjnXHUZ/d3gvibNKbGfWfP5s2KsBSyXWJK3lyJuIfxPC2WmZlGV5jCSEEnX/nhccNbbTjv9tlXlhH3MXeHl3PZ2P5QxBnLtwVvmMvX3gd9jvn+KTLKPZOpy4rbToFPSA7k/NQim4O13bQaVBKZs+j190Nrfxvjr2uTkD3yQ9MxWq/E7rN95GOpUuPAAHMSNDlnpO4SyHAE+uNNG4Db6NunqxXIH0VfGPZLYVIw90Sl1Je
+ GvruyymH
+ boRhC4DgLHAd54EJ1N218MXQK/Y2VBVTNXlsklTGObH6LX0zEjRPlNsm8Di2t7a0UBofnAeNyEIOjpKQ80P0SjK+CzssFEQPc6syrf833oshlXdvfrg0u3vkeXzYK8s4OAzAiDNjxVXzxQc3QFnCvS7Upixl4/Yr5gSIxhLh8M6jjM36hsPuyFZoIBk7OwYsUxM7yCsyyIvM2vEYWJQXmn47ki66uxufOv+Yen6Nt5VrypM/2HC7YzXfKq6QlJy5k11y1qVlgjCw+6SMkUR0TZLoEj83TlB5Mlj8N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,45 +114,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The CMA dma-buf heap uses cma_alloc() and cma_release() to allocate and
-free, respectively, its CMA buffers.
+The CMA dma-buf heap uses the cma_get_name() function to get the name of
+the heap instance it's going to create.
 
-However, these functions are not exported. Since we want to turn the CMA
-heap into a module, let's export them both.
+However, this function is not exported. Since we want to turn the CMA
+heap into a module, let's export it.
 
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
- mm/cma.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/cma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/mm/cma.c b/mm/cma.c
-index 94b5da468a7d719e5144d33b06bcc7619c0fbcc9..be142b473f3bd41b9c7d8ba4397f018f6993d962 100644
+index be142b473f3bd41b9c7d8ba4397f018f6993d962..550effb9c4e01cc488b5744fe61d55a5b70a6d6c 100644
 --- a/mm/cma.c
 +++ b/mm/cma.c
-@@ -949,10 +949,11 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
- 	if (page)
- 		set_pages_refcounted(page, count);
+@@ -50,10 +50,11 @@ unsigned long cma_get_size(const struct cma *cma)
  
- 	return page;
- }
-+EXPORT_SYMBOL_GPL(cma_alloc);
- 
- static struct cma_memrange *find_cma_memrange(struct cma *cma,
- 		const struct page *pages, unsigned long count)
+ const char *cma_get_name(const struct cma *cma)
  {
- 	struct cma_memrange *cmr = NULL;
-@@ -1025,10 +1026,11 @@ bool cma_release(struct cma *cma, const struct page *pages,
- 
- 	__cma_release_frozen(cma, cmr, pages, count);
- 
- 	return true;
+ 	return cma->name;
  }
-+EXPORT_SYMBOL_GPL(cma_release);
++EXPORT_SYMBOL_GPL(cma_get_name);
  
- bool cma_release_frozen(struct cma *cma, const struct page *pages,
- 		unsigned long count)
+ static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
+ 					     unsigned int align_order)
  {
- 	struct cma_memrange *cmr;
+ 	if (align_order <= cma->order_per_bit)
 
 -- 
 2.53.0
