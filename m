@@ -4,140 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A85EC113C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 17:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F91FD377A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 17:58:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 257696B0092; Wed, 25 Feb 2026 12:57:34 -0500 (EST)
+	id E068B6B0088; Wed, 25 Feb 2026 12:58:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205736B0096; Wed, 25 Feb 2026 12:57:34 -0500 (EST)
+	id DDF166B0089; Wed, 25 Feb 2026 12:58:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1083F6B0098; Wed, 25 Feb 2026 12:57:34 -0500 (EST)
+	id CE1B76B008A; Wed, 25 Feb 2026 12:58:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F20E66B0092
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 12:57:33 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1DA7BA840
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:57:33 +0000 (UTC)
-X-FDA: 84483736386.29.10B297A
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A1A9F180008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:57:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=doIZJMao;
-	spf=pass (imf24.hostedemail.com: domain of almasrymina@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=almasrymina@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772042251;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B3AE66B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 12:58:50 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 028AA1606CE
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:58:49 +0000 (UTC)
+X-FDA: 84483739620.04.A57AD41
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6BECF1C000A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:58:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zu8JNqj/";
+	spf=pass (imf21.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772042328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
-	b=llGz0qSYktqyJq8XJGJO1EptJNTpv+Yn5LfTSzeMG1QhEDDes0LMzsgck2cHabQT+MYVL9
-	bYVI/vpger8OSTcw2SWoXJOAYBrtGfSX0GjU+CjDmL+qmBbgL1qMesqr9GjsReYWlftUaQ
-	VfrF996TN+gBCTgW66fHjl68a8C2TEE=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=doIZJMao;
-	spf=pass (imf24.hostedemail.com: domain of almasrymina@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=almasrymina@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772042251; a=rsa-sha256;
-	cv=pass;
-	b=36AfpMz61YSH+g5Fv57NOfGfDq1AsZaot9qwQg6wvCtYWG+V5mrV05VyP6MOgyZEUa59GU
-	pU7/klD/HH8noAY+t/I2IbftKLJkiFuX2zkRz1K5eXoFX/vWU0ZRROibAxE9H/4zihoSNP
-	wbZZ9Xkp9DEHVb/CqiYLoJXu/fmTYQI=
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-124a60cc9a1so497c88.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:57:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772042250; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LUK6JDmkw8Nji7chA9AOLmuzJnL83b6n2fF83X5YQUZv6/RIu5+oFb14Jtgd3pcSPj
-         lt/4i7ZA2GTWz75tE4H/gPEX5iEWxmFXrRFzZbizynGgvmbf3/I2NUJm3BgywGOqFyoc
-         GhyqEukqbq4ShTn1zIII0v/8xS2FgGYx6/wJF6zdR98ZSP1jf+lVvGjOPolpzAV3yvlw
-         UdXnyujhnVax6gMwQKOA/gR8VnSUZNL2cZIQiadF2r4Ycis/Geh6HD6bvqImhNF3eqfl
-         3vozQpE+7YR4jkNPTDWG6tv9JaxPfBbLKZmcRoyL+fgG2z4OeMYD20rXduX0DGZk4546
-         OFag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
-        fh=eQSt8hbEegt1D1/xP1zIskIW/vvUjg/CPKDQhBfoBuQ=;
-        b=WihgpDNyZw0Gil2aobPIEMMi6BvZ8OYJB6oqEseKeR/YOGdK0ibSNcXL9UlsNi0CB1
-         t4FykAyWbVYp76V7ZxguajWXarwFv0nm2KMAENghTI/LBF/lQxYu7yYSsXTwYFZSowJD
-         iWUAjudWUZt4MIAKy401Unhq3EaAknupurR5tA7R+sKi7Wn3fzMdCVaFNatqFYqwX31p
-         Mwsv4jWnMDClW7PcJqezac4cNTaPceX469Rj0bIGeSTslO+1jM7MomC2jyVdI0OC6LXY
-         7jpdoeLk/bVkOVXhEq2ekFoEIRqhw/pqF2D/7Am+roqq8xiMifCVvLRMGaMF6o3i5bfe
-         NGFQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772042250; x=1772647050; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
-        b=doIZJMaogGlcPztc9fRJXQ6hQ9YcaXH1MgdfiIsgv54MYnXrbYQXGRps41vrD4L9UL
-         dMB9X23OT4l+p6qzKioPwqZBQhWaYoTnnVjNYFaTS/6CV8vz+eyChhI4dTjmdsqCpfmd
-         Onoau9409jyV8X1wgxuORuAt6DPWD05i8jOiJFWyhe1+cCYayE3Sy6j43IQu7tAhZyG5
-         Yu5EJQLvtK4mZ5zVBYA6os5JU18AA/WleO7qxIIe7uQsUng/dBBLOsLrHCPMLiVwFB4J
-         oN+FLCQtf/f0ppvvZVvdNiv2AtoJyRSRADIaOXC5qndssUw+rGIS9XW1hP/AxlYeH6Rm
-         8mNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772042250; x=1772647050;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
-        b=Q0Rzw1D5wL6tvnxyH/LD3zYkpifMKovwE1+lEjw92At3KzET2WGiMSpf/HW6zuiJtz
-         KTcM603/lghOvl2pPftWhSo5eD1r4+zz0HmlS7JTCoacm5sZRtDoL/ejp6U8XCDKcYpy
-         C2Bq60wW4eVYSto6eQkws0VTgKWMPyHjHXcwoDsqmDRIKxayOHFJTyVtIb7Cwne4t248
-         RbqeHyhYyYD3hHgp4i37pnUDKKZ/bM19ZhNPYgcuIiP/ZU5n8LRhXQJg1npQ1KIRR0MW
-         9JEfdzxLpxUzmgv99vrgi55PtRehIqb1VJMbQ66NvIBoBaI6wnNM3wPcZ9yWu2xf0/Zv
-         7Lng==
-X-Forwarded-Encrypted: i=1; AJvYcCVeVbuYP/a0p3mHe63E4IYGmAEaGLFq5mAfVTiMzl3MjMCeoN6kH1OWBbqxahsyVxN/WBsBijK9bg==@kvack.org
-X-Gm-Message-State: AOJu0YxPSN4E4/lCbDSYIliec2uHyc/loIHs43cZ0jEoDWoPYy7Y0WxL
-	jAUgAT8wb3UBt3bdXkXa/JzIQxr0w34Y8yIWSsE/pked92ass0yRZNPzPSS7X2BJTQyqgpl9phj
-	rSPx1ag8NnUcwPcjeb7j9xxK2hjnYDPBBVqe9eP4i
-X-Gm-Gg: ATEYQzxBxZtVOtt8cnvtNRSxN7SXitK6TUV8foVCkKRBVRFq5qjUnuhE9mb4q2s4mWD
-	Iu5oi6ygVKyrDMl/C4UMuBdF2QsAHa6nBerQv2bKW/IO8CwIAMWQhPxx5xrJwVLNh/WSeMcxIPO
-	n1dN7OGh1/y0HEYozvXSASPN6oaM/wk5e04YUVqTi9r7IeuZv+X/6z265MVzT/D00DILQ0PXs5s
-	h6n6PUFtMOEUIwF71blOTuU/cU5wtMyTLqtxJtrRKgRLB1oOC1pbS2qcIsZYxvWWaQYIMrIxhZ5
-	ASu+rgHb5csNYWBuPcwLOCzpePsaAM6P+MEDmo/c
-X-Received: by 2002:a05:7022:229:b0:119:e56b:c1de with SMTP id
- a92af1059eb24-12781cfd467mr170045c88.9.1772042249674; Wed, 25 Feb 2026
- 09:57:29 -0800 (PST)
+	bh=42HkHRjPvRxy6KQmY6Z+VTaVUuPZH8CLBAJh3e58i/o=;
+	b=x3dbWYLtDaf4jqJIdf+sJEWvoDoRgL68KRW9/oexOM/8hKNVgF2+PBTHGuwgHF6WgVEt73
+	RT8NVN9F3i3ixYkiqmA118aLhTdfrpPAXeni1qObCzEkihvp34vGCt9y+9H4xXeCpxfudt
+	9KqfoKHSGPy5jwtFcYf0m4FsgBP3vLE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772042328; a=rsa-sha256;
+	cv=none;
+	b=Z2LdOoY1i0MtymSjB51pa8hiqyYSCbs690qPKg4xntWcu50psUNIi3K/Qcryisq1Bv2th4
+	JZdrbp80xwVZ66XQt9tQ4cTo+BmxXm0Ds/OQ7vq7qK9Sk2LUUgxM5lO/r7LkoQkSmwOOKb
+	xy17TKuE+kqzQO6SoBng8cpC36ud3qU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zu8JNqj/";
+	spf=pass (imf21.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 62F5F60054;
+	Wed, 25 Feb 2026 17:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D58C19421;
+	Wed, 25 Feb 2026 17:58:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772042327;
+	bh=v0gF9Yip5vqOARGERS15X+Fy4jzc8bSZ5q+f4+jXpUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zu8JNqj/+hKCuwHWQmCTVK1tpzyAwq+TjOic7LMbDsxpza4QKAWhfMSzlUs+0RVaB
+	 dVEVQkTrA/nffg0WU/RbRyizDjK8x/ZZIKCxA+UXJEwWrxt5Wpbq5rQUCtJM3nvtLx
+	 q+JxJeiHbsMLzLZ6iqjDQWOSGmPTmUhRf/ziwKMKjrPhiDtm/w8nMJInDFHB/sHrXC
+	 Do+b3hGxgat3Nv8fAK0fCFQp3tHzsLTxU+5lrdqimLhUJMr6yJEnnwPFXJhST7BjVB
+	 rb299g0C9pNfUgE11c2kcpJ0CTepo+iR7WwwBYjEhjklyRu8LgjuGzc8b730qjqJ6p
+	 y/a4iv4wHRlTw==
+Date: Wed, 25 Feb 2026 12:58:45 -0500
+From: Mike Snitzer <snitzer@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
+	Anders Larsen <al@alarsen.net>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
+	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
+Message-ID: <aZ84VRrRVyGEzSJn@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
 MIME-Version: 1.0
-References: <20260224061424.11219-1-byungchul@sk.com>
-In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 25 Feb 2026 09:57:17 -0800
-X-Gm-Features: AaiRm52vhIdwB8NdZd7JgaIXodcRDphEOHqkxN7idSkBUfk5IzYKeF_O7pMnx5E
-Message-ID: <CAHS8izPjfrKFNtvkyODY7HXSsAuQuPhzy3+fMyYTFuWKQJZ0Fg@mail.gmail.com>
-Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
-To: Byungchul Park <byungchul@sk.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kernel_team@skhynix.com, harry.yoo@oracle.com, hawk@kernel.org, 
-	andrew+netdev@lunn.ch, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, ziy@nvidia.com, willy@infradead.org, 
-	toke@redhat.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, asml.silence@gmail.com, axboe@kernel.dk, 
-	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org, sdf@fomichev.me, 
-	dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com, 
-	shivajikant@google.com, io-uring@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: uorwr5wtsdxwh9o3k3nosics81d4rrkr
+Content-Type: multipart/mixed; boundary="BuvfweD5MaN+t/uz"
+Content-Disposition: inline
+In-Reply-To: <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
+X-Rspamd-Queue-Id: 6BECF1C000A
+X-Stat-Signature: i94f4ponw3q1et3y7y14zrhbrs8t7ur6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A1A9F180008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772042251-530904
-X-HE-Meta: U2FsdGVkX19bteW1EhgKUD5FqMDNwk4dg9CHgxd7txYnVHxjQjGQzKqiMDKlCeUToV7sO4nAOX2UeFODP1RgilEO2w/Uj9cmRT8HRmk9arOTTY3z5WUrghRrw7Zuzr9UNk0UktndumV6JziNpPXDa1K4ARhVYtji/NpmaiGJzrdnveubRhPT3ldZ9+cnZEy5FuS2eTC61SnpYTlGXfYSPhWG9oUJ6LsAE+ZwFMdnFSJ65+etknVx2HHK2zCOy9lnLREwJDGBAaHROQWykLpxIchS4PAep+KHZhqfnvqHko4L6mD0gALFbhEGzknc8OKmR++1QwUZn3+4+c9n+DZ2ar0Jdp5dCo2Z0YpamxkOPIX39pnb+RS4H94QFEh/tSsMWRd7AMeQP9j+FbkvJ+IdC5oEeibdDUkZI4F1BL+Jw6Xgcs+rOwSDwLxiMnM7OFS1iYboSmmYpkEPb2vjLazgO7tgTx1MruBNLi/V12ZxCtr2iQtBK9797YALjccC4a7MqwR5HHYy031Sevk25XlAz88hKnspt8DBaVTxmqfLwg7B3iHlknlXac7U5hfsCZlf7Rpm/iAxOOrl8Hc7BQi1yDSnecsADI+KEnlYFFoD5EHH+gBEmCgA13Ob24fNGP1MIMdHpV9z4UjQdUfKD2P0UNurTa3Mp6ItGVAUj9whgEUIfHjPrBe6AlHL1tRLj8Tz+Il2UHSL1N1ZGqyfcNcTIhn175cdH0I+0advvYQDrRSSgraNCJpl8lN1UFdHNq7Ch1eAkeL8wu+S4iX5Bxn9IAIZorb+7sZxVwY88Km7v0ktiQBVp6W8WtD2ZkNZbhfZqulQH6wITwGeCgOlqpt6GF9QKO4gtnUY7bWyWAaoXAFbJ9+wTD6fyJ+2HuhLcOG2DZhUcMsaDg2Qj2nG/6KxVQ6vR452kbOypV2/xlZ1fIuIb/OFPCM+L955R8PPkhFPmYf0q7x+mzZWe0rJ9Cv
- HCvUIoeP
- fYiub7Inl8a6MURpn4v9+brBVpJWheV6so+COYFxEDTnOPzFI8rFbWVYv+87nckC2aUCaOYBCfRFjEH03pomhA8/MAwlpXmy33lQqleH0MTY53psjuDHXkhSb9NN8b34f6QxSGgMr6INxw2SEMvXEM2u8emcuRFNWGxRVQC+sdW8C3JF3e6T+G9KLAdkg2WgJ8vmoDID20ryuvz7I0zv4ltyGG3YtLPe/RzjVHvgoyoPcKFfV63BBxRVf43Y/dl7UuCO1u1sQdOwKy7a6atXgi8VgrNh24Cn2iTY8sNZElG17OuuZ5mWcQNhJEY3uO5KJuSRxun15BiR9svWqHzSxzauxpXBhVkZ0PaK8HEyNE245xD1wt7u1Sv7rlfOWV/lKZMzEWyXrjGahpJRTWClp52GBXZBS7ROmJDRhF/WizUcLFZgy4uXe6r2rMQOG5/539RH8
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772042328-930182
+X-HE-Meta: U2FsdGVkX1/SPhCaa88cZqhRp/wUI0OrooKXR5NK5nC6pEjAslAulIAmlZ9hJX+SUwTHlthVYS7cMYs6JTcWVuefEC4meemnFB4B5hkD8JFir24qLlJp3lUopPj/F7I6cjVVhrE1+OptC9YCDiHqNLi3bg7IfyufbYmf3QA+jZXsbk7/PCH3juLGhOaeoV0wfpclONjo7h+Atekr+sLjM+oCOzvc1tOuDZpzAkWQZO2F3DW4UUl9YDoibjlDXMdJOF/xz3Fq4GIt0hpEEEUyPtNVQrImiVkfwJt7AcrHV1/V7WtuOglg+4q5bUaXOfjRFXMnQppd4eknvspdqBBS6b+Yie/8SqFZKjsTC1kV1RYBcbXOvgd9I/itQ3U8vUUqWUrECbjqk3db2d0tCJ53DGNPmEl6C8/psmE/zlcnqbYP+MpzaNdy+lHuWpM/A55e//JtR7sRhctvy2JvhbigZHtGjcjmltOSx1s1hsUp4suzt5UQ+7ZnpbC0Y9MdzCvFc+D2GCIneWkIpWr/XN3ZBMYZQM6eF1ZDUTKh4/74Xl1p1jY2K6cKswQXfGJ3KvzuScU5EJeCcr6noiP6t/bolarrE5WBjHVktx4BdZCAcCSDIVbskvlBJxCdwN9o/ZtK1P7ivp3hgkNbbhvM2ZURDldyrzBaIOBVJK+hRK9wNHlfN+knyyoNEMo5pzouU/J9RZlNLu2Me8w7QTQyMcrp7lnBz984pOr9G4kIEWCrum7UebGwVjLr3wsdcpCB1sAZ7mWJ+guy9Lh+ZX7+6uUOA7/2N44NSrUNbg564+dXXFhgWwRM3ViS3XikHFBgOKQNNVI31XMxBJTO2o6x4A9rLW9lEnUrkz967XS4GhqOIM9yvA0aPrBA8SHFdDE75fi+nOLvF7cp3EcVs0q9f5GF/tiQqTQqkG58BAUHnxEalwsiwNcTdkIpP+qm3zL0RTFrSsxOid+CjKcyrgyNqE5
+ xaMqUtu4
+ ufX8LypA8kCXBsoGMbeaMxnSaquczug2wGcNWr6zDSh3PS68/WBDe6XS10cowQFRX+OEaotFWH0FuL4PtkbqA5uuu1um0q34aLcCyY5FA0gXtK8jt3KV3l7yMz1pkKkWWFksj3kPC+e2GOStIRMgT+4PF5jYY+yhLZRw3CkQkU79IASwWwtwVS/SPgo9gN6TnJvU91OUL7pEN5l3KgHOxByizrFviW3M1ScgcXMM8HGb5IARlDML+dQQRI+/X0pg0CUaIevaw2KL9saemRWphg8Y0aWCyWJ9xjJrQiO5d8Iz+qFBGtBwgXl1qBgsq0uYiedr0nkJe0+Ch5JtsyS4C4wNV3+YuvwU7bmFM9/mWhk2GJGam42DtDjNQScQgGl4GrDHKq+pviTaxFqQE/NfVqcOxEWxkpK+NGNzyK8eA9qPHvlDx80W3cIfgPCwe6cZ/QDfAK1D0B08od4gGiCwamU578Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,99 +153,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 10:14=E2=80=AFPM Byungchul Park <byungchul@sk.com> =
-wrote:
->
-> Now that the pp fields in net_iov have no users, remove them from
-> net_iov and clean up.
->
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+
+--BuvfweD5MaN+t/uz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
+> Setting ->setlease() to a NULL pointer now has the same effect as
+> setting it to simple_nosetlease(). Remove all of the setlease
+> file_operations that are set to simple_nosetlease, and the function
+> itself.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 > ---
-> The original post was:
->
->   https://lore.kernel.org/all/20251121040047.71921-1-byungchul@sk.com/
->
-> 1/3 was covered by Pavel's patch:
->
->   commit f0243d2b86b97 ("io_uring/zcrx: convert to use netmem_desc").
->
-> 2/3 was taken by Jakub and merged:
->
->   commit df59bb5b9af3f ("netmem, devmem, tcp: access pp fields through
->   @desc in net_iov")
->
-> Now that io-uring and net core changes converge in one tree, I'm
-> resending the 3/3, which is what Jakub asked:
->
->   https://lore.kernel.org/all/20251124184729.7e365941@kernel.org/
-> ---
->  include/net/netmem.h | 38 +-------------------------------------
->  1 file changed, 1 insertion(+), 37 deletions(-)
->
-> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> index a96b3e5e5574..a6d65ced5231 100644
-> --- a/include/net/netmem.h
-> +++ b/include/net/netmem.h
-> @@ -93,23 +93,7 @@ enum net_iov_type {
->   *             supported.
->   */
->  struct net_iov {
-> -       union {
-> -               struct netmem_desc desc;
-> -
-> -               /* XXX: The following part should be removed once all
-> -                * the references to them are converted so as to be
-> -                * accessed via netmem_desc e.g. niov->desc.pp instead
-> -                * of niov->pp.
-> -                */
-> -               struct {
-> -                       unsigned long _flags;
-> -                       unsigned long pp_magic;
-> -                       struct page_pool *pp;
-> -                       unsigned long _pp_mapping_pad;
-> -                       unsigned long dma_addr;
-> -                       atomic_long_t pp_ref_count;
-> -               };
-> -       };
-> +       struct netmem_desc desc;
->         struct net_iov_area *owner;
->         enum net_iov_type type;
->  };
-> @@ -123,26 +107,6 @@ struct net_iov_area {
->         unsigned long base_virtual;
->  };
->
-> -/* net_iov is union'ed with struct netmem_desc mirroring struct page, so
-> - * the page_pool can access these fields without worrying whether the
-> - * underlying fields are accessed via netmem_desc or directly via
-> - * net_iov, until all the references to them are converted so as to be
-> - * accessed via netmem_desc e.g. niov->desc.pp instead of niov->pp.
+>  fs/9p/vfs_dir.c        |  2 --
+>  fs/9p/vfs_file.c       |  2 --
+>  fs/ceph/dir.c          |  2 --
+>  fs/ceph/file.c         |  1 -
+>  fs/fuse/dir.c          |  1 -
+>  fs/gfs2/file.c         |  2 --
+>  fs/libfs.c             | 18 ------------------
+>  fs/nfs/dir.c           |  1 -
+>  fs/nfs/file.c          |  1 -
+>  fs/smb/client/cifsfs.c |  1 -
+>  fs/vboxsf/dir.c        |  1 -
+>  fs/vboxsf/file.c       |  1 -
+>  include/linux/fs.h     |  1 -
+>  13 files changed, 34 deletions(-)
+> 
+
+<snip>
+
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266beecf31e9d2667af7a9684 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_block *s)
+>  }
+>  EXPORT_SYMBOL(alloc_anon_inode);
+>  
+> -/**
+> - * simple_nosetlease - generic helper for prohibiting leases
+> - * @filp: file pointer
+> - * @arg: type of lease to obtain
+> - * @flp: new lease supplied for insertion
+> - * @priv: private data for lm_setup operation
 > - *
-> - * The non-net stack fields of struct page are private to the mm stack
-> - * and must never be mirrored to net_iov.
+> - * Generic helper for filesystems that do not wish to allow leases to be set.
+> - * All arguments are ignored and it just returns -EINVAL.
 > - */
-> -#define NET_IOV_ASSERT_OFFSET(desc, iov)                    \
-> -       static_assert(offsetof(struct netmem_desc, desc) =3D=3D \
-> -                     offsetof(struct net_iov, iov))
-> -NET_IOV_ASSERT_OFFSET(_flags, _flags);
-> -NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
-> -NET_IOV_ASSERT_OFFSET(pp, pp);
-> -NET_IOV_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
-> -NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
-> -NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
-> -#undef NET_IOV_ASSERT_OFFSET
+> -int
+> -simple_nosetlease(struct file *filp, int arg, struct file_lease **flp,
+> -		  void **priv)
+> -{
+> -	return -EINVAL;
+> -}
+> -EXPORT_SYMBOL(simple_nosetlease);
 > -
+>  /**
+>   * simple_get_link - generic helper to get the target of "fast" symlinks
+>   * @dentry: not used here
+> diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+> index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b76ddf28f4f59a1c8a015e2 100644
+> --- a/fs/nfs/dir.c
+> +++ b/fs/nfs/dir.c
+> @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations = {
+>  	.open		= nfs_opendir,
+>  	.release	= nfs_closedir,
+>  	.fsync		= nfs_fsync_dir,
+> -	.setlease	= simple_nosetlease,
+>  };
+>  
+>  const struct address_space_operations nfs_dir_aops = {
+> diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+> index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f88529551b0f0287920960ac62 100644
+> --- a/fs/nfs/file.c
+> +++ b/fs/nfs/file.c
+> @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operations = {
+>  	.splice_read	= nfs_file_splice_read,
+>  	.splice_write	= iter_file_splice_write,
+>  	.check_flags	= nfs_check_flags,
+> -	.setlease	= simple_nosetlease,
+>  	.fop_flags	= FOP_DONTCACHE,
+>  };
+>  EXPORT_SYMBOL_GPL(nfs_file_operations);
 
-Probably better to retain an assert that netmem_desc is the first
-field in struct net_iov, no?
+Hey Jeff,
 
-There technically is no assert that netmem_desc is the first field of
-struct page, but it's generally well understood that the memory
-descriptor types should be the first field of struct page. It's not
-well understand that the netmem_desc type should be the first field in
-struct net_iov though.
+I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
+(similar but different due to your series that requires opt-in via
+.setlease).
 
---
+Bisect first pointed out this commit:
+10dcd5110678 nfs: properly disallow delegation requests on directories
+
+And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
+so lstat() on parent dir (of file that I touch) gets -EINVAL.
+
+So its a confluence of NFS's dir delegations and your setlease changes.
+
+If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
+is seen by doing (lstat reproducer that gemini spit out for me is
+attached):
+
+$ touch /mnt/share41/test
+$ strace ./lstat /mnt/share41
+...
+lstat("/mnt/share41", 0x7ffec0d79920)   = -1 EINVAL (Invalid argument)
+
+If I immediately re-run it works:
+...
+lstat("/mnt/share41", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+
+I'm not sure what the proper fix is yet, but I feel like you've missed
+that NFS itself can be (re)exported?
+
 Thanks,
-Mina
+Mike
+
+--BuvfweD5MaN+t/uz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="lstat.c"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+    // 1. Check if the filename was provided via argv
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    struct stat file_stats;
+
+    // 2. Pass the filename to the lstat syscall
+    if (lstat(argv[1], &file_stats) < 0) {
+        perror("lstat error");
+        return EXIT_FAILURE;
+    }
+
+    // 3. Display some basic metadata
+    printf("Information for: %s\n", argv[1]);
+    printf("---------------------------\n");
+    printf("File Size: \t\t%lld bytes\n", (long long)file_stats.st_size);
+    printf("Number of Links: \t%ld\n", (long)file_stats.st_nlink);
+    printf("File inode: \t\t%ld\n", (long)file_stats.st_ino);
+
+    // 4. Determine file type using macros
+    printf("File Type: \t\t");
+    if (S_ISLNK(file_stats.st_mode)) printf("Symbolic Link\n");
+    else if (S_ISREG(file_stats.st_mode)) printf("Regular File\n");
+    else if (S_ISDIR(file_stats.st_mode)) printf("Directory\n");
+    else printf("Other\n");
+
+    return EXIT_SUCCESS;
+}
+
+--BuvfweD5MaN+t/uz--
 
