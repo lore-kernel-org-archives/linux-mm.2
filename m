@@ -4,119 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259C7FD45F8
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EE7FD45F6
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 484186B0088; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
+	id 214396B0088; Wed, 25 Feb 2026 17:17:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 431A96B0089; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
+	id 1C1BD6B0089; Wed, 25 Feb 2026 17:17:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35E956B008A; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
+	id 0A3DF6B008A; Wed, 25 Feb 2026 17:17:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 254BB6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:11:16 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C58BF1A03DD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:11:15 +0000 (UTC)
-X-FDA: 84484375710.10.55403CC
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DD45040010
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:11:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="DnStfq/t";
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772057473; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7B296B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:17:16 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9857EC281C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:17:16 +0000 (UTC)
+X-FDA: 84484390872.24.156DDC4
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B49381C0008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:17:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tkl7ILRQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772057834; a=rsa-sha256;
 	cv=none;
-	b=6XdbjxKR+8hHiDOzJDgtg9rWjVEt34ZWmjyRN6BiT63Qd+MXwjXT1BEui1QPRVI2Z10QGa
-	QhG2FUGuguNAAofUs4NhodAiMjewA37isMRYhYUQEHcEdDvUbl2SlJSyeCd6rH7LEgD34h
-	QSPNbvcEBYJj7Ba7TM/gTJFAdj2jc9E=
+	b=G1oljFPmucvab1ebAZ5tkUaHqmUkt7PFBZ6wqkRWYxrRElv9LbB9jkEatDAseHn62/Vt51
+	rVAk80MuNAuyODsqXYegjjV2VkbFa3iWDr9ZY5WS4+Gcv+k4CqFHy5ug1gXQdLIi6IyZyz
+	TCFE3YCXhYUQVEVgaMnWxFbR3sUpjQI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="DnStfq/t";
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tkl7ILRQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772057473;
+	s=arc-20220608; t=1772057834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vU6GlShc4/RKkhIbjvbyyJHXZFOxo4/Rb7lB1rnFGYI=;
-	b=E8jluA0i2mGstJvJJLJIu4jvlF44nl1hHAL6bURpgnsjGY0wc+iCUemMS81ER6b/aeQJ92
-	amHxe9VFpLSTrzU0LlP+4PR2cThLKJe6DqtHySRfzOdQYo4JO9hkdJ/6Q2CcRpeRr2V+vG
-	S8zmFonuHTwKvEWBr7VZZs+gmln/Cyg=
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d1890f7ee4so75209a34.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:11:13 -0800 (PST)
+	bh=hHyAmbqk7HhQ2rW+koNARPwcM5Pex8BM81YALg0B5qs=;
+	b=1QHRLd8r7kerK4PnDcpSimG5AkPpT4TmapVZJlJ/RoB9g4i87oM/ui1xvpC3OtwKtyuHuV
+	XOxeU39+6ubI/Bql4lkQ+T8ZKciW9HQIIb6ucwWpIo7KotCYB0+S6PC4NahUALVYfS1jXM
+	HsSzxL7fgLYKI4YpYZH4CfwKKyb5t0Q=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2bdcb30fe8aso317835eec.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:17:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772057473; x=1772662273; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vU6GlShc4/RKkhIbjvbyyJHXZFOxo4/Rb7lB1rnFGYI=;
-        b=DnStfq/tp8veVAWTEvdehhPZTZwQYLAOLtC3EZy2dWigg5pyGtyOPThuvPGqY57y0F
-         DGKf4v6pPRAaRWPbUCCeJ+wOIJGTFUeDnxVptdXrC0flQueVfkzvQZQ4EcXxEXEreaq7
-         BSUpfTkRhx+H+hFiYaKW46qxfG8+tRAzKj5lNWTcyYSBeeY9pHX4G7wxNykAMKqTJG1l
-         YNFjG9UEvcqsAGoXqxxtfTQDnpsbt1hlZuI2mlGaEn2K9bzpdwtRe9v1qPtfHtjr3QHD
-         dqraCBXbeb2oT5qb39WskTvcj7peSyym5VhqlwqtcrUFJHwQ2wECu/BCuAJU9ykQQ14N
-         kVeA==
+        d=gmail.com; s=20230601; t=1772057833; x=1772662633; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hHyAmbqk7HhQ2rW+koNARPwcM5Pex8BM81YALg0B5qs=;
+        b=Tkl7ILRQSvawcohHTBS7KJbcEUV+aYKq+tUY+de3G1a7L+Doj1odd4t9D2J0SK/Ag0
+         CJJNw7/fOogk4w0dbXwZ5P9rQ4rVcXDK77IEUKVl8+eJu09cOO9XIzLf10lgV79O/W+/
+         eOXfxt7PhI85yXv/nVupGYl4KCy3maVC3yM8nuLuo3mJzXVUjlSEgM+d1UvHx+FCtK8J
+         OkrI/aIqxDQwvHjBhJ2rSefhYjqnKSjhuSmQec8ExffZuS8rTrnkhJXw99FVaNMEZb/c
+         kdFbrLrXbwEcZ1fJ85zrgKquyfkpfFhRNtVpNAwjrSfu4UQP2zipMYreDw0+dsiKwiqw
+         ncXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772057473; x=1772662273;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vU6GlShc4/RKkhIbjvbyyJHXZFOxo4/Rb7lB1rnFGYI=;
-        b=A/RqRlJCE3EuODXNZnWdcRocCMJsosWbTd2w7GW9uo23F449PoPVR7VVKWxpU6qMXR
-         ARb8hVEayYU8LRxuSOPtgcGNMwWanEV9sPIinXLb57GDolLxIPKu1pKJiXqoyDFAo+cm
-         204q7e2nYGvQoam+kkH115gID9Cfv6QkFmnNqCrxRLxxt6MDoR7hJzuWGwKSDuYjZYGu
-         l7QhAN8VwsDIWVAGOkw0RLXYMc5V41RVNGRENQE/cTP7XDpvdV8EnbZ67ZB5qYG8i/2H
-         JfQoyYg7T66K/eodoQlHMi/uLz70N2K6sE0e/Q3/y+ufghgWNHhjJ2m1VVIrXpx0+HyU
-         PzMg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+h3tSneCsH8YHW9iD0Y30NLCJi0NhjqtU9fbRzWXuEwJYE5Fjf5w/ERR0ejcB1/DT0a5kqKKOLg==@kvack.org
-X-Gm-Message-State: AOJu0YxUTdVdvkeK1VB7eYKlkeZlFTpHbltW76VLC9/IA6V69sJ3flBl
-	M0BZiV30RuYlI9b4DpUazsNIGiA0IaySK3EGWmnwhZN3dkWJsZT8vF8w
-X-Gm-Gg: ATEYQzxfnex6MpO8HPlhoGF9tEOvBrOMSWFu3YUIpxkv06rqWZWBA2J2Q6qAMngE+Ec
-	rs4tTfW8yy1mpIUTU10k8+i9tJXH/GXTU+hiEBSix5V/ux4lZAjy1Id9xYJSTHvpqOko68+f2A6
-	5fDz7YPPuNrTFABFgL9QXOwc2lTnnUPqoYcaO92o4uv0xO8vKpoDyPqEYHM3ovrIzGidSMHZm/p
-	50T7HbQSWN14qRYVJBbWH+mfebG+Vtll94Ab86N24N3PAfnRItrdv8SMUgp63sDab+uhpY5d9Kl
-	f6nEgQP9TtsoceodukOxMQ6o3YJ+ivN8SGLYpZgzVJBRyoaPoqnVt3nX5hpa+fVDLdp+pWf0ujs
-	qqZ7AHbQme4c6QQ17jHxincC7JDRsSv5eSyCy80Bjx7y7PzwKOIEnnXBykj+meoEbyQiqj96RBI
-	7MmyJMf7YPyQaGJBAu4gpHXByyNZV2guFUE09r9A==
-X-Received: by 2002:a05:6830:1b78:b0:7d5:2c30:9fba with SMTP id 46e09a7af769-7d52c30a246mr8551076a34.24.1772057472770;
-        Wed, 25 Feb 2026 14:11:12 -0800 (PST)
-Received: from fedora ([2603:8080:10f0:ab80::1382])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d58666f30esm175108a34.26.2026.02.25.14.11.11
+        d=1e100.net; s=20230601; t=1772057833; x=1772662633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hHyAmbqk7HhQ2rW+koNARPwcM5Pex8BM81YALg0B5qs=;
+        b=LOY+MzVp46ak27+cvT5hGIsCnJ5HJFNu/qblZoIxnIUGPQtJXPfz46FsWdDEQJOkB8
+         vysCdbw6TFO2ea5wA3bGUJjwou2ERXPqttVdalMo0eipJdKTQtPjXnsBLKsqPDVE1rYQ
+         g9yzAYNAONH0T+O3U8Rne9LgxMUc5UTxakHlsvtj/lurFf/s1NArOF+EMhlcOoKC4Q+U
+         8mSxPLsQzgdDfukBK2jpV2VOCC5cuAif68HRHhhfuMwWfcyksvHpXlETww8Dzb45LH5g
+         iHxPk131VcrVAXd1/asRlSxYWSX7JQ6Ckv/21Xjd1OwSOdNKcjmS5Kp8hP6GFyVHZjq7
+         2yGA==
+X-Forwarded-Encrypted: i=1; AJvYcCW0PYtiC87QZQWNyF+hc6HHroYDEC8ZFuLs/u2Wr5mtRlq0iPye7jl0pW6kJyAX7OnRKWscLRoAbw==@kvack.org
+X-Gm-Message-State: AOJu0Yy3VgDHKMIuT905xzVYh7cLNDM3bInJFy92aXcJhIR1Ljd5ySZt
+	IWdJ+KPN6QCojCk+QkCjTBd6s3DldDf2mJewOl0r9fZnPIxWv/4+TBLgnf/5Ew==
+X-Gm-Gg: ATEYQzz6vI4pbZL86lNPo10v6BllNmTjF2xDM14R5dABgcmkUcqyBxOhD9qim0CdQcr
+	pUNmiYpYI4yd5yifF9+xILUdQQ1FPXGsm9mhKzCJCnNKvqVzoXps1x+GC5GN6+xhk5LoYc++aT9
+	DOOOcujg0lU7IHdrl+p7ZyWZS7olsfr43/Bi2IDPR+GJDhlo4mDp2Em48mPEq4s0JTwGQ5QqUXn
+	aPhwO4x3txz4F1ZZRgj3VxN1ZmcBuIoM6QHS2WwWsG97Lj19ZVz9yYPhOmqtB/sZwrckdJDWf5U
+	K/ldJORapH3AOXULyybdBlAkYdwV4llmE0O0bdDThg0DQz+ioE0pSHlP2Cq8MIr3JRJSk7/N+SR
+	+YiCY207oNdxJYAmoX6TA2pclhddReYwdmyrm3TczaPTjNqLF+0nM1d6AN/RIf9fEqe3D0hqyWE
+	Yv7mh9YT12fwfKfjFd2R3I
+X-Received: by 2002:a05:6808:168b:b0:463:cf6b:982a with SMTP id 5614622812f47-4644622ce34mr8146359b6e.22.1772051111331;
+        Wed, 25 Feb 2026 12:25:11 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:3::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4157cfa6624sm16078679fac.8.2026.02.25.12.25.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 14:11:12 -0800 (PST)
-Date: Wed, 25 Feb 2026 14:11:09 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
- __pagetable_ctor() and pagetable_dtor()"
-Message-ID: <aZ9zfQU6xeTQyt2T@fedora>
-References: <20260225002434.2953895-1-axelrasmussen@google.com>
+        Wed, 25 Feb 2026 12:25:10 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: akpm@linux-foundation.org,
+	dan.j.williams@intel.com,
+	david@kernel.org,
+	fvdl@google.com,
+	hannes@cmpxchg.org,
+	jgg@nvidia.com,
+	jiaqiyan@google.com,
+	jthoughton@google.com,
+	kalyazin@amazon.com,
+	mhocko@kernel.org,
+	michael.roth@amd.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	pasha.tatashin@soleen.com,
+	pbonzini@redhat.com,
+	peterx@redhat.com,
+	pratyush@kernel.org,
+	rick.p.edgecombe@intel.com,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	seanjc@google.com,
+	shakeel.butt@linux.dev,
+	shivankg@amd.com,
+	vannapurve@google.com,
+	yan.y.zhao@intel.com,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more generic use
+Date: Wed, 25 Feb 2026 12:24:37 -0800
+Message-ID: <20260225202437.4077364-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1770854662.git.ackerleytng@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225002434.2953895-1-axelrasmussen@google.com>
-X-Rspamd-Queue-Id: DD45040010
-X-Stat-Signature: xpxmpsqaw8mr5qx1qotjk6qbnxmr8u7k
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772057473-437052
-X-HE-Meta: U2FsdGVkX1+JOKP5stLqPffKesV4Q1XW5rG6ZkNwDzPEbK0IUnorJDJba4CktQ/+wm9F7DIofViJixrqce+gIr/kg694BoSghyolDsUGxw+YgHyY/8aAP7/JobL3zhIo+s6jcJyRaIZPMXmg0W9ZC60uND9wYMWS+Ai5iOupkN91VbbhMd0JglyXIlcUvd7aW6xyF3N1O2klJQADByydO9DFySKTC3ppoZi2hVGFnUhBzPW0I8F3nw93ivQ/2rGo0FpjRZYaPxnMmuITP7LKHh9TyCForFYU+O+Q8gCkrQcMNu1f5OY0bPVUvt/kYUNbcbdOxBJenRgkyqBuhAPpQ76e3iG+qCCeH428yv0uyNuhVBoKrWqyCnRYtqCKG9JOrDgq3J5tILb+KhGgpYaljuu3atGXaXiiN3oZuQk4i+YVgx5JVitt+NYqx4rr3Fv83kHsQChBuQzDh36LcIdba/jrGz1gJ/zNnrFdwXfLMXDDDuiXMHI/XlP/Wy6Ao7TH9J4KjREVAMMGF2dBM0Z0QEISttw5x/GuK8TnvifxKJQp5s3OZfRYMSvkmzJHkAhXEGiZwNq/M3lwtv4cVcQuOHYoOF6iScG/qUw6qRU3mgJZ405Ao+MJJipI0rvVHWXXGvs03PVtDYBbVN9UXSQkIcMtRDWs4oy3jBReF65TkjB+b595d6aSP7e//9yEMOLCKUQTQCjnPGlvM6Yx+I7U0TRFeKtagyRVLQkEXUcm4TjcgAh/LM0piYBakGS8iaOOag8zFi0tILAgepk4cFsQbyjTXcABzqACjkPO6Xz2JtTtK+lzNgFVwFa/U6lWo0E/wBlXmbsaf0LDDIOnoMUXK5tAh9hJ5hxVEcllEbc4+Q7+pxt1DsS16yR61o+blhiS7c/jcCG7ml7Zi88ZokbzKj+rsKglrcFxVQJfAB3L69jxgOSqD7tb2BtDmxWCCVij6f1KJ/xIt/TuA3z5Gvx
- gcciUPwn
- fdGE+HPokgcAzuI7lrT5kdnKbt266jt7JnYbqC3BBwBsWEk7Drd3cbHQxq0MVDXbLA9ODyiuuhlJwEc0yhF9f+FXW9wLv1Opwy759J/j7QuczIEtS/+YICuHzEeuUWopYT2XxwrMJjralaq59BHhLAEHP0pNQ1hTY35h54Qyd5uT4RNfoFYk0cfezjZ55Cazp5x4bSjfKxa0LEU5Gbsxve9gyDrt1MbqK1n8FkkDrqWftkju3x18UDUEp2gDLRdekg4imk8G6cdgDqFYSN723+YmFrd/ZKuqLJjm97MJqODJXdKZqdrKj/L6kSdv2GdOtdSxY2L13T6aeG5vTbYVdpp3vSTOdQ7PM3mDUdFXu9S4R9t1zT0xB2RMVOOxv7OrqnZiwUm66VcNBOJk237ctqP/vQQPsFGcZ/zJKBHCuoTklgC9Q5Ui7c/A24izUsT/qAhaGPuy0PXSDA64SHwX7KGj/Ca3agXFakLsMtpJwUyJrx+9DrLtm2Hv0VsddSbGDkVzGxAUEkL7U19bYppEKzl08kJsJ0g36MCZQMCC1tT1loB9t0HwtPQB7dbIj4CS/JW+ShlugopMcCHntKBSk0iFHWA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B49381C0008
+X-Stat-Signature: prmbrr6h1bwjdnydr1hyk95pmy1an1do
+X-HE-Tag: 1772057834-750389
+X-HE-Meta: U2FsdGVkX18ZD/Gpgh98YaULWj9H+NE21L5EtEbZJ4WuqXMgEe5N5yxfod2RksTYKvRlNIkeE/lE/dFQWk7BPh2qqBIilpCKpbPw6mAR9zufBl6RsBrMcmCt/Ih1Zrz6vOZwlxREdJgaAGfndhhQgu5i+B+5KbosNmK78prWqtM99PmYxrady5aoXLhTGnyrk7xncL0LM2AzmzdUp7Quv8RdAo2bXwpEp6LJgfscgK0jy46sJi9HS2+KtH63quGFSFDmFL+gW/+Ng88OMbBFqhYAwhB+0d4u6hyllcxCc2WmLMKKIj61EDUpTDRIwj2eT66Y2dd/MpOohwptGpZVIKPsNg/c9rBOUtcShSFJPjEfeYKBbZnjO5kgCFCyf3AAwwrhM21ROoXbTJI26LtPahb1W5O817KkQoTUs9kRrm6Fh1DuztCc0AHYT+RhIcT/MNXJoqbIpDW42EB9iprFRSK8x5MNEgKzSG4fDMF+C1e5CBGrl+/8jNEgBqVajNTt0nRC6L4zYI3BABDbwEzUB15PFc5KzJ2+7DbewzIiFOV8+3avXZqxyjI6qY9c8jxfclU52B7tUrMwATrsTekjRbA7GrWXbnWIUM8n4AcvY6X21Ea1nK7Z8HwMhXtmpE+wYzmuLEoW5Rb4OnmvbQDOi8banf3yJUVG70lYtDr6EtPlMd3yVmxN8gf+vy7PJdxwmZoe9hUHaNfn/domYRWJ0xwSbdhgMT5zrdbVjV2Wg0+2BcrjlVgpXkx0AVvt1HEkeuLPfdn/kvJDgWCN5nZ2mPXTF1a0j280azXR1XQ573szYIcRLITVcm+/N805mpsQC4ppsPH6O2+mbadByEz8yHdu6AvVVK8QnimDpVWbK/028fSiifOB8JI8HgepREPvB1s2eXxF4JZAww13nxaiE636CzGshIAqtc1f0bxuEccjmukVfXk4zkn/taM4IfgVCIFkPRBV3F267+8aewx
+ FwRbu8Bb
+ /bc58w8szRhyMHXLwAVwe8zbYwunYPFgRc0dzYWXS7rNMp+TL91wVRzGV/5lrwDzwwLrD7of71qJr8dMBrA2vAuWaLgm4tfkgYZeHFM5CsohLQxb5K52lXxIEDTLmdSs6sDzelBfHP1jj4CuswUl9RScg/Yt+l5WXRiucegzB5jpjJdVOZExl+Kx0a73ZNiSz1qgkL0z8xGZY+u2voeNwhq4wHpokrpG9AmrU17zrKqHHwgj57q/s5WoP7ssJ1bN7s0kd7ZtZfr/QGP89TO/kF2kYXRXo0AsmIZvaRDweXV01Zi3XJlwVrpve8l/Y6eFun5DAB7QFdUtZEEFKL0rDjds293SIGzTyHNnijwyGk5Zdnu9397i//JM62gFXk24f7/YW6ExrttsBbyncnoeoGYJo1REe7tQ1L44s28wi9zwscjc/D+vHGFw3C7DKhrlQZkO71Ip4+MivpnIHhCX8ZA9HWBHvI36DZlT6rSxjk4tSae3WAxsY2CeJk+2fnxoI7OhtEC08ohpk36Pd6AB53udPtgPsAPZ9p/3z8GMvdJf5mcmhop3C2afjd1GT5002xnuz3TQESWILUlj7pGQ6kJ9T4vfEjhyLOYARZbDUltZbRARr+TEJY40De4npsFghGR89reYsKKxsqs2uzVQ7CEV23/UgKwgQwgtc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,31 +143,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 04:24:34PM -0800, Axel Rasmussen wrote:
-> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
-> But, these two APIs are not interchangeable: the lruvec version also
-> increments memcg stats, in addition to "global" pgdat stats.
-> 
-> So after this change, the "pagetables" memcg stat in memory.stat always
-> yields "0", which is a userspace visible regression.
-> 
-> I tried to look for a refactor where we add a variant of
-> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
-> folio, to try to adhere to the spirit of the original patch. But at the
-> end of the day this just means we have to call
-> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
-> accomplish much.
+On Wed, 11 Feb 2026 16:37:11 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
 
-I recall making sure we had a memcg_data member in ptdesc so that ptdesc
-could directly reference it. Until we have a generic version, reverting
-this patch should be the right way to go.
+Hi Ackerly, I hope you're donig well!
 
-> This regression is visible in master as well as 6.18 stable, so CC
-> stable too.
+[...snip...]
+
+> I would like to get feedback on:
 > 
-> Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+> 1. Opening up HugeTLB's allocation for more generic use
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+I'm not entirely familiar with guest_memfd, so pleae excuse my ignorance
+if I'm missing anything obvious. But I'm wondering what hugeTLB offers
+that other hugepage solutions cannot offer for guest_memfd, if the
+goal of this series is to decouple it from hugeTLBfs.
+
+> 2. Reverting and re-adopting the try-commit-cancel protocol for memory
+>    charging
+
+On the second point, I am wondering if reintroducing the try-commit-cancel
+protocol is tied to factoring out hugetlb_alloc_folio. When I removed
+the protocol a while back, the justification was that for the most part,
+grabbing a hugetlb folio was a relatively cheap & fast operation, since
+hugetlb mostly operates out of a preallocated pool.
+
+So the cost of being wrong, going above the limit, and having to return
+the hugetlb folio was also relatively low.
+
+It seems like this patch series introduces some new paths for hugetlb
+pages to be consumed (specifically, without a reservation or vma).
+I imagine that these new paths make the slowpath for hugetlb more frequent,
+which makes the cost of assuming that the memcg limit is OK higher?
+I think explicitly spelling this out in the justification for reintroducing
+the charging protocol could be helpful. 
+
+Thank you for the series, again. I hope you have a great day!
+Joshua
+
+> To see how hugetlb_alloc_folio() is used by guest_memfd, the most
+> recent patch series that uses this more generic HugeTLB allocation
+> routine is at [1], and a newer revision of that patch series is at
+> [2].
+> 
+> Independently of guest_memfd, I believe this change is useful in
+> simplifying alloc_hugetlb_folio(). alloc_hugetlb_folio() was so
+> coupled to a VMA that even HugeTLBfs allocates HugeTLB folios using a
+> pseudo-VMA.
+> 
+> [1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
+> [2] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring-12-08-25
+> 
+> Ackerley Tng (7):
+>   mm: hugetlb: Consolidate interpretation of gbl_chg within
+>     alloc_hugetlb_folio()
+>   mm: hugetlb: Move mpol interpretation out of
+>     alloc_buddy_hugetlb_folio_with_mpol()
+>   mm: hugetlb: Move mpol interpretation out of
+>     dequeue_hugetlb_folio_vma()
+>   Revert "memcg/hugetlb: remove memcg hugetlb try-commit-cancel
+>     protocol"
+>   mm: hugetlb: Adopt memcg try-commit-cancel protocol
+>   mm: memcontrol: Remove now-unused function mem_cgroup_charge_hugetlb
+>   mm: hugetlb: Refactor out hugetlb_alloc_folio()
+> 
+>  include/linux/hugetlb.h    |  11 ++
+>  include/linux/memcontrol.h |  21 +++-
+>  mm/hugetlb.c               | 228 +++++++++++++++++++++----------------
+>  mm/memcontrol.c            |  77 ++++++++-----
+>  4 files changed, 212 insertions(+), 125 deletions(-)
+> 
+> 
+> base-commit: db9571a66156bfbc0273e66e5c77923869bda547
+> --
+> 2.53.0.310.g728cabbaf7-goog
+> 
 
