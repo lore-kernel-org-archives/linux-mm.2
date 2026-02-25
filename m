@@ -4,121 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E327FD3777
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 17:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A85EC113C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 17:57:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 559A76B00A1; Wed, 25 Feb 2026 12:24:12 -0500 (EST)
+	id 257696B0092; Wed, 25 Feb 2026 12:57:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 507496B00A2; Wed, 25 Feb 2026 12:24:12 -0500 (EST)
+	id 205736B0096; Wed, 25 Feb 2026 12:57:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8CF6B00A3; Wed, 25 Feb 2026 12:24:12 -0500 (EST)
+	id 1083F6B0098; Wed, 25 Feb 2026 12:57:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AA7C6B00A1
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 12:24:12 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E66C31C7A1
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:24:11 +0000 (UTC)
-X-FDA: 84483652302.15.54C7E39
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0DBD3C0008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:24:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WHCorz9T;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772040250;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F20E66B0092
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 12:57:33 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1DA7BA840
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:57:33 +0000 (UTC)
+X-FDA: 84483736386.29.10B297A
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A1A9F180008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:57:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=doIZJMao;
+	spf=pass (imf24.hostedemail.com: domain of almasrymina@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772042251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kFBUeSrCJcgeVZQHXlbB3qF3h65fAHKQt2LY2SMsUkk=;
-	b=zqRiGsNhT16DAYZo/FdhII9/d7xp/UFnBIsfsoDgdoDYdPmfUN9HcXxtroA3BbstHp9MDs
-	l5zV+pN3LUSCIdQs5ZzJl25M4rlDMxLIaHhDBqHNRr+pOgXkpiJMjHf534xd7TBwU2+pfG
-	PCQxw873mFiSN9VcI8ruHsSmYIWgKf0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WHCorz9T;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772040250; a=rsa-sha256;
-	cv=none;
-	b=iqOMNPrtw6F+AbXq8REUI9Ptqp9p7wmXO4fbH2JYkrJ0v2CKfA/k6NFsWwkmrcjm3QKXQJ
-	MmnEJpRw7TIdh4JRFrCHmSUNIFKRGv5934u9VrHoIr4ngEFzl/6nUqEXKf3kVXEs0ahvhT
-	H0MniLvqGceZ2QTdCy3jxUyFZphV0eQ=
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-673ee2a98b1so19990eaf.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:24:09 -0800 (PST)
+	bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
+	b=llGz0qSYktqyJq8XJGJO1EptJNTpv+Yn5LfTSzeMG1QhEDDes0LMzsgck2cHabQT+MYVL9
+	bYVI/vpger8OSTcw2SWoXJOAYBrtGfSX0GjU+CjDmL+qmBbgL1qMesqr9GjsReYWlftUaQ
+	VfrF996TN+gBCTgW66fHjl68a8C2TEE=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=doIZJMao;
+	spf=pass (imf24.hostedemail.com: domain of almasrymina@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772042251; a=rsa-sha256;
+	cv=pass;
+	b=36AfpMz61YSH+g5Fv57NOfGfDq1AsZaot9qwQg6wvCtYWG+V5mrV05VyP6MOgyZEUa59GU
+	pU7/klD/HH8noAY+t/I2IbftKLJkiFuX2zkRz1K5eXoFX/vWU0ZRROibAxE9H/4zihoSNP
+	wbZZ9Xkp9DEHVb/CqiYLoJXu/fmTYQI=
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-124a60cc9a1so497c88.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:57:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772042250; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LUK6JDmkw8Nji7chA9AOLmuzJnL83b6n2fF83X5YQUZv6/RIu5+oFb14Jtgd3pcSPj
+         lt/4i7ZA2GTWz75tE4H/gPEX5iEWxmFXrRFzZbizynGgvmbf3/I2NUJm3BgywGOqFyoc
+         GhyqEukqbq4ShTn1zIII0v/8xS2FgGYx6/wJF6zdR98ZSP1jf+lVvGjOPolpzAV3yvlw
+         UdXnyujhnVax6gMwQKOA/gR8VnSUZNL2cZIQiadF2r4Ycis/Geh6HD6bvqImhNF3eqfl
+         3vozQpE+7YR4jkNPTDWG6tv9JaxPfBbLKZmcRoyL+fgG2z4OeMYD20rXduX0DGZk4546
+         OFag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
+        fh=eQSt8hbEegt1D1/xP1zIskIW/vvUjg/CPKDQhBfoBuQ=;
+        b=WihgpDNyZw0Gil2aobPIEMMi6BvZ8OYJB6oqEseKeR/YOGdK0ibSNcXL9UlsNi0CB1
+         t4FykAyWbVYp76V7ZxguajWXarwFv0nm2KMAENghTI/LBF/lQxYu7yYSsXTwYFZSowJD
+         iWUAjudWUZt4MIAKy401Unhq3EaAknupurR5tA7R+sKi7Wn3fzMdCVaFNatqFYqwX31p
+         Mwsv4jWnMDClW7PcJqezac4cNTaPceX469Rj0bIGeSTslO+1jM7MomC2jyVdI0OC6LXY
+         7jpdoeLk/bVkOVXhEq2ekFoEIRqhw/pqF2D/7Am+roqq8xiMifCVvLRMGaMF6o3i5bfe
+         NGFQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772040249; x=1772645049; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kFBUeSrCJcgeVZQHXlbB3qF3h65fAHKQt2LY2SMsUkk=;
-        b=WHCorz9TLDH20BWzo0pkSfC2O1LeHZahrhIP07EqQSA297oki63m6MKGnqO5mZWUFN
-         kPkGx/om/g7f95wJ/xA4mgX02a2V9Daqs5IVuelgdC4j7IjcqamL7mi/RHYEPx2M8trd
-         A2OERLtv38lmnkCDfXJhNbBiqgWHn4OFiOqyq9K9r22ysJwwu9SdAAiuxVZYcW6FNlbp
-         4fnbF+whiZH3XVMi1Ryy148U+Ljl4s+18XLcX84Vrj2Jc8fwcmCwUOGZr4BkpFpUG2C8
-         HehtJbpq331DAtDiWnCNVEsZe+PCDOPc2aqfbjU6TptnQq99EU7xAIgiTMQCuReh6r5b
-         oreQ==
+        d=google.com; s=20230601; t=1772042250; x=1772647050; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
+        b=doIZJMaogGlcPztc9fRJXQ6hQ9YcaXH1MgdfiIsgv54MYnXrbYQXGRps41vrD4L9UL
+         dMB9X23OT4l+p6qzKioPwqZBQhWaYoTnnVjNYFaTS/6CV8vz+eyChhI4dTjmdsqCpfmd
+         Onoau9409jyV8X1wgxuORuAt6DPWD05i8jOiJFWyhe1+cCYayE3Sy6j43IQu7tAhZyG5
+         Yu5EJQLvtK4mZ5zVBYA6os5JU18AA/WleO7qxIIe7uQsUng/dBBLOsLrHCPMLiVwFB4J
+         oN+FLCQtf/f0ppvvZVvdNiv2AtoJyRSRADIaOXC5qndssUw+rGIS9XW1hP/AxlYeH6Rm
+         8mNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772040249; x=1772645049;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kFBUeSrCJcgeVZQHXlbB3qF3h65fAHKQt2LY2SMsUkk=;
-        b=IC90tN5eF+jP5yrI9F6QynV0eIX1YNMLsZtPGvzuCcruTNyeVz5sZeIGg+KBRb1Ano
-         pg0J7uamKvimicJHWbkB2Bs2cxOyUQjFQolgX+CldjgHuuJknuNka3V3SCN8OMsW4EFI
-         Ka5eyYjzgEQNTTNpueYOyTwIWYqNsDAOBkeRVLzwVmTXP5p2PVXRFaMtTk0bAy8NkyHP
-         gpTQ/EubcE46Iz+hpCC341/CYX6LauTas9gd39fBb/iD+K+HdUBlLJJqQUOLHm+8q9V0
-         dJgDPbZLXinOjMm+GeLPfrzjCUXEzW0LKyfGBbFXpsZZBASEg1d5U/ifkRkzhISfrJIa
-         MU2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWHmaYdugMBWYxiT4mIwbjzAsoepigtAAgq5kplNSu8S6Mv4fLVcgdklAzeRe0yj9UVRZgAwQoGfg==@kvack.org
-X-Gm-Message-State: AOJu0YwbEu2AiVfun4GzEznJJjp1lP54/mu6snZn7e75mEsLchgb/l/+
-	EnLnA5hNxjXVX8iMgZp0xgfjGCTLmp/YObk1FjgIKV39BNWz5W9aTTnj
-X-Gm-Gg: ATEYQzykJAJEirO6MBQWQQOxvEsSsPpvlKrbr8Ox7ISSOzAqaMxXy/azkRXy11mt2Bf
-	upMWoxFfiJMnowDTDGBeSBRMI1R8z2zyzGT/DyR601HCJAuqAgklndDMuo9ptnv4P9iRFSjUgqD
-	Uo9uNhaZqtBQAS+BnNrKl+IYZ0cVIJmixpWJoxulZbe4rGIM0mm6ZDoOy3w57TpX/MCyBPJIRsS
-	pc9uAl80frlTgarcn/i6oS756TEHwAbD1nbde5ppEdtYU5RM0Zb84pGP5Ul4XXO699k/wBA2irC
-	iSUuoWu0TI2RqqnDXf2C/T6E65Rph4t8EuICO9B/y/L51UVKcosxzmbu6DpsaIpzeQ11EMuPlUb
-	krx4OttNSHnw/JN4vzOTEpnNK5v65rvaNTZH0Qd7BapLGzVbAPn+hLHY2NNn3ZDeOgPVs+Pkw0B
-	U2aaApmEdFuxEjapJpJvSkZA1cyUIiE7S+KAHVMQ==
-X-Received: by 2002:a05:6820:1799:b0:66e:e441:857f with SMTP id 006d021491bc7-679ef9832ffmr601352eaf.51.1772040248944;
-        Wed, 25 Feb 2026 09:24:08 -0800 (PST)
-Received: from fedora ([2603:8080:10f0:ab80::1382])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679c5630827sm10737190eaf.3.2026.02.25.09.24.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 09:24:08 -0800 (PST)
-Date: Wed, 25 Feb 2026 09:24:04 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, SeongJae Park <sj@kernel.org>,
-	Ron Economos <re@w6rz.net>
-Subject: Re: [PATCH v3] mm/cma: move put_page_testzero() out of VM_WARN_ON in
- cma_release()
-Message-ID: <aZ8wNLTx4e7ZwCK0@fedora>
-References: <20260225031231.2352011-1-ziy@nvidia.com>
+        d=1e100.net; s=20230601; t=1772042250; x=1772647050;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Om7WA+0rDJMCyh+EuthvxH1P/DwUlMRij1gLg5qOqPQ=;
+        b=Q0Rzw1D5wL6tvnxyH/LD3zYkpifMKovwE1+lEjw92At3KzET2WGiMSpf/HW6zuiJtz
+         KTcM603/lghOvl2pPftWhSo5eD1r4+zz0HmlS7JTCoacm5sZRtDoL/ejp6U8XCDKcYpy
+         C2Bq60wW4eVYSto6eQkws0VTgKWMPyHjHXcwoDsqmDRIKxayOHFJTyVtIb7Cwne4t248
+         RbqeHyhYyYD3hHgp4i37pnUDKKZ/bM19ZhNPYgcuIiP/ZU5n8LRhXQJg1npQ1KIRR0MW
+         9JEfdzxLpxUzmgv99vrgi55PtRehIqb1VJMbQ66NvIBoBaI6wnNM3wPcZ9yWu2xf0/Zv
+         7Lng==
+X-Forwarded-Encrypted: i=1; AJvYcCVeVbuYP/a0p3mHe63E4IYGmAEaGLFq5mAfVTiMzl3MjMCeoN6kH1OWBbqxahsyVxN/WBsBijK9bg==@kvack.org
+X-Gm-Message-State: AOJu0YxPSN4E4/lCbDSYIliec2uHyc/loIHs43cZ0jEoDWoPYy7Y0WxL
+	jAUgAT8wb3UBt3bdXkXa/JzIQxr0w34Y8yIWSsE/pked92ass0yRZNPzPSS7X2BJTQyqgpl9phj
+	rSPx1ag8NnUcwPcjeb7j9xxK2hjnYDPBBVqe9eP4i
+X-Gm-Gg: ATEYQzxBxZtVOtt8cnvtNRSxN7SXitK6TUV8foVCkKRBVRFq5qjUnuhE9mb4q2s4mWD
+	Iu5oi6ygVKyrDMl/C4UMuBdF2QsAHa6nBerQv2bKW/IO8CwIAMWQhPxx5xrJwVLNh/WSeMcxIPO
+	n1dN7OGh1/y0HEYozvXSASPN6oaM/wk5e04YUVqTi9r7IeuZv+X/6z265MVzT/D00DILQ0PXs5s
+	h6n6PUFtMOEUIwF71blOTuU/cU5wtMyTLqtxJtrRKgRLB1oOC1pbS2qcIsZYxvWWaQYIMrIxhZ5
+	ASu+rgHb5csNYWBuPcwLOCzpePsaAM6P+MEDmo/c
+X-Received: by 2002:a05:7022:229:b0:119:e56b:c1de with SMTP id
+ a92af1059eb24-12781cfd467mr170045c88.9.1772042249674; Wed, 25 Feb 2026
+ 09:57:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225031231.2352011-1-ziy@nvidia.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0DBD3C0008
-X-Stat-Signature: f8aen3yxg76zfdiibwfcp4tt61yi3ach
+References: <20260224061424.11219-1-byungchul@sk.com>
+In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 25 Feb 2026 09:57:17 -0800
+X-Gm-Features: AaiRm52vhIdwB8NdZd7JgaIXodcRDphEOHqkxN7idSkBUfk5IzYKeF_O7pMnx5E
+Message-ID: <CAHS8izPjfrKFNtvkyODY7HXSsAuQuPhzy3+fMyYTFuWKQJZ0Fg@mail.gmail.com>
+Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
+To: Byungchul Park <byungchul@sk.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	kernel_team@skhynix.com, harry.yoo@oracle.com, hawk@kernel.org, 
+	andrew+netdev@lunn.ch, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, ziy@nvidia.com, willy@infradead.org, 
+	toke@redhat.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, asml.silence@gmail.com, axboe@kernel.dk, 
+	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org, sdf@fomichev.me, 
+	dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com, 
+	shivajikant@google.com, io-uring@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: uorwr5wtsdxwh9o3k3nosics81d4rrkr
 X-Rspam-User: 
-X-HE-Tag: 1772040249-332931
-X-HE-Meta: U2FsdGVkX18r/JKLOr7e+rXWjzgaKL1LmDay0eHgRgFOuu66AYAd5uski/tNAm0+pWKHV9NSlpUMQc04ty/z758vE2HEkuV3qIH2ed43wRT8ctHWdAymCumqw2zGVA9kQnMwgF4kkEE/5951xz/bdKfZjTYAbPTrfoA8wSfa/8yw4vMBKaTWtGp+/BlTNXqWqrxV5TfOvpGDcpAdsuxBteO1rXnu4qiExuASIfeJSDCq1FATTxquTl9GinwZ75UwWyEx43yAqGSj0K6AIkynNtL0aOLsr15iHgP3hHDBNVX9fWueBVElD09GKQWoq89K1KWKI+arwecqqipO9aTiQXUN2dbVFv8caLMLskR7dtvV99Rk+RvgyItHkE4On6qPkg3VOmbuKCaYFhFT6OLg9EK2IcWk9R31bSMDb/nDljul0jM1ZDlGdnhTfnuPv7ASKQFLLTx/WzTRxYedG3ZMGSwKFxW70Ve1H/2FiJn7x0jx62x2JFhQWrrWGHLCx0zU3D8YVjMTBRSTiFnEoaxOGB6gqL5VlFDfkwauvmnhmdLTEWOmKiC+vM7xMMArwTyyMy/qjZz3CKV152lh2/5H80BGgCGtfV5hDB128usqkjdz9jg+9ahnB72xo1eAU5Do1GrqtxV4J8pnd0EaXH459z7RdRPlR1Sfo2044NR1gN6kHrFtK0NITempKMw8TdbMnbul56+qrWKBSfPYZmbmSWLZEDZvwMB7i+HKzVjjSFrguhpqSKjj2mRwJLA9mvLQf7+Q3SAg5b0dRlrIy6mKIEnbrhQJ6lWvFdZxyC2gLXotoAdSZjygGcmo8mfTNNhauZRZtUbWx3+QvIxXNKBtzHqYKb6o3Xjr3FJwkGHyO6mNUlR/x5WNEN4FOK1tR0c2CN0ZDrM/h0jMqe9kuiicOsWHiJmVdr729nMjqkvyxdDHk+BqMQM1uQeJCb9f1Fc6PTCSOTgonAHQWoZpllt
- cwRvU1sg
- UkjUk2lIa3r2oIe4g7gDJsq8wEbSeFawr+pRBR59pWJtj974PDKPLt+624KF7zSKg8D2EHPqwRDlzv6EcZ8pK05FU+0ye+PlaOJmKuTJ8sATKujsdSKRSEY9mdaim5hfk5ZsWWRoexNR2IcH3QQQtqhR5Z3tlYrUsggbrXTEcd6WMx+z9P9T/4th1pGSpPvnFDihyQl/cBA3RrCbMA2/hIfSU74Ehd45Je6gaoVBdfkaOk4nX5LOMRPAHLOVsC/Sr3vcBlsRXrRxuLFPkgPG1T3icL7M8yOn94AUTDh/8ALkS132fPOOdOo2UMDVCco9/szevMDUqS1w5fcrATiFhapQWgfdvL3e/TP3k4uz4GZwCD1QMuS/LzRxJN2mu2VkSj43zcqqLtrWJ9DUBHz4CuYTnYKB/nCmA7JHzNBqp4g39vCpelqyGef3QOGbFJqvrXn8I53WR1K2VWj58Ytcf2SQb0UBRWm899zOiX4bZnCyBXRB8S7JYocNzzj9+VINwobr0McbzwdEa95tFD90x01n66mBbE4gqUiFo
+X-Rspamd-Queue-Id: A1A9F180008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772042251-530904
+X-HE-Meta: U2FsdGVkX19bteW1EhgKUD5FqMDNwk4dg9CHgxd7txYnVHxjQjGQzKqiMDKlCeUToV7sO4nAOX2UeFODP1RgilEO2w/Uj9cmRT8HRmk9arOTTY3z5WUrghRrw7Zuzr9UNk0UktndumV6JziNpPXDa1K4ARhVYtji/NpmaiGJzrdnveubRhPT3ldZ9+cnZEy5FuS2eTC61SnpYTlGXfYSPhWG9oUJ6LsAE+ZwFMdnFSJ65+etknVx2HHK2zCOy9lnLREwJDGBAaHROQWykLpxIchS4PAep+KHZhqfnvqHko4L6mD0gALFbhEGzknc8OKmR++1QwUZn3+4+c9n+DZ2ar0Jdp5dCo2Z0YpamxkOPIX39pnb+RS4H94QFEh/tSsMWRd7AMeQP9j+FbkvJ+IdC5oEeibdDUkZI4F1BL+Jw6Xgcs+rOwSDwLxiMnM7OFS1iYboSmmYpkEPb2vjLazgO7tgTx1MruBNLi/V12ZxCtr2iQtBK9797YALjccC4a7MqwR5HHYy031Sevk25XlAz88hKnspt8DBaVTxmqfLwg7B3iHlknlXac7U5hfsCZlf7Rpm/iAxOOrl8Hc7BQi1yDSnecsADI+KEnlYFFoD5EHH+gBEmCgA13Ob24fNGP1MIMdHpV9z4UjQdUfKD2P0UNurTa3Mp6ItGVAUj9whgEUIfHjPrBe6AlHL1tRLj8Tz+Il2UHSL1N1ZGqyfcNcTIhn175cdH0I+0advvYQDrRSSgraNCJpl8lN1UFdHNq7Ch1eAkeL8wu+S4iX5Bxn9IAIZorb+7sZxVwY88Km7v0ktiQBVp6W8WtD2ZkNZbhfZqulQH6wITwGeCgOlqpt6GF9QKO4gtnUY7bWyWAaoXAFbJ9+wTD6fyJ+2HuhLcOG2DZhUcMsaDg2Qj2nG/6KxVQ6vR452kbOypV2/xlZ1fIuIb/OFPCM+L955R8PPkhFPmYf0q7x+mzZWe0rJ9Cv
+ HCvUIoeP
+ fYiub7Inl8a6MURpn4v9+brBVpJWheV6so+COYFxEDTnOPzFI8rFbWVYv+87nckC2aUCaOYBCfRFjEH03pomhA8/MAwlpXmy33lQqleH0MTY53psjuDHXkhSb9NN8b34f6QxSGgMr6INxw2SEMvXEM2u8emcuRFNWGxRVQC+sdW8C3JF3e6T+G9KLAdkg2WgJ8vmoDID20ryuvz7I0zv4ltyGG3YtLPe/RzjVHvgoyoPcKFfV63BBxRVf43Y/dl7UuCO1u1sQdOwKy7a6atXgi8VgrNh24Cn2iTY8sNZElG17OuuZ5mWcQNhJEY3uO5KJuSRxun15BiR9svWqHzSxzauxpXBhVkZ0PaK8HEyNE245xD1wt7u1Sv7rlfOWV/lKZMzEWyXrjGahpJRTWClp52GBXZBS7ROmJDRhF/WizUcLFZgy4uXe6r2rMQOG5/539RH8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,15 +145,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 10:12:31PM -0500, Zi Yan wrote:
-> When CONFIG_DEBUG_VM is not set, VM_WARN_ON is a NOP. Putting any statement
-> with side effect inside it is incorrect. Collect all !put_page_testzero()
-> results and check the sum using WARN instead after the loop. It restores
-> the same check in free_contig_range() before commit
-> e0c1326779cc ("mm: page_alloc: add alloc_contig_frozen_{range,pages}()"),
-> the commit prior to the Fixes one.
+On Mon, Feb 23, 2026 at 10:14=E2=80=AFPM Byungchul Park <byungchul@sk.com> =
+wrote:
+>
+> Now that the pp fields in net_iov have no users, remove them from
+> net_iov and clean up.
+>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+> The original post was:
+>
+>   https://lore.kernel.org/all/20251121040047.71921-1-byungchul@sk.com/
+>
+> 1/3 was covered by Pavel's patch:
+>
+>   commit f0243d2b86b97 ("io_uring/zcrx: convert to use netmem_desc").
+>
+> 2/3 was taken by Jakub and merged:
+>
+>   commit df59bb5b9af3f ("netmem, devmem, tcp: access pp fields through
+>   @desc in net_iov")
+>
+> Now that io-uring and net core changes converge in one tree, I'm
+> resending the 3/3, which is what Jakub asked:
+>
+>   https://lore.kernel.org/all/20251124184729.7e365941@kernel.org/
+> ---
+>  include/net/netmem.h | 38 +-------------------------------------
+>  1 file changed, 1 insertion(+), 37 deletions(-)
+>
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index a96b3e5e5574..a6d65ced5231 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -93,23 +93,7 @@ enum net_iov_type {
+>   *             supported.
+>   */
+>  struct net_iov {
+> -       union {
+> -               struct netmem_desc desc;
+> -
+> -               /* XXX: The following part should be removed once all
+> -                * the references to them are converted so as to be
+> -                * accessed via netmem_desc e.g. niov->desc.pp instead
+> -                * of niov->pp.
+> -                */
+> -               struct {
+> -                       unsigned long _flags;
+> -                       unsigned long pp_magic;
+> -                       struct page_pool *pp;
+> -                       unsigned long _pp_mapping_pad;
+> -                       unsigned long dma_addr;
+> -                       atomic_long_t pp_ref_count;
+> -               };
+> -       };
+> +       struct netmem_desc desc;
+>         struct net_iov_area *owner;
+>         enum net_iov_type type;
+>  };
+> @@ -123,26 +107,6 @@ struct net_iov_area {
+>         unsigned long base_virtual;
+>  };
+>
+> -/* net_iov is union'ed with struct netmem_desc mirroring struct page, so
+> - * the page_pool can access these fields without worrying whether the
+> - * underlying fields are accessed via netmem_desc or directly via
+> - * net_iov, until all the references to them are converted so as to be
+> - * accessed via netmem_desc e.g. niov->desc.pp instead of niov->pp.
+> - *
+> - * The non-net stack fields of struct page are private to the mm stack
+> - * and must never be mirrored to net_iov.
+> - */
+> -#define NET_IOV_ASSERT_OFFSET(desc, iov)                    \
+> -       static_assert(offsetof(struct netmem_desc, desc) =3D=3D \
+> -                     offsetof(struct net_iov, iov))
+> -NET_IOV_ASSERT_OFFSET(_flags, _flags);
+> -NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
+> -NET_IOV_ASSERT_OFFSET(pp, pp);
+> -NET_IOV_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
+> -NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
+> -NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+> -#undef NET_IOV_ASSERT_OFFSET
+> -
 
-LGTM.
+Probably better to retain an assert that netmem_desc is the first
+field in struct net_iov, no?
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+There technically is no assert that netmem_desc is the first field of
+struct page, but it's generally well understood that the memory
+descriptor types should be the first field of struct page. It's not
+well understand that the netmem_desc type should be the first field in
+struct net_iov though.
+
+--
+Thanks,
+Mina
 
