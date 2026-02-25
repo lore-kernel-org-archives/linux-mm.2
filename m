@@ -4,78 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF238EFD20B
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 09:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBBBEFD211
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 09:21:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BA5F6B00D2; Wed, 25 Feb 2026 04:15:36 -0500 (EST)
+	id 703026B00C9; Wed, 25 Feb 2026 04:21:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1854E6B00D9; Wed, 25 Feb 2026 04:15:36 -0500 (EST)
+	id 6865E6B00CB; Wed, 25 Feb 2026 04:21:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 038716B00D2; Wed, 25 Feb 2026 04:15:35 -0500 (EST)
+	id 5680B6B00CD; Wed, 25 Feb 2026 04:21:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DFF526B00D2
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 04:15:35 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF4CB1C465
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:15:34 +0000 (UTC)
-X-FDA: 84482420988.15.B33B8F6
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 403756B00C9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 04:21:54 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A8DF516047E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:21:53 +0000 (UTC)
+X-FDA: 84482436906.16.9B726EE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1C0C0180008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:15:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hR3UwT/h";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id C476740009
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:21:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V+Xm/LYt";
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772010933;
+	s=arc-20220608; t=1772011312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VpqWqmeekBxGCdYM/oej5HZdc/pCkIl7k8yl+tXjn6I=;
-	b=73Oh1+oPejZ5Re57mVWC1Qr6GG9PZuMgBMNliB1wLXwFaVUHcDP/sT4hECmfWWp5D+Ih94
-	rXsiHAb8soi+MdUjLyg+BZg6T0sv8XGn+P/UdnsLWWeBhmmwaCgz92dFfjbaHv6PmN+oXo
-	uJdWIBoxvK98T4rtJIXutgx1v0rPhF8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772010933; a=rsa-sha256;
-	cv=none;
-	b=JG6VKtm5dDpKypB2D+tDeA9NZFKAn8Ac2QohGoLed2qamYkBkStxhG0Dg7koXy3hWM7lFy
-	cpdft7xqsmv64q37/c3NbzjAljJVZdhZbgD8YPoNHHum11GHvyEh5APQtDUHVGKChlzrVP
-	QOG5kVMhVpWegM7z1t7owPmNkRPJoVA=
+	bh=sHTzjPAdUXx7aSK1FZkMhpMuawR9OmUc+gARiLeL2lc=;
+	b=cr4xgyJbFK6MOFUm3yb+ciQn2tK2MY4In6KRDSu5BHHQq2UIjsknQnMFkoRa7JY/tBUoDN
+	sNRiAq5/UMMjvgyNkoM4xZnrJ61Ub4/PSnOBhE1U+Dl6Iw+J675LMGi/cfttd/2UzFzlkv
+	EEoPglZdh/oTXTYLj8rIe2PeHztOJco=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hR3UwT/h";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V+Xm/LYt";
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772011312; a=rsa-sha256;
+	cv=none;
+	b=FmrSXvfCSRSgx7X09wmeBQf/s6i5oRDkhrfholTbcSIHuRIvbQNWbGdWfJsvnmqemEuLv1
+	7Ob3DFTzxLruhrYtqxrn3pvOpTg0O+6vMhENDTKTnIkPoF4lm/h8CKsKmIr8q5N2VSP+Ni
+	GSz904x6PsOQHx3syBPp3KBSnr7j43s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 356E942B3E;
-	Wed, 25 Feb 2026 09:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5A6C116D0;
-	Wed, 25 Feb 2026 09:15:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BB09F44576;
+	Wed, 25 Feb 2026 09:21:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4C1C116D0;
+	Wed, 25 Feb 2026 09:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772010932;
-	bh=KtvgSxQGgdMS+TNo1repNzbP0o8KdKN1yGWAXwQiQ5Q=;
+	s=k20201202; t=1772011310;
+	bh=kx7pq8DDspnaKIfXROIyERaWB0WWO84KzMGW4mlWQSw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hR3UwT/hBiYY4ZmaZn1cvCK0AdO+Fmny7YaC7t4ovO/7sm8QogmBTN+r4pGwKRA70
-	 gGKRDrp+ifJKzUbVdvkdiGB5gAzwFWk7lN5PrvNVN93blTJIOt67AbfGPYQeaFsD7C
-	 lvKlztp6guAQS65B29fyqU8bVHavL58wxoS3c893dchwghYENwJBP674199uBwne1P
-	 EsDTMjWUw7fmEYwsnyQlZlhTfrzD+x77eXAUD/6OK8CbyUgfAOarjREgfYYu+CqWxm
-	 DmYVJcaIvIgvTSSKL2oJn+bMiBCo9w/oykXx+FOAibqBzX9So3c8Jx7QvHGXMSeFEJ
-	 Y/yp8ywS5/bUQ==
-Message-ID: <db51a324-ee8e-44fe-b7bc-6ca65a3c2a3d@kernel.org>
-Date: Wed, 25 Feb 2026 10:15:25 +0100
+	b=V+Xm/LYtmxMDUJ5A8US73eDHyRZSl8sIZdld/LxkspZPgqIE9oLO7fLvhnBXQQii3
+	 UO6DqoseaIx9fToKO6WQRhPGlraKtDYDKqo1I1N5LawSkpWqfFmMaxer+E2ihHqmk7
+	 SAzDu92PidPFo3qpJC1Lh24gvDfAW3bjONnKh3UAW6IfQ6rjHzqU0V4VqSfeH68cAD
+	 XjXZkL4TILHLvhOTzPZ7efIYtU1i2C5FueVPt5MPiWbiLj3cKu5ZNmZhv6x7M9u7VB
+	 qIlwKMcxK39yIWX0bky32qPHXgTiEMDkdPhuSUalRSfKIycxVq60oSBpm5xR+O3sNs
+	 G3bNy3ZjetlSw==
+Message-ID: <f6649b09-aa64-4c91-bf3a-ba706f023180@kernel.org>
+Date: Wed, 25 Feb 2026 10:21:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix folio isn't locked in
- softleaf_to_folio()
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, fengwei.yin@intel.com,
- baohua@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260225081240.253057-1-tujinjiang@huawei.com>
+Subject: Re: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory
+ allocated on inode
+To: Ackerley Tng <ackerleytng@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org,
+ seanjc@google.com, shivankg@amd.com, rick.p.edgecombe@intel.com,
+ yan.y.zhao@intel.com, rientjes@google.com, fvdl@google.com,
+ jthoughton@google.com, vannapurve@google.com, pratyush@kernel.org,
+ pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com,
+ michael.roth@amd.com
+References: <cover.1771826352.git.ackerleytng@google.com>
+ <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
+ <CAEvNRgFF0+g9pmp1yitX48ebK=fDpYKSOQDmRfOjzSHxM5UpeQ@mail.gmail.com>
+ <9ef9a0bd-4cff-4518-b7fb-e65c9b761a5a@kernel.org>
+ <CAEvNRgESctVm9CcEyK36hY8Ta=DEDOS1oW5w0qRDoNfdd=470g@mail.gmail.com>
+ <CAEvNRgFyRsqhv7CuuDARHTFSanzOHaudM6JMBLwxDwsrjTNCGQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260225081240.253057-1-tujinjiang@huawei.com>
+In-Reply-To: <CAEvNRgFyRsqhv7CuuDARHTFSanzOHaudM6JMBLwxDwsrjTNCGQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1C0C0180008
-X-Stat-Signature: 6paxbk7c9ydt6bzi3mpsohkcosy6g3m8
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772010932-98492
-X-HE-Meta: U2FsdGVkX1/nlcXp+B5RqcqVnz4yKoDO0HY/vK8hBCGHZ2JXfBqhokjjAVtKdIeeI/t8q2WQWhuAEP2IR7AXkOVOUqlVxZBjODYiipWoetXTkYf4JFiNxVi+cXtmDs54vtI0CTAArdtFoUmJw1nk3jPYqRfdrC9H1e2PctOgVaJ0Vb3YuONUWSdcIm1VWZUBSrnFMhXGS/3lVY8x8cEr3fEW1dTtq4LlHOGs41FIzvrSUf7AhhRZCyGqdAG56+P2T/rcF81QJoASombfPm1AQ+ZijqqYbkjve1hJFSmpx09U+x8Ct0tJUW9i5p5rBsE5Y7hGywbtqoowY4QH3kC1sBdz2wB1q+3S7llVOsz9QNy9ypflJhwTvdRAuwEo6AQc1G8NgP8Wcn8LMaCRrSlpXv/4YzRghMvkQq2OXC1kePTT5QXj3s9vPSA+/uu6ucVgNaxlJUxk+U27Mb8U2t8TLjhnfyEZs70fubpLdXwY3G63uRefNDeLpLGMlI46oMhP9qiYgeoILvmR2KNUz3T7a1Fdkh0g5c38bMmW7fobvrVqYNTBZIT7cjScLCPgKMDF8pFxCC+443BOFr4BRdk9LF2uMN9iFFSQFV4bGU+By5tp6CItt1pTXCOcmG1We/rRdFjyXzBy7goYrYAsQadZrab4WV2jLbYgep5EERx910P8LhtNat5tSnv7Rj7zH4kYQ86TR2C+2CR7QVOGsPaMMjmCbkVv6IbGiKTqCIASka4i83IbHGDzkuYTF8XkfWTFKiZL3lTUQE6jg62PppEwlsjKX5MaNuLsP3MGqrgwFyYvlU1TiZHEFSviB8FXyWQPPSclTZEQPQhj32RkHQeKpvjj5JwMEhMJpVKkeMxnj9P722BNB94P6ejJSRRRVuoCO+byKHZQSaskvGUrRQojO0toKAfSHQqGJ/dheHAIsjUsnC82pf3btRvl5vZvdsUMniay1obdOn1TIMQvCek
- mrwY7RK5
- w+XWmP4EvrQUoM1s=
+X-Rspamd-Queue-Id: C476740009
+X-Stat-Signature: x7jydcne1acohj6uyoriaj66ycs6gtn9
+X-HE-Tag: 1772011311-301448
+X-HE-Meta: U2FsdGVkX1+RsOR3yIhfz5rWXW/jSNm2yxU1QQaFgPTfB2AMFk3aym1EvHy2HMULutyY+ZXH4oIZKfHPXexCRAJ7yGXOQ292MYpZRTi77bRWVgb4jBAmGdsVvEL0X2Ooe8CkpZ+t++HFI7+JK2qQxuD+Ljmz0mfhzPS93cXDfn7UBE8RZZpcKOxsrdnqUtVchj8mXpHdA0UAW6w9B8wMPhxJ2Hba+ia9aPKRXU6DDogci+lMEf+yyRS6frJEHnuUatdOkN7JepppPGMzB3P2fneilUBS4YQrS0Z9OYxLGO190CFAY61PxswYLfaz98Y7oTWRQyfaiF8rUigQUcXrC0zJlgPIDZ26tMt7Z92Mvbtq9HIVIeXB9tGUiGqiqZ2gk9YnpTzz1LSbKwkLgQdnZwYKCt4zCLV9St+6LJQWYjYSK0pFerRRwtTXhdPHHDVb0cnWryJgQzB40hcKCS4eZeMyY5M8D/5mdPgWxkLlUUelKNxdRggbrTWxqxskm3Ng7qJVHRndj4a9x8yDXI1XjlusG2muuxR8BQFpITHqWZvLd45EUGfB6WUf+3UMS70x+FDyuF9AZTUC0uQMJ/LqL2K0qgZ+D69IkFxWrolbfQjLtsW36JYJbiLuMf292X+oMLniW08nkdiS7kDjFsgeLzIzFdqY5DV3PN65HUqeYYx6/hnaIi6OiXaNjYnYm8/4znj+EpE9Igfj2HmM+KWm6Rf6yBDAGZVeZqkQAVGaIo2QDk3b+EjxhFVIEHRGATxrvnns462GZ4HNNHYXhh/NFArNJDKuCV0qjsb75KUwLH0MKJmfOf3ZusKNDswp3fmiZnGcxeI+Sc1buFhjr3xFHWFD5eG1kiI2/Z5JZJoyzIcDzW+ufvQ38jOY1nodJlpFYO8aHEq25Umm4FtyACYxvap6jdW0zAGvl51D93hA3TvvfF9FcY2yQSmUMwuGIuF6ZKe9r6IxFD7GJJ3E9Dc
+ DezWuoWD
+ VYm6AoI+ic+mwVnfqNwR7nQN+/OF4GG6/WTwV5YbaFu5LEwKpTIUuVK9gMySzjroPrMJ59K+idCpiHBKwWx5rcFOdOLUnFI5x3y5VBjbbXh1MKdyiiltt83I+wQhBdh0GDsC1fXz9qKJmSqB6T/wWgKjH/2Y2KQXENUEKFL4GUkYfqNTMzlMcKQTDNt/mlwabhauouwrC2Nf3Rn40TVd2DTHFPRfgE8qcdJSOT5SUGcfKLamM2X632O1HPsmrrHXj79bMQ8ZXrF11Dn1NOdquqf834aA/2aLXe8Z3AnubW84pK1Bf+be1GYo9vEF4fvq7FyEHAeUKsM5qdTLdmt6IrAKk8XQ+bes+LkjH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,97 +151,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 09:12, Jinjiang Tu wrote:
-> On arm64 server, we found folio that get from migration entry isn't locked
-> in softleaf_to_folio(). This issue triggers when mTHP splitting and
-> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-> in softleaf_to_folio(). The race is as follows:
+On 2/25/26 08:31, Ackerley Tng wrote:
+> Ackerley Tng <ackerleytng@google.com> writes:
 > 
-> 	CPU0                                             CPU1
+>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>>
+>>>
+>>> [...snip...]
+>>>
+>>>
+>>> If that avoids having to implement truncation completely ourselves, that might be one
+>>> option we could discuss, yes.
+>>>
+>>> Something like:
+>>>
+>>> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+>>> index 7c753148af88..94f8bb81f017 100644
+>>> --- a/Documentation/filesystems/vfs.rst
+>>> +++ b/Documentation/filesystems/vfs.rst
+>>> @@ -764,6 +764,7 @@ cache in your filesystem.  The following members are defined:
+>>>                 sector_t (*bmap)(struct address_space *, sector_t);
+>>>                 void (*invalidate_folio) (struct folio *, size_t start, size_t len);
+>>>                 bool (*release_folio)(struct folio *, gfp_t);
+>>> +               void (*remove_folio)(struct folio *folio);
+>>>                 void (*free_folio)(struct folio *);
+>>>                 ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+>>>                 int (*migrate_folio)(struct mapping *, struct folio *dst,
+>>> @@ -922,6 +923,11 @@ cache in your filesystem.  The following members are defined:
+>>>         its release_folio will need to ensure this.  Possibly it can
+>>>         clear the uptodate flag if it cannot free private data yet.
+>>>
+>>> +``remove_folio``
+>>> +       remove_folio is called just before the folio is removed from the
+>>> +       page cache in order to allow the cleanup of properties (e.g.,
+>>> +       accounting) that needs the address_space mapping.
+>>> +
+>>>  ``free_folio``
+>>>         free_folio is called once the folio is no longer visible in the
+>>>         page cache in order to allow the cleanup of any private data.
+>>> diff --git a/include/linux/fs.h b/include/linux/fs.h
+>>> index 8b3dd145b25e..f7f6930977a1 100644
+>>> --- a/include/linux/fs.h
+>>> +++ b/include/linux/fs.h
+>>> @@ -422,6 +422,7 @@ struct address_space_operations {
+>>>         sector_t (*bmap)(struct address_space *, sector_t);
+>>>         void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
+>>>         bool (*release_folio)(struct folio *, gfp_t);
+>>> +       void (*remove_folio)(struct folio *folio);
+>>>         void (*free_folio)(struct folio *folio);
+>>>         ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+>>>         /*
+>>> diff --git a/mm/filemap.c b/mm/filemap.c
+>>> index 6cd7974d4ada..5a810eaacab2 100644
+>>> --- a/mm/filemap.c
+>>> +++ b/mm/filemap.c
+>>> @@ -250,8 +250,14 @@ void filemap_free_folio(struct address_space *mapping, struct folio *folio)
+>>>  void filemap_remove_folio(struct folio *folio)
+>>>  {
+>>>         struct address_space *mapping = folio->mapping;
+>>> +       void (*remove_folio)(struct folio *);
+>>>
+>>>         BUG_ON(!folio_test_locked(folio));
+>>> +
+>>> +       remove_folio = mapping->a_ops->remove_folio;
+>>> +       if (unlikely(remove_folio))
+>>> +               remove_folio(folio);
+>>> +
+>>>         spin_lock(&mapping->host->i_lock);
+>>>         xa_lock_irq(&mapping->i_pages);
+>>>         __filemap_remove_folio(folio, NULL);
+>>>
+>>
+>> Thanks for this suggestion, I'll try this out and send another revision.
+>>
+>>>
+>>> Ideally we'd perform it under the lock just after clearing folio->mapping, but I guess that
+>>> might be more controversial.
+>>>
 > 
-> deferred_split_scan()                              zap_nonpresent_ptes()
->   lock folio
->   split_folio()
->     unmap_folio()
->       change ptes to migration entries
->     __split_folio_to_order()                         softleaf_to_folio()
->       set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
->       smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
->       prep_compound_page() for tail pages
-> 
+> I'm not sure which lock you were referring to, I hope it's not the
+> inode's i_lock? Why is calling the callback under lock frowned upon?
 
-In general, relying on a "struct page" for a migration entry is shaky,
-because it can change any time from being a large folio to being a small
-folio.
+I meant the two locks: mapping->host->i_lock and mapping->i_pages.
 
-So we generally only check properties that would be true for either the
-old (large) or the new (smaller) folio, like folio_test_ksm() or
-folio_test_anon().
+I'd assume new callbacks that might result in holding these precious
+locks longer might be a problem for some people. Well, maybe, maybe not.
 
-It's important that these properties were written for the new folio
-before a migration entry user might look at the page indeed.
-
-So it's not just about the locked state.
-
-> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-> are visible before the tail page becomes non-compound. smp_wmb() should
-> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
-> result, if zap_nonpresent_ptes() accesses migration entry that stores
-> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
-> page before page->flags.
-> 
-> Although the code exists for long time, this issue should only exist after
-> mTHP splitting is supported. For THP splitting, there is only a pmd
-> migration entry 
-
-When splitting, we first install a PTE table, no?
-
-unmap_folio() passes TTU_SPLIT_HUGE_PMD.
-
-and it's impossible to access migration entry that stores
-> tail page pfn.
-> 
-> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-> in softleaf_to_folio() and softleaf_to_page().
-> 
-> Fixes: 7dc7c5ef6463 ("mm: allow deferred splitting of arbitrary anon large folios")
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> ---
->  include/linux/leafops.h | 39 ++++++++++++++++++++++++++-------------
->  1 file changed, 26 insertions(+), 13 deletions(-)
-> 
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> index a9ff94b744f2..f823f390ba6b 100644
-> --- a/include/linux/leafops.h
-> +++ b/include/linux/leafops.h
-> @@ -371,14 +371,21 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->   */
->  static inline struct page *softleaf_to_page(softleaf_t entry)
->  {
-> -	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
-> +	struct page *page;
->  
->  	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
-> -	/*
-> -	 * Any use of migration entries may only occur while the
-> -	 * corresponding page is locked
-> -	 */
-> -	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
-> +
-> +	page = pfn_to_page(softleaf_to_pfn(entry));
-> +	if (softleaf_is_migration(entry)) {
-> +		/* See __split_folio_to_order() comment */
-> +		smp_rmb();
-> +
-> +		/*
-> +		 * Any use of migration entries may only occur while the
-> +		 * corresponding page is locked
-> +		 */
-> +		VM_WARN_ON_ONCE(!PageLocked(page));
-> +	}
-
-Conceptually, wouldn't the smb_rmb() have to happen *after* the
-page_folio(), like we have in softleaf_to_folio()?
+I guess .free_folio() is called outside the lock because it's assumed to
+possibly do more expensive operations.
 
 -- 
 Cheers,
