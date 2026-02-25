@@ -4,86 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF924FD375D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402A5FD3758
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20EF46B0005; Wed, 25 Feb 2026 08:32:07 -0500 (EST)
+	id 799506B008A; Wed, 25 Feb 2026 08:32:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BCE76B0088; Wed, 25 Feb 2026 08:32:07 -0500 (EST)
+	id 74D2F6B008C; Wed, 25 Feb 2026 08:32:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BFC56B008A; Wed, 25 Feb 2026 08:32:07 -0500 (EST)
+	id 65C906B0092; Wed, 25 Feb 2026 08:32:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E926C6B0005
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:32:06 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 912401405C9
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:32:06 +0000 (UTC)
-X-FDA: 84483067452.28.CF72690
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 243EDC0007
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:32:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p4sgVw56;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53E446B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:32:47 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E146A1C799
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:32:46 +0000 (UTC)
+X-FDA: 84483069132.08.77D0750
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1C49DC0004
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:32:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lowN1fXa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772026365; a=rsa-sha256;
+	cv=none;
+	b=W6XzZLcZ9F7b7ewjJkJqScquSPvwKWD+t6l5rgVFWWQJyraKB0nApZ0EGNnzl1GaWUZWiF
+	B8ouCgFJ1MchtteAsHZwUZa8qDzW+HC+YFUwxnMy2QGYdgZi+W8LJyGW5qDidsAJvXy7ku
+	1D9RwQARUfsf/HX8YzCh1kfFvS8WIbo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lowN1fXa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772026325;
+	s=arc-20220608; t=1772026365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=efkMVajN2N/IRF7C076bX4bMjtWcB2gLayz3FuAnYog=;
-	b=cu0Iz+kPJNNx0fHFaGNuzNjZ/ZvNHaIvqQQPPFc8IZdG6ta0U5CxIJnnSAAi+gHU75nJZb
-	T9ByTmuMIB9PZA/v2NiB0uwxWIcVOFQWLEXNuXu2kNwnLa/HTB4kBWaBojstrsy+mZMCrP
-	PnADsGhb9k7CEKmLBzGvW6BNY+2s9I4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p4sgVw56;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772026325; a=rsa-sha256;
-	cv=none;
-	b=dx8jK89CRDucU5DqtA0fupfnUMfHJQOCrFX2iPKDHLyWkwoocszKg6wu3tWa91k1TTniah
-	wChTXPpxN9c5zTn/xhFnRBHPBRiSyrmRNsBwr/CmU+OY2xI1ubDb8mdZJ7ewf4DvQCmkJE
-	naVdEd084p+swBsFB7R/7lT8h0Y9PzM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=efkMVajN2N/IRF7C076bX4bMjtWcB2gLayz3FuAnYog=; b=p4sgVw56jKhFiBT0NU54IU0xN9
-	l8s6oNEoxRsjPSG42mZKlNVuypYcJM4WSP5AB5swbLjl5vPtGYV5aUvSv+l3K4BsqBkt2qhAkOTBT
-	I59DDp8pNjJd1hF2J8in0hds/h5u/8In66y0h7+K+aM/ITPX57hp3zKdma20COg0Lg1z8L98f9ENv
-	IxWRczBkvII7uM/8NXbikDLlStecRsMyUAjoClg3GC5JQoJz2JxoheOqKUN02JT8H7fHTdtczMELB
-	iqGSyEtAai8OaBVo+6khCUWuQh3Z4TvpJhiVLI0WulwVCcVU+Bzf/keaVfKOjlUZwr3qSdH+chUgW
-	UUrTAljQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvEza-0000000172N-0p6Q;
-	Wed, 25 Feb 2026 13:31:54 +0000
-Date: Wed, 25 Feb 2026 13:31:53 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, ankur.a.arora@oracle.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Avoid calling folio_page() with an out-of-bounds
- index
-Message-ID: <aZ75ydx-FKaFvygT@casper.infradead.org>
-References: <20260225092628.11687-1-lizhe.67@bytedance.com>
- <cc08424a-22d9-422c-90dd-54893bda1213@arm.com>
+	bh=a4eMnlk159rc+pn8tPeNwlSEScn9DtiHuFZwPn08Y9E=;
+	b=h+/gsXggjJrqJIZxaXf1D6pLG2yywIH5JqX0pqtmzGueiIG5972taMVSZ/t28mqUJiYexb
+	d9idGddwTdC53giPNSQ5lAnkApKHFp7Vw7rRy4wSrTrzyAcn5RHMu41wF7mWtVoUs/BmB4
+	vMx0+NFmGykABqDBKF9AJHJle/6hnOI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6479860097;
+	Wed, 25 Feb 2026 13:32:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A4EC116D0;
+	Wed, 25 Feb 2026 13:32:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772026364;
+	bh=93Mh71NbG5+oh8SLMr+D80K3rtiPszgWs+oYcu1c38s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lowN1fXaUvgh5wPI9HCoKY61vts/SWKwO5aaYnlNh146Rw6q7d1D74Mt3+DD5NF71
+	 mGg1Pp4VsVHnrGiDO6U2JLibIp68k2I8Y1n+OlevEow7KeFLe9C+TuEilx0mRtDuAG
+	 YwTXeT5dCEjM0WmIgeV8Qo8FrOQKsMzRUf4+BlyC+5e9tLDgDGrrKXlGRFQNUCzXuY
+	 cTpoWSkwo6g6R1MG8BC/xY0sOm5N3DFQMlvcktTKLqikygNbu0BxNs9TGwkUHMlVwh
+	 HcVvNn16aypGbGOboWEKm8UpLgKKYVU27r3tIHAuDbTDRagRVKmSA9ZbCV671ZD6s4
+	 3eY0JRRpNXcUg==
+Message-ID: <d77a11e7-0c33-49a9-8de6-efcf751842bd@kernel.org>
+Date: Wed, 25 Feb 2026 14:32:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cc08424a-22d9-422c-90dd-54893bda1213@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] mm: Introduce vm_mmap_shadow_stack() as a helper for
+ VM_SHADOW_STACK mappings
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mark Brown <broonie@kernel.org>,
+ Deepak Gupta <debug@rivosinc.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-mm@kvack.org
+References: <20260224175800.2500729-1-catalin.marinas@arm.com>
+ <20260224175800.2500729-2-catalin.marinas@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260224175800.2500729-2-catalin.marinas@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ux5h9e1xydny1cdwbnr6jyahtfsnzn4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 243EDC0007
-X-Stat-Signature: 8trkew5eh14zwep6a75sdzn1nxttoqux
-X-HE-Tag: 1772026323-190472
-X-HE-Meta: U2FsdGVkX1/uWtAFXluEVUog79HGOw187sy83+nuun9S/gV01Umf6nrgygHmv6NMaJrNfcXHdXq+4nEtNDqFlriYXh9A75ZkHQ1mXKfkikvzkdmZLcVZ+GSmnDySPnuvlRIZOIdqbDtr1smRpfjKf8jAw9uGWCG19oMs+MuX+y9wgnXhiYYafOn6jnB+6HKjpcUV70iGPb3y02Ub5k3Kw9/seH3QCSOmETNE6leFFiX08lQXTN4dbdG0kJ3AXQj6evtsB10nvOrkJFDbIhgKV747yAT+u1yCvvGLi+BWRPmD1hYLRhZhfsMnSzmDlPVyeIH1HagTcEMQhl+jsrOBkPFywXlOL85L53651Z3MJ82Bd1seTpHsGhMOW0TZ67BST9K8UCRbjlm8HZ2P2hd/8/JKCbS6kpN9jTpPwJVfs3kl3S/SgInlHZ+QdTXuTpAJ3ajGJ0YauXuXpRir+ujvHorAAh+Ct3Hy8ETANg2zfGxJmbQTFoqlh8yMBv4fRfCG9AqFjdqrJLXtU0PyomlpDyxY1Cfwjl2FDelWThLyXS+OMEA/KurDYUvLxO23cZR8maCkr0oNBrDicku+bUbKhYyS5MVHuLNqaUiFiv3woChuA5K8Fx8kbvBnBI3U2+9+fnw3hz9+yaSEm2pySYBgLSz4NOCl24tIvwTg3t0sPm6bVDNsOSmHw7enRIdCX+Sv69PjUm/S+em+WO4gi/vl8+qi3VjOIIHcIxj2EMelBJ3EMP2lph8/+D/LNanUuQIxtL2SkXpUxVIAoXM/13wtd+WkI+NgWsWLh7/TKOp08h9OHR9ox+gEnXtUaaVdcsYd8awNuF6nYriCUOY6MvxZP9nqPB2x/Kauyi8Y8uhiIttjl90zsHIALThHKzyTmq19AfHBQkt/M92pjM99k6gUwDJfa8Ch6onx39/hOGOL9fFXyHzn4CPdmw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1C49DC0004
+X-HE-Tag: 1772026364-486199
+X-HE-Meta: U2FsdGVkX18Ydg6h97T7VquEg1eACZ4QrpbFu0wMOk1W6FpByToeY4wjh3RFwDUNLVGyQ7gsyi6SM8KKIe0vwO7O47SRtrcsv09h+a31CKVRXYVdhqswaTNMzV9YqJ9M7XEAKZmdRjKtQuL8nhSQ2mMLXH5XAwKI08bhQzy9kU/LXk0G630qqmjJ/roNmNrZ9DpDJYH7c4aFC/Joiil1FVfNPOzJdef0L1XsZ9Kh4cmAJnt6AAKjJ59uX+DlsWgKbGgyJTK6t7zL0P8yYDlsbNeI1vQB8PEiSAZL8E+Z/yxwEtVsTrdnvZDw/EeepA0ukWE5Od2ayA5P6cQneQ+iELuZ00yyDl5Ar4bsfNQSFDJ63DWucjJrXWaT0O1INlu/pyo27q3tiM0afyNEqR30GjRRbEZGdjzHXZCIspu639P4byYXnTvxjJxGbNGqV4k/SS6HBm2Vtayr53t3fWOXlnQK9crVJ62Y3+kZiA+JTsBcG2zNLdhJ+1fUHa1HqxDYJFGvT8uCGE/b1MV2hbMRuMXXE4g5iEJMb85osPtruJkb599oWHd9AMSGKJDEjMjyPZQapHMP5XUO/nMa2wVq4NT2/Ag7vnySnMcZRzfyKMheDacqt5hLfCfj19P4K5/faxEYC59Nm7ZBKQViVNrFsB6u6/ZBo3+t5u3c4qZFG0VO7Sc1f8N7awgHSsioAz0zVPXlQ7W72kwUJzV6ZmB6NTSrksSncyB3Jp7ky79Qee3iwLnFQp+2limO0dISuQ1vSxf10li/Gb+TFybVKeWj2RB1iQjBrM668sqGICRdS9Tqzn+aS+Chu3LrQETV7wpgOo3DaKBt9WsCo0sF86emaDLlkscpfuGEvh2XI3mHLMoYPivGlY+q3GRWzFeIKo1tpxOmBVzidRIMRJAs6lmxDQOx8qIPaMj7Gua1RN4QWO8gbwClO4fhSi6Y47MQGepK2H2I1gAgj0J7kjRU9nj
+ fNXZjWx0
+ mnR1FgpqX7ft6Df1auhs/CMdibgd0j53aW5Ebcetx7DVqUDep66lHtX1V3Vpqqz+ZyicVH6wrQjyngLUMW5jfY5ooBBW7Igzd1bYOLqk2UXbnyM5k1p9i09ZyQ8kLzY6Lq1o30fTRtWXzx6r3oyKxO/dMazdDDEAR7qtKx+sXVGocuG4VNXxF/a6XB8MtIbGyKvrQSTML98cPzk9V6O2kukGh509eULhhbyFBg7dotYyWBlmxZCZITVshi1bMREgPtE/vb9sAZDcV9L803raiEgl3+I5mcni1B/Ex63sukT/W2UAN/+NU3208E/2JfFHAsZmCGsF2zVsDEkm6kYhhLInPEndJcLbcM0rimx3BdKSLYjmhyJk+KaYoTE2rn9BJbYQ8BkZ6W/2SyfHAWlPnVwKX6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,74 +147,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 03:35:32PM +0530, Dev Jain wrote:
-> On 25/02/26 2:56 pm, Li Zhe wrote:
-> > In folio_zero_user(), the page pointer is calculated via folio_page()
-> > before checking if the number of pages to be cleared is greater than zero.
-> > Furthermore, folio_page() does not verify that the page number lies
-> > within folio.
-> > 
-> > When 'addr_hint' is near the end of a large folio, the range 'r[0]'
-> > represents an empty interval. In this scenario, 'nr_pages' will be
-> > calculated as 0 and 'r[0].start' can be an index that is out-of-bounds
-> > for folio_page(). The code unconditionally calls folio_page() on a wrong
-> > index, even though the subsequent clearing logic is correctly skipped.
-> > 
-> > While this does not cause a functional bug today, calculating a page
-> > pointer for an out-of-bounds index is logically unsound and fragile. It
-> > could pose a risk for future refactoring or trigger warnings from static
-> > analysis tools.
-> > 
-> > To fix this, move the call to folio_page() inside the 'if (nr_pages > 0)'
-> > block. This ensures that the page pointer is only calculated when it is
-> > actually needed for a valid, non-empty range of pages, thus making the code
-> > more robust and logically correct.
-> > 
-> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> > ---
+On 2/24/26 18:57, Catalin Marinas wrote:
+> arm64, riscv and x86 use a similar pattern for mapping the user shadow
+> stack (cloned from x86). Extract this into a helper to facilitate code
+> reuse.
 > 
-> Not only the correctness, but even from a perf PoV (folio_zero_user is a
-> hot path) it may make sense to initialize the variable only when required.
+> The call to do_mmap() from the new helper uses PROT_READ|PROT_WRITE prot
+> bits instead of the PROT_READ with an explicit VM_WRITE vm_flag. The
+> x86 intent was to avoid PROT_WRITE implying normal write since the
+> shadow stack is not writable by normal stores. However, from a kernel
+> perspective, the vma is writeable. Functionally there is no difference.
+> 
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> ---
+>  include/linux/mm.h |  4 ++++
+>  mm/util.c          | 25 +++++++++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5be3d8a8f806..1f28be975f86 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3908,6 +3908,10 @@ extern int vm_munmap(unsigned long, size_t);
+>  extern unsigned long __must_check vm_mmap(struct file *, unsigned long,
+>          unsigned long, unsigned long,
+>          unsigned long, unsigned long);
+> +#ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
+> +extern unsigned long __must_check vm_mmap_shadow_stack(unsigned long addr,
+> +	unsigned long len, unsigned long flags);
 
-But now calculating 'addr' and 'page' is dependent on calculating
-nr_pages instead of being an independent calculation.  I'd be *VERY*
-wary of saying this is a performance win without actually measuring it.
-CPUs are far more complex than you seem to realise (which is ironic,
-given your employer).
+MM nowadays tends to use two tabs here.
 
-Now, maybe the compiler is smart enough to realise there isn't a real
-dependency and it can hoist the calculation out of the 'if'.  But then
-what have we achieved with this patch?
+> +#endif
+>  
+>  struct vm_unmapped_area_info {
+>  #define VM_UNMAPPED_AREA_TOPDOWN 1
+> diff --git a/mm/util.c b/mm/util.c
+> index b05ab6f97e11..2592291948f0 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -618,6 +618,31 @@ unsigned long vm_mmap(struct file *file, unsigned long addr,
+>  }
+>  EXPORT_SYMBOL(vm_mmap);
+>  
+> +#ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
+> +/*
+> + * Perform a userland memory mapping for a shadow stack into the current
+> + * process address space. This is intended to be used by architectures that
+> + * support user shadow stacks.
+> + */
+> +unsigned long vm_mmap_shadow_stack(unsigned long addr, unsigned long len,
+> +				   unsigned long flags)
 
-Honestly, I think this patch is worthless and would not include it.
+And here as well.
 
-> 
-> 
-> >  mm/memory.c | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 07778814b4a8..6f8c55d604b5 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -7343,12 +7343,14 @@ void folio_zero_user(struct folio *folio, unsigned long addr_hint)
-> >  	r[0] = DEFINE_RANGE(r[2].end + 1, pg.end);
-> >  
-> >  	for (i = 0; i < ARRAY_SIZE(r); i++) {
-> > -		const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
-> >  		const long nr_pages = (long)range_len(&r[i]);
-> > -		struct page *page = folio_page(folio, r[i].start);
-> >  
-> > -		if (nr_pages > 0)
-> > +		if (nr_pages > 0) {
-> > +			const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
-> > +			struct page *page = folio_page(folio, r[i].start);
-> > +
-> >  			clear_contig_highpages(page, addr, nr_pages);
-> > +		}
-> >  	}
-> >  }
-> >  
-> 
-> 
+Agreed that the ifdef for the function declaration is not required.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
