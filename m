@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7CC0FD376A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A311FD376C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:08:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 267FD6B00A2; Wed, 25 Feb 2026 11:06:23 -0500 (EST)
+	id 09B7A6B00A3; Wed, 25 Feb 2026 11:08:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 245F46B00A3; Wed, 25 Feb 2026 11:06:23 -0500 (EST)
+	id 073156B00A5; Wed, 25 Feb 2026 11:08:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E896B00A4; Wed, 25 Feb 2026 11:06:23 -0500 (EST)
+	id EB75E6B00A6; Wed, 25 Feb 2026 11:08:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 01B956B00A2
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:06:22 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C89338C195
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:06:22 +0000 (UTC)
-X-FDA: 84483456204.08.59EDDC9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BF1C440013
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:06:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rWGyZhLK;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035581; a=rsa-sha256;
-	cv=none;
-	b=qngdixHlSIz6neF5q3NSkq6hfyEGJaDrFYT24kPb6krFRQYagZGaRqIfr9mdtVdawO7ujc
-	2lZ7paAMsqzADQdnMZeIyKq06VSF5SCxsHGxTm2Wh+5oj2FzduVQVrPhrrVzVd4detpH6T
-	2tyhgvc4sWj0Gy6cxPOTv21iIz4B1XY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rWGyZhLK;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2C9E6B00A3
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:08:36 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E2F813B5F1
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:08:36 +0000 (UTC)
+X-FDA: 84483461832.18.0E5EE5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BA9A820005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:08:34 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r9gj3Soi;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772035581;
+	s=arc-20220608; t=1772035714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fFsxMWE1ut4viaW08wuponMeMTtje1DivE0qfAlUAFg=;
-	b=LWrhUXSJ2PJG/pPxiUg09YuXc0AH0hSONZgrX9auGpBZM6Qk0o4YLXceGiZMUbaAjrSgfh
-	0ZMMIIQMDDnFtq+FS2FpAYTkOZju0zQvRFKEPS0eGWHjRmawyFsthu5E0f3QnbH07O0o1Y
-	SsEtM/qMPWkMUan2QDlxib8bboxvW+I=
+	bh=FFWSFvcs3OLl8e5i1Jd9VVYSUmxtFekcTUezinSfDio=;
+	b=l0GCsN2i4cwiHpj6TYC4pinQgmPqJm4O9As/Lv19C+ObljjeRqw8X6XwrKjZ+LVLMl2HbP
+	xTp8+QT0M+IfLN4Zv90WO3LQtVJwsnFLbuh6d0zmp6xsCVvLt9ndR0+zlLBO1zQXiQSejZ
+	L67pRT6sMfzBaXbi2SCZ0Nnv0EGrUn0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035714; a=rsa-sha256;
+	cv=none;
+	b=EAeqyfyT2gTOC9T2KtQ3BVVWN5pRruAyeICWRwAOZvstg62yVdorKtl9gNlc9s2D5DLk5x
+	Ka5BhU/P44+8+vAw5MpLQVUDEGaGPjUNHdb57puCyAJADPYMwL0WcA24dJPDCAI5RVucjX
+	G7mfiErrf77i4OvtxiMY/JRLOXNa634=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r9gj3Soi;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B950142DAC;
-	Wed, 25 Feb 2026 16:06:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04B1C116D0;
-	Wed, 25 Feb 2026 16:06:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E5C1C600AE;
+	Wed, 25 Feb 2026 16:08:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD0DC116D0;
+	Wed, 25 Feb 2026 16:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772035579;
-	bh=P1WqrWepQTVhtGtG9DocW0+fnFtdDHJ0Gf1aJlk8qPg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=rWGyZhLKZYiW2u9VlD06zBBflxsyka3E89QsxNaXXoJYozgm/nDKuG9XxPVGQGQf8
-	 mapz3f7xm5vfA6oingwoLiKzIumwOKnSxNyUEmFn20mpuWWLYJWqlwNvXAD+zx/1zg
-	 taAtqF+z50BG/LDGhVnmPM+9p9nDL83129yPJQyyqJFOwfrVjS/7s1NbhAjH32XT46
-	 FXdHTpr1kEMaEIlUYiTwmPF3APKoLGnz8kYbap3gxcegegXFjEepDoE1nO9E6Y2QaN
-	 l+Hib6lT4TNlVcYEGy6/UxzhaFsxEabsu8fLwBSijjFLR1/AtSNh7bllSkwvTZ3fzX
-	 MNUx0aaQP+Jlg==
-Message-ID: <35c35f9f-244b-4591-a610-87606d5019f2@kernel.org>
-Date: Wed, 25 Feb 2026 17:06:15 +0100
+	s=k20201202; t=1772035713;
+	bh=MT1L7YBLKKqIK0OqXYMAqrJF0p22rKY9Fuu8MlKzILc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=r9gj3SoiOrfGytjtrhqCxDhEEhl8435Ek4kDJS9YBc5rkgjf26cCrnyVvPzJo2Eue
+	 GOYFmesqLiGv83qEyOqJyMvyyOh5aPvJ09mLhxoxxjm6OUyj3k39Rybm5R3Yhub9k8
+	 pl2lhCGm7jBmlMuO9l1Dc/ddqDN2imj61JyDYjEo39rIxtSM5cyMFQWdzb+4KoEHxo
+	 Tj9Qte4nbZnYW0Q2+uZTXS+TlrXqW7OZESQWtZ/o8uZfJuxM6NbzZ3Quc9xrD70LW0
+	 bmkPxUX11qKtNcJn/DmTz8xVfxHEYZvke4SP/YOkWklY2jwD+8y9Vqca3/mxrI9H6I
+	 YtUIOcGUE4Yiw==
+Message-ID: <6b5e14a9-751d-4a0d-9d53-b45a0ee5a4ed@kernel.org>
+Date: Wed, 25 Feb 2026 17:08:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
  __pagetable_ctor() and pagetable_dtor()"
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Axel Rasmussen <axelrasmussen@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
+To: Matthew Wilcox <willy@infradead.org>,
+ Axel Rasmussen <axelrasmussen@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
  <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20260225002434.2953895-1-axelrasmussen@google.com>
- <0d4f253f-6e92-4aec-9df1-e668b457d362@kernel.org>
+ <aZ8dasxUYuuWF9M1@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <0d4f253f-6e92-4aec-9df1-e668b457d362@kernel.org>
+In-Reply-To: <aZ8dasxUYuuWF9M1@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BF1C440013
-X-Stat-Signature: n6trg6itix6pcofunp8qniom8qcbj35a
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772035580-960240
-X-HE-Meta: U2FsdGVkX19Hudvd3u2BHJGJ2LqP8+u8LnrUggvI0qfMk19vJ4pdXbnj70bZ5MvC2JqwLSDso5Lpo4PpkJ3vc2Mi34JZJiyIxmw722TFqtwEk/iW0F3qLBS1vijFj6OmbtG/BQe6CEMug2Fm8NJ7f/lfS8p9yPWGU96t1XJ7roax8xoA3TkrBeAs5qC1cKTPpKhlzZ49u3wPZsJX0fxnx/vYkot8B8bmaxGYplHpxx0PNyhBXV1NYz3OqHjAkwI7Ij2Hqut1GVLZ2z2IOESq1j6WP37CHiMu2M/hQexUOjOPg+itv1jr1BvnIRNhNXMwREEr7KP591ERyUAC97ie9RT2vK7gz0GQfPgYgwWTY7Whfis+SIO5U/ep5B+cch3JEwbs7sM/XJzxh8gxVaY4cWV+81hP2F7kUyZQCPRVlG4iHQDrPI3PlGtiq6gEyzNBlTS+VkHJRVf3fZxxrw4r+uzbn6AnJYyjA33JH78yNj2OZInotAqnbk6OpswnALQ0+vVt3vH+3qu09oRlHCeqppEWISubJShXsauXYV7lDI3cT3QctTcqOISt6qvZqi7my2ZvR1mvK4jwSp/sjVp/avOGq5VF8S6AoSbCoQUVFbdy0sHRDS0IMhiajwwoWaLylcLgkITWWCWSPBwHPtVbl7xdKlXqNXD8ukK0VpbTVNWVRw8+EF2kzJrNgK/syy/6VAMx0HEm+xXT0x/EGzVQCWKlfHIBXFleiJGvTqEgWXGeSxwKa4vBEL0hJy0lro8xb3V2LWH1oOaMtybQ3GkvpA8zkNtGwXCnk1NED0zPvwkuF6wnhrbMohzY29opSdiyF//rGhtlRLBKmfay1tZmX27FWMcL1Fe5dUs3QGxjipKjHi2FswkTmzd7MTj0cLST2I0791vCoZgoLKeWCQDWFO3NJBnX7PRWE07ZKyymgbADd5XAuQWoNG5OyoG8cvqDHCeF1liFD5C/4GM3Fn0
- XF8npP3i
- U1S6iezR06ba7gGcYciFJ7oEyV/5Et7m1fp/59Ssq2wouxaHeQ2eHsYX78tSlkCZJteyES2+Z8A1lp01SnWfayVsyq9lT20UGxxjUH4vDI0XRXDZqnONeKJC2bwTb25FRDjXLrpabvt3jvAXKY9BqlY0LF3lE3jgVuGZAGA0eQ7nMsoYeXTRQ3dT/fQMJSiVquwdgF/saJosaBvYIsIIJQ20dkyEQu4vhxDkUnYY1ccldggdTeeq0ZwJainogVUsaiVH6PI03NRtX+NzjMSHiT78I2vGHWMAah2v3DvcIBWIh2AkaMfo0AKS0Vw==
+X-Stat-Signature: xir3usdgro7eo36yrmh1i6g3cbugk6on
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BA9A820005
+X-HE-Tag: 1772035714-719000
+X-HE-Meta: U2FsdGVkX1/veSIqUF9eLMDeqW4WaXhhDf9+v32nYPko4Mvsd4ap1/kOtKUPDxxoHW14h9YMD2fnmR6x2vuajOd0PMlYX1AmFJRiRgzbWpDaPM6KA2xvcnUeLKvEj5K3pUBPD0Bu3wr79lc6Q5ban4C55WD3qf6Tkz5AolMIVzVRfqIaA8g47xTRo7ymNq9tW6w6y73DfnQKYSEmimaaazbq69JBEis+gqDOScN/F6FZCmr4zFVUHiyogxyu4fY119l8623Elg69zJUvT86uxYIi9hkxXx4/GQE7ujPoLrxPEtUH5LtWdjZ1/jTM2ZyeMagyz9VBJX+H7XaL7lhdZ1ZqNOuA634eN9iFTW3uX9F4m7sy2JTpPDNqFAm6D74heZA9eg02hlA5Dhjod5hZ3YbpsH8oiaSoOCZwJB1c/LguV/KO86SXS/dpd8E1QN4DMUpdf++8uL5DB4nI/Eq4EiJz+DQGTFfj6bNqO/zbgYbbEJDNa4BZTHDOoHjdBvUdsheWWlTq3lbmzZpzTrSVo1+qaFQgCAAq5onWzjaAHsiwVxY0B3q811yAb1m3dE6CUJ+b9dH6boxn743DVt5PMSXSZ2Nv7SfLn+Vq2bkTmqJ7dOFkZfvxugOX8/JecXEQWv5SPsio2rkdm8SXIfzAtxOjXqQgwJayhAHIGNg2buMit6m1LnP+/d4ZTejQeVJ5rNhw8bn0SruBnS+evstoNHLFvYnuEJeufrWXbPGFdmtAuL1ZGPNC9fKnM5t2MsIuoXYH8Vyc8G4/sDI9JJGZQpA3TnM8rku604M/L2ycPbkODYoG8rEzoNwrcIiaLB9Zr8JSOIzmjFZZz+p+/Not5xgE07K/jh9sEOUz9EA3n/vf6BtyJhxDLI3Jp0pkkcqCxLUw8MsM+P9PbtYXI+FEgVtXiETW/CJZLi/aCfAhjik05wwR850dJxPnZZbU5SVHwTMtw4T/y5uMIK60cyj
+ LqIFP3Jd
+ ZbKutEzeuVVyBfvbMnoW/Zpx+L4blSoY91H0Wzo6bRFR9SywSMg7c5Sp+Zy6v798Cp57WPhNcrPKlWOCtVHUyMAGiXo9MCapfwH/o/Tk6qa/IaIochRQLoLhHRVkCM/oa1kVVOAOihlJamwAvfF98sIW40OGwCTV9EVTbsM+VFcVx1fuLqAVV9hONE1uhqV1T6/nrw3GXoNzK828FfOfeJN1xOxfI2ch52js1UTA+DrnIvIgrJsnioecqcwEk/gV/SyGEVED3SmN1q5zb26a1IUiumnmbx9BidUqHeTOn+FtfgDp75slEAe9cCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,17 +144,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 17:04, David Hildenbrand (Arm) wrote:
-> On 2/25/26 01:24, Axel Rasmussen wrote:
+On 2/25/26 17:03, Matthew Wilcox wrote:
+> On Tue, Feb 24, 2026 at 04:24:34PM -0800, Axel Rasmussen wrote:
 >> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
 >> But, these two APIs are not interchangeable: the lruvec version also
 >> increments memcg stats, in addition to "global" pgdat stats.
 >>
 >> So after this change, the "pagetables" memcg stat in memory.stat always
 >> yields "0", which is a userspace visible regression.
-> 
-> Argh, missed that these page tables are charged.
-> 
 >>
 >> I tried to look for a refactor where we add a variant of
 >> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
@@ -163,23 +160,19 @@ On 2/25/26 17:04, David Hildenbrand (Arm) wrote:
 >> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
 >> accomplish much.
 > 
-> The goal of the original patch is obviously to get rid of any folio
-> references in ptdesc code.
+> Thank you!  I hadn't been able to get a straight answer on this before.
 > 
-> But if these ptdesc are charged, then we'd also need long-term a
-> ptdesc->memcg_data.
+> You're right that there's no good function to call, but that just means
+> we need to make one.  The principle here is that (eventually) different
+> memdescs don't need to know about each other.  Obviously we're not there
+> yet, but we can start disentangling them by not casting ptdescs back to
+> folios (even though they're created that way).
 > 
-> For now we could still go through page->memcg_data, to avoid going
-> through the folio.
-> 
-> But that requires some work, so likely we should just directly enlighten
-> ptdesc to have memcg_data.
-> 
-> Agreed that, as a quick fix, reverting the commit might be best.
-> 
-> But let's wait a bit whether Willy has a comment.
+> Here's three patches smooshed together; I have them separately and I'll
+> post them soon.
 
-Heh, Willy just replied while composing the mail. :)
+Should we just apply + backport the revert for now and re-do it based on
+the revert?
 
 -- 
 Cheers,
