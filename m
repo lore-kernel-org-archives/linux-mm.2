@@ -4,136 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 176B6FD375C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06103EFD213
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 19:08:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FDEC6B0088; Wed, 25 Feb 2026 13:58:31 -0500 (EST)
+	id 288636B0088; Wed, 25 Feb 2026 14:08:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AC296B0089; Wed, 25 Feb 2026 13:58:31 -0500 (EST)
+	id 2369B6B0089; Wed, 25 Feb 2026 14:08:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456346B008A; Wed, 25 Feb 2026 13:58:31 -0500 (EST)
+	id 0EE1F6B008A; Wed, 25 Feb 2026 14:08:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 310CF6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:58:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF3201C8F6
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:58:30 +0000 (UTC)
-X-FDA: 84483889980.03.8B1FA29
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D6D4FC000B
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:58:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TgAc6Zfg;
-	spf=pass (imf28.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED1EB6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:08:23 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99768BAB87
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:08:23 +0000 (UTC)
+X-FDA: 84483914886.25.361E662
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 901F8180008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:08:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qGlPzt5d;
+	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772045908;
+	s=arc-20220608; t=1772046501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ArROPpjnJzj85QG9odZcXqmuIgynPaSR2+psVn75qQI=;
-	b=643nBeSqTtxV3d2BqyBuz/h2a5dfCn4307iAbullYBG3raKKvbBgxncIRb5E0NV1o3/RWN
-	tX/AjChDlEZviTOxJylrcfd2c5wocrsPJm3puA/3RP1CkONFnqiC9j75ehjs/KgqrDmatd
-	ktiYoIz0MtmU7DDzjL/lEI0Dmx7nfmU=
+	bh=pdv5n4oRZUOb0dBehW/2IVbvHxLeECYP3avwc2lNt7s=;
+	b=hHrEYsKU72vEnDyomCF45ca3hW0w1HZxdLrO9ZALBv18dc1UBEQJnTYza4FXIpn2FqdMa0
+	chLQlDKuaEh8fhHAb0PyF1gXpa0abV1/polXpRvjiYFaOzXUEfB4szYu4X4s6pXgSj6+Qw
+	6W4tQR7jKtjJdnzhK32k5SkZ+J09my0=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TgAc6Zfg;
-	spf=pass (imf28.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qGlPzt5d;
+	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772045908; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772046501; a=rsa-sha256;
 	cv=pass;
-	b=8D2Jx1SxFHlrGb7nhheUOj2uD4S97DL3VQd5vzKs45galAhZXI6ZRyPyyccsbZv5ido7mF
-	ZsmyK2YA0kXDpwyFfTrZCCUd7noy4Yf+b1fsEQbheZJkw/wRmrj/a3zuuDp9UGfofx5Bwq
-	iQaY88HF14hhh6loLUSvAS64DtlY4+M=
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-126ea4e9694so3945076c88.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:58:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772045907; cv=none;
+	b=oI+9WQ0mM37tdzbWxs8zQ6huvjxFz/bxAsD3vGBQczc7fkJ6NF25CwFc8zLCVLa2vFsLyu
+	pZ/PAtM8NFj41gQTFcRgvZhKokBtWWpSRmsHtv6wLQILFo0IaRmDDDjm+5rTkxgSnntfrw
+	fg7S7pO6aSBlpkodty8CAfH4+2q6ejE=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5033b64256dso62681cf.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:08:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772046500; cv=none;
         d=google.com; s=arc-20240605;
-        b=PkIGfKvffEEv3B+jo+Q9JXWLzIFoelrSDDkUSYptN05dfwo+0t8y2dJdlOxyUUKLCn
-         UUzSScDW4Z4vKk8VKhyl377aD6f1JhXfTtfhBs4MhapGzVltJ3hCBRMs8ZF/nd7TSyL9
-         9u18ezR61vdofFuIS74SVa/SX5n/N3Ih2G3Yet9G2lb9M8bOXHgo6OQ4YuULM4M6ETSk
-         TGLTYlMRbLWGwFMZxx9FMI+cnf45ParYjTogvGwk+iLLWl90veXvTsJ9KO5u3SN4KqwF
-         l/bSyOErTEeyn95f5TjTQBIsZkUMVsCU381T1++y7Fkg9yS8EW+VThtes8J2MTPoiNs7
-         KdRw==
+        b=Qp6pzJ+8zx3hJA37LGcNjsbUpQTm7ZRIgnqDF/jMuLO3PpAHqYg425tnZ4Q0gzdzxs
+         4LnXziU15OnfYQU7qkniZuITWdASlfkx0jDnUO7BQTqC6tTWBFPi2An/EEYYdFC1+N1z
+         pSX27pejt5W5ua/lLKrzDMxF47iaiI04mgr0chCoznZoUkMAObQwkQyyPIrkulOg4uar
+         kDEI9aXcim4g5nRDdI1zmgEqOGsuGZmbHFJDNJlf2i6IXBGuE1pPgX6GdPAb0LkN8kso
+         v0kHo7r1X7OHJTZOkaqoQJl5+bMgDi8MPMVHLaEJicU0DGH5Q9BodyuX18oAjmvtQZf3
+         lXzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ArROPpjnJzj85QG9odZcXqmuIgynPaSR2+psVn75qQI=;
-        fh=DW9P0m11V/TWMAIg54upU+0baKZ8Uv/7/djjq6euU8A=;
-        b=ZAwIzgo+gvKO5//c7MLFuViRjDWe+OpHwpLjd5JoEptzDoLpxLJfpiHy+bAgAfXHAW
-         5ahIaCh9j5Lti9kW4X8WLqiUICRv9xAARusBGnIa376eMcknLEWEjwvL2nkb8SULP2nM
-         DXSKVIC6QVlkw0YX3J5tmCHMXxqLwbiVYRnhPno5r5iI4s934AzL0IBC1EhJnypxtvMi
-         BP6dg8JOzSH9H4n26BAamJjhCPY9ifVIqZMloRtahNvPMGuBkoLslox+d9WJR7LgtRC1
-         J2XRtj4Fr+CJYzfxDJTiHEfUoE2Glm9bSHjSwgg9UBIc+uFcY1OYMZOC/kzbGDJFyhmH
-         9FkQ==;
+        bh=pdv5n4oRZUOb0dBehW/2IVbvHxLeECYP3avwc2lNt7s=;
+        fh=DtGDqwKVGjh/9fPqS7HKUnBHqOZnrNDDk+T6HDg/C7c=;
+        b=TR3ysYpdFf9hIDdXvfcLR3y9xbZMiEBk29NKKFcEy5sSExDiCaSqzx4isfzcE9VcmO
+         Rws/UodrMlLcbkGafFWNC74ac3fhTxKcrf1rZQAqxh5eFf3YfwHO5Tm2Stj4xugFRQmV
+         +RszmU7C93lNS+li+3k+weC84Hu0cPMeOTQf13sGwvPdZb0PB694gOpuCqWfp34bSafi
+         FCppeyFQ6Eb29YI2Sf9olryeX+9op4sImQDeyVIjkQZweYKIPLITUlYRr90eUtXq0d3L
+         /T/D5tMhU99SLqeL8rXsVSHGX9Fi8K26ytFoScAYgOCiqovKBYzJNag5xiFuQ67YmLr1
+         1Qnw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772045907; x=1772650707; darn=kvack.org;
+        d=google.com; s=20230601; t=1772046500; x=1772651300; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ArROPpjnJzj85QG9odZcXqmuIgynPaSR2+psVn75qQI=;
-        b=TgAc6Zfg1FZW3o5B0nfYuG/GRniRAqFc6t+l6lRf0Cx85QuIoBVke9bpYtegUIn7Zk
-         2iGar5umvqczlXUqIFhTgEyZDsi9uMt2W2xBQTGpFfUUc7ErJIeK9tWOdzzFm85R/Hne
-         XVd4VvSM/aZcfRcGuZqCQZfAHg9PycvpnWf5teVJhfNOI1q/WTc6Uuc62B1KCP/u2lkY
-         BHb9DHT0DaSMGxUuWmJoahwOC1Q4JaVhoUmFQ/PtuLduKIOVM27FOyY8wZNyJCyR7uGg
-         554UpAhutS8qpGzsE4U7x+GHSeiOj8TLjsN9H8SNZzHKU7CTS5TNIAiY4kkl0w6P6hWd
-         YnBg==
+        bh=pdv5n4oRZUOb0dBehW/2IVbvHxLeECYP3avwc2lNt7s=;
+        b=qGlPzt5dA/tWfPBcRjL9lP4Sbjlqp21aV2zWzpQyyjkVeIS9csVugF4PYrMLHtY1Jl
+         yzTNcmxZNdslT33P/G8yOr7jIIPcgtBnPwhBk14uEs3BOY9oo4pag4Em5aTcbbf1hQ9C
+         BS/wgC9Nsvf4a/cdohaL8cdvfH2AxjPZA/tRnYfMtOokwTBJOeNm4xgWp9Yk8RbAiKUU
+         Koi39gqLl0OwuBkjJ1ZGPAhima2kQww9nemv4ezgsqiVdK+C3Q989LmBbcsXK1RISDgp
+         Lh0aVir/4Tdhb0pjbIFjJpOjquyLs1Rw1OwsdO2fC9U79oU1xGmOUh88vaGmwHksetE/
+         5tJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772045907; x=1772650707;
+        d=1e100.net; s=20230601; t=1772046500; x=1772651300;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ArROPpjnJzj85QG9odZcXqmuIgynPaSR2+psVn75qQI=;
-        b=mtGU5I192K5jLyofCTGjPT/Nn+j/2bAcipHVdFdldEkbKng0Ec2j/6TgMHBjuONkJj
-         10WrWixYino7/SI1xzprxBT4bdguesmgayKT8MnJJ9AZmjucyBc35mRS51LZcmBQcg1W
-         S6+3hQWMksLOeq22yGd6ExfuX27vpWLuXe49LRbdl6XrFvde9HXaS32slG2GuPJ8Sdh8
-         faKSO2xXhh+0IoJxMKK6KESX1IjNXpj4qm2q8HcDETnCsrNczM3L2+UIU1dgiy3K5uoB
-         lQ3Xx5UHW47vRshiRt8Fzn4v+zIeN+t7ver0G4vd1L66IRWBeSRmjUM1SNqakh51TdKc
-         5VUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgzGAcbTNSC1NiHERss0vkAi6q8iTTNaSm+Cyc2JocrLukG7e6fZToSZ8eFx36OzlLsZZFLM5bng==@kvack.org
-X-Gm-Message-State: AOJu0YyytMATTWufNagrCpyTZDHYZLm/dNiB6JzQCrT5H507SbEfb+AX
-	ouQu16FE1NJgY0jKhXyz2Bx6U59p9Oh046cNjJTtMFUVmogve1vZYHHtVM3ccMGHsFriTrHCgk2
-	/r7dBMNa9PW2Q5sbReDv6kpd2XWOWEQ==
-X-Gm-Gg: ATEYQzzWTB0L7ldoh8jtve7TIFWtgBWyl07NHAI5bUjSXVPx9UyaD0iWyTi5wryEZsH
-	PJG4m66Cw49OHJfpGF1i2nuDz7xQwkjkcNXed9IHRYm+szIzAPw5TMwZYP+uj/70sxM/DPn9x8A
-	w9t2YIwBiWY9VGX4LuqrFT1IZrBeS1E64p93U52WmVkPKKAlNoWaq7MHwe6bVuMl3ubbunvzEjO
-	EtSGrW9XoszIm0yLAwRpMaBxHNWyPkHD0dTZjXOOJXi0LYbaYLbaw93G46bH/c2jo4rVbz+Uu2C
-	/CRPl/4=
-X-Received: by 2002:a05:7022:4589:b0:11b:ca88:c4f7 with SMTP id
- a92af1059eb24-1276ad3fecemr6585546c88.40.1772045907494; Wed, 25 Feb 2026
- 10:58:27 -0800 (PST)
+        bh=pdv5n4oRZUOb0dBehW/2IVbvHxLeECYP3avwc2lNt7s=;
+        b=BWAhXU7Bi4AEs5H40fVK+wvNIZUUZt48PO96Wxn5CFrW+d4QNN6x8ozIKrGEMdnMUi
+         v36S1y1MuatQURcJx71seXWPk6k0qe5VqaxrY/qi5oPnX7wPih7ANTIq3SIEJJYfLGSb
+         t/VFqN2T90VIbCPwlp8qRkMCf6jcdOIhg+XlBhM5UJhDdXseZl0jzfym7vsGRXWbuPUR
+         g4pNimO11VoTrm2w7ej6MAppQm9dG98FJibCE3iPsm9dum9aYVm/iC7ZDqG5dJ6yAEfd
+         9wpKKucMdWJ7tnddFRnoHvF25c00Pp5vUXJxex0xEcRnITQ5cEUtok9PchQw1A4YSXFZ
+         x6SA==
+X-Forwarded-Encrypted: i=1; AJvYcCVndsQFZUmmwpbS7qnIHY7APGKJT9/qzK/b/wZ+Ox0ui/eJnfLiUpuZJWKgHNliJfaxE3t8PVD1Vg==@kvack.org
+X-Gm-Message-State: AOJu0YwpWGP+cLnINoutG4yAGkmZ4XjW9S/wiVP4GE7OqeORTVqkUrtw
+	jDc4dIFtLGJKih4eEQvzZxgD3XiS8iRtFer296d6NC0LhT7caNnAj9mTuubZ1QOKV80z7+r1F0y
+	fXNw8xM/vQoMf7AlZaZmSxasBJrkj2rHoX7P71YDL
+X-Gm-Gg: ATEYQzzfHrYGsvExBPYlXP/Ov06oMKWSF43d3MWcOKVrANRDVKIvIvEaevd1S/4G3Wk
+	m3bcKYhMCTXxNY1cRTworVy2ld1KT9rsf8kGqYL+LcEITxNzzQVKtXrmqrHM4Sv/vXvrXhKMMlV
+	bKGEDij7oDrRFEH8V8LeTnadsgX1Zt1nWMcn0cy0NwEOyq/vO0vExAskoNG1M/E3xGOuem2iV4l
+	HV3/0sGBZCq8ih60erWIxl4nT/LdD+21qr8JKj4p8JkLQfC4mKRdKuNAJ+47W9b4Npat15X8fDQ
+	uymUVc4v5QpBxFzKEylV9RJQ/U8MTtpggiE=
+X-Received: by 2002:ac8:7f07:0:b0:4ed:ff79:e678 with SMTP id
+ d75a77b69052e-507441e7002mr1142051cf.18.1772046499964; Wed, 25 Feb 2026
+ 11:08:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20260223123232.12851-5-ravis.opensrc@gmail.com> <20260224055451.58713-1-sj@kernel.org>
-In-Reply-To: <20260224055451.58713-1-sj@kernel.org>
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Wed, 25 Feb 2026 10:58:15 -0800
-X-Gm-Features: AaiRm53tTS4j79q29YaqOt6DqbWcBTOrpnxU-5ZG60LfsiyErPqmfboGnXJ-bZE
-Message-ID: <CALa+Y14yVxW+NSP6-G+93yHFLKhFhvKMQowGUR1MBcPgvO_q-A@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 4/4] mm/damon: add PA-mode cache for eligible
- memory detection lag
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
-	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
-	yunjeong.mun@sk.com
+References: <20260225163407.2218712-1-surenb@google.com>
+In-Reply-To: <20260225163407.2218712-1-surenb@google.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 25 Feb 2026 19:08:09 +0000
+X-Gm-Features: AaiRm518uYOgnm58APBpc_-5TJ7TrM4AalLW1XmytYKV1TXGn9WcLsqN8_K-A2o
+Message-ID: <CAJuCfpH-+trdZ=68v0FTj_yKn6+gmE10gKjmjrTyPvO2EaXdRQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] mm/slab: mark alloc tags empty for sheaves
+ allocated with __GFP_NO_OBJ_EXT
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz, harry.yoo@oracle.com, 00107082@163.com, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4tbakfohnc5aykkp4qfyc7ohn9u9phah
-X-Rspamd-Server: rspam11
+X-Stat-Signature: dbsier7dz69onpuq41d4p93ps6ajpbuu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D6D4FC000B
-X-HE-Tag: 1772045908-480346
-X-HE-Meta: U2FsdGVkX1/8Lt6dF2902Iovkg6VC9CVtUvMcNUs4VnmnS3Zo6zazmWWjiWbm/IK/IvDaio0MP0XkcGUpmTSMpXgqIcXLXx/zJC3JCSUrbWmTGo0Xu3vbnNZgkatS/dvkeVRwD0Z/sXqEz8sBtICWzQqvgUCmLEp4EKAAe76ajubdUyX1Gz5MBBxXcjaLSBmgthIPUyFPlqHUxG0T3rqMNogoiXBXWoq8vR4fKY364GxtGAm3iDdXJT34BYz9lwAVnBqqkK0eNGDm6TBG9DwTkiCi984iraWDRDVZ1/0Bgvs1TlPuBIqW+lCK6/pwLjfRTQbBvdxxIsZ+bVnrPTKKl1U+Go+udlAInGFt/P0a8v5qR6ItOUpFU/kol9VLBfOrICFS++CU0XF99OOCD6zcvs247Z9iQXs4V5OL9RxPqMYew6AMVaED9P8icDyvzFrmp8IGUB9eZXkIbR2N7bHrfLsRqP4andWxC2u2WsEzviNxdt0Q1sJTFe7/eByi8r0/T4ttyawv7/kCcDmESYU3oZzc1K3M2TfgzLpb5g75/mE0vetuZ2e+pNktlHgRnpiCmqkptKqXAIa8N/FWmjyvQylRTt4PligXXVw1ErDNSltWFr3kfhPs7LkPEZhrsP78pk8uSsUWZGh9T9tIgzER7/fvKP6Fi8VFOE5Ks4BecMJfjQ+pRPAcblwOvLq+9JN/uQpzCxFs9Tvpryzer8feru1fwN/Z+32l0kcWCT/YIy8D3fgqiBxhve4nlRfWJKKrcjqr0sqGJmEg8udJ1Z/tlxe7aF7RjjUtMth1kgkfqAls0JsCX10+Pd4ZWbZn7fOGq3Jvr7SRkJkq1GmBnxcCS8HLUEQdbRe9QVP+xSWNi9iR8njQyU7n3hQQjnh4Z3LEOfGGRyVWqxstyqDWuF8/rVtwaE/4v0HiKiMQhl/rgVeLhDiw+ugTQs6H2A+04VVOiNDHgTlCQL7Z9yaAV+
- Bc6FUhOJ
- QnuKaMwjD24I1kUi9r4kxrsKEpKMv6/DfFn5hUedD/6vMNtcTEYMNG993cWWS6XXxlXC6IxD413raiyYQtaDI5ieymHY1qsA52eZgy5CPcGSKMZisuD+4ipKcxiUpby0Mp2y5NcNt056p5B7EQXPa16gWJsaR8W/rkv5IvbqdqKS22M2OIG0bzlazvkHA9Qbe+hd+6d9yEiq8PDaYvkZt3C+RsAJ7GvQrsjEDJSvm9NBeSQjaZuyg+clKMwvj+fmiL1mPW2TSqE24RoeLK8XN1pQbPBKN40npdTcKB3CPucB5oD0SWe/sRPTiuTKXHV4zU9d99PxowWZd7Wv98cqZTr1LGC3/y5cB2aeoXipuImH9157RtUX4z/nhqQ7SLnbeVRJNxt6Yo5nyWUBfZ0yMIxHzB7ujlAEGIMqK2hUWloP9/RARVgkqlmrgayGHl+uBVxJA98vzjA+Zes/SyPkEojXq0wM1eS79gRtaWeqttVZPJUBB+PYIs2MC3NmJIw/niDwyiGMiYSB1sORoBfXzlyjreeedl3zUYPjNzfuMGA7UJ33O4AASFdDXqQ==
+X-Rspamd-Queue-Id: 901F8180008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772046501-202085
+X-HE-Meta: U2FsdGVkX1+yE0aTwEpvz5llL/eSJoe8MA2iUB8XWZg/BkHTs7twysyTzf+47jYu4bLtpvUwgLBEPDm/q+YseUUAFJ8m1vtD2NnM7nQFKQZfQx22IvVh3Y0vfqAu8Be1i9U8Nmep2gCnSUQBWOtZKu0lFSA0WyH+6JhhvLzIIkuit07VzMMCHIIDaO3KMLIx24bXJVet4YHkW29rAbp5gyNPhKjy7mg4mW8gUDbVUmtoy29WjS7rVkj3GDNMVsdOv5Xatf2i4jk7FOa2Lsyj974J2yoYSSEX7y1O817LktIztgaUHe6kPAnBO34Fmjfm68oClfmwNdYCwVyuQBX+S2xiXCl10PeHQ8YgsVyrVex3jlSLORuq/FEQufXYSAYz2ORPnrw1rcMfd0Xak9RJfLAmRtMBV2wywygCEBmdbzcEc13GViGhAd32o8yf/HOSUayewAVGE2VBA/IzGB+jGkseM2nleNOxadlZ+mVgR/rayCPgGtZm4lltyEEmRoDTWhsUxkh1Jq4ut5Yk+Xk1k0lz4ThQ8xwOMq+zm+xL7yIXhJryHqJaWozXPq7fAgSQDoUWtYIBU5SDdYAjepVuEE5qsqHGvH85d2/p24bCHBUkR72Qo3x4DKL3i1XY0uCZGRFnnn6P7Fh1xM/3FEF2QUhHkKHdweLjSg3OvV5THPtpFh34fwjV4xoR0a1k6gu1GsGR9CMj1HpZZPtYjQPktqp7Em3CxKg8dWQH55ys5nM6Ut5FGCua2heIgMqduAtgo/8QTPZPXk9RFcolPqb+ETiYyzyfehI8kB5uAvXpi3NJaG0PXkXyX7i8hZQSQ9QiNqEGKLXVUi367ijG5yMb5jzBJuVj9o5519rICy3NqI7T91d/hgPZyGBpj4PKTqYWiyeqCH6bheYt51Ch31IXASRPVwK+9wGFPkMQQAyoTYCQncDmGqeXmNPkpRKcvt7bUIybYnto2fKyjsJ7RVI
+ homY+vdg
+ BWhck0H/ujK2rNQL+xhWU46+ihMWiM3pVe8OXJi39Mee1kgh1WvypEj0AmXULzG9YId5EhPyKAG8XNsSZzJTCYrXjbadRLdg8Pv9RGqhrMdrmfjnPBDqDowkMEXg0SHKwhZ7zIRPg/FqnJO8hgIS1mgCVgeJsnXbjPv+isRGRH3ZIDkM3HDcQO1wlC3Kkuvy13LA0OqYR3QSbqpxL25k5K+vTCwOR30Fk1YLznNuLbX5HsOFktkjEhIEcKal3rxfj1cWijidDDFPiz68I9Kl/uTT9hdvBi0dW9AYgBZLnYXHzbNhIVfJjDHDRroQVhl1OSru42H4fKk4LetDhXTi/46R9OfC/aT1PhcRc0m/nFKch9rq/ojKFtfxYv/8MeT6Oj+A5TgAx+oZwJdoQbt7lChS2Ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,141 +140,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 9:54=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
-:
+On Wed, Feb 25, 2026 at 4:34=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
 >
-> On Mon, 23 Feb 2026 12:32:32 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail=
-.com> wrote:
->
-> > In PA-mode, DAMON needs time to re-detect hot memory at new physical
-> > addresses after migration. This causes the goal metrics to temporarily
-> > show incorrect values until detection catches up.
->
-> I agree this can happen, and could be problematic on some setup.
+> alloc_empty_sheaf() allocates sheaves from SLAB_KMALLOC caches using
+> __GFP_NO_OBJ_EXT to avoid recursion, however it does not mark their
+> allocation tags empty before freeing, which results in a warning when
+> CONFIG_MEM_ALLOC_PROFILING_DEBUG is set. Fix this by marking allocation
+> tags for such sheaves as empty.
 >
 
-Thank you for acknowledging the issue.
+I think this should also have:
 
-> >
-> > Add an eligible cache mechanism to compensate for this detection lag:
-> >
-> > - Track migration deltas per node using a rolling window that
-> >   automatically expires old data
-> > - Use direction-aware adjustment: for target nodes (receiving memory),
-> >   use max(detected, predicted) to ensure migrated memory is counted
-> >   even before detection catches up; for source nodes (losing memory),
-> >   use predicted values when detection shows unreliable low values
-> > - Maintain the zero-sum property across nodes to preserve total
-> >   eligible memory
-> > - Include cooldown mechanism to keep cache active while detection
-> >   stabilizes after migration stops
-> > - Add time-based expiry to clear stale cache data when no migration
-> >   occurs for a configured period
-> >
-> > The cache uses max_eligible tracking to handle detection oscillation,
-> > prioritizing peak observed values over potentially stale snapshots.
-> > A threshold check prevents quota oscillation when detection swings
-> > between zero and small values.
+Fixes: 4c0a17e28340 ("slab: prevent recursive kmalloc() in alloc_empty_shea=
+f()")
+
+and CC to stable for inclusion into 6.19.
+Andrew, Vlastimil, should I post another version CC'ing stable or you
+can add that line and forward to stable?
+
+> Reported-by: David Wang <00107082@163.com>
+> Closes: https://lore.kernel.org/all/20260223155128.3849-1-00107082@163.co=
+m/
+> Analyzed-by: Harry Yoo <harry.yoo@oracle.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Tested-by: Harry Yoo <harry.yoo@oracle.com>
+> Tested-by: David Wang <00107082@163.com>
+> ---
+>  include/linux/gfp_types.h |  2 ++
+>  mm/slab.h                 |  4 ++--
+>  mm/slub.c                 | 33 +++++++++++++++++++++++----------
+>  3 files changed, 27 insertions(+), 12 deletions(-)
 >
-> But, I feel this might be too overfit solution for a specific setup.
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index 814bb2892f99..6c75df30a281 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -139,6 +139,8 @@ enum {
+>   * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
+>   *
+>   * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
+> + * mark_obj_codetag_empty() should be called upon freeing for objects al=
+located
+> + * with this flag to indicate that their NULL tags are expected and norm=
+al.
+>   */
+>  #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
+>  #define __GFP_WRITE    ((__force gfp_t)___GFP_WRITE)
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 71c7261bf822..f6ef862b60ef 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -290,14 +290,14 @@ static inline void *nearest_obj(struct kmem_cache *=
+cache,
 >
-> >
-> > Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-> > ---
-> >  include/linux/damon.h    |  45 +++++
-> >  mm/damon/core.c          | 421 +++++++++++++++++++++++++++++++++++----
-> >  mm/damon/sysfs-schemes.c |  30 +++
-> >  3 files changed, 460 insertions(+), 36 deletions(-)
+>  /* Determine object index from a given position */
+>  static inline unsigned int __obj_to_index(const struct kmem_cache *cache=
+,
+> -                                         void *addr, void *obj)
+> +                                         void *addr, const void *obj)
+>  {
+>         return reciprocal_divide(kasan_reset_tag(obj) - addr,
+>                                  cache->reciprocal_size);
+>  }
 >
-> The size of the change is quite big.  I'm now curious if the problem is
-> significant enough for this size of change, and if this solution is only =
-the
-> single and the best one.
-
-I understand. The cache was consciously separated as patch 4 because it
-represents ONE possible approach to handle detection lag - not
-necessarily THE approach.
-My goal was to share what was needed to achieve equilibrium with my
-synthetic benchmark workload,
-while making it clear this could be dropped or replaced with alternatives.
-
+>  static inline unsigned int obj_to_index(const struct kmem_cache *cache,
+> -                                       const struct slab *slab, void *ob=
+j)
+> +                                       const struct slab *slab, const vo=
+id *obj)
+>  {
+>         if (is_kfence_address(obj))
+>                 return 0;
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 862642c165ed..34c32749f091 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2041,18 +2041,18 @@ static inline void dec_slabs_node(struct kmem_cac=
+he *s, int node,
 >
-> First of all, I'm curious if the problem is that significant.  I assume y=
-ou may
-> seen the issue from your test setup that you shared with the cover letter=
-.
-> From my understanding of the cover letter of this patch series, however, =
-you
-> are testing this on a setup having two complementary schemes.  And you us=
-e
-> TEMPORAL tuner.  The motivation of TEMPORAL tuner was for setup that not =
-having
-> a factor to move the quota goal value without additional intervention.  I=
-n
-> complementary schemes setup, the schemes becomes such factors for each ot=
-her.
-> In the case, TEMPORAL tuner might be worse in terms of the size of tempor=
-al
-> oscillations.  I don't know details of your test setup, but I suspect the=
- use
-> of TEMPORAL tuner might made the issue bigger than real.
-
-That's a fair point. I chose TEMPORAL because I wanted to move the required
-amount of pages as quickly as possible to reach equilibrium - essentially
-"migrate at full speed until target is reached, then stop." For my multiloa=
-d
-benchmark with uniformly hot memory, this seemed like the most direct
-approach.
-
-You're right that with complementary schemes, the schemes act as factors fo=
-r
-each other, and CONSIST tuner with its feedback loop might make the detecti=
-on
-lag problem more manageable through gradual adjustment.
-
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
 >
-> I also assume the real world people may use DAMON with auto-tuning mostly
-> because they don't know the access pattern of the system and assume it wi=
-ll be
-> dynamic.  In the case, even if we perfectly solve the issue, some of
-> oscillation will happen.  So, I think the issue in the real world might b=
-e
-> smaller than that we can find on some specific test setups.
-
-Agreed. Real-world workloads with mixed hot/cold memory and dynamic access
-patterns might behave differently from my synthetic benchmark where all mem=
-ory
-is uniformly hot. The uniform-hot case is essentially a worst-case scenario
-that forces continuous oscillation regardless of detection lag compensation=
-.
-
+> -static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
+> +static inline void mark_obj_codetag_empty(const void *obj)
+>  {
+> -       struct slab *obj_exts_slab;
+> +       struct slab *obj_slab;
+>         unsigned long slab_exts;
 >
-> Meanwhile, the node_[in]eligible_mem_bp concept makes sense to me.  I'm w=
-orried
-> if this patch is unnecessarily delaying the progress of the main change.
+> -       obj_exts_slab =3D virt_to_slab(obj_exts);
+> -       slab_exts =3D slab_obj_exts(obj_exts_slab);
+> +       obj_slab =3D virt_to_slab(obj);
+> +       slab_exts =3D slab_obj_exts(obj_slab);
+>         if (slab_exts) {
+>                 get_slab_obj_exts(slab_exts);
+> -               unsigned int offs =3D obj_to_index(obj_exts_slab->slab_ca=
+che,
+> -                                                obj_exts_slab, obj_exts)=
+;
+> -               struct slabobj_ext *ext =3D slab_obj_ext(obj_exts_slab,
+> +               unsigned int offs =3D obj_to_index(obj_slab->slab_cache,
+> +                                                obj_slab, obj);
+> +               struct slabobj_ext *ext =3D slab_obj_ext(obj_slab,
+>                                                        slab_exts, offs);
 >
-> So, unless we have clear evidence of the significance of this issue, I'd =
-prefer
-> dropping this for now.  After that, if the issue turns out to be signific=
-ant or
-> this solution is proven to be significantly beneficial, from your next mo=
-re
-> realistic test setup, or from real world usage after upstreaming of the m=
-ain
-> change, we can revisit.  What do you think?
-
-I agree with dropping this patch for now. Let's focus on getting the
-core metrics merged first.
-The cache mechanism can be revisited later if real-world usage shows
-it's needed.
-
-Thanks,
-Ravi.
-
+>                 if (unlikely(is_codetag_empty(&ext->ref))) {
+> @@ -2090,7 +2090,7 @@ static inline void handle_failed_objexts_alloc(unsi=
+gned long obj_exts,
 >
+>  #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
 >
-> Thanks,
-> SJ
+> -static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
+> +static inline void mark_obj_codetag_empty(const void *obj) {}
+>  static inline bool mark_failed_objexts_alloc(struct slab *slab) { return=
+ false; }
+>  static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+>                         struct slabobj_ext *vec, unsigned int objects) {}
+> @@ -2211,7 +2211,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct k=
+mem_cache *s,
+>                  * assign slabobj_exts in parallel. In this case the exis=
+ting
+>                  * objcg vector should be reused.
+>                  */
+> -               mark_objexts_empty(vec);
+> +               mark_obj_codetag_empty(vec);
+>                 if (unlikely(!allow_spin))
+>                         kfree_nolock(vec);
+>                 else
+> @@ -2254,7 +2254,7 @@ static inline void free_slab_obj_exts(struct slab *=
+slab, bool allow_spin)
+>          * NULL, therefore replace NULL with CODETAG_EMPTY to indicate th=
+at
+>          * the extension for obj_exts is expected to be NULL.
+>          */
+> -       mark_objexts_empty(obj_exts);
+> +       mark_obj_codetag_empty(obj_exts);
+>         if (allow_spin)
+>                 kfree(obj_exts);
+>         else
+> @@ -2312,6 +2312,10 @@ static void alloc_slab_obj_exts_early(struct kmem_=
+cache *s, struct slab *slab)
 >
-> [...]
+>  #else /* CONFIG_SLAB_OBJ_EXT */
+>
+> +static inline void mark_obj_codetag_empty(const void *obj)
+> +{
+> +}
+> +
+>  static inline void init_slab_obj_exts(struct slab *slab)
+>  {
+>  }
+> @@ -2783,6 +2787,15 @@ static inline struct slab_sheaf *alloc_empty_sheaf=
+(struct kmem_cache *s,
+>
+>  static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sh=
+eaf)
+>  {
+> +       /*
+> +        * If the sheaf was created with __GFP_NO_OBJ_EXT flag then its
+> +        * corresponding extension is NULL and alloc_tag_sub() will throw=
+ a
+> +        * warning, therefore replace NULL with CODETAG_EMPTY to indicate
+> +        * that the extension for this sheaf is expected to be NULL.
+> +        */
+> +       if (s->flags & SLAB_KMALLOC)
+> +               mark_obj_codetag_empty(sheaf);
+> +
+>         kfree(sheaf);
+>
+>         stat(s, SHEAF_FREE);
+>
+> base-commit: 7dff99b354601dd01829e1511711846e04340a69
+> --
+> 2.53.0.414.gf7e9f6c205-goog
+>
 
