@@ -4,95 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9386AFD375E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:44:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 839BAFD3760
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D4D6B00A4; Wed, 25 Feb 2026 08:44:18 -0500 (EST)
+	id A73186B0088; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F157C6B00A6; Wed, 25 Feb 2026 08:44:18 -0500 (EST)
+	id A20D76B0095; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E17EB6B00A7; Wed, 25 Feb 2026 08:44:18 -0500 (EST)
+	id 92D076B0099; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CC5B36B00A4
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:44:18 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 801541C683
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:44:18 +0000 (UTC)
-X-FDA: 84483098196.21.12CA056
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CF4E6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A65F1A05FC
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:50:23 +0000 (UTC)
+X-FDA: 84483113526.30.9C83C4A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 00C0BC0007
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:44:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SpAiFJPc;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7573B80011
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:50:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oWYj+DK9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772027421; a=rsa-sha256;
+	cv=none;
+	b=nsjygEs7ETQL49RTgqLMi3Kba/bZzfzIhpewW7zSp7NzBGKuf7K7R5V3H+39duPljoUCuR
+	tUugjT60WJaxXDuwcg3lPd4/0u4ePJMl8Gn151ohOXwpguB1q79M0GNnFQejzAkd62hPlJ
+	nc7otqpPy9U58GHaJ8GB7I/CzREjNJQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oWYj+DK9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772027057;
+	s=arc-20220608; t=1772027421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iKI5d80iNf5DVAtuh41BHGC4rcIetjz8N0i4qx5NPy8=;
-	b=Y/0S+bJ/dVtl9wJkWXV5Y8bKQpvRHFRNLcd0/LH7c5R+VJBlHEAn4ZAcNv20ZmFTQNMb8i
-	IlhHvrOK54rc+MpI8vxVnvx8rMx7cGTSdzru839GxF8wL0M3t992ioENGkfC8E3Y7/+FIu
-	mBV92xd9JjRdA82gMJI+d+cqV0sjuYE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772027057; a=rsa-sha256;
-	cv=none;
-	b=L9gZIHOxCTJffDEY/xRk6uWSWpvcW6rTPgp8kIfWXG6TBaGWlydJM9DGGbQjdggHFtv8rr
-	FhIZ6ylXGBVZCA6M/pxurzL2FeXmUlarlaeKsDfqmXFCNu9s2SGwOLUnVOqTkUKx2iSlNv
-	nZMCX2YZsWerk1GsSQ5e8D9SOuFFbLs=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SpAiFJPc;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Lq5ecgA+9mTidS5h/GOx3OFkzcnwMmoNARsZjt0qEkU=;
+	b=HET30nNkIB45ADny3N4EmYk3SAxj16m8AOMYf9tkUCBCqAor8Qeu+NtV+QbnBXMJN4uuZI
+	oyWBZeEwScXytWKvXwrL5BEdfcAPrQaBsORfzCEV6Kpgk52ZIpeod6r/SjmcyN0O3OiNxj
+	eCuJ8q1gJmeX4M4/GGMw0vCSlIEPAdQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 56EC86011F;
-	Wed, 25 Feb 2026 13:44:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA52C116D0;
-	Wed, 25 Feb 2026 13:44:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D905B60126;
+	Wed, 25 Feb 2026 13:50:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B59C116D0;
+	Wed, 25 Feb 2026 13:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772027056;
-	bh=ARdXTG2KcXABGnV51bTk0sFa9t4kT06+4nvw4wTpA2g=;
+	s=k20201202; t=1772027420;
+	bh=mevslpoK0ZYqJd8J/tRXskOYzzQGZU6+tC6Xef3xsDo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SpAiFJPcWumzD9KUnk4LIR5Dx1RgP30kUnv/949Qg4Z7M7bmOz+XsdkwxIDXRevbv
-	 HJ7okfgYwgEdHbF4B4JOU0D3Iiurwg/f3vNNkD4VIE8c7hJ+kOKY+RkFphuKHx6M2n
-	 Ml8B8RoTqArrzuNGEmUgASaIKhZl8GMjNuz+gemb6AZpnmTry012Rgxw/xmUykJBeY
-	 Kua4nATj7VxPSDtZAzNQGoyXN2qydoIZzCx1SyV9zLbDgR93DVsyfACSji314wsrFc
-	 UZvZw76SrM/MWpMn3DPNq0HhyVcnw90NZWIOThRlljQkacEQGvmWa+DWPRm6qlO0eh
-	 o2gpt/qUgetag==
-Message-ID: <cd29096d-7d99-446f-9371-df19c2eb5927@kernel.org>
-Date: Wed, 25 Feb 2026 14:44:01 +0100
+	b=oWYj+DK9G7R7SbizbH3STLSaU8Lo6I4REPxazn98tRvg8owFxze7IZD0Fgc8ONMao
+	 3iQ/lzXs009ZGq92BwM6afz6LtquWd5BXicLzg6k0Cp0qr1bkgsBG1odk/EyExAqqo
+	 ArRnWP7cDxcy0erdcHEX2ZEn+RPjVxLKpxAxGXukSTuMGIzMjCGUwJNDC6Ip8SH50/
+	 MYBGLV+9X+w0/g5AMlJDGCSqYKCNzpGzR52mzkVZOCM6k8F+k+DRf/CjRLGDowEsrp
+	 q+RNgtkqGfvwwEdSPAwgfjoNhm3LSQraEc/DG8VFjUrBXGE/rAUY3/3SlVOYdwqCaN
+	 Y8Hq6uOXTl3dg==
+Message-ID: <24cbde8e-53b1-48bb-b44d-2b4bdc674d55@kernel.org>
+Date: Wed, 25 Feb 2026 14:50:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v1 3/5] mm/khugepaged: define
- COLLAPSE_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
-To: Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260212021835.17755-1-npache@redhat.com>
- <20260212021835.17755-4-npache@redhat.com>
- <493d7898-c959-42ee-ad09-35ffc631ec21@kernel.org>
- <CAA1CXcApttZPka9EDdo1fV_ZtktRcXKivQYmLQ=xiwrYFfL4-w@mail.gmail.com>
+Subject: Re: VM_BUG_ON_VMA in split_huge_pmd_locked: huge PMD doesn't cover
+ full VMA range
+To: Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
+ Zi Yan <ziy@nvidia.com>, Gavin Guo <gavinguo@igalia.com>
+References: <aZ78kFBEA2SjgT93@laps>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAA1CXcApttZPka9EDdo1fV_ZtktRcXKivQYmLQ=xiwrYFfL4-w@mail.gmail.com>
+In-Reply-To: <aZ78kFBEA2SjgT93@laps>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 3oy8hmb1fnh8jx4zd4ikpwc4yyoqkear
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 00C0BC0007
-X-HE-Tag: 1772027056-350867
-X-HE-Meta: U2FsdGVkX18X6RmT/+A7FXOfKKWEmDGj5xfqYb33CSJAqek4/m8DX9uvv2JbLC9NXOhOL55f3Dq314G6ldZfXN8wGJJMyXkP2cgOb+yNinyNrdLwSz8mBmrXDOcHXYa6jqKLHYKlaPss78q+DvdJgrQ0OXbwqmRtL99rJqbFAR7n54nb+14YH5yH/pE6x4ycvJe2wLt2GQ3ZZnDf6/Cu48Wf43txbZnkL2hdaGsbNLxBjltC7KjZbNtjQgphJ2BW5k7us3vVbmAUJKpPkPyZeaaGL5wy2Q0fbgqxflLGKL2w2qwhPmJ4fBmXHoQVJTwiOSn5xAt9z4DLVIca8XnMy73hOlUrPINPM+4ycmCC84Aoz3gRbdIlfA8TLlM+48AysPzeSQkua+80L1Q0ccWl8BTpGdyuBcErR3F5PsSc/RFBWwuekSRl5kwHYpBG0SSLGjSKZFeGXWVtwFGdeiazEUxSdcqoCLQ+0Ag/jqZQ+ZLhKjwvatGKPJNvJXhn79bzVVHtR996AqDii4Z/Ly7w64UZQhybkXOv69BoS2FTkyHHFGaPLBTRlPzqIjBKnuOnweCsQbI23CQz5DiRJ/yLq/Jhv2VR59y3eSOaZ+YN+Qvu7h/MFybzS2HkI14AsT02wM2ijK7YeC2SPLo8n770OVUSbSeSBWU15mtUygXaK8xMgizFXe5e6D1saJZKhGfbME6xscZS46ij26gHFWM4WatLMyIjpKSImIC1cvypIEopwgFiyNxKQ1l428zvy7P1aoQ/pW5S0pNyRMi2uY7XIQH/UDkYMGLyFj+7jdWbk6BI+1XNaZLxuCxR2jIlWTqD08I0dQPNCsdPDJKhu8qmP4i7yx4QPBV2VEywBrc6SYaE8nHPss9Nqojv0hXtgDl1mWdVFejn/1H1NO0PWoyuzRDiUE+cFeUVyEWnqwoi/UR/Hc8TQ4phjlGorS3PLSW6SLrDJ+h03MK6b/vJTXv
- xKBSUgEG
- o1KqUGAgSUGj3Uj9wk2/evUeSZCJW+nRJKPhbB2RqTYPC5V4dSf5xHpYsBTjBtBl0Gm3S3Ee3FHs4qPM=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7573B80011
+X-Stat-Signature: s73a8m5yu96wjfurbbnhq4jn6j7a4quo
+X-HE-Tag: 1772027421-88102
+X-HE-Meta: U2FsdGVkX180I6igzQX5oIcykD4J1rrh9yRSKRNCLSF3PokBvWu5LH/IBWcK38qGkyDcZGZj5O/DpE0xL8vQy9ctY8uSb0TuxjEbQC4rCOg/7ufBj5tRxg7bqjabTKqCtmR5AP0SdBdc/bIagESz6i6rPT94AKUYVvZW4IfU0A1BNeiGkjhfo6scK++EEXiDFdLGcM13GPFsEyBGz8sag/0bs/ecWzyPreGFKhSkU8nFEGF2Hr7y5I6rqWyLLb/PYjp0Gl9uudfbflBaZH3l3W5q/RmJECf0ssTJauq1di9efQUKgRWycoZm92J1A67IKLu8TmhovNBukGwxZ5JS42jbi7DzQUgk1lsl57f0MgcsUMNB/NvuHODuRZRwZpKOVPNwdSPDdqp+k236o12rby5lhzV6uY0KKH13Jie3v9htfXMVisp/WUhpjPVOIy+cClJ3stimdcLxOTktTaAF5ohgCoayW0mP7g5L5lm+c15RucYzm7ZJCsS1Dg+yV2OhEnNNEbFcqUTAuoNeFuJBW/IYBvfwnZqCSELopaqJBS5mrcp/ChPSgNAig25uhmpFwq6Znlgzzpyrxg4uqRu2G+H8HSbY3emx/atrCZKisubU35FzVv9SFwcKIHYSg7Gq+vijFYTCYl4OKfnkU2BW5oFAleAGrHx9uJOB0rblgcsS/EPFmSsBFJ4fNe8sA5lx5lWfDy7ZRkVorbbrq4eUJsUlbui7f336tdsCp/vRcm6Peifar/NYHx5tJH4SOZhzZ1T/ZzLIZBKVMmTJ1MtYe4l3vC5uPUGdebn5eIOo0FyBV0VkdJwjB20/hwTXeGJOQlqeDuFQiuQZDDDxEyPLxyju31l8NRUowTkw1g7tAQoMpyHsj8P3oSHY+Yxjy6IA3e+FumoR/mnmnSBjvWQTGMlcdvjPgM24LnS/q11CImDhd/6AkpDT5SIrsnLgi1CiD/rkQmDAO8whbHQRauZ
+ 5aX9TlWg
+ EI2+Dt1uRWaYTKdagl/ysMcCowXd1WFkdYjJUpbKkMnKNepzmgW4/KXFNkXieppm15DZMLno+Z+PuFVnKryV3apKzo6ftUZ0pNyAoYRzNsr8IbS3X21/J1Z/51IvSG1BXZ/r83k3wS6LlAqAw/HL/0UGRMJ691CPkH3SptvKGMvGQeWNQHj9wvnj0ukM8nSBFk6cMu18XMT5e64AaVOxxroGdRrc2K5jyy2fOLWQ3+TSDMn3saKL727mI0fD8MoiQgzaYtB5ciD0JcUOtxpiyLFKpRtPm2yIta7V8F51YXU1Fn1huDz18gmZOr4rQlVdKifC4cYKihxQ/h10=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,121 +140,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 01:35, Nico Pache wrote:
-> On Thu, Feb 12, 2026 at 12:51 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 2/12/26 03:18, Nico Pache wrote:
->>> The value (HPAGE_PMD_NR - 1) is used often in the khugepaged code to
->>> signify the limit of the max_ptes_* values. Add a define for this to
->>> increase code readability and reuse.
->>>
->>> Signed-off-by: Nico Pache <npache@redhat.com>
->>> ---
->>>   mm/khugepaged.c | 15 ++++++++-------
->>>   1 file changed, 8 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index c362b3b2e08a..3dcce6018f20 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -85,6 +85,7 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
->>>    *
->>>    * Note that these are only respected if collapse was initiated by khugepaged.
->>>    */
->>> +#define COLLAPSE_MAX_PTES_LIMIT (HPAGE_PMD_NR - 1)
->>>   unsigned int khugepaged_max_ptes_none __read_mostly;
->>>   static unsigned int khugepaged_max_ptes_swap __read_mostly;
->>>   static unsigned int khugepaged_max_ptes_shared __read_mostly;
->>> @@ -252,7 +253,7 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
->>>       unsigned long max_ptes_none;
->>>
->>>       err = kstrtoul(buf, 10, &max_ptes_none);
->>> -     if (err || max_ptes_none > HPAGE_PMD_NR - 1)
->>> +     if (err || max_ptes_none > COLLAPSE_MAX_PTES_LIMIT)
->>>               return -EINVAL;
->>>
->>>       khugepaged_max_ptes_none = max_ptes_none;
->>> @@ -277,7 +278,7 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
->>>       unsigned long max_ptes_swap;
->>>
->>>       err  = kstrtoul(buf, 10, &max_ptes_swap);
->>> -     if (err || max_ptes_swap > HPAGE_PMD_NR - 1)
->>> +     if (err || max_ptes_swap > COLLAPSE_MAX_PTES_LIMIT)
->>>               return -EINVAL;
->>>
->>>       khugepaged_max_ptes_swap = max_ptes_swap;
->>> @@ -303,7 +304,7 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
->>>       unsigned long max_ptes_shared;
->>>
->>>       err  = kstrtoul(buf, 10, &max_ptes_shared);
->>> -     if (err || max_ptes_shared > HPAGE_PMD_NR - 1)
->>> +     if (err || max_ptes_shared > COLLAPSE_MAX_PTES_LIMIT)
->>>               return -EINVAL;
->>>
->>>       khugepaged_max_ptes_shared = max_ptes_shared;
->>> @@ -384,7 +385,7 @@ int __init khugepaged_init(void)
->>>               return -ENOMEM;
->>>
->>>       khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
->>> -     khugepaged_max_ptes_none = HPAGE_PMD_NR - 1;
->>> +     khugepaged_max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
->>>       khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
->>>       khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
->>
->>
->> Changing these is ok. I don't like the name either.
+On 2/25/26 14:43, Sasha Levin wrote:
+> Hi,
 > 
-> Yeah I prefer COLLAPSE_MAX_PTES as others suggested, its shorter and
-> more general.
+> I've been playing around with improvements to syzkaller locally, and hit
+> the
+> following crash on v7.0-rc1:
 > 
-
-COLLAPSE_MAX_PTES is misleading. We will happily collapse for 512 PTEs.
-
-It's all about khugepaged_max_ptes_* semantics.
-
->>
->> It should be clear that they all belong to the "khugepaged_max_ptes" *
->> values. (see below)
->>
->>>
->>> @@ -1869,7 +1870,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->>>       bool is_shmem = shmem_file(file);
->>>
->>>       VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
->>> -     VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
->>> +     VM_BUG_ON(start & (COLLAPSE_MAX_PTES_LIMIT));
->>>
->>>       result = alloc_charge_folio(&new_folio, mm, cc);
->>>       if (result != SCAN_SUCCEED)
->>> @@ -2209,7 +2210,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->>>        * unwritten page.
->>>        */
->>>       folio_mark_uptodate(new_folio);
->>> -     folio_ref_add(new_folio, HPAGE_PMD_NR - 1);
->>> +     folio_ref_add(new_folio, COLLAPSE_MAX_PTES_LIMIT);
->>>
->>>       if (is_shmem)
->>>               folio_mark_dirty(new_folio);
->>> @@ -2303,7 +2304,7 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
->>>       memset(cc->node_load, 0, sizeof(cc->node_load));
->>>       nodes_clear(cc->alloc_nmask);
->>>       rcu_read_lock();
->>> -     xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
->>> +     xas_for_each(&xas, folio, start + COLLAPSE_MAX_PTES_LIMIT) {
->>>               if (xas_retry(&xas, folio))
->>>                       continue;
->>>
->>
->> Changing these is not. They are semantically something different.
+>   vma ffff888109f988c0 start 0000555580cc0000 end 0000555580ce2000 mm
+> ffff8881048e1780
+>   prot 8000000000000025 anon_vma ffff88810b20f100 vm_ops 0000000000000000
+>   pgoff 555580cc0 file 0000000000000000 private_data 0000000000000000
+>   refcnt 1
+>   flags: 0x100073(read|write|mayread|maywrite|mayexec|account)
+>   ------------[ cut here ]------------
+>   kernel BUG at mm/huge_memory.c:2999!
+>   Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+>   CPU: 3 UID: 0 PID: 15162 Comm: syz.7.3120 Tainted: G                
+> N  7.0.0-rc1-00001-gc5447a46efed #51 PREEMPT(full)
+>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-
+> debian-1.17.0-1 04/01/2014
+>   RIP: 0010:split_huge_pmd_locked+0x11a0/0x2f80
+>   RSP: 0018:ffff888053cc7338 EFLAGS: 00010282
+>   RAX: 0000000000000126 RBX: ffff888109f988d0 RCX: 0000000000000000
+>   RDX: 0000000000000126 RSI: 0000000000000000 RDI: ffffed100a798e43
+>   RBP: 0000555580cc0000 R08: ffffffffa3e62775 R09: 0000000000000001
+>   R10: 0000000000000005 R11: 0000000000000000 R12: 0000000000000080
+>   R13: 0000000000000000 R14: 0000555580c00000 R15: ffff888109f988c0
+>   FS:  0000000000000000(0000) GS:ffff88816f701000(0000)
+> knlGS:0000000000000000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: 00007fe2ac1907a0 CR3: 0000000021c91000 CR4: 0000000000750ef0
+>   PKRU: 80000000
+>   Call Trace:
+>    <TASK>
+>    __split_huge_pmd+0x201/0x350
+>    unmap_page_range+0xa6a/0x3db0
+>    unmap_single_vma+0x14b/0x230
+>    unmap_vmas+0x28f/0x580
+>    exit_mmap+0x203/0xa80
+>    __mmput+0x11b/0x540
+>    mmput+0x81/0xa0
+>    do_exit+0x7b9/0x2c60
+>    do_group_exit+0xd5/0x2a0
+>    get_signal+0x1fdc/0x2340
+>    arch_do_signal_or_restart+0x93/0x790
+>    exit_to_user_mode_loop+0x84/0x480
+>    do_syscall_64+0x4df/0x700
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>    </TASK>
+>   Kernel panic - not syncing: Fatal exception
 > 
-> With the new name these are ok right? given we dropped the LIMIT
-> aspect. The only thing that comes to mind is that COLLAPSE_MAX_PTES
-> would seemingly refer to 512 not 511, but I'm ok with that if no one
-> objects.
+> The assertion VM_BUG_ON_VMA(vma->vm_start > haddr, vma) fires at
+> mm/huge_memory.c:2999 because a huge PMD exists at PMD-aligned address
+> 0x555580c00000 but the VMA only covers [0x555580cc0000, 0x555580ce2000):
+> a 136KB region starting 816KB past the PMD base.
 
-Just leave it at HPAGE_PMD_NR - 1, any magical constant will make this
-code only more confusing.
+Do you have a reproducer and would this trigger before v7.0-rc1?
+
+Lorenzo did some changes around anon_vma locking recently, maybe related
+to that.
 
 -- 
 Cheers,
