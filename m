@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3386FD45FA
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:39:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39CCFD45FA
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:39:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B69746B0089; Wed, 25 Feb 2026 17:39:06 -0500 (EST)
+	id ADBC26B008A; Wed, 25 Feb 2026 17:39:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEB206B008A; Wed, 25 Feb 2026 17:39:06 -0500 (EST)
+	id A73086B008C; Wed, 25 Feb 2026 17:39:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ABE46B008C; Wed, 25 Feb 2026 17:39:06 -0500 (EST)
+	id 957C96B0092; Wed, 25 Feb 2026 17:39:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8408F6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:39:06 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3703313B9DA
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:39:06 +0000 (UTC)
-X-FDA: 84484445892.17.3970B30
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6E3FC180004
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:39:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IAAj98YS;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9296B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:39:07 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F78013B9D7
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:39:07 +0000 (UTC)
+X-FDA: 84484445934.13.5F3C604
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6AC4240006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:39:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=eRx90f5O;
+	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772059144;
+	s=arc-20220608; t=1772059145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o965ljUc5sj5Dk15lV3ScaKwdf6iFJtEKkC95QIQfpk=;
-	b=QC2v8PT3KC8gGl4LlcP2eeGzaz9Kr2MXuGtcg4+CdD2OqB0L4icTS8iUo3OFCBUYBARuhe
-	guGGYn1+jzwYNTUt15FjTJXsyE+OoyoJgoONdsVYEIhM+jRROtKjMwEanro/ZGu9NAMH/2
-	x4L/FOyztxOiQCjcvW/Mlo2iwYrmQbM=
+	bh=4lZvVwm+F04xN8ZkK9KLgYq8/GMMqb6l7a/In49g+nU=;
+	b=Yb/DZZrrPknqFZ4cZtq7CK7C64vp5SuYsavTNqTLuBoUHqeBDjLkHLxzlhEauz1MzwojZ3
+	nFu6gPaewyAE8I6IpXVO4BFKiLRgN+Plw4xE95lFEtrMu++THJGf1gWdK0niioByRKtDBO
+	qHUbHjbAjJFb9mikUhubv5Bldvw3t2Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IAAj98YS;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=eRx90f5O;
+	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059144; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059145; a=rsa-sha256;
 	cv=none;
-	b=yuBTjO6Kb8TGwn3RDFRDq54cdW2NXY0VRtHW30m1T6cSHhQ/VOnlfIUlrwLEc64OHBWYBp
-	b4oDSaWDEibFUl9gKxKZ/mprUwOW1YFxLUNtbe/jEQK1HyKR3dO8I8AJn0892DuvTex4fq
-	Qrf0MCx2bL7lFEzQL1PivSTg5Ao3G/g=
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79801df3e42so3330757b3.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:39:04 -0800 (PST)
+	b=lvqGga/+Nlf/AkPkILum64vNSO+mtDqbXHl7DnCt7bI3VA/V+GteFtiSGB5ru94y1kgeKs
+	1UgniZhn0jhNJMr9NRYhXSdECelYOMHEvFX1pT46rvzqHmCRBwynifZcXZt2Y7Sk/OfXFW
+	VfrI5/5wwj4w2IDEaJ2roJ0KQCvn/Rs=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7986c7b8076so1627877b3.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:39:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1772059143; x=1772663943; darn=kvack.org;
+        d=soleen.com; s=google; t=1772059144; x=1772663944; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=o965ljUc5sj5Dk15lV3ScaKwdf6iFJtEKkC95QIQfpk=;
-        b=IAAj98YSAVN9YHI6GszTCtphmxrBHud5sdvml1Wj2GAztWvgBz909USCFOYaPyB9eT
-         xpyJoB/U3eP1VeNy9c/vXfaRJgO+E9227QgKuCfvvQQ0HqDXpxC1k6KXkB8N3GILjd1y
-         4mZ00/TDGWjnIXuoK/ikBcXLtFUkVnyCEAlPI2FvnKr4Y0NT4x/bbMrSx/4H3R1T0YPx
-         McQOazCuiFEAsisURPcoHxMS0JjHmQnZONGuRmgF/8zpoUEqcstpXJI2ugvx+czCLaN4
-         IJOYktRVyVZcuY2zqgb6RebG1TKJ4Kizaedb+zcNUnWF0fZqBJaYM3OUZvm8lv5qPjg0
-         PTIg==
+        bh=4lZvVwm+F04xN8ZkK9KLgYq8/GMMqb6l7a/In49g+nU=;
+        b=eRx90f5OMEzZjJMYccR8ivIQQ9K0o6YopZ+LUCPAIoJv7itiLjYWvHl+o216FwmtxC
+         gDNARvohRwa0KtMyvpNr3Q3hyZw1R/2u7ajZ6hlJBnGn5GIDvgJ2ss9RQC0oPu4E/+9N
+         ULQtmDRL9CZN5KxbCtx0JBsTmGg+NkL7Cs8ZrHuD6r6szmj6g1qdK6Nn/PhLOLnvVcWY
+         DiOXgV2D6AsXdhPOjCpk0WtT3O7m6cmtUjoqiD/FZI8HPqPq7F/exvW1lG+1UYAGqAZE
+         58jl8Ezx4buUxgRVWQjPhyWlQoA6GEJTnN2fmr/7QmfSYY47PF6K+vpr5Zw/PkvpDroX
+         Iclg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772059143; x=1772663943;
+        d=1e100.net; s=20230601; t=1772059144; x=1772663944;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=o965ljUc5sj5Dk15lV3ScaKwdf6iFJtEKkC95QIQfpk=;
-        b=T7AKXOxJPYvlH+6zwUTOYsTJXNy+KOhiNJyGuG5HAhYX/S8S+6RFyPocgOvWsexNTj
-         ZU1aosZsIzv9I7NGXh0TzyY1s33I10OtjOSXfXMFLu6nO3MtprO26fkHhvKZr2x1rAXv
-         7zjna0fuNMUU3d73nJiNJdWWHgtXoqGPo8d0FIQPoQWjWI/lP9siYSdrXQQynQucXocZ
-         cVzI9mEjFikvgCI1XGFTSLMemJM2K/VZpid60qBEV+Zx1dwLjbhpnPcs2EJs/2+UqHys
-         817RBl7D2fax8agYeBEyYWIFv28HcmcA/y7AoKhhazIGS1e4yYRUxRXzPfcDhibQ1YMU
-         pm6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVE0g/4ElnrtFOrTTfqIc3ImRXiPKmPYNVsljed6vgF8eRAjB7/RgHaTikU/EJOh9zEQ2xIMX85og==@kvack.org
-X-Gm-Message-State: AOJu0YxfSE4C5hfm7ROgyEPhYqkZZkKDVdsJRV/A6DAtpQ/uCII/Vmcq
-	yTsNxcipcx3hnO4+60zHTRTkxt5MfSNe3jcv4AT4PV/AbI6cqhgduoJxxB/fqmvI8Jo=
-X-Gm-Gg: ATEYQzwzA6s5jjfFw4Ajel0/D1rQWldzkF73z3aOz06dzeuV9G8tsO81UF2WlAv4FhO
-	hk6nDaqkiKQ3aV0cBJRlBqSZaZm/Q3le/D+cFt+XGf3t5xsGS9VTEYe4iROIceyCJhnygxtzNX8
-	V/Wj6DKw9H7xI0OkDFU200O+5aPhe4XBOoIbD1lKIHAz4vqLfirWvzHn8EVKkHKFRhCVIHr+2WO
-	yyBUBIAnh5Clu4xqnfZwLWY3FrIBPOzuJfhvPh7Bnc4zdkDWwH3kqXX3LoqzMI8wf96IFNxgo5J
-	EPpJOT9GhHlOYTDZZDZ3imdWVfJno3WcsYLg/y7sTA77RK99re1eV1yC047LZBpC+0YY5FJmyF7
-	ZBaBJfMK2HRldkJ918K46bR+DeqzDRbsR+XH+b2kwb6sUvhl9K6RgHVc228ai1O6fgZH1D1SjZy
-	Q6Jy/S1bxQ1qWDYJ9YCMLL4PyRsC2t3wp564wh7XIb8oP8BOus23NPAa7clutR3ZjCiJNu/3qbV
-	Gc9+AY/sZZ+zTAbRImTzIZ3u8fwZRmdKGk4WCUAx9gH3l7jI+Ubeh9Pwl+T
-X-Received: by 2002:a05:690c:6e81:b0:796:30e1:3245 with SMTP id 00721157ae682-79874d8540emr6020577b3.32.1772059143526;
-        Wed, 25 Feb 2026 14:39:03 -0800 (PST)
+        bh=4lZvVwm+F04xN8ZkK9KLgYq8/GMMqb6l7a/In49g+nU=;
+        b=LKwtdKQij4OMGZd93yxGlD/6DG8Q9+gf3+7Gj1/YqYzIlVFKuje5t6ZWhm+np3s4Yi
+         HmI1/UfSsYOhsxetKqiCaeHMUfxsnTplF5Sh5SscdAIiQqIKdo38hibfCYaQyXhyYgl+
+         TIrPR7oYyXDHMTky8KVTLmIn7USGA7FA8qKjHdkdPj2ge556eVv7pZZQYW9ns9TUlAFp
+         CzT/fVX8IX06+xEDzHQ62PjNJVu50wrK5ypXYTYbqeWyxOBh1MrjG4lsaoXI1OcARQ4J
+         jnPw6V31sXps8eL3olV1wiVOM8ODBXMAypLqTUI2XLd0V39FFkKMj0LmUeYU9W/ZYUnJ
+         uF0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXQZ9cm4CwkoqCVjPzN5Tp9GpvxgW1l9TX3PqaC8ZeC0MfMJ6/K8Aih0sWU3mMSnPV2VacTbCAq8A==@kvack.org
+X-Gm-Message-State: AOJu0Ywzwy5ysziKANWETYAI3Bga9oVEpsaGGOeIyxgpOdNzGTrgPvEg
+	e/tzHE8elFwPTb2cmU5j69IKtbfSuJYtc/EVaAVcdpYbPY9uuyBTJtHq6YFiAeMWbLk=
+X-Gm-Gg: ATEYQzyw7VYk9qd33TnwZV72a5k1EO5Bzf2gXCJgsA4qtI/t2gacQ6cb6ZxGu3QYPH9
+	yOm8jA6wSWxNjWOn65QA2wBJbUDttKy4weVgoNlSbz6ni9ZTsDLmoI5GTair3d4LjK+Gmh7vdUN
+	Clp7/szLxcPI+hl7aqF6h+zJOXCTVW7KKcl8OQPUL8CeGtgVKiMEGpOnD7m3Non5v8/ywyK07Iy
+	LL16HuqFaeeKquzru07FCdvrWHSx5a7/Jnd9Bpq1to2io8pIgzFGTp3E7UFFoF9hEw8EwP93DLw
+	1etPG/Y9EzcZFnbIA0SqaTw1yDCovnVnyZJ+EC6lSeYRWmKozscRQJ87OyF58msgiTbm5K4TPjm
+	WcevGLGS/rmvKylGjBb5LMIbjQg7MS9MT0XsoTfP+uGdu2cM1AEsHx7XEhDXOC1/ccW80VZFeH3
+	upMlPxF8hMuIE4nQMN8MBbCEnDJcAIjXLXgElQGQxe+UT5mP9WnvizVqG7lC3kwv1hjWuJLXBhY
+	ftOSbyOfz9Mr2X6s7xBe4tzfsmGZurcB8mZMjVoP8xYaITpyQ==
+X-Received: by 2002:a05:690c:3513:b0:797:ef49:a487 with SMTP id 00721157ae682-79876e3fc70mr1675837b3.62.1772059144413;
+        Wed, 25 Feb 2026 14:39:04 -0800 (PST)
 Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876c992b9sm918297b3.50.2026.02.25.14.39.02
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876c992b9sm918297b3.50.2026.02.25.14.39.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 14:39:03 -0800 (PST)
+        Wed, 25 Feb 2026 14:39:04 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	akpm@linux-foundation.org,
@@ -106,22 +106,22 @@ To: pratyush@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
 	urezki@gmail.com
-Subject: [PATCH v1 1/2] mm/vmalloc: export clear_vm_uninitialized_flag()
-Date: Wed, 25 Feb 2026 17:38:56 -0500
-Message-ID: <20260225223857.1714801-2-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 2/2] kho: fix KASAN support for restored vmalloc regions
+Date: Wed, 25 Feb 2026 17:38:57 -0500
+Message-ID: <20260225223857.1714801-3-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
 In-Reply-To: <20260225223857.1714801-1-pasha.tatashin@soleen.com>
 References: <20260225223857.1714801-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: c5mwd6yubhwgqrf74xyd9io4fk1brqq9
-X-Rspamd-Server: rspam11
+X-Stat-Signature: 4gosouphzbpz1xkztrr1sgrqaze54fy3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E3FC180004
-X-HE-Tag: 1772059144-991065
-X-HE-Meta: U2FsdGVkX1/59lBDH6g6ECzu6x+aY/67La/RCHDMCnOd/tncaXd2ISsvV3kLamqPoCU/htSJWwrsRDMW2YbvELi/SHWWxuHol4O57GharYWtStBLGJ954RuKfbdAWLxfnpAiozkX1VD5NAwZ2bg36VKSEEY5udtNSK5Yb+sSNIE7HhFFTHxdQ37KZemAYoHA1P4bgHFy/UnOzJsXI3Ev0p5ZDQMYX7+TCPirqzXVkYs7Q5BlNMJNX8VtsK8ldJD29YjhmVTptiy1dyArzkG7QuRk7LRtpUAFrUAvMVjuevakqpqztZYjN8Y1wIh7pjxrVcJ7aQJMskh7AqmRgSkzPxHJjDibpECgu9bMt3o50RaRiNDVGRYuSkwPBpneZKna8A+WYeXQPdGSUnm0xhhEp7xmJ1jMNym0sRfipfVqKIKJ+n6RY1AOsV5kzUduwuZH18+oeYKFgAoW60fJqFxCaUlJ1im1ndc1M6vy35BPR+sxmvyuLd5t7NFtmUfYZP0jOVd7MMzEsjJPwKwzqEyrkUwIB5b3Qrqr/bbFcWclvnqMkG8aNCnbR0+8eDkx03wtKXt2sFb6srUe1iNDiL/nfsBRQbeXrV9lVEjvSo+FEdFXr0KGzK5Rvoy+6sKZkiQHi4Jb4QUZgehUh0QMM4Y/dF67FqIyMONyjK8omDJDxe+SfYVkLSMlW8W8UnfjBKGPqTQCARMmpvXCFf4F+/EmmrZsujJXc12hZqWdkXJoxxxRukA7gIkQmBSVGuwe7qwZwy/te205vnI0Af+t4OGEsm0lu6qDyT/3BH8r2SAi+zdYvX3H7xFscJTD2eVJTdtNEvnakZhRiOnixR4AN4aU7DX0lbe1jn0X/UWfXGYCZfPq5ZxM2y3b4AixKNZipP8zPpRg+FQ8OmPa7ZWDCs3ZYSYnhZKf80OUR6zhRdXe9jsIh/sI2OctALWI9KyA/vPZu/zOSwA3u5M8jpwyGKz
- 5igE3OWG
- Igu2x53/KiA16puAPRqJik7Rwll6RhlqQLDEzFbS8yJSsdaM2oN0ENX9i9TLIvRI3iEavhHlm0MG9+uW1iQN+PmbAwTQBRhxs5XF3Yc8m8drZsmRBZPhw4i5BLO8dtw1DOsCpbYpDfXQBRQ7cWGQ0blRfk7skubYCmaQdc9E/p2nF5eHYiokNPWSfOu3uNBrq4/IfZorY7wNQBROzmuYwwYh2OLOoi4Hu2XNr+vdzP+3J7/20RyjXt4bHiKrIhaULbggSCLoyKbvcj22FGXQ9PVnyvxgJlUN7iZnngsZZ6Fyk4e2AQ6gncpB1xy72CkAJzrMqkn5fNj4zg/xNc9gAKZ0yeg==
+X-Rspamd-Queue-Id: 6AC4240006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772059145-116199
+X-HE-Meta: U2FsdGVkX1/LTO/WZNRvJ3RYoygn4km0esiksqKEZ70Z+0bESG89lcKFOt7BgftHTIb1VwO6TcISxQA5gx8h9NIw1vTYW6SQBh8To8sR3MH+yqKETrH2t62+zfD4cUh0jZI/MOON3WtrzNI7aDgrN1J0ho/OlWM3v+Z6x4VGigZ6NNXVQ0uJurV9blw+rJH1hoHNGTfoab4LrQ8MVZVUv/YAT3n3e8ZGOXgTImnoL+cfZzkmhqx4u0O9UvCFDqC7Omnr5xtHieaEMv+HyQbVywDZpMLvHmB8V13ve6YEAewiPmxXLZuaIWpzcgrnOKE74JhsPPqVeSeok5Rvrj22b9LfD8I9X7vIWQRrpfokm4/fSAyiB7Oip4hnw7Q9oQO26ml4jcUn/vYPHy50qNZDcsH77GtwRarjPuRXxL4OeGQvmmRzi0XNEMITix0k5Cx6gABZw1a2mVf7HsMchnfgD3/eJ2lwe4W2AXJvJytZcJJQvSrK4t553JW39pGTzR/Ei0YFxQa6ttKZasODLEAkqt7u7FRTVAYfgfsFYSGNMT08Epe058p89IB/gb5IOMPGi1VExzjKYqHRJcsO+p9EKwo/5/qjcrQo7g7MZPer4ywxo+31fUHIrM15J/F4kEdw1mlShqnoDVIZ5UboMHoQf9B9PO2cxag8sVVDgIwbZ36nFbCyRfY2CLrm+LV/HyKSaqK4Hb3BZvT1ubf1glAK426tFCqt9S7NoRXtp6fD7c00SfMg9hVRRP/MDGXKvLBTxw4MgV2UFhSozBR3rVkXEa8ivSfBEHM+n8moiow69DkDPCXUBFzvlPG047yGGalVelOaBsbcKXnnu5rtnztuIXtXoTdVxxchfG4OvoXBjf3ShGlbY9X355mBHXA+ihmFRc2CJvUIPHaDJIqr2bxO5VXHTR1Upjwo2BG+k/YMJr7ZIjm8t2xksSlXXWr02SFgXuyZ/8VQMQHRL6rKLay
+ 4L7sN5O/
+ E3yRWJgkKzi4byjVeoYQADEfmAI8JOTTHKPdODaoHg6GPUmONoGFQy720Q+LVS0NozT7UufQIpdF0845pmpC8G4Qn+Y5fr4I1tos/NIuZgArnsXaZcFaohGs+rEDuFesNMd3yiHEmnjN+eslwe2YOYCkSLgUVqCXgPEXUMyZRe+xpFXJRJpUAb+MGF27L0Hw662H6Q29gkFofgybSaPvx4RTXIrDYBhHSqxrSxrM9FxNTACSDkjZsn1K885uzrQBSYY+ALyUmrC+rmRtZ87/ncOqvjdmV12kWs9ww3dCfLoY9Q4wrdrvKwrG9CjxdmXFAjZEvAyNuHuNXROr793sBwxTBJbdSMEgDG6ZmHMMt/T8egpOfYMup4i7rlQ0gXQ5hPlML
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,42 +129,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make clear_vm_uninitialized_flag() available to other parts of the
-kernel that need to manage vmalloc areas manually, such as KHO for
-restoring vmallocs.
+Restored vmalloc regions are currently not properly marked for KASAN,
+causing KASAN to treat accesses to these regions as out-of-bounds.
 
+Fix this by properly unpoisoning the restored vmalloc area using
+kasan_unpoison_vmalloc(). This requires setting the VM_UNINITIALIZED
+flag during the initial area allocation and clearing it after the pages
+have been mapped and unpoisoned, using the clear_vm_uninitialized_flag()
+helper.
+
+Reported-by: Pratyush Yadav <pratyush@kernel.org>
+Fixes: a667300bd53f ("kho: add support for preserving vmalloc allocations")
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- mm/internal.h | 2 ++
- mm/vmalloc.c  | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ kernel/liveupdate/kexec_handover.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 39ab37bb0e1d..2daa6a744172 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1469,6 +1469,8 @@ int __must_check vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- }
- #endif
- 
-+void clear_vm_uninitialized_flag(struct vm_struct *vm);
-+
- int __must_check __vmap_pages_range_noflush(unsigned long addr,
- 			       unsigned long end, pgprot_t prot,
- 			       struct page **pages, unsigned int page_shift);
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 56e3611c562a..33216b3c15de 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3189,7 +3189,7 @@ void __init vm_area_register_early(struct vm_struct *vm, size_t align)
- 	kasan_populate_early_vm_area_shadow(vm->addr, vm->size);
- }
- 
--static void clear_vm_uninitialized_flag(struct vm_struct *vm)
-+void clear_vm_uninitialized_flag(struct vm_struct *vm)
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 410098bae0bf..747a35107c84 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -14,6 +14,7 @@
+ #include <linux/cma.h>
+ #include <linux/kmemleak.h>
+ #include <linux/count_zeros.h>
++#include <linux/kasan.h>
+ #include <linux/kexec.h>
+ #include <linux/kexec_handover.h>
+ #include <linux/kho_radix_tree.h>
+@@ -1077,6 +1078,7 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
+ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
  {
- 	/*
- 	 * Before removing VM_UNINITIALIZED,
+ 	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
++	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_PROT_NORMAL;
+ 	unsigned int align, order, shift, vm_flags;
+ 	unsigned long total_pages, contig_pages;
+ 	unsigned long addr, size;
+@@ -1128,7 +1130,8 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 		goto err_free_pages_array;
+ 
+ 	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+-				  vm_flags, VMALLOC_START, VMALLOC_END,
++				  vm_flags | VM_UNINITIALIZED,
++				  VMALLOC_START, VMALLOC_END,
+ 				  NUMA_NO_NODE, GFP_KERNEL,
+ 				  __builtin_return_address(0));
+ 	if (!area)
+@@ -1143,6 +1146,13 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 	area->nr_pages = total_pages;
+ 	area->pages = pages;
+ 
++	if (vm_flags & VM_ALLOC)
++		kasan_flags |= KASAN_VMALLOC_VM_ALLOC;
++
++	area->addr = kasan_unpoison_vmalloc(area->addr, total_pages * PAGE_SIZE,
++					    kasan_flags);
++	clear_vm_uninitialized_flag(area);
++
+ 	return area->addr;
+ 
+ err_free_vm_area:
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
