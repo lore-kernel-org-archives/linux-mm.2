@@ -4,89 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AEA3EFD209
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6206EFD208
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:20:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 809286B00D8; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
+	id 243036B00A0; Wed, 25 Feb 2026 03:20:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B6E06B00DC; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
+	id 1EC626B00A1; Wed, 25 Feb 2026 03:20:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69E156B00E5; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
+	id 0EF1E6B00A2; Wed, 25 Feb 2026 03:20:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5571A6B00D8
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 004401C4A9
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:20:03 +0000 (UTC)
-X-FDA: 84482281128.26.8F06BCF
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 13DB31C000A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:20:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Sv/XUFhd";
-	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772007602; a=rsa-sha256;
-	cv=none;
-	b=R8uMeNVeup/fRxIb9S17GbdKyLOJEtTjawMAc2d18MlWSDqxk8mnsazh3s1iJYwY8X4H9M
-	arwTpC+AAGgEvG+WaYi70xwPy6jshjU2luYXt//iD8fDkaTa8VEy5eZgVgWvnb3iFFxFVk
-	ST73r4lgLbqLx9pUounjPiGm/4OWdd8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Sv/XUFhd";
-	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED7DF6B00A0
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:20:55 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75BA3C1F39
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:20:55 +0000 (UTC)
+X-FDA: 84482283270.11.459ECD8
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D34781A0006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:20:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=w6rz.net header.s=default header.b=R0VUdg69;
+	spf=pass (imf19.hostedemail.com: domain of re@w6rz.net designates 35.89.44.33 as permitted sender) smtp.mailfrom=re@w6rz.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772007602;
+	s=arc-20220608; t=1772007653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CqMfuQhJe0D0dX24jwBy/Pxdi2sd3URLqvWF4bUrvgU=;
-	b=dZtm6tfY24eQ4HbEtwTmJxP4Cv1izXoXsAoTEu9uJ2xavvRxhKfw72enV/WlE+/92dfZrj
-	OnLJI6aEKZw7Hg4KBFzbC+8v23jlW5iA90gZ2jakxlaiulVHfQ0JEnqw+8KP4FjvNR5p6S
-	4h0BUbhDe8NesTc+63ZbdI/S9qzpZJI=
-Date: Wed, 25 Feb 2026 16:19:49 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772007600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CqMfuQhJe0D0dX24jwBy/Pxdi2sd3URLqvWF4bUrvgU=;
-	b=Sv/XUFhdHVYdyOnP9s/ge+Ix9sVmvmrfu+qD5qxsje9QS7SbipcDGBGnpQ2rTybeNg5E1o
-	4AYLh2vEQbx5pbMRusGIMIQZPwfeHtK87V9JFkd/QRo89/j4de9q0C7I5l+iHXD/awBsAj
-	TyeYJebnNhJ+Kl5M/qfLQ4I2zKIVaYw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, surenb@google.com
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <jcgdv46sngpfggq26x2f7oodqxlwqtiilcgjzdcwvbt3ovelpj@mwllshvzoeoz>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <aZ0wX_QuxNTxXHMj@hyeyoo>
- <aZ1qRhIGDAR7d56r@fedora>
- <qiqptuqsiaufeasf2xukfzoumiyoau3zfpokosn2amgc6zskc6@vl6ie2h2zj4m>
- <aZ6cjpU36_EmXslf@hyeyoo>
- <zn7q75k7u2mspvmspwiao6245kmaahti3kwagablp3advcx5ga@5d36ctyi2a35>
- <aZ6ijXgDKj9D-kDm@hyeyoo>
+	bh=9769W8VHpJro6GAQ/EcmKlyQChcM6EoaPrkzXWmeTLY=;
+	b=BKSCeQehdDXeMrkMavQ/7N3E673j62Cg1ZGe/lqjvSJF8fdlUT7rN3nUnToWBF6gLEfAI3
+	2jpojv8fJiVg+PzuKHYWdkupodXs6brSB+nPfqf0/4stYmZWx8MpaYe6sKq/O8c55Meo7J
+	ZlMhlYZrydUIxb1x4/dkI7OiuxRofYY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=w6rz.net header.s=default header.b=R0VUdg69;
+	spf=pass (imf19.hostedemail.com: domain of re@w6rz.net designates 35.89.44.33 as permitted sender) smtp.mailfrom=re@w6rz.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772007653; a=rsa-sha256;
+	cv=none;
+	b=hikNe+eB228K62weyybz6Lh0i7VV1RUMsBwxG/T9zK1D0EigvRGrKINURWKshuHsSqwoIL
+	MOURRiJ6WuD/2u69KsLWjjRc9fb2d6W7ZvoQf2qNrrTU7EGbPqxBHb7wHYrH1krIZRPTmE
+	cHQk/bW1A4jY6aoUmm0Jy1uxtXADwro=
+Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
+	by cmsmtp with ESMTPS
+	id v7wLviinLKjfovA8ZvdyyQ; Wed, 25 Feb 2026 08:20:51 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id vA8WvmkvTqfpWvA8WvmLoD; Wed, 25 Feb 2026 08:20:48 +0000
+X-Authority-Analysis: v=2.4 cv=A55sP7WG c=1 sm=1 tr=0 ts=699eb0e3
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=i0EeH86SAAAA:8 a=Ikd4Dj_1AAAA:8 a=XXQT6F6NWBzNftsnd64A:9
+ a=QEXdDO2ut3YA:10 a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=9769W8VHpJro6GAQ/EcmKlyQChcM6EoaPrkzXWmeTLY=; b=R0VUdg69K8zE7eegG+hUV11zF+
+	BoXW9Abokzmyr5TPW73yMiDDN34VajncGJZruUqfXcha4ei93ShH6xrtPKML8qpQRjQNZNUMTsngv
+	yFNd2bPPV1DmahKvX6COL6LF2vi1rAxVtvPjUt58Tzcyv0mix6mfYsJA2p1ze9aizUxIzz3pkOlyb
+	jz2ZCabE47iFzYOQ3a/Jdo+0SDtmdEShuB2T4Ix3HwY63SgLLubAUpmunbj7vuhhpzcgOI3V5AlQv
+	d7GFY5ecpE9ts+M8YKuMIiu2DVOvkoe1vFQOqGePHu+bC2wc6ravKlM5H5o8+wKIb820cyeY2Q9QX
+	4VXxl3nA==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:46688 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vvA8V-00000000zeI-1LXO;
+	Wed, 25 Feb 2026 01:20:47 -0700
+Message-ID: <de0a394d-65a4-4f17-8424-2a1c9a82bf98@w6rz.net>
+Date: Wed, 25 Feb 2026 00:20:46 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ6ijXgDKj9D-kDm@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 13DB31C000A
-X-Stat-Signature: yoo9p4igrpzm9bahs8x3wnkoms9rqgkx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/cma: move put_page_testzero() out of VM_WARN_ON in
+ cma_release()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, SeongJae Park <sj@kernel.org>
+References: <20260225031231.2352011-1-ziy@nvidia.com>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260225031231.2352011-1-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - kvack.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vvA8V-00000000zeI-1LXO
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:46688
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 16
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGxPhqF9mOZEpiAIrOn6F8qKxqVtXc947Sgzf0IwgMhkRAKb38B2vvWgW59a1cJVW1SAq5s7YuC/jjJILm695geEUqtBNFkGZy0CfOarl+kG4zkjIgGq
+ Iq4Pry4uGhkR0HZSuqHUR6xR3vCyxCASXrDUyue8UwWXplxwfvbEekeIhKp/OI6lQuIOkwGyNDAV9A==
+X-Stat-Signature: jdkp499kafadecaq89953esdd5jius59
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772007601-106117
-X-HE-Meta: U2FsdGVkX19feDn2MpU+BoxkhoTEGBLv87UQ63KtQxP+8lzR9AmhdyjF35IABWAhvAxb+3FSXiY6IfbW5WTitkJPKXMvlnsSVURnQNmtnqEbMpK4bw2nOjXLzkJFP+7zxH+aCWMk37cWhaJFDIchU08ThOVipEc+vPNO89Y24bJrzdoTsGBR+4titL7spOn+FGi+mqqzkFgF0OxWfenQrNOZl4L2YgSzY9TiM2Pr1OCrFhMhl9nDlj5gjAT/MORokzNvLsk4mNnlce+mCjOyrIpsuBDaO/xgsxYT4dPnoHYC+HsGNa+mckjIFrjHqtsjUIz2makjwg0z1ycSVmvmdsRo8h8OEerN8+xC8KYKA0MQzCiktFAAL1p/2EbzBcLQWckxIX6/QMkFFQ4+Grt8h99vJQU0FWNt0jjYhV0GvGdQYClGieAf69BDOfHOMfxcAE5SFs59GyNGReRpXyeQTWFocpQ3Yqu3L9CLRvTqAosfG92686Uoozy7C29kjuh+AZXcORuSKjSE9yoS6GpoCOKKV0fRAjFyh9xoWKxReaZsnPG7SjuFFarIRCkBSDQxkAnhoWHMOLeGcadet9MnytGWsnkD8B5cLenm/Ud7cNBUtMzEFJHC6VrcHG6rgM7gtmWpl5cMFLJdyhvaCgm9XjxYlIKAD3Yci/d0VzS80DjIYEq7YuRjI8kBa0FcadJyhgdd7aHQtk2bLVDgX+QfPCnlJ6heJxdHcLtalDNuuD0YIz4WCTQ1+AAC5QI2fQVrRbAGJ6MkWYTL+Nv1Cz937dvbkknvQxSWTUuNLjDSgmlg09Wh/woGSMt7l82Xzj1gS8Qtk2FmAep5pZpVPn+pFy+vHaK+GXXx6DAtrPOYHA+HslyjuWbssVlQmwvGXH0AtWkIY0dEG+V8/Qy0PffMkn6ygYoDjO3IAfjpnPsZ+32M+7yupNbg8J3HwusC+2fnxDH+kSJHtk9RUO06FXM
- X644eYXG
- IJ27J9qc4m8xazfn6CHQ1Ps7Gk7x1WYZ42/xIFFt1SNUZBD9XvpMtnHmrGMpYWQfI+5UTf6Hw488l4ik2CtdNVyWmNtX7Tgh7FycIoJ/k/vgs8qUWYGRwxSot/GYJ/SabTEqAGvoLipuUHOPXfkR5BviarIbW/lA96o9tCkXxQqPo6TtvTHh36twwN7virDfMVZ9DLhkIVbZELhc=
+X-Rspamd-Queue-Id: D34781A0006
+X-HE-Tag: 1772007652-91982
+X-HE-Meta: U2FsdGVkX1/unY+jSYEh7hPAExZPRDfg4zrWi7C73WWoStBjRz0EXBP1/CqYTs6rIw/Vlmt/fwdLFXEEjsJDLrZzl7yrhkpvrzf5bHUXklFCyE632MaC15PjP80D6bUksY3DurS+Jvl5UlVz0S9LJLtm1ngfks2sl21ZlS5rOqQhoUb/htn1fM/PTzt+VzsLnNcvplYhIAw4bDL9RGKo/ULTtvg3LtD+kvpxaydunlaCbSmOanoHlGyHMFr1QW3D+QybnnkIV8/8mAHCEknomSXTdmfghynwtL23ugLbwQvn8UuqSKWFemtm0QanVoQFQtrHpSK9FmWK4IVbG9LsmbhRHBWJyQIT7clyM7A4CJIKqXKtJ9jQ3jNrK65TTNWRWAWYtoYlO0jsSx11u+ZssvwcbHNhwgCr+5+717Q1W9nAjJPTT4h3Xv4lNUxodDkKL1pInEqBOOUMlr1PQFm4FiqnIY1ZPtH3IML2jzwCeZgk8vLznb6Vcw8pF0fU5fBx751WucrcqEgLraE3eyR2Tm4GogEj8x2QFcpkxO/erRcPIHD0NGr5Oie0+V4Y++X4IKoa9SckFKEI4HnVhhG2hSTBDFQlqTzbON607ZsVjgsFvGT7wGFNDJ8mMEh1Y6qkLu62AFOiWxUIn2y3GriS+nTwpYNNhQ2M0ttF6ZWbs67APedxNl761YYVyV8Dv3daUeIwdEqszadq4M4Nw5nbga7AQRdqBBBWx0tBcQYqSpid7RhvBXm6Hem+WrigwIOI7E5/HdKSsUi3jfgWDnz8Qu5leuS8gjqaDSwxN2N9SCuInWz2jLTmrSzQTvKrZ23JEIVRAMrqptkv+OpiReXir2qe95f7nkzQWFwTbEkCoQ4YrFV7W/IGdOaEiWax6yosHNvWmg5GB/YEKYsrCsyyD34VIWOEUztVbr5HR3wUpuXp0BIpLpZPtxFSqqL6BCKVpw38ednOzAE9MHRBa82
+ d8kAmApJ
+ 6hS9nxZVXeqcUdbAMkpHpsu+enJbfKb31EBjJO/idk/ulepHXXQ5LFae9snz7ahR0IcUT1IwvKi3WSsOV96N2mmwYcjoklXxt8JML5fnB02P2XuKI4dfhfJbG1eYssElUFcQD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,182 +133,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 04:19:41PM +0900, Harry Yoo wrote:
-> On Wed, Feb 25, 2026 at 03:06:46PM +0800, Hao Li wrote:
-> > On Wed, Feb 25, 2026 at 03:54:06PM +0900, Harry Yoo wrote:
-> > > On Wed, Feb 25, 2026 at 01:32:36PM +0800, Hao Li wrote:
-> > > > On Tue, Feb 24, 2026 at 05:07:18PM +0800, Ming Lei wrote:
-> > > > > Hi Harry,
-> > > > > 
-> > > > > On Tue, Feb 24, 2026 at 02:00:15PM +0900, Harry Yoo wrote:
-> > > > > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
-> > > > > > > Hello Vlastimil and MM guys,
-> > > > > > 
-> > > > > > Hi Ming, thanks for the report!
-> > > > > > 
-> > > > > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
-> > > > > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
-> > > > > > > performance regression for workloads with persistent cross-CPU
-> > > > > > > alloc/free patterns. ublk null target benchmark IOPS drops
-> > > > > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
-> > > > > > > drop).
-> > > > > > > 
-> > > > > > > Bisecting within the sheaves series is blocked by a kernel panic at
-> > > > > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
-> > > > > > > paths"), so the exact first bad commit could not be identified.
-> > > > > > 
-> > > > > > Ouch. Why did it crash?
-> > > > > 
-> > > > > [   16.162422] Oops: general protection fault, probably for non-canonical address 0xdead000000000110: 0000 [#1] SMP NOPTI
-> > > > > [   16.162426] CPU: 44 UID: 0 PID: 908 Comm: (udev-worker) Not tainted 6.19.0-rc5_master+ #116 PREEMPT(lazy) 
-> > > > > [   16.162429] Hardware name: Giga Computing MZ73-LM2-000/MZ73-LM2-000, BIOS R19_F40 05/12/2025
-> > > > > [   16.162430] RIP: 0010:__put_partials+0x2f/0x140
-> > > > > [   16.162437] Code: 41 57 41 56 49 89 f6 41 55 49 89 fd 31 ff 41 54 45 31 e4 55 53 48 83 ec 18 48 c7 44 24 10 00 00 00 00 eb 03 48 89 df 4c9
-> > > > > [   16.162438] RSP: 0018:ff5117c0ca2dfa60 EFLAGS: 00010086
-> > > > > [   16.162441] RAX: 0000000000000001 RBX: ff1b266981200d80 RCX: 0000000000000246
-> > > > > [   16.162442] RDX: ff1b266981200d90 RSI: ff1b266981200d90 RDI: ff1b266981200d80
-> > > > > [   16.162442] RBP: dead000000000100 R08: 0000000000000000 R09: ffffffffa761bf5e
-> > > > > [   16.162443] R10: ffb6d4b7841d5400 R11: ff1b2669800575c0 R12: 0000000000000000
-> > > > > [   16.162444] R13: ff1b2669800575c0 R14: dead000000000100 R15: ffb6d4b7846be410
-> > > > > [   16.162445] FS:  00007f5fdccc23c0(0000) GS:ff1b267902427000(0000) knlGS:0000000000000000
-> > > > > [   16.162446] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > [   16.162446] CR2: 0000559824c6c058 CR3: 000000011fb49001 CR4: 0000000000f71ef0
-> > > > > [   16.162447] PKRU: 55555554
-> > > > > [   16.162448] Call Trace:
-> > > > > [   16.162450]  <TASK>
-> > > > > [   16.162452]  kmem_cache_free+0x410/0x490
-> > > > > [   16.162454]  do_readlinkat+0x14e/0x180
-> > > > > [   16.162459]  __x64_sys_readlinkat+0x1c/0x30
-> > > > > [   16.162461]  do_syscall_64+0x7e/0x6b0
-> > > > > [   16.162465]  ? post_alloc_hook+0xb9/0x140
-> > > > > [   16.162468]  ? get_page_from_freelist+0x478/0x720
-> > > > > [   16.162470]  ? path_openat+0xb3/0x2a0
-> > > > > [   16.162472]  ? __alloc_frozen_pages_noprof+0x192/0x350
-> > > > > [   16.162474]  ? count_memcg_events+0xd6/0x210
-> > > > > [   16.162476]  ? memcg1_commit_charge+0x7a/0xa0
-> > > > > [   16.162479]  ? mod_memcg_lruvec_state+0xe7/0x2d0
-> > > > > [   16.162481]  ? charge_memcg+0x48/0x80
-> > > > > [   16.162482]  ? lruvec_stat_mod_folio+0x85/0xd0
-> > > > > [   16.162484]  ? __folio_mod_stat+0x2d/0x90
-> > > > > [   16.162487]  ? set_ptes.isra.0+0x36/0x80
-> > > > > [   16.162490]  ? do_anonymous_page+0x100/0x4a0
-> > > > > [   16.162492]  ? __handle_mm_fault+0x45d/0x6f0
-> > > > > [   16.162493]  ? count_memcg_events+0xd6/0x210
-> > > > > [   16.162494]  ? handle_mm_fault+0x212/0x340
-> > > > > [   16.162495]  ? do_user_addr_fault+0x2b4/0x7b0
-> > > > > [   16.162500]  ? irqentry_exit+0x6d/0x540
-> > > > > [   16.162502]  ? exc_page_fault+0x7e/0x1a0
-> > > > > [   16.162503]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > > 
-> > > > For this problem, I have a hypothesis which is inspired by a comment in the
-> > > > patch "slab: remove cpu (partial) slabs usage from allocation paths":
-> > > > 
-> > > > /*
-> > > >  * get a single object from the slab. This might race against __slab_free(),
-> > > >  * which however has to take the list_lock if it's about to make the slab fully
-> > > >  * free.
-> > > >  */
-> > > > 
-> > > > My understanding is that this comment is pointing out a possible race between
-> > > > __slab_free() and get_from_partial_node(). Since __slab_free() takes
-> > > > n->list_lock when it is about to make the slab fully free, and
-> > > > get_from_partial_node() also takes the same lock, the two paths should be
-> > > > mutually excluded by the lock and thus safe.
-> > > > 
-> > > > However, I'm wondering if there could be another race window. Suppose CPU0's
-> > > > get_from_partial_node() has already finished __slab_update_freelist(), but has
-> > > > not yet reached remove_partial(). In that gap, another CPU1 could free an object
-> > > > to the same slab via __slab_free(). CPU1 would observe was_full == 1 (due to the
-> > > > previous get_from_partial_node()->__slab_update_freelist() on CPU0), and then
-> > > >
-> > > > __slab_free() will call put_cpu_partial(s, slab, 1) without holding
-> > > > n->list_lock, trying to add this slab to the CPU partial list.
-> > > 
-> > > If CPU1 observes was_full == 1, it should spin on n->list_lock and wait
-> > > for CPU0 to release the lock. And CPU0 will remove the slab from the
-> > > partial list before releasing the lock. Or am I missing something?
-> > > 
-> > > > In that case,
-> > > > both paths would operate on the same union field in struct slab, which might
-> > > > lead to list corruption.
-> > > 
-> > > Not sure how the scenario you describe could happen:
-> > > 
-> > > CPU 0					CPU1
-> > > - get_from_partial_node()		
-> > >   -> spin_lock(&n->list_lock)		
-> > > 					- __slab_free()
-> > >   -> __slab_update_freelist(),
-> > >      slab becomes full
-> > > 					-> was_full == 1
-> > > 					-> spin_lock(&n->list_lock)
-> > 
-> > In __slab_free, if was_full == 1, then the condition
-> > !(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) becomes false, so it won't
-> > enter the "if" block and therefore n->list_lock is not acquired.
-> > Does that sound right.
-> 
-> Nah, you're right. Just slipped my mind. No need to acquire the lock
-> if it was full, because that means it's not on the partial list.
+On 2/24/26 19:12, Zi Yan wrote:
+> When CONFIG_DEBUG_VM is not set, VM_WARN_ON is a NOP. Putting any statement
+> with side effect inside it is incorrect. Collect all !put_page_testzero()
+> results and check the sum using WARN instead after the loop. It restores
+> the same check in free_contig_range() before commit
+> e0c1326779cc ("mm: page_alloc: add alloc_contig_frozen_{range,pages}()"),
+> the commit prior to the Fixes one.
+>
+> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
+> Reported-by: Ron Economos <re@w6rz.net>
+> Closes: https://lore.kernel.org/all/1b17c38f-30d3-4bb4-a7e1-e74b19ada885@w6rz.net/
+> Suggested-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  From V2:
+> - Collect !put_page_testzero() to get the right result.
+>
+>  From V1:
+> - Collect all put_page_testzero() results and do a single WARN after the
+>    loop.
+>
+>   mm/cma.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 94b5da468a7d..15cc0ae76c8e 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -1013,6 +1013,7 @@ bool cma_release(struct cma *cma, const struct page *pages,
+>   		 unsigned long count)
+>   {
+>   	struct cma_memrange *cmr;
+> +	unsigned long ret = 0;
+>   	unsigned long i, pfn;
+>   
+>   	cmr = find_cma_memrange(cma, pages, count);
+> @@ -1021,7 +1022,9 @@ bool cma_release(struct cma *cma, const struct page *pages,
+>   
+>   	pfn = page_to_pfn(pages);
+>   	for (i = 0; i < count; i++, pfn++)
+> -		VM_WARN_ON(!put_page_testzero(pfn_to_page(pfn)));
+> +		ret += !put_page_testzero(pfn_to_page(pfn));
+> +
+> +	WARN(ret, "%lu pages are still in use!\n", ret);
+>   
+>   	__cma_release_frozen(cma, cmr, pages, count);
 
-Exactly.
+Tested-by: Ron Economos <re@w6rz.net>
 
-> 
-> Hmm... but the logic has been there for very long time.
-
-Yes.
-
-> 
-> Looks like we broke a premise for the percpu slab caching layer
-> to work correctly, while transitioning to sheaves.
-> 
-> I think the new behavior introduced during the sheaves transition is that
-> SLUB can now allocate objects from slabs without freezing it. Allocating
-> objects from slab without freezing it seems to confuse the free path...
-
-I feel it's not a big issue.
-
-I think the root cause of this issue is as follows:
-
-Before this commit, get_partial_node would first remove the slab from the node
-list and then return the slab to the upper layer for freezing and object
-allocation. Therefore, when __slab_free encounters a slab marked as was_full,
-that slab would no longer be on the node list, avoiding race conditions with
-list operations.
-
-However, after this commit, get_from_partial_node first allocates an object
-from the slab and then removes the slab from the node list. During the
-interval between these two steps, __slab_free might encounter a slab marked as
-was_full and then it want to add the slab to the CPU partial list, while at
-the same time, another process is trying to remove the same slab from the node
-list, leading to a race condition.
-
-> 
-> But not sure if we could "fix" that because the percpu partial slab
-> caching layer is gone anyway :)
-
-Yes, this bug has already disappeared with subsequent patches...
-
-By the way, to allow Ming Lei to continue the bisect process, maybe we should
-come up with a temporary workaround, such as:
-
-} else if (IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) {
-	spin_lock_irqsave(&n->list_lock, flags);
-	/*
-	 * Let this empty critical section push back put_cpu_partial, ensuring
-	 * its execution happens after the critical section of
-	 * get_from_partial_node running in parallel.
-	 */
-	spin_unlock_irqrestore(&n->list_lock, flags);
-	/*
-	 * If we started with a full slab then put it onto the
-	 * per cpu partial list.
-	 */
-	put_cpu_partial(s, slab, 1);
-	stat(s, CPU_PARTIAL_FREE);
-}
-
--- 
-Thanks,
-Hao
 
