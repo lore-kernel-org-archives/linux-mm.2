@@ -4,126 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BFFF55425
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 00:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1D7F55425
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 00:10:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E93606B0005; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
+	id 099586B0005; Tue, 24 Feb 2026 19:10:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E41376B0089; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
+	id 047046B0089; Tue, 24 Feb 2026 19:10:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D228E6B008A; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
+	id E6A796B008A; Tue, 24 Feb 2026 19:10:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BD8426B0005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 522FDC1A58
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:06:19 +0000 (UTC)
-X-FDA: 84481036878.27.8F64703
-Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7E5102000B
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:06:17 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=AkgzLPse;
-	spf=pass (imf13.hostedemail.com: domain of debug@rivosinc.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
+	by kanga.kvack.org (Postfix) with ESMTP id D1EB56B0005
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:10:08 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 939D91B6BE4
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:10:08 +0000 (UTC)
+X-FDA: 84481046496.04.676A4F6
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B23C9140007
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:10:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nh0kkNvm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771978206; a=rsa-sha256;
+	cv=none;
+	b=B8BfNWvZnu8KHnoSaVxnQ332lWUvqu67pA/KkGxES1Pq4NBSAntQKKqGKuhPdlRk5gN/bJ
+	knNlWPuMZPDuv33egA3+Wjrw30lV5sMB/IDMNOSXy3al9KCWJTHIPHP4AX05ZSpbG2mNLO
+	J9bUl9zupFKQVx79BNAnzDAn1UtyxKY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nh0kkNvm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771977977;
+	s=arc-20220608; t=1771978206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2hwbo+qh3ZKjcL1ArZ2cEab76Y3DqcSCVeG8QenLMGQ=;
-	b=GlER5C1G9XSoo3fV5mjJeK+F612VPGmzrdkUQ/214wR2scC/MKTn7Cthm9bMhhaWPDTazT
-	HdtGl45aSY/ixLbzOoX3TsH4iT6aI+FyGTqhXKXiu+vEt0mI8Jny/tuZwyPjnaDgs2DHWi
-	9jDBWHrxM1wXnZi9wjPpEK+lYOmHWlY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=AkgzLPse;
-	spf=pass (imf13.hostedemail.com: domain of debug@rivosinc.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771977977; a=rsa-sha256;
-	cv=none;
-	b=No6FBZ8eKZAZ1npWLnopJHhLYLuUHn4qV2IzKh+p2rQ4iRoTLmwlwIkl0YTcI8cxs9hnma
-	hZ006GOxKT95wXd11hGYRf1SCMBGYXPPu63DyMCImbo5vdiB9KI9xhMs5//A8GjDbnEW20
-	hxo3OOph7mEJ/6A2gbB6E+UEvbnwoYQ=
-Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-12732165d1eso6688797c88.1
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:06:17 -0800 (PST)
+	bh=dTN9nDYyDw1VitSAoVU8XmQ2K7N+PmzLt6G2wl3/Yas=;
+	b=fDAj3qYcn3AsmsbgCuadvrCBHCHRdm2o8RMlLwsSMEQUTmLJwsb14ttebN8FX0nd4CO1SJ
+	jW90BeIUd82UHqqaiM30qfpMOxVgyF8XXoKEe3zJUuezyH2DIJEuFoOh4DGFHyjkZHpJEt
+	w4616YjhqfssbBqaD6lTTc5q6Z55KF4=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4833115090dso59222225e9.3
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:10:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1771977976; x=1772582776; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2hwbo+qh3ZKjcL1ArZ2cEab76Y3DqcSCVeG8QenLMGQ=;
-        b=AkgzLPseSPLtLgvPE4Nv4s4a3YobFC4dHA+w3HTLS3DKGmnFRJPrMMjla16u6QJKol
-         254h0Wk4WLzUOoIzJZebWUUTK0L/sFDpn0VWwHFnaDPdUTcQwZrfbu49Y1WZRTOc9CaD
-         F5V6vMz90FxtFFai4QJGlX84+wUbIV6Q8WrR7IeGir3Z24p2hzpmAOhSopsYsVf0ErF1
-         G1LOsOQ6ju40ggHNj1TjoM+RqzESXXY3JFHdEn63cV4L5aivsZ0Mk49Url7yB139UK77
-         alO7r853a9d3PWzqnc5erknxCVCzYl+XzKLIoN77fRSk9pGMbHhj+Sh0PDUlCtEA8ru4
-         cbQw==
+        d=gmail.com; s=20230601; t=1771978205; x=1772583005; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dTN9nDYyDw1VitSAoVU8XmQ2K7N+PmzLt6G2wl3/Yas=;
+        b=nh0kkNvmHd25Ag4GM2aAmv1rDhvq9L7QLE9WlmkoZpE68/AEkSpXT+NIiO/gLXCs/k
+         Phcj179Izior8NBC4yjf90U/WgUC3tXd7nW6DBSj6SOHwegsF+1A1McsaYzirl3lg25y
+         qviPk6pZJ1iGumfzCaWqny77tM9y26GYbw+A8XjfC6VDeT/+Xx03RRnlQEEiZO3FZBQG
+         gb32fRk++KpdYHOCC2Bb4GGrYTz7h/hrWU5snBUsyRNi77KlMUFfGtm/Aj6PL1ahn+lB
+         fuyv40Ktjpc5Uw/9VFuRXWHEaJMs5dnLuT9zN4Cl38ru9ZX72NfNxGJOLkA4czPkjpeH
+         +epA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771977976; x=1772582776;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2hwbo+qh3ZKjcL1ArZ2cEab76Y3DqcSCVeG8QenLMGQ=;
-        b=vW4GW9rvZWkyTaMRReZS5V4XpWAVlVI/sQj7DgmefnTTwQHhQLRzhZ5a2aM4Fe+r9p
-         IvR1AofFfH0Cws48xkBl/d7vrqX71mcZYVxnAoDriMdcBAYE6nSCDnLGfTKFzn3nn3Rw
-         y6y4/XnfioEap6vQg3PcDyyLkjm3uqnjzerprirGUbCVAmx10mPzBswtbIRLJIHU5L/F
-         6lOxgUnnOwohGBBsCO88ebRzt3AadY/hDymWSLd3/FwrMam+ffoJED6+XIe6gyjz5SqK
-         eg23L01+d3FbNQb2j5kQkpyUeV1LNifbaZ5RLhEK1LJFFIbKI+w5qoGJov+v5GzjoQo6
-         g7LA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6McGehLy/SFBuqc292qekaa4Z5/rkTNeon23jRGc43FnK7Ykaqtz/k5MNCBRRRW8m1i8OkY26hw==@kvack.org
-X-Gm-Message-State: AOJu0YwoWRawOdiZDHDGqrE/xwBm/IkyMdfjE6lPzxZLt8k4LeVs7O1Z
-	hrBe9t5LJBmc+DH6zsRbSnBMS+RPIkB79MeH0GSN8GiOnkzC7TMFQPl53wgS2Yez024=
-X-Gm-Gg: ATEYQzx1L0wK9EfJDvD2Hb/nMLEuRy0GODSbQR8xq8vz+HJyimVoa2xGYp8Yv5jKkUN
-	Zfnn0z61U4MXu2XBDQjV8TatO/r99h/Iw+CgHOLCmHQBnleInnRehVCUESyRbdf1IwJMuFmJ5N+
-	rXgqhCnXiK1r9U7Ku7+wCpm4loRYx34NH8rYT+ItX/RySYPnbFJnKSFJ06Vu9oLUGok6MkiMnBM
-	QMsNFWZRtCYm65dAaKc+Xv1FEXONjMD9QRFC+3uGUdZnyZDopSMIQNGEpj6VymJJAX4mXxPgPRt
-	zW3W+ryjP3PYnthjSvBn6ya2E3eiB4nwykQtSKckSQhKR7OTq6fJjlb68J1p/WfkDj9qynZkxBY
-	3g7i1ngOgj/zSvhTLMQi3aTGaVLUZ755bN0gpuXGA4corS2sVH1+Mv7r+dNSuOEevy/lfulUK3d
-	mOxSQhm1UPxoSwss7/CyZWj8SbIeWS0zRL9xCjAF1o7kc=
-X-Received: by 2002:a05:7022:396:b0:127:c88:d597 with SMTP id a92af1059eb24-1276acec1a2mr5538246c88.10.1771977975966;
-        Tue, 24 Feb 2026 16:06:15 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1276af2edd7sm12707115c88.8.2026.02.24.16.06.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 16:06:15 -0800 (PST)
-Date: Tue, 24 Feb 2026 16:06:13 -0800
-From: Deepak Gupta <debug@rivosinc.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kito Cheng <kito.cheng@sifive.com>,
-	Jesse Huang <jesse.huang@sifive.com>,
-	valentin.haudiquet@canonical.com, heinrich.schuchardt@canonical.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/5] mm: arch/shstk: Common shadow stack mapping helper
- and VM_NOHUGEPAGE
-Message-ID: <aZ489QDHxEZfLydn@debug.ba.rivosinc.com>
-References: <20260224175800.2500729-1-catalin.marinas@arm.com>
+        d=1e100.net; s=20230601; t=1771978205; x=1772583005;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dTN9nDYyDw1VitSAoVU8XmQ2K7N+PmzLt6G2wl3/Yas=;
+        b=PrTqpfT75AHPwRSdG7x9PRtI8hk9k97vR6xCzR/Ua7XlUy6TuL3sXW6YnsnGUfESmk
+         nD1mqXBN5j2V3IKwE7zz+2wKDGgl9xul+CAEasXnWGmSZJ+Q3AC+iUjAzs0T39sLy67L
+         Dv051VVrNCd5Pw1eSC+FWxUYuR85BTjXM4kr7LUFaRSe7X/OcR66J87/U3uK69fG7M3u
+         z5gnbkvfPjMYerYiWkd7YENqCGIYqLghMKsB4zfpg7cicBRWkIDSYkOj9WeTK2tDTj/n
+         i+8xihkoIY9ks7V//DaMsfXAM6UmpWcifWZqCoeD5LP5BNZA8NPhduGYPLMCcz2YtEj3
+         oP/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWj48Sr3o0HZnL0DZtOpCwlZ8mCzyCdlaI3AUZQ4tGabILNpBXEsshQJGVlARkAwhSoiy6P8R2uDw==@kvack.org
+X-Gm-Message-State: AOJu0YxMMTtKljIOQDyngTVPMA48OTKXgJn9m69lO+X188RKDIwCW1bB
+	AYTdkrnmJLkuD2MQU+ee6Ke+AEN68o00zafEFBK67dATjUW322ZzumDY
+X-Gm-Gg: ATEYQzxXPEB+AoJ/sfOFn70a/yDlDbWJTodONkzQ+pHujqPwG1qX6A6zAmmAV6zRSHH
+	JA//pgO//mIOiqx26ryqm4k1vLKhWENfzOtK/NCfVHHXpveCg3DNf+r2QlQ02vNJFYm7BhIGbVj
+	xk6vIq/2S/NAyo7r8sx9oWzpuUABpRsMmIdnL3X763gHRecizr6Pj4hCJKB6RlbJ26RIMvY7WIe
+	kl65oQkvBk1nuzh8agf4xkAsVnXd813DbVSKRQguISr8cI2oTJV/jfaN1Np1sdIPUMelVUEY7au
+	Zw24WEYYPEcogZyBMcWUAN6uemaGZ2X3jSaQ+kiLS5TI963TfjOEj2dZXMPkCBsNS+3Xlf5LMVy
+	9M8CDODjUeqzamd1n1zo6FG74y5Mbv9veGS/LM/yb8V9ISoSCLfV0C36OqAOX4VIlVy6Zbk1D7z
+	VJwSsBTQ/kTDHqm8dTmgA=
+X-Received: by 2002:a05:600c:37cc:b0:483:54cc:cd89 with SMTP id 5b1f17b1804b1-483a95bec82mr255382725e9.9.1771978204745;
+        Tue, 24 Feb 2026 16:10:04 -0800 (PST)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-483bd72bd66sm28594105e9.11.2026.02.24.16.10.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Feb 2026 16:10:04 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: cgroups@vger.kernel.org,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v3 00/20] Virtual Swap Space
+Date: Wed, 25 Feb 2026 03:09:17 +0300
+Message-ID: <20260225000952.2778156-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260208215839.87595-1-nphamcs@gmail.com>
+References: <20260208215839.87595-1-nphamcs@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260224175800.2500729-1-catalin.marinas@arm.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: yye8yt55uhtq19fphfm1dpy9pfnd8kxj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7E5102000B
-X-Stat-Signature: cz8chcwp4kk4fkgjjbeasanw1749e8yp
-X-HE-Tag: 1771977977-214
-X-HE-Meta: U2FsdGVkX1/fxSwJAIqwOhZS1sDvuXwacdKUGHOTHZNC+ZoB/eHnxJu20sU2cHtbXVNkUCd8capoZtoHU2LrCbkFKlxnYh0FG9PxdNeGNR7NadNVuxa7BrsTpjL7j9piWEvpFynDzdIYjqFuI524tsdkbL9jUd2Wv2fPuL5HFh7CjkisAK6IoVTifZYcmXfQaHhz7GJgXo/+cFs750KlYis/M23fU+fl0wfdmevW1AXIoNeJh3qk8bzTDniXRwya7nU6BNqyOjuJYxxx3mamnFUe0GTJMmLWZxcxIwXVVPTF2Vb+HUgPCL6TLIdI/pUWEnQkGFO7cYrZfA7s5RvU9lQW5te+NKSMjXpnLbUMbB/W03uFFTIAS0WD+oZUVKLAtJqblhOypsaoHbbxdLT/ZV7WLyueITjnSyX4hb9iPq2tIFNBqcPGn9w/Sbbz3jZ6ol5DqUGXwi0R+mf/4wNnm9bc/IMmH9fwCdWgfGTQ+hKleXoI9Kj9M1mpOTom68cUcDVtUWcBW3/TRyjya53kHcbJN/N46ipPMos/Ghquao/J/wT25vPVfJHc7ivyTuU0IRjcw5rlyZfyDOzOdF9v3RMRnxiOV1zqn6Q9nj1e3v1a9lLFYiqgzzmPjGTXv3hxUEL9xd6YxirnaI+4uPKjGjxXVLqwH8N7CkhpuLNGB+JWCCxu34r+p7S+j0yHhgwvtxADtKjCXqx9qbid2qEGIU9hviHW8HdRdd9YYi92V7nJsWrGkul1Hoygv5Lir+mTwuqvXzvhxIck8S1PB1svcP7b+DJqlvlbz++7cuMFw4qXlevfSb7VY0DpOoTIsPGPo/2St7LXpgy8lnr0ABytyQwvcbpb2fa9uA0mHEwKo0mlt+3ZMvmAUsEzhLI906ROTmXlN2Jk84g16UgZCNeSgRDAOs/4o1oG6U7hdA1mWWMiSwdHfHdOafN6k3sKK0cmE3s0+FVOlZUBGgnrkir
- RN2H/kuc
- FLptjkqEGKDl6KD0blODtLnxDWqmmSk7orrG/5FWhIWpCUfLq0/vwuGX7Nm+H5jcpt9Ia36qAMei7K7P1LUMdt85hqfg8Jn+SR4U+qZMgG34+8SMiSo3ZT4zvDcIQnMqy9VD9pf/1ra8TWhMKw5ggqU89abAsANoRjnXO/NEoyxbmyYpnefiJ2jC6Cw7LMZMlBEFUtxrKy2rfxEgq1kS8npTl8BWV37H96J0CW3A+FyigvlS46R1pw1uX6sdBE6cdXoIgn+iXC0P593jHbY1OFAJkaW/xBjifztu6tfFC8AZnmaQVSjukcgAGlMaoL7su8lE3cchflxdOeoHkCtihuqx0xiR4ArdFT5rcwYeryie4cJybaKKbjQu0K00o69/GObqkSDVfRC5USJz0gKPfnjPrNhkwKtRh82nr7oyPTThAmdMh/tj8sI7iR1zNZ+eFdopVLCac1mGrYLA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B23C9140007
+X-HE-Tag: 1771978206-583620
+X-HE-Meta: U2FsdGVkX1+GOleF/ffm6loXMRy8dfrncqLE2piP4tG+WKpB7r3B4CKDhovkO85rhpuaCVPnekWpd6Z7dq04mMk479H5CDz95dytHtSkCbJgWTtiIGuCrrGrD+IozSBjEkpdiaD9TZvafJOXOLGaRejrbYpZLB1MhAdEHxvwZu35YfknE5xAz1xQ8yc3ti6Yp83CWXBaPdXkuJabUp3Mjw+MMZHKOy43KOkFNcG/HYX1oePUwEGg2HDDbnyLBDGOmp4SM9YNtlhsruYZo8cFqzgBn8lXgdBwbQsXXoKeQV8KsHbhQ5D0zTtQfeSSrw0ATy0Eo03ytcHGSYtolT+eoldYoVbT8GpBRXj4gfR4n1p/PYBhpJe4pyIXwv+FTiK9xuJjUuuflockDYXEyp/8JEIIchUvQYLdjlNK2D7SphqJrG/jB32vGtSLRKdbemSor4UPvYVqbbQbhRDrnT7wU9DIezjYnbC2+J50aN5as+bhByodCVBcA27YsEp1LQ0fEnnE5osUdJFeR9wJeJ9Jx7EVQpzB9X7qR4KcRWDBwoaWagogdDoOCo3+H0QckQR1qX4sVHyVvBWhSzV3A+xgld01+HZcdr+UeNsuGtPgjBwzxRgN3iWGlN/ImQ6n2QmO7FONXbMCclPCDhSCYhcRkbrx5RDBv42RB/+jCGIba6U4SdSNxkQKMdZYOYN5IUOx2oQPaQ2x24UymW8Qi6fx2cAjJzWKJrKvsSQwlqJoptmv9EvFe9K8qh2+aVwLS2l/bkarCTcJ7uBDktus0C7fqoBUBbXFwb/hBH2P2XB68ldfZNlLK4cSeXY52XP/S1M2BpkIpcCwCSGOM3auMs7cK2hYCYymmNGHXlLHJuEP5Ot5Bq//io0GEkxIwGWwfgSTRsXsxCEdssuj8z9G4CZevGas3ZGMHPYNhqR6K3EuoyymDBfh8FbICdiyWHcsYxa9g59YMp46uDcLiZxBS8Q
+ XS0F5oUL
+ ilpVmFZnlRpvno/gf0oLF2wUSOGWTdm/PwoTiXEjTHMi9FkwVmsCnm5urvC/C97/ykIHohBx+RUvtlAulRklcotmW7XYHAgBrWM0XAX1X9pHW0T3alIpH2WsylGynO7MO1CmEQs6AnwD65QgCRBZdemrzFLlPmPXShhZGYpPaWbHIVlUyHZPIFCMdyh71Si6QoLm/lbaAZF1drkOX7UfOn+XpnvhkWSWdnymIpvEdO86+hiHt5uBgQWbB9q9P7WRwVlFTQNjZG5WInFJE88HhmmSLwlu5OKstIpFKTLP31VB/vZUN4UHmxein69q2+lNSuuiLWmUvYIqUQitVbkJ2UT0BJqNhecl2tj2WIuDX5O931Nlvcz6xt4VQrkJPk9yCw0+jSWBVNrbdjUkiRA+Wz+mqGzGOHDhe/Kp87z4KlADVcofLPIDG7qmMc93pDAGfMW+O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,97 +120,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Kito, Jesse, Valentin and Heinrich.
+Nhat Pham <nphamcs@gmail.com>:
+> only tackles that same problem, but also achieve the dyamicization of
 
-I had to rebuild toolchain by bumping up prctl (prctl conflict in 7.0 merge led
-to landing pad prctls bumping by 1)
+I think there is a typo in "dyamicization"
 
-Jesse/Kito,
-
-So you might want to do that as well before sending out next iteration of libc
-changes.
-
-Rest inline.
-
-On Tue, Feb 24, 2026 at 05:57:52PM +0000, Catalin Marinas wrote:
->Hi,
->
->arm64, riscv and x86 all implement shadow stack support and use a
->similar pattern for mapping the user shadow stack (originally cloned
->from x86). Extract this common pattern into a shared helper -
->vm_mmap_shadow_stack().
->
->Patch 1 introduces vm_mmap_shadow_stack() in mm/util.c, which wraps
->do_mmap() with the flags required for a VM_SHADOW_STACK mapping. The
->helper uses PROT_READ|PROT_WRITE prot bits instead of the earlier x86
->approach of PROT_READ with an explicit VM_WRITE vm_flag. Functionally
->there is no difference. I looked up the history of this flag on the
->lists but it wasn't conclusive. My guess is that the original aim was to
->mark the vma not writable but that would confuse the kernel, so it ended
->up with the VM_WRITE flag instead.
->
->Patches 2-4 update arm64, riscv and x86 respectively to use the new
->helper, removing the duplicated mmap logic.
->
->Patch 5 forces VM_NOHUGEPAGE when allocating the shadow stack via the
->new helper, mirroring what commit c4608d1bf7c6 ("mm: mmap: map MAP_STACK
->to VM_NOHUGEPAGE") did for normal stacks. It will save some memory,
->especially when the ulimit -s is high.
->
->Boot-tested on x86, fully tested on arm64. I do not have a compiler
->version that supports the -march=rv64ima_zicfiss_zicfilp option for
->riscv, so any help with testing is welcome.
-
-Catalin,
-
-FWIW, I applied your patches on v7.0-rc1 and risc-v cfi kselftest passes
-
-# ./cfitests
-TAP version 13
-# Starting risc-v tests
-# Landing pad and shadow stack are enabled for binary
-# cfi_ptrace_test, ptrace test succeeded
-# Executing RISC-V shadow stack self tests
-1..5
-# Exercising shadow stack fork test
-# Parent pid 130 and child pid 132
-# dummy calls for sspush and sspopchk in context of parent
-# Spewing out shadow stack ptr: 7fff914b7fb8
-   This is to ensure shadow stack is indeed enabled and working
-# Waiting on child to finish
-# dummy calls for sspush and sspopchk in context of child
-# Spewing out shadow stack ptr: 7fff914b7fb8
-   This is to ensure shadow stack is indeed enabled and working
-ok 1 shstk fork test
-# Exercising shadow stack map test
-ok 2 map shadow stack syscall
-# Exercising shadow stack gup tests
-ok 3 shadow stack gup tests
-# Exercising shadow stack signal test
-ok 4 shadow stack signal tests
-# Exercising shadow stack protection test (WPT)
-ok 5 memory protections of shadow stack memory
-# Totals: pass:5 fail:0 xfail:0 xpass:0 skip:0 error:0
-#
-
-So you can tag tested by for risc-v.
-
->
->Thanks.
->
->Catalin Marinas (5):
->  mm: Introduce vm_mmap_shadow_stack() as a helper for VM_SHADOW_STACK
->    mappings
->  arm64: gcs: Use the new common vm_mmap_shadow_stack() helper
->  riscv: shstk: Use the new common vm_mmap_shadow_stack() helper
->  x86: shstk: Use the new common vm_mmap_shadow_stack() helper
->  mm: Do not map the shadow stack as THP
->
-> arch/arm64/mm/gcs.c         | 14 +-------------
-> arch/riscv/kernel/usercfi.c | 12 +-----------
-> arch/x86/kernel/shstk.c     | 12 ++----------
-> include/linux/mm.h          |  4 ++++
-> mm/util.c                   | 29 +++++++++++++++++++++++++++++
-> 5 files changed, 37 insertions(+), 34 deletions(-)
->
+-- 
+Askar Safin
 
