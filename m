@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2FCFFD3770
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:14:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A68AFFD376A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:14:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E36F6B00A8; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
+	id 165616B00AA; Wed, 25 Feb 2026 11:14:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467236B00A9; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
+	id 10F996B00AB; Wed, 25 Feb 2026 11:14:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36FF46B00AA; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
+	id 03CB26B00AC; Wed, 25 Feb 2026 11:14:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 25A956B00A8
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:14:13 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA74A1B6F18
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:12 +0000 (UTC)
-X-FDA: 84483475944.19.0F94CBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 61BA040008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E29F06B00AA
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:14:19 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C1131B717C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:19 +0000 (UTC)
+X-FDA: 84483476238.01.A5C31E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 71FD840006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf11.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772036051;
+	s=arc-20220608; t=1772036058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=jiEHsHfMpWlRl7bljrHmdd+gJcFtALSCg3Y7Z7VxAHw=;
-	b=dGAoek1+DLYZtmSioXq29/ifiEUmjnis+LcS6YL5ZbNwH3az4ILjQex6rXKkJoVobcPKLG
-	9VDHM4625V45KPqBT8N73kFnoG5OlT7DTCMg8X/XqwvfvhvZl8kHuzWNfAIJ8Q1jyCfCAO
-	MfgXUxzj5f1diAZ7uHh+xFPcKzJzCzg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=9OjAZugVPCx8r/+dS+ND9M3tTcf9QCbsN8AjDXYD3Wo=;
+	b=wazzz4BQKiV83DbQtHwtC008o5Za38h8fGNy3marED/dJisQuy45nb84ECzV+ymE6BaRge
+	oSKlVxq5Ysab+ZcS5hFlvZvU4FsIxoNYFnVqBV3K7kMYo9RB4l2awCrIbln+GcOTwfC64W
+	QM0OnTXJxRK1zuB/viuzFEfhqND7SZA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036051; a=rsa-sha256;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf11.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036058; a=rsa-sha256;
 	cv=none;
-	b=4oe34RNtPfpKLtNfH6w7JZ/5hrF0EJJw3SQ0EQ7I9t1RQrdfm6CrbepH7yvUTUBsvyBlGL
-	32SS2QGK4OdMRpI/zQjWL9QeMd8qtKNVW4MYNx4Utj+7wOV+9uAt3gt+9BILM9qtakyQCL
-	TUNWW6P1Arg8PR5S5SkFTxOqF5BfgEY=
+	b=byItPzC1wGVNhKz88fivHgKq8KVFdV5DL6IgxM7vmDnavCHuWN6VG3+qCM4xtomGNOl/P4
+	RCd9OjBMiTl0X9Mej6oqfqu6BXMTOxOxJ8ez2um/kDliMypHJhz9BvCkZ3DwAcM1LxEOaC
+	MuEiCbs5ezQEblee3n43X2hp63LtTVU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D443B600AE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 605B644274;
+	Wed, 25 Feb 2026 16:14:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9970C2BC87;
 	Wed, 25 Feb 2026 16:14:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38738C19421;
-	Wed, 25 Feb 2026 16:14:07 +0000 (UTC)
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -72,20 +73,22 @@ Cc: Will Deacon <will@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 0/5] mm: arch/shstk: Common shadow stack mapping helper and VM_NOHUGEPAGE
-Date: Wed, 25 Feb 2026 16:13:57 +0000
-Message-ID: <20260225161404.3157851-1-catalin.marinas@arm.com>
+Subject: [PATCH v2 1/5] mm: Introduce vm_mmap_shadow_stack() as a helper for VM_SHADOW_STACK mappings
+Date: Wed, 25 Feb 2026 16:13:58 +0000
+Message-ID: <20260225161404.3157851-2-catalin.marinas@arm.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260225161404.3157851-1-catalin.marinas@arm.com>
+References: <20260225161404.3157851-1-catalin.marinas@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: owzjcz6cr9x34ezc78imhqe1ykwq91xp
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 71FD840006
+X-Stat-Signature: ksmg9cktsypy6m9b86im7cefef9mmzz8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61BA040008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772036051-573169
-X-HE-Meta: U2FsdGVkX1/NOUP1osYaHYgW1YkA3nn9Oy3PLzvS5WG3tzNznZrlQVtF443U9Y+HACWI2jU0+QbdiSds/Lug9gPFFGhkfrIbfheuGNW3FDiPTOrvktfh5lnQxuM6sdsfW+rBRkBI7Ewu3Pcj0sDfZvG4Ie0w6A2cp47SlHlpXB0yMO3lPfUgbDBsux32KFyDirKU7irp2bKsPFrIH+DVIhzznUmCbKej0RStv9s5U6YPTnXnwuRSMRDl3tZbtDjFHEdUohpChuyDzuK6Jx7wHzUAszF5Ejy2lM8D6GUydbQSJwUI79NiRHohkpPuWX/F/NV2WRTvqndVRdREE4KouPXbU2Bun7SG7EYn99XbZi0sO44idbM5aZ40mSo3GP6rLoQrUsj0+JczG4kzzOUvjObeeb2Pc28Ab7RUebcEL62O/AielvMTWdsUH4tdToqKSYsn5QlPtD6uta3pb33xhqAp+YB2IGmaaIfm+LSeHRQrz1U3nAm3B4ftkfFRHa/JyXUYtp3MrllGhgQi6P4fR/YHYWRf/xbjlRcU6HCKPgzF2n3fSdG2PJMYodzXD0y2TV7Y1+iHyQUtapiGWe48UEUEt/6eVYVodH1AwEbeKIo1EH9jGLKWtcWiNAYBgUUNUNJuOdZlLIGavcRTN4vKwSj25K/9bYaPxCmXupbuMwimZW1paFgI+XKNd6X5ii6BLq+6oMDRHQl899mraZpedASLgy2NmgjqXZQEwrkPQVFFszFUwmXEmoVbrF6aFO5Gmu6PtCN4PA9wn6X6y5hvriqGbAfdpWOowyqY/9Zp22E7whh48Es7uYCBSALJYUAvYg3E7Ljdb0tMLYoyTfUM6o0tBny39kVUZ/DR03FzHwSzz8IRtJerpJnjNHmW7OW/zgJU4FiXClb4HdiCrhLQo6gjC9CLD0x94aXHailpabUw08ywfc03kuTciTCMdA3J7WK4EsHaIwZmwrHXKOy
- 7bb7qPaI
- GAaM8s7M7rsf1jQMdIxRh/E2KqKJSf8qEl53ic6/TVw83Oi1YKB1dbXrPzIIOmLAmKDCKywYUJEjMbibG/7K2ZgucdRWfch0FudB89InESALmTUMQowSju0ZzaYF1zKHKZ6cTr0+P+iatkhSuh3kmevoNyD1WrzwdwiG1e1NEiTvBDfOGP2wTSXSNGI/938aCflXqIiBFSwJO3phuApRU/rVEmh7BFvgBHyynwaRUwXpTYFljfq96zzEn206u1t/N6a8y956K9LGS56N3X2V1XggxWmBgDlXuHJBb23x3myvVhwEcaRHJXFo61edZemFCNrMKlZJ6PizSf31z0KYoGrmEC0ya/4fb7/xENWSnRzqksXCFQ35mTmdJcKxSl0OjkJ6Pu+iQOojweClBt7k3lDjoKmqRfLap5n0AEmEgo8Gu8PqZ93A7JLIyLQ==
+X-HE-Tag: 1772036055-301917
+X-HE-Meta: U2FsdGVkX188NmGDkpCSOMdNIdMg6zLfhpyiao1BMDAOGkxU8eDeAWAsG6LtZXm9+boIeGFMJwEtzS1St8AYTvGQhD/d8BYD1a1zS0HY3oM4DnWdBEe7+YTrPjA4YxQkoyRIcw8W6kAkdKr75NyidTeUPB1K+KZdJibLL1lbvpxN90cop9uMOdbEvAZTxx+Q6Uafu+ogkrqWqyPpVZv6qdI5g84t5Vv6gY6nBOKDtzsuYrYO7G/F9ItNX1KFpr0EIHpOogFewdP1sbN+EVBZ9nsQ4c8jCnJwOmZQzEUUe+u8c3UrLKrDeaAzgGPyEO6P+nclb7mKJ5m40kqJTje0SYIG/3TwyWACXpkJQG4koJu0wdkYJrRNfs+KbKskEH37T57/CP19xFo6PjQpiUduYE+BVoJ+suRrZNMDi09FF6eITaVsXEl/OnjCTpaUorSR0nG7og4Mi3hSGupD42HrmXOjr6uEjS1QxOkVGMkG6Ghn9L+QByWPRR3xhBG//VfBTStICTwCPGD9LP+/mtR4hEq7Tf3DoBU4LXDoTMIpgAQ8NG2YkMK8klAc2j5YZBqqBcmMIMrZR0lv7F1PdiLf4lh6t/I2ufnHRj99xiTbu4OywxhZSBwRKS9Kbi2dtFJClG4dkKC2CpLB+j5KVqKyAPaYskPrc5d1kUEeSfEsASguaig7qwfWD7Cds6Ew77oCrFxWAm+iq45Qv7s1hK2QqSgm99fff0lkxMerxX8aizSC+KbcIeFuDNSNOm9nRelE2Sc6a96INp2BtONoA9cyfWPVXtSvPh4vb6374JZKCNBs1TYHFkP69Ar6jMrAY881BfVju5IRLGNGj9AMSjhQUuS7pW8D9c9At3rNCFBfLOljgR+JlKj86qt4aaOHCvD2sFYFiu51qel1ircSbYptQ78PYw5bivZxGJr2mscDTVVZ6j4gjy18SxtbGg+pvEKDRcfQn9DaENh21OuuMpg
+ ogaLGfdd
+ hDsfKuOORFY6+o0tbLcT42dS1LU7bLTRGzb9rZSrkcRThOiI4qCV5m4GAuGZmLbZxuAwKPqsZP0rJOfranjR2SpE9BHJdMGqIZht8Nuffz3BhRRaAfORAmFEC3W0tKF5LWgLgoKwctPVTY2JC0ab4VfioXwk0WsswYO2lKKtF5lT0Dx1sZ9ZyF/xw0CMD3nTcvUmq4LeXmacaq+HXQYsw/jnIznKDtKF5mHt/WIRlo2OJC5vbogNX5j2RzdxBFBhUsBhByPtoMT526Uku7dUdZXFE8hqTOj7usZClq7rx/djIkxF0YYGWkOAdg/4ZAfCWPGBJ+lWKnQNhCRRb2oGwdnq0vupL09TEPmKwa3izZymnXATncYVzhLQEPjBqYgWHcsqXcc01AyIdjy2E+TBTQQ2IwJ/+rDkXP5M5JPZV70q/INeqkoYXa9rDrnLDQRVH+8BWQTlfzUsE0RfJvjsX68BdUDTXrLJbu+hwygeZWus1ANVI9qQJyZPHf08XrtpwKLQepz46Q0z1MUAUqYHTUw8jgz4Nr3Y0anJMZPI644iH/AHSE8OnUs4DFkYc/p/+r67G7lj8XidVYGs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,36 +96,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is v2 of the series extracting the common shadow stack mmap into a
-separate helper for arm64, riscv and x86. Thanks for the review.
+arm64, riscv and x86 use a similar pattern for mapping the user shadow
+stack (cloned from x86). Extract this into a helper to facilitate code
+reuse.
 
-Andrew, if you are happy with this, I think taking the patches through
-the mm tree makes most sense.
+The call to do_mmap() from the new helper uses PROT_READ|PROT_WRITE prot
+bits instead of the PROT_READ with an explicit VM_WRITE vm_flag. The
+x86 intent was to avoid PROT_WRITE implying normal write since the
+shadow stack is not writable by normal stores. However, from a kernel
+perspective, the vma is writeable. Functionally there is no difference.
 
-Minor changes since v1:
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Deepak Gupta <debug@rivosinc.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+---
+ include/linux/mm.h |  2 ++
+ mm/util.c          | 25 +++++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
 
-- Removed #ifdef from the helper function declaration
-- Used two tabs for the alignment of multi-line function arguments
-- Added "There is no functional change" to the arch patches log
-- Collected ack/review/test tags
-
-v1:
-
-https://lore.kernel.org/r/20260224175800.2500729-1-catalin.marinas@arm.com
-
-Catalin Marinas (5):
-  mm: Introduce vm_mmap_shadow_stack() as a helper for VM_SHADOW_STACK
-    mappings
-  arm64: gcs: Use the new common vm_mmap_shadow_stack() helper
-  riscv: shstk: Use the new common vm_mmap_shadow_stack() helper
-  x86: shstk: Use the new common vm_mmap_shadow_stack() helper
-  mm: Do not map the shadow stack as THP
-
- arch/arm64/mm/gcs.c         | 14 +-------------
- arch/riscv/kernel/usercfi.c | 12 +-----------
- arch/x86/kernel/shstk.c     | 12 ++----------
- include/linux/mm.h          |  2 ++
- mm/util.c                   | 29 +++++++++++++++++++++++++++++
- 5 files changed, 35 insertions(+), 34 deletions(-)
-
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5be3d8a8f806..61071dd72eb6 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3908,6 +3908,8 @@ extern int vm_munmap(unsigned long, size_t);
+ extern unsigned long __must_check vm_mmap(struct file *, unsigned long,
+         unsigned long, unsigned long,
+         unsigned long, unsigned long);
++extern unsigned long __must_check vm_mmap_shadow_stack(unsigned long addr,
++		unsigned long len, unsigned long flags);
+ 
+ struct vm_unmapped_area_info {
+ #define VM_UNMAPPED_AREA_TOPDOWN 1
+diff --git a/mm/util.c b/mm/util.c
+index b05ab6f97e11..51f7f417e91f 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -618,6 +618,31 @@ unsigned long vm_mmap(struct file *file, unsigned long addr,
+ }
+ EXPORT_SYMBOL(vm_mmap);
+ 
++#ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
++/*
++ * Perform a userland memory mapping for a shadow stack into the current
++ * process address space. This is intended to be used by architectures that
++ * support user shadow stacks.
++ */
++unsigned long vm_mmap_shadow_stack(unsigned long addr, unsigned long len,
++		unsigned long flags)
++{
++	struct mm_struct *mm = current->mm;
++	unsigned long ret, unused;
++
++	flags |= MAP_ANONYMOUS | MAP_PRIVATE;
++	if (addr)
++		flags |= MAP_FIXED_NOREPLACE;
++
++	mmap_write_lock(mm);
++	ret = do_mmap(NULL, addr, len, PROT_READ | PROT_WRITE, flags,
++		      VM_SHADOW_STACK, 0, &unused, NULL);
++	mmap_write_unlock(mm);
++
++	return ret;
++}
++#endif /* CONFIG_ARCH_HAS_USER_SHADOW_STACK */
++
+ /**
+  * __vmalloc_array - allocate memory for a virtually contiguous array.
+  * @n: number of elements.
 
