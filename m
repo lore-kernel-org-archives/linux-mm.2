@@ -4,118 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357E7F55431
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Feb 2026 23:45:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BFFF55425
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 00:06:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ACB86B0005; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
+	id E93606B0005; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55A746B0089; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
+	id E41376B0089; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43BF96B008A; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
+	id D228E6B008A; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29ABE6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 18:45:17 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BA0E8B1FF
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:45:16 +0000 (UTC)
-X-FDA: 84480983832.13.28F98BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F408940003
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:45:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="i/UCxPaF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771976715; a=rsa-sha256;
-	cv=none;
-	b=emKhVsdsFDgkWqY3FOKtsZ3lo8mphkiPlfU+NX1Lt5RGkcCLepKoyLvZd9N5oexK0kb5ee
-	g5GzQFZR6hdM86wsnQpAvMSf8wNza/b6F/KZmpB0IRtR2ziv0Tq/efT1l09PHKrx4kxGP/
-	MUaoHCY0QH+pdapKuyGwJNjv3Sb2f+g=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="i/UCxPaF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BD8426B0005
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:06:19 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 522FDC1A58
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:06:19 +0000 (UTC)
+X-FDA: 84481036878.27.8F64703
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7E5102000B
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:06:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=AkgzLPse;
+	spf=pass (imf13.hostedemail.com: domain of debug@rivosinc.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771976715;
+	s=arc-20220608; t=1771977977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ezX10oK5/u+NTgYSFdiQ6Hdd1Z6R4dOgw7jwXcbCAZ4=;
-	b=AYUQ7c9Xrn3GhDjo8pDITWC/wK2jIHFBCtcDPTCDPOlL/9YZTFAo2FsnVqw5/dZkwxylQa
-	VF5axR4C6dKRp1vcleaqbRqkVaJE5I5KJAVDrfawYWh8im3GkJtn1eHyj/JmLxzlhfRy3C
-	Q8kLUHhF4yTq6Gzwrma+46Ykfnw2dAw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44E6860053;
-	Tue, 24 Feb 2026 23:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2756C116D0;
-	Tue, 24 Feb 2026 23:45:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771976714;
-	bh=5uvJhF5LDkPTld+1CeJL8wog5w0F76/q9pZPlIbrTVo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i/UCxPaFsPqa+xdPI+yB+vtq/dghbqe5ao7qw2QhsssZyTjiJFZoRDeDg0C+V+F6D
-	 btqHA6Ce0RsaFpsCG0phcfSDCWCGHEtDFifDJ/fGz9vUe9gQb85sktY/zDkOUPRBTy
-	 lbVlB+mAMllViQm2yDW0sYPLNKChX2FtIXxjXvIByDit8prF0wE8RrNrSPE9aDHfgE
-	 /YkMvY/DRKm4lF/LlPMBpgYCpc9dabq0AC3SjzEkhdpBRp5qYxa87cFPqpyTwx4z0d
-	 AL8uxuu9jRkVzCPb3IiX2g9AHxWa9hGVNE1d39cKrtH4CXqWb6u3ZcbXuDyWwQtmbo
-	 IitiGV/DnD/+A==
-Date: Tue, 24 Feb 2026 15:45:13 -0800
-From: Kees Cook <kees@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	John Hubbard <jhubbard@nvidia.com>, Joe Perches <joe@perches.com>,
-	Christoph Lameter <cl@linux.com>, Marco Elver <elver@google.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Jann Horn <jannh@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Alexander Potapenko <glider@google.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v6 4/5] slab: Introduce kmalloc_flex() and family
-Message-ID: <202602241541.65DBBD8CB@keescook>
-References: <20251203233029.it.641-kees@kernel.org>
- <20251203233036.3212363-4-kees@kernel.org>
- <675ec547-dac8-465f-b3c9-a0f97c5bdef7@lucifer.local>
+	bh=2hwbo+qh3ZKjcL1ArZ2cEab76Y3DqcSCVeG8QenLMGQ=;
+	b=GlER5C1G9XSoo3fV5mjJeK+F612VPGmzrdkUQ/214wR2scC/MKTn7Cthm9bMhhaWPDTazT
+	HdtGl45aSY/ixLbzOoX3TsH4iT6aI+FyGTqhXKXiu+vEt0mI8Jny/tuZwyPjnaDgs2DHWi
+	9jDBWHrxM1wXnZi9wjPpEK+lYOmHWlY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=AkgzLPse;
+	spf=pass (imf13.hostedemail.com: domain of debug@rivosinc.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771977977; a=rsa-sha256;
+	cv=none;
+	b=No6FBZ8eKZAZ1npWLnopJHhLYLuUHn4qV2IzKh+p2rQ4iRoTLmwlwIkl0YTcI8cxs9hnma
+	hZ006GOxKT95wXd11hGYRf1SCMBGYXPPu63DyMCImbo5vdiB9KI9xhMs5//A8GjDbnEW20
+	hxo3OOph7mEJ/6A2gbB6E+UEvbnwoYQ=
+Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-12732165d1eso6688797c88.1
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:06:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1771977976; x=1772582776; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2hwbo+qh3ZKjcL1ArZ2cEab76Y3DqcSCVeG8QenLMGQ=;
+        b=AkgzLPseSPLtLgvPE4Nv4s4a3YobFC4dHA+w3HTLS3DKGmnFRJPrMMjla16u6QJKol
+         254h0Wk4WLzUOoIzJZebWUUTK0L/sFDpn0VWwHFnaDPdUTcQwZrfbu49Y1WZRTOc9CaD
+         F5V6vMz90FxtFFai4QJGlX84+wUbIV6Q8WrR7IeGir3Z24p2hzpmAOhSopsYsVf0ErF1
+         G1LOsOQ6ju40ggHNj1TjoM+RqzESXXY3JFHdEn63cV4L5aivsZ0Mk49Url7yB139UK77
+         alO7r853a9d3PWzqnc5erknxCVCzYl+XzKLIoN77fRSk9pGMbHhj+Sh0PDUlCtEA8ru4
+         cbQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771977976; x=1772582776;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2hwbo+qh3ZKjcL1ArZ2cEab76Y3DqcSCVeG8QenLMGQ=;
+        b=vW4GW9rvZWkyTaMRReZS5V4XpWAVlVI/sQj7DgmefnTTwQHhQLRzhZ5a2aM4Fe+r9p
+         IvR1AofFfH0Cws48xkBl/d7vrqX71mcZYVxnAoDriMdcBAYE6nSCDnLGfTKFzn3nn3Rw
+         y6y4/XnfioEap6vQg3PcDyyLkjm3uqnjzerprirGUbCVAmx10mPzBswtbIRLJIHU5L/F
+         6lOxgUnnOwohGBBsCO88ebRzt3AadY/hDymWSLd3/FwrMam+ffoJED6+XIe6gyjz5SqK
+         eg23L01+d3FbNQb2j5kQkpyUeV1LNifbaZ5RLhEK1LJFFIbKI+w5qoGJov+v5GzjoQo6
+         g7LA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6McGehLy/SFBuqc292qekaa4Z5/rkTNeon23jRGc43FnK7Ykaqtz/k5MNCBRRRW8m1i8OkY26hw==@kvack.org
+X-Gm-Message-State: AOJu0YwoWRawOdiZDHDGqrE/xwBm/IkyMdfjE6lPzxZLt8k4LeVs7O1Z
+	hrBe9t5LJBmc+DH6zsRbSnBMS+RPIkB79MeH0GSN8GiOnkzC7TMFQPl53wgS2Yez024=
+X-Gm-Gg: ATEYQzx1L0wK9EfJDvD2Hb/nMLEuRy0GODSbQR8xq8vz+HJyimVoa2xGYp8Yv5jKkUN
+	Zfnn0z61U4MXu2XBDQjV8TatO/r99h/Iw+CgHOLCmHQBnleInnRehVCUESyRbdf1IwJMuFmJ5N+
+	rXgqhCnXiK1r9U7Ku7+wCpm4loRYx34NH8rYT+ItX/RySYPnbFJnKSFJ06Vu9oLUGok6MkiMnBM
+	QMsNFWZRtCYm65dAaKc+Xv1FEXONjMD9QRFC+3uGUdZnyZDopSMIQNGEpj6VymJJAX4mXxPgPRt
+	zW3W+ryjP3PYnthjSvBn6ya2E3eiB4nwykQtSKckSQhKR7OTq6fJjlb68J1p/WfkDj9qynZkxBY
+	3g7i1ngOgj/zSvhTLMQi3aTGaVLUZ755bN0gpuXGA4corS2sVH1+Mv7r+dNSuOEevy/lfulUK3d
+	mOxSQhm1UPxoSwss7/CyZWj8SbIeWS0zRL9xCjAF1o7kc=
+X-Received: by 2002:a05:7022:396:b0:127:c88:d597 with SMTP id a92af1059eb24-1276acec1a2mr5538246c88.10.1771977975966;
+        Tue, 24 Feb 2026 16:06:15 -0800 (PST)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1276af2edd7sm12707115c88.8.2026.02.24.16.06.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 16:06:15 -0800 (PST)
+Date: Tue, 24 Feb 2026 16:06:13 -0800
+From: Deepak Gupta <debug@rivosinc.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kito Cheng <kito.cheng@sifive.com>,
+	Jesse Huang <jesse.huang@sifive.com>,
+	valentin.haudiquet@canonical.com, heinrich.schuchardt@canonical.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] mm: arch/shstk: Common shadow stack mapping helper
+ and VM_NOHUGEPAGE
+Message-ID: <aZ489QDHxEZfLydn@debug.ba.rivosinc.com>
+References: <20260224175800.2500729-1-catalin.marinas@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <675ec547-dac8-465f-b3c9-a0f97c5bdef7@lucifer.local>
-X-Stat-Signature: korjnst49c7as7ceha1qpwnii54nm4uw
+In-Reply-To: <20260224175800.2500729-1-catalin.marinas@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F408940003
-X-HE-Tag: 1771976714-253063
-X-HE-Meta: U2FsdGVkX1/XEJMkeHEZHXxzz7AA70VAi9cBR6MKRIbkO938CadSZaKiV0hqTuzjUF3nQfYzE6EpmwTmy8BdDHwI5Imf9TvMSaGSc/+gOHGZqgFoTgRf+QmSOkxsREjck1VgQy3mKaSCpBJam2+b90baOsuCB3M+yeJwH2dXRe5nNHjfEiQxqkOoaczsXij5reIhbH3hU8fyMZogkEPCGAyVVoNo7Aq0/ik0Z/qp7bQqcpalFSLiAuI7K+cPHq4wYnXAOlylwoA2WXpvTuBFU4Cv0u0pln4nUPLmOrbt3lb2Pf/0nTL7AfkIcNvh1kd4cJvDC4gQykmGmdZwUzq30Flrblcnt5NTQzPqi1LSHC/Korn7bva+R9MV6zXQhToMxFTL50fQHdas7S+zMig0vgGFmzBLax4dYxGQ4PdZllZDs6UwJPuKDtNkDs6cxPJu+G7b1mietxaR04FHyDmRuQ2HuYfh7ARY50McczuADKgPM87RHUFCzYZjjsrtzwEzD7U1DOOynEtagCBHeotpSAlQEkFMeYSjbcwrrOQbUE79OGN9xwGnzvkCHKyYfSoO4kll/sMYgD5s1u33gY1mNqAxGkeKvkKMK6+j7Q6w7bVo/Mpv23Ym2zfSQWMWBTITDCDvsYUof7/xIBNydeucvFi2HxqxbI2sAS3nmBa6k7a51nqsNLm1n5qK2ODjOK5yn0GBkfBwVuwsDKfpB0D4ZPTvGazJX21HhtmwDqUMQZW5DMC9uxQ6mUW9rLZTsGOCnscUmu2pjJHX26u+19l6ioQRRgLla6w9N0cfo4zttow3BdeSwVTkEdiOf1meaqBoNDnWVOo78AwHwTppXcSmnwTyT/Xr1IQlZejDVsgu2Eaa7d69SfD1g+RgSetkq/rSPIiv23Fxz5N+H8O4pnFzPObBWfirtV2WhOTMaIf7kIITygE0WtYGTXvqni1yzg5C0c/x6NSjXGIS6k0M5I7
- 7CMQY5oZ
- Fx2uz6tFMXOwKGc0qYW7Qtec6smVcjPUWwQjyHefZzoTMNIvF09Nonhyqpu4jvOYUEbltINhqs/mSMjIDkxOh8TzpwlEHTuS2Ntx3J91wlySOJqniG5yntjwRiNzf4Lw7BpNcAVPaxC6kQP4/ZHX4dMViv6QnuDPavFCnIzy0AOBXcLUpcbPBInR1fy8EVQQUmklZR8l9bfzS3qLMB3loBV/ptempB4h1HM8rh79EVcxoM59R4eRUV3S28Wx4EI/fFItTURL4PpX8eKcvvEWVPhkb4HB/MTVywAYiWmqsu07Ix2ekWqwl3LUh66MxIKVkVue0BaUEIDJejYSBVcCGTFsRAirf/TRRLmcapiNDwlG9llZ3wG3EKkWLEg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7E5102000B
+X-Stat-Signature: cz8chcwp4kk4fkgjjbeasanw1749e8yp
+X-HE-Tag: 1771977977-214
+X-HE-Meta: U2FsdGVkX1/fxSwJAIqwOhZS1sDvuXwacdKUGHOTHZNC+ZoB/eHnxJu20sU2cHtbXVNkUCd8capoZtoHU2LrCbkFKlxnYh0FG9PxdNeGNR7NadNVuxa7BrsTpjL7j9piWEvpFynDzdIYjqFuI524tsdkbL9jUd2Wv2fPuL5HFh7CjkisAK6IoVTifZYcmXfQaHhz7GJgXo/+cFs750KlYis/M23fU+fl0wfdmevW1AXIoNeJh3qk8bzTDniXRwya7nU6BNqyOjuJYxxx3mamnFUe0GTJMmLWZxcxIwXVVPTF2Vb+HUgPCL6TLIdI/pUWEnQkGFO7cYrZfA7s5RvU9lQW5te+NKSMjXpnLbUMbB/W03uFFTIAS0WD+oZUVKLAtJqblhOypsaoHbbxdLT/ZV7WLyueITjnSyX4hb9iPq2tIFNBqcPGn9w/Sbbz3jZ6ol5DqUGXwi0R+mf/4wNnm9bc/IMmH9fwCdWgfGTQ+hKleXoI9Kj9M1mpOTom68cUcDVtUWcBW3/TRyjya53kHcbJN/N46ipPMos/Ghquao/J/wT25vPVfJHc7ivyTuU0IRjcw5rlyZfyDOzOdF9v3RMRnxiOV1zqn6Q9nj1e3v1a9lLFYiqgzzmPjGTXv3hxUEL9xd6YxirnaI+4uPKjGjxXVLqwH8N7CkhpuLNGB+JWCCxu34r+p7S+j0yHhgwvtxADtKjCXqx9qbid2qEGIU9hviHW8HdRdd9YYi92V7nJsWrGkul1Hoygv5Lir+mTwuqvXzvhxIck8S1PB1svcP7b+DJqlvlbz++7cuMFw4qXlevfSb7VY0DpOoTIsPGPo/2St7LXpgy8lnr0ABytyQwvcbpb2fa9uA0mHEwKo0mlt+3ZMvmAUsEzhLI906ROTmXlN2Jk84g16UgZCNeSgRDAOs/4o1oG6U7hdA1mWWMiSwdHfHdOafN6k3sKK0cmE3s0+FVOlZUBGgnrkir
+ RN2H/kuc
+ FLptjkqEGKDl6KD0blODtLnxDWqmmSk7orrG/5FWhIWpCUfLq0/vwuGX7Nm+H5jcpt9Ia36qAMei7K7P1LUMdt85hqfg8Jn+SR4U+qZMgG34+8SMiSo3ZT4zvDcIQnMqy9VD9pf/1ra8TWhMKw5ggqU89abAsANoRjnXO/NEoyxbmyYpnefiJ2jC6Cw7LMZMlBEFUtxrKy2rfxEgq1kS8npTl8BWV37H96J0CW3A+FyigvlS46R1pw1uX6sdBE6cdXoIgn+iXC0P593jHbY1OFAJkaW/xBjifztu6tfFC8AZnmaQVSjukcgAGlMaoL7su8lE3cchflxdOeoHkCtihuqx0xiR4ArdFT5rcwYeryie4cJybaKKbjQu0K00o69/GObqkSDVfRC5USJz0gKPfnjPrNhkwKtRh82nr7oyPTThAmdMh/tj8sI7iR1zNZ+eFdopVLCac1mGrYLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,33 +131,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 10:26:36AM +0000, Lorenzo Stoakes wrote:
-> Annnd now I typed that I realise that Linus fixed this up in mainline and I was
-> working with a stale version of this file :))
-> 
-> Anyway, I see that the comment isn't fixed up, so I think that's something we
-> should patch, like:
-> 
->  * Returns: true if @COUNT can be represented in the @FAM's counter. When
->  * @FAM is not annotated with __counted_by(), always returns true.
-> 
-> ->
-> 
->  * Returns: true if @COUNT cannot be represented in the @FAM's counter. When
->  * @FAM is not annotated with __counted_by(), always returns false.
++ Kito, Jesse, Valentin and Heinrich.
 
-Yeah, I'm working on fixing this up correctly. I think Linux is right
-that we need to put the overflow checking entirely within the counter
-setting. That way the checks will only happen for the cases where
-counted_by is actually in use.
+I had to rebuild toolchain by bumping up prctl (prctl conflict in 7.0 merge led
+to landing pad prctls bumping by 1)
 
-I am, however, still pondering that the size check (as I _intended_
-it, not as it actually manifested), would catch negative sizes (i.e.
-negative can't be represented in a size_t -- the default type when the
-counter type is unknown) and refuse to allocate, though honestly the
-allocator would probably also refuse to allocate them since they would
-be very very large when cast back to size_t for the allocation itself.
+Jesse/Kito,
 
--- 
-Kees Cook
+So you might want to do that as well before sending out next iteration of libc
+changes.
+
+Rest inline.
+
+On Tue, Feb 24, 2026 at 05:57:52PM +0000, Catalin Marinas wrote:
+>Hi,
+>
+>arm64, riscv and x86 all implement shadow stack support and use a
+>similar pattern for mapping the user shadow stack (originally cloned
+>from x86). Extract this common pattern into a shared helper -
+>vm_mmap_shadow_stack().
+>
+>Patch 1 introduces vm_mmap_shadow_stack() in mm/util.c, which wraps
+>do_mmap() with the flags required for a VM_SHADOW_STACK mapping. The
+>helper uses PROT_READ|PROT_WRITE prot bits instead of the earlier x86
+>approach of PROT_READ with an explicit VM_WRITE vm_flag. Functionally
+>there is no difference. I looked up the history of this flag on the
+>lists but it wasn't conclusive. My guess is that the original aim was to
+>mark the vma not writable but that would confuse the kernel, so it ended
+>up with the VM_WRITE flag instead.
+>
+>Patches 2-4 update arm64, riscv and x86 respectively to use the new
+>helper, removing the duplicated mmap logic.
+>
+>Patch 5 forces VM_NOHUGEPAGE when allocating the shadow stack via the
+>new helper, mirroring what commit c4608d1bf7c6 ("mm: mmap: map MAP_STACK
+>to VM_NOHUGEPAGE") did for normal stacks. It will save some memory,
+>especially when the ulimit -s is high.
+>
+>Boot-tested on x86, fully tested on arm64. I do not have a compiler
+>version that supports the -march=rv64ima_zicfiss_zicfilp option for
+>riscv, so any help with testing is welcome.
+
+Catalin,
+
+FWIW, I applied your patches on v7.0-rc1 and risc-v cfi kselftest passes
+
+# ./cfitests
+TAP version 13
+# Starting risc-v tests
+# Landing pad and shadow stack are enabled for binary
+# cfi_ptrace_test, ptrace test succeeded
+# Executing RISC-V shadow stack self tests
+1..5
+# Exercising shadow stack fork test
+# Parent pid 130 and child pid 132
+# dummy calls for sspush and sspopchk in context of parent
+# Spewing out shadow stack ptr: 7fff914b7fb8
+   This is to ensure shadow stack is indeed enabled and working
+# Waiting on child to finish
+# dummy calls for sspush and sspopchk in context of child
+# Spewing out shadow stack ptr: 7fff914b7fb8
+   This is to ensure shadow stack is indeed enabled and working
+ok 1 shstk fork test
+# Exercising shadow stack map test
+ok 2 map shadow stack syscall
+# Exercising shadow stack gup tests
+ok 3 shadow stack gup tests
+# Exercising shadow stack signal test
+ok 4 shadow stack signal tests
+# Exercising shadow stack protection test (WPT)
+ok 5 memory protections of shadow stack memory
+# Totals: pass:5 fail:0 xfail:0 xpass:0 skip:0 error:0
+#
+
+So you can tag tested by for risc-v.
+
+>
+>Thanks.
+>
+>Catalin Marinas (5):
+>  mm: Introduce vm_mmap_shadow_stack() as a helper for VM_SHADOW_STACK
+>    mappings
+>  arm64: gcs: Use the new common vm_mmap_shadow_stack() helper
+>  riscv: shstk: Use the new common vm_mmap_shadow_stack() helper
+>  x86: shstk: Use the new common vm_mmap_shadow_stack() helper
+>  mm: Do not map the shadow stack as THP
+>
+> arch/arm64/mm/gcs.c         | 14 +-------------
+> arch/riscv/kernel/usercfi.c | 12 +-----------
+> arch/x86/kernel/shstk.c     | 12 ++----------
+> include/linux/mm.h          |  4 ++++
+> mm/util.c                   | 29 +++++++++++++++++++++++++++++
+> 5 files changed, 37 insertions(+), 34 deletions(-)
+>
 
