@@ -4,94 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 741C3FD45F1
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 261BEFD45F1
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:39:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 908F56B0088; Wed, 25 Feb 2026 19:39:50 -0500 (EST)
+	id 8A1EC6B0089; Wed, 25 Feb 2026 19:39:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CA506B0089; Wed, 25 Feb 2026 19:39:50 -0500 (EST)
+	id 867E06B008A; Wed, 25 Feb 2026 19:39:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CC7A6B008A; Wed, 25 Feb 2026 19:39:50 -0500 (EST)
+	id 747B86B008C; Wed, 25 Feb 2026 19:39:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 67E836B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:39:50 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03F4216016E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:39:49 +0000 (UTC)
-X-FDA: 84484750140.09.9204981
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 421C7120008
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:39:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kw8Z446L;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772066388; a=rsa-sha256;
-	cv=none;
-	b=YXc2NGbvi3bwxLUjaLjMwvRFOwIgYqUsheTsFu5es21PJrYNDrxqOwoHpvgcuEce7xxRVY
-	WZvycneIycavL0f/j7BCnTGR31Lec9yCjW1nRR5X7J+ComOeiAukkDfOtysmyHbsTPciAC
-	EZINE38o5u09mb/18/9cvnQOGwCJlBs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kw8Z446L;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 615D26B0089
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:39:58 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D9FAB8BB4
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:39:58 +0000 (UTC)
+X-FDA: 84484750476.07.4556A8B
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4BAB6100002
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:39:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BwGkujwM;
+	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772066388;
+	s=arc-20220608; t=1772066396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=74Rq9waJ5OaEku2bqnXV7KbpQK3SQla0Hez/s/7rAu0=;
-	b=qP4E8crWjL5M24Fr9ZtgmfBuhNjiXOu+DIIXM9jNJoDnis0coGnoMKCBK7pzKDV7hjAHsi
-	7Cci0cvqAHdVCppkUntjR7DMpgDr0l55hww6Jr8PibWqQ6ElN3iBy4UBmgEh8Hymq6Sgjd
-	uk+YI/yvMk/Ov19bvN6WCD2JSBIvQPE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 300F844495;
-	Thu, 26 Feb 2026 00:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58D7C116D0;
-	Thu, 26 Feb 2026 00:39:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772066387;
-	bh=ARTPcSrgUSDeZ5aaEMcCmyrM2w97b2lJEf161Z+GogQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kw8Z446LHFulM7Ynb3GVAIBS4yWtXYfSZuj8K7sOXNN4Vc1OowpzfTvTp62gIZZga
-	 H/kvXaWO+3ey7eKkhh+voQIUlCyqfQd+nfCGpP9zz1aMU2SefH8KmbSlKvfN7ZunEq
-	 nPmuzvANQb9Awjoku2i9L2Io4An7jF2uUSANY7OViiPtnOaSeSp1er443Dnp2Kp2N5
-	 RMAl5Wq2fdHvjy06FiJB+9iHAdI4OHGVVRzWVzi9msFILb/5mfv7f/SF9Z/Zp4Pheq
-	 bbCTT5FDYuhlC2SYlifyGVusspXuTwVw+SLzcTWIKR6WsXfRgD24sD2Tj7GWZF7euz
-	 2vFnxVFSRkmGw==
-From: SeongJae Park <sj@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-kernel@vger.kernel.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Ht+6aiKcLO5UeELKaqdbgm4IHdAivvgizKUqvMkq7j4=;
+	b=5OhnX4BUvAstUOnn5nurxqaROy8/7mXgn4JG1WqVimgeoDlSegY7vm1kDE0cuMIPpmGR25
+	g6lblTJQ5h99ScqCgy8pU05wZxq02qr7C3O76ryZm3IINujpFGG2XDdN5Uchi4vJgczs5d
+	gzlR3FQlIAguL6vURS8l2V9NNQoppoo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BwGkujwM;
+	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772066396; a=rsa-sha256;
+	cv=none;
+	b=vQbIoMB/uWgicZn8D9C3eSnVCrhjaCcAexFSIm+Nvft4UU2tABA3CIZZV9varrSuVSPA0q
+	+b+5phYmZOAto34mQWeAAEjtRiLvvK89OBfy1bEj8Rx9JFNrbvLv4hrj2oq3ZcVrfX9xc+
+	w7By8gnNg1irhxQlDk3nwCBjgy7hgPM=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-896fd2c5337so3821036d6.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:39:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772066395; x=1772671195; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ht+6aiKcLO5UeELKaqdbgm4IHdAivvgizKUqvMkq7j4=;
+        b=BwGkujwMA++g6YAdPQ2tIf4Pms2JWg5Wnny6x05m/cXDa3ABT5EMcVi2ccqp7z3J0I
+         mLnSTqAyZFxqV/9pC/Xv5hrJmndp7+srHYo2nwmIlOhhvViGOZOJhpgTF34rOvI1QmKu
+         Ni5/n9REtOma6oPMf/xqTDclpSwNmFYmL2uOBK8u1whEO/1A1+KQ6FKKoski8K7yw4xE
+         U0IkAaXm6Swp41a9h9EQNdwCNxd0tnaYjHkHM7X0bdrbxWRI1RihSU2H00Sk30f0EgXE
+         Up4R04OcAYCB7ArmvmTFwmaXi9jQ4N2hT9+kza7vgDozUkJfd4BXk9cEKfs8mCk0L40H
+         FJNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772066395; x=1772671195;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ht+6aiKcLO5UeELKaqdbgm4IHdAivvgizKUqvMkq7j4=;
+        b=rVbzKnL/crMfJlIk4g0geyU+TWXWT6v/xmjJ5ylSMAfVckDmP5Mg0TEJPKnowNC5tp
+         aWCsR49uYYjEF9exbnGCZxXclbk3doCt7gOna+XXu3LU1Y0Yx6ux4VP4ZI9aoPYiLuse
+         hTpj/TaKiqqamWEZP33e06epke3rnC+jIYWAi+mcz8Lo8uzDK+Jf2H/NJjpwyuePZ7SU
+         iA3UR7ybcU2Kq7sMT9zzYHEEKVf1g0u/WVs6QoMMbXmVrz9U4MXX1emo2IUyempq1/cf
+         5Lm80FDCqoLWDUnRevk9yfVIitNm/wSnl/sihn9LymIE/NwdNuGWKvbz6dXQPG1uiKw4
+         GIug==
+X-Forwarded-Encrypted: i=1; AJvYcCVaqimEwoPi9gH4WfpAfF7X/eMKdZFbzipAJ0MZNWANU9/z8R7AWJ1UMZUpJ4V2C/YcpmAE/t1UVA==@kvack.org
+X-Gm-Message-State: AOJu0YydgvQocT/MGH77T5SCQ+cAvq16HOBXy4AEyVggdhxzkJVib5+n
+	PhM+T0AcQUbjUxokl3nnJWXXlPezCjhKcamQP6RYiVmjIc1bu3tl+GTkKKeZMpao
+X-Gm-Gg: ATEYQzxfBAHX3F1gcPW64sP3Vq3SeJR8/lm8osvq5dBGyp4Inrqu18SHme/Lxq2RgvF
+	DJOIBb4dh5aLXl9D2FcZxOG3p6511PSMco4jLC/Np2jBObvH9nlceybupEq+kY/ayemkyxKGD27
+	+ifrsDkn6NsQnAypqUL8yITnF3/bjKJ+4e6L/TDBxfEf5UCoOV9KmZGujjc1Pl0yJpriMleFQ8f
+	AfIhDkdMaQKYcXqcG04M8ytp5/J4odF0xoiBaSpNAkBZb4eDudCeBvKofif2At1fbdAHgeJ7s+D
+	mtP2QbDoNIBXolh9D7UUxaeSFwLxiP4wetADlInn/XJkofpxx0+wN4Aa9hF0OhMS2oquxDhbmjz
+	m213/XwUTXsMH6/Pa5/jkrXAEDb48ekworMhtLKtR2h4TzfHkzH+RCD2A9i/+lTg2WUxHKMz4Zs
+	a/cimTzCSc6xwRKDAakPOLSdilISGHw5IrFuY=
+X-Received: by 2002:a17:902:ea0a:b0:2ad:d77c:bf6a with SMTP id d9443c01a7336-2ae034c0c73mr600925ad.26.1772059058501;
+        Wed, 25 Feb 2026 14:37:38 -0800 (PST)
+Received: from barry-desktop.hub ([47.72.129.29])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5c3b01sm2761535ad.31.2026.02.25.14.37.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 14:37:37 -0800 (PST)
+From: Barry Song <21cnbao@gmail.com>
+To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] tools/testing: fix testing/vma and testing/radix-tree build
-Date: Wed, 25 Feb 2026 16:39:43 -0800
-Message-ID: <20260226003945.7145-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260225233111.2760752-1-rppt@kernel.org>
-References: 
+Cc: linux-kernel@vger.kernel.org,
+	Barry Song <baohua@kernel.org>,
+	wangzicheng <wangzicheng@honor.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lei Liu <liulei.rjpt@vivo.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Kairui Song <kasong@tencent.com>,
+	Tangquan Zheng <zhengtangquan@oppo.com>
+Subject: [PATCH RFC] mm/mglru: lazily activate folios while folios are really mapped
+Date: Thu, 26 Feb 2026 11:37:12 +1300
+Message-ID: <20260225223712.3685-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 421C7120008
-X-Stat-Signature: bwrht3caqnx3o783888kahd1wsu4d4p8
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772066388-153695
-X-HE-Meta: U2FsdGVkX1/GvfSpYPT8KBuIdmWW6DVaKw2BaFrbPD7OsaH+Hv6S0E+QdH4sXW8UcM1J69QJhZxqilyQ4z81ew0NlosAXT2egCy5zzu9ug8lrwQTxG78CY9KwLtHb/4wOg0rxaJNRb6uU+EX14rQrzpdiKLXo23FM0KXjCNrOdzsaxIt398cvYnBKoACvnvyPi4lLO1qEUQvDbWQpggjWPFTj1aEuOOHquygy61ZIJ1f0kV1LqWUsDkz1fVWF78SJU/Xw1tSYnO9Udo15oRL7UUSo6y5bY13/DSXx38fIcUkz6oLDRhhhz1FSb7hSF/A3i4D1M8VfMGV/xZK5qDYwBNZ6uB12tRYz+OHLIenmJEFnsLCpoJXrd24kEvSKyTCrE3R2+yluN81FijQWZCXFhH2USBr+1WqwEXX7yzTR387PxKSA4Q3yylLk4fhbQSmH92RQ5abTfA5QOWSinpydLXiUqMHT6kqR69L8Qov4VwWUCqA50j7zrXwW+Kr+j5NhYIpiKUEeST0SSY/0kTfGrRr2HNrU/Wmi+5aIQMnPSWuyLdmdSgHRPilKfBnnzuF9/h4ekkENfxpsIkGt3LEeA+43e03X9mrnT9Dy5uV4gLabXITKE/ovIiuk+3yam5nCLfyKA3hZvudu87bRU3eXojIaU5yaRZpgypVATvw3MWPV8r9JMNP8iM3wGKPK2sqcZ8sqVWoUanWo7MN+QF/nNFZMVCK7c/EijaVa0bshCAr/BDujZlFfHdelEVkCx46C6FpomoidVGq2T/bi0q/6pF1fbv+QejB8OmlZ3sT24kqWZ1X42y0I8zNj08weqTJsrVm4fWmp6eNlEHMfsC3r87cLtAoR1h6No6O429Om6DsDnCQuITma1IJovJiHWR/4x9Hz40zHNrdPOR8qG0iAR+Dv/L8rz6cZB9+dHyVyPpC+bzAWWzJnGNOWe+rs86YRfXSMkWI1hR2Os1TeQO
- 4U52oADw
- 5vPHCFk9y1FhM2zToCsHa2pCTm/2qwH6DIjL4vjc/63jyri6UTfcIDpTEThQjhpG2SsxVMLrqTacqrVkSdTVhEeaf7XrMVFxV6E9XLG4rkCO+wpAblWDSLOBjAE+C8Z2EQajrfRDP1QrpD4gC3UIE5U0npQ/kfbtUcgnZgQ9VFm3+kqrb9pXsv4XbnahTlpIvCLmRc3srKt6eU2ATSMfpSu0SH7Jym24CDrcW1Jadf29fXCK2AtFS56aSy2pZsRiqBY5gyTa92EDYajw=
+X-Rspamd-Queue-Id: 4BAB6100002
+X-Stat-Signature: 46h3s5c8zckzwjnfe7pj9ydmguxj3got
+X-HE-Tag: 1772066396-34239
+X-HE-Meta: U2FsdGVkX1/LXFyjSDAXy7lOHibyY/Hsj7SEJOwo6Yn8wfQKo7WMyFGLOIzv/TEmMCrUI6WMS5GwwMToAMR3cx0pSDHs9G5+FJENDX1302JszsBQ+bj5T5WzpmRjxfENgrxjmsuavGez85+6LB94/Hx7tUGynmK3acB7PNTzOjdE/h3eSdC3H1mbwnXjNLYCba26ds2sCjazqsXuxq1RqfDPjQTzVVQhRLedHIhuR7foqo0GbqOHt4Y3iIx6cHYZ2NaTFJ9h+dkYYiCiy51fxMLaTJOpY7erMuayBgFNITq+A8XBUe/LDSjgmS+jeH2CWOG8AjQK2pKOUKhyNHqKgPoPbWVIREJo6L9mHGDac2a9Et657+FPloYmnLOKuY57QMFvsSqIYakYQRGJ5YnlQpMRY1L+ZddgFa1glOwEywPfKhO1GKk/hP6jWGxTjlmR6EY/fU9qt7VTECD3qlDytizrspP6WymFmj5MJFqHqMbhnmjQleKscOa0oUz7iRAPdJ/zdocFgmO+2mjvLXHI7pny7j3cAYCg7VSdykdlo/i8oZB1UHk8Cj1DjTQQGWNMTTZjey70znkOEnIywSiVsCLj9OHrlxnvpANvde0O3ykcjuqzX7xt//wE/GR1rmandtDE2YPmEQ6xOJKtiCtVIT4Qz9ndEISrWpS0uu4vKYkj+NaKyM8uKI2LHCXznS+HNDb5HYna7sCVHF918UiJANsePt3xHbDZInUnZ0P/iyaCJtDXXPd1mKOgJGyk18Bmr46GVaRBPr/yOUNnJZIkflWX/Gx98CkDCiI4BuYWOLZFymZ+D5JYh1ITprIhcEPZCE5vAGgb+G4kwQEhl5CU1Fscbj0OFoFjDLZ8oq1HT49zaLds1GUaOIdcWyIjotdZRDLrRfjpI/Tfph2mA80ejCXcf5vMCtD23UD0DM7Z3nqxDd7/uWKAzb2rPNmb2opu8mi8bt0bPGz5QbY/ArG
+ g9Qhf6it
+ 8MeamOevvAfOH/9/F/NODQ/yeutuiQuTaG50kY0drIFAazcnWkXEdBoso+E6GqU8bOdnLRBNQVUnxJN/93AHrPn85lUqFK5HBoUDsiSY3LMf/AyfyM47p0VCFOVbcf+HQx2ECH0XTHCzXQTljx3PQapZpekb0UUi5U1Ed73nzEEfI6cj/CzHo+LdFPVFoBsP8i/anhxNFy+8tD4Za3+DTxLuAb9nqfJz83hwqi8TWKFYiQFIcw23MTpSoG6uQW+02DNcDKQ81afrxf2yk5wHYRCCvSRFxQWHU31FSPJxHwq/e9oZtzY4sxldylfizMH5J4f6iO8pP7bBByacmADuGhn54xxlMaS9HhmS8LPwU2ZVtomVn6OUlOjMlL1M3nLHbUW172vuWN8s4a66YCUNE6MzyFdy7T4c++EQ6gtzG+ZApj44pKaVK831oKyRppCTOhW3jD553I8N0koBDPv1CeKfaZbUREIQ0rkct/gx5/VjB++M/klp6rujz91H/bJvXKOSjbL6DMI7kpbkFVPWsDxXi0fYOqErphgrIuoDcau4Y3U2mJkquZ1HUrL1XQQ9oiBtmiaNu+GJzT3skKXAeoDQaJffxzf8H+SnrApEzyMAUGfK/BvFytWa9ai4g1FiN6An0HFc9ElVvs438P1zLtcJZXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,116 +124,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Feb 2026 01:31:11 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+From: Barry Song <baohua@kernel.org>
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Build of VMA and radix-tree tests is unhappy after the conversion of
-> kzalloc() to kzalloc_obj() in lib/idr.c:
-> 
->   cc -I../shared -I. -I../../include -I../../arch/x86/include -I../../../lib -g -Og -Wall -D_LGPL_SOURCE -fsanitize=address -fsanitize=undefined  -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128   -c -o idr.o idr.c
->   idr.c: In function ‘ida_alloc_range’:
->   idr.c:420:34: error: implicit declaration of function ‘kzalloc_obj’; did you mean ‘kzalloc_node’? [-Wimplicit-function-declaration]
->     420 |                         bitmap = kzalloc_obj(*bitmap, GFP_NOWAIT);
->         |                                  ^~~~~~~~~~~
->         |                                  kzalloc_node
->   idr.c:420:32: error: assignment to ‘struct ida_bitmap *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
->     420 |                         bitmap = kzalloc_obj(*bitmap, GFP_NOWAIT);
->         |                                ^
->   idr.c:447:40: error: assignment to ‘struct ida_bitmap *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
->     447 |                                 bitmap = kzalloc_obj(*bitmap, GFP_NOWAIT);
->         |                                        ^
->   idr.c:468:15: error: assignment to ‘struct ida_bitmap *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
->     468 |         alloc = kzalloc_obj(*bitmap, gfp);
->         |               ^
->   make: *** [<builtin>: idr.o] Error 1
-> 
-> Import necessary macros from include/linux to tools/include/linux to fix
-> the compilation.
+MGLRU activates folios when a new folio is added and
+lru_gen_in_fault() returns true. The problem is that when a
+page fault occurs at address N, readahead may bring in many
+folios around N, and those folios are also activated even
+though many of them may never be accessed.
 
-Thank you for fixing this!
-> 
-> Fixes: 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+A previous attempt by Lei Liu proposed introducing a separate
+LRU for readahead[1], but that approach is likely over-designed.
 
-Tested-by: SeongJae Park <sj@kernel.org>
+This patch instead activates folios lazily, only when they are
+actually mapped, so that unused folios do not occupy higher-
+priority positions in the LRU and become harder to reclaim.
 
-> ---
->  tools/include/linux/gfp.h      |  4 ++++
->  tools/include/linux/overflow.h | 19 +++++++++++++++++++
->  tools/include/linux/slab.h     |  9 +++++++++
->  3 files changed, 32 insertions(+)
-> 
-> diff --git a/tools/include/linux/gfp.h b/tools/include/linux/gfp.h
-> index 6a10ff5f5be9..9e957b57b694 100644
-> --- a/tools/include/linux/gfp.h
-> +++ b/tools/include/linux/gfp.h
-> @@ -5,6 +5,10 @@
->  #include <linux/types.h>
->  #include <linux/gfp_types.h>
->  
-> +/* Helper macro to avoid gfp flags if they are the default one */
-> +#define __default_gfp(a,...) a
-> +#define default_gfp(...) __default_gfp(__VA_ARGS__ __VA_OPT__(,) GFP_KERNEL)
-> +
->  static inline bool gfpflags_allow_blocking(const gfp_t gfp_flags)
->  {
->  	return !!(gfp_flags & __GFP_DIRECT_RECLAIM);
-> diff --git a/tools/include/linux/overflow.h b/tools/include/linux/overflow.h
-> index dcb0c1bf6866..3427d7880326 100644
-> --- a/tools/include/linux/overflow.h
-> +++ b/tools/include/linux/overflow.h
-> @@ -68,6 +68,25 @@
->  	__builtin_mul_overflow(__a, __b, __d);	\
->  })
->  
-> +/**
-> + * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
-> + * @factor1: first factor
-> + * @factor2: second factor
-> + *
-> + * Returns: calculate @factor1 * @factor2, both promoted to size_t,
-> + * with any overflow causing the return value to be SIZE_MAX. The
-> + * lvalue must be size_t to avoid implicit type conversion.
-> + */
-> +static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
-> +{
-> +	size_t bytes;
-> +
-> +	if (check_mul_overflow(factor1, factor2, &bytes))
-> +		return SIZE_MAX;
-> +
-> +	return bytes;
-> +}
-> +
->  /**
->   * array_size() - Calculate size of 2-dimensional array.
->   *
-> diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
-> index 94937a699402..6d8e9413d5a4 100644
-> --- a/tools/include/linux/slab.h
-> +++ b/tools/include/linux/slab.h
-> @@ -202,4 +202,13 @@ static inline unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf)
->  	return sheaf->size;
->  }
->  
-> +#define __alloc_objs(KMALLOC, GFP, TYPE, COUNT)				\
-> +({									\
-> +	const size_t __obj_size = size_mul(sizeof(TYPE), COUNT);	\
-> +	(TYPE *)KMALLOC(__obj_size, GFP);				\
-> +})
-> +
-> +#define kzalloc_obj(P, ...) \
-> +	__alloc_objs(kzalloc, default_gfp(__VA_ARGS__), typeof(P), 1)
-> +
+A similar optimization could also be applied to swapin readahead,
+but this RFC limits the change to file-backed folios for now.
 
-Just out of curiosity.  Is there a reason to not copy the comments from the
-original (include/linux/...) for the above two macros, unlike the others on
-this patch?
+Based on Tangquan's observations, this can significantly reduce
+file refaults on Android devices when using MGLRU.
 
+BTW, it seems somewhat odd that all LRU APIs are defined in
+swap.c and swap.h.
 
-Thanks,
-SJ
+[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.com/
 
-[...]
+Cc: wangzicheng <wangzicheng@honor.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Lei Liu <liulei.rjpt@vivo.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Tangquan Zheng <zhengtangquan@oppo.com>
+Signed-off-by: Barry Song <baohua@kernel.org>
+---
+ include/linux/swap.h |  1 +
+ mm/filemap.c         |  2 ++
+ mm/swap.c            | 16 +++++++++++++++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 62fc7499b408..ce88ec560527 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -335,6 +335,7 @@ void folio_add_lru(struct folio *);
+ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
++void folio_activate_on_mapped(struct folio *folio);
+ 
+ static inline bool folio_may_be_lru_cached(struct folio *folio)
+ {
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 6cd7974d4ada..0b8f383facdb 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3567,6 +3567,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+ 		}
+ 	}
+ 
++	folio_activate_on_mapped(folio);
+ 	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
+ 		goto out_retry;
+ 
+@@ -3926,6 +3927,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 					nr_pages, &rss, &mmap_miss, file_end);
+ 
+ 		folio_unlock(folio);
++		folio_activate_on_mapped(folio);
+ 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
+ 	add_mm_counter(vma->vm_mm, folio_type, rss);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+diff --git a/mm/swap.c b/mm/swap.c
+index bb19ccbece46..e50b1e794ef1 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -488,6 +488,19 @@ void folio_mark_accessed(struct folio *folio)
+ }
+ EXPORT_SYMBOL(folio_mark_accessed);
+ 
++void folio_activate_on_mapped(struct folio *folio)
++{
++	if (lru_gen_enabled() && lru_gen_in_fault() &&
++			!(current->flags & PF_MEMALLOC) &&
++			!folio_test_active(folio) &&
++			!folio_test_unevictable(folio)) {
++		if (folio_test_lru(folio))
++			folio_activate(folio);
++		else /* still in lru cache */
++			__lru_cache_activate_folio(folio);
++	}
++}
++
+ /**
+  * folio_add_lru - Add a folio to an LRU list.
+  * @folio: The folio to be added to the LRU.
+@@ -506,7 +519,8 @@ void folio_add_lru(struct folio *folio)
+ 	/* see the comment in lru_gen_folio_seq() */
+ 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+ 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+-		folio_set_active(folio);
++		if (!folio_is_file_lru(folio))
++			folio_set_active(folio);
+ 
+ 	folio_batch_add_and_move(folio, lru_add);
+ }
+-- 
+2.39.3 (Apple Git-146)
+
 
