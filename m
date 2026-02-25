@@ -4,120 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E18FD377B
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D2F4FD377B
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9259F6B0088; Wed, 25 Feb 2026 13:23:25 -0500 (EST)
+	id 355E16B0088; Wed, 25 Feb 2026 13:28:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D3CB6B0089; Wed, 25 Feb 2026 13:23:25 -0500 (EST)
+	id 303196B0089; Wed, 25 Feb 2026 13:28:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B4F36B008A; Wed, 25 Feb 2026 13:23:25 -0500 (EST)
+	id 20F496B008A; Wed, 25 Feb 2026 13:28:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 631DD6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:23:25 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0351D1406DD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:23:24 +0000 (UTC)
-X-FDA: 84483801570.27.6484E18
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0ECA1160004
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:23:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D3166B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:28:45 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B292754E8A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:28:44 +0000 (UTC)
+X-FDA: 84483814968.22.13E91EC
+Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BAB4D160005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:28:42 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/XktPmH";
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gfDlO8J7;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772043803; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772044122; a=rsa-sha256;
 	cv=pass;
-	b=AKt7FVRyt9kCQjDpUE6DEbIfuECZrB+crwvQ1phYq2kkAE4Wfp661hXEKe95qljTW5Ol83
-	G7Ht5BtepYNEs9a1bGzzPUlRcnX3xmvjjFZyTkDtaWdun1+HBbQVLvW3Cx0VV2I5daD9TO
-	rj5nH6VBuyNwc/7i0unTwmc0zGDd620=
+	b=JsQqQhCFY6t5EQ8IYbdR9Jj8+NBNefQGfMbA4tu4DhJpdX6YPpteIUApENgb/osz2VLpip
+	6D0G0/JhRJKamXW71djDIqjrzU6tPbBiBx48olMWR0GD8cwnN6i5xb3FunIukeF9L51ODu
+	EkBCcJUHTc3HXGceZb/SQg+nyOX8nn0=
 ARC-Authentication-Results: i=2;
 	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/XktPmH";
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gfDlO8J7;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772043803;
+	s=arc-20220608; t=1772044122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/xa2NxgBV56+zcp+pDI4D3jQAyDOvWbrM47gZNUvrNM=;
-	b=SLqXlkRnABGgX1WFlbPNugKTG4T23rWsfjzwLbbaiGSpXJ1Aqnck0uFdorStkQUnmWAFkv
-	KvwU3VWKj5tiQoIjsKcwJOkpld21k+w445/v4u8UINqnYl9v0qg84fdqxFS+7XMDDwkOiC
-	Eq4elosmqdfKTJq/O5qp2HVL34Tl5sQ=
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-124afd03fd1so10101146c88.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:23:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772043802; cv=none;
+	bh=b+vs7qWH/PosxazHRVXXbHEySPzv3IencMxP7YmTfGQ=;
+	b=02jjHNHDs3F8wiLLBWKNRttVKuNRrcGE/cqBDCaIdBhQFC68qzFaYHxjaWccGwDZxbiq4b
+	lmVcBr0QvbS/CZHhrcC14DeQGAA6pSZ0xBjw27/29Ft9sr7N8UlY5DS/TQOa4Bw0ysYZAe
+	OV0lFBKvmxxdkenHLYluPEqKOsIdP60=
+Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-1275910b930so861639c88.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:28:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772044121; cv=none;
         d=google.com; s=arc-20240605;
-        b=dQ7giopx7ZmB6saOgzQrkQI/mkwk06OqW2jqIwNhoXZ3amqV2ufvY9WiuiRxXprJLb
-         VXybE0+9rbBhJ56XKInxBvmuDtIZOp7mFtOEHkcEyYl4OcEEL355lPeO1WEqrKngMgKl
-         P+0trzBfSQLe3iE/zHegfwuhoB0ZZFvYeD5wPQQTi70OiIJKQHe/pDNp1ECtBk3srtYa
-         4IQdXP6XwXYF8lP85MrzOxaoz2Lc5Xnb3h9ZEPtLeOugrzDPNkS5zc0aAgxr/8MC76x9
-         ffSBVqe+uUJGNQQS3TjH4FWCYbufYbqhEyBbk57ZOo75SZUewCkhlbV6aE77bNc7WEK/
-         tCzg==
+        b=fl9B0HUWLcFAzt9SL3LndlducpcO80WY2G47dsbimgpRKqRAWqhY/tOEzHP2mYObAT
+         AWI2CMNKriPyB7qxkcwRTlBHdhI5EV7HWIqtB3wXRcm+/piKijmq/Oi3dazJ5FMjLWVu
+         Qt9uu2BszST8FGRZRlB9ZH4JBo/XkKbNbfdrJQ4x1YQroNE0ctzSL6PfH2kqNPCsiDgT
+         HApxV1SNZqcbS9zxGKIiCei2CLFlzmu9P5K30ZNM2IazlMT+MDqPxxx4ZP+eJtVG3I93
+         zyZ3QnWIInphdzgPK4SlrsWRNAFyzoO8EfkZSXOcYC2g+22nk+oI8uWhX5S16HLKWBVq
+         tj4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=/xa2NxgBV56+zcp+pDI4D3jQAyDOvWbrM47gZNUvrNM=;
-        fh=tXauhgmfXNPb34OHJHjI3F5Mal40bIeumTzPdcDM9Jg=;
-        b=WjysD9n+buFNdU7KqER7M49YAhuPr3Q8e5n0tjBEh0FJEicPTfX45p3cIZoIT+Ty5w
-         q8/SyonNKlEQ25MHQLrqlkODAo6fl35d7nnjre6+HfjU86HWrXWc7xuM0wALhDHlEBQL
-         WWS9utIoJp2YDT+L8oCYVfN/3jFEtqhtukuO3u3ZWr/eQX1uqC7BdCdh4UheGLQ4eOMl
-         JTHr6Xrn6FWtYu+UtiBIFa0FGmLSU3PwhkT9inzPc8M+2/25hC9fkeDq9sd2VpH4mr+H
-         rLnX5eoh0efSz1wYOQ0wDxSddyFQL8e8rQ/Wi/yXxEqNoTFjzrGr0pTPoI0cB8CVSwRr
-         BWqw==;
+        bh=b+vs7qWH/PosxazHRVXXbHEySPzv3IencMxP7YmTfGQ=;
+        fh=TdI4LBPsKQ+J27oVrB6LxJDPEUTJmqjAw6ujkaBrN+Y=;
+        b=PjXjS9HeXdsdKOB5iUjCn5j3XaCFm4J8DfWPRpYroG9N2UwZsxVyuSdhFoGL5jIISK
+         SsFr4eFCSVH9VrH0YxBLlbr8Ke1yaxIzwfHM6FFHQ0fII9xAI2wtqwzG1aaSOqjrNksQ
+         tTCPPyeC1Y8X6m/8jl+UD/fT7ejfgYOtwNc6kt+4UyvOn7bIJO3RhuAXWv3bcrizzNdy
+         I8t7DSAqtwamHv4a317Qx/OYuujTgUrAV1FcyC64CZ5B9VN9CetfoMlkNOvk+jYVTFIP
+         XWSlaxUTo8iNDrCQrAgZyh8OVPvjL+8wSuRRaxuTyLm/3y8/9o4zL3E+nAv6lKv0Xl4P
+         lgTw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772043802; x=1772648602; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772044121; x=1772648921; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/xa2NxgBV56+zcp+pDI4D3jQAyDOvWbrM47gZNUvrNM=;
-        b=M/XktPmHJrnxTAFJkEKQihihVKAFXMooF+YoEawq6QNwdcj+P8cuyYCo09aw4zNbWz
-         WdylWJFZA0LgW03QoUlyJqy+O3Bj1Ep74QKM1q4rM+yLsUJByIrEa7TGk0pogsFNvS0/
-         Cit84Hnc44DYnAnVvJKjyum2gnQvZLsUatdL1ufpmScZZ56AQ0j4O+ZuYBoCQOPQAVZo
-         B0p6SHczCh7fF8PU5Jae8ADh0UJnSzFginy8ZRid9wYHf2/VQyqfBiKUwx8SsJ/fcJ5J
-         g2Ldr1tHd2EnLL/hP7Ykb/UK5KZx0ofaVC9hUnjnAi9Th2wEJ/qkFvoylsyYEqfgegGK
-         WK3g==
+        bh=b+vs7qWH/PosxazHRVXXbHEySPzv3IencMxP7YmTfGQ=;
+        b=gfDlO8J76WH2B6IgGwFgEHRaD2O9zZHiiEVl7ajOVWh9eVXhOW94Hd2zIQB+xM+cns
+         EMr6YVZUCXjvAKxjHuP8eK2h3f7ALeYpGHYUiMjwnxEKxgobUyeP4mY2yLqCh/X2HEdI
+         lM63EN3jrqGrxRjbDVVtV5Q6pN++fcTX9BF2jlIpaDj8MFDvQYzXjlNKq+absUb0a0o/
+         9UGiQkp8E63QZA1F0g70AHY9ujpW/zetB9OooNDrC1mIO7YLiXTTvhiszyUQ9obMmzkh
+         sdN2SSk8vMBFCUK5RIl3i3MfpC2YypyLEyam/1yiEJHlWsv06ZkCrP9JmRW50xIMlcoC
+         VuVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772043802; x=1772648602;
+        d=1e100.net; s=20230601; t=1772044121; x=1772648921;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/xa2NxgBV56+zcp+pDI4D3jQAyDOvWbrM47gZNUvrNM=;
-        b=eRlGGXswGaXzlTrH9fxtd7OSzdXbwUDrmAaUkzi/4cquGKtzMPVVu5C6FREN6nlAe1
-         0saO9iD8CizDNL8hRuF01qOVrZUyOueR43tb2Uj/nbdzja+np6a7lCgTsPJx1JnhsJi0
-         lY1BaVBqQROd3C0edHTizfLImIkfAeVhkC2EfkTsc5Aj4E3KhjBuvx5ukblkqX5Wk2gy
-         4cbjUvUPT3I5jFmU+F8nq/B2Jiy7FynKeJQ1BGBw3ix0rDsnoyydhN1TAF/eRD1cVkQY
-         UAl2Wc67XWRDM9tGJHu9jFSn5UkM08ZSUfO08H/0f/M9vHrAFoD6Tp8rXW6vIPUdVtud
-         XKFA==
-X-Forwarded-Encrypted: i=1; AJvYcCUs5h0kOLoC/7LtnOGog/d8vVW42E2lEnxpcmIu5gDTygJS9Fshyz5oLCPl9thoxJm9ipm8gnEDmQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw9n9PmjIDgVmydQ5Te6aVKsVy+KCJxmB9BIXvYeNmsSZ9l6MgA
-	87qccCcIMatBa9tY64qgFWqsOJ1U9SyE53jehtwxKAzsc8Ogf/qVTcQw7HDKOMXjnDRPqsEMTOO
-	ZQeGgGhWsnGh8VrX5bkDsu+7bEr9w4Q==
-X-Gm-Gg: ATEYQzwJ1T28QU4AK//NkUbeIP3lQCtwT1GoE5+eHs24TmN0GI2bIwvuq8VJdhh7G32
-	sOvEPszyw/E4c+IBs/zTzWrqESKsYUsKSNQCue+b8XcIrUzPVu/LJLbDe88X6VuqDUxknLifLco
-	1fbXcNvexZQzD+KuzTQVmwB4Tkxc40aL4pb3GpUfSBA/ZAmVEGdHwZlzTS8MefYcrEpt1ZXjp6+
-	UxRmx8SVgmPFQIhc3mkpZUH+DwcqPLaAFU/ln6KoMYiiz3iSu0rTuHzTURom3Gv92VJQPwACmYx
-	Fgf2TLs=
-X-Received: by 2002:a05:7022:1605:b0:127:3214:c862 with SMTP id
- a92af1059eb24-127869c8215mr555717c88.40.1772043801261; Wed, 25 Feb 2026
- 10:23:21 -0800 (PST)
+        bh=b+vs7qWH/PosxazHRVXXbHEySPzv3IencMxP7YmTfGQ=;
+        b=UX7wGE0FKnPbVcfL0wHvL/pwPnNX1F0EOfaa0UJBr5g3grPeD/fnaIADho6j98KEw+
+         fSzBRLBgpNeDE0VWfkpMQVMFB5/1LYwog10yqToTTqH14xH56AUhbRUtmgxfEk9KWtj8
+         OgEVvKbAd4/sgVW01hh2xsMB6CXJQybSrO86f4Rdo/cO5BC2b8TOoj7UaL/UWQMkIqFs
+         udTbQL43w1OuKyAQzsfmVUNcHVIAHPyhP5wlJRNa9ajwZvqbEIDxmiqyiHn0Br5YMNs/
+         KwaEgFw/3VyQEnETKWSD1+nOpJuaXO3MHGi0VPOt4azNLBMn42D5ix5gJOSBS8U0V1Ov
+         ORag==
+X-Forwarded-Encrypted: i=1; AJvYcCUyAjgcd69hGChP20nuTOHblLM5Fw4U+ITTMCkERr3Q64p3hrnB478/ZlCieVYGfNoqX96QvFaV4Q==@kvack.org
+X-Gm-Message-State: AOJu0YzPFOZWegie1Cfm9uuFQzCL0YvggwQO+NqncWrPQR2zcamgzHND
+	mpRRZuozpqiqs6TwzthXiekYVEfNt0qVisxeUHExueo++tf6uVwlLPzsKOsOPjLWrnE9B8Z7Ho0
+	rpahr94Uh4zOHjqhl0eJ7d2AjCFMmlw==
+X-Gm-Gg: ATEYQzx3y4f98uFSpSfHnN5q9oSrLohRnFcGAc3Y7HfVnmUYdqc1ACa28Eik7IlUVXG
+	WeMmdUQHuZBUkddQMsrK2j1Ze9kxPBXgGk25paqcwnffDX4VrAzs/7k87BX9TfmBbADjLDkgcDa
+	79P6pNbxDP5SPoyrywS9gccKEmUrVoJPZvIRu07I86dW7ygi1SSaaOIXgeiCnRLj2UhvE5rj4gO
+	XmJ1x8pWeTyawD+lZ4R93AuEBZmELDYsBFl0jpeSv/HjQsktd20oazYQTb2YuLFTQ/f7X+cUq/y
+	pi05Ujc=
+X-Received: by 2002:a05:7022:322:b0:11b:a8e3:847b with SMTP id
+ a92af1059eb24-12789062f85mr18156c88.5.1772044121482; Wed, 25 Feb 2026
+ 10:28:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20260223123232.12851-2-ravis.opensrc@gmail.com> <20260224014011.56624-1-sj@kernel.org>
-In-Reply-To: <20260224014011.56624-1-sj@kernel.org>
+References: <20260223123232.12851-3-ravis.opensrc@gmail.com> <20260224015453.56879-1-sj@kernel.org>
+In-Reply-To: <20260224015453.56879-1-sj@kernel.org>
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Wed, 25 Feb 2026 10:23:09 -0800
-X-Gm-Features: AaiRm52SmZr4YLw7ydgp3VDu-h8ez3jJibjPYgTRa_tIkzg4tH3npe4ZI2HnusQ
-Message-ID: <CALa+Y15MQecahb-FfeQEJK2uwFdC7VxUH7GHCfSvy3uQ_jNC_A@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 1/4] mm/damon/sysfs: set goal_tuner after scheme creation
+Date: Wed, 25 Feb 2026 10:28:30 -0800
+X-Gm-Features: AaiRm53PZ7CQTO2nNmE87UPyau54sbWlAb_SIOGk1iCbJaNIOH0-q30nKNVvXfw
+Message-ID: <CALa+Y15BbvgKttRRxrNrr38y3Pt4A+MP8tfQZZ7LVyoUS+_0fQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 2/4] mm/damon: fix esz=0 quota bypass allowing
+ unlimited migration
 To: SeongJae Park <sj@kernel.org>
 Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
@@ -127,12 +128,12 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0ECA1160004
-X-Stat-Signature: hb6mk8oa6f7zoruejy6m6h5xg7atqaxt
-X-HE-Tag: 1772043802-437703
-X-HE-Meta: U2FsdGVkX1+KLFptF6m4lGy45NVw8GQqq5ThLhR8u9TfELBv/NS104h3i4+GairchL2fjx3K6qDAqHVcY+vmHEetqv58gimqznrD70I+NiZdOeZ42I8c9HwFwiA5A164IiuSVG0K89jcKe16Q9Vi9+MgGcMpQWl+skmEouDvuzMEGKaTg/xc2WJmNMtcoa2oJQS2k+fKvj1nPeSpk4j7arOYGFqxoz0il/TELlkKw6sg4bJZji+/TrraoiPYc7bVOytZigZbCH2FGwsV0uejwOi+iYp/pjXMqJRYgoAdLjA51uNDPFeHY8/zmhAI34yJmBR0AGJtl9ZA8IPiLLl/2jN0WT7Lwn6pwbo4fB5I+ic2PiYiHTm3VmE/AUwOfSpE+oHHUn3MrPR5OnXW19ewfADVC08HKqrvp095NdbN0UTmf8PrpukKOUrVtjCbj/hjuX2j2sr/ogZqe++7XFwgT+iLne13Ga/n17R9EWO/Bpt5qraFTF2WRgqnrv5irnbDwIAW3x3uP7wKd2MkEY7fwx6OhavP6vdMUznPus1S9CKrMnz8OnQu+UAgyRc2mHksNeoC0Wr4UKKue8aOfnj+LxnEfD5B3bcmLDUYilgViZ9+4J7SVW5a/L8ztBcXSQo6cFt4nH62FrBkADZH/auiN+29aDwS1dsMckRwjP3eDE8Oh1D6JdN9Xhyxn3LPRtiPEdvgJsXAV97c9kn/xZBLW7XIRXhWQZhbrMVf0xVaAs0Y3B8QMtY5si5AOgA5lX9q2EWHQulWJl0h3aGaXWWEpZzYwfAa3sD7QnWPswr7sj5wwCSoYSlQUCKcSEecl/qF+VhFGSNZ+Wyy2/tNZ0pbN9r9SoKrpO8+2g5ud81h/+kcnv3CYstscBnMJL4oGs7tFoblD7JXsXZ6ifZuCti2cU0QrDmvuvtpTlezNocdzXLg0Sxa7QVG2grZJhnuBsRLLNhw5M7/QdLH6DK6sjI
- tL0RNqE6
- nJkHGjfAskTQdkELEP1lSVA/HDivVD3CgVTdeqL5YHZC3K3lZW6c2gtpzD3a3qmHUmjjBgWDZDO2Ec7RNaCA7pX40H74U/2oKTYHyyFE0xiP6frZrAhztIwq8B+EBFIbHrP+UEgmVNIzotFwOitoSbOR3kElETd0rzbXZVZWktRgGvPTQAlECj8X7RWvbggWWPlXyrYSy6bKzhPVN1FSM4asEShB6iyKb9UyMlVSfeNWR7IaHbkrNk/fHa+DFXj9CNKqpMiCOhPKXvIU8SsPX87cF3WtPM6gghuSQsu8ZE1biOLOlD35ahG5loNo9d0gN4AJDgd2kJ4nVjTpizzgz1mnJTCz4TDA0GFzqSWVX130ptbYTznKypLuA4P3yHjWoPRHKZdxlZBb2TLDTxtlQwp/s1qtLjz7IGZHUnUfl37t4EbF8qMgST1Fx2TZvA1O1SP5ZqfMPFsPicTkBX2xo8tQH9EUCpRj5c6t/S+ofqkvgGfjk6zohhDCIP78L3JW5e7yihXJhNSbtq/P4iTOrldIM2twixavWPENJ2oxiMkLrK75j53QjEYIcwHmcaTrj3eFq
+X-Rspamd-Queue-Id: BAB4D160005
+X-Stat-Signature: cep1y8r6nghxsiun1w4hqie1jyebaq5s
+X-HE-Tag: 1772044122-912055
+X-HE-Meta: U2FsdGVkX18gnANysd3gPGXYw7MkZgqcyfzb3q4P32Ki9PolbyWcUZufB4t9kWD0vyrfLOcg2Ls99YM3or0OsriD/yZ3Pb3gq8OiLxgFRGaEGAs9wPJrjsyBrJnHLH+mcNzwW/VlxvZQfN9D/80Gc8qiokqG97t7d48OvayA16Y05z2CAlnKwfFWvlz9LyZNKyx71SiaG286VtPlxJj3f8ZQODsJDhwAyiayhvFHOtiS5O3cu57h8o3tnoJlpFpKJydIEOnqXw9sMFWtyMCNfS8TuDMHVy5Q66wCIbbtnle33XKwjQ0MVBnuK7xeXfR+y3PSzbXVZ9/2vUOl63vuRxUfPqRZ67V/MBLGiZmqTrsvpzMCaXBa4VZyzsbs98DBIG9nnEWTTgZvbYnyW4ikdLd72QnlaAGY/RkKN4so7RVa+vIv9YN2BhrpBbFRfQHBq301mcJfIYRJSXryUUL3QNvDX9N8+8ELKiP63fx4v3citzO2XLuf1hIbXAJD2RmhAEAzb69MT+jP2Yi0RUueXh9QFegj6M87NjXYYFinLrslrZWkxecwW7O2BpU9aLtkAmIJ428GZlrF+kj8Bp3kqMYr+YzJSlnSjvoHtMeiJALYH6vr2gZy/zLn6o09ofIY9snFb48oO6PPUXOrvYtTkrNj31tY/NIBp7eylvDUaYiPmUlr1dT/lmU4ZyZ3IhllFL9N/px9o2JBmzoteu+XfPrDCElSMs08RwcsOFRO5H28C/ugUXCY07BSktC5spJT9BEBYnXU1ixzS09xgNMTSRUwN58W3if+FgT9JINS9t+k5YGq+PyinW+5xyiKnajiIAwzUYiwbqsV5kTddZ6vDOOGgm43hco+7r5rK2VVGPCIWJ9Xngo8DAnbRhkS8Kxd9PstGOcEB+xyG3/44egY54I3KNxsDPqjQFK0cE26OQhjw6OVnaBiWHI7EM+RM7EssVm/fPgHl357txeasJh
+ DUMKj2FK
+ wFJ+HOfwasppRmQvo2qac+3hFAUMRRkDQa+AMpSros4c6jDl2ZZ4KfttKslUt+VqamaKg/ff8V37vBaWRCR6I6wKXidTU6N0+VBVOYlOExKavUI/h0mwhSIhbKWzirCSVUPDNJe3EsDKOhkTDY5DYxkFqV4XriPHm15dt9JylKMZdkxu41QNAQWSZiIpOJdu0FPVONrs5LFwqeYsTXCDsFJ0qyR7zgZPm7YHQ+BywrsNlF2wxvoxJcIJWgwevp4t9ZHTkO9rAC4p29l1ce7u/Sy7bQCpTAXljmLklwlKpA8ITv1KMpRhf+78WNPzdz5f30K2wA9b/W9C2HA4tpW9K+PdDe2EuRNes/whbXhwyhBdszblS56g3Mhkhql+IF8mwgBLy85mS8s5/siZGcXZJVFlQvEcInE3VzvybUrjHJ4u1R4KvCPRzEfCUBymd/LUCAB8QGYBzEa3HSb1VW1SETeAl7H/9GhzmQePmBxjf5eW00LwClTdjOxmBEmGMQtnAF8zDCLrpUxScyr1dTpg7trbN/7jaIdwUW+rkVR7ocD1LSD5Dravd/nLTZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,82 +141,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 5:40=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
+On Mon, Feb 23, 2026 at 5:54=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
 :
 >
-> On Mon, 23 Feb 2026 12:32:29 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail=
+> On Mon, 23 Feb 2026 12:32:30 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail=
 .com> wrote:
 >
-> > damon_new_scheme() always sets quota.goal_tuner to CONSIST (the default=
-)
-> > regardless of what was passed in the quota struct. This caused the sysf=
-s
-> > goal_tuner setting to be ignored.
+> > When the TEMPORAL goal tuner sets esz_bp=3D0 to signal that a goal has
+> > been achieved, the quota check was not actually stopping migration.
 > >
-> > The comment in damon_new_scheme() says "quota.goals and .goal_tuner
-> > should be separately set by caller", but the sysfs code wasn't doing
-> > this. Add explicit assignment of goal_tuner after damon_new_scheme()
-> > returns to properly apply the user's setting.
+> > The condition:
+> >     if (quota->esz && quota->charged_sz >=3D quota->esz)
 > >
-> > Without this fix, setting goal_tuner to "temporal" via sysfs has no
-> > effect - the scheme always uses the CONSIST (feed loop) tuner, causing
-> > overshoot when the goal is reached instead of immediate stop.
+> > When esz=3D0, this evaluates to (false && ...) =3D false, so the contin=
+ue
+> > is never executed and migration proceeds without limit.
 >
-> Thank you for catching this, Ravi!  So, this is a fix for the RFC patch s=
-eries
-> [1] that not yet merged, right?  I think this fix is better to be carried=
- with
-> the series, and squashed into the broken commit to not introduce unnecess=
-ary
-> regression.
->
-> So, if you don't mind, I will squash this into the sysfs-schemes part cha=
-nge on
-> my tree, with your Co-developed-by: tag.
+> Nice finding, thank you for sharing this!
 
-Yes. Please go ahead and squash it into your series.
+Thanks!
 
 >
-> [1] https://lore.kernel.org/20260212062314.69961-1-sj@kernel.org
-> [2] https://lore.kernel.org/20260212062314.69961-4-sj@kernel.org
->
 > >
-> > Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
->
-> Reviewed-by: SeongJae Park <sj@kernel.org>
->
-> > ---
-> >  mm/damon/sysfs-schemes.c | 3 +++
-> >  1 file changed, 3 insertions(+)
+> > Change the logic to:
+> >     if (!quota->esz || quota->charged_sz >=3D quota->esz)
 > >
-> > diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> > index bbea908074bb..fe2e3b2db9e1 100644
-> > --- a/mm/damon/sysfs-schemes.c
-> > +++ b/mm/damon/sysfs-schemes.c
-> > @@ -2809,6 +2809,9 @@ static struct damos *damon_sysfs_mk_scheme(
-> >       if (!scheme)
-> >               return NULL;
-> >
-> > +     /* Set goal_tuner after damon_new_scheme() as it defaults to CONS=
-IST */
-> > +     scheme->quota.goal_tuner =3D sysfs_quotas->goal_tuner;
-> > +
-> >       err =3D damos_sysfs_add_quota_score(sysfs_quotas->goals, &scheme-=
->quota);
-> >       if (err) {
-> >               damon_destroy_scheme(scheme);
+> > Now when esz=3D0, (!0 =3D true) causes the continue to execute, properl=
+y
+> > stopping migration when the goal is achieved.
 >
-> To follow the order on the comment ("quota.goals and .goal_tuner should b=
-e
-> separately set by caller"), I'd prefer setting the goal_tuner after
-> damos_sysfs_add_quota_Score() call here, if you don't mind.  Let me know =
-if you
-> prefer keeping the current order.  If not, I will just make the change wh=
-en I
-> apply this to damon/next.
+> But this code is written in the way because the current code assumes zero=
+ 'esz'
+> means it is not being used and therefore be ignored.  This change should =
+be ok
+> for your use case, but could introduce an unexpected behavioral change fo=
+r
+> other users.
+>
+> One easy workaround would be setting esz_bp with a value smaller than 409=
+60000
+> instead of 0.  That is, esz_bp is the bytes in bp, so setting it smaller =
+than
+> 40960000 will result in making it effectively zero, e.g., like below.
+>
+> '''
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2623,7 +2623,7 @@ static void damos_goal_tune_esz_bp_temporal(struct =
+damos_quota *quota)
+>         unsigned long score =3D damos_quota_score(quota);
+>
+>         if (score >=3D 10000)
+> -               quota->esz_bp =3D 0;
+> +               quota->esz_bp =3D 10000;
+>         else if (quota->sz)
+>                 quota->esz_bp =3D quota->sz * 10000;
+>         else
+> '''
+>
+> But maybe there is a better way to cleanly fix this.  Let me take a time =
+to
+> think more...
 >
 
-Agreed. Please make that change when you apply it.
+I understand. Please take your time. I'm happy to test whatever approach
+you come up with.
 
 >
 > Thanks,
