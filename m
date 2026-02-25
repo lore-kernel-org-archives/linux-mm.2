@@ -4,119 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC79FD45FA
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77577FD45F9
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:06:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACAE16B0088; Wed, 25 Feb 2026 18:04:11 -0500 (EST)
+	id CFCAE6B0088; Wed, 25 Feb 2026 18:06:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78356B0089; Wed, 25 Feb 2026 18:04:11 -0500 (EST)
+	id C7FF06B0089; Wed, 25 Feb 2026 18:06:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984AC6B008A; Wed, 25 Feb 2026 18:04:11 -0500 (EST)
+	id B61866B008A; Wed, 25 Feb 2026 18:06:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 80B876B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:04:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14E5913A8C4
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:04:11 +0000 (UTC)
-X-FDA: 84484509102.02.D439426
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 532871C000A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:04:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mQ928ON2;
-	spf=pass (imf18.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772060649;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EC4E6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:06:27 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50FA51A025B
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:06:27 +0000 (UTC)
+X-FDA: 84484514814.21.3239384
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 34533140003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:06:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IiAaSONX;
+	spf=pass (imf09.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772060785; a=rsa-sha256;
+	cv=pass;
+	b=A8Al9Ad7vGCB8fBoNetYkcv7NZwUsLerhjmm7iVdHLrJCLDQyr8Fpx7PfEOGxIcM93tzrZ
+	DEyMMhk2KsmhGK1ELOpwaBMFEQ3FvccxS8FMdfEASCsktAFheHaV+D6RKMPqDm1kPB3AP8
+	Buwm4EHMZUD6jPmnF73buTo47YEg51o=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IiAaSONX;
+	spf=pass (imf09.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772060785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+DIYJmA1zfgahLdi3SX9E/gtSF322FOGG+oNFk3Qenw=;
-	b=qohIqBp0vRLhNa4FI2eFqxFDyvP9SJmzAbKodA30xFr+Ai4yNS7SQGAX6cdMN3Biky3bes
-	gNq+BW7RPapjk0NcFf9vMyWP+gq1q95EMeRT4oABd/ws6kEhuyNymWkZDIT6PHb0Z1ZzPa
-	mFF+iFUaqDxgHkU/0oE1tgcYxiIB5Ow=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mQ928ON2;
-	spf=pass (imf18.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772060649; a=rsa-sha256;
-	cv=none;
-	b=gVZAzbaAn3mc+mpKSe22MhKmJNPvxZgFh21WRJsLEnTUL8YnlFHOkNDYwJIQ9ciIAoy+m2
-	sGyUfaFeORbaAfIfdsQeI3lYJK0awrJab4vJf8JLxJJAiPk93BYN7po9B6kBIn8GKn89ra
-	Q4NN2/0AhLFhR7wYFSKWD0+Y89yUato=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-899a2f4cdddso3292406d6.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:04:09 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OCcej487YgFKOPTEV46nBBjzZMXcrtqh5hw60mHgWDA=;
+	b=HLXZTxYiRnudVQVYZ95H3l4J9EwEI9CKVR86DW6/ASYZCyr7Tppsx+AEyg/Fi4cCxiNLhy
+	qfICHhQoof3Uk9FZ64Ox8Y4rr+lJrqJ9jRTvgsdOW5yt+PWUW/f3Zr73M2aCOQHgSy7Cw1
+	VFcX74f2AkRwso3GTuK8oGfYfQ+1gbM=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2aad8123335so18415ad.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:06:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772060784; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Qohglm7hdg1RcwBfJecMElcKOQRYpLYBJqo9SVtPHYuDVE/5/ke1Tgp4CJx4EFJpMG
+         M2XaNxuy5XWY6Yopi3BzbVa4vwKdQOfBnX3UAVj5F9EEa4Lc+A6mGMpKGB+R0P/f90nE
+         bOW1Qo/RRgRcjNuTh78xEHcfzTvX6sO8MgmFOMF9nifmCqll6xDc45bWb2iVsKnWKhPN
+         NN+9/MU5CHoaEnnWc5lNvE9IKTHPNrxCypvOkFzYoggslqvKEvrSh9JC8SJHLntnU3Zi
+         90z6DxmtR5MsUWdRNOabBS5sTWMznbfvM1MSj35/Jfm298caVAz+ZR3sRkpbzLsU8LrV
+         rAQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OCcej487YgFKOPTEV46nBBjzZMXcrtqh5hw60mHgWDA=;
+        fh=HyhnVPbb+jHBygpfY1GcYIF4rXwYA+KwwNIOC1P8UX4=;
+        b=Xea8B3zu/lDe5gFgTPEdh6cqKhdNk4vkO6CyO65gjT9ZSuq6ntbwi1xH25QNIVfsWd
+         pecBxJqaB8jsuH225GfIBI+atoZwpP0dGKqUnuGUFss5Kw+XU2vtvEl8eQEhV6fOivRL
+         XsZL1h46qBdDb3ZdH3t7jyN3rpUzPZzV/rL+Kmn8mRU5GB8UkQ8gu/eNgftDgkPYsTXq
+         2vXI0Wl4m/6Y+RA5MTADus14qo6ifoM7EamBUMso2Q1gJw/KzrS3Y1AQpFO3F+ZWVHQx
+         BIVXUFf1XlYHJ8+2gLS8ce+ao7shywXxUszHb5TlDfmnLE9bL5ZXUgGRhAU08piw77J3
+         MIhw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772060648; x=1772665448; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+DIYJmA1zfgahLdi3SX9E/gtSF322FOGG+oNFk3Qenw=;
-        b=mQ928ON2iYIxo1oxnk7bjT+D24ndny1PvYDhTt6CmKCTFrTxpYNdNpZMz4UP1CqQRo
-         +sJikLlLOn6uJcV5ZGBKiI21MkN5rEtzh3/i5EKI/JAyAr3Fu+SJj8fB7xwd5X0QuOBc
-         rl8bWpQRMeQVSl14Hu/AOhp2U6KEwuLaAYg6Gqir4axAZumxBtoAjep/lxBR2U3F7n7H
-         PhzYmSWxAM5Ue0SQQN5896R3LifJpD8EFbNSeSEUeS8CeaIcWyIyvZmPCFfRjRkTQgpC
-         pfD1KBWO1S76jqTKLmXnmlE7vChIPYqaFpEOSFVwv15wT/4tP35ws6Tqn23geToERm5w
-         fs3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772060648; x=1772665448;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1772060784; x=1772665584; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+DIYJmA1zfgahLdi3SX9E/gtSF322FOGG+oNFk3Qenw=;
-        b=LYIK5czhO+G8w9tybPa1/5dJPg6jezMikksdPjQfYArSDGAgfqhAD6MIKGXGz4ZcDS
-         Gns2VkRx3JamIjkRHl5qD7QM3ngE0RMRSbmBujD5j6UkXpJSNeIxF+f5l0UlZ96gLsfD
-         e8ocPC28HYbWNqnKUaiJrd2Or+UH46JQ11PT8NMuxaYandsGEOmg7sCyjzXgxaW4fveg
-         FZ3dEATkX/kYgI3v2Za/Gq+lZGfDGT7T/h1llbU+bkB8ruAWVzTOWimLnbr3ZfT2Or1i
-         neQExD7LbZ5foxnlLksSLBY/KjJoixp+BfV9vOhN0D4uwhCAbHdyyeam3QqjM3S/WVza
-         j5MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXblltrKZjQgWhQaelFNIDEVvZDD6LQBgKMOeGen6+e6H1QwvD0E57q1+2gtOpbGyszl1zipK0uYQ==@kvack.org
-X-Gm-Message-State: AOJu0YxipMUdvIr7kdEHmopo1/ns4BndIi4ZnbxcUBT0SBmtUcnAeS+I
-	7lKpntE/L5yeRnK0L6t1mqY9cHCYM3pZeuZIwx7xUQuLT14JIhNjQz/FU/jZOAna
-X-Gm-Gg: ATEYQzxwijDpsst7EUXOXCI08KBAI9LIqvsWkRzyUOK47/l8sU0kHGhYh0On1XJ0Nvd
-	+0kstlBQSZu5OScJ5NO8NAjaq/aufR78RyF5nyoKzbCphecJXEwB6PCfPLL6bEdwCVSti3umGWQ
-	OKeWPro5m4VA7y3hcT1kzFTAkPoMoLbP1BYmeuoPMdl8ozvM5iAzwKnGZ56iB3QWyZ8+p2UqvmC
-	yth8VcdZsD9x2jWCDaN74x9jUtm3hoANDYK8bgKvk6uiycblPkKx+0YivKVhci9X3nw8O2mMhOr
-	JDXugPPQzWDHOoiUvEY6xZ+FuJjGz8zUq68i5YFvS1T21v07Y2Ay42sk24+SGpBv6Cpr38Tu71d
-	8kOejLOhWVr8C4SLKQGjZ86ZrfzooUMv5URPEZRqkRhLY9GxqDn8t0rTH0wxSRn/qIZI/cf8Zxx
-	ECdEOB+iY443d3ca4ybyMFiREfLEe79mDy5l3L
-X-Received: by 2002:a17:902:d2d2:b0:2a0:c1ca:20f7 with SMTP id d9443c01a7336-2ade99bd62bmr19648135ad.15.1772054816193;
-        Wed, 25 Feb 2026 13:26:56 -0800 (PST)
-Received: from Barrys-MBP.hub ([47.72.129.29])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6c87a9sm1455865ad.71.2026.02.25.13.26.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 25 Feb 2026 13:26:55 -0800 (PST)
-From: Barry Song <21cnbao@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Barry Song <baohua@kernel.org>,
-	wangzicheng <wangzicheng@honor.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lei Liu <liulei.rjpt@vivo.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Kairui Song <kasong@tencent.com>,
-	Tangquan Zheng <zhengtangquan@oppo.com>
-Subject: [PATCH RFC] mm/mglru: lazily activate folios while folios are really mapped
-Date: Thu, 26 Feb 2026 05:26:42 +0800
-Message-Id: <20260225212642.15219-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+        bh=OCcej487YgFKOPTEV46nBBjzZMXcrtqh5hw60mHgWDA=;
+        b=IiAaSONXet5OK7N6rJjSPVYqntQMjgMbxOKSYCnF/0MTqqN/w0fJgNy56dZR/cgFGs
+         T94ENzTKMIPD5zCY7WGVLt3xG4JpgmYyr6p1C5dfcsxTXl95hmwkKK8xioq4KZJHs7Yq
+         G/RUtkI/IvQOydpbeKGAxIbQQ6VLwhS+PCHLcPSseTrS+MhuEdbjE5C4stxppXKeEf+R
+         dHxn5NF4pabm+KCzFmMqyfI1uP6UYWb2TDsSRXvXfKr2XGaAy4Td0W/iAAtBMUH9LEL2
+         h0H+spVNZ7Lsh8Dlj8N8FCy3uG4cdo7V4Ip+yVk+SWjP1xcKlvR6p5rlylFKIYfeAZSu
+         UmOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772060784; x=1772665584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OCcej487YgFKOPTEV46nBBjzZMXcrtqh5hw60mHgWDA=;
+        b=hF5++P4H/PZiQta64FPyPHc4rKM/lHyw1lmbR440byEvy6omnrxp9SJMzdFSniS5Wi
+         qqFQ2JmTUXnmtfyjLdE0geTFvnZUTa/INSNlaNuPFxkD26HDez9/z1dupfiEqKC4Zsz8
+         FFUUs0UMAJaQpiyj39MBATVN9C3nTj0Q8hRQBG7EtTbmWjZQ7lzGPuon8Jy2nZdimwmt
+         HkeX07NQ/a/nOVV+XqVixkRQoZp5eXsVQKeqxtILHLq14E3Lb3Y0nH607x1WtiZooP55
+         HKeTcn1JUP8d02jvi+A7ZTrh8OgX+pNRhy0/hBTFdgtlg488OSwYqM7IKznAi/nXYb9k
+         oJCA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9ZzIJo3PdyGrYbZWj0BLN145HMounYeVmFHhyAdi/se/UC22nGY8zxeP1VwkOYEZx0HIl1pS82Q==@kvack.org
+X-Gm-Message-State: AOJu0YwZWfEWz8KLoooZZDeCCJBhW38g2SrWuBqdeGd77iN3VzNyMiST
+	4kggymvR92EtjsMPCIa2JqvGuRcFiwdZZ5BcmPGOE9vA9MBHWtjdgXiQQYWp0ppkHdXmqnykvs7
+	FBBaXc+kId5ePO4ey1umclQS/3iUpiXGtx1R13MZ6
+X-Gm-Gg: ATEYQzzZIthOWYEX0iR/dB06LxR5DQ8yQ8jyj27/Re+EaxYxIy/drdDCJyvtaiAw24o
+	VhQiIYjkLxnzeQzsBxQhBamPX339D5K3LEzR9VXCuAPkE5RrsTPCWad3jfsQpTDOqZDjpNYcgpt
+	MlnwV3WDD9clpqL/v3TJ8vaXvrcw7Ojcc2F3gcraveIskawU2gtAtisnyhIwF9JcYhODcilNkym
+	T7uf9hO/OMiYLqjHwwwdGSyEy+PF3M7ddR8LmxGVrKLAdJEt4taiw8P4kHAmuUC2AL2R/Sbfnnz
+	Rz5CD+aVy2q9Gg9VfOaTBh70wE805SKI/dRAVw==
+X-Received: by 2002:a17:902:ec83:b0:299:c368:6b1f with SMTP id
+ d9443c01a7336-2adf77829e3mr890095ad.18.1772060783430; Wed, 25 Feb 2026
+ 15:06:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 532871C000A
-X-Stat-Signature: hstypyae513ktrko7e564pobctradjc4
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com> <b82a5ac3-33e9-4cbf-892a-f0c7f6fe0c20@kernel.org>
+In-Reply-To: <b82a5ac3-33e9-4cbf-892a-f0c7f6fe0c20@kernel.org>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Wed, 25 Feb 2026 15:06:10 -0800
+X-Gm-Features: AaiRm53L_V-Oqt0aKWGxGR-IMY7YR8csbAzuy6C894gHyFaSj1OZXeEBVl8_aWU
+Message-ID: <CAC_TJvdgvyjyJsU4v6W+3tHKx_2e8UMJU3RT2HKLSngcC+yH3Q@mail.gmail.com>
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de, bp@alien8.de, 
+	brauner@kernel.org, bsegall@google.com, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dietmar.eggemann@arm.com, ebiederm@xmission.com, 
+	hpa@zytor.com, jakub.wartak@mailbox.org, jannh@google.com, 
+	juri.lelli@redhat.com, khalid@kernel.org, liam.howlett@oracle.com, 
+	linyongting@bytedance.com, lorenzo.stoakes@oracle.com, luto@kernel.org, 
+	markhemm@googlemail.com, maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, 
+	mhocko@suse.com, mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de, 
+	osalvador@suse.de, pcc@google.com, peterz@infradead.org, pfalcato@suse.de, 
+	rostedt@goodmis.org, rppt@kernel.org, shakeel.butt@linux.dev, 
+	surenb@google.com, tglx@linutronix.de, vasily.averin@linux.dev, 
+	vbabka@suse.cz, vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, 
+	vschneid@redhat.com, willy@infradead.org, x86@kernel.org, 
+	xhao@linux.alibaba.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	Isaac Manjarres <isaacmanjarres@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	android-mm <android-mm@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 34533140003
+X-Stat-Signature: shfi19d3cxo43umziqywg7kyg94rpudt
 X-Rspam-User: 
-X-HE-Tag: 1772060649-856830
-X-HE-Meta: U2FsdGVkX18Ptv7JazOflqHdCNrITMozGv/g8vh5ldkR6NGeb1uslB36aoDqSNKyWiZCs2DFdTwpmI921Ebsoms9ZUUZjHFDkiaamj9ALugPyv9XWpUEsQLMMSx1Wt4yRXPO53HFWl4GGSOH5HmjZUQnsVrmJdD9b2el/ycFgnjZIwQ72uvo8iqBWXtTt+bksDn5xoGHaCWe7G/i1M4z+MRHUiFfjwCVJbgiZChx7r0ysjM94H4v7ueUimaQuhBTh3ThGOIH9oSTfbZmIigV21vShgIBeDl4xqHGdeU53cC/F+UpAmdvNhRhDtnc7oH3A5tzgGn22JCCaaa9EEEouvYBELvdMtdvnj7ljgpoJrksAal/xyupLmS7LW5jIO0OGmZteoHXQL7Y37qUrrHVCfyh67nrMyucq1JNViV5EIYrlz9ezB9Y6oZIwQg2b1/6DPAh/IIPB/4O2dzcb5172rhzB/kqiGaD07jA29Enbeu69qM/FI+9D6sg1IqzHHGjXsBVjXG8/Nb0EBvQ19hTEzlzgclJJ+QAnKPyLxP6VHE1x/Y+qtMSlCFjvjMB2GoUgr9nGZkK+TPTIxti9BlqgwCZzjojlmiZcIZ7J9Y1KBM/xQIlDxRu/h0XUN5npmw2DggEJJpYEuPvEPZEBIj/XW4K60ycgYUkWbZebhFi0Ux/GqYwaKFfxAR3hlRC8mFuIzn3ApwxedNh3i3iBrl94zNAh7YeRAIZWIkCNW4aBt1EpN/3mRc+Y4KRLrtnusuo8DthGmmkqvygzUFmLEKmj4MmP3l5Ofad32ROKwuVLQ+qbmJHd54bCXQMqcJYVfTt+EIF7zvwbgvjD0naD+C5UipdNQAruk/GEiDJ80nqmoT37r8z/2jby/ObkDKLImjI96nr2M6WopoJN3peWEaA99nK/24wDDy40ag9R3/VqZvo3lm3//S47mxy/Fu7+jpf0b+Wmb5grCYsQzUDUAd
- Qn2SAj4v
- l4Ol+sjv6BlcZjOX+acbtYukr+FGWfcXJQ2fWqUnZlWNkqzz5Ez8DpINE0BKtWj55heKD5NevH2BjAX0KXQx2dMcr53QOhEq/IkeU4uiSMN9ab4WA/HeB4cXu1d7V9npKzhn2preHNdGMkUnXxor5Z0Bo5wc1GALDmQY8AqjL5GRzkIPEP8eCx4XmFQurTAIs00/2QbBW9YtFTK82vFVTkkPEGFOVSFfLK+UuRZ6LuSDpCmFFwjidBVWPfGhtxhbO+4bK+GRsT18FW2LB+uqxQ8Z2UIvabX+1G7x6ddlaA+2ukDwdUuqymejFwpdrrc8Om8ZHRJHnHv/z/b2mDlAN43cTfCBNMRmomwFY2YzlzPfzEjuatSAR2bzrM/SgZuK2IwYbtUhFC2l+zsmZzUBj/2HLms5YJED7Vsq8b8qWG+XAUxf1S9I36GBiUiWr7eIrHvcZ4ghC6or4YPQDUGRltTm1AaeLHSHPeku6+fT1VJNOxlSmWlOmFOOBhBGDh2O5uig4GIYdgPx9YM1qFLro7ER57sjjSHgoYFHQPjuot+dU+MWEmMGJRRAY7PwidL1yFqc+G2Ui1A4vEh8UEbEA65Asmv4SdYt/Z9x0HL1cpIxqVpUxBQ59BoacUX776W1gEHhnEvIrmPCab7cgbVH+jBHj6g==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772060784-732673
+X-HE-Meta: U2FsdGVkX18oXG+SH9FXzCjHaVKTySJumHmjtQZfn/I0OOQiBY8iY/gSS48/D10hLgk6a9dIsvTCnBZSKClNPfvv/SE7GlWbk/7aFu69SB1YuX2KKcmvdM2lOYU0D0MRevdtT0vDX+XkiEFA3D4KhYKjqLKh52KVIz0LLtTmToA44jTjrxdp4oqUsLnfyYWyVzYsNzS3tmntrPh4JnoyrNzn/xLMOMEgY5/5s+DlodpgUlLiGnhUS9UWcETaRAvwNkb8redrL0x/ULKeSdn1Q8WNuxVPMQxEIu3q8NKUGBG3jqkrZ9zbUD1wriZZZ6Fq0NtIpI4mecaPlHH2D8w6FnxbK8dopqRnwMlT0aJ1he2Gi2ySuFlhJl3MD7ttcyNed11aywMt/VJghx63AUs2yELa4B66jituV7wkPngdxgQMAyfM/XgFmykXEr5FQ7mhmkFfQ7tP0fnk/TwMDmSAdiJBpdle4LaHwOt+zuWw38NEmr2ysTcNf8Eyr0qcLZARjiihRbREy/O3w3ocJ4MYmkgT0c4bdUDZAHj9RpnHuH7BxHLF+8DoUijnUgGotNwPW/Ve6kfEypokRK6Zpim5Lz2klvrMoAbAMlKph3BuKPL063ccMv4om4jiw//QTB1eGO46V1CS5mJ//NvjNcS9QFdrxM7H2MPSDrZNfTY5oNwtlezjPTKJfXXUWUx8NKecIrdYwbbS95gb/Dodmdf+ixr65dnFmbetZbO19xP8t6fS0bpyY4LL/TttkSbsNw7IkYlZ3onAMNXDE34VzOr1vlYc3VFdpjD5sD+TGNH81wYOulLXVCu4VkpbzCWPhpBSCEug8AHSqFnvHsjng3WBYavpREP87QO9UE8qJoC1Jfzx6m43dOhSotSUJ+AdaFAAFMSd8aLOIapcu5EvxwiRwuyNtsRAxei3ff9k8eEfF0/Qh8/Nrr/byYaZWu9fZdJbApCyuawK/II9eg2Oomv
+ qFbT8iZK
+ No6IDaFRp2mJbwEPBx39aMKiEpak+lpEFTSnv7LOw9b0K8wjZpkjxixlGB99c+Eni8Qi1BuMEU+pbT4dDJ1EXpqUK5WBjv5el4PxtWXOkZ2xZAdh+LdxrUditAongjfRedWaEqRe99xhPmzmIJTYpq0qhKiosr9Z/f8ij2m64NFKrB4n8Yb0xqItbpZ0Kmf1Ay01APslTSgMLGKKEx9UHDtlga3nI19l/Ii/nlrkSYONOhP4sDow4umE2VshgYruresrMKwwgvA3sboP8fKu+wbabhCQLPer0WRYMNBMJ+AaEnzJbKfvM8LtLkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,116 +155,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Barry Song <baohua@kernel.org>
+On Tue, Feb 24, 2026 at 1:40=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> > I believe that managing a pseudo-filesystem (msharefs) and mapping via
+> > ioctl during process creation could introduce overhead that impacts
+> > app startup latency. Ideally, child apps shouldn't be aware of this
+> > sharing or need to manage the pseudo-filesystem on their end.
+> All process must be aware of these special semantics.
+>
+> I'd assume that fork() would simply replicate mshare region into the
+> fork'ed child process. So from that point of view, it's "transparent" as
+> in "no special mshare() handling required after fork".
 
-MGLRU activates folios when a new folio is added and
-lru_gen_in_fault() returns true. The problem is that when a
-page fault occurs at address N, readahead may bring in many
-folios around N, and those folios are also activated even
-though many of them may never be accessed.
+Hi David,
 
-A previous attempt by Lei Liu proposed introducing a separate
-LRU for readahead[1], but that approach is likely over-designed.
+That's agood  point. If fork() simply replicates the mshare region, it
+does achieve transparency in terms of setup.
 
-This patch instead activates folios lazily, only when they are
-actually mapped, so that unused folios do not occupy higher-
-priority positions in the LRU and become harder to reclaim.
+I am still concerned about transparency in terms of observability.
+Applications and sometimes inspect their own mappings (from
+/proc/self/maps) to locate specific code or data regions for various
+anti-tamper and obfuscation techniques. [2] If those mappings suddenly
+point to an msharefs pseudo-file instead of the expected shared
+library backing, it may break user-space assumptions and cause
+compatibility issues.
 
-A similar optimization could also be applied to swapin readahead,
-but this RFC limits the change to file-backed folios for now.
+Perhaps we could advertise the shared VMAs in the /proc/*/[s]maps
+entries for the processes sharing these areas?
 
-Based on Tangquan's observations, this can significantly reduce
-file refaults on Android devices when using MGLRU.
+[2] https://lore.kernel.org/all/CAC_TJveMB1_iAUt81D5-+z8gArbVcbfDM=3DdjCZG_=
+bRVaCEMRmg@mail.gmail.com/
 
-BTW, it seems somewhat odd that all LRU APIs are defined in
-swap.c and swap.h.
+Thanks,
+Kalesh
 
-[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.com/
 
-Cc: wangzicheng <wangzicheng@honor.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Lei Liu <liulei.rjpt@vivo.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Tangquan Zheng <zhengtangquan@oppo.com>
-Signed-off-by: Barry Song <baohua@kernel.org>
----
- include/linux/swap.h |  1 +
- mm/filemap.c         |  2 ++
- mm/swap.c            | 17 ++++++++++++++++-
- 3 files changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 62fc7499b408..ce88ec560527 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -335,6 +335,7 @@ void folio_add_lru(struct folio *);
- void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
- void mark_page_accessed(struct page *);
- void folio_mark_accessed(struct folio *);
-+void folio_activate_on_mapped(struct folio *folio);
- 
- static inline bool folio_may_be_lru_cached(struct folio *folio)
- {
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 6cd7974d4ada..0b8f383facdb 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3567,6 +3567,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 		}
- 	}
- 
-+	folio_activate_on_mapped(folio);
- 	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
- 		goto out_retry;
- 
-@@ -3926,6 +3927,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 					nr_pages, &rss, &mmap_miss, file_end);
- 
- 		folio_unlock(folio);
-+		folio_activate_on_mapped(folio);
- 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
- 	add_mm_counter(vma->vm_mm, folio_type, rss);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
-diff --git a/mm/swap.c b/mm/swap.c
-index bb19ccbece46..1a991586c5af 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -488,6 +488,20 @@ void folio_mark_accessed(struct folio *folio)
- }
- EXPORT_SYMBOL(folio_mark_accessed);
- 
-+void folio_activate_on_mapped(struct folio *folio)
-+{
-+	if (lru_gen_enabled() && lru_gen_in_fault() &&
-+			!(current->flags & PF_MEMALLOC) &&
-+			!folio_test_active(folio) &&
-+			!folio_test_unevictable(folio)) {
-+		if (folio_test_lru(folio))
-+			folio_activate(folio);
-+		else /* still in lru cache */
-+			__lru_cache_activate_folio(folio);
-+	}
-+}
-+EXPORT_SYMBOL(folio_activate_on_mapped);
-+
- /**
-  * folio_add_lru - Add a folio to an LRU list.
-  * @folio: The folio to be added to the LRU.
-@@ -506,7 +520,8 @@ void folio_add_lru(struct folio *folio)
- 	/* see the comment in lru_gen_folio_seq() */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
- 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
--		folio_set_active(folio);
-+		if (!folio_is_file_lru(folio))
-+			folio_set_active(folio);
- 
- 	folio_batch_add_and_move(folio, lru_add);
- }
--- 
-2.39.3 (Apple Git-146)
-
+>
+> --
+> Cheers,
+>
+> David
 
