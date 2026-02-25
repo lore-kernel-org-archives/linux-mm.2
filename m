@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C78D7FD45E2
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 19:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EFF7FD45E4
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 19:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FA436B0088; Wed, 25 Feb 2026 14:34:30 -0500 (EST)
+	id EB6E46B0088; Wed, 25 Feb 2026 14:34:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A89D6B0089; Wed, 25 Feb 2026 14:34:30 -0500 (EST)
+	id E613A6B0089; Wed, 25 Feb 2026 14:34:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECBFA6B008A; Wed, 25 Feb 2026 14:34:29 -0500 (EST)
+	id D39F36B008A; Wed, 25 Feb 2026 14:34:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D94876B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:34:29 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82220160732
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:34:29 +0000 (UTC)
-X-FDA: 84483980658.17.9E593E3
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7C43540008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:34:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C110A6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:34:59 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C88613B80B
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:34:59 +0000 (UTC)
+X-FDA: 84483981918.27.E5BB879
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E75840004
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:34:57 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TdWi6uJT;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=google.com header.s=20230601 header.b=LORfMFoy;
+	spf=pass (imf01.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772048067;
+	s=arc-20220608; t=1772048097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Si8z437tvGEJio1pwGBHAqSsYapkryN7R/ntn+VLWw=;
-	b=HBP/5Hp2sXJq12QfwVWKbwghVSQLsC2xgct1dpni7KhBFwZ1ruizzVE/csu1h57/fFm4Ko
-	2FnefN3psvO+SMJGuo1WmIpzytBY1UoYC4RAUAALc98kx2mJgQyH2qTS/sL0bfouCegaVN
-	/WgPmIWMXTbliNN676g6WIK+lyGXcDM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772048067; a=rsa-sha256;
-	cv=pass;
-	b=ieUrTd+Ifip+s9MUkZ1ktZjC4YrjNswoFwTKKTGsy+vLRLF/ZRLlD+sXzxCUizmD2WoxrV
-	oLUQGcfQw2ufXJajIhVttWJ5e/c/0DzS8euH53F+YX+KtJ+MYGPy4Y2q0jvlPTSpDrjXxc
-	xfiE0pOpZmSvQ9VIhNXYNdIgztWOrII=
+	bh=JcGfZZLTy1EfxpUAiB3PslYr4DWldds2kTYxvCknlIw=;
+	b=E97n2VYIl1GLKXQlZ2cU/VhuBeFdmeAANqhTVzaA5YkTcM7fhBK0mODH4aErtQwibR5CBu
+	R6ocCXKQYwP49K5wYOe2tGVWtMKzmq5SNtd2m2k3dVFdQ55G3sbmzOsqkLQ2BNP63arnxg
+	CHHiENyjlfbWjuCdF3EIlD577alO6oU=
 ARC-Authentication-Results: i=2;
 	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TdWi6uJT;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48371d2f661so10475e9.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772048066; cv=none;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LORfMFoy;
+	spf=pass (imf01.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772048097; a=rsa-sha256;
+	cv=pass;
+	b=DH+Q6d6a/fWrSGa0IbvAjrRPjDdrKeopQMMHZzOSKaWrUBHZGIOsr+/gJpij911K1X0XKw
+	L7ADa6LPnSzm/8BgKtFcH6o3lmsQQUKP7y3xUQPJTCmuyGYvxmKnxAG4mvGv6ZVKn4nsmv
+	eIEn4eP3a8+TnHJoP1sjLqk+vfOnlu4=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48373ad38d2so14345e9.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772048096; cv=none;
         d=google.com; s=arc-20240605;
-        b=GI1bf6blECkPu88ZfoeYfgO0HtGmPzcjkPW+5V6tfDv85ewhJllwkLJu9BWNqhVC9A
-         VQQra+65iVFi1zqcC2K+FsGQmYX+yG3jQNSWVo2eZJJ9eorfR9jZMoSllGQUS1n3YNNw
-         hjVHfO2baT1jvzkARABldN1G5oYgRW9FTv0knIN21PKAfu1d0Tcda1n3hTH0gCh45EOT
-         WF1dZOK0wIPqYSfPe9INPyXcWDLnVwA6HtKVWQ+qRORRywVbXF73b5aQWPnDQcvxu+1z
-         UJlIABLm1Ppc4Aqh+OcfxvPBp9toxg0vs52k93k+SI49x3eVJE2MRs4RkIL827Sbly9N
-         ywTA==
+        b=JP+mI6cXWt5TeAuzGqWV1W8meEhv4AEGOzO3g3YVqdZNqwjtz4ZG0FTykS4f44VbsJ
+         5ss+8QjoaB51WcZRlLMxoAG97Jku7vtLaNvqf1PxOLNdtkBhxtQUrLzU8xygfkYlmgpS
+         RFj9rrxm8PeH58J4pklfhIshM+xj/pUCjtLzWgj/w6SPIMxpAzIn+juDNaZPussjn8j5
+         B/2S20xBbwOzSZWm3uFWA3QGsh4t+BpFHw26si6uqxcIa8TMJOQHH98+mTjQkvsObzRp
+         VBrWuscuFCobmW/LZ8m4P1eQzp6Bney+BAkJGerYScvWxkkbRtc6NCXXZhQJCG1QyJ9W
+         y9oQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7Si8z437tvGEJio1pwGBHAqSsYapkryN7R/ntn+VLWw=;
-        fh=YSMnXsVpmAy8HMrsnPPovE7KaBMfvs4CMr52br3DF+k=;
-        b=AWQsqYujHJwvCnWWoRXE+xKDFIHjsw6TH9eN6BSatagPFxq39Sukr2MPV6eeh0T/9i
-         BaO1IILK31HLm4FAexbOAMQTvP9Ghw+rLfOlC/WDt9cJNPur3q5bu5j0bFs93ZRH3TNL
-         pbX5Rn2qGwxbQjSmRbnJhVYDL5cI0KZ47P5Mq8/ngKdOcsHfLCmprW7+uyy6iBhVuM/t
-         mSDMjoWo6MCwW8oSatBt6bTNrU30nuNDimAnb+FSXpSw/JkWjZgodKg1wNCMR8YoTT1d
-         zsgXgfEHPPZtHytt+RF42W8JqTux69EXqrPBka2P4xgGW83yagmDFjJQN4CFCzRUjpVD
-         Ao1Q==;
+        bh=JcGfZZLTy1EfxpUAiB3PslYr4DWldds2kTYxvCknlIw=;
+        fh=mhCD2Xv41wZqas+xiF9hT76WEQpR1zFdWw7nPZ314Tc=;
+        b=CK7i71ouTGio7b6TkOtX/aFzHFoxUGGPOYhcnKLBP934/hQ+/P3F7FOXTRUddRg8Cq
+         N0n4ZbOmRY53dKpzNzwgHort10chGoX0kp4Ln1jBRDLNIIdfOSaUCF84GdSYVGsOl+w8
+         XvMEiEvrMTwUqqflFGVsAo037Pk3MuPFA38XpXITzrskWbledS3kvGd4mb1gGei6Pgul
+         yrc0SvPW+2UoaJYJHfZSLA9rtVmvUCobrjHOq2BgQ+RBtPiihjeBF0O/n40j9iolZrWK
+         zIBw+q3ZZlxTGh16518Yp+bSYZOUomrLtBC760xG6UOH6v6WzYu8s8X/MtJsk8PYvQHi
+         nTbw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772048066; x=1772652866; darn=kvack.org;
+        d=google.com; s=20230601; t=1772048096; x=1772652896; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7Si8z437tvGEJio1pwGBHAqSsYapkryN7R/ntn+VLWw=;
-        b=TdWi6uJT9jGKXoEzCWiH7jSPrLKm0kXhUPxAZUWugxsLnbKPmp8q+T1LLqEazTqhiC
-         3Thc60kwKz5o/i7IpW+WX4vzrGBzEm6RRrnZ+5xbGoMqkqHOr9k6xLq5sv0raNAmWO3y
-         M99NvUs5N0YOBeWHioikZQJ9VpsOHuXCMZCiZLYdyWkv4tRrMFAEdlIMaBJqaN2eG5uB
-         WZabyJFH5eCudmN8Ej7HQ2/jKnH/iw3UXCsskQttbu90CZqrUq1NKWTkHWbdD+Wk4SXx
-         SDqicMqyZk0e5YwGPIC2JbCP+7duIQe524d8J+SB2Yc2K8F+khJ3KsMkTqx2wfL6WCXo
-         D0+g==
+        bh=JcGfZZLTy1EfxpUAiB3PslYr4DWldds2kTYxvCknlIw=;
+        b=LORfMFoyeLO4cvzzFamMxbGX0lbME7XwZDFnVLIJs18pqSrb/TCZ6SpkRzPqYHc7jk
+         MpduJIKTri6DzWbs9FcU1cKSOYq2vhSU84G7xcE+/zuxcgx06lVTHOq9fWReBnD71Xdi
+         w2AbPkOVREH6F4LkmuNPwoqnrlwWt2/DrcfGqLkIMv1UGmCb34zMr/Mz3OABxfetd/wH
+         stYGCBxMES8btTaT6XU14cs3ulyEfaJRaF3LZF/Jmyszm7QHywAocUMBP/QbxWvkc38N
+         dS+6GtXkk2fX93y5QD0vsYhoNBJGe+HP0pX63QYfR2v6ZaN2aPemOpkFz3FD2gyAqsoF
+         CkIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772048066; x=1772652866;
+        d=1e100.net; s=20230601; t=1772048096; x=1772652896;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7Si8z437tvGEJio1pwGBHAqSsYapkryN7R/ntn+VLWw=;
-        b=DSo/D+r3JqTw0UzErP1Pat3njCoq5or+AyLOmbx9VkZsc/aMSIQxjq9ypQEdcM+VEF
-         NyNAdlzkIvDb8P/USuTCNjflPqxvLH0D7KBhGYonPXAAq0LhmX+VeKWTbDPrVLQKSZJ1
-         O8G3g9mpV8bp3ec2SZCOc4JTYFofZaYqazrgy2mB4IFL2rUTZy2XFrQfnvsGRK+UttRa
-         Us26NfC6BsUYyCgfLVwXQyNcwMyM6qan2lEAyKzyYhem67Z/99QCzLXue3wUnUVDGU8V
-         ZytE5GHkWk/Yj0BqO96FpKltHDUCGt+fJOLvVIk9x9ollCYEFdxUHKavdVEGDG85Wbzh
-         RbnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKXMLRbeJDVCCoMR+4PEuaIJxNNKWza5QBJqwc+e+JxUQqU0wzv9YfgAUs7Hw6/07GxJw/Pl7PWQ==@kvack.org
-X-Gm-Message-State: AOJu0YyD8jxh7GWxWZgvuZhXnUksqIvK7SU4Wkpgir7+yXgFgIhwdWaN
-	103JpI5slOZtrWNp6S7b/u5PfpLxK3Wd5xs+bVCA+bBTvuklVD3i/EkMl7U5im27suHR2iMyIlm
-	ZPrIwxY01rgfN622e9oxfoVOzU/QV2UVRv5NGxjtP
-X-Gm-Gg: ATEYQzyhnrNTuRIlCl2HcRkpGddMxPnk3Ab8ne5Bqzs3+jBNSjNO6IxlqiK+Xzkw44P
-	EThV1AuTOoAbXdZYBayUGOhG1jTaV3/2wU7qeJb0fYopZ3YRyV74dI6HW4MlA6LWqzOBwsfDRZP
-	IQwySFJQ0mOr0b5RjiJ8ksR1DdT3mB1qfSU0D6+smvu/8yjB3D7E6olAUFzhaccoEtvRQlSXoR0
-	8RvCtLPWCRAaPKKkixM6QSoet3Y6XybKfrIdUsUXU4luY7QIrN/UJAyJEG7eEpa1zB0UB938k5B
-	VGHa3Tfr81Vn72j/itqeT4d5kz3zjBBLBrxiiF5e8fIcW6CgNQQemHFhxlkpN6tlCOU6Rw==
-X-Received: by 2002:a7b:c059:0:b0:480:4a7b:228 with SMTP id
- 5b1f17b1804b1-483c3195488mr93045e9.1.1772048065599; Wed, 25 Feb 2026 11:34:25
- -0800 (PST)
+        bh=JcGfZZLTy1EfxpUAiB3PslYr4DWldds2kTYxvCknlIw=;
+        b=f4+IGly8lRuRshTwXig0W4vGFHJumi9Qfka3u2DlL+0O5knDSVoAl72ffTOHk5YWdB
+         5kxLNVVGu99hImDr5OvI9Fz6ogHt1KDflPM39evbUjzWjbx+a3/1l0TOoJMdjf/8/zbn
+         SuCjo/UkAw0sBysBt1yn5K2NHVthnz9K9n4h0rKEx+m0xjFQkhkCchL9I50WQ6KThcBv
+         3HHF6VbYSWFuxz+B63LhoKwGGQmQjFVZepiSv5n4xPXi/mP/WBzF0yUgMU3uqVyq94py
+         AlaHUg3OsLL4uVFrMBRWstPn/ZgYYLdaJ90vgOfMFFdgvT5VQIW7wTEoaIfPAmavU1ct
+         Wi2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVhc+2sMyvkM5c3nwJyqYwPd3huNOQ1vZqYPdlUbahCmky7+PBy3mUNW/4XcBHAsnphEC6AzvZXGw==@kvack.org
+X-Gm-Message-State: AOJu0YxKc5YR4mCWqlyw1R7yhynfrXeFkMvK8oPTc5lFVvHT+b0xkYdz
+	Eq8T+mNRFmsGoYs9fsiL6CX6SHf0+dJdECPKeWAMBY5oyqSrUk0sYffuOtiBDx3QZ0QRwf2/3je
+	8N9gDgXJSLBojNxvxs8mZ71sM/1ZJuYHLzrIGFKIa
+X-Gm-Gg: ATEYQzxvwlpxnX4XxamfcISLA3Yp9JhAutkeSOS4ZvKM0vX8YjETeHRJVKh4u2Z87l6
+	wwjLfHkT8sIZlYku25CCFzNWfCm7Di4kO15bO9ArZtK4WwCcCO3tOlS8S6uXjf/CiFrCw40bILe
+	b00U8axQAZgbyafAwJWDvDA6uSBLwIc5QbPHpo3ggq051gpB69B5Ur++CLJswNNJYYTcTlydLEu
+	TE96RdO8hjPFIN0hY9I85CMFxxRQ1MwjUNXbW/hKCH1E648WeL3rsSyn+qQEdYB3307E/lvBUKw
+	q3EGOLw7QiqyLcHuCUO0QBUQOUyeHeSDoGw6zaEasDg4OrMZibzYSFNN4CGf/Wg9IORLxQ==
+X-Received: by 2002:a05:600c:628e:b0:480:274f:843d with SMTP id
+ 5b1f17b1804b1-483c31b00d9mr66475e9.16.1772048095548; Wed, 25 Feb 2026
+ 11:34:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org> <20260225-dma-buf-heaps-as-modules-v1-2-2109225a090d@kernel.org>
-In-Reply-To: <20260225-dma-buf-heaps-as-modules-v1-2-2109225a090d@kernel.org>
+References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org> <20260225-dma-buf-heaps-as-modules-v1-3-2109225a090d@kernel.org>
+In-Reply-To: <20260225-dma-buf-heaps-as-modules-v1-3-2109225a090d@kernel.org>
 From: "T.J. Mercier" <tjmercier@google.com>
-Date: Wed, 25 Feb 2026 11:34:13 -0800
-X-Gm-Features: AaiRm51mS0fj4CpzrUrBMi_FPuw0tp6YT-qMjNhlthEAQ04zl32goABU8oOB09E
-Message-ID: <CABdmKX06VsekPpwairaWC6JuH6BHMj-NqJj1cYgR=-rd6iY9ZA@mail.gmail.com>
-Subject: Re: [PATCH 2/7] mm: cma: Export cma_alloc and cma_release
+Date: Wed, 25 Feb 2026 11:34:43 -0800
+X-Gm-Features: AaiRm50gu1dpca-LBzWZRd4gNx9rYHRkdAZSms4Y4Ytlet4IdIIADCtT7UW67vY
+Message-ID: <CABdmKX0hGSSbRFwni+Mzq9KbpxwCHzAFPc70RZVv1GmFW92fzg@mail.gmail.com>
+Subject: Re: [PATCH 3/7] mm: cma: Export cma_get_name
 To: Maxime Ripard <mripard@kernel.org>
 Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
 	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
@@ -131,14 +131,14 @@ Cc: Sumit Semwal <sumit.semwal@linaro.org>,
 	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 516yw1yexbx8g6gk8rzazes3jotq4kr8
-X-Rspamd-Queue-Id: 7C43540008
+X-Stat-Signature: pcccedtwskymomzwtgr7jpy1sr85c9je
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1772048067-914338
-X-HE-Meta: U2FsdGVkX19y2uXRuSQQAVzE9onnmibvcMil/tdpiv8tnFWWE2JX2X4Q0aYWk7fi/dSXVyH2VcBQjFTFju4530E9bWkEGJ1sslBx8NWxqEDtsg3wVpH1Gogm2abFXx+8dQF2ivIVej/3W33ZQccMWsricSTlWsTXc0NsMwr0e8GRjqSwnESnd/ADSxwTLQYcMLZD4LQ/56IdxWh9yZug1D4AHigNop3TNTKFoVCC+7K7WXqRfsXbSI1hN++P7xDhhPEplwNxoXREg7oj9WZ7WEeHWUxKxJPIJOa5dM3tSJcYdBAYPHeFpP1cRluidDHgIW3W9MrbaoZRfT83OHAs7X9iLCooubwmv+MKOs8qwTrR3C8sHoNfBboYSamq1DtPMfzKzNCWEqJTjA5nSTps70GABrtOjRoJY0iPh/azlZenDb6ia8UM7ldihy+/zpJAFNms+uANVsmn0kJcylb+vkBzzLAoYpasjFDo1Pc8V0er60WS4S9hnUndVaH49O+6ps8O/wUGV32rvkY2fJJ4GMvlQWcpI2EGlQpvnu2uM/G1VPzRRwY2sn2fcTISyEb4NYuO7+um5Coe1IodKKiOswr0SsncdYPKEpkvbGgTXDSRvodh9oOhMGdF0gLnPf6TfDJzqWD59ZXFU93WhKL976yzLqV4IQSy0ufJLOO4px41J1PexXmUKEvEGQhEVHZ5/uIkAcVJLg9pNQ26radVJ+kT08J+QwZL4mvlhPToASw/L0SjufRqsdEpYNXcpNf37rpJpCBa3SUQxjJbHFBO5eIQ++0J5URi6ZzHDCwx07RFL/WvybBP3jFlLclnfdPS668yI0j+a47d6P6+J+9ocqkpLGMetaiuQFkUeTf7ycy1bbLwMscb8rD2b9pBhPFW7HLLKv0FeTPmfT8HUSHJGDWaxDQi0b2Ace7eGE1gFE3cbi5TRnkP8nlm5G0qFbCfh78LOutyiBopN7HeJsQ
- Bpx8S8Y9
- CHMUDXd4E0So84bdX8+HFgQ35eTlfPmX5YevGha1/QEYx6Z+EfT/KjsH27jvemlj3j3hd8qxN4C/1nVjjStabfNnzYy/xUYr4ke3cz1UqiYS3bk3BZuLuu6RdwKUqSE2F5cCWFalWXg+M3/kl7KdsLzaXobrnIOpyPqqZ3LDw+7G0vx9YadylCBQSBpMsPc/2qb0eGqlsptlOGpSYak/GWAhlJ7dZwrQEayOCfUbNTRqV1Yen+UI8yOFUE/gZV7M7oiuECXGrcsiO3uv5GotvVXI5ezD/SMEmdrYjCKpEvnQHfg5FO5RC6ruDfajx0HYlE289UBobAyPbwPo=
+X-Rspamd-Queue-Id: 5E75840004
+X-HE-Tag: 1772048097-561819
+X-HE-Meta: U2FsdGVkX1+EA4H9Hwh7t1RXCZlX85oVoL3/s3rHyhdfqh/yOK8aMrkR0CU4sgpbILFVPuk2D+bvVl6jgycM5IMlZbimsZ27ul8H8NKqKfWw/xVMPIhLtbR7efGkOBRTIMcpioCuYeqn38tFnwzQsoKl96HToHf+q6fASKHYA+u+rCmUU5RXhVjXNj5cDcwUTZDN0P84LIe3f0CNdSydzL39zHT0tw/vBzON+mDRQKc/LV7E99H+K4gcGDlAlRcb4EXNGG0dkFIXLldyHU+M82Qj+HLEcBOhQn+k62Xi+lqPfgMo71GeOPJH4PGuqYmkRpoz+5mqPVh/SGVv4sFyGiMf8+ZI7/8wnf2h8fVruxLWyl+vC0grWEwDj0RgAHiFOQ2SU1CKqcBuRwfBdL9GJ0X97lkl7jpqG7s3p5eS4opD0oFfVNpGvtS0Kqo9lZI6PLSvVhjFN+RG51VmDkD8pcg7KrLbIXfnxK5os5cOQl5MFVvGqc/h2H4FQUOghZOhMSWRXeWh7IHad3UVE2qL9CNQ1tGJFDhzrAdbVLRsVTRiPwpAGkxVZPSC4ckGGzlatKxDctvKuahrb6euBfLaxRy7j9H0JsQG8Ciwr931lBRXT47YKaQZoZ60KcftM/0gwpeypWR4QYwPIqIDLxia+nIO3RrTID5N2RNvoiwv70gRVjLATAbyYBmSI33feP/Yw+g0ZTgi6nmTjjJpL1wxeuIF1Z+SGrt4aaGgF6tanUp1oAgMylxMJeF8hmjFJLlQV59vY3OYbKz1QNGlwtoeCyj5mxRlLeUm4q6bplB09WNubyt35lllGJpL90t/j8gGdNkyhNxLxpbcKn/2Mni6mPT6Y+nLhBQ++r+Wix2Hh46/cvjDlcCO5FNk3u71xy2QSYYH5W93YGuppfYidJzAyOsxIxhS5blNfrmj1MIWRPAcwmd3ZAsEHuuWDRp6o25AA1wzQ13Voxlt+23NSf/
+ naIKP6FT
+ ePt7mfqhAV09BAng+AvkcXb/1lYIMeBu+p4KLZe2n5sDyDBknNwZ90B/RBT4cdmPB4ZMjoH8ojTqALHtJ7KnYbrO73NTamkCBRPKvL6hMXLRcBHDRPop1LK3B+R8ozTybWZso67NT2cMGDWrSZd4wfRhqnl5dIMbr/GmaX6itvqDTDo6rToby0gOp6xb7OoXTZYMpPSzvSjoqVSBlQ/JOevUl/XbA9eAb6lwWAGPBoXQ6xC6fR/syII0BPs7Q7WAD2RhWMu/YFv2x8UyZH+0lc0Siq+B8vS2qqyVnROZVcqDj5RbtZZqES64cYfPpmunGmYVl6az405OMhOk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,11 +149,11 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Wed, Feb 25, 2026 at 8:42=E2=80=AFAM Maxime Ripard <mripard@kernel.org> =
 wrote:
 >
-> The CMA dma-buf heap uses cma_alloc() and cma_release() to allocate and
-> free, respectively, its CMA buffers.
+> The CMA dma-buf heap uses the cma_get_name() function to get the name of
+> the heap instance it's going to create.
 >
-> However, these functions are not exported. Since we want to turn the CMA
-> heap into a module, let's export them both.
+> However, this function is not exported. Since we want to turn the CMA
+> heap into a module, let's export it.
 >
 > Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
