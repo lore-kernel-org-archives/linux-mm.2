@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E67A1FD3760
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 14:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D4C6FD3764
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 14:29:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3108B6B0089; Wed, 25 Feb 2026 09:26:10 -0500 (EST)
+	id AB8576B008C; Wed, 25 Feb 2026 09:29:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E7F26B008A; Wed, 25 Feb 2026 09:26:10 -0500 (EST)
+	id A6FB16B0092; Wed, 25 Feb 2026 09:29:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D3256B008C; Wed, 25 Feb 2026 09:26:10 -0500 (EST)
+	id 9721B6B0095; Wed, 25 Feb 2026 09:29:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 09BF46B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:26:10 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A434F1405B3
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:26:09 +0000 (UTC)
-X-FDA: 84483203658.06.C665CAB
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 822F86B008C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:29:14 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D0F2216064A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:29:12 +0000 (UTC)
+X-FDA: 84483211344.18.A214D29
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C39CBA000D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:26:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CxpYOHbN;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id E95FD1C0011
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:29:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dih97yUw;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772029567;
+	s=arc-20220608; t=1772029751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NRnwp9JeeMuXV2IPWrFKL08ojPGCfMkvh4ICRPXvlx4=;
-	b=PWNO9jsPkePgPKtGhtcHsranerAD+OA6tzlqW4R8dujO/EKQJ2ner7tr8a3wZcBkGVHrm2
-	QAlIxiAAduZPblVZpASZgP/r+egnn0Y72WX7nlJYEq+aYFcmh8DBvwU3K6IzK3i5uB7Iw/
-	HkhRp67fBDqvaeWLQlIdtO9o0tP+o1I=
+	bh=hglIMTi5yH96FKO0KlPxpmEj708Ntm0CckS6EOHKm+8=;
+	b=O7FACRhmB+LY5dC7nu20XyFeclWqh8e5Tc0F8OX3SCMoyD0UO1SEBBgOfag13a73QJxTZG
+	ufv6lgoTho1r+CmRiXc+wjm0z9MEg2UEchFlLPPZhBGuo/d23xUWxZQNgonIwsHE+ou5aU
+	9bLaYUaOqfk2ovuZOk4Ym9rbUGG9/Ws=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CxpYOHbN;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dih97yUw;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772029567; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772029751; a=rsa-sha256;
 	cv=none;
-	b=uPMmJH/0wZnKHADa5AKsHnNBqO0vqdaF0Yqo/ZItjytoTJb7AeBB42JHCCd4dGlrjft7HM
-	pbtGvGKeJQ83jcdaFdOLeWRVEqhz+xuyZtAFYPH8UXZ/tjx7rwmdZUzKz5wb1ith7siR3q
-	+zNRarMEEgN55I2CfQEb+GhLqPuSZyw=
+	b=qJggdJUWxaz04+YJSSmIQdksxW+HbnBND2erEwuN7XR7o3vYI42COfGDIHVRVLZogDTX7/
+	jd/CQ682fTgyAgiMomD4KULZr2OEDWGk3TmbvavnqaeNILh3Oir/prrcR+UlsnqQO4JT/X
+	bEnV8lYYr8thDZQAVOV6DmuU2A9rJSA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D8E943AF9;
-	Wed, 25 Feb 2026 14:26:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC66C116D0;
-	Wed, 25 Feb 2026 14:26:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA5B343EC2;
+	Wed, 25 Feb 2026 14:29:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACDFC116D0;
+	Wed, 25 Feb 2026 14:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772029566;
-	bh=4Zuc2Y9/N0Q0CeGfuCJTQWoryvTqEgChCwBgzAT8okc=;
+	s=k20201202; t=1772029749;
+	bh=xTbnO8irbggftyZ2HO6Vjdj/n/hlLlq5vQffuB15YcY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CxpYOHbNRnMWhNAqNpFrfukLpdzeg1LRV0oAqS7UDI5b8GZrx5v/O5ao+ghL1UebI
-	 ZQn3qMZBfq9IYorrdR/9wGj8EcxZXdNBmypOPG7gq5JoT01S5yxYCB4T59d5lg29eZ
-	 6xN16q4cgYEsJARO3HUrgAyPhZ0JY+Z3dgyaVYSgDFJWjKZ/A3jgC/ktsqYX2UevCX
-	 RGKpENC1W72otHAW6gF4NMAKERAgcq0l9KkLMTitGjP8ippq4coA5LVSgHUBJDgaFr
-	 2QDY4d9b8L03kcJ2r9teoUSv4yE3KzdSVbHPUqYvH05yBMcDm5pl+5a0FC1KXZpiK3
-	 K0cPoIVdbAhnw==
-Message-ID: <2e7a1e24-3616-4b79-b943-b5f7efde2d31@kernel.org>
-Date: Wed, 25 Feb 2026 15:25:58 +0100
+	b=dih97yUwR5cLKaWMB8pNBZDprkzmb2dUqR1rK3NfIEcPxo5Yz3wpWHdSS+aSQMt9X
+	 Cc7g0YLwBzPzQ6TESotA72/54lLfRW5hMzQrpKjQbAlRJdkhE0JRaXGiUDgKW/pWh1
+	 7OUBCvIIOgb6dpnuJsEs+HaNqKjYkdEp+Id2lTstuh8LNGUE02GL7TMl+tbhvrZJ13
+	 MSfXqC8jTOZ5gm7Li2V+zJCFcZ+gSrhbTOZ3vt8VbD1LLtplr60rphx8sjXSQ/Og9H
+	 HwnI+5iVAKaZleRVtiLbQKo0bZZWq5+uUcF4yjxf9coxPjhsFwvKD8fKzl5AVAu6DN
+	 I0kbaOLLWxTmg==
+Message-ID: <1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
+Date: Wed, 25 Feb 2026 15:29:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm: support batched checking of the young flag for
- MGLRU
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
- zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
- <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
+To: Vernon Yang <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+ <20260221093918.1456187-3-vernon2gm@gmail.com>
+ <20260224035247.r6mxsfcpiev4wnce@master>
+ <zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C39CBA000D
-X-Rspamd-Server: rspam02
-X-Stat-Signature: gfibrpxdoeajut8kjtqwat6ojbqo8dxx
-X-HE-Tag: 1772029567-687565
-X-HE-Meta: U2FsdGVkX1/f9juDEeht8Q3z6MAd5k2p2F6968M45gmkURXU4EW/2GeK1WcjX6xHtfO1+hZgAEIwemqpmtdyFVuS15g2wMCYsUfTTtLkOu8t3i4W2R9pgAqphCpDYha1A5X/lONz3twEyjSbnn4ZmtAFT9x6jpuCZdle2IWBf0+3qGghe/M1kMD4fGYLU1Ko0q4wyM8QQv3I0oeAUZM81XOIvtSNW/KIJ8ro0CTkANwsy/SPZrEQZcozq/QUcUta+/MyhFx6ud9D5s5Pq7mSyo93LMGYSU13rOIuS31G2fzaZ0eiMflySylvUXh8Na9MJ3s914yC1YzPQza4YAVzsYDKL/Qn4jm1/6QkMaR8FlU3hzMD4KBYN2D77B0d74FjGpbDWIru44fIDeDyYQdBi21Tu4RhQO/zNcQSGtfmGqpWBi9raBJgaKtAvXTzQ9gtI67UV8n9vuiX3sB/nhDPPvwkuc/ZHa4ofJsshqrTqyRGHJKsdLhOUAABkrDo9zCNTkTTWScLohXOJ+nh0+SP2CI/qQRsVfM3kFPEod1zkEwi+BI5ppiuynfIWGO8BQlie7T6q5eQYe0Te55fSo58CcKL+fp4fxXO74LcVao0a58tQWZoVFdVBQ3Bqg4+ftgjHwGpOMCU94Rnt/6lWBkDg6oEPRGFMQguGPZI6pMnd2y3ny1GaGjjxf4gqEFbQEYCtLR0zMMQYHdNqmMoZTgeC+8mpzivnaO4J6yR73EHWH+DtlEwWLe5mr46vIPzVYAc9W38/q6OhwljzaUYBF0ZVsA5g644Ef+okKvTbdq+9/qMl7b1X57lGbXwI1/K5ArvokSvuItiRWsgyMWVQbxJPx1Z2/Ww8MqRI0OSpHeCRTjn1/8QrTmIYk2cjuijsSf7qg8WkjTjRHFJrbKspPLfaT3xPJ90y2Q/UWk31M4pADT5/wCjyPPZQaCFyRS/mDf7IAOb5bgJMSeEOQJ7HP8
- M5tTjvk0
- 2zCca90mKkCY6Ak7d0zaMm/+eTdy7ak7LK261AjVU6A/Zlrx215O2XKnZf7gI7MxDUn971Sw20eAjPjYGNIPtCc4O+CnoYn7C2R07T0Jsaz8xN84ZCGdctZCSFdLDuzYl1NdXVGNCtHq9L5zzn8sZTD4GZqSSwtPFvfZ5SGEkc5xTxEVfpd0FPjzqySn/4/k0KFRg8jnSjvk5fZ/uTK3MSmHhNvtNeEnswPJ6iCkFO5r3UIZB77a7alMtMg==
+X-Rspamd-Queue-Id: E95FD1C0011
+X-Stat-Signature: im4c6jcbs1g8kbke4bk38meekc6ugxqa
+X-HE-Tag: 1772029750-11800
+X-HE-Meta: U2FsdGVkX18jyr/hAMT+Rc2U4CwTeKT+n9LrHe3XobbqiK7ZJcOPFbO+A4uaHjBrp90t923lY5vbwN3XlEt3jwInRAbuOk7AgkqviwXvpNbeSIL5QnodFGIui0ObSGS2OLLJP2eri1z+kLBgnTk81OqAx7Ytb75hfeoTMomUpxvxmwUEHtKnhCJF9X9pwmA0hHuUI7TrfI+kXCTHHpiOg3a8ymjD53Nm5OP+3JjolrJe4KeqsgbNnBnqEi//Fet8CxWOls/qSrXHsGrpu5zPJzOcDMU5Rlvl+YkBt8bBOWTRXr+Xp8oppg2xDO8Xsl+WJzpSQaQIjpPvqGZqGGcYfDmMJWOlLAOdfhovYRpM0XF/KqBwZ879ST67iJ5v8+yCFLak2ysFZA/6KBmqv2qYrLU2eJCi/lNUinSWnK9e5QDE0V1npuk+MsQUgv0G74Opm8yxinUkntxdo9tzlQ8QFwc8WGztFC8WoLwiCwIB/+NeRWee5mlWXvMo12eojHC5GbG845P4jfvRlx304J63N6ueNHarbP2dPCRNHK++D3mBeXfEUu0G3JuUZCBM3CQEucPvMGQfLVyfSmgHBVnx6+CmNPsRacWkGgYwjnkrGYd6k7193nonoD83H33k8g5rH6FQvmIPvKPn+taAKP2ZDGiZWrnXenGWUgpFweiAhECf9WYRbPJi4Nl+GCbONfuWpnDKyUF0hZpu/yN/MmxC5uxim/CZsTmQQcNl6SQy3gZr8IZyjxe1xDIEp6MTDKyEvadwN8GbQcyH6u4+EgKErjWFlmSyXvvlW2P64z1i/eT7EbVbD1i0hXGUDZmX5kNhelyrRKKQMU48tWUYQ2q5rBAKHQLkThmRhrrXPfYJmsOIu1ff7CRwYHZQHdbgEY0MsNUYW6DZSY1rq6IBS4Ao60eiSfZWUWlnJo8c5k1iFJ0HOQbTYkJ3atG47PjPOrFE/g7zZmL1GeNzWLBNfsL
+ UoM/IGs3
+ pASQXXZDnKgY+S3z7ZemGNc2kU27w9MVsaWKsNQI4jqGRkvNjhGbg2vgRshB30PbcVjhYmepwnY0nTzTrkbiZuvjKkpfuPUNQFPD6DT07X9SdtyEKIlKEAAAS/DPWyJ5Z7GBNq4PqXu0m7Niw+6PC0UeOf5h6QOBJvdWmFvPKMOcTmRscNW7t0aITWyqmXkha2Pejkzdh96zm2rkyHYfJTvDX2p73epHhq27J3igEVFkD2k2W+j3J9fm2Erz3EuWVhWo8lm5sRfDfvC2WGVtmFp8Gv0vLtBozmoGn59IgUSxqHFw3Rayx2gt4JaJiC/sv4cdBdnzQ61W8V9FQ6LP2smfyxLNgwOlsw9bQiMadyv29u4TDhFxWveNGjdiAxp5gVuyUTtiJ/1MUseEE7505aPbwpIMY+4HzkTdd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,195 +142,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 02:56, Baolin Wang wrote:
-> Use the batched helper clear_young_ptes_notify() to check and clear the
-> young flag to improve the performance during large folio reclamation when
-> MGLRU is enabled.
+On 2/25/26 15:25, Vernon Yang wrote:
+> On Tue, Feb 24, 2026 at 03:52:47AM +0000, Wei Yang wrote:
+>> On Sat, Feb 21, 2026 at 05:39:16PM +0800, Vernon Yang wrote:
+>>> From: Vernon Yang <yanglincheng@kylinos.cn>
+>>>
+>>> Currently, each scan always increases "progress" by HPAGE_PMD_NR,
+>>> even if only scanning a single PTE/PMD entry.
+>>>
+>>> - When only scanning a sigle PTE entry, let me provide a detailed
+>>>  example:
+>>>
+>>> static int hpage_collapse_scan_pmd()
+>>> {
+>>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>> 	     _pte++, addr += PAGE_SIZE) {
+>>> 		pte_t pteval = ptep_get(_pte);
+>>> 		...
+>>> 		if (pte_uffd_wp(pteval)) { <-- first scan hit
+>>> 			result = SCAN_PTE_UFFD_WP;
+>>> 			goto out_unmap;
+>>> 		}
+>>> 	}
+>>> }
+>>>
+>>> During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
+>>> directly. In practice, only one PTE is scanned before termination.
+>>> Here, "progress += 1" reflects the actual number of PTEs scanned, but
+>>> previously "progress += HPAGE_PMD_NR" always.
+>>>
+>>> - When the memory has been collapsed to PMD, let me provide a detailed
+>>>  example:
+>>>
+>>> The following data is traced by bpftrace on a desktop system. After
+>>> the system has been left idle for 10 minutes upon booting, a lot of
+>>> SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
+>>> by khugepaged.
+>>>
+>>> >From trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file, the
+>>> following statuses were observed, with frequency mentioned next to them:
+>>>
+>>> SCAN_SUCCEED          : 1
+>>> SCAN_EXCEED_SHARED_PTE: 2
+>>> SCAN_PMD_MAPPED       : 142
+>>> SCAN_NO_PTE_TABLE     : 178
+>>> total progress size   : 674 MB
+>>> Total time            : 419 seconds, include khugepaged_scan_sleep_millisecs
+>>>
+>>> The khugepaged_scan list save all task that support collapse into hugepage,
+>>> as long as the task is not destroyed, khugepaged will not remove it from
+>>> the khugepaged_scan list. This exist a phenomenon where task has already
+>>> collapsed all memory regions into hugepage, but khugepaged continues to
+>>> scan it, which wastes CPU time and invalid, and due to
+>>> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+>>> scanning a large number of invalid task, so scanning really valid task
+>>> is later.
+>>>
+>>> After applying this patch, when the memory is either SCAN_PMD_MAPPED or
+>>> SCAN_NO_PTE_TABLE, just skip it, as follow:
+>>>
+>>> SCAN_EXCEED_SHARED_PTE: 2
+>>> SCAN_PMD_MAPPED       : 147
+>>> SCAN_NO_PTE_TABLE     : 173
+>>> total progress size   : 45 MB
+>>> Total time            : 20 seconds
+>>>
+>>> SCAN_PTE_MAPPED_HUGEPAGE is the same, for detailed data, refer to
+>>> https://lore.kernel.org/linux-mm/4qdu7owpmxfh3ugsue775fxarw5g2gcggbxdf5psj75nnu7z2u@cv2uu2yocaxq
+>>>
+>>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>> mm/khugepaged.c | 42 ++++++++++++++++++++++++++++++++----------
+>>> 1 file changed, 32 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index e2f6b68a0011..61e25cf5424b 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -68,7 +68,10 @@ enum scan_result {
+>>> static struct task_struct *khugepaged_thread __read_mostly;
+>>> static DEFINE_MUTEX(khugepaged_mutex);
+>>>
+>>> -/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+>>> +/*
+>>> + * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+>>> + * every 10 second.
+>>> + */
+>>> static unsigned int khugepaged_pages_to_scan __read_mostly;
+>>> static unsigned int khugepaged_pages_collapsed;
+>>> static unsigned int khugepaged_full_scans;
+>>> @@ -1231,7 +1234,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>>> }
+>>>
+>>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>> -		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
+>>> +		struct vm_area_struct *vma, unsigned long start_addr,
+>>> +		bool *mmap_locked, unsigned int *cur_progress,
+>>> 		struct collapse_control *cc)
+>>> {
+>>> 	pmd_t *pmd;
+>>> @@ -1247,19 +1251,27 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>> 	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>>>
+>>> 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>>> -	if (result != SCAN_SUCCEED)
+>>> +	if (result != SCAN_SUCCEED) {
+>>> +		if (cur_progress)
+>>> +			*cur_progress = 1;
+>>> 		goto out;
+>>> +	}
+>>
+>> How about put cur_progress in struct collapse_control?
+>>
+>> Then we don't need to check cur_progress every time before modification.
 > 
-> Meanwhile, we can also support batched checking the young and dirty flag
-> when MGLRU walks the mm's pagetable to update the folios' generation
-> counter. Since MGLRU also checks the PTE dirty bit, use folio_pte_batch_flags()
-> with FPB_MERGE_YOUNG_DIRTY set to detect batches of PTEs for a large folio.
+> Thank you for suggestion.
 > 
-> Then we can remove the ptep_clear_young_notify() since it has no users now.
+> Placing it inside "struct collapse_control" makes the overall code
+> simpler, there also coincidentally has a 4-bytes hole, as shown below:
 > 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
+> struct collapse_control {
+>         bool                       is_khugepaged;        /*     0     1 */
+> 
+>         /* XXX 3 bytes hole, try to pack */
+> 
+>         u32                        node_load[64];        /*     4   256 */
+> 
+>         /* XXX 4 bytes hole, try to pack */
+> 
+>         /* --- cacheline 4 boundary (256 bytes) was 8 bytes ago --- */
+>         nodemask_t                 alloc_nmask;          /*   264     8 */
+> 
+>         /* size: 272, cachelines: 5, members: 3 */
+>         /* sum members: 265, holes: 2, sum holes: 7 */
+>         /* last cacheline: 16 bytes */
+> };
+> 
+> But regardless of khugepaged or madvise(MADV_COLLAPSE), "cur_progress"
+> will be counted, while madvise(MADV_COLLAPSE) actually does not need to
+> be counted.
+> 
+> David, do we want to place "cur_progress" inside the "struct collapse_control"?
 
-[...]
+Might end up looking nicer code-wise. But the reset semantics (within a
+pmd) are a bit weird.
 
->  
-> -static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
-> -					  unsigned long addr, pte_t *ptep)
-> -{
-> -	return clear_young_ptes_notify(vma, addr, ptep, 1);
-> -}
-> -
->  static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
->  					  unsigned long addr, pmd_t *pmdp)
->  {
-> @@ -1847,12 +1841,6 @@ static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
->  #define clear_young_ptes_notify	test_and_clear_young_ptes
->  #define pmdp_clear_young_notify	pmdp_test_and_clear_young
->  
-> -static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
-> -					  unsigned long addr, pte_t *ptep)
-> -{
-> -	return test_and_clear_young_ptes(vma, addr, ptep, 1);
-> -}
-> -
+> If Yes, it would be better to rename "cur_progress" to "pmd_progress",
+> as show below:
+> 
 
-Oh, we remove the last user, nice.
+"pmd_progress" is misleading. "progress_in_pmd" might be clearer.
 
-
->  #endif /* CONFIG_MMU_NOTIFIER */
->  
->  #endif	/* __MM_INTERNAL_H */
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index be785dfc9336..1c147251ae28 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -958,25 +958,21 @@ static bool folio_referenced_one(struct folio *folio,
->  			return false;
->  		}
->  
-> +		if (pvmw.pte && folio_test_large(folio)) {
-> +			unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
-> +			unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-
-Both could be const.
-
-> +			pte_t pteval = ptep_get(pvmw.pte);
-
-I wonder if there could be a way to avoid this ptep_get() by letting
-page_vma_mapped_walk() just provide the last value it used (in
-check_pte() I guess). Something for another patch.
-
-> +
-> +			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
-> +			ptes += nr;
-> +		}
-> +
->  		if (lru_gen_enabled() && pvmw.pte) {
-> -			if (lru_gen_look_around(&pvmw))
-> +			if (lru_gen_look_around(&pvmw, nr))
->  				referenced++;
->  		} else if (pvmw.pte) {
-> -			if (folio_test_large(folio)) {
-> -				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
-> -				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-> -				pte_t pteval = ptep_get(pvmw.pte);
-> -
-> -				nr = folio_pte_batch(folio, pvmw.pte,
-> -						     pteval, max_nr);
-> -			}
-> -
-> -			ptes += nr;
->  			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
->  				referenced++;
-> -			/* Skip the batched PTEs */
-> -			pvmw.pte += nr - 1;
-> -			pvmw.address += (nr - 1) * PAGE_SIZE;
->  		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
->  			if (pmdp_clear_flush_young_notify(vma, address,
->  						pvmw.pmd))
-> @@ -995,6 +991,12 @@ static bool folio_referenced_one(struct folio *folio,
->  			page_vma_mapped_walk_done(&pvmw);
->  			break;
->  		}
-> +
-> +		/* Skip the batched PTEs */
-> +		if (nr > 1) {
-> +			pvmw.pte += nr - 1;
-> +			pvmw.address += (nr - 1) * PAGE_SIZE;
-> +		}
-
-As nr >= 1, you can just unconditionaly do
-
-pvmw.pte += nr - 1;
-pvmw.address += (nr - 1) * PAGE_SIZE;
-
->  	}
->  
->  	if (referenced)
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 728868c61750..d83962468b2e 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3494,6 +3494,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
->  	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
->  	DEFINE_MAX_SEQ(walk->lruvec);
->  	int gen = lru_gen_from_seq(max_seq);
-> +	unsigned int nr;
->  	pmd_t pmdval;
->  
->  	pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
-> @@ -3512,11 +3513,13 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
->  
->  	lazy_mmu_mode_enable();
->  restart:
-> -	for (i = pte_index(start), addr = start; addr != end; i++, addr += PAGE_SIZE) {
-> +	for (i = pte_index(start), addr = start; addr != end; i += nr, addr += nr * PAGE_SIZE) {
->  		unsigned long pfn;
->  		struct folio *folio;
-> -		pte_t ptent = ptep_get(pte + i);
-> +		pte_t *ptep = pte + i;
-> +		pte_t ptent = ptep_get(ptep);
-
-
-Existing "pte vs ptent" vs. "ptep vs. pte" is already confusing.
-Combining them into "pte vs. ptep vs. ptent" is no good.
-
-If you need another variable, call it "cur_pte". Or rename "pte" to
-"start_pte".
-
->  
-> +		nr = 1;
->  		total++;
->  		walk->mm_stats[MM_LEAF_TOTAL]++;
->  
-> @@ -3528,7 +3531,14 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
->  		if (!folio)
->  			continue;
->  
-> -		if (!ptep_clear_young_notify(args->vma, addr, pte + i))
-> +		if (folio_test_large(folio)) {
-> +			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
-> +
-> +			nr = folio_pte_batch_flags(folio, NULL, ptep, &ptent,
-> +						   max_nr, FPB_MERGE_YOUNG_DIRTY);
-> +		}
-> +
-> +		if (!clear_young_ptes_notify(args->vma, addr, ptep, nr))
->  			continue;
->  
->  		if (last != folio) {
-> @@ -4186,7 +4196,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
->   * the PTE table to the Bloom filter. This forms a feedback loop between the
->   * eviction and the aging.
->   */
-> -bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
-> +bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int batched)
-
-What is "batched"? Did you mean "nr_ptes" ? Or just the initial value
-for "nr" ?
-
-[...]
-
->  
-> -		if (!ptep_clear_young_notify(vma, addr, pte + i))
-> +		if (folio_test_large(folio)) {
-> +			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
-
-Can be const.
-
-> +
-> +			nr = folio_pte_batch_flags(folio, NULL, ptep, &ptent,
-> +						   max_nr, FPB_MERGE_YOUNG_DIRTY);
-> +		}
-
-I guess we might benefit from a FPB_MERGE_YOUNG only here. But this
-should work.
+Play with it to see if it looks better :)
 
 -- 
 Cheers,
