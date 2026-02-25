@@ -4,166 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB22FD45FA
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 572E4FD45FA
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E3EF6B0099; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
+	id 939CF6B0088; Wed, 25 Feb 2026 17:46:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE586B009B; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
+	id 8BD856B008A; Wed, 25 Feb 2026 17:46:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651316B009D; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
+	id 79EDC6B008C; Wed, 25 Feb 2026 17:46:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BA856B0099
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E33D5BACB1
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:41:44 +0000 (UTC)
-X-FDA: 84484452528.08.56A7BEC
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 716311C0009
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:41:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=ZQwNYgHV;
-	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059302; a=rsa-sha256;
-	cv=none;
-	b=RLApM+0NQluQ6TH3PfUaKocjLb31Q2udESZBrmRCXspYOlN3qa7Vhx6Xh/fmYm6HLloCOZ
-	xnZkGGFFp96ZRXuOjALwiTYyZ744cA6vuEmw9G6sdG+cXvI4dvQbm6ycJnhnNrjRwApDNI
-	8DgS97X6rKweOGLUsSBwftez6M1Q4xs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=ZQwNYgHV;
-	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E27E6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:46:56 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A4BDB71C5
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:46:56 +0000 (UTC)
+X-FDA: 84484465632.21.299F66A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 537C820003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:46:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fLfzE9sq;
+	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772059302;
+	s=arc-20220608; t=1772059614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UCadQArHxHi9ThZ1jAIvSvngqH0LQPrZ8HK0cEt3m1g=;
-	b=I112iz/Qahie5KFIpajQwR9c0yiAhVcxKk9UHDeC/2cSCOKeoKS7ODwZu8sMlSp3SE6Pln
-	noQa+6cVTsaZRfObzUSyG4xT74728QRVCFTIMbxZB1LVWHKWSo+g8vUVizdabF+aJqfBb7
-	Oezk7tIR+CNXpc9hYeWAamuWwLR+VO4=
-Received: from pps.filterd (m0167075.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PMC1hj3216210
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=UCad
-	QArHxHi9ThZ1jAIvSvngqH0LQPrZ8HK0cEt3m1g=; b=ZQwNYgHVk1e7AonBp1GN
-	AHhms9mVIbxtdg9djgycPaIK5SH2e7LZ9supw+fWQxOsuxDxLdWYTg29qYdOZWOY
-	Yoxind27Lp1LnTlBB+iocGqkBeujZgdoOx0KTpb3+L2flDUaQvgq7QGL0FSOMsZb
-	aePYzQ46aAH5yfuxGueCd2PW8+BtSYb/6riEK9KE4UlCVlV4OAKU7LPjPny0bZRa
-	r/F5oQMKeYFunqtUXZRY4gcq/FG3n9onHe0PD5YjSbIvEHhHmA/12/mqQIcDCB0E
-	/BIYyBF4K6XcVWBm+onb/+8xjo0VkdTKX9hjL7/Xe7D735HMn5X1aR3McboDQo3F
-	fQ==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4chs0qevfq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:41 -0500 (EST)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-506b4005ab7so29854901cf.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:41:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772059300; x=1772664100;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UCadQArHxHi9ThZ1jAIvSvngqH0LQPrZ8HK0cEt3m1g=;
-        b=Tiaqk815+U4nMWs772k0xjX0W0/TU6BoUplr16rm526owtFrBUK65/W/ax+GZEHf9A
-         sBwV4p3FBDlk87ZFzalJ7Cp7VPpCJeC881KZQfaY3zfPZvGK7TN7jlLTHwDY5lcLxw4X
-         VuRCTK6gP0aR2HY74C4EfpwGEJkBiiNX76LI/k1acLVCugLzF+jrZIKFDoP858pUiT0C
-         1lN2+RJC++pjg3edZrEuvaYPDLGFc8Gdf9O7KkMn6LZEhsaU7sZ5aP7AVCGl4nMiXiFu
-         PhfN1rIvJBQIY8/gtPfTaxrC1WtMOA/WGB9UKejRYZOkJl6IVToo+W/BcIKe2BFjB2sp
-         sMTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGm2i0gbxM3P7Y5atGNinCS4KGK73nFwfQQMyT12tp8J1naA2AgIByvq7Lu0P25QLHvZWETaWm9Q==@kvack.org
-X-Gm-Message-State: AOJu0Yzjp/dWLwXD2oqsZmiJ1eBM5cV80E+SuMowFdU7LvH5z+rvYd2h
-	UpwkbBgXBRneaKZwoYLVnVu91S7ITQgCeddig+N/cemmCy71BGuOjJM5gGAN3FjzUWHBoB+IX6b
-	b6OxBMR0t5Epvru+iTsC9cU58BfG9wvedQnxCZWMLkv4pKZey
-X-Gm-Gg: ATEYQzw6w0htU5+9+Meylq5r3vwweMtcmWjb73aQvLcPAYq54SmyC9yRKmPVpiGAebJ
-	2gMBfxtWM6XHsUyYhsKC4r13AUY1/NL/XK73G0Byr+K3a6OMTlL92K2H8/aY1oqwKUAesX41yF4
-	H3qpJ4oF4Xv/yAnhdi4hh4iLd8+90cSu7hrj/ohL5XGWctRvTKt91wtx306J/YnZ8sgW23Mz5L5
-	7KspIvUFORQDEaNVPAln/42ph0smmnDN09wBZew6pjYwFUOiPjTLDVgZ5Wa00MjXTlZnewnXYM/
-	ceg2Ux+9vlO2LdtfGAAi9tZ/ut6c6R6wTSxilfSfyHzdxaD+ncoSaIn9Fd5+b7N9HDXn0zLf4+5
-	M84Em1z51DsxlMcDvMSz/9Ht2zh5sxGVO
-X-Received: by 2002:ac8:5850:0:b0:4ec:a568:7b1c with SMTP id d75a77b69052e-50745effd87mr1368611cf.21.1772059300013;
-        Wed, 25 Feb 2026 14:41:40 -0800 (PST)
-X-Received: by 2002:ac8:5850:0:b0:4ec:a568:7b1c with SMTP id d75a77b69052e-50745effd87mr1368101cf.21.1772059299490;
-        Wed, 25 Feb 2026 14:41:39 -0800 (PST)
-Received: from [127.0.1.1] ([216.158.158.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-507449be47dsm4196231cf.15.2026.02.25.14.41.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 14:41:38 -0800 (PST)
-From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 25 Feb 2026 17:40:57 -0500
-Subject: [PATCH RFC v2 2/2] block: enable RWF_DONTCACHE for block devices
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=hYq2HM/yXb2ZtTYAtuQVcl6Rr+cphxuSCeq+XGnXxgY=;
+	b=MXnNnUebUMJ3ni2ELtZUVC1ZUITqWhTXmqGFguNICeG6z3ijbngCYnY33ghQaDr6VO9srr
+	7k8SdHjA+inKs++hvglOKNAhVeMEMXz2mm8a/Giey2QHqJaCpuAsOBv3I32khUCN9SrjLX
+	HJPerLqGBQ09DQ/qM2arsYo+Ftta0CM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059614; a=rsa-sha256;
+	cv=none;
+	b=esnOZBw9QPZEoFkeneJWC23dXuRwEmVbk1854vzK3mX4JbdN7+DpTJjYyLBxdDPEe1UTjj
+	seHZfa200a+fzzU1kAIAbSllkns0bpGHxv+iG6RtX9yph90QzbElrKKIF4mZ8pFrJGYRF6
+	wnwcsxg7vRwrdk9L2peck4oxg3zNiCo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fLfzE9sq;
+	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D636408A9;
+	Wed, 25 Feb 2026 22:46:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B517BC116D0;
+	Wed, 25 Feb 2026 22:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772059612;
+	bh=PTjq+4/D+IzkYXkv5mizn+hDJB3L4KyyQ4pV0ihQ7vc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=fLfzE9sqNX2M3OlPq9XtgvX2CSblhRxIxYwGfOqWzh73vdkJ1eyR/SDMoNxIs4htN
+	 exQpwOsZqx/gffethdxaIee4xk7hQXLH7P8yPYRbjRyPL8BuYDfKOjWFCkhyMs9G6G
+	 UzNmLV3HCkjtDK/itE87sZYNt9sCt2ye8RSVBOXDtJY+emFSkRqhku/ykxwUsKtbc2
+	 glWyhSGXSpU6WOpfPMaezlLyos9hJPVzH3t39UaYh/6AkdIW01zHD85NW+udcoivsC
+	 CfwaP5OJI6BOHkXjZ268AnM+f4Bp5dAfLtutNyB6FEr4S0gpWMzguYJIwjySgqVqcC
+	 VVG8d1yPPitOQ==
+Date: Wed, 25 Feb 2026 16:46:51 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
+ across Live Update
+Message-ID: <20260225224651.GA3711085@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-blk-dontcache-v2-2-70e7ac4f7108@columbia.edu>
-References: <20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu>
-In-Reply-To: <20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu>
-To: Jens Axboe <axboe@kernel.dk>,
-        "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        Yuezhang Mo <yuezhang.mo@sony.com>, Dave Kleikamp <shaggy@kernel.org>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Bob Copeland <me@bobcopeland.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
-        ntfs3@lists.linux.dev, linux-karma-devel@lists.sourceforge.net,
-        linux-mm@kvack.org, Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772059296; l=9465;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=Ut4irJAP91Ja56kFfECaXVcCmgWiTiooWThaHJixb4A=;
- b=Nv2Kk4KuLTpGQX84Y042xeZddog0F8f7rPDUzrUKUw+0BVDRxxIPtrNiY2iL73Q/t4raHOUQx
- MqYl+nhxhJlBePWXMDkS88wNw/JvTeg7ErN4IzVAeE9mMzN1BIIMHzs
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Authority-Analysis: v=2.4 cv=ZbYQ98VA c=1 sm=1 tr=0 ts=699f7aa5 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=HpS3TJQ9O3Ob1ozEcmik:22
- a=Omgu3vtQbb9kFtOpCJYA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-GUID: 2ue5Gdu9UG-_DVrZRSHphWNX7qdOW-6R
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIxNiBTYWx0ZWRfX45tZMeSgLfUL
- rwyyb5oCMbHad3xXTyUwvP8RzXERG9BSrqfDxSj/L3XA0cmht+UIqtV1/HGSPCetRhpxW37sLRu
- 06e27siwMQxpyofRFjyFAGieN8/WjvjjiX57HCTXzJJH47WDKMKRo+nEk/e6DUIh3MOXv/Cbqod
- GZ40yYKdHK2a2qAUp+d+y38ZQpmvQUvo40M8hJBiEFyDAYvB3n/5BurZ9406xw8Q2NmnPTxAimI
- RG83H5Xp4hKLI7pDOcjFaVFno2v2oK9Py7H7bFxTjG9iriVcQ5rsh/EbfaeU+B27zJfm6dUdTSE
- Wv5wUPfnjtQ1PbO2PQcMv3LUHncUqfGjjGSxBh70mDR7iBIW7oOaT+gaBvleW6H5cXixZaUJied
- WMURMNJS6dhiA7Gl3MgXuNrys0qA1P7uDZ6AbtyR0ZhP7PRR0qg7upKaEIS2HB+iswM3XABPINg
- HjGccG/uU0/nXOlcTyQ==
-X-Proofpoint-ORIG-GUID: 2ue5Gdu9UG-_DVrZRSHphWNX7qdOW-6R
-X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11712
- signatures=596818
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0 suspectscore=0 impostorscore=10
- priorityscore=1501 phishscore=0 spamscore=0 bulkscore=10 adultscore=0
- lowpriorityscore=10 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2602250216
-X-Rspamd-Queue-Id: 716311C0009
-X-Stat-Signature: 7a8y7ywhh7teundjuqc9skjbnh4jybou
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260129212510.967611-3-dmatlack@google.com>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: y4d1735ccdy1ke9ziymc9j7xangbif68
+X-Rspamd-Queue-Id: 537C820003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772059302-231820
-X-HE-Meta: U2FsdGVkX19Npqh1zoAVsK7DteC2GvAUFz0GlacisULfac8Besp5GJLmhUjaEZjJtDzPOOUwkKokFULM9FccUPUx6akiQJXPtQQBvIFY8uAcs9i/97j40/kCD54x+x6307M1T9BqIPVd17hneox+6VE8G+NWDGYaCZpDi4JlHcCxaOYs81N//Uur0+OTW0i/QA/FSskVcymQExqX809vbt4JHj0rxC/8vgwm9GWXy7p+aPmCGvXr4uF9RN38ns/EHN6RyNQZUClYt0FmmO7FYocv1+vKrnspUYk11t5KEcuhWTn3isVa8exYr9s6vEGDDBh3/NNzwnPDQI7B7qJko++3D+qite5fOAXFLLR1KJnfdumCRxDrO2v2P/G5GGKmvCOUj0YI/fANyqNkZWDgEnxqK30ottg85EGeVC62d0SBmN/KuKUEGPdlOXGAVVMxhCgB7qYUOFROCh0OcElfgXN9FOoWlfVK2T0fQcQ0oRX419xcuwTUb53r+5x1O3Vk/xRQ7YZTR55ejrpFCYlJ0BsZq7w0TD9c9/SOqbTFiDENimKIOibGHuJVDqLLdiaXZbN6viBoLY/MCNKsq2Kr5qwKhO4rAwK0lmf19VpEXQchgKHKaN0LJlXLwFo09HW+Lx+ktX/u7iWMwOR5coyyF15fueavufJM5hJr7P+YRa9YMRtor+LtR3kP6uN/SIaNI7ZbXkSPwyrxYIuH0iVlcLzKFnnFcHgIS/uJ+VQSTf3aFkAAUDkVma6+CN6GjVGnt1P33CAv9SliDhwIDa9Lfx9bLdrS/fDQ2u0ki/q/X4DT9zsLc4J74xevN6KbKnmVThFX87pUIyhw5ToK8KY5k83+h43VsyfTiP9V1pMgMk3Lmm9yvLmA+sCdUMi78m2uiQA6PBej4kUkld2SLuxHn5+1rEW0N9ma+dJyLAiKKf3Dr1jSVyK/wwPW6CRrIuxRC/RzzyWLbTjOfMlrZQc
- J2/O0ppA
- +JeNUYA/TJG7JHHswqFg9z9LKGIFaSYSUK2VCXmuH96f9uKnMNAcvVgIfGkKZbLhRswJCRFhG5n2p81tFDpb3DAauf01Kwj3DYtaEwVA0+I2EyON3ISAhEOjMK3bYObmzEbfuiwdxCethUnA53TgvJjrOT4mNjIEJCxlVIItdN9TxB/nEsk8UGH4+2+yaN95IlOfN1B615t3vBBJfDZR0meBZoguaAFYeFBibkIs7Yk1HYcOCDOdZ3DG9V7nQTquarro0crWmOhwKuAJyDI9hqqiatNI6agt6Nt922rFRQqbTOB2NnpUZx4//iBwjUL1vqfg8TQNWxpuCzZFGAhtwAXjeI4bo4zAdj22kuPQU1Sl40NU0BKvwX+fFQzkaIe3NzWW3S1ChpX48jjPAfw6/30V1kX74QlhM0CcTwpl4/r3eU2ng9DcwvOrz+ydYzMo9REC25WtJBv6ELpEizfIiqAkU33rZkMKhANzaGHxJZ6WVE6sJP7y888nWR35wzecGgs7BdOvqhvaD0EsnRHCuwn2TsNvLpz9JpX++Mb+928gNTgY=
+X-HE-Tag: 1772059614-2775
+X-HE-Meta: U2FsdGVkX1+PuGjICWZTUSAkApBmDVhQMj2P7JtLgVdTkKGcTjUz0iuKbfXf0ZUCwZmtVI67p80zeTeqclTwWA8ZWG29O/IAnH6rHXtKsIQamxCogXXyaOpbwYIgrEb3A3aiBhVQ8vAKcjV7WEgMFMA5Jv/m0hMJa7Spm5YlCHn0KgtdQXQufXxdPWScw9UNWpwtEM9XqEkHZoAYwtRhwJQn1yIVyC6iw7gQ/hwGSMH3n3cCCkxt+fmH6hc2DTGMPKy4P53RbscgOZdREJsjtsS/a+VtnOyExiyF8NEBeWG1BJJO3Z4Fu2bQCETq3bn44AUlCq/GBxClniPwDdYiPW+z5JMLmH9Ip4QC1s6j8B+Qu1OA6M2s9rIIy/mXow7duf6+Epz+cphVm+4ahNRdJl6xryqG/BFmDpChYgkWFIrLbf3AqRbxNaPRmC3ffSKkrEgnqo4EZGVEbP1NN6FfgzDYnW+liQC+3XE0RveWm/yyRbJn89lqPUnHOraDTLBFCYJJjU+WSfQUX8KWo2gdNYKM7SqmgqC1JnQ/iy6L5GdPydzrsCDluXK0qh7u7IWh+TNbRxR+l6oojfSCvNQsCnBJpelzFeyRQthCNtnYmBUP7w1QD/7DIWjNkHfXR9HEP17/Tl4IAGhk/FdOye5JWwtD8JfOwZCHEmJkjT7xhWCh7pUfa6W/OAo4VhrIO55O+gJ07Bufi8rpqFi9aTU8cmi43YGiB1M/olrxGiFVS9HqQjaDZr3W2C5yksqFnS4TPJUKWIA9Q/xk6UUwptc6IajpY9UguN9uJ002SreYvfRGYThGYulMu1yF47aSXpTUHz+oJd3+DttsN2s84mp5kRX+qwoJwXD0Xb0JiyFMbM1IVzKGUBl1t8IJEJfpGXkhsyn8+JKgVR74BJxCfzWG1t6AkX9SEGT6G79hKVS/4M0hvZsGw+07hBmL5LzkwruFpB84VMEQP/KY5yo+MoG
+ JC6jHoUQ
+ TXBPGUehTSU4eoip+Dv4YngNbBPkk1cDN9hqC2wBcQuL/sJhmxVggO/vucKsRvZaAzTAJRz0QEQ+bzxZjJmF/vvYqHTzjsabr44mVFj5PrZx/oq+vbKUfSkWG8bUQEPRpjBptcug7IePioA0yxKJ6kUPirdY78KbUnOFpom3HZ6E3fJGHQpf8kz8S67I3ESft384Mn6D/zbIsdN9HeMhoDWLZRHxTaYUEPxzE9cCR7g3S2jE4J1jxvmo24r/4sYs5kSNf2/SCYTse3UE4vdpcT1pTDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,256 +121,538 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Block device buffered reads and writes already pass through
-filemap_read() and iomap_file_buffered_write() respectively, both of
-which handle IOCB_DONTCACHE. Enable RWF_DONTCACHE for block device files
-by setting FOP_DONTCACHE in def_blk_fops.
+On Thu, Jan 29, 2026 at 09:24:49PM +0000, David Matlack wrote:
+> Add an API to enable the PCI subsystem to track all devices that are
+> preserved across a Live Update, including both incoming devices (passed
+> from the previous kernel) and outgoing devices (passed to the next
+> kernel).
 
-For CONFIG_BUFFER_HEAD paths, thread the kiocb through
-block_write_begin() so that buffer_head-based I/O can use DONTCACHE
-behavior as well. Callers without a kiocb context (e.g. nilfs2 recovery)
-pass NULL, which preserves the existing behavior.
+I'd probably describe this in the "outgoing ... incoming" order since
+that's the order of operation.
 
-This support is useful for databases that operate on raw block devices,
-among other userspace applications.
+> Use PCI segment number and BDF to keep track of devices across Live
+> Update. This means the kernel must keep both identifiers constant across
+> a Live Update for any preserved device. VFs are not supported for now,
+> since that requires preserving SR-IOV state on the device to ensure the
+> same number of VFs appear after kexec and with the same BDFs.
+> 
+> Drivers that preserve devices across Live Update can now register their
+> struct liveupdate_file_handler with the PCI subsystem so that the PCI
+> subsystem can allocate and manage File-Lifecycle-Bound (FLB) global data
+> to track the list of incoming and outgoing preserved devices.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
----
- block/fops.c                |  4 ++--
- fs/bfs/file.c               |  2 +-
- fs/buffer.c                 | 12 ++++++++----
- fs/exfat/inode.c            |  2 +-
- fs/ext2/inode.c             |  2 +-
- fs/jfs/inode.c              |  2 +-
- fs/minix/inode.c            |  2 +-
- fs/nilfs2/inode.c           |  2 +-
- fs/nilfs2/recovery.c        |  2 +-
- fs/ntfs3/inode.c            |  2 +-
- fs/omfs/file.c              |  2 +-
- fs/udf/inode.c              |  2 +-
- fs/ufs/inode.c              |  2 +-
- include/linux/buffer_head.h |  5 +++--
- 14 files changed, 24 insertions(+), 19 deletions(-)
+In what sense is this "global"?  I assume it doesn't mean global
+scope; does it mean something that persists across the kexec?
 
-diff --git a/block/fops.c b/block/fops.c
-index 4d32785b31d9..6bc727f8b252 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -505,7 +505,7 @@ static int blkdev_write_begin(const struct kiocb *iocb,
- 			      unsigned len, struct folio **foliop,
- 			      void **fsdata)
- {
--	return block_write_begin(mapping, pos, len, foliop, blkdev_get_block);
-+	return block_write_begin(iocb, mapping, pos, len, foliop, blkdev_get_block);
- }
- 
- static int blkdev_write_end(const struct kiocb *iocb,
-@@ -967,7 +967,7 @@ const struct file_operations def_blk_fops = {
- 	.splice_write	= iter_file_splice_write,
- 	.fallocate	= blkdev_fallocate,
- 	.uring_cmd	= blkdev_uring_cmd,
--	.fop_flags	= FOP_BUFFER_RASYNC,
-+	.fop_flags	= FOP_BUFFER_RASYNC | FOP_DONTCACHE,
- };
- 
- static __init int blkdev_init(void)
-diff --git a/fs/bfs/file.c b/fs/bfs/file.c
-index d33d6bde992b..f2804e38b8a7 100644
---- a/fs/bfs/file.c
-+++ b/fs/bfs/file.c
-@@ -177,7 +177,7 @@ static int bfs_write_begin(const struct kiocb *iocb,
- {
- 	int ret;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, bfs_get_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, bfs_get_block);
- 	if (unlikely(ret))
- 		bfs_write_failed(mapping, pos + len);
- 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 838c0c571022..33c3580b85d8 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -2241,14 +2241,18 @@ EXPORT_SYMBOL(block_commit_write);
-  *
-  * The filesystem needs to handle block truncation upon failure.
-  */
--int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
--		struct folio **foliop, get_block_t *get_block)
-+int block_write_begin(const struct kiocb *iocb, struct address_space *mapping,
-+		loff_t pos, unsigned len, struct folio **foliop, get_block_t *get_block)
- {
- 	pgoff_t index = pos >> PAGE_SHIFT;
-+	fgf_t fgp_flags = FGP_WRITEBEGIN;
- 	struct folio *folio;
- 	int status;
- 
--	folio = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
-+	if (iocb && iocb->ki_flags & IOCB_DONTCACHE)
-+		fgp_flags |= FGP_DONTCACHE;
-+
-+	folio = __filemap_get_folio(mapping, index, fgp_flags,
- 			mapping_gfp_mask(mapping));
- 	if (IS_ERR(folio))
- 		return PTR_ERR(folio);
-@@ -2591,7 +2595,7 @@ int cont_write_begin(const struct kiocb *iocb, struct address_space *mapping,
- 		(*bytes)++;
- 	}
- 
--	return block_write_begin(mapping, pos, len, foliop, get_block);
-+	return block_write_begin(iocb, mapping, pos, len, foliop, get_block);
- }
- EXPORT_SYMBOL(cont_write_begin);
- 
-diff --git a/fs/exfat/inode.c b/fs/exfat/inode.c
-index f9501c3a3666..39d36e8fdfd6 100644
---- a/fs/exfat/inode.c
-+++ b/fs/exfat/inode.c
-@@ -456,7 +456,7 @@ static int exfat_write_begin(const struct kiocb *iocb,
- 	if (unlikely(exfat_forced_shutdown(mapping->host->i_sb)))
- 		return -EIO;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, exfat_get_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, exfat_get_block);
- 
- 	if (ret < 0)
- 		exfat_write_failed(mapping, pos+len);
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index dbfe9098a124..11aab03de752 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -930,7 +930,7 @@ ext2_write_begin(const struct kiocb *iocb, struct address_space *mapping,
- {
- 	int ret;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, ext2_get_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, ext2_get_block);
- 	if (ret < 0)
- 		ext2_write_failed(mapping, pos + len);
- 	return ret;
-diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
-index 4709762713ef..ae52db437771 100644
---- a/fs/jfs/inode.c
-+++ b/fs/jfs/inode.c
-@@ -303,7 +303,7 @@ static int jfs_write_begin(const struct kiocb *iocb,
- {
- 	int ret;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, jfs_get_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, jfs_get_block);
- 	if (unlikely(ret))
- 		jfs_write_failed(mapping, pos + len);
- 
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index 51ea9bdc813f..9075c0ba2f20 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -465,7 +465,7 @@ static int minix_write_begin(const struct kiocb *iocb,
- {
- 	int ret;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, minix_get_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, minix_get_block);
- 	if (unlikely(ret))
- 		minix_write_failed(mapping, pos + len);
- 
-diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
-index 51bde45d5865..d9d57eeecc5d 100644
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -230,7 +230,7 @@ static int nilfs_write_begin(const struct kiocb *iocb,
- 	if (unlikely(err))
- 		return err;
- 
--	err = block_write_begin(mapping, pos, len, foliop, nilfs_get_block);
-+	err = block_write_begin(iocb, mapping, pos, len, foliop, nilfs_get_block);
- 	if (unlikely(err)) {
- 		nilfs_write_failed(mapping, pos + len);
- 		nilfs_transaction_abort(inode->i_sb);
-diff --git a/fs/nilfs2/recovery.c b/fs/nilfs2/recovery.c
-index a9c61d0492cb..2f5fe44bf736 100644
---- a/fs/nilfs2/recovery.c
-+++ b/fs/nilfs2/recovery.c
-@@ -541,7 +541,7 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
- 		}
- 
- 		pos = rb->blkoff << inode->i_blkbits;
--		err = block_write_begin(inode->i_mapping, pos, blocksize,
-+		err = block_write_begin(NULL, inode->i_mapping, pos, blocksize,
- 					&folio, nilfs_get_block);
- 		if (unlikely(err)) {
- 			loff_t isize = inode->i_size;
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 0a9ac5efeb67..8c788feb319e 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -966,7 +966,7 @@ int ntfs_write_begin(const struct kiocb *iocb, struct address_space *mapping,
- 			goto out;
- 	}
- 
--	err = block_write_begin(mapping, pos, len, foliop,
-+	err = block_write_begin(iocb, mapping, pos, len, foliop,
- 				ntfs_get_block_write_begin);
- 
- out:
-diff --git a/fs/omfs/file.c b/fs/omfs/file.c
-index 49a1de5a827f..3bade632e36e 100644
---- a/fs/omfs/file.c
-+++ b/fs/omfs/file.c
-@@ -317,7 +317,7 @@ static int omfs_write_begin(const struct kiocb *iocb,
- {
- 	int ret;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, omfs_get_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, omfs_get_block);
- 	if (unlikely(ret))
- 		omfs_write_failed(mapping, pos + len);
- 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 7fae8002344a..aec9cdc938be 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -259,7 +259,7 @@ static int udf_write_begin(const struct kiocb *iocb,
- 	int ret;
- 
- 	if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB) {
--		ret = block_write_begin(mapping, pos, len, foliop,
-+		ret = block_write_begin(iocb, mapping, pos, len, foliop,
- 					udf_get_block);
- 		if (unlikely(ret))
- 			udf_write_failed(mapping, pos + len);
-diff --git a/fs/ufs/inode.c b/fs/ufs/inode.c
-index e2b0a35de2a7..dfba985265a8 100644
---- a/fs/ufs/inode.c
-+++ b/fs/ufs/inode.c
-@@ -481,7 +481,7 @@ static int ufs_write_begin(const struct kiocb *iocb,
- {
- 	int ret;
- 
--	ret = block_write_begin(mapping, pos, len, foliop, ufs_getfrag_block);
-+	ret = block_write_begin(iocb, mapping, pos, len, foliop, ufs_getfrag_block);
- 	if (unlikely(ret))
- 		ufs_write_failed(mapping, pos + len);
- 
-diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
-index b16b88bfbc3e..4b07dec5f8eb 100644
---- a/include/linux/buffer_head.h
-+++ b/include/linux/buffer_head.h
-@@ -258,8 +258,9 @@ int __block_write_full_folio(struct inode *inode, struct folio *folio,
- 		get_block_t *get_block, struct writeback_control *wbc);
- int block_read_full_folio(struct folio *, get_block_t *);
- bool block_is_partially_uptodate(struct folio *, size_t from, size_t count);
--int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
--		struct folio **foliop, get_block_t *get_block);
-+int block_write_begin(const struct kiocb *iocb, struct address_space *mapping,
-+		loff_t pos, unsigned len, struct folio **foliop,
-+		get_block_t *get_block);
- int __block_write_begin(struct folio *folio, loff_t pos, unsigned len,
- 		get_block_t *get_block);
- int block_write_end(loff_t pos, unsigned len, unsigned copied, struct folio *);
+>   pci_liveupdate_register_fh(driver_fh)
+>   pci_liveupdate_unregister_fh(driver_fh)
+> 
+> Drivers can notify the PCI subsystem whenever a device is preserved and
+> unpreserved with the following APIs:
+>
+>   pci_liveupdate_outgoing_preserve(pci_dev)
+>   pci_liveupdate_outgoing_unpreserve(pci_dev)
 
--- 
-2.39.5
+IIUC this is basically asking the PCI core to preserve the generic PCI
+parts of a device, i.e., the PCI core and the driver collaborate to
+preserve it?
 
+I know what "preserve" means: "please maintain the original state."
+The sort of made-up "unpreserve" sounds nicely symmetric, but I don't
+think it means "destroy the original state."  It feels like more of a
+"cancel" of the original request to preserve something.  Maybe not
+worth any change, but I suspect this operation is going to be part of
+the user interface for the administrator, and the description of
+"unpreserve" will probably include something like "cancel."
+
+> After a Live Update, the PCI subsystem fetches its FLB global data
+> from the previous kernel from the Live Update Orchestrator (LUO) during
+> device initialization to determine which devices were preserved.
+> 
+> Drivers can check if a device was preserved before userspace retrieves
+> the file for it via pci_dev->liveupdate_incoming.
+
+I see how drivers need to know whether their device has been preserved
+and needs to be adopted, but what does userspace have to do with this?
+
+I don't know what the file is, but it doesn't sound related to the PCI
+core, so maybe it should be mentioned elsewhere?
+
+I assume the PCI core preserves a device based only on the indication
+from the previous kernel.
+
+> Once a driver has finished restoring an incoming preserved device, it
+> can notify the PCI subsystem with the following call, which clears
+> pci_dev->liveupdate_incoming.
+> 
+>   pci_liveupdate_incoming_finish(pci_dev)
+>
+> This API will be used in subsequent commits by the vfio-pci driver to
+> preserve VFIO devices across Live Update and by the PCI subsystem.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/pci/Makefile        |   1 +
+>  drivers/pci/liveupdate.c    | 212 ++++++++++++++++++++++++++++++++++++
+>  drivers/pci/probe.c         |   2 +
+>  include/linux/kho/abi/pci.h |  55 ++++++++++
+>  include/linux/pci.h         |  47 ++++++++
+>  5 files changed, 317 insertions(+)
+>  create mode 100644 drivers/pci/liveupdate.c
+>  create mode 100644 include/linux/kho/abi/pci.h
+> 
+> diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
+> index 8c259a9a8796..a32f7658b9e5 100644
+> --- a/drivers/pci/Makefile
+> +++ b/drivers/pci/Makefile
+> @@ -16,6 +16,7 @@ obj-$(CONFIG_PROC_FS)		+= proc.o
+>  obj-$(CONFIG_SYSFS)		+= pci-sysfs.o slot.o
+>  obj-$(CONFIG_ACPI)		+= pci-acpi.o
+>  obj-$(CONFIG_GENERIC_PCI_IOMAP) += iomap.o
+> +obj-$(CONFIG_LIVEUPDATE)	+= liveupdate.o
+>  endif
+>  
+>  obj-$(CONFIG_OF)		+= of.o
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> new file mode 100644
+> index 000000000000..182cfc793b80
+> --- /dev/null
+> +++ b/drivers/pci/liveupdate.c
+> @@ -0,0 +1,212 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+
+2026
+
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +
+> +#include <linux/bsearch.h>
+> +#include <linux/io.h>
+> +#include <linux/kexec_handover.h>
+> +#include <linux/kho/abi/pci.h>
+> +#include <linux/liveupdate.h>
+> +#include <linux/mutex.h>
+> +#include <linux/mm.h>
+> +#include <linux/pci.h>
+> +#include <linux/sort.h>
+> +
+> +static DEFINE_MUTEX(pci_flb_outgoing_lock);
+> +
+> +static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
+> +{
+> +	struct pci_dev *dev = NULL;
+> +	int max_nr_devices = 0;
+> +	struct pci_ser *ser;
+> +	unsigned long size;
+> +
+> +	for_each_pci_dev(dev)
+> +		max_nr_devices++;
+
+How is this protected against hotplug?
+
+> +	size = struct_size_t(struct pci_ser, devices, max_nr_devices);
+> +
+> +	ser = kho_alloc_preserve(size);
+> +	if (IS_ERR(ser))
+> +		return PTR_ERR(ser);
+> +
+> +	ser->max_nr_devices = max_nr_devices;
+> +
+> +	args->obj = ser;
+> +	args->data = virt_to_phys(ser);
+> +	return 0;
+> +}
+> +
+> +static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
+> +{
+> +	struct pci_ser *ser = args->obj;
+> +
+> +	WARN_ON_ONCE(ser->nr_devices);
+
+What is this warning telling the user?  Is there something wrong?
+What would I do to fix things if I saw this, and how would I know what
+to do?
+
+Is this telling us that we're undoing a "preserve" operation, which is
+supposed to involve "unpreserve" on each device that has previously
+been marked for preservation, but something (what?) forgot to
+unpreserve one of the devices?
+
+Seems like maybe a debugging aid, but probably not something an
+indication that the administrator did something wrong?
+
+> +	kho_unpreserve_free(ser);
+> +}
+> +
+> +static int pci_flb_retrieve(struct liveupdate_flb_op_args *args)
+> +{
+> +	args->obj = phys_to_virt(args->data);
+> +	return 0;
+> +}
+> +
+> +static void pci_flb_finish(struct liveupdate_flb_op_args *args)
+> +{
+> +	kho_restore_free(args->obj);
+> +}
+> +
+> +static struct liveupdate_flb_ops pci_liveupdate_flb_ops = {
+> +	.preserve = pci_flb_preserve,
+> +	.unpreserve = pci_flb_unpreserve,
+> +	.retrieve = pci_flb_retrieve,
+> +	.finish = pci_flb_finish,
+> +	.owner = THIS_MODULE,
+> +};
+> +
+> +static struct liveupdate_flb pci_liveupdate_flb = {
+> +	.ops = &pci_liveupdate_flb_ops,
+> +	.compatible = PCI_LUO_FLB_COMPATIBLE,
+
+I don't see anything in this series that checks this.  Maybe omit it
+until it's used?
+
+> +};
+> +
+> +#define INIT_PCI_DEV_SER(_dev) {		\
+> +	.domain = pci_domain_nr((_dev)->bus),	\
+> +	.bdf = pci_dev_id(_dev),		\
+> +}
+> +
+> +static int pci_dev_ser_cmp(const void *__a, const void *__b)
+> +{
+> +	const struct pci_dev_ser *a = __a, *b = __b;
+> +
+> +	return cmp_int(a->domain << 16 | a->bdf, b->domain << 16 | b->bdf);
+> +}
+> +
+> +static struct pci_dev_ser *pci_ser_find(struct pci_ser *ser,
+> +					struct pci_dev *dev)
+> +{
+> +	const struct pci_dev_ser key = INIT_PCI_DEV_SER(dev);
+> +
+> +	return bsearch(&key, ser->devices, ser->nr_devices,
+> +		       sizeof(key), pci_dev_ser_cmp);
+> +}
+> +
+> +static int pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
+> +{
+> +	struct pci_dev_ser *dev_ser;
+> +	int i;
+> +
+> +	dev_ser = pci_ser_find(ser, dev);
+> +	if (!dev_ser)
+> +		return -ENOENT;
+> +
+> +	for (i = dev_ser - ser->devices; i < ser->nr_devices - 1; i++)
+> +		ser->devices[i] = ser->devices[i + 1];
+> +
+> +	ser->nr_devices--;
+> +	return 0;
+> +}
+> +
+> +int pci_liveupdate_outgoing_preserve(struct pci_dev *dev)
+> +{
+> +	struct pci_dev_ser new = INIT_PCI_DEV_SER(dev);
+> +	struct pci_ser *ser;
+> +	int i, ret;
+> +
+> +	/* Preserving VFs is not supported yet. */
+> +	if (dev->is_virtfn)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&pci_flb_outgoing_lock);
+> +
+> +	if (dev->liveupdate_outgoing)
+
+Is there a real need to keep "dev->liveupdate_outgoing", as opposed to
+just searching ser->devices[]?  It looks like the only use is to keep
+from adding a device to ser->devices[] twice.
+
+> +		return -EBUSY;
+> +
+> +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
+
+I guess this "get" must correspond with the kho_alloc_preserve() in
+pci_flb_preserve()?  It's sort of annoying that there's nothing in the
+function names to connect them because it's hard to find the source.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (ser->nr_devices == ser->max_nr_devices)
+> +		return -E2BIG;
+> +
+> +	for (i = ser->nr_devices; i > 0; i--) {
+> +		struct pci_dev_ser *prev = &ser->devices[i - 1];
+> +		int cmp = pci_dev_ser_cmp(&new, prev);
+> +
+> +		if (WARN_ON_ONCE(!cmp))
+> +			return -EBUSY;
+> +
+> +		if (cmp > 0)
+> +			break;
+> +
+> +		ser->devices[i] = *prev;
+> +	}
+> +
+> +	ser->devices[i] = new;
+> +	ser->nr_devices++;
+> +	dev->liveupdate_outgoing = true;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_outgoing_preserve);
+> +
+> +void pci_liveupdate_outgoing_unpreserve(struct pci_dev *dev)
+> +{
+> +	struct pci_ser *ser;
+> +	int ret;
+> +
+> +	guard(mutex)(&pci_flb_outgoing_lock);
+> +
+> +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&ser);
+> +	if (WARN_ON_ONCE(ret))
+
+I'm a little dubious about all the WARN_ON_ONCE() calls here.  They
+seem like debugging aids that we would want to remove eventually, so
+maybe they should just be out-of-tree to begin with.
+
+> +		return;
+> +
+> +	WARN_ON_ONCE(pci_ser_delete(ser, dev));
+
+I don't like putting code with side effects inside WARN_ON() because
+the important code gets hidden.
+
+> +	dev->liveupdate_outgoing = false;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_outgoing_unpreserve);
+> +
+> +u32 pci_liveupdate_incoming_nr_devices(void)
+> +{
+> +	struct pci_ser *ser;
+> +	int ret;
+> +
+> +	ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
+> +	if (ret)
+> +		return 0;
+> +
+> +	return ser->nr_devices;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_incoming_nr_devices);
+
+Currently only called from drivers/pci/probe.c; does this really need
+to be declared in include/linux/pci.h and exported?  We can do that
+later if/when needed.  Put in drivers/pci/pci.h if only needed in
+drivers/pci/.
+
+> +void pci_liveupdate_setup_device(struct pci_dev *dev)
+> +{
+> +	struct pci_ser *ser;
+> +	int ret;
+> +
+> +	ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&ser);
+> +	if (ret)
+> +		return;
+> +
+> +	dev->liveupdate_incoming = !!pci_ser_find(ser, dev);
+
+I think this would be easier to read as:
+
+  if (pci_ser_find(ser, dev))
+    dev->liveupdate_incoming = true;
+
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_setup_device);
+
+Currently only called from pci_setup_device(); does this really need
+to be declared in include/linux/pci.h and exported?  We can do that
+later if/when needed.
+
+> +void pci_liveupdate_incoming_finish(struct pci_dev *dev)
+> +{
+> +	dev->liveupdate_incoming = false;
+
+What is this useful for?  Does the PCI core need to *do* anything
+after a driver finishes its own adoption of a preserved device?  I
+assume everything the PCI core does, i.e., rebuilding its pci_dev and
+related things based on KHO data, must be done before the driver sees
+the device.
+
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_incoming_finish);
+> +
+> +int pci_liveupdate_register_fh(struct liveupdate_file_handler *fh)
+> +{
+> +	return liveupdate_register_flb(fh, &pci_liveupdate_flb);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_register_fh);
+> +
+> +int pci_liveupdate_unregister_fh(struct liveupdate_file_handler *fh)
+> +{
+> +	return liveupdate_unregister_flb(fh, &pci_liveupdate_flb);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_unregister_fh);
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 37329095e5fe..af6356c5a156 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2060,6 +2060,8 @@ int pci_setup_device(struct pci_dev *dev)
+>  	if (pci_early_dump)
+>  		early_dump_pci_device(dev);
+>  
+> +	pci_liveupdate_setup_device(dev);
+> +
+>  	/* Need to have dev->class ready */
+>  	dev->cfg_size = pci_cfg_space_size(dev);
+>  
+> diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
+> new file mode 100644
+> index 000000000000..6577767f8da6
+> --- /dev/null
+> +++ b/include/linux/kho/abi/pci.h
+
+Seems unusual to make an abi/ subdirectory when that's the only thing
+in kho/, but I assume you have plans for more.
+
+There are several *-abi.h files in include/uapi/, but this abi/
+directory is the ABI-ish name in include/linux (except for the
+include/soc/tegra/bpmp-abi.h oddity).
+
+> @@ -0,0 +1,55 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +
+> +#ifndef _LINUX_KHO_ABI_PCI_H
+> +#define _LINUX_KHO_ABI_PCI_H
+> +
+> +#include <linux/compiler.h>
+> +#include <linux/types.h>
+> +
+> +/**
+> + * DOC: PCI File-Lifecycle Bound (FLB) Live Update ABI
+> + *
+> + * This header defines the ABI for preserving core PCI state across kexec using
+> + * Live Update File-Lifecycle Bound (FLB) data.
+> + *
+> + * This interface is a contract. Any modification to any of the serialization
+> + * structs defined here constitutes a breaking change. Such changes require
+> + * incrementing the version number in the PCI_LUO_FLB_COMPATIBLE string.
+> + */
+> +
+> +#define PCI_LUO_FLB_COMPATIBLE "pci-v1"
+> +
+> +/**
+> + * struct pci_dev_ser - Serialized state about a single PCI device.
+> + *
+> + * @domain: The device's PCI domain number (segment).
+> + * @bdf: The device's PCI bus, device, and function number.
+> + */
+> +struct pci_dev_ser {
+> +	u16 domain;
+
+ACPI _SEG is limited to 16 bits, but I think all the Linux interfaces
+use "int" and VMD creates domains starting with 0x10000 to avoid
+colliding with ACPI segment numbers.  I think we should probably use
+u32 here (and for the Linux interfaces, but that's another patch).
+
+> +	u16 bdf;
+> +} __packed;
+> +
+> +/**
+> + * struct pci_ser - PCI Subsystem Live Update State
+> + *
+> + * This struct tracks state about all devices that are being preserved across
+> + * a Live Update for the next kernel.
+> + *
+> + * @max_nr_devices: The length of the devices[] flexible array.
+> + * @nr_devices: The number of devices that were preserved.
+> + * @devices: Flexible array of pci_dev_ser structs for each device. Guaranteed
+> + *           to be sorted ascending by domain and bdf.
+> + */
+> +struct pci_ser {
+> +	u64 max_nr_devices;
+> +	u64 nr_devices;
+> +	struct pci_dev_ser devices[];
+> +} __packed;
+> +
+> +#endif /* _LINUX_KHO_ABI_PCI_H */
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 7e36936bb37a..9ead6d84aef6 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -40,6 +40,7 @@
+>  #include <linux/resource_ext.h>
+>  #include <linux/msi_api.h>
+>  #include <uapi/linux/pci.h>
+> +#include <linux/liveupdate.h>
+>  
+>  #include <linux/pci_ids.h>
+>  
+> @@ -582,6 +583,10 @@ struct pci_dev {
+>  	u8		tph_mode;	/* TPH mode */
+>  	u8		tph_req_type;	/* TPH requester type */
+>  #endif
+> +#ifdef CONFIG_LIVEUPDATE
+> +	unsigned int	liveupdate_incoming:1;	/* Preserved by previous kernel */
+> +	unsigned int	liveupdate_outgoing:1;	/* Preserved for next kernel */
+> +#endif
+>  };
+>  
+>  static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
+> @@ -2854,4 +2859,46 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
+>  	WARN_ONCE(condition, "%s %s: " fmt, \
+>  		  dev_driver_string(&(pdev)->dev), pci_name(pdev), ##arg)
+>  
+> +#ifdef CONFIG_LIVEUPDATE
+> +int pci_liveupdate_outgoing_preserve(struct pci_dev *dev);
+> +void pci_liveupdate_outgoing_unpreserve(struct pci_dev *dev);
+> +void pci_liveupdate_setup_device(struct pci_dev *dev);
+> +u32 pci_liveupdate_incoming_nr_devices(void);
+> +void pci_liveupdate_incoming_finish(struct pci_dev *dev);
+> +int pci_liveupdate_register_fh(struct liveupdate_file_handler *fh);
+> +int pci_liveupdate_unregister_fh(struct liveupdate_file_handler *fh);
+> +#else /* !CONFIG_LIVEUPDATE */
+> +static inline int pci_liveupdate_outgoing_preserve(struct pci_dev *dev)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline void pci_liveupdate_outgoing_unpreserve(struct pci_dev *dev)
+> +{
+> +}
+> +
+> +static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+> +{
+> +}
+> +
+> +static inline u32 pci_liveupdate_incoming_nr_devices(void)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline void pci_liveupdate_incoming_finish(struct pci_dev *dev)
+> +{
+> +}
+> +
+> +static inline int pci_liveupdate_register_fh(struct liveupdate_file_handler *fh)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline int pci_liveupdate_unregister_fh(struct liveupdate_file_handler *fh)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +#endif /* !CONFIG_LIVEUPDATE */
+> +
+>  #endif /* LINUX_PCI_H */
+> -- 
+> 2.53.0.rc1.225.gd81095ad13-goog
+> 
 
