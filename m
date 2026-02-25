@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96777EFD23D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08FB4F4BB9F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02A386B00B0; Wed, 25 Feb 2026 06:05:29 -0500 (EST)
+	id 691FE6B00B9; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F41426B00B1; Wed, 25 Feb 2026 06:05:28 -0500 (EST)
+	id 6669B6B00BA; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E35696B00B2; Wed, 25 Feb 2026 06:05:28 -0500 (EST)
+	id 513CD6B00BB; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC12B6B00B0
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:28 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4E36B00B9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B62C1A0569
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:28 +0000 (UTC)
-X-FDA: 84482697936.27.B9CDFEE
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C854A140008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:26 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S1XiELdA;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E8D341A0550
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:32 +0000 (UTC)
+X-FDA: 84482698104.27.EA42D88
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 31471140015
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kplBmSnN;
+	spf=pass (imf09.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772017526;
+	s=arc-20220608; t=1772017531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zzyMxNvzMyycWrQ4teqi8VMBfU5GZXWjfAFiWBwDYeU=;
-	b=eWLXmsdJCH+dH57Q7PahU7dnJlE2+PAMttDoHzPO0bWU5GtJi1Agwt1G8IjHqjPn7XhCzm
-	8YbddXvrD6QQA6W7Xe0LDA2tInFL0WQte8XVvJTiHnw6PCPgehTN0k0XC8/HHTbis2T/6Z
-	vweF8d1AhJ5jwxwqo8jdKA1b3ZE8SFQ=
+	bh=MmnNCbfSwbXJVlcc7ToRrddmEn5JYiYLNZaSrZR850Y=;
+	b=onCXlimzz/Tf3+OKPKSOMEfGCSjpzhNLNm5TM7tblr5nmeJuX+t6uJcQFNXbNnjue4F9sk
+	Nlf2svmxFJZjzePJzgKnrIqBVOYexmo/eLOYe9BN8Rwwa5CDkDzNGKoAb/z/S3nS5ikND7
+	m4KtBI+OsMNFp+OLBOwzaIOU3oYUJ4A=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S1XiELdA;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kplBmSnN;
+	spf=pass (imf09.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017526; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017531; a=rsa-sha256;
 	cv=none;
-	b=omM/2Y9fO8xpbGnrM8iCvzLiEybmq9AKYHD0kh+y9xzqVatvlgYCIMT5mNjFu+L04wl0gJ
-	PcSsaNjebuddq/PSgmOQQyUeixsdQZTfb4kyWbSHzqsXphepogkt3CIpyiz3W6KCKx23xJ
-	DWlZsXoAqQ6mv0DYhnsssMJnqThfCVU=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c7059b9df33so345682a12.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:26 -0800 (PST)
+	b=yPBYIm8GAmPQ/EtqLVdGKkwODIdjB2/4tEI+jQvQkPCg+954ymQJ5loGFnVWudnyiC8TIa
+	fBvD9CZFWU+Se7c4vO4Yz5E/fHFdu07zs8nabWzPnrxOr2gyRuUUiiANB6A6ffV+3VD3Jq
+	ImThCoUv7QSHneecyqVDHyEs/lW34Y8=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ab077e3f32so26162685ad.3
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772017526; x=1772622326; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772017530; x=1772622330; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zzyMxNvzMyycWrQ4teqi8VMBfU5GZXWjfAFiWBwDYeU=;
-        b=S1XiELdARTXWfFkeYqYrzWYp5Qt4yt9DnIQpbt+NEX6s/jQxI0nbcHHDQMdy90mxii
-         z8MieRq9QtfDc0oq9lpsyGn3rm+eQndmPmHeh1z6LejXp2ZC4T46myCvuugw8Kr4ce6F
-         98rvVi+atSJNJt96NgF59OFHFGCQsOFAXBsvzx0hTc586oqsb2ggyFekuy83Bk3gkr/K
-         HcuMOPOCPriNSyrfMJr4T6RECLnbN90xGVaO9hZHaM4oFjkeuCGnWf9KxT5DXGWwPg7i
-         7ai4TLuRzVn6jLEwg10myaK0lPbYUIOByWTkGCvnzgqBXHDGCqz/9YrfWrURz1gjUo5r
-         rFKA==
+        bh=MmnNCbfSwbXJVlcc7ToRrddmEn5JYiYLNZaSrZR850Y=;
+        b=kplBmSnNtIwpoKCClZJH2XAJrgiL+ZhcaUQvfea75i70jORd8HR/5wmqhe4FPG+/Vd
+         qGxdAIa0NG96uNTx6fi6aSd3gxvYk0E233CIFZDiJD57jNnPxh+6wl0UUYxjJ+e8XHdn
+         AuP2rmpfAprGKw83aoaFpcoV3tsvDQBjLHDuh0cyLFmehIYoY45s6tmBJm8tp7XB9ZS+
+         15khWa88gkAbCWYidEywovI9863FO/OARUkrxpt2UO14vRLfDum+sYXdpJotVsyeQ1F3
+         had8N9VG1q9sQMqPX5M5SD1O6tSkoIQ8rpibXCHYPKg2dgZ3MPBbpIvRIRDvpEkXqXRv
+         8x0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772017526; x=1772622326;
+        d=1e100.net; s=20230601; t=1772017530; x=1772622330;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zzyMxNvzMyycWrQ4teqi8VMBfU5GZXWjfAFiWBwDYeU=;
-        b=fE9SOaj3910jsh84SmGREJy3+ProfbQscX2kQTch6FN8wGnNPOjYsCSZmTTi2v4eG3
-         XQDEpg0ZnbXfMkN8bJyA3YD9mZhv9odMI4/5mD5EYnzN+lyiz1iSN7BDNmVpyoRBfU+9
-         jp79oVRK7LUBAVdIhI4c9+p02it18FjkaepNf16q2MXbbQkWOZDAO4NzbXKhrnhnB+lO
-         Ui6LCS4qehKoTexcUoQxnOJE85+nCd4j7QSdOQkaLE2duI9eFmv8HQeafMGd0YpoKYqV
-         EJnn0dNRWejUg0vkauXLFJMD+8QnmIiXAy82AL3851z3zDDTwHNte6xVb2iC8AZw0qMb
-         PD+g==
-X-Gm-Message-State: AOJu0YzKdUGTH1BScscN0C6d6Fdd+iFjweR77egpP/kU3bwU9mg6Fl6Q
-	oLfZaI8nFY1GCpPQEvIP1lutf9vAEjxX1RH5+DJjmwGr8VNiloSFFKFm
-X-Gm-Gg: ATEYQzy+8oDD3mv2L52GnGIM62dLm+/w0PLH+7Rbe6oczPIiZc0sO1dr+Y/w/12PCGg
-	W3LwGQ607NLI8gkCgjs3ba+fbllW9C5o8VcSh9bwIa1mOdVJ/1jXxmVcE1h47GTzzVNn+9YBBXM
-	WvTNU7zlno0l3zfXOd2/w+yUloPjEwcT0S0D1lUhMX2z1eLzY8YpjW6qIK+Dz2NuZ4hUI20mA6l
-	xMMd0pUDR41i9OVeOK7fHyt2uzpAKCdcAzkjTb/wHCKHErkzLAzv/cV5VJsH2RhWxGZe7UFTBmk
-	Xb++AjTRPpkPAbBOVQqteyBH0GkUGbJdivLGEHlc02o9PaUTE916ZExGH52+FdKXe8JHFEJb1kw
-	w3SKYRibukj8Mg1PMPZ9iu4gkmlCyRpN5oiwIuU2uA5e8UQ/tYxjiar2MPfEcfueWgYLw9B+6Tz
-	gVJdAAPQs2DVPrccWTVmrLetwuI7+jV5s=
-X-Received: by 2002:a17:902:c946:b0:2aa:d6a1:e183 with SMTP id d9443c01a7336-2adbdc3c51cmr30803075ad.1.1772017525603;
-        Wed, 25 Feb 2026 03:05:25 -0800 (PST)
+        bh=MmnNCbfSwbXJVlcc7ToRrddmEn5JYiYLNZaSrZR850Y=;
+        b=HuYSXnFxzI2Z8KYcxR5q6fede1TZqQff61Rwe9Kdii1/nlgcJVSBMLESJRY4zqFzi+
+         vuCxPss4lHaeez0pz4ZBpCWu91Jd5AeP7KOF214HO+Fyg8SO2EWMwnLJ3Cn8dOV+f1eJ
+         O6dhmCbYxztRJOdacr2opP6Q59uZytIQ1M3upQ7aULNZQgE1+U4sHqZwdP/hHAhCgmZ2
+         /MWLhuiRKkGRwFuMBuy0oTdRZObGv0Nh9WYWNdPxE/zDZ+t9CoTLyL3OWQ0nBCIZc7e7
+         Xfyx3jLKShZVRHFQmdlkqoeyRSfG/FPyRzjaCOUfplVP4z4UxlrNLyNpCdfqIecByuWk
+         vZLw==
+X-Gm-Message-State: AOJu0YwMsT2V9GFMgnlcWg5tPSUC2nR7vqSWBUscklhP9K+ib/wK5ppb
+	Md24fN88gMpE6E5PGgqma/eGac+0bIsKSxVlRxc76NxrB1UvYH34+B1z
+X-Gm-Gg: ATEYQzxrnq6S6kwXcpBIu9mJ+lee+cmNDy4r6h9vVwpF+66cpXWIrL3/uEj+upLayaq
+	NaF4mA6B0fdsLlC47xXDVsUVJaGamnU6Yxrmx5DAoghDSeTEIS4YiiefTonaopDP94Xjs4lUveE
+	eVzYUQSrdbJAo8fJQU5wjCsRtzSFQtwsXwXyDP4nb9G76qNgrUfEZ9mUw5J0pi7xlLyLR7rdb51
+	O5Xku/zLKsIH3q4pkoHjuZaD/Vu17qsnRW7TyODoEw0pNKKCPznnxesXUPPa9gaTSVFXJHp+E9v
+	eTrVn3KVrxDYnmpXoK+VsKI8OBFi+7u/uXI0Cmnf6E08bdfGkPl+hgkPj9d+QssMiTOfCK+b58n
+	/bBmB9ldjUDj2m8AzAJgeEbhBQCubXRCNLVKb9i+e6aFwNKvALPa+hOpE+M2D6tyHoEBy03lBPB
+	4VkiuFCwrlkW3mslfGSTVyl2JS9TIqnSQ=
+X-Received: by 2002:a17:903:3c0c:b0:2a0:8e35:969d with SMTP id d9443c01a7336-2add13bda24mr20779715ad.39.1772017530108;
+        Wed, 25 Feb 2026 03:05:30 -0800 (PST)
 Received: from dw-tp.ibmuc.com ([203.81.242.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:05:25 -0800 (PST)
+        Wed, 25 Feb 2026 03:05:29 -0800 (PST)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org,
@@ -100,22 +100,22 @@ Cc: linux-mm@kvack.org,
 	Christophe Leroy <chleroy@kernel.org>,
 	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 09/10] powerpc: book3s64: Make use of H_RPTI_TYPE_ALL macro
-Date: Wed, 25 Feb 2026 16:34:30 +0530
-Message-ID: <3fb34ebce6a92855ce6c20326c1f7f99097227e3.1772013273.git.ritesh.list@gmail.com>
+Subject: [RFC v1 10/10] powerpc: Add MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS
+Date: Wed, 25 Feb 2026 16:34:31 +0530
+Message-ID: <c57b1c00145a2db1a1b4feec94cfc2917e4877af.1772013273.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9z78h98ppwkmx496zm33nfhfeozqxpx5
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C854A140008
-X-Stat-Signature: bmq5ejfrhuabe7rbpyei9nrzkfpbktc8
-X-HE-Tag: 1772017526-901967
-X-HE-Meta: U2FsdGVkX1+16M64PDvoXcXdEnVtUUA0F2tdagAWdzf0dVrke+Yil+1Icj2z2IDp0JtZlISS/XH1BFfZVfRbJAhGuObBxScfMfh+aJDOqRxQOoPqgOCk81TC9/4KUQxa1tPsWHIPcIRDX3EtZEO1l52ObbLuOlZGImfVD+Se2eCrF9KiDGEWICBJjLS3Cz4vmaStmfS/hXPe4Y07bbuAugr5JSWBm+jdq22CdTrPa7325HCJeLZjbyWTFZFngW3xB6QRaBjl22S9+cX/nTw+cl9SfMFoWEj9Tc0o8myJ/U85h1LlI0QAFtWXq+TDuIQ6QK5zNJh5BUNzZwNJQ5POGUvAau5N5Y5AoDz+QmKHplgjx5huChhonUiIAyksQa+iXR2nbmA+ztuvkn/bHyprwiVX6IwwVPcg0QE6ez2QZ14+mkqw/1zrtGtWzvPlanj7CG1vGol2wCyLu/pyHt24UCSX1rWh5qCV43Ayj5+oXoRwliVLhldn3z4LbfRSHRvN/8/uy+6hAozQ6ADg19NLvP0hZGFAo1mW5Ga+tlWxOAKc9ak0SHuIdMOvlRo6U3rhdJ1aFWnprSByFCqPwhN0L28RwDAo0VlK0Eu0a0FlbPDOjfQs238RoUkHX8fdF4EYUL6+obGkt+t0TOfCzYiwaYVdDTn055N1OC1lxdkyhG0l6FbZGwe13eFYvc4921L8mIEJnxJXs2uLdvaAjD9GRniJY+rzfpAD4MOcFEiNOT7pcQUKBCNTt+3St1lIf25dDVgcjcdlTCbKUQf85MJPpPTfS6hvgdaJIgu35m5FkumcmaLWwixQG1FHtkIBA5o43UBIUs25CzRtMOLNlYocY6n3WsW+OaccBDijeGJNDKJHfdlMymSoo0YcoPaYNGQp5uIKLwMjTXCLErIAW5tXmEpopdkgITb7CpgKFn42sZEvY//AGAaBfiCLzpceUI4n2tlL0F//waRa1d8A/AR
- ANWCwRUI
- aBD2He20+XW/aWsCPtuRPC14tMVUsPL6lZN3nGH9mqFK1/y7tL2QgdEKoN3qvNTZyUI11r7SAkZWkBwSdxI4uKD/h6y4UmYo4erjTPLKhvOCY8g1sVGSJtgVqw4ZTiY205dHQJ7/pWSAZpnszRdBa3w28rWSm4k26MTwTcENK/F0MaACJJuG3MmOaMPmiw2HFjyQjiu127xufbhWYXHK+Qj32Seo+L9sptxTY52JeR98JtopeITASRlurxogJ00SY/Ib2z+bfvDb6Y/NxZEdIcqKEED6Ptp6mrdCaoBc43osjULkW7Xwe3wZaYdycLz6qF54kF9ROUk8blW/8ZaIdVZce4T8cEp4il1hQ9qQkzMLHabE2D59OvVHkylFZwQ2aotMHRl1ZCzr+OoC6GqSXud6M3GtUr6VdjePNwMEmKioU3pCfTmQKvC+oib1jfl6S1fmCwZyRDvHjX7Qv5xT0spIGzYzVxAE6tCo1SQefhVuz/EILsT2K74GKQfJWwkSqNVZ/BMKzGpEktVFWGrotpjOq+thurVd79qfPJnX7BR2CHh3ZC2YW/tty+g==
+X-Rspamd-Queue-Id: 31471140015
+X-HE-Tag: 1772017531-971134
+X-HE-Meta: U2FsdGVkX1/+CoJp1PFCaptqwpRO356YJC3VkYdrEVDVVN2EdvRlZISVtl4g7K1zXWiKviRksBe14VL+vQZQawtBTYbe+rhNtIqkjc6RnB0KtGx6FlT5DC6OYVUrJBRS8AQ62pfwD5YfOux7k4FdLEhW8ED7CeXlCOl6l5NrERc5jRm9PuPdygXGi5RxvON7lMMJpvQM5iayH9au64QLVU4Znw2/x0FvzMXIcUwysQDW7UmG4wGm8QjcJQQ5BMJfLrwK9EqHL95Dwkf5gRVr6Rk4ZLzcQF0MeTe5uwD5fbjaJKoHbybQkaKhdI70lnwexBgGRsz8Zh+HIXS6X3yxYEG3qw/OPTXnFwOEb+LPVZ6G1m9yanz5Qn4WPFygGC2+28aqFYUHpLhieH/wUDs5sVDy7jUMKQ0oKfaBGJArlUFjk61CPcX2L2eMEni2/XdTgcIyOIiv2STZTLJ3x0Ia6c0ze2eRREENuqlWLPoljjdhHh2/B7FpAzhHAaghJElhlNIALr8teJZSNcwa1RrCW/+ZMM5CVL2j3UbMR6vvYccXu7Qqw2sHB+W10uDz8Kl63Cvklm6uaJ2XPmJo1HVz0SWBKjzzjw8J1cRlelVZXuAx5ehHiWbHFwP2hD62D7llCe0aPuKQLDieDPl1DQ8YcLe07ta55f+FxfdTLz5j3QpO5AAZloAEt6m70mJr9yZy6p9DkwtYx8vZXtypxqLDzbYulsPgblJ0FFfbR2PqZkxj8EdW6Zdrh0CdAuPkEH9X07NC9PdmJhiJnCh8zUTYt64TdktpPD2LBsSm9MFTLxbGRiTtp2ETVgA2oytFO6OLF0RD4uVFysY5h7jRGIrjMzZl97tGr1QcKBCeGtyXSHNPesld/5IYpdTlrSRI4fTR5FBaYpTJ9p4qZn58uX2OcDmNIyOJM1DO4kE4dEvJqHPJSn7eaDoI9jZqhxmrdrktY4PESJfMtKTTDjG84dY
+ Z0LWVI98
+ cNHI4VM5vBOTHcRO3O4ygkWl/5lrPZwenE2rIe/BRuAx8F/IkuGbCpvCZGJadNzY3QCcAnJd6JruQV2fdBrJKa5CfJMbHU7eHHtA8rJxicg0iuph765FjUaS0hgap11QiX9r00WYcu/3WH+RC7cv+OS9FyZ602QX40WIWvVsNNBKpcLibJoRSoDIK2pqF/ATi795gimhKsy/Fwfx5sgjIYMZSjjWJi/edq4emcJl/Bk46LbB7dVL/mkVCNiuvDjIiAfQzmmbIwosCr5dnZd1meRYx3epSKOqtB1kQhJ01B56hndVQJWPYdoOo9xKS9W1YaRXq5ARFoLiS6xI0dCHD+iHKd8b6QCw5dV+o/Ot3yrDCTUVisow2F8WSueZfSpVbiQ1ZpookPYSiV44Q6m3WUJog9JsEWqvCEGNVUezU7OP8PSPECoT7V6sHQErxnEl09dXgeypGK5ISjBmVjuHUP2nZc0IW2laIMbuXPOwqKOKrGlpXQSNo7PKQM0+ZDn+XOZvjqu7UxWZ9Z6K+5VcrmCbw5wKHqK/56or844qnQcHPGpR3yy6w4Qy8+Z0VrJ8fBOBVCEiIhrc8UDOAWAY3BJv4CaRVNR6uoxtgV+beC6M37/JOIDJaG2I9EFUYn9t9W0gFB3E8S21L3bM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,49 +123,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of opencoding, let's use the pre-defined macro (H_RPTI_TYPE_ALL)
-at the following places.
+Similar to CPU_FTRS_[POSSIBLE|ALWAYS], let's also print
+MMU_FTRS_[ALWAYS|ALWAYS]. This has some useful data to capture during
+bootup.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/mm/book3s64/radix_tlb.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/setup-common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 6ce94eaefc1b..7de5760164a9 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -885,8 +885,7 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
- 	} else if (type == FLUSH_TYPE_GLOBAL) {
- 		if (!mmu_has_feature(MMU_FTR_GTSE)) {
- 			unsigned long tgt = H_RPTI_TARGET_CMMU;
--			unsigned long type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
--					     H_RPTI_TYPE_PRT;
-+			unsigned long type = H_RPTI_TYPE_ALL;
- 
- 			if (atomic_read(&mm->context.copros) > 0)
- 				tgt |= H_RPTI_TARGET_NMMU;
-@@ -982,8 +981,7 @@ void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
- 	if (!mmu_has_feature(MMU_FTR_GTSE)) {
- 		unsigned long tgt = H_RPTI_TARGET_CMMU | H_RPTI_TARGET_NMMU;
--		unsigned long type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
--				     H_RPTI_TYPE_PRT;
-+		unsigned long type = H_RPTI_TYPE_ALL;
- 
- 		pseries_rpt_invalidate(0, tgt, type, H_RPTI_PAGE_ALL,
- 				       start, end);
-@@ -1337,8 +1335,7 @@ void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr)
- 			unsigned long tgt, type, pg_sizes;
- 
- 			tgt = H_RPTI_TARGET_CMMU;
--			type = H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
--			       H_RPTI_TYPE_PRT;
-+			type = H_RPTI_TYPE_ALL;
- 			pg_sizes = psize_to_rpti_pgsize(mmu_virtual_psize);
- 
- 			if (atomic_read(&mm->context.copros) > 0)
--- 
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index cb5b73adc250..002b312eb7e9 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -866,6 +866,10 @@ static __init void print_system_info(void)
+ 		cur_cpu_spec->cpu_user_features,
+ 		cur_cpu_spec->cpu_user_features2);
+ 	pr_info("mmu_features      = 0x%08x\n", cur_cpu_spec->mmu_features);
++	pr_info("  possible        = 0x%016lx\n",
++		(unsigned long)MMU_FTRS_POSSIBLE);
++	pr_info("  always          = 0x%016lx\n",
++		(unsigned long)MMU_FTRS_ALWAYS);
+ #ifdef CONFIG_PPC64
+ 	pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
+ #ifdef CONFIG_PPC_BOOK3S
+--
 2.53.0
 
 
