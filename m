@@ -4,120 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FECFFD45F1
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:02:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F94FD45F8
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:06:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4FE76B0088; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
+	id 4B4086B0089; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FDA66B0089; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
+	id 461536B008A; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DF096B008A; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
+	id 36E396B008C; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B5856B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:02:31 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 29AF01607AA
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:02:31 +0000 (UTC)
-X-FDA: 84484353702.21.A4DB1C2
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 62C0B40009
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:02:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VkGc+B1E;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772056949; a=rsa-sha256;
-	cv=none;
-	b=wKSlJogm72bGriHDWzwUgaoTDZisnlmlx201/TYm1udIdAdfax3NexRatdS0Xe49ZDvkOq
-	mjB7X/PKKar+034MI34DeybmPCpnHv05OHCQbHCRumqAiQiKcTJ6EeDoeD8UTHkQryw5cM
-	l+O50JIcd7ZE0jm+siHn80b1BTXwEYE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VkGc+B1E;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id 219886B0089
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:06:32 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2BD28C3A3
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:06:31 +0000 (UTC)
+X-FDA: 84484363782.10.9D0AB59
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf05.hostedemail.com (Postfix) with ESMTP id F3A2A100011
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:06:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LI7Nut8j;
+	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772056949;
+	s=arc-20220608; t=1772057190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=67P+JH09J2cm5qxmBeSmD51+Qk6Cs1f/aDxhT8sdTsA=;
-	b=YBjlOYS+V9ZslCuQ4qZX3n2a0HAa50HpGD6Dk9E7HC1QRQWKpoVhv+2WOHoZB6WHpylKGW
-	8t1S+tiC9MMer52RCt2DWFnblVSrMYpdiO+z3i/u6yOpEe15IjHYyyHZ6m1Mw5U8q96dMu
-	cdM6yd9Rl/L363LK/l0PM27SIYXY5sA=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7986e538decso960777b3.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:02:29 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yKxFO5jbcj0n3yx3uCDHTRhkwPsNZ/ADjqKpvoexazc=;
+	b=Tc4RCqQJVQ0PYRKYqJn0lux6jiwe6NdEbDlwLXySLhayOUhPlaNAlmbxy/i9NwhlIaGdNy
+	JRu7EMp8H7IQExT+8+2dsMWR/KtcS2WX3RpDRvnVzUZdc5l0dmCuNPPUga9nnXbfGgJztY
+	TGwU15S1iWVo+NuPhK+KcMKcLN7yT40=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772057190; a=rsa-sha256;
+	cv=none;
+	b=jrT5e0VU/7XbkoIX8TE4ldLUUw/LSPi2KrHFrSaKBGTwUxQYlgp1yOS4rthezt6F6kWvMp
+	6SDa5fOEqeuxcOQKLJ+j7YPbCZIIA7H0ImITmBi49YQjEcd6+FYuCGVtQf2bFC7oXVSqQ+
+	LB8aCRU49p9ThXFOvPHkEDPu7rcQvuA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LI7Nut8j;
+	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ada9e4ea32so11255ad.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1772056948; x=1772661748; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=67P+JH09J2cm5qxmBeSmD51+Qk6Cs1f/aDxhT8sdTsA=;
-        b=VkGc+B1E3P2VLYq1+9SqFxJDUnXj8A2o6PTy3ZEOJ7uVCLOSD52PQPBlaRnfn0oocl
-         hd2VbTCMEW2LIVG5Qop+fyBi+L2XzAVYA9ADvMzFfHe8pH2VDthYPdDXYm4EwXgOndk/
-         v3MHp38FqCW9D3DBi/sYf9AWycnoaaCmiq25cOQC2nT+VRG3PTIEVV6Egtctn7wt2UVW
-         WA4hgS3dXvtZNNcptGJbeCCQHXr7gvyY/5vfuzvAkoJUijXoMW7jM/YVvURmNVkgcJL0
-         c9nzVdZ6Z15Q6gdI9/hqfXJHxF4+xl8sHkfx8ekzkQVOFamVTVo4DWgA5sUS7IabQvH/
-         LgHQ==
+        d=google.com; s=20230601; t=1772057189; x=1772661989; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yKxFO5jbcj0n3yx3uCDHTRhkwPsNZ/ADjqKpvoexazc=;
+        b=LI7Nut8jc1fwfR0WAGkb6rRTFf8VKGqI4zAN1AnEM9repobhhcPA/VGbB36Jzy4yKW
+         17otl8d1/AzUc9584gP3ihoZPbrZBeqkiiB9f+/UMDpjW4FUQqUmdu9xoMmOvp5KHCUz
+         pJVo6UZW1rOpl8BZrVRVx86IhccLLfJEh45kfPIJeoiMkNpFMmcvotdyMxhE1X0RyTlw
+         8f9jR4XLzpaoFG3JYSyhZqTwNSYfPfvY3IBsjEycZ1JGkgCTSsjznE7vNSap8d3uqa3A
+         yvjSIaLJPk20MtGJkvUCr+6TPPZhGjfrqNo2RaSjC6I2DXymtqqJygMyvlAV9rpSAiuU
+         ARdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772056948; x=1772661748;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=67P+JH09J2cm5qxmBeSmD51+Qk6Cs1f/aDxhT8sdTsA=;
-        b=mJ5F695Wl9l1kAtlXB+TzuAsTwceJIz/fOkTGUxaJnOw77Hox1aUa+P2dDmBJqND1X
-         JbRnJfXMdjlOmzykg4bxKhPAiKoI2KMq8NPAAahIX8ajCF/r6neqGUV1QYQi1aldsZeR
-         70uwfccdg4QaPLsZs8UDaHBiSWjgAvXqDUzesnJ+5SmS6+PJyTRIru0RnQ8yXtGhuxjy
-         xMozrcmhS+hxsp711O49m7dfj0pe8rj8dts0I1xChRkDzK1NqkLGa3P3EYlMgbbAm8Ds
-         rkh/pGlpJbyoYAepMmgDAyyBhldsVHRD9hqwMxbXE7D3UIWbNxawtm225INcTa7HyotD
-         q0TQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGB5RPxFL11g/WsaN4kCjD7wL2qwwEMw35gkzKG94iOmi4P9JyQc6stgSs3sOFDc/SvekILJiVRg==@kvack.org
-X-Gm-Message-State: AOJu0Yxn40A9gKF2G5wCCL5Wf/kiUA3LA+ELjRpomaquUYEKrxzzhrns
-	8vhU2134zkjY1aCZ2faOHZ+jVpOONMOxcYTEIhSgqmXAWzuL9S3KT1C2cJQ+FL8vpHU=
-X-Gm-Gg: ATEYQzxE0qOsTIGBjszEFKFTEjb7gjzwWv6C5YAKL21waybG+cEMvO8MHYRBCx4u9GB
-	i27OZz7FMXHr8jpTIDC+wDk36tChHDQYs6PzQAj8YVXylTHPb9R/uLgcRGzMh9kX50BSBo2DcL2
-	28Bzkp9XqFploqhoWrChOsX89san8OcfYVqcs9CjBKXBdpGEAvfef1Mr6RhwE2HfKrZzPlFacU8
-	QPuYf8bZr7H1a0okpipP0JWhEVkxPHuaksHwo7LF6YgAUVV7x35iix/lKn0Jpctu9w3uUsnLPb/
-	oYoE7K3LMHhR2QE6Txrm7GFi6CjOGElw0qQaGlvl9q8zsSa1zmbyfeLpNEM11X6kpPcNcoCm+K4
-	7+thkLplwc4+hDxeLFlj5Xr8JmBkEzxFHVx01xabnJXEK87OUsOHu8lAnkIOn6IoayFaZd9B3aq
-	eAXDwubg46+4mGAiZbnOOFMRtbqDVWiWxyG/Y+E3/wCdFWpPFySUwyFiABIHxsyG6d55IymYCXk
-	KobG3OPD0TfF2rDEapu5TJXLL6hr75zwGC1iN1pJ+yzGEZXow==
-X-Received: by 2002:a05:690c:60c2:b0:794:e839:ad76 with SMTP id 00721157ae682-7986ff8a362mr18639447b3.44.1772056948232;
-        Wed, 25 Feb 2026 14:02:28 -0800 (PST)
-Received: from soleen.c.googlers.com.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876af20ebsm703617b3.22.2026.02.25.14.02.27
+        d=1e100.net; s=20230601; t=1772057189; x=1772661989;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yKxFO5jbcj0n3yx3uCDHTRhkwPsNZ/ADjqKpvoexazc=;
+        b=RGXcmue/KQbbl/a4YBcTI9V9Hgy+MtQJRNFt101BsYHFKgI8oIiKdl8B2gZnIomEYg
+         ZJrCzl2pLJaoffgpFx6CTjJqwzqUH3yYOe4ghce7bBlmutBZtVEbdAzKqZXHLLmSfiRC
+         Okp2iCjhUJOoT2Xe9eBu1zSb+EoVBAQfti8+lsS7VOqbMnnUFFMnClHdGfobFfDUeaIR
+         xqkBPjdb/OgKImixxHXNqAsd36Sb7+P6I2cS+F3BAcClP6kZStWmMpUF/4jS8tEolfg8
+         Q2EjYYXkPSOG6iSJ1zGEK7KwlaDylDgzVrQerJhrB6B3U+wXdsLhPjIp+hn5pS2YWwXp
+         eIJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGEi8ppAd7BqLvi3qcII09G2qe18QOMXagXxGvdVStQl4UZi0wv5Llru0YU2j6dCP58iPivcU9dg==@kvack.org
+X-Gm-Message-State: AOJu0YzRutl3TINvse7+6c95IScJcNotGYXCYTH8KbMN/HsZSqCN/eqx
+	tnEBy8nSyPJ6bpN0fM9F3bj930WHi9LxPz/mkAtX1N0Q7NiP6lgLobeo+hZFKkMQzw==
+X-Gm-Gg: ATEYQzzbf/bfsCdcgsPSdO898STw557osLyXG0Znhceda6Bi56vPSHBm2eFQpbqJ21G
+	63V+Vceb5OagR2Wbp8m9UJKkwt9CrSvHGj4SA3b9ZSlMLlEftWpwkIfEi9koZ8k4vapCR5PbeBu
+	xmdC3OQiB5VeGo2xsjQloK9gu6g9Ba9HO23jWNdzd2waptVItpPoj7e6KZ8CYg/xFPJkVonKaoi
+	qjUp1FQrCKt6u413qbb21MeXqwSdgZcOmAJfrPgmorNpTpsyjNvKathnidhSwxJfuxFVN2QuWN6
+	9CYETM172EnHFuX4JAleXcGP2dRKjXa5V/IdFQ9iNmBwC/c1FKxtlxVQ+RcMzDMSsMbGbaDWkPY
+	xWvjgi+RF1RWHCMHvwh6QR8q4C1y4/8v0T7NoA8mRTFyXZ7JRnQzf4wGadG4JOTRDia+/c5orIK
+	ED8rtkgkpcKEx6fezxbm96jL0FVIxNgQoyqzxry3s07TGywArP5/eEjZ/Me9XEZsZM/1owVIs=
+X-Received: by 2002:a17:903:2a86:b0:29e:27f4:bac0 with SMTP id d9443c01a7336-2adf77c692amr672495ad.16.1772057188344;
+        Wed, 25 Feb 2026 14:06:28 -0800 (PST)
+Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8273a05e831sm236247b3a.58.2026.02.25.14.06.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 14:02:27 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: pratyush@kernel.org,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	graf@amazon.com,
-	pasha.tatashin@soleen.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	urezki@gmail.com
-Subject: [PATCH v1 0/2] Fix KASAN support for KHO restored vmalloc regions
-Date: Wed, 25 Feb 2026 17:02:21 -0500
-Message-ID: <20260225220223.1695350-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+        Wed, 25 Feb 2026 14:06:27 -0800 (PST)
+Date: Wed, 25 Feb 2026 22:06:18 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: David Matlack <dmatlack@google.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
+ Update Orchestrator
+Message-ID: <aZ9yWlcqs2b6FLxy@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-5-dmatlack@google.com>
+ <20260225143328.35be89f6@shazbot.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7xphmw1s8eg45w9op348duetkssuokyr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225143328.35be89f6@shazbot.org>
+X-Rspamd-Server: rspam09
+X-Stat-Signature: bau39y4rss8mqaoz7pnmhmkwtcp4ras8
+X-Rspamd-Queue-Id: F3A2A100011
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 62C0B40009
-X-HE-Tag: 1772056949-162871
-X-HE-Meta: U2FsdGVkX19379PqB3klUaYSFvlB5S9tSmYd0cm5hTjYMAzvv6dGTCGPGA1gOW3paE3+/y8MMdOlGmTY3Zu8e5G6xwXoPqRLIKi9g2Njk0ati8oe+QycHA5qbKU7tmWazHAAj7TtxRMGncnn/5sdKetgqTdPAhjd2ZzbFmr9OFO4FMXamwT4GhHH891ZH1XvhAaJAKP4ye3RO51HQvthghgbioMpgbe+dwEoqySr8BRjadb559l3PdiU4R84lortN0DvtKYXP+Vvb5qNlH1LJrVa485T7klKrPDRdrGlngy00mbJA5qga6hOrtBzSeZAN2vyn7pGPsXrFgm35fr+LE48951tu3uEKFVbt3h09cgUrEAtg4fSmPpE6rXrErZphHJKH+Kdww46GlC46FvfgjMW40hfz70TFNOEy4RE2qwjKhVV0V3s2/3bcmJAj67j/dvvnsleFQZN8MeNCNTJjVffwVZKcvfsWmYVBh3RoIQCrL9GAa3XLhkeJYdV2pZlX9LX7lMlVjmKHeHo9siynBpYenBBtBkvhoaFJ3bMxAIvEFc/58MJbkn7lA8TWs+nX8UKc77q5zy2tg2RbrUgnOGrSDjuQ9F09HScCuv7j+YGIy5QjKINDKmCHaZXQhfFdXZmVnjQR451xgjcDewJu57cjBC0Vf8U4GGCWCrWo5omrf/ZGCvALpzVQCSexQQQ74FnxIIeB6PvaUaF7jWbrucz7mR3nhyqzwNJv8jJJvzuIYhxXVg9nHrOXtdK9ly75Swqu2u07D9Ci/pu8DoDGG28qNKGUURKG7WqBZqAkQ7LT8aPVPntYoqeDxlzqQ9F9G0XsmKOFpeNG5dWyj5KiDEx0hxfSGfYU0PlIVAJZDUKTtwU1X3mG0lig50+O7i3fVS0VBKdDbxpE9v9NQNiPx2K4fl/Lrv82SBQ8KId2pi3WvFm6Jb5WmpAZAi9ZFS5U3XnCgELaRD5MrhUU+7
- aIUc1Jqa
- JEIMk41viu1qncnU+Z4Z1zGUzZbAHA2MuAn7Bn+LIbKNkL9tam33w1KszlH60FnInR/kGMZKPHzCM5GcA8GO1npLB1IgBWD6h75/Fr8Hn1Tq2eEPFRj5aGqeSqaeXH6GFsw5SqRj/+/db8Ol461HU8erbs62qAo0bJGIXaJdwsuOYnp+x2EoKkX93lhxGGsSSFgCUkZIL8+atCgGDBSUdRg8jAhU3X67hDZRpGZdj6q6hqemWud0HBzkAMtrsqm8aK/Zqmx8XkpEaZjBtRbcmxxIMPpMjC3+kNB2V3kPhFoPSu+c=
+X-HE-Tag: 1772057189-884197
+X-HE-Meta: U2FsdGVkX1/oIYi987kkivNPXbbGatr4bG/idqk5mX9uU8IPHyA1QvHDlRXRY1qOg7eIaVPwl5xZ2Jx8/8O7DeDCh2wU+dKxuTQYuCMbIpx42HcGIaVYmqinGAC1oLo1FJ8W5uotC+OI/cAhCbZXuXCrtiAnpftOEC5DuAYzphedYSdP9TyJlnOGtWYmUQRhCrCnTFZ8QK7wcN0TmjJfNTxm4nozXlFWT/37pb0fYBKivhHoaL+uWW1UtckWj8fVb41+GIBCsGGlDusg3JbyNtnbUDOkDS4bV1dSop0CxHBe9zZ1PhxxC2K4LL/W3d2Ff4Xb10zON/3K2ucjsLlsAQ875qjYx3L26OfaqEAwHfZwlProJ8wFzY+t0r+S3AdYQkariTDZq1MhObedmIa5fEAnAq09TuHvxfeUgnako2BsTjY+Re/7Jr2ElUDiLb7OjUS8vjejwPDeOMtJPXaqSOTu669h8xSLqP5/C7qQXuID2cYBTPy7T1eSJCiX/651yYLiGY3/wJuLmX5S8BQ7tC+emh5PxBAgB0yGe3ETgwh1FO2hPqmrDNl20iuvSJVSDgjLGmJIL+XsJERRuZmLBX4DGwRoC1zpMdrvkWU24nPHesHsLmaWixAWGBz3E5pniMplt2YkXTFm/YJDiQ0syk3F9ZFrhX8rPUXWEIWeMdy8H33Dl1OdWLJMzALYjgeqynUJV+dnWqHsgxLV7XA4S7xtZE7unbWFlrTjUnDPJmFXS1rXIia+YSJ6T3SVYt9BN2ATvODwKsPrAGQRiL5yezrmvxhcu6BkobsziMNGQaRGoATN/N91joWJYWyjT7yVi+SzL/IAnuL76w+24QQAJfMrdvH2JG9l4Gqy2RFzssUuj/Q9UCuwVEJhCLpnKQW2e8NbGDYM95SkumZQeCUXO1yvLqZUcImrNPHf0+h0tpxVLmf+eqU61xhXrmlsDZEigkikiPaEp35Lip0ZTN2
+ pq6Gmi41
+ Z0SFW9DDcPHM9dDB0vnJKe7mcUIQymkskccTwE6nHly4eHQDrUCbD05MmPwoCGjgHeN2Ks6Ds4aES+R3kl8d91TQcCo/kcPGXRAQloeiICJ24C3tCzOkXZHhRGwIm0+OCu0uXI0+wvYfx6o5Zg+TW2UhEX9o6KjsFrbxoP16Z8ubiMlvCjWwEBcrZs+/8oM1t/pM6D7nboVyV833FBM195UZ8/xzGQdXIFRE651q1em++j95Ywlt8BQB7s6mskgUEc7g4cCzJRPmU1/TzX+12VyiA17eZpHmluI2QCVVPm/QZ1x4HB0jWHg4BAl1/gt+CoBjoezt+h8T1CLQQd1wQTHa8kiGiiU3Mo8AH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,36 +149,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When KHO restores a vmalloc area, it maps existing physical pages into a
-newly allocated virtual memory area. However, because these areas were not
-properly unpoisoned, KASAN would treat any access to the restored region
-as out-of-bounds, as seen in the following trace:
+On Wed, Feb 25, 2026 at 02:33:28PM -0700, Alex Williamson wrote:
+> On Thu, 29 Jan 2026 21:24:51 +0000
+> David Matlack <dmatlack@google.com> wrote:
+> > diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> > index 0c771064c0b8..19e88322af2c 100644
+> > --- a/drivers/vfio/pci/vfio_pci.c
+> > +++ b/drivers/vfio/pci/vfio_pci.c
+> > @@ -258,6 +258,10 @@ static int __init vfio_pci_init(void)
+> >  	int ret;
+> >  	bool is_disable_vga = true;
+> >  
+> > +	ret = vfio_pci_liveupdate_init();
+> > +	if (ret)
+> > +		return ret;
+> > +
+> >  #ifdef CONFIG_VFIO_PCI_VGA
+> >  	is_disable_vga = disable_vga;
+> >  #endif
+> > @@ -266,8 +270,10 @@ static int __init vfio_pci_init(void)
+> >  
+> >  	/* Register and scan for devices */
+> >  	ret = pci_register_driver(&vfio_pci_driver);
+> > -	if (ret)
+> > +	if (ret) {
+> > +		vfio_pci_liveupdate_cleanup();
+> >  		return ret;
+> > +	}
+> >  
+> >  	vfio_pci_fill_ids();
+> >  
+> > @@ -281,6 +287,7 @@ module_init(vfio_pci_init);
+> >  static void __exit vfio_pci_cleanup(void)
+> >  {
+> >  	pci_unregister_driver(&vfio_pci_driver);
+> > +	vfio_pci_liveupdate_cleanup();
+> >  }
+> >  module_exit(vfio_pci_cleanup);
+> >  
+> > diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> > new file mode 100644
+> > index 000000000000..b84e63c0357b
+> > --- /dev/null
+> > +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> > @@ -0,0 +1,69 @@
+> ...
+> > +static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
+> > +	.can_preserve = vfio_pci_liveupdate_can_preserve,
+> > +	.preserve = vfio_pci_liveupdate_preserve,
+> > +	.unpreserve = vfio_pci_liveupdate_unpreserve,
+> > +	.retrieve = vfio_pci_liveupdate_retrieve,
+> > +	.finish = vfio_pci_liveupdate_finish,
+> > +	.owner = THIS_MODULE,
+> > +};
+> > +
+> > +static struct liveupdate_file_handler vfio_pci_liveupdate_fh = {
+> > +	.ops = &vfio_pci_liveupdate_file_ops,
+> > +	.compatible = VFIO_PCI_LUO_FH_COMPATIBLE,
+> > +};
+> > +
+> > +int __init vfio_pci_liveupdate_init(void)
+> > +{
+> > +	if (!liveupdate_enabled())
+> > +		return 0;
+> > +
+> > +	return liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
+> > +}
+> 
+> liveupdate_register_file_handler() "pins" vfio-pci with a
+> try_module_get().  Since this is done in our module_init function and
+> unregister occurs in our module_exit function, rather than relative
+> to any actual device binding or usage, this means vfio-pci CANNOT be
+> unloaded.  That seems bad.  Thanks,
 
-BUG: KASAN: vmalloc-out-of-bounds in kho_test_restore_data.isra.0+0x17b/0x2cd
-Read of size 8 at addr ffffc90000025000 by task swapper/0/1
-[...]
-Call Trace:
-[...]
-kasan_report+0xe8/0x120
-kho_test_restore_data.isra.0+0x17b/0x2cd
-kho_test_init+0x15a/0x1f0
-do_one_initcall+0xd5/0x4b0
+Hmm... IIUC the concern here is about liveupdate policy if the user 
+wants to unload a module which was previously marked for preservation?
 
-The fix involves deferring KASAN's default poisoning by using the
-VM_UNINITIALIZED flag during allocation, manually unpoisoning the
-memory once it is correctly mapped, and then clearing the uninitialized
-flag using a newly exported helper.
+AFAICT, In such a case, the user is expected to close the LUO session FD,
+which "unpreserves" the FD. Finally, when rmmod is executed, the __exit 
+(vfio_pci_cleanup) calls vfio_pci_liveupdate_cleanup() which ends up 
+calling liveupdate_unregister_file_handler(), thereby dropping the ref
+held by the liveupdate orchestrator which allows the module to be
+unloaded.
 
-Pasha Tatashin (2):
-  mm/vmalloc: export clear_vm_uninitialized_flag()
-  kho: fix KASAN support for restored vmalloc regions
+I think we should document this policy somewhere or have a dev_warn to
+scream at the users when they try unloading the module without closing
+the session FD.
 
- kernel/liveupdate/kexec_handover.c | 12 +++++++++++-
- mm/internal.h                      |  2 ++
- mm/vmalloc.c                       |  2 +-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+Thanks,
+Praan
 
--- 
-2.53.0.414.gf7e9f6c205-goog
-
+> 
+> Alex
+> 
+> > +
+> > +void vfio_pci_liveupdate_cleanup(void)
+> > +{
+> > +	if (!liveupdate_enabled())
+> > +		return;
+> > +
+> > +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
+> > +}
 
