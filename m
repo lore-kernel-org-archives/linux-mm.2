@@ -4,144 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6CC5FD45F9
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F26FD45F1
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:43:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9E416B0088; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
+	id 43EA26B0088; Wed, 25 Feb 2026 18:43:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D55526B0089; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
+	id 3C2316B0089; Wed, 25 Feb 2026 18:43:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C58856B008A; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
+	id 29A166B008A; Wed, 25 Feb 2026 18:43:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADCC76B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4300E13B9AC
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:41:13 +0000 (UTC)
-X-FDA: 84484602426.23.0A6D05F
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 441454000A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:41:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SVlfCKx2;
-	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772062871;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 13C726B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:43:59 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD42414074B
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:43:58 +0000 (UTC)
+X-FDA: 84484609356.14.0545778
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B37C6100004
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:43:56 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tb3W5fKV;
+	spf=pass (imf14.hostedemail.com: domain of airlied@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=airlied@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772063036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
-	b=iw/OPYav5Sdz1Vxax01cqRrK4B6yjyEj8scT9OqYWndD21iKA7YNo4w2IusI4YTtO2TA/R
-	nNvaPonGP1EBlZzBd4/2gkS1vlRstyPhl59zAWT4u8k5KBAcouv9dVEt7sAfRN5TfRWERL
-	Kfl6OwzZJIgpJq6Vx0t10dGXBwEd9Pk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772062871; a=rsa-sha256;
-	cv=none;
-	b=M24n5zOD0Z3rX4WufJpncGXUnrNAB9BJanTkhJSCU5eSIXGZBYwLbPYxiFn0Ut9HTEsQhu
-	fJIE1+pEgywrUoMS2rbXgX97LKxhWIoBi/BnjlIhoFOqUl3w0pRlXUhPYZhn4035tR2VPG
-	p9tnIDrpM3kn7gs9yGQASZN2hLyvZ/I=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SVlfCKx2;
-	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2add623cb27so1274475ad.3
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:41:10 -0800 (PST)
+	bh=uKa/vajBWOBwhcb6ZTw/N1BLKynDSWMpaPUdswW6428=;
+	b=B5nYT+IM2cjCtZJt6yIAUYseFyz2Ck1smhCglh21oWTtHKy8kJoLwf+Xxkx5OMaCM80a3q
+	p19+dXloDa8xCXsUWuKA0pNFOWlEH9QFqV/Ckqe1qrsFbf96VOi2WqVRQooUHz2nT9j73v
+	Z8Wnwx1/RcaIILu2q2FtRX+GZplYtSs=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tb3W5fKV;
+	spf=pass (imf14.hostedemail.com: domain of airlied@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=airlied@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772063036; a=rsa-sha256;
+	cv=pass;
+	b=MTB4lAzQqUd4m/ntqZMVXjw30O50DDVCE12PyDn/POitpbsW4JnP/+r3df0q+piyPQ4Rka
+	HCzNXieMyuzCyYStmgAlzF8xgub+RfMyv6ObRCEr6L7WAQL/vNmpprc2DH2mIbyFByaKv9
+	zgX3tIZGk2O2zGie8WaFJxBlpu3dyh0=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-896fd2c5337so3352656d6.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:43:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772063036; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QiSSQdV/W9Gulk+5CRrVfnbS91Ku8ZFHfcTeF7b5LBnD9H71tXAwk/UrhUxOwEitV0
+         6uF8BXzXNyk+5si8M2toNgaSi5ANZGooZJ1pCbKGRickSthx16AwB2dWPbwI9bp8hi8I
+         6gtwt4youKNHrVQACicK7FCthtlOYNPebQGBdNG28eR1ZGqFjJv5w4oyWIPjoivpAdEq
+         +yK1Ode07o7aEce9PXZ2hCwavi5lrZ0E9h6sRQymTdBGkjtPY4M6YBuplzvz4bplJyS2
+         6Yc2uR1HjHEYHB7KP5xZI+EacHHyuh+aYWsg9adPqz+1+FJhrfBYXR3D4+tgTONz6Ziv
+         tXAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uKa/vajBWOBwhcb6ZTw/N1BLKynDSWMpaPUdswW6428=;
+        fh=xczxFWd1iqMv+2UL+irHTPmm4r2l92YeAwcjeI8Bi6s=;
+        b=Rv3SvYno525dgQvGqZl0dLXeIDVnjv8eFKKf3Qj/rkyuU+ecineov37ZeiSXS0Rt4b
+         6lfeV+tpZwnKJCUpb0s4EsRqNEb2JHpYBszpd16mL+PN983XZftJKCendDGkYhvRFmgm
+         43imKpEeMMULVWwwz8OXveVzlww7GtJAjjEAXD7WGMki2+0/gtHnny2WvjKB2V6lm5Yx
+         LT9GMO9Oekv+wPy0+gZq2vD0E0iMUpGhmSODC0Xspz+TE5mrDrfcCsT+Tdr4C6oXleYK
+         3fPAa9QzLmYeDupaZDHI5zpNhm7IrwefdnYwzb9p+mO4fXv6HKaMVVnK7EkiQz+/Dca6
+         vJNA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772062870; x=1772667670; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
-        b=SVlfCKx2e04+mipyYLrwFKj66j0aXaLylZohDpTFBKrYdR+ENNok/3UfhP+h2DVjXi
-         7HKg2tEN2rc1gDt+/Z+e0XYAlJDmeYRFjLVIDYEuYHH2nM0J030xMhesvpJBEY+2b/z8
-         OfKb0ku+9nEkcI1WCar4RjeY93xRIcxe2OCXEtIb1sYkeBLLcFknGXcBOCifYbb9JcFw
-         E0objhXbeQPQAn49dpk6XZOCr4gjhixK+1/3ejmygUtHJKvdvoTB05ASwocKaBPbNS62
-         IzLeliNGWH3jmW3xd35EphApTQFKD486RKKsUTGSqHTMK21RXJ12Sm4SCNsAC9ONAX9R
-         uW9w==
+        d=gmail.com; s=20230601; t=1772063036; x=1772667836; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uKa/vajBWOBwhcb6ZTw/N1BLKynDSWMpaPUdswW6428=;
+        b=Tb3W5fKVWfU2oHSCjBSUPurcCZvgt1huwd8nPvAVeh9o4ufcmnevlYIEXMLX/7kR2B
+         Aw9a0mQPe+ouobfsjkG800mD7Tr47OftuTqNjeTl9NKjkBnQ2W3zFROC4zfhWN8UprBk
+         Yikg3WcYfdkkCe4CD3noNy9MsccUQ03rSIuHNgx1UOPaRmV68eu3s7NSRNeJtHcVy0sT
+         INK15XX672U0ZhnynPnHCmiCc0PbKi1fc2aAPbKuDBn1j5aPZRNcMKmjbLych2wBdliT
+         Tqisoww4slRsjjdZXCtqELBOdQlIk5h6wmXnkcp/WW2cAnMUBXhuekBGSfv6AzUrw+tm
+         NQyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772062870; x=1772667670;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
-        b=HSlOU2lJ5X+TfdSvr+tYLU7gKhJ3nFNFyU4zWdS+IdECg/B/Yqf0MtvoiWI+WPiUb0
-         Y0MDGOuTdZ0q8qLXypIzHy/oRrvP0uCwuK31kgc0rV+41YSfNX+8/v+L34wrybOljEtp
-         YLkCnxQau8NvaO9uY3og5/dN4NpBbQB1n5jJ80R3R4S739QyjhlyDUl2J3TMMCLxgRoG
-         YzXS+rp84fXLx1nJapy4dw2qOe9+pAue1d4/ahBuaNG1ngmv1FaN6Nz/Wehs6XK8dbt8
-         r7TluT3Dp/iDSRXExmHVfyfSho/eOe8LIxDxXhvQNCqmGfVRp/BgKDtXJ7CHUmqYphh6
-         0K2g==
-X-Forwarded-Encrypted: i=1; AJvYcCW1hhtEBd4N1CLzW1XiKKpFinE2yDG5d6eCQHgjx+NTRaziWFCBrGBYVjiRd1SWgd3uG5ALxUpL3w==@kvack.org
-X-Gm-Message-State: AOJu0YwAdAVBElHkQCDNcz+xxOLXxLX+hiVz3konbDYDwjPyLkYZx//e
-	JVhckDaaydQlHsv6QbSBcp3TxJXjmF3WGVQL9BoJffREuYJmlNUwAo7ZSHEmw3G2og==
-X-Gm-Gg: ATEYQzxPJ9zSh0bLynPUhIqQom8jiPj+rqZ4jjKCm0OBqIv5hFhI+sjnWJGWUstP2Zu
-	gHvfC9qGtI+c70Q92KXOPBBN7aytckLqJUosObZipoIzE3Qujwf0ZDC/nTabvFjyq7TcXsWbkRf
-	Cj/5JN2Sh1ewKRPO+QW1lNTpQokwa/9PCQEwZV2d5ipN4HSZlZN0OAN3WOMmwYIPNNjFamYOxTV
-	Ax7Oy/sARu+FSX4zPezQS/fAl5rzgrKDl2UNutz0gePhfmxr9lbg+nNIa69BpdwmOKLOk+7h61t
-	Ox+aWjU+napCJnIz+t+sKJJgDNWRSvSq5IvYvh7jB2w58AD/00/Ih7CzwWQ6BzA6doyYlUxyPkh
-	SlbqFabuFv4pFpo7/7Wu9YdtLjRobTBf3L1bAFrCA5FBf0+qIQn/ACFrLRO6FO4Nw24illZ7JJe
-	R/1u0MvBmiau/H6P/YjzfMFdVb4M2SCeeAJ4/1Em4K8rVuku9n9JIUv4zCPRTIvw==
-X-Received: by 2002:a17:902:cccf:b0:2a1:e19:ff0 with SMTP id d9443c01a7336-2ae035d235dmr1928845ad.39.1772062869584;
-        Wed, 25 Feb 2026 15:41:09 -0800 (PST)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b5813sm3778175ad.63.2026.02.25.15.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 15:41:08 -0800 (PST)
-Date: Wed, 25 Feb 2026 23:41:04 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 05/22] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <aZ-IkNFOLJUff1hC@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-6-dmatlack@google.com>
- <20260225154124.78e18fa4@shazbot.org>
+        d=1e100.net; s=20230601; t=1772063036; x=1772667836;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uKa/vajBWOBwhcb6ZTw/N1BLKynDSWMpaPUdswW6428=;
+        b=PQ9AhJYAvl15eJ17ewCK63TpnCS+5T6rd2RAcUJFCmhMGAxZECTqUCvwpVBbWhV8Bx
+         cuyJ0m5K6odv9+5juvKB0q/q1ixkWITTOwa0R5+kqYYI8vFRsQvcMro7x/GSXaWvQUwY
+         jsoxbGrPicNqEirCM+MUXovVWwgwCTTxKpA+6oTaNqXAFZReDj0vesOMonLsEHEyh+Ro
+         W73imd+9q2BWeCPvurnEZMeXvXS09Z+awucxLylrwnd27/uAEWZIohk4UI8Ffve1kRJb
+         Oio6bGdz2z1snx53o8CEQqOrvqlYJ7xPLdC00MpYWFNdCyhn3I9t2H7a8n0crlqM/e0e
+         3wMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXl1stGpqfYZpEedJndQ0gqNytZRBITyH9bQfBLU0M4TqD4uTvPMT6Nz3zhI6ecwi9Vy5o+lcYwJg==@kvack.org
+X-Gm-Message-State: AOJu0YwPOUtnueLnttyvodMWZt7i4Ka83FKCRaWEhL85gZuz+rQOOuy0
+	wk1fTZhZ29fjwYGsdqRiHdgWoOZ81mvesA+B3S4G3qyLzSLtpJ9IFF7vR32lKdumgEYdrIBWKVK
+	QJyywLmtU1odYyNIz5AdxjD93LmWOHxo=
+X-Gm-Gg: ATEYQzwkGe7+/w75lUTr9Mj1EaU095pf95UmoyWmK9GZjMmdeJhLVEH0ax//AbymbMd
+	+XyX5gEcRETn+OSoNFuSUflovrp/yFqW18S8vZL44hRduVb9iKYWjuj4bQxSbe4Bwf1VrEnuGtJ
+	+nOD8QxPQxGyXU0Gpv6joxf8w/0JxE1rETubyhBaqPxZrp0cu/WYapbO/yunVN0cBltPwU3evBg
+	uh+0MoMdRfL8WbofX2hu0yDb8iy6/8LAFyNNYiGqsGwmKp3kOydpX5KW657f4rjoQehVMeRZISj
+	498E01gwC8WgCJd07XQgVFvlTh6AhRVmXX7w9de4nRdQTN/vwGtYymZMy1SyEu3OrhU=
+X-Received: by 2002:a05:6214:dc5:b0:899:ac2b:6ddc with SMTP id
+ 6a1803df08f44-899c8065c8emr3236056d6.62.1772063035679; Wed, 25 Feb 2026
+ 15:43:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225154124.78e18fa4@shazbot.org>
-X-Rspamd-Queue-Id: 441454000A
-X-Stat-Signature: 6kn9b576gotdk1o5w1bq81339mqxwnw4
+References: <20260218-dmabuf-heap-cma-dmem-v2-0-b249886fb7b2@redhat.com>
+ <CABdmKX0LpKJ9tw48oQh7=3CF0UR5uFtgo0OMwQhHBB40LnijyQ@mail.gmail.com>
+ <a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.com> <20260224-solemn-spider-of-serendipity-0d8b94@houat>
+ <56400505-8a13-4cb2-864c-cb785e4b38d4@amd.com>
+In-Reply-To: <56400505-8a13-4cb2-864c-cb785e4b38d4@amd.com>
+From: Dave Airlie <airlied@gmail.com>
+Date: Thu, 26 Feb 2026 09:43:43 +1000
+X-Gm-Features: AaiRm50TeEvqc50OnpAEgaAX78C2joyWBAyYfH_ecZDl20ZLik30HZzrg2UNE4M
+Message-ID: <CAPM=9ty5mbMAVHPO4mRy1jKGnpChr7gK6uMtco2=j7MMJGpZdg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] dma-buf: heaps: cma: enable dmem cgroup accounting
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Maxime Ripard <mripard@redhat.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Eric Chanudet <echanude@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	Albert Esteve <aesteve@redhat.com>, linux-mm@kvack.org, 
+	Yosry Ahmed <yosryahmed@google.com>, Shakeel Butt <shakeel.butt@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B37C6100004
+X-Stat-Signature: nnx579qkb41w76tj9ecrpqssj3f8zje9
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772062871-992628
-X-HE-Meta: U2FsdGVkX1+t8ydo/3fGpVFubMFxpbPqrSaOZTTCGZwKE6uMFQlvnWP7t/FQ8qyWVerOro3pQ1AHjBPrJEMfnsRt0mSOVsWmJUYZuSMiu825Hg3HBaNW93UzHOZJlhoMDFB1ndd2Tto1QIDE9vCkDOVYg9HfdXKi7MQqGO3AY2iUIDi3GxWEwry1LIigpZGraI8+9bAcKk38+n+WictvDNnZ34SLRZ86hEzbm26K/1rNqFhHtVl4i2VoHeYCsrgxdyMp/h3TzuKR2RpUEUw4HQxLvGNeac3Q4X5TTr4kY9+xA7J1EL6Bgb1KGlMDRYwYOHaKpxCkOUn5SErnmn8o6hpQo6H+2E8iqKgalKnhCX0EWgb/M+0bU8okDd3MufYkj6sGym/iyovoJVumZojeHfMPYp0z6XMpCfPdk9wZ93bgsXCn/H5SFpPpOP2WXcozP97elaq4z60+hjJbBqFM4s3PnEjkj2BewAg9XRfhnJ6SwZLMeDgGrMjMEvWBjAL8St1B7dFB/wMogXNeBDiHQET4JMQytzK5N6LyB1tbXtuM6+3H6WXy1anegeg8SViTzO+MpmE6SGWUcsX1yjbPhjs9P7DSo3/Psh1CitOX2A/OqmiFko5j3FxBnJJDDpWnLZyHGU/p7mG3Z0IUtqO+R7zD0Oz6iRUvLLD4IBW6O7M/6kU8dpA24qVjhRVEUGVTSW0kwKY0e5zmwdJqNZ6NFlY8sGbxcx5TQOOP0y/MAs23EJXmuVjHaAf9ibRKUxc4EVTPmnXOrf+Nfeam+wzvgR/Pe4odJulVq+6Flb1YhT1kK7h/10eZyM3GfpF6R16Y1ezEqGQsqySdbLWQRJFtkrTyl/sYGLOULfXnGJ8A0v4TB5EFK7DbAdSPzll85DrjuQ1InLE3GkXA/IZ6Q2MeJ8tzMUJRyIBznVxxxfIyi0QDR8fqSjMWwcZ7+OXSOtftqpSKjqIC2wU92AamLhj
- 85+aWcab
- YH6scgxLFIu/gQz6u8j4QoAXxmVXxzRSPcHD+IOVzqHUaUF8VacuHu+9HmORU3b8ZgOxZ5a0ebvqgoPQoT/9aQakTms/pK1Yg8BlEpqcLnmtLcJvOlmcNKjqcpWIMIoSizOuaV0S9uxEjDzBDLs3vBQjBHjv0ir2ZoMGWr3yl+dSP0h+uJgm4EeUnqD4Chup2wd07VWcFEwfFq1UVPljlAYM+t7diqW/GpyhwpHDLei7/Z9iCd9dI5xkahDIExP4BaKAMfXgguR7FQebSpEdEu/JiUGBmmAig3iRp0tbPlpDYAud5Ch4nI7jxgIdIFnBTShLTO0EIDAZDRsuHgu9/aSxy4yvbNJs7HxiLlAESxzTfj37L0rETToN+2xC0N9P4M50f
+X-HE-Tag: 1772063036-762654
+X-HE-Meta: U2FsdGVkX1/mp1LG/O2i4Fs1cd9yiYfVrui1osJ5dalxxTdJIdj9Ou7QKXM2B6LEtAvtB1qRuSK5MdbwRUHx3n4fM7zBdOBlkgWak8ktf8/8DU+7bQ/yus/GOi+AiptbHdVeK8iSru3wKtiM64/jllUHK7TAtGTSZAvLvCpw5stf5dj25yvc6WcwzeUfCtVrpPa2EKW5s5jXMlnlyliwz21NyaMHsVuNfOdGz/iwTM41Owb+6wxtLYJQ2ZYrvnxck49sq5kLeclQgmKTHUNpTMJy8IiEDOJCHyYKnU2JCEHypuIbC4FvP97Z9JKg7bOR+axnM37Ge6hJlLFnMEDz7hrmBL+SDAqjpQnr2tjDFvdAM55OJfTSIf1/Ca77Ask1j3s5YlVlvCe1k7Iz9sA6xS8HN903t+djIgtlXFm+Ui38Dj7c9ycekoH3OPOnVfg9xGfkDMbbEBrrdlGUjNYco5Y4NztEzhT3Jcccmzfi9DmVphkVs3AcDJqfWUjjxYeM1NQhdXNEaI7SRs2avbaJe5QZDvAvvP3lMT/L7aj9vTGhColynMRXV9q8kiT99YUE72iflLOZW1Tvl+YpNnSISmq1AK0uJy/8dEx7nBlOtDDw61YToEcjoq3ELh4gZxfstKi13AErUdLhPuFHsWPFmSGtggX5GTwPW/4VPXxtDARvEKicceBZIzj8bH7DhVEGjlwsR8tOI8IGzYFkJf1zvU0fh1KNe+6BoakVMqxpRtNYRcxyuolMOGeCS3qF1C4XbYYP6zPJhHfJS9pjXZ2iAG2mn5ZwuWcBkyHS+b9SQ3b95jHTs+mhgDtvj3coDuJ8hZyW16X1GblBwXMOA/VOB5VAaWngeY50re2MHTz1bvYMo51zSs5hF39WrsHeZFOzQ6rXFUdHAR486gfnm8TBX946AxCiCBdtID42X3yPuW3IjqCuhvqeq6h2yapILZS4uyN/wVsfKxrfJ5/0KEZ
+ 7hEYAyrE
+ qZwx/c5dKvPbadN4GqpZXSGy++TykyDIlK4ZEc2tlaqGxdNQu6ecVBGYRoa0S78a9IZ6qAG+cEzVPVVaXpKyHGdZd3NE5i5oQ6bfJIEpDr2BxcZtMU33op//DDkrkFKhKEWThS0LF5VYWVKZfg6RZNuxUoTCjt5CqABv910xppT6UE8WSpgdV9vRIKnfID5AIlFpUS+OfojJTiUmI4HMC8S7xyMD3vto4uTUYaeQKvmNNmhntZN1DMs16IOpRsQlEUN+dvQ/3j+JilIdpRyMJ6jr8/Kb3nEDccqoLdLLncSTjDVuV3oefQlvqaGfvYoD/7gLEwl0AcGT2ouusJX8rDM2prHIV8GYphunDmvBIt+vocxWyGYf+9dRsvyLQi+FgdnMBP71RUEfIZdrLJLszejP3RAppoPgCXl6TU5xJO5insCs76ChDIIpbUJlzhR1bOer7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,102 +150,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-25 03:41 PM, Alex Williamson wrote:
-> On Thu, 29 Jan 2026 21:24:52 +0000 David Matlack <dmatlack@google.com> wrote:
+On Tue, 24 Feb 2026 at 20:32, Christian K=C3=B6nig <christian.koenig@amd.co=
+m> wrote:
+>
+> On 2/24/26 10:43, Maxime Ripard wrote:
+> > Hi Christian,
+> >
+> > On Fri, Feb 20, 2026 at 10:45:08AM +0100, Christian K=C3=B6nig wrote:
+> >> On 2/20/26 02:14, T.J. Mercier wrote:
+> >>> On Wed, Feb 18, 2026 at 9:15=E2=80=AFAM Eric Chanudet <echanude@redha=
+t.com> wrote:
+> >>>
+> >>> Hi Eric,
+> >>>
+> >>>> An earlier series[1] from Maxime introduced dmem to the cma allocato=
+r in
+> >>>> an attempt to use it generally for dma-buf. Restart from there and a=
+pply
+> >>>> the charge in the narrower context of the CMA dma-buf heap instead.
+> >>>>
+> >>>> In line with introducing cgroup to the system heap[2], this behavior=
+ is
+> >>>> enabled based on dma_heap.mem_accounting, disabled by default.
+> >>>>
+> >>>> dmem is chosen for CMA heaps as it allows limits to be set for each
+> >>>> region backing each heap. The charge is only put in the dma-buf heap=
+ for
+> >>>> now as it guaranties it can be accounted against a userspace process
+> >>>> that requested the allocation.
+> >>>
+> >>> But CMA memory is system memory, and regular (non-CMA) movable
+> >>> allocations can occur out of these CMA areas. So this splits system
+> >>> memory accounting between memcg (from [2]) and dmem. If I want to put
+> >>> a limit on system memory use I have to adjust multiple limits (memcg =
++
+> >>> dmems) and know how to divide the total between them all.
+> >>>
+> >>> How do you envision using this combination of different controllers?
+> >>
+> >> Yeah we have this problem pretty much everywhere.
+> >>
+> >> There are both use cases where you want to account device allocations
+> >> to memcg and when you don't want that.
+> >>
+> >> From what I know at the moment it would be best if the administrator
+> >> could say for each dmem if it should account additionally to memcg or
+> >> not.
+> >>
+> >> Using module parameters to enable/disable it globally is just a
+> >> workaround as far as I can see.
+> >
+> > That's a pretty good idea! It would indeed be a solution that could
+> > satisfy everyone (I assume?).
+>
+> I think so yeah.
+>
+> From what I have seen we have three different use cases:
+>
+> 1. local device memory (VRAM), GTT/CMA and memcg are completely separate =
+domains and you want to have completely separate values as limit for them.
+>
+> 2. local device memory (VRAM) is separate. GTT/CMA are accounted to memcg=
+, you can still have separate values as limit so that nobody over allocates=
+ CMA (for example).
+>
+> 3. All three are accounted to memcg because system memory is actually use=
+d as fallback if applications over allocate device local memory.
+>
+> It's debatable what should be the default, but we clearly need to handle =
+all three use cases. Potentially even on the same system.
 
-> >  static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
-> >  					     struct file *file)
-> >  {
-> > -	return false;
-> > +	struct vfio_device_file *df = to_vfio_device_file(file);
-> > +
-> > +	if (!df)
-> > +		return false;
-> > +
-> > +	/* Live Update support is limited to cdev files. */
-> > +	if (df->group)
-> > +		return false;
-> > +
-> > +	return df->device->ops == &vfio_pci_ops;
-> >  }
-> 
-> Why can't we use vfio_device_cdev_opened() here and avoid all the new
-> exposure in public headers?
 
-I thought I explored using vfio_device_cdev_opened() but I can't
-remember now why I went with df->group. Maybe there wasn't a good
-reason. I'll switch to vfio_device_cdev_opened() in the next version.
+Give me cases where 1 or 3 actually make sense in the real world.
 
-> >  
-> >  static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
-> >  {
-> > -	return -EOPNOTSUPP;
-> > +	struct vfio_device *device = vfio_device_from_file(args->file);
-> > +	struct vfio_pci_core_device_ser *ser;
-> > +	struct vfio_pci_core_device *vdev;
-> > +	struct pci_dev *pdev;
-> > +
-> > +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> > +	pdev = vdev->pdev;
-> > +
-> > +	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM))
-> > +		return -EINVAL;
-> > +
-> > +	if (vfio_pci_is_intel_display(pdev))
-> > +		return -EINVAL;
-> 
-> Some comments describing what's missing, if these are TODO or DONTCARE
-> would be useful.
+I can maybe take 1 if CMA is just old school CMA carved out preboot so
+it's not in the main memory pool, but in that case it's just equiv to
+device memory really
 
-Will do.
+If something is in the main memory pool, it should be accounted for
+using memcg. You cannot remove memory from the main memory pool
+without accounting for it. Now we can add gpu limits to memcg, that
+was going to me a next step in my series.
 
-> > +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
-> > +{
-> > +	struct vfio_device *device = vfio_device_from_file(args->file);
-> > +	struct vfio_pci_core_device *vdev;
-> > +	struct pci_dev *pdev;
-> > +	int ret;
-> > +
-> > +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> > +	pdev = vdev->pdev;
-> > +
-> > +	guard(mutex)(&device->dev_set->lock);
-> > +
-> > +	/*
-> > +	 * Userspace must disable interrupts on the device prior to freeze so
-> > +	 * that the device does not send any interrupts until new interrupt
-> > +	 * handlers have been established by the next kernel.
-> > +	 */
-> > +	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
-> > +		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	pci_dev_lock(pdev);
-> 
-> device_lock() is a dangerous source of deadlocks, for instance how can
-> we know the freeze isn't occurring with an outstanding driver unbind?
+Whether we have that as a percentage or a hard limit, we would just
+say GPU can consume 95% of the configured max for this cgroup.
 
-I can change this to a try-lock and return an error if taking the lock
-fails. The freeze() callbacks are triggered by liveupdate_reboot() which
-is called from kernel_kexec(). So returning an error to userspace is
-possible.
+3 to me just sounds like we haven't figured out fallback or
+suspend/resume accounting yet, which is true, but I'm not sure there
+is a reason for 3 to exist outside of the we don't know how to account
+for temporary storage of swapped out VRAM objects.
 
-My only concern is whether using try-lock would make kexec flaky, or if
-it would only fail if userspace is misbehavior (e.g. unbinding drivers
-while kexecing).
+Like it might be we need to have it so we have a limited transfer pool
+of system memory for VRAM objects to "live in" but we move them to
+swap as soon as possible once we get to the limit on that. Now what we
+do on systems where no swap is available, that gets into I've no idea
+space.
 
-> > -static struct vfio_device *vfio_device_from_file(struct file *file)
-> > -{
-> > -	struct vfio_device_file *df = file->private_data;
-> > -
-> > -	if (file->f_op != &vfio_device_fops)
-> > -		return NULL;
-> > -	return df->device;
-> > -}
-> > +EXPORT_SYMBOL_GPL(vfio_device_fops);
-> 
-> Seems we just need to export vfio_device_from_file().  Thanks,
+Static partitioning memcg up into a dmem and memcg isn't going to
+solve this, we should solve it inside memcg.
 
-Will do.
+Dave.
 
