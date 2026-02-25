@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F15ACEFD20D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA93FEFD20E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07E896B0093; Wed, 25 Feb 2026 03:53:40 -0500 (EST)
+	id 0A0AD6B00D3; Wed, 25 Feb 2026 03:54:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04EF66B00D1; Wed, 25 Feb 2026 03:53:39 -0500 (EST)
+	id 04AE06B00D6; Wed, 25 Feb 2026 03:54:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7EA6B00D2; Wed, 25 Feb 2026 03:53:39 -0500 (EST)
+	id EB9BE6B00DA; Wed, 25 Feb 2026 03:54:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DA6366B0093
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:53:39 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7027714048F
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:53:39 +0000 (UTC)
-X-FDA: 84482365758.29.0E82BA8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AFDF380007
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:53:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=icycVHHB;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772009617; a=rsa-sha256;
-	cv=none;
-	b=6G+0v7Sm2ogOLlwJ4A1/TSyrw9UydbGltostKDymE8BsamdwhEYDBSLz9KH6NTcbkzkJ6M
-	FHXIvNz4Pu39PZvUvcuFoQl6z4Truui55iJppr3H7vn4pXtG3EIfn4E6+m73k0Tv3fkqFV
-	EF9tkHYm3HRn/930jy0suR9bUrzhnqQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=icycVHHB;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5C836B00D3
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:54:35 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8E46F1A04F4
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:54:35 +0000 (UTC)
+X-FDA: 84482368110.01.83D3550
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1A378C000E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:54:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TLfq3px+;
+	spf=pass (imf22.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772009617;
+	s=arc-20220608; t=1772009674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UmPmEa7SSNc9Hc+xx6yeOemVQhqbPXhye0ICAtg1V8Q=;
-	b=P9F9qyI40ntwyQyDA6Wtuy/XT5yUb7OnvDKCtquQ5f+Zpzh9MTEKZmXIryyqNUj2KAAhpR
-	Wu0WE1rPWTfZPLjhkqhcu4bSgbt4aYnYdCt/aZO1lBF0Mepp6eMl2Wh02JcN9KHacR9n/b
-	nfN03JiD7Zy4dQoJyaLUXdKAY4iTV/s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8E864430F;
-	Wed, 25 Feb 2026 08:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C336C116D0;
-	Wed, 25 Feb 2026 08:53:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772009616;
-	bh=5e/H/4vB41n/5YYIxm5Oxq/j6NJu0Yg2mNzLELZkuFE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=icycVHHB8aMnMr/HwvRS/5ti/Jab+BYAMwEV3W4YW/JwDDKygA/4G1zIpiU/zdqh/
-	 pQ7Xip/pq3u+x7rjAl7i/S3E/3ZSNOQKXGEV9NgfuaJ+D3HUkIihdWhgIyDg6bN5ht
-	 HqhSg6WlJAKjdsWe6lAA2U4WsEtHWp5zVemkHEmvAmYp67O1/KSzNXEaYR/Ec3US2P
-	 uGPM0KVkVxvWDxFrlBZtdJlycNbIja8f+956maAm76K18ObYnocpCuqHuP+HbV/uDo
-	 lipm7jFRE11l4MMwin9dc0+BRQHtDiWZZg7QZrTArizGs2dwxP3l9HeJL8FJMGVlRN
-	 EhE6W74fQEhBg==
-Date: Wed, 25 Feb 2026 10:53:30 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: memfd_luo: always make all folios uptodate
-Message-ID: <aZ64ikDtz8tF_rFU@kernel.org>
-References: <20260223173931.2221759-1-pratyush@kernel.org>
- <20260223173931.2221759-2-pratyush@kernel.org>
+	bh=TMkVA0euUxxXAl11Dh1k7Y8bkQ5sdy1B0WAf9PHOXPQ=;
+	b=w8Nl//CCubs1gIqGdFZfZGfW/UT4UShY6+CERHQnYkd8E8tRTwPTNdkeBaET8zUS7smmRv
+	mW5gRO1eC9LAclxhrBFDQvFjmpc8GKGqg9711WuWIXVxSXidtCEcqq2tbERLxNaC/5nn+u
+	WPY68QyJ5Py+uNMngxuM3DvBnvrHKcA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772009674; a=rsa-sha256;
+	cv=none;
+	b=Ysnij8WrKQhU2OvJrHexXldBm8KWDfn8KIO5B3oNIFwO9AeBCRHCyQcqLWLXbuH1oy1ZeW
+	/zEswl956nNSUeLhnk2RrRYx8g2Js11jdoAokHDGoeHW/vWg0CRGkzNQsURQZXalSBq8hg
+	W4bIs02mwYVcLZfFvz2mcNkqs5LAjKw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TLfq3px+;
+	spf=pass (imf22.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 25 Feb 2026 16:54:21 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772009669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TMkVA0euUxxXAl11Dh1k7Y8bkQ5sdy1B0WAf9PHOXPQ=;
+	b=TLfq3px+rut234+ANmx0TBpPjRH7NItJNklA81S9x1iVOXcoDEHQf8xnBn/1Gi+eg6Jl89
+	kM9oBU/O2yCog8JtDaWqXTg9l6ymakdbdRqAZyHTdwvy7jTb7bMUhohR84+lR+HlSQUesA
+	5lShJQG7aiQBf8a9k/j6W4pRK3E/sqI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, surenb@google.com
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <brwmyipllianz4x4dzqqoz6r7up65dcebrl7vdvpqvk4vdfjbu@b33zoul2xgvi>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <aZ0wX_QuxNTxXHMj@hyeyoo>
+ <aZ1qRhIGDAR7d56r@fedora>
+ <qiqptuqsiaufeasf2xukfzoumiyoau3zfpokosn2amgc6zskc6@vl6ie2h2zj4m>
+ <aZ6cjpU36_EmXslf@hyeyoo>
+ <zn7q75k7u2mspvmspwiao6245kmaahti3kwagablp3advcx5ga@5d36ctyi2a35>
+ <aZ6ijXgDKj9D-kDm@hyeyoo>
+ <jcgdv46sngpfggq26x2f7oodqxlwqtiilcgjzdcwvbt3ovelpj@mwllshvzoeoz>
+ <aZ61qwplTCCapq3L@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260223173931.2221759-2-pratyush@kernel.org>
-X-Rspamd-Queue-Id: AFDF380007
-X-Stat-Signature: 7wsxh37189xa1zfhq13hb994xnd3spt6
+In-Reply-To: <aZ61qwplTCCapq3L@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 1A378C000E
+X-Stat-Signature: y6odd8zchuqhguc4ynim7fqqne4ensxh
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772009617-366971
-X-HE-Meta: U2FsdGVkX18lTq6tUpzPTqG6x9t6A/IDoC68ZMeUj0GMfevuXk3Ye5CWZiej6zRF5K3ODR38yjtcv9BICz7EblVB7ntnDPMxzwMryDCV4LBqZWIXTGxEL5S9A14JBARmXhcRCv6BF0FfBQu5YkycDFXxbUk17CO5YMSiTePlB0iRpIcindMbEZsylt+JqCnCNDRavcnT10bY8ndW3JjFQH1vbKbfnGw+hghRA2JGA6L5/+qgGI26BdiqGwiHSQeKrSTqvOe+phGjdI+5LMXQJpNe1twoL/KUR7jwSCKTGJc8SgMVaQXepjS8Hj2dlpNhb8y0Ock7TvU3E/PRs2mYLR/7OmeCPXTJdu2hQ0ZuGk6WDZaB+Dbf7INlhaPA6dKggc/OVvt1AqoZhdKHNUzf4iu2I7KC0UmDlIw4pk4wKJdvdVd9D/C+V+IY8Bx/BMk30rMES6sa9JemuwJUtl/eIBkvNG5ZeQkZydDXAWTnz6DjMmTXhrLG+CZVp4rNQaTSwgqDOPdDAi2j6BDE7cWuocwOBKLKITlTNclr6GLDfvmATxRRTZuGXaFPTBJ1ehDLuXGBuV2eWZDY55pYp78Uoji4rH+Sjkn3AS+qI/N4K3BJZe8qLRhTjvRzmPATIjqkes5gWlTuspxnZnwOs06Juc5jPPa34kfME2es+T/W+nu81o9YqmzclbZkGI5kPWRNivp9PQmUMxLXuTc4zKZpQ5NKxzdroFW/iTXZ1yW208QzZe7S9JB7rPJ9iaX/umbJEHZBUCe8UGv7WJFrtjtOLJI/yuq8Trm6Y/5cIqgiNbtunxHNXIDC3OX8pbarP87TkzJUgWZowbFTZi02YhIN/JABM2sYlDdSSObFuctIuO4EX1kz/sji6TocsVSlnHxXek6vFH7bkXOi+dwx6hWIbnRY5mvSY3jHOqEidGwNN7dGbwQ/vQGQj8PZdS5MG3PxbUEUuWVniOgIClJnJeM
- zLqKcIxT
- dfWZa8mHphb2pc/VZM9XKYLK/Q3cGjogN76FKEMVJ5FXp//Yj5bgNTCnG9ty08nsTixllF6Pwd5F0DmLPNi04u5tCFLs0nMI8+MXR4Ct4Cyih1vbLO1wWZqanATMG8pLqvRQMF6QzsHtPCO0q3nOhrTHgEZoZJTHMWdzpubEuRf/lUDnztqNs+6I/mHT2imEaKr/Yto7bLciKbyZGOP0QQaqsDLFN3K77U12dLJsusfwj3V4Zz9BzSmGjHOSeF8thQNdt7NWFiQxtcfzdgX1mGuKIvPCbZl5fqe0IjEabeJYV2dcfJ+m6AJq1ZKY8qUO8OUUr
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772009671-727938
+X-HE-Meta: U2FsdGVkX19kIbrUpR6n7+GfuQv2XHMwH7SgXKorBoUHPhhNj7hz3/CUIpSvkAldN4pX/NnmYrsSDCKY0WjiBy4BeReKUZnQeW/+e0xjCkgLEB01d0RnmbQGAEMRPmEA/9sBYBwrkQvJcZF/G22FLOvyhprQRMlVz80Nl9O8RhZ1PJyrfoj4GwXpJt9xfnVlHLYeStlpu4THRkWUqyBr/mjU2Pm/nhncaAQEAqb3eLAuhOKQyX4Nig8qnCPcNhp3WOeX/rtLqmZkfrxvyr7WFmgUyohHVhPONZWIc6ClDQrIAWrvs6REAmJ++YoUXSzY0XsedIwf9+viDaVEIW4Ntr+lr9dX6PZ3q4ilwP9navFGY/ZYUZ4PpYk8xkERJfrgyJWlB91by3+/fZHmVpj+cTchkQkpuUJbBF+dDcWFhJx2V7NdEyYUMrCIJZoNoQ2Lk9nQVK7N1lOxrfpbDtI3KfTjzs9YsWkdoApOwkzfFVgDYbcjNfLkduP7pxjPh82hDI0U8xkKP/BnbAArdYb9B/d55eC1dYGiY5QvIbLGtdWmIRpCwK4suOAIOPLTxcWu7HEbm492UVDQFdQAKpb38GGcQ63kJaWjtjmTT8MCoEsNe51zSiXD7wCuTFS+HQZ3491nHYYdIE9/wYRjCjxuuuNpTAL+fgMN3Q8xMiNoHiDq0P9td3tImlrNyQjVeVQ/juOzR80Ki6B01/QnQeS2C7dP2jqTpJqyPwaG6ZUUphizBTWFFT/HIXlAQRCQFczzMGfMK6o6ZqnuymLMHE8E2jgOhy9cZ4sZwEkg6ulWoYDPGdixglQy0LodExAmqDwyi72Q5LbeaAQZnXuOakp2mqfUZX5kkkta5nIcUsLO4HyRUdDZ+G535GYjxZDC45zpWBuol1gfyC2zicqkM6bKNSp1hx6ab8KYQ7YDBpGJyG8bgMQK7HFwzRoM9jwYU+0ed8B4o8hswM8COhPYJov
+ UFPO1+4F
+ gHRaTtnqVvuur0AFwHrznxoJovMvkW8qQjouT8sSShjaJi8C/ecO0W+DoLv2xUtjzaDsKFYd8/dvSSnoY90dkYUPdhu1/nzkic924iJF2VF5mEgTd+CFxzLkMpzvU7C46PFkq5IfIoDWSGsWndT5paMzZ8Y2RY1EEBB57GSYyBzDTJkM3xNK/qfuktx0Q8OnVbv0gLzMpMq/IEmY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,93 +96,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 23, 2026 at 06:39:28PM +0100, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Wed, Feb 25, 2026 at 05:41:15PM +0900, Harry Yoo wrote:
+> On Wed, Feb 25, 2026 at 04:19:49PM +0800, Hao Li wrote:
+> > On Wed, Feb 25, 2026 at 04:19:41PM +0900, Harry Yoo wrote:
+> > > On Wed, Feb 25, 2026 at 03:06:46PM +0800, Hao Li wrote:
+> > > > On Wed, Feb 25, 2026 at 03:54:06PM +0900, Harry Yoo wrote:
+> > > > > On Wed, Feb 25, 2026 at 01:32:36PM +0800, Hao Li wrote:
+> > > > > > On Tue, Feb 24, 2026 at 05:07:18PM +0800, Ming Lei wrote:
+> > > > > > > Hi Harry,
+> > > > > > > 
+> > > > > > > On Tue, Feb 24, 2026 at 02:00:15PM +0900, Harry Yoo wrote:
+> > > > > > > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
+> > > > > > > > > Hello Vlastimil and MM guys,
+> > > > > > > > 
+> > > > > > > > Hi Ming, thanks for the report!
+> > > > > > > > 
+> > > > > > > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
+> > > > > > > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
+> > > > > > > > > performance regression for workloads with persistent cross-CPU
+> > > > > > > > > alloc/free patterns. ublk null target benchmark IOPS drops
+> > > > > > > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
+> > > > > > > > > drop).
+> > > > > > > > > 
+> > > > > > > > > Bisecting within the sheaves series is blocked by a kernel panic at
+> > > > > > > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
+> > > > > > > > > paths"), so the exact first bad commit could not be identified.
+> > > > > > > > 
+> > > > > > > > Ouch. Why did it crash?
+> > > > > > > 
+> > > > > > > [   16.162422] Oops: general protection fault, probably for non-canonical address 0xdead000000000110: 0000 [#1] SMP NOPTI
+> > > > > > > [   16.162426] CPU: 44 UID: 0 PID: 908 Comm: (udev-worker) Not tainted 6.19.0-rc5_master+ #116 PREEMPT(lazy) 
+> > > > > > > [   16.162429] Hardware name: Giga Computing MZ73-LM2-000/MZ73-LM2-000, BIOS R19_F40 05/12/2025
+> > > > > > > [   16.162430] RIP: 0010:__put_partials+0x2f/0x140
+> > > > > > > [   16.162437] Code: 41 57 41 56 49 89 f6 41 55 49 89 fd 31 ff 41 54 45 31 e4 55 53 48 83 ec 18 48 c7 44 24 10 00 00 00 00 eb 03 48 89 df 4c9
+> > > > > > > [   16.162438] RSP: 0018:ff5117c0ca2dfa60 EFLAGS: 00010086
+> > > > > > > [   16.162441] RAX: 0000000000000001 RBX: ff1b266981200d80 RCX: 0000000000000246
+> > > > > > > [   16.162442] RDX: ff1b266981200d90 RSI: ff1b266981200d90 RDI: ff1b266981200d80
+> > > > > > > [   16.162442] RBP: dead000000000100 R08: 0000000000000000 R09: ffffffffa761bf5e
+> > > > > > > [   16.162443] R10: ffb6d4b7841d5400 R11: ff1b2669800575c0 R12: 0000000000000000
+> > > > > > > [   16.162444] R13: ff1b2669800575c0 R14: dead000000000100 R15: ffb6d4b7846be410
+> > > > > > > [   16.162445] FS:  00007f5fdccc23c0(0000) GS:ff1b267902427000(0000) knlGS:0000000000000000
+> > > > > > > [   16.162446] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > > > > [   16.162446] CR2: 0000559824c6c058 CR3: 000000011fb49001 CR4: 0000000000f71ef0
+> > > > > > > [   16.162447] PKRU: 55555554
+> > > > > > > [   16.162448] Call Trace:
+> > > > > > > [   16.162450]  <TASK>
+> > > > > > > [   16.162452]  kmem_cache_free+0x410/0x490
+> > > > > > > [   16.162454]  do_readlinkat+0x14e/0x180
+> > > > > > > [   16.162459]  __x64_sys_readlinkat+0x1c/0x30
+> > > > > > > [   16.162461]  do_syscall_64+0x7e/0x6b0
+> > > > > > > [   16.162465]  ? post_alloc_hook+0xb9/0x140
+> > > > > > > [   16.162468]  ? get_page_from_freelist+0x478/0x720
+> > > > > > > [   16.162470]  ? path_openat+0xb3/0x2a0
+> > > > > > > [   16.162472]  ? __alloc_frozen_pages_noprof+0x192/0x350
+> > > > > > > [   16.162474]  ? count_memcg_events+0xd6/0x210
+> > > > > > > [   16.162476]  ? memcg1_commit_charge+0x7a/0xa0
+> > > > > > > [   16.162479]  ? mod_memcg_lruvec_state+0xe7/0x2d0
+> > > > > > > [   16.162481]  ? charge_memcg+0x48/0x80
+> > > > > > > [   16.162482]  ? lruvec_stat_mod_folio+0x85/0xd0
+> > > > > > > [   16.162484]  ? __folio_mod_stat+0x2d/0x90
+> > > > > > > [   16.162487]  ? set_ptes.isra.0+0x36/0x80
+> > > > > > > [   16.162490]  ? do_anonymous_page+0x100/0x4a0
+> > > > > > > [   16.162492]  ? __handle_mm_fault+0x45d/0x6f0
+> > > > > > > [   16.162493]  ? count_memcg_events+0xd6/0x210
+> > > > > > > [   16.162494]  ? handle_mm_fault+0x212/0x340
+> > > > > > > [   16.162495]  ? do_user_addr_fault+0x2b4/0x7b0
+> > > > > > > [   16.162500]  ? irqentry_exit+0x6d/0x540
+> > > > > > > [   16.162502]  ? exc_page_fault+0x7e/0x1a0
+> > > > > > > [   16.162503]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > > > > 
+> > > > > > For this problem, I have a hypothesis which is inspired by a comment in the
+> > > > > > patch "slab: remove cpu (partial) slabs usage from allocation paths":
+> > > > > > 
+> > > > > > /*
+> > > > > >  * get a single object from the slab. This might race against __slab_free(),
+> > > > > >  * which however has to take the list_lock if it's about to make the slab fully
+> > > > > >  * free.
+> > > > > >  */
+> > > > > > 
+> > > > > > My understanding is that this comment is pointing out a possible race between
+> > > > > > __slab_free() and get_from_partial_node(). Since __slab_free() takes
+> > > > > > n->list_lock when it is about to make the slab fully free, and
+> > > > > > get_from_partial_node() also takes the same lock, the two paths should be
+> > > > > > mutually excluded by the lock and thus safe.
+> > > > > > 
+> > > > > > However, I'm wondering if there could be another race window. Suppose CPU0's
+> > > > > > get_from_partial_node() has already finished __slab_update_freelist(), but has
+> > > > > > not yet reached remove_partial(). In that gap, another CPU1 could free an object
+> > > > > > to the same slab via __slab_free(). CPU1 would observe was_full == 1 (due to the
+> > > > > > previous get_from_partial_node()->__slab_update_freelist() on CPU0), and then
+> > > > > >
+> > > > > > __slab_free() will call put_cpu_partial(s, slab, 1) without holding
+> > > > > > n->list_lock, trying to add this slab to the CPU partial list.
+> > > > > 
+> > > > > If CPU1 observes was_full == 1, it should spin on n->list_lock and wait
+> > > > > for CPU0 to release the lock. And CPU0 will remove the slab from the
+> > > > > partial list before releasing the lock. Or am I missing something?
+> > > > > 
+> > > > > > In that case,
+> > > > > > both paths would operate on the same union field in struct slab, which might
+> > > > > > lead to list corruption.
+> > > > > 
+> > > > > Not sure how the scenario you describe could happen:
+> > > > > 
+> > > > > CPU 0					CPU1
+> > > > > - get_from_partial_node()		
+> > > > >   -> spin_lock(&n->list_lock)		
+> > > > > 					- __slab_free()
+> > > > >   -> __slab_update_freelist(),
+> > > > >      slab becomes full
+> > > > > 					-> was_full == 1
+> > > > > 					-> spin_lock(&n->list_lock)
+> > > > 
+> > > > In __slab_free, if was_full == 1, then the condition
+> > > > !(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) becomes false, so it won't
+> > > > enter the "if" block and therefore n->list_lock is not acquired.
+> > > > Does that sound right.
+> > > 
+> > > Nah, you're right. Just slipped my mind. No need to acquire the lock
+> > > if it was full, because that means it's not on the partial list.
+> > 
+> > Exactly.
+> > 
+> > > 
+> > > Hmm... but the logic has been there for very long time.
+> > 
+> > Yes.
+> > 
+> > > 
+> > > Looks like we broke a premise for the percpu slab caching layer
+> > > to work correctly, while transitioning to sheaves.
+> > > 
+> > > I think the new behavior introduced during the sheaves transition is that
+> > > SLUB can now allocate objects from slabs without freezing it. Allocating
+> > > objects from slab without freezing it seems to confuse the free path...
+> > 
+> > I feel it's not a big issue.
+> > 
+> > I think the root cause of this issue is as follows:
+> > 
+> > Before this commit, get_partial_node would first remove the slab from the node
+> > list and then return the slab to the upper layer for freezing and object
+> > allocation. Therefore, when __slab_free encounters a slab marked as was_full,
+> > that slab would no longer be on the node list, avoiding race conditions with
+> > list operations.
 > 
-> When a folio is added to a shmem file via fallocate, it is not zeroed on
-> allocation. This is done as a performance optimization since it is
-> possible the folio will never end up being used at all. When the folio
-> is used, shmem checks for the uptodate flag, and if absent, zeroes the
-> folio (and sets the flag) before returning to user.
-> 
-> With LUO, the flags of each folio are saved at preserve time. It is
-> possible to have a memfd with some folios fallocated but not uptodate.
-> For those, the uptodate flag doesn't get saved. The folios might later
-> end up being used and become uptodate. They would get passed to the next
-> kernel via KHO correctly since they did get preserved. But they won't
-> have the MEMFD_LUO_FOLIO_UPTODATE flag.
-> 
-> This means that when the memfd is retrieved, the folios will be added to
-> the shmem file without the uptodate flag. They will be zeroed before
-> first use, losing the data in those folios.
-> 
-> Since we take a big performance hit in allocating, zeroing, and pinning
-> all folios at prepare time anyway, take some more and zero all
-> non-uptodate ones too.
-> 
-> Later when there is a stronger need to make prepare faster, this can be
-> optimized.
-> 
-> To avoid racing with another uptodate operation, take the folio lock.
-> 
-> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> Right, that's an important point. Just realized that while elaborating
+> the analysis :), there was a race condition between you and I!
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Haha, true race condition - we both sent emails within a minute :D
 
-> ---
->  mm/memfd_luo.c | 25 +++++++++++++++++++++++--
->  1 file changed, 23 insertions(+), 2 deletions(-)
 > 
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index a34fccc23b6a..ccbf1337f650 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -152,10 +152,31 @@ static int memfd_luo_preserve_folios(struct file *file,
->  		if (err)
->  			goto err_unpreserve;
->  
-> +		folio_lock(folio);
-> +
->  		if (folio_test_dirty(folio))
->  			flags |= MEMFD_LUO_FOLIO_DIRTY;
-> -		if (folio_test_uptodate(folio))
-> -			flags |= MEMFD_LUO_FOLIO_UPTODATE;
-> +
-> +		/*
-> +		 * If the folio is not uptodate, it was fallocated but never
-> +		 * used. Saving this flag at prepare() doesn't work since it
-> +		 * might change later when someone uses the folio.
-> +		 *
-> +		 * Since we have taken the performance penalty of allocating,
-> +		 * zeroing, and pinning all the folios in the holes, take a bit
-> +		 * more and zero all non-uptodate folios too.
-> +		 *
-> +		 * NOTE: For someone looking to improve preserve performance,
-> +		 * this is a good place to look.
-
-I'd add a larger comment above memfd_luo_preserve_folios() that says that
-it allocates, pins etc and fold the last two paragraphs of this comment
-there.
-
-> +		 */
-> +		if (!folio_test_uptodate(folio)) {
-> +			folio_zero_range(folio, 0, folio_size(folio));
-> +			flush_dcache_folio(folio);
-> +			folio_mark_uptodate(folio);
-> +		}
-> +		flags |= MEMFD_LUO_FOLIO_UPTODATE;
-> +
-> +		folio_unlock(folio);
->  
->  		pfolio->pfn = folio_pfn(folio);
->  		pfolio->flags = flags;
-> -- 
-> 2.53.0.371.g1d285c8824-goog
+> > However, after this commit, get_from_partial_node first allocates an object
+> > from the slab and then removes the slab from the node list.
 > 
+> Right.
+> 
+> > During the
+> > interval between these two steps, __slab_free might encounter a slab marked as
+> > was_full and then it want to add the slab to the CPU partial list,
+> 
+> Right.
+> 
+> > while at the same time, another process is trying to remove the same slab
+> > from the node list, leading to a race condition.
+> 
+> Exactly.
+> 
+> > > But not sure if we could "fix" that because the percpu partial slab
+> > > caching layer is gone anyway :)
+> > 
+> > Yes, this bug has already disappeared with subsequent patches...
+> > 
+> > By the way, to allow Ming Lei to continue the bisect process, maybe we should
+> > come up with a temporary workaround, such as:
+> >
+> > } else if (IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) {
+> > 	spin_lock_irqsave(&n->list_lock, flags);
+> > 	/*
+> > 	 * Let this empty critical section push back put_cpu_partial, ensuring
+> > 	 * its execution happens after the critical section of
+> > 	 * get_from_partial_node running in parallel.
+> > 	 */
+> > 	spin_unlock_irqrestore(&n->list_lock, flags);
+> > 	/*
+> > 	 * If we started with a full slab then put it onto the
+> > 	 * per cpu partial list.
+> > 	 */
+> > 	put_cpu_partial(s, slab, 1);
+> > 	stat(s, CPU_PARTIAL_FREE);
+> > }
+> 
+> Hmm but if that affects the performance (by always acquiring
+> n->list_lock), the result is probably not valid anyway.
+> 
+> I'd rather bet that Vlastimil's analysis is correct :)
+
+Indeed.
+Let's look forward to the test results for Vlastimil's patch!
 
 -- 
-Sincerely yours,
-Mike.
+Thanks,
+Hao
 
