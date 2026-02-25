@@ -4,138 +4,223 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EE7FD45F6
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60BFFD45F1
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 214396B0088; Wed, 25 Feb 2026 17:17:17 -0500 (EST)
+	id 3FAEA6B0088; Wed, 25 Feb 2026 17:22:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C1BD6B0089; Wed, 25 Feb 2026 17:17:17 -0500 (EST)
+	id 3A7CB6B0089; Wed, 25 Feb 2026 17:22:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A3DF6B008A; Wed, 25 Feb 2026 17:17:17 -0500 (EST)
+	id 2282D6B008A; Wed, 25 Feb 2026 17:22:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7B296B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:17:16 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9857EC281C
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:17:16 +0000 (UTC)
-X-FDA: 84484390872.24.156DDC4
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B49381C0008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:17:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tkl7ILRQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772057834; a=rsa-sha256;
-	cv=none;
-	b=G1oljFPmucvab1ebAZ5tkUaHqmUkt7PFBZ6wqkRWYxrRElv9LbB9jkEatDAseHn62/Vt51
-	rVAk80MuNAuyODsqXYegjjV2VkbFa3iWDr9ZY5WS4+Gcv+k4CqFHy5ug1gXQdLIi6IyZyz
-	TCFE3YCXhYUQVEVgaMnWxFbR3sUpjQI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tkl7ILRQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772057834;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 072C76B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:22:12 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A63CA16079E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:22:11 +0000 (UTC)
+X-FDA: 84484403262.02.BB6B95C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 59A1840008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:22:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=W0J5NHjz;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772058128; a=rsa-sha256;
+	cv=fail;
+	b=m5iEzpKc2vqaA1R43k9LnPQ9AtTBzxTKwwMWYxomxNvdR1uodeBIkWvluA1aQd3ykNmSKU
+	xcYqwoZM6YwgG0b1d0OZ+XMpDwFiP6qzJy95Rc18/ACI/4nEj3XrVWUgwJITOwsW/A7fDc
+	e9TiaT2rrDJlUMgJ09LvhICw8SX6/yI=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=W0J5NHjz;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772058128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hHyAmbqk7HhQ2rW+koNARPwcM5Pex8BM81YALg0B5qs=;
-	b=1QHRLd8r7kerK4PnDcpSimG5AkPpT4TmapVZJlJ/RoB9g4i87oM/ui1xvpC3OtwKtyuHuV
-	XOxeU39+6ubI/Bql4lkQ+T8ZKciW9HQIIb6ucwWpIo7KotCYB0+S6PC4NahUALVYfS1jXM
-	HsSzxL7fgLYKI4YpYZH4CfwKKyb5t0Q=
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2bdcb30fe8aso317835eec.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:17:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772057833; x=1772662633; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hHyAmbqk7HhQ2rW+koNARPwcM5Pex8BM81YALg0B5qs=;
-        b=Tkl7ILRQSvawcohHTBS7KJbcEUV+aYKq+tUY+de3G1a7L+Doj1odd4t9D2J0SK/Ag0
-         CJJNw7/fOogk4w0dbXwZ5P9rQ4rVcXDK77IEUKVl8+eJu09cOO9XIzLf10lgV79O/W+/
-         eOXfxt7PhI85yXv/nVupGYl4KCy3maVC3yM8nuLuo3mJzXVUjlSEgM+d1UvHx+FCtK8J
-         OkrI/aIqxDQwvHjBhJ2rSefhYjqnKSjhuSmQec8ExffZuS8rTrnkhJXw99FVaNMEZb/c
-         kdFbrLrXbwEcZ1fJ85zrgKquyfkpfFhRNtVpNAwjrSfu4UQP2zipMYreDw0+dsiKwiqw
-         ncXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772057833; x=1772662633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hHyAmbqk7HhQ2rW+koNARPwcM5Pex8BM81YALg0B5qs=;
-        b=LOY+MzVp46ak27+cvT5hGIsCnJ5HJFNu/qblZoIxnIUGPQtJXPfz46FsWdDEQJOkB8
-         vysCdbw6TFO2ea5wA3bGUJjwou2ERXPqttVdalMo0eipJdKTQtPjXnsBLKsqPDVE1rYQ
-         g9yzAYNAONH0T+O3U8Rne9LgxMUc5UTxakHlsvtj/lurFf/s1NArOF+EMhlcOoKC4Q+U
-         8mSxPLsQzgdDfukBK2jpV2VOCC5cuAif68HRHhhfuMwWfcyksvHpXlETww8Dzb45LH5g
-         iHxPk131VcrVAXd1/asRlSxYWSX7JQ6Ckv/21Xjd1OwSOdNKcjmS5Kp8hP6GFyVHZjq7
-         2yGA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0PYtiC87QZQWNyF+hc6HHroYDEC8ZFuLs/u2Wr5mtRlq0iPye7jl0pW6kJyAX7OnRKWscLRoAbw==@kvack.org
-X-Gm-Message-State: AOJu0Yy3VgDHKMIuT905xzVYh7cLNDM3bInJFy92aXcJhIR1Ljd5ySZt
-	IWdJ+KPN6QCojCk+QkCjTBd6s3DldDf2mJewOl0r9fZnPIxWv/4+TBLgnf/5Ew==
-X-Gm-Gg: ATEYQzz6vI4pbZL86lNPo10v6BllNmTjF2xDM14R5dABgcmkUcqyBxOhD9qim0CdQcr
-	pUNmiYpYI4yd5yifF9+xILUdQQ1FPXGsm9mhKzCJCnNKvqVzoXps1x+GC5GN6+xhk5LoYc++aT9
-	DOOOcujg0lU7IHdrl+p7ZyWZS7olsfr43/Bi2IDPR+GJDhlo4mDp2Em48mPEq4s0JTwGQ5QqUXn
-	aPhwO4x3txz4F1ZZRgj3VxN1ZmcBuIoM6QHS2WwWsG97Lj19ZVz9yYPhOmqtB/sZwrckdJDWf5U
-	K/ldJORapH3AOXULyybdBlAkYdwV4llmE0O0bdDThg0DQz+ioE0pSHlP2Cq8MIr3JRJSk7/N+SR
-	+YiCY207oNdxJYAmoX6TA2pclhddReYwdmyrm3TczaPTjNqLF+0nM1d6AN/RIf9fEqe3D0hqyWE
-	Yv7mh9YT12fwfKfjFd2R3I
-X-Received: by 2002:a05:6808:168b:b0:463:cf6b:982a with SMTP id 5614622812f47-4644622ce34mr8146359b6e.22.1772051111331;
-        Wed, 25 Feb 2026 12:25:11 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:3::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4157cfa6624sm16078679fac.8.2026.02.25.12.25.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 12:25:10 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: akpm@linux-foundation.org,
-	dan.j.williams@intel.com,
-	david@kernel.org,
-	fvdl@google.com,
-	hannes@cmpxchg.org,
-	jgg@nvidia.com,
-	jiaqiyan@google.com,
-	jthoughton@google.com,
-	kalyazin@amazon.com,
-	mhocko@kernel.org,
-	michael.roth@amd.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	pasha.tatashin@soleen.com,
-	pbonzini@redhat.com,
-	peterx@redhat.com,
-	pratyush@kernel.org,
-	rick.p.edgecombe@intel.com,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	seanjc@google.com,
-	shakeel.butt@linux.dev,
-	shivankg@amd.com,
-	vannapurve@google.com,
-	yan.y.zhao@intel.com,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more generic use
-Date: Wed, 25 Feb 2026 12:24:37 -0800
-Message-ID: <20260225202437.4077364-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1770854662.git.ackerleytng@google.com>
-References: 
-MIME-Version: 1.0
+	bh=xVPCAhZhb7CFIZ/7AaBjFvcIMSz2MfWgVWKZRLhxovo=;
+	b=3JCtlVqyEfv8dkqgt+2pnhRNNhF4Uz7rUWoUUxyybcMmtIfn+XOCHE6JBMYWXSeWURUXeG
+	Or7RvIaT0BHyC6dPqmOzQyPIy1FVjrOkByOtipF0Z1TfXZiwWq3ZBvpe68RGXQdIp5sJ0V
+	gTRThGcH/ToRD+EYDGEAwljw7y7oMZ0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772058126; x=1803594126;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=xl1OfFp+Kky30f+IdLdbu8gRliaRpcYstiaOSMqdWPI=;
+  b=W0J5NHjz6yQcP0lWEd1oIDj0lzzjBzKHhAhxLQbT38x1TilkuoZyicki
+   9AlR9krb1OTAbjWqDDtag8rwLziIVwRpAVjvGLjxqdEQq43CoPCMHhoCu
+   UM0xKpz7RMX4RIBV9VZJbQ5vMepuz6ThWGxjrm9kEazRNU5cEHOSumGy5
+   k3wjhJsh1djAXp04e+Hpkz1nMVTfUteCrJrc8+fb3X/4p4RTQA0zfBcZQ
+   6wGjtT6j+jh0kzh1UnAwWLPltfClAiXKUKKBl6QxpSfWhw2pX+0gIddBD
+   2uGfREPxbsz+lR9lGCw0G0l63NIgN3aIUcXbP1wM1wTqIc9oeEMr7F7x1
+   w==;
+X-CSE-ConnectionGUID: agRuFJOhTZSWdx9mQuA+Tg==
+X-CSE-MsgGUID: pGkjVpwfTrWoe209aRvKrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="84568186"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
+   d="scan'208";a="84568186"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 14:22:04 -0800
+X-CSE-ConnectionGUID: +pVxMKqnRoybzYTL37CMtA==
+X-CSE-MsgGUID: Ye09/GDESNqwNI/F5VZh1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
+   d="scan'208";a="214629860"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 14:22:04 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 25 Feb 2026 14:22:04 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 25 Feb 2026 14:22:04 -0800
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.55) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 25 Feb 2026 14:22:04 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WSSdy2eoL3ugXlpMvvlqnoflvNJkWvrni+GQOIdX4XSIGaJ5CI5kQoSB9T279uG+0NJeZn5/GOZAYqRAzGx8w4yUDCewLUk+45L7eKXKPkvlEKUbk3MiUloQ8WVeZ9YYqQ5GIBXHPzRzCCC3qkNjDOvlcRk7gT+VuYzFttIukjE0HO8eHyLnw4nNfnfgccCAXHveGgfWvnajD2+0IuZEZzIEaxNiTYTC/xdtSUOGL/l1ojoejJfeK8yiFikQfQL7w/S9FzIBpyHro9R7pi+80d0Mprz4ZUWRUwk/rDUz9lWFq4WZWEB3hYf/3xyNzXqr1WAzlANlAdRrb1yW0U/Y6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xVPCAhZhb7CFIZ/7AaBjFvcIMSz2MfWgVWKZRLhxovo=;
+ b=N2rwzG31tZVwmQVGztYpw6dG0wHRxYob0yrYY9oqIC3eVg0dGaRVcy/oJODTJXiPslIRyLihu9TRRJ0hrKHXE3NX1TTn3aiJoGcohAhuVFh7BCLNaq9EcdNb+iG/MQcklZHwQFyjtzHbYDfj2Z1zLMaHUk5pGTqm1AfpLAU/ZOFdWEPwJKGUUv1GQgcXYit4t20K1DVdacJV1jkUMA6j15kGgfxjpVQyAvSXYCN4/2o0VF6IUYPG22mYnoEz+RbtETK+h+jzY4Qqo255Z+9brj8ChzKqOjf/RPLS32XHaUkmePKzrZdYKno9y+7yjncxlJyZEUKSN1mzTCsy5RCZ0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by DS0PR11MB6349.namprd11.prod.outlook.com (2603:10b6:8:ce::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Wed, 25 Feb
+ 2026 22:22:01 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%6]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
+ 22:22:00 +0000
+Date: Wed, 25 Feb 2026 14:21:54 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Gregory Price <gourry@gourry.net>
+CC: Alistair Popple <apopple@nvidia.com>, <lsf-pc@lists.linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-trace-kernel@vger.kernel.org>, <damon@lists.linux.dev>,
+	<kernel-team@meta.com>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<dakr@kernel.org>, <dave@stgolabs.net>, <jonathan.cameron@huawei.com>,
+	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
+	<dan.j.williams@intel.com>, <longman@redhat.com>,
+	<akpm@linux-foundation.org>, <david@kernel.org>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<osalvador@suse.de>, <ziy@nvidia.com>, <joshua.hahnjy@gmail.com>,
+	<rakie.kim@sk.com>, <byungchul@sk.com>, <ying.huang@linux.alibaba.com>,
+	<axelrasmussen@google.com>, <yuanchu@google.com>, <weixugc@google.com>,
+	<yury.norov@gmail.com>, <linux@rasmusvillemoes.dk>, <mhiramat@kernel.org>,
+	<mathieu.desnoyers@efficios.com>, <tj@kernel.org>, <hannes@cmpxchg.org>,
+	<mkoutny@suse.com>, <jackmanb@google.com>, <sj@kernel.org>,
+	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
+	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
+	<muchun.song@linux.dev>, <xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>,
+	<jannh@google.com>, <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
+	<pfalcato@suse.de>, <rientjes@google.com>, <shakeel.butt@linux.dev>,
+	<riel@surriel.com>, <harry.yoo@oracle.com>, <cl@gentwo.org>,
+	<roman.gushchin@linux.dev>, <chrisl@kernel.org>, <kasong@tencent.com>,
+	<shikemeng@huaweicloud.com>, <nphamcs@gmail.com>, <bhe@redhat.com>,
+	<zhengqi.arch@bytedance.com>, <terry.bowman@amd.com>
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <aZ92AvAg5boiSVw1@lstrano-desk.jf.intel.com>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <fzy6f6dpv3oq3ksr2mkst7pz3daeb3buhuvdvcw4633pcl7h6u@mxjgiwpg5acv>
+ <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
+X-ClientProxiedBy: MW4PR03CA0256.namprd03.prod.outlook.com
+ (2603:10b6:303:b4::21) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS0PR11MB6349:EE_
+X-MS-Office365-Filtering-Correlation-Id: c34d67fc-b774-4f5b-9f64-08de74bc4b87
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007|3122999024;
+X-Microsoft-Antispam-Message-Info: Z1nP8qxKJKQU5mImEmcwRw45dsmoqsSmFBIKcvErjhp6jbomlhfmlAi6WTCm7xouAH6L+CowyDosGF3istolCYjUyNRcBKaoR6P6Zvt3Kkz8OcqJVQKVr75zgrmfRLsJAtl13yhVD7VCz3xa/vkWcS6XVwAzRQX0ouB3XsJNJpPmwmMXWcPLBItPAXl1dZ/P8GVmoaAW4HsxH4r5agQBI1WIs1+Ai2ujAHnnKhzOJEMpyNSebiJtpm3lbf+hV6FXrtQ5YRMYxr8vJsK6q9LDrF05kBoWYpmyhgCLENpFLAB1S+iEYsbTYMxQlFjT2fXq6HoUcyFI5XR31frX1+VnCFjCiA0ffGn5IlUhgI5otdVR0KbvdZHSifLXDAmLowRgU4DdhT2zi6kYdpQwTLulafeVeTe95WUEuh8RB1jL9MPjhAWC46SZSbKfUmuy/jqbvKNe5wRd4nOVrTgg6ZGgHf4XLaf8MEfx3wXTGqmtmFgXTaUFnwplCM0RVewWORjgXHYvBAeZGwQQEdnchvauuiTDcq5LBBfdSonkYmm+KRdmh/1hue4e1Ndfg36NeKzkNFdprQ018+/PYLQ2JXKhdqvoeX/BcI+JZzeSXbjbvsYXPHvQ5mpR94xWMiBr7UdKkiYl7mWo3J5Y8fATOovL6JLtLEgjsBeSDT/cHlykVIU9+wtqdIz/GsYvydzEp3Wk/cloZPU1mCLduZIms7Dzs9SnQRZdfRaaPDPyHyK+FNQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007)(3122999024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RXRsdlZBMkdGRGV2NmRmS0wzUXBPa3RDYWk5RVVKbTdtV0JVL3JNRXVrV2Jp?=
+ =?utf-8?B?UjgxZEk2anA3MG0vMkY5SGNhV3lRdktodlNTd1ptbWw4QWYxcTJOWExlRGhX?=
+ =?utf-8?B?L0xTL3hmTk01WmdJL1BSZVZQZkNkdExuVXQ5Rm9qSnc0dWxGYVpiUlYzTUpT?=
+ =?utf-8?B?aGlEbW1iaUN6MjAraTVoQWNPc0hyRlhRWXVxOEVFd1VEelp6dDBHNDl0ZDJN?=
+ =?utf-8?B?ZUxVa0tQZzRRdGY0aDNwNnBYWVp2ZU8vaVVJTE9Bd0hhZ1FBV3p4dWlIS3Ro?=
+ =?utf-8?B?enl1ZXBnTXFqazhicW0wWjFMMlVoMEZOaitXV2N2ZFpLQm81SFNCZWxJd2Fp?=
+ =?utf-8?B?eHpKKzE1Y09WWFpoenNTMDEyYW5pWEl2QkM4T2UyUURhMnc0SGMyek9ESGZC?=
+ =?utf-8?B?bDl2dWZBTkhUK20ybEdLdCs1OUZtb1o2M2RuMm5yZ3dZRkhvUm84S01QWTNi?=
+ =?utf-8?B?Uk5EVEZKcnFnS0FUTVlDVUd2ZDgzWUpPYmhHV2orSWUraG5NbkxKU1A5WHFl?=
+ =?utf-8?B?d0EvTHI3STBnMlVTT0dsZitsQlJodm54aVh1elR1ekx0RkR0T1RUVzBGVEpz?=
+ =?utf-8?B?ZytxQ1dwUnV6L0R6bHlBZlkyV1NTdE02V2MxY0NlMDgwV3hxQlRod0lNbVJL?=
+ =?utf-8?B?Wm9YSzFHQzFPUjhyOGJzM3ZCZEh4cU92bURKRE9PVEk3TVZNSzlXUHBEbkJI?=
+ =?utf-8?B?eWhjM3JoZ2dseU5xRkNoQmxuTVBXUVNYLzRsa1lxT3hWb3ROOE5ISE9jeEtF?=
+ =?utf-8?B?U2hOcXYvSG5VTmdJYUw5S2tBQlR5aEYwdEY0cDJCZnQrZEJOaUdSMnZBQUNz?=
+ =?utf-8?B?L2xOR3pUR3pyN1NLcHloVkN6VXdkV2d6TTNXWG5KNkd2dTI3dkJCTm5xVjZB?=
+ =?utf-8?B?UkdlL3R4cDREMUh0QzFPTS9mVmM2aTdmNk9QYzlsSmFWOUlaOU51L3JCSkJN?=
+ =?utf-8?B?NnVWcE81K0phekJCL0FVUUFERWQvU3VKdTlDU1V3MmpidnZPeEpkYnFsMDBO?=
+ =?utf-8?B?WFl2eWQvT254UlFxL0RrbDVHU1ZzMVpHMnZ0TEtxZlY4NEdxUTVNakE5RlhO?=
+ =?utf-8?B?b0JIN0REdjFrbWFsRFpRanNYeGVISjRlMGJDb1JhRW9RdjV6aHEva3Awalpq?=
+ =?utf-8?B?TmdlV3A2cnhkYllXWlExTkd0bE5aZ2dYSWpnT0QxSzVwbU9KazZ0U1NSejFZ?=
+ =?utf-8?B?aDZ6WkpwREcza0N3bXlaQzBnU3pXUHZZcFJyZEJkV0pSYlR2UTdTZzZ1Y0Fz?=
+ =?utf-8?B?KzJ4SWx3cjF2em44aDZIaXliQ1J3eXUrZU1yNGV1Y1J5ZzMwM1JSWEM1dE9P?=
+ =?utf-8?B?eUdHOHp3TlpVemJsMTZucWR4UGN3YXhZQ1RXQlN6dGFwdzRIbk9OWDErTkk0?=
+ =?utf-8?B?OUF4WnpTS2IydGkyTk5mc09uK0tsVndYRFpLZWVDekJteXZxZWYwNG9FbS93?=
+ =?utf-8?B?NkZ6ZitwemljTFlWRXVsV1NHL2dWT1dxYlhrNi9sZzl3SUJ5T2NmcGlKbm1S?=
+ =?utf-8?B?NWp3THZES0xuT1BZWkxhWjlGWG5vTzVjM2hiT0FNRjVmbmVJU3BQRXIwZHFl?=
+ =?utf-8?B?QTQ3dzYxS1k5UnVjd2ExOWd3bUNqdnJrcCtiaCtUQW5qU0syMjVQWW1kaFlT?=
+ =?utf-8?B?Zy9hTzQzQUhqVmpCWGVrRTBiR204Qkl0aUU0TlowRUJaM3hhenlhMkRnNERj?=
+ =?utf-8?B?TytWK0ZyT05CRmsyTnVjZ1lZVWRqQW1XVVRDOVB2b3doUDZ3VE1jZnlENDRB?=
+ =?utf-8?B?UkMrTlJpMTBPbE03VU0zMWJSbDVQeUk0TjhFSVBlZEZHZHJ6YjNnQlUwQVE4?=
+ =?utf-8?B?anBKY0t0U25kRWNRdVYwTkpjUmZlTzYyTk9zdTFsTWorTlBlMEh4c2ZDL2Rl?=
+ =?utf-8?B?NkZjK1oyak00KzY0WmZ3SnRDOWtmOGd5RVZSUXFPQm5FUlZpU1pENFNaVDFJ?=
+ =?utf-8?B?S3B6SWNDcmZLcFZWdERJOHRLRnk0SEpYekVzVWtyNDJLUnF3UnY1MmpUNXVt?=
+ =?utf-8?B?a2R4YnlZRXRCVVVkRHMweXUvUkUzYXRTcitXZldpRGg4VDJaM0loY250Vjk0?=
+ =?utf-8?B?L0xUMHhwYnRHZElTNGpQaCtQVzNSbjVYZ1hjamg1U0lNSXB2WFJvV3RFTjFk?=
+ =?utf-8?B?WDFwZThOaGs1RDcvcXJTNVdsZzB6N2x0OUhITllpaHk5UmxiYzNQNndyanp1?=
+ =?utf-8?B?OHZnRlJGWGJkVlhNU0ltUEdSRFhrSDM3b0VKV25wa0pQNHdMcVdhZHF4NDk4?=
+ =?utf-8?B?dVJZeWEzNnI0SzRUVlFXbTk4bm8zMWxNc3YrSDFBZXpyVURJVCtoUVc3eVp3?=
+ =?utf-8?B?YTArWkFxVjlGQnlSYkRtVEFXNDJBdXFFczFaU3FTRzRjSG1scDl3V2xNeW1C?=
+ =?utf-8?Q?hMX4LPKX0hqbTqSc=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c34d67fc-b774-4f5b-9f64-08de74bc4b87
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 22:22:00.4868
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: heCi3iTcD1WVJcKiTHFFZ8edMb1HLGbekFVjarbsCMSps++x/ylYj2/4hjUeTw+qo9zWHsT2SLm4KRXf6N6mBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6349
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B49381C0008
-X-Stat-Signature: prmbrr6h1bwjdnydr1hyk95pmy1an1do
-X-HE-Tag: 1772057834-750389
-X-HE-Meta: U2FsdGVkX18ZD/Gpgh98YaULWj9H+NE21L5EtEbZJ4WuqXMgEe5N5yxfod2RksTYKvRlNIkeE/lE/dFQWk7BPh2qqBIilpCKpbPw6mAR9zufBl6RsBrMcmCt/Ih1Zrz6vOZwlxREdJgaAGfndhhQgu5i+B+5KbosNmK78prWqtM99PmYxrady5aoXLhTGnyrk7xncL0LM2AzmzdUp7Quv8RdAo2bXwpEp6LJgfscgK0jy46sJi9HS2+KtH63quGFSFDmFL+gW/+Ng88OMbBFqhYAwhB+0d4u6hyllcxCc2WmLMKKIj61EDUpTDRIwj2eT66Y2dd/MpOohwptGpZVIKPsNg/c9rBOUtcShSFJPjEfeYKBbZnjO5kgCFCyf3AAwwrhM21ROoXbTJI26LtPahb1W5O817KkQoTUs9kRrm6Fh1DuztCc0AHYT+RhIcT/MNXJoqbIpDW42EB9iprFRSK8x5MNEgKzSG4fDMF+C1e5CBGrl+/8jNEgBqVajNTt0nRC6L4zYI3BABDbwEzUB15PFc5KzJ2+7DbewzIiFOV8+3avXZqxyjI6qY9c8jxfclU52B7tUrMwATrsTekjRbA7GrWXbnWIUM8n4AcvY6X21Ea1nK7Z8HwMhXtmpE+wYzmuLEoW5Rb4OnmvbQDOi8banf3yJUVG70lYtDr6EtPlMd3yVmxN8gf+vy7PJdxwmZoe9hUHaNfn/domYRWJ0xwSbdhgMT5zrdbVjV2Wg0+2BcrjlVgpXkx0AVvt1HEkeuLPfdn/kvJDgWCN5nZ2mPXTF1a0j280azXR1XQ573szYIcRLITVcm+/N805mpsQC4ppsPH6O2+mbadByEz8yHdu6AvVVK8QnimDpVWbK/028fSiifOB8JI8HgepREPvB1s2eXxF4JZAww13nxaiE636CzGshIAqtc1f0bxuEccjmukVfXk4zkn/taM4IfgVCIFkPRBV3F267+8aewx
- FwRbu8Bb
- /bc58w8szRhyMHXLwAVwe8zbYwunYPFgRc0dzYWXS7rNMp+TL91wVRzGV/5lrwDzwwLrD7of71qJr8dMBrA2vAuWaLgm4tfkgYZeHFM5CsohLQxb5K52lXxIEDTLmdSs6sDzelBfHP1jj4CuswUl9RScg/Yt+l5WXRiucegzB5jpjJdVOZExl+Kx0a73ZNiSz1qgkL0z8xGZY+u2voeNwhq4wHpokrpG9AmrU17zrKqHHwgj57q/s5WoP7ssJ1bN7s0kd7ZtZfr/QGP89TO/kF2kYXRXo0AsmIZvaRDweXV01Zi3XJlwVrpve8l/Y6eFun5DAB7QFdUtZEEFKL0rDjds293SIGzTyHNnijwyGk5Zdnu9397i//JM62gFXk24f7/YW6ExrttsBbyncnoeoGYJo1REe7tQ1L44s28wi9zwscjc/D+vHGFw3C7DKhrlQZkO71Ip4+MivpnIHhCX8ZA9HWBHvI36DZlT6rSxjk4tSae3WAxsY2CeJk+2fnxoI7OhtEC08ohpk36Pd6AB53udPtgPsAPZ9p/3z8GMvdJf5mcmhop3C2afjd1GT5002xnuz3TQESWILUlj7pGQ6kJ9T4vfEjhyLOYARZbDUltZbRARr+TEJY40De4npsFghGR89reYsKKxsqs2uzVQ7CEV23/UgKwgQwgtc
+X-Rspamd-Queue-Id: 59A1840008
+X-Stat-Signature: 9aitfnfb35fnppm6i4154jbbnun1mj3e
+X-HE-Tag: 1772058126-51092
+X-HE-Meta: U2FsdGVkX1+BGou9v3eR5u+xE01uZ2Y/4AvS3KbMVZPLqYtMr5+FhJpmXnfjfQQKjXT43ksbvfT089HUxeCE1wSMldr/sYyP/VNTTRybSIagF1LydFgZx9CBLz+ISBeup80RWKm8ic+1E68xNBhcGpOuwyUWmUMtBnvJ8RdbUuBWZtQvw8FTaefxv3NTPyLziMQOK4hIG17oN0c5m+vPUvCJYOCqSxHvTqvf1kzOBNHCSgergBWuKMOau3pAanGn2vZTlQk5CbOQZPT6t11BRv3bD+wpAYQL95362SQOTCasH5uKw7F4ZInTXqCU7mzy0j10yrNVC87TDK12natJCFQ109BDFQPwiUCcppxMmSMhfan4sSjMGI18gNA12Y3kGMB0VVNWiz+W2sYkKuqKpfq6smZUFWKdIC02hhvWQBug6WIEMPFJFWTJQQD4B8NrC5Lhn0iSSARoMnDK9S3OVuQpS1UTU9OhY7rXBY15OyOegGWn3cOYXGOhxe5Bs1LFokWRSl0shGdcw/2fAfxF2mCBqgVuR30SAINFkMI+PHyBmtXcmU5aQUG8j4nX5LF1BSWeisz/5mJ2K5hXVJeArq6vIDQ297D93Obd54VdouVa+p+lRLwIPF67ZzbPNemvg1tsTFYbR1W8JeE7NU0rFupl4jKTG/Ga4Ui6zCd3+9JLkRzkDnVfUo0wUxrmx6Ojc3Pl19IuCynbQfFWrSjqIsswzGngNHz0AmBFI2yB0cFL4JefZUVyakhMgM97bIIe8yBWm5nb94LPyJZLAP7QQAUEspB0tuwouUa0zQS85vwvdYeJDIQF5KztoLZYoF2O0SF1SdxE+4arhqm7guQt1tu3mEtmeTkYuBizNt9TcsNVuuRKYQZHcJeO9xTnyNGy37LDTaUKZgXE9J5aZxjqlTbQQZ62YDdYxJIdR8NgBD0UL+WV67UZTpu/NDhYdSCw12RrnGZqQMgWi6yrSBt
+ XmVL/UAR
+ cfznfLp4cx0B3JueatJaPd1roZJ8UQ+opYBNh+8m55qY2F+yBLkmWCD4mZPh8Gi9tkAzPzY+1wLD5aOD/03Gc4pH/6v8ipEjocEW1ooNar7Ih4aS1+VfsmX4hbo3u7q27+t0I9fmRh80h/zlO+rAeLeKl/xOnidTO7vvfZ0xn7KVJiXJgamDBoygBvA9+jgAWJBmgBzZB4nvsY0ChmhR4qz9C6ppqI0DH36ryL2wuPqrZf0LzkZTleaDduyX6XowIMYomsW7QHpPPxxpY8UjoJA2MvcIaogy6N5ZifohVCik5waki9Kn5TuxLsAQiM8bEpOFHSg0EZOEBrYDRjyq13MZSMGbpWEqlYnp4ikA6K2i8ipfKveJ4D/WmnMEIgJgWkusa4BhxEF8+PT65X0vwaB1elA5DNUx9RTtkpjNB8X6+D+Aze6L4B8XNlJHDSOhpQoYGVzZDLtq1BLaMC6w7KHWsw8qMD5c7915fWafKLH/Tx7FNfoKdSEWLlibLQUtYrOe3N0SH84I/v9JMKuDvQNRFBaR4WvUNBLn0YRxnWX+ZZXTgTl9uoCPr2GI1r94MMmn+RkBXo/LAXM9BZw4jTSom2kWrNapa0AUBu/BrlYPyD/Nxv3YhGp9uwRhYujP/dM9E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,78 +228,287 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Feb 2026 16:37:11 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
-
-Hi Ackerly, I hope you're donig well!
-
-[...snip...]
-
-> I would like to get feedback on:
+On Tue, Feb 24, 2026 at 10:17:38AM -0500, Gregory Price wrote:
+> On Tue, Feb 24, 2026 at 05:19:11PM +1100, Alistair Popple wrote:
+> > On 2026-02-22 at 19:48 +1100, Gregory Price <gourry@gourry.net> wrote...
+> > 
+> > Based on our discussion at LPC I believe one of the primary motivators here was
+> > to re-use the existing mm buddy allocator rather than writing your own. I remain
+> > to be convinced that alone is justification enough for doing all this - DRM for
+> > example already has quite a nice standalone buddy allocator (drm_buddy.c) that
+> > could presumably be used, or adapted for use, by any device driver.
+> >
+> > The interesting part of this series (which I have skimmed but not read in
+> > detail) is how device memory gets exposed to userspace - this is something that
+> > existing ZONE_DEVICE implementations don't address, instead leaving it up to
+> > drivers and associated userspace stacks to deal with allocation, migration, etc.
+> > 
 > 
-> 1. Opening up HugeTLB's allocation for more generic use
-
-I'm not entirely familiar with guest_memfd, so pleae excuse my ignorance
-if I'm missing anything obvious. But I'm wondering what hugeTLB offers
-that other hugepage solutions cannot offer for guest_memfd, if the
-goal of this series is to decouple it from hugeTLBfs.
-
-> 2. Reverting and re-adopting the try-commit-cancel protocol for memory
->    charging
-
-On the second point, I am wondering if reintroducing the try-commit-cancel
-protocol is tied to factoring out hugetlb_alloc_folio. When I removed
-the protocol a while back, the justification was that for the most part,
-grabbing a hugetlb folio was a relatively cheap & fast operation, since
-hugetlb mostly operates out of a preallocated pool.
-
-So the cost of being wrong, going above the limit, and having to return
-the hugetlb folio was also relatively low.
-
-It seems like this patch series introduces some new paths for hugetlb
-pages to be consumed (specifically, without a reservation or vma).
-I imagine that these new paths make the slowpath for hugetlb more frequent,
-which makes the cost of assuming that the memcg limit is OK higher?
-I think explicitly spelling this out in the justification for reintroducing
-the charging protocol could be helpful. 
-
-Thank you for the series, again. I hope you have a great day!
-Joshua
-
-> To see how hugetlb_alloc_folio() is used by guest_memfd, the most
-> recent patch series that uses this more generic HugeTLB allocation
-> routine is at [1], and a newer revision of that patch series is at
-> [2].
+> I agree that buddy-access alone is insufficient justification, it
+> started off that way - but if you want mempolicy/NUMA UAPI access,
+> it turns into "Re-use all of MM" - and that means using the buddy.
 > 
-> Independently of guest_memfd, I believe this change is useful in
-> simplifying alloc_hugetlb_folio(). alloc_hugetlb_folio() was so
-> coupled to a VMA that even HugeTLBfs allocates HugeTLB folios using a
-> pseudo-VMA.
+> I also expected ZONE_DEVICE vs NODE_DATA to be the primary discussion,
 > 
-> [1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
-> [2] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring-12-08-25
+> I raise replacing it as a thought experiment, but not the proposal.
 > 
-> Ackerley Tng (7):
->   mm: hugetlb: Consolidate interpretation of gbl_chg within
->     alloc_hugetlb_folio()
->   mm: hugetlb: Move mpol interpretation out of
->     alloc_buddy_hugetlb_folio_with_mpol()
->   mm: hugetlb: Move mpol interpretation out of
->     dequeue_hugetlb_folio_vma()
->   Revert "memcg/hugetlb: remove memcg hugetlb try-commit-cancel
->     protocol"
->   mm: hugetlb: Adopt memcg try-commit-cancel protocol
->   mm: memcontrol: Remove now-unused function mem_cgroup_charge_hugetlb
->   mm: hugetlb: Refactor out hugetlb_alloc_folio()
+> The idea that drm/ is going to switch to private nodes is outside the
+> realm of reality, but part of that is because of years of infrastructure
+> built on the assumption that re-using mm/ is infeasible.
+
+I was about to chime in with essentially the same comment about DRM.
+Switching over to core-managed MM is a massive shift and is likely
+infeasible, or so extreme that we’d end up throwing away any the
+existing driver and starting from scratch. At least for Xe, our MM code
+is baked into all meaningful components of the driver. It’s also a
+unified driver that has to work on iGPU, dGPU over PCIe, dGPU over a
+coherent bus once we get there, devices with GPU pagefaults, and devices
+without GPU pagefaults. It also has to support both 3D and compute
+user-space stacks, etc. So requirements of what it needs to support is
+quite large.
+
+IIRC, Christian once mentioned that AMD was exploring using NUMA and
+udma-buf rather than DRM GEMs for MM on coherent-bus devices. I would
+think AMDGPU has nearly all the same requirements as Xe, aside from
+supporting both 3D and compute stacks, since AMDKFD currently handles
+compute. It might be worth getting Christian’s input on this RFC as he
+likely has better insight then myself on DRM's future here.
+
+Matt
+
 > 
->  include/linux/hugetlb.h    |  11 ++
->  include/linux/memcontrol.h |  21 +++-
->  mm/hugetlb.c               | 228 +++++++++++++++++++++----------------
->  mm/memcontrol.c            |  77 ++++++++-----
->  4 files changed, 212 insertions(+), 125 deletions(-)
+> But, lets talk about DEVICE_COHERENT
+> 
+> ---
+> 
+> DEVICE_COHERENT is the odd-man out among ZONE_DEVICE modes. The others
+> use softleaf entries and don't allow direct mappings.
+> 
+> (DEVICE_PRIVATE sort of does if you squint, but you can also view that
+>  a bit like PROT_NONE or read-only controls to force migrations).
+> 
+> If you take DEVICE_COHERENT and:
+> 
+> - Move pgmap out of the struct page (page_ext, NODE_DATA, etc) to free
+>   the LRU list_head
+> - Put pages in the buddy (free lists, watermarks, managed_pages) or add
+>   pgmap->device_alloc() at every allocation callsite / buddy hook
+> - Add LRU support (aging, reclaim, compaction)
+> - Add isolated gating (new GFP flag and adjusted zonelist filtering)
+> - Add new dev_pagemap_ops callbacks for the various mm/ features
+> - Audit evey folio_is_zone_device() to distinguish zone device modes
+> 
+> ... you've built N_MEMORY_PRIVATE inside ZONE_DEVICE. Except now
+> page_zone(page) returns ZONE_DEVICE - so you inherit the wrong
+> defaults at every existing ZONE_DEVICE check. 
+> 
+> Skip-sites become things to opt-out of instead of opting into.
+> 
+> You just end up with
+> 
+> if (folio_is_zone_device(folio))
+>     if (folio_is_my_special_zone_device())
+>     else ....
+> 
+> and this just generalizes to
+> 
+> if (folio_is_private_managed(folio))
+>     folio_managed_my_hooked_operation()
+> 
+> So you get the same code, but have added more complexity to ZONE_DEVICE.
+> 
+> I don't think that's needed if we just recognize ZONE is the wrong
+> abstraction to be operating on.
+> 
+> Honestly, even ZONE_MOVABLE becomes pointless with N_MEMORY_PRIVATE
+> if you disallow longterm pinning - because the managing service handles
+> allocations (it has to inject GFP_PRIVATE to get access) or selectively
+> enables the mm/ services it knows are safe (mempolicy).
+> 
+> Even if you allow longterm pinning, if your service controls what does
+> the pinning it can still be reclaimable - just manually (killing
+> processes) instead of letting hotplug do it via migration.
+> 
+> If your service only allocates movable pages - your ZONE_NORMAL is
+> effectively ZONE_MOVABLE.  
+> 
+> In some cases we use ZONE_MOVABLE to prevent the kernel from allocating
+> memory onto devices (like CXL).  This means struct page is forced to
+> take up DRAM or use memmap_on_memory - meaning you lose high-value
+> capacity or sacrifice contiguity (less huge page support).
+> 
+> This entire problem can evaporate if you can just use ZONE_NORMAL.
+> 
+> There are a lot of benefits to just re-using the buddy like this.
+> 
+> Zones are the wrong abstraction and cause more problems.
+> 
+> > >   free_folio           - mirrors ZONE_DEVICE's
+> > >   folio_split          - mirrors ZONE_DEVICE's
+> > >   migrate_to           - ... same as ZONE_DEVICE
+> > >   handle_fault         - mirrors the ZONE_DEVICE ...
+> > >   memory_failure       - parallels memory_failure_dev_pagemap(),
+> > 
+> > One does not have to squint too hard to see that the above is not so different
+> > from what ZONE_DEVICE provides today via dev_pagemap_ops(). So I think I think
+> > it would be worth outlining why the existing ZONE_DEVICE mechanism can't be
+> > extended to provide these kind of services.
+> > 
+> > This seems to add a bunch of code just to use NODE_DATA instead of page->pgmap,
+> > without really explaining why just extending dev_pagemap_ops wouldn't work. The
+> > obvious reason is that if you want to support things like reclaim, compaction,
+> > etc. these pages need to be on the LRU, which is a little bit hard when that
+> > field is also used by the pgmap pointer for ZONE_DEVICE pages.
+> > 
+> 
+> You don't have to squint because it was deliberate :]
+> 
+> The callback similarity is the feature - they're the same logical
+> operations.  The difference is the direction of the defaults.
+> 
+> Extending ZONE_DEVICE into these areas requires the same set of hooks,
+> plus distinguishing "old ZONE_DEVICE" from "new ZONE_DEVICE".
+> 
+> Where there are new injection sites, it's because ZONE_DEVICE opts
+> out of ever touching that code in some other silently implied way.
+> 
+> For example, reclaim/compaction doesn't run because ZONE_DEVICE doesn't
+> add to managed_pages (among other reasons).
+> 
+> You'd have to go figure out how to hack those things into ZONE_DEVICE 
+> *and then* opt every *other* ZONE_DEVICE mode *back out*.
+> 
+> So you still end up with something like this anyway:
+> 
+> static inline bool folio_managed_handle_fault(struct folio *folio,
+>                                               struct vm_fault *vmf,
+>                                               enum pgtable_level level,
+>                                               vm_fault_t *ret)
+> {
+>         /* Zone device pages use swap entries; handled in do_swap_page */
+>         if (folio_is_zone_device(folio))
+>                 return false;
+> 
+>         if (folio_is_private_node(folio))
+> 		...
+>         return false;
+> }
 > 
 > 
-> base-commit: db9571a66156bfbc0273e66e5c77923869bda547
-> --
-> 2.53.0.310.g728cabbaf7-goog
+> > example page_ext could be used.  Or I hear struct page may go away in place of
+> > folios any day now, so maybe that gives us space for both :-)
+> > 
 > 
+> If NUMA is the interface we want, then NODE_DATA is the right direction
+> regardless of struct page's future or what zone it lives in.
+> 
+> There's no reason to keep per-page pgmap w/ device-to-node mappings.
+> 
+> You can have one driver manage multiple devices with the same numa node
+> if it uses the same owner context (PFN already differentiates devices).
+> 
+> The existing code allows for this.
+> 
+> > The above also looks pretty similar to the existing ZONE_DEVICE methods for
+> > doing this which is another reason to argue for just building up the feature set
+> > of the existing boondoggle rather than adding another thingymebob.
+> >
+> > It seems the key thing we are looking for is:
+> > 
+> > 1) A userspace API to allocate/manage device memory (ie. move_pages(), mbind(),
+> > etc.)
+> > 
+> > 2) Allowing reclaim/LRU list processing of device memory.
+> > 
+> > From my perspective both of these are interesting and I look forward to the
+> > discussion (hopefully I can make it to LSFMM). Mostly I'm interested in the
+> > implementation as this does on the surface seem to sprinkle around and duplicate
+> > a lot of hooks similar to what ZONE_DEVICE already provides.
+> > 
+> 
+> On (1): ZONE_DEVICE NUMA UAPI is harder than it looks from the surface
+> 
+> Much of the kernel mm/ infrastructure is written on top of the buddy and
+> expects N_MEMORY to be the sole arbiter of "Where to Acquire Pages".
+> 
+> Mempolicy depends on:
+>    - Buddy support or a new alloc hook around the buddy
+> 
+>    - Migration support (mbind() after allocation migrates)
+>      - Migration also deeply assumes buddy and LRU support
+> 
+>    - Changing validations on node states
+>      - mempolicy checks N_MEMORY membership, so you have to hack
+>        N_MEMORY onto ZONE_DEVICE
+>        (or teach it about a new node state... N_MEMORY_PRIVATE)
+> 
+> 
+> Getting mempolicy to work with N_MEMORY_PRIVATE amounts to adding 2
+> lines of code in vma_alloc_folio_noprof:
+> 
+> struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>                                      struct vm_area_struct *vma,
+> 				     unsigned long addr)
+> {
+>         if (pol->flags & MPOL_F_PRIVATE)
+>                 gfp |= __GFP_PRIVATE;
+> 
+>         folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
+> 	/* Woo! I faulted a DEVICE PAGE! */
+> }
+> 
+> But this requires the pages to be managed by the buddy.
+> 
+> The rest of the mempolicy support is around keeping sane nodemasks when
+> things like cpuset.mems rebinds occur and validating you don't end up
+> with private nodes that don't support mempolicy in your nodemask.
+> 
+> You have to do all of this anyway, but with the added bonus of fighting
+> with the overloaded nature of ZONE_DEVICE at every step.
+> 
+> ==========
+> 
+> On (2): Assume you solve LRU. 
+> 
+> Zone Device has no free lists, managed_pages, or watermarks.
+> 
+> kswapd can't run, compaction has no targets, vmscan's pressure model
+> doesn't function.  These all come for free when the pages are
+> buddy-managed on a real zone.  Why re-invent the wheel?
+> 
+> ==========
+> 
+> So you really have two options here:
+> 
+> a) Put pages in the buddy, or
+> 
+> b) Add pgmap->device_alloc() callbacks at every allocation site that
+>    could target a node:
+>      - vma_alloc_folio
+>      - alloc_migration_target
+>      - alloc_demote_folio
+>      - alloc_pages_node
+>      - alloc_contig_pages
+>      - list goes on
+> 
+> Or more likely - hooking get_page_from_freelist.  Which at that
+> point... just use the buddy?  You're already deep in the hot path.
+> 
+> > 
+> > For basic allocation I agree this is the case. But there's no reason some device
+> > allocator library couldn't be written. Or in fact as pointed out above reuse the
+> > already existing one in drm_buddy.c.  So would be interested to hear arguments
+> > for why allocation has to be done by the mm allocator and/or why an allocation
+> > library wouldn't work here given DRM already has them.
+> > 
+> 
+> Using the buddy underpins the rest of mm/ services we want to re-use.
+> 
+> That's basically it.  Otherwise you have to inject hooks into every
+> surface that touches the buddy...
+> 
+> ... or in the buddy (get_page_from_freelist), at which point why not
+> just use the buddy?
+> 
+> ~Gregory
 
