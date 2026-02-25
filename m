@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB413FD3774
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:42:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2698FD376A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:42:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CD416B0096; Wed, 25 Feb 2026 11:42:15 -0500 (EST)
+	id 455326B0098; Wed, 25 Feb 2026 11:42:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5814C6B0098; Wed, 25 Feb 2026 11:42:15 -0500 (EST)
+	id 429606B0099; Wed, 25 Feb 2026 11:42:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 466F96B0099; Wed, 25 Feb 2026 11:42:15 -0500 (EST)
+	id 2A2526B009B; Wed, 25 Feb 2026 11:42:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 336356B0096
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:42:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC433C259A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:14 +0000 (UTC)
-X-FDA: 84483546588.29.4344CFF
+	by kanga.kvack.org (Postfix) with ESMTP id 17A846B0098
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:42:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D54C98C1C7
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:17 +0000 (UTC)
+X-FDA: 84483546714.09.19F6D15
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0BDCFC0012
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gaWdSdqJ;
-	spf=pass (imf22.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037733; a=rsa-sha256;
-	cv=none;
-	b=EnxAKgCSUfatnx9wsR2ZpMduQVhkZtHt/BkpS3YWM4BDJFOLmrcSCcZLYLx4JgFjnS74rc
-	QE6Z/FTDfNW7XmVeJ1upnF4XyFEG4UO7kcZ73q+CSzVqo546oQUXAWnKFd1iYrITxTP9w0
-	YRAYGOHRoLACkMxZYuUmX6WqmEEnP00=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gaWdSdqJ;
-	spf=pass (imf22.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id E71B0120010
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:42:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JJjXalcp;
+	spf=pass (imf29.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772037733;
+	s=arc-20220608; t=1772037736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HIhr3uHJlQefCPCcH2/aKU4ZRDZNHhdONE+tXJ7gqak=;
-	b=SNYNJuvWLeXRZ77ndOd2LmPIs5u9SD6qcwVtJf4Lr7aP9blRsFb6CbmWkXuNQNTx/Olga4
-	/L5nWRSDx4uHqe0cqTxQeftpwn403FvUuERCKxwraome3HA5VX7xWUecs5Ra6eXpIHMUg2
-	ntRkVqKkx+sTrs3wJUlHaZE91MGUt48=
+	bh=Ygc72kGVmd8ZQpsIyk4lkVVEcc03lOMYv5NZ35NviHY=;
+	b=sQQpsUegq5/w1c1ujzZ/KZOb+VHSdX2SfT25l6RUYaA7cIpAzRCdOIHG/HpU87czRvlaND
+	HqsVSWDrvtD5yIRvRMzcdT/GCSDGdDf6h+hZmZTHiiMYZitsLFwspIl+5nuBFwKFo7BNvW
+	Hvsm6Vmfg/LF4kT7udCmr+QzUCgwRzI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037736; a=rsa-sha256;
+	cv=none;
+	b=YyJ1hsZ5fLCkwt7vSygfaEnCHbmBVu9zRUxbscg5+15zNo6Uxyqx8LE6XfHOeX2VpHEiIG
+	VysY6NrPzZVbNySTsBDM+d8N0nOBji56nOdSD8Y1+SVvv5fWutBdFecoDnEQYMXGoXY/Yj
+	9wDbPHxrw6He+/FgIDQKlkWEo3YQ0TE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JJjXalcp;
+	spf=pass (imf29.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3951A44540;
-	Wed, 25 Feb 2026 16:42:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909BEC2BC87;
-	Wed, 25 Feb 2026 16:42:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 173894453E;
+	Wed, 25 Feb 2026 16:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA1C4AF09;
+	Wed, 25 Feb 2026 16:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772037732;
-	bh=5eRES9IJzrhq6zmZepgudykCny//SFXm37BLxrFr738=;
+	s=k20201202; t=1772037735;
+	bh=3ZfbgvU0bLE1CVEwtquKpm5fJ/GAe/ZRFRUG6VZuG1I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gaWdSdqJyk2rfO6R2i/Rq4sZfKC56WS1WM40M314C2+MoUqCykXKONzIZmhjmX93J
-	 A+uAsrfN1mLpl+PeVLbATaGnWena2lmfuRS9bevZN1n8GBXvtWxNX68KGx7XqJUXSj
-	 kVPdOYauJvjgcRHZvyJp7m4nobJIz1i7KmEo3BBCda4nKwi0Txy5KB5966/jVKVV3C
-	 pNGpsdPDFU/kbF+RG7FhZmFiu85dNOMRrGowNJU5+totaLK3gA1KjJo9Ikg/rA0eHx
-	 451KMUgszIHvYsQoByint44EISSPFCrbWNXQs3e1Fu+2RUhYE9lYMvJcZ2XAaRrZ/Z
-	 MZqdN5+gmhVEg==
+	b=JJjXalcpzSXkoB8Ni6wXiA74nEozWfroeKtL3vmqR4UqYOo/GcDZDki+80Li66fYn
+	 eVW7TpKCNM4iPWL2SI1WaqFEI4SwYL3ysjpyCDfevFNH1iInAX9H0TLdwE2ndJTOD6
+	 +Jkt42XG9qMd9WbqYVRZBzGFroRI69Dg0lBUpXfNLu3WUa1rNdAeFwU54cjsIs6cSd
+	 mY4DQyX3STn0GSOGy8mzvoCTEN+0PdeVY/IFhh/amLXAnUhN71S5sAp6kYUEPbv5Se
+	 fRM9FhO8Vne2ZvCdJSwPq03WOtZLXoTicIHabtEZO6+3kdhxJnq/tZOd35mKRSQ+W1
+	 8e59vjrE4dMBw==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Wed, 25 Feb 2026 17:41:53 +0100
-Subject: [PATCH 5/7] dma-buf: heaps: Export mem_accounting parameter
+Date: Wed, 25 Feb 2026 17:41:54 +0100
+Subject: [PATCH 6/7] dma-buf: heaps: cma: Turn the heap into a module
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-dma-buf-heaps-as-modules-v1-5-2109225a090d@kernel.org>
+Message-Id: <20260225-dma-buf-heaps-as-modules-v1-6-2109225a090d@kernel.org>
 References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
 In-Reply-To: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
 To: Sumit Semwal <sumit.semwal@linaro.org>, 
@@ -91,22 +91,22 @@ Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
  iommu@lists.linux.dev, linux-mm@kvack.org, 
  Maxime Ripard <mripard@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1064; i=mripard@kernel.org;
- h=from:subject:message-id; bh=5eRES9IJzrhq6zmZepgudykCny//SFXm37BLxrFr738=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJnz1QJa+s1ijMu9+XLnvVgTuiJkztL1Ez9dZDkl5cDWk
- uK4bEZ2x1QWBmFOBlkxRZYnMmGnl7cvrnKwX/kDZg4rE8gQBi5OAZhIsC9jw67djtzh+g/PW7+c
- 7bqE8dPDGKW25vm1uY+33phvn1UoHTSLfwWr0ad4br1M7cmxDRrOjHW2j3pqNeyurbWr/6Sy6zj
- r29och4ufjLuCl1QyX7+l6Tb7rCHTsYlpSt+sIisF3lQdygMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1712; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=3ZfbgvU0bLE1CVEwtquKpm5fJ/GAe/ZRFRUG6VZuG1I=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJnz1QIO/V0Qvq7+gY3Smi9WgS+77V5drTja5fcquX264
+ 6WP/+4v6pjKwiDMySArpsjyRCbs9PL2xVUO9it/wMxhZQIZwsDFKQATsdnJ2PCBec+iTTaurZdr
+ pxmZLRZ0bc2a2vjh6BruogWL59UqHHxRNL90xZrM6OUBz0U5n1tqZzDW8MdcrC8XZLjRI5E8Pe7
+ bRnXnRdumapw5Xmj0P36JqsoGlYK2u9UFipMWTjHtM3+3Y3sRAA==
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
-X-Rspamd-Queue-Id: 0BDCFC0012
-X-Stat-Signature: xi1ffxz1a8x3rreqrwkictfubtx9afjg
+X-Rspamd-Queue-Id: E71B0120010
+X-Stat-Signature: wn8mzcn78ozk6jdifnqfe5xkfihj1kdy
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772037732-815811
-X-HE-Meta: U2FsdGVkX1/DpSvPMJO4iXtS1xSaiWxjKh28rHMrYxy0gLkhTavYUugFYA6rDgOivry/L1Qfmt+Ie5WuhwVoa6uaFsEKNLLpoWc7szJsyzBxjJw8tJkNJEn6JpEabZqZwBq60AhQnb5WPXKV29MCbuQsvltZM0RvvSlIV9HNW2qZvgKA343ybg1E2vue9YDz9XaIinlGwKpkjV3K2TjMMtS5VghVQvD0ArRZygnrY+VlsUPCQ1dmGce8sygK6k7/QWFWW7Qk8g/PNYidrajvzHHaVbCBWNtd9/absLXDpdo/MdqQv++2o4EUuyhr6nbEO36phn9bKI0BcRIrU6Y2YCJvRSueakzBWoUI2w0T+6xz55GHfmb4a9+LUhhxERxFhCqeZD+qnWEendZ/47b+X7F8AcyBJlyURQqKyUjBu6GRVNqqzuJKvaasVRZCORA8rwnFBWFSiyhTYm+8TYtH8myYnpGVTfzHTvdZug3BrfYR7qdMzIvGspQ/jarzyTcest6EwnEEw9fMfNtfo4r8M+9rppGUmuKHXPz8qiLMyJiTYt9O0jpAMfPEGuS9gHEOaRF6DbnHbc0JOfpna7RNS4LXoXE35RqozpMmqsNDjpLCKsG3liaTLzbQjOynHNs+RcF8Qorpq2R13HCpw2nt0aJ49u83qL7ICUyt3xWy+y2BLwM1NLYXdm9HasjsBfYHIyiZe19PulHq5EhMBpnyDyoza6VCRYa917jEs+w2WnV6dwhVQlk0MiReu9IY/MA93/fkGq8GWqLwXaObapr6WrfgVwZUPMQvMrMTyjwjX0bb2WWZFTDXXCG5tT/S7erYhzR1CJ13GYQmdiKn1hujv32mQHjpMhemn2yuKOBVbw1tlghIE5HhleoC/E6tfeNVGJZx2EKqpRW8cU9TY7FBohiBvU27k1Dl/iUJiA+icXSKcs3HKyFQi9ZdbMWQ0vZygWqO6ICuTokFThG35lx
- OGbctR+d
- 23Ck0MiEblbMMhMKzRVT0+0CfkJALjrzJVxLdvdNicqySTWaPXvcGRPnGLWHgzDlkwmTJP1j50VFmOeguhcsjFtPhQt2Dv42465+YYSEe02YxWoMEia5BIflPLddmzRkQIX+WOp3fWPWdQz2e5s11c2kQG8ieLAfOJ9cl9VRep4EHVPH6TtgL+ZHQpKsO+AiHkU287AG7+o7bVwlrtOA4+N7/P5i0kISCKL/+mt67jax1bdOn/i2tBcIIWUfrmOSWPO5QU8dg9hK9HiZlw2QaWZ7CogZj4ruWuPTb
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772037735-646308
+X-HE-Meta: U2FsdGVkX19v4DRcopFqthxBULF82jqX1TO3AVizrnpFKu3Wf1yFTXWI4Ia1eAtFdIarJiGuGQjzDDLmZ2CssgTuuCUN0wxH3lNqJqxzYzGB79nPGJw7xv/smShO6pzXi6NanppudkAiQV0tKIwUNoMOxf4cZpnbE1h6cc4KHK+61kgiiXhB4KbRHA5lggil2sFMtXyfX0R+arYkU9HaWiDxDtYcQN+3cobhOhNvaUzhDSvFfAt4ngMV9T8zWdqa/ROyLc7zgu1Ly4GvfHVdJkpoDMrohFO7NG00DZDJ7EnT7FozezmjkLosTizws7poPTns8uVVf72xgv3DPpTrfC2gtvAyatr/+LaNF5Y0rw6Xtuy2Nlc0bXcOjNGmBEM/Zu8M6IC9l5vnNh5PwW+ucreZWjuS0FZvqLUkbjWGuWcWo/QMBepdbC0Jy2STKiIaTvXmLahUuwyQXYt1cI+x6J8HiMNxza0yORRmR1o9BowWA30EeE07RlwODghT0GY0xSaK1TuHWAP37/Xi5ChbmRJASeHmTZJT5Oe9dA/Hnxg4hOguvcgSFwMoYOaAMdVeL9Q9neQmVOg02Q0YimXoLyvDE2pP0gc9xqCsfz3yQ4TovzEnWNpKb+rvrwuzIRsO00YCHxPgDLfCjKLHPbMNCwlfeHCYLi174jZKknfgXkDahQbfTFWoE0hV8nZ+U0If8np6tsMPVI8Ddbg1aXpx8fwsAHhvVv9ibQcaO45c/17KPTyd8UF+BWJrlNB/DjSulBvRgGrNOdkhfVdq9qG4Q0LsSJ4RMOKRu+r4WQHV3JY4GkTc9gSPpr3ltysYMbxfMm9Gwe4Q78Zcmo9Bw1yqxXbbrBsITZVTNUJbVm77FYcB8LIS90X4mAsHxOIP5QnMMHOSaQjRLuOk8BGWng1lyP9MBsTWDBtXS1GXFTuDR4mgKGBWq07DOB4M9wNG0KcdcDjZnsc9Pv0bv8vKhUv
+ NTkhWlOV
+ WY2jG9HbLIJNQ6S14vKhYZbgx+ui/JzvJRweoTVCOdG6w8UWv1Q3KLa0Tiu3me6XVYdZ/Qgx0xg10WNCq+JgaYzs4dw749BYSBWQdi2QxSsx8n1uWH3UB+uCW17voH0aihakQwcD05kBmZSTD3YBi7YTL0VXBaAQ0+NonVxfyuI2Q/fPbZqSJ8MqntZDeOxALRvnxiK0gD+SuzmPfRCrGUOuDCLfD3saLft/Isn9Q3bOe+fOntNdIXgBt5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,33 +114,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mem_accounting kernel parameter is used by heaps to know if they
-should account allocations in their respective cgroup controllers.
-
-Since we're going to allow heaps to compile as modules, we need to
-export that variable.
+Now that all the symbols used by the CMA heap are exported, turning the
+CMA heap into a module becomes pretty easy: we just need to add the
+usual MODULE_* macros, import the proper namespaces and change the
+Kconfig symbol to a tristate.
 
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
- drivers/dma-buf/dma-heap.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma-buf/heaps/Kconfig    | 2 +-
+ drivers/dma-buf/heaps/cma_heap.c | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-index ac5f8685a649496c0e1c6decbf263b63fa472d04..a76bf3f8b071a3d5bf39a8513f31e9e8aa16e02f 100644
---- a/drivers/dma-buf/dma-heap.c
-+++ b/drivers/dma-buf/dma-heap.c
-@@ -51,10 +51,11 @@ static DEFINE_XARRAY_ALLOC(dma_heap_minors);
+diff --git a/drivers/dma-buf/heaps/Kconfig b/drivers/dma-buf/heaps/Kconfig
+index a5eef06c422644e8aadaf5aff2bd9a33c49c1ba3..aed0b9b4febf388376cfc41be9843980d010c4e8 100644
+--- a/drivers/dma-buf/heaps/Kconfig
++++ b/drivers/dma-buf/heaps/Kconfig
+@@ -4,11 +4,11 @@ config DMABUF_HEAPS_SYSTEM
+ 	help
+ 	  Choose this option to enable the system dmabuf heap. The system heap
+ 	  is backed by pages from the buddy allocator. If in doubt, say Y.
  
- bool __read_mostly mem_accounting;
- module_param(mem_accounting, bool, 0444);
- MODULE_PARM_DESC(mem_accounting,
- 		 "Enable cgroup-based memory accounting for dma-buf heap allocations (default=false).");
-+EXPORT_SYMBOL_NS_GPL(mem_accounting, "DMA_BUF_HEAP");
+ config DMABUF_HEAPS_CMA
+-	bool "DMA-BUF CMA Heap"
++	tristate "DMA-BUF CMA Heap"
+ 	depends on DMABUF_HEAPS && DMA_CMA
+ 	help
+ 	  Choose this option to enable dma-buf CMA heap. This heap is backed
+ 	  by the Contiguous Memory Allocator (CMA). If your system has these
+ 	  regions, you should say Y here.
+diff --git a/drivers/dma-buf/heaps/cma_heap.c b/drivers/dma-buf/heaps/cma_heap.c
+index f8a3d87f3ccee9630383ba28502eb40b10671cc2..7216a14262b04bb6130ddf26b7d009f7d15b03fd 100644
+--- a/drivers/dma-buf/heaps/cma_heap.c
++++ b/drivers/dma-buf/heaps/cma_heap.c
+@@ -422,5 +422,8 @@ static int __init add_cma_heaps(void)
  
- static int dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,
- 				 u32 fd_flags,
- 				 u64 heap_flags)
- {
+ 	return 0;
+ }
+ module_init(add_cma_heaps);
+ MODULE_DESCRIPTION("DMA-BUF CMA Heap");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("DMA_BUF");
++MODULE_IMPORT_NS("DMA_BUF_HEAP");
 
 -- 
 2.53.0
