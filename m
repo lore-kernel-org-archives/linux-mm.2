@@ -4,107 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D726EFD204
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AB2AEFD206
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1136B00D1; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
+	id 8B4046B0005; Wed, 25 Feb 2026 03:03:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B20A6B00D2; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
+	id 861DB6B0088; Wed, 25 Feb 2026 03:03:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A71F6B00D3; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
+	id 718F66B0092; Wed, 25 Feb 2026 03:03:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 489146B00D1
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E200C5880B
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:55 +0000 (UTC)
-X-FDA: 84482222790.01.0A8228C
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3EE4E120009
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t5eI0eBp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772006214; a=rsa-sha256;
-	cv=none;
-	b=az1ZOry39aT15LAryhnjadDqaPdD/Fc0iVEG4jpV8FoZFOAwvlQzFEgDLMQHCIJkesspb5
-	RzXCMoCP7W8JGJb4zAfFh/2Jic//TSWODjSH+JXz7mgIjK0pK6A5pLWIgyYUQJ0dNOuAC9
-	JC8CPdWq7LNRRcwZx51lOVJ5T4JcSc8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t5eI0eBp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E3EA6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:03:33 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C5EF1C598
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:03:33 +0000 (UTC)
+X-FDA: 84482239506.14.CFEBBBF
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 244FC1C0003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:03:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1synquUZ;
+	spf=pass (imf20.hostedemail.com: domain of praan@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772006214;
+	s=arc-20220608; t=1772006611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ME0/F5y30Uv1s+QbxgHUtCa7ObeVmIsWm7RG/5Co0FY=;
-	b=UNsxAWzbo9flu/isNpO4FFUVG1WSw8GnLwKSasFsrWPWMrRlyf/R8NWy0RJk6rRTcox0wU
-	hMB7bSxuUrJtlP/L983/xhgzD0r6WCzioDd3Slacy4qKLKpuvFqrKV/qXQPuoT9l66lOfV
-	SZbf7ngJPX1cMM7uxNr4hZpPviwCd3Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772006212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ME0/F5y30Uv1s+QbxgHUtCa7ObeVmIsWm7RG/5Co0FY=;
-	b=t5eI0eBph5ukFLwgWDVMW63HTjsF/nKxNunRL+w1BMRv4OZ+Gnj1y0Ra9yNHKEYQIQOgOx
-	YtjJEUibMIUeQLxekC4mxf4IjGMiloxQgCjJI2x/lEmDq5cZ5qf8UyQWPo9hDqBWZAiT6B
-	FVebdx87fiB1zJgVldgtNWBcX0Bd7yw=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: hannes@cmpxchg.org,
-	hughd@google.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	harry.yoo@oracle.com,
-	yosry.ahmed@linux.dev,
-	imran.f.khan@oracle.com,
-	kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chenridong@huaweicloud.com,
-	mkoutny@suse.com,
-	akpm@linux-foundation.org,
-	hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com,
-	lance.yang@linux.dev,
-	bhe@redhat.com,
-	usamaarif642@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v5 32/32] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
-Date: Wed, 25 Feb 2026 15:53:15 +0800
-Message-ID: <9a0b6ba87112b2bf038ab65c47b6f16311b829cb.1772005110.git.zhengqi.arch@bytedance.com>
-In-Reply-To: <cover.1772005110.git.zhengqi.arch@bytedance.com>
-References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
+	bh=sCJxVjDFn9Nx1ZVu0w3V3L8nPN74ZP9DglkzEBV+/BI=;
+	b=O1AmdWsj45Z4ftGifvqqeQ3bGEv33mo8lgdv0lPFwCKWg4998yfHzoEhEhyzOAM0aeYPPR
+	bFSBdpbee3RiKE1+Il8mySpBMU+4TAW8s597oHqDSlH29SvVE2zVeXUECyCbTsicSHiZaK
+	NxbwjSDNWiMhS4voInnKFnFt43O43Qk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772006611; a=rsa-sha256;
+	cv=none;
+	b=gV0vupiVH3OiNtnz5nzJaAV7R8ephrMU6OyD7B2/eyPcF8mcA/IYdUal92kC88RNtdKUXM
+	R2kX+2Fb/fDduPdWaeKPyUy2ueUS6NQJwL8kQFvVnYbvtNe0V00okLEXtkoe8hJL2O/Y3d
+	gG/JRmbwfly4UVKpsxk/v1E1Ne1WwO0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1synquUZ;
+	spf=pass (imf20.hostedemail.com: domain of praan@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ada9e4ea32so56015ad.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:03:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772006610; x=1772611410; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sCJxVjDFn9Nx1ZVu0w3V3L8nPN74ZP9DglkzEBV+/BI=;
+        b=1synquUZ9ORMcomU4f5v/xHQ0f5+KrDodcWRsaHD6bDRMe0EaDpHE/gocydoEoiAtc
+         +OhE2rIy22y2BYs4T0br5fzYrexGD5NSfJs9Sw3rdRW/AlOwxYv4UE4r1T6NkcBYl/3C
+         CIP87cxZNZBeYFJGWl6QpFmrb+kFAo8iKfx7cljZ/zfAYeCT9d+Rqkwj+s9xYikTK/tU
+         Sddqw4TdI3Y4LA7nFUxMqBbd+Hj3n4GfOcv/Aybcq2oHxUVb4fi+Nap9p/MVxN/eNWOd
+         Jh0gYVQ3p2ArmqA9rf5cNLkBsk6OrurVslGOI+UIw7aQAgxZGLbUzMDpzfJ38pUFBkpf
+         tuzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772006610; x=1772611410;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sCJxVjDFn9Nx1ZVu0w3V3L8nPN74ZP9DglkzEBV+/BI=;
+        b=GL/WqqRrFh+EdDvEcpMD3hUtc+Apw3RgqsO22XIpM8llA8mrojxDVMw5Dq9y0MKq8U
+         ag15UrSX5qLhQ4qe3A1sXfEBWfKPkAHFIQ62WVWK7Opf/h3Pvx9tENuc6DnyzGOJ941A
+         Yurq8XzLZSWZY9pgcP01jxMj7fDnvW9oPfQUHHolLJO+hesGagVI5DZG8uKqPxcaFHCf
+         ZVEyWP+vfuJI4WlIKLrajMuDXmOBY1FN8wGWn8e5+x5EhjHp6jMZxypeTMm0q791IW7f
+         ipsCgtkHACh//iZzm/qF0aNI9KXbnjwoNjSmrhCQ3lbHVDPEzW4u7LsRfwLbPUB5yzLG
+         chnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfTxC7GwFphL3Ss49D4dmiADibpkdA+8OZrYsLq23FqYSYjyKmTT9Mqmm8Icn12GyTAZHIOEakSA==@kvack.org
+X-Gm-Message-State: AOJu0YyTqw/mkUdAIxGLr1hk5hNkhzhUVJWvGAAZiLa4rEMd3Wd5LV7s
+	ekreAoASdHqHET6BOM77TBnsx2jREI/qlMzayCuSV40xnCBOlcjcbag2M+Yn4FHyUg==
+X-Gm-Gg: ATEYQzxqNazYDCNHIqDMZqF6UsjTCdshXYUqLtpYyklP6KpSmGnfO9wDjNXmk1k2ddK
+	65S/ACIt1wD5mXOSYkSOnO85XpKOcM5lSk3L1eW5MWuynXl1eei4dnolvx/vcrBQyXBDnM9Rv48
+	iMdIqFfmUIvjNAt+I5RqtZ1vdpt9zjeLtUhIH9uej0Nz8LJuvon1YGj5Nm/HNPVqY6wPWexNVWz
+	0O5Z3+UYokrn67oZJBdlNkOk9u64LvPP8zjNTgRQz2OGFjwv6ouopaLi+QEHpbpg/UZY21XaEh6
+	92ncqZXLzCQFGe2x7Hu82z9Y+lEKcE+Cl+9tFROJvR/9x3nKNGJH8akoRa7xhESuP2EX6gVUAsR
+	J7kwymGwmMvayCTlTvzuSjCOl4XmgBdDTHceFaoqklPsbjLGW0F+fcyhwLxtB9++qR6UWQoSnaX
+	JyivI7bF/qnCUvvx1MxiQhGHZFk8WjeGjLn58L2NJiCyfWdVVQZHQL6mIiKDwJ
+X-Received: by 2002:a17:902:ecc2:b0:2a7:7f07:340e with SMTP id d9443c01a7336-2adca6c9d85mr1313215ad.4.1772006609152;
+        Wed, 25 Feb 2026 00:03:29 -0800 (PST)
+Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3591342f19fsm421683a91.10.2026.02.25.00.03.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 00:03:28 -0800 (PST)
+Date: Wed, 25 Feb 2026 08:03:18 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 08/22] vfio: Enforce preserved devices are retrieved
+ via LIVEUPDATE_SESSION_RETRIEVE_FD
+Message-ID: <aZ6sxhNeHqy-hqhK@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-9-dmatlack@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260129212510.967611-9-dmatlack@google.com>
+X-Rspamd-Queue-Id: 244FC1C0003
+X-Stat-Signature: 68n9urq4bwsjmr8hct7g3ud8cqr3ua4r
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3EE4E120009
-X-Stat-Signature: 9jbkumekwnnodgswcsf16rqzjcupneo1
-X-HE-Tag: 1772006214-880990
-X-HE-Meta: U2FsdGVkX1+eG7LMuL2QEJE+ODCZOCjZBE9eaa9rtvxz41mFp0YpngoCnRQmTCWQyF82n++g0EVyISweTq9MYZd5GEh/HwbA43kGMLoACsfDnc6N6CSvfTotaDaJQ/MVFdiuL1/i2ya4aLi14tzMCWubtjq2I2ZluS2Y+U6vTVlRSsx5xj1Fdmo1BUaxwSulxGWnnpHE07RdIHP/OSL4h69FmJEnS4/0eubHvv/9WpkhDL5yTND8ZtVHcSq+dAMU5tJl7AQv8wBSD8gKzm/u03rWo/eOFdNuPL0ErguHr/qAC1miIJqKc2vhZyeQ4AClsoI2G+kzldW+iXw+1Ml38ZUzLj9zEUL31BBmZuvR9WSQJxeiUDd0z9C2IglMT69MZ0wnaxDnqEq2mlx3Rcr5dfxgfw+fwRUThG653tauVrgZMgb+GGr8CfJrw3l4gXvefJ6c6CI79V/KBVxVJR0x8fOO5lyCjspo/lIIVuunuOfiaosUrHJqPzeI8lbHeTG0iS8ixOxKqqk8vBII16Q+9TPk46dto2VQsnMyk4sqjYPNpFj4Zbo27vVBSVM+r5+B5zx9ZGkzqOURqfKub8VOZKWpAAj+PJykg5riQnq6s0jTKf3hUTqXE9zjVtmfIIGsVhPBHyIxfJS+ej4XaE6rTVLrvGigH55Iw12zn2bogGOWeBwoRihJJ19nGSzQAWkvp90xA5Tc/iA8NzQmwp3SBcqWPX5a77pD9BAlZFJNBG9uzTJLvcVlnxDtikoFTFKC+HMio+hG6PHo4fsJbVZS6KUmdHPzqMAz9fnZqKwFtRw7BssDedR/emoYBlyNhoZylaPbJo1yZzaUH+1lZyJk7vvLRheoxbCM+M8XfoMaOr0bho2fjVqiZuhScLZhIFmUKFShTtta7nw5i1+VCSUwTwf2n8KqCy2yWTAaAO56YJpfVEeZyOdyalcN/r0flm1s1cJPhLS7LZuird3aF7L
- D564spHR
- /FST9myE+dKzqhUdXK+sGaY1tBwEzKOirtg4JmF4ZmSXMbjQ2DzNOV8MpY0imDvs77ezpZGHvhwVEW+S0AvZ8eGvFVZlfhogCBu+OK2UjArydCN8SAu1ZxVoBmCkXMO7YSFa1VNzMNoddUurey0SPKSCPfBXuWE7gQDHc7LW+6qmStUAfP2WUiQ0+PyJWhTuGYeVvoedf+/UhJ+hqX9oZAzA0aP6No2TU2xZKyT1urAs7oOpAZvvX8ygtXooQLmrdvn/NCTAvcYu+DQMPcAMZD4bWGoZUgLbSo18W9tlfNqSM1dsim3H0MrUmKJhv0rA7m0Yik+bnmUIoJJ0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772006610-767928
+X-HE-Meta: U2FsdGVkX194dF8EKNJdMUdNTbwnuwd2pbRsGzP6K+A79ceIq8uk+c+8P17GBc92wRJBn4Fjv138lNfV9HiTZtgnMPPFWXa9g9f7VCoyncDVlN/FTaREjBCa0wF1DV9ES6tmQzDRwyDKtLyxP4Kbkre1b78SKrVKkIdXzECMMnaogTiXkFLzRCPqVHRa/QulFwdS2ipOPBLEJrf8RA87tiRf1QRg7UPpJp+xssl1mMiJMWTfLduSf7VoTasF3G2Tg53qrirumVDfGcEXJ7gTihzGJXrH2F8Im6Ypc1Ne+Iu4xc0AVdGIoN3vDyeoCRnjDPFfJ4mfgkPSZy2sO5L5dRXg+fsc6ij6L2t29HyFASHn9JPDPjnx+B6LYbno4SgQNC6+LKSSrVawLTXOZR4yKWjwxrtanBcxx2U9XcxkcmC4RCEL7zygxOE7Ipn3ICE5zcJ9MlYAI8fTH4NyMRyUtAUcOOZ1UrPrEAIBkAkJURYhSNmwgTVQLaYbgyxK4hC981LTxPDOM+j0Ry2ycw58PBmj1W6vG2oE9qM6FuieooIv6PkWAR6pgNfgEC9P/M/zJTt93OwBaDJRTDWl3D97Z+emDukajGZVKCYq1N7fgM+eSZOY3zk8bX2EmS8R4zkoAdFEbYj9N75Ro36vzk50Kmwsu6nnLtEKo1q+15d7JwUz/DsNgVzOvSWxeIvLuPLrhZt2owV5+2gkhf41HKUT7xm9sdEANh6Pb94E2OPtx+v3WfPrM/9sEt+U/l0K5BDTcj6Ou5uuDX+TEonTPxnP266wQ6lOrOskU0alzWBmWPTl/taAQeo6aNIsjccs1KaEWS5V1QBqbIhxC9owyvCYUbSXCifgwwjuUAL/z5pyKdbhlTEl9VlZPkbTpvx2aXyqQevb4q5OGfm6Ze0XCsRADmljr95eAMyjHNoS0XpFHE+Y27DnUYr6IY3CxC5pKIEBxlFNRqFEqH01gs2eK/f
+ cujWyR/l
+ viMVdHx7mCgOdin9JeACzQh+q7rJSudTDGceTjdNIKZq5BdJ7/olNpWWEIR7e7hPaQis3BrgbzZV4Zd1OTbPojYwGKBEdLdbcSsneQu9Mr1hN2cbudHojALUuyC0KDEhBIlddwO28uuDK+5McwZUZAsveh32wG28w+cz1B1zn2dxRmIiyORxNepfWhISMQiny5tm8ezp36NZCsk7wWOyJL/EYO9yta7l7paYQZyA/4S5qIrCPpoz54i4SzAOucMq19hz5dLJ+LtkOvwzZSKHNrQLjwioJW7ulAhRQif4VJXvzivsR0yPrgp+73BqbkkQzB4CXZUWlu5yW42pZ5fMJ25rv+mKIDHbiAVU1YHvOab16kMjUSmryjSUeRd6+02S92VmbHaFE6mmTwLbX403AXdhO7WFB5W2Y7W9Oig6GjKUbkI3/MN9wIUGzFRCCDcCB97635WjWfo3VlrT6iXkWDbHkdtVD4FnpgLc1OMdPweRqfDXUJf4KMAf1hNsFBgzRho8s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,67 +148,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Muchun Song <songmuchun@bytedance.com>
+On Thu, Jan 29, 2026 at 09:24:55PM +0000, David Matlack wrote:
+> Enforce that files for incoming (preserved by previous kernel) VFIO
+> devices are retrieved via LIVEUPDATE_SESSION_RETRIEVE_FD rather than by
+> opening the corresponding VFIO character device or via
+> VFIO_GROUP_GET_DEVICE_FD.
+> 
+> Both of these methods would result in VFIO initializing the device
+> without access to the preserved state of the device passed by the
+> previous kernel.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/vfio/device_cdev.c |  4 ++++
+>  drivers/vfio/group.c       |  9 +++++++++
+>  include/linux/vfio.h       | 18 ++++++++++++++++++
+>  3 files changed, 31 insertions(+)
+> 
 
-We must ensure the folio is deleted from or added to the correct lruvec
-list. So, add VM_WARN_ON_ONCE_FOLIO() to catch invalid users. The
-VM_BUG_ON_PAGE() in move_pages_to_lru() can be removed as
-add_page_to_lru_list() will perform the necessary check.
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- include/linux/mm_inline.h | 6 ++++++
- mm/vmscan.c               | 1 -
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index fa2d6ba811b53..ad50688d89dba 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -342,6 +342,8 @@ void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
- {
- 	enum lru_list lru = folio_lru_list(folio);
- 
-+	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
-+
- 	if (lru_gen_add_folio(lruvec, folio, false))
- 		return;
- 
-@@ -356,6 +358,8 @@ void lruvec_add_folio_tail(struct lruvec *lruvec, struct folio *folio)
- {
- 	enum lru_list lru = folio_lru_list(folio);
- 
-+	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
-+
- 	if (lru_gen_add_folio(lruvec, folio, true))
- 		return;
- 
-@@ -370,6 +374,8 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
- {
- 	enum lru_list lru = folio_lru_list(folio);
- 
-+	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
-+
- 	if (lru_gen_del_folio(lruvec, folio, false))
- 		return;
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7f9f66e0b40e1..73bfa93696a27 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1920,7 +1920,6 @@ static unsigned int move_folios_to_lru(struct list_head *list)
- 			continue;
- 		}
- 
--		VM_BUG_ON_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
- 		lruvec_add_folio(lruvec, folio);
- 		nr_pages = folio_nr_pages(folio);
- 		nr_moved += nr_pages;
--- 
-2.20.1
-
+Thanks,
+Praan
 
