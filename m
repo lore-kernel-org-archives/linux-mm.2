@@ -4,93 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BAEBEFD202
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C571EFD202
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:56:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA7CB6B00CA; Wed, 25 Feb 2026 02:56:15 -0500 (EST)
+	id DB0616B00CC; Wed, 25 Feb 2026 02:56:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C93456B00CC; Wed, 25 Feb 2026 02:56:15 -0500 (EST)
+	id D70AE6B00CE; Wed, 25 Feb 2026 02:56:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8C5E6B00CD; Wed, 25 Feb 2026 02:56:15 -0500 (EST)
+	id C9A6E6B00CF; Wed, 25 Feb 2026 02:56:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A46756B00CA
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:56:15 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 637168B749
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:15 +0000 (UTC)
-X-FDA: 84482221110.30.7782393
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B82F7140007
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jfqiLdX+;
-	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B1EAE6B00CC
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:56:24 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 841CEB8788
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:24 +0000 (UTC)
+X-FDA: 84482221488.17.8DCDA4F
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0D0D040006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fnng9NxN;
+	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772006173;
+	s=arc-20220608; t=1772006183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1e/WslVpKxNq+OO+cYj8QXbC11DYZb5ICkCTqzPgH2E=;
-	b=dGPs/baHkbOBALSdNySp/BAAt9MzqyBCXcyHTEJ6KEDiD4N+Fm5FyJ2EtR48nSRSpS+qOt
-	cq8VAbfTHnHkjQ0QQp9vD7JqQgZnK2UihY+uRCkaEqPc7Zgow/MKhEgdnrpFYaXlLdiuDs
-	1gDaxkPoNVAbFEljkiQPkuOtRwwhG3U=
+	bh=rudIknK3Co4enoGw+e5q9iMbCGsfaLu1FJFwhiN9DPs=;
+	b=HqnY3peWbUeLL+Vbo4yr9LNsCQ6w27UflJPTnMDh3oLsfQkeq5t2TcW3HyVEx66IdpVNK6
+	bUY+ldf1IzNZ2XUdBzJ5Lhb5eFKf67G7wnnz33Ikpf6qW2gdQNuWHPaBmLortNYRRQ9sq2
+	QAsD0SDEYUkh9558FBkRZrLBxlz4mtw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jfqiLdX+;
-	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772006173; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fnng9NxN;
+	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772006183; a=rsa-sha256;
 	cv=none;
-	b=q4Zfx4Rxn0672GS+Cyl9xeZP8IlrrKdcNxRPISTPhE5d9XoJlqI+e7EqO7kQ94tsimdsip
-	pfEENh9bOn7AH2eQbFkp/LChwoVDYXS4RIRrHR1eK3KIEEijFyIzqz2geUK2wAiaKKBtTa
-	kKLwUdAVejim3MGW6DyXIs41+M3rFLE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EDE8D60097;
-	Wed, 25 Feb 2026 07:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F4DC4AF09;
-	Wed, 25 Feb 2026 07:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772006172;
-	bh=JqFR4U/I4MB+SKLFl9OdO6R2LAzf+H3aHpw6oWSGOSY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jfqiLdX+BCpABsbWe3Of/Ix1OstPBdj3NaP2fSQoptwGjcCv92DCb4bZNJpkWAbrB
-	 GdByBXHvlt3lsF9GnscNYZmYGViRi1UTL+6MJaoTUsTeJxpK8yhXYZda4si1PIf01f
-	 +gq6VibJdxGU0azGnJCqmiVSPtMEsb5IvgV8MU4zat+Ee+UiSb+CbRHa2UdsUlJBPG
-	 pe5CLE1sb1k0PpDsH54Y+4AIOLN9cPnBlI//Q8vkZ+PTvIulR7AERM4leQLrQG3D7r
-	 gfJQXnBOK/9bVEuzILpbV4uyPiS9uue5gLCuKIJmJAdJs0tx0mBcWDe/J/wqh9moMy
-	 zIQ3VRCVdJqww==
-Date: Wed, 25 Feb 2026 09:56:09 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Ashish Mhetre <amhetre@nvidia.com>
-Cc: Pranjal Shrivastava <praan@google.com>, robin.murphy@arm.com,
-	joro@8bytes.org, will@kernel.org, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC] iommu/dma: Validate page before accessing P2PDMA
- state
-Message-ID: <20260225075609.GB9541@unreal>
-References: <20260224104257.1641429-1-amhetre@nvidia.com>
- <20260224123221.GM10607@unreal>
- <aZ4Q1HA9q1ojsVYY@google.com>
- <9d01b4e3-be5b-4c9c-8088-1d10f67f1fd8@nvidia.com>
+	b=ZeSudjkCHktlud8l4mSAiYlX4SBKd+izhvxQDDF2PAwXO1GKB/QbedODIWkfer5Ta/VRAK
+	/5K9TK3kiJ3BptGAhpK3tTZFKow/K8t9u5sbMsipn/zNIon5MJFN5hWDw3R+i7iVyHaL8j
+	Gzbn3K8vQL8iZZmS0IxAhEWlnQ71QHg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772006181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rudIknK3Co4enoGw+e5q9iMbCGsfaLu1FJFwhiN9DPs=;
+	b=Fnng9NxN9VbqQqK6RGjNMs9gDULKBTZBmNki1Tx672OH7lMmOjVb6GGX/bfk1kQiMTPLB6
+	gds3r37RnwZjoVquWhXhybiZZmO+NMJeseKns8FJPGEM3FodSLr/zE8UDM2iyH68lkMbnt
+	Ccj2CISllIH+Vu2CFKekt1jkT8AyLpw=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com,
+	usamaarif642@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v5 29/32] mm: memcontrol: prepare for reparenting non-hierarchical stats
+Date: Wed, 25 Feb 2026 15:53:12 +0800
+Message-ID: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1772005110.git.zhengqi.arch@bytedance.com>
+References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9d01b4e3-be5b-4c9c-8088-1d10f67f1fd8@nvidia.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B82F7140007
-X-Stat-Signature: j8z9tqwctrf9i93m9xf3a3wrtxzgptpw
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-HE-Tag: 1772006173-347958
-X-HE-Meta: U2FsdGVkX1+M2m97R3uTOUIG8DYw8Atjuq4wmhWkSHoM7ZyLKyXt1G5Exr7AONFxMR+4psbnYv5e3rBCD4fsAvKYBKGr1BECGVef2kTMCwr2/jDc33T4WE/KCNqceraXUtb4tpfx70qvS/mlHJzjgon/rchxBRfBDbFvIifZbDs4/eH+2OBcVOsRaYtQaSTqXO+uRhU1VPLYiIOLoxmbLOpyyJiJm4oC89WQWrDKcblbbzeLH/OiaJshQSbrEnkoqrIcMcBrnOLjKIlUAhQgUBarwZ6vGI1HA/TOFqXrD3CADuujlaErrbSZlBizyA4QA6J5BmW5IlwfjgahxOul0S9kmNeApop3N56QNcXLdpVVvUMrjWRCeJL/7ehxAB2HRxwGDaEEGhWcS0ilqiUpB+F9mzbRZAoI6QHvEMSSBS1lR3eiK1356nAp26QoLI2q5vO2HXK1vChlg47MWttVXGlpUgjAn00rfezvIeLqey1nID3ypY3eit+zSAz28oXjRTO5DVtcAygb+iXh74jiOsaXHggzjbtCqFx4lLeiqUe5FLj/my9PR08lfqUdKjTBf/OVVR+MTtD3REB5t3N8AKTzpcifnWO9QuExJMGULEBKEf1U9oMMQfsq0wUQlSpL2AgGJ0ujezyTydTk2Drs/Ng/IWExFZMaG5GlEAA1CDtgUeakZJyXH1fTUSVvBQma35TJwlxZlA8dam5IcL+38UZP0v0Yeptong84sW8vKWOuXyuyR4Cuj/HeAdrw0Y2WvdMUll68lvwj8ZFCSpwKz6hRCLmi43Sc+qTacuXkx258NfbsCMRka9+eCEMEqXjDsNirnjXuxWeaqPA6qaG2d2DfepdnWlksL7LefgjStDk8SHaDJ+0uuhCD/19aKId0Te7SYzOF96SndEGsQBMdA9hHvgMgrRhBWxCOPyAUMbiNEz279XH+5KAh4PkDVIxAxTHgyQfuM4047d+kXI0
- 0sV5h4B5
- OMsKV5GzyPU2ZzrcKyRy1y0OiE+OlVrqNw5ob2iIm+Y4HW6BcvUbWrMrqn0oRW1Paagnv8TfXIK9GrF1QQiMHvFRSIr3NRThyAb0wR1ZYhScbI5xdpcLElJhvrq8gk35So00mzdUcry8ajIVGKSl8wLFkfaXrgOVFLbLiEbH7OmXmfPxweGqGowMUH1y4caCh47Siro/6bJOE7q96SD6ysXZAbl+0i3ZVRxGUTIo2WI2dc+tAIFpLGgU0ax+ySS2Uojv3u0lUJDViQX+xyQyqczUxKw==
+X-Rspamd-Queue-Id: 0D0D040006
+X-Stat-Signature: fw46h5oietfcaehid41zix83h8k345xs
+X-HE-Tag: 1772006182-875209
+X-HE-Meta: U2FsdGVkX1+3OHxQuU7OhFmwIYDnSpDEdSMCvCRWPNEbvSGaU4aTKLUubzlIJhT17JQFCcg/zTn+7QBGued0IAPi976HB1mDylSF7NqR9caMS+3KSxNyfBGpXRw3w099f4cRG/RtYRDpvhMaq1uNqWGMK/ttjKFtE5Eedyzgd6Ei5wfJnDWy950j5PLDAI6HmLvBlVNoz+B0B9Bc45ccjslRtyKLhjMatdY1kKursD6rU3jq/rRKrwisB0b00+O0QvZr/CQe+iPfTq3AZ/IhXwxig18igXJYXnYdoqUMsPxL5Ypy5Ib8xWe6lu++Yztyg4EO3MPAKqsLX6li74llLeW+ZMi1u+pHsC68zX9UBiCWbe96xu5REmI8glhnh8ZEFPXZTvCBD/q4Adogyesv8ZEBl7O/ojX0PBj0FBY8kpGTYx9+OBcPPE8hIk2s2SsVCRXM93r7l3m0NRTBRf+QsHkYCNOdEmqkYcr3Y5HxF5Ipx5ZXw3kvSu9C9tyWO2WzqskqxQdyGJfGJg9trjV5grBOVn7rRhnZtHiQiR1eIfROQpwD93iNlFbwYoKur560egCDyiHZdKrCBnjlsDky+v7oNo78+H4NMkIAST+wEVLdhWg6t07fZZDAfYojcjGcHe7m48I6v5foj72nvZRR27BnpmqhXfueOUVyTtbFPbPwa3pfsb5LHHSmvj9bG8EoBbdfKN8XnjfegAy0YJ4lrnKCDYwFigkmL/UXwEVN9bL8qIHPGmcABhkrOznAdkOS2khMpHWFhejFUMk+BTvVzyZXhcqXCJye2FjFLxztjtkcxmqTpzEw1JazxT47W2i4I7ZKtJ2Sx8s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,82 +109,344 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 10:19:41AM +0530, Ashish Mhetre wrote:
-> 
-> 
-> On 2/25/2026 2:27 AM, Pranjal Shrivastava wrote:
-> > External email: Use caution opening links or attachments
-> > 
-> > 
-> > On Tue, Feb 24, 2026 at 02:32:21PM +0200, Leon Romanovsky wrote:
-> > > On Tue, Feb 24, 2026 at 10:42:57AM +0000, Ashish Mhetre wrote:
-> > > > When mapping scatter-gather entries that reference reserved
-> > > > memory regions without struct page backing (e.g., bootloader created
-> > > > carveouts), is_pci_p2pdma_page() dereferences the page pointer
-> > > > returned by sg_page() without first verifying its validity.
-> > > I believe this behavior started after commit 88df6ab2f34b
-> > > ("mm: add folio_is_pci_p2pdma()"). Prior to that change, the
-> > > is_zone_device_page(page) check would return false when given a
-> > > non‑existent page pointer.
-> > > 
-> 
-> Thanks Leon for the review. This crash started after commit 30280eee2db1
-> ("iommu/dma: support PCI P2PDMA pages in dma-iommu map_sg").
-> 
-> > Doesn't folio_is_pci_p2pdma() also check for zone device?
-> > I see[1] that it does:
-> > 
-> > static inline bool folio_is_pci_p2pdma(const struct folio *folio)
-> > {
-> >          return IS_ENABLED(CONFIG_PCI_P2PDMA) &&
-> >                  folio_is_zone_device(folio) &&
-> >                  folio->pgmap->type == MEMORY_DEVICE_PCI_P2PDMA;
-> > }
-> > 
-> > I believe the problem arises due to the page_folio() call in
-> > folio_is_pci_p2pdma(page_folio(page)); within is_pci_p2pdma_page().
-> > page_folio() assumes it has a valid struct page to work with. For these
-> > carveouts, that isn't true.
-> > 
-> > Potentially something like the following would stop the crash:
-> > 
-> > diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-> > index e3c2ccf872a8..e47876021afa 100644
-> > --- a/include/linux/memremap.h
-> > +++ b/include/linux/memremap.h
-> > @@ -197,7 +197,8 @@ static inline void folio_set_zone_device_data(struct folio *folio, void *data)
-> > 
-> >   static inline bool is_pci_p2pdma_page(const struct page *page)
-> >   {
-> > -       return IS_ENABLED(CONFIG_PCI_P2PDMA) &&
-> > +       return IS_ENABLED(CONFIG_PCI_P2PDMA) && page &&
-> > +               pfn_valid(page_to_pfn(page)) &&
-> >                  folio_is_pci_p2pdma(page_folio(page));
-> >   }
-> > 
-> 
-> Yes, this will also fix the crash.
-> 
-> > But my broader question is: why are we calling a page-based API like
-> > is_pci_p2pdma_page() on non-struct-page memory in the first place?
-> > Could we instead add a helper to verify if the sg_page() return value
-> > is actually backed by a struct page? If it isn't, we should arguably
-> > skip the P2PDMA logic entirely and fall back to a dma_map_phys style
-> > path. Isn't handling these "pageless" physical ranges the primary reason
-> > dma_map_phys exists?
-> 
-> Thanks for the feedback, Pranjal.
-> 
-> To clarify: are you suggesting we handle non-page-backed mappings inside
-> iommu_dma_map_sg (within dma-iommu), or that callers should detect
-> non-page-backed memory and use dma_map_phys instead of dma_map_sg?
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-The latter one.
+To resolve the dying memcg issue, we need to reparent LRU folios of child
+memcg to its parent memcg. This could cause problems for non-hierarchical
+stats.
 
-> Former approach sounds better so that existing iommu_dma_map_sg callers
-> don't need changes, but I'd like to confirm your preference.
+As Yosry Ahmed pointed out:
 
-The bug is in callers which used wrong API, they need to be adapted.
+```
+In short, if memory is charged to a dying cgroup at the time of
+reparenting, when the memory gets uncharged the stats updates will occur
+at the parent. This will update both hierarchical and non-hierarchical
+stats of the parent, which would corrupt the parent's non-hierarchical
+stats (because those counters were never incremented when the memory was
+charged).
+```
 
-Thanks
+Now we have the following two types of non-hierarchical stats, and they
+are only used in CONFIG_MEMCG_V1:
+
+a. memcg->vmstats->state_local[i]
+b. pn->lruvec_stats->state_local[i]
+
+To ensure that these non-hierarchical stats work properly, we need to
+reparent these non-hierarchical stats after reparenting LRU folios. To
+this end, this commit makes the following preparations:
+
+1. implement reparent_state_local() to reparent non-hierarchical stats
+2. make css_killed_work_fn() to be called in rcu work, and implement
+   get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
+   between mod_memcg_state()/mod_memcg_lruvec_state()
+   and reparent_state_local()
+3. change these non-hierarchical stats to atomic_long_t type to avoid race
+   between mem_cgroup_stat_aggregate() and reparent_state_local()
+
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ include/linux/memcontrol.h |   1 +
+ kernel/cgroup/cgroup.c     |   8 +--
+ mm/memcontrol-v1.c         |  16 ++++++
+ mm/memcontrol-v1.h         |   8 +++
+ mm/memcontrol.c            | 115 ++++++++++++++++++++++++++++++++++---
+ 5 files changed, 136 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index d2748e672fd88..45d911dd903e7 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -957,6 +957,7 @@ static inline void mod_memcg_page_state(struct page *page,
+ 
+ unsigned long memcg_events(struct mem_cgroup *memcg, int event);
+ unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
++
+ unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+ bool memcg_stat_item_valid(int idx);
+ bool memcg_vm_event_item_valid(enum vm_event_item idx);
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index be1d71dda3179..74344e3931743 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -6044,8 +6044,8 @@ int cgroup_mkdir(struct kernfs_node *parent_kn, const char *name, umode_t mode)
+  */
+ static void css_killed_work_fn(struct work_struct *work)
+ {
+-	struct cgroup_subsys_state *css =
+-		container_of(work, struct cgroup_subsys_state, destroy_work);
++	struct cgroup_subsys_state *css = container_of(to_rcu_work(work),
++				struct cgroup_subsys_state, destroy_rwork);
+ 
+ 	cgroup_lock();
+ 
+@@ -6066,8 +6066,8 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
+ 		container_of(ref, struct cgroup_subsys_state, refcnt);
+ 
+ 	if (atomic_dec_and_test(&css->online_cnt)) {
+-		INIT_WORK(&css->destroy_work, css_killed_work_fn);
+-		queue_work(cgroup_offline_wq, &css->destroy_work);
++		INIT_RCU_WORK(&css->destroy_rwork, css_killed_work_fn);
++		queue_rcu_work(cgroup_offline_wq, &css->destroy_rwork);
+ 	}
+ }
+ 
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index fe42ef664f1e1..51fb4406f45cf 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -1897,6 +1897,22 @@ static const unsigned int memcg1_events[] = {
+ 	PGMAJFAULT,
+ };
+ 
++void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(memcg1_stats); i++)
++		reparent_memcg_state_local(memcg, parent, memcg1_stats[i]);
++}
++
++void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
++	int i;
++
++	for (i = 0; i < NR_LRU_LISTS; i++)
++		reparent_memcg_lruvec_state_local(memcg, parent, i);
++}
++
+ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
+ {
+ 	unsigned long memory, memsw;
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index 4041b5027a94b..d1db1f883f066 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -45,6 +45,7 @@ static inline bool do_memsw_account(void)
+ 
+ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event);
+ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx);
++void mod_memcg_page_state_local(struct mem_cgroup *memcg, int idx, unsigned long val);
+ unsigned long memcg_page_state_local_output(struct mem_cgroup *memcg, int item);
+ bool memcg1_alloc_events(struct mem_cgroup *memcg);
+ void memcg1_free_events(struct mem_cgroup *memcg);
+@@ -77,6 +78,13 @@ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+ 			   unsigned long nr_memory, int nid);
+ 
+ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
++void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
++void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
++
++void reparent_memcg_state_local(struct mem_cgroup *memcg,
++				struct mem_cgroup *parent, int idx);
++void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
++				       struct mem_cgroup *parent, int idx);
+ 
+ void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
+ static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 5929e397c3c31..63210b2222243 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -226,6 +226,26 @@ static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memc
+ 	return objcg;
+ }
+ 
++#ifdef CONFIG_MEMCG_V1
++static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force);
++
++static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
++	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return;
++
++	__mem_cgroup_flush_stats(memcg, true);
++
++	/* The following counts are all non-hierarchical and need to be reparented. */
++	reparent_memcg1_state_local(memcg, parent);
++	reparent_memcg1_lruvec_state_local(memcg, parent);
++}
++#else
++static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
++}
++#endif
++
+ static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+ {
+ 	spin_lock_irq(&objcg_lock);
+@@ -422,7 +442,7 @@ struct lruvec_stats {
+ 	long state[NR_MEMCG_NODE_STAT_ITEMS];
+ 
+ 	/* Non-hierarchical (CPU aggregated) state */
+-	long state_local[NR_MEMCG_NODE_STAT_ITEMS];
++	atomic_long_t state_local[NR_MEMCG_NODE_STAT_ITEMS];
+ 
+ 	/* Pending child counts during tree propagation */
+ 	long state_pending[NR_MEMCG_NODE_STAT_ITEMS];
+@@ -465,7 +485,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 		return 0;
+ 
+ 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	x = READ_ONCE(pn->lruvec_stats->state_local[i]);
++	x = atomic_long_read(&(pn->lruvec_stats->state_local[i]));
+ #ifdef CONFIG_SMP
+ 	if (x < 0)
+ 		x = 0;
+@@ -473,6 +493,29 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 	return x;
+ }
+ 
++#ifdef CONFIG_MEMCG_V1
++void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
++				       struct mem_cgroup *parent, int idx)
++{
++	int i = memcg_stats_index(idx);
++	int nid;
++
++	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
++		return;
++
++	for_each_node(nid) {
++		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
++		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
++		struct mem_cgroup_per_node *parent_pn;
++		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
++
++		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
++
++		atomic_long_add(value, &(parent_pn->lruvec_stats->state_local[i]));
++	}
++}
++#endif
++
+ /* Subset of vm_event_item to report for memcg event stats */
+ static const unsigned int memcg_vm_event_stat[] = {
+ #ifdef CONFIG_MEMCG_V1
+@@ -555,7 +598,7 @@ struct memcg_vmstats {
+ 	unsigned long		events[NR_MEMCG_EVENTS];
+ 
+ 	/* Non-hierarchical (CPU aggregated) page state & events */
+-	long			state_local[MEMCG_VMSTAT_SIZE];
++	atomic_long_t		state_local[MEMCG_VMSTAT_SIZE];
+ 	unsigned long		events_local[NR_MEMCG_EVENTS];
+ 
+ 	/* Pending child counts during tree propagation */
+@@ -718,6 +761,42 @@ static int memcg_state_val_in_pages(int idx, int val)
+ 		return max(val * unit / PAGE_SIZE, 1UL);
+ }
+ 
++#ifdef CONFIG_MEMCG_V1
++/*
++ * Used in mod_memcg_state() and mod_memcg_lruvec_state() to avoid race with
++ * reparenting of non-hierarchical state_locals.
++ */
++static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
++{
++	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return memcg;
++
++	rcu_read_lock();
++
++	while (memcg_is_dying(memcg))
++		memcg = parent_mem_cgroup(memcg);
++
++	return memcg;
++}
++
++static inline void get_non_dying_memcg_end(void)
++{
++	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return;
++
++	rcu_read_unlock();
++}
++#else
++static inline struct mem_cgroup *get_non_dying_memcg_start(struct mem_cgroup *memcg)
++{
++	return memcg;
++}
++
++static inline void get_non_dying_memcg_end(void)
++{
++}
++#endif
++
+ /**
+  * mod_memcg_state - update cgroup memory statistics
+  * @memcg: the memory cgroup
+@@ -756,13 +835,25 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+ 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+ 		return 0;
+ 
+-	x = READ_ONCE(memcg->vmstats->state_local[i]);
++	x = atomic_long_read(&(memcg->vmstats->state_local[i]));
+ #ifdef CONFIG_SMP
+ 	if (x < 0)
+ 		x = 0;
+ #endif
+ 	return x;
+ }
++
++void reparent_memcg_state_local(struct mem_cgroup *memcg,
++				struct mem_cgroup *parent, int idx)
++{
++	int i = memcg_stats_index(idx);
++	unsigned long value = memcg_page_state_local(memcg, idx);
++
++	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
++		return;
++
++	atomic_long_add(value, &(parent->vmstats->state_local[i]));
++}
+ #endif
+ 
+ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+@@ -4083,6 +4174,8 @@ struct aggregate_control {
+ 	long *aggregate;
+ 	/* pointer to the non-hierarchichal (CPU aggregated) counters */
+ 	long *local;
++	/* pointer to the atomic non-hierarchichal (CPU aggregated) counters */
++	atomic_long_t *alocal;
+ 	/* pointer to the pending child counters during tree propagation */
+ 	long *pending;
+ 	/* pointer to the parent's pending counters, could be NULL */
+@@ -4120,8 +4213,12 @@ static void mem_cgroup_stat_aggregate(struct aggregate_control *ac)
+ 		}
+ 
+ 		/* Aggregate counts on this level and propagate upwards */
+-		if (delta_cpu)
+-			ac->local[i] += delta_cpu;
++		if (delta_cpu) {
++			if (ac->local)
++				ac->local[i] += delta_cpu;
++			else if (ac->alocal)
++				atomic_long_add(delta_cpu, &(ac->alocal[i]));
++		}
+ 
+ 		if (delta) {
+ 			ac->aggregate[i] += delta;
+@@ -4192,7 +4289,8 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 
+ 	ac = (struct aggregate_control) {
+ 		.aggregate = memcg->vmstats->state,
+-		.local = memcg->vmstats->state_local,
++		.local = NULL,
++		.alocal = memcg->vmstats->state_local,
+ 		.pending = memcg->vmstats->state_pending,
+ 		.ppending = parent ? parent->vmstats->state_pending : NULL,
+ 		.cstat = statc->state,
+@@ -4225,7 +4323,8 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 
+ 		ac = (struct aggregate_control) {
+ 			.aggregate = lstats->state,
+-			.local = lstats->state_local,
++			.local = NULL,
++			.alocal = lstats->state_local,
+ 			.pending = lstats->state_pending,
+ 			.ppending = plstats ? plstats->state_pending : NULL,
+ 			.cstat = lstatc->state,
+-- 
+2.20.1
+
 
