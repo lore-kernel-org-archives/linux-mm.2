@@ -4,138 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D57C3FD376C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:05:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9781FD376A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:05:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 447056B009E; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
+	id 164336B00A0; Wed, 25 Feb 2026 11:05:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FA956B009F; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
+	id 1565E6B00A1; Wed, 25 Feb 2026 11:05:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 306EC6B00A0; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
+	id 06BAF6B00A2; Wed, 25 Feb 2026 11:05:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AE1C6B009E
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C18C31405FB
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:07 +0000 (UTC)
-X-FDA: 84483453054.25.A7E00D5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D667418000E
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJpCmMSi;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E3F646B00A0
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:11 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8510659FE9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:11 +0000 (UTC)
+X-FDA: 84483453222.09.5A68530
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7F97D10001C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=psXGNg6g;
+	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772035506;
+	s=arc-20220608; t=1772035509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a2j64OZq+XWnWM49sQ5sWsWYMhDm7zk27Ebe/2YgfW8=;
-	b=KyPlqpWx2dlXHmq0YM2gzJR36n24XOcYeagJom+ilEevzh0PiC5qttzw8hvxz/MZRusJYw
-	wqZY+8Y4kVapF3LFmLey8j56dHlhRfJT7eypnkQ1gDnC1lfeTVwi9VgJKIFS5+ej4JJzAl
-	qvbGmfwbdBI3JJ/jd4LtJqd51CRQ06c=
+	bh=w2mHEadrI82HevMOqzNsydbPuFfL3JspAsXzk7QxJzo=;
+	b=quP8wTtOexCJUAK+QFie6o0Rapuv/n8uZ0VPn1cfZEu+8+JWPeFaHaID8wudOspc5IaPhr
+	nKd225e58bFLBScjPHDoA8WxpeAFWBNxiJ1uYaba4dPlVBFP4DX9uBnIypat5GzXhPGyZK
+	pSOTR8x45Ns6ZZru6VwIJbshHU5lyQk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJpCmMSi;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035506; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=psXGNg6g;
+	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035509; a=rsa-sha256;
 	cv=none;
-	b=3a8v76RVTZqoInAoHkByL5H4u7R7HOgXmSAVEW8SMCOo6An/iYIoeso/R2VrgP8PKseZgM
-	gZQNAC9iw3eYM5PfvIYr98fQ0j70myA22n1ZogYsNS43hQtxkDs83eLNEcAX8PwHTBA6U3
-	3dRAohWntuPL1GWNIpBPKfeE6UuftEQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A862A43A09;
-	Wed, 25 Feb 2026 16:05:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5A6C116D0;
-	Wed, 25 Feb 2026 16:05:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772035504;
-	bh=6cBj+Nps6gZCDh175QMBhnUiCqnkZzeVhurQ5HBT2ak=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aJpCmMSiyPeO4MPY5gwI9uFlCabMc/1yNENpczauCzT0QwiuYQlJmIRQFOEpksinJ
-	 IvoneyPH9CZV8jeMETGLxPY89iABSsjKDa3flLHDjfsroYhyrPix91bAX/WAbzLgZM
-	 kd/O/VBGATz10mlXOwKx8sSTiuqp1XEHlFWQIgUqLTxKW35fJX+qnVR4wtPNr6zU1T
-	 o3lhqdb3nPgolh+cGBPibLhsl7wqcbCRNL1+HW516okEraPlfkklM/8/6QGpdSYPNi
-	 4cojZMILi0iWPXYbLV7DoRvSBsdFPLT01awtP+wDmtI7vHJ+R5wGQBMgvVAlucJ1OQ
-	 fmDQeX1GnUEpA==
-Message-ID: <0d4f253f-6e92-4aec-9df1-e668b457d362@kernel.org>
-Date: Wed, 25 Feb 2026 17:04:59 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	b=22hl6wlEopHgst/JzAYB/jp596BiCBJ+7fSUBwlEk2vzqtP5hNeFrTjG/nJEtK1dxkrB3w
+	V4Y/eoppRwqLYqixcKh3ibxCxcSWgwHEGWQC8yw2+QFaS9ZXlqj9xgESLfkmx3eK4qujvT
+	joukh8oAobaK/CpihF9pUIjxlmdtrPs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=w2mHEadrI82HevMOqzNsydbPuFfL3JspAsXzk7QxJzo=; b=psXGNg6g61/oc6WQCvMVMCNhlW
+	3A9Yrcb4Am0HNGEvdPaEBgNrUXC5I+rl6pVamJKW4QoHB4Seq/37+igO7VVBTFCGvSvsyB/bud0Xm
+	bn3pjm7CG2jQIymlbKrjsgSoy9bFqtovRFC6dLF4TWQeQjbXFq7t8lF1GgqVVS66a6/tTJinsZLkS
+	Jou+WpE7fL6DAOFGeeNaU5R4yjlrdC15Gi9ZKExrs45vYY4U1r4DhOcCd4xc5KOMM/z8HdcDsoGte
+	HLuKPN3rkMbeucb+NqJ1heauPS75JmW2H/bJPqKqYzasEpybXRBjc5KU6PbMaO+5Y0WtTSg2gDsSC
+	yjPGunKA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvHNq-00000001Iny-2zuo;
+	Wed, 25 Feb 2026 16:05:06 +0000
+Date: Wed, 25 Feb 2026 16:05:06 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
  __pagetable_ctor() and pagetable_dtor()"
-To: Axel Rasmussen <axelrasmussen@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-ID: <aZ8dsnqAsAcGE34o@casper.infradead.org>
 References: <20260225002434.2953895-1-axelrasmussen@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260225002434.2953895-1-axelrasmussen@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <aZ8dasxUYuuWF9M1@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ8dasxUYuuWF9M1@casper.infradead.org>
+X-Stat-Signature: am1gtn66mth9nrwc1sbc4mo6xanyccho
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D667418000E
-X-Stat-Signature: dosbh5hepfeyf6ktxy8k7o4iqba6fzzj
-X-HE-Tag: 1772035505-774607
-X-HE-Meta: U2FsdGVkX18DfVJyDkMaUOdBPaPCpROZv39+5JGZFGCpW7vcjph3SogRgqWa0s+VWGlW10VC9ZiRloqb1LoBgM9/wGviQfW+18VVC+MzC8Xet5LgI6s672P1mpl67e3kA7tXdSU4JgTPaYDsPzJDdZyscxK2TrXs4wN8vw7ayuNwyCWY1cPQSLH6HOHrMX1Wf9mPjYHpEDc7SKGlaxIDMAYBDXQD8tbfXqE/VqrPxG3kFPVirocvbTh5YtWOT4op5p1lZvdyN/THH/ihj8CUlU9WO19aIbXuts5yN2NhBX7/vRo3mPG/Zklby06i2qiCKygTppcVbUVBjy04bTPgLPQMqr/FZtqxW4wXZQBBIEoMmXfsxP7p69Vr5wFzA5xDPDyAWjvdtChcdPMyvmIhOm8lfaLVm6XDlvkocfewKcoDnvsj9/anqfoG3OPvqKd/76vMhJsh3sgeE5xRrEG7hI1mwLCcGQDtcsQDV+8hFW0r7tQCYLfLZj9m4H7wnkkgRPcttKo4Zi77SUY0y9qUK8KspsypEWrGAV6FrA49njLae/+P2jfjCGY3zmtK+tra+VnFYDouRgaIk5bwuaHUMusKoYLNNz3zTVDZSQN4+wpPT32uxNA3SXvmf2Hur9QmXz8ta7qKHydbJXgnduO9tYIY8anz4oJ4Wg/OB5L4uH8GDOQ2C33IcLW9gsQ8ORj9lrLoEYsYoxCLs7XUWT7sEkG/Nl3hxXuwGWIet8yWT3jdY71kE4GVHzhvmGH8iCEFGM5W01KNgBH7AuuDEksVVWZGCwA2B9vgyhZUUtf0vKL2GycJc4KC+xh1XrcFUgU3RkoDSN90ComqO4xpSRDE808dv2dAsIPgF44GQXVI4O/VKwCxfQI0stTwQAnX0jzQkLoLWGwQUSbe38LM9+XcxFuYZWlbhvg8UcwGx/M0mQNMJJnzaA+bs6ivkrkxsL+ex65PCvXn5oUgxf9cSDR
- aJjDmG/e
- Ide08CYgHfPtd7TpbZDO3UXF3aSWNZjT9DTCp1OvPkTRk5juRcT8jmGur/f2CB+B5VKUAJwefdkcPn1zTgtBql81CagifsO2NuEFuUXzMbAPvFGx7q3dl3pRLeRzXKfMi6UeAiN2RmatUcSXsVmfPNslTix+wy+U6WyEZ9Qvt0d8eMupQLuwTqdezjeuoGhYzCqHU713WM6okXPB95ttXdLBfeh/bWdq3Oomq3cPA6MGNEVZOMkD7RDQNM+n6VNs+juksIhkWYI+LOHeYGOhdqv00VdS2FJ+kbRo83XiSS5GQpEZL3yqSNylHSQKrEYUZuoU+TPBmRT02bstTGZw8/yqq1XlCPCRS/LJ2vyuDMasoN4PF/8VHQZV9I0pPN1e0/1eL
+X-Rspamd-Queue-Id: 7F97D10001C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772035509-489192
+X-HE-Meta: U2FsdGVkX1/uspBp6qLZva5JeOtaYGjLGVZmPA/kVKytu3QWfTImWVQUNmJ8POFpEQslyWwN0015/Csz3TnVllgoSa7N+K31vf0GnRTkhjmkXH68/xZOgJkzNlP52LiO8Z/oOk4YpQJ9X7Y4ECEBg0jf6LSVsVX+INzRdAuMrFag93hoJ/RrawsQ+u0E/wdxJW4kpgwMwwGxmMLOneeuvP9YnQq3QGKYO9weZ8BP5MuW9gzfa0G/EV8ALjUeqGBOBEyrZoW70SxQeRQe68OIb3PwQ5o1IOzjhkhK8hEmbnGB5M88dxb9h16fRi6ApTbI+DjLQBYp+qeT+33Cq83XsXDgv5P30o4YMMkFOydyDpG7Nm7GJB4GJ3StouReo2CyUaF9xCE5zPBxb3j/iK9ZJzKXFHxNHr5H79n7OV2BHdEzUqXAAjd4MMria301ZO+eCAj7IdrgNNL/9EwAOKCP5x0vuYkaKFw6A2lh7Q5jRzHN7gw1XH5EHS/VDZNRKgqcyiAjE6yqXGRp3lXq0Jb8XyWvgwlse1Pq5K24BLrR3AjVaie1jGbd34Tf9PkHwpr1rW9hYq6X2WnGarQK53TUAKG3FK8sXqNA/gUbDa52SAVo0BXz2+Av5tTutZKPdB69IEt2/9WI0zgO0fwVjA5FLj8V5p7G+oka5GowPqK8Wgb/hDIZCx8SzGMdRXQ1MM5VxhHZmkivjilXxv5auTDvA8WjYeLzkD7MX7EkOZn1BHytClBGK48qXWzhCmUXcduS4lHaFNtKaiYVk7zD5FD6Y2zdwD83tEzKHh/oy4juGWZA2mCjl+uQ/jiUw3P0yHLisTNbF/3UFY+Q/VEMIUGmXyf+xk6Ty1ZOtWKMA6cQI8C6uC8OSoi8fgLEn8jAoQpNgKmEyHL0gY9J07UIXC70Wu7E8iP0gn4cMAVDId9RlBpI/NBW0OqxEhtb21jbJ/2ONu23PTGC/fcy7B68v+D
+ OxAaCbo3
+ RnQxMsnOA6JlvwpfkjJe7zUBHubQte12YnW3Cnfgj5+t+6q1nkUjULa+PedUOhNRlXyvkJ90zCeXZkq8yibYJMC0iVggrO5hHsW0Y1LQCtbi2gRE4GE17oOM8i0UH4asJKHuU91aHrnhsx1wxw9eXmqgth576P99F5wcV0lD1R/AWo4W4fYKVXGWoeh68HwOuJYATU/9ulyX9RckH+UqFzix3ppm/XY4CWb3FrHdLuaqM9Zdf+8XladN1aKbfS7o/S+AE19wAG96keiYU2rgyU2pg0gIDht2Lb85Jh4IRKDVgEB+nF/BZV0D9gltZ0sAh+VhbNjT9d3tlGVRfhckn7Hx81w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,92 +96,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 01:24, Axel Rasmussen wrote:
-> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
-> But, these two APIs are not interchangeable: the lruvec version also
-> increments memcg stats, in addition to "global" pgdat stats.
+On Wed, Feb 25, 2026 at 04:03:54PM +0000, Matthew Wilcox wrote:
+> On Tue, Feb 24, 2026 at 04:24:34PM -0800, Axel Rasmussen wrote:
+> > This change swapped out mod_node_page_state for lruvec_stat_add_folio.
+> > But, these two APIs are not interchangeable: the lruvec version also
+> > increments memcg stats, in addition to "global" pgdat stats.
+> > 
+> > So after this change, the "pagetables" memcg stat in memory.stat always
+> > yields "0", which is a userspace visible regression.
+> > 
+> > I tried to look for a refactor where we add a variant of
+> > lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
+> > folio, to try to adhere to the spirit of the original patch. But at the
+> > end of the day this just means we have to call
+> > folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
+> > accomplish much.
 > 
-> So after this change, the "pagetables" memcg stat in memory.stat always
-> yields "0", which is a userspace visible regression.
-
-Argh, missed that these page tables are charged.
-
+> Thank you!  I hadn't been able to get a straight answer on this before.
 > 
-> I tried to look for a refactor where we add a variant of
-> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
-> folio, to try to adhere to the spirit of the original patch. But at the
-> end of the day this just means we have to call
-> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
-> accomplish much.
-
-The goal of the original patch is obviously to get rid of any folio
-references in ptdesc code.
-
-But if these ptdesc are charged, then we'd also need long-term a
-ptdesc->memcg_data.
-
-For now we could still go through page->memcg_data, to avoid going
-through the folio.
-
-But that requires some work, so likely we should just directly enlighten
-ptdesc to have memcg_data.
-
-Agreed that, as a quick fix, reverting the commit might be best.
-
-But let's wait a bit whether Willy has a comment.
-
+> You're right that there's no good function to call, but that just means
+> we need to make one.  The principle here is that (eventually) different
+> memdescs don't need to know about each other.  Obviously we're not there
+> yet, but we can start disentangling them by not casting ptdescs back to
+> folios (even though they're created that way).
 > 
-> This regression is visible in master as well as 6.18 stable, so CC
-> stable too.
-> 
-> Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-> ---
->  include/linux/mm.h | 17 ++++++-----------
->  1 file changed, 6 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 5be3d8a8f806..abb4963c1f06 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3514,26 +3514,21 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
->  static inline void ptlock_free(struct ptdesc *ptdesc) {}
->  #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->  
-> -static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
-> -{
-> -	return compound_nr(ptdesc_page(ptdesc));
-> -}
-> -
->  static inline void __pagetable_ctor(struct ptdesc *ptdesc)
->  {
-> -	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
-> +	struct folio *folio = ptdesc_folio(ptdesc);
->  
-> -	__SetPageTable(ptdesc_page(ptdesc));
-> -	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
-> +	__folio_set_pgtable(folio);
-> +	lruvec_stat_add_folio(folio, NR_PAGETABLE);
->  }
->  
->  static inline void pagetable_dtor(struct ptdesc *ptdesc)
->  {
-> -	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
-> +	struct folio *folio = ptdesc_folio(ptdesc);
->  
->  	ptlock_free(ptdesc);
-> -	__ClearPageTable(ptdesc_page(ptdesc));
-> -	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
-> +	__folio_clear_pgtable(folio);
-> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
->  }
->  
->  static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+> Here's three patches smooshed together; I have them separately and I'll
+> post them soon.
 
+Argh, fatfingered the inclusion and ended up sending ...
 
--- 
-Cheers,
-
-David
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5be3d8a8f806..34bc6f00ed7b 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3519,21 +3519,32 @@ static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+ 	return compound_nr(ptdesc_page(ptdesc));
+ }
+ 
++static inline struct mem_cgroup *pagetable_memcg(const struct ptdesc *ptdesc)
++{
++#ifdef CONFIG_MEMCG
++	return ptdesc->pt_memcg;
++#else
++	return NULL;
++#endif
++}
++
+ static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+ {
+ 	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
++	struct mem_cgroup *memcg = pagetable_memcg(ptdesc);
+ 
+ 	__SetPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
++	memcg_stat_mod(memcg, pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
+ }
+ 
+ static inline void pagetable_dtor(struct ptdesc *ptdesc)
+ {
+ 	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
++	struct mem_cgroup *memcg = pagetable_memcg(ptdesc);
+ 
+ 	ptlock_free(ptdesc);
+ 	__ClearPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
++	memcg_stat_mod(memcg, pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+ }
+ 
+ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 3cc8ae722886..e9b1da04938a 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -564,7 +564,7 @@ FOLIO_MATCH(compound_head, _head_3);
+  * @ptl:              Lock for the page table.
+  * @__page_type:      Same as page->page_type. Unused for page tables.
+  * @__page_refcount:  Same as page refcount.
+- * @pt_memcg_data:    Memcg data. Tracked for page tables here.
++ * @pt_memcg:         Memcg that this page table belongs to.
+  *
+  * This struct overlays struct page for now. Do not modify without a good
+  * understanding of the issues.
+@@ -602,7 +602,7 @@ struct ptdesc {
+ 	unsigned int __page_type;
+ 	atomic_t __page_refcount;
+ #ifdef CONFIG_MEMCG
+-	unsigned long pt_memcg_data;
++	struct mem_cgroup *pt_memcg;
+ #endif
+ };
+ 
+@@ -617,7 +617,7 @@ TABLE_MATCH(rcu_head, pt_rcu_head);
+ TABLE_MATCH(page_type, __page_type);
+ TABLE_MATCH(_refcount, __page_refcount);
+ #ifdef CONFIG_MEMCG
+-TABLE_MATCH(memcg_data, pt_memcg_data);
++TABLE_MATCH(memcg_data, pt_memcg);
+ #endif
+ #undef TABLE_MATCH
+ static_assert(sizeof(struct ptdesc) <= sizeof(struct page));
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..0da38ea25c97 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -518,7 +518,8 @@ static inline const char *vm_event_name(enum vm_event_item item)
+ 
+ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 			int val);
+-
++void memcg_stat_mod(struct mem_cgroup *memcg, pg_data_t *pgdat,
++		enum node_stat_item idx, long val);
+ void lruvec_stat_mod_folio(struct folio *folio,
+ 			     enum node_stat_item idx, int val);
+ 
+@@ -536,6 +537,12 @@ static inline void mod_lruvec_state(struct lruvec *lruvec,
+ 	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
+ }
+ 
++static inline void memcg_stat_mod(struct mem_cgroup *memcg, pg_data_t *pgdat,
++		enum node_stat_item idx, long val)
++{
++	mod_node_page_state(pgdat, idx, val);
++}
++
+ static inline void lruvec_stat_mod_folio(struct folio *folio,
+ 					 enum node_stat_item idx, int val)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a52da3a5e4fd..8d9e4a42aecf 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -787,24 +787,27 @@ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 		mod_memcg_lruvec_state(lruvec, idx, val);
+ }
+ 
++void memcg_stat_mod(struct mem_cgroup *memcg, pg_data_t *pgdat,
++		enum node_stat_item idx, long val)
++{
++	/* Untracked pages have no memcg, no lruvec. Update only the node */
++	if (!memcg) {
++		mod_node_page_state(pgdat, idx, val);
++	} else {
++		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
++		mod_lruvec_state(lruvec, idx, val);
++	}
++}
++
+ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ 			     int val)
+ {
+ 	struct mem_cgroup *memcg;
+ 	pg_data_t *pgdat = folio_pgdat(folio);
+-	struct lruvec *lruvec;
+ 
+ 	rcu_read_lock();
+ 	memcg = folio_memcg(folio);
+-	/* Untracked pages have no memcg, no lruvec. Update only the node */
+-	if (!memcg) {
+-		rcu_read_unlock();
+-		mod_node_page_state(pgdat, idx, val);
+-		return;
+-	}
+-
+-	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-	mod_lruvec_state(lruvec, idx, val);
++	memcg_stat_mod(memcg, pgdat, idx, val);
+ 	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL(lruvec_stat_mod_folio);
+@@ -812,24 +815,9 @@ EXPORT_SYMBOL(lruvec_stat_mod_folio);
+ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+ {
+ 	pg_data_t *pgdat = page_pgdat(virt_to_page(p));
+-	struct mem_cgroup *memcg;
+-	struct lruvec *lruvec;
+ 
+ 	rcu_read_lock();
+-	memcg = mem_cgroup_from_virt(p);
+-
+-	/*
+-	 * Untracked pages have no memcg, no lruvec. Update only the
+-	 * node. If we reparent the slab objects to the root memcg,
+-	 * when we free the slab object, we need to update the per-memcg
+-	 * vmstats to keep it correct for the root memcg.
+-	 */
+-	if (!memcg) {
+-		mod_node_page_state(pgdat, idx, val);
+-	} else {
+-		lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-		mod_lruvec_state(lruvec, idx, val);
+-	}
++	memcg_stat_mod(mem_cgroup_from_virt(p), pgdat, idx, val);
+ 	rcu_read_unlock();
+ }
+ 
 
