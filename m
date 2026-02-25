@@ -4,143 +4,240 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E1FEEFD207
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:38:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5291EFD209
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:41:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44F026B008A; Wed, 25 Feb 2026 03:38:17 -0500 (EST)
+	id 051F76B0088; Wed, 25 Feb 2026 03:41:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 430546B009F; Wed, 25 Feb 2026 03:38:17 -0500 (EST)
+	id F3EA06B00C3; Wed, 25 Feb 2026 03:41:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3332A6B00A1; Wed, 25 Feb 2026 03:38:17 -0500 (EST)
+	id DE86C6B00D6; Wed, 25 Feb 2026 03:41:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F67A6B008A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:38:17 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C0FBA58613
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:38:16 +0000 (UTC)
-X-FDA: 84482326992.24.0636EE1
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DA29940009
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:38:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kwBBPtyp;
-	spf=pass (imf12.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772008694;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C393D6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:41:33 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C842B7C79
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:41:33 +0000 (UTC)
+X-FDA: 84482335266.08.C77B40B
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf05.hostedemail.com (Postfix) with ESMTP id F250A10000E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:41:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=i+SuTLwg;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aukEtDKV;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772008890; a=rsa-sha256;
+	cv=pass;
+	b=q0v81neHbF88IQ/VBZI1XDkghH+M5w83BSwuRxX/t3BustLLmJgXKmbDu87Je90lN9tUL5
+	UR9sqAYV4UNVWJ2sl35VOQXh0fx9grKGCpDGF3Xde2svW56G9+aMw80eq6u6b5gEV+IGuc
+	7nUPy+hL2IZY9hyWpZQ5bp33bQJZnHg=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=i+SuTLwg;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aukEtDKV;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772008890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=euz76pxATmJYev+UEaMjSj8YYGXQ5aYbA3uegrgN/Es=;
-	b=VGmhfjW5OvnVobfi47QNv6CQEEUO/nVS6NRpN5gCOQJWBzn3n3/vUsWJJRNW+1NQVOPRxL
-	SrJ7gai4ZzxzoNlQR2le6qsaBHgcQ0MpOezvtNiEV4/2Wkv72UppmB6Qb+nOJyjECgx4T9
-	oQRdUD1k5Vw4w++Tmxvpry1UjgyuO/8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kwBBPtyp;
-	spf=pass (imf12.hostedemail.com: domain of praan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772008695; a=rsa-sha256;
-	cv=none;
-	b=qUBrvCKiMP9/ddhbtnF8hbRvpCG/TDYzSdojZV4lXPufS28eyhczha+XlZgzZiplxe4hDo
-	CH/CNKhP2mPWNkXZMTwrbTgGxtOqrNer/1vV8fmccPcmKIl6HK9mHasyxkITPp+xWA9Ck7
-	uDONaOj1mt8Rtcp37GdYXm0XjLTzuew=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aad8123335so61815ad.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:38:14 -0800 (PST)
+	bh=5ZX4MsMGElTrw096uDA+hLLYyJ3zddFOi1GUincnDjQ=;
+	b=3QAEZdrTDIGr7ammtUCTxc60JCXOsa0QtpbqCaZMIJULvkbKosAAH8nA9//Q+vurJ7ze1s
+	TbTQ73PTtpzQcllkaSVsAiPNFcpL0UuFzI6Fh1LvXlaSsXP4mbCfT5vaCrvFdrW0uzhF6T
+	z3V8KdpYYPkXz7I6AarH3IoU6BIJPhs=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OItvfl369223;
+	Wed, 25 Feb 2026 08:41:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=5ZX4MsMGElTrw096uD
+	A+hLLYyJ3zddFOi1GUincnDjQ=; b=i+SuTLwgvdznb5N2mFJE8xTw7uk/CT5M3T
+	ESaUE6pJJAgwq+2iuP8clP02nOvcOHtriNhY+/1ZQI1JIBja27VmfCIY8gBtXTeM
+	5tcvVNCV64X6wsNGv+EorGumbcsK8+YScZvbPkwncyJ9dotPYgDaa4Vnp5vBIPl6
+	qVQ+r36HdZxG2+fQY9TepOArhCFR410iVSD6mWp2PQmcv60cNtkOqA0ALS7jyesp
+	xpSE0GC3MI5EFPoI/uETrVvuC7PSy5tJy8cAECwqyfDVpkzCyAIGNUfx36oCR3R+
+	GkjMiOlYPT0YajnVoZrhWiQ6AVydm5JEKleWE84zL6OUz2EjQI1Q==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf4k5wp7v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Feb 2026 08:41:26 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7PwfW028463;
+	Wed, 25 Feb 2026 08:41:25 GMT
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010031.outbound.protection.outlook.com [52.101.61.31])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35at7k8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Feb 2026 08:41:25 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m3kaI1YyUENmASJED4WKxcmz79+6MZES2/zsvfspkgeDlQvsZZiggAT1+LbIhZLATb4PYHwY5pdSD9CGM7ZEPyV2wEBN4x+EqaSsb+DVeGNlyiw6CPgv/10he7B9SunSvA8/c1pS4fQoJOElS+rmLzegCpntagYJ7tA0lPYNkj6s7l2SoGQMsWNlcKoBqGP2CBOdP+1F1NHCh69DUTfpK7r/McfcoJOjU4JULoOszow/XeucWEDM5PUhNyx6HA8UOtDw36S4rNLmwRRwkmJeXGbQPtW3z7TD14BhJuHP++qqV8jBCDOFthXAmlRM2cHtMGttZzpHBuyD8tg6AIU8QQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5ZX4MsMGElTrw096uDA+hLLYyJ3zddFOi1GUincnDjQ=;
+ b=c8hU+LSIAb07hp7I5Rm/zMm5dBSgALLLu6rPQTkUa6eb0f7PW8zyPECdqDaIPuWExUlsQ0hwYD3zA1elbWU6GZJkvQJZBHGBoE44CFrhuFkLQin5uJ6d2JVrMt9JkyHcrhDdjTzAq/R6jMXNiHyC92SvcHv2DBBOTnYt508xIgFnEvIBT8BP2TbfdFgLxuTCDQEEBz91GjIR0Sx9cAAGy0eyhb60p2Lc9kRvU4eMDF24f2u9H7uRNg0w10m8VVfbBi7IDIZa1mU9si9Idaieg/FKARIgpGzIUcFHqP+7k3WrLdJ8H8LAZWdaXWvEGK/xD5hcAtaSOsjERX//0Hqg6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772008694; x=1772613494; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=euz76pxATmJYev+UEaMjSj8YYGXQ5aYbA3uegrgN/Es=;
-        b=kwBBPtyp6SRTYLmObsRb4H+UIBOM1XLiXk0E2Q1ZTD6hwuXDT2/Q1uIUJcPeyJgKV4
-         uREmMQfTFKU8Kao67cbIfEf36eYkWTi593WmrkkXqhMppfabWw6eEIn0XQW39XAuFDh+
-         O2/2x+QbPj6rJzUOQ1Cw2okYG0g/Y2gwxIdyavsQreoFZgjdajojRG0ZX0Wst5prsMBi
-         buzI2HAdUXGgWySUWUezgjB3rws8AKiCZhhCy47PshvB35/HP51LdTLT5xKHgfUGSyKx
-         0aiU2ApKqRon5jtiatHpwR3dUpHMBxV03Y+b6FOmUV9CggO1bO9zqTI3/W/wARToONIx
-         Dr2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772008694; x=1772613494;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=euz76pxATmJYev+UEaMjSj8YYGXQ5aYbA3uegrgN/Es=;
-        b=HrFtANxEcU/OJ/ERhcX0NjnV+TBFRKAW+k5ZAGQfxQh9DJ8qqOhb3ciJtJbd94jP4c
-         9vAv8mvgc4UH/2dvnSbchJGf/PeUwF/lbQeC2vtpSjxfwcLtSIGklMP1NzRHMu0vEY6Z
-         GOiwZPBAaWvOS1y4FJIQO5A7CUFmxVGSXBI0U5VfvlIjyXa+pB/nr4mLsF1dVUMLDJPX
-         p9c++FgHVf+Jxu+q3H8gCQjcvWbxV6VSq/ka85OfzcJXE1+ym7wXPleYLkDrPT3B2QJr
-         XHykpuxC8MR427GagPBUDlrYEPbWMlGNxi67HvIFbfp2LVi5xk8smO5E0W+l+bmjm3lc
-         kCTg==
-X-Forwarded-Encrypted: i=1; AJvYcCU1UpHAu2aRIcJQkLFvWLPcJD38cX1NIVzJEBwTymjioDQkycT9pfuDsqsk/eZI+/XrC+c76qM29Q==@kvack.org
-X-Gm-Message-State: AOJu0YyFkP2+j/z9aTirQKIHZyMbAuVPBJ4iyDKNLeeWSdvV2rIwFVJQ
-	ux7tJb6wUGEJQVz4FVqTHpT4VGPVzbrODOES128ushZK/WGbEcNtUC5/j0va1irgZg==
-X-Gm-Gg: ATEYQzxuWJhtK8UZn2goYJCn0qR75cLDY/UJZGYbYMqbLLVXlAof8QZTbt/B7VQRB3c
-	Wt2d/t6334eqeT1Ty8jqWS55FU+t/zExxCUAU3GZTUzuFIPFDlTTEl+g7QbY6BHY6DbzSSNocfF
-	jjNerRzh6SUCMB3GSqS8RrQ7+LIy2qG6jcp9SUO4RJJPSZnrIxBFZt5GcDf7HATfnN+fnM2i9Sk
-	bgWBMMPVpJBWhHvCoHt4KwTrucTHkaePbZoi6aY+vzemXWSxRh1KA4AQwXX/lmYcmEMHLjpw2cx
-	AAGTNW5E3yRnJkMIP0+vP36pjl2IQN+ynk4uSYOKRhGnABmCbGRh76Ixp0CnbhUrgmAcLGiBvRh
-	EEz0QrDG0o2tgHlyUlllF1rjJmTnR7NojsntO70QXAP/vovs8lzdg8c4ktdO8aVH/roQ1BQP/qc
-	aApdYUCEqeRl5EkHvpRN9+8cVRgCizvoiUO9UKoIbfGxh+A57/dZvaqTwko019
-X-Received: by 2002:a17:902:ea02:b0:291:6858:ee60 with SMTP id d9443c01a7336-2adca6c8a9fmr1402215ad.4.1772008693092;
-        Wed, 25 Feb 2026 00:38:13 -0800 (PST)
-Received: from google.com (222.245.187.35.bc.googleusercontent.com. [35.187.245.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd6c30dfsm13034861b3a.27.2026.02.25.00.38.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 00:38:12 -0800 (PST)
-Date: Wed, 25 Feb 2026 08:38:02 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 09/22] vfio/pci: Store incoming Live Update state in
- struct vfio_pci_core_device
-Message-ID: <aZ606sDJxtfNF6qW@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-10-dmatlack@google.com>
-MIME-Version: 1.0
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5ZX4MsMGElTrw096uDA+hLLYyJ3zddFOi1GUincnDjQ=;
+ b=aukEtDKV4WMbCLJxa1Lr7XGrRAubDEe2WWBIM5NfVFIyU6A7xiPGKRifparFl8RM+Rod7g+3PVVzdClxo/YwzpuZf4tY8ojir0yMv7vhx1X26xIWvOaQmfDTpe4LRzELdtcZQuGQteSFCzPkVrdxW9ylxijQ1LhnyQJCJH7gwRk=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by SA7PR10MB997773.namprd10.prod.outlook.com (2603:10b6:806:4cf::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
+ 2026 08:41:23 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
+ 08:41:23 +0000
+Date: Wed, 25 Feb 2026 17:41:15 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Hao Li <hao.li@linux.dev>
+Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        surenb@google.com
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <aZ61qwplTCCapq3L@hyeyoo>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <aZ0wX_QuxNTxXHMj@hyeyoo>
+ <aZ1qRhIGDAR7d56r@fedora>
+ <qiqptuqsiaufeasf2xukfzoumiyoau3zfpokosn2amgc6zskc6@vl6ie2h2zj4m>
+ <aZ6cjpU36_EmXslf@hyeyoo>
+ <zn7q75k7u2mspvmspwiao6245kmaahti3kwagablp3advcx5ga@5d36ctyi2a35>
+ <aZ6ijXgDKj9D-kDm@hyeyoo>
+ <jcgdv46sngpfggq26x2f7oodqxlwqtiilcgjzdcwvbt3ovelpj@mwllshvzoeoz>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260129212510.967611-10-dmatlack@google.com>
-X-Stat-Signature: je7qecnjnxg6x9gw35urdbojfj1dc9um
-X-Rspamd-Server: rspam11
+In-Reply-To: <jcgdv46sngpfggq26x2f7oodqxlwqtiilcgjzdcwvbt3ovelpj@mwllshvzoeoz>
+X-ClientProxiedBy: SE2P216CA0183.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2ca::8) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA7PR10MB997773:EE_
+X-MS-Office365-Filtering-Correlation-Id: 020ab4a2-b1f6-443c-c93b-08de7449a7ff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?q/q10GnzOviv3nKwH2GnnFbgqEJpT/N+JHRibnvszzHy1o8mcFGqgGkMVq+D?=
+ =?us-ascii?Q?P/rEih4+p9LjtmvSM+vBZ4i8avYtix+zmKUwfihhpq/M794Y37iU3K8t5WCi?=
+ =?us-ascii?Q?6FUq3aW4CCEPUW0eRo3smnQKRLblhVKQooXFHbVd38M/d/GPh5kQUyU2Bw9B?=
+ =?us-ascii?Q?HmGvMI0AegcblKNWrVJty1mAW3qaIM4L0RQbxcCPGbawkemp8VQ+KTAMd40b?=
+ =?us-ascii?Q?tHH3foUx4bBRfkNF1b4XiebwQe5NMAv01agYQ/rGFw6K8DZ9URtPaeyd7crS?=
+ =?us-ascii?Q?6zb67xREwtLnUrM3++OlGxVDu3WhqHdJYM129OobvZ04XtHMbDq/pjYCnaFJ?=
+ =?us-ascii?Q?4Rxs1yPybI17EppnIPD3PW2eoPdP9qTb1oBaI4B0iFQqMuifcEf++x1v3m1W?=
+ =?us-ascii?Q?ITHgzrlHAWl8XuQBaqabPmVkMKA4HxrwbL33Pvls1n561z2CqmAkUZ4ypb9/?=
+ =?us-ascii?Q?vPbPYQCX947THEnhrdrAxDFWDVRi6HpWtFO03PgjfrNJcjhH8VZXQmPgEkG2?=
+ =?us-ascii?Q?YKGCljhdZ+bwb22g2aqDVMU4IR5RhJAoneRDFH1uPimAEuZZ/bAr2fK0JL9D?=
+ =?us-ascii?Q?Dbv+BjfDroPbNG1BHTXmNTptFcUzeaFNtUCD2pI0AziUMMX4zSZxyoG7DirD?=
+ =?us-ascii?Q?L7TghBuXeuQws2y0/8kD5EGRPDv3rm8moWWsZeXdGgf5lX/IZveJE+kLE0yb?=
+ =?us-ascii?Q?XXwpnU2c1BlZk8RxkD6zDneBVWRQIId6MMcqjOwFmXbuNMzEU4+aoonZbVsT?=
+ =?us-ascii?Q?Hrfl1YW6L7ykkLI6sfAyk8JzP9bwPZ8OnOJmH9F423XrmHS1yflnUiJwN83m?=
+ =?us-ascii?Q?QlRGqe2Nk5rwma5Q35h+ACXdTwcUEVnSqfM9WrlKeI0YMHLeThMctjWKw4BE?=
+ =?us-ascii?Q?Qk/RLVkTmKovRCKEsQr9fltP0To7N+28hqCS6YhgYgOuztu5G2h5RXXno/Wm?=
+ =?us-ascii?Q?O3CmX2ozykAYHtVOZq42oCacINQC8rOg5o77Is2s+DVGn+2A8HeuH7Ba1H1g?=
+ =?us-ascii?Q?/aS8jOcTKdNyYJu5E8+9eqqt7Xl9CLog3FwF/xr8V1hZ0c5Uq/Im2l9N3ly5?=
+ =?us-ascii?Q?sLBfko9fxkuzl/s4GLXJDdpJoUf0AEMbK3vI2zzGr20xXCR6pbP3yJZDfVYD?=
+ =?us-ascii?Q?rwTa1knmOHIzAEsmsyr9WO0RgVy0obh7vjaxDjZbZZYdSzUhWqv6c/ewJM8J?=
+ =?us-ascii?Q?LejmmXo5m2eFaV9N21aWUg/3LLXtkvfM+T3qfRHgicKw11+GfCWO+4/Hfhr3?=
+ =?us-ascii?Q?w1cBMzb4zJghzsIHl4I7LRnMH2FjKu43jDWEkLLSG+UKs0Wq8+w2mftq3JbT?=
+ =?us-ascii?Q?Piq383eTRTOiU8XzEayK4XpNFqLWeH5SvmTHjygKoMn6yaWDFK6W/3+Z9bP9?=
+ =?us-ascii?Q?lQuO5FD3j/Ex0FX441/hlZc5UxNqFXDrWMmn8Bgkt/TRRDXjD66CfPsiEpIi?=
+ =?us-ascii?Q?F7F/9OnextybpdLbLWk+2Ky6+fyxpwU/FlHD9QZwEyLRQSsA7xke2e0hGwU8?=
+ =?us-ascii?Q?9I0fvvQdvP9CMGq6dRs3Ccpwu+gmodtVkx4oPncs48yswwnFd9wUTlrL7OcK?=
+ =?us-ascii?Q?UTJrHE4x9OgJ/wMO5tQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9FHY38WZsyQAnPzNspwgadNhOjnEtEpwQrFARLqgFbeM2Xn1Hcv56ojdZnmg?=
+ =?us-ascii?Q?sJ02RakKpX+27w8MCVnKeJrjNafrKpVYZbphzEWufsXgPfGvOKi1vo2JtKwr?=
+ =?us-ascii?Q?Bzi5cyHaHde0CyjuEiuPvOPzTXPuK+FLLFU/Ymg30uqidoGEKDf+4GCQjlgj?=
+ =?us-ascii?Q?2MJaS5d3nA+G03sSWWRMoYapR/DECYp6vKXSWi90OvxPk94d/WOTyat9MD4g?=
+ =?us-ascii?Q?q+vksArO23Gg2qFqOEtKvTOtuyA4roHxKM54i2kIO0OMXnMirp0kLgzcBcg1?=
+ =?us-ascii?Q?ZZxzoqr3XuBRJCPdc51FLzVB4bwaqnbQdQlalz7JjZDyFw74PjL9JMbaObh0?=
+ =?us-ascii?Q?SLyyb+HFQTFCRDZN4FjUFdoc/dXnuH1OtWs9w/IL7X8EDzCKwAoyk9hQM22/?=
+ =?us-ascii?Q?3ImNDj3f300XTG/mSFTUsp+CmL9aaQ6KXOntzj0S2F4rO/7dHLPvMMxG+LQK?=
+ =?us-ascii?Q?0v5ILyt8fEo6gSig1zXn2KlmVeEq1fqscHUIkbbTNGUCWOnpeJ7zvu0Mx8Id?=
+ =?us-ascii?Q?3jwic6AcPEac1p52Qa4ztk7FZ1yCbSL9j3NQTM5umg4tMA5z3w5cAKdlQuud?=
+ =?us-ascii?Q?q4mPQQugGG3ss0YltmiKkCexsCbOFhKk+9yv5csNOsmjMr2w3oOagBUOIk88?=
+ =?us-ascii?Q?Ogt5cO7uRI0T+bp1VAvcYhIPsseDxn3ZTR2AnZzh+ZRVWsHSG1GPVqn6ZGYX?=
+ =?us-ascii?Q?hjG3v/tUn2oenaPpsOHr+aZ0fmpDs2TS8rmnTXk6aHINGZS/uF/su+v1Df6o?=
+ =?us-ascii?Q?cL2xzfa7RvjnTlrcLHsO1H0qEq4HKicTIJDXN1QytWJb72uVi6+TpJJvEE/0?=
+ =?us-ascii?Q?LdvqEIxtuaB8hnL9PI9k2ygmR0zRSd6jVIjEdp3uSX/slnSRqx0yvW4jHj11?=
+ =?us-ascii?Q?whkXgaoYvErnTOrwODUFznyKpLDLIyFhzBkValKwYPATlJEQdqnCJOEp1beg?=
+ =?us-ascii?Q?EgrAVWlxMMIh7B/Qke1v7fBjAVtWsvM2i35PSf+Ml6ocAJQt0Yw5u7QMbxJ8?=
+ =?us-ascii?Q?h2tSTWlnmwi6w5Nky6Zh3Vzz7BKp4TLJb6s+6saAuDTN2mYTkv6FrLn+wFw/?=
+ =?us-ascii?Q?zX9e2I96pZufVE9B2cA+psSaWcZqIarpWJL7wzRsnkfJ8oxToME8cUl0kuYd?=
+ =?us-ascii?Q?bwNQeMWi8zSdzVyYX9xVmouF2SKXQVLJnhT9zptX+MbuEHTOePU3+HMHBUqJ?=
+ =?us-ascii?Q?qfFD8kwSnUnYOK0+/7dUXsX6JlqPiesBUQRbqNCPO0X/JKnHyUWK0fQyMnve?=
+ =?us-ascii?Q?5qFU2JLDJw8nrF8fvplFr3/r8oGKaYYar3St7XlVCrPUYo4yb3V73w+48ucK?=
+ =?us-ascii?Q?E69QgVkyBvsU5nuSRWpDJcmxmvSVP6e9ABr+BruR3q1ianIX/xUpt8Ixcj+G?=
+ =?us-ascii?Q?HUNO9o6ScgnavllMPLoTV+/wvJD5EAbuu37DaPOSBnM6vsiOBfZgXBB83fad?=
+ =?us-ascii?Q?U46rXRUMb6+KsRkGiIlBt7Y5lIeIoEpx6dezNzSIZaK3Z0f2hrid2IDIKm3h?=
+ =?us-ascii?Q?0wbSbwxM0+Sk4ee0Foy6hIDyRfGlI9XJyjvuabb82FcKA6BmEwno3RhkIoyy?=
+ =?us-ascii?Q?npPi4QpO/RuWG8WFCsDlYMgHvNo80RRlitGxm9BFx9xLRGGnDehiS1O+xYKb?=
+ =?us-ascii?Q?EjMR90tWhpTGHUsE1d/9+jiqaGTkaShE3Of2HXrE0XDG6Z/vLvNGX5jHYKJv?=
+ =?us-ascii?Q?O2LEa7PjxrzrN0AwMp3fVDeOb4VxzMaFLrc+MdeHnN91SR6nbIqho4xCzKYC?=
+ =?us-ascii?Q?xbSTsYPXhQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	g2wJT7WhQXy5SLku6dOjC/bgWpozIywOpO/IRMhZFKMmlnBXrj6ci6zO+SzIzFLo5kCAdraygSF3fdAxYQLgvqeghHX7IAC/S1UWzEOn9pZlJhXf4sXJexMi5Grv/aBG5U/hiYYmquyp07/lnXyL79YbbyTvhGCJ8f94x6SQIWKZOeBy4rCCrJcDiqpyRfCm0fcuaXjpgxwOZC07nAVxz3iO8gSL8ePlgXwtYjol5cjq82nlKARQIlQI56cpXLHyg901J7bu7wY9OE16tN9wwsx4kXlwkwi6u0E2QzDgeehJOv8LYC5hvV/fyg+NpersPZ7Icmm2yQyodNGSkoyGT7fbX4F71fk7TRFJ/yINPOHgf5oVENpz5F9mCqgMNppEV01kfW49+YxgRvAx9+FQkznlR8eVXnAJzpu9OwjxOmuCaGuSiPeiSIkHGzAJ4j9bh+93fvm+h3P6taAI2qxmbcV2DFQmNlYmeeIIXQnonbmX6/rO0hKBYAPjfrHqfJxuzCxTG8VTvkIRbdf9bpcB5eCXKHXsFdK2xqqD4b3xYjxHHZO5H5/cEcEGCrjf/tGcMAj334YXsYEvs7jW0fcWc39n/SQLpSRfx6EqWOGtI1E=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 020ab4a2-b1f6-443c-c93b-08de7449a7ff
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 08:41:23.4258
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OZ745vYJWljSdywfnMK8vnqqrSudfyzvD1qUgnPSJ/XOX3D+6qmt33sp01ZoeQUsZVuG8vmGDwf6fK0kxbgS9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA7PR10MB997773
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2602250084
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDA4NCBTYWx0ZWRfX/Xx9TiomeFW2
+ adx1LtQiAAmnbriVqRv2rgsGwZKeh5GwtevYOTyAVdZ5KD3oszg0+7jy2DNCjYOak8g6Y3dV+g1
+ vI3qJmg9xAXsPZpMs/D9aWzzcGMx3RhTFG8UbJ+0j/MMhoRm8aD5ohxCTCOoaHGJPUkTzuyxuz5
+ HDfvwyU7fWL7q4vGI1G0LouXCW7GhtEUPdVVav6WLK5x9y1GikMBEEE+M0wuXyThn1W0/pQfzMD
+ CDaZd5GD/LJndeNorhPq5UnMGUjoOmZeHb5hEyHlSqcELMvZAJE8F0moSeENTJvRCXpi1qnbJJc
+ AJNrOOAqy1YdaCf0uLcbxdcoGBOj8ljgacdVyDdJnWzzc1MKoFKrKKCR3vRA02EgZh4UzksHF2g
+ MFL/nJhk6ZXxA00+PV3aDpqdCxVr/TXHFhj0GlKL1xxCEhV3ejSccHqhImeVph0EfrB07C0a9Zb
+ spEEIr1S4Rq21EhWMvA==
+X-Proofpoint-GUID: ZqJJKLCSKVlOUoHwcckUas6c_DvUsDTt
+X-Authority-Analysis: v=2.4 cv=b9C/I9Gx c=1 sm=1 tr=0 ts=699eb5b6 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=07C2qf2vc5oDr3DVq9AA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: ZqJJKLCSKVlOUoHwcckUas6c_DvUsDTt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA29940009
-X-HE-Tag: 1772008694-664385
-X-HE-Meta: U2FsdGVkX19ArbkGabP+E/Pzrgs9R5zNYQoHxz/E22Ae8BUMKgi6+rZQ5NJTjYXNDqc541EJfileKkB6AgoHUSg0d6AxCwxciitibPT5o9UfpzPpYNeyqQMnr86nEcxYx0p7TQHXw4aooclsevUXZ+32VGDamyI4/c48JRdtbS0F+MAD4bVkOfGpsKMS7HPQfjJhXR1GRmz3fpL9y71xxgZL4q8Wo+xKLzo73y4JwIP9SmurfMJnuPT8dFrpL9QG+ti2dUNO80M+Vg5yDdqxWgAJE2/c7MzkQqFPxl+KUnZ8PevcTG6rVv+N1MMa3P0CifAqovUfTyVRy2vwfDnq7hnu7a2duIIYjAi2FW9CkdpzL8mHdHFPUBpKUPHYSNe/+Oc+jsP87CIyCMomdJQAVfThcGK5vUNlZwclOSV4IPXvoN+DmpAQPodtCbZ7aA612hYtx5Ar8vtYpOYig1UqBBtdxXRqr0wMzi4O4PSXarW/NckdHcVpYOanosZHsMrV1dgI2rShRyaRaiv2jwAYMtzmn5tAC3lrw0LsA5IrwcUWLBprQzTKgNoEWKIBDhq4mrJg8jFrGK1hWmmiKX6qiVPOxEof9Yn4DzvTNFxjCNUxKHPYZYv1XWiZb69zBXRvoaf9cODNGnBNu68iXYWdmOWBdN3bEOc6lth8C9OkM8KsgL/Kb19EQUaRd5HpRVBlA/8L0Gnowb362BmwGuZ+kHss0lhp0o1n441jYPNvA4G6aI1WQ8sCL0adWpMf+EUTuE1NZuX5VVeyVU/E758eAYd/Rtn0wfgrFb4T79BHGmKfix4iSsQo/P2+Cz0o0C7Oa3/ZSzH5NX5iW9loZJv5/sjl7GmeJyyceHUAQVwSWeY8Hwfh6Et2Lm0DTqIMgswcSWYSVFXUvsmIuYFdwIE0MaYUbQOD/xjp1pKZ1LLPMnWZDJnj0u1U09Ov5xv5z+P3FKU8Vs6WTk2yEmzSQJr
- n7VuFQQD
- rFQdwDut8OfrDVkz+81Zz3trQr0KEyaksrw63zMPjCMflWWQy2KqnYmIfBpLobRpaGOaBuviWvslIm8uKMatORBozQebvjhI/VHBlwOlH/KkMEwZoKTz5cyrql8YYW1JXySvwbzFaX4UbNwCFNIsczYbVbSvXSBTKf+YTdOCMJU5QU+YnPToJ/NT5JUADW4l8UvBJZBWs/Cl68s4lfwPzy3EuHIC/YoPFdxIIFvueKeX3+WJVXiYBKyBuzgZGQ8dLIYoH03LtbdWrVC/FGHY5ECyefi/ErHQlp3CIguUTT7YbHU/GgLUGgy/wLs+U6Wn6cw5kYhe7HXErsz5iDxekaPA54Y4Y0gNu5Ncx8xNbWR0n9F68o0jJ3Mw/+DA4cDmMiEXjdbATTH1zBbO/AJTgDzItjHoU2Kqbh2w0J09djkE0jZG7+jPpNHt6Igxg+s2Y8CKTn7/A02lbPE86ZThjxDwIVBYOLpdKWa5PcRnIcgROWtw=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F250A10000E
+X-Stat-Signature: zhkq7pmsqsntxu38rqbthp6iifx3uu5p
+X-HE-Tag: 1772008889-154475
+X-HE-Meta: U2FsdGVkX18mCxL1Z9pIK95Y74OzN84IaKcvqRDH7CNQQxHN3OZ3QZnROyHIktH+rdW/F8uaG81uoqT1aAVC5/8XVM/Oec89NLs6VpmRA4RQgvZk3u07hrCrjTsIdd+MGFC9lBnIf3C8+WDpp90WuuuAQ2AfLR/Gw5nJ6DDLERLL1s/SERywqtimpqYYhLZHXjPuAt8e23evcY/sqSq6/viYUyfsJ32/KdLzRGB6oeNzKc3eJ0eOjtvdCfAtDxiMgLtInoSTu8fG2urqiCy2gEDFFYPFrdCPpPCWY6r8f6bkNtA3nzGpLftoNiHwcOXzRtNKQ38lz39DqlFXlwD2aWlzlas21WR01P3SAm7bvut7Kp6enbuak314rj+qu6T9IKJf+MSGNkKlPtruhR9+x4u6QN6hita+FBudVOZGXwSIz8LGmDJOGLWjiATY72qDXumw+LQDhtJ0OfzzFTx6XToxp0yezcwKhGIJib7QoC6kGaH8pVc1K8o9fHuI8IV/jE62hxyzIeuKf+Ya9/lk5TU5AgfcDDAjskaHVOhOv3lpj3BTNGN2NKY6qSZO7ANX7buMQsNsa+5BczzYSUVU+RsihftgKxhAMr5d5H8po7WJ7i24xTXKHs6EDlWrFfF0Ul4Gl0r5rc7ebihl5KgfqRIOSYilos4KmteWRDL1LbAf4V+Bms5PAzl9bJW+TlvkOtRxEG3yxZcBhjZFTNO7xIwjtmMd8oX+jd+muF7lAd6kF6ySjwmwxsvBq8dSRWfdjeLqrBAvqk9DB9jNGm+w9ZZ/uZBAELdiwbCtA+pItQUDM7CD2xMzzOXcb70C0qMj/Yi5fbSmx8jMbACyW3ehNHry2w5LjxMiyBbGxrFa2VVnZLKGtX+cgHSc9ogTarAIe8rX1kqpLO/c8hqXMpoo1WqlAnSDER3Ox1NaATaHO6QVvzxcHy039S+HsrGPYXMER0d6r63xqAUoKnTgUNA
+ JpuPH1It
+ U9Br+Wzn6Du+lie+0tI/Fgl4AHO4rsJzBuH+1KxNDqHvIbzdE5hAc9JKSHBY/giQBVILhJpAQLvhlDcCrKQ7jg+DU01BlenoLfsKAZi7Te2xlrEw0FkBtq7QfqT5bpNAAWKX6OdfRDj3RAxrsDgeFkRmI7TAnH3anBU5A06gbVAOaEV89f5SLUFrQVQod0MlxyEK411ni6dzIJJBokPlDhGuqy+xa2anSet930AFau4yBdOV/9WKLgX/Nb10DB3RN9yjGODWSLQZymvlzLsqA60u2xYVlZkBl+TDDsslYx6LqWnp+7VdCLhrrNzhO4Xy2N2ubgo/EchctaZF8mr6JxYI4z9SrY+ZsNQxe03YtF9Jr6PH/16QtaEs6wNosrvBoOMlnOLkmYzD3k8o+vEsWvs9r/8OCk7z9JCchtgNmFkpOOvMrvL6RJlv32E19pmC0MFKxdJEMpsEgcnlgjDAhdv3Mm+ALPG8vWVjclrSyF5ofX5VQr2Kazq0zjUFTmKnzJeFRDKtiLu3PVTcteRC7MFjKEacf7jHOHqiW2sd5pdDbf4IGX0PoZ0WZ8DRXZ5OLNexb614Yu/Ak/tW97Moup6d6Jz4FoYL27n7jfJ6B2XfhjLrTGQZ7wi6H4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,87 +245,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 09:24:56PM +0000, David Matlack wrote:
-> Stash a pointer to a device's incoming Live Updated state in struct
-> vfio_pci_core_device. This will enable subsequent commits to use the
-> preserved state when initializing the device.
+On Wed, Feb 25, 2026 at 04:19:49PM +0800, Hao Li wrote:
+> On Wed, Feb 25, 2026 at 04:19:41PM +0900, Harry Yoo wrote:
+> > On Wed, Feb 25, 2026 at 03:06:46PM +0800, Hao Li wrote:
+> > > On Wed, Feb 25, 2026 at 03:54:06PM +0900, Harry Yoo wrote:
+> > > > On Wed, Feb 25, 2026 at 01:32:36PM +0800, Hao Li wrote:
+> > > > > On Tue, Feb 24, 2026 at 05:07:18PM +0800, Ming Lei wrote:
+> > > > > > Hi Harry,
+> > > > > > 
+> > > > > > On Tue, Feb 24, 2026 at 02:00:15PM +0900, Harry Yoo wrote:
+> > > > > > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
+> > > > > > > > Hello Vlastimil and MM guys,
+> > > > > > > 
+> > > > > > > Hi Ming, thanks for the report!
+> > > > > > > 
+> > > > > > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
+> > > > > > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
+> > > > > > > > performance regression for workloads with persistent cross-CPU
+> > > > > > > > alloc/free patterns. ublk null target benchmark IOPS drops
+> > > > > > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
+> > > > > > > > drop).
+> > > > > > > > 
+> > > > > > > > Bisecting within the sheaves series is blocked by a kernel panic at
+> > > > > > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
+> > > > > > > > paths"), so the exact first bad commit could not be identified.
+> > > > > > > 
+> > > > > > > Ouch. Why did it crash?
+> > > > > > 
+> > > > > > [   16.162422] Oops: general protection fault, probably for non-canonical address 0xdead000000000110: 0000 [#1] SMP NOPTI
+> > > > > > [   16.162426] CPU: 44 UID: 0 PID: 908 Comm: (udev-worker) Not tainted 6.19.0-rc5_master+ #116 PREEMPT(lazy) 
+> > > > > > [   16.162429] Hardware name: Giga Computing MZ73-LM2-000/MZ73-LM2-000, BIOS R19_F40 05/12/2025
+> > > > > > [   16.162430] RIP: 0010:__put_partials+0x2f/0x140
+> > > > > > [   16.162437] Code: 41 57 41 56 49 89 f6 41 55 49 89 fd 31 ff 41 54 45 31 e4 55 53 48 83 ec 18 48 c7 44 24 10 00 00 00 00 eb 03 48 89 df 4c9
+> > > > > > [   16.162438] RSP: 0018:ff5117c0ca2dfa60 EFLAGS: 00010086
+> > > > > > [   16.162441] RAX: 0000000000000001 RBX: ff1b266981200d80 RCX: 0000000000000246
+> > > > > > [   16.162442] RDX: ff1b266981200d90 RSI: ff1b266981200d90 RDI: ff1b266981200d80
+> > > > > > [   16.162442] RBP: dead000000000100 R08: 0000000000000000 R09: ffffffffa761bf5e
+> > > > > > [   16.162443] R10: ffb6d4b7841d5400 R11: ff1b2669800575c0 R12: 0000000000000000
+> > > > > > [   16.162444] R13: ff1b2669800575c0 R14: dead000000000100 R15: ffb6d4b7846be410
+> > > > > > [   16.162445] FS:  00007f5fdccc23c0(0000) GS:ff1b267902427000(0000) knlGS:0000000000000000
+> > > > > > [   16.162446] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > > > [   16.162446] CR2: 0000559824c6c058 CR3: 000000011fb49001 CR4: 0000000000f71ef0
+> > > > > > [   16.162447] PKRU: 55555554
+> > > > > > [   16.162448] Call Trace:
+> > > > > > [   16.162450]  <TASK>
+> > > > > > [   16.162452]  kmem_cache_free+0x410/0x490
+> > > > > > [   16.162454]  do_readlinkat+0x14e/0x180
+> > > > > > [   16.162459]  __x64_sys_readlinkat+0x1c/0x30
+> > > > > > [   16.162461]  do_syscall_64+0x7e/0x6b0
+> > > > > > [   16.162465]  ? post_alloc_hook+0xb9/0x140
+> > > > > > [   16.162468]  ? get_page_from_freelist+0x478/0x720
+> > > > > > [   16.162470]  ? path_openat+0xb3/0x2a0
+> > > > > > [   16.162472]  ? __alloc_frozen_pages_noprof+0x192/0x350
+> > > > > > [   16.162474]  ? count_memcg_events+0xd6/0x210
+> > > > > > [   16.162476]  ? memcg1_commit_charge+0x7a/0xa0
+> > > > > > [   16.162479]  ? mod_memcg_lruvec_state+0xe7/0x2d0
+> > > > > > [   16.162481]  ? charge_memcg+0x48/0x80
+> > > > > > [   16.162482]  ? lruvec_stat_mod_folio+0x85/0xd0
+> > > > > > [   16.162484]  ? __folio_mod_stat+0x2d/0x90
+> > > > > > [   16.162487]  ? set_ptes.isra.0+0x36/0x80
+> > > > > > [   16.162490]  ? do_anonymous_page+0x100/0x4a0
+> > > > > > [   16.162492]  ? __handle_mm_fault+0x45d/0x6f0
+> > > > > > [   16.162493]  ? count_memcg_events+0xd6/0x210
+> > > > > > [   16.162494]  ? handle_mm_fault+0x212/0x340
+> > > > > > [   16.162495]  ? do_user_addr_fault+0x2b4/0x7b0
+> > > > > > [   16.162500]  ? irqentry_exit+0x6d/0x540
+> > > > > > [   16.162502]  ? exc_page_fault+0x7e/0x1a0
+> > > > > > [   16.162503]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > > > 
+> > > > > For this problem, I have a hypothesis which is inspired by a comment in the
+> > > > > patch "slab: remove cpu (partial) slabs usage from allocation paths":
+> > > > > 
+> > > > > /*
+> > > > >  * get a single object from the slab. This might race against __slab_free(),
+> > > > >  * which however has to take the list_lock if it's about to make the slab fully
+> > > > >  * free.
+> > > > >  */
+> > > > > 
+> > > > > My understanding is that this comment is pointing out a possible race between
+> > > > > __slab_free() and get_from_partial_node(). Since __slab_free() takes
+> > > > > n->list_lock when it is about to make the slab fully free, and
+> > > > > get_from_partial_node() also takes the same lock, the two paths should be
+> > > > > mutually excluded by the lock and thus safe.
+> > > > > 
+> > > > > However, I'm wondering if there could be another race window. Suppose CPU0's
+> > > > > get_from_partial_node() has already finished __slab_update_freelist(), but has
+> > > > > not yet reached remove_partial(). In that gap, another CPU1 could free an object
+> > > > > to the same slab via __slab_free(). CPU1 would observe was_full == 1 (due to the
+> > > > > previous get_from_partial_node()->__slab_update_freelist() on CPU0), and then
+> > > > >
+> > > > > __slab_free() will call put_cpu_partial(s, slab, 1) without holding
+> > > > > n->list_lock, trying to add this slab to the CPU partial list.
+> > > > 
+> > > > If CPU1 observes was_full == 1, it should spin on n->list_lock and wait
+> > > > for CPU0 to release the lock. And CPU0 will remove the slab from the
+> > > > partial list before releasing the lock. Or am I missing something?
+> > > > 
+> > > > > In that case,
+> > > > > both paths would operate on the same union field in struct slab, which might
+> > > > > lead to list corruption.
+> > > > 
+> > > > Not sure how the scenario you describe could happen:
+> > > > 
+> > > > CPU 0					CPU1
+> > > > - get_from_partial_node()		
+> > > >   -> spin_lock(&n->list_lock)		
+> > > > 					- __slab_free()
+> > > >   -> __slab_update_freelist(),
+> > > >      slab becomes full
+> > > > 					-> was_full == 1
+> > > > 					-> spin_lock(&n->list_lock)
+> > > 
+> > > In __slab_free, if was_full == 1, then the condition
+> > > !(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) becomes false, so it won't
+> > > enter the "if" block and therefore n->list_lock is not acquired.
+> > > Does that sound right.
+> > 
+> > Nah, you're right. Just slipped my mind. No need to acquire the lock
+> > if it was full, because that means it's not on the partial list.
 > 
-> To enable VFIO to safely access this pointer during device enablement,
-> require that the device is fully enabled before returning true from
-> can_finish(). This is synchronized by vfio_pci_core.c setting
-> vdev->liveupdate_incoming_state to NULL under dev_set lock once it's
-> done using it.
+> Exactly.
 > 
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c       |  2 +-
->  drivers/vfio/pci/vfio_pci_liveupdate.c | 17 ++++++++++++++++-
->  include/linux/vfio_pci_core.h          |  1 +
->  3 files changed, 18 insertions(+), 2 deletions(-)
+> > 
+> > Hmm... but the logic has been there for very long time.
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 3a11e6f450f7..b01b94d81e28 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -569,7 +569,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->  	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
->  		vdev->has_vga = true;
->  
-> -
-> +	vdev->liveupdate_incoming_state = NULL;
->  	return 0;
->  
->  out_free_zdev:
-> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> index ad915352303f..1ad7379c70c4 100644
-> --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
-> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> @@ -131,6 +131,7 @@ static int match_device(struct device *dev, const void *arg)
->  static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
->  {
->  	struct vfio_pci_core_device_ser *ser;
-> +	struct vfio_pci_core_device *vdev;
->  	struct vfio_device *device;
->  	struct file *file;
->  	int ret;
-> @@ -160,6 +161,9 @@ static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
->  		goto out;
->  	}
->  
-> +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> +	vdev->liveupdate_incoming_state = ser;
-> +
->  	args->file = file;
->  
->  out:
-> @@ -171,7 +175,18 @@ static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
->  
->  static bool vfio_pci_liveupdate_can_finish(struct liveupdate_file_op_args *args)
->  {
-> -	return args->retrieved;
-> +	struct vfio_pci_core_device *vdev;
-> +	struct vfio_device *device;
-> +
-> +	if (!args->retrieved)
-> +		return false;
-> +
-> +	device = vfio_device_from_file(args->file);
-> +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
-> +
-> +	/* Check that vdev->liveupdate_incoming_state is no longer in use. */
-> +	guard(mutex)(&device->dev_set->lock);
-> +	return !vdev->liveupdate_incoming_state;
+> Yes.
+> 
+> > 
+> > Looks like we broke a premise for the percpu slab caching layer
+> > to work correctly, while transitioning to sheaves.
+> > 
+> > I think the new behavior introduced during the sheaves transition is that
+> > SLUB can now allocate objects from slabs without freezing it. Allocating
+> > objects from slab without freezing it seems to confuse the free path...
+> 
+> I feel it's not a big issue.
+> 
+> I think the root cause of this issue is as follows:
+> 
+> Before this commit, get_partial_node would first remove the slab from the node
+> list and then return the slab to the upper layer for freezing and object
+> allocation. Therefore, when __slab_free encounters a slab marked as was_full,
+> that slab would no longer be on the node list, avoiding race conditions with
+> list operations.
 
-Since we set this to NULL in the success path of vfio_pci_core_enable()
-I'm wondering if a failure in vfio_pci_core_enable could cause a
-resource leak? Because vfio_pci_liveupdate_can_finish() returns false
-as long as that pointer is valid, a single device failure will 
-perpetually block the LIVEUPDATE_SESSION_FINISH IOCTL for the entire 
-session preventing the LUO from reclaiming KHO memory.
+Right, that's an important point. Just realized that while elaborating
+the analysis :), there was a race condition between you and I!
 
-Shall we also set vdev->liveupdate_incoming_state = NULL on the error
-paths of vfio_pci_core_enable() ?
+> However, after this commit, get_from_partial_node first allocates an object
+> from the slab and then removes the slab from the node list.
 
-Thanks,
-Praan
+Right.
+
+> During the
+> interval between these two steps, __slab_free might encounter a slab marked as
+> was_full and then it want to add the slab to the CPU partial list,
+
+Right.
+
+> while at the same time, another process is trying to remove the same slab
+> from the node list, leading to a race condition.
+
+Exactly.
+
+> > But not sure if we could "fix" that because the percpu partial slab
+> > caching layer is gone anyway :)
+> 
+> Yes, this bug has already disappeared with subsequent patches...
+> 
+> By the way, to allow Ming Lei to continue the bisect process, maybe we should
+> come up with a temporary workaround, such as:
+>
+> } else if (IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) {
+> 	spin_lock_irqsave(&n->list_lock, flags);
+> 	/*
+> 	 * Let this empty critical section push back put_cpu_partial, ensuring
+> 	 * its execution happens after the critical section of
+> 	 * get_from_partial_node running in parallel.
+> 	 */
+> 	spin_unlock_irqrestore(&n->list_lock, flags);
+> 	/*
+> 	 * If we started with a full slab then put it onto the
+> 	 * per cpu partial list.
+> 	 */
+> 	put_cpu_partial(s, slab, 1);
+> 	stat(s, CPU_PARTIAL_FREE);
+> }
+
+Hmm but if that affects the performance (by always acquiring
+n->list_lock), the result is probably not valid anyway.
+
+I'd rather bet that Vlastimil's analysis is correct :)
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
