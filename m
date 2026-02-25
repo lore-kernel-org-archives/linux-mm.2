@@ -4,115 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1D7F55425
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 00:10:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A05F55431
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 00:23:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099586B0005; Tue, 24 Feb 2026 19:10:09 -0500 (EST)
+	id A00FC6B0088; Tue, 24 Feb 2026 19:23:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 047046B0089; Tue, 24 Feb 2026 19:10:08 -0500 (EST)
+	id 9ABD66B0089; Tue, 24 Feb 2026 19:23:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6A796B008A; Tue, 24 Feb 2026 19:10:08 -0500 (EST)
+	id 888A66B008A; Tue, 24 Feb 2026 19:23:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1EB56B0005
-	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:10:08 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 939D91B6BE4
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:10:08 +0000 (UTC)
-X-FDA: 84481046496.04.676A4F6
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B23C9140007
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:10:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nh0kkNvm;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F8A06B0088
+	for <linux-mm@kvack.org>; Tue, 24 Feb 2026 19:23:46 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FDAC8B5E9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:23:46 +0000 (UTC)
+X-FDA: 84481080852.28.AD6FE78
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0257B140012
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:23:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cwUzYfYI;
+	spf=pass (imf09.hostedemail.com: domain of avagin@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=avagin@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771978206; a=rsa-sha256;
-	cv=none;
-	b=B8BfNWvZnu8KHnoSaVxnQ332lWUvqu67pA/KkGxES1Pq4NBSAntQKKqGKuhPdlRk5gN/bJ
-	knNlWPuMZPDuv33egA3+Wjrw30lV5sMB/IDMNOSXy3al9KCWJTHIPHP4AX05ZSpbG2mNLO
-	J9bUl9zupFKQVx79BNAnzDAn1UtyxKY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nh0kkNvm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771978206;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1771979024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dTN9nDYyDw1VitSAoVU8XmQ2K7N+PmzLt6G2wl3/Yas=;
-	b=fDAj3qYcn3AsmsbgCuadvrCBHCHRdm2o8RMlLwsSMEQUTmLJwsb14ttebN8FX0nd4CO1SJ
-	jW90BeIUd82UHqqaiM30qfpMOxVgyF8XXoKEe3zJUuezyH2DIJEuFoOh4DGFHyjkZHpJEt
-	w4616YjhqfssbBqaD6lTTc5q6Z55KF4=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4833115090dso59222225e9.3
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:10:06 -0800 (PST)
+	bh=uamfHDmCrLi6nzaR6RT4ftOE05lQx2cwZblWDDjb7zk=;
+	b=AWV9IO0LP2NaauxMIgCYYrcqmEpoVBMS7//h1IUcnBf7BWf1SmvhvKHoLAM/Vhb6xUUcTb
+	mbgFkLJcPl413XMd7CT1SLvg7LXubU0myp2OUE41ukvduvfZ5ysrjO2Xgs+aDdWpjOsV6v
+	3BKWxZBlcrmJhDr1ULuI5jfb6+uAQOA=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cwUzYfYI;
+	spf=pass (imf09.hostedemail.com: domain of avagin@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1771979024; a=rsa-sha256;
+	cv=pass;
+	b=OdyzjVAhzM9t/CFbMWyH0NGJ3GJceDMVFtH+TKWTWY7HAtZm08OT9ZgU0Zqn/J6u8zvffB
+	GESF+bu1gtuOmlp/W5usbzi1agRO8pCiB96H5Vn5P4A77ETDPLXZOSeOgHsHaE7c3Z+LAh
+	7VonHCdmvgOMRGoGIrXbGN2Hb90oFyA=
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7d1872504cbso439260a34.0
+        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 16:23:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771979023; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W5oInFLEQt/+BV5Ai3ccIUVzzDg/IQtbC+tkaQ6yfoUvc8YxH8/Jna3PBYuCbXIzOh
+         ddYef1H9EYNZ93N62Q8DN5LP3yV1zK5hsw9/hepyU5CxaTvDR8Z0eCY+LOtqAyiNj7We
+         V+vOc3+g6oHbvx2pMJDwsWSyltdz31nDQX/BsUgxEYvURUV25pR5uEhTS/tIvr9l+adO
+         M1WxBoP0j4Ur8MYYFDt0xUsu7QB7okY4EoUgFHwPKDLvMRpsmOZFyyWrM4pW23ruRc+E
+         37dhIBosQVflbWZTBt+DMZQC9EDiK/2Aa5OP4EWAvmmimJsQ9WdYaeS4zgaFgM+blFEX
+         Go3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uamfHDmCrLi6nzaR6RT4ftOE05lQx2cwZblWDDjb7zk=;
+        fh=VUdPUU6X0LKjTT9Cz0Op754vMLYiBae5wLMr4WHqgmE=;
+        b=cWkYlw0PEMImB3x0v2c7zVfgQhm+ZKyBcrRbBFein9zJmRNR5lpTQ8t7wPLcSPu1E/
+         B236WsP+HLEbXuoInrTeMWV6WpW9oG6zI8Rjfcm1UQ5+njI/bt3YwKYGp0h5llwsLjN+
+         IzRQu4Uk4q1pKeN+3Yo3ZOhPRrEBhid6Coqwqug9rxjRsgI6EqP3hS3f60XpWRUJtGVk
+         HZgP2pXuAUqrDnEbgsgiGAzKe1cObYv7UfkGWY5EWsdBZafbmFykvq7iUVN3+TZOheR+
+         gJf5TLtgef0b0jjW2DsvhGNHMO3ynP2CxNsfspNnmEcxdh09+1/DL0RG5UumzdczhIy+
+         +HNw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771978205; x=1772583005; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1771979023; x=1772583823; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dTN9nDYyDw1VitSAoVU8XmQ2K7N+PmzLt6G2wl3/Yas=;
-        b=nh0kkNvmHd25Ag4GM2aAmv1rDhvq9L7QLE9WlmkoZpE68/AEkSpXT+NIiO/gLXCs/k
-         Phcj179Izior8NBC4yjf90U/WgUC3tXd7nW6DBSj6SOHwegsF+1A1McsaYzirl3lg25y
-         qviPk6pZJ1iGumfzCaWqny77tM9y26GYbw+A8XjfC6VDeT/+Xx03RRnlQEEiZO3FZBQG
-         gb32fRk++KpdYHOCC2Bb4GGrYTz7h/hrWU5snBUsyRNi77KlMUFfGtm/Aj6PL1ahn+lB
-         fuyv40Ktjpc5Uw/9VFuRXWHEaJMs5dnLuT9zN4Cl38ru9ZX72NfNxGJOLkA4czPkjpeH
-         +epA==
+        bh=uamfHDmCrLi6nzaR6RT4ftOE05lQx2cwZblWDDjb7zk=;
+        b=cwUzYfYILcXi3xKZG51+91D281yPoQSHsQ9hZEZcNYjazj7KKZXE5US1cWHd/OL0sE
+         fjDvWUKmB0jpt4kUFE7SB1pxorw4h8UxysjGwvVzeH9s1Dyuqz0VdKFBoSgQ67kRND9B
+         SPQNdRwgjEhGgwWMkGioU6OdXlYt/pPgdFaYfkqBaD93RkO9g5mzAystzq9QUc1/ZGD7
+         doW3LxaF0K6YqxjT4JD6HI85avHOKgsw7gAh6Yw7ltJsPtKx695d0l49Uj86ryxFdgUE
+         pVoJQrUreFkcr8Jp+DRlAHEiG6GTJgNE83TeRYzf9uehcofy/EBu3n5J/5aNA6u7TcoV
+         s+Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771978205; x=1772583005;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1771979023; x=1772583823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dTN9nDYyDw1VitSAoVU8XmQ2K7N+PmzLt6G2wl3/Yas=;
-        b=PrTqpfT75AHPwRSdG7x9PRtI8hk9k97vR6xCzR/Ua7XlUy6TuL3sXW6YnsnGUfESmk
-         nD1mqXBN5j2V3IKwE7zz+2wKDGgl9xul+CAEasXnWGmSZJ+Q3AC+iUjAzs0T39sLy67L
-         Dv051VVrNCd5Pw1eSC+FWxUYuR85BTjXM4kr7LUFaRSe7X/OcR66J87/U3uK69fG7M3u
-         z5gnbkvfPjMYerYiWkd7YENqCGIYqLghMKsB4zfpg7cicBRWkIDSYkOj9WeTK2tDTj/n
-         i+8xihkoIY9ks7V//DaMsfXAM6UmpWcifWZqCoeD5LP5BNZA8NPhduGYPLMCcz2YtEj3
-         oP/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWj48Sr3o0HZnL0DZtOpCwlZ8mCzyCdlaI3AUZQ4tGabILNpBXEsshQJGVlARkAwhSoiy6P8R2uDw==@kvack.org
-X-Gm-Message-State: AOJu0YxMMTtKljIOQDyngTVPMA48OTKXgJn9m69lO+X188RKDIwCW1bB
-	AYTdkrnmJLkuD2MQU+ee6Ke+AEN68o00zafEFBK67dATjUW322ZzumDY
-X-Gm-Gg: ATEYQzxXPEB+AoJ/sfOFn70a/yDlDbWJTodONkzQ+pHujqPwG1qX6A6zAmmAV6zRSHH
-	JA//pgO//mIOiqx26ryqm4k1vLKhWENfzOtK/NCfVHHXpveCg3DNf+r2QlQ02vNJFYm7BhIGbVj
-	xk6vIq/2S/NAyo7r8sx9oWzpuUABpRsMmIdnL3X763gHRecizr6Pj4hCJKB6RlbJ26RIMvY7WIe
-	kl65oQkvBk1nuzh8agf4xkAsVnXd813DbVSKRQguISr8cI2oTJV/jfaN1Np1sdIPUMelVUEY7au
-	Zw24WEYYPEcogZyBMcWUAN6uemaGZ2X3jSaQ+kiLS5TI963TfjOEj2dZXMPkCBsNS+3Xlf5LMVy
-	9M8CDODjUeqzamd1n1zo6FG74y5Mbv9veGS/LM/yb8V9ISoSCLfV0C36OqAOX4VIlVy6Zbk1D7z
-	VJwSsBTQ/kTDHqm8dTmgA=
-X-Received: by 2002:a05:600c:37cc:b0:483:54cc:cd89 with SMTP id 5b1f17b1804b1-483a95bec82mr255382725e9.9.1771978204745;
-        Tue, 24 Feb 2026 16:10:04 -0800 (PST)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-483bd72bd66sm28594105e9.11.2026.02.24.16.10.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 16:10:04 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: cgroups@vger.kernel.org,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 00/20] Virtual Swap Space
-Date: Wed, 25 Feb 2026 03:09:17 +0300
-Message-ID: <20260225000952.2778156-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260208215839.87595-1-nphamcs@gmail.com>
-References: <20260208215839.87595-1-nphamcs@gmail.com>
+        bh=uamfHDmCrLi6nzaR6RT4ftOE05lQx2cwZblWDDjb7zk=;
+        b=PBkfFhD6LSTl3Crk1cH7eCE9HokvDzMzHKnyu+ABkXQl/xv39cfM1U8kGml5QqmKBZ
+         PO3YbF9dp0R8SVzsFEmjViye58561W7jY7IS7/FN4zdHRrbNmqNY7M6b+8SaeH0bkV1D
+         /2fvxXl60slvC+a8Euja9tA2Rx4e7zFOEHlYnTPb0uKM6PTEb2uHHEAx/8rSqkcuaqAu
+         fZsrXbkA50jmy5d80TX3Mp5mR54w0SrUjtnUiGaavdJT7Qw7kI4noYXKgq7jKpOBY5KZ
+         zhXPPXg4xQ9nzv3439PA0QiaR0bHYkIqOCqTARwOkSkihHkcc1KSNBNUch6V2yZu0Yuq
+         cCEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUP7z03rYTe8h78XZzvuid6EjBGAjbLjZTBxIP302+pBf9iqmVmmo63flrRmytyESySR9ohQl0e+w==@kvack.org
+X-Gm-Message-State: AOJu0YzAKmvVrsbjamSYdXjFmsFrONl7xTLrhhi2Eu/9tI72Iaw9znV6
+	w+S7KRzToOEQ6BeA98/dRdU1WSrJ2d3iZcj3XjUd9FR3yLkPMHRjEtQgkQNR9JTKtSRAN0zZY9U
+	W9SJtQmVuSGxPwYZcOyXJ13gGy4IAdjk=
+X-Gm-Gg: AZuq6aKiuNQL2sZ6teqKs0cP/tGJy3Vtn7LqzIh1Gk7ohAe5Gh23Y23mwe+ugMbuxqd
+	QSkYFQVMuuwDuoxwiWuzmWpPmuznfxmllvDuZMGM8pYMtwagyns33/1li2CdUoO48ii7GqLx3kR
+	0voSLGSDiTfCKqSFtW3Sj0OMIbmzXkfvUqwfeb0x42Ue5KqylWnnEsKOgOOTxOQ1rbxYDcYqb3x
+	30Mg7v5YflcrDm0NzLtO5c0FrDZdqJlzW0hDdD/l0TVbe8dkpHkY0yrEEX3sAJIZmnTSiX57eEm
+	1qjCfiQ=
+X-Received: by 2002:a05:6830:82cf:b0:7d4:ba6d:e33b with SMTP id
+ 46e09a7af769-7d572f732e4mr1157163a34.14.1771979022917; Tue, 24 Feb 2026
+ 16:23:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yye8yt55uhtq19fphfm1dpy9pfnd8kxj
+References: <20260224164852.306583-1-ptikhomirov@virtuozzo.com> <20260224164852.306583-3-ptikhomirov@virtuozzo.com>
+In-Reply-To: <20260224164852.306583-3-ptikhomirov@virtuozzo.com>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Tue, 24 Feb 2026 16:23:31 -0800
+X-Gm-Features: AaiRm51sc6PYns4iCYnbIf9VDxONZDk0EGBX4WlziIcqv7s5ocyQB1y1CIul7gs
+Message-ID: <CANaxB-znXjfh5s9ro127TGONsu6PieuaJ1vB3PMVFeV4Eo8pkQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] pid: check init is created first after idr alloc
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Oleg Nesterov <oleg@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Jan Kara <jack@suse.cz>, Aleksa Sarai <cyphar@cyphar.com>, Andrei Vagin <avagin@google.com>, 
+	Kirill Tkhai <tkhai@ya.ru>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, Adrian Reber <areber@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B23C9140007
-X-HE-Tag: 1771978206-583620
-X-HE-Meta: U2FsdGVkX1+GOleF/ffm6loXMRy8dfrncqLE2piP4tG+WKpB7r3B4CKDhovkO85rhpuaCVPnekWpd6Z7dq04mMk479H5CDz95dytHtSkCbJgWTtiIGuCrrGrD+IozSBjEkpdiaD9TZvafJOXOLGaRejrbYpZLB1MhAdEHxvwZu35YfknE5xAz1xQ8yc3ti6Yp83CWXBaPdXkuJabUp3Mjw+MMZHKOy43KOkFNcG/HYX1oePUwEGg2HDDbnyLBDGOmp4SM9YNtlhsruYZo8cFqzgBn8lXgdBwbQsXXoKeQV8KsHbhQ5D0zTtQfeSSrw0ATy0Eo03ytcHGSYtolT+eoldYoVbT8GpBRXj4gfR4n1p/PYBhpJe4pyIXwv+FTiK9xuJjUuuflockDYXEyp/8JEIIchUvQYLdjlNK2D7SphqJrG/jB32vGtSLRKdbemSor4UPvYVqbbQbhRDrnT7wU9DIezjYnbC2+J50aN5as+bhByodCVBcA27YsEp1LQ0fEnnE5osUdJFeR9wJeJ9Jx7EVQpzB9X7qR4KcRWDBwoaWagogdDoOCo3+H0QckQR1qX4sVHyVvBWhSzV3A+xgld01+HZcdr+UeNsuGtPgjBwzxRgN3iWGlN/ImQ6n2QmO7FONXbMCclPCDhSCYhcRkbrx5RDBv42RB/+jCGIba6U4SdSNxkQKMdZYOYN5IUOx2oQPaQ2x24UymW8Qi6fx2cAjJzWKJrKvsSQwlqJoptmv9EvFe9K8qh2+aVwLS2l/bkarCTcJ7uBDktus0C7fqoBUBbXFwb/hBH2P2XB68ldfZNlLK4cSeXY52XP/S1M2BpkIpcCwCSGOM3auMs7cK2hYCYymmNGHXlLHJuEP5Ot5Bq//io0GEkxIwGWwfgSTRsXsxCEdssuj8z9G4CZevGas3ZGMHPYNhqR6K3EuoyymDBfh8FbICdiyWHcsYxa9g59YMp46uDcLiZxBS8Q
- XS0F5oUL
- ilpVmFZnlRpvno/gf0oLF2wUSOGWTdm/PwoTiXEjTHMi9FkwVmsCnm5urvC/C97/ykIHohBx+RUvtlAulRklcotmW7XYHAgBrWM0XAX1X9pHW0T3alIpH2WsylGynO7MO1CmEQs6AnwD65QgCRBZdemrzFLlPmPXShhZGYpPaWbHIVlUyHZPIFCMdyh71Si6QoLm/lbaAZF1drkOX7UfOn+XpnvhkWSWdnymIpvEdO86+hiHt5uBgQWbB9q9P7WRwVlFTQNjZG5WInFJE88HhmmSLwlu5OKstIpFKTLP31VB/vZUN4UHmxein69q2+lNSuuiLWmUvYIqUQitVbkJ2UT0BJqNhecl2tj2WIuDX5O931Nlvcz6xt4VQrkJPk9yCw0+jSWBVNrbdjUkiRA+Wz+mqGzGOHDhe/Kp87z4KlADVcofLPIDG7qmMc93pDAGfMW+O
+X-Rspamd-Queue-Id: 0257B140012
+X-Rspamd-Server: rspam02
+X-Stat-Signature: mejprorttphz74sxr3pssar4rnxxakz5
+X-HE-Tag: 1771979023-17643
+X-HE-Meta: U2FsdGVkX1+IuuFPBseCxAPlninUtqxkYbs7KldnPe60SXFY9HTMAuYG+XMSbNwcPb1oiBfooEe2Z09J2xp669xvF52j/g6Kafn4N00RlBQDHTRqs84UGF+pRyaIisEANHAJLRE+iDWMx9VNq8/P0Xs2zDGDG+GyEbCw8J+yp1CirJLbLUmUAEWUAlPXHe0xKNhTwydpWbMfgjmCQ3/AnFQ3A0oFVQMQh9iyPUIuGBs4hBVf7Y1qVAEEdOPj4hTBtxKTFI8NWVTtRlBW3tadMYT7c8dosgCGBWAyOw+OJMJNTZGGraJO0NcC2LHrBIUxzuDODrPwjc4LcJW7BWM48we3ggN2e/X9WkmIO2prw3hzwdZwgGE5Za0Vs1QorCSUbgKONIU+DsZOCZ+3B1UK+U6mAm8yeXaFXV7o6In5RwCF3Bg+mljCMsttxes9ywOcCYBRaaGBcqzAkyQZOd/zJoupvh5Gj0oRPMiuLUgIIE7faAH0+CArkBw0U+7CFYYhtsqcx66c6L79KLc/XXX5hrbfGy4dgSieAipwNNW7chY9BrqHnq2pho3DkbxbRu1Wuv0TRU4EU3AMj8CpFuySD049rnEk7eUWelGQisbNWaatmVtDWU9KWwIpQ8bYuu8ToSlC1F2t0988SmVT12RvmhInEKLq3BT5ekJWyEv6vlqIEcqQ72SLOQ4kih84xGZFa4FSZ2fkNVK1H23/kpqQsGP/Qr7ppI6g6DCRuOYekjFg7SyEGZI+mKzS/tWcQrDOf6VaNDDWlqZWe7o0+8GztED04A+3pzblyu79ZKv2olCDT58RSSKyD0fMdS9BCGpJ1rjHsst/fTjfAy8f7lTK9bMxHIEq5an7gWOpcerpABliRTZ810+Y2Z95cON060x3PJhY4/xrsjvCprvtay4UzxG6kgY7mpTEXD+mADHqaTRULLUu5EODpVNtWDeTgyczEGrHQWK9+H1/eP9LOxt
+ CUZ1tK2n
+ uKOjIRk023O5bWnStOGuIKWUC4o6sNcZ0qwK9rynvz3t/dxbWWRJH8NMQL7qzrXSkhiCv2/K3bsIv7HeIPg6i7ZrY+JLhgA3ewEn49dW3nIHi8KMmEEfIHj8pODqL5IYwGZewq+Xjwi3Pv6YSySdtDq+EOlGBu2i/zbiNNgvadY0U64e3DQqsnqVe2uVlIyknkdH0ZrBb03Do5vXFmdqxhY1jue1WK1+UcZ4YbWt3k1reWAa7AkDzA0Bozo/AnetoywEqbMhrwD8D3/KaNYGyZpvk390unuaApdiYloTqfIf4mm6VoX2unGAUuMM7zOQ5wwALPQryMIoy8S5W2M/mrbRnzJQcyo0KZKYYxIAQSV5L9a8P7JfCGL1DSInfg6UHY3EqJSf0FhzPAXFvb15a8/kJug/9KZzI544o6rI1uz09wctr9Ijk0xI+9CwnnHqUuaEEZLwzR6C2o5psjZNwI3Sk3Sn7BX8dPyIdCG1trluKCsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,11 +144,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nhat Pham <nphamcs@gmail.com>:
-> only tackles that same problem, but also achieve the dyamicization of
+On Tue, Feb 24, 2026 at 9:02=E2=80=AFAM Pavel Tikhomirov
+<ptikhomirov@virtuozzo.com> wrote:
+>
+> This moves the condition (tid !=3D 1 && !tmp->child_reaper) to after idr
+> alloc, so it not only covers that first process in pid namespace has pid
+> 1 in case of clone3(set_tid) requesting wrong pid, but also if idr
+> itself gives wrong pid for some reason.
+>
+> This could've been the case before this patch, when creating first
+> process the alloc_pid()->pidfs_add_pid() code path fails, so that the
+> idr->idr_next is non zero anymore and next process calling to
+> alloc_pid(), will get 2 as a pid from idr_alloc_cyclic(). Effectively
+> leading to init-less pid namespace, which is a bug.
 
-I think there is a typo in "dyamicization"
+I don't think this is an issue right now, as we only allow one attempt
+to create the init. If that first attempt fails, free_pid will disable
+further PID allocations in the target namespace.
 
--- 
-Askar Safin
+It is a sort of off-topic, because we will definitely need this logic
+with the next patch in this series.
+
+>
+> Note: This is also a preparation for the next patch in the series, which
+> will introduce an ability of creating init from the task different to
+> the task which had created the pid namespace. Needed to make sure that
+> init is always first, even in this new case.
+>
+> Suggested-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+> --
+> v3: Split from main commit. Merge two checks of ->child_reaper into one.
+> ---
+>  kernel/pid.c | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
+>
+> diff --git a/kernel/pid.c b/kernel/pid.c
+> index 76c2744493e2..ebf013f35cb3 100644
+> --- a/kernel/pid.c
+> +++ b/kernel/pid.c
+> @@ -215,12 +215,6 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_=
+t *arg_set_tid,
+>                         retval =3D -EINVAL;
+>                         if (tid < 1 || tid >=3D pid_max[ns->level - i])
+>                                 goto out_abort;
+> -                       /*
+> -                        * Also fail if a PID !=3D 1 is requested and
+> -                        * no PID 1 exists.
+> -                        */
+> -                       if (tid !=3D 1 && !READ_ONCE(tmp->child_reaper))
+> -                               goto out_abort;
+>                         retval =3D -EPERM;
+>                         if (!checkpoint_restore_ns_capable(tmp->user_ns))
+>                                 goto out_abort;
+> @@ -296,9 +290,18 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_=
+t *arg_set_tid,
+>
+>                 pid->numbers[i].nr =3D nr;
+>                 pid->numbers[i].ns =3D tmp;
+> -               tmp =3D tmp->parent;
+>                 i--;
+>                 retried_preload =3D false;
+> +
+> +               /*
+> +                * PID 1 (init) must be created first.
+> +                */
+> +               if (!READ_ONCE(tmp->child_reaper) && nr !=3D 1) {
+> +                       retval =3D -EINVAL;
+
+According to the comment below, we should probably return ENOMEM if this
+is a subsequent attempt to create the init process. In the next patch,
+we may want to return EAGAIN if there is a concurrent attempt to create
+the first process.
+
+This isn't directly related to this patch, but why do we check
+"ns->pid_allocated & PIDNS_ADDING" after allocating all pids?  Wouldn't
+it be more reasonable to do that right after taking the pidmap_lock?
+
+> +                       goto out_free;
+> +               }
+> +
+> +               tmp =3D tmp->parent;
+>         }
+>
+>         /*
+> --
+> 2.53.0
+>
+>
 
