@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D258EFD20D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:57:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 531AEEFD20F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97ADC6B0092; Wed, 25 Feb 2026 03:57:34 -0500 (EST)
+	id 89F026B00DC; Wed, 25 Feb 2026 03:58:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 952316B009D; Wed, 25 Feb 2026 03:57:34 -0500 (EST)
+	id 84C996B00DE; Wed, 25 Feb 2026 03:58:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87E856B009F; Wed, 25 Feb 2026 03:57:34 -0500 (EST)
+	id 7700F6B00DF; Wed, 25 Feb 2026 03:58:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 730076B0092
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:57:34 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF50FC1F8A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:57:33 +0000 (UTC)
-X-FDA: 84482375586.05.08079F1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 056F78000C
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:57:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NXOrTgw9;
-	spf=pass (imf30.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 606C36B00DC
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:58:43 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 129241C332
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:58:43 +0000 (UTC)
+X-FDA: 84482378526.26.6987FEC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4E63940007
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:58:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D1HwktCW;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772009852;
+	s=arc-20220608; t=1772009921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GanXkJjST8p9TrvQUdc8dnJl6GmI5zogzlDRKcNNJtg=;
-	b=0kZeQydPkrFGrMGAlGwz7z/Cw6CAQXCGcFsU7rkZ55+chUU5vKtEOuoUgjZc9kRgWe/c1+
-	QBEwwtU220dabGdGsUlcQUV4WW6BHtn3WneDOiOFiupDUzCW3WnZSisjTbXI5+olChFr93
-	uDGFzhr3h0TbJ+LtmLXjN8r2TT7mIr4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772009852; a=rsa-sha256;
-	cv=none;
-	b=TArFY4EBhUctvMiASgGcFHS7sv7uTTJJZkaV+2tMtv6ZpjrOpw05q1s8k7wMAcenTX+oHt
-	e+M2aRuhbw2tN3qYEYZ6qyyEI3U1bzWCpThhs2ZHRHjr5RSV5CiQlnkum/aI1wue0PRhF5
-	d2Xch4fXeuUocYlVIZgJE+j//SoH/Nw=
+	bh=xTY2XBZ0M88etrL4RrqM4EAFLVXRy7VP1mSXMJJNCZ8=;
+	b=1R+EjOs7wqdWBVV+SEqwWp43gO/lHC+0TtvA8lyfY9qv1hwFLONYUFiiI6ElkBvnXgZcQC
+	acrZhKoJuEtsXmUpCDb7Z1fScUbSd42BFGGgZTLBLa55heHZQGd2C0erRJUUrCqNBtQhQG
+	mLTnIhfAaU63Sy+pcXHVxUEvuYfJttU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NXOrTgw9;
-	spf=pass (imf30.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772009851;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GanXkJjST8p9TrvQUdc8dnJl6GmI5zogzlDRKcNNJtg=;
-	b=NXOrTgw9nkDXuVnzwVx2/77yEq18WPjVbi65R/TSLC8gZDK700OXAc6GoABpDIpIOOEHmL
-	tlRqhjEAS9V7omULVjcIzdLloxGJgTR6ZSuR6cBAll2YZxb1yh4m7gWWhig6mA+snnW1mm
-	G01QkcN7MM0O0ievuY/6AcaE433zFIU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-FGNCDzsOM22o-VbrbTemxw-1; Wed,
- 25 Feb 2026 03:57:27 -0500
-X-MC-Unique: FGNCDzsOM22o-VbrbTemxw-1
-X-Mimecast-MFC-AGG-ID: FGNCDzsOM22o-VbrbTemxw_1772009845
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6078F180025C;
-	Wed, 25 Feb 2026 08:57:25 +0000 (UTC)
-Received: from fedora (unknown [10.44.32.38])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id E428D1955F43;
-	Wed, 25 Feb 2026 08:57:18 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Wed, 25 Feb 2026 09:57:24 +0100 (CET)
-Date: Wed, 25 Feb 2026 09:57:17 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Kees Cook <kees@kernel.org>,
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D1HwktCW;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772009921; a=rsa-sha256;
+	cv=none;
+	b=xuZE+ICbXdHBlEdrBpJiSK6Y/ZiqE1gWZ1JGg/LZLX/vYT4CKdh6r56JlzDlQeVPhTIntA
+	0sSaZlyIPqwySaBET9RPaytBnoW6IoygYREDKWQBi+kTEMvMSOHzrQ3QlEczULFLrEsc+h
+	KY/EduLcm9mPKJyMCZXwEdbPvmMG5hY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 577FD43DBC;
+	Wed, 25 Feb 2026 08:58:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C4AC116D0;
+	Wed, 25 Feb 2026 08:58:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772009920;
+	bh=++lJa34FIQd0srk6H91XdQrYCvf1kKADzH8XRl7vWR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D1HwktCWBfBnn+mWoG4xVpdg937txzThq5+AUBBINYW1g0lW/MV/s+4VwR7J4yHqG
+	 A4ipDqQa/TBbV4j/DbbFZDZTpIwEqxWq1T0C5kN/SyiT8qmNjXFt4vIDwgtj+cg7gQ
+	 h7qjztYt9jQmo5oRNpqm/nNJzH9Nldlizjw7NSZq0kwlkcpvcGkZsp4gsDzQsukMS9
+	 8kl/P5Yd29AW583M1C7kJT+meOcy/shZy9SVmdMoOGxb13CiO4FqBJv2sOFjUTy+Ns
+	 +c8ESgT0u+cQ3Al1BLMS4UxeLYcNwq7DxJbftIJBOqBx6ahnt3Kl+p+Ht/mz5yR7xA
+	 uDKVrFXDj4seg==
+Date: Wed, 25 Feb 2026 10:58:34 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Jan Kara <jack@suse.cz>, Aleksa Sarai <cyphar@cyphar.com>,
-	Andrei Vagin <avagin@google.com>, Kirill Tkhai <tkhai@ya.ru>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] pid: check init is created first after idr alloc
-Message-ID: <aZ65bWeZWanmJblL@redhat.com>
-References: <20260224164852.306583-1-ptikhomirov@virtuozzo.com>
- <20260224164852.306583-3-ptikhomirov@virtuozzo.com>
- <aZ63F7vHRKw9qZw9@redhat.com>
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm: memfd_luo: always dirty all folios
+Message-ID: <aZ65uvOrTDndpic6@kernel.org>
+References: <20260223173931.2221759-1-pratyush@kernel.org>
+ <20260223173931.2221759-3-pratyush@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aZ63F7vHRKw9qZw9@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: OvzAtXUvY_Fizrybrb4rVjkp32N1aAAVWBd6O4076fk_1772009845
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam09
-X-Stat-Signature: uuecrt1pdmmqg9irdmfkkzenmdo1tpmn
-X-Rspamd-Queue-Id: 056F78000C
+In-Reply-To: <20260223173931.2221759-3-pratyush@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1772009851-131798
-X-HE-Meta: U2FsdGVkX1+w72upOpoVdJrKYzltdFVk2WmlmCzQ/ZNU/TGiYwr+bcr5/1n2jVpAOKpKZTNwmw6S3qUs5GR7UsFYbqciFGWB71rPnvx2Af+c/JehelY92EbtKHN/FlSDfAm+j+TUaFTE0XTISeJ0IzCU93+bfISqufPPeDyE7+1ffOX7eYw8k67qkXX16988ba/COodDDCzKK/EZiAl6GQhsuTj5JypgA6dZvLUiPT1Y+5dEmN6MdL3e/rWJYurMYdNV3MJ/+7D3ukf1Iize/H5CQr6Sd3W4KUlLDOEfvMo0G0816wcLgal9Cowpe2IJIkRdCToBgzou3RJsC1MWyeGvcxLB/WIsjGP9nRGOf2CAVVVdqYwx7QPYmk4Iz/nPTo63ICRzRsXFzdC6W3Wpn9BzHfWfrAjohBq98eg0mYf3SJL90tl50v/dCgZo7VRtYIWm8bNzqaxKFCoQhYbppyFzftb88A6eWDeaU8Zh0kH1qamIFto38+dozegJWypadqqCOMVFdGVjV3b5xxTFLHj2n67uGP3abSDLbPlAJOO3UD8wk7wdQzZmHt2de6cfeudf2hRflNzqU7RADrX9CeeZXawOF0N+3UV4BnMl0m8XCPq6pKfLaLiSbMQpzHzQs/p8lX7Fj/t4r58OIoz1eFxrBEg8bR+Iwx9n8YiX1+KrgC/9iHjxRHPStsuJFmhz/GmECInVnlnfhfpRCm86F7FrBCoWGYHLEo4dSfDAISvt8SciwfE1j8BPFt7iEWptEx2s27Vbr31rwtOa0ie5M/W4hn5O/8ZkUrJvjYnW+lrzy+k+Nsd3FzcnPaTYRN6DRyEISk+FFqMw0lBpJ8rFUCj7NwF+o36EcNB1zdXl9S0MPB6TttPFTfN7gi8X/jTVtucP3/7g6bmzgtusMfD23Xu+AthDKEmB01f2uN+HkI/P8r1Id7seBWBSkXrHh0V7uUAdCeQdebJDZkDusQd
- iWPqT+w0
- AYQG7ucltzaUpTP+MCL6/RKgnOLJufB3M+oHUK3590MspnTbNtZdLivBWtg==
+X-Rspamd-Queue-Id: 4E63940007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: rqxauo93zhg6hxuh3mbfzhjkfrk8u4d8
+X-HE-Tag: 1772009921-466018
+X-HE-Meta: U2FsdGVkX1/UkFxQeuuadCehi+JQNNVFdyMphR437Wok6eHPJSk6x2Xp8JzSoHIT2533vZOaR/BcooxBZDMzDLCWghaVYsfQIuyCTO9jnjn2CPxHkPd0szg3SY83uVYMd7cyF6POkn+roiRKCE/4NrelLHHYeUSP3d0qmpBIhuz7ob9WdYn4rwlolIVB9J7bViP0whZKvN3pLpd+eywes9gxYX1JvF0g48S7Nfszh0JyGit7hbi3BhXyAvbjsmPrWARD4RfONgZxuPskLYnG51xWT9iIpcPyoFxUh9NLnmZyt2dIwCcoWhio8HM2L6ZzvgGhkX4quZU/5dfW6R7V5PcvHUGE/jQ1cVl3dTWLU/UrrTUhM98wegLLKSAv+7r8UFoOSQ65rvQM8h+QQSxhTows6QcHo94v/Ybhk46pS7BCJk4tpM0qUpRKpzBmeefU8zsjV1ME92juCHI/OBnvmyIeOteEYilPLKuSerD/UZ6mrWpZPVyrBBDjvhz5hw8VC6Ly4kV3vK6M+Sq4KmLE8w3ZoAXHZAfXj4IWpjqL0nNYFlEBnYIFCqqHQ4I7RArQ2dNvGCEtshvZYiuPdDOqM6SYPAhWu4mL7BoYri47lfXIE7L+sjboj443lLNMQPMWDPu6VOZSQ1HoWxftqKsQ+wVLQfa2YFyF+IOaYCiu/OuMTNbIqqK5zIRuDXpWeuz4IEOglNQq0Y7BkMGLaHLcTLI3wO5AQ4AwLlnmymbxSz1ZTo/Lvbwc9OtTUbnRovUgxCv7YefXbW6TmH/1WdMbYE2Rqni5D0+wvPQcJerlej0HtGTz4K9xsdPh7RM5vTxJ3VclTCESKLfqb1BVlKB9zQX1S1i1Ip2M1QOgKqJtRjWdkJ/lVBtP4C8o7UTdDSrn/CROKYUzmaICYypu8cs2bLnbxt0dnR1fvuT6O6fnl+quYrWY+Jgfr4hxIMzfMyIgXI2GDSHkNIHQmrCEOFx
+ KPTfZEfI
+ i0pCPfsGxLHFOHs5zy7Ofv0cUMFNIyDuLxMJwUZDODqPexgOm+euJf1pe0Px5RbfDjfKX6seJ61pEDY6Il5CD8qBMyvGWHvejg/Szqb8pjrXdK3+DWLkdAKGz4v2CXqP5xwYIzP6qLqLFceCGyS5SEMzp2e73tZomhuGdYNsYrWvqWxIvV37k6eOI8unfh5/G5vef9T18cE5bzP8UGYLy9opGBKg3JX9Tgc/AX89GiiR5a1bRWSK3DcZ0Am5kFxNUqe21RUYYC7APaZ9GwMRMnq4ksoJQoBTwu9UG8Kb+2zmAjXW/TjL2hzgCyp2ylnHvGmVD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,43 +93,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02/25, Oleg Nesterov wrote:
->
-> On 02/24, Pavel Tikhomirov wrote:
-> >
-> > This moves the condition (tid != 1 && !tmp->child_reaper) to after idr
-> > alloc, so it not only covers that first process in pid namespace has pid
-> > 1 in case of clone3(set_tid) requesting wrong pid, but also if idr
-> > itself gives wrong pid for some reason.
-> >
-> > This could've been the case before this patch, when creating first
-> > process the alloc_pid()->pidfs_add_pid() code path fails, so that the
-> > idr->idr_next is non zero anymore and next process calling to
-> > alloc_pid(), will get 2 as a pid from idr_alloc_cyclic(). Effectively
-> > leading to init-less pid namespace, which is a bug.
->
-> Yes.
->
-> alloc_pid() does:
->
-> 	/* On failure to allocate the first pid, reset the state */
-> 	if (ns->pid_allocated == PIDNS_ADDING)
-> 		idr_set_cursor(&ns->idr, 0);
->
-> but this logic is broken.
->
-> Suppose that a task P does sys_unshare(CLONE_NEWPID). Then it does
-> fork(), and fork() fails for any reason after alloc_pid() succeeds.
-> If P does another fork() to retry, we have a bug.
->
-> So with this patch we can either remove the code above, or (better)
-> improve this logic.
+On Mon, Feb 23, 2026 at 06:39:29PM +0100, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> A dirty folio is one which has been written to. A clean folio is its
+> opposite. Since a clean folio has no user data, it can be freed under
+> memory pressure.
+> 
+> memfd preservation with LUO saves the flag at preserve(). This is
+> problematic. The folio might get dirtied later. Saving it at freeze()
+> also doesn't work, since the dirty bit from PTE is normally synced at
+> unmap and there might still be mappings of the file at freeze().
+> 
+> To see why this is a problem, say a folio is clean at preserve, but gets
+> dirtied later. The serialized state of the folio will mark it as clean.
+> After retrieve, the next kernel will see the folio as clean and might
+> try to reclaim it under memory pressure. This will result in losing user
+> data.
+> 
+> Mark all folios of the file as dirty, and always set the
+> MEMFD_LUO_FOLIO_DIRTY flag. This comes with the side effect of making
+> all clean folios un-reclaimable. This is a cost that has to be paid for
+> participants of live update. It is not expected to be a common use case
+> to preserve a lot of clean folios anyway.
+> 
+> Since the value of pfolio->flags is a constant now, drop the flags
+> variable and set it directly.
+> 
+> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Damn, no, I was wrong ;) As Andrei pointed out, free_pid() will clear
-PIDNS_ADDING in this case.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Still I think the patch is fine.
+> ---
+>  mm/memfd_luo.c | 26 +++++++++++++++++++++-----
+>  1 file changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index ccbf1337f650..9eac02d06b5a 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+> @@ -146,7 +146,6 @@ static int memfd_luo_preserve_folios(struct file *file,
+>  	for (i = 0; i < nr_folios; i++) {
+>  		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+>  		struct folio *folio = folios[i];
+> -		unsigned int flags = 0;
+>  
+>  		err = kho_preserve_folio(folio);
+>  		if (err)
+> @@ -154,8 +153,26 @@ static int memfd_luo_preserve_folios(struct file *file,
+>  
+>  		folio_lock(folio);
+>  
+> -		if (folio_test_dirty(folio))
+> -			flags |= MEMFD_LUO_FOLIO_DIRTY;
+> +		/*
+> +		 * A dirty folio is one which has been written to. A clean folio
+> +		 * is its opposite. Since a clean folio does not carry user
+> +		 * data, it can be freed by page reclaim under memory pressure.
+> +		 *
+> +		 * Saving the dirty flag at prepare() time doesn't work since it
+> +		 * can change later. Saving it at freeze() also won't work
+> +		 * because the dirty bit is normally synced at unmap and there
+> +		 * might still be a mapping of the file at freeze().
+> +		 *
+> +		 * To see why this is a problem, say a folio is clean at
+> +		 * preserve, but gets dirtied later. The pfolio flags will mark
+> +		 * it as clean. After retrieve, the next kernel might try to
+> +		 * reclaim this folio under memory pressure, losing user data.
+> +		 *
+> +		 * Unconditionally mark it dirty to avoid this problem. This
+> +		 * comes at the cost of making clean folios un-reclaimable after
+> +		 * live update.
+> +		 */
 
-Oleg.
+Can we make the comment here shorter to only contain the gist of the issue?
 
+> +		folio_mark_dirty(folio);
+>  
+>  		/*
+>  		 * If the folio is not uptodate, it was fallocated but never
+> @@ -174,12 +191,11 @@ static int memfd_luo_preserve_folios(struct file *file,
+>  			flush_dcache_folio(folio);
+>  			folio_mark_uptodate(folio);
+>  		}
+> -		flags |= MEMFD_LUO_FOLIO_UPTODATE;
+>  
+>  		folio_unlock(folio);
+>  
+>  		pfolio->pfn = folio_pfn(folio);
+> -		pfolio->flags = flags;
+> +		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
+>  		pfolio->index = folio->index;
+>  	}
+>  
+> -- 
+> 2.53.0.371.g1d285c8824-goog
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
