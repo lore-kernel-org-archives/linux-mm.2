@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25853FD45FD
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:41:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB22FD45FA
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 22:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16C4B6B0096; Wed, 25 Feb 2026 17:41:44 -0500 (EST)
+	id 8E3EF6B0099; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DF526B0099; Wed, 25 Feb 2026 17:41:43 -0500 (EST)
+	id 7EE586B009B; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E66756B009B; Wed, 25 Feb 2026 17:41:43 -0500 (EST)
+	id 651316B009D; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C07FD6B0096
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:43 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 888DEC287D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:41:43 +0000 (UTC)
-X-FDA: 84484452486.01.866C5BC
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3095A40008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:41:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=dk9Jybov;
-	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BA856B0099
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:45 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E33D5BACB1
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:41:44 +0000 (UTC)
+X-FDA: 84484452528.08.56A7BEC
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 716311C0009
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:41:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=ZQwNYgHV;
+	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059302; a=rsa-sha256;
+	cv=none;
+	b=RLApM+0NQluQ6TH3PfUaKocjLb31Q2udESZBrmRCXspYOlN3qa7Vhx6Xh/fmYm6HLloCOZ
+	xnZkGGFFp96ZRXuOjALwiTYyZ744cA6vuEmw9G6sdG+cXvI4dvQbm6ycJnhnNrjRwApDNI
+	8DgS97X6rKweOGLUsSBwftez6M1Q4xs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=ZQwNYgHV;
+	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772059301;
+	s=arc-20220608; t=1772059302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B+x8HlKrObJCF5zGXiosgMuiJzbAlNo3I+yj4hi3OCU=;
-	b=IxuV9ejaclsqC20YeGH4CIHJk5gCw6jHu77kCIJHSRrjI4iO4Y55c9EBA9huER6Dosh/ci
-	/C9VY98r1lRjLk711ZbDgWnfm6RDwN1FNy0ks2A/lmjYUq1tAXlQo1QkuLA4lRQWL/Rqw5
-	Ffv/5/uaeTEPyjHA+zmN3dCMlg1fu8Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=dk9Jybov;
-	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772059301; a=rsa-sha256;
-	cv=none;
-	b=U7sT0Q2ZHQfoNVnpoS+DDMmwFMF38KGriOYFBW17p4kzpLeuvM9ea/aJj4NEpu6bcCgnhL
-	Tfiex5vSu0Z2A+KpK8OjVz99Jcla+FRSKbxTXGU/CT5pHRqUFcCscKnTGQxVduHpyzwsSQ
-	GVj+8N8Vz1dxnuQ+RioIOm1yuoSVEuw=
-Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PMC1jT1601368
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:40 -0500
+	bh=UCadQArHxHi9ThZ1jAIvSvngqH0LQPrZ8HK0cEt3m1g=;
+	b=I112iz/Qahie5KFIpajQwR9c0yiAhVcxKk9UHDeC/2cSCOKeoKS7ODwZu8sMlSp3SE6Pln
+	noQa+6cVTsaZRfObzUSyG4xT74728QRVCFTIMbxZB1LVWHKWSo+g8vUVizdabF+aJqfBb7
+	Oezk7tIR+CNXpc9hYeWAamuWwLR+VO4=
+Received: from pps.filterd (m0167075.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PMC1hj3216210
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=B+x8
-	HlKrObJCF5zGXiosgMuiJzbAlNo3I+yj4hi3OCU=; b=dk9Jybovs8IHdEvEGP9P
-	/Q+tTmC5El4AZB2gHDz4eA8v6PeKwiNC27gSP64f3zuophROaYaLhYmmHZXiKwMJ
-	NSRp7hKX/59LhbwItsKVPFd7Crde5MZ4zs3tGudNHcoxx4fALdYT98VxFmtL21u7
-	fGfx2Y40whZsXWbmDY0qeSprynaAbzY7D4ttYLp1lNjUZRCarCpKgXdwbIuqQBKo
-	dAh2ixL7cwqcSMAUrxeiWUHwrgu0D6JUMLqoY/Z34kR3anogYSc0Opb+0Pn0KWVM
-	aWbq5vkVIyD/o2s7Co6n14E/UIIBlvbWXdW76yZm6WRRtPqcpoGOJFPXc2AOxDga
-	cA==
+	:message-id:mime-version:references:subject:to; s=pps01; bh=UCad
+	QArHxHi9ThZ1jAIvSvngqH0LQPrZ8HK0cEt3m1g=; b=ZQwNYgHVk1e7AonBp1GN
+	AHhms9mVIbxtdg9djgycPaIK5SH2e7LZ9supw+fWQxOsuxDxLdWYTg29qYdOZWOY
+	Yoxind27Lp1LnTlBB+iocGqkBeujZgdoOx0KTpb3+L2flDUaQvgq7QGL0FSOMsZb
+	aePYzQ46aAH5yfuxGueCd2PW8+BtSYb/6riEK9KE4UlCVlV4OAKU7LPjPny0bZRa
+	r/F5oQMKeYFunqtUXZRY4gcq/FG3n9onHe0PD5YjSbIvEHhHmA/12/mqQIcDCB0E
+	/BIYyBF4K6XcVWBm+onb/+8xjo0VkdTKX9hjL7/Xe7D735HMn5X1aR3McboDQo3F
+	fQ==
 Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4chxa0p1sg-1
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4chs0qevfq-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:39 -0500 (EST)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5061d1ef1f3so32446481cf.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:41:39 -0800 (PST)
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:41:41 -0500 (EST)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-506b4005ab7so29854901cf.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:41:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772059299; x=1772664099;
+        d=1e100.net; s=20230601; t=1772059300; x=1772664100;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=B+x8HlKrObJCF5zGXiosgMuiJzbAlNo3I+yj4hi3OCU=;
-        b=qLKqCOiSsHc+arDgchiDTS22zdXn+v6dXebm+4leOrqkK1UP1++1z/ZZmzrFh+hQ40
-         KvFTE/x1P/zt0HIpG2JjRwxrmoPeq5qa1gFw5oAoxL4t7O4KggPjfLMEr2NSaV+U1LmV
-         Pc5OSZSqH/HRHq0sYNongM53XGH+0MNBJjb/gJMghICRU27kHqkIxuhcT2BzgzCJUrFt
-         wN+pP7Wr8P0TPdpsIaVCpp6HZWYsmO86xIzXwXwbqhMIKkDdrUB/MY/CtSlgk+y+KWuP
-         xGYQk8iwQqh43516/LevyW/bpFR3QLIDsDJQazagt3pyDphhqcTXI9cOK9T4BwCU+c5J
-         AMLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIKlOtQRjUsqviKNBfqo1CdRQZR2ifhVQrslv6IccSeQTbfSgiJF8ypS5+PTnTKIggWcuWqh5KwQ==@kvack.org
-X-Gm-Message-State: AOJu0Yymk1FqhpLyr+8LM3eZwcdd1CsFAPbek1sK660MCpHVWyKEpEyT
-	X53jVA7UcsuNMElgj2gJgKcZU61qfETOmiVHV/utfpwA6KdiM1WX/PaQ6ErS9/vnS7EEGUtN4JK
-	goN8tgPbthEHn3Dj7nltKp/WtVaBdOhNFs11RvRAwSRhmvgMz
-X-Gm-Gg: ATEYQzwQgC8jjwXFC86Tokbv6o0K78uekE53cXUQr7n4bV1uGCr/fRMz8dZlERtjU+N
-	VkW9fwGDe5Jwn0fju32Yeg/t98xqmo60IBiGP2xZHARDA6walW/zcs72GGfWSACjYvyNcLdKc1X
-	kjfiTzY6Cg/0Rj/89a91i7G6hFNa67khU6yhhbjfFRrrObmXc1xAly/KwJw77SsmhVJaWPGQbRA
-	FrLVTZ+liikZE5AzcrVlpFG/L+KjUt1GetBRiXzU1txz/P/VP7oGxYH8awczDSl0J60NuJROC73
-	VsFXnYxIMfBtKEdA4kJAVasyGMKF9mJ99MeDrSTgymLJbqbT9f+sjDNT8LL53VodIOKEgVikdr0
-	SaBGPyPlrw+5vS1fZ4qYZ1hwvsvzx0LOM
-X-Received: by 2002:a05:622a:44:b0:4f3:59c1:768c with SMTP id d75a77b69052e-507460dc42emr758601cf.60.1772059298710;
-        Wed, 25 Feb 2026 14:41:38 -0800 (PST)
-X-Received: by 2002:a05:622a:44:b0:4f3:59c1:768c with SMTP id d75a77b69052e-507460dc42emr758291cf.60.1772059298273;
-        Wed, 25 Feb 2026 14:41:38 -0800 (PST)
+        bh=UCadQArHxHi9ThZ1jAIvSvngqH0LQPrZ8HK0cEt3m1g=;
+        b=Tiaqk815+U4nMWs772k0xjX0W0/TU6BoUplr16rm526owtFrBUK65/W/ax+GZEHf9A
+         sBwV4p3FBDlk87ZFzalJ7Cp7VPpCJeC881KZQfaY3zfPZvGK7TN7jlLTHwDY5lcLxw4X
+         VuRCTK6gP0aR2HY74C4EfpwGEJkBiiNX76LI/k1acLVCugLzF+jrZIKFDoP858pUiT0C
+         1lN2+RJC++pjg3edZrEuvaYPDLGFc8Gdf9O7KkMn6LZEhsaU7sZ5aP7AVCGl4nMiXiFu
+         PhfN1rIvJBQIY8/gtPfTaxrC1WtMOA/WGB9UKejRYZOkJl6IVToo+W/BcIKe2BFjB2sp
+         sMTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGm2i0gbxM3P7Y5atGNinCS4KGK73nFwfQQMyT12tp8J1naA2AgIByvq7Lu0P25QLHvZWETaWm9Q==@kvack.org
+X-Gm-Message-State: AOJu0Yzjp/dWLwXD2oqsZmiJ1eBM5cV80E+SuMowFdU7LvH5z+rvYd2h
+	UpwkbBgXBRneaKZwoYLVnVu91S7ITQgCeddig+N/cemmCy71BGuOjJM5gGAN3FjzUWHBoB+IX6b
+	b6OxBMR0t5Epvru+iTsC9cU58BfG9wvedQnxCZWMLkv4pKZey
+X-Gm-Gg: ATEYQzw6w0htU5+9+Meylq5r3vwweMtcmWjb73aQvLcPAYq54SmyC9yRKmPVpiGAebJ
+	2gMBfxtWM6XHsUyYhsKC4r13AUY1/NL/XK73G0Byr+K3a6OMTlL92K2H8/aY1oqwKUAesX41yF4
+	H3qpJ4oF4Xv/yAnhdi4hh4iLd8+90cSu7hrj/ohL5XGWctRvTKt91wtx306J/YnZ8sgW23Mz5L5
+	7KspIvUFORQDEaNVPAln/42ph0smmnDN09wBZew6pjYwFUOiPjTLDVgZ5Wa00MjXTlZnewnXYM/
+	ceg2Ux+9vlO2LdtfGAAi9tZ/ut6c6R6wTSxilfSfyHzdxaD+ncoSaIn9Fd5+b7N9HDXn0zLf4+5
+	M84Em1z51DsxlMcDvMSz/9Ht2zh5sxGVO
+X-Received: by 2002:ac8:5850:0:b0:4ec:a568:7b1c with SMTP id d75a77b69052e-50745effd87mr1368611cf.21.1772059300013;
+        Wed, 25 Feb 2026 14:41:40 -0800 (PST)
+X-Received: by 2002:ac8:5850:0:b0:4ec:a568:7b1c with SMTP id d75a77b69052e-50745effd87mr1368101cf.21.1772059299490;
+        Wed, 25 Feb 2026 14:41:39 -0800 (PST)
 Received: from [127.0.1.1] ([216.158.158.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-507449be47dsm4196231cf.15.2026.02.25.14.41.37
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-507449be47dsm4196231cf.15.2026.02.25.14.41.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 14:41:37 -0800 (PST)
+        Wed, 25 Feb 2026 14:41:38 -0800 (PST)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 25 Feb 2026 17:40:56 -0500
-Subject: [PATCH RFC v2 1/2] filemap: defer dropbehind invalidation from IRQ
- context
+Date: Wed, 25 Feb 2026 17:40:57 -0500
+Subject: [PATCH RFC v2 2/2] block: enable RWF_DONTCACHE for block devices
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-blk-dontcache-v2-1-70e7ac4f7108@columbia.edu>
+Message-Id: <20260225-blk-dontcache-v2-2-70e7ac4f7108@columbia.edu>
 References: <20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu>
 In-Reply-To: <20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu>
 To: Jens Axboe <axboe@kernel.dk>,
@@ -127,43 +126,44 @@ Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
         ntfs3@lists.linux.dev, linux-karma-devel@lists.sourceforge.net,
         linux-mm@kvack.org, Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772059296; l=4861;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772059296; l=9465;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=wvO7UclkDfOFQdfC1evvQhRGdmzqdeL+WI5Bp8USXg0=;
- b=h4bisF4GoCaCSoqd37/ZfJNSaUymW/3u+9LXcqmZG0KnRoDbGHtk/4qRW+EsLRX8yAk3THDOa
- S2MblO1dCLPBna+BzWEdZKkpfva3GYEHQU94DPCiujOK2l2fhb+tpu1
+ bh=Ut4irJAP91Ja56kFfECaXVcCmgWiTiooWThaHJixb4A=;
+ b=Nv2Kk4KuLTpGQX84Y042xeZddog0F8f7rPDUzrUKUw+0BVDRxxIPtrNiY2iL73Q/t4raHOUQx
+ MqYl+nhxhJlBePWXMDkS88wNw/JvTeg7ErN4IzVAeE9mMzN1BIIMHzs
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Authority-Analysis: v=2.4 cv=Csiys34D c=1 sm=1 tr=0 ts=699f7aa3 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=ZbYQ98VA c=1 sm=1 tr=0 ts=699f7aa5 cx=c_pps
  a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22
- a=wj6egcThClJy_xBgiekA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-GUID: NbuSrbQ8E6FK-t7cCenw7G29_MMKv72a
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIxNiBTYWx0ZWRfX46pA/6gCqBto
- iOvZfgzHlpXBHyMVOTgiK7H/vXEI4TrzL+O32qy6WJ1U+35+SxAa3aub2O8MH79g6ehTzYHhmp6
- ky7YJLMzvKNXPK2w0bHCLodHUTPJCfwbOHflfMc0plkbtZl4KVHtnKpurmJsNfkRqDiCmpZK1rn
- tybyJUd36BO1CNkxLjWGLaxk02ejCc+3+GCi9nmC0XH3XugF4Mb70LWcYkLblhQ+TPw7RsnE/PW
- 0a3oXA6JgxQxIdq9Vg9b4Nh+7hNrJ0wtEQ9yz3ycJjXcJu1I6k5E3ye8bwZZOTiJYzJfRwtRnPK
- gTrb3ZGinPsaD30oAzIQ/MkLxCkSN1fRfbeLlzhPn2z/oViWKAmou5FpTBSN0lSwOYkVB8yAQVL
- D4UHOxGi0ktyth8mJTrocg4OYOU2LSkx/8Z0DDk2tbL0+LPGy0OYbOi3EGFLVEptLAtMCJmklbX
- sVv5D60LhaCLLqIK0zA==
-X-Proofpoint-ORIG-GUID: NbuSrbQ8E6FK-t7cCenw7G29_MMKv72a
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=HpS3TJQ9O3Ob1ozEcmik:22
+ a=Omgu3vtQbb9kFtOpCJYA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-GUID: 2ue5Gdu9UG-_DVrZRSHphWNX7qdOW-6R
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIxNiBTYWx0ZWRfX45tZMeSgLfUL
+ rwyyb5oCMbHad3xXTyUwvP8RzXERG9BSrqfDxSj/L3XA0cmht+UIqtV1/HGSPCetRhpxW37sLRu
+ 06e27siwMQxpyofRFjyFAGieN8/WjvjjiX57HCTXzJJH47WDKMKRo+nEk/e6DUIh3MOXv/Cbqod
+ GZ40yYKdHK2a2qAUp+d+y38ZQpmvQUvo40M8hJBiEFyDAYvB3n/5BurZ9406xw8Q2NmnPTxAimI
+ RG83H5Xp4hKLI7pDOcjFaVFno2v2oK9Py7H7bFxTjG9iriVcQ5rsh/EbfaeU+B27zJfm6dUdTSE
+ Wv5wUPfnjtQ1PbO2PQcMv3LUHncUqfGjjGSxBh70mDR7iBIW7oOaT+gaBvleW6H5cXixZaUJied
+ WMURMNJS6dhiA7Gl3MgXuNrys0qA1P7uDZ6AbtyR0ZhP7PRR0qg7upKaEIS2HB+iswM3XABPINg
+ HjGccG/uU0/nXOlcTyQ==
+X-Proofpoint-ORIG-GUID: 2ue5Gdu9UG-_DVrZRSHphWNX7qdOW-6R
 X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11712
  signatures=596818
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1011 lowpriorityscore=10
- impostorscore=10 phishscore=0 suspectscore=0 bulkscore=10 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602250216
-X-Stat-Signature: 37g5p71jsxart7yhx481f7i9f5t6ydmf
-X-Rspamd-Server: rspam11
+ clxscore=1011 malwarescore=0 suspectscore=0 impostorscore=10
+ priorityscore=1501 phishscore=0 spamscore=0 bulkscore=10 adultscore=0
+ lowpriorityscore=10 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2602250216
+X-Rspamd-Queue-Id: 716311C0009
+X-Stat-Signature: 7a8y7ywhh7teundjuqc9skjbnh4jybou
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3095A40008
-X-HE-Tag: 1772059300-195633
-X-HE-Meta: U2FsdGVkX1/FBhSs+CqhGBtu3I3vRTQlnReZVqdZNH9e3A6LLx9cgPhioYNfuMY/QntVSL4qCMI4uFErePUk/e+Ri60A+b6puU6FUz/0o9Lry7q0alM0e0ZzYy+yJ4YJoPiuqScJdidaWiOkJNR26X7gGJ/axypBa10Ga+bkI9jjCzd5p0/YAQOyEK839ChAEIIxMgKzaRxym51E7DsVp9Xf2rHlME6rTe8rOKXsX57IZSV13BbCSjPNAyHnIoLtMxpaPGG3RZINnC3TklIy3YV36GOa4OUJJslN8Vt9uCULR5zicBF7feSvUvtnm8d/UBL8ilXWAMcmImu3v9wqSsf7Aqqnlcm/gPzCvOGovqS9oAhoCnPqILrxLc6OYLGDfLGfITBQjgOElVwCfm0a5H0L6XcqPVpc6PfCBMhmRE9FyABGcr4NoNlcqWS6fduw0DvRWKMkpvWMmajf10YnlGgEJUcDEv19s+Md5ez4pVF99yg4ln0pi+kHj5d4W4HPQt5T3/U7rn6eHHYIhVNcfyxCEuBFLh2lo70s0s0qSVtCaBHJ2qUPAaTZUD3UI7MRe3roAg5Ob5xoEU0UGWCIZzhBeXjD0GiqO3KEQdim4oWuTusXHbKeNsd1EYjKqujjTZOl07qSf+rQAqR/fljcEOWHny+83O0VGiRE83pavMzi26axc1XTWDk/3L97QlVWX7ay+zl+CGl5OkaYsRI7Qya29Es2DA7VcgJT1W7rJ3LdTBk1cGG41g20T6jRJf5nuYqfcRYAQkjqNSInMj8g9b+jgiLXGTraCy8UmvqQcKxl1wxMsF/NwxdpJdztQAVi2Y7oM6dAHKkVwCMXBTGqDPQZhq9XMd4TWfAn1TiGvRUY7GydExKbYRbNSuWv0vmYNoKPES0B+jNIUErYj1PL+coh5g7d+xkWIiLU4PMtVFRTUWVFO86twPu3TVKHWjIaYw9BYT0ksoJ+APczsy1
- u6aLkfsQ
- NUNrpXnTjRGSh7u8k+rFbZ5TxIghVD2d8cQJbUIPRdrpzhCZwmRja3akWNJB8sadU6SCDRbq4cFsPnzR5AnS18Ke+AACLNwsOFHez1f4kJ1Zn9/ipH9GicpAjmtroTpB17TPeByxVzDCWVJ6Xe+IVu0QzkQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772059302-231820
+X-HE-Meta: U2FsdGVkX19Npqh1zoAVsK7DteC2GvAUFz0GlacisULfac8Besp5GJLmhUjaEZjJtDzPOOUwkKokFULM9FccUPUx6akiQJXPtQQBvIFY8uAcs9i/97j40/kCD54x+x6307M1T9BqIPVd17hneox+6VE8G+NWDGYaCZpDi4JlHcCxaOYs81N//Uur0+OTW0i/QA/FSskVcymQExqX809vbt4JHj0rxC/8vgwm9GWXy7p+aPmCGvXr4uF9RN38ns/EHN6RyNQZUClYt0FmmO7FYocv1+vKrnspUYk11t5KEcuhWTn3isVa8exYr9s6vEGDDBh3/NNzwnPDQI7B7qJko++3D+qite5fOAXFLLR1KJnfdumCRxDrO2v2P/G5GGKmvCOUj0YI/fANyqNkZWDgEnxqK30ottg85EGeVC62d0SBmN/KuKUEGPdlOXGAVVMxhCgB7qYUOFROCh0OcElfgXN9FOoWlfVK2T0fQcQ0oRX419xcuwTUb53r+5x1O3Vk/xRQ7YZTR55ejrpFCYlJ0BsZq7w0TD9c9/SOqbTFiDENimKIOibGHuJVDqLLdiaXZbN6viBoLY/MCNKsq2Kr5qwKhO4rAwK0lmf19VpEXQchgKHKaN0LJlXLwFo09HW+Lx+ktX/u7iWMwOR5coyyF15fueavufJM5hJr7P+YRa9YMRtor+LtR3kP6uN/SIaNI7ZbXkSPwyrxYIuH0iVlcLzKFnnFcHgIS/uJ+VQSTf3aFkAAUDkVma6+CN6GjVGnt1P33CAv9SliDhwIDa9Lfx9bLdrS/fDQ2u0ki/q/X4DT9zsLc4J74xevN6KbKnmVThFX87pUIyhw5ToK8KY5k83+h43VsyfTiP9V1pMgMk3Lmm9yvLmA+sCdUMi78m2uiQA6PBej4kUkld2SLuxHn5+1rEW0N9ma+dJyLAiKKf3Dr1jSVyK/wwPW6CRrIuxRC/RzzyWLbTjOfMlrZQc
+ J2/O0ppA
+ +JeNUYA/TJG7JHHswqFg9z9LKGIFaSYSUK2VCXmuH96f9uKnMNAcvVgIfGkKZbLhRswJCRFhG5n2p81tFDpb3DAauf01Kwj3DYtaEwVA0+I2EyON3ISAhEOjMK3bYObmzEbfuiwdxCethUnA53TgvJjrOT4mNjIEJCxlVIItdN9TxB/nEsk8UGH4+2+yaN95IlOfN1B615t3vBBJfDZR0meBZoguaAFYeFBibkIs7Yk1HYcOCDOdZ3DG9V7nQTquarro0crWmOhwKuAJyDI9hqqiatNI6agt6Nt922rFRQqbTOB2NnpUZx4//iBwjUL1vqfg8TQNWxpuCzZFGAhtwAXjeI4bo4zAdj22kuPQU1Sl40NU0BKvwX+fFQzkaIe3NzWW3S1ChpX48jjPAfw6/30V1kX74QlhM0CcTwpl4/r3eU2ng9DcwvOrz+ydYzMo9REC25WtJBv6ELpEizfIiqAkU33rZkMKhANzaGHxJZ6WVE6sJP7y888nWR35wzecGgs7BdOvqhvaD0EsnRHCuwn2TsNvLpz9JpX++Mb+928gNTgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,149 +171,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-folio_end_dropbehind() is called from folio_end_writeback(), which can
-run in IRQ context through buffer_head completion.
+Block device buffered reads and writes already pass through
+filemap_read() and iomap_file_buffered_write() respectively, both of
+which handle IOCB_DONTCACHE. Enable RWF_DONTCACHE for block device files
+by setting FOP_DONTCACHE in def_blk_fops.
 
-Previously, when folio_end_dropbehind() detected !in_task(), it skipped
-the invalidation entirely. This meant that folios marked for dropbehind
-via RWF_DONTCACHE would remain in the page cache after writeback when
-completed from IRQ context, defeating the purpose of using it.
+For CONFIG_BUFFER_HEAD paths, thread the kiocb through
+block_write_begin() so that buffer_head-based I/O can use DONTCACHE
+behavior as well. Callers without a kiocb context (e.g. nilfs2 recovery)
+pass NULL, which preserves the existing behavior.
 
-Fix this by deferring the dropbehind invalidation to a work item.  When
-folio_end_dropbehind() is called from IRQ context, the folio is added to
-a global folio_batch and the work item is scheduled. The worker drains
-the batch, locking each folio and calling filemap_end_dropbehind(), and
-re-drains if new folios arrived while processing.
+This support is useful for databases that operate on raw block devices,
+among other userspace applications.
 
-This unblocks enabling RWF_UNCACHED for block devices and other
-buffer_head-based I/O.
-
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- mm/filemap.c | 84 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 79 insertions(+), 5 deletions(-)
+ block/fops.c                |  4 ++--
+ fs/bfs/file.c               |  2 +-
+ fs/buffer.c                 | 12 ++++++++----
+ fs/exfat/inode.c            |  2 +-
+ fs/ext2/inode.c             |  2 +-
+ fs/jfs/inode.c              |  2 +-
+ fs/minix/inode.c            |  2 +-
+ fs/nilfs2/inode.c           |  2 +-
+ fs/nilfs2/recovery.c        |  2 +-
+ fs/ntfs3/inode.c            |  2 +-
+ fs/omfs/file.c              |  2 +-
+ fs/udf/inode.c              |  2 +-
+ fs/ufs/inode.c              |  2 +-
+ include/linux/buffer_head.h |  5 +++--
+ 14 files changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index ebd75684cb0a..6263f35c5d13 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1085,6 +1085,8 @@ static const struct ctl_table filemap_sysctl_table[] = {
- 	}
+diff --git a/block/fops.c b/block/fops.c
+index 4d32785b31d9..6bc727f8b252 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -505,7 +505,7 @@ static int blkdev_write_begin(const struct kiocb *iocb,
+ 			      unsigned len, struct folio **foliop,
+ 			      void **fsdata)
+ {
+-	return block_write_begin(mapping, pos, len, foliop, blkdev_get_block);
++	return block_write_begin(iocb, mapping, pos, len, foliop, blkdev_get_block);
+ }
+ 
+ static int blkdev_write_end(const struct kiocb *iocb,
+@@ -967,7 +967,7 @@ const struct file_operations def_blk_fops = {
+ 	.splice_write	= iter_file_splice_write,
+ 	.fallocate	= blkdev_fallocate,
+ 	.uring_cmd	= blkdev_uring_cmd,
+-	.fop_flags	= FOP_BUFFER_RASYNC,
++	.fop_flags	= FOP_BUFFER_RASYNC | FOP_DONTCACHE,
  };
  
-+static void __init dropbehind_init(void);
-+
- void __init pagecache_init(void)
+ static __init int blkdev_init(void)
+diff --git a/fs/bfs/file.c b/fs/bfs/file.c
+index d33d6bde992b..f2804e38b8a7 100644
+--- a/fs/bfs/file.c
++++ b/fs/bfs/file.c
+@@ -177,7 +177,7 @@ static int bfs_write_begin(const struct kiocb *iocb,
  {
- 	int i;
-@@ -1092,6 +1094,7 @@ void __init pagecache_init(void)
- 	for (i = 0; i < PAGE_WAIT_TABLE_SIZE; i++)
- 		init_waitqueue_head(&folio_wait_table[i]);
+ 	int ret;
  
-+	dropbehind_init();
- 	page_writeback_init();
- 	register_sysctl_init("vm", filemap_sysctl_table);
- }
-@@ -1613,23 +1616,94 @@ static void filemap_end_dropbehind(struct folio *folio)
-  * If folio was marked as dropbehind, then pages should be dropped when writeback
-  * completes. Do that now. If we fail, it's likely because of a big folio -
-  * just reset dropbehind for that case and latter completions should invalidate.
-+ *
-+ * When called from IRQ context (e.g. buffer_head completion), we cannot lock
-+ * the folio and invalidate. Defer to a workqueue so that callers like
-+ * end_buffer_async_write() that complete in IRQ context still get their folios
-+ * pruned.
+-	ret = block_write_begin(mapping, pos, len, foliop, bfs_get_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, bfs_get_block);
+ 	if (unlikely(ret))
+ 		bfs_write_failed(mapping, pos + len);
+ 
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 838c0c571022..33c3580b85d8 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -2241,14 +2241,18 @@ EXPORT_SYMBOL(block_commit_write);
+  *
+  * The filesystem needs to handle block truncation upon failure.
   */
-+static DEFINE_SPINLOCK(dropbehind_lock);
-+static struct folio_batch dropbehind_fbatch;
-+static struct work_struct dropbehind_work;
-+
-+static void dropbehind_work_fn(struct work_struct *w)
-+{
-+	struct folio_batch fbatch;
-+
-+again:
-+	spin_lock_irq(&dropbehind_lock);
-+	fbatch = dropbehind_fbatch;
-+	folio_batch_reinit(&dropbehind_fbatch);
-+	spin_unlock_irq(&dropbehind_lock);
-+
-+	for (int i = 0; i < folio_batch_count(&fbatch); i++) {
-+		struct folio *folio = fbatch.folios[i];
-+
-+		if (folio_trylock(folio)) {
-+			filemap_end_dropbehind(folio);
-+			folio_unlock(folio);
-+		}
-+		folio_put(folio);
-+	}
-+
-+	/* Drain folios that were added while we were processing. */
-+	spin_lock_irq(&dropbehind_lock);
-+	if (folio_batch_count(&dropbehind_fbatch)) {
-+		spin_unlock_irq(&dropbehind_lock);
-+		goto again;
-+	}
-+	spin_unlock_irq(&dropbehind_lock);
-+}
-+
-+static void __init dropbehind_init(void)
-+{
-+	folio_batch_init(&dropbehind_fbatch);
-+	INIT_WORK(&dropbehind_work, dropbehind_work_fn);
-+}
-+
-+static void folio_end_dropbehind_irq(struct folio *folio)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&dropbehind_lock, flags);
-+
-+	/* If there is no space in the folio_batch, skip the invalidation. */
-+	if (!folio_batch_space(&dropbehind_fbatch)) {
-+		spin_unlock_irqrestore(&dropbehind_lock, flags);
-+		return;
-+	}
-+
-+	folio_get(folio);
-+	folio_batch_add(&dropbehind_fbatch, folio);
-+	spin_unlock_irqrestore(&dropbehind_lock, flags);
-+
-+	schedule_work(&dropbehind_work);
-+}
-+
- void folio_end_dropbehind(struct folio *folio)
+-int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
+-		struct folio **foliop, get_block_t *get_block)
++int block_write_begin(const struct kiocb *iocb, struct address_space *mapping,
++		loff_t pos, unsigned len, struct folio **foliop, get_block_t *get_block)
  {
- 	if (!folio_test_dropbehind(folio))
- 		return;
+ 	pgoff_t index = pos >> PAGE_SHIFT;
++	fgf_t fgp_flags = FGP_WRITEBEGIN;
+ 	struct folio *folio;
+ 	int status;
  
- 	/*
--	 * Hitting !in_task() should not happen off RWF_DONTCACHE writeback,
--	 * but can happen if normal writeback just happens to find dirty folios
--	 * that were created as part of uncached writeback, and that writeback
--	 * would otherwise not need non-IRQ handling. Just skip the
--	 * invalidation in that case.
-+	 * Hitting !in_task() can happen for IO completed from IRQ contexts or
-+	 * if normal writeback just happens to find dirty folios that were
-+	 * created as part of uncached writeback, and that writeback would
-+	 * otherwise not need non-IRQ handling.
- 	 */
- 	if (in_task() && folio_trylock(folio)) {
- 		filemap_end_dropbehind(folio);
- 		folio_unlock(folio);
-+		return;
- 	}
+-	folio = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
++	if (iocb && iocb->ki_flags & IOCB_DONTCACHE)
++		fgp_flags |= FGP_DONTCACHE;
 +
-+	/*
-+	 * In IRQ context we cannot lock the folio or call into the
-+	 * invalidation path. Defer to a workqueue. This happens for
-+	 * buffer_head-based writeback which runs from bio IRQ context.
-+	 */
-+	if (!in_task())
-+		folio_end_dropbehind_irq(folio);
- }
- EXPORT_SYMBOL_GPL(folio_end_dropbehind);
++	folio = __filemap_get_folio(mapping, index, fgp_flags,
+ 			mapping_gfp_mask(mapping));
+ 	if (IS_ERR(folio))
+ 		return PTR_ERR(folio);
+@@ -2591,7 +2595,7 @@ int cont_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+ 		(*bytes)++;
+ 	}
  
+-	return block_write_begin(mapping, pos, len, foliop, get_block);
++	return block_write_begin(iocb, mapping, pos, len, foliop, get_block);
+ }
+ EXPORT_SYMBOL(cont_write_begin);
+ 
+diff --git a/fs/exfat/inode.c b/fs/exfat/inode.c
+index f9501c3a3666..39d36e8fdfd6 100644
+--- a/fs/exfat/inode.c
++++ b/fs/exfat/inode.c
+@@ -456,7 +456,7 @@ static int exfat_write_begin(const struct kiocb *iocb,
+ 	if (unlikely(exfat_forced_shutdown(mapping->host->i_sb)))
+ 		return -EIO;
+ 
+-	ret = block_write_begin(mapping, pos, len, foliop, exfat_get_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, exfat_get_block);
+ 
+ 	if (ret < 0)
+ 		exfat_write_failed(mapping, pos+len);
+diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+index dbfe9098a124..11aab03de752 100644
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -930,7 +930,7 @@ ext2_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+ {
+ 	int ret;
+ 
+-	ret = block_write_begin(mapping, pos, len, foliop, ext2_get_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, ext2_get_block);
+ 	if (ret < 0)
+ 		ext2_write_failed(mapping, pos + len);
+ 	return ret;
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index 4709762713ef..ae52db437771 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -303,7 +303,7 @@ static int jfs_write_begin(const struct kiocb *iocb,
+ {
+ 	int ret;
+ 
+-	ret = block_write_begin(mapping, pos, len, foliop, jfs_get_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, jfs_get_block);
+ 	if (unlikely(ret))
+ 		jfs_write_failed(mapping, pos + len);
+ 
+diff --git a/fs/minix/inode.c b/fs/minix/inode.c
+index 51ea9bdc813f..9075c0ba2f20 100644
+--- a/fs/minix/inode.c
++++ b/fs/minix/inode.c
+@@ -465,7 +465,7 @@ static int minix_write_begin(const struct kiocb *iocb,
+ {
+ 	int ret;
+ 
+-	ret = block_write_begin(mapping, pos, len, foliop, minix_get_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, minix_get_block);
+ 	if (unlikely(ret))
+ 		minix_write_failed(mapping, pos + len);
+ 
+diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
+index 51bde45d5865..d9d57eeecc5d 100644
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -230,7 +230,7 @@ static int nilfs_write_begin(const struct kiocb *iocb,
+ 	if (unlikely(err))
+ 		return err;
+ 
+-	err = block_write_begin(mapping, pos, len, foliop, nilfs_get_block);
++	err = block_write_begin(iocb, mapping, pos, len, foliop, nilfs_get_block);
+ 	if (unlikely(err)) {
+ 		nilfs_write_failed(mapping, pos + len);
+ 		nilfs_transaction_abort(inode->i_sb);
+diff --git a/fs/nilfs2/recovery.c b/fs/nilfs2/recovery.c
+index a9c61d0492cb..2f5fe44bf736 100644
+--- a/fs/nilfs2/recovery.c
++++ b/fs/nilfs2/recovery.c
+@@ -541,7 +541,7 @@ static int nilfs_recover_dsync_blocks(struct the_nilfs *nilfs,
+ 		}
+ 
+ 		pos = rb->blkoff << inode->i_blkbits;
+-		err = block_write_begin(inode->i_mapping, pos, blocksize,
++		err = block_write_begin(NULL, inode->i_mapping, pos, blocksize,
+ 					&folio, nilfs_get_block);
+ 		if (unlikely(err)) {
+ 			loff_t isize = inode->i_size;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 0a9ac5efeb67..8c788feb319e 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -966,7 +966,7 @@ int ntfs_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+ 			goto out;
+ 	}
+ 
+-	err = block_write_begin(mapping, pos, len, foliop,
++	err = block_write_begin(iocb, mapping, pos, len, foliop,
+ 				ntfs_get_block_write_begin);
+ 
+ out:
+diff --git a/fs/omfs/file.c b/fs/omfs/file.c
+index 49a1de5a827f..3bade632e36e 100644
+--- a/fs/omfs/file.c
++++ b/fs/omfs/file.c
+@@ -317,7 +317,7 @@ static int omfs_write_begin(const struct kiocb *iocb,
+ {
+ 	int ret;
+ 
+-	ret = block_write_begin(mapping, pos, len, foliop, omfs_get_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, omfs_get_block);
+ 	if (unlikely(ret))
+ 		omfs_write_failed(mapping, pos + len);
+ 
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 7fae8002344a..aec9cdc938be 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -259,7 +259,7 @@ static int udf_write_begin(const struct kiocb *iocb,
+ 	int ret;
+ 
+ 	if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB) {
+-		ret = block_write_begin(mapping, pos, len, foliop,
++		ret = block_write_begin(iocb, mapping, pos, len, foliop,
+ 					udf_get_block);
+ 		if (unlikely(ret))
+ 			udf_write_failed(mapping, pos + len);
+diff --git a/fs/ufs/inode.c b/fs/ufs/inode.c
+index e2b0a35de2a7..dfba985265a8 100644
+--- a/fs/ufs/inode.c
++++ b/fs/ufs/inode.c
+@@ -481,7 +481,7 @@ static int ufs_write_begin(const struct kiocb *iocb,
+ {
+ 	int ret;
+ 
+-	ret = block_write_begin(mapping, pos, len, foliop, ufs_getfrag_block);
++	ret = block_write_begin(iocb, mapping, pos, len, foliop, ufs_getfrag_block);
+ 	if (unlikely(ret))
+ 		ufs_write_failed(mapping, pos + len);
+ 
+diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+index b16b88bfbc3e..4b07dec5f8eb 100644
+--- a/include/linux/buffer_head.h
++++ b/include/linux/buffer_head.h
+@@ -258,8 +258,9 @@ int __block_write_full_folio(struct inode *inode, struct folio *folio,
+ 		get_block_t *get_block, struct writeback_control *wbc);
+ int block_read_full_folio(struct folio *, get_block_t *);
+ bool block_is_partially_uptodate(struct folio *, size_t from, size_t count);
+-int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
+-		struct folio **foliop, get_block_t *get_block);
++int block_write_begin(const struct kiocb *iocb, struct address_space *mapping,
++		loff_t pos, unsigned len, struct folio **foliop,
++		get_block_t *get_block);
+ int __block_write_begin(struct folio *folio, loff_t pos, unsigned len,
+ 		get_block_t *get_block);
+ int block_write_end(loff_t pos, unsigned len, unsigned copied, struct folio *);
 
 -- 
 2.39.5
