@@ -4,90 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C385FD45F1
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:31:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6CC5FD45F9
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 23:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB3956B0088; Wed, 25 Feb 2026 18:31:19 -0500 (EST)
+	id D9E416B0088; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C61496B0089; Wed, 25 Feb 2026 18:31:19 -0500 (EST)
+	id D55526B0089; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B97F86B008A; Wed, 25 Feb 2026 18:31:19 -0500 (EST)
+	id C58856B008A; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A83786B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:31:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 521BF86BB0
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:31:19 +0000 (UTC)
-X-FDA: 84484577478.02.828152A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C2A93100009
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:31:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hts5iko5;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADCC76B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:41:13 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4300E13B9AC
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:41:13 +0000 (UTC)
+X-FDA: 84484602426.23.0A6D05F
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 441454000A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:41:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SVlfCKx2;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772062277;
+	s=arc-20220608; t=1772062871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TA1v5e8OD7JNHzwKUv2pYfZF5lX28NZvCATWMgeOf9w=;
-	b=i08T5TzqTcdXlh/JU/0ZDER1o5mjyd6HtCG1Oz7FYB4sYOwyMhn+Z4GkI+it5+bDnay5qr
-	hWNwi9zeQf45wzbNlDbhKoNs2YNOBGeq/zJ9X+WNLoyDjiSdv0xlZEl/zxuHAW5a8nyvqF
-	067ibi612an9ymcFHbPhWoo6iz+ZHvY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772062277; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
+	b=iw/OPYav5Sdz1Vxax01cqRrK4B6yjyEj8scT9OqYWndD21iKA7YNo4w2IusI4YTtO2TA/R
+	nNvaPonGP1EBlZzBd4/2gkS1vlRstyPhl59zAWT4u8k5KBAcouv9dVEt7sAfRN5TfRWERL
+	Kfl6OwzZJIgpJq6Vx0t10dGXBwEd9Pk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772062871; a=rsa-sha256;
 	cv=none;
-	b=rQyVlccaANLF8shOH0M++0RwYcICM7MMbx3yXJNeitnM3x5a86gBtx3OOp7OI1xGZisHBn
-	KcdMO2VCs8B0TUZ7Bw1XZGJkwor5clvceLVj/pePjENMG2N1DDzbDF+XkZetx7tFc79Lvs
-	dzNNbK1AQA7SlKu2ERh4gG6Tv0wx1Dc=
+	b=M24n5zOD0Z3rX4WufJpncGXUnrNAB9BJanTkhJSCU5eSIXGZBYwLbPYxiFn0Ut9HTEsQhu
+	fJIE1+pEgywrUoMS2rbXgX97LKxhWIoBi/BnjlIhoFOqUl3w0pRlXUhPYZhn4035tR2VPG
+	p9tnIDrpM3kn7gs9yGQASZN2hLyvZ/I=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hts5iko5;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11C3260053;
-	Wed, 25 Feb 2026 23:31:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862D2C116D0;
-	Wed, 25 Feb 2026 23:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772062276;
-	bh=obkI1FVNxT6sa1JWz7SJNPJ5sUYJoL8uwfx+TuaNXco=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Hts5iko5XDHdD4DxAUey78Ja5C7J5OkIO1eyaWzr62jF2EQdR3NDndztOAjzSzxiK
-	 9MamRoetJp73z7YpLt3OLEWESwvnScOcQJGZykDUw0JdbQxyvgBJumGMYACw/VGSBD
-	 7mHpBqfA63Tatx9cdq4igioBo8j2UpAI0vzp0SHtrniX4yFUohLeXIJF0BGrYbeiim
-	 rmHlLM3OUl3M4FO3/0KIf5Ghm0qxCohR5B6lJ/hdpyEZTKheGMnFYRZ+z47JcNAX4g
-	 w3APT633imujsByWHdI3F02g2ovvf8712ep4bzejIfpOnVmxC905piaLKFvMueNpcI
-	 4wRNew0FMyfMQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] tools/testing: fix testing/vma and testing/radix-tree build
-Date: Thu, 26 Feb 2026 01:31:11 +0200
-Message-ID: <20260225233111.2760752-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SVlfCKx2;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2add623cb27so1274475ad.3
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:41:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772062870; x=1772667670; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
+        b=SVlfCKx2e04+mipyYLrwFKj66j0aXaLylZohDpTFBKrYdR+ENNok/3UfhP+h2DVjXi
+         7HKg2tEN2rc1gDt+/Z+e0XYAlJDmeYRFjLVIDYEuYHH2nM0J030xMhesvpJBEY+2b/z8
+         OfKb0ku+9nEkcI1WCar4RjeY93xRIcxe2OCXEtIb1sYkeBLLcFknGXcBOCifYbb9JcFw
+         E0objhXbeQPQAn49dpk6XZOCr4gjhixK+1/3ejmygUtHJKvdvoTB05ASwocKaBPbNS62
+         IzLeliNGWH3jmW3xd35EphApTQFKD486RKKsUTGSqHTMK21RXJ12Sm4SCNsAC9ONAX9R
+         uW9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772062870; x=1772667670;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/CK8Xw2Z8/jwhJKdKy0esOogFCKRH5zkiTBeIKoVGlM=;
+        b=HSlOU2lJ5X+TfdSvr+tYLU7gKhJ3nFNFyU4zWdS+IdECg/B/Yqf0MtvoiWI+WPiUb0
+         Y0MDGOuTdZ0q8qLXypIzHy/oRrvP0uCwuK31kgc0rV+41YSfNX+8/v+L34wrybOljEtp
+         YLkCnxQau8NvaO9uY3og5/dN4NpBbQB1n5jJ80R3R4S739QyjhlyDUl2J3TMMCLxgRoG
+         YzXS+rp84fXLx1nJapy4dw2qOe9+pAue1d4/ahBuaNG1ngmv1FaN6Nz/Wehs6XK8dbt8
+         r7TluT3Dp/iDSRXExmHVfyfSho/eOe8LIxDxXhvQNCqmGfVRp/BgKDtXJ7CHUmqYphh6
+         0K2g==
+X-Forwarded-Encrypted: i=1; AJvYcCW1hhtEBd4N1CLzW1XiKKpFinE2yDG5d6eCQHgjx+NTRaziWFCBrGBYVjiRd1SWgd3uG5ALxUpL3w==@kvack.org
+X-Gm-Message-State: AOJu0YwAdAVBElHkQCDNcz+xxOLXxLX+hiVz3konbDYDwjPyLkYZx//e
+	JVhckDaaydQlHsv6QbSBcp3TxJXjmF3WGVQL9BoJffREuYJmlNUwAo7ZSHEmw3G2og==
+X-Gm-Gg: ATEYQzxPJ9zSh0bLynPUhIqQom8jiPj+rqZ4jjKCm0OBqIv5hFhI+sjnWJGWUstP2Zu
+	gHvfC9qGtI+c70Q92KXOPBBN7aytckLqJUosObZipoIzE3Qujwf0ZDC/nTabvFjyq7TcXsWbkRf
+	Cj/5JN2Sh1ewKRPO+QW1lNTpQokwa/9PCQEwZV2d5ipN4HSZlZN0OAN3WOMmwYIPNNjFamYOxTV
+	Ax7Oy/sARu+FSX4zPezQS/fAl5rzgrKDl2UNutz0gePhfmxr9lbg+nNIa69BpdwmOKLOk+7h61t
+	Ox+aWjU+napCJnIz+t+sKJJgDNWRSvSq5IvYvh7jB2w58AD/00/Ih7CzwWQ6BzA6doyYlUxyPkh
+	SlbqFabuFv4pFpo7/7Wu9YdtLjRobTBf3L1bAFrCA5FBf0+qIQn/ACFrLRO6FO4Nw24illZ7JJe
+	R/1u0MvBmiau/H6P/YjzfMFdVb4M2SCeeAJ4/1Em4K8rVuku9n9JIUv4zCPRTIvw==
+X-Received: by 2002:a17:902:cccf:b0:2a1:e19:ff0 with SMTP id d9443c01a7336-2ae035d235dmr1928845ad.39.1772062869584;
+        Wed, 25 Feb 2026 15:41:09 -0800 (PST)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b5813sm3778175ad.63.2026.02.25.15.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 15:41:08 -0800 (PST)
+Date: Wed, 25 Feb 2026 23:41:04 +0000
+From: David Matlack <dmatlack@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 05/22] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <aZ-IkNFOLJUff1hC@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-6-dmatlack@google.com>
+ <20260225154124.78e18fa4@shazbot.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225154124.78e18fa4@shazbot.org>
+X-Rspamd-Queue-Id: 441454000A
+X-Stat-Signature: 6kn9b576gotdk1o5w1bq81339mqxwnw4
 X-Rspam-User: 
-X-Stat-Signature: xddu6y4nt5z1ipy3cfhxsuwjnfdztnde
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C2A93100009
-X-HE-Tag: 1772062277-48809
-X-HE-Meta: U2FsdGVkX1+RivRl48SkiewqMWOdXXtkv41Y6lUFwJFfsXaWgjgdP/g2r5lxzVHLIJ78bUsJOend6bdrzE3ERgYrMQ5mpQP803Cq+bJq1ZahSO/0bSB6jOeMDb1v+SI0IY23ERQ9EV6SghsGC0Zw1TpeuVlC22Mpa01IDeeuzlLLvRmeCgrvZ7V/rLTMeuFqK1/mYqGj5+qQFyTb2xLSJPV0jzh3YiJx1A8m126fiViXL6VR3Ttf58A+X367hDWrursbON0QBAke5IJIqboik/Ow3ZrpkMvwroZAAvtmnitOlHkYr6ktvBcgd8805NnVmrv7tmtSMMMijY9xttY+iRqVvBpeeeXyNQwUectP8H2xJV7fNUFsJjHJ3oJagubxxP/H+EAEkE8lK8iUuU+K4hnRkKknGfEMq4AC9IXruyz6DDICdl+wSDHwPbepMTeP8Pp+oL3tlNNchkJzImwOvJIPm7lRvdD/iBqWWLIk8QMO2VKoN+KEtmjFw81czLUOpQRScHhC5ZLncwK7FBBoaOnc4LNO/9j+h9fN1QYEcck96/XFdh/RtbUR2DdddpRD/JgIk2TWVjly5L++pJ+gM4fr8K6FA5nIJvg1rXH2D7ZmBWEAy+6Gso3b/MdAQU1Jvidvv5yB3x5Kc56czwAblFsPvuEr0gKRjIBwG7AdhSxRHIqJqx9soS9B/S7GX5xyngL3pZcjQmUVrAJHr1naoMSZ52HDBiuCVK4JRwkidfsIkyJJqbCDnOjXPriNtTzMt6h8jgyV7XPTAvS+7ioSVpisXd1PWrCj7Eac29WwPOf+YDoOkQeTPXJ+LrFjzcgyGYFuLAqnZbA4IYI910s/mWMso/10B3NIjfhnWVF5XWd6GwMJZjxgWjhGlfdpNNHjQ/xboMbdQjxPwBfE5Dt5ftzk49x3zB7ZOqJUTquaEn4Q32rnmddq4/ghC3gRXI23cMSrLuwJNKVC3ueeKsJ
- de9D0PD8
- 5fLOERuG+C24nFjh39GfIbdG3hiO0oURJXQFedEP+aD90yMoecZBelsBaO7fb23DQ+XanfI3wqxMCEJHnzF3UE8QJF1V2wtOvaDlHyhLo61SuxudOEvYyA7cCYzorX2W6ORH4kUFcfV6Jd8ItpyaxJXNte9/1dB9SVDwe0GHMu1B4hyp2DkxDJ/5vxbZEFCuXrwLVX1xZpy98D7xn7zlfoASsuARhLhD73EGTHcVXKZPfbSaayQo2v4yoDfZ0HXtBpjZ+G/dISM3dPPzOYkdBkO7daEnJPnQ/OKU8G0yVlVRRqqLbef8r3kfrzka6XwXehcQPPULn//Kkgq8=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772062871-992628
+X-HE-Meta: U2FsdGVkX1+t8ydo/3fGpVFubMFxpbPqrSaOZTTCGZwKE6uMFQlvnWP7t/FQ8qyWVerOro3pQ1AHjBPrJEMfnsRt0mSOVsWmJUYZuSMiu825Hg3HBaNW93UzHOZJlhoMDFB1ndd2Tto1QIDE9vCkDOVYg9HfdXKi7MQqGO3AY2iUIDi3GxWEwry1LIigpZGraI8+9bAcKk38+n+WictvDNnZ34SLRZ86hEzbm26K/1rNqFhHtVl4i2VoHeYCsrgxdyMp/h3TzuKR2RpUEUw4HQxLvGNeac3Q4X5TTr4kY9+xA7J1EL6Bgb1KGlMDRYwYOHaKpxCkOUn5SErnmn8o6hpQo6H+2E8iqKgalKnhCX0EWgb/M+0bU8okDd3MufYkj6sGym/iyovoJVumZojeHfMPYp0z6XMpCfPdk9wZ93bgsXCn/H5SFpPpOP2WXcozP97elaq4z60+hjJbBqFM4s3PnEjkj2BewAg9XRfhnJ6SwZLMeDgGrMjMEvWBjAL8St1B7dFB/wMogXNeBDiHQET4JMQytzK5N6LyB1tbXtuM6+3H6WXy1anegeg8SViTzO+MpmE6SGWUcsX1yjbPhjs9P7DSo3/Psh1CitOX2A/OqmiFko5j3FxBnJJDDpWnLZyHGU/p7mG3Z0IUtqO+R7zD0Oz6iRUvLLD4IBW6O7M/6kU8dpA24qVjhRVEUGVTSW0kwKY0e5zmwdJqNZ6NFlY8sGbxcx5TQOOP0y/MAs23EJXmuVjHaAf9ibRKUxc4EVTPmnXOrf+Nfeam+wzvgR/Pe4odJulVq+6Flb1YhT1kK7h/10eZyM3GfpF6R16Y1ezEqGQsqySdbLWQRJFtkrTyl/sYGLOULfXnGJ8A0v4TB5EFK7DbAdSPzll85DrjuQ1InLE3GkXA/IZ6Q2MeJ8tzMUJRyIBznVxxxfIyi0QDR8fqSjMWwcZ7+OXSOtftqpSKjqIC2wU92AamLhj
+ 85+aWcab
+ YH6scgxLFIu/gQz6u8j4QoAXxmVXxzRSPcHD+IOVzqHUaUF8VacuHu+9HmORU3b8ZgOxZ5a0ebvqgoPQoT/9aQakTms/pK1Yg8BlEpqcLnmtLcJvOlmcNKjqcpWIMIoSizOuaV0S9uxEjDzBDLs3vBQjBHjv0ir2ZoMGWr3yl+dSP0h+uJgm4EeUnqD4Chup2wd07VWcFEwfFq1UVPljlAYM+t7diqW/GpyhwpHDLei7/Z9iCd9dI5xkahDIExP4BaKAMfXgguR7FQebSpEdEu/JiUGBmmAig3iRp0tbPlpDYAud5Ch4nI7jxgIdIFnBTShLTO0EIDAZDRsuHgu9/aSxy4yvbNJs7HxiLlAESxzTfj37L0rETToN+2xC0N9P4M50f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,103 +149,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 2026-02-25 03:41 PM, Alex Williamson wrote:
+> On Thu, 29 Jan 2026 21:24:52 +0000 David Matlack <dmatlack@google.com> wrote:
 
-Build of VMA and radix-tree tests is unhappy after the conversion of
-kzalloc() to kzalloc_obj() in lib/idr.c:
+> >  static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
+> >  					     struct file *file)
+> >  {
+> > -	return false;
+> > +	struct vfio_device_file *df = to_vfio_device_file(file);
+> > +
+> > +	if (!df)
+> > +		return false;
+> > +
+> > +	/* Live Update support is limited to cdev files. */
+> > +	if (df->group)
+> > +		return false;
+> > +
+> > +	return df->device->ops == &vfio_pci_ops;
+> >  }
+> 
+> Why can't we use vfio_device_cdev_opened() here and avoid all the new
+> exposure in public headers?
 
-  cc -I../shared -I. -I../../include -I../../arch/x86/include -I../../../lib -g -Og -Wall -D_LGPL_SOURCE -fsanitize=address -fsanitize=undefined  -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128   -c -o idr.o idr.c
-  idr.c: In function ‘ida_alloc_range’:
-  idr.c:420:34: error: implicit declaration of function ‘kzalloc_obj’; did you mean ‘kzalloc_node’? [-Wimplicit-function-declaration]
-    420 |                         bitmap = kzalloc_obj(*bitmap, GFP_NOWAIT);
-        |                                  ^~~~~~~~~~~
-        |                                  kzalloc_node
-  idr.c:420:32: error: assignment to ‘struct ida_bitmap *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-    420 |                         bitmap = kzalloc_obj(*bitmap, GFP_NOWAIT);
-        |                                ^
-  idr.c:447:40: error: assignment to ‘struct ida_bitmap *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-    447 |                                 bitmap = kzalloc_obj(*bitmap, GFP_NOWAIT);
-        |                                        ^
-  idr.c:468:15: error: assignment to ‘struct ida_bitmap *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-    468 |         alloc = kzalloc_obj(*bitmap, gfp);
-        |               ^
-  make: *** [<builtin>: idr.o] Error 1
+I thought I explored using vfio_device_cdev_opened() but I can't
+remember now why I went with df->group. Maybe there wasn't a good
+reason. I'll switch to vfio_device_cdev_opened() in the next version.
 
-Import necessary macros from include/linux to tools/include/linux to fix
-the compilation.
+> >  
+> >  static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+> >  {
+> > -	return -EOPNOTSUPP;
+> > +	struct vfio_device *device = vfio_device_from_file(args->file);
+> > +	struct vfio_pci_core_device_ser *ser;
+> > +	struct vfio_pci_core_device *vdev;
+> > +	struct pci_dev *pdev;
+> > +
+> > +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+> > +	pdev = vdev->pdev;
+> > +
+> > +	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM))
+> > +		return -EINVAL;
+> > +
+> > +	if (vfio_pci_is_intel_display(pdev))
+> > +		return -EINVAL;
+> 
+> Some comments describing what's missing, if these are TODO or DONTCARE
+> would be useful.
 
-Fixes: 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- tools/include/linux/gfp.h      |  4 ++++
- tools/include/linux/overflow.h | 19 +++++++++++++++++++
- tools/include/linux/slab.h     |  9 +++++++++
- 3 files changed, 32 insertions(+)
+Will do.
 
-diff --git a/tools/include/linux/gfp.h b/tools/include/linux/gfp.h
-index 6a10ff5f5be9..9e957b57b694 100644
---- a/tools/include/linux/gfp.h
-+++ b/tools/include/linux/gfp.h
-@@ -5,6 +5,10 @@
- #include <linux/types.h>
- #include <linux/gfp_types.h>
- 
-+/* Helper macro to avoid gfp flags if they are the default one */
-+#define __default_gfp(a,...) a
-+#define default_gfp(...) __default_gfp(__VA_ARGS__ __VA_OPT__(,) GFP_KERNEL)
-+
- static inline bool gfpflags_allow_blocking(const gfp_t gfp_flags)
- {
- 	return !!(gfp_flags & __GFP_DIRECT_RECLAIM);
-diff --git a/tools/include/linux/overflow.h b/tools/include/linux/overflow.h
-index dcb0c1bf6866..3427d7880326 100644
---- a/tools/include/linux/overflow.h
-+++ b/tools/include/linux/overflow.h
-@@ -68,6 +68,25 @@
- 	__builtin_mul_overflow(__a, __b, __d);	\
- })
- 
-+/**
-+ * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
-+ * @factor1: first factor
-+ * @factor2: second factor
-+ *
-+ * Returns: calculate @factor1 * @factor2, both promoted to size_t,
-+ * with any overflow causing the return value to be SIZE_MAX. The
-+ * lvalue must be size_t to avoid implicit type conversion.
-+ */
-+static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
-+{
-+	size_t bytes;
-+
-+	if (check_mul_overflow(factor1, factor2, &bytes))
-+		return SIZE_MAX;
-+
-+	return bytes;
-+}
-+
- /**
-  * array_size() - Calculate size of 2-dimensional array.
-  *
-diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
-index 94937a699402..6d8e9413d5a4 100644
---- a/tools/include/linux/slab.h
-+++ b/tools/include/linux/slab.h
-@@ -202,4 +202,13 @@ static inline unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf)
- 	return sheaf->size;
- }
- 
-+#define __alloc_objs(KMALLOC, GFP, TYPE, COUNT)				\
-+({									\
-+	const size_t __obj_size = size_mul(sizeof(TYPE), COUNT);	\
-+	(TYPE *)KMALLOC(__obj_size, GFP);				\
-+})
-+
-+#define kzalloc_obj(P, ...) \
-+	__alloc_objs(kzalloc, default_gfp(__VA_ARGS__), typeof(P), 1)
-+
- #endif		/* _TOOLS_SLAB_H */
--- 
-2.51.0
+> > +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
+> > +{
+> > +	struct vfio_device *device = vfio_device_from_file(args->file);
+> > +	struct vfio_pci_core_device *vdev;
+> > +	struct pci_dev *pdev;
+> > +	int ret;
+> > +
+> > +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+> > +	pdev = vdev->pdev;
+> > +
+> > +	guard(mutex)(&device->dev_set->lock);
+> > +
+> > +	/*
+> > +	 * Userspace must disable interrupts on the device prior to freeze so
+> > +	 * that the device does not send any interrupts until new interrupt
+> > +	 * handlers have been established by the next kernel.
+> > +	 */
+> > +	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
+> > +		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	pci_dev_lock(pdev);
+> 
+> device_lock() is a dangerous source of deadlocks, for instance how can
+> we know the freeze isn't occurring with an outstanding driver unbind?
 
+I can change this to a try-lock and return an error if taking the lock
+fails. The freeze() callbacks are triggered by liveupdate_reboot() which
+is called from kernel_kexec(). So returning an error to userspace is
+possible.
+
+My only concern is whether using try-lock would make kexec flaky, or if
+it would only fail if userspace is misbehavior (e.g. unbinding drivers
+while kexecing).
+
+> > -static struct vfio_device *vfio_device_from_file(struct file *file)
+> > -{
+> > -	struct vfio_device_file *df = file->private_data;
+> > -
+> > -	if (file->f_op != &vfio_device_fops)
+> > -		return NULL;
+> > -	return df->device;
+> > -}
+> > +EXPORT_SYMBOL_GPL(vfio_device_fops);
+> 
+> Seems we just need to export vfio_device_from_file().  Thanks,
+
+Will do.
 
