@@ -4,133 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 037FDEFD238
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 09:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A52EFD238
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 09:45:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BBAF6B00C1; Wed, 25 Feb 2026 04:43:34 -0500 (EST)
+	id 37BB96B00BF; Wed, 25 Feb 2026 04:45:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393836B00C9; Wed, 25 Feb 2026 04:43:34 -0500 (EST)
+	id 3298D6B00C0; Wed, 25 Feb 2026 04:45:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2679A6B00CB; Wed, 25 Feb 2026 04:43:34 -0500 (EST)
+	id 2561A6B00CB; Wed, 25 Feb 2026 04:45:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EAB06B00C1
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 04:43:34 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACD1A140544
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:43:33 +0000 (UTC)
-X-FDA: 84482491506.17.B320A82
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0446F8000D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:43:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BSjE7YXh;
-	spf=pass (imf02.hostedemail.com: domain of toke@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=toke@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EC276B00BF
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 04:45:33 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A1E1E1A0536
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:45:32 +0000 (UTC)
+X-FDA: 84482496504.16.45D57E3
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AB0D314000F
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:45:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CPe+l3kF;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772012731; a=rsa-sha256;
+	cv=none;
+	b=PR2DFVdkDZrWOSD4K7WGT7FNf+bD3ytxMPCdbH/I1Bu2EBCIpWS7mZwuXanSI6zA4AMYmh
+	mhou64B+o2Ory1lHfmWQ65ZM1/+SWMiDP8tiz6cLMY/lfUTzWI2/JaNK0upBxrrEnYk/n2
+	VFJmE/8Q/LZ4Ea0UwOtWatnOoKkHkI0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CPe+l3kF;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772012611;
+	s=arc-20220608; t=1772012731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dJBC8mLDABEEc1VlJb5lfgoDrRuha1EpEiY4jlkAt8U=;
-	b=RefZw9dQeM4ruj4oAxmLlkKe/VciDTehPwXzuRJOfRs1YIzS2C6Mhsq9Z86PdB1yUqaAxH
-	m6JBavxbQQdZv7Zk31NyUAC9jhQW0Jvtig5S2PL82HFCH3Q5AUqIeLEEPpl80/gZC6zTkv
-	ifm8Rr5Us1H6cMP75PtY+5Ux980O0n4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BSjE7YXh;
-	spf=pass (imf02.hostedemail.com: domain of toke@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=toke@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772012611; a=rsa-sha256;
-	cv=none;
-	b=gbznoGyLDFJlXt2PBoRnT0LEAIyulq/I1zEJ4J5OoM2I9hkxhZvnNaSdCcREK8YbJAOEW/
-	4jAmXNQZzwY7Qq5wr1dRQtiZU7d38tGd51p+lx6PaiIZxSuN540UCHfoFOIKSvD1DPH5QQ
-	IFFpEuJNZrRyQzmyIqnb9ipIshzf3DU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772012610;
+	bh=FhuAyl241CW382or6lcoabauCcaKPEH8lUmsbyHD+is=;
+	b=dt3zpREbGBylbG1s12k2rv8NZYwqb0WgD6e48cM2XwG4CmoB3ZFOLwqyWGC6v24h+ia+Vj
+	9m0axt8jW5trM6lFO9YmPzZNeIc/l4QqclgSP+S2jVog+hQKzp+fKW5bRk9BH+lasXVZL4
+	JYkNuTSieU8KYorSJzuhCKT8eaBMqOI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772012728;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dJBC8mLDABEEc1VlJb5lfgoDrRuha1EpEiY4jlkAt8U=;
-	b=BSjE7YXhUTHmAF8fWvxzw2Muw4ag9kFuImifmLbEmVLjGDmwI+gLZlYMbFF5Q8D1UHAoo4
-	hm873NDmneXzW+2MnCPLHELtwFHQ7HEH780lEJq/iqAuNhVA1t3ObH5NSg4N+r+My6fOfA
-	+ltxCvgnjrQXRqts/uFv+nQmnNAZONQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-gz6H_3o6MdGBEmove922BA-1; Wed, 25 Feb 2026 04:43:29 -0500
-X-MC-Unique: gz6H_3o6MdGBEmove922BA-1
-X-Mimecast-MFC-AGG-ID: gz6H_3o6MdGBEmove922BA_1772012608
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43985826d05so1283205f8f.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 01:43:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772012608; x=1772617408;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dJBC8mLDABEEc1VlJb5lfgoDrRuha1EpEiY4jlkAt8U=;
-        b=KIz34cT7a0o39w7SAxsZ1Ex6IvOAw/4xOg34/ZH1Shl2jGjPeYpz4aMKw7mgL1jkNY
-         i1wmPggyFLE0r5fBF1XLo8mrJV1U5BXBIQePg6ho279/8KCcSOLXWnP1cDriXRPkA70X
-         Pgl7DNPm6lQN4wqig6d7+Yh+gl61E8fx38hSpfI064K2LSV3WJLgxbceDfo6aEv0IJRl
-         SEPHl1elDJMR6TSZAHN8q9ARZ4rAkVRnH+nnaM8xKDIRL4FLQMyBsZA+Jkx8gH0Dtibj
-         o/R7EGHKYjNyWkzlP0SLlMvJ5tf4GQUPhP3ysmJKhH8D8j9C+3nMEmS6AJB4jtbIt5Vn
-         qxJg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5TlGjt+f6a1sMneUk+Y6Hz0njEemSkYezgw8Cw3oODewalYLbd218slLTAeaZPh4e/IeSRxY4Kg==@kvack.org
-X-Gm-Message-State: AOJu0YxilQ6yYTcXbY+N7vXeVwq8Q9UE20gBak+OlIFwdgykbBRHxpzi
-	Z6gg4QcKFb6Vbmwa5VPoZkHr6jeDqGdYrWA/RcLNrlJSpItDQTjavfR4QgAT6yVW4eh/aSKEqmi
-	dzmOtIhDVGRfnNiIweQXDEdPwNcCnjkia4BlTJca+9Xyiy6NziJ7+
-X-Gm-Gg: ATEYQzxxT8Ukjp67Rai9h/LGLEtoommXOgV6PFfkyrfdB8Km9KWjFk025Nf0bKoYzYC
-	1YdotiV2/ZRsMjOHfObM6Fud5IO4r1KDfOEbZ1ngpznK1tDmJeZ/+7rsGBl+FiBvdqR4Xp9Olf1
-	qIKD7IPdrZE1CXupY3AeihBuUMCsNz76Y+zW1BJ7fETrGvXwff0Phx39WlPfV18jlW4+yZWasiL
-	XlkvDrcmUgA4YdR23j0gXTn9gYlqzGpEN96ASV+TYJWwEgXnHA8G6+SMBKsBHZTfHFa4batNctd
-	cNNu0zlAOBRMXccC9A8L3a/MuFUyO1IHhmAUVzVQPEYgnKxtAH4g8BVbGmJg7Kr4sdbdTyQ8l32
-	2OJSWSnnTFs1MonxZTQlWVNIuHnwPFPdc0h+fN0PO7EHG8tSm
-X-Received: by 2002:a05:600c:8287:b0:480:3a71:92b2 with SMTP id 5b1f17b1804b1-483a95eab99mr223255755e9.26.1772012608022;
-        Wed, 25 Feb 2026 01:43:28 -0800 (PST)
-X-Received: by 2002:a05:600c:8287:b0:480:3a71:92b2 with SMTP id 5b1f17b1804b1-483a95eab99mr223255025e9.26.1772012607592;
-        Wed, 25 Feb 2026 01:43:27 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfb85c58sm8490385e9.9.2026.02.25.01.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 01:43:26 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 7DC33516AE5; Wed, 25 Feb 2026 10:43:28 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Byungchul Park <byungchul@sk.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kernel_team@skhynix.com, harry.yoo@oracle.com, hawk@kernel.org,
- andrew+netdev@lunn.ch, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, ziy@nvidia.com,
- willy@infradead.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- asml.silence@gmail.com, axboe@kernel.dk, ncardwell@google.com,
- kuniyu@google.com, dsahern@kernel.org, almasrymina@google.com,
- sdf@fomichev.me, dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com,
- shivajikant@google.com, io-uring@vger.kernel.org
-Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
-In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
-References: <20260224061424.11219-1-byungchul@sk.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Wed, 25 Feb 2026 10:43:28 +0100
-Message-ID: <87fr6pma4f.fsf@toke.dk>
+	bh=FhuAyl241CW382or6lcoabauCcaKPEH8lUmsbyHD+is=;
+	b=CPe+l3kFC7+Vh8T+pai1Hzv8lKTKwr/mmp6U/dd4cmhegSxmBTJHK0CHI5s9ooLgbu0KTi
+	egrCTAso0yCFB/d4S8/a/Gn8pW80a9eyo9d0V0UNrxdZZu/CVDbISt3Sq0DO54NzJdji0j
+	l55CCASNHixYJIuwTQ3GFjQ8TXR9A4M=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com,
+	usamaarif642@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v5 update 30/32] mm: memcontrol: convert objcg to be per-memcg per-node type
+Date: Wed, 25 Feb 2026 17:44:56 +0800
+Message-ID: <20260225094456.74145-1-qi.zheng@linux.dev>
+In-Reply-To: <0f915487ffc653cf6ea19335c21c01aa06004641.1772005110.git.zhengqi.arch@bytedance.com>
+References: <0f915487ffc653cf6ea19335c21c01aa06004641.1772005110.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: z5mejXehCIkaJYAGcZGFR9b-FVhi_JDWmuDFddt40hM_1772012608
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: kpwz4dno7m9dhxqoo15esj8zk66yhez8
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: AB0D314000F
+X-Stat-Signature: yt8zqosgfay6ypnwhpfb3c9sb4csk3i1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0446F8000D
-X-HE-Tag: 1772012610-866459
-X-HE-Meta: U2FsdGVkX18Yy92kJ7shatIU09N8IUtaZ52Rcgco0gCfFvOU8bRM8nCnAEkv5YdqDqzfXWyavb9nqRzWRVnf3Bc4QKj3PZtgVnK82LMmwQDC8ycQ6RIjkXnVte6WhmTX87+gTGI6P0JXA+l9q3UMfRDMOWaA/ByLkkU1WQzSBCalXIAZXoGd3AC2HNkIYbbYhGlNEz+fcbxCfG+CvvZ8R/Ch9V8Y0xWoFivIhmDj6n+ttqzHhAd8cwrDewNF3HylxCxp2nby7INg716CJyoMID/jN6fpAh85Zyjcv1VctCdLpz0GU8TzYsbfr24hVcuyMYEow5QgQTq6hrq3XPy1ou651u38+DjHGEabocstpIOdA6IDKwVkUTXJzo/YjNFiYY28ZdhsExYIyvinanxHkHEqoZzNDZnnBWLv6QU9bsWmxqRgrGvMWtG5rWMXU6kNKmOI9ICy+Ty3xpRzo/cuXHmRkBAuooApIMTOXNIsyqmsIsBLublSfWNYjOf/HqBQymTLZaCYOW3TkTsEmGCVBkOtOxFx6dmD3BrxLzQrRHZYsbVTjBaIv+qxt/qFeGOHfrAgoVgfWgLzeVhCjKZznNkZ2qlhFiCwCqHbHSPGtbhz3YPEJR+RfuUX5fVgDoAaPXQNY13D2ekIkPOoPux0/W7Hse++dFjPtiGzvO7ua5G7coBCtMLP1ASjPOfWG/a7arE0R1yYqyY9maoFmZez46Mn/Mv/F+N/JzzhMHRnQtYJaWa18kl7LZmfU+dVyJ9KsuLHTWmhKklo/8gCow5qYFRXOaTGvD7mpE3aLv8nCzaAFt+U6Ycj/97Lab3E7lzFRzyUAb7Acmb6NbphJVlSylndQDD25nSLThfRN94zwm7tKXy/bqCK9qxJUEHStfNkuTK7bdr83o0HhnsuiZvweeO+u1118FAmk0BZgeJkylvwzmSYWDxnHbmCZv3Sf1y/35BKWWfV5sHq8TbWN8A
- tsTZlB74
- uLyDtHVGwuDPPJ9KjENpbnUW/n0h23lcGvlfg3yc33fuOKurdqPmENg6hfJRr1aX7FtjkfMhCtzIhLauGN4VLCJOYBoLrY5hYkl559V5jBenV55YCU6eiQBglwQZmVj2PHDjtUbUomIgkyL7+oL5cXE/CsKvUS1DmZFvJuYeUK43wv9AjdPc0KpS3ZJZRpu8v/h8JQMI5I168nyjGCDObpByRmlt6kg0VhOp6kPB9unKZaliMvdHdTX0W2Ldn1CTuCWHhT9B/tnW63306PCW2Ztl3lExZToZC8hV/UqV9tEWHD6e+VCb9LXxiiIpVjr01mS8SjzW1dFaOfPTfosYN6BH0djmx/6lvB6whvQubrEub2k1CY8NUxLfcU3X7+jUpeJrE9cBUTndrVg6WCfC1a62poUp4+KVBm1pxklj9sLW0bjdh/RAky1FU7LAM9mTRMNKOfH8kMrLPnW2lueh0u+tJ486AhadUToUsZ7AyU+bpvvTxpgP8QQwSMwx8WaAbDSQNLdoObdN5kMQIUUdI/ZOnV4SWyRq215CMW28SEWKKYeAg/0J3zPQODzOHUykVIlKikgCa0Nc5yjtZQLCYnZopWvKzD8tXGLNKy7kPHFBrXW6Jh7rotPj4g/sc29DcFI/EhkjVhZ2c5Ek=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772012730-513936
+X-HE-Meta: U2FsdGVkX18XOdarRfLC20KeHcjPN5YxvRcL5+cbLD8EVsmyDndkhA2K3k8zZ4WPzXstSvkDCjvnLLhh0tOiSwGOtVOGQWRIIu3Yhj8WlFCXVI+vUuXeFHZGuO2HUTKsin2H386C/nsdj30ikppYXTDmw+pGq7bw5mF3VjTmFFWdEYEGzv++6iiP0DgTuQPyNSHYUJ2XXPj46oxUThMkCimEeIL77rcNX8RZwg9q/TClGEJNDN9Ylj1XxNy5aYUkQLLB6b99tgyQ/EwLp7oTmmgITf91oFLVisoSQ7VKpXSsDQYi6DxH0g67KmIHC8dZh1Ir5rpbKkLVPuKipJLF2WIRckCgnEFZ/GVp136HObleMexD4AdZVwGHDpDKtn7i+YQgXXXmxU1tIsZEJV4mS+vay3bdo8D2/B3Giu/on2TJeSCPAjpNINyD+3wThEVk5mRZo6MjpB8fCr5S8GSqFxRK5sCHBeY0sQzwwygZJce90PiC9u1zvx2RsRVpTQMDWMgHXXrHN+KryiFwVvyZGodSU8uVk4ggf3fW4DCfc7vcFEHLjhcqEBn5fmofKdLLkZy/r3Le7cqZ2qjP8M2vmcNvhxTVixJ/ZPYcsxh/BfnYuGJAwQVLZuMkwA4oYNM5CvaZecya0gCy9Wo4jUuk4PgRy3sp3l3t1ZigWz8+9yfUBoWiCpfldTZ7ugK1j00K6WQs5zpXEfgze0iR/Q7uRB3Z3P9qob2hEaMs2nLF/c+D3M4mGMYTF8LfA0GZqhPl1/q+FWcRLf2z9tOz8c1qUAcjmW9dSIKSS9B/fknblGKqwK5mGBDGywS9VGK+knFV0ycjm8vqnysqpcY495XO1jLT74O9e38XT9kTI/WGVLYBarJ4SGB2xnEe/x4M6BrWQW1O9AJ/mJti7dT0G7S70lkUPkMjdvY/0UEKyc0cUVUcOEmtMAzzb4lRdFbgyEuPRwStIzLSPEqKGBxHWYv
+ hTlWhLMi
+ dTkhuRQqd8I6ONKJTUMQA06jBDYX/W3rea27QZyuJd3wKjlCpoe99kTYsUEgvjk2WzQF5IkzqKWtfRONMFp4zbDSyAXLRFgm4pHErbRLu1mEgM3ySPlBloxtsbfkJHIPnhPz4JE8VuHqkigIhPbL0AjSosSfLb8/3IuHE4T5JvEd7MN+Z2NKnzzc68CQJJUOYTB4hThPbUVhuksZg/AK/ECwKsgp3jhecm70yWtqLmNJtH3DSptEegx912cZuEkgFMhqN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,13 +111,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Byungchul Park <byungchul@sk.com> writes:
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-> Now that the pp fields in net_iov have no users, remove them from
-> net_iov and clean up.
->
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+Convert objcg to be per-memcg per-node type, so that when reparent LRU
+folios later, we can hold the lru lock at the node level, thus avoiding
+holding too many lru locks at once.
 
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+changlog:
+ - fix a missing root_obj_cgroup conversion and completely delete
+   root_obj_cgroup.
+
+ include/linux/memcontrol.h | 23 +++++------
+ include/linux/sched.h      |  2 +-
+ mm/memcontrol.c            | 79 +++++++++++++++++++++++---------------
+ 3 files changed, 62 insertions(+), 42 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 45d911dd903e7..6e11552a90618 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -116,6 +116,16 @@ struct mem_cgroup_per_node {
+ 	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+ 	struct mem_cgroup_reclaim_iter	iter;
+ 
++	/*
++	 * objcg is wiped out as a part of the objcg repaprenting process.
++	 * orig_objcg preserves a pointer (and a reference) to the original
++	 * objcg until the end of live of memcg.
++	 */
++	struct obj_cgroup __rcu	*objcg;
++	struct obj_cgroup	*orig_objcg;
++	/* list of inherited objcgs, protected by objcg_lock */
++	struct list_head objcg_list;
++
+ #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+ 	/* slab stats for nmi context */
+ 	atomic_t		slab_reclaimable;
+@@ -180,6 +190,7 @@ struct obj_cgroup {
+ 		struct list_head list; /* protected by objcg_lock */
+ 		struct rcu_head rcu;
+ 	};
++	bool is_root;
+ };
+ 
+ /*
+@@ -258,15 +269,6 @@ struct mem_cgroup {
+ 	seqlock_t		socket_pressure_seqlock;
+ #endif
+ 	int kmemcg_id;
+-	/*
+-	 * memcg->objcg is wiped out as a part of the objcg repaprenting
+-	 * process. memcg->orig_objcg preserves a pointer (and a reference)
+-	 * to the original objcg until the end of live of memcg.
+-	 */
+-	struct obj_cgroup __rcu	*objcg;
+-	struct obj_cgroup	*orig_objcg;
+-	/* list of inherited objcgs, protected by objcg_lock */
+-	struct list_head objcg_list;
+ 
+ 	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+ 
+@@ -333,7 +335,6 @@ struct mem_cgroup {
+ #define MEMCG_CHARGE_BATCH 64U
+ 
+ extern struct mem_cgroup *root_mem_cgroup;
+-extern struct obj_cgroup *root_obj_cgroup;
+ 
+ enum page_memcg_data_flags {
+ 	/* page->memcg_data is a pointer to an slabobj_ext vector */
+@@ -552,7 +553,7 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+ 
+ static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+ {
+-	return objcg == root_obj_cgroup;
++	return objcg->is_root;
+ }
+ 
+ static inline bool mem_cgroup_disabled(void)
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index a7b4a980eb2f0..7b63b7b74f414 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1533,7 +1533,7 @@ struct task_struct {
+ 	/* Used by memcontrol for targeted memcg charge: */
+ 	struct mem_cgroup		*active_memcg;
+ 
+-	/* Cache for current->cgroups->memcg->objcg lookups: */
++	/* Cache for current->cgroups->memcg->nodeinfo[nid]->objcg lookups: */
+ 	struct obj_cgroup		*objcg;
+ #endif
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 63210b2222243..0755be8dcdfb6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -84,8 +84,6 @@ EXPORT_SYMBOL(memory_cgrp_subsys);
+ struct mem_cgroup *root_mem_cgroup __read_mostly;
+ EXPORT_SYMBOL(root_mem_cgroup);
+ 
+-struct obj_cgroup *root_obj_cgroup __read_mostly;
+-
+ /* Active memory cgroup to use from an interrupt context */
+ DEFINE_PER_CPU(struct mem_cgroup *, int_active_memcg);
+ EXPORT_PER_CPU_SYMBOL_GPL(int_active_memcg);
+@@ -210,18 +208,21 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
+ }
+ 
+ static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memcg,
+-							 struct mem_cgroup *parent)
++							 struct mem_cgroup *parent,
++							 int nid)
+ {
+ 	struct obj_cgroup *objcg, *iter;
++	struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
++	struct mem_cgroup_per_node *parent_pn = parent->nodeinfo[nid];
+ 
+-	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
++	objcg = rcu_replace_pointer(pn->objcg, NULL, true);
+ 	/* 1) Ready to reparent active objcg. */
+-	list_add(&objcg->list, &memcg->objcg_list);
++	list_add(&objcg->list, &pn->objcg_list);
+ 	/* 2) Reparent active objcg and already reparented objcgs to parent. */
+-	list_for_each_entry(iter, &memcg->objcg_list, list)
++	list_for_each_entry(iter, &pn->objcg_list, list)
+ 		WRITE_ONCE(iter->memcg, parent);
+ 	/* 3) Move already reparented objcgs to the parent's list */
+-	list_splice(&memcg->objcg_list, &parent->objcg_list);
++	list_splice(&pn->objcg_list, &parent_pn->objcg_list);
+ 
+ 	return objcg;
+ }
+@@ -260,14 +261,17 @@ static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
+ {
+ 	struct obj_cgroup *objcg;
+ 	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
++	int nid;
+ 
+-	reparent_locks(memcg, parent);
++	for_each_node(nid) {
++		reparent_locks(memcg, parent);
+ 
+-	objcg = __memcg_reparent_objcgs(memcg, parent);
++		objcg = __memcg_reparent_objcgs(memcg, parent, nid);
+ 
+-	reparent_unlocks(memcg, parent);
++		reparent_unlocks(memcg, parent);
+ 
+-	percpu_ref_kill(&objcg->refcnt);
++		percpu_ref_kill(&objcg->refcnt);
++	}
+ }
+ 
+ /*
+@@ -2859,8 +2863,10 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ 
+ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+ {
++	int nid = numa_node_id();
++
+ 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+-		struct obj_cgroup *objcg = rcu_dereference(memcg->objcg);
++		struct obj_cgroup *objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
+ 
+ 		if (likely(objcg && obj_cgroup_tryget(objcg)))
+ 			return objcg;
+@@ -2924,6 +2930,7 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+ {
+ 	struct mem_cgroup *memcg;
+ 	struct obj_cgroup *objcg;
++	int nid = numa_node_id();
+ 
+ 	if (IS_ENABLED(CONFIG_MEMCG_NMI_UNSAFE) && in_nmi())
+ 		return NULL;
+@@ -2940,14 +2947,14 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+ 		 * Objcg reference is kept by the task, so it's safe
+ 		 * to use the objcg by the current task.
+ 		 */
+-		return objcg ? : root_obj_cgroup;
++		return objcg ? : rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
+ 	}
+ 
+ 	memcg = this_cpu_read(int_active_memcg);
+ 	if (unlikely(memcg))
+ 		goto from_memcg;
+ 
+-	return root_obj_cgroup;
++	return rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
+ 
+ from_memcg:
+ 	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+@@ -2957,12 +2964,12 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+ 		 * away and can be used within the scope without any additional
+ 		 * protection.
+ 		 */
+-		objcg = rcu_dereference_check(memcg->objcg, 1);
++		objcg = rcu_dereference_check(memcg->nodeinfo[nid]->objcg, 1);
+ 		if (likely(objcg))
+ 			return objcg;
+ 	}
+ 
+-	return root_obj_cgroup;
++	return rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
+ }
+ 
+ struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
+@@ -3859,6 +3866,8 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
+ 	if (!pn->lruvec_stats_percpu)
+ 		goto fail;
+ 
++	INIT_LIST_HEAD(&pn->objcg_list);
++
+ 	lruvec_init(&pn->lruvec);
+ 	pn->memcg = memcg;
+ 
+@@ -3873,10 +3882,12 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
+ {
+ 	int node;
+ 
+-	obj_cgroup_put(memcg->orig_objcg);
++	for_each_node(node) {
++		struct mem_cgroup_per_node *pn = memcg->nodeinfo[node];
+ 
+-	for_each_node(node)
+-		free_mem_cgroup_per_node_info(memcg->nodeinfo[node]);
++		obj_cgroup_put(pn->orig_objcg);
++		free_mem_cgroup_per_node_info(pn);
++	}
+ 	memcg1_free_events(memcg);
+ 	kfree(memcg->vmstats);
+ 	free_percpu(memcg->vmstats_percpu);
+@@ -3947,7 +3958,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ #endif
+ 	memcg1_memcg_init(memcg);
+ 	memcg->kmemcg_id = -1;
+-	INIT_LIST_HEAD(&memcg->objcg_list);
+ #ifdef CONFIG_CGROUP_WRITEBACK
+ 	INIT_LIST_HEAD(&memcg->cgwb_list);
+ 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+@@ -4024,6 +4034,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
+ 	struct obj_cgroup *objcg;
++	int nid;
+ 
+ 	memcg_online_kmem(memcg);
+ 
+@@ -4035,17 +4046,19 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	if (alloc_shrinker_info(memcg))
+ 		goto offline_kmem;
+ 
+-	objcg = obj_cgroup_alloc();
+-	if (!objcg)
+-		goto free_shrinker;
++	for_each_node(nid) {
++		objcg = obj_cgroup_alloc();
++		if (!objcg)
++			goto free_objcg;
+ 
+-	if (unlikely(mem_cgroup_is_root(memcg)))
+-		root_obj_cgroup = objcg;
++		if (unlikely(mem_cgroup_is_root(memcg)))
++			objcg->is_root = true;
+ 
+-	objcg->memcg = memcg;
+-	rcu_assign_pointer(memcg->objcg, objcg);
+-	obj_cgroup_get(objcg);
+-	memcg->orig_objcg = objcg;
++		objcg->memcg = memcg;
++		rcu_assign_pointer(memcg->nodeinfo[nid]->objcg, objcg);
++		obj_cgroup_get(objcg);
++		memcg->nodeinfo[nid]->orig_objcg = objcg;
++	}
+ 
+ 	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
+ 		queue_delayed_work(system_dfl_wq, &stats_flush_dwork,
+@@ -4069,7 +4082,13 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+ 
+ 	return 0;
+-free_shrinker:
++free_objcg:
++	for_each_node(nid) {
++		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
++
++		if (pn && pn->orig_objcg)
++			obj_cgroup_put(pn->orig_objcg);
++	}
+ 	free_shrinker_info(memcg);
+ offline_kmem:
+ 	memcg_offline_kmem(memcg);
+-- 
+2.20.1
 
 
