@@ -4,93 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC02EEFD209
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85183EFD20B
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:33:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B03996B00BD; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
+	id E756C6B00DE; Wed, 25 Feb 2026 03:33:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADABA6B00D2; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
+	id E1F9F6B00E2; Wed, 25 Feb 2026 03:33:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA3F6B00DF; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
+	id D25836B00E4; Wed, 25 Feb 2026 03:33:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5A46B00BD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 513D0B91DB
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:31:35 +0000 (UTC)
-X-FDA: 84482310150.28.732DE16
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 67A5F80018
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:31:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PQ83Te9w;
-	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BDE066B00DE
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:33:10 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6218213B0DB
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:33:10 +0000 (UTC)
+X-FDA: 84482314140.07.2688479
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5916D100002
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:33:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T9PQ/CO8";
+	spf=pass (imf05.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772008293;
+	s=arc-20220608; t=1772008388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=V+0btWJvpN82MWoUIfyGBEuNyVbQfKtpoUxMOk6bk5g=;
-	b=AL+snpmjL/qVFspor7rV++rP5KCj3v2S7nVskhcv/pcKSjU7aMoOzPt94sZ2lDdTVLW6JA
-	dn4/vf2QghqFNUEu9oYHDaKHJ8lH6NGiuV9A4kTKELVvUKEdNtNr0cSch9GY1PzjHvloaa
-	FJ2j1V0Tr4avZGR2ciaMnWhQD+RF7Cg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772008293; a=rsa-sha256;
-	cv=none;
-	b=JcskE52cHbW/dDGxzBwXtEnTevpOJkRX4gBX+trVGEVlnaZLhcUBjyNkX5JdGmzjohcmEK
-	0xSVgXsoV3UD/3GOlZgnZn9mys5bZzhQ23pyQ9WhYoQTZ34nzJznHVHEOVU6iEBlYA/jLe
-	10K0clzZ7rs2eeD+UrVc3+ETMA4CE0o=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QUcecvJ6CTvZw4HoYhcVZcZInJ2rCw8PwxbbGXj6WpA=;
+	b=cX1oWkXZGgFLd6XjCd9WtBD/MEkV4onvB6PIalx87VKLRKEYXR7gSCpU/rdq9WdATaq4Cp
+	rk6CT29JAvI3QqGVgwnaFjhOiJgssimkDGNPu9THJnASF5s5HFcF5O/M69IIHnj5ehRs38
+	m2X0f4ntcpynz4UyoKHdM12W/SlOBL0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PQ83Te9w;
-	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=V+0btWJvpN82MWoUIfyGBEuNyVbQfKtpoUxMOk6bk5g=;
-	b=PQ83Te9w1pj/Y/rdt6DlwqL+Q5nF3zmYcSBrFVCTRqvMsZbmO+KvZCwmVEKCNPbfiedXjTDpV
-	dq5SsbAPaCCpwaiaL2lZEEMeNXFEJjW6ucexMQVnzrq+xykiVrrlcoqpErwohSlvFj0yb90wc+m
-	vPUT/0g7b2Y24SDJNy34cJI=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fLSNs6FnvzKm4l;
-	Wed, 25 Feb 2026 16:26:37 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4E62D4056D;
-	Wed, 25 Feb 2026 16:31:25 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Feb
- 2026 16:31:24 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<fengwei.yin@intel.com>, <baohua@kernel.org>, <ryan.roberts@arm.com>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: [PATCH] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
-Date: Wed, 25 Feb 2026 16:12:40 +0800
-Message-ID: <20260225081240.253057-1-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T9PQ/CO8";
+	spf=pass (imf05.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772008388; a=rsa-sha256;
+	cv=none;
+	b=qGIn0MCHU28WVlO+uShi6wLnGP7gwYUKqMDaRK8dNtLQl/tzOgaoamVB5g9P5eDbMWvqfE
+	EwTlgVEcCSp9kp+iMmKNubu+/LcCZcEfcIOTRLprb/nT8JUO6sSwieeeNcDLXVk1hK9w7i
+	8TZ3ktgAn4LRj4w/tbl/YsHC2uebGk0=
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-389d5138820so6310971fa.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 00:33:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772008386; x=1772613186; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QUcecvJ6CTvZw4HoYhcVZcZInJ2rCw8PwxbbGXj6WpA=;
+        b=T9PQ/CO8bETb0d0hctVSqtZtCXsHlln9TvCS6FeF6ZGpvF01BUG1LfW5VFUcpDTlhv
+         H2cMZzj4SjknrCRVhA68s3CeUmOJ28egaoD1eWl6y92PqruI8CRgEjQhB4Cpejr0kzKO
+         sDUnK8PR4mMsXbnHgkwmd3ZfWhhM352fuf0PwqK8L+Gw/XQyc+ah/IxSS6imBnFK5ttf
+         1hN8d8mRv+ZktdXZd9VVqxbNgpEqurICDqscob41BVRSBimTF/S6tu3b4G3lLujucdEh
+         I8eWo0X8yd9aiEHjweMiwzJKtmiTXBFD64D/xupM4z+aLSTQS9dhJ4E//Wu8Ja+FFSK5
+         kmTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772008386; x=1772613186;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QUcecvJ6CTvZw4HoYhcVZcZInJ2rCw8PwxbbGXj6WpA=;
+        b=Y/85O3Z75B9RY4nZZ9sFYSRWKf16TzmNPTnP9dtS3pWL1BepAibGLbuk4xMAXPRQ1R
+         mqc86XbOPRhbLkcmWrZBE2ORBlGac/7t+gqgVf3I7gT3eyV/e8IpcbUgHUIEXBADTKw/
+         NDmnVYhfqeu5ypgUEB/f8CKrL6L9y3K7XI3/ck9mnHMGvKnCY5WxrgQVEM6qMGyuHLm8
+         0Bf6IdLoGcisSBV1/wuCXgQ+aEcP5QEodAvNdLlSgZCV6y8PaaEaUihBvOqlTn5xyj8t
+         tKppBitvMBe0AU/K+8mWyPSd3g3SIkJG7g7FpOOf1XNKebZiJjn+NANu9fgS7ywwiae+
+         D/sA==
+X-Forwarded-Encrypted: i=1; AJvYcCWejjrXYxmnelNtkrTcluTFlF0MNJ1XZGuRqYzO7dk3baIjKYIomoNNBixjvVLwQ/L2TH3xK1u2yw==@kvack.org
+X-Gm-Message-State: AOJu0YwcJaVjakp/WMEbm+ncLzkdPtxFgSFKL1VDKDN21mZGLlsQjZOl
+	tSzW3D8HUlUlBtilTszuJc6lrH4yfJxu9FX6sEdECzxOg7p83DTTlLKv
+X-Gm-Gg: ATEYQzyj7yISqmVx5wh6Tan+FUJgmoIwHaORAqOeUgZGNSWPbhcxby8GSwVvNz/fE5e
+	C54kawbMcQe79xAfFwnNxuFjyKCEoQu53nR0hMkBk0t+kOb6mClA9/hGrO6o4iuciJcnTxgTTi1
+	44Al/mH94ctS0rAzFKtK3Hm4bcq5ehxVwHLYn/L2mHMW/qtwtMDJAUmKcVX10AGyTcCyWTI5APW
+	g5M0GG/Pvz8Lqv30xFqVeC7bhfuUx/2JNv9JzQeMXVPph+oBxwBUIWd4ZGZEbXhquFUqqwtqdWB
+	wm9aIGHemTdJ2kNMyULKQPDbLK2hNr2P+7i9VZNfCwPfeSnAVxZIl/nOB38pW56EtTyAp4TqtKr
+	EPcN0PT2ntRJT8YvHCOY0B7m1H/AM+Jj/tRNPdb5tpLOIvLBLhIrM0tg9Ws0nzQUntzvM5rrEO9
+	HWvj6Brxo1A1PWqanvSbCHNT8ZaXL7AngiWH55tiygd8ie0DnKsNovbC55VCWchDY=
+X-Received: by 2002:a05:6512:2213:b0:5a0:ef6d:475b with SMTP id 2adb3069b0e04-5a0fe48952dmr910148e87.11.1772008386045;
+        Wed, 25 Feb 2026 00:33:06 -0800 (PST)
+Received: from pc636 (host-90-233-215-147.mobileonline.telia.com. [90.233.215.147])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a0eeb0b9aasm2778886e87.12.2026.02.25.00.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 00:33:05 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Wed, 25 Feb 2026 09:33:04 +0100
+To: Michal Hocko <mhocko@suse.com>, Mikulas Patocka <mpatocka@redhat.com>
+Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
+	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
+	dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+Message-ID: <aZ6zwMQIj-3JFQZq@pc636>
+References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com>
+ <aZykWyxLy34o7PKr@fedora>
+ <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
+ <aZzPwsBp-Z4XM58U@tiehlicka>
+ <aZ2N9a4XgxnurOhz@pc636>
+ <aZ2YDD_l5JN78DJC@tiehlicka>
+ <aZ3F2cghZpqBi1Mk@pc636>
+ <aZ3HaVuIA4Ezu1uY@tiehlicka>
+ <aZ3JB5Xm3SCmJW95@tiehlicka>
+ <aZ3MzxtMp2OykAQq@pc636>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam09
-X-Stat-Signature: hgbp53sefhbn5ba5pqposqdhpk87fcex
-X-Rspamd-Queue-Id: 67A5F80018
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ3MzxtMp2OykAQq@pc636>
+X-Stat-Signature: gnpyksg9wxmf9gxfh9qa1wa7jwjj6ctj
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1772008292-336061
-X-HE-Meta: U2FsdGVkX1+C78AtpgjvubebOomkG+E+avHG15R52h+lydbieG8f232hjcTIeI+rvXuKFm+fbOtjbcTkUOMoCQoNVRAADYl9fzN8rRqA566eQjo5DgSBZhovTvDC/y9VzsBGVqNPir+teI6yQprOBpxLdwjqkMINGRluHH2aqOVLQH6Pz6ziG8hAm1sV+ukJXoZc2KgrAAk3j1Fug9aaMqq+qt4Ds+74C9zGQJnoDrQ159RPTzBmOaz7lzQy0oo+aXicUFEIIMOIwCfp/FitjGtCmnbyHh4EZmiBoSwmNgzK/Pcr8DwWaHAXVWqT6ehZ0J+yYly+yjwUDKnzPoCSB2VickiTBWwDrPEhkEHWugdskbkfH/+CKHgDGICDhBnq1cbmgB8nU3oGeKqXtaprphxb0FjkzTKDZ2u5yKXQK+ps1QCESE40uwzHcgH8U6jaVdXyOdC1bWwYClp5nntMVXyERoO8X90F8JebzGOKN5C8rSopYQvD6NkzgXRYQamkdgPB/GIJ9RpPr4VgXEqp0tO+CjD9G3Uf9tNAgw6wWyESAG8OEJy3jE2orzA4eYBhetrpc1MZXBYuu6Tp//PjwcThNx/H2Ypkt/6dx8KoxV8z8hbmIMrMlUvCX6faU+5QiHTMs0VVwUF7XQn8vmD8As0T91ZWEDxQp5Rn6PFeMllgDCSfWE6gikST0wwxfoB5rdENBh8J6svPVpoI0RgGE6YAeAwGVszJ3WTqwDnyJmUtOUDRAg20EAOZiWS7SjcDN2FgdKVbgg3Ms5KhTIZN7xGStoy0WH6SrRC/2V9JuZk5jd6iFlt/b52DWYesY1yke7cMMQPCBIsbYiSozk2lKRK38gwgqs45wph/ZkuKh7CwG9P8hk6EzRS6kDmYxOI3I7LKdlLBif7abpVDHBlEvZZAB8dFonS2HkZSvsRrS4EatJHIHAnFAUkk2LGXC1BVgXhkVivlkunRghgTeCs
- dvlkwgnO
- N3wHodcP0dkCR77xs0Qwqj/BQeLyyvSl6mzQTLFIFbzpMgnIETY1KK+LPegmvOSWSeT6PkTmCVYzfStecloQVo9S5anW9mmqVumpyV5LW+ZPBQIwoOx99Xerl4igLIvPyilxXkiD4JKR6U3WjVAfTeNfVH3bImSY2HBAB5JzS3SpIvKMCrCXvgJq0ph1PLkFwYS8SDcBrZNa1q+FI6XPy08EV+M3NC4jzV+wGS8+w8DPKnyiLKbIYd35umm6FyZ1vSJBk1hD+92gulsmoKhLz7upr4YHX7bQBo7YWqIjyDYMnoto=
+X-Rspamd-Queue-Id: 5916D100002
+X-HE-Tag: 1772008388-135160
+X-HE-Meta: U2FsdGVkX19sree65pSLcn8K3y9E/9KlZq2IQNa6md9lmMrqbRCrAi8iulwi00F7cDakQofQYrNtOxg9M+Ob8PenLiDGnsk8JmY2bPpxfWr0EvfOitsLeTCl+zj49CjHYKJOOyQ7U4Ib2fQzShwrASiC8WenTQwjB3bU+KLq5CPf/cIUsG70pQAv27Rbp6pTNNzHawoPrZL8VhscmyZCQDfQMQ0jngDOk45sM/20v7N+s3OQIxpjjOewSsq2CbUdl7idX+r+5AzP/Y/V3OosNAtOGR/SdWo0U2W1OMS7UL4lGhiAF+KnDpwZ3jneGojyczBn0iOu0/4u/alpN2OFCapWsnD3YSyzALFTAvjMFt5PJVCT9Nz6UNuOOFbdPYP3NaTozFVzjITIpPvNDY0Fvrly6sLP7vQn3YExkGkVf0ok5DuSEMt5c7WgIGG8POqfYu9USUZGbCw79yGc6GtXzQJLG+JwsGpLzqo1uNoum8vrF+5qXe4EUHjbqJJkCtrg1Bg1Ho8vxjb/i1Zk5th3vcBIXpoDM29oR8CxARYx7H4GsNxmhoo//72rUXVjcu0O0XThc+bnC1f4PxTFvT+gZUlozEXbL71GqfU3gBVbumEMTjdLQDq3GSyUKIKpG8n5CfJuq7kVpp9n8yvyVMWO7Rjmu4zZocftHVv5aNZkKELRm/whMe43o+WOy1q5i64e6G1rve/iaRJvIZSV7IvN7AgHcy2VQDvM0TGsjApzI14Vva0b8TrWR8P0K5pUjRxbgobYD0peGU2D/J8rcQ6Dv3Qu9aOu0IOK83oYHhKSViydtNSfEN0HDDVqwyyUwy85ws9SpKtYZyfybavkv4ygKbB0DZ/9JKiJyrAn+6C/XurPYf4Js8YgcG7OFH+5WE6ynfeRDOnCa6Sotu4hYQKlKU8oKLHmoGpjlGU/+oM5INuIDcBP6mTQ7VLFEUW7zcrm8jUIND4HBLOu6qVw7LT
+ owA5T9zK
+ 2PtMY8Jj0koO+q+XXk+oyJCRM0zRGwGYxs+r/LidydABa9YiW8H66erEWsuseIurZMwSWrs9ZRUIbgI4ilv/NP2fpI4HLjWZki6NzxfTFPEWknoakIJCBPZcSSVIEpoXWymWxMCckLqv3mcsKpPfypYYk5PGVWqBTDMhOLbnRDQQYZY1P/2oygJfhapIel9VaU5JsjggxAB47o7l7voXGwDElQ9IHNtsgFG604VbIMUBPjXMLLcibV8BGQmtPidK1h57gP65wrpXuBi/AxzK7motcduAKeeoPuzGfz4iwrXOoL9ohOEPfzJUzTO2UY80/fsZS405t8r0GB8Rh7JhuQs7/kCm+T5aiFES6g/dFkwEHBfpCwG/vgtmdbe5Gj53XGWKt9OVCz6K4HqCMFmWudVgbXb9p+1nnkIMO/zefQLzxJFGnvOXaY5MS+xAdkQPf3zkRYL901kWWvM1SdUEW2SOhgzD5HoJsWSbMETQUJrzcP524vJh8O0FHsWqmJCXUcW7B51eAvkJTQQJU3k4NYDLNLrJ+16f7bCded3mW0CAdKGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,106 +130,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On arm64 server, we found folio that get from migration entry isn't locked
-in softleaf_to_folio(). This issue triggers when mTHP splitting and
-zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
-in softleaf_to_folio(). The race is as follows:
+On Tue, Feb 24, 2026 at 05:07:43PM +0100, Uladzislau Rezki wrote:
+> On Tue, Feb 24, 2026 at 04:51:35PM +0100, Michal Hocko wrote:
+> > On Tue 24-02-26 16:44:43, Michal Hocko wrote:
+> > > On Tue 24-02-26 16:38:01, Uladzislau Rezki wrote:
+> > [...]
+> > > > I do not have a strong opinion about workaround you noted. Maybe Mikulas
+> > > > can switch to NOWAIT flag instead.
+> > > 
+> > > using NOWAIT for the full vmalloc allocation would be just too easy to
+> > > fail under moderate memory pressure.
+> > > 
+> > > The real question is whether we want to provide some sort of backoff
+> > > early but not way too easily allocation semantic for vmalloc. If yes we
+> > > need to get creative in the vmalloc internals rather than expect callers
+> > > to be working around that on their side. History has proven that this
+> > > just leads to tech. dept and more work later on.
+> > 
+> > Just to make sure we are on the same page I mean something like this 
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 61caa55a4402..791366fe44e2 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -3798,6 +3798,8 @@ static void defer_vm_area_cleanup(struct vm_struct *area)
+> >   * non-blocking (no __GFP_DIRECT_RECLAIM) - memalloc_noreclaim_save()
+> >   * GFP_NOFS - memalloc_nofs_save()
+> >   * GFP_NOIO - memalloc_noio_save()
+> > + * __GFP_RETRY_MAYFAIL, __GFP_NORETRY - memalloc_noreclaim_save() to prevent
+> > + * OOMs
+> >   *
+> >   * Returns a flag cookie to pair with restore.
+> >   */
+> > @@ -3806,7 +3808,7 @@ memalloc_apply_gfp_scope(gfp_t gfp_mask)
+> >  {
+> >  	unsigned int flags = 0;
+> >  
+> > -	if (!gfpflags_allow_blocking(gfp_mask))
+> > +	if (!gfpflags_allow_blocking(gfp_mask) || (gfp_mask & (__GFP_RETRY_MAYFAIL|__GFP_NORETRY)))
+> >  		flags = memalloc_noreclaim_save();
+> >  	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
+> >  		flags = memalloc_nofs_save();
+> > @@ -3940,7 +3942,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+> >   * GFP_KERNEL_ACCOUNT. Xfs uses __GFP_NOLOCKDEP.
+> >   */
+> >  #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+> > -				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
+> > +				__GFP_NOFAIL |  __GFP_ZERO | |\
+> > +				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
+> >  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+> >  				GFP_USER | __GFP_NOLOCKDEP)
+> >  
+> > @@ -3971,12 +3974,15 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+> >   * virtual range with protection @prot.
+> >   *
+> >   * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
+> > - * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
+> > + * %__GFP_RETRY_MAYFAIL, %__GFP_NORETRY, %GFP_NOFS and %GFP_NOIO.
+> > + * Zone modifiers are not supported.
+> >   * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
+> >   * by __vmalloc().
+> >   *
+> > - * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
+> > - * and %__GFP_RETRY_MAYFAIL are not supported.
+> > + * Retry modifiers: only %__GFP_NOFAIL is fully supported; 
+> > + * %__GFP_NORETRY and %__GFP_RETRY_MAYFAIL are supported with limitation,
+> > + * i.e. page tables are allocated with NOWAIT semantic so they might fail
+> > + * under moderate memory pressure. 
+> >   *
+> >   * %__GFP_NOWARN can be used to suppress failure messages.
+> >   *
+> > 
+> Yep, i got your intention correctly. It would eliminate the problem
+> with page tables allocations :)
+> 
+If no objection, we can go the way which was proposed by Michal and
+support __GFP_RETRY_MAYFAIL flag.
 
-	CPU0                                             CPU1
+Mikulas is that possible for you to resend the patch including
+Michal changes(unless Michal wants to send the patch on his own)?
 
-deferred_split_scan()                              zap_nonpresent_ptes()
-  lock folio
-  split_folio()
-    unmap_folio()
-      change ptes to migration entries
-    __split_folio_to_order()                         softleaf_to_folio()
-      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
-      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
-      prep_compound_page() for tail pages
-
-In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
-are visible before the tail page becomes non-compound. smp_wmb() should
-be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
-result, if zap_nonpresent_ptes() accesses migration entry that stores
-tail pfn, softleaf_to_folio() may see the updated compound_head of tail
-page before page->flags.
-
-Although the code exists for long time, this issue should only exist after
-mTHP splitting is supported. For THP splitting, there is only a pmd
-migration entry and it's impossible to access migration entry that stores
-tail page pfn.
-
-To fix it, add missing smp_rmb() if the softleaf entry is migration entry
-in softleaf_to_folio() and softleaf_to_page().
-
-Fixes: 7dc7c5ef6463 ("mm: allow deferred splitting of arbitrary anon large folios")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
- include/linux/leafops.h | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
-
-diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-index a9ff94b744f2..f823f390ba6b 100644
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -371,14 +371,21 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
-  */
- static inline struct page *softleaf_to_page(softleaf_t entry)
- {
--	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
-+	struct page *page;
- 
- 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding page is locked
--	 */
--	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
-+
-+	page = pfn_to_page(softleaf_to_pfn(entry));
-+	if (softleaf_is_migration(entry)) {
-+		/* See __split_folio_to_order() comment */
-+		smp_rmb();
-+
-+		/*
-+		 * Any use of migration entries may only occur while the
-+		 * corresponding page is locked
-+		 */
-+		VM_WARN_ON_ONCE(!PageLocked(page));
-+	}
- 
- 	return page;
- }
-@@ -391,15 +398,21 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
-  */
- static inline struct folio *softleaf_to_folio(softleaf_t entry)
- {
--	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
-+	struct folio *folio;
- 
- 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
--	/*
--	 * Any use of migration entries may only occur while the
--	 * corresponding folio is locked.
--	 */
--	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
--			!folio_test_locked(folio));
-+
-+	folio = pfn_folio(softleaf_to_pfn(entry));
-+	if (softleaf_is_migration(entry)) {
-+		/* See __split_folio_to_order() comment */
-+		smp_rmb();
-+
-+		/*
-+		 * Any use of migration entries may only occur while the
-+		 * corresponding folio is locked.
-+		 */
-+		VM_WARN_ON_ONCE(!folio_test_locked(folio));
-+	}
- 
- 	return folio;
- }
--- 
-2.43.0
-
+--
+Uladzislau Rezki
 
