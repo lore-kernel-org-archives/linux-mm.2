@@ -4,135 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 232E5FD376A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D57C3FD376C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 530BA6B009B; Wed, 25 Feb 2026 11:05:03 -0500 (EST)
+	id 447056B009E; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C3EC6B009D; Wed, 25 Feb 2026 11:05:03 -0500 (EST)
+	id 3FA956B009F; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F1406B009E; Wed, 25 Feb 2026 11:05:03 -0500 (EST)
+	id 306EC6B00A0; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 269336B009B
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:03 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCAC0BA5A6
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:02 +0000 (UTC)
-X-FDA: 84483452844.26.6131D94
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BA06840010
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:00 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iZdyR754;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772035500;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AE1C6B009E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:08 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C18C31405FB
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:07 +0000 (UTC)
+X-FDA: 84483453054.25.A7E00D5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D667418000E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:05:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJpCmMSi;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772035506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x/BQJ+R+TI33mzFtq5raf6n+ghaSbKffikGrD0MxajU=;
-	b=hqLYsU5m6LRkey7ZgV0ZqsKts/ksMuIy4ejVRbrlQPm/VO3SeDt+UwbEH+9WiyxHfhhtPD
-	HSotK43UpiknNPdTAArwL0bpIs6H+CvRf1a39fHj2HaCg0H5d6QUD++OhHRWfCPB9M+X6f
-	VKaU+jELOwEpSG358Df/mXGVaPesEXc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772035500; a=rsa-sha256;
-	cv=pass;
-	b=3u6vl5yPm1370VgPtSvLdkoLbBkkMaaw0h4buFh9vc2H6lrJMvxkOa39GsVAf5qlKhi18a
-	9S5WN0ZfzRHZr7pbhrhvGqlkiJFXXMkb4FJR9sSQMQ1akWPk1VZqQKqXmwlrOyRCkrK1gT
-	ABRCRo6S9AOO54Aq85HmtzLoWFw8he0=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iZdyR754;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5069a785ed2so724061cf.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:05:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772035500; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Gi++d+x1iQWGIC53m74/MsnnBQRKXLtoZksBaR+Jd40Xczp4dg9f9O2oP+OElyrIwf
-         0Oxa8xnWYNH0G7C4/MnSW/PZpWw1BvpQtjsMc+8oTIbuUj6PO5z9hKkptcwX4MvRL3mP
-         PhrfKg9+6fw7ofHOwqVkhcgkRWncIeJSTHsN1/+CETPGZxUOhdEfxvQpwvjTJEN8Mp6h
-         rFageT71Y6Rqh0X6Tj480mVqJ4rrgMdrIXelGph1NFsL5b1aFV4UHYFaX/g1G/E7djgu
-         pD7S/pxAi9O2i80VNvOgbO9k7WVPjYJo+aLgwJ71/HGogQZh4l68bL25+ACxCMQUrG02
-         ejjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=x/BQJ+R+TI33mzFtq5raf6n+ghaSbKffikGrD0MxajU=;
-        fh=fy2sPtlvjaoUtemOfH++ZqImQP+zHR9F3/0xbHk2cds=;
-        b=L8mLHt4PUFSitzRCARFVgOir50ScQ1FnriC8EZTpRUP/1dK1VlJq90hBCU6sRB3JEP
-         F+3HXvrLmLMCDuUpAypk+Dlw+J3GtETI0TxxazIhU3kx8fu+O1DjHbFw/Khw/r9So9Wj
-         Mgbd3OWpzXT6RciwCJzKt0O7eEYdp4PuEXliiQNgAlvN0OIvzYEmjBS9kskXfaED1nLV
-         TqWKa8qav7dfqk93wizRhGoWek9wBPHZmBbbPYYCnuO8Nye8FpjVhpaq5FmgwnLA2g1B
-         4j2LynE/RXZH/QEO4M2Cy1RI86/9jDINRt9j+QF8tCrqEBwc8LWZO9UiYvsOMZ2mBe5V
-         2dAQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772035500; x=1772640300; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x/BQJ+R+TI33mzFtq5raf6n+ghaSbKffikGrD0MxajU=;
-        b=iZdyR754c6aCFVam3NoVyIt3CGEF/QjnakbJSSs4QLmO3hgBptgya2BR+FXwmH63K2
-         iAu/0Ltt704OtJKUn3doW4GiENI/vyCUa2BAm7v954C3A7pLUJ24XBmDCFCKJHFCbhWe
-         GZOS0CVTlsTxlJWkwdJJktU9W0UK/2WvBt0fuTboVSf15RUn32rM5Fbo3+IAWiFvZ3hb
-         bQCoqt7VZvGvZXH1nrrERHDkECoY+3wc2PruIB6FSop/Os3CNjiNfTl6qoGULuxNXz1z
-         FVhZMCITjRJ5f2FnCzhRf2y97nBOklENweEYTgzTe0+uP3wj+dg0dlIegokkQjv9OJS1
-         GgUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772035500; x=1772640300;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=x/BQJ+R+TI33mzFtq5raf6n+ghaSbKffikGrD0MxajU=;
-        b=JyL4Q5J6ZnH2Y1Htc+qQJA8j9rql/2myOTzcDMXZ/GbOlyXFGHrnJcPXBtn69IBPYS
-         jttv0JFv5BgdhJiWUWjRReTrpbVYHVOipp1mAkiiQeFzR3nLeTxoX58guMBqQQJEoUgY
-         71I0UMlOBQFKFmzjKtkPiu80bY+IC7t3U07QbFiA1F7nBLg+C02VMoY1EJXGy2eRAFJn
-         kRwe+zHUtzk8lXyXB0GN/MrZG+Agkv6TJI/7TbC6v7DyOvOpEbwX1+u89fllPBl5l0gq
-         YLaY++wOgxLshz7wbaeXZSoIMLoPK8zOER4jD7bdAPf0mzTSar96dbzR7UeCgvTaWtEb
-         6YeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrXcTgOqvU6Px+ntHkxMopzTANOpdduTvoNVJKmfCib2did4de2Wx+4cfyyDwwEk35i9BOP0HwsQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyam0ox9cGOJt+3y1GZzeIwOwbLI/HARGGr4LpfV4oYTIO5H+kZ
-	PSOm9T+8OuWlCzxYSv6Vm3s9HoHFPB6cA3N8lEcVdVpwJNhwKeb2iv/04PWH1MWwzk8nRq5HTxu
-	ZPzq8Yh+uBQVzHdY8i6qHch13cK74lCAP41ONJpwt
-X-Gm-Gg: ATEYQzwoP+qF5vnyTQ8Eyeyjvx69X3W0PVo3VyWU3UbRpY0z/FEiL3d5+1QWqYbyhRK
-	mZTOQR2DgWwJnJVIcQVOKXB1Ix7EJNgv1QF7QWsAt9uBe362pkVPGxt38n9odmjWwdpgzkwr19K
-	GNVf3ZSWHRBgS74qB5PlA/7oMUMs7E0pQIai3PXbakSlFl16UlWNc488VHA3BTY+Fiu5T2YYckc
-	Y+0qNgxZJ1zUCMuNWMM9HnbAzIjWCVAoD0IPKu3DiHy7zRIGv+FGPrSjGzRVnT1/ECkYT96VwpP
-	DpGuNbHn1RQVs64i9rUkpLr/04NIFQm5EaqwIw==
-X-Received: by 2002:a05:622a:413:b0:4ed:ff77:1a85 with SMTP id
- d75a77b69052e-5073a362016mr10340311cf.17.1772035499181; Wed, 25 Feb 2026
- 08:04:59 -0800 (PST)
+	bh=a2j64OZq+XWnWM49sQ5sWsWYMhDm7zk27Ebe/2YgfW8=;
+	b=KyPlqpWx2dlXHmq0YM2gzJR36n24XOcYeagJom+ilEevzh0PiC5qttzw8hvxz/MZRusJYw
+	wqZY+8Y4kVapF3LFmLey8j56dHlhRfJT7eypnkQ1gDnC1lfeTVwi9VgJKIFS5+ej4JJzAl
+	qvbGmfwbdBI3JJ/jd4LtJqd51CRQ06c=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJpCmMSi;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772035506; a=rsa-sha256;
+	cv=none;
+	b=3a8v76RVTZqoInAoHkByL5H4u7R7HOgXmSAVEW8SMCOo6An/iYIoeso/R2VrgP8PKseZgM
+	gZQNAC9iw3eYM5PfvIYr98fQ0j70myA22n1ZogYsNS43hQtxkDs83eLNEcAX8PwHTBA6U3
+	3dRAohWntuPL1GWNIpBPKfeE6UuftEQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A862A43A09;
+	Wed, 25 Feb 2026 16:05:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5A6C116D0;
+	Wed, 25 Feb 2026 16:05:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772035504;
+	bh=6cBj+Nps6gZCDh175QMBhnUiCqnkZzeVhurQ5HBT2ak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aJpCmMSiyPeO4MPY5gwI9uFlCabMc/1yNENpczauCzT0QwiuYQlJmIRQFOEpksinJ
+	 IvoneyPH9CZV8jeMETGLxPY89iABSsjKDa3flLHDjfsroYhyrPix91bAX/WAbzLgZM
+	 kd/O/VBGATz10mlXOwKx8sSTiuqp1XEHlFWQIgUqLTxKW35fJX+qnVR4wtPNr6zU1T
+	 o3lhqdb3nPgolh+cGBPibLhsl7wqcbCRNL1+HW516okEraPlfkklM/8/6QGpdSYPNi
+	 4cojZMILi0iWPXYbLV7DoRvSBsdFPLT01awtP+wDmtI7vHJ+R5wGQBMgvVAlucJ1OQ
+	 fmDQeX1GnUEpA==
+Message-ID: <0d4f253f-6e92-4aec-9df1-e668b457d362@kernel.org>
+Date: Wed, 25 Feb 2026 17:04:59 +0100
 MIME-Version: 1.0
-References: <20260224221132.1702713-1-surenb@google.com> <6bebf90c.1ff0.19c92b4998d.Coremail.00107082@163.com>
-In-Reply-To: <6bebf90c.1ff0.19c92b4998d.Coremail.00107082@163.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 25 Feb 2026 08:04:47 -0800
-X-Gm-Features: AaiRm50Rq-Rv7w21M8RjmtQCzSFI9nv5a06j8jiGlrIkF14Qhab1ylbF28A0bZU
-Message-ID: <CAJuCfpFcjgrRtJnY3aOVnvDEUTut14+QwBYMWG_pKyn2QAYtyA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] mm/slab: mark alloc tags empty for sheafs
- allocated with __GFP_NO_OBJ_EXT
-To: David Wang <00107082@163.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, harry.yoo@oracle.com, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
+ __pagetable_ctor() and pagetable_dtor()"
+To: Axel Rasmussen <axelrasmussen@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260225002434.2953895-1-axelrasmussen@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260225002434.2953895-1-axelrasmussen@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: odjsywchms6b38sqob1jkhcinbhwnyo9
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BA06840010
-X-HE-Tag: 1772035500-492728
-X-HE-Meta: U2FsdGVkX18nlUsulb56XXj4/4Dl83mZ8PYEW14Uy0TSLtsqr9a1Dfw2ffNi9QzgBhxlsob6hm7nkUFi07mXFb2rL7rOMOPrtDXnmW9ENpqxl5850fY9Mu7FG+ZYEm4PDP+tb/uFyrgWnpdPoDffcKG4tt/Ma3CE/Y/ZqFuSYMBsY5jSrMZLOMoG1ZeqMa0/TzpiUZ2X15+MxmBUPp++njE7J1Ip9QOAvZ5U0bJrXFRK06XamudIo/G653AZ6OBE8ChAZV3tqEZ/AkrUQ8iK0w4G0ZRqniEYVeWHUXWPEb7vwP5VW+3sXO3gNbpOafxHqGhZoety9kPkngX5GdM6QtFsJ6cS76IptPtPvmoPKFMDO4gVxGnvYOfonj+CwGamyb+ZLI6NpyNI7LJMG6grYlBjQ8Adxdb/wz8p1RVYkPhea9bf9IaIr+wMl50pa0QCKlooibvYpzzS4u9o5bld6QSC4IJG2OWO4Uc1l0rv/wzAKBZbJTQDCMARBKS4+k9gBL2oWia/JLx2Q3MuwWT+c4CQjdB8OGCmakgikcMzM+mhIwAGeYqQb4r7Zti4iiq3oUJU52FNPDFH0B6JFtovaMb2SpDcnWsMjd4zM65vxaEiCdRizD0E4jK3GTuSdfbYBE8Rd2XNl+VcXsp10cpNkE1C1kqIfeEjpwy6gb1sSIZUJlKhZxil0bLJpvQ2U1vri41N8f8LQ7ZejMdDTxN4syLcA82UAmmH2sF+KvJXuvVl5desLDkVeVCUF+/mF0Q9zm5JA8v7UftOh6KLigZAsolGFHw2U6FgZTkLG7qEJNXJZUO//LeiWX99kmQ/LHcagyEXEHiwlTm43WuTBHVVPncyIKwJqbemfdrItd5GxAYExNK1zuIn8Tb2y5yjqruQnaTxzcvUNxO5y8wV0q0SsbiytcpNs5iAmZIxvqRDdUFC+zd/KqAcC2snb4HH3uCC703cp0uFogt3/+tuUiC
- MB3SW7ed
- ub3V1EQegfFBbby8bAA+f9SoR934QymNtTcdgJLuxiko6EfiWv2ubt/RTQrH/ETVE2gZubGhCFCPkeee8Yy8edu1OYMd/UYsVHyfpDZB6CryOrGsM9xBpgPlWto9lgLvhmq7VQRwjRXwl8KqEoYagILFajCm3Eegf1XajfGnhZndy3Y6dGff90AdUq6s5oAY6wdKHEStgi7fN/Snux6bXAqTdAHnJ2bXUxlP09NMgOBnmERbxJoLLc/O9XwAJIIio1WBMe0wUy2NjBXHfqamjQmerrL9a1pEpXz4iByNxdv+pVBB8VLMYdmrZ+6ziG0ZZ5wYOl+62YdTkGjWSIZ0KGPNeDi5GRFfoLoJfyWQ7T7SQvElZsyDcXPWOy3Anycic+EAvIo9ddzLvK/vmsAEosCWN2Q==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D667418000E
+X-Stat-Signature: dosbh5hepfeyf6ktxy8k7o4iqba6fzzj
+X-HE-Tag: 1772035505-774607
+X-HE-Meta: U2FsdGVkX18DfVJyDkMaUOdBPaPCpROZv39+5JGZFGCpW7vcjph3SogRgqWa0s+VWGlW10VC9ZiRloqb1LoBgM9/wGviQfW+18VVC+MzC8Xet5LgI6s672P1mpl67e3kA7tXdSU4JgTPaYDsPzJDdZyscxK2TrXs4wN8vw7ayuNwyCWY1cPQSLH6HOHrMX1Wf9mPjYHpEDc7SKGlaxIDMAYBDXQD8tbfXqE/VqrPxG3kFPVirocvbTh5YtWOT4op5p1lZvdyN/THH/ihj8CUlU9WO19aIbXuts5yN2NhBX7/vRo3mPG/Zklby06i2qiCKygTppcVbUVBjy04bTPgLPQMqr/FZtqxW4wXZQBBIEoMmXfsxP7p69Vr5wFzA5xDPDyAWjvdtChcdPMyvmIhOm8lfaLVm6XDlvkocfewKcoDnvsj9/anqfoG3OPvqKd/76vMhJsh3sgeE5xRrEG7hI1mwLCcGQDtcsQDV+8hFW0r7tQCYLfLZj9m4H7wnkkgRPcttKo4Zi77SUY0y9qUK8KspsypEWrGAV6FrA49njLae/+P2jfjCGY3zmtK+tra+VnFYDouRgaIk5bwuaHUMusKoYLNNz3zTVDZSQN4+wpPT32uxNA3SXvmf2Hur9QmXz8ta7qKHydbJXgnduO9tYIY8anz4oJ4Wg/OB5L4uH8GDOQ2C33IcLW9gsQ8ORj9lrLoEYsYoxCLs7XUWT7sEkG/Nl3hxXuwGWIet8yWT3jdY71kE4GVHzhvmGH8iCEFGM5W01KNgBH7AuuDEksVVWZGCwA2B9vgyhZUUtf0vKL2GycJc4KC+xh1XrcFUgU3RkoDSN90ComqO4xpSRDE808dv2dAsIPgF44GQXVI4O/VKwCxfQI0stTwQAnX0jzQkLoLWGwQUSbe38LM9+XcxFuYZWlbhvg8UcwGx/M0mQNMJJnzaA+bs6ivkrkxsL+ex65PCvXn5oUgxf9cSDR
+ aJjDmG/e
+ Ide08CYgHfPtd7TpbZDO3UXF3aSWNZjT9DTCp1OvPkTRk5juRcT8jmGur/f2CB+B5VKUAJwefdkcPn1zTgtBql81CagifsO2NuEFuUXzMbAPvFGx7q3dl3pRLeRzXKfMi6UeAiN2RmatUcSXsVmfPNslTix+wy+U6WyEZ9Qvt0d8eMupQLuwTqdezjeuoGhYzCqHU713WM6okXPB95ttXdLBfeh/bWdq3Oomq3cPA6MGNEVZOMkD7RDQNM+n6VNs+juksIhkWYI+LOHeYGOhdqv00VdS2FJ+kbRo83XiSS5GQpEZL3yqSNylHSQKrEYUZuoU+TPBmRT02bstTGZw8/yqq1XlCPCRS/LJ2vyuDMasoN4PF/8VHQZV9I0pPN1e0/1eL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,128 +143,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 6:50=E2=80=AFPM David Wang <00107082@163.com> wrote=
-:
->
-> At 2026-02-25 06:11:32, "Suren Baghdasaryan" <surenb@google.com> wrote:
-> >alloc_empty_sheaf() allocates sheafs from SLAB_KMALLOC caches using
-> >__GFP_NO_OBJ_EXT to avoid recursion, however it does not mark their
-> >allocation tags empty before freeing, which results in a warning when
-> >CONFIG_MEM_ALLOC_PROFILING_DEBUG is set. Fix this by marking allocation
-> >tags for such allocations as empty.
-> >
-> >Reported-by: David Wang <00107082@163.com>
-> >Closes: https://lore.kernel.org/all/20260223155128.3849-1-00107082@163.c=
-om/
-> >Analyzed-by: Harry Yoo <harry.yoo@oracle.com>
-> >Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> >---
-> > mm/slab.h |  4 ++--
-> > mm/slub.c | 23 +++++++++++++++--------
-> > 2 files changed, 17 insertions(+), 10 deletions(-)
-> >
-> >diff --git a/mm/slab.h b/mm/slab.h
-> >index 71c7261bf822..f6ef862b60ef 100644
-> >--- a/mm/slab.h
-> >+++ b/mm/slab.h
-> >@@ -290,14 +290,14 @@ static inline void *nearest_obj(struct kmem_cache =
-*cache,
-> >
-> > /* Determine object index from a given position */
-> > static inline unsigned int __obj_to_index(const struct kmem_cache *cach=
-e,
-> >-                                        void *addr, void *obj)
-> >+                                        void *addr, const void *obj)
-> > {
-> >       return reciprocal_divide(kasan_reset_tag(obj) - addr,
-> >                                cache->reciprocal_size);
-> > }
-> >
-> > static inline unsigned int obj_to_index(const struct kmem_cache *cache,
-> >-                                      const struct slab *slab, void *ob=
-j)
-> >+                                      const struct slab *slab, const vo=
-id *obj)
-> > {
-> >       if (is_kfence_address(obj))
-> >               return 0;
-> >diff --git a/mm/slub.c b/mm/slub.c
-> >index 862642c165ed..5c76e55eee7d 100644
-> >--- a/mm/slub.c
-> >+++ b/mm/slub.c
-> >@@ -2041,18 +2041,18 @@ static inline void dec_slabs_node(struct kmem_ca=
-che *s, int node,
-> >
-> > #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-> >
-> >-static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
-> >+static inline void mark_objexts_empty(const void *obj)
-> > {
-> >-      struct slab *obj_exts_slab;
-> >+      struct slab *obj_slab;
-> >       unsigned long slab_exts;
-> >
-> >-      obj_exts_slab =3D virt_to_slab(obj_exts);
-> >-      slab_exts =3D slab_obj_exts(obj_exts_slab);
-> >+      obj_slab =3D virt_to_slab(obj);
-> >+      slab_exts =3D slab_obj_exts(obj_slab);
-> >       if (slab_exts) {
-> >               get_slab_obj_exts(slab_exts);
-> >-              unsigned int offs =3D obj_to_index(obj_exts_slab->slab_ca=
-che,
-> >-                                               obj_exts_slab, obj_exts)=
-;
-> >-              struct slabobj_ext *ext =3D slab_obj_ext(obj_exts_slab,
-> >+              unsigned int offs =3D obj_to_index(obj_slab->slab_cache,
-> >+                                               obj_slab, obj);
-> >+              struct slabobj_ext *ext =3D slab_obj_ext(obj_slab,
-> >                                                      slab_exts, offs);
-> >
-> >               if (unlikely(is_codetag_empty(&ext->ref))) {
-> >@@ -2090,7 +2090,7 @@ static inline void handle_failed_objexts_alloc(uns=
-igned long obj_exts,
-> >
-> > #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
-> >
-> >-static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
-> >+static inline void mark_objexts_empty(const void *obj) {}
-> > static inline bool mark_failed_objexts_alloc(struct slab *slab) { retur=
-n false; }
-> > static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-> >                       struct slabobj_ext *vec, unsigned int objects) {}
-> >@@ -2312,6 +2312,10 @@ static void alloc_slab_obj_exts_early(struct kmem=
-_cache *s, struct slab *slab)
-> >
-> > #else /* CONFIG_SLAB_OBJ_EXT */
-> >
-> >+static inline void mark_objexts_empty(const void *obj)
-> >+{
-> >+}
-> >+
-> > static inline void init_slab_obj_exts(struct slab *slab)
-> > {
-> > }
-> >@@ -2783,6 +2787,9 @@ static inline struct slab_sheaf *alloc_empty_sheaf=
-(struct kmem_cache *s,
-> >
-> > static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *s=
-heaf)
-> > {
-> >+      if (s->flags & SLAB_KMALLOC)
-> >+              mark_objexts_empty(sheaf);
-> >+
-> >       kfree(sheaf);
-> >
-> >       stat(s, SHEAF_FREE);
-> >
-> >base-commit: 7dff99b354601dd01829e1511711846e04340a69
-> >--
-> >2.53.0.414.gf7e9f6c205-goog
->
-> Tested-by: David Wang <00107082@163.com>
+On 2/25/26 01:24, Axel Rasmussen wrote:
+> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
+> But, these two APIs are not interchangeable: the lruvec version also
+> increments memcg stats, in addition to "global" pgdat stats.
+> 
+> So after this change, the "pagetables" memcg stat in memory.stat always
+> yields "0", which is a userspace visible regression.
 
-Thanks!
->
->
-> David
+Argh, missed that these page tables are charged.
+
+> 
+> I tried to look for a refactor where we add a variant of
+> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
+> folio, to try to adhere to the spirit of the original patch. But at the
+> end of the day this just means we have to call
+> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
+> accomplish much.
+
+The goal of the original patch is obviously to get rid of any folio
+references in ptdesc code.
+
+But if these ptdesc are charged, then we'd also need long-term a
+ptdesc->memcg_data.
+
+For now we could still go through page->memcg_data, to avoid going
+through the folio.
+
+But that requires some work, so likely we should just directly enlighten
+ptdesc to have memcg_data.
+
+Agreed that, as a quick fix, reverting the commit might be best.
+
+But let's wait a bit whether Willy has a comment.
+
+> 
+> This regression is visible in master as well as 6.18 stable, so CC
+> stable too.
+> 
+> Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+> ---
+>  include/linux/mm.h | 17 ++++++-----------
+>  1 file changed, 6 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5be3d8a8f806..abb4963c1f06 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3514,26 +3514,21 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+>  static inline void ptlock_free(struct ptdesc *ptdesc) {}
+>  #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>  
+> -static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+> -{
+> -	return compound_nr(ptdesc_page(ptdesc));
+> -}
+> -
+>  static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+>  {
+> -	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+> +	struct folio *folio = ptdesc_folio(ptdesc);
+>  
+> -	__SetPageTable(ptdesc_page(ptdesc));
+> -	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
+> +	__folio_set_pgtable(folio);
+> +	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+>  }
+>  
+>  static inline void pagetable_dtor(struct ptdesc *ptdesc)
+>  {
+> -	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+> +	struct folio *folio = ptdesc_folio(ptdesc);
+>  
+>  	ptlock_free(ptdesc);
+> -	__ClearPageTable(ptdesc_page(ptdesc));
+> -	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+> +	__folio_clear_pgtable(folio);
+> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+>  }
+>  
+>  static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+
+
+-- 
+Cheers,
+
+David
 
