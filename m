@@ -4,125 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD68EFCEE8F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:46:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5DC4FD3747
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 12:19:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 268A66B00A5; Wed, 25 Feb 2026 06:46:53 -0500 (EST)
+	id BEAD66B0005; Wed, 25 Feb 2026 07:19:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2163A6B00A6; Wed, 25 Feb 2026 06:46:53 -0500 (EST)
+	id B98906B0088; Wed, 25 Feb 2026 07:19:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122EB6B00A8; Wed, 25 Feb 2026 06:46:53 -0500 (EST)
+	id A9ADA6B008C; Wed, 25 Feb 2026 07:19:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F2E476B00A5
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:46:52 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A52C78BDDB
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:46:52 +0000 (UTC)
-X-FDA: 84482802264.03.EC29C4C
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BEF4D120006
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:46:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Gx2PD43K;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772020011;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 958A76B0005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:19:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24E201A0585
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 12:19:27 +0000 (UTC)
+X-FDA: 84482884374.16.E6CE0B9
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3C289180002
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 12:19:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J9xTjjgU;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772021965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cNc9GIaPSTJl+nOh/VY47x5Qb0/LB38ox3wV8xU//DI=;
-	b=ZTdkGPXkaa2fmAlE3TisF2Fum7ScUfeMSeaDVBapepo/UFfA6rJDC6e8jVKCvKbCYCG7aZ
-	whUk4S2tBkaxhauRoqierLpt+yM3yfHczyrd85bj1YuYifdnzDNt9ZqI+Gj77CFVuK4Rlm
-	dEX+M18tR70LMjeMmwu0GxH5NSmlKJo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772020011; a=rsa-sha256;
-	cv=none;
-	b=xHTUdTJaFmZajtyLN3mYyphwAJ8ubdc6WlJUZ0a1VjwyhM15EujGfG/zGWqugnNT2D/fcO
-	jrO/aoL1yhSj2pKiFxR9dBJ/8V14FLyRxsLYJumCzbhhy97DpBCfJ3WNOhr20K1E2j+X9W
-	BK4N+aLaJtPY6A3duinifU5HOsjyvJQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Gx2PD43K;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.68 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-4837584120eso45744745e9.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:46:50 -0800 (PST)
+	bh=5GivVNyIA8JAZFbbK477torhwiVkLccEddGHhqwOeMg=;
+	b=nS6LZnfxDw/BfG5QlxKX/QcOj2HVfZtY81nh7eo7CzphINYQfm6PFF3HagYvgTV5kXOLgt
+	gtMByNWUTPsE5YEmUSUxfwFA7LPAl2YJkHZU4UaAXBoivrVzucbtWpWVJPfIRnqfkQmJYY
+	ec7V4A+CA3GtB7LGCxVWxdsZFETixFM=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J9xTjjgU;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772021965; a=rsa-sha256;
+	cv=pass;
+	b=ZLkByQUbzhLdn6YeSNgfjUIM3f8XWLpH2IyFjcO8J/7BDZRoL1tLK0IXeYlbPgJPnWQktm
+	OhgVZOWW4u/+N5UV7l6yAih2GfqaNwilScBYQ40zsQNT78OQczju3luVQhs4UmBebI01Rr
+	5gREDhxIdU/9PIpv+0LA0f/Eaa4C35E=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50334dd44d2so78952501cf.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 04:19:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772021964; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AXJrKaM+ViDENDcT6J8qO2YXLZVgp74EAfA2BZmxShMb4tlyI94dfrKgemkbwPn4Gz
+         aaP30iXJPWG/DX/NLlyIJGiH9ZQLkFlbRJewxGDTvQ/lHnXxwEK/5rrtPPgiQOzxCdqV
+         O/csAu1Cvjy7OKrGoON9MHur0trUqPvX+x7XEBxq8HLNnEeGG/y8gMGRTQFiiyyisL+o
+         +KQIsOVLBNCsOQ2RKQpAMXvmBC1OPNjZLDRGNlgBKXqVVltnTMaMcOdOpxBEY+OqilOL
+         6aqS9HyIbeQM4GjGyC0zsscxCo3olY78mlSeXOojOlR3P7eJioiZvFawxVUL2guBoWww
+         d1DQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5GivVNyIA8JAZFbbK477torhwiVkLccEddGHhqwOeMg=;
+        fh=jIchxDKlRgnfV0eL5R53VjxB0IUCJp2NSH1bWCUm7G0=;
+        b=O0lfBigQ6KNZF774aYoNCBdY5Bq++YV+6WMiVpVfIM3XY+5H1vDpWoJDaZLl+VcYB1
+         sPEH7wEV7tpICgO9QV0RcHLaGgjNxyWmLoWtKDW8k8COPCtRROfI53alP4wjAMCovblQ
+         ZrFtC0rRSZ/gKCNT9n1HmhzFS/l2Rwi5UUuiABs/xQBbDKP2Xephhg+vFm/nrFv1z7fS
+         EZObCqM4+UJY/FThKIGzcvbj3Uh1BPsv7cK2FrBDQED92okyVtvrj/KjpWFo1KWFGqZa
+         yOWNagalbgXnOvSHl7PHJIzk5TiXbuey/CiZWqaGceFxIwQFwjDJ5gFvA6sg/SmNBQYr
+         qLBQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772020009; x=1772624809; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cNc9GIaPSTJl+nOh/VY47x5Qb0/LB38ox3wV8xU//DI=;
-        b=Gx2PD43K+oavVkWokAPGs2/xLGX0rvXhfwXhUmzgjCLQtsQowozwrz9RtMzDLpC5bA
-         oX0K+ar4/O5HXv4VXzjh9Gg7mOynf8Btj7PcbUusG6xWYThfPKTYqbzi/TIfoYv0RV1L
-         eRZdYP7pRiyLmkXojnFxmhd3UQYQhDNsf0kqpGiWbK5TnAzkYJ/GK+w7DnrR0CeMXDz1
-         75mnJLKRnV5CnU3TqHeZXOpn7YXIHPD/Rik5uH7j45+m20IfwMirVVWLACFCIf0VdRFg
-         mmEgYB9CEW2i5jBcllIIWVMufZHJch++YRTZ2voAccr7Ix/I1Ce6b2Y2uzIBR4VucOnA
-         m23w==
+        d=gmail.com; s=20230601; t=1772021964; x=1772626764; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5GivVNyIA8JAZFbbK477torhwiVkLccEddGHhqwOeMg=;
+        b=J9xTjjgUjxX9UvtJveUatnpb0AdKghqBguiuX5WA71+iVGGWlCcef7hvUq6nr1a5tc
+         sk9EC0rbKPsxS3XsRk3ZpUSh7p3rAYvUwqzfGtZy8qTuA+cs4Igb7TBK+OD05YxXfB7E
+         4S2Mn/4uRnd5NBqWia8IX6NQFQxuB+aPhqs72GpxVwMO31ObKyv09HLIfXdVCHwbYFnO
+         IKNU/CU5Xr3zPkH+7zneHMBoxqg4yFAb77tuIMncvd+HTQnaixxIx6YTm7EV4/ojrtUu
+         zW7Fyd+XCTHHCBZgwLR8m6jp1TDm0uPyeOjjb1I19B/LS9XklT/d2xOlHmQrQhhqgwvH
+         UnMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772020009; x=1772624809;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cNc9GIaPSTJl+nOh/VY47x5Qb0/LB38ox3wV8xU//DI=;
-        b=xB+9wkfgb56iA5h/Kq5ExeJggpI7PhlhqkDbS9dk16SstA/AeJgC+U3e3GLu/XW9jl
-         SbGJZ5OYPmacR5Hqt43H1QI5tDx+QRQ57UbMnsStnFNTHTWHY9eCZXC1ColTO0l9/8DS
-         /ahACTcEODbG4BXxlyfrcVfelEW56PDadNNSxJ1/Ea/sXEo2hCW8jfr8yzj10tgmYpga
-         s+o34K8lN/n9vQ6Tlekjy1y6/3bLeEf9LiI3sU6ksx4YKTGXY07+UJBFzU+rCa/iOJs7
-         r0QgvncMtBcpIhOnpFx6FqLgyhR84vjc4JCwU1EAPJ0IqqC/PUPWkrGtc6eJqjhjm/HA
-         MliA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN7F/ZwPtJtIQzkNxL/wPY/bWrmQFEYbmW8p+ntJ8avDIyGznuTptXG/gkmgkTx/zhkRd+xlmFOQ==@kvack.org
-X-Gm-Message-State: AOJu0YyxLeZJupalFC1dhfXdsCSP3b/0lBn8cQDO+L5sI+dO0ix5L+VL
-	pa1f1XKdi/oYOIxElZLDpBKtQSUFtQD7Ei/dMaVEsIuqXBK+pfutRbH4VSPF5KJoufQ=
-X-Gm-Gg: ATEYQzy/rGImEkagmsIcUlRFE3QoX/4J0PEbmT+wG5d4eZmGa/jJ/2XMMbRvcxj1lJD
-	HSGkZy8SGwUtlcu/X4bQPpOEa5aeqPrdT+3oIK5chYGmdbFrL8STT4krbPTIWIYLwz5Xg6iR2HD
-	yy+sr281DVU411P8n7ZwS/uvRkfJk/CHwUE4ySlohfxmbuem3tmeytIjrVqYSB9ievnNFNJgzgf
-	qazNXS2Uk20Bs7E9NQkSONLPmXGKDOKuElqlE7rF2Y3Sdy1tvL7bjW+n9a0dGDg8yg9YDBENs1i
-	uQAPkX+kKMUn1AyDSIbJdNLDIv+4L0qiGNSv84fIXyxMskR/FQw/a2Et5Xme1Im1FI4d5LM6Y4T
-	2tt3KEx/Pk0HAAKMP+kxUA/LFFnw/eEaJSwSKPgbZ4uh25KKbtBQ2hLPl0KT3MAn7jrYNlFvc3A
-	qaYrVaYmeFWoIvpR5rMW3aiyAgfFVMLCY=
-X-Received: by 2002:a05:600c:4f93:b0:480:1b65:b741 with SMTP id 5b1f17b1804b1-483c21793d2mr1738195e9.15.1772020008975;
-        Wed, 25 Feb 2026 03:46:48 -0800 (PST)
-Received: from localhost (109-81-84-7.rct.o2.cz. [109.81.84.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfcd0818sm10055605e9.26.2026.02.25.03.46.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:46:48 -0800 (PST)
-Date: Wed, 25 Feb 2026 12:46:46 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Mikulas Patocka <mpatocka@redhat.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, zkabelac@redhat.com,
-	Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org,
-	dm-devel@lists.linux.dev
-Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
-Message-ID: <aZ7hJi2-iATBD6GL@tiehlicka>
-References: <aZykWyxLy34o7PKr@fedora>
- <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com>
- <aZzPwsBp-Z4XM58U@tiehlicka>
- <aZ2N9a4XgxnurOhz@pc636>
- <aZ2YDD_l5JN78DJC@tiehlicka>
- <aZ3F2cghZpqBi1Mk@pc636>
- <aZ3HaVuIA4Ezu1uY@tiehlicka>
- <aZ3JB5Xm3SCmJW95@tiehlicka>
- <aZ3MzxtMp2OykAQq@pc636>
- <aZ6zwMQIj-3JFQZq@pc636>
+        d=1e100.net; s=20230601; t=1772021964; x=1772626764;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5GivVNyIA8JAZFbbK477torhwiVkLccEddGHhqwOeMg=;
+        b=s7sLiTrVBCmLmIJitQ2eFfpCvNNwL2n82+kGY3FSivJcfw1T86VQCFm9ANKEfTKzZm
+         Ksx9k5nOMLYQp4ENL4nqA27BOB0AqqGz9ZRc7Mt2MWyc1xdCPe5hIVHuhJ6cWI7kz2Wk
+         S+iObedoW3pdJVa75ZrQbPAqQakA1jpUXYVGy6HnjJfKGLYk9RhyNXx5sJ1CUtcgiFjt
+         LCodFaFXvtHMmJa0MY0Y6R+Cd0EwFlWZos1rZe44BNnmh2kEZig/7Enu4cBdMaLTh+2d
+         X3SLkiyAdyZvK+cnPhGO0nsZDAQh0CBZuvtfO4xAM/qFZDjOOxp4XWiNTAy52TaiQ8VA
+         hh+A==
+X-Gm-Message-State: AOJu0Yxc1B0sR87TM8x1+q7XTszcFHMl1R26lb/GI5cF0WTGz8MZCUMM
+	7IRBlezMzU3Mk+0OP/c9QPO9pSPhIta17AHFZHo3FwAQJKUkxx1VfmRSdt14s+3ZOqNqMecaSew
+	l9xolGWTx+kHLzqnpj8rEA9FeVCKCAMY=
+X-Gm-Gg: ATEYQzz5JtBYugqbrMs/wpywbTjHCVz5NAL+9QDzEP/ifsN5S3wx0LYrIuSZJTyiv0K
+	pAXe4iWAIVUKbi3SJ915Kz8gbWGjz7KdS6xH3iScYap66axpjF/QHYusK+OgZ34u2DOoJss3uJP
+	77qlHAtr13hx3RXe+VesVxRpZ5Aws+iS2frvKND4kpuk2gSChj08pCAf/5qLhxhHI2KWNG560Vz
+	3kBPiN+enrGr9eJVLRYg8fRAazoEPXd4k1/IKqEYsJw9N/6K3VGcfVuPCMkf9c10J6mxXwYvmuL
+	OS7kCA==
+X-Received: by 2002:ac8:7f91:0:b0:506:9ad2:8d4a with SMTP id
+ d75a77b69052e-50741fcfdd3mr1385691cf.75.1772021964065; Wed, 25 Feb 2026
+ 04:19:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ6zwMQIj-3JFQZq@pc636>
-X-Rspamd-Server: rspam09
-X-Stat-Signature: fm68dmajmb4z91fdtpp85bny7dh3whig
-X-Rspamd-Queue-Id: BEF4D120006
+References: <20260220-swap-table-p4-v1-0-104795d19815@tencent.com> <20260220-swap-table-p4-v1-12-104795d19815@tencent.com>
+In-Reply-To: <20260220-swap-table-p4-v1-12-104795d19815@tencent.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 25 Feb 2026 20:19:14 +0800
+X-Gm-Features: AaiRm511TxBGRVuIyMzvT0fAaZozlquA48wNCycgFlMQWIgQStFaENf0SwcgBCQ
+Message-ID: <CAGsJ_4yv31utMTsZcRf5adeUzC7NnE0DfMKRFi3v1iCxfdXbdw@mail.gmail.com>
+Subject: Re: [PATCH RFC 12/15] mm, swap: merge zeromap into swap table
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: us5s8qwyiqnbm67qygj1bd7t9ea51ras
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1772020010-402774
-X-HE-Meta: U2FsdGVkX1+Xc1Ot1mOhuUIILE2ix/mVEefjbNr164hTX8S47TFnOHUnWWXAykbTPDxpurTfgLKF+mCNu50ruQh9c4gvKzG847uVt7vGabOVYBuYLsI7FbGy6uFfWOuej8rOPzKAeq/Cd1pqsebqZnOn9/Fq6iEl71dAFxcDi+2J+0zlvxgwhbpPsk7GSKCUgPdfvxvWJjEh2uPQWavOxL732dTy0L7rSrslCGzZg1vBv+6m7vXfUuylq9v9jM6bc8pm3Rd0/f915CAe20R7YIJaiON72NRNmFvTd6KnnP1ZM9JCLYTGc26Ur6iss/GhehB8Tat9PRw3SUdTzXb5zdFda9HtN/g43J0Zf3pLfb8teiAkvqFsqDEPWtQKpWAMapmQ87yukw0hw6r6CqH1Q+uPuGBgyEgcBoYeEXW1Rg78uvJhO/r0SzAqqWbHazXJYTgizN+oOvL9FzrwSmTppihPX7WjCF5DlDZFVwczXkweXB4eSHwMcoJAalpWZSfyaRBV1Qt7/tFCLfEI2a1cijUSOJ9Ys6MsrLG11VTf8WyjFi9haoOerABEG8I6VsQSZrGeR/TNEx1L8JdHuIgtODtFkdfCbRB6B+XlT6f4ROPf0NQCqQ5xYy/ZnHx0CJzM0kvjqgQf5EhC492ApFg9rW+11WBosoKj2BNaBRDYcEh5JLtxNMpJpML+tdzJsYE0/cQGV4Sz1sx3viUo64nsjCztwPrEU/P+pyYZKjCtz0dM99IEOKLjyYRoymy3RoDhpzruOBqXDfjpU2XWGlwtykFYMjw6hjxW38ixTgYYyJfNRilhpGn+c5+ZNe6+X5rFfXqd7j41MWkto9KC/AC+vhz/wLgopx56cGjxUCVph07IlmzvFzb02eBWk/2dMipSaCEywh2vW+t4ygzI919QieEch3kYaT9iMrffuNBYTAbwd3uuryDlKSa/ktobog35r+d7sIzNcFCJnpA2LWH
- 9ADlQI0P
- PEj4WpOJ93/NqfTZzK3PmrYYy/GdPNqFAF4n92hKvOHZO9tkOm90bEPe0cTvGo0wDVpG+4HEZr7tAVVr10MX6vcuUvg2hI6qDixjhLChOpnEhFkgovLqd4Qc6RN84rkaxISO/ona0n/BLUi5yTLAjJPSOjSUoJD/nTxAYiaC8LuVRZoXkPoktebG0CSj5ssu9RISWsHsRLzEW/iBfPoRK2nRmof4qSU9Q5ZIQxgp6JXUjCsprpS9iFIlFI2jgaVOxTqF7ld0ntJ6z9X4=
+X-Rspamd-Queue-Id: 3C289180002
+X-HE-Tag: 1772021965-80962
+X-HE-Meta: U2FsdGVkX19aLPb40MfBlMYmgKLfwq33g9BQRAQv4bEAN2yTqM+eRN2XMZZ1HsY76FNgm1bCVMNZzdqGhWd4K2OsCx2DOkqJhPV59gOao919uNbqQh34d0W7zadl8voc8nHm6o3t8H2xrjf6zJT8IO6lBnRjqUKm3CnEk2qoLwDhl1johOtmfi0VrpvEEaU6Bx2UDj6C39Cmet+kvxpVQtFu0+OdK36tmfzXvmuy3MIC/qh1CxgniyA5uMqK08rGdk542k22Pgxf01pnJntgFR4w6NiQ2xyItNa2hjAVgug2BRUDmEFNxdnfdjCHOcRd+zwjLQt3bT7TZBa6z8ooXZFgVuDq6ZqMn9U4zDqCG/uZto34C4W4jzZ8ixq4LygesmWf6mTEUyLsx4YsxxfM+XkjeybSU0RFHY709K+dTjD0AnBKLU80OIGwVV5lDfoj93PXwdvF7naVExcuFXVOruyQfcRjACwK7JqwspLWPyphwZC+il7TVK8aFOidv12oagcShMKNNPiyJyTBGfUREQOMe8vnwiAcYStGhhaC8keZHDGU+BDkzfD8H5GpHhn5v2lnFf19SCq56ba5W0pppXY00CIYSteK0x9b7vLd+sA5LUcSLEaYHdU4gcOonsY8Oar4BYfeEfPrOVVknyL775Ys2AnSB9JejprTjIO4i82BMOMobJ/3zN2Q35JEn2LqVZFhULgLgpQh1owjWYJv3Rz26LN9AjsgbTU4btN2OiqxjBh2mCSkgvmDTfaVGkvUgZy2jjGrlAw0ti8w7wLVvJaQMVLQbBUhLzlfOD/VD92WrhSMfDANdobUL31TXQ/dsl6HhuaYaHX1jHvQqYsfDwYVnpoW19B1HMjHKtbrEUTIZlp1ypOL3tJ5pzz7Y4okTrtYD97I57DoNhSqLtmkka030tvFqoVE9+A5QW4D42bTiFFBENISJiMy5TJu0O+q7SpgV03dUV41OuQN8jl
+ okEWCY4b
+ UX0uURgKjs3KQgbAqRpRU3wBfMk8W6yG5zpV7w/tGqg6MotvC3tMrroN/P6tnwE4Mu06LTlHmumHuAUxvFneqDzCZwRnnA31I/0fot1sgnRp6gcsbEEnCJpjnaeCaPkYz8co5wt2ZU7dsGYF3RCMaam+W+T1Sp3VcfSguzdhYvkdmbNb8hMvHJ1d68KJ5sJMY5jmBcU1/DkjZoG+6GhUhmr2862k9OiNFnWVkarGrZ624W2j8RYiiHi/0i8BRQvcQWcdSeZRC3YNIFvwmKUhmUv7qncJ+1212IlQ/BvtA6Yspt1cB6/5FU+vtzlVO3ZDSlKB5lMImYLOJTu17jDsH8oEyEpZRM1TchKsCifhcRu70e6Uaq/zYAUD4cjl+4lqf3n1JWV2FYBHLKCatVLItOBF1kbASkxpmKeu1T8nkBwghng7C5uzqceelzJlZc4JaQdmd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,98 +145,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Feel free to use this patch. But please note that I do not have any user
-so I couldn't test it. So make sure this is tested before posted for
-official inclusion.
+On Fri, Feb 20, 2026 at 7:42=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> By reserving one bit for the counting part, we can easily merge the
+> zeromap into the swap table.
 
---- 
-From ee94ade23655dac7e239c1dfd2b04c0db3d10298 Mon Sep 17 00:00:00 2001
-From: Michal Hocko <mhocko@suse.com>
-Date: Wed, 25 Feb 2026 12:38:28 +0100
-Subject: [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
 
-__GFP_RETRY_MAYFAIL and __GFP_NORETRY haven't been supported so far
-because their semantic (i.e. to not trigger OOM killer) is not possible
-with the existing vmalloc page table allocation which is allowing for
-the OOM killer.
+Hi Kairui,
 
-There are usecases for these modifiers when a large allocation request
-should rather fail than trigger OOM killer which wouldn't be able to
-handle the situation anyway [1].
+I know you're saving space by removing the zeromap memory,
+but do you think a bitmap can sometimes be faster
+than iterating over multiple data points to set or get bits?
+Or is the performance difference too small to notice?
 
-While we cannot change existing page table allocation code easily we can
-piggy back on scoped NOWAIT allocation for them that we already have in
-place. The rationale is that the bulk of the consumed memory is sitting
-in pages backing the vmalloc allocation. Page tables are only
-participating a tiny fraction. Moreover page tables for virtually allocated
-areas are never reclaimed so the longer the system runs to less likely
-they are. So it makes sense to allow an approximation of __GFP_RETRY_MAYFAIL
-and __GFP_NORETRY even if the page table allocation part is much weaker.
-This doesn't break the failure mode while it allows for the no OOM
-semantic.
-
-[1] https://lore.kernel.org/all/32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com/T/#u
-
-Signed-off-by: Michal Hocko <mhocko@suse.com>
----
- mm/vmalloc.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 61caa55a4402..86b912d38bd3 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3798,6 +3798,8 @@ static void defer_vm_area_cleanup(struct vm_struct *area)
-  * non-blocking (no __GFP_DIRECT_RECLAIM) - memalloc_noreclaim_save()
-  * GFP_NOFS - memalloc_nofs_save()
-  * GFP_NOIO - memalloc_noio_save()
-+ * __GFP_RETRY_MAYFAIL, __GFP_NORETRY - memalloc_noreclaim_save() to prevent
-+ * OOMs
-  *
-  * Returns a flag cookie to pair with restore.
-  */
-@@ -3806,7 +3808,7 @@ memalloc_apply_gfp_scope(gfp_t gfp_mask)
- {
- 	unsigned int flags = 0;
- 
--	if (!gfpflags_allow_blocking(gfp_mask))
-+	if (!gfpflags_allow_blocking(gfp_mask) || (gfp_mask & (__GFP_RETRY_MAYFAIL|__GFP_NORETRY)))
- 		flags = memalloc_noreclaim_save();
- 	else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
- 		flags = memalloc_nofs_save();
-@@ -3940,7 +3942,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-  * GFP_KERNEL_ACCOUNT. Xfs uses __GFP_NOLOCKDEP.
-  */
- #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
--				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
-+				__GFP_NOFAIL |  __GFP_ZERO | |\
-+				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
- 				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
- 				GFP_USER | __GFP_NOLOCKDEP)
- 
-@@ -3971,12 +3974,15 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
-  * virtual range with protection @prot.
-  *
-  * Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
-- * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
-+ * %__GFP_RETRY_MAYFAIL, %__GFP_NORETRY, %GFP_NOFS and %GFP_NOIO.
-+ * Zone modifiers are not supported.
-  * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
-  * by __vmalloc().
-  *
-- * Retry modifiers: only %__GFP_NOFAIL is supported; %__GFP_NORETRY
-- * and %__GFP_RETRY_MAYFAIL are not supported.
-+ * Retry modifiers: only %__GFP_NOFAIL is fully supported;
-+ * %__GFP_NORETRY and %__GFP_RETRY_MAYFAIL are supported with limitation,
-+ * i.e. page tables are allocated with NOWAIT semantic so they might fail
-+ * under moderate memory pressure.
-  *
-  * %__GFP_NOWARN can be used to suppress failure messages.
-  *
--- 
-2.53.0
-
--- 
-Michal Hocko
-SUSE Labs
+Thanks
+Barry
 
