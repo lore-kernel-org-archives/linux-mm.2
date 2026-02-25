@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE399FD45EB
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 20:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15A3AFD45ED
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 20:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07BDB6B008A; Wed, 25 Feb 2026 15:12:57 -0500 (EST)
+	id 63C216B008A; Wed, 25 Feb 2026 15:14:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02FF76B008C; Wed, 25 Feb 2026 15:12:56 -0500 (EST)
+	id 5EC8F6B008C; Wed, 25 Feb 2026 15:14:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6E856B0092; Wed, 25 Feb 2026 15:12:56 -0500 (EST)
+	id 52FCE6B0092; Wed, 25 Feb 2026 15:14:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D50B76B008A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:12:56 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 717D7BA815
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:12:56 +0000 (UTC)
-X-FDA: 84484077552.23.1312E13
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AE0C91C0006
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:12:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vZXOPZ1F;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772050374; a=rsa-sha256;
-	cv=none;
-	b=7Q1hBJ3rNVXq9dcRUdhUSw8hlap+22s0Kzg1l4A+8RrY+wDgh+SagHbbIgTOzD8fd/RLKy
-	fmFjWm0aEFm9yirUbs4xZitVL8iL+fUyoIktAqAi4lTm20yS7Fi76sXHd3mxssen4YNZMG
-	xB19NJIuFeaLlf35L1EuVJwdq4oz3Dg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vZXOPZ1F;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 419626B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:14:26 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D06A314073A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:14:25 +0000 (UTC)
+X-FDA: 84484081290.27.BFC6A97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0DDC440002
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:14:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zclgkkzo;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772050374;
+	s=arc-20220608; t=1772050464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RFcNUDMA0fpfKTsH+tpEq3bJZDfRy3nnHNOQvpT4r0I=;
-	b=IFgIlJ7L3EG7R692Pn2bpTS8+xNAZg2gauXjzoGE0fibdXBLqmfyaZ/vQoaNlSRBEcxvnQ
-	wP54Iig8VODH0cC9khPUnpmZ3QMc7Y+oSu8A8xHMgl4ofeplOpTuuptw9GMZir48+HoOco
-	lFZdsf51Z1UDL5ZBdbLb+kA5SlvdQ6I=
+	bh=t6DzpTFJIBfvdXmCcCDGOZtmv0z6aEF/BqPB0+KsIxY=;
+	b=T4Pu/2k2uVVKYKMWAUgszFgTXOEkTzXF8pFWIR6f/OZwE5s/cdVWT3UAr0YkLX3m+5Ctei
+	xcD/hz7IXTaTk3bIY6Dq7b7NW38z6E62uRckl+SlaU/tk5/YZuTkUmAd3E65TMocQ3Vsxk
+	XqcOLKjGlr+G0WVwZQK4qfrsZ7GzLw0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zclgkkzo;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772050464; a=rsa-sha256;
+	cv=none;
+	b=q1a6sSph+glcaeGuntVIHjN0SDDvLyfjLrCEvb2FFRS0hjSVwN9ctgrRBK4ts6ogLJ49AP
+	TvT7hT6f2ygR2ijdp/Tl8/Z70Y7X0lJzVVomsOn0oNf3BV7UmcEOAuyq4PG66cLHR11R/o
+	vqQtOeEQvzSLzquklhxS+noEjOav6lg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25B6060053;
-	Wed, 25 Feb 2026 20:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BCEC116D0;
-	Wed, 25 Feb 2026 20:12:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B3DB142B90;
+	Wed, 25 Feb 2026 20:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2578C116D0;
+	Wed, 25 Feb 2026 20:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772050373;
-	bh=hvDyKIkKV0xKNXKf+f4mVxzCGIFYEMzA/sqURO92W30=;
+	s=korg; t=1772050462;
+	bh=ZR89WZo19RbWI5s9dT12x74sNrjCq2xbeHPg2EjiXV4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vZXOPZ1F0hslCdpR1V7LhWv/gVAq66hcZRmtOh8L0xMZCTpYuZhP96kGtG+PXIthU
-	 ZM6TOaD8CYQ8v8jrmSN2C10ygQ+Vc29+ZUVwzbn3eeprcJHSdh0uzI/RtkPKH6erMZ
-	 xv09WEpiHYPEtpqqi/5rOnyYmVcb7IHVcxQrnKTc=
-Date: Wed, 25 Feb 2026 12:12:52 -0800
+	b=Zclgkkzosw4SMxwoKAiGEH/ZbSH9lv41enOItAHjveMmmZUvHmQ8eDLlYUpQ8Dqay
+	 bvcVj8hga4F1yCL5hHRS3huAelb+vI0W117kN4ZVuAI3nnfaA5MvJBqV5S+x3xJTQp
+	 XPjNtQxc2PJjF8J9s365amibB7Wd3e6YgxdtlP50=
+Date: Wed, 25 Feb 2026 12:14:21 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
@@ -77,23 +77,23 @@ Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
  Xu <weixugc@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
  kernel-team@meta.com, Benjamin Cheatham <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH v2 3/4] mm: convert compaction to zone lock wrappers
-Message-Id: <20260225121252.7c6519a857c1a8c56ba5206f@linux-foundation.org>
-In-Reply-To: <9710c3448c6c984164c93d7c6c0283e06ff987bf.1772030186.git.d@ilvokhin.com>
+Subject: Re: [PATCH v2 1/4] mm: introduce zone lock wrappers
+Message-Id: <20260225121421.2eb75a94578af35780978851@linux-foundation.org>
+In-Reply-To: <5bcc39cd3a227944d0fbe75ff86cdac92b38d4ca.1772030186.git.d@ilvokhin.com>
 References: <cover.1772030186.git.d@ilvokhin.com>
-	<9710c3448c6c984164c93d7c6c0283e06ff987bf.1772030186.git.d@ilvokhin.com>
+	<5bcc39cd3a227944d0fbe75ff86cdac92b38d4ca.1772030186.git.d@ilvokhin.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AE0C91C0006
-X-Stat-Signature: wa1oxhur9roh8mih8qctqcffjx4zdkht
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0DDC440002
+X-Stat-Signature: p1ssmu3d3yhec3mgr4d3d97tgsndf3rz
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772050374-723883
-X-HE-Meta: U2FsdGVkX19MAspfx1Y3qB+a6fzJVh6zVqFI/opy0dQGENksPRLRfUEmVzgXrGGdBG/O736zvHMHO8vr+W0yIiYeaZWObEv+qxu1ijJmOsIybmGbUwKYv5N8qp1sijQOBUORrJMvnuGHM3IkVC5cavzaXjWdOYSwg5tKffaWwoW+3RPeTvb7IXmjwp5LJ5Cmk0Hkkz/PfdUZLMduW7bUSrRV6TWEziydPIEVJ3eLxF9b/Y3nzE61IbSlVs2GMAeE36+QpS5+D0bZSCDH4lrV95owe0kQQAf1koI+qQKZkQY/ElpVBYR1U0fzm5TViC9I2roE+LfTTNCvoISgZ2Px9dYO4twA+dibKMkLM5P0m5WofzukfP4jGXm0ULbeyl7LySZyd8c53b3ETtk0iaZ+6wgVZEbMvM8rUY1OE0ZzPFwhV56cZeOPkbVa3WHjdJTjpS0Wr7PNqHlXW/3SeNAJOS6Sz2SdlOOyw8WLmI4vJ9tD0nxVTlbUdRZdcSjPPmGDB2LL445I7VAhXpy8zox1QRCYbi9EOVCvDUu9MzEVB4/EyUlyejpWFHTuU0s/0G1A5TeBtqjcDc75cHLpgBfDmroI4uKCwzt350S/dZy5RvSDaZQ49hoAymAByhdIWiW3qYCXba31+gyzl6z3BQJIYqfWycY0S6nCMkNXjM9PjkiJAZB+zXxClKORcfwaWwPL48r8CKpk16rAsmtTRjhUIONSqHTqaZcCcOfUKxE00oJz7RVyuYxZUItLfYP2m9gQ3JYlz7wI5HU/PBCFk74d3b7fVK/kprwUqcdtEcjkmlVCZ64R8JjD4SeaTJ1DoPlJX2n+pt+6M7l52xGDXB4Iq/Mra8nDVkTKIWhHyCOygQPEIRTXIip9CYVk1Vn1ALqkwLPvJWl8suo6bwxBSlmA1i24hlDR/AfClyCWt1Y4tb+SuRCUoVYi1XjTe2kt9MVwXorgoCNr84CjHm8TTC+
- f9+arvAU
- f5uXzjPXtm4XVC10e7h9yn968Jfc9R9pmhVSpHIw0ZKwWyCQg6Fi/V97LOLQ9WuLqbhmhjHZig3lo2DDSvXZWYRFsn0zgaShaBSe6rC+XAAXvIypf1YK5Sa/klJ08b1iGEAHvku/NQa9XL/m6y8y/xwk4MqLIwxR6PwzzDyHJ7NEAa8NM6J78bPdOlISKUa400lH+jaULfVH7fR55k6PTFkZ4gbpfaBzMJrhHXfwBwFsfYV7b9GiBdp4PjjEZtcbxyWxcpHxl7osMldEQ2Do8kdQbkMcsZk7d1297HxUqzwomE9eohk2PxKVnnQ==
+X-HE-Tag: 1772050463-90518
+X-HE-Meta: U2FsdGVkX185s6BBEKTrtTaDUruPSR5zinCqJRohAPqxuuy0aYqyDQGkW02sXY3eMX+aEWxh5Ph/aiC94kA+Uqo0vKEQ9pRFPB3fq5niCHYw9UEJv46TSouhxKbdQDQMdFCfj0e0lq4DIZIeRIR/gPFDeynaLdQGDiGxW58c71jSRdford7gKE+rBc0KytsHs6cZfT+fdeK6bcFtV7MvGlL0DJAIxxmtItb4zed8W5t18m1GzwPKiACFJ/GjTWn/Ds4NYdrInVp5CGG25CbK6UYHWfxostG3sCfzK6PUdBamPhorLp6uRSN3L3LYydcC7vYExyvULWYtJVoQTQV5RM4yZ61a+xvCUlimtV9gFX442B/himv0Rkn/DDst+n2wl/hBIWuxD2E5ZoF1Uc0zhSiAfRxO+iPczR003INIyQ5YZfPlJYI7nC694Gj88bj7zj8JykCawWHBgBJdtGjW3gJwhW6sh++AjzCvHy/oR3HdMCcwRikkljqxkmxQ2xLdyMLr9xIJAgrYY9gEsCXe3PyOaAt6rdbLuK61dKCnO2IwBLHGOivnxkWQR/wN5AEfEPUBYR6DPPkevwICs0t8Bq2GVIcd62JRznuv5lIsQya+Yk4Bilehxo9EHbR4GfG4Z5BgAMgh+/z0wcRZBrmxOYLhfWJYeBHiWmo3MQMgnTMqXacMAwgm2jN4GSDs197c+9ljUhO95bTECv1aTMx9WA4e3dlhGNAlxYVswSwqzc4QYu9s9+9iUX8gC5ZUYNZVt9xGpZ2F8QGOYK1kGbSo4915sHEvsZtdPoEiFNoTU8QM73ksHeIW5W/vx9Y2IcMzxhas+0LGlxkzV7vB6MUZdSNpnN1zSngeXHbIu5z+mn0GDX2JghMI7wPaCY9DxS+YMmk6WxXbMevZJzH1hVPyjEH17w1ViS2+8JqlvQVKFmv4k2f8H2rUGqzVsBEyf1QQj+c0lXXcsIM5s3z7PMQ
+ mSV4ux3x
+ ADyrNiUwAx0/3tcpAScXkY/RY+5Y6nbLeAuz3+FyYhYU9BnVA9tBT9ZfoE1qziLAsg6DtoCpJlslf16eh6ZyyfujL1Vn5Bo2FWlKAolPe9lfhWu5bJqPirgBJXXYOtrf+V0uULUOLVP7y5RCRK231mr4C9f+bFcyN6ydqHrUMlfDibUrhWcedcFLMyK4WvxB0Aj7Nk/gbSPhU8s7KFbxQVHQhy3x4NefpYFgUHXC0gIQJs2RK/Gjcd2PkAgY5heDQWnrOTxkD/pEIdvgTofpAJ2E/ltkkBmkN//qakFDAkEYRyB4GS6uq82DhjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,28 +101,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Feb 2026 14:43:05 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+On Wed, 25 Feb 2026 14:43:03 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> Compaction uses compact_lock_irqsave(), which currently operates
-> on a raw spinlock_t pointer so that it can be used for both
-> zone->lock and lru_lock. Since zone lock operations are now wrapped,
-> compact_lock_irqsave() can no longer operate directly on a spinlock_t
-> when the lock belongs to a zone.
+> Add thin wrappers around zone lock acquire/release operations. This
+> prepares the code for future tracepoint instrumentation without
+> modifying individual call sites.
 > 
-> Introduce struct compact_lock to abstract the underlying lock type. The
-> structure carries a lock type enum and a union holding either a zone
-> pointer or a raw spinlock_t pointer, and dispatches to the appropriate
-> lock/unlock helper.
+> Centralizing zone lock operations behind wrappers allows future
+> instrumentation or debugging hooks to be added without touching
+> all users.
+> 
+> No functional change intended. The wrappers are introduced in
+> preparation for subsequent patches and are not yet used.
+> 
+> ...
+>
+> +static inline void zone_lock_init(struct zone *zone)
+> +{
+> +	spin_lock_init(&zone->lock);
+> +}
 
-It's regrettable that adds overhead - increased .text, increased
-instructions.
-
-Thing is, compact_lock_irqsave() has only two callsites.  One knows
-that it's dealing with the zone lock, the other knows that it's dealing
-with the lruvec lock.
-
-Would it not be simpler and more efficient to copy/paste/edit two
-versions of compact_lock_irqsave()?  A compact_zone_lock_irqsave() and a
-compact_lruvec_lock_irqsave()?
+Please consider renaming zone.lock to something else (_lock would be
+conventional) so that any present and future and out-of-tree
+unconverted code won't compile.
 
 
