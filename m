@@ -4,92 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CE0CFD377B
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:12:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67336FD377E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:19:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4416B0088; Wed, 25 Feb 2026 13:12:33 -0500 (EST)
+	id 9ED7B6B0088; Wed, 25 Feb 2026 13:19:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7580A6B0089; Wed, 25 Feb 2026 13:12:33 -0500 (EST)
+	id 9C5776B0089; Wed, 25 Feb 2026 13:19:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664156B008A; Wed, 25 Feb 2026 13:12:33 -0500 (EST)
+	id 89A0D6B008A; Wed, 25 Feb 2026 13:19:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 549906B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:12:33 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 170E11C8ED
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:12:33 +0000 (UTC)
-X-FDA: 84483774186.12.CAB0D67
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5D54C180004
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:12:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mCVhFnWb;
-	spf=pass (imf24.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772043151;
+	by kanga.kvack.org (Postfix) with ESMTP id 77B856B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:19:28 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E651F13B88A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:19:27 +0000 (UTC)
+X-FDA: 84483791574.28.9B83341
+Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D364A140012
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:19:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S6o7JSFw;
+	spf=pass (imf23.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772043565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fhX+35GPIOeAxoKO62khBkWu+rr0L+P14BheYXFnUXc=;
-	b=1OFwdxMtCMLavkAQbfY+U50TcxJyKZSOcmqXnP8p5OINUJQSQgfj4iAZGaSdnN5NEXFesZ
-	DQnUMFvd7V7ZTLM5/n72YLAISGVNW6u6LiUU1ihVdvWwNSLxPG/w6C+h8CD4MFlejte5SQ
-	lxwV+jaOwZ11hXFMv/BkeuVf7SiIf0w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772043151; a=rsa-sha256;
-	cv=none;
-	b=CEhQH5fyBPJ2UDfCrUi+TIsaHeBO0/txD1O//C75/9McCWEiJPBjBgd0Ss3ocovbtOWFoG
-	jN0JwjVE+eAB7efGbDckuiWURgvs7OJ3ugmFhh9wTsIZ8JvTVFmPK+yWzcU6+TV7MRuSRV
-	ZdkRtTUKifXbLD4pp6SzIG0UzKkgmoI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mCVhFnWb;
-	spf=pass (imf24.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D357600AA;
-	Wed, 25 Feb 2026 18:12:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D280C116D0;
-	Wed, 25 Feb 2026 18:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772043150;
-	bh=49QvQ4TbddAGvgoT5UB+apP76VxdQZq65SDCKT6nENw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mCVhFnWbSg9j91soLEar5wX/m2n/Q1lo0wOe/qgSz5Z6WsDlWrXd1H2TZCly9lcGb
-	 vPxbpIgmTzaB/o624PMvf/J0g2b9KPHlMZIZTdXA4Oxzx2y6PYbbcdmYX7O7MPVR0t
-	 KwO9rNKtOCebHu0GpSa6U1Xs76eZjV9jerksdkrp5qm7niBX3tOWu2tym8T1diabDi
-	 IDSYjLlOpwfo5Hz4G5qlbgu+7VEMu57elKgfjLBkY1hN1nwmHrh7WizLG6hl5XnY/i
-	 kLk7mKPI/zozmsvb6c15wkWL9SOgYOYfhAblCZQGLNgiIfANEiQbzQQzBQOhbof/AJ
-	 glOGwReXiBKMg==
-Date: Wed, 25 Feb 2026 13:12:28 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hugh Dickins <hughd@google.com>, Zi Yan <ziy@nvidia.com>,
-	Gavin Guo <gavinguo@igalia.com>
-Subject: Re: VM_BUG_ON_VMA in split_huge_pmd_locked: huge PMD doesn't cover
- full VMA range
-Message-ID: <aZ87jIN0mWfBbcEv@laps>
-References: <aZ78kFBEA2SjgT93@laps>
- <24cbde8e-53b1-48bb-b44d-2b4bdc674d55@kernel.org>
+	bh=fpua/5AqL7IvJ5rCFhonR5njdxMsCjSPzuEjD4KqeMY=;
+	b=MhAy9/8bjslJHvE/R1d3LHwwpsZbMaOhVIfqKKAnzFWU5Dt653nFZmtGUZfSHLJKQcmZtB
+	o++wCP5RIcRfDzMq5Lx5cd+b+meA5HnzJwA2jKB3AUFOG4Ynm4MNO5vYN9HyUwgtwvOKYz
+	LYzA3khteDhyZypGjjU+thv8vG7Hppk=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S6o7JSFw;
+	spf=pass (imf23.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772043565; a=rsa-sha256;
+	cv=pass;
+	b=vMkUa+nzyNgtZQuctZI44SE42xixkd6to/tYuQYSgf9E0TZ/5ypuA/mUaiysJtXLej3xqW
+	vyzjT64RqojiQMkb3atqJiGs23rjLvNIyKClf/cre7zBCm/Tt83f2NFk6h5hmzmryMgcO1
+	WUjpfUzPUz7BPv0Bgx+ljIdqQcoV9Tc=
+Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-1270adc5121so8483845c88.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:19:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772043564; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IW2T4pGHZRxY3Y2CWVZR7sxyyZio5b6NpW0YvX8eO4ruPZuPBGvBtvGeI3i9CzEkBc
+         bvAdKRgnDe5cfBE+5zhO7+YkG9jrun3+4Qk5Ou3/OFm+PDhmQq8132SRUS63DmKfdTHt
+         dc6ExIkkgPCxzQwYefRCuy/swfkKw6nzrYUDwYmmJYheg07MT5hcHRjB/7fAAQTKqFpG
+         KwK4G8qlTJhPD+4FCo+uLAWf8fYieEM7FSMmGcPU2BOqExrhILbAwIyq3ZzllZdhM50Y
+         iO3J6YGD3qSQGmbJsyFwLWRM9+UW+EXV1wUcYvNciRR/t9lXxMtdxUDTZVhii/NHsyav
+         Ikjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fpua/5AqL7IvJ5rCFhonR5njdxMsCjSPzuEjD4KqeMY=;
+        fh=Q2LgqFw2k8Zk+q4vErnTFEGG1eYGvKfi8HPAN3+gU8k=;
+        b=hy8HYcLXaMWfg88YPwVlMdnR548EuVcrO78JYBBy9ZsZAC40+vFD9BjBme9myNGMfD
+         icQBDpQE3W2DrVL/0q3RaTL093ev+uXeLHKAPNybhDaE70tvIWspqAopQtT+0aDnv2Yl
+         5VAfkJ1hJ4NPVxFzo/4stUpTOSq2x39dE+g2wVhzliMfV0Y/5CwAkmoSMQHtEtehJUxb
+         Gy53y69uNCOk3kerVGqF7S4arsjLSyXfaz/TCjr6riFeCS7qnAZjhLVnJbrWnk53tfho
+         JIX0fdzDAW6UUx3hI8uxm5ESm9yWNzQiXONzDrWgLfA53DXueWxH5Jen+z2WoAMXoNuk
+         mqTg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772043564; x=1772648364; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fpua/5AqL7IvJ5rCFhonR5njdxMsCjSPzuEjD4KqeMY=;
+        b=S6o7JSFwZpLLL4mxCV3XqjWf80zNBET0PAmuFmBkDiz/AXeNtG3RUOY9jetArBHcok
+         t1BuQQHbvF/d5IGAbVJPhPZDCERdIclJzo6w+P9Y5B5yJigKSag3qssokk064XxTmJEX
+         BVknTfYR82jPMjJBo06zsC+FjbwZttTha5AUB6ykQJ84inxt39Pem4cfXXC1CK6HfEg7
+         tt5jfV1QN58GMiWkqgPB4/LKdjZF2fpbQ7qK3b3gJ0naiyD3K+Ci4Ezox3sSCfvR7+Xw
+         n6UUTEabuTyhtSVVbZZUIHqGoQzeeGiTSl3eTqAKa7xZ4/aSR8FPMkJt315Q4K9SiEd6
+         fygg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772043564; x=1772648364;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fpua/5AqL7IvJ5rCFhonR5njdxMsCjSPzuEjD4KqeMY=;
+        b=dXmgdaKvRvM8OxbDiBQAVjN8RzOpmw7WRfG3UmyBoSxdIGM/W9qQefe0Kz8hMgKp6A
+         yoqUe87bMF4AJPkkbRcn13g/JIE6JZtWIhdoZboTOq/czKrIiji6gOW/0oe3Zaohkkht
+         KA/ZBrhI5Br/AhLfOKdd+GP93iXH4H0caNEkookQMf9V9KYHWP5IhWVu9dGOolAzAiTZ
+         vIZPpG/3a40exQ7qJD9rKiPuCyI5wbe95fNymBGmI/D9BlWNUg3I4X0O4IqOsP9znuJM
+         V8VfUZM2wxtVwcfcYSznooDhwTCs62jmAlsMfQS7ovbvQDtyShtdWH/EmIgW+Nmqi5Df
+         g2qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhFNHWwQd+vyftuZTDF0eVMLpLJVeGA7Ey9FpRsPXdWvVC7IN2FZ92SFgpcsxL4eD9QOHaX7qJVg==@kvack.org
+X-Gm-Message-State: AOJu0Yx8W9Kwy0hsnqylyc5r1tFcl+1RAhy+FiYUo5lCCBUd7C+NSVTF
+	kaqQXeTHfoRgeaXArVKoMqL6kiUUzN2VWUX6dYIXJ8mp/IPu/gSHa63ITpxp0pfchirO7DJTDup
+	YMNpzmfpuL6TLPSKIbsolUSO4pD0DEw==
+X-Gm-Gg: ATEYQzwKC3Uv2sLX/Hcn+lAAAE+YMavxnLlzdnRxE8xC83qkxoZtu7+kl38zlhHZM4R
+	fK5e7pebWOvKgJbZLzA4WHb2xTPfgQQgxaIBIrdcM0+ss32jvkG1x7QInp0AEUc0fRVxQ09PEb2
+	3cuT7FyatzjJc/fdKGQV0PFr7NBeE7ulzg56gpXBhd1uGYv301XwzxdftoQifjDr6cq1HY/dCjO
+	ePdEHgixyXCCSKJ1dVr3SYF3Efc3n5fl4bRlumue+reFYpAzhsAsiK4d0fHnpKBTqSWy8N5Udms
+	VZ9lyyg=
+X-Received: by 2002:a05:7022:50c:b0:119:e56b:98a7 with SMTP id
+ a92af1059eb24-1276acfb898mr8110234c88.14.1772043564405; Wed, 25 Feb 2026
+ 10:19:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <24cbde8e-53b1-48bb-b44d-2b4bdc674d55@kernel.org>
-X-Rspamd-Queue-Id: 5D54C180004
-X-Stat-Signature: 37jg1msp1tp15rn7jiebhtkps8eif4ps
+References: <20260223123232.12851-1-ravis.opensrc@gmail.com> <20260224053633.58448-1-sj@kernel.org>
+In-Reply-To: <20260224053633.58448-1-sj@kernel.org>
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Date: Wed, 25 Feb 2026 10:19:11 -0800
+X-Gm-Features: AaiRm53hBf4jh574PmxytdQQ-YYkGigD5nOoFyBC9KFKd9UXuxLJxrvhLrRMxwQ
+Message-ID: <CALa+Y17HPOxpLF41+Jn-fHqu7s4YUzgsFKdhD9MsN=wCop_kRw@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 0/4] mm/damon: Introduce node_eligible_mem_bp and
+ node_ineligible_mem_bp Quota Goal Metrics
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
+	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
+	yunjeong.mun@sk.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772043151-536001
-X-HE-Meta: U2FsdGVkX19SvxkAlt53ilaEoXRzm7Iy47AvWhGXbNlG8xD9BrqKDlsOtwbYSR12hSpAghPNA/60UqDVbgb5YodDZFvAaCfx4qRz0yxKsD2qOvfSF/pHqyUWG2UJ6WO7myE8UjDh8KEU6ijhsk/4apZAGnnpZvfjvdLw40Ng6sQ+qkTjXLw4KaaZj+fWdRI+XF4cZmxPdi5QoK46TP0Qeq9o2YIBLXqP2lbWBt6ZsoU7u7KcoTfMi2zKUNdZSlIrLt0SxfiiGXvbM77U9E2wpiYkcMTmwSIT9qvXk4Q4lHFLXv6+vBQWEECnn1vdFl2uUbqMaMkADcOQp75vgl1k2XVxH395wI+rKe5Lv4R5eG56ikyKznXv9UAn4/h0cCMTh/eqhj1DbXBsGC2wAvYCwmfrKdkdPQXbFTUtWRW5Xk+j4L1WOexGCK5XQEiJJ1XQnnX56HC3OA66izVd7kbeyekha5JQxYvRhzZsq7b5bkhrKjdrIcXjabYIxu2es3HI7U1GEIimOGo8D/BZOKvvLYsX2ecgm9VCnecRKt0TBquNNFfSfss3LGS8z2kAuWQhYu5q5jNZ/VxlFfONSoDhtGxZ8+ADlidNTgNexumiT5F+kXhcp69MLhk8uWA+5AQHYcOiGFdYpjdbA4ryWa81IFTiMpQS3ajSz/h9RShxg/CG1Jr9ZU8lo4zIAo0zJ2WF2sXgvvWR8NX6u+8DWwwxu4KUcir0ntj3yLR9ykpkz8NSos0wMwojZFzIlBatzkQGW2i9o6RIdkmx6wwmr0PaEYT2Ozx9Ddfxgas+q5UW5eONkMZbYWLOQucQM1kqPyL4zljWparehDWcAcjy0ffhqldA2SBMSWmtKh0a+EMUJ+EBtGbi6Jp3VxTGsEJAIfcNSQfddFGItLdCLw6bng9nRM5q8zLDaOVjHkSl7WlBKQ7aofiJohaoXMijjkxJiw8qJso6mFAE5ChIOUTH4RK
- 7gm4W5Hr
- ODTeB4RhVrJ6xfQlAp9ttlEBDvDR7LpTs+5VYURQpbA+0GHczBhrYOhGN2CgpNNps1HSL4Nn4+Q5p3bmiruyJuXC4qtSYelRJRdMSPvlKAy1/mB18LRplABv+3sQvAatEXxs1DypSXjNR2P+DLw5kGEEQjN7RYUYrpWgPbBsj5kzkKRa03FgHFbLDh0YMoVc6rGWii66Rpa9FCwkKpjKVYCXwtAHIz4IjLH6Ch6aQvwQq1GUhfndMnQ4oTJ6JxLPjzVRWrUq2ni/a51wzB9vermSaRBCdWQrBSJG9dMaDS4jxa+yI6799EahUTV9pBIkyeF+6
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D364A140012
+X-Stat-Signature: wi758tft6ma4sb9nxqogxodwd7niduep
+X-HE-Tag: 1772043565-456761
+X-HE-Meta: U2FsdGVkX19K3lURgkgn/vDtvTpL13snicCvlYndWxGlMOXUjq3EH4V+Xyl6vST5kE7knwmMFSoS1GqklRV0kRITi3dUizH3lgtAfMyEqYtI0Cuqjz/c9nOrsOAVpCy1ma7RATQ5sYf30V68FILSNpkFYnTwaQ/bYXbEJ05z3HYQgW9M0z3nZWETPiDxKeaVAVob9NbOsN8IeKSIO4FzXy9uhaiCdmHj6cJ8jhK1U0SySVpPNAr6ss9u1fJknsRItjHR8UMurFtXzAuH39ADLevGrnsyLg/pULdndsrJzNA/+1uazKFM/7EiPK0HCY9K2riqLHqG0iy4DvAo35hM3bDPBXc102lN1+pWtIE/TY/XTy/4P8Ca1N11Q01lqWFVHHHiTPc2SqItzmvTW6WWnevoUG/cllruGBwJdceAa2URMIWlPO9o++N8MkFbHWFhOIiejLfMuiom6uWx6hwQhFNQC5WPi4e5Zu+FfiR8rAdADHrJCOQlgXGO94DkAZ3VI74nXNK2yrP0f79Yjor2sdZ5+jW7zkfQ2cNCwbTXtmbeRqms1PxoDOI02ly6kmQKs6rwVP/sjuT58CxFtq5FF2uPugQWmk8258mn/GrGLtyR3KXzJBOlDgwJ7Tu/7yrR1cBTWsZBRpvzY8dkTOI3ymIZu0myL8sNYh+no8FQlZAc2Ia9jkmNm5fraCC0IdD+By56fee2OOxnWxFKOTu951mB4N0zNYCsLTz6rmYz0ADgwe/bR9PTm+mowYCMoWqLZ68d+/QW3giJRnWemnMrsBSldJL+uNtdO+hVDATcnAQ+uVib3zsysPEGajrvm6uuYxipFocId/yrGevZp7vV/Z0p71RxhnQFqT4hBpNJLwb/PHlG5oTtgmiZrCK8t2d330mUPOFEvwYFwkJuOlRcyrtVC1pK+6dZDFtHEzT+Q/Hspdh1weBAjjF68GnQ5zUFQLiUYOdi+s8uQTQ+XCm
+ +TEAOl9v
+ GiLzO/0UtVwtjuP4KVPkaZyvX3UuRW7CmGrmYx+iuZ/1Wl/jNq+gcji3cQ8aXXJppBKvRtMvMO+vUJJ6/04FKSLbmIWSXJBkC4fPLf6NaXMei9k2I8S7xhO3fjpO/Chb0CFyu36x+/k9NAHQhT7rWlwYNtDV3NeAE/zP+HMxaLT8yWdd1rB241v5eDYFQ5SuK+dc39FSyWKl7ZlG55+G1Yep2xt0X84PtMm0JckfCRQlisA3FtAo8Ue54auSRXxV0VjViRfNhMccLXCpj2euttXKdb7YlIfgEgpvjOqCDdch3v+H5N8d8+M4YXeCuB+uZupOb0CFaKoMpwBZ6cnXyjOdQdhyR4gqnqkNS1fHbEjQEhFR0B0aVb1Ksk3rE7mzpAzMZPsl05Tm/J8dpcYwhYN1eWCeiEdbkbOH1TQa6b0jmG2r+fHzcGB5XuA2PJdK7Pja7Rx0UF3L3+seTaqZKsr1m48Lm4u5gJjIgjDZxn3pBnZZZrAN4zaaA4kDjOsfnOu1/sRfruzezZwz5JEzbxTpBahJH6hHvwpNIieSoqlfMLTx7N/olXaqZakJ6NZQdLGgp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,70 +141,293 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 02:50:16PM +0100, David Hildenbrand (Arm) wrote:
->On 2/25/26 14:43, Sasha Levin wrote:
->> Hi,
->>
->> I've been playing around with improvements to syzkaller locally, and hit
->> the
->> following crash on v7.0-rc1:
->>
->>   vma ffff888109f988c0 start 0000555580cc0000 end 0000555580ce2000 mm
->> ffff8881048e1780
->>   prot 8000000000000025 anon_vma ffff88810b20f100 vm_ops 0000000000000000
->>   pgoff 555580cc0 file 0000000000000000 private_data 0000000000000000
->>   refcnt 1
->>   flags: 0x100073(read|write|mayread|maywrite|mayexec|account)
->>   ------------[ cut here ]------------
->>   kernel BUG at mm/huge_memory.c:2999!
->>   Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
->>   CPU: 3 UID: 0 PID: 15162 Comm: syz.7.3120 Tainted: G                
->> N  7.0.0-rc1-00001-gc5447a46efed #51 PREEMPT(full)
->>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-
->> debian-1.17.0-1 04/01/2014
->>   RIP: 0010:split_huge_pmd_locked+0x11a0/0x2f80
->>   RSP: 0018:ffff888053cc7338 EFLAGS: 00010282
->>   RAX: 0000000000000126 RBX: ffff888109f988d0 RCX: 0000000000000000
->>   RDX: 0000000000000126 RSI: 0000000000000000 RDI: ffffed100a798e43
->>   RBP: 0000555580cc0000 R08: ffffffffa3e62775 R09: 0000000000000001
->>   R10: 0000000000000005 R11: 0000000000000000 R12: 0000000000000080
->>   R13: 0000000000000000 R14: 0000555580c00000 R15: ffff888109f988c0
->>   FS:  0000000000000000(0000) GS:ffff88816f701000(0000)
->> knlGS:0000000000000000
->>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->>   CR2: 00007fe2ac1907a0 CR3: 0000000021c91000 CR4: 0000000000750ef0
->>   PKRU: 80000000
->>   Call Trace:
->>    <TASK>
->>    __split_huge_pmd+0x201/0x350
->>    unmap_page_range+0xa6a/0x3db0
->>    unmap_single_vma+0x14b/0x230
->>    unmap_vmas+0x28f/0x580
->>    exit_mmap+0x203/0xa80
->>    __mmput+0x11b/0x540
->>    mmput+0x81/0xa0
->>    do_exit+0x7b9/0x2c60
->>    do_group_exit+0xd5/0x2a0
->>    get_signal+0x1fdc/0x2340
->>    arch_do_signal_or_restart+0x93/0x790
->>    exit_to_user_mode_loop+0x84/0x480
->>    do_syscall_64+0x4df/0x700
->>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->>    </TASK>
->>   Kernel panic - not syncing: Fatal exception
->>
->> The assertion VM_BUG_ON_VMA(vma->vm_start > haddr, vma) fires at
->> mm/huge_memory.c:2999 because a huge PMD exists at PMD-aligned address
->> 0x555580c00000 but the VMA only covers [0x555580cc0000, 0x555580ce2000):
->> a 136KB region starting 816KB past the PMD base.
+On Mon, Feb 23, 2026 at 9:36=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
+:
 >
->Do you have a reproducer and would this trigger before v7.0-rc1?
+> Hello Ravi,
+>
+> On Mon, 23 Feb 2026 12:32:28 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail=
+.com> wrote:
+>
+> > MIME-Version: 1.0
+> > Content-Type: text/plain; charset=3DUTF-8
+> > Content-Transfer-Encoding: 8bit
+> >
+> > This series introduces two new DAMON quota goal metrics for controlling
+> > memory migration in heterogeneous memory systems (e.g., DRAM and CXL
+> > memory tiering) using physical address (PA) mode monitoring.
+>
+> Thank you for keep working on and sharing this :)
 
-No reproducer. I saw it exactly once yesterday, syzkaller wasn't able to come
-up with a reproducer and pointing the LLM at that task hasn't produced anything
-useful either :(
+Thank you for the detailed review!
 
--- 
-Thanks,
-Sasha
+>
+> >
+> > v2: https://lore.kernel.org/linux-mm/20260129215814.1618-1-ravis.opensr=
+c@gmail.com/
+> >
+> > Changes since v2:
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > - Split single metric into two complementary metrics:
+> >   * node_eligible_mem_bp: hot memory present ON the specified node
+> >   * node_ineligible_mem_bp: hot memory NOT on the specified node.
+> >   This enables both PUSH and PULL schemes to work together.
+>
+> This perfectly aligns with the direction we agreed on the previous discus=
+sion.
+> Sounds good and reasonable to me.
+
+Great, glad the approach makes sense.
+
+>
+> >
+> > - Added PA-mode detection lag compensation cache (see dedicated section
+> >   below for design details).
+>
+> I'm not very sure if this is really needed, though.  I'll leave comment o=
+n the
+> dedicated section below.
+
+Understood. I consciously separated the cache implementation (patch 4)
+from the core metrics (patch 3) because the cache is ONE possible approach =
+to
+handle detection lag - not necessarily THE approach. My goal was to share
+what was needed to achieve equilibrium with my synthetic benchmark
+workload (multiload),
+while making it clear that the cache mechanism could be dropped or
+replaced with alternatives.
+
+>
+> >
+> > - Added fix for esz=3D0 quota bypass that allowed unlimited migration w=
+hen
+> >   goal was achieved.
+> >
+> > - Added fix for goal_tuner sysfs setting being ignored due to
+> >   damon_new_scheme() always defaulting to CONSIST.
+>
+> Thank you for finding and fixing these issues in my previously shared RFC=
+ patch
+> series!  I left a few comments to the patches.  In short, the second fix =
+looks
+> good and I will add that to the next revision of my RFC patch series, if =
+you
+> don't mind.  For the first fix, I'd like to take more time on thinking mo=
+re
+> cleaner solution.
+
+Sounds good. Please go ahead and incorporate the goal_tuner fix into
+your series.
+Happy to test whatever approach you come up with for the esz=3D0 issue.
+
+>
+> >
+> > - Rebased on SJ's damon/next branch which includes the TEMPORAL goal
+> >   tuner required for these metrics.
+>
+> Thank you for clarifying this!  This kind of context is very helpful at
+> revidewing patches.
+>
+> >
+> > Background and Motivation
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> >
+> > In heterogeneous memory systems, controlling hot memory distribution
+> > across NUMA nodes is essential for performance optimization. This serie=
+s
+> > enables system wide hot page distribution with target-state goals like
+> > "maintain 30% of hot memory on CXL" using PA-mode DAMON schemes.
+> >
+> > Two-Scheme Setup for Hot Page Distribution
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > For maintaining 30% of hot memory on CXL (node 1):
+> >
+> >     PUSH scheme (DRAM->CXL): migrate_hot from node 0 -> node 1
+> >       goal: node_eligible_mem_bp, nid=3D1, target=3D3000
+> >       Activates when node 1 has less than 30% hot memory
+> >
+> >     PULL scheme (CXL->DRAM): migrate_hot from node 1 -> node 0
+> >       goal: node_ineligible_mem_bp, nid=3D1, target=3D7000
+> >       Activates when node 1 has more than 30% hot memory
+> >
+> > Both schemes use the TEMPORAL goal tuner which sets esz to maximum when
+> > under goal and zero when achieved. Together they converge to equilibriu=
+m
+> > at the target distribution.
+>
+> When this kind of complementary setup is being used, in my opinion, CONSI=
+ST
+> tuner might be better, especially when the access pattern is dynamic.  Bu=
+t it
+> is up to user's choice.
+>
+
+That's a fair point. I chose TEMPORAL because I wanted to move the required
+amount of pages as quickly as possible to reach equilibrium.
+For my multiload benchmark with uniformly hot memory, this seemed like the
+most direct approach to test the metrics.
+
+> >
+> > What These Metrics Do
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > node_eligible_mem_bp measures:
+> >     effective_hot_bytes_on_node / total_hot_bytes * 10000
+> >
+> > node_ineligible_mem_bp measures:
+> >     (total_hot_bytes - effective_hot_bytes_on_node) / total_hot_bytes *=
+ 10000
+> >
+> > The metrics are complementary: eligible_bp + ineligible_bp =3D 10000 bp=
+.
+>
+> All make sense to me, so far.
+>
+> >
+> > PA-Mode Detection Lag and Cache Design
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > In PA-mode, when pages are migrated:
+> > 1. Source node detection drops immediately (pages are gone)
+> > 2. Target node detection increases slowly (new addresses need sampling)
+>
+> I agree.  And this is not what I clearly expected during the previous
+> discussion.  Thank you for sharing this issue.
+
+I'm glad this observation is useful. It was something I discovered during
+testing that wasn't obvious until I looked at the trace data closely.
+
+>
+> >
+> > This asymmetry causes temporary underestimation of hot memory on the
+> > target node. Without compensation, the system keeps migrating even afte=
+r
+> > reaching the goal.
+>
+> But, is this really significant?  I believe people may use complementary
+> auto-tune setup especially when they expect dynamic access pattern.  In t=
+he
+> case, even if we can perfectly compensate this kind of gap, some of oscil=
+lation
+> will happen.  You also mentioned "eventual convergence" could be acceptab=
+le.
+>
+
+This is a valid point. Real-world workloads with mixed hot/cold memory and
+dynamic access patterns might behave differently from my synthetic benchmar=
+k
+where all memory is uniformly hot. The uniform-hot case is essentially a
+worst-case scenario that forces continuous oscillation regardless of
+detection lag compensation.
+
+For my multiload workload without patch 4, there was significant unnecessar=
+y
+page movement due to the detection lag. However, as you note, that may be a=
+n
+artifact of the synthetic benchmark + TEMPORAL tuner combination rather tha=
+n
+a fundamental problem that affects all use cases.
+
+> >
+> > The cache addresses this by remembering how much was recently migrated.
+> > When calculating effective hot memory:
+> > - Source node: reduce detected amount by recent migrations out
+> > - Target node: boost detected amount by recent migrations in
+> >
+> > The cache uses a rolling window to track migrations over time, and
+> > expires after a configurable timeout (default 10s) when no migration
+> > activity occurs. It also detects when its baseline becomes stale due
+> > to new hot memory appearing in the workload.
+>
+> I will leave more comments to the patch implementing this.  But this seem=
+s too
+> much at the current stage, unless there are clear test results showing it=
+s
+> needs.  I'd recommend proceeding without this, and later revisit if the p=
+roblem
+> becomes clearly significant.
+
+I agree. Let's drop patch 4 for now and focus on getting the core
+metrics merged.
+The cache mechanism can be revisited later if real-world usage shows
+it's needed.
+
+>
+> >
+> > Dependencies
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > This series is based on SJ's damon/next branch which includes:
+> >
+> > - mm/damon/core: introduce damos_quota_goal_tuner [1]
+> > - mm/damon/core: set quota-score histogram with core filters [2]
+> > - mm/damon: always respect min_nr_regions from the beginning [3]
+> > - mm/damon/core: disallow non-power of two min_region_sz [4]
+> >
+> > [1] https://lore.kernel.org/linux-mm/20260212062314.69961-1-sj@kernel.o=
+rg/
+> > [2] https://lore.kernel.org/linux-mm/20260131194145.66286-1-sj@kernel.o=
+rg/
+> > [3] https://lore.kernel.org/linux-mm/20260217000400.69056-1-sj@kernel.o=
+rg/
+> > [4] https://lore.kernel.org/linux-mm/20260214214124.87689-1-sj@kernel.o=
+rg/
+> >
+> > Patch Organization
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > 1. mm/damon/sysfs: set goal_tuner after scheme creation
+> >     - Fixes goal_tuner initialization order in sysfs scheme creation
+> >
+> > 2. mm/damon: fix esz=3D0 quota bypass allowing unlimited migration
+> >     - Ensures esz=3D0 stops migration rather than bypassing quota entir=
+ely
+> >
+> > 3. mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal m=
+etrics
+> >     - Adds the two complementary metrics for hot memory distribution co=
+ntrol
+> >
+> > 4. mm/damon: add PA-mode cache for eligible memory detection lag
+> >     - Implements rolling window cache to compensate for PA-mode detecti=
+on lag
+> >     - Adds configurable cache timeout via sysfs
+> >
+> > Testing Status
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > Functionally tested on a two-node heterogeneous memory system (DRAM + C=
+XL)
+> > with PUSH+PULL scheme configuration.
+>
+> Glad to hear the functionality is tested.  Looking forward to the next re=
+sults!
+>
+> >
+> > This is an RFC and feedback on the design is appreciated.
+>
+> I'm yet to further reply to the fourth patch, but I hope my comments be w=
+orthy
+> :)
+>
+
+Very much so! Your feedback has been invaluable in shaping this work. :-)
+
+I'm currently on a break and will be back after March 10th. Once I return,
+I'll send the updated patch 3 and share test results with CONSIST
+tuner.
+
+Thanks again for the thorough review!
+
+Ravi
+>
+> Thanks,
+> SJ
+>
+> [...]
 
