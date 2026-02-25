@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954F3F357D5
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 06:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C4E9F357D5
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:07:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 001B26B0005; Wed, 25 Feb 2026 01:56:06 -0500 (EST)
+	id 45CB96B0005; Wed, 25 Feb 2026 02:07:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F04216B0088; Wed, 25 Feb 2026 01:56:05 -0500 (EST)
+	id 40A516B0088; Wed, 25 Feb 2026 02:07:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3AC86B008A; Wed, 25 Feb 2026 01:56:05 -0500 (EST)
+	id 2EBC56B008A; Wed, 25 Feb 2026 02:07:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D232D6B0005
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 01:56:05 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 675DA140340
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:56:05 +0000 (UTC)
-X-FDA: 84482069490.03.7A8ED0D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E7FE41C000F
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:56:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SkEd7g1M;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 197ED6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:07:04 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90EFF16029C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:07:03 +0000 (UTC)
+X-FDA: 84482097126.10.6BA3BA0
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 90557100003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:07:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dzQKIHxm;
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772003222; a=rsa-sha256;
+	cv=none;
+	b=tpvLQxtbQWh2N7FZ++DQupypg0lscccTVas+NlAuk2ksVkgCLi7ssvs9uif8tqkvstTeiE
+	A9Fb6cI3A2fO5+2Cfwc26/f0t7vrNUrVmu62lVX6xkE3tEraS4SpxaL1Hl7G/F9QFDifO2
+	Wu/IajGAFoHqGOCImEQSpZULdvarenk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dzQKIHxm;
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772002563;
+	s=arc-20220608; t=1772003222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SMvqq1I9w5yHuM4iSRyIHCqh3C+S+Q6QAzoTW18r9U0=;
-	b=H7T8GJ30U+BL+97BGtPW8/Okl0B4V2LWI1LmJSebUHnB8FX/2salSxP56HhNjwpEuymsj9
-	lUeAy48yLe1Nu2CtukociAB4D1ckYAe45xe9GDxSXrhx3TZVlEks7Wv8ry08ay7WMZ8k+j
-	GpXGqwPfNEzEF6R7mg+emrg8b0zsqFI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SkEd7g1M;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772002563; a=rsa-sha256;
-	cv=none;
-	b=IngEbBc+Vxl1ej5uJTA42uAU/d9hhh7YLI9nW6E5EaUApWYl1r6c33TIOzgaJNMunEP1Za
-	UiLF5aSYGGwvHWOOefzliPkdanX+Lzaixj7s4ElM/SQ/wnwmQQBPA7IkuIVbJb2YNmZmeE
-	/aX21Qi8+CX99JFZv5ZeTutLNTzV1eI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 294DB600AA;
-	Wed, 25 Feb 2026 06:56:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFC9C19425;
-	Wed, 25 Feb 2026 06:55:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772002562;
-	bh=c8mFbnM9U8FHHhGL8ssz28X5TtDgBLCNoO42oAAqqbQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SkEd7g1Mj5AaEydDMbFzILf8tBoIZJKGMp96yd43Y0MJCHTwM82ONmBCoNFtVZzHi
-	 D3P290d01ENWEEEIIG6mu7AwkXcz2oytKekOZWQu+dD0ft0PXI3sQeWyIrx5I3NJwI
-	 +ya5o+VP/DOq4cKJXsWxRf8sLm0ErJfFl0OB0gJ9TG3gfDFJy/QCpT2vHH6v4p+5tk
-	 EjT2EPxH2vgE83Fk9bQ9nw6rQIXSrKgBhSSX4KXH+t6VOlPKfKQwLimrlDwFH6ZDSZ
-	 bvZ/+w8VMNsmA9i9k2V2OryXWT4BtuDHTkp5B/HzSOdkm1DTUNIjY8tpr+kn7v9XrR
-	 Ik6t3ZZdPL5fw==
-From: Mike Rapoport <rppt@kernel.org>
-To: x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-efi@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] x86/efi: defer freeing of boot services memory
-Date: Wed, 25 Feb 2026 08:55:55 +0200
-Message-ID: <20260225065555.2471844-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2XCqGwE2JITi+kn+HyNQ55mzrR4dNxt4VlIjP1tP+zg=;
+	b=buLVnZCE6GpxPlFUUJNlAiZUBsmwRZ+K5eMigxKeF+1Te4U8XDqFYtKSMULUQRCy2ypK70
+	XCJxKgLneNtxxumYxzSR0plBJIdE/NBMrnzWd/UBFwe7l4Tsj9BJqHzQXeDkJinwcImfWr
+	mxM7Kb9nRoPQ85QgVkywayGnFJ8ZMaQ=
+Date: Wed, 25 Feb 2026 15:06:46 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772003219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2XCqGwE2JITi+kn+HyNQ55mzrR4dNxt4VlIjP1tP+zg=;
+	b=dzQKIHxm7dbe1pGFIYt7fFjcQk5E1h3vzOTZygUNDAm35NZPiwaM89uQx9OF+X3qbsJx90
+	v5Nq9bqlyB7pQfueQt0u+7ki47sla6afPhY4Dbq5gK0yZn8vw34aZHVQlZM1BltVofHY0W
+	/35Vct7R9sC8s7Gvtf1LSukzKw5M8zg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, surenb@google.com
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <zn7q75k7u2mspvmspwiao6245kmaahti3kwagablp3advcx5ga@5d36ctyi2a35>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <aZ0wX_QuxNTxXHMj@hyeyoo>
+ <aZ1qRhIGDAR7d56r@fedora>
+ <qiqptuqsiaufeasf2xukfzoumiyoau3zfpokosn2amgc6zskc6@vl6ie2h2zj4m>
+ <aZ6cjpU36_EmXslf@hyeyoo>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cx18ex3mrftodb8ezk73nzedxmcd46nf
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ6cjpU36_EmXslf@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 90557100003
+X-Stat-Signature: 5k1he56r37pyjmef6dqoxq1mhz947zu5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E7FE41C000F
-X-HE-Tag: 1772002563-689081
-X-HE-Meta: U2FsdGVkX1+Rm77LhQ6nh0szjd5OpbNiZhCyNRsq34JuJ0oGUlTQjlG2X0s2ABWa3ip/U8GdivbkgGqorVNf8uYgCm3A8JZ3z+btDPXSHIfpidH9oKZvowVh9/ihviC4AfzVqsGqUeKQtAaawNm69Q4WJ/4csR58pOf79D0/Ty1B20SAVdVg7JE9uJgg5g/hE7aAi6obXqEbAc1AHteP9kFRWitfBfsJ0OMmjNrRe2ZUEiGWn0F8ucBIssETR2/mv3NS2ldZAeOWSJZrJG8zVbM6tQ+J9F4l9Dp41fPCk/rUkyABj8GRpoURMUU2eEeJgJKv48+YFSnd3zfb8xwqZORc3/cR3lGFVNGy4IZC+YpgeWqMMzCYu/ItMUmnL24BY/48Glo0eDu+rToEJDvniEbNdwMSvYRckiD0GdRXqkj2IvIE36GKLd1fZXhG82Sa080NbVG9D73Lwv2hEGhv7ENNgisLDyiaeB8pTbHFhSrGwMyuLj9bq3XYk3LE3vHU1sYNhgUymCW7MOHt3UXwLTfMKQ3qw6kN/U5uOH4qjhlNgMzr25LjLU3EldASU2D7AO0WjWLfciZjBz0ip++ILPSVrQciCvbIC47JnvAi0fjHhsVtiFL2galpW/WVrBLTeeAMwr2EZwinbN/3WFmAfFLAlZSclnbKauLzt3vB40jIf7gybHfIau4+XxgxP2v9Pm5zShGsz12GWg8SFe+BRKbWrraaelkoN0x3+vtXMiepdPXgCgZ6AaavDDLXCRNfV4oSrDqPUKh5Fs9l4U5CtlHKHqjfcade8ZbH/7fIvik0QQDRFdzyIkkA60iX3IzOIn5L5GbfrP/wua/4D5k1NDV//49Bzs19sv5Ys2MxPq7JOZSeju1XMNcTk46sBn15DxRJn3qMhD2/u60g/qBTcVi5pqz2v9D1Ux1Osft5A5ln82zysLqe+Hvhg2ifAdCVXBHhbJlLLH/ST73vEp9
- JtztjmGv
- 0akg+xcy2T2/0CU6qVWyGAr1BRqamEbwZgs24QqrmvwV1M/WLnkCCHFKRQw51KFg+PxTBaxVXHrMm6H2yTeptoaeYvJDZLOQyrkXWIejdDuNsaS4Ssm7Uuzslt+jnrPRcsQ/pWd67Mcl0f2ZizHSttU9LRglKf6ySf4oq3vK/6VgWp2ZAxUfPwtFRW93Mrj0FwHZzS4dwBgPZyP6UMxRmtJodiIOnJr9YM7sh3LmDL7walEGT1xHAMpF9T/qZWit0TghzoAobbZJcKej+59ehTQxtXGm9pE1+rlxZ
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772003221-839061
+X-HE-Meta: U2FsdGVkX1+03XTwNnZUFwzw4sTD6lc8GsHMoycxqMib4Rdd4QG2RWFg0VHPhx5tvR2uJ/attv6/aeTndqBtQcbwWO8+pZq+Y+pusp49lRam2w5xwFFQxsnWwBn62l2+tVcNM9UngM41bqjm2DwWN3rduUH3Yn4YmroXa2F8+NfZBhazDYT/jPVyu9BcqkbXFPBO9ZwdM9IWZgV2f/VeE3I1gBxQ05g6uOMEFIe/olIjBir0woR0+G9yRByq9qj/auM9mIEa8NxGaGlPFYKKVgw3H4bR6DZNm9fDg7tioQ3AQe6Ny/n5qo5nFUASe/RmYM9YdEibo5+zja1TAP+K300+p1nyBEqnAqj+Kyj8ESrQvwr9PnVsaXe10UooYECpSbgij8t/PbJkulYOs8iGSovuNLfSwhotTP/EgkdADX31/H3ukqvp1bKhheZqczOIp2m3F2Vg0w6rJXdemmpJ1W0Nbwbhtpsw9qICI70n/ui3voy8sAs1/wG+eQnEtEjdhoTeSDQNhFQb1wOqXJAljh7foiKoXFz9cQ7Lj667PZl9pNqJougARjw/0jb6QBnEWbtwhFO/XRemoGTCP9vatWSpbv4x5L6SvA0Pf67csyfBKawFuCoQuNdq+N2vXIUGpboJPTVehlExZ+oHLxKKm2pPErK/M6qHrKgi/b5HUOMyrmOmLEUWTZ18Wq/8dAdKGTAXeVGwcVGPiCZb8ui8sXAkOCohjuVoafYMBJWGp6/OD5x4Lco4lKusJxkUmCdaxiSKB1YGR7nUETPuKRXzcLa7UGv6iy8JZhvO2+L5tEX+EQ6rYwb3Q5cXzYTDKNtQ2SDSIFTvhsNo6qocreJlcsPCSBz8ngCIRU0+L1GZWQvSJ6xxzKNHSv2dWJULTBu/flxIlayADHeqUKyACx/OKgFyCU+vt9yhFmjBVoQ8VVZdxIr0q/Chved1172CVoouWDkkl+j7/2Jq9ky8YtA
+ rQ2MN8pt
+ TZHYc3lzRLIPf7WUGEMG6OyJi03Kn94j/ZM7u37w6MonHMa62H4Z4aeL4cvSUSN9OEKGzCP9fjA0HzGTddZGjXCwzo0pYy3xY0Q6dX89/HwDis6CgGy9mtuWj7gYQfIivZQrvBCjnUeYUmoi377IDVSaeJjxiun1RWzD4JKqlqrDLnW4r55/usEfPSY3u0UIXwYhzwowjPRnv5TA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,198 +92,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Wed, Feb 25, 2026 at 03:54:06PM +0900, Harry Yoo wrote:
+> On Wed, Feb 25, 2026 at 01:32:36PM +0800, Hao Li wrote:
+> > On Tue, Feb 24, 2026 at 05:07:18PM +0800, Ming Lei wrote:
+> > > Hi Harry,
+> > > 
+> > > On Tue, Feb 24, 2026 at 02:00:15PM +0900, Harry Yoo wrote:
+> > > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
+> > > > > Hello Vlastimil and MM guys,
+> > > > 
+> > > > Hi Ming, thanks for the report!
+> > > > 
+> > > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
+> > > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
+> > > > > performance regression for workloads with persistent cross-CPU
+> > > > > alloc/free patterns. ublk null target benchmark IOPS drops
+> > > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
+> > > > > drop).
+> > > > > 
+> > > > > Bisecting within the sheaves series is blocked by a kernel panic at
+> > > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
+> > > > > paths"), so the exact first bad commit could not be identified.
+> > > > 
+> > > > Ouch. Why did it crash?
+> > > 
+> > > [   16.162422] Oops: general protection fault, probably for non-canonical address 0xdead000000000110: 0000 [#1] SMP NOPTI
+> > > [   16.162426] CPU: 44 UID: 0 PID: 908 Comm: (udev-worker) Not tainted 6.19.0-rc5_master+ #116 PREEMPT(lazy) 
+> > > [   16.162429] Hardware name: Giga Computing MZ73-LM2-000/MZ73-LM2-000, BIOS R19_F40 05/12/2025
+> > > [   16.162430] RIP: 0010:__put_partials+0x2f/0x140
+> > > [   16.162437] Code: 41 57 41 56 49 89 f6 41 55 49 89 fd 31 ff 41 54 45 31 e4 55 53 48 83 ec 18 48 c7 44 24 10 00 00 00 00 eb 03 48 89 df 4c9
+> > > [   16.162438] RSP: 0018:ff5117c0ca2dfa60 EFLAGS: 00010086
+> > > [   16.162441] RAX: 0000000000000001 RBX: ff1b266981200d80 RCX: 0000000000000246
+> > > [   16.162442] RDX: ff1b266981200d90 RSI: ff1b266981200d90 RDI: ff1b266981200d80
+> > > [   16.162442] RBP: dead000000000100 R08: 0000000000000000 R09: ffffffffa761bf5e
+> > > [   16.162443] R10: ffb6d4b7841d5400 R11: ff1b2669800575c0 R12: 0000000000000000
+> > > [   16.162444] R13: ff1b2669800575c0 R14: dead000000000100 R15: ffb6d4b7846be410
+> > > [   16.162445] FS:  00007f5fdccc23c0(0000) GS:ff1b267902427000(0000) knlGS:0000000000000000
+> > > [   16.162446] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > [   16.162446] CR2: 0000559824c6c058 CR3: 000000011fb49001 CR4: 0000000000f71ef0
+> > > [   16.162447] PKRU: 55555554
+> > > [   16.162448] Call Trace:
+> > > [   16.162450]  <TASK>
+> > > [   16.162452]  kmem_cache_free+0x410/0x490
+> > > [   16.162454]  do_readlinkat+0x14e/0x180
+> > > [   16.162459]  __x64_sys_readlinkat+0x1c/0x30
+> > > [   16.162461]  do_syscall_64+0x7e/0x6b0
+> > > [   16.162465]  ? post_alloc_hook+0xb9/0x140
+> > > [   16.162468]  ? get_page_from_freelist+0x478/0x720
+> > > [   16.162470]  ? path_openat+0xb3/0x2a0
+> > > [   16.162472]  ? __alloc_frozen_pages_noprof+0x192/0x350
+> > > [   16.162474]  ? count_memcg_events+0xd6/0x210
+> > > [   16.162476]  ? memcg1_commit_charge+0x7a/0xa0
+> > > [   16.162479]  ? mod_memcg_lruvec_state+0xe7/0x2d0
+> > > [   16.162481]  ? charge_memcg+0x48/0x80
+> > > [   16.162482]  ? lruvec_stat_mod_folio+0x85/0xd0
+> > > [   16.162484]  ? __folio_mod_stat+0x2d/0x90
+> > > [   16.162487]  ? set_ptes.isra.0+0x36/0x80
+> > > [   16.162490]  ? do_anonymous_page+0x100/0x4a0
+> > > [   16.162492]  ? __handle_mm_fault+0x45d/0x6f0
+> > > [   16.162493]  ? count_memcg_events+0xd6/0x210
+> > > [   16.162494]  ? handle_mm_fault+0x212/0x340
+> > > [   16.162495]  ? do_user_addr_fault+0x2b4/0x7b0
+> > > [   16.162500]  ? irqentry_exit+0x6d/0x540
+> > > [   16.162502]  ? exc_page_fault+0x7e/0x1a0
+> > > [   16.162503]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > 
+> > For this problem, I have a hypothesis which is inspired by a comment in the
+> > patch "slab: remove cpu (partial) slabs usage from allocation paths":
+> > 
+> > /*
+> >  * get a single object from the slab. This might race against __slab_free(),
+> >  * which however has to take the list_lock if it's about to make the slab fully
+> >  * free.
+> >  */
+> > 
+> > My understanding is that this comment is pointing out a possible race between
+> > __slab_free() and get_from_partial_node(). Since __slab_free() takes
+> > n->list_lock when it is about to make the slab fully free, and
+> > get_from_partial_node() also takes the same lock, the two paths should be
+> > mutually excluded by the lock and thus safe.
+> > 
+> > However, I'm wondering if there could be another race window. Suppose CPU0's
+> > get_from_partial_node() has already finished __slab_update_freelist(), but has
+> > not yet reached remove_partial(). In that gap, another CPU1 could free an object
+> > to the same slab via __slab_free(). CPU1 would observe was_full == 1 (due to the
+> > previous get_from_partial_node()->__slab_update_freelist() on CPU0), and then
+> >
+> > __slab_free() will call put_cpu_partial(s, slab, 1) without holding
+> > n->list_lock, trying to add this slab to the CPU partial list.
+> 
+> If CPU1 observes was_full == 1, it should spin on n->list_lock and wait
+> for CPU0 to release the lock. And CPU0 will remove the slab from the
+> partial list before releasing the lock. Or am I missing something?
+> 
+> > In that case,
+> > both paths would operate on the same union field in struct slab, which might
+> > lead to list corruption.
+> 
+> Not sure how the scenario you describe could happen:
+> 
+> CPU 0					CPU1
+> - get_from_partial_node()		
+>   -> spin_lock(&n->list_lock)		
+> 					- __slab_free()
+>   -> __slab_update_freelist(),
+>      slab becomes full
+> 					-> was_full == 1
+> 					-> spin_lock(&n->list_lock)
 
-efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+In __slab_free, if was_full == 1, then the condition
+!(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) becomes false, so it won't
+enter the "if" block and therefore n->list_lock is not acquired.
+Does that sound right.
 
-There are two issue with that: memblock_free_late() should be used for
-memory allocated with memblock_alloc() while the memory reserved with
-memblock_reserve() should be freed with free_reserved_area().
-
-More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-efi_free_boot_services() is called before deferred initialization of the
-memory map is complete.
-
-Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-RAM on EC2 t3a.nano instances which only have 512MB or RAM.
-
-If the freed memory resides in the areas that memory map for them is
-still uninitialized, they won't be actually freed because
-memblock_free_late() calls memblock_free_pages() and the latter skips
-uninitialized pages.
-
-Using free_reserved_area() at this point is also problematic because
-__free_page() accesses the buddy of the freed page and that again might
-end up in uninitialized part of the memory map.
-
-Delaying the entire efi_free_boot_services() could be problematic
-because in addition to freeing boot services memory it updates
-efi.memmap without any synchronization and that's undesirable late in
-boot when there is concurrency.
-
-More robust approach is to only defer freeing of the EFI boot services
-memory.
-
-Split efi_free_boot_services() in two. First efi_unmap_boot_services()
-collects ranges that should be freed into an array then
-efi_free_boot_services() later frees them after deferred init is complete.
-
-Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
----
-
-v1: https://lore.kernel.org/all/20260223075219.2348035-1-rppt@kernel.org
-* update the commit message with correct function names (Ben)
-
- arch/x86/include/asm/efi.h          |  2 +-
- arch/x86/platform/efi/efi.c         |  2 +-
- arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
- drivers/firmware/efi/mokvar-table.c |  2 +-
- 4 files changed, 55 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index f227a70ac91f..51b4cdbea061 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
- extern int __init efi_reuse_config(u64 tables, int nr_tables);
- extern void efi_delete_dummy_variable(void);
- extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
--extern void efi_free_boot_services(void);
-+extern void efi_unmap_boot_services(void);
- 
- void arch_efi_call_virt_setup(void);
- void arch_efi_call_virt_teardown(void);
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index d00c6de7f3b7..d84c6020dda1 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
- 	}
- 
- 	efi_check_for_embedded_firmwares();
--	efi_free_boot_services();
-+	efi_unmap_boot_services();
- 
- 	if (!efi_is_mixed())
- 		efi_native_runtime_setup();
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 553f330198f2..35caa5746115 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
- 
- 		/*
- 		 * Because the following memblock_reserve() is paired
--		 * with memblock_free_late() for this region in
-+		 * with free_reserved_area() for this region in
- 		 * efi_free_boot_services(), we must be extremely
- 		 * careful not to reserve, and subsequently free,
- 		 * critical regions of memory (like the kernel image) or
-@@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
- 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
- }
- 
--void __init efi_free_boot_services(void)
-+struct efi_freeable_range {
-+	u64 start;
-+	u64 end;
-+};
-+
-+static struct efi_freeable_range *ranges_to_free;
-+
-+void __init efi_unmap_boot_services(void)
- {
- 	struct efi_memory_map_data data = { 0 };
- 	efi_memory_desc_t *md;
- 	int num_entries = 0;
-+	int idx = 0;
-+	size_t sz;
- 	void *new, *new_md;
- 
- 	/* Keep all regions for /sys/kernel/debug/efi */
- 	if (efi_enabled(EFI_DBG))
- 		return;
- 
-+	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-+	if (!ranges_to_free) {
-+		pr_err("Failed to allocate storage for freeable EFI regions\n");
-+		return;
-+	}
-+
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-@@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
- 			start = SZ_1M;
- 		}
- 
--		memblock_free_late(start, size);
-+		/*
-+		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-+		 * map are still not initialized and we can't reliably free
-+		 * memory here.
-+		 * Queue the ranges to free at a later point.
-+		 */
-+		ranges_to_free[idx].start = start;
-+		ranges_to_free[idx].end = start + size;
-+		idx++;
- 	}
- 
- 	if (!num_entries)
-@@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
- 	}
- }
- 
-+static int __init efi_free_boot_services(void)
-+{
-+	struct efi_freeable_range *range = ranges_to_free;
-+	unsigned long freed = 0;
-+
-+	if (!ranges_to_free)
-+		return 0;
-+
-+	while (range->start) {
-+		void *start = phys_to_virt(range->start);
-+		void *end = phys_to_virt(range->end);
-+
-+		free_reserved_area(start, end, -1, NULL);
-+		freed += (end - start);
-+		range++;
-+	}
-+	kfree(ranges_to_free);
-+
-+	if (freed)
-+		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-+
-+	return 0;
-+}
-+arch_initcall(efi_free_boot_services);
-+
- /*
-  * A number of config table entries get remapped to virtual addresses
-  * after entering EFI virtual mode. However, the kexec kernel requires
-diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
-index 4ff0c2926097..6842aa96d704 100644
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
-  * as an alternative to ordinary EFI variables, due to platform-dependent
-  * limitations. The memory occupied by this table is marked as reserved.
-  *
-- * This routine must be called before efi_free_boot_services() in order
-+ * This routine must be called before efi_unmap_boot_services() in order
-  * to guarantee that it can mark the table as reserved.
-  *
-  * Implicit inputs:
-
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 -- 
-2.51.0
+Thanks,
+Hao
 
+> 					// starts spining
+>   -> if (!new.freelist)
+>   ->   remove_partial()
+>   -> spin_unlock()
+> 					-> spin_lock(&n->list_lock)
+> 					   // acquired!
+> 					-> slab_update_freelist()
+> 					-> spin_unlock(&n->list_lock)
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
