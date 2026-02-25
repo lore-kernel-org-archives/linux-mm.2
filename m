@@ -4,78 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 839BAFD3760
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95723FD374E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A73186B0088; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
+	id E75C26B0095; Wed, 25 Feb 2026 08:56:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A20D76B0095; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
+	id E23596B0096; Wed, 25 Feb 2026 08:56:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92D076B0099; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
+	id CFC866B0098; Wed, 25 Feb 2026 08:56:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CF4E6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:50:23 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A65F1A05FC
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:50:23 +0000 (UTC)
-X-FDA: 84483113526.30.9C83C4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7573B80011
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:50:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oWYj+DK9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772027421; a=rsa-sha256;
-	cv=none;
-	b=nsjygEs7ETQL49RTgqLMi3Kba/bZzfzIhpewW7zSp7NzBGKuf7K7R5V3H+39duPljoUCuR
-	tUugjT60WJaxXDuwcg3lPd4/0u4ePJMl8Gn151ohOXwpguB1q79M0GNnFQejzAkd62hPlJ
-	nc7otqpPy9U58GHaJ8GB7I/CzREjNJQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oWYj+DK9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B973C6B0095
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:56:37 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6402013B2FC
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:56:37 +0000 (UTC)
+X-FDA: 84483129234.16.2C09760
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 82547C0007
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:56:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrrhvcB6;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772027421;
+	s=arc-20220608; t=1772027795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lq5ecgA+9mTidS5h/GOx3OFkzcnwMmoNARsZjt0qEkU=;
-	b=HET30nNkIB45ADny3N4EmYk3SAxj16m8AOMYf9tkUCBCqAor8Qeu+NtV+QbnBXMJN4uuZI
-	oyWBZeEwScXytWKvXwrL5BEdfcAPrQaBsORfzCEV6Kpgk52ZIpeod6r/SjmcyN0O3OiNxj
-	eCuJ8q1gJmeX4M4/GGMw0vCSlIEPAdQ=
+	bh=ic0tJ9oGrpcJbx0Ys3nLG4VmEW5f6HgZdRcOvHuGYr4=;
+	b=fjwUFb9aW1B4+yDoqXz4DHprl5oTUWs1ptQPV3dHClUSckXyg7oIlRf67uuriEjs8eYbH0
+	+VpCz3dJtm1R8bIXRnTvPe69jjqR5kVHcGc3fKw7V0pwMPgaDoC1QtS+BzStgr5uKQr7YC
+	vuTI0eBvHQ/Tx+Qz5yosrm2RfBrNsh8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrrhvcB6;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772027795; a=rsa-sha256;
+	cv=none;
+	b=eaU9IlZBNxv9Fow1shtyWVQrVN3vvObGXSRsZxxYNPU7XYGHx/53DJnZ08lHSAM3OpH04M
+	9EwGJKJtwidYnIymHP9dy+Pi9AdiOxVcRSMhsZRCBq1+Rz6sJpUoHF4xt7aGdxv5zr6BU5
+	L0i+4/B+orpZpdbL/bqdxxKfuIo4C1w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D905B60126;
-	Wed, 25 Feb 2026 13:50:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B59C116D0;
-	Wed, 25 Feb 2026 13:50:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7706F40774;
+	Wed, 25 Feb 2026 13:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69545C19421;
+	Wed, 25 Feb 2026 13:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772027420;
-	bh=mevslpoK0ZYqJd8J/tRXskOYzzQGZU6+tC6Xef3xsDo=;
+	s=k20201202; t=1772027794;
+	bh=adewTxheBJ0exE2Odd3Bcl/XDcxF8jBrDVD2w5lYLiM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oWYj+DK9G7R7SbizbH3STLSaU8Lo6I4REPxazn98tRvg8owFxze7IZD0Fgc8ONMao
-	 3iQ/lzXs009ZGq92BwM6afz6LtquWd5BXicLzg6k0Cp0qr1bkgsBG1odk/EyExAqqo
-	 ArRnWP7cDxcy0erdcHEX2ZEn+RPjVxLKpxAxGXukSTuMGIzMjCGUwJNDC6Ip8SH50/
-	 MYBGLV+9X+w0/g5AMlJDGCSqYKCNzpGzR52mzkVZOCM6k8F+k+DRf/CjRLGDowEsrp
-	 q+RNgtkqGfvwwEdSPAwgfjoNhm3LSQraEc/DG8VFjUrBXGE/rAUY3/3SlVOYdwqCaN
-	 Y8Hq6uOXTl3dg==
-Message-ID: <24cbde8e-53b1-48bb-b44d-2b4bdc674d55@kernel.org>
-Date: Wed, 25 Feb 2026 14:50:16 +0100
+	b=BrrhvcB6m+QHlz7bEjPpcTkhpxbZOBs5XQrkDdBe/HikRWLNblps/GYtmxvT8NLmT
+	 lwjp4a9/wkSHSw83DXgMJkE26YbADXQ5Wgrzma0Lzkxe6PrTvGTmGMkcr0S7tjD25a
+	 cUbxobXSpjd3msn5/omXQOip0YId1+NkqtVjYSR8RRdQzG4xfaRZOJR/ihRWKT8neU
+	 CyfSniRPgXT1bmdKqFRcjIn51gGNFGCW55g6/YssgE3kDtmeAaQ5AMDeliVC3lBXzs
+	 mR57N/UT6rGaAzfrKRvdVNfv/88j0Bmfs9tfmn8MrYQmlFcMu4cjEn1Wx+6+4aZ3sn
+	 DrC3YTLtn/MQA==
+Message-ID: <1e90b26c-5934-47e4-a0ea-96fd8af45076@kernel.org>
+Date: Wed, 25 Feb 2026 14:56:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: VM_BUG_ON_VMA in split_huge_pmd_locked: huge PMD doesn't cover
- full VMA range
-To: Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- Zi Yan <ziy@nvidia.com>, Gavin Guo <gavinguo@igalia.com>
-References: <aZ78kFBEA2SjgT93@laps>
+Subject: Re: [PATCH 1/5] mm: use inline helper functions instead of ugly
+ macros
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+ <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aZ78kFBEA2SjgT93@laps>
+In-Reply-To: <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6pbzwxdd63ffy3sdfgo18iwnniz3zfaf
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7573B80011
-X-Stat-Signature: s73a8m5yu96wjfurbbnhq4jn6j7a4quo
-X-HE-Tag: 1772027421-88102
-X-HE-Meta: U2FsdGVkX180I6igzQX5oIcykD4J1rrh9yRSKRNCLSF3PokBvWu5LH/IBWcK38qGkyDcZGZj5O/DpE0xL8vQy9ctY8uSb0TuxjEbQC4rCOg/7ufBj5tRxg7bqjabTKqCtmR5AP0SdBdc/bIagESz6i6rPT94AKUYVvZW4IfU0A1BNeiGkjhfo6scK++EEXiDFdLGcM13GPFsEyBGz8sag/0bs/ecWzyPreGFKhSkU8nFEGF2Hr7y5I6rqWyLLb/PYjp0Gl9uudfbflBaZH3l3W5q/RmJECf0ssTJauq1di9efQUKgRWycoZm92J1A67IKLu8TmhovNBukGwxZ5JS42jbi7DzQUgk1lsl57f0MgcsUMNB/NvuHODuRZRwZpKOVPNwdSPDdqp+k236o12rby5lhzV6uY0KKH13Jie3v9htfXMVisp/WUhpjPVOIy+cClJ3stimdcLxOTktTaAF5ohgCoayW0mP7g5L5lm+c15RucYzm7ZJCsS1Dg+yV2OhEnNNEbFcqUTAuoNeFuJBW/IYBvfwnZqCSELopaqJBS5mrcp/ChPSgNAig25uhmpFwq6Znlgzzpyrxg4uqRu2G+H8HSbY3emx/atrCZKisubU35FzVv9SFwcKIHYSg7Gq+vijFYTCYl4OKfnkU2BW5oFAleAGrHx9uJOB0rblgcsS/EPFmSsBFJ4fNe8sA5lx5lWfDy7ZRkVorbbrq4eUJsUlbui7f336tdsCp/vRcm6Peifar/NYHx5tJH4SOZhzZ1T/ZzLIZBKVMmTJ1MtYe4l3vC5uPUGdebn5eIOo0FyBV0VkdJwjB20/hwTXeGJOQlqeDuFQiuQZDDDxEyPLxyju31l8NRUowTkw1g7tAQoMpyHsj8P3oSHY+Yxjy6IA3e+FumoR/mnmnSBjvWQTGMlcdvjPgM24LnS/q11CImDhd/6AkpDT5SIrsnLgi1CiD/rkQmDAO8whbHQRauZ
- 5aX9TlWg
- EI2+Dt1uRWaYTKdagl/ysMcCowXd1WFkdYjJUpbKkMnKNepzmgW4/KXFNkXieppm15DZMLno+Z+PuFVnKryV3apKzo6ftUZ0pNyAoYRzNsr8IbS3X21/J1Z/51IvSG1BXZ/r83k3wS6LlAqAw/HL/0UGRMJ691CPkH3SptvKGMvGQeWNQHj9wvnj0ukM8nSBFk6cMu18XMT5e64AaVOxxroGdRrc2K5jyy2fOLWQ3+TSDMn3saKL727mI0fD8MoiQgzaYtB5ciD0JcUOtxpiyLFKpRtPm2yIta7V8F51YXU1Fn1huDz18gmZOr4rQlVdKifC4cYKihxQ/h10=
+X-Rspamd-Queue-Id: 82547C0007
+X-HE-Tag: 1772027795-41490
+X-HE-Meta: U2FsdGVkX18POALQGJp4K1tgz/aunOhbSFiyJQ/dqAGcoQtQkUagkwbDXBmCwjvsnC0BDU8JVP1bGCapxC/NoLw6dgTLBgGOlvyfCTCFIZsxS5XnL5zLpGKQon1zJrIHhTr/GFKvnLPApOpCpbFA7oK4Z30lgTH0e2kCMPtlSSoMxWwLDdQqgN7kB2Z+JYLzxMNqu+xj/Pygqp8HqljDdH206cBildFaGVZQ5wjaSRRoSi1KjXXk5Es1QcC8x/LyEDQM7H44LQAamXZ8lFeTo9UGcsOFIDv7jIKfAuuDWD2w5qgQf4Np/zY6J3ia9i8jcJmTYXHBX5GLd7yC2Le+UXY6cF8X+vRpFM3/oieUqcFXcxIAtdO6kR48ouGqsHt3E/Qan4VqlcJwSqMNCYOJ22sh3bNYAUuk5McE7WzPv3QPhFtMvAz9adi0hI4v/O5+cIlTwxBGxDVXPUnhMPRj9r8UAr9bEV+u+fXpOyOhBb3f9dGGgIi6jx1VIE8eVXwU/m7xzX0YKpOP4mD3yeiwDPKa0XbVQK0JGd+BcUX/yjFb8ev6AnJy1/819kjBlZ/dOtIcojL5hH4uR065GYA5oSMdHnUeSOQpU982Z1+pWpP2XhatgrJKq1Da9jvwCmWQnSiAerVl5JiWuNu/n/FIhtjXfxptPnDzYKrQRdiuHTUYOSRW3Nk7d1pN3gVAhXV/uhynyIXas1mAm1YZ3P5Ts6xvurjp5SOPYfZlTY1l2b2a1KZhsU95YTulEQiMdemZDAzUQd0Mg8nSu/V12DHUeze8sBm0Ailm58vgQQ6a90oXWQw56ugmzlglqwuba9XCMdWNKtyoQRrevMA8LNSgOrqCqeUz/Zh+tOGlme4DY9W76UAWmBRTCzkjGEgD8yaMTws9L9U3q/GbLOdEQZdKOIxB9Mh9eOHq5OoTC7XIxQng5QzrksZyCLRgSK3k/p9DEei1Z9HaxQW3pm46qB5
+ 0fyKPL6j
+ TweqZJUhClUxX1AygOI4Hem36ySZiGNovSMRA0Lgyr1Lll2fw9Ec/MmY6X28iYZrRXhL3FWrgJR/WyG/+vsxuQGbBU+6qR1oB61rfrRMRSkXnW6qxWJrhrkVz93galJN9NC77XimaPsXewGOlNZ0syJf9O0rujK4K09RRw+44oWyd1eA7eYD6WuG6cRBEeHwVdo4k6UOyziUzzxNtlnPj3m6d7dCs3ljdfWhU0ebvoNrJelpDVpRYRxbcP3MkDe8uvTp8ZhpH5DrLMlK1iX9k3BUo0ryzg3Ky8wBAeOVg21Zg9xkEmDjNcYS3ItKTVv2NBQncIz53T0raheaXFMQQRyIiuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,66 +145,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 14:43, Sasha Levin wrote:
-> Hi,
-> 
-> I've been playing around with improvements to syzkaller locally, and hit
-> the
-> following crash on v7.0-rc1:
-> 
->   vma ffff888109f988c0 start 0000555580cc0000 end 0000555580ce2000 mm
-> ffff8881048e1780
->   prot 8000000000000025 anon_vma ffff88810b20f100 vm_ops 0000000000000000
->   pgoff 555580cc0 file 0000000000000000 private_data 0000000000000000
->   refcnt 1
->   flags: 0x100073(read|write|mayread|maywrite|mayexec|account)
->   ------------[ cut here ]------------
->   kernel BUG at mm/huge_memory.c:2999!
->   Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
->   CPU: 3 UID: 0 PID: 15162 Comm: syz.7.3120 Tainted: G                
-> N  7.0.0-rc1-00001-gc5447a46efed #51 PREEMPT(full)
->   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-
-> debian-1.17.0-1 04/01/2014
->   RIP: 0010:split_huge_pmd_locked+0x11a0/0x2f80
->   RSP: 0018:ffff888053cc7338 EFLAGS: 00010282
->   RAX: 0000000000000126 RBX: ffff888109f988d0 RCX: 0000000000000000
->   RDX: 0000000000000126 RSI: 0000000000000000 RDI: ffffed100a798e43
->   RBP: 0000555580cc0000 R08: ffffffffa3e62775 R09: 0000000000000001
->   R10: 0000000000000005 R11: 0000000000000000 R12: 0000000000000080
->   R13: 0000000000000000 R14: 0000555580c00000 R15: ffff888109f988c0
->   FS:  0000000000000000(0000) GS:ffff88816f701000(0000)
-> knlGS:0000000000000000
->   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   CR2: 00007fe2ac1907a0 CR3: 0000000021c91000 CR4: 0000000000750ef0
->   PKRU: 80000000
->   Call Trace:
->    <TASK>
->    __split_huge_pmd+0x201/0x350
->    unmap_page_range+0xa6a/0x3db0
->    unmap_single_vma+0x14b/0x230
->    unmap_vmas+0x28f/0x580
->    exit_mmap+0x203/0xa80
->    __mmput+0x11b/0x540
->    mmput+0x81/0xa0
->    do_exit+0x7b9/0x2c60
->    do_group_exit+0xd5/0x2a0
->    get_signal+0x1fdc/0x2340
->    arch_do_signal_or_restart+0x93/0x790
->    exit_to_user_mode_loop+0x84/0x480
->    do_syscall_64+0x4df/0x700
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->    </TASK>
->   Kernel panic - not syncing: Fatal exception
-> 
-> The assertion VM_BUG_ON_VMA(vma->vm_start > haddr, vma) fires at
-> mm/huge_memory.c:2999 because a huge PMD exists at PMD-aligned address
-> 0x555580c00000 but the VMA only covers [0x555580cc0000, 0x555580ce2000):
-> a 136KB region starting 816KB past the PMD base.
+On 2/24/26 02:56, Baolin Wang wrote:
+> People have already complained that these *_clear_young_notify() related
+> macros are very ugly, so let's use inline helpers to make them more readable.
 
-Do you have a reproducer and would this trigger before v7.0-rc1?
+Could it have been me :)
 
-Lorenzo did some changes around anon_vma locking recently, maybe related
-to that.
+> 
+> In addition, I cannot implement these inline helper functions in the
+
+"We cannot implement ..."
+
+> mmu_notifier.h file, because some arch-specific files will include the
+> mmu_notifier.h, which introduces header compilation dependencies and causes
+> build errors (e.g., arch/arm64/include/asm/tlbflush.h). Moreover, since
+> these functions are only used in the mm, implementing these inline helpers
+> in the mm/internal.h header seems reasonable.
+
+Agreed. if it compiles, all good.
+
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  include/linux/mmu_notifier.h | 54 ------------------------------------
+>  mm/internal.h                | 53 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 53 insertions(+), 54 deletions(-)
+> 
+> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+> index 07a2bbaf86e9..93894b90c8c1 100644
+> --- a/include/linux/mmu_notifier.h
+> +++ b/include/linux/mmu_notifier.h
+> @@ -515,55 +515,6 @@ static inline void mmu_notifier_range_init_owner(
+>  	range->owner = owner;
+>  }
+>  
+> -#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
+> -({									\
+> -	int __young;							\
+> -	struct vm_area_struct *___vma = __vma;				\
+> -	unsigned long ___address = __address;				\
+> -	unsigned int ___nr = __nr;					\
+> -	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
+> -	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+> -						  ___address,		\
+> -						  ___address +		\
+> -						  ___nr * PAGE_SIZE);	\
+> -	__young;							\
+> -})
+> -
+> -#define pmdp_clear_flush_young_notify(__vma, __address, __pmdp)		\
+> -({									\
+> -	int __young;							\
+> -	struct vm_area_struct *___vma = __vma;				\
+> -	unsigned long ___address = __address;				\
+> -	__young = pmdp_clear_flush_young(___vma, ___address, __pmdp);	\
+> -	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
+> -						  ___address,		\
+> -						  ___address +		\
+> -							PMD_SIZE);	\
+> -	__young;							\
+> -})
+> -
+> -#define ptep_clear_young_notify(__vma, __address, __ptep)		\
+> -({									\
+> -	int __young;							\
+> -	struct vm_area_struct *___vma = __vma;				\
+> -	unsigned long ___address = __address;				\
+> -	__young = ptep_test_and_clear_young(___vma, ___address, __ptep);\
+> -	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
+> -					    ___address + PAGE_SIZE);	\
+> -	__young;							\
+> -})
+> -
+> -#define pmdp_clear_young_notify(__vma, __address, __pmdp)		\
+> -({									\
+> -	int __young;							\
+> -	struct vm_area_struct *___vma = __vma;				\
+> -	unsigned long ___address = __address;				\
+> -	__young = pmdp_test_and_clear_young(___vma, ___address, __pmdp);\
+> -	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
+> -					    ___address + PMD_SIZE);	\
+> -	__young;							\
+> -})
+> -
+>  #else /* CONFIG_MMU_NOTIFIER */
+>  
+>  struct mmu_notifier_range {
+> @@ -651,11 +602,6 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
+>  
+>  #define mmu_notifier_range_update_to_read_only(r) false
+>  
+> -#define clear_flush_young_ptes_notify clear_flush_young_ptes
+> -#define pmdp_clear_flush_young_notify pmdp_clear_flush_young
+> -#define ptep_clear_young_notify ptep_test_and_clear_young
+> -#define pmdp_clear_young_notify pmdp_test_and_clear_young
+> -
+>  static inline void mmu_notifier_synchronize(void)
+>  {
+>  }
+> diff --git a/mm/internal.h b/mm/internal.h
+> index e0ef192b0be3..1ba175b8d4f1 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -11,6 +11,7 @@
+>  #include <linux/khugepaged.h>
+>  #include <linux/mm.h>
+>  #include <linux/mm_inline.h>
+> +#include <linux/mmu_notifier.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/pagewalk.h>
+>  #include <linux/rmap.h>
+> @@ -1789,4 +1790,56 @@ static inline int io_remap_pfn_range_complete(struct vm_area_struct *vma,
+>  	return remap_pfn_range_complete(vma, addr, pfn, size, prot);
+>  }
+>  
+> +#ifdef CONFIG_MMU_NOTIFIER
+> +static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
+> +						unsigned long addr, pte_t *ptep,
+> +						unsigned int nr)
+
+Two tabs indent on the second line makes this fit into two lines.
+
+Same for the others.
+
+With that
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+> +{
+> +	int young;
+> +
+> +	young = clear_flush_young_ptes(vma, addr, ptep, nr);
+> +	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
+> +						addr + nr * PAGE_SIZE);
+> +	return young;
+> +}
+> +
+> +static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
+> +						unsigned long addr, pmd_t *pmdp)
+> +{
+> +	int young;
+> +
+> +	young = pmdp_clear_flush_young(vma, addr, pmdp);
+> +	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr, addr + PMD_SIZE);
+> +	return young;
+> +}
+> +
+> +static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+> +					  unsigned long addr, pte_t *ptep)
+> +{
+> +	int young;
+> +
+> +	young = ptep_test_and_clear_young(vma, addr, ptep);
+> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+> +	return young;
+> +}
+> +
+> +static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
+> +					  unsigned long addr, pmd_t *pmdp)
+> +{
+> +	int young;
+> +
+> +	young = pmdp_test_and_clear_young(vma, addr, pmdp);
+> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
+> +	return young;
+> +}
+
+Wonder why someone thought it would be a good idea to not include the
+"test_and_", to make the function names inconsistent.
 
 -- 
 Cheers,
