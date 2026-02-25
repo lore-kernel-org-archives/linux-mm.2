@@ -4,127 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58586FD377E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B625EFD375C
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 18:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8AFA6B0089; Wed, 25 Feb 2026 13:39:12 -0500 (EST)
+	id E61B16B0088; Wed, 25 Feb 2026 13:46:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41AB6B008A; Wed, 25 Feb 2026 13:39:12 -0500 (EST)
+	id E0FF26B0089; Wed, 25 Feb 2026 13:46:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5B366B008C; Wed, 25 Feb 2026 13:39:12 -0500 (EST)
+	id CE82B6B008A; Wed, 25 Feb 2026 13:46:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E496B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:39:12 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30E7313B864
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:39:12 +0000 (UTC)
-X-FDA: 84483841344.07.FFF5FDB
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E119B20013
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:39:09 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MxgxDh9j;
-	spf=pass (imf03.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772044750;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BDA176B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:46:51 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 722EAC267A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:46:51 +0000 (UTC)
+X-FDA: 84483860622.25.CC16F76
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A311C40006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:46:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=atU1bpdR;
+	spf=pass (imf11.hostedemail.com: domain of avagin@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=avagin@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772045209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=XOpGuwqZTKF6bz60SpxWW0lS1c9nYBDcqJqzi/pIY4Q=;
-	b=Z3rfmMln2vVoqhU5a1mug742LI7Eya9P3+sqPRcPEuyUDY3VwPXnFrL6tJlvomczeW7hCC
-	kM0d7/6+Gmx2ERFVhjjXHrWr+Sci+WtxHMWX1JQqvMY761Qd1ely19Vb2uGQTeIgx12u6A
-	D1DA/ydDmKU67E9HCPAlg1IdV3SutSg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772044750; a=rsa-sha256;
-	cv=none;
-	b=N71/IZLNKky9iqZ3hyvBOUwCDiqC+WmyrNRdCCwKx6CcGEd+NKlkUYNM+g5W1V54ETzPGf
-	38+aUnNnlo6ma0IqIquSDPxp3npJbpYScVJLJ8hsL3jvKBOnMcxCTDFL3a21VQ4XAFEPA7
-	boy4CdaaLxRAI50uKrnWUSOes0R9lr0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MxgxDh9j;
-	spf=pass (imf03.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4398f8403edso20730f8f.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:39:09 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0N6PIEQkF9K4Mf3+vZgb/e0cIuHyJAzBkOn2Am3gQxw=;
+	b=lkH+Xz1BE4aNKEoQI0LL61Vnatbgn3V5zVS0aQOpx0PS1OX5jh4GXKFee8S8rCOO+rjTf1
+	wq70/vOeJa++ZUnFZ5aVs0GSePzSiu50qGbUI4uHidpaeuSsEMxYClOUx6ND9QkUCTPjcP
+	SuVjuHbdktXdhA/OiyCozH/jHhiM8pI=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=atU1bpdR;
+	spf=pass (imf11.hostedemail.com: domain of avagin@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=avagin@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772045209; a=rsa-sha256;
+	cv=pass;
+	b=Dy5ouUjUr4hNnwu2DhItaGOVqubREl/dAzfmuMc+6Af+tWS6SxhKufnhi0aIcYEb7fgPQf
+	BTNUsmb27ihS2aFNAvcRrRh+j1zOVKKKKVAux1TcWiacnj3FVjPL1HGwkwd4oWOXipoAEw
+	EIo9TXo3BOzATWJOyiPgRNHhd712WFc=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5069a785ed2so43071cf.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:46:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772045209; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bBZf18A04TuXP2dC+vYQ+MJ5eJzaURDeL8nOovmNLJj5sW482SmLfhvMbJQ5L5yREg
+         g1jNBH26t5m+cF1FTFU1JTBjsrF3iso7UrMCg7KZ2OlrLWqNufuDZphUedAKUuTHznl8
+         sdcULdWE/cDx7xkeOh0jc2wBPDNEenkfjTG2iZojdWmA17JWxHbsvC09ghDXN+7AIWAs
+         K9tfWQaa8CFffPPOi6bMFLCU1mlr5cWtTqsGIbjVMrgYHBzWvoVD/MEGOPU6N85lw6Oh
+         FjkZGZsuzq0VIWSL8OPpEJ702BMrIwRmTsYLuLKKn128c0JKE+vOcxiyVWZn4zvZoSsf
+         X4nA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0N6PIEQkF9K4Mf3+vZgb/e0cIuHyJAzBkOn2Am3gQxw=;
+        fh=2BdXNH3uLdVqkyH3NInuhc9+p+3jEsabbB9yxsZaK80=;
+        b=BahWmKbq+17RerwrziI8E0GgsrFVQ1z8NXuL6ASrG2oIwb1zNaoR0E/Hxr73oiXheA
+         ZlOffGPnyjyctr+KGOcP4z6mXkiipF0O1ENXyMDKlLvy+ByrwOOBhI6PvSDSqhKqN6dT
+         s/g2P8ZQDUBv4OuL7oJI/X6ZycaKm5xpUfrk55BCEq+HQH+Os4a5LiiVUoD+LLbs3OhI
+         z2gx2UQUVtFsfEdXRsdI1k8+4bjJQ96lg1G3C5s8hUWum85kghmUfov29GRta/hd/7W6
+         FpJ7GGBVwMyJjkgKy8dvF3PjPSoVFNXU5i7b9xMzQdxaq5UINCSmSobCXNbB1yXP2Hl9
+         YcEA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772044748; x=1772649548; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XOpGuwqZTKF6bz60SpxWW0lS1c9nYBDcqJqzi/pIY4Q=;
-        b=MxgxDh9jlKrd5OEDQFf7u5CkXqTD6O/nz1+Vd8JmvGruue0NB2g0LHOR/8hVJtoKsh
-         gtaFJ25NoXom27M7yVCs1nb3ZwwaF7Lr0Di4RNOGY9XXeuke65zvbJ5Ts5EGO2vOiLdU
-         VTH09NbyC3RS1tON/pUTkpiTp18ToPbjgRIDUtkgzMrJOiUhdCrJkZn01gzBoJdbkFlu
-         P0m36XTI061Rh83xvmc7qdkhZDmF5Z4HhU0H2yyWVdyj5vvIhEWx0IT5QoAt4j9QM42C
-         blV0CS+xaIwI0p20NmGS82y3EDkP0x1Yy4MgnAOAWrN5MA2Axu5v8Foq2tTwfejQ7YFR
-         BdDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772044748; x=1772649548;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1772045209; x=1772650009; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XOpGuwqZTKF6bz60SpxWW0lS1c9nYBDcqJqzi/pIY4Q=;
-        b=OhU2BEB1TEIjiLyn7PpHV9WKaDNnGC+hD191uTK979u2Fy8tmsX/TXpMEtqsSnJM7i
-         L+EKppVowYl2AeKJbN1mGuFMUEIWpbezyVICurMI6ggPuEMEtvmBjHRO7Hc5cEwDOKgR
-         ZsA0KLNImoLfb96lkcA7A+e4ToCW0XBPdszNDJtIaG2OlwIQcBWdop/JdOy42Ax3Psh0
-         fs3siS19h7NA8zq3lzvubQagEtRalTNFQzrJBj1UCZ1zycF1A7UzaYIFUs6ajCVHSRWX
-         9c5FRkE9Ju17Mg9d1nueYIHQdW1NvoMIpZaromK+Br5z9E1b4nvwEtTTGYeIa2hZAEh4
-         RCmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3bSy/OdNxwNzvBMRNDAgwjnhEwGLZk8rvoPkfvgjU5YyFXUuQmkLBSppfirUNDHkT+Lo/l/PZFA==@kvack.org
-X-Gm-Message-State: AOJu0Yyhd4rLJARFR2BMpKJmS57L608ivEa4gWDkoXHG73GyzB+Dc3E6
-	94TAHp8UYoparH4nSLAmBL7tXtj5+KnEc3AZzqBbr2Kqssr5OK2Vh5KLF6XCQatKUgU=
-X-Gm-Gg: ATEYQzw5VxuABgIBbO2hHxWwnh3jsMxRM/ORXh21dFQAR3Vfz76xuzaXiGj7w6eozxG
-	JcGwjGnPDuA5NAjqXWqDZ/b3ZoSWmipcWsZngSzY4PJbnM7Kglka43QadnNQ7dUIJI6s8xDwsGc
-	10fEQhQ8QLADjWTM5Cw0cIdOVEWLde30fUa6dNujBBYOr+8OO0i8bCnztQJ+7jsIVeF0gaN3m1D
-	cA/u7cCOCVXAqCB53k+MGTUqvzFKlinyX7zP2xt2nznMgO0Ug/5YfDu5oeWe8irtnNGPMm0xdKg
-	4jThz56yNACfmvWMyVb3CwpfzoGlY/wNoPJXIId1cuwdxgYfW/OLgJI32pQ9gdHTzRlM5ps8bjE
-	nAD5uPBUHlxnjMA0FcUvxNK/txbhLdCUNDWYiwMoTy5DeK/J+lSToJPfXcfxzkpjQELUZtqhXcG
-	/iJ0e+D8AmzVJWzStZiWBgPLNX1m2VQz4KkmZYcPWbGZU=
-X-Received: by 2002:a05:600c:524b:b0:477:7ae0:cd6e with SMTP id 5b1f17b1804b1-483c2168d6dmr27534795e9.5.1772044748156;
-        Wed, 25 Feb 2026 10:39:08 -0800 (PST)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfb29715sm44245515e9.0.2026.02.25.10.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 10:39:07 -0800 (PST)
-From: =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Date: Wed, 25 Feb 2026 19:38:44 +0100
-Subject: [PATCH] mm: Do not allocate shrinker info with
- cgroup.memory=nokmem
+        bh=0N6PIEQkF9K4Mf3+vZgb/e0cIuHyJAzBkOn2Am3gQxw=;
+        b=atU1bpdRxoW+U0L/R1N3HnZBCHXw2/vDnOzkMhtVOdfPnsJ3amCXTryws2nRgjwIqE
+         QtHVujpdg0X7zCEtQAqENHNO1KI5sQfINJIrnuJiUWkIWCvTi4qwpJSLNGIl2ImSqZM1
+         F8hT+zI/WKDxrFEN2cQwlHF7Jdt1/u8mAfLKCDwn+rGppelxkd5CWyORc6uf5xch0cq/
+         l/7HFIIEkdInQIwaKCl7wbpgC0a0S+ZvNbjNxfPZsq+XkYd+pdWNr5EE6aXSAeQjM6sS
+         vpkVtoKv1oM3o7spVZ5YyUwlKPTlw/FTKasXCXKVl8ZCR3HH8FAj/aPQZ1xReihJDRPv
+         qO7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772045209; x=1772650009;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0N6PIEQkF9K4Mf3+vZgb/e0cIuHyJAzBkOn2Am3gQxw=;
+        b=AUOTzSUNnfbmc2E7nYIoM1AIBsL88u3CeGts16LRppAnCWUOSiE4CmqKC//pymutKZ
+         onGP4a8Y/YAj7eJOqJUyUQn31djuES06Vwdfvay+1C2TnF9BYyrqU+UyDdOS0f1n4ZpI
+         VmX54+Z6shKvEhjTYuZoXCUJlj14zEwnXpKrgtb71yx6uXCDMUZxcuEldeIK2VXDD2Dq
+         YCoaTCTP8RZvtJ8HN3AhTJqNvGwt81qPhhJCjoFspHF0JkURJb6zN18iDv8I1yRBY0Cl
+         M8WJfr5hIJJpoQgvzE2fEbdYiVswxoCIeVu/81B5h9rcEX1YbWDtL08Cdew0V+t8NboP
+         5nDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQgf7Yfajaz3NiAb//6bh2q3EBMoA78UbuRsBL+tw3a218tJewy4pVEBNaXWhGUFHdwAjlCrL36A==@kvack.org
+X-Gm-Message-State: AOJu0YzWE2CvYxfIMJF7FIrUe6ROBh6it2IJQqhEKeyCDX3gQJaZqFnL
+	bXL8TU7aK3lAJGOKQyFrggQhUtsn+R/dIdDkReFFFoFNtRBQPMwLXZZUHD6dAKiE6xVMCUU7xvo
+	Rqe6G6fTY1i+2yEx6PsiqWfVr2Md6yjsukTWiCV/v
+X-Gm-Gg: ATEYQzxSd35lceWkizCm4oLOyn74hwebj6ST7M2rFvzP0kSXMH7VBZZ/QmOPwIeR9Kx
+	YeJRlf/wV0Y5HQfu9tiMXMHZ4PJzSGB/gOc1QanosqedVIMkB7OceOabAtk2aG9D1+O0kKYHF13
+	ruzr8jApG1HciLNFjvIqnlFXoAgrGF8Q4Nh6ScqKVvbpS5pelLcpTEf+2VZKpd+aVQqMIUwFRw9
+	dd3Vw2Asu+6XOsCIRbCMCj8cIQlKz3eWaLgUzKKvHnMbG4VDF1D6bt2QHxQCrtLQ1ATAGbtz8Jt
+	OxaeJcuVF1Be6GC+ay4HZNgkoNDlApjpLl9X6w==
+X-Received: by 2002:ac8:58c4:0:b0:506:a1b1:422d with SMTP id
+ d75a77b69052e-507441e2f1dmr647121cf.14.1772045208089; Wed, 25 Feb 2026
+ 10:46:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260225-cgroup-ml-nokmem-shrinker-v1-1-d703899bdda4@suse.com>
-X-B4-Tracking: v=1; b=H4sIALNBn2kC/x3MTQqEMAxA4atI1hNwgn94lWEWtaYatK2kKIJ4d
- 4vLb/HeBYlVOEFfXKB8SJIYMr6fAuxswsQoYzZQSU1JVKOdNO4b+hVDXDx7TLNKWFixHU1FbrC
- ucwS535SdnO/797/vBzJkrwFrAAAA
-X-Change-ID: 20260225-cgroup-ml-nokmem-shrinker-7da42fbcf8f2
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1767; i=mkoutny@suse.com;
- h=from:subject:message-id; bh=vCSUMFDcCR7TTirWzMfGTpmIOE4hV1UFUHSUFG9Fiow=;
- b=owGbwMvMwCVWZ8v0fMrtHxyMp9WSGDLnOx47cJpF7FzoCh7ZH/MTFX49nTiD4+ACtpjANM83o
- c+qNM3NOyayMIhxMViKKbI4Ceexzv8g42Z5uusLzBxWJpAh0iINDEDAwsCXm5hXaqRjpGeqbahn
- aKgDZDJwcQrAVP/5xfBX8KBMyIaes4ce8EefZ7QMiq/1dDNOqkzT2npLLarsUNBVRoZHXGqLOY0
- qGa3zGt5qXZD1NUq55Tn/m495SPwJvZnKq5kB
-X-Developer-Key: i=mkoutny@suse.com; a=openpgp;
- fpr=9F2AB6F1F2BBEE7621C1B620CFDED9A2FD1314F0
+References: <20260225133229.550302-1-ptikhomirov@virtuozzo.com> <20260225133229.550302-3-ptikhomirov@virtuozzo.com>
+In-Reply-To: <20260225133229.550302-3-ptikhomirov@virtuozzo.com>
+From: Andrei Vagin <avagin@google.com>
+Date: Wed, 25 Feb 2026 10:46:35 -0800
+X-Gm-Features: AaiRm50yP7U5Mblj8nExlDPbtbQY6Smjt4Ct49GvH3x6Zklgi4smtXG6r6gKV_U
+Message-ID: <CAEWA0a5s5fvERdrk1mUAqo+VYimGty9=BU1DEmPHDugLcgPevQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/4] pid: check init is created first after idr alloc
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Jan Kara <jack@suse.cz>, Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Kirill Tkhai <tkhai@ya.ru>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, Adrian Reber <areber@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ucu6m4g5tig3ijru6imhkz71wp1x3r3f
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: ua7ewtzetat5zxbg8j8y96mjwtt3ms1h
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E119B20013
-X-HE-Tag: 1772044749-784274
-X-HE-Meta: U2FsdGVkX193Twpr8lRyprlWW3zPfMXXQsMRba6s/nw8+XrFcekIbUS8HszQfaBGr6cmREcdIpnVbfj5eGYkMROiJkV6KRtv7JLycdrx0HBAVhdjCf5d9zFMpy6ZBPy6PIGURamPTWSgLFFKidaO1nlWpLgSaPP1bdKWLcoO4ucC2qGJ1kaciss+THDDLhgSqeS49PeJswiczUKg8NguppxRl2jkEsUn+HmWZrGw7GI8/Pl1MwLteAVhB0tWIXjPISc4fPh8K/5TyaBmkq812hHJcLr/8MlC6X83yq8UFa9p55QE/YrBZVNoEmuYglSK/dPZIJYMtkZHIvx/j2N73+0hbO8UwRiWMpNnHKlU+h+MJeRNi9wOsTlSjxo4X+4IPa7s/3f6+odia0/lJbx9Z3W0INGREQ96BMqgg+c/FPwD7hiDNMhPxDy9ffsPb/c7hFEySd5Rs199aZoAWGt50LJRYmnbh78q8PXWmvoiGoaTTIMo5lydO774leofNkxCSeb5ISL9Z2dEV5hse5yHF85XjFABEQ2Z1BEr0gmMPxq0cyN7eBCC7QVXUqK6pXVrNmWSU2MFzuRXbIKaVePEcvO0oDJ40EZw4z8+Fjia0TivVBYeD2t4OPtOswmM8A3SaIBVpGhHuHzI4Ncyi0L/xG6P+EjUWDQDNyqwcpKcf+qSkkzdsHVOhFoPXADh1DZDx9B1cQOJksTL44Zg0X/6z4KyMOphU3ZCvKwL+8y51QuCtCJb1uGUD540RUGBUvo7qdMiP0fgHzUExKj4kGT44o+YILOA0hu9jI/f3njizyboa9FWAw2OQGGX7C7mNEj5WfTLUmRIBvLUIt1o5PcHjVAyQb7wog8LNG/FyVWw6PGSy4aJf8aDH6cVRzw6R5TCaW7D1dU2g7yh/9K6wAfL8sCPagjZoOrT+nkJ/EB/uSpwoLUgPYzgy19DI4TIlPssB/CquChZv6XLAmrY1jX
- /uIYi56d
- mS2oFOQPn4lyI5KL+whfms4jac7ySzcH1CoDbcP28DwwFqa88/yqJjQgMa42JV3fPbpU28wD7gR/pNdIrI2kWZ8oW7/iHhvQvc34Vk22FANIDaz3snCWY/w3ThVXrmvMo6Sxim/qpLPL3xwgEiq8CnHueabLwzcr7RSunyU4vwWNUVEVzhFt5WkKwf4eWiqT50kvc2jM6g1EWTVTrAi8lMpCT6iutzGAAE4HRusWefT2CjLj90t1brmQNiU6lRdsKdLetWSGi70x5BgTSpes/NXKo7T8r3qPc5eajJTtaFgvY1vnJifXArxiggGdtBsPYgBPSOSpSyoF0g4FqbZ1W+zW7q2E/6nsR+lhJ
+X-Rspamd-Queue-Id: A311C40006
+X-HE-Tag: 1772045209-563598
+X-HE-Meta: U2FsdGVkX1/9c5bpVffW4+bKuUrErbGkhuV5M0GAy3RktbvUbEEy0bPR6LC7XQC2Svp+FsUMT9l6AFAbvjcvRtwzU5VpAkFbdJMznoildPn2nIrmGvUY2c5zoQpxzOAYw5AT4Ak40UdMzMbsYdCfGSn48dpSSJxzwcJpqZWIm/eETb1E3ANSPIfoEM7j71OGe7YbfDAfEohUs5hSEyqwJ3rp6ohufJXNF193jwUy3i3hHmsIL0Yc4eN803k0U+R0aV0zodIuSzxbYghxiehtn3nI1IxB3W9DzvWWroh3w6JnhtZy/LYYvWwur4inMrHzWR1QzIlputRjP81s1mMOPMMtmHBE31lufLygonHtEXj0pAfHhmiEYfjLbFh2V1/yLUR7gM2zLNMezC8n+seSnIenRTujY1zqk2/fewkja0y/R7lEc6wa/CGv5ithmWWe1QQiTeHPlA0Ucf3SPPlq72My7OrlnJkg5KHJU+YxObXHMnNJ1QMJ2UE2Alyru6UNhLExGrZWyrbDmWdoVXM1ZmiOi6PKmNnsyULzVR/Z5pFJ4HUp0zZObWr4l8YoH9pueQXaPCrign3s/bitKpb4IxJKR0iR1Prlyy8zGsv3sRy6trbDkBA/7lT51i32gGChSISYaN3Y9VW+HRsM3DQtsy0k7pC7zfQBc+oAOkz7dcxSqysiM9rVqUc2XsAT8YyEdRcomPKCcYtaRtz9V/iPSRwvZOon+K5jKH2MjdPau5Ree8O8WQC2QmgoTZ6z6+Bx1bqYDU3mSQuBQS9r7dtlv1skRBaA+TXyt5hCbRbIc1Xy00hCsM34rc3PX7As3qVwNpS3YSmvFtRtd52GkGs6d9LrAIqB3phX5Dt0qfnpf96Fn+B5qDQuDS2kQn0dpp5pMAQGQDiuG9NaFFg/Yy33VMiFfLrWy6nvGgCYmrOrfmq9VJo4VwnLo1gBgSybwus9op1bmB0kyhM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,51 +142,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There'd be no work for memcg-aware shrinkers when kernel memory is not
-accounted per cgroup, so we can skip allocating per memcg shrinker data.
-This saves some memory, avoids holding shrinker_mutex with O(nr_memcgs)
-and saves work in shrink_slab_memcg().
+On Wed, Feb 25, 2026 at 5:33=E2=80=AFAM Pavel Tikhomirov
+<ptikhomirov@virtuozzo.com> wrote:
+>
+> This moves the condition (tid !=3D 1 && !tmp->child_reaper) to after idr
+> alloc, so it not only covers that first process in pid namespace has pid
+> 1 in case of clone3(set_tid) requesting wrong pid, but also if idr
+> itself gives wrong pid for some reason.
+>
+> This could've been the case before this patch, when creating first
+> process the alloc_pid()->pidfs_add_pid() code path fails, so that the
+> idr->idr_next is non zero anymore and next process calling to
+> alloc_pid(), will get 2 as a pid from idr_alloc_cyclic(). Though thanks
+> to PIDNS_ADDING logic, free_pid() disables further pid allocation in
+> this case and it does not lead to any real problem.
+>
+> Note: This is also a preparation for the next patch in the series, which
+> will introduce an ability of creating init from the task different to
+> the task which had created the pid namespace. Needed to make sure that
+> init is always first, even in this new case.
+>
+> Suggested-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-Then there are SHRINKER_NONSLAB shrinkers which handle non-kernel memory
-so nokmem should not disable their per-memcg behavior. Such shrinkers
-(e.g.  deferred_split_shrinker) still need access to per-memcg data (see
-also commit 0a432dcbeb32e ("mm: shrinker: make shrinker not depend on
-memcg kmem")).
+Acked-by: Andrei Vagin <avagin@google.com>
 
-The savings with this patch come on container hosts that create many
-superblocks (each with own shrinker) but tracking and processing
-per-memcg data is pointless with nokmem (shrink_slab_memcg() is
-partially guarded with !memcg_kmem_online already).
-
-The patch uses "boottime" predicate mem_cgroup_kmem_disabled() (not
-memcg_kmem_online()) to avoid mistakenly un-MEMCG_AWARE-ing shrinkers
-registered before first non-root memcg is mkdir'd.
-
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
----
- mm/shrinker.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 4a93fd433689a..7d7302619b7f7 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -219,6 +219,8 @@ static int shrinker_memcg_alloc(struct shrinker *shrinker)
- 
- 	if (mem_cgroup_disabled())
- 		return -ENOSYS;
-+	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
-+		return -ENOSYS;
- 
- 	mutex_lock(&shrinker_mutex);
- 	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
-
----
-base-commit: cd2e103d57e5615f9bb027d772f93b9efd567224
-change-id: 20260225-cgroup-ml-nokmem-shrinker-7da42fbcf8f2
-
-Best regards,
--- 
-Michal Koutný <mkoutny@suse.com>
-
+Thanks,
+Andrei
 
