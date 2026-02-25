@@ -4,145 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 058F9F357D5
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:31:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CDCDF357DB
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0514D6B0088; Wed, 25 Feb 2026 02:31:29 -0500 (EST)
+	id 6D7386B0005; Wed, 25 Feb 2026 02:49:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F41596B008A; Wed, 25 Feb 2026 02:31:28 -0500 (EST)
+	id 68E0E6B0088; Wed, 25 Feb 2026 02:49:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEEFD6B008C; Wed, 25 Feb 2026 02:31:28 -0500 (EST)
+	id 5BA746B008A; Wed, 25 Feb 2026 02:49:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8F1C6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:31:28 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D9DE8B682
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:31:28 +0000 (UTC)
-X-FDA: 84482158656.15.717C810
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6E73B40003
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:31:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Yf6uATsK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.44 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772004686; a=rsa-sha256;
-	cv=pass;
-	b=NT2cb2rXWZRx+RAUc00byYyaSYWTR/rtz5DVkaj6/xib6Q66dZfztRHglyBOXvmzMSpV1Q
-	hSwg1D18QP1d0rsCj5Qys+FoaxyXo2LM0IYpJBxnV49+is1EY97RqHiIRntccbFiVNrpSr
-	LwpExA4YWZbhEY63CGS3tg+KA5E89W8=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Yf6uATsK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.44 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772004686;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 498666B0005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:49:42 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC63DC1D37
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:49:41 +0000 (UTC)
+X-FDA: 84482204562.12.AED5419
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 36ED6C000A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:49:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gthI7paU;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772005780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XX8b+rtVnqMMtNp/ESqgVDIfe5eqIi9YcNK6m86bxSc=;
-	b=0nd7rKCVlVi/7d2TmUHbLWoLLo6YnCkx15irss7kwB4wWgdVBm8+AUgOefH22Sd3OL23PH
-	RWrQVgC3sSnBOrY9gXqQu7964KDshscI53DWP9/b2sO0IAcyrWPEroNzP8Cmum792A2Oez
-	dzryJ0tXvXG82kgpt3HK7ZY9XiL9Nqc=
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-94dd01deb53so495970241.0
-        for <linux-mm@kvack.org>; Tue, 24 Feb 2026 23:31:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772004685; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Y6Y0r16SyOMuFjGZZBBFLVu/En/wSaTQUE5Vb4+l5H8bU8DuzoyIhm6A08/kNLRrMf
-         b45fVISx1tMlNcuT+Lj++yEuD2stKDfkgOF5o2dVdHsKZj3pdaNJYIzG6Pe0rUy8n9T5
-         zDOnZbnVqqbTMP2qsV/irvGtUaczuiU3+8fOraVVoSFZs6HUOg/6VAT/Ch32euhr2MC6
-         j4dPiz9Uas1ZGjBMQAbfcQGwEIOTrNsPa/Urw+mMGo4HeqdPUYtgt7z6Gb0Lc2RqFLBg
-         T2jg525IqB/rtJV5DzOUczfyW+J6DPlspfpIlPUytl7ULzcuSjcp4hHeVqRjLMgfWMnH
-         C42w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=XX8b+rtVnqMMtNp/ESqgVDIfe5eqIi9YcNK6m86bxSc=;
-        fh=7rYowq3j91+3U4Riw341CT7jc8FiwyupCFCv2xcyxUw=;
-        b=fW8WwAcnb3ujZO4AWpFoRiXVTgZPKQOULpqgm2NcN9Q10YHrk161y1IgqIDutl8o02
-         uvxCLRA+gZNpaztrOpJoXVh4RhBl+A9t2xS/o/Tn/dkRN6KGMyLVju315sRUmgk+qhDG
-         7Y+eQRSpe6qWXSRleEOWI8Bsm0hMK0xK85c/WlNJ8FpHKICIlrMjlOENSyBqfwyxI3A6
-         HoZcBM3qnT2YeIBBuv9G2kyhe8+hHpGQ0hS7/JbXJJJGF6ZTDBwJsjnQVXKF1Kk1xMsZ
-         8x5XoPMHF+Je5TnzhTqOfYbkEozZ2+ZPJ1XRXp7iGsXPRSuRBywVJCDHxhmAMhDY8mzr
-         yHjg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772004685; x=1772609485; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XX8b+rtVnqMMtNp/ESqgVDIfe5eqIi9YcNK6m86bxSc=;
-        b=Yf6uATsKesiqGywtks6tOMzK7hVRbH4cSY0RADfT02TuQxlpk/dUvXny1B7ghdTmbV
-         WnJKmyjhJ/f6fGb0KEqGFlXHTUkKbCJH/rjne31Hw3TCRRO+v1imaZ4HizWD+5Zwc2cs
-         eayrLdsTQrdYMaA/UmeeEeVcDCBPxYQPkAXD4EXac5fWlOGvLNSNO0Syur1FlwShmJse
-         qdPbD44kCUBKsxE3z5MgV61BN8sSAJwFSq2PSSdtUIgvvRWQ1VdvALySZAk91fC+ivz8
-         E1i0nzAxU2CKu5LjJZTcOFWEpp/mQVSS92f1K0yejPtcPfV0aFvYy5Stus27VE1ShZdj
-         6T1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772004685; x=1772609485;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XX8b+rtVnqMMtNp/ESqgVDIfe5eqIi9YcNK6m86bxSc=;
-        b=xM72W6av1vcYX5IgTH82P6NjUWJO5vI0oKYnJSLknXvFTTcXd6uTyzCa4rn7v+GW+u
-         YBNvB1zYjGY7SGi8ifeMfEdKcEeqasIpzQiSIa4u3HXA7xZtJ5ThdknDIyI02LfgE9eO
-         E5sOYWQgTdS6LEvWZ609beFMFIWCcIclfjSdYRGDDheectr7lzoDVUz6cIc5vc/ZDeEI
-         sjo6ZEyeeZH5dSQvmzgDG+yJMTWCZN6LISjYxtz6+LV4r7q2ehSWvCK9uoGh32f4ZdRv
-         hvfZxjy7QmytSfSWdyQOTTic8kaZTYGmZ4zEcRWcmYen5JqzP94vyMY0O6L+53Dg8awL
-         7/uA==
-X-Forwarded-Encrypted: i=1; AJvYcCVM2Jf0sQn2aoWyODlg949mfqMrvbcR4+mHv+SScWXn7gGai9iJLoFQERuv+PsKbjjhq7LrP3W5rw==@kvack.org
-X-Gm-Message-State: AOJu0Yzxcjp06CtyHmQ8Q7AnLhvw7Yl+q65mOCNAkxfnwsCqTwIHx2s1
-	rt2fAUyLDifeDVakgXUDIofoTk0rby0mi7XyxetAoxrjsbygf4iJQO2xABHY5avoPkEhLmYZ5ch
-	+KWNPDg0tiV7m9Fkmib/MBRNnZDvqZZ3tJidpAyge
-X-Gm-Gg: ATEYQzz/h6fQGyXPcqL9EANKxWOI2gU6pZXLtC410tjGr2EUQh3Sd4EUqgsmcZNqH2i
-	JNu0jt7tsvIXBBTahXhtUNv1GvnxY9jWpU0IMQB+T6j3mzSomPCTiXGvsXq5qdk5HO/NgWai6uW
-	3Fn7dy5lWs3G36haT8WEYiMN3iaXd1DLt940mzeZ6Pa7o6puQkzlxg0RSS7SED2qjWUww2LGCSh
-	vgLrGFiNlmLZiHbLRSYQedtWrVHTxXvBRoRHZ6SX0vKNUgO7SQXxNk6KIsU4wOJwnuZC1L+lQTm
-	Mq8GrNr4k/+gOz61o/nb8TpkYNey05HGAPISltKan8QzWtnplzGz0f04KlfDWOUOM/8Akg==
-X-Received: by 2002:a05:6102:3e84:b0:5dd:89af:459b with SMTP id
- ada2fe7eead31-5ff05d62336mr520728137.7.1772004684941; Tue, 24 Feb 2026
- 23:31:24 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 24 Feb 2026 23:31:24 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 24 Feb 2026 23:31:23 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgESctVm9CcEyK36hY8Ta=DEDOS1oW5w0qRDoNfdd=470g@mail.gmail.com>
-References: <cover.1771826352.git.ackerleytng@google.com> <a97045a9-8866-40fe-aa15-d319cafa6f2c@kernel.org>
- <CAEvNRgFF0+g9pmp1yitX48ebK=fDpYKSOQDmRfOjzSHxM5UpeQ@mail.gmail.com>
- <9ef9a0bd-4cff-4518-b7fb-e65c9b761a5a@kernel.org> <CAEvNRgESctVm9CcEyK36hY8Ta=DEDOS1oW5w0qRDoNfdd=470g@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=VCxg7NgM2LDq4e9k0AtZ4iU6ry0kPMJ5QI3Tfg+syuk=;
+	b=vzDVtMAHJyEs9vrX9BgMnIMdNluHs4QjTw1NUVdeuyY7pN+nJ1xK0/bOuFlf9oly11eM/C
+	rWy44MIP/Jua3OeK/S0gd31mRjV1darheNy0e4xNIWkW3x25nm++u0Tdu4yc7IOPLCqILG
+	ZQ+lpY+G1A/0i1dzgUpilSuLdUtlEu0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gthI7paU;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772005780; a=rsa-sha256;
+	cv=none;
+	b=QQj6X2ZvMPdl6ZewimyFo8AGv/ge7/c8in4U8CtibFT0XJRmp+RM4eDyaVJQFPA+v2QMGk
+	WHAD1bbtmfbt6e/2iBGzeX3dJLEJTQScuMYD/viMOmBcP0pGIiq8J/GFYE+F5wr/6+VXiD
+	S9fbWGKp19yiDbp5HtlkHZuSAANYVPQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772005777;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VCxg7NgM2LDq4e9k0AtZ4iU6ry0kPMJ5QI3Tfg+syuk=;
+	b=gthI7paU9xez6XU/jDo30rhRLR9Oge7fTJ7c4xSlxweS6wjbEjTVQWXkxEUPU5TQnR3FtK
+	LV8jU2wrEQ24TbTw+ZGqztmlsBbDKL1UqVHF9/nM3syqEMAt9CsDkmOpYRX7cDARocdG4X
+	1vJhvE2kzreucNYVYOEVb9cEb0tLlwI=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com,
+	usamaarif642@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v5 00/32] Eliminate Dying Memory Cgroup
+Date: Wed, 25 Feb 2026 15:48:33 +0800
+Message-ID: <cover.1772005110.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Date: Tue, 24 Feb 2026 23:31:23 -0800
-X-Gm-Features: AaiRm51zoZaexsL8AgLT-NSu-LX5kDXX-7Kv8iZiX_RuOJxbA-22InSuIouRjL8
-Message-ID: <CAEvNRgFyRsqhv7CuuDARHTFSanzOHaudM6JMBLwxDwsrjTNCGQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 00/10] guest_memfd: Track amount of memory
- allocated on inode
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, pbonzini@redhat.com, shuah@kernel.org, 
-	seanjc@google.com, shivankg@amd.com, rick.p.edgecombe@intel.com, 
-	yan.y.zhao@intel.com, rientjes@google.com, fvdl@google.com, 
-	jthoughton@google.com, vannapurve@google.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, 
-	michael.roth@amd.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gdft9pjujoib8u4ycondojbb71xpicpc
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: fao8xfjmwwoa773bcwnapi54w19798oc
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6E73B40003
-X-HE-Tag: 1772004686-575020
-X-HE-Meta: U2FsdGVkX1/3pRqZHFLz8Yixcw62E73vAwEhLdzjxHrj//pRW95kXmLnp1yWZZZIBR2NRwyTO2hMPARaFg0KXJH37yagah0keXqhX+Dl/vWFAmla+EEScM4BqoRGOKiFvsMZPjlqOHWusIf6xEzVB8qYW/H34NEY1Dmr/hLrW3nnZhS/bxCT/KsNmjpb4FH+yW5ZTV8vucmYCobsZeFCtSWoRLf+8wm1DUtC4SByA6sFBBgKdVYhfrdfOQZU2QRyY0F6qKPB2ofeFSRRk0+dVJCxbRfgSYQB2WsOUHr8Q/iHAOwXZng72CcqOdrTMUtrvjmqDrB4C8g8bXQoMcN/RU0D7K4srvJ1px37AugPPsm6W9zB7gtruXWp4CrjMEB96vspwcgRkMbf2VG0S/V9ZVNbtGaSf2+TVTwZXc1QC9np12aK26Id4s341wdCvVwlghjOGuEl66VplT4A0QrtmElv3xj18n5ZOCuqoJh+q/R6R4iE4BGVCYI/PlqCfRM/cAHFueGL9wZhT/qQ3/ah0aNMuoeqNSjx7tsTigP57SaE9lmINMbr5A77jg7u5MIe676iQwApZFn+xNES7THZaA0ctmUmSzTge/rVW8tq1rmW3xEV6k84MHr8svxDPKWdExKc+BAvqqgUJTTaQ0yc6nZXr30nt2EP7CMohybXqDAME+9RLZ13aKPZ8kU0SM8ZXODZVsZtvGb/gYb2CVpN0WBl7QUjBFpVADQkxsb3Z2i17dtjE+cs5LMoppVe1n3NXS3WGacQF+x5G5hm8iJ8lrKbUidJxIhAlTYdD9U0whmDnc6rKLcn/qglVmOSh0IL4NoHUoj3sXnEL17tiiUOXu4BjslmClQM9GAyAwT929it+79+SLI4wheOgyaxIlYiO5nr2jslJMHLWH3ZjTVdJWFjSvXIyMtLmBWimZjwXV1KOeUxzrsQV3C/m0WVz9NmK7R/+JvQeWoH05rA4Uf
- seoSD6+a
- 6Cud+FhmJgcRMMseTQ9c5mr3ybJJcYLQ0VcMGr3KQ48Tg1VuKevcamBAxiWXQPuW6sTnwKFyiPi15TGWhVUxFAQX+rrVom5MpRgu8Hgozi6762r6w9clbtJhBm0NoqzCvw8rUpLNrq8aEcxmH2PczC4q0UlBnAC9wsFlwrJrxGcZKIg1xGDnRoDAzdTYibvtthWX0/K7THPtDGfTOnOsDKo3Ar5bRUqcWftiZwskrin6IxPY1zq+CyilqFYHpojfoy6U16iULB+R2aTLUXncKUI+vWokGrqKfmp1SA94kDeJZ0GTr5f0RO+Ntpoi7L5aZgX/QytHC0Vk9KvP0o+HErkp/hXif5v1XajLI46Vb7KTZYUEkh7B+So/XAMe+77LviF2VjqGFWwy8kXc=
+X-Rspamd-Queue-Id: 36ED6C000A
+X-HE-Tag: 1772005779-883397
+X-HE-Meta: U2FsdGVkX1/yRdBKC9j+9bXWbumxECdJcCqr94xPGAcJfrNZjFw9QTA4NG2bOvHrobh9UmTP15LJm+1yi/qWLhevhLaqteR8NAx/NxweZdhcCpBMglrEeVtI+5NEsMOVY/U4WDUQYM1+PzmmOBzJ04907C+HEtvs9ZSs6q5inxsOkLJvyKG/y8JWyxYf+BSoo9n53hNW6E6/On07rRvj5EWDaftaNTGN16sSOXDpIRVadWpW9t5LVqaDO1sxl/qbSR0KUIkhZZelkLmbhvjepbVO4J464OK9NQ11KLkUVbqWtHOrmC3KFsv6LotYUDXCoXe53uNnPMkgvdFUnAxQY6bQUHgRyBQSzyROFCtmzgb7fQfNQI/SjxYDJiBjYnzYYwEsRx9Job2qVxQewnchn7SYtUK70uMCiVsITB+8t1ybt0CxePVYa1aq3V3QiKE3h88U3c3EeVl138CEa/bE+ye7FwRdARYvY5L9l7IaBojz1JyJdlqgyB3AffSkBixcXe72vKAAISDpKZigYlG4aLAqeLA6LH8wguM/aUCSGBPk03FFvIqzBZ/7Duisbp4cY0WbT8t4ApaC/HNT0cXQ8+hJ3gYicotZbqfbO/7KSUlTVfleyaD+OvY3lRUkWjjlanxQrGlqqoGYx+L9VO7/A6m3VYKTsg6n4wzgkY0x3/mX5gEVMb2MgnzgVxG2kbGNb0EEIH8f3U/5e5I04rOn984xT8/C/hmlY2ZMPpMmkv8wFUb74kCVLpDSLtnzzTFDlWmwv9O48g74w7BBMIVa/NOBv6ft6EjQvLGc7Rxsd1APvdxY6tG2qVbzLzKPvtXBJG88sbb03qLsYlQgdpPofCMVs57w2x+PoOhHnddNEOcTroWmNl8e2Z4cTJsHuRtrb0b1zkfTO5LPJkpJgeOokTrcTBcNJh+jjcJKu3F+uOb2OxyW3d9MsE5A0m4aHKlnQhHVDoWfX5wuk/Iphu9
+ mcnczEZF
+ 8yLBpOTudGl6D6AkcT6tDACF+1SilxWF/ir+PcdJmBVwTDdEkNy49/VEIsGxFC47pxF0NXuH6MGdrUUkRrUWE+RGvK+j5pIKT8dnMQ9cfmNmkcSuDJrgm3Xuf7x2YO71r38Pv8lHQUVBx0jsZVWA0bQ0LddsBy1ZObiSNrVoO3qZj1oGl+1hGIdT5q/7Ti0uaHBnryrGYUWATHbWJUk3Q6vK5GoFK0+WC88uTAD8KBz+qsD406iSBkd0u10kVi2wYSvYKU6R4vbIFKrMCZHjBCuAOQ2+LVSzJ2prC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,106 +108,300 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->
->>
->> [...snip...]
->>
->>>> Could we maybe have a
->>>> different callback (when the mapping is still guaranteed to be around)
->>>> from where we could update i_blocks on the freeing path?
->>>
->>> Do you mean that we should add a new callback to struct
->>> address_space_operations?
->>
->> If that avoids having to implement truncation completely ourselves, that might be one
->> option we could discuss, yes.
->>
->> Something like:
->>
->> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
->> index 7c753148af88..94f8bb81f017 100644
->> --- a/Documentation/filesystems/vfs.rst
->> +++ b/Documentation/filesystems/vfs.rst
->> @@ -764,6 +764,7 @@ cache in your filesystem.  The following members are defined:
->>                 sector_t (*bmap)(struct address_space *, sector_t);
->>                 void (*invalidate_folio) (struct folio *, size_t start, size_t len);
->>                 bool (*release_folio)(struct folio *, gfp_t);
->> +               void (*remove_folio)(struct folio *folio);
->>                 void (*free_folio)(struct folio *);
->>                 ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->>                 int (*migrate_folio)(struct mapping *, struct folio *dst,
->> @@ -922,6 +923,11 @@ cache in your filesystem.  The following members are defined:
->>         its release_folio will need to ensure this.  Possibly it can
->>         clear the uptodate flag if it cannot free private data yet.
->>
->> +``remove_folio``
->> +       remove_folio is called just before the folio is removed from the
->> +       page cache in order to allow the cleanup of properties (e.g.,
->> +       accounting) that needs the address_space mapping.
->> +
->>  ``free_folio``
->>         free_folio is called once the folio is no longer visible in the
->>         page cache in order to allow the cleanup of any private data.
->> diff --git a/include/linux/fs.h b/include/linux/fs.h
->> index 8b3dd145b25e..f7f6930977a1 100644
->> --- a/include/linux/fs.h
->> +++ b/include/linux/fs.h
->> @@ -422,6 +422,7 @@ struct address_space_operations {
->>         sector_t (*bmap)(struct address_space *, sector_t);
->>         void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
->>         bool (*release_folio)(struct folio *, gfp_t);
->> +       void (*remove_folio)(struct folio *folio);
->>         void (*free_folio)(struct folio *folio);
->>         ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);
->>         /*
->> diff --git a/mm/filemap.c b/mm/filemap.c
->> index 6cd7974d4ada..5a810eaacab2 100644
->> --- a/mm/filemap.c
->> +++ b/mm/filemap.c
->> @@ -250,8 +250,14 @@ void filemap_free_folio(struct address_space *mapping, struct folio *folio)
->>  void filemap_remove_folio(struct folio *folio)
->>  {
->>         struct address_space *mapping = folio->mapping;
->> +       void (*remove_folio)(struct folio *);
->>
->>         BUG_ON(!folio_test_locked(folio));
->> +
->> +       remove_folio = mapping->a_ops->remove_folio;
->> +       if (unlikely(remove_folio))
->> +               remove_folio(folio);
->> +
->>         spin_lock(&mapping->host->i_lock);
->>         xa_lock_irq(&mapping->i_pages);
->>         __filemap_remove_folio(folio, NULL);
->>
->
-> Thanks for this suggestion, I'll try this out and send another revision.
->
->>
->> Ideally we'd perform it under the lock just after clearing folio->mapping, but I guess that
->> might be more controversial.
->>
+Changes in v5:
+ - fix build error in [PATCH v4 24/31] (reported by kernel test robot)
+ - move the declaration of reparent_memcg_state_local() and
+   reparent_memcg_lruvec_state_local() into mm/memcontrol-v1.h file.
+   (suggested by Shakeel Butt, and due to some function dependencies, I keep
+    reparent_memcg_lruvec_state_local() in place)
+ - convert objcg to be per-memcg per-node type
+ - hold the per-node lru locks to reparent per-node objcg and lru folios, which
+   fix the potential lockdep warning
+   (pointed by Usama Arif and suggested by Shakeel Butt)
+ - use try_charge_memcg() directly in charge_memcg()
+   (suggested by Shakeel Butt)
+ - collect Acked-bys
+ - rebase onto the next-20260224
 
-I'm not sure which lock you were referring to, I hope it's not the
-inode's i_lock? Why is calling the callback under lock frowned upon?
+Changes in v4:
+ - fix commit message in [PATCH v3 23/30] (pointed by Baoquan He)
+ - move lruvec_lock_irq() and firends to mm/memcontrol.c to fix the compilation
+   error in [PATCH v4 24/31] (reported by LKP)
+ - include parent_lruvec() within the RCU lock in lru_note_cost_unlock_irq() in
+   [PATCH v4 24/31] (pointed by Harry Yoo)
+ - move the declaration of lru_reparent_memcg() to swap.h
+   (suggested by Muchun Song)
+ - fix lru size update logic in lru_gen_reparent_memcg() in [PATCH v4 26/31]
+   (pointed and suggested by Harry Yoo)
+ - add [PATCH v4 28/31] to use lruvec_lru_size() to get the number of lru pages
+   in count_shadow_nodes() (suggested by Shakeel Butt)
+ - fix reparenting logic of lruvec_stats->state_local in [PATCH v4 29/31]
+   (pointed by Shakeel Butt)
+ - change these non-hierarchical stats to atomic_long_t type to avoid race
+   between mem_cgroup_stat_aggregate() and reparent_state_local() in
+   [PATCH v4 29/31]
+ - make css_killed_work_fn() to be called in rcu work, and use rcu lock +
+   CSS_IS_DYING check to avoid race between
+   mod_memcg_state()/mod_memcg_lruvec_state()
+   (suggested by Shakeel Butt)
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20260128
 
-I found .remove_folio also had to be called from
-delete_from_page_cache_batch() for it to work. Then I saw that both of
-those functions already use filemap_unaccount_folio(), and after all,
-like you said, guest_memfd will be using this callback for accounting,
-so in RFC v2 [1] I used .unaccount_folio instead, and it is called under
-the inode's i_lock from filemap_unaccount_folio().
+Changes in v3:
+ - modify the commit message in [PATCH v2 04/28], [PATCH v2 06/28],
+   [PATCH v2 13/28], [PATCH v2 24/28] and [PATCH v2 27/28]
+   (suggested by David Hildenbrand, Chen Ridong and Johannes Weiner)
+ - change code style in [PATCH v3 8/30], [PATCH v3 15/30] and [PATCH v3 27/30]
+   (suggested by Johannes Weiner and Shakeel Butt)
+ - use get_mem_cgroup_from_folio() + mem_cgroup_put() to replace holding rcu
+   lock in [PATCH v3 14/30] and [PATCH v3 19/30]
+   (pointed by Johannes Weiner)
+ - add a comment to folio_split_queue_lock() in [PATCH v3 17/30]
+   (suggested by Shakeel Butt)
+ - modify the comment above folio_lruvec() in [PATCH v3 24/30]
+   (suggested by Johannes Weiner)
+ - fix rcu lock issue in lru_note_cost_refault()
+   (pointed by Shakeel Butt)
+ - add [PATCH v3 28/30] to fix non-hierarchical memcg1_stats issues
+   (pointed by Yosry Ahmed)
+ - fix lru_zone_size issue in [PATCH v2 24/28] and [PATCH v2 25/28]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20260114
 
-[1] https://lore.kernel.org/all/20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com/T/
+Changes in v2:
+ - add [PATCH v2 04/28] and remove local_irq_disable() in evict_folios()
+   (pointed by Harry Yoo)
+ - recheck objcg in [PATCH v2 07/28] (pointed by Harry Yoo)
+ - modify the commit message in [PATCH v2 12/28] and [PATCH v2 21/28]
+   (pointed by Harry Yoo)
+ - use rcu lock to protect mm_state in [PATCH v2 14/28] (pointed by Harry Yoo)
+ - fix bad unlock balance warning in [PATCH v2 23/28]
+ - change nr_pages type to long in [PATCH v2 25/28] (pointed by Harry Yoo)
+ - incease mm_state->seq during reparenting to make mm walker work properly in
+   [PATCH v2 25/28] (pointed by Harry Yoo)
+ - add [PATCH v2 18/28] to fix WARNING in folio_memcg() (pointed by Harry Yoo)
+ - collect Reviewed-bys
+ - rebase onto the next-20251216
 
->> For accounting you need the above might be good enough, but I am not sure for how many
->> other use cases there might be.
->>
->> --
->> Cheers,
->>
->> David
+Changes in v1:
+ - drop [PATCH RFC 02/28]
+ - drop THP split queue related part, which has been merged as a separate
+   patchset[2]
+ - prevent memory cgroup release in folio_split_queue_lock{_irqsave}() in
+   [PATCH v1 16/26]
+ - Separate the reparenting function of traditional LRU folios to [PATCH v1 22/26]
+ - adapted to the MGLRU scenarios in [PATCH v1 23/26]
+ - refactor memcg_reparent_objcgs() in [PATCH v1 24/26]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20251028
+
+Hi all,
+
+Introduction
+============
+
+This patchset is intended to transfer the LRU pages to the object cgroup
+without holding a reference to the original memory cgroup in order to
+address the issue of the dying memory cgroup. A consensus has already been
+reached regarding this approach recently [1].
+
+Background
+==========
+
+The issue of a dying memory cgroup refers to a situation where a memory
+cgroup is no longer being used by users, but memory (the metadata
+associated with memory cgroups) remains allocated to it. This situation
+may potentially result in memory leaks or inefficiencies in memory
+reclamation and has persisted as an issue for several years. Any memory
+allocation that endures longer than the lifespan (from the users'
+perspective) of a memory cgroup can lead to the issue of dying memory
+cgroup. We have exerted greater efforts to tackle this problem by
+introducing the infrastructure of object cgroup [2].
+
+Presently, numerous types of objects (slab objects, non-slab kernel
+allocations, per-CPU objects) are charged to the object cgroup without
+holding a reference to the original memory cgroup. The final allocations
+for LRU pages (anonymous pages and file pages) are charged at allocation
+time and continues to hold a reference to the original memory cgroup
+until reclaimed.
+
+File pages are more complex than anonymous pages as they can be shared
+among different memory cgroups and may persist beyond the lifespan of
+the memory cgroup. The long-term pinning of file pages to memory cgroups
+is a widespread issue that causes recurring problems in practical
+scenarios [3]. File pages remain unreclaimed for extended periods.
+Additionally, they are accessed by successive instances (second, third,
+fourth, etc.) of the same job, which is restarted into a new cgroup each
+time. As a result, unreclaimable dying memory cgroups accumulate,
+leading to memory wastage and significantly reducing the efficiency
+of page reclamation.
+
+Fundamentals
+============
+
+A folio will no longer pin its corresponding memory cgroup. It is necessary
+to ensure that the memory cgroup or the lruvec associated with the memory
+cgroup is not released when a user obtains a pointer to the memory cgroup
+or lruvec returned by folio_memcg() or folio_lruvec(). Users are required
+to hold the RCU read lock or acquire a reference to the memory cgroup
+associated with the folio to prevent its release if they are not concerned
+about the binding stability between the folio and its corresponding memory
+cgroup. However, some users of folio_lruvec() (i.e., the lruvec lock)
+desire a stable binding between the folio and its corresponding memory
+cgroup. An approach is needed to ensure the stability of the binding while
+the lruvec lock is held, and to detect the situation of holding the
+incorrect lruvec lock when there is a race condition during memory cgroup
+reparenting. The following four steps are taken to achieve these goals.
+
+1. The first step  to be taken is to identify all users of both functions
+   (folio_memcg() and folio_lruvec()) who are not concerned about binding
+   stability and implement appropriate measures (such as holding a RCU read
+   lock or temporarily obtaining a reference to the memory cgroup for a
+   brief period) to prevent the release of the memory cgroup.
+
+2. Secondly, the following refactoring of folio_lruvec_lock() demonstrates
+   how to ensure the binding stability from the user's perspective of
+   folio_lruvec().
+
+   struct lruvec *folio_lruvec_lock(struct folio *folio)
+   {
+           struct lruvec *lruvec;
+
+           rcu_read_lock();
+   retry:
+           lruvec = folio_lruvec(folio);
+           spin_lock(&lruvec->lru_lock);
+           if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
+                   spin_unlock(&lruvec->lru_lock);
+                   goto retry;
+           }
+
+           return lruvec;
+   }
+
+   From the perspective of memory cgroup removal, the entire reparenting
+   process (altering the binding relationship between folio and its memory
+   cgroup and moving the LRU lists to its parental memory cgroup) should be
+   carried out under both the lruvec lock of the memory cgroup being removed
+   and the lruvec lock of its parent.
+
+3. Finally, transfer the LRU pages to the object cgroup without holding a
+   reference to the original memory cgroup.
+
+Effect
+======
+
+Finally, it can be observed that the quantity of dying memory cgroups will
+not experience a significant increase if the following test script is
+executed to reproduce the issue.
+
+```bash
+#!/bin/bash
+
+# Create a temporary file 'temp' filled with zero bytes
+dd if=/dev/zero of=temp bs=4096 count=1
+
+# Display memory-cgroup info from /proc/cgroups
+cat /proc/cgroups | grep memory
+
+for i in {0..2000}
+do
+    mkdir /sys/fs/cgroup/memory/test$i
+    echo $$ > /sys/fs/cgroup/memory/test$i/cgroup.procs
+
+    # Append 'temp' file content to 'log'
+    cat temp >> log
+
+    echo $$ > /sys/fs/cgroup/memory/cgroup.procs
+
+    # Potentially create a dying memory cgroup
+    rmdir /sys/fs/cgroup/memory/test$i
+done
+
+# Display memory-cgroup info after test
+cat /proc/cgroups | grep memory
+
+rm -f temp log
+```
+
+Comments and suggestions are welcome!
+
+Thanks,
+Qi
+
+[1].https://lore.kernel.org/linux-mm/Z6OkXXYDorPrBvEQ@hm-sls2/
+[2].https://lwn.net/Articles/895431/
+[3].https://github.com/systemd/systemd/pull/36827
+
+Muchun Song (22):
+  mm: memcontrol: remove dead code of checking parent memory cgroup
+  mm: workingset: use folio_lruvec() in workingset_refault()
+  mm: rename unlock_page_lruvec_irq and its variants
+  mm: vmscan: refactor move_folios_to_lru()
+  mm: memcontrol: allocate object cgroup for non-kmem case
+  mm: memcontrol: return root object cgroup for root memory cgroup
+  mm: memcontrol: prevent memory cgroup release in
+    get_mem_cgroup_from_folio()
+  buffer: prevent memory cgroup release in folio_alloc_buffers()
+  writeback: prevent memory cgroup release in writeback module
+  mm: memcontrol: prevent memory cgroup release in
+    count_memcg_folio_events()
+  mm: page_io: prevent memory cgroup release in page_io module
+  mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
+  mm: mglru: prevent memory cgroup release in mglru
+  mm: memcontrol: prevent memory cgroup release in
+    mem_cgroup_swap_full()
+  mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+  mm: workingset: prevent lruvec release in workingset_refault()
+  mm: zswap: prevent lruvec release in zswap_folio_swapin()
+  mm: swap: prevent lruvec release in lru_gen_clear_refs()
+  mm: workingset: prevent lruvec release in workingset_activation()
+  mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+  mm: memcontrol: eliminate the problem of dying memory cgroup for LRU
+    folios
+  mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+
+Qi Zheng (10):
+  mm: vmscan: prepare for the refactoring the move_folios_to_lru()
+  mm: thp: prevent memory cgroup release in
+    folio_split_queue_lock{_irqsave}()
+  mm: zswap: prevent memory cgroup release in zswap_compress()
+  mm: do not open-code lruvec lock
+  mm: vmscan: prepare for reparenting traditional LRU folios
+  mm: vmscan: prepare for reparenting MGLRU folios
+  mm: memcontrol: refactor memcg_reparent_objcgs()
+  mm: workingset: use lruvec_lru_size() to get the number of lru pages
+  mm: memcontrol: prepare for reparenting non-hierarchical stats
+  mm: memcontrol: convert objcg to be per-memcg per-node type
+
+ fs/buffer.c                      |   4 +-
+ fs/fs-writeback.c                |  22 +-
+ include/linux/memcontrol.h       | 191 ++++++-----
+ include/linux/mm_inline.h        |   6 +
+ include/linux/mmzone.h           |  17 +
+ include/linux/sched.h            |   2 +-
+ include/linux/swap.h             |  25 +-
+ include/trace/events/writeback.h |   3 +
+ kernel/cgroup/cgroup.c           |   8 +-
+ mm/compaction.c                  |  43 ++-
+ mm/huge_memory.c                 |  22 +-
+ mm/memcontrol-v1.c               |  31 +-
+ mm/memcontrol-v1.h               |   8 +
+ mm/memcontrol.c                  | 562 ++++++++++++++++++++-----------
+ mm/migrate.c                     |   2 +
+ mm/mlock.c                       |   2 +-
+ mm/page_io.c                     |   8 +-
+ mm/percpu.c                      |   2 +-
+ mm/shrinker.c                    |   6 +-
+ mm/swap.c                        |  59 +++-
+ mm/vmscan.c                      | 273 +++++++++++----
+ mm/workingset.c                  |  30 +-
+ mm/zswap.c                       |   5 +
+ 23 files changed, 904 insertions(+), 427 deletions(-)
+
+-- 
+2.20.1
+
 
