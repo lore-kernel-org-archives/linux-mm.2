@@ -4,85 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B454EFD3774
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C648FD3775
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:42:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2026B0089; Wed, 25 Feb 2026 11:41:58 -0500 (EST)
+	id D39866B008A; Wed, 25 Feb 2026 11:41:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19FC56B008A; Wed, 25 Feb 2026 11:41:58 -0500 (EST)
+	id CB9596B008C; Wed, 25 Feb 2026 11:41:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CC6C6B008C; Wed, 25 Feb 2026 11:41:58 -0500 (EST)
+	id AF2716B0092; Wed, 25 Feb 2026 11:41:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E8BC86B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:41:57 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B4E61C1A7
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:41:56 +0000 (UTC)
-X-FDA: 84483545832.22.BF83B41
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 94DAD18000D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:41:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="JrMI/oge";
-	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DC5C6B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:41:59 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 477471405E6
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:41:59 +0000 (UTC)
+X-FDA: 84483545958.12.270226B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B85BA80002
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:41:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n+xg12JP;
+	spf=pass (imf02.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772037714;
+	s=arc-20220608; t=1772037717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Fxhu6JylkiDzMEjDuKttQE1tDuQQiQGKZbk6dmKVauI=;
-	b=GvL+hdLNtLzJEDBY/lNJIp4sVew32Ra/kSSVLM9ncA0eQwNhpX/t8tILXEl1K0NXHZKWxa
-	xGIBLjyhA+uwkAOazWW4k1XnNgXfp+yng51YsgU+EWx8HOUPz82Dnb4D4bfxriOTW5JtJB
-	AKifTR82P+37/yyDF+dPpSGrnl+qbGs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xwOhCvX5hfnB7th9RFNwJ77Zve9wqw3uYjbXiHZmzSM=;
+	b=6hvyO21xIvD8RgN6x3egBL3/T0jPpZWxtHT+bZsSEk9BAcKXIcWYYY0dZsEBHlNflUcNZi
+	Py4cdrocYlUuLaeQeOJwuURHlgxYZglYgrylPiPCqOVDAs5SnMuEDlE3gj1Phk7I7VUn7G
+	hUFQpUDQux89bfX577msdty0gdqEmQw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="JrMI/oge";
-	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037714; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n+xg12JP;
+	spf=pass (imf02.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037717; a=rsa-sha256;
 	cv=none;
-	b=LjeYKC3SlM3AGSBOajl2Jmoc6YtCEIWEdUUJjaZNatpwAYneVm6DeBfsEYDar9yeEipxOq
-	34bWmDVtFweVeqiolgLfiYKuwTNn/SlQQOsoV3pa3stRtlVEKiaKlim6j/2r3EbapMGTKk
-	4jpu4T36OB24JsxhReP/vEsU04hxZiQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=Fxhu6JylkiDzMEjDuKttQE1tDuQQiQGKZbk6dmKVauI=; b=JrMI/ogeMG5ARWoH7nHxTdwz1c
-	1WigUWPSDL/tBc6/MJCvGPEsYLso4MDLWEQ67hdA9u6mxgKSfEZck3k0WZpk5nP+XTLv3e4euQ9Rc
-	fBhqQppdIDwa8rLrvOx3oqqfp0mFjlpUXwtBa/Rt5TEiE8fhekPjOMYGdm5lZZNShw3QAiNGaoqCx
-	KY7VvhUCR/rpICJMpLn+Ge/NN8wawNIhBOfgMY8aq1Hwv71R1U3szl7eankJB9q+tkXgkoeEjXN8v
-	RJt6NQU5eOzDbWKskkRx9IIz/tJLs+/KLyMShzZoXtmfMOmbr2uSZCk2hhVovwxujRt+800kJ8VK9
-	MOuFv+Ag==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvHfV-00000001K4m-1vwH;
-	Wed, 25 Feb 2026 16:23:21 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 0/3] Make memcg location more flexible
-Date: Wed, 25 Feb 2026 16:22:14 +0000
-Message-ID: <20260225162319.315281-1-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
+	b=gqrrg5HxtPVMLmqCOYhV+Pt9TKCoWiP+8CNtJeTczCsnHA+9boEZ7tEUpYddQReqbbeXFr
+	CK6IN8IeRHmZESnm4QqseDFglDjvHif3rqDYtHuOkDML4ZjqBD2JPX6j3lLzkJyem08d51
+	hyQclWpk6tqJvPz4Ivt2EkIbCIjaz/0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 08FC860126;
+	Wed, 25 Feb 2026 16:41:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3297DC116D0;
+	Wed, 25 Feb 2026 16:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772037716;
+	bh=RsGWTxEf7XecP10VMIRwvUSVG8Qsr83RzrgZ5IzF8FI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=n+xg12JPezepMjFSTJolxFs8rNtU/+FapKmNzxdb/yaHfCvOEPJ6mOianSuwJ3HB4
+	 jE3Ot5ZU6GHmh11K/S+fwE9WMB6m+Vwp8SokCYu1VmKfKN8aR3eIuhv8R3ybaKjmv0
+	 efD4dDCcFNqnMcb/eORXibFrZdR7YGUy+z9AKrSPdZpzcx+qh+1SLmvXULdYsGx3BT
+	 lIFy6l+hpnInUBMIomFEw0v7FdyjjUcLg7GjjG3HE2J2UAvtjb9xdMjipwGGgLNiGh
+	 XaNqsaakVso0/STbFhI6IO0+eqrYd7vRP3dHDYicVFqkj7cQOyLOoxk5pNOvFOOtw3
+	 +vMLUKA5T16mg==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH 0/7] dma-buf: heaps: Turn heaps into modules
+Date: Wed, 25 Feb 2026 17:41:48 +0100
+Message-Id: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 94DAD18000D
-X-Stat-Signature: fdpwna9ne8ud8rxg37n3stz1y4d7yibm
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MywqEMAxA0V+RrA3U+ADnVwYX0aYa8EVDhwHx3
+ y0uz+LeC0yiisGnuCDKT02PPaMqC5gW3mdB9dlAjjpH1KLfGMcUcBE+DdlwO3xaxbBydTPWMvW
+ BGHJ+Rgn6f9ff4b4fj1bsG2oAAAA=
+X-Change-ID: 20260225-dma-buf-heaps-as-modules-1034b3ec9f2a
+To: Sumit Semwal <sumit.semwal@linaro.org>, 
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+ "T.J. Mercier" <tjmercier@google.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Robin Murphy <robin.murphy@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+ iommu@lists.linux.dev, linux-mm@kvack.org, 
+ Maxime Ripard <mripard@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1658; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=RsGWTxEf7XecP10VMIRwvUSVG8Qsr83RzrgZ5IzF8FI=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJnz1fxsJSoPiF0/6nFZ8aiH50IR++QHe2acfuV99o3Ur
+ b8ySw/bd0xlYRDmZJAVU2R5IhN2enn74ioH+5U/YOawMoEMYeDiFICJmGxgrK+6GlaicfGcTlM7
+ j1HSN+2aLWFpC6+58f3Ksl4fWK82++OBaXObyvu/3GDf+lfy4bsblxjrlDyEk+dOmTt1f4tlj+L
+ D544WizcUfH6/eWZLdt9O3qyk3guqU24edFvzLdMucMm8krc+AA==
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-HE-Tag: 1772037713-109607
-X-HE-Meta: U2FsdGVkX1/UZjY27FIy0Hhpv2iZ9adfeba22aHQHkZ37ta+GNKO0XSFlRbEGew/K1ZY1vyoEK0ngH6O5dFSSuZA0sa5KICtqWEY7jar8AYCG/9Ccn9zLXkqBd9xbK+JhMUSY2ViU6zeRhkrJfVeymRi5jZPEQi9DYo9mUgIQvMY3xV9Rr+1wo3p9nyQkSgmkPBCctl0xZ0bwRcxi90Q5aQNk7p+cZnO8S4EmS3Uy96R14kH3knaRKYicjauLK+ewMId4Gm5k5m//uqMdA3WY1zqkPUx78znUdEgPBuTK5V0c4/JhpznUNdzKFgBoQA4/4cfN8vUiuoG6Ks5orOT2wNJ6FcSPCCbwmsB0hsVURSSHvZHbXnHXZ7Wq4dfga9aw0fKvZo2xm3wYjCVa4jj/B7A3dWzbfVoECUk3j5XQod7mfaglXwJT8Vz2uW3z3dYzvvWAEet73dGtDfnMHntLXX9ccbKP3ZlLTOdmor42wbP4K5A3j5KQEPMijB7vmc6coJXqJv14f11yBJUmw217GLK5eNWHo+3xc2NfGvYG7/HF3KqLAmlfTMGq5IEzmkg80TE24HN8tYcyPyY0eCTNOQXDvZ0f6TkgIJ8c6+H1Bs0CMi/BXdIRgtC7jURLnOdm7lxpDi+BNakAw3zV4pX1RPA2ErjGyNgrSBPqZytmnorLu/NpcVC4d9lKS7TgoarLv8HSeguBq3BvxZjDpptV8WTJ8Jyuk/K/jQQzXqwnWNMihEWdOT/p1yLVgMVSHNcSxqJM+CrlgFtyea4I6tSJnd3FKRM0EGyZJvNvNN0oEVaNquCY2DJVda2L80P4H7gvjyR3pd00cRJufsLwN0OxehHtpt8q06lue8mztmxek5mkCtIu1ecuhYIya6PbZLsw8zhFQIzk7/tZnX3Gp9wXj8FfEn6OC0RvvphFRQnMdJ3hJGUcHbVZzbRFHxwRPaKfYI1/xNCPGmxxgOKRUQ
- Q7uowp3q
- 45zKtDjD037S9N78CsZo/9UB8DgTV50GNc9889w24CcPD5eOgHgRTieH9caz6xyE3CtR1o7yg2LQudFL1S0e62qZxBTM9Na2pzr8XJjWpik5bL2iGLDXiUB606/Lq3JecYqPiE89kIAg7+gwFhr5SII+YhZOjx57APBBB2hpOo772p3GjzETIU8V/YAixv8FrNJgQEKn4gHCRnnZaJo8EY1Y51bSYmP4ZtPISAUJesHX11mOnX0I7oGDtxmNORTnIiFkLgo/aoeVZmdU=
+X-Rspamd-Queue-Id: B85BA80002
+X-Stat-Signature: gf619egtdh7c169gusxbped3rgcfac1q
+X-HE-Tag: 1772037717-269622
+X-HE-Meta: U2FsdGVkX18QDSF5ooh67WOxEoq4vtVyLCMa4tb71W0Zvrro0L0jk6ErPnjTiNkBPLigpcK7Ja1PGsu42p15DKU8mlhARr3Sk/y9rX3GEwELDFKONYLHX+YYI9UJS7XYfqy05FJz46I6Onk4vwsf24Zk5quMxkRQwwAY2elGCPXT6/VONq6S+0ABt5bfcGrfhgVVRV26Xg4v4vUTG/7N+EnAyDOwHxO3KmisKEt4Lfwp8gpoY0fRAFbC6hB/SsAHGOzQN13rlef9VuVrwqeRGd4iXt3eonWnqSgqeCXfdeuEYhDvpkcMJiWHW2bDcu7BqxOZc3y2tKFJuScEWMmpw7uF9cCS7WZnPft7aEX2Iil0ezz+FXKAZnO5zEC+lBc/UOwODK2sy1tfvu3+EnVD31yKlp99hecTCZHeci34Ks9tEgst5IN0WfBY++TmXXc1xbYO5mLWjg2Sw6jDJbxU0HRj73YbQXmgogT3tIuJVyH0yB9pJWqleXnTq05r+3cci8TquL3tx2fZmY+Ez1GqHOtjIfJlUa6jxX0BKJpEO+sWM0g2mWDTAWUPATrlOCUHeHAYHJ4qvLKRM16oc7l02N/6dy3vy3k3MfmY9SyuSt/2q+O5izr86nc3EEYAEDi0WRJpXtIMRKb6kpq4RTi8XDWmdClQgpOP0JVblSwrv7+woARnKJKW8q2Tn4UEb8GuEh7G//FMgtmBvYHdCB8R0VbYNgWiW8GKmdED2Zl/4YSFliM9jx1U7oZGIK5cd/mXnXJ/eYLAWXMoTxUMfv9KeWZzJBXy2zFRXEW5cAZ1dckqd7VR7f54VgyjD+wx7bMN2pIZ2zqmARhj/3G+hMh5NyzkRS3EBiT0g2jXXtyTxJIbPW0LikHhHChJ4KMzhuhg4HFh6uqUqZA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,25 +113,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Different memdescs should have the flexibility to place their memcg
-wherever they need to.  That means that instead of indirecting through
-lruvec_stat_mod_folio() and extracting the memcg from the folio,
-we need an interface which takes the memcg as a parameter.  It turns
-out we already need to do that for slabs, and this memcg_stat_mod()
-interface also works for that use case.
+Hi,
 
-Matthew Wilcox (Oracle) (3):
-  memcg: Add memcg_stat_mod()
-  memcg: Simplify mod_lruvec_kmem_state()
-  ptdesc: Account page tables to memcgs again
+The recent introduction of heaps in the optee driver [1] made possible
+the creation of heaps as modules.
 
- include/linux/mm.h       | 15 +++++++++++++--
- include/linux/mm_types.h |  6 +++---
- include/linux/vmstat.h   |  9 ++++++++-
- mm/memcontrol.c          | 40 ++++++++++++++--------------------------
- 4 files changed, 38 insertions(+), 32 deletions(-)
+It's generally a good idea if possible, including for the already
+existing system and CMA heaps.
 
+The system one is pretty trivial, the CMA one is a bit more involved,
+especially since we have a call from kernel/dma/contiguous.c to the CMA
+heap code. This was solved by turning the logic around and making the
+CMA heap call into the contiguous DMA code.
+
+Let me know what you think,
+Maxime
+
+1: https://lore.kernel.org/dri-devel/20250911135007.1275833-4-jens.wiklander@linaro.org/
+
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+Maxime Ripard (7):
+      dma: contiguous: Turn heap registration logic around
+      mm: cma: Export cma_alloc and cma_release
+      mm: cma: Export cma_get_name
+      mm: cma: Export dma_contiguous_default_area
+      dma-buf: heaps: Export mem_accounting parameter
+      dma-buf: heaps: cma: Turn the heap into a module
+      dma-buf: heaps: system: Turn the heap into a module
+
+ drivers/dma-buf/dma-heap.c          |  1 +
+ drivers/dma-buf/heaps/Kconfig       |  4 ++--
+ drivers/dma-buf/heaps/cma_heap.c    | 21 +++++----------------
+ drivers/dma-buf/heaps/system_heap.c |  5 +++++
+ include/linux/dma-map-ops.h         |  5 +++++
+ kernel/dma/contiguous.c             | 27 +++++++++++++++++++++++++--
+ mm/cma.c                            |  3 +++
+ 7 files changed, 46 insertions(+), 20 deletions(-)
+---
+base-commit: 499a718536dc0e1c1d1b6211847207d58acd9916
+change-id: 20260225-dma-buf-heaps-as-modules-1034b3ec9f2a
+
+Best regards,
 -- 
-2.47.3
+Maxime Ripard <mripard@kernel.org>
 
 
