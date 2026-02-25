@@ -4,131 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8882DFD3769
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 15:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D8CFD3769
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 15:48:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76E36B0089; Wed, 25 Feb 2026 10:44:37 -0500 (EST)
+	id 731806B008C; Wed, 25 Feb 2026 10:48:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFA7B6B0092; Wed, 25 Feb 2026 10:44:37 -0500 (EST)
+	id 6F22C6B0095; Wed, 25 Feb 2026 10:48:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC5006B0095; Wed, 25 Feb 2026 10:44:37 -0500 (EST)
+	id 61F676B0096; Wed, 25 Feb 2026 10:48:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A955D6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:44:37 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27563BA592
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:44:37 +0000 (UTC)
-X-FDA: 84483401394.14.F09920B
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1E05F1C0004
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:44:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NmxfWJI2;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772034275;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E42B6B008C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 10:48:39 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E02D21B718F
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:48:38 +0000 (UTC)
+X-FDA: 84483411516.02.0DE89CF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B9DCB4000C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 15:48:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772034517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JYMokGfjxIyugJzvHNVEK04XDDC0cpUvKjNgXaP6x3g=;
-	b=YcYJbPD98Jvsc17l4U9NNIoBhKfB8TMItL5BXO7PU+LBcom+JBjcuCgv54ZGJidFTg6Fbp
-	fWEcg89wwHdjtQIxrdwXzUTRvURHKPf1hgbOnwsKAGv/vNIEvtQfmDCV0g9cFRkBhRWDxK
-	1PG65P9f2v1kbL/IISc1zRRV2Px/DAw=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NmxfWJI2;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772034275; a=rsa-sha256;
-	cv=pass;
-	b=PwLvSl6yDLDlsKBBiCY8VIgc3MH0c1GJV8dnZNTUpLI6qGX9jE8SUX2MYZ6JHeLVIL349D
-	DG25ygVXt3hdRT2TciIZxALdtm2pSDCegGGMEOGSFjsTgAQRWHKt6csFu8e0faxP/a7VCz
-	28EdUrFYl1H+ECYPbA7EacPu1FHCIIM=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8842e5a2a1so970102166b.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:44:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772034274; cv=none;
-        d=google.com; s=arc-20240605;
-        b=V2nVrKUVylc8eLjrFjjToEX3mqPFza7GiJUlOejXAkb1XVyGmnZfP4mOoS7kJhleJG
-         47dtaoWfh8WqCgNNloHsrD6ga69frsnCkFsu+LUbauRuNFZSUw1PPGrqseOxj1Focjy0
-         bZYcS1uz4twSe8u/1zoIBEKGBgEfvDNka2FLjHAgfLXtgm20mrGpqX6HfM7r4oCx8E/b
-         negLJ1WK7e1SYBpVCA8WEDcU10Fh/cyVSk5LMmzwDZiZIycPQy7h7jXVo+Fg2wbBJ1un
-         U9UE4ox9tgNEeXi9bSZOm2e16MPI5p/vPNboJlgGy3+GIYwSTrlXNDgvmI52RSF09WUZ
-         Qz1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=JYMokGfjxIyugJzvHNVEK04XDDC0cpUvKjNgXaP6x3g=;
-        fh=AtEVF4eguTH8npBABuC2B3F/ANAn4hdROiKgEITwdDU=;
-        b=X6i7zWzmUmoLLIropkbCcrBcJwtRiiqCaeIB5hoX+WvuYNoBPJ9D7GJ9pQmCAtswIu
-         7DGKaW8U5EVyCpwWxv6UQ9W9Pr9q3JjZqDBLhDRjRirddyKV4eQjx8weDtgdxlR//lm4
-         maQA8LllZEuBpGOshdPscLnBTSeJQOFXMfPnUaVB5ZwPGovIWrWqzD8AW2Iqjc/r2u6u
-         G31xrp+BI4ZiYUhUEXRGn+/H9lwF7rP0ft1HJrq3rnAWSpKX+gN5u1XSciwG3MUHTLZe
-         yBbroe2Qdxw5dE7wXlNJSS825jV1A3ToIPnbbJZ2Q+hiMqkoo2grbXQNn+dNtgVL8Bx4
-         fvXw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772034274; x=1772639074; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JYMokGfjxIyugJzvHNVEK04XDDC0cpUvKjNgXaP6x3g=;
-        b=NmxfWJI2wkUkLpbZALEuHlM9f8ZUqB3vYLRQFxNCWWhNdgtEMXQKnxjECYNGgvHP1/
-         j2ROx8mqq7sxJL+wSspP1MoGT4XBvjNh6eEcn4lkpe0vNGZ/3vpPC3GwSEugWItV6Kt1
-         lqztVSJAASIkfaQVuc0CADlyYVpiea244zCNSTpP87566jepaxl91b0mAy5C2+olLR+T
-         isXVkP9z0f39lWRyNnvj4PdZBN5hlzD5A9gz1wtshiG8+KvgbzMz1KYkJgD0jf4UIgPI
-         jN9FQb91kxHClkR9dOf5/XyDuK2qLo9ktF3+9FRvVRWOXDJe3KqXEWRYDtlhOdYbWD0m
-         EoXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772034274; x=1772639074;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JYMokGfjxIyugJzvHNVEK04XDDC0cpUvKjNgXaP6x3g=;
-        b=TysnjRboVNLpnjuj0Alsecm+JAfvYlNzZCLqW/RrefAh5JWPWckfn/xia9GwqCLLLP
-         CjMv4MLbLlmWHbaBvlto6cyLXTsYlVO7r1mVmvyxM/w3KmZCM2V8gPNsuG/43NFaYjZJ
-         S6wmWkk128trPezI2+3Ra5nM4Uya7FU9NZzOuHyJNuoqfaBKd/EtOqIann0gDCG0tObd
-         U8xX0CCpbzFeW/lbuq75WHAlu15ekDg94OZq4jWe8QWTRfou4ne3CkW652nyaaLRs/FX
-         HhrfQsoeHLxLAxNcb1GNyfhm1ue1yCiN+qkkfR6jRt/wTvefRhD6eNuwc5RqQE6ogLln
-         GfRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpdUh6uDt+dAsqjAc25G09nbNAmp5z/xAkcw70oytCEOfv05gPSLr91HVGl+Wx2Wja0yFkkfMiBQ==@kvack.org
-X-Gm-Message-State: AOJu0YwKYD80IelhxY+Iv640de/TQWLqVXBQYo3a9LB/fwjf3/UovNP+
-	fGWIhHcl7A9y/UOhiyXmyqs9yS4pPsO1/me3xXtYk/lMxaUToyUVPHdO7VLFkwtTEy/W4psi28N
-	iApvMHsWW59u+ys7+eOtsQWc/reIStqooUhYA
-X-Gm-Gg: ATEYQzyXr4fmG4eV1kSj6VQuozKvuH0seWW+85xsvohZPfeftC3PsyjakII7TEoswAu
-	X61pub1KeLUIaqMP9GwhCoUzyBFaEF0pI9xt+BtSvozvFEA2roKsuN/kMrUjKch14xzfdovL5M/
-	ovk3vzfTJJLdSqHNKyB9wWhFXs6bjwLU3QvmB8y5fFjWZ7oOC2t7CnSAN/WccLuud159dXtoEeJ
-	cnm5IiIQ2HyBWXV8hFU+OpOHDvXrNIdrOzEx+V+zNVf32DO72+16OZzaKXYJhdE9MYTllAXCuxF
-	JaTNGxcrk0sgnEyNNEGfy4N17+kUpePHIw==
-X-Received: by 2002:a17:907:3e83:b0:b7f:f862:df26 with SMTP id
- a640c23a62f3a-b9081a0251bmr1059208666b.14.1772034273280; Wed, 25 Feb 2026
- 07:44:33 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/lzvS+REHUbdU2iRg0EwTmTnXu8Ing0j53s1RrWMvfg=;
+	b=EgRp7yIPeQapjwHHo/xmoo3Hotx3pC9BRkPuA7DdvIPtueM7oVj+HWtOgTVo3DHXBEloDz
+	FXnbK2NVYQhknWupIuGgB+2ZAiA57mB2f90GMmTHnTvMYS6s08gXVSIussBeSlQd5hDczV
+	RR1ZTBIP3u9ovoWEJQ2KC2z62AkK2Fo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772034517; a=rsa-sha256;
+	cv=none;
+	b=yUuftg+WysGYd1xWv9XjpxKHbxXiobpnNNv5h0FzCKgsyg/aVL2hWRohBHC3ZgiabfXlMD
+	48jWDrFF9bINN8pP1JPSxAzyWxwrYsvAUTY+0XYGJY4G4jbviNVBWfBeRhtu43CD55sNch
+	XPmLJLTST87JbxtxyVAuTb348n76CIg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C52A165C;
+	Wed, 25 Feb 2026 07:48:29 -0800 (PST)
+Received: from [10.163.135.208] (unknown [10.163.135.208])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E83C63F62B;
+	Wed, 25 Feb 2026 07:48:30 -0800 (PST)
+Message-ID: <61fc0cd5-58d0-475b-8dab-a453f12c7faf@arm.com>
+Date: Wed, 25 Feb 2026 21:18:27 +0530
 MIME-Version: 1.0
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Wed, 25 Feb 2026 10:44:21 -0500
-X-Gm-Features: AaiRm50LoCwVVLTKr6fVegDhRvGAiAQZ-nq2m-IWbycrGlYdl0TbvkvixqU5Qn0
-Message-ID: <CAN+CAwNwpjRf9QhgAEhBQZD7r7sXCzLXqAKbNrPeMEq=7bX8Jg@mail.gmail.com>
-Subject: [LSF/MM/BPF TOPIC] Making memcg limits tier-aware
-To: lsf-pc@lists.linux-foundation.org
-Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Michal Hocko <mhocko@suse.com>, linux-mm <linux-mm@kvack.org>, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Avoid calling folio_page() with an out-of-bounds
+ index
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+ david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ ankur.a.arora@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260225092628.11687-1-lizhe.67@bytedance.com>
+ <cc08424a-22d9-422c-90dd-54893bda1213@arm.com>
+ <aZ75ydx-FKaFvygT@casper.infradead.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aZ75ydx-FKaFvygT@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E05F1C0004
+X-Rspamd-Queue-Id: B9DCB4000C
 X-Rspamd-Server: rspam02
-X-Stat-Signature: w5uzh6ye5qb74gtyh6jzgakab9nhqzmj
-X-HE-Tag: 1772034274-964660
-X-HE-Meta: U2FsdGVkX1/ZlVBKPM2t1aeyPP3rvuSx/t+OWf9lIqb8V70xV/ZT1iGaLuIUoGX6YEE7vDP3U4LvxYtf9Ixq7TOnsBz8yhCLXaSldHWVrlSjEa27p6lyb8aZ/BBiEp2rShYer2oUIA6h8FICf+dVUymCjsv9XlAJj+i2Zjt/mPkRqEqq9VvR3VRt9q+adB8DNNSMsviozOp21BWFCRM3c5xnfrXR1FWZODiea25qTeygeHvAaEt4zAddA/hnR0j8QRzLNcUcYvuFsypOFIiMpOcSkSFA4m3FWPUX6V0w5gnOpzb9Pe1fhuXeKhWeQX07y06XqQVDFC9VYI5XR5kszVWmwjIluCWmHga303pE0KUFF6Icvm8fFpFm8mJ4FYLZC7ALvAS/LeeoJFXxGch0XDUNYuDtac8cQJZMQVvcMIN+I/u7By7B6HxKxBMShbdzM7GL2H33FJWVOwPQVSwt/78tj/r3oNUImgS+fIzmvja9qAtDnM+eAYpK/xIGN9xXIxBk7gTUvYMUBVWhGt0UEp92c72qEs6DWtTcrYA3Qrvkvki8k7pRjSuwWYYEJkpuNbhNSkmIGLPcJVgWy8n5ocs670kE6/5G94cMOkYViFD0zsu+2adDl7gRsVpoF4bZE6VXhPDibUJsyu3mNqhwc7elCZTviAqzl4cPjAFW3LoLqTnwm6GpJWHHQn/BbnsDPPT+ks80Bmr5vggBzvODPEjSJXVdQ0kgGsCV0TOxv8ohPoaZ/TZT9ZRG0OLbQ7p+FNps7KKlrwbDnNCLOZ/tJAUBNIywaHY4B/Aiu79dS7AkSiVG+OhFjV6vKJ2ziPkXXUf2AxSk/YK/ke9SDtnUtaxijQoD5V6GmUEBjItYmvHWubr5Q5QxVRO1eGE0PwNZn+RgrH5B7ilD6JLT9+HZogM94g3Q84qiUKpKJ3rPGHvFxyOIXfPkw0r1tJwUIYwJj20jbcOkDAGj/FkOLjm
- I38A4ZWe
- wcbfhfPsx+i04ANMfe56W3StBzvcsNOyPFZRbO9G+RCYyFVKubgq4fnaU9BXRIa9pWwNK4b5R67oJ0Uxro9t4hGphmAdkPYas6uSvRyswhaj7d8bSM+hgprTQfVdsl9jSoUZMtvyjro0wTgvtx1RXDgVc430ApUgSnX8SIYGQUj3sqOpp3YBTUltVUegeUYre8BurqOtPbAPClQM0M7tExBpBJzalO3VSwOYrG/YSu50ayoAYYagMENSSveCmaitpCoOGcR/I3Z47itzrv3dYZ+CNeWpJQQ7BGi6nSqDUDO7T5vPJ5HN4f+mwuuiAo1Xut2ihW6ow/jn84XEPuV4gwev/i8qLzbh4pFeJnKzaMvDnEodxVIe7UufWBco7zU3QnleWS74O4V9ri6YXHk+uemzMvs5baSgUq0LD+ZQLOMcsbRvRWwLw8r9WjXs7WZrOzE1EF2MKjgSodiRPxEs2We/gmSIMhSW64QvtwdTdLwiy2Bk6ZFhk/pOaoKd4DBVaqsXCzNQ8TqKQxT1iAkrjyAjHSksdP37udCE1Qs1kCXsGE3I=
+X-Stat-Signature: pjqro9o4ri8uygwwb9tpgf7xbrietmft
+X-HE-Tag: 1772034516-43708
+X-HE-Meta: U2FsdGVkX19MYr/EO1/4RYvMdb50Rhra/oKTfL3+zhhfGTmPc1OdLK+xq9rZS+ZTyfa0JnUZ8CQA29+Mx9/ijc4o/xgMbZ1yve2BPIGqVbPmj0WgvZfCv6mtlt+bN40428qYLO2G0jmUoCkj/fuJyObn7Aib/Dw6sw04ZhRfX1sIPkIjsrtCj9UodWeXPx3qrzQ9x2lSu469wvGnkMHIu+qXnRTVFbu7tfkd1SW2CkmJOxdUD+O5UC4m5mRpXaKr8AQDvB1rugDkxCnEpZlEZwcxx0T4DSLbZ8yY9L2BluGI6+/ahaTP/5KHZcBtCdrmHifyIVQa2DHtxCIOtkclNeQcT7i+bAJlmUO3mZ8uT8SnF0UlAko8SzuoJXnlGTsHk0NLRiv/qL2jQTIoNH3Bz2p/IXNwu6eL/TFcO36QJGK/Uaj7ShZi8YZUey9AatK0EHZ+mPdGcIHmfczsx/uJ9joYm2VbusAozYYENxC8u7uPoHzP/oxI29+gzSTgsMjrSxhzIfG6VHBETRf9etjlCdiQoshBKIr7g21P5Me36zTNNtzwUec7x3CNb6qmjtKTZgzMcxW/OsglFiJiyu3Ii1ViGhtpv/kLcS3T6oh9CA3nxWjmTIAP4KKggxS+YJfwXhNv1jO8CdTn5zLQJ3Fw7xVpaj7Zao9l8IbebUje6n6Mjq64CvPoDVnaj/n5egsODvmcAkDfycZNtECAlnM6qJgzKNdA5eVbZVBg3JGZertMzqGj+XmYxgTdkWCw68glOVlNvAFVRuY8nTSzC71BXot4JaH7twD67mD2lTpvRhTFQQg1jtIyl+K/mAVUDAKIINxyoYDLa6WsPduQk+/34/yf8W6rqze1IUykx6vIYDiITzN8in43drr+Nf5ZL8dmCZOf4/sVSLK2y8FJpIDQVSbQUX6StsFzlHhBddDb6bRc2e3ggD1fHS7P+agdEkGPxlEVlYPPUNW4pArOgrv
+ frA+Vqah
+ grl3nrN0fQpXy4xxofZHR7jg2+SFNVLiJvDRy4IRzpX3C36R7+TAXMiog6SonnKbfEJyzKzQbqJQz8OOwORxotT8cp5fq+7M2xU9VBprd1OKnXG8jHJWf3qXDTuytyTBo/T70mmI0vrNSPMScGUr71yIFyHrqNISQjqHivJTziHR5v5w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,132 +89,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Preface
-=3D=3D=3D=3D=3D=3D=3D
-I=E2=80=99ve sent out an RFC PATCH for this topic, which is available here =
-[1].
-The goal with separating the patch and the topic thread is so that
-there can be a unified discussion thread even if the RFC moves
-forwards in versions.
-
-Introduction
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Memory cgroups provide an interface that allow multiple workloads on a
-host to co-exist, and establish both weak and strong memory isolation
-guarantees. For large servers and small embedded systems alike, memcgs
-provide an effective way to provide a baseline quality of service for
-protected workloads.
-
-This works, because for the most part, all memory is equal (except for
-zram / zswap). Restricting a cgroup's memory footprint restricts how
-much it can hurt other workloads competing for memory. Likewise, setting
-memory.low or memory.min limits can provide weak and strong guarantees
-to the performance of a cgroup.
-
-However, on systems with tiered memory (e.g. CXL / compressed memory),
-the quality of service guarantees that memcg limits enforced become less
-effective, as memcg has no awareness of the physical location of its
-charged memory. In other words, a workload that is well-behaved within
-its memcg limits may still be hurting the performance of other
-well-behaving workloads on the system by hogging more than its
-"fair share" of toptier memory.
-
-Usecases
-=3D=3D=3D=3D=3D=3D=3D=3D
-In [2], I list out two real-life scenarios that can benefit:
-
-VM hosting services must ensure fairness of hostwide resources and
-guarantee a baseline performance. These machines benefit from maximizing
-its baseline performance, rather than maximizing system throughput.
-
-Hosts running isolated workloads with a guaranteed maximum tail latency
-are also in a similar situation. They want each workload to process its
-work (e.g. a query) in a fixed time window, and they would like to
-maximize the system=E2=80=99s throughput at the same time.
-
-In [3], Gregory Price notes a third usecase: hyperscalers deploying
-hosts that run mixed workloads with different owners must also ensure
-fairness across the workloads, as to not reward memory-aggressive
-workloads while punishing the less aggressive workloads by pushing
-them out to lowtiered memory.
-
-Mechanism
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Memcg limits are made tier-aware by scaling effective memory.low/high
-values to reflect the ratio of toptier:total memory available to the
-cgroup. For instance, on a host where 75% of memory is toptier, a
-cgroup=E2=80=99s effective memory.high is scaled to 75% of its value and
-enforced at the toptier.
-
-toptier_ratio =3D toptier_cap / total_cap
-memory.toptier_{low, high} =3D memory.{low, high} * toptier_ratio
-
-As an explicit example:
-On a host with 3:1 toptier:lowtier, say 150G toptier, and 50G lowtier,
-setting a cgroup's limits to:
-memory.min:  15G
-memory.low:  20G
-memory.high: 40G
-memory.max:  50G
-
-Will be enforced at the toptier as:
-memory.min:          15G
-memory.toptier_low:  15G (20 * 150/200)
-memory.toptier_high: 30G (40 * 150/200)
-memory.max:          50G
-
-This prevents the (previously possible) scenario where 3x50G containers
-on the host above can hog all of toptier, while one container is
-pushed out to lowtier.
-
-Topics for Discussion
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-1. In this implementation, we restrict a cgroup=E2=80=99s ability to use mo=
-re
-   than its fair share of toptier memory, even when there is no
-   competition. This extends the natural memcg limits, which don=E2=80=99t
-   let memory.high/max limits go unenforced because the host has free
-   memory. However, tier-aware and tier-agnostic memcg limits arguably
-   serve different purposes.
-
-   Concrete usecases for allowing a cgroup to use more toptier memory
-   than its fair share (while staying within its memcg limits) include
-   systems that keep their hosts underutilized, workloads with low
-   baseline memory usage with transient spikes in usage, and hosts whose
-   total workingset size never exceeds the size of toptier.
-
-   The desired effect can be achieved through a protection-based system
-   that relies on only memory.low to protect workloads, instead of
-   punishing overconsumers. Whether a purely protection-based system can
-   adequately protect its workloads is an open question, however.
-
-   Should this difference be encapsulated in different =E2=80=9Cmodes=E2=80=
-=9D for the
-   user? Or, are existing mechanisms enough to support these usecases?
-   (More context can be found in the Jan. 29 Linux Memory Hotness and
-   Promotion meeting notes [4])
-
-2. In this implementation, we extend the limits to memory.low/high.
-   Are there usecases that may necessitate extending the limits to
-   memory.min/max as well?
-
-3. Are there usecases (and hardware) for systems with 3+ tiers, that
-   need per-tier enforcement, not just toptier enforcement?
-
-4. Are there usecases for users to set their own toptier limits, instead
-   of relying simply on a tier-proportional limit?
-
-5. Are there usecases for individual cgroups opting in, as opposed to
-   enforcing this toggle on a system-wide level? What would it mean for
-   a cgroup to be unrestricted in its toptier usage, while other
-   cgroups are punished?
 
 
-[1] https://lore.kernel.org/linux-mm/20260223223830.586018-1-joshua.hahnjy@=
-gmail.com/
-[2] https://lore.kernel.org/all/20260224161357.2622501-1-joshua.hahnjy@gmai=
-l.com/
-[3] https://lore.kernel.org/all/aZ3ysV-k1UisnPRG@gourry-fedora-PF4VCD3F/
-[4] https://lore.kernel.org/linux-mm/c8bc2dce-d4ec-c16e-8df4-2624c48cfc06@g=
-oogle.com/
+On 25/02/26 7:01 pm, Matthew Wilcox wrote:
+> On Wed, Feb 25, 2026 at 03:35:32PM +0530, Dev Jain wrote:
+>> On 25/02/26 2:56 pm, Li Zhe wrote:
+>>> In folio_zero_user(), the page pointer is calculated via folio_page()
+>>> before checking if the number of pages to be cleared is greater than zero.
+>>> Furthermore, folio_page() does not verify that the page number lies
+>>> within folio.
+>>>
+>>> When 'addr_hint' is near the end of a large folio, the range 'r[0]'
+>>> represents an empty interval. In this scenario, 'nr_pages' will be
+>>> calculated as 0 and 'r[0].start' can be an index that is out-of-bounds
+>>> for folio_page(). The code unconditionally calls folio_page() on a wrong
+>>> index, even though the subsequent clearing logic is correctly skipped.
+>>>
+>>> While this does not cause a functional bug today, calculating a page
+>>> pointer for an out-of-bounds index is logically unsound and fragile. It
+>>> could pose a risk for future refactoring or trigger warnings from static
+>>> analysis tools.
+>>>
+>>> To fix this, move the call to folio_page() inside the 'if (nr_pages > 0)'
+>>> block. This ensures that the page pointer is only calculated when it is
+>>> actually needed for a valid, non-empty range of pages, thus making the code
+>>> more robust and logically correct.
+>>>
+>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>> ---
+>>
+>> Not only the correctness, but even from a perf PoV (folio_zero_user is a
+>> hot path) it may make sense to initialize the variable only when required.
+> 
+> But now calculating 'addr' and 'page' is dependent on calculating
+> nr_pages instead of being an independent calculation.  I'd be *VERY*
+> wary of saying this is a performance win without actually measuring it.
+> CPUs are far more complex than you seem to realise (which is ironic,
+> given your employer).
+> 
+> Now, maybe the compiler is smart enough to realise there isn't a real
+> dependency and it can hoist the calculation out of the 'if'.  But then
+> what have we achieved with this patch?
+
+I did do a compiler analysis in my head, I should have spelled it out
+before R'bing in haste :) My guess was that since the array size is small
+(i.e 3) the compiler should unroll the for loop - that should perhaps
+generate better code with the patch (the two initializations will be done
+inside the branch as opposed to outside).
+
+But your point is that the current code may be CPU friendly (better
+instruction parallelism, etc), so we shouldn't speculate without testing
+(even my compiler logic may be wrong in reality). Indeed. Thank you for
+setting me straight.
+
+> 
+> Honestly, I think this patch is worthless and would not include it.
+> 
+>>
+>>
+>>>  mm/memory.c | 8 +++++---
+>>>  1 file changed, 5 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 07778814b4a8..6f8c55d604b5 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -7343,12 +7343,14 @@ void folio_zero_user(struct folio *folio, unsigned long addr_hint)
+>>>  	r[0] = DEFINE_RANGE(r[2].end + 1, pg.end);
+>>>  
+>>>  	for (i = 0; i < ARRAY_SIZE(r); i++) {
+>>> -		const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
+>>>  		const long nr_pages = (long)range_len(&r[i]);
+>>> -		struct page *page = folio_page(folio, r[i].start);
+>>>  
+>>> -		if (nr_pages > 0)
+>>> +		if (nr_pages > 0) {
+>>> +			const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
+>>> +			struct page *page = folio_page(folio, r[i].start);
+>>> +
+>>>  			clear_contig_highpages(page, addr, nr_pages);
+>>> +		}
+>>>  	}
+>>>  }
+>>>  
+>>
+>>
+
 
