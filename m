@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5505FD3773
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03601FD3770
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:23:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C80276B00B4; Wed, 25 Feb 2026 11:23:27 -0500 (EST)
+	id 5305C6B00B6; Wed, 25 Feb 2026 11:23:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C03CC6B00B5; Wed, 25 Feb 2026 11:23:27 -0500 (EST)
+	id 4DA9B6B00B7; Wed, 25 Feb 2026 11:23:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0F626B00B6; Wed, 25 Feb 2026 11:23:27 -0500 (EST)
+	id 40B3B6B00B8; Wed, 25 Feb 2026 11:23:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE326B00B4
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:23:27 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D12E56947
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:23:27 +0000 (UTC)
-X-FDA: 84483499254.17.B937233
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C7166B00B6
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:23:31 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D27731B7115
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:23:30 +0000 (UTC)
+X-FDA: 84483499380.07.55D82F6
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6867F1C0018
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:23:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WSl4pTZL;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3299F180017
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:23:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=P7IbmXIw;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772036605;
+	s=arc-20220608; t=1772036609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMW7um1zFk3y2lfz3dcqtafdNKn0uB27eRvgbewzzag=;
-	b=p3Xd9iPXGtavYSIDGdF5zasoixl048JwbsNIRgVBp1/mfNMivq0+tnq0pERmsyF6dznCkm
-	Vc1gBfeQRlZvBkE406bUaWfqYKE4s7RM0FeEhXdFSsLT8M+Tzto4oW6QSAcavMKaUICCc5
-	+70VUTy9yzWMTUBrsLdSJSwQ21XDDZI=
+	bh=+00XNNy3xKzd0oEXtdRXCr3SQsysWVmAOu1hobMNKdc=;
+	b=L6LxEzfQhLjG4gV6v8n1PeteaJDCU41yehNjyCHJVzCV9WiGTgoGmpTb6WnYcL1q/IirBm
+	gk3to/IK3PmHgm4HfAsukn4pI9w2suqgou6zvDoPcMj4eThBCCSRrNc/S1AxxFmS1fE0HH
+	OB2eVO06UyLUmd3HGgKUHDQRi022Wzg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WSl4pTZL;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=P7IbmXIw;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036605; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036609; a=rsa-sha256;
 	cv=none;
-	b=XluwwskplfhaEbPxM6hYCytCR5xGnEsnMhjdOEKJ13/YNtaYqi2VyPgCpU18vjNbp0td4F
-	t/upJvwyhOTXZGD97cBIMh7rtXPBotSTiYCmC0+GPBePdJ4wh8QRk2Nv5V8vIAiLZTaSA2
-	A8olaJ94SX3cyt6Xg67UJIO1xXRjOGQ=
+	b=lte1heygAYncGg1sc5xm5xWHjh4cOK1+lzcSexFCcFZ+jXBEFAqFhRqkrjn3W8yfWC2Zz0
+	kUtjZJNF1u/TJ7z3o0GtHzv+Z6h4F7kquO4Uf6C0clIHIoj7i5toxQkzkPo8AbTksHyX78
+	shp6xangwLGi9ddZje8wRWbEtMmVVU8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=lMW7um1zFk3y2lfz3dcqtafdNKn0uB27eRvgbewzzag=; b=WSl4pTZLsw4QoBOULrpeWRN4su
-	1x2EFQQC248KOrGWqT5rhI1D29JewZTTDtKkHdcHMjxaeu1sa1Qp4lgx2y+C0IjwJwPC6kN8afTJ2
-	otuzFjWj4DhjyE1IjV/QD+7cUtc5m8O5AYhcSlPyG2iUJp0SBd2rW5A/nFzljOC2L4/7KeSpqBaag
-	BIgvia44HXomUVR5pYTADpWnUfxrzEh6Pr9i6wOrGL8LAV1PCckVT5A/doM/SUDrLxLZwKTMBhlsB
-	NTbgxrTEHhuzSPX6VL4jbRY7uuAz9uN/ULeRd1i7Dg6uVVW/ag++rFV+rp/F3gZlV8W4gbRlCvbvW
-	3ckFBl6Q==;
+	bh=+00XNNy3xKzd0oEXtdRXCr3SQsysWVmAOu1hobMNKdc=; b=P7IbmXIwZtyE5OQxnBdjckNY8C
+	4Zuk08aWMGTKp+JopyVLEXINpIAkr0i+j+1BVVwHbP5/KHfLay3/rAr8ymGGXp4XDQ1id1t4J/EI0
+	FBtB3lf+QeLEM5SNYqTeB2D7oo5W7x9M+GnPBCs/wEY+46n/7JeRtYrFJGIRYcjYwXTdm7WqeOH6j
+	NvGciAVHFwU/Nq1PmiG237ZA8tbQpPwTWcA0ixRCvNXrhpr7tkPM3AE1cn4PcOO2dCWtCPu2QfhDu
+	9+Ai6ePkPAn+XFoyxycKLLLbTcTxsS9TMHOFWaPUIeMOh8aixmZteNMgHxBXHdiSWPRg/iWC/TNQ6
+	4Gn1YIjw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvHfV-00000001K4s-3Zh8;
+	id 1vvHfV-00000001K4o-2W75;
 	Wed, 25 Feb 2026 16:23:21 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Johannes Weiner <hannes@cmpxchg.org>,
@@ -68,24 +68,23 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Axel Rasmussen <axelrasmussen@google.com>
-Subject: [PATCH 3/3] ptdesc: Account page tables to memcgs again
-Date: Wed, 25 Feb 2026 16:22:17 +0000
-Message-ID: <20260225162319.315281-4-willy@infradead.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: [PATCH 1/3] memcg: Add memcg_stat_mod()
+Date: Wed, 25 Feb 2026 16:22:15 +0000
+Message-ID: <20260225162319.315281-2-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260225162319.315281-1-willy@infradead.org>
 References: <20260225162319.315281-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: smb5m8x9khqeyzgrutpefpeiuqob1881
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6867F1C0018
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772036605-105198
-X-HE-Meta: U2FsdGVkX1/xv1WVnx8+l0XNZxgRF2/d5fZMU0Aoge7sD0+pD7xx+R3D81ISeiJifxcB9/09a6znyk0yDokfHlYl6+E1jLhLqrZP/sezfPJhj+veUIXim0I7ZNnqMNUdwZAI9dx5B6rhy2X7PV4QG6dDCRUA9AWhx0TO0pNDnj+MQKZJaW+mvOluNSEdcbD31t4Y0Tokss79RIq93WFv908DWFEjtRwA6Sne93ndkcHrmNHxmTvgcso9wZiTzPC+GcD8fDju3W2q3mvxsFdHWU1LO8OHdapvO76ZXil9SVAbPPkai56B0TbLz6ttIAqn8jk5VLmjDEFmdlviBKW1zU1pnIbDh3eD96VNVFNrwM2kStXuEAmpUvO9h/n6kfNBRvJj/wbheXSdSREWQQ3qgf79YEm6wS17XH5zbMSXhUotth+TpXh7sqn8wyHHTMjRblYcy+af6Iz//ehopkJ2Jii0yOgaXpfLtlXyFxkO8V5oNZlBgOAN4mjf6wA4iXbvxVKHqy/1zo+VJaajlp3XYck4PcmnhLafEDxCPt3d3Xvd+SZKZoi4ROu3tHMlVcLxps2ldncOlUh85jlU4bJ3O2p5BWpUgVtXnf5E2VoJoudFdAwDmDwQHYl8zSVGcV8eepjeWXXFBf4DGOjeZaH59eOZ1dwxTb4sVSOJNT6W6W29z1Wmo+q0BE6mxn+DKOEdXKWWRUbaTMTCmJKK+UjujHjUeo0EEBs1NndBYGpwf/M7a6nb6Tb783d+foqePoHmCx3vNIXQ6PqnA+Uxs3NmNTgfd/+YbKzknK4wHmGq94DVgAu7hu1gDWdVfg0x6gKRQp33I/n8pfJ9X1A3JwPe31uxxWNbAVzEE1pWdNUWUIJPyW3HoG0ooOH/RnEfjXPzm1gZNFBOXIk5YP+r5bqXW50zWGWIJnY3wZoMihYlxzkM8w2IbX8GToVwt22UkD+quRXt+xa/LimM60PK49g
- KdiqM0Xg
- TIfqlvnIIeFOCyQRxNGNkvyk4ICeBN6MmekoxomT9QpueC8xT5vhauBQqXdrZkLeLWt01tpd5PgrwuCzz5kxLFGzKj6QZJliL4WLQKP7M+kR00I6JJAR+y4zj96el6tkqQnQjZsNI7QssaOwN2EkSjoCW6+JsoR1M2WecvFc0aV6aK2fNrrVxaFA7k6IdvKjSO4fm+1hi8kwq45wPtInCXB5sZ4tFTXHYYBzPakTuKAPVRZeKPAJr2+xbG8nn4zjavGXBj0CljGbwKWv0FvXLmPxIc2bmXKAhdoL6QJdQ3dap+lxTfQJH+x13X6iBck1Z3oTt
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3299F180017
+X-Stat-Signature: uwugnpb368ypjaj868yu6s8ywdbyispg
+X-HE-Tag: 1772036608-433362
+X-HE-Meta: U2FsdGVkX1/0cuoC5SuXFMnBd+6NzMRbF/uFJDIQYW7h4+J2YXGTbFXizoltN0/VOyGROUP5JfVV+ukoKqcy7SmjkfUynPnx/LuUlgBr4E9AE4+9QQQV4FvKVhC52m/Aj9gB+5fFn9zVtKxB7ZLXyS780e3L5v3HTEWs4H9rTvu4PgDEAojj8nBbGZaLnRh1rk8AULkkdtsxcielBxtY7aSAe/RMbxa7cOjiKccfu9jXCanuuRTRhfM3pygpnkT0gD7YgHtTsxYdKk0HchdpDWckoqd6DO/UmibCpMGwJmv5jy4npEl2WxgYkG+gKpXXdrBJIG/rdlcQLtLhKnd0F+NkFezzTr7LlXei6VUHx5jad5Pt0HEzGe7uADdiJwpW9qFbgwrgYtegphbGwP/omaHnORa4hBg1JmbZKbRiCtMRrP6+ZGSIyaK9tyGaOUeqmn6sV8o9VNaNZmJBtzdXtwsRvp9hHP6sS2bmE8JpY6lL5ELrUr8DA72q1mN3AVumpf13tOi96A7DlY8smJnwrEglWYtXsXAhb01wMhSy4t3lh/TwJAMuodlqV3qS+268CHhPLFWVCXb2b7y9nunjG/dXRwPeKWHSoWDvbSWoMPaXFMoU4beX3nJxWpj6IhBhMc9CyJmhEE0i32oUlXLy0i/tlOnCxk3a+bltAo28nLnu5Y9YPQniSWsu7CGZhC2ntOFIIjsoX85+JEv4nc7bQ4bXZNHJ52l1cw8s79a9yejlvla/Fz0SKQSds8y1gPaV8XSKLfyEXwZzSYE6Ha1zfHa8KrI4K7nZHjiFS3qI1+SRjrGq5ASRLeI/tKdbALqkOqC5Jg2ml4gpdEDDSWlIT9frMGTU5r/TZBirkKQMpvGaKoMbnA7jRmNiYdCL7eDCABFzw8Q0pSZBYD+1zumbuM1UeTqZh4OynY7qwD9+XScf/S+bBBBTkbZ6YcmTiG8A76RVonNTXJI/LOoEwI4
+ qhoKn0zy
+ TbAeuN9STL672L0wBPq2AsaG4dzpcyDAblCqiBVyLA5TzZWsgeETrGX9Wef9JM4wxw3HtoP3ntQvy3q5puiemOuXqUQ8weSFJpcp2uixuFg3opHNv/r1B5bTaT+jBZvoEkqqyvF6GyNGtlayz3xCUXReGTZfOFYk4eyCUux1YJ1SZPN8XtutF+ruMcWyjAJVIa0WOhUi5CR1716PKky6QwpYkIuQ7mCFN+XQDpuU4sQOKR4xsG/wiNaBXIdhB8N7Gr2VIcyqqsqN+QZpAHp4BWQjRwNSAfLL6v+5WOhZNYDs1+8eqDONeyIsS6dzzeSmUy9jt+/4KPwEqmgxHDOGo2i2U7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,87 +92,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit f0c92726e89f removed the accounting of page tables to memcgs.
-Reintroduce it.
+This function lets the caller find the memcg somewhere other than
+page->memcg_data.
 
-Fixes: f0c92726e89f (ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor())
-Reported-by: Axel Rasmussen <axelrasmussen@google.com>
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/mm.h       | 15 +++++++++++++--
- include/linux/mm_types.h |  6 +++---
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ include/linux/vmstat.h |  9 ++++++++-
+ mm/memcontrol.c        | 23 +++++++++++++----------
+ 2 files changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 5be3d8a8f806..34bc6f00ed7b 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3519,21 +3519,32 @@ static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
- 	return compound_nr(ptdesc_page(ptdesc));
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..0da38ea25c97 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -518,7 +518,8 @@ static inline const char *vm_event_name(enum vm_event_item item)
+ 
+ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 			int val);
+-
++void memcg_stat_mod(struct mem_cgroup *memcg, pg_data_t *pgdat,
++		enum node_stat_item idx, long val);
+ void lruvec_stat_mod_folio(struct folio *folio,
+ 			     enum node_stat_item idx, int val);
+ 
+@@ -536,6 +537,12 @@ static inline void mod_lruvec_state(struct lruvec *lruvec,
+ 	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
  }
  
-+static inline struct mem_cgroup *pagetable_memcg(const struct ptdesc *ptdesc)
++static inline void memcg_stat_mod(struct mem_cgroup *memcg, pg_data_t *pgdat,
++		enum node_stat_item idx, long val)
 +{
-+#ifdef CONFIG_MEMCG
-+	return ptdesc->pt_memcg;
-+#else
-+	return NULL;
-+#endif
++	mod_node_page_state(pgdat, idx, val);
 +}
 +
- static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+ static inline void lruvec_stat_mod_folio(struct folio *folio,
+ 					 enum node_stat_item idx, int val)
  {
- 	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
-+	struct mem_cgroup *memcg = pagetable_memcg(ptdesc);
- 
- 	__SetPageTable(ptdesc_page(ptdesc));
--	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
-+	memcg_stat_mod(memcg, pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a52da3a5e4fd..b356ef312bc2 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -787,24 +787,27 @@ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 		mod_memcg_lruvec_state(lruvec, idx, val);
  }
  
- static inline void pagetable_dtor(struct ptdesc *ptdesc)
++void memcg_stat_mod(struct mem_cgroup *memcg, pg_data_t *pgdat,
++		enum node_stat_item idx, long val)
++{
++	/* Untracked pages have no memcg, no lruvec. Update only the node */
++	if (!memcg) {
++		mod_node_page_state(pgdat, idx, val);
++	} else {
++		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
++		mod_lruvec_state(lruvec, idx, val);
++	}
++}
++
+ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ 			     int val)
  {
- 	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
-+	struct mem_cgroup *memcg = pagetable_memcg(ptdesc);
+ 	struct mem_cgroup *memcg;
+ 	pg_data_t *pgdat = folio_pgdat(folio);
+-	struct lruvec *lruvec;
  
- 	ptlock_free(ptdesc);
- 	__ClearPageTable(ptdesc_page(ptdesc));
--	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
-+	memcg_stat_mod(memcg, pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+ 	rcu_read_lock();
+ 	memcg = folio_memcg(folio);
+-	/* Untracked pages have no memcg, no lruvec. Update only the node */
+-	if (!memcg) {
+-		rcu_read_unlock();
+-		mod_node_page_state(pgdat, idx, val);
+-		return;
+-	}
+-
+-	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-	mod_lruvec_state(lruvec, idx, val);
++	memcg_stat_mod(memcg, pgdat, idx, val);
+ 	rcu_read_unlock();
  }
- 
- static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 3cc8ae722886..e9b1da04938a 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -564,7 +564,7 @@ FOLIO_MATCH(compound_head, _head_3);
-  * @ptl:              Lock for the page table.
-  * @__page_type:      Same as page->page_type. Unused for page tables.
-  * @__page_refcount:  Same as page refcount.
-- * @pt_memcg_data:    Memcg data. Tracked for page tables here.
-+ * @pt_memcg:         Memcg that this page table belongs to.
-  *
-  * This struct overlays struct page for now. Do not modify without a good
-  * understanding of the issues.
-@@ -602,7 +602,7 @@ struct ptdesc {
- 	unsigned int __page_type;
- 	atomic_t __page_refcount;
- #ifdef CONFIG_MEMCG
--	unsigned long pt_memcg_data;
-+	struct mem_cgroup *pt_memcg;
- #endif
- };
- 
-@@ -617,7 +617,7 @@ TABLE_MATCH(rcu_head, pt_rcu_head);
- TABLE_MATCH(page_type, __page_type);
- TABLE_MATCH(_refcount, __page_refcount);
- #ifdef CONFIG_MEMCG
--TABLE_MATCH(memcg_data, pt_memcg_data);
-+TABLE_MATCH(memcg_data, pt_memcg);
- #endif
- #undef TABLE_MATCH
- static_assert(sizeof(struct ptdesc) <= sizeof(struct page));
+ EXPORT_SYMBOL(lruvec_stat_mod_folio);
 -- 
 2.47.3
 
