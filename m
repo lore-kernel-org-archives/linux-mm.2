@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0248EFD23D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:04:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99444F4BB9E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:04:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23D436B00A7; Wed, 25 Feb 2026 06:04:47 -0500 (EST)
+	id 068F06B00A8; Wed, 25 Feb 2026 06:04:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C0966B00A8; Wed, 25 Feb 2026 06:04:47 -0500 (EST)
+	id F38776B00A9; Wed, 25 Feb 2026 06:04:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CCEB6B00A9; Wed, 25 Feb 2026 06:04:47 -0500 (EST)
+	id E58476B00AB; Wed, 25 Feb 2026 06:04:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E9D576B00A7
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:04:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 613D859592
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:04:46 +0000 (UTC)
-X-FDA: 84482696172.19.CBC1331
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CBEF91A000C
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:04:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T2lCwRmE;
-	spf=pass (imf19.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D41916B00A8
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:04:56 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67CD88BFC6
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:04:56 +0000 (UTC)
+X-FDA: 84482696592.13.5021C39
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9BA9A40003
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:04:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=f1W43m2p;
+	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772017484;
+	s=arc-20220608; t=1772017494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=g5KVqfadpQstZ/7tuEPjkEGdNo2tYUxFPdG16RZ/7OI=;
-	b=bc7QPj2sOnwshoD3CYbePgvACf2OiSeMcM4LYDud8YVtxeE4+jWMZnZnR9ato+GVLsiR7d
-	uSrwEvIQ0kW9Ej5BlDAIzNvxosJYEBBD1zze4wrHJnzeZvSYPL3QeJGY0Rbb0D6owOlNrf
-	fLVxW6buAMPbYSNue+MfJ9RLr3oH34Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017484; a=rsa-sha256;
-	cv=none;
-	b=xb3gAxd3alsq3dnj/+gLuA7vB8+qN7emDvMCMLnnycSq932Ddywcvanaj86ZoSfQSIMmPj
-	vgjdOTTbmLbQXIbp7j3kzHFv2b8LU1LSKqWxH8jLb36UmQ0zyvFP6prXUdEjtElVkJaU37
-	nqBvzfdu9Mcfqq5h2UB7yp/JjgNTn+I=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J868TVnPJgR7LCa7+/bcaLOytmiRzF7462XYcNyDyzw=;
+	b=S0asjtXk3vt2sN+Wmhp4BkNfCIfiArkjRGQgsHzH5/PrhXecbR+d0iSVmfXFhyiOmNMAkD
+	To/rjKuXS1EGXswB/ZS2hSfWz/khzc3mKAptEK88IIitkHTEDUb2qCaqRvCi169D+B621o
+	WOcMf5dq6vdGkLC9Y3ONhvEJqhfkfRE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T2lCwRmE;
-	spf=pass (imf19.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=f1W43m2p;
+	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ad9f2ee29aso12454725ad.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:04:44 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017494; a=rsa-sha256;
+	cv=none;
+	b=YuPr/P4sybQcTMw69/5BVS5QojgUxnvqFiNOIPpS0y3XlFhjEk9dp+WNj+dK90FPBZb+QM
+	As7ffCTBtITPTr2GmklhW0leD3nqPReJTRJ4TKGZMQLWlWzYk429B0EuDzNVqILoro3VR5
+	qb3VOPiTXeJprgKNTE6r0CvU/hV44us=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ada721eda1so7936625ad.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:04:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772017484; x=1772622284; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g5KVqfadpQstZ/7tuEPjkEGdNo2tYUxFPdG16RZ/7OI=;
-        b=T2lCwRmEs9DtykQyVzBPdI8dDb1z0dsE2NRp4t+7iHEI5sDhq1CnsSHDLk56VGAdjt
-         IABMBQ6QhqaJCL+gHIZYzbFW1f89j9mkGpj50c2QI16zfM6qKarxnkKD8vU7WEvK6oiS
-         0sHDiyZo5w2U7ZlnE4TZaW62hBAOx++WerOfIlswHWsh9i2005/4+xZPGN6OOaCrXdYF
-         7LSNjnB9lGpRB4MiDpFw7yWJS6jdb9+KQwTmPjR1ak0AafnqemNN7LJhG0XXMk/RMku3
-         MHG05sr5Uu3KApi00oATO+Efylo6L227PPtDMRstz0bEZF7dR+hmQKT6mThq0G1sHz0c
-         bpAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772017484; x=1772622284;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772017493; x=1772622293; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g5KVqfadpQstZ/7tuEPjkEGdNo2tYUxFPdG16RZ/7OI=;
-        b=Uu8FWO57lCayd5kQX0tchQpSLt4pHNj9Sye8i+1iMYS4+R84VtoDLA2a5bJmHdH0C6
-         2W7uJX0bUbb7BIug6NBc4aIeKehrunfdk6GIAQX1C3VHPoOniuIr0oSIsWxhhSMB+uEH
-         LoCCrLatpAUIzDod1kUaM016/i3hJXgjea0gLeHdyJUmFgUl//XIB0Jq740tIWgLDeYR
-         Ky6me605caLj4rOCnHIHeO8ZgptpUEjnk0G6RjMFYNbictuQ1cLKXDGS0W519W4Np5hx
-         XhHSJi0j9I86FhL3AOvDrfud9nWhXaSAHHQIWl3wT1V67HUhXt4eC3Bx1+CkywrKH0WD
-         JUag==
-X-Gm-Message-State: AOJu0YxDFazpT7m1+feIm9v+oxODUMhZPHCbwioHGzB+5OKWl8NQxssB
-	+TLA2LLjVHgPti+WW/Pzn6VtVFCXyKchPVceqkvyVa4vBVtFo3+Pm6mm
-X-Gm-Gg: ATEYQzy9+ouGbwlzT1SZW+nrsWzwkcXhXShMGxIUtsEGPvmLfHZg3it04qW6np+WLE8
-	rKcUQ2dBgnRV32eM+IaUd+bfS7Ac4XtlJit+8fVTWVkXBDfGucscX7AAAvzDx1tfFJwmnyFzoLk
-	Ur1NbacvBShxqmPuseyU3CjxwxoyTV0P9D78gku7aaP3ZKfFbhwPUEmiW9asC/n2ogpv8OFTy4+
-	ulOfvPbnK+qmShus4PHFrAuqUePmpUcBK+z2HMx2MXuJNSlTK7VtxvaFXorvZxmNUP4M/DOPxe1
-	U9MHrLzkK/FP3fh89835JDuVpdkHLG7QsMwgXChujy/CLw0B4/YRtkXJkWs2vb4hzgkl9bukDxl
-	cHUHtkv0MmXeIjf5zf9eJCh8tqgcGYErPwRPs8qI1oE9/G7chaQJfsh553ViO0IzPb7WteZmfCv
-	MvuVScnn256ieK83CbO+zcYLOQop1SboU=
-X-Received: by 2002:a17:903:3885:b0:2aa:daf7:84f6 with SMTP id d9443c01a7336-2ad74597df5mr135442095ad.55.1772017483592;
-        Wed, 25 Feb 2026 03:04:43 -0800 (PST)
+        bh=J868TVnPJgR7LCa7+/bcaLOytmiRzF7462XYcNyDyzw=;
+        b=f1W43m2pDbeucyfVsObSXmtC62AIefwkv3VouDnVKgOE+9evw8ifPxQMjZijVoQvse
+         BJprrndDzQi5nbCBNZVhX+OJkS5ZADmexg03MDz/DOPWkhS4iRssBqxa0cJPuTbGQgn6
+         aAmDJbxZYa4IrnmqeACB/Q7gFIBI8TSwG+o6SDO6JyD75Gtxt8tKsjZEI0LHwofvkq/U
+         Vz4BQcAwIUb/FGhUXees4ylTYBa+HCjNEoHE0wF+O+acf1Xdg4kpxpD1WRLdlq/eUa3M
+         eXyqdSN/wr0lXJ41zN7hgCHUMdG8MfWuhbkfUmZfrNTC9ZqD2jTKRiAUizMTV0MHkE6o
+         QKdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772017493; x=1772622293;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=J868TVnPJgR7LCa7+/bcaLOytmiRzF7462XYcNyDyzw=;
+        b=hqASa9lner7OgkTTdvKftYJz9UY8aLijtN24YFk9WIf6fBluf1+eJ4GLjsqnTVkvYW
+         Nh6a7IvKQOXKNlF1S0np0Ipw1vp588Ow98vZCG4hqt3p7anPw/LPZD6ehhHKVzXgPpc4
+         FwuAiQqpqN5sOVs5RyAqGaJePfH5TwRft6f/um/rpRrCgPx5yKnEK/szP0rMhfnj43Bk
+         jtToFohFQNBYD+Pj4upSqlB3ChOYI0yB8bbnLWSi4e5kaxqzzGTbPK+9LkN2vWp7ur0J
+         F9NEm6TC6n47C+4eD/XjCQw2WeKkdUAiFJ/ov6w8ddCZm+g2mmn87n8ILTQw7+sU1/Ga
+         hFXw==
+X-Gm-Message-State: AOJu0YxsQy7WfbwabK9E8tjmZGXyme16RQ9HgBj7G7Afkj+SNV5k8q4w
+	Qg4OohzYMMy3GyH3V/3Ddu5wbAscgQI/Z/rYyHFD4cpgOyhQTNGX2zDs
+X-Gm-Gg: ATEYQzzxxJwdzG5iRh2W18C/AtKTsyXirWazkH9Mw388creLUOL+PBcblxllcbjXKbp
+	xrDRWRBx4iI4278GDEDRX9iwt4YbuAaigxQGRYRou2QIbg6o3uxTydWxB2FDIvbNMzynnlxEaT/
+	KUjJy5m6Xp5cCF7cYz9xA8JXYB75Q6q+icJGf1/q4HQBnHwDS3ygnnoduqfY1PQF0ck/eroCZpu
+	KQAfmC0tuycD7v2JnwUEsYSp7ngiRQK1sGsQ5cde8hVgafvcWh0FsOXeJIUhEgHXELG2cgWQ8EF
+	le5ghN1VnhdP/mEh+FFl+WbtnANYOdzLRDavLHH28GdTHoUfdeInDOmDNsO9B0G8CDaXIj53NIP
+	V5/S9CXoKbsGRv9gtihU8AW5Nz5IvqlY5MRZsmeVnmrw82MvIe5QyqoDd7i9Q7SUhuUmSGTlTn8
+	ztCFDqQaV+pXEKC1HtQt8meLezvJGTSaU=
+X-Received: by 2002:a17:902:cecc:b0:2a0:c58b:ed6 with SMTP id d9443c01a7336-2add1382e8amr25909715ad.29.1772017493421;
+        Wed, 25 Feb 2026 03:04:53 -0800 (PST)
 Received: from dw-tp.ibmuc.com ([203.81.242.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.04.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.04.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:04:42 -0800 (PST)
+        Wed, 25 Feb 2026 03:04:52 -0800 (PST)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org,
@@ -98,21 +99,24 @@ Cc: linux-mm@kvack.org,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
 	Christophe Leroy <chleroy@kernel.org>,
 	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 00/10] Misc powerpc fixes and refactoring
-Date: Wed, 25 Feb 2026 16:34:21 +0530
-Message-ID: <cover.1772013273.git.ritesh.list@gmail.com>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
+Subject: [RFC v1 02/10] powerpc: book3s64: Fix unmap race with PMD THP migration entry
+Date: Wed, 25 Feb 2026 16:34:23 +0530
+Message-ID: <6a1d3d5992307e181082b35ba238d7e09acc77a6.1772013273.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
+References: <cover.1772013273.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Stat-Signature: wmmwyjtqonpi6agzj1x9zzfmdfdt7zws
-X-Rspamd-Queue-Id: CBEF91A000C
 X-Rspam-User: 
-X-HE-Tag: 1772017484-141022
-X-HE-Meta: U2FsdGVkX1/oO9sXfLW3z+Cg1A/S04PjWXIEpBMX7yGryvmuMWZJbmOWdY08z0W2h0jo0R2Tu3hxADP9fyMUcTEAvadH7i5qbzmTE5lQiqbxYj8vfjSjKj9tAoce12Wom/DngIaubitl8feX4R5Z/9+bctbGYliRtUy52ncL5DJ4co0GOXvMIkqhZzuE/lM6lRUk8Am6w/K6CL7FxQmkeSxVoMB04x6l1Wtxd+gBWeKZtnaHfi8I2jgwdN6xldx+lHroV62VHZYQUM7u1sIDZIQI103hK7GG1ny52+Y4HDsM8tPsU4bSSuCZ92PHjlT8JCU+gI/XselTXGGS+GzJr9mvLuAAZTk9PVBRUJPit7dQX+/ghG6/LiPrXARJ7KpS7PCCgqcuqwrawNC0+uH5JJKW9Bbs1Z5qM+NtD4eCPV1tYiQX2PtMaj5XiVxkCb/w4t3XveSrXZt1h0F5wUSMjLlidLfaFqeP8sV40PVGM05JKiiKGOsXP7i5L4G/gXA/7obw9gkwxb7syDiRHAhtki4EVfPnh/NE91vM1TA7WFgUpvagU8G+iNc2vpLVs2/GdknwGvk7f1J8hz4Czs0kG6ab/jG6Hfv5BpfG5zB5Ieza4/81N8N4WAWGQXPs3VJpkmbEWBmxDQ1SP5gdkJ/Yd59fefX6apv8L0LuEpxl4DOAxcsLFlj+fyQoc5Ao7e4g3SXZVM0ISCqSCctW0hEhFtEchtxrr5AN7UBQt1HRsxxykSeLYJzL8BvL0d3xdE9imgzFv6+TZ0AOMtlzhdd78Q8BLsRrmxC7czPPOy5UWtqTRzIEwPDYeJsOnh5QJWvTwen7QntdxG0MY3pskECJaZUTQqnQFzIvkTlemUdRCcnCmWDUqM8IHdNOdvy5eNfwQIN4hcqrXXlOnoQ8+Kz5BSxQaE95eeiG9UwUZALB8lETRpBwKUWRtiT6I/CajGoBO2b78tMZoPnE8/L/wRQ
- 1b0xLt7a
- KD1CeFEY0lWI9iRRmsgDzMoD5j4ikQ4XD2J29UAtEiIpD1EKlgP7tlgj+er3kUW5UCWQhRjkIhXGXGpyASWPiUQVgCDxQ6RKLqAbS4/O79VeD37G5i5I0/R32M3Rz2cRMKLqkFtWGsmtd3Bh86KQzQPkEiYiWPIs3md4D
+X-Rspamd-Queue-Id: 9BA9A40003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ya9jqopz6mfn7ctessdzzb396ugotos4
+X-HE-Tag: 1772017494-89552
+X-HE-Meta: U2FsdGVkX1+8IHqoEI8Rm1ZBWafJkAcnAxjBEKVZkjwHInQTK4Hl4SAhX/PLHMNfToe7iyotSnjslZPW3CvRuw7umCjCIOauSAVVdx84sEoRnD/igwf4Y2HwKmSDU/N+6HLurl4Ilt22o+fsN/bTwCwmngpBeMKk8KUYBP+0x0sEur6l/lqXEgggElgLiirHzf97njvQ2JiBY0bm7eZ5gw07W/yMNbFAcLvMrRka88F2aOD+mpiB+KEAAp0SlrJzKi5bPgW4cksKouPTSJryuFdKztYLLBHay2juE6UrZSm6u04+oBpyxZoZ5J1qmIDpWX6MtHMQARG1x9xq6ERNb4TpMoazhLXaeNSZaDLgEJYUb3+wrj54JDp0pvhK6q68/GuJ8uH0780023aksBHfjbxfmnPmCEuitapSB5fVJYBzvKzsOPmwrIYCkzfq8eowM2dwmf/p+W6ow5K/UpXor9hZ9AEkHbf6hTv6iwBVQsNEdG1MtavOJVUlIGB1YwaoyU4vB09crEXqfz0L4cZblNkDnJg1R1oCv8ahvE6jxMD337vyutGzvoocb9tQ4ZEhZ7bbTB7Vc/2ml6exuXmwpVjRaTYyJ5M4KPqrxiYux0HZyfdmFAZmnOLUiCwv8S4m9c1/T0s8ENXhI/6h/YsB29oEz5eHUvImuwhbc1rjBigbrx8KaDtg64bsiSh2HK+vKq3fzI7svTxvQXF/eEMQwCv6asRGrEf6K9T9R+7Ge633yex78FWftEtoyPEEtEh4nNAYEqPz+aPrVLbE+L3n8f5uvjK2SsrI76LZFJnt5IQ7zNYmJvfBX9HLibb4BYYbfhifoUmDZr+vRXi7IYx0B/WW2afL3HBTCwxFMycikOOIJxOr+Sk0oYRLW6Qnitf6WcHq0BNTxUzfY2RTsKt3ShlRB40lrvOlFsShcW5cckDzh1/exJNzLWKojGE7tSqRquJ7eBft5buWvbjspwP
+ iv1v4raF
+ Uq5QHUSlz72JHjtKcstah5bY9GA21H39xVRp6iTmQgMo/54YrHFbHF6E+MWBglwU5IK0/toe0lpgVkeOVZuVmctfzXjeNnP62mBNtEP4FMTQeD0kAHucnvVzbu/d6tRb/jjhIOK1D5okJaxCh9gU1OR3aqXa///l1aUCgJQQfBpNO3zH5ovoGflku9pyKhBHIaqp1m2xE5Oo+K5c5Y0M/TQNgTwGrDPvsBYamzIUWQsBP34XpcqNs4Uyf1vL11eo7ShC5qguO7brDCwue2mqCVZL2cdEsdrOiu7sUfj0MPRJjTtxI0bAgnj6odVsR5sNnzVEdwe2wllaPEPdqSFLd9yb7ZRYrJjydvIkdC+knl2HdR1UujywAoUTKzMuD5QbFyOeA0T2xmYPsX3jUxqTiuV0ljiKEjdFXQySgOzMJw7jnIxQMSVCPveFXNhosHDuiFAWOzC4gPO+zagLeyln7VthY1NcZjOzsWmPkjUVkqDQFmVAclbvhhVaB2jFfB0Kvp6LzOqXMLGaCNY1tC1D+VZ5Bg8eyPLxyqEMx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,41 +124,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello All,
+The following race is possible with migration swap entries or
+device-private THP entries. e.g. when move_pages is called on a PMD THP
+page, then there maybe an intermediate state, where PMD entry acts as
+a migration swap entry (pmd_present() is true). Then if an munmap
+happens at the same time, then this VM_BUG_ON() can happen in
+pmdp_huge_get_and_clear_full().
 
-- Patches 1 & 2, are fixes found during reviews and while running mm selftests.
-- Patch-3 adds a way to verify / test this race using debug_vm_pgtable.c
-- Patches 4-10 are various cleanups and refactoring, that I have been carrying in
-  my tree. I felt it's time to push it, if those changes seems logical to others too.
+This patch fixes that.
 
-Please review and share your thoughts!
+Thread A: move_pages() syscall
+  add_folio_for_migration()
+    mmap_read_lock(mm)
+    folio_isolate_lru(folio)
+    mmap_read_unlock(mm)
 
--ritesh
+  do_move_pages_to_node()
+    migrate_pages()
+      try_to_migrate_one()
+        spin_lock(ptl)
+        set_pmd_migration_entry()
+          pmdp_invalidate()     # PMD: _PAGE_INVALID | _PAGE_PTE | pfn
+          set_pmd_at()          # PMD: migration swap entry (pmd_present=0)
+        spin_unlock(ptl)
+        [page copy phase]       # <--- RACE WINDOW -->
 
+Thread B: munmap()
+  mmap_write_downgrade(mm)
+  unmap_vmas() -> zap_pmd_range()
+    zap_huge_pmd()
+      __pmd_trans_huge_lock()
+        pmd_is_huge():          # !pmd_present && !pmd_none -> TRUE (swap entry)
+        pmd_lock() -> 		# spin_lock(ptl), waits for Thread A to release ptl
+      pmdp_huge_get_and_clear_full()
+        VM_BUG_ON(!pmd_present(*pmdp))  # HITS!
 
-Ritesh Harjani (IBM) (10):
-  powerpc/pgtable-frag: Fix bad page state in pte_frag_destroy
-  powerpc: book3s64: Fix unmap race with PMD THP migration entry
-  mm/debug_vm_pgtable.c: Add test to zap THP migration entry
-  powerpc/64s/tlbflush-radix: Remove unused radix__flush_tlb_pwc()
-  powerpc/64s: Move serialize_against_pte_lookup() to hash_pgtable.c
-  powerpc/64s: Kill the unused argument of exit_lazy_flush_tlb
-  powerpc: book3s64: Rename tlbie_va_lpid to tlbie_va_pid_lpid
-  powerpc: book3s64: Rename tlbie_lpid_va to tlbie_va_lpid
-  powerpc: book3s64: Make use of H_RPTI_TYPE_ALL macro
-  powerpc: Add MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS
+[  287.738700][ T1867] ------------[ cut here ]------------
+[  287.743843][ T1867] kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:187!
+cpu 0x0: Vector: 700 (Program Check) at [c00000044037f4f0]
+    pc: c000000000094ca4: pmdp_huge_get_and_clear_full+0x6c/0x23c
+    lr: c000000000645dec: zap_huge_pmd+0xb0/0x868
+    sp: c00000044037f790
+   msr: 800000000282b033
+  current = 0xc0000004032c1a00
+  paca    = 0xc000000004fe0000   irqmask: 0x03   irq_happened: 0x09
+    pid   = 1867, comm = a.out
+kernel BUG at :187!
+Linux version 6.19.0-12136-g14360d4f917c-dirty (powerpc64le-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #27 SMP PREEMPT Sun Feb 22 10:38:56 IST 2026
+enter ? for help
+[link register   ] c000000000645dec zap_huge_pmd+0xb0/0x868
+[c00000044037f790] c00000044037f7d0 (unreliable)
+[c00000044037f7d0] c000000000645dcc zap_huge_pmd+0x90/0x868
+[c00000044037f840] c0000000005724cc unmap_page_range+0x176c/0x1f40
+[c00000044037fa00] c000000000572ea0 unmap_vmas+0xb0/0x1d8
+[c00000044037fa90] c0000000005af254 unmap_region+0xb4/0x128
+[c00000044037fb50] c0000000005af400 vms_complete_munmap_vmas+0x138/0x310
+[c00000044037fbe0] c0000000005b0f1c do_vmi_align_munmap+0x1ec/0x238
+[c00000044037fd30] c0000000005b3688 __vm_munmap+0x170/0x1f8
+[c00000044037fdf0] c000000000587f74 sys_munmap+0x2c/0x40
+[c00000044037fe10] c000000000032668 system_call_exception+0x128/0x350
+[c00000044037fe50] c00000000000d05c system_call_vectored_common+0x15c/0x2ec
+---- Exception: 3000 (System Call Vectored) at 0000000010064a2c
+SP (7fff9b1ee9c0) is in userspace
+0:mon> zh
 
- arch/powerpc/include/asm/book3s/64/pgtable.h  |  1 -
- .../include/asm/book3s/64/tlbflush-radix.h    |  1 -
- arch/powerpc/kernel/setup-common.c            |  4 ++
- arch/powerpc/mm/book3s64/hash_pgtable.c       | 21 +++++++
- arch/powerpc/mm/book3s64/internal.h           |  2 -
- arch/powerpc/mm/book3s64/pgtable.c            | 46 ++++++--------
- arch/powerpc/mm/book3s64/radix_tlb.c          | 61 ++++++++-----------
- arch/powerpc/mm/pgtable-frag.c                |  1 +
- mm/debug_vm_pgtable.c                         | 38 ++++++++++++
- 9 files changed, 108 insertions(+), 67 deletions(-)
+Fixes: 75358ea359e7c ("powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel page fault race")
+Reported-by: Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+ arch/powerpc/mm/book3s64/pgtable.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 4b09c04654a8..359092001670 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -210,8 +210,23 @@ pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
+ {
+ 	pmd_t pmd;
+ 	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
+-	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)) ||
+-		   !pmd_present(*pmdp));
++	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)));
++
++	if (!pmd_present(*pmdp)) {
++		/*
++		 * Non-present PMDs can be migration entries or device-private
++		 * THP entries. Since these are non-present, so there is no TLB
++		 * backing. This happens when the address space is being
++		 * unmapped zap_huge_pmd(), and we encounter non-present pmds.
++		 * So it is safe to just clear the PMDs here. zap_huge_pmd(),
++		 * will take care of withdraw of the deposited table.
++		 */
++		pmd = pmdp_get(pmdp);
++		pmd_clear(pmdp);
++		page_table_check_pmd_clear(vma->vm_mm, addr, pmd);
++		return pmd;
++	}
++
+ 	pmd = pmdp_huge_get_and_clear(vma->vm_mm, addr, pmdp);
+ 	/*
+ 	 * if it not a fullmm flush, then we can possibly end up converting
 --
 2.53.0
 
