@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7772F4BB9E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17A78F4BB9E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4366A6B00AC; Wed, 25 Feb 2026 06:05:11 -0500 (EST)
+	id 77BD46B00AD; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E11C6B00AD; Wed, 25 Feb 2026 06:05:11 -0500 (EST)
+	id 750496B00AE; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C3056B00AE; Wed, 25 Feb 2026 06:05:11 -0500 (EST)
+	id 6666C6B00AF; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A4E56B00AC
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:11 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0D36B9CE0
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:10 +0000 (UTC)
-X-FDA: 84482697180.08.40D7D8B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 547066B00AD
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:15 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EA811B6F72
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:15 +0000 (UTC)
+X-FDA: 84482697390.28.4DB8885
 Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E4EC240003
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WXcwiink;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2FDDA140019
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kBSnuG4j;
+	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772017509;
+	s=arc-20220608; t=1772017513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5++u0m+xGMfRLjfeOcLvTjbT7zO8s4I8sMKuOvXVOb0=;
-	b=fHtYQGxJzKelQtHaCGC7l8SugXd9w+XwqzhMHmq094bSR4OtzvtXa6SUsiECNg5IxbMKdh
-	AU7wIY/ETypV/2J8ab3qUI5i7j+I921xRLz1Iyc7vatN6suKmckxpriBIdRny2Oma/54wu
-	fLOkPRa8oSRsQtPDY1lt5KAj0mIfKrM=
+	bh=I5Rw321CUbGq2CWBlWTI6x0JAHGQZPTv69nPcT78KGw=;
+	b=3vE5l3x+ekp1Zy/dM5fr3EpiSmt6fDC0BCof81F8botUsRnbdpd0KdimGCGpvm94FnUGIr
+	KvH4HO3WQcc4zNE+b24QikGDadFO3cND8LmleuybjIFO+nGyUoyBHQoznyowPCcQ+y9p4o
+	zgdAykVH6mpDNkSJH63aSTvcaijEpWw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WXcwiink;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kBSnuG4j;
+	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017509; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017513; a=rsa-sha256;
 	cv=none;
-	b=rXNHI+W/FB3j5ux2PGix0A1vylNmQiJ7vX37OXDSxqbnKO8hfRRzyUDwveZ7REmMpTAhuP
-	CU9q90vabsvUYcpteMQ8R9gClW/U3gidDXqHAUDUuZNVqBqKByqh7+uZWURz+gSi/i9IiI
-	qzYtGh655pQjU/TpqumJPM1oLS6Ny9M=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2aaf59c4f7cso30442635ad.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:08 -0800 (PST)
+	b=CLjztjVekBgR6z6K1AddWuiThTjm8KWWiQY5NkCHp9DX2x7kbazSx2xXRGp8burdSIDc74
+	wKAthk7pTCC8D1EAKtsKMI19B5SRS1mQ1rxMsJORXA0NVzuIZXfMyjWOpeE+ah2ONgaLb0
+	xumVoTbt+xvDymchUVwv0JLCcwDQsDA=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2aaf5d53eaaso44681505ad.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772017508; x=1772622308; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772017512; x=1772622312; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5++u0m+xGMfRLjfeOcLvTjbT7zO8s4I8sMKuOvXVOb0=;
-        b=WXcwiinkAt+W8LyP1jn7fNgRMWP6eCyF2eMQ6e/5CFNdnkVNq70pAK0suuT2UNzOKf
-         SAZ0uo3CUgkkk3d4ZVeXQkFm4Dg4uffrOnM6L9DPEkv15ISTs/U8kjc1qJS/4uq1gFsA
-         rX1k7iGsENBtLazboM7qFnd94Ej2m2RO0KUMv3XJZ1JpNJ1bMWRb4HpjDdNyyfHG0886
-         EHYG4whiSmoWLBS+FkYCNX+lL46QXYAu6aG4mRBiqMzEEyz34cIVv9uKpXCYZBIgKrYV
-         3BWEj25zVTJhQwnfzQqI1P/e4WNmZfO7agQ5wHj6sBWIEkbj0NACFFyq6c6N3dxXgD0Q
-         Vnuw==
+        bh=I5Rw321CUbGq2CWBlWTI6x0JAHGQZPTv69nPcT78KGw=;
+        b=kBSnuG4jG/izo35c/ZGFWfil/liiJ+3Y6VzzNnMWGAYfQjwWeQMn1Q4G4Nt+XqP+zk
+         IXj5jFeP5yYzuN4xtJmyXe41ZCDowqEEWph5mHQkf4XN3biPOUEG9sixEtO2tnQYUJOE
+         t1ZK2i5JWPvwjG7GYDcCqf1QenTkF0gn1Iui+pJARx5uCB5FHW5pTyu1UC/5dHc4zSlD
+         +8XB9KPg14yVUKlZ1Yi4xsKPOD81nMG0mzFrCiGA0t3ishWTEXy6XrvbYPywcveeS6Pe
+         G4TEUuzAceZnAgqODHYnqqTpOeVF407r2P2knsPoi/w8cLnlmJeA3N14a1yx4DMG5INh
+         PvvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772017508; x=1772622308;
+        d=1e100.net; s=20230601; t=1772017512; x=1772622312;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5++u0m+xGMfRLjfeOcLvTjbT7zO8s4I8sMKuOvXVOb0=;
-        b=dhRubWBY/wgjZs5eNccNlxZCHaKSe4+l51dYojynk0ck/SccFsmTTReldJPSz7pG6V
-         E+IjjC3oDbk9p4Czz6/lO2TL5xOo6SEKcudNiNDOkNTBNVy53ofHm+5ASON/JbYvp0zN
-         szjiylJCtiahCBza93lazLPhB3YSVBRHFcTT8IPf/HGCcAC/ZGqI1ioxTmRBhA5Ryyda
-         pWSBH63I1hT8Y3uH0eIifDP5fsBZ9sRbab7RGO1QsdcZzRCqXP2XvfVigbnfiWpwneUg
-         zWolg+0Ls45DSP8bnyuisLen8V1OcjwusDzuQSo3dmMq4TSRPEzofgre/EzJ9BeJmWKM
-         5fIw==
-X-Gm-Message-State: AOJu0YxXJGUzcSgXySSiODpIjz5WKy9pzmq/PXDX7lEk/s2lpE8lrpiz
-	SLRKlcKSL7izuiC83MFFQOh3F1kSQLBymBLjS++5jWk+Gcr62zT+HNCQ
-X-Gm-Gg: ATEYQzxzxVZqPWWwFkeWQmL1MoBB4Qb+EYEMatrdzEmgf8CdSIOQldhMcxewIKyLNCw
-	7Tp5m1G0z0tRk9i/t57w+gGP99hOxnxqVtDDtLjC6u16wcb3DI1P40WI/6ctx2OY1MO3bVrkbMs
-	/HGWfyOuzZPKGJ2wTE3AWRIcFQ3Rqb9Dldr7n/OfzUSJNIfhorZbOZvFzceY7cJ4xuaUWk9vUUs
-	xuBAcH3mttvUbWpcpJ+e0rtiVBvlCBtsGMQIGXWiEUKJ65q77gHCSoprABQyRkS4yL5Kq29RAHZ
-	yOABSye/M71VrkLWyPoMXIXyvocFXsmVJG8UXM9B//4LWIL0elubhrshVWMdZdipeKgPo/fnS/L
-	7CsZ1eGRIfHe2z9OsyBwzekZMpX7f3TrTUVI7SXkacXXpdC5f2FXojnqjRO5YbOReHyUliGB3cg
-	PSJICHHpwrsbekLy4UbwDoIxo6qy92auY=
-X-Received: by 2002:a17:903:2ece:b0:2a0:e532:242e with SMTP id d9443c01a7336-2ad743fee5cmr163977165ad.11.1772017507407;
-        Wed, 25 Feb 2026 03:05:07 -0800 (PST)
+        bh=I5Rw321CUbGq2CWBlWTI6x0JAHGQZPTv69nPcT78KGw=;
+        b=LtTirgJ/y/4NavfcE1isaaIZvUYa0seOkkRaw6b6HC+miFETIRdmPQU1RCnF6M4TbH
+         33W3blm43jjXfPL6/+jrM7vD17BWoUCvNNEEYTatJoBkfkT3JWzrQ4cmzFzc57vUh34c
+         6ftnlJKuyPtjYV10EXP+R8pjAFqgg4FTv9CcVBhtD+baNA23tq1RqLECe2Gt9mBp29bg
+         5NmSSg9SmLjd8YQyyzsS7XnidZrDGUqYDjVlzbD8DfdxdjZpoEsGib9eQtBp0pYwD+Sa
+         iPn9GSrk4QSFcfI6c/s75qCMvsur5WY7a9qneKQFawh4Fw2wLcGB6zpXrIeoAHn1fS7f
+         UNGA==
+X-Gm-Message-State: AOJu0Yx4JxyM7pH8HYbDsSbFs4WHjvIS0JQSPtNooVcUfUTJ7qNiWgyF
+	JBhXMCKHJog5+hyk9sSdn0c6zA/Oaki7Bo7P2SjkCmWJhhhupd1/VsFD
+X-Gm-Gg: ATEYQzw6bmM/gYfd6r1NrCD+AzQHqBQNDM16gRdlJjlY0m+A8N42C7MloCA9lIZT4f1
+	ykymaJG8mlKZlUfgRKgvjDG70qQOEwshIPO8O0yeCNI7uQiGtkRedPcET72quTVaEvdH0eqH/e+
+	xtkido9Ruyp9/7ZaKEeXdmaOy5/Yy9CSLLa+uuS64TmJ1JQROBc6P0DuEb7bmBnbrz+LlILRjlG
+	EYBfzxcbKScrXqGBYeDu0AQEPGLxRuXfkJQva4dAzpj+TeSN49ef0CVKs5TsDo46kHpAtLaKO+z
+	0AOWecA6y6d0OpS7nTCWrd0YqkYmrZccpS/ZOkIyBeR3ufiDK0YzvM4w71ou8qQL5oOx6lJvF5t
+	/XWSR5GpdLoW9FdynvP9qBwzE5zWYREB6Qv7jS8v5RMMqy3XVUCSrrEHLHSnZcNQcdru0MAWysC
+	CH/8RNRVNWYENm6/tkc0ccs0+yF7g85Qg=
+X-Received: by 2002:a17:902:ea0c:b0:2ad:c66d:ad00 with SMTP id d9443c01a7336-2add13fbfe1mr20563975ad.50.1772017512011;
+        Wed, 25 Feb 2026 03:05:12 -0800 (PST)
 Received: from dw-tp.ibmuc.com ([203.81.242.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.03
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:05:06 -0800 (PST)
+        Wed, 25 Feb 2026 03:05:11 -0800 (PST)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org,
@@ -100,22 +100,22 @@ Cc: linux-mm@kvack.org,
 	Christophe Leroy <chleroy@kernel.org>,
 	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 05/10] powerpc/64s: Move serialize_against_pte_lookup() to hash_pgtable.c
-Date: Wed, 25 Feb 2026 16:34:26 +0530
-Message-ID: <dd9b5abdcc56d935681f7f95fa018bd886d59ba0.1772013273.git.ritesh.list@gmail.com>
+Subject: [RFC v1 06/10] powerpc/64s: Kill the unused argument of exit_lazy_flush_tlb
+Date: Wed, 25 Feb 2026 16:34:27 +0530
+Message-ID: <9385e4fbc4bb99ba47ea6070fd82233e6576c228.1772013273.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2FDDA140019
+X-Stat-Signature: dszrfctd9aecoayrhfj5xjaag9cxjrxz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E4EC240003
-X-Stat-Signature: t3srgomuqkq6fux7dhtzrdahwxatcszb
-X-HE-Tag: 1772017508-54128
-X-HE-Meta: U2FsdGVkX19pVjaY8+gg/CCFyozep9wg39wYVUuFUTVAOqfCORSAhFXcMVXLz6YkYIscVVo9XsUWElD6VSTvrZmUAY+DU7BZEyUoNAV7jfKsGvWTcwqZThz+oCXDVMMtLOFDmMEeyhVXBeYmmATOGlfgL71AtufdzXIMEPmoJdBkldcgSv+wVXrfpyehsbVvt80a1N4odyoUq4DZmB6pTgxTX0LEQNgd3EuG9flPYf20+ghjiWVJPbPK39/muRxv2XW1+bVPZRgTHH6Q+iZgioI6X7PiuZX6OS/EczLCULXvbakeE1InVQ+Jfi5+Nx3b4ydHLWtFQwZtukBakPURu/9hDF3w9fkWYnZHPINQ3x0bRps+/Z3KcychR6DKYaHpyWfLDADt5Fw/F19ntQuOkSw92AxDIG9wU04yK8yK7unsuXAaeha9Px40rgol3rOd0Uv84NroLRuIxMVWMt66tMilNdTylyAm91awvhPZftSAiq8i5hOAQEo3xSEIH1r+lkmQ2HGRONd9n2r9DW783FsGB/kZwPZJapdpwCXd581KhbAnLcyN73A/jvagklMITl265zL0WWJlT8rhtZ3ciLiEfm6Z6wFD3lUIe+zbjRQ+xG+2ck3+yVsNygkbjta/WNWPHpqtuwm+JjFrxkxXuu1VbvVetl9iu6kijwT/HWxMQMljw+7MuVcHHHrQ7NHoUCqhYLIN/W/JY7ZJaCDWLsFG+HO/50DAQUxHLSK9XjD06aC9p9+QOX3ua0P6/LTcjILossEAM45CLagvt1ofA99GpprpkclLc7xh1AfvRwcUJWXaoNhHoFF8aKEzBLa2oZ7hUU4uTHwdiG1l5hj22A/GvcLW9e6VFKmIhJYCBbPEMmBW7fEus/iPS2Ktfv1ff2lA6RZsStx/ZIaknev4M7qyznBxE3XJdv+zyVGMIpKW30V4/C5xfCg7WQIC5SWQ6Zhvz0EC17f2m3pcWBE
- yJh7Q0YK
- 7sSvTMzbUT2EV3TcQviFn+YZxWfwkPO2IpcHHU8d3HwVgqOX5mSATPcZY5WP0GO2pLtmtcgqZn2gTZ2S1YwsllC0qPcO+jLO4LIGChHKCCr8X7UBg7kUpXpAy9r6kCr2xAEs4BpCCdozfRrNJj8u6LZ2E2e0jWkTdoFINHE9DqJsXV5x5fAV5UqNnCDbVTao0yMeh/U65U2PenlT6IrFLOufPq/+bCfrkM7cqq5iuTHlMObyVnx+ndxfjXyresEr925gweGOzJTK2v2sqoLqHzNlTZIlan6Gv/3Bk/keFcbvGXfjJh+9XqOgY2K5SP2Le10et5nYiZCnKp7DYjG/J+MBP97dT19uMnT0xm37N3negQgzA+6IMjAwNNF27eGYvvVAtMwg5NJ3HXstWmqOrSHM1Ht7BL9IvHzkCZIK5od2R6Ngo/vcBGniZYKOsRRxAyF/O2uWXHAPvTDpKC+A3pbZ/ZZ+ifv2PxDwXuB4DFXGUFzBZdRLlYIu9RpvotTKvvsCC8bk7OHPBZOkttHd75ablUwb0rnlha8HMECOAlKSzFdpoKSd83LV2zF+1A8gD42Rt1bygcYv86Z2eRL8zQ3CZkIiWjtnAzVmiN+HeUEpcnEJ7MtDWC3CqtPlaQW+jeZc0L/dcpQQwmqbnqMScZBRW3A==
+X-HE-Tag: 1772017512-829387
+X-HE-Meta: U2FsdGVkX1/2Xf39uDoyVI2KHgHEfZ0AkBsOrT82nda7L1rprGfJjbXhSfQZ0v4mfgG1uMoK29ldH5IwjPc6zkk5fntsjyFbYAd4L5C0E7Ez2loT70UMAtaQfFG5ha9InOPyODYc14/ugsKXcGxWX6gptdHQ2IUTAwZ+1PqRwotHWX7EIpmn4TgV2Bmk6KvwjZ7+hHjnNjFSF9ahNeTkDbRL6Zf97VF3EW9oLkxSZIhbBjGWORD1DVeURwc5NyhV86g4BUT9//byxcPe4818SfZGF7r4Zjd3DRs/plzKJDWZcy/KRokof2OVtAAh2witrKQk8vjXPTC7Mtm60eIssbqlgGx0XYm66Xw7BsQOqENDLD447veHOidcQTYNDsCz2rC7uglYhQM1Hb6FQZEaltREJCRCcTaTMt8vxgQyBHrHwkKH3hQqkrp4f7AFuzUzjrMYcsOTlWYyqQ/yS94GEmXmjBgr1vpwD+GYNytmQgNiuzq9nU5cbN2LdwCa40oMeNvSB+K9gqChD8r/WsnWUpDHJkpF/9zTw5u95lf5bj+0yETKeXGOWyWH3hHAQoznXzlaA8G8hjBZlHw6+3doypvanmKbwYYiNZ/XK+G9iiTv2fSqnJ5p78gOm+MGaspTqpLfSAKKMBpmJ9PG9Z41DWNY7JdId2unAK9MofZaNYr/JOmRfR4ysn/ex1n9s4ff0AzJO7n1PGYZmf0X7oQMpLCsEo/MpWREsbAosAPXRr29vORePKaTJE3ASeO52dE5i4qT1lr32WXHebUKiZHgT1WF1eNkM7uFViqzYhf0UfYoYAH7XwnzuJDyalhG/oqyFAiitqOFuMwLXMSvUDvTpXLYTdBl9ll0WXROLUI/tS5yvP8pS51sFOClMh7v6yNVX0j/rAxdDiWI3GHHEQl0Z0s/pAxQHQReRoLGX567kmktg/KiWayRdsLeJNpDqtcU00xF4n4FpV/4ZZgA6o6
+ qp8QzZTm
+ LzpSimuW++XdQI4aElp8IiiS78FoEQXC+/l5+b+gQUPfxDz9XsEJ5yUVkZjEjzHJxdEd6ZzUzs38SJr1I1VXQgUjpd57ssu8BfnDQbWgJBZvpBPAjXK8ntWv1E89uWMmOPebBG8lWxPbYpB7WSxvmSwb18IYnyax9tQcb/BxzabtamrFD3QFmLS+A2havfmMfwf6p3twvvGL/LOss1iPr8TDs6yugXe4bU2DzaOpyV5FmwdpyWf9u3lZ5Ajl2pPC/YCzG0WOv43vTwDxxZJ57eK+MNj9AW/R9CRbg/TatBcJ2OwlB27me0yZmQwQf79pm1hWI+XlCfFG+mXbpaz0PSKpvEUXo/XKaL85QfdyDfDvN8ew8hytaNgG9ozS0BUP2yQ2L0k3rObhgwNMq9MWSA7lnDyK2QXWTkCLqMrgCuStDgg5YS8FLuZmovl8Mt8kFFm1EpZyUlcQa0bGFESMQfNQuROdfPFoOqqwIO8L5iOUspg7Od1BI44NiSKoAq0YwiSE9gBd8ojcJ1RNK8KtfYKQTFKbJaD3VXc4IoNMYn2VoJKGZj2/R9mmE3ndtoKeXsWOBMi3zaHxUyp08mBw+bcLKZTE73ilK4YQ0abTBMQZtNUq9QMUDaQZ6IqOFguuCFNJZ80ONl2wI13l2pFgHkNnmLu3JRCEM/TLSAYQACaGvBJptNRuqJ2xt9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,116 +123,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Originally,
-commit fa4531f753f1 ("powerpc/mm: Don't send IPI to all cpus on THP updates")
-introduced serialize_against_pte_lookup() call for both Radix and Hash.
+In previous patch we removed the only caller of exit_lazy_flush_tlb()
+which was passing always_flush = false in it's second argument.
 
-However below commit fixed the race with Radix
-commit 70cbc3cc78a9 ("mm: gup: fix the fast GUP race against THP collapse")
+With that gone, all the callers of exit_lazy_flush_tlb() are local to
+radix_pgtable.c and there is no need of an additional argument.
 
-And therefore following commit removed the
-serialize_against_pte_lookup() call from radix_pgtable.c
-commit bedf03416913
-("powerpc/64s/radix: don't need to broadcast IPI for radix pmd collapse flush")
-
-Now since serialize_against_pte_lookup() only gets called from
-hash__pmdp_collapse_flush(), thus move the related functions to
-hash_pgtable.c
-
-Hence this patch:
-- moves serialize_against_pte_lookup() from radix_pgtable.c to hash_pgtable.c
-- removes the radix specific calls from do_serialize()
-- renames do_serialize() to do_nothing().
-
-There should not be any functionality change in this patch.
+This patch does the required cleanup. There should not be any
+functionality change in this patch.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h |  1 -
- arch/powerpc/mm/book3s64/hash_pgtable.c      | 21 ++++++++++++++++
- arch/powerpc/mm/book3s64/pgtable.c           | 25 --------------------
- 3 files changed, 21 insertions(+), 26 deletions(-)
+ arch/powerpc/mm/book3s64/internal.h  |  2 --
+ arch/powerpc/mm/book3s64/pgtable.c   |  2 --
+ arch/powerpc/mm/book3s64/radix_tlb.c | 14 +++++---------
+ 3 files changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 1a91762b455d..ff264d930fe8 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1400,7 +1400,6 @@ static inline bool arch_needs_pgtable_deposit(void)
- 		return false;
- 	return true;
- }
--extern void serialize_against_pte_lookup(struct mm_struct *mm);
+diff --git a/arch/powerpc/mm/book3s64/internal.h b/arch/powerpc/mm/book3s64/internal.h
+index cad08d83369c..f7055251c8b7 100644
+--- a/arch/powerpc/mm/book3s64/internal.h
++++ b/arch/powerpc/mm/book3s64/internal.h
+@@ -31,6 +31,4 @@ static inline bool slb_preload_disabled(void)
  
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ void hpt_do_stress(unsigned long ea, unsigned long hpte_group);
  
-diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index ac2a24d15d2e..d9b5b751d7b7 100644
---- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -221,6 +221,27 @@ unsigned long hash__pmd_hugepage_update(struct mm_struct *mm, unsigned long addr
- 	return old;
- }
- 
-+static void do_nothing(void *arg)
-+{
-+
-+}
-+
-+/*
-+ * Serialize against __find_linux_pte() which does lock-less
-+ * lookup in page tables with local interrupts disabled. For huge pages
-+ * it casts pmd_t to pte_t. Since format of pte_t is different from
-+ * pmd_t we want to prevent transit from pmd pointing to page table
-+ * to pmd pointing to huge page (and back) while interrupts are disabled.
-+ * We clear pmd to possibly replace it with page table pointer in
-+ * different code paths. So make sure we wait for the parallel
-+ * __find_linux_pte() to finish.
-+ */
-+static void serialize_against_pte_lookup(struct mm_struct *mm)
-+{
-+	smp_mb();
-+	smp_call_function_many(mm_cpumask(mm), do_nothing, mm, 1);
-+}
-+
- pmd_t hash__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long address,
- 			    pmd_t *pmdp)
- {
+-void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush);
+-
+ #endif /* ARCH_POWERPC_MM_BOOK3S64_INTERNAL_H */
 diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 359092001670..84284dff650a 100644
+index 84284dff650a..52d3e0c4a030 100644
 --- a/arch/powerpc/mm/book3s64/pgtable.c
 +++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -150,31 +150,6 @@ void set_pud_at(struct mm_struct *mm, unsigned long addr,
- 	return set_pte_at_unchecked(mm, addr, pudp_ptep(pudp), pud_pte(pud));
- }
+@@ -23,8 +23,6 @@
+ #include <mm/mmu_decl.h>
+ #include <trace/events/thp.h>
  
--static void do_serialize(void *arg)
--{
--	/* We've taken the IPI, so try to trim the mask while here */
--	if (radix_enabled()) {
--		struct mm_struct *mm = arg;
--		exit_lazy_flush_tlb(mm, false);
--	}
--}
+-#include "internal.h"
 -
--/*
-- * Serialize against __find_linux_pte() which does lock-less
-- * lookup in page tables with local interrupts disabled. For huge pages
-- * it casts pmd_t to pte_t. Since format of pte_t is different from
-- * pmd_t we want to prevent transit from pmd pointing to page table
-- * to pmd pointing to huge page (and back) while interrupts are disabled.
-- * We clear pmd to possibly replace it with page table pointer in
-- * different code paths. So make sure we wait for the parallel
-- * __find_linux_pte() to finish.
-- */
--void serialize_against_pte_lookup(struct mm_struct *mm)
--{
--	smp_mb();
--	smp_call_function_many(mm_cpumask(mm), do_serialize, mm, 1);
--}
+ struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
+ EXPORT_SYMBOL_GPL(mmu_psize_defs);
+ 
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 9e1f6558d026..339bd276840b 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -19,8 +19,6 @@
+ #include <asm/cputhreads.h>
+ #include <asm/plpar_wrappers.h>
+ 
+-#include "internal.h"
 -
  /*
-  * We use this to invalidate a pmdp entry before switching from a
-  * hugepte to regular pmd entry.
+  * tlbiel instruction for radix, set invalidation
+  * i.e., r=1 and is=01 or is=10 or is=11
+@@ -660,7 +658,7 @@ static bool mm_needs_flush_escalation(struct mm_struct *mm)
+  * If always_flush is true, then flush even if this CPU can't be removed
+  * from mm_cpumask.
+  */
+-void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
++static void exit_lazy_flush_tlb(struct mm_struct *mm)
+ {
+ 	unsigned long pid = mm->context.id;
+ 	int cpu = smp_processor_id();
+@@ -703,19 +701,17 @@ void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush)
+ 	if (cpumask_test_cpu(cpu, mm_cpumask(mm))) {
+ 		dec_mm_active_cpus(mm);
+ 		cpumask_clear_cpu(cpu, mm_cpumask(mm));
+-		always_flush = true;
+ 	}
+ 
+ out:
+-	if (always_flush)
+-		_tlbiel_pid(pid, RIC_FLUSH_ALL);
++	_tlbiel_pid(pid, RIC_FLUSH_ALL);
+ }
+ 
+ #ifdef CONFIG_SMP
+ static void do_exit_flush_lazy_tlb(void *arg)
+ {
+ 	struct mm_struct *mm = arg;
+-	exit_lazy_flush_tlb(mm, true);
++	exit_lazy_flush_tlb(mm);
+ }
+ 
+ static void exit_flush_lazy_tlbs(struct mm_struct *mm)
+@@ -777,7 +773,7 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
+ 			 * to trim.
+ 			 */
+ 			if (tick_and_test_trim_clock()) {
+-				exit_lazy_flush_tlb(mm, true);
++				exit_lazy_flush_tlb(mm);
+ 				return FLUSH_TYPE_NONE;
+ 			}
+ 		}
+@@ -823,7 +819,7 @@ static enum tlb_flush_type flush_type_needed(struct mm_struct *mm, bool fullmm)
+ 		if (current->mm == mm)
+ 			return FLUSH_TYPE_LOCAL;
+ 		if (cpumask_test_cpu(cpu, mm_cpumask(mm)))
+-			exit_lazy_flush_tlb(mm, true);
++			exit_lazy_flush_tlb(mm);
+ 		return FLUSH_TYPE_NONE;
+ 	}
+ 
 -- 
 2.53.0
 
