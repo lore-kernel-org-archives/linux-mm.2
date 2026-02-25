@@ -4,92 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E45AFEFD20A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:45:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 972B5EFD20A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:47:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2861C6B00D6; Wed, 25 Feb 2026 03:45:11 -0500 (EST)
+	id 017D26B00D2; Wed, 25 Feb 2026 03:47:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 209AB6B00DA; Wed, 25 Feb 2026 03:45:11 -0500 (EST)
+	id F07656B00D3; Wed, 25 Feb 2026 03:47:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115F36B00DC; Wed, 25 Feb 2026 03:45:11 -0500 (EST)
+	id E3E186B00D6; Wed, 25 Feb 2026 03:47:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F06346B00D6
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:45:10 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8261160252
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:45:10 +0000 (UTC)
-X-FDA: 84482344380.04.43EFEDB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1045080016
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:45:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R32xm9Mz;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CFCD36B00D2
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:47:39 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92BA91C368
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:47:39 +0000 (UTC)
+X-FDA: 84482350638.29.C72EAE1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7231F40005
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:47:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c9gv31vo;
+	spf=pass (imf11.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772009257; a=rsa-sha256;
+	cv=none;
+	b=rcWBWs1HJT3T44yD/q3MIfhD5BXZtQdxwKn1Am8WookNa/kew+YA8ri1MCZ+ZIs4AHb6V+
+	QsMDFY6bIO7kudhOIrG1uxCKzMseoJ5TJb+L/4eLobe8uO7DHCnQCkZY/T6dZ/af9j4Rjp
+	lMUcF/lwPyd58tvfFQIMNMOaB67FwRc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c9gv31vo;
+	spf=pass (imf11.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772009109;
+	s=arc-20220608; t=1772009257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sDf9n9i3wgaklmvOnpVf+yTHOhmlYVZHLFGAUOwxEPo=;
-	b=8UJoijyFc6DhnZJdlvdcktmQsAJAHZD+nklDGe9eeiKQl8/O2CfxrU/1lIjFT4HeKMedlN
-	gK3PS7Xcvl2upUhmiynYwn7YfVQqq/Nxp31/M+BdLm+WxzWehWhxg8FBDd7y5YY/kbxEd/
-	OLL1hlAlFo89HBGTGf0QEvxXkfFvnHs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R32xm9Mz;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772009109; a=rsa-sha256;
-	cv=none;
-	b=SeFsxwACmntd0TXZYc01ZEF2TXqtMV17FWSc0HTro3eMBnivkbE7PVld66pzFat/HYYxWp
-	65PwJ9e+7fYqSLSHtx1CFvXP+41/gCHscCjb+BHfVqFptEWFqMN+a171VHtRTOGTSoddDQ
-	InGNpOUy3PdoMvCZyAP9GtKs7C5G1+U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C97A60097;
-	Wed, 25 Feb 2026 08:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A464C116D0;
-	Wed, 25 Feb 2026 08:45:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772009108;
-	bh=jzaWURpUIGyaa1hBlzWd/+9vleP5W6HeGo+lBuhWi14=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R32xm9MzE8TxcoyKzFlaZmT+e50QdO9vFwHyumznycMPjMjPq6MmfR1bMYVUGVpWQ
-	 /X7JULpk7l6XvPEDWYVefaDoqhK6EfH72qx6WHSI4EggY4ktKX/ogNyFKjGyYmZQDt
-	 b6xDnS0BDXqluk9HNUh5PDqI6GDaOUqdMNzByh9H8KT+FR+aG6ALeBdd5PpZv0mUmJ
-	 Ne+DyWdbj2Dyq2EKgK09VwGMFHsF4yZP96TUC0RqE9elf+B7aWEEmlBU7U8l+FUcYD
-	 Sv61GxcUNmkhSgwdbiUAYZkw30l4YlqF6PxGgVODaba0m8fcNFMAQ9wL8t1k5W9D6h
-	 gJRm5HFXsiOPQ==
-Message-ID: <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org>
-Date: Wed, 25 Feb 2026 09:45:03 +0100
+	bh=d04OwuAx5S3mZfnINvJ//qURUEObB9dXr+1t12EiSts=;
+	b=V0YsL3Nra/pQlQs1KEBr7cXutaUJnY7BkRISstVMqA/dsS9pZG0lFjqa8znEX612wHAJO4
+	WYKvRT3L8u5HjsfEYGB9MS2/XYQ/AtQHjn6Bu3A0jeXjrKm1xzgUIa2oXQQ0iOGWpw1QmT
+	WwXKUkiGeVCBdfQC2eQHrDifGwJseeU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772009256;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d04OwuAx5S3mZfnINvJ//qURUEObB9dXr+1t12EiSts=;
+	b=c9gv31vofQPEV5F5meEuHcuH+tKkPAmnw+xI9+h3ruK6wmUzUCzOWjEamaUekWGI4RKCcf
+	pD1Eo0U8ncJNl+l99iNi/9l4JA0lRXPqehrqToyE4qK7Ri0uFzsa5+QBQ2Hz/W1ParjKs9
+	4tcUsh9oaGj5eMiOUoPYrncdl6w0u4g=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-4-4FFrYcPSmYzIZuxXg9Uw-1; Wed,
+ 25 Feb 2026 03:47:31 -0500
+X-MC-Unique: 4-4FFrYcPSmYzIZuxXg9Uw-1
+X-Mimecast-MFC-AGG-ID: 4-4FFrYcPSmYzIZuxXg9Uw_1772009249
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DB49C195608F;
+	Wed, 25 Feb 2026 08:47:28 +0000 (UTC)
+Received: from fedora (unknown [10.44.32.38])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id BE0E0180066B;
+	Wed, 25 Feb 2026 08:47:21 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Wed, 25 Feb 2026 09:47:28 +0100 (CET)
+Date: Wed, 25 Feb 2026 09:47:19 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Jan Kara <jack@suse.cz>, Aleksa Sarai <cyphar@cyphar.com>,
+	Andrei Vagin <avagin@google.com>, Kirill Tkhai <tkhai@ya.ru>,
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
+	Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] pid: check init is created first after idr alloc
+Message-ID: <aZ63F7vHRKw9qZw9@redhat.com>
+References: <20260224164852.306583-1-ptikhomirov@virtuozzo.com>
+ <20260224164852.306583-3-ptikhomirov@virtuozzo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Content-Language: en-US
-To: Vlastimil Babka <vbabka@suse.cz>, Ming Lei <ming.lei@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>, Christoph Hellwig <hch@infradead.org>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260224164852.306583-3-ptikhomirov@virtuozzo.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: Zrfar_RxmI_6DdsHS_nitd1FiTSppGyItlzTOrBn29Y_1772009249
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 7231F40005
+X-Stat-Signature: ccw8p3tyc9tse9rkm1uwt71jgnd64wjd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1045080016
-X-Rspamd-Server: rspam02
-X-Stat-Signature: n8hzrwc3qt8tocpjwejwhoejgqdu9j4o
-X-HE-Tag: 1772009108-651719
-X-HE-Meta: U2FsdGVkX1/5qTkjVEPIwDl9gBoFLCbHp91g30SUbXU9vCp5zh8qadqr5Ts40Fv/sboHNMdZRi7rsdLLm4G9n4WagfuH671omrR9Zrzof4H2GmFTo+zwTnu1P86BL+finM2845oEI+Zxx62bgGlrmE/eoUXaKAGOCdo0XHrvtfJjER4h7CqNA0ISYC33WACOqkVkA9BDKg9GZl0l4tgyLOZKsC3sRHXnilNEJz8so7LyIq83djtBfw1m3wP0BK4iuN0/faxl55c9W3SWtiwX4u8usaYXWvo4RYi/FjXzYRUm3MW3YLPGZM+QiPsiSv53sUBTsQVT5qgCSiNtr4tJt/Cmc6N6NSSo7aS3/xB4mKdimLmhXgSD8O1fjCW2XOOrL9r/AKihZYKD5C3xMA2sv/KFD7+bmmMRwEqO5lBbhLGSpWYHysZYgRMRP3YOmG2WsFT9ldvrvCbBdulKbTOFKzy2a1AUC4dQe3qB1eyOORu5v5ojl2O54GLmqrKquP6+C0MurgqEo1bQ02vBf9RqLSBsbaze32WJn7XomaAxz+m/3jyBN1dhAhhD2Y4cXcWKt+svCcN+dmjs8BYqIuHxn+JELYpjn5FcY+6YEHJ1CyTrY1bep9mjDQPLEuCK39lcJnFggP1J0jO0udo7YNmvP67eEJkOmN/IUjj5b/Z/cDRC7lrWkDjfBFmb//h5OSzz35rnXmYZZE6QT6ayTDguvPIpgbQB1cP+nEPy1JRy7339UL9YPDTFUCUPJOSnkQ1DXtkR9cw9W6U/1WIBI4XQYow/8pFn4cY6M3aCy8xSdSoijYgiX4xmhnx1iaL2Oesf9GF3Ty8qFfmxErDgEZ4uemYsBuVc2EKoPNO88Wzay6o3yYpvIi0GVv0owvsqODEIn9OoECvQANZ2syO8f/efC24UWcc7XUrEG3ZAMl9saJRANkJtFLFrJpCCr/1DBKwALYxSRWx6nWMvTd3gHBX
- x8P8BUI+
- pDJXshUcWQSwyY6LHjoSv9ZWnHKyoEuFUEO/EpCNYlbHEL8TssYnyLKO296TwhLzL81GnxMw88raqLpKAxYcMt1CBt+UCOVKIMqjAdjlK9HlqoIFqKiNOXE6qnihrrac/kw/HQhqXhqsL3cwJYSye0jSSfNUX3j5uCk/3Tjv0q0RjHZ8bKxAWHMIvzqCPEjaCGCEVC1DWJ6yZbEHCFZ3CxrPi6qV9y1LlAs/1oT2ncBu+urrM3CJD8PkzBpIz8M+6DgOGNfgS/MWr7xXzF+x7jgEHCw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772009257-766509
+X-HE-Meta: U2FsdGVkX1/x/6xMRfJMFYmbhbrHzDbb5uuHJh4G/ottbWJhofpxShDsJVuPBIaockTszA9kPDw8yjB4sRSZEkZYfSNdCnwCd5VU+ryYWU1IgbMOYRhIkMP19mH4+eZKI/AhfZ9x9fz460yQX8eHssfodCqyU96yMxInR2dowYEjtdzNI7ImuwWdYkaGVidfNxk0ICUAa4LgrPARKTXjT+U4XTr6Ft1QQQgEgoTKcMW8FU0BFWZsFxN739zhsn4pEAWbJ6DTXWn2y9lSllU2yhKhVkLaAi5k6FhLb3E9j3GzIrn2jjsU+C1w49U/H0XBNYNgcAECmQEISrjhuQgSQ3zB4oyGgZ7K9+i3+hUIWxDIibnKnwzGjMggA+Z+5w3oCq6pdJ7Q8GXc44tsrrMo7IFaEoYI6hto5QjCkR+vtGng2D8z+je0k+/fMHvzJEWnsZP0HmcRB+gs7VD83J+ebxJjO/+Wr3O9n7aBrGjomLxt84V7Uf3Ufa5UBy8pjWIlIaDQGBKyIMvkK/9mO80GNpwne/8prb0puatS34O2MANjaaktTu9L/kabMcf3peaWCQYNfyVfltI3oz8LBkEUs8+PFuG5lnvZTdR8q7b4nZzbaMTvIcn/5PlOD0qPrN36EqEtvsQ9aR7QOZ34B7xpf4jD7D45qCsPqIRw5RFYyzbmy05OPyUBuZ5gGSnqD+QmTNOAqRALtRojwJt7jr/J1UqYU4LaTnqu54pQ73TOr6gfyBHq+7c8QjYoTRLcrB9SKAXUG7DbXPupgoaxHlxdgzvTTqEiIkeFrT23gV21LJIInGTjqH+91mfeuo33jt8wADyhSlsoM8f9TxPs2D3BnqHzwGe8gV7sokJ/STKqd9jITxXnAp1X4doN/KmWi+ZzjEkKRS58YybmPWHJ5MjZ6jmlsexFra9p4DZzBZqBELyT2JSkl3tAmfEFRVAlJJRJ1B2boHio2T8jAsJyJ1l
+ Jnmqpk1o
+ MG/hVB0wqDFaG4WWZYy9lXLEfO+N2wcH3z1thrOUrIexS6tng7uMBjjH9Ebr3Yd3rRuRATVB4k4i6E/+I3iM/H2CDUSjHGvtuwXCObXMb7dW4kLWA8tQoJEULSdnNspCoaV5dm190MiX6N5uANh0NRuKG1OpdFeYm7mChOvJMrKZm+WE+TfZfiB+7mEwwL3XifLVIZEcGZiKcUCnfG8gs3ykhEws9d8h1Qga3Xi6VtWn/SJQ6T13xH7pgwJrnCcw5dV3eo9D7dXDCmqM2WsBjD651t3YIUUBGqXpvPjzmzaY9MZkK+vg9o878dX1ibVTstfpqC4BECEN2p4TvewPUrJQpbYpV+swj+JQzrTs3g5QO1lrrkJNiJfFI9jZoar8EEhUmBoWSNEQ3h3zImgk/x9h+BCj38TmWipbZdwVN+QKaeU1guGeHJhSlFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,97 +117,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 21:27, Vlastimil Babka wrote:
-> 
-> It made sense to me not to refill sheaves when we can't reclaim, but I
-> didn't anticipate this interaction with mempools. We could change them
-> but there might be others using a similar pattern. Maybe it would be for
-> the best to just drop that heuristic from __pcs_replace_empty_main()
-> (but carefully as some deadlock avoidance depends on it, we might need
-> to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
-> tomorrow to test this theory, unless someone beats me to it (feel free to).
-Could you try this then, please? Thanks!
+On 02/24, Pavel Tikhomirov wrote:
+>
+> This moves the condition (tid != 1 && !tmp->child_reaper) to after idr
+> alloc, so it not only covers that first process in pid namespace has pid
+> 1 in case of clone3(set_tid) requesting wrong pid, but also if idr
+> itself gives wrong pid for some reason.
+>
+> This could've been the case before this patch, when creating first
+> process the alloc_pid()->pidfs_add_pid() code path fails, so that the
+> idr->idr_next is non zero anymore and next process calling to
+> alloc_pid(), will get 2 as a pid from idr_alloc_cyclic(). Effectively
+> leading to init-less pid namespace, which is a bug.
 
-----8<----
-From b04dad02eb72feb1736241518dd4d3dd64aadc0e Mon Sep 17 00:00:00 2001
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 25 Feb 2026 09:40:22 +0100
-Subject: [PATCH] mm/slab: allow sheaf refill if blocking is not allowed
+Yes.
 
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
- mm/slub.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+alloc_pid() does:
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 862642c165ed..258307270442 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4526,7 +4526,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	struct slab_sheaf *empty = NULL;
- 	struct slab_sheaf *full;
- 	struct node_barn *barn;
--	bool can_alloc;
-+	bool allow_spin;
- 
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
-@@ -4547,8 +4547,9 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		return NULL;
- 	}
- 
--	full = barn_replace_empty_sheaf(barn, pcs->main,
--					gfpflags_allow_spinning(gfp));
-+	allow_spin = gfpflags_allow_spinning(gfp);
-+
-+	full = barn_replace_empty_sheaf(barn, pcs->main, allow_spin);
- 
- 	if (full) {
- 		stat(s, BARN_GET);
-@@ -4558,9 +4559,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 
- 	stat(s, BARN_GET_FAIL);
- 
--	can_alloc = gfpflags_allow_blocking(gfp);
--
--	if (can_alloc) {
-+	if (allow_spin) {
- 		if (pcs->spare) {
- 			empty = pcs->spare;
- 			pcs->spare = NULL;
-@@ -4571,7 +4570,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 
- 	local_unlock(&s->cpu_sheaves->lock);
- 
--	if (!can_alloc)
-+	if (!allow_spin)
- 		return NULL;
- 
- 	if (empty) {
-@@ -4591,11 +4590,8 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	if (!full)
- 		return NULL;
- 
--	/*
--	 * we can reach here only when gfpflags_allow_blocking
--	 * so this must not be an irq
--	 */
--	local_lock(&s->cpu_sheaves->lock);
-+	if (!local_trylock(&s->cpu_sheaves->lock))
-+		goto barn_put;
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	/*
-@@ -4626,6 +4622,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		return pcs;
- 	}
- 
-+barn_put:
- 	barn_put_full_sheaf(barn, full);
- 	stat(s, BARN_PUT);
- 
--- 
-2.53.0
+	/* On failure to allocate the first pid, reset the state */
+	if (ns->pid_allocated == PIDNS_ADDING)
+		idr_set_cursor(&ns->idr, 0);
 
+but this logic is broken.
+
+Suppose that a task P does sys_unshare(CLONE_NEWPID). Then it does
+fork(), and fork() fails for any reason after alloc_pid() succeeds.
+If P does another fork() to retry, we have a bug.
+
+So with this patch we can either remove the code above, or (better)
+improve this logic.
+
+> Note: This is also a preparation for the next patch in the series, which
+> will introduce an ability of creating init from the task different to
+> the task which had created the pid namespace. Needed to make sure that
+> init is always first, even in this new case.
+>
+> Suggested-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+
+
+> @@ -296,9 +290,18 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+>
+>  		pid->numbers[i].nr = nr;
+>  		pid->numbers[i].ns = tmp;
+> -		tmp = tmp->parent;
+>  		i--;
+>  		retried_preload = false;
+> +
+> +		/*
+> +		 * PID 1 (init) must be created first.
+> +		 */
+> +		if (!READ_ONCE(tmp->child_reaper) && nr != 1) {
+> +			retval = -EINVAL;
+> +			goto out_free;
+> +		}
+> +
+> +		tmp = tmp->parent;
+>  	}
+
+Cosmetic, but why did you move "tmp = tmp->parent;" down? This is fine
+but not strictly necessary. OTOH, if you do this, perhaps it makes sense
+to move "retried_preload = false;" as well?
+
+Oleg.
 
 
