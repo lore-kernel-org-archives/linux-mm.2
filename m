@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F17F5EFD202
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D726EFD204
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 07:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 631216B00D0; Wed, 25 Feb 2026 02:56:48 -0500 (EST)
+	id 6F1136B00D1; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E80D6B00D1; Wed, 25 Feb 2026 02:56:48 -0500 (EST)
+	id 6B20A6B00D2; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DE536B00D2; Wed, 25 Feb 2026 02:56:48 -0500 (EST)
+	id 5A71F6B00D3; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 396E26B00D0
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:56:48 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1EB752538
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:47 +0000 (UTC)
-X-FDA: 84482222454.24.433B41A
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2F346100003
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CWavkArw;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 489146B00D1
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 02:56:56 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E200C5880B
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:55 +0000 (UTC)
+X-FDA: 84482222790.01.0A8228C
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3EE4E120009
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 07:56:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t5eI0eBp;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772006214; a=rsa-sha256;
+	cv=none;
+	b=az1ZOry39aT15LAryhnjadDqaPdD/Fc0iVEG4jpV8FoZFOAwvlQzFEgDLMQHCIJkesspb5
+	RzXCMoCP7W8JGJb4zAfFh/2Jic//TSWODjSH+JXz7mgIjK0pK6A5pLWIgyYUQJ0dNOuAC9
+	JC8CPdWq7LNRRcwZx51lOVJ5T4JcSc8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t5eI0eBp;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772006206;
+	s=arc-20220608; t=1772006214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sO3xPVTV2vMKK43Qj7TVPP/Fyp00smzPwZrC6YsEjcM=;
-	b=p+6yfvuHmt164uRn0uCnJXP/AKE37uK4yVDrl7H86D6Du0tnzVs4RETgY1Co7sPYaZKkd1
-	OyVOTngMcP17JTra0xIAOf0b9EVta9D4I0lcsIyid0KIdfZSn3quWLUGtDC18onbte68yL
-	T/vjZd+gPR/urHNPxOeYBQ0AuF5YbcY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CWavkArw;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772006206; a=rsa-sha256;
-	cv=none;
-	b=DKxZ+FBOfawAQlZeVRVDiz83uMKyNfuHAazWbHCaom90VW5ntqHwY8lEaanNlkSkh38o9m
-	br3nDA9zzbd6f5P0dab5VTvj0zHEh3l8gaal1PFt+LRCzXHZ9Ee8g7t9D+ek4YpXJpZF98
-	FiWmznzJRt1JHFYC4bJK4YrTjpGyXQA=
+	bh=ME0/F5y30Uv1s+QbxgHUtCa7ObeVmIsWm7RG/5Co0FY=;
+	b=UNsxAWzbo9flu/isNpO4FFUVG1WSw8GnLwKSasFsrWPWMrRlyf/R8NWy0RJk6rRTcox0wU
+	hMB7bSxuUrJtlP/L983/xhgzD0r6WCzioDd3Slacy4qKLKpuvFqrKV/qXQPuoT9l66lOfV
+	SZbf7ngJPX1cMM7uxNr4hZpPviwCd3Y=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772006204;
+	t=1772006212;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sO3xPVTV2vMKK43Qj7TVPP/Fyp00smzPwZrC6YsEjcM=;
-	b=CWavkArwNsS2BdzHMSFBCm44dnvzB/pALf7q2TkATGTQG/s08nulN6EZtI5QGlCiHQqp1Y
-	ILMqQ4hyE+q7PV57wuxeJVWh93bZmJpq4DzBQfcyyLSkCQuFvmAPm0VvrwyLDvjBfVMC+a
-	j+m9WUohawvt7DSKDFv0ffusuqUAF/g=
+	bh=ME0/F5y30Uv1s+QbxgHUtCa7ObeVmIsWm7RG/5Co0FY=;
+	b=t5eI0eBph5ukFLwgWDVMW63HTjsF/nKxNunRL+w1BMRv4OZ+Gnj1y0Ra9yNHKEYQIQOgOx
+	YtjJEUibMIUeQLxekC4mxf4IjGMiloxQgCjJI2x/lEmDq5cZ5qf8UyQWPo9hDqBWZAiT6B
+	FVebdx87fiB1zJgVldgtNWBcX0Bd7yw=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -89,22 +89,22 @@ Cc: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v5 31/32] mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios
-Date: Wed, 25 Feb 2026 15:53:14 +0800
-Message-ID: <ff5a945386f168faa877901d569296592cdaadc3.1772005110.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v5 32/32] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+Date: Wed, 25 Feb 2026 15:53:15 +0800
+Message-ID: <9a0b6ba87112b2bf038ab65c47b6f16311b829cb.1772005110.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1772005110.git.zhengqi.arch@bytedance.com>
 References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2F346100003
-X-Stat-Signature: t9qg8qhww6tpi3mqm3kcdw8chw61mgat
 X-Rspam-User: 
-X-HE-Tag: 1772006205-682939
-X-HE-Meta: U2FsdGVkX19t7KjkqlGuA70Ig/jygYfMVsYEiiA2kWaTSaXmIGnwPH84qCVQ87rwDjC5boDux25OtrgGeryzDxDBk9Uu7cuZDKIHgG13jv21XmVRcyfIUV0TwykIjUKczK5orjZfSA7YBQnn8+Y2DFwUXL3hbuhTPJLichgAQdXQ6Ya2itBFLk4u/vZ/GDlsGbmbu78cRINaUWfupI9HUHb6Yy8LJM451BZkl4Magm/LlY+dvv24N/GwzAFeAENHi2hj8b81wRBJpCPeYsv3iY4hrHWFVLuOV7VyA2Zvos2731PDb+HlkXZ4wisoGOmlWAwF8TOGOQFRgKMIW7d4fXN7YG5Uf5bBBFHfp5ISuIRbztVSu+Am8AU7dTHTgl5f+d0/Xz6Z+sTu68yZW1sBUdaji911vguLnLQ3XA0yNx4ghnAuRueBsDG/XH6tkKg+WzyseB6rjCJ9zhpMyWGZ9Y83mYPsRMJL1Lr1ItbH8qQxE1SQcBt7NCtWZHZenaZ5g+pX//L6N4hrcofv/7lvTPgvRu0tGd2equLsGeMcLMvCTF5BywNB2cD8wzACL+z6yT/5DCmxsEZENaAJBoMdSe25fdxG4We2kyQ7KmgwxlFLn8nyieL0wBI6GWGy5VwPSt1y5E3ah0GbOI6SVoT8j3kPCR181oKW4Gi+L4c4gabBxJCP1ru4b5IzbXNLLG30MloH1qKDM9/d1WLF6Cn+Sr+gHvakN6w70SqRfE+mwZyNmVc4md9E8KnZNuW5g1ypzaZbci3m9Swaj0APxKH5Px+sfoNfSA0qXKccQug6kxpfyUvj1BP2xogyaxvghINLI2IF3YNYonfpQXbZ0G+VMufTuWcp3xc9qQf+2Ax51NCuVSbhvwVpyvMdfRT7StkgcQtmzJGu6jMNbSIQMplT7CvfTrJ9OlJopMVD1KHlhwoys27oHAw12cfjXapY5rLbbbmRhpA9hLdD1XsLWCl
- RWxpU3c6
- g/QZN//aMIGAHoWtalIduk0ryN9YhQ+saCuiStcgHmau/666DDmBwJmYP0vfBssYaChpVBqSsRDhn6FAtzHGK3j6SNHwRWB+D6ebYBAqCNDs7XP/wqalsqksJIRDzQtYIUgFvmyGz2o9Trzl7DSveAUknUM9djJ84RWL5kQUs0dNbV28/1RBld+InZw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3EE4E120009
+X-Stat-Signature: 9jbkumekwnnodgswcsf16rqzjcupneo1
+X-HE-Tag: 1772006214-880990
+X-HE-Meta: U2FsdGVkX1+eG7LMuL2QEJE+ODCZOCjZBE9eaa9rtvxz41mFp0YpngoCnRQmTCWQyF82n++g0EVyISweTq9MYZd5GEh/HwbA43kGMLoACsfDnc6N6CSvfTotaDaJQ/MVFdiuL1/i2ya4aLi14tzMCWubtjq2I2ZluS2Y+U6vTVlRSsx5xj1Fdmo1BUaxwSulxGWnnpHE07RdIHP/OSL4h69FmJEnS4/0eubHvv/9WpkhDL5yTND8ZtVHcSq+dAMU5tJl7AQv8wBSD8gKzm/u03rWo/eOFdNuPL0ErguHr/qAC1miIJqKc2vhZyeQ4AClsoI2G+kzldW+iXw+1Ml38ZUzLj9zEUL31BBmZuvR9WSQJxeiUDd0z9C2IglMT69MZ0wnaxDnqEq2mlx3Rcr5dfxgfw+fwRUThG653tauVrgZMgb+GGr8CfJrw3l4gXvefJ6c6CI79V/KBVxVJR0x8fOO5lyCjspo/lIIVuunuOfiaosUrHJqPzeI8lbHeTG0iS8ixOxKqqk8vBII16Q+9TPk46dto2VQsnMyk4sqjYPNpFj4Zbo27vVBSVM+r5+B5zx9ZGkzqOURqfKub8VOZKWpAAj+PJykg5riQnq6s0jTKf3hUTqXE9zjVtmfIIGsVhPBHyIxfJS+ej4XaE6rTVLrvGigH55Iw12zn2bogGOWeBwoRihJJ19nGSzQAWkvp90xA5Tc/iA8NzQmwp3SBcqWPX5a77pD9BAlZFJNBG9uzTJLvcVlnxDtikoFTFKC+HMio+hG6PHo4fsJbVZS6KUmdHPzqMAz9fnZqKwFtRw7BssDedR/emoYBlyNhoZylaPbJo1yZzaUH+1lZyJk7vvLRheoxbCM+M8XfoMaOr0bho2fjVqiZuhScLZhIFmUKFShTtta7nw5i1+VCSUwTwf2n8KqCy2yWTAaAO56YJpfVEeZyOdyalcN/r0flm1s1cJPhLS7LZuird3aF7L
+ D564spHR
+ /FST9myE+dKzqhUdXK+sGaY1tBwEzKOirtg4JmF4ZmSXMbjQ2DzNOV8MpY0imDvs77ezpZGHvhwVEW+S0AvZ8eGvFVZlfhogCBu+OK2UjArydCN8SAu1ZxVoBmCkXMO7YSFa1VNzMNoddUurey0SPKSCPfBXuWE7gQDHc7LW+6qmStUAfP2WUiQ0+PyJWhTuGYeVvoedf+/UhJ+hqX9oZAzA0aP6No2TU2xZKyT1urAs7oOpAZvvX8ygtXooQLmrdvn/NCTAvcYu+DQMPcAMZD4bWGoZUgLbSo18W9tlfNqSM1dsim3H0MrUmKJhv0rA7m0Yik+bnmUIoJJ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,645 +114,64 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Muchun Song <songmuchun@bytedance.com>
 
-Now that everything is set up, switch folio->memcg_data pointers to
-objcgs, update the accessors, and execute reparenting on cgroup death.
-
-Finally, folio->memcg_data of LRU folios and kmem folios will always
-point to an object cgroup pointer. The folio->memcg_data of slab
-folios will point to an vector of object cgroups.
+We must ensure the folio is deleted from or added to the correct lruvec
+list. So, add VM_WARN_ON_ONCE_FOLIO() to catch invalid users. The
+VM_BUG_ON_PAGE() in move_pages_to_lru() can be removed as
+add_page_to_lru_list() will perform the necessary check.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/memcontrol.h |  77 +++++---------
- mm/memcontrol-v1.c         |  15 +--
- mm/memcontrol.c            | 199 ++++++++++++++++++++++---------------
- 3 files changed, 154 insertions(+), 137 deletions(-)
+ include/linux/mm_inline.h | 6 ++++++
+ mm/vmscan.c               | 1 -
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 487c66d9e5304..2edb60aeb4a42 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -371,9 +371,6 @@ enum objext_flags {
- #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
- 
- #ifdef CONFIG_MEMCG
--
--static inline bool folio_memcg_kmem(struct folio *folio);
--
- /*
-  * After the initialization objcg->memcg is always pointing at
-  * a valid memcg, but can be atomically swapped to the parent memcg.
-@@ -387,43 +384,19 @@ static inline struct mem_cgroup *obj_cgroup_memcg(struct obj_cgroup *objcg)
- }
- 
- /*
-- * __folio_memcg - Get the memory cgroup associated with a non-kmem folio
-- * @folio: Pointer to the folio.
-- *
-- * Returns a pointer to the memory cgroup associated with the folio,
-- * or NULL. This function assumes that the folio is known to have a
-- * proper memory cgroup pointer. It's not safe to call this function
-- * against some type of folios, e.g. slab folios or ex-slab folios or
-- * kmem folios.
-- */
--static inline struct mem_cgroup *__folio_memcg(struct folio *folio)
--{
--	unsigned long memcg_data = folio->memcg_data;
--
--	VM_BUG_ON_FOLIO(folio_test_slab(folio), folio);
--	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
--	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_KMEM, folio);
--
--	return (struct mem_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
--}
--
--/*
-- * __folio_objcg - get the object cgroup associated with a kmem folio.
-+ * folio_objcg - get the object cgroup associated with a folio.
-  * @folio: Pointer to the folio.
-  *
-  * Returns a pointer to the object cgroup associated with the folio,
-  * or NULL. This function assumes that the folio is known to have a
-- * proper object cgroup pointer. It's not safe to call this function
-- * against some type of folios, e.g. slab folios or ex-slab folios or
-- * LRU folios.
-+ * proper object cgroup pointer.
-  */
--static inline struct obj_cgroup *__folio_objcg(struct folio *folio)
-+static inline struct obj_cgroup *folio_objcg(struct folio *folio)
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index fa2d6ba811b53..ad50688d89dba 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -342,6 +342,8 @@ void lruvec_add_folio(struct lruvec *lruvec, struct folio *folio)
  {
- 	unsigned long memcg_data = folio->memcg_data;
+ 	enum lru_list lru = folio_lru_list(folio);
  
- 	VM_BUG_ON_FOLIO(folio_test_slab(folio), folio);
- 	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
--	VM_BUG_ON_FOLIO(!(memcg_data & MEMCG_DATA_KMEM), folio);
- 
- 	return (struct obj_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
- }
-@@ -437,21 +410,30 @@ static inline struct obj_cgroup *__folio_objcg(struct folio *folio)
-  * proper memory cgroup pointer. It's not safe to call this function
-  * against some type of folios, e.g. slab folios or ex-slab folios.
-  *
-- * For a non-kmem folio any of the following ensures folio and memcg binding
-- * stability:
-+ * For a folio any of the following ensures folio and objcg binding stability:
-  *
-  * - the folio lock
-  * - LRU isolation
-  * - exclusive reference
-  *
-- * For a kmem folio a caller should hold an rcu read lock to protect memcg
-- * associated with a kmem folio from being released.
-+ * Based on the stable binding of folio and objcg, for a folio any of the
-+ * following ensures folio and memcg binding stability:
-+ *
-+ * - cgroup_mutex
-+ * - the lruvec lock
-+ *
-+ * If the caller only want to ensure that the page counters of memcg are
-+ * updated correctly, ensure that the binding stability of folio and objcg
-+ * is sufficient.
-+ *
-+ * Note: The caller should hold an rcu read lock or cgroup_mutex to protect
-+ * memcg associated with a folio from being released.
-  */
- static inline struct mem_cgroup *folio_memcg(struct folio *folio)
- {
--	if (folio_memcg_kmem(folio))
--		return obj_cgroup_memcg(__folio_objcg(folio));
--	return __folio_memcg(folio);
-+	struct obj_cgroup *objcg = folio_objcg(folio);
++	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
 +
-+	return objcg ? obj_cgroup_memcg(objcg) : NULL;
- }
- 
- /*
-@@ -475,15 +457,10 @@ static inline bool folio_memcg_charged(struct folio *folio)
-  * has an associated memory cgroup pointer or an object cgroups vector or
-  * an object cgroup.
-  *
-- * For a non-kmem folio any of the following ensures folio and memcg binding
-- * stability:
-+ * The page and objcg or memcg binding rules can refer to folio_memcg().
-  *
-- * - the folio lock
-- * - LRU isolation
-- * - exclusive reference
-- *
-- * For a kmem folio a caller should hold an rcu read lock to protect memcg
-- * associated with a kmem folio from being released.
-+ * A caller should hold an rcu read lock to protect memcg associated with a
-+ * page from being released.
-  */
- static inline struct mem_cgroup *folio_memcg_check(struct folio *folio)
- {
-@@ -492,18 +469,14 @@ static inline struct mem_cgroup *folio_memcg_check(struct folio *folio)
- 	 * for slabs, READ_ONCE() should be used here.
- 	 */
- 	unsigned long memcg_data = READ_ONCE(folio->memcg_data);
-+	struct obj_cgroup *objcg;
- 
- 	if (memcg_data & MEMCG_DATA_OBJEXTS)
- 		return NULL;
- 
--	if (memcg_data & MEMCG_DATA_KMEM) {
--		struct obj_cgroup *objcg;
--
--		objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
--		return obj_cgroup_memcg(objcg);
--	}
-+	objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
- 
--	return (struct mem_cgroup *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
-+	return objcg ? obj_cgroup_memcg(objcg) : NULL;
- }
- 
- static inline struct mem_cgroup *page_memcg_check(struct page *page)
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 51fb4406f45cf..427cc45c3c369 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -613,6 +613,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
- void memcg1_swapout(struct folio *folio, swp_entry_t entry)
- {
- 	struct mem_cgroup *memcg, *swap_memcg;
-+	struct obj_cgroup *objcg;
- 	unsigned int nr_entries;
- 
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
-@@ -624,12 +625,13 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
- 	if (!do_memsw_account())
+ 	if (lru_gen_add_folio(lruvec, folio, false))
  		return;
  
--	memcg = folio_memcg(folio);
--
--	VM_WARN_ON_ONCE_FOLIO(!memcg, folio);
--	if (!memcg)
-+	objcg = folio_objcg(folio);
-+	VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
-+	if (!objcg)
+@@ -356,6 +358,8 @@ void lruvec_add_folio_tail(struct lruvec *lruvec, struct folio *folio)
+ {
+ 	enum lru_list lru = folio_lru_list(folio);
+ 
++	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
++
+ 	if (lru_gen_add_folio(lruvec, folio, true))
  		return;
  
-+	rcu_read_lock();
-+	memcg = obj_cgroup_memcg(objcg);
- 	/*
- 	 * In case the memcg owning these pages has been offlined and doesn't
- 	 * have an ID allocated to it anymore, charge the closest online
-@@ -644,7 +646,7 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
- 	folio_unqueue_deferred_split(folio);
- 	folio->memcg_data = 0;
- 
--	if (!mem_cgroup_is_root(memcg))
-+	if (!obj_cgroup_is_root(objcg))
- 		page_counter_uncharge(&memcg->memory, nr_entries);
- 
- 	if (memcg != swap_memcg) {
-@@ -665,7 +667,8 @@ void memcg1_swapout(struct folio *folio, swp_entry_t entry)
- 	preempt_enable_nested();
- 	memcg1_check_events(memcg, folio_nid(folio));
- 
--	css_put(&memcg->css);
-+	rcu_read_unlock();
-+	obj_cgroup_put(objcg);
- }
- 
- /*
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index edc785438a65b..e990c432a9ac4 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -249,13 +249,17 @@ static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
- }
- #endif
- 
--static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid)
+@@ -370,6 +374,8 @@ void lruvec_del_folio(struct lruvec *lruvec, struct folio *folio)
  {
- 	spin_lock_irq(&objcg_lock);
-+	spin_lock_nested(&mem_cgroup_lruvec(memcg, NODE_DATA(nid))->lru_lock, 1);
-+	spin_lock_nested(&mem_cgroup_lruvec(parent, NODE_DATA(nid))->lru_lock, 2);
- }
+ 	enum lru_list lru = folio_lru_list(folio);
  
--static inline void reparent_unlocks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+static inline void reparent_unlocks(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid)
- {
-+	spin_unlock(&mem_cgroup_lruvec(parent, NODE_DATA(nid))->lru_lock);
-+	spin_unlock(&mem_cgroup_lruvec(memcg, NODE_DATA(nid))->lru_lock);
- 	spin_unlock_irq(&objcg_lock);
- }
- 
-@@ -266,14 +270,31 @@ static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
- 	int nid;
- 
- 	for_each_node(nid) {
--		reparent_locks(memcg, parent);
-+retry:
-+		if (lru_gen_enabled())
-+			max_lru_gen_memcg(parent, nid);
++	VM_WARN_ON_ONCE_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
 +
-+		reparent_locks(memcg, parent, nid);
-+
-+		if (lru_gen_enabled()) {
-+			if (!recheck_lru_gen_max_memcg(parent, nid)) {
-+				reparent_unlocks(memcg, parent, nid);
-+				cond_resched();
-+				goto retry;
-+			}
-+			lru_gen_reparent_memcg(memcg, parent, nid);
-+		} else {
-+			lru_reparent_memcg(memcg, parent, nid);
-+		}
- 
- 		objcg = __memcg_reparent_objcgs(memcg, parent, nid);
- 
--		reparent_unlocks(memcg, parent);
-+		reparent_unlocks(memcg, parent, nid);
- 
- 		percpu_ref_kill(&objcg->refcnt);
- 	}
-+
-+	reparent_state_local(memcg, parent);
- }
- 
- /*
-@@ -823,9 +844,14 @@ void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
- 
- 	cpu = get_cpu();
- 
-+	memcg = get_non_dying_memcg_start(memcg);
-+
- 	this_cpu_add(memcg->vmstats_percpu->state[i], val);
- 	val = memcg_state_val_in_pages(idx, val);
- 	memcg_rstat_updated(memcg, val, cpu);
-+
-+	get_non_dying_memcg_end();
-+
- 	trace_mod_memcg_state(memcg, idx, val);
- 
- 	put_cpu();
-@@ -866,6 +892,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 				     enum node_stat_item idx,
- 				     int val)
- {
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	struct mem_cgroup_per_node *pn;
- 	struct mem_cgroup *memcg;
- 	int i = memcg_stats_index(idx);
-@@ -879,14 +906,18 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 
- 	cpu = get_cpu();
- 
-+	memcg = get_non_dying_memcg_start(memcg);
-+	pn = memcg->nodeinfo[pgdat->node_id];
-+
- 	/* Update memcg */
- 	this_cpu_add(memcg->vmstats_percpu->state[i], val);
--
- 	/* Update lruvec */
- 	this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
--
- 	val = memcg_state_val_in_pages(idx, val);
- 	memcg_rstat_updated(memcg, val, cpu);
-+
-+	get_non_dying_memcg_end();
-+
- 	trace_mod_memcg_lruvec_state(memcg, idx, val);
- 
- 	put_cpu();
-@@ -1112,6 +1143,8 @@ struct mem_cgroup *get_mem_cgroup_from_current(void)
- /**
-  * get_mem_cgroup_from_folio - Obtain a reference on a given folio's memcg.
-  * @folio: folio from which memcg should be extracted.
-+ *
-+ * See folio_memcg() for folio->objcg/memcg binding rules.
-  */
- struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
- {
-@@ -2753,17 +2786,17 @@ static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	return try_charge_memcg(memcg, gfp_mask, nr_pages);
- }
- 
--static void commit_charge(struct folio *folio, struct mem_cgroup *memcg)
-+static void commit_charge(struct folio *folio, struct obj_cgroup *objcg)
- {
- 	VM_BUG_ON_FOLIO(folio_memcg_charged(folio), folio);
- 	/*
--	 * Any of the following ensures page's memcg stability:
-+	 * Any of the following ensures folio's objcg stability:
- 	 *
- 	 * - the page lock
- 	 * - LRU isolation
- 	 * - exclusive reference
- 	 */
--	folio->memcg_data = (unsigned long)memcg;
-+	folio->memcg_data = (unsigned long)objcg;
- }
- 
- #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
-@@ -2877,6 +2910,17 @@ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
- 	return NULL;
- }
- 
-+static inline struct obj_cgroup *get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
-+{
-+	struct obj_cgroup *objcg;
-+
-+	rcu_read_lock();
-+	objcg = __get_obj_cgroup_from_memcg(memcg);
-+	rcu_read_unlock();
-+
-+	return objcg;
-+}
-+
- static struct obj_cgroup *current_objcg_update(void)
- {
- 	struct mem_cgroup *memcg;
-@@ -2978,17 +3022,10 @@ struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
- {
- 	struct obj_cgroup *objcg;
- 
--	if (!memcg_kmem_online())
--		return NULL;
--
--	if (folio_memcg_kmem(folio)) {
--		objcg = __folio_objcg(folio);
-+	objcg = folio_objcg(folio);
-+	if (objcg)
- 		obj_cgroup_get(objcg);
--	} else {
--		rcu_read_lock();
--		objcg = __get_obj_cgroup_from_memcg(__folio_memcg(folio));
--		rcu_read_unlock();
--	}
-+
- 	return objcg;
- }
- 
-@@ -3504,7 +3541,7 @@ void folio_split_memcg_refs(struct folio *folio, unsigned old_order,
+ 	if (lru_gen_del_folio(lruvec, folio, false))
  		return;
  
- 	new_refs = (1 << (old_order - new_order)) - 1;
--	css_get_many(&__folio_memcg(folio)->css, new_refs);
-+	obj_cgroup_get_many(folio_objcg(folio), new_refs);
- }
- 
- static void memcg_online_kmem(struct mem_cgroup *memcg)
-@@ -4941,16 +4978,20 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
- 			gfp_t gfp)
- {
--	int ret;
--
--	ret = try_charge(memcg, gfp, folio_nr_pages(folio));
--	if (ret)
--		goto out;
-+	int ret = 0;
-+	struct obj_cgroup *objcg;
- 
--	css_get(&memcg->css);
--	commit_charge(folio, memcg);
-+	objcg = get_obj_cgroup_from_memcg(memcg);
-+	/* Do not account at the root objcg level. */
-+	if (!obj_cgroup_is_root(objcg))
-+		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
-+	if (ret) {
-+		obj_cgroup_put(objcg);
-+		return ret;
-+	}
-+	commit_charge(folio, objcg);
- 	memcg1_commit_charge(folio, memcg);
--out:
-+
- 	return ret;
- }
- 
-@@ -5036,7 +5077,7 @@ int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
- }
- 
- struct uncharge_gather {
--	struct mem_cgroup *memcg;
-+	struct obj_cgroup *objcg;
- 	unsigned long nr_memory;
- 	unsigned long pgpgout;
- 	unsigned long nr_kmem;
-@@ -5050,58 +5091,52 @@ static inline void uncharge_gather_clear(struct uncharge_gather *ug)
- 
- static void uncharge_batch(const struct uncharge_gather *ug)
- {
-+	struct mem_cgroup *memcg;
-+
-+	rcu_read_lock();
-+	memcg = obj_cgroup_memcg(ug->objcg);
- 	if (ug->nr_memory) {
--		memcg_uncharge(ug->memcg, ug->nr_memory);
-+		memcg_uncharge(memcg, ug->nr_memory);
- 		if (ug->nr_kmem) {
--			mod_memcg_state(ug->memcg, MEMCG_KMEM, -ug->nr_kmem);
--			memcg1_account_kmem(ug->memcg, -ug->nr_kmem);
-+			mod_memcg_state(memcg, MEMCG_KMEM, -ug->nr_kmem);
-+			memcg1_account_kmem(memcg, -ug->nr_kmem);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7f9f66e0b40e1..73bfa93696a27 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1920,7 +1920,6 @@ static unsigned int move_folios_to_lru(struct list_head *list)
+ 			continue;
  		}
--		memcg1_oom_recover(ug->memcg);
-+		memcg1_oom_recover(memcg);
- 	}
  
--	memcg1_uncharge_batch(ug->memcg, ug->pgpgout, ug->nr_memory, ug->nid);
-+	memcg1_uncharge_batch(memcg, ug->pgpgout, ug->nr_memory, ug->nid);
-+	rcu_read_unlock();
- 
- 	/* drop reference from uncharge_folio */
--	css_put(&ug->memcg->css);
-+	obj_cgroup_put(ug->objcg);
- }
- 
- static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
- {
- 	long nr_pages;
--	struct mem_cgroup *memcg;
- 	struct obj_cgroup *objcg;
- 
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 
- 	/*
- 	 * Nobody should be changing or seriously looking at
--	 * folio memcg or objcg at this point, we have fully
--	 * exclusive access to the folio.
-+	 * folio objcg at this point, we have fully exclusive
-+	 * access to the folio.
- 	 */
--	if (folio_memcg_kmem(folio)) {
--		objcg = __folio_objcg(folio);
--		/*
--		 * This get matches the put at the end of the function and
--		 * kmem pages do not hold memcg references anymore.
--		 */
--		memcg = get_mem_cgroup_from_objcg(objcg);
--	} else {
--		memcg = __folio_memcg(folio);
--	}
--
--	if (!memcg)
-+	objcg = folio_objcg(folio);
-+	if (!objcg)
- 		return;
- 
--	if (ug->memcg != memcg) {
--		if (ug->memcg) {
-+	if (ug->objcg != objcg) {
-+		if (ug->objcg) {
- 			uncharge_batch(ug);
- 			uncharge_gather_clear(ug);
- 		}
--		ug->memcg = memcg;
-+		ug->objcg = objcg;
- 		ug->nid = folio_nid(folio);
- 
--		/* pairs with css_put in uncharge_batch */
--		css_get(&memcg->css);
-+		/* pairs with obj_cgroup_put in uncharge_batch */
-+		obj_cgroup_get(objcg);
- 	}
- 
- 	nr_pages = folio_nr_pages(folio);
-@@ -5109,20 +5144,17 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
- 	if (folio_memcg_kmem(folio)) {
- 		ug->nr_memory += nr_pages;
- 		ug->nr_kmem += nr_pages;
--
--		folio->memcg_data = 0;
--		obj_cgroup_put(objcg);
- 	} else {
- 		/* LRU pages aren't accounted at the root level */
--		if (!mem_cgroup_is_root(memcg))
-+		if (!obj_cgroup_is_root(objcg))
- 			ug->nr_memory += nr_pages;
- 		ug->pgpgout++;
- 
- 		WARN_ON_ONCE(folio_unqueue_deferred_split(folio));
--		folio->memcg_data = 0;
- 	}
- 
--	css_put(&memcg->css);
-+	folio->memcg_data = 0;
-+	obj_cgroup_put(objcg);
- }
- 
- void __mem_cgroup_uncharge(struct folio *folio)
-@@ -5146,7 +5178,7 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
- 	uncharge_gather_clear(&ug);
- 	for (i = 0; i < folios->nr; i++)
- 		uncharge_folio(folios->folios[i], &ug);
--	if (ug.memcg)
-+	if (ug.objcg)
- 		uncharge_batch(&ug);
- }
- 
-@@ -5163,6 +5195,7 @@ void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
- void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
- {
- 	struct mem_cgroup *memcg;
-+	struct obj_cgroup *objcg;
- 	long nr_pages = folio_nr_pages(new);
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
-@@ -5177,21 +5210,24 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
- 	if (folio_memcg_charged(new))
- 		return;
- 
--	memcg = folio_memcg(old);
--	VM_WARN_ON_ONCE_FOLIO(!memcg, old);
--	if (!memcg)
-+	objcg = folio_objcg(old);
-+	VM_WARN_ON_ONCE_FOLIO(!objcg, old);
-+	if (!objcg)
- 		return;
- 
-+	rcu_read_lock();
-+	memcg = obj_cgroup_memcg(objcg);
- 	/* Force-charge the new page. The old one will be freed soon */
--	if (!mem_cgroup_is_root(memcg)) {
-+	if (!obj_cgroup_is_root(objcg)) {
- 		page_counter_charge(&memcg->memory, nr_pages);
- 		if (do_memsw_account())
- 			page_counter_charge(&memcg->memsw, nr_pages);
- 	}
- 
--	css_get(&memcg->css);
--	commit_charge(new, memcg);
-+	obj_cgroup_get(objcg);
-+	commit_charge(new, objcg);
- 	memcg1_commit_charge(new, memcg);
-+	rcu_read_unlock();
- }
- 
- /**
-@@ -5207,7 +5243,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
-  */
- void mem_cgroup_migrate(struct folio *old, struct folio *new)
- {
--	struct mem_cgroup *memcg;
-+	struct obj_cgroup *objcg;
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(new), new);
-@@ -5218,18 +5254,18 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
- 	if (mem_cgroup_disabled())
- 		return;
- 
--	memcg = folio_memcg(old);
-+	objcg = folio_objcg(old);
- 	/*
--	 * Note that it is normal to see !memcg for a hugetlb folio.
-+	 * Note that it is normal to see !objcg for a hugetlb folio.
- 	 * For e.g, it could have been allocated when memory_hugetlb_accounting
- 	 * was not selected.
- 	 */
--	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(old) && !memcg, old);
--	if (!memcg)
-+	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(old) && !objcg, old);
-+	if (!objcg)
- 		return;
- 
--	/* Transfer the charge and the css ref */
--	commit_charge(new, memcg);
-+	/* Transfer the charge and the objcg ref */
-+	commit_charge(new, objcg);
- 
- 	/* Warning should never happen, so don't worry about refcount non-0 */
- 	WARN_ON_ONCE(folio_unqueue_deferred_split(old));
-@@ -5412,22 +5448,27 @@ int __mem_cgroup_try_charge_swap(struct folio *folio, swp_entry_t entry)
- 	unsigned int nr_pages = folio_nr_pages(folio);
- 	struct page_counter *counter;
- 	struct mem_cgroup *memcg;
-+	struct obj_cgroup *objcg;
- 
- 	if (do_memsw_account())
- 		return 0;
- 
--	memcg = folio_memcg(folio);
--
--	VM_WARN_ON_ONCE_FOLIO(!memcg, folio);
--	if (!memcg)
-+	objcg = folio_objcg(folio);
-+	VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
-+	if (!objcg)
- 		return 0;
- 
-+	rcu_read_lock();
-+	memcg = obj_cgroup_memcg(objcg);
- 	if (!entry.val) {
- 		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
-+		rcu_read_unlock();
- 		return 0;
- 	}
- 
- 	memcg = mem_cgroup_private_id_get_online(memcg, nr_pages);
-+	/* memcg is pined by memcg ID. */
-+	rcu_read_unlock();
- 
- 	if (!mem_cgroup_is_root(memcg) &&
- 	    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
+-		VM_BUG_ON_FOLIO(!folio_matches_lruvec(folio, lruvec), folio);
+ 		lruvec_add_folio(lruvec, folio);
+ 		nr_pages = folio_nr_pages(folio);
+ 		nr_moved += nr_pages;
 -- 
 2.20.1
 
