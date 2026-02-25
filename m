@@ -4,86 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 313E0FD375F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 13:57:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3A16FD374E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 14:04:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9472A6B0096; Wed, 25 Feb 2026 08:57:27 -0500 (EST)
+	id 0EFA56B008A; Wed, 25 Feb 2026 09:04:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1606B009B; Wed, 25 Feb 2026 08:57:27 -0500 (EST)
+	id 09DFC6B008C; Wed, 25 Feb 2026 09:04:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 806F46B0096; Wed, 25 Feb 2026 08:57:27 -0500 (EST)
+	id E974F6B0092; Wed, 25 Feb 2026 09:04:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 684D06B0096
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:57:27 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 161F116037B
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:57:27 +0000 (UTC)
-X-FDA: 84483131334.08.BCA951A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6573E120008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 13:57:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I92pcnP/";
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D37936B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 09:04:28 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E0BFC2380
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:04:28 +0000 (UTC)
+X-FDA: 84483149016.24.A82C608
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 470FB1C0008
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 14:04:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PClkNlBY;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772027845; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772028266; a=rsa-sha256;
 	cv=none;
-	b=LIJvHnghviscEqYFIRLH8ydpw3gXtLI2/CmBYexti/EQgE+7nDdbgKc8KLczc+/ptjJ1uP
-	uaae9Zo0bY4giUPjFBSUHxlp4h0JV0qVSYhbwvDUHFjZmy8kZ+ucUs98Tg5plwSMsoT49a
-	psgpOH9lBEru4oD9272Mu75sY9eC110=
+	b=E6ojXRquKRNwlCYqXzYxHCQoQeYRx+sxWHcO5lpLRP4DdXlDzAX9ErMsQFF6VMICXQ1bdw
+	LP8q0iPll6veQnOqEblJGeGSF2uH5jilmMpkT9ILQdFVX6z4ghN1rJHmCkMlN7CZo46JbM
+	ICOlC3MG4PwIzMtta351FjA7nd6jCp8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I92pcnP/";
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PClkNlBY;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772027845;
+	s=arc-20220608; t=1772028266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=euXigfeu1Ls+Mvlqr/jfLJrufgIc8aH5ZNnJ/mmFges=;
-	b=wztBfjTTCUbV8LHJvnmnzzv1yJ8cd/TTEenjWymYMyVywnHzGSaS32ebEyRiJsYp2XUifN
-	vYgP5e0VUZ8Kaj0+LWS4DERyi5rp3ysmB7cNSNzg3tH2iroZvP9SRNQZVLAwcrSbWFrTZx
-	8LiqC9Ihv2VZvk8O96CV6KJkdsqbcAs=
+	bh=DSAgkJWi5hoJt+P3JikprjcOkH0bitSNHNb5Lpt8ZRM=;
+	b=qW5U+bhTC368FE8K54AcpSsKkgu7iDeo6mVNxRlcGk9ss1pYCjr3lBgw18tj8jwxXRgimG
+	F0oaJx9d3dO/XV3K3aCt59JAaJHvIZ6bvLcbxGBVdpbqhQBQMHe5i+70W8dal+wtbKazIK
+	THqZdS8vpfMnrsP7xqArXS/WHRNvV4A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CAFE16012B;
-	Wed, 25 Feb 2026 13:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD8CC116D0;
-	Wed, 25 Feb 2026 13:57:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1921343C79;
+	Wed, 25 Feb 2026 14:04:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1371FC116D0;
+	Wed, 25 Feb 2026 14:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772027844;
-	bh=OUurYv35bNhXesuuVWjFpAi6I65QdGPN0j4kp3KPEIs=;
+	s=k20201202; t=1772028265;
+	bh=uGl0916oRQSQUnxyyrcUO8NjVfohNTiN1mXCplhRCQA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I92pcnP/2w/38kBmgcDkuu+UDMvqA+rUZOm3NlbmqSs/M2THpW0kgPllrMeteQshm
-	 vOfYwOs6vei328598cOpaenhGoAYoIXD8nqV3ivJKUH8XAGotGZwQ7E8Z0JAMtXwgK
-	 D4xDk1e+5hc9dMVj+LDpW/dmGs9gFZYy5974BopbOmYeeSGU2+JN7Sw45oAvy3uVKa
-	 JPaQR+IhNJIM34CCmd1FDef2ElMhcfCqoXmwPSLgxT2yWhQK9+phbCg0ro0Wucn9HE
-	 pBg9j6ZoA5ndt9PZGt40XNny4FR0erxKyQ9Zb5gdcR8sE2EAbZB5tjLfsw+1I1avWS
-	 sXSvM8ohkeL9A==
-Message-ID: <258cad5e-9ad2-4dfa-a090-c65bbe3fc7ff@kernel.org>
-Date: Wed, 25 Feb 2026 14:57:16 +0100
+	b=PClkNlBYDQ2xdogeOlwf0lwcfsg8VJYH5FB61T1LdXbnCrDvl409Q9vKrvHyWSapz
+	 6YHimcgknAFRJHtKYdKoKu3wtkVHa0WrB6Juwh5XxqTV+O4WE4DNivfekLfdQ2Y27J
+	 Bs/XpORBfPSoslHXzkCwCQLmE6OKF0o5hV5mOrvRs6KNAcaVSLJjr7gSBQfR64L9sg
+	 JOnakNnjyfNTVutKLSaugkSwjGDg4Vj7QhjoepZRF4yfpA/fjRpxmza7KB3+D2OG14
+	 413W7Kgem4AGvcItQtQnCP+i6sLuxBtvhXQsW8uSxM0tT3LdwjhyW3lXj84sZLb3gb
+	 9orwgTYjnzsTw==
+Message-ID: <d172d6bf-c60c-4cf5-9da9-f30de38cdfed@kernel.org>
+Date: Wed, 25 Feb 2026 15:04:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] mm: rmap: add a ZONE_DEVICE folio warning in
- folio_referenced()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Rik van Riel <riel@surriel.com>, akpm@linux-foundation.org
+Subject: Re: [PATCH 3/5] mm: add a batched helper to clear the young flag for
+ large folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
 Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
  ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, harry.yoo@oracle.com,
- jannh@google.com, willy@infradead.org, baohua@kernel.org, dev.jain@arm.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- hannes@cmpxchg.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
- <e91eaa86a6fbb0682b4e308082048c688a57c035.1771897150.git.baolin.wang@linux.alibaba.com>
- <b3c1c739c233ccb32945ccaffdaf25fd3f96dd59.camel@surriel.com>
- <ec92b9a6-d6a6-4b14-9724-b1722d35b69d@linux.alibaba.com>
+ <bfbe28e381b02452b455498e7ea82662e83a3865.1771897150.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ec92b9a6-d6a6-4b14-9724-b1722d35b69d@linux.alibaba.com>
+In-Reply-To: <bfbe28e381b02452b455498e7ea82662e83a3865.1771897150.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6573E120008
-X-Stat-Signature: d9rykud83umhfucdrt1gdnonhi5b9ddx
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 470FB1C0008
+X-Stat-Signature: 47r1omibhdujuz7afgaauxfbbxhr8gq5
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1772027845-358035
-X-HE-Meta: U2FsdGVkX18bcA4DVcwZSC+fqAoBLvqASH0+rv54Sb8mprRzqOOrnSjw0JjQbB+9lUR3iKP/IOsNa2Sg2WmBLbsrnxvHeHCUeFw/K6GurAq23HLh6rH/sJlX5Oiqhhnhrtd2oLi9d0jzPeKPpMk+/phoz6omAEn9gmT8BRxBYU+rfpDWGY+8EvEqx/wm2lUqM0u9j0QmocUBH2hJltR4uz+BwMuWJY7O6PjFMhT4KjKtTJvOBj0ibT+CyB0L/1p2CvHYiv2ji5a3QSxAgp63kCx48uOqGVesyYnqihrApx06LkAYWJusrgRIV8f8IflfUAGUZV9Pf/9ervEARZDltMQ25bqAmfnJMYx9wg5GixOC1lI6RskYTyryppcorm7Z/4s3iboBgeG3uXR9joSv2clVQOILer8h1cAlsmJrFccDX8Gzx/UsbWzPYf7xbk73nNEe9qUDYoImg3iM1a6kQTpr6bH1uOPbN+Xwv4OAZTSlRTlDI6Mnzf2tK9aCR+x5aQ6pA0tHoaw4LzzMjYqBZI+YRk+lhln+3VO4oVgsBW+B20LbM6mCgUzJHImygKaOsHXmmD9tR30Ahu8ZiOfKebIjc78H3NZQHSsovR35Q6nfCyNB+secxcr1S9JPMu1nyy1Wy2ucQCKEwdLEHhm+hKaS4Xn75wYXQwUr+Xb6iElB0mpt1ktE4aiJofhF4wqBJPw7YUzLzKWDgvo2clTAJTGikf5Us822XlOEiW9mWlO9n12HmWeHxXydI+SJ+GR4gJASZflH5VxdexfgqIRwoon6JcvFx9G+qsX46dWBMgeR6SCN3dfwmczLpUCcllIFdDnB2m0/ElOHXv0PmNiudHhy40aoJ9NFrQUI8n7TIU3AIWxa7rYQ3h2d6zJV3V3/czw7ySkM7fIIWh3YCTTUhHNCmNUUV0TxxC7WBoHNfxbhnpuN9MHfLOhqBs69QxS1A3pcljMX5WRXxZHcLhb
- /jGTiap7
- cP+y9Ci2lSMGdeOUnqglnc/Yo6o1bSFpQE7ESSxqSA4is+v2nj5C7mHEbWPZJ1c8Sg7gx5EChDtt5YBBRBHi4ISPi3eNQXYMikg8KwQZ9/nv4k67q0cCEqU4/J7I+aTdq+sGZ0OMGh5C7gIgTXLlHE8QeE5qLTvu3nQZ6Wj8CzmTTaa6b5CTEUOK4dSN4QERvEnhfRGwz5YOoAYTkDkNdxsOMyhxoeqwDsb42Fjr6AZSRidWxXjV8vgE7T9eKLzJjuDr6hG4/k7+W2alZHM11QWeLtiU/ouaIS4OIuf9NvptCcduJwQjXVnNjoceQ1332Hm2EC1gbl7/0Dw8xEk7xYxp6ZVFIXRP0kfi5
+X-HE-Tag: 1772028266-504958
+X-HE-Meta: U2FsdGVkX19jXFP/Wiwp1b0fAKAZ8AHbCBK7y2WCECsy6Ont6rX//TTxLqTytJlDOP8GQC/JfEjqW+AZ/Zr9ykKbUOwdPXWBbiYHZXSCo+Tt9PyNFA/hbkelueFNUddfw7QjTlA3F74+ICXcqmGu8/aVFjmSsugqQT7G0Xq+/zz3Y79fPSH/Sh+dmybPT5LcIMx/d2ZUJRu/HtOYZ5Rwma/b4jQTrzPMoNnzkiOzhRiMsX6MwoozRjwQDbMzSpKSNwq4Pc1AhT+mmEgkCVen2HNRyyNI974WCMuU3TC39EMLHdmH1YI7pgTP7CZ6qjKmNKWb9cZVDuPQdRkTxQscC/JWNgg4QEHQfE+HQwD8Pe06+4aMEka26UBFWjp1vXkhTRokrsCpyVdDIPanpqQh4LzGEDM7Rj3g5d8r4M0BJma6hh2EdX3GKjil6zfFN4grFJ0nV0ULh+SjySGV5XARbbd83Sp4cIlOn2EBdHS9xi7UmZpSQ6JfAGtsHs4Xud5Kicv7DJurYIkSPR4jvL/V2kZlXnYUGkX8nuHu6eGqnZFRKjpoUTfNpCNkahdrEpE58x7SvVbpdF1dbuR7+9POPV3aaGHotWD15hwILMwigHCDAGX1l1QXKPwK1n32+YZnbE01OfV7QdCETj5ATfK+89zEqw257Nwjrd4URy47RvCM2io+Dz2bKDhABNu5PFgq8psms1QhSALtXAvbMXrcmuMnr+qkX1cu79Qb3BfUCd5poDIIs4gzP5pzECN1BvQRvFqMSE+ORcuUoUeEz+iVW8jO+J56Y/sXc3HnhE4ff4oXGTKeCLu3X68tMifaNnrDppyNfXuSSDPZtFi1AXPena6cqK+qd5U8M1vqPeSX5W5UamZpXGqyCvHuiTBW0l+TsKvdihGjbTzp4WdRmppsLRm7HpHbZRXBNDLzzFNq1mnjWP733p4Dhr7dzPPW8ijsETcbBNmnO3Dmx2trZfA
+ z4a9UeKt
+ MIbmklPWf311G+5Kn1+AuV3Na90Fqk9qxNNNada9xMlhKW9X/e3MEqco+NS+lss02+wttAPFGteZkkUzOR52HCyEMPJCEBbii43Xux7YKS0r/Asng1mo1yOV20kHlSPof9jNNMUA1utllUa8UgyagiMLSwjux8whhfrXd6M7YI1UbGKLXh587GBtmRuLTEKKzK0NYCWlNF930DboiXWEgDO7AH1LcBy8JthTs4ma28ZQkxcRgr/vX7bXb8P4GEpMixxZ/r9QKrYNHjZTjIZ7t1Bwd73b1gKAAcyaReBGbJLfpab6615I2oUr6lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,36 +145,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 06:49, Baolin Wang wrote:
+On 2/24/26 02:56, Baolin Wang wrote:
+> Currently, MGLRU will call ptep_clear_young_notify() to check and clear the
+> young flag for each PTE sequentially, which is inefficient for large folios
+> reclamation.
 > 
+> Moreover, on Arm64 architecture, which supports contiguous PTEs, the Arm64-
+> specific ptep_test_and_clear_young() already implements an optimization to
+> clear the young flags for PTEs within a contiguous range. However, this is not
+> sufficient. Similar to the Arm64 specific clear_flush_young_ptes(), we can
+> extend this to perform batched operations for the entire large folio (which
+> might exceed the contiguous range: CONT_PTE_SIZE).
 > 
-> On 2/24/26 10:38 AM, Rik van Riel wrote:
->> On Tue, 2026-02-24 at 09:56 +0800, Baolin Wang wrote:
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index bff8f222004e..be785dfc9336 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -1065,6 +1065,7 @@ int folio_referenced(struct folio *folio, int
->>> is_locked,
->>>           .invalid_vma = invalid_folio_referenced_vma,
->>>       };
->>>   +    VM_WARN_ON_FOLIO(folio_is_zone_device(folio), folio);
->>>       *vm_flags = 0;
->>>       if (!pra.mapcount)
->>>           return 0;
->>
->> Should be a VM_WARN_ON_ONCE_FOLIO so we do not cause
->> a softlockup if we try to print information about a
->> million ZONE_DEVICE pages?
+> Thus, we can introduce a new batched helper: test_and_clear_young_ptes() and
+> its wrapper clear_young_ptes_notify(), to perform batched checking of the young
+> flags for large folios, which can help improve performance during large folio
+> reclamation when MGLRU is enabled. And it will be overridden by the architecture
+> that implements a more efficient batch operation in the following patches.
 > 
-> Yes, sounds reasonable. Will do in next version. Thanks for reviewing.
 
-Feel free to add my
+Maybe mention that the implementation follows the other existing functions.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  include/linux/pgtable.h | 36 ++++++++++++++++++++++++++++++++++++
+>  mm/internal.h           | 23 ++++++++++++++++++-----
+>  2 files changed, 54 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 776993d4567b..0bcd3be524d3 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1103,6 +1103,42 @@ static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>  }
+>  #endif
+>  
+> +#ifndef test_and_clear_young_ptes
+> +/**
+> + * test_and_clear_young_ptes - Mark PTEs that map consecutive pages of the same
+> + *			       folio as old
+> + * @vma: The virtual memory area the pages are mapped into.
+> + * @addr: Address the first page is mapped at.
+> + * @ptep: Page table pointer for the first entry.
+> + * @nr: Number of entries to clear access bit.
+> + *
+> + * May be overridden by the architecture; otherwise, implemented as a simple
+> + * loop over ptep_test_and_clear_young().
+> + *
+> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
+> + * some PTEs might be write-protected.
 
-to that.
+Document the return value?
+
+Returns: whether any PTE was young.
+
+Or sth like that.
+
+> + *
+> + * Context: The caller holds the page table lock.  The PTEs map consecutive
+> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
+> + */
+> +static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+> +					    unsigned long addr, pte_t *ptep,
+> +					    unsigned int nr)
+
+Two tabs ...
+
+> +{
+> +	int young = 0;
+> +
+> +	for (;;) {
+> +		young |= ptep_test_and_clear_young(vma, addr, ptep);
+> +		if (--nr == 0)
+> +			break;
+> +		ptep++;
+> +		addr += PAGE_SIZE;
+> +	}
+> +
+> +	return young;
+
+BTW: can this function simply return (and use) a bool instead?
+
+Likely we should do the same for the other functions, but that can be
+done separately.
+
+> +}
+> +#endif
+> +
+>  /*
+>   * On some architectures hardware does not set page access bit when accessing
+>   * memory page, it is responsibility of software setting this bit. It brings
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 1ba175b8d4f1..1b59be99dc3f 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1813,16 +1813,23 @@ static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
+>  	return young;
+>  }
+>  
+> -static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+> -					  unsigned long addr, pte_t *ptep)
+> +static inline int clear_young_ptes_notify(struct vm_area_struct *vma,
+> +					  unsigned long addr, pte_t *ptep,
+> +					  unsigned int nr)
+>  {
+>  	int young;
+>  
+> -	young = ptep_test_and_clear_young(vma, addr, ptep);
+> -	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+> +	young = test_and_clear_young_ptes(vma, addr, ptep, nr);
+> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + nr * PAGE_SIZE);
+>  	return young;
+>  }
+>  
+> +static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+> +					  unsigned long addr, pte_t *ptep)
+> +{
+> +	return clear_young_ptes_notify(vma, addr, ptep, 1);
+> +}
+> +
+>  static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
+>  					  unsigned long addr, pmd_t *pmdp)
+>  {
+> @@ -1837,9 +1844,15 @@ static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
+>  
+>  #define clear_flush_young_ptes_notify	clear_flush_young_ptes
+>  #define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
+> -#define ptep_clear_young_notify	ptep_test_and_clear_young
+> +#define clear_young_ptes_notify	test_and_clear_young_ptes
+>  #define pmdp_clear_young_notify	pmdp_test_and_clear_young
+>  
+> +static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+> +					  unsigned long addr, pte_t *ptep)
+> +{
+> +	return test_and_clear_young_ptes(vma, addr, ptep, 1);
+> +}
+
+Why not outside of the ifdef a single generic
+
+static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+		 unsigned long addr, pte_t *ptep)
+{
+	return clear_young_ptes_notify(vma, addr, ptep, 1);
+}
+
+Same comment regarding bool.
 
 -- 
 Cheers,
