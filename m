@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E049FD3773
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:14:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4993FFD376A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:14:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22BCD6B00AC; Wed, 25 Feb 2026 11:14:21 -0500 (EST)
+	id AC8296B00AE; Wed, 25 Feb 2026 11:14:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C2FF6B00AD; Wed, 25 Feb 2026 11:14:21 -0500 (EST)
+	id A88546B00AF; Wed, 25 Feb 2026 11:14:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B07D6B00AE; Wed, 25 Feb 2026 11:14:20 -0500 (EST)
+	id 9D63E6B00B0; Wed, 25 Feb 2026 11:14:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DCB7D6B00AC
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:14:20 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A584759E23
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:20 +0000 (UTC)
-X-FDA: 84483476280.03.3A1399E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B7736B00AE
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:14:24 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39B651A0654
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:24 +0000 (UTC)
+X-FDA: 84483476448.22.0807021
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E9630C000A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 97141A000C
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:14:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036062; a=rsa-sha256;
+	cv=none;
+	b=SlBHNuAgxFkm7GYZEs2cW33uDDTnVAUR3A39sFEh27DdnIZi7l3g4ugZDC5vUc4ugxKf91
+	TIMbqkP+LkhQT2g+o0iZu9SbRjOY8ntn1PTcBhUCgUfAR2CuuTvycIfWI3c7ljh1+wW+Eu
+	KChnx1iLWMLBRak+45HpuciB6vukYz4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772036059;
+	s=arc-20220608; t=1772036062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p+gtLgf5w1Pu79iysL4vKgVbs4fWJy4Zbi8NuaeRCx0=;
-	b=4QHIRY92Zr2c9SDc5G2HH+yQIEme6xPKYfyAPl2ByZBWeLhMGQxpW5iRHJOmZSyYQd0NP1
-	YmY/UamGzxJ6O8yJOXcDfeUW/c1U9UWT4VrOiWNrz3KPyKhuIdDHsKLKOB4DL/73WZ7tGx
-	qIzO12uaJ9rhp0mDwttyhpyqJwcAbn4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036059; a=rsa-sha256;
-	cv=none;
-	b=1OD5LRTp7CgZIbYjZjvXMgLHZnDKm42E0xmOh+w6sqZUM3Sg8pIHFWhCzQhogJyzXmCvnZ
-	YN+IKQu/VygZsCrexRSjIK1OR7gJ+YFu228iSWi9ltnIEDROvEr/U9PWR1ssYORMPUS6VI
-	jaZHPIrf4cICUX6yZI7eULm8R78oO/A=
+	bh=W8mtVNSf5jbuIUTS4uk4r5ba2RaZhsfy8seu5VQNWOI=;
+	b=zc0WwWRFoIhiWwgBHOQuEwZQKwx2BVAl0E6pu+EKbE0jHFh3eTqtRecq/N3gPyseHgEeeG
+	5C42FNg1+L+myoWQF2ZdA1LsJQdhRTbCHDrZtC10cCqoY1ypPByxlYTeLU3RDO9sSSAPab
+	u3ED910jGYn++9ytpN/wk4DV83jo7mo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A02644391;
+	by sea.source.kernel.org (Postfix) with ESMTP id C91844425C;
+	Wed, 25 Feb 2026 16:14:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA6BC19421;
 	Wed, 25 Feb 2026 16:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D49C2BC9E;
-	Wed, 25 Feb 2026 16:14:14 +0000 (UTC)
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -73,22 +73,22 @@ Cc: Will Deacon <will@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 2/5] arm64: gcs: Use the new common vm_mmap_shadow_stack() helper
-Date: Wed, 25 Feb 2026 16:13:59 +0000
-Message-ID: <20260225161404.3157851-3-catalin.marinas@arm.com>
+Subject: [PATCH v2 3/5] riscv: shstk: Use the new common vm_mmap_shadow_stack() helper
+Date: Wed, 25 Feb 2026 16:14:00 +0000
+Message-ID: <20260225161404.3157851-4-catalin.marinas@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260225161404.3157851-1-catalin.marinas@arm.com>
 References: <20260225161404.3157851-1-catalin.marinas@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3ttb8x3fbow6crg6bdawy8o393uh8qcy
+X-Stat-Signature: 66ecw1sam1hpgqhtdpoenutgigjy3oxm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E9630C000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772036058-67093
-X-HE-Meta: U2FsdGVkX188iE10N9QHWeLcLh/MdJG8n3Ay6VAgwCcxvckBbODfKeqCxtguRNbS4ZgBJ5ORTsGocDNf8AVNz9MvuB9k8+xFPNNKiVD7BSzemEEFP41JQC+6T7x5Fh5YWRROswV/BuT1+BwcKtR8yXSoEZ9Me6VlDmjTE3rncARmYMq7zLPJx+tE085bx8r8J4eREABIWA96KWxetXWPW911RKBdaYD8BUDXNRJ0FOdAFx+CU2DSXU7aEd7olRHqIv/uldXogS+s7DJq+2aRWAchondW1cqcks1+EdITlTf74DwEYPwUt1fcKevsd5DRDI25HS7axdNSRUq44ANFR81V6Xvlfr0mEk1UxwIQ3O8s/POWnGb6dskkWvJuWB0FzbdxR/mQClPM7qzGADh5tyTR2Vp/8McRMh8gg3qoBMTBhqw1MmtmnapB5sg0N3cgOrcOdcArS7tMtpz6TXCn9gaF7jF931FewQjcnXSfFbHYBqt6Nzy2lfSSCTXP6DlrBoh6txNJDQS9VsTheAn0DP9UcCYe2YUc8UlxiohQc+kADDFlSfyd/rcpc4yz1qoR655st6qLZ/yioywu/vxJqXGEPuHzDm5Blg2gIqF45aMWGbPX/7A15hv5Us8iZwAt/dzn2LLfKZFfyzOyI0ui7Iv4wWgxoGqHvGA3k2vikt1h44tjJgfTjL/ApHa73VDpPEoVmSHQpcJ8qpiCyB/cLov2KY+HO5m/Tgxu/waZDBBIr+WFdB3zMVrY5g0zcwpYessSzpQ+qv2gL329V039XAh+0WjlVjFb90AiF+MHGNzE6nBeC7oo4nrOcQ7AAnPjrte/zXQ/kOFU0XexkWm3Bz0dgg4cuPGk5sBptD1ORZkswVvtISepr9JXU5oL+Wxv6NgNZBu/4POl86bwLKZ7kEuBcpmhRkJZoudFIHLVyv0HqTtreaD3XYMfd80hcU28dju1ULYS82f62+c6JBH
- Fz+xEpnf
- k0LBLbSmRMcfnRFFOoVJ/yCKK8KrxqPJGp3+KN5YY3GNRbvjyDBvybZGs1Rhx5adTpG9Zah/V8RIRXtVi8W8NgzU69qiHgl1L7m2nXQR8s8zTffApRfjObCN4ETv9sNft6Wm00nUldNtQCzF5c18saWkKrr2KvR9v4k2JSa+z2WgPpdleV0EfBiJThbl1oAyD9lRSKfri77HjcOw10JL+w1Xkvw5PiCTFG/BQ4BvE+YBb3q0E45dGv7TldeBFCiEPkNB4RxA58srbwAjQ2on+swqa5VU2An/1jsWlLhMjYLYjDmCR4alq1pTWtH62NES33rU9d7GDWsRI/FJ1RVxUyrO/yCFgSELW31lB/KPdHPpbv5lVzO0PbmafM87cmGQxvU8KoJo9QOZegQ8WLyRRzWgFzV6pxJVL82Nf9ojLcoPQOxx+eWv3Pr/Xgw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 97141A000C
+X-HE-Tag: 1772036062-429713
+X-HE-Meta: U2FsdGVkX1/DqatkLdmGtgAI0eI9Rd+xEbWevbe78uZEcuNo0lojkicW4ogsj1KoPoFRiwdVw83Rc4PjLPSKCxXYvYgqPFpvQKraTUkDThkVPR3Xqt4RUjr4mkz7yTLDuSnj/TuBu5rkC92z2+/HH+FsWq5ru0mb7GRUMXMWNlehffd0QAvPvZu159ky08yjhk9mNjlx7JmTRD7tnKOxS/nQdKkqC2ORtU0drsUvnsEcXf+pYkadyZncYxtopQZY3ppvbkWr4k6hqmOm+wKsxVZgwkZiNbAiisqcASqfpibXq68cmV35DwocG2tWtbz07QIaXSkbbEB++TSFofqdFaioI6e+8q0mR7atlYDFUuPG4cwHfhwod/Rh8vJXc5Oz5VeM2mDrrnH308WBFLRjmMlOThzMtC9oHVTOBRaVsbBUET+NCsc7/IUPV+p6IFdoxIIis48xnFYyszQKSY6zBLmA43nfIUlDAjJ0v5hlrtbYO9m4xVnLj4/lY/Txu8edsoZZes4yu8Mv2a2aS+nbU3pFCw5MmGJMXtzCPAemlMqzLmrpGWmC24b4NwIm0qXt/snyN6Iblw6T06fuiMzkefFTolKSzE5PUWjWs5eWddygeec/43kplM7ZdWvhfSJ2VRGohXp79hx2Fxry0SWygrE3FRAXx7EGXILq2A3CLQRCsvLFC95qdAU4rURMu+OrQly1WqTCKRXPcrj7chKxYMFVPynmVQXMBeV06lfHV6xjj04KMepiq2PSVHTwOvcESDfG36CY9skODy3is72PlhY8449R98g0Y5fIcM2bfcz4sf1lb7azL2yta977GHJhEmy1tuAmAGbH7R1O6bj999g6TpVKbLdDOLmcupdtHPYdYvf14YG8KnStkuBUj54kC3EWANVSX2ZfQlAaSuZEMv6Ab3R6NeaL+ewIV2JXpEe9FzyAiA36h/2sBtA3LffWXMvg9YVQxxEEyANt9lm
+ wGU4qfDH
+ l6zMFwSUiYF65tQ8M3yHMQHNNdriopWrYuwqZrrHfq8Eaj1Y7Je5dx8D/CsTKj7dnEJjfaG2AlUr4MtwfkKTFVTq+1NPqoR1w151tkFWxLSEePWQuh2Qz4zY/qJCzICcdzM16jbeQFk9YwdSBb8rbN9h5P1zj8vPh1/FiDejiqo1GrKOqxzJ+yRKazb/hsqcpsLkrbiP4ExkZQGVKn4Q33yP++WIfheAZA6HKju2uPwBieOlTDsHT8OSE+q2toB3PmHOU3vNYMG/wm3dwyFMrdtVqBF5pIXOGPq8xJDoCZy7W6KUBK0Q5ZXBzZdY4csH1p29qXbHaT3+L+ThdrRE7yq9sJ/V3r+Uz/RDFip26t76K0pc9lgZQgROY7xekCPwoqmboVneaV/Qf0k3N7SkhJwLDs9PFMZ1XoGbEKR+jGyraGxGrTcLkij2ldCSR6vGx/XG/5sqXy8vkobfEq/bZZgoHlvMZZ5Uc0LvUuIJ3/rQULquP3d3t8QAjAcWEALzVEvW20sQi00A55K68X/8GjsHkGhLRf9AnhCP/SUQl4R6GKI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,40 +96,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the arm64 map_shadow_stack() content with a call to
+Replace part of the allocate_shadow_stack() content with a call to
 vm_mmap_shadow_stack(). There is no functional change.
 
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Deepak Gupta <debug@rivosinc.com>
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
+Cc: Paul Walmsley <pjw@kernel.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
 ---
- arch/arm64/mm/gcs.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ arch/riscv/kernel/usercfi.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/arch/arm64/mm/gcs.c b/arch/arm64/mm/gcs.c
-index 04a23a497f20..680749611a9a 100644
---- a/arch/arm64/mm/gcs.c
-+++ b/arch/arm64/mm/gcs.c
-@@ -12,19 +12,7 @@
- 
- static unsigned long alloc_gcs(unsigned long addr, unsigned long size)
+diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
+index 1adba746f164..7e57f54dc5b2 100644
+--- a/arch/riscv/kernel/usercfi.c
++++ b/arch/riscv/kernel/usercfi.c
+@@ -230,17 +230,7 @@ int restore_user_shstk(struct task_struct *tsk, unsigned long shstk_ptr)
+ static unsigned long allocate_shadow_stack(unsigned long addr, unsigned long size,
+ 					   unsigned long token_offset, bool set_tok)
  {
 -	int flags = MAP_ANONYMOUS | MAP_PRIVATE;
 -	struct mm_struct *mm = current->mm;
--	unsigned long mapped_addr, unused;
+-	unsigned long populate;
 -
 -	if (addr)
 -		flags |= MAP_FIXED_NOREPLACE;
 -
 -	mmap_write_lock(mm);
--	mapped_addr = do_mmap(NULL, addr, size, PROT_READ, flags,
--			      VM_SHADOW_STACK | VM_WRITE, 0, &unused, NULL);
+-	addr = do_mmap(NULL, addr, size, PROT_READ, flags,
+-		       VM_SHADOW_STACK | VM_WRITE, 0, &populate, NULL);
 -	mmap_write_unlock(mm);
--
--	return mapped_addr;
-+	return vm_mmap_shadow_stack(addr, size, 0);
- }
++	addr = vm_mmap_shadow_stack(addr, size, 0);
  
- static unsigned long gcs_size(unsigned long size)
+ 	if (!set_tok || IS_ERR_VALUE(addr))
+ 		goto out;
 
