@@ -4,115 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D5C1EFD208
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AEA3EFD209
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BADF6B00E3; Wed, 25 Feb 2026 03:17:30 -0500 (EST)
+	id 809286B00D8; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07BA06B00E5; Wed, 25 Feb 2026 03:17:30 -0500 (EST)
+	id 7B6E06B00DC; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDCFB6B00E6; Wed, 25 Feb 2026 03:17:29 -0500 (EST)
+	id 69E156B00E5; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D86336B00E3
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:17:29 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EB1BC1EFA
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:17:29 +0000 (UTC)
-X-FDA: 84482274618.10.1B9C78D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C8609100006
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:17:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PXiNa+Yj;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772007447; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5571A6B00D8
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:20:04 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 004401C4A9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:20:03 +0000 (UTC)
+X-FDA: 84482281128.26.8F06BCF
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 13DB31C000A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:20:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Sv/XUFhd";
+	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772007602; a=rsa-sha256;
 	cv=none;
-	b=HvCr3WPSHfgSpak4FWFdLe1R64nSlon0AKu5BGFxfvGki/+6k1Q1uMWZ2gEMZvo9FSfXKG
-	o9SiXHZXKgJICZ+UNSQ/LUpT63bsmoafUb5nGzoHnRDcRL/AmWRBkGVkLmArO1LaGBNs56
-	b4/ECOAqT6QN1Pvh1l97v/D1XOZC2Rg=
+	b=R8uMeNVeup/fRxIb9S17GbdKyLOJEtTjawMAc2d18MlWSDqxk8mnsazh3s1iJYwY8X4H9M
+	arwTpC+AAGgEvG+WaYi70xwPy6jshjU2luYXt//iD8fDkaTa8VEy5eZgVgWvnb3iFFxFVk
+	ST73r4lgLbqLx9pUounjPiGm/4OWdd8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PXiNa+Yj;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Sv/XUFhd";
+	spf=pass (imf18.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772007447;
+	s=arc-20220608; t=1772007602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oV6MOc6IZ/eQSfEt7lDYf3QV1I2fYi7uzloZcjfdDk8=;
-	b=UQDpTnYwLdIK5GohuQI5iJzXFflDSNYrTslZAyGTsrkLHtOtZEbi7elpk1YXkRgDBCrFPP
-	kCf1YTjuCNgKzyCcx1rrUHmiAeoEctVUepBtcqDnhZWzVgEUaYSqU39/aW3GEROZi26ibV
-	QWN5EN1TSHzKAtW5c9jUL09wjyz77vM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772007447;
+	bh=CqMfuQhJe0D0dX24jwBy/Pxdi2sd3URLqvWF4bUrvgU=;
+	b=dZtm6tfY24eQ4HbEtwTmJxP4Cv1izXoXsAoTEu9uJ2xavvRxhKfw72enV/WlE+/92dfZrj
+	OnLJI6aEKZw7Hg4KBFzbC+8v23jlW5iA90gZ2jakxlaiulVHfQ0JEnqw+8KP4FjvNR5p6S
+	4h0BUbhDe8NesTc+63ZbdI/S9qzpZJI=
+Date: Wed, 25 Feb 2026 16:19:49 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772007600;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oV6MOc6IZ/eQSfEt7lDYf3QV1I2fYi7uzloZcjfdDk8=;
-	b=PXiNa+YjYf9xRoxDJFv0X8xYotSgTZb+UCAGyQJpbI1XoG+ndyD3n7vbbvbV1Bx8e8Hn8h
-	ycSwt6juZm7qhv1WeGlkglpJy1Z3i0/NWkv6bOk5LuKF5nCNECD8/KJIBIcXBHYlklkDhS
-	RwrZYJJGLHUJG+ABKACsHbGi2Hkq404=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-d1eK6WOzOV6_MuYcbjoUdg-1; Wed,
- 25 Feb 2026 03:17:22 -0500
-X-MC-Unique: d1eK6WOzOV6_MuYcbjoUdg-1
-X-Mimecast-MFC-AGG-ID: d1eK6WOzOV6_MuYcbjoUdg_1772007439
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 33B381955E8C;
-	Wed, 25 Feb 2026 08:17:16 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.55])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 657C01800465;
-	Wed, 25 Feb 2026 08:17:04 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: kasan-dev@googlegroups.com
-Cc: linux-mm@kvack.org,
-	andreyknvl@gmail.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	dvyukov@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	x86@kernel.org,
-	chris@zankel.net,
-	jcmvbkbc@gmail.com,
-	linux-s390@vger.kernel.org,
-	hca@linux.ibm.com,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v5 15/15] mm/kasan: clean up unneeded ARCH_DEFER_KASAN and kasan_arch_is_ready
-Date: Wed, 25 Feb 2026 16:14:12 +0800
-Message-ID: <20260225081412.76502-16-bhe@redhat.com>
-In-Reply-To: <20260225081412.76502-1-bhe@redhat.com>
-References: <20260225081412.76502-1-bhe@redhat.com>
+	bh=CqMfuQhJe0D0dX24jwBy/Pxdi2sd3URLqvWF4bUrvgU=;
+	b=Sv/XUFhdHVYdyOnP9s/ge+Ix9sVmvmrfu+qD5qxsje9QS7SbipcDGBGnpQ2rTybeNg5E1o
+	4AYLh2vEQbx5pbMRusGIMIQZPwfeHtK87V9JFkd/QRo89/j4de9q0C7I5l+iHXD/awBsAj
+	TyeYJebnNhJ+Kl5M/qfLQ4I2zKIVaYw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, surenb@google.com
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <jcgdv46sngpfggq26x2f7oodqxlwqtiilcgjzdcwvbt3ovelpj@mwllshvzoeoz>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <aZ0wX_QuxNTxXHMj@hyeyoo>
+ <aZ1qRhIGDAR7d56r@fedora>
+ <qiqptuqsiaufeasf2xukfzoumiyoau3zfpokosn2amgc6zskc6@vl6ie2h2zj4m>
+ <aZ6cjpU36_EmXslf@hyeyoo>
+ <zn7q75k7u2mspvmspwiao6245kmaahti3kwagablp3advcx5ga@5d36ctyi2a35>
+ <aZ6ijXgDKj9D-kDm@hyeyoo>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: 92dgqxFJq5Zgb7jIb3xCVnP7h75r7mblbwGMeRCfe8w_1772007439
-X-Mimecast-Originator: redhat.com
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qszetjoyew9uxxoxgcgbnd6qk46m6yck
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZ6ijXgDKj9D-kDm@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 13DB31C000A
+X-Stat-Signature: yoo9p4igrpzm9bahs8x3wnkoms9rqgkx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C8609100006
-X-HE-Tag: 1772007447-83651
-X-HE-Meta: U2FsdGVkX19HgfOQfi6cnSGjaza7sLA6o2KudabPuBnzVYsDXA7aRgRy/mASgeviAvDxwWBWSrV3/ds84ZdnBdUdAbWCD2znBowciHOVR/50CTtpt77xaO7IpSG/QDnnzBvUpaQGYontYTEzw8Y308CcsXybJxlwX9s3v52m8LvWwZAFvSbIR0AH3PsGTibWAMYxqorf+GSNNNUto0+SEYGJAwYh3GoIhLh/jLSQovksIeQpa+naBHwRPTXPUZktzTpcbcwgwUtBhGRhcw719rZs/Bxihc/kuc2eqnylnU8DSCgXlrywwTI5/GDOJqvUWeifN0byWXqnBuP+Gx/8J/wWcig211LnUWHsDkXYs1cn6YAdPmP5naRJVy5PIKfID5xS18nPYwIDKt7scR0IIBu0cFKJURGSAm/atTMM/fiqlxyoShsLqXAiHO4AtTGQMwBqYeFWruBCn2H6cFJ0YQfZHmK/BNz6L5Ti+dVcRr+8LiWhnaWyG/hmrpD7/1fhLL4cZU5EX5fyVzoiIpm9tnwvDKJj5HqQAQ5zM77tzf0yt7O/+BPgpjTSp8uqSyCFD4mnjRp1MkeAd3avi3NwODswIKy+g8ejtvQuKDGotKLPhyuTfnZKyazRPVStYX20xBoxJEfBvYzgEGgxr6ggNYB9kkV503NkgCEoQKLfZgGs12hXM5vRfNtDbs6yIjGm+L0h/3nzY+Zd7YwrW6WMS4BPDsiT6uINB7ZxwLp2bped+yQG+WB55+Ht1drmbE86LhCxLy7aqFrYWxcdrFPelJmjNIppPnJmTVssYEJfUB7XrxjCszn8DVcARW2oeznJZM1fkmYQO2HnlxKr5okNWdPKf5/yZrTTZxSZwwWkP+h+FYRpMzmmILE71FL06G6Lg1ccegrmSrWmLp0M8KjecCDlKC2ep/4tP3iVfq0OvQXq87c7qeQUbkNnUH8Scnzihis9qqVz7djd6E4aStP
- vqC6mCp1
- 8lbkniqeGVRFjhG+8Ayq2qJz3pVLLXC6D78FiPqD/DSFeqP4nawyW92bIt+kBmngwLjhb0U6ebdk3MgBC7S2Ar9KMQ5gQkVcFMJiwx0pS8JTpnL4d1QMUxn0TSH7Gv0X+D8x4SqTaEjKTJk0FiXbDcUa4pIT5bXwXxO4rHp0frzAeVtBOxiZkyp3AUO4NMz1YdWG2kei0XbDJu+MmnaGrr8J61aN/k9sn1YFSPO4SVTY2fmh1+gsw3t8g4XwyAAY5XgpfPGcNSoJ2sR6/CX2YLXqK+u3vRvUHkH5y7L09q8bobhQGwr7A34nbiqIi9CUOMW2jfoZnK0apqYqxM57pTKASXeYXtzFJ4M74mczagSiBjlG7EeuoZZx6XdEpuGnRIE/+xPPLDrs2XOoHmuP+EqRw4FuEWresuz9aPQW7AIYoes4S/pt/flTQDNPGpPTGD6S4lGZieWDKeoA=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772007601-106117
+X-HE-Meta: U2FsdGVkX19feDn2MpU+BoxkhoTEGBLv87UQ63KtQxP+8lzR9AmhdyjF35IABWAhvAxb+3FSXiY6IfbW5WTitkJPKXMvlnsSVURnQNmtnqEbMpK4bw2nOjXLzkJFP+7zxH+aCWMk37cWhaJFDIchU08ThOVipEc+vPNO89Y24bJrzdoTsGBR+4titL7spOn+FGi+mqqzkFgF0OxWfenQrNOZl4L2YgSzY9TiM2Pr1OCrFhMhl9nDlj5gjAT/MORokzNvLsk4mNnlce+mCjOyrIpsuBDaO/xgsxYT4dPnoHYC+HsGNa+mckjIFrjHqtsjUIz2makjwg0z1ycSVmvmdsRo8h8OEerN8+xC8KYKA0MQzCiktFAAL1p/2EbzBcLQWckxIX6/QMkFFQ4+Grt8h99vJQU0FWNt0jjYhV0GvGdQYClGieAf69BDOfHOMfxcAE5SFs59GyNGReRpXyeQTWFocpQ3Yqu3L9CLRvTqAosfG92686Uoozy7C29kjuh+AZXcORuSKjSE9yoS6GpoCOKKV0fRAjFyh9xoWKxReaZsnPG7SjuFFarIRCkBSDQxkAnhoWHMOLeGcadet9MnytGWsnkD8B5cLenm/Ud7cNBUtMzEFJHC6VrcHG6rgM7gtmWpl5cMFLJdyhvaCgm9XjxYlIKAD3Yci/d0VzS80DjIYEq7YuRjI8kBa0FcadJyhgdd7aHQtk2bLVDgX+QfPCnlJ6heJxdHcLtalDNuuD0YIz4WCTQ1+AAC5QI2fQVrRbAGJ6MkWYTL+Nv1Cz937dvbkknvQxSWTUuNLjDSgmlg09Wh/woGSMt7l82Xzj1gS8Qtk2FmAep5pZpVPn+pFy+vHaK+GXXx6DAtrPOYHA+HslyjuWbssVlQmwvGXH0AtWkIY0dEG+V8/Qy0PffMkn6ygYoDjO3IAfjpnPsZ+32M+7yupNbg8J3HwusC+2fnxDH+kSJHtk9RUO06FXM
+ X644eYXG
+ IJ27J9qc4m8xazfn6CHQ1Ps7Gk7x1WYZ42/xIFFt1SNUZBD9XvpMtnHmrGMpYWQfI+5UTf6Hw488l4ik2CtdNVyWmNtX7Tgh7FycIoJ/k/vgs8qUWYGRwxSot/GYJ/SabTEqAGvoLipuUHOPXfkR5BviarIbW/lA96o9tCkXxQqPo6TtvTHh36twwN7virDfMVZ9DLhkIVbZELhc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,99 +94,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 1e338f4d99e6 ("kasan: introduce ARCH_DEFER_KASAN and unify
-static key across modes"), kasan_arch_is_ready() has been dead code.
-And up to now, ARCH_DEFER_KASAN is useless too because of code change
-for 'kasan=on|off'.
+On Wed, Feb 25, 2026 at 04:19:41PM +0900, Harry Yoo wrote:
+> On Wed, Feb 25, 2026 at 03:06:46PM +0800, Hao Li wrote:
+> > On Wed, Feb 25, 2026 at 03:54:06PM +0900, Harry Yoo wrote:
+> > > On Wed, Feb 25, 2026 at 01:32:36PM +0800, Hao Li wrote:
+> > > > On Tue, Feb 24, 2026 at 05:07:18PM +0800, Ming Lei wrote:
+> > > > > Hi Harry,
+> > > > > 
+> > > > > On Tue, Feb 24, 2026 at 02:00:15PM +0900, Harry Yoo wrote:
+> > > > > > On Tue, Feb 24, 2026 at 10:52:28AM +0800, Ming Lei wrote:
+> > > > > > > Hello Vlastimil and MM guys,
+> > > > > > 
+> > > > > > Hi Ming, thanks for the report!
+> > > > > > 
+> > > > > > > The SLUB "sheaves" series merged via 815c8e35511d ("Merge branch
+> > > > > > > 'slab/for-7.0/sheaves' into slab/for-next") introduces a severe
+> > > > > > > performance regression for workloads with persistent cross-CPU
+> > > > > > > alloc/free patterns. ublk null target benchmark IOPS drops
+> > > > > > > significantly compared to v6.19: from ~36M IOPS to ~13M IOPS (~64%
+> > > > > > > drop).
+> > > > > > > 
+> > > > > > > Bisecting within the sheaves series is blocked by a kernel panic at
+> > > > > > > 17c38c88294d ("slab: remove cpu (partial) slabs usage from allocation
+> > > > > > > paths"), so the exact first bad commit could not be identified.
+> > > > > > 
+> > > > > > Ouch. Why did it crash?
+> > > > > 
+> > > > > [   16.162422] Oops: general protection fault, probably for non-canonical address 0xdead000000000110: 0000 [#1] SMP NOPTI
+> > > > > [   16.162426] CPU: 44 UID: 0 PID: 908 Comm: (udev-worker) Not tainted 6.19.0-rc5_master+ #116 PREEMPT(lazy) 
+> > > > > [   16.162429] Hardware name: Giga Computing MZ73-LM2-000/MZ73-LM2-000, BIOS R19_F40 05/12/2025
+> > > > > [   16.162430] RIP: 0010:__put_partials+0x2f/0x140
+> > > > > [   16.162437] Code: 41 57 41 56 49 89 f6 41 55 49 89 fd 31 ff 41 54 45 31 e4 55 53 48 83 ec 18 48 c7 44 24 10 00 00 00 00 eb 03 48 89 df 4c9
+> > > > > [   16.162438] RSP: 0018:ff5117c0ca2dfa60 EFLAGS: 00010086
+> > > > > [   16.162441] RAX: 0000000000000001 RBX: ff1b266981200d80 RCX: 0000000000000246
+> > > > > [   16.162442] RDX: ff1b266981200d90 RSI: ff1b266981200d90 RDI: ff1b266981200d80
+> > > > > [   16.162442] RBP: dead000000000100 R08: 0000000000000000 R09: ffffffffa761bf5e
+> > > > > [   16.162443] R10: ffb6d4b7841d5400 R11: ff1b2669800575c0 R12: 0000000000000000
+> > > > > [   16.162444] R13: ff1b2669800575c0 R14: dead000000000100 R15: ffb6d4b7846be410
+> > > > > [   16.162445] FS:  00007f5fdccc23c0(0000) GS:ff1b267902427000(0000) knlGS:0000000000000000
+> > > > > [   16.162446] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > > [   16.162446] CR2: 0000559824c6c058 CR3: 000000011fb49001 CR4: 0000000000f71ef0
+> > > > > [   16.162447] PKRU: 55555554
+> > > > > [   16.162448] Call Trace:
+> > > > > [   16.162450]  <TASK>
+> > > > > [   16.162452]  kmem_cache_free+0x410/0x490
+> > > > > [   16.162454]  do_readlinkat+0x14e/0x180
+> > > > > [   16.162459]  __x64_sys_readlinkat+0x1c/0x30
+> > > > > [   16.162461]  do_syscall_64+0x7e/0x6b0
+> > > > > [   16.162465]  ? post_alloc_hook+0xb9/0x140
+> > > > > [   16.162468]  ? get_page_from_freelist+0x478/0x720
+> > > > > [   16.162470]  ? path_openat+0xb3/0x2a0
+> > > > > [   16.162472]  ? __alloc_frozen_pages_noprof+0x192/0x350
+> > > > > [   16.162474]  ? count_memcg_events+0xd6/0x210
+> > > > > [   16.162476]  ? memcg1_commit_charge+0x7a/0xa0
+> > > > > [   16.162479]  ? mod_memcg_lruvec_state+0xe7/0x2d0
+> > > > > [   16.162481]  ? charge_memcg+0x48/0x80
+> > > > > [   16.162482]  ? lruvec_stat_mod_folio+0x85/0xd0
+> > > > > [   16.162484]  ? __folio_mod_stat+0x2d/0x90
+> > > > > [   16.162487]  ? set_ptes.isra.0+0x36/0x80
+> > > > > [   16.162490]  ? do_anonymous_page+0x100/0x4a0
+> > > > > [   16.162492]  ? __handle_mm_fault+0x45d/0x6f0
+> > > > > [   16.162493]  ? count_memcg_events+0xd6/0x210
+> > > > > [   16.162494]  ? handle_mm_fault+0x212/0x340
+> > > > > [   16.162495]  ? do_user_addr_fault+0x2b4/0x7b0
+> > > > > [   16.162500]  ? irqentry_exit+0x6d/0x540
+> > > > > [   16.162502]  ? exc_page_fault+0x7e/0x1a0
+> > > > > [   16.162503]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > > 
+> > > > For this problem, I have a hypothesis which is inspired by a comment in the
+> > > > patch "slab: remove cpu (partial) slabs usage from allocation paths":
+> > > > 
+> > > > /*
+> > > >  * get a single object from the slab. This might race against __slab_free(),
+> > > >  * which however has to take the list_lock if it's about to make the slab fully
+> > > >  * free.
+> > > >  */
+> > > > 
+> > > > My understanding is that this comment is pointing out a possible race between
+> > > > __slab_free() and get_from_partial_node(). Since __slab_free() takes
+> > > > n->list_lock when it is about to make the slab fully free, and
+> > > > get_from_partial_node() also takes the same lock, the two paths should be
+> > > > mutually excluded by the lock and thus safe.
+> > > > 
+> > > > However, I'm wondering if there could be another race window. Suppose CPU0's
+> > > > get_from_partial_node() has already finished __slab_update_freelist(), but has
+> > > > not yet reached remove_partial(). In that gap, another CPU1 could free an object
+> > > > to the same slab via __slab_free(). CPU1 would observe was_full == 1 (due to the
+> > > > previous get_from_partial_node()->__slab_update_freelist() on CPU0), and then
+> > > >
+> > > > __slab_free() will call put_cpu_partial(s, slab, 1) without holding
+> > > > n->list_lock, trying to add this slab to the CPU partial list.
+> > > 
+> > > If CPU1 observes was_full == 1, it should spin on n->list_lock and wait
+> > > for CPU0 to release the lock. And CPU0 will remove the slab from the
+> > > partial list before releasing the lock. Or am I missing something?
+> > > 
+> > > > In that case,
+> > > > both paths would operate on the same union field in struct slab, which might
+> > > > lead to list corruption.
+> > > 
+> > > Not sure how the scenario you describe could happen:
+> > > 
+> > > CPU 0					CPU1
+> > > - get_from_partial_node()		
+> > >   -> spin_lock(&n->list_lock)		
+> > > 					- __slab_free()
+> > >   -> __slab_update_freelist(),
+> > >      slab becomes full
+> > > 					-> was_full == 1
+> > > 					-> spin_lock(&n->list_lock)
+> > 
+> > In __slab_free, if was_full == 1, then the condition
+> > !(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) becomes false, so it won't
+> > enter the "if" block and therefore n->list_lock is not acquired.
+> > Does that sound right.
+> 
+> Nah, you're right. Just slipped my mind. No need to acquire the lock
+> if it was full, because that means it's not on the partial list.
 
-Here clean them up.
+Exactly.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- arch/loongarch/Kconfig |  1 -
- arch/powerpc/Kconfig   |  1 -
- arch/um/Kconfig        |  1 -
- lib/Kconfig.kasan      | 12 ------------
- mm/kasan/kasan.h       |  6 ------
- 5 files changed, 21 deletions(-)
+> 
+> Hmm... but the logic has been there for very long time.
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index d211c6572b0a..4b7802d02911 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -9,7 +9,6 @@ config LOONGARCH
- 	select ACPI_PPTT if ACPI
- 	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
- 	select ARCH_BINFMT_ELF_STATE
--	select ARCH_NEEDS_DEFER_KASAN
- 	select ARCH_DISABLE_KASAN_INLINE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index ad7a2fe63a2a..b51fbc25bdc9 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -122,7 +122,6 @@ config PPC
- 	# Please keep this list sorted alphabetically.
- 	#
- 	select ARCH_32BIT_OFF_T if PPC32
--	select ARCH_NEEDS_DEFER_KASAN		if PPC_RADIX_MMU
- 	select ARCH_DISABLE_KASAN_INLINE	if PPC_RADIX_MMU
- 	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
-diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-index 098cda44db22..fd0bedd2c696 100644
---- a/arch/um/Kconfig
-+++ b/arch/um/Kconfig
-@@ -6,7 +6,6 @@ config UML
- 	bool
- 	default y
- 	select ARCH_DISABLE_KASAN_INLINE if STATIC_LINK
--	select ARCH_NEEDS_DEFER_KASAN if STATIC_LINK
- 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
- 	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_CPU_FINALIZE_INIT
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index a4bb610a7a6f..f82889a830fa 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -19,18 +19,6 @@ config ARCH_DISABLE_KASAN_INLINE
- 	  Disables both inline and stack instrumentation. Selected by
- 	  architectures that do not support these instrumentation types.
- 
--config ARCH_NEEDS_DEFER_KASAN
--	bool
--
--config ARCH_DEFER_KASAN
--	def_bool y
--	depends on KASAN && ARCH_NEEDS_DEFER_KASAN
--	help
--	  Architectures should select this if they need to defer KASAN
--	  initialization until shadow memory is properly set up. This
--	  enables runtime control via static keys. Otherwise, KASAN uses
--	  compile-time constants for better performance.
--
- config CC_HAS_KASAN_GENERIC
- 	def_bool $(cc-option, -fsanitize=kernel-address)
- 
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index fc9169a54766..f08f7f75c285 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -552,12 +552,6 @@ static inline void kasan_poison_last_granule(const void *address, size_t size) {
- 
- #endif /* CONFIG_KASAN_GENERIC */
- 
--#ifndef kasan_arch_is_ready
--static inline bool kasan_arch_is_ready(void)	{ return true; }
--#elif !defined(CONFIG_KASAN_GENERIC) || !defined(CONFIG_KASAN_OUTLINE)
--#error kasan_arch_is_ready only works in KASAN generic outline mode!
--#endif
--
- #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
- 
- void kasan_kunit_test_suite_start(void);
+Yes.
+
+> 
+> Looks like we broke a premise for the percpu slab caching layer
+> to work correctly, while transitioning to sheaves.
+> 
+> I think the new behavior introduced during the sheaves transition is that
+> SLUB can now allocate objects from slabs without freezing it. Allocating
+> objects from slab without freezing it seems to confuse the free path...
+
+I feel it's not a big issue.
+
+I think the root cause of this issue is as follows:
+
+Before this commit, get_partial_node would first remove the slab from the node
+list and then return the slab to the upper layer for freezing and object
+allocation. Therefore, when __slab_free encounters a slab marked as was_full,
+that slab would no longer be on the node list, avoiding race conditions with
+list operations.
+
+However, after this commit, get_from_partial_node first allocates an object
+from the slab and then removes the slab from the node list. During the
+interval between these two steps, __slab_free might encounter a slab marked as
+was_full and then it want to add the slab to the CPU partial list, while at
+the same time, another process is trying to remove the same slab from the node
+list, leading to a race condition.
+
+> 
+> But not sure if we could "fix" that because the percpu partial slab
+> caching layer is gone anyway :)
+
+Yes, this bug has already disappeared with subsequent patches...
+
+By the way, to allow Ming Lei to continue the bisect process, maybe we should
+come up with a temporary workaround, such as:
+
+} else if (IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) {
+	spin_lock_irqsave(&n->list_lock, flags);
+	/*
+	 * Let this empty critical section push back put_cpu_partial, ensuring
+	 * its execution happens after the critical section of
+	 * get_from_partial_node running in parallel.
+	 */
+	spin_unlock_irqrestore(&n->list_lock, flags);
+	/*
+	 * If we started with a full slab then put it onto the
+	 * per cpu partial list.
+	 */
+	put_cpu_partial(s, slab, 1);
+	stat(s, CPU_PARTIAL_FREE);
+}
+
 -- 
-2.52.0
-
+Thanks,
+Hao
 
