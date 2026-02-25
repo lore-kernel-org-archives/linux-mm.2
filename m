@@ -4,239 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC8CEFD20A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC02EEFD209
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 08:31:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B5456B00E0; Wed, 25 Feb 2026 03:21:19 -0500 (EST)
+	id B03996B00BD; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 795BB6B00E7; Wed, 25 Feb 2026 03:21:19 -0500 (EST)
+	id ADABA6B00D2; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6368E6B00E8; Wed, 25 Feb 2026 03:21:19 -0500 (EST)
+	id 9DA3F6B00DF; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7746B00E0
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:21:19 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 006D659163
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:21:18 +0000 (UTC)
-X-FDA: 84482284236.30.469BBAD
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 85A7D180008
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:21:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="pU3/buEV";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=pRQXUwj3;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf16.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772007675; a=rsa-sha256;
-	cv=pass;
-	b=F1g+AsvHWMFtyu/exiY95DzZe+oJeRe78Fj9kyPYKpt6PIlNnUU6FJJ8pCMXsA9ZKy5cCq
-	n+Nr9GFqbjrWzhdPJugyzB3tOMZoFCJJxgp+ECwWYCQJqntevT5waJ/HaJUmuY2bz5i4mr
-	UiWYy6T0Tbc6eTh0T2X991NTp42jDM0=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="pU3/buEV";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=pRQXUwj3;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf16.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772007675;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A5A46B00BD
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:31:35 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 513D0B91DB
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:31:35 +0000 (UTC)
+X-FDA: 84482310150.28.732DE16
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 67A5F80018
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:31:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=PQ83Te9w;
+	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772008293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QFW4NdM+l/YlC9FLBE7B1Om3RlV6t7eH37VGnSGWls4=;
-	b=nIuqWQQ73M+jrBYWP5z7vx0ivnM1h9brrhDTfRYEwzvl79Jr9Vn4yaSPCRpdgV05eRKisw
-	ZEQQ9BBS8ezBqnyJCjZKd+1YzZqpdJdZKjBhhy+2TUFPaJD06rHgyDIBcEry04SpkKijOR
-	85zNJQeFELjkg+vcVJ+1HjOiqCt/enQ=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OIuRla719632;
-	Wed, 25 Feb 2026 08:21:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=QFW4NdM+l/YlC9FLBE
-	7B1Om3RlV6t7eH37VGnSGWls4=; b=pU3/buEVw/TNhNEZjQ7UHlziLHtDdKH8Sb
-	crfMPqQqH5c2rlY9o0cx14giRyrWyLiWdcyBHOatsu7U+lWdP33+pnRVCyQ0Eaax
-	cxl81pBMxbKe8uYHLUqsQ8PV+Tv/t1K+wwqRjN0HyKS86fqLzsc2ix4UzT1mDOFJ
-	j2cc5pAjn4I5wvW2qqlKfhS7DH86BYBDu7EguFRyNsX50Q8pPkdEpmOs7nn6hsWh
-	dNVEPNjjL1m8WigDuK5LaxCD3eGiyNpDwwKxIafJoqcITId/3g2SNmRe/frrhnbr
-	JezCmmJDRWQ7KMCYOTdv4tiV9CcZ0tqmbFnbOflV0UVf5lbQRnJA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf34b5qeq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Feb 2026 08:21:13 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61P7J5pr028497;
-	Wed, 25 Feb 2026 08:21:12 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011061.outbound.protection.outlook.com [52.101.62.61])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35asnxq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Feb 2026 08:21:12 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IDr9TK1BrhWoP++KVvx33tddAhE56F050kDzkgDQhhQfkaiP5gqeqQ3i9LpGGC4f/vqS0p/kUbJQw1SOPKYC92Mobfp8DxiacM/zFVL5/RPYk0V2RkaHjyHrGh4F3wzVstoOWUcWC+8i/xuWodKvyGg/Hgf4iPU0mmx2s9+6LTSCHoFu3I/zAKHa7lc4ghujTpvDoL68wjwKUkSxRnNo7VHf9g3DjZ2Rqrs2DBEwxLQrw/TZ/RS32vJVEwIN8WiqbfwIhfV595hV4BGbCZjh3C5Joy0ogo6Z69hojSN1eR22/aQpj/qTr+XOy8vZDAVcAdlQKKSIDvwRALWvM7DlEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QFW4NdM+l/YlC9FLBE7B1Om3RlV6t7eH37VGnSGWls4=;
- b=ehjjwtlNVfHU+vS0HAx2drPx+tZJ7P02xzmN2WoXm0U9TpfbnddWPq7CUXOVrP99D2b06nU6Ps1YdGrey0NZAyrCS3dCFrXZqTVLWrbhLbfSFm3Ori4dvl3L7Hhig0BVzmH3wRmKChaGUol6CM4NtXcc2fEbKiLDmJxS2XFraVcPre9ngYMTyx7xHQ81ayLw8kxj1+anBiGlvYd29KLPLBrqW6BGQE149//qzJMjuvZRYCmy0oYE9pqGsYfVsJSlemogbtvWMyq9FFj6PhNEGkyu8d7hycFXrjm0LOCN2PQuNjGpOdMtrxinvzsuo5WJNuPizciNDSrkoheLEBBPVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QFW4NdM+l/YlC9FLBE7B1Om3RlV6t7eH37VGnSGWls4=;
- b=pRQXUwj3td4NfZ/NV5U8AaWGAiUwD/cZhnZNqNgggVAvNEHHEs6KlAg+0WuTrS2PGwlbMXJl8sx+iAwjolFXrQRq7fTN1EUE0Dk00H65uUYP7e39Y20U/oF3paEwIV3ozSKXMsF9/ViJX3RMuwXQ0L2f56zrhgB6yvbrPBjYBVA=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH5PR10MB997735.namprd10.prod.outlook.com (2603:10b6:510:34d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
- 2026 08:21:09 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
- 08:21:09 +0000
-Date: Wed, 25 Feb 2026 17:21:01 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Hao Li <hao.li@linux.dev>
-Cc: Ming Lei <ming.lei@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-        surenb@google.com
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <aZ6w7cf_9uH6wupI@hyeyoo>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <aZ0wX_QuxNTxXHMj@hyeyoo>
- <aZ1qRhIGDAR7d56r@fedora>
- <qiqptuqsiaufeasf2xukfzoumiyoau3zfpokosn2amgc6zskc6@vl6ie2h2zj4m>
- <aZ6cjpU36_EmXslf@hyeyoo>
- <zn7q75k7u2mspvmspwiao6245kmaahti3kwagablp3advcx5ga@5d36ctyi2a35>
- <aZ6ijXgDKj9D-kDm@hyeyoo>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ6ijXgDKj9D-kDm@hyeyoo>
-X-ClientProxiedBy: SE2P216CA0136.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c8::8) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=V+0btWJvpN82MWoUIfyGBEuNyVbQfKtpoUxMOk6bk5g=;
+	b=AL+snpmjL/qVFspor7rV++rP5KCj3v2S7nVskhcv/pcKSjU7aMoOzPt94sZ2lDdTVLW6JA
+	dn4/vf2QghqFNUEu9oYHDaKHJ8lH6NGiuV9A4kTKELVvUKEdNtNr0cSch9GY1PzjHvloaa
+	FJ2j1V0Tr4avZGR2ciaMnWhQD+RF7Cg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772008293; a=rsa-sha256;
+	cv=none;
+	b=JcskE52cHbW/dDGxzBwXtEnTevpOJkRX4gBX+trVGEVlnaZLhcUBjyNkX5JdGmzjohcmEK
+	0xSVgXsoV3UD/3GOlZgnZn9mys5bZzhQ23pyQ9WhYoQTZ34nzJznHVHEOVU6iEBlYA/jLe
+	10K0clzZ7rs2eeD+UrVc3+ETMA4CE0o=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=PQ83Te9w;
+	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=V+0btWJvpN82MWoUIfyGBEuNyVbQfKtpoUxMOk6bk5g=;
+	b=PQ83Te9w1pj/Y/rdt6DlwqL+Q5nF3zmYcSBrFVCTRqvMsZbmO+KvZCwmVEKCNPbfiedXjTDpV
+	dq5SsbAPaCCpwaiaL2lZEEMeNXFEJjW6ucexMQVnzrq+xykiVrrlcoqpErwohSlvFj0yb90wc+m
+	vPUT/0g7b2Y24SDJNy34cJI=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fLSNs6FnvzKm4l;
+	Wed, 25 Feb 2026 16:26:37 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4E62D4056D;
+	Wed, 25 Feb 2026 16:31:25 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Feb
+ 2026 16:31:24 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<fengwei.yin@intel.com>, <baohua@kernel.org>, <ryan.roberts@arm.com>,
+	<linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
+Date: Wed, 25 Feb 2026 16:12:40 +0800
+Message-ID: <20260225081240.253057-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH5PR10MB997735:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb07d6b5-4a0b-43bb-dc93-08de7446d435
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3mSrbvGkKhrgLFDPstU/2i1FNEkJHegZXTEL1FRu6UMRpySpoA7AyKcmqckx?=
- =?us-ascii?Q?BkUa2jA4M4lZl0mDyU966NtMnEyLTmwhmtcKQlTiO834N8GyRcWh9xkPSHcJ?=
- =?us-ascii?Q?sxN1E/sqX2PcTQnPt7d6B6EF9we+k69rbAYr9TeGVto7iDJE7JiW3jRkIQMo?=
- =?us-ascii?Q?g6M+7h0HulVQ3HfhCVqfs9Tdf4mnXE7l/swwq+Et1DALCIYWWy5R16eYwpt3?=
- =?us-ascii?Q?hn7USlSoeYzawWzwKAlQqkvAxr912XpjBXSfKH2NerzM+Iji+N0+9km6+Kd0?=
- =?us-ascii?Q?Vf2LeWeIc5thN5pR0VVKImM/owiLpRkDtZKX9/JiGx7aLXVd8eLteqdjN6nf?=
- =?us-ascii?Q?EdhlWnVx7rguvJO1Fe4lzw7/B/EfScw76iinluLd6OCz2QllGogqJDC9RDmC?=
- =?us-ascii?Q?ZhboNHAJxDV7OaNyA/5GFfTk3QQvrhVUzUu2BM803dpz+Zm4V8NFfApgWO60?=
- =?us-ascii?Q?zRzwSeQQtMM6AXytO27He3/W30UrrnMJxvG++C1/wV/t6LCLuL2d3gl3NpcZ?=
- =?us-ascii?Q?ypkb7hQy13FbQIVftqrpCIH72O4ISrB1XVm65N+tDmXaQVeJTfB00MzK40cm?=
- =?us-ascii?Q?xl6allBrYA0JnESYHAftikpW6Vt1HrwTpdHp64ibOA458tH2Y6SJvmleqTxk?=
- =?us-ascii?Q?Eg7g7XfLiDLD/ZDCePNtF78a3FS2vtJjrgFo40TA+iJkv/ODJbN/mdYJ4ZIh?=
- =?us-ascii?Q?CyYGEtGqwk5MZ7Ls599gukscHRP/PoKlX9ssCIllYnonxEZdCCZiCCyQpHKm?=
- =?us-ascii?Q?F+MpxTSEvGQLtiEtGc1ZDOMLcXtcpqRA4PA/BGV/uv17S1OvuGXK7BSR8lxe?=
- =?us-ascii?Q?Am+HIx5CDoFxzIuftujfYCE4isc7ravdNRYGxzkaHT2qU/MOA7fFVUFIn09o?=
- =?us-ascii?Q?qQHbFLT+SAxT9+NNpLHKxz7tITUoNwfcBxTnUlRDTwPgQ9eqf2J51EUPeJKD?=
- =?us-ascii?Q?QMJap8Wm0OEGs8yJzEvwh9/LFJhFbY+3G9/w5zLF+iKFLpqUbOhOm4c7D0hf?=
- =?us-ascii?Q?hHJtLjcbZHwz9VLp9NNsZPPgqwAH8GD3rj2iWyGudlfMTCrMHbzcHNPQG2cV?=
- =?us-ascii?Q?AOfYhBrcGvvheh8ZUruTbs1BwPcLYQgFI5XEFZ8+pwhlG+7PBdueYmFt3vLJ?=
- =?us-ascii?Q?hj2fT64u8SfSkGl57g89JZeweWTcWNhwkElm/O8OJYJduofifD71JMW05HOX?=
- =?us-ascii?Q?qBZ7HL/m3sR5GASUDZA9GfLLNbTnrQHwsxPzhJszGbPSsv/NOrIz3MMxiXme?=
- =?us-ascii?Q?mBAhOfdzlRT/Bq5LCds+19Y2GLeySu+CQY+X1gI0iWFtwarrWaR0ykshcYlQ?=
- =?us-ascii?Q?jdnHzI+poQL52LhDN93T2GDIEuFcnas8674dWxig8MI5CGefVz6mEh4Hvm+a?=
- =?us-ascii?Q?Dt52Oz8DK2pfi9w6wXutBWa6AUPsCK2V5PJ/BtPxb7LY4OaMEDgCFyL4QYj4?=
- =?us-ascii?Q?WZmbpdPEjJedYWU1ZahN4NDCjTWTUJqm3B4wrdxaLAY/v6DwTY622owUxcxO?=
- =?us-ascii?Q?pmzKIK0ptjnd37vJnKr4WFCCvv3ynxPKtDc8VIvlfuvhnf6hQaLsSnnTQffH?=
- =?us-ascii?Q?u4LvZwxNkn8d98I5v5A=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?m9aXLHEubWMgqPVTstZvNM0YJ8E4+LfDpFSmU3IIIQVzbOUSXX1tendo6nmQ?=
- =?us-ascii?Q?fhHRv4+jiD9b2Pp22KrH0quh27vIGWVUph4lINrB0I23nGMIqJ/6ZQX59cKW?=
- =?us-ascii?Q?I2D8Vb/dBVi58ccVM2i7MFiu9Xa3UWJaGgMcDD9aw0DHN51XgHzIUvAZHsgS?=
- =?us-ascii?Q?DVKXuYYMKjggOiOMgbg0U3eK5kndQ9zezqVZRGo0Vr18d60M+wlE+8mse6lA?=
- =?us-ascii?Q?IT+bkGqZlQvMq2azB1s9pcVbh5fT1a6AupgkeoRRp+SGkfsxLdOQXmsix3Oq?=
- =?us-ascii?Q?4vlkQrfAqfM4hEckvJIk6mcKkJGVv+tfEdrEMo7ME6OTiragI663xTB4dM73?=
- =?us-ascii?Q?WUoD3vRGUAw9/t03c0rw8r9Tr9ld3BuP6bkIUUpyE329Kh96Clf5zbIn5hu2?=
- =?us-ascii?Q?1KFQzgHqdlHk10xsE5YdTMUziZ52eRLxf5NL+XrE0hC/KtA3fcuoTec8uXVk?=
- =?us-ascii?Q?YmWQXT6LCybscyKmpUzQf57m0QTTLmfz1vnbZsTmi8QXvd6zhLE4XkIDMuf2?=
- =?us-ascii?Q?9rVwoyhir81UKS+Rhyy5ivbLSDMifBJaUX01r7wIIbf2O85oV16R8JyyjeYO?=
- =?us-ascii?Q?VW5xIk9K/ZUtcm4fHJVw5cSDEtr4blge9z/XNtuHN/N3Hm99f3Hxdjh1TJPQ?=
- =?us-ascii?Q?aRRLFJoglvUb9LBL0R1nE6/4vqSIQ6VdAOWbLRj6KHE6mz57IGyvLkvI56dm?=
- =?us-ascii?Q?pkExIMoawgveW4HDa3A3UAaBuF+s9dz/rm8QVjMGgiUemdEa9qidbjYyYmnw?=
- =?us-ascii?Q?zGi/2gnXIAa/Ohp2AA+NkErVZjJ5q4PIqwyInbXaWVkZQ7mV9c/EBPHOXVfM?=
- =?us-ascii?Q?hJAxV0zjPtYth8BmgBHZz0JlK80INEi0J17C+y8SNCxSssl1L2rY8QeSgUxG?=
- =?us-ascii?Q?VTLJXVBNs9QhTRxWniVmOBANGe2CpMeh8GRaYzmgNCHY96jBz0JHXaIIdZT3?=
- =?us-ascii?Q?00YADbaYLE6APah1Tg8wEtdyjoBPw/FdGB8NEP2+7caSK827WmlJN31dvKMR?=
- =?us-ascii?Q?IlJS9wSjrulzGqhI7aMkM3+n9UG10kjuRnJWDA4b4eXEq1rFyJXgQJLb4E93?=
- =?us-ascii?Q?ZYdAv86gO1TzO9nMd/d8vhM3UL2hnlZUB9E0PyHcJ3OPlQ+eqLWPVXIU8rwT?=
- =?us-ascii?Q?YIADuN+KQcJymstAhyLzlYAwb0ytlfv/+6yHjf4AZyrKA49ur4NvWOraSZlv?=
- =?us-ascii?Q?qgBU/V6xAowD/w3whZyiswG9NyoNjjDClHpm5ZPh/WDZsnV+tXfzUhrpHch5?=
- =?us-ascii?Q?3gxr4sipgCWQuAKB0TMYtY+cjbjEj0mdgZwIdycQYV6VLz+Q0wBqa0Vy8orX?=
- =?us-ascii?Q?0Ev610xXaRqIBLJCulmjtEFmQk3w/A1DoxssyRbloOEefkEAjIGalgMuqRQO?=
- =?us-ascii?Q?txtCNuI9QCNiEjKW7pvFLiSAgWrzmUgGs1z2zJvIOravFLwGCvVVwmVycW5z?=
- =?us-ascii?Q?SRhbcMMiDPwUt1i3VuEFwrhYpNNrWWmG6WuMRI81ADHjP+8b8lw75eLsAjkr?=
- =?us-ascii?Q?BtkVbCPhUMVR7tVj3YXDln20fJqeEmAT6vhClqRNjq+yUD+C0OAnj8ypA1Pd?=
- =?us-ascii?Q?7L0xukFDM5XCNRtfRq07phJfF5HcIucBPr/M3VYv+owx5VRL5nlNdecs7A38?=
- =?us-ascii?Q?VZ1dM0+tw1OQGFQ1KDrP4GP3cMYwdRm/3kswqYkb9sdL8HZYrnTdgjH8wkrk?=
- =?us-ascii?Q?InyaUpD5STwQTNRJ3CGfZvGmaPP3FpQPSLsJ2VOSE7kWQpU7owcdc8Lcyqy6?=
- =?us-ascii?Q?mAIQKp87IA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Y6AK2aEak2uq4CXF3C3lz30uOOx0u/Qhgix/iE2Z+JtmZlOZ1H41m7aNGAYfe1rQfVYl0HnhxQYImzX4xj9QTmlkacmGxqyf+7eHEQP4Pu3Hj/eOcYVGOTs64U5OCdc8epIwDpg4bsVDZ61nKUgPPJKDj+++/UOUvo9xmKFPIoSGcSyLjnJoknC2ItV9ed8vD0/Jv045wyaJIT4rMDFBEUzhGMtdnbIk31DeNPFfskJ6EhrMdm9qqL74wkA2evw/wzXjvo3Xho4zp6kCh6XzvwNEKoK47RqumRqXHBwPOlr8xkhG7wKcPWDPqQ6kzc+xGAbylCYN+XsJ3PTmRYytzjipcIuqJzhA1nONvfuRktEojvZ8KeDL4SMBAHOnMKZ/TntB9Zzhy/G86rs2KUv0vhiunuYnK7gW5khcBz0I3rGa7RIrYa79UuvKujBANYAoDH2+4WPZ1w7Hi+h3SYAPnRVo84PXnZBmg6uZ1almTuRJE0mDBrHy9LBygnmGnNmFuEN7kkBQs4egMtUxawY5NJM7J4rg7pJFBToy9qO7fk56tNmX4cGL9wCWO0q+gs5UcVVWqIjiAaXacxVwneLJRf+Fel7PuRvRNNJ1hPUHVro=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb07d6b5-4a0b-43bb-dc93-08de7446d435
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 08:21:09.1228
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: khLCk9L5EiJBXQC56hvOu/PAokAGwGheHJcFoWjTyPmzRHMxb/SmRNiBdG0qsGXQTcJz/ASiqFaXLEjAPlUgAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH5PR10MB997735
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
- mlxscore=0 suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2602250080
-X-Authority-Analysis: v=2.4 cv=GrlPO01C c=1 sm=1 tr=0 ts=699eb0f9 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=lmGR486ZKR69I_DK8vkA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: J1BkQusaN0CMCXQINsJ--MRUjmlEJU2T
-X-Proofpoint-GUID: J1BkQusaN0CMCXQINsJ--MRUjmlEJU2T
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDA3OSBTYWx0ZWRfX06Rk5sdDf50F
- FTGprcjGOzyASpv5Dr4WxEB4r6+5tkI+UCxWaro2jEosCObTN56ZwT+oI/PmVLwEcHJMHHRC6eL
- apGc/c+wl2M6Ec4LRRnDgIwqTaqA7XK+IobmtWX9ZYPaFd+MYpIOdtTHTv5zTbHQqhezrATbjqE
- aejHiFTNVwcwg0oT5VyQF9ZodRv/4c+9KG2ZZmlWcPmbDnqGdx0QJhRBCNlJnGlxTqgTLL1OLiW
- OVWhaLikG6539brFvEG4CiHrW5erob1v8dniV3rcP2k7P5uZfvJHgZ9q1cDHHMW1RawPq0mz2QH
- V70ser/aCa7Q7FRnvotouYTNQWaJ963JjWQBIIPZsQK2Ihb+byqT6AM7VbH6GjstTA7ZwxIGZpJ
- V2NP9rwXgKWeWRvayeOJxtR0v/WSy+bu9rre32QRnEtlEdJ6EArEp7Zg4Vd0o1HO8ckQpzP1ijQ
- UVRzaK1RsTOOMjJZ2uw==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam09
+X-Stat-Signature: hgbp53sefhbn5ba5pqposqdhpk87fcex
+X-Rspamd-Queue-Id: 67A5F80018
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 85A7D180008
-X-Stat-Signature: ehb859wureycpwznxddghespgxeak8oo
-X-HE-Tag: 1772007675-923112
-X-HE-Meta: U2FsdGVkX19ve0Arx0AqbTTWhxNtzqqBFbgPCu0ym0cCC4vLiOoliVia34LxhSw8X7q6NfSLC4cwVEzrAnSpjDd4uBrE8Zvqi1PlGwrf7dp7xQqRUWP1MBY/+Ox/FB1pfqyu4+llLLa+SMYY8h62uW8tbuIgbwFICMsoHZYXa2nAUbodcWg2dnPZ/20YBLqbTqPdd0Sp4VZejJ9XUdks9+GKdogQNusMSE4qPw3Oyu6/Ia5iyeEd1vERnlE9jNN+OPa4HpEbTn7ysBYVYW4jw+UYA39sDcZLb8O5uNjqS5/kXHrUu97QCKhMER7u0nTvr3Qck69w1Vs07CMOVWk6tjrDAicWSEeTmkGzvz0OO8H/qSn8TMwdGiMfl6OeqGrfdfqPQ5IwcPCS/N8122PIfJHNl7X93o0DfgE7w0tb/841DRH9Aj1j8utdCDrfOkEbRZWzMOTH8P9/bsYwmRbJEQMd5wDH4qW9d0ePbH1rLhHAmwqSD2PLIBghdNCP8OEJ1JCyegh0Rn07nomzMlyjtUlV9GKlnT8FB1JTu7OENFUb99pt3hfJlwOElsvQ4QvjfbWAOX0hWaO7dBXJPDpiMV/sB+vtUiavYq7CXPtBeqjQlksPVOTxIGK1eaHqypEizmNPVVNtX9uJM8f+3sid3v/Ko/d3VdqRcu0LBfEXT47javFYyLYHNdQQicb9Jmh/ayYB3A6jiDtf1bTvM5IPRByfMDUKOoLGZd+p3odtnCQjTA1O1O6e3dC7Nf1pJkKL4d90k/t3/oQKOut+qKlinrpmavu0oihKoor7bGtq6+nvidNJFbk1x6q1xCx3xgn4dgzMS7TNzVjsIZ+WiwxwZBnP/1qtUhHRAT+KUag5K51GYMYIq8dlThRS1fCj3gf3O778Tfggc6n4j5kNYDOtlRsO0UK/OiAqR9BNErA3dpkQHrf4XIXldzqtR7c5fwMRM8qOqMIAg4O0szNsYRc
- kW+dAi4f
- nYbH1256x++P8zUfk2DFyUNWGywesjSUFDgVTTvS0r8VsllXe2LkxM1/OTldCezqEiGv1MZ2TEhQlDDi086PrETm+r8o8PtpSdEwqfZ04ViB2Oui5lkPJsQmRuhBJtVFNi38IdFQCOIDH2q9K+4KvsLbXn4k1nfDGg/YYH4mZmpxI/nTV6OTijGCYeYwvwPfcVZEHL3p6LxFRkNKzXF9z0NFlhQB/e48rF3q1sIDN0Xofu2GeQer0hhA7rf3Nf8ywMSw30bCrZuUmMR90tcH/chiVuvd4wWV2bsBfosWl1YReWFZkvUh9xn1gjYMxTKqWtaufwiXgYqIDrdvkeGoYC/DMpFIbdDK4FC1zl/AvPF+5d94L9cuPmrCzX57CvDz0djHbAe6aoy/PRHLHj9bXKXpwU9OB4rYeHxsvuWY7lTSvCeGZdbX9248/ReiWH2i2L3pSAi+nEMKAHYNW8M6H/aeZs5ZeqyBjM4kI/2ejmBeDgURvPE+KwCywzg/4esbFdr82Bh7XBdTuFNxAjWywocTLiPcBL71Gr5Id9CYQA8mPaCE3gBP6uZIr06sri1K6vaK+5pj69fvQTEB8nh0Ha//VyJrsVbVcE2hL1pLXTageqgekWeL0+GrpXg==
+X-HE-Tag: 1772008292-336061
+X-HE-Meta: U2FsdGVkX1+C78AtpgjvubebOomkG+E+avHG15R52h+lydbieG8f232hjcTIeI+rvXuKFm+fbOtjbcTkUOMoCQoNVRAADYl9fzN8rRqA566eQjo5DgSBZhovTvDC/y9VzsBGVqNPir+teI6yQprOBpxLdwjqkMINGRluHH2aqOVLQH6Pz6ziG8hAm1sV+ukJXoZc2KgrAAk3j1Fug9aaMqq+qt4Ds+74C9zGQJnoDrQ159RPTzBmOaz7lzQy0oo+aXicUFEIIMOIwCfp/FitjGtCmnbyHh4EZmiBoSwmNgzK/Pcr8DwWaHAXVWqT6ehZ0J+yYly+yjwUDKnzPoCSB2VickiTBWwDrPEhkEHWugdskbkfH/+CKHgDGICDhBnq1cbmgB8nU3oGeKqXtaprphxb0FjkzTKDZ2u5yKXQK+ps1QCESE40uwzHcgH8U6jaVdXyOdC1bWwYClp5nntMVXyERoO8X90F8JebzGOKN5C8rSopYQvD6NkzgXRYQamkdgPB/GIJ9RpPr4VgXEqp0tO+CjD9G3Uf9tNAgw6wWyESAG8OEJy3jE2orzA4eYBhetrpc1MZXBYuu6Tp//PjwcThNx/H2Ypkt/6dx8KoxV8z8hbmIMrMlUvCX6faU+5QiHTMs0VVwUF7XQn8vmD8As0T91ZWEDxQp5Rn6PFeMllgDCSfWE6gikST0wwxfoB5rdENBh8J6svPVpoI0RgGE6YAeAwGVszJ3WTqwDnyJmUtOUDRAg20EAOZiWS7SjcDN2FgdKVbgg3Ms5KhTIZN7xGStoy0WH6SrRC/2V9JuZk5jd6iFlt/b52DWYesY1yke7cMMQPCBIsbYiSozk2lKRK38gwgqs45wph/ZkuKh7CwG9P8hk6EzRS6kDmYxOI3I7LKdlLBif7abpVDHBlEvZZAB8dFonS2HkZSvsRrS4EatJHIHAnFAUkk2LGXC1BVgXhkVivlkunRghgTeCs
+ dvlkwgnO
+ N3wHodcP0dkCR77xs0Qwqj/BQeLyyvSl6mzQTLFIFbzpMgnIETY1KK+LPegmvOSWSeT6PkTmCVYzfStecloQVo9S5anW9mmqVumpyV5LW+ZPBQIwoOx99Xerl4igLIvPyilxXkiD4JKR6U3WjVAfTeNfVH3bImSY2HBAB5JzS3SpIvKMCrCXvgJq0ph1PLkFwYS8SDcBrZNa1q+FI6XPy08EV+M3NC4jzV+wGS8+w8DPKnyiLKbIYd35umm6FyZ1vSJBk1hD+92gulsmoKhLz7upr4YHX7bQBo7YWqIjyDYMnoto=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -244,165 +98,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 04:19:41PM +0900, Harry Yoo wrote:
-> On Wed, Feb 25, 2026 at 03:06:46PM +0800, Hao Li wrote:
-> > On Wed, Feb 25, 2026 at 03:54:06PM +0900, Harry Yoo wrote:
-> > > On Wed, Feb 25, 2026 at 01:32:36PM +0800, Hao Li wrote:
-> > > > On Tue, Feb 24, 2026 at 05:07:18PM +0800, Ming Lei wrote:
-> > > > > [   16.162422] Oops: general protection fault, probably for non-canonical address 0xdead000000000110: 0000 [#1] SMP NOPTI
-> > > > > [   16.162426] CPU: 44 UID: 0 PID: 908 Comm: (udev-worker) Not tainted 6.19.0-rc5_master+ #116 PREEMPT(lazy) 
-> > > > > [   16.162429] Hardware name: Giga Computing MZ73-LM2-000/MZ73-LM2-000, BIOS R19_F40 05/12/2025
-> > > > > [   16.162430] RIP: 0010:__put_partials+0x2f/0x140
-> > > > > [   16.162437] Code: 41 57 41 56 49 89 f6 41 55 49 89 fd 31 ff 41 54 45 31 e4 55 53 48 83 ec 18 48 c7 44 24 10 00 00 00 00 eb 03 48 89 df 4c9
-> > > > > [   16.162438] RSP: 0018:ff5117c0ca2dfa60 EFLAGS: 00010086
-> > > > > [   16.162441] RAX: 0000000000000001 RBX: ff1b266981200d80 RCX: 0000000000000246
-> > > > > [   16.162442] RDX: ff1b266981200d90 RSI: ff1b266981200d90 RDI: ff1b266981200d80
-> > > > > [   16.162442] RBP: dead000000000100 R08: 0000000000000000 R09: ffffffffa761bf5e
-> > > > > [   16.162443] R10: ffb6d4b7841d5400 R11: ff1b2669800575c0 R12: 0000000000000000
-> > > > > [   16.162444] R13: ff1b2669800575c0 R14: dead000000000100 R15: ffb6d4b7846be410
-> > > > > [   16.162445] FS:  00007f5fdccc23c0(0000) GS:ff1b267902427000(0000) knlGS:0000000000000000
-> > > > > [   16.162446] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > [   16.162446] CR2: 0000559824c6c058 CR3: 000000011fb49001 CR4: 0000000000f71ef0
-> > > > > [   16.162447] PKRU: 55555554
-> > > > > [   16.162448] Call Trace:
-> > > > > [   16.162450]  <TASK>
-> > > > > [   16.162452]  kmem_cache_free+0x410/0x490
-> > > > > [   16.162454]  do_readlinkat+0x14e/0x180
-> > > > > [   16.162459]  __x64_sys_readlinkat+0x1c/0x30
-> > > > > [   16.162461]  do_syscall_64+0x7e/0x6b0
-> > > > > [   16.162465]  ? post_alloc_hook+0xb9/0x140
-> > > > > [   16.162468]  ? get_page_from_freelist+0x478/0x720
-> > > > > [   16.162470]  ? path_openat+0xb3/0x2a0
-> > > > > [   16.162472]  ? __alloc_frozen_pages_noprof+0x192/0x350
-> > > > > [   16.162474]  ? count_memcg_events+0xd6/0x210
-> > > > > [   16.162476]  ? memcg1_commit_charge+0x7a/0xa0
-> > > > > [   16.162479]  ? mod_memcg_lruvec_state+0xe7/0x2d0
-> > > > > [   16.162481]  ? charge_memcg+0x48/0x80
-> > > > > [   16.162482]  ? lruvec_stat_mod_folio+0x85/0xd0
-> > > > > [   16.162484]  ? __folio_mod_stat+0x2d/0x90
-> > > > > [   16.162487]  ? set_ptes.isra.0+0x36/0x80
-> > > > > [   16.162490]  ? do_anonymous_page+0x100/0x4a0
-> > > > > [   16.162492]  ? __handle_mm_fault+0x45d/0x6f0
-> > > > > [   16.162493]  ? count_memcg_events+0xd6/0x210
-> > > > > [   16.162494]  ? handle_mm_fault+0x212/0x340
-> > > > > [   16.162495]  ? do_user_addr_fault+0x2b4/0x7b0
-> > > > > [   16.162500]  ? irqentry_exit+0x6d/0x540
-> > > > > [   16.162502]  ? exc_page_fault+0x7e/0x1a0
-> > > > > [   16.162503]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > > 
-> > > > For this problem, I have a hypothesis which is inspired by a comment in the
-> > > > patch "slab: remove cpu (partial) slabs usage from allocation paths":
-> > > > 
-> > > > /*
-> > > >  * get a single object from the slab. This might race against __slab_free(),
-> > > >  * which however has to take the list_lock if it's about to make the slab fully
-> > > >  * free.
-> > > >  */
-> > > > 
-> > > > My understanding is that this comment is pointing out a possible race between
-> > > > __slab_free() and get_from_partial_node(). Since __slab_free() takes
-> > > > n->list_lock when it is about to make the slab fully free, and
-> > > > get_from_partial_node() also takes the same lock, the two paths should be
-> > > > mutually excluded by the lock and thus safe.
-> > > > 
-> > > > However, I'm wondering if there could be another race window. Suppose CPU0's
-> > > > get_from_partial_node() has already finished __slab_update_freelist(), but has
-> > > > not yet reached remove_partial(). In that gap, another CPU1 could free an object
-> > > > to the same slab via __slab_free(). CPU1 would observe was_full == 1 (due to the
-> > > > previous get_from_partial_node()->__slab_update_freelist() on CPU0), and then
-> > > >
-> > > > __slab_free() will call put_cpu_partial(s, slab, 1) without holding
-> > > > n->list_lock, trying to add this slab to the CPU partial list.
-> > > 
-> > > If CPU1 observes was_full == 1, it should spin on n->list_lock and wait
-> > > for CPU0 to release the lock. And CPU0 will remove the slab from the
-> > > partial list before releasing the lock. Or am I missing something?
-> > > 
-> > > > In that case,
-> > > > both paths would operate on the same union field in struct slab, which might
-> > > > lead to list corruption.
-> > > 
-> > > Not sure how the scenario you describe could happen:
-> > > 
-> > > CPU 0					CPU1
-> > > - get_from_partial_node()		
-> > >   -> spin_lock(&n->list_lock)		
-> > > 					- __slab_free()
-> > >   -> __slab_update_freelist(),
-> > >      slab becomes full
-> > > 					-> was_full == 1
-> > > 					-> spin_lock(&n->list_lock)
-> > 
-> > In __slab_free, if was_full == 1, then the condition
-> > !(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) becomes false, so it won't
-> > enter the "if" block and therefore n->list_lock is not acquired.
-> > Does that sound right.
-> 
-> Nah, you're right. Just slipped my mind. No need to acquire the lock
-> if it was full, because that means it's not on the partial list.
+On arm64 server, we found folio that get from migration entry isn't locked
+in softleaf_to_folio(). This issue triggers when mTHP splitting and
+zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
+in softleaf_to_folio(). The race is as follows:
 
-"because it's not on the partial list, and SLUB is going to add it
- to the percpu partial slab list (to avoid acquiring the lock)"
+	CPU0                                             CPU1
 
-> Hmm... but the logic has been there for very long time.
-> 
-> Looks like we broke a premise for the percpu slab caching layer
-> to work correctly, while transitioning to sheaves.
-> 
-> I think the new behavior introduced during the sheaves transition is that
-> SLUB can now allocate objects from slabs without freezing it. Allocating
-> objects from slab without freezing it seems to confuse the free path...
+deferred_split_scan()                              zap_nonpresent_ptes()
+  lock folio
+  split_folio()
+    unmap_folio()
+      change ptes to migration entries
+    __split_folio_to_order()                         softleaf_to_folio()
+      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
+      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
+      prep_compound_page() for tail pages
 
-Just elaborating the analysis a bit:
+In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
+are visible before the tail page becomes non-compound. smp_wmb() should
+be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
+result, if zap_nonpresent_ptes() accesses migration entry that stores
+tail pfn, softleaf_to_folio() may see the updated compound_head of tail
+page before page->flags.
 
-Hao Li (thankfully!) analyzed that there's a race condition between
-1) alloc path removes a slab from partial list when it transitions from
-partial to full and 2) free path adds the slab to percpu partial slab list
-when it transitions from full to partial.
+Although the code exists for long time, this issue should only exist after
+mTHP splitting is supported. For THP splitting, there is only a pmd
+migration entry and it's impossible to access migration entry that stores
+tail page pfn.
 
-The following race could occur:
+To fix it, add missing smp_rmb() if the softleaf entry is migration entry
+in softleaf_to_folio() and softleaf_to_page().
 
-CPU 0					CPU1
-- get_from_partial_node()		
-  -> spin_lock(&n->list_lock)		
-					- __slab_free()
-  -> __slab_update_freelist()
-     // slab becomes full
-					-> was_full == 1,
-					   no lock acquired
-					-> slab_update_freelist()
-					-> if (was_frozen) // not frozen!
-					->  else if (was_full)
-					->    put_cpu_partial(slab)
-					      // add the slab to percpu
-					      // partial slabs
-  -> if (!new.freelist)
-  ->   remove_partial(slab)
-       // CPU1's percpu partial slab list
-          is now corrupted
+Fixes: 7dc7c5ef6463 ("mm: allow deferred splitting of arbitrary anon large folios")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+ include/linux/leafops.h | 39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-And later when CPU1 calls __put_partials(), it crashes while
-iterating over the percpu partial slab list.
-
-The race condition did not exist before sheaves, because
-1) slabs were not on the partial list when the alloc path allocates
-objects and 2) the alloc path froze them before allocating objects.
-When slabs are frozen, free path doesn't call put_cpu_partial().
-
-Commit 17c38c88294d ("slab: remove cpu (partial) slabs usage from
-allocation paths") changed both 1) and 2) and introduced the race
-described above. Now, 1) slabs are on partial list when the alloc path
-allocates objects, and 2) it does not freeze slabs.
-
-Because the alloc path does not freeze slabs, the free path thinks
-that it can always safely add slabs to the percpu partial slab list,
-but it's now racy because there's a window between it becomes full
-and it's removed from the partial list.
-
-This should be have been fixed after removing cpu partial slabs layer
-from the free path, though.
-
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index a9ff94b744f2..f823f390ba6b 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -371,14 +371,21 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
+  */
+ static inline struct page *softleaf_to_page(softleaf_t entry)
+ {
+-	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
++	struct page *page;
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding page is locked
+-	 */
+-	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
++
++	page = pfn_to_page(softleaf_to_pfn(entry));
++	if (softleaf_is_migration(entry)) {
++		/* See __split_folio_to_order() comment */
++		smp_rmb();
++
++		/*
++		 * Any use of migration entries may only occur while the
++		 * corresponding page is locked
++		 */
++		VM_WARN_ON_ONCE(!PageLocked(page));
++	}
+ 
+ 	return page;
+ }
+@@ -391,15 +398,21 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
+  */
+ static inline struct folio *softleaf_to_folio(softleaf_t entry)
+ {
+-	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
++	struct folio *folio;
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding folio is locked.
+-	 */
+-	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
+-			!folio_test_locked(folio));
++
++	folio = pfn_folio(softleaf_to_pfn(entry));
++	if (softleaf_is_migration(entry)) {
++		/* See __split_folio_to_order() comment */
++		smp_rmb();
++
++		/*
++		 * Any use of migration entries may only occur while the
++		 * corresponding folio is locked.
++		 */
++		VM_WARN_ON_ONCE(!folio_test_locked(folio));
++	}
+ 
+ 	return folio;
+ }
 -- 
-Cheers,
-Harry / Hyeonggon
+2.43.0
+
 
