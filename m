@@ -4,128 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D9CFCEE8A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B91D6FCEE8A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EDAA6B00AD; Wed, 25 Feb 2026 06:34:39 -0500 (EST)
+	id 0CBDC6B00AE; Wed, 25 Feb 2026 06:35:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 390FA6B00AE; Wed, 25 Feb 2026 06:34:39 -0500 (EST)
+	id 076626B00B1; Wed, 25 Feb 2026 06:35:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 245AE6B00AF; Wed, 25 Feb 2026 06:34:39 -0500 (EST)
+	id E90996B00B2; Wed, 25 Feb 2026 06:35:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E1B36B00AD
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:34:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B264F14058D
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:38 +0000 (UTC)
-X-FDA: 84482771436.19.6A8406F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 64930160004
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KFqeXe5m;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=73bPQfUX;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VPIRHKg7;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XkD1UiKJ;
-	spf=pass (imf08.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D21466B00AE
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:35:43 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74CA01604B7
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:35:43 +0000 (UTC)
+X-FDA: 84482774166.26.23264BB
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1090140006
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:35:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d/1MOW6y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x9VqnedY;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d/1MOW6y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x9VqnedY;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772019341; a=rsa-sha256;
+	cv=none;
+	b=QQ5mXSAbZJ0Kv97Oofovhbo5J6lsbKAWDDA4MEkJmMEjbHdgN//7rftINaFgATC16TM0OY
+	OTH2WMSvecDQWa/KS1q+U5O0nKmA58vr4f8kr7xwFBAwk3dxpUrymn4C6WNUd9ZvZw6Ye8
+	SCAWHJS4RxUTadq/MZBQbuLgDhPWx+w=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d/1MOW6y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x9VqnedY;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="d/1MOW6y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x9VqnedY;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772019276;
+	s=arc-20220608; t=1772019341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06rR0BzSAqyocoz661s88dhkzq7l5Ry/ExxLEADtw6Y=;
-	b=YmCfYu1S3MpfbTanNJYUiSgeyKmxIRFe0bBbvws1uTIjiJpn1h+rhrZ+iGLK9yyNXM0Rws
-	UtLxgmwOx2thiT4pXCYbMNiamDouMgaFhTv8mRughESgaLRaTtsND4oi0hjk5+m42U469e
-	aTISQzb4ix29J6p2CqIftlHyKLHaQIQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KFqeXe5m;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=73bPQfUX;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VPIRHKg7;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XkD1UiKJ;
-	spf=pass (imf08.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772019276; a=rsa-sha256;
-	cv=none;
-	b=07ieclqoj0+aZZAXGndK95LTlX/5P3KXW0ZYLLu6EB4Uhr0Og3UTaNxCRudISkJZ3ceOza
-	h99OtDylorph/yJSCIC1YxP0lP4UZli7AVP0DmJXogNqjtDaEO5Tj/wNf0PIZBza1EACDg
-	IqbngV+fbWfSJp9/pNhTrQAegEuCA6k=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=1aY6r9vtQDBmuQFoWtVNnGY9iK116zu55UD0rtR50Nw=;
+	b=hsdz/M3Qdu5MB5HvWBjPX0VjgJOOpGcPnmUu9RiyAxkBuzTThkhcEltGZos0hzcYG7hP3G
+	cvylAGF6rY8kBkHwnMy0jz23JB5OD/F2NMgbkfkrLDCxP/SSIkBtGy2+Jh24fOkl94e9/m
+	Xl69WMZEFy1D4Av59iEAzgL07iULvyg=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A550D5C5B4;
-	Wed, 25 Feb 2026 11:34:33 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 84F1E3FFD0;
+	Wed, 25 Feb 2026 11:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772019274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772019339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=06rR0BzSAqyocoz661s88dhkzq7l5Ry/ExxLEADtw6Y=;
-	b=KFqeXe5mX7IkzCXMPUSjqOZEMi4J+b1hIMPunZzDTp5Ab3zTdtXpLT90A2d44jNnxE1rc0
-	ZjCHhX60opUx0tEMO9JahvF8/NjsdOiZlNDIhFIto0MEBf1NkTvr9rZVze+Eoep7YkLVsT
-	5MKCLLtAOaTHbWMYypvACUoecn1aHcg=
+	bh=1aY6r9vtQDBmuQFoWtVNnGY9iK116zu55UD0rtR50Nw=;
+	b=d/1MOW6yh3ZsLj3Oidq7wfi/4LOCYn2mf7Ta7kh8TZHUaFp9tJRHwFbFlUeFHWhi7+Zvj3
+	SOgqRvPBcpF102VvAgEg9SA4yV/IFOvXLyqwAlMtwaLmvcGzDFYSPNS9cGGLJQLhklej9g
+	3dRb+n+jWweAgLGHQrk72n8deI1UIPE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772019274;
+	s=susede2_ed25519; t=1772019339;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=06rR0BzSAqyocoz661s88dhkzq7l5Ry/ExxLEADtw6Y=;
-	b=73bPQfUXLwY0J8NOY6ANi6i80szQNjySSuQtnKxpr3TP/0Vj000ppmldpZR7b97YvaX49s
-	SvcqqB0SVWDhERCQ==
+	bh=1aY6r9vtQDBmuQFoWtVNnGY9iK116zu55UD0rtR50Nw=;
+	b=x9VqnedY7jUIO1liaWISDZKZyASKqWAgL+6ZagDMedOH6kCiWAK3EwHeopHPORkDV/WQGo
+	hsA4yedE2XAnILCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772019273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772019339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=06rR0BzSAqyocoz661s88dhkzq7l5Ry/ExxLEADtw6Y=;
-	b=VPIRHKg7Hv3bQTLdgZwq1PScdkfg1VUblMH/DiAd+bIAqsQbYRBI0mO9nyY78I60U0YVEi
-	pt6S22B3xnK+IZBnh4mwzuQpzwfxkjC+G9xalGfYmp81QfNGpz5Ptg2x9X0ubowQzlieup
-	le+Y2XNwtlCkwgAn0Obynxoaa7QUxh4=
+	bh=1aY6r9vtQDBmuQFoWtVNnGY9iK116zu55UD0rtR50Nw=;
+	b=d/1MOW6yh3ZsLj3Oidq7wfi/4LOCYn2mf7Ta7kh8TZHUaFp9tJRHwFbFlUeFHWhi7+Zvj3
+	SOgqRvPBcpF102VvAgEg9SA4yV/IFOvXLyqwAlMtwaLmvcGzDFYSPNS9cGGLJQLhklej9g
+	3dRb+n+jWweAgLGHQrk72n8deI1UIPE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772019273;
+	s=susede2_ed25519; t=1772019339;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=06rR0BzSAqyocoz661s88dhkzq7l5Ry/ExxLEADtw6Y=;
-	b=XkD1UiKJlcjoeVUsLCNTuM9qeG9KzMTJJqf+I3wRltmAnnfVN8xiHLCOBVvQagZKX/geyL
-	HbCxGn8c71G6qqAQ==
+	bh=1aY6r9vtQDBmuQFoWtVNnGY9iK116zu55UD0rtR50Nw=;
+	b=x9VqnedY7jUIO1liaWISDZKZyASKqWAgL+6ZagDMedOH6kCiWAK3EwHeopHPORkDV/WQGo
+	hsA4yedE2XAnILCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F9573EA65;
-	Wed, 25 Feb 2026 11:34:33 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 301113EA65;
+	Wed, 25 Feb 2026 11:35:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1kuxEUnenml+HwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 25 Feb 2026 11:34:33 +0000
-Message-ID: <04bc032c-3b6c-424c-b928-302a602d08bf@suse.de>
-Date: Wed, 25 Feb 2026 12:34:32 +0100
+	id TmNoCovenmlwIAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 25 Feb 2026 11:35:39 +0000
+Message-ID: <788bd9a6-003a-4761-ab4c-1bc0cb716d9c@suse.de>
+Date: Wed, 25 Feb 2026 12:35:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] drm/gem-shmem: Track folio accessed/dirty status
- in vmap
-To: Frank Binns <Frank.Binns@imgtec.com>, Matt Coster
- <Matt.Coster@imgtec.com>, "simona@ffwll.ch" <simona@ffwll.ch>,
- "airlied@gmail.com" <airlied@gmail.com>,
- "boris.brezillon@collabora.com" <boris.brezillon@collabora.com>,
- "loic.molinari@collabora.com" <loic.molinari@collabora.com>,
- "willy@infradead.org" <willy@infradead.org>,
- "mripard@kernel.org" <mripard@kernel.org>,
- "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>
-Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: loic.molinari@collabora.com, willy@infradead.org, frank.binns@imgtec.com,
+ matt.coster@imgtec.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
 References: <20260209133241.238813-1-tzimmermann@suse.de>
- <20260209133241.238813-7-tzimmermann@suse.de>
- <d8d52d86fae1c3bb153cebb3ec154c84470804b8.camel@imgtec.com>
+ <20260209133241.238813-6-tzimmermann@suse.de>
+ <20260209152340.16f9b30a@fedora>
+ <0d00a0f6-d0e4-41db-b48b-77157cd2e968@suse.de>
+ <20260209160109.79a020ae@fedora>
 Content-Language: en-US
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Autocrypt: addr=tzimmermann@suse.de; keydata=
@@ -152,17 +149,18 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <d8d52d86fae1c3bb153cebb3ec154c84470804b8.camel@imgtec.com>
+In-Reply-To: <20260209160109.79a020ae@fedora>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dz1e4disq9f8mw769giwetd6cp4oh8gt
-X-Rspamd-Server: rspam11
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 64930160004
-X-HE-Tag: 1772019276-424226
-X-HE-Meta: U2FsdGVkX192M1k1k8dgr/9UiIwqgasvnwOAd6ZxN3Br2cIT3N+r1nOsiyP3TlmSWGNq3FMkWrchGNlGqeCOU2OBqvhQVK08tK/KujnLEMFKasbkBvnLL29VwlWeHAwRHoSPT1J0JUOOidfwr+acMKR4e3iXd+32x/4Ef5ltJ0xQEjoCwmpIiDYK+n4m1ailhur7CHM1NeH4r7RhgIrXEv+Wa/bDBAm/X3hnqzQncJM5DSv+/AjbEZaKn8HoNaAXF5LO9m7wyWEmzN1qj3KOCnqQIWIH0BrSeJmk4I44xGlClEGMLzJHcdMZSKNHO4E0+X3DdK2KdrsOE601NnkRkrJw4eKrLLB3NWSk4NRPeKyidunVoL6cVoMeqpTJPwOoDKqyDjHcUDnoTRB+DuBHD5AN3BdEjJnrI663ca5jgQPuCn7EU65JpZcmo7vtqnqPxY77ImTseC6X8Tdr3QSPfUNC/Kk01Ddgne+uXqSPl8RxmHfHWr0WuYpGGTEIVH/q/LHtkbe/bD2UEd0LZw7DlYDL9upDErgQ4yJ7lSPJU61teWf7k+7q9z3SyzRHRbsJI1tPsEhh+tIWRTpP9GmBXsRa97jt0sizF/hW6St68LE9QQLNpp/ZTqfoOhz5hKxvoUcfzBc5VQQ7EUx8YHEy8DuO68VNo6FzZva5g7oE1NaIiofmTlbRUCFUJBHTzhQdds55Q2w66/KnpDDhoZ445rpcr9Y7OUTTwu7KD5Bcw+Q1IWy9NWSqAOmLlRkCx+fxcxLnnktSa30TZReg6N+957+Fj8KO0KjMSblGBWL8lxDS8gHdbIwmmffiR8/jkv3FbNuzbgqZAgIcVGOMLgIt5+PSlXrpQfm/dw+7EzsH3Osl+AIZpFxPaIbaMwHJbx5pVpC5pgwruqdiGN5uoB7+Ocf0I7jbKqnA0RhS0jZ0zxcwHpuPIfbPvboialX16Jh1AH1tlTgE40zjOY2tnxE
- 430dKwkD
- cl2EmYQEvLCQvfq1frM0vuDGEmbylcSus1AV5T3RXc0PP6R2y2sQIetKGBIVo0u4qKqevBSTFDNnDmNrtHKfmI80cXYGuUluVxvJ3pZ6LQMjWCwNs0Jn5RPisbJhP8UXVSN/2WBy/epj674l+Ig21SBEgtlcqCte7AOjU8qb78+rnmE/psEwU9lVhk17tQjlkIH4MCRhlvS70UGDdNt9LcBPpbZ5QP6M4lpLpqdgmgHukjgHWUAQ/4Sy0euhKi4eMPxh3h+Ri8iEsMFTItT0yOGwd3Gi33FE/v2//wNKgvdmoJZm1LeVWbILPzZcoqVA9niP2JjCxx3jOmpdK2PAt8MtQhiMWlv4W7R5gif/j0ZiOipdxnDFY3fWVGbGbp7IJArY8z7Bx9sSyR+YoiWbw8/fV0rVHnxd/M2oJeK/bj2f/01+GtLsprjLaDjltPmL3wlM+n+R3ZzqU53TpHfsZQxKyBD7+A2WGnxYN1cM/zSUzxu+OzlF43tv1JvkPARApY6xE47BSZD/Z19XhFj4u73reT8jr9seIzB9JW32qbVADsxo=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1090140006
+X-Stat-Signature: eamcjqfd7x1tnephhwc8u6z63z1coths
+X-HE-Tag: 1772019340-206709
+X-HE-Meta: U2FsdGVkX19WKcfJC956cRuEdnOCo2Y5bmPyO1ht/c8Ovt6AwrDQ7XXieGWCEI3+PxOxbAZjUEvRc8tARnBm3lbseJLXVLDmiV3TfxKeAkuBDRspFoEdpeH0KQ8vCBe1re6yu3BsDQ2t1AZqpl3BH5g2CGtUZ4gwsYGITPqp9bvWPUwYx415Lq5W87p92XWdcxe2MssBb7hT4HS5PCp6wxwivkbs872UlX55PkZ8vNCjMNKGME+JQKVPmZQVcJ8CdKk+kzztdpS4QYvV90LAfL3Z+ONW8QOusaQZYvNIGA4D9+7nfjq3Xp9BhK4sNNLFMpktBwyOgmIEO9G0XDcfSnq95bRqoDNT4OSrIeOUbGVTeL7p2pmj7a37IZgQr3qJ2IFq5SLjhA/V76bLOlCItpHyDy/f3P5mZWYiZyxLmb18xT9CZ/6pz2g/jRI/5MBad6qizSOxKhq9qUUafdAxxZw3gwEv35u4XtuSBYtRRvtep8yAX8KucO4JEyeOmjY8grb/gKYc0v8RyAcFD6V5qYzhZWwv07YYsEdY2dwBynUOBJ2/oYcc0GFkGawAMGfZmt446q/ixBIOL6Mjq67PCB0/U4aPvdZyH4w8pzgGis3eFxYcRraECVmG+RUX3HicKwO+BnrBICkCo6fanP3YmOcadCKXXUIY/lK3bReFJ0InvfcKoQvIp24paIBC+JM80pIOXpMG1Iv843xG6Lc6zNw2jg7/lKTQQS8smSS9z+RF7Y6KWj9BNOnuhFxHOW04VxhC2JpBvcOWCPbXC11ORb0rZvzAH5cogy9WGjnQpurxBetei5O0WiuwdaqKzg+Z72MmGtL1vG9ha/csdPhNKDZetxfnTPxQcpNk3CoG1goc0lyjqkewhwdtXO0i9tttDQ2Ihzjg/8BlPn6QEEYDqV7yX/e5gWiiTLuIdTHQau63XrGTLwxeb4J16idDdgvUcGiNSkwpqNTMqYYoV57
+ 0CsYBn0i
+ jFHxxffDbO35VYx5my18Ql6bK3MwOzCquLgXkqgvFJc1EkGXWsxNC7xuuuw2dx5wNxSG51gfJBBSRtae3i1Wbkk8EFPH3pi24UWbECI0Chbo+LPxPxsBPWny2ctGi7zOvgAsgcPi3/rTRs0FOby4xZRq1pi+GxTpY0oXw6Qhq8Nvwdq83pYx3C6WSkB2O5Y59251OZqAYAxMtJXGD4A+xS4YhkgEWKbPw4SA+P7lLvBLqQv2XCj+TdiyDYFxWVyOujEvVx8jEF/x28DaguKRTa8IKg6G7GjGFLt0/b4yzL1aKcBCnkWjF4QsxwzwlRXUzJXx4EeSs0esCDcuGoogv54xUMDUHbmTN7N7RnvvLDwPswB+5lspQQARi7HOK/rbY4XApuGDa99wCDPwNoq/qe7h74Mh0L1rMEi6RT75F3rjUZryM6AeViTfhybVOoP5FfM18NbugT/guXjw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,92 +168,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi
 
+Am 09.02.26 um 16:01 schrieb Boris Brezillon:
+> On Mon, 9 Feb 2026 15:46:21 +0100
+> Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>
+>> Hi Boris,
+>>
+>> thanks for reviewing the series.
+>>
+>> Am 09.02.26 um 15:23 schrieb Boris Brezillon:
+>>> On Mon,  9 Feb 2026 14:27:14 +0100
+>>> Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>>>   
+>>>> Invoke folio_mark_accessed() in mmap page faults to add the folio to
+>>>> the memory manager's LRU list. Userspace invokes mmap to get the memory
+>>>> for software rendering. Compositors do the same when creating the final
+>>>> on-screen image, so keeping the pages in LRU makes sense. Avoids paging
+>>>> out graphics buffers when under memory pressure.
+>>>>
+>>>> In pfn_mkwrite, further invoke the folio_mark_dirty() to add the folio
+>>>> for writeback should the underlying file be paged out from system memory.
+>>>> This rarely happens in practice, yet it would corrupt the buffer content.
+>>>>
+>>>> This has little effect on a system's hardware-accelerated rendering, which
+>>>> only mmaps for an initial setup of textures, meshes, shaders, etc.
+>>>>
+>>>> v3:
+>>>> - rewrite for VM_PFNMAP
+>>>> v2:
+>>>> - adapt to changes in drm_gem_shmem_try_mmap_pmd()
+>>>>
+>>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>>> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+>>>> ---
+>>>>    drivers/gpu/drm/drm_gem_shmem_helper.c | 20 ++++++++++++++++++++
+>>>>    1 file changed, 20 insertions(+)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>>> index c3a054899ba3..0c86ad40a049 100644
+>>>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>>> @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>>>>    	if (ret != VM_FAULT_NOPAGE)
+>>>>    		ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>>>>    
+>>>> +	if (likely(!(ret & VM_FAULT_ERROR)))
+>>> Can't we just go
+>>>
+>>> 	if (ret == VM_FAULT_NOPAGE)
+>>>
+>>> here?
+>> After reviewing the code in vmf_insert_pfn, I think so. All we'll see is
+>> _OOM and _SIGBUS; or _NOPAGE on success.  I'll change it then.
+>>
+>>
+>>>   
+>>>> +		folio_mark_accessed(folio);
+>>>> +
+>>>>    out:
+>>>>    	dma_resv_unlock(obj->resv);
+>>>>    
+>>>> @@ -638,10 +641,27 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
+>>>>    	drm_gem_vm_close(vma);
+>>>>    }
+>>>>    
+>>>> +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+>>>> +{
+>>>> +	struct vm_area_struct *vma = vmf->vma;
+>>>> +	struct drm_gem_object *obj = vma->vm_private_data;
+>>>> +	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+>>>> +	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
+>>>> +	struct page *page = shmem->pages[page_offset];
+>>> Should we have a
+>>>
+>>> 	if (WARN_ON(!shmem->pages ||
+>>> 		    page_offset <= (obj->size >> PAGE_SHIFT)))
+>>> 		return VM_FAULT_SIGBUS;
+>>>
+>>>
+>>> ?
+>> I left it out because it doesn't seem necessary.  In the fault handler
+>> in drm_gem_shmem_fault(), I can see that we could get an OOB access. But
+>> we only call pfn_mkwrite() after going through _fault() first. I don't
+>> see a way of getting here unless we've already tested for the page in
+>> _fault().
+> I agree it's not supposed to happen, but isn't it what WARN_ON()s are
+> for (catching unexpected situations)?
 
-Am 25.02.26 um 11:57 schrieb Frank Binns:
-> Hi Thomas,
->
-> On Mon, 2026-02-09 at 14:27 +0100, Thomas Zimmermann wrote:
->> On successful vmap, set the page_mark_accessed_on_put and _dirty_on_put
->> flags in the gem-shmem object. Signals that the contained pages require
->> LRU and dirty tracking when they are being released back to SHMEM. Clear
->> these flags on put, so that the buffer remains quiet until the next call
->> to vmap. There's no means of handling dirty status in vmap as there's no
->> write-only mapping available.
->>
->> Both flags, _accessed_on_put and _dirty_on_put, have always been part of
->> the gem-shmem object, but never used much. So most drivers did not track
->> the page status correctly.
->>
->> Only the v3d and imagination drivers make limited use of _dirty_on_put. In
->> the case of imagination, move the flag setting from init to cleanup. This
->> ensures writeback of modified pages but does not interfere with the
->> internal vmap/vunmap calls. V3d already implements this behaviour.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com> # gem-shmem
-> The change to the imagination driver is:
->
-> Acked-by: Frank Binns <frank.binns@imgtec.com>
-> Tested-by: Frank Binns <frank.binns@imgtec.com>
+OK, with Frank's ack on the imagination changes in, I'll send out an 
+update with additional warning.
 
-Great, thanks a lot.
+Best regards
+Thomas
 
->
-> Thanks
-> Frank
->
->> ---
->>   drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++++
->>   drivers/gpu/drm/imagination/pvr_gem.c  | 6 ++++--
->>   2 files changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
->> index 0c86ad40a049..dda9af9bf5b3 100644
->> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
->> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
->> @@ -265,6 +265,8 @@ void drm_gem_shmem_put_pages_locked(struct drm_gem_shmem_object *shmem)
->>   				  shmem->pages_mark_dirty_on_put,
->>   				  shmem->pages_mark_accessed_on_put);
->>   		shmem->pages = NULL;
->> +		shmem->pages_mark_accessed_on_put = false;
->> +		shmem->pages_mark_dirty_on_put = false;
->>   	}
->>   }
->>   EXPORT_SYMBOL_GPL(drm_gem_shmem_put_pages_locked);
->> @@ -397,6 +399,8 @@ int drm_gem_shmem_vmap_locked(struct drm_gem_shmem_object *shmem,
->>   		} else {
->>   			iosys_map_set_vaddr(map, shmem->vaddr);
->>   			refcount_set(&shmem->vmap_use_count, 1);
->> +			shmem->pages_mark_accessed_on_put = true;
->> +			shmem->pages_mark_dirty_on_put = true;
->>   		}
->>   	}
->>   
->> diff --git a/drivers/gpu/drm/imagination/pvr_gem.c b/drivers/gpu/drm/imagination/pvr_gem.c
->> index c07c9a915190..307b02c916d4 100644
->> --- a/drivers/gpu/drm/imagination/pvr_gem.c
->> +++ b/drivers/gpu/drm/imagination/pvr_gem.c
->> @@ -25,7 +25,10 @@
->>   
->>   static void pvr_gem_object_free(struct drm_gem_object *obj)
->>   {
->> -	drm_gem_shmem_object_free(obj);
->> +	struct drm_gem_shmem_object *shmem_obj = to_drm_gem_shmem_obj(obj);
->> +
->> +	shmem_obj->pages_mark_dirty_on_put = true;
->> +	drm_gem_shmem_free(shmem_obj);
->>   }
->>   
->>   static struct dma_buf *pvr_gem_export(struct drm_gem_object *obj, int flags)
->> @@ -363,7 +366,6 @@ pvr_gem_object_create(struct pvr_device *pvr_dev, size_t size, u64 flags)
->>   	if (IS_ERR(shmem_obj))
->>   		return ERR_CAST(shmem_obj);
->>   
->> -	shmem_obj->pages_mark_dirty_on_put = true;
->>   	shmem_obj->map_wc = !(flags & PVR_BO_CPU_CACHED);
->>   	pvr_obj = shmem_gem_to_pvr_gem(shmem_obj);
->>   	pvr_obj->flags = flags;
 
 -- 
 --
