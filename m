@@ -4,118 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08FB4F4BB9F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:05:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE251FCEE8A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 11:29:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691FE6B00B9; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
+	id EA6B06B00A9; Wed, 25 Feb 2026 06:29:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6669B6B00BA; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
+	id E2A426B00AD; Wed, 25 Feb 2026 06:29:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 513CD6B00BB; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
+	id D2CC56B00AE; Wed, 25 Feb 2026 06:29:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D4E36B00B9
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:05:33 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E8D341A0550
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:32 +0000 (UTC)
-X-FDA: 84482698104.27.EA42D88
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 31471140015
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:05:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kplBmSnN;
-	spf=pass (imf09.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BF1406B00A9
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 06:29:33 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6AC531C477
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:29:33 +0000 (UTC)
+X-FDA: 84482758626.24.197F6DC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C36A2A000E
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:29:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PWpiXD1v;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772017531;
+	s=arc-20220608; t=1772018971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MmnNCbfSwbXJVlcc7ToRrddmEn5JYiYLNZaSrZR850Y=;
-	b=onCXlimzz/Tf3+OKPKSOMEfGCSjpzhNLNm5TM7tblr5nmeJuX+t6uJcQFNXbNnjue4F9sk
-	Nlf2svmxFJZjzePJzgKnrIqBVOYexmo/eLOYe9BN8Rwwa5CDkDzNGKoAb/z/S3nS5ikND7
-	m4KtBI+OsMNFp+OLBOwzaIOU3oYUJ4A=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kplBmSnN;
-	spf=pass (imf09.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772017531; a=rsa-sha256;
+	bh=goqZuLkGy8gEkMCmvwLpiqHZftleNYKDe+rhz/rSVO4=;
+	b=wvBoNPVv8by4YJRO1e+pyGklJJjH2qykz2l8hENquiCRu/iqPXZ5L8n50tx1ZXYN8FQR9u
+	yVUh0BgiaeCcTrVCjo0jlbPBEud5z99Zgv3hSHs4MWTDFlc8j6a6DpeSeUorGgtU8xtMts
+	fCo7jtNBRiUr2bz5Zx0IwayGTUKJqeM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772018971; a=rsa-sha256;
 	cv=none;
-	b=yPBYIm8GAmPQ/EtqLVdGKkwODIdjB2/4tEI+jQvQkPCg+954ymQJ5loGFnVWudnyiC8TIa
-	fBvD9CZFWU+Se7c4vO4Yz5E/fHFdu07zs8nabWzPnrxOr2gyRuUUiiANB6A6ffV+3VD3Jq
-	ImThCoUv7QSHneecyqVDHyEs/lW34Y8=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ab077e3f32so26162685ad.3
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 03:05:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772017530; x=1772622330; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MmnNCbfSwbXJVlcc7ToRrddmEn5JYiYLNZaSrZR850Y=;
-        b=kplBmSnNtIwpoKCClZJH2XAJrgiL+ZhcaUQvfea75i70jORd8HR/5wmqhe4FPG+/Vd
-         qGxdAIa0NG96uNTx6fi6aSd3gxvYk0E233CIFZDiJD57jNnPxh+6wl0UUYxjJ+e8XHdn
-         AuP2rmpfAprGKw83aoaFpcoV3tsvDQBjLHDuh0cyLFmehIYoY45s6tmBJm8tp7XB9ZS+
-         15khWa88gkAbCWYidEywovI9863FO/OARUkrxpt2UO14vRLfDum+sYXdpJotVsyeQ1F3
-         had8N9VG1q9sQMqPX5M5SD1O6tSkoIQ8rpibXCHYPKg2dgZ3MPBbpIvRIRDvpEkXqXRv
-         8x0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772017530; x=1772622330;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MmnNCbfSwbXJVlcc7ToRrddmEn5JYiYLNZaSrZR850Y=;
-        b=HuYSXnFxzI2Z8KYcxR5q6fede1TZqQff61Rwe9Kdii1/nlgcJVSBMLESJRY4zqFzi+
-         vuCxPss4lHaeez0pz4ZBpCWu91Jd5AeP7KOF214HO+Fyg8SO2EWMwnLJ3Cn8dOV+f1eJ
-         O6dhmCbYxztRJOdacr2opP6Q59uZytIQ1M3upQ7aULNZQgE1+U4sHqZwdP/hHAhCgmZ2
-         /MWLhuiRKkGRwFuMBuy0oTdRZObGv0Nh9WYWNdPxE/zDZ+t9CoTLyL3OWQ0nBCIZc7e7
-         Xfyx3jLKShZVRHFQmdlkqoeyRSfG/FPyRzjaCOUfplVP4z4UxlrNLyNpCdfqIecByuWk
-         vZLw==
-X-Gm-Message-State: AOJu0YwMsT2V9GFMgnlcWg5tPSUC2nR7vqSWBUscklhP9K+ib/wK5ppb
-	Md24fN88gMpE6E5PGgqma/eGac+0bIsKSxVlRxc76NxrB1UvYH34+B1z
-X-Gm-Gg: ATEYQzxrnq6S6kwXcpBIu9mJ+lee+cmNDy4r6h9vVwpF+66cpXWIrL3/uEj+upLayaq
-	NaF4mA6B0fdsLlC47xXDVsUVJaGamnU6Yxrmx5DAoghDSeTEIS4YiiefTonaopDP94Xjs4lUveE
-	eVzYUQSrdbJAo8fJQU5wjCsRtzSFQtwsXwXyDP4nb9G76qNgrUfEZ9mUw5J0pi7xlLyLR7rdb51
-	O5Xku/zLKsIH3q4pkoHjuZaD/Vu17qsnRW7TyODoEw0pNKKCPznnxesXUPPa9gaTSVFXJHp+E9v
-	eTrVn3KVrxDYnmpXoK+VsKI8OBFi+7u/uXI0Cmnf6E08bdfGkPl+hgkPj9d+QssMiTOfCK+b58n
-	/bBmB9ldjUDj2m8AzAJgeEbhBQCubXRCNLVKb9i+e6aFwNKvALPa+hOpE+M2D6tyHoEBy03lBPB
-	4VkiuFCwrlkW3mslfGSTVyl2JS9TIqnSQ=
-X-Received: by 2002:a17:903:3c0c:b0:2a0:8e35:969d with SMTP id d9443c01a7336-2add13bda24mr20779715ad.39.1772017530108;
-        Wed, 25 Feb 2026 03:05:30 -0800 (PST)
-Received: from dw-tp.ibmuc.com ([203.81.242.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7503f9f5sm138365975ad.77.2026.02.25.03.05.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 03:05:29 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 10/10] powerpc: Add MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS
-Date: Wed, 25 Feb 2026 16:34:31 +0530
-Message-ID: <c57b1c00145a2db1a1b4feec94cfc2917e4877af.1772013273.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772013273.git.ritesh.list@gmail.com>
-References: <cover.1772013273.git.ritesh.list@gmail.com>
+	b=RHhbaBAVYtH7IBIdtd9vHD4XdrT5DvDA5BCWvgSGMrJDcPENpuHMUBvdIM4WnsgLRwrNur
+	YtXfhuyjsssX8ZJlEGhyl/gr4k+zBiPCxbFgA1grloFNKC5qpPB3WQMtPc982EWSxHx+pB
+	tcS/AZehV/ME9JtzkyFxw2/LnSn1Swg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PWpiXD1v;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C6FA4170A;
+	Wed, 25 Feb 2026 11:29:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DA3C116D0;
+	Wed, 25 Feb 2026 11:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772018970;
+	bh=ZoMjdr0T6OM95kTpTHlHC/FoYXWZ4T8BYxxD5K3H2Qo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PWpiXD1vPXYvxvOheOYqV1U5YoimDIoPoi+fFNBTpYbOOXaZz5UfXmpwYuZG158E8
+	 40GGsVEDIH7wfNfv0tFBHRGOMHZBRK4elGleYsKFoaJMG5qjfuSYF0yzqkVV8/7zBt
+	 2wTnop450r3CkoMM58GF+dcSJ3/+WHYWJw5tmKOubTtfrHoFuXZ2k1ttVqdYOMPSDi
+	 oi7Tsn+TURZe/oRzDmMdFCVytlfba2ab6DDYgXZRbvYgRVPFyDKXRCzwF1Dg30+EGE
+	 VFocWPZ7GYHPLjDZZB7d4Gm0IkS7klHUd2KkNL+eJiyiveZ0ChhDoq2Mbs7imb5mL/
+	 JTad5V2+X7U5A==
+Message-ID: <f3a26a8a-a3db-4133-83c0-7a70faacee9c@kernel.org>
+Date: Wed, 25 Feb 2026 12:29:26 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9z78h98ppwkmx496zm33nfhfeozqxpx5
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Content-Language: en-US
+To: Ming Lei <ming.lei@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+ Christoph Hellwig <hch@infradead.org>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
+ <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org> <aZ7BbosIr2FvZFAe@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <aZ7BbosIr2FvZFAe@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Stat-Signature: f6qd535za3osw6ubakpejnmowxtwmw8c
+X-Rspamd-Queue-Id: C36A2A000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 31471140015
-X-HE-Tag: 1772017531-971134
-X-HE-Meta: U2FsdGVkX1/+CoJp1PFCaptqwpRO356YJC3VkYdrEVDVVN2EdvRlZISVtl4g7K1zXWiKviRksBe14VL+vQZQawtBTYbe+rhNtIqkjc6RnB0KtGx6FlT5DC6OYVUrJBRS8AQ62pfwD5YfOux7k4FdLEhW8ED7CeXlCOl6l5NrERc5jRm9PuPdygXGi5RxvON7lMMJpvQM5iayH9au64QLVU4Znw2/x0FvzMXIcUwysQDW7UmG4wGm8QjcJQQ5BMJfLrwK9EqHL95Dwkf5gRVr6Rk4ZLzcQF0MeTe5uwD5fbjaJKoHbybQkaKhdI70lnwexBgGRsz8Zh+HIXS6X3yxYEG3qw/OPTXnFwOEb+LPVZ6G1m9yanz5Qn4WPFygGC2+28aqFYUHpLhieH/wUDs5sVDy7jUMKQ0oKfaBGJArlUFjk61CPcX2L2eMEni2/XdTgcIyOIiv2STZTLJ3x0Ia6c0ze2eRREENuqlWLPoljjdhHh2/B7FpAzhHAaghJElhlNIALr8teJZSNcwa1RrCW/+ZMM5CVL2j3UbMR6vvYccXu7Qqw2sHB+W10uDz8Kl63Cvklm6uaJ2XPmJo1HVz0SWBKjzzjw8J1cRlelVZXuAx5ehHiWbHFwP2hD62D7llCe0aPuKQLDieDPl1DQ8YcLe07ta55f+FxfdTLz5j3QpO5AAZloAEt6m70mJr9yZy6p9DkwtYx8vZXtypxqLDzbYulsPgblJ0FFfbR2PqZkxj8EdW6Zdrh0CdAuPkEH9X07NC9PdmJhiJnCh8zUTYt64TdktpPD2LBsSm9MFTLxbGRiTtp2ETVgA2oytFO6OLF0RD4uVFysY5h7jRGIrjMzZl97tGr1QcKBCeGtyXSHNPesld/5IYpdTlrSRI4fTR5FBaYpTJ9p4qZn58uX2OcDmNIyOJM1DO4kE4dEvJqHPJSn7eaDoI9jZqhxmrdrktY4PESJfMtKTTDjG84dY
- Z0LWVI98
- cNHI4VM5vBOTHcRO3O4ygkWl/5lrPZwenE2rIe/BRuAx8F/IkuGbCpvCZGJadNzY3QCcAnJd6JruQV2fdBrJKa5CfJMbHU7eHHtA8rJxicg0iuph765FjUaS0hgap11QiX9r00WYcu/3WH+RC7cv+OS9FyZ602QX40WIWvVsNNBKpcLibJoRSoDIK2pqF/ATi795gimhKsy/Fwfx5sgjIYMZSjjWJi/edq4emcJl/Bk46LbB7dVL/mkVCNiuvDjIiAfQzmmbIwosCr5dnZd1meRYx3epSKOqtB1kQhJ01B56hndVQJWPYdoOo9xKS9W1YaRXq5ARFoLiS6xI0dCHD+iHKd8b6QCw5dV+o/Ot3yrDCTUVisow2F8WSueZfSpVbiQ1ZpookPYSiV44Q6m3WUJog9JsEWqvCEGNVUezU7OP8PSPECoT7V6sHQErxnEl09dXgeypGK5ISjBmVjuHUP2nZc0IW2laIMbuXPOwqKOKrGlpXQSNo7PKQM0+ZDn+XOZvjqu7UxWZ9Z6K+5VcrmCbw5wKHqK/56or844qnQcHPGpR3yy6w4Qy8+Z0VrJ8fBOBVCEiIhrc8UDOAWAY3BJv4CaRVNR6uoxtgV+beC6M37/JOIDJaG2I9EFUYn9t9W0gFB3E8S21L3bM=
+X-HE-Tag: 1772018971-509629
+X-HE-Meta: U2FsdGVkX18/PSYSEng9A2nYeWTSMtXHI3IpkWMOIQ6GIcc6+yLF3AkX1hb3Qkwq5ijFo6s3oNOuSQBtu4HlbGVac7fZ/mkx7GvIBsRuhG6ftU47mR43Di6G5B5n87kXEWBlfObpEuyEqdU3Bq0az81WupBbC8PhzwMDFzR0TL9ksh1ALP36AttXsM5Oak2F8kJ4IH+zHcsmg6l04TUk5+brqzKdfSyEyO35nkyKRoDZeBYq4JInndoqg4WueKIHs7QdSwxPYng/9+RwbxgjiQKbvBND2iQL+TO9UCjjUaLsIXVru22+wTOgLIdeCSVQ6VsAiTQ8UPFRHzRpein7NVxIaCjyV0DPcak1PqsRcwWU5kyzIgUSU7caH+8T9FJYikZdMc+UYMKJPCKIxPBgtpyttH8AnztP0Wbfg1zJOn/pbdigIzNSXisJU4Mes9go0vJGRHbypHwx4BmOHZ3ozoqFfV3TVlDZnOsBxIBapNVeP+Bcj3x+g3KXyDCVE1Y5VEORc8SZGeiyQIE3v9e87wRkM0hlyteHY1hzbFoHzu30WgJBLVO1ZoOaPxjfwA8BX8QnC7zqdf1JWZ7aZJ1oz5+gpH6y2vkf1a15C1ME36iFxmbFXXgLdZxqBQ9R+2ZnFWT7Xb+z+qUmjM61cYI+zUE1WjdudxJCsX9iw/va28SSuCvrHGFk2a4R3qeNo0Tk2sGM5ed3LKBiOYjFTta+qegVigymI+WfXG30CIjeS6B68xqFLL2SPgYxk1qVdH8aFMRUcNhnm+Tk7odIOLyCk0yMGQWYkuYl39jCzydDhlsTUmAgGD3lGjUeNOXOgli6vIGK+AMoIegzGlvQLWogjMz8UhX3mbtjDpvFUxbQaNCaN3PcGEBy4t32aNkgmFMYBRJj4jEFFBbQ+/TxR+0TcPF2sb/A1W+VYNEI0UehoXTKKoeT6vEVug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,31 +97,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Similar to CPU_FTRS_[POSSIBLE|ALWAYS], let's also print
-MMU_FTRS_[ALWAYS|ALWAYS]. This has some useful data to capture during
-bootup.
+On 2/25/26 10:31, Ming Lei wrote:
+> Hi Vlastimil,
+> 
+> On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUSE) wrote:
+>> On 2/24/26 21:27, Vlastimil Babka wrote:
+>> > 
+>> > It made sense to me not to refill sheaves when we can't reclaim, but I
+>> > didn't anticipate this interaction with mempools. We could change them
+>> > but there might be others using a similar pattern. Maybe it would be for
+>> > the best to just drop that heuristic from __pcs_replace_empty_main()
+>> > (but carefully as some deadlock avoidance depends on it, we might need
+>> > to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
+>> > tomorrow to test this theory, unless someone beats me to it (feel free to).
+>> Could you try this then, please? Thanks!
+> 
+> Thanks for working on this issue!
+> 
+> Unfortunately the patch doesn't make a difference on IOPS in the perf test,
+> follows the collected perf profile on linus tree(basically 7.0-rc1 with your patch):
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/kernel/setup-common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Hm that's weird, still the slowpath is prominent in your profile.
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index cb5b73adc250..002b312eb7e9 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -866,6 +866,10 @@ static __init void print_system_info(void)
- 		cur_cpu_spec->cpu_user_features,
- 		cur_cpu_spec->cpu_user_features2);
- 	pr_info("mmu_features      = 0x%08x\n", cur_cpu_spec->mmu_features);
-+	pr_info("  possible        = 0x%016lx\n",
-+		(unsigned long)MMU_FTRS_POSSIBLE);
-+	pr_info("  always          = 0x%016lx\n",
-+		(unsigned long)MMU_FTRS_ALWAYS);
- #ifdef CONFIG_PPC64
- 	pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
- #ifdef CONFIG_PPC_BOOK3S
---
-2.53.0
+I followed your reproducer instructions, although only with a small
+virtme-ng based setup. What's the output of "numactl -H" on yours, btw?
+
+Anyway what I saw is my patch raised the IOPS substantially, and with
+CONFIG_SLUB_STATS=y enabled I could see that
+/sys/kernel/slab/bio-248/alloc_slowpath had substantial values before the
+patch and zero afterwards.
+
+Maybe if you could also enable CONFIG_SLUB_STATS=y and see in which cache(s)
+there's significant alloc_slowpath even after the patch, it could help.
+
+Thanks!
+
+
+> ```
+> 04cb971e2d28 (HEAD -> master) mm:slab/sheaves: severe performance regression in cross-CPU slab allocation
+> a5a9cf3f020f mm: fix NULL NODE_DATA dereference for memoryless nodes on boot
+> 7dff99b35460 (origin/master) Remove WARN_ALL_UNSEEDED_RANDOM kernel config option
+> 551d44200152 default_gfp(): avoid using the "newfangled" __VA_OPT__ trick
+> 6de23f81a5e0 (tag: v7.0-rc1) Linux 7.0-rc1
+> ```
+> 
+> +   49.03%     2.00%  io_uring         [kernel.kallsyms]       [k] __blkdev_direct_IO_async
+> -   38.66%     1.16%  io_uring         [kernel.kallsyms]       [k] bio_alloc_bioset
+>    - 37.51% bio_alloc_bioset
+>       - 34.98% mempool_alloc_noprof
+>          - 34.87% kmem_cache_alloc_noprof
+>             - 33.82% ___slab_alloc
+>                - 30.25% get_from_any_partial
+>                   - 29.59% get_from_partial_node
+>                      - 28.42% __raw_spin_lock_irqsave
+>                           native_queued_spin_lock_slowpath
+>                + 2.16% allocate_slab
+>                + 0.60% alloc_from_new_slab
+>               0.51% __pcs_replace_empty_main
+>         1.58% bio_associate_blkg
+>    + 1.16% submitter_uring_fn
+> +   35.16%     0.30%  io_uring         [kernel.kallsyms]       [k] kmem_cache_alloc_noprof
+> +   35.13%     0.12%  io_uring         [kernel.kallsyms]       [k] mempool_alloc_noprof
+> 
+> 
+> Thanks,
+> Ming
+> 
 
 
