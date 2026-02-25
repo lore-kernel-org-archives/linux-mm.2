@@ -4,133 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5381CFD3773
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 208B6FD376A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Feb 2026 16:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A075A6B00B8; Wed, 25 Feb 2026 11:25:48 -0500 (EST)
+	id 5C1416B00BA; Wed, 25 Feb 2026 11:34:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A49A6B00B9; Wed, 25 Feb 2026 11:25:48 -0500 (EST)
+	id 56F2F6B00BB; Wed, 25 Feb 2026 11:34:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87C836B00BA; Wed, 25 Feb 2026 11:25:48 -0500 (EST)
+	id 47A836B00BC; Wed, 25 Feb 2026 11:34:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 722936B00B8
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:25:48 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F37CBA14C
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:25:48 +0000 (UTC)
-X-FDA: 84483505176.12.509C290
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A169D1C0009
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:25:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cULZ5qEP;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772036746; a=rsa-sha256;
-	cv=none;
-	b=VETQJ30xD81ujcRYC6+pJZInbkZl8X66NFJRg3BLW+3j6nkEFNm2yyiG+0BH3QX8RUDzYu
-	BnTr1U1kQGlkOcp5HP7N3GAG8RlEzXxtUGsFfbgkuAj1ZQaLqriGeOGvYkTq/W4g+RLkWC
-	OWM/sbtdlC8lxZJ/iDF97rkRV2FfxPo=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cULZ5qEP;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FD6D6B00BA
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 11:34:15 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D77B787F27
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:34:14 +0000 (UTC)
+X-FDA: 84483526428.08.26173B6
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3786020007
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:34:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1rsPRTHU;
+	spf=pass (imf13.hostedemail.com: domain of 3gySfaQYKCJwOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3gySfaQYKCJwOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772036746;
+	s=arc-20220608; t=1772037253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ho7oD4oPu5/eYCdKSOQS6EY6Lbkwk1pVey6+CNgj1os=;
-	b=cs1e0OqN4xz6I3gRBzAy9b4G0FQ8B8jhc2nONb0GbyKvOjiKT84mDejkznVqAbgWSNnBLx
-	tW06zyoIAJv3FWURSMwTgx+sZzlRgoBdygby3iZD4AAkzRD/qOB+XPx/nXXseAaWVdwEnw
-	pohqkRAr31LNrRRxNdP2yuGpSMp5KtQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DCF4660126;
-	Wed, 25 Feb 2026 16:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3776DC116D0;
-	Wed, 25 Feb 2026 16:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772036745;
-	bh=guCbsIDgg8ayG9mMMymVvi9nZm4Jxc5WYXcp2FwHotE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cULZ5qEPz3eS7I+Fsxr6miX8AP+0kVboSS3w9recg6hIWBQu8d492aJMKFAtePr5C
-	 Yxw6zeIYl0NzkVTqOY+rZ3drD+EwjqMadIeU3+bhyJFoPCMVo0RZaVEqrkGtGCEwa4
-	 bcriv7DhH2j0T9uGVeVdL+y8N8zL0iY2hVFSWAbADuMDI7VU71xE8IuqKkYJ+gZCsQ
-	 xR3OY+ov4QmLACxJ9gpX2X8RBJq46iAC34jhNq6rOPIAXeo23p3YGZbABHQNK9QxkC
-	 B70PkGx9oFgxrBgyJwJJ0C90f4GZTWG9hD7VkXOtmEBOVrFFkcSQg/ezo7Ywq0Uean
-	 YvcAIzi1k5CAg==
-Date: Wed, 25 Feb 2026 18:25:24 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Klara Modin <klarasmodin@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	x86@kernel.org, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 24/29] arch, mm: consolidate initialization of SPARSE
- memory model
-Message-ID: <aZ8idANginXzhf0_@kernel.org>
-References: <20260111082105.290734-1-rppt@kernel.org>
- <20260111082105.290734-25-rppt@kernel.org>
- <87tsv5h544.ritesh.list@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87tsv5h544.ritesh.list@gmail.com>
-X-Rspamd-Queue-Id: A169D1C0009
-X-Stat-Signature: tdipy9ncotbgwj73esz8egn5ccxufm6k
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6B7L7o41Oxea7KFZzUcBIICs8iJlEAxQhGkCpMBeOa4=;
+	b=ikrk3qD+ot+FgUhPElCVLoyRuRo5KwF2PJyQumSmLLiI1AatXwIKVHb0mTfW9XlGG4M3IM
+	4onmkunhKRCEFGS+ttEP1R1VXIKgq2PGnACX4zYpTy1nMfgqihChDy5PJHw22gEPfiibPF
+	VAJz4uXC93F2GXkMV1xzE54gSXoZLFU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1rsPRTHU;
+	spf=pass (imf13.hostedemail.com: domain of 3gySfaQYKCJwOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3gySfaQYKCJwOQNAJ7CKKCHA.8KIHEJQT-IIGR68G.KNC@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772037253; a=rsa-sha256;
+	cv=none;
+	b=5p+XtJvBtBjpzs6LYuHQgOB3hz3TgoMg4R1sHKY/x1flpQ5MTKx+U+Yrgr60355ZCAhJoU
+	73Ne6aAueIk8KWxAiMD+ZuHWK3jEtYcKaU6A7mvROtpzLp7pd8p4OvEqE3WUUoKKPkZoYX
+	+52WKdtAxO/YppSM1tOBfxSUA1hPVMs=
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2bd808454d6so40376784eec.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 08:34:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772037252; x=1772642052; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6B7L7o41Oxea7KFZzUcBIICs8iJlEAxQhGkCpMBeOa4=;
+        b=1rsPRTHU0/kK+M8HSiS3YituBDMePwlm19QXjfxsd02Iklbf/Hxut2vnRmiCmRS0pY
+         7eSmHtuM1Qms4Nsxmu2uLfkjYj1fo/+c80WZIDtKZcBTRyHfFtzS/phxMpp56T5kLihV
+         bdc9XL7eZh6dj4LfOZb/eSbI87ywNZSpHDJm0ACTBesj79yD3Hu/QJYqceHHd+q7+LNE
+         te2brl9fhvlUDm3vL6Hd6DpbTQE+hExtvS+5cZegrb+C3a+dqx6yyn4kPohBN/XuOu4x
+         f0wopVUGNUYc/H6ObsNy7yfhxMOpVzMH7TC5UOtYiwAmBnLX5zTcVSnb+RBgJ5DBiIme
+         001w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772037252; x=1772642052;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6B7L7o41Oxea7KFZzUcBIICs8iJlEAxQhGkCpMBeOa4=;
+        b=bqBJH0TI+43xEajxvsVujXoZUxH3v6uwPEAzVnoOBliT22y1MaI0jCh0+pLnYwMcvX
+         QR5tIwE0JpxeoANZ+yrVYfcDXy9uYi/ZhpUdrC2hPMzyRjYKPftOU1WRg9tvyM5yk4TI
+         +2mLJ5W+MLnTV2Avu3n0B06beAzH3qi/e5ljJGIqJFaQwABfctzVB8S83OmU0zGit5Do
+         0Gfw2+dZBQg2CYIzhQXr9WigD3jph5kFsMG6kV+2HK0NVR4MCxcrl/BfEhth+2ECTa4B
+         jqRG7a/M8KkGueFJhTt6zBm08NLs94kN9yLHWwEVK2MS02PCf09IYPKhv5WO1GmxsQ3U
+         sTCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKTznhfWRgdI4DSvE9BLOSeudJt8Z+QjLLiPN9zVF/EO5qO9pQQepziuik7y9CWm2JhfZYV+kI/w==@kvack.org
+X-Gm-Message-State: AOJu0YzUyvimiBP7jkOfBfQn1UR0MbkPfhVj6SxsSWifU2S0HHpmVPJN
+	1owLRkB028HJdmujZPXPcSYXEwRKIePO/552uQdOlIYPRf+7L6XgbB2Wz7nZlxOUmyv1LJPT+PU
+	yvQkLaQ==
+X-Received: from dycqw12-n1.prod.google.com ([2002:a05:7300:c00c:10b0:2ba:b709:6d63])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:7492:b0:2b7:da6d:8e8e
+ with SMTP id 5a478bee46e88-2bdcbf46311mr522707eec.4.1772037251637; Wed, 25
+ Feb 2026 08:34:11 -0800 (PST)
+Date: Wed, 25 Feb 2026 08:34:07 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+Message-ID: <20260225163407.2218712-1-surenb@google.com>
+Subject: [PATCH v3 1/1] mm/slab: mark alloc tags empty for sheaves allocated
+ with __GFP_NO_OBJ_EXT
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz, harry.yoo@oracle.com, 00107082@163.com, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: amdo589wc4khdxc51p7mw9cn95dxoits
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772036746-496759
-X-HE-Meta: U2FsdGVkX18AUyPqLXBwpe3C67/3nv3igRzgZ23QHirMjCFCnFf2FvmMx8gkkhnFqmdF0QJmemC4qmwPISLDi+7SWX+8aV8kllM5K91IigPIe5v8gld0GkLi2FWuMcjIuwtwSo1HKYPJbjPG7r6jkc/PBAX1LqLOKkLRShZA5A8aVzpP9CnM6cIk735a3wevs+eUXRj6yjyiHBcNWHP/w7xo/Czpq9yH+UB1UlOojzphVqVUINbsGb17QbrC2FG+xcWo+7pXg9KRqmhRG/fgUwVeG4QAxJlCZ7AxRdnKqxDuG5XuP1mdxNSkJKYLeFBaY1k7z3VjOgMDzyoXZyw1aWwWpEuaiDy7KiaDZGeX9jYV9vt37Gf/T9r2MfvefqRNBUJFBjOcLpyvPk0+gChI+pYmBXFe1KyXshAvey4j3zzg1ptGBdIOGpCdvdNzuoLOq2IoY3fvk7bnECVPt/ZB/xpop4r1pVvEmlWpn1Dr6RTlZBBSe6di0mw4Wnv0W6wWokMGYMS7ZVVT7BCaDj3KLzEOZMLgOsYlEmaxvWoHCPRVuNvmf+SNwdxdwWEv2CXcIZTp/UVLET//fqaA6dZ7qVsXJs1AW+Az6/fahC4qdmLv1/Mgk7sMkm9XYnhSpFRo1MGPOTfc6xloL2FU7aqNhm/XzaRgNkICKKuS7RpKRKYoNKlZs4tIH0FLVJ3Ht0zXvSrZK3JljVv3rO6Afzp08tV/Z/KmcU6MAG0ugPsAPikJxf1UwWbOQWPznXTIPtW1/HWOOQ16mjAFIW35YGrGDFf3TnEuMPdk4exTMluFLU7+W3OjA+he8B5DEcEgwn0POcNYGeeUyybTb+e+PdQaRSe7QWxHJ+K4NmX9ESD6D218P5g7BpNBkJQD8CXbJWZfQ+4XFhcg3MD1ccnLsEPMn91plt9yKk/2m0BLX+DMMqO2Ppw3coN1/MhANCPfexj1WRCcFWJeqAwPgzuH/Ku
- zuO+qdHr
- nUicitg0qj38h60Hdb53CDE/lROIXkP70op+CeTKx3dtInNrXWIyDHRu+54M1rEYSBMJC+UBHSseOMjv8/IQnHzF2nXe54zi72Dzj/MA/fjHKvnXTKTDJ++NMTjLmiGmb5BN5oZ7sWB5N2IxGTEi6CeVuJtD3qj+TMMe1CTC2xa85vwKCuoHXm1nxucorZq6x5zd1DBHjR2gVq1HIdgHc4RoZD0U0c+n5WSmKU84scSPFMjWS6p8EiN8vs7YXbMRX06eqycjYWkKNmWR2MRKyPja3IvgCIozeBMK0gAd0cxEZ4Gyz9hyOVb7vcEcw+cxdRWIN81b4s0FtAtjAcojq/oqtHnglDi6QT7wlUmBzwEI+eLq1vvCpZ06Lks1q48hR1sj/
+X-Rspamd-Queue-Id: 3786020007
+X-HE-Tag: 1772037253-301652
+X-HE-Meta: U2FsdGVkX19lARXmU+u1bfk6YDXq8+b6zuBTR9Yr4lbm1/Y2sWUzh6HQqTNCP9EvPn0NKQZr7f2x3ugX5W81fNQy5Fvy1z8ejJ2HS2TP88/eHj5SPxU8mEjTnc+zYZQ9jsBCcfPPlXuNSRucoogr1qiq27WiGv4L2taarYyC4ZPBq1dDm83OPo7dq8DeON8HVMlOtI+uX0iiYySzDobgAUeAuoFUiSALPYApTiS6SqENWwrcA9HZLA+jvb/oM/eMauTQVSskW12OcqlmA8sIewsajqHe/+5IyfoFm2fUvUueMb3ETs+3zCWv0Dbx9/4Al9DAPCtViRdMta2lHQpSS9fPujrMB07pohizP7acseh+pdqRywEiSrjYadh0rAT+ucQD9iixid7G7G5VmjxmCDGcqHnX4YqLNtldA7sTE4gNTqPjx9ug4/E6s5OC3whuWHTcHadmTT7rf1coteZXED9SzMY55ame0cy0oiLqpH1THulUP1YN10b39xBeRErdINinK2HeD3i+hLlDVb4OVwUQRpErI3hA5cIlD4h7hxpcW7j92GmafyPue9GLnfugWSfGqm6eNHQq/UK03DXREcyq8+1m8q3RRDImeJ4r77wr7iXVpP7T9QEJcVSX9ZA79NdxtnCbSdbo06wagewFRCzaUAFP5kk+3fwwisqc/uMiQEBXRDuWwXkRAekeOV9wI3TTakuPD0Obpg0/QUJJnbW/VzuyZNu+i9mMFZhI7NQJ06zhEr8+iEdCnRu9f5LGseVCjled2xYbXFR69EpOe7nG1RjV+YiBWZ7m9W5K1iWm/nGkiGvoRM0iiD4oXjCX37+zgufBA/v0QQeSu9cJSS2RMokP+08oKhhsni9vNoUJwiK+XxUYXUEB8i9Z6MLuFq1DIeNMaMnXI/QMPEQUO9h5o9PWL+YnCdZGBh4QizX1hwm6N3P/m7DH9YWv0KBbZvNe/ZfGFWhF78ceOI4
+ tAW2czwi
+ sMmkHTcVZEQ+ivAJ80O5RzS8dltCf8WLzKv0I00o5f7u5gQL29vFgBgdSFa7SqnSrNgppWD5VqBe2252lMuLiaCy7+B+TsR6lHjhdrsVYmuu1g4Sndo8TTphrtKevQP9TNV36pALgwpsO3VG8gfYpQ7EgyOQKQpZq2K9YCOAmgqmNKAHppCGoHTlqAoRkeJmq8S0tSttUH51nuVXhhnNfE0k5EA1+AZGNAgIjL2hm9lRQx1KSMVZ+OTd6EqWq1rxQQNCnb37AYSNaVhZ4J9M8tFIg402g3BPbNSNOptPxgUT0xA01QYWmd/U961E2ZZ8FCf4LFXXNZOL+CQdwdZaz0x6AnP9OWpWK3ytAMRQOp/dcFKjvQte43D6xxRom4HUodVeIUHP6N41uqj0oyZK7/CPxvgljA3NdIu31y7ReHLMJfYzG+hfDhDmY+RQq++GefYDztdoGF43C7lfGskHuz6G5hOVgWR+l5mRKm68NonrninS9UXdzE5u64fzReV7J1QYIX43Bgk6p2P/DX9zfn+kdV0BYOXSw5My7oYMawAkiaVHevDjy4Tr/uJdv9YUPSaB8kW2weJMSa+AyqgW5h63PYCzvz5jFQfyCHYLI2Zzv4qW3ZBH7CgCsOkUWTk2muT6jeDPhA35ecYY4x3D6sMlvPWnNhNtUmhgRyTcmA+I4KoCfjj3VvWgcA/8vsePVAwe7s3xMSZhHAl9R4C4bGIWlmz/aeWX+7peWEJg2iJNdXgc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,121 +106,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Ritesh,
+alloc_empty_sheaf() allocates sheaves from SLAB_KMALLOC caches using
+__GFP_NO_OBJ_EXT to avoid recursion, however it does not mark their
+allocation tags empty before freeing, which results in a warning when
+CONFIG_MEM_ALLOC_PROFILING_DEBUG is set. Fix this by marking allocation
+tags for such sheaves as empty.
 
-On Wed, Feb 25, 2026 at 09:00:35AM +0530, Ritesh Harjani wrote:
-> Mike Rapoport <rppt@kernel.org> writes:
-> 
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> >
-> > Every architecture calls sparse_init() during setup_arch() although the
-> > data structures created by sparse_init() are not used until the
-> > initialization of the core MM.
-> >
-> > Beside the code duplication, calling sparse_init() from architecture
-> > specific code causes ordering differences of vmemmap and HVO initialization
-> > on different architectures.
-> >
-> > Move the call to sparse_init() from architecture specific code to
-> > free_area_init() to ensure that vmemmap and HVO initialization order is
-> > always the same.
-> >
-> 
-> Hello Mike,
-> 
-> [    0.000000][    T0] ------------[ cut here ]------------
-> [    0.000000][    T0] WARNING: arch/powerpc/include/asm/io.h:879 at virt_to_phys+0x44/0x1b8, CPU#0: swapper/0
-> [    0.000000][    T0] Modules linked in:
-> [    0.000000][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-12139-gc57b1c00145a #31 PREEMPT
-> [    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
-> [    0.000000][    T0] NIP:  c000000000601584 LR: c000000004075de4 CTR: c000000000601548
-> [    0.000000][    T0] REGS: c000000004d1f870 TRAP: 0700   Not tainted  (6.19.0-12139-gc57b1c00145a)
-> [    0.000000][    T0] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 48022448  XER: 20040000
-> [    0.000000][    T0] CFAR: c0000000006016c4 IRQMASK: 1
-> [    0.000000][    T0] GPR00: c000000004075dd4 c000000004d1fb10 c00000000304bb00 c000000180000000
-> [    0.000000][    T0] GPR04: 0000000000000009 0000000000000009 c000000004ec94a0 0000000000000000
-> [    0.000000][    T0] GPR08: 0000000000018000 0000000000000001 c000000004921280 0000000048022448
-> [    0.000000][    T0] GPR12: c000000000601548 c000000004fe0000 0000000000000004 0000000000000004
-> [    0.000000][    T0] GPR16: 000000000287fb08 0000000000000060 0000000000000002 0000000002831750
-> [    0.000000][    T0] GPR20: 0000000002831778 fffffffffffffffd c000000004d78050 00000000051cbb00
-> [    0.000000][    T0] GPR24: 0000000005a40008 c000000000000000 c000000000400000 0000000000000100
-> [    0.000000][    T0] GPR28: c000000004d78050 0000000000000000 c000000004ecd4a8 0000000000000001
-> [    0.000000][    T0] NIP [c000000000601584] virt_to_phys+0x44/0x1b8
-> [    0.000000][    T0] LR [c000000004075de4] alloc_bootmem+0x144/0x1a8
-> [    0.000000][    T0] Call Trace:
-> [    0.000000][    T0] [c000000004d1fb50] [c000000004075dd4] alloc_bootmem+0x134/0x1a8
-> [    0.000000][    T0] [c000000004d1fba0] [c000000004075fac] __alloc_bootmem_huge_page+0x164/0x230
-> [    0.000000][    T0] [c000000004d1fbe0] [c000000004030bc4] alloc_bootmem_huge_page+0x44/0x138
-> [    0.000000][    T0] [c000000004d1fc10] [c000000004076e48] hugetlb_hstate_alloc_pages+0x350/0x5ac
-> [    0.000000][    T0] [c000000004d1fd30] [c0000000040782f0] hugetlb_bootmem_alloc+0x15c/0x19c
-> [    0.000000][    T0] [c000000004d1fd70] [c00000000406d7b4] mm_core_init_early+0x7c/0xdf4
-> [    0.000000][    T0] [c000000004d1ff30] [c000000004011d84] start_kernel+0xac/0xc58
-> [    0.000000][    T0] [c000000004d1ffe0] [c00000000000e99c] start_here_common+0x1c/0x20
-> [    0.000000][    T0] Code: 6129ffff 792907c6 6529ffff 6129ffff 7c234840 40810018 3d2201e8 3929a7a8 e9290000 7c291840 41810044 3be00001 <0b1f0000> 3d20bfff 6129ffff 792907c6
-> 
-> 
-> I think this is happening because, now in mm_core_early_init(), the
-> order of initialization between hugetlb_bootmem_alloc() and
-> free_area_init() is reversed. Since free_area_init() -> sparse_init()
-> is responsible for setting SECTIONS and vmemmap area. 
-> 
-> Then in alloc_bootmem() (from hugetlb_bootmem_alloc() path), it uses virt_to_phys(m)...
-> 
-> 			/*
-> 			 * For pre-HVO to work correctly, pages need to be on
-> 			 * the list for the node they were actually allocated
-> 			 * from. That node may be different in the case of
-> 			 * fallback by memblock_alloc_try_nid_raw. So,
-> 			 * extract the actual node first.
-> 			 */
-> 			if (m)
-> 				listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
-> 
-> 
-> ... virt_to_phys on powerpc uses:
-> 
-> static inline unsigned long virt_to_phys(const volatile void * address)
-> {
-> 	WARN_ON(IS_ENABLED(CONFIG_DEBUG_VIRTUAL) && !virt_addr_valid(address));
-> 
-> 	return __pa((unsigned long)address);
-> }
-> 
-> #define virt_addr_valid(vaddr)	({					\
-> 	unsigned long _addr = (unsigned long)vaddr;			\
-> 	_addr >= PAGE_OFFSET && _addr < (unsigned long)high_memory &&	\
-> 	pfn_valid(virt_to_pfn((void *)_addr));				\
-> })
-> 
-> 
-> I think the above warning in dmesg gets printed from above WARN_ON, i.e.
-> because pfn_valid() is false, since we haven't done sparse_init() yet.
+Reported-by: David Wang <00107082@163.com>
+Closes: https://lore.kernel.org/all/20260223155128.3849-1-00107082@163.com/
+Analyzed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: David Wang <00107082@163.com>
+---
+ include/linux/gfp_types.h |  2 ++
+ mm/slab.h                 |  4 ++--
+ mm/slub.c                 | 33 +++++++++++++++++++++++----------
+ 3 files changed, 27 insertions(+), 12 deletions(-)
 
-Yes, I agree.
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 814bb2892f99..6c75df30a281 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -139,6 +139,8 @@ enum {
+  * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
+  *
+  * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
++ * mark_obj_codetag_empty() should be called upon freeing for objects allocated
++ * with this flag to indicate that their NULL tags are expected and normal.
+  */
+ #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
+ #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
+diff --git a/mm/slab.h b/mm/slab.h
+index 71c7261bf822..f6ef862b60ef 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -290,14 +290,14 @@ static inline void *nearest_obj(struct kmem_cache *cache,
  
-> So, what I wanted to check was - do you think instead of virt_to_phys(), we
-> could directly use __pa() here() in mm/hugetlb.c, since these are
-> memblock alloc addresses? i.e.: 
-> 
-> // alloc_bootmem():
-> -   listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
-> +   listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
-> 
-> // __alloc_bootmem_huge_page():
-> -   memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
-> +   memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
-
-It surely will work for powerpc :)
-I checked the definitions of __pa() on other architectures and it seems the
-safest and the easiest way to fix this.
+ /* Determine object index from a given position */
+ static inline unsigned int __obj_to_index(const struct kmem_cache *cache,
+-					  void *addr, void *obj)
++					  void *addr, const void *obj)
+ {
+ 	return reciprocal_divide(kasan_reset_tag(obj) - addr,
+ 				 cache->reciprocal_size);
+ }
  
-Would you send a formal patch?
+ static inline unsigned int obj_to_index(const struct kmem_cache *cache,
+-					const struct slab *slab, void *obj)
++					const struct slab *slab, const void *obj)
+ {
+ 	if (is_kfence_address(obj))
+ 		return 0;
+diff --git a/mm/slub.c b/mm/slub.c
+index 862642c165ed..34c32749f091 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2041,18 +2041,18 @@ static inline void dec_slabs_node(struct kmem_cache *s, int node,
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
+ 
+-static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
++static inline void mark_obj_codetag_empty(const void *obj)
+ {
+-	struct slab *obj_exts_slab;
++	struct slab *obj_slab;
+ 	unsigned long slab_exts;
+ 
+-	obj_exts_slab = virt_to_slab(obj_exts);
+-	slab_exts = slab_obj_exts(obj_exts_slab);
++	obj_slab = virt_to_slab(obj);
++	slab_exts = slab_obj_exts(obj_slab);
+ 	if (slab_exts) {
+ 		get_slab_obj_exts(slab_exts);
+-		unsigned int offs = obj_to_index(obj_exts_slab->slab_cache,
+-						 obj_exts_slab, obj_exts);
+-		struct slabobj_ext *ext = slab_obj_ext(obj_exts_slab,
++		unsigned int offs = obj_to_index(obj_slab->slab_cache,
++						 obj_slab, obj);
++		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
+ 						       slab_exts, offs);
+ 
+ 		if (unlikely(is_codetag_empty(&ext->ref))) {
+@@ -2090,7 +2090,7 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+ 
+ #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+ 
+-static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
++static inline void mark_obj_codetag_empty(const void *obj) {}
+ static inline bool mark_failed_objexts_alloc(struct slab *slab) { return false; }
+ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+ 			struct slabobj_ext *vec, unsigned int objects) {}
+@@ -2211,7 +2211,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 		 * assign slabobj_exts in parallel. In this case the existing
+ 		 * objcg vector should be reused.
+ 		 */
+-		mark_objexts_empty(vec);
++		mark_obj_codetag_empty(vec);
+ 		if (unlikely(!allow_spin))
+ 			kfree_nolock(vec);
+ 		else
+@@ -2254,7 +2254,7 @@ static inline void free_slab_obj_exts(struct slab *slab, bool allow_spin)
+ 	 * NULL, therefore replace NULL with CODETAG_EMPTY to indicate that
+ 	 * the extension for obj_exts is expected to be NULL.
+ 	 */
+-	mark_objexts_empty(obj_exts);
++	mark_obj_codetag_empty(obj_exts);
+ 	if (allow_spin)
+ 		kfree(obj_exts);
+ 	else
+@@ -2312,6 +2312,10 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ 
+ #else /* CONFIG_SLAB_OBJ_EXT */
+ 
++static inline void mark_obj_codetag_empty(const void *obj)
++{
++}
++
+ static inline void init_slab_obj_exts(struct slab *slab)
+ {
+ }
+@@ -2783,6 +2787,15 @@ static inline struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s,
+ 
+ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
+ {
++	/*
++	 * If the sheaf was created with __GFP_NO_OBJ_EXT flag then its
++	 * corresponding extension is NULL and alloc_tag_sub() will throw a
++	 * warning, therefore replace NULL with CODETAG_EMPTY to indicate
++	 * that the extension for this sheaf is expected to be NULL.
++	 */
++	if (s->flags & SLAB_KMALLOC)
++		mark_obj_codetag_empty(sheaf);
++
+ 	kfree(sheaf);
+ 
+ 	stat(s, SHEAF_FREE);
 
-> Thoughts?
-> 
-> -ritesh
-
+base-commit: 7dff99b354601dd01829e1511711846e04340a69
 -- 
-Sincerely yours,
-Mike.
+2.53.0.414.gf7e9f6c205-goog
+
 
