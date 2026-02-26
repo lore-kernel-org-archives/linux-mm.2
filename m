@@ -4,84 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8A17FCE075
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69AF1FCE074
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:57:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 189BA6B008C; Thu, 26 Feb 2026 07:55:06 -0500 (EST)
+	id B98D26B008A; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 137DB6B0096; Thu, 26 Feb 2026 07:55:06 -0500 (EST)
+	id B59726B0096; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 064406B0098; Thu, 26 Feb 2026 07:55:05 -0500 (EST)
+	id A90136B0099; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E9B916B008C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:55:05 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2F01BD8D6
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:55:05 +0000 (UTC)
-X-FDA: 84486602970.12.4C9A277
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0992E1C0006
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:55:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 932AC6B008A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B59E850F4
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:57:56 +0000 (UTC)
+X-FDA: 84486610152.24.E30F5C4
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 63E4FA000C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:57:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=TwPizSSA;
+	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772110504;
+	s=arc-20220608; t=1772110674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9UpS5jL+Gpp+QY07dUZaiaPkT9jgd2LHzEpatl5ADyk=;
-	b=du9NDcb0pQMzM8KN/DCeIqLBALjA+YnRDBLB2dj+wBDddOSCsdsMYgfLqDtqUpYR5i3c5n
-	9zjaIZrLUIIiIIxyEc78v+HK7i4I/Q/LvG/NrSysOjpmjRUOu6tJkDL0mGLkQFQvcQp/Kj
-	K/3wexx0SUnOUWJt9CKlvwg/wXuskdM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772110504; a=rsa-sha256;
-	cv=none;
-	b=jwMlXB3Mfa3QySDvQomSTEp/vIwlQtz7igwGILZm4bic0Wl5zWCuoZGAESl4ge6i//qyqi
-	+9AlFQ9elRvhyeebWdXtVnPQbrZP6l251gcvhaiysubaSStpTPNYLm1YOimApZovjSXESX
-	U/bmAARPX9fMUsSV60KciCSlnOdTQe4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XPQokzKIR4QEBWebfj0SvsNzvMWG4WPoP7HqHEXWzMQ=;
+	b=oi6v/aCJ0s8SRYttJBqBj3C9SW3iWsjSXAkUPoyvrgCjStLTMzgoESwRN1orZ6gr5FdCcR
+	92TVifuV9z/DIr/hKGtXJlodAFgGDvWE75ZtRphG6Ib6i5C34pq3/lgrnQbhLu51lq1PwX
+	Tg4TZmV8Tn+9jRDAaijoFZUfaSByocw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3A3A339;
-	Thu, 26 Feb 2026 04:54:56 -0800 (PST)
-Received: from [10.163.173.11] (unknown [10.163.173.11])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20EB03F73B;
-	Thu, 26 Feb 2026 04:54:57 -0800 (PST)
-Message-ID: <0ee7ff56-ac0c-458e-9772-b3c026389e65@arm.com>
-Date: Thu, 26 Feb 2026 18:24:51 +0530
+	imf25.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=TwPizSSA;
+	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772110674; a=rsa-sha256;
+	cv=none;
+	b=nq2/lg2XHJwHgqXn3Eib5j7O3EGOeLxpmQZQduzF9pVmnMMhVsICNy5WoZnBafR+kJxDXM
+	7gyvKy/IApJV3VlYC/t0hOjFAwLn7KmC6AmOXZ9A5gCx5KJTcFZ2MIO/vZVcGrhl5uWWbA
+	B8wRrvwYau25dSMtMZSEUG9j72osW+A=
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=XPQokzKIR4QEBWebfj0SvsNzvMWG4WPoP7HqHEXWzMQ=;
+	b=TwPizSSAdOagw0bRh7x9IGiFjHeSd1U4f84NwrsYKyLjJr8Foe70PHW8i7BQj+zKPj5JA4FlL
+	rcmmpD+aswtkoAFS+xBNWtXQaq7zLngNReFKlH1HKQbjgDVT/QLZGNfJZC+C45XonlFGKnZM/6e
+	a2vPgM3n9JYPmTQVeJCSTrM=
+Received: from w001.hihonor.com (unknown [10.68.25.235])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4fMBHD6WPdzYl5nV;
+	Thu, 26 Feb 2026 20:54:16 +0800 (CST)
+Received: from a015.hihonor.com (10.68.27.88) by w001.hihonor.com
+ (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 26 Feb
+ 2026 20:57:42 +0800
+Received: from w002.hihonor.com (10.68.28.120) by a015.hihonor.com
+ (10.68.27.88) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 26 Feb
+ 2026 20:57:42 +0800
+Received: from w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3]) by
+ w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3%14]) with mapi id
+ 15.02.2562.027; Thu, 26 Feb 2026 20:57:42 +0800
+From: wangzicheng <wangzicheng@honor.com>
+To: Barry Song <21cnbao@gmail.com>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Barry Song
+	<baohua@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Lei Liu
+	<liulei.rjpt@vivo.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Axel
+ Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
+ Xu <weixugc@google.com>, Kairui Song <kasong@tencent.com>, Tangquan Zheng
+	<zhengtangquan@oppo.com>, wangtao <tao.wangtao@honor.com>
+Subject: RE: [PATCH RFC] mm/mglru: lazily activate folios while folios are
+ really mapped
+Thread-Topic: [PATCH RFC] mm/mglru: lazily activate folios while folios are
+ really mapped
+Thread-Index: AQHcprbIkLI8koBjtkqDPEnVc1b3J7WU7U8w
+Date: Thu, 26 Feb 2026 12:57:42 +0000
+Message-ID: <2558f7d82b9a482387960f45409e1b76@honor.com>
+References: <20260225223712.3685-1-21cnbao@gmail.com>
+In-Reply-To: <20260225223712.3685-1-21cnbao@gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.163.18.229]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 10/16] arm64/mm: Route all pgtable writes via
- ptdesc_set()
-To: Usama Arif <usama.arif@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260226123747.801496-1-usama.arif@linux.dev>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260226123747.801496-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 63E4FA000C
+X-Stat-Signature: 9mj6stfoqtjh154ichqufrfp6uqp84na
 X-Rspam-User: 
-X-Stat-Signature: 94u8t6u4x7nnu57c5c5pno5wtq9zsuns
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0992E1C0006
-X-HE-Tag: 1772110503-474716
-X-HE-Meta: U2FsdGVkX19fae1XXXQx0NJZ2ULx5fltDJ1DpPFVGFm1c6iD0x/GZV769xKo8m9QFLmIgYuSRiaC8CQHJipJrF7MkQuiXOYQ5WAULT6OwZp4ug8nBKUKbg4GlEYdzjk2LVwunINTCGMHoyPqrY/Rgpmdu+PcO0mpEn8Rr2Adjjlldr8GZexmXHvdR5bO6imGeCWwDm6Clt8staz6xwJm3soFoqlt3huq4nPn6veKvF4ETN8mD8yz5s0EOpiHEMwJKstzLQhWQwtWTCFjAhbv+2hcuUzHiHX6EdDe2V4ZYOWd1XgN8HQZlcTBoTzrqxZ4W+lyG2I7TSXm08/yKVe0EHDPpCWQg4uBfJ7I+BXCGRofL3akSRO2nI5zWmWwWw9acWYiNsUG5lmFJrrliLR/kXSF5tHIhho9Xc1uVZSKrZE2gbwWTU0St1cPaBNeNvGgvlIcflXgf72FrTIJWXdrQ9m6AAl+l3AsB4iRUtDgAvhOcxflP+p+GkloGMNzzQmyN2r9cIyLt0ZG/7sqDlbCNyTU015eQ//6ryq0tw/XyinBe/EdcyqaAIQhtcTw1b0m3s8xcWzp0uha7cM/pTjbVYVBagm/3iotfVwOsKmHO3MReVb6IvUVpm+TV4Joa5FEDLgGcnEwc+W5qmtT2oAODoEXoM0b7suWSwgTyudI9ZMlM+Pr2dGSa39zRpwoD1MXYctmpUEHEXg4AN69PIbNzHVRSamy4NvpGg41MMq4Ipz5kzc8H2aT0MKufoO209m5lyRJB9ra1NMVhDPWMM5+9DcrsrYFvGWDfKpDgEVSrQf8b8+vYk8aLPFgQ8mr3l5GiFC77rE3pcBxOrh0+mavUKNWjTAKJbsuRCuIWBtRKpLJIOIFkdUoR3l9tL1O6e16X3HKTKsiFgY=
+X-HE-Tag: 1772110672-972189
+X-HE-Meta: U2FsdGVkX18bA22gF3W9WpKZVqxJoKpsG+epMpt6RTKRKMGniYmJdY/a0whHM3vQ4x53ren1w/b1cohwVD1LtsMMs+wCnhiKwgSmmiTw4x/vDsk4nL+nMrSoLghuKjJj15SE4jg6iYKHxxkbchzYawUaXJMWcDaM1Gw6hAjjLqcVA0gQ/vlW64uE35ifacfr4fbVq30ElNODZx0N0Yd+b1Q1uu7jkWF688fWhpgtQiGO+UtFgENrzed1jL4Dj7B7vLV6UcD52ySC7H0dBHqiJr7O3Po9bGXqn74StN0/jDHOV3udPZdEWySlRxgVx7aGHlp6a7S8BL7T4/ijZ5rDc7isZ8xlQqfjLggFntrLcE1tJMmY2RkxVowdupXIU1Og0dM4Oe5PJxgziViJwmJQl9Bw8G827fGt15paQY0+Tijn+ANJcXRzIT5T/N9BI3WVVeH1N7mZOVRfTZZb58QDk5ioypEhsxaDVUoPw/gLsItjKM3TVS7bN5zOelQrgbuLVIrrRx19SRWUcM44UYSXefgCAL+OxfyYqMbLOyje1OuoGNu7zgCMWtWaxSD6542jJZ/aCdRKu7E3NF1/BLR5cU4+Vtq3jAL61IjD/d6L0NbMFyPET/7ELHo/3TZpCvoCKOQ++V37mZE7P1gyL32ui8MwACS6JAjwwhoh9qajut3kYHQaDuIsSwEdE68V3352a2uHXbyngu8yVDHo1Do3qw+4uV8F9aAXhzJIfcuXwYZHtlpsi5lg7Ws7OjDFrIu971py4PFCYzCB1hhu1SRI2eI0wmsLOPjE1okB+T3Qx9kOuxGjO1/TmLzE566qWo535Jb4Bqieu6yqrA/P0UDJP1EP1VEEBfO+GJ+qFTkoaTDsBlpGY4SqlZFJgyCIM5rC/7P94cRgDeMnaK+og++Hzu2vEOq86qE5nA3VPhUiKbdq/YqFCSTDwm95a5gcpYciVGQdji0S/KOAXcHNIVO
+ 3P/186/M
+ PVq8lzfzFqwnjOnPoH9gtX6WwRAxIStsYpX089fi859v7Ph3rD5wjUoA+uYScXxvJR9YW8wrQI0psENZpeV8h/0vmY3GV+M8hTgnDhSxsJeRBH4NuvqS/3WwVRlnZlGa1cWnQly+q6TmlT7ARuHw2lIaFv7c62ORollNXYUy6EmM+Q9aUCPFtAIUaQaWI936kYo8PE6Ji+DDKLPJL6I9rsoX1KEFHQwrnJ5UKikHqDsR7r1O4UL814itQJXyXN+2NooE/5nj07Xh7cUwoT7DzPSyCVeVtZBabtPVeS4XXi/d8TW7QRXuNy0tfirGFvFFfcPOTY+su+1Y8xgu+LLS4/A0msbZWnBWQqVJBayuc8WZb/3kwPjPUcghwMzXRhy0SQcofAr8hNSO0kDN46o+69xLg05NUiKwD+zzls4ygEZWNuR6dcqB+u02eQzQ4q4uUl7eaDUgo3o+vjIzyHtb+CyK4iGlHMiKOYLAfT9FOtLr1ugARtBnBVqRanS4w7vAqERBvOtaX44G+MIMcxSEqJfgL0aP/luQOBFnBEp2C6NOOYu3mgSMMQS0f+oSIzV06bLT+LWc8Fs6cUuNWI6L//3uyWyKeRiyXST6UMJM3F2Eg+aKJszVnRHzjewC6gNSciCLwbHAAEQWVxmwFbWOKjLYjqrIfPdYtQbq5i4NKPaLt9xmeS9G9ty0k/AuTbx4hZJrmKdVWpwRSayNJZe3J564HIYh54xCrMtii7iG8OgU61eo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,149 +113,153 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 26/02/26 6:07 PM, Usama Arif wrote:
-> On Tue, 24 Feb 2026 10:41:47 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> 
->> Currently ptdesc_set() is defined as WRITE_ONCE() but this will change for
->> D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
->> copy atomicity.
->>
->> In future this infrastructure can be used for D128 to maintain single copy
->> atomicity semantics with inline asm blocks.
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Ryan Roberts <ryan.roberts@arm.com>
->> Cc: Mark Rutland <mark.rutland@arm.com>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/arm64/include/asm/pgtable.h | 11 ++++++-----
->>  arch/arm64/mm/mmu.c              |  4 ++--
->>  mm/debug_vm_pgtable.c            |  4 ++--
->>  3 files changed, 10 insertions(+), 9 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 804ef49aea88..42124d2f323d 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
->>  }
->>  
->>  #define ptdesc_get(x)		READ_ONCE(x)
->> +#define ptdesc_set(x, val)	WRITE_ONCE(x, val)
->>  
->>  #define pmdp_get pmdp_get
->>  static inline pmd_t pmdp_get(pmd_t *pmdp)
->> @@ -389,7 +390,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
->>  
->>  static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
->>  {
->> -	WRITE_ONCE(*ptep, pte);
->> +	ptdesc_set(*ptep, pte);
->>  }
->>  
->>  static inline void __set_pte_complete(pte_t pte)
->> @@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
->>  	}
->>  #endif /* __PAGETABLE_PMD_FOLDED */
->>  
->> -	WRITE_ONCE(*pmdp, pmd);
->> +	ptdesc_set(*pmdp, pmd);
->>  
->>  	if (pmd_valid(pmd))
->>  		queue_pte_barriers();
->> @@ -917,7 +918,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
->>  		return;
->>  	}
->>  
->> -	WRITE_ONCE(*pudp, pud);
->> +	ptdesc_set(*pudp, pud);
->>  
->>  	if (pud_valid(pud))
->>  		queue_pte_barriers();
->> @@ -999,7 +1000,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
->>  		return;
->>  	}
->>  
->> -	WRITE_ONCE(*p4dp, p4d);
->> +	ptdesc_set(*p4dp, p4d);
->>  	queue_pte_barriers();
->>  }
->>  
->> @@ -1120,7 +1121,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
->>  		return;
->>  	}
->>  
->> -	WRITE_ONCE(*pgdp, pgd);
->> +	ptdesc_set(*pgdp, pgd);
->>  	queue_pte_barriers();
->>  }
->>  
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index bcf32d1a92de..ffd307c546f5 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -83,7 +83,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
->>  	 * writable in the kernel mapping.
->>  	 */
->>  	if (rodata_is_rw) {
->> -		WRITE_ONCE(*pgdp, pgd);
->> +		ptdesc_set(*pgdp, pgd);
->>  		dsb(ishst);
->>  		isb();
->>  		return;
->> @@ -91,7 +91,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
->>  
->>  	spin_lock(&swapper_pgdir_lock);
->>  	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
->> -	WRITE_ONCE(*fixmap_pgdp, pgd);
->> +	ptdesc_set(*fixmap_pgdp, pgd);
->>  	/*
->>  	 * We need dsb(ishst) here to ensure the page-table-walker sees
->>  	 * our new entry before set_p?d() returns. The fixmap's
->> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->> index 83cf07269f13..faf6a19a89a1 100644
->> --- a/mm/debug_vm_pgtable.c
->> +++ b/mm/debug_vm_pgtable.c
->> @@ -445,7 +445,7 @@ static void __init pmd_huge_tests(struct pgtable_debug_args *args)
->>  	 * X86 defined pmd_set_huge() verifies that the given
->>  	 * PMD is not a populated non-leaf entry.
->>  	 */
->> -	WRITE_ONCE(*args->pmdp, __pmd(0));
->> +	ptdesc_set(*args->pmdp, __pmd(0));
-> 
-> The ptdesc_set() and ptdesc_get() macros are defined in
-> arch/arm64/include/asm/pgtable.h and are arm64-specific. This change is
-> in mm/debug_vm_pgtable.c which is generic code compiled for all
-> architectures. Other architectures do not define ptdesc_set(), so this
-> will would cause a build failure on other architectures..
+> -----Original Message-----
+> From: Barry Song <21cnbao@gmail.com>
+> Sent: Thursday, February 26, 2026 6:37 AM
+> To: akpm@linux-foundation.org; linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org; Barry Song <baohua@kernel.org>;
+> wangzicheng <wangzicheng@honor.com>; Suren Baghdasaryan
+> <surenb@google.com>; Lei Liu <liulei.rjpt@vivo.com>; Matthew Wilcox
+> (Oracle) <willy@infradead.org>; Axel Rasmussen
+> <axelrasmussen@google.com>; Yuanchu Xie <yuanchu@google.com>; Wei
+> Xu <weixugc@google.com>; Kairui Song <kasong@tencent.com>; Tangquan
+> Zheng <zhengtangquan@oppo.com>
+> Subject: [PATCH RFC] mm/mglru: lazily activate folios while folios are re=
+ally
+> mapped
+>=20
+> From: Barry Song <baohua@kernel.org>
+>=20
+> MGLRU activates folios when a new folio is added and
+> lru_gen_in_fault() returns true. The problem is that when a
+> page fault occurs at address N, readahead may bring in many
+> folios around N, and those folios are also activated even
+> though many of them may never be accessed.
+>=20
+> A previous attempt by Lei Liu proposed introducing a separate
+> LRU for readahead[1], but that approach is likely over-designed.
+>=20
+> This patch instead activates folios lazily, only when they are
+> actually mapped, so that unused folios do not occupy higher-
+> priority positions in the LRU and become harder to reclaim.
+>=20
+> A similar optimization could also be applied to swapin readahead,
+> but this RFC limits the change to file-backed folios for now.
+>=20
+> Based on Tangquan's observations, this can significantly reduce
+> file refaults on Android devices when using MGLRU.
+>=20
+> BTW, it seems somewhat odd that all LRU APIs are defined in
+> swap.c and swap.h.
+>=20
+> [1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-
+> liulei.rjpt@vivo.com/
+>=20
+> Cc: wangzicheng <wangzicheng@honor.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Lei Liu <liulei.rjpt@vivo.com>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: Yuanchu Xie <yuanchu@google.com>
+> Cc: Wei Xu <weixugc@google.com>
+> Cc: Kairui Song <kasong@tencent.com>
+> Cc: Tangquan Zheng <zhengtangquan@oppo.com>
+> Signed-off-by: Barry Song <baohua@kernel.org>
+> ---
+>  include/linux/swap.h |  1 +
+>  mm/filemap.c         |  2 ++
+>  mm/swap.c            | 16 +++++++++++++++-
+>  3 files changed, 18 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 62fc7499b408..ce88ec560527 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -335,6 +335,7 @@ void folio_add_lru(struct folio *);
+>  void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+>  void mark_page_accessed(struct page *);
+>  void folio_mark_accessed(struct folio *);
+> +void folio_activate_on_mapped(struct folio *folio);
+>=20
+>  static inline bool folio_may_be_lru_cached(struct folio *folio)
+>  {
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 6cd7974d4ada..0b8f383facdb 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3567,6 +3567,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+>  		}
+>  	}
+>=20
+> +	folio_activate_on_mapped(folio);
+>  	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
+>  		goto out_retry;
+>=20
+> @@ -3926,6 +3927,7 @@ vm_fault_t filemap_map_pages(struct vm_fault
+> *vmf,
+>  					nr_pages, &rss, &mmap_miss,
+> file_end);
+>=20
+>  		folio_unlock(folio);
+> +		folio_activate_on_mapped(folio);
+>  	} while ((folio =3D next_uptodate_folio(&xas, mapping, end_pgoff)) !=3D
+> NULL);
+>  	add_mm_counter(vma->vm_mm, folio_type, rss);
+>  	pte_unmap_unlock(vmf->pte, vmf->ptl);
+> diff --git a/mm/swap.c b/mm/swap.c
+> index bb19ccbece46..e50b1e794ef1 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -488,6 +488,19 @@ void folio_mark_accessed(struct folio *folio)
+>  }
+>  EXPORT_SYMBOL(folio_mark_accessed);
+>=20
+> +void folio_activate_on_mapped(struct folio *folio)
+> +{
+> +	if (lru_gen_enabled() && lru_gen_in_fault() &&
+> +			!(current->flags & PF_MEMALLOC) &&
+> +			!folio_test_active(folio) &&
+> +			!folio_test_unevictable(folio)) {
+> +		if (folio_test_lru(folio))
+> +			folio_activate(folio);
+> +		else /* still in lru cache */
+> +			__lru_cache_activate_folio(folio);
+> +	}
+> +}
+> +
+>  /**
+>   * folio_add_lru - Add a folio to an LRU list.
+>   * @folio: The folio to be added to the LRU.
+> @@ -506,7 +519,8 @@ void folio_add_lru(struct folio *folio)
+>  	/* see the comment in lru_gen_folio_seq() */
+>  	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+>  	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+> -		folio_set_active(folio);
+> +		if (!folio_is_file_lru(folio))
+> +			folio_set_active(folio);
+>=20
+>  	folio_batch_add_and_move(folio, lru_add);
+>  }
+> --
+> 2.39.3 (Apple Git-146)
 
-Agreed. Probably will add a local fallback for ptdesc_set() which
-defaults to WRITE_ONCE() for platforms not overriding. OR does it
-require making ptdesc_get/set() much more generic construct ?
+Hi Barry,
 
-Probably missed this problem while building on some other platforms
-as DEBUG_VM_PGTABLE might not have been enabled in their defconfig.
+Setting only non-filelru-folio in folio_add_lru looks reasonable and
+should help with over-protecting readahead pages that are never
+actually accessed.
 
-> 
->>  	WARN_ON(!pmd_set_huge(args->pmdp, __pfn_to_phys(args->fixed_pmd_pfn), args->page_prot));
->>  	WARN_ON(!pmd_clear_huge(args->pmdp));
->>  	pmd = pmdp_get(args->pmdp);
->> @@ -465,7 +465,7 @@ static void __init pud_huge_tests(struct pgtable_debug_args *args)
->>  	 * X86 defined pud_set_huge() verifies that the given
->>  	 * PUD is not a populated non-leaf entry.
->>  	 */
->> -	WRITE_ONCE(*args->pudp, __pud(0));
->> +	ptdesc_set(*args->pudp, __pud(0));
->>  	WARN_ON(!pud_set_huge(args->pudp, __pfn_to_phys(args->fixed_pud_pfn), args->page_prot));
->>  	WARN_ON(!pud_clear_huge(args->pudp));
->>  	pud = pudp_get(args->pudp);
->> -- 
->> 2.43.0
->>
->>
-> 
+For our workloads that already suffer from file under-protection, we see tw=
+o
+sides here: on the positive side, keeping only actually-used readahead page=
+s
+in memory could improve performance; on the other hand, since we already
+see file under-protect issues, it's not clear whether this change might
+exacerbate that or even hurt performance.
 
+We'll test this when available and report back. We hope to have a
+chance to discuss this topic at LSF/MM/BPF.
+
+Thanks,
+Zicheng
 
