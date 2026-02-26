@@ -4,126 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399F1FD4609
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 03:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569E2FD4609
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 03:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 431506B0088; Wed, 25 Feb 2026 22:00:01 -0500 (EST)
+	id 9A3F86B0088; Wed, 25 Feb 2026 22:03:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA506B0089; Wed, 25 Feb 2026 22:00:01 -0500 (EST)
+	id 951D06B0089; Wed, 25 Feb 2026 22:03:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 296386B008A; Wed, 25 Feb 2026 22:00:01 -0500 (EST)
+	id 85DE36B008A; Wed, 25 Feb 2026 22:03:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 118DF6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:00:01 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B6905AD36
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:00:00 +0000 (UTC)
-X-FDA: 84485103360.04.91E2172
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DDE8E1C0006
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:59:58 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IT6c015o;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772074798;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 721CE6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:03:33 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB4D81403CE
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:03:32 +0000 (UTC)
+X-FDA: 84485112264.16.36BB4E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2CE094000F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:03:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kf7vD2PM;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772075011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8F8DPv1+8kXX8FrzoNjsuCyL9jUTbkIPz4J+MH2Hlts=;
-	b=y0ZhcJLpxhAZlTC9qeta35IDpKWuXyscWUPz3ZGfHby1sRc+3BIL28ylIM2VkL3XrjTFMb
-	Q6U2ZovUttyE0JO4ubXJ8cmGVeoo2Elaa5NdFEP3hqXIcr0SztbN47eWeiTFLZjxOwyAip
-	rJWcK0iMjTlxikat5U5qG7IfFRc93/s=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772074798; a=rsa-sha256;
-	cv=pass;
-	b=JAfXEIWKpu4JFGd3NiUHA1ACz6g0YIn8Jskcct+A3PFEZ6WiEz9J/QfUeMx1LjO4aNJUBn
-	XH65G8/odRsPcro0gv0mIl7mgbrExveVKBPqUcCombxh56/KFMGCYD/f495YQq/1jQzs0B
-	vVE7SPkUOeoBBT/Q+A6w4rPBI5UEANw=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IT6c015o;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5fdf3735e14so191645137.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:59:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772074798; cv=none;
-        d=google.com; s=arc-20240605;
-        b=T2tZSYHp44QkH6k9ptl/Jxl1Gh+i+RsNjyEcTY+3xvCDMh+PoSCAxslybenpAifF/W
-         9/dcQ+u41eeqbS2/J/7XP/kxqGKOA1pU5I5ujt2XFItUefU1BeufOWpPsraj6AFDJjFn
-         kxs4y+oj7f1/bq0rLxiARLnNrwTHXHiE+kcBjR2ocM19uwYF7aEQKIQY9dx/7UNu75mr
-         H5+woR2mi5Z82DTwjdsnKh7Wfc7wcmTDdvq99rvQNCQsf+uuqEgfuXk+Xyyyn2FspiuO
-         FbVYF/dWZPQAAQJjN+EKnLUbJsEzCU36HApRenFypqIu/dPzaHPzgWcWZt7C/Oq2DNmg
-         2QkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=8F8DPv1+8kXX8FrzoNjsuCyL9jUTbkIPz4J+MH2Hlts=;
-        fh=9eFgDjXNZZJCdSvaijTCD67lxeDTua2kWIw+zcw9vkI=;
-        b=iQnPvMI5uCYepw56Kh5iPORkMz1zehLVo/MVrZIvmLEuU9aKoRSviMaEWmZQ2QDlE/
-         Ly1vqTCck+RtARYpS31yH0Ry/DGD/9DPYE3ymdhQCz48W93xR/7KWbNtTjeL5cFW/8Hv
-         UAONa+rFnbTDUtlUoJLBWailJCPCQIpdB9sae90mVjqdflL+11giT9JMVac6Y/QFSc5a
-         9bCON0ztFYLXKS6F8AMOlIKlOjtY1W9F2EUU7hDjuuCnuLGEFWXXjP8k1Bvr3FzOsyFh
-         NV1Dgni+6vso5nIUWjCM+OykcPPrz1HKR+VK6FSBUZnIcjFwJhpSmnynShJ4m6ZrPnLd
-         I/Tg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772074798; x=1772679598; darn=kvack.org;
-        h=to:subject:message-id:date:mime-version:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8F8DPv1+8kXX8FrzoNjsuCyL9jUTbkIPz4J+MH2Hlts=;
-        b=IT6c015oqiVIx9ZD6mTx4LnSLJxu91mJYAkwedAGdfnZQi1A3FeiJJFTXcINz0GEEh
-         iez3nH6rKAylo3YvaYGZEUxeLb3GagnTxndOUhMiPi/oQdE1+NgqYxeFQMmVwPbWTzGB
-         lVGwxu0cfYDi8hKKcBU9k629jEecAQGNkTsYVWkvLSCFG+eEqYNnrFBdKbme9RybxY0v
-         FM3sQlsxrqSz0ArygAHH8yo0LjEhv4IyJAB+O7Io39/+2qIN4Ap1xRmzTUShc+RWbIi7
-         BlfyWzpLqAWNdt1Dz6Glv1/wwI1sRvmwumNcekaeUDDSpSCFwOCkcQoMTiw5iBPcdhNL
-         kByg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772074798; x=1772679598;
-        h=to:subject:message-id:date:mime-version:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8F8DPv1+8kXX8FrzoNjsuCyL9jUTbkIPz4J+MH2Hlts=;
-        b=GkKmtlYGWGxexha3yps0u0a8sU1u0SwuG96mTG9CMfXWeQBhSfdHZo3D1HdBJ/DY22
-         E60QE4IcABEpctH962DpNxzrRTGndXZjOxQfnLgpWhEKxeUOH288DEvYDGVSGpWEUkG0
-         PVD8P1Cayl8sKGkOvij/jNRZEEqFjqM3wEhz5Iwi6f8vEcZG4j8a6rBn4P2uU9VbvWlt
-         ExemqC+1iLNQtXRU82aw2+1LqWmow2+L4cNJzK8OR06S8J2fKwmTRYkzrVWWIyYy4h3F
-         McnBtsMi6dJqwtXKq2KVyfgcF12fj6uSbPAnJaFcw6hBT0yTRcG77obvbsmxvTT4QozJ
-         F+AA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFhUUZSSQbndAiy9I2FalXGocceHkJlY1trf94mbDQttnep2n9dI92pDNr/dKBDCn4RNkQN72S+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxMvXgMvJ0eicPHt8Uroiz8A+0kCVehrPt/z+GBgiOImEo95Wj/
-	D2uFx8FDdUGvsmvPNAwnCXjx6G8NbOK/RmNbg4q+YSLbHHXoDtBc+dlX4/gyT0l70px4aN1eTOY
-	qkDsmTbDG6Q4ThmNEeNBI8uzFuKy+QWwJSnbjLLk+
-X-Gm-Gg: ATEYQzwSa66Xd4/ayIorTFPx3O19/VfciVtc3ggdElTp6he+/Vz0OS5bpPVOPrW4TLM
-	uF2/CodS25QG2MYtHvAih1zUP6aQR7JL6bmr166inl+vYaBPnwn8KmDtd9C9T1irSKKkea7Rv3b
-	oG1Vt6Z6RyWv4RPGHGcjroEKUjUQQf6SYF38qRSGfgHyaazntQrgVJBOWbvQX/4UWeO8V3qZ9RR
-	hie6RAO5xvbqDOmUcJSYDu1tgxjhLnquh8P0MihEYq+lg+vJJYR7jkH3/27F7dq4U5cwNrwFt96
-	sYSls62UQw6HhEMEN5P863Jmkt3i0kt3XH7cehSmIFysCF7gwavTxOg7UdqxaWRxZbGucA==
-X-Received: by 2002:a05:6102:418d:b0:5f1:bcb3:5577 with SMTP id
- ada2fe7eead31-5ff20c30c12mr353313137.32.1772074797488; Wed, 25 Feb 2026
- 18:59:57 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 25 Feb 2026 18:59:56 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 25 Feb 2026 18:59:56 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-MIME-Version: 1.0
-Date: Wed, 25 Feb 2026 18:59:56 -0800
-X-Gm-Features: AaiRm50M8XWgDMJ9cOTMEwCcIKXEzhH3SzAKiIj_3KCzzjf8AvWJgkzJ68SfaSI
-Message-ID: <CAEvNRgFvHNH6GwuY5yLYD+0OK19mC3pRJKDBR=HsKgym=rghWA@mail.gmail.com>
-Subject: [LSF/MM/BPF TOPIC] Opening HugeTLB up for more generic use
-To: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Stat-Signature: fowii6aywgpxj9ne9snowqzpk8pw7qbs
-X-Rspamd-Queue-Id: DDE8E1C0006
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pHdFmfA6ydn2D0fyBZktjauNe5rVUr817jAte06w9ik=;
+	b=c6dR2MPP7yllP7jWBd/lHxP4Aj6TutpZLrWgdfOd3LL5cVE997aY3BDBQfIdL28GrJeO6z
+	dXb2Kmd94lX1Od41uznOv92xXcDRtpp4c1+9bvAuEmTlEU1JFzypHey+/VC5sHC5csEUaa
+	p7YU4hH85f/BNVK6VsbC7CYYsrnVgpA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kf7vD2PM;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772075011; a=rsa-sha256;
+	cv=none;
+	b=sPv1KJ1zlwZEUN9xQrpl6r/BnQwMLWW10wo/Xw9mNkIoooz1OV24i9F88Y0bs7GzMDDtQs
+	d17gebER0k+6+yQ+2keBz9gcBzvnVFSQ1laGc1i6EBuik4eFcr0Gty3kGxDutLGWQssZWO
+	nd9hewAFyURVc7BakeATQEFulXR/0lQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 717CA60097;
+	Thu, 26 Feb 2026 03:03:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D073DC116D0;
+	Thu, 26 Feb 2026 03:03:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772075010;
+	bh=w4nmxgg6B2apbZjFl/wiFqr3+gpq+vuQ3u1MkV8t4+8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kf7vD2PMlRugco/gixwl6qO61uIeodj7f+pX287GNC4q7nt63hRP6khor5FKThsPS
+	 GsHH9OI7giafksCC0Cye9sdUcyIjZ+Uz3SvTD8dEBcfteBtTPohLvfu2+NdwUxLnty
+	 2nUPZkCm4J92i4NLFTradHtn4rXOoFr0Vg/qg/RI=
+Date: Wed, 25 Feb 2026 19:03:29 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, Minchan Kim
+ <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>, Richard Chang
+ <richardycc@google.com>, Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH] zram: rename writeback_compressed device attr
+Message-Id: <20260225190329.8f76b847d391c71d58988234@linux-foundation.org>
+In-Reply-To: <20260226025429.1042083-1-senozhatsky@chromium.org>
+References: <20260226025429.1042083-1-senozhatsky@chromium.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2CE094000F
+X-Stat-Signature: yh87pry5kbxib8u1da7jm4ch849r378s
 X-Rspam-User: 
-X-HE-Tag: 1772074798-387029
-X-HE-Meta: U2FsdGVkX19rnZLLfMuCMPI3ubmdzRpmSJzSgSHQH3A2JXk/ku0OpT8ys7aO/8HD1nKEaRzRFf7T7Fvwbt4LYflChlLrD9mVhNz+VGogkx3iXe3aeLPHZoAqJEZzP2ceiUpy/Lz2VVOTLv5vR9mEt5c5la/wvAoqSVFJaD3EDR3eJf1yiqSPGceusq24yR70UXReegN8na7v3Bre+x8Aa5Hd4npYR8S9oWPdvub4NGLg+edtf/og1SVfwVNInPeXO/Wq40QZoFbOlJ3cisZ7PTtfIl5ZmtYXc1JfF7cL0tI+gR02RvX/alk/jmuz8y3u6mt/mu/lKX4it6oqu0VbVduZb1bSqW5Ottx6CaEFb/2VdNFmAyRkRwKEsuoAbc4egdfQ45g/mpaw/BXH/tL+mzQKfeg8DzORA8Q7vVlqTXNJW8pSc2m+zjJTpD/0cf9QXG98QdNtCipsw7BNprJypqxHusyBQ7r/TndMUVZyJPsGMmLGolmJZq+35J+nVoi7J0n63CzENBUaIPaxOEP/F988QuxBHzTRtWMhX05phfjDVxtRDnYLojhE1agt2tScqB3CWcBLiZI17esVUAZtBHum74TauMxjY1jFn0wEJ28Ajgt75pRyYX7PUptdqCS8pHHE023PwfjuqJl5Abu5ZwuUzTAaIbh+Sdr1z1w06SNwyM4xszc6X9VhSmKL4J2Mkq5lyMf1W3GptLKPzxKBzoMAzVckfRJqkP20z32lPy4E89woDF09+wfwTamd6jd0UM0DvToIyjtmtJcsR2StnyH7VK4YRzrr0eG80Dj5Vx1MeQk+dLXoXTx5UXorCOdcM4Nkd/yxgcYtDCPcCegb/WQVo8WEwqPN6R7TB6q4rC3jm23265L3Pse4CWl2N0woFQVbtbH8wbGzc7+PuoF5jaJ9+Xpn8aldVXJRepqkbZGEaftJDxCmX+1P7X1f3Yr0evz8vXTjUUs=
+X-HE-Tag: 1772075011-142146
+X-HE-Meta: U2FsdGVkX18dLgYlHUsAWTTqboxM430XrUl79dTIOHh35NQHCGV2FHO6O1I7+41VAYhupCfbBulJ7uSW5KAJtcikDmS7eU6gq4DgRpcV5bNCCcB3Wrrl6k2eTfjv3SicPP08bZNFkgdGxE1vEMq1auvuquQvd90hddxGZllBmh2DxmLMtRLRlnzCbsVpu6lkLz8YZgFGZZbXQ4fbPKhKrAgcfN/kc6YDOLrKFj1SsLNbwAxpFAObe9S9Bggkm6k5bKGcoWfy2O3KHIPDKu+ZNg50DuRpVNjJJzd1ialK/CS1OyB4l+uW7TVGqgRff6/xUg9EsACS7sG10Gwm9LSc4PBe4i75GAurX/bCZE5/mlH0fSvMP2DHzBwvhBOl/B7k8nlg//C/PPMJF+L1jOWy+epzqhXvt5pJx5qoTUlQJR4E83y47hixvNO5u4p4ve6b9XnAgRIfXr65PVPYvR3boxyuH3u7L2pu2EdkhiUp9k9Sckr0K8117+ks1SfuXCUwEgXEOjbtMdmWFSStvQgHIu0GODewwV6vjq09tgQzxvW2gTSd8U1Jkesop0c4y3c3MKgvZgw6K20xqfnF84nb1yUIcoEbSPypDcTqwm7etsAQGpWPcsHXpGhT+aJtCvJNrCu0oZaxLUnwvRYEUrlYistlqbfO1wVRIHRoZAb14DZmZ83CLXdphyooQrtJKVqmaol/G+XCtrs4KuEa8G87+XcVWtxLcSUls7ZJuhXGp546nArumZDcIz4zPhyCKNUoiK5NMZYqDP/87V1ibOqBDodg6Wg2Fl8FJOn0CYcCbHcKZo+eNqYhQkpGWx084ePXOmz8rGhlS198mX6z720QpimYFofncr4/dUaY684naYkFd8xeQf73VbolSX8FILDOg1ORwZDPav/3ho1Eh4hYhpA9M8TfpDhiWCCCBf9hsCZd+w6yQy4FXiJMZl7QPuaLJVnwPBUKBaKCVbRJnfK
+ auks3u3x
+ KYqA18AQlCg+YMbaPez39QX0zIRAgxN2qZWq71q0qpSQ+dOTuhyOmxnBAxmIeFCXsYXu0Mtf0Hr61IaO+YZwk7dW2zivKP6e29j5jzm/mZrRIrs4/Qy8H+vFwh2FFdeCCxAN7lVLSS2UdNC48bHPUne4GCC1cFwI8+kdfE7Ii8i7i1Xi/luRJ5iKLRGHPwqHg5VGDRPjH+wzTufCFXU0HZmdReKjhEFJ0JPU2V8ncEEGHRGVWb0s2FxpxPscnrIX28Y6C2D9/oVKrqPq8fEra9FDwIQAiUAXnoWFyRFBflJC94yh+0C38a5bt7LFZetK6qux3iJNFMBUFPsaN2dwsGSbVoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,75 +91,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Thu, 26 Feb 2026 11:54:21 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
 
-I would like to propose to open HugeTLB up for more generic use.
+> Rename writeback_compressed attr to compressed_writeback
+> to avoid possible confusion and have more natural naming.
+> writeabck_compressed may look like an alternative version
+> of writeback while in fact writeback_compressed only sets
+> a writeback property.  Make this distinction more clear
+> with a new compressed_writeback name.
+> 
+> ...
+> 
+> Andrew, the code in question is in 7.0-rc1, it has not been
+> released yet, so we think it's safe to rename the attribute
+> without breaking userspace.  Can you please pick this patch
+> for 7.0-rc2?
 
-Motivation
-==========
+Fair enough.  I'll add
 
-This proposal was motivated by guest_memfd needing to provide huge
-pages. guest_memfd wraps existing allocators to provide memory for
-backing KVM virtual machines, and wants to use HugeTLB as a source of
-huge pages.
+Fixes: 4c1d61389e8e ("zram: introduce writeback_compressed device attribute")
 
-Proposal details
-================
-
-The proposal is to (re)think the in-memory filesystems as memory
-providers around memory sources:
-
-| Memory Provider                | Memory Source            |
-|--------------------------------|--------------------------|
-| Anonymous (mmap(MAP_ANONYMOUS) | Buddy allocator          |
-| Tmpfs/shmem                    | Buddy allocator          |
-| HugeTLBfs                      | HugeTLB                  |
-| guest_memfd                    | Buddy allocator, HugeTLB |
-
-While working on HugeTLB and exploring HugeTLBfs vs HugeTLB, my
-impression is that these two are overly coupled together and could
-benefit from better conceptual separation, as well as code separation
-between mm/hugetlb.c and fs/hugetlbfs/inode.c.
-
-Status
-======
-
-I've been working on guest_memfd HugeTLB support for a while now, and
-Google is in the process of qualifying guest_memfd HugeTLB
-support. Here [1] is an earlier version of what's being qualified.
-
-Here [2] is an RFC patch series, split out from [1] and updated, that
-refactors the HugeTLB allocation routine for more generic use. I hope
-this will serve as a starting point for this discussion.
-
-Goals of the discussion
-=======================
-
-+ Find out what the community thinks of opening up HugeTLB as a more
-  generic source of huge pages, not coupled to HugeTLBfs
-    + Get feedback on guest_memfd using HugeTLB
-+ Find out what the plan is for HugeTLB(fs) testing
-    + Is the plan to continue maintaining tests in libhugetlbfs?
-    + Should the tests be migrated as kernel selftests?
-+ Gather key components that would need refactoring
-
-Requested attendees
-===================
-
-+ David Hildenbrand
-+ Muchun Song
-+ Oscar Salvador
-+ Peter Xu
-
-References
-==========
-
-[1] https://lore.kernel.org/all/cover.1726009989.git.ackerleytng@google.com/T/
-[2] https://lore.kernel.org/all/cover.1770854662.git.ackerleytng@google.com/T/
-[3] https://github.com/libhugetlbfs/libhugetlbfs/
-
-
-Thanks,
-
-Ackerley
+and shall queue it as a hotfix.
 
