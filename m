@@ -4,130 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F06FFD8FEC
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:04:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D24CFD8FDA
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:06:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C3FC6B00BF; Thu, 26 Feb 2026 13:04:20 -0500 (EST)
+	id 70B186B00B1; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99B0E6B017C; Thu, 26 Feb 2026 13:04:20 -0500 (EST)
+	id 6DF086B0136; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 873B36B017A; Thu, 26 Feb 2026 13:04:20 -0500 (EST)
+	id 5AD806B0131; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B8F6B00BF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:04:20 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D93B14038F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:04:20 +0000 (UTC)
-X-FDA: 84487382280.11.042F441
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A4901180004
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:04:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ABg26jN5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yxK92OaI;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ABg26jN5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yxK92OaI;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 446EB6B00AD
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E9841602DF
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:06:58 +0000 (UTC)
+X-FDA: 84487388916.02.1F28F1F
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 24EA34001C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:06:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=TNeRh3oM;
+	spf=pass (imf27.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.49 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772129058;
+	s=arc-20220608; t=1772129216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bw/pxMCs3PGZ3t1xDbLU2eOlXd2FRM6wCa/DdIh9vIw=;
-	b=H5cVT0vzWborbF/0N0WwKCAvcOvL1hsi9XqMh3p8YTq949yArLVKUuAn+qzK62m9aU4nZh
-	vvm5D/mz9fIEW1A2X3jHHSvlHG/OyOOmAdHFfRbiLNMjMalZqh481IOtyMP86X9e/rJPgf
-	x1NoyNNNQfon6xipNd+1nuQ0ZvU3gzQ=
+	bh=4UbRn1/Zoh4IIbiAkpXZr+7zJlNAh6IGPdvB7q6Yi9o=;
+	b=GQrLkx9T6cc0Cklse9gJanYAAHbPP+YA99Z99lbWBYaqeeDrwfcEjuSTDjdE7n1Kfxl6HB
+	37hLjId3p7qutzXMlN+paidRs6np/QGc89K5MFvscSTlPX5Xar2ZFPVxfd8UV2z/BFnIIo
+	yXS+wnrU3/VCjYNVOeScbQ5T3hnUr5c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ABg26jN5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yxK92OaI;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ABg26jN5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yxK92OaI;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772129058; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=TNeRh3oM;
+	spf=pass (imf27.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.49 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772129216; a=rsa-sha256;
 	cv=none;
-	b=kp16vU/HDefebOW1z/bV3u0HwiWxtnbaR5gNc9mVHwYn9Z4g+lM9zgNhZzQ+yDI9ivsOj9
-	nOqGv2nq1+BwDOO6vi3EkqIlCzY20Q8XRR97fghX8cI3sFwqlK4kCBdfiWe/0ODM/qa8wn
-	p0FZaGLpSuKzLSmGVLB2fU3NI25Bch4=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A6A0A4D372;
-	Thu, 26 Feb 2026 18:04:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772129050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bw/pxMCs3PGZ3t1xDbLU2eOlXd2FRM6wCa/DdIh9vIw=;
-	b=ABg26jN5sboOiEbl5mP+ymHsjVlzRkzTWU3bUObNqTlzwN3AvDMtymW7EOU6+A0WAT/Xz3
-	bn2QUhGjXnjp9DtTQr7G+ZucZ7cTITq8CtiR1F+OEU9HtAMG84jWnw4gi6ffjtUW2tPq0h
-	Cbi5zVZRytmf/6jYXpkGdjlXGE7jI34=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772129050;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bw/pxMCs3PGZ3t1xDbLU2eOlXd2FRM6wCa/DdIh9vIw=;
-	b=yxK92OaIInZOuWsYJVe12akQvMahjC0j0h1rnulH/CXOsA3ISY/56bvMtNLVX7NAn80XCP
-	YhNS71eeOaKifODw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772129050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bw/pxMCs3PGZ3t1xDbLU2eOlXd2FRM6wCa/DdIh9vIw=;
-	b=ABg26jN5sboOiEbl5mP+ymHsjVlzRkzTWU3bUObNqTlzwN3AvDMtymW7EOU6+A0WAT/Xz3
-	bn2QUhGjXnjp9DtTQr7G+ZucZ7cTITq8CtiR1F+OEU9HtAMG84jWnw4gi6ffjtUW2tPq0h
-	Cbi5zVZRytmf/6jYXpkGdjlXGE7jI34=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772129050;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bw/pxMCs3PGZ3t1xDbLU2eOlXd2FRM6wCa/DdIh9vIw=;
-	b=yxK92OaIInZOuWsYJVe12akQvMahjC0j0h1rnulH/CXOsA3ISY/56bvMtNLVX7NAn80XCP
-	YhNS71eeOaKifODw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C0A53EA62;
-	Thu, 26 Feb 2026 18:04:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PXyWHhmLoGk6fQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 26 Feb 2026 18:04:09 +0000
-Date: Thu, 26 Feb 2026 18:04:07 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: syzbot <syzbot+709f5ab0e03871dec50a@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz, netdev@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
-	linux-block@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [syzbot] [mm?] possible deadlock in lock_mm_and_find_vma (4)
-Message-ID: <btgotj7xgnzgoqwkfwk3pviof4cd6dnhxes3g32ncxz5ogcslk@epki2rug5yor>
-References: <69a05ea3.050a0220.305b49.0022.GAE@google.com>
- <ibhdm4y3cwmornxfyxckosbznmtx3hi37tdp4xvha7a7wyaktp@rkrjyxdqmgb2>
+	b=iLkmUyXfsfbeQrJa/RNz7o4QGzWvyfZTCabFu8BXZ4ALJ60KeZWC/OrmC9wa24pFU3XJII
+	RKHXr/N3pDYAqOdDZXKWwURGUPH3O0bBK/dpLECf2r3EIwnDRYWZGM5rqBtaeTIjW9w2EX
+	p8UxVUqsoFCsBAVp2fdbuxPsNz1PbFs=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8972a14e27bso14282546d6.2
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1772129215; x=1772734015; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4UbRn1/Zoh4IIbiAkpXZr+7zJlNAh6IGPdvB7q6Yi9o=;
+        b=TNeRh3oMvpj62u85jJ3JZ0mBYBjzS11dOiAUA6S6ccQ86qiw7B7a7eSQk/eWJ1MhSd
+         o/1JFoeGaWHsLRKXoSgurk8Wg6kVYrBHl6Fo2eeolTQNyj2LMcIkliQ/Q2stTu9cgEJ2
+         phJAC5VljsAvD5x6tgPbFyFsJjEq3IGeiW6bWVmORvhXZ7Gi43tVFxXW4eE2PrfYUEjU
+         d2vocv/UurU/bhzGsS6TDrLB6nSDbI28RvU9ziPNJbRsqyyxMxff/BAldUQTBip4qENm
+         7tgN67cdcj78hBF8xZN1ivyT4JHiSalqyvHSwkVb51UwHcGmNeQ6eS/jfVKFSoIkHAe8
+         Bcug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772129215; x=1772734015;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4UbRn1/Zoh4IIbiAkpXZr+7zJlNAh6IGPdvB7q6Yi9o=;
+        b=OTXuZXmJBH4Z+rpEDzz6KbsjMnp+zPCSNuqiG6aFWdk9Cti3n5/A0RObMj7RHJwrSw
+         ivH4OdMihZWR0O1VmSorxvqY7TQDdMt15vyqvFuYANDEYJRVx6YDMfcS89Ggk6kYghNt
+         lGoqyHKQ8pUvdpZar0PYr1r4rTnT6RHMV6+OSPN1Blejc2g0wzjkyUZdZc29/XkjF2dV
+         RJRzu56XfvIRqRpsjEM49PH3l9s49cxCvgBLYgQI/Vzm+6sWrVO1FHAenFyNPnq4Y7L+
+         cIHvghsjudueInqw5nOgBEQCKkPdjur5BRnt59yPDHZHjgxRs45EJ231a3f653pAd2XT
+         lMjQ==
+X-Gm-Message-State: AOJu0YyqLGxQB+13ydt3fjxEAgn4VdFpFrV8jCpuAKLwy1FV7IyQanKl
+	Y01L0ZzDNbLnnWSdGIXbZ85xCQpxLws0PQpOE8T/e2ZDsUdkgHIrN9he7h16JC77CQ==
+X-Gm-Gg: ATEYQzwtMS1eRyy+sAptIS5xjtsbJXcq/uCalaBd0V47qTKCLVBX5q/NgUbyT69WELw
+	8Wt0sTlv/OpT9oSNQTOnfmA7HAOwD6OPdSTr14+89M286toVvDrOfKyVhpTHwi+7eD2nMznQv7u
+	YDIho7ZxwjgRBTPzyX6oFaZvDwcEqqwwJpzZvvy65ebfDbC4wT4rFPgM0xCpmaSSWj27Z4N+uUz
+	xt11nNMz51uv8HA6yJNKDUfnqJ9qAp68chYJ+MFSrcoHlvMMw9bypbzzIIw5yP9aeB3nAJB6TVk
+	ZQmBpvUynfrGiWyYtVqgnil9teOqmVJ1HmDGvZKRfaAIlNVtqO/btIZNRXqTWmC7fo2NPjJI8lZ
+	kqPkN7W/vejcaeBu0EXmanGt975dsNR1yYdIGDzoNb8FVMRc2IlsKMunwFUlkroycb4btiAxshz
+	8F+/opUSYsGkjzoJHbUpxFgyCOtkxHWuejDwfmh/XCB6XLap21mN2Tu+jxlJ4QywphYsoonTGan
+	6hPiaw829HNtC8FUu+J
+X-Received: by 2002:a05:6214:c2e:b0:895:4b79:83a5 with SMTP id 6a1803df08f44-89979e1bb72mr293888636d6.5.1772129215103;
+        Thu, 26 Feb 2026 10:06:55 -0800 (PST)
+Received: from rowland.harvard.edu (nat-65-112-8-51.harvard-secure.wrls.harvard.edu. [65.112.8.51])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c6fe55cesm23138596d6.0.2026.02.26.10.06.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 10:06:54 -0800 (PST)
+Date: Thu, 26 Feb 2026 13:06:51 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-mm@kvack.org, Dmitry Vyukov <dvyukov@google.com>,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Daniel Lustig <dlustig@nvidia.com>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	David Howells <dhowells@redhat.com>,
+	Nicholas Piggin <npiggin@gmail.com>, Boqun Feng <boqun@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Deacon <will@kernel.org>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Marco Elver <elver@google.com>
+Subject: Re: [BUG] Memory ordering between kmalloc() and kfree()? it's
+ confusing!
+Message-ID: <9240040d-598e-48bd-b802-bf91cce92d0c@rowland.harvard.edu>
+References: <aZ_lJAqxh_hNGr_v@hyeyoo>
+ <9dcd02b9-42da-455d-aa08-165e6ff0b921@rowland.harvard.edu>
+ <aaByMLSAIJM8HdbO@hyeyoo>
+ <d8308828-ed28-4650-8c8f-22a7e5cfd1a0@rowland.harvard.edu>
+ <aaB-1e1LoxkcYl2f@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ibhdm4y3cwmornxfyxckosbznmtx3hi37tdp4xvha7a7wyaktp@rkrjyxdqmgb2>
-X-Rspamd-Action: no action
+In-Reply-To: <aaB-1e1LoxkcYl2f@hyeyoo>
+X-Stat-Signature: xt7on1h8pcbu7kjixcd85hfkfuk36k6r
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A4901180004
-X-Stat-Signature: i9hmpo7uw737hxn87c6jf5iqdy5rjgan
-X-HE-Tag: 1772129057-786822
-X-HE-Meta: U2FsdGVkX1+0usyf7OTIBPhiVmNZfuBhNbnBW/DzwSDRbRp9urWsY9nXw3M+0va138LgBhpmbAQUyOKh2WAX4VtHJQLpfGVhV3HpwUOz7bGhS9XBC1lVhaQm9MDo3eK75v27c5/9awQcBft12KVYG0L+25fvvtDWQG60SqBZCyeyaL5p7ZeOiaXpd6QQBv9q3JObImu2ctF2yU2fGykuL1XbmaBkwd/ohsT6YBaBmmsh51SxmYyDttOCsQ7VF/8PcvS6wZDYoxiIonlqbrUYViLBIMe8ilNe2au7iK29eF2OOZnV1lhRx8Y00Q8dix1CFdMbvlFGNQl5EvgzGUCwolRWGBeTv2Z7w4u9rqJEizWQF/5oWvGTCnGTYQ1svZoW2U0sLooMCZZIRin3QfPB3nu9Gjs+tPjLTdy86E2Bm+Kvhk9Oby9UIYQjGoKxvWHOlW6gk89Osvn9uTEMVxs7eEbeOF5SHhGTCGxDY5m89k6drJaDhana3pWpeYrcm4UUtZb0IWnb9/ygIDC4a7VA5E8yr44MDp+E5W141X63qBT8Ckw3EFA0A4705b0kct6IfQ71ZLkFWKR+UbVB7dDj1ykv6wNaDXYLh6UJm/z/faDivKGLFVqV0FZImomd65j4WJXibQbxd9s4bdmL5cKgZuW6a9pFxTZvNcrNfsXWhBpExIZML25rhb6HLMR97BxkPAi+iz85uMOnBwYYmpdqOvbSwqkt8TYKrXKUEIDXbfVF7LjCeyi/0SzkPhorUgg3t7Lb0Eviuk4GMH/BbGxvjqGHbZYAptBEih8PgtIx5VhZw9kzdYBR5W9diI64H/3DXQp6eAYzDQol1rMwr1cO3IVB6tG4TsSw5eTdNWH+jZeelWK8kOzhTTFKQI/hrErqpB5qMZQL9JYP4Coch1j5a3uKXjRv4jM2wYgUZirWdFbI1HhXKMcGtkPN2hPfCOdS4waFZT3W2/otRyPT5AM
- uQGF4FVS
- PhSfyiRqhHEYcB60UyNtOVol+YHWO+oLar5prr55BV/kxATMBj2coS9WFq4o7tKZWYOYxoF7tBo1X0SAQS0Vk0+9XeKG0XkmdRHUy5gFL8J/HRjqfpeMFUTOiChlYq1gNRuo073Vo4LNHyixU1DJ7PgUJdz5W1k4NSAJZtv8Yn/iyXGiZm2C6nkVuUJ88X9ygIQeLjOwo6KT25NnUI6gf6zGRYPmANtFAC9hArKb++OnwLgiyaZ73ZhlKtrfL4DeJt5wJz+xv2BeJEhdEETfvXf7NUV5aAuUvytm/rSGSVkZ/h+AEtDIJGg8XP19Ws3nFROQ10eGeLxnOVgjU57veh32z6tiRAME/y1IwyKgt5dnvOK49ZztfsNu4LKy97z7Mnin8e8eXxxo/BersEJfg4wzTDsrWITeYe6pwLDO/DVDK7ZdCvkNaiFAiQkBmXlg/S++MwximksPz7AYiEjPeLL1OqLKWqk2lFb1bwIpgsn/OUbw=
+X-Rspamd-Queue-Id: 24EA34001C
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772129216-853337
+X-HE-Meta: U2FsdGVkX19zniw1X3FR5uL0I8qzBkDZHpPWk736wOz15JO00xFI7zlCIH0y5Pg5hzAChp0vc86kR6+ktlWmRV3EC8O5pnoToE6yDEHI9LgL6da5L1/TPRBMnEq9IOLb5HE8OWRWQmiZx1IxmypwSBYMakHx3cBBUwO7PyDLRrZIkvICbonvOzHMAOZTGaDL74KCV7ra5EPkfxpdhFRl9ZSUFKy31Ut5uPfSwBVJuLlp0Iv+W18DkdHcKuQSB/v39RuSA6QWiL4kMHjDjYRTA6qY9F4kfb2XtjaubZwO1DN9DT2TdN2vr+KFQWJfhwbpCwK3I0Rt+tW+q6F5CJqMu+BXILL6j/PsfMlal3MNJyBEa0kJ4HthD7jxLhxrdvTdTFvH3MahvXIWbwaGtcCPoA7zYrrzwZu3deRRHNEpW3v33NThvLZqbvr8EJweLwjjRa5+XSZQPXxHAE2LK6VtGNIIUGwPwY62nvje3qaU1EH08Xvr4zn7XvCfBzoRpGrhQnDrYXr5kPomX6E8GhoJ2mfuxopY3yk19llRz5z9oAFnGj5gaP5i7nsFQ6pH13OH3eK4fyDP8/n24KRO18Q/D/GTPV8R3GzF/wcD4dD9d8dAatEQ9Ew8TbpCk9ernfVzYViFtcvxQ0D3vU+IZbsx5FzYirmn68m0tU/rdOsMjoE+/xb/iYK3ZoPJVj8sIdv3gF/F4hitF/w8cLQi2LHnu7J76sQwKwoPUIRBixKBgHjSZIzUAH8IlXm2um6C53rMULDdqNhXUCKzgRbGxve2txYO7kkXJanDqqP6cmCswF1PtLb6JhwQyl1fqAMgXtML1kerb1LXPpNpVpOfccNt3C7avD2v/gi9LxZTE6VkK6U/Z8xcxG+TTYsu0IslazNdqmu6bffAY/wJNXg3z4XHhtFkw1rAt8zzAKjO76PzzNO5dyzl89DX5+yq2Sc/b4PXjNil8zyfeJfCs0kZpn/
+ bm5bgWxs
+ 27KtbQ497F4uP5Gswcw1iGhAyyAKS53qGg2n1MX6nBGC2qAB/X85Hk+3fziwQS/qPpBOOFANX0OUvqKdvi5072BKuUioZ7aS2xPZzNsLkMbcUE1EHeSPivtzWbADqbxshmF4nUA/Zv9uFBkMNR/ttI+LMimOgVd5znYGwYbTKt7eaxUg1A6/XM9kQYiZq4mlJvId8u8M4B7fgtpFRp8jGSS+FRyJ0BA8mf14zcuZ5Qr5RX+pD9NeTOijCXG0BKYg1pl135ayehZ/8leTcKsabPZ1YtgUmmsB/0vgzkgdCaXKQMD9auCPRL1TYQmqTs2jj4U/eDDXr8gAhcDW/mBq21Ci6ciSLRPi16DkJ4y34uTKk8aUKb14glpyYjd9caMt5zUULHmNkeJLd4ORbF5pHE2iLIiaYVczy9oVNJVQcdtEgZFDGIiQGFnWFNyICBptp49bemDyBo34WyxohpCEztmCgbe8BshYP+nkmygfJj4TRc+gnmYiStk9NBDuR0p6yWFt9Lo9J+dFAPfTnBFCzK3kvpOFM1ugf/gzwG9Gnz0Uf4vfwx2Zq/ocDVzGjKHVdT698NF69fAg7om+tfsvUfBq68ebfYJX/DNAUvbgjvzjAU1M27QS5U/jhycJ3wDzjI4Eu7XAXk1fsTxovCZvFePLZhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,46 +142,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 05:40:26PM +0000, Pedro Falcato wrote:
-> +Cc netdev, block, nbd people
+On Fri, Feb 27, 2026 at 02:11:49AM +0900, Harry Yoo wrote:
+> On Thu, Feb 26, 2026 at 11:42:02AM -0500, Alan Stern wrote:
+> > On Fri, Feb 27, 2026 at 01:17:52AM +0900, Harry Yoo wrote:
+> > > On Thu, Feb 26, 2026 at 10:45:55AM -0500, Alan Stern wrote:
+> > > > On Thu, Feb 26, 2026 at 03:35:08PM +0900, Harry Yoo wrote:
+> > > > > Because the slab allocator itself doesn't guarantee that such
+> > > > > barriers are invoked within the allocator, it relies on users to
+> > > > > do this when needed.
+> > > > 
+> > > > It doesn't?  Then how does the slab allocator guarantee that two 
+> > > > different CPUs won't try to perform allocations or deallocations from 
+> > > > the same slab at the same time, messing everything up?
+> > > 
+> > > Ah, alloc/free slowpaths do use cmpxchg128 or spinlock and
+> > > don't mess things up.
+> > > 
+> > > But fastpath allocs/frees are served from percpu array that is protected
+> > > by a local_lock. local_lock has a compiler barrier in it, but that's
+> > > not enough.
+> > 
+> > If those things rely on a percpu array, how can one CPU possibly 
+> > manipulate a resource (slab or something else) that was changed by a 
+> > different CPU?
 > 
-> On Thu, Feb 26, 2026 at 06:54:27AM -0800, syzbot wrote:
-> <snip>
-> > 
-> > Chain exists of:
-> >   fs_reclaim --> k-sk_lock-AF_INET6 --> &mm->mmap_lock
-> > 
-> >  Possible unsafe locking scenario:
-> > 
-> >        CPU0                    CPU1
-> >        ----                    ----
-> >   rlock(&mm->mmap_lock);
-> >                                lock(k-sk_lock-AF_INET6);
-> >                                lock(&mm->mmap_lock);
-> >   lock(fs_reclaim);
-> > 
-> >  *** DEADLOCK ***
-> > 
-> > 2 locks held by syz.3.3387/17804:
-> >  #0: ffffffff905e2228 (br_ioctl_mutex){+.+.}-{4:4}, at: br_ioctl_call+0x34/0xa0 net/socket.c:1225
-> >  #1: ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
-> >  #1: ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: get_mmap_lock_carefully mm/mmap_lock.c:441 [inline]
-> >  #1: ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: lock_mm_and_find_vma+0x35/0x6f0 mm/mmap_lock.c:501
-> >
+> AFAICT that shouldn't happen within the slab allocator.
 > 
-> It looks to me like the issue is:
->  setsockopt(nbd_sock) -> takes sk_lock -> copy_from_user -> page fault ->
->    mmap_lock -> allocation needs reclaim -> fs_reclaim -> fs does IO -> nbd
->    grabs sk_lock -> deadlock
+> > The whole point of percpu data structures is that each 
+> > CPU gets its own copy.
 > 
+> Exactly.
+> 
+> But I'm not talking about what happens within the allocator,
+> but rather, about what slab expects to happen outside the allocator.
 
-Another funny case that came to me just now:
-sendmsg(nbd_sock) -> lock_sock(nbd_sock) -> tcp_sendmsg_locked(nbd_sock) ->
-copy_from_user() -> if VMA is backed by file on nbd bdev -> ... ->
-lock_sock(nbd_sock)
+I understand.
 
-Right? Is there something extremely crucial that I'm missing?
+> Something like this:
+> 
+> CPU X				CPU Y
+> ptr = kmalloc();
+> WRITE_ONCE(gp, ptr);
+> 				if (p = READ_ONCE(gp))
+> 					kfree(p);
+> 
+> Yes, it's a crazy thing to do. CPU Y isn't guaranteed to see
+> up-to-date version of object content or metadata.
+> 
+> Instead, the code should do:
+> 
+> CPU X				CPU Y
+> ptr = kmalloc();
+> gp = smp_store_release(&gp, ptr);
+> 
+> 				if (p = smp_load_acquire(&gp))
+> 					kfree(p);
+> 
+> One reason that I started this discussion was to argue that we should
+> have a well-defined a contract between the slab allocator and its users.
 
--- 
-Pedro
+Yes, you have made that quite clear.  But you're missing _my_ point.
+
+Which is: The same mechanism that the slab allocator uses to ensure that 
+CPU X and CPU Y won't step on each other's toes if they both run 
+kmalloc/kfree at the same time should also be able to guarantee that the 
+metadata changes made by CPU X will be visible to CPU Y if Y manipulates 
+a slab that X just finished with.
+
+To put it another way, ensuring non-interference during simultaneous 
+accesses isn't all that different from ensuring coherence during 
+sequential accesses.  Doing the first should easily allow doing the 
+second.
+
+And if it doesn't then something questionable is going on.
+
+Alan Stern
 
