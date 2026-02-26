@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6FA5FD45FF
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0799FD45FE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:31:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43EF86B0089; Wed, 25 Feb 2026 20:30:54 -0500 (EST)
+	id 429516B0088; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E9B06B008A; Wed, 25 Feb 2026 20:30:54 -0500 (EST)
+	id 3FDC06B008A; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C17F6B008C; Wed, 25 Feb 2026 20:30:54 -0500 (EST)
+	id 2D68E6B008C; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1852C6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:30:54 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A012C13AE53
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:30:53 +0000 (UTC)
-X-FDA: 84484878786.29.6AA16E4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AB3A9A0005
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:30:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NbNSEyyF;
-	spf=pass (imf25.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B0CC6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D22B113AD6F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:31:11 +0000 (UTC)
+X-FDA: 84484879542.09.97B5520
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B8425C0006
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:31:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KtnMfELr;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772069469; a=rsa-sha256;
+	cv=none;
+	b=OSba0yus1hjf9Lj2GaPtdp1f0W+S9MNHl/rvoJXMeD9Wo54pB+cP6Zo/RcCky67fMqSBKL
+	33xyXsPxp1esYF/Qp3QC/d2Dc3qa6c9PoECssDaPfbcg+xp3pGOB4SPUkAWFtpskzl0CX2
+	dwyen+w4tj6RdvFbhBwTo1HTeAZYjTI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KtnMfELr;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772069451;
+	s=arc-20220608; t=1772069469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6CWKU+s+/ibAb4RGR5iOyoI/KP+ZxoADOlF3DvBlYHY=;
-	b=5qXuhulOUzA+VXq12YQau/F8PvkCifUUNYjhT5eyQp+hIRSMz8JTkeyCNGImzFo2mkW/PY
-	iDyuKz+1djqfMZ8IwdIfeH2TZi/vQtBE3TqNzYj76TzAxvTUGeupJfYDAxTUJRZuyRmqTs
-	FzBg5sucswU1fVqBlXFWsyXaiowZsxE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772069451; a=rsa-sha256;
-	cv=none;
-	b=6nySU9GUU2z5EYtTL4AzFahtgHfV4i1NXtQVrtZmo32FoXY0lh+yqh5eSTyBTdLrRcwvpk
-	ZMqyC4X7PrhJBJoIs7bV5xuPLZ2tR8SuP4gVtIL63hBLypUKGQgb4d6Rwtl1SHp30MSu8l
-	bcpLlCbwUEp6QyZZa0n45LrFN7gamEg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NbNSEyyF;
-	spf=pass (imf25.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=MFM5ACWvZzUBi8NGbn5Vs1lsLXddFcAE8fhUo7LqxxQ=;
+	b=ncM1is+h0zLUoxdoHrzDnp61qycqoNVpAl2+K4cRrbzsG+L6wP+iCP6Z9Z0qbfT2aV7BUe
+	oq8IOf1RuD6Fbs+2DKL32h1msjrff1mMzO/+w2ZdP7P8hBO+5EZ7IpJNzq+kuMLbCRPky6
+	kgiQ7ZJMolYlpjWSx+quuO8HPk2kKUw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772069451;
+	s=mimecast20190719; t=1772069468;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6CWKU+s+/ibAb4RGR5iOyoI/KP+ZxoADOlF3DvBlYHY=;
-	b=NbNSEyyF4JJn6qnAytRRaHtzP1hVP/aQjUf8q5vAV8hDM+TyplumltmGujFxaCmOB3CVtb
-	FdpkcV5QgPISgabjO/cHOyJNhJoQ8W1G+CRDmTGvZ5UaG8AqJtzUvvEx+ouIXHR93f3ruv
-	riFbnMLYiJODhI3+2YKvL4o2yaTHN3s=
+	bh=MFM5ACWvZzUBi8NGbn5Vs1lsLXddFcAE8fhUo7LqxxQ=;
+	b=KtnMfELrSA7ORJ0HUytr+MUPquAdTxuqrFcLhVtViijlf/syDXD788lg1MuamUtFt4wq/t
+	B5L7VPIHXaiZNPdlq3ZQZM65O6U/TNyHAHxF8s/GQSpE0Crt6eqsThoMvwlcp8T8GfQgn7
+	ZEfeBQxHXhzyDCMFgGFCM6ayLLNZn2U=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-BVZLdWHXPHC8rvvMyBCjmg-1; Wed,
- 25 Feb 2026 20:30:46 -0500
-X-MC-Unique: BVZLdWHXPHC8rvvMyBCjmg-1
-X-Mimecast-MFC-AGG-ID: BVZLdWHXPHC8rvvMyBCjmg_1772069441
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515--67Cj5ImOwuOffmixlpEDA-1; Wed,
+ 25 Feb 2026 20:31:04 -0500
+X-MC-Unique: -67Cj5ImOwuOffmixlpEDA-1
+X-Mimecast-MFC-AGG-ID: -67Cj5ImOwuOffmixlpEDA_1772069459
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 64D271956080;
-	Thu, 26 Feb 2026 01:30:39 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EE8BB19560A1;
+	Thu, 26 Feb 2026 01:30:57 +0000 (UTC)
 Received: from h1.redhat.com (unknown [10.22.64.173])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1CD923003D8C;
-	Thu, 26 Feb 2026 01:30:18 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 29A8C3003D88;
+	Thu, 26 Feb 2026 01:30:39 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
@@ -133,26 +133,26 @@ Cc: aarcange@redhat.com,
 	ying.huang@linux.alibaba.com,
 	ziy@nvidia.com,
 	zokeefe@google.com
-Subject: [PATCH mm-unstable v2 1/5] mm: consolidate anonymous folio PTE mapping into helpers
-Date: Wed, 25 Feb 2026 18:29:25 -0700
-Message-ID: <20260226012929.169479-2-npache@redhat.com>
+Subject: [PATCH mm-unstable v2 2/5] mm: introduce is_pmd_order helper
+Date: Wed, 25 Feb 2026 18:29:26 -0700
+Message-ID: <20260226012929.169479-3-npache@redhat.com>
 In-Reply-To: <20260226012929.169479-1-npache@redhat.com>
 References: <20260226012929.169479-1-npache@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9YbwYi_45OlN3yy6aRIIU4v1sHYWYGI64Rpg-_8imZQ_1772069441
+X-Mimecast-MFC-PROC-ID: Jq_0WpoVirjWlc4V00cr7AE7GWnzswPu91SkxhnpBNg_1772069459
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: AB3A9A0005
-X-Stat-Signature: y5rwpji5qi5iorhoqoypzmiscndysbf3
+X-Stat-Signature: g9te4ucbzqmct8y4gqpazcz4kg78n4f9
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772069451-944929
-X-HE-Meta: U2FsdGVkX19yCMTu5oyfcfkLoWhuJU2wTQMomDg72JORcc8w2XEVaTNttQ80Arq0AWK3KNoOYY06ZzauNQkjFRrgBZ7PRLHkfk7R+uULvSuc8sQriroiNBONndyOJXTvKM4kmNIPuMMjxcv7iNCjgm7SC2ujO3XwoczhhXezD2lE9EMy1FeuXPiWPbbi57JozMNS0U79x4gTPULuevKRGKrm4kqg14ShSSCxBe+nDD2qZZQ1XU+8bwdgKCkkgqlMXgb/bq6I0g9gR3cc+pcj3KME+1nH0p3sPMk/yCjF+byHEzvvPBYiQYJO1mMBBr43vPPw0s5j4xyzGdDkjQXeBF4PrUB0B48VQzeX6jV1okV6TnsG33aYjKru9iNlXJjcer2WaJ6EI/vQRURHIcoRRSB6qlkSNS4Usbi/R/u3F/Aokc1YLUpGWKthnG4hsmDh+EjXEkuiwHEClydqyPwq1VaynZ7ZYMBQ2g+yoKrUV2IItTIk4flESRJFs0xGpUOABtj6qw3pJvwGQVpMJ8AQYN2NXTYCr+J5Wk/c7ehi46SNQKjGaXg6Uit76fY1yA/ONClw5nQrImDd+uEX9lSoIsHwbkl9xd15quXhomTYS9WnySZHJrLlBKICixLF2MdYB/8RI5dBJJ1KX+beINuMeU30gwld2rCIF7O8lse/r+1+WqYRKkPPbdQB8ZHHj02KEJH/9W/WL4YzbAUzNt5vWRN9yYPCJ4kObl0NGAa04ccfNIkBSyUjJEnstKJAXV/izONMJHqVnQ45dOJ4CvsWWYL7mwNt5qmoitEYvq5/Uug4+LreQxhaF4cOjKyrkB6siyFPdGQZGIM2DMVzP70jZeQ4U4dYXmFoQKBLVxj7Xu4UrvjdEsZIdakZT94b3ucLIVT9XoOLzSZpNqMCXoKNT6RcvgWKIFhPYWeN5uYYVonzlDLDN+aKoEREqoYTfV4S1xRjL5QBS54hvAlSXFA
- 6kRKQICz
- ahyXmcDuMeCov2yylXJ5+cqQRMdMONhZTCLkn8iu0Lm31wk/1EMevnq+Vp7LfbByVeErXMn2Y8ZcQdL7KHydXtUKlS7UpEltUBzkYJJKxkAeN2NIgr7TweGQ1pNdiCsxiIJDlHOAvGH8g6Cb27lRuiaYtSokxr1ShE4py9IW2lrFr1kBIjcVbDRZx7xiRM6DMjFolHqhvnw8vy7ZgTvBwFzn6iRHwTs0ORBehse+YqHzVFw1uUcnLXfUqhgg5o3oIAU3l4KHn71XlsDCvzcJfDIOqBSF/vyGH2sa1EuLesjRcblcamIgAcplXzGWWOkkKJFPIwxX8D1EF5uKpdydrHy0+aFJ/5cpmZfgCpayo/ujQhc1fVygVUeyvzB3Qn0jc4UNbIUk5WoXzHyeKHe83CXNjdcBQ9ys00u7W
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B8425C0006
+X-HE-Tag: 1772069469-324383
+X-HE-Meta: U2FsdGVkX19nLlCTQjRtrE0/Y7uLJrRaECLxzVY0IqifI/Povko4tJAjRPiZeuA0ak6yUv1no9EN2e+ng8eQjAaL7Hxnt5VLmQhX9jJ9XBYukzKWlWf7feZkooyUnstYEgsu/aeBQVQZgh54rk7zvxI3eOmzOgBRR9C69UTMpzBg/0DiHadKQlN+d2cTtbZdW/jIZ3D5MqlB15C5zrPKbmQ5k0Yh9eONWMRhmNQmAps0HtZVn9M4HWU/fzzqi/1+YLjsj6NpCxAAxsFN9NI53IpR5nGLXbXaje//tVWjkaOs7Q8WSInL01a0GfaeOzC2KxTpKj9K8g0MX+dmQpTmhF1ojjLhmDgrQnQWCEtZkhPBO+RXWGg3tzq2ZQbdNPhumi1nAUrpexgco6AGyW0vjJ8JpUZmSxZv2YShHO6NL/gSK3aN7o75k03c3L2BRbmB2+nPE5ph1VtajRVyy+oFO89VvgiVL8GFlV4qduzZ3lfxpXVllEu3JSI1Nl448NDT3Pht7nwgmqxYIfPl7nlSrlWe7IEXLM7aAHEm6odmMlM+/rgjO4PHsZxNZ3M4qlbbXId3Xc2SczRhcYwBGWErTOTNVq8N6oE2AGF7V3dEP4hD37EfFmnqAdqSVCsnpRsg38XNcFr0lRNxdm3V+gXzIp/oJTNJAGDV1ueSZKruzCypSKVp+GufFnT+P9LhyNEnDQtW8fGl7kTPasuujQLiyDukS/T/CFoBVPmzaiZ3LJfwUBkV//u7gIJCwZyCVoCvJ27nkwu0hFqqaJTv5OZ/TyARiZeEHKlMqPL0RcbEht7C2VZGOSCEtf/9tsMNhRP+5Upn8rvrRlKw50UAIqTD1td3sXJNiED8sy6SApK6woKltD/bTTNqAf/RwKmuYCBDCPm7VlTQZ1DI2Y3aiSBwMAQEneH2YVM5Otk+KRgeOTMbUkR9fZLmnPdlswZPgh4C8zp+r/s80PLs0EkdjeE
+ frB98iL6
+ cueOa4G4bppUiVA/vmAE19DXVMtej4G4WsLdYwmec0KMbFoDiRa2AkBj7uGf6eYbabEoKrNGLr8XXtNFQnOX6KbZrj1GwkcKR/f/L6YMrRvuhLTGEMbOvwdmpDFZYO59Ri/SnV8Ud+udwGe0qN8FvDpd6fr6SbKzKN9SfnYWjG7vPcAv3+DWpJyoRvK3QWU9XIoh7gEuGdoFZjvf+HyRbFSLWcCSOULKMQ/Eh8my+XVdCdMQKGTB/ENjwUvu26Ap2IrckYKhYfVMF22gsYDGJwv+T60QzdwofCvHs46hr6Jg9r4wvOrYd3PHx2pAPrchsiKD+A2k1JIc4Rdlw50PCsbTa6bYIN4B78tPoabxTf93kCnsfBG6w64liaDWqWQT5FuXlPXs/QpXJdEMjahjV4TUmiwjyOfin91B1LPoLH5QX7SiOdEaD79EXGT4pysNOKr8zW4W7+Yzpfs0Xz9hcvUQPv7xMWxJNJvYLubNpWASEGLH1hpslzEc3IWXWXiuoHriWlXak6WprHOz1uQwCyG+kZ8WMc7eCC+gFNzR7EuPRA6A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,145 +160,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The anonymous page fault handler in do_anonymous_page() open-codes the
-sequence to map a newly allocated anonymous folio at the PTE level:
-	- construct the PTE entry
-	- add rmap
-	- add to LRU
-	- set the PTEs
-	- update the MMU cache.
+In order to add mTHP support to khugepaged, we will often be checking if a
+given order is (or is not) a PMD order. Some places in the kernel already
+use this check, so lets create a simple helper function to keep the code
+clean and readable.
 
-Introduce a two helpers to consolidate this duplicated logic, mirroring the
-existing map_anon_folio_pmd_nopf() pattern for PMD-level mappings:
-
-	map_anon_folio_pte_nopf(): constructs the PTE entry, takes folio
-	references, adds anon rmap and LRU. This function also handles the
-	uffd_wp that can occur in the pf variant.
-
-	map_anon_folio_pte_pf(): extends the nopf variant to handle MM_ANONPAGES
-	counter updates, and mTHP fault allocation statistics for the page fault
-	path.
-
-The zero-page read path in do_anonymous_page() is also untangled from the
-shared setpte label, since it does not allocate a folio and should not
-share the same mapping sequence as the write path. Make nr_pages = 1
-rather than relying on the variable. This makes it more clear that we
-are operating on the zero page only.
-
-This refactoring will also help reduce code duplication between mm/memory.c
-and mm/khugepaged.c, and provides a clean API for PTE-level anonymous folio
-mapping that can be reused by future callers.
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- include/linux/mm.h |  4 ++++
- mm/memory.c        | 59 +++++++++++++++++++++++++++++++---------------
- 2 files changed, 44 insertions(+), 19 deletions(-)
+ include/linux/huge_mm.h | 5 +++++
+ mm/huge_memory.c        | 2 +-
+ mm/khugepaged.c         | 6 +++---
+ mm/memory.c             | 2 +-
+ mm/mempolicy.c          | 2 +-
+ mm/page_alloc.c         | 4 ++--
+ mm/shmem.c              | 3 +--
+ 7 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 13336340612e..3ebf143c7502 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4901,4 +4901,8 @@ static inline bool snapshot_page_is_faithful(const struct page_snapshot *ps)
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index a4d9f964dfde..bd7f0e1d8094 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -771,6 +771,11 @@ static inline bool pmd_is_huge(pmd_t pmd)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
- void snapshot_page(struct page_snapshot *ps, const struct page *page);
- 
-+void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
-+		struct vm_area_struct *vma, unsigned long addr,
-+		bool uffd_wp);
++static inline bool is_pmd_order(unsigned int order)
++{
++	return order == HPAGE_PMD_ORDER;
++}
 +
- #endif /* _LINUX_MM_H */
+ static inline int split_folio_to_list_to_order(struct folio *folio,
+ 		struct list_head *list, int new_order)
+ {
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 8003d3a49822..a688d5ff806e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4100,7 +4100,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		i_mmap_unlock_read(mapping);
+ out:
+ 	xas_destroy(&xas);
+-	if (old_order == HPAGE_PMD_ORDER)
++	if (is_pmd_order(old_order))
+ 		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
+ 	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
+ 	return ret;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index c85d7381adb5..2ef4b972470b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1533,7 +1533,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ 	if (IS_ERR(folio))
+ 		return SCAN_PAGE_NULL;
+ 
+-	if (folio_order(folio) != HPAGE_PMD_ORDER) {
++	if (!is_pmd_order(folio_order(folio))) {
+ 		result = SCAN_PAGE_COMPOUND;
+ 		goto drop_folio;
+ 	}
+@@ -2016,7 +2016,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 		 * we locked the first folio, then a THP might be there already.
+ 		 * This will be discovered on the first iteration.
+ 		 */
+-		if (folio_order(folio) == HPAGE_PMD_ORDER &&
++		if (is_pmd_order(folio_order(folio)) &&
+ 		    folio->index == start) {
+ 			/* Maybe PMD-mapped */
+ 			result = SCAN_PTE_MAPPED_HUGEPAGE;
+@@ -2346,7 +2346,7 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
+ 			continue;
+ 		}
+ 
+-		if (folio_order(folio) == HPAGE_PMD_ORDER &&
++		if (is_pmd_order(folio_order(folio)) &&
+ 		    folio->index == start) {
+ 			/* Maybe PMD-mapped */
+ 			result = SCAN_PTE_MAPPED_HUGEPAGE;
 diff --git a/mm/memory.c b/mm/memory.c
-index 9385842c3503..a1a364e1fdcd 100644
+index a1a364e1fdcd..cb76fa182eab 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -5189,6 +5189,36 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
- 	return folio_prealloc(vma->vm_mm, vma, vmf->address, true);
- }
+@@ -5427,7 +5427,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+ 		return ret;
  
-+void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
-+		struct vm_area_struct *vma, unsigned long addr,
-+		bool uffd_wp)
-+{
-+	unsigned int nr_pages = folio_nr_pages(folio);
-+	pte_t entry = folio_mk_pte(folio, vma->vm_page_prot);
-+
-+	entry = pte_sw_mkyoung(entry);
-+
-+	if (vma->vm_flags & VM_WRITE)
-+		entry = pte_mkwrite(pte_mkdirty(entry), vma);
-+	if (uffd_wp)
-+		entry = pte_mkuffd_wp(entry);
-+
-+	folio_ref_add(folio, nr_pages - 1);
-+	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
-+	folio_add_lru_vma(folio, vma);
-+	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
-+	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
-+}
-+
-+static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
-+		struct vm_area_struct *vma, unsigned long addr,
-+		unsigned int nr_pages, bool uffd_wp)
-+{
-+	map_anon_folio_pte_nopf(folio, pte, vma, addr, uffd_wp);
-+	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
-+	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
-+}
-+
- /*
-  * We enter with non-exclusive mmap_lock (to exclude vma changes,
-  * but allow concurrent faults), and pte mapped but not yet locked.
-@@ -5235,7 +5265,14 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 			pte_unmap_unlock(vmf->pte, vmf->ptl);
- 			return handle_userfault(vmf, VM_UFFD_MISSING);
- 		}
--		goto setpte;
-+		if (vmf_orig_pte_uffd_wp(vmf))
-+			entry = pte_mkuffd_wp(entry);
-+		set_pte_at(vma->vm_mm, addr, vmf->pte, entry);
-+
-+		/* No need to invalidate - it was non-present before */
-+		update_mmu_cache_range(vmf, vma, addr, vmf->pte,
-+				       /*nr_pages=*/ 1);
-+		goto unlock;
- 	}
+-	if (folio_order(folio) != HPAGE_PMD_ORDER)
++	if (!is_pmd_order(folio_order(folio)))
+ 		return ret;
+ 	page = &folio->page;
  
- 	/* Allocate our own private page. */
-@@ -5259,11 +5296,6 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 	 */
- 	__folio_mark_uptodate(folio);
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 0e5175f1c767..e5528c35bbb8 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2449,7 +2449,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
  
--	entry = folio_mk_pte(folio, vma->vm_page_prot);
--	entry = pte_sw_mkyoung(entry);
--	if (vma->vm_flags & VM_WRITE)
--		entry = pte_mkwrite(pte_mkdirty(entry), vma);
--
- 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
- 	if (!vmf->pte)
- 		goto release;
-@@ -5285,19 +5317,8 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 		folio_put(folio);
- 		return handle_userfault(vmf, VM_UFFD_MISSING);
- 	}
--
--	folio_ref_add(folio, nr_pages - 1);
--	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
--	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
--	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
--	folio_add_lru_vma(folio, vma);
--setpte:
--	if (vmf_orig_pte_uffd_wp(vmf))
--		entry = pte_mkuffd_wp(entry);
--	set_ptes(vma->vm_mm, addr, vmf->pte, entry, nr_pages);
--
--	/* No need to invalidate - it was non-present before */
--	update_mmu_cache_range(vmf, vma, addr, vmf->pte, nr_pages);
-+	map_anon_folio_pte_pf(folio, vmf->pte, vma, addr, nr_pages,
-+			      vmf_orig_pte_uffd_wp(vmf));
- unlock:
- 	if (vmf->pte)
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    /* filter "hugepage" allocation, unless from alloc_pages() */
+-	    order == HPAGE_PMD_ORDER && ilx != NO_INTERLEAVE_INDEX) {
++	    is_pmd_order(order) && ilx != NO_INTERLEAVE_INDEX) {
+ 		/*
+ 		 * For hugepage allocation and non-interleave policy which
+ 		 * allows the current node (or other explicitly preferred
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d88c8c67ac0b..96ffb47bcfee 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -687,7 +687,7 @@ static inline unsigned int order_to_pindex(int migratetype, int order)
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	bool movable;
+ 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+-		VM_BUG_ON(order != HPAGE_PMD_ORDER);
++		VM_BUG_ON(!is_pmd_order(order));
+ 
+ 		movable = migratetype == MIGRATE_MOVABLE;
+ 
+@@ -719,7 +719,7 @@ static inline bool pcp_allowed_order(unsigned int order)
+ 	if (order <= PAGE_ALLOC_COSTLY_ORDER)
+ 		return true;
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (order == HPAGE_PMD_ORDER)
++	if (is_pmd_order(order))
+ 		return true;
+ #endif
+ 	return false;
+diff --git a/mm/shmem.c b/mm/shmem.c
+index cfed6c3ff853..ba74803c7518 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5558,8 +5558,7 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+ 		spin_unlock(&huge_shmem_orders_lock);
+ 	} else if (sysfs_streq(buf, "inherit")) {
+ 		/* Do not override huge allocation policy with non-PMD sized mTHP */
+-		if (shmem_huge == SHMEM_HUGE_FORCE &&
+-		    order != HPAGE_PMD_ORDER)
++		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+ 			return -EINVAL;
+ 
+ 		spin_lock(&huge_shmem_orders_lock);
 -- 
 2.53.0
 
