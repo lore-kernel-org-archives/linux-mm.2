@@ -4,155 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BF11FD9E0E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 20:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8667DFD9E0A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 21:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF0E66B01FB; Thu, 26 Feb 2026 15:49:19 -0500 (EST)
+	id 9FF4C6B019F; Thu, 26 Feb 2026 16:01:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9AFF6B0249; Thu, 26 Feb 2026 15:49:19 -0500 (EST)
+	id 9D6736B01A8; Thu, 26 Feb 2026 16:01:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99D606B024A; Thu, 26 Feb 2026 15:49:19 -0500 (EST)
+	id 8D5DA6B020D; Thu, 26 Feb 2026 16:01:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F766B01FB
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:49:19 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B611896AF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:49:19 +0000 (UTC)
-X-FDA: 84487798038.27.8EE33C7
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012066.outbound.protection.outlook.com [40.93.195.66])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 63A4518000D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:49:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I6YG+Bh6;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.66 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772138956;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 789C06B019F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:01:38 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB9AA1B6D94
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 21:01:37 +0000 (UTC)
+X-FDA: 84487829034.23.194F71D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 24B4840016
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 21:01:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dW46b5y9;
+	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772139695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8zma5mBBrWc/5mba9cBE0XFLOY+IQdJfbuXFBGzi6Mc=;
-	b=eJdq1m1QbDQZVpDJ/IQ+eC1NCDphUwyM0syH/lW2lJw+mzFysVUrzylZDgfhINthWvG7lR
-	joJTz3wviay40i53fQPLeadWDkDNp9C/RLJJA5aY5n+Dp7XtzGzAour2EDuAp1V0WiG94C
-	xYqlnSZpPJqcvlioncs4Qy4wdRik4GY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772138956; a=rsa-sha256;
-	cv=pass;
-	b=muwI7Cg8LhCYxKJRT1zSY0Et3/CsOYp/U4WTVa3Gj87titqTWpyDOD5lk33MjzL20uA+n7
-	Y/F+R4KEj1maFGheHw4vF0Aeo+g+wuCCdig+xJbWZXkiu0gxqp4xeggPAwkDVrpf/+yOuU
-	LapiFFAC9de/r3rv6lEwoIhCw42bnd0=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I6YG+Bh6;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.66 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XUREu/GJWw2QmS8qIFqkzG6rCsPi+/Z2I095Zcx2lmYSwYJdsm7bnVOGC6ZAveHBIrUWckFZIKe0s0BMCt0SdYr4eR5nt+yzN82LF9Knb5yKMDloP8C99S9af1cKIbDe6IIZC5zvHuBPClRJt8SgCNNfj+mIXZbup4wu4hsxVWB2fTeTlgxJjlQBt9KCB3YHXXcCCrF6g2CqKsGZjVDQ60RSWanYsrY+r6m78dxgaphFBNdyD3UBcSqJyEfGG0neZKvCQrPeVAjCErIBGanKeMOboZF4cCYoKnD4m2/i4BJJCw7J/RZnusSHwoCEKktf+sosfPnNhe/BPZjvt3ZS+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8zma5mBBrWc/5mba9cBE0XFLOY+IQdJfbuXFBGzi6Mc=;
- b=li9EgUWcCvvRwIKiWjI6tcORXfuA8uaZr1GdYrsYzr+DBjho72U/DCvfLjkfvshfkUscmjMP1W1vZZIhIIdBkKma9AplnyqtuARWKCf3SWSfOb7o6Cm9kpEFKotUdEyEwJ63WZnwI9Fal5l6GtfzEEI347Y7e2dSRAKmdUiEZ/H13R2cwq/c1N/QcBmS2FAQ8TkU/xeGtek4GjSYe9F5A7K/EtTe6Q0cdVdWIhr5DaPoHQ9YZivNENWyPhz+0jTHA7/8MqlymcZvM5FeA0AW0FNPyKQFT7Bjbbc6DSIllaK7/xpYYqvK7OS1qcAfZ3036ZBaH78lvqZHLb1+AIVhPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8zma5mBBrWc/5mba9cBE0XFLOY+IQdJfbuXFBGzi6Mc=;
- b=I6YG+Bh6f5HYv+KrMBynlnux2DdiPflKnJrhj3UMnSssbmZl1Z8USTAqFZnBX8B05n6fM7U1ms98xKJGUx1Nsv/9ynErTYXO4IYUHEWqdz5hO2bpJb2eVSoQA9HFE488Ud/cmYG2gqKVCEX4+ThaCHxxhA6xesb+9D/p1PXnPGOG9/xaHfun/NeQzFSp7OqCANdUQNvc0XvEYFJ51AdZnO46U9pH5R1w+F332ovHi70h7dN+0BYoaDGmV+En3xfKUNaMuKir5C7TXxhhGYVsrGv4joVbbPz+FnJECSGSUb8BcUFcwYXsGPfOn7AvDMx06iRBENhS8zQqNlk68fsyDQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS7PR12MB8370.namprd12.prod.outlook.com (2603:10b6:8:eb::22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.14; Thu, 26 Feb 2026 20:49:10 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 20:49:10 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Bas van Dijk <bas@dfinity.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, regressions@lists.linux.dev,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
-Subject: Re: [REGRESSION] madvise(MADV_REMOVE) corrupts pages in THP-backed
- MAP_SHARED memfd (bisected to 7460b470a131)
-Date: Thu, 26 Feb 2026 15:49:05 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <CB5EF1C4-6285-4EEC-ABD0-A8870E7241E8@nvidia.com>
-In-Reply-To: <CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com>
-References: <CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0112.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::27) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=bmxX/qYJNas+Kj/SszP9KMGgHjwU+T3IF8YxcVK/CRk=;
+	b=XqJePfPXXTsF9Hyn8tS/AamMq9sQFDDrub2y0AFidl+4ljZb+k6JCN3ikw3Hfzpmco0Y8a
+	zWXzEGB0em54kho5aCJknOQ47Avfcfp6gUpSki3tiZDIxDxDb9VQ/Sg1HZqu88JB2r6Ibx
+	BdKPcqol8vaw5VmEIvImRtnEOeqyZNE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dW46b5y9;
+	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772139695; a=rsa-sha256;
+	cv=none;
+	b=0dLtfG+If54G3q13MKuYYG2gRQ4NqJ/t1Bj/U0vU9DnCrqLGheTkD6BJwStm7J6lHlq+Op
+	wUcS8OEOzRjGdP0e2UyzcT8r5LCPwrQcWPcZyH1vPZDIo7+Zs3YG9LPsbMWQiUJrYh9eVR
+	FypnbNLRBJ/EKp2TMo3nxWnYfOX1so8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772139693;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bmxX/qYJNas+Kj/SszP9KMGgHjwU+T3IF8YxcVK/CRk=;
+	b=dW46b5y9Zh6JRARSRmzDoCZenWOXUpOYGYQCTEsrtaLdJjFc4g1vGh146ousg+exwMmM0w
+	78yke2E/+8DCuKcjjdeYSi+KCjoLAcxwuAh3y7kmZJqRdTm2H++dJdj2hobncAVCa7Q9FM
+	HXWYXi0uJ25jjdlj8RpgsCnC9mZQh8w=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-9KoVBBsRNbaLJ3QMul-BRg-1; Thu, 26 Feb 2026 16:01:31 -0500
+X-MC-Unique: 9KoVBBsRNbaLJ3QMul-BRg-1
+X-Mimecast-MFC-AGG-ID: 9KoVBBsRNbaLJ3QMul-BRg_1772139691
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-64cad8f8d03so2434218d50.1
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:01:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772139691; x=1772744491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bmxX/qYJNas+Kj/SszP9KMGgHjwU+T3IF8YxcVK/CRk=;
+        b=os/RldRyRcfbF5tBYyzwX6NorYCPxBiGHb4FCDubBW2k1ebe6QS6QGhHpJD9Prjdym
+         xAPD9ttMcoWlJnVbVacpILNdda4Za2048Puiskl8sNyUxUHmxX5yQcyzkzrrIeYh3V/S
+         hWVwzFADuVDidFLHYmX2PVjpd6xmmbC5joWHt4ZvjPYif7VO6WYB+ikdHTWEdsHLaBUy
+         vWFkbuqUiXGadpseTjb8NrB4OLoi7fu8bWeGS7H0hcepE8cPOWNdydGAzBqg4ap7NyGU
+         Sbg2deoNgL2Pl6NL1F2twTlGl0E8zfgp6sV/77mjwK2E4mhFgHizybjKd75S5Z/C2MsP
+         I3uw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeBJNBJ+ph2yVjO2vwGXr+Lg7vA4W1Ls4btZ1zt3g44tU/GQdcyUIXXR2XPRsBb1JKXUcSHXvF1A==@kvack.org
+X-Gm-Message-State: AOJu0YxVkx6e5Llqb+To8hTQ21kEEPWjFXtJXbcXHlXNETlL6S+omTQb
+	qzpNG5WI6+Jq9FbFIZpAvrGlhRssfKySa8eG0OtvIFcBdSnffS0Cb3dzgsAB1e+hNCZKyQ7cKWH
+	QUFfrQnlfc15+t1f64X7spy320OU3s2paS6Aujh8ltiGQnpbv7sBPvO9NYyHfp8XBzWIb3Lw9EQ
+	D+3Ch5SF+nR622OfJ3/j41OmYi3Lw=
+X-Gm-Gg: ATEYQzytxQPw+LdUOmjqxQWRkxsnR2w2APxD6tbOHA/lKd/nTmkcrM7gLAZlNpVPNof
+	SbKwAzmmccdsKgl5MImI5zdoIT8GjNJCiM5oroI8ek6ZFBDexkWpIx2NRtECSR10owT7OVCXhFo
+	Gr5CSII0qLl+9In2GD20N4OpCjLE/Ic+1ucqZ1MJ4uQO3Xm4F5h3kpTMtEaH7WLvK9oCf44WDsB
+	1Ja
+X-Received: by 2002:a05:690e:bc6:b0:649:4f58:5cd2 with SMTP id 956f58d0204a3-64cb6e0c928mr3154531d50.0.1772139691060;
+        Thu, 26 Feb 2026 13:01:31 -0800 (PST)
+X-Received: by 2002:a05:690e:bc6:b0:649:4f58:5cd2 with SMTP id
+ 956f58d0204a3-64cb6e0c928mr3154488d50.0.1772139690404; Thu, 26 Feb 2026
+ 13:01:30 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS7PR12MB8370:EE_
-X-MS-Office365-Filtering-Correlation-Id: af17ae90-10d2-46fa-199b-08de75787dce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	yTbHNpgBivIs9gpPBaVwbH+D5Nbg7/N9ONYtXfmgV6Cm8V4dwDxMIWz3936sZa8CQlQjEeWOYNXy++kh5zIHvuIRxzaX3cPfGoFJWKNk30zLR24hxMFJtmotaSh2vPU5ug3ulrJiEUSIco6G0ca4ydarD7L6Bdn5A8fj1Eyafhgapnqqe4o5c+HXZwYQwGvXbooMMc6DHKLKTFRVb2nIE6y/i0R6P2tBK8BgHud7U0PqPmrQwzZpRx5jpi+bg6D5dkDXBjaULhtE3lHWqXH/xBe5sCPvjsJW8Kr9jrSvc+ckXgyBNyiPGbwqEoniDPNHBRZSlYUl5J/EaoZcsK116p/AhkkFbrqkArdoLq56IkDhPPtuMVqMHmiuZ+4+cZtzI/0xhXKHGaqa4WMSnjE76qr9pFUnWblB8W3Qn4lO5Ua9BKdQbezMDQnNpFy9Rdlz5EBon1SyBPJHIsd7fQ2WkTxBbcnVChn+6/AiTpyC2KihFA0tCGvXcKEJjYp3fLzYx7PaeKRJs9barigH8BjXajB2W4bQ3k+zyq5bLpOi0/PwUskg5ZL/mdYgdBWaAG2cS4EbuzdGSEJ29xUwEI+ZOKlY++o5QOIglaOKHoIgKnU5uYDZjHRHxEJ97BJsnAl4nv4NGWmR30AawSySwyw9uP3wPiSmnQqMSwmzrVD28Nfkdjf/FZwLG8FJDfmj5re7IoZozIL2afL5641DDg+tD8CrklgadfCvzpfO+UzH3no=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?G28TCbOu7oBHa1Q94kqlZcTuCMbWjYaoXRh4I88MhsHRVQoZ7RlHF2fDvYiO?=
- =?us-ascii?Q?9qNEdc9WeoW1ePAJM/OCkEAYkKT5C5PneL0Dbq26f8h0Cps3+Tt3c2CQmVhw?=
- =?us-ascii?Q?hBfZ3rxpWn7wrIrq7ffHAhHgZng4XMfpyE/Jbmzl0zXBOwI/HmMFaZkzsoe2?=
- =?us-ascii?Q?+0QNpouYHHsuSf5DyCQmcceHP4ARQpd1KtLb/0JaRkkOw8xGQF9FpRQy7ARx?=
- =?us-ascii?Q?/u/xbGogg9qwVzZSmINrcnd4tUhzUptK1cn3CBkVRtGg/S7v3O+dwXhoLcGY?=
- =?us-ascii?Q?U2n3WanBeD1VLh7aajw073gbeXPSzBa6gfKkBXmmHNwoTSu/hszkCanSVsvC?=
- =?us-ascii?Q?zdDfaIVSdd7iYmGk1tgONzF6Cf8u57HK0qIZrzAxnbShCEvZAECSoxd7g6/g?=
- =?us-ascii?Q?MiM3T1XooEvgoQjZ3piCrNE2FLIDCE0bX/T/XCikF21yNYLxrIuGXEcYwOxt?=
- =?us-ascii?Q?yj2e/eu1abirDsKUv8gHAShqfl0lO45MVmQ08AaNhC6VA/B0oxN2aZxkC+Yh?=
- =?us-ascii?Q?n0K74VsZf/rg2aE8p2r1jgr7onGFUB8vxkRPsLDFy0Ri+fWQuRsJRaVDT5Ka?=
- =?us-ascii?Q?nJfEY1N6jIUsn6TDFTJSo+d/8y4VkTEEv+QFxBc1FlCDXsXsNARAKCmk+Tin?=
- =?us-ascii?Q?e+O8CFQi/An28nqW5CXPIuipAz7XzCjLxE8OmhlrAgTXG6K7+/pBFr4PXzcN?=
- =?us-ascii?Q?0DGSwjcG68sN1beT5+KKYsauSV+W4UhArNm3cPxeJNYGolxlhotk3ZqAmsem?=
- =?us-ascii?Q?d3NdH+dElrt9POibU0VLCF5PSOn2HV3xk3e6Dq3DxB1iAns+1y8fvAgWEU6u?=
- =?us-ascii?Q?lRSNlxbMTO3l1opV9lGf/swOEm+Np0uhjVe+zoIEqYYorBFYpbGhhDmBDaWp?=
- =?us-ascii?Q?EiisKpJrp0gAdNY7ctIngpZ10Inqzvo1OKduyn+XcwnCtuaGy7bhqAHH7rZg?=
- =?us-ascii?Q?erRFpqPX9YJVmkKJdRUnHhqUsCaNC/cwrU2ApGk/D1JZ6p8PjuaO+m6hqzOo?=
- =?us-ascii?Q?RBsnbRRVfpyVB6bBxSSfeDGAXBXQMNvlPx4v7FBzai10f8weWzX6RV/MVPFy?=
- =?us-ascii?Q?731Gl+6PxYgK74+Ck8HqMdvxkq8u+t2jG/1MurCD9QLYilngVHpCFJ2NyYx4?=
- =?us-ascii?Q?T72J1hoMapI3f9BBEnp6Jo5BhmI7oAlcsoMUbDGF66UsoT8mhi1LJUfRLVbf?=
- =?us-ascii?Q?zR5xzTkRCMT/TMu9pHAjZo4YxuMADzgpsRiBcmBL5LPkFaXNr927FZ1MBwLY?=
- =?us-ascii?Q?MLa2I7KyaeTRTXxXfJVPwrjGxFXS6xZIMKF01iAr0Vv7EJ+U8gcjVNoJpsCT?=
- =?us-ascii?Q?d0cT3gyhj2oNwoBE6W/NHPJIprWPuyRY2aHRLqMSHS3I2vjrXu1VtpzBJNFk?=
- =?us-ascii?Q?qzG4eZPRuhYKhjq0cLpyWoj3N4fybm2GbHnBEz81eZCc5CRU3c4hw+lFKFzr?=
- =?us-ascii?Q?M58K89mox/YOcuCS1TpCv/QF/X0u9nPqU/ZT3Pe68MMMyxhxPGkDMODGn7AS?=
- =?us-ascii?Q?ICJroD2X/vA0GD9nWMUQ4/jvmrvcqKvOoLZ2xI5rGrir12yffeumhw8D96pn?=
- =?us-ascii?Q?3ombnLAnJQ47ZxNfexJZJd8j4k66yHOJqlkkBN59zXwIv+sX/2Z+mwHig/4V?=
- =?us-ascii?Q?ho1JvkAy5GOi+ITwW1JDDORvX/YePQqIlQV6DkhkWoiO6g4Xsi18Bx0JKLOt?=
- =?us-ascii?Q?ac9aDvHwn5qkTvCCpC0PaiHSm6yK6oOGoZali+crdCw6E8BH?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af17ae90-10d2-46fa-199b-08de75787dce
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 20:49:10.2243
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9t7zI+e8zVEvYlnBEeXhIG5N1AGGeQQshquUNorXrotyBZZOhQMYqgoIZgGvG2sK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8370
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 63A4518000D
-X-Stat-Signature: 9f6ncwkq5oy87zgepuzkhb4u3irssh6j
+References: <20260226113233.3987674-1-usama.arif@linux.dev>
+In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Thu, 26 Feb 2026 14:01:04 -0700
+X-Gm-Features: AaiRm5209LV06f3Unt5ipFy-rNSZmlqNghFDY0XoCRoPEuuBfLMWoAzmF-tTAXE
+Message-ID: <CAA1CXcAYt3OfW_uBTYZgr-dBhg99x=5pUs5uvqtpg+PNJ1KxGQ@mail.gmail.com>
+Subject: Re: [RFC v2 00/21] mm: thp: lazy PTE page table allocation at PMD split
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: d7EfJO1oMt0B_ipaXyytEBbqSvyQP1P89T5xhBuI05k_1772139691
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1772138956-607373
-X-HE-Meta: U2FsdGVkX1/1YCp6mPkH5KVGH8B4PvzZObHWZXFCvIGvQEymKsiDIYXXOkaEvl/LBTGu44ObMZpYeyiwubtBkEvqPlDQ/5iZm8baHeDwfgItZ/BwSWk8L5dzQJjfD2l7OiqJCyBJXCTI66GCoHwm6XMHf9Mm7iMVYV1FLZBTMcFaSpvM6cFmA1obzh06TV5wEnb6Gpox3wTfPkifD+9Ku0siwQonlNyOxzho1dqy9lHv2vaYJuo6pyZUjSo73lGUo1nF5Ci5+EcFDfoWPrkjtAZ2Ql8ULvpJX/at2uEwHGLKQYsbtBQ7BMkPJHgeYIRdMS5vUKgOQ6PQVZ2OJg4RmLur72mm4Z4Qi//TGGvWUtmOqNXV3FRURskntZ/73AWGTdEmrusf8iYJi/6JcvIDdobb5EgWfWaH4E7Dmez0yKSCf7WO44A2fPg30sXc+Uk3DslKIRf9Hl6asqC5lC0sZR0AFkEH0xoKGZQHs4fX/CPgAHERIIEHUcWYuz8Vel4OfhDt0u94E+JTH+MHrnuiYcNJkQbjpblfypw6EeLcL+rojZe2t/ZDkhqhaoAp5XPDcJcu8xRyl0T1XMdkBGlGs8SqFyinyE1xW+cvEdfbyAxrk6uTluSZ9vARZnMh5wRrBI+49cTe9FxZ83WmkRt4PbnPZZrOXPttUC9pk1BZ5cEkRW2ufMSVfAr3WhjaAc0KCglqva/NySqigZk38N+yll62C+PRBdpDiS0kdMhndY/BRKnby6KbbwUyDEZaDVBNDss4mzZRHtNjaR7RUKaKfYAdVg5ZWgefsvobyHVRzN9tXGT8C6SzvZxr5zc6lOgmz+X0lxdOVfs4nfKg5KURFDG2R6L2C3bmIR0DR99WV9hAMOK0HsHo3idsfrho7pY2POuWrzjusoqNC/7EmKHJnWe0doxUweeNVFNd+4kaazK7COFnXvIO8lXKw71emKH/LdHo9T2EBUuEoI6KBaf
- nro77uY/
- 80HgUVyLV5cYGRE4qzzJnbvM8EM1+p9nsesEQZAJgDCJ1sfVf7JX2EqvV4R/17lYnKrsfIDBvoHdD2aBH/IxcDw8ip/pElqjOVr5ZjdqZX5NQvKzHquo75PIue/nT2OG3b9W8DuTWxWxs2neTiGISsNH7YfkMWx6M0RmflEwigU3Z218wizlHsZe+c8cFPBPKzmuGULkhf43hicLad1F3MN47P7WN9Oe9xNQscT7liwbZaKyCFjqdnstHoiOF2OAuQPikTFqKLu8X4RUYfYkmh9StTq66pVzjPUyXXg/jDA5YUUgCey/seicNArF6k5oAUkoStLiNbv8lVLBbZJjF7sZxX6qIsa6zMsUZMqIDxe0aG7N+1sIbFGKP2ld573/tcHre5G8ZvAmJvXxnlsYKjAN44usTEpzCnl3U
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 24B4840016
+X-Stat-Signature: 74sapbip4k5npsw9edg4toxpyn1tsb9c
+X-HE-Tag: 1772139693-728530
+X-HE-Meta: U2FsdGVkX195P/nwrrVjhUYbiG/7zUQxIWOYI4kRJygC4UA3im6+KePGw1GbwsDRQ8p2v25UeqF6avFtgnkiyksW/ahc9VYJweMfgF45vhz8SB2IXJya1HIHQa7eMPTSk+Jisa3jl24fzHyVzwSgjPkpnjtnnGJiYhv1K/dqkVCDpdj4ZrAKY2BKnujUFF+EZlrbxcwSyTTjV6yYhWBiHTFTzuEvcRcBHGJ+rVJDzUjlF9ZIzYWQyrGFIzZu77Ei0of79WmVNEcbFFdGZiBnDnoESTp0X664ONTSv1t7C3wlFdcuA35ULhzgH3sTAUdZ14u+lGWSbWPhzPKgMKcCYP8rMYMgzb8HeSh+TiB4P7zlIW9pYSqlQbcFCBogsCieoKlIeiPArcgSH+LMn4RZH5OuqjWHP+JCC4cQBn4WeAOFa3SgXBITUMJo528nGcA6mY0o1vnMQgpP0zgo5eJ7+0AKUuhTt8IeEG1cxrAo3kJXuhPAReJIBVNkdY8fpqsOnQHNMg6YLbA2Z//iOX5xLx2kvfKHy0fIZR0R+lqFNvulw7szi0Xk3rzFU/ZULTx2i1S+wRgcu1An3AUG6pb3ozAEY03IBmnzvTTHC4dTCsC5y5jPXNzUeOeELN0GaYkWoA8F4ae2bkV1pqnzGHunEcW+BHYZJMvu+YQ2vuTmDzHKPpMZjdPYVtaZpUkc2PO9eD7nYZFXnUHv72xySPVvf/HBBILze9boaHFJnpypku6vRow5XNfqK7zn5zTIQx4TPtBFN0ea2ciAkqEY4YqGh9iYvkJ7RaxbBeI8R/iQ2ARmf2/Xr1EIS21oP9qNweRYquQIZvkDLhDMHn1LS3hwKm2EptyYSeWT+MUi27NY3q82C3DZsCSJMCuQfQwCvVpAKfLI3GOrlS/z0nbHnvlwlvF/fZ2Pq6UVU+jlz66aVeIAzfKb7feXfMtEGrX1e8ReS182ibHc5lSOWcUxpDB
+ s6ExRjnD
+ 3regLz8Uc+JxB93EI3UN1RJPC48X4LLFQz3kZuiYO4/FOJqhkw2jzQnYpC2iqQ/VupMtUTKTCqJTfKsXn0Fppg//74lHndMLLv3Mkr22TUaFsTD/e9+Vp9VRJMefNgkJJCq80yWWhY3Ve6vrFGbpW6L+b2TZXOJr0U/CKw5WxYHs5pojCgbsNtm2WJ8H5aDpPwSQV2sdWN8+OCMcPuiGXbDCwx+YwjHj+qX/X0CpChrjutCd7RP8U6n74XYdmoepaiMcMV/qc4XkrSWR+DzR/5cGfCRwPOn6kIi7h9VkV8FGPZJDdSkOMQkVqeGN2j/dRIVgSG0N5DRSWjOk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,33 +131,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26 Feb 2026, at 15:34, Bas van Dijk wrote:
+On Thu, Feb 26, 2026 at 4:33=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
+rote:
+>
+> When the kernel creates a PMD-level THP mapping for anonymous pages, it
+> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
+> page table sits unused in a deposit list for the lifetime of the THP
+> mapping, only to be withdrawn when the PMD is split or zapped. Every
+> anonymous THP therefore wastes 4KB of memory unconditionally. On large
+> servers where hundreds of gigabytes of memory are mapped as THPs, this
+> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
+> could otherwise satisfy other allocations, including the very PTE page
+> table allocations needed when splits eventually occur.
+>
+> This series removes the pre-deposit and allocates the PTE page table
+> lazily =E2=80=94 only when a PMD split actually happens. Since a large nu=
+mber
+> of THPs are never split (they are zapped wholesale when processes exit or
+> munmap the full range), the allocation is avoided entirely in the common
+> case.
+>
+> The pre-deposit pattern exists because split_huge_pmd was designed as an
+> operation that must never fail: if the kernel decides to split, it needs
+> a PTE page table, so one is deposited in advance. But "must never fail"
+> is an unnecessarily strong requirement. A PMD split is typically triggere=
+d
+> by a partial operation on a sub-PMD range =E2=80=94 partial munmap, parti=
+al
+> mprotect, partial mremap and so on.
+> Most of these operations already have well-defined error handling for
+> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
+> fail and propagating the error through these existing paths is the natura=
+l
+> thing to do. Furthermore, split failing requires an order-0 allocation fo=
+r
+> a page table to fail, which is extremely unlikely.
+>
+> Designing functions like split_huge_pmd as operations that cannot fail
+> has a subtle but real cost to code quality. It forces a pre-allocation
+> pattern - every THP creation path must deposit a page table, and every
+> split or zap path must withdraw one, creating a hidden coupling between
+> widely separated code paths.
+>
+> This also serves as a code cleanup. On every architecture except powerpc
+> with hash MMU, the deposit/withdraw machinery becomes dead code. The
+> series removes the generic implementations in pgtable-generic.c and the
+> s390/sparc overrides, replacing them with no-op stubs guarded by
+> arch_needs_pgtable_deposit(), which evaluates to false at compile time
+> on all non-powerpc architectures.
 
-> #regzbot introduced: 7460b470a131f985a70302a322617121efdd7caa
->
-> Hey folks,
->
-> We discovered madvise(MADV_REMOVE) on a 4KiB range within a
-> huge-page-backed MAP_SHARED memfd region corrupts nearby pages.
->
-> Using the reproducible test in
-> https://github.com/dfinity/thp-madv-remove-test this was bisected to the
-> first bad commit:
->
-> commit 7460b470a131f985a70302a322617121efdd7caa
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Fri Mar 7 12:40:00 2025 -0500
->
->     mm/truncate: use folio_split() in truncate operation
->
-> v7.0-rc1 still has the regression.
->
-> The repo mentioned above explains how to reproduce the regression and
-> contains the necessary logs of failed runs on 7460b470a131 and v7.0-rc1, as
-> well as a successful run on its parent 4b94c18d1519.
+Hi Usama,
 
-Thanks for the report. I will look into it.
+Thanks for tackling this, it seems like an interesting problem. Im
+trying to get more into reviewing, so bare with me I may have some
+stupid comments or questions. Where I can really help out is with
+testing. I will build this for all RH-supported architectures and run
+some automated test suites and performance metrics. I'll report back
+if I spot anything.
 
-Best Regards,
-Yan, Zi
+Cheers!
+-- Nico
+
+>
+> The series is structured as follows:
+>
+> Patches 1-2:    Error infrastructure =E2=80=94 make split functions retur=
+n int
+>                 and propagate errors from vma_adjust_trans_huge()
+>                 through __split_vma, vma_shrink, and commit_merge.
+>
+> Patches 3-12:   Handle split failure at every call site =E2=80=94 copy_hu=
+ge_pmd,
+>                 do_huge_pmd_wp_page, zap_pmd_range, wp_huge_pmd,
+>                 change_pmd_range (mprotect), follow_pmd_mask (GUP),
+>                 walk_pmd_range (pagewalk), move_page_tables (mremap),
+>                 move_pages (userfaultfd), and device migration.
+>                 The code will become affective in Patch 14 when split
+>                 functions start returning -ENOMEM.
+>
+> Patch 13:       Add __must_check to __split_huge_pmd(), split_huge_pmd()
+>                 and split_huge_pmd_address() so the compiler warns on
+>                 unchecked return values.
+>
+> Patch 14:       The actual change =E2=80=94 allocate PTE page tables lazi=
+ly at
+>                 split time instead of pre-depositing at THP creation.
+>                 This is when split functions will actually start returnin=
+g
+>                 -ENOMEM.
+>
+> Patch 15:       Remove the now-dead deposit/withdraw code on
+>                 non-powerpc architectures.
+>
+> Patch 16:       Add THP_SPLIT_PMD_FAILED vmstat counter for monitoring
+>                 split failures.
+>
+> Patches 17-21:  Selftests covering partial munmap, mprotect, mlock,
+>                 mremap, and MADV_DONTNEED on THPs to exercise the
+>                 split paths.
+>
+> The error handling patches are placed before the lazy allocation patch so
+> that every call site is already prepared to handle split failures before
+> the failure mode is introduced. This makes each patch independently safe
+> to apply and bisect through.
+>
+> The patches were tested with CONFIG_DEBUG_ATOMIC_SLEEP and CONFIG_DEBUG_V=
+M
+> enabled. The test results are below:
+>
+> TAP version 13
+> 1..5
+> # Starting 5 tests from 1 test cases.
+> #  RUN           thp_pmd_split.partial_munmap ...
+> # thp_pmd_split_test.c:60:partial_munmap:thp_split_pmd: 0 -> 1
+> # thp_pmd_split_test.c:62:partial_munmap:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_munmap
+> ok 1 thp_pmd_split.partial_munmap
+> #  RUN           thp_pmd_split.partial_mprotect ...
+> # thp_pmd_split_test.c:60:partial_mprotect:thp_split_pmd: 1 -> 2
+> # thp_pmd_split_test.c:62:partial_mprotect:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_mprotect
+> ok 2 thp_pmd_split.partial_mprotect
+> #  RUN           thp_pmd_split.partial_mlock ...
+> # thp_pmd_split_test.c:60:partial_mlock:thp_split_pmd: 2 -> 3
+> # thp_pmd_split_test.c:62:partial_mlock:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_mlock
+> ok 3 thp_pmd_split.partial_mlock
+> #  RUN           thp_pmd_split.partial_mremap ...
+> # thp_pmd_split_test.c:60:partial_mremap:thp_split_pmd: 3 -> 4
+> # thp_pmd_split_test.c:62:partial_mremap:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_mremap
+> ok 4 thp_pmd_split.partial_mremap
+> #  RUN           thp_pmd_split.partial_madv_dontneed ...
+> # thp_pmd_split_test.c:60:partial_madv_dontneed:thp_split_pmd: 4 -> 5
+> # thp_pmd_split_test.c:62:partial_madv_dontneed:thp_split_pmd_failed: 0 -=
+> 0
+> #            OK  thp_pmd_split.partial_madv_dontneed
+> ok 5 thp_pmd_split.partial_madv_dontneed
+> # PASSED: 5 / 5 tests passed.
+> # Totals: pass:5 fail:0 xfail:0 xpass:0 skip:0 error:0
+>
+> The patches are based off of 957a3fab8811b455420128ea5f41c51fd23eb6c7 fro=
+m
+> mm-unstable as of 25 Feb (7.0.0-rc1).
+>
+>
+> RFC v1 -> v2: https://lore.kernel.org/all/20260211125507.4175026-1-usama.=
+arif@linux.dev/
+> - Change counter name to THP_SPLIT_PMD_FAILED (David)
+> - remove pgtable_trans_huge_{deposit/withdraw} when not needed and
+>   make them arch specific (David)
+> - make split functions return error code and have callers handle them
+>   (David and Kiryl)
+> - Add test cases for splitting
+>
+> Usama Arif (21):
+>   mm: thp: make split_huge_pmd functions return int for error
+>     propagation
+>   mm: thp: propagate split failure from vma_adjust_trans_huge()
+>   mm: thp: handle split failure in copy_huge_pmd()
+>   mm: thp: handle split failure in do_huge_pmd_wp_page()
+>   mm: thp: handle split failure in zap_pmd_range()
+>   mm: thp: handle split failure in wp_huge_pmd()
+>   mm: thp: retry on split failure in change_pmd_range()
+>   mm: thp: handle split failure in follow_pmd_mask()
+>   mm: handle walk_page_range() failure from THP split
+>   mm: thp: handle split failure in mremap move_page_tables()
+>   mm: thp: handle split failure in userfaultfd move_pages()
+>   mm: thp: handle split failure in device migration
+>   mm: huge_mm: Make sure all split_huge_pmd calls are checked
+>   mm: thp: allocate PTE page tables lazily at split time
+>   mm: thp: remove pgtable_trans_huge_{deposit/withdraw} when not needed
+>   mm: thp: add THP_SPLIT_PMD_FAILED counter
+>   selftests/mm: add THP PMD split test infrastructure
+>   selftests/mm: add partial_mprotect test for change_pmd_range
+>   selftests/mm: add partial_mlock test
+>   selftests/mm: add partial_mremap test for move_page_tables
+>   selftests/mm: add madv_dontneed_partial test
+>
+>  arch/powerpc/include/asm/book3s/64/pgtable.h  |  12 +-
+>  arch/s390/include/asm/pgtable.h               |   6 -
+>  arch/s390/mm/pgtable.c                        |  41 ---
+>  arch/sparc/include/asm/pgtable_64.h           |   6 -
+>  arch/sparc/mm/tlb.c                           |  36 ---
+>  include/linux/huge_mm.h                       |  51 +--
+>  include/linux/pgtable.h                       |  16 +-
+>  include/linux/vm_event_item.h                 |   1 +
+>  mm/debug_vm_pgtable.c                         |   4 +-
+>  mm/gup.c                                      |  10 +-
+>  mm/huge_memory.c                              | 208 +++++++++----
+>  mm/khugepaged.c                               |   7 +-
+>  mm/memory.c                                   |  26 +-
+>  mm/migrate_device.c                           |  33 +-
+>  mm/mprotect.c                                 |  11 +-
+>  mm/mremap.c                                   |   8 +-
+>  mm/pagewalk.c                                 |   8 +-
+>  mm/pgtable-generic.c                          |  32 --
+>  mm/rmap.c                                     |  42 ++-
+>  mm/userfaultfd.c                              |   8 +-
+>  mm/vma.c                                      |  37 ++-
+>  mm/vmstat.c                                   |   1 +
+>  tools/testing/selftests/mm/Makefile           |   1 +
+>  .../testing/selftests/mm/thp_pmd_split_test.c | 290 ++++++++++++++++++
+>  tools/testing/vma/include/stubs.h             |   9 +-
+>  25 files changed, 645 insertions(+), 259 deletions(-)
+>  create mode 100644 tools/testing/selftests/mm/thp_pmd_split_test.c
+>
+> --
+> 2.47.3
+>
+
 
