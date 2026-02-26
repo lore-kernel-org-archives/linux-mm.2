@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E71BDFD45FE
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61420FD45FE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:57:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 572116B0088; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
+	id 970AB6B0088; Wed, 25 Feb 2026 19:57:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53D746B0089; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
+	id 952736B0089; Wed, 25 Feb 2026 19:57:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 473356B008A; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
+	id 888266B008A; Wed, 25 Feb 2026 19:57:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 35DDD6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 045701602CF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:54:39 +0000 (UTC)
-X-FDA: 84484787520.17.9C45BBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6782C1C0008
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:54:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GreAoEyx;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7580A6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:57:37 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07640C19F8
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:57:37 +0000 (UTC)
+X-FDA: 84484794954.14.9CF002E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 58995100002
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:57:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AHjcPwVM;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772067278;
+	s=arc-20220608; t=1772067455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kCGgfLyIzohTL0EhS4g472GMW4/UMF10Ji0K3AJdvNQ=;
-	b=LLspSzBxjWS6MHMJJqKHk5UBgvqgddD7gwVrOCA3FoV1ecIssfLhVwEx7YrGOCfpdavfPh
-	juAolVhGDlsE5VjyZhecujKfipx0KRoR81q8wzzjYTNUYlA0K1OJvYdpqrxiynurLN+mtg
-	4e8sdsEjOBdONM0cST//2b6b3wrAEe0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GreAoEyx;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772067278; a=rsa-sha256;
+	bh=aY9V24uTr1/JJ6EREQlykAthH4Gf6hPUxAJj20GQXgY=;
+	b=XyGhAayXymSuNzhRTvZSyiNLX6eZW2/Qfer6FeuIahS6AIRxsJfpDkzjMtM7BUa5Ji0RNu
+	S6UaocYSwIZiHH9hmIl50ljl/gcywROapGv+D4X+jhIW5Iqq280BEGkwaMarNPdqUj9hzR
+	WfkA/rVzYx13McfQlSgMy0d2PbWODoo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772067455; a=rsa-sha256;
 	cv=none;
-	b=aCAhJ3XL1qhN36TkaTg1SnxYgSFj18G689lvKFCnX1Lr3j9dyStadLSYcglmpFV1htcXmA
-	F+WJUSwxqDfUBvII6gKqoqaoZnxNMVgMXTEQt0ge8T6+UPlW14ky7fVek/xjTT/BqHm0TJ
-	KyyvI6KCD0CGYaZz2J3ooKm6qfJyrGY=
+	b=aLKFR46Uj8Nk+h2aHMqW1ZnSoZsw5E/1h/sVk+An4y3s07cMC3er9vtSuS/If3gi2K3h9i
+	0z2HE/SHZaqK+kEhUYyRouhEfG0IYXaXpjkOQswP3isU28Sd4qzz8Bd9nix3QBUDaQDNKE
+	yXj5q8JMGqAneNmrx8YfAM1c0sAK4qw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AHjcPwVM;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDA9D600AD;
-	Thu, 26 Feb 2026 00:54:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5F5C116D0;
-	Thu, 26 Feb 2026 00:54:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 46A3042DA9;
+	Thu, 26 Feb 2026 00:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B9CC116D0;
+	Thu, 26 Feb 2026 00:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772067277;
-	bh=N92T+3E8LhZQO5VlmuG98fMnfwS5aJm8dE5mN5TOOPA=;
+	s=k20201202; t=1772067454;
+	bh=q+CQwYcdbwUOFLj1CvBSURNbNPO+bp03YTfwhYPOTHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GreAoEyxNF1eCY+CIwrbtaTJSy8AV5QsujAvVhjp7m7ngK8yWSr9tyhAOIP7jbLqg
-	 FHKjWE3mTCyROdAbSdDehqcSGc7iDgX0sE0iAWIDHeNWn0EM3tEac8t1nQxuwpbwUH
-	 SNy8bLmX5q5ZnTKUDMBIckIMitO7xkRNF6GM4z9Ze66Wa/Wc87gnkaG0EYHC0kQ69P
-	 5ar1/ljiF1kT6uhBEQ3e8yJXk+REgpcy2VP1wue02mKeKsqmXmeV07HAHNea5xlADN
-	 7JS6b05uPvt1YReO3pRWF7S7gWeGu111D4xLAT/V2O5K0UeJ3uzPJJbH7u9SxwZZ7l
-	 sYweuYj21WS1g==
+	b=AHjcPwVMIAiYYEGBpfx3lHSd2/P5d+v7r7FMnMdbXBEreVOIPGcqXj/x8x37W0m+P
+	 ZoVCh7/EYXI7+v2iQWInc4bblq/Xo8qwfvYfa0MXMm2X98mvfcxxswIVe/XB08gGmU
+	 dL+I4Dg36/4j2fxy05Tw2x4jV92SNhMQ0D4hH45lRJ2oroF+b5TzxyCO8XmhdTmgTG
+	 Z4BlqIugl8mG7tgBgxAkAjF18S3fMuP7xD6i2rYKslaMD3qyHa3CrnASC8Yy7gU2ZD
+	 W93qa8MSTPadb6O3hrKYNoHZgiqXuhNtD2GcOiTJXVo4pAuiDD4ab09sYrZcuJamKI
+	 mDdnezseFomPg==
 From: SeongJae Park <sj@kernel.org>
 To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -77,23 +77,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	ajayjoshi@micron.com,
 	honggyu.kim@sk.com,
 	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v3 2/4] mm/damon: fix esz=0 quota bypass allowing unlimited migration
-Date: Wed, 25 Feb 2026 16:54:34 -0800
-Message-ID: <20260226005435.7720-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v3 3/4] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Wed, 25 Feb 2026 16:57:31 -0800
+Message-ID: <20260226005732.7839-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CALa+Y15BbvgKttRRxrNrr38y3Pt4A+MP8tfQZZ7LVyoUS+_0fQ@mail.gmail.com>
+In-Reply-To: <CALa+Y16T-yNPq75s_PWwEJAEZ=r1YVdd7AyRMA2DtS=BdkZ3-w@mail.gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 58995100002
+X-Stat-Signature: oh913uj61sgninb7tu4butrra5pb5msa
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6782C1C0008
-X-Stat-Signature: c5isk8zjo7oafe7aej6jb1cd3su9ggnw
-X-HE-Tag: 1772067278-828780
-X-HE-Meta: U2FsdGVkX1/js6xrWd9GPnXo4uIJ9momh+k7masP830Ssy/9+iJlwp/aeWtbcUJgOqkxbg9o9HXPLDrP4COUVV08Vv5RiMhH89xLlZEzAmMXOQuHBrlmTn5ee9fuPkKxtjd2nAcrA/9lN+x9tAlsOKa676Vh9LxP+pF/mKyZfEu02pAvKz9lY/YxfP6bSk5VbCaY7hS1oZJXHJpBVin2CRuEyVXuUkG0O5r0xYQ0du7MSoOA5q+YC9RXoZsxKMd7ICw1aTIYmistjqTUBJomNzEwP9F+JW0urcaHbJ6SwaYAsvUi8M8s7DyN1+oztpmxhE0xY38LdXssO9Y0mYbSmr9Y64seBaxcUbthldkQowJRSbPmK55ibFBauHCjPa8YdBn6gyMuv8ttLjnOX8mErosJHRUx3C+rhyhwTUHwViOntVzjg2xiiaqLnp+7wGQ0aaLUBanz7APdZs/6vKF9SLd+DxD4/RK1aQ2eKsMZy8s3R1u29TUr8fo9clH2Rj2JEZotX9S/q6SYcImZezuyB+ueAPBMAG96/p1EIrTPKpOGBT1nbHJaxQ7PafCj+dEZySNyTH62RTN+BSDWIeN1eNbaIKwBaO9KSRS5B6H/3jmKQ+LRqfK2WH7ahZz2xGos73o4R98gH4P2i2Ows7Ad7S57uS9cxtKPnfMp/xdWHAINqyUUARORbKPzo5ZcgvCdlnqDnm0sCwjTx63ogu9N1jsOQ/N592WvQNuNoBqfSkd5cE9BonZ5VjEvRAxZsJweBOz2WpwxHhe5sIcexIhaOwTCpED0DoH7dE3cUSpTQu9pcQ/cYjjqIjpKUsiAZC9hZ7q/g6YedZFU2AdXBJWQgDtZD2nKaO/twqrLcu4ABFt+6xFiOH1aCBfqmcgmtF20mG9wuJyH79BO2CsMunZqfQXoKJoKzUXktcnxpvOe6xe46gRfgH0m0bCUvW39GQIJvdHvJiU23cRiftzqh2o
- mmF9a53r
- fxFp7+74j+fVZ60sw0OCPt8Co1n+D/kLr//XXLfQ4laljE+91m4T91Ezd3YhUCJ48hr5TriY5A+7OOwg2A8KSxBiQfXdZGtB44W4GCmt/ZRy1IDFz76ZSFdvSDBpyFlA4BCX0hu5LwI+wkLimrGp/Xw3TBlmhOT9jnhpTD5SyouXfhaLIhUYT/HD/CQ+OLBszOAUBMfOG48BDWx6fVOvwcAf7BUzHOgy78xs1YZSYNef2YC9aDfcz4MILqinJkhnmDdNaQTskTmQ2B03/EwCHfIFfoChUHP9DYENq6G7kRrdwF8SwMdOT+WI76xVA0+dj3IgHyHPlYJF9gY/SjhCH9BtrG78Bn+op0jLqZ8Eru915ne0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772067455-338904
+X-HE-Meta: U2FsdGVkX1+X+f0mE8x5JTCluMSyznzkWutQv1fHukIfmXoBGRvqCMargLLNgtR5NSAl1U11NSp5XfIEug29hgqS//L3L5tuAqjG2aIjLbQ2S8LpWjktsJoRjIKIyRwL8egenony9LrZGb5dytrusHaAsf6LTk+em3znwLxXG6sKC2AF1dhD6QuhU2fTULzK1jsOi7bO4nBN/MxxIhc9to7yubSeldXhf17p7QFNFUdyY66Yx4XQRYqNJY2j1FLXEPvk34fmQt2V0bqduefukf34O02GW4afOL8XDQQ20fdmDutWjvR+4aey3EGyJQuPxTyIjkLFFy+oexmwW5LTsD03aT56/qa2cZNkz0KsBtRDlLl++5mMDxfY29hGLuohLX7g7GZKk1j6ddG9cmzGSPpQCOcFUn9++fHiWRLumFG4RL6bPnoMebIYlEe2+asm58THFqB1B5Ojxgo9coIDiJyhX2/c29Hawp/+nn1dSvH2Hyf4Jk8P/LShRkHooKnsnpzDnJ2OH7XTpaVaM3RjwxGccfUr0bARA7xSXdBXYRRRyCvwveiOhsoB7xuA+73WLXCTYK+VOwR69WvMOiXtBojUzRkhZzsPKbmJtsH+lCksjobug3ES+vuZusizuQq50ykduwa8UzfGwwJ8EXzzylq+cr0AKVBc8kjDq5UTC+k5CcB1Iw5NqJR65YV5HNVsFoK+vSeAlRRrbWDkMPj43hjMXXbC4r55KR66T5+RDFShQcMAoPOx8ZYM7nLncabCYwIgiMR8UuMBV/9LMyXEx279avVEPx88xmz2sHeDrXocxzgPJcJGOt90ujjh9JuE66+I4ZaTWkct00NDXrdztLeXRKnbCshxG0rHL6lSrbOi7RP75jQ90wPj+lOLIpTgl2ye9xh9jsuUCNjFx9BbaWYAX12W5a2MpAf0/eCLdqVJUHGNI6Ud6hc8+FSqjk+1gi8ZZK0jiivMKzJUO2o
+ EV/A0LRZ
+ 4pVFNWuzkBKXxR8/RlbjDQwIW2XgOv76qIMnDRwKI/SONqAYG0BNjxGApBCYjIidWRl9PQrKxF7suo+Ucwk1+i3KgyUxKoSwA97KMQNKAvNpuM2uf5FcmRMVf7Ot/js5UM5pKewYzARYPYGQIgxi/97223ucrA1W4toNEe1uLU0AUKwiQGnBXgOgS9nayGDQpWmwWy5raEZgESIHG7yAD5uQ2d8bnZ+pmpWqEUxSob78TaYZ1OOUH+G1xz7QEm9gqEq9iZFSGh3G06oA49z4l18SZtKY7brz0GyT3eJ0hxWeV3DFQG9r22P30BYmt3QqHOXAteRkjC2PVJlHxIk5UplleR3NCZkamL1CgfIS5/D3YydDS24wpsZ4/IrRio6f03SC5p9KTxILnsi03f2JVyFxCs64RBar9/1wX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,64 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Feb 2026 10:28:30 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Wed, 25 Feb 2026 10:46:56 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-> On Mon, Feb 23, 2026 at 5:54 PM SeongJae Park <sj@kernel.org> wrote:
+> On Mon, Feb 23, 2026 at 8:27 PM SeongJae Park <sj@kernel.org> wrote:
 > >
-> > On Mon, 23 Feb 2026 12:32:30 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+> > On Mon, 23 Feb 2026 12:32:31 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 > >
-> > > When the TEMPORAL goal tuner sets esz_bp=0 to signal that a goal has
-> > > been achieved, the quota check was not actually stopping migration.
-> > >
-> > > The condition:
-> > >     if (quota->esz && quota->charged_sz >= quota->esz)
-> > >
-> > > When esz=0, this evaluates to (false && ...) = false, so the continue
-> > > is never executed and migration proceeds without limit.
+[...]
 > >
-> > Nice finding, thank you for sharing this!
-> 
-> Thanks!
-> 
-> >
-> > >
-> > > Change the logic to:
-> > >     if (!quota->esz || quota->charged_sz >= quota->esz)
-> > >
-> > > Now when esz=0, (!0 = true) causes the continue to execute, properly
-> > > stopping migration when the goal is achieved.
-> >
-> > But this code is written in the way because the current code assumes zero 'esz'
-> > means it is not being used and therefore be ignored.  This change should be ok
-> > for your use case, but could introduce an unexpected behavioral change for
-> > other users.
-> >
-> > One easy workaround would be setting esz_bp with a value smaller than 40960000
-> > instead of 0.  That is, esz_bp is the bytes in bp, so setting it smaller than
-> > 40960000 will result in making it effectively zero, e.g., like below.
-> >
-> > '''
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -2623,7 +2623,7 @@ static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
-> >         unsigned long score = damos_quota_score(quota);
-> >
-> >         if (score >= 10000)
-> > -               quota->esz_bp = 0;
-> > +               quota->esz_bp = 10000;
-> >         else if (quota->sz)
-> >                 quota->esz_bp = quota->sz * 10000;
-> >         else
-> > '''
-> >
-> > But maybe there is a better way to cleanly fix this.  Let me take a time to
-> > think more...
+> > So, the overall concept and definition of the new goal metrics sound good to
+> > me.  But I'd prefer having less optimized but simpler code, and nodes boundary
+> > crossing regions handling.
 > >
 > 
-> I understand. Please take your time. I'm happy to test whatever approach
-> you come up with.
+> I'll prepare a v4 addressing all these points:
+>   1. Fix 80-column wrapping
+>   2. Remove eligible_bytes_per_node[] array, iterate regions per goal
+> instead
+>   3. Handle regions crossing node boundaries
+>   4. Pass scheme pointer from caller
 
-Thank you for being flexible, I will do!
+Thank you for flexibly accepting my suggestions and listing those again here.
+All looks good and catching all the points!
+
+> 
+> I'm currently on a break and will send the updated patch after March
+> 10th.
+
+I hope you a great break!
 
 
 Thanks,
