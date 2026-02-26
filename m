@@ -4,115 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BE3CFCE06A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F3EFCE06D
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:49:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE61F6B0092; Thu, 26 Feb 2026 07:46:42 -0500 (EST)
+	id 623076B0088; Thu, 26 Feb 2026 07:49:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A93D26B0093; Thu, 26 Feb 2026 07:46:42 -0500 (EST)
+	id 5F9EA6B0089; Thu, 26 Feb 2026 07:49:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 975836B0095; Thu, 26 Feb 2026 07:46:42 -0500 (EST)
+	id 5274C6B008A; Thu, 26 Feb 2026 07:49:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 84C516B0092
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:46:42 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 215895CAEF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:46:42 +0000 (UTC)
-X-FDA: 84486581844.30.D88773F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1ACCB14000E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:46:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=h+0GHvO6;
-	spf=pass (imf26.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 400BC6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:49:57 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD74B13C0BD
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:49:56 +0000 (UTC)
+X-FDA: 84486589992.29.2DE7418
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 92ABDC0011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:49:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772110000;
+	s=arc-20220608; t=1772110195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=REu4C5gEnD9lCrQ0u+aojk+enYm0J/YBvFh4w0Tt6ow=;
-	b=fYtEElmlPxUwKb5xVWk7mAEmtNQYabyeX1NZyu8dO8bGHOjvw2DxMhFR8YilEUm/r3JjGA
-	lfn2xjsyxnS5HVdDcYEpQxLlsy6U2sFf9aSi5UW2lBCSuUAuTw6EkTV61JyfuUYbiyTJGR
-	JgyMso+1tRUqhNfReeE0DsxC6ZWXg+U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772110000; a=rsa-sha256;
-	cv=none;
-	b=n9LzOIKSrhOwwDrVU0L/hCH4FSlDA+3qY0ScZ/rOx3ebf4xPd8vPNO/ENyOPQNtwRIanYw
-	tXRFQVZaIPaJXQW0OZmNq83OzADotIvp6ARcXh1HMbBrXH98CSAWnVe+7u4TOgCaSp33R+
-	IlFIfXIz+NwrU21HPxZxS0myI6btyIg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=h+0GHvO6;
-	spf=pass (imf26.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772109999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=REu4C5gEnD9lCrQ0u+aojk+enYm0J/YBvFh4w0Tt6ow=;
-	b=h+0GHvO6zzeVQTeTCyXfTePu2xR8ZxAbLsjHxYBHFg6u3eA7+gBguY8zd0N47wcSRJt5sA
-	uUq++jcn3dOXzC76b6OG+3Xv5F9yUlLGlEPaRMToZDbynT7q8AfN4MGui10iGnWJY35pqW
-	1nuXGwOSd8tq3G6y3J62AmZBbvNybYs=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-KHvnGr7SPuCRykxddpXmIg-1; Thu,
- 26 Feb 2026 07:46:35 -0500
-X-MC-Unique: KHvnGr7SPuCRykxddpXmIg-1
-X-Mimecast-MFC-AGG-ID: KHvnGr7SPuCRykxddpXmIg_1772109992
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D73DF19560A3;
-	Thu, 26 Feb 2026 12:46:31 +0000 (UTC)
-Received: from fedora (unknown [10.44.32.38])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 5E75419560B8;
-	Thu, 26 Feb 2026 12:46:25 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Thu, 26 Feb 2026 13:46:31 +0100 (CET)
-Date: Thu, 26 Feb 2026 13:46:23 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Andrei Vagin <avagin@gmail.com>
-Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Jan Kara <jack@suse.cz>, Aleksa Sarai <cyphar@cyphar.com>,
-	Andrei Vagin <avagin@google.com>, Kirill Tkhai <tkhai@ya.ru>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] pid: check init is created first after idr alloc
-Message-ID: <aaBAn-r7A65f2ubP@redhat.com>
-References: <20260224164852.306583-1-ptikhomirov@virtuozzo.com>
- <20260224164852.306583-3-ptikhomirov@virtuozzo.com>
- <CANaxB-znXjfh5s9ro127TGONsu6PieuaJ1vB3PMVFeV4Eo8pkQ@mail.gmail.com>
- <aZ67mwBEbRtdaWp2@redhat.com>
+	bh=BcQzBIoel8ouA37v+xJmTro0U9klZrqKYw4HmUnjPwY=;
+	b=jCF6UxsJ098aIMK+4iabxIeXbOhw/YwvXe/evTMmHx186MFcGtmF8GsSKlUT2bGNg3qzoM
+	GKQB6M4U4TywUL56ROxm16qOpZyLf9TH605M6t2y4mphmPgecBkTe9rYCfDLn1maGJWOUL
+	s/puwJUDJi2ao+VKVObGjAakpbpqbpM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772110195; a=rsa-sha256;
+	cv=none;
+	b=E0OLdAcddYxu4vL9iMZB3sSH6kH4FmNhpJeEs94ppYHROgIcqJAutAlWp6jVbc5lOqasdL
+	Y8zcanZUK/+K9os+ALYOC2N+AzHGXiBHaDmgWTF/XM1+3AoKFTutad75oy1YCHI6soH+uO
+	ZqKhY3YmsaY0schQVfzW8A1ecaJ5EBc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A9E91516;
+	Thu, 26 Feb 2026 04:49:47 -0800 (PST)
+Received: from [10.163.173.11] (unknown [10.163.173.11])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D99D43F73B;
+	Thu, 26 Feb 2026 04:49:48 -0800 (PST)
+Message-ID: <75c09e05-1b8a-4009-bbb3-07924b76b532@arm.com>
+Date: Thu, 26 Feb 2026 18:19:45 +0530
 MIME-Version: 1.0
-In-Reply-To: <aZ67mwBEbRtdaWp2@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: OXAkNuHGL0dE4ZEsc2x_MF5ysoF6T3azb8LBCjflLIQ_1772109992
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 7ujsg4z9cgji8uyeb6u19nek4mmdjcaf
-X-Rspamd-Queue-Id: 1ACCB14000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V1 01/16] mm: Abstract printing of pxd_val()
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260226123442.759447-1-usama.arif@linux.dev>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20260226123442.759447-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 92ABDC0011
+X-Stat-Signature: eygiccqnw76yir3pdjqauyp5g8af5aiq
 X-Rspam-User: 
-X-HE-Tag: 1772109999-932505
-X-HE-Meta: U2FsdGVkX19AZaYPGgEoLxugC9Hl6Umo62eV0Xwhj5yOL9uzQzoOeFpQJHrn6PbAz+1P3IW8bh5IkQ/y+sX37zrxE0eq/zH71N6uFbey282sikP3N0SxmtzxiaXho7MuioErbNWx/HwuXjrL69Y0qb15lYgIhbt84l1PxNsKOh/vA2LDgoyWfUus5hUMP2/0mMu14QY8GdXEW6h1DF6ve+7gmf62HUOKm0ZNp+hg1Bex5DbFsklyYXKNLezxE9B4dck+iElXpF+0bdG/Qz3sqMRFm4mRL8iwndc69F+KX2fjtlfhL4JJxCf5lkg+RWlLx4wZRCjIE+vG4L2eTqm7fWYeRTLDoOkH889PXahz7jXmKhSkK7w9gZbAoaaWluJaIruR/7mAmp2HuCqOLHNBF7Iuw8ENYdtkZyoYEcpNWzSbOFkhTTZTGcTpfIZIamKmXw0HI1VH4g/GbfkEW0U/feBWuGc5t1/j86Dmaja7zFH6scZ6feTJ7iKFcOB+tH81kLW9rIblNQFt2S4OKfsMTXIyhOqRBzPlucrq5khJPe2+61XshC97Uv+JZSqoMqS/DXIIny+kAj4pMgo3Y3iFH+46+MlvzFTDAZ2Fkg7zo0W00GwmNi6E2EZQdXCtZeM+jg9Q1jzvLwW0bk6hirDRlQbA2G95tvjGDdM1Bmo1/DKiOQ38T5qW/QlzCkvb8CxScUzh3sYNW6xN4Cvfa63nNTIT40NX99Z4QJCWzpu11opm7HmnI18KMFcFuzsABHIawIc3wLGVBjt+vZTADi4BatYLOgf38LjDqoXh2GPcVcyeUWCkyoMvZkPTd31L0nmppWmRMbVDqEVmPx3v48dNdb4StXTERDjKYJaUX1MP6oWuPneE5QZl5aWYkUBoNzOdPW3DmpaKMoZSF5HRhwdbbEfFleKciYRU0DVj+P7w9otbsm7xww1aWtLm0obqAsueVHUVsX9/6a15v50N7am
- JVHzIaPB
- 5o3QOPCJmFx8Ch1FAN+IN+HF9VaSTNDKEMBIDXeDUQEJOt5Sr2b3P69PRmyaM9QC9REKVx4NPAgCW1aPcOMpOCtYVlDcJJZnG8DUDUnfSXvYp8SQtldAteTQBZT+MxLZWm3aPFRMrS8W08dcvXVm/jbb/f4LHHaGINNUUpmCFEgffq3rwWiXBB4UsS62/EhNoBaEGwOZYHJbEnRT9af7eG5hzM6K/3i2yFn147RsS466A+bbc+NJD1iy3L/s7fsrgEVJ/vxgIUmVUPvGctc+TZ6GJQSZzrSGj7wYnbxo0q9Gj5HubDuvdiIJ2zpfGxf1Y4pXljOE62NmZhcjfF/zIRw+uum2AINbH/VGn
+X-HE-Tag: 1772110194-267671
+X-HE-Meta: U2FsdGVkX18RNue9NOR0fuG1/jnxKyNfj7TR3glyl70kN1bfIbQ1/oOovb50HGp6UzDHG3rWFUhP6Js7mFyz/LtebF2qlKVpfpiKNrsbVWdcMzRguIKwq1F9xruk/Kf3l/Bx1WF4RcHLG3+R3txMxpw8KyvLXu22F4T4udd3zep0kDq6857rWXrutHWWbpZ3x49TgOQ8kxeIUp4yE2HrKo8KrKgjbHUhT4m5bkgDhgR+KFlSQQus5t4IhlFqsQi+R1DtE3ZGqrrwLSueShKsTCDmHx+MlsUEX8zN922HK2Zd0boMQobehAjZvnw8uf36IQie0yAtTRRhHVrVSvjwcEpzHVdgU+JojedXpA3wOUH3CmMTpn1+x9YqhriA0aWs0Jjj7UlnuJ49X5mRn2fyxGpdZoJd4/xP1uo6MVxA0mHLqKXFbk7/MAHFMDJG9K8ZMmHjf5dW2onRYr8jyFHLfewZH+xkM3uDM4Yf8GP113ba1DDj7Uk0BWhbndcBRotQBEci5xPqydyWHFzw227NCdnc2s4e6eCOwTnM5x/3sBtLWYI60YIzytlJgAp/bwshpqM01pYxzSA2gd7Dpy1H2Em1Zo2T5UKMljqte1fvBkIp6fQ/R4zGmMVC/K4M9jQwXhXWaP6VkDm+wfiywXzjMLF7IJro0nAxjCxHgoiA3qfRwjbsHmLxprslJRsyNH7FkdcF0rdPG50vsQ3FgQFg6UiWYsUCHgziOmnTIV1RorpyjP++CG54lmafufNOjIv/h7TSNJUzF4ad9W/ypMz0DlkvVIkp0UYF0MY1yV+++21OXrcaocfzLAaAH6h5J0dLU0Pz4g9YP5/8wIipGVHLOwgWOKLK9jMCQTEIByyXg5GsKe5fOdb7rZO7xhEcGC2TZ6njwgnQ1tYgLvIY/ypXfbTX7z4LtEUY8dUMRpi2V3ZKYqCVl1FyPe1e4AzMjJVccoa6TAkeBhzKxJb/tiy
+ Vx5F/x99
+ 6rmCK/QibccjYmPInW0Aij7DVZ/0VsaVNJLmbCXgL1nLtxlK37oLfUmRtatV5eVSa91jRmVLL++QC8mSWThVtPxKwoiASqbpesszjjEkOJwzUR6INB72wbOQ7FlirnqPP650YoubOjcRl51itB32UfNFHEkqA+wNm8salQdxX5pRKuV5Ruxt559TEUDUTMOgaKq3HjkvdHloQo5MsYvTx4YjZX6CY2asHqmk2R0K06ifQcit8bu2H7GfezGZ5LDJmG8lGJrwcQAGgVVsqkRg4FDodggAeWYwCLNu8nQrZ8fJf71f8m57HkvvZJMGTUJYIK0K5bhrvsPHEoXSG1W4ou0jpUjQ3qfwpzHJu06cqo+GuNDQsQ/TsmZ+nTu4Bc+CooQtf5q7xYP7x8Qh6re9gpJg4vbAZpouXIwl4knHk2Jl7reysOnvL6FxzPIXgm7gQdcCF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,29 +90,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02/25, Oleg Nesterov wrote:
->
-> On 02/24, Andrei Vagin wrote:
-> >
-> > This isn't directly related to this patch, but why do we check
-> > "ns->pid_allocated & PIDNS_ADDING" after allocating all pids?  Wouldn't
-> > it be more reasonable to do that right after taking the pidmap_lock?
->
-> Perhaps, but alloc_pid() can drop pidmap_lock and retry, so we will
-> need to re-check PIDNS_ADDING.
+On 26/02/26 6:04 PM, Usama Arif wrote:
+> On Tue, 24 Feb 2026 10:41:38 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+>> Ahead of adding support for D128 pgtables, refactor places that print
+>> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
+>> macro to prepare the argument(s). When using D128 pgtables in future,
+>> we can simply redefine __PRIpte and __PTIpte_args().
+>>
+>> Besides there is also an assumption about pxd_val() being always capped
+>> at 'unsigned long long' size but that will not work for D128 pgtables.
+>> Just increase its size to u128 if the compiler supports via a separate
+>> data type pxdval_t which also defaults to existing 'unsigned long long'.
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Mike Rapoport <rppt@kernel.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>  include/linux/pgtable.h |  5 +++++
+>>  mm/memory.c             | 29 +++++++++++++++++++----------
+>>  2 files changed, 24 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>> index a50df42a893f..da17139a1279 100644
+>> --- a/include/linux/pgtable.h
+>> +++ b/include/linux/pgtable.h
+>> @@ -17,6 +17,11 @@
+>>  #include <asm-generic/pgtable_uffd.h>
+>>  #include <linux/page_table_check.h>
+>>  
+>> +#ifndef __PRIpte
+>> +#define __PRIpte		"016llx"
+>> +#define __PRIpte_args(val)	((u64)val)
+>> +#endif
+>> +
+>>  #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
+>>  	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
+>>  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 07778814b4a8..cfc3077fc52f 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -532,9 +532,15 @@ static bool is_bad_page_map_ratelimited(void)
+>>  	return false;
+>>  }
+>>  
+>> +#ifdef __SIZEOF_INT128__
+>> +	typedef u128 pxdval_t;
+>> +#else
+>> +	typedef unsigned long long pxdval_t;
+>> +#endif
+>> +
+>>  static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+>>  {
+>> -	unsigned long long pgdv, p4dv, pudv, pmdv;
+>> +	pxdval_t pgdv, p4dv, pudv, pmdv;
+>>  	p4d_t p4d, *p4dp;
+>>  	pud_t pud, *pudp;
+>>  	pmd_t pmd, *pmdp;
+>> @@ -548,7 +554,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>  	pgdv = pgd_val(*pgdp);
+>>  
+>>  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+>> -		pr_alert("pgd:%08llx\n", pgdv);
+>> +		pr_alert("pgd:%" __PRIpte "\n", __PRIpte_args(pgdv));
+>>  		return;
+>>  	}
+>>  
+>> @@ -557,7 +563,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>  	p4dv = p4d_val(p4d);
+>>  
+>>  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
+>> -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
+>> +		pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "\n",
+> 
+> Hi Anshuman,
+> 
+> The original format had a space between values ("pgd:%08llx p4d:%08llx").
+> The replacement loses the space separator producing output like
+> "pgd:123p4d:456" instead of "pgd:123 p4d:456". The same issue exists
+> in other places in this commit.
 
-Now that I look at this code again... Why do we bother to check
-"pid_allocated & PIDNS_ADDING" at all? copy_process() does
+There needs to be a forward single space before p4d starts.
 
-	/* Don't start children in a dying pid namespace */
-	if (unlikely(!(ns_of_pid(pid)->pid_allocated & PIDNS_ADDING))) {
-		retval = -ENOMEM;
-		goto bad_fork_core_free;
-	}
+pr_alert("pgd:%" __PRIpte " p4d:%" __PRIpte "\n"
 
-I am going to send the patch which removes this check from alloc_pid...
-Need to recheck.
+			  ^^^
+Will fix all the instances.
 
-Oleg.
+> 
+>> +			 __PRIpte_args(pgdv), __PRIpte_args(p4dv));
+>>  		return;
+>>  	}
+>>  
+>> @@ -566,7 +573,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>  	pudv = pud_val(pud);
+>>  
+>>  	if (!pud_present(pud) || pud_leaf(pud)) {
+>> -		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
+>> +		pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "pud:%" __PRIpte "\n",
+>> +			 __PRIpte_args(pgdv), __PRIpte_args(p4dv), __PRIpte_args(pudv));
+>>  		return;
+>>  	}
+>>  
+>> @@ -580,8 +588,9 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>  	 * doing another map would be bad. print_bad_page_map() should
+>>  	 * already take care of printing the PTE.
+>>  	 */
+>> -	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
+>> -		 p4dv, pudv, pmdv);
+>> +	pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "pud:%" __PRIpte "pmd:%" __PRIpte "\n",
+>> +		 __PRIpte_args(pgdv), __PRIpte_args(p4dv),
+>> +		 __PRIpte_args(pudv), __PRIpte_args(pmdv));
+>>  }
+>>  
+>>  /*
+>> @@ -597,7 +606,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>   * page table lock.
+>>   */
+>>  static void print_bad_page_map(struct vm_area_struct *vma,
+>> -		unsigned long addr, unsigned long long entry, struct page *page,
+>> +		unsigned long addr, pxdval_t entry, struct page *page,
+>>  		enum pgtable_level level)
+>>  {
+>>  	struct address_space *mapping;
+>> @@ -609,8 +618,8 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+>>  	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+>>  	index = linear_page_index(vma, addr);
+>>  
+>> -	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+>> -		 pgtable_level_to_str(level), entry);
+>> +	pr_alert("BUG: Bad page map in process %s  %s:%" __PRIpte, current->comm,
+>> +		 pgtable_level_to_str(level), __PRIpte_args(entry));
+>>  	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+>>  	if (page)
+>>  		dump_page(page, "bad page map");
+>> @@ -695,7 +704,7 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+>>   */
+>>  static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+>>  		unsigned long addr, unsigned long pfn, bool special,
+>> -		unsigned long long entry, enum pgtable_level level)
+>> +		pxdval_t entry, enum pgtable_level level)
+>>  {
+>>  	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+>>  		if (unlikely(special)) {
+>> -- 
+>> 2.43.0
+>>
+>>
 
 
