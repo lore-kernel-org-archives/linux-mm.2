@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF963FC5926
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB634FC5927
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:38:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46C386B0089; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
+	id 02D036B0088; Thu, 26 Feb 2026 05:38:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4160B6B008A; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
+	id EF2DD6B0089; Thu, 26 Feb 2026 05:38:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30F766B008C; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
+	id DFED16B008A; Thu, 26 Feb 2026 05:38:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CB416B0089
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A53C713C020
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:28:36 +0000 (UTC)
-X-FDA: 84486233832.16.24709BB
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A6B0DA000A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:28:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YAVrmS6n;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id CD3026B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:38:51 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C3FF1A0AFC
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:38:51 +0000 (UTC)
+X-FDA: 84486259662.24.E3E17F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DDAD940010
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:38:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IoUxF9Ix;
+	spf=pass (imf17.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772102329; a=rsa-sha256;
+	cv=none;
+	b=jM0p7jWOh4Uu/faj6sXxfa15FdcPPqiTAG7x+2WWWLfN31470n+PxMcjX29o01lAGZkd2D
+	6/L/u6FahDkjRDyOxchgAHQkWI1s2IrJWl96llfmSi5RYzyJgd+xnspxYrNckhd1neH954
+	1zHeTqBiKjb6DI+gxt1Z9909COyeKyQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IoUxF9Ix;
+	spf=pass (imf17.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772101715;
+	s=arc-20220608; t=1772102329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S+yFBRNqmJ5O/9wR1LsjXptvmYsNUxZetzHoIAzFZaU=;
-	b=MdDMKC6q3TFVXVe9g/CSOxozJ5c8U5B/ZsuJNg8G8p6TzLmxNNxp+fn7/B3qW/Ulb113qm
-	p9nNC14fdvooufS4r5tVA1d8pfZXsBNi05q2/3aIIXAtPCPjBMN+zxfPBzR/JXOYn5mvOC
-	JFDWx4fS4pdp03Bn39yRo0CJLnjVqTU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YAVrmS6n;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772101715; a=rsa-sha256;
-	cv=none;
-	b=x3LFphlGJ+gAwI8dafH1I56CrXrgCCq9HRL3x+tr69iyaYs0KsUzMgS00GGY76lrB23Aiu
-	Vsn30wdYM6Bl2/5cmlIa6D6S2q4nV8BNubNzOa+3qff6Vhd3CW7frUsGs77gE+Q+2K4qUm
-	mu6P6BUmv9KHekaL9Q5angS9kpdkoUA=
-Message-ID: <dfd37e2c-d939-4682-a693-ae3941358fea@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772101712;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S+yFBRNqmJ5O/9wR1LsjXptvmYsNUxZetzHoIAzFZaU=;
-	b=YAVrmS6nLqZsCg6F0yNd7g0+0S+UrhZBNrsQMxarcA45GZ9rploasDDZG3zBZSsvtqu4V1
-	ECAaFMOU82waYaNw0uoudNJkZG/zShB6fLGXc24OaJox6bMyFxjr9yGpUarKUGEhz2ukum
-	27LYG00ZV4ikGkVU5Gl5m+aEL7o7tEc=
-Date: Thu, 26 Feb 2026 18:28:23 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree
- folios
-Content-Language: en-US
+	bh=uzdETfk1/rH8Q4u5UfAUK/lzdcfpsH5IbB8f5XAtcJg=;
+	b=rePIfhPg9UOkW9Mu1ri6vWtfjfQnArl4xAxvmeke/HPq4s9bt3mxQgXoY/PfqPbE82XtVo
+	1USF1xJa/N33OjDVJKvkGmfosRE6eFH6vBNjypc5rMjjpIlgmrJaWKtvF671zQMXBxheP7
+	vvub/8v1LfxA15f90ja2g6AhMYjDfCg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 29F0560054;
+	Thu, 26 Feb 2026 10:38:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD58C116C6;
+	Thu, 26 Feb 2026 10:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772102328;
+	bh=3cOwLR1yuzDPYHdlDaDVoK2pdPAwkELvu6I0P5vN37I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IoUxF9IxL7VVwAVoDntFnPAkfIWSHLhW91I1Vc9LOXHqb0Uv5XdMWsOeuNxkKOlnd
+	 p3Sff2GOZ5ehabP7i/+BXiG0zYbPB6Arb/3mKU1+a/mWv5bIGqvClieRUtEppXthcQ
+	 0H1WxNy4vKo21HkfKSYGPedzAB3nFwQ5J9qq0GHfEVX3acOJCbuDcs22o9CnL8xt/E
+	 Fu3qNKVpZNdN/+9W8xTGnDVmZijhJcBEN+zPVPD/jByqSvdOseSF8hY0L0kC0Jh1cX
+	 Kwd//qtejF+Wfw2gU6Db0AKwqmLV95mktrlNEV5tSKpS/hpQXsXe73uO29EgtHgVcs
+	 RRhzUDaq86Bvw==
+Date: Thu, 26 Feb 2026 11:38:45 +0100
+From: Maxime Ripard <mripard@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
- dev.jain@arm.com, harry.yoo@oracle.com, jannh@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, riel@surriel.com, stable@kernel.org,
- vbabka@kernel.org
-References: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
- <20260226070940.96226-1-lance.yang@linux.dev>
- <ece450e0-8e19-42bd-9a7a-fdfc7ab785e6@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <ece450e0-8e19-42bd-9a7a-fdfc7ab785e6@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A6B0DA000A
-X-Stat-Signature: x48he167u8aonr8pr1iw6eu8w3h14zpp
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH 2/7] mm: cma: Export cma_alloc and cma_release
+Message-ID: <20260226-impetuous-analytic-jellyfish-d4a86d@penduick>
+References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
+ <20260225-dma-buf-heaps-as-modules-v1-2-2109225a090d@kernel.org>
+ <60ecebf2-a708-4797-bedd-588c3e9931ff@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="4m3wi7hiurafpqag"
+Content-Disposition: inline
+In-Reply-To: <60ecebf2-a708-4797-bedd-588c3e9931ff@kernel.org>
+X-Rspamd-Queue-Id: DDAD940010
+X-Stat-Signature: r94ir8gnhp88nikqet5z5pteqamgezze
 X-Rspam-User: 
-X-HE-Tag: 1772101714-389844
-X-HE-Meta: U2FsdGVkX1/VKl6OACBKUDMunB1HD1bAcDn0eTCQFyBAgejO7feHknBbYHVKIfT8MBMKmc/tgavmvjImo0B4nZ46hjaYKPphRoTL4aY8cer87fl/O0qTvMzNvYQ/uSH85E+mBgK7OuY/zKCX80jM8S5pHvVlZDe1XiRQGNYUN7O4o9W+PmwPz3X578HHwU0c5eaX+6wNM5e60tTfaYu+l3Ppigtr5Prg5E9Ao5a9NKe6Ihrd33R3YkED/GNLhTX4wkGKUeAJzvwIH0XflrXtGb52uoA3X3jej1PqLb31x9OVLpQQlVpZL19WZD5Bbc55yrXhSeodBiQIsKA06xGOcMHEJPZaZ7oQwPT+ihDpeGmd/bEjcxzrQgXaV4y8dDCQI8QxyF987VpnQEqNzQI3+xM/BYoj7QSbVbXzdrgl/PQRw1uAk+G1CDKRbfrYehWKfzYGSrA0tOG30csrAjRM39fIm+VvB/NG5SUtoppdVfX6Ui2HBlq5gLQox0dOxfCMRjsd7A7nkNFEKBWKX5mW4Dwq4XmVn+TNlFWuI0xlnh02P/oYKwCZDL6O/ggr9y026nqifz3/1u35TjM0/mSPnxe8lSttr4deRalg4yJVJXcnzgH8E5447cIo4x0FFy4GdjcHJL0CV92duPKeKeC/HNYM6plQo3hCfJ7+KzP18CweUMkC9izgvV1tfFKWRXWCZLytJC4l54OCWcvVCcfm5LZAPjv3Bppo4mbjh+rly63pwnXbAe4eAcilAIzmT4OZ0nk8CTbnLCuH7fRista5/9qjkPGMgFA6prxWnXDp2tMsR71k9zuyvX0IpYNag8FWExiwIiwakxPAvdZyJ599H/Wwef37wYKQRmOEMrFdRZiQ1CtZA45Sdk2QGNps1vRge1e1VYWkvVP9dIhMN8cN7R5+XghsV5kV2ttK4IUSj4uGvpjJyMGrEML67zBD0Qe3R3JHV1Nv6FlLgvCWTv5
- MhhR5hl9
- qg5zJCm37fAeBRxdGsowFEhCa1b3+ekQO0artbWjCA3lYS2/EvzXcUksGkcqEJ+LTViUu738HTdOpi9gHBVNxB5IM5H/ZAl8uNMb/+7SLVQvRYchKlLdS+GnzD/biJSBMdurfhrJCHhPNKJGQBdM1mcTlGBbgnwUIhhAII2tCRuRfgm3dWNQEpfauyQt2CPUl1QXvMQqYBaOdV5++qZzVmwswnw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772102329-322745
+X-HE-Meta: U2FsdGVkX18XvlEvfVhCuqDWR7MFODYR0Jxtw6ijmYI80LBuTVdlkVbFNUwnO2vTRDor1yPvRoTh4QVhuCU/qZig+PoFmByhXl38KW0A1CTBOTmrpl+VpmCjYQq/p+tjdzLOPqLuosZxByYVtuF3OAtV1N+lwSGFJN8aBHE2KqLAL7EJXzoDtgSMsO/4yt/EloV4nf8CmgQxj3Noc8wwBo0bsrgj1oXuOZO/xZPdTaHvY3LRQTRaWg8/AT7dOugH4PK4zAa4yLHenlvSZBZlLIESOL0obLRMYCTBcvpdW9+YBZk40mhB7hnYjhrUZykcLgOLsI0FfjItDlh5l08lkx8ISb0uc3Zq8lkMvtDAE6O58YPMar0ICAiAAQr4UIDROPaVjN3ULZgxmc0stJpX+3yh6zG+kuHNCz36CrskHJSPWjBDuFqdMTSiUzd4h1J+ZXWqzCZP6kFhOkJfsyQizD6kfOE2D/lUNckPz6PGC367ORNB+TyfFC8FNu7Dn9+rT/jkO8Zu2MbluntnOWD9DnTI7Pm0pHTcW212Czhc8WGuXeYKh1O5qx05l/gmQ00P9DXduJgnKmsd4eSAI4cZPl1DoZaCPaziF+3hD7PlYLbfY2/6PRDI6ZrrrfD4I/VPcalYRYZnTM8mrjLD4VymXJxBhXBd7HfKIN0Xm2B3+VZ8Is8JS/lu7GfcvLLVnQunvMWqrt4saSgdcj6yLxbsp3ckXSoKK275bMMjMBNJ+rHHyAgiueP9gAaPl7tyVMO1kj2VI6WIL2lzIg2VyZToB3ACLEb9VlgeNNXrQvX/1m6zPUzwxybk8rlqiRHytmr/LMWszm5Uu+pUG32vLTFgDmEGCIYVG5aNxoKnEYY9SZ1cirl2ZBHB2Jn85Ug/qOOE0ATRYyoXmWa8qrI2ABaQB2YpZloF2dSYefNlWSYpqrKzmOXQwyRdxCHixDYdQXfQbaR02ajksbz5jNwVHbz
+ OXeoRgu3
+ PwZcvlAuwzSjgPvrAY/OArQGbiBg74Oua8FgmyuW4FBzvGXQdy1yDAUNEDsE5sWI9GBsXvUfxUEgFVKISdLK3IASc9xdZPBfbdPF9XFnVqLjhjoebzgUllB4u3p9Wb9eXW0d2OJmcopudoxPToEmp4OUHt0xDFfRFGiVojHYX7rCZMyAvZv87rtWG/0kfOiJ6UzWoM9qbyhAXFVWvgKVVhGoViqKZ4udo35Hf+g6JtosJn2odgV6SJv+hdIAXZzcTHE9ZbPPIaf6eKkopMEmPYZ6VbeMDpc5FN9YFyl0qdU5fHK5DM9yHDPPQb50uSR9QxRwIiWm7OtG4Cd8AMgyiOPniSOS3XHpTkugQTZJ+G6G0QY/Q7+1Z4MFZAp3NN/n8yNNMvPw85oSe5riq29eumNF84DYtDmIksFTitCMNSD/Uhsc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,107 +102,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+--4m3wi7hiurafpqag
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 2/7] mm: cma: Export cma_alloc and cma_release
+MIME-Version: 1.0
 
-On 2026/2/26 18:06, David Hildenbrand (Arm) wrote:
-> On 2/26/26 08:09, Lance Yang wrote:
->>
->> On Tue, Feb 24, 2026 at 05:01:50PM +0100, David Hildenbrand (Arm) wrote:
->>> On 2/24/26 12:43, Lorenzo Stoakes wrote:
->>>>
->>>> Sorry I misread the original mail rushing through this is old... so this is less
->>>> pressing than I thought (for some reason I thought it was merged last cycle...!)
->>>> but it's a good example of how stuff can go unnoticed for a while.
->>>>
->>>> In that case maybe a revert is a bit much and we just want the simplest possible
->>>> fix for backporting.
->>>
->>> Dev volunteered to un-messify some of the stuff here. In particular, to
->>> extend batching to all cases, not just some hand-selected ones.
->>>
->>> Support for file folios is on the way.
->>>
->>>>
->>>> But is the proposed 'just assume wrprotect' sensible? David?
->>>
->>> In general, I think so. If PTEs were writable, they certainly have
->>> PAE set. The write-fault handler can fully recover from that (as PAE is
->>> set). If it's ever a performance problem (doubt), we can revisit.
->>>
->>> I'm wondering whether we should just perform the wrprotect earlier:
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index 0f00570d1b9e..19b875ee3fad 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -2150,6 +2150,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>>
->>>                         /* Nuke the page table entry. */
->>>                         pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
->>> +
->>> +                       /*
->>> +                        * Our batch might include writable and read-only
->>> +                        * PTEs. When we have to restore the mapping, just
->>> +                        * assume read-only to not accidentally upgrade
->>> +                        * write permissions for PTEs that must not be
->>> +                        * writable.
->>> +                        */
->>> +                       pteval = pte_wrprotect(pteval);
->>> +
->>>                         /*
->>>                          * We clear the PTE but do not flush so potentially
->>>                          * a remote CPU could still be writing to the folio
->>>
->>>
->>> Given that nobody asks for writability (pte_write()) later.
->>>
->>> Or does someone care?
->>>
->>> Staring at set_tlb_ubc_flush_pending()->pte_accessible() I am
->>> not 100% sure. Could pte_wrprotect() turn a PTE inaccessible on some
->>> architecture (write-only)? I don't think so.
->>>
->>>
->>> We have the following options:
->>>
->>> 1) pte_wrprotect(): fake that all was read-only.
->>>
->>> Either we do it like Dev suggests, or we do it as above early.
->>>
->>> The downside is that any code that might later want to know "was
->>> this possibly writable" would get that information. Well, it wouldn't
->>> get that information reliably *today* already (and that sounds a bit shaky).
->>
->> Makes sense to me :)
->>
->>> 2) Tell batching logic to honor pte_write()
->>>
->>> Sounds suboptimal for some cases that really don't care in the future.
->>>
->>> 3) Tell batching logic to tell us if any pte was writable: FPB_MERGE_WRITE
->>>
->>> ... then we know for sure whether any PTE was writable and we could
->>>
->>> (a) Pass it as we did before around to all checks, like pte_accessible().
->>>
->>> (b) Have an explicit restore PTE where we play save.
->>>
->>>
->>> I raised to Dev in private that softdirty handling is also shaky, as we
->>> batch over that. Meaning that we could lose or gain softdirty PTE bits in
->>> a batch.
->>
->> I guess we won't lose soft_dirty bits - only gain them (false positive):
->>
->> 1) get_and_clear_ptes() merges dirty bits from all PTEs via pte_mkdirty()
->> 2) pte_mkdirty() atomically sets both _PAGE_DIRTY and _PAGE_SOFT_DIRTY on
->> all architectures that support soft_dirty (x86, s390, powerpc, riscv)
->> 3) set_ptes() uses pte_advance_pfn() which keeps all flags intact
->>
->> So if any PTE in the batch was dirty, all PTEs become soft_dirty after
->> restore.
-> 
-> PTEs can be softdirty without being dirty. That over-complicates the
-> situation.
+Hi David,
 
-Ah, it's even trickier then :D
+On Thu, Feb 26, 2026 at 11:25:24AM +0100, David Hildenbrand (Arm) wrote:
+> On 2/25/26 17:41, Maxime Ripard wrote:
+> > The CMA dma-buf heap uses cma_alloc() and cma_release() to allocate and
+> > free, respectively, its CMA buffers.
+> >=20
+> > However, these functions are not exported. Since we want to turn the CMA
+> > heap into a module, let's export them both.
+> >=20
+> > Signed-off-by: Maxime Ripard <mripard@kernel.org>
+> > ---
+> >  mm/cma.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >=20
+> > diff --git a/mm/cma.c b/mm/cma.c
+> > index 94b5da468a7d719e5144d33b06bcc7619c0fbcc9..be142b473f3bd41b9c7d8ba=
+4397f018f6993d962 100644
+> > --- a/mm/cma.c
+> > +++ b/mm/cma.c
+> > @@ -949,10 +949,11 @@ struct page *cma_alloc(struct cma *cma, unsigned =
+long count,
+> >  	if (page)
+> >  		set_pages_refcounted(page, count);
+> > =20
+> >  	return page;
+> >  }
+> > +EXPORT_SYMBOL_GPL(cma_alloc);
+> > =20
+> >  static struct cma_memrange *find_cma_memrange(struct cma *cma,
+> >  		const struct page *pages, unsigned long count)
+> >  {
+> >  	struct cma_memrange *cmr =3D NULL;
+> > @@ -1025,10 +1026,11 @@ bool cma_release(struct cma *cma, const struct =
+page *pages,
+> > =20
+> >  	__cma_release_frozen(cma, cmr, pages, count);
+> > =20
+> >  	return true;
+> >  }
+> > +EXPORT_SYMBOL_GPL(cma_release);
+> > =20
+> >  bool cma_release_frozen(struct cma *cma, const struct page *pages,
+> >  		unsigned long count)
+> >  {
+> >  	struct cma_memrange *cmr;
+> >=20
+>=20
+> I'm wondering whether we want to restrict all these exports to the
+> dma-buf module only using EXPORT_SYMBOL_FOR_MODULES().
+
+TIL about EXPORT_SYMBOL_FOR_MODULES, thanks.
+
+> Especially dma_contiguous_default_area() (patch #4), I am not sure
+> whether we want arbitrary modules to mess with that.
+
+Yeah, I wasn't too fond about that one either. Alternatively, I guess we
+could turn dev_get_cma_area into a non-inlined function and export that
+instead?
+
+Or we could do both.
+
+Maxime
+
+--4m3wi7hiurafpqag
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaaAitQAKCRAnX84Zoj2+
+dn2RAX40ENhBNNnA9IVK7i0+qn5IsVH8v3M4faEFfo9IBr96Q8kfaeEhQLPJokV5
+OD/rbD0BfA29oWhRpf5wZDuyQy8g1598nXD4qkmluGfS3ZE2BbGta/gjBRP5O3kl
+YIcJ/SmxPQ==
+=LmIK
+-----END PGP SIGNATURE-----
+
+--4m3wi7hiurafpqag--
 
