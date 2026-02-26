@@ -4,237 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5688FFD8FDA
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B31FD8FE7
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B153D6B015C; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
+	id 883B66B016F; Thu, 26 Feb 2026 12:43:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3006B015E; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
+	id 85CB46B0170; Thu, 26 Feb 2026 12:43:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 965CA6B0161; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
+	id 733436B0172; Thu, 26 Feb 2026 12:43:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 779766B015C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E64111A02DC
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:43:47 +0000 (UTC)
-X-FDA: 84487330494.09.57FA028
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 129614000D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:43:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rgsCuSqI;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VX4KlOjs;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772127824; a=rsa-sha256;
-	cv=pass;
-	b=CiGY6oY5J0YGygsIUa9gMxjoGX35PvZmAzJQuY0MgeeMuYSdvvm5j5h3AZECIg8sRtT/qu
-	odNK5jdEKj/e1dXHLylimRcWNghKzZksBP6HYwFomg5HAz+lXUt9DxotCgim+wnP/1BcAL
-	+IriDFKNY8w/YlzHTWI81gpObBABZPc=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rgsCuSqI;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VX4KlOjs;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772127824;
+	by kanga.kvack.org (Postfix) with ESMTP id 5C2396B016F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:43:53 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 24485140332
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:43:53 +0000 (UTC)
+X-FDA: 84487330746.27.0F1B631
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 470322000D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:43:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PQHN6d70;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772127831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YXw+X2iueWbDM79q3fuJmseNco19H5edzrosVmZf+3A=;
-	b=G7KgKfbgr38E+9GaYYVFxfOJJx8pznhD7DvBJB3sqkPlu50/T895av/MTGoCAoHqU0l+VV
-	IuOtKMNburPwM4fEkHhnP5a4mYnnCXi9weJjLOHcOvftW7eX/f5SyNvfDbeOQuP88l3hBa
-	dcITBbYf4KUSa/Hx0Yq1f7vw+qK3GfA=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QDNLe41973013;
-	Thu, 26 Feb 2026 17:43:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=YXw+X2iueWbDM79q3f
-	uJmseNco19H5edzrosVmZf+3A=; b=rgsCuSqIG0y4sU/Yy9kblLf9sH22NS5DS0
-	KraJyVnBU5qFGsior+PEfs6Q6FZLqkIhG9z1x1oQySKRp5kG3QMEqX6BRgVWzkVA
-	H6cUdocmpPj1plCX3295F7PY2+Y+uHwnglExJQd/ibc7Td18rUY0A5mmhXIZo6wB
-	ZBQEroiWOxN+ONgk/XMlcX86aR8uGHj1Oy/nq955XCR1XXyKhhOVFffmM7G21WGL
-	hXF8V3tuaKtevyCcJ74w7nCW55TFTLYc0KvPoAeXARDaehXQX12SAPsHVGg8m1tx
-	kkkPWA4NGk48pTikLLewa+NZnxtIHnoyN1KK410WXzU2ZVQ2u31A==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cjgs0133u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 17:43:23 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61QGSvPf038497;
-	Thu, 26 Feb 2026 17:43:22 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013033.outbound.protection.outlook.com [40.107.201.33])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35q1ecj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 17:43:22 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w59A7Ucj/+/BCjVvPBDinb9/Rjbqp3aOz9/yUTGq+tthLeYbOiLy8neryFqSsm3g+E7VpPsz8LhJuWchl76dm4r97iVjL3zsEaN2eA9oCyZiCFDIu1XRrgvEPLk5pkoFHJpjW4JYgeFosD6ltCbcjlZsETiXjLp+ffzn/nJO9wInyQtHeNjglF4rBs11Q3qJXNXa5ATtEyCiXW3E+8txkb5koE+zjD/FVsYvwfDd/87FSkSd+B+acSJmPPsf4ikHYIKOgBxQ3uUblacYdMl5t0LlUlCFbYjLuEcwCB+/1hEk985KiY9bDiZbVh2jrqd9oZXI1iwekeuEC8Nr7MBuCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YXw+X2iueWbDM79q3fuJmseNco19H5edzrosVmZf+3A=;
- b=BjIJwmozg5dIOm6WAs1rB7P8yL4zbUKsoQAlnf00qcYWoawu/C3ZMqFs7+T5RlBLESlkfN0p+K3B9RxVPb5CIgYyWjvfTPNz3ivjg+BEO1MkX4ichsta1KSvwBnaGpu38sk5+twEbf1V7YDRyZmUsty0Z1aMNIGZpI9E2JesXknbC2hXOQQNpEApLte5W08nH93HxIuW9p8saD0LgLVR2I82P/5Y2PYdhrwRyo74/sp37tCxcFd6eiWCOpkcwNWRS8/XpoE2qG0O0M1xu8fH6yTBXwLMsgY01Ze8cTwNrOzPHqG+EuJrMZqWiHRemBGYDP9bSHNgAJyNYcUmRriG6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YXw+X2iueWbDM79q3fuJmseNco19H5edzrosVmZf+3A=;
- b=VX4KlOjsMFnlHwJ34upg+c6NZwB8i269CItJqHui1W9z1LEWtqoevnCllHHLSb4PMBbY1hYb+c1bNCCVPxpKiHk0KraWkBZLZpZAP4S35J1UKjxdJQw5Jp3bj7xia3dtEDKs8nHTvLjWSV6rji760MQJWEXmfKYs88AVjOfy2yU=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by DS0PR10MB7936.namprd10.prod.outlook.com (2603:10b6:8:1b6::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.11; Thu, 26 Feb
- 2026 17:43:15 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 17:43:14 +0000
-Date: Thu, 26 Feb 2026 12:43:08 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org,
-        ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
-        rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
-        ying.huang@linux.alibaba.com, apopple@nvidia.com,
-        lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
-        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-        baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz,
-        jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de,
-        kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com,
-        mpe@ellerman.id.au, chleroy@kernel.org, borntraeger@linux.ibm.com,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
-        gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with
- vma_start_write_killable()
-Message-ID: <vb6lgskvpmk6qcdo7tthmc3hpo7jppbx4ke75vepx2nqos65je@wxv7muptiiq5>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, 
-	rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, 
-	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-References: <20260226070609.3072570-1-surenb@google.com>
- <20260226070609.3072570-3-surenb@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226070609.3072570-3-surenb@google.com>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT4PR01CA0285.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:109::23) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+	bh=wQ5DBtqJLpJ/f9Fcv5GpC1oAxf8goYYwoevTMdhm3D8=;
+	b=ohL+vx3TEPQrMkItKiOIoznc+/n0DhE03I1Ojr8RqGL7q1z73UyM9Y9pOebLzAE4vOyLE9
+	Ho/tqkfgTRATXDO20JplL6Vox/kKCT8aoKpa28mR9Rnk+d4wKfvoT7v9cS1zGuqnDPEqf7
+	gj98bfDDulyarQtEo0KnWf/yBtrx/9A=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PQHN6d70;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772127831; a=rsa-sha256;
+	cv=none;
+	b=5A/BxtbeNOqWFcdoVoll4CMc1OBpE68+hKZuW/7w2ul9rHCdyqtxiiPBv5oN4V1p4D6XxH
+	gH82KG6ikPHvZVdIUosP2sVIKQTMAueF9w5/zrDPIMATCSisDqUfwZxrVf3QZdJYVcepak
+	oySUSSjzl6dPq9s2XsuMbHxYMm22Sz8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EE0C43B46;
+	Thu, 26 Feb 2026 17:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B34C116C6;
+	Thu, 26 Feb 2026 17:43:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772127830;
+	bh=P8ldSxwfLZVjMH586whroUmxuPZFLnNzibkezo9KuFQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PQHN6d70ELrN3toH2TcI45DI/G35aRETlgWeripiFftg7n1f3wItLYTdAiL6XcdU7
+	 bIou2KquSsNFB2kkrZvgJJ5bO0EA7BJTLiLrTWCZJXtTdB97Nu3YrDBfjyYz7RP3GL
+	 gH3aOyXxcR5Cb+IgAMaHDHCT4bSCL5i217xbDQK3cA25va6um9p5upgf3kRawBu87R
+	 6HwwWYNR8B00JgePqDy6EYgpf6tbu2PcxH3Y0bEPXz4FbUS9jokKvAPEuV+khMvKRw
+	 l5PFM2D5oKdE/hpJEj2xylh05fzWWStMNiUv5f3y5fjDfWVAreM1ylu2dXMg7ngL40
+	 sjp9XBzoYXw5w==
+Message-ID: <d9294aae-b91d-42b4-9e8c-cc63245a3f43@kernel.org>
+Date: Thu, 26 Feb 2026 18:43:42 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|DS0PR10MB7936:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5feda253-dec4-4280-43f8-08de755e8440
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	CR5pbkATy7SpACb+prRbph/a4bLziUukxLdtd+T0NsCUR5thUUvPtmAhhK7kZzEANI4G9TaW9NbKGjmIRM7JpoRetJz3jtYJ4p8ukcRKA38R3W3n+zlvSlRhTpNrash20htJ9bPlIXbraxwCWq2TdY3ke2R9PGfXsfh14QC7cy4EheC200XQyl/9ld9HOZ9JVjf/q4HNK6EJy2gpeEddjeXaRzQhQYfE2r0NForu5Kv1ZJtu9ZANdI0LYIOf8kdIkKKXvXyoYfsfqEyf+nfZ6g0Dy0EFdaIpDQ1TOKbFGrP95dTfb7Mr3g+91/C+S2kCZglK8mNTY4qbPvhfOEV2ULQ4EXeED7HEKqfWOXUYSwPK/jKwW3dSaG7LDg8oVRRQAkLMP2lUike4DFuMLeC5b198/0ru0+p0F0x5H5tUr1J5xEx6ozKS4YyPm6zzJK32GOyxtOTXD5fYJyAYRcgeCi1DR/+rV7cmPsgr2WeYPbyU5MmWRHCyOKjxzrMgjzJJtZBztddEXv/VA3a6cowogkDATFNp8HGHh7t2cEcNgcj9NvJXear3uTlexoeaQybLY2oqXILvzAaSLl+uNehTpej/vRuilb7cGbeXKOedhg6+2DV8yplGAe26FbCZFAOLOX2KVX7F3KMmg3BNFD0QppV0+a83QdegXutHWDWJDohlC+i/uDTRkrwUdWPcuhO/4xIgTGsYxWkTkmCiafmgagwwPucc0QH4D8s8Li5A4+Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bIIhh6Y5Xjn+n8lG1od371knysP7232voONkThq9BDK0866pJY1aU5Q0oET+?=
- =?us-ascii?Q?gXuwX8tyCrTKhhsd/uMeGIRwDiQIyLhfKqreHDwTuBIJaJmfYudeARGoaHoG?=
- =?us-ascii?Q?70iAsHrw2Vmw3eb3p/hSTdhKpdqldh/EjpUEAZpcXkFVgSwYeX4UnGrPjtOI?=
- =?us-ascii?Q?OSEaL7cmjw/XKIDuY1V+7P42mi06X9cc6jHbdzXi92A6Ly5sDyNlqOO+f35e?=
- =?us-ascii?Q?Ff6cDaQ22VElxhPs7tHEuC/Rx/esLUC11VnUoRoTxyMVz/HIDm/vZ2yOP1A7?=
- =?us-ascii?Q?7n1XnT9FvnQAcLN7TQoomY421sweNV/+XsLsj14goTosMR5nFeEXb9Da52QN?=
- =?us-ascii?Q?yuIlLCmTnckgSq2ZPzVlHhl0xz+hwlgYlamPYebaUAIbYN0dILaKq8Fe9Ad7?=
- =?us-ascii?Q?XJgFF7rrdkClrpTLJOrHD8U8lJMSJynvuWJ405+fk7RzipjAzIkVAyhQvs+d?=
- =?us-ascii?Q?tLf+bEddwSa0mZKE2O/64xF6nFC5JdUJCIfEsBr5sYYiK4+pyG0a5JtYUXvX?=
- =?us-ascii?Q?GV1fMpzxlLroX6uIbK+E6fekuTK+RrfU4YlOBm06XKjzsRxeImn8yeNASMzT?=
- =?us-ascii?Q?bXW6y7f3NNlDO6hVczkro5O1iiqJ2KU30WAV6Dh0ndVTe74/1QAIb87W3FI3?=
- =?us-ascii?Q?SeOJhod2BczCLN+Dq6Y+qccRVNED38JYckG53Z0UhzxqQc8UywUoobmLbAeq?=
- =?us-ascii?Q?zMZusLepAjw8CuZ3qAKyvIJ2W/xGXcYuko9KoslTNOXBGgO2cNj0jB2p7npM?=
- =?us-ascii?Q?NRHrrQoPCfTJaXZvp41fY+XIdEiZJCuSMtMgy3/nFpzzM+z+HPW8oUxiN96L?=
- =?us-ascii?Q?GvJsYyZQfW8m3arUIxOUpytp68TALWjtMQLkAo8WBHx4nc5vYDHlXFsmg8eh?=
- =?us-ascii?Q?dQabL9RfVZB4QnTrNfG8EBUoifh4LM/4CDmEC3unSOp2PzK8q6pqr2ALKSCh?=
- =?us-ascii?Q?ZnmbZ/SmFgmYDMG5tOu0m75Ur0cIaxTXoBtMwwpuB7pfDKVRXxaqx8pxhbik?=
- =?us-ascii?Q?BXl1lPgGXZU5e7M18PKBABvLX+tOag9v8ZIbvImU4DoUlcvNO8cxnlNMXBwb?=
- =?us-ascii?Q?JmtbNsQ5f/af+SsbUKI+ZEZJ551s+LS6ux6oThJI6YbdgtraaMVVOUoVMwBA?=
- =?us-ascii?Q?87mA1eeTKVFHqctCfe1pavbOv9z+i9TESegtERsXRbrg4irJi7+k3eSqldtF?=
- =?us-ascii?Q?EMX3Xaunbz2kEBXHH6KDEoC64iN30pLFhIiBPYGUemTVRbxUbUIW2g/llAv/?=
- =?us-ascii?Q?GnvKQ4p0sjAFNDqie8Ng4ZoSD1rIPEyPsMwaIk7CthRvA1opbBfmhX3Bre+r?=
- =?us-ascii?Q?eD3aBhNtaf64EGrwzFfXFPC4PsOu1VJYQScghwabzj5gYAsdG61x1Z1ZGuHZ?=
- =?us-ascii?Q?mFzpquXhFal4JnfUjNNacs6LxRFoWYA7pkayVSgYC/B3HBGJ+nD2g+ToS1jb?=
- =?us-ascii?Q?+onJ1bVgz0R1iPY2nu0jn6T7s9km76eIwjExKvHFPZcjKqqwit+t95vRygyF?=
- =?us-ascii?Q?5Aetgu8NGwX8BJnO8u3uAT1WFoq6xxnVl7JgEJ9yUlUkPdquvQZtpEI5Tlrh?=
- =?us-ascii?Q?XHBu37TaZI8nPwKVExjN9lhxtUEzddRdzAXz5t6mhe2K48rRybNZMBKEOhLP?=
- =?us-ascii?Q?FND12GeuquEiuNSVp6MkGtQkMuv4kIBH2ql673TnZKIygtnBYYqgbZI2v0Qw?=
- =?us-ascii?Q?dZcnWkT2C4ytBQ3khHTZzKkAu5GQOO6GvHMbiTLrDn1jHpwXnuaJ3vnbuUje?=
- =?us-ascii?Q?g3nP2FUKew=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	JvxbmQhePx0aD1Zcr6H7VapiQFKC8aS7u4JdA36KeHUikcQCw5gf8HLYY/pypFzGyqaOtBJsL1+zS4CEQwjyduumv+d+I9IXNEVAUq5tsmwEw+DDMDTowog++BKuWJ0USV9sJFByW0E2mTciE0HaqyHlIt5pUg4LG/yBAuA38UHxfMbdG4Hnm/oXmskw/y6eOcKH5IUn2VzWYUcASNkZ4hHVvckPGzObNEt7MxtKZeXR9oZeumwLAuAyoYznqYrFFTIEeejL0uKOIL8qiPjPsNSHUG9BOJL9FGTBCclgYgT7P6I2n2a0HSRQF6Y1wwfoddeh+wPaNZmjkkSjKpS+goxl+p3artFPAVlRHkQNeSQ82GwQgG7pWGnaN3BdkXRoWicmUtkm40QUNNJUPMqMS1Am9AZ89okb10yxVml2bulYGBDbRRREAMCfK5JMTlSJzKfMt8iYPAiPZzkUSA87rwDDqmhpFhio85pmFSPjN8WPj3ok31bcnFegfpBtdYAnAUd61/TGMrc5t/RmC5rm5EoxDt9h7I/o6SPku3E0IZdRQvp8Pbij8KHCZEOTCSpRZV8pxN2nwD8WcDnTVonIiD7J6HUG1IvdVNPYVjQ+RpM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5feda253-dec4-4280-43f8-08de755e8440
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 17:43:14.3289
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0/Z2td3OUCDW2wFEwSbN2sOqT2XoAy0k9k4d8dPCJw1AKnVSgpRlGf/F/+H2lHsk0dCkwdXCG1tYnYW7kcP56w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7936
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 suspectscore=0
- spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2602260161
-X-Authority-Analysis: v=2.4 cv=BKK+bVQG c=1 sm=1 tr=0 ts=69a0863b b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=1XWaLZrsAAAA:8
- a=JfrnYn6hAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=p-90_2tMuphpnIqHMSUA:9
- a=CjuIK1q_8ugA:10 a=1CNFftbPRP8L7MoqJWF3:22 cc=ntf awl=host:12261
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE2MSBTYWx0ZWRfXz1RoPGnnfDLr
- i/OMjf5eZ3Bt/46yyHMNhCNTSAYevsTgad2HxD9Gd8IQJO1+WLJ3KYAhgQdx36dsv/yC4IvlLyP
- OLxZqwTNjxIS2RF/P9dQa8iYOtGBPUqvSYvn5Sv56WooPloC3QdHjEEEci5qCfHciJXsrshEpMy
- RvaFNjJ2hlZAEjTV0KkWyfyrt/RQCdYhk3LA4SyAZstQBKvGGkFTOF47qb2GXpcwwyz/21k/yue
- HjWfg2qhNuvyUP72ZvtQbYsPEfXC8HTSdkIU5m6Z+gX+VElDrcjF8/fCwSYS6oglFl8gNF29eM3
- AGTjRcLQPoDvy6aoxLho8oLz5187ARPwrJZJmceGlXVQXb3nKL8uH/zjdtt9+c/OYtlRI0O9tC3
- enlZXL3x/NajPRFBWjxktVugVmYQxM6L083fZ3s4DIHl7vMvCMeG7ajopzwUe8jeTxUy25oZCIV
- TDOjuzl8tIr2YOtexlEyIIEIWyCw96lAVgNModkw=
-X-Proofpoint-ORIG-GUID: MPMCU-7bT0OaDXbrHLS3pAVEb32mp5S9
-X-Proofpoint-GUID: MPMCU-7bT0OaDXbrHLS3pAVEb32mp5S9
-X-Stat-Signature: td3p9rpfwju8tf3q7roqqhzujkmfizyq
-X-Rspamd-Queue-Id: 129614000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] virtio_balloon: Set pr_dev.order to new default
+To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>,
+ akpm@linux-foundation.org, mst@redhat.com
+Cc: vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ virtualization@lists.linux.dev, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260226070125.3732265-1-yuvraj.sakshith@oss.qualcomm.com>
+ <20260226070125.3732265-4-yuvraj.sakshith@oss.qualcomm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260226070125.3732265-4-yuvraj.sakshith@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 470322000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772127823-83451
-X-HE-Meta: U2FsdGVkX182UPumFxzgiofQzBkbdDl4f47AKiSf9ByCm07MvjrEvoasiqILD1XYLjdcCIHSTTDHK5HqrSI4JtCDE3G2a2dPMd/Up2Sa8g8RVChlm/Dp+NuB5/g7tRwvCIC09IAHJ+fsmc8qbnsJXbdQtuh7PEgRPE2j2C6yhG25fKc5md5dvRkAun+ii09UVrS5McHMmDeBY9RPAumj+PNmGm1ZPlYVX1zon3c6r+hd6F6JyNBVBuhsXuUJ6JFFz3hjSxZIMaYou468LeiJv5WOwy4StSpYXpTq5hEeJFomb922z3ktxLP8acgOoHUVjj3lJgEIUs/dTivzddvNuvuD1tCbSExVLSBBfSI0UPH+tnXNyWA9Z7ytZgqaQ/l0q4wAXeEIljT2VxGrNfay6p8nVA+O7eyAU3rZ/A2MTzB0le9aWSbRusixAXOt0e6TqFNvYA5IZH//9jkJVCix9ka96jUqdSfyTdNRvlz/ReJC+TvRgGjhpm+/3nox6Zx6sMVPvMXN87poHYu/ZuLV3t+DRoGtcLKQW2I2OV+2Rx9z4N43JE3qGZ2XYvE5Ibw5R4kPBRXgieoK0jCUiw4z7DyH7UbYPbGXGMMLEH2BbSxEWRLCUFqDRCVHmuddPBdbmk3XwVwAqqTvRop2u+fHIeJObhCQjoiTb2Dx1UHYwv+7bjXQWdhnLQAwLzC5s4q2SGuzbK914McvTf4N4cppsW2TlkGqPSpbrQKPGcqf2pTZr2JywsQ9b/JQns7r2Q0qRYki2Aa+bDMBukTWPzhMpWyM3XgFkR781L/s5T27KakaosQMcw8V/f3tgVqRX76JBYEwNZ6MM6i9uQUap1b2Lt7DInXLAnHNdVuqRyx/EVovzfe//boVsS8ygRx/aXAstgRjCho78k11hH/jQowQh9rzGZ8h3yRoWvkEP6wCUE/k6+VnQCy2jPhIyCBB6B4KlRBO5g5yT9WhFJwTvHx
- 1ZohRZfd
- 4MUG7ypEfniGi6FSz+1+Woaa1BDYR13xwiwjj8Ek3tRTzc2ZowAv+tLpIgVJkzmg9z8rkjvILtPvs4lQ0BL5QezUfRWFswTwsTyeDRkSns+BkBxWh0WKJvfMt5bm+PpUOp56q04bKUYAeuMNqgKbXFYY/wqsTiBhFyMUaY5TLOaGzWxPxdSoOXeRtbPZtFn/aMm59pd2PYD117iNchUE2i8cxTigBu82iJWv43Cji2yy4L4xBm5Scm/6YqaHwDRuO1Ct5oRda4w/2HxC8wjQSkO9OvuZ6H/MpMNYbfk1XGJjDWMxQ7v5oYbIInMu9ggiRXx2JGv9kqr/WIw0OA2BSL2KmHsHC3SjGrmOVLxbawo5xjy9uXRqhwHyy1LaiHT2GrR00P1ZA3/MWZLtqUF/l9J0A1J7dAZ4139z4sSm2+c+Qu6KxHap8+HJ39i8s3suDvnPRwwOpyQI8cbRwVpKfedKCr46CdVjVXkGRFpHbu0XXulmDIrDJJhXdtKRr01mQ0noJL3cP0eMXXg9lkR5aRSQnfY7SgvKzx6aCttC5Ghgz+LTTN1dwUJkV2lipe7U4aPiMntyk8tO90f1VzmgpPnR+AcOTz4ggSAoY8uOXvhA0dvFXC0nDIA+Kfj9ylI4hl132IAFv9Rys7JzthrbAdo37vt0glz++hHnkRsALAwd5wAxNrkU/dgWbI0BtUJSejl6W6p8DKowDXQt/flr863uc0R7OlVpft2KLxzgrx+I+6rhMSGbjAm+2SFD9csWBACbt0rktMocwl7wwx4m1g0sgDMy+ysT2+/8XBYg2dyXoLsvITnkn/vnUDWkY5K1vFlf70utM7lTIxuwL0hlda+I4ogu5Pl4d/hGkki0BULfqw2xcXePNhvA4VA==
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7uzsgpzy61zuodsxhk96oxwhmceufdjd
+X-HE-Tag: 1772127831-485122
+X-HE-Meta: U2FsdGVkX19tFxUMgxf9UL7spGU2B0753/ORKPQJwFOPR/OkyyvD1sdfy+acnl831lcxPCJzJGRhYSINSxkNEbYHCldqsXRZdM6vZCkFz2jYAJYs7uCj709WbjxAcMU5VL2tTnLUiP6KDiwLFccMHqIPAoll8dcYKUqHvzxYNi+Fh7k5NCjD/hOhelIrUvZZEKAm/rBnxxJcp7oMG8mLYqtn2ya4kbgjP2sbbEX+wo66pkV7Vd5ycn+w9GNZjCGonpM1udu4hTbKwthbLQjrQem1YkIK4lAViiIFO1c+PfThqrYt4v6FBnKrY/4cbVQtY32ZLel070NgEw9P2TruksBgAhHPHEjXPRoy6s9S02OsnnjMDSYPs0zeGpqJKf18PUSutRXRe8h87YWglb8MvPRbN7Q/H+a+H0cbITkGvFuJoKcoltlvz7z5U1i5xieRYJQq5zLHhaXB3OO8XY6SLJGRhKlhVJPWv4Obik/YX/Lkmh6+gTVWAVa5qyZxqDcAHaoGPT1O4RvgCe25Xll20KPJbKlTha3kZjkaeZZvXZYHRdMo/uiVNQ6KgNJRu2BnB4f+3LevSYWFHhpGCG5V8lsDUerYYTBitpBoE+eu4NCLhEeJE227IreBKkVAM54kBRusWmI+rcGeDZhUV9qmVu8QZfu9ODYXPHjd5IyhGzlyCKloagSFayGsWBzbHQr3+WamJB8dqTEwrNR7e1yQlWWy+xw4JlxeKcXc6Nx8hNvcUXywpR50BeBv3qNwWKP2DR057IRF2FdZeLUwdr0IwxEfuOg9cGQTuENLniB/bq6p9BMiT8tcKVlh4R0eE42xlSc3/X5ekIjUil0dThlJi3N1hdYV1MdD8/3kRyrpeWXcX4Nw3p+IL96afhn0ROJ602sOj7UpaeQwUqhJLJx2Jaz2MHtGwcE88nt+KQajn2ihsKDfdbIldEKYHVzh8UeaROnzTdVz0GKbFedGbz+
+ 2R/kez6B
+ 81wlefoKjHtDnjiEcD32kbDoYNZMIPR8TXFzFjb+A0e0d23AhMsQT18KBsc4OWBbDjJZmdRV4VChbaANNB0B6YbHId01cwUUeg2dmtMGmzoDFUHDp8xTJKgLC0UnV35yyXrXOTciRor7cExxaG9RgBuDBDjeGtud7RZN8irmSVa/WGfEfz6+Ez61hDn7irMR8aMYAetG2BvyPz4dfWl+1Qwqzt1ICQKASd5Z46zN9FwPMKw/6ZrJw4Lov9tBMkOXSzc2enCnhlSI/c1zCNBJYsipwxZT+mjkOJoT2pMUciqKZ+HZjhfzjLCV0TguGYzjbFZFigU/9LHXROK58ZBp46ndEEg6fiM/anHVxgi+nm1rWCoU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -242,550 +143,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Suren Baghdasaryan <surenb@google.com> [260226 02:06]:
-> Now that we have vma_start_write_killable() we can replace most of the
-> vma_start_write() calls with it, improving reaction time to the kill
-> signal.
+On 2/26/26 08:01, Yuvraj Sakshith wrote:
+> Drivers registering with page reporting used zero
+> as a way to signal page_reporting_order to be set
+> as a default value (either passed as a param or
+> MAX_PAGE_ORDER).
 > 
-> There are several places which are left untouched by this patch:
+> Since page_reporting_order can now have zero as
+> valid order, default fallback value send by drivers
+> to page reporting is now -1.
 > 
-> 1. free_pgtables() because function should free page tables even if a
-> fatal signal is pending.
-> 
-> 2. process_vma_walk_lock(), which requires changes in its callers and
-> will be handled in the next patch.
-> 
-> 3. userfaultd code, where some paths calling vma_start_write() can
-> handle EINTR and some can't without a deeper code refactoring.
-> 
-> 4. mpol_rebind_mm() which is used by cpusset controller for migrations
-> and operates on a remote mm. Incomplete operations here would result
-> in an inconsistent cgroup state.
-> 
-> 5. vm_flags_{set|mod|clear} require refactoring that involves moving
-> vma_start_write() out of these functions and replacing it with
-> vma_assert_write_locked(), then callers of these functions should
-> lock the vma themselves using vma_start_write_killable() whenever
-> possible.
-> 
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
-
-Some nits below, but lgtm.
-
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-
+> Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
 > ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
->  mm/khugepaged.c                    |  5 +-
->  mm/madvise.c                       |  4 +-
->  mm/memory.c                        |  2 +
->  mm/mempolicy.c                     |  8 ++-
->  mm/mlock.c                         | 21 +++++--
->  mm/mprotect.c                      |  4 +-
->  mm/mremap.c                        |  4 +-
->  mm/vma.c                           | 93 +++++++++++++++++++++---------
->  mm/vma_exec.c                      |  6 +-
->  10 files changed, 109 insertions(+), 43 deletions(-)
+>  drivers/virtio/virtio_balloon.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 5fbb95d90e99..0a28b48a46b8 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
->  			ret = H_STATE;
->  			break;
+> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> index 74fe59f5a..3cc3dc28a 100644
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -1044,6 +1044,20 @@ static int virtballoon_probe(struct virtio_device *vdev)
+>  			goto out_unregister_oom;
 >  		}
-> -		vma_start_write(vma);
-> +		if (vma_start_write_killable(vma)) {
-> +			ret = H_STATE;
-> +			break;
-> +		}
->  		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
->  		vm_flags = vma->vm_flags;
->  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1dd3cfca610d..6c92e31ee5fb 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1141,7 +1141,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->  	if (result != SCAN_SUCCEED)
->  		goto out_up_write;
->  	/* check if the pmd is still valid */
-> -	vma_start_write(vma);
-> +	if (vma_start_write_killable(vma)) {
-> +		result = SCAN_FAIL;
-> +		goto out_up_write;
-> +	}
->  	result = check_pmd_still_valid(mm, address, pmd);
->  	if (result != SCAN_SUCCEED)
->  		goto out_up_write;
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index c0370d9b4e23..ccdaea6b3b15 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -173,7 +173,9 @@ static int madvise_update_vma(vm_flags_t new_flags,
->  	madv_behavior->vma = vma;
 >  
->  	/* vm_flags is protected by the mmap_lock held in write mode. */
-> -	vma_start_write(vma);
-> +	if (vma_start_write_killable(vma))
-> +		return -EINTR;
+> +		/*
+> +		 * page_reporting_register() takes the order either
+> +		 * from the driver or the commandline. If neither
+> +		 * are provided, it falls back to MAX_PAGE_ORDER.
+> +		 *
+> +		 * Order given by the driver is required to be in the
+> +		 * range [0, MAX_PAGE_ORDER].
+> +		 *
+> +		 * One way for the driver to not provide any order
+> +		 * is by setting it to -1.
+> +		 */
 > +
->  	vm_flags_reset(vma, new_flags);
->  	if (set_new_anon_name)
->  		return replace_anon_vma_name(vma, anon_name);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 07778814b4a8..691062154cf5 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -379,6 +379,8 @@ void free_pgd_range(struct mmu_gather *tlb,
->   * page tables that should be removed.  This can differ from the vma mappings on
->   * some archs that may have mappings that need to be removed outside the vmas.
->   * Note that the prev->vm_end and next->vm_start are often used.
-> + * We don't use vma_start_write_killable() because page tables should be freed
-> + * even if the task is being killed.
->   *
->   * The vma_end differs from the pg_end when a dup_mmap() failed and the tree has
->   * unrelated data to the mm_struct being torn down.
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 0e5175f1c767..90939f5bde02 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -1784,7 +1784,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
->  		return -EINVAL;
->  	if (end == start)
->  		return 0;
-> -	mmap_write_lock(mm);
-> +	if (mmap_write_lock_killable(mm))
-> +		return -EINTR;
->  	prev = vma_prev(&vmi);
->  	for_each_vma_range(vmi, vma, end) {
->  		/*
-> @@ -1801,13 +1802,16 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
->  			err = -EOPNOTSUPP;
->  			break;
->  		}
-> +		if (vma_start_write_killable(vma)) {
-> +			err = -EINTR;
-> +			break;
-> +		}
->  		new = mpol_dup(old);
->  		if (IS_ERR(new)) {
->  			err = PTR_ERR(new);
->  			break;
->  		}
->  
-> -		vma_start_write(vma);
->  		new->home_node = home_node;
->  		err = mbind_range(&vmi, vma, &prev, start, end, new);
->  		mpol_put(new);
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index 2f699c3497a5..c562c77c3ee0 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -420,7 +420,7 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
->   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
->   * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
->   */
-> -static void mlock_vma_pages_range(struct vm_area_struct *vma,
-> +static int mlock_vma_pages_range(struct vm_area_struct *vma,
->  	unsigned long start, unsigned long end, vm_flags_t newflags)
->  {
->  	static const struct mm_walk_ops mlock_walk_ops = {
-> @@ -441,7 +441,9 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->  	 */
->  	if (newflags & VM_LOCKED)
->  		newflags |= VM_IO;
-> -	vma_start_write(vma);
-> +	if (vma_start_write_killable(vma))
-> +		return -EINTR;
-> +
->  	vm_flags_reset_once(vma, newflags);
->  
->  	lru_add_drain();
-> @@ -452,6 +454,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->  		newflags &= ~VM_IO;
->  		vm_flags_reset_once(vma, newflags);
->  	}
-> +	return 0;
->  }
->  
->  /*
-> @@ -501,10 +504,12 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	 */
->  	if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
->  		/* No work to do, and mlocking twice would be wrong */
-> -		vma_start_write(vma);
-> +		ret = vma_start_write_killable(vma);
-> +		if (ret)
-> +			goto out;
->  		vm_flags_reset(vma, newflags);
->  	} else {
-> -		mlock_vma_pages_range(vma, start, end, newflags);
-> +		ret = mlock_vma_pages_range(vma, start, end, newflags);
->  	}
->  out:
->  	*prev = vma;
-> @@ -733,9 +738,13 @@ static int apply_mlockall_flags(int flags)
->  
->  		error = mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
->  				    newflags);
-> -		/* Ignore errors, but prev needs fixing up. */
-> -		if (error)
-> +		/* Ignore errors except EINTR, but prev needs fixing up. */
-> +		if (error) {
-> +			if (error == -EINTR)
-> +				return error;
-> +
->  			prev = vma;
-> +		}
->  		cond_resched();
->  	}
->  out:
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index c0571445bef7..49dbb7156936 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -765,7 +765,9 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->  	 * vm_flags and vm_page_prot are protected by the mmap_lock
->  	 * held in write mode.
->  	 */
-> -	vma_start_write(vma);
-> +	error = vma_start_write_killable(vma);
-> +	if (error < 0)
-> +		goto fail;
->  	vm_flags_reset_once(vma, newflags);
->  	if (vma_wants_manual_pte_write_upgrade(vma))
->  		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index 2be876a70cc0..aef1e5f373c7 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -1286,7 +1286,9 @@ static unsigned long move_vma(struct vma_remap_struct *vrm)
->  		return -ENOMEM;
->  
->  	/* We don't want racing faults. */
-> -	vma_start_write(vrm->vma);
-> +	err = vma_start_write_killable(vrm->vma);
-> +	if (err)
-> +		return err;
->  
->  	/* Perform copy step. */
->  	err = copy_vma_and_data(vrm, &new_vma);
-> diff --git a/mm/vma.c b/mm/vma.c
-> index bb4d0326fecb..9f2664f1d078 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -530,6 +530,13 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	if (err)
->  		goto out_free_vmi;
->  
-> +	err = vma_start_write_killable(vma);
-> +	if (err)
-> +		goto out_free_mpol;
-> +	err = vma_start_write_killable(new);
-> +	if (err)
-> +		goto out_free_mpol;
-> +
->  	err = anon_vma_clone(new, vma, VMA_OP_SPLIT);
->  	if (err)
->  		goto out_free_mpol;
-> @@ -540,9 +547,6 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	if (new->vm_ops && new->vm_ops->open)
->  		new->vm_ops->open(new);
->  
-> -	vma_start_write(vma);
-> -	vma_start_write(new);
-> -
->  	init_vma_prep(&vp, vma);
->  	vp.insert = new;
->  	vma_prepare(&vp);
-> @@ -895,16 +899,22 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
->  	}
->  
->  	/* No matter what happens, we will be adjusting middle. */
-> -	vma_start_write(middle);
-> +	err = vma_start_write_killable(middle);
-> +	if (err)
-> +		goto abort;
->  
->  	if (merge_right) {
-> -		vma_start_write(next);
-> +		err = vma_start_write_killable(next);
-> +		if (err)
-> +			goto abort;
->  		vmg->target = next;
->  		sticky_flags |= (next->vm_flags & VM_STICKY);
->  	}
->  
->  	if (merge_left) {
-> -		vma_start_write(prev);
-> +		err = vma_start_write_killable(prev);
-> +		if (err)
-> +			goto abort;
->  		vmg->target = prev;
->  		sticky_flags |= (prev->vm_flags & VM_STICKY);
->  	}
-> @@ -1155,10 +1165,12 @@ int vma_expand(struct vma_merge_struct *vmg)
->  	struct vm_area_struct *next = vmg->next;
->  	bool remove_next = false;
->  	vm_flags_t sticky_flags;
-> -	int ret = 0;
-> +	int ret;
->  
->  	mmap_assert_write_locked(vmg->mm);
-> -	vma_start_write(target);
-> +	ret = vma_start_write_killable(target);
-> +	if (ret)
-> +		return ret;
->  
->  	if (next && target != next && vmg->end == next->vm_end)
->  		remove_next = true;
-> @@ -1187,6 +1199,9 @@ int vma_expand(struct vma_merge_struct *vmg)
->  	 * we don't need to account for vmg->give_up_on_mm here.
->  	 */
->  	if (remove_next) {
-> +		ret = vma_start_write_killable(next);
-> +		if (ret)
-> +			return ret;
->  		ret = dup_anon_vma(target, next, &anon_dup);
->  		if (ret)
->  			return ret;
-> @@ -1197,10 +1212,8 @@ int vma_expand(struct vma_merge_struct *vmg)
->  			return ret;
->  	}
->  
-> -	if (remove_next) {
-> -		vma_start_write(next);
-> +	if (remove_next)
->  		vmg->__remove_next = true;
-> -	}
->  	if (commit_merge(vmg))
->  		goto nomem;
->  
-> @@ -1233,6 +1246,7 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	       unsigned long start, unsigned long end, pgoff_t pgoff)
->  {
->  	struct vma_prepare vp;
-> +	int err;
->  
->  	WARN_ON((vma->vm_start != start) && (vma->vm_end != end));
->  
-> @@ -1244,7 +1258,11 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	if (vma_iter_prealloc(vmi, NULL))
->  		return -ENOMEM;
->  
-> -	vma_start_write(vma);
-> +	err = vma_start_write_killable(vma);
-> +	if (err) {
-> +		vma_iter_free(vmi);
-> +		return err;
-> +	}
+> +		vb->pr_dev_info.order = -1;
 
-Could avoid allocating here by reordering the lock, but this is fine.
+That overly-long comment indicates that we can do better.
 
->  
->  	init_vma_prep(&vp, vma);
->  	vma_prepare(&vp);
-> @@ -1434,7 +1452,9 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
->  			if (error)
->  				goto end_split_failed;
->  		}
-> -		vma_start_write(next);
-> +		error = vma_start_write_killable(next);
-> +		if (error)
-> +			goto munmap_gather_failed;
->  		mas_set(mas_detach, vms->vma_count++);
->  		error = mas_store_gfp(mas_detach, next, GFP_KERNEL);
->  		if (error)
-> @@ -1828,12 +1848,17 @@ static void vma_link_file(struct vm_area_struct *vma, bool hold_rmap_lock)
->  static int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
->  {
->  	VMA_ITERATOR(vmi, mm, 0);
-> +	int err;
->  
->  	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
->  	if (vma_iter_prealloc(&vmi, vma))
->  		return -ENOMEM;
->  
-> -	vma_start_write(vma);
-> +	err = vma_start_write_killable(vma);
-> +	if (err) {
-> +		vma_iter_free(&vmi);
-> +		return err;
-> +	}
 
-Ditto here, ordering would mean no freeing.
+What about the following:
 
->  	vma_iter_store_new(&vmi, vma);
->  	vma_link_file(vma, /* hold_rmap_lock= */false);
->  	mm->map_count++;
-> @@ -2215,9 +2240,8 @@ int mm_take_all_locks(struct mm_struct *mm)
->  	 * is reached.
->  	 */
->  	for_each_vma(vmi, vma) {
-> -		if (signal_pending(current))
-> +		if (signal_pending(current) || vma_start_write_killable(vma))
->  			goto out_unlock;
-> -		vma_start_write(vma);
->  	}
->  
->  	vma_iter_init(&vmi, mm, 0);
-> @@ -2522,6 +2546,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
->  	if (!vma)
->  		return -ENOMEM;
->  
-> +	/* Lock the VMA since it is modified after insertion into VMA tree */
-> +	error = vma_start_write_killable(vma);
-> +	if (error)
-> +		goto free_vma;
-> +
+Patch #1: Introduce PAGE_REPORTING_DEFAULT_ORDER
 
-There's no way this is going to fail, right?
+diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+index fe648dfa3a7c..3e21bfbb49a4 100644
+--- a/include/linux/page_reporting.h
++++ b/include/linux/page_reporting.h
+@@ -8,6 +8,9 @@
+ /* This value should always be a power of 2, see page_reporting_cycle() */
+ #define PAGE_REPORTING_CAPACITY                32
+ 
++/* Specifying this value as minimal reporting order selects the default. */
++#define PAGE_REPORTING_DEFAULT_ORDER   0
++
+ struct page_reporting_dev_info {
+        /* function that alters pages to make them "reported" */
+        int (*report)(struct page_reporting_dev_info *prdev,
+diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+index f0042d5743af..d5191cb6b31c 100644
+--- a/mm/page_reporting.c
++++ b/mm/page_reporting.c
+@@ -370,7 +370,8 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
+         */
+ 
+        if (page_reporting_order == -1) {
+-               if (prdev->order > 0 && prdev->order <= MAX_PAGE_ORDER)
++               if (prdev->order != PAGE_REPORTING_DEFAULT_ORDER &&
++                   prdev->order <= MAX_PAGE_ORDER)
+                        page_reporting_order = prdev->order;
+                else
+                        page_reporting_order = pageblock_order;
 
->  	vma_iter_config(vmi, map->addr, map->end);
->  	vma_set_range(vma, map->addr, map->end, map->pgoff);
->  	vm_flags_init(vma, map->vm_flags);
-> @@ -2552,8 +2581,6 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
->  	WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
->  #endif
->  
-> -	/* Lock the VMA since it is modified after insertion into VMA tree */
-> -	vma_start_write(vma);
->  	vma_iter_store_new(vmi, vma);
->  	map->mm->map_count++;
->  	vma_link_file(vma, map->hold_file_rmap_lock);
-> @@ -2864,6 +2891,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  		 unsigned long addr, unsigned long len, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
-> +	int err = -ENOMEM;
->  
->  	/*
->  	 * Check against address space limits by the changed size
-> @@ -2908,7 +2936,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
->  	vm_flags_init(vma, vm_flags);
->  	vma->vm_page_prot = vm_get_page_prot(vm_flags);
-> -	vma_start_write(vma);
-> +	if (vma_start_write_killable(vma)) {
-> +		err = -EINTR;
-> +		goto mas_store_fail;
-> +	}
 
-I'd rather have another label saying write lock failed.  Really, this
-will never fail though (besides syzbot..)
+Patch #2: Use the define in hyperv
 
->  	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
->  		goto mas_store_fail;
->  
-> @@ -2928,7 +2959,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	vm_area_free(vma);
->  unacct_fail:
->  	vm_unacct_memory(len >> PAGE_SHIFT);
-> -	return -ENOMEM;
-> +	return err;
->  }
->  
->  /**
-> @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
->  	struct mm_struct *mm = vma->vm_mm;
->  	struct vm_area_struct *next;
->  	unsigned long gap_addr;
-> -	int error = 0;
-> +	int error;
->  	VMA_ITERATOR(vmi, mm, vma->vm_start);
->  
->  	if (!(vma->vm_flags & VM_GROWSUP))
-> @@ -3126,12 +3157,14 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
->  
->  	/* We must make sure the anon_vma is allocated. */
->  	if (unlikely(anon_vma_prepare(vma))) {
-> -		vma_iter_free(&vmi);
-> -		return -ENOMEM;
-> +		error = -ENOMEM;
-> +		goto free;
->  	}
->  
->  	/* Lock the VMA before expanding to prevent concurrent page faults */
-> -	vma_start_write(vma);
-> +	error = vma_start_write_killable(vma);
-> +	if (error)
-> +		goto free;
->  	/* We update the anon VMA tree. */
->  	anon_vma_lock_write(vma->anon_vma);
->  
-> @@ -3160,6 +3193,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
->  		}
->  	}
->  	anon_vma_unlock_write(vma->anon_vma);
-> +free:
->  	vma_iter_free(&vmi);
->  	validate_mm(mm);
->  	return error;
-> @@ -3174,7 +3208,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
->  {
->  	struct mm_struct *mm = vma->vm_mm;
->  	struct vm_area_struct *prev;
-> -	int error = 0;
-> +	int error;
->  	VMA_ITERATOR(vmi, mm, vma->vm_start);
->  
->  	if (!(vma->vm_flags & VM_GROWSDOWN))
-> @@ -3205,12 +3239,14 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
->  
->  	/* We must make sure the anon_vma is allocated. */
->  	if (unlikely(anon_vma_prepare(vma))) {
-> -		vma_iter_free(&vmi);
-> -		return -ENOMEM;
-> +		error = -ENOMEM;
-> +		goto free;
->  	}
->  
->  	/* Lock the VMA before expanding to prevent concurrent page faults */
-> -	vma_start_write(vma);
-> +	error = vma_start_write_killable(vma);
-> +	if (error)
-> +		goto free;
->  	/* We update the anon VMA tree. */
->  	anon_vma_lock_write(vma->anon_vma);
->  
-> @@ -3240,6 +3276,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
->  		}
->  	}
->  	anon_vma_unlock_write(vma->anon_vma);
-> +free:
->  	vma_iter_free(&vmi);
->  	validate_mm(mm);
->  	return error;
-> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-> index 8134e1afca68..a4addc2a8480 100644
-> --- a/mm/vma_exec.c
-> +++ b/mm/vma_exec.c
-> @@ -40,6 +40,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
->  	struct vm_area_struct *next;
->  	struct mmu_gather tlb;
->  	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-> +	int err;
->  
->  	BUG_ON(new_start > new_end);
->  
-> @@ -55,8 +56,9 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
->  	 * cover the whole range: [new_start, old_end)
->  	 */
->  	vmg.target = vma;
-> -	if (vma_expand(&vmg))
-> -		return -ENOMEM;
-> +	err = vma_expand(&vmg);
-> +	if (err)
-> +		return err;
->  
->  	/*
->  	 * move the page tables downwards, on failure we rely on
-> -- 
-> 2.53.0.414.gf7e9f6c205-goog
-> 
-> 
+Patch #3: Use the define in virtio-balloon
+
+Patch #4: Change PAGE_REPORTING_DEFAULT_ORDER to "MAX_PAGE_ORDER + 1" or sth. like that.
+
+
+Then I think you can just drop the comment in virtballoon_probe() completely.
+
+-- 
+Cheers,
+
+David
 
