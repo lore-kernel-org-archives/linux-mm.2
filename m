@@ -4,115 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86FF3EA4E26
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEBD1EA4E22
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C3416B009F; Mon,  2 Mar 2026 10:53:37 -0500 (EST)
+	id 162306B009B; Mon,  2 Mar 2026 10:53:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26B696B009E; Mon,  2 Mar 2026 10:53:37 -0500 (EST)
+	id 117DE6B009E; Mon,  2 Mar 2026 10:53:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12D186B009F; Mon,  2 Mar 2026 10:53:37 -0500 (EST)
+	id F30A16B00A0; Mon,  2 Mar 2026 10:53:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E5D696B009B
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:36 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A2F4B661A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:36 +0000 (UTC)
-X-FDA: 84501568032.10.E219887
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DDE326B009B
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:37 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AAC651C18C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:37 +0000 (UTC)
+X-FDA: 84501568074.27.852368A
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A501C40018
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZxe6TBg;
-	spf=pass (imf11.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id E5AD54000A
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1Q1ivTW;
+	spf=pass (imf07.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772466814;
+	s=arc-20220608; t=1772466816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=nA4r8tdoDE9581pdteheJGgZx1L1mlw7TfGP6HByoC0=;
-	b=Um+LDwMwxtFqFG4+HwFLMbnilI95KGmwPKRH3WnZv6tSvRY6m6zOq6+sYFpQIHOZ4RAcK2
-	QP1XlKk6ZxFx4DDA9Qf3yIsYogQbE07xvah3Cxz4tL1Eqg7En8sIPjLhHBw7mFg61jXWHz
-	wogcyNAU5hpfVClLWzTqI/g1RFberUE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466814; a=rsa-sha256;
-	cv=none;
-	b=Y3ZsEThZSQLaZUYIbCd9vTGKuIf7eglWt8pebmiRGf4k1s8dL9mg0qOAdQE3ozvla7J4uJ
-	9FlrojBYQD6LfVXnmfEfTryEgmx9NpXjBzbnr1R61bfbV4/HpSSWRGZYJZxDxhq1TUohjw
-	X2nwjiG/BuWrWKA0laYOU+LoZ43CAA0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OaBXJgsoo6WsLjg1YVuWoSTbF9JI3puRHeYj5Y9cYkA=;
+	b=JYpla1ejDlMzFQhqppFqazND5fy7f/hXsEeQMtINdO0pkPB6jVYXgfDM9gGZRrnmbo8z6m
+	HnE7Zoe9L1Jo02sqGTRhYQPAdlwwhMsntmsbNLlw43IMabDPfUxqgjQ63nXZdQrCbLFOFK
+	QuqAZS3Xjtlib0WRWRSl28Yo5iAtWXY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZxe6TBg;
-	spf=pass (imf11.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1Q1ivTW;
+	spf=pass (imf07.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466816; a=rsa-sha256;
+	cv=none;
+	b=8pgo0av43GfBt19CYEVMHOn1lbXng+zy7//x8XQp8mSa15dR4bnVLg6erQm0DNz+a2rbrh
+	CSjZWMN1kgfzXzTlCCh40AZIT0X/PZFszH2HSUux5koqZJkigSMFNHimap/N3t+pyQytuW
+	I4QKt47XCXyKbtZPB8UwslbH0HfXUu8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772466813;
+	s=mimecast20190719; t=1772466815;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=nA4r8tdoDE9581pdteheJGgZx1L1mlw7TfGP6HByoC0=;
-	b=YZxe6TBgYVJzJTne8vl3XoleBT6NENi12YYb0mPfWv6mHzsU1BW86LTbK6NZ1K0CE1vDXo
-	ndJf0CF9PDNJ4JiyCKFblDIPfJsG2lweXhuGYKMzV+WC2zouXAmqleOc7mI7W9CQJSfmRf
-	YicRDbarBk8W6aDCz0h6AT6uWk5JqEM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	 in-reply-to:in-reply-to:references:references;
+	bh=OaBXJgsoo6WsLjg1YVuWoSTbF9JI3puRHeYj5Y9cYkA=;
+	b=Y1Q1ivTW6ckLsEGQXrkEkwD+8I/hZlk2dOQp+g39oYj97tjJID9UBgROnYj4t5+f/W71UG
+	NLEEa86VX7X0KIS6xMUgrNW3bfStjH/4uPP2scaaEtCx/viwBeewIDeHeaq71yqtFsUI99
+	1Dv5W+MooROtjRptkLlDhLf6gnJgcPY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-OUNtEChCNLK_YYkHVzdt6A-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-vTipCNljPmCj4_eeQjf37g-1; Mon,
  02 Mar 2026 10:53:29 -0500
-X-MC-Unique: OUNtEChCNLK_YYkHVzdt6A-1
-X-Mimecast-MFC-AGG-ID: OUNtEChCNLK_YYkHVzdt6A_1772466807
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+X-MC-Unique: vTipCNljPmCj4_eeQjf37g-1
+X-Mimecast-MFC-AGG-ID: vTipCNljPmCj4_eeQjf37g_1772466807
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 165C21800465;
-	Mon,  2 Mar 2026 15:53:27 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E76011800267;
+	Mon,  2 Mar 2026 15:53:26 +0000 (UTC)
 Received: from tpad.localdomain (unknown [10.96.133.6])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5175A1800576;
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F51019560AD;
 	Mon,  2 Mar 2026 15:53:26 +0000 (UTC)
 Received: by tpad.localdomain (Postfix, from userid 1000)
-	id B1AE14025F126; Mon,  2 Mar 2026 12:53:00 -0300 (-03)
-Message-ID: <20260302155105.306721019@redhat.com>
-User-Agent: quilt/0.69
-Date: Mon, 02 Mar 2026 12:49:50 -0300
+	id 40058401E0C28; Thu, 26 Feb 2026 15:24:29 -0300 (-03)
+Date: Thu, 26 Feb 2026 15:24:29 -0300
 From: Marcelo Tosatti <mtosatti@redhat.com>
-To: linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@linux.com>,
- Pekka Enberg <penberg@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Leonardo Bras <leobras.c@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Waiman Long <longman@redhat.com>,
- Boqun Feun <boqun.feng@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH v2 5/5] slub: apply new queue_percpu_work_on() interface
-References: <20260302154945.143996316@redhat.com>
+To: Vlastimil Babka <vbabka@suse.com>
+Cc: Michal Hocko <mhocko@suse.com>, Leonardo Bras <leobras.c@gmail.com>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aaCP3V64INRZiZUH@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <aYs6Ju2G4bm6_tl2@tiehlicka>
+ <aYxviLoWsrLqDU7o@tpad>
+ <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash>
+ <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZiRAa6uf4KhscJC@tpad>
+ <aZiSHT5DwIZwc/cH@tpad>
+ <1fd2efef-888b-4d3c-9c72-bdb2d594336f@suse.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: xnfGBMZQP2PGxP-E2WX_-nkVHb2MvQyH5QXZFsDWFBw_1772466807
+In-Reply-To: <1fd2efef-888b-4d3c-9c72-bdb2d594336f@suse.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: CLg9LlUqBAbisgy1B3HnbdBy-XWegSaH5NBgYX4pRkI_1772466807
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E5AD54000A
+X-Stat-Signature: cu9c5mjaj3zggsd844iqdujeesgqeuc3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A501C40018
-X-Stat-Signature: rkbmzwzu7s6fx3xbhcyzuzx1uth494x9
-X-HE-Tag: 1772466814-529657
-X-HE-Meta: U2FsdGVkX1+JfVmZnCV3sHEGQKURo1kfNeygOoFcrpmfbgta6ZL+UIK/qk1+EhRzP4b4adLfySW785td312Ps+buDWoBsKXDM3/T0oJQxKj12cI1figzl1XUR+p4UCN3pS6uWdxGYQl1l2GKyr31A0kwrqWEABGYUHDQVBHwriiheXTfuHwBXf2XjEd/NR3ygbDk/NH39mmWROcsBTzKzxnxGXejJSyEvy8WRs7Tn2Cg/0yjBKP7vtl0fc66JXoIL8xwBjxc4uN7P+oLVH+rJvSzYVpZ136ZzVG4eCxBUnBy6EhFAae1Dug/ThuZp+2l/WFhp1LKzUmyCbriNuSQcemtbadn7qSThGuYekMY+at14OnHi0oXWTiEc/00cELF7Kn/Hl/QZqcs98roTP6vufArRjtoREM9d10Xx+Q+crPI88rtEV9de87Blk/guTSaoENyK3qDzDou80ke6jLs3CQnC2M3kBC3apjQApZ/vyZPGnAJzFNrFQoQIsPPUJo9TVe0qNct3CsprN/SiHJjI6s5zmeOFwksPhMEZ+hTf7bC/0tRlWrUAFmvKJm2sCfHgMVM6oG63jVrv4JIMVI8d7BGrI3X4iHH7GAF/C13myDis/Em3DQxLfbgMDMo65Epk5NB/MCeh0mFa3wRVC72pxYIzQHoDFGZG/WP5709u5s+YzqhApAqT7uMwcSGJ8+r5wvciD6gmCk7DG5P/l6kFwAC8N42hYKHiL2ZsL6YjsjvlG+E/AATHTc5N18NajFhI6kgbZb+Qa1mLor5HKi+T4caMxSjw5k4SMuZojd8ilGEGa83XG0Y1HfwVkGL6NcJz9MLjUhypVotwQ4AoaPXaqC2uXaohTRqRn/e3DtDBV1fWGKXtYoPidr81w1nNTni/gtHXa2G7WsmCnAz+vmmsIHFDRme1RwC7CfNxVsQU42HE9YRwOFjR4WLSuSRjnLBicUGZ6rfZDQt2CMLaT7
- 92d6ojc0
- ZGUk8SB8ObBw/HW3jK8xQa5nK0y9GgHUVg+GQzKUt8STwO5C9TdETRKzRbypcZdbFdMdWheYATN8fBAm0pS4lHVntd7jzw9G9Ba4TulhoZeLYHJD/aDfWLcM3j0RJHDQ/0DlxKfR55RJeHWOr/izPY1fHz6jBbvGElLzzCMt7EWMx56Xi151QWBRMImrYRQmtMLGYWBIrEXOBnX6D9BXmCuBj+HC/mLknTj/Orzu13iLGDr+o5pImCkZkguaTQcwDCsXX++xR8SQYEMKIJKM1JWwIVPYzoip4C2CMErbg7xc5/tgOXx8WTftRFNPycPhINhnDj5bNkKZ2yqlZe8zwdjRxcLpQeJ3cTh/gbZYGo27rCCG5ixcnHEMqgogSgOJOGg9DYQtEAHSZiYWfqJEq2ax845h+KhHSP1gxGE1WXW2H0t8G9yBBIchfnP4+xkr/6sPL
+X-HE-Tag: 1772466815-589444
+X-HE-Meta: U2FsdGVkX1+qJqV07T1khgnoQrDjaurY6BaocUQ8ocSMA22XkSZDXInxTqxSm6jf6fxnP2joXtT+gD2rIrR7lTiAFsgMISZCmf0sDT3YP5bH/JgBCbB5RvFm0fP6aBzus8n2P5sy55WQqUiEi5Dftguc5YyQA5j8u7vX5TmVz8lvZsFUN6Fkc/DKuw1EEtyNavwpFVUOpXHBnaBAjHkx4VuRFWGXfdXd8dyI3+R9RRVJU6nabAojSI2rdzZmtfxmy8Bltts552vAGUGeyKEOn/ACSA5bQubGccWIiFQ8UiC57upOeR840ClCbIDMO0awlM01ZEsvQL8sr2WlCTkiFWPI8RYHqh0Pcag8vVuIWnoAf9f6dDZ03LJv32EJXlSmyy2Xj9W6b8mZd1KrD4JTPtAHp7Oi0Cy2jpiMiFKMWPpxmKhusO2Km1/3UwGjZMU4sqiIcH9rW28h8QckXuf1BXK31JGEjcVt/uOzOtOXjPOxyVB6wwcz9Ixe/6i0rYFx/B9wZLzTNMZ4+ztQRvOq+HQ8uvOFyv5XqYGCd+L/yRG5NF/pMWynZeUISJjVAlD6p4x4DHzfZi2AP/lph6ogYwejxinBeTJf+2vM8dIZpn06MZZEc27CTKJr/E1jsCxPKC1S3IBYJF/skDgnbAPISSWCK7J1Mf8ryHBUnkYT3Zn6ffVRpYEr0YUEmW8NovN/0x7DS9hMU4BmgpMeDERRdtLZGGblwoj5oO1NyLuRmLpUwyYI6u54X+UIN3tnm3aCJtc9/lIAYsiJjI49cSYgCa1K33TihfOClVJdzcDiMHoPsnbRgsaQQLXB2Wf7APQbyDK8otStRnHCntGpjCOOIgQqulYyzkNOxAgFnUZQPolIncdmAbvaYfBqN68H23mi1o8C3u+qdlg9/bbLSY1M8rBYEL8sV6b4huF8Oydy1wcdjXfl5/cio5tcRuEpUCrUZdgAh6/B2gcbTzE/qii
+ DhLNXks0
+ NKz3oO38TqoAA3WRKhWT0iKh9AXFvLYYVsHz17PHiKak51EELEqSAK/WGAaPG6uIYJHw1QWt09HyxZ2VcqNVoAJEpNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,587 +126,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make use of the new qpw_{un,}lock*() and queue_percpu_work_on()
-interface to improve performance & latency.
+On Mon, Feb 23, 2026 at 07:09:47PM +0100, Vlastimil Babka wrote:
+> On 2/20/26 17:55, Marcelo Tosatti wrote:
+> > 
+> > #include <linux/module.h>
+> > #include <linux/kernel.h>
+> > #include <linux/slab.h>
+> > #include <linux/timex.h>
+> > #include <linux/preempt.h>
+> > #include <linux/irqflags.h>
+> > #include <linux/vmalloc.h>
+> > 
+> > MODULE_LICENSE("GPL");
+> > MODULE_AUTHOR("Gemini AI");
+> > MODULE_DESCRIPTION("A simple kmalloc performance benchmark");
+> > 
+> > static int size = 64; // Default allocation size in bytes
+> > module_param(size, int, 0644);
+> > 
+> > static int iterations = 1000000; // Default number of iterations
+> > module_param(iterations, int, 0644);
+> > 
+> > static int __init kmalloc_bench_init(void) {
+> >     void **ptrs;
+> >     cycles_t start, end;
+> >     uint64_t total_cycles;
+> >     int i;
+> >     pr_info("kmalloc_bench: Starting test (size=%d, iterations=%d)\n", size, iterations);
+> > 
+> >     // Allocate an array to store pointers to avoid immediate kfree-reuse optimization
+> >     ptrs = vmalloc(sizeof(void *) * iterations);
+> >     if (!ptrs) {
+> >         pr_err("kmalloc_bench: Failed to allocate pointer array\n");
+> >         return -ENOMEM;
+> >     }
+> > 
+> >     preempt_disable();
+> >     start = get_cycles();
+> > 
+> >     for (i = 0; i < iterations; i++) {
+> >         ptrs[i] = kmalloc(size, GFP_ATOMIC);
+> >     }
+> > 
+> >     end = get_cycles();
+> > 
+> >     total_cycles = end - start;
+> >     preempt_enable();
+> 
+> While preempt_disable() simplifies things, it can misrepresent the cost of
+> preempt_disable() that's part of the locking - that will become nested and
+> then the nested preempt_disable() is typically cheaper, etc.
+> 
+> Also the way it kmallocs all iterations and then kfree all iterations may
+> skew the probabilities of fastpaths, cache hotness etc.
+> 
+> When introducing sheaves I had a similar microbenchmark, but there was
+> different amounts of inner-loop iteraions, no outer preempt_disable(), and
+> linear vs randomized array. See:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/commit/?h=slub-percpu-sheaves-v6-benchmarking&id=04028eeffba18a4f821a7194bc9d14f7488bd7d9
+> 
+> (at this point the SLUB_HAS_SHEAVES parts should be removed and the
+> kmem_cache_print_stats() stuff also shouldn't be interesting for QPW
+> evaluation).
 
-For functions that may be scheduled in a different cpu, replace
-local_{un,}lock*() by qpw_{un,}lock*(), and replace schedule_work_on() by
-queue_percpu_work_on(). The same happens for flush_work() and
-flush_percpu_work().
+Hi Vlastimil,
 
-This change requires allocation of qpw_structs instead of a work_structs,
-and changing parameters of a few functions to include the cpu parameter.
+There is a problem which the numbers vary significantly across runs
+(on the same kernel, system is idle, cpu is isolated).
 
-This should bring no relevant performance impact on non-QPW kernels:
-For functions that may be scheduled in a different cpu, the local_*lock's
-this_cpu_ptr() becomes a per_cpu_ptr(smp_processor_id()).
+SLUB_HAS_SHEAVES is not defined on my build. Just copied slub_kunit.c
+from slub-percpu-sheaves-v6-benchmarking
+to current tip (and dropped call to kmem_cache_print_stats).
 
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+1st run:
+[  635.059928] average (excl. iter 0): 56571797
+[  635.235206] average (excl. iter 0): 58329901
+[  635.409957] average (excl. iter 0): 57459678
+[  635.585128] average (excl. iter 0): 58268333
+[  635.767325] average (excl. iter 0): 60063837
+[  635.944534] average (excl. iter 0): 58912817
+[  636.154503] average (excl. iter 0): 68992131
+[  636.362533] average (excl. iter 0): 69030629
+[  636.536737] average (excl. iter 0): 56545622
+[  636.704314] average (excl. iter 0): 55536407
+[  636.879097] average (excl. iter 0): 57397803
+[  637.051157] average (excl. iter 0): 57021907
+[  637.296352] average (excl. iter 0): 81582815
+[  637.539810] average (excl. iter 0): 81126686
 
----
- mm/slub.c |  146 +++++++++++++++++++++++++++++++-------------------------------
- 1 file changed, 74 insertions(+), 72 deletions(-)
+2nd run:
+[  662.824688] average (excl. iter 0): 56833529
+[  662.996742] average (excl. iter 0): 57145388
+[  663.167063] average (excl. iter 0): 55828870
+[  663.339814] average (excl. iter 0): 57505312
+[  663.514563] average (excl. iter 0): 57374528
+[  663.690328] average (excl. iter 0): 57282062
+[  663.896128] average (excl. iter 0): 68097440
+[  664.103029] average (excl. iter 0): 69263914
+[  664.276497] average (excl. iter 0): 57073271
+[  664.442210] average (excl. iter 0): 54895879
+[  664.617186] average (excl. iter 0): 56972700
+[  664.787353] average (excl. iter 0): 56457173
+[  665.028944] average (excl. iter 0): 80339269
+[  665.268597] average (excl. iter 0): 80371907
 
-Index: linux/mm/slub.c
-===================================================================
---- linux.orig/mm/slub.c
-+++ linux/mm/slub.c
-@@ -50,6 +50,7 @@
- #include <linux/irq_work.h>
- #include <linux/kprobes.h>
- #include <linux/debugfs.h>
-+#include <linux/qpw.h>
- #include <trace/events/kmem.h>
- 
- #include "internal.h"
-@@ -129,7 +130,7 @@
-  *   For debug caches, all allocations are forced to go through a list_lock
-  *   protected region to serialize against concurrent validation.
-  *
-- *   cpu_sheaves->lock (local_trylock)
-+ *   cpu_sheaves->lock (qpw_trylock)
-  *
-  *   This lock protects fastpath operations on the percpu sheaves. On !RT it
-  *   only disables preemption and does no atomic operations. As long as the main
-@@ -157,7 +158,7 @@
-  *   Interrupts are disabled as part of list_lock or barn lock operations, or
-  *   around the slab_lock operation, in order to make the slab allocator safe
-  *   to use in the context of an irq.
-- *   Preemption is disabled as part of local_trylock operations.
-+ *   Preemption is disabled as part of qpw_trylock operations.
-  *   kmalloc_nolock() and kfree_nolock() are safe in NMI context but see
-  *   their limitations.
-  *
-@@ -418,7 +419,7 @@ struct slab_sheaf {
- };
- 
- struct slub_percpu_sheaves {
--	local_trylock_t lock;
-+	qpw_trylock_t lock;
- 	struct slab_sheaf *main; /* never NULL when unlocked */
- 	struct slab_sheaf *spare; /* empty or full, may be NULL */
- 	struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
-@@ -480,7 +481,7 @@ static nodemask_t slab_nodes;
- static struct workqueue_struct *flushwq;
- 
- struct slub_flush_work {
--	struct work_struct work;
-+	struct qpw_struct qpw;
- 	struct kmem_cache *s;
- 	bool skip;
- };
-@@ -2849,16 +2850,14 @@ static void __kmem_cache_free_bulk(struc
-  *
-  * Returns how many objects are remaining to be flushed
-  */
--static unsigned int __sheaf_flush_main_batch(struct kmem_cache *s)
-+static unsigned int __sheaf_flush_main_batch(struct kmem_cache *s, int cpu)
- {
- 	struct slub_percpu_sheaves *pcs;
- 	unsigned int batch, remaining;
- 	void *objects[PCS_BATCH_MAX];
- 	struct slab_sheaf *sheaf;
- 
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
--
--	pcs = this_cpu_ptr(s->cpu_sheaves);
-+	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 	sheaf = pcs->main;
- 
- 	batch = min(PCS_BATCH_MAX, sheaf->size);
-@@ -2868,7 +2867,7 @@ static unsigned int __sheaf_flush_main_b
- 
- 	remaining = sheaf->size;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
- 
- 	__kmem_cache_free_bulk(s, batch, &objects[0]);
- 
-@@ -2877,14 +2876,14 @@ static unsigned int __sheaf_flush_main_b
- 	return remaining;
- }
- 
--static void sheaf_flush_main(struct kmem_cache *s)
-+static void sheaf_flush_main(struct kmem_cache *s, int cpu)
- {
- 	unsigned int remaining;
- 
- 	do {
--		local_lock(&s->cpu_sheaves->lock);
-+		qpw_lock(&s->cpu_sheaves->lock, cpu);
- 
--		remaining = __sheaf_flush_main_batch(s);
-+		remaining = __sheaf_flush_main_batch(s, cpu);
- 
- 	} while (remaining);
- }
-@@ -2898,11 +2897,13 @@ static bool sheaf_try_flush_main(struct
- 	bool ret = false;
- 
- 	do {
--		if (!local_trylock(&s->cpu_sheaves->lock))
-+		if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 			return ret;
- 
- 		ret = true;
--		remaining = __sheaf_flush_main_batch(s);
-+
-+		lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+		remaining = __sheaf_flush_main_batch(s, smp_processor_id());
- 
- 	} while (remaining);
- 
-@@ -2979,13 +2980,13 @@ static void rcu_free_sheaf_nobarn(struct
-  * flushing operations are rare so let's keep it simple and flush to slabs
-  * directly, skipping the barn
-  */
--static void pcs_flush_all(struct kmem_cache *s)
-+static void pcs_flush_all(struct kmem_cache *s, int cpu)
- {
- 	struct slub_percpu_sheaves *pcs;
- 	struct slab_sheaf *spare, *rcu_free;
- 
--	local_lock(&s->cpu_sheaves->lock);
--	pcs = this_cpu_ptr(s->cpu_sheaves);
-+	qpw_lock(&s->cpu_sheaves->lock, cpu);
-+	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
- 	spare = pcs->spare;
- 	pcs->spare = NULL;
-@@ -2993,7 +2994,7 @@ static void pcs_flush_all(struct kmem_ca
- 	rcu_free = pcs->rcu_free;
- 	pcs->rcu_free = NULL;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
- 
- 	if (spare) {
- 		sheaf_flush_unused(s, spare);
-@@ -3003,7 +3004,7 @@ static void pcs_flush_all(struct kmem_ca
- 	if (rcu_free)
- 		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
- 
--	sheaf_flush_main(s);
-+	sheaf_flush_main(s, cpu);
- }
- 
- static void __pcs_flush_all_cpu(struct kmem_cache *s, unsigned int cpu)
-@@ -3953,13 +3954,13 @@ static void flush_cpu_sheaves(struct wor
- {
- 	struct kmem_cache *s;
- 	struct slub_flush_work *sfw;
-+	int cpu = qpw_get_cpu(w);
- 
--	sfw = container_of(w, struct slub_flush_work, work);
--
-+	sfw = &per_cpu(slub_flush, cpu);
- 	s = sfw->s;
- 
- 	if (cache_has_sheaves(s))
--		pcs_flush_all(s);
-+		pcs_flush_all(s, cpu);
- }
- 
- static void flush_all_cpus_locked(struct kmem_cache *s)
-@@ -3976,17 +3977,17 @@ static void flush_all_cpus_locked(struct
- 			sfw->skip = true;
- 			continue;
- 		}
--		INIT_WORK(&sfw->work, flush_cpu_sheaves);
-+		INIT_QPW(&sfw->qpw, flush_cpu_sheaves, cpu);
- 		sfw->skip = false;
- 		sfw->s = s;
--		queue_work_on(cpu, flushwq, &sfw->work);
-+		queue_percpu_work_on(cpu, flushwq, &sfw->qpw);
- 	}
- 
- 	for_each_online_cpu(cpu) {
- 		sfw = &per_cpu(slub_flush, cpu);
- 		if (sfw->skip)
- 			continue;
--		flush_work(&sfw->work);
-+		flush_percpu_work(&sfw->qpw);
- 	}
- 
- 	mutex_unlock(&flush_lock);
-@@ -4005,17 +4006,18 @@ static void flush_rcu_sheaf(struct work_
- 	struct slab_sheaf *rcu_free;
- 	struct slub_flush_work *sfw;
- 	struct kmem_cache *s;
-+	int cpu = qpw_get_cpu(w);
- 
--	sfw = container_of(w, struct slub_flush_work, work);
-+	sfw = &per_cpu(slub_flush, cpu);
- 	s = sfw->s;
- 
--	local_lock(&s->cpu_sheaves->lock);
--	pcs = this_cpu_ptr(s->cpu_sheaves);
-+	qpw_lock(&s->cpu_sheaves->lock, cpu);
-+	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
- 	rcu_free = pcs->rcu_free;
- 	pcs->rcu_free = NULL;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
- 
- 	if (rcu_free)
- 		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
-@@ -4040,14 +4042,14 @@ void flush_rcu_sheaves_on_cache(struct k
- 		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
- 		 */
- 
--		INIT_WORK(&sfw->work, flush_rcu_sheaf);
-+		INIT_QPW(&sfw->qpw, flush_rcu_sheaf, cpu);
- 		sfw->s = s;
--		queue_work_on(cpu, flushwq, &sfw->work);
-+		queue_percpu_work_on(cpu, flushwq, &sfw->qpw);
- 	}
- 
- 	for_each_online_cpu(cpu) {
- 		sfw = &per_cpu(slub_flush, cpu);
--		flush_work(&sfw->work);
-+		flush_percpu_work(&sfw->qpw);
- 	}
- 
- 	mutex_unlock(&flush_lock);
-@@ -4555,11 +4557,11 @@ __pcs_replace_empty_main(struct kmem_cac
- 	struct node_barn *barn;
- 	bool can_alloc;
- 
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
- 
- 	/* Bootstrap or debug cache, back off */
- 	if (unlikely(!cache_has_sheaves(s))) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 		return NULL;
- 	}
- 
-@@ -4570,7 +4572,7 @@ __pcs_replace_empty_main(struct kmem_cac
- 
- 	barn = get_barn(s);
- 	if (!barn) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 		return NULL;
- 	}
- 
-@@ -4596,7 +4598,7 @@ __pcs_replace_empty_main(struct kmem_cac
- 		}
- 	}
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	if (!can_alloc)
- 		return NULL;
-@@ -4622,7 +4624,7 @@ __pcs_replace_empty_main(struct kmem_cac
- 	 * we can reach here only when gfpflags_allow_blocking
- 	 * so this must not be an irq
- 	 */
--	local_lock(&s->cpu_sheaves->lock);
-+	local_qpw_lock(&s->cpu_sheaves->lock);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	/*
-@@ -4699,7 +4701,7 @@ void *alloc_from_pcs(struct kmem_cache *
- 		return NULL;
- 	}
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 		return NULL;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -4719,7 +4721,7 @@ void *alloc_from_pcs(struct kmem_cache *
- 		 * the current allocation or previous freeing process.
- 		 */
- 		if (page_to_nid(virt_to_page(object)) != node) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			local_qpw_unlock(&s->cpu_sheaves->lock);
- 			stat(s, ALLOC_NODE_MISMATCH);
- 			return NULL;
- 		}
-@@ -4727,7 +4729,7 @@ void *alloc_from_pcs(struct kmem_cache *
- 
- 	pcs->main->size--;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	stat(s, ALLOC_FASTPATH);
- 
-@@ -4744,7 +4746,7 @@ unsigned int alloc_from_pcs_bulk(struct
- 	unsigned int batch;
- 
- next_batch:
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 		return allocated;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -4755,7 +4757,7 @@ next_batch:
- 		struct node_barn *barn;
- 
- 		if (unlikely(!cache_has_sheaves(s))) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			local_qpw_unlock(&s->cpu_sheaves->lock);
- 			return allocated;
- 		}
- 
-@@ -4766,7 +4768,7 @@ next_batch:
- 
- 		barn = get_barn(s);
- 		if (!barn) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			local_qpw_unlock(&s->cpu_sheaves->lock);
- 			return allocated;
- 		}
- 
-@@ -4781,7 +4783,7 @@ next_batch:
- 
- 		stat(s, BARN_GET_FAIL);
- 
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 		/*
- 		 * Once full sheaves in barn are depleted, let the bulk
-@@ -4799,7 +4801,7 @@ do_alloc:
- 	main->size -= batch;
- 	memcpy(p, main->objects + main->size, batch * sizeof(void *));
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	stat_add(s, ALLOC_FASTPATH, batch);
- 
-@@ -4978,7 +4980,7 @@ kmem_cache_prefill_sheaf(struct kmem_cac
- 		return sheaf;
- 	}
- 
--	local_lock(&s->cpu_sheaves->lock);
-+	local_qpw_lock(&s->cpu_sheaves->lock);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	if (pcs->spare) {
-@@ -4997,7 +4999,7 @@ kmem_cache_prefill_sheaf(struct kmem_cac
- 			stat(s, BARN_GET_FAIL);
- 	}
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 
- 	if (!sheaf)
-@@ -5041,7 +5043,7 @@ void kmem_cache_return_sheaf(struct kmem
- 		return;
- 	}
- 
--	local_lock(&s->cpu_sheaves->lock);
-+	local_qpw_lock(&s->cpu_sheaves->lock);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 	barn = get_barn(s);
- 
-@@ -5051,7 +5053,7 @@ void kmem_cache_return_sheaf(struct kmem
- 		stat(s, SHEAF_RETURN_FAST);
- 	}
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	if (!sheaf)
- 		return;
-@@ -5581,7 +5583,7 @@ static void __pcs_install_empty_sheaf(st
- 		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
- 		struct node_barn *barn)
- {
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
- 
- 	/* This is what we expect to find if nobody interrupted us. */
- 	if (likely(!pcs->spare)) {
-@@ -5618,9 +5620,9 @@ static void __pcs_install_empty_sheaf(st
- /*
-  * Replace the full main sheaf with a (at least partially) empty sheaf.
-  *
-- * Must be called with the cpu_sheaves local lock locked. If successful, returns
-- * the pcs pointer and the local lock locked (possibly on a different cpu than
-- * initially called). If not successful, returns NULL and the local lock
-+ * Must be called with the cpu_sheaves qpw lock locked. If successful, returns
-+ * the pcs pointer and the qpw lock locked (possibly on a different cpu than
-+ * initially called). If not successful, returns NULL and the qpw lock
-  * unlocked.
-  */
- static struct slub_percpu_sheaves *
-@@ -5632,17 +5634,17 @@ __pcs_replace_full_main(struct kmem_cach
- 	bool put_fail;
- 
- restart:
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
- 
- 	/* Bootstrap or debug cache, back off */
- 	if (unlikely(!cache_has_sheaves(s))) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 		return NULL;
- 	}
- 
- 	barn = get_barn(s);
- 	if (!barn) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 		return NULL;
- 	}
- 
-@@ -5679,7 +5681,7 @@ restart:
- 		stat(s, BARN_PUT_FAIL);
- 
- 		pcs->spare = NULL;
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 		sheaf_flush_unused(s, to_flush);
- 		empty = to_flush;
-@@ -5695,7 +5697,7 @@ restart:
- 	put_fail = true;
- 
- alloc_empty:
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	/*
- 	 * alloc_empty_sheaf() doesn't support !allow_spin and it's
-@@ -5715,7 +5717,7 @@ alloc_empty:
- 	if (!sheaf_try_flush_main(s))
- 		return NULL;
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 		return NULL;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -5731,7 +5733,7 @@ alloc_empty:
- 	return pcs;
- 
- got_empty:
--	if (!local_trylock(&s->cpu_sheaves->lock)) {
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock)) {
- 		barn_put_empty_sheaf(barn, empty);
- 		return NULL;
- 	}
-@@ -5751,7 +5753,7 @@ bool free_to_pcs(struct kmem_cache *s, v
- {
- 	struct slub_percpu_sheaves *pcs;
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 		return false;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -5765,7 +5767,7 @@ bool free_to_pcs(struct kmem_cache *s, v
- 
- 	pcs->main->objects[pcs->main->size++] = object;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	stat(s, FREE_FASTPATH);
- 
-@@ -5855,7 +5857,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 
- 	lock_map_acquire_try(&kfree_rcu_sheaf_map);
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 		goto fail;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -5867,7 +5869,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 
- 		/* Bootstrap or debug cache, fall back */
- 		if (unlikely(!cache_has_sheaves(s))) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			local_qpw_unlock(&s->cpu_sheaves->lock);
- 			goto fail;
- 		}
- 
-@@ -5879,7 +5881,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 
- 		barn = get_barn(s);
- 		if (!barn) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			local_qpw_unlock(&s->cpu_sheaves->lock);
- 			goto fail;
- 		}
- 
-@@ -5890,14 +5892,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 			goto do_free;
- 		}
- 
--		local_unlock(&s->cpu_sheaves->lock);
-+		local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 		empty = alloc_empty_sheaf(s, GFP_NOWAIT);
- 
- 		if (!empty)
- 			goto fail;
- 
--		if (!local_trylock(&s->cpu_sheaves->lock)) {
-+		if (!local_qpw_trylock(&s->cpu_sheaves->lock)) {
- 			barn_put_empty_sheaf(barn, empty);
- 			goto fail;
- 		}
-@@ -5934,7 +5936,7 @@ do_free:
- 	if (rcu_sheaf)
- 		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	stat(s, FREE_RCU_SHEAF);
- 	lock_map_release(&kfree_rcu_sheaf_map);
-@@ -5990,7 +5992,7 @@ next_remote_batch:
- 		goto flush_remote;
- 
- next_batch:
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!local_qpw_trylock(&s->cpu_sheaves->lock))
- 		goto fallback;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -6033,7 +6035,7 @@ do_free:
- 	memcpy(main->objects + main->size, p, batch * sizeof(void *));
- 	main->size += batch;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	stat_add(s, FREE_FASTPATH, batch);
- 
-@@ -6049,7 +6051,7 @@ do_free:
- 	return;
- 
- no_empty:
--	local_unlock(&s->cpu_sheaves->lock);
-+	local_qpw_unlock(&s->cpu_sheaves->lock);
- 
- 	/*
- 	 * if we depleted all empty sheaves in the barn or there are too
-@@ -7454,7 +7456,7 @@ static int init_percpu_sheaves(struct km
- 
- 		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
--		local_trylock_init(&pcs->lock);
-+		qpw_trylock_init(&pcs->lock);
- 
- 		/*
- 		 * Bootstrap sheaf has zero size so fast-path allocation fails.
+3rd run:
+[  716.278750] average (excl. iter 0): 54191777
+[  716.442014] average (excl. iter 0): 54151132
+[  716.605254] average (excl. iter 0): 53148722
+[  716.766461] average (excl. iter 0): 53204894
+[  716.933339] average (excl. iter 0): 54719251
+[  717.098761] average (excl. iter 0): 54922923
+[  717.296178] average (excl. iter 0): 65351864
+[  717.491440] average (excl. iter 0): 65264027
+[  717.660778] average (excl. iter 0): 54370768
+[  717.823625] average (excl. iter 0): 54137410
+[  717.988983] average (excl. iter 0): 54222488
+[  718.152716] average (excl. iter 0): 54339019
+[  718.387978] average (excl. iter 0): 78249026
+[  718.619598] average (excl. iter 0): 77746198
 
+Increasing total parameter from 10^6 to 10^7 does
+not help:
+
+1st run:
+[ 1074.601686] average (excl. iter 0): 650711901
+[ 1076.450880] average (excl. iter 0): 633014260
+[ 1078.363300] average (excl. iter 0): 660440649
+[ 1080.266134] average (excl. iter 0): 652695083
+[ 1082.117007] average (excl. iter 0): 635632144
+[ 1084.009277] average (excl. iter 0): 654270513
+[ 1086.286343] average (excl. iter 0): 790520038
+[ 1088.512516] average (excl. iter 0): 768071705
+[ 1090.448161] average (excl. iter 0): 664564330 
+[ 1092.349683] average (excl. iter 0): 659016349 
+[ 1094.274099] average (excl. iter 0): 662388982
+[ 1096.172362] average (excl. iter 0): 647972747
+[ 1098.753304] average (excl. iter 0): 887576313
+[ 1101.339897] average (excl. iter 0): 885102019
+
+2nd run:
+[ 1120.186284] average (excl. iter 0): 615756734
+[ 1122.019323] average (excl. iter 0): 623846524
+[ 1123.885801] average (excl. iter 0): 639124895
+[ 1125.693617] average (excl. iter 0): 623667563  
+[ 1127.588515] average (excl. iter 0): 646441510  
+[ 1129.410285] average (excl. iter 0): 628291996
+[ 1131.542157] average (excl. iter 0): 728497604
+[ 1133.698744] average (excl. iter 0): 743717953
+[ 1135.514112] average (excl. iter 0): 616621660
+[ 1137.306874] average (excl. iter 0): 615863807
+[ 1139.110637] average (excl. iter 0): 616425899
+[ 1140.948769] average (excl. iter 0): 638115570
+[ 1143.426557] average (excl. iter 0): 847799304
+[ 1145.914827] average (excl. iter 0): 861180802
+
+Will switch back to the simple test (and its pretty obvious 
+from the patch itself that if qpw=0 the overhead should 
+be zero, and it is). Its numbers are more
+stable across runs.
 
 
