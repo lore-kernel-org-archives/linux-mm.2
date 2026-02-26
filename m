@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0799FD45FE
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:31:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F21FD45FF
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 429516B0088; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
+	id 781DA6B008A; Wed, 25 Feb 2026 20:31:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDC06B008A; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
+	id 704E26B008C; Wed, 25 Feb 2026 20:31:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D68E6B008C; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
+	id 5FD986B0092; Wed, 25 Feb 2026 20:31:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B0CC6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:31:12 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D22B113AD6F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:31:11 +0000 (UTC)
-X-FDA: 84484879542.09.97B5520
+	by kanga.kvack.org (Postfix) with ESMTP id 500E46B008A
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:31:21 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1965F8B8B8
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:31:21 +0000 (UTC)
+X-FDA: 84484879962.26.C5A9769
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B8425C0006
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:31:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KtnMfELr;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772069469; a=rsa-sha256;
-	cv=none;
-	b=OSba0yus1hjf9Lj2GaPtdp1f0W+S9MNHl/rvoJXMeD9Wo54pB+cP6Zo/RcCky67fMqSBKL
-	33xyXsPxp1esYF/Qp3QC/d2Dc3qa6c9PoECssDaPfbcg+xp3pGOB4SPUkAWFtpskzl0CX2
-	dwyen+w4tj6RdvFbhBwTo1HTeAZYjTI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KtnMfELr;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0C5B91C0013
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:31:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HFmG0caR;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772069469;
+	s=arc-20220608; t=1772069479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MFM5ACWvZzUBi8NGbn5Vs1lsLXddFcAE8fhUo7LqxxQ=;
-	b=ncM1is+h0zLUoxdoHrzDnp61qycqoNVpAl2+K4cRrbzsG+L6wP+iCP6Z9Z0qbfT2aV7BUe
-	oq8IOf1RuD6Fbs+2DKL32h1msjrff1mMzO/+w2ZdP7P8hBO+5EZ7IpJNzq+kuMLbCRPky6
-	kgiQ7ZJMolYlpjWSx+quuO8HPk2kKUw=
+	bh=AvNozlzLA/ebYnDRm1WHGbK4AZV4ReJTtrZzdXy7rIw=;
+	b=H8MsYuTF3FBb8M73eYrh9I1hX2+Y7Z5yMulIU/K9EJwVJ+qkE02FuULx4hiiJOQT1f3eRA
+	kFDbfURQXsHpOlVj4dYhz5S4SFeyI47nP7aWOHYLQJ8g1kYchWvt7NgiFIloq9hFuI6f9O
+	wgbbRiOSuVM37WrbzlM8Wu9MyQCG3i8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HFmG0caR;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772069479; a=rsa-sha256;
+	cv=none;
+	b=bBxt8+NaY/FK1YlChaFGHDhUr2OAbVKEy/m0tkEHbY8l/8tEF4iL6C2GyvlnqLQ7rm7O81
+	HWwh3ptRD1MpJ/W6CCUfY5n5ttlV5VBNdT3Zgx9UV4DV3lnTz7Ze0/XqpW5aJcytg0hvBx
+	ggT6SPmJXg2GFb5tnBeZ4b9auGO2uFg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772069468;
+	s=mimecast20190719; t=1772069478;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MFM5ACWvZzUBi8NGbn5Vs1lsLXddFcAE8fhUo7LqxxQ=;
-	b=KtnMfELrSA7ORJ0HUytr+MUPquAdTxuqrFcLhVtViijlf/syDXD788lg1MuamUtFt4wq/t
-	B5L7VPIHXaiZNPdlq3ZQZM65O6U/TNyHAHxF8s/GQSpE0Crt6eqsThoMvwlcp8T8GfQgn7
-	ZEfeBQxHXhzyDCMFgGFCM6ayLLNZn2U=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=AvNozlzLA/ebYnDRm1WHGbK4AZV4ReJTtrZzdXy7rIw=;
+	b=HFmG0caRHXUV6hS7wKeOxnRk6aMrRpa8ADBFNz5kZkmUT512osDq8XT9QYx9lssjxmgwg7
+	2UXfHwENLEq06U71hb8oAwRJeeBGynZnm/NtsH60mmqpOoUSHbFfCTJZAeTGoj3R7XZ3PB
+	OGn98ezyNg1JI3utlKV1AmRJB4q6uE0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515--67Cj5ImOwuOffmixlpEDA-1; Wed,
- 25 Feb 2026 20:31:04 -0500
-X-MC-Unique: -67Cj5ImOwuOffmixlpEDA-1
-X-Mimecast-MFC-AGG-ID: -67Cj5ImOwuOffmixlpEDA_1772069459
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-mNbgZne5N-akG3rrBXDuEA-1; Wed,
+ 25 Feb 2026 20:31:16 -0500
+X-MC-Unique: mNbgZne5N-akG3rrBXDuEA-1
+X-Mimecast-MFC-AGG-ID: mNbgZne5N-akG3rrBXDuEA_1772069471
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EE8BB19560A1;
-	Thu, 26 Feb 2026 01:30:57 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 582411800464;
+	Thu, 26 Feb 2026 01:31:10 +0000 (UTC)
 Received: from h1.redhat.com (unknown [10.22.64.173])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 29A8C3003D88;
-	Thu, 26 Feb 2026 01:30:39 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4B3803003D8C;
+	Thu, 26 Feb 2026 01:30:58 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
@@ -133,26 +133,26 @@ Cc: aarcange@redhat.com,
 	ying.huang@linux.alibaba.com,
 	ziy@nvidia.com,
 	zokeefe@google.com
-Subject: [PATCH mm-unstable v2 2/5] mm: introduce is_pmd_order helper
-Date: Wed, 25 Feb 2026 18:29:26 -0700
-Message-ID: <20260226012929.169479-3-npache@redhat.com>
+Subject: [PATCH mm-unstable v2 3/5] mm/khugepaged: define COLLAPSE_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
+Date: Wed, 25 Feb 2026 18:29:27 -0700
+Message-ID: <20260226012929.169479-4-npache@redhat.com>
 In-Reply-To: <20260226012929.169479-1-npache@redhat.com>
 References: <20260226012929.169479-1-npache@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Jq_0WpoVirjWlc4V00cr7AE7GWnzswPu91SkxhnpBNg_1772069459
+X-Mimecast-MFC-PROC-ID: Ys_QUBsbMU58KMal58JRLkNAUbpDTz8d8rdf-QG-htc_1772069471
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: g9te4ucbzqmct8y4gqpazcz4kg78n4f9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B8425C0006
-X-HE-Tag: 1772069469-324383
-X-HE-Meta: U2FsdGVkX19nLlCTQjRtrE0/Y7uLJrRaECLxzVY0IqifI/Povko4tJAjRPiZeuA0ak6yUv1no9EN2e+ng8eQjAaL7Hxnt5VLmQhX9jJ9XBYukzKWlWf7feZkooyUnstYEgsu/aeBQVQZgh54rk7zvxI3eOmzOgBRR9C69UTMpzBg/0DiHadKQlN+d2cTtbZdW/jIZ3D5MqlB15C5zrPKbmQ5k0Yh9eONWMRhmNQmAps0HtZVn9M4HWU/fzzqi/1+YLjsj6NpCxAAxsFN9NI53IpR5nGLXbXaje//tVWjkaOs7Q8WSInL01a0GfaeOzC2KxTpKj9K8g0MX+dmQpTmhF1ojjLhmDgrQnQWCEtZkhPBO+RXWGg3tzq2ZQbdNPhumi1nAUrpexgco6AGyW0vjJ8JpUZmSxZv2YShHO6NL/gSK3aN7o75k03c3L2BRbmB2+nPE5ph1VtajRVyy+oFO89VvgiVL8GFlV4qduzZ3lfxpXVllEu3JSI1Nl448NDT3Pht7nwgmqxYIfPl7nlSrlWe7IEXLM7aAHEm6odmMlM+/rgjO4PHsZxNZ3M4qlbbXId3Xc2SczRhcYwBGWErTOTNVq8N6oE2AGF7V3dEP4hD37EfFmnqAdqSVCsnpRsg38XNcFr0lRNxdm3V+gXzIp/oJTNJAGDV1ueSZKruzCypSKVp+GufFnT+P9LhyNEnDQtW8fGl7kTPasuujQLiyDukS/T/CFoBVPmzaiZ3LJfwUBkV//u7gIJCwZyCVoCvJ27nkwu0hFqqaJTv5OZ/TyARiZeEHKlMqPL0RcbEht7C2VZGOSCEtf/9tsMNhRP+5Upn8rvrRlKw50UAIqTD1td3sXJNiED8sy6SApK6woKltD/bTTNqAf/RwKmuYCBDCPm7VlTQZ1DI2Y3aiSBwMAQEneH2YVM5Otk+KRgeOTMbUkR9fZLmnPdlswZPgh4C8zp+r/s80PLs0EkdjeE
- frB98iL6
- cueOa4G4bppUiVA/vmAE19DXVMtej4G4WsLdYwmec0KMbFoDiRa2AkBj7uGf6eYbabEoKrNGLr8XXtNFQnOX6KbZrj1GwkcKR/f/L6YMrRvuhLTGEMbOvwdmpDFZYO59Ri/SnV8Ud+udwGe0qN8FvDpd6fr6SbKzKN9SfnYWjG7vPcAv3+DWpJyoRvK3QWU9XIoh7gEuGdoFZjvf+HyRbFSLWcCSOULKMQ/Eh8my+XVdCdMQKGTB/ENjwUvu26Ap2IrckYKhYfVMF22gsYDGJwv+T60QzdwofCvHs46hr6Jg9r4wvOrYd3PHx2pAPrchsiKD+A2k1JIc4Rdlw50PCsbTa6bYIN4B78tPoabxTf93kCnsfBG6w64liaDWqWQT5FuXlPXs/QpXJdEMjahjV4TUmiwjyOfin91B1LPoLH5QX7SiOdEaD79EXGT4pysNOKr8zW4W7+Yzpfs0Xz9hcvUQPv7xMWxJNJvYLubNpWASEGLH1hpslzEc3IWXWXiuoHriWlXak6WprHOz1uQwCyG+kZ8WMc7eCC+gFNzR7EuPRA6A=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0C5B91C0013
+X-Stat-Signature: w8wbzyu4owewu96ad6z5ergaawyippt7
+X-HE-Tag: 1772069478-563992
+X-HE-Meta: U2FsdGVkX18+C+BaBO4oE7Hs3FG+Hra2L4I4H5gEDF51/wXCvn2fPe/0Sa2xTdvte0c9NAM174x7qkXJ7SwwaTvRUcdjoLDBUK07Rq27CDVhclkFFMMktI+kwf6U6aIR4qX5cnu2KV3LB7NrmEn1S2brdI+DoM5Ba7Ub5+UpiU+gX5TObeFshBrXldrBPpYh16DQxdCQVCZW1BLXYUY8RMVMY2q0rqNfZToedsTVAsjgIC8rBHMX6EsXYcgJGAjB2OovaSqAZv2ecHSUmRobTIYsvkH6IwS7E3WWXexzCUjLr/1I4tfpHv6g4mhMEuGlybIqIc8kK76j6xV2zc5u0qdNijBwpGV/K9IhIUKOlJ1o8zZwZoF2hpbsS+liJTvdvw/oa+plbtc0mj4zRKWLCIlNeYThk15kaLvcFR6aT01QhBvUswe8pYv556yWW4E6US8aS5ZuJLmXVBfmrImijlyDEL7YRH/UnmrpQWtvdCVJVE5r05/DC6vP+2i6hmZRwcsi0R120mO8tm3avzlSTpnKgXLYjfn0sDeSV7K4+Mq4S0t0YBaSpKrHVkR+FO+Bke8srs09c6GDFQ/BsQ9EcIr4oxF913bZlYJuTp3+eHcWg26PVPRTr1DNQBxspEcEtfITP0RQ60mVM+pBvcDp+suZ9Y7FzbodiGU+YQzFKIDih5eSOUPMoRbV02AjA5U7JgcSDhsBNn1QeG3I7nW6XSFeICjapF3OoUcQ1XK1hHJDebtZYd3J1fEgJ2mTofkjAz1cqj3pRN2Pv1YayQ54at00NTK+CtnJ4Pu7ucpB/6CXlRNq0Ul+bO17Ga058mhe4ekRWXW19szkmgbuzCFuZrr+X2haH4MsMQhK2bKMja/OdDV3DtgMGRszUMJpqus7aZHEPjMlrxlifav0xlabSIrGHNCc3/3xkpCN+ae/yn3n5tXrCMDA1DEN/SZeFPAH4wOVq+3UfIC9hXqBQeC
+ twGwCwS2
+ F2bg/IwmmRzGDdbtjoefzBANa6ZDhNNNUoWqvTLAXXNdlZHrxIq8dUOgCUyTAdxjA/FmaYMugScjSB7y0IY0Be4gQgIeFeoVK3xB9MLJRdAta6hYhsm11xrBDlHSOleB8HXjrHlno2CT0k9xOaqF8lmJ9uNx20sMQSCV/poceVqT5OVm6F5HoJo2cwI8rrzlDruZQH/cWX/578LEa9L0BFs50jcHM8cP8tMaRHzOYD4oBF7RAMA/xrAdrUToxehulvW5FWg0ZXxS92phdTb3/DX6mHo5cp5ndljsiiXge5SeBaw+df9gEbE04GDm3kEKj1zgazphbFNUecjfiBEHLejlWJblYYFyFI7Gt+PfgmOZY4VL3beV484lB95t/Q7q2B+Xzn5eOUAszTLm3CoBxP/ZYcn6E3Hm1OCigZ7/fGelgwb6XoAQKywXq5GnO47UxLCk7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,152 +160,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to add mTHP support to khugepaged, we will often be checking if a
-given order is (or is not) a PMD order. Some places in the kernel already
-use this check, so lets create a simple helper function to keep the code
-clean and readable.
+The value (HPAGE_PMD_NR - 1) is used often in the khugepaged code to
+signify the limit of the max_ptes_* values. Add a define for this to
+increase code readability and reuse.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Barry Song <baohua@kernel.org>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- include/linux/huge_mm.h | 5 +++++
- mm/huge_memory.c        | 2 +-
- mm/khugepaged.c         | 6 +++---
- mm/memory.c             | 2 +-
- mm/mempolicy.c          | 2 +-
- mm/page_alloc.c         | 4 ++--
- mm/shmem.c              | 3 +--
- 7 files changed, 14 insertions(+), 10 deletions(-)
+ mm/khugepaged.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index a4d9f964dfde..bd7f0e1d8094 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -771,6 +771,11 @@ static inline bool pmd_is_huge(pmd_t pmd)
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+static inline bool is_pmd_order(unsigned int order)
-+{
-+	return order == HPAGE_PMD_ORDER;
-+}
-+
- static inline int split_folio_to_list_to_order(struct folio *folio,
- 		struct list_head *list, int new_order)
- {
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 8003d3a49822..a688d5ff806e 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4100,7 +4100,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 		i_mmap_unlock_read(mapping);
- out:
- 	xas_destroy(&xas);
--	if (old_order == HPAGE_PMD_ORDER)
-+	if (is_pmd_order(old_order))
- 		count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
- 	count_mthp_stat(old_order, !ret ? MTHP_STAT_SPLIT : MTHP_STAT_SPLIT_FAILED);
- 	return ret;
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index c85d7381adb5..2ef4b972470b 100644
+index 2ef4b972470b..4615f34911d1 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -1533,7 +1533,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 	if (IS_ERR(folio))
- 		return SCAN_PAGE_NULL;
+@@ -89,6 +89,7 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
+  *
+  * Note that these are only respected if collapse was initiated by khugepaged.
+  */
++#define COLLAPSE_MAX_PTES_LIMIT (HPAGE_PMD_NR - 1)
+ unsigned int khugepaged_max_ptes_none __read_mostly;
+ static unsigned int khugepaged_max_ptes_swap __read_mostly;
+ static unsigned int khugepaged_max_ptes_shared __read_mostly;
+@@ -256,7 +257,7 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
+ 	unsigned long max_ptes_none;
  
--	if (folio_order(folio) != HPAGE_PMD_ORDER) {
-+	if (!is_pmd_order(folio_order(folio))) {
- 		result = SCAN_PAGE_COMPOUND;
- 		goto drop_folio;
- 	}
-@@ -2016,7 +2016,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		 * we locked the first folio, then a THP might be there already.
- 		 * This will be discovered on the first iteration.
- 		 */
--		if (folio_order(folio) == HPAGE_PMD_ORDER &&
-+		if (is_pmd_order(folio_order(folio)) &&
- 		    folio->index == start) {
- 			/* Maybe PMD-mapped */
- 			result = SCAN_PTE_MAPPED_HUGEPAGE;
-@@ -2346,7 +2346,7 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
- 			continue;
- 		}
+ 	err = kstrtoul(buf, 10, &max_ptes_none);
+-	if (err || max_ptes_none > HPAGE_PMD_NR - 1)
++	if (err || max_ptes_none > COLLAPSE_MAX_PTES_LIMIT)
+ 		return -EINVAL;
  
--		if (folio_order(folio) == HPAGE_PMD_ORDER &&
-+		if (is_pmd_order(folio_order(folio)) &&
- 		    folio->index == start) {
- 			/* Maybe PMD-mapped */
- 			result = SCAN_PTE_MAPPED_HUGEPAGE;
-diff --git a/mm/memory.c b/mm/memory.c
-index a1a364e1fdcd..cb76fa182eab 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5427,7 +5427,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
- 		return ret;
+ 	khugepaged_max_ptes_none = max_ptes_none;
+@@ -281,7 +282,7 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
+ 	unsigned long max_ptes_swap;
  
--	if (folio_order(folio) != HPAGE_PMD_ORDER)
-+	if (!is_pmd_order(folio_order(folio)))
- 		return ret;
- 	page = &folio->page;
+ 	err  = kstrtoul(buf, 10, &max_ptes_swap);
+-	if (err || max_ptes_swap > HPAGE_PMD_NR - 1)
++	if (err || max_ptes_swap > COLLAPSE_MAX_PTES_LIMIT)
+ 		return -EINVAL;
  
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 0e5175f1c767..e5528c35bbb8 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2449,7 +2449,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 	khugepaged_max_ptes_swap = max_ptes_swap;
+@@ -307,7 +308,7 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
+ 	unsigned long max_ptes_shared;
  
- 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
- 	    /* filter "hugepage" allocation, unless from alloc_pages() */
--	    order == HPAGE_PMD_ORDER && ilx != NO_INTERLEAVE_INDEX) {
-+	    is_pmd_order(order) && ilx != NO_INTERLEAVE_INDEX) {
- 		/*
- 		 * For hugepage allocation and non-interleave policy which
- 		 * allows the current node (or other explicitly preferred
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d88c8c67ac0b..96ffb47bcfee 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -687,7 +687,7 @@ static inline unsigned int order_to_pindex(int migratetype, int order)
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	bool movable;
- 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
--		VM_BUG_ON(order != HPAGE_PMD_ORDER);
-+		VM_BUG_ON(!is_pmd_order(order));
+ 	err  = kstrtoul(buf, 10, &max_ptes_shared);
+-	if (err || max_ptes_shared > HPAGE_PMD_NR - 1)
++	if (err || max_ptes_shared > COLLAPSE_MAX_PTES_LIMIT)
+ 		return -EINVAL;
  
- 		movable = migratetype == MIGRATE_MOVABLE;
+ 	khugepaged_max_ptes_shared = max_ptes_shared;
+@@ -379,7 +380,7 @@ int __init khugepaged_init(void)
+ 		return -ENOMEM;
  
-@@ -719,7 +719,7 @@ static inline bool pcp_allowed_order(unsigned int order)
- 	if (order <= PAGE_ALLOC_COSTLY_ORDER)
- 		return true;
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (order == HPAGE_PMD_ORDER)
-+	if (is_pmd_order(order))
- 		return true;
- #endif
- 	return false;
-diff --git a/mm/shmem.c b/mm/shmem.c
-index cfed6c3ff853..ba74803c7518 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5558,8 +5558,7 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
- 		spin_unlock(&huge_shmem_orders_lock);
- 	} else if (sysfs_streq(buf, "inherit")) {
- 		/* Do not override huge allocation policy with non-PMD sized mTHP */
--		if (shmem_huge == SHMEM_HUGE_FORCE &&
--		    order != HPAGE_PMD_ORDER)
-+		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
- 			return -EINVAL;
+ 	khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
+-	khugepaged_max_ptes_none = HPAGE_PMD_NR - 1;
++	khugepaged_max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
+ 	khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
+ 	khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
  
- 		spin_lock(&huge_shmem_orders_lock);
 -- 
 2.53.0
 
