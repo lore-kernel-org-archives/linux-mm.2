@@ -4,88 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A268FC5910
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:05:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B4CFC591C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:06:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8869C6B0089; Thu, 26 Feb 2026 05:05:16 -0500 (EST)
+	id CC22B6B0092; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 830946B008A; Thu, 26 Feb 2026 05:05:16 -0500 (EST)
+	id C62B86B0093; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D286B008C; Thu, 26 Feb 2026 05:05:16 -0500 (EST)
+	id B86056B0095; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60E9D6B0089
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:05:16 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 154B21CB0F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:05:16 +0000 (UTC)
-X-FDA: 84486175032.09.C0B03F6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5823E180009
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:05:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VMluFYl2;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A4A296B0092
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36A8F8CACF
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:29 +0000 (UTC)
+X-FDA: 84486178098.24.7D5CEE0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5ECC9100002
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RVfx1aLC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100387; a=rsa-sha256;
+	cv=none;
+	b=hiLgCVS89o9JJc5QZu2TN4mwJhZyKfm1WEK5StPxZU9qci4YfInNhg0XYAD8mCWteYY50h
+	HocJEgkhkB7WC7Wh1oeLwpWUyB3ipPxqZRBj1sRJeV/3EsGyuIrwcmnQZ6lVgRdAuwatvk
+	LGPsadeQTcxhTX/RxsOm3vCJRX7Kz5E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RVfx1aLC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772100314;
+	s=arc-20220608; t=1772100387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i3F5RIFEQ/UwgW3/S4L7YItQqiVTx9i+3R9Z42licvw=;
-	b=51CUXaAt+sKKZ3uk9fhnZw4vngR8gx5Ze733TKK5RVLqdtskij0or17+AE+smvepH7FCZk
-	iu09HPRLleA0J+WXaodaOSylaz1mJ6Na5jwkc7FZ2zfZNTWO1TcIL4ctThaxN1zz7LEynu
-	hjT+vMSqlfDqNMFR0n1eZw8qlP7jMq8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VMluFYl2;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100314; a=rsa-sha256;
-	cv=none;
-	b=ezLZHRVxxBvyp+qLaR7cBVSiQ9jKvY/4hlV1A9ZfSsI5Bb+LvE5fDhFZnpfQuT1R2YKkWF
-	UKq7WHJ3dxfKPc1hwMhRsVTYP8WUOhvVrQpCnfNMgLywfPSwRuZHT4bnukyoyqrv4PRkHt
-	NSv3GYOFIC/SVwGF7c6WQnp39OQc/Y8=
+	bh=JtrtUSgCQeh3Rw2Fn/JXA71Qvme4jG+l3UE8ddeJyxE=;
+	b=nMYcN+6Ftvx4Ete1F7KID7BPrb9lsbYLqvTkvDZBlUxrxmUBIP1v9At4Pj4fADb9qkLtbA
+	Q8y2QiFsW3V6GKGzjbCHkqCw2M1R/hS97KZSm4Z9K9SwK0Kql7a/iAKaFvsbKaAm4wQ1G7
+	TLtcfQPKgSYryaXOetykIyA8GFxlKTY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A7FE060054;
-	Thu, 26 Feb 2026 10:05:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8037CC19423;
-	Thu, 26 Feb 2026 10:05:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 20D3043EE7;
+	Thu, 26 Feb 2026 10:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED8FC19422;
+	Thu, 26 Feb 2026 10:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772100313;
-	bh=UVl73YTi3WAb0rSLgkjhLjnRTNlC2VQmZE7K1ed7oJM=;
+	s=k20201202; t=1772100386;
+	bh=45Zns+iP/oDv+AJi9pnKB/hFBYoQKB7TJG74cHZZyrc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VMluFYl2qzzCDbgzKI7uHWI1CmImLaX/Med8w2aauu+pKGlxtRo25jCkxNQrOIoaD
-	 M247DXq3nXdcAkpXIdKnpNS6XzytyVFC5hQIy/eZIslhE809LU/a2uITqkCcsL0qEg
-	 ih35xq+TKmmoPbXkfRxy7dtYUG9kWcuAtyNgVIigFOrEdwLm/gg4jN8mzUk0IWt4Zj
-	 fJmE97MlG1NpZz2uOV//4olRp+r6CaVKYKaaWd0G43b1Km51hZX2VEaz6VbLmOWLbQ
-	 LIqqEeB0VAUkVd0hVqRs4O0r/LpnybKYnUhafLv4O0Zd+I+2+qJB5j8T26HmGBn49Z
-	 5tKtnB7z++GzQ==
-Message-ID: <99ea2e25-a2fb-469f-9a4e-1ca2cceab77c@kernel.org>
-Date: Thu, 26 Feb 2026 11:05:06 +0100
+	b=RVfx1aLC/rgzPLjR+YcRHQ9QbMkTt7VfNKPsmzbBDUyihBicyXDn+/CeSp0q5fh/F
+	 kjKWSDb2zclM9wXTPMaYjY7TuXRdjo3wVHYkEPQHl5TO3YrcmhTI8ElSfoLYFDjLno
+	 Tnpicv8R/PgEavrSqwmG9XtEDSkeupZDbiLG8GqGN4c3SVz6DRQDzMYlmr38dgumMv
+	 4bGZ6u2W69bswr2nr6Vsj063bCaR5yAK150vHGgOtsLE9QwvWy6yRGXCivwyIyoFqk
+	 bv/Ix9i6Xr2zxWM0B04MCptDQmEspkcDA811RyRki4QGP+naiU+Jj+62wb86gvZBMx
+	 PceWJ5vHKtGJQ==
+Message-ID: <ece450e0-8e19-42bd-9a7a-fdfc7ab785e6@kernel.org>
+Date: Thu, 26 Feb 2026 11:06:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Beyond 2MB: Why Terabyte-Scale Machines Need
- 1GB Transparent Huge Pages
-To: Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Usama Arif <usama.arif@linux.dev>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, riel@surriel.com,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@suse.cz>,
- Lance Yang <lance.yang@linux.dev>, Frank van der Linden <fvdl@google.com>,
- Oscar Salvador <osalvador@suse.de>
-References: <540c5c13-9cfb-44ea-b18f-8e4abff30a01@linux.dev>
- <aZ318PoxdAZjqnLX@cmpxchg.org>
- <42CCC4AB-EE32-4279-BB50-EE72756B5137@nvidia.com>
- <aZ4Lg51BVmGE5MLn@casper.infradead.org>
+Subject: Re: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree
+ folios
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ dev.jain@arm.com, harry.yoo@oracle.com, jannh@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, riel@surriel.com, stable@kernel.org,
+ vbabka@kernel.org
+References: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
+ <20260226070940.96226-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aZ4Lg51BVmGE5MLn@casper.infradead.org>
+In-Reply-To: <20260226070940.96226-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5823E180009
-X-Stat-Signature: j48oxzjfhwnyptd9w39gifisye9bmfns
+X-Stat-Signature: okkp19m54oz1xm81kj4k81kkshwjuz46
 X-Rspam-User: 
-X-HE-Tag: 1772100314-497471
-X-HE-Meta: U2FsdGVkX195FckCwkS2HSdgihuC9AmN5bRBoYsRD7PN8cnxrdIcoX4MfgM5YY172Dd8dmG3S39ajK5Q66jZGmJZru+4JBdGTgwZ/UOPjxM3qX9n4IU0vPwbtwe6pZZElkKdAkFrICt1d+NZnhRJ6xhBekbYpyS/ekUUCHLj7X4x/w7cM5H0yGfuV4QDGDtT1PKThbc8V39U0gIO8cjxY5ujQou8wPNUkN4m98wutw0udzhNbjtFhQJnSL26JYcu9Gg3GtEq1VzJSIdhP9O7uwCgva/pNsxlD838iE5XptqoAUgNDhKFBUsAHgxgqi5QjAm5ti8HrvOFkVZQ+3KyCXV+O/pc9MSFYvXzzaCrWfvSqpe+LyymYv2Vd4NUT08fv+kmb+UZL43iuZDlfkmT70lv+KE5jVSwiRQlN40y0ut0M8MH5BwFm/au/cQ4oZds8tVvLI8y8pQS2b0LtLgKLmgQoVCSzyx8UJO+K/Eb/vW/KxmfmF6/xz1KpOUvyAfKJo4cKc969HLxnh+3xr6z3fJdo5aJKA12f5b2fwOefgew0rh+y5yEeR2c/HV+bpDp7IC+G3FVskSsHTafLAgrDWyqprKpx5A+iA54iuicYEXu8moPCQxhuLuypUSyf9SRzOYJwXFkO/3FYgsda+GchaMZQd22dNPGecVYI0JZwg8aVc4q2nxYOJ6Aimsk70/78kTep9Z4MJA9vPV8AoY3DYyGN/cQck0ppmODOvnhbxtR+5NgzopmEmFbJ46botd+gV6h62oL5cJ6IgCt9SOZobyk7cQ9vlkt4Jmbhvtxnlhk5/a6CovZPzxqP4c8YtEfrTsNLRKEJ3vStQh3FvJ70ZxPPRUiH2ri5CA23HDjqCU8f/fPBbXiYXDFN7hQjSDGyKrRGRIKHYRuPK1OFQAbVb1IPPZs6AtBVYC0kgVt/OZYfLsxEmA5uQhUpLn35uUX7NBC44ybrfb2o0nktFM
- FsVWMTI1
- Fe5OzNAMDBCRqsAPVFgYkLpa0iSZRV5+TOLqwg50+EXE8wVwyhi0iPWTRDpgK6m+geUz9N7ZyZMHeeomh6TzNPzAwK3cBw79CC7QafqoDrdR+NveNrtqVOT72zO8OcWiyJ6KFAKztpWmUN7n9cYA+thTsCvXF24ghuEhgNbs+xvVRJKVyzujbQ1loPh6YEel37e5l2zn/RCXjkU1iqjKsRYPWovl8/zpmu31PCO+B7aHNSGzRAJKWh+tkt/Hd3iv7Ar6GtIjRMj6ZkRjKT1lhjipcZ+QQnFVvYJYROjqcL88B2BbnoX5Dgc/XFg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5ECC9100002
+X-HE-Tag: 1772100387-441561
+X-HE-Meta: U2FsdGVkX18hx0m+qOUdoZ/mfwWb0AqXXtuCdq2bdYKx3yWYf0eWEqZLxQgtn9IhqxOVMTsC5KeA0wMIFQW/Ulst3hUTvDzhb0R3EpVd7bjFPvATy20IL4grOasadlSMAIMtFlVGA0xSjgH02MQKhCfzFtinNTTuyWWQhWpTdzZiUq5mHiQVXfwXRVId5PzWXy1WO7v77KHpTgMuRwBfw9cuDBYimhbSF79IdYaw/PVLuMMuekCK4lmWLVkmzCewSEZURtTNgExtDHTiQdsELYjmML8ek6CquU1UmJ2crLr7nZnQiseYlJmlf4oJyV7/9Qle9MEBRLsuvaTlDF1dGgtfqOOtRVvVlQi6LcjAG4SsOcanB4JgSVuD73R3JYzHCS2K4nULRj+yM6BfGIS3QqvtrfRTLB9wQukGzG18Q+QdpAoBQPSjb8oxJa2gnAKQnf1iUiGBTsXPuaxCash7qp0GSmJtLZ47wAy4K0x+ZsbQJ+928FiJgSKg2scJ2I1JHErXXqPpG7mSKBczAoUsLL4ediKdvjxx6eOTtAcY9U1NJNXLSmXZpU7tiYgQk4ECXmsNrrD+WwWIg7PUQuuc30pmoE3wB1WIg+xd7ATipA8di6C7spTTRU9BRPMrm7GlPgby9jxtDxO3QBV68ozk6fjFWoE26siU1CsNVIDtbvhHbtmTnXrrlhM6Yema9GjWQM9/E5rZPnulE7TmHxc4MUp2kYYmeAUfyYQvjBd37ls8BPDzg+NXpUGfcJJfjM3HH/antOvoG6d5xmYsBdS3ZWFU2juK2uthdqaZMEgOdLupeEGOPKL8HAG52qjM3Zc7j37gZVpwQduhWSZaGmXmZi0n7t2q5MuIYfEl/8DDe8pHh2Veij4wkGfUQKfenpisoJViyLb/X3ZZzCfy2b2uAooAaw8GF6gpBgb7GjyXkM+4E5MfDrn72JL2BgiClWuamaO2D3JgVGqM02MeXhH
+ uDk+IZ3b
+ XJrrHxrcs8M2I+wUffHA5fQlYYXjLUTHCcIVqTVRhvETegm0KfORZFCpNnNOhQpzYrWzdKuYPe/jNfoKe7lb2PDPHLMn/UDw6eiPYut374MWtFBmLIP3CFrw6L3Zei8GOKQ4yl/TzzdU6t/o7mK57fFZ9eS6RURvt4YsocZYQVEXTi9Zzy9YGJF9ZhQJnAu2GJa/G1AUwe00aW8+ufY0Umn3HFF707DKxgATwYq5WGbLdS3GgxSsUR4d4mp4GYtZ59PXl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,86 +142,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 21:35, Matthew Wilcox wrote:
-> On Tue, Feb 24, 2026 at 02:08:26PM -0500, Zi Yan wrote:
->> On 24 Feb 2026, at 14:03, Johannes Weiner wrote:
+On 2/26/26 08:09, Lance Yang wrote:
+> 
+> On Tue, Feb 24, 2026 at 05:01:50PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/24/26 12:43, Lorenzo Stoakes wrote:
 >>>
->>> I know this isn't your intention, but one interesting aspect of
->>> supporting PUD mapped folios natively is that it could open the door
->>> to simplifying hugetlb as well.
+>>> Sorry I misread the original mail rushing through this is old... so this is less
+>>> pressing than I thought (for some reason I thought it was merged last cycle...!)
+>>> but it's a good example of how stuff can go unnoticed for a while.
 >>>
->>> We currently have all kinds of huge_vma checks scattered over the page
->>> table code, and entirely parallel paths for unmapping etc. With native
->>> PUD mappings, this could allow pushing the special casing out of the
->>> virtual memory layer and into where we deal with the page objects.
->>>
->>> You might be able to take it as far as the only thing left of hugetlb
->>> is the reservation pool. Such that a naive application does mmap() as
->>> per usual, and it comes down to a separate allocation policy how the
->>> backing pages are served (buddy, CMA, boot-time reservations, ...)
->>>
->>> Approaching it this way could help separate out the discussion on code
->>> impact and tech debt of PUD mappings, from the allocation technique
->>> question, which in itself is a fairly large topic.
+>>> In that case maybe a revert is a bit much and we just want the simplest possible
+>>> fix for backporting.
 >>
->> I agree with this 100%. Adding 1GB folio support first, we then can think
->> about what other THP features, e.g., split, migration, PMD/PTE mapping, are
->> really needed and add them one by one. It is also going to be a good way
->> of retiring hugetlb special code.
+>> Dev volunteered to un-messify some of the stuff here. In particular, to
+>> extend batching to all cases, not just some hand-selected ones.
+>>
+>> Support for file folios is on the way.
+>>
+>>>
+>>> But is the proposed 'just assume wrprotect' sensible? David?
+>>
+>> In general, I think so. If PTEs were writable, they certainly have
+>> PAE set. The write-fault handler can fully recover from that (as PAE is
+>> set). If it's ever a performance problem (doubt), we can revisit.
+>>
+>> I'm wondering whether we should just perform the wrprotect earlier:
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 0f00570d1b9e..19b875ee3fad 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2150,6 +2150,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>
+>>                        /* Nuke the page table entry. */
+>>                        pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+>> +
+>> +                       /*
+>> +                        * Our batch might include writable and read-only
+>> +                        * PTEs. When we have to restore the mapping, just
+>> +                        * assume read-only to not accidentally upgrade
+>> +                        * write permissions for PTEs that must not be
+>> +                        * writable.
+>> +                        */
+>> +                       pteval = pte_wrprotect(pteval);
+>> +
+>>                        /*
+>>                         * We clear the PTE but do not flush so potentially
+>>                         * a remote CPU could still be writing to the folio
+>>
+>>
+>> Given that nobody asks for writability (pte_write()) later.
+>>
+>> Or does someone care?
+>>
+>> Staring at set_tlb_ubc_flush_pending()->pte_accessible() I am
+>> not 100% sure. Could pte_wrprotect() turn a PTE inaccessible on some
+>> architecture (write-only)? I don't think so.
+>>
+>>
+>> We have the following options:
+>>
+>> 1) pte_wrprotect(): fake that all was read-only.
+>>
+>> Either we do it like Dev suggests, or we do it as above early.
+>>
+>> The downside is that any code that might later want to know "was
+>> this possibly writable" would get that information. Well, it wouldn't
+>> get that information reliably *today* already (and that sounds a bit shaky).
 > 
-> But this hasn't happened yet for PMD-sized hugetlb, and there's no need
-> to wait for PUD-sized THP to start this process.  I don't think that
-> introducing PUD-sized THP will actually motivate anyone to do this work.
+> Makes sense to me :)
 > 
-> I think we have four main things that hugetlb still offers:
+>> 2) Tell batching logic to honor pte_write()
+>>
+>> Sounds suboptimal for some cases that really don't care in the future.
+>>
+>> 3) Tell batching logic to tell us if any pte was writable: FPB_MERGE_WRITE
+>>
+>> ... then we know for sure whether any PTE was writable and we could
+>>
+>> (a) Pass it as we did before around to all checks, like pte_accessible().
+>>
+>> (b) Have an explicit restore PTE where we play save.
+>>
+>>
+>> I raised to Dev in private that softdirty handling is also shaky, as we
+>> batch over that. Meaning that we could lose or gain softdirty PTE bits in
+>> a batch.
 > 
->  - Reserved pool (mentioned above) which we don't yet have a THP
->    replacement for
->  - shared page tables.  mshare() is the replacement here, and that
->    project is moving along nicely.
->  - Being able to allocate gigantic folios.  This is also progressing.
->  - Guaranteeing that you don't get a fallback; you either get memory in
->    the size you asked for, or you fail.
+> I guess we won't lose soft_dirty bits - only gain them (false positive):
 > 
-> Every time this comes up, I offer the pagewalk code as an egregious
-> example of where we force every user to know "oh, hugetlb is special".
-> Getting rid of mm_walk_ops->hugetlb_entry() would be a great improvement.
+> 1) get_and_clear_ptes() merges dirty bits from all PTEs via pte_mkdirty()
+> 2) pte_mkdirty() atomically sets both _PAGE_DIRTY and _PAGE_SOFT_DIRTY on
+> all architectures that support soft_dirty (x86, s390, powerpc, riscv)
+> 3) set_ptes() uses pte_advance_pfn() which keeps all flags intact
+> 
+> So if any PTE in the batch was dirty, all PTEs become soft_dirty after
+> restore.
 
-I'm all for having a better way to walk folios, and Oscar did some work
-on that in the past that got stalled (also partially my fault for being
-overloaded to provide feedback).
-
-But that would be rather replacing mm_walk_ops, not changing it.
-
-The real challenge are not PMD-mapped or PUD-mapped hugetlb folios.
-These are the easy case.
-
-It's all about the hugetlb corner cases. PTE-batching to handle
-cont-pte, we already can support. Cont-PMD-mapped hugetlb folios would
-require similar support (rather easy).
-
-But the real struggle is "fun" hugetlb things like
-* PMD table sharing. I don't want ordinary page table walking code to
-  mess with that monstrosity. It can mostly stay in mm/hugetlb.c where
-  it can die a slow death.
-* Powerpc stuff like a hugetlb folio that spwans two full page tables.
-  There is no way we are going to add batching support (reading+writing)
-  to generic page table walking code just for that purpose.
-
-Instead, I think we should
-* Leave all the mm_walk_ops->hugetlb_entry() stuff alone.
-* Enlighten shmem to provide 2M + 1G folios from an alternative
-  allocator (pool) (like guest_memfd is planning)
-* Allow hugetlb to server as such a pool. Preparations happening in [1].
-* Maybe enlighten shmem to be able to reserve folios in hugetlb.
-
-Essentially: rebuild something like hugetlb for shared memory using
-shmem, and reuse the existing hugetlb pool. Avoid all the nastiness
-(weird architecture tweaks, odd folio sizes we don't want to support,
-huge pmd sharing, etc).
-
-
-[1] https://lore.kernel.org/r/cover.1770854662.git.ackerleytng@google.com
+PTEs can be softdirty without being dirty. That over-complicates the
+situation.
 
 -- 
 Cheers,
