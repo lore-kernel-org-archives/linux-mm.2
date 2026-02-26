@@ -4,96 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94452FD45FE
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35FBFFD45FE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:08:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F36A76B0088; Wed, 25 Feb 2026 20:01:58 -0500 (EST)
+	id 2D9366B0088; Wed, 25 Feb 2026 20:08:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F18626B0089; Wed, 25 Feb 2026 20:01:58 -0500 (EST)
+	id 287196B0089; Wed, 25 Feb 2026 20:08:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E456C6B008A; Wed, 25 Feb 2026 20:01:58 -0500 (EST)
+	id 189E56B008A; Wed, 25 Feb 2026 20:08:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D2A796B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:01:58 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 978481C57E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:01:58 +0000 (UTC)
-X-FDA: 84484805916.13.395659C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 03185C000A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:01:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pjtN5EkC;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0382E6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:08:39 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A34EE1B7234
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:08:38 +0000 (UTC)
+X-FDA: 84484822716.20.7D72DD7
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 79FB61C000A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:08:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772067717;
+	s=arc-20220608; t=1772068117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4905uXVX9GCze6TLxTjn2Ivk3XPKxE2EqOjwlga3Nbw=;
-	b=GNqhtVsmDqmZJMUG8cO4WVWHzn0IYVvWwaA/Medzn6CDfZgoyXaN4kthwnFmnRbYO2wDOp
-	YWGgcgiiaK+39gaY46dqWo8gzZAPAX89xQV43bs5Gs4w2NNWjAztNykk6Ot5Sf2OwaXCPq
-	N4cynTvuD5Q6mDtNMcg84gDTHYjobd8=
+	 in-reply-to:references; bh=HA3lanI21yIiyXu9S+5kmmRZnagu/mBBgbb2W+iMoQM=;
+	b=JxgI609VdINS2VRc4NTFIpzzBUyx0iKyPX2ydlKWt7hJDJhn+Wti4i2dKo/s937JqGBHs0
+	D4xb76ABu7ZzR03thXy9gOHJzbc+Mq7ko6fe6slYTxpg2VXAI9yiX9XRT9rEHQe2yn01hm
+	2/5laj6wATwSIUb426KIZMOURdJXVsQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pjtN5EkC;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772067717; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772068117; a=rsa-sha256;
 	cv=none;
-	b=mJWdawJSS2NYSO2hVCtzVL45I3Y6CXabsw18qrgGNz+UUsgp3ycp6+YTEA4WgvqFOyU0pl
-	GuvVIV8iNdsPA41FkteOmJjP/uCManwnIpqOnYPkw806lOmh/lD3jvSFNmjD7SI3CKQddX
-	Ve6sDXBquavKGxN22NadQOxfz0HQJ8g=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 58E2360054;
-	Thu, 26 Feb 2026 01:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F2C116D0;
-	Thu, 26 Feb 2026 01:01:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772067716;
-	bh=zFdmXpPt1AUJPzUzuIRQvkZc175RtEgIkrR7sqdAa9Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjtN5EkCmecTuHcBc6/oquE8k/dM1e2UU+e8llWJG5XO1U+OiVpEfy5e9K5EfRe9U
-	 IK4oGG4GbOzfmNOWjKWcUjk9z9OGXOmRSuhhpFL7KBHW8IcproMlJhJHwg4xGvDnLg
-	 1la0gio8NT4GNMtTWWXGTRNTmk8IM+NNJqe0yk+Rxm029ohOMN97k774WPZn6SnqkR
-	 DssyX1dpsLfADn3hF3n1E+GjMh7tzpgOYMY6uMKaAH9cC7BOZ9uajU36BS0U5UA/OZ
-	 iXb2TOo4XK3h0qzJMuBqUm7k+26DfZFhRet7reXgHbsi8DIo4x7Hp/7vsx3et9YNuT
-	 fE7Jm1reJZzjg==
-From: SeongJae Park <sj@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	b=ofVCzzYsCC9eICZoQ7z7z8HGT3hoZjgsZwdypw4RAMkcWFB8LE0jYq8IBc6EfZZIlqmHlW
+	AGW4zQRApTcvLYOZ+8Z+dkt0JK9IwLthtNZR3qYcXx5T3iq+oVCiTEn56qOuTE1iZ82WAw
+	1NMm2suEAZcPz73Jr8KXOnD/zsGuscA=
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 26 Feb 2026 10:08:32 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ron Economos <re@w6rz.net>
-Subject: Re: [PATCH v3] mm/cma: move put_page_testzero() out of VM_WARN_ON in cma_release()
-Date: Wed, 25 Feb 2026 17:01:53 -0800
-Message-ID: <20260226010154.8065-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260225031231.2352011-1-ziy@nvidia.com>
-References: 
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: Add myself as reviewer for SWAP
+Date: Thu, 26 Feb 2026 10:07:39 +0900
+Message-Id: <20260226010739.3773838-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wrb384bz1seg1udqmxq9mck7jngip5jb
+X-Stat-Signature: jmb7z3uhghd7ua36wq9wwpiuqeho84ic
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03185C000A
+X-Rspamd-Queue-Id: 79FB61C000A
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1772067716-247341
-X-HE-Meta: U2FsdGVkX1/Jjaw4lH1yth++DWDKfrVmRcryV3KONQn9gctTVpDlQ6A/VowlMj5VVuLbhMtKgsTHQrzZ3jVeZvgy7cFNN4SFr5K7jGYS64Y9sVNsxhPxouY3KMshA2Q0RRMm4GeNu7HZkItd54ncAC8n3gRqjiwiTVPNoNRMbNU/rNZJ4WdVfi3pFboI1DgOxosPcWs4cPfnXRxbLA8V6VfMPMjdmmbDfDVxOhaerwNq2xyCEH3iWcwutfA/T2trxWcI0gjy1V70mjdpgHNHzzjzu30VV6trqJwauy70YV6SxL+cR/lQ277XVG2c8qmrRskR8y3sztqrnIaTkgw7d17E/2uSlDZagRLn83Leao9gHn+tTnrXCpJBtHx8coKGLs9uh+VILz3NmPtc/+tAEEKgu6KZhUioUb2MZni7jplhE5QuQ4NVB/luEL0FUpqDpK4Z05FlU8paLgFQSWO/CuVAQ5YO4KaGRfw7GKGUkfrKMbEE6P4UN7VOd3UiVcIH4yXJqgmqekESljNMBFXDVJ9A2xfchIMb2IEp6EDLH3zxvzAWs7TgG8v3GfbpTv4C3+ys0MAygN2xQTl0928dw0lcH90QHxuSySM2HZfbYzGGLcqRgYucyf32EisvrEu6eVBiItcYXUTym7gDW87yWALUmA/qf0+vtThxdyngtlNDADDrRlma2RUq+1wobF1xX20r0S1SlYGpnqwhGlBWGMmRwhaSB/8VnFkAU/44uqaFMubQBXABbemYSF1R1v3Z5xgly5RAOpWajIh+Lp99kO6UOFIv+dCyA/FYzp0of2rAa20bk/g+AJt1MRSmos02VZDXF6X/vsFSN8Jobfh3BY7jS5s+CR6SAOdDnzg9XadQKG02e4bGSgD/NoVGA0QZ0IKDNEKmV05/erc5k5QPK8EHHbnrFx9ASOOXp9oT6V7peRZ3e/pAZUAbbkj1mdN9ggshBBcohbEwsZ+lZHP
- 694ry6j8
- /zUgITKdev+sfNKTb+b9zXs2LgZIvRmYk7yIksz5dPAcbZHYMtbPhHvLNK/r35pkhVUZK08vwiR5qLjg9vD5Ti8anmWqfzmxgmy1/tMiYyATBa3aqHY9MEy+16r8BSksuvEGWjIYQV75a0/WlZZ1k5ozKzpcFJrK33ubMiIrVwGcd05yh+vPYh6D8eWqHtwzTwKlQKgrq6trNDiLnmPLDnZxsuPLFOmEZYdllu9Rm2BpxNLhbBccTnqQJ4b6fJ5OyofFCa7CYZ2B2K7AcELJUE+dLce79KsQnOybZT9h5WZe1wH3/SQQ44LSJlApwPRQCr8B5rppkwnrq/wyuB5vIszxaXxvKJUyP7loi4TSLnJ82gubHtaJRUA/haDxjaGVTvoAq
+X-HE-Tag: 1772068116-804247
+X-HE-Meta: U2FsdGVkX19Ky36dXeMSoR07mlsp/08LgoAJZaC7QpbNOSQAns6Tl/+BFsOAPStKOkCxuCwsS02fs0Vp/SUwUVpDDd5Hpfws8wJ3l3XcC2t/fO/FcEc6DC9WHwLsuOWElxgUtDOpG/jfbpLssjFdfT4zm7RGiNOqmrdbg3UUPJW6LJ7Yp4bLcP+juct41TF3MI7NtkErVXaJnFeKRsAWbGPuCicuY7zdMNF6IgVRknXE3FIrBylrq/ASH309Z0eFDYffp03NSU33oi3zWzMBwk/JSBLRywWyu9ZomHMP5zfW8pYNHS25fq01AKU5jMQiodX29AQENW99j0xgPnLnEfDubm8fKFsQuqOmwZka74WNeEyVsTnb3UggyORXg2v9pYexEGmnsIePjKonV6vk7xNnf4xeb1U/tpLm+XyBzy1SfLHwep8TAmYF4od7eY5CGNHrprZP3ojhyEqExaRIbQvWQn7aLU5xbJiTU5iUtG4M9mcJpNXnqZqTgtXTebC6VlsBtVThuiy//9K7CrZF0RYxW+L+ngUl+faPF/Qjcr6ef3TxzXoaMoaECj4+oLBF57Cz0wiYsVQhluPLivoZB5A3gcRlQwWOk11bMs7OAKSWAQ1AllkI/NQdCrL0KbyOv34rIoxPaWvAa5KTJ4GbYBjmgcxLrz1L2DPImeEdeC5CnzsBIeuoGejqyQufkRy5vXV6EW6sljJbwB/AFCDaNLrAFLBxza38aBcC24Smms8w48h3SjcaQdmvWceAFz4tMg8XE0OXy1/ZnLkbVxAI+DhZr11rqne/30e8E2QHOumptOMbMd1Ra6PlD14NHwn6YXET3ywPJVPm/hRCzRXBDurHmEUN7VSWJoN2ShzdFHOj5BEluivm5zXf0J5lPMaCvnZ76oaxZOB5CmiXDhw/YxDa24iF3c1LI5Mj7eneH0B62Y4RuyuR80Iefr5UAJF+/6xv6irDCnmUbdm+hlD
+ /Dhzxf28
+ JnCs25Zbl908m3K/VI9QUEyG0CfSIHtvlB+ucVWvQ7dH20nMHyddNGW+BalcOu3a3v68YLxOYMcUyBkA1GLha3d/6ulKgsZCxjAkI9iWgcYfgp1nqfcndBCCoAM+V0Pyba9DeBOI5x+WONRwlJq1Hs3XFStR/thDs1LCFrXLpZOSn5DPOJbzw81dplQ1hFb5IlOUZvTGObXWjraiUBkfBz0MVopZb/dym9t9g44ukMdPAwPxwjV/1Ojlib3mqZt/KaTSzb4jPd/ffqTl1u+nyZA/nfbvovzRS5rYVTOm23DMzqSLwRS40cHQ+2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,26 +83,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 24 Feb 2026 22:12:31 -0500 Zi Yan <ziy@nvidia.com> wrote:
+Recently, I have been actively contributing to the swap subsystem through
+works such as swap-tier patches and flash friendly swap proposal. During this
+process, I have consistently reviewed swap table code, some other patches and fixed several
+bugs.
 
-> When CONFIG_DEBUG_VM is not set, VM_WARN_ON is a NOP. Putting any statement
-> with side effect inside it is incorrect. Collect all !put_page_testzero()
-> results and check the sum using WARN instead after the loop. It restores
-> the same check in free_contig_range() before commit
-> e0c1326779cc ("mm: page_alloc: add alloc_contig_frozen_{range,pages}()"),
-> the commit prior to the Fixes one.
-> 
-> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
-> Reported-by: Ron Economos <re@w6rz.net>
-> Closes: https://lore.kernel.org/all/1b17c38f-30d3-4bb4-a7e1-e74b19ada885@w6rz.net/
-> Suggested-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+As I am already CC'd on many patches and maintaining active interest in
+ongoing developments, I would like to officially add myself as a reviewer.
+I am committed to contributing to the kernel community with greater
+responsibility.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e4572a36afd2..8fb7b70dfb47 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16913,6 +16913,7 @@ R:	Kemeng Shi <shikemeng@huaweicloud.com>
+ R:	Nhat Pham <nphamcs@gmail.com>
+ R:	Baoquan He <bhe@redhat.com>
+ R:	Barry Song <baohua@kernel.org>
++R:	Youngjun Park <youngjun.park@lge.com>
+ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	Documentation/mm/swap-table.rst
+-- 
+2.34.1
 
-Thanks,
-SJ
-
-[...]
 
