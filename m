@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11E1FC5921
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 19:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1ACAFC5921
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 19:29:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0D76B020C; Thu, 26 Feb 2026 14:29:50 -0500 (EST)
+	id 433666B0131; Thu, 26 Feb 2026 14:29:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85BE6B020D; Thu, 26 Feb 2026 14:29:50 -0500 (EST)
+	id 398B06B013A; Thu, 26 Feb 2026 14:29:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C09806B020E; Thu, 26 Feb 2026 14:29:50 -0500 (EST)
+	id 1EBE16B020D; Thu, 26 Feb 2026 14:29:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A66DE6B020C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 14:29:50 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 693EB140222
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 09FD46B0131
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 14:29:53 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8E7116018F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:29:52 +0000 (UTC)
+X-FDA: 84487597824.13.EEE3290
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E13001A000F
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:29:50 +0000 (UTC)
-X-FDA: 84487597740.10.BC79968
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 84FAD40006
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:29:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=M7zWiiYJ;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gAZFc8kQ;
+	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772134188;
+	s=arc-20220608; t=1772134190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oEfEA70JNXawqJbV01nYPcSs1BoCcq++8AXelGDLMgg=;
-	b=rIY8sOvls384+Sl76Q99zFx2lp8NMb4VUw5RHbuSY91MADo5uYlTUslliFqSlkq1O7yz2/
-	iRA1IUfhb+eI6UC9fjArOb1RS0w1M6dPQLYFD42J8MirWN0IJd6LW09sCENyJkHlGOuZXg
-	sNNCx4aKBKwBBHuQpdR3nEpRzkxVnzg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=M7zWiiYJ;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772134188; a=rsa-sha256;
+	bh=BQnJpZ9tlMxlAvSH4/u9efMTjBoGOkCwurLY+eANTp4=;
+	b=JK6MUxzJDGi/shqanfJFOJAE0nRhRBejE4OTavOZuvg+pDtP6iJrA0kqgOZiwAfik0iS32
+	Uz7rg88ACBlBDHtG8hN6B/3xJwHX1xeseLouFsKmL7604z7EHWV4pt3UwxglQkJ4oGGorB
+	uUA6qBLxQJNQD2lEje0P3YE1bivMq0U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772134190; a=rsa-sha256;
 	cv=none;
-	b=iJhAlojCH/tXYygv/1wfvECbi1uH755os622JsN/jYh0lH4h0RFFq5OmQ0d0WEjCSJT3wo
-	Lc5MPZZdd6Alp0VyhOkyoo9YfbaK/6BpfeZBRgGa2oxNPYfqvvKmyh+JjXVehCJiu1hbx9
-	rU7x8peiNxPwYHv4QWqLlqiu9Geattg=
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d1872504cbso1208545a34.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:29:48 -0800 (PST)
+	b=FbPjYyL7MKR/ga89viN112Xo8bwGrgcBdcT6JpL4LAQMm2eBIA+U+KS+hrdrgleVsDd7HU
+	8QN2iRWjSJiA/kx6qx9tyXzCq2ui7+SYg7udryNKaMakiKDaXstlLdTcJoAUrk6rStnqzq
+	oOEKwr86+AYDLiavpOk2iTIW3tE4Edw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gAZFc8kQ;
+	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-463960df4f9so979059b6e.0
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:29:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772134187; x=1772738987; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772134190; x=1772738990; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oEfEA70JNXawqJbV01nYPcSs1BoCcq++8AXelGDLMgg=;
-        b=M7zWiiYJFlQxiwJSxjBUJCIkaKecPNkFlKf0Z9MrVQsFftrmHrBm7DpEqY7bp+lZT2
-         uEYjzJEkAtV2xa1MpltASgJRtZfpxER7TQT2h+3TJw70Eeweex6e0po52P5/cfUm38Vf
-         wBj2yyVXhX5Oyt3lkEDEcV3orVE1VyQEJCv3zv4KD4SYOk/0nuVTfPzXVr1Hh9q1ael3
-         AR6NbsMMwDB34EZzJiMh0Cu+7U47AjzC1cMmEHGXB4Rz3ECjDX9nNIJiU4ObQmfCZdmF
-         Emim47nems5sV9rXtjDtrW/ZwXXEJyeqZedgvveFxtoEXj0GzXfpnBrf2RDocTwASu0g
-         1Tbw==
+        bh=BQnJpZ9tlMxlAvSH4/u9efMTjBoGOkCwurLY+eANTp4=;
+        b=gAZFc8kQajoqm0uj75Z3upM0VDEp8qMp1IQOSA4kuodqjSQD/+A+BJxeeOmkApnX7l
+         NmOu6BsYA2PKwuC3QInSonjMF8hKmFSXeoXb9b8okC65wDPuNKrPIQyrbJ6zCi5uldGW
+         cnACqbiU+PMP13LyA/gbp2fYeWwICnYUsFkdyJ6z0kwyeyJVtDLaBuh9h3XBDGJxjSTN
+         8AsQvsv+QD0UvyE2ZMGGP2AzIn3iRjwVU+QEoLLAf206REq+DXnPVASBOlzn2xBNmjXg
+         7D6Vfs+YK7W2a3cyNLVKIbymS3E4uq+N8huF+OjrWb/x7GFz2rZOn3CJjlT/1EopeFjw
+         4vFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772134187; x=1772738987;
+        d=1e100.net; s=20230601; t=1772134190; x=1772738990;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oEfEA70JNXawqJbV01nYPcSs1BoCcq++8AXelGDLMgg=;
-        b=rUfl8X82h30JQbSlMF/+sDSP8wEgtYBYzm3YubAfnHStYWnsFt/gLSnerv0H+cgF4u
-         Y80j4s5yXtdPVFd6BVp4ZCI95IdGK2Z8RnwHRM6L2h80/wi5RAxeUNdaFl1xTq5jvIQk
-         yR7m+oe3PwmmCFwPxPeOVmIuY3V9gNo7bMWC4iVng5rC/EWB7w+3+eOQ+iHQSgaH/T8W
-         AXkP0Jga/ZHS+sWa791TiK1hOKDokJ2oywAxqnJUFvNMNykVofJhwuP9pRcXlxzHmBXM
-         gtk/aKzYtXi5TuuZ+D49VXqFkRNEIHQ15E2ZVVkjb2rc6vsUyPIp4tQlwkRWOIL9C/K3
-         wiAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhUuhpwgtNCoLlc7giJpgcLptRPwPagPAPv/dAL56bU/y4a/Vj7/TeSmGcofba5KxJBLTyKlXxAg==@kvack.org
-X-Gm-Message-State: AOJu0Yyz5LbvdojoCCeIvnVKcK9sI7Ybnz5OesfNnMlPo6didQjHM1qd
-	wCD7gqC1xfOyLnLFATzp9zspLhH8KTW9RyYsK9FkOwRPBn4jj9DGJ2g+
-X-Gm-Gg: ATEYQzzJiwWbYmfM7O32A5Hhkrr4DGMqHF5iohFxYzzWAq2pVJuCKI+4tzSavHRCSlD
-	M0JcpUvB8T6wvoXMX8Xqv0VYecOlEZQy6i8fGQvEMLyoHNbq8JmQZfYxoZ+Esn8dUteYy7Joe9Y
-	fqCM4jX65LNFTRpwU0dOJ+E5BLA5UUotNfAl1ShAs8EHHw8TdR52qUZ6qrhOef5KEcjqU2niglR
-	F+kSGxv14VVJuoOiKt5e+OtqdQOSTpskPCKUid+hBmrr0i+kBxhiitXY8s7DlWWgbQwH1dCDS3j
-	OKalit+VV6Y2WljBruPIC2y+PkqKHHpYs+XQjsnR4EB4PGfWSJs0BLFIgGzNBF4FBLpKiOTiw1g
-	6/C5h2mMG8fhiguvUVxvntvsDHakpyceX6jmnTAxxF/nM8nQYRq6mmOFuQ3tJIfBVFHneIC8Xmf
-	smTpYB+rgUfrY6VuUgDfitWw==
-X-Received: by 2002:a05:6830:3986:b0:7c7:48b7:640a with SMTP id 46e09a7af769-7d5856d877bmr2357295a34.7.1772134187538;
-        Thu, 26 Feb 2026 11:29:47 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:56::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d58644d426sm2404272a34.3.2026.02.26.11.29.46
+        bh=BQnJpZ9tlMxlAvSH4/u9efMTjBoGOkCwurLY+eANTp4=;
+        b=vR6m00seRPaxJ3yhago6/tGzrU3+VnQlcdsxTV23L7s0Aso28LvIu6aMNRER1yfh7A
+         LNOcR5//U2gg5u5Q82kCj7GZfWz/xun3Nlk4YXXADikewO8rd6qCOeHNYcB4UYw1WQ9j
+         XkzcdsacAVXj/Nf8R7xoYOK7mEPGl3Av1orN1UUAeeBIHlB4xalpI6cHcEOiNwliiRYd
+         VpeKsbhOKJnRqokD9fbHLkNrxG/Kd78xnS6A6ywNSrPNwq+sRLNVIxUZ8Hmf5iw7Y10w
+         h7YU/u8KDuNfswahu6vzhO2ZUTQJttbZcHMuH9Ay/rxEHRzug2RGKNC7bUbzOY0Fp39h
+         VarQ==
+X-Forwarded-Encrypted: i=1; AJvYcCURGklXGNk+TqkDxdvcU9A7kc8E1VxxgBDzIgrbFNcmrlrg6epWIOns2PEU0Zn1mWyz9vUd2ahPCA==@kvack.org
+X-Gm-Message-State: AOJu0YwQPRxkKzLqxSvXjv8R12EQ+4Qdq6E/G66808hclUxC44OL8ewL
+	f016Iw81YEd+ELKybiUVQgCEiKtKPn2s7foMXzs7fpiJYcO8sjO9/0A6
+X-Gm-Gg: ATEYQzy041mkVSg7I9AzpQwamoEbqXO4iM7Pp5Oqku5kJnaQyPSPpf5Laq6Y1LkBAaP
+	h3eCeNA8dz4vAWuYtqhkoGGoXlNRVj/fiBYm1XTY0aGPfxg6JDtrGZfF+PqYkVZ02wHex49Qd2S
+	QfgMSoVBEPWsvYTnBxlHX8UX0oFSVvG/tdh93bfQrecWay8yb2iRF5IYLfJxr18V2bLXkeHSPj6
+	AsOdBbJoIte9Cr9pQxfWkHdLCQxJdz7coffAIatyOBPCCg0AdZIA4csp8Q0s74Iw+SwdpbSS4zS
+	EQ7jc970ZRCAqiIwI8V7YcI8lPjL/noX8jKkkJiEqsFsX4mU9kq0F7L+epiZHz0nsaB7T8YXToK
+	GhTJ6UpyI4grV2Vb659Le3VE4Gd92yU7dqnr8k412sfr6KanfU2QeFRw/OowwdmW8oeCQe7d1S6
+	EUpYv0OQ/6tXuqbkSaXRlwhA==
+X-Received: by 2002:a05:6808:c1e2:b0:45c:8c23:12b3 with SMTP id 5614622812f47-464bec872bdmr142745b6e.61.1772134189833;
+        Thu, 26 Feb 2026 11:29:49 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb0991f5sm498612b6e.0.2026.02.26.11.29.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 11:29:47 -0800 (PST)
+        Thu, 26 Feb 2026 11:29:48 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Minchan Kim <minchan@kernel.org>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
@@ -98,26 +98,31 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	Nhat Pham <hoangnhat.pham@linux.dev>,
 	Nhat Pham <nphamcs@gmail.com>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 5/8] mm/zsmalloc,zswap: Redirect zswap_entry->obcg to zpdesc
-Date: Thu, 26 Feb 2026 11:29:28 -0800
-Message-ID: <20260226192936.3190275-6-joshua.hahnjy@gmail.com>
+Subject: [PATCH 6/8] mm/zsmalloc, zswap: Handle objcg charging and lifetime in zsmalloc
+Date: Thu, 26 Feb 2026 11:29:29 -0800
+Message-ID: <20260226192936.3190275-7-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260226192936.3190275-1-joshua.hahnjy@gmail.com>
 References: <20260226192936.3190275-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h3gctnbduexb37hs4uucoyxxq9he7gx4
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E13001A000F
+X-Stat-Signature: gyh9reu9rf9obnzi4h573pfsy9bjbrbx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 84FAD40006
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772134188-34852
-X-HE-Meta: U2FsdGVkX1/hxpWRIEfmXkxQ4sqabEWMMcC+pxts0dm4VOqGvNHtYzcYnWrZWo+k8Xwce6hVJ2FX8qbotHMitmSUATim+EHfPVm/bRNpjWOZiAp2NieDRWGsjeoItt56jY9M88mCranqrA2uhnouNJG2U+4I0CO0EaZ/4HOB7J0tuSyLEPo2yEPdrxPQhQbJGVxAoqagZdyOckb6HAIw2Y2n6SrEpUrXxQZFoV5su3o3F63HtorqfiO6DCC1HcKQHlLfR2sb3YSjwX2h6VQy9+iB/TK1RYe7njXcYlbI10+XrfXBEo1L40PB66zOi4ln0/Ha3ednpSt7z+5uFSqfui2PIf11k24MfmNfkJGdzRi7UjWhmO3SU7ODvOMPdgO/j7GK3N7ak88VOBTm6A2FS19sdh3VYwmAL0m1Cs5koH93I/G7K61uXdX6n1wNgOVXmS7xSSRGBxtyt/G2jwWYhRgJsBgVAohpTG/8MFM+oPgCSq9yEjdSLHbF6vCZfpM395ccT3GFCvE/9hX8OFNOvBcJ1SBT136JIxzlcet417wFVrhrtz5F8PGPPDKIBmQZn2giWlComJ/Rn/xj9i7rzZW7wLhsvQKgffQaP+kLrfndOa74eNWnDCTVcA5G60B8kaq21Z7ufsq9C16I45Sa0Qt7OOQjHp1H2GgZkBWNQPSLmfhep/3MFxxwuNbuQNxFad1gOh2NZOcUvJOj4xe+7ar1VyI80HvKxJOBkH6LeCLN/nQuP+H34PDraBy7P3RaRPZmrF5GJkkD086Ex4XtS//28Zi1Sr6wv31pVJbrlLnhRRGmx+MQf/2zPArrBn7XJOiw6Se0A4LFrAbDuTi8vuvBrtqBa+PqhJW7D3a6v8lSKNnnSjURtNF9/rG1ggkHiJ6PNNQ7AXD34oAKHZgMcbc67oIaxjGDFdQgM2Z56GYJWpW5HDII/+VvFeHNPW5t4OzfX4xlSCqVFjdkOuB
- 5uV24o9I
- Ioouz7WhX0WAla1AesIMLF5rENYX6I7jV0wPJZdhVYplnXmY4RAvZ4f/Lm4DOA4pt5Xvlj0uCM+GxpHizzU+KR8d6h7RMuddCIHszsPi7gLikDBFIQyhUH27REUJffLEONpMxKVn9v0lsoexNQRGs/iNhrERVTtrFRw9iEBOHke2mPXiE9/WbSGDpCs0PD+wTAkpf+zwJIQauXV8QbOi8wAYQdZiN3uMzWfwZUpKxvJtXJ6Bp+AFCIo+h31eqdZ06gp6qtjAshxEyGn6e3S+JqrcawARY821MOn6duVEdHrymLJSJzLksBCYw8Ue7iCEXOWeOb2bIWhXB4Uxmbobyh4V+iMQ/lOHW2I9m+fCMkADukWrCXvk8JbZ4LIVTCfsstCJplw8IoJ9x0IdcgR4wLlChOkaWSCK4ZHw8y9o0lRoRNhbY1v56FjXJ4stOOIp9DLRjKae8v47h+eLgDKWmpeDevM/tvbtZNl5unPDFONHsGKdgMksgKYn20esx5TFGgFtcVcyU+acEFqjIAAn165FQb1hOKUylKNVScZxGD5NyJJGyGpUYOtp8l8PCQQKt4tK/YoIdKLW+wa10fLwx6NhUPD96vKvyN6DE
+X-HE-Tag: 1772134190-653271
+X-HE-Meta: U2FsdGVkX1+nk9KeQwjqhiOEE/l0sWPpLMdmGObFy98iUp9AoVKfNibBfQYbWuGzyT7zYgbdzQo98roEmBAf+tySiUtVHx6/5sbkg+tuwmdyIOkXByQwDiYdXeaJIFyIIGIHJBvhCD4fJiUwfsrGK1DBN2hogQCuvfCdwBceyZfdFXAHoJzwwnKw3F/Xt+8rEdKbLtwHiyUm7xxc5BxRxzL9+YLU1iEhY84xs1RR8zRJXN2urDLQD+BHiIm4hL0LzeII4p3i0WuzZnhgy0q/FXBcXtsutsP8EAPTQ3u9Fk+xpeQ5gB9jA9Jj6rIsn/YdECTG3+2kjqHSt1z1E/ER5FrdgMO8rRgBa8dh+K4+Z2F6TSD8M75w8vZMTtlJxEcljlCL8frZQCR7fND2G2jpGao+PUlrSg32H3EQ1WUHsxmy6C47XF9Q3EJvTeAYDT+1bSsflXJqSGSuu1S8r+cu+Uxh6H3WGg/XPpDE48cpRWXBocdaUT45ZzPUkUB6piHIG7rAIqZuzOxhCHbIYXkq6UMshIfDPpykpWXoZkjy0uAK8lDBfYP8pc6m8u1t5x0V/qw34dxBsxfV8lUoB+27t6zedr2VaFozLAN6OvL1FcrSFhJ+4a/HJivBNCFL65wkTQjTjZ8cCTb/2+te7cETSuADvn/iZLTwy8gDcAQuE+5OCsPsFKjItOSCSJyLbIo8ZCRjJDAxRb1qsgpDucze4ndvi1SjcHldqorODe9u2YYqjvbN5r7aQm1P4Sp6rYPTVpw2yhqIRcbGUdIAc4UVIvjiUEaKjM3nh0deLEJKpmkFVlpXWuBKmMeYWWhsxmXznDf5HswxO1jXyl+tmByfVLaQZ1J+J/gz0y/ELgXzUDCcOlRyKlRUzT+F1JRN2rbidKsVMy2HYLeR3isPiC9PtBSP8cfpRksUIcuOGCGyyfDjbDJJyEQekS3Dnh2Z7EnsnGyTMCWWCbyh4MMQxIF
+ oG7ZdpZa
+ SSji9Bfuy+xeTs2nYNXagHWzj1CWdYjJNFNEKyeNWE7u2xqzoVjRHFsq6kjvSQMVXJXQkRt3spNyVV8LrGTX7h+rUz5xmzUBfBuqtgKMbsm2mlD/u0zakjD8M49/URSqnF4wbxjUywPzonrEBppGsmopLSU1EBdRKK+atG5eaTTvl9NZPZXXvOm5IqwHDPlHqKn06WUBaehA6PjFoif8/m/yUGYjdeej6+aHtLO//7HO7WLP0XxC2jFXFraIN3LYU4xk+P04dAkXKIysDwNxle821C4xCV57VPNht0+a0zOh6VQlRcn/T3jn5QSlfzVDKZdF6/T9S93R8KP2FjZaN77Wq4eJ3gfhKGy1PZ/Fgn21UPLnq2PFsR+m+4BgBtJMsZ+fOpDy7/f48JHOgzKxysR3Ezd9rGJggkKoj45MdgMlyBDSXdwg+noDaetyUlssQV6w12EjA5LtfXmD+AMqaMyanlCucwlyDwT10S5tDvJaOLx2ItjGApk1g5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,222 +130,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that obj_cgroups are tracked in zpdesc, redirect the zswap layer to
-use the pointer stored in the zpdesc and remove the pointer in
-struct zswap_entry.
+Now that zswap_entries do not directly track obj_cgroups of the entries,
+handle the lifetime management and charging of these entries into the
+zsmalloc layer.
 
-This offsets the temporary memory increase caused by the duplicate
-storage of the obj_cgroup pointer and results in a net zero memory
-footprint change. The lifetime and charging of the obj_cgroup is still
-handled in the zswap layer.
+One functional change is that zswap entries are now no longer accounted
+by the size of the compressed object, but by the size of the size_class
+slot they occupy.
 
-Clean up mem_cgroup_from_entry, which has no more callers.
+This brings the charging one step closer to an accurate representation
+of the memory consumed in the zpdesc; even if a compressed object
+doesn't consume the entirety of a obj slot, the hole it creates between
+the objects is dead space the obj is accountable for.
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Thus, account the memory each object makes unusable, not the amount of
+memory each object takes up.
+
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/zsmalloc.h |  1 +
- mm/zsmalloc.c            | 29 +++++++++++++++++++++++
- mm/zswap.c               | 51 ++++++++++++++++++----------------------
- 3 files changed, 53 insertions(+), 28 deletions(-)
+ include/linux/memcontrol.h | 10 -------
+ mm/memcontrol.c            | 51 ----------------------------------
+ mm/zsmalloc.c              | 57 ++++++++++++++++++++++++++++++++++++--
+ mm/zswap.c                 |  8 ------
+ 4 files changed, 55 insertions(+), 71 deletions(-)
 
-diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-index 22f3baa13f24..05b2b163a427 100644
---- a/include/linux/zsmalloc.h
-+++ b/include/linux/zsmalloc.h
-@@ -38,6 +38,7 @@ unsigned long zs_get_total_pages(struct zs_pool *pool);
- unsigned long zs_compact(struct zs_pool *pool);
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index b6c82c8f73e1..dd4278b1ca35 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -1824,22 +1824,12 @@ static inline bool memcg_is_dying(struct mem_cgroup *memcg)
  
- unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
-+struct obj_cgroup *zs_lookup_objcg(struct zs_pool *pool, unsigned long handle);
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
+ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
+-void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
+-void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size);
+ bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg);
+ #else
+ static inline bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+ {
+ 	return true;
+ }
+-static inline void obj_cgroup_charge_zswap(struct obj_cgroup *objcg,
+-					   size_t size)
+-{
+-}
+-static inline void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg,
+-					     size_t size)
+-{
+-}
+ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ {
+ 	/* if zswap is disabled, do not block pages going to the swapping device */
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 007413a53b45..3432e1afc037 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5433,57 +5433,6 @@ bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
+ 	return ret;
+ }
  
- void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
- 
+-/**
+- * obj_cgroup_charge_zswap - charge compression backend memory
+- * @objcg: the object cgroup
+- * @size: size of compressed object
+- *
+- * This forces the charge after obj_cgroup_may_zswap() allowed
+- * compression and storage in zswap for this cgroup to go ahead.
+- */
+-void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+-{
+-	struct mem_cgroup *memcg;
+-
+-	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+-		return;
+-
+-	VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
+-
+-	/* PF_MEMALLOC context, charging must succeed */
+-	if (obj_cgroup_charge(objcg, GFP_KERNEL, size))
+-		VM_WARN_ON_ONCE(1);
+-
+-	rcu_read_lock();
+-	memcg = obj_cgroup_memcg(objcg);
+-	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
+-	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+-	rcu_read_unlock();
+-}
+-
+-/**
+- * obj_cgroup_uncharge_zswap - uncharge compression backend memory
+- * @objcg: the object cgroup
+- * @size: size of compressed object
+- *
+- * Uncharges zswap memory on page in.
+- */
+-void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+-{
+-	struct mem_cgroup *memcg;
+-
+-	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+-		return;
+-
+-	obj_cgroup_uncharge(objcg, size);
+-
+-	rcu_read_lock();
+-	memcg = obj_cgroup_memcg(objcg);
+-	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
+-	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
+-	rcu_read_unlock();
+-}
+-
+ bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ {
+ 	/* if zswap is disabled, do not block pages going to the swapping device */
 diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index e5ae9a0fc78a..067215a6ddcc 100644
+index 067215a6ddcc..88c7cd399261 100644
 --- a/mm/zsmalloc.c
 +++ b/mm/zsmalloc.c
-@@ -977,6 +977,30 @@ static void migrate_obj_objcg(unsigned long used_obj, unsigned long free_obj,
- 	zpdesc_set_obj_cgroup(d_zpdesc, d_obj_idx, size, objcg);
- 	zpdesc_set_obj_cgroup(s_zpdesc, s_obj_idx, size, NULL);
+@@ -963,6 +963,44 @@ static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
+ 	return true;
  }
-+
-+struct obj_cgroup *zs_lookup_objcg(struct zs_pool *pool, unsigned long handle)
-+{
-+	unsigned long obj;
-+	struct zpdesc *zpdesc;
-+	struct zspage *zspage;
-+	struct size_class *class;
-+	struct obj_cgroup *objcg;
-+	unsigned int obj_idx;
-+
-+	read_lock(&pool->lock);
-+	obj = handle_to_obj(handle);
-+	obj_to_location(obj, &zpdesc, &obj_idx);
-+
-+	zspage = get_zspage(zpdesc);
-+	zspage_read_lock(zspage);
-+	read_unlock(&pool->lock);
-+
-+	class = zspage_class(pool, zspage);
-+	objcg = zpdesc_obj_cgroup(zpdesc, obj_idx, class->size);
-+	zspage_read_unlock(zspage);
-+
-+	return objcg;
-+}
- #else
- static inline struct obj_cgroup *zpdesc_obj_cgroup(struct zpdesc *zpdesc,
- 						   unsigned int offset,
-@@ -996,6 +1020,11 @@ static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
  
++static void zs_charge_objcg(struct zpdesc *zpdesc, struct obj_cgroup *objcg,
++			    int size, unsigned long offset)
++{
++	struct mem_cgroup *memcg;
++
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return;
++
++	VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
++
++	/* PF_MEMALLOC context, charging must succeed */
++	if (obj_cgroup_charge(objcg, GFP_KERNEL, size))
++		VM_WARN_ON_ONCE(1);
++
++	rcu_read_lock();
++	memcg = obj_cgroup_memcg(objcg);
++	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
++	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
++	rcu_read_unlock();
++}
++
++static void zs_uncharge_objcg(struct zpdesc *zpdesc, struct obj_cgroup *objcg,
++			      int size, unsigned long offset)
++{
++	struct mem_cgroup *memcg;
++
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return;
++
++	obj_cgroup_uncharge(objcg, size);
++
++	rcu_read_lock();
++	memcg = obj_cgroup_memcg(objcg);
++	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
++	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
++	rcu_read_unlock();
++}
++
+ static void migrate_obj_objcg(unsigned long used_obj, unsigned long free_obj,
+ 			      int size)
+ {
+@@ -1018,6 +1056,12 @@ static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
+ 	return true;
+ }
+ 
++static void zs_charge_objcg(struct zpdesc *zpdesc, struct obj_cgroup *objcg,
++		            int size, unsigned long offset) {}
++
++static void zs_uncharge_objcg(struct zpdesc *zpdesc, struct obj_cgroup *objcg,
++			      int size, unsigned long offset) {}
++
  static void migrate_obj_objcg(unsigned long used_obj, unsigned long free_obj,
  			      int size) {}
-+
-+struct obj_cgroup *zs_lookup_objcg(struct zs_pool *pool, unsigned long handle)
-+{
-+	return NULL;
-+}
- #endif
  
- static void create_page_chain(struct size_class *class, struct zspage *zspage,
+@@ -1334,8 +1378,11 @@ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+ 	class = zspage_class(pool, zspage);
+ 	off = offset_in_page(class->size * obj_idx);
+ 
+-	if (objcg)
++	if (objcg) {
++		obj_cgroup_get(objcg);
++		zs_charge_objcg(zpdesc, objcg, class->size, off);
+ 		zpdesc_set_obj_cgroup(zpdesc, obj_idx, class->size, objcg);
++	}
+ 
+ 	if (!ZsHugePage(zspage))
+ 		off += ZS_HANDLE_SIZE;
+@@ -1501,6 +1548,7 @@ static void obj_free(int class_size, unsigned long obj)
+ 	struct link_free *link;
+ 	struct zspage *zspage;
+ 	struct zpdesc *f_zpdesc;
++	struct obj_cgroup *objcg;
+ 	unsigned long f_offset;
+ 	unsigned int f_objidx;
+ 	void *vaddr;
+@@ -1510,7 +1558,12 @@ static void obj_free(int class_size, unsigned long obj)
+ 	f_offset = offset_in_page(class_size * f_objidx);
+ 	zspage = get_zspage(f_zpdesc);
+ 
+-	zpdesc_set_obj_cgroup(f_zpdesc, f_objidx, class_size, NULL);
++	objcg = zpdesc_obj_cgroup(f_zpdesc, f_objidx, class_size);
++	if (objcg) {
++		zs_uncharge_objcg(f_zpdesc, objcg, class_size, f_offset);
++		obj_cgroup_put(objcg);
++		zpdesc_set_obj_cgroup(f_zpdesc, f_objidx, class_size, NULL);
++	}
+ 
+ 	vaddr = kmap_local_zpdesc(f_zpdesc);
+ 	link = (struct link_free *)(vaddr + f_offset);
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 1e2d60f47919..55161a5c9d4c 100644
+index 55161a5c9d4c..77d3c6516ed3 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -193,7 +193,6 @@ struct zswap_entry {
- 	bool referenced;
- 	struct zswap_pool *pool;
- 	unsigned long handle;
--	struct obj_cgroup *objcg;
- 	struct list_head lru;
- };
- 
-@@ -601,25 +600,13 @@ static int zswap_enabled_param_set(const char *val,
- * lru functions
- **********************************/
- 
--/* should be called under RCU */
--#ifdef CONFIG_MEMCG
--static inline struct mem_cgroup *mem_cgroup_from_entry(struct zswap_entry *entry)
--{
--	return entry->objcg ? obj_cgroup_memcg(entry->objcg) : NULL;
--}
--#else
--static inline struct mem_cgroup *mem_cgroup_from_entry(struct zswap_entry *entry)
--{
--	return NULL;
--}
--#endif
--
- static inline int entry_to_nid(struct zswap_entry *entry)
- {
- 	return page_to_nid(virt_to_page(entry));
- }
- 
--static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
-+static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry,
-+			  struct obj_cgroup *objcg)
- {
- 	int nid = entry_to_nid(entry);
- 	struct mem_cgroup *memcg;
-@@ -636,19 +623,20 @@ static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
- 	 * Similar reasoning holds for list_lru_del().
- 	 */
- 	rcu_read_lock();
--	memcg = mem_cgroup_from_entry(entry);
-+	memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
- 	/* will always succeed */
- 	list_lru_add(list_lru, &entry->lru, nid, memcg);
- 	rcu_read_unlock();
- }
- 
--static void zswap_lru_del(struct list_lru *list_lru, struct zswap_entry *entry)
-+static void zswap_lru_del(struct list_lru *list_lru, struct zswap_entry *entry,
-+			  struct obj_cgroup *objcg)
- {
- 	int nid = entry_to_nid(entry);
- 	struct mem_cgroup *memcg;
- 
- 	rcu_read_lock();
--	memcg = mem_cgroup_from_entry(entry);
-+	memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
- 	/* will always succeed */
- 	list_lru_del(list_lru, &entry->lru, nid, memcg);
- 	rcu_read_unlock();
-@@ -716,12 +704,16 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
-  */
- static void zswap_entry_free(struct zswap_entry *entry)
- {
--	zswap_lru_del(&zswap_list_lru, entry);
-+	struct obj_cgroup *objcg = zs_lookup_objcg(entry->pool->zs_pool,
-+						   entry->handle);
-+
-+	zswap_lru_del(&zswap_list_lru, entry, objcg);
+@@ -711,10 +711,6 @@ static void zswap_entry_free(struct zswap_entry *entry)
  	zs_free(entry->pool->zs_pool, entry->handle);
  	zswap_pool_put(entry->pool);
--	if (entry->objcg) {
--		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
--		obj_cgroup_put(entry->objcg);
-+
-+	if (objcg) {
-+		obj_cgroup_uncharge_zswap(objcg, entry->length);
-+		obj_cgroup_put(objcg);
- 	}
+ 
+-	if (objcg) {
+-		obj_cgroup_uncharge_zswap(objcg, entry->length);
+-		obj_cgroup_put(objcg);
+-	}
  	if (entry->length == PAGE_SIZE)
  		atomic_long_dec(&zswap_stored_incompressible_pages);
-@@ -994,6 +986,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	struct mempolicy *mpol;
- 	bool folio_was_allocated;
- 	struct swap_info_struct *si;
-+	struct obj_cgroup *objcg;
- 	int ret = 0;
- 
- 	/* try to allocate swap cache folio */
-@@ -1043,8 +1036,9 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	xa_erase(tree, offset);
- 
- 	count_vm_event(ZSWPWB);
--	if (entry->objcg)
--		count_objcg_events(entry->objcg, ZSWPWB, 1);
-+	objcg = zs_lookup_objcg(entry->pool->zs_pool, entry->handle);
-+	if (objcg)
-+		count_objcg_events(objcg, ZSWPWB, 1);
- 
- 	zswap_entry_free(entry);
- 
-@@ -1463,11 +1457,10 @@ static bool zswap_store_page(struct page *page,
+ 	zswap_entry_cache_free(entry);
+@@ -1437,10 +1433,6 @@ static bool zswap_store_page(struct page *page,
+ 	 * when the entry is removed from the tree.
  	 */
- 	entry->pool = pool;
- 	entry->swpentry = page_swpentry;
--	entry->objcg = objcg;
- 	entry->referenced = true;
- 	if (entry->length) {
- 		INIT_LIST_HEAD(&entry->lru);
--		zswap_lru_add(&zswap_list_lru, entry);
-+		zswap_lru_add(&zswap_list_lru, entry, objcg);
- 	}
- 
- 	return true;
-@@ -1592,6 +1585,7 @@ int zswap_load(struct folio *folio)
- 	bool swapcache = folio_test_swapcache(folio);
- 	struct xarray *tree = swap_zswap_tree(swp);
- 	struct zswap_entry *entry;
-+	struct obj_cgroup *objcg;
- 
- 	VM_WARN_ON_ONCE(!folio_test_locked(folio));
- 
-@@ -1620,8 +1614,9 @@ int zswap_load(struct folio *folio)
- 	folio_mark_uptodate(folio);
- 
- 	count_vm_event(ZSWPIN);
--	if (entry->objcg)
--		count_objcg_events(entry->objcg, ZSWPIN, 1);
-+	objcg = zs_lookup_objcg(entry->pool->zs_pool, entry->handle);
-+	if (objcg)
-+		count_objcg_events(objcg, ZSWPIN, 1);
- 
- 	/*
- 	 * When reading into the swapcache, invalidate our entry. The
+ 	zswap_pool_get(pool);
+-	if (objcg) {
+-		obj_cgroup_get(objcg);
+-		obj_cgroup_charge_zswap(objcg, entry->length);
+-	}
+ 	atomic_long_inc(&zswap_stored_pages);
+ 	if (entry->length == PAGE_SIZE)
+ 		atomic_long_inc(&zswap_stored_incompressible_pages);
 -- 
 2.47.3
 
