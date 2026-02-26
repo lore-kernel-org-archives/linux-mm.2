@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B8F4FC5933
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 11:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D03FC5933
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 11:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E94696B0088; Thu, 26 Feb 2026 06:34:10 -0500 (EST)
+	id 057676B00AA; Thu, 26 Feb 2026 06:34:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E72DE6B00AA; Thu, 26 Feb 2026 06:34:10 -0500 (EST)
+	id 00AD26B00AD; Thu, 26 Feb 2026 06:34:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D75B66B00AC; Thu, 26 Feb 2026 06:34:10 -0500 (EST)
+	id E70316B00AE; Thu, 26 Feb 2026 06:34:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C2E7A6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:34:10 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24B4E1CE90
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:10 +0000 (UTC)
-X-FDA: 84486399060.15.9B733FA
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 928D68000D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IWSKImJr;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id D0ABD6B00AA
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:34:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 918031B7B81
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:16 +0000 (UTC)
+X-FDA: 84486399312.18.4D6C96E
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DA39B180006
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WE+bzrYN;
+	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772105648;
+	s=arc-20220608; t=1772105654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c14WgMu6/15qhuICdOLPBmddgsK8PG21SZ4l5q+gLlo=;
-	b=Im7LuhD38arPpDuCIRv/uodZvAsA/6qRoZ7TChcoH3o3WEPokz+XF3aXzsNlUzVYcEEYHZ
-	e8jfLF6oQvV7YS1hGNzZaL1sSjZm769gGPpSL78ktnbsw3uEh+8cNHwc9jCgB9wUorj5jf
-	orh541A/0P6rJWLw1v34Q4VXpxcn0L4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IWSKImJr;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772105648; a=rsa-sha256;
+	bh=S0H8ygH+YlO4CNCx03qcK3DVZPCm8qVQiV1k1Y2d+/k=;
+	b=gpRn33GdVr566IykVhCSCXfM9TOmym7tY7mXgKDwajVvP41ULxD148Rt5DmE7yVGYDcmPp
+	iWqMOD5BMUNNW1dS+/k66FAqFdZKtgPuFrNpAihDqCZ8v4bJ9Hn2v0shOGBlKX+Watm6VZ
+	3bYOdNH00eSpzpFHsWA/lqljaexz/ko=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772105654; a=rsa-sha256;
 	cv=none;
-	b=ByuqHg/ib4MrfopKqb6BDgfDrdsyMgwsaaDtxmFYZ6d4g3uHpksNZhFPm6hap2z74y1xuI
-	fZFUrIzWkV2djz04Jeo/DvWbGlRlUv4wu04vX51CNBdzmf91nCuRZl2OZ2yDdaF3Fn0dEk
-	pxmCp6AP/uWi5D+X2zqIiB3X5JGGgbQ=
+	b=lzXkeoCwaVIoMP+xwo7bkmHaD16dqTIMweZ3UTP8iiqDmItzdkVm3RqGyPKrAdMiGWaX5U
+	sUxCbAtP64zyZ7gaWksogrenD0Gs7mX/7uoi7kk2SEO+pboC8MgFgaEzi9cz8xOzhDbbI3
+	6Ojh9MS9PO64xGbtnL2hZeCu3RCrqTQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WE+bzrYN;
+	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105646;
+	t=1772105652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c14WgMu6/15qhuICdOLPBmddgsK8PG21SZ4l5q+gLlo=;
-	b=IWSKImJr/lhTtq+7dWWCDBff/3vlsDJfZ5E4/kWREeiGjoKal7G4aXUV6deMVpg27q/Yop
-	OTsn9HimEI/nuXkSIAWQ1bqJnFpUQRDmLiv4z/EhIzmdzFMMJB1Z54wZ7psaJRXtZ10qtQ
-	reVy6qgPIMnhvu7EHAlifyWC4llEGMo=
+	bh=S0H8ygH+YlO4CNCx03qcK3DVZPCm8qVQiV1k1Y2d+/k=;
+	b=WE+bzrYNxkX7rkOvVYIotj0P/HNDg7dgr5BIyKjoWK6c/gNQyNgdKm5vkjTkfoZRMJ11uG
+	7YnOvlg6mRw5/v+qJxjjYm2FpSYphCBWmhfAjo9Kp1SB7EoIDR3aW2hScwzOCQc+oLE42l
+	nXUPqt58pVi3eC52uFA6Yk2oOf9BZZA=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -90,20 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 12/21] mm: thp: handle split failure in device migration
-Date: Thu, 26 Feb 2026 03:23:41 -0800
-Message-ID: <20260226113233.3987674-13-usama.arif@linux.dev>
+Subject: [RFC v2 13/21] mm: huge_mm: Make sure all split_huge_pmd calls are checked
+Date: Thu, 26 Feb 2026 03:23:42 -0800
+Message-ID: <20260226113233.3987674-14-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: e918t7tnshwo7ekhuiqr6suwtk4h8ep6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 928D68000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772105648-275807
-X-HE-Meta: U2FsdGVkX1/b0OC1VZN7q8Q/oDcJACUodQQJ++XBOKFKsisXevgCSId4LKqM+9BwlRvKOadolMcdsry6So/gWdWd6/uO9RxyDA/UAWpo6qVnNTumqxbHp6VqeFby7MI0QdyaRqN0iaNga7CNyTQ925blwITURmFva75bybWBY/dm4HOakz/24lz9BAWWhk61jKac6Zh6oQFDZFlRrwP8U4e6VLRufv7seJ1VcDG1TPtELv3pXIlLgjox2tErbWpkOwlLXKQto0Y4R2QXkDuzbMvH9utBuqRwqjswJ7yJYfwofDBS7dwsSSUPchEBHy1y0SfiN3rEgSqnQmblxHYAIE0JHjH9LOMMkIQ3LuW0gldGKxFGJ6LcBh1XyNmDgaVixfJBJZksPVT0bA2suobwY4QU9W39xsfa9VCsECaKBt32P1W9AgMH9FIogJc7YLO+S5Q1P9t6hJhdvFmgkKAxjxKKShko936j8tY9FMjgV54Q+AoHwvyKBGBjRSqUqu0UkZt5om1Lmhjl1g94iHondoCxnOTLiMTk4756Qi+Z74w41aB8kGtkN6SgkpNIDSMIVRDH2B06dReSaJhmdFqAV8dGeHEm8vWm5Z72v1x6H6K5bhygKdbUmWlx3ar2sQvwKfyJ1fhCggTZw9Mz0KMHm+Oqtfw39oPHfgy4yKHynSX4XUZWj0mZDEDJKOXZkG75TeuPhkgsGb+tuiTbMxQRcAqyxMHGCOAegWG3bt2iPnrNnwwzjzO/LfvNGyozMj+h65UUzybeWl5kbdJepEC7ybPYJdq49dzIEd9Zidwfq6/5I0wARkqQBhLtWDDldDDDDe/llLyv2W/9nKGVXEGV1OT/msicgaGSCnNyn7GrEABKfipg8hvFUuWwuOh5TkJyrxYxARvYwE9anEvnt6mR1tWucTZg5vF6
+X-Stat-Signature: 3sjff1gq1akwdcjwb64tm8qk8mjqqws7
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DA39B180006
+X-HE-Tag: 1772105653-33294
+X-HE-Meta: U2FsdGVkX18lVRRI3bBJA4kQMMcpqiAe24g7UmZ3yAYOQzxYLTIazKwa8eLhmKMpCmveiuiswVxPK5eAz3JWb2PhwvUxAZ4Dcv2hhaZHbjgNIqkbkt6rggo1th3ylMkLQwVwrExALwnPV2/r/iJKPMsAALjb2qE02x3WACmHq2fGmoHjQUe72dSFfDrIwG46E3n61vVuQPwyeMAmTr67eyw6MO34/28VZJ+Y303bsdPOCDB7r8cgz/sqyX/qg9kuHSxvGXqZ63+vG+38x83mYsjpAfB+qDB+vPaoH4ijBWlDzL7u71s10batLyTIyLAXZK3yGlLOrJvhZ4cMi8uoLdsWbGKcEr+t/8u4C6hPSPvWAhltC15BinAsrSKBljws2t4zAHQewC1HGZr1M5dS8vm8ErqUcVOMob15xmzl3Y+KSO9IdyWgNy70eBL/+copndwcOmYb0bPHK0uQy4cCoqtfUpFgCYTQI27dweDb4y1/uU0OSsQvMGlEuTvtJ2E+/X5w2qZrF5L61dmcaGTRqI+hQWPLTQA22JjNFeDKVfkgxsUy2vOX/5qZFhEu5OzWeIsDtDlG8l8+ItV1xHzz/KIDD5LS5bg45clcPMJjrsNGpPBfJAoDBK1yVNKFk+Nr3U7e2ffgkT+Rr21srITd9/+xckowLd8DOwWMYOUxn/hm0faSFySXgF+oEYgoOIo5H127nOJsbwISb7wINdojYP2WsTVKt4ZdPFb3kTiX0WGfMXkoHRUlNALIy9tMNlWAEWvXnOmgwUHC5TyYuH5yoiJKWkFbqFjf4vjyRBss3xk5dzsTd+8LqW7u3Px+3a7fZuIumPVlSPyWfBTR8onEO/HG+zsEfyPTYgz7O0kzgxHTMzdYzBL/fivy2jC6yJeF3FIZajww42f2X8q/wW1MZBO/dJgEQ6QbkZXnhOarSNKLlWf1CRbSmXvot062MGTOes1Gp5aCFgC5En998zd
+ nke7Wil3
+ f+fXY3MzcF/810o3Q/RBv0rNCkVTw3tv5/bhgxzdfmaxqddcmvU9IAi2fPT/0YKBkTwz/nQ7L+eK37oltv6Rcw1DJYOEnYMKrip+EYiu8LSTF/OcvRaGJsMa1hkbHDI05/uQcexasbGSD2QwbdczaUtGkEljI02eqOwlNY+AujadAxny4fg6lTNpCS3kKTYG9fwcgvgIqGBDqVo8Q9Dhgr4BKJekLZzm+6U4ctXN+eeIe9GDVqJPys4a+kA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,66 +113,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Device memory migration has two call sites that split huge PMDs:
-
-migrate_vma_split_unmapped_folio():
-  Called from migrate_vma_pages() when migrating a PMD-mapped THP to a
-  destination that doesn't support compound pages.  It splits the PMD
-  then splits the folio via folio_split_unmapped().
-
-  If the PMD split fails, folio_split_unmapped() would operate on an
-  unsplit folio with inconsistent page table state.  Propagate -ENOMEM
-  to skip this page's migration. This is safe as folio_split_unmapped
-  failure would be propagated in a similar way.
-
-migrate_vma_insert_page():
-  Called from migrate_vma_pages() when inserting a page into a VMA
-  during migration back from device memory.  If a huge zero PMD exists
-  at the target address, it must be split before PTE insertion.
-
-  If the split fails, the subsequent pte_alloc() and set_pte_at() would
-  operate on a PMD slot still occupied by the huge zero entry.  Use
-  goto abort, consistent with other allocation failures in this function.
+Mark __split_huge_pmd(), split_huge_pmd() and split_huge_pmd_address()
+with __must_check so the compiler warns if any caller ignores the return
+value. Not checking return value and operating on the basis that the pmd
+is split could result in a kernel bug. The possibility of an order-0
+allocation failing for page table allocation is very low, but it should
+be handled correctly.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/migrate_device.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ include/linux/huge_mm.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 78c7acf024615..bc53e06fd9735 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -909,7 +909,13 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
- 	int ret = 0;
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 207bf7cd95c78..b4c2fd4252097 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -419,7 +419,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped);
+ void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+ #endif
  
- 	folio_get(folio);
--	split_huge_pmd_address(migrate->vma, addr, true);
-+	/*
-+	 * If PMD split fails, folio_split_unmapped would operate on an
-+	 * unsplit folio with inconsistent page table state.
-+	 */
-+	ret = split_huge_pmd_address(migrate->vma, addr, true);
-+	if (ret)
-+		return ret;
- 	ret = folio_split_unmapped(folio, 0);
- 	if (ret)
- 		return ret;
-@@ -1005,7 +1011,13 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
- 		if (pmd_trans_huge(*pmdp)) {
- 			if (!is_huge_zero_pmd(*pmdp))
- 				goto abort;
--			split_huge_pmd(vma, pmdp, addr);
-+			/*
-+			 * If split fails, the huge zero PMD remains and
-+			 * pte_alloc/PTE insertion that follows would be
-+			 * incorrect.
-+			 */
-+			if (split_huge_pmd(vma, pmdp, addr))
-+				goto abort;
- 		} else if (pmd_leaf(*pmdp))
- 			goto abort;
- 	}
+-int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
++int __must_check __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 		unsigned long address, bool freeze);
+ 
+ /**
+@@ -448,7 +448,7 @@ static inline bool pmd_is_huge(pmd_t pmd)
+ 	return false;
+ }
+ 
+-static inline int split_huge_pmd(struct vm_area_struct *vma,
++static inline int __must_check split_huge_pmd(struct vm_area_struct *vma,
+ 					     pmd_t *pmd, unsigned long address)
+ {
+ 	if (pmd_is_huge(*pmd))
+@@ -456,7 +456,7 @@ static inline int split_huge_pmd(struct vm_area_struct *vma,
+ 	return 0;
+ }
+ 
+-int split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
++int __must_check split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
+ 		bool freeze);
+ 
+ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
 -- 
 2.47.3
 
