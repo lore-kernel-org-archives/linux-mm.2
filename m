@@ -4,181 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53485FD9E1B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4299FD9E1E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 23:03:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A5116B014E; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
+	id 0F7836B0274; Thu, 26 Feb 2026 18:03:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6525E6B0154; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
+	id 0A5EF6B0275; Thu, 26 Feb 2026 18:03:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FD7E6B0165; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
+	id EE86F6B0276; Thu, 26 Feb 2026 18:03:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34C456B014E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB10E140214
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:56:45 +0000 (UTC)
-X-FDA: 84488119170.18.C733184
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 30BB740010
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:56:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ln4pWb9Z;
-	spf=pass (imf07.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D58646B0274
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:03:14 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7FB7B160363
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:03:14 +0000 (UTC)
+X-FDA: 84488135508.24.A863045
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4B862C0012
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:03:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HMk4jFMu;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772146604;
+	s=arc-20220608; t=1772146992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QKjw2490skdA7I90PoNooqy2Z5vbbaG3ix+lcITPfE4=;
-	b=SflQfT8NI9v8DBNby1BxEdYFBMskz8IvL+wsszHFUGzF/nrxKuFxQefTAHyrhk440URP3+
-	f3qbmD+sVweXXZHsRCH1Svc+Atlg98vHQcfTwGr/FYwdYU4OH6ObBNvuXUHJWCNpDXrJDv
-	XXYj9nzOckY8Av+dgRfISOuET4ctT08=
+	bh=5UypsyKKeCREV0I4kkEJ6atzxFAX4PgCgpjS/IkNKfE=;
+	b=uqqik6eB4rWV4MAH9ZNOjXYFbTXJQiNfdqJH/dA9IMX/nLIwpwyfrdy9AMqhSpKLyLpQtH
+	sB7gzWoLtFbNfZSfvmrs20f25jprI9+YVmoLk74UPLc5WMc7wHgSR5RrtcLqtBoWU0lnU2
+	CHPzdMspMZtlZhqfSAT/Etklbb9VyH4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ln4pWb9Z;
-	spf=pass (imf07.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772146604; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HMk4jFMu;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772146992; a=rsa-sha256;
 	cv=none;
-	b=hrPurbnCFmYU3RjGGOHXh3g0WTpDwfMlOcri7/W4gmoO3IM0M+iIU97FpN2wk1JFVePH+2
-	6mb0rksuqzSCjIdpa8CnyVr8WKE/56/RQewqBoTE27mtinEC15fOArEv+HGyvr0vkRWtY+
-	H97O7iuyCJqnm6gGuhQYebAzmI9jBec=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6E46C60103;
-	Thu, 26 Feb 2026 22:56:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E473EC116C6;
-	Thu, 26 Feb 2026 22:56:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772146602;
-	bh=ElkHN/R2fcBT5rLZGFbsSk4BZBEcI1Z5rkz7cnL9q58=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ln4pWb9ZIa3iii1vd5gskrCoKmm1t9tEjYVEd5fbke5FD8fPQDsw2mkbqPb5Bnw+S
-	 z3+EiWtdlhrUEY/TzIpfb4TaDwuEYYePiDKvB2OL6xLfeGklpk4bZ6oZPa7zFemslG
-	 rGqmK29WoeRiHAvoCn9ydRfTOnwb3b8GUvcCmKy2jWa2lV07OB5alxRd6yvLlYu4sb
-	 GaIsxiVCRS8rqhZm6xuDYkrjN+izm2sJOCaV0gENsM1vxdjD6EFWvjkPYxW+Mk0ppk
-	 CgdPwGLujPkowNzYZB2g8SKWMopeLJvORgQ3TQwNfrH9FkU9y/THXIshdB3DErq5Vf
-	 e80DkaSCt9oCA==
-Message-ID: <044291bc-9841-44fe-813e-c50772962f09@kernel.org>
-Date: Fri, 27 Feb 2026 07:56:18 +0900
+	b=7VIQXm5mfXiYGBj5VT/jaS6oYIm8Eiqjw08qb9p75HsObYRZSU8k7K/K2gWP3pkmJgbXzy
+	Cq8ByXldpCWo+Q8i9liNG9M/WTIAw1Tgh/kfdN1IWRVwNW43UfXaCpwPa2pk5n3M+Sp2nZ
+	kRzM+YUd3ZGsiVSx5fPFb8RjNRPdRYg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772146991; x=1803682991;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SreBxnXx9H5+1XCmaSIiW+VRtXmst8sQevpR2PIDGS8=;
+  b=HMk4jFMuylR+bigAoymc1mFkVj+R2wgXllFl2hsGVcIMXtm4s1Hv/sSA
+   7qVvigm4KfvAoz7FRBeNanbBh8IiVYMUMuEHXiocubKuDa/MExVFCiATy
+   OSY7KR/g1K0FKt6Qc6p2Mc1OBpsGpOdDr3z7INSuwz4t06z4L3FUrRo2H
+   6cOL4eZM7sFLwte5VjM/59lCeAXdLiHqg7LLqtMzJU4zYjXKU7CKxW7HU
+   cwOamXomHU9WDdReNnvsFI+/DfAjyPzfmkFOSUwPMLZt/IxVlikF4zW/6
+   HN5krUkh9yCZjc/SkUyM0f7Wzj8jnEipFZBK/yRpLzivKMtICuUCMaNhk
+   w==;
+X-CSE-ConnectionGUID: PcKZFwweTCCoK0oToGZJVA==
+X-CSE-MsgGUID: y6KKFBVlSVy6NNHT6IQCfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73133992"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="73133992"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 15:03:07 -0800
+X-CSE-ConnectionGUID: ZIvjQsmVT0qcB3SKaitltA==
+X-CSE-MsgGUID: APSr2F91RjeZTN3y3woKgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="221716270"
+Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
+  by orviesa005.jf.intel.com with ESMTP; 26 Feb 2026 15:03:02 -0800
+Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vvkNm-000000009yZ-3u9j;
+	Thu, 26 Feb 2026 23:02:58 +0000
+Date: Fri, 27 Feb 2026 07:02:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: oe-kbuild-all@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <hoangnhat.pham@linux.dev>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 8/8] mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B
+ per-memcg-lruvec
+Message-ID: <202602270614.hOv7KIkV-lkp@intel.com>
+References: <20260226192936.3190275-9-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/61] vfs: widen inode hash/lookup functions to u64
-To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
- <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Bharath SM
- <bharathsm@microsoft.com>, Alexander Aring <alex.aring@gmail.com>,
- Ryusuke Konishi <konishi.ryusuke@gmail.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>,
- Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>,
- Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Yangtao Li <frank.li@vivo.com>,
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
- Dave Kleikamp <shaggy@kernel.org>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall
- <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
- Zhihao Cheng <chengzhihao1@huawei.com>, Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
- Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>,
- Casey Schaufler <casey@schaufler-ca.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>,
- Martin Schiller <ms@dev.tdt.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org,
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org
-References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
- <20260226-iino-u64-v1-1-ccceff366db9@kernel.org>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20260226-iino-u64-v1-1-ccceff366db9@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7qoq1jxcfwpqy3y8cpyz84htadp1e1hw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226192936.3190275-9-joshua.hahnjy@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30BB740010
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772146604-298506
-X-HE-Meta: U2FsdGVkX19dfSkxVV06BglrMgeTDjoTc70LsxXaD33JC9iYsf669rw2nOd4jG3Dtqd/g1ZPl7zpRB7s/SCkq2YiWiMAFppCxVP3Zurov37A5SFpuqBIv+oZvvlPXEy8kriLRlkIzcC5Aq3bW3lmf9yde+ZBE5LOTtyMVt9u5XsMxHWrCHn53zR2eBrlbECkhQGWrEZld6+eqyvR57zxUgQbd8L3WIUB8qUZwGxuuJjuQ8j66vqMdb+tLerccd4NxvQvOrBs97qATfyNbWe/717iDvNHmo816VYIEUVnF/MItEdrB75AYviLL2WX2PcEMeLfTz3nqqqbpRLAjqPuYstBZM9U55Z5kBhQ1uE1Siq89Sm74B6f3EAYCSt3mQgMc9r9NImI2c5IT4LFVEf4cLnGRjlKoHQMXnb7Ok+1/DNbNg31YbQU2qXmiuVBd9JlbKLFnzX2l3q63kWutFamBtwUSYAmR7Q0h/CL5Qqh6jGmi6vSgRdeJNxHvwtY6E5FBqwWP1py++uhPlKZ1Kt62WDAQK5knph5ZzHmvC3YBmx8jycG6Jo8nY6c4SgvV2aSEel6G8c3Lit1cMpYj1Er6TCejHRRsDXvaxD8/tJPLKo+cnV79LNA0AticwfTrm7Smy+rHaAwThOo7Kh+8rRGoWZD6CgKcSHDk+PXkTdzXFo3+RBwH1WgJd5I60wEC9/BWCFXiVUzgnMoWiLv1Zt2FMzkDrlz2v+GVAN9q8tbgiTN13f3buwuPwwBrpsczsMtmQtUGwY4uzH8cf5RiEAwuczYj6OsGi25kltpT2r6/sJBpF1mwtmIyVRZqhL40L+pTlN7WDgGBvDujXm115Y10f43DsrXnURFob99zv+YyRDw2bX0hag48FAuWxJ+oQqK4RKqvC45Vk9Z0l5MO6cvWe+CUhoOEFNBDQ+4W+HQzRGOOsd3BUhsj8WuNZgioP9tL0A/mzoSCkJtS2njwKJ
- oN3Z0bYl
- ls5tBQk9Ngql1v09EFb/myVQDKoLqco96pGr08VSBZj5EB5z8y2Lxdubt2vFZ7wjEf6nTDqQfSHPilp8TI/gG25ioJe7fimefqH6h+8YtIeNBbXXfBabIajtlBeU6WXVrU5yK0amMppEoanX4jlaOf/EXPgnW2UE7Kx5PVOtpVjIFJHAiIFAdQcy2gHVrtGMq6VCUtN0RftaN8m6OjtCGB9cw+LJONzJli38anoVmE/K+8/y3+cI0H/6FiOie42RWSBbA9APbi0XZLik7PkLM8o3SUW6ofjzm3hc1dg05MnLdjG2aywE7Z9mDXxSaTY2GZbaxn3B0C5M5An8JOvN/fqYtgqeQAN2S12S5WZxlOt8O+eGecpBe7ncEVlPR7+i8yvXTf6kkIQiypm1dqb9l78W35b4xDb9dmisKtXG6EO+8ucu/4++AKV8M7ozrkS+JBMlgHAGnJf6Y680c0E2B8LYOMJ+y80Mr9Ha6lxVEfQSNFdYhN/5igWHR8R+vzkkk8SpKvCfxUHsEOUkoKCnXm4iG1YzvFVN+4095lp5PvwJn8xRmQjOfOpwe4p7w7V1K0Y9YDAhjYr3luzMXYD8jhc8BILYzV8ympqNb+w/EtHqqLibPx+opiXEPMEdkrFUbTXARge1/JD+WBi+EV3xPZAG1h7RNZyMiYBwyUPD+02ZWqAFSwGqco0B/0KOUGZbbnb2CyUxouxRD3l2CZmv2/Ct7zDfD4q4tE4i8QzXHnfhsyairPQjKPYWyomdVkTnMxuewNDLQee9SZn4J+yRRBRRt7pKdqy4csJ0kATpK73ldbWYA/HwHNYFENfHjW7w9qPN6a3WdNLYl6OVoigGoaX1EYsUg6S3tKU2Yh4osdOG58EWSgdduq0m3yztNf3wIvPgFJugFCgBZq0dHTp4V4AQPyY3Fr7L3Ue+LmJ7U8UW7B3V0mqQpC6H84IEYUHQJsSJVCwJ7Dju3GWaZCpld4LdGC0ql
- ksIh54l2
- Mzk7PnJ3UegOi4lG0JMdfrq46trs2Yy1Tx2V/eIYh2TTma8TrSyvrD6RcI/avwgrE3T+Dn4UO8yHVnbw/5Zl1XczPLFPeXluUv+uZxlKVxc/3oAwIdwuR2KSoOb0Eav2XSNFWhAolSHqMKPxf742E6sMDFMCz9Kz4ez+3VKRK+ElWdbOuqsT8YZnXYfkl8IzWwcaE3UEAB86anXJMPbbru50goDwzYV6RKwTh00MaiHDLoyDyDZ/FnIRev0ibmTPS0Cr+HmtpJuQQDoGTY4iC18SlhDDFvxu3CDflnYM4DtaUD1AvcCKCDL51LZMze285ydvLvw7CqwVPkCEOqZ9CHFWG3lCY9nqLsam7JoQNGEctWKP66nzRAqf7QmaYaKSuvO9a2K33sKshuy+Hy8wmVQimeu79O87Tsph99/oFeKkI8d/mPLYR7O6/1QlsG0ZbyrrnboXoWzuDp4li22j8EmAExYfmIbW/Cf93Mk0KcPE2dpoIuNXvr1wTdiUu7eRFEjtFZsU5rlwq8nEesmJ302fQxULrspCzgnjRbVuHhWqyjLReduU3gb1Ka+zT6MzM8v42JHUtCm3UOn8vOQTwwa5dzncNql5GaN7tkyWw25itQe20tjTaByx4eB64aqOmvQsZBGs+2ZG2+tjmg6aRPULo0V2Ii+ps41rRPTJHSOThPaW3yOrfCsVZ4pKnNOKK4pRxC5g21lfRVaUKzUbT0HhGOiDVqbr5D99khzyQG0zFcNPlXZmpz18JvaYSa+7Zwgqtno9O+se17jwLqItIS7eKIZMUOFnagJM1qdh8/1/xzWJFX9Y50+9dL+hLNF4nnvEiQxxAB3qiE3Ne/jAgHwml4oo6ojNP2kvX5kXgFVEPlkUUmevW/orZIoeT0DDUn3qbIyWzaunVVWrFYGWX5BbtZPsozYN45eW+X6SXUcYuSY1lNm5hK+TFGnuofl9qFAwFZpQ+z+gEGAL7PCj06VdmUnF3
- dVnWVu8F
- WHEM4Gn+50BgdsiR3eZSmhbWpyHAuhp+KqmjHF0K0D+OlsIdbaUcNSbxkiBSjUKnc+IQe+F7cEzlyVPu17FTBMQy9J4AJ/9+FJJtD7ih+9uwCWo1qtbeF9nWjBZmLY4xqaEDXLP/20qebav3XpWYl5Lt9vKcgkiGIYY5VGdLF9bPfY8VLe5fTuoAGW37PvRosJihZOya8eFL4mtHduiGEoWNSOA6Bw9bqyjcgyvZyaOw7+/TqkfOxnEz+C0VUMO71kSYmBUoxeI0X4Oryq5d7ldhy7VT8olIQ6osYReLJ47DYX7vDr2AMB+5rjVa9jA6bjZqAaOzUFbpi82H2UH1KRjhbPCqDpjFUBwmeaUq4atwlP0r3zb7XkMUOipAMSht2sn7D8UB0TPwpQHWO0VmSw3mGKZKcau7/C3ZODmNphBJsugupuxP/LHeoawmGD52Q1h6fnu6qmKsv1pPIa6jGuJkCyjm8rdu8PxbXI1tjMiqvk5F3zFWu5gVJH/VfgXWNE9Kced/qU7bV88Dx1SIxadTEN4ej+bIXMKFnR3vpqZLahuSDXBJfmZaa3YBQLPVyI5xIzIJvMo/eY8ZVq7DI55AYT60VblxQKTXhk7/D2ZACv3NzNF/qES6sICsuVL0XHlNtsz/HP+XKKtTCc3R/sRpcJcyCNMZgYvIcvUI6iB9L/ecb8p9XpFv+xknvJSMlyxXWLo+92xkrboAoSu30svGgqfi7IKqwvYBm5g7gW2EGF3XQIbrc5O8XgZZ11MpFQf5ikLOZfhnT1F+iIwkdyVxzGqk4xMeUXnK8Y+jhdcPsaTvBiMMkTZsM67HNxzPW03fkMBIURESZVnV8RHnsQRjGI0mBY70I+yLTcj0a0g2Xh80C2gXhO1+a7r3q/BQO7nRax4jSNDqSbz7uGljZjONScklfr9Ty4M/REoV8wM75xCG4Mc5QU948n9aP3HK6e/0B6Sa7rgHXSkfj4OIrmmsi5Lb/
- bjCWmp/u
- JvRZ/Ru1/yEl75nQBucknJ/bvWR4z8dO9Zi3oaYo1KAlukznZyCdATVPwx2oDvVAEdMOcoHNn0lAjwH49jdLvuecUYhKFOCqQsoukYQ0lbY7ecr3tcMiMra9xyrAniO8M1/aRpRqsxGibIC0H2FrFu8gM2RLJf8LAqjM+QCGK6e1uE8+EJPmIQfPZcKGvyAGIqHm9TYrWve3beBlwWEvxvLHIGYhH1Vf1YgVb5dH84WfRqu0zChlxQmFLPwe6R+ODUdSOvDu6rD7XCzRQ1sKh9LjPCN8rMyPf1uzuOzpdoHpvu5/92tWCgkqR2UXNc2kF1LJXXl97E4+KnEjvu9w/wdWF+lA4vICZB7KAp4XgN070d085ZhW7ElwHFX+EJTTSr/uHLUCL8zSGKxhxrKVgne3r4jtINzt8=
+X-Stat-Signature: nie5ir1mb1n3qd45w6boiad7bdexccke
+X-Rspamd-Queue-Id: 4B862C0012
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1772146990-154561
+X-HE-Meta: U2FsdGVkX18Z1UKaW23pmXrrOf3VW5SKarM9nKqiNBOsfEVx6aRuSKb2Msv2Mo2YkeOd1hy0WaEwpgaS7zgrTGi8G1+Vl5Y4EDhBhIUocD7uYguLIUthPiLDJzODHgeZXdXVtiWDGZcZH7s/aeGOu4cych42rkWJpV++e77LDW1471l1LVgA7TkgkW7UqkBuqNjIzP8NZhGuwiCe+00Ze4PgPS0GcG8PL2q1dNzXnqiKxApG2bJGavcAffTNB2fpAIfCHCJx+50i6c2GbvZlIwXSLsxrnduCQMymYJSqxuGgEyuDjJEFtTRF7d1lsLeBr4DR6MOvdxXuqgqy1Ytj5I6D2Sg8xd+nQc1Ojcq0Uf9SZ0AetkiPd5OoQXo3qpQBQiHFfWBDLsKa2HaF4RecSFKhoMPBlbaU+eAuf1gNOW3FTrBeY0BP26J5it+/RCW+UtUXGPNsC94+1LPCadTm8Ux2uptyHY7lScHhAyEzkkBVjJQ+9+DJg5WKxc+avVekgYYqq4q4Wc2wlaSam0hJ/8dT9HPgH6U7I7FmYrxQu5OdhrCb1UWwVO6ZDjmbcQtKcoZpaX1Bnhj454J6DjP1WVnkZD//rJSpoSZn+PI4E+hwy8YRjVoloMfnh+iujKBb3xJQTH6WmCoHX58IYQmGgl8ZKWXQ4kLYfSS2LTLgo9AfIRhrNW/kwn3pQvWVL23TZ62j3oPsGQ+TliVa5ByXBnDbUSmIro+eCGDbgP2NAVJhWntTZVskQv2o73qOSn2bM5Tr6cT7TnEfVd+WDeZ0NGDo06QNqJqsyOfvmhKz+cP/APRhCns0yQnYoRB7U5yaU8Cy3oc26ZWGdl+TvzIrf3SSXrDPRAku38FCTWkVLSo1l0b7VM0feOqSnYAwa7FLSn4CX+RY205Tu/GRHIgc+i4vcc4I0o/mvqBLN7oM1MlUO4Aiz/40hhoA4Se1pz8ncwvWnHsAHDCWHL5f4D1
+ jGm8NaUp
+ v3WwDomZoC0UGMhS9wwuIuIHMig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,46 +125,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 00:55, Jeff Layton wrote:
-> Change the inode hash/lookup VFS API functions to accept u64 parameters
-> instead of unsigned long for inode numbers and hash values. This is
-> preparation for widening i_ino itself to u64, which will allow
-> filesystems to store full 64-bit inode numbers on 32-bit architectures.
-> 
-> Since unsigned long implicitly widens to u64 on all architectures, this
-> change is backward-compatible with all existing callers.
-> 
-> Functions updated:
->   - hash(), find_inode_fast(), find_inode_by_ino_rcu(), test_inode_iunique()
->   - __insert_inode_hash(), iget_locked(), iget5_locked(), iget5_locked_rcu()
->   - ilookup(), ilookup5(), ilookup5_nowait()
->   - find_inode_nowait(), find_inode_rcu()
->   - inode_insert5(), insert_inode_locked4()
->   - insert_inode_locked() (local variable)
->   - dump_mapping() (local variable and format string)
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Hi Joshua,
 
-[...]
+kernel test robot noticed the following build errors:
 
-> -int insert_inode_locked4(struct inode *inode, unsigned long hashval,
-> +int insert_inode_locked4(struct inode *inode, u64 hashval,
->  		int (*test)(struct inode *, void *), void *data)
->  {
->  	struct inode *old;
-> @@ -2642,7 +2642,7 @@ void init_special_inode(struct inode *inode, umode_t mode, dev_t rdev)
->  		break;
->  	default:
->  		printk(KERN_DEBUG "init_special_inode: bogus i_mode (%o) for"
-> -				  " inode %s:%lu\n", mode, inode->i_sb->s_id,
-> +				  " inode %s:%llu\n", mode, inode->i_sb->s_id,
+[auto build test ERROR on axboe/for-next]
+[also build test ERROR on linus/master v7.0-rc1]
+[cannot apply to akpm-mm/mm-everything next-20260226]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Hmmm. the type of ino in struct inode is changed in patch 2, not this patch. So
-this feels incorrect. Why not just squash patch 2 in here ?
+url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-zsmalloc-Rename-zs_object_copy-to-zs_obj_copy/20260227-033239
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux.git for-next
+patch link:    https://lore.kernel.org/r/20260226192936.3190275-9-joshua.hahnjy%40gmail.com
+patch subject: [PATCH 8/8] mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B per-memcg-lruvec
+config: m68k-defconfig (https://download.01.org/0day-ci/archive/20260227/202602270614.hOv7KIkV-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602270614.hOv7KIkV-lkp@intel.com/reproduce)
 
-While at it, maybe you could change this to use pr_debug() too ?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602270614.hOv7KIkV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/zsmalloc.c: In function '__free_zspage':
+>> mm/zsmalloc.c:813:24: error: implicit declaration of function 'zpdesc_objcgs'; did you mean 'zpdesc_lock'? [-Wimplicit-function-declaration]
+     813 |         bool objcg = !!zpdesc_objcgs(zspage->first_zpdesc);
+         |                        ^~~~~~~~~~~~~
+         |                        zpdesc_lock
+
+
+vim +813 mm/zsmalloc.c
+
+   808	
+   809	static void __free_zspage(struct zs_pool *pool, struct size_class *class,
+   810					struct zspage *zspage)
+   811	{
+   812		struct zpdesc *zpdesc, *next;
+ > 813		bool objcg = !!zpdesc_objcgs(zspage->first_zpdesc);
+   814	
+   815		assert_spin_locked(&class->lock);
+   816	
+   817		VM_BUG_ON(get_zspage_inuse(zspage));
+   818		VM_BUG_ON(zspage->fullness != ZS_INUSE_RATIO_0);
+   819	
+   820		next = zpdesc = get_first_zpdesc(zspage);
+   821		do {
+   822			VM_BUG_ON_PAGE(!zpdesc_is_locked(zpdesc), zpdesc_page(zpdesc));
+   823			next = get_next_zpdesc(zpdesc);
+   824			reset_zpdesc(zpdesc);
+   825			zpdesc_unlock(zpdesc);
+   826			zpdesc_dec_zone_page_state(zpdesc);
+   827			if (objcg)
+   828				dec_node_page_state(zpdesc_page(zpdesc), NR_ZSWAP_B);
+   829			zpdesc_put(zpdesc);
+   830			zpdesc = next;
+   831		} while (zpdesc != NULL);
+   832	
+   833		cache_free_zspage(zspage);
+   834	
+   835		class_stat_sub(class, ZS_OBJS_ALLOCATED, class->objs_per_zspage);
+   836		atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
+   837	}
+   838	
 
 -- 
-Damien Le Moal
-Western Digital Research
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
