@@ -4,94 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40BDAFC590F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 09:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81D17FC590F
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 09:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 604FA6B0088; Thu, 26 Feb 2026 04:03:11 -0500 (EST)
+	id A9C786B0088; Thu, 26 Feb 2026 04:08:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DC8E6B0089; Thu, 26 Feb 2026 04:03:11 -0500 (EST)
+	id A205D6B0089; Thu, 26 Feb 2026 04:08:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C34B6B008A; Thu, 26 Feb 2026 04:03:11 -0500 (EST)
+	id 901FE6B008A; Thu, 26 Feb 2026 04:08:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 371446B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 04:03:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7D29BC83C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:03:10 +0000 (UTC)
-X-FDA: 84486018540.02.D62C2BF
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 781B56B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 04:08:18 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2FBCD1B762C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:08:18 +0000 (UTC)
+X-FDA: 84486031476.04.7C39237
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2FA37100004
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:03:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cS5t3jCM;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4C9EE4000D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:08:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fz2NDguc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772096589; a=rsa-sha256;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772096896; a=rsa-sha256;
 	cv=none;
-	b=GCN1jxQVboEcMFQSsC/ephp3jrVhE3R2nlShi9BYZW4P19ZBMAW96OgiRuoRA+WPZkgsJf
-	rk3P8CRAR5PKQThVvAs9VAPBuVKrDUx+DzTuFbl8Sle49UmYPJ5tN13HxVYYVHFSrastwB
-	J4lqwVtUJwVKbw0oLBa27pDEejtkpI0=
+	b=FQxeEyz25laFxXnvQVDANvXhQT46k0xrD8xGXINjYWyGDRcNCFa2lof+cdx4KI1LyQImRI
+	SEAIfnxo4fVoXt94BZjRBZtTdqsl8pKUrDrR1tkeaIyRHEHdta4YQKHEoGrZygtcF+cl9P
+	MNW/gOiCFrv1shFPGbH7MJxJWrZQQQY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cS5t3jCM;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fz2NDguc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772096589;
+	s=arc-20220608; t=1772096896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KZdFcI4eXpZoyKT13kC5vn8pi69nFwJf20ayen5sF8g=;
-	b=jAij7eAg1YmyAaMukEEEBZVlicTwDJgzQ0CPrAYx5esQDb5bqEbEVBV2RWeHcoLeLi6t1G
-	jY/3huI02cS4f9cKNV9ywBQWBIvrldg7P7+u8uNC+XARbbeWFcAhsY1jiefHGA/OXdhFBA
-	rt4Fm/s8eQrRgiwgJ1/xGTGF9ASCFw4=
+	bh=9GxSMZHScUxIn+8E4CzIuG4hlJVrAkuR5XrUsdWo5VE=;
+	b=KO6dTCzJedWJ03I2A8fhfZXV8HXwio2xPYAaZUnfPYdjVRTvwbtj13AY0NiBPjHJq3AX/v
+	XuE1zHiMWG0ZcK7kFt8LlRwE7XkHcs+FjY9TONFBMdA1FvxuSMSqMG/qgPVpC/mftHHOvs
+	E8DpzDUHNLMhzf8tywDSMT+gUn+kY/8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1C8243FA8;
-	Thu, 26 Feb 2026 09:03:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9432BC19422;
-	Thu, 26 Feb 2026 09:02:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 606AB43E7B;
+	Thu, 26 Feb 2026 09:08:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10C7C19423;
+	Thu, 26 Feb 2026 09:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772096587;
-	bh=3jJF19kOL002PKzJx7tPe3WBmaVpoZDKGRO68cQdyfc=;
+	s=k20201202; t=1772096895;
+	bh=y11g85XCUlJsP2pyz2TMzKQd4wTjpzRaV9t1RrP34Is=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cS5t3jCM4TrHZ3kAmS1dfNZ+wIyDioyr3ft5LuPrWwAX5oBaTf1vyUh39Kp9J6msd
-	 83R6ym3iza2RRsZKN8v88nTU4m+b7nQKcZIMAR5QEeS+KZg406nDTyOx5agcsUa/05
-	 cIwbgSJUCljCwUiiZgiqyrZ2/iCrzIlEXIUnR7p31XwSDYSE1IsOewBop2zlJGVEMA
-	 3i4JBeC0fknZ7c8W3YcmOqaa7JeUnFjaJqELCTIEy7aYOT/WloyKoNmNc2NldY33Ok
-	 IF20rLgwo3ySPQmH2SdEYuwfELlhhcMBXeE5l7mF5R8tKybZrUFi4t051Vn7d6tZuw
-	 fbGsJHc8zqAeA==
-Message-ID: <b5dbdeda-4d7e-4056-aca1-4e1be73a267a@kernel.org>
-Date: Thu, 26 Feb 2026 10:02:54 +0100
+	b=fz2NDguc1AOocd74h8/J/h7ht36vcblPdeyl1ZjskZ7ogkSk1JEeX1JSL2GS/wXMD
+	 6/3VKmcLGkdTHvpkKnUlhY73qSQgkI5UMSA6TGcPqpCL0tKrQUGPgodhruXcwy/clE
+	 93idkfQEhc3SibeIbHqrEUcxXp8pfLXx8QYAq78BeGCktAGudCKsWyRE4AiL0GO8ev
+	 cLqSWYlL/AjfUAzOViDYpfJSWLs1xCAE9r6rP5XeufpTYz0/WRlB8AbtvUE/7v4qDC
+	 Uu0PjfRGzRPH0v0yfeKQrnUKcz22mqwEiAXAqSAiwctDwofLuelBp+jKmeKvkL1aID
+	 OV9ExLj0EQ3kA==
+Message-ID: <2599bc1e-1f8e-46bc-afea-4cb8f657545b@kernel.org>
+Date: Thu, 26 Feb 2026 10:08:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
- bp@alien8.de, brauner@kernel.org, bsegall@google.com, corbet@lwn.net,
- dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
- ebiederm@xmission.com, hpa@zytor.com, jakub.wartak@mailbox.org,
- jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org,
- liam.howlett@oracle.com, linyongting@bytedance.com,
- lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
- maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
- mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de, osalvador@suse.de,
- pcc@google.com, peterz@infradead.org, pfalcato@suse.de, rostedt@goodmis.org,
- rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
- tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz,
- vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com,
- willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, Isaac Manjarres <isaacmanjarres@google.com>,
- "T.J. Mercier" <tjmercier@google.com>, android-mm <android-mm@google.com>
-References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
- <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
- <b82a5ac3-33e9-4cbf-892a-f0c7f6fe0c20@kernel.org>
- <CAC_TJvdgvyjyJsU4v6W+3tHKx_2e8UMJU3RT2HKLSngcC+yH3Q@mail.gmail.com>
+Subject: Re: [PATCH 4/5] mm: support batched checking of the young flag for
+ MGLRU
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+ <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+ <2e7a1e24-3616-4b79-b943-b5f7efde2d31@kernel.org>
+ <0871edb9-08a2-46a0-ade6-af842a12e0d3@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,15 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAC_TJvdgvyjyJsU4v6W+3tHKx_2e8UMJU3RT2HKLSngcC+yH3Q@mail.gmail.com>
+In-Reply-To: <0871edb9-08a2-46a0-ade6-af842a12e0d3@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fqou44qkjmaitibups1usrm566adegte
+X-Stat-Signature: aa37xj5bukqkcgrujrcmjhcm17p6jfpg
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2FA37100004
-X-HE-Tag: 1772096588-162165
-X-HE-Meta: U2FsdGVkX19/Qw1UjJUiXiX6fvb1v1VUBnZWe9t+DGumc3T8MKVouG4QiltMR2Ae7Fwb5FqCioJkJZMUvPEQT4grd6Gv6tDwvzJZiq6OZGyImPFNf0yOOnsHvoZmxqL8DyTP4wauFDXNWdTJnNmBleQaSUsCicHd0bYfdxL3ZnCY11hiP/HXkNd4j4hSRfH5wsYWXJOmfe/TxsER4YdygGKlkSqVkOB3JPJpfpNVYiMFxad4C6Z8K4Wevfj15s2T0Ix6d0N/m3znUNVsNHZuE5ivyDJ9qvyLTJQicdu/h9EOJquam9Ib0WpUyO7d4t+98wGpx6/XlHjrMO2bls16pDmUjfUb+PQDM+oT4wRIm+49qRQPFJokzL27Oo42AkHCANxy5xPZipdW+6IN960GWjYxojzrsiTToGstyygaogRFCL1lz5Npbbp7297aMrylIU3R/2KmWm+yo2+UOHeHX38hn76ee3/e0uIO9L8Yu07XmP85WOP741NQ2uJsGDI54eRXkmFb9eoHkhjK33t7CSqcwAfbK4waZunMrH+xOV5q9P2ZZuflPhBSzvZYzNUZNwSMOTNUN7RLoqoOggrw047OFG6CKgBJrSjDxUm59/bJXvV2787byWd2Ko/uQIolO3JZQVgLmqiOoODDFdwxJI1v4fg5CbLSxVv3mWdrCCKdIi6QHheJtqkwiZ7adYEYHD3mw7Yk1Y/3O8WkMwOzAd8TOEtwm98sdFG6+KtW/kR8v3C9PExGNwmufc/cs9HwTfj4j0HFm3c4mBnhZNGKKT4cuUTPdp9mjkaK7LkZAAQ/5jW+HCPGPVItUMRtn2TQoNBQHVm7SiW+vsIQHdiNlvGc3fqyWy0loBrtB81LLXbKGv0lsgVbafZRi3fYY4zm21ywPH8QauAeKVpW7BuzAoNruJqR1K8gdYL5+kpymX8SRne+hA34vA==
+X-Rspamd-Queue-Id: 4C9EE4000D
+X-HE-Tag: 1772096896-600181
+X-HE-Meta: U2FsdGVkX18bq2QNB3+2valEeVh6/if9oUvwgfNmUDLF716pV0yvq54TUNwE/Z0EHocK7ioZC8KhmS4W6xfnrgZjBhr/OzdkmMZoHANxvp0jAn4jeEOewcS1/crxy5D1E9SY3TzzuH8cqXfLg8rskXQu+DEgbEaF3cGU0Ia2u3Z294ES2AEo2CaddPx4pjH1pDfnihQYv/tp9zxtQ0z2oK5emHRbE+oOaaxPiGXbo83pd14nCtHnpWQZGNiqCRBG/73eHq7E/us0Xim6Zl8j+kuN9jYVfEHzcU5z4NrQLok21sEZC404/Qee1v823kJuWy8u7cZlElKESIgtrKsZ3QFoyBSzrI0oD/swmXz1tr9lX628XoJtCA35DLJyNAIAcWCVufUWprtvuHH1UJyUW6IGbx39GkuArXNo07vCse0dtSxdu5vE68s8xZ/APIN3VB3RqbnUwN/IAZi0hXBQAnm3Q362a1smxXzsy4Z8LRv5Wu2MeX9/ql8m9kHRlQ7arq1LOfRQVFK7BZ1ASOSVUZP8CRZ953q/pUM25HejjNGN/lBHhMXTLhGrkHtLeWrvISG9DV79HLdEr77FK9CIM82P/1p7FyxQNsVjkpAjL57RY20YjvD9TH3ZzDSAcVpbdbCy2C8Ku3PEu92OpRRaq9AL53G1YNPP7GtFpHE5IrrulL2WzSMPZgvrolv4rZWBM48k1K4DcyrM0bjPldrd2kx642mhJmHLjrlSRFiA0MySPg0bXvsBgtXU8f3w0n4Y1licdqbsUCJdG+UHiu8NUCavcimC7pjfUmIZZhCWFsbADTBqRgdyR0Mwt5yuFNf56MgyZ1IMNaYapjJ6aN0nM8bc+SjKt8M0O69+YUHDjynOEggJG6UpdOL34ACUj7yKwyKYeLEBSeQptPhEkA//SEgHVGgLi7SFDm/fZhSPsBHTgwjYzdPMFa9d+8/cywBaB5qeOSCTHG7+ElQriSH
+ cIeeDres
+ 44rgtgggHPGv0bcZE8JnJYQcasRmO3VOBF3m3iXmSOGKDoQFrlvUz/Dph0x+fsif7y/Ai4QzIt9+zuqst8AS/bu56OMUCfw2YpnfntgOhILAS+K1VCrSFOJJKDf/PliX41ChX78L2/ImI/4YTilgN/nPp61W/AUNxMnJ02b8YholKxAULsmJJVe3xp4ZBm78r+c1WU0H+frltFrHMNWV/8lHP8ASZBoV/4ooUnH6cs77oaVi87T740pYStgGXF9yFdWjYPt6kqqiKM3fqh7pMC+zWl+EcnZS6oz28
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,47 +147,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/26/26 00:06, Kalesh Singh wrote:
-> On Tue, Feb 24, 2026 at 1:40 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->>> I believe that managing a pseudo-filesystem (msharefs) and mapping via
->>> ioctl during process creation could introduce overhead that impacts
->>> app startup latency. Ideally, child apps shouldn't be aware of this
->>> sharing or need to manage the pseudo-filesystem on their end.
->> All process must be aware of these special semantics.
->>
->> I'd assume that fork() would simply replicate mshare region into the
->> fork'ed child process. So from that point of view, it's "transparent" as
->> in "no special mshare() handling required after fork".
-> 
-> Hi David,
-> 
-> That's agood  point. If fork() simply replicates the mshare region, it
-> does achieve transparency in terms of setup.
-> 
-> I am still concerned about transparency in terms of observability.
-> Applications and sometimes inspect their own mappings (from
-> /proc/self/maps) to locate specific code or data regions for various
-> anti-tamper and obfuscation techniques. [2] If those mappings suddenly
-> point to an msharefs pseudo-file instead of the expected shared
-> library backing, it may break user-space assumptions and cause
-> compatibility issues.
-> 
-> Perhaps we could advertise the shared VMAs in the /proc/*/[s]maps
-> entries for the processes sharing these areas?
-The current plan is to have special "mshare container VMA" representing
-an mshare region. What's actually hiding in there is defined in the
-mshare MM.
 
-One could, add support to walk the VMAs hiding in there instead; I don't
-remember what out latest opinion about that was. But I do recall that it
-involves a lot of complexity :)
+>>
+>>> +            pte_t pteval = ptep_get(pvmw.pte);
+>>
+>> I wonder if there could be a way to avoid this ptep_get() by letting
+>> page_vma_mapped_walk() just provide the last value it used (in
+>> check_pte() I guess). Something for another patch.
+> 
+> Well, we’d need to add a new field to ‘struct page_vma_mapped_walk’ to
+> store the last value (e.g., pvmw.pteval),
 
-Applications must be aware that this mshare region behaves completely
-different than non-mshare regions. There should definitely be an
-interface for an app to introspect what exactly is (currently, anybody
-else could modify it concurrently) hiding in there.
+Yes.
+
+> but this makes me wonder if it
+> is worth adding a new field just to avoid a lightweight read (which
+> should have no obvious performance impact).
+
+You recall that ptep_get() on arm64 is not that lightweight due to
+con-pte? :)
+
+But yeah, something for another day.
+
+[...]
+
+>>
+>> What is "batched"? Did you mean "nr_ptes" ? Or just the initial value
+>> for "nr" ?
+> 
+> There is already an 'nr' variable in this function. "nr_ptes" sounds
+> good to me, and will use it.
+
+You can just use "nr" here and reuse it for the existing variable?
+
+Both have the same semantics (nr of ptes / pages), so having a single
+value might cause less confusion.
 
 -- 
 Cheers,
