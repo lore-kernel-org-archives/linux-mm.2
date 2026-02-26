@@ -4,144 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A367BFD9E1F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 23:40:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB0FFD9E1E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 23:42:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA9426B0139; Thu, 26 Feb 2026 18:40:52 -0500 (EST)
+	id A53296B0279; Thu, 26 Feb 2026 18:42:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C55A66B024F; Thu, 26 Feb 2026 18:40:52 -0500 (EST)
+	id A00DA6B027C; Thu, 26 Feb 2026 18:42:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B24AB6B027B; Thu, 26 Feb 2026 18:40:52 -0500 (EST)
+	id 8D71C6B027D; Thu, 26 Feb 2026 18:42:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 99A606B0139
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:40:52 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 641131401B5
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:40:50 +0000 (UTC)
-X-FDA: 84488230260.17.4A7461C
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 821751A0006
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:40:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u9LRNVdb;
-	spf=pass (imf19.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 75B426B0279
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:42:46 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 385C21A021E
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:42:46 +0000 (UTC)
+X-FDA: 84488235132.11.0A6A0F0
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 224DA20011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:42:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b="gLN0v/HG";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="A Vqkdu0";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf03.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.142 as permitted sender) smtp.mailfrom=alex@shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772149364; a=rsa-sha256;
+	cv=none;
+	b=c3aInSv0d2aB9QCizwitdOtZVMsNyTCBb48+/Sv89l2N1HC/tLxH8DfPxZTl6SwSyvnmhx
+	gKi90ogD8eVlXInfvHpqhgVk05rzRQoMLl3eqQWhwI9xlO62OHYji8T0PQwpmC5UDc+hiK
+	M5giSX58wwm5KWuFaMuW2jzoES9BsEg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b="gLN0v/HG";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="A Vqkdu0";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf03.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.142 as permitted sender) smtp.mailfrom=alex@shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772149248;
+	s=arc-20220608; t=1772149364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dweZEP9P9syIIaIBNbJewu0YbCAV1KvejPrlkY4pDLk=;
-	b=JQw4PefQ+yLCQCMjBNIxPnY94rlH7ECpNWpiYFbbLxjvYMnyjR/jOt4OPqX+G8+8u9lcGH
-	S/FDGFL3u/AwMKtJbdTlkvnUzFP8EesR44mQdnRq+cSu+PFxh3532lexVG5rURMydTx05P
-	kad0EoTy0q7fh7f2vk7y5ZZLQLDHgaY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u9LRNVdb;
-	spf=pass (imf19.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772149248; a=rsa-sha256;
-	cv=none;
-	b=T06v7Kt8taEbgBYQhg8gA0lAwjG9VstzAFe1tRhAacvbgsAq7YpVnLlqOYBJh7O6utI0lL
-	1FffRxcrz3FMUoO/ut1d7M2VCVoDYDpxpJrb45V1n45A7yS/+5Fgpub34cCblrJHIy4Q2b
-	gA3qqXo6aX+ctj8NP+9O62HoVrd9Yls=
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c70378ddaafso926291a12.3
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:40:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772149247; x=1772754047; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dweZEP9P9syIIaIBNbJewu0YbCAV1KvejPrlkY4pDLk=;
-        b=u9LRNVdbIJTRCMXhTqjPLDSsAiTONl5YifsvwE4m93g5hVrXUskfZcK8axBMRO49cD
-         0vXdho8qo7MZHA0+2+98dLJZVGWG8i+ui5REJYw4adzWp//Tl9oleNkcIVgvb0lEtT8j
-         iIvpp2KapY7kDsUyrWupYRzvyktc7gCaJCFhZTXASe3BmiWc1Mg+/fWsssZmXJSwpkeG
-         9IR4HPNMWtDRMMBspj8ORjY5sL8qpxYsY49FXlC5xwNz3fzwQxvHb/EeislV/jm0b0hF
-         t/lBzfbNZvJ8Hr3RqPpZE6uaNoIZ/mzB6gNMBKAeHul4LW0EzTyoZZLXIA1/5y9xcmbS
-         CjTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772149247; x=1772754047;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dweZEP9P9syIIaIBNbJewu0YbCAV1KvejPrlkY4pDLk=;
-        b=ejmUJ1JBIaS0Wh3lB8P0E2RxEEfPcHuKQGQi1Inr0QDemyjsivzK4OInXwmiJ6YxKs
-         Rw982xCVyteuer2rFgSP1uJ5srKT7lvg/xPN0cZkQK94j+GRKZKvbnz6mmwxeI/udjMZ
-         P/F2f8J5z6+Q2iRfVFdU1NcAJd8M4aRfyUp3KoujchPzSfW+PK8/ePi6M8v2KlCUtnp1
-         FyqG8Ol2hzMd88/+2z6Z5srW6D8hA5XaeCB+kZIOhBMIqmutlJT+IIiqeQ7wXlvhvbAH
-         s0G99LgS/t+g1z5inHwFuSM3iL4zlvowptAZMdPXTl1mTIzQ8OGBMn5gNGI05BLEJF6c
-         Hi/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWyVtZ1VtEzbcIf+aUeAtM9mVWbDk3Row4Qptof2avZAloH3X/oIrVAvNGfWLynTKD9PZcmBQDPPg==@kvack.org
-X-Gm-Message-State: AOJu0YybXOEjhZcteRgJQo1CkGNnBayZWLuRdIfxtuNYn2Wc0P8qSg5M
-	tAUW0jszR3sX8tMdHGgNOI8DtNYNrioVoaXvSSsQzmkKtFAektVro3quYYDQLRqnaQ==
-X-Gm-Gg: ATEYQzz0ypIapL9llr0FYYWJNmiztkRljiqBwKut1XvFz3hO9uDHmd1jZaYfiH7WCKG
-	JjqCkEUPhbTP6FdHtEMVnKG9ehdWIoA3gcQzfyn9cy5N5UcLl4JpUy9a2jPxDqljaMb7H+yasAQ
-	2A/pYBRx4W4+xrPK8uNRSN5/CcbHcq20j9OH/b7R8mMxlRk6gbb7XbcCK4F48AFcEkKre+WTvZJ
-	z2dr46WkhPna9tKGvsLQwBNulAXVFrVRMAHr0ZQwIAAAXeR2hu3ytUQMzkLnxm3xT/ILclqzTZx
-	ni1ad/RQxZ3diQvVcmiNRY96k5N1FwhuVwUftpMMlivlQcPECYEZpLyATR7hwsw/wpOavGEVg+r
-	IznbZoWL4G1dAYMesYkaeniAsZsV330zvZD9yeOGyb3ca93OEGdMttOFoHCrD+ch0uTix9NebN1
-	/Iil3lv+vwdGMH8GIxf+/t2/VTrE9psyGOPMMXB28C7YkgGVahjmNznKu/wJOKmg==
-X-Received: by 2002:a17:903:22c9:b0:2ad:cede:3a18 with SMTP id d9443c01a7336-2ae2e46bd8emr6748745ad.33.1772149246778;
-        Thu, 26 Feb 2026 15:40:46 -0800 (PST)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b257esm36167495ad.4.2026.02.26.15.40.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 15:40:45 -0800 (PST)
-Date: Thu, 26 Feb 2026 23:40:41 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
+	bh=du7fewflJTiy4RY4M9JcEhPtcfpcGR3V2HHqx7PYFdQ=;
+	b=o1UPg9h2MPJSIuzb/coSNYVizubEBavU+EWlph9PS7BO4SVsrYff62BHVoxl/4mx8LRhJ5
+	8KV46pVbbwhFbS0V/MoUIBLZEDjzngKJUhcdclrY7pIaoVLAA4ggnTdk5ismAOVaoE39wC
+	w5i7hLeEqEQkZ9u+DeH9CXbLhz7IRr0=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id B11A81300CD7;
+	Thu, 26 Feb 2026 18:42:41 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 26 Feb 2026 18:42:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772149361;
+	 x=1772156561; bh=du7fewflJTiy4RY4M9JcEhPtcfpcGR3V2HHqx7PYFdQ=; b=
+	gLN0v/HGUd/V0nfv+tewCC0psNtLQyjZbWvqVO9SniKU+XNel86qvzNsxsTS2rhP
+	+Sasie1tUUqBrpPWrS09obG6ygRmkANwrxgWOkCDM99YeG1dyTDlauIbYKRX8PE2
+	WMakPQx/cPdRv4HjyoQeOHuAIZTAsaIRiUHu3wpM4uMYzA7nCBVjEz06MLdEm41A
+	Sd4QgIB3SB6ZjLRB8hTA+mwlxHlwx7LRGMAhY+tlWeo8q2rfRxajhWY6qzz8WA9h
+	w990EEzbp4MIikkoNHGMBz72bsWhYPccOx4lL3iso06dObf9sebg+f59s/ouRF2H
+	bgZsfIzIQ8mNqjwY526TqA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772149361; x=
+	1772156561; bh=du7fewflJTiy4RY4M9JcEhPtcfpcGR3V2HHqx7PYFdQ=; b=A
+	Vqkdu04ZkIyGghzqKCUsqcO0POg3Ui7ZMXshuBnxTI388SOk5n10HzYar+rqSDAe
+	C/6uGkhD0UC469ivtIUm6MMC5QT+s8RjGroeEQvOS7hXEzSI7hPHQ1ifklfb12AJ
+	PZd4rLcWNzS3UBm315m+HpVcQYcoJZ47S4md1oBQZBtfB/90epcrjjt5NDuahanp
+	yQ3OJeL9M9U+r3JPhk7hScLGNo3WIMaBA+LMuiOdPtSeCN+7DALf2bLoYs+W0zFh
+	vTB1GITGhgd6ioaYRTmpsF+ZbOVhD3SSJMh1OEJPx8/oaB0nIvL/n0pYvarZcmQ1
+	/SgJdlDJNbNiv4KcTcrxQ==
+X-ME-Sender: <xms:cNqgaXpMmxoB3kSOky1mjx1TJLbpYE_Q3lq2_z-dSIS4jA6vVHQ8qA>
+    <xme:cNqgaec7-4keVSCV7QvjAX8g0Bou_cq9lPLalblxCAnCUWGc4psij64v2CSOOGvJO
+    09nNikj6hf5yRVfrj5XEWa0utzNlcS8aA1clUFTK3T5w5NPDwIqAQ>
+X-ME-Received: <xmr:cNqgaYaQZ8vQYnZbKPuXo5gMhT_Lqft1yYIxjfNrQSAa3SsKG1FQ_U4-QlY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeejgeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepgeehpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpd
+    hrtghpthhtoheprghjrgihrggthhgrnhgurhgrsehnvhhiughirgdrtghomhdprhgtphht
+    thhopehgrhgrfhesrghmrgiiohhnrdgtohhmpdhrtghpthhtoheprghmrghsthhrohesfh
+    gsrdgtohhmpdhrtghpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghp
+    thhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtth
+    hopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:cNqgaZBWGEMBMo6wAeDnQPoMQ1RB3_FyXD2bgYUBYWWoy3Nil71WIQ>
+    <xmx:cNqgabDwuVEK97fr6qnquLcLxnx5_OEE9X7aEzrRhC22YMC0y9IyVw>
+    <xmx:cNqgabV1-aqR1IFCc4MWo42xThetUjXbFjeGkiZ1NoD4KZoSUHe_tw>
+    <xmx:cNqgaSC5ljiRgzmy6yv2HrPe3PYxrEU4Q8gCyruiHKSfRU2iM0Ohlw>
+    <xmx:cdqgadKScMQkDT3KYeKNbDm9q2hUFzCVi1EFn1C9LtAtHYSjWGZ0Cjjz>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Feb 2026 18:42:37 -0500 (EST)
+Date: Thu, 26 Feb 2026 16:42:36 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
 Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 06/22] vfio/pci: Retrieve preserved device files after
- Live Update
-Message-ID: <aaDZ-ffs4kiUo3GY@google.com>
+ Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+ kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+ Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Lukas Wunner <lukas@wunner.de>,
+ =?UTF-8?B?TWlj?= =?UTF-8?B?aGHFgg==?= Winiarski
+ <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>,
+ Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Raghavendra Rao Ananta <rananta@google.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ Zhu Yanjun <yanjun.zhu@linux.dev>, alex@shazbot.org
+Subject: Re: [PATCH v2 08/22] vfio: Enforce preserved devices are retrieved
+ via LIVEUPDATE_SESSION_RETRIEVE_FD
+Message-ID: <20260226164236.1d091ffe@shazbot.org>
+In-Reply-To: <aaDW86eWuQLZ3cfP@google.com>
 References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-7-dmatlack@google.com>
- <20260226155222.5452a741@shazbot.org>
+	<20260129212510.967611-9-dmatlack@google.com>
+	<20260226161512.532609ec@shazbot.org>
+	<aaDW86eWuQLZ3cfP@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226155222.5452a741@shazbot.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: cf4ijneaitd8u5om6m8xksywsoiy1h8t
-X-Rspamd-Queue-Id: 821751A0006
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1772149248-541855
-X-HE-Meta: U2FsdGVkX18VhmGq4/BvSeNeMakQe+IEWs9FBx6SpDlDDdEKnx8P7YrbQR7KN3kgfuz9PadoXat1kOJMcx7XTQLlSHKM/uzWL9PLuJCvq82m8eReG+g380sJBVLGjI0XykaHnqgE0P3E42Dboaj16Rbrptry7q77bnnX3LKHdmn3sJQkRc5zCRtbYeZOqx5f81FScWqFf1kubSSZCmoTUlI8ygb0VgxH6IsusYVKddTsEmBZSIXzgFuHhkOM8h2KfVgjwx3IrnFMBP/xPde6QRWrBsa9aZ6YbAL49kI9fRP9BAPCvdSg280x8bVEchdL6BK9y8vcEKK4nfxKiBBC37pv+P5lPa4jSLnrYoSZOEa2NX/flxLfyCvCPRZikM5b3qtGx6zj9+pQk3wzHuu4Qq0trVFyO6RpwqO26Cid00doRgvR1Qnefb3TWzvsdTNxDXajxieoYBx7aTmzVzMT06U5XwGuivjZ1OqAdGYG6UkRNwRCR/pS6nFaNPFoSk3bTDnnF8junMv+6xP2IT1NOPrDrilLNLVJlZrjFAeZXx+R3OTh9nv3e30MB1K5rNPv5ZPep+47J7fi+gnWTJ3iIBQpXApR49B1OIdl0eW83cD9IdM5ccvDH/6D30MJDDa1Kx9vxpk2h/S349T5b7pgkl18FZPwXJYru5BRc5pjgb7YJ8PGlefoYp5EzRBN+jV/A0FltB8/bNyDTzQFbGf5PudA3IsZC/uolrBbUGQJUpF1MSpI7c+GLtAWLP0402NX/4M+AdIApJc3Se11QYxeR+4WsSQvikc8lFG/HLoK2/yjpZpFr20j1LXSvTcrSfCpl6/80p6WqMxUZTg1tDX+uVOpo35xH4DVIWtCNaUU41g8XWQwA+B66ZTltcyzWUzfWUuePJ/XJ7itjJVRXRuCxkfW6NmaxrEVr+o9WboDUq6eWvb4sCKlh5ijYWf6nI1U7V573Wut19eYFh5Ns4F
- gugfT0Gm
- y/qDBpHMEAiRptwuC8/yi4zk08PlAtTIt/40Fh/YQfm7S3HsLYUGYuk5QlOJKydfLCTuWOdKpBo4wgClJ3vkQxFfetqytHymfg/WwN6QyKfcHwIoG/WK4xEDwf5uqR/H5XuIkAWyRfNDuQCClkYsDyZActMmFh9jXlMbd7Nkto4Dc4C5Scy3CZAU3Jh2VjVvJJmQ+6bQMqTv2K/b+FmLoukgzdG+AvBoUdt1IIzrTRWNS2ZTMYigdHAPOv5KqV1A8CClZU2ZxzDNzApq6hqBXF+/QMxnT6bvEwbQqUfwsedxYBG2X4unsZDFcAgvBcn2ldCTD/X3yiY7CjuAqACMuS9nU0/o+7hKhm1id
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 224DA20011
+X-Stat-Signature: am7zh5cfs9hg97er98ih9zr4455k5soq
+X-HE-Tag: 1772149363-804052
+X-HE-Meta: U2FsdGVkX18Qd2Qph0nY4Pf22xbZ17sWh0aXvc3K6u524H4sU0nYtUOfkMosUOssuoE7fxqMj0iHeoV4Xd9JDDoSHnxbbaN72Y5PXIVskyryvOwO7ZwP+TqsWLKsslznycJHP66S0p7LXAo9tzz5pTbwIHcxtgHBUjTvOCZKT0iZQumf6z0+XqfS6poPYig/GpjOMBlY46hGgVbUcu++61FTre5yYC6V2l3TVWDstmcpMjzuQPU11o0BFWBm0JZr/9RB6OZ6S1RN8ii6NUhVRisY5pzAHUdVtNxOGzfHdv+Ur70fM6GoAVJ393oaXMptnsj7+pBfTwqMsi58yvxwuilYFg2IOWxQOVMZFWdrKGeqNJ0vHboaCKbtniyKjGioFStgiphEoavtjellxNDZZ7xrqnNneTh2rIoRs2O4sSkSe/EG5q+8+G4J0HwxqNBZnlXwJUjL89Lwp/baZ98dvbkNpk0QXbMMIx18HBn4zmbPeHjZK/dvBxHsDFruQK04rTntXPQFuQIdBMwAi6TKmFu/KZaJwyJIonU4+/rm7QhSxslM4gQoYeJdKR9qv9kjvSxID+PUZU0WRR1urVuwaBRdFRqEnLS7QQv/QKZX4YdHvEHznnkit1eQITy2hPgEwTef7hfxH1/IIWFPv+V3y1v+/haoHZJIXqkM0+cV9zQE91euR7ullyHvkW/h7lh7hcAphkibydSHc1vaSp4RirhfTQTcaROQQuZrPdXyE5zQzwTkTHgT6BFGnmsS9TcrVfZYhkUgYcuh1zsLY1zFc+6/r796jj4eiv9KwZgW14tjr3hH9PF7rDf4l56kgtzl8Ehys88fniQp7hVCBDpUFs1ZeKREZN1tV2oStpwMtfrqXt0DfYYlXJc3MZCjfuCtE3zEX8JPdWKoI+YYjC+UMxgf+6Sg6q2iyY7mQt2pPSFo2azfrgfOq6BBNZmAmYUqrWydfbmSXmG4EfbBMag
+ Dkv0IY//
+ pPk7Jx+T57GZAN3QI9zaet6jmsB5viledcd9+0PvMILWVg3BetP4iB4Eknj6euNrhPc278XCLZ+V8fq8+L3Vgiduid0B1M9OYMFdzDXbuO2ifIA+nZWXiNPun0kmx7YkSo6//8Gq42y8i+slAGdiXXU/M4hO+Pc3O6iVsXmnf86gCBF1Yu0TqwBIvYiD+asiHqxTTF72/hVNTfeQKxHHBtynBobjdW9oNHT14XnNMG5dHV3hPsIywjJbMRN5goEkIGqrbL0u7hcZ8JCX1j9ZFSNrZmj61nrT9wRrK5ekYRRqh3FjwXLxDtXTRgxzcUkox7KNaevkO18z6XKK7WjZODkVFPTlJN6l1PFf1yxiiykARxWI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,54 +169,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-26 03:52 PM, Alex Williamson wrote:
-> On Thu, 29 Jan 2026 21:24:53 +0000 David Matlack <dmatlack@google.com> wrote:
+On Thu, 26 Feb 2026 23:27:47 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-> > diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-> > index 8ceca24ac136..935f84a35875 100644
-> > --- a/drivers/vfio/device_cdev.c
-> > +++ b/drivers/vfio/device_cdev.c
-> > @@ -52,6 +46,19 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
-> >  	vfio_device_put_registration(device);
-> >  	return ret;
-> >  }
-> > +EXPORT_SYMBOL_GPL(__vfio_device_fops_cdev_open);
+> On 2026-02-26 04:15 PM, Alex Williamson wrote:
+> > On Thu, 29 Jan 2026 21:24:55 +0000 David Matlack <dmatlack@google.com> wrote:  
 > 
-> I really dislike that we're exporting the underscore variant, which
-> implies it's an internal function that the caller should understand the
-> constraints, without outlining any constraints.
+> > > +	/*
+> > > +	 * This device was preserved across a Live Update. Accessing it via
+> > > +	 * VFIO_GROUP_GET_DEVICE_FD is not allowed.
+> > > +	 */
+> > > +	if (vfio_liveupdate_incoming_is_preserved(device)) {
+> > > +		vfio_device_put_registration(device);
+> > > +		return -EBUSY;  
+> > 
+> > Is this an EPERM issue then?  
 > 
-> I'm not sure what a good alternative is.  We can drop fops since this
-> isn't called from file_operations.  Maybe vfio_device_cdev_open_file().
-
-Ack. Due to the bug you pointed out below, I think the changes in this
-file will look fairly different in the next version. But no matter what
-I'll avoid exporting a underscore variant without outlining the
-constraints.
-
-> > +	/*
-> > +	 * Simulate opening the character device using an anonymous inode. The
-> > +	 * returned file has the same properties as a cdev file (e.g. operations
-> > +	 * are blocked until BIND_IOMMUFD is called).
-> > +	 */
-> > +	file = anon_inode_getfile_fmode("[vfio-device-liveupdate]",
-> > +					&vfio_device_fops, NULL,
-> > +					O_RDWR, FMODE_PREAD | FMODE_PWRITE);
-> > +	if (IS_ERR(file)) {
-> > +		ret = PTR_ERR(file);
-> > +		goto out;
-> > +	}
-> > +
-> > +	ret = __vfio_device_fops_cdev_open(device, file);
-> > +	if (ret) {
-> > +		fput(file);
+> I was thinking EBUSY in the sense that the device is only temporarily
+> inaccesible through this interface due it being in a preserved state as
+> part of a Live Update. Once the preserved device file is retreived and
+> closed, the device can be accessed again through
+> VFIO_GROUP_GET_DEVICE_FD.
 > 
-> Don't we end up calling vfio_device_fops.release with NULL
-> file->private_data here with inevitable segfaults?  Thanks,
+> EPERM might lead to confusion that there is a filesystem permission
+> issue?
 
-Yes indeed. In that case I think we need to call
-vfio_device_try_get_registration() and vfio_allocate_device_file()
-before anon_inode_getfile_fmode(). We could play games with file->fops
-to avoid it calling vfio_device_fops.release here instead, but that
-feels hacky.
+Ok, fair explanation.  Thanks,
+
+Alex
 
