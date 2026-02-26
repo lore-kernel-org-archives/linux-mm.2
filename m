@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AB94FD8FCE
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBFAFFD8FD0
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:06:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB96E6B00A9; Thu, 26 Feb 2026 11:06:09 -0500 (EST)
+	id 577D86B0132; Thu, 26 Feb 2026 11:06:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8DB86B00B7; Thu, 26 Feb 2026 11:06:09 -0500 (EST)
+	id 521AB6B0133; Thu, 26 Feb 2026 11:06:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4F3E6B012F; Thu, 26 Feb 2026 11:06:09 -0500 (EST)
+	id 3E3CF6B0134; Thu, 26 Feb 2026 11:06:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BD3D06B00A9
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:06:09 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F8C658514
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:06:09 +0000 (UTC)
-X-FDA: 84487084458.04.EEEAD77
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9DFE92000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:06:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L94xfs5r;
-	spf=pass (imf13.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 221C46B0132
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:06:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7E0E1B7020
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:06:21 +0000 (UTC)
+X-FDA: 84487084962.27.2777D70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BB15040015
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:06:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+nkvjU5;
+	spf=pass (imf12.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772121967;
+	s=arc-20220608; t=1772121980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RL3AOG6ACroVERFwAaC8rMyqRGWi6zh4Wfqum33Z+rs=;
-	b=DH5udUmirnV3lSiXYdp+tFy8LNAgNExWKqpG7IcmX6LVsAY3JSP2I6yhpmreOOZaWhKv1b
-	0oPvC1wrB7DGJlcKDd0+kWvqiY6sa1W6pi3qbkPq8ExjwycgV132l8kqb211Sc+QRQshT/
-	QwCf8R/sy+vBVS7ovxHq1b8qnMibvW4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772121967; a=rsa-sha256;
-	cv=none;
-	b=zBdQM3aTIKA2DpPTeWhuCRC4psTcmGDnXwafLL3KcBaXlv3wxxWJP1+QoHVzQ4CEDgvhxd
-	i14ggc8wiFN0jq7n/vBe5MdhzH/mR71/ZrfXOWa20ypHZwJTLeFIrNhxUxOqZ5JV7uKvZQ
-	Hw1lJgs/bORNdqMKrrUQW9Lovf8pKYE=
+	bh=l8ZGGQY1qt6ZflVHJHdXL7pSr306z7ZFggqnVaoYryQ=;
+	b=1HvjVM33gvyzxYVnZwYUtpe+f0FNvjNIaU3ttMmDc5mOm+oLB2myPfj7UlJqq1de9ksDXu
+	p8ZjABjb3YqLqYW0TkNiHjLbwXeTkN4ZNzyk2v+EX6m4Qe37UBHOJKv8/+44vUBrLQjnBz
+	1r+oIhj6iEciob0cRv1g1SqtiAhGrj0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L94xfs5r;
-	spf=pass (imf13.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+nkvjU5;
+	spf=pass (imf12.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772121980; a=rsa-sha256;
+	cv=none;
+	b=p/6AxlwVB5tC/8a6nsdUJ5hrkNN6llE13LpJ2ZFAby1EezagFE8hn/+aypMG7gxNxmWj5z
+	WGIQiyntYGy/Sq61CjNbHuFUJF7oYkiJWfAsHD9Ds/je7ZsubKg1P+JsNeAR7nmaz0y75X
+	1DSrNHrEERkYXW8hsKjKuwWvWyD1oKc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88B0560103;
+	by sea.source.kernel.org (Postfix) with ESMTP id D360043BE1;
+	Thu, 26 Feb 2026 16:06:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79300C19424;
 	Thu, 26 Feb 2026 16:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2DBC19423;
-	Thu, 26 Feb 2026 16:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772121966;
-	bh=q+bcxkl7x+wO0XFiFu/znjyA1wp3zKjgxGfQeY8dkXE=;
+	s=k20201202; t=1772121978;
+	bh=iU6e4zeAj5z40Ah35aY1Jl4/4X7n705dfCUksW8kFiQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=L94xfs5r7lo8rSBYQNyS3HIEom/2svL4r4BMlz+u57ucCljy5GwDuDzExr4Qn59Yv
-	 UeQbW3s0K6wkB8oiQXf8Qrf6bOznA+IrH94NqFzEFobhi0xJGsa33otRBe0vxGdSBL
-	 o/xoyfMd/pP4jdrWJmB0RZTX8dgBTApl1jq2O+cEGORpCT6hXCX12kzYCzo5ErNxi9
-	 jfkBUGApQRXOG8Z72SrVXZKCyxwrXPeX/7KSjwPoDzO/Q5Us+3trMFFSieiVbIKNDy
-	 incYBTR819n1LcIo66kxqD+Ll8zJi0vAcgRSPMSxmTWzOJERHupi3COP4QK2k/Dqoh
-	 swRH0gXeSfTog==
+	b=Q+nkvjU5PH9beX1sDz7TCsGU59b7gNRW0L4FVkS1TxbYVf2dxcTYZJCdahq16kk8H
+	 KhaF7luPDMrHsoDLihiy3XRwGzOhdOHklTnXTFqiUNpk9xbeIbuZAXIZiVyQMJUHSs
+	 0thfIptMhvoCgjCV8rtksyKLzyK8Qzl8TlINr01NDAKGOnLMWvK4vMPzhZ9cZiOZWE
+	 EEYxRFbvgEkMHUz7/plm1zhg2LD/iDkTpgEDUXEFFyYjaOR485LQ5gBJhchKq9Q8II
+	 0xuI2i6blS7+c1UFIt43sTJQyGkoA4wxF3SzrVEbxy7kPXrqL0o+2XnZfs2mSyR2Ph
+	 K/arfLmyIBGmA==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 26 Feb 2026 10:55:49 -0500
-Subject: [PATCH 47/61] ubifs: update format strings for u64 i_ino
+Date: Thu, 26 Feb 2026 10:55:50 -0500
+Subject: [PATCH 48/61] udf: update format strings for u64 i_ino
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-iino-u64-v1-47-ccceff366db9@kernel.org>
+Message-Id: <20260226-iino-u64-v1-48-ccceff366db9@kernel.org>
 References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
 In-Reply-To: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -165,36 +165,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
  linux-x25@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20772; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=q+bcxkl7x+wO0XFiFu/znjyA1wp3zKjgxGfQeY8dkXE=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpoG0Q+IbHK4956UER9wi3fedY0n/I2aaROMBiB
- kyVS8oxqKqJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaBtEAAKCRAADmhBGVaC
- FVMBD/4yItGJmJRvKwMWw0P4j1lljqw/kujaYTmyJytGnZoNsrVtmGe9c7ZOJ2EBVrBR697CyVM
- USBFHS42wKxWBjzoNuJeszljlbJjesRGPLcnRP0cFsNxNyzWAuChQLgFemibljHOHVVJnlPTKaE
- 3pnv4iPn45fsZmImC7pEZUdFJK+Q8OOzI67CF5NeqDezLkOu17wt+jLRdh/QG8YPSCk1av+DAAW
- lApDJ0QFcZStQlZJFBF3Hff3iJdbnXu+87B5NGPAn39QTeJZOtsWCfSq3DBoJ+MGhSpIv71N7s1
- D3zkeBnE0Zlg4n8cCFLmejtKuC0Myhl80wHzI2Ro92Mt6Uc1QvZdUSrInJBCA06e0+Rm8CscbKb
- JfMaQi7gXtjfnSBFuS5VJrDEpDN/qIC5rftirzo48afSzsV+HDHVUyGAyNkFKwYDzbrDAa72Y85
- UebxvXtJElbQ/lciYxWS99bana/DVNi2wwjyrVPV/LQWq6kjkbAO+Q8754Z9GrFvj8Rdzx2Hhdb
- gyz9tchSOg50NJ7qVT+zL6RQibe0RD7pACR4WuVD3dUZGwW4+DXFez1Dus6uuCSPwyVBvVwgNP7
- yYN5pvfI2w/ZxZcmmzxZUBsYfYZBXy6Td0UvmlyOuQRHIiO9D4aaq62sqmGxfztBuLFYG8x/wTa
- qH2rjBE/wZg93dQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9281; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=iU6e4zeAj5z40Ah35aY1Jl4/4X7n705dfCUksW8kFiQ=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpoG0QDnCya8A+2cJJ9pOZSFdmxegEJ3eymi5BG
+ 766eHMtgmuJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaBtEAAKCRAADmhBGVaC
+ FcOYD/9P5pWzfQuRUb6+cBoUCHAhFB70OfFIZwuhgN2vnyZxuw5DlmpjeZfqLSA0uIv2wWBNue2
+ qADCpMu+cQZe7F/XaXtUplsygzoq1jIFrtkQypp0Z+/w4UVy73Ikr0a0FXrxLVb3/PMjGHNjM7I
+ HoDBWjU1befct4Gd4Cvj20PsB7hm3cY9Qwgm8aGn9ORDjyxvTDZrYxI0snho0Bb9BwNiSFTgdu+
+ IzsGRpgoRHbAGA2P9OYczBisozKER7UrMkmqSq9kEvC/zF3jQKjbu5H2xrIpXoDeIipoVF3Kq7D
+ kwztabjrqa1iR6NfOF4vMbZmIH7HWtrTr92NwUqfw1E+WTuhXl5dM3EzFR/wqmq6jtVd+O1BMBK
+ GRNphZPulnGgW8MdhkHr1WhB6IHdTR2g4Gudbk+Zv5UWwX22+MJfr8nc1/ZaABnU00y1beP4qsW
+ zT9of6iaDj4AKxUu4o7GYQ9sPeBpdmDT0ViCr5VWGhbX0u/G8p5d8Xt0xT+zUhigfodUnB/3vuU
+ zFB6gNo9T6YyGZLlImQhBNEjuv7RahinrrNVQCJGpORKjmO/Ss+Un5OBeUhaOtrQ8GgkqaZ1Fio
+ X4h0O7SeOcQbTwUOeZVbbr6i8aX6UtXfQkW/WVdQRtelo3zV0z5P/4v9ET4BRLNDCFVcmVjGz73
+ K6a3u+3nNCsAr9Q==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam09
-X-Stat-Signature: yzdqgj5zmtb4qewtkcnsz3d5ccjbxhke
-X-Rspamd-Queue-Id: 9DFE92000B
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BB15040015
+X-Stat-Signature: 5xmjahdmoo4hxnewrep7nsepfpibykh4
 X-Rspam-User: 
-X-HE-Tag: 1772121967-630988
-X-HE-Meta: U2FsdGVkX1/WBMQwOpfG4qixgX6KjCwzjAcsQ2ycqbzy759rJmd80nJdGtelTpqapz8JIJ4LbhTrV61X0v6kkYV27wz9J/RC5XAxqAyD3wbdiHLdttcdONL0ABZgcaQVwqXk2IYSlYfzBnia6y2tMcokrKU+Ijpb0ijfIAhj85R2nL9OH4zb+mK75T7dMwnndR3v5CqnvJrPqXqEMmondh4qWomzmhIJ7xyliln3GdK4JB+dLtF2cuWJNbtCRLW/r6ZEF6of5FgUXJCE60zbW7zhOciV2x+nByOYXl1OJInZKQ7G1iMdsxqP9iKmHLg7AVOiet75FkYiq3YQAok+KYgGFJMgwZF4HxQMa5WvPDJVPW9NLCWFUSami/jOFzZusb1dSbt8hX993vw5fWdvyIhhHbgQvy3bLvnJoTyew7yHJvddkEvm8CJxDsCZLYn1b0ojRDoIyKzcLuMEJ+wq1S4/aAOeLkjG3yWhx5CHPHA8cmobuLY+SMaFUH4eKVIQtTKClI5bGrrmAolrDjoiJAirsdCDAHvzkEcdngD/F2cVnriU9MuT16B3JIkDl+cxMmJBaG7M+YFgOhXberugkXRFODYiQY3JkvbugBBEqchAi35TMMj7jEuZ9GQtEdNl+IFJV0+3INBn1p4wRYgX4UW9iARsowqstUphFvigyXPbqvDue8/iJYuCrJXPniPsE9HrGojPdO0sgLBy1wV0lY8dgpcDGi3zFOVkoVis9O9VmnrjWIgJgChr5tWuVnfBDu8UEnp3xXQQBxCmdZ7Ea+g4ToJmL3kku1wsSbNju8fN88iATBVteATrT24UwrcIuDt3qkahjgWeVnR5clV3WhYKXq/zGC/Y8sdsK5G8CcKhJx9/BE+kKdcyZ4a+8jjIU2SYtPHXU4xK6P8YYD5SLHt/uXnfXj5KGjx1OiVwygOnwbFtL7hjBYBUB0kl4l8D5Axe6ek2TcYFFjW9GHl
- f12hHl5n
- L0CRR8NxAPa9OXMQDxg+MgadIMciyPfZBfYvHilpG7gP9+BrA8ThcYY9TM7FsKoCkNcP1Yoe/mX2TvSKx2Gx9qyoQtBeskv/tWYvKzvm93PcYjYN+xuEMU8xLxpIUnO2IZAowHbiDF5tOqL8R1R4U5UFpxdILkvC7SsbOP7V5SYfHbUDhTeT3/95iRDYO/4M3fkQ8tbbdVDmWJSgETjdHOKlvY4u8BiexR+8RacPgmdhYnixWPWNTMN0E9sse+k7s5nN/Rpv4PcNHCOKcAWVeJ+TKUdgN3BXcykixITO9X2K7xZvbroslm551Ys324clQXN+U05GD4bp1h2duFFmXdBc1HnoBYplPMtp4X6B/YPo+Bq5DW19cU4WKc/qeD5QaaKZX19WJs4OiexWH6shWJ1pI3cm/ThIcaGc3U+SE0Q2YauL0OZBB51YqxZnnDJkpBLhJo+g5oBk+lTI2ZRK217p480jdUKYJq+xoB5f8FEUMcG4TYLni/8mYSLGbt1ytjWhS6xF3vl4+Fyl2AEcyF3YVNs0IEzZb058ISRkBbCKMB9kl35Dk4dko5bRnDsvIXqN42dW/wUEOiAKLBty61SR5bv3GxwN9PnE4c7LgRHPEPMUmlVLlKR69WVArg+9IJ+S1rg62Ucep8Wu2SOoS+u+F+izBo5DyAXqKcTr/Z+qr+czrr+XC22UKumsCqcTkmsu/Gp+DmXUXITMUj6TxGZsGyOFtwaVepJ+fwmO+lG6Dq1ouUfiw6bJ6Lnu2JHQVstFheh53MHUYumOOamV+ol0APQYooi/FyOINdkVXqPXs+iyOwpfHrJDcvEYuMZp05hbZ8bmW8Y6qUWRN6vbK/Sy0Zm/CUVRktsZipSDK+HTlcan1cBl8iH+gaYH7DTSNdCuh4AN6t8yI7mcuJIzLIGFiPTvIOdfhqlrfXtky17o0EAueabcpNBYf7MU1ZaXRwPIrx0Lx/yQboHrr6xuvv2O4tYjD
- MBeBoLyh
- 0CNNXKk9TbAcc1c6DT7BlgcL3V5Ai857FjGeFMVK88VoVLS3nHKEg4nUEnytHtZckKJPFWiBOuby0LRE77FNk9OdQayiJ+ZTgwIohHov7EIpU8kJUL3RoPcpMLfQdo4rLIexBONfuQFX6X55hi1ugwXG0i/Wt1mNqP7RsNPPbEE7KKka9fCxXqipEBaCKIm+cBfhrVYkTOJxxXtOImoAFewGdFABylkxGtJORjDwrVymUmN/Eidu2Z1yMvktFe0YhZeIev4dEI1UxkBtiYfjfkKsHQQesOlk7HVh0K3sI9G6cHVePjYXoUi4HIxH4fZsCJHil1TOUlctSC5K/LshKj+GlOHtITzTwZZO5IxkSm5YrgR5favY5YwN4eMUab4xokVoZZTcz4XO982CeRouph91lAgcYdNH/vn2XaFVpVFy1w832s2pwvgmVOzqzhRAVxsDntSxm5+F7ZF3jI2QlPkzNiOr+KvYp9ZZNGPRY2uWFuPYn8kb65A4GydQnQ3m5fnPwxgFX87Y1VSSDr7d898/Dd+sPBuVPevBzfX/1KQywWhBGknn/Ee7oa4Cq/tYFoJtnmL98jGBvPjxxENglQjUCLeGoHcwor6158Wwf+zbl2bov7ypSfX/G9/4MxzhUbuYzXd8MdCgDHSZ4t8mbYqDG/I7AWOraAFr7AoMBF7daIWKRQ8IrEmcwjSM8oU4II6PRp3g2fXoA2W0eCG1btf4RvdpqZj7uIwSRgby01pEpY2nuzhJUSZQsnnumf9WRDPqN1/5ZEI+umut68XQjFGksU3TQ3FDbTPhvDh2MPQly9wdb6jawyOs4hdVny6+ITFmmCJIJmFlDnna7rIji07aJfH70gypo5mMK82EwdxBX1+nQEwH3C1BAAggw7c6rt7ov1sCYK3RG9w+I/9immyrb6XpSYTEuYkUqTCKwv6XMzMo2V9OJ9+kUEN0dCOJr989JnNg37NhhHfhvq0b1D5nDzcS4
- MpXxcSK/
- L9tAe3R/bTHlANShAQlu7kjbb2ZSs1wufjd/6Ebvs9ELn9W1uvRFO9LyyCVuDRHFlgcE9o66E+rkOy4QRA/vHoNn4kdBW0fG/d5bSTDY+2IOq3xvdXHupOoLDpgDTlGK9UwuAjf9NcPphwxN7pkLpkbQpo0+jIU6wSlRMgOQEFdhGjwY/wLSp5426GWxcFLwXe447NsoH8IWoJE1lpC09I5XSnNygNbXj+NPS4Lwu+RHdEk6LlFamTVnaCq9yJpQ4nfFEW6uEAIz43YTZWOCD2JHXQToMIXv5SyteSFjXmpcbxwXd7lXCGseVThYTxeLmzf2/OeFHUPVcB9hajmEFvb64w+CVOdWp3g8RVg76hNjxHI9M4sv35LulTcECMyOsjIIFwghDBZH70aqnWd/bxD40ngG+W5bJqg4LPMJbY6CyhhNwaZTvc+TvKjw8dRBb0hbqywTVwfixP7k0M7HuaKNgvrANPS7/h2NgbjmAsSIzzZWltBZ/Q+uuBwjL0yAkR8znBNT2iJDl6fp17xA2ZI80MKqAwCevXFXb/f5iGhsPwbB/J2WFxwEkHW6emhwRNf8tjujJlhCUcTGTCCDRXgaFLK6M2YIlO1NtAoT1Mzcd4mm4fn427o5hPCFdXxWFfTteqF2ozQNqx0D+EQPuuQygpAe66TZOvOIgwOy2G3ndAw634Rkv08i6fOT9SJsmTLvvVERkhoZi8vUrGW7Cj9fhQuVobOPSUuF1OeaWo0KHoUsactkkLsNWHHBIiBysShIv7dhWgubpsuzwGdMSwAZzS7HE60BrzB3u+ylb2a+AVaeg+6X3nqwDKZg6ZGcDLCujgc7X01ZX9D0jQyfoO6WNf+fTMpzxT5xw/uQPzf0WqcnbkoPJOistWgVE9dEJ9uHA53d2OinKC2UsQ0XNsIpagbQGlfiDf7otoGxwu91jXRJckavV/iwwDVFg0pxVAoJV3J6Um+ALHJmM4Q0i3KAX3pzw
- AcMuBx+4
- pl3zfBwQeZdHIMAUigRvryGyCk9f6VUzjleYlOR8NFCL/bsfuyptLWB9vYsN69yysvBNWPlAs/bzPz3Y4aRXHKN6biWF/vjV2uaXnO+CWBL662XqdUkeFDEgpGMEfNlffeHCFfzfOE6dUNx3a7TTNhLZBCZLVg7diJwI7ToVjKee/4uhdcm2NV5aYE7Ktr4bR8o8p4G8Tmev0H9kNWRoICZwntRYAe+2ScsiNeq88zLCzis1aLkcM/sYXn84tPSLF4OZ4qWNKHcdtt+2f/XzirKmX+K6q4o7blpvDGikY2+hRsxY1JH8g1jJg7Y2B8993rpdBUiLlUpCd+WsP6BmmUPTCKziCnlx39wKBO9KOEXPJfXwLwPeZXjafpuYEBekAMDwB1vZPSm6GcvO3rn/3ywqdc7i2hatmvKAnR7XzwKA==
+X-HE-Tag: 1772121979-984678
+X-HE-Meta: U2FsdGVkX19GTLmYyq93TL2+Pu+4CoQLIA61F4b0RcC5jNHKrrkdIGhNnc7jhwkYw4wjsXMVVP3MGpaYg9unc18WShIFqs67Kt60j67/Dm3xE3a3M5ftGEakQR8PbKzsrVF8uH8z41OYJDivc2IeHnun+Gf408UVtfo6jw0XFQo6YIpnMkEVuXsNQ5RN91x8jSC+cSToC/rI60/qBy6SumoY4c5Zg3HJQImwFGIKQ31UanI57mt5hUK6LNdPmTrJg3brFC/qF8iuD2q3bYztWwveK3/c9b+Z2DXet1ioaR2YVq/8SJ/ZU6VnWzC2k4nQokeTlI+sfxf7qQr7pAKbLrN0Pg6YNw1OqnM415PLnBV1lK26tishLguymMEURkO/2Tnah5PQHsYuTb+ltikQ1ouqN8IhMAaA/reYqafxRKRzF4IYpEyGsZ4Qlv1FC72BTDpLEYxVUh+HWCnoi+1w3IFAl/dl7DVYN4CGp42yEN1OKNep98DPRYt73neZlPDHduHox5whI4++IeCGtIgCDzPemL4fPqvHx/L14dsG7HDMs3XiCyH+X2+6XyaENTC4XzVb6xB3wKq83NB1XQL49sNc63nXo1t4p3z4uMuvIebxQlVxBzk7ZKkqL9t5fpYYAjtaMxtZqHSS3TD5qKa6HbaEkmvBzH92up9zrAFQFx0aXXp6Us0UyP9EkDrOuQz48EOrBPu2mNZzZ1DR91I5tNPZZLEpquWEoIqgeRKknf+4VSQXSuYJTxwnygELk5NgmZhoylVzigqFcw6lVf8XEEbnxJeHX5vOqDfbohiq9KsEpXQLX3Qg3Hf1jCEThe62JGad9yoh0Ue8XVglu3cL6qFotE6yEOhWCdPdNMMlE5VcJQN8Q70C1RpRm8BGcQ4W7eMxRJM+IBctQoYx3p561BzFfom+LyFWKEmTL28VRoKg04FaWi5AW+IqBTy74lz5NXhi7v3mPrnIm9YKJYo
+ ctsURjFE
+ MMvMpDDJq7hJINHJRbzHG5977xDyPqLxtwZucApjtJZJZ0vsYR2NUAf+AYlfXn2ryaV2eoXvN0rh/9JksqmhEB+U5rK9oqkqrpNkbIqN/ZJsLBtmMjXpFKnulVOmMYAI6IUl44W61apr/tLqmS+fn2RxXRtA4OcSLQX4uSF45f83LE6BwVJdyPozyR+Z0QXOw9o6IFi2zAC6KWxbhQ2ZFdwopjSvbmLBDUOGTWVNlVWjEaN2bXETBQSly0jfc8Cpj38mSCsUPowzI+w0UEOJE1dyGyZkUb6e4HiSqTsYDjIwYesYgBEWWlIzVuIFky2JWc8PC86UcCyODRFbhpK8nNu46f6qC1QAlY2lw6G87ITXxUoKvrXarUbl7lQECaIncSN4MPBCVWkdqFeQSYG4H7xEYaEDiS2A2zWddRk4RVBzwju+Q93RPEyhMvNSNzj23MCXu3mXN48P9ti+TntScmgVW66HxSC15BhkSydCKEObVgRDXHiDR9FZ4Enjrrd6dC6BBWi/ATIIqKcekkJ6fbC65gV6xr6YuUcXNWarppQnxVxaqNeQlBisVoS92VeYZ5C+Keso+uoz1H0TbwcqU8eH+D9A4nByGDwzBd6D2CMz2NkFm301heaJ9S5UB1F5yYreCIMQpT3ju3/MAwyTyhB6RFgN/r+WBL1fE+DXEsRpz0mxliXTxgAoDxsQ3NNcr1XXPc866ALNv7Tc+REDo5cVLUwKKMrt80i9a8nZo37EBKL6byAU4YmhYKU+7Jya8dQ7kBPgs9VgCsVL+xpE+Y6XNUDQkNMtn7rY1auH7C+ptP5QZwcxvQ+mAwB+i81eY0P5AR67hntAmbemNCdfwTHHkq6IzfgW52ZfamG6ZOY0KBNrUQhBdFbHog/DeekUUMfsWj8iQgNjrA2k1RYyzroRSVghO8EL8khDaaGvVTtCf1skOWNykiC5j/XFF/UCtn/NcoVsrDtUai/vDXkiiPVGQgIVy
+ x8cTrDH2
+ yfezJsgSGzBCiJHpFSF8WlJvNooa5IuJrhwGWAHx1fRP6otprL4PuMowQ+JwvTjXPKLYYBIn3tUABo15q4zQpuWv6xylCcLwVH+2Mno98cLxYxqx5Zd8sQxRg4U6lWUrO0u9N6IU1yB1l1QESWUQlZMOIlcqxIuSMvexWyWaEsAB64H3hK8+arm+2v4VRGzaHGc9UNAzPTlXAf+RkNPnDQ+lhy+UwHJXbk6/fkjTCkcfNpPcBpPwNufH8f9VDkPyEJS77OMICI4OQEYethPTx3OJ9JZ/kBS+iDPXmzUL9tpjU0wSf1MOQlYjByziZp9pLh0EsI4UK/jQvJhNXRswhdaawU4Q7vyh6hyPnSFH/NaQgzRBlOdecAPMZheRPjTGXghAFZj2y7CehN1pNMi1K5CymOWGYICaUtsy6m163jiPkBBZGTUuFej6zy74vEHAHiFuZUgKwxAIgedbrL5540zXuBM1BdbVuHHTiLwW98oiZMIJ3BSFNgNUe5AGN89bCI7XTeDCpqUKP/wA2pQnktHsrylUGtfYFhLv9VdGjLqrqZ3YRekoP+71/zBk11YSIeJbeLjk+UikuUb3ekns5DYbW5jODlGTsU7n6BLYH9IximhamFkeK3TnA4oqpmp2O4WkMlhLD7AuGNGsPLr6Dpey+8fAVqLUQgTT6BDH7Lx2Kr19pQ6CAhSQ9k1La1kaTPFu3F8zkLllhE0avyHaOWPST4UEFu1vRJB7NQP3TFW2hOpy4Sm+ccXz/U9AvvRdXeY6+tzbqkYiK3oh3s+6AgRa4wG/TlPFWfsE8eo3xf2nGIm1N7tuVQ1ZTaliYFxJQC40BNGkbk7wGy9EA87zuaFnvpPQiOrGJKRXT87B/GXqdM5MrSRA8EgoiJKZob6OaxweLFvrl1cjtGjTsVnynrfWBW7+YDvPxYF8GmyVgdfdP6OByn0uOeRXlgjIgry62ZjS4JDOB341BU0URIeo7r8/dzUmM
+ YZaYwWwq
+ sirWDPKVGMbsJCi155wnVIH43ojZZzHw+tKJ6FaQA+EhTNGriiMSXvMSR7/CV0pViaMwjhuSLnYfa+TaOUQ/w9PvcNMrlLfZvpy0Asp0aDLbMSjPMo86/mmNvPMxE2behlJX0ao/FDDxsxkv+wrz2A+7ZpsHI1fkYMKt7KxorTbgTAGynlxLSN3lBoO4iMmp8kHTLoWTSbbgdg/R+HVjCM6sKUOiPq0ZBGmhfA7uX/PzWYc41tYxMq1l9GeUYXFd1bUxgXN5MPHYWaEy9QZZgB3XOgJ0kRbasKl4WO01h+tHk13bg72VLKnPfpS8xHyKFowrr5dJZ2LOWzYWtVUzPz9XapaE2OuirDKBIA5HhH4RKzaFVNU3WbMdlSKx6O/lub+FUZqFsG8v9Eg5b6H/qYEwi57SlSRElNX1QxyQXN8T+CeqCJ+SeTpOUSAsoQK8gNRXurdy63asbp2xRN16JRQB+yko6BvlaCR+D/Z8+M4TV9LCZFzBzLCAHKJYS3z3+TH3M1k4DzNVgC6CXRBeKN3I/PRz0+gfTuSp9il4tXUWTK4i5Bnm4I/OsjwXc6i+HgvzrmdVaBVLFuvL6hcICDX4jkxNRkXm6BlXM06uC6xIl1nA4IZ7FQOEc3eZfQ98/0k1Of2Pr7yCmz8mcZhLag8xYH5UaSF8a2PvPrEd2d9wTJVUqKSyKXzMFkmxiuk1JYjJ4JVJms3fizdqJ1e2/lsWGRy6SBd3SjC8GKDwQ/8pHlwTYA0P1Eqheq1zECYqwENShmqIigirc24oKzP6hqCnARTwIK+sQBgDiOcw2u5hpmtOX20NEJvRA1eAwG9KmExCh7EuW5cw/1oS8lGmvDBEswlVCa4L/wnIxMx0+McUxQwRpMyrlJkuBUCzvO8u0776JutUiCjnu9Z2Dnvb1BQtWpN9KCON+shRc2dd1LVKKCskUOkXQdu9onUEz2bXy5IJkPKCJCjMDQBQxPthQ0DJ3MD6N
+ yV0xecAU
+ c+pNSXDdiUhHZrg2bS1dZL13ht1wdib2LlxkH+D/x97sfDaY/6jZTyih9oUg0ttN0sQn1iFmHeWb4Vm5oaGPEeZYloHDf9bv7ffJ2aovH1XDIrOYor0NdNAQ/BSAWxrfTuiiRjXZIOyUjDd7d4Fh+brhEJk34qwt4+Y9J6/wiKwW/cLmadCHVxNyMOhzs0lEelJNVj1kRHLBS1E0v9KseFo/48Bo8HLcuOwrLr1IwrxJgbtINO7uQ/SFPsHRQ711ddk3gOxRaybHmj2i0mlLNxSn9qTA/iG0u1ZRPS8JWwTjQb3UfvkwymJYxRdUB6F3XrRW9S9j7o0qAkqjJqST1QwvsypOvNdfiDCuGlqriJLCcp3rSIt0a8+jVHTQhaLRSPoo8WhP/E5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,505 +202,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update format strings and local variable types in ubifs for the
+Update format strings and local variable types in udf for the
 i_ino type change from unsigned long to u64.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/ubifs/debug.c   |  8 ++++----
- fs/ubifs/dir.c     | 28 ++++++++++++++--------------
- fs/ubifs/file.c    | 28 ++++++++++++++--------------
- fs/ubifs/journal.c |  6 +++---
- fs/ubifs/super.c   | 16 ++++++++--------
- fs/ubifs/tnc.c     |  4 ++--
- fs/ubifs/xattr.c   | 14 +++++++-------
- 7 files changed, 52 insertions(+), 52 deletions(-)
+ fs/udf/directory.c | 18 +++++++++---------
+ fs/udf/file.c      |  2 +-
+ fs/udf/inode.c     | 12 ++++++------
+ fs/udf/namei.c     |  8 ++++----
+ fs/udf/super.c     |  2 +-
+ 5 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
-index 160c16aa7b6e7088355582670357262ab3930225..5794de5a9069f20302b6630c39c1452183137acc 100644
---- a/fs/ubifs/debug.c
-+++ b/fs/ubifs/debug.c
-@@ -230,7 +230,7 @@ void ubifs_dump_inode(struct ubifs_info *c, const struct inode *inode)
- 	int count = 2;
+diff --git a/fs/udf/directory.c b/fs/udf/directory.c
+index 632453aa38934a0b58b420717ec0674c85627ce5..f5c81e13eacb17f931d2df564ec4f2a6e9a5d7ab 100644
+--- a/fs/udf/directory.c
++++ b/fs/udf/directory.c
+@@ -22,7 +22,7 @@ static int udf_verify_fi(struct udf_fileident_iter *iter)
  
- 	pr_err("Dump in-memory inode:");
--	pr_err("\tinode          %lu\n", inode->i_ino);
-+	pr_err("\tinode          %llu\n", inode->i_ino);
- 	pr_err("\tsize           %llu\n",
- 	       (unsigned long long)i_size_read(inode));
- 	pr_err("\tnlink          %u\n", inode->i_nlink);
-@@ -1101,7 +1101,7 @@ int dbg_check_synced_i_size(const struct ubifs_info *c, struct inode *inode)
- 	if (ui->ui_size != ui->synced_i_size && !ui->dirty) {
- 		ubifs_err(c, "ui_size is %lld, synced_i_size is %lld, but inode is clean",
- 			  ui->ui_size, ui->synced_i_size);
--		ubifs_err(c, "i_ino %lu, i_mode %#x, i_size %lld", inode->i_ino,
-+		ubifs_err(c, "i_ino %llu, i_mode %#x, i_size %lld", inode->i_ino,
- 			  inode->i_mode, i_size_read(inode));
- 		dump_stack();
- 		err = -EINVAL;
-@@ -1163,7 +1163,7 @@ int dbg_check_dir(struct ubifs_info *c, const struct inode *dir)
- 	kfree(pdent);
- 
- 	if (i_size_read(dir) != size) {
--		ubifs_err(c, "directory inode %lu has size %llu, but calculated size is %llu",
-+		ubifs_err(c, "directory inode %llu has size %llu, but calculated size is %llu",
- 			  dir->i_ino, (unsigned long long)i_size_read(dir),
- 			  (unsigned long long)size);
- 		ubifs_dump_inode(c, dir);
-@@ -1171,7 +1171,7 @@ int dbg_check_dir(struct ubifs_info *c, const struct inode *dir)
- 		return -EINVAL;
+ 	if (iter->fi.descTag.tagIdent != cpu_to_le16(TAG_IDENT_FID)) {
+ 		udf_err(iter->dir->i_sb,
+-			"directory (ino %lu) has entry at pos %llu with incorrect tag %x\n",
++			"directory (ino %llu) has entry at pos %llu with incorrect tag %x\n",
+ 			iter->dir->i_ino, (unsigned long long)iter->pos,
+ 			le16_to_cpu(iter->fi.descTag.tagIdent));
+ 		return -EFSCORRUPTED;
+@@ -30,7 +30,7 @@ static int udf_verify_fi(struct udf_fileident_iter *iter)
+ 	len = udf_dir_entry_len(&iter->fi);
+ 	if (le16_to_cpu(iter->fi.lengthOfImpUse) & 3) {
+ 		udf_err(iter->dir->i_sb,
+-			"directory (ino %lu) has entry at pos %llu with unaligned length of impUse field\n",
++			"directory (ino %llu) has entry at pos %llu with unaligned length of impUse field\n",
+ 			iter->dir->i_ino, (unsigned long long)iter->pos);
+ 		return -EFSCORRUPTED;
  	}
- 	if (dir->i_nlink != nlink) {
--		ubifs_err(c, "directory inode %lu has nlink %u, but calculated nlink is %u",
-+		ubifs_err(c, "directory inode %llu has nlink %u, but calculated nlink is %u",
- 			  dir->i_ino, dir->i_nlink, nlink);
- 		ubifs_dump_inode(c, dir);
- 		dump_stack();
-diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
-index 4c9f57f3b2adbbd396b288878cb18fa87cdbd0df..86d41e077e4d621dbb8c448acd0065c8ac7ae225 100644
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -223,7 +223,7 @@ static struct dentry *ubifs_lookup(struct inode *dir, struct dentry *dentry,
- 	struct ubifs_info *c = dir->i_sb->s_fs_info;
- 	struct fscrypt_name nm;
- 
--	dbg_gen("'%pd' in dir ino %lu", dentry, dir->i_ino);
-+	dbg_gen("'%pd' in dir ino %llu", dentry, dir->i_ino);
- 
- 	err = fscrypt_prepare_lookup(dir, dentry, &nm);
- 	if (err == -ENOENT)
-@@ -281,7 +281,7 @@ static struct dentry *ubifs_lookup(struct inode *dir, struct dentry *dentry,
- 	if (IS_ENCRYPTED(dir) &&
- 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
- 	    !fscrypt_has_permitted_context(dir, inode)) {
--		ubifs_warn(c, "Inconsistent encryption contexts: %lu/%lu",
-+		ubifs_warn(c, "Inconsistent encryption contexts: %llu/%llu",
- 			   dir->i_ino, inode->i_ino);
- 		iput(inode);
- 		inode = ERR_PTR(-EPERM);
-@@ -318,7 +318,7 @@ static int ubifs_create(struct mnt_idmap *idmap, struct inode *dir,
- 	 * parent directory inode.
+@@ -41,20 +41,20 @@ static int udf_verify_fi(struct udf_fileident_iter *iter)
  	 */
- 
--	dbg_gen("dent '%pd', mode %#hx in dir ino %lu",
-+	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
- 		dentry, mode, dir->i_ino);
- 
- 	err = ubifs_budget_space(c, &req);
-@@ -386,7 +386,7 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
- 	 * atomically.
- 	 */
- 
--	dbg_gen("dent '%pd', mode %#hx in dir ino %lu",
-+	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
- 		dentry, mode, dir->i_ino);
- 
- 	inode = ubifs_new_inode(c, dir, mode, false);
-@@ -460,7 +460,7 @@ static int ubifs_tmpfile(struct mnt_idmap *idmap, struct inode *dir,
- 	 * be released via writeback.
- 	 */
- 
--	dbg_gen("dent '%pd', mode %#hx in dir ino %lu",
-+	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
- 		dentry, mode, dir->i_ino);
- 
- 	err = fscrypt_setup_filename(dir, &dentry->d_name, 0, &nm);
-@@ -589,7 +589,7 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
- 	bool encrypted = IS_ENCRYPTED(dir);
- 	struct ubifs_dir_data *data = file->private_data;
- 
--	dbg_gen("dir ino %lu, f_pos %#llx", dir->i_ino, ctx->pos);
-+	dbg_gen("dir ino %llu, f_pos %#llx", dir->i_ino, ctx->pos);
- 
- 	if (ctx->pos > UBIFS_S_KEY_HASH_MASK || ctx->pos == 2)
- 		/*
-@@ -764,7 +764,7 @@ static int ubifs_link(struct dentry *old_dentry, struct inode *dir,
- 	 * changing the parent inode.
- 	 */
- 
--	dbg_gen("dent '%pd' to ino %lu (nlink %d) in dir ino %lu",
-+	dbg_gen("dent '%pd' to ino %llu (nlink %d) in dir ino %llu",
- 		dentry, inode->i_ino,
- 		inode->i_nlink, dir->i_ino);
- 	ubifs_assert(c, inode_is_locked(dir));
-@@ -836,7 +836,7 @@ static int ubifs_unlink(struct inode *dir, struct dentry *dentry)
- 	 * deletions.
- 	 */
- 
--	dbg_gen("dent '%pd' from ino %lu (nlink %d) in dir ino %lu",
-+	dbg_gen("dent '%pd' from ino %llu (nlink %d) in dir ino %llu",
- 		dentry, inode->i_ino,
- 		inode->i_nlink, dir->i_ino);
- 
-@@ -941,7 +941,7 @@ static int ubifs_rmdir(struct inode *dir, struct dentry *dentry)
- 	 * because we have extra space reserved for deletions.
- 	 */
- 
--	dbg_gen("directory '%pd', ino %lu in dir ino %lu", dentry,
-+	dbg_gen("directory '%pd', ino %llu in dir ino %llu", dentry,
- 		inode->i_ino, dir->i_ino);
- 	ubifs_assert(c, inode_is_locked(dir));
- 	ubifs_assert(c, inode_is_locked(inode));
-@@ -1018,7 +1018,7 @@ static struct dentry *ubifs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	 * directory inode.
- 	 */
- 
--	dbg_gen("dent '%pd', mode %#hx in dir ino %lu",
-+	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
- 		dentry, mode, dir->i_ino);
- 
- 	err = ubifs_budget_space(c, &req);
-@@ -1096,7 +1096,7 @@ static int ubifs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	 * directory inode.
- 	 */
- 
--	dbg_gen("dent '%pd' in dir ino %lu", dentry, dir->i_ino);
-+	dbg_gen("dent '%pd' in dir ino %llu", dentry, dir->i_ino);
- 
- 	if (S_ISBLK(mode) || S_ISCHR(mode)) {
- 		dev = kmalloc_obj(union ubifs_dev_desc, GFP_NOFS);
-@@ -1183,7 +1183,7 @@ static int ubifs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 					.dirtied_ino = 1 };
- 	struct fscrypt_name nm;
- 
--	dbg_gen("dent '%pd', target '%s' in dir ino %lu", dentry,
-+	dbg_gen("dent '%pd', target '%s' in dir ino %llu", dentry,
- 		symname, dir->i_ino);
- 
- 	err = fscrypt_prepare_symlink(dir, symname, len, UBIFS_MAX_INO_DATA,
-@@ -1349,7 +1349,7 @@ static int do_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	 *   ino_req: marks the target inode as dirty and does not write it.
- 	 */
- 
--	dbg_gen("dent '%pd' ino %lu in dir ino %lu to dent '%pd' in dir ino %lu flags 0x%x",
-+	dbg_gen("dent '%pd' ino %llu in dir ino %llu to dent '%pd' in dir ino %llu flags 0x%x",
- 		old_dentry, old_inode->i_ino, old_dir->i_ino,
- 		new_dentry, new_dir->i_ino, flags);
- 
-@@ -1597,7 +1597,7 @@ static int ubifs_xrename(struct inode *old_dir, struct dentry *old_dentry,
- 	 * parent directory inodes.
- 	 */
- 
--	dbg_gen("dent '%pd' ino %lu in dir ino %lu exchange dent '%pd' ino %lu in dir ino %lu",
-+	dbg_gen("dent '%pd' ino %llu in dir ino %llu exchange dent '%pd' ino %llu in dir ino %llu",
- 		old_dentry, fst_inode->i_ino, old_dir->i_ino,
- 		new_dentry, snd_inode->i_ino, new_dir->i_ino);
- 
-diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
-index cd04755e792a7f8e7d33ed4e67806cd202c71fad..e73c28b12f97fd1fbeb67510434e499eab84da70 100644
---- a/fs/ubifs/file.c
-+++ b/fs/ubifs/file.c
-@@ -90,7 +90,7 @@ static int read_block(struct inode *inode, struct folio *folio, size_t offset,
- 	return 0;
- 
- dump:
--	ubifs_err(c, "bad data node (block %u, inode %lu)",
-+	ubifs_err(c, "bad data node (block %u, inode %llu)",
- 		  block, inode->i_ino);
- 	ubifs_dump_node(c, dn, UBIFS_MAX_DATA_NODE_SZ);
- 	return -EINVAL;
-@@ -106,7 +106,7 @@ static int do_readpage(struct folio *folio)
- 	loff_t i_size = i_size_read(inode);
- 	size_t offset = 0;
- 
--	dbg_gen("ino %lu, pg %lu, i_size %lld, flags %#lx",
-+	dbg_gen("ino %llu, pg %lu, i_size %lld, flags %#lx",
- 		inode->i_ino, folio->index, i_size, folio->flags.f);
- 	ubifs_assert(c, !folio_test_checked(folio));
- 	ubifs_assert(c, !folio->private);
-@@ -162,7 +162,7 @@ static int do_readpage(struct folio *folio)
- 			dbg_gen("hole");
- 			err = 0;
- 		} else {
--			ubifs_err(c, "cannot read page %lu of inode %lu, error %d",
-+			ubifs_err(c, "cannot read page %lu of inode %llu, error %d",
- 				  folio->index, inode->i_ino, err);
+ 	if (len > 1 << iter->dir->i_blkbits) {
+ 		udf_err(iter->dir->i_sb,
+-			"directory (ino %lu) has too big (%u) entry at pos %llu\n",
++			"directory (ino %llu) has too big (%u) entry at pos %llu\n",
+ 			iter->dir->i_ino, len, (unsigned long long)iter->pos);
+ 		return -EFSCORRUPTED;
+ 	}
+ 	if (iter->pos + len > iter->dir->i_size) {
+ 		udf_err(iter->dir->i_sb,
+-			"directory (ino %lu) has entry past directory size at pos %llu\n",
++			"directory (ino %llu) has entry past directory size at pos %llu\n",
+ 			iter->dir->i_ino, (unsigned long long)iter->pos);
+ 		return -EFSCORRUPTED;
+ 	}
+ 	if (udf_dir_entry_len(&iter->fi) !=
+ 	    sizeof(struct tag) + le16_to_cpu(iter->fi.descTag.descCRCLength)) {
+ 		udf_err(iter->dir->i_sb,
+-			"directory (ino %lu) has entry where CRC length (%u) does not match entry length (%u)\n",
++			"directory (ino %llu) has entry where CRC length (%u) does not match entry length (%u)\n",
+ 			iter->dir->i_ino,
+ 			(unsigned)le16_to_cpu(iter->fi.descTag.descCRCLength),
+ 			(unsigned)(udf_dir_entry_len(&iter->fi) -
+@@ -78,7 +78,7 @@ static int udf_copy_fi(struct udf_fileident_iter *iter)
+ 	}
+ 	if (iter->dir->i_size < iter->pos + sizeof(struct fileIdentDesc)) {
+ 		udf_err(iter->dir->i_sb,
+-			"directory (ino %lu) has entry straddling EOF\n",
++			"directory (ino %llu) has entry straddling EOF\n",
+ 			iter->dir->i_ino);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -184,7 +184,7 @@ static int udf_fiiter_advance_blk(struct udf_fileident_iter *iter)
+ 			return 0;
  		}
+ 		udf_err(iter->dir->i_sb,
+-			"extent after position %llu not allocated in directory (ino %lu)\n",
++			"extent after position %llu not allocated in directory (ino %llu)\n",
+ 			(unsigned long long)iter->pos, iter->dir->i_ino);
+ 		return -EFSCORRUPTED;
  	}
-@@ -212,7 +212,7 @@ static int write_begin_slow(struct address_space *mapping,
- 	int err, appending = !!(pos + len > inode->i_size);
- 	struct folio *folio;
- 
--	dbg_gen("ino %lu, pos %llu, len %u, i_size %lld",
-+	dbg_gen("ino %llu, pos %llu, len %u, i_size %lld",
- 		inode->i_ino, pos, len, inode->i_size);
- 
- 	/*
-@@ -526,7 +526,7 @@ static int ubifs_write_end(const struct kiocb *iocb,
- 	loff_t end_pos = pos + len;
- 	int appending = !!(end_pos > inode->i_size);
- 
--	dbg_gen("ino %lu, pos %llu, pg %lu, len %u, copied %d, i_size %lld",
-+	dbg_gen("ino %llu, pos %llu, pg %lu, len %u, copied %d, i_size %lld",
- 		inode->i_ino, pos, folio->index, len, copied, inode->i_size);
- 
- 	if (unlikely(copied < len && !folio_test_uptodate(folio))) {
-@@ -599,7 +599,7 @@ static int populate_page(struct ubifs_info *c, struct folio *folio,
- 	size_t offset = 0;
- 	pgoff_t end_index;
- 
--	dbg_gen("ino %lu, pg %lu, i_size %lld, flags %#lx",
-+	dbg_gen("ino %llu, pg %lu, i_size %lld, flags %#lx",
- 		inode->i_ino, folio->index, i_size, folio->flags.f);
- 
- 	end_index = (i_size - 1) >> PAGE_SHIFT;
-@@ -680,7 +680,7 @@ static int populate_page(struct ubifs_info *c, struct folio *folio,
- 	return 0;
- 
- out_err:
--	ubifs_err(c, "bad data node (block %u, inode %lu)",
-+	ubifs_err(c, "bad data node (block %u, inode %llu)",
- 		  page_block, inode->i_ino);
- 	return -EINVAL;
- }
-@@ -913,7 +913,7 @@ static int do_writepage(struct folio *folio, size_t len)
- 	}
- 	if (err) {
- 		mapping_set_error(folio->mapping, err);
--		ubifs_err(c, "cannot write folio %lu of inode %lu, error %d",
-+		ubifs_err(c, "cannot write folio %lu of inode %llu, error %d",
- 			  folio->index, inode->i_ino, err);
- 		ubifs_ro_mode(c, err);
- 	}
-@@ -987,7 +987,7 @@ static int ubifs_writepage(struct folio *folio, struct writeback_control *wbc)
- 	loff_t i_size =  i_size_read(inode), synced_i_size;
- 	int err, len = folio_size(folio);
- 
--	dbg_gen("ino %lu, pg %lu, pg flags %#lx",
-+	dbg_gen("ino %llu, pg %lu, pg flags %#lx",
- 		inode->i_ino, folio->index, folio->flags.f);
- 	ubifs_assert(c, folio->private != NULL);
- 
-@@ -1106,7 +1106,7 @@ static int do_truncation(struct ubifs_info *c, struct inode *inode,
- 	int offset = new_size & (UBIFS_BLOCK_SIZE - 1), budgeted = 1;
- 	struct ubifs_inode *ui = ubifs_inode(inode);
- 
--	dbg_gen("ino %lu, size %lld -> %lld", inode->i_ino, old_size, new_size);
-+	dbg_gen("ino %llu, size %lld -> %lld", inode->i_ino, old_size, new_size);
- 	memset(&req, 0, sizeof(struct ubifs_budget_req));
- 
- 	/*
-@@ -1258,7 +1258,7 @@ int ubifs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	struct inode *inode = d_inode(dentry);
- 	struct ubifs_info *c = inode->i_sb->s_fs_info;
- 
--	dbg_gen("ino %lu, mode %#x, ia_valid %#x",
-+	dbg_gen("ino %llu, mode %#x, ia_valid %#x",
- 		inode->i_ino, inode->i_mode, attr->ia_valid);
- 	err = setattr_prepare(&nop_mnt_idmap, dentry, attr);
- 	if (err)
-@@ -1308,7 +1308,7 @@ int ubifs_fsync(struct file *file, loff_t start, loff_t end, int datasync)
- 	struct ubifs_info *c = inode->i_sb->s_fs_info;
- 	int err;
- 
--	dbg_gen("syncing inode %lu", inode->i_ino);
-+	dbg_gen("syncing inode %llu", inode->i_ino);
- 
- 	if (c->ro_mount)
- 		/*
-@@ -1495,7 +1495,7 @@ static vm_fault_t ubifs_vm_page_mkwrite(struct vm_fault *vmf)
- 	struct ubifs_budget_req req = { .new_page = 1 };
- 	int err, update_time;
- 
--	dbg_gen("ino %lu, pg %lu, i_size %lld",	inode->i_ino, folio->index,
-+	dbg_gen("ino %llu, pg %lu, i_size %lld",	inode->i_ino, folio->index,
- 		i_size_read(inode));
- 	ubifs_assert(c, !c->ro_media && !c->ro_mount);
- 
-@@ -1531,7 +1531,7 @@ static vm_fault_t ubifs_vm_page_mkwrite(struct vm_fault *vmf)
- 	err = ubifs_budget_space(c, &req);
- 	if (unlikely(err)) {
- 		if (err == -ENOSPC)
--			ubifs_warn(c, "out of space for mmapped file (inode number %lu)",
-+			ubifs_warn(c, "out of space for mmapped file (inode number %llu)",
- 				   inode->i_ino);
- 		return VM_FAULT_SIGBUS;
- 	}
-diff --git a/fs/ubifs/journal.c b/fs/ubifs/journal.c
-index e28ab4395e5ca404d8e8d8f735c3113b58bcc941..40a95a2fad50039f39917e71da7b71a735237469 100644
---- a/fs/ubifs/journal.c
-+++ b/fs/ubifs/journal.c
-@@ -982,7 +982,7 @@ int ubifs_jnl_write_inode(struct ubifs_info *c, const struct inode *inode)
- 	int kill_xattrs = ui->xattr_cnt && last_reference;
- 	u8 hash[UBIFS_HASH_ARR_SZ];
- 
--	dbg_jnl("ino %lu, nlink %u", inode->i_ino, inode->i_nlink);
-+	dbg_jnl("ino %llu, nlink %u", inode->i_ino, inode->i_nlink);
- 
- 	if (kill_xattrs && ui->xattr_cnt > ubifs_xattr_max_cnt(c)) {
- 		ubifs_err(c, "Cannot delete inode, it has too many xattrs!");
-@@ -1743,7 +1743,7 @@ int ubifs_jnl_truncate(struct ubifs_info *c, const struct inode *inode,
- 			int dn_len = le32_to_cpu(dn->size);
- 
- 			if (dn_len <= 0 || dn_len > UBIFS_BLOCK_SIZE) {
--				ubifs_err(c, "bad data node (block %u, inode %lu)",
-+				ubifs_err(c, "bad data node (block %u, inode %llu)",
- 					  blk, inode->i_ino);
- 				ubifs_dump_node(c, dn, dn_size);
- 				err = -EUCLEAN;
-@@ -1987,7 +1987,7 @@ int ubifs_jnl_change_xattr(struct ubifs_info *c, const struct inode *inode,
- 	u8 hash_host[UBIFS_HASH_ARR_SZ];
- 	u8 hash[UBIFS_HASH_ARR_SZ];
- 
--	dbg_jnl("ino %lu, ino %lu", host->i_ino, inode->i_ino);
-+	dbg_jnl("ino %llu, ino %llu", host->i_ino, inode->i_ino);
- 	ubifs_assert(c, inode->i_nlink > 0);
- 	ubifs_assert(c, mutex_is_locked(&host_ui->ui_mutex));
- 
-diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-index 03bf924756ca003809d229837a970d5935450f23..9a77d8b64ffa70f9d5b695fb3d87c22cb223704f 100644
---- a/fs/ubifs/super.c
-+++ b/fs/ubifs/super.c
-@@ -92,7 +92,7 @@ static int validate_inode(struct ubifs_info *c, const struct inode *inode)
- 		return 5;
- 
- 	if (!ubifs_compr_present(c, ui->compr_type)) {
--		ubifs_warn(c, "inode %lu uses '%s' compression, but it was not compiled in",
-+		ubifs_warn(c, "inode %llu uses '%s' compression, but it was not compiled in",
- 			   inode->i_ino, ubifs_compr_name(c, ui->compr_type));
- 	}
- 
-@@ -248,14 +248,14 @@ struct inode *ubifs_iget(struct super_block *sb, unsigned long inum)
- 	return inode;
- 
- out_invalid:
--	ubifs_err(c, "inode %lu validation failed, error %d", inode->i_ino, err);
-+	ubifs_err(c, "inode %llu validation failed, error %d", inode->i_ino, err);
- 	ubifs_dump_node(c, ino, UBIFS_MAX_INO_NODE_SZ);
- 	ubifs_dump_inode(c, inode);
- 	err = -EINVAL;
- out_ino:
- 	kfree(ino);
- out:
--	ubifs_err(c, "failed to read inode %lu, error %d", inode->i_ino, err);
-+	ubifs_err(c, "failed to read inode %llu, error %d", inode->i_ino, err);
- 	iget_failed(inode);
- 	return ERR_PTR(err);
- }
-@@ -316,12 +316,12 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 	 * As an optimization, do not write orphan inodes to the media just
- 	 * because this is not needed.
- 	 */
--	dbg_gen("inode %lu, mode %#x, nlink %u",
-+	dbg_gen("inode %llu, mode %#x, nlink %u",
- 		inode->i_ino, (int)inode->i_mode, inode->i_nlink);
- 	if (inode->i_nlink) {
- 		err = ubifs_jnl_write_inode(c, inode);
- 		if (err)
--			ubifs_err(c, "can't write inode %lu, error %d",
-+			ubifs_err(c, "can't write inode %llu, error %d",
- 				  inode->i_ino, err);
- 		else
- 			err = dbg_check_inode_size(c, inode, ui->ui_size);
-@@ -357,7 +357,7 @@ static void ubifs_evict_inode(struct inode *inode)
- 		 */
+@@ -272,7 +272,7 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
+ 		if (pos == dir->i_size)
+ 			return 0;
+ 		udf_err(dir->i_sb,
+-			"position %llu not allocated in directory (ino %lu)\n",
++			"position %llu not allocated in directory (ino %llu)\n",
+ 			(unsigned long long)pos, dir->i_ino);
+ 		err = -EFSCORRUPTED;
  		goto out;
- 
--	dbg_gen("inode %lu, mode %#x", inode->i_ino, (int)inode->i_mode);
-+	dbg_gen("inode %llu, mode %#x", inode->i_ino, (int)inode->i_mode);
- 	ubifs_assert(c, !icount_read(inode));
- 
- 	truncate_inode_pages_final(&inode->i_data);
-@@ -375,7 +375,7 @@ static void ubifs_evict_inode(struct inode *inode)
- 		 * Worst case we have a lost orphan inode wasting space, so a
- 		 * simple error message is OK here.
- 		 */
--		ubifs_err(c, "can't delete inode %lu, error %d",
-+		ubifs_err(c, "can't delete inode %llu, error %d",
- 			  inode->i_ino, err);
- 
- out:
-@@ -399,7 +399,7 @@ static void ubifs_dirty_inode(struct inode *inode, int flags)
- 	ubifs_assert(c, mutex_is_locked(&ui->ui_mutex));
- 	if (!ui->dirty) {
- 		ui->dirty = 1;
--		dbg_gen("inode %lu",  inode->i_ino);
-+		dbg_gen("inode %llu",  inode->i_ino);
+@@ -483,7 +483,7 @@ int udf_fiiter_append_blk(struct udf_fileident_iter *iter)
+ 		   &iter->loffset, &etype);
+ 	if (err <= 0 || etype != (EXT_RECORDED_ALLOCATED >> 30)) {
+ 		udf_err(iter->dir->i_sb,
+-			"block %llu not allocated in directory (ino %lu)\n",
++			"block %llu not allocated in directory (ino %llu)\n",
+ 			(unsigned long long)block, iter->dir->i_ino);
+ 		return -EFSCORRUPTED;
  	}
- }
+diff --git a/fs/udf/file.c b/fs/udf/file.c
+index 32ae7cfd72c549958b70824b449cf146f6750f44..b043fe10e5d605b62988512bbda65bd357fb649a 100644
+--- a/fs/udf/file.c
++++ b/fs/udf/file.c
+@@ -133,7 +133,7 @@ long udf_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 	int result;
  
-diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
-index 694b08d27d7d9c7d9d7d9039f406637c702f8613..52c758c5290d8cc425fdc6d49c608d0cb0ba7ff7 100644
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -3561,8 +3561,8 @@ int dbg_check_inode_size(struct ubifs_info *c, const struct inode *inode,
- 
- out_dump:
- 	block = key_block(c, key);
--	ubifs_err(c, "inode %lu has size %lld, but there are data at offset %lld",
--		  (unsigned long)inode->i_ino, size,
-+	ubifs_err(c, "inode %llu has size %lld, but there are data at offset %lld",
-+		  (unsigned long long)inode->i_ino, size,
- 		  ((loff_t)block) << UBIFS_BLOCK_SHIFT);
- 	mutex_unlock(&c->tnc_mutex);
- 	ubifs_dump_inode(c, inode);
-diff --git a/fs/ubifs/xattr.c b/fs/ubifs/xattr.c
-index c21a0c2b3e907c1572780d4a3e48cc9d2a11b9d6..b5a9ab9d8a10adcf49e6d7228d385cb986e6e75e 100644
---- a/fs/ubifs/xattr.c
-+++ b/fs/ubifs/xattr.c
-@@ -76,7 +76,7 @@ static int create_xattr(struct ubifs_info *c, struct inode *host,
- 				.dirtied_ino_d = ALIGN(host_ui->data_len, 8) };
- 
- 	if (host_ui->xattr_cnt >= ubifs_xattr_max_cnt(c)) {
--		ubifs_err(c, "inode %lu already has too many xattrs (%d), cannot create more",
-+		ubifs_err(c, "inode %llu already has too many xattrs (%d), cannot create more",
- 			  host->i_ino, host_ui->xattr_cnt);
- 		return -ENOSPC;
+ 	if (file_permission(filp, MAY_READ) != 0) {
+-		udf_debug("no permission to access inode %lu\n", inode->i_ino);
++		udf_debug("no permission to access inode %llu\n", inode->i_ino);
+ 		return -EPERM;
  	}
-@@ -88,7 +88,7 @@ static int create_xattr(struct ubifs_info *c, struct inode *host,
+ 
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 7fae8002344a0e1e7e51022e97f1e0e2424185f9..902f81729bd886a534c9da644771c7c04c067cbf 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -147,7 +147,7 @@ void udf_evict_inode(struct inode *inode)
+ 		if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB &&
+ 		    inode->i_size != iinfo->i_lenExtents) {
+ 			udf_warn(inode->i_sb,
+-				 "Inode %lu (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
++				 "Inode %llu (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
+ 				 inode->i_ino, inode->i_mode,
+ 				 (unsigned long long)inode->i_size,
+ 				 (unsigned long long)iinfo->i_lenExtents);
+@@ -1386,13 +1386,13 @@ static int udf_read_inode(struct inode *inode, bool hidden_inode)
  	 */
- 	names_len = host_ui->xattr_names + host_ui->xattr_cnt + fname_len(nm) + 1;
- 	if (names_len > XATTR_LIST_MAX) {
--		ubifs_err(c, "cannot add one more xattr name to inode %lu, total names length would become %d, max. is %d",
-+		ubifs_err(c, "cannot add one more xattr name to inode %llu, total names length would become %d, max. is %d",
- 			  host->i_ino, names_len, XATTR_LIST_MAX);
- 		return -ENOSPC;
+ 	bh = udf_read_ptagged(inode->i_sb, iloc, 0, &ident);
+ 	if (!bh) {
+-		udf_err(inode->i_sb, "(ino %lu) failed !bh\n", inode->i_ino);
++		udf_err(inode->i_sb, "(ino %llu) failed !bh\n", inode->i_ino);
+ 		return -EIO;
  	}
-@@ -390,7 +390,7 @@ ssize_t ubifs_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 	int err, len, written = 0;
- 	struct fscrypt_name nm = {0};
  
--	dbg_gen("ino %lu ('%pd'), buffer size %zd", host->i_ino,
-+	dbg_gen("ino %llu ('%pd'), buffer size %zd", host->i_ino,
- 		dentry, size);
- 
- 	down_read(&host_ui->xattr_sem);
-@@ -498,7 +498,7 @@ int ubifs_purge_xattrs(struct inode *host)
- 	if (ubifs_inode(host)->xattr_cnt <= ubifs_xattr_max_cnt(c))
- 		return 0;
- 
--	ubifs_warn(c, "inode %lu has too many xattrs, doing a non-atomic deletion",
-+	ubifs_warn(c, "inode %llu has too many xattrs, doing a non-atomic deletion",
- 		   host->i_ino);
- 
- 	down_write(&ubifs_inode(host)->xattr_sem);
-@@ -641,7 +641,7 @@ int ubifs_init_security(struct inode *dentry, struct inode *inode,
- 					   &init_xattrs, NULL);
- 	if (err) {
- 		struct ubifs_info *c = dentry->i_sb->s_fs_info;
--		ubifs_err(c, "cannot initialize security for inode %lu, error %d",
-+		ubifs_err(c, "cannot initialize security for inode %llu, error %d",
- 			  inode->i_ino, err);
+ 	if (ident != TAG_IDENT_FE && ident != TAG_IDENT_EFE &&
+ 	    ident != TAG_IDENT_USE) {
+-		udf_err(inode->i_sb, "(ino %lu) failed ident=%u\n",
++		udf_err(inode->i_sb, "(ino %llu) failed ident=%u\n",
+ 			inode->i_ino, ident);
+ 		goto out;
  	}
- 	return err;
-@@ -652,7 +652,7 @@ static int xattr_get(const struct xattr_handler *handler,
- 			   struct dentry *dentry, struct inode *inode,
- 			   const char *name, void *buffer, size_t size)
- {
--	dbg_gen("xattr '%s', ino %lu ('%pd'), buf size %zd", name,
-+	dbg_gen("xattr '%s', ino %llu ('%pd'), buf size %zd", name,
- 		inode->i_ino, dentry, size);
+@@ -1641,7 +1641,7 @@ static int udf_read_inode(struct inode *inode, bool hidden_inode)
+ 		udf_debug("METADATA BITMAP FILE-----\n");
+ 		break;
+ 	default:
+-		udf_err(inode->i_sb, "(ino %lu) failed unknown file type=%u\n",
++		udf_err(inode->i_sb, "(ino %llu) failed unknown file type=%u\n",
+ 			inode->i_ino, fe->icbTag.fileType);
+ 		goto out;
+ 	}
+@@ -1942,7 +1942,7 @@ static int udf_update_inode(struct inode *inode, int do_sync)
+ 	if (do_sync) {
+ 		sync_dirty_buffer(bh);
+ 		if (buffer_write_io_error(bh)) {
+-			udf_warn(inode->i_sb, "IO error syncing udf inode [%08lx]\n",
++			udf_warn(inode->i_sb, "IO error syncing udf inode [%08llx]\n",
+ 				 inode->i_ino);
+ 			err = -EIO;
+ 		}
+@@ -2224,7 +2224,7 @@ int udf_next_aext(struct inode *inode, struct extent_position *epos,
  
- 	name = xattr_full_name(handler, name);
-@@ -665,7 +665,7 @@ static int xattr_set(const struct xattr_handler *handler,
- 			   const char *name, const void *value,
- 			   size_t size, int flags)
- {
--	dbg_gen("xattr '%s', host ino %lu ('%pd'), size %zd",
-+	dbg_gen("xattr '%s', host ino %llu ('%pd'), size %zd",
- 		name, inode->i_ino, dentry, size);
+ 		if (++indirections > UDF_MAX_INDIR_EXTS) {
+ 			udf_err(inode->i_sb,
+-				"too many indirect extents in inode %lu\n",
++				"too many indirect extents in inode %llu\n",
+ 				inode->i_ino);
+ 			return -EFSCORRUPTED;
+ 		}
+diff --git a/fs/udf/namei.c b/fs/udf/namei.c
+index 5f2e9a892bffa9579143cedf71d80efa7ad6e9fb..ccafcaa9680982decaabc180833b67ace5c92973 100644
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -550,7 +550,7 @@ static int udf_unlink(struct inode *dir, struct dentry *dentry)
+ 		goto end_unlink;
  
- 	name = xattr_full_name(handler, name);
+ 	if (!inode->i_nlink) {
+-		udf_debug("Deleting nonexistent file (%lu), %u\n",
++		udf_debug("Deleting nonexistent file (%llu), %u\n",
+ 			  inode->i_ino, inode->i_nlink);
+ 		set_nlink(inode, 1);
+ 	}
+@@ -809,7 +809,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 					       &diriter);
+ 		if (retval == -ENOENT) {
+ 			udf_err(old_inode->i_sb,
+-				"directory (ino %lu) has no '..' entry\n",
++				"directory (ino %llu) has no '..' entry\n",
+ 				old_inode->i_ino);
+ 			retval = -EFSCORRUPTED;
+ 		}
+@@ -821,7 +821,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 				old_dir->i_ino) {
+ 			retval = -EFSCORRUPTED;
+ 			udf_err(old_inode->i_sb,
+-				"directory (ino %lu) has parent entry pointing to another inode (%lu != %u)\n",
++				"directory (ino %llu) has parent entry pointing to another inode (%llu != %u)\n",
+ 				old_inode->i_ino, old_dir->i_ino,
+ 				udf_get_lb_pblock(old_inode->i_sb, &tloc, 0));
+ 			goto out_oiter;
+@@ -869,7 +869,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	retval = udf_fiiter_find_entry(old_dir, &old_dentry->d_name, &oiter);
+ 	if (retval) {
+ 		udf_err(old_dir->i_sb,
+-			"failed to find renamed entry again in directory (ino %lu)\n",
++			"failed to find renamed entry again in directory (ino %llu)\n",
+ 			old_dir->i_ino);
+ 	} else {
+ 		udf_fiiter_delete_entry(&oiter);
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 27f463fd1d89e8ae4844cd70c291d737aee1589e..3a2d66c7e856383cc5c8a605180a9582396ba805 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1166,7 +1166,7 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		}
+ 		map->s_uspace.s_table = inode;
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_TABLE;
+-		udf_debug("unallocSpaceTable (part %d) @ %lu\n",
++		udf_debug("unallocSpaceTable (part %d) @ %llu\n",
+ 			  p_index, map->s_uspace.s_table->i_ino);
+ 	}
+ 
 
 -- 
 2.53.0
