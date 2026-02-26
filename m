@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9D3FD45FE
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:53:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E71BDFD45FE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09EBF6B0088; Wed, 25 Feb 2026 19:53:55 -0500 (EST)
+	id 572116B0088; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0601B6B0089; Wed, 25 Feb 2026 19:53:55 -0500 (EST)
+	id 53D746B0089; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF8FC6B008A; Wed, 25 Feb 2026 19:53:54 -0500 (EST)
+	id 473356B008A; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF90F6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:53:54 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B3A3513AA0F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:53:54 +0000 (UTC)
-X-FDA: 84484785588.29.CC2A4F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F1A194000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:53:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xqlkl38o;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 35DDD6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:54:40 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 045701602CF
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:54:39 +0000 (UTC)
+X-FDA: 84484787520.17.9C45BBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6782C1C0008
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:54:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GreAoEyx;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772067233;
+	s=arc-20220608; t=1772067278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MP3At+V5QSmekCI1bwLN/NiPOKrXJZ5DwcbD+tHfk5w=;
-	b=aBcpFU839YSZNpwc5xrotbkyYSIlXALsQ8v7rl9ePpxHSIVQXzU7QVnfqDHhbGUw+xG4Vq
-	7Hy9QYoL+qCdSLlGjLbgLJN9cvxMTJBgroZooTljSK1RJZWP7H8148JCOMe9SCykV/C+pI
-	FotBL26cUzZ7RT8cnUxZq9r9x+qI1Fs=
+	bh=kCGgfLyIzohTL0EhS4g472GMW4/UMF10Ji0K3AJdvNQ=;
+	b=LLspSzBxjWS6MHMJJqKHk5UBgvqgddD7gwVrOCA3FoV1ecIssfLhVwEx7YrGOCfpdavfPh
+	juAolVhGDlsE5VjyZhecujKfipx0KRoR81q8wzzjYTNUYlA0K1OJvYdpqrxiynurLN+mtg
+	4e8sdsEjOBdONM0cST//2b6b3wrAEe0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xqlkl38o;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GreAoEyx;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772067233; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772067278; a=rsa-sha256;
 	cv=none;
-	b=rHEdTCMy/uDrEjNhLK1slCAztPzF0aQ76pep5VhZYJgdAY0FginCkxKipYF8sjZjVO1EL5
-	d6pMJrzzLgVuW6F8AvUQ910Lj7cxOdfb4v7MlkyYnTd+FYx+KDf9iyEWIxRTX9MkQ+vkKP
-	RMWENP9CKWFhseAnW3yCUGJh/3R4IOk=
+	b=aCAhJ3XL1qhN36TkaTg1SnxYgSFj18G689lvKFCnX1Lr3j9dyStadLSYcglmpFV1htcXmA
+	F+WJUSwxqDfUBvII6gKqoqaoZnxNMVgMXTEQt0ge8T6+UPlW14ky7fVek/xjTT/BqHm0TJ
+	KyyvI6KCD0CGYaZz2J3ooKm6qfJyrGY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EBA9243302;
-	Thu, 26 Feb 2026 00:53:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64945C116D0;
-	Thu, 26 Feb 2026 00:53:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDA9D600AD;
+	Thu, 26 Feb 2026 00:54:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5F5C116D0;
+	Thu, 26 Feb 2026 00:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772067231;
-	bh=H+4ZFB56eGq4gNOwEmh7VtVx1y/BR3AOfSM4+GziBoQ=;
+	s=k20201202; t=1772067277;
+	bh=N92T+3E8LhZQO5VlmuG98fMnfwS5aJm8dE5mN5TOOPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xqlkl38otYDSZdSJptQyN0H83BcVNsYv/0+EPC7EBKPWvPIMIWovn+bgfZftbUmjp
-	 S2AWI/ciM1Ayfn+pk72wGKwm1WECAEsguLw3YxEpCFuspjPTgN6vqwXnvRsCezrKBf
-	 TJHE7SWpexdjA6Ry8U6dWZe0ZTYEJTNCJm+1intc7XOyS5i3KP6MhlFwdFp7V3iazl
-	 7chYT+RIJDWTG/aEvv44utQuEpCgBO+AXKPhvRtIUAhw5oUnmsZH2v2UPFFwqVJmMs
-	 d/H/ccfoNMnBg+ZuoGLX3o5hpGQ1InrLkgGPKpt+2MHo9Cm6YJgt63sIBbbu3cJ1Vd
-	 Br4VJZ9P2yTSw==
+	b=GreAoEyxNF1eCY+CIwrbtaTJSy8AV5QsujAvVhjp7m7ngK8yWSr9tyhAOIP7jbLqg
+	 FHKjWE3mTCyROdAbSdDehqcSGc7iDgX0sE0iAWIDHeNWn0EM3tEac8t1nQxuwpbwUH
+	 SNy8bLmX5q5ZnTKUDMBIckIMitO7xkRNF6GM4z9Ze66Wa/Wc87gnkaG0EYHC0kQ69P
+	 5ar1/ljiF1kT6uhBEQ3e8yJXk+REgpcy2VP1wue02mKeKsqmXmeV07HAHNea5xlADN
+	 7JS6b05uPvt1YReO3pRWF7S7gWeGu111D4xLAT/V2O5K0UeJ3uzPJJbH7u9SxwZZ7l
+	 sYweuYj21WS1g==
 From: SeongJae Park <sj@kernel.org>
 To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -77,23 +77,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	ajayjoshi@micron.com,
 	honggyu.kim@sk.com,
 	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v3 1/4] mm/damon/sysfs: set goal_tuner after scheme creation
-Date: Wed, 25 Feb 2026 16:53:48 -0800
-Message-ID: <20260226005350.7612-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v3 2/4] mm/damon: fix esz=0 quota bypass allowing unlimited migration
+Date: Wed, 25 Feb 2026 16:54:34 -0800
+Message-ID: <20260226005435.7720-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CALa+Y15MQecahb-FfeQEJK2uwFdC7VxUH7GHCfSvy3uQ_jNC_A@mail.gmail.com>
+In-Reply-To: <CALa+Y15BbvgKttRRxrNrr38y3Pt4A+MP8tfQZZ7LVyoUS+_0fQ@mail.gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ogq6c14a9d7waik8ic7gusgwh1yfk4pd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1A194000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772067232-946844
-X-HE-Meta: U2FsdGVkX1/2l59ylE8NTDW598Xn4uvJIIu0yj11PUAeHaGHxezTz8uHpIS36ylEaFlr4LnvW0hzJusFAXZSR0WdkmEy/uiooJzStFC51FT3hrRYLKqBnWRaiyFFs6Cm2KODG6PKSIUmBr2ohJ90jwa2rLeG8PzptZeDDs2neZv9XAcSYYQHIARr/NI9IEXFR1HcoNyqOgWWUTV9OKBhK3DL124D+MinrAg8km2uAD47D4WyA/3YmD/fv3rnwvE0SYYUTzZyPwZUJkrn5GOZW+pThNym/uM0G2OGdfCtgm+8YJ7kgpCTbvsMnMYJZrhz1QLyD8Nsf/tcVvfnII6U3F6JoROF72baj6yhgPLoRsI10en9/flhEP5yAaOcJp4oc6yFbkhtnIh9+R2vN3/LI0f6qHM0p0XRAZRZfgUiLNLy4SeKtj7oSktpxeISLLqutUgrEcO1XAGP87LT/SzEZK6aSnZGdx5aPZ236NbjmG54lc22zU+OntDHZkG4cKcWkCNc6739t3r9SsJ2mvWQRtccoGjCBVO6U1YVx+P8EciCY+hxKhax28LERCuulSXoqol9Nmff8QqcSAswH2WndJRog/rUjLvnbVlINFfn530tC5U3cfl7Aoa6NNYlEz5hFP4OV5P5LYzI7n4Lkvu6yMM2bD74eX7BQ4MP5NtYS0wXH1bJswAt+84ox9RpgZA3TPteXLLLrQ7+vsTjzbBEZt+muK142U4+vVRaYPtjI0eAAFoZnlTVQhr5V9saum8wYorFg+ewJbaBNgDkgibx7irBomc+DYe/T38mQjvplJTIk5ls5JdpsBsM9yPW8dW3n7niMgn7T59CgyfKEpMXVjng8eJiN8BTivsbaTkFHUHFzItzN1Og2C2ui60h7YTarUpW5NCb4KBS4SOHTcJbzhYbSFzedjL66WCyevEfmiQPAppkCXclLFQtgyICID3nqsmVoSP4/IIxO92e60p
- vbM/n6Gd
- O0iBc59fTD7Ld+WDkIyIb0api2Spx6rusmj1rEf2vRfJ1l97CCQQwnfj0v2yGTuJA794Gn3atazBHRWkP+wc5bdNSjCpt6MzUFhsPKwSnuQSF+SZnVH3qnyvOaI5TtQcbkbFGnEvPkJa40LIV4OG9jIYtP3aniTcJTYaKKxAzEGqAUwVXKmJrhvSp2H9on6TQiOUHEv7MyMPQxlbPmZtOulb7AeWSpdq3xbMVO84T1uWjE/LFOI9Prf8KxyHQ9QYXGyMAkxu7yMHjq8C05lVt4NNki6qOxISHBkBJ+RYFeduQA+dKWRKXE+61q7JxMxx3c4X3aoOcXPRis4oZgGK9MMUTo/G8SjGMTbSMbHHRN2WuAgfsoOD1CZyojBMDzjtalvRMU5uGfrVGLAYqE4n+CtdjP83Vb8SmQ0R3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6782C1C0008
+X-Stat-Signature: c5isk8zjo7oafe7aej6jb1cd3su9ggnw
+X-HE-Tag: 1772067278-828780
+X-HE-Meta: U2FsdGVkX1/js6xrWd9GPnXo4uIJ9momh+k7masP830Ssy/9+iJlwp/aeWtbcUJgOqkxbg9o9HXPLDrP4COUVV08Vv5RiMhH89xLlZEzAmMXOQuHBrlmTn5ee9fuPkKxtjd2nAcrA/9lN+x9tAlsOKa676Vh9LxP+pF/mKyZfEu02pAvKz9lY/YxfP6bSk5VbCaY7hS1oZJXHJpBVin2CRuEyVXuUkG0O5r0xYQ0du7MSoOA5q+YC9RXoZsxKMd7ICw1aTIYmistjqTUBJomNzEwP9F+JW0urcaHbJ6SwaYAsvUi8M8s7DyN1+oztpmxhE0xY38LdXssO9Y0mYbSmr9Y64seBaxcUbthldkQowJRSbPmK55ibFBauHCjPa8YdBn6gyMuv8ttLjnOX8mErosJHRUx3C+rhyhwTUHwViOntVzjg2xiiaqLnp+7wGQ0aaLUBanz7APdZs/6vKF9SLd+DxD4/RK1aQ2eKsMZy8s3R1u29TUr8fo9clH2Rj2JEZotX9S/q6SYcImZezuyB+ueAPBMAG96/p1EIrTPKpOGBT1nbHJaxQ7PafCj+dEZySNyTH62RTN+BSDWIeN1eNbaIKwBaO9KSRS5B6H/3jmKQ+LRqfK2WH7ahZz2xGos73o4R98gH4P2i2Ows7Ad7S57uS9cxtKPnfMp/xdWHAINqyUUARORbKPzo5ZcgvCdlnqDnm0sCwjTx63ogu9N1jsOQ/N592WvQNuNoBqfSkd5cE9BonZ5VjEvRAxZsJweBOz2WpwxHhe5sIcexIhaOwTCpED0DoH7dE3cUSpTQu9pcQ/cYjjqIjpKUsiAZC9hZ7q/g6YedZFU2AdXBJWQgDtZD2nKaO/twqrLcu4ABFt+6xFiOH1aCBfqmcgmtF20mG9wuJyH79BO2CsMunZqfQXoKJoKzUXktcnxpvOe6xe46gRfgH0m0bCUvW39GQIJvdHvJiU23cRiftzqh2o
+ mmF9a53r
+ fxFp7+74j+fVZ60sw0OCPt8Co1n+D/kLr//XXLfQ4laljE+91m4T91Ezd3YhUCJ48hr5TriY5A+7OOwg2A8KSxBiQfXdZGtB44W4GCmt/ZRy1IDFz76ZSFdvSDBpyFlA4BCX0hu5LwI+wkLimrGp/Xw3TBlmhOT9jnhpTD5SyouXfhaLIhUYT/HD/CQ+OLBszOAUBMfOG48BDWx6fVOvwcAf7BUzHOgy78xs1YZSYNef2YC9aDfcz4MILqinJkhnmDdNaQTskTmQ2B03/EwCHfIFfoChUHP9DYENq6G7kRrdwF8SwMdOT+WI76xVA0+dj3IgHyHPlYJF9gY/SjhCH9BtrG78Bn+op0jLqZ8Eru915ne0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,73 +101,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Feb 2026 10:23:09 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Wed, 25 Feb 2026 10:28:30 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-> On Mon, Feb 23, 2026 at 5:40 PM SeongJae Park <sj@kernel.org> wrote:
+> On Mon, Feb 23, 2026 at 5:54 PM SeongJae Park <sj@kernel.org> wrote:
 > >
-> > On Mon, 23 Feb 2026 12:32:29 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+> > On Mon, 23 Feb 2026 12:32:30 +0000 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 > >
-> > > damon_new_scheme() always sets quota.goal_tuner to CONSIST (the default)
-> > > regardless of what was passed in the quota struct. This caused the sysfs
-> > > goal_tuner setting to be ignored.
+> > > When the TEMPORAL goal tuner sets esz_bp=0 to signal that a goal has
+> > > been achieved, the quota check was not actually stopping migration.
 > > >
-> > > The comment in damon_new_scheme() says "quota.goals and .goal_tuner
-> > > should be separately set by caller", but the sysfs code wasn't doing
-> > > this. Add explicit assignment of goal_tuner after damon_new_scheme()
-> > > returns to properly apply the user's setting.
+> > > The condition:
+> > >     if (quota->esz && quota->charged_sz >= quota->esz)
 > > >
-> > > Without this fix, setting goal_tuner to "temporal" via sysfs has no
-> > > effect - the scheme always uses the CONSIST (feed loop) tuner, causing
-> > > overshoot when the goal is reached instead of immediate stop.
+> > > When esz=0, this evaluates to (false && ...) = false, so the continue
+> > > is never executed and migration proceeds without limit.
 > >
-> > Thank you for catching this, Ravi!  So, this is a fix for the RFC patch series
-> > [1] that not yet merged, right?  I think this fix is better to be carried with
-> > the series, and squashed into the broken commit to not introduce unnecessary
-> > regression.
-> >
-> > So, if you don't mind, I will squash this into the sysfs-schemes part change on
-> > my tree, with your Co-developed-by: tag.
+> > Nice finding, thank you for sharing this!
 > 
-> Yes. Please go ahead and squash it into your series.
+> Thanks!
 > 
 > >
-> > [1] https://lore.kernel.org/20260212062314.69961-1-sj@kernel.org
-> > [2] https://lore.kernel.org/20260212062314.69961-4-sj@kernel.org
-> >
 > > >
-> > > Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-> >
-> > Reviewed-by: SeongJae Park <sj@kernel.org>
-> >
-> > > ---
-> > >  mm/damon/sysfs-schemes.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
+> > > Change the logic to:
+> > >     if (!quota->esz || quota->charged_sz >= quota->esz)
 > > >
-> > > diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> > > index bbea908074bb..fe2e3b2db9e1 100644
-> > > --- a/mm/damon/sysfs-schemes.c
-> > > +++ b/mm/damon/sysfs-schemes.c
-> > > @@ -2809,6 +2809,9 @@ static struct damos *damon_sysfs_mk_scheme(
-> > >       if (!scheme)
-> > >               return NULL;
-> > >
-> > > +     /* Set goal_tuner after damon_new_scheme() as it defaults to CONSIST */
-> > > +     scheme->quota.goal_tuner = sysfs_quotas->goal_tuner;
-> > > +
-> > >       err = damos_sysfs_add_quota_score(sysfs_quotas->goals, &scheme->quota);
-> > >       if (err) {
-> > >               damon_destroy_scheme(scheme);
+> > > Now when esz=0, (!0 = true) causes the continue to execute, properly
+> > > stopping migration when the goal is achieved.
 > >
-> > To follow the order on the comment ("quota.goals and .goal_tuner should be
-> > separately set by caller"), I'd prefer setting the goal_tuner after
-> > damos_sysfs_add_quota_Score() call here, if you don't mind.  Let me know if you
-> > prefer keeping the current order.  If not, I will just make the change when I
-> > apply this to damon/next.
+> > But this code is written in the way because the current code assumes zero 'esz'
+> > means it is not being used and therefore be ignored.  This change should be ok
+> > for your use case, but could introduce an unexpected behavioral change for
+> > other users.
+> >
+> > One easy workaround would be setting esz_bp with a value smaller than 40960000
+> > instead of 0.  That is, esz_bp is the bytes in bp, so setting it smaller than
+> > 40960000 will result in making it effectively zero, e.g., like below.
+> >
+> > '''
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2623,7 +2623,7 @@ static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
+> >         unsigned long score = damos_quota_score(quota);
+> >
+> >         if (score >= 10000)
+> > -               quota->esz_bp = 0;
+> > +               quota->esz_bp = 10000;
+> >         else if (quota->sz)
+> >                 quota->esz_bp = quota->sz * 10000;
+> >         else
+> > '''
+> >
+> > But maybe there is a better way to cleanly fix this.  Let me take a time to
+> > think more...
 > >
 > 
-> Agreed. Please make that change when you apply it.
+> I understand. Please take your time. I'm happy to test whatever approach
+> you come up with.
 
-Thank you, I will do!
+Thank you for being flexible, I will do!
 
 
 Thanks,
