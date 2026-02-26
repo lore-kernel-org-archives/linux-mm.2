@@ -4,141 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EF04FD9E1A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:11:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93B5FFD9E14
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:16:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22FBB6B015D; Thu, 26 Feb 2026 17:11:21 -0500 (EST)
+	id BE55A6B00A5; Thu, 26 Feb 2026 17:16:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F0A26B015E; Thu, 26 Feb 2026 17:11:21 -0500 (EST)
+	id BBDAE6B00CD; Thu, 26 Feb 2026 17:16:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B2CD6B018B; Thu, 26 Feb 2026 17:11:21 -0500 (EST)
+	id ABCCA6B025C; Thu, 26 Feb 2026 17:16:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D57246B015D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:11:20 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 838DCB809B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:11:20 +0000 (UTC)
-X-FDA: 84488004720.17.3CD29E9
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 87734140007
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:11:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=doW9DqJ8;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of yuanchu@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=yuanchu@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772143878; a=rsa-sha256;
-	cv=pass;
-	b=s2j/oucna5GJBz9QqYrOS7zRR85kg1qGhFemPPglQTXORo8LGWM3F1o5jVOqbR+6N9cbBw
-	tiO6bUn2BV0tpI7XVrwmyXcf46HNiY1DADJEDJlHStoMnyXgzZRf2fJ9E1MbbwXHnsr/wZ
-	ITCpD6lscyJAdxHEyCYDt0dZ4Q4GBdo=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=doW9DqJ8;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of yuanchu@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=yuanchu@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772143878;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E8FB6B00A5
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:16:38 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F2AC8B2D8
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:16:38 +0000 (UTC)
+X-FDA: 84488018076.25.BB880AF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 76BB616001A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:16:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X1Wf65kj;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772144195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pOhaTi5HaJ97iJf/0vPTQE+hsCcmtEeTgjTJobMqU5E=;
-	b=P5aviOuP2bYZdKfQjBGRCG3dSOQGrPd1FFr1As4zdL380F8wkpK9nU8gOeqI4g0hG2tgJQ
-	ovhln+D/Rqnv6Ppnr9FS4IBDABrggktWVV3mrMVkoW7YDW1bwax+XDvFskirPNJ0rdeXeh
-	kPtqN2BBy3kCrfqzJK5UeN62MipZ1LA=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1270fc2bdf2so3600c88.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 14:11:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772143877; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IYEeppNmSktsiI195FWZpQFopVT11poWzwiwaex46jOCzG3WIxcYBnCh9PskFScO5q
-         PQmKCRhbpnLB4PixoONWJCNTzsW8UkM0FWe2L7+yOsMMyRUFXiFyvuCD3oyR+AQe71ea
-         LWOccJALR6mRqRx7HVXtcTd+FUbcePyKivLEJA8/Qvb+/iV2V8d7CoDjLt98S76FiwQ1
-         OeCID46Tli6KOyqWm9abfsi9k47g255zCZUD3iEyNVU1Nm7HooslbPoNklosHeRj/48v
-         h8oADtZKRMHp6pL5gOrG0EX+4zRWeFj6j3henJFW7EzEjPi7C+QMoLYUFasWEu4N37EQ
-         jX6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pOhaTi5HaJ97iJf/0vPTQE+hsCcmtEeTgjTJobMqU5E=;
-        fh=9St5+wXzcvXWD3mq2vPh4DovynKck/tNggXmkklhxUk=;
-        b=Q+oSznNHKbQCJxjReLB9R3cfm0wut84JLs4RCBZ9pO/eA+wNfyeOp0v7GIIdz9+b2B
-         cLg4WSokbVJUIVhUVPr1EGGkYfkIivz5O8zr46BEoZ/UucGvp6eP764a8dGffT7UAufr
-         fV6a4Ti4dGzhTjgY5/2sTFPx5+gNCX22+M+6gXDzadAJuCDhk42pdIxkhx6yy27OgT8p
-         UnTQIUSeeHitF/8+ZZaoEsausrX456i75SDIa4BZe/NCHEcBX1Qfq4yVFQxw9O0DJC2f
-         YAwjeqynoTssG0Q4shE8VhyNtBzO+nUUSKRgiQEtLIjWbRVUR7OMWtgZOJ5HoEnRI8Ra
-         /+Wg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772143877; x=1772748677; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pOhaTi5HaJ97iJf/0vPTQE+hsCcmtEeTgjTJobMqU5E=;
-        b=doW9DqJ81NOe6KXqic2OJqOMnozRge6XpaQEEyMwcOi2ZkmM8egy/i1SHl2nin9GeK
-         dHXEgW0LFCumQMLeRuGfHA0yxg5gqmxY5ELvOcLUgYdFeYx1iVzzcD/T6Cah8UQu38LY
-         CwFu0x6M8b2nL8Rpp18GGaP32bK3E5qWrZL9UewsxHAFE+cC5HI480UW9kDheI7yqFu6
-         woz2P+wVSZJzjImaR5kSEEbC72j2lpWNfhCk35j9ReFiefnp1KrDUG9al2RnGjJWRuBz
-         WGgzFED5PJ6Y1LNtiKxWfaYyDxduZqiFNTZY5zfVNkW+1zt1Wdr4JYaZ7SldHQhWd5aG
-         nWEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772143877; x=1772748677;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pOhaTi5HaJ97iJf/0vPTQE+hsCcmtEeTgjTJobMqU5E=;
-        b=l14rIOoa3S7QUS9kIQl6ayrYjdLZwObWWlFZ6Z5VFwP80P3pdhx42jLo/2GUthDs5U
-         n7x+qCZ+bmHDZtJREeTXxkHKKKP0YKycOwyQqbTtEpgFp3gdT0F9zV962ZKAXrob8Dhz
-         9ZY9XY2PBsSWFNeVTStXd8kLDwqVJ0MMYt0QrJdVNbcVJRxQrfIaeKDx89HGoq6iGN/i
-         S4QKbxN18wn9121STkyMDBOV5dPyrrxIOJQ1gqhsBrNes6DOu0iTWUxMXkPMkXKdNbqg
-         rVOOq/pLCrvzsKoUD3rIE/ygZiYaI+27twfHH5BMWab6jJTvPv5a8VqtspN0uPXvkmmu
-         4nkg==
-X-Forwarded-Encrypted: i=1; AJvYcCVugBRKolZ+PC1YNxu9y3ivffz47wHVi/r6GeDdZiihz7SArL26pQkEmE9DsH4vgRkMs/rK4jkqdg==@kvack.org
-X-Gm-Message-State: AOJu0YzdZeE0jsLSFlv/mhhHhAfXq3L+dalh+lQWA6SbMvcchEGGThPS
-	nqxerzBqf/XxdjsSUwH9ve9RqCKCUAuFWgamQ6uquRMu8hOUKp+BLCi8K9OZ6ADnTzRb8tBvogD
-	rd/HjXUUo4OCUg8c9+pG0qNoqaEK89sLX7o/NOeB3
-X-Gm-Gg: ATEYQzySyAOKGs7HuBqdhCdakfHyFbtoMWd6sJTYUQWNO/zlovJ9WJrhSylI2OpH3Is
-	eDhdK/l85frGUGZ7Xjb/ZvA9ukEZzAvHvfyQ61mT9I7XpdeaLjfiMB9f5h5mDApxMt6i35gKLU9
-	b8WBetdU6DFmmwzpn0e0kwG8Y9VfZZjvCj0ERfwVjI8hZoOLYWJpgEtmauzijLHkQeOrgXBU9Y3
-	wGchnh0img0svMCTz2uL78LikNXcEJOQrG9zSRfvXquBlatNRks7nhlRt1+d+Hl7b4Vz+3t49mv
-	Qe09mL5evrQX5WTasa/59Th5X6l2WfuwgI8KAw==
-X-Received: by 2002:a05:7022:983:b0:123:3640:33e4 with SMTP id
- a92af1059eb24-12788fdf4cfmr293567c88.18.1772143876621; Thu, 26 Feb 2026
- 14:11:16 -0800 (PST)
-MIME-Version: 1.0
-References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com> <CAGsJ_4zatnuLkCJyDe_o_yXmhngpc54kV6b7M3tu6JyvF-ZxDw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zatnuLkCJyDe_o_yXmhngpc54kV6b7M3tu6JyvF-ZxDw@mail.gmail.com>
-From: Yuanchu Xie <yuanchu@google.com>
-Date: Thu, 26 Feb 2026 16:10:59 -0600
-X-Gm-Features: AaiRm53duTGxs5_rOU69bwiqKsWqvxGqDIz55VhSjBILktAbzzPIrPzsTkwYxkE
-Message-ID: <CAJj2-QEHAk-H6SSJY5OmLYuVyLRacSEgUupKaKefFFwGg7CftA@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and Challenges
-To: Barry Song <21cnbao@gmail.com>
-Cc: wangzicheng <wangzicheng@honor.com>, 
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>, 
-	wangtao <tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>, 
-	zhouxiaolong <zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "weixugc@google.com" <weixugc@google.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
-	"willy@infradead.org" <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 87734140007
-X-Stat-Signature: q3t79d3dugir6mopj615znn5cdmorza1
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2twt4f2FJmYcN6Pw5QmZNRqw7SJ/w14xOtAZ1HzA/5U=;
+	b=3BFqvmMmRDvZv8y4DrRoDEv16MkOaIvCoZWMu93x4MdQhtLWPlIwm1BKb7IQc1mS4A0qq/
+	OUdABWfTaEzTNROwxtR04DZkET7WCjn32NEB+fRwGkfDukzwW7jRwViXrq2jZkkR3TyKYt
+	uBcMq6fVwvtDIMfk9tPCb2T2LxdA3TU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X1Wf65kj;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772144195; a=rsa-sha256;
+	cv=none;
+	b=QFDoQ7iqh7HH/PDdDrzqtjrkcDjX6FnzMtEXiCp/Cig7aFfPK86HXNyPilIw+38g0hzUNO
+	cb8/7hSvoGVoFaXOZ7+CpKsG8nKrhDpIeOqmk7KS1prgwLnIyi4Yon/ioldI3bDBVmKdul
+	OhWLexQLaroYBUl6+WjlNJiUXMzRaPU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 65D5B40503;
+	Thu, 26 Feb 2026 22:16:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B976C116C6;
+	Thu, 26 Feb 2026 22:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772144194;
+	bh=BE0fpb4BhRoem7NlGuVlvqeNimwZSbowvwDgnccDyFg=;
+	h=Date:From:To:Cc:Subject:From;
+	b=X1Wf65kj8xm3BDnBvQQlzXyKgJ2d7LCGkq4Nf8xLr52BY+yXsI61lTG0PF2taALKN
+	 nkUmWNT1ktI5VTO9rYzFQNPcM3bkvIuqFJIH9FJue1jsO0GShq13bms6vH9Jxza9+i
+	 m2mjxNvKb4a+V+dqgKBXp0mdxngHsrjmVbzYZVEU=
+Date: Thu, 26 Feb 2026 14:16:33 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ mm-commits@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 7.0-rc2
+Message-Id: <20260226141633.fd525fd4a4fe2c0cc07596f5@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 76BB616001A
+X-Stat-Signature: 1zydz43fjzsdxwu7zswom54sd74jsmoo
 X-Rspam-User: 
-X-HE-Tag: 1772143878-295082
-X-HE-Meta: U2FsdGVkX1/igrprN30gyGj629numVSJM8YFk/5ULxuPFRWNmV9NsH0ujnczKvai5o7gfuDlOhFyg/5pdorgggd3pdmWR++DtDyxU8GjSpxHUuRxZZuEC6wf5Dab099nOlw4IkoAPZlBxzCBholie2WtRn1jBvwce1YMZhDGJAFZqW+Gyi2NkeiogrFpyh5HcL04Ufo0G2EzHmo+8EdFZNhcXDmt//1H/9B57JdTORDUfrBTyfAMdwf0bciTUNL3sXLqx0hvPLfPSibz0FV2wl86t1/H1wCyYb9oUzwWQYP70cHYyKCphZgIsB2E5VjOAMJP1wROFxGp1y4koOV8S9np62bIl8Tman71v3nVZts/7O+zlisZDg1QT7WxphqDZq3ke00u8Hvlrwn8fGP1G0amgVfQX4EsgzM5QlUU3UOC4r0VneFfKrLtViHUuLjsRraYlPtJjkvXzeBZ/cCgiHq6ewdZtJkMxvUQLLryidc1h6/ZXhLVxGuAulW7a7YjIHXW8C8IvCKqJIww1sDkY4UrZQa8Y49nxCp3Ze2gOVGzblo5o6vgfyerTigbuLfCTlhNBXV5bo7cNGO1xvvubO4Gp+XU4s6jXnF1rj2aQ0qbRQ+BJmqhscyNA5ghI49NO6d/id+Cr1X9d3EGF8LqZ8A4wevlPGoMmwOpnFhnRSus3yYtBX8+SaItQ12xuO7jWkFo4JT2zyyJZS9TcJz0RNuXPX3V1O4JrDzkKNt8vhhUeTgc9p8nfsyajGd2324GPkS7a4btnIgr4EuBPrIRZ9KyokUpQ1SjfZr9WIy6BPMHTfuIB+5w9WOXsk0ivfEo8dSCe/G/xY8349W3aNoPUmGcHFarb2Jv7bv8utUt13msDtHvhp26bqLOwA5b6t+hC8pKnlk62gVbKzwKFEp6c4D/ntOgIRcoGMaaf4cx/Foff8A6MfsivM4c8CZ48rboLOzSi0nrB2b1xggVS4g
- u+PdrfCo
- DR2Kccldy4LamF068zcaextVwPkpvT9tqIvZt9KuAHkGWZdGXgZx1ChYkDKokX4+BgamqNzhFXDXQWHTyyTXfZj0UFwruGy2x1hPQWg+MauU4nvERr15VRVO8IVL9oA3Ay8eZuJYEIzynSqU/fQMJ+ecBeNPoO2nKXfGDpE4K/Ez7GBJlSn309NeoCMwIvzibFUhH9b5e/dMtdVqTd4uW8zH7tpH77gTlkEFXrHkllAqz6h/W0TUuWfayVvAOG4EuAn0Ih7jEkS7vcvjAli9GZcrmQaRCXK/W/bW/6BNnaPajaQHJqh6x8yTjBhDZLO2oSlqQ1/OVVskBND7UqxBOIxWAe6jQBnU7EhUiHo6McAD6v+g=
+X-HE-Tag: 1772144195-473523
+X-HE-Meta: U2FsdGVkX1+/XH7eBsYfugUPQqytOaxcUtWzILAZHlSRmAPm36WULpSQ6dOUO2ulksESxVpMDgZSFmhGtZJl0pv4cQpBkC23FOMsF1Z4xK5U8QZ9Nt7Ss9lGevP3+p+acx6xwf16oD0cRF59JEDpYsheKkzP7VYfoLCw9neyct+mkUB578bsz3Fiku69mqjttKCqOz+RFGwE3x9HDtVByX2evh2KxqUGdN4vibG+nyBOdf9mq9s0tB/V2A7zSt34o6xnNZkdeQGmmMnVfUjVxm+maS5MmjNtLGm6bvU+dchKTscedb+XARkTAfBNbC6p3MKGC3fjlh4yzSPcjj13A57UXPI1LW01WJhd8+U3ONfBsotTlbILZqoFar/GKo/BI139alW+mgqO9a1dJdKOLFrQB1QBoeXswgUQITnyJiICi79szUuiOcB+p9uBuqDAELT8nHJg79gcpGQ/sBnmSw3XZXOoYOKsFfUiz8usAPqQNduZ68ZzpALEqAlNMd7io5/gvuso/pUKeksZyOOpPxpTYoZs74XfdAiwRqmdKvGLFAgycaTSRUGsD0pjU8FxUNZ0C4VQ8hHtYgl/uGhfdqle55hQes7dXMexmyBOS1T3eFNu8CTS1HezWTiK+qSmaMNDJnpClc6YmcZXHHCWDVIIZpLpkK6J6WOPAz+aOMB/V4Vay7LTrKzvySSCsovB54pXj1eTM5LZcrKnsjNq0fzviFNAWSabR49bc6k8WSdxaMqwCjyeLT919Dpm1NSPYJru0yc/NA0cv3dA2CsF/F1GfM+gYImrcy9JTWvWMCrCqH+sYWlgdlQ/JqCw0k7AqGYafNVBnyH/93qzJNv07upExxqPbfKPcmZCw/1DkvQxGCuKZ/jH18QS35RE9fhox6ZAkowju6msIfB2r35R5BvT/Db//A3Sm7Oc85q4CiBgOY6C36sPck6W/2rR9dNLL0rRWOTpVFCsGTS8ve3
+ fBeFgk6z
+ 4C0BCMGjXrjCtaPr3UohYxuq7VMvB/O9z+dywp/Smp/UwfMbMNlQwFGNLhD+pi+7n23Ee1pCUpEkL49qZDAD5bvpBapszJIjWO316KbwffwtpWGyDNZ47OYZnj71fbsQTciT/D8JXgg731bWio5sb+7eeMV8DpLg8cMuduMC0bsdBCSIQAxIgX0LHrsxWA+b2VTTocajr3V9Cxxfub2oVzYY4oF5Ofkbz+LcFyCGnuLstLLYNlWHdWjiTbbwRfrHVAD+F+/89yuT4Gr1/lN6nYqt/lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,98 +86,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry and Zicheng,
 
-On Tue, Feb 24, 2026 at 2:23=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
-e:
->
-> On Tue, Feb 24, 2026 at 11:17=E2=80=AFAM wangzicheng <wangzicheng@honor.c=
-om> wrote:
-> > *snip*
-> > Below is a short summary of what we see.
-> >
-> > Q1: anon/file imbalance and drop in available memory
-> > Android apps workload show a persistent anon/file generational
-> > imbalance under MGLRU:
-> > anon pages tend to stay in the youngest 2 generations;
-> > file pages are spread across multiple generations and over-reclaimed.
-> > Tuning swappiness to 200 and ANON_ONLY does not fully fix this.
-> > On a 16G media workload we see:
-> > MGLRU: MemAvailable ~ 6060 MB
-> > legacy: MemAvailable ~ 6982 MB (differs by ~1G)
-> > Today we mitigate this via explicit memcg aging in Android
-> > userspace [1], which is a vendor-only workaround.
->
-> One fundamental design of MGLRU is that file generations and anon
-> generations catch up with each other when the generation gap reaches
-> two or more. As a result, even if swappiness is set very high, its
-> effect on aggressively reclaiming anonymous pages is much smaller
-> than with the traditional LRU.
->
-> One workaround is to force old file folios to be promoted to relatively
-> younger generations, but this could also cause problems by clustering
-> file folios in the newer generations.
->
-> I wonder if anon and file generations can progress separately to some
-> extent.
->
+Linus, please merge this batch of hotfixes, thanks.
 
-To provide some context, the file and anon generations are coupled
-primarily to simplify the MGLRU logic (Original Yu Zhao's intent).
-Separating the two should allow for more flexible policies for sure.
 
-> >
-> > Q4: Lack of global hot/cold + priority view with per-app memcg
-> > Android uses a per-app memcg model and foreground/background levels
-> > for resource control. root reclaim lacks a cross-memcg hot/cold and
-> > priority view;
-> > foreground app file pages may be reclaimed and reloaded frequently,
-> > causing visible stalls;
-> > We currently use a hook [3] to skip reclaim for foreground apps.
->
-> Interesting. This somehow reflects that the LRU lacks the user=E2=80=99s
-> context, especially on Android systems=E2=80=94for example, which apps ar=
-e in
-> the foreground, which are in the background, and how long an app has
-> been in the background.
->
-> But this is not specific to MGLRU; it can also be an issue for the
-> active/inactive LRU?
 
-Pardon my lack of familiarity with the use case, in what ways are
-existing memcg protection features insufficient?
+The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
 
->
->
-> Additionally, I=E2=80=99d like to add Q5 based on my observations:
-> Q5:
-> MGLRU places readahead folios in the newest generation. For example, if
-> a page fault occurs at address 5, readahead fetches addresses 1=E2=80=931=
-6, and
-> all 16 folios are put in the youngest generation, even though many may
-> not be needed. This can seriously impact reclamation performance, as
-> these cold readahead folios occupy active slots.
->
-> See the code below and the checks performed by lru_gen_in_fault().
->
-> void folio_add_lru(struct folio *folio)
-> {
->         ...
->         /* see the comment in lru_gen_folio_seq() */
->         if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
->             lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
->                 folio_set_active(folio);
->
->         folio_batch_add_and_move(folio, lru_add);
-> }
-> EXPORT_SYMBOL(folio_add_lru);
->
-> I could have submitted a patchset to address this by initially marking
-> only address 5 as active, and activating the other addresses later when
-> they are actually mapped or accessed.
+  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
 
-I need to read it more closely but that's a good idea.
+are available in the Git repository at:
 
-Thanks,
-Yuanchu
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-02-26-14-14
+
+for you to fetch changes up to 410aed670cddac1de4f0c2865f30ec623fd20f78:
+
+  MAINTAINERS: update Yosry Ahmed's email address (2026-02-24 11:13:28 -0800)
+
+----------------------------------------------------------------
+12 hotfixes.  7 are cc:stable.  8 are for MM.
+
+All are singletons - please see the changelogs for details.
+
+----------------------------------------------------------------
+Alexander Potapenko (2):
+      mm/kfence: disable KFENCE upon KASAN HW tags enablement
+      mm/kfence: fix KASAN hardware tag faults during late enablement
+
+Arnd Bergmann (1):
+      mm: change vma_alloc_folio_noprof() macro to inline function
+
+Daniele Alessandrelli (1):
+      mailmap: add entry for Daniele Alessandrelli
+
+Deepanshu Kartikey (1):
+      mm: thp: deny THP for files on anonymous inodes
+
+Kalesh Singh (1):
+      mm/tracing: rss_stat: ensure curr is false from kthread context
+
+Ming Lei (1):
+      mm: fix NULL NODE_DATA dereference for memoryless nodes on boot
+
+Phillip Lougher (1):
+      Squashfs: check metadata block offset is within range
+
+Pratyush Yadav (Google) (1):
+      liveupdate: luo_file: remember retrieve() status
+
+SeongJae Park (1):
+      mm/damon/core: disallow non-power of two min_region_sz
+
+Vlastimil Babka (SUSE) (1):
+      MAINTAINERS, mailmap: update e-mail address for Vlastimil Babka
+
+Yosry Ahmed (1):
+      MAINTAINERS: update Yosry Ahmed's email address
+
+ .mailmap                     |  5 ++++-
+ MAINTAINERS                  | 20 ++++++++++----------
+ fs/squashfs/cache.c          |  3 +++
+ include/linux/gfp.h          |  7 +++++--
+ include/linux/liveupdate.h   |  9 ++++++---
+ include/trace/events/kmem.h  |  8 +++++++-
+ kernel/liveupdate/luo_file.c | 41 +++++++++++++++++++++++++----------------
+ mm/damon/core.c              |  3 +++
+ mm/huge_memory.c             |  3 +++
+ mm/kfence/core.c             | 29 +++++++++++++++++++++++------
+ mm/memfd_luo.c               |  7 ++++++-
+ mm/mm_init.c                 |  6 +++++-
+ mm/page_alloc.c              |  3 ++-
+ 13 files changed, 102 insertions(+), 42 deletions(-)
+
 
