@@ -4,93 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC1FFC591C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C49F5FC591C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4C46B0088; Thu, 26 Feb 2026 05:02:50 -0500 (EST)
+	id EE7C26B0088; Thu, 26 Feb 2026 05:05:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77EA86B0089; Thu, 26 Feb 2026 05:02:50 -0500 (EST)
+	id E95436B0089; Thu, 26 Feb 2026 05:05:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6641C6B008A; Thu, 26 Feb 2026 05:02:50 -0500 (EST)
+	id D945F6B008A; Thu, 26 Feb 2026 05:05:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 580C56B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:02:50 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B121C34CD
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:02:50 +0000 (UTC)
-X-FDA: 84486168900.28.775E49D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5293FC000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:02:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k5mcq+9j;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C34776B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:05:01 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DC035C3BF
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:05:01 +0000 (UTC)
+X-FDA: 84486174402.06.F0A838F
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4798420008
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:04:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of pmenzel@molgen.mpg.de designates 141.14.17.11 as permitted sender) smtp.mailfrom=pmenzel@molgen.mpg.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100299; a=rsa-sha256;
+	cv=none;
+	b=2x70KFuxV8zevMRUytOGXq1+dTjlg/w8Lr+HVkthPCaeZwTR8GYU0D3zdO6PdG3XHW9mde
+	QAXQem/laVIyyVRZWsf+OBfDNN2VGxpyJLM009nayfkUH6+CawPFKqsVHPUOty1hisp5Zh
+	syftZFOqDE6VTOaE1nJIH2h29Uro/hw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of pmenzel@molgen.mpg.de designates 141.14.17.11 as permitted sender) smtp.mailfrom=pmenzel@molgen.mpg.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772100168;
+	s=arc-20220608; t=1772100299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UQ32N0ggUz+EQ4Cl4Yp/xkAKLBUsCr8TSpCw1q8krdE=;
-	b=3b7oGn8iPHhZXWOdWbZ+n8o3nmgs2drEGffrkBQEbSd2i60m5b4alWaIyji2I08m1LsUo/
-	jDmsxLVkqNoUFv8N6VQdFM131a4RM5njp4XE3tUWTsKQmwapPy72Zc3HsNRHp4Ntlmv4wg
-	Vex0L/dSmnIQRXYWgBjihtXuH8isFR0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k5mcq+9j;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100168; a=rsa-sha256;
-	cv=none;
-	b=J9cqDsP1GCgIe4999G+yORtmWm/uboMqNaag7+VVoNFF9yX3USqxM0Kj9XhcuCXi7uoJ1U
-	f4XUgITAjQkpfLZbdzchxaeLjglgCopX3Uhy2dSRMjykJlsoxzPr2gZA4QrPMCHR4ofy2T
-	kV0dT4aq6eHQA3SCBmfTKwmq/HhS2BY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A7B94418E;
-	Thu, 26 Feb 2026 10:02:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2891FC19422;
-	Thu, 26 Feb 2026 10:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772100167;
-	bh=biKqRyvpWuguXFm/8QPIOZ5OjWV5g0hWS/d8h9nLg4k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k5mcq+9jHOWQHwCsIwdPytzf22xUG1PXgxXrh1jZEGbut8FBQSnZffk41jdeNMa9r
-	 RxCt/YDDTmSJfBMNY6FUuoxqEzsV7QIHEfzVdHXNlRZoxCZ9iZTNvJcTIiuYapadcv
-	 FCwvSYs1yjkihMGxMaewrJBiKgzeM5TOMiwZBkYvF9ya+o8JPgNBRQ1J/rI/Tl6Kyy
-	 2tjnysSQ1QaNQvG2ArYo5qapPY1hDURLbBSh0nHrPSahNAswY7MitJ5FZCJ9Xbcnr0
-	 XlCkAbf+6rQCu5UnaqNY/wAVwTOCV0b+Cn0Bz85PBkzDuIf6alj1usL6I/dg6qN4mn
-	 ofmO9koIbDOtA==
-Message-ID: <751a94a7-d5b2-415e-9591-a7d97b452d81@kernel.org>
-Date: Thu, 26 Feb 2026 11:02:43 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Lf5IZoMgp2m/i70iKYKC3yuPdqrFPWP9u0BkL4lOUo=;
+	b=fCvLPoNIuMcQTh0gTHeRUE60qPsxs6cZbmo8FEM/nAvjanss1HZH+qeV3f3QCQsjRV1a2n
+	JZgD0N/IXDZmAiaeF5WPfv4e9Sdfo1xaEcLcEDP8wctlcZtJVMjOBDSEY9u5zHdyHpQID0
+	MxiNKq1PqJBjcGiHlcwSFcBFomhbwcw=
+Received: from [10.108.10.175] (unknown [194.94.98.184])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 95D5A4C4430406;
+	Thu, 26 Feb 2026 11:04:24 +0100 (CET)
+Message-ID: <5b8c1811-c9d9-469a-b8d0-992814a11b9a@molgen.mpg.de>
+Date: Thu, 26 Feb 2026 11:04:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slab: Saturate to SIZE_MAX for allocation size overflows
+Subject: Re: [PATCH] block: remove bdev_nonrot()
+To: Damien Le Moal <dlemoal@kernel.org>
+References: <20260226075448.2229655-1-dlemoal@kernel.org>
 Content-Language: en-US
-To: Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20260225013954.work.319-kees@kernel.org>
- <aZ5zjIpYZYoc-LSX@casper.infradead.org> <202602242315.C9D5430C7@keescook>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <202602242315.C9D5430C7@keescook>
-Content-Type: text/plain; charset=UTF-8
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
+ linux-raid@vger.kernel.org, "Martin K . Petersen"
+ <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, David Sterba <dsterba@suse.com>,
+ linux-btrfs@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20260226075448.2229655-1-dlemoal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wyh3cxonrnsfx1amw8gz7xa95rdgwyqs
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4798420008
+X-Stat-Signature: o7miqzpftdftd84gzf9d3w5tpk587s3z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5293FC000B
-X-HE-Tag: 1772100168-79173
-X-HE-Meta: U2FsdGVkX19qTKzrhhiUkhpADUqBet4Z783J498dwDi+whC2D+lyr9H1ktpUPeSxsC/KKgPcAAE9zwR00md9XnLxBRqhsFhh8FcxQ6XRec6beu9lXrPf2IIpQM8ozLBPd18jibnYFmhxdl8JErMWvbdMJE4HI66+L/PUxyIMaoxBOAB0s1shVYacy5RbZWK6NiqU4iubEc+T0OHzADKqsB3y42C//60Go2tnn6LES0G+z/Q16W4AF4z56zd/4Vv42vvncxeWQkkBBcsWLTgc4W3lsvt/tkpFjitaC7EAZsXRYtrZV98EDpYPUllhoruBjmGH6txWlqkM8RpLYBQvbK/Y4i7k01zcGo+G/t1Uek90uPa5o0q4xY3OixhZz4h4d1X8fxaxHQMFXCNFQGZ7lH0fuW2LXRawmf3f89x3KiUJ2uGr0Op4iCG1l0ijYT1Y+Ccr56QDcN3RQXjGDfbhfKR/P9boYRT3R+C0/OWQ1BJ7izXVMelkuKTeNHFGPvnE+JB2TFRigb/9uaVudILDZ9FbI9Op62S2lAz9a79lrOXMiWTfT9Kwbid9Q7NoMZvAT3k9RNfAI/J1uZWnPa6HWUMUfG2i25wcrfqanMYV0kNnlyZy6a9AWKu87EKCJxKiIjmZwnGPHyf4mmTdZP6CFJo07YJIlboa30Hu1h1Sl2XvnrFOoIxrp5AywQVRxne0wWOStLmr/b33Em8hevX1bPwrcWj7wmYOPd5WD/TcYYP61BS0II7DAx5EZIgsk23+Xr8q3WH+NgomYWY1lvQMhzbhSqgsldW/iLhvwHAET9Zc/Bt5ur+b7vMTlqlW288UkHtXfL5Kocw36xYlin7UcCnGWyClxjLFkhES6qrlqNZzqWu3TvGrzPQjUDEN0s2Ac9gpTOfeZeBIyQDTcPgLMB6+1K7onTSeQWpe4W7hqWtVOEviRZTBIDjoLVYHx2Ja8ihfimDekQGhLyLb9Eu
- W6FUbqZ4
- 5IJyRSl/HyXGlq2ILhRmoKkFkQJDXf9q0K7njJy6Z/kYkyEZ7jz5BrwBLIZ/qZdYasWYGzzXhBC+4ICLeClVbF1TFmU4/6KjvAltEPuy2wecxYzTVU6ZLIQCJVXbYK4ME6QEAjfa9uN4P/nr0xB5clCQdvF4zrVOUb81wTvhM2z91hKI99udhahb9pkvqZUOKCXysgct3hM86bznCKNbCCwkdNOHChqNbFWGagnn3IcLzmdTEQlJOxCSjFwwV9lwggJ37xnt0koTZErx2ARAbCOg+lJj3Q9h8GAjDifRF1soDiWvEYovwY8awGQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772100299-374084
+X-HE-Meta: U2FsdGVkX1/ICs09dEpf0g76dQMib9zklVcl03J9ximdZ2qUmA+t131o3+tvB9HrtEgoL3Pl4+5evMTyfSE0I7KMTzpGVEMvJqp5UkZXgnF1AERmS6SiO73GSAuMTG7/XjVDVj2iN1wBemfgDkFrAFOz2HCdglkZ16SzRX6CMNInqMSaZkOZN1jhtXouLMvELoxi+RPiMcPDoKBzKD/4dvy6Kq3BI8t90OoSC3B6SGNiqz1ppjH0G+sdRnYglHL92Po4bfEMqYiA9ldQiL7VebrDY7XapCuD2O5yvK8Lh/dYaU8f85jEm0XOJUR/6seq5HD3o5fy0DyxXLuD0NZR7UskvOh7jNLqRlyUtrLK6NHyqRVpeD/7WKFNl72DdqBge58Pe87FXJQ1gtdOOFjxcE/WDXd8UBaXfUHY565oLe0HLcuNeXkMxKcsIpam5KurrNJZXf1fFBN5R/l/kIpqpzCCGxjdJCOdR8zjH4caCVaNEEEULhfuo948JjVfluXiQRfuHst70abPJ/PDIdu1ZxxZZRzReAP4emR6yWC3sNAT0qrcNSZa1VjDlJOe2/+G33KdmI2n1VV1WTLIYEyCIZ6IMb5KhwXnweI9QPILGX9FSNurkXCCc+A4H/6nqqdf9vEs0YN2PhYg7WP/SQu3TZF7RLNwcHjD7gBJRUMyznQVVDOBakSwdHk25j6O3cLxiprU4ZpG7QEh0WbsVOAk7xFsvvp6nGvmahcPmyzMEGgb9j5+Ib902KTzjL1YHJ5tfuJDrmA2liDyaIah3hxLHCRUlgD6m9Psqa52QaxSdtgmH/+kIXtRLD5GUCRwgkukG+JFeBAuHRrqiJb+RO8FrPXxadXBinfcT/46JOCh0dyu7uRFqJ3IhfLYV0VOxHtd4h54jCDOhi+QD833to6D1oJEt4IZIEXQTUBExZQllRb4mTNT6edxJ00BogKrlbmSXPZUmujepQTL4ataFiR
+ 54pOfpIO
+ gvFJji1Fdjb8VIw+eIvKBIFHKXgmJcJRc2bjSYy6na1it/xfAHT9BaoCB+OmSlQtVYIZPouFE4JSzNm9WvG+ZT4M1+IrhUh+66K1AK+r/a8oRuRa3VL/WlyLMxCwow1aLySnZe6KTO/WY9GYbi7YrFC1qBlZlFQAlkG/X7xDo2UEWjH77ZkDkr/GH/uP3DmtHCzpK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,27 +90,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/25/26 08:15, Kees Cook wrote:
-> On Wed, Feb 25, 2026 at 03:59:08AM +0000, Matthew Wilcox wrote:
->> On Tue, Feb 24, 2026 at 05:40:02PM -0800, Kees Cook wrote:
->> > +++ b/include/linux/slab.h
->> > @@ -1105,7 +1105,7 @@ static inline __alloc_size(1, 2) void *kmalloc_array_noprof(size_t n, size_t siz
->> >  	size_t bytes;
->> >  
->> >  	if (unlikely(check_mul_overflow(n, size, &bytes)))
->> > -		return NULL;
->> > +		bytes = SIZE_MAX;
->> >  	return kmalloc_noprof(bytes, flags);
->> 
->> Wouldn't this be better written as:
->> 
->> 	return kmalloc_noprof(size_mul(n, size), flags);
->> 
->> (etc)
+Dear Damien,
+
+
+Thank you for your patch.
+
+
+Am 26.02.26 um 08:54 schrieb Damien Le Moal:
+> bdev_nonrot() is simply the negative return value of bdev_rot().
+> So replace all call sites of bdev_nonrot() with calls to bdev_rot()
+> and remove bdev_nonrot().
+
+Is the generated code different now?
+
+Is it worth the change, as it looks quite subjective if you prefer the 
+one or the other way?
+
+> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+> ---
+>   drivers/md/raid1.c                  | 2 +-
+>   drivers/md/raid10.c                 | 2 +-
+>   drivers/md/raid5.c                  | 2 +-
+>   drivers/target/target_core_file.c   | 2 +-
+>   drivers/target/target_core_iblock.c | 2 +-
+>   fs/btrfs/volumes.c                  | 4 ++--
+>   fs/ext4/mballoc-test.c              | 2 +-
+>   fs/ext4/mballoc.c                   | 2 +-
+>   include/linux/blkdev.h              | 5 -----
+>   mm/swapfile.c                       | 2 +-
+>   10 files changed, 10 insertions(+), 15 deletions(-)
 > 
-> Sure, I can convert them all that way if that's preferred?
+> diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+> index 181400e147c0..cda6af0712b9 100644
+> --- a/drivers/md/raid1.c
+> +++ b/drivers/md/raid1.c
+> @@ -1878,7 +1878,7 @@ static bool raid1_add_conf(struct r1conf *conf, struct md_rdev *rdev, int disk,
+>   	if (info->rdev)
+>   		return false;
+>   
+> -	if (bdev_nonrot(rdev->bdev)) {
+> +	if (!bdev_rot(rdev->bdev)) {
+>   		set_bit(Nonrot, &rdev->flags);
+>   		WRITE_ONCE(conf->nonrot_disks, conf->nonrot_disks + 1);
+>   	}
+> diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+> index 0653b5d8545a..cfbd345805ca 100644
+> --- a/drivers/md/raid10.c
+> +++ b/drivers/md/raid10.c
+> @@ -806,7 +806,7 @@ static struct md_rdev *read_balance(struct r10conf *conf,
+>   		if (!do_balance)
+>   			break;
+>   
+> -		nonrot = bdev_nonrot(rdev->bdev);
+> +		nonrot = !bdev_rot(rdev->bdev);
+>   		has_nonrot_disk |= nonrot;
+>   		pending = atomic_read(&rdev->nr_pending);
+>   		if (min_pending > pending && nonrot) {
+> diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+> index a8e8d431071b..ba9d6d05b089 100644
+> --- a/drivers/md/raid5.c
+> +++ b/drivers/md/raid5.c
+> @@ -7541,7 +7541,7 @@ static struct r5conf *setup_conf(struct mddev *mddev)
+>   	rdev_for_each(rdev, mddev) {
+>   		if (test_bit(Journal, &rdev->flags))
+>   			continue;
+> -		if (bdev_nonrot(rdev->bdev)) {
+> +		if (!bdev_rot(rdev->bdev)) {
+>   			conf->batch_bio_dispatch = false;
+>   			break;
+>   		}
+> diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
+> index 3ae1f7137d9d..d6e3e5214652 100644
+> --- a/drivers/target/target_core_file.c
+> +++ b/drivers/target/target_core_file.c
+> @@ -173,7 +173,7 @@ static int fd_configure_device(struct se_device *dev)
+>   		 */
+>   		dev->dev_attrib.max_write_same_len = 0xFFFF;
+>   
+> -		if (bdev_nonrot(bdev))
+> +		if (!bdev_rot(bdev))
+>   			dev->dev_attrib.is_nonrot = 1;
+>   	} else {
+>   		if (!(fd_dev->fbd_flags & FBDF_HAS_SIZE)) {
+> diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
+> index 3c92f94497b4..1087d1d17c36 100644
+> --- a/drivers/target/target_core_iblock.c
+> +++ b/drivers/target/target_core_iblock.c
+> @@ -148,7 +148,7 @@ static int iblock_configure_device(struct se_device *dev)
+>   	else
+>   		dev->dev_attrib.max_write_same_len = 0xFFFF;
+>   
+> -	if (bdev_nonrot(bd))
+> +	if (!bdev_rot(bd))
+>   		dev->dev_attrib.is_nonrot = 1;
+>   
+>   	target_configure_write_atomic_from_bdev(&dev->dev_attrib, bd);
+> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+> index 6fb0c4cd50ff..c6e49eb74f3a 100644
+> --- a/fs/btrfs/volumes.c
+> +++ b/fs/btrfs/volumes.c
+> @@ -694,7 +694,7 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
+>   			set_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
+>   	}
+>   
+> -	if (!bdev_nonrot(file_bdev(bdev_file)))
+> +	if (bdev_rot(file_bdev(bdev_file)))
+>   		fs_devices->rotating = true;
+>   
+>   	if (bdev_max_discard_sectors(file_bdev(bdev_file)))
+> @@ -2919,7 +2919,7 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
+>   
+>   	atomic64_add(device->total_bytes, &fs_info->free_chunk_space);
+>   
+> -	if (!bdev_nonrot(device->bdev))
+> +	if (bdev_rot(device->bdev))
+>   		fs_devices->rotating = true;
+>   
+>   	orig_super_total_bytes = btrfs_super_total_bytes(fs_info->super_copy);
+> diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
+> index 9fbdf6a09489..b9f22e3a8d5c 100644
+> --- a/fs/ext4/mballoc-test.c
+> +++ b/fs/ext4/mballoc-test.c
+> @@ -72,7 +72,7 @@ static int mbt_mb_init(struct super_block *sb)
+>   	ext4_fsblk_t block;
+>   	int ret;
+>   
+> -	/* needed by ext4_mb_init->bdev_nonrot(sb->s_bdev) */
+> +	/* needed by ext4_mb_init->bdev_rot(sb->s_bdev) */
+>   	sb->s_bdev = kzalloc_obj(*sb->s_bdev);
+>   	if (sb->s_bdev == NULL)
+>   		return -ENOMEM;
+> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+> index 20e9fdaf4301..8a4dfe19878c 100644
+> --- a/fs/ext4/mballoc.c
+> +++ b/fs/ext4/mballoc.c
+> @@ -3836,7 +3836,7 @@ int ext4_mb_init(struct super_block *sb)
+>   		spin_lock_init(&lg->lg_prealloc_lock);
+>   	}
+>   
+> -	if (bdev_nonrot(sb->s_bdev))
+> +	if (!bdev_rot(sb->s_bdev))
+>   		sbi->s_mb_max_linear_groups = 0;
+>   	else
+>   		sbi->s_mb_max_linear_groups = MB_DEFAULT_LINEAR_LIMIT;
+> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+> index d463b9b5a0a5..e439d6fa8484 100644
+> --- a/include/linux/blkdev.h
+> +++ b/include/linux/blkdev.h
+> @@ -1467,11 +1467,6 @@ static inline bool bdev_rot(struct block_device *bdev)
+>   	return blk_queue_rot(bdev_get_queue(bdev));
+>   }
+>   
+> -static inline bool bdev_nonrot(struct block_device *bdev)
+> -{
+> -	return !bdev_rot(bdev);
+> -}
+> -
+>   static inline bool bdev_synchronous(struct block_device *bdev)
+>   {
+>   	return bdev->bd_disk->queue->limits.features & BLK_FEAT_SYNCHRONOUS;
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 94af29d1de88..60e21414624b 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3460,7 +3460,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>   	if (si->bdev && bdev_synchronous(si->bdev))
+>   		si->flags |= SWP_SYNCHRONOUS_IO;
+>   
+> -	if (si->bdev && bdev_nonrot(si->bdev)) {
+> +	if (si->bdev && !bdev_rot(si->bdev)) {
+>   		si->flags |= SWP_SOLIDSTATE;
+>   	} else {
+>   		atomic_inc(&nr_rotate_swap);
 
-Yeah I think it's better than effectively open-code the same thing?
+My point above aside, the diff looks good.
+
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
 
+Kind regards,
+
+Paul
 
