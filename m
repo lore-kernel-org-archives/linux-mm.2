@@ -4,161 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BECBFD9E1A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53485FD9E1B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 902EF6B0145; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
+	id 6A5116B014E; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ACE36B0266; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
+	id 6525E6B0154; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AFC66B0272; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
+	id 4FD7E6B0165; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A26C6B0145
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 098E11C0C8
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:52:34 +0000 (UTC)
-X-FDA: 84488108628.20.DDD51F7
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B3299A0009
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:52:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm3 header.b="o83TYSm/";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="m QieDi2";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf15.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.142 as permitted sender) smtp.mailfrom=alex@shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772146352; a=rsa-sha256;
-	cv=none;
-	b=T4e6TeQ5EXHD3YkwngDtCjlfKpA84LCzmeCzUAzPtDFZ9FrBVjEOJp4bvJmdAJYWMy1eF7
-	qeA2fGxE11rq+FBu3yVzuilZjLaofaF+6e5C+8Zu3b3eYrEVZSTvO+RG4H1bHe1H0mgzK2
-	c21Ag/9ibRugvWuZXoISLfrD26/POwc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm3 header.b="o83TYSm/";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="m QieDi2";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf15.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.142 as permitted sender) smtp.mailfrom=alex@shazbot.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 34C456B014E
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:56:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB10E140214
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:56:45 +0000 (UTC)
+X-FDA: 84488119170.18.C733184
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 30BB740010
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:56:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ln4pWb9Z;
+	spf=pass (imf07.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772146352;
+	s=arc-20220608; t=1772146604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=44uo4P/92yZYJcD163y8UHc8z0ZnnckxsAr9PpEhJjk=;
-	b=MUdYm/TkO+ultAm40iAPaJ3YOEHLiXWDV4EQX8HSAaLCQ3WfinvGEnWIxsAJz1Kx6He3M1
-	y+TDm42j0/Gtfbrf6E7RU28U4ZSQnvgeiIiMlr1pNAYZqeuAMuzX2ANQwv8XLnKwENLyUi
-	6nA2BMJ4LR/gGiNJz6KWgtbWYWUGoXA=
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailflow.stl.internal (Postfix) with ESMTP id EBF011300BCC;
-	Thu, 26 Feb 2026 17:52:28 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Thu, 26 Feb 2026 17:52:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772146348;
-	 x=1772153548; bh=44uo4P/92yZYJcD163y8UHc8z0ZnnckxsAr9PpEhJjk=; b=
-	o83TYSm/N5K9/2/Rtg8QOuuro4N9DEyyzUyMSplPsN/HHQ4SFtKbd1kGwp9qti8C
-	CvLnqaRv1nJft8p4Y0Kfx3UPhzpppkvrC3+lmXar4Ih+r8yDS0BN+r95ELWuTHYO
-	LCH/xD+NNQ8d3oFyo9vLoYiOMntUFokn9INVsNwb636AF3cZMrDdHlVhQMR4hO1e
-	7s/OGnE5phRQfxWBF2pc2Hg3jHNw/z+Oa4xIIRlaqUKDmzxaCH0q3AglMZJTnAod
-	GTcOFeay+bxbwjKYMCmBRbqswfGfBbi04mYW7an6R05gtlnDK29AoHRFU/SkoAEi
-	tVIotca6drSoW2xWOmNd8w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772146348; x=
-	1772153548; bh=44uo4P/92yZYJcD163y8UHc8z0ZnnckxsAr9PpEhJjk=; b=m
-	QieDi29aKWQhWaRpHtkJFXYVNhddIFR7f1/l5RV2JXj5JOe+34TRrGuQiPCDv/8q
-	sjM36sYZIDHM2TGPHAxCACtHKdowQytZzI4RflFQSb3CxaENKe8Em93flZZh1XI2
-	fjmRj009hat7tVQzvk6S123bFzQGqrO6/M+F9i94o1mZyJkarnMR7K8UZ54Bh24T
-	fNJNab9xC16c8ohNRSoahEGm5WdPpm7ZXwjCDtv+SC8JsjDGZsJdZDeAb0FOwzzL
-	1pOU0SrAsFwH342Fb6sIn9fs1m27yGiPdJBtFl9p6I7LXjWkkQds8iaA3hT0mKZu
-	hLXSXHpBe9Y8dHfXiA/Fw==
-X-ME-Sender: <xms:q86gaa0GCSBc5XmrtJOtc0A3ut03vk8J3s-GIS1-0yrWmZ63HMf-Og>
-    <xme:q86gaZ5VAVB5eigFLbsLhd_u2X8uOaH9nw78UFOeqIQwSAW7uVUtjwvXEDRvbgHdF
-    R2BaaKt1sSzbyyFclW2_Jo4xob0FFO9o6HKaqosuZvM9_8eUFDN2Q>
-X-ME-Received: <xmr:q86gaXHtzv04BUksDBjPA5ncTtb6reAZXM-aGVQmLA7HEu2rMLsN3egnp9Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeejfeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepgeehpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpd
-    hrtghpthhtoheprghjrgihrggthhgrnhgurhgrsehnvhhiughirgdrtghomhdprhgtphht
-    thhopehgrhgrfhesrghmrgiiohhnrdgtohhmpdhrtghpthhtoheprghmrghsthhrohesfh
-    gsrdgtohhmpdhrtghpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghp
-    thhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtth
-    hopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
-    sehgohhoghhlvgdrtghomhdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorh
-    hg
-X-ME-Proxy: <xmx:q86gaZ8IOgmE5jQ4E_zPNAkwAsNuDaoq9Ee8ASHZkDmvLycmY9W6Qw>
-    <xmx:q86gaRM74BtYK0cfgvaow8GWkJUAe5HqLvyQVzPqdfUk8SyqK2o53g>
-    <xmx:q86gadwTYJEI1Vb6JEv1mtsNrc-X6xUY5EjAoX5Q4RHmZ-5N99K_Ug>
-    <xmx:q86gabsZUyLA7ivoaXFaN-s7syAAkj4Ajry4CbETBa0CDmMYZBV4dg>
-    <xmx:rM6gab3exeKbhLg9LIZVoPa_QSXQHzpDienbmSCle7GUjyeehzyyTTDv>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Feb 2026 17:52:23 -0500 (EST)
-Date: Thu, 26 Feb 2026 15:52:22 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
- Alistair Popple <apopple@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
- kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
- Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>,
- " =?UTF-8?B?TWljaGHFgg==?= Winiarski" <michal.winiarski@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- Raghavendra Rao Ananta <rananta@google.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>,
- Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>,
- "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=" <thomas.hellstrom@linux.intel.com>,
- Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
- Zhu Yanjun <yanjun.zhu@linux.dev>, alex@shazbot.org
-Subject: Re: [PATCH v2 06/22] vfio/pci: Retrieve preserved device files
- after Live Update
-Message-ID: <20260226155222.5452a741@shazbot.org>
-In-Reply-To: <20260129212510.967611-7-dmatlack@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
-	<20260129212510.967611-7-dmatlack@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	bh=QKjw2490skdA7I90PoNooqy2Z5vbbaG3ix+lcITPfE4=;
+	b=SflQfT8NI9v8DBNby1BxEdYFBMskz8IvL+wsszHFUGzF/nrxKuFxQefTAHyrhk440URP3+
+	f3qbmD+sVweXXZHsRCH1Svc+Atlg98vHQcfTwGr/FYwdYU4OH6ObBNvuXUHJWCNpDXrJDv
+	XXYj9nzOckY8Av+dgRfISOuET4ctT08=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ln4pWb9Z;
+	spf=pass (imf07.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772146604; a=rsa-sha256;
+	cv=none;
+	b=hrPurbnCFmYU3RjGGOHXh3g0WTpDwfMlOcri7/W4gmoO3IM0M+iIU97FpN2wk1JFVePH+2
+	6mb0rksuqzSCjIdpa8CnyVr8WKE/56/RQewqBoTE27mtinEC15fOArEv+HGyvr0vkRWtY+
+	H97O7iuyCJqnm6gGuhQYebAzmI9jBec=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E46C60103;
+	Thu, 26 Feb 2026 22:56:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E473EC116C6;
+	Thu, 26 Feb 2026 22:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772146602;
+	bh=ElkHN/R2fcBT5rLZGFbsSk4BZBEcI1Z5rkz7cnL9q58=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ln4pWb9ZIa3iii1vd5gskrCoKmm1t9tEjYVEd5fbke5FD8fPQDsw2mkbqPb5Bnw+S
+	 z3+EiWtdlhrUEY/TzIpfb4TaDwuEYYePiDKvB2OL6xLfeGklpk4bZ6oZPa7zFemslG
+	 rGqmK29WoeRiHAvoCn9ydRfTOnwb3b8GUvcCmKy2jWa2lV07OB5alxRd6yvLlYu4sb
+	 GaIsxiVCRS8rqhZm6xuDYkrjN+izm2sJOCaV0gENsM1vxdjD6EFWvjkPYxW+Mk0ppk
+	 CgdPwGLujPkowNzYZB2g8SKWMopeLJvORgQ3TQwNfrH9FkU9y/THXIshdB3DErq5Vf
+	 e80DkaSCt9oCA==
+Message-ID: <044291bc-9841-44fe-813e-c50772962f09@kernel.org>
+Date: Fri, 27 Feb 2026 07:56:18 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/61] vfs: widen inode hash/lookup functions to u64
+To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>,
+ "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
+ Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+ Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Bharath SM
+ <bharathsm@microsoft.com>, Alexander Aring <alex.aring@gmail.com>,
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>,
+ Salah Triki <salah.triki@gmail.com>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+ Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+ Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
+ Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Yangtao Li <frank.li@vivo.com>,
+ Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+ David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Dave Kleikamp <shaggy@kernel.org>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall
+ <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
+ Zhihao Cheng <chengzhihao1@huawei.com>, Naohiro Aota <naohiro.aota@wdc.com>,
+ Johannes Thumshirn <jth@kernel.org>,
+ John Johansen <john.johansen@canonical.com>, Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>,
+ Casey Schaufler <casey@schaufler-ca.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>,
+ Martin Schiller <ms@dev.tdt.de>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
+ linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
+ v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+ ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
+ jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
+ ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
+ selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+ linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
+ linux-x25@vger.kernel.org
+References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
+ <20260226-iino-u64-v1-1-ccceff366db9@kernel.org>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260226-iino-u64-v1-1-ccceff366db9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B3299A0009
-X-Stat-Signature: sffecknyz5ngq66nzh1qb96893jt3snf
+X-Stat-Signature: 7qoq1jxcfwpqy3y8cpyz84htadp1e1hw
 X-Rspam-User: 
-X-HE-Tag: 1772146351-952177
-X-HE-Meta: U2FsdGVkX1+ldS21zPh29C1mMEKRBbc9IpFVkY2ellUj7ug5ucYsD3pCIxhudZ2C9eK8pBjw6j+0pi2nS0KlzKMsCRDVLtQ4Wcr9mdeFFojbDtqA04YJT5gomoJu6ckv88bQZV9sbNaldg+UASNe4ONAzdFIIBMUuMm4Bz83AbIkUgx46NMh5XLm/jtMCwQqwGPJtXJcQGj1xxYIgN4GZGiwQM905n3zL4Hj4qRZ7LbgVUb3+6vWIAjByutj1uaSLNXEiTx8QdrG2t163Qrr/gUjCOytMU2xJSCZzfesT5PedVWZruVT2e/NkzuiaPpmJfAI8J2/dCK3ojq3etJrJ85ykGUxm0EC74Vnig4IwENM7DoKBr5FGPLlIHtuRNLW34/JZzenO984ZFQcqMYgzVOdpHelvu70UgbZK5FzSSNYYZkegtM3rUDD1MMXj84S/D0gItMF8KZW5u57Uh3KG+JGauw+nMXD0U2v4nBxDli8/nUaoaMHzJl8jz2iREphKbXnJQvw9e4ngVR5e9LRdI+gMowX73Nzlb7tkpxqJYgbCfaPBnUXn6BpR2V09LdFh5gRqC78f+hna5qa+WhlIMB/eKjts9En+htJhfUKz4jPUkliC+Y8WIXR00i2/0etmcYPCJ4iPa17Oz6Nyu5x8dz16dvIBMSbFR1vlAA6Wb7iqvksjVX1MzulsfxQrDOtTIHWYZ9JsV+ieaEdocfS5f2MFXcCw7Xztlq9vE0ZbpJ9r6Zxc42EX8F7hMtkqdyxCr0+Zga4a7a5haPAurOYZyHNzEXzCtj8tl+BWpZU6LeRlpy4lzOPZfVu+bfgb2HS+patHQScg0LvAB/Qv8Y3TtGSIhDSc1yzcLbwBJFrQf3gvHCuSxYAlKGIMU3Gh9DDDV146pFL/zTWMdw07YfH5Ri8nlgTSsC+ptaI/3+8XNUlvkJYaBe+luntadHT5/dnnVjiuTk9hmSIc+N+oQI
- 19P9Sr+0
- k7PBjVCt05s+m6Oxdeiwr3v5nDZFiQNUOQwZS2N/9WzRKJbU9FopX74GcioZ4UvZfBDxRYy8mwHackOEmHjQ31cAjvYE7DhqV9XF7rUlws1RvXGtsECo+WC9CG7RPYfr2M1cYCOWhaKGktWhO/52zCOI0xETkWYSqqZ+jDsxGLSLV/i3bqIYB/cIuXPncl8W7xSBr3GWl/F5EnnkltlsjeeZY5DAVlwfNFpLoWcTuKLjFapIXmi5E2CF5YL/V8ShJjf9rSNLm1SlEc9fZWAnz44qxy7tOFOnF3DlecgO4mVABcOLejPmscGvsOXwAetYDmjI5ILlAxTNdG4+n920kYUwyaWpoHugWNMQK
+X-Rspamd-Queue-Id: 30BB740010
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772146604-298506
+X-HE-Meta: U2FsdGVkX19dfSkxVV06BglrMgeTDjoTc70LsxXaD33JC9iYsf669rw2nOd4jG3Dtqd/g1ZPl7zpRB7s/SCkq2YiWiMAFppCxVP3Zurov37A5SFpuqBIv+oZvvlPXEy8kriLRlkIzcC5Aq3bW3lmf9yde+ZBE5LOTtyMVt9u5XsMxHWrCHn53zR2eBrlbECkhQGWrEZld6+eqyvR57zxUgQbd8L3WIUB8qUZwGxuuJjuQ8j66vqMdb+tLerccd4NxvQvOrBs97qATfyNbWe/717iDvNHmo816VYIEUVnF/MItEdrB75AYviLL2WX2PcEMeLfTz3nqqqbpRLAjqPuYstBZM9U55Z5kBhQ1uE1Siq89Sm74B6f3EAYCSt3mQgMc9r9NImI2c5IT4LFVEf4cLnGRjlKoHQMXnb7Ok+1/DNbNg31YbQU2qXmiuVBd9JlbKLFnzX2l3q63kWutFamBtwUSYAmR7Q0h/CL5Qqh6jGmi6vSgRdeJNxHvwtY6E5FBqwWP1py++uhPlKZ1Kt62WDAQK5knph5ZzHmvC3YBmx8jycG6Jo8nY6c4SgvV2aSEel6G8c3Lit1cMpYj1Er6TCejHRRsDXvaxD8/tJPLKo+cnV79LNA0AticwfTrm7Smy+rHaAwThOo7Kh+8rRGoWZD6CgKcSHDk+PXkTdzXFo3+RBwH1WgJd5I60wEC9/BWCFXiVUzgnMoWiLv1Zt2FMzkDrlz2v+GVAN9q8tbgiTN13f3buwuPwwBrpsczsMtmQtUGwY4uzH8cf5RiEAwuczYj6OsGi25kltpT2r6/sJBpF1mwtmIyVRZqhL40L+pTlN7WDgGBvDujXm115Y10f43DsrXnURFob99zv+YyRDw2bX0hag48FAuWxJ+oQqK4RKqvC45Vk9Z0l5MO6cvWe+CUhoOEFNBDQ+4W+HQzRGOOsd3BUhsj8WuNZgioP9tL0A/mzoSCkJtS2njwKJ
+ oN3Z0bYl
+ ls5tBQk9Ngql1v09EFb/myVQDKoLqco96pGr08VSBZj5EB5z8y2Lxdubt2vFZ7wjEf6nTDqQfSHPilp8TI/gG25ioJe7fimefqH6h+8YtIeNBbXXfBabIajtlBeU6WXVrU5yK0amMppEoanX4jlaOf/EXPgnW2UE7Kx5PVOtpVjIFJHAiIFAdQcy2gHVrtGMq6VCUtN0RftaN8m6OjtCGB9cw+LJONzJli38anoVmE/K+8/y3+cI0H/6FiOie42RWSBbA9APbi0XZLik7PkLM8o3SUW6ofjzm3hc1dg05MnLdjG2aywE7Z9mDXxSaTY2GZbaxn3B0C5M5An8JOvN/fqYtgqeQAN2S12S5WZxlOt8O+eGecpBe7ncEVlPR7+i8yvXTf6kkIQiypm1dqb9l78W35b4xDb9dmisKtXG6EO+8ucu/4++AKV8M7ozrkS+JBMlgHAGnJf6Y680c0E2B8LYOMJ+y80Mr9Ha6lxVEfQSNFdYhN/5igWHR8R+vzkkk8SpKvCfxUHsEOUkoKCnXm4iG1YzvFVN+4095lp5PvwJn8xRmQjOfOpwe4p7w7V1K0Y9YDAhjYr3luzMXYD8jhc8BILYzV8ympqNb+w/EtHqqLibPx+opiXEPMEdkrFUbTXARge1/JD+WBi+EV3xPZAG1h7RNZyMiYBwyUPD+02ZWqAFSwGqco0B/0KOUGZbbnb2CyUxouxRD3l2CZmv2/Ct7zDfD4q4tE4i8QzXHnfhsyairPQjKPYWyomdVkTnMxuewNDLQee9SZn4J+yRRBRRt7pKdqy4csJ0kATpK73ldbWYA/HwHNYFENfHjW7w9qPN6a3WdNLYl6OVoigGoaX1EYsUg6S3tKU2Yh4osdOG58EWSgdduq0m3yztNf3wIvPgFJugFCgBZq0dHTp4V4AQPyY3Fr7L3Ue+LmJ7U8UW7B3V0mqQpC6H84IEYUHQJsSJVCwJ7Dju3GWaZCpld4LdGC0ql
+ ksIh54l2
+ Mzk7PnJ3UegOi4lG0JMdfrq46trs2Yy1Tx2V/eIYh2TTma8TrSyvrD6RcI/avwgrE3T+Dn4UO8yHVnbw/5Zl1XczPLFPeXluUv+uZxlKVxc/3oAwIdwuR2KSoOb0Eav2XSNFWhAolSHqMKPxf742E6sMDFMCz9Kz4ez+3VKRK+ElWdbOuqsT8YZnXYfkl8IzWwcaE3UEAB86anXJMPbbru50goDwzYV6RKwTh00MaiHDLoyDyDZ/FnIRev0ibmTPS0Cr+HmtpJuQQDoGTY4iC18SlhDDFvxu3CDflnYM4DtaUD1AvcCKCDL51LZMze285ydvLvw7CqwVPkCEOqZ9CHFWG3lCY9nqLsam7JoQNGEctWKP66nzRAqf7QmaYaKSuvO9a2K33sKshuy+Hy8wmVQimeu79O87Tsph99/oFeKkI8d/mPLYR7O6/1QlsG0ZbyrrnboXoWzuDp4li22j8EmAExYfmIbW/Cf93Mk0KcPE2dpoIuNXvr1wTdiUu7eRFEjtFZsU5rlwq8nEesmJ302fQxULrspCzgnjRbVuHhWqyjLReduU3gb1Ka+zT6MzM8v42JHUtCm3UOn8vOQTwwa5dzncNql5GaN7tkyWw25itQe20tjTaByx4eB64aqOmvQsZBGs+2ZG2+tjmg6aRPULo0V2Ii+ps41rRPTJHSOThPaW3yOrfCsVZ4pKnNOKK4pRxC5g21lfRVaUKzUbT0HhGOiDVqbr5D99khzyQG0zFcNPlXZmpz18JvaYSa+7Zwgqtno9O+se17jwLqItIS7eKIZMUOFnagJM1qdh8/1/xzWJFX9Y50+9dL+hLNF4nnvEiQxxAB3qiE3Ne/jAgHwml4oo6ojNP2kvX5kXgFVEPlkUUmevW/orZIoeT0DDUn3qbIyWzaunVVWrFYGWX5BbtZPsozYN45eW+X6SXUcYuSY1lNm5hK+TFGnuofl9qFAwFZpQ+z+gEGAL7PCj06VdmUnF3
+ dVnWVu8F
+ WHEM4Gn+50BgdsiR3eZSmhbWpyHAuhp+KqmjHF0K0D+OlsIdbaUcNSbxkiBSjUKnc+IQe+F7cEzlyVPu17FTBMQy9J4AJ/9+FJJtD7ih+9uwCWo1qtbeF9nWjBZmLY4xqaEDXLP/20qebav3XpWYl5Lt9vKcgkiGIYY5VGdLF9bPfY8VLe5fTuoAGW37PvRosJihZOya8eFL4mtHduiGEoWNSOA6Bw9bqyjcgyvZyaOw7+/TqkfOxnEz+C0VUMO71kSYmBUoxeI0X4Oryq5d7ldhy7VT8olIQ6osYReLJ47DYX7vDr2AMB+5rjVa9jA6bjZqAaOzUFbpi82H2UH1KRjhbPCqDpjFUBwmeaUq4atwlP0r3zb7XkMUOipAMSht2sn7D8UB0TPwpQHWO0VmSw3mGKZKcau7/C3ZODmNphBJsugupuxP/LHeoawmGD52Q1h6fnu6qmKsv1pPIa6jGuJkCyjm8rdu8PxbXI1tjMiqvk5F3zFWu5gVJH/VfgXWNE9Kced/qU7bV88Dx1SIxadTEN4ej+bIXMKFnR3vpqZLahuSDXBJfmZaa3YBQLPVyI5xIzIJvMo/eY8ZVq7DI55AYT60VblxQKTXhk7/D2ZACv3NzNF/qES6sICsuVL0XHlNtsz/HP+XKKtTCc3R/sRpcJcyCNMZgYvIcvUI6iB9L/ecb8p9XpFv+xknvJSMlyxXWLo+92xkrboAoSu30svGgqfi7IKqwvYBm5g7gW2EGF3XQIbrc5O8XgZZ11MpFQf5ikLOZfhnT1F+iIwkdyVxzGqk4xMeUXnK8Y+jhdcPsaTvBiMMkTZsM67HNxzPW03fkMBIURESZVnV8RHnsQRjGI0mBY70I+yLTcj0a0g2Xh80C2gXhO1+a7r3q/BQO7nRax4jSNDqSbz7uGljZjONScklfr9Ty4M/REoV8wM75xCG4Mc5QU948n9aP3HK6e/0B6Sa7rgHXSkfj4OIrmmsi5Lb/
+ bjCWmp/u
+ JvRZ/Ru1/yEl75nQBucknJ/bvWR4z8dO9Zi3oaYo1KAlukznZyCdATVPwx2oDvVAEdMOcoHNn0lAjwH49jdLvuecUYhKFOCqQsoukYQ0lbY7ecr3tcMiMra9xyrAniO8M1/aRpRqsxGibIC0H2FrFu8gM2RLJf8LAqjM+QCGK6e1uE8+EJPmIQfPZcKGvyAGIqHm9TYrWve3beBlwWEvxvLHIGYhH1Vf1YgVb5dH84WfRqu0zChlxQmFLPwe6R+ODUdSOvDu6rD7XCzRQ1sKh9LjPCN8rMyPf1uzuOzpdoHpvu5/92tWCgkqR2UXNc2kF1LJXXl97E4+KnEjvu9w/wdWF+lA4vICZB7KAp4XgN070d085ZhW7ElwHFX+EJTTSr/uHLUCL8zSGKxhxrKVgne3r4jtINzt8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,230 +186,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 29 Jan 2026 21:24:53 +0000
-David Matlack <dmatlack@google.com> wrote:
+On 2/27/26 00:55, Jeff Layton wrote:
+> Change the inode hash/lookup VFS API functions to accept u64 parameters
+> instead of unsigned long for inode numbers and hash values. This is
+> preparation for widening i_ino itself to u64, which will allow
+> filesystems to store full 64-bit inode numbers on 32-bit architectures.
+> 
+> Since unsigned long implicitly widens to u64 on all architectures, this
+> change is backward-compatible with all existing callers.
+> 
+> Functions updated:
+>   - hash(), find_inode_fast(), find_inode_by_ino_rcu(), test_inode_iunique()
+>   - __insert_inode_hash(), iget_locked(), iget5_locked(), iget5_locked_rcu()
+>   - ilookup(), ilookup5(), ilookup5_nowait()
+>   - find_inode_nowait(), find_inode_rcu()
+>   - inode_insert5(), insert_inode_locked4()
+>   - insert_inode_locked() (local variable)
+>   - dump_mapping() (local variable and format string)
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-> From: Vipin Sharma <vipinsh@google.com>
-> 
-> Enable userspace to retrieve preserved VFIO device files from VFIO after
-> a Live Update by implementing the retrieve() and finish() file handler
-> callbacks.
-> 
-> Use an anonymous inode when creating the file, since the retrieved
-> device file is not opened through any particular cdev inode, and the
-> cdev inode does not matter in practice.
-> 
-> For now the retrieved file is functionally equivalent a opening the
-> corresponding VFIO cdev file. Subsequent commits will leverage the
-> preserved state associated with the retrieved file to preserve bits of
-> the device across Live Update.
-> 
-> Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> Co-developed-by: David Matlack <dmatlack@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/vfio/device_cdev.c             | 21 ++++++---
->  drivers/vfio/pci/vfio_pci_liveupdate.c | 60 +++++++++++++++++++++++++-
->  drivers/vfio/vfio_main.c               | 13 ++++++
->  include/linux/vfio.h                   | 12 ++++++
->  4 files changed, 98 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-> index 8ceca24ac136..935f84a35875 100644
-> --- a/drivers/vfio/device_cdev.c
-> +++ b/drivers/vfio/device_cdev.c
-> @@ -16,14 +16,8 @@ void vfio_init_device_cdev(struct vfio_device *device)
->  	device->cdev.owner = THIS_MODULE;
->  }
->  
-> -/*
-> - * device access via the fd opened by this function is blocked until
-> - * .open_device() is called successfully during BIND_IOMMUFD.
-> - */
-> -int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
-> +int __vfio_device_fops_cdev_open(struct vfio_device *device, struct file *filep)
+[...]
+
+> -int insert_inode_locked4(struct inode *inode, unsigned long hashval,
+> +int insert_inode_locked4(struct inode *inode, u64 hashval,
+>  		int (*test)(struct inode *, void *), void *data)
 >  {
-> -	struct vfio_device *device = container_of(inode->i_cdev,
-> -						  struct vfio_device, cdev);
->  	struct vfio_device_file *df;
->  	int ret;
->  
-> @@ -52,6 +46,19 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
->  	vfio_device_put_registration(device);
->  	return ret;
->  }
-> +EXPORT_SYMBOL_GPL(__vfio_device_fops_cdev_open);
+>  	struct inode *old;
+> @@ -2642,7 +2642,7 @@ void init_special_inode(struct inode *inode, umode_t mode, dev_t rdev)
+>  		break;
+>  	default:
+>  		printk(KERN_DEBUG "init_special_inode: bogus i_mode (%o) for"
+> -				  " inode %s:%lu\n", mode, inode->i_sb->s_id,
+> +				  " inode %s:%llu\n", mode, inode->i_sb->s_id,
 
-I really dislike that we're exporting the underscore variant, which
-implies it's an internal function that the caller should understand the
-constraints, without outlining any constraints.
+Hmmm. the type of ino in struct inode is changed in patch 2, not this patch. So
+this feels incorrect. Why not just squash patch 2 in here ?
 
-I'm not sure what a good alternative is.  We can drop fops since this
-isn't called from file_operations.  Maybe vfio_device_cdev_open_file().
+While at it, maybe you could change this to use pr_debug() too ?
 
-> +
-> +/*
-> + * device access via the fd opened by this function is blocked until
-> + * .open_device() is called successfully during BIND_IOMMUFD.
-> + */
-> +int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
-> +{
-> +	struct vfio_device *device = container_of(inode->i_cdev,
-> +						  struct vfio_device, cdev);
-> +
-> +	return __vfio_device_fops_cdev_open(device, filep);
-> +}
->  
->  static void vfio_df_get_kvm_safe(struct vfio_device_file *df)
->  {
-> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> index f01de98f1b75..7f4117181fd0 100644
-> --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
-> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> @@ -8,6 +8,8 @@
->  
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->  
-> +#include <linux/anon_inodes.h>
-> +#include <linux/file.h>
->  #include <linux/kexec_handover.h>
->  #include <linux/kho/abi/vfio_pci.h>
->  #include <linux/liveupdate.h>
-> @@ -108,13 +110,68 @@ static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
->  	return ret;
->  }
->  
-> +static int match_device(struct device *dev, const void *arg)
-> +{
-> +	struct vfio_device *device = container_of(dev, struct vfio_device, device);
-> +	const struct vfio_pci_core_device_ser *ser = arg;
-> +	struct pci_dev *pdev;
-> +
-> +	pdev = dev_is_pci(device->dev) ? to_pci_dev(device->dev) : NULL;
-> +	if (!pdev)
-> +		return false;
-> +
-> +	return ser->bdf == pci_dev_id(pdev) && ser->domain == pci_domain_nr(pdev->bus);
-> +}
-> +
->  static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
->  {
-> -	return -EOPNOTSUPP;
-> +	struct vfio_pci_core_device_ser *ser;
-> +	struct vfio_device *device;
-> +	struct file *file;
-> +	int ret;
-> +
-> +	ser = phys_to_virt(args->serialized_data);
-> +
-> +	device = vfio_find_device(ser, match_device);
-> +	if (!device)
-> +		return -ENODEV;
-> +
-> +	/*
-> +	 * Simulate opening the character device using an anonymous inode. The
-> +	 * returned file has the same properties as a cdev file (e.g. operations
-> +	 * are blocked until BIND_IOMMUFD is called).
-> +	 */
-> +	file = anon_inode_getfile_fmode("[vfio-device-liveupdate]",
-> +					&vfio_device_fops, NULL,
-> +					O_RDWR, FMODE_PREAD | FMODE_PWRITE);
-> +	if (IS_ERR(file)) {
-> +		ret = PTR_ERR(file);
-> +		goto out;
-> +	}
-> +
-> +	ret = __vfio_device_fops_cdev_open(device, file);
-> +	if (ret) {
-> +		fput(file);
-
-Don't we end up calling vfio_device_fops.release with NULL
-file->private_data here with inevitable segfaults?  Thanks,
-
-Alex
-
-> +		goto out;
-> +	}
-> +
-> +	args->file = file;
-> +
-> +out:
-> +	/* Drop the reference from vfio_find_device() */
-> +	put_device(&device->device);
-> +
-> +	return ret;
-> +}
-> +
-> +static bool vfio_pci_liveupdate_can_finish(struct liveupdate_file_op_args *args)
-> +{
-> +	return args->retrieved;
->  }
->  
->  static void vfio_pci_liveupdate_finish(struct liveupdate_file_op_args *args)
->  {
-> +	kho_restore_free(phys_to_virt(args->serialized_data));
->  }
->  
->  static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
-> @@ -123,6 +180,7 @@ static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
->  	.unpreserve = vfio_pci_liveupdate_unpreserve,
->  	.freeze = vfio_pci_liveupdate_freeze,
->  	.retrieve = vfio_pci_liveupdate_retrieve,
-> +	.can_finish = vfio_pci_liveupdate_can_finish,
->  	.finish = vfio_pci_liveupdate_finish,
->  	.owner = THIS_MODULE,
->  };
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 276f615f0c28..89c5feef75d5 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -13,6 +13,7 @@
->  #include <linux/cdev.h>
->  #include <linux/compat.h>
->  #include <linux/device.h>
-> +#include <linux/device/class.h>
->  #include <linux/fs.h>
->  #include <linux/idr.h>
->  #include <linux/iommu.h>
-> @@ -1758,6 +1759,18 @@ int vfio_dma_rw(struct vfio_device *device, dma_addr_t iova, void *data,
->  }
->  EXPORT_SYMBOL(vfio_dma_rw);
->  
-> +struct vfio_device *vfio_find_device(const void *data, device_match_t match)
-> +{
-> +	struct device *device;
-> +
-> +	device = class_find_device(vfio.device_class, NULL, data, match);
-> +	if (!device)
-> +		return NULL;
-> +
-> +	return container_of(device, struct vfio_device, device);
-> +}
-> +EXPORT_SYMBOL_GPL(vfio_find_device);
-> +
->  /*
->   * Module/class support
->   */
-> diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-> index 9aa1587fea19..dc592dc00f89 100644
-> --- a/include/linux/vfio.h
-> +++ b/include/linux/vfio.h
-> @@ -419,4 +419,16 @@ int vfio_virqfd_enable(void *opaque, int (*handler)(void *, void *),
->  void vfio_virqfd_disable(struct virqfd **pvirqfd);
->  void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
->  
-> +#if IS_ENABLED(CONFIG_VFIO_DEVICE_CDEV)
-> +int __vfio_device_fops_cdev_open(struct vfio_device *device, struct file *filep);
-> +#else
-> +static inline int __vfio_device_fops_cdev_open(struct vfio_device *device,
-> +					       struct file *filep)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +#endif /* IS_ENABLED(CONFIG_VFIO_DEVICE_CDEV) */
-> +
-> +struct vfio_device *vfio_find_device(const void *data, device_match_t match);
-> +
->  #endif /* VFIO_H */
-
+-- 
+Damien Le Moal
+Western Digital Research
 
