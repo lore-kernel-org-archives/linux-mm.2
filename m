@@ -4,187 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2159DFC5908
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B919EFC5903
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:40:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CF196B008A; Thu, 26 Feb 2026 02:26:43 -0500 (EST)
+	id BA4EE6B0088; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5524F6B008C; Thu, 26 Feb 2026 02:26:43 -0500 (EST)
+	id B5BAE6B0089; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FCEA6B0092; Thu, 26 Feb 2026 02:26:43 -0500 (EST)
+	id A88506B008A; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C0606B008A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:26:43 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8E758C95B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:26:42 +0000 (UTC)
-X-FDA: 84485775444.17.31F9713
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0309620002
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:26:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bFvpl9Ce;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf03.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=oliver.sang@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772090799; a=rsa-sha256;
-	cv=fail;
-	b=JGNybZWSgWlEerdPAVMTutabV7WLc5c2nWpNogmILRzHtoqqqqz1gN9KP2sn/1tihXotEB
-	BsKQmozH/wbvI+TuKHkaM4qKZE054ys/YB9rQ+p96R17gVJ808zgV/O46gGfsXC1wsj/6U
-	r3Gs3P0g5xsziu66qWCc5frkuGWRTGY=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bFvpl9Ce;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf03.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=oliver.sang@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 91DEF6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2DD235BF2B
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:40:52 +0000 (UTC)
+X-FDA: 84485811144.12.CABCDFD
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 29A6B40010
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:40:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=u3f52SWm;
+	spf=pass (imf27.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772090799;
+	s=arc-20220608; t=1772091650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2IqnSdp0GlCGR0BU9EH1XetnmOjBjvD24J/a4cpuhOk=;
-	b=jb3tW0zB0l1dSURtx1ak2W+jsrMSSyKxgUDwo0PhvJZ3yXxwBw925OonVfCKBtyOTCFb64
-	SvX7o64pZhzKysQ0vGyJDSaDUBshGJ94HCsMvE+U0P8153B/dIH+8fW8PUOv+wDqf2bSqX
-	FHHIHJ2udo1X4/ugw92hGsLyGJCvjrc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772090799; x=1803626799;
-  h=date:from:to:cc:subject:message-id:
-   content-transfer-encoding:mime-version;
-  bh=hPIL4SqAzy5hYxPg9PjZH/h+07z4hM9ZjAPW5HfxZLo=;
-  b=bFvpl9CeyaLtQ/bpqU1/KQgQlFwr83LiEIXjfF0XY2gyjaPyFlAwUIqq
-   ikYyhw32Ymg2VKAZqu+J25Vl3/f3KqTyUjXduz/EPes6otbNs7tDLJDC4
-   a0H97fNc39FF7hyoLsMUUFxPKzd7q6SWNlZXh1zQHR9S7hjed6lowdhZw
-   hVoHAYKBo9zsNAYHWyCxDXEVbSRU8mo7LFMRRRn82gEHdN+4TTip7D4fR
-   zYWK9SuDLI4aPRsTPbn04X0UFnH8BcQU9NzOoEfmUs4HkqczRg13qRja1
-   brPw2wguucnNftB1A/5ygkfj1pYj/Ry69kzlr0+sES7VsKTVq86uKKfF+
-   A==;
-X-CSE-ConnectionGUID: pU06FuXJQgybjnjH0SAt/w==
-X-CSE-MsgGUID: JeJxykGQQc+YTM+xnMKVQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="84500742"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="84500742"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 23:26:35 -0800
-X-CSE-ConnectionGUID: nLE2Y9B4QKqItZsUp2alRw==
-X-CSE-MsgGUID: /493rF4zRkqyEVc8hWkA3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="221462891"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 23:26:34 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 25 Feb 2026 23:26:33 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 25 Feb 2026 23:26:33 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.20) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 25 Feb 2026 23:26:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WgKdP+9wMzMbeyXwmjTco71SYIeP7IUIn280aTmd5Uhobj8KH6t6Z68c0JsQA++7ncFI8sB1THzxPzn26z3sJY/oz1s5+xwF0EHN7XDFNFhmQxgPwJQYA78lvkPf3aA6sz14HsTCq7EPruVGS1TpVi1xqdqaHI2LxBEOOAU1tN3VYknqYj6+gZYwPJdbWsK96olhW5Sjf4FrISRqdcODD+knBFRHZTK4dUavlYeb1Xz7Pko3EYla8swQpTxM0PNX4eS+HpttmpnQBbv9pCSjrCh+1SRgdqxhc3SHh5SqDx6YfAQLIgIfkHm5DontT2js8ZnWlA//kv8kTN3oQMm5qA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aH17W20esjCWDSGIfY36znyukH7m1GW4RTpNNyMXLNI=;
- b=WgryYX/ijal3grpZkaB4zypUbs/k/Xa9ekwG/19XBAtnaqBVlShNLa2jBe8KcVCFzyuEKJRvCgv48I7RHQGjkFiHpiYduc8MfDafz9oR91X82ET4VrI0UWdFom17AX+zx8sUaowDzR9zk/gCGWi5nVlPBGYil6/CKr4B2MXoYkgyBQLicWKpDC0w5xGKLDX9k6nPfhW7qOKBBI3VlMRUj7KibKlLhNXGUyFQrJuYzpcAiYcAf4DeqCfwIqE0NsAVobKEXmF0E+tZ/iOBF5tREiBVeiK5T6uKJaRRuVFFs2YC4AQFYJwRzT6X8RP70TEMMi95IN/YpfVfGIDJhyT5Ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by DS4PPF10012BF96.namprd11.prod.outlook.com (2603:10b6:f:fc02::a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Thu, 26 Feb
- 2026 07:26:26 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::e4de:b1d:5557:7257]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::e4de:b1d:5557:7257%5]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
- 07:26:26 +0000
-Date: Thu, 26 Feb 2026 15:26:16 +0800
-From: kernel test robot <oliver.sang@intel.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>, "Suren
- Baghdasaryan" <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
-	<linux-mm@kvack.org>, <oliver.sang@intel.com>
-Subject: [linus:master] [slab]  17c38c8829: will-it-scale.per_process_ops
- 60.5% regression
-Message-ID: <202602261526.dc2fdec-lkp@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: s-nail v14.9.25
-X-ClientProxiedBy: SI2PR02CA0044.apcprd02.prod.outlook.com
- (2603:1096:4:196::17) To LV3PR11MB8603.namprd11.prod.outlook.com
- (2603:10b6:408:1b6::9)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
+	b=yoYCmmh3vDd3KSak0FhYEW1v15kT362rvL/2+Vf739wXzsIFBsh+MtiPLXL6bXK0V5oQrS
+	A6oaf7dfAaETFsHpOcsQxsqKLwsVCpNRSa7Cyf4Fa6UkqZftxcfPL4BrD8jF3z+rwBKZBk
+	i+9s54wABM37Ue/oqP7pjPZ5L6WOuLw=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=u3f52SWm;
+	spf=pass (imf27.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772091650; a=rsa-sha256;
+	cv=pass;
+	b=aZ/c7xri+2trPcLU+zBVERcnyn9IJooVrOI/EOhwqztJ5KCqkWjLPjKzTn7Lzx5V99h54l
+	kliJ1/SYDIBJy8LCuxk3znicsHhnr05YBx/ramyFiyyHoKPKGuSQrMTL/PquyPSq7Qe5OY
+	fl+dv5hI2Ff8EB26japqeQkxmKZXAiQ=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ada9e4ea32so52895ad.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:40:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772091649; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ih4WWVUwlMvoCkIoipbImi+NUQCZQkJAT3gHq43ct0WTQl/rBHCCBZqzOjSvj4p5S/
+         xNqK1XEZCsASz6rB+1sxFzokj17wD+Clr64r6hFSD3HBzZ3uF7S2VBASHySWAe+iU6oQ
+         jqCR3shh572EKoeU0Qvnv3+ecbdbaQEKLgr6/DpTKeZc8rRAMDk3J02uEYxrXzpW9FxR
+         BltTev9s0pVT/UqIcFb4Lja6VVOuT92URj/J8DpjkvSZxdOmzmUXUS5XSRaLiG/aLh1p
+         WScpgC1QRVuF2imtYGVs34AZuCJqC6O9PwZDyBDFLLVbhM/t8gEqY6ariKekyDhuDtYF
+         q1Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
+        fh=QLxJeTTVMFrQFy4+qnaHrIWuGhVo6d5yPE9BV5o8dLU=;
+        b=SO5vlFMBmPbVwKS/Oy2giPGwpBNTkpUxkjyyQe+K0aHKh47loFeXzNxZzoHxXgRvAc
+         E0YboUj0FOwp2LuQfGX4h1d3bJtLocP0Y/2SoXHNXOI82O6l188bB18CgTeX/tgeT41f
+         cyEogPDnzzuCdb+iHrjoNetooE+C4k1kBs7iip+oyV7GVpoGqvFYAx77bOoXrIjMjm8n
+         QqD3okEvskPAbvls5ZxGVhu1Vi1Mvq6t0Mn+xO6AE8NckklVUYlIgVbsURPDX6sszz5/
+         LEb72hHT/WAIQMijnkXSKAuKImHHzFCEjmhnMVzRL6S6qb1bkvFAkmG/nbw7Uqtfu3sb
+         hrIg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772091649; x=1772696449; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
+        b=u3f52SWmy4TdvZy/HNpon3R7C6KZMTQsBdE3D44MDg33UkRYRTgm9/gs+PBveyq+Gt
+         THVsD5DtZ3nOZBY5g/ZYw0iE1fjLsDwHLkWZpJCp+kWZ9tnqFKsKE/J+6o7z3v3LAsAk
+         /edg6mkBXcTCsq/PcGSNeb5jMKrOQRu9MMyQx8M5eHy8N7BuM1XrU1pf6AQY3nN+2SVe
+         CCx65ZrXCyUXf1xkRyULqjFae7iH4uNsYV+m7s+UEfg6oh7Ht7bPgAL6clgjEfk8Mq36
+         5xiBPalE4UBHWL0ck/IW2+L9A6tZiYwPQWoWwZO+mad5uw0dis7WwAzv4zWulv3rRyNd
+         ktzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772091649; x=1772696449;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
+        b=B/aH6yU2lHQZS1MZybZcmLOTX1+kjRnQGFVmWSaKmS8Kp1m2w1AcsG3foW1JXOExSV
+         oB4DrvjPvWaXzuK53M4CwYR7+u7Xpc+HnaS7RBhy2pXt9d+0NUucP/Pp8E7l0kBekCAI
+         EU0GoX3/5+ZotbYWUUynemH6BWu1pPP8+QLM78IJtKCgtKQofWLLC2fJa1DnSs/OURGG
+         qT27qPM86VTpjt13D8pnh1j8GnOpN3cH2XWjEvfQgtZB+lfPmgoJ/vAz7umPfPSedmZp
+         1RZGHj/Npfx6X+Bv8CyttPp+WAWEIcRPLvoVuu4/rCAXxAFOTYJASlNMVbetY+mnFVqO
+         Jylg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGhQQaKzBZzW//70IkTfJjkgpvkHuT3g18ujXG427HdEZWGNeh3gRvYN74wrCjDDhJ/XaF69oSqw==@kvack.org
+X-Gm-Message-State: AOJu0YwSa1AiPndjA57doD4lwCFSOxtBCSW7zb2NWEFpuqJnbEDlwcVo
+	XZLjqfPEEYo5N4OVPymGZAZluwAqm9HAxysK1NMyVGudK6I2fNHb4w8UtJ5VROqcziIXl5JsE6f
+	pJMyITHaIlHMVgX4sBi9BSYcdQLI+VCzNEVSX3dnu
+X-Gm-Gg: ATEYQzzG+WR+NcBkh1azey69TjV0+hVjOhZl2YzOX/EoFtcis3eeUEBpOJdufj9ak/9
+	9GnwdLVHNbwhurBivuKT1M7WoJ06tUO6lX84nASyc8z6AqLgz0SS8HZbDp/Ky8camoXdIv2LfYx
+	rTou5H/jAVZ0gaJay8RZed6J6qRS4gi8EHqQlA0Feg6OA0HzAAfMOJf+ZWvVuFo9Hn7o/67quew
+	YSNpD/5XAHrmwRhdJ1MdGGQxNG2bWnyGQ2Pvg2JNjGWOmG8jfjDxxJHJ3s9yYx/3XPt2yn0kA8W
+	T9b5mlr73Nzks2vdY/NFW5ER7b84jYtWlHuumd+MrtgOCGS51w==
+X-Received: by 2002:a17:903:1ad0:b0:2a7:6c4e:5914 with SMTP id
+ d9443c01a7336-2adf7721839mr1456305ad.6.1772091648235; Wed, 25 Feb 2026
+ 23:40:48 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|DS4PPF10012BF96:EE_
-X-MS-Office365-Filtering-Correlation-Id: 634ea035-4f2c-4ac7-601b-08de750859fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: YZRUJGjkaPPWZEQSAm8iKD7gCzcRE/55fAqenS8HGq57ATjKho6IYmqaf725bKWZ0rMVNfDNw+uqNm81rNMQbeur0UD8RD79XKAC491LPsfbZxiRky88A54FNF5+VleUhFbBX6fixiZ1zUbzUDEjzvJHJN/twChyGvbfmNpnLGRG4P4GLJWJiHRZZaWeSQjqvYRyEC76P/0peB7zib0SSs4LLyDZpTfYzDU8N2XSDd7bX+zIm3hVssne3io3z7vYhM7F3nS7Q1bISfF9N0OrCYlRAFv5LkYU1jSIpa2QbmAfolFVX9jygfTdrXK4fE0cguk745Z54aAA8i3vueVhb3o8SShQfsrrehppmdWy8ZXhgzr2pDk3JcOz8cdWU6HeMIpRdnA7WaZbkIpgPd1wreQ3GWmDY7JMG6KkwEAbRl6UmaeF6R8xp1TmJ7C2M97kRf4igqEgLoQaF1I95rSH4Po/kXhGp2R7iuD3itZ5yzzwQvW1CGtaq7WyoKc6QHkwBSZOUwDt5mkzZUlGsje/toaqA5JxIws5QjMy3hD9Wqp9WqjDTDrzgWRhYABLbxbiuPnpmXAp+EHQnbsh+5m+WkgacyY6oDfFglfl2JV+EMHkhlL6m0mRpj1MWYAR5c+LBCW1EZmb1jWWDGya4SxfdeficWlo1vRTxTGJkXu8L5HfBay6R6f40u91hVIQC8JOUBZUMr7SRqYLF5ljxF7AJOlfkasK80owVN1JhHwptsdzkDAytSktzHSYN6NwgJ6D
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?YnbfVBYWP/cGHs1NZTlZdYszUqYhqlxhGfMwp8TUxi+V0G2aWl0AD0ry3H?=
- =?iso-8859-1?Q?CTD32BWv9ndjnvrN4EZVTgGlwR3ugBvU3P7garETMDQp1u/eAJHExG8k7s?=
- =?iso-8859-1?Q?CXgxFnm0x/2Tjt+CfZQWXNSOLz3KtyxSkDRmtgRY3EX9b0tzmFHvAJwBu2?=
- =?iso-8859-1?Q?VDFD9O8Sj9Qzqy/NN0np4L0ydGHL/HvVRnr5BwpVdhsRSohTFXRLLdRJrD?=
- =?iso-8859-1?Q?XwLtvLEJ7ARoJ1Gd+U8ZXcAHwAwxnpagc+Akx3Rwoq/nZccLsFesXJcUtC?=
- =?iso-8859-1?Q?WUtBecntW/O3UDIP38vPGeMp58oLnm4wO2wLtrktbxzNQscocgDPo/2i1U?=
- =?iso-8859-1?Q?skapTM7BuDo9rq2mSDIWnOrbROE7Cyds1pPnjd1+6PrNtvmtVTeElHUWbk?=
- =?iso-8859-1?Q?ToDa/O+vJSmmT+auuHiqRH3OGMqKB79dTydLq44KyRRILVgunykCMdzcPX?=
- =?iso-8859-1?Q?m1lUuCiv35gb74qPTZU0GYOCQPmgPTK0ZNtObbyQzyrdKE+FHV4Vm3d9X7?=
- =?iso-8859-1?Q?iRqsl1y+DVzttMjPGM9K2UqjDYHZWAsIJyslS+/WEiwZfDu9I0PKDWh3wK?=
- =?iso-8859-1?Q?hGxRoM00jIlHjABdBycLda/sPbbQNBNNOBcU5hUCwMwWdXgtp73394fbCl?=
- =?iso-8859-1?Q?tGetf381TUpYuHDQj6twu2TfOpw1L/eLQ8a3eL5Jr9du1I037N5WSJx3nQ?=
- =?iso-8859-1?Q?Qt+4JAAZyKaQwFK807DYPSnqF6l0J34NARPMH9BFjmKsHt9r2+ZmZM13tq?=
- =?iso-8859-1?Q?/LEL2yM7yDS97wwh8VnVw1omCk0pvq+SiAZeJjOMGOGKcoP2ZvjdIyiRFw?=
- =?iso-8859-1?Q?2+MNz2zu5kQ7CoAuVyoA7u1kcRO8kfRacl69tUeS3JUFa05s0ZndgdJHNy?=
- =?iso-8859-1?Q?5V4SJ/T0Knhx0Sq+dF9iaSwqG1es9sEsmbe19E1p6ELTyDcha30AqqY0/A?=
- =?iso-8859-1?Q?3HbEdUVz6Pjy6Km6/32SjjcBrTfnk0OSd9eT/TciAm8m37P44Gm2Nxh+ey?=
- =?iso-8859-1?Q?KSdLyV3mV4qH3JO4Pd2j0niUhGfgweDmeHgrYM9AvrSN9vnUM6kH7qo8m5?=
- =?iso-8859-1?Q?OZxjlibTVJsO8sJXIPMLnDBlzNp0+1iikhsxIBHomJg7ZtMWQec9g2P3bI?=
- =?iso-8859-1?Q?uq5APDbdL/CkXNAIPLFXCW6CReRgAEQMmpKt6W86YhDFVij/zZbu4Ndxvn?=
- =?iso-8859-1?Q?DgMW56JlR3QNA4H2AFGr4OZPpaaDh4UB3tfVVKuUq/+uvlhgv6CuYpfI8G?=
- =?iso-8859-1?Q?bHMVWMQ9Bsn++oGsISONalSjID148C8NFnbcwXO5S8550bjd3gIckyj0d0?=
- =?iso-8859-1?Q?aJFPiYrSMLim0Sl+8GBoKx1JWjfEfgn+wyRTqLmYd9zvqscC774kRAWyh6?=
- =?iso-8859-1?Q?Aaayl0Z+L309pLD2Wgjw4E8oBGfuad5GqUl1Qiy+r1Mpntnp2Xu7cubPQ/?=
- =?iso-8859-1?Q?0hz1JYe6CD8zjvxLCkKy305TvFMiA9fmJ25Pa5DRKcjQhFPEE6OrEQYcLP?=
- =?iso-8859-1?Q?D5afAGm0jBkrKORNmvEgr5Lzgx18vR+QDr0UA1SM+CQPnTfhLQdOfFhynJ?=
- =?iso-8859-1?Q?c9NmQRDc/Avv7uDotuDuY9uj8yv39NMRcgax6Rv87hYPiAaLjV8JSQbn1k?=
- =?iso-8859-1?Q?A43NNiIyqNW1ktH0S6Hgj3TORTyh9131kB69zVUuw7EgIDl5C+pY0WkVsq?=
- =?iso-8859-1?Q?XkKBUEbMG3acBaR6C9B6xP+FM3pWj6E5vU/sr3emiE2Y+d0pvnhH3F8+bX?=
- =?iso-8859-1?Q?UE642cbhCq8eHKvn27Cpub0y3tJsQZMPx3Uy9at6gjQs1mm5peTC6/mcJD?=
- =?iso-8859-1?Q?hsQYajsagQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 634ea035-4f2c-4ac7-601b-08de750859fc
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 07:26:26.4110
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yrdtrDd3KtrPGW6x+rnBs3NA97epAwPNDGXrpUz0CSdQaT/OAeED3Zl8lSZ1c8weJ3IxT12cYCKj4p/Id3M2sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF10012BF96
-X-OriginatorOrg: intel.com
-X-Stat-Signature: s8m8h94di9sskcmjuwdw5zexfy9mb336
+References: <20260217145026.3880286-1-dev.jain@arm.com>
+In-Reply-To: <20260217145026.3880286-1-dev.jain@arm.com>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Wed, 25 Feb 2026 23:40:35 -0800
+X-Gm-Features: AaiRm53qWWo5MB4ueH2PCIe5gx6Mwj_ETLVvRNUsIKl5chlpjmW_kvj6j6uOl6s
+Message-ID: <CAC_TJvfD19E--wyeVyTmp-LP9ffoLQaUHruZARbdes2EnKgptQ@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Per-process page size
+To: Dev Jain <dev.jain@arm.com>
+Cc: lsf-pc@lists.linux-foundation.org, ryan.roberts@arm.com, 
+	catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org, 
+	willy@infradead.org, hughd@google.com, baolin.wang@linux.alibaba.com, 
+	akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, =?UTF-8?Q?Mateusz_Ma=C4=87kowski?= <mmac@google.com>, 
+	=?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
+	Marcin Szymczyk <marcinszymczyk@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 29A6B40010
+X-Stat-Signature: epr1xciwgdpnteygkxjuyrjk4dq95nsy
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0309620002
-X-HE-Tag: 1772090798-555591
-X-HE-Meta: U2FsdGVkX1/p3431wzn1i46LAnoQ5xKemfkJNgA2d7+kN5zQRlDHDAsiaHeReuv0oV044zBnlZt1Ewn8Fm6BtgcJmznJO41pSvVL7fTyPPoLFVeRE7KCSyedx8YV2GJcbOqG7s1srPJHgVbSXxhLV3EuLcgmHKOdhAO5Akyp+w8KnPcAHAaCT6hMWSR8EUUd7yzzlEje1fQZT2pE3xpqin54HeUqq6jC80mRPV1E/B98xqzobRSUF/c/Q0UpToQykvpmzYmyIi+Ya1TsUIPfmvfsRw6F9L/7Wuei3wYcdmGaGZlP3dSkY8UPBHj+rsLRXj/+fflD+RFOhXwt/YnLKpVSaJgXWU/OPIkjEbhl8gNgOXxlzJtbF8dv4fWmNSP0apO0iOg6gsqlBEpVFZbKWPAc/aHH/jK0MLXkkQW3eg3a0gug60kw92wi9RyaIcwVqLM7D9iBN34x71QsGkHvomrzEK3yhr9+hB0FyxjaXBapmrEffhkkBGwC5zflBvGFsW+yUq38IYhpOFJeDnPe+gFTJi2xzAhvm+Z/VwzbI+soEmTI3ZJ9RAYqwUPDMK0Ktoir2mIIKZYWgFUs9MtTphqXXtoP+CqQlx+OPDKdXs6l0+E0iiVw4ziwggDk0t3KyPRyRtp7+jYhfFHK1xCpfne1iQ3tDdHP4nYTS7U4L69BOHJ2TUPUZ8sv9+phXno/lRgavESDaDmO1YmNoBJmH7CYwljm6FdRCFl5PQYFy+srTgi7nwfg7U78kv9+bDNu01aIFXg4xW5GLeQjpONDaCY72F6NA3fHo4D8yxEaSjcfex9E+Sztfui258D809lozAk6+VJnTL1qKj7XadqH7CGT0W96p0StYJ1xOswjjU9yqV0YV7L43godZWTvrwG9rG3EcMSxDay7omCMwGXjPhrNk6DMVQ0suuqfKgR6bZvJCgDR+wiGxHAz7Ws/9Ys4KddrTcTZJz2kHQmv/Z8
- zqaKrfXX
- ibjaqFT4BZGxXIyt6UCtGM1oGcTY6I+2W6nD0uXdYpoqYAj3/jKh0MBIdh6wiDrPk+WSiSCWD26+KTqXfsxHmDuVqLh3DqTUEZNQ1M6RSfeFwP+4J6GepMt3hXRmWX72qp39wromqSm9VfA+Egug+r6r2FU6MzXqXTIgiBlKhlf3rPGR8OgiwzUwLfsnKNQxhqhDVvAOVs0q7xAhyy5HH1ZAJoDIgvL0kZ2dA3HCK5SsBNNmDWMc/fSQC4ckbqqSeMmZ8qX+FpawVEoW05D2Ev1NGxz1XBubgbRrvInYodO1aBf7vWgUWRJAF7E7qJDU0qT4l4N02e42OZJgVZwu4LytRUYVuuNVcwLzmb0uSZjh/5Jw+H1Y9giq7iril0Ej5YbZcemcezJsfDDJXsCv37Yiv5x1yCFPpYAzt2RfXYn+GkB6ChT06jOvkKfDUxmg5rklttKfWDdRQLYED5Di/IT9N8qKH4IMd1y7ifX2vRdmJCtdKO9Qh4iwLEThsDhrKeNK1DmRlWpTBhMCstldwjHMw9HwUaWjxGSHHxoI6XR9Cg5ylunRebDSB2Qnj67wgC7QO2SQ81IZeVFCEohX/02GE3aTULg1A3sJgthUa9YF24Sb85mLbebhHXrVP2/b6MK2/03N4cVgDR9w=
+X-HE-Tag: 1772091649-692597
+X-HE-Meta: U2FsdGVkX19M1pbiCN7wDhPR7dWvDuiI47kY9KpyBTy+YUp5w9URoVZBJXPPzQhIBCaDKPnhBKzj62ecUzQHeY/ENhJCQGXCznVb/lGxGXyYMMszUIRZahOaXyVkksw38DeXDk3eLrCguH62MNX8lAGXbvSsPwXeR8u86HH6BDJcB8lcoF9bwXb/7gS2idNIuh7m2J5A9QorOKtjCkeS/wbxnPRWzFYYCsAAOSdq7OqHVZKj32yNbP0meZIxp7L3Y7dqmzbAVQf4JfRDI7SCtTbu6CrAaa675x+dBTirr8HTYup3BRPmUa2dEn+DpBBFKvsrfkRU1aYp1Mp2hz+YQHo2Ui0SIsu5XkqGQzyKExbeuk2nPPZe4qdJo9CbZ7rvSJAsFyHy2jYcdS7/lInYbnEFf9WI5l4SFtaGsp9xfDSuxjnZlv9BlV6lLKr1hNo0cHhRM5i6MnKFwdDHEiraNGVmHEK9950qoG6A18QwC4rSMC2tKGLhaTw9LhIiWctk6A6ZAmkw5pKwvxqcuiVO8oiFYj8Eqvgzej14sQ4BYxjXNI9p+/JLanz4V1tctgDiwnGhZQqIQsIx6+hhrUv8w8ElwkwETrW8usByH3YOxZtSYph1xMQ9NwS2492J+26aGzEA+amF8qw6BV6fOcFUOO/gSalmPHQlU9vOnlm2SkKthaNVDeyYvLdMTrWAJYBSo14algmd0JdBswIj35j9lAYh1Wk06PbUphRUMZwK80c4dkIAoGSjoy5jPaGomJutejVG/cRJyEthfJ21FcSYvhn57PoeDs/04HlUcpwbxRnTrwvo4V7IKXbGV0rQNcMndENV5EorFtiPTBYbVROBj1LOvYz8sFRdSlhej8cn7kbNJyMerc+aQipuTGE/ZgBa2x8ZdbLCH9zdeGZzIitNdWg7qhYEfSHQF3/szSWzWl4pQzFQCqMq/8hKcoUL/BklXMYs6XbNcpFYOQOKAf1
+ scp4UdND
+ XXBJEmnLCcrpOGpC7Z0ZVJIsL4+EZsPHIq4rTIhTai1u7ps/wAKcqSKKwHDR2EEA+0dvGPgvthZH7HhWZ8sXfAJQyoLS+7S5jVV1YGpbft3WIIkg8+VZUNoaiylq5Vvhp/vNhSjJ9cmIz/93b804vjoH/mPEBillWljaTyAHloZrHvcmdmMcJjtQPumDloWxSFnau6EDtNDG49+gI/g6RAsZrByVX2vI5EqpWGcZjeWgIXhE4lXiZrLjgD+n/dgKkmOsi2wvE1+YIypo2OoiGCNxrmElv4uc6O0NfzP4MuW1QTcYjpaBbL8n7gDZygPbotL6g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,116 +145,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Feb 17, 2026 at 6:50=E2=80=AFAM Dev Jain <dev.jain@arm.com> wrote:
+>
+> Hi everyone,
+>
+> We propose per-process page size on arm64. Although the proposal is for
+> arm64, perhaps the concept can be extended to other arches, thus the
+> generic topic name.
+>
+> -------------
+> INTRODUCTION
+> -------------
+> While mTHP has brought the performance of many workloads running on an ar=
+m64 4K
+> kernel closer to that of the performance on an arm64 64K kernel, a perfor=
+mance
+> gap still remains. This is attributed to a combination of greater number =
+of
+> pgtable levels, less reach within the walk cache and higher data cache fo=
+otprint
+> for pgtable memory. At the same time, 64K is not suitable for general
+> purpose environments due to it's significantly higher memory footprint.
+>
+> To solve this, we have been experimenting with a concept called "per-proc=
+ess
+> page size". This breaks the historic assumption of a single page size for=
+ the
+> entire system: a process will now operate on a page size ABI that is grea=
+ter
+> than or equal to the kernel's page size. This is enabled by a key archite=
+ctural
+> feature on Arm: the separation of user and kernel page tables.
+>
+> This can also lead to a future of a single kernel image instead of 4K, 16=
+K
+> and 64K images.
+>
+> --------------
+> CURRENT DESIGN
+> --------------
+> The design is based on one core idea; most of the kernel continues to bel=
+ieve
+> there is only one page size in use across the whole system. That page siz=
+e is
+> the size selected at compile-time, as is done today. But every process (m=
+ore
+> accurately mm_struct) has a page size ABI which is one of the 3 page size=
+s
+> (4K, 16K or 64K) as long as that page size is greater than or equal to th=
+e
+> kernel page size (kernel page size is the macro PAGE_SIZE).
+>
+> Pagesize selection
+> ------------------
+> A process' selected page size ABI comes into force at execve() time and
+> remains fixed until the process exits or until the next execve(). Any for=
+ked
+> processes inherit the page size of their parent.
+> The personality() mechanism already exists for similar cases, so we propo=
+se
+> to extend it to enable specifying the required page size.
+>
+> There are 3 layers to the design. The first two are not arch-dependent,
+> and makes Linux support a per-process pagesize ABI. The last layer is
+> arch-specific.
+>
+> 1. ABI adapter
+> --------------
+> A translation layer is added at the syscall boundary to convert between t=
+he
+> process page size and the kernel page size. This effectively means enforc=
+ing
+> alignment requirements for addresses passed to syscalls and ensuring that
+> quantities passed as =E2=80=9Cnumber of pages=E2=80=9D are interpreted re=
+lative to the process
+> page size and not the kernel page size. In this way the process has the i=
+llusion
+> that it is working in units of its page size, but the kernel is working i=
+n
+> units of the kernel page size.
+>
+> 2. Generic Linux MM enlightenment
+> ---------------------------------
+> We enlighten the Linux MM code to always hand out memory in the granulari=
+ty
+> of process pages. Most of this work is greatly simplified because of the
+> existing mTHP allocation paths, and the ongoing support for large folios
+> across different areas of the kernel. The process order will be used as t=
+he
+> hard minimum mTHP order to allocate.
+>
+> File memory
+> -----------
+> For a growing list of compliant file systems, large folios can already be
+> stored in the page cache. There is even a mechanism, introduced to suppor=
+t
+> filesystems with block sizes larger than the system page size, to set a
+> hard-minimum size for folios on a per-address-space basis. This mechanism
+> will be reused and extended to service the per-process page size requirem=
+ents.
+>
+> One key reason that the 64K kernel currently consumes considerably more m=
+emory
+> than the 4K kernel is that Linux systems often have lots of small
+> configuration files which each require a page in the page cache. But thes=
+e
+> small files are (likely) only used by certain processes. So, we prefer to
+> continue to cache those using a 4K page.
+> Therefore, if a process with a larger page size maps a file whose pagecac=
+he
+> contains smaller folios, we drop them and re-read the range with a folio
+> order at least that of the process order.
+>
+> 3. Translation from Linux pagetable to native pagetable
+> -------------------------------------------------------
+> Assume the case of a kernel pagesize of 4K and app pagesize of 64K.
+> Now that enlightenment is done, it is guaranteed that every single mappin=
+g
+> in the 4K pagetable (which we call the Linux pagetable) is of granularity
+> at least 64K. In the arm64 MM code, we maintain a "native" pagetable per
+> mm_struct, which is based off a 64K geometry. Because of the guarantee
+> aforementioned, any pagetable operation on the Linux pagetable
+> (set_ptes, clear_flush_ptes, modify_prot_start_ptes, etc) is going to hap=
+pen
+> at a granularity of at least 16 PTEs - therefore we can translate this
+> operation to modify a single PTE entry in the native pagetable.
+> Given that enlightenment may miss corner cases, we insert a warning in th=
+e
+> architecture code - on being presented with an operation not translatable
+> into a native operation, we fallback to the Linux pagetable, thus losing
+> the benefits borne out of the pagetable geometry but keeping
+> the emulation intact.
+>
+> -----------------------
+> What we want to discuss
+> -----------------------
+>  - Are there other arches which could benefit from this?
+>  - What level of compatibility we can achieve - is it even possible to
+>    contain userspace within the emulated ABI?
+>  - Rough edges of compatibility layer - pfnmaps, ksm, procfs, etc. For
+>    example, what happens when a 64K process opens a procfs file of
+>    a 4K process?
+>  - native pgtable implementation - perhaps inspiration can be taken
+>    from other arches with an involved pgtable logic (ppc, s390)?
+>
+
+Hi Dev, Ryan,
+
+I'd be very interested in joining this discussion at LSF/MM.
+
+On Android, we have a separate but very related use case: we emulate a
+larger userspace page size on x86, primarily to allow app developers
+to test their apps for 16KB compatibility using x86 emulators [1].
+
+Similar to your proposed "ABI adapter" layer, our approach works by
+enforcing a larger 16KB granularity and alignment on the VMAs to
+emulate the userspace page size, while the underlying kernel still
+operates on a 4KB granularity [2].
+
+In our emulation experience, we've run into a few specific rough edges:
+
+1. mmap and SIGBUS: Enforcing a larger VMA granularity means that
+mapping files can easily extend the VMA beyond the end of the file's
+valid offset. When userspace touches this padded area, the 4KB filemap
+fault cannot resolve to a valid index, resulting in a SIGBUS that
+applications aren't expecting.
+
+2. userfaultfd: This inherently operates at the strict PTE granularity
+of the underlying kernel (4KB). Hiding this from a userspace that
+expects a 16KB/64KB fault granularity while the kernel still operates
+on 4KB granularity is messy ...
+
+3. pagemap and PFN interfaces: As you noted with procfs, interfaces
+that expose or consume PFNs are problematic. Userspace tools reading
+/proc/pid/pagemap, /proc/kpagecount, /proc/kpageflags,
+/proc/kpagecgroup, and /sys/kernel/mm/page_idle/bitmap calculate
+offsets based on the userspace page size ABI, but the kernel returns
+4KB PFNs which breaks such users.
 
 
-Hello,
+It would be great to explore if we can align on a unified approach to
+solve these.
 
-kernel test robot noticed a 60.5% regression of will-it-scale.per_process_ops on:
+[1] https://developer.android.com/guide/practices/page-sizes#16kb-emulator
+[2] https://source.android.com/docs/core/architecture/16kb-page-size/gettin=
+g-started-cf-x86-64-pgagnostic
 
+Thanks,
+Kalesh
 
-commit: 17c38c88294d75506c67cae378c9e940d1ce55e3 ("slab: remove cpu (partial) slabs usage from allocation paths")
-https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-
-[still regression on linus/master      8bf22c33e7a172fbc72464f4cc484d23a6b412ba]
-[still regression on linux-next/master 44982d352c33767cd8d19f8044e7e1161a587ff7]
-
-testcase: will-it-scale
-config: x86_64-rhel-9.4
-compiler: gcc-14
-test machine: 48 threads 2 sockets Intel(R) Xeon(R) CPU E5-2697 v2 @ 2.70GHz (Ivy Bridge-EP) with 64G memory
-parameters:
-
-	nr_task: 100%
-	mode: process
-	test: brk1
-	cpufreq_governor: performance
-
-
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <oliver.sang@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202602261526.dc2fdec-lkp@intel.com
-
-
-Details are as below:
--------------------------------------------------------------------------------------------------->
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20260226/202602261526.dc2fdec-lkp@intel.com
-
-=========================================================================================
-compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
-  gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-ivb-2ep2/brk1/will-it-scale
-
-commit: 
-  ed30c4adfc ("slab: add optimized sheaf refill from partial list")
-  17c38c8829 ("slab: remove cpu (partial) slabs usage from allocation paths")
-
-ed30c4adfc2b5690 17c38c88294d75506c67cae378c 
----------------- --------------------------- 
-         %stddev     %change         %stddev
-             \          |                \  
-  22625956           -60.5%    8947026        will-it-scale.48.processes
-    471373           -60.5%     186395        will-it-scale.per_process_ops
-  22625956           -60.5%    8947026        will-it-scale.workload
-     20.65           -74.9%       5.19        vmstat.cpu.us
-     10502 ±  3%     -87.0%       1366 ±  9%  vmstat.system.cs
-      1.31            -0.1        1.20        mpstat.cpu.all.irq%
-      4.13            -1.9        2.21        mpstat.cpu.all.soft%
-     73.24           +17.4       90.61        mpstat.cpu.all.sys%
-     20.67           -15.3        5.36        mpstat.cpu.all.usr%
-    179.60            -4.1%     172.24        turbostat.CorWatt
-      0.39           -40.0%       0.23 ±  2%  turbostat.IPC
-    211.17            -4.4%     201.86        turbostat.PkgWatt
-     21.36           -45.0%      11.76        turbostat.RAMWatt
-      0.07 ±  6%     -38.7%       0.04 ±  9%  perf-sched.sch_delay.avg.ms.[unknown].[unknown].[unknown].[unknown].[unknown]
-      0.07 ±  6%     -38.7%       0.04 ±  9%  perf-sched.total_sch_delay.average.ms
-     18.17 ±  3%    +262.0%      65.77 ±  8%  perf-sched.total_wait_and_delay.average.ms
-     47429 ±  4%     -84.9%       7139 ± 10%  perf-sched.total_wait_and_delay.count.ms
-     18.10 ±  3%    +263.2%      65.72 ±  8%  perf-sched.total_wait_time.average.ms
-     18.17 ±  3%    +262.0%      65.77 ±  8%  perf-sched.wait_and_delay.avg.ms.[unknown].[unknown].[unknown].[unknown].[unknown]
-     47429 ±  4%     -84.9%       7139 ± 10%  perf-sched.wait_and_delay.count.[unknown].[unknown].[unknown].[unknown].[unknown]
-     18.10 ±  3%    +263.2%      65.72 ±  8%  perf-sched.wait_time.avg.ms.[unknown].[unknown].[unknown].[unknown].[unknown]
-      0.68           -83.8%       0.11 ±  6%  perf-stat.i.MPKI
- 1.657e+10           -35.2%  1.073e+10        perf-stat.i.branch-instructions
-      0.27 ±  2%      +0.1        0.34 ±  2%  perf-stat.i.branch-miss-rate%
-  43387409           -17.1%   35980500 ±  2%  perf-stat.i.branch-misses
-     38.35           -35.8        2.53 ±  6%  perf-stat.i.cache-miss-rate%
-  56795946           -90.4%    5475678 ±  6%  perf-stat.i.cache-misses
-  1.48e+08           +48.5%  2.198e+08        perf-stat.i.cache-references
-     10520 ±  3%     -87.4%       1322 ±  9%  perf-stat.i.context-switches
-      1.70           +65.9%       2.81        perf-stat.i.cpi
-      2499         +1000.8%      27508 ±  6%  perf-stat.i.cycles-between-cache-misses
- 8.369e+10           -39.7%  5.048e+10        perf-stat.i.instructions
-      0.59           -39.7%       0.36        perf-stat.i.ipc
-      0.68           -84.0%       0.11 ±  6%  perf-stat.overall.MPKI
-      0.26            +0.1        0.34 ±  2%  perf-stat.overall.branch-miss-rate%
-     38.37           -35.9        2.49 ±  6%  perf-stat.overall.cache-miss-rate%
-      1.70           +65.9%       2.81        perf-stat.overall.cpi
-      2500          +942.6%      26067 ±  6%  perf-stat.overall.cycles-between-cache-misses
-      0.59           -39.7%       0.36        perf-stat.overall.ipc
-   1117006           +52.3%    1700887        perf-stat.overall.path-length
- 1.651e+10           -35.2%  1.069e+10        perf-stat.ps.branch-instructions
-  43243442           -17.1%   35861582 ±  2%  perf-stat.ps.branch-misses
-  56607711           -90.4%    5457714 ±  6%  perf-stat.ps.cache-misses
- 1.475e+08           +48.5%  2.191e+08        perf-stat.ps.cache-references
-     10485 ±  3%     -87.4%       1318 ±  9%  perf-stat.ps.context-switches
- 8.341e+10           -39.7%  5.031e+10        perf-stat.ps.instructions
- 2.527e+13           -39.8%  1.522e+13        perf-stat.total.instructions
-
-
-
-
-Disclaimer:
-Results have been estimated based on internal Intel analysis and are provided
-for informational purposes only. Any difference in system hardware or software
-design or configuration may affect actual performance.
-
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+> -------------
+> Key Attendees
+> -------------
+>  - Ryan Roberts (co-presenter)
+>  - mm folks (David Hildenbrand, Matthew Wilcox, Liam Howlett, Lorenzo Sto=
+akes,
+>              and many others)
+>  - arch folks
+>
 
