@@ -4,118 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C0BEFC590A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 08:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F954FC5910
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 08:40:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7996B6B0088; Thu, 26 Feb 2026 03:13:43 -0500 (EST)
+	id 6EC336B0088; Thu, 26 Feb 2026 03:40:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 771226B0089; Thu, 26 Feb 2026 03:13:43 -0500 (EST)
+	id 699E96B0089; Thu, 26 Feb 2026 03:40:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67CD86B008A; Thu, 26 Feb 2026 03:13:43 -0500 (EST)
+	id 57B9F6B008A; Thu, 26 Feb 2026 03:40:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 57A7E6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:13:43 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED0211609F7
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:13:42 +0000 (UTC)
-X-FDA: 84485893884.11.777D723
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 19D5C1C0010
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:13:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y+nvrZou;
-	spf=pass (imf21.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4548E6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:40:53 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 901D613BF60
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:40:52 +0000 (UTC)
+X-FDA: 84485962344.02.53F9658
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 98FD5180008
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:40:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T5K+2bTN;
+	spf=pass (imf16.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772093621;
+	s=arc-20220608; t=1772095251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=/F/t6odtrO1QsYUM+Oc2ZRehZzeRWIs6L56PaAgiZlk=;
-	b=FVnikXn6BT8Rr/gOx4tQkReQ0ai7+9OQVYywym+pVEWNTEuibeDSZovQSv8sNvB5S9m1YI
-	GKGFHaZsb0txZs32lz3kvQS9bnAzIdh10DloY/vmESueBASCbip0+ck0pGvGWYfyAZKWuh
-	vlEwKK5LSQZLpdgsBAkXyqL64hbeKDk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772093621; a=rsa-sha256;
+	bh=r6ok+REfdEcAEOyYdN8mpwOjfAi6PmuRiNBeuWg5TUU=;
+	b=xKhjJLCoDO9zCinhRDCIC4TxkjL0AoyvR4IqQv70qZAxJoADJoVQlTmIPdjoi3TfFEIrxv
+	6qRWuSRijUV99FQVjZSHvQD3lVRacbinwkcwmg8xcAcx8lUbAUDOvN85qMQxXTEnBk3f8s
+	TvQtLbXaBM+MW31Kui8IFBFgjIOPN/I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772095251; a=rsa-sha256;
 	cv=none;
-	b=ykQSO3mzFqGiayYNRdeEcsUgnKeR5ZkPr7Z6V2bToY/1CWGjmGj5C+JdIIdHKx+cYigh8X
-	uFONCeuHBnldE6jUOPki0pJlm1iWpodwmzmmBMIuLKkeHnf+QWFzZre+42mbBgyjGn1LUt
-	jCxogbOZch3ZMaG9/xYdIJqa7g2LL0U=
+	b=BBhQlrhnI8v24OQGWbmWrGyf/xYygPV7dXRL3KLCZIA+ub1buLXIgZOF+91a+3xugXCrH4
+	zdqSckDLJm6cAyGVuWpfI8GQyVMiqU+3P5gZ7vRY6udWgXfTEfqKwRxTeA7SbxKLVJlLkY
+	ps7ZFpVp81ADhzxu6U1vlfisv4odG6c=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y+nvrZou;
-	spf=pass (imf21.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2adc1d9ec56so3774285ad.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:13:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772093620; x=1772698420; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/F/t6odtrO1QsYUM+Oc2ZRehZzeRWIs6L56PaAgiZlk=;
-        b=Y+nvrZourOpwucx/26WxJ/83U3ZZDFH1xzNrFi50COwBZhtmXM5J05ZUgRVC5gR9Yr
-         OJ7wtv/7NjhIsv8X23aFHzon8gu48PVXVZ02ZrN7sZqh5pDGcd7G1LzPL4reM4uNHl7e
-         JDSJYyfsDzTkNAth4wkmaQBEfVOz9MaRYCR0pkBkPzShPO5f5qtbDaNu3srqtSaJJmHt
-         aGRwIKCL1TGVvTJAqBWGPdp99W2Zv/GNzM1BE2J4aKtXPF3AbptF/kDtsihFJPt8fzTi
-         Ca/3Kqv9UCV+knFHWelqmSEkq2bDpv5QFSSx0CbnQVq7WoL+DINFpazXvfOKz6ab8xc9
-         puIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772093620; x=1772698420;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/F/t6odtrO1QsYUM+Oc2ZRehZzeRWIs6L56PaAgiZlk=;
-        b=nBBvgfIIpfbi1DWSsNwZRzzy6kqL7MPkoAXOLpox6QUKtnA7KFqY1ctJYr/7aptw3w
-         0gf3fOdwY1hP/onAzV95ArgRUbLu7LlBjDYcEOX0P06B/OUlFyJS8oToJS8PJ5kdYWH5
-         cD0iJSK9YC8KWpYLsFuhiBCIrUoRXPBQAypI9F/tV8eR5f8N/OWazXRdB/vZAMrxH9eH
-         evTOeXHqRu7vPK6lI396l6jkWS8YtResXUgcLiRDRnF8t+9auWp0YrH+X+5PtK7Sa8jL
-         TG8XbrGuIDHcGyIEBjN8C38ekq93a/w/rDdQMaOjnKqx/qRBxAsJvCM9ABE+JUdjIcg9
-         Ir1A==
-X-Forwarded-Encrypted: i=1; AJvYcCX8aHfqV8YOZ8TJhbJSLERK/bXpZ0c5q03xuWOU8UW6pG8jQ994xuAkxCAybOE/Yi2tXOaL9SHv9g==@kvack.org
-X-Gm-Message-State: AOJu0YxOVggOLHuvBc4BE/REL5QlDCBGOa5Qa12y41VMzU00dmlJhY7L
-	814OijoHBM/5vwjfslHNjQMbWWMg9oyFxY6/Cu2NJJS1J2P6cp9pKfF6
-X-Gm-Gg: ATEYQzxMCjS5XyA+/8TikQkD90StvfrA7ug+CzlWQTUGo3CuG1FK0JXEpvsyTm/nwRv
-	9kWgJ+kz8EwNC1efNb5+Cfo8N2HK3g3h4xk5851a1BWhf7chLjSurroc2sq1AQzGZaZ+4lzydOF
-	GEdO2PrxmkeEs4t0p5rYj5Iy5M6h7a0hNgEUPcJPw1S1/iRsu45TRruEm7bC+Wu7xlm4uqX4yye
-	oIKUOLo4n6C8m8q0xPFmCGAod+4rTRPXdnEjQMgeWRsfxQsW6ItIQI27mbV2316sP4JhWsMtWVf
-	eOrDgSUNQOdJYGJAkWVZffQUwuTP67m95fBN+aLiFpFrcRo/lEoIvZ1YEIRRwloL2Mku9Rzi6R6
-	MbaPJS3gBS4NxwwDyIpyqh5py1D5ulIDDZzPBudF+D7vLJ0muYjNqkWB/y/RUPRbFQaPP1dpNg+
-	BSM9pCiui0rTY1AoCIY2HoMCHnO2x87gkUEnAak9bdZBdDgzBGByK62kHOr6m0UdwFNJuM6MKTH
-	4B5Rw==
-X-Received: by 2002:a17:902:ce0f:b0:2a7:682b:50af with SMTP id d9443c01a7336-2ad7453ae06mr177141285ad.40.1772093619850;
-        Thu, 26 Feb 2026 00:13:39 -0800 (PST)
-Received: from localhost.localdomain (n058152022206.netvigator.com. [58.152.22.206])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b3889sm16375365ad.16.2026.02.26.00.13.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 00:13:39 -0800 (PST)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	richard.weiyang@gmail.com,
-	linux-mm@kvack.org,
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T5K+2bTN;
+	spf=pass (imf16.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772095248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r6ok+REfdEcAEOyYdN8mpwOjfAi6PmuRiNBeuWg5TUU=;
+	b=T5K+2bTNXbyiZNubyfIgKzDWc7n++7B7nePN71sU4f09J1Z1zIXlbtNc+/wUPPFZr90CyP
+	WGRtf1eL2ccboUEI1sH532tb4YN/k/NZBD/VWOkRmOeKLQR6AWkjAVuuyOzUIdv48y05/E
+	r/+dWZ9KNUA0tglW3MTUw+5KWgo1dkU=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: linux-mm@kvack.org
+Cc: jiayuan.chen@linux.dev,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+6880f676b265dbd42d63@syzkaller.appspotmail.com,
+	"Theodore Ts'o" <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-ext4@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH] mm: khugepaged: simplify scanning progress in pmd
-Date: Thu, 26 Feb 2026 16:13:13 +0800
-Message-ID: <20260226081313.53518-1-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	ntfs3@lists.linux.dev,
+	linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v1] mm: annotate data race of f_ra.prev_pos
+Date: Thu, 26 Feb 2026 16:40:07 +0800
+Message-ID: <20260226084020.163720-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 98FD5180008
+X-Stat-Signature: psbqhshf9fx7ag4ucbypri87mier9jti
 X-Rspam-User: 
-X-Stat-Signature: k68ww6kazpbb7tcierzpfn95muh736t6
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 19D5C1C0010
-X-HE-Tag: 1772093620-115605
-X-HE-Meta: U2FsdGVkX1+cK+bi8pbaCoy19kTPhb+diTeFC+2CfutUy52yNF3aNbn0FjdpkwbutY1lvMnM7aDNZdrgfeZmvPdaneBat4BeEgnkEIM4ZCJ4Hw2X3VvW81QiELCLxjGROsL5EGjdFn6Vsxf7uEubhS9xiSZeJJFfSoUl0yJVqeMvcYvN+vAK/wdAW+wpbIfN9RxjEwJmMBm14cH7FyTEyuVlf1yppeVhAZEnsIY2qvuTOHqFigIvKmNnVmi1xoSmmXUa9DH4h23qNbyhbyR2qsMAJdeopq46SrcSn9ilV/cEO0nMej/SBKIund8vlfTEexTddvZ9MiFfuiaATOaC5OFVR1JaoTszzpCt73GKJM1LWYvoQ2sKvsYXeieKXvFOeqXTV1nwYK6eMxH1f7ZbidGNszwhmlnJl5hsQ5a+S0UhzE9UxV/I40W1fzAOJ/pQBSoFqs3zcOx0qdyHeat5yEeYWylJ834NhMVhrKfKi6qNbN0Jn5+obEALuGB9u9N3tu8z+JXAoKSKvnmV3nMGRTzlGsDtjxEfytHHLdC5HfKB6eeW+BKXHUkV+qtJnshGrjzjF2iR4eHxQhhELD+q4KfMnrTgvKm3wZLCM3Wsxokt6dFiz/Pt3u+sGO6xgOYXC6JDuAFPmVNIxUD3I1zt1Eo1aDUsPl/62ptbRk0ZWK9IJCxwWWI8WXVA/T8VWRPfxGMaf/vceP+lcy0Wuz7u6PdrWV8WUBByg1UCkR3LUlhZKfE9As/EWdE/axcffiXUWy8Nn7RehPTqfMjr0eWb2EEsNEBijOS56GCe4IuE1nV8ypdNFS+WSLl4f2gd1/LU2mhcyRxYaMKbXI8m0grr41JjZYnbF5KWdGPSULUskTT595NePWBZC+GMm4ewiKv251bEGrhAau7/1vgCXCA46Ky/MGXXCm5dzWZcTNRo3PRt4uNIxnpZ/p/leq6ptqI0i6azy/BP2Fpe5kCKWAA
- JkD+PqYJ
- EQvhEKoxE9nxgpByjw8Q4aMysEniAn0+oZPwleb3FJCewkWmK25EWojOMlboyEsvrv6/cozXYZSzBOA+cT+0AbH+JomGRmv6yKrWpEBEDp1nBwjTdPc1aOEUtIzF3sl8DGzVrKU592DAnovFW+LWqBOqqasv9vyFCVNWiGRXnGurMta9rFjH527X05uj7n42E+BORJzGdBgLPAVZUn7G9GFmDoxWCJZ1fJAxp03dPtUxvNsxJfLviJ2ZCu3cegJECa/qe4MDxMLsIvG1umuvgxdhcqh76XeCX2SYTrwyU7WMrUhctyOTku+V8ZJl5Wv22fNtyWExM5JGNGu/QT6hv9LgC4RKH0VI3VVkLKrwXNz0fZDcVy0jrXHJb9HUhtK1aExH7GWTOIbzM0jT4ZqMhosncgPcji45g7aHQ0ItwOETM9Zx/vHXL5eOTVKbVGb9LpEvawsfUa5NXDkavdtHIyLjR3iLJWdtdunFHJ3Bs7n7z1dMKfUfMMSRjSqCuHLtxdHL+oh/YP+aXJEGrOcOdG4Rj+iJ2zDCs09K5yk64stpmzMI=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772095250-775351
+X-HE-Meta: U2FsdGVkX19LKfBTMCTulmZmxBKp5n7Zv5ZaSiT4AueXq1gGDWYzwwpVPEq4GGHOhxjYaP0gqO0AQEHdDytXYXLYnHyxy9QBn+giFgmqkxYEBmZIxVN37GLA4zFijMFGRlQ0svMcTX8Kg6Zq9009Zn98cqUicdU1yFaU/pVonaQAUGjzjKDaQ7TVf9BqOmrdmweu4hdSw3GWZIgxmiHU91lCHJSOd1dJy7/RO57b9EzuH9ucJ5BF8A2DGb1x9d/P6W1bocz1lHdKyV7oMOOD6F/aqVz61qP+sbf/zPj2pGCFk0AcJ7nzgz70GxtrczYH0XnT+YiVEaizFaaeKQoLYBT8bHMClMkJ7D6nPV5t6PBwX1T7t7Vmi48TbH3kv4aMKAfQ40gcNVQplDlRcRxh3AJiLggwcvc0Wkkxlr8oWZTL6WdJBM4nLtDXJNzbSP3r+fKk2oAQpWFa6qpsHz5WnDMGy5RP7ktLBcJX2nmoLu69Qkn0J2Wqkg6RTGgjX5NEMlYEfQ4UtljOqd1dQqQeNAQXnqm213HIXqTLuWr/jmd3wqtGPnCU+azcodocTWx03drjIQgXu0FjnytmqrUD5PaLyHaUpFNSWgGjObpMuG3aDkeHKbgF5sZRMTUkFwPrjtDpo0yy8Fi8y0aJw/bKF0U8Y/yQNhqWUg55Ky5uOyDC7WBoZVTIGbkjptBORRuzGsAYdIiqR60oRvZhRkTK7xVcrDIx8e+2ZijFsij0yJO4ejrM0L9UY7WV6iIh2zRlu9nM+zFlFAlF5S2/J5JNVblZRHTuxV2dU5K5oMdUcngfwLSpTNVOCFwZo4U0aLiAjf+6I2ouPEmmItCvKgRYttiH7gw1WGr+OsTqqRAitj0GddNQZZNXfK0gQaxHY17j096ztdsqEejl+kwW0Q8eT6gCm5VRp3szANMJLKMvnr/5hwK1duYEm0embkPfasncjo+WkDVrapzyQaL8NAW
+ JQDy5Bv8
+ 5n4/mewwagcp9mgIGpiQM8GvIiSdiXcppAEhLNIi4UgcOq0Zl5pFKKrEC0CS55b9OdSeLHPT8+iiOtkLeLLz+d2lL/5XW478X4fUZUIAe0HOFCpcsBpaaXM071T2mihdARVfak56lRUM5lpvwzZCxvNSFqePPoKZ76QqHUhQJGO9TwL9U6A7eDvRD2WjIJDilJkT6qkSo2RH1M5PCsSMMDgj7RUbvV1Jf+M18hTKzD+X2SIt7PFmz3y3DJqvIf/XlYtyYp/4405GoNRravqBh2+O+VgGjLA03UVo3HI/Kc/oxFuXpmpH40aGSU3kqVOar7582/AN7HMI9MhdE9S7N2pH7LDbZr5znHeco/pgNYgDSzMJ0G4Jrty5OliELOzxFrpxLRhnxX6aqYnHenpl+GsrQAhSmijhUKxvi5iBDu36CxR/NFwm/+j5FiFsSD8Ue9bNsHGuDyDSTnC+x0/7Z/U3/AZ1vp4riW1OtXxn5Jnupox0l+6RPoHgoSw1fZ8ZosspQ/zLpW2QFEG8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,201 +100,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Placing "cur_progress" inside "struct collapse_control" makes the
-overall code simpler, there also coincidentally has a 4-bytes hole,
-as shown below:
+KCSAN reports a data race when concurrent readers access the same
+struct file:
 
-struct collapse_control {
-        bool                       is_khugepaged;        /*     0     1 */
-        /* XXX 3 bytes hole, try to pack */
-        u32                        node_load[64];        /*     4   256 */
-        /* XXX 4 bytes hole, try to pack */
-        /* --- cacheline 4 boundary (256 bytes) was 8 bytes ago --- */
-        nodemask_t                 alloc_nmask;          /*   264     8 */
+  BUG: KCSAN: data-race in filemap_read / filemap_splice_read
 
-        /* size: 272, cachelines: 5, members: 3 */
-        /* sum members: 265, holes: 2, sum holes: 7 */
-        /* last cacheline: 16 bytes */
-};
+  write to 0xffff88811a6f8228 of 8 bytes by task 10061 on cpu 0:
+   filemap_splice_read+0x523/0x780 mm/filemap.c:3125
+   ...
 
-Also rename "cur_progress" to "progress_in_pmd", make it clearer.
+  write to 0xffff88811a6f8228 of 8 bytes by task 10066 on cpu 1:
+   filemap_read+0x98d/0xa10 mm/filemap.c:2873
+   ...
 
-No function changes.
+Both filemap_read() and filemap_splice_read() update f_ra.prev_pos
+without synchronization. This is a benign race since prev_pos is only
+used as a hint for readahead heuristics in page_cache_sync_ra(), and a
+stale or torn value merely results in a suboptimal readahead decision,
+not a correctness issue.
 
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+Use WRITE_ONCE/READ_ONCE to annotate all accesses to prev_pos across
+the tree for consistency and silence KCSAN.
+
+Reported-by: syzbot+6880f676b265dbd42d63@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=6880f676b265dbd42d63
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 ---
- mm/khugepaged.c | 51 ++++++++++++++++++++++++-------------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+ fs/ext4/dir.c                    | 2 +-
+ fs/ntfs3/fsntfs.c                | 2 +-
+ include/trace/events/readahead.h | 2 +-
+ mm/filemap.c                     | 6 +++---
+ mm/readahead.c                   | 4 ++--
+ mm/shmem.c                       | 2 +-
+ 6 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 7c1642fbe394..00e025f16c02 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -70,8 +70,8 @@ static struct task_struct *khugepaged_thread __read_mostly;
- static DEFINE_MUTEX(khugepaged_mutex);
- 
- /*
-- * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
-- * every 10 second.
-+ * default scan 8*HPAGE_PMD_NR ptes, pte_mapped_hugepage, pmd_mapped,
-+ * no_pte_table or vmas every 10 second.
-  */
- static unsigned int khugepaged_pages_to_scan __read_mostly;
- static unsigned int khugepaged_pages_collapsed;
-@@ -104,6 +104,12 @@ struct collapse_control {
- 	/* Num pages scanned per node */
- 	u32 node_load[MAX_NUMNODES];
- 
-+	/*
-+	 * Num pages scanned per pmd, include ptes,
-+	 * pte_mapped_hugepage, pmd_mapped or no_pte_table.
-+	 */
-+	unsigned int progress_in_pmd;
-+
- 	/* nodemask for allocation fallback */
- 	nodemask_t alloc_nmask;
- };
-@@ -1246,8 +1252,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 
- static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		struct vm_area_struct *vma, unsigned long start_addr,
--		bool *mmap_locked, unsigned int *cur_progress,
--		struct collapse_control *cc)
-+		bool *mmap_locked, struct collapse_control *cc)
- {
- 	pmd_t *pmd;
- 	pte_t *pte, *_pte;
-@@ -1263,25 +1268,23 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
- 
- 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
- 	if (result != SCAN_SUCCEED) {
--		if (cur_progress)
--			*cur_progress = 1;
-+		cc->progress_in_pmd = 1;
- 		goto out;
- 	}
- 
- 	memset(cc->node_load, 0, sizeof(cc->node_load));
- 	nodes_clear(cc->alloc_nmask);
-+	cc->progress_in_pmd = 0;
- 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
- 	if (!pte) {
--		if (cur_progress)
--			*cur_progress = 1;
-+		cc->progress_in_pmd = 1;
- 		result = SCAN_NO_PTE_TABLE;
- 		goto out;
- 	}
- 
- 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
- 	     _pte++, addr += PAGE_SIZE) {
--		if (cur_progress)
--			*cur_progress += 1;
-+		cc->progress_in_pmd++;
- 
- 		pte_t pteval = ptep_get(_pte);
- 		if (pte_none_or_zero(pteval)) {
-@@ -2314,7 +2317,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 
- static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
- 		unsigned long addr, struct file *file, pgoff_t start,
--		unsigned int *cur_progress, struct collapse_control *cc)
-+		struct collapse_control *cc)
- {
- 	struct folio *folio = NULL;
- 	struct address_space *mapping = file->f_mapping;
-@@ -2327,6 +2330,7 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
- 	swap = 0;
- 	memset(cc->node_load, 0, sizeof(cc->node_load));
- 	nodes_clear(cc->alloc_nmask);
-+	cc->progress_in_pmd = 0;
- 	rcu_read_lock();
- 	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
- 		if (xas_retry(&xas, folio))
-@@ -2404,12 +2408,10 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
- 		}
- 	}
- 	rcu_read_unlock();
--	if (cur_progress) {
--		if (result == SCAN_PTE_MAPPED_HUGEPAGE)
--			*cur_progress = 1;
--		else
--			*cur_progress = HPAGE_PMD_NR;
--	}
-+	if (result == SCAN_PTE_MAPPED_HUGEPAGE)
-+		cc->progress_in_pmd = 1;
-+	else
-+		cc->progress_in_pmd = HPAGE_PMD_NR;
- 
- 	if (result == SCAN_SUCCEED) {
- 		if (cc->is_khugepaged &&
-@@ -2434,7 +2436,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 	struct mm_slot *slot;
- 	struct mm_struct *mm;
- 	struct vm_area_struct *vma;
--	int progress = 0;
-+	unsigned int progress = 0;
- 
- 	VM_BUG_ON(!pages);
- 	lockdep_assert_held(&khugepaged_mm_lock);
-@@ -2488,7 +2490,6 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 
- 		while (khugepaged_scan.address < hend) {
- 			bool mmap_locked = true;
--			unsigned int cur_progress = 0;
- 
- 			cond_resched();
- 			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-@@ -2505,8 +2506,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 				mmap_read_unlock(mm);
- 				mmap_locked = false;
- 				*result = hpage_collapse_scan_file(mm,
--					khugepaged_scan.address, file, pgoff,
--					&cur_progress, cc);
-+					khugepaged_scan.address, file, pgoff, cc);
- 				fput(file);
- 				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
- 					mmap_read_lock(mm);
-@@ -2520,8 +2520,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 				}
- 			} else {
- 				*result = hpage_collapse_scan_pmd(mm, vma,
--					khugepaged_scan.address, &mmap_locked,
--					&cur_progress, cc);
-+					khugepaged_scan.address, &mmap_locked, cc);
+diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
+index 28b2a3deb954..1ddf7acce5ca 100644
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -200,7 +200,7 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
+ 					sb->s_bdev->bd_mapping,
+ 					&file->f_ra, file, index,
+ 					1 << EXT4_SB(sb)->s_min_folio_order);
+-			file->f_ra.prev_pos = (loff_t)index << PAGE_SHIFT;
++			WRITE_ONCE(file->f_ra.prev_pos, (loff_t)index << PAGE_SHIFT);
+ 			bh = ext4_bread(NULL, inode, map.m_lblk, 0);
+ 			if (IS_ERR(bh)) {
+ 				err = PTR_ERR(bh);
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 0df2aa81d884..d1232fc03c08 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1239,7 +1239,7 @@ int ntfs_read_run_nb_ra(struct ntfs_sb_info *sbi, const struct runs_tree *run,
+ 			if (!ra_has_index(ra, index)) {
+ 				page_cache_sync_readahead(mapping, ra, NULL,
+ 							  index, 1);
+-				ra->prev_pos = (loff_t)index << PAGE_SHIFT;
++				WRITE_ONCE(ra->prev_pos, (loff_t)index << PAGE_SHIFT);
  			}
- 
- 			if (*result == SCAN_SUCCEED)
-@@ -2529,7 +2528,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 
- 			/* move to next address */
- 			khugepaged_scan.address += HPAGE_PMD_SIZE;
--			progress += cur_progress;
-+			progress += cc->progress_in_pmd;
- 			if (!mmap_locked)
- 				/*
- 				 * We released mmap_lock so break loop.  Note
-@@ -2852,7 +2851,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 			mmap_locked = false;
- 			*lock_dropped = true;
- 			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
--							  NULL, cc);
-+							  cc);
- 
- 			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
- 			    mapping_can_writeback(file->f_mapping)) {
-@@ -2867,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 			fput(file);
- 		} else {
- 			result = hpage_collapse_scan_pmd(mm, vma, addr,
--							 &mmap_locked, NULL, cc);
-+							 &mmap_locked, cc);
  		}
- 		if (!mmap_locked)
- 			*lock_dropped = true;
+ 
+diff --git a/include/trace/events/readahead.h b/include/trace/events/readahead.h
+index 0997ac5eceab..63d8df6c2983 100644
+--- a/include/trace/events/readahead.h
++++ b/include/trace/events/readahead.h
+@@ -101,7 +101,7 @@ DECLARE_EVENT_CLASS(page_cache_ra_op,
+ 		__entry->async_size = ra->async_size;
+ 		__entry->ra_pages = ra->ra_pages;
+ 		__entry->mmap_miss = ra->mmap_miss;
+-		__entry->prev_pos = ra->prev_pos;
++		__entry->prev_pos = READ_ONCE(ra->prev_pos);
+ 		__entry->req_count = req_count;
+ 	),
+ 
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 63f256307fdd..d3e2d4b826b9 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2771,7 +2771,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 	int i, error = 0;
+ 	bool writably_mapped;
+ 	loff_t isize, end_offset;
+-	loff_t last_pos = ra->prev_pos;
++	loff_t last_pos = READ_ONCE(ra->prev_pos);
+ 
+ 	if (unlikely(iocb->ki_pos < 0))
+ 		return -EINVAL;
+@@ -2870,7 +2870,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
+ 
+ 	file_accessed(filp);
+-	ra->prev_pos = last_pos;
++	WRITE_ONCE(ra->prev_pos, last_pos);
+ 	return already_read ? already_read : error;
+ }
+ EXPORT_SYMBOL_GPL(filemap_read);
+@@ -3122,7 +3122,7 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+ 			len -= n;
+ 			total_spliced += n;
+ 			*ppos += n;
+-			in->f_ra.prev_pos = *ppos;
++			WRITE_ONCE(in->f_ra.prev_pos, *ppos);
+ 			if (pipe_is_full(pipe))
+ 				goto out;
+ 		}
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 7b05082c89ea..de49b35b0329 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -142,7 +142,7 @@ void
+ file_ra_state_init(struct file_ra_state *ra, struct address_space *mapping)
+ {
+ 	ra->ra_pages = inode_to_bdi(mapping->host)->ra_pages;
+-	ra->prev_pos = -1;
++	WRITE_ONCE(ra->prev_pos, -1);
+ }
+ EXPORT_SYMBOL_GPL(file_ra_state_init);
+ 
+@@ -584,7 +584,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+ 	}
+ 
+ 	max_pages = ractl_max_pages(ractl, req_count);
+-	prev_index = (unsigned long long)ra->prev_pos >> PAGE_SHIFT;
++	prev_index = (unsigned long long)READ_ONCE(ra->prev_pos) >> PAGE_SHIFT;
+ 	/*
+ 	 * A start of file, oversized read, or sequential cache miss:
+ 	 * trivial case: (index - prev_index) == 1
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5e7dcf5bc5d3..03569199baf4 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3642,7 +3642,7 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
+ 		len -= n;
+ 		total_spliced += n;
+ 		*ppos += n;
+-		in->f_ra.prev_pos = *ppos;
++		WRITE_ONCE(in->f_ra.prev_pos, *ppos);
+ 		if (pipe_is_full(pipe))
+ 			break;
+ 
 -- 
-2.51.0
+2.43.0
 
 
