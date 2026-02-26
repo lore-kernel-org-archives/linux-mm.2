@@ -4,89 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C48AEFD460E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 03:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D3E1FD460B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 03:37:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 232B56B008A; Wed, 25 Feb 2026 22:36:48 -0500 (EST)
+	id A05E46B00A7; Wed, 25 Feb 2026 22:37:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E0D76B00A7; Wed, 25 Feb 2026 22:36:48 -0500 (EST)
+	id 9997B6B00A8; Wed, 25 Feb 2026 22:37:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C2A06B00A8; Wed, 25 Feb 2026 22:36:48 -0500 (EST)
+	id 867926B00A9; Wed, 25 Feb 2026 22:37:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EAFA76B008A
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:36:47 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE7E71CB0B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:36:47 +0000 (UTC)
-X-FDA: 84485196054.13.A9908DD
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8236A80010
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:36:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wGe2FI2i;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772077005; a=rsa-sha256;
-	cv=none;
-	b=R08l59f8dMYk/IXn0d5Deyc2jZmf3ZKguYEVR2Mygsfrh1StuJWXTnHv7YvqTbC8rOYER/
-	WOAO0fe4klqeomcPibdfjSpYufdhm8+Qne0O/ctyGEZ5W6fLeGF4qyeYR7p1DC7OImDmNe
-	tRmAUzkBB0T8kCQA330oIV+spAHbuNg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wGe2FI2i;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772077005;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 715786B00A7
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:37:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20E8C13BB09
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:37:18 +0000 (UTC)
+X-FDA: 84485197356.21.EE47E04
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F333B100002
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:37:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="3i9M8/E3";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ackerleytng@google.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772077036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xpzgBIQcGsuSWrw8v83C+dnRIF10MeSyjQBe5C87dLY=;
-	b=Q6PyIdKWnE9U21rWRmdaHNjEswMFySIvmzYLmDrwopZmaF9gJfsrkoCqB21WMe+oISkFXk
-	sYca3vvr4I/2Hwq/uWtPLC2x3saVDLgizkPJNIoYjaJJrHE+o5Q7hItGmVhzukCD+mQV8m
-	6BaCxVKWPhdZ5phPsMReoUIzrh7PyBQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1772076996; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=xpzgBIQcGsuSWrw8v83C+dnRIF10MeSyjQBe5C87dLY=;
-	b=wGe2FI2iwtDLzFCr32SRgQYfJp6qAkb/Dp6TgW9k79bLKdvqKzR4OE/oN+PbiDzd4ntN73bYGgZcPOu7iqYz3yI85fGrOL8EVBsZJy++UQ1pvsM5DLSrnugpClE2gbOUBN74IhTa5UC0UfFcIIgR0N8ocVNwQKFxwwWy/RI/Xsc=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzpnG4Z_1772076994 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Feb 2026 11:36:35 +0800
-Message-ID: <41be3f15-2cc6-4ec3-beab-9a5c4da532a2@linux.alibaba.com>
-Date: Thu, 26 Feb 2026 11:36:33 +0800
+	bh=jg3R22OOVfrafHOHSh0bSMLnUJD5uZeRUb4Z2gkWz+8=;
+	b=Ztw8OVF6CcCdE/nonaL8ghw77FepcD3XahoEqpw65p1HmNN/08MrA1TQ99LoxoW/28dCFP
+	wUJRSroY8bN5HyIV7NG/px2PfYl5ffriwm7uV8wRY0QbEA3bO2tPsjb3bitBjJ4ylNm5Xq
+	HJVVDzeChVRg4phR4hRX+c/Qk90IeUQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772077036; a=rsa-sha256;
+	cv=pass;
+	b=FKA/ykFGyQDemIpKhb9BAVrhiaxixxvsf25uZ7L6ha98tIBFVF5vs4CDrBT3BHJlu+Ymmu
+	YC3rt4Xpi3skHcPb7fViHwM1Gncg4cwQMOU58az16vV4JJGdWFTdqwUQuyWJnUR/Ly4J9b
+	x7ed6hLw+7YNz1AMt8vC80JuZLTZ4Xk=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="3i9M8/E3";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ackerleytng@google.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-389fad34e2eso18291fa.3
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:37:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772077034; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kPJxiE8Q6wlQ/HwtrPqA7YEipO4g+RC79qtndM2JghLGH6xI3J7/t+zgCr5bmgMQuT
+         WLKK+1f1IOZ00o7L0VeFNnvD6bKmLk6eWb0mcmLz8CWyNqbTttWfkAFFcCojSeZZHKSg
+         KgUxdy9d2/EpAvysOz419ExSjhGyJiCxgWrtORkOGtPpqaHeS3T8q01VRkAqp40BwLhU
+         mC/BeiW0PC4O/PAl9pxKwYc4o9OwuAppbrK7gr01SY/s/YfwXCCOv2CiN7AcsWSOEoND
+         Kl/+N906D4sZu6GeEWmMJgVNshG3HJ6dLgJJsXE9QBQzK1kPvDC22TwMfG/HLbw/cW/Q
+         KQyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=jg3R22OOVfrafHOHSh0bSMLnUJD5uZeRUb4Z2gkWz+8=;
+        fh=qVg7EYrL1yyKvSBEgq15UJT+pmRsePMRgkp829ifELI=;
+        b=GPZZ7zs+xcpOsrN+65ONAo5vUyBBP+fwNG7RPm9Rw8r36zGrNjUfQ+D3sD2UmUIf+9
+         ARUP/SsUxioFCrPXJ5CoJsy2Q5IspR88WQ3knBa33Vdn3gbyLag1JkX6CZu4ScfHLPGx
+         ONJxYn8q8n8De31qyF35e1OZK3cF3EfMbvYEXakzf13lwHKdi12q1FqAFy4IylJKNVA9
+         pChnhCLmRhAVLcK41WIFGEg24c54KmUCqEnWoDW/xTq3SFagrqo4LninOdK26ROjNftY
+         fPMGWyjIP4+xK/PhpLcCV30MwTr22TI8Wpqrrn0SXpTwSiLueTe76KY+rQHJ0ged+jIH
+         zqww==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772077034; x=1772681834; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jg3R22OOVfrafHOHSh0bSMLnUJD5uZeRUb4Z2gkWz+8=;
+        b=3i9M8/E38k/7dNTL+GPnLyfEcYPKXt3OJ9D0FTKbMAa6oiQ4KOQa1BepnP+wmnL13Q
+         DGO5r2fjdpuc1GO6D1HKIGMayg7Q/mxKx6w7f8my+O1eElMLNCCI/kPq+FQTQydjFPBY
+         e+Xy+fvKU5YTgL4ijZoIb+QNPC2/L9niMlu0+NCT4MXJamg2uop414z4dV3l18RbyjUv
+         rCe6v7DqvDybAiCJYW9z8v698W1ihpN6I4II7AhfFL8A9QSt2uVjbabd+SQuhRzGDL4V
+         3izCUMkUOGO92PVui9VzvmbDr5T0F53nXCwL22EGl5k39daUp5WB96xVdYgQvITYi+l7
+         S3BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772077034; x=1772681834;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jg3R22OOVfrafHOHSh0bSMLnUJD5uZeRUb4Z2gkWz+8=;
+        b=n++/gEGW4jef70MGQrqYpBl1XpXF9eH2XYrpqOry3FmnIN+Gf8c26JTOaa0yhdekrn
+         qRtvHpw3bXwdNg9j4DXCj6DFJJ7ZIF0uNNOqxBE6vVPdzPSoCFS0SUl8xF2QaEAHF8B9
+         3UU0eQFqAS5QEenDAiJZK9ohSoRu66W6Y+FvliXq3V6vb0lz5p0hFCxSbq1dbAfT9Ylx
+         Bi6APp8pphxhwO0vywZE8kUpJ9r3YNf91HaQdsKQE3dCdoZk7NCe0pngHPBDDicnqRYI
+         luEu6GO0URtoLI3U/yqwiJ9N8p8mrCu64uoRKnbHlt3ypTUL021F7NqLFGHC7AaJJzd+
+         sfjg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3gQsLBD/xwWuyQoQ+pV7BbLjtymkSFxgzBnuioIrsP0IM+eXaZzMkiXqAuaKZeXHPdQhAdyiQ8w==@kvack.org
+X-Gm-Message-State: AOJu0YxPu/uaWqjyPRK8V0Z1jjLky/4YiPrMteQdJDxsYfASr5xfiNnY
+	ExhD1wovDEIVObjd7o/iR2/AKDqysB/QieHLVOZ56Vw6jkseLfGKks6ROzE9uh+PuZWORmchcmI
+	rLmo1vwPdBA0+jzd5SWwxUcF2J9ZwCiqFgBSh5ykp
+X-Gm-Gg: ATEYQzzDwkJg4A4PKYLeDhABN7PBOS+/TlQULcwTREYltRoCPsYN651ibNDypdOcSjt
+	j4a5EwV/ToYDDxVI60qneO27WxQV0IAtJakC93T++/nE9Q5398gmEwrt1JfczYeDiXsN3q7XdR0
+	oTjH3tfkM/jx0G9hwq1/H50nuKhNGeG7JgKqT4R6wCVBfB9h1oUxr8gGvroy/3tWWtSG0pJAFy/
+	Ju8W490gv+P3Dllr/lnuc6K/gM1FlmJ7xIdHKyaQmjYt2pw7KMgRZuDwb859igcTPXjwSX5pJhV
+	v+sLjmECdxzSB39xrmEoJ6CjYjcvISoYZqpWvEdczNIeOXQHLU2viTZX1us/aVvEelaGiQ==
+X-Received: by 2002:a05:6512:3d8b:b0:59e:5c8f:75ff with SMTP id
+ 2adb3069b0e04-5a105eacea6mr921238e87.35.1772077033614; Wed, 25 Feb 2026
+ 19:37:13 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 25 Feb 2026 19:37:04 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 25 Feb 2026 19:37:04 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260225202437.4077364-1-joshua.hahnjy@gmail.com>
+References: <20260225202437.4077364-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] mm: use inline helper functions instead of ugly
- macros
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
- zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
- <dc94552605926f9ce84f9fc2ddfe5f7d1319e41c.1771897150.git.baolin.wang@linux.alibaba.com>
- <1e90b26c-5934-47e4-a0ea-96fd8af45076@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <1e90b26c-5934-47e4-a0ea-96fd8af45076@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Wed, 25 Feb 2026 19:37:04 -0800
+X-Gm-Features: AaiRm50_sTs9jAEWMqZ835Cj7pEpp2iIBtsZ9twJbpGr-Sc3zM2ecvbh25350Y4
+Message-ID: <CAEvNRgGaJXbOGPQSgvo3rVDfis22DC4hYy=2Rczas0Vm3o66kQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more
+ generic use
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org, 
+	fvdl@google.com, hannes@cmpxchg.org, jgg@nvidia.com, jiaqiyan@google.com, 
+	jthoughton@google.com, kalyazin@amazon.com, mhocko@kernel.org, 
+	michael.roth@amd.com, muchun.song@linux.dev, osalvador@suse.de, 
+	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pratyush@kernel.org, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	roman.gushchin@linux.dev, seanjc@google.com, shakeel.butt@linux.dev, 
+	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Stat-Signature: km6tfcuzsihsghpua5cjdf3io9h75t5w
+X-Rspamd-Queue-Id: F333B100002
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8236A80010
-X-Stat-Signature: k4gcbn5uny4i75nkyz5bqt89wezcqkzg
-X-HE-Tag: 1772077002-663235
-X-HE-Meta: U2FsdGVkX19jBBb9KEQeJWZw3KsRszGRK4Q3TmotKGi0s4P5O4rKVaMnWS9OZQkaAdRjsSZqZrVdG60qy1xsNdYQM6dpjmWNX2PCdFnQPE0U42Q9O2WxwBXghJl9SYk5s/ShhhIgyA7b+Sf7Q/So6o5YVwoLgMKTp6AA2v+ct9P5FMHgu+8cGoKxL3bU6ccScGK7SYcwHWVPzmuhtPKSaV2CFHwOeSQbejSYeIsRxqSMq1n/4/2aVCBdg+Vb+ORRfDwh2dkTQlNhMQ4tpy2Yhfh2FrRaqI5btpRRNriNXaBxVUZPtfT4JUfJUjYq4NV3EoHMUw4rDpJqqyFpw23BJy5LijQm9ZMKmBfyfCbh98PDmNPtr++K6nZT5aiiwGBeedK9DfdcCCVW9uWw8hY7Bm49OcxJvfQZbcr1BxiellQyjrxs8h7Lr/emmXLBl7fZzUOjQ8/t+U1xtSeKkvKmKQdCVbp4WqvJT2x1hEfLV0zNMUcaqKvsP3J08dZ84u2nrYfP6eC3fk541TPsGD2eCBZKST8ZpcGaZWj9FbogDFx0ctULUGUqGFrgaW337kWFYnDB76Yg1cSMHUcycDKEN5CdrR85F6N158KiV18pzTfHz5Txr3jBWoFmP33HW1vwlxQ4wssoPjYoF5eA3hJXgZXCJRqhHFkSX8jiNEr0XWBNfPH4I6XvzJetcPcNfecSBaCtXMmISzw+Whi2HZkynzVHygGSAs4U9qXToQBng47xJ5uSWdV4PY7UZqWo+3CL/mKuaZqq0f4GpXLLhcpVYq0G7ICTOOwxM7PuHiXwfpvwK6kmWbfjrW7gNO5bPmpGO9VHAhQGS65nDMoG1fwKWq5KQ9d8AHYpBj/PLnlA/tgG1mqk+TTUS4DeiEJakk3p0w4bW2pugLTtrbXiy4iXDu19IK4QFTiu6HjKPa924N6GLaiC0y7hoURP1WBpwrHKCYnreNZYQjzC/nJHS/+
- c2fFQUId
- uvGqY3N/RCGantfpLysR/6nVA0ZpTC5eiOoG4SXlaWgg5seM/ri9oFfcxqLa0Pwf+gp/T+DekDa309y0jBkDayWnsGz2rnd7dzSdY3ajaiDeiWt8jPtlyDcf2Q7z6D7JQpVLQ29MXsvvBPesMdASUhCuxjMZjrwT1jCKpRkEd44sfpsIrDYalubM/pzKCPy6IRX0fl5FUcyTA57huZmFOEXuJNWVn6nT/4EQTqbXpOqLRSkMhNA7t9t20Z7tAhOwmSYfyR+2bioYEFgK3ag7P9m4F7Xp0Kj3m35AfHKlLVuUVazI5opkKCvLZeETKCxZJhD8vn6iaL32YfofDM8EQ6VoIsXtWNXGqcHxKFKa601V0/6A=
+X-HE-Tag: 1772077035-124996
+X-HE-Meta: U2FsdGVkX18fzc6Epn5VDFKmh+ezYNVHDXw/owrVsz6Z1IkaYvUWiEhCUBJglggirQvP9U0kMnf5MG5qHsXYLl88UpJiXSJJfoRefpyFdwl4WiqKy52RYYwID5SacSQDYJlrAj+OdphpM1BYld6JD5o0A82u5MJOLSv2U4zTODrFxfVwK/ojWbyZMp5zKI534WmOaBgpu1ucLhtF0F02c4T4mSMba1cJ4/pXYjvsN6BVPIpNr0HSsRxc/AC70324dA0yO5H9m7N6k/mU/uGKxwAJMIV6rluuEVhdW8iiErIOP3RQk2Z2VzRQFn3nqvylyLYw0Xx47Wui8KJzaxBc64oUawXKnlAPeoatJHQY7OvDCjyLwzabqZcwp51oKcU/uNY/oLYAvIK6dQ0H5s2ExWLznaYWY66ew/KYX/7lyK6hRGP6srtQdVjbrD4l7z4M4EZxk8/fmKvcVnYDtPtfsTZKWgLJXwSPP6eUzY9BG387/wr7uVEFWRXLwEQM/Dg8B5clAFCZTEdcn6Ln3jCdOvRhKLgeMqqDMMIjiWc1MQNOY8FHYEwPro8UgZTxdqWpoTjbS/pP4sXGSXmZwQlQe3Lo2linQtgeD70H5fz3VsVfhZHzsWHcOgKVhY7fr1fbrYD4vd1tUdRieW88DsRqP4trUwVGXfQyl0HnMZWzvaTbF3FqcgmOVE0Mechk7GmPI8yS+9zxWWcT79s5cTW/QBmsfqYv35dBP65GQ/nMkYDOA9S7W5ux7Hv8xZMFzokQjqna0d+oIEeKAOTUUIlTJmP3p9GMIG0CxEcoOwx9svHTSyz+/PSSXJYIO+3OKwY/uZ/i7UslGYtYb5maf+1BpMxcIHpyJKonO0/XIQ/kpB1U3k8M0l80Yo2K/fK2u1PRVIStkgSH8isqjbAsbqWS9GVUaVfRsamkpWMNRPlqyLRMFCHxKmHYfiZExBsyZljuHrUQ6cDZ5nwyUF7bTn9
+ g0jBFHNr
+ UPJ3DEUPNTxi+0kRFr8Y3pAXvfBKiWeTEHLNnWAdR4cpJ3ga01q0B6zA87w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,186 +147,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-
-On 2/25/26 9:56 PM, David Hildenbrand (Arm) wrote:
-> On 2/24/26 02:56, Baolin Wang wrote:
->> People have already complained that these *_clear_young_notify() related
->> macros are very ugly, so let's use inline helpers to make them more readable.
-> 
-> Could it have been me :)
-
-Lorenzo and Matthew have also said they dislike these ugly macros:)
-
->> In addition, I cannot implement these inline helper functions in the
-> 
-> "We cannot implement ..."
-
-Sure.
-
->> mmu_notifier.h file, because some arch-specific files will include the
->> mmu_notifier.h, which introduces header compilation dependencies and causes
->> build errors (e.g., arch/arm64/include/asm/tlbflush.h). Moreover, since
->> these functions are only used in the mm, implementing these inline helpers
->> in the mm/internal.h header seems reasonable.
-> 
-> Agreed. if it compiles, all good.
-> 
+> On Wed, 11 Feb 2026 16:37:11 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
+>
+> Hi Ackerly, I hope you're donig well!
+>
+> [...snip...]
+>
+>> I would like to get feedback on:
 >>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   include/linux/mmu_notifier.h | 54 ------------------------------------
->>   mm/internal.h                | 53 +++++++++++++++++++++++++++++++++++
->>   2 files changed, 53 insertions(+), 54 deletions(-)
+>> 1. Opening up HugeTLB's allocation for more generic use
+>
+> I'm not entirely familiar with guest_memfd, so pleae excuse my ignorance
+> if I'm missing anything obvious.
+
+Happy to take questions! Thank you for your thoughts and reviews!
+
+> But I'm wondering what hugeTLB offers
+> that other hugepage solutions cannot offer for guest_memfd, if the
+> goal of this series is to decouple it from hugeTLBfs.
+>
+
+The one other huge page source that we've explored is THP pages from the
+buddy allocator. Compared to HugeTLB, huge pages from the buddy
+allocator
+
++ Has a maximum size of 2M
++ Does not guarantee huge pages the way HugeTLB does - HugeTLB pages are
+  allocated at boot, and guest_memfd can reserve pages at guest_memfd
+  creation time.
++ Allocation of HugeTLB pages is also really fast, it's just dequeuing
+  from a preallocated pool
+
+The last reason to use HugeTLB is not because of any inherent advantage
+of using HugeTLB over other sources of huge pages, but for
+administrative/scheduling purposes:
+
+  Given that existing non-guest_memfd workloads are already using
+  HugeTLB, for optimal scheduling, machine memory is already carved up
+  in HugeTLB pages for these workloads. Workloads that require using
+  guest_memfd (like Confidential VMs) must also use HugeTLB to
+  participate in optimial workload scheduling across machines.
+
+>> 2. Reverting and re-adopting the try-commit-cancel protocol for memory
+>>    charging
+>
+> On the second point, I am wondering if reintroducing the try-commit-cancel
+> protocol is tied to factoring out hugetlb_alloc_folio. When I removed
+> the protocol a while back, the justification was that for the most part,
+> grabbing a hugetlb folio was a relatively cheap & fast operation, since
+> hugetlb mostly operates out of a preallocated pool.
+>
+> So the cost of being wrong, going above the limit, and having to return
+> the hugetlb folio was also relatively low.
+>
+
+Thanks for this! I saw your patch to just optimistically grab a HugeTLB
+page :) For that patch, the primary reason was to simplify the logic,
+and the simplification was justifiable because grabbing a folio is
+cheap, right? (And so grabbing a folio being cheap wasn't a reason in
+itself?)
+
+> It seems like this patch series introduces some new paths for hugetlb
+> pages to be consumed (specifically, without a reservation or vma).
+> I imagine that these new paths make the slowpath for hugetlb more frequent,
+> which makes the cost of assuming that the memcg limit is OK higher?
+> I think explicitly spelling this out in the justification for reintroducing
+> the charging protocol could be helpful.
+>
+
+Yes, I should have done that. Will copy the following to the next
+revision.
+
+The main reason is that reintroducing the charging protocol is the
+clearest way (for me) to cleanly refactor out hugetlb_alloc_folio()
+without worrying about the edge cases around HugeTLB reservations and
+charging.
+
+If I didn't reintroduce the charging protocol, I would have to depend on
+freeing the new hugetlb folio on memcg charging failure, and the freeing
+in turn depends on the subpool correctly being set in the folio, and the
+presence of the subpool influences (in free_huge_folio()) whether the
+reservation was returned to the global hstate. Aaannnd... there's also a
+hugetlb_restore_reserve flag that controls whether to return the folio
+to the subpool (and the hstate). I find folio_clear_hugetlb_restore_reserve()
+on certain code paths kind of magical/unexplained too.
+
+I would rather iron out those charging and reservation details
+separately from this series (with more testing support).
+
+
+On the other hand, reintroducing the charging protocol has the benefit
+of avoiding allocations (not just dequeuing, if surplus HugeTLB pages
+are required) if the memcg limit is hit. Also, if the original reason
+for removing the protocol was to simplify the code, refactoring out
+hugetlb_alloc_folio() also simplifies the code, and I think it's
+actually nice that memcg charging is done the same way as the other two
+(h_cg and h_cg_rsvd charging). After hugetlb_alloc_folio() is refactored
+out, the gotos make all three charging systems consistent and symmetric,
+which I think is nice to have :)
+
+I hope the consistent/symmetric charging among all 3 systems is welcome,
+what do you think?
+
+> Thank you for the series, again. I hope you have a great day!
+> Joshua
+>
+>> To see how hugetlb_alloc_folio() is used by guest_memfd, the most
+>> recent patch series that uses this more generic HugeTLB allocation
+>> routine is at [1], and a newer revision of that patch series is at
+>> [2].
 >>
->> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
->> index 07a2bbaf86e9..93894b90c8c1 100644
->> --- a/include/linux/mmu_notifier.h
->> +++ b/include/linux/mmu_notifier.h
->> @@ -515,55 +515,6 @@ static inline void mmu_notifier_range_init_owner(
->>   	range->owner = owner;
->>   }
->>   
->> -#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
->> -({									\
->> -	int __young;							\
->> -	struct vm_area_struct *___vma = __vma;				\
->> -	unsigned long ___address = __address;				\
->> -	unsigned int ___nr = __nr;					\
->> -	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
->> -	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
->> -						  ___address,		\
->> -						  ___address +		\
->> -						  ___nr * PAGE_SIZE);	\
->> -	__young;							\
->> -})
->> -
->> -#define pmdp_clear_flush_young_notify(__vma, __address, __pmdp)		\
->> -({									\
->> -	int __young;							\
->> -	struct vm_area_struct *___vma = __vma;				\
->> -	unsigned long ___address = __address;				\
->> -	__young = pmdp_clear_flush_young(___vma, ___address, __pmdp);	\
->> -	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
->> -						  ___address,		\
->> -						  ___address +		\
->> -							PMD_SIZE);	\
->> -	__young;							\
->> -})
->> -
->> -#define ptep_clear_young_notify(__vma, __address, __ptep)		\
->> -({									\
->> -	int __young;							\
->> -	struct vm_area_struct *___vma = __vma;				\
->> -	unsigned long ___address = __address;				\
->> -	__young = ptep_test_and_clear_young(___vma, ___address, __ptep);\
->> -	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
->> -					    ___address + PAGE_SIZE);	\
->> -	__young;							\
->> -})
->> -
->> -#define pmdp_clear_young_notify(__vma, __address, __pmdp)		\
->> -({									\
->> -	int __young;							\
->> -	struct vm_area_struct *___vma = __vma;				\
->> -	unsigned long ___address = __address;				\
->> -	__young = pmdp_test_and_clear_young(___vma, ___address, __pmdp);\
->> -	__young |= mmu_notifier_clear_young(___vma->vm_mm, ___address,	\
->> -					    ___address + PMD_SIZE);	\
->> -	__young;							\
->> -})
->> -
->>   #else /* CONFIG_MMU_NOTIFIER */
->>   
->>   struct mmu_notifier_range {
->> @@ -651,11 +602,6 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
->>   
->>   #define mmu_notifier_range_update_to_read_only(r) false
->>   
->> -#define clear_flush_young_ptes_notify clear_flush_young_ptes
->> -#define pmdp_clear_flush_young_notify pmdp_clear_flush_young
->> -#define ptep_clear_young_notify ptep_test_and_clear_young
->> -#define pmdp_clear_young_notify pmdp_test_and_clear_young
->> -
->>   static inline void mmu_notifier_synchronize(void)
->>   {
->>   }
->> diff --git a/mm/internal.h b/mm/internal.h
->> index e0ef192b0be3..1ba175b8d4f1 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -11,6 +11,7 @@
->>   #include <linux/khugepaged.h>
->>   #include <linux/mm.h>
->>   #include <linux/mm_inline.h>
->> +#include <linux/mmu_notifier.h>
->>   #include <linux/pagemap.h>
->>   #include <linux/pagewalk.h>
->>   #include <linux/rmap.h>
->> @@ -1789,4 +1790,56 @@ static inline int io_remap_pfn_range_complete(struct vm_area_struct *vma,
->>   	return remap_pfn_range_complete(vma, addr, pfn, size, prot);
->>   }
->>   
->> +#ifdef CONFIG_MMU_NOTIFIER
->> +static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
->> +						unsigned long addr, pte_t *ptep,
->> +						unsigned int nr)
-> 
-> Two tabs indent on the second line makes this fit into two lines.
-
-OK.
-
-> Same for the others.
-> 
-> With that
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks.
-
->> +{
->> +	int young;
->> +
->> +	young = clear_flush_young_ptes(vma, addr, ptep, nr);
->> +	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
->> +						addr + nr * PAGE_SIZE);
->> +	return young;
->> +}
->> +
->> +static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
->> +						unsigned long addr, pmd_t *pmdp)
->> +{
->> +	int young;
->> +
->> +	young = pmdp_clear_flush_young(vma, addr, pmdp);
->> +	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr, addr + PMD_SIZE);
->> +	return young;
->> +}
->> +
->> +static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
->> +					  unsigned long addr, pte_t *ptep)
->> +{
->> +	int young;
->> +
->> +	young = ptep_test_and_clear_young(vma, addr, ptep);
->> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
->> +	return young;
->> +}
->> +
->> +static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
->> +					  unsigned long addr, pmd_t *pmdp)
->> +{
->> +	int young;
->> +
->> +	young = pmdp_test_and_clear_young(vma, addr, pmdp);
->> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
->> +	return young;
->> +}
-> 
-> Wonder why someone thought it would be a good idea to not include the
-> "test_and_", to make the function names inconsistent.
-
-Sounds reasonable. I can send a patch to rename them to:
-ptep_test_and_clear_young_notify
-pmdp_test_and_clear_young_notify
+>> Independently of guest_memfd, I believe this change is useful in
+>> simplifying alloc_hugetlb_folio(). alloc_hugetlb_folio() was so
+>> coupled to a VMA that even HugeTLBfs allocates HugeTLB folios using a
+>> pseudo-VMA.
+>>
+>> [1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
+>> [2] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring-12-08-25
+>>
+>> Ackerley Tng (7):
+>>   mm: hugetlb: Consolidate interpretation of gbl_chg within
+>>     alloc_hugetlb_folio()
+>>   mm: hugetlb: Move mpol interpretation out of
+>>     alloc_buddy_hugetlb_folio_with_mpol()
+>>   mm: hugetlb: Move mpol interpretation out of
+>>     dequeue_hugetlb_folio_vma()
+>>   Revert "memcg/hugetlb: remove memcg hugetlb try-commit-cancel
+>>     protocol"
+>>   mm: hugetlb: Adopt memcg try-commit-cancel protocol
+>>   mm: memcontrol: Remove now-unused function mem_cgroup_charge_hugetlb
+>>   mm: hugetlb: Refactor out hugetlb_alloc_folio()
+>>
+>>  include/linux/hugetlb.h    |  11 ++
+>>  include/linux/memcontrol.h |  21 +++-
+>>  mm/hugetlb.c               | 228 +++++++++++++++++++++----------------
+>>  mm/memcontrol.c            |  77 ++++++++-----
+>>  4 files changed, 212 insertions(+), 125 deletions(-)
+>>
+>>
+>> base-commit: db9571a66156bfbc0273e66e5c77923869bda547
+>> --
+>> 2.53.0.310.g728cabbaf7-goog
+>>
 
