@@ -4,245 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C76FD8FE4
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 719D4FD8FE4
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:55:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7B2C6B019B; Thu, 26 Feb 2026 12:54:00 -0500 (EST)
+	id CF0666B0151; Thu, 26 Feb 2026 12:55:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E45096B019C; Thu, 26 Feb 2026 12:54:00 -0500 (EST)
+	id CBB4F6B0152; Thu, 26 Feb 2026 12:55:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD2C86B019D; Thu, 26 Feb 2026 12:54:00 -0500 (EST)
+	id BE7BD6B0153; Thu, 26 Feb 2026 12:55:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B39A86B019B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:54:00 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F0AB8B3DD
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:54:00 +0000 (UTC)
-X-FDA: 84487356240.09.E61F008
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 87D6A180010
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:53:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SSFys7tF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A805C6B0151
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:55:16 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EECF958525
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:55:15 +0000 (UTC)
+X-FDA: 84487359390.10.B19A38E
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1910A140011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:55:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=2RHNxVtv;
+	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772128438;
+	s=arc-20220608; t=1772128514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MNw9FGjx9On8XxQKSL1fuM1nXJmJwWObsoSb9FPwBDo=;
-	b=ZgnNjLDzrpjb+OsQjg52+WTdYHpyzsYn7JKniABGeX3jgpFC42fxKb/gFFs02lajh0wmYB
-	L+jmvTriz2ZY4tg7DaOfZdMHUKPl6pvz7xAb7eK/ZQkj26nkPrdrCiKR1FSsH3ejjPQy9v
-	KBHmmGk7ECnx2B7npGVmlIOVteH9hVI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772128438; a=rsa-sha256;
+	bh=n26Wbnp3l3vR8dz90LZIold6P91TJCToqADcCftfVoY=;
+	b=bhRLFSl/dUIJcKPJietH2Y6eGCCtTCf3d1LsZy7RYR2sMzv36tSWKP88YY0ghZBGr6iVi0
+	Mb9Do5DP2TCGVtPIC1csH9N4ULZM7L+QBUrT9bPzZp6fFPKC7UOhgsbJtPyPbSINzg0kbp
+	nARbTwGgC+rWmSpMJC7+jh2dksX7KTE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772128514; a=rsa-sha256;
 	cv=none;
-	b=DxLTSQX9amiJXiPY/poLKCrjliPTQu66yPN7IDE/xTRB+BNkYQ3evOr1etr7NtR8xWxCDY
-	OWmvlVNceBnB8xIQMptpV9xNkh1/cZXEJ1D1U0eVlxCTrJRTVKg3oXAGCVUwul/aDVtzdD
-	vsMaC1KX5n6xZW8VOLIHKLxC/jNhbgQ=
+	b=ODL1gVmgVmqYX2rcS24FeiI5ybqjLOlLpT+rSOSiYPuu9AA8S1V6OUIVszeoacVmAziN3K
+	jQ4mvcHO67/OIhwKV/45674WsmG605D4itDsqzcIv9AFgls+1yZBwfZqftrOEWidvrd3mX
+	OaKvq2ttIMglKC4Dl8wmabyzVUG1/mY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SSFys7tF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1512242E57;
-	Thu, 26 Feb 2026 17:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9026C116C6;
-	Thu, 26 Feb 2026 17:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772128436;
-	bh=moWnYE8/Vbpv09X6nITbMhXYVzO985Iymx+6B4LKXtI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=SSFys7tFdXTAyhr+VddviYDQcdIcSNALi0h44vkTTgABjXl2HZOlR+hXAGlAxrBYs
-	 W6y/je/mk2w7IeEvXDvch9OEQs71Mqu4n7+p6GgXpJIOgNvtC+Ka/RS7RtOQGi9t1b
-	 AHfzkCZfJkn4NUfryM17K8KZaL7r6ujmVn0LVfr3+oQhvJSb/vgigxIpqtyQNEDE3z
-	 Kc5lJHajXp11EPVsZ8dEZ4mqRRgBGmO9F6l9L9qtvR0/qAA4MH1H2rlhjay25Lovq+
-	 sdsm8hBVOyD2wkaZcXwjKOnh6ejRtTVlZvNzAY3zouYB43PEzCLkbNWpoKk/MPU5ho
-	 hFMvp9HOHb8eg==
-Message-ID: <353dfa5494f8d83eff01b0c7dc8451c81463ce57.camel@kernel.org>
-Subject: Re: [PATCH 03/61] trace: update VFS-layer trace events for u64 i_ino
-From: Jeff Layton <jlayton@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
- <brauner@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu	 <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  Dan Williams <dan.j.williams@intel.com>,
- Matthew Wilcox <willy@infradead.org>, Eric Biggers	 <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song	 <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand	 <david@kernel.org>,
- David Howells <dhowells@redhat.com>, Paulo Alcantara	 <pc@manguebit.org>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara	 <jack@suse.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,  Trond
- Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck
- Lever <chuck.lever@oracle.com>,  NeilBrown <neil@brown.name>, Olga
- Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,  Tom
- Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, Ronnie Sahlberg
- <ronniesahlberg@gmail.com>,  Shyam Prasad N <sprasad@microsoft.com>,
- Bharath SM <bharathsm@microsoft.com>, Alexander Aring	
- <alex.aring@gmail.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
- Viacheslav Dubeyko	 <slava@dubeyko.com>, Eric Van Hensbergen
- <ericvh@kernel.org>, Latchesar Ionkov	 <lucho@ionkov.net>, Dominique
- Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
- <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, Marc Dionne	
- <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, Luis de
- Bethencourt	 <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian"	 <aivazian.tigran@gmail.com>, Ilya Dryomov
- <idryomov@gmail.com>, Alex Markuze	 <amarkuze@redhat.com>, Jan Harkes
- <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,  Nicolas Pitre <nico@fluxnic.net>,
- Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
- Christoph Hellwig	 <hch@infradead.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>,  Yangtao Li <frank.li@vivo.com>, Mikulas
- Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse	
- <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp	
- <shaggy@kernel.org>, Konstantin Komarov	
- <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- Mike Marshall	 <hubcap@omnibond.com>, Martin Brandenburg
- <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Anders Larsen
- <al@alarsen.net>, Zhihao Cheng	 <chengzhihao1@huawei.com>, Damien Le Moal
- <dlemoal@kernel.org>, Naohiro Aota	 <naohiro.aota@wdc.com>, Johannes
- Thumshirn <jth@kernel.org>, John Johansen	 <john.johansen@canonical.com>,
- Paul Moore <paul@paul-moore.com>, James Morris	 <jmorris@namei.org>, "Serge
- E. Hallyn" <serge@hallyn.com>, Mimi Zohar	 <zohar@linux.ibm.com>, Roberto
- Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
- <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, Fan
- Wu	 <wufan@kernel.org>, Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, Casey Schaufler
- <casey@schaufler-ca.com>, Alex Deucher	 <alexander.deucher@amd.com>,
- Christian =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>, David
- Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>, Sumit Semwal
- <sumit.semwal@linaro.org>, Eric Dumazet	 <edumazet@google.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, Paolo Abeni	 <pabeni@redhat.com>, Willem de
- Bruijn <willemb@google.com>, "David S. Miller"	 <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman	 <horms@kernel.org>, Oleg
- Nesterov <oleg@redhat.com>, Peter Zijlstra	 <peterz@infradead.org>, Ingo
- Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland	 <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,  Jiri Olsa
- <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
- <adrian.hunter@intel.com>,  James Clark <james.clark@linaro.org>, "Darrick
- J. Wong" <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
-	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
- autofs@vger.kernel.org, 	ceph-devel@vger.kernel.org,
- codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
- devel@lists.orangefs.org, 	linux-unionfs@vger.kernel.org,
- apparmor@lists.ubuntu.com, 	linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, 	selinux@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, 	dri-devel@lists.freedesktop.org,
- linux-media@vger.kernel.org, 	linaro-mm-sig@lists.linaro.org,
- netdev@vger.kernel.org, 	linux-perf-users@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, 	linux-xfs@vger.kernel.org,
- linux-hams@vger.kernel.org, linux-x25@vger.kernel.org
-Date: Thu, 26 Feb 2026 12:53:42 -0500
-In-Reply-To: <6exhq5gjvef5obfsqwkxfcpl2sjqmlv7klrzolodzpcjolgrmd@ds42ulhod7pw>
-References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
-	 <20260226-iino-u64-v1-3-ccceff366db9@kernel.org>
-	 <6exhq5gjvef5obfsqwkxfcpl2sjqmlv7klrzolodzpcjolgrmd@ds42ulhod7pw>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	imf23.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=2RHNxVtv;
+	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 7CE69B2CB9;
+	Thu, 26 Feb 2026 17:55:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1772128512;
+	bh=n26Wbnp3l3vR8dz90LZIold6P91TJCToqADcCftfVoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=2RHNxVtva8HwJ7FaIWnZp6Yt1NGrDNHqnBR2rEXpPGHZoiZxHqeEXt4ZiiBE9um38
+	 jZDDgBcsH0TK5JJY+MFhm54eAyQlY/ZNIR3lfuGaOX8fmuwGlXQZ/ok3VZQ7yqwFDi
+	 3DqfRtRcGwfHjCw0V7gvMRm8Hl0iXme8KVRXyF4Y=
+Date: Thu, 26 Feb 2026 17:55:11 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/4] mm: introduce zone lock wrappers
+Message-ID: <aaCI_-bNm-YGGXI1@shell.ilvokhin.com>
+References: <cover.1770821420.git.d@ilvokhin.com>
+ <3826dd6dc55a9c5721ec3de85f019764a6cf3222.1770821420.git.d@ilvokhin.com>
+ <20260225175105.7777c514@fedora>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 87D6A180010
-X-Stat-Signature: p6xyx8ppgn8cmxbz975n6jmusqqgimg8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225175105.7777c514@fedora>
+X-Stat-Signature: z37gtukq8axph1aqf5xbtb3efzebqh9k
+X-Rspamd-Queue-Id: 1910A140011
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772128438-288544
-X-HE-Meta: U2FsdGVkX19YkxZBGwiLP+HjDJfRTUeINlU1CqCZfxoZfq2sytmEdd5ijd573hIFmxHupI4hiC2M/Flc6SKFNdd+xqyRSxvIsmkdGY2C0vdWnFtcJBgKrkfrCIvTK2ouDjdBes/QXP7rxdaRZK0bpnbuAtdO2XUfNXF3s3hP0cyfqdzmb43htZXBcEC7JGW+9nr2EOKYX/FHzOS4nW0LxJxhiqsblYli7h7yKPA1cucP2ZD5yTmWyUAx1PefYPPoC918wOlX7x4y/SJsvnme41rWKwLhjQlUS01X2RHNrEqa/wfSRprlIN73MXfIh/EInqZROALjAD4y6nPH+RJ6bnoVnQF3upWcabdvWWRlIyHxbIK6RFn52r2kftmkiE4jBg15eUBz68ZzSOMPVknpdzJXPpN+DpajOpN93mv2OwK7rSIuZrSq0Nb92JYNNQP5E5aP494BET9Fj3KnCHMyI2ClG9MI/FAZ/QwVKS2ub9ruc10quLIfRO0YAQiW2Ve2e3vONGOMiCYwD/GRB+UsKctdOHE6HvnEY5eckz5365uxgt0QWtyjTVYUL0dcUenh2VOShPoorCQdWH/ZgAQJQcguAEgMDaEMSQxkA+sy/Ek0z0tn/Hj9DZdzHe03mi4TJKnaAkmNAqcjM3VjBuZaB5jJpG3NHS/c8iWUEmAYi5t9Xj6ptDHY6HQjfn+oAjqMDGj3DxLwO1TEpcWqoLN8Dv5FezSmeORqI0oUzR11lwWRg55qHeTqs2+sfOnBXTSOYGw0ftf2QlLxdRw+Qui24vg5RiSg7sS7qqL/7iqc5i/IGXB2EmS2EAJNPzZdYrIrSF3mk1RT6EwJcLjx1ttqvuSAlZOXPERMFI+uXuIZVQ0wuYhbynmIsB4eA/PP2YRCc/UodNcDysME0neblxQ8gXHvpO1JFQ5VLw6i8K5O5suqYBt5qL5M4jPSrRYLd9HlJQbQ511f7yZe9gfBBsr
- gayZVAZD
- HcM6gcnnCX5MXzfcBKodmfoObsRWiSvC7eaBzvZ59iGhPO8AmObieczgDl1VzgNlKhVt4mv6Rbx5iwBgP4W+MQJYOys8xKYst2dwFBdseg5nC4cV4dM14pjd7wjO3ZlSXr4XnijlloBePLY3k1/PWf7a+RgbxySpt/2/aSWYsCuOlVQxjbzRyhz81TjY5KQ1cwFh3u210mept95avgPp+Oo9e/q8k2KWFFmOW42SVWpj7de4wOQzIeHl+7v1hO9ChDMtCdYBLxyBmmZ+1F35fJosGUBi0Ttq33OvjeU7Fkv52jZXwriGvM5RBkP1cADh1z3/c8eN3TiVimxErHowajDyocYjRRaXDu/j+/IYs1KVt89WPhAaTu7iosCyBQlwTeox9TcoYiGptU97kaHaxTXmdUzAoyQdNnJSMvAobjrgMwmmCwF5OYAwnfuDAyyUan7rBAJrYLNAeECOT05XxgkoNzfA5eGiAWqrvX8xn8c+Fcki2rpUIZM7S1u3USZMJE7WEHQwvRRX6Cc4j9u6dUqJNXBHltTPYQn/KBHZM8JH0uDXCqwE95Q58mVmqD57hOpaCS7ftmKL9tnOoH+w8I1raQMhpLoUSLeqDMEIlywZLEnDq7O4p1cacMdiD+eBatGsF62RIOAa2KdfKgCgn3x8yekHoBUdU0LUCX+6EECuMPL4JWc7lrm1kLwOcK2nqNtb9CgLBnawS6rvpRfMP3/F/FqeQ5bRbnEZ/wS1vBcvY7vNaS+eDO2x/eVcSiPa2YjDc6BKeJEn3b53ltxfUKpIXEg3BG3AV53mKJPOjg5KI/s10XHd60Uqnwt45M0EjbA7pxVs3VPvpnEcr/FMSd5sYp/b1SSzCyNk76OM18LwzYgAmAjDlLIDG0ymrNnAMoSBbuTP8rOZ9h0Vdr3LRNL09jwlv3FwFhi98jsYExelL2c2dkk5YxzOBN/WJnUlF5O3l+qUzB10KZ00Z9SechOgINy2U
- PP4WZOKn
- 8wrRotRY19eMvaTvUmJ6mCDImcYCI3xKAGvIudGteXjBxW70w/oPrKmhwuWFSMOEuM5445rHC/srtuc+42O4mQsIqXiESoGkXG5IqQ9ATchGHtmonRIfh75D+vkzN/1iQd8n20Tl2qEt0QxuLtuB+9T5jImu/Xk3JTWO0yE+6Gwk2TrL+kgviysZGY0a8EharNVmb3Fvx89X9kHU+G6qrVw015mtgOqMzMeUAkAcvbGSdamegSAu8UYqde6U73nAxEFYd9MR2Pa8bK4fZPHdBds7FjER/s4ostOqwIpJnFyHqLDPtz+6U5p0M2OwDmxM3YFjWaLQpoAYjsoD6RZ0shmKCrHfn3KCvmWx1D/5iJ9YB57NMVC9/AatjwSXEPAIPa/KoHzpPbhThXT6gEMwZiwDF38kKAkmLBsgrWMfFeZzl+yIHiKz1SLWoToPZQ721jLiUYdfP6jMGGx8WOaUTIXlCU6L25+MtdR28R3TzMusfBgUgmUiOyUved1hTFrI9b2BREn/KsLIomAg6/LQoOLlq64xd123bBjKNc6BHkw4zNMHF1pqap6R622jwlXppBomp+L0G3ej4M3KY4wstcrggnYhyYo9lQF0sITLlm6VJV5VADCl1oxg5t6kCDOylEtjIdoBhFgCLNBtQ3ibnHm/MXUuvMzFwZ7uCmNwd0ozp+gVHy6GlEyNe3SWv6Io2FE8XxnorzEhhdjXGV+0ow1Gx8fylQd7u3Qd5i0VPUB+Iq6eT86FsAJvAxJw1V4I+quf78g/YClgDwHzKZ6kGOG+wzFLx/j5Z4Xs/9A9zGx6LMm/ew1X484f58GUL8hRN4/mPlfGRwaJrQ0M2dExYxa5FJ5qXsQJPVfnM1uBjcpGwEwlaq3SxwL/WJz4RoH3JDr85YdMXmfIhmUOsvIouHF/PItO9BpteBGEVIZluiBvPivIbhT+hA0K/l2h/5UPsPuM6l28rIyPqiA/hF1Brr2B8LhJf
- V1TeLOUB
- HXodBVY2hVQdgCCA/SEQJzybhYdyRbMddQSbuuEavfIEA1NpzqkpHzRzjBmCY3MQWtuu9Ai/b9bLigfgMvzUploTzKt69zRh5azkbipL1eEOyEbI+WNALREXqLxgBJgUTVUC59Q2jaUl7OFgk/yM4+zVfONxf+3UTP08Vi2bXwMWipR/iWMU0mUvJgJ93OUsZeIsl/nCUCd0Btfzgoa2yKFs426+TmfHo1m0A9mmqNPZMpaydkAfqjqJ5FOzbB5WCWucf2YucZ1GWiIbZivEYWrJbZa98mt5eV2ysOw5Xr2Fc905HOa6fl1Xi1jcqq6TOcWNEvHfZ3ad60dkqXwfZEpxPr2Ka9U0O4MgHBmnmQb6Oj4omJEMbu+EPZbC2aXbM/ADr5PvAnjBa6KpT1M7Q9jjfAtjNvBDzcq5BjD8bkhgGNJ/oJvCi0a3EkAaA7vn5o26XXQiOgL6gANt/TgfrwOglt6eI6Z1lZccEIx0WtYm1mPYi4diylYNqPPm4kxcKkTv7akWtOYrEtArKs4nbODhAPDYl4W/8eNmqs3GAHIwcFLIxDEjiaImj2+p6CQUs07R9qKye/5+4ylTzzb1/tJFYYGjjgkI/0Pb7rFvO6hB++f70xGUZV3zOZ8gqXfCG7Edzv6ElHrGazTS5QCqKwynyILIF7G2rCVw9A5FdCBlUoKjmUvEpTjCv4S/7jCNprsfk/kfoDeYj9HcMEFgJYqMN1oTjX42EcPFACM6VXPirGp+w9VyVV3L2d28+UgIM+LPofCo1T7U+oEq2LM0hijWG/hHEJvzaWQCXh7L7ldG0BvBQCII76ggiTMyeqHctIs3GN0lDpZ4kp3INdWaklCu9b6I28HH0bdqdd1g7QqpEVvb9mgT6svfkMxNqks/UkSFIbjQ3xdYEvU7J0XrAb1ypXLSrEHPyUlF+1RjICCC1Ng/AwBxhtZwTwPUkJpzNl3NyH5VEJX4EWhvpUrpTmqki6tQV
- lMJnUg+w
- YPnKMr+A3B54mxqF5QJeFfh1CK4kjQv6Bn+SP4TfB6sAHebVmfet2XWnpZwpnQoU/yhA+dB9RIW3N7JKidANdBp96kVylwXt1pR6+ohguqzPam45NiM/liYmwTyzWYkNQnaUBVw0Ss3boimuJxJb//ujfANuQf+uO6H7+AbxTU7Vg9sk4C87fenHrwr2vbBZ7B5mVPjwFTjxpW6ZuImrhM9G3G3waeq91PkeMDib9iahf6w0bCTonQd41D0zzBIUX4SzwwPTO2LrrO7R3vs7aucqT9lJU639k+GibIm2kdjKzrqDrNVshr/YaA7KlFcAOKoAIC2HcvvAN5Fb3YH9V2Zh9Ts7z3SyNi+9B9rctsEuvK/49ACj1zCP/3hxIy3534AiFkbiCmxw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1772128513-979651
+X-HE-Meta: U2FsdGVkX1+xVj4WeG4nXIBoxTXBWAZgQ5ATLgDV/yuCFGtIxBRT9bNNb+vGUf4QSTxeCocsTW2ziAbNvXYs4y1kaxxac0YMWUx5NOi0tgZqfl6TexbNQOBEAx0ehxl/CJ/66YCnHffyvL+7kGqgnMQV0lrHlX58QmjH5vgyWz/9BRQs3TiNKBGf5MlUGAaLWWsYTWV0wYEl0apuOjhjIDwzXRuQr/heJyOe7L/1AG8OoXBoK81sYS9rjUncR3+wz8UcmKw44lXpz8lH1afPwHOggr/ZnQWQhaTLJFn52P5B8Gg+VMWkh+juLyBENyz1hdAD4S53NcWlVwcJ8XD/w2UneQe0RUiUmpAtfgoAJfd/D6EKOqZxFxqqDLIpX/91TSQUiMfZ0IOWdxxNO40FkwVIBX6G7v+ZNeDp+BGy3CZgOdZK8q2d+Hl7O06tR+W+gPFtAjnVNkTJAqzq6WY2MkXUiFqkL6v7WpNTlfiAXxMSRYcZzn7wJSJbxHpAf1wt8ah/HG32Tzc4boNko1rOATiteWVkztt5dwszgPIo8hq18BeRKzbcaTpSBkKXcxfYDHDHw8Gf317iFEFdndDzKrZ3AYvdn7d3tcmEd475EL67dl0ONDoURXe5JjLKQSvw5+WDAjbS4pBuiQ+b8qHo6+c5fNSDA9cZ4KfM7lTfEGcJAv8s3JMcRZgSYZ/klnMktzT9nC84m3sLovdiXdrYlu6dXVijJclGDGp96oWZoazJazu2XI+d9NwIlkHlh3sPN/Puy1C7G30v4vASiM5nyeUekyMzMd0BgXh/RTf+mpSC5ykan0MEHDrAdSPHg62rulnwki91jO0uxG4qJQsETkY7lOD0llBi2mKcIBplmrCpRMPQ6Ls8pLxP1ocbBR/5Gt1aiWb4l76OKhsHRoNqJVv9ya5vNn9CUWS9TxVHio3ifcIfUgixabF5sr7d5hvI9O6VzTIzDw4jThUW/yB
+ 5oAx0/Fj
+ e8ZCh1bfzgDg0cigK00LOS54kpcvS88PKy16ZlAlcCJX7Cxuupyl4olC2Tof6A8LhqnpSKf+9mwOx97/cZGXHsvCm4d+HjBPole7EAqYBezCPozjs5XYdDunRh3Hunem8EzI6lRCQUX2DIDZ2RLfk2JV4soMufjSaS4VNm7dHfQ1EJJj0RNETqKvFXMUHQxwSIYBz6Z0gv/A1GnyiC6ds7zVZIRFVqEzztK7som3tYuI7ww/H78exyslakNEY6N4mhOwXZ2Yrq4urTUmwqGYUu/65U57rnEEoOIK6dsbwEBJ2F5mUPYGaJ7uQlYvh8NU0Qrtr6U6Xgq4+f6s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -250,80 +105,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-02-26 at 18:11 +0100, Jan Kara wrote:
-> On Thu 26-02-26 10:55:05, Jeff Layton wrote:
-> > Update trace event definitions in VFS-layer trace headers to use u64
-> > instead of ino_t/unsigned long for inode number fields, and change
-> > format strings from %lu/%lx to %llu/%llx to match.
-> >=20
-> > This is needed because i_ino is now u64. Changing trace event field
-> > types changes the binary trace format, but the self-describing format
-> > metadata handles this transparently for modern trace-cmd and perf.
-> >=20
-> > Files updated:
-> >   - cachefiles.h, filelock.h, filemap.h, fs_dax.h, fsverity.h,
-> >     hugetlbfs.h, netfs.h, readahead.h, timestamp.h, writeback.h
-> >=20
-> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
->=20
-> ...
->=20
-> > diff --git a/include/trace/events/writeback.h b/include/trace/events/wr=
-iteback.h
-> > index 4d3d8c8f3a1bc3e5ef10fc96e3c6dbbd0cf00c98..cc7651749eb3ce1123cb3ea=
-9496f0803a0f4c1a0 100644
-> > --- a/include/trace/events/writeback.h
-> > +++ b/include/trace/events/writeback.h
-> > @@ -67,7 +67,7 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
-> > =20
-> >  	TP_STRUCT__entry (
-> >  		__array(char, name, 32)
-> > -		__field(ino_t, ino)
-> > +		__field(u64, ino)
-> >  		__field(pgoff_t, index)
-> >  	),
-> > =20
-> > @@ -79,9 +79,9 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
-> >  		__entry->index =3D folio->index;
-> >  	),
-> > =20
-> > -	TP_printk("bdi %s: ino=3D%lu index=3D%lu",
-> > +	TP_printk("bdi %s: ino=3D%llu index=3D%lu",
-> >  		__entry->name,
-> > -		(unsigned long)__entry->ino,
-> > +		(unsigned long long)__entry->ino,
->=20
-> No need for explicit typing to ULL?
->
-> >  		__entry->index
-> >  	)
-> >  );
-> > @@ -108,7 +108,7 @@ DECLARE_EVENT_CLASS(writeback_dirty_inode_template,
-> > =20
-> >  	TP_STRUCT__entry (
-> >  		__array(char, name, 32)
-> > -		__field(ino_t, ino)
-> > +		__field(u64, ino)
-> >  		__field(unsigned long, state)
-> >  		__field(unsigned long, flags)
-> >  	),
-> > @@ -123,9 +123,9 @@ DECLARE_EVENT_CLASS(writeback_dirty_inode_template,
-> >  		__entry->flags		=3D flags;
-> >  	),
-> > =20
-> > -	TP_printk("bdi %s: ino=3D%lu state=3D%s flags=3D%s",
-> > +	TP_printk("bdi %s: ino=3D%llu state=3D%s flags=3D%s",
-> >  		__entry->name,
-> > -		(unsigned long)__entry->ino,
-> > +		(unsigned long long)__entry->ino,
->=20
-> And here as well? And many times below as well...
->=20
-> 								Honza
+On Wed, Feb 25, 2026 at 05:51:05PM -0500, Steven Rostedt wrote:
+> On Wed, 11 Feb 2026 15:22:13 +0000
+> Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> 
+> 
+> > diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
+> > new file mode 100644
+> > index 000000000000..c531e26280e6
+> > --- /dev/null
+> > +++ b/include/linux/zone_lock.h
+> > @@ -0,0 +1,38 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +#ifndef _LINUX_ZONE_LOCK_H
+> > +#define _LINUX_ZONE_LOCK_H
+> > +
+> > +#include <linux/mmzone.h>
+> > +#include <linux/spinlock.h>
+> > +
+> > +static inline void zone_lock_init(struct zone *zone)
+> > +{
+> > +	spin_lock_init(&zone->lock);
+> > +}
+> > +
+> > +#define zone_lock_irqsave(zone, flags)				\
+> > +do {								\
+> > +	spin_lock_irqsave(&(zone)->lock, flags);		\
+> > +} while (0)
+> > +
+> > +#define zone_trylock_irqsave(zone, flags)			\
+> > +({								\
+> > +	spin_trylock_irqsave(&(zone)->lock, flags);		\
+> > +})
+> > +
+> > +static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
+> > +{
+> > +	spin_unlock_irqrestore(&zone->lock, flags);
+> > +}
+> > +
+> > +static inline void zone_lock_irq(struct zone *zone)
+> > +{
+> > +	spin_lock_irq(&zone->lock);
+> > +}
+> > +
+> > +static inline void zone_unlock_irq(struct zone *zone)
+> > +{
+> > +	spin_unlock_irq(&zone->lock);
+> > +}
+> > +
+> > +#endif /* _LINUX_ZONE_LOCK_H */
+> 
+> Have you thought about adding guards as well. It could make the code simpler:
+> 
+>   (Not tested)
+> 
+> #include <linux/cleanup.h>
+> [..]
+> 
+> DEFINE_LOCK_GUARD_1(zonelock_irqsave, struct zone *,
+> 		    zone_lock_irqsave(_T->lock, _T->flags),
+> 		    zone_unlock_irqrestore(_T->lock, _T->flags),
+> 		    unsigned long flags)
+> DECLARE_LOCK_GUARD_1_ATTRS(zonelock_irqsave, __acquires(_T), __releases(*(struct zone ***)_T))
+> #define class_zonelock_irqsave_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(zonelock_irqsave, _T)
+> 
+> DEFINE_LOCK_GUARD_1(zonelock_irq, struct zone *,
+> 		    zone_lock_irq(_T->lock),
+> 		    zone_unlock_irq(_T->lock))
+> DECLARE_LOCK_GUARD_1_ATTRS(zonelock_irq, __acquires(_T), __releases(*(struct zone ***)_T))
+> #define class_zonelock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(zonelock_irq, _T)
+> 
+> Then you could even remove the "flags" variables from the C code, and some goto unlocks.
+> 
 
-Good catch. I'll clean those up.
+Thanks, Steve.
 
-Thanks,
---=20
-Jeff Layton <jlayton@kernel.org>
+I like the idea: guards could indeed simplify parts of the
+locking and reduce some of the explicit flags handling.
+
+For this series, though, I'd prefer to keep the changes mostly
+mechanical and focused on introducing the wrappers and tracepoints.
+Converting to guards would make the transformation less mechanical
+and potentially harder to review.
+
+I'd be happy to follow up with a separate patch to explore adding
+guards for zone locks and see whether we can simplify the existing
+logic further.
+
+> -- Steve
 
