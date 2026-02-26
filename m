@@ -4,142 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16294FD461F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 05:54:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0064F55451
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 05:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4731A6B008A; Thu, 26 Feb 2026 00:54:16 -0500 (EST)
+	id 289226B0088; Thu, 26 Feb 2026 00:56:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F6386B008C; Thu, 26 Feb 2026 00:54:16 -0500 (EST)
+	id 2375B6B008A; Thu, 26 Feb 2026 00:56:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CB316B0092; Thu, 26 Feb 2026 00:54:16 -0500 (EST)
+	id 118D86B008C; Thu, 26 Feb 2026 00:56:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 162A66B008A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:54:16 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B919314098B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:54:15 +0000 (UTC)
-X-FDA: 84485542470.26.6DE737F
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C9223140007
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:54:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F3A3F6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:56:37 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E2885BD61
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:56:37 +0000 (UTC)
+X-FDA: 84485548434.20.A36B1CE
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 74CA9140003
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:56:34 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="bkJYy///";
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772085253; a=rsa-sha256;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jjekpZRR;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772085395; a=rsa-sha256;
 	cv=none;
-	b=rbbQL/CbbMeMgzvMoLsjtY6Pm5SRAP1qIIkF5BgtZTkto/BCny4/G0uI7w4F6QI8Sjz4ok
-	Kr8bbseh3a92nWMHRs3+eUhEAqOX2+G4ogXGu0v/TrVGeSHsXKqpUKp9VZHRdntXIoht3G
-	lMVH9YMf2kWF85uKZR0s7zO2KB3koG0=
+	b=2IB2Vw6e9oBIhBANlBheavds6uQeFYG7CCAWdJ8aUWhCsDUmHPccMN+61r3YBaeM4+EjGc
+	U02WQzf2zEx/tI0N+N7Y0818iAM5auY1Gm8LOXPgCxtAdtqFnE2v8mQsfcEyl07nVwz+zk
+	1hk59FxTci9j0c2DGha0wPK12Ii8Q7s=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="bkJYy///";
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jjekpZRR;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772085253;
+	s=arc-20220608; t=1772085395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fI0pTJ34/6sVzsoFrrk7qColB3pOoTYylL8enXM9wuE=;
-	b=NepQFy0dm51Sy2qIPQwmgbhNYRE+m9QnKc7uqrCZIcf7MVWe6DR1ykANwWCBcTC+o9zO87
-	GUnbofKY/vu3HSvwXUYkZlfMGryFtHAxPwGZPAm3bBc0USIFHfrArEsizftbmgsrMQGOgG
-	TYd0YEGqts5xHqNJgEG06iZo1jbpaIg=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cb3b3e643dso25596085a.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 21:54:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1772085253; x=1772690053; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fI0pTJ34/6sVzsoFrrk7qColB3pOoTYylL8enXM9wuE=;
-        b=bkJYy///3C5nt0gY6S0kKv5p7m+hxcIUxBlnNtMBz8bmJw2x+oQdUhtT3SduCrWmIY
-         HYBZyd+xhKR/2wu7sK4shpjIWRKuEaVkHLSJrPiH/QYY7yGX7d2BL//3VWvAlOROG3XN
-         XcA1rPc7LAEC8vkg0BcLcYGeZrzSyO5igrICx3Cz993PEKlAIdS3Z5X5IdRr9VCuAtup
-         83YU+uIFGLdJhfmJV4kLPh5a7jMfmxd01+NWJoBraf6Tct8fYCNXP1wu1l+CCaRMDho8
-         EcnsmuK19l5ca19Xrh2KLL0j5cRCQ9Cbxc3b4y61pojODltJgQapz4+H1SrwDbJI1+Vi
-         z1mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772085253; x=1772690053;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fI0pTJ34/6sVzsoFrrk7qColB3pOoTYylL8enXM9wuE=;
-        b=K9zbrSTaftYq2vikkkN0uw3YUftjm2R8PbfFq56rLYrw3QEWp8wAP1pdYWVFQdtxM6
-         bmLx8wDzYxw/D0kdFNAGFIw5O6B6KyhpmqhQcFIlZbQ5gUK/BYl78NmACdqYPxsr4OaP
-         RvePjufCjANP7nbXAxC/gtFkjiLGujArjN/w3IixKmWpOwCoRTReHPk+yfbJIsZlprwh
-         0VDND7Cj7Xr+BYMyvtRiv+aa6vGlw0uc2u2RRyB1KRl2R2XMwWSSom0ImVAe4YUk6lH8
-         Nonh5ThaHgTYaD8gL30TK58S4jOvgl6JhYrbhk7IIf8mU74acTk+T3o1a7W4wjnAP1ID
-         T9bA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGNMYraqCXJtA/NctUep4PzNUDXB/X4Y9Iekz8DpXWbfYyB86T5i9PHvE5A6dMY5hrsZsJ2t4I6Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyinewnne1Ipn97xCwZokKtTo5bM87ddmJYL/cnVxv3LEHgYjJv
-	67yQ6TXB6x5lIwLChkcYxsyPbia+ZQmlHyX9Mj+v4muK8Uu7UbGe6o46tlAyGfKeJ/w=
-X-Gm-Gg: ATEYQzy1IV/Wnb0Sf5bSdqHkGpYqVP3N+fVB9GQXq96jx7SNU/wvCxGqIbUabeKRczB
-	CMoa0cEgBM+ud3gmGiMXiz1DRQH4sEqLutJIoF1iTdIyafQGPg+NOy0CuNe0CV/oY6Hn5c1LjJz
-	jR20+a7y/CGp3hsU1CeEAhmF/mlaotPohomJWwBWIhqEw3Tlmxne9k91VOv9DcsZVoPDQwWLImM
-	HfArVoEg4tKW23MTeWBixgREGGia/jvg2mWu7wloAntRBv1gPud/Px5LHJ5FBg7B+saYHu2NYrt
-	QKPwom8Lvd2u4H/jBMTgiPUc2/UsPO/TPzgUDbcrECRYBfRRdFpe0SOI8spJcFhWe9Ta24ZQbXY
-	HXJz7t55itW9nfU6si68cqCaEHj+9sooMEhtbh8sWG9XywljcjQ7lIRA06CWpqttq0cPFTl9dj+
-	tktUgSTCSMcwI7Iu5J3NsubQqKfMDRwL2+PQB+zD/OmFbpGD0Mp7vOAlS8uTBjKtiSCECpLI1r5
-	SbfLfGH6Q==
-X-Received: by 2002:a05:620a:288e:b0:8cb:4128:ec3c with SMTP id af79cd13be357-8cbc11f57bdmr90671085a.64.1772085252472;
-        Wed, 25 Feb 2026 21:54:12 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6f940fsm122507885a.23.2026.02.25.21.54.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 21:54:11 -0800 (PST)
-Date: Thu, 26 Feb 2026 00:54:08 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <aZ_gALm7aE3d4IcP@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <fzy6f6dpv3oq3ksr2mkst7pz3daeb3buhuvdvcw4633pcl7h6u@mxjgiwpg5acv>
- <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
- <a6izpi2wlqro72erhbvxhlx2lwdnae7my3ghfs6t33ivtixo4h@bi2u4x6qv7ul>
+	bh=A9qs2zE0FueYonacX/ztnskZqTvxRHERhL76d+GCneQ=;
+	b=3zfX5Yz1bulVNXjpnMU88sApCfpIZ+9oWVZezhCgitYYnkjI0K9nDWrqzx3dH1GRNTfYaq
+	DyGF4PRp0owFnkNNTlcecOFMQxi1qJwzwdlCsW5k9buNmI6/Ctg2m2lyn7nYDH5dhj+wXh
+	+PUyZkZDazIN6t4/eNGgmQa0lTs88Mw=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772085391; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=A9qs2zE0FueYonacX/ztnskZqTvxRHERhL76d+GCneQ=;
+	b=jjekpZRRoQmkHaECBrekxx1mq9aIn+a5iA1VSseMRSSqQ3Y9WofCq+9Rsj7mqJI8toTruGwWtBDYhWFd83WVogzNXoozxwtP9Qu8CIKUv1zaK1UpL0D3Th4lvcvDHX0oAPIPKaDRJ0mLRcwYvx0MteQqAOFqlVxCdsOJpgdAxFI=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzqFsiZ_1772085389 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 26 Feb 2026 13:56:30 +0800
+Message-ID: <0871edb9-08a2-46a0-ade6-af842a12e0d3@linux.alibaba.com>
+Date: Thu, 26 Feb 2026 13:56:28 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6izpi2wlqro72erhbvxhlx2lwdnae7my3ghfs6t33ivtixo4h@bi2u4x6qv7ul>
-X-Stat-Signature: s8b56qaa36w6jmo7eepkgywpqcjytu1h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] mm: support batched checking of the young flag for
+ MGLRU
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+ <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+ <2e7a1e24-3616-4b79-b943-b5f7efde2d31@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <2e7a1e24-3616-4b79-b943-b5f7efde2d31@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 74CA9140003
+X-Stat-Signature: 7q4sjif4tmzks6e8xh1oethgd54ric6w
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C9223140007
-X-HE-Tag: 1772085253-490636
-X-HE-Meta: U2FsdGVkX1/C1vCbYibYREs389sQ2xLjSQD1OeIBxm3zXsecOSnwaCwB43ASAWNK9zxUmTN/X+i5MVDuz7e3a6QFi1B/vdGIpxk/AJ3SiqwZr+WywyK17UEay4sMQyGNGKcjEoHB7Q2/pPy1iRH+ZZaLPjzsO76vX/JFhsAPzm7hJGtDnslFZysoGzEMOJ+5mhMofWiAaxeUbzloB5IPEwuJWubMMQMUfuYT55rOiL6i1cviqGGXZIsHl8NhUWLdxWP8/meBnsRQOZWd6qHtAEOfnerlEtMhTJGxwes6/ZDY86pTOgNdtNjmX8q6HIguzI+OvWP0GKgfNzMXK1XuQ9UFCFYS75k3GfqLZVeeWzkDThYUT+SH/FKH9ZRBbbk7VGABj9vokpuKM+Gp4f5+snU9VdmsaDBXpH+2ex5DE8VfmaNccDQqYqhpYsyNJ47CfU3H2fRRnZ0fmZXrY0E9E+LiuxA75U4UHqpt0g+S2ceDelzN2WUKJvizbz8m9WB+ypWJPQXw5RG2HTL/zPqz7bb6WefgVZk50FAJFpvnJ1gop+g/asYQPPOkcPWyBPLqGcFm+O/FVCMuCd9b369psZHpCwF73EzDXwhWXoXfgPgotC6ZiRQPrhjSdgK1lVDtsc+MqqgIsWHPlQIA5fZYq7VxHkTXOgR2NSleQKtEV59/Mya9yD7yKgEroY8PrBzvTVjXwDpcdk2J2H1UnW9S5LEZqrDrvlB2eqcAGiJEwrX8zbk/xl+tFWLP/a+BNGus2jOuYeOZdMxnXz03/ry4CnbuQ/FcD1nkrBomHvTWU5epQc9VNOxLOjWY/75lZUZ5b4ZCZ4sLoW+93nN0i/TAYk5b6gvwaiFpif5oGrmWzqOjbDaV/voYFvFsxYsMIiqybOlwKQR376MEEwX/fXG44kCM9luO7sK5sK8cUngS7jKMXhLLfiyOUhNad+9odHJ2cxfn+M65D2+CqkznQKw
- Eij5C7v5
- 0lTP+Ke47Z8W8gnzIFyfHXO0hshkJF2//9ujJpK6vRtfIYdqagaZ7XpToG6Hp+7hw/lJnADlnJec94+PIgzx8EImLhQhYo7NI7Usp/X2zu0m2vClK1Q15rSFYDDA5Ow7S9ph0+WOY6WnuXshVif1PC6YTCe7Za8HYa4ZwgMyp5TYiPjmlJxElAowh5KS0F5mFv9IMk7AkNwE+r/OhKaa1y14f1zQzt6UzyRvAvTQ995nucEm95hZKGXVy5/xWD8jS1aijBKPtI8jGkfQaBob5bIhtFIaUCecmDWg8L5VywQDp+Joyd5yUcF14zWecEAKVOqIInT0oyKANupnyvlneWywNzOaciAFqMsiAPYx++Wne0TLAY4qKbm8E7MUlQrPilmGsmpXNgiY+H0lWbV07q5gP2snx3FU1uJqMs4N1vjRMNbu/WJOvyEizfEtJ90u/sJjPyFRExtrx/7U=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772085394-349582
+X-HE-Meta: U2FsdGVkX1+75uKDr+ksuXSni9LO/lrQdm0oggGmQplv85ESNCyos97d/r+j8HodFU41/0T5/eepSjd6RdkNoYWPQrnb3LiN7oJ4++CSnTgFXKxqbGXOfC8zMZPYtfm81QAazUDrqt/6IoVqtm+NSfCaEM3cEWWxruIU0nsnh/PTnwv24QoLgMTVq7q8Vdi4poRt2GDRB/t2UioCQYIiIVm/l2Fp5d5lNn4S89q1UpH091Qb7BJBEfNGf7AyFKvhtN2cSliehSrWYlk3A62viaHONK1iWpWTbawIGV0+jag7MWHky338jpzwjwb3DbSGEJivAkIWbfVd39Kdr8a463nRJO/A4o6gjv27mcrVVE377Lqj7imvbO0c8/V97C9AlVnJl2XVt9oeYONOLbpCB1r7AbzGD2uGm2A+wmifi2L7ij2UkLe7ffOomgpq/6EWiqFo5INmQtZwwYWKUQJvRmE3NffYUJVJEZP3B3ppNs3+oawPTYRebveG9C8hAqMkRX8U+HgsRXfDYc6iZ8bfZPae32GU+zKBygoXf9je407XySmpX+QW0hGbSFb/gTnSHP+ISxbNJeudCaju5eVAHl52oUXDT+km+pCWsosDAZCOXVCa455uHgi0ptdVgqsZaqEN5714pDPzZVBLrfQudXQCwWnl7Rzu9KDYlVIYqa9xYdgdWkJmkAuwnS2fIijEPUkGqvf7+dpA9MbonFt9aKiY4Mrx6ciazQRT6Uxpua+MGj3x6lo5nlMNevv+tlSbHH2PyDdU4O27EcaoSbVYco+QsswmEBT5mBNW8adQHfsyGWYQ1e9uhZB3btevBMhc1fls2DKGfKUujPduDgXLulN9yhAjBfz1X9zRKeHzCsv5vJz3jybMP/zH0ggwM4nQf37ImjBL3j10K/M2WeDsS1msM3vtqGOJGyOALWmozSv0FPpQL6FIR88T3F+4QkL3bbk5AcC5yztvyqdjT3z
+ C0sFXg4w
+ sNcNvsdKfQGXYBj2hbZE8LU2+wUMhPQ3Flb26Y48a2s/Opft2rAbuHDffNvlnRHoOv9huxnnfWXh5cmS+lI9UU9MK0P25l+qT7gJTiTRZCzPgfuHu9fo7uvHTcbmOEVpcMWqRAOYGEN0Kf29LZx3S3opDJiPlcgyfU4QNuiQCSCBZ3VQolxR2tSvlB4fYt/XlszyKICyx2qXXciunWOHq6j2kyLCVq8rsri2kx+wInHmMJMJcA3vp8pj7Mxy5faM9lUzVHvHy1bUnrxWq3LEmwEST4ttdtjTA90cC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,118 +94,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 02:27:24PM +1100, Alistair Popple wrote:
-> On 2026-02-25 at 02:17 +1100, Gregory Price <gourry@gourry.net> wrote...
-> > 
-> > DEVICE_COHERENT is the odd-man out among ZONE_DEVICE modes. The others
-> > use softleaf entries and don't allow direct mappings.
+
+
+On 2/25/26 10:25 PM, David Hildenbrand (Arm) wrote:
+> On 2/24/26 02:56, Baolin Wang wrote:
+>> Use the batched helper clear_young_ptes_notify() to check and clear the
+>> young flag to improve the performance during large folio reclamation when
+>> MGLRU is enabled.
+>>
+>> Meanwhile, we can also support batched checking the young and dirty flag
+>> when MGLRU walks the mm's pagetable to update the folios' generation
+>> counter. Since MGLRU also checks the PTE dirty bit, use folio_pte_batch_flags()
+>> with FPB_MERGE_YOUNG_DIRTY set to detect batches of PTEs for a large folio.
+>>
+>> Then we can remove the ptep_clear_young_notify() since it has no users now.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
 > 
-> I think you have this around the wrong way - DEVICE_PRIVATE is the odd one out as
-> it is the one ZONE_DEVICE page type that uses softleaf entries and doesn't
-> allow direct mappings. Every other type of ZONE_DEVICE page allows for direct
-> mappings.
+> [...]
 > 
-
-Sorry, you are correct.  I have trouble keeping the ZONE_DEVICE modes
-straight sometimes, and all the hook sites have different reasons for why
-all the different ZONE_DEVICE modes and it mucks with my head :[
-
-Device Coherent is the one that doesn't allow pinning, but still comes
-with all the baggage of not being on the lru.
-
-Spoke a bit too bluntly here, apologies.
-
-> Don't you still have to add code to hook every operation you care about for your
-> private managed nodes?
+>>   
+>> -static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+>> -					  unsigned long addr, pte_t *ptep)
+>> -{
+>> -	return clear_young_ptes_notify(vma, addr, ptep, 1);
+>> -}
+>> -
+>>   static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
+>>   					  unsigned long addr, pmd_t *pmdp)
+>>   {
+>> @@ -1847,12 +1841,6 @@ static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
+>>   #define clear_young_ptes_notify	test_and_clear_young_ptes
+>>   #define pmdp_clear_young_notify	pmdp_test_and_clear_young
+>>   
+>> -static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
+>> -					  unsigned long addr, pte_t *ptep)
+>> -{
+>> -	return test_and_clear_young_ptes(vma, addr, ptep, 1);
+>> -}
+>> -
 > 
-... snip ... below
-> > I don't think that's needed if we just recognize ZONE is the wrong
-> > abstraction to be operating on.
-> > 
-... snip ... below
-> > If your service only allocates movable pages - your ZONE_NORMAL is
-> > effectively ZONE_MOVABLE.  
+> Oh, we remove the last user, nice.
 > 
-> This is interesting - it sounds like the conclusion of this is ZONE_* is just a
-> bad abstraction and should be replaced with something else maybe some like this?
 > 
-
-Yeah i'm not totally married to this being a node, but it makes far more
-sense to me than a zone.
-
-ZONE_DEVICE sorta kinda really *wants* to be its own node, but it seems
-that "what constitutes a node" was largely informed by ACPI Proximity
-Domains.  Nothing in the rules say that has to remain the case.
-
-To answer your question above - yea you still need to add code to hook
-the operations - but this is essentially already true of ZONE_DEVICE
-(except you have to contend with other weird ZONE_DEVICE situations).
-
-Some of the hooks here are an experimentation in what's possible, not
-what I think is reasonable (mempolicy is a good example - i don't think
-userland should really be doing this anyway... but neat, it works :P)
-
-> And FWIW I'm not tied to the ZONE_DEVICE as being a good abstraction, it's just
-> what we seem to have today for determing page types. It almost sounds like what
-> we want is just a bunch of hooks that can be associated with a range of pages,
-> and then you just get rid of ZONE_DEVICE and instead install hooks appropriate
-> for each page a driver manages. I have to think more about that though, this
-> is just what popped into my head when you start saying ZONE_MOVABLE could also
-> disappear :-)
-
-Yup! Basically ZONE_MOVABLE and CMA and ZONE_DEVICE/COHERENT all try to
-do similar things for different reasons.
-
-Zones manage to somehow be both too-broad AND too-narrow.
-
-In my head, we should just be able to just plop these things "into the
-buddy" and provide hooks that say what's allow "for those pages".
-
-That sounds like Non-Uniform Memory Access *cough* :P
-
-Heck, I was even playing with adding these nodes *back into* the
-fallback lists for some situations.
-
-NP_OPS_DIRECT / NP_OPS_FALLBACK
-	don't require __GFP_PRIVATE, but give me the hooks I want :V 
-
-> > Where there are new injection sites, it's because ZONE_DEVICE opts
-> > out of ever touching that code in some other silently implied way.
+>>   #endif /* CONFIG_MMU_NOTIFIER */
+>>   
+>>   #endif	/* __MM_INTERNAL_H */
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index be785dfc9336..1c147251ae28 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -958,25 +958,21 @@ static bool folio_referenced_one(struct folio *folio,
+>>   			return false;
+>>   		}
+>>   
+>> +		if (pvmw.pte && folio_test_large(folio)) {
+>> +			unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
+>> +			unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
 > 
-> Yeah, I hate that aspect of ZONE_DEVICE. There are far too many places where we
-> "prove" you can't have a ZONE_DEVICE page because of ad-hoc "reasons". Usually
-> they take the form of it's not on the LRU, or it's not an anonymous page and
-> this isn't DAX, etc.
->
+> Both could be const.
 
-It's kinda the opposite of how operating systems do everything else.
+Ack.
 
-Generally we start from a basis of isolation and then poke deliberate
-holes, as opposed to try to patch things up after the fact.
-
-> > If NUMA is the interface we want, then NODE_DATA is the right direction
-> > regardless of struct page's future or what zone it lives in.
-> > 
-> > There's no reason to keep per-page pgmap w/ device-to-node mappings.
 > 
-> In reality I suspect that's already the case today. I'm not sure we need
-> per-page pgmap.
->
-
-Probably, and maybe there's a good argument for stealing 80-90% of the
-common surface here, shunting ZONE_DEVICE to use this instead of pgmap
-before we go all the way to private nodes.
-
-cough cough maybe i'll have looked into this by LSFMM cough cough
-
-> > On (1): ZONE_DEVICE NUMA UAPI is harder than it looks from the surface
+>> +			pte_t pteval = ptep_get(pvmw.pte);
 > 
-> Ok, I will admit I've only been hovering on the surface so need to give this
-> some more thought. Everything you've written below makes sense and is definitely
-> food for thought. Thanks.
+> I wonder if there could be a way to avoid this ptep_get() by letting
+> page_vma_mapped_walk() just provide the last value it used (in
+> check_pte() I guess). Something for another patch.
+
+Well, we’d need to add a new field to ‘struct page_vma_mapped_walk’ to 
+store the last value (e.g., pvmw.pteval), but this makes me wonder if it 
+is worth adding a new field just to avoid a lightweight read (which 
+should have no obvious performance impact).
+
+>> +
+>> +			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
+>> +			ptes += nr;
+>> +		}
+>> +
+>>   		if (lru_gen_enabled() && pvmw.pte) {
+>> -			if (lru_gen_look_around(&pvmw))
+>> +			if (lru_gen_look_around(&pvmw, nr))
+>>   				referenced++;
+>>   		} else if (pvmw.pte) {
+>> -			if (folio_test_large(folio)) {
+>> -				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
+>> -				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
+>> -				pte_t pteval = ptep_get(pvmw.pte);
+>> -
+>> -				nr = folio_pte_batch(folio, pvmw.pte,
+>> -						     pteval, max_nr);
+>> -			}
+>> -
+>> -			ptes += nr;
+>>   			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
+>>   				referenced++;
+>> -			/* Skip the batched PTEs */
+>> -			pvmw.pte += nr - 1;
+>> -			pvmw.address += (nr - 1) * PAGE_SIZE;
+>>   		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+>>   			if (pmdp_clear_flush_young_notify(vma, address,
+>>   						pvmw.pmd))
+>> @@ -995,6 +991,12 @@ static bool folio_referenced_one(struct folio *folio,
+>>   			page_vma_mapped_walk_done(&pvmw);
+>>   			break;
+>>   		}
+>> +
+>> +		/* Skip the batched PTEs */
+>> +		if (nr > 1) {
+>> +			pvmw.pte += nr - 1;
+>> +			pvmw.address += (nr - 1) * PAGE_SIZE;
+>> +		}
 > 
+> As nr >= 1, you can just unconditionaly do
+> 
+> pvmw.pte += nr - 1;
+> pvmw.address += (nr - 1) * PAGE_SIZE;
 
-cheers! thanks for reading :)
+Actually, I want to filter out the THP case where the 'pvmw.pte' is 
+NULL. But it shouldn’t be a problem, because 'nr' is always 1 for the 
+THP case. I can remove the check.
 
-~Gregory
+>>   	}
+>>   
+>>   	if (referenced)
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 728868c61750..d83962468b2e 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -3494,6 +3494,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>>   	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+>>   	DEFINE_MAX_SEQ(walk->lruvec);
+>>   	int gen = lru_gen_from_seq(max_seq);
+>> +	unsigned int nr;
+>>   	pmd_t pmdval;
+>>   
+>>   	pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
+>> @@ -3512,11 +3513,13 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>>   
+>>   	lazy_mmu_mode_enable();
+>>   restart:
+>> -	for (i = pte_index(start), addr = start; addr != end; i++, addr += PAGE_SIZE) {
+>> +	for (i = pte_index(start), addr = start; addr != end; i += nr, addr += nr * PAGE_SIZE) {
+>>   		unsigned long pfn;
+>>   		struct folio *folio;
+>> -		pte_t ptent = ptep_get(pte + i);
+>> +		pte_t *ptep = pte + i;
+>> +		pte_t ptent = ptep_get(ptep);
+> 
+> 
+> Existing "pte vs ptent" vs. "ptep vs. pte" is already confusing.
+> Combining them into "pte vs. ptep vs. ptent" is no good.
+> 
+> If you need another variable, call it "cur_pte". Or rename "pte" to
+> "start_pte".
+
+OK. "cur_pte" sounds good to me.
+
+>> +		nr = 1;
+>>   		total++;
+>>   		walk->mm_stats[MM_LEAF_TOTAL]++;
+>>   
+>> @@ -3528,7 +3531,14 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>>   		if (!folio)
+>>   			continue;
+>>   
+>> -		if (!ptep_clear_young_notify(args->vma, addr, pte + i))
+>> +		if (folio_test_large(folio)) {
+>> +			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+>> +
+>> +			nr = folio_pte_batch_flags(folio, NULL, ptep, &ptent,
+>> +						   max_nr, FPB_MERGE_YOUNG_DIRTY);
+>> +		}
+>> +
+>> +		if (!clear_young_ptes_notify(args->vma, addr, ptep, nr))
+>>   			continue;
+>>   
+>>   		if (last != folio) {
+>> @@ -4186,7 +4196,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+>>    * the PTE table to the Bloom filter. This forms a feedback loop between the
+>>    * eviction and the aging.
+>>    */
+>> -bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>> +bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int batched)
+> 
+> What is "batched"? Did you mean "nr_ptes" ? Or just the initial value
+> for "nr" ?
+
+There is already an 'nr' variable in this function. "nr_ptes" sounds 
+good to me, and will use it.
+
+>> -		if (!ptep_clear_young_notify(vma, addr, pte + i))
+>> +		if (folio_test_large(folio)) {
+>> +			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+> 
+> Can be const.
+
+Ack.
+
+> 
+>> +
+>> +			nr = folio_pte_batch_flags(folio, NULL, ptep, &ptent,
+>> +						   max_nr, FPB_MERGE_YOUNG_DIRTY);
+>> +		}
+> 
+> I guess we might benefit from a FPB_MERGE_YOUNG only here. But this
+> should work.
+
+I’ve thought about it. Instead of adding another flag and some new 'if' 
+branches for folio_pte_batch_flags(), and given that it brings no 
+performance improvement for MGLRU, I still prefer the current 
+FPB_MERGE_YOUNG_DIRTY method. :)
+
+Thanks for reviewing.
 
