@@ -4,106 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69AF1FCE074
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DDFFFCE074
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 13:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B98D26B008A; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
+	id 8B5746B0005; Thu, 26 Feb 2026 08:06:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B59726B0096; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
+	id 896B36B0089; Thu, 26 Feb 2026 08:06:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A90136B0099; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
+	id 7C0096B008A; Thu, 26 Feb 2026 08:06:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 932AC6B008A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:57:56 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B59E850F4
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:57:56 +0000 (UTC)
-X-FDA: 84486610152.24.E30F5C4
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 63E4FA000C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:57:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=TwPizSSA;
-	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 685926B0005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:06:22 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1FFEE55F38
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:06:22 +0000 (UTC)
+X-FDA: 84486631404.02.763EFAD
+Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 704E8100014
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:06:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf14.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772110674;
+	s=arc-20220608; t=1772111180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XPQokzKIR4QEBWebfj0SvsNzvMWG4WPoP7HqHEXWzMQ=;
-	b=oi6v/aCJ0s8SRYttJBqBj3C9SW3iWsjSXAkUPoyvrgCjStLTMzgoESwRN1orZ6gr5FdCcR
-	92TVifuV9z/DIr/hKGtXJlodAFgGDvWE75ZtRphG6Ib6i5C34pq3/lgrnQbhLu51lq1PwX
-	Tg4TZmV8Tn+9jRDAaijoFZUfaSByocw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=TwPizSSA;
-	spf=pass (imf25.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772110674; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=h1nIKrqhG2XNbLVqQIbEmHgSnvWcgHzz5Au9PtQRLFM=;
+	b=Qzh7BSTdI81Gyi9T08XGglq8s4kgXMBbvD5ikRLuB67iOgY9DkaJvqRfleV3muz8yyRbcj
+	F1Q9YHo763hmDNxSJ8r/U10qNCzzO0zzrKSkIX6NWjMBe3oFqOPZsAPTzODl8OP4k75PRv
+	HuN9vcWrZgn9W+0GUMgVciDBkvuEjEk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772111180; a=rsa-sha256;
 	cv=none;
-	b=nq2/lg2XHJwHgqXn3Eib5j7O3EGOeLxpmQZQduzF9pVmnMMhVsICNy5WoZnBafR+kJxDXM
-	7gyvKy/IApJV3VlYC/t0hOjFAwLn7KmC6AmOXZ9A5gCx5KJTcFZ2MIO/vZVcGrhl5uWWbA
-	B8wRrvwYau25dSMtMZSEUG9j72osW+A=
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=XPQokzKIR4QEBWebfj0SvsNzvMWG4WPoP7HqHEXWzMQ=;
-	b=TwPizSSAdOagw0bRh7x9IGiFjHeSd1U4f84NwrsYKyLjJr8Foe70PHW8i7BQj+zKPj5JA4FlL
-	rcmmpD+aswtkoAFS+xBNWtXQaq7zLngNReFKlH1HKQbjgDVT/QLZGNfJZC+C45XonlFGKnZM/6e
-	a2vPgM3n9JYPmTQVeJCSTrM=
-Received: from w001.hihonor.com (unknown [10.68.25.235])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4fMBHD6WPdzYl5nV;
-	Thu, 26 Feb 2026 20:54:16 +0800 (CST)
-Received: from a015.hihonor.com (10.68.27.88) by w001.hihonor.com
- (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
+	b=RaehSfUVTCT9pcrznYbIupYTtjQ58hRN7iDGI9kxpv6eDMC3femZN0JDKK6zGlvKi43qEg
+	V+jrXvLyAf1giUhsipNXXYOXdSYyp+tWRJYGBK0Utwww49ipd3fTmG9xJKfPk/TAVqP7NM
+	sN7FbjoEY5pBNrQeS8siAnlF+15mWFU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf14.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
+Received: from w013.hihonor.com (unknown [10.68.26.19])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4fMBT00hdQzYlKcg;
+	Thu, 26 Feb 2026 21:02:44 +0800 (CST)
+Received: from a006.hihonor.com (10.68.23.242) by w013.hihonor.com
+ (10.68.26.19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 26 Feb
- 2026 20:57:42 +0800
-Received: from w002.hihonor.com (10.68.28.120) by a015.hihonor.com
- (10.68.27.88) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 21:06:12 +0800
+Received: from w002.hihonor.com (10.68.28.120) by a006.hihonor.com
+ (10.68.23.242) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 26 Feb
- 2026 20:57:42 +0800
+ 2026 21:06:11 +0800
 Received: from w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3]) by
  w002.hihonor.com ([fe80::ef6f:d9c5:cf75:d4d3%14]) with mapi id
- 15.02.2562.027; Thu, 26 Feb 2026 20:57:42 +0800
+ 15.02.2562.027; Thu, 26 Feb 2026 21:06:11 +0800
 From: wangzicheng <wangzicheng@honor.com>
-To: Barry Song <21cnbao@gmail.com>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Barry Song
-	<baohua@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Lei Liu
-	<liulei.rjpt@vivo.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, Kairui Song <kasong@tencent.com>, Tangquan Zheng
-	<zhengtangquan@oppo.com>, wangtao <tao.wangtao@honor.com>
-Subject: RE: [PATCH RFC] mm/mglru: lazily activate folios while folios are
- really mapped
-Thread-Topic: [PATCH RFC] mm/mglru: lazily activate folios while folios are
- really mapped
-Thread-Index: AQHcprbIkLI8koBjtkqDPEnVc1b3J7WU7U8w
-Date: Thu, 26 Feb 2026 12:57:42 +0000
-Message-ID: <2558f7d82b9a482387960f45409e1b76@honor.com>
-References: <20260225223712.3685-1-21cnbao@gmail.com>
-In-Reply-To: <20260225223712.3685-1-21cnbao@gmail.com>
+To: Kalesh Singh <kaleshsingh@google.com>
+CC: Suren Baghdasaryan <surenb@google.com>,
+	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, wangxin 00023513
+	<wangxin23@honor.com>, gao xu <gaoxu2@honor.com>, wangtao
+	<tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>, zhouxiaolong
+	<zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>,
+	"kasong@tencent.com" <kasong@tencent.com>, "21cnbao@gmail.com"
+	<21cnbao@gmail.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "yuanchu@google.com"
+	<yuanchu@google.com>, "weixugc@google.com" <weixugc@google.com>, Randy Dunlap
+	<rdunlap@infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"willy@infradead.org" <willy@infradead.org>, yangxuzhe 00017436
+	<yangxuzhe@honor.com>, "T.J. Mercier" <tjmercier@google.com>, android-mm
+	<android-mm@google.com>, "ryncsn@gmail.com" <ryncsn@gmail.com>
+Subject: RE: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and
+ Challenges
+Thread-Topic: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and
+ Challenges
+Thread-Index: AQHcpbCW9Jb7JciVVEirgKqS2Lh6gbWTO+JQgAB7BoCAAT0bIA==
+Date: Thu, 26 Feb 2026 13:06:11 +0000
+Message-ID: <586d56f766bf4181b99d6ba8106ebe0e@honor.com>
+References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com>
+ <CAJuCfpHzTdwcGh8wXetEcAy-93-WqPmoyDnbC8UhzGttpcm_Cw@mail.gmail.com>
+ <e3734e2cfac3403da02213b64af8c5b4@honor.com>
+ <CAC_TJveNB_beemBUdJ02tYpTj5c2Po6zQAMRzdFQD5WJKfTacQ@mail.gmail.com>
+In-Reply-To: <CAC_TJveNB_beemBUdJ02tYpTj5c2Po6zQAMRzdFQD5WJKfTacQ@mail.gmail.com>
 Accept-Language: zh-CN, en-US
 Content-Language: zh-CN
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-originating-ip: [10.163.18.229]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 63E4FA000C
-X-Stat-Signature: 9mj6stfoqtjh154ichqufrfp6uqp84na
 X-Rspam-User: 
-X-HE-Tag: 1772110672-972189
-X-HE-Meta: U2FsdGVkX18bA22gF3W9WpKZVqxJoKpsG+epMpt6RTKRKMGniYmJdY/a0whHM3vQ4x53ren1w/b1cohwVD1LtsMMs+wCnhiKwgSmmiTw4x/vDsk4nL+nMrSoLghuKjJj15SE4jg6iYKHxxkbchzYawUaXJMWcDaM1Gw6hAjjLqcVA0gQ/vlW64uE35ifacfr4fbVq30ElNODZx0N0Yd+b1Q1uu7jkWF688fWhpgtQiGO+UtFgENrzed1jL4Dj7B7vLV6UcD52ySC7H0dBHqiJr7O3Po9bGXqn74StN0/jDHOV3udPZdEWySlRxgVx7aGHlp6a7S8BL7T4/ijZ5rDc7isZ8xlQqfjLggFntrLcE1tJMmY2RkxVowdupXIU1Og0dM4Oe5PJxgziViJwmJQl9Bw8G827fGt15paQY0+Tijn+ANJcXRzIT5T/N9BI3WVVeH1N7mZOVRfTZZb58QDk5ioypEhsxaDVUoPw/gLsItjKM3TVS7bN5zOelQrgbuLVIrrRx19SRWUcM44UYSXefgCAL+OxfyYqMbLOyje1OuoGNu7zgCMWtWaxSD6542jJZ/aCdRKu7E3NF1/BLR5cU4+Vtq3jAL61IjD/d6L0NbMFyPET/7ELHo/3TZpCvoCKOQ++V37mZE7P1gyL32ui8MwACS6JAjwwhoh9qajut3kYHQaDuIsSwEdE68V3352a2uHXbyngu8yVDHo1Do3qw+4uV8F9aAXhzJIfcuXwYZHtlpsi5lg7Ws7OjDFrIu971py4PFCYzCB1hhu1SRI2eI0wmsLOPjE1okB+T3Qx9kOuxGjO1/TmLzE566qWo535Jb4Bqieu6yqrA/P0UDJP1EP1VEEBfO+GJ+qFTkoaTDsBlpGY4SqlZFJgyCIM5rC/7P94cRgDeMnaK+og++Hzu2vEOq86qE5nA3VPhUiKbdq/YqFCSTDwm95a5gcpYciVGQdji0S/KOAXcHNIVO
- 3P/186/M
- PVq8lzfzFqwnjOnPoH9gtX6WwRAxIStsYpX089fi859v7Ph3rD5wjUoA+uYScXxvJR9YW8wrQI0psENZpeV8h/0vmY3GV+M8hTgnDhSxsJeRBH4NuvqS/3WwVRlnZlGa1cWnQly+q6TmlT7ARuHw2lIaFv7c62ORollNXYUy6EmM+Q9aUCPFtAIUaQaWI936kYo8PE6Ji+DDKLPJL6I9rsoX1KEFHQwrnJ5UKikHqDsR7r1O4UL814itQJXyXN+2NooE/5nj07Xh7cUwoT7DzPSyCVeVtZBabtPVeS4XXi/d8TW7QRXuNy0tfirGFvFFfcPOTY+su+1Y8xgu+LLS4/A0msbZWnBWQqVJBayuc8WZb/3kwPjPUcghwMzXRhy0SQcofAr8hNSO0kDN46o+69xLg05NUiKwD+zzls4ygEZWNuR6dcqB+u02eQzQ4q4uUl7eaDUgo3o+vjIzyHtb+CyK4iGlHMiKOYLAfT9FOtLr1ugARtBnBVqRanS4w7vAqERBvOtaX44G+MIMcxSEqJfgL0aP/luQOBFnBEp2C6NOOYu3mgSMMQS0f+oSIzV06bLT+LWc8Fs6cUuNWI6L//3uyWyKeRiyXST6UMJM3F2Eg+aKJszVnRHzjewC6gNSciCLwbHAAEQWVxmwFbWOKjLYjqrIfPdYtQbq5i4NKPaLt9xmeS9G9ty0k/AuTbx4hZJrmKdVWpwRSayNJZe3J564HIYh54xCrMtii7iG8OgU61eo=
+X-Stat-Signature: ogn9wyygmcer4cuz3hy4ago8pbcqsrs8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 704E8100014
+X-HE-Tag: 1772111179-703354
+X-HE-Meta: U2FsdGVkX18AghdN5gP+ma0GxXj/Sa8ZUrZ/OiO4zMk6QFMLEa5RUNZGOG2OSnbb8znB+OKm+miviTWduc4nzCbDvJye/ET9WJwO1RlqHnCnxN+gvLjSVL4xuXekHPU2LsXQwMXK4Z64dOttW6+ALWFXsCpi1JWnekYUPi2v881MsrtHBeS1rpKCEegohsXPwyWFTZbj9BJS7fWSkefjySyz+eNgRTPrtDZSKhLxMnpWu49DOPzaivVLJhKDpknL6O4947v7bDT/S//RjOxLbECMD5Nra6ZDcFcEE8DtTEZ689+J7trqDhN4zIRXwJjDo8xV0UwPHKt6T8dETPTJGBFs3f55wuBDv6iC3xKmCzC0Cd7eqnrisjjmS26IWk9XSjkLnu26VNlLw/XMCxFq9ZvzgtOMI/y2fRuZBoGfSF/CWSnsVTG33yU40blibbZnRmY6OYkluIcbLIjgklWJYpVOKS9P2DcCk1KPFVZR2AKIezGv7jZnsely/9jxpC0yCETMR5fgwnQwh2bzVgXrehdlIwunDLJ6K3NN0BHeBj3EOi2vn4VSCtWXLoYQTkuswJhMBqIOtTljVnNFtr5zsqVs+npkoZUqmpCZqzSji0ZvHMnhv6PXFmfzPZUc3J3w1csDVYd1Ue19DTxDYdFPcDc99D1GiF78Q1rLRcQjIYoDXXvLfBKNFBbr0tApsN4LYgsAkwNotZqyiwcljMjaH3cXXP+M4oBoBUcxpP+VLN9QS8GWhiXvEQp7+Pt9wHGKd+7oT84PaB+PxXJFTXbkcb3wDY95MxfKvLpaNHg5VtGlbj7gE6wq5l7vPR7x2c9xbU4eHVpluDXN2vT/utrpADTqun1WVlAbYm1TePtZCcESby3mqBYKycKf40BraN22CfFA5UMkoNNXWF2fjPObzoTLSWu2a7mAAlsBhU6KxV1eywGX4ttz7C7fgqmpsR1xTcdKhCko+lqTZGfhXV7
+ 2t4ijnYz
+ 1wH6IXt6uxEb0p/sT8sxk/DkgWtoW+c5tFSj2wwRvjQdJmr0mkOeZ+hVO9nRaWeLWX8Gk8j+i8VTfJjza6M1oupeff86F2WZYkuPTllx+vz3DHCbUaiJ2S8XNYs+DTvtrkzwkr7ZuO/BkupMGlbrFUeJXqpS0OB2Mqw7gVMCqiDrrGL2SU+ERwhtLLotjGAe4TDokxMkMNzavqxuxWA4dSVavvoCdMIzaGYkcEgQ686L+gKlQelUgL4PbHdTo85QQZEAfObMb3isIao6irEtIL6XmM8pjiVDV5tzK7FP+Kp56PS3G7o3C+eHz2klDJ6v3ChPo1ve3NyyPhHXicKzHT8UJg8qGsnh3ZI0ZbCd5M2UogzENsm95hyqsKPIsu50tTlBxPNSc1eTQjaYx9UzBifkyROk5YuenYVsp45oQ2QmbsMLhCfcnym7+EaFTRa+IgeV/+FVuxq5XlkE2+ZZldAPKwH2H2/Jx4GFwARKm/xQcqlsQgFDUYECu0Rl4fRE5CTONzUuATz2kgj3G09doPdqxuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,155 +114,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> -----Original Message-----
-> From: Barry Song <21cnbao@gmail.com>
-> Sent: Thursday, February 26, 2026 6:37 AM
-> To: akpm@linux-foundation.org; linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org; Barry Song <baohua@kernel.org>;
-> wangzicheng <wangzicheng@honor.com>; Suren Baghdasaryan
-> <surenb@google.com>; Lei Liu <liulei.rjpt@vivo.com>; Matthew Wilcox
-> (Oracle) <willy@infradead.org>; Axel Rasmussen
-> <axelrasmussen@google.com>; Yuanchu Xie <yuanchu@google.com>; Wei
-> Xu <weixugc@google.com>; Kairui Song <kasong@tencent.com>; Tangquan
-> Zheng <zhengtangquan@oppo.com>
-> Subject: [PATCH RFC] mm/mglru: lazily activate folios while folios are re=
-ally
-> mapped
->=20
-> From: Barry Song <baohua@kernel.org>
->=20
-> MGLRU activates folios when a new folio is added and
-> lru_gen_in_fault() returns true. The problem is that when a
-> page fault occurs at address N, readahead may bring in many
-> folios around N, and those folios are also activated even
-> though many of them may never be accessed.
->=20
-> A previous attempt by Lei Liu proposed introducing a separate
-> LRU for readahead[1], but that approach is likely over-designed.
->=20
-> This patch instead activates folios lazily, only when they are
-> actually mapped, so that unused folios do not occupy higher-
-> priority positions in the LRU and become harder to reclaim.
->=20
-> A similar optimization could also be applied to swapin readahead,
-> but this RFC limits the change to file-backed folios for now.
->=20
-> Based on Tangquan's observations, this can significantly reduce
-> file refaults on Android devices when using MGLRU.
->=20
-> BTW, it seems somewhat odd that all LRU APIs are defined in
-> swap.c and swap.h.
->=20
-> [1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-
-> liulei.rjpt@vivo.com/
->=20
-> Cc: wangzicheng <wangzicheng@honor.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Lei Liu <liulei.rjpt@vivo.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Axel Rasmussen <axelrasmussen@google.com>
-> Cc: Yuanchu Xie <yuanchu@google.com>
-> Cc: Wei Xu <weixugc@google.com>
-> Cc: Kairui Song <kasong@tencent.com>
-> Cc: Tangquan Zheng <zhengtangquan@oppo.com>
-> Signed-off-by: Barry Song <baohua@kernel.org>
-> ---
->  include/linux/swap.h |  1 +
->  mm/filemap.c         |  2 ++
->  mm/swap.c            | 16 +++++++++++++++-
->  3 files changed, 18 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 62fc7499b408..ce88ec560527 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -335,6 +335,7 @@ void folio_add_lru(struct folio *);
->  void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
->  void mark_page_accessed(struct page *);
->  void folio_mark_accessed(struct folio *);
-> +void folio_activate_on_mapped(struct folio *folio);
->=20
->  static inline bool folio_may_be_lru_cached(struct folio *folio)
->  {
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 6cd7974d4ada..0b8f383facdb 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3567,6 +3567,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
->  		}
->  	}
->=20
-> +	folio_activate_on_mapped(folio);
->  	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
->  		goto out_retry;
->=20
-> @@ -3926,6 +3927,7 @@ vm_fault_t filemap_map_pages(struct vm_fault
-> *vmf,
->  					nr_pages, &rss, &mmap_miss,
-> file_end);
->=20
->  		folio_unlock(folio);
-> +		folio_activate_on_mapped(folio);
->  	} while ((folio =3D next_uptodate_folio(&xas, mapping, end_pgoff)) !=3D
-> NULL);
->  	add_mm_counter(vma->vm_mm, folio_type, rss);
->  	pte_unmap_unlock(vmf->pte, vmf->ptl);
-> diff --git a/mm/swap.c b/mm/swap.c
-> index bb19ccbece46..e50b1e794ef1 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -488,6 +488,19 @@ void folio_mark_accessed(struct folio *folio)
->  }
->  EXPORT_SYMBOL(folio_mark_accessed);
->=20
-> +void folio_activate_on_mapped(struct folio *folio)
-> +{
-> +	if (lru_gen_enabled() && lru_gen_in_fault() &&
-> +			!(current->flags & PF_MEMALLOC) &&
-> +			!folio_test_active(folio) &&
-> +			!folio_test_unevictable(folio)) {
-> +		if (folio_test_lru(folio))
-> +			folio_activate(folio);
-> +		else /* still in lru cache */
-> +			__lru_cache_activate_folio(folio);
-> +	}
-> +}
-> +
->  /**
->   * folio_add_lru - Add a folio to an LRU list.
->   * @folio: The folio to be added to the LRU.
-> @@ -506,7 +519,8 @@ void folio_add_lru(struct folio *folio)
->  	/* see the comment in lru_gen_folio_seq() */
->  	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
->  	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-> -		folio_set_active(folio);
-> +		if (!folio_is_file_lru(folio))
-> +			folio_set_active(folio);
->=20
->  	folio_batch_add_and_move(folio, lru_add);
->  }
-> --
-> 2.39.3 (Apple Git-146)
-
-Hi Barry,
-
-Setting only non-filelru-folio in folio_add_lru looks reasonable and
-should help with over-protecting readahead pages that are never
-actually accessed.
-
-For our workloads that already suffer from file under-protection, we see tw=
-o
-sides here: on the positive side, keeping only actually-used readahead page=
-s
-in memory could improve performance; on the other hand, since we already
-see file under-protect issues, it's not clear whether this change might
-exacerbate that or even hurt performance.
-
-We'll test this when available and report back. We hope to have a
-chance to discuss this topic at LSF/MM/BPF.
-
-Thanks,
-Zicheng
+PiA+ID4gPg0KPiA+ID4gPiBXZSBhcmUgaGFwcHkgdG8gc2hhcmUgbW9yZSBkZXRhaWxlZCBkYXRh
+IGFuZCBleHBlcmltZW50cyBhbmQgdG8gaGVscA0KPiA+ID4gPiB3aXRoIFBvQ3MgYW5kIGxhcmdl
+LXNjYWxlIHZhbGlkYXRpb24gaWYgdGhlcmUgaXMgaW50ZXJlc3QgaW4NCj4gPiA+ID4gcHVyc3Vp
+bmcgdGhlc2UgZGlyZWN0aW9ucy4NCj4gDQo+IEhpIFppY2hlbmcsDQo+IA0KPiBJIHdvdWxkIGJl
+IHZlcnkgaW50ZXJlc3RlZCBpbiBqb2luaW5nIHRoaXMgZGlzY3Vzc2lvbiBhdCBMU0YvTU0gYXMg
+d2VsbC4NCj4gDQo+IEkgYWN0dWFsbHkganVzdCByZXBsaWVkIHRvIEthaXJ1aSdzIE1HTFJVIHRo
+cmVhZCBub3Rpbmcgc29tZSBzaW1pbGFyDQo+IG9ic2VydmF0aW9ucyB3ZSd2ZSBtYWRlIHdoaWxl
+IGV2YWx1YXRpbmcgTUdMUlUgWzFdLiBJIHRoaW5rIHlvdXINCj4gZmluZGluZ3MgaW4gUTMgcmVn
+YXJkaW5nIGhpZ2ggcmVjbGFpbSBjb3N0cyBhbmQgdGFza3Mgd2FpdGluZyBpbg0KPiB1bmludGVy
+cnVwdGlibGUgc2xlZXAgY29ycm9ib3JhdGUgdGhlIGluY3JlYXNlZCBkaXJlY3QgcmVjbGFpbSB0
+YWlsDQo+IGxhdGVuY2llcyB3ZSBoYXZlIGJlZW4gaW52ZXN0aWdhdGluZyBvbiBvdXIgZW5kLg0K
+PiANCj4gSXQgd2lsbCBiZSB2YWx1YWJsZSB0byBkaXNjdXNzIHlvdXIgbGFyZ2Utc2NhbGUgZmll
+bGQgZGF0YSBhbmQgc2VlIGhvdw0KPiB0aGUgd29ya2Fyb3VuZHMgeW91J3ZlIGltcGxlbWVudGVk
+IG1pZ2h0IGluZm9ybSB0aGUgdXBzdHJlYW0NCj4gZGlzY3Vzc2lvbnMgYWxvbmdzaWRlIEthaXJ1
+aSdzIHByb3Bvc2Fscy4NCj4gDQo+IFsxXQ0KPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwv
+Q0FDX1RKdmZpXzVuMmNyR0hiUlZPMFI4amRZY1NDbWd6VUpQemh0U3YNCj4gV2VDTjZmQ2JRZ0Bt
+YWlsLmdtYWlsLmNvbS8jdA0KPiANCj4gVGhhbmtzLA0KPiBLYWxlc2gNCj4gDQpIaSBLYWxlc2gs
+DQoNClRoYW5rcyBmb3IgZm9sbG93aW5nIHVwIGFuZCBmb3Igc2hhcmluZyB5b3VyIG9ic2VydmF0
+aW9ucy4NCkZvciBRMywgd2UgaGF2ZSBvbmx5IHRyaWVkIHNvbWUgYXBwcm9hY2hlcyBzbyBmYXIg
+YW5kIGRvbuKAmXQgaGF2ZSBhIHNvbGlkIHNvbHV0aW9uIHlldC4NCldl4oCZZCBiZSBoYXBweSB0
+byBzaGFyZSBvdXIgZmllbGQgZGF0YSBhbmQgc29tZSBQZXJmZXR0byB0cmFjZXMuIFdlIGJlbGll
+dmUgaXQgd291bGQgDQpiZSB2ZXJ5IGhlbHBmdWwgdG8gZGlzY3VzcyB3aXRoIHlvdSBhbmQgS2Fp
+cnVpIGF0IExTRi9NTS9CUEYuDQoNCkJlc3QsDQpaaWNoZW5nDQoNCj4gPiA+DQo+ID4gPiBGb3Ig
+b2J2aW91cyByZWFzb25zIEknbSBpbnRlcmVzdGVkIGluIHRoaXMgZGlzY3Vzc2lvbi4gV2UgYWxz
+byBub3RpY2UNCj4gPiA+IHNvbWUgc2hvcnRjb21pbmdzIG9mIE1HTFJVIGFuZCB3b3VsZCBsaWtl
+IHRvIGNvbGxhYm9yYXRlIG9uIHJlc29sdmluZw0KPiA+ID4gdGhlbS4NCj4gPiA+IFRoYW5rcywN
+Cj4gPiA+IFN1cmVuLg0KPiA+ID4NCj4gPiBIaSBTdXJlbiwNCj4gPg0KPiA+IHRoYW5rcywgd2Xi
+gJlkIGJlIHZlcnkgaGFwcHkgdG8gd29yayB0b2dldGhlciBvbiB0aGlzLg0KPiA+DQo+ID4gPiA+
+DQo+ID4gPiA+IFJlZmVyZW5jZQ0KPiA+ID4gPiBbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
+bGludXgtbW0vMjAyNTExMjgwMjUzMTUuMzUyMDY4OS0xLQ0KPiA+ID4gd2FuZ3ppY2hlbmdAaG9u
+b3IuY29tLw0KPiA+ID4gPiBbMl0gaHR0cHM6Ly9hbmRyb2lkLQ0KPiA+ID4gcmV2aWV3Lmdvb2ds
+ZXNvdXJjZS5jb20vYy9rZXJuZWwvY29tbW9uLysvMzg2NjU1NA0KPiA+ID4gPiBbM10gaHR0cHM6
+Ly9hbmRyb2lkLQ0KPiA+ID4gcmV2aWV3Lmdvb2dsZXNvdXJjZS5jb20vYy9rZXJuZWwvY29tbW9u
+LysvMzg3MDkyMA0KPiA+ID4gPiBbNF0gaHR0cHM6Ly9sd24ubmV0L0FydGljbGVzLzEwNTE4ODIv
+DQo+ID4gPiA+DQo+ID4gPiA+IC0tDQo+ID4gPiA+IEJlc3QgcmVnYXJkcywgYW5kIHdpc2hpbmcg
+eW91IGEgcHJvc3Blcm91cyBZZWFyIG9mIHRoZSBIb3JzZSwNCj4gPiA+ID4gWmljaGVuZyBXYW5n
+DQo=
 
