@@ -4,138 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D14EFD9E12
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 21:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98409FD9E0A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 21:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B882F6B010B; Thu, 26 Feb 2026 16:16:40 -0500 (EST)
+	id BBB7F6B01F0; Thu, 26 Feb 2026 16:22:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5FF96B0127; Thu, 26 Feb 2026 16:16:40 -0500 (EST)
+	id B68FC6B0209; Thu, 26 Feb 2026 16:22:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8CA86B014E; Thu, 26 Feb 2026 16:16:40 -0500 (EST)
+	id A6BB46B0255; Thu, 26 Feb 2026 16:22:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 93FD66B010B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:16:40 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E5B1C1584
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 21:16:40 +0000 (UTC)
-X-FDA: 84487866960.03.D739A6D
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 286EC14000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 21:16:37 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=dfinity.org header.s=google header.b=iXE5dd1h;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of bas@dfinity.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=bas@dfinity.org;
-	dmarc=pass (policy=reject) header.from=dfinity.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772140598;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FFA66B01F0
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:22:15 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 429D0160232
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 21:22:15 +0000 (UTC)
+X-FDA: 84487881030.07.D64FA53
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EFE75A0011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 21:22:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772140933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ycYPYyZx7AmOLkJ5x4ffI/sFVR72W8M1sWNLx9umW4=;
-	b=H/lNgx5rQheEIV6thlJAgvCgZsyBSs8Bp8vNkG8MEkoCuGEpOdWZQClGa8g7n4Ezav8ilX
-	VNiiMxSCQVV8xiDr11+F9vxInWy3xn1ILU/iMwAxrTEer+V+3qLBGSdht/NAXU1Ajyifjd
-	8sSVf+6n/tGo54cxpHFzb9ez6PeF1tg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772140598; a=rsa-sha256;
-	cv=pass;
-	b=qd19x0aC0dAlCavsffnius0cn9lebhiRC/xdj6tMo9Ll5/C4fKd8w0MsnMXF6/TeIhy+x+
-	GPV70qlExtVmp1OpueKFy0WnjB0MMjgs/uX7iJqsh8VYJOrd9gsy5HXJ3zYkWf1PDXhjHh
-	zDctPRR6Pp6HCQJF4DLmFvyYs4BMuHk=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=dfinity.org header.s=google header.b=iXE5dd1h;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of bas@dfinity.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=bas@dfinity.org;
-	dmarc=pass (policy=reject) header.from=dfinity.org
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-65c5a778923so2200402a12.2
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:16:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772140596; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FnbWu+OnFLVuSaP1vqvrqPJW4w1659JzyPJBmYZAPPmaQBtEFaM21xMaPTz87SWTSd
-         F0ad/LEqFpGxCP1uWopDzLBgi+O6EeTXv9SNsL471N7OZ0zPKkKSbAFasp2DQEA4PmIv
-         KspyFGjgh8Bnce3ZSvLz7PDrbLEIJjLYm1eZqG9tYJmgbepCn6Eh88DRLJy+Qh6ZXjCG
-         IvFIPlO4ygrtMtVSBld0KtAkDErDZXce+nmXMPK5Di/szfuLljnlH9yQupjSr7y1l2Cz
-         nzWAYg0FYI7eaP65eiXQgIdJeiwVtDDsHfziUML27qCypIAlVtx1TpL4qtmkMcvUt3RD
-         0dow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6ycYPYyZx7AmOLkJ5x4ffI/sFVR72W8M1sWNLx9umW4=;
-        fh=It8EWs0EU5+BQzUvle8GzaW+Q/gck3fTHnLfX/N/atc=;
-        b=WaZq/2gE2voX297bfXKZ58OcNv0TOScazCPV9xUNSjf00/mfxrDSG4p1m+QfiLTPqM
-         1plWE1hvFDVROxsOTH0v5mkiv6hK8M2zyTY1IBk9sMsqLoTFL9tsgmxjaHJDgK8RXCOd
-         1BADWAJYT0i8zyNCrZT+KUi83Xe7tLkSrA2r5v1ryzI5ME2PvTFghG0wPEwc4k8zMY9S
-         WViBTOB3Bs8+WDfBOyYnBLC74aDSfiWAScrp7UkjTLlfOQbN7kDOt9tf5UzJRkXFNGUZ
-         uFOkCu1ji+QcoUxiukNvxGwNjEj9X8S56HRvSM5PEe2jriRiWCMuSfrHp1j9TNLp8iQG
-         +sBg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dfinity.org; s=google; t=1772140596; x=1772745396; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ycYPYyZx7AmOLkJ5x4ffI/sFVR72W8M1sWNLx9umW4=;
-        b=iXE5dd1hYfEdXKoAS2WGlMPeDwY2KLwfQNOThIIXdr0ARhFSajxeIJdqOV9BJ36ooj
-         ct4iJyAQlQOYwdoQdYZhzRb80e3bhv4IANI2jysuOFQFtkSKIfOuQVsr2PyGePs9ZTtS
-         3cPWo6zzwJgEHGdnaiD9qYV2ZytuHha2PlO9nZ2YLYkA88KZxMqKbT9nPv2VwS8qy/hS
-         GjkajlEionrYZzGipAwUGM99rIp8FYJdrKpZNMef80w5ORg63DiejN0OBwJDUKf2it51
-         u4XEvKI8LiV33Yky8F9SqPG+l9XiDNCj8ued9ZdAoUYXSA+mk3NSCzuy1dxV7zaLLNpR
-         jC7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772140596; x=1772745396;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6ycYPYyZx7AmOLkJ5x4ffI/sFVR72W8M1sWNLx9umW4=;
-        b=o9XA/YdE/jK0GSsLWYKU9e1uDoJ62qB0MpNje+BCGNjc+k/s8bNffQfkm87qRKBPlW
-         mK7SWZuh1EgfmUel4qs9pQRd4HSShQQDPOwi/pUgWWLlQSnZ26FRysMq30t4GhcOqdJ+
-         4CQHQhNfRzPfd9/FZkFvAUisW14/pA5orQ5VyYfXe0IAHy14docsKhIEF/Zf5sldM9e+
-         KSBuqkmHix0IwlWRhSVjHP/4ux3T293vzgsm2R09rUqxM8WMdIy/4Y1aGi/DuE5Rs6Gv
-         JTpOQwmQlGfIJxpcETlGfus7BdSSUfWlmw1P9m1cEuqPWt+dN8RMM9D+IyYziS1blQMk
-         3K3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWf0jtkS//AIEQ/FertPfzhz4OEbXGoaBIqLBMlLy9j8koFqjJtv0mEnmZ19ej2mkoklo0nexH2OQ==@kvack.org
-X-Gm-Message-State: AOJu0YzaYiljnQDRh0xyQR4V3c8dzA0hgnC1aH4IYZj2DEkuRBkNlbpy
-	l0mTx8IXwBfnVNreDWs1Pau6j2jkGYKJYiwId6o4bmGPHW1q9v3Xc1E8Mx0oFO2jQGi2Ml+ioPk
-	g9zoshysy4YlVpkpO+Xb0NTtbznNmXqPcV2pzP2N/wA==
-X-Gm-Gg: ATEYQzwytlWSr0rVRWdiBAiHGvl+zq5Mv2x8Qe2pjMG6KGLMeTU5oUqLNbmfgKJ7Dz7
-	1YwzuZdteJlUA1eTjrU7lfKQU6MdqwQaWfJZvIxfB34wgDuLF+yVqS6dF9+F4fRGSCeHTNqJDYJ
-	KYPxmjuOOAFvaKRJn0YhjjqTRu1W5/a/a2uDGb7qUrORtS4Jy55PuvjixcJ32wOI9Vgt2odOOZ6
-	Bri4iPogcV4/RPSoQyPqpyFSPkrV4l7sjQ+MyXdLkrCPX9LgZBRQ7lb+D47vYsJT/hF1vziUTFR
-	+ePP93o=
-X-Received: by 2002:a05:6402:3889:b0:65c:209e:32c4 with SMTP id
- 4fb4d7f45d1cf-65fdddeecfamr459737a12.20.1772140596428; Thu, 26 Feb 2026
- 13:16:36 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references;
+	bh=ePX7B57+99lriMffUyBNaGW/GrNI7oq+UA3S5TDmNfk=;
+	b=CPdAC1az8CjfYfa86RUE1fxckEAolYDyhgM0GU8fZnduSSLSNc80V2z1Om+Lv9PoySquc1
+	MSEwwGb2czvkLhNdhox6IbqgceqeiVS6o8cLFi5elY2yyN2nzwyEw9VmASCRDsJ/EYOiKT
+	H+HXZRjTZf4kxUXrXzK2gjXrg4TyBRw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772140933; a=rsa-sha256;
+	cv=none;
+	b=78xNHASqYAp+zSWeaYvWsbya99xlVX7zTCDfr5adrm/tr4KLm2fZRCX7Sr8orkecSwtS+o
+	VZK7SqoMYgO/+MMANY+pDCURxcbd8r7EXjpVWew76V6QTiSnXCwuauvOVgHcxeGH9+mzo7
+	1oHV07Q7hja6hH9o1Op4P5lyCeLGzuI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6E4A24E2DB;
+	Thu, 26 Feb 2026 21:22:11 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25AC63EA62;
+	Thu, 26 Feb 2026 21:22:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CH6xBYC5oGlMRAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 26 Feb 2026 21:22:08 +0000
+Date: Thu, 26 Feb 2026 21:22:06 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	andreyknvl@gmail.com, arnd@arndb.de, bp@alien8.de, brauner@kernel.org, 
+	bsegall@google.com, corbet@lwn.net, dave.hansen@linux.intel.com, 
+	dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com, jakub.wartak@mailbox.org, 
+	jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org, 
+	liam.howlett@oracle.com, linyongting@bytedance.com, lorenzo.stoakes@oracle.com, 
+	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org, mhiramat@kernel.org, 
+	mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, muchun.song@linux.dev, 
+	neilb@suse.de, osalvador@suse.de, pcc@google.com, peterz@infradead.org, 
+	rostedt@goodmis.org, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz, 
+	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
+	willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	Isaac Manjarres <isaacmanjarres@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	android-mm <android-mm@google.com>
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+Message-ID: <5tdailzxoywzzunbwhtlk4yjfmzunntniqtudkb52q6hib74ql@oq4mi226dedv>
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
+ <b82a5ac3-33e9-4cbf-892a-f0c7f6fe0c20@kernel.org>
+ <CAC_TJvdgvyjyJsU4v6W+3tHKx_2e8UMJU3RT2HKLSngcC+yH3Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com>
- <CB5EF1C4-6285-4EEC-ABD0-A8870E7241E8@nvidia.com> <D4BD80F5-6CA2-42E1-B826-92EACD77A3F3@nvidia.com>
-In-Reply-To: <D4BD80F5-6CA2-42E1-B826-92EACD77A3F3@nvidia.com>
-From: Bas van Dijk <bas@dfinity.org>
-Date: Thu, 26 Feb 2026 22:16:25 +0100
-X-Gm-Features: AaiRm503vB6PlOzpF1Ah8vvKRhyYi5KSR9A57eyUrg2LZOnrpgEX8RHLQIcMuBg
-Message-ID: <CAKNNEtwZzt3xWh_b1pn4X4FG+cq6FLOP5rR4+G=WUsjHsJRjaA@mail.gmail.com>
-Subject: Re: [External Sender] Re: [REGRESSION] madvise(MADV_REMOVE) corrupts
- pages in THP-backed MAP_SHARED memfd (bisected to 7460b470a131)
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, regressions@lists.linux.dev, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, Eero Kelly <eero.kelly@dfinity.org>, 
-	Andrew Battat <andrew.battat@dfinity.org>, 
-	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 286EC14000B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAC_TJvdgvyjyJsU4v6W+3tHKx_2e8UMJU3RT2HKLSngcC+yH3Q@mail.gmail.com>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EFE75A0011
+X-Stat-Signature: be96gst3teywx5j71kc57treq4t4spph
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: y4iuptqdsgjxdhuyh11wxt1yre1w1xgk
-X-HE-Tag: 1772140597-687781
-X-HE-Meta: U2FsdGVkX18jdpSEAw/azTRJf3kkaR/ihg7JcQsWEC3nC+z3ogzldtD+2cX8lvK3HAuCBztx+RlkxGUFBhxfPr09PZ5OGoyf+eRGCitvUybXjma5mQlT60Sde1ThMMqvw4adSYTIXkpBgSfd8jQlHGFqSzdd1Uox09mCDILQRF3s0PaRxcPgvjfONjQ1SfAGe/rCqZ8szbkoZXG7FUkGeIco5UQVqbnJerJExdOnspLBQPwfRhZOG94YvSUSMAE9cFeFyZFzIS9CO3/nIP4aeG7ziOJxb2D52+YuxuT0lLuki29LePa1wjW+O7UVCARdnCQOohmXqzZfzvNJW+0xtV2fthN1H0bksR+RFFMDZV3WQ9kbqaU19pvSAFbqQsO4dyWanUROyh+DM+VHgjHTCxTOIOzXpgu3oZisEeYQMtzg24vGTjTBm0Zhp1Sj0Q8ENrc8JMxfWhUfKFmIxR/T12jRiksiwTaCg6AjniyB3dPMbfozGKXx+H5biDFaAbff7L1a9Lkt0iX+MQLnRdBFbZqiZAscFYZxnlf/KFHjYbph9F8ZVeo3FnCc16JyXxMqqaipTtJA7R+2ktlD1bTkwagw2ixKMu3qIxSmfYlXL4zQhUmEkru9FmCL4ThV12Kqt4H9SOPdRXcGpJKtshXMofdhdBxq0Z1mkEr9a+WvgtHQIqMJEm8Kjd8NpFXMsqMhf3KnTgZRopFuHsV+BOyLcyQvGYKbUawBzRzrryMDpYUdrwMW23TCUFNFE8X1/j/5BnikihvE3E6n7OzPVKBYVNqD2nr1JVe5pHNeUszq8HeTpy7/pCH/8LnLJB55z7MubhWdJq6a/F56Jdxf8QYnkqk6YGRNlN5/c+TyVaz+nEZt/8DUQnNmcPuko3MdIF0tQoyYAnu48APwMgK36VqzNQWO6PjFf70tUlQsDKxZa1b1gonDBgFVCSYveUzlK7heIBC+JioxduYLa3CUQvS
- R3wEJ7qE
- 35w6tgNvzk6k2NFSxLAz3Ef4z0qvgAaYr2ERoOusLiXB8m8uG4QPsvCwZI2yrXkV0Phv0CE2IuYz4hh0suhZBK81+Ufw9Nb4SOQrVVBgIXY7SMqzUOSe6omtzfcbEq7RrOcKRoUUCgKF0AM8fkIYKgRQ5jYCC4SodKSKt64JrMlE/w2w43gelyL4gS6FwU7ZpKqQeonUq/ZHXRU1aJgnIAYUF24udTSRdWd3ADB7x4/+3t0N1QTsVyxyuAQz6z6MAAcQBaEDFLsknewp/RWdJxdoJ8/lFA7RIR3QbdD2ombvw/a8rLS88JFsZmvvNSdoP+LzRv8LwljCWruzEJA8LFqO+N7aVPRqo/CeLjTF+pR/nWOBYTRkt35jibnJQUmtX4Fa/wT/EQq1hIf4=
+X-HE-Tag: 1772140932-501949
+X-HE-Meta: U2FsdGVkX195EvRxq27ftsstRG8kzP7t6JXRjg6pl9Lkv7+rYV66vjAn7OvySqU/us4rbFWADVAjCkC4cmkPZULlrq73rzi/SUBF+aUIeJ7Mf24HEOJS/G4Le/5ph2m20CXB/x5EsnilsivSI3mfg1MD57omhoDqkTy0GHQwNOVRASHnPTV5bpX7CjY+jth760UysV1wTdPJIeDwF86ouda3n0Id0pkZzqj/HRzs/pAtu0sYGM0MhKXzRI2iHgeeAk64xO7Q4S4PnYvQZptjRtg2dkboRRpdPXZ3shBB2Xce5CdgHJ0hgrjJHHWDrtywldGXODz85+Mc++xvUl8zcSadYiEH8c1fcHFDwueLMOxoWgGbNWIddtJDtZzClcBa4tVIe+8mj6XJD+PnChfYAS0y+1TZIF3uTbzbyhE3/D6mQVau0jpAKeiIa1rAF4NPtSe82/7JIHLcq0Xj5dyIT4tc8ytXldr5op/BnAODEp4w5BfTu6Qk+40BOU2J4Z1Kjo+aiiz6ThkRVuWtHT9r9MdZ1EYC7oUdzZcolsIjDqaT/lIBDg9bxCF9oQI+SYLStevzAf7ZnQwNK92vvdcm8OkXfQmtLtPc5ZqKU40RcWeQbb+jnwVI02aGuFRlQ/pn8wdru09Ok/Kw7oHyWvVQNtLaPdkuJJ+ecAPlHSZb/72phyzsyE0R0rcuab4FUFngsop+trXCCodOR+myFPe14kSw4S144rnu5Pkh1HELbis3kvQA6WiWqTRcVRfBKJ1yP8SAQ0oP9py/xl3wjxNrlYuvOvIgOqXNit3YNyx8K/2upEfHLprCVYjEtjoinLmQt98vBGnBwWjPOAdjda5MeEspmOJNXOARnrgGKQKKL6tsGLEV2PQP9OHJyQ2693WMHv3ueo3i1rWyE6ez0AFxsWULouC5rJSV1U9aJUNNU0+eRMH5Zs0ORMuCOrn//n76z+ojKhwHUXwgxri4o+r
+ 0DuUmfNZ
+ Io4FcW+51wlM+WCzphPv6nqQtefUxshhXxNmz9KUL9pz1hFYiHhsZRMOy2JcNjnRJAtKFQq4I5/P8//W3kY7f5FCMbaUPx2YgEQZYPrB2znjBOYyYBeuHrDct5n7dEYB7VWNY9ODCpOST8szlzT/eV+6Qa1MgwFM+SXiqgoTgKB3/dcaezBO5mRmWtbRmp6t+KClYNLxCliZ8ccNqaeTV0rxuqWk3WyXKNGYkhWDSFVPaksut74M4g3KnIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,45 +118,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 10:06=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On 26 Feb 2026, at 15:49, Zi Yan wrote:
->
-> > On 26 Feb 2026, at 15:34, Bas van Dijk wrote:
+On Wed, Feb 25, 2026 at 03:06:10PM -0800, Kalesh Singh wrote:
+> On Tue, Feb 24, 2026 at 1:40 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 > >
-> >> #regzbot introduced: 7460b470a131f985a70302a322617121efdd7caa
-> >>
-> >> Hey folks,
-> >>
-> >> We discovered madvise(MADV_REMOVE) on a 4KiB range within a
-> >> huge-page-backed MAP_SHARED memfd region corrupts nearby pages.
-> >>
-> >> Using the reproducible test in
-> >> https://github.com/dfinity/thp-madv-remove-test this was bisected to t=
-he
-> >> first bad commit:
-> >>
-> >> commit 7460b470a131f985a70302a322617121efdd7caa
-> >> Author: Zi Yan <ziy@nvidia.com>
-> >> Date:   Fri Mar 7 12:40:00 2025 -0500
-> >>
-> >>     mm/truncate: use folio_split() in truncate operation
-> >>
-> >> v7.0-rc1 still has the regression.
-> >>
-> >> The repo mentioned above explains how to reproduce the regression and
-> >> contains the necessary logs of failed runs on 7460b470a131 and v7.0-rc=
-1, as
-> >> well as a successful run on its parent 4b94c18d1519.
+> > > I believe that managing a pseudo-filesystem (msharefs) and mapping via
+> > > ioctl during process creation could introduce overhead that impacts
+> > > app startup latency. Ideally, child apps shouldn't be aware of this
+> > > sharing or need to manage the pseudo-filesystem on their end.
+> > All process must be aware of these special semantics.
 > >
-> > Thanks for the report. I will look into it.
->
-> Can you also share your kernel config file? I just ran the reproducer and
-> could not trigger the corruption.
+> > I'd assume that fork() would simply replicate mshare region into the
+> > fork'ed child process. So from that point of view, it's "transparent" as
+> > in "no special mshare() handling required after fork".
+> 
+> Hi David,
+> 
+> That's agood  point. If fork() simply replicates the mshare region, it
+> does achieve transparency in terms of setup.
+> 
+> I am still concerned about transparency in terms of observability.
+> Applications and sometimes inspect their own mappings (from
+> /proc/self/maps) to locate specific code or data regions for various
+> anti-tamper and obfuscation techniques. [2] If those mappings suddenly
+> point to an msharefs pseudo-file instead of the expected shared
+> library backing, it may break user-space assumptions and cause
+> compatibility issues.
 
-Sure, I just ran `nix build
-.#linux_6_14_first_bad_7460b470a131.configfile -o kernel.config` which
-produced:
+I'm not worried about transparency because this is not supposed to be
+transparent. This is not supposed to be used by most core system software.
+This is supposed to help replace hugetlb page table sharing.
 
-https://github.com/dfinity/thp-madv-remove-test/blob/master/kernel.config
+Transparent page table sharing has other constraints. I like the idea, in
+theory, but there are a number of constraints that make the idea unfeasible
+for now. There are a couple of problems we need to solve first:
+
+1) Every spot where we modify PTEs needs to be assessed and use different
+helpers (that can un-cow page tables). Every pte_offset_map_lock() can now
+feasibly fail for OOM reasons (and that also needs to be assessed).
+
+2) Various bits of PTE modification/unmapping now needs special care wrt TLB
+invalidation. The kernel needs to be aware of how the page tables are shared.
+I don't think the current rmap data structures are well suited to this kind
+of stuff (perhaps with Lorenzo's WIP anon rmap rework we'll get something
+better). Basically every spot that goes "modify PTE, flush TLB for mm" now
+needs to go "modify PTE, for every mm that maps this page table, flush $mm"
+(if you're thinking that COW will save us, it technically won't, or shouldn't,
+because of stuff like try_to_unmap_one() that is used in reclaim).
+
+3) Reclaim loses even more information as now N processes share the same A
+bits. I don't know what effects this can cause. It would require
+experimentation. Perhaps something like "if page table is shared, value
+pte_young more". I don't know if this can work as a bandaid, but it's not
+ideal.
+
+4) It's not known whether page table COW fork() is a real win in most cases,
+or all cases. Would want measurement.
+
+5) It becomes even harder to estimate RSS and PSS for each process.
+
+For these reasons (and more, certainly), I don't think working mshare() into
+a transparent, all-great thing that fits the zygote model can work. It has been
+discussed at length how to pull off certain hard bits like TLB invalidation and
+locking for mshare, and with mshare we have the advantage of not needing to
+support every feature ever (tailoring it more to the big database users of
+hugetlb). And we'll still need to adapt certain bits of arch code just to get
+it to work efficiently.
+
+This said, if you want to discuss pulling this off, I'm all ears and it could
+be perhaps a fun discussion (too late for LSF, I guess), but I don't think
+it's workeable into the current mshare efforts. And, believe me, I would love
+a unified feature here :)
+
+-- 
+Pedro
 
