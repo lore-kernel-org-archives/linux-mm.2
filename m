@@ -4,170 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A23EBFD45F9
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 02:52:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 563EFFD4609
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 02:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48F76B0088; Wed, 25 Feb 2026 21:52:51 -0500 (EST)
+	id 9F2556B0088; Wed, 25 Feb 2026 21:55:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACC626B0089; Wed, 25 Feb 2026 21:52:51 -0500 (EST)
+	id 9A02F6B0089; Wed, 25 Feb 2026 21:55:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ADAB6B008A; Wed, 25 Feb 2026 21:52:51 -0500 (EST)
+	id 875346B008A; Wed, 25 Feb 2026 21:55:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 87D306B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 21:52:51 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 217981A0629
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:52:51 +0000 (UTC)
-X-FDA: 84485085342.21.9DF68E5
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010051.outbound.protection.outlook.com [52.101.193.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 46B9E80007
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:52:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XbD0vrWY;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.193.51 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772074368; a=rsa-sha256;
-	cv=pass;
-	b=tXm8oeEV6w56RpG7XSNFayUt+adhAjUN93RyJ1a24N2zUJcq3gHcrFSsGPhrcu0VsW3tgH
-	s9tt3OigTa9Cr3TnLekOQAbGzTbE2GRzfJPJbhiQCehhs50eXdXbWHPdodW8FaS14q3dE4
-	AX3+NrcrXLullLBBYD1KGsZTnKCueBc=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XbD0vrWY;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.193.51 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772074368;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 70B2E6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 21:55:18 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 122468BF22
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:55:18 +0000 (UTC)
+X-FDA: 84485091516.11.2240397
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3DCBB40007
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:55:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=TmhdchdF;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772074516; a=rsa-sha256;
+	cv=none;
+	b=m/z/00uakIOnK6vF4Gj2zeB683/+xFF24ACEaxHyaGTugT8SxUzVVafs6R6TGozSH8Hz7U
+	dSiqtkl3vxve5QkD3uvLxnkH2DWVk0hzFW8O0cGFBD3strvZJsvToQ0zeLcH4+URGFoDk2
+	GOrG7eXPDVp2Ck1/ozhyJ+DWxFx8GaQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=TmhdchdF;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf12.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772074516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JvG3sp+tK2Hd+lIwEz+cV0SdmB7fBfQ0JvujxR/8ed8=;
-	b=5X7xyFNI0csEn81WlxE0OgfhLehGGgWZcsahxIgrOLqDQMhCfi9WaxVkwQMc9+CcU06sb/
-	5KZZcJsTBc+dK0dctkVv7aj9HwseEJV5aYUEwkNaQcXxHAGWVv0JVzoL/cmOB0vqsidI8d
-	nJmeHZTX8EZBQbht7Y3NqGGsKovOoas=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=boHPx/JnClcDNQFa7peRmIspJq/IiGNIBRUhBAGIjBUXMR/HcmLCDw78eDeLdGxXwEncHqZqv1lqTjL6u53d5TaoUM/mJRRnA/GTBPd/G8+3wTrAoGVoNMmTV7IRjk5f+48CEe+SaMhFkQzFdoR9lW4KvDrhIy9zG2wrMYu5khrdX4BbKgtk0iE2y9NS6XCQJN+iUmITpTD7a1bwjvtYZ3XLTTtSQSobIOBZdcHUzD2sN+MVOKYzf0F7sVA8cS6stxe4t2Ns7l/Ch+cNrM6Ec323BB41rErw2iz+fJWWj5tDjaK9ZsmATGE2REqO3Lp2fqGN00U9dDcRr74kYeqYtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JvG3sp+tK2Hd+lIwEz+cV0SdmB7fBfQ0JvujxR/8ed8=;
- b=JhcvuPxsClrwI0B6Aepc1/GV06gJ4+7XId1BnQJ4LO/9lWS6lIWM+WPBMAsEVugpwEEKUpVUqu5NlxWslpYsNLBf1clRbnY0+fpWhQl2k0gzaBikGIzqMzO5LIu1sIw95Lm16unTIYzrqu5iCFtWEG8Qw/n1qHqWyHTOK+jqaLMYN5x9uZ2vf6EagRyyvmY6vXwbLDjwtuf7ros5pui9n2ZDkshV3VYcn04+FLKTUtK18pZypv2VbqmEr+Bd8+OCnAZm9eBvU+l2WPbJI7KtjezQ19NELSiHv8YVTVSbAQI6mconlbDllBwSofObm1HkmtAZYnBoVpOS4ysvl9fYIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JvG3sp+tK2Hd+lIwEz+cV0SdmB7fBfQ0JvujxR/8ed8=;
- b=XbD0vrWYmbngP/dzuzpi8Nlj3bWz/vqjgj9HDSLeWhYEM7JN+dZD/g19fjt+V/J80dtGEZooLRIZcg54kHrm9jzJIjRLaFxytwOL8VMRNOgXqWll6BvONrBk9YdwQdyON1GqKrdqOoQQwSSU6QK13PlF+dlQE4nwNSYHdU6u9Va4yKq+AREC7CJHhjkrdCdCK9+jKSo6x+Y3DjkSiF1EdJePhoO951FCyTezCFlslA4xe8yvNs3GU55xCUqXX8On/95zPfuVEp7N+FuwbHGxYc0XBlcyqGDYoRI0gc0hLNUeqBSMPF7kZ1/dakqY983CeaoOluKYGs6PfVMhb+qFmg==
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- DM4PR12MB7574.namprd12.prod.outlook.com (2603:10b6:8:10e::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.22; Thu, 26 Feb 2026 02:52:43 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
- 02:52:43 +0000
-Message-ID: <0cbf0f20-e374-4360-8dbb-1f9536774c31@nvidia.com>
-Date: Wed, 25 Feb 2026 19:52:40 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: LSF/MM/BPF: 2026: Call for Proposals
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-nvme@lists.infradead.org,
- bpf@vger.kernel.org, lwn@lwn.net
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org
-References: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner>
- <20260119-bagger-desaster-e11c27458c49@brauner>
- <20260129-beidseitig-unwohl-9ae543e9f9f5@brauner>
- <20260216-ruhelosigkeit-umlegen-548e2a107686@brauner>
- <20260224-sangen-aufatmen-06ba16719f33@brauner>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260224-sangen-aufatmen-06ba16719f33@brauner>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0015.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::28) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=EaJpafr6czHHudzxJg6tiucI2ej6OmZ2sEcinKt0YCQ=;
+	b=aVoStGrk4mcl4sky2wsx03D586nG4c4pxgpw43IMHzxiUYFBGKGydF6g/9za3Nz6c94C7n
+	fXxV0PlaLJgEbLwd9+tsBtu7N+79wAp6FyLWiDpFc/yUOyCbQ1fqAZLddzir9k+PXVqCMO
+	QRuq/avXYIePk3heP/3K5IKyUrrwj7A=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2adec255754so1852005ad.3
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 18:55:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1772074515; x=1772679315; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EaJpafr6czHHudzxJg6tiucI2ej6OmZ2sEcinKt0YCQ=;
+        b=TmhdchdFJM8twhKGh4/uRX3wd0ugZ0Fz8OPJFYB4o3z2nsrzi8POA3M+cBjd5a4C+7
+         pluKfLrt+oiCOcT8+ye3hCatz0pVywyPBI2fFLf2h7le0/X6BCp//WS3O5uHa10MeRCK
+         JQBrB2+vPzqdA4IawnMqndapeLQzpX3n94ISs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772074515; x=1772679315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EaJpafr6czHHudzxJg6tiucI2ej6OmZ2sEcinKt0YCQ=;
+        b=RsAtq4tqDUeAGQ2/TrQig4f6KQkuoZlH053fgTwRBekcouWXBmjWAUHHfTBev/kkEj
+         TIaKwBopJgx68SUaj13+gm0WXs7/g1W9FIsj5rzOwxozbmPwbGuV0tmCfZ0PAHBVS8ag
+         hXRzYk7r2SdaM+ylbCf6IWwzJZWrc3q1wt+OVT3E/cJrLhD0KXmylXV/wwc8uuognXmY
+         cYBmy3O5IFnLNkUcJ5HrlisDGTlo3Zr1ucWj3Wu9aODZtiD68HgVUdpbL7ByA6kn9eu0
+         zNJg7Owc33lI/pjpBB47Yu0I/i6qqPcPJhJMt1XBNUr6RBSw9mERA7/ucjuIxtXNsTjl
+         5WWA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0uj21EePumiiE6wzNrgA001U7E7LaocnOCt9u4JMtayM3/UaT6iYaQ+kAWreeItDe5i8e8nMP+A==@kvack.org
+X-Gm-Message-State: AOJu0Yzt/aOewRYtQth/bfSk+x5/zStIe1mtQJ9whWZ8UYXC5P+CPY4s
+	pif5dh96kmYYvlmLaeFQlojMLs3rVg+Y8UDO2DSn4U8in6OefPYWNSU0x5SU7fMBlA==
+X-Gm-Gg: ATEYQzyaOs5UW1PgTeDUSQhs8QvLAnaocgY/LazzmCatU+Ixj7noOfAAd2jUIQHXfKS
+	pTe+bwHsFkscCJdwWM0GzjIM5mz4ZyNH5sTG63fB2xf4IlcwjTwV7KRHoA6dZ0mrMOsy87hDTy5
+	8xd5zNMJTJh0CBODF31Bg2XtHO3c39ml84FnoedQu6nn8my+0JpOLuarQBePrULdccZ4DhRkZLy
+	+g7gsdRfv5BxFunNgA7bALDJXOLZ/9qpYaulZBYCu4c6zanSBnwFDbt1cIOkHnXvKc9e+9zkl/6
+	Vmh56eUBbdCq0fjjukQFk7kNwa67ahkIT3emfQ3Cuo+G4ALxgEfNrJDi9p+EgNb1GbAoyxMf4G3
+	pNVzAh3Em2vWghebmUlo16wP1vzNPteRCZ3/TMTrw8ottsQd0r9U3g9S+vaUtFhTPojFUXb4hXw
+	MvlhPKnk+vbygMeFxHPw21hVOUd8hn0CZZhGOksYCpeBYvOQodIwwXYgO4jn0Vc0Btr5C54Tg0s
+	YL008yZvpbqEA==
+X-Received: by 2002:a17:903:3b83:b0:2a0:ba6d:d101 with SMTP id d9443c01a7336-2ad74463a70mr174086735ad.21.1772074515021;
+        Wed, 25 Feb 2026 18:55:15 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:f7cc:c9c1:b4d7:b50d])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69f277sm8716145ad.55.2026.02.25.18.55.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 18:55:14 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Richard Chang <richardycc@google.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: [PATCH] zram: rename writeback_compressed device attr
+Date: Thu, 26 Feb 2026 11:54:21 +0900
+Message-ID: <20260226025429.1042083-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM4PR12MB7574:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0dac6e78-6691-473a-0aaf-08de74e21cfb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|3613699012;
-X-Microsoft-Antispam-Message-Info:
-	rZGZTEnTXygE0fdSp2kODT9lIHTseRmEHFVA+ZVQff4LtuuVG6KCbHxskP989r1gOwL/4AXEZd5s5nsLu0Rl0Qg2DTQX0cpdt9xhb+yVvoJOUWoWOJhWYUch8lBfj7Va0Z8Vr0YNOzr7KFCUTTDOO+ipSjHUHFyiCBV5IJG5KxrtwilHjP4mr4y6AZwH/P0SIww6A0C1jZ8I69rNkck1V0MrEjvn+TSejHp7Nax0x4D3bV9ApEpHp+loExqCKGTW5ckOECvcbRaPN6SPmgAdWCoJuyOw6At+UYzuCnX9rsFQDPN3R7HWniab02WF0nLBFb9QFDlkLUPuGgNFzObpUfD8wY3okLLLDqoeXZT3OBmD0Vko9lxowgQ/qSckCc7kwshnp9UsnNXFGbF5O2bf4rbiXNRfXDuBdC77NOvRJ/ZvumIAC1hmqSs0ERSYfCFYgHK4fFzEiew8F7SWJ1ACmMvXjbOyBnAkk5JKaQMPRWlyzZgR5INFWXhOCVpRORjiJ+YdtnSLDXWuSJigTdQ5pqXjlKdIGnmH6Xok9S4adEua6y57Dc9KloUHpt1UaIrcbUFRBzPO9h0zeE0vcSC6caA92jMnFUeFd9r/s97ahrRikeAepJ2BNqt0+JbEGKhp1iyzSX1+d4v2myZo7xm3hQwzqg9gbMAegbR4VppXabAIjfvwjUWYSG6+r0grXf9YAeIlCJSyBHyCFaja17ZQQGiKAbzSMNT+YRJplGCoWpjZUBdBKU7V9bfllULoNGAjgf16At+DpFyzCqWWZxFqUz9N8PG3Iv4RynBssnoWtTM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(3613699012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NGsxYWc5V20zMjljb1ExRGIzMEo3bmU2dzZlOUdFL0ljc0hTb040U0pkZDM0?=
- =?utf-8?B?QmxaNEZJUll0NEswLzQrckRlY1YrS1ZOcE53TmtVUFJxNHYzR1BJbjNhelZl?=
- =?utf-8?B?NC9iRy9yQ2lDYTJCaWZ0K2FmWjh2N2dBTU9yWHBpblU1YUpqbXppV3pCUVNS?=
- =?utf-8?B?dmhHYnB2QXlvUVo0cExUMW1oVHJ6NmhBMndSN1gvakdmamRiZnJ1NmovVUdm?=
- =?utf-8?B?OTJ6UTlJTzhTa2F4WkZ3WVV5SWl5UzdaaE9kdVJweVl2QjlKWGxkU3M4bnRF?=
- =?utf-8?B?eUhoaC9TOVFMZzB5ZjFuUHFkQzY0b0UvdmVIcU5oNm5va3BLSC93bElyOCtw?=
- =?utf-8?B?Nmx6NmRnZFFiRFFieFpsUGh6elp4UDlYMjg0d291NXVOUHB5eDNoVUFHNTQ1?=
- =?utf-8?B?clJXT1RsazdsbFYzZnVrdWt4OExobFZxMlgrbmJUQnNSM3hzajRJQ1NTdVV6?=
- =?utf-8?B?SWpVaEw1d3V6ak4rSzBramJUeFJHeTlpeXh0cUYwcHVmSkptRW43dlRYTTJH?=
- =?utf-8?B?YzBUeVVBK1NpMHozSDJ5azJyWThwN2JSR1pHUWw4ay85K0V6MWRVdmd1dTRa?=
- =?utf-8?B?ZzU2QTh5NzlWQW9RaGM4ZEQxVjB1aWxsK1h3eHRBTGtpVGVNb3ZRdkkvMmZR?=
- =?utf-8?B?RGRDNmNMSS9oN3FuUUlVT2FuaDhuWHlWRFlidjNZUm94SS9GaW5HWU1hT1Fl?=
- =?utf-8?B?cSs3YnZhZi8rcytaQTVGa0pxQjZPQ1pjRkM4cFUxRTc5S3Uya0g2M09CaHl5?=
- =?utf-8?B?T2xSaC8rYklnREhjME9EaVZFbXBwZ0hhV001V3F4dDB1MVFrR0M1TUtYc2Ix?=
- =?utf-8?B?bW12SEM1ZWRPa0VrWkprNHErd044OGRuczExNXpESXIveXg3dWEyeWhIMXlu?=
- =?utf-8?B?ZWlZSDZFNnRUN2J0SnlIbnFNbkxGMXU4TENFR2RVZ0g1LzFkdXlHUFQ0cFBG?=
- =?utf-8?B?M0V2ZnVPWHdGUTBGYWdSYzVKbzNJRlV0MkRBejJkL0hIRWdSNERzUVM0YkFF?=
- =?utf-8?B?U3FkWEpSdTdRWHYzVFZON1RNT2JvUXZXQXRYWXBBMlR5dnFvQ3BCZ3JvNkZR?=
- =?utf-8?B?SEkyemh6N2tUeWhJaWhKYlVEb2FOaGhTcG56dXhNRzBFRnRsSUdnNXVWWE5u?=
- =?utf-8?B?cWg0aCtYK2dKdnFzM01MMjV5dEp2R0xTc0cyNGF6UWpVREg0TytzbnBZMFJi?=
- =?utf-8?B?OE9BeGRTcEFMZGpGZGhTNy8rT1hjK0IvZWFRV0ovQmQ3bEYxZUk1N2YxTEY3?=
- =?utf-8?B?K0lGTTVicGVrZzF3VjBWNzFUY0ZNR2tLMFNvZEFwcEtyQU9vNE8zVHM5QjEr?=
- =?utf-8?B?TEo5ZW00cTAzYmlwOGQxeEM2TUswVFhoQ216T0ZKUG1QU1ljT3Z6aGk3eDJ1?=
- =?utf-8?B?cTczbkllcDFZWWVHRWo1NnlqdGhzSCtCMmRVOWNhdkFnMENaNXJ5eEJPTGhm?=
- =?utf-8?B?OTRNYUdWUEw0VU1OUnpZNGhvQlZFMnRoVWZNWkdJVmU5Wll0TnJudUxQMElo?=
- =?utf-8?B?VDRtc01rMmMvaXNuS0tUWWpLQzJWSk5MaEtlcmhPMmthU1hYSFh2dWhMREF5?=
- =?utf-8?B?dHM2SGwrc21USnBucGhKZDNEUG1oSWVZWjNlY09kbHp3M3BhclRiZlU4Qkd5?=
- =?utf-8?B?dXVCcDdzdkhhRnNuWWprRGJxdnRhekpub1cwU1kxVUR6MWl1bVpYRS81bDVI?=
- =?utf-8?B?VSt2akxRQlhmKy9tcnhRT1I5OUVYUWJnZGY2eUhuTjhpS2dMSTB2WTB6STd0?=
- =?utf-8?B?ZUI1NnEyckV3aS9GVi9OKzRGcDdCT0hjbDlCZEtvbTBZSXBiREUwcUQ3Mzcz?=
- =?utf-8?B?VStyZkJ6RFhMeE5aZEU2RjNDVExtYW5Ub1FPZmNvZlNBcko0NE9HdGd3R3NI?=
- =?utf-8?B?MlUxRUdsZkozaEJYUGNhQ1V6MkRZblBFMllIS1hoWjVXclRrakphbkZhYWsw?=
- =?utf-8?B?aU9qK3NtSzlnSGtLS3NXZGt3Y2xBSDNwWFZnc0h0bTlXSVBaTUJTN09kQTFs?=
- =?utf-8?B?NGJiZHFyR2RKQngwQ3pzaHdKMDhHclk3UmlON2g1WXR3YlE4MDdUNlEwVkNj?=
- =?utf-8?B?ajVzWmh2L2JIK3BtcnBla1lVTWF1VG5kR0VHcmNpNHh6cUZOMXNwL0FUVEVx?=
- =?utf-8?B?am9EeW5ta2RFRkhhUFp4NklESlE0Qm12L3RBN0kzWTdPbkJPb0JmNWN3Zzgx?=
- =?utf-8?B?d2RWdWw1WVBVdG54bGtudVNETWNWc2FpYWN6MGF6WDBsNkdGaUQzZit0Z3Jy?=
- =?utf-8?B?L09FVUdYNml0Z0p3ckJkaEt1ektLblY4YmY2Z3dNWnNUL2swNGg5ZW90SnBP?=
- =?utf-8?B?Q1JXSFVZNHJYKy93SHh6TFo5Vm5udzJ1RDRpN29FR1VCL0pHUkIyUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0dac6e78-6691-473a-0aaf-08de74e21cfb
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 02:52:43.3498
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f/SIxtUputapC89b9rg9ZGDBwqc78A2YW+x7azCvwzf+fntQP+sUNHkzQTkRbiNzVggTtWuP99oqBNgI69wGlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7574
-X-Stat-Signature: yhmson4qzo5majs3hkoqe9pwcxofw3p7
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6syizp6yy9jboo9brrdqxgzua3t6xkw6
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 46B9E80007
-X-HE-Tag: 1772074368-859382
-X-HE-Meta: U2FsdGVkX1+vSIk8jW6+vhpi3H1OjDCMf6jOsC/dj+NIzsfEvO3FJqOGjnJBuqYo4bj0GduoPXoyVKAQt9LUMhmH/25pEimamDcKEqmJAv44A3ycmLzbHGdNckEpGNG8Rd4GnY3Yj57ouDaFkdpa/HZtQs0mhoe5bx5cNHOCgGcE3lKr512znwJJ/1hw409GxQ9NYpD3tPEMgXux8ytgwtZNpV4cPnO38BXahBei7pwHpwOGigy3w2rxyTHclqnK3vU8l3y351TGeAFD9lBN9x5qL0Ew7YXKajGO8D7pvKdtbTCwT8ap5DPrIds0dqyoZqQhZxawX2g5Kuq4OdvhjfaplbtxS7sl5La2ytwknpO1li9dxxhfsPKKpzMrANEjG78OVaCtTDJpcwZNmUWBn3KQQUasiqDxrYUVenFZIaWigVrQ1ELUO5R5WqTLYS9rnFSKC7qbPWuUWnhlinOjMX54u2en6IK+J9kThESyhmMpUdPIxpIfy8F4zxtJrUhys1w6MUmtqXBYEk2TI7NE64x4t9UIqPPU5h6yKndmFE8OH0ewM7pTfMX4Olt9xBjqMpYWh3KEuHIVYgXmZSWCwAhw8O2zwYUHVHTfWOzZuBlcATLrtVJgywABkaRIqHztwDxYkvXgFKR6qr0Pd5llbKouiL9mQ7NmjP9+S3p1NShEQWnTiVm7WTCbPV3M8Ax5Cj6Mi6QL5329S4togiTJLqRLtvz001zsVflTtQ1Tz2Em0XmGgNO4XU2XRJK7giEGzEEXWRnG8hDisBW231G5atekzz0N8aM1fzmu+rB0vdD/0GgtGCbNUgpxVOBzUJTzAT9MSg/k8rxV9WlDzarNKVOXrMPBOBfx+7M4q0XtsXYKdC4Ch4wGzAyOIZ0mkIBGksZGTHD1YWpo1M0S5zX+3/0IUURzWsWjRNXeqhyDpVN23auf4z1dIaGgDjcDMEidu7DG1w5knUsNl1X9/gS
- HAP6kg17
- ICnJEo2FrFkQDLFdHBU8skYqbtpcqjVaS9krZlv4a8VRo+Ixbrl26cgWAqu/Q+1bncvJL3fvgidtjXMrXyk2novGhXQcAXOkfI6hk+bpgrniHP+JZEjcucw6B/42w1/fDQ2M9mybO67+uVpXbL4iUeAf309OCG8aWhGxVZzq9o6bGkH5WN3xKVapoEvEWwiUJn/bdc/poENQQsoOkuozRCXjonG6+Yn4y38SgUts5qz6kbvRnQykEm5Xak0iCDWE+T134y3YjGJjspH5O+yKpD2fal/44//ReNnwbkYkqzDa4l082MK0QoAK1uLIUm6DMH5xhxFd+oNU5P5ZpJ2n1f8G/AkYYjRoZ/nv9FWQ7OPTRSzA9StRuZYAm2ggVeo/pjmkL/nKIfZNF1hLke81N3hUvVRY/93lKIbiL
+X-Rspamd-Queue-Id: 3DCBB40007
+X-HE-Tag: 1772074516-728662
+X-HE-Meta: U2FsdGVkX19vXfkT+BQ5A0AEUZ4bNWZT0DIh3wLojTWaC/8hDL6GBHXvqNUY7axw88czqBbNwJt0SLGhCyCjQEJFktzx0T5Q4IBlVeoChiL1WPNgWIr1EigwMToUB7t9nVK+bvnKeh2Z8e89az4xw+UHCs4Mru1JUyqWHftBGsCUn4JF125u85Lkc1eQkqZ682qDUmp2U6Vsjx4GeGqDuC6tSzIfY4r8lBdEI3od0fnty5OBwlWRZk+5loWrQAsHsVWjj1hSgCdSpf1Acx42hvoQCxNYRcNwZ92MlZqKcsa1lFXgGfD+odmM8U3hhksZ5Je+X1Qp0HGtIA/jMYLNqVoIznGW6eqqpYfxfZRZtUaI4TE1gg6NNexGbaQfQ9YBzIURtcSVJWa59RsZO6++SYEUimrFlcZ472cGnJXdUwuXwV+G1Gh/I97Tw+1QUrSavmTIZJwKvvWCoD1fJ+m/lbc32VOg/ODwAsT3AV+okAYy7I6/VkEVtL81DVV9mdfnCKTJInbQHbfwxJ5RlAGpjBG8ubn1qhHDaVPkFB5qEQ6YXmtuc/BEZ0Psyzt3yNwq6VT89I6aPbGij4VKXwOZ8gMuf0chn3iDCgevwo+Dqq7aV1RczFd3Ot9XeXkwk1/e0hyusxsqSa2aqI6H1m9HWE/nu7yu/fdPPGR8I7qLPwu5MYPlNR7D7Bt9mZYYWAWL/s9JJdFt0MF792PqLEIuFvv/6lvZNyxs1jpDOurSi2XFDYQ3kaP+xIs7/8cXbQIHc3XHsBm+N4nTFkIrLgBTIwr63+MgsJ04alqi/v8MRD8UVtR1oYEYO9QAiI3M/fVCb0rssZUPy0/jQ7Ysgd8mCyvm8KvH4JOe4UyyQ6MbS13qyk38nFMVjqAj8TOCSqGvL4ILBOTPyiCJJhxP/XZPoaUD4r1WTJS2+712G+VKNg9se51HNwHO8VgobdQ3GdrvT5rqruZYeJdVOXejdt1
+ 7rXH8wcA
+ 2+zeEUBUOtCuYSBEJgNE99aMcqJaczc9EUfMMoUg4AbScQB+wL0yrSXnq1w+wVWtYe6u3JUNsCisnZ41MyAxk7OOvLfRf9lnFPKPT4jN9iYeEjQ7mjKvhg4928tnJTOz9XmT/4KCtQmpHJNnLShM7Payp3DHUUGxtyz1Df9+n42BlCIZF345aSj1uRmJZTq7oDpIJJF9dwpQwSf8pOCv+Nqoo/NzmVoCusS49d8wjWq3YXtDxM9Yv3WwBeme0Z8oVC8MEhM+DNZD032fQbCacVlroAtpbw/D1SAAiDIDVQn3166Km24ZP+1BbD8mHFdMAshql6mKtvmeAER33HClJhgzwNpRWS4nFvZeDMArZhgSdLlUNkt5CGmoD7qoTmlGhxHIUGcgAh8MR8rWhpPnk8KaUsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,43 +119,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 2:53 AM, Christian Brauner wrote:
->> Don't forget to pester^wask^wremind your respective organizations to
->> sponsor LSF/MM/BPF 2026! If it helps, you can tell them that we're
->> considering renaming it LSF/MM/BPF/AI.
-> 
-> I have just looked at the sponsorship site for LSF/MM/BPF/AI again and
+Rename writeback_compressed attr to compressed_writeback
+to avoid possible confusion and have more natural naming.
+writeabck_compressed may look like an alternative version
+of writeback while in fact writeback_compressed only sets
+a writeback property.  Make this distinction more clear
+with a new compressed_writeback name.
 
-Logos only show up there after the sponsorship agreement is completed.
-If you are on the LSF/MM committee and are wondering what sponsorships
-are really in the pipeline, then I'd recommend checking with your
-Linux Foundation contacts, they might be allowed to tell you what is
-in the pipeline (maybe?).
-
-In particular, I've been handling the NVIDIA sponsorships for LSF/MM
-since 2017, we've done it every year, and we're doing it again this
-this year as well.
-
-But it's still getting signed and finalized, so you won't see the
-logo up on the LSF/MM page yet. Soon.
+Suggested-by: Minchan Kim <minchan@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Richard Chang <richardycc@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
 
 
-thanks,
+Andrew, the code in question is in 7.0-rc1, it has not been
+released yet, so we think it's safe to rename the attribute
+without breaking userspace.  Can you please pick this patch
+for 7.0-rc2?
+
+
+ Documentation/ABI/testing/sysfs-block-zram  |  4 ++--
+ Documentation/admin-guide/blockdev/zram.rst |  6 +++---
+ drivers/block/zram/zram_drv.c               | 24 ++++++++++-----------
+ drivers/block/zram/zram_drv.h               |  2 +-
+ 4 files changed, 18 insertions(+), 18 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-block-zram b/Documentation/ABI/testing/sysfs-block-zram
+index e538d4850d61..64c03010e951 100644
+--- a/Documentation/ABI/testing/sysfs-block-zram
++++ b/Documentation/ABI/testing/sysfs-block-zram
+@@ -151,11 +151,11 @@ Description:
+ 		The algorithm_params file is write-only and is used to setup
+ 		compression algorithm parameters.
+ 
+-What:		/sys/block/zram<id>/writeback_compressed
++What:		/sys/block/zram<id>/compressed_writeback
+ Date:		Decemeber 2025
+ Contact:	Richard Chang <richardycc@google.com>
+ Description:
+-		The writeback_compressed device atrribute toggles compressed
++		The compressed_writeback device atrribute toggles compressed
+ 		writeback feature.
+ 
+ What:		/sys/block/zram<id>/writeback_batch_size
+diff --git a/Documentation/admin-guide/blockdev/zram.rst b/Documentation/admin-guide/blockdev/zram.rst
+index 005266b0ef15..e83c2860f2f0 100644
+--- a/Documentation/admin-guide/blockdev/zram.rst
++++ b/Documentation/admin-guide/blockdev/zram.rst
+@@ -216,7 +216,7 @@ writeback_limit   	WO	specifies the maximum amount of write IO zram
+ writeback_limit_enable  RW	show and set writeback_limit feature
+ writeback_batch_size	RW	show and set maximum number of in-flight
+ 				writeback operations
+-writeback_compressed	RW	show and set compressed writeback feature
++compressed_writeback	RW	show and set compressed writeback feature
+ comp_algorithm    	RW	show and change the compression algorithm
+ algorithm_params	WO	setup compression algorithm parameters
+ compact           	WO	trigger memory compaction
+@@ -439,11 +439,11 @@ budget in next setting is user's job.
+ By default zram stores written back pages in decompressed (raw) form, which
+ means that writeback operation involves decompression of the page before
+ writing it to the backing device.  This behavior can be changed by enabling
+-`writeback_compressed` feature, which causes zram to write compressed pages
++`compressed_writeback` feature, which causes zram to write compressed pages
+ to the backing device, thus avoiding decompression overhead.  To enable
+ this feature, execute::
+ 
+-	$ echo yes > /sys/block/zramX/writeback_compressed
++	$ echo yes > /sys/block/zramX/compressed_writeback
+ 
+ Note that this feature should be configured before the `zramX` device is
+ initialized.
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 346a99561a95..6b76dbe7fb80 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -549,7 +549,7 @@ static ssize_t bd_stat_show(struct device *dev, struct device_attribute *attr,
+ 	return ret;
+ }
+ 
+-static ssize_t writeback_compressed_store(struct device *dev,
++static ssize_t compressed_writeback_store(struct device *dev,
+ 					  struct device_attribute *attr,
+ 					  const char *buf, size_t len)
+ {
+@@ -564,12 +564,12 @@ static ssize_t writeback_compressed_store(struct device *dev,
+ 		return -EBUSY;
+ 	}
+ 
+-	zram->wb_compressed = val;
++	zram->compressed_wb = val;
+ 
+ 	return len;
+ }
+ 
+-static ssize_t writeback_compressed_show(struct device *dev,
++static ssize_t compressed_writeback_show(struct device *dev,
+ 					 struct device_attribute *attr,
+ 					 char *buf)
+ {
+@@ -577,7 +577,7 @@ static ssize_t writeback_compressed_show(struct device *dev,
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+ 	guard(rwsem_read)(&zram->dev_lock);
+-	val = zram->wb_compressed;
++	val = zram->compressed_wb;
+ 
+ 	return sysfs_emit(buf, "%d\n", val);
+ }
+@@ -946,7 +946,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ 		goto out;
+ 	}
+ 
+-	if (zram->wb_compressed) {
++	if (zram->compressed_wb) {
+ 		/*
+ 		 * ZRAM_WB slots get freed, we need to preserve data required
+ 		 * for read decompression.
+@@ -960,7 +960,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ 	set_slot_flag(zram, index, ZRAM_WB);
+ 	set_slot_handle(zram, index, req->blk_idx);
+ 
+-	if (zram->wb_compressed) {
++	if (zram->compressed_wb) {
+ 		if (huge)
+ 			set_slot_flag(zram, index, ZRAM_HUGE);
+ 		set_slot_size(zram, index, size);
+@@ -1100,7 +1100,7 @@ static int zram_writeback_slots(struct zram *zram,
+ 		 */
+ 		if (!test_slot_flag(zram, index, ZRAM_PP_SLOT))
+ 			goto next;
+-		if (zram->wb_compressed)
++		if (zram->compressed_wb)
+ 			err = read_from_zspool_raw(zram, req->page, index);
+ 		else
+ 			err = read_from_zspool(zram, req->page, index);
+@@ -1429,7 +1429,7 @@ static void zram_async_read_endio(struct bio *bio)
+ 	 *
+ 	 * Keep the existing behavior for now.
+ 	 */
+-	if (zram->wb_compressed == false) {
++	if (zram->compressed_wb == false) {
+ 		/* No decompression needed, complete the parent IO */
+ 		bio_endio(req->parent);
+ 		bio_put(bio);
+@@ -1508,7 +1508,7 @@ static int read_from_bdev_sync(struct zram *zram, struct page *page, u32 index,
+ 	flush_work(&req.work);
+ 	destroy_work_on_stack(&req.work);
+ 
+-	if (req.error || zram->wb_compressed == false)
++	if (req.error || zram->compressed_wb == false)
+ 		return req.error;
+ 
+ 	return decompress_bdev_page(zram, page, index);
+@@ -2982,7 +2982,7 @@ static DEVICE_ATTR_WO(writeback);
+ static DEVICE_ATTR_RW(writeback_limit);
+ static DEVICE_ATTR_RW(writeback_limit_enable);
+ static DEVICE_ATTR_RW(writeback_batch_size);
+-static DEVICE_ATTR_RW(writeback_compressed);
++static DEVICE_ATTR_RW(compressed_writeback);
+ #endif
+ #ifdef CONFIG_ZRAM_MULTI_COMP
+ static DEVICE_ATTR_RW(recomp_algorithm);
+@@ -3006,7 +3006,7 @@ static struct attribute *zram_disk_attrs[] = {
+ 	&dev_attr_writeback_limit.attr,
+ 	&dev_attr_writeback_limit_enable.attr,
+ 	&dev_attr_writeback_batch_size.attr,
+-	&dev_attr_writeback_compressed.attr,
++	&dev_attr_compressed_writeback.attr,
+ #endif
+ 	&dev_attr_io_stat.attr,
+ 	&dev_attr_mm_stat.attr,
+@@ -3066,7 +3066,7 @@ static int zram_add(void)
+ 	init_rwsem(&zram->dev_lock);
+ #ifdef CONFIG_ZRAM_WRITEBACK
+ 	zram->wb_batch_size = 32;
+-	zram->wb_compressed = false;
++	zram->compressed_wb = false;
+ #endif
+ 
+ 	/* gendisk structure */
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 453e27ea4525..08d1774c15db 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -132,7 +132,7 @@ struct zram {
+ #ifdef CONFIG_ZRAM_WRITEBACK
+ 	struct file *backing_dev;
+ 	bool wb_limit_enable;
+-	bool wb_compressed;
++	bool compressed_wb;
+ 	u32 wb_batch_size;
+ 	u64 bd_wb_limit;
+ 	struct block_device *bdev;
 -- 
-John Hubbard
-
-> we all really need to go out and go steal some of that AI funding money
-> and funnel it into one of the conferences that really drives development
-> of the operating system that drives the compute for all of this.
-> 
-> Please go and remind your organizations to sponsor. They should know how
-> to get in touch with the Linux Foundation. Just going by the sponsorship
-> page we're missing a bunch of large organizations that we would
-> appreciate if they decided to pitch in. :)
-> 
-> Christian
-> 
-
-
+2.53.0.473.g4a7958ca14-goog
 
 
