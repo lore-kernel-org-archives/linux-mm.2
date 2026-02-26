@@ -4,120 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADD0FC5903
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3973FC5903
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD6D86B0088; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
+	id 5F2526B0088; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B84BB6B0089; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
+	id 5A0586B0089; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A66BD6B008A; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
+	id 4CCE36B008A; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F5CC6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AB856B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2AD675C064
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:55:55 +0000 (UTC)
-X-FDA: 84485849070.29.EE15698
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 466EFC000C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:55:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=I8DUUtGl;
-	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AF3F140A24
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:58:13 +0000 (UTC)
+X-FDA: 84485854866.29.4995EFE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EFB2B1C0009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:58:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zc1/CqtJ";
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772092692; a=rsa-sha256;
+	cv=none;
+	b=zyyTng67VnV5qqoETbRCwxYnsX6k36K+rcjYcMp+b+xXAPgZH7cOiWN80Dlz0/cj7cc89e
+	+9dgX/3iLVFsWaS3cwvvT2nIQxOA9hxN33KVwBGGVMNish9LpF8rsBxNmG7q6nkpozBieu
+	/ytWP0taFTDgVVtZgO/HYB79goRekZQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zc1/CqtJ";
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772092553;
+	s=arc-20220608; t=1772092692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VdRtsLUQfCDc5iPsCOodG6em0TwbFpXFEtbprvISMYg=;
-	b=Bok4wkZ43T4L19YMI96he6R/sW1pqbiS8Q2Mk8tFzINkm4IJnUE34A/8kuXKOc4Hs8AT9d
-	OAUk4P1y1/u4LeBYbZaBPi0Xc7SmaG6St9rMh8WYKvNvaOSppy93cxb6zw47ALYL8Ashvi
-	/YQk6fwd9vB9JhAXBgvF7zb2gtwGK18=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=I8DUUtGl;
-	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772092553; a=rsa-sha256;
-	cv=none;
-	b=estbdzjoYwIsAvmc7CpKtNA8bSuXOuIjE6nPXUB0tBFthV/I5twu3gg7IgF928uSoE/Aen
-	Rb2j2k2deXKz9RS0cZXDrVHbsQ3bgL/tqDw9jzFltC+jUJLn7FVYdmqHwMzItLynYSkzlV
-	FVQotJKFANSKZbjAwq5MKv1agrKLx0M=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3594d7b36bdso12398a91.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:55:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772092552; x=1772697352; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VdRtsLUQfCDc5iPsCOodG6em0TwbFpXFEtbprvISMYg=;
-        b=I8DUUtGlN/2xNt4BsO59Ht1FsE9LJ5JRWLL9lMjlLXd45Xj7I5Q7cFuUMnat/kkBjb
-         Ha/VuQJtAcr3BmEGxo8FMNi9djzZcdZR2QZQ4NMIUnZuMdnDMGet/7G0HuGyK81Y+SDn
-         zP/lreijjvkL23M4V2c7ozk8uGoJxGCYFsLQj4pTBNYTYTkI9xXkr+JJmSwgwRvYOgGM
-         SJ0s+cPdxL+EglssIfv7OtHQDOIBQD6YoKFl31Yg4sohmFe0gXdq0e1r11LV8TYFP8dc
-         weU0iQCvX4RM0fPwk8+BveVvOHHs16hWMByt9KMBgwugimY0vWUlG7KfQKq4/033KhL/
-         AGEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772092552; x=1772697352;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VdRtsLUQfCDc5iPsCOodG6em0TwbFpXFEtbprvISMYg=;
-        b=M7ISL1Szxl5wtIlTTu6MPb7dLWlqR8H/LfKq5DRD3bzjzPjX+IuKvD9JZ5jNH87RoN
-         bYBnkloQTgw353G5mNibcbaBkrk3AXzt5acJ1qLp4/bxxEYMA8gwpIe8QZZarLJTQa0d
-         ZIunEldaAtsk9rl5/TIPLG14JuO4GJ0ZC+Ea0gRTozKglOtxnIaqPIo0SFdXE3Ym9BlW
-         jE1Eay5VwsmM0I25FjlVPV/uMmdnRkAVKDUbY6kX1xjxu3zrfFLTVzcUxSib+/Ksdl+Q
-         Ac3lHiVfusoEBW1B5sbDLaAYcfEtzfyTJH+a4262qrqB72oDw6+YKwvzitdcdt3AN2Ok
-         oZDg==
-X-Forwarded-Encrypted: i=1; AJvYcCV53MUuaEnnp2T1flw+2LiKrnKYHitLiyVkX+7LygKDAcfD9M0uLgOaNJjiD3vyzqguoEsWNyb3rQ==@kvack.org
-X-Gm-Message-State: AOJu0YxBhehO9EKH5vDO94KkRIBkALohCQaJDhCIIGyy3eKvj7J857+4
-	7iB7SA1HRu44Gq+ZmG8Y2gG+50L3sGX50XDuApn+S8CGeLJbM7onG70z
-X-Gm-Gg: ATEYQzwhAlIHIiA2ABFuLsK6oO3+NqZCHyxufhoD//ejdke/K1uuCugP5bDt+N4Z/b/
-	sxVwXdeUBk0XPHiSqdfP7Sci5xYh64QqySnrc0xB7flyxc2JilHv2ykbgbsJ3GiBTGRtpkkHpKN
-	Dav4SY760WrIpSUC0hN+fgi8WKk4XRBnEBmDW3Hux0f3TaLoLWiAapG4r1vtKkAPWBmBp6CIonJ
-	pOnF77y82WYZpDV25xllkRNh8gVVcL6ceqPe3yDG+LvLoBPatSnnBacJ4g3fnne6ztkxmOP5RlR
-	EujXc41H+4f2K53s3u/0o5dk/bqIPVjzBXiDd+tGH0Cr9iyjOGzE4lA11AkPJJZWC/ZBhhyZy+d
-	Le+oyGiZaqkr6d9sx3XmKxnMu0P8r+WfPNMPW25LmH5fqydXpgXZvNFPWAqEmKhUXrvZdk7AuyK
-	LeNwE7ZZHwl7dApdeNS7qoQ9VAKdhQdtNbSwpjNB0Pk4jAnXmXYjdluqKUEByf6h0Wc71axPegi
-	GYqxA==
-X-Received: by 2002:a17:90b:3e50:b0:34a:b4a2:f0bf with SMTP id 98e67ed59e1d1-358ae8a5315mr16693593a91.16.1772092552046;
-        Wed, 25 Feb 2026 23:55:52 -0800 (PST)
-Received: from localhost.localdomain (n058152022173.netvigator.com. [58.152.22.173])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3593db82627sm1217069a91.0.2026.02.25.23.55.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 23:55:51 -0800 (PST)
-Date: Thu, 26 Feb 2026 15:55:45 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org
-Cc: david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
-	dev.jain@arm.com, lance.yang@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v8 4/4] mm: khugepaged: skip lazy-free folios
-Message-ID: <i4uowkt4h2ev47obm5h2vtd4zbk6fyw5g364up7kkjn2vmcikq@auepvqethj5r>
-References: <20260221093918.1456187-1-vernon2gm@gmail.com>
- <20260221093918.1456187-5-vernon2gm@gmail.com>
- <CAGsJ_4z1twdSNrAVR_vZRnLW4xtsfi+vegNMCwht+RPCjy=E4w@mail.gmail.com>
- <xbej7d3uc3xzlx53djgg3to3ejcgrxotxwxvrdppqxfsgieife@5moeg6x2vutg>
- <CAGsJ_4ycodbcWHxFRacpzbxx4evQRJbuqJy3gfweAdHOtJg1Og@mail.gmail.com>
+	bh=6fpUK4LfylAvkG0XeIRFeExbCCkS9TIdCEYEy7IZVNY=;
+	b=esoUjGsu2ypSZrz6ofJyx7wYQAJqiKn0bSKYd1XfDv8rejb+F+OpJhTQn7MLKuwgEgiv+R
+	LFm0mJkps5mMkyjSr9kjVigQRvAaKgn13MQbjapietxPBRMilOf6FSB+LXH0t+VnftCuQt
+	pUTDdZM3dAx/YQwC6bhmGEMetzTDsng=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ADF9544297;
+	Thu, 26 Feb 2026 07:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23668C19422;
+	Thu, 26 Feb 2026 07:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772092690;
+	bh=hwHQ4BRTp4F0JOLYb4176Dt2qXHf/97NMLc4rVMaBHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zc1/CqtJ2lX1ikU1tRuGiLCcSf+PJcmQp27jY1UVT8mEhBa0T7oK+fzCGVBeZsnTp
+	 y57Hm4DKDShkuemMzKtTTD22AIzdkwAkI/Zh/EaCqzfKLjjTjMMwqeIKxG5MPinOyB
+	 +Ua2UOxErR6UkS9HiaYRC8ewYWmTy69fEgQVMDp1XNvm+wbugf4un4dWktqraeOfuJ
+	 bmFGDIk24OO+ugM8aNKQuQ1DFb6el5T2YXMfJrDaE8aGHS2my8BNOJmsZTvgdMk/04
+	 F46UtHTWtsIjlkIKgoLOgYn0YWEPuXM0+VUczSP0rxBwQzQwkfPCYF3jEIEug39BTT
+	 MU9wptbR55eFw==
+Date: Thu, 26 Feb 2026 09:58:06 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Ashish Mhetre <amhetre@nvidia.com>, robin.murphy@arm.com,
+	joro@8bytes.org, will@kernel.org, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC] iommu/dma: Validate page before accessing P2PDMA
+ state
+Message-ID: <20260226075806.GE12611@unreal>
+References: <20260224104257.1641429-1-amhetre@nvidia.com>
+ <20260224123221.GM10607@unreal>
+ <aZ4Q1HA9q1ojsVYY@google.com>
+ <9d01b4e3-be5b-4c9c-8088-1d10f67f1fd8@nvidia.com>
+ <20260225075609.GB9541@unreal>
+ <aZ9Xccnn7JOikudb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4ycodbcWHxFRacpzbxx4evQRJbuqJy3gfweAdHOtJg1Og@mail.gmail.com>
-X-Stat-Signature: qg6samj3ghb6kihgy3su45azxy84x4nm
-X-Rspamd-Server: rspam11
+In-Reply-To: <aZ9Xccnn7JOikudb@google.com>
+X-Rspamd-Queue-Id: EFB2B1C0009
+X-Stat-Signature: 4u8krakonyandopro7po1n5chx7x43mx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 466EFC000C
-X-HE-Tag: 1772092553-166272
-X-HE-Meta: U2FsdGVkX1+2b2KaeLUjyytyIZqLWhttDQbchyQnSncvcrPDm2ItZrxHFG77pUMdGv4EOdk55V+g1/bi0rua8DuXfKjMtIbguZuQ6gAWwsl6akUk3sbMH1ugEsezNZIP1qH+Tcp/IRuLESEP25PiNMX4S9rU3g5wCaF96/GU9idOScDMhyyaskSHYLmCAE/lCDMMCWWjWkaGcTtfJE5wDPc2C1LJPvVpqrs1mKRacf3Gru4Kxq+y1HFygOvf8MsARWnlfc4btt16j6JIXfedkWGy8bQmXAqNAl4G6XpcTU06a6EoW4Rk6MTrV/e2hP0d02LFkkB/tx4S5CMhsqPe4ybODq7/2X4oROnjFAJChZyw41Ru9PmmemvhFV7oIv6Ca1unQw5jimouitjiNKtHqgLG9AveLg4oXXbK/0ehLIpUmoy5LsQb72sWZ1ccA5s5OxVFhMBySCrOJyN/ieO15fPuNqOWJQScJKfBgWaJiNWCtjMXgWS1JvD/C8dxoVX5gX2H37AVhvZyCAOGPnR7cmkuw/N8xrTld59Y6ELGhbqcJLN9u2SOsQf8YU/eJxd/df9gItvOWYrAtbvVSd02vXmn5ZiLyynaTwRXCbNPOHSTuMhpcALtM7eFYC5kTl4tWnWXvRnOnLNm79dtBD690w6so/AEZNAbg+i2z/G1/cv5n8+ywNMviU39nQ58LF9EmU/kB4xaYNOnMDiDiBqDBlUtRCz2YIu5ln3mJDwh6rmczBs9N5bZIu9bZDgHWoSQjbmJ4tfFi3i1cUqpzrFal89udPFmJq+j7YKj2xMVs1koThjyFv0JxlA661si57zELFhfoO26FmV+/xWByla4zrOhSIuwG0ghEKlqaTHHsa0/nG6/ifKzWZKvNbrL9Mg9sUYxqkLV74/Pf+CAX+lhRJs8B7PI8Nq5h68HURV5uRlj9LlLCIw9a4ly2xDpHRCSfOW+hDX3FRXxlHvQk0N
- M36TmRZ7
- snwThGIz4HjoiFOMbRpFnYddSeimkAhTvuZ0QKzIjry5D5J/LHkMyPj5wFJuCdfFq9njEqjqkmYHLV6+Oecb8+WxoJt+5vpQUCnSLkcbyk3IjvS4ZgHyZCCADR5+kK8AjZnJq3CwNTlnHAFebOhE/Nr0lW8qsN1SGNt7rafpBP5Aa65k0OwlrRuTT5OChnCp+f4ayPlNF7RQpyk+jH2LCGy8QmqseF/Dh5IDpQXnmkH+zqCupU9UVLW2HdoPjmVQQEAkz3UaWnKGydTHl0UW9ec4+HQn3g0VB8J6EL6NmGgoBKZRz7yilljg6uyc1JLEwnUMj+QJh03Jjxz+Pc1eDkfgMpNkw6E9PjjG+YkGJHahvVK+RiA3voTFzxUuH4T48Dkvnt/zYbOm9MjHYijtKnilDMdPgHYCTpn5OPKVkVQzdezEBI3u5EZs25Keb8Wadq8aFITO4fwc/DcD1QvhlErrDIkjCNAIbxjxSMpjP6obubQRCOcZ2gmf5vZzjjJMxutjakPeYRZxUbv8t5RkAmvorIvjdg+WAfr1IyTpparMLbX6kWniA+07ytxjQBzJy+siKp6axEJttDPeIYuS28gqlS+hhtzcX6I/efJg8HNr2NBY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772092691-20623
+X-HE-Meta: U2FsdGVkX1+uglbMO5vYIEHlx6N8GrvtkauaOF3fYY4xk3ZZsz34ElJW30yV71C0lqPyKefC8VXO9SoO6ioB6VRXlaVYGKrfKC7+UbNFDUYdjbfRbFCieUEV2Utq7JC4HrLArbg1yHZgnf6WMn+xEXpqz9PGZT7IwbM8QVi9ATroZZaoPrPNzEQr/9BOI7/OaDJrONb274uM8Ll76fold5CMLCjraUL9NMNpLmhVyPtR45PaRYiQMbOtiZCSrkLa16ZY03nnIYRYc/mbb7kNxDLSvtIhTvx288+sNqldgl7553Uj+vjP9jHrXdjCrj2JlO2IUaAItbwgujqX+jDxUG7SEO0Dy2n5PBqUU/oWG823JELch1pESUI5q7DonSwENB0prWFaFL0Drf+2veL6XDaLo5Xlpp1pY/YAeLhBUeni7ME3p0O/IqIooCAPAX1SigbFEpWM4SXQUdY4EQse+paUTQIWu0JGvmL8lAg7arwBrVvDMRcTCVLAxufOASGCwJAMPX9Or76J/0rz1bCB8amxd0yfpY/HKwQVnH1HSIhscdBd31pxYlINGxVDGlcreKfrM1rrMEafVaDHqsrjXxDzShB5ffElxGQcdtVlct0exZWhQlig5H5llSzscSAyaXIpgLvgljYLSMtT/XjsblIizKALABc7vLCkU5GE9zD0t4B0Gq+xu0Ck0zKGxVHnZON2fU8qhRM+5qwL0bhWrJM+edQGL1rNUPpx5dnKv2EUuGoDh9I3P/aiCAzQeBM2rm0dx9n0D7pUkzFw+WfSI7QP6TicF5NMYvO+A+IOcEjo1wPVc0+jU9sQf3zpHWj+XUdgmzyT6FPFw34gevR5GPT6zPOC1Rinr/MMToEYQPpGWytKb9rwDkkaFxKOig/4xtDtZSND7VPnx7dTzJBloXaL4kAzePM/EEHjUjpSkNU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,98 +98,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 04:10:47AM +0800, Barry Song wrote:
-> On Sat, Feb 21, 2026 at 9:39 PM Vernon Yang <vernon2gm@gmail.com> wrote:
-> >
-> > On Sat, Feb 21, 2026 at 06:27:36PM +0800, Barry Song wrote:
-> > > On Sat, Feb 21, 2026 at 5:40 PM Vernon Yang <vernon2gm@gmail.com> wrote:
-> > > >
-> > > > From: Vernon Yang <yanglincheng@kylinos.cn>
-> > > >
-> > > > For example, create three task: hot1 -> cold -> hot2. After all three
-> > > > task are created, each allocate memory 128MB. the hot1/hot2 task
-> > > > continuously access 128 MB memory, while the cold task only accesses
-> > > > its memory briefly and then call madvise(MADV_FREE). However, khugepaged
-> > > > still prioritizes scanning the cold task and only scans the hot2 task
-> > > > after completing the scan of the cold task.
-> > > >
-> > > > And if all folios in VM_DROPPABLE are lazyfree, Collapsing maintains
-            ^^
-here
+On Wed, Feb 25, 2026 at 08:11:29PM +0000, Pranjal Shrivastava wrote:
+> On Wed, Feb 25, 2026 at 09:56:09AM +0200, Leon Romanovsky wrote:
+> > On Wed, Feb 25, 2026 at 10:19:41AM +0530, Ashish Mhetre wrote:
+> > > 
+> > > 
+> > > On 2/25/2026 2:27 AM, Pranjal Shrivastava wrote:
+> > > > External email: Use caution opening links or attachments
+> > > > 
+> > > > 
+> > > > On Tue, Feb 24, 2026 at 02:32:21PM +0200, Leon Romanovsky wrote:
+> > > > > On Tue, Feb 24, 2026 at 10:42:57AM +0000, Ashish Mhetre wrote:
+> > > > > > When mapping scatter-gather entries that reference reserved
+> > > > > > memory regions without struct page backing (e.g., bootloader created
+> > > > > > carveouts), is_pci_p2pdma_page() dereferences the page pointer
+> > > > > > returned by sg_page() without first verifying its validity.
+> > > > > I believe this behavior started after commit 88df6ab2f34b
+> > > > > ("mm: add folio_is_pci_p2pdma()"). Prior to that change, the
+> > > > > is_zone_device_page(page) check would return false when given a
+> > > > > non‑existent page pointer.
+> > > > > 
+> > > 
+> > > Thanks Leon for the review. This crash started after commit 30280eee2db1
+> > > ("iommu/dma: support PCI P2PDMA pages in dma-iommu map_sg").
+> > > 
+> > > > Doesn't folio_is_pci_p2pdma() also check for zone device?
+> > > > I see[1] that it does:
+> > > > 
+> > > > static inline bool folio_is_pci_p2pdma(const struct folio *folio)
+> > > > {
+> > > >          return IS_ENABLED(CONFIG_PCI_P2PDMA) &&
+> > > >                  folio_is_zone_device(folio) &&
+> > > >                  folio->pgmap->type == MEMORY_DEVICE_PCI_P2PDMA;
+> > > > }
+> > > > 
+> > > > I believe the problem arises due to the page_folio() call in
+> > > > folio_is_pci_p2pdma(page_folio(page)); within is_pci_p2pdma_page().
+> > > > page_folio() assumes it has a valid struct page to work with. For these
+> > > > carveouts, that isn't true.
+> > > > 
+> > > > Potentially something like the following would stop the crash:
+> > > > 
+> > > > diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+> > > > index e3c2ccf872a8..e47876021afa 100644
+> > > > --- a/include/linux/memremap.h
+> > > > +++ b/include/linux/memremap.h
+> > > > @@ -197,7 +197,8 @@ static inline void folio_set_zone_device_data(struct folio *folio, void *data)
+> > > > 
+> > > >   static inline bool is_pci_p2pdma_page(const struct page *page)
+> > > >   {
+> > > > -       return IS_ENABLED(CONFIG_PCI_P2PDMA) &&
+> > > > +       return IS_ENABLED(CONFIG_PCI_P2PDMA) && page &&
+> > > > +               pfn_valid(page_to_pfn(page)) &&
+> > > >                  folio_is_pci_p2pdma(page_folio(page));
+> > > >   }
+> > > > 
+> > > 
+> > > Yes, this will also fix the crash.
+> > > 
+> > > > But my broader question is: why are we calling a page-based API like
+> > > > is_pci_p2pdma_page() on non-struct-page memory in the first place?
+> > > > Could we instead add a helper to verify if the sg_page() return value
+> > > > is actually backed by a struct page? If it isn't, we should arguably
+> > > > skip the P2PDMA logic entirely and fall back to a dma_map_phys style
+> > > > path. Isn't handling these "pageless" physical ranges the primary reason
+> > > > dma_map_phys exists?
+> > > 
+> > > Thanks for the feedback, Pranjal.
+> > > 
+> > > To clarify: are you suggesting we handle non-page-backed mappings inside
+> > > iommu_dma_map_sg (within dma-iommu), or that callers should detect
+> > > non-page-backed memory and use dma_map_phys instead of dma_map_sg?
+> > 
+> > The latter one.
+> > 
+> 
+> Yup, I meant the latter.
+> 
+> > > Former approach sounds better so that existing iommu_dma_map_sg callers
+> > > don't need changes, but I'd like to confirm your preference.
+> > 
+> > The bug is in callers which used wrong API, they need to be adapted.
+> 
+> Yes, the thing is, if the caller already knows that the region to be
+> mapped is NOT struct page-backed, then why does it use dma_map_sg
+> variants?
 
-> > > > that property, so we can just collapse and memory pressure in the future
-> > >
-> > > I don’t think this is accurate. A VMA without VM_DROPPABLE
-> > > can still have all folios marked as lazyfree. Therefore, having
-> > > all folios lazyfree is not the reason why collapsing preserves
-> > > the property.
-> >
-> > In folio_add_new_anon_rmap(), we know that the vma has the VM_DROPPABLE
-> > attribute, which is the root reason why Collapsing maintains that property.
-> > The above commit log clearly states "all folios in VM_DROPPABLE are lazyfree"
-> >                                                 ^^^^^^^^^^^^^^^
-> > (the "if" is redundant and should be removed), not "all folios are lazyfree".
->
-> Yes, we should remove the if; otherwise, it’s misleading.
->
-> [...]
->
-> > >
-> > > I would prefer to add a comment about VM_DROPPABLE here
-> > > rather than only mentioning it in the changelog.
-> >
-> > Is the following comment clear?
-> >
-> > /*
-> >  * If the vma has the VM_DROPPABLE flag, the collapse will
-> >  * preserve the lazyfree property without needing to skip.
-> >  */
->
-> Looks good to me.
+Before dma_map_phys() was added, there was no reliable way to DMA‑map
+such memory, and using dma_map_sg() was a workaround that happened to
+work. I'm not sure whether it worked by design or by accident, but the
+correct approach now is to use dma_map_phys().
 
-Hi Andrew, could you please squash the following fix into this patch?
-also remove "if" in the changelog above.
+Thanks
 
----
-From ab5060c7be655dd00bf3a9abc779915922b2f969 Mon Sep 17 00:00:00 2001
-From: Vernon Yang <yanglincheng@kylinos.cn>
-Date: Thu, 26 Feb 2026 13:18:39 +0800
-Subject: [PATCH] fixup! mm: khugepaged: skip lazy-free folios
-
-add comment about VM_DROPPABLE in code, make it clearer.
-
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
----
- mm/khugepaged.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index c85d7381adb5..7c1642fbe394 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -575,6 +575,10 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		folio = page_folio(page);
- 		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
-
-+		/*
-+		 * If the vma has the VM_DROPPABLE flag, the collapse will
-+		 * preserve the lazyfree property without needing to skip.
-+		 */
- 		if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
- 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
- 			result = SCAN_PAGE_LAZYFREE;
-@@ -1333,6 +1337,10 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		}
- 		folio = page_folio(page);
-
-+		/*
-+		 * If the vma has the VM_DROPPABLE flag, the collapse will
-+		 * preserve the lazyfree property without needing to skip.
-+		 */
- 		if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
- 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
- 			result = SCAN_PAGE_LAZYFREE;
---
-2.51.0
-
+> 
+> Thanks
+> Praan
 
