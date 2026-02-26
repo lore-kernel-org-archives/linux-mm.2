@@ -4,108 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 034E7FD8FD8
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF8EFD8FD3
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:50:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19E396B0092; Thu, 26 Feb 2026 11:49:26 -0500 (EST)
+	id 6C7D26B016B; Thu, 26 Feb 2026 11:50:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14BAA6B0136; Thu, 26 Feb 2026 11:49:26 -0500 (EST)
+	id 691F26B016C; Thu, 26 Feb 2026 11:50:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 002966B016B; Thu, 26 Feb 2026 11:49:25 -0500 (EST)
+	id 55FF66B016D; Thu, 26 Feb 2026 11:50:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DED7C6B0169
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:49:25 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3805B57920
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:49:25 +0000 (UTC)
-X-FDA: 84487193490.28.9873F9E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D18A64000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:49:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hAYgA2jp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zCgOS19u;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hAYgA2jp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zCgOS19u;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=dsterba@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772124563; a=rsa-sha256;
-	cv=none;
-	b=ACG6bgLU3MviZ2NYbLxHSAcxjPyJ9vnnZoVU8dXQVAy5Uw61HjR8TFTbP4ddSX8ovzyf39
-	sb/CDEylbS0fOurgEixV0NmpoR9Ws48lpGmuAlXuHjJdaTzVZM1j1rCXKfWGaa1Z14AdRM
-	kP+B1Bhnz6qUdKNDW2kgUMV7m25WQWU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hAYgA2jp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zCgOS19u;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hAYgA2jp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zCgOS19u;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=dsterba@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id 40D076B016B
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:50:38 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0B741602D3
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:50:37 +0000 (UTC)
+X-FDA: 84487196514.21.2E2AA33
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 165D040006
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:50:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qdlbu5M+;
+	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772124563;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772124636;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BNwEAWIsld/a3bTo0jTTEGruuvEsAoMftAo147KwrkY=;
-	b=WQL8vEfQvxdn0NqX/TwavPNWAmlRQd7QIYvaJHD2cwYgTVSCAJ266+zV4oR9Bdn8f+k9Ni
-	KZAyM0AWG2aIAhQ1gCNUKEGSq94satcB1MNd703jxX+w62EIrV45JxHMMNFwv9bi6YHne2
-	WTD9uoHsprf53piu7J42I8gak3N4S/M=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C88DD4D4B2;
-	Thu, 26 Feb 2026 16:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772124560;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BNwEAWIsld/a3bTo0jTTEGruuvEsAoMftAo147KwrkY=;
-	b=hAYgA2jpZa4xi0xhqaRwMEM4MmatY7e7kOD/E1qjGdJ66bF2R3siOjYy5Y6Yg9dDfzUDD4
-	aeuOtKCnl8v1QoxCgsTX8W1RjLx4+PdWc/SXCUL+OLAvf+woDLtaeDL8YsARBgnzpciH/g
-	IVXCKBa3wKZd2silyKmBo19Po0OpWAk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772124560;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BNwEAWIsld/a3bTo0jTTEGruuvEsAoMftAo147KwrkY=;
-	b=zCgOS19u4C6rF6D6cMRbA7dGGq7ArZv1u0GnIvuUsaX35ZbUbgb8M1Ez+SVwqYgh9euqH2
-	kmxPCc+6nDwXgTAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772124560;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BNwEAWIsld/a3bTo0jTTEGruuvEsAoMftAo147KwrkY=;
-	b=hAYgA2jpZa4xi0xhqaRwMEM4MmatY7e7kOD/E1qjGdJ66bF2R3siOjYy5Y6Yg9dDfzUDD4
-	aeuOtKCnl8v1QoxCgsTX8W1RjLx4+PdWc/SXCUL+OLAvf+woDLtaeDL8YsARBgnzpciH/g
-	IVXCKBa3wKZd2silyKmBo19Po0OpWAk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772124560;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BNwEAWIsld/a3bTo0jTTEGruuvEsAoMftAo147KwrkY=;
-	b=zCgOS19u4C6rF6D6cMRbA7dGGq7ArZv1u0GnIvuUsaX35ZbUbgb8M1Ez+SVwqYgh9euqH2
-	kmxPCc+6nDwXgTAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3626B3EA62;
-	Thu, 26 Feb 2026 16:49:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GqJ+DJB5oGkrMQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Thu, 26 Feb 2026 16:49:20 +0000
-Date: Thu, 26 Feb 2026 17:49:15 +0100
-From: David Sterba <dsterba@suse.cz>
+	bh=JYOuv3Wk70T6Ktfro7eZgRq5FR8cgwXHcAYF//Gcaxo=;
+	b=n0RZGjDAqlEF68YEZsoi8WCliqG0xDAA0JNjz7ip/rGKDE8Vx5nCfm8GRc+PdxGi5x1gPi
+	Hg3Ot8eGKCRV4bUBtrxPM4rOVAqKMMiwH2ozO5jzUUotiRZXdgyDHsrtNzKWTSCJZAKypB
+	M1uXG1zdQtBUUYQRNj0VRK2LjuBkois=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qdlbu5M+;
+	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772124636; a=rsa-sha256;
+	cv=none;
+	b=R7y47w0BZvhYTxKLV/uYfElEhU4UqtLgX08MBO7cU+dV3nTUGS6J4xbTouoRbGk1gINfu4
+	uqpsMS66I8zmJh36k53/MM6Aj98bY0kiaI5PfF/CvGAXfKrJY2LNTI/SSIVifT7uAHcE7f
+	bYhNrAoj4h909SorCT01O8t6dxdL/kE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=JYOuv3Wk70T6Ktfro7eZgRq5FR8cgwXHcAYF//Gcaxo=; b=qdlbu5M+P6Pxrph9XhplsceUnf
+	By70JOxs9V7ehBqewoNTBtJyp3ozeST6lRBCTS7BcJkjUsXpWVNdIcj+v185wnLwPWCaLhNWzAoqo
+	REd7S0IP98IzzAdEUaVcZ927qwAeGdsZABPpeKrkpMjY2T9PFxTUBhlfxm4AheId3dHNsbEbN7e1f
+	xrm/+WlKszDxZnFfIixHQGgK1TJd5Pk+YcSrSmRLqE8DIXQoqxHdPhWqnHLTlmz8pOB/CQLVzgL/i
+	Z3cJnjjLD5VAtw9cA+rW3ijYHu6xMMZdJvbn/fZNJGFrzBaph/MUmddmRCDoRXXHGr4v4tTcThIId
+	1TG5iysg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vveYJ-000000037bs-0hID;
+	Thu, 26 Feb 2026 16:49:27 +0000
+Date: Thu, 26 Feb 2026 16:49:26 +0000
+From: Matthew Wilcox <willy@infradead.org>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
@@ -113,7 +70,6 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
 	Eric Biggers <ebiggers@kernel.org>,
 	"Theodore Y. Ts'o" <tytso@mit.edu>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -217,30 +173,27 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
 	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
 	linux-hams@vger.kernel.org, linux-x25@vger.kernel.org
-Subject: Re: [PATCH 19/61] affs: update format strings for u64 i_ino
-Message-ID: <20260226164914.GG26902@suse.cz>
-Reply-To: dsterba@suse.cz
+Subject: Re: [PATCH 00/61] vfs: change inode->i_ino from unsigned long to u64
+Message-ID: <aaB5lgKd8FOIizPg@casper.infradead.org>
 References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
- <20260226-iino-u64-v1-19-ccceff366db9@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226-iino-u64-v1-19-ccceff366db9@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Stat-Signature: ohfm16cpifhue57b4gqxbubi7isxsint
-X-Rspamd-Queue-Id: D18A64000B
+In-Reply-To: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
+X-Stat-Signature: 1rmcoxncfcgu41of6a3u6ajmkgq3f7xi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772124562-379429
-X-HE-Meta: U2FsdGVkX18Hvz1H04If2OMGCSS0p98fnwf9kkYynQAELweUKYODxIidyjHBs8lwpbIDYRVEFp/wW5FmyUny6G4pj1N3j9tEZRMPxjao6EJuPJzfp+NgzZUzLqQBScNLQjxzqkPGrYXMqWQUCLJkPRnvXxvE5YMAGsici7QWMy19gouPpvn9wz1aN0l9QbV5XPR3y7zjiAAcpff034Qim6x0OcoYc0RZh3yt2VpfyVkEqHPMsw1JsKfi2mmEQP1tuA4tQosW1YUhsgtALC1eNV/crJh5zMWCZIrur397lOuz6Zn6vneHyQKopSI0nixCnYqr/ubX8bUdm8b0/UNmRcqgPxh3fQebeRZrt/JoYR3RanJcALQKqi7+sM6h8JxQeSsPoWN1ckQivil+BbZ3o1UAPPX3zs8zYUxig/WygCz9ta40pzHRrJL3IHSAw1ve0w42aILHO9/GiFKhMbLCBtKTZXyJOBNhpt7TupIW+rJFZkRTLyggl+DQFUA7jxzk1gpdlBhPUUDDFrJEfNOTffsTe4MKLdi20xRybhbMpwwOYvB73qTRw/5GUcLur+DBYJFDW9924h79CoWrZSw5poeEx/+u7rv3/64QZYVyxCO/a1VA+7Ndd8ItiEdgCZxhngEwGEEND0kHU8gCI+SWPt+GK2oUFf/x6xzw8fPeMG7o7BIy1F7AB0CxWE7PAuKdtoS2+vqbleqCpJbrl4kVOIh2G3pGQVurLZC3rL0Z43NhK/mY8QTgu05KC7NlS2rEUhXb9ZfYwAqmCzr5j8JIiqsh+wWE+GCAUY7BW118nST/02uGo7WWkxuE9XcD9fVUrjnORSVbpinbeTNmV6V69T69K1iThaVRN8TFHqdVUycn+V5OkPNG+8KQdDrU6sk26HhyOF1d0ZYRPQgvMOMBD+zZEdXFFeFApX2oO9RKnd2J2BmoLXyvwCm7ROiOuSOzVsZy36bXcqkN7wGpiXt
- XufoWbd3
- 7i8fSAFl6qNgyGN7f6uhkV4Qzhf9i16nezhA0+csDu0/ZxFN4cdMl9pgifNjwN2DSoCAib7aBIy7Miel/T7to94ffQb8+ZTAtRaKm8cbjmy1DA/0KABU37ctRYksK/GoRSg+l06J7ewWQ9KHFlA0GEZjFdQpokiJjAyStv/26kHb2qOSZJuyJAXtTR+gd94/ga5JdYOZB+5otaNR34cEMUGBtAdJ6BV6HYnHDWLhZCwGQosjZaSWwik2UAwCyMIVIabs4gF6J/QQfMLuMUiD6WDwAUci33j+cJhC3tdrBZiePMMfCRYFiXr+j6HLdFwCiJkh8xsi+4GT/XvE2ivqulSWWmqvwLC36GehjydszIC/zGTVarj0A/RqVwGYABnqoxA75lItzuTn8TMzigqek3zT49QI5ghJ8XdDDXcJIhMolIeRTjjkhEzofickqvjeZRakNsi+ZezvgTCN/gdeoldE5FaQ13cEvrGYeDesms5T5HWvVGkKRYbtViOO5Hodrw/o/xOfY0O0JLniXwSk3b0BFVFsviQRHyT2WN171Z7Y6f/1coeBvIF7OHnNlRrGf97U4JgFeKT4agzqQb5DdpNsDPcA1icTYIcRCTS0/FL2TvbBEjIgycivhaPCXAVGxk8I0r0WKOyWDXZzd0ayT9oM4+HQKnHk8plQpQGywVkHOoycGCqCf81WbTxp4lr0qm03gCafN87wW10RgZiMsN7EnoIkTQ/+2b2QYUYPQNrq+viJm75sqLVCbdJOI20IkxxPzWg/MMMeOALDKc9AzC0drzUODwgIkAuH30UJL5ujkCnDJTWqYH0wTQbJUCEtK1bFxkyyfHCwRbPXgpQ9zbwGdruWVFW39/YCFozy0bmyB1buG4+Ya/cR38/6ZT8t3hkc750l/ycORdzJ4px3PD0lkVVlIwLChtCPhP3xzgX2dHMFfgimpgA7fsWk7pZtXjYCCGa91N77axqRRPX0uH4jafo3G
- g7YY4Fqk
- gPLZsfIFHVg2Mxd8NmyjB6+3HcQEQlKMGYUOlsoLsi4gj8aNveX6nb99D/hjS/cnb/Sk/8KQuQeWh2xBRRd4TmGjffkH2pbNTRBlLFayI5fGGsQl784MxmvihHm62J1U2eUbTgoNng2WEWNAbksowIGef2enSAF1nvUp8S8+6vYKtiZ9eJx56kTbMVt53d0omS+svqjQG04bQDg57Er5m3TYy9tJ5FBTzLBr8Ckj9JRv2Rh0E5R56wjzWTYENY02qe1gfo/Xbm5BaCawlQKjXzxI7R4F7FkyEs67JvR+j+gUlYA/NaVa5KoX0UawdnonQjyAo0Cd2kNCXiy7dM6Jk7p2QuUbxnAtyZsmIfEdJE9FzbzqkbFyj0jaLaedWIIA2xMGdvJMM5h8ULTSiNa6wf4V0t3RudrjhS6D733D/eI9mJ4ZZNUAn0CCzT2sQyJKa1/Vd7paDWbQaIbsfEblQXkpKnS4cxdNPAl8tadQoaUtO00VmGp+b8LGqmF69L9tfjMS/GZwstwSWByiTIdOmJ0m0GPPPjWhsO4ZIEIUiFY2F1Wo8aUPxQFmRo/EC7TyISn5nykfyJcU2Uxl3cOidbzjQmRGvzK9gXqumyO5NSRyeeGPzfnx7sAhib+TUaklCQzWCLhzw2hrJH9OJVZS8wipDaLrRVNHbLDwk3qw2JCTaxNfR4lkkWajqQ9X+FUVgnrQJYaBkZP2WRjjLPk6+eocRwVepdTGAPAGC15H2StV+eKX3tmCzRLwu+t5bVAnaRaRcaL6hdhI/sAsBVqjwEjNYRtJvU71O85ftdtdfbFTjGtFnvRXLOfZNKx+40gV7MxZCbvxkXOeuDu15dhns2kkQoYva0RYR4oprWee4NcbduoDVM2BvBZthiBjfXiyPHq2G8jl/XNJ0CkyUdYxRaztxbXQdavkgoaosn1iYaSCjkbtVQQeY4rWC2sqddq7hE3x5ZMBdigkx4aShdVEdPfqKZyUx
- HKOXH+q1
- CsUSaTS/hX0Jd6KXbXaSKA1p3bJzmP60ix+C5+dGB8QTQRj5p7j80MuuKCk+LKHNjz+IWdQxB0KdRJ0w0wozjZW3D7yJY2LSxo29lR8GhXTz3pPjuoocpGMhe5SNwfsmlNyitmhqhHgT8T6l8yElxP1ody4820O7K4qzB+gBW2ABiK0fv5cMqzscau7Yew/L8d60pl8TmeYZEqXquxuoXfUSe2SegOtrUz7hzKGtoGyxZaTxniCzDb6NUGNCWdihFHrgG5mEdnaWXo4++2/Ps7LlpOnsMfLjS9vTq68bXDB1h71nl0xXqjlIa9F1/6QCb4ukTNcTLAAJYyaM8eM9khFYBUoK92ODvl7jGMYcuU9GyTECJI1F9Or+RuauL6fWVfuUOysU4PbXTkS5KXgxaUtHbkTvLrHO0e+w1nMdEPtPUzZLNqHtY1/eTad8xAC5nfGKZ6QPNKDg6EdcOPfsH0DbSvTBqqb/agORGYdVnlhGgKqZiRtvQ63mQFCTlyPvvRRz9lm4S5fKP3OzFme7Y/FDuoaYVa3nu80NjyXaDjXsB3UU3NitsKlSqJ9z1cZcBZUQG+xVUfIvBfl4/7ew0W3PgnT90wJB2f3sqEVY6yPC5/vFG8di9Cc4ausMfxqGE/6r5C+Jyo5PRRfd7PcTi5pISIBffA4OIwkw9YO3VyR1xNtJTzK/3j8GQrDOT+qyit/JzPorSAYCDYb8EER/Ez42TML3Ei5iJeJwfb2Vsl4WwsKGJIlhSoUmz+zTazP7F06DPjsjGV48QVgpg/DjN6UaPyMdAulXdrDCXfa3uj62GfyCk0n3H9FzreDB4cJS4iZg4W92a1fHIfVdlotXo66v+sM7PoSfkduKOU7kp6ncNw9Mtq+yu7fFIa9YsGJykuT/qakx26FfkeYzEcubtWDaaCao9o+/giOApcE2d9OW8mGH6wPYSWJ7n0zsNbiJGm/MeLjzCkkQqglAiYXCJP3rhzcUw
- 13lFHrLW
- Rta9wh7/1R/hkwzMrrps7mjR3D8iZIk1dFOu4/+Tstsobjx9apSPADt6wRAIN8OoOKX+MNGrL4LNfWhrLxVBmvh23vxabqfUrAKAUyAl4VCzkp/iYBxCx6ngivhkMuRr47+Ql9s0NLQ9R+mGPunTwH+QI68hBzRe2GHjVdkaELI3UXAMHY8qhO2dZvWsCV40uFzuyH6MSKgEAOzdbqksb4x6i3BTB6jDBTh/ezc03mEBQFbeE9g6SoihjECQkLhQysshcJq1+Ld9lcKHrTKaJpSKgdoAvuQmU8T99WiK83c16NE3oNiVIIIctS7fx68sW5wclMzDuA72Fwnpc2F+Dhev//laHSPoTCwiKOzrFluRBjXA4QrtYyMIOryBNuCyrFXkeWl7ZsWf9s3eISBoDFoJIGSSSRDU2+poUwgXLn49EV+fbTLWhYA+KVPAaLBAD47KCebEIknzgdQIWhIZ/OwJiwm1pZeYOax1PhUfHefuOSz8zL9XQ5AxBhmRK4nRvVU6t1PklR/Y+OYd5ZEUEHPqrhwOc+8o6jLUPMyNthVP/rIZ8CLjclc8tJjJkXTNNNXOQj33U+YPA3SF7HWoA1ZjVYInv7ffGGwN8/Z1hIB1aXM75e5ePsSiIw8w4mgxAWJJg4cKDyIA==
+X-Rspamd-Queue-Id: 165D040006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1772124635-9300
+X-HE-Meta: U2FsdGVkX1929t+9/8k8Pf/+8KkKe31gl2KFxO/QEGny99sryBXoxYpfnLQNLO8gX2LMHGXKi9sXWy1zIpzhOMYDa/5TQspeLqSJ2AaobLX8C0Jvz0rWzzcs3a1V1eGmKLZUdnGNa3odqHfs0SBh0075kC4Vmf1Cp//WC+Eqeqpq5SpbzU4gmC3SU9YYWTtj8RdzY5No2rLB2HhEcipNzO66ckNYAL/6hdFZgYBmo8R4kqtx+xkQmlRIi5159haJZEZDQxYm4blpNUVirksnbn5QzivQaQCGkVBMtvS/xyWdMjvHDEiV1hUj3sXKpGy1P5jBXhPK/cjyDCJaxgCItlz2fQlvZvF2GTEZsOFoMuYyIU4LbGqhyUJbUYwpmeAMXg1lfVHOdDESgU2AKRdgHc08FwtyfBVEVf7oe6Aa3SSXLNT7VJUTq6Y6u7/Znc1JGVEnSTM5qBoqSBmWSOI2R/YfFf0W+TBT5vQ03aprK2FLLS7oZ4b1M9i+rRE0a3SPSXt6z5Ky2aMvFMepxAOqfUJFab/CJtM6oAwyQWUtGK3IzC4AGZr5KcDSTzghErqrssMQ3bKr/YwOMkoThwXpxYtMcUA+Fnlfmhft9Vp+qkgZjwQW6tD7h/3tm7hdMZZZ8OFb28MY2YE3RiEftCeYkcvWtLWdNALZnds9tTZxQH1+caEs5iKrzmg6iqlPrzd7NzHf5rCDTWgWCOp1m/eyrnzVSnxkVkZhWplilfwWHqOOB162kl0taUfo6ifuYXsN4EJ7SIf3P4y1X4KPzeWkAX2qZQX8acYGJvgW9m0OWmyBVE/jySXRnQNrbGt04nzOhDvwKyvMRihkQDfpAR1zo2z0zK4b3taMKzyaZGgbbjTiFw3SFUsfeJQYkyjLV63LR/UDPgR2IRbNpd19kbKTOr/bKA8H7WQ6HoKd3uglPgwsF+SKotf3VkekspSOG8P6+4ATIu+kR3mdZmQ/G2h
+ w37dkk3f
+ 32BOmL+zVtNi31C8pVnICgwx5HjGsDqq+GupeNH/gBNve/Hmb9R5+E+FvCwjrk8b13qZ2uUJkWqgfi5SeazhqiNEbdi2fU27i36mwdLWirySb47ceUHmlbFVXdOpfPqs6NPTydr9wHnH8yFEyzWJf95O7oVztpgAcPwhIhbrGSlmhD+GdA7E12DCJTb3lfFbwAo6eMSTJd0fYRwMyTMbOg5eaamKR3onbCyab6tmBTy324Jsl81SLcOjnJgkQU1EEDTqAliX/Tx6oQnzTs9caLmLgTB4X/ArTZraKtbdTZ5uFgF9w1c1RA7cpsQBaDv4h3Xr4ekRQyrz5FFIxbW1jEIVGHddBhAl1h22DCTgWoiM6Gaeoco4Z8KgZl2B/2UPeR4b1yvSZxwaKeWRHrP5aaOuv8ak8BmdPA/q3e049lPOGIjjUZ9x9SiEubOSZTHUG1gBopOTqMU5TpRDvflesAHidVcL4fztquYGUiXAmG5KgtuOQEjC45Jwh3x57/9TVtCCIpGGNyMjqksDBpnuvo3KbeX8je3tUJ2fscN2DltaiZd1HxNev/t14iGnZRNIhso1Z8518RKhl8JPELrWJkzj0Xa6zovt1Lfe3yIWT67Z07mXy2RWMGiJL9cw561JrbiaetgSvYHstwpZ8QGci9PhhSWpQ/w+xv04gi/fDk7CnuaMS4T56l630qWy4ToTA7tisGynFG9gE/cfy3/5v6+tA2dP5szMRyIebMXZmYET2hBaKCdIbfoUNqyx0E16kcYGDKsgcXYkwBNWMPIxXeTnvSQtmizhlbCaSiSIcuYNgvlADiA9bgMcG2PG9qtF428R5r+wsr/0JFckjdai9SaxU9YUQP69V9J5EVoY0gePAh7P+3NVYRCkI8Kn8IG9KfnT+6uL8wah5H8+8D4LOd/bIQGtJw4gY3sFMPB9rBH0wuHNtUXQDbvKmmJt5LU3CzVCh2UWsssFiBePsqkwJjd5G6dXl
+ Ts90WCS8
+ qqjOdZkNFJZeYqoY/MprjoaoWnFADzB98SHqETjgswhgTeJudFb3rhN9hZEnG35ejUrBJ8OC3jVHyrhiHDfblVMpgB0ON8q1n0zfYWQZVojdJVORjK/qdc7aeSw4+iz0KNaqMRenpuQEwWVk8D3wWrSdGEuQPgJ3HgPB1AIxkz5ZdwCmCO3t6r+JhRyD3o+iPt11Ms3KzDDaR+AT0o6S1JwkuH/Tj6SzGvOXk1sJDSD1RGnoltvng5N5kx3BSWTYnmNjj/I6Puoqxyv5IhxgjLdTPze/UTtA/NnbVpqqJrsXvk0C3XmUZOpzxgA+IS3Ekp0Wg14jyrqUEQ1Cb9cvkEwIRvJWfxT+KnVy0k7/tQU2ApfCRxYYx68WXIojSnByil77VImOJCSl+Zgr5WLbb5tw+8mt2ZYmKlSeHL0wm0R8ZA60SytHyEoKq/TzrgAybNmKLGFz6z745BjvPDmhbouwmAhuQZyv/LKdTnL7dklCqzoFaKKngadvIffv51xe4K2ff/tBCh/O/vHI+RMhSGEu9DWgpbSqVBrdGE8+aC4DDFJ2zmrdrt/JeJQnZ1ZmMyeFl0DFeVlfJDwA8zbMe5m7wzzuv5kNQwWEnLS2nM1Gix7HYOSrDLiv89neTBI3XKV3EMxs5FCTohq2ZtAxSrt8UhQ7b8j6XBaoUpvcQRO+4sv/em2amcSmeK2ku4qta/ii5STpeoY3bGfuQDETTiZb5XwNfOoOOpdIJMcpcQy1ifVBN8lJ1kuSt5FgYRjxoNDfNeVypBRPfMM/7YabTF84Mk0aUsXKddakx7b2FylXtJjdzW2Ta7pZFzmZwbMyPlSFOjSKwy3HKfx7bs525Dbmb3bA6WkRKmUyhVknkzazkdssLPmkjYjRbO25HjmoBtfVQZsf+hk/D6xID1nZGAG8cIdyT/+/9082CJhPopozZmAMqJeKIPzwz+LDbn9fw40hLBW7Wpf8j0ovurgZ9wKbWN+Pb
+ w+BQKWu8
+ c0SJyB/BFG0PWAqKBFmqkHAI+WvNYnOM0RHeNUIDK5tc/zFCAVWLOvLCXnPKp8RxCcTbKqPi3vSa0dXrtjLSuJc9iwKyDLCsMSFF0BRpmGNQvlPeZpavVU6rLUXV20d0gziDZTDC7oA1Boc4+hCIHf2RC87nPGGiJ2N2oF1zwqlBOH4hNpJbbgNRkrOPrqTDC89MtOfH60ZekKjqandCTIMOzJxyXRNHalLX85biN8J4O6rKGB9nQMZF/Vwdk1jt9WIjboesGWKx/cPIKnzwxQDSEJAhwFOG/5bLuGGwp0mUIY0BpzKXetO/6RsGtUZtt6itjcEp+u+84ZMJyILWES6eHS7GXdzthUzIo77km2t0zuLMej2Yg/ZxtYVxLMA/KjDEt5m6FSv3GLqbavmpYZJP88zFmgsQLaBo0XJWf4BGziWQpglhJW2RiIAZFBdZn8amwIo42OkZQ0p/JSxkA+ULoBGY21n4LYMtvMERWU79aPSDt8soLl4HqM/ucG6tJIfOuJZVDQ7iCPZuRd4fVQUhjsMfgKwQ3yijtm2yG4yRkMNq0yr8k2nGoUX3/P5XO2IvCw/CY3ZQywOEJcEMLBII3QR48DvjzNzx55/0VLWq4ijmnupag116ZxKzNGQ6sq9orvx2pmBzCouYOe3p3uIFDwzGyjwlIDzlOBhQY2pyhQPMCM9NgMK0Utp+cmEpsMtbQqknivg0+1cFd+5oFiQiGFvtTSsTijj7XsmnTHfdJiWivmzmEHHip19OVRr1njnVz3DLk5mBCOv8G1Z9VTwVYtkoApH+Hkswmpot/66YLQ0MSgZJF3dGxjnS9Hglj2g1cwic1jk12ltAxtaX2APQeB7sYKHoENPhe7PaHguoevvo3ijeFYHu6wucKsJiVuInuUyE30/ohw9tClOZfXJYEIw695631MFrxFnAr2KkPAwVP5nEZtXRau6T4aT15bEK7BGhwd789gfG2tV1MoOmXu6CU
+ bVdrptZB
+ 412NbZxSB070bNquK6s3eVEXn+22SMp1mi3y7KH9PQ/33K0hTgjXl1Ffj0TEd9GasHciqGq/qsgLN0iDcpy46mwObyQJEcskt3hxEYjNwQnh79mnbjL5OC0259GofL4n4B2wL/R2mzMR4gqIKyWVxVv0Tq3oIKTJMoXUpHqVdgDNTHeon6vGVd5aiJQg57JhdJmOlns5vOiMS0xgfORwlzczG0ID9stcASpstfmM/aw/2YZOfaXQ/I8PTufa4GC4H6+gVCDVSVQVXDkrwrWjox7/mZi0cctcmA7uZSZRHz+38FE5japC1MzKHf06HQpXLlL4rnZiyTfM5Oqk6KFct7FzCDrq3VD8oZAASAp22nNdV1I7BlbYKi8qonCK3AB/YL68YbQ+lQsjde7nacGWHx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -248,11 +201,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 10:55:21AM -0500, Jeff Layton wrote:
-> Update format strings and local variable types in affs for the
-> i_ino type change from unsigned long to u64.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+On Thu, Feb 26, 2026 at 10:55:02AM -0500, Jeff Layton wrote:
+> The bulk of the changes are to format strings and tracepoints, since the
+> kernel itself doesn't care that much about the i_ino field. The first
+> patch changes some vfs function arguments, so check that one out
+> carefully.
 
-Acked-by: David Sterba <dsterba@suse.com>
+Why are the format strings all done as separate patches?  Don't we get
+bisection hazards by splitting it apart this way?
 
