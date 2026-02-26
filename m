@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97E0DFD45F1
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84246FD45FE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:52:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA89F6B0088; Wed, 25 Feb 2026 19:46:25 -0500 (EST)
+	id AACD26B0088; Wed, 25 Feb 2026 19:52:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2C5C6B0089; Wed, 25 Feb 2026 19:46:25 -0500 (EST)
+	id A5AA86B0089; Wed, 25 Feb 2026 19:52:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90D816B008A; Wed, 25 Feb 2026 19:46:25 -0500 (EST)
+	id 911ED6B008A; Wed, 25 Feb 2026 19:52:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 79B126B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:46:25 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CC771C46A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:46:25 +0000 (UTC)
-X-FDA: 84484766730.25.DE9382B
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 35BB9140004
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:46:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E1716B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:52:20 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16C9A1B61AD
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:52:20 +0000 (UTC)
+X-FDA: 84484781640.04.4D42DDB
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0ADEA140011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:52:17 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RH7RMbTW;
-	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.222.54 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hmHDONgw;
+	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=dmatlack@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772066783;
+	s=arc-20220608; t=1772067138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ACpb0o7E3VaAsC1KFvr2yXYuV7ohO1EROiDs9rJDa00=;
-	b=r0rM0eQzkIhQzX+6ZLBKpIvEyeXhL+mqxQp6gkXtsxvEV5g8VMT8rMPLZ7a5zZQQtOxijF
-	0Xaft1Z4KhMmqL3ScRHOEcTCGIo5hUxWvdmLn7npGmt/enWvEkzZgT+SqsSjfsUkavF8J1
-	7j/55rswlHTLXcEtuETBf09MOokK8lo=
+	bh=tit/ZfajxqvE3xISUpVUeXJRv5DgJC6ZdqyR1I2SKAc=;
+	b=5as+6vtlf08RuIekdK467SUIBpf5WXyX7kuUDVqlFstR7Kug9rEls6aVUJoj+cGoZCiWX3
+	fjLa0fuIDLcsa59a1k26WIoZJ8tHCqyX+4WjrliDIAnNQNItBfYk2+QKTmFenBmYroE/HY
+	OLUyCXfRf0UI3sdJb7J5cJhBIVkILXs=
 ARC-Authentication-Results: i=2;
 	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RH7RMbTW;
-	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.222.54 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hmHDONgw;
+	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=dmatlack@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772066783; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772067138; a=rsa-sha256;
 	cv=pass;
-	b=PA/hIgcz01QPmWN8PZE1abrRoCT9SCqJSjpHfHnhl8jYX97cz0PMEnNetoEkxxK7BiGY45
-	KKN/ql4OijVJsw/s3a2EB0pRgHI/UuBydbcYmdPBaLcSaYZMCLAH/4xqrhSO3Ys76whax+
-	wi25nDM4tf913ZtKGq2eAbpdtS0Xc3E=
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-94acb3d6cceso176734241.2
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:46:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772066782; cv=none;
+	b=2mjGWYDt+59PnFEhDeFWRJXCbqYlFsoYQlMUKYCwF9g3mnLK4VstBWYA6PNYhk9ejY+vr3
+	fLYD28plEbADC+zCJjTYj43thGf0CxjVRVNaVgai7spvyZWc8GEFq1m8HS746AYh9EwoMN
+	Nvy+22AeWOAJ1+LYvNa8I/DTx82u6kM=
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5637886c92aso236818e0c.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 16:52:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772067137; cv=none;
         d=google.com; s=arc-20240605;
-        b=GzHoj/PMHd5PQL9tzPf6TerRqmVtpTGqUCxW8MlEEBF0qBGSHhHNaFUKiifsKiKbAb
-         qCEBW2UwRLIiw+PZRWtCubimUJ6OVv5QSSpmQWz+gYj6sDXHPiIshUEsPOs6c7gTjYOd
-         IJOanJ+kanZToH0/U0AUX7PpQ1rHZo8/8sLXBXfWKxzbddQaVt1Re5rwmdnAl6PBP5Aq
-         52AWVKS859OvJVdGG+C1G8q2R2n42L1uYBmPoPQUM+Yzzl+xWIxdreRLp4Drc3WutYjt
-         zUFqdwgHE5Fd64paw1xcuBXblGyfLmZZuXa8UDEKdw+bbCpoV09HfvsfAHAcDfSkpcps
-         j4hw==
+        b=EqlbW/R4Z6ZcAEDrxX2e1XVHelW/IK5itvxJx49yefyPI6RJ4LetI1I/xJ1cDcGRkj
+         MDulZOXfXcmmuz1QzXviGLavHjJHDLebDOk1G0U0gGJbVu6y4AaEMxjxeMyRhuCRvAXs
+         c3BcSjNCYkoCIWAPlB4ihXRv4ClntcylFJuSB9O/1sm67q6GBNb3TNnwRxH0Hjb0YHZO
+         awK3BSbvsGpzBE/9h4KD4TC4dqlXr5lkU5FUC2NfGhDOLe0LR/mGphUFsW6yPe4koBF+
+         xg4ZlgFfspq68TSF7mcOwFZLW+d9U8pJZgmB4h6UiLnZK1y3dFwfhxb7NrcNB8+++WDQ
+         /lYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ACpb0o7E3VaAsC1KFvr2yXYuV7ohO1EROiDs9rJDa00=;
-        fh=+XRVuKzrm56uF9+4nfZuAys7pTpDgCNXgoZ0+KPSVMQ=;
-        b=canDMUl2sQjo/rnbn7C6Im6rosIj9OSEsQmOYX8R3qc3q3BqmTebbeITnn19mH9JO1
-         b31PmdNEeQf52J1qtyJUh4euNpS+1REjTbJFRLsOqXVzFnrAznFjq634s+lciY8iok7g
-         5axn+qYjp2hneLlaR90wi+eMw9XhTx1C0/H0m8WE+sylE6GEjSvoW9XdpClD9VyDWVwN
-         VMAfLfYdaLJ554FoAWM8bXDgxBHL911ZhSQneIjXBFgUTClfc84HSmnrooz3aDtMPCOc
-         hh37NY1BFIOvj6NgMzTEecxQCUTLNRKWiAp5XCFDG4qc1/YuV2ECapCSiNIF5uiBKeBT
-         YJmg==;
+        bh=tit/ZfajxqvE3xISUpVUeXJRv5DgJC6ZdqyR1I2SKAc=;
+        fh=jKH0qIap7HPcc66WJ9Hk9luW2EUQiQKwA3b+psUzHkI=;
+        b=ZghHRWISd8Xu8Ld9454iqVlrKOk4DYqB58NHTLbww38NAHajn3Jua1d94NpgjJzt3M
+         TKKagE1pkM0g7imOzXq68a2aaEJw4I/yaHk7xiodPQKeiqfQXKWbXhlVDkWaa6umnkT3
+         wCkUyZmn09exFgkjxVbjcMjZlkXY96GLzdN3jOvcmXcU6WSz3BQEBjKlLe1Q6pJBYyCi
+         N0rNl60D2+AIYHsi/drLNIG/juY7rqWNs6tIvtJ/W7LubDTzxPWSdJaa2RqSWccHlURP
+         gRaM7eGtSVjRshR5sHymtGk3FFA4eUWT/h9hKgM2H7I7LsPvkcXAMAXHMAn6r+vKOd/R
+         Si9Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772066782; x=1772671582; darn=kvack.org;
+        d=google.com; s=20230601; t=1772067137; x=1772671937; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ACpb0o7E3VaAsC1KFvr2yXYuV7ohO1EROiDs9rJDa00=;
-        b=RH7RMbTWFAngt3QWurcZxhIxia5SsXJQ4ZJRS4YaUg/GnwPeXApQNcndE7EJoHj57O
-         wOA3Ccv95kC6BthJdZSLk1WSoPK/CLtJeiigM1hgLq0r57EdXOTMfNK4J5wdHd3jM6lw
-         cyApIIiywBwM3fWnQoUMk+gheYgHK+pcm8Xbveu6SfUn4LnIp40ZGI6MfMvFYH3OZxcs
-         RIBzXjD+7aV1/KyYr2tj9WI4BxIrmm14OXlC9LTIO1qDp6sfDSSTG6Wv5sWHvywo78XZ
-         62TH5B6DrQ6uOd+ghmcWglSNtq+XA0L56DHGYhl0r2cGLSSgbis+8ZbiXIemE7vZiQUq
-         dvBQ==
+        bh=tit/ZfajxqvE3xISUpVUeXJRv5DgJC6ZdqyR1I2SKAc=;
+        b=hmHDONgwh4YZVo05H79SKsUmF46682GHRj38N+DF7t+esD2crS7e88PRB3w8SWfVCl
+         NNeIbCxLC3Ti7TeQIIeCcDfrzzxq54gQxGGMNO1zpuMGiamFRM7OGUBhGyTtAjjkyAAR
+         di4RWM45mbj/chZAGFi4KB7ZDY5mgwQaR4saHaLGZ3kIuyAxF/Pb23tDxzu/B8jO/trc
+         PUodrugroNQrHEVkP7gGEic8oHeAg71LPlMlS+0UKXxsnn4oCGz/pY9xgxOb4fjV3sgF
+         wUZ2EvpBv6++JT5vVnZQZxvpzvKMDpgMJUwc0Loe6l/9APkNJ/L++xfPx7RAXZkgwVhf
+         BtzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772066782; x=1772671582;
+        d=1e100.net; s=20230601; t=1772067137; x=1772671937;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ACpb0o7E3VaAsC1KFvr2yXYuV7ohO1EROiDs9rJDa00=;
-        b=gULg7EZQDXCFG8/YEtAt6QGheKhDfxN5ZOorc3iJmJ8lw02WvG8OeWUUP/7L62lrpj
-         kstxeXzTZUofEvblaNzNHp0kZHN2tYKzaXF5Nb7x/UrsHfAKJjz5ojgqgL+PZP5TmGPu
-         j38cykyRghZROl92ZWj2k3hgwDqru+tiE9t8j6u8MlE0pUvrAB7jfHqSS1JRLTJA0+E7
-         Qv6dXZgonlFflLyhrY4CsNQZQCXXXO9Arrtl5UAH5ty0X5+9/qY734+SM2aikSlrInZf
-         gbtiVInwo4dY1Us6tk/tmWudQ1Ov7wpiZfN5jskYw4kP8byb95rQ9TPRlXpGsWueqPJV
-         GmXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxrGqKw404CyF8qYTBrJc8EJ5P8xTuFqdMFZ6/FVX+Eqb9Wd446v/V6a2JFL5tzw4WXKhdRGJXpQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxui/RqMJrQ37AuuR0NGDJwLLmvLQm5aZyr8YY6Ww44M7eh0nqQ
-	KKgFfZlA+zcmjL/XOBVyn4Pg/+sJVs6+dW3oxHyE8e6hqve3Fa3yMkrar5X+WvI1zuW89V4Lhcr
-	jPXhKAzYWy0KkwgbnbX9w9AVtdyRxf0E2nteXMT98
-X-Gm-Gg: ATEYQzxdMokJVE+WusjpLPuafAz+4rfoST4zZNFZJO19jmZGivAhCG2Pfzg/qQJ6ucH
-	5y1CY5LdtBoW/BRhIlvrbcjCIoZngmAgzLUGMyxXWYt5+FmIfDFPEcVwNMoOZ4pQB23ZZL49jrZ
-	GKjxb6jmAEwc4+dPL1/5lpDyTZ9oy7DT0ASnzMQSS/l41i3ambpuEvqt6Cw9AvtMcmtpqTk/DvS
-	zs3VqGKjelPeARjQzSCvTRCaM0z2FD60krTJ4BY/G4byF2mX4bNt7Cc6aQfpWMI50G28ptv6sDb
-	ihrnyko=
-X-Received: by 2002:a05:6102:94d:b0:5e5:6eee:8adb with SMTP id
- ada2fe7eead31-5feb2e8f35emr8956594137.4.1772066781725; Wed, 25 Feb 2026
- 16:46:21 -0800 (PST)
+        bh=tit/ZfajxqvE3xISUpVUeXJRv5DgJC6ZdqyR1I2SKAc=;
+        b=u2V033JMHxKB9EYbHZ3erNfFMeIs5trzsJoqaCxdscn7JsRM22mDs/9CzeHXBq4n5c
+         qy4JLxKbqg4FX19ItCXhTk0446/i6NfNlLz/I/38JCpikAl747DSTHRYHGalE9lKA0E9
+         Osz2ZwXIlwfEcfOwnmDKKfYO4wBAMDvDUkjOLGNhyABuzjRPNlllgOtUeXtldvj7fthy
+         IwsYRaHCj0ca8VGLui2mB3B5RBaBg1YOVV4+/llY/LaUaWV/pvx3UmlPtOhAuyeV4RhE
+         +ZOeOoEaSt/vqEf8KvsqqGOU4qk+xAjAzV+LPxh20JfPd7E66EoGCiS4sVzEIM26D9u/
+         EhKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOR7xfgknCmgkEF1ptKqK6Iaw9YVTTwFw+xE6ItWwy9+d2dbyTfcVm5O9xSsE6QnGb7WeOM83vyA==@kvack.org
+X-Gm-Message-State: AOJu0Yy72sCUErbzMZqpTi1bGVMLxgt/ApkYixBvpDELgtPAuPWaGgc4
+	hgC485BqxE4LPWC6Ch1u6uCOsYnenGC9+YMK82C9weC0yYcRfRdwO7ljuDCZuj4qDFvUE8KWiUN
+	Wj7JZrUDn0NNo7PHbJ5g0LB3riesetv8L19D2ns4e
+X-Gm-Gg: ATEYQzyLP5YFikh+36oxyiVNQqB8wN0Zzjb1wY12zmUlA0kRJPALCSBl/KGclUWl/+b
+	TdJZD6MXKUZyzTU8kI2XGR5hFObCdACin1blucppPbtNGPtpBk9+DwUO0EQbygWrdNLIx+Ukwcr
+	0/lJj2qKSMTwUrqvNOEWO0h8/UvRwYtqJ4lXzjMf33RpJY9we18q60pXfqlXy/mwrGV8azqr4fI
+	VLGY1FfYZcJBwCuHHWnh25Qp0guF3bYRq+4fyqPXddI48oOIhu/WuwLERqlJbZqoRXyU5RVmOrW
+	Cer0Gnc=
+X-Received: by 2002:a05:6102:3f0d:b0:5ed:f13:e58a with SMTP id
+ ada2fe7eead31-5ff1419f7b6mr1037473137.37.1772067136513; Wed, 25 Feb 2026
+ 16:52:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-8-dmatlack@google.com>
- <aZ6rB-zmpaR3RLB_@google.com>
-In-Reply-To: <aZ6rB-zmpaR3RLB_@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-10-dmatlack@google.com>
+ <aZ606sDJxtfNF6qW@google.com>
+In-Reply-To: <aZ606sDJxtfNF6qW@google.com>
 From: David Matlack <dmatlack@google.com>
-Date: Wed, 25 Feb 2026 16:45:52 -0800
-X-Gm-Features: AaiRm53bfmGZyNFLKGENFMQ0ksttnoZ823ayheFdxpLxg9pxKiAgxb_V1e66-JA
-Message-ID: <CALzav=fQtLd0DfWcVku1BDUzcvvYu7MBY+=G7rMMr-gjLUioAA@mail.gmail.com>
-Subject: Re: [PATCH v2 07/22] vfio/pci: Notify PCI subsystem about devices
- preserved across Live Update
+Date: Wed, 25 Feb 2026 16:51:47 -0800
+X-Gm-Features: AaiRm51I1tTdJRO5CbbBFYwdOmR4S6VSPvkujC59eyupuwvOv4iLZLnGYRmW3DQ
+Message-ID: <CALzav=cH0-qqQJTOjDD7pHzsFeZOir5DoC3f1hhDg=jqK7vdgw@mail.gmail.com>
+Subject: Re: [PATCH v2 09/22] vfio/pci: Store incoming Live Update state in
+ struct vfio_pci_core_device
 To: Pranjal Shrivastava <praan@google.com>
 Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
 	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
@@ -144,14 +144,14 @@ Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran <ajayachandra@nvidi
 	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: j9buifxssyopre56izd9rbn5t6mu9yxb
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 35BB9140004
-X-HE-Tag: 1772066783-231339
-X-HE-Meta: U2FsdGVkX1+2H0+BquQG1OzAwJK14FCHlxOISdBmiLw9NDADUswtf/wcMdFLOMYAJvmErH7EiSCjwPEioybqvi9QyiAbi64sCb82IEIf6sAurEDqdZjSpstXa13ZqsiLdBNzJfMjq60OjUwbIv15IdMiOqom/9TIF8aG2zsTG7dbGJxF/mzk0YHH64qK7JtucY/svEZGH+orQlNADe3sDVZaR7DpkJpnibhX6GOTXJhnQ4RqkvkAn3F9PMefGyDi2ByCWeUshYHz9sxQRnQwUmCzAWtmT9+zV1kZ9O66UMcCy0UwwbDuMyaV4MMTX3UVCn8VKodkjQzU1BGfufUoVI/aU2yAm6bFBDS16rEkB2k4S85ZbUsWt6YAJ23mAHDcM6Ba2NmxhzApzW0xVYLjSTtjf7KNcK654aymwE5ZuJwI2geEV1LuSFDkqdZlrVjUKllk3MjEzi4BKF68BtW+QkR16ZNgf0xls1pCWk/3BNzPb9Rg2Y22K2pofeKB2WtDC7r8Qw2WgnbtvD5uFeFXDsLM+r9nLi6sKk0AIaZGnBwnU0cUNo5HGAFp0I5HZKqEakBjNzbtL6V5jUJ8m/HlbwovVDmnYd6bYXr2leF5XMqu7qiMEsQawJpLMYLDSjdpzeFBIGqliAuYGbgAsftVwBOhSiJ3E0sWB0ArIgZcUp24LJFdMzyvBA9PvwN5Fzye3gJ1qPi2b/AVpfmNyXRGmJf3achaAZQhDdKvngrG86hy/OmYGUIt3HSFwQUnlI79Js4jRL30cexovdORH522/wd9zozFRF01QSUaOxOVz8mADlTrbx/GXoOPwuDiB1cVa2JmTXgKNRmPkmBjnOr6jNzYYsV+6MwZdrCHemIbLnnkpz3eb/PN1l5Iqn9iC5XgP9KFNBYTSbNP9Xod3AW4IH0PNBgAS3g57ci6O3pB+2hZEGO/mHY89ZQ82TKYnr6Vfa1x/XIEOSlbFdTE+De
- D17sTy7C
- HEoOoUITKrLk/ZULqsR5i6Ag6tMtXssqBUulTSuE+NE+M/EtnSBs8UWrvuCV7PME9ASmLN7g9KVGqaQWmtdnLCq7f9ZeCqm3k7xfDjm6a/eL+kNewuGLnFw6L3R4/FTTEmFzpENXsgTJWGqL6aLlIgcOUP+hglE6CZsIvaEGQoQpVFwAJdCynG0kWEL9URVrk8+gOUsecmnTzakjgNUJor9ayLOo3szWAma0LagYcxQ+N/grbXR/67jsa4tZ1j9lNYyXui3pZUyV0O/8=
+X-Rspamd-Queue-Id: 0ADEA140011
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 6cs5qxuheyeuhs4oiowbaj3bfyia8d5k
+X-HE-Tag: 1772067137-839169
+X-HE-Meta: U2FsdGVkX1/MOmOwxzM3cHAoTjFiFUnhBjGwQ3LrtiZSc8NQYozId6kdk0Cy9w88Lp1CAbPnNsX+/30PXg1mMUaI/5UMx/1nF3+NKqafTTUOqyHtiukyCWn/6VNAWxfoEYnvuRNBv8O6dDB7cAyMKFs8NvVYpTePcyQOJF2fF3jX7+evMI6H76vCHFPQQGSSeGQZ5tAuTFBqB72csN1uCaAQyBAlVjeV4/UDRXvn6yZlOwHKj9qDp6DfsfzkFTWjexR3+c410qkWGutLexEKgbs8+mQ+tk5Zge++JA1vxas4ZuiEus5ygp3xgu2xqjkFXoN4/duo13erqAXOgPsmvPYrFk7WWgKSDc5JQnjfuvmwJ7/Cnluud3LHVj87lmtqc3HB/EEkyUBu7vNB+lFO5SmZYCTpQ9KjBudh5WNgQ55sENle39ZmB7ngBkfzrr0wvsWFU1Mj3OQkWZdyag2omCD0Es1+8DDMrVga02sDjsJeK74E1FVYmnywWvongvPKuhIaVq7DIkE0mXpp2XZfVkyl0zrisC/jCipSXt4TVh86BQP9E+4GVFEUVt3pLgIpvcdgt1nBMIBEf5D68W8wTz4zogGMhJiOAqbhhSNIX9wQQFy6cP3R0EnKsyCfMl0jnWIuMGUpm6Oig5shVMNL6QWkCBrDL4gLZLf0zzn0VPZ39ZvTX9ZTHdNsgxqJIuYd2DJUQA0v9/wwOEpWXx7EKJY0oLNAkunDcmWuyaEkeDf4yWqFTngPDGUUmK9d/1k3Gry399jFXscTFdDMp5TC/vy+7Ore8odWUO/XUuH9wZLO0H3XrcxS6h1Pgf0c3QbunIlsSl9PIEuGX9oqCvddSCbSugAiKJ2gL/Zqyz5VrBia+ZlwAE+Q+L+sOnOzskINKmFy/0Q1qRYLROilRRzsyVdyMONPk6u3cMAqBxyjIJFdu7JY2wmextfmMJjCcOPaPQB5i7RLjoPWWfU0ViO
+ JXvyq0dc
+ 9werCuO0d23Msuw3OsI3S65xT90yvHm3+xH23SfOPLU989DK7y5pAiQr7zioz16hCUKALz+1sGItV3stkiVNljT6dWteKZyWSyjtGK/qSAX6vlx9xkaz/tvaYRcWR8VEZSzoe4wCTrpK0YXyP3kc4aOu2+2s66qR2ReBc+8OXjf2MdvW+2MBlMV/GNighovjmFn4OMQq7lAY0swnL/cPRnrDh737cd/VcRWYAdb6tPqROqwvC6K2aj6YZRl2lo5DtqHdmaHN7rliZXA30mC22TZxEZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,26 +159,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 11:56=E2=80=AFPM Pranjal Shrivastava <praan@google.=
+On Wed, Feb 25, 2026 at 12:38=E2=80=AFAM Pranjal Shrivastava <praan@google.=
 com> wrote:
-> On Thu, Jan 29, 2026 at 09:24:54PM +0000, David Matlack wrote:
+> On Thu, Jan 29, 2026 at 09:24:56PM +0000, David Matlack wrote:
 
-> >  int __init vfio_pci_liveupdate_init(void)
+> >  static bool vfio_pci_liveupdate_can_finish(struct liveupdate_file_op_a=
+rgs *args)
 > >  {
-> > +     int ret;
+> > -     return args->retrieved;
+> > +     struct vfio_pci_core_device *vdev;
+> > +     struct vfio_device *device;
 > > +
-> >       if (!liveupdate_enabled())
-> >               return 0;
-> >
-> > -     return liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
-> > +     ret =3D liveupdate_register_file_handler(&vfio_pci_liveupdate_fh)=
-;
-> > +     if (ret)
-> > +             return ret;
+> > +     if (!args->retrieved)
+> > +             return false;
+> > +
+> > +     device =3D vfio_device_from_file(args->file);
+> > +     vdev =3D container_of(device, struct vfio_pci_core_device, vdev);
+> > +
+> > +     /* Check that vdev->liveupdate_incoming_state is no longer in use=
+. */
+> > +     guard(mutex)(&device->dev_set->lock);
+> > +     return !vdev->liveupdate_incoming_state;
 >
-> Nit: We might need to handle the retval here if we remove the
-> liveupdate_enabled() check above (as discussed in patch 2).
+> Since we set this to NULL in the success path of vfio_pci_core_enable()
+> I'm wondering if a failure in vfio_pci_core_enable could cause a
+> resource leak? Because vfio_pci_liveupdate_can_finish() returns false
+> as long as that pointer is valid, a single device failure will
+> perpetually block the LIVEUPDATE_SESSION_FINISH IOCTL for the entire
+> session preventing the LUO from reclaiming KHO memory.
+>
+> Shall we also set vdev->liveupdate_incoming_state =3D NULL on the error
+> paths of vfio_pci_core_enable() ?
 
-I think you mean for the below call to pci_liveupdate_register_fh(),
-but yes agreed :).
+LIVEUPDATE_SESSION_FINISH will also perpetually fail if userspace
+never calls ioctl(VFIO_DEVICE_BIND_IOMMUFD) (which is what triggers
+vfio_pci_core_enable()). Or if that ioctl fails before it gets to
+vfio_pci_core_enable().
+
+It's not a great situation to be in, but this is why can_finish()
+exists as a callback. Userspace must properly and correctly restore
+all of the state in the session before the session can be cleaned up.
+And the kernel is not going to handle every possible edge case (some
+files in a session are restored but some are not), at least not
+initially. If userspace gets stuck and cannot recover a resource then
+userspace will have to reboot the host to get back to a healthy state.
 
