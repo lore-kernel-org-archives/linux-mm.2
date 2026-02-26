@@ -4,113 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A952DFC5905
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD02AFC5904
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:10:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 838EB6B0099; Thu, 26 Feb 2026 02:06:23 -0500 (EST)
+	id 48A3F6B0089; Thu, 26 Feb 2026 02:10:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CFF96B009B; Thu, 26 Feb 2026 02:06:23 -0500 (EST)
+	id 462A56B008A; Thu, 26 Feb 2026 02:10:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65A0B6B009D; Thu, 26 Feb 2026 02:06:23 -0500 (EST)
+	id 398D56B0093; Thu, 26 Feb 2026 02:10:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5262A6B0099
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:06:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 248376B0089
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:10:11 -0500 (EST)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 116AD160A00
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:06:23 +0000 (UTC)
-X-FDA: 84485724246.06.3CB81C4
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3086C20004
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:06:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="SA/xKPxf";
-	spf=pass (imf03.hostedemail.com: domain of 36_CfaQYKCKASURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=36_CfaQYKCKASURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7F291CCD9
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:10:10 +0000 (UTC)
+X-FDA: 84485733780.06.42247E0
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D2817100009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:10:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T5RbrvYi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772089809; a=rsa-sha256;
+	cv=none;
+	b=0b1TlOTbjELdAijVn92L5NdhsqfZ/+yXE2WYuZzYs+ll6Pnep6XFu/dp49JABF/ksoJbrq
+	uAOUwEHAVayu73UlzaWUz5clONG/y49wgXPvWkVdOalt1gwmnILHDtuKwrs8PVKZJUtLOo
+	yCyyMjRrughnicoUSs1mGBQG/tp2viQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T5RbrvYi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772089581;
+	s=arc-20220608; t=1772089809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5I1QOj3Vyf2nTpPPlemTkxt7qh7oWHe4YCv7YkUsRic=;
-	b=XRyuoXEbabf03jiAMMQQuN44ba95SysGcNLfBnQImk3T889jj0waIFgAxggoNOoDlF/8DS
-	R1SKOwKoSiiktfflY/MPP7qQGNtt+GMkHvBzSgcJvkuZqcYEdRFe/Co4pCNr3UiVjZDBH9
-	dZISbsNtlTy+qxuUO+6LIQtews5wo6Y=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="SA/xKPxf";
-	spf=pass (imf03.hostedemail.com: domain of 36_CfaQYKCKASURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=36_CfaQYKCKASURENBGOOGLE.COMLINUX-MMKVACK.ORG@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772089581; a=rsa-sha256;
-	cv=none;
-	b=HZh9tD4WT3CDmBegJMVm+sDU5D0sH5X98rln4l1pWicojUlqtskcU+YhsIypI9zDFw6pUS
-	BeB/7jRd82zudh4xrABhtAsKjo77YdLqjRDnPfz7kXoWL6I5KxX9AhG/xPPCdrfMfzg2qu
-	D2n+aTfl7MW/fL8/IqlK/hVrIS0Eq08=
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2bdb58f18f0so6636848eec.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:06:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772089580; x=1772694380; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5I1QOj3Vyf2nTpPPlemTkxt7qh7oWHe4YCv7YkUsRic=;
-        b=SA/xKPxft08Qo/IbxfFzvKsku8uTbnhl8aWTCPQjCEa+GyMmtp+Z9jSCEDaW5izyTA
-         n5afPJcfD+lwJ6l2OYPk+WHMVSc1+mEduLh7GaUPH/MEZxLdYEDViHUyN7YhJjThTayq
-         c1aZYHVVxgltbJcQwHcYGz1ye6f8nKr+lcW2B7bdiOq/9fhwjB62aAj1GAw0xqNsSAgA
-         q12ofT4cE/RX2bqc3x8plzcYUxN7ezzz/x5oC8rdnJIqqrfPznnZkVgO6qvfNU8md5WJ
-         IA4tk7ErlZKNe9Kc22ExWGdKVCYgq2IbLqnmomx2/aOIZEU9GSMR9yPQmJwz77OHo0aT
-         ov/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772089580; x=1772694380;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5I1QOj3Vyf2nTpPPlemTkxt7qh7oWHe4YCv7YkUsRic=;
-        b=q8M6XGPe452p0GhDeT3lwCSWW7rDDGAYB8oKlCxNN+BILXbery+JUiSQXo0EEkDOoc
-         kZYgtpBA/MQIgPfqdfOL4hxcLf7ixCzu5WWnHTyPgwd68KWfcajLkv21P2IAoJKapIzR
-         aA8h9MQmAHOW5kD8unsaz2qNHPscx7zd8S1WElKJSpxdsM9IayFrDoX9PhJfRd2qr0Ac
-         vCk5igZEwwhc2Bq5gc10g8/94F03xKj28Gnh4eFg44APIy8jrHAT8tH5xrfIY6p+j2jl
-         +f9w+RB+hW1ZLUMtOtq218MoIvcR6pUDv6h+R1EdipJkrc4wrP+PGZiVCmKWLh4xgY6s
-         u95g==
-X-Forwarded-Encrypted: i=1; AJvYcCXwVL5ltVGL5Bnv6NO4/WwWd4Ue6bUKCIcQcjQ9CEITfnN1z8TeIqK+RTzoc16NV5UUQiPRMt5Vag==@kvack.org
-X-Gm-Message-State: AOJu0YyNaxvet5GJsnHrozFVjwiWBMKDmCZe8iM7b/NCMk2bZVh/mYwK
-	+O4SudQuwEakt3fHlWk/ZjXoYyplBTwNsBX0lBivtIbuQ3xFHMVYgTMWv2J9lsXeVpAB5LV/M33
-	7HNRXTg==
-X-Received: from dybri2.prod.google.com ([2002:a05:7300:f082:b0:2bd:c0e6:3762])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:4348:b0:2b4:5b59:af52
- with SMTP id 5a478bee46e88-2bdd301cbc8mr527999eec.29.1772089579483; Wed, 25
- Feb 2026 23:06:19 -0800 (PST)
-Date: Wed, 25 Feb 2026 23:06:09 -0800
-In-Reply-To: <20260226070609.3072570-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20260226070609.3072570-1-surenb@google.com>
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260226070609.3072570-4-surenb@google.com>
-Subject: [PATCH v3 3/3] mm: use vma_start_write_killable() in process_vma_walk_lock()
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3086C20004
-X-Stat-Signature: 41c8b6mhyw8eiskjcda36nrhgpd9nwd5
+	bh=blph2lJMOWUKWT5xAcasjhPc5lsVgPYBkYe9OiBnrFo=;
+	b=6oZcQJCNBxJCiBPKcB5LbaoCbO+vHGXUXmZKprEaCWzzcdzSZUrQ9UZKp5xdzm+pJhSqkO
+	An2yOIvGXMsjquezdYJ2vhoObxQaIvrqTP8eDJUgzi7ThmBf5vcdIqQB1rW/8H6ozei614
+	ztGcnBi2OhO1MVB5pRraskjtg/Z5mgI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772089806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=blph2lJMOWUKWT5xAcasjhPc5lsVgPYBkYe9OiBnrFo=;
+	b=T5RbrvYiPNIdRhfvw5JAikOpxhVjBz1xrmoTd92fOVEGmDQ2xWgabqHv755kCfxYLwuix/
+	WCR/+EXQ1md0c18KGEyzr/nZ40BHt9egIeTftkrFB8u0OPfAugKD67i84YwbQH3rOQ0kZT
+	G+E9PoYBAV8U3l3PoT11fjOSTDxsIIg=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	riel@surriel.com,
+	stable@kernel.org,
+	vbabka@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree folios
+Date: Thu, 26 Feb 2026 15:09:40 +0800
+Message-ID: <20260226070940.96226-1-lance.yang@linux.dev>
+In-Reply-To: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
+References: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: cht1bremdkdp7az5wg6xf5qxnjesnihq
 X-Rspam-User: 
-X-HE-Tag: 1772089580-619376
-X-HE-Meta: U2FsdGVkX19uou5sH5Xk8UTPvoiatH7JespMCzanJAG7pA4FC2wHTxETSZ8LPaoaNSASA5DCXUhcy6zB92cKC8lcqh7F592/cnl1ZZj7jZoH4jMnL2BOyCBL+m9HKDFN4pr44bPlRk2W5fX+NNvzYxOLAPRCOBj5ZtksvOEcBMfJfwktM5kWR0fBL5SHWRkUyr0hRJpKdPkwZEFyc5H1VOQMQKhYXHoKSPExBASi0J2hBW8RS6OBUwuj3pzmK5tz7Gk9AC9QxEBN5MplNIB4cc3CO7T1V+LQBQ/vdc8qrJCON6Glri4DIjYjSbz4Z39h/g7Jma9tveYz6ocNpaHNxutP0C6VrJq9sipfV4QOGFpyknRym2b/+SiI4kp8J8zRCMAjy7wYDsl8vBvNy+AYjQUdEFpz27iBQeNdcvp80dFCtDiyqyxTf+vnrFemxrtv10xnfiRoWagjGVKoNQXQ3Ll0nOv3axi3I8rk2ZWzwpskO5zW0qoEjFX1bnTiccBItNHlKN71ck2bTdxFPOgfiVhSIn2nJAoLz0amjbzTiRgrSkrnyy1mtTBG+BBeQ7WGBASVhWenMYDf1O2GOm79HO4Azkqz0VUl7QZ6OVJrywNz4BgSeJc4eE00XghNaN4zk4CIGj2vnL047wW25anw8v1uwAxASmObFkkFlL+HhjdV87TbbZMicCnngRF1ABKo11IjhxL7JHIroFwYcrQgHO1ff60I68EoeAJrKrUVTqdQNpECoThvct5mZy6N47oCAT3r8KTV26mqBkz7VBUIN24jX9kcItpL6en++Am2BSzEaK+q1rOqwb5OESRLAaTxBrj1ZtFL9WHRhUTtbX07TPKlcumKlUcQ5s/ZnsG8L6LW9Ii02ISImw0mvToH3V6OWWpCZMQyu8/WeCQgsaX6ie1rQizc2boYzy1pxtFS9b4x0OrPBh1BGHEApTCajP1n7ZCB8BwLK0fHJLJsg4t
- byOCeGzX
- My3g5s4Cq7nfNByUwp5bTw5Hx/h0KRCjYTLrjQE8Fxld7wnzz+5R2Oo8UlTrFZeu27+J+1epYn2d12NrfD8tSrp6LKyfM0Dgwags0U9KYFeYavnAVWV7M53KaigzZ+zpRE//N9VPCC0dUyx1ul4nfsqiFZ4rF4rAhJl57pRnqd4eM9nc5ZBGN9lvj4I3kXK32iKN/gqslPbC9Uc3ZzKWi73/gheSU5Mt8j1GHZD6oW89ujEUAd+MxzF5/pQinc1wHPSmPlJYd4gPcTNYecd1N/RAAQUSHJs72sUnZKgkBkXD53jH5hmSOF+T46Xg//pVOV45Hb4Ns0aDcfwuM481EOuquHYCBNJ4SFKj7F7t2VZXcalQwGK3mgFViOvBA0Mcgrw1EiqNztDx5EbabpAEU4EdkY7l6YEjaEUfvT8eWHuUMjYIaWo3EymhEpyL+I5/EyPxeLMz2SAQsr3VGOy9nnbjZYo7Ohuy3dYOxj60GS7BCh5Ii4FT422xfzw1fXohfmpt1bWk8TXjPIswvALNJa2I4BtHp51MhsOD/4OScNarg13d5rNGBj3DBZh4k1K4uDxQrC1YvvKr9yMBN+wJxilFAP8l76vAM0zCs1T1xYYOm07wV/zMf3On3p39oMVESxNrFgquUpVzVxPWrBpOi95pkQqAL3wqCbLUT2vGNARnmJeMB8TUDVzbq8PHQMGpw4Aqz1QJrn+hvp3YKl36l/VfqXdVjQIp0UtuvJNGNax+XN5MQ3u5i689Eng==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D2817100009
+X-HE-Tag: 1772089808-49892
+X-HE-Meta: U2FsdGVkX18VNxZwbRyDF4YSOuvrLsCwwa4yYRGh8yt5hvDSxSrfIPT+8YMCwN3cb8ser4wsT4qaP9nVcmQW/kvd6cbUtycC4MPyMwq23Utc271dVAYMIusMCo1KXJFEgRgZ45aW11NXGfzzxnWewXlr0Xo741cMP59N6Y7iFhkHP6iW360OSiRvlm07IXuV67U2COyTSBz8+JcAvjVaa0bxHWGLFa8v7q8b4Gvmw5PhGr75MrVozVczOYpuShDO9nHgwjwooeFecgMd9yJcQ9gGgh9w4tVwmGefu3pgjXTnBmndqWr+EUV7cUpM1u1nISGZKkS1Nw/NTFPxalMwxBISMdiag4SymSctkBBiew8z9y1PY5M+mfsEA5zvPvOV0+RRZ+BelmuomiAFFfS4nDniJBArjMiw8ajcN/yicLPkQruJJxsAJuMuNkUAD6qi4GyKTOCUhpQ30EKAQg7jtN4jVKfOAw9qkfRz6EPD/+IBAGqObNV0K7ocr3Kvt/8vXOSiwKekHciMOwjhxeFBBENBlQOSnchAkAvyEUAZShSH84cNowKTNoCoBJVYg3CBoGHxI2z6xVsTpnNmZ6tkfZHImPdzMoY81i/8x27h2chAnpudW9V78MVcbmvhNwqljpkjZAPrtx3FmMGeR6SVh6O2/23G5uJyBCp7Og02MN2cgwEjQuCSufp+epzRZaJozJES8GPJq8M6C7CmnC8YQ/H8Ag2Ebr17d/ZQvkBbNmIkK1r+F0K0P1Srf0EJSaWZ1Z/eII72mv9mosjknd+e0/ikuDqPLZx1zD/bG10fknbpHI3n76ybPDtqLSPCL8r4ju6dZ17UpvkZBKRjWyl9ZOPjzEV8tExxywdO29fmtBLdfdxRR214PsoxTq5bfQXJpuHNXsRtQrM1MAmmOG7arDcqtDxSTwTlCiVzQcn9jUy25vSdG0pI0B7WPUcnMwJ83t/JAUfbAprvfafchas
+ b+lBpsfB
+ g20vjswOVCjRULYVFLGVExul8TvDLroqIdRIkgODdk8EernzIGfj1BJ9L25a4UlR4XEhh0QnFmNmTnzlCS+dLFekxxzjzIqkNHj/RG6Zj7ePmBUq6d8zMl9/U5Q8GHqQmVkxuKsIZscZt3XZwqZAYcOI+Edp0IW3IebqKY3YKSeju9fJ3QZdviGpad4NBDb9UJroHwDldHve28DkiiaigGErPX4Xw8C8U9F4ny95gqm+9VpRkrKOmvhgYjQO3PQvg/m84
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,241 +99,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace vma_start_write() with vma_start_write_killable() when
-process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-Adjust its direct and indirect users to check for a possible error
-and handle it. Ensure users handle EINTR correctly and do not ignore
-it.
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- arch/s390/kvm/kvm-s390.c |  2 +-
- fs/proc/task_mmu.c       |  5 ++++-
- mm/mempolicy.c           | 14 +++++++++++---
- mm/pagewalk.c            | 20 ++++++++++++++------
- mm/vma.c                 | 22 ++++++++++++++--------
- mm/vma.h                 |  6 ++++++
- 6 files changed, 50 insertions(+), 19 deletions(-)
+On Tue, Feb 24, 2026 at 05:01:50PM +0100, David Hildenbrand (Arm) wrote:
+>On 2/24/26 12:43, Lorenzo Stoakes wrote:
+>> On Tue, Feb 24, 2026 at 11:31:24AM +0000, Lorenzo Stoakes wrote:
+>>> Thanks Dev.
+>>>
+>>> Andrew - why was commit 354dffd29575 ("mm: support batched unmap for lazyfree
+>>> large folios during reclamation") merged?
+>>>
+>>> It had enormous amounts of review commentary at
+>>> https://lore.kernel.org/all/146b4cb1-aa1e-4519-9e03-f98cfb1135d2@redhat.com/ and
+>>> no tags, this should be a signal to wait for a respin _at least_, and really if
+>>> late in cycle suggests it should wait a cycle.
+>>>
+>>> I've said going forward I'm going to check THP series for tags and if not
+>>> present NAK if they hit mm-stable, I guess I'll extend that to rmap also.
+>> 
+>> Sorry I misread the original mail rushing through this is old... so this is less
+>> pressing than I thought (for some reason I thought it was merged last cycle...!)
+>> but it's a good example of how stuff can go unnoticed for a while.
+>> 
+>> In that case maybe a revert is a bit much and we just want the simplest possible
+>> fix for backporting.
+>
+>Dev volunteered to un-messify some of the stuff here. In particular, to
+>extend batching to all cases, not just some hand-selected ones.
+>
+>Support for file folios is on the way.
+>
+>> 
+>> But is the proposed 'just assume wrprotect' sensible? David?
+>
+>In general, I think so. If PTEs were writable, they certainly have
+>PAE set. The write-fault handler can fully recover from that (as PAE is
+>set). If it's ever a performance problem (doubt), we can revisit.
+>
+>I'm wondering whether we should just perform the wrprotect earlier:
+>
+>diff --git a/mm/rmap.c b/mm/rmap.c
+>index 0f00570d1b9e..19b875ee3fad 100644
+>--- a/mm/rmap.c
+>+++ b/mm/rmap.c
+>@@ -2150,6 +2150,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+> 
+>                        /* Nuke the page table entry. */
+>                        pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+>+
+>+                       /*
+>+                        * Our batch might include writable and read-only
+>+                        * PTEs. When we have to restore the mapping, just
+>+                        * assume read-only to not accidentally upgrade
+>+                        * write permissions for PTEs that must not be
+>+                        * writable.
+>+                        */
+>+                       pteval = pte_wrprotect(pteval);
+>+
+>                        /*
+>                         * We clear the PTE but do not flush so potentially
+>                         * a remote CPU could still be writing to the folio
+>
+>
+>Given that nobody asks for writability (pte_write()) later.
+>
+>Or does someone care?
+>
+>Staring at set_tlb_ubc_flush_pending()->pte_accessible() I am
+>not 100% sure. Could pte_wrprotect() turn a PTE inaccessible on some
+>architecture (write-only)? I don't think so.
+>
+>
+>We have the following options:
+>
+>1) pte_wrprotect(): fake that all was read-only.
+>
+>Either we do it like Dev suggests, or we do it as above early.
+>
+>The downside is that any code that might later want to know "was
+>this possibly writable" would get that information. Well, it wouldn't
+>get that information reliably *today* already (and that sounds a bit shaky).
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 7a175d86cef0..337e4f7db63a 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -2948,7 +2948,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 		}
- 		/* must be called without kvm->lock */
- 		r = kvm_s390_handle_pv(kvm, &args);
--		if (copy_to_user(argp, &args, sizeof(args))) {
-+		if (r != -EINTR && copy_to_user(argp, &args, sizeof(args))) {
- 			r = -EFAULT;
- 			break;
- 		}
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e091931d7ca1..1238a2988eb6 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1797,6 +1797,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 		struct clear_refs_private cp = {
- 			.type = type,
- 		};
-+		int err;
- 
- 		if (mmap_write_lock_killable(mm)) {
- 			count = -EINTR;
-@@ -1824,7 +1825,9 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 						0, mm, 0, -1UL);
- 			mmu_notifier_invalidate_range_start(&range);
- 		}
--		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-+		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-+		if (err < 0)
-+			count = err;
- 		if (type == CLEAR_REFS_SOFT_DIRTY) {
- 			mmu_notifier_invalidate_range_end(&range);
- 			flush_tlb_mm(mm);
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 90939f5bde02..3c8b3dfc9c56 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -988,6 +988,8 @@ queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
- 			&queue_pages_lock_vma_walk_ops : &queue_pages_walk_ops;
- 
- 	err = walk_page_range(mm, start, end, ops, &qp);
-+	if (err == -EINTR)
-+		return err;
- 
- 	if (!qp.first)
- 		/* whole range in hole */
-@@ -1309,9 +1311,14 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
- 				      flags | MPOL_MF_DISCONTIG_OK, &pagelist);
- 	mmap_read_unlock(mm);
- 
-+	if (nr_failed == -EINTR)
-+		err = nr_failed;
-+
- 	if (!list_empty(&pagelist)) {
--		err = migrate_pages(&pagelist, alloc_migration_target, NULL,
--			(unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
-+		if (!err)
-+			err = migrate_pages(&pagelist, alloc_migration_target,
-+					    NULL, (unsigned long)&mtc,
-+					    MIGRATE_SYNC, MR_SYSCALL, NULL);
- 		if (err)
- 			putback_movable_pages(&pagelist);
- 	}
-@@ -1611,7 +1618,8 @@ static long do_mbind(unsigned long start, unsigned long len,
- 				MR_MEMPOLICY_MBIND, NULL);
- 	}
- 
--	if (nr_failed && (flags & MPOL_MF_STRICT))
-+	/* Do not mask EINTR */
-+	if ((err != -EINTR) && (nr_failed && (flags & MPOL_MF_STRICT)))
- 		err = -EIO;
- 	if (!list_empty(&pagelist))
- 		putback_movable_pages(&pagelist);
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index a94c401ab2cf..dc9f7a7709c6 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -425,14 +425,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
- 		mmap_assert_write_locked(mm);
- }
- 
--static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-+static inline int process_vma_walk_lock(struct vm_area_struct *vma,
- 					 enum page_walk_lock walk_lock)
- {
- #ifdef CONFIG_PER_VMA_LOCK
- 	switch (walk_lock) {
- 	case PGWALK_WRLOCK:
--		vma_start_write(vma);
--		break;
-+		return vma_start_write_killable(vma);
- 	case PGWALK_WRLOCK_VERIFY:
- 		vma_assert_write_locked(vma);
- 		break;
-@@ -444,6 +443,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
- 		break;
- 	}
- #endif
-+	return 0;
- }
- 
- /*
-@@ -487,7 +487,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
- 			if (ops->pte_hole)
- 				err = ops->pte_hole(start, next, -1, &walk);
- 		} else { /* inside vma */
--			process_vma_walk_lock(vma, ops->walk_lock);
-+			err = process_vma_walk_lock(vma, ops->walk_lock);
-+			if (err)
-+				break;
- 			walk.vma = vma;
- 			next = min(end, vma->vm_end);
- 			vma = find_vma(mm, vma->vm_end);
-@@ -704,6 +706,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
- 		.vma		= vma,
- 		.private	= private,
- 	};
-+	int err;
- 
- 	if (start >= end || !walk.mm)
- 		return -EINVAL;
-@@ -711,7 +714,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
- 		return -EINVAL;
- 
- 	process_mm_walk_lock(walk.mm, ops->walk_lock);
--	process_vma_walk_lock(vma, ops->walk_lock);
-+	err = process_vma_walk_lock(vma, ops->walk_lock);
-+	if (err)
-+		return err;
- 	return __walk_page_range(start, end, &walk);
- }
- 
-@@ -734,6 +739,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
- 		.vma		= vma,
- 		.private	= private,
- 	};
-+	int err;
- 
- 	if (!walk.mm)
- 		return -EINVAL;
-@@ -741,7 +747,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
- 		return -EINVAL;
- 
- 	process_mm_walk_lock(walk.mm, ops->walk_lock);
--	process_vma_walk_lock(vma, ops->walk_lock);
-+	err = process_vma_walk_lock(vma, ops->walk_lock);
-+	if (err)
-+		return err;
- 	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
- }
- 
-diff --git a/mm/vma.c b/mm/vma.c
-index 9f2664f1d078..46bbad6e64a4 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -998,14 +998,18 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 	if (anon_dup)
- 		unlink_anon_vmas(anon_dup);
- 
--	/*
--	 * This means we have failed to clone anon_vma's correctly, but no
--	 * actual changes to VMAs have occurred, so no harm no foul - if the
--	 * user doesn't want this reported and instead just wants to give up on
--	 * the merge, allow it.
--	 */
--	if (!vmg->give_up_on_oom)
--		vmg->state = VMA_MERGE_ERROR_NOMEM;
-+	if (err == -EINTR) {
-+		vmg->state = VMA_MERGE_ERROR_INTR;
-+	} else {
-+		/*
-+		 * This means we have failed to clone anon_vma's correctly,
-+		 * but no actual changes to VMAs have occurred, so no harm no
-+		 * foul - if the user doesn't want this reported and instead
-+		 * just wants to give up on the merge, allow it.
-+		 */
-+		if (!vmg->give_up_on_oom)
-+			vmg->state = VMA_MERGE_ERROR_NOMEM;
-+	}
- 	return NULL;
- }
- 
-@@ -1681,6 +1685,8 @@ static struct vm_area_struct *vma_modify(struct vma_merge_struct *vmg)
- 	merged = vma_merge_existing_range(vmg);
- 	if (merged)
- 		return merged;
-+	if (vmg_intr(vmg))
-+		return ERR_PTR(-EINTR);
- 	if (vmg_nomem(vmg))
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/mm/vma.h b/mm/vma.h
-index eba388c61ef4..fe4560f81f4f 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -56,6 +56,7 @@ struct vma_munmap_struct {
- enum vma_merge_state {
- 	VMA_MERGE_START,
- 	VMA_MERGE_ERROR_NOMEM,
-+	VMA_MERGE_ERROR_INTR,
- 	VMA_MERGE_NOMERGE,
- 	VMA_MERGE_SUCCESS,
- };
-@@ -226,6 +227,11 @@ static inline bool vmg_nomem(struct vma_merge_struct *vmg)
- 	return vmg->state == VMA_MERGE_ERROR_NOMEM;
- }
- 
-+static inline bool vmg_intr(struct vma_merge_struct *vmg)
-+{
-+	return vmg->state == VMA_MERGE_ERROR_INTR;
-+}
-+
- /* Assumes addr >= vma->vm_start. */
- static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
- 				       unsigned long addr)
--- 
-2.53.0.414.gf7e9f6c205-goog
+Makes sense to me :)
 
+>2) Tell batching logic to honor pte_write()
+>
+>Sounds suboptimal for some cases that really don't care in the future.
+>
+>3) Tell batching logic to tell us if any pte was writable: FPB_MERGE_WRITE
+>
+>... then we know for sure whether any PTE was writable and we could
+>
+>(a) Pass it as we did before around to all checks, like pte_accessible().
+>
+>(b) Have an explicit restore PTE where we play save.
+>
+>
+>I raised to Dev in private that softdirty handling is also shaky, as we
+>batch over that. Meaning that we could lose or gain softdirty PTE bits in
+>a batch.
+
+I guess we won't lose soft_dirty bits - only gain them (false positive):
+
+1) get_and_clear_ptes() merges dirty bits from all PTEs via pte_mkdirty()
+2) pte_mkdirty() atomically sets both _PAGE_DIRTY and _PAGE_SOFT_DIRTY on
+all architectures that support soft_dirty (x86, s390, powerpc, riscv)
+3) set_ptes() uses pte_advance_pfn() which keeps all flags intact
+
+So if any PTE in the batch was dirty, all PTEs become soft_dirty after
+restore.
+
+>For lazyfree and file folios it doesn't really matter I guess. But it will
+>matter once we unlock it for all anon folios.
+>
+>
+>1) sounds simplest, 3) sounds cleanest long-term.
+>
 
