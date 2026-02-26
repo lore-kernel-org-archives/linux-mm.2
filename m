@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D69FD461F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 06:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B13DAFD461F
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 06:46:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8A146B008C; Thu, 26 Feb 2026 01:43:21 -0500 (EST)
+	id 0554D6B0088; Thu, 26 Feb 2026 01:46:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5DEB6B0092; Thu, 26 Feb 2026 01:43:21 -0500 (EST)
+	id F1BB76B0089; Thu, 26 Feb 2026 01:46:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D814E6B0093; Thu, 26 Feb 2026 01:43:21 -0500 (EST)
+	id E1D166B0092; Thu, 26 Feb 2026 01:46:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C4AB96B008C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:43:21 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71558BAC99
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:43:21 +0000 (UTC)
-X-FDA: 84485666202.13.39AC851
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8D4044000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:43:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HP5Ga7xy;
-	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CFA406B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:46:01 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5ECECC311C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:46:01 +0000 (UTC)
+X-FDA: 84485672922.12.C6A2EC8
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8E03B1C0009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:45:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fqwCC+zh;
+	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772088199;
+	s=arc-20220608; t=1772088359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/gFMs3BNYCLYbp907qyYSrv7ESdIsN4oDF7h/Fu2FJY=;
-	b=SXol6FB+bEKiiCR/XuUbqBVoFn+Lmg8WmedyBoRqQvrMkAZ06RwJz1DUmCR5k2WcZTgLe3
-	LIrZbDbiokyqtG2z1sQWyu3RMRSp6UHbD2MNIc5fyJYm0Ab6VkOmyA2JlKssHDbwRqFFPS
-	zv0pbp9txzqaZjYsPnmqslsg/cGKgrw=
+	bh=C4rL/wwllg6CU5AzOZho/BUjc41JirXfRLVAIZITAog=;
+	b=kTOHfnUgM6ueBwJ3H+rkvRtBoQ/z+b70ZQUtfbVpYbowy916HJ/9ZhzRZcdGu52nkUnyRC
+	zP0g6UchRkR246u5iuScmAyxzooQHJP5ddWJCBRlcjxyInMNGmITXAxF0ZAHur/LFGU054
+	3FRytJoe76WNM18AO0UmEnD1SkwlqL4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HP5Ga7xy;
-	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fqwCC+zh;
+	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772088199; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772088359; a=rsa-sha256;
 	cv=none;
-	b=8LucG5KU0q3eq16Iu3qupFSNomtBJufff7Qq9GDyjxsrHJdGuAjVUs1y67LG5vFU0IxW7n
-	9O5gPS5OKj/2rOI8ACYIumwV8Ujpj6+rS+x0eBYFtuLCsO9i9LUI+bXtjGmaurY/RX90aZ
-	DPLQQs8GygB25pbsK/64IPBGR3/KlSk=
-Message-ID: <d7bc163c-7dca-4cb5-b522-a6f98ba4b16f@linux.dev>
+	b=MSiHPTVayblrb9M0/1HfI1xoCQn8NsjNeg7dP3xS2Pnb6p4j3w01rFFG4dSO6tm4NvHrA1
+	egHUuDwh8kKB3JhOIBSCJ8mhQObWGGjlTv5E4Ezqnf8hjb63qPJY7aQFqNzEjFzZXO8teU
+	oBhXhtSSogHQKfgNVkRlar8cbLPTSI4=
+Message-ID: <c155f9e7-e4fc-46e5-999d-4422072f7d4a@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772088196;
+	t=1772088357;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/gFMs3BNYCLYbp907qyYSrv7ESdIsN4oDF7h/Fu2FJY=;
-	b=HP5Ga7xyX4/Ux+VNCIMWTaLmiC52BjFNZ8ZGo2ljwIaNuUW1j9m0tascLyfYdtnFd+8HtH
-	Z55p50bo9TBs9IZhmfCIXUiw7Tjqv9UwPTuyH3MtGTAf/qgvQ0w8lku/YcCSGDx40MMllu
-	Ogim/cLOLqJMhJFU7U1l3hlNee2bCCo=
-Date: Thu, 26 Feb 2026 14:42:51 +0800
+	bh=C4rL/wwllg6CU5AzOZho/BUjc41JirXfRLVAIZITAog=;
+	b=fqwCC+zho2n+4/p9/dwF/Zeky6wKhrtDbuYw1zzSrKqzghBSWcypfO12waZoixPntWyd45
+	WYrm3j6GECj3OS1oxAzopUY1P1+JNiN5ZEXDRr/Oa1k/Ir5/biWrClmwF7xAkvmnc6nRP6
+	nZ/FW3jXXhmkxVqNOAPdkrxYdwl9SBk=
+Date: Thu, 26 Feb 2026 14:45:46 +0800
 MIME-Version: 1.0
 Subject: Re: [PATCH v5 29/32] mm: memcontrol: prepare for reparenting
  non-hierarchical stats
-To: Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
  roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
  lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
@@ -77,22 +77,21 @@ Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
  Qi Zheng <zhengqi.arch@bytedance.com>
 References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
  <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
- <CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com>
- <aZ-R87JfacQ2gGq1@linux.dev>
+ <aZ-kefGBeT-RzGcG@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aZ-R87JfacQ2gGq1@linux.dev>
+In-Reply-To: <aZ-kefGBeT-RzGcG@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 79tj8tfnuayjoy433p7mr6hjkzh17kj3
+X-Stat-Signature: eikxdhwhhj188ys4k6rojgsst6bwdrfy
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D4044000B
-X-HE-Tag: 1772088199-172906
-X-HE-Meta: U2FsdGVkX19Rq5InbfE0dZtwMikbXF7aF8q/THQzBLh9OqgU2GR9G0LV1kI7YAB/yRCT/Br3eBewKf8ocJUG6qJ5eyOL3zPAYkjgU+jXRvXxPO1n5ZyOks4NQNDxyVjAfoY6bIhAMUGRah9IW1gkz5crcWVoYW1bYDuFIz8SbaUkTAjpl8srhKqghne2I4tGAGapLY6Ddw/MWcwKz13gJ9t8VBEutWbneBsupJiuGKovhHVPmsP1v1tVwqkpSI+zirsJUBtUiyJ2ljfjKvYJAv3S5gLD2wH7aTGT+lvNVxSMnIsO1bi4LVTuc913nZqbixQWEXRf2A/ZuyaBC/GXEBtr2R4Nplh41SLEWJ1g7VnPqdAupmHBlIRw172YSro2oRPK1k3yL6OP8dBXhhSVR+8LgJNd+KpVOeVXnCwVUuA1h2Uhj0uV/kGLWu9hrJ9aMVY8cDuA56hVO+jhMhZwZk3rNAEs5wHmDbqp4/rveeHJEgvVORQ7ec+cdtBIsdLPTplbmMVa42LHvXSxniGcJacAZ3uX4F/crB+TzJhNMVTav0mXzE6VgOStpOBtNF788aop8bhV5Ka/4SRp2TVHEgbYbqtpxznUTtTXaJZ+1IzKkglgFHCwj6Vw7rgXQsKl/f7gFMO1R3WDeN07yvkUSJCT6qGOa23rT2o6/8Ha65YIZsfhmRtfi8sO0qT5X3gLiEpBRcs2BWqpJ8fn1URmforOgbUsPZxZ6+nk4AQCb9n4qAz7bWcUl7pPkIhaHkAuQJUYvW614ybhOoAK0TaXKW2aUkuzClyuq35C4v/ErFilo7XF618Awb8p8t51+OBzxKpYtceNA3lHKAK9/Yti2skxSDwhax8bwiJSeiEOREj8aCB3aDYWdkwmCC1UOrOfCvKz4mD+wvcyrs19JpsWB8v0HeZTQwEghA2Jt8bVMqAmCtah0vUSIjidz1Ok/oTtR74x7Ggy3+H9dxzU6QM
- AliAgtcX
- 5ighJRXOuA6UrRWiecIwsWci/HEQgT/++1SFNjmk3jOu4TO6so651p9U+0romr5JD4gDgjdoE9xva/C1X3FviPnDbL0mbym1PChsNA7U0+4Q2/uhjOLLnRU1TwKHFQfX1O9utn+RJIArlNdPBR71G1CHV+8EWay4nN/TpUg878Ky1t1l/K0G9A1lRY+Yctx/QFx4X4azjyB2CgPrzCLXJ2p3XqA==
+X-Rspamd-Queue-Id: 8E03B1C0009
+X-HE-Tag: 1772088359-966147
+X-HE-Meta: U2FsdGVkX1/mh23TZ3mUKBN/zDVgc4Fj037RWkAjkXIOqbAW35ifUljQqo0GbmeNMytygtj+3TeVKIFZslp8ah9zgdPxK8XlmYa4ao2UCmfZGh0+UfmEY8ZB/lk0H2/xr/iUe9mrvamzaafQmxyvjRxrytg+pKbGjE7gD7ARx51TW0aG7J4P1tEW0E1GObygvHmWDVH1vAv7jXaJv5FcocutzP+RZJcLYXnJln+PxJNfLNebqS8OSVTIXihcDZsYs/9S9jkm7lluFR9ZzOeREZwBIFC0f76Q9BEmLKio43DV+4iGtsDMQYKfZvkGNtaLUo1QlwwO/pyyHgJgQfLNm9cEZrnC+OBsT+SxrrkO4Q+f373cXqaaeT4OiSadJ7CkyyljGQUpj4ACH2niSqUf0rNfu961BDFxXnAh+BzQCknU2ZTTfePDY93aRnGWcrE64bV7w284EMGZmBC/a/0TZGz6A0jGrdmTsDc9lfqNV3SaqgHCou43WWHOSFTTJRaSAJF1ktuRXKQUslomHlSzlf6oHS+Cnxhs6+uVAck5G+Ok0lUqi+/Ur0kXM/dtywoxcaM77ra5ENfcS8gbpfxvckl3PU6xPHOWfPuQctNghBTylUJkQu5P0P1UPD/gr77MF3XmNqspg+5QNekvB6mLtH5YSupdn9FjIE6APyldK3FWGgHFlXYE/vwea7AqJi6wTBkO9oilRvkRHkBF3QIw/M8XigDi59eBmbRNn94C4iev6XRly0IdNktFtFyxj5E8GjZ7bQpM5sJJKVH8cFVBQ4UaCiQUzPQGIXIGj9h1tOmXin3SHmtUaCqkKDpBftyFFqTmtIkeZIx2UnDe5cSRS+ongvKMYnHkaDq4Cor037uM0QmEJTu70KX6DABJf0rkZe/ld481rpIONtyfNcTjyh/kBs/Do/JIoXpDMp0JGJeXlZJ6VTHdcJqn8T4sdO04v0P9bY/FPE3kvK8PSt/
+ ++HlQdFx
+ zP3sLVvUWrofG/lFO+TLQPLxaJY6ixW9Wp3AZuefKEE91raRzVWKCL3Mq47LtTusDdtKXK+mWRtYd6gHRGH9cdWY++H1zKPiVZ+wc8R4cM8Dv3+vRfnUmSvB6y6OcsWhyBKk1tUkmasE8tvyUOHOU6ULz/MUR6w7nxzjG3M61HRbvJHec1EuXE9rAKQPgxoFvwATPwlUCakCJwVH+r1dhMhovrDpObup0dSTEx/WZS3gCgELVr+PVuu32bCqSlGUpG5r/BfzV3jTOz9BVGBnzL3Uuyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,48 +100,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 2/26/26 8:25 AM, Shakeel Butt wrote:
-> On Wed, Feb 25, 2026 at 06:58:59AM -0800, Yosry Ahmed wrote:
->>> @@ -473,6 +493,29 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
->>>          return x;
->>>   }
->>>
->>> +#ifdef CONFIG_MEMCG_V1
->>> +void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->>> +                                      struct mem_cgroup *parent, int idx)
->>> +{
->>> +       int i = memcg_stats_index(idx);
->>> +       int nid;
->>> +
->>> +       if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>> +               return;
->>> +
->>> +       for_each_node(nid) {
->>> +               struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
->>> +               struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
->>> +               struct mem_cgroup_per_node *parent_pn;
->>> +               unsigned long value = lruvec_page_state_local(child_lruvec, idx);
->>> +
->>> +               parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
->>> +
->>> +               atomic_long_add(value, &(parent_pn->lruvec_stats->state_local[i]));
->>> +       }
->>> +}
+
+On 2/26/26 9:41 AM, Shakeel Butt wrote:
+> On Wed, Feb 25, 2026 at 03:53:12PM +0800, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
 >>
->> Did you measure the impact of making state_local atomic on the flush
->> path? It's a slow path but we've seen pain from it being too slow
->> before, because it extends the critical section of the rstat flush
->> lock.
+>> To resolve the dying memcg issue, we need to reparent LRU folios of child
+>> memcg to its parent memcg. This could cause problems for non-hierarchical
+>> stats.
+>>
+>> As Yosry Ahmed pointed out:
+>>
+>> ```
+>> In short, if memory is charged to a dying cgroup at the time of
+>> reparenting, when the memory gets uncharged the stats updates will occur
+>> at the parent. This will update both hierarchical and non-hierarchical
+>> stats of the parent, which would corrupt the parent's non-hierarchical
+>> stats (because those counters were never incremented when the memory was
+>> charged).
+>> ```
+>>
+>> Now we have the following two types of non-hierarchical stats, and they
+>> are only used in CONFIG_MEMCG_V1:
+>>
+>> a. memcg->vmstats->state_local[i]
+>> b. pn->lruvec_stats->state_local[i]
+>>
+>> To ensure that these non-hierarchical stats work properly, we need to
+>> reparent these non-hierarchical stats after reparenting LRU folios. To
+>> this end, this commit makes the following preparations:
+>>
+>> 1. implement reparent_state_local() to reparent non-hierarchical stats
+>> 2. make css_killed_work_fn() to be called in rcu work, and implement
+>>     get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
+>>     between mod_memcg_state()/mod_memcg_lruvec_state()
+>>     and reparent_state_local()
+>> 3. change these non-hierarchical stats to atomic_long_t type to avoid race
+>>     between mem_cgroup_stat_aggregate() and reparent_state_local()
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Qi, please measure the impact on flushing and if no impact then no need to do
+> [...]
+> 
+>> --- a/mm/memcontrol-v1.h
+>> +++ b/mm/memcontrol-v1.h
+>> @@ -45,6 +45,7 @@ static inline bool do_memsw_account(void)
+>>   
+>>   unsigned long memcg_events_local(struct mem_cgroup *memcg, int event);
+>>   unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx);
+>> +void mod_memcg_page_state_local(struct mem_cgroup *memcg, int idx, unsigned long val);
+> 
+> The above seems like addition by mistake.
 
-OK, will try to do it.
-
-> anything as I don't want anymore churn in this series.
-
-Agree.
+Yes, my mistake, need to be deleted directly. ;)
 
 > 
+> After fixing this, you can add:
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
+Thanks!
+
+> 
 
 
