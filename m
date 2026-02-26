@@ -4,140 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B919EFC5903
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:40:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADD0FC5903
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:55:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA4EE6B0088; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
+	id BD6D86B0088; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5BAE6B0089; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
+	id B84BB6B0089; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A88506B008A; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
+	id A66BD6B008A; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91DEF6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:40:52 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2DD235BF2B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:40:52 +0000 (UTC)
-X-FDA: 84485811144.12.CABCDFD
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 29A6B40010
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:40:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u3f52SWm;
-	spf=pass (imf27.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772091650;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F5CC6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:55:55 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2AD675C064
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:55:55 +0000 (UTC)
+X-FDA: 84485849070.29.EE15698
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 466EFC000C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:55:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=I8DUUtGl;
+	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772092553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
-	b=yoYCmmh3vDd3KSak0FhYEW1v15kT362rvL/2+Vf739wXzsIFBsh+MtiPLXL6bXK0V5oQrS
-	A6oaf7dfAaETFsHpOcsQxsqKLwsVCpNRSa7Cyf4Fa6UkqZftxcfPL4BrD8jF3z+rwBKZBk
-	i+9s54wABM37Ue/oqP7pjPZ5L6WOuLw=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u3f52SWm;
-	spf=pass (imf27.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772091650; a=rsa-sha256;
-	cv=pass;
-	b=aZ/c7xri+2trPcLU+zBVERcnyn9IJooVrOI/EOhwqztJ5KCqkWjLPjKzTn7Lzx5V99h54l
-	kliJ1/SYDIBJy8LCuxk3znicsHhnr05YBx/ramyFiyyHoKPKGuSQrMTL/PquyPSq7Qe5OY
-	fl+dv5hI2Ff8EB26japqeQkxmKZXAiQ=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ada9e4ea32so52895ad.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:40:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772091649; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ih4WWVUwlMvoCkIoipbImi+NUQCZQkJAT3gHq43ct0WTQl/rBHCCBZqzOjSvj4p5S/
-         xNqK1XEZCsASz6rB+1sxFzokj17wD+Clr64r6hFSD3HBzZ3uF7S2VBASHySWAe+iU6oQ
-         jqCR3shh572EKoeU0Qvnv3+ecbdbaQEKLgr6/DpTKeZc8rRAMDk3J02uEYxrXzpW9FxR
-         BltTev9s0pVT/UqIcFb4Lja6VVOuT92URj/J8DpjkvSZxdOmzmUXUS5XSRaLiG/aLh1p
-         WScpgC1QRVuF2imtYGVs34AZuCJqC6O9PwZDyBDFLLVbhM/t8gEqY6ariKekyDhuDtYF
-         q1Ig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
-        fh=QLxJeTTVMFrQFy4+qnaHrIWuGhVo6d5yPE9BV5o8dLU=;
-        b=SO5vlFMBmPbVwKS/Oy2giPGwpBNTkpUxkjyyQe+K0aHKh47loFeXzNxZzoHxXgRvAc
-         E0YboUj0FOwp2LuQfGX4h1d3bJtLocP0Y/2SoXHNXOI82O6l188bB18CgTeX/tgeT41f
-         cyEogPDnzzuCdb+iHrjoNetooE+C4k1kBs7iip+oyV7GVpoGqvFYAx77bOoXrIjMjm8n
-         QqD3okEvskPAbvls5ZxGVhu1Vi1Mvq6t0Mn+xO6AE8NckklVUYlIgVbsURPDX6sszz5/
-         LEb72hHT/WAIQMijnkXSKAuKImHHzFCEjmhnMVzRL6S6qb1bkvFAkmG/nbw7Uqtfu3sb
-         hrIg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VdRtsLUQfCDc5iPsCOodG6em0TwbFpXFEtbprvISMYg=;
+	b=Bok4wkZ43T4L19YMI96he6R/sW1pqbiS8Q2Mk8tFzINkm4IJnUE34A/8kuXKOc4Hs8AT9d
+	OAUk4P1y1/u4LeBYbZaBPi0Xc7SmaG6St9rMh8WYKvNvaOSppy93cxb6zw47ALYL8Ashvi
+	/YQk6fwd9vB9JhAXBgvF7zb2gtwGK18=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=I8DUUtGl;
+	spf=pass (imf28.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772092553; a=rsa-sha256;
+	cv=none;
+	b=estbdzjoYwIsAvmc7CpKtNA8bSuXOuIjE6nPXUB0tBFthV/I5twu3gg7IgF928uSoE/Aen
+	Rb2j2k2deXKz9RS0cZXDrVHbsQ3bgL/tqDw9jzFltC+jUJLn7FVYdmqHwMzItLynYSkzlV
+	FVQotJKFANSKZbjAwq5MKv1agrKLx0M=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3594d7b36bdso12398a91.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:55:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772091649; x=1772696449; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
-        b=u3f52SWmy4TdvZy/HNpon3R7C6KZMTQsBdE3D44MDg33UkRYRTgm9/gs+PBveyq+Gt
-         THVsD5DtZ3nOZBY5g/ZYw0iE1fjLsDwHLkWZpJCp+kWZ9tnqFKsKE/J+6o7z3v3LAsAk
-         /edg6mkBXcTCsq/PcGSNeb5jMKrOQRu9MMyQx8M5eHy8N7BuM1XrU1pf6AQY3nN+2SVe
-         CCx65ZrXCyUXf1xkRyULqjFae7iH4uNsYV+m7s+UEfg6oh7Ht7bPgAL6clgjEfk8Mq36
-         5xiBPalE4UBHWL0ck/IW2+L9A6tZiYwPQWoWwZO+mad5uw0dis7WwAzv4zWulv3rRyNd
-         ktzw==
+        d=gmail.com; s=20230601; t=1772092552; x=1772697352; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VdRtsLUQfCDc5iPsCOodG6em0TwbFpXFEtbprvISMYg=;
+        b=I8DUUtGlN/2xNt4BsO59Ht1FsE9LJ5JRWLL9lMjlLXd45Xj7I5Q7cFuUMnat/kkBjb
+         Ha/VuQJtAcr3BmEGxo8FMNi9djzZcdZR2QZQ4NMIUnZuMdnDMGet/7G0HuGyK81Y+SDn
+         zP/lreijjvkL23M4V2c7ozk8uGoJxGCYFsLQj4pTBNYTYTkI9xXkr+JJmSwgwRvYOgGM
+         SJ0s+cPdxL+EglssIfv7OtHQDOIBQD6YoKFl31Yg4sohmFe0gXdq0e1r11LV8TYFP8dc
+         weU0iQCvX4RM0fPwk8+BveVvOHHs16hWMByt9KMBgwugimY0vWUlG7KfQKq4/033KhL/
+         AGEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772091649; x=1772696449;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2GU5SM6jqGe2gfNc3W7uqQvvp0coVugTWgrE3eLCzdQ=;
-        b=B/aH6yU2lHQZS1MZybZcmLOTX1+kjRnQGFVmWSaKmS8Kp1m2w1AcsG3foW1JXOExSV
-         oB4DrvjPvWaXzuK53M4CwYR7+u7Xpc+HnaS7RBhy2pXt9d+0NUucP/Pp8E7l0kBekCAI
-         EU0GoX3/5+ZotbYWUUynemH6BWu1pPP8+QLM78IJtKCgtKQofWLLC2fJa1DnSs/OURGG
-         qT27qPM86VTpjt13D8pnh1j8GnOpN3cH2XWjEvfQgtZB+lfPmgoJ/vAz7umPfPSedmZp
-         1RZGHj/Npfx6X+Bv8CyttPp+WAWEIcRPLvoVuu4/rCAXxAFOTYJASlNMVbetY+mnFVqO
-         Jylg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGhQQaKzBZzW//70IkTfJjkgpvkHuT3g18ujXG427HdEZWGNeh3gRvYN74wrCjDDhJ/XaF69oSqw==@kvack.org
-X-Gm-Message-State: AOJu0YwSa1AiPndjA57doD4lwCFSOxtBCSW7zb2NWEFpuqJnbEDlwcVo
-	XZLjqfPEEYo5N4OVPymGZAZluwAqm9HAxysK1NMyVGudK6I2fNHb4w8UtJ5VROqcziIXl5JsE6f
-	pJMyITHaIlHMVgX4sBi9BSYcdQLI+VCzNEVSX3dnu
-X-Gm-Gg: ATEYQzzG+WR+NcBkh1azey69TjV0+hVjOhZl2YzOX/EoFtcis3eeUEBpOJdufj9ak/9
-	9GnwdLVHNbwhurBivuKT1M7WoJ06tUO6lX84nASyc8z6AqLgz0SS8HZbDp/Ky8camoXdIv2LfYx
-	rTou5H/jAVZ0gaJay8RZed6J6qRS4gi8EHqQlA0Feg6OA0HzAAfMOJf+ZWvVuFo9Hn7o/67quew
-	YSNpD/5XAHrmwRhdJ1MdGGQxNG2bWnyGQ2Pvg2JNjGWOmG8jfjDxxJHJ3s9yYx/3XPt2yn0kA8W
-	T9b5mlr73Nzks2vdY/NFW5ER7b84jYtWlHuumd+MrtgOCGS51w==
-X-Received: by 2002:a17:903:1ad0:b0:2a7:6c4e:5914 with SMTP id
- d9443c01a7336-2adf7721839mr1456305ad.6.1772091648235; Wed, 25 Feb 2026
- 23:40:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772092552; x=1772697352;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VdRtsLUQfCDc5iPsCOodG6em0TwbFpXFEtbprvISMYg=;
+        b=M7ISL1Szxl5wtIlTTu6MPb7dLWlqR8H/LfKq5DRD3bzjzPjX+IuKvD9JZ5jNH87RoN
+         bYBnkloQTgw353G5mNibcbaBkrk3AXzt5acJ1qLp4/bxxEYMA8gwpIe8QZZarLJTQa0d
+         ZIunEldaAtsk9rl5/TIPLG14JuO4GJ0ZC+Ea0gRTozKglOtxnIaqPIo0SFdXE3Ym9BlW
+         jE1Eay5VwsmM0I25FjlVPV/uMmdnRkAVKDUbY6kX1xjxu3zrfFLTVzcUxSib+/Ksdl+Q
+         Ac3lHiVfusoEBW1B5sbDLaAYcfEtzfyTJH+a4262qrqB72oDw6+YKwvzitdcdt3AN2Ok
+         oZDg==
+X-Forwarded-Encrypted: i=1; AJvYcCV53MUuaEnnp2T1flw+2LiKrnKYHitLiyVkX+7LygKDAcfD9M0uLgOaNJjiD3vyzqguoEsWNyb3rQ==@kvack.org
+X-Gm-Message-State: AOJu0YxBhehO9EKH5vDO94KkRIBkALohCQaJDhCIIGyy3eKvj7J857+4
+	7iB7SA1HRu44Gq+ZmG8Y2gG+50L3sGX50XDuApn+S8CGeLJbM7onG70z
+X-Gm-Gg: ATEYQzwhAlIHIiA2ABFuLsK6oO3+NqZCHyxufhoD//ejdke/K1uuCugP5bDt+N4Z/b/
+	sxVwXdeUBk0XPHiSqdfP7Sci5xYh64QqySnrc0xB7flyxc2JilHv2ykbgbsJ3GiBTGRtpkkHpKN
+	Dav4SY760WrIpSUC0hN+fgi8WKk4XRBnEBmDW3Hux0f3TaLoLWiAapG4r1vtKkAPWBmBp6CIonJ
+	pOnF77y82WYZpDV25xllkRNh8gVVcL6ceqPe3yDG+LvLoBPatSnnBacJ4g3fnne6ztkxmOP5RlR
+	EujXc41H+4f2K53s3u/0o5dk/bqIPVjzBXiDd+tGH0Cr9iyjOGzE4lA11AkPJJZWC/ZBhhyZy+d
+	Le+oyGiZaqkr6d9sx3XmKxnMu0P8r+WfPNMPW25LmH5fqydXpgXZvNFPWAqEmKhUXrvZdk7AuyK
+	LeNwE7ZZHwl7dApdeNS7qoQ9VAKdhQdtNbSwpjNB0Pk4jAnXmXYjdluqKUEByf6h0Wc71axPegi
+	GYqxA==
+X-Received: by 2002:a17:90b:3e50:b0:34a:b4a2:f0bf with SMTP id 98e67ed59e1d1-358ae8a5315mr16693593a91.16.1772092552046;
+        Wed, 25 Feb 2026 23:55:52 -0800 (PST)
+Received: from localhost.localdomain (n058152022173.netvigator.com. [58.152.22.173])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3593db82627sm1217069a91.0.2026.02.25.23.55.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 23:55:51 -0800 (PST)
+Date: Thu, 26 Feb 2026 15:55:45 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org
+Cc: david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	dev.jain@arm.com, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH mm-new v8 4/4] mm: khugepaged: skip lazy-free folios
+Message-ID: <i4uowkt4h2ev47obm5h2vtd4zbk6fyw5g364up7kkjn2vmcikq@auepvqethj5r>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+ <20260221093918.1456187-5-vernon2gm@gmail.com>
+ <CAGsJ_4z1twdSNrAVR_vZRnLW4xtsfi+vegNMCwht+RPCjy=E4w@mail.gmail.com>
+ <xbej7d3uc3xzlx53djgg3to3ejcgrxotxwxvrdppqxfsgieife@5moeg6x2vutg>
+ <CAGsJ_4ycodbcWHxFRacpzbxx4evQRJbuqJy3gfweAdHOtJg1Og@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260217145026.3880286-1-dev.jain@arm.com>
-In-Reply-To: <20260217145026.3880286-1-dev.jain@arm.com>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Wed, 25 Feb 2026 23:40:35 -0800
-X-Gm-Features: AaiRm53qWWo5MB4ueH2PCIe5gx6Mwj_ETLVvRNUsIKl5chlpjmW_kvj6j6uOl6s
-Message-ID: <CAC_TJvfD19E--wyeVyTmp-LP9ffoLQaUHruZARbdes2EnKgptQ@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Per-process page size
-To: Dev Jain <dev.jain@arm.com>
-Cc: lsf-pc@lists.linux-foundation.org, ryan.roberts@arm.com, 
-	catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org, 
-	willy@infradead.org, hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, =?UTF-8?Q?Mateusz_Ma=C4=87kowski?= <mmac@google.com>, 
-	=?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
-	Marcin Szymczyk <marcinszymczyk@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 29A6B40010
-X-Stat-Signature: epr1xciwgdpnteygkxjuyrjk4dq95nsy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4ycodbcWHxFRacpzbxx4evQRJbuqJy3gfweAdHOtJg1Og@mail.gmail.com>
+X-Stat-Signature: qg6samj3ghb6kihgy3su45azxy84x4nm
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1772091649-692597
-X-HE-Meta: U2FsdGVkX19M1pbiCN7wDhPR7dWvDuiI47kY9KpyBTy+YUp5w9URoVZBJXPPzQhIBCaDKPnhBKzj62ecUzQHeY/ENhJCQGXCznVb/lGxGXyYMMszUIRZahOaXyVkksw38DeXDk3eLrCguH62MNX8lAGXbvSsPwXeR8u86HH6BDJcB8lcoF9bwXb/7gS2idNIuh7m2J5A9QorOKtjCkeS/wbxnPRWzFYYCsAAOSdq7OqHVZKj32yNbP0meZIxp7L3Y7dqmzbAVQf4JfRDI7SCtTbu6CrAaa675x+dBTirr8HTYup3BRPmUa2dEn+DpBBFKvsrfkRU1aYp1Mp2hz+YQHo2Ui0SIsu5XkqGQzyKExbeuk2nPPZe4qdJo9CbZ7rvSJAsFyHy2jYcdS7/lInYbnEFf9WI5l4SFtaGsp9xfDSuxjnZlv9BlV6lLKr1hNo0cHhRM5i6MnKFwdDHEiraNGVmHEK9950qoG6A18QwC4rSMC2tKGLhaTw9LhIiWctk6A6ZAmkw5pKwvxqcuiVO8oiFYj8Eqvgzej14sQ4BYxjXNI9p+/JLanz4V1tctgDiwnGhZQqIQsIx6+hhrUv8w8ElwkwETrW8usByH3YOxZtSYph1xMQ9NwS2492J+26aGzEA+amF8qw6BV6fOcFUOO/gSalmPHQlU9vOnlm2SkKthaNVDeyYvLdMTrWAJYBSo14algmd0JdBswIj35j9lAYh1Wk06PbUphRUMZwK80c4dkIAoGSjoy5jPaGomJutejVG/cRJyEthfJ21FcSYvhn57PoeDs/04HlUcpwbxRnTrwvo4V7IKXbGV0rQNcMndENV5EorFtiPTBYbVROBj1LOvYz8sFRdSlhej8cn7kbNJyMerc+aQipuTGE/ZgBa2x8ZdbLCH9zdeGZzIitNdWg7qhYEfSHQF3/szSWzWl4pQzFQCqMq/8hKcoUL/BklXMYs6XbNcpFYOQOKAf1
- scp4UdND
- XXBJEmnLCcrpOGpC7Z0ZVJIsL4+EZsPHIq4rTIhTai1u7ps/wAKcqSKKwHDR2EEA+0dvGPgvthZH7HhWZ8sXfAJQyoLS+7S5jVV1YGpbft3WIIkg8+VZUNoaiylq5Vvhp/vNhSjJ9cmIz/93b804vjoH/mPEBillWljaTyAHloZrHvcmdmMcJjtQPumDloWxSFnau6EDtNDG49+gI/g6RAsZrByVX2vI5EqpWGcZjeWgIXhE4lXiZrLjgD+n/dgKkmOsi2wvE1+YIypo2OoiGCNxrmElv4uc6O0NfzP4MuW1QTcYjpaBbL8n7gDZygPbotL6g
+X-Rspamd-Queue-Id: 466EFC000C
+X-HE-Tag: 1772092553-166272
+X-HE-Meta: U2FsdGVkX1+2b2KaeLUjyytyIZqLWhttDQbchyQnSncvcrPDm2ItZrxHFG77pUMdGv4EOdk55V+g1/bi0rua8DuXfKjMtIbguZuQ6gAWwsl6akUk3sbMH1ugEsezNZIP1qH+Tcp/IRuLESEP25PiNMX4S9rU3g5wCaF96/GU9idOScDMhyyaskSHYLmCAE/lCDMMCWWjWkaGcTtfJE5wDPc2C1LJPvVpqrs1mKRacf3Gru4Kxq+y1HFygOvf8MsARWnlfc4btt16j6JIXfedkWGy8bQmXAqNAl4G6XpcTU06a6EoW4Rk6MTrV/e2hP0d02LFkkB/tx4S5CMhsqPe4ybODq7/2X4oROnjFAJChZyw41Ru9PmmemvhFV7oIv6Ca1unQw5jimouitjiNKtHqgLG9AveLg4oXXbK/0ehLIpUmoy5LsQb72sWZ1ccA5s5OxVFhMBySCrOJyN/ieO15fPuNqOWJQScJKfBgWaJiNWCtjMXgWS1JvD/C8dxoVX5gX2H37AVhvZyCAOGPnR7cmkuw/N8xrTld59Y6ELGhbqcJLN9u2SOsQf8YU/eJxd/df9gItvOWYrAtbvVSd02vXmn5ZiLyynaTwRXCbNPOHSTuMhpcALtM7eFYC5kTl4tWnWXvRnOnLNm79dtBD690w6so/AEZNAbg+i2z/G1/cv5n8+ywNMviU39nQ58LF9EmU/kB4xaYNOnMDiDiBqDBlUtRCz2YIu5ln3mJDwh6rmczBs9N5bZIu9bZDgHWoSQjbmJ4tfFi3i1cUqpzrFal89udPFmJq+j7YKj2xMVs1koThjyFv0JxlA661si57zELFhfoO26FmV+/xWByla4zrOhSIuwG0ghEKlqaTHHsa0/nG6/ifKzWZKvNbrL9Mg9sUYxqkLV74/Pf+CAX+lhRJs8B7PI8Nq5h68HURV5uRlj9LlLCIw9a4ly2xDpHRCSfOW+hDX3FRXxlHvQk0N
+ M36TmRZ7
+ snwThGIz4HjoiFOMbRpFnYddSeimkAhTvuZ0QKzIjry5D5J/LHkMyPj5wFJuCdfFq9njEqjqkmYHLV6+Oecb8+WxoJt+5vpQUCnSLkcbyk3IjvS4ZgHyZCCADR5+kK8AjZnJq3CwNTlnHAFebOhE/Nr0lW8qsN1SGNt7rafpBP5Aa65k0OwlrRuTT5OChnCp+f4ayPlNF7RQpyk+jH2LCGy8QmqseF/Dh5IDpQXnmkH+zqCupU9UVLW2HdoPjmVQQEAkz3UaWnKGydTHl0UW9ec4+HQn3g0VB8J6EL6NmGgoBKZRz7yilljg6uyc1JLEwnUMj+QJh03Jjxz+Pc1eDkfgMpNkw6E9PjjG+YkGJHahvVK+RiA3voTFzxUuH4T48Dkvnt/zYbOm9MjHYijtKnilDMdPgHYCTpn5OPKVkVQzdezEBI3u5EZs25Keb8Wadq8aFITO4fwc/DcD1QvhlErrDIkjCNAIbxjxSMpjP6obubQRCOcZ2gmf5vZzjjJMxutjakPeYRZxUbv8t5RkAmvorIvjdg+WAfr1IyTpparMLbX6kWniA+07ytxjQBzJy+siKp6axEJttDPeIYuS28gqlS+hhtzcX6I/efJg8HNr2NBY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,202 +125,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 17, 2026 at 6:50=E2=80=AFAM Dev Jain <dev.jain@arm.com> wrote:
->
-> Hi everyone,
->
-> We propose per-process page size on arm64. Although the proposal is for
-> arm64, perhaps the concept can be extended to other arches, thus the
-> generic topic name.
->
-> -------------
-> INTRODUCTION
-> -------------
-> While mTHP has brought the performance of many workloads running on an ar=
-m64 4K
-> kernel closer to that of the performance on an arm64 64K kernel, a perfor=
-mance
-> gap still remains. This is attributed to a combination of greater number =
-of
-> pgtable levels, less reach within the walk cache and higher data cache fo=
-otprint
-> for pgtable memory. At the same time, 64K is not suitable for general
-> purpose environments due to it's significantly higher memory footprint.
->
-> To solve this, we have been experimenting with a concept called "per-proc=
-ess
-> page size". This breaks the historic assumption of a single page size for=
- the
-> entire system: a process will now operate on a page size ABI that is grea=
-ter
-> than or equal to the kernel's page size. This is enabled by a key archite=
-ctural
-> feature on Arm: the separation of user and kernel page tables.
->
-> This can also lead to a future of a single kernel image instead of 4K, 16=
-K
-> and 64K images.
->
-> --------------
-> CURRENT DESIGN
-> --------------
-> The design is based on one core idea; most of the kernel continues to bel=
-ieve
-> there is only one page size in use across the whole system. That page siz=
-e is
-> the size selected at compile-time, as is done today. But every process (m=
-ore
-> accurately mm_struct) has a page size ABI which is one of the 3 page size=
-s
-> (4K, 16K or 64K) as long as that page size is greater than or equal to th=
-e
-> kernel page size (kernel page size is the macro PAGE_SIZE).
->
-> Pagesize selection
-> ------------------
-> A process' selected page size ABI comes into force at execve() time and
-> remains fixed until the process exits or until the next execve(). Any for=
-ked
-> processes inherit the page size of their parent.
-> The personality() mechanism already exists for similar cases, so we propo=
-se
-> to extend it to enable specifying the required page size.
->
-> There are 3 layers to the design. The first two are not arch-dependent,
-> and makes Linux support a per-process pagesize ABI. The last layer is
-> arch-specific.
->
-> 1. ABI adapter
-> --------------
-> A translation layer is added at the syscall boundary to convert between t=
-he
-> process page size and the kernel page size. This effectively means enforc=
-ing
-> alignment requirements for addresses passed to syscalls and ensuring that
-> quantities passed as =E2=80=9Cnumber of pages=E2=80=9D are interpreted re=
-lative to the process
-> page size and not the kernel page size. In this way the process has the i=
-llusion
-> that it is working in units of its page size, but the kernel is working i=
-n
-> units of the kernel page size.
->
-> 2. Generic Linux MM enlightenment
-> ---------------------------------
-> We enlighten the Linux MM code to always hand out memory in the granulari=
-ty
-> of process pages. Most of this work is greatly simplified because of the
-> existing mTHP allocation paths, and the ongoing support for large folios
-> across different areas of the kernel. The process order will be used as t=
-he
-> hard minimum mTHP order to allocate.
->
-> File memory
-> -----------
-> For a growing list of compliant file systems, large folios can already be
-> stored in the page cache. There is even a mechanism, introduced to suppor=
-t
-> filesystems with block sizes larger than the system page size, to set a
-> hard-minimum size for folios on a per-address-space basis. This mechanism
-> will be reused and extended to service the per-process page size requirem=
-ents.
->
-> One key reason that the 64K kernel currently consumes considerably more m=
-emory
-> than the 4K kernel is that Linux systems often have lots of small
-> configuration files which each require a page in the page cache. But thes=
-e
-> small files are (likely) only used by certain processes. So, we prefer to
-> continue to cache those using a 4K page.
-> Therefore, if a process with a larger page size maps a file whose pagecac=
-he
-> contains smaller folios, we drop them and re-read the range with a folio
-> order at least that of the process order.
->
-> 3. Translation from Linux pagetable to native pagetable
-> -------------------------------------------------------
-> Assume the case of a kernel pagesize of 4K and app pagesize of 64K.
-> Now that enlightenment is done, it is guaranteed that every single mappin=
-g
-> in the 4K pagetable (which we call the Linux pagetable) is of granularity
-> at least 64K. In the arm64 MM code, we maintain a "native" pagetable per
-> mm_struct, which is based off a 64K geometry. Because of the guarantee
-> aforementioned, any pagetable operation on the Linux pagetable
-> (set_ptes, clear_flush_ptes, modify_prot_start_ptes, etc) is going to hap=
-pen
-> at a granularity of at least 16 PTEs - therefore we can translate this
-> operation to modify a single PTE entry in the native pagetable.
-> Given that enlightenment may miss corner cases, we insert a warning in th=
-e
-> architecture code - on being presented with an operation not translatable
-> into a native operation, we fallback to the Linux pagetable, thus losing
-> the benefits borne out of the pagetable geometry but keeping
-> the emulation intact.
->
-> -----------------------
-> What we want to discuss
-> -----------------------
->  - Are there other arches which could benefit from this?
->  - What level of compatibility we can achieve - is it even possible to
->    contain userspace within the emulated ABI?
->  - Rough edges of compatibility layer - pfnmaps, ksm, procfs, etc. For
->    example, what happens when a 64K process opens a procfs file of
->    a 4K process?
->  - native pgtable implementation - perhaps inspiration can be taken
->    from other arches with an involved pgtable logic (ppc, s390)?
->
+On Tue, Feb 24, 2026 at 04:10:47AM +0800, Barry Song wrote:
+> On Sat, Feb 21, 2026 at 9:39 PM Vernon Yang <vernon2gm@gmail.com> wrote:
+> >
+> > On Sat, Feb 21, 2026 at 06:27:36PM +0800, Barry Song wrote:
+> > > On Sat, Feb 21, 2026 at 5:40 PM Vernon Yang <vernon2gm@gmail.com> wrote:
+> > > >
+> > > > From: Vernon Yang <yanglincheng@kylinos.cn>
+> > > >
+> > > > For example, create three task: hot1 -> cold -> hot2. After all three
+> > > > task are created, each allocate memory 128MB. the hot1/hot2 task
+> > > > continuously access 128 MB memory, while the cold task only accesses
+> > > > its memory briefly and then call madvise(MADV_FREE). However, khugepaged
+> > > > still prioritizes scanning the cold task and only scans the hot2 task
+> > > > after completing the scan of the cold task.
+> > > >
+> > > > And if all folios in VM_DROPPABLE are lazyfree, Collapsing maintains
+            ^^
+here
 
-Hi Dev, Ryan,
-
-I'd be very interested in joining this discussion at LSF/MM.
-
-On Android, we have a separate but very related use case: we emulate a
-larger userspace page size on x86, primarily to allow app developers
-to test their apps for 16KB compatibility using x86 emulators [1].
-
-Similar to your proposed "ABI adapter" layer, our approach works by
-enforcing a larger 16KB granularity and alignment on the VMAs to
-emulate the userspace page size, while the underlying kernel still
-operates on a 4KB granularity [2].
-
-In our emulation experience, we've run into a few specific rough edges:
-
-1. mmap and SIGBUS: Enforcing a larger VMA granularity means that
-mapping files can easily extend the VMA beyond the end of the file's
-valid offset. When userspace touches this padded area, the 4KB filemap
-fault cannot resolve to a valid index, resulting in a SIGBUS that
-applications aren't expecting.
-
-2. userfaultfd: This inherently operates at the strict PTE granularity
-of the underlying kernel (4KB). Hiding this from a userspace that
-expects a 16KB/64KB fault granularity while the kernel still operates
-on 4KB granularity is messy ...
-
-3. pagemap and PFN interfaces: As you noted with procfs, interfaces
-that expose or consume PFNs are problematic. Userspace tools reading
-/proc/pid/pagemap, /proc/kpagecount, /proc/kpageflags,
-/proc/kpagecgroup, and /sys/kernel/mm/page_idle/bitmap calculate
-offsets based on the userspace page size ABI, but the kernel returns
-4KB PFNs which breaks such users.
-
-
-It would be great to explore if we can align on a unified approach to
-solve these.
-
-[1] https://developer.android.com/guide/practices/page-sizes#16kb-emulator
-[2] https://source.android.com/docs/core/architecture/16kb-page-size/gettin=
-g-started-cf-x86-64-pgagnostic
-
-Thanks,
-Kalesh
-
-> -------------
-> Key Attendees
-> -------------
->  - Ryan Roberts (co-presenter)
->  - mm folks (David Hildenbrand, Matthew Wilcox, Liam Howlett, Lorenzo Sto=
-akes,
->              and many others)
->  - arch folks
+> > > > that property, so we can just collapse and memory pressure in the future
+> > >
+> > > I don’t think this is accurate. A VMA without VM_DROPPABLE
+> > > can still have all folios marked as lazyfree. Therefore, having
+> > > all folios lazyfree is not the reason why collapsing preserves
+> > > the property.
+> >
+> > In folio_add_new_anon_rmap(), we know that the vma has the VM_DROPPABLE
+> > attribute, which is the root reason why Collapsing maintains that property.
+> > The above commit log clearly states "all folios in VM_DROPPABLE are lazyfree"
+> >                                                 ^^^^^^^^^^^^^^^
+> > (the "if" is redundant and should be removed), not "all folios are lazyfree".
 >
+> Yes, we should remove the if; otherwise, it’s misleading.
+>
+> [...]
+>
+> > >
+> > > I would prefer to add a comment about VM_DROPPABLE here
+> > > rather than only mentioning it in the changelog.
+> >
+> > Is the following comment clear?
+> >
+> > /*
+> >  * If the vma has the VM_DROPPABLE flag, the collapse will
+> >  * preserve the lazyfree property without needing to skip.
+> >  */
+>
+> Looks good to me.
+
+Hi Andrew, could you please squash the following fix into this patch?
+also remove "if" in the changelog above.
+
+---
+From ab5060c7be655dd00bf3a9abc779915922b2f969 Mon Sep 17 00:00:00 2001
+From: Vernon Yang <yanglincheng@kylinos.cn>
+Date: Thu, 26 Feb 2026 13:18:39 +0800
+Subject: [PATCH] fixup! mm: khugepaged: skip lazy-free folios
+
+add comment about VM_DROPPABLE in code, make it clearer.
+
+Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+---
+ mm/khugepaged.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index c85d7381adb5..7c1642fbe394 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -575,6 +575,10 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 		folio = page_folio(page);
+ 		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
+
++		/*
++		 * If the vma has the VM_DROPPABLE flag, the collapse will
++		 * preserve the lazyfree property without needing to skip.
++		 */
+ 		if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
+ 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+ 			result = SCAN_PAGE_LAZYFREE;
+@@ -1333,6 +1337,10 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		}
+ 		folio = page_folio(page);
+
++		/*
++		 * If the vma has the VM_DROPPABLE flag, the collapse will
++		 * preserve the lazyfree property without needing to skip.
++		 */
+ 		if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
+ 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+ 			result = SCAN_PAGE_LAZYFREE;
+--
+2.51.0
+
 
