@@ -4,111 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A2DEA4E26
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 502BEEA4E22
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A7276B0098; Mon,  2 Mar 2026 10:53:32 -0500 (EST)
+	id DB0D86B0096; Mon,  2 Mar 2026 10:53:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 245166B0096; Mon,  2 Mar 2026 10:53:32 -0500 (EST)
+	id D3B8D6B0099; Mon,  2 Mar 2026 10:53:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA2886B0099; Mon,  2 Mar 2026 10:53:31 -0500 (EST)
+	id B94D06B009B; Mon,  2 Mar 2026 10:53:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6F8D6B0098
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:31 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60EB5140180
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:31 +0000 (UTC)
-X-FDA: 84501567822.04.AC094EB
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 999CC6B0096
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:34 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F9691401BD
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:34 +0000 (UTC)
+X-FDA: 84501567948.12.675ACE1
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7AA11C0009
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WtHonB/J";
-	spf=pass (imf28.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6A0624000A
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XZeLSDdS;
+	spf=pass (imf07.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772466809;
+	s=arc-20220608; t=1772466812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0FcJExh6URZjyjWUCUvehL157kXxK4+CRdEnZ1Cl6Yg=;
-	b=dMSanPkxkwFatb2Jv6VG1gXpPE03k+1ir2aIZWAEILyvlqS+RgRFKEFm27RlprGeZu3GkA
-	kh+mnZaDaGn0+ReZ+TqmZJSRTJMaLBHCjdW43hLABPs53CkchIQKJbDNViY0cc/AGu6LAq
-	keG3ckvgDbJpWaYTtt1rTrxLUHrSaPc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dLbuFPWOWGHaHFWL2ILwbNpXfhNKBfkyvba0iiQAlY0=;
+	b=scoHIUYKhtKu41Hw9pTXfQ/1Y9hF7UaoFE0Wl8QxntTG2DqrUBYZ9m2a4USkqmeNqh59UF
+	nL8a8w3TzvUtLrLlF4HnyXDgyZdAAEv5jg0pUlMlH1caoTkvodfdIpQvdH+LpA9Uk3qT13
+	l64LsSQO4oSGUjL24/zWrv2AttlAj80=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WtHonB/J";
-	spf=pass (imf28.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XZeLSDdS;
+	spf=pass (imf07.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466809; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466812; a=rsa-sha256;
 	cv=none;
-	b=Q710xvcWFNAHTbsLtWxmyHKFRFYj4d94oUU7AHBxjOC7QZ6oa7aWb0bp62n4d/nA2qPUtX
-	KBmKnlKKDI1grnfO52YTQ3DhsRBLrTVBcROSZNYor/RbiqMZFx2nsbLtvHG7AVZyJ9Jxq0
-	xNAzUBf6phYLV3kjdUUf9mvtsHeEGJk=
+	b=aegvG27bPzBMe3HeDAK2bV6HyPsd9oYI4hnNfOdejvbPGQsxkr4s4nZQmZuLOBqLhHPuKu
+	NHxXtodpllZbhsqm2H2sznbAkTUw3x5SnzqWrgC7DyxgZbP8vrMXft0iosTIy+S2SL0PaU
+	INgIs/KKU5TBR+hYRjpL/jHxWFJYono=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772466808;
+	s=mimecast20190719; t=1772466811;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type;
-	bh=0FcJExh6URZjyjWUCUvehL157kXxK4+CRdEnZ1Cl6Yg=;
-	b=WtHonB/JUgn6iA+Ad51qso/oTYz481PsfZ+0jZ0UgxPbVZ1nfVoHdER4rOiJwPny6mOaO6
-	8EzeThN9qbKm28FMeNlxkfYkEf1qP0Al8kj+kFYxwYz7ISuAIeXIUoqFka+UDdcLcCnIXe
-	7+VabKNx0+jXWahbe14oP4AtcEuPktE=
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dLbuFPWOWGHaHFWL2ILwbNpXfhNKBfkyvba0iiQAlY0=;
+	b=XZeLSDdSWtRQSpIuotJ/0D9qV4f1mY6f2QdXqDbns0rZj/rg8VVOBWGCMsHHjvieowNgm9
+	t6TmCf7CeYo6+Y4LQM/W16lSzxR3jPlLRgwWQokMHaYRCtzioj5+uhGJZauqG5dvtWoIPQ
+	L32pYMSvmA2+4j5uaOayfHNnGc9gz34=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-630--FvjyvKDOCyFg5cYcHDD5g-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-h8wrkvvyNiGreQWPAh48UQ-1; Mon,
  02 Mar 2026 10:53:25 -0500
-X-MC-Unique: -FvjyvKDOCyFg5cYcHDD5g-1
-X-Mimecast-MFC-AGG-ID: -FvjyvKDOCyFg5cYcHDD5g_1772466803
+X-MC-Unique: h8wrkvvyNiGreQWPAh48UQ-1
+X-Mimecast-MFC-AGG-ID: h8wrkvvyNiGreQWPAh48UQ_1772466802
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E30319560A7;
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7682819560A2;
 	Mon,  2 Mar 2026 15:53:22 +0000 (UTC)
 Received: from tpad.localdomain (unknown [10.96.133.6])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0BC881800594;
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F3D2A1800592;
 	Mon,  2 Mar 2026 15:53:20 +0000 (UTC)
 Received: by tpad.localdomain (Postfix, from userid 1000)
-	id 874C0401CED19; Mon,  2 Mar 2026 12:53:00 -0300 (-03)
-Message-ID: <20260302154945.143996316@redhat.com>
-User-Agent: quilt/0.69
-Date: Mon, 02 Mar 2026 12:49:45 -0300
+	id C42E64014FBC7; Thu, 26 Feb 2026 12:49:18 -0300 (-03)
+Date: Thu, 26 Feb 2026 12:49:18 -0300
 From: Marcelo Tosatti <mtosatti@redhat.com>
-To: linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@linux.com>,
- Pekka Enberg <penberg@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Leonardo Bras <leobras.c@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Waiman Long <longman@redhat.com>,
- Boqun Feun <boqun.feng@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>
-Subject: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 3/4] swap: apply new queue_percpu_work_on() interface
+Message-ID: <aaBrfg0ozWK4moxC@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <20260206143741.589656953@redhat.com>
+ <aYaQFM9sBbauUn5c@WindFlash>
+MIME-Version: 1.0
+In-Reply-To: <aYaQFM9sBbauUn5c@WindFlash>
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: OFezU6u646QVBXL0nBTJogwnPQZfY633g085cQDY5os_1772466803
+X-Mimecast-MFC-PROC-ID: jirs7lx3bPc33FAxAAQElJfX07Ac1IZUttRfaL0sBSA_1772466802
 X-Mimecast-Originator: redhat.com
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7AA11C0009
-X-Stat-Signature: bgexrc93zm4n1yc8ed7uq8trz51ea4rc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-HE-Tag: 1772466809-753382
-X-HE-Meta: U2FsdGVkX198mhanK3h9TrO0o2t0BxshDovHdgMvda7NOyc+qZZJImHMLhaMcfPckixnF1Bj6/ubHPI29G3idX5z/O4WPdphaE/eZo2jJnTjYk3PAxffjEN8CF6qLSIMMm1Tnw/FzVKcdps1x3+lOrSvBthYMoHljDQLeiyb6p8v++mI4dZzcUalz9JDxkxoEP1m76S8ndwGbo1qtFz1J850oCUSvQ5xYcrzcvCsefPm8iHzZofVb4jl2A0t7jDnIbOFw1Qw/tBoHNf8YAyOxilibDKRku5VCAthrYnZMboMPz2RhvS3vZkl2ztKLbKAIRczdxwDS02MXonbZGRZrIbEo5kEHN8MvIRYzivIC9284I1Rl3UI2pfLvT5xRm1PtGuHD6AQbv52M6JZkhZLZszeDDhHMc3BELLut5hOvSXHPOFF9iSuvt2zA5mYSGnzSpbw7gSqqcl6YTJG6FV14C3bcfqTrKw5uoS1SUzJ5UuacWOu8va0JZzvFDwzOrOpzTiABfR6wk1JtGFdPbO0XTxe08H43lQXUHG3FvjRo+e+A9eCcl9+lLPy1YcOo0JalLUVzFP5MPp5sMgGUQlL62daLeweN8ZQTNBy3zmgyqxLiRyobFRF0DIV/jGNVjJ+jynDKOuNZJAlFaRn906ZrBkZ2r0fAs+a9MRb6FXlasO5yEFxgydoR2DJgOGx2klOY6Sgz9ogGxK3q3Iz3OGaT3VyYNK65v5fS33YLAgFVK3c7QMU0pTMB5Cg6IbbPVjFL1OzF7a9vEJt0RhybwTVCp1VzIJeIDUwkof+QsAf35TlOo4jEAGzmwGzDWRzfWUnKcF/4bwdefk05/wU6e8pKFGPnvwvNwbeEO/EJDjtzfKfiziyq3elbyF+ABdxOn3Hvd/QxD2ZvHDY+OZHxSKOp9uY9ZTUH1XzX30sQHrcJBkrsN9pYp7q486HF7MYWsq1hNVfOUQMuYSIi0JVtLD
- F57Ck5YA
- IBSHgAdVx0nFUaztJClW0BH7DZimW1MvnYcZ2BaETGnZu2Pq3jITUwlAf22n1QsMi3U+5o5yFiDHctofuhVLUHQfXtQIi3AWPSHCT/2fKzR6Mufr/cPfpB0gYxHerDgqLaRBA2EDoahITWJfFIDrXvymFv8VF2ila/gR1KXt8c+hFOJIno69dBKtwvB7eZ7JRO4mhD7RRrFd429g9G5ZePdE/MxZ3RgdtEgnbsVrF+eT3hpwtuGfMWmEKaEpv8lCAlBZ427KJnWTmBmNq1l2JfAbf2rNlMvQJCvskyagnw4UhrN3MkZJi7jOqb56PqtkNdob1EsddvJWoTJIJq/v64xe8AOt16BlA7T6zHyh1GTglg+5PxOHuFz8ZWgXg/4dWoSsRVaHwwkVFPOYm57AEgjrLLg==
+X-Rspamd-Queue-Id: 6A0624000A
+X-Rspamd-Server: rspam08
+X-Stat-Signature: wucpaibgoue4fqgnsjn1cobb4gj7oy4c
+X-HE-Tag: 1772466812-470908
+X-HE-Meta: U2FsdGVkX1/HmLxoKgdCN2KoHZIS3Sl6Dnq+yIZPDAr6sRAykBhGRDdX3w19AUL8J9H9EUO3ZVZ0S6Vzb7e6f5Dg4ZQKOweP3OzxsVHy5A15TwQYQEqAA+6Vfr+iNmSh3wgy5I2Qzlek2YZyot+3x/sMpvDcg8jhpMxXer+OBcJ88HfdZvmzC5s16PLSz8jDv8YEclvrUab1V12dfdxg1ZBha9hNi8yrGbq2PD3BjKrninhLT+pEo52VjOkTpyAKBQEyXaF/nVVMwwanTwtIeKjxRBFWr9cJwLimmMbq98dxSU4Ox2MLF1tbX2dN/hqVLRKdfbqK2F7FXAqa6KsQh8ryde0lsvYrBpxFAjritb9HcsE2WU8ZEySbLrUx3JPqXfauwuqMbpZ7r9B9vrUG/uOmGNaYPnC35Tiv8/U2dV+IcTObTG4Ri1k3ecZZBI7bHSSfulHLRaqAKHAb0wPBer6o7gxa3HA9pt1cKwWuU91ksQjVBzClFcSjhgSOrZCvDqNtBr2OKa1Z6gq3sYTovth63WLZoBeYoYKqa5Eq37oKcD78/b/g7k4sM9awSmkh/71IvIDbycbt9y8cEwD0gkfaAV6q/KTKJK5IMHxM5lLpz66hFY+fRRtDRDESwyTYdNJy/VqMDpCI1pPMc0dXLnmDlb2AUpLxWoE9MGJ23jeU1qFFEhijLlUZayyPnrlaJpWVwNbhypY05maZ95DK2IyeOpv1Pe09rr8wsXx1pOBFnGmgCYjfIa2rfJXK+4ik4L0wRhVYLCd1jw3yVn5GKcowhgK8ziwlytne33BVbhoGQr+WlOAO52qkJm4By7q09Y6TW38wT6D8zGALLxWbxN5TymqAxbSMVdU8HhpNQBIkkXr9P9/msG0FKvu+UvFebDibBvrBuZQCRqb8tZDSKbksceOLQVWkehXHH0QYN1NjUJbC8EnW+Rw+eyv74hEytPJSuPK45ZaIN4svIBz
+ dWtFJmWY
+ mT1QrPU5rsBZIw92LkGNOvBWbW1aD+Hrk2Ut2iEkEJ9l1g4+OYAO6FeMHp+DdPCR6qNDoXxCp4XOL3NuWWI1/nu/lD8LS+rrAaBs7eCIiMPmaKjvo3tHCjcrU0OJs/TfMCY0SfTjnW4N6nHiElO+15QxkHjkz3lzrKzRmbcQDLAP85BvR3Cz6djmu35S/ts0FRW5oWBs7PK0I4NHnUu5AbAWkBKgfVF9L9/7rTr07h0C/yM9d1yZp5TkWu8aAn/qiWQW6qdYVWc0bOlUJBqbzGm5XyaN1O+avgOLblQe0FbqOka93qrj6y1VAptnEV16DI2b4ns7nKYbnFsSPCmiAqst1eIlOLV47AnEoYclgF+LnjGXQM6jghMUUq7Gl7ngQwM080OaKCanH2J5JK/qAycHhePcHBshFge4mtgZTPQqF02v7+BgwHNHfAfNB77m44wVdL0MDha3g15VkWjyj7etD+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,254 +120,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The problem:
-Some places in the kernel implement a parallel programming strategy
-consisting on local_locks() for most of the work, and some rare remote
-operations are scheduled on target cpu. This keeps cache bouncing low since
-cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-kernels, even though the very few remote operations will be expensive due
-to scheduling overhead.
+On Fri, Feb 06, 2026 at 10:06:28PM -0300, Leonardo Bras wrote:
+> > +	cpu = smp_processor_id();
+> 
+> Wondering if for these cases it would make sense to have something like:
+> 
+> qpw_get_local_cpu() and 
+> qpw_put_local_cpu() 
+> 
+> so we could encapsulate these migrate_{en,dis}able()
+> and the smp_processor_id().
+> 
+> Or even,
+> 
+> int qpw_local_lock() {
+> 	migrate_disable();
+> 	cpu = smp_processor_id();
+> 	qpw_lock(..., cpu);
+> 
+> 	return cpu;
+> }
+> 
+> and
+> 
+> qpw_local_unlock(cpu){
+> 	qpw_unlock(...,cpu);
+> 	migrate_enable();
+> } 
+> 
+> so it's more direct to convert the local-only cases.
+> 
+> What do you think?
 
-On the other hand, for RT workloads this can represent a problem: getting
-an important workload scheduled out to deal with remote requests is
-sure to introduce unexpected deadline misses.
+Switched to local_qpw_lock variants.
 
-The idea:
-Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
-In this case, instead of scheduling work on a remote cpu, it should
-be safe to grab that remote cpu's per-cpu spinlock and run the required
-work locally. That major cost, which is un/locking in every local function,
-already happens in PREEMPT_RT.
+> >  {
+> > -	local_lock(&cpu_fbatches.lock);
+> > -	lru_add_drain_cpu(smp_processor_id());
+> 
+> and here ?
 
-Also, there is no need to worry about extra cache bouncing:
-The cacheline invalidation already happens due to schedule_work_on().
+Fixed lack of migrate_disable/migrate_enable, thanks!
 
-This will avoid schedule_work_on(), and thus avoid scheduling-out an
-RT workload.
+> > @@ -950,7 +954,7 @@ void lru_cache_disable(void)
+> >  #ifdef CONFIG_SMP
+> >  	__lru_add_drain_all(true);
+> >  #else
+> > -	lru_add_mm_drain();
+> 
+> and here, I wonder
 
-Proposed solution:
-A new interface called Queue PerCPU Work (QPW), which should replace
-Work Queue in the above mentioned use case.
+This is !CONFIG_SMP, so smp_processor_id is always 0.
 
-If CONFIG_QPW=n this interfaces just wraps the current
-local_locks + WorkQueue behavior, so no expected change in runtime.
+> >  	drain_pages(cpu);
+> >  
+> >  	/*
+> > 
+> > 
+> 
+> TBH, I am still trying to understand if we need the migrate_{en,dis}able():
+> - There is a data dependency beween cpu being filled and being used.
+> - If we get the cpu, and then migrate to a different cpu, the operation 
+>   will still be executed with the data from that starting cpu 
 
-If CONFIG_QPW=y, and qpw kernel boot option =1, 
-queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
-and perform work on it locally. This is possible because on 
-functions that can be used for performing remote work on remote 
-per-cpu structures, the local_lock (which is already
-a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
-is able to get the per_cpu spinlock() for the cpu passed as parameter.
+Yes, but on a remote CPU. What prevents the original CPU from accessing 
+its per-CPU local data, therefore racing with the code executing on the
+remote CPU.
 
-v1->v2:
-- Introduce local_qpw_lock and unlock functions, move preempt_disable/
-  preempt_enable to it (Leonardo Bras). This reduces performance
-  overhead of the patch.
-- Documentation and changelog typo fixes (Leonardo Bras).
-- Fix places where preempt_disable/preempt_enable was not being
-  correctly performed.
-- Add performance measurements.
-
-RFC->v1:
-
-- Introduce CONFIG_QPW and qpw= kernel boot option to enable 
-  remote spinlocking and execution even on !CONFIG_PREEMPT_RT
-  kernels (Leonardo Bras).
-- Move buffer_head draining to separate workqueue (Marcelo Tosatti).
-- Convert mlock per-CPU page lists to QPW (Marcelo Tosatti).
-- Drop memcontrol convertion (as isolated CPUs are not targets
-  of queue_work_on anymore).
-- Rebase SLUB against Vlastimil's slab/next.
-- Add basic document for QPW (Waiman Long).
-
-The performance numbers, as measured by the following test program,
-are as follows:
-
-Unpatched kernel:			166 cycles
-Patched kernel, CONFIG_QPW=n:		166 cycles
-Patched kernel, CONFIG_QPW=y, qpw=0:	168 cycles
-Patched kernel, CONFIG_QPW=y, qpw=1:	192 cycles
-
-kmalloc_bench.c:
-#include <linux/module.h>
-#include <linux/kernel.h>
-#include <linux/slab.h>
-#include <linux/timex.h>
-#include <linux/preempt.h>
-#include <linux/irqflags.h>
-#include <linux/vmalloc.h>
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Gemini AI");
-MODULE_DESCRIPTION("A simple kmalloc performance benchmark");
-
-static int size = 64; // Default allocation size in bytes
-module_param(size, int, 0644);
-
-static int iterations = 9000000; // Default number of iterations
-module_param(iterations, int, 0644);
-
-static int __init kmalloc_bench_init(void) {
-    void **ptrs;
-    cycles_t start, end;
-    uint64_t total_cycles;
-    int i;
-    pr_info("kmalloc_bench: Starting test (size=%d, iterations=%d)\n", size, iterations);
-
-    // Allocate an array to store pointers to avoid immediate kfree-reuse optimization
-    ptrs = vmalloc(sizeof(void *) * iterations);
-    if (!ptrs) {
-        pr_err("kmalloc_bench: Failed to allocate pointer array\n");
-        return -ENOMEM;
-    }
-
-    preempt_disable();
-    start = get_cycles();
-
-    for (i = 0; i < iterations; i++) {
-        ptrs[i] = kmalloc(size, GFP_ATOMIC);
-    }
-
-    end = get_cycles();
-
-    total_cycles = end - start;
-    preempt_enable();
-
-    pr_info("kmalloc_bench: Total cycles for %d allocs: %llu\n", iterations, total_cycles);
-    pr_info("kmalloc_bench: Avg cycles per kmalloc: %llu\n", total_cycles / iterations);
-
-    // Cleanup
-    for (i = 0; i < iterations; i++) {
-        kfree(ptrs[i]);
-    }
-    vfree(ptrs);
-
-    return 0;
-}
-
-static void __exit kmalloc_bench_exit(void) {
-    pr_info("kmalloc_bench: Module unloaded\n");
-}
-
-module_init(kmalloc_bench_init);
-module_exit(kmalloc_bench_exit);
-
-The following testcase triggers lru_add_drain_all on an isolated CPU
-(that does sys_write to a file before entering its realtime 
-loop).
-
-/* 
- * Simulates a low latency loop program that is interrupted
- * due to lru_add_drain_all. To trigger lru_add_drain_all, run:
- *
- * blockdev --flushbufs /dev/sdX
- *
- */ 
-#define _GNU_SOURCE
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <pthread.h>
-#include <sched.h>
-#include <unistd.h>
-
-int cpu;
-
-static void *run(void *arg)
-{
-	pthread_t current_thread;
-	cpu_set_t cpuset;
-	int ret, nrloops;
-	struct sched_param sched_p;
-	pid_t pid;
-	int fd;
-	char buf[] = "xxxxxxxxxxx";
-
-	CPU_ZERO(&cpuset);
-	CPU_SET(cpu, &cpuset);
-
-	current_thread = pthread_self();    
-	ret = pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
-	if (ret) {
-		perror("pthread_setaffinity_np failed\n");
-		exit(0);
-	}
-
-	memset(&sched_p, 0, sizeof(struct sched_param));
-	sched_p.sched_priority = 1;
-	pid = gettid();
-	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
-	if (ret) {
-		perror("sched_setscheduler");
-		exit(0);
-	}
-
-	fd = open("/tmp/tmpfile", O_RDWR|O_CREAT|O_TRUNC);
-	if (fd == -1) {
-		perror("open");
-		exit(0);
-	}
-
-	ret = write(fd, buf, sizeof(buf));
-	if (ret == -1) {
-		perror("write");
-		exit(0);
-	}
-
-	do { 
-		nrloops = nrloops+2;
-		nrloops--;
-	} while (1);
-}
-
-int main(int argc, char *argv[])
-{
-        int fd, ret;
-	pthread_t thread;
-	long val;
-	char *endptr, *str;
-	struct sched_param sched_p;
-	pid_t pid;
-
-	if (argc != 2) {
-		printf("usage: %s cpu-nr\n", argv[0]);
-		printf("where CPU number is the CPU to pin thread to\n");
-		exit(0);
-	}
-	str = argv[1];
-	cpu = strtol(str, &endptr, 10);
-	if (cpu < 0) {
-		printf("strtol returns %d\n", cpu);
-		exit(0);
-	}
-	printf("cpunr=%d\n", cpu);
-
-	memset(&sched_p, 0, sizeof(struct sched_param));
-	sched_p.sched_priority = 1;
-	pid = getpid();
-	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
-	if (ret) {
-		perror("sched_setscheduler");
-		exit(0);
-	}
-
-	pthread_create(&thread, NULL, run, NULL);
-
-	sleep(5000);
-
-	pthread_join(thread, NULL);
-}
-
-
-
-
-
+> - But maybe the compiler tries to optize this because the processor number 
+>   can be on a register and of easy access, which would break this.
+> 
+> Maybe a READ_ONCE() on smp_processor_id() should suffice?
+> 
+> Other than that, all the conversions done look correct.
+> 
+> That being said, I understand very little about mm code, so let's hope we 
+> get proper feedback from those who do :) 
+> 
+> Thanks!
+> Leo
+> 
+> 
 
 
