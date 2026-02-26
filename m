@@ -4,137 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A918FD9E0C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 20:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC664FD9E0E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 20:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A66B6B0202; Thu, 26 Feb 2026 15:21:30 -0500 (EST)
+	id 25C766B0152; Thu, 26 Feb 2026 15:22:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 683666B0203; Thu, 26 Feb 2026 15:21:30 -0500 (EST)
+	id 20A1A6B024A; Thu, 26 Feb 2026 15:22:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 588DE6B0204; Thu, 26 Feb 2026 15:21:30 -0500 (EST)
+	id 136E46B024E; Thu, 26 Feb 2026 15:22:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 428706B0202
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:21:30 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0FA1DB50FD
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:21:30 +0000 (UTC)
-X-FDA: 84487727940.09.A5E869A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E1C0E40013
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:21:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AONXE8Kj;
-	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00F906B0152
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:22:47 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 895281BF30
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:22:47 +0000 (UTC)
+X-FDA: 84487731174.16.A2405F9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C950F4000B
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:22:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UQrL6ITS;
+	spf=pass (imf07.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772137288;
+	s=arc-20220608; t=1772137365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OuUT6ttU4JUu+7YnbkAm0OY0100H8afFpF1ksWTWIMQ=;
-	b=uFeEUD3PNl67kEdLfiOMX3d/nFTkcUXI6zDOcMajqO+2zCqEplr7wyj0byJBjgOCBkNBXA
-	17+iBJClqw4nyeZYjQUv0Q+/6vyggC699dMGDZrUrihNmNg+uibBMMhipxbB+mT4jqR4Ak
-	EpLTNuWG5OsK792dO0faji7Yuu7yPsI=
+	bh=yWZNpYzf4Dqw3i94iV7fiiH7gq94n6HGTsUtIH3AsWA=;
+	b=tjUZsOreM2RMag66K9bqgs0kvnTyDCh2gt5AsxZLAkosRL4uHkCXweydBjsx6Hz6z6BdCm
+	kqCUCEeHgf6t5DGOhXzQby8LA7VRZPj9ROsxP8p1Em/J2bdg+m0Tol3QqU0wiwsGXt0HHq
+	d85biGkQGwlyWYhlCbKzOwUznFpkm0Y=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AONXE8Kj;
-	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UQrL6ITS;
+	spf=pass (imf07.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772137288; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772137365; a=rsa-sha256;
 	cv=none;
-	b=Q50ar2ii40gYgZYgnKZIuNqTRmiEpbDjMJSehnGmQQ2uJhwYtWfj1ozwkr+t8VWc0LNLQf
-	DVWP1ZESoUpNI30W8/pKnOtXtHj552Ze2zKbMEY4C2OAK53+STe2KaK3OLNt6kweRj/iIt
-	nL5vXHRpQ0CppUc+icC1zkiM1BOA408=
+	b=hvf2TD9zNVBiMXXUK21MIh6o/8R4En+2EIBSfQoftz7++WGQ047DWYv2nLxbuXKdDmxNoj
+	wKHwVOawoQUe7rGHgv9TOfuRyUgJcJtedZvGP7lDGcGcKMQgcnzRADJsJf7Ka6se2NKXuo
+	wfnbfKm/xaFOBhqP21CqOFiVE8eTzm0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772137287;
+	s=mimecast20190719; t=1772137365;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OuUT6ttU4JUu+7YnbkAm0OY0100H8afFpF1ksWTWIMQ=;
-	b=AONXE8KjATvp1LGXlRZS7Bi5wg6DUnVY5yReXB7uckyXg1wBUyrRcv41YBSwzY90GY7GgO
-	zCDw6fRBp8Cq+Gq5HInJOlsyKyjLnH4h9Skcx0JwbUhPglgwwtpXx0MVVibTpzBGpIUbOS
-	FWRkZtRniKOoBZuTdVi4dN9pBmlDx5M=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-Rvu-H0s0N2mTx5okWL-JFg-1; Thu, 26 Feb 2026 15:21:26 -0500
-X-MC-Unique: Rvu-H0s0N2mTx5okWL-JFg-1
-X-Mimecast-MFC-AGG-ID: Rvu-H0s0N2mTx5okWL-JFg_1772137284
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-64caa85b132so1785797d50.3
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:21:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772137284; x=1772742084;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OuUT6ttU4JUu+7YnbkAm0OY0100H8afFpF1ksWTWIMQ=;
-        b=v7/R8woJRlxYFp2edZHKAvtVsawIo7qEbdcGviS57wgPkmecd+KZGSz8ugVKLnoBva
-         KH7g00XX4m0AFvsnI/zbHctJqOMSUV1QskWQvu6tYgjnr9ns+iLsOffkWVKpgFQHxhmB
-         hB12vJEdNc0X9FLAMLjUZywtSc6Jgo6gmkw1+bciAZkBy/o8LiXxlioKA3OhOVC09O4M
-         byCBSe9e+cTYi7wOvElz/Qjb/m4Y2TpqyARjJmTpEp7G/Bwv9jvLCB49H2r1SpApUPs/
-         g0Wc7hT/KbDEIZBVBB3wWi2lntkvZppY8/3L193DNg+5auqeKG1HZ9cgBYRSg/K8um//
-         PK4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWYREExBkd9Trgi9r3r+EBAEXKXT8C4Dg+Fja5lfqmdClaJcUDK21TIpYtua+VCjRwQc2BA9LC0Iw==@kvack.org
-X-Gm-Message-State: AOJu0YyAXwHuZQZ6N7y6PULAU/8hw1Ab2m66LeFTMrN0WBNRcE2fK9s0
-	+AAILM9HaAfn1nsmC9yRNsOB4w9lT8TbqMsk8q25qPCEQ5MkeiX95zvkU4aYJLU8JptDcPLqT0G
-	ethefsPGA3lYCIHdOwsf0g0feIkjGw5RgNVMLyR9BFBXI6l7UzP+GgKGpyqlI2aTNQVoOUq7v7V
-	QM6AckkOdO+sMlGgQzZxT6m//yUZY=
-X-Gm-Gg: ATEYQzw+3mroYeeu54hgPJ4kg8mPSZgQEVKeQ6BnPvbNNVRn8WuDQrphkp0LtAJWvKi
-	uRfSedJrXyofqYWMhsGKImJRZPJCg2XMPTThzyorcz+jZeb8mPGPKJZt0VLBIUXtren386VouNm
-	U8kV0+FLSYRIZq5VV90Xcm62dL2oWm5ALOedI3fkw+j9QvL2+c0mquu56fpv48KlfEeSyibGSxb
-	ss1
-X-Received: by 2002:a05:690e:1a85:b0:64a:cee0:fa8 with SMTP id 956f58d0204a3-64cc23434b1mr419309d50.88.1772137284566;
-        Thu, 26 Feb 2026 12:21:24 -0800 (PST)
-X-Received: by 2002:a05:690e:1a85:b0:64a:cee0:fa8 with SMTP id
- 956f58d0204a3-64cc23434b1mr419253d50.88.1772137283976; Thu, 26 Feb 2026
- 12:21:23 -0800 (PST)
+	bh=yWZNpYzf4Dqw3i94iV7fiiH7gq94n6HGTsUtIH3AsWA=;
+	b=UQrL6ITSY0feq6fQVCgBdMT6y2tRwg88mtZCdMVQYJiu+sQreuW9bZmFgdFPyN7MQBgWYP
+	XtV1JUYsZtP+Iw4pPWJ06lSdXNhIu8k7Lp3PXYOz6QbfT59mKTWKrSKEhCdifaFweWzRdm
+	/Te0yaQF+uLEkN8reeX1ENV6qtLJqeU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-XAF75V7rOmW6OA1s9pG8XQ-1; Thu,
+ 26 Feb 2026 15:22:41 -0500
+X-MC-Unique: XAF75V7rOmW6OA1s9pG8XQ-1
+X-Mimecast-MFC-AGG-ID: XAF75V7rOmW6OA1s9pG8XQ_1772137360
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 339CB1956064;
+	Thu, 26 Feb 2026 20:22:39 +0000 (UTC)
+Received: from bfoster (unknown [10.22.80.229])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3E41019560B5;
+	Thu, 26 Feb 2026 20:22:36 +0000 (UTC)
+Date: Thu, 26 Feb 2026 15:22:32 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: Morduan Zang <zhangdandan@uniontech.com>
+Cc: linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, willy@infradead.org
+Subject: Re: [PATCH] mm: fix pagecache_isize_extended() early-return bypass
+ for large folio mappings
+Message-ID: <aaCriOt-CDs4sciP@bfoster>
+References: <20240919160741.208162-3-bfoster@redhat.com>
+ <3F3A46783F8E9D52+20260226133149.79586-1-zhangdandan@uniontech.com>
 MIME-Version: 1.0
-References: <20260226012929.169479-1-npache@redhat.com> <20260226012929.169479-6-npache@redhat.com>
- <60e44957-b816-4f7e-b004-4e957a67fe12@linux.alibaba.com>
-In-Reply-To: <60e44957-b816-4f7e-b004-4e957a67fe12@linux.alibaba.com>
-From: Nico Pache <npache@redhat.com>
-Date: Thu, 26 Feb 2026 13:20:57 -0700
-X-Gm-Features: AaiRm53Me-8fM5QXkOAdd9G9REAo0qDWjRpQ1RLCmd1oOD2Zvo593rtgeJ1DgoI
-Message-ID: <CAA1CXcBD6paPH30_Tcsa5mvFxRQetZhAAh+3kX99zbN8KYXrSw@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v2 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com, 
-	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
-	baohua@kernel.org, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com, 
-	joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
-	Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, 
-	mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, 
-	raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com, 
-	rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, 
-	surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de, 
-	usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
-	zokeefe@google.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6umhsh9rhnfXWDB0h69KXlrYZxArF5gyUZPY9m_R7eY_1772137284
+In-Reply-To: <3F3A46783F8E9D52+20260226133149.79586-1-zhangdandan@uniontech.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: 4NN9MaoS-qDwCnvscshsqxtOIt7YKi566tbYHZtRtmY_1772137360
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E1C0E40013
-X-Stat-Signature: igm5hbphiyfgp113ydi7eehjcz3knjqe
+X-Rspamd-Queue-Id: C950F4000B
+X-Stat-Signature: xqjim9ydca4u31si5zjtkw6y5o5hm1zi
 X-Rspam-User: 
-X-HE-Tag: 1772137287-903050
-X-HE-Meta: U2FsdGVkX19EpHUZ6s9wHrXgdVYOJ7/eS99IBGYYhW5wkoxvKdRdYFKoqNFCPTsC1RnPEeQ+HGka0+EjUg1GlOIT5qb+Is9N7AiRxKIuLvbYG+8JqQXEiHX+ZrOwXLLlRfvvZ2ZI9XUXQuMSe9J7TxelXoz5w0fXloE5+5Lpu50nKaLOr8pwQoHj60sOiFtRURJ5CgZDls/ROtBbo5GRoPYjxnIPq7/THqmPRcuMHc9IucZKc1w8rGass5RAG6Ofb8MOVTVZNiPs7+MZIkNRFqcI11z9voTDVuCvVc/khGj+1OQekWOmiK2EZSULus6abz61Y7RAdDXXRSSFNeLJ0+Qe6YfHNiDI5OEvXVo3sS9yUhd/KPw5Wx+laCNCvXHFA0xmPYTTtSM/j5R9p7egsKEsoUzSa92hR3BCX+zkHbiail/ZXzgKHtPNi2H9MiJ7WCnmvLQ3pYX59d5m6cTDlMW9YpN4ZhxJiVcGwj6vd4I0ZdQH9XZBqAclZpOIoAKQs3my5qvvFOeNXuDvs/pMZS+BO4r/oK0C0eu84/UUN/ldUulmEBAUP1fSs40Km/B2nw4V52YlMGBJOTn3+OsXGEti9CAgJY9aVx0NH5szeBacw9Mr8cHVH7v1AWCGIbNGw83a+KYgclxRIl0P8D6TqHSGQUCUcjwxuzoyZIUyNzANZWQmz2taf4mjXQOtxYD18lq6O4y10gDMMECbOi4UYrDqESfdG7YQHl0ss9dV1NvCUIBEeduRg/rEnfEw9FJFp7w1u9aygxaz/YVVQeObSAjrcpemlspBS2RKesioW+8IQeSc7i/0ef6b8zlEvxAX6KI0YzSAyW8DgPCYuTggU1CG3CsNUhd8MSDcncE+Octe5g9DPCKxiPGWtUhoaM9Da6cgCr/g3Hg/VT6HTLGlU7SM3EO8K1G1kQcnLI7wtMwPywwHWKWkPoPeLieAqJUfNj26hgyFWSQfjxaWKKV
- sDFsNjoU
- IwCTnSSIXddKMm9dyUZ8ljqN43/jpX/xUtqRtfkNhontVMpeM21ie+gtJIK1UKdOuWDEnAf8uodDA6HJe500mecNkeZl1rXkD22o9kizWhvlIsK4BA/CmyTGNyJwkZUwtj88pLZ3qGCjIxoXCeb/rL1Rdwen3Z64V/4ind3JjQxzpBX4Pgwg2aT7vKU7/mhxquxRXkAvHtqy0FT3/2AwNQm/kDhvG3kOVpZut2202ctZ3qS6Lf2yQFYaLXYKKvftNQE9Jo9UNMiztp9KiRzkUR/4KxyoVH7hCOjF9Y7UW9wFVTgzJvWsq+Rfinop7sw5pdwgRppFO/KCFpWp72etQiMiLU7bU+dapAWpssDtqNzOfgXoNuCJn3qAP9SQvqaxYHGMyvMngvp7hPC9MmA3HDqJyhbsOHCUAgf1P+3WwyvPMUh/jozhLw+6l7lJaI/Qm4GT49NFLR2gclvTPk6qQh+/DletnHWr+EhSANxQ+uc1EEyE=
+X-HE-Tag: 1772137365-361308
+X-HE-Meta: U2FsdGVkX1+bMN097OTUBIk6pgdGN3WaGLnVs99IcE62EoDxI7Kdc92BcxrOGj18FP0ig4/Za7ErJ7sHtTpQsyT2jkX7iOzGThxhYZZmFHNjvnfxdLMnIfXRi4KBJEBAxkCutaCGmigdIKD22tsvWvPbtw3QRdKpRWH2L7REtqtMXf8QszvNbBjFIpbX767W1iCB5UubdLwIBEXPrvW4JRGWC/98EsBoNaooWfafZNVGSYo454IzZ5IHo6SeO88KThNUuziPbrickJoC2idLmRqPUrY7/xP2O5MYWoa0nPBAVCTq76+C+mF4HfdJULcE0wUv+BeENaLZQvOE0AfiVBtuSiS6XMznTrLy02btRRIeYSEsGLsR24B9tUwrIMacDIzfOs/vR+oG4lY9fFKPdzhv4k5veu89qiYd3+Ig8G/NdVthGKZIJUyoQVTT04jSRa9UpZ00cwBTig0f01LEQb+Lw0NZIfYj/HD25HpDrOTloqdm9ICI0YhiBt7298Nrm26DWaB4VXmkWb0Hfyp1mYJAvYEySqlG3DsP9zpjOG+zhT19A5rwTrA9ha8nFurSIZ76oxdf1R18otu4jHwIcxQ1mqFB/UA/KHO4OKtqae7vLJLOc3mIF7iThCGKe9y6dRAiqX5S/CK6FhYAdkHZH4tUObmnZw4AbdpEyQkIwBeRUcIbRmTGNOrTYy4yPbNwz6UsUqegQTpJp91dsXurWGQRgxrUGWYUyx2M+TMLQMOdJ3EEcy+t4lRgSEpRl5Xh3BHD+ODnEIbTxJHaB98Lva7a2xjdgvfmzk5XaR2E3nLNk/CCtHWrJAWFdX9jTuuftXlt1g1XiiEXrw9KXm3EV9XeVaV7pnpR0JHqaMCjWM/qNuq943olNkrf2XXnbVY8qW5IPT+5tlsXCYUdIjgAS9ZHp/iHZYt8p4xhDEb9zlGnYgs4AKg1ly1HPg2BdNYnBHN/9R/kW2/IbJ4QmH3
+ hazsu/uY
+ yciE+lF+o3nPo34KDQZGxTaM4qhlAAWwJFzl8CRas54d9ccpsLa1uanODjeq3YAny7OrEnPzf73I8IoakfBUWNwmqSW2eOAIFdYMjFhLXt3MRFGA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,119 +105,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 2:24=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 2/26/26 9:29 AM, Nico Pache wrote:
-> > The khugepaged daemon and madvise_collapse have two different
-> > implementations that do almost the same thing.
-> >
-> > Create collapse_single_pmd to increase code reuse and create an entry
-> > point to these two users.
-> >
-> > Refactor madvise_collapse and collapse_scan_mm_slot to use the new
-> > collapse_single_pmd function. This introduces a minor behavioral change
-> > that is most likely an undiscovered bug. The current implementation of
-> > khugepaged tests collapse_test_exit_or_disable before calling
-> > collapse_pte_mapped_thp, but we weren't doing it in the madvise_collaps=
-e
-> > case. By unifying these two callers madvise_collapse now also performs
-> > this check. We also modify the return value to be SCAN_ANY_PROCESS whic=
-h
-> > properly indicates that this process is no longer valid to operate on.
-> >
-> > We also guard the khugepaged_pages_collapsed variable to ensure its onl=
-y
-> > incremented for khugepaged.
-> >
-> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Signed-off-by: Nico Pache <npache@redhat.com>
-> > ---
->
-> [snip]
->
-> >       for (addr =3D hstart; addr < hend; addr +=3D HPAGE_PMD_SIZE) {
-> >               enum scan_result result =3D SCAN_FAIL;
-> > -             bool triggered_wb =3D false;
-> >
-> > -retry:
-> >               if (!mmap_locked) {
-> >                       cond_resched();
-> >                       mmap_read_lock(mm);
-> >                       mmap_locked =3D true;
-> > +                     *lock_dropped =3D true;
-> IIUC, this should be '*lock_dropped =3D false', right?
+On Thu, Feb 26, 2026 at 09:31:49PM +0800, Morduan Zang wrote:
+> pagecache_isize_extended() has two early-return guards that were designed
+> for the traditional sub-page block-size case:
+> 
+>   Guard 1:  if (from >= to || bsize >= PAGE_SIZE)
+>                 return;
+> 
+>   Guard 2:  rounded_from = round_up(from, bsize);
+>             if (to <= rounded_from || !(rounded_from & (PAGE_SIZE - 1)))
+>                 return;
+> 
+> Guard 1 was originally "bsize == PAGE_SIZE" and was widened to
+> "bsize >= PAGE_SIZE" by commit 2ebe90dab980 ("mm: convert
+> pagecache_isize_extended to use a folio").  The rationale is correct
+> for the traditional buffer_head path: when the block size equals the page
+> size, every folio covers exactly one block, so writeback's EOF handling
+> (e.g. iomap_writepage_handle_eof()) zeros the post-EOF tail of the folio
+> before writing it out, and no action is needed here.
+> 
+> Guard 2 covers the case where @from rounded up to the next block boundary
+> is already PAGE_SIZE-aligned, meaning no hole block straddles a page
+> boundary.
+> 
+> Both guards are correct for the traditional case.  However, commit
+> 52aecaee1c26 ("mm: zero range of eof folio exposed by inode size extension")
+> added post-EOF zeroing inside pagecache_isize_extended() to
+> handle dirty folios that will not go through writeback before the new
+> i_size becomes visible.  That zeroing code is placed after both guards,
+> so it is unreachable whenever either guard fires.
+> 
+> The same stale-data window is also covered by xfstests generic/363
+> which uses fsx with "-e 1" (EOF pollution mode) and exercises a broad
+> range of size-changing operations.
+> 
 
-Yes! Thanks for catching that :) As David and others have pointed out,
-this lock handling here might be unnecessary and better placed in
-collapse_single_pmd(). I meant to look into that before posting this
-but it slipped my mind.
+Hi Morduan,
 
->
-> >                       result =3D hugepage_vma_revalidate(mm, addr, fals=
-e, &vma,
-> >                                                        cc);
-> >                       if (result  !=3D SCAN_SUCCEED) {
-> > @@ -2836,46 +2872,20 @@ int madvise_collapse(struct vm_area_struct *vma=
-, unsigned long start,
-> >                       hend =3D min(hend, vma->vm_end & HPAGE_PMD_MASK);
-> >               }
-> >               mmap_assert_locked(mm);
-> > -             if (!vma_is_anonymous(vma)) {
-> > -                     struct file *file =3D get_file(vma->vm_file);
-> > -                     pgoff_t pgoff =3D linear_page_index(vma, addr);
-> > -
-> > -                     mmap_read_unlock(mm);
-> > -                     mmap_locked =3D false;
-> > -                     *lock_dropped =3D true;
-> > -                     result =3D collapse_scan_file(mm, addr, file, pgo=
-ff, NULL, cc);
-> >
-> > -                     if (result =3D=3D SCAN_PAGE_DIRTY_OR_WRITEBACK &&=
- !triggered_wb &&
-> > -                         mapping_can_writeback(file->f_mapping)) {
-> > -                             loff_t lstart =3D (loff_t)pgoff << PAGE_S=
-HIFT;
-> > -                             loff_t lend =3D lstart + HPAGE_PMD_SIZE -=
- 1;
-> > +             result =3D collapse_single_pmd(addr, vma, &mmap_locked, N=
-ULL, cc);
-> >
-> > -                             filemap_write_and_wait_range(file->f_mapp=
-ing, lstart, lend);
-> > -                             triggered_wb =3D true;
-> > -                             fput(file);
-> > -                             goto retry;
-> > -                     }
-> > -                     fput(file);
-> > -             } else {
-> > -                     result =3D collapse_scan_pmd(mm, vma, addr, &mmap=
-_locked, NULL, cc);
-> > -             }
-> >               if (!mmap_locked)
-> >                       *lock_dropped =3D true;
-> >
-> > -handle_result:
-> >               switch (result) {
-> >               case SCAN_SUCCEED:
-> >               case SCAN_PMD_MAPPED:
-> >                       ++thps;
-> >                       break;
-> > -             case SCAN_PTE_MAPPED_HUGEPAGE:
-> > -                     BUG_ON(mmap_locked);
-> > -                     mmap_read_lock(mm);
-> > -                     result =3D try_collapse_pte_mapped_thp(mm, addr, =
-true);
-> > -                     mmap_read_unlock(mm);
-> > -                     goto handle_result;
-> >               /* Whitelisted set of results where continuing OK */
-> >               case SCAN_NO_PTE_TABLE:
-> > +             case SCAN_PTE_MAPPED_HUGEPAGE:
-> >               case SCAN_PTE_NON_PRESENT:
-> >               case SCAN_PTE_UFFD_WP:
-> >               case SCAN_LACK_REFERENCED_PAGE:
->
+So looking back at the original cover letter for this, this bit was for
+the case where we had a dirty folio in pagecache that might be partially
+hole backed due to eof, therefore fs zeroing might not occur.  Hence we
+do the page zeroing here before exposing this range to the file (i.e.
+that writeback would have done if the folio were clean).
+
+I thought at the time this plus the ext4 patch covered the bases for
+generic/363 on ext4. You refer to this test above but don't mention if
+it fails. Do you reproduce a failure with that test, or is this
+something discovered by inspection?
+
+> Fixes: 52aecaee1c26 ("mm: zero range of eof folio exposed by inode size extension")
+> Fixes: 2ebe90dab980 ("mm: convert pagecache_isize_extended to use a folio")
+> Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
+> ---
+>  mm/truncate.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index 12467c1bd711..d3e473a206b3 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -847,13 +847,32 @@ void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to)
+>  
+>  	WARN_ON(to > inode->i_size);
+>  
+> -	if (from >= to || bsize >= PAGE_SIZE)
+> +	if (from >= to)
+>  		return;
+> +
+> +	/*
+> +	 * For filesystems with bsize >= PAGE_SIZE, the traditional buffer_head
+> +	 * path handles post-EOF zeroing correctly at writeback time. However,
+> +	 * with large folios enabled, a single folio can span multiple PAGE_SIZE
+> +	 * blocks, so mmap writes beyond EOF within the same folio are not zeroed
+> +	 * at writeback time before i_size is extended. We must handle this here.
+> +	 */
+> +	if (bsize >= PAGE_SIZE) {
+> +		/*
+> +		 * Only needed if the mapping supports large folios, since otherwise
+> +		 * each folio is exactly one page and writeback handles EOF zeroing.
+> +		 */
+> +		if (!mapping_large_folio_support(inode->i_mapping))
+> +			return;
+
+Is there currently a case for bsize >= PAGE_SIZE &&
+!mapping_large_folio_support()? I thought there was a WIP for
+multi-block folios, but I wasn't sure if that actually worked anywhere.
+
+> +		goto find_folio;
+> +	}
+> +
+>  	/* Page straddling @from will not have any hole block created? */
+>  	rounded_from = round_up(from, bsize);
+>  	if (to <= rounded_from || !(rounded_from & (PAGE_SIZE - 1)))
+>  		return;
+>  
+
+If I understood this code correctly (and I very well may not), the
+purpose of this is to basically filter out cases where a dirty eof folio
+doesn't require a refault after the size update for the fs to fully
+populate it with blocks. If that is the case, this makes me wonder if
+perhaps this check should remain, but instead use folio_size() of the
+eof folio (if one exists)..?
+
+My understanding at one point was that we wouldn't have large eof folios
+that included a page aligned offset beyond eof, but I also feel like
+I've run into that once or twice when dealing with some other oddball fs
+related issues, so I'm not really clear on what the expected behavior is
+supposed to be there. Maybe it's a corner case (i.e. related to split
+failure or some such)..? That is probably a question for Willy..
+
+Brian
+
+> +find_folio:
+>  	folio = filemap_lock_folio(inode->i_mapping, from / PAGE_SIZE);
+>  	/* Folio not cached? Nothing to do */
+>  	if (IS_ERR(folio))
+> -- 
+> 2.50.1
+> 
+> 
 
 
