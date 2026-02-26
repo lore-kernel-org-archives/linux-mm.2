@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68651FC5914
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 09:24:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A0FFC5918
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 09:27:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C10406B0088; Thu, 26 Feb 2026 04:24:04 -0500 (EST)
+	id 4C4EA6B0089; Thu, 26 Feb 2026 04:27:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B932C6B0089; Thu, 26 Feb 2026 04:24:04 -0500 (EST)
+	id 4965B6B008A; Thu, 26 Feb 2026 04:27:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A95436B008A; Thu, 26 Feb 2026 04:24:04 -0500 (EST)
+	id 3A2266B008C; Thu, 26 Feb 2026 04:27:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 934DD6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 04:24:04 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30F081CF0F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:24:04 +0000 (UTC)
-X-FDA: 84486071208.27.B04558C
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1E397100002
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:24:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=qvywMMVp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772097842; a=rsa-sha256;
-	cv=none;
-	b=fXYh07jPuFPIyH6N7TusPRE4ujNf7Wx+JqbkUTcO1LHqZXYs750Zz6c3Of/cn35ukWXFw0
-	yW6f+047fAmHWBE93nJd/PLj1AnMOI3rrP5PD18qZQsQlPBJWhEW09kzloJ8aR4NYzVpIj
-	yG+Bxo65iemBjU4PvZMVCeY7Jy7mskM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=qvywMMVp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 26BAC6B0089
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 04:27:26 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE894140A9D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:27:25 +0000 (UTC)
+X-FDA: 84486079650.20.C6C36B1
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A03081A0002
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:27:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="t7H/RwvO";
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772097842;
+	s=arc-20220608; t=1772098044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NMIGcQmXL6bNGpLRZlwetHCCNpKRzFWWcdjC2dOpFyk=;
-	b=Wzs1qfKzzmkfOnH/Y4fweOLzXG6qUvgn9iNLUfcaR2ZEpyptrrlaHhEr38oHhau/2FvRpw
-	J+F3vKp9797Fd6h4yYlcZ00+rCZdEqyBxtB1ywUKmB4uWkOTEVQAO0/hk5UoyEL4kpCcSO
-	iynBr23HjX4/zwrCkwJzjsR3Caq9Z08=
+	bh=5Z7J2/ULNSA00ESGJkV5zPKGTqAvtL1rE4wzbzIL92k=;
+	b=eCOdp91TOY90xr14P/6ybADomXzGbDMFu1Yj5oZ7fPqul2HANhFbBTEqNKEoFCMN3iHOWq
+	GMZpn2il7iaBUjLxFUpBq3FVn3I68/junJJg0HZMOnAEPBZVZk7QiIt3wxi3tIh7F4F9vJ
+	36nKPIG9yYTrCK0A/dHUtW+6pCx5m9g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772098044; a=rsa-sha256;
+	cv=none;
+	b=KeJCz/oVbIC8Sj8hsk8XTwFKCFr+uSSTeu4gD1EZrBVPP9rT97EQQARj35MV0DqMIuDR6s
+	V1rbZdyPWiCEIV+00R0gqE7oqxVlTc/Yvg3iKMjLD2vXxY3ZZWnO5rGYyS2lWqArihYXmh
+	iv62JGulEsvcziVXWExvyJTgmn1m0+o=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="t7H/RwvO";
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1772097832; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=NMIGcQmXL6bNGpLRZlwetHCCNpKRzFWWcdjC2dOpFyk=;
-	b=qvywMMVpC4SHksnMSWVf9rIP6EZzyn0U4GekTolsw7Odp6XQAIfTHspEcfP6447IspUfEh6HHf2bpiPQCeNKduJPvh+R0M6GtOf7ZfyzJTAZ6HOHVpEtPY/KD90o5ZFDDiuZJ5I1yCZZz9b8jWs7+h1vqdXE7DOpKEQGT/0QGos=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzqqw9q_1772097828 cluster:ay36)
+	t=1772098039; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=5Z7J2/ULNSA00ESGJkV5zPKGTqAvtL1rE4wzbzIL92k=;
+	b=t7H/RwvOxr1w+kYVWoXmXIYcgN6QKyrhhd2dNIE58KFFbwlKxL01bV38M1a2wDJvovmGc5il6htMtukPT6+/sxQofloadCnPpWhraOuh+z41j1qK8Dv6CNJa+rqAkNcHSRHy2ecVUmJdPFm9fMEZk5b4Ftvws9R9kqxpNSfn1pM=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzqngAX_1772098037 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 26 Feb 2026 17:23:50 +0800
-Message-ID: <60e44957-b816-4f7e-b004-4e957a67fe12@linux.alibaba.com>
-Date: Thu, 26 Feb 2026 17:23:48 +0800
+          Thu, 26 Feb 2026 17:27:18 +0800
+Message-ID: <08a22ed6-3165-41a5-8d46-aaa09402a0f9@linux.alibaba.com>
+Date: Thu, 26 Feb 2026 17:27:17 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v2 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-To: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
- gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260226012929.169479-1-npache@redhat.com>
- <20260226012929.169479-6-npache@redhat.com>
+Subject: Re: [PATCH 4/5] mm: support batched checking of the young flag for
+ MGLRU
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
+ <84d2426c63c1eafeaa0cfbad7c5cc11e9c11b980.1771897150.git.baolin.wang@linux.alibaba.com>
+ <2e7a1e24-3616-4b79-b943-b5f7efde2d31@kernel.org>
+ <0871edb9-08a2-46a0-ade6-af842a12e0d3@linux.alibaba.com>
+ <2599bc1e-1f8e-46bc-afea-4cb8f657545b@kernel.org>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260226012929.169479-6-npache@redhat.com>
+In-Reply-To: <2599bc1e-1f8e-46bc-afea-4cb8f657545b@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zf3jk4mswj3duh6ce8z7ej8gd73rsai9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A03081A0002
+X-Stat-Signature: boqsgqqnawnxucyoip7tuk7on9sbumkf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1E397100002
-X-HE-Tag: 1772097840-996335
-X-HE-Meta: U2FsdGVkX1+4Tsze3dEO8Uv1Aa1d2qA8r1GJAYhfA7r0ISueTTckPVsaoOT1+9rztz8ydmDWnsciS7QoR+WuSKvjtoiYLYJYWZtfvssgNpJpvA9k5XeXf8K3WExw3wr8F3+KvJdgQhdWii4ZRssX7XNUYUS+xqGifSHWUe5vBKnZ/5ft7g2y2P736GL+LQzvXsW2SMZdFkSRuy0a7RMf83LDrLbMfuYvlXcLFh1EaV8bCsaMSGjMqBFcgQXTnJzVMvvJnNdpnfpPgJ71q3hwzs7rH1PpzDU/TrU4saT2Ix5INa/tvue7rTRGLAz1rzBE3qpT9VoPolwNV90qqeCdD7+F1Lv7vHicWWw8HWxv4hvTo47alV2yuN71d5ZVv4FpEhVMjR9eOU1FdmbZ5cleur3Z4/ZjQkMystqYc23j5aGqwIuZ6jQe3ujfmWsylkIdbpiKHfaZhHD9rlrQPE3LUEzstJgU1EDQwMS816R2H8quuh0citfAWeVWCyv/L8f8cmCYMUf1uO/ieyU67JMvO4SbBh+AMy7aa0hsE1npYCf3yKZjasLPLtgwdT0sZSghjt1aMNvYN6SB5n7nSqD1fxkOtTSUmPdyVMrTw+w0bRypOShBI0BbrjzWC1MCgd8hmsybPpSFaX1uiJjVU4eUgbzM2b5VpDbnTlWcbf3Iymc5NSF89efRTmJSa+cL1YVbgwJnj1jxHl3hferQxqZNu80eYDjdQ25tC3l+I9D/rjHb8KtLviSpJwYdxBtzHpJmgDp1arlpyHFVq3cudqsQK1SWBfd3T3MLy2ycGgVLv06EMDpA6Cd83vGiHrEI1ud4ankd6MJFJp1KykjoEBurqfq6KryGziTCkfIdN/OQqaD3Q5OxiVvWy19NdobyQyY5h4yAnltKoOtXtu4oiptHpP7ywlsnmgBotbq7CV7KcEIFQgPaKI7Ewe3pLNShT1R9zq8L9153rWW6Zv3f2pb
- OAL6x5qP
- zD4cfQ90VFms2xs9cQgr2B3Ff7WMHFJTDXOWz0o3wipy02BI7pJb9NL1BsArID57StQaurxZDbNi3tmWHj5iEQZbGLBXy2zV10LEhASNxC9nrSM1fGTy66SmF3O0F3s8AqqyUYTMZSDuc1CH8IZCC+uTB34Rl1wIt3MXDHorx7GitALoA2ZZmRHbIv4Y1pNkmbQ9JkdxeMGtrEk/zFbCkFzLxffzrT/YZiphyXfXGP3CZ+vrG6IRqAFl5GqCFakULirR734ytbr2KIS2K6U/wa3mRN88pSXQEHNUajYx1pKIthqwoa5Jtt/FoNACZwhj335Z9UFt/LoyddVTVedhTy8DKRgWDsZPngMop9KJScoZFEgUcTErSwJqVbDU1XQQFD+Atw4zwYtUGX/61L2oqQpJyvpKEuc+Wy5dDYA48q51fuqe+EvF3bXhpRvDki0pmy4ASXcIrt2cjllmosEdDVHOlWyPyA/3vtxK5
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772098043-78707
+X-HE-Meta: U2FsdGVkX1+cCtcvIx21h/gyfBYpOSNeozIrZRFkYAWRAARHByQY9FQqKQoeFeLL6lgOlz1IyxXA+HR7bp71ZfkO8RO1F5/SKIBDuApTx+7PCCzxU1Yrop/zzN/ur83ON6lwJpdBazc9oi8jTpWeAomfx5ZD7l0FpNxgzDI1vAEhxx5pEQt35bC63/TTBPW0P+jPU5wGmiklp1vV/tSlSEx9Q4SBuHgHYBdcXTunup854/IDrL33yhLm0wkdV/6Fno3u+aVa2xTHwCY2hx2BRQCAVRJCCiF1HLukpjtYVaSyVWnScys5a5tYJ4gKvoN4jiKa2JJUOBb+8osK5K2mPEU6TfZB2TZokgJ9m3SWpbLC+45bPkIEiBltXJgdcy/0GjPgnDAlEIZYIy+OrLu572Onkd3m+QlbUD6WSxIdl5PwBol6AgDcLT2qEVk3nkEK64wqskfDXm5D1HodgLjHj9NDr9nfFmGJRWNTv92FzE0YPVv7REUmWyrU5VGQYHBKR2IV9ArZPeuSkpYjCytPlq8AKcmFtDOMh2jOmCYfCSxDAg4BilIlue8vyRO0wLmE73MtWKd+RimnY4in505SWD+yUEZXINAxcWcgdD+A88/VWfO2ACjNdwXzAj82fb7MtMfp1X96KqHmInBYaqSXlTut3Zp03BppvVjasHHfDQwkIrml1IYqu+ETZF0LmwB4VrlazR6HubvhtimjfCHXEm/0hGDo4+CXAneOSBb3b7SCtGZcVIz86b0YkLXkmh5YcDMFuJLzuMwHfcEnI28kSbyyTqkD1aaxK3AYuwD5zlJETDtyBV0sJDJ2mP6Juaqb5T1ZddGDs5S0VxeZczoiWehm1QYOHEYl8Cbm7diDtoTAR6jgHVb3ZrcoTUdXDvUJZNrOwsG19bVl8TfJMWl22tHpkRFHbHZT/t5jXarFmTT8v7RfAEGThAcnHi65c/MbGCP3CqRgf2qowr+XN/W
+ o/FyC4NP
+ qUS0tMIMIFnO695cKykkva3oc56jETl/YdabOW2SB9285Nrn1xePqm23o9QmLlPjPCkPx4jgy8KNPwbhsfnFYuykA6XhqwP42qw5nTHC/8vXGJv0kchkVsuAcBTavXjbLWMM/A1H9ZMEEjgwFaalgOiC2MuJObRkItIShHdv9gCyzkr2UPBdK+21kVQSt5gSbcye/deaQX5+9EWyFXss+R+UafvvZK5WMSmQlL6BIa6MnwJJt75+zeV3bVAvkht9c+7QQWzzMddpkXGOc5w+NLvNCMjjfFmTPkEPK9ddZxoPfiqkeJJpktFrFo7DLB4DbjxbcvNHKyHHkK07rIqA1cXZutw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,94 +98,41 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2/26/26 9:29 AM, Nico Pache wrote:
-> The khugepaged daemon and madvise_collapse have two different
-> implementations that do almost the same thing.
+On 2/26/26 5:08 PM, David Hildenbrand (Arm) wrote:
 > 
-> Create collapse_single_pmd to increase code reuse and create an entry
-> point to these two users.
+>>>
+>>>> +            pte_t pteval = ptep_get(pvmw.pte);
+>>>
+>>> I wonder if there could be a way to avoid this ptep_get() by letting
+>>> page_vma_mapped_walk() just provide the last value it used (in
+>>> check_pte() I guess). Something for another patch.
+>>
+>> Well, we’d need to add a new field to ‘struct page_vma_mapped_walk’ to
+>> store the last value (e.g., pvmw.pteval),
 > 
-> Refactor madvise_collapse and collapse_scan_mm_slot to use the new
-> collapse_single_pmd function. This introduces a minor behavioral change
-> that is most likely an undiscovered bug. The current implementation of
-> khugepaged tests collapse_test_exit_or_disable before calling
-> collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
-> case. By unifying these two callers madvise_collapse now also performs
-> this check. We also modify the return value to be SCAN_ANY_PROCESS which
-> properly indicates that this process is no longer valid to operate on.
+> Yes.
 > 
-> We also guard the khugepaged_pages_collapsed variable to ensure its only
-> incremented for khugepaged.
+>> but this makes me wonder if it
+>> is worth adding a new field just to avoid a lightweight read (which
+>> should have no obvious performance impact).
 > 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
+> You recall that ptep_get() on arm64 is not that lightweight due to
+> con-pte? :)
+> 
+> But yeah, something for another day.
 
-[snip]
+OK.
 
->   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->   		enum scan_result result = SCAN_FAIL;
-> -		bool triggered_wb = false;
->   
-> -retry:
->   		if (!mmap_locked) {
->   			cond_resched();
->   			mmap_read_lock(mm);
->   			mmap_locked = true;
-> +			*lock_dropped = true;
-IIUC, this should be '*lock_dropped = false', right?
+>>> What is "batched"? Did you mean "nr_ptes" ? Or just the initial value
+>>> for "nr" ?
+>>
+>> There is already an 'nr' variable in this function. "nr_ptes" sounds
+>> good to me, and will use it.
+> 
+> You can just use "nr" here and reuse it for the existing variable?
+> 
+> Both have the same semantics (nr of ptes / pages), so having a single
+> value might cause less confusion.
 
->   			result = hugepage_vma_revalidate(mm, addr, false, &vma,
->   							 cc);
->   			if (result  != SCAN_SUCCEED) {
-> @@ -2836,46 +2872,20 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
->   		}
->   		mmap_assert_locked(mm);
-> -		if (!vma_is_anonymous(vma)) {
-> -			struct file *file = get_file(vma->vm_file);
-> -			pgoff_t pgoff = linear_page_index(vma, addr);
-> -
-> -			mmap_read_unlock(mm);
-> -			mmap_locked = false;
-> -			*lock_dropped = true;
-> -			result = collapse_scan_file(mm, addr, file, pgoff, NULL, cc);
->   
-> -			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
-> -			    mapping_can_writeback(file->f_mapping)) {
-> -				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
-> -				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
-> +		result = collapse_single_pmd(addr, vma, &mmap_locked, NULL, cc);
->   
-> -				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
-> -				triggered_wb = true;
-> -				fput(file);
-> -				goto retry;
-> -			}
-> -			fput(file);
-> -		} else {
-> -			result = collapse_scan_pmd(mm, vma, addr, &mmap_locked, NULL, cc);
-> -		}
->   		if (!mmap_locked)
->   			*lock_dropped = true;
->   
-> -handle_result:
->   		switch (result) {
->   		case SCAN_SUCCEED:
->   		case SCAN_PMD_MAPPED:
->   			++thps;
->   			break;
-> -		case SCAN_PTE_MAPPED_HUGEPAGE:
-> -			BUG_ON(mmap_locked);
-> -			mmap_read_lock(mm);
-> -			result = try_collapse_pte_mapped_thp(mm, addr, true);
-> -			mmap_read_unlock(mm);
-> -			goto handle_result;
->   		/* Whitelisted set of results where continuing OK */
->   		case SCAN_NO_PTE_TABLE:
-> +		case SCAN_PTE_MAPPED_HUGEPAGE:
->   		case SCAN_PTE_NON_PRESENT:
->   		case SCAN_PTE_UFFD_WP:
->   		case SCAN_LACK_REFERENCED_PAGE:
-
+Sure. Will do.
 
