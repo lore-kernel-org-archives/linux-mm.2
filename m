@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA1BFD45FC
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1C48FD45F1
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CACB6B0088; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
+	id AB24C6B0089; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 278416B0089; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
+	id A05AB6B008A; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15A586B008A; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
+	id 80D4D6B008C; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 035E36B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:25:44 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C120DB809B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:25:44 +0000 (UTC)
-X-FDA: 84484714608.17.D990A9D
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 68EEF180002
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 70CFA6B0089
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:25:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EF591A0292
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:25:45 +0000 (UTC)
+X-FDA: 84484714650.10.59AD347
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CA69F40004
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:25:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ey+g63E7;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lhjlr5lN;
+	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772065543; a=rsa-sha256;
+	cv=none;
+	b=XJEsgfO13nkM7GXLs4G6A8M05r8uxPxNywGM1mALZXpP78Tm5Hr6c4v6bMISNroFX6BL4e
+	1Ris05fo+Jklpo96qWPpIeUNqNYd33xtLw20fnAFciWpfelPsg+xNoWxDOuThbFfKZFswO
+	jPIf1WnFLxdIVCjua33zp2AOxBiB1ZM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lhjlr5lN;
+	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772065543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxPqJ6E7xvNtCuOu5zbMYJVgjaGYkAlt6qTcXlH4PpM=;
-	b=wFdoaGqjAVO9N03lYiYeLSLpEtU5kg8ydaVbRXNbmNT1I4rZuRB7l7Y1O1mKeRpfNGu1JQ
-	68Om4u//3csFRPdFWm24frdnNV6r7jWYpBNJXL3BeH2EZPl0jQ4BFxZsSUSWSULtaWLCJm
-	0FdxXJ3uKJ44OzAx+qu6J0xDR4YkgYQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ey+g63E7;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772065543; a=rsa-sha256;
-	cv=none;
-	b=1mrVIiZbFThgIbFdq8KPRXvXpjK9XpbCE95mA8QPLj8XgR+V7HcEBfV8kheEc/l3FNuTom
-	yR7Bze5jcvFBSD63kpANf9v+OK6GOqdoE3WGLGH7swZk1f2iNxib6zD1eYA0wI00eyA3kH
-	xeLftw3r6/1pa3cwOP4fnGdSdecSiTg=
-Date: Wed, 25 Feb 2026 16:25:27 -0800
+	bh=JmXVL4P1e5YTwQCoJlcBCe7K7mA9E+OOkZZvyk9qLts=;
+	b=lIcyDRiKqIWPbD2hlisH9DdYGWH/O7gsL6GTLPmApK8IvqzaXwN1mv9f3PKXxvUU4IozGa
+	qU2iIJ3Npn1cvH2lWlGm6/ttWU5J5Z00ErAx2GdpceUFyCoRxaB/TpOhjhnqq4iy/NWA+A
+	q5eHIWFLtT5RhgE7woRK9mZ/s0BtYI0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772065537;
+	t=1772065540;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yxPqJ6E7xvNtCuOu5zbMYJVgjaGYkAlt6qTcXlH4PpM=;
-	b=ey+g63E7MYcvKk29/8ZzUc3pXSq1elfr4bhlsqngJRjogeai6DH6S2T7UWhCrTJSC1+Bdt
-	nyff4LdW470iaVY2rFfXfbEfQtnqRAZ/jH/mY6iGY/XJn1ZQO7iPw3GVDrGvpWDUTW+q5y
-	4uMIS9FVfmAwC2lXFCseF48lDsZ7Cy4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
-	mhocko@suse.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
-	yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
-	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com, 
-	usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v5 29/32] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-Message-ID: <aZ-R87JfacQ2gGq1@linux.dev>
-References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
- <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
- <CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com>
+	bh=JmXVL4P1e5YTwQCoJlcBCe7K7mA9E+OOkZZvyk9qLts=;
+	b=Lhjlr5lNIb1WKzputRiZytKzU9MeQHWSk4q1xw1k5qiL896YfGek2Sdzhqho2coh5zYVwK
+	RnxLJhH32L0wMqK9OxLzr06DaYUQX0wC8LuLdxStMCyRXI/R/9diYjyztOSbe7Vtfz0jBa
+	IaqPerrY9fRNnappxWNh4jYDE7ocEoM=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Dave Chinner
+ <david@fromorbit.com>,  Qi Zheng <zhengqi.arch@bytedance.com>,  Muchun
+ Song <muchun.song@linux.dev>,  Jan Kara <jack@suse.cz>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Do not allocate shrinker info with
+ cgroup.memory=nokmem
+In-Reply-To: <20260225-cgroup-ml-nokmem-shrinker-v1-1-d703899bdda4@suse.com>
+	("Michal =?utf-8?Q?Koutn=C3=BD=22's?= message of "Wed, 25 Feb 2026 19:38:44
+ +0100")
+References: <20260225-cgroup-ml-nokmem-shrinker-v1-1-d703899bdda4@suse.com>
+Date: Thu, 26 Feb 2026 00:25:17 +0000
+Message-ID: <7ia4ikbknyfm.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: CA69F40004
+X-Stat-Signature: koeezc3hx8da4qdcoqpthmycxru9sy4m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68EEF180002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hzupuaoea93mtr6wfdq5hiq8wpxmgktu
-X-HE-Tag: 1772065541-532296
-X-HE-Meta: U2FsdGVkX1+4ZBHJhNHZfTruAcPpkfsp0rv7gx+4BPoafsOOwyI0VwXZU9VXvanH4oFDauqBLjM3gliXAakQCOIGsBGKKBbmBvDoHLUYuszAlVxjVWyGSr2/Sy/Hu0VzoA51pfZ8NsCz4N1v81q/9QDP9gNu1k9gpMHYiB71EYG9SQPeEFVbFSDLE/Hv3fOGPkhy1m3/MZutqF4ioTQcYFY6WVAWAAojG41bhD1BYUp3cIpZxfYqU/+3dSX4I53uZ90xcfMK0w31NOVXhMgjvC8G9yhz28OAuEmJks2PV8FOwb+FbFgYRPPcnfeAzm2UKNVIMUraGcCwRNHvVzLFNI0AmvOoi1dmWKjw+5VO4/SKAxRfImUANg/DLuUqZrqfY5MZ3sTd8FySxYgsaweDNtIKvKTxYO5GZLvJSPVS3ffkM3RYk6LB/CpUXXtBzh1JH9mlhsvh5ifhBjVHpHVzSreUvIzT4hgOnBsCEWrfQssT9/2q2eaxJRxmQbMY12Jf8fZS85Q37uJN3K9Wvr4ESfw2KXaDMRdUAZPC2ySBo3sUgFbBEi0rcmLLHgiMXZdbKqSGCDvLIDfQO6eKGN88JrS+ZAZ00amS28AqyYYghMeRQDWqg/0RGBZxvy+lDLL/XKkSrMw2bujARYTPAfmFzH2aO3vWQWcL8xbTdDOda4Aj7osT3SNYDi8AAl6jfYip7BFGKO5frk2vSSLV8sOLmzIjljBqZ9zZheehFdHzxw6VfP6P6/iTQUpvc1NvBhXRogixKF1dRrRtkCPirNjOGzO1UrlCKv+N84omoC40JF8NmjId/zaJCjOvg6nIghnUJ3TkAIK3Z6+RuQxBW2Cf2ZOCPgNDpkRUr9BBI/2AezDO/oWGXEWnA0QIs8HPPu6C4g7zfexTnoos+Xw+yX7TXAbkjIwvPRnYibXWHRUipIoSDLd2f4I+wCF3wUtZ+vBxbKW6J+OlHgqshgw2Voq
- xg2sPGiX
- Dl543rzPwCfHHNOzml1+n5DeqSaXJPDCECP451GVx5w9Wg53iGsVzvFoXLnGPk6AH12pqrimfGrC0j/IKhk2mnGSIN9tU/K4vNVJdW7b2qBp27Kl/ART/ot2Q1fBMvQuGnvsg29Y4v2XKXE5oPDo24PRKUmREtv39Jm4YpiTwbuQvoRh+EKWxb+bboc9NL/NhcCuBQ5NNZWVIOa+bhZLeIliNvw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772065541-901332
+X-HE-Meta: U2FsdGVkX19vmCkNdwwnT0wewJ2eJ2wOZqT0Hjz6IQvqZorTE9SKaJm4McxbMMzDAKVVD7POwVp7v13ZBospFEw6lk0t3laRYUpO0ow5x7D6YoStgaiRULkKcTvqpJlE/O/KfWkAqZSjsVLvnSkyQHQdWuJ6M0AxRtbvTzSDvnXvexGHsvHyPfZVj1acMuqimj4Zu77UV5xixr7onRVLqu0RZkf7zYIyXkzwB4/Z685qJR8CeD3BsQJyFBNOUhDK+lpd8y7wTJ2uIXcRyX0SlTdWJzKsD88JLdab+GBAD/Hn3VIlsqFn5GBd52gmM4ClRWOi3ZlsBVjIIhGuhuy4SXWfv9JTBMQErt3AclPY/Fe/dy85FYaWvOHx/HvaGlUKN5edyqOz82Lm5I4wT8QJoEhgjclqpoTwSNTK87K2fAKCi8LB8loM4WheLWqGNCLmK3pZM1wYcDw/BDLQp5uopN6nMWWb4g46H8EaOEWRF1XpZ4sxPVJ/y0hbB6koEJEbARPLepgtvQVciXAsmpMEHshisxSioycovbFLxvUAhGvADZ8mvyUqfIOnTVldEQEOZF3s8dnkXkzbsoGMRfA3eodEDc8ikz0o/MZD9WzTId92zNG2xPrbCPAmvpoNiOTMhsX2a+8iuBc4RgZSiFhMPrQ6NMVHuDZxLyxP9Zwf56xau5znH5wWvl2/P5fEiDHZgoq0Tf9pGj2FxGn0Tc/sxVOe2tJij42tp9VTspsuTSqnFd3KmjEFP3RBLokPncIMtOgqYHL8KQoQ5lslTrxWrZyAT+T4eSw/KHjIJGQuiAElgnd6o7LAtwFGPKIxh72VRmOnaccliVZX9lcAKHfWInQQ4zmisYDz5iODj0w6xEqAObcwHGdo3etec+OBQAIlGzOtOeA+3YcnMdCgadaFAvfPmPxzyzDkZg4b7hAtqkJ5WV27kLnn6PmuPLyK8sVF/TU84tsY2jyrsaKqaCX
+ irqQwae+
+ W17mtxb+SMUK8/tjQZNp3lHeyVtqffpiEOtAmHvEGRONat+z2zBwSfpGZ65w7v8t2ahL6qn8amif6+AOyrqXmFxsZueS3bk6HI/3qiL34DHuy5ywvYhzExUplxxqUBSMngMeR8P8GONgfOSbf1zlvQu9547J4tZjPwULaIqdc/7RB1UVrhboQb2IZXDPkvNwz4+nO4S0DoxMzLqHAGAglAt7isGYrLbEGSM3F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,50 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 06:58:59AM -0800, Yosry Ahmed wrote:
-> > @@ -473,6 +493,29 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
-> >         return x;
-> >  }
-> >
-> > +#ifdef CONFIG_MEMCG_V1
-> > +void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-> > +                                      struct mem_cgroup *parent, int idx)
-> > +{
-> > +       int i = memcg_stats_index(idx);
-> > +       int nid;
-> > +
-> > +       if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
-> > +               return;
-> > +
-> > +       for_each_node(nid) {
-> > +               struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-> > +               struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
-> > +               struct mem_cgroup_per_node *parent_pn;
-> > +               unsigned long value = lruvec_page_state_local(child_lruvec, idx);
-> > +
-> > +               parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
-> > +
-> > +               atomic_long_add(value, &(parent_pn->lruvec_stats->state_local[i]));
-> > +       }
-> > +}
-> 
-> Did you measure the impact of making state_local atomic on the flush
-> path? It's a slow path but we've seen pain from it being too slow
-> before, because it extends the critical section of the rstat flush
-> lock.
+Michal Koutn=C3=BD <mkoutny@suse.com> writes:
 
-Qi, please measure the impact on flushing and if no impact then no need to do
-anything as I don't want anymore churn in this series.
+> There'd be no work for memcg-aware shrinkers when kernel memory is not
+> accounted per cgroup, so we can skip allocating per memcg shrinker data.
+> This saves some memory, avoids holding shrinker_mutex with O(nr_memcgs)
+> and saves work in shrink_slab_memcg().
+>
+> Then there are SHRINKER_NONSLAB shrinkers which handle non-kernel memory
+> so nokmem should not disable their per-memcg behavior. Such shrinkers
+> (e.g.  deferred_split_shrinker) still need access to per-memcg data (see
+> also commit 0a432dcbeb32e ("mm: shrinker: make shrinker not depend on
+> memcg kmem")).
+>
+> The savings with this patch come on container hosts that create many
+> superblocks (each with own shrinker) but tracking and processing
+> per-memcg data is pointless with nokmem (shrink_slab_memcg() is
+> partially guarded with !memcg_kmem_online already).
+>
+> The patch uses "boottime" predicate mem_cgroup_kmem_disabled() (not
+> memcg_kmem_online()) to avoid mistakenly un-MEMCG_AWARE-ing shrinkers
+> registered before first non-root memcg is mkdir'd.
+>
+> Signed-off-by: Michal Koutn=C3=BD <mkoutny@suse.com>
 
-> 
-> Can we keep this non-atomic and use mod_memcg_lruvec_state() here? It
-> will update the stat on the local counter and it will be added to
-> state_local in the flush path when needed. We can even force another
-> flush in reparent_state_local () after reparenting is completed, if we
-> want to avoid leaving a potentially large stat update pending, as it
-> can be missed by mem_cgroup_flush_stats_ratelimited().
-> 
-> Same for reparent_memcg_state_local(), we can probably use mod_memcg_state()?
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
 
-Yosry, do you mind sending the patch you are thinking about over this series?
+Thanks!
 
