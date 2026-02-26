@@ -4,130 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E655AFD8FDA
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:40:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5688FFD8FDA
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:43:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D5966B018F; Thu, 26 Feb 2026 12:40:29 -0500 (EST)
+	id B153D6B015C; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 158276B0190; Thu, 26 Feb 2026 12:40:29 -0500 (EST)
+	id AC3006B015E; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0659F6B0191; Thu, 26 Feb 2026 12:40:29 -0500 (EST)
+	id 965CA6B0161; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E11FA6B018F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:40:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E9AB658874
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:40:27 +0000 (UTC)
-X-FDA: 84487322094.20.18938EF
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A0DAF1C001D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:40:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SH3Ou5sE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=W83zxFoS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SW3YgwmF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eU36ZaSA;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772127626;
+	by kanga.kvack.org (Postfix) with ESMTP id 779766B015C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:43:48 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E64111A02DC
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:43:47 +0000 (UTC)
+X-FDA: 84487330494.09.57FA028
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 129614000D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:43:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rgsCuSqI;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VX4KlOjs;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772127824; a=rsa-sha256;
+	cv=pass;
+	b=CiGY6oY5J0YGygsIUa9gMxjoGX35PvZmAzJQuY0MgeeMuYSdvvm5j5h3AZECIg8sRtT/qu
+	odNK5jdEKj/e1dXHLylimRcWNghKzZksBP6HYwFomg5HAz+lXUt9DxotCgim+wnP/1BcAL
+	+IriDFKNY8w/YlzHTWI81gpObBABZPc=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rgsCuSqI;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VX4KlOjs;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772127824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AXs/RsDBHjGRJfjfFAGz+4wFtmpWD2NFJ2Ti9sGQ/SA=;
-	b=DlaKSiPrt5SVkMgPzleeV3t4i13Ejk+tA18u+IF/WBSrw8T/h9U5+SmwawxVXBGQQ2QiiX
-	KbrfJLnYmMWirSX8zdiGwZMDkhLcooBrFuf1xdb9+8J2i3xgo/VPdqdnDxHCO9DlhzgLWS
-	NqPoEi/wOjribmdql25ObaaFVkFJFOY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SH3Ou5sE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=W83zxFoS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SW3YgwmF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eU36ZaSA;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772127626; a=rsa-sha256;
-	cv=none;
-	b=Aninif5tnhND1vy4r0+Mtd/y+0zOOT+Ekxd4AUHgqu8d/6pc2Lwj7G2AunkaByypSUbNqg
-	0VEAlxNk+K1BDeRTsiDGnsq476TxTXnbUZ/0PBFpWBL/lNqD8hsSWogvjFRN1PNoynuLXf
-	lZ1WSi1SlM1wfuviWc/grRakGKrST0s=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D31131FAB8;
-	Thu, 26 Feb 2026 17:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772127624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AXs/RsDBHjGRJfjfFAGz+4wFtmpWD2NFJ2Ti9sGQ/SA=;
-	b=SH3Ou5sEnKBtg8uljKq/DihYSVo6MIWJBM/2etNXi66fJu5UblMHy9+LdXkXqOqxx8Ss07
-	8rRHibhRTBlw+Eb+2nzvNlX+pXBcWAOT+M87bnhe3ViZneWyxITxOUsbpXlosJjsZU3RBk
-	+h6cUxywdnWcAf7I7cC2nHfM7xav/Vg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772127624;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AXs/RsDBHjGRJfjfFAGz+4wFtmpWD2NFJ2Ti9sGQ/SA=;
-	b=W83zxFoSWepVykY6DB5EUEitnLtSKx/k4qYuyZiIvTWrfb3eWlY/NoH3+VRuyhkUQpy4r6
-	cBaQrWvCpBZBmNCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772127623; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AXs/RsDBHjGRJfjfFAGz+4wFtmpWD2NFJ2Ti9sGQ/SA=;
-	b=SW3YgwmFsj26pY70eJhnV9WoubeBgkze9akSMwLHq/+c6O5yaA542khQ6VpURd72hjiEnu
-	MSEdKjVfllybsblp4OwDXVbusDJk5mBzuT1k+7CmOCcEU4Xm4wXUW26/MDG6gQ3eZ7vc/i
-	UKXrXfqKxvLwD3BIhpE6l3YxN/YsEF4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772127623;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AXs/RsDBHjGRJfjfFAGz+4wFtmpWD2NFJ2Ti9sGQ/SA=;
-	b=eU36ZaSAdRQDjiMSx5TauPvJH12I2/y291NEjNDiXOLvPR/XZzbZtJ0PGguBQwMh+ItVvh
-	S0UGaCOs/WJGQBAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A19713EA62;
-	Thu, 26 Feb 2026 17:40:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id y1FOBIaFoGmaZQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 26 Feb 2026 17:40:22 +0000
-Date: Thu, 26 Feb 2026 17:40:20 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: syzbot <syzbot+709f5ab0e03871dec50a@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz, netdev@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
-	linux-block@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [syzbot] [mm?] possible deadlock in lock_mm_and_find_vma (4)
-Message-ID: <ibhdm4y3cwmornxfyxckosbznmtx3hi37tdp4xvha7a7wyaktp@rkrjyxdqmgb2>
-References: <69a05ea3.050a0220.305b49.0022.GAE@google.com>
-MIME-Version: 1.0
+	bh=YXw+X2iueWbDM79q3fuJmseNco19H5edzrosVmZf+3A=;
+	b=G7KgKfbgr38E+9GaYYVFxfOJJx8pznhD7DvBJB3sqkPlu50/T895av/MTGoCAoHqU0l+VV
+	IuOtKMNburPwM4fEkHhnP5a4mYnnCXi9weJjLOHcOvftW7eX/f5SyNvfDbeOQuP88l3hBa
+	dcITBbYf4KUSa/Hx0Yq1f7vw+qK3GfA=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QDNLe41973013;
+	Thu, 26 Feb 2026 17:43:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=YXw+X2iueWbDM79q3f
+	uJmseNco19H5edzrosVmZf+3A=; b=rgsCuSqIG0y4sU/Yy9kblLf9sH22NS5DS0
+	KraJyVnBU5qFGsior+PEfs6Q6FZLqkIhG9z1x1oQySKRp5kG3QMEqX6BRgVWzkVA
+	H6cUdocmpPj1plCX3295F7PY2+Y+uHwnglExJQd/ibc7Td18rUY0A5mmhXIZo6wB
+	ZBQEroiWOxN+ONgk/XMlcX86aR8uGHj1Oy/nq955XCR1XXyKhhOVFffmM7G21WGL
+	hXF8V3tuaKtevyCcJ74w7nCW55TFTLYc0KvPoAeXARDaehXQX12SAPsHVGg8m1tx
+	kkkPWA4NGk48pTikLLewa+NZnxtIHnoyN1KK410WXzU2ZVQ2u31A==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cjgs0133u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Feb 2026 17:43:23 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61QGSvPf038497;
+	Thu, 26 Feb 2026 17:43:22 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013033.outbound.protection.outlook.com [40.107.201.33])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35q1ecj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Feb 2026 17:43:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w59A7Ucj/+/BCjVvPBDinb9/Rjbqp3aOz9/yUTGq+tthLeYbOiLy8neryFqSsm3g+E7VpPsz8LhJuWchl76dm4r97iVjL3zsEaN2eA9oCyZiCFDIu1XRrgvEPLk5pkoFHJpjW4JYgeFosD6ltCbcjlZsETiXjLp+ffzn/nJO9wInyQtHeNjglF4rBs11Q3qJXNXa5ATtEyCiXW3E+8txkb5koE+zjD/FVsYvwfDd/87FSkSd+B+acSJmPPsf4ikHYIKOgBxQ3uUblacYdMl5t0LlUlCFbYjLuEcwCB+/1hEk985KiY9bDiZbVh2jrqd9oZXI1iwekeuEC8Nr7MBuCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YXw+X2iueWbDM79q3fuJmseNco19H5edzrosVmZf+3A=;
+ b=BjIJwmozg5dIOm6WAs1rB7P8yL4zbUKsoQAlnf00qcYWoawu/C3ZMqFs7+T5RlBLESlkfN0p+K3B9RxVPb5CIgYyWjvfTPNz3ivjg+BEO1MkX4ichsta1KSvwBnaGpu38sk5+twEbf1V7YDRyZmUsty0Z1aMNIGZpI9E2JesXknbC2hXOQQNpEApLte5W08nH93HxIuW9p8saD0LgLVR2I82P/5Y2PYdhrwRyo74/sp37tCxcFd6eiWCOpkcwNWRS8/XpoE2qG0O0M1xu8fH6yTBXwLMsgY01Ze8cTwNrOzPHqG+EuJrMZqWiHRemBGYDP9bSHNgAJyNYcUmRriG6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YXw+X2iueWbDM79q3fuJmseNco19H5edzrosVmZf+3A=;
+ b=VX4KlOjsMFnlHwJ34upg+c6NZwB8i269CItJqHui1W9z1LEWtqoevnCllHHLSb4PMBbY1hYb+c1bNCCVPxpKiHk0KraWkBZLZpZAP4S35J1UKjxdJQw5Jp3bj7xia3dtEDKs8nHTvLjWSV6rji760MQJWEXmfKYs88AVjOfy2yU=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by DS0PR10MB7936.namprd10.prod.outlook.com (2603:10b6:8:1b6::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.11; Thu, 26 Feb
+ 2026 17:43:15 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
+ 17:43:14 +0000
+Date: Thu, 26 Feb 2026 12:43:08 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org,
+        ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+        rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+        ying.huang@linux.alibaba.com, apopple@nvidia.com,
+        lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+        baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz,
+        jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de,
+        kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com,
+        mpe@ellerman.id.au, chleroy@kernel.org, borntraeger@linux.ibm.com,
+        frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with
+ vma_start_write_killable()
+Message-ID: <vb6lgskvpmk6qcdo7tthmc3hpo7jppbx4ke75vepx2nqos65je@wxv7muptiiq5>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, 
+	rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, 
+	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+References: <20260226070609.3072570-1-surenb@google.com>
+ <20260226070609.3072570-3-surenb@google.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69a05ea3.050a0220.305b49.0022.GAE@google.com>
-X-Rspamd-Queue-Id: A0DAF1C001D
+In-Reply-To: <20260226070609.3072570-3-surenb@google.com>
+User-Agent: NeoMutt/20250510
+X-ClientProxiedBy: YT4PR01CA0285.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::23) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|DS0PR10MB7936:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5feda253-dec4-4280-43f8-08de755e8440
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	CR5pbkATy7SpACb+prRbph/a4bLziUukxLdtd+T0NsCUR5thUUvPtmAhhK7kZzEANI4G9TaW9NbKGjmIRM7JpoRetJz3jtYJ4p8ukcRKA38R3W3n+zlvSlRhTpNrash20htJ9bPlIXbraxwCWq2TdY3ke2R9PGfXsfh14QC7cy4EheC200XQyl/9ld9HOZ9JVjf/q4HNK6EJy2gpeEddjeXaRzQhQYfE2r0NForu5Kv1ZJtu9ZANdI0LYIOf8kdIkKKXvXyoYfsfqEyf+nfZ6g0Dy0EFdaIpDQ1TOKbFGrP95dTfb7Mr3g+91/C+S2kCZglK8mNTY4qbPvhfOEV2ULQ4EXeED7HEKqfWOXUYSwPK/jKwW3dSaG7LDg8oVRRQAkLMP2lUike4DFuMLeC5b198/0ru0+p0F0x5H5tUr1J5xEx6ozKS4YyPm6zzJK32GOyxtOTXD5fYJyAYRcgeCi1DR/+rV7cmPsgr2WeYPbyU5MmWRHCyOKjxzrMgjzJJtZBztddEXv/VA3a6cowogkDATFNp8HGHh7t2cEcNgcj9NvJXear3uTlexoeaQybLY2oqXILvzAaSLl+uNehTpej/vRuilb7cGbeXKOedhg6+2DV8yplGAe26FbCZFAOLOX2KVX7F3KMmg3BNFD0QppV0+a83QdegXutHWDWJDohlC+i/uDTRkrwUdWPcuhO/4xIgTGsYxWkTkmCiafmgagwwPucc0QH4D8s8Li5A4+Q=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bIIhh6Y5Xjn+n8lG1od371knysP7232voONkThq9BDK0866pJY1aU5Q0oET+?=
+ =?us-ascii?Q?gXuwX8tyCrTKhhsd/uMeGIRwDiQIyLhfKqreHDwTuBIJaJmfYudeARGoaHoG?=
+ =?us-ascii?Q?70iAsHrw2Vmw3eb3p/hSTdhKpdqldh/EjpUEAZpcXkFVgSwYeX4UnGrPjtOI?=
+ =?us-ascii?Q?OSEaL7cmjw/XKIDuY1V+7P42mi06X9cc6jHbdzXi92A6Ly5sDyNlqOO+f35e?=
+ =?us-ascii?Q?Ff6cDaQ22VElxhPs7tHEuC/Rx/esLUC11VnUoRoTxyMVz/HIDm/vZ2yOP1A7?=
+ =?us-ascii?Q?7n1XnT9FvnQAcLN7TQoomY421sweNV/+XsLsj14goTosMR5nFeEXb9Da52QN?=
+ =?us-ascii?Q?yuIlLCmTnckgSq2ZPzVlHhl0xz+hwlgYlamPYebaUAIbYN0dILaKq8Fe9Ad7?=
+ =?us-ascii?Q?XJgFF7rrdkClrpTLJOrHD8U8lJMSJynvuWJ405+fk7RzipjAzIkVAyhQvs+d?=
+ =?us-ascii?Q?tLf+bEddwSa0mZKE2O/64xF6nFC5JdUJCIfEsBr5sYYiK4+pyG0a5JtYUXvX?=
+ =?us-ascii?Q?GV1fMpzxlLroX6uIbK+E6fekuTK+RrfU4YlOBm06XKjzsRxeImn8yeNASMzT?=
+ =?us-ascii?Q?bXW6y7f3NNlDO6hVczkro5O1iiqJ2KU30WAV6Dh0ndVTe74/1QAIb87W3FI3?=
+ =?us-ascii?Q?SeOJhod2BczCLN+Dq6Y+qccRVNED38JYckG53Z0UhzxqQc8UywUoobmLbAeq?=
+ =?us-ascii?Q?zMZusLepAjw8CuZ3qAKyvIJ2W/xGXcYuko9KoslTNOXBGgO2cNj0jB2p7npM?=
+ =?us-ascii?Q?NRHrrQoPCfTJaXZvp41fY+XIdEiZJCuSMtMgy3/nFpzzM+z+HPW8oUxiN96L?=
+ =?us-ascii?Q?GvJsYyZQfW8m3arUIxOUpytp68TALWjtMQLkAo8WBHx4nc5vYDHlXFsmg8eh?=
+ =?us-ascii?Q?dQabL9RfVZB4QnTrNfG8EBUoifh4LM/4CDmEC3unSOp2PzK8q6pqr2ALKSCh?=
+ =?us-ascii?Q?ZnmbZ/SmFgmYDMG5tOu0m75Ur0cIaxTXoBtMwwpuB7pfDKVRXxaqx8pxhbik?=
+ =?us-ascii?Q?BXl1lPgGXZU5e7M18PKBABvLX+tOag9v8ZIbvImU4DoUlcvNO8cxnlNMXBwb?=
+ =?us-ascii?Q?JmtbNsQ5f/af+SsbUKI+ZEZJ551s+LS6ux6oThJI6YbdgtraaMVVOUoVMwBA?=
+ =?us-ascii?Q?87mA1eeTKVFHqctCfe1pavbOv9z+i9TESegtERsXRbrg4irJi7+k3eSqldtF?=
+ =?us-ascii?Q?EMX3Xaunbz2kEBXHH6KDEoC64iN30pLFhIiBPYGUemTVRbxUbUIW2g/llAv/?=
+ =?us-ascii?Q?GnvKQ4p0sjAFNDqie8Ng4ZoSD1rIPEyPsMwaIk7CthRvA1opbBfmhX3Bre+r?=
+ =?us-ascii?Q?eD3aBhNtaf64EGrwzFfXFPC4PsOu1VJYQScghwabzj5gYAsdG61x1Z1ZGuHZ?=
+ =?us-ascii?Q?mFzpquXhFal4JnfUjNNacs6LxRFoWYA7pkayVSgYC/B3HBGJ+nD2g+ToS1jb?=
+ =?us-ascii?Q?+onJ1bVgz0R1iPY2nu0jn6T7s9km76eIwjExKvHFPZcjKqqwit+t95vRygyF?=
+ =?us-ascii?Q?5Aetgu8NGwX8BJnO8u3uAT1WFoq6xxnVl7JgEJ9yUlUkPdquvQZtpEI5Tlrh?=
+ =?us-ascii?Q?XHBu37TaZI8nPwKVExjN9lhxtUEzddRdzAXz5t6mhe2K48rRybNZMBKEOhLP?=
+ =?us-ascii?Q?FND12GeuquEiuNSVp6MkGtQkMuv4kIBH2ql673TnZKIygtnBYYqgbZI2v0Qw?=
+ =?us-ascii?Q?dZcnWkT2C4ytBQ3khHTZzKkAu5GQOO6GvHMbiTLrDn1jHpwXnuaJ3vnbuUje?=
+ =?us-ascii?Q?g3nP2FUKew=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	JvxbmQhePx0aD1Zcr6H7VapiQFKC8aS7u4JdA36KeHUikcQCw5gf8HLYY/pypFzGyqaOtBJsL1+zS4CEQwjyduumv+d+I9IXNEVAUq5tsmwEw+DDMDTowog++BKuWJ0USV9sJFByW0E2mTciE0HaqyHlIt5pUg4LG/yBAuA38UHxfMbdG4Hnm/oXmskw/y6eOcKH5IUn2VzWYUcASNkZ4hHVvckPGzObNEt7MxtKZeXR9oZeumwLAuAyoYznqYrFFTIEeejL0uKOIL8qiPjPsNSHUG9BOJL9FGTBCclgYgT7P6I2n2a0HSRQF6Y1wwfoddeh+wPaNZmjkkSjKpS+goxl+p3artFPAVlRHkQNeSQ82GwQgG7pWGnaN3BdkXRoWicmUtkm40QUNNJUPMqMS1Am9AZ89okb10yxVml2bulYGBDbRRREAMCfK5JMTlSJzKfMt8iYPAiPZzkUSA87rwDDqmhpFhio85pmFSPjN8WPj3ok31bcnFegfpBtdYAnAUd61/TGMrc5t/RmC5rm5EoxDt9h7I/o6SPku3E0IZdRQvp8Pbij8KHCZEOTCSpRZV8pxN2nwD8WcDnTVonIiD7J6HUG1IvdVNPYVjQ+RpM=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5feda253-dec4-4280-43f8-08de755e8440
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 17:43:14.3289
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0/Z2td3OUCDW2wFEwSbN2sOqT2XoAy0k9k4d8dPCJw1AKnVSgpRlGf/F/+H2lHsk0dCkwdXCG1tYnYW7kcP56w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7936
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 bulkscore=0 adultscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2602260161
+X-Authority-Analysis: v=2.4 cv=BKK+bVQG c=1 sm=1 tr=0 ts=69a0863b b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=1XWaLZrsAAAA:8
+ a=JfrnYn6hAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=p-90_2tMuphpnIqHMSUA:9
+ a=CjuIK1q_8ugA:10 a=1CNFftbPRP8L7MoqJWF3:22 cc=ntf awl=host:12261
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE2MSBTYWx0ZWRfXz1RoPGnnfDLr
+ i/OMjf5eZ3Bt/46yyHMNhCNTSAYevsTgad2HxD9Gd8IQJO1+WLJ3KYAhgQdx36dsv/yC4IvlLyP
+ OLxZqwTNjxIS2RF/P9dQa8iYOtGBPUqvSYvn5Sv56WooPloC3QdHjEEEci5qCfHciJXsrshEpMy
+ RvaFNjJ2hlZAEjTV0KkWyfyrt/RQCdYhk3LA4SyAZstQBKvGGkFTOF47qb2GXpcwwyz/21k/yue
+ HjWfg2qhNuvyUP72ZvtQbYsPEfXC8HTSdkIU5m6Z+gX+VElDrcjF8/fCwSYS6oglFl8gNF29eM3
+ AGTjRcLQPoDvy6aoxLho8oLz5187ARPwrJZJmceGlXVQXb3nKL8uH/zjdtt9+c/OYtlRI0O9tC3
+ enlZXL3x/NajPRFBWjxktVugVmYQxM6L083fZ3s4DIHl7vMvCMeG7ajopzwUe8jeTxUy25oZCIV
+ TDOjuzl8tIr2YOtexlEyIIEIWyCw96lAVgNModkw=
+X-Proofpoint-ORIG-GUID: MPMCU-7bT0OaDXbrHLS3pAVEb32mp5S9
+X-Proofpoint-GUID: MPMCU-7bT0OaDXbrHLS3pAVEb32mp5S9
+X-Stat-Signature: td3p9rpfwju8tf3q7roqqhzujkmfizyq
+X-Rspamd-Queue-Id: 129614000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Stat-Signature: w1jau8dtfaxk8sr45bk9z5aid4yjs4dt
-X-HE-Tag: 1772127625-263969
-X-HE-Meta: U2FsdGVkX1/lAFAEdJN64jk3tH0X8juTE5FLdiAsaAVHlLI5CqnVZjT1jhW/uPHca6Vw9mCFu1kvzEJnLDcIh+NNxJnOqQ88I3nI7jl9i0PX/EFWCY1ClsYOgsohLzeT3XgqoJO0Vvj31L4+kYtW79d2sqIVSv/KbxPA8f8H2Rkd7y8AzFkXZK9GJLtxlMRonMlClxLOWZnan3CjrMGfUI8q/9kyNzM/Ei1+eke5JN055OOXZYdtiqy7pYknCwBtAnEJnluwSOabyVQNXQ4rSj9p+MFUNYREOEKL43gmshEDL8L59/WNRHH8e9ZCpI36VSvvli52TYax8lm3HK0qpNLHEOWTxenb2xjF61Wt/Qah95AKjoAXgc8ucwBP5FbfYs5bT69qaiys7Et7leL8uhYr1hsjEcrnWRMsvIJ29gt8zycYtEnkZG8cm6SuFfZns0RD/rRnX7DZInxbHazPJyUCmrO8Wdt9LWlDNkLXiRpqz83cafFS6EYieWHHssO09zKftaS12A6JjB06CytOOUh5ch7fSWUCYKBSrQIT0lMUbgf5bq1ATV424qH2kPm8waSi/qAe9pVFa6ZmAl0p/v/9JclmwB66H5URFtSHwynzmCsrB8ntTpEU1YGTDpzuSqeoI9QFXWBsmx3NoxoLE8Zk8ucLLZXMW9DZlhP7Wzpot6WsBR9LlDJfJGqaCyIcyCZYqsIDnPxmbVTaJYOFOAew56pnRj1+0c4hf2WuqqKSIJuT5y0ucoTCXD7TsPr2jxAcY6qLsRUoHEwAtl+g1bfrU0m38WzqCVMqFUuCktr/eXmYSOzl+nDxVPIdjBlr51sp8iYzHbzNz9YKoRzo1RfzmwXUAM0GRiSfduW49r7Fl3zGRynOp6lOovPrGYWYewO6kTlWkqP7Nj+ZlWMkX/XjbBum43M9FZX5pGy8kUq4AqRSyvhc0g8oHa3uzFooNYRROd/nUJKLz2+cDMm
- K0lKTvM0
- BoFcscyARi/25npG939HKOXbg7awdTnmev0SZmbzfQqfgzXwkG2qrN2DaSr1mnJNFJ6TkO/VWgJlnwbvSIjrVkanSME91QmHGjbNg1v0a2IJelT1nk4RKvMOVk5NDURfXrdnWbNrYfTOvwDzIO2FEh4kUYaFOwXAqg9ya/7RmxS/vqZykt2rDoiuDBsUGeSdP8Wk55VHxri5gd4oXnEhhRW78QyvrM7VMf7ZydP7d4oPMF5u3euIeaEJqaLm81FbB2ZPy3X3p2uUrTolamW3xiLVjSjnJDfazyOH8fwgY1J6b0eWoHAPNlfI//Hv6uC/I1/nsg/NrvDp9BqKy+zdTkGo4ugLjJ5RjMxBLHwCnt/0CcGQImeSTWwr7SUVOrV8AwPCWbbFDSZseWQnbQaNJXIylArXlmIF84dd3vNtOnX5aGVZvbFtkvM4eF2oIlTKXAf1Acb9S6e64NKgATnjA2Xw1NQ8IWHOT5hwH1y5QEY0LJXJ5aNLsy6MTEsVSkDwL7IQ7gt6kbcVJc1Gp2YhHP6dEr35I+SxTxxj6CLJL4H5Y9LBvCTjhzIty47sGBOeNQovi39wJNW3YO8cYBjgfEJwOUL5fyOARrGgQ1t5X3juzjG88Er2SfCaY1sSnv0/bO96XdBCb+5nSSoiNfuXxKXFspIxZtAh/IlBGZ++8tEJwf6fptJF73y/zpleX/Hl6NMVc9c3yoD2jOGqXDf6WYi/WOPMK082uQNikojCbGN+Lc2736osu69tpIPCnLak96o+Ui8b6CKAECts6HdD/vrNG9rH5sA9MJox0teH+hhUOzPPj9i+EgxyQLrIpQl8+SIS+h5Du6uD5WLOZxC1y0Ff+ylDUD8v9K6sEShvaIeU+vol5h3CROM0pTH4n4xwpJzKUNGdRZnE9BMt+k0OPzJ2Ug3dVH4rJmyLtqnZ3bVobfjyuyu/fT478X3g889vtQxS7Smm5skAPBYZNIB2HTZKszXZ1
- 093+R3p5
- GbzthX2rMaT+gLzLVnzGyw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772127823-83451
+X-HE-Meta: U2FsdGVkX182UPumFxzgiofQzBkbdDl4f47AKiSf9ByCm07MvjrEvoasiqILD1XYLjdcCIHSTTDHK5HqrSI4JtCDE3G2a2dPMd/Up2Sa8g8RVChlm/Dp+NuB5/g7tRwvCIC09IAHJ+fsmc8qbnsJXbdQtuh7PEgRPE2j2C6yhG25fKc5md5dvRkAun+ii09UVrS5McHMmDeBY9RPAumj+PNmGm1ZPlYVX1zon3c6r+hd6F6JyNBVBuhsXuUJ6JFFz3hjSxZIMaYou468LeiJv5WOwy4StSpYXpTq5hEeJFomb922z3ktxLP8acgOoHUVjj3lJgEIUs/dTivzddvNuvuD1tCbSExVLSBBfSI0UPH+tnXNyWA9Z7ytZgqaQ/l0q4wAXeEIljT2VxGrNfay6p8nVA+O7eyAU3rZ/A2MTzB0le9aWSbRusixAXOt0e6TqFNvYA5IZH//9jkJVCix9ka96jUqdSfyTdNRvlz/ReJC+TvRgGjhpm+/3nox6Zx6sMVPvMXN87poHYu/ZuLV3t+DRoGtcLKQW2I2OV+2Rx9z4N43JE3qGZ2XYvE5Ibw5R4kPBRXgieoK0jCUiw4z7DyH7UbYPbGXGMMLEH2BbSxEWRLCUFqDRCVHmuddPBdbmk3XwVwAqqTvRop2u+fHIeJObhCQjoiTb2Dx1UHYwv+7bjXQWdhnLQAwLzC5s4q2SGuzbK914McvTf4N4cppsW2TlkGqPSpbrQKPGcqf2pTZr2JywsQ9b/JQns7r2Q0qRYki2Aa+bDMBukTWPzhMpWyM3XgFkR781L/s5T27KakaosQMcw8V/f3tgVqRX76JBYEwNZ6MM6i9uQUap1b2Lt7DInXLAnHNdVuqRyx/EVovzfe//boVsS8ygRx/aXAstgRjCho78k11hH/jQowQh9rzGZ8h3yRoWvkEP6wCUE/k6+VnQCy2jPhIyCBB6B4KlRBO5g5yT9WhFJwTvHx
+ 1ZohRZfd
+ 4MUG7ypEfniGi6FSz+1+Woaa1BDYR13xwiwjj8Ek3tRTzc2ZowAv+tLpIgVJkzmg9z8rkjvILtPvs4lQ0BL5QezUfRWFswTwsTyeDRkSns+BkBxWh0WKJvfMt5bm+PpUOp56q04bKUYAeuMNqgKbXFYY/wqsTiBhFyMUaY5TLOaGzWxPxdSoOXeRtbPZtFn/aMm59pd2PYD117iNchUE2i8cxTigBu82iJWv43Cji2yy4L4xBm5Scm/6YqaHwDRuO1Ct5oRda4w/2HxC8wjQSkO9OvuZ6H/MpMNYbfk1XGJjDWMxQ7v5oYbIInMu9ggiRXx2JGv9kqr/WIw0OA2BSL2KmHsHC3SjGrmOVLxbawo5xjy9uXRqhwHyy1LaiHT2GrR00P1ZA3/MWZLtqUF/l9J0A1J7dAZ4139z4sSm2+c+Qu6KxHap8+HJ39i8s3suDvnPRwwOpyQI8cbRwVpKfedKCr46CdVjVXkGRFpHbu0XXulmDIrDJJhXdtKRr01mQ0noJL3cP0eMXXg9lkR5aRSQnfY7SgvKzx6aCttC5Ghgz+LTTN1dwUJkV2lipe7U4aPiMntyk8tO90f1VzmgpPnR+AcOTz4ggSAoY8uOXvhA0dvFXC0nDIA+Kfj9ylI4hl132IAFv9Rys7JzthrbAdo37vt0glz++hHnkRsALAwd5wAxNrkU/dgWbI0BtUJSejl6W6p8DKowDXQt/flr863uc0R7OlVpft2KLxzgrx+I+6rhMSGbjAm+2SFD9csWBACbt0rktMocwl7wwx4m1g0sgDMy+ysT2+/8XBYg2dyXoLsvITnkn/vnUDWkY5K1vFlf70utM7lTIxuwL0hlda+I4ogu5Pl4d/hGkki0BULfqw2xcXePNhvA4VA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,373 +242,550 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc netdev, block, nbd people
+* Suren Baghdasaryan <surenb@google.com> [260226 02:06]:
+> Now that we have vma_start_write_killable() we can replace most of the
+> vma_start_write() calls with it, improving reaction time to the kill
+> signal.
+> 
+> There are several places which are left untouched by this patch:
+> 
+> 1. free_pgtables() because function should free page tables even if a
+> fatal signal is pending.
+> 
+> 2. process_vma_walk_lock(), which requires changes in its callers and
+> will be handled in the next patch.
+> 
+> 3. userfaultd code, where some paths calling vma_start_write() can
+> handle EINTR and some can't without a deeper code refactoring.
+> 
+> 4. mpol_rebind_mm() which is used by cpusset controller for migrations
+> and operates on a remote mm. Incomplete operations here would result
+> in an inconsistent cgroup state.
+> 
+> 5. vm_flags_{set|mod|clear} require refactoring that involves moving
+> vma_start_write() out of these functions and replacing it with
+> vma_assert_write_locked(), then callers of these functions should
+> lock the vma themselves using vma_start_write_killable() whenever
+> possible.
+> 
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
 
-On Thu, Feb 26, 2026 at 06:54:27AM -0800, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    32a92f8c8932 Convert more 'alloc_obj' cases to default GFP..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13cd6f3a580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=6259cfbe2d15cac4
-> dashboard link: https://syzkaller.appspot.com/bug?extid=709f5ab0e03871dec50a
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/64d473c704b2/disk-32a92f8c.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/570c8f79c450/vmlinux-32a92f8c.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/b3d4ccd686ce/bzImage-32a92f8c.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+709f5ab0e03871dec50a@syzkaller.appspotmail.com
-> 
-> ======================================================
-> WARNING: possible circular locking dependency detected
-> syzkaller #0 Tainted: G             L     
-> ------------------------------------------------------
-> syz.3.3387/17804 is trying to acquire lock:
-> ffffffff8e9aaf80 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
-> ffffffff8e9aaf80 (fs_reclaim){+.+.}-{0:0}, at: prepare_alloc_pages+0x166/0x5f0 mm/page_alloc.c:5018
-> 
-> but task is already holding lock:
-> ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
-> ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: get_mmap_lock_carefully mm/mmap_lock.c:441 [inline]
-> ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: lock_mm_and_find_vma+0x35/0x6f0 mm/mmap_lock.c:501
-> 
-> which lock already depends on the new lock.
-> 
-> 
-> the existing dependency chain (in reverse order) is:
-> 
-> -> #7 (&mm->mmap_lock){++++}-{4:4}:
->        __might_fault+0xde/0x140 mm/memory.c:7217
->        _inline_copy_from_user include/linux/uaccess.h:169 [inline]
->        _copy_from_user+0x29/0xd0 lib/usercopy.c:18
->        copy_from_user include/linux/uaccess.h:223 [inline]
->        copy_from_sockptr_offset include/linux/sockptr.h:48 [inline]
->        copy_from_sockptr include/linux/sockptr.h:61 [inline]
->        do_ip_setsockopt+0x2363/0x3200 net/ipv4/ip_sockglue.c:1294
->        ip_setsockopt+0x5a/0xf0 net/ipv4/ip_sockglue.c:1417
->        ipv6_setsockopt+0x155/0x170 net/ipv6/ipv6_sockglue.c:968
->        tcp_setsockopt+0xa7/0x100 net/ipv4/tcp.c:4217
->        smc_setsockopt+0x1b6/0xa10 net/smc/af_smc.c:3097
->        do_sock_setsockopt+0xf3/0x1d0 net/socket.c:2322
->        __sys_setsockopt+0x119/0x190 net/socket.c:2347
->        __do_sys_setsockopt net/socket.c:2353 [inline]
->        __se_sys_setsockopt net/socket.c:2350 [inline]
->        __x64_sys_setsockopt+0xbd/0x160 net/socket.c:2350
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> -> #6 (k-sk_lock-AF_INET6){+.+.}-{0:0}:
->        lock_sock_nested+0x41/0xf0 net/core/sock.c:3780
->        lock_sock include/net/sock.h:1709 [inline]
->        inet_shutdown+0x67/0x410 net/ipv4/af_inet.c:913
->        nbd_mark_nsock_dead+0xae/0x5c0 drivers/block/nbd.c:318
->        sock_shutdown+0x16b/0x200 drivers/block/nbd.c:411
->        nbd_clear_sock drivers/block/nbd.c:1427 [inline]
->        nbd_config_put+0x1eb/0x750 drivers/block/nbd.c:1451
->        nbd_release+0xb7/0x190 drivers/block/nbd.c:1756
->        blkdev_put_whole+0xb0/0xf0 block/bdev.c:737
->        bdev_release+0x47f/0x6d0 block/bdev.c:1160
->        blkdev_release+0x15/0x20 block/fops.c:705
->        __fput+0x3ff/0xb40 fs/file_table.c:469
->        task_work_run+0x150/0x240 kernel/task_work.c:233
->        resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
->        __exit_to_user_mode_loop kernel/entry/common.c:67 [inline]
->        exit_to_user_mode_loop+0x100/0x4a0 kernel/entry/common.c:98
->        __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
->        syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
->        syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
->        do_syscall_64+0x668/0xf80 arch/x86/entry/syscall_64.c:100
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> -> #5 (&nsock->tx_lock){+.+.}-{4:4}:
->        __mutex_lock_common kernel/locking/mutex.c:614 [inline]
->        __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
->        nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
->        nbd_queue_rq+0x428/0x1080 drivers/block/nbd.c:1207
->        blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
->        __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
->        blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
->        __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
->        blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
->        blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
->        blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
->        blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
->        blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
->        __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
->        blk_finish_plug block/blk-core.c:1257 [inline]
->        __submit_bio+0x584/0x6c0 block/blk-core.c:649
->        __submit_bio_noacct_mq block/blk-core.c:722 [inline]
->        submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
->        submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
->        blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
->        submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
->        submit_bh fs/buffer.c:2826 [inline]
->        block_read_full_folio+0x4c8/0x8e0 fs/buffer.c:2458
->        filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2496
->        do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4096
->        read_mapping_folio include/linux/pagemap.h:1028 [inline]
->        read_part_sector+0xd1/0x370 block/partitions/core.c:723
->        adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
->        check_partition block/partitions/core.c:142 [inline]
->        blk_add_partitions block/partitions/core.c:590 [inline]
->        bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
->        blkdev_get_whole+0x187/0x290 block/bdev.c:764
->        bdev_open+0x2c7/0xe40 block/bdev.c:973
->        blkdev_open+0x34e/0x4f0 block/fops.c:697
->        do_dentry_open+0x6d8/0x1660 fs/open.c:949
->        vfs_open+0x82/0x3f0 fs/open.c:1081
->        do_open fs/namei.c:4671 [inline]
->        path_openat+0x208c/0x31a0 fs/namei.c:4830
->        do_file_open+0x20e/0x430 fs/namei.c:4859
->        do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
->        do_sys_open fs/open.c:1372 [inline]
->        __do_sys_openat fs/open.c:1388 [inline]
->        __se_sys_openat fs/open.c:1383 [inline]
->        __x64_sys_openat+0x12d/0x210 fs/open.c:1383
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> -> #4 (&cmd->lock){+.+.}-{4:4}:
->        __mutex_lock_common kernel/locking/mutex.c:614 [inline]
->        __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
->        nbd_queue_rq+0xba/0x1080 drivers/block/nbd.c:1199
->        blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
->        __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
->        blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
->        __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
->        blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
->        blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
->        blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
->        blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
->        blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
->        __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
->        blk_finish_plug block/blk-core.c:1257 [inline]
->        __submit_bio+0x584/0x6c0 block/blk-core.c:649
->        __submit_bio_noacct_mq block/blk-core.c:722 [inline]
->        submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
->        submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
->        blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
->        submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
->        submit_bh fs/buffer.c:2826 [inline]
->        block_read_full_folio+0x4c8/0x8e0 fs/buffer.c:2458
->        filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2496
->        do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4096
->        read_mapping_folio include/linux/pagemap.h:1028 [inline]
->        read_part_sector+0xd1/0x370 block/partitions/core.c:723
->        adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
->        check_partition block/partitions/core.c:142 [inline]
->        blk_add_partitions block/partitions/core.c:590 [inline]
->        bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
->        blkdev_get_whole+0x187/0x290 block/bdev.c:764
->        bdev_open+0x2c7/0xe40 block/bdev.c:973
->        blkdev_open+0x34e/0x4f0 block/fops.c:697
->        do_dentry_open+0x6d8/0x1660 fs/open.c:949
->        vfs_open+0x82/0x3f0 fs/open.c:1081
->        do_open fs/namei.c:4671 [inline]
->        path_openat+0x208c/0x31a0 fs/namei.c:4830
->        do_file_open+0x20e/0x430 fs/namei.c:4859
->        do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
->        do_sys_open fs/open.c:1372 [inline]
->        __do_sys_openat fs/open.c:1388 [inline]
->        __se_sys_openat fs/open.c:1383 [inline]
->        __x64_sys_openat+0x12d/0x210 fs/open.c:1383
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> -> #3 (set->srcu){.+.+}-{0:0}:
->        srcu_lock_sync include/linux/srcu.h:199 [inline]
->        __synchronize_srcu+0xa1/0x2a0 kernel/rcu/srcutree.c:1505
->        blk_mq_wait_quiesce_done block/blk-mq.c:284 [inline]
->        blk_mq_wait_quiesce_done block/blk-mq.c:281 [inline]
->        blk_mq_quiesce_queue block/blk-mq.c:304 [inline]
->        blk_mq_quiesce_queue+0x149/0x1c0 block/blk-mq.c:299
->        elevator_switch+0x17b/0x7e0 block/elevator.c:576
->        elevator_change+0x352/0x530 block/elevator.c:681
->        elevator_set_default+0x29e/0x360 block/elevator.c:754
->        blk_register_queue+0x412/0x590 block/blk-sysfs.c:940
->        __add_disk+0x73f/0xe40 block/genhd.c:528
->        add_disk_fwnode+0x118/0x5c0 block/genhd.c:597
->        add_disk include/linux/blkdev.h:785 [inline]
->        nbd_dev_add+0x77a/0xb10 drivers/block/nbd.c:1984
->        nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
->        do_one_initcall+0x11d/0x760 init/main.c:1382
->        do_initcall_level init/main.c:1444 [inline]
->        do_initcalls init/main.c:1460 [inline]
->        do_basic_setup init/main.c:1479 [inline]
->        kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
->        kernel_init+0x1f/0x1e0 init/main.c:1582
->        ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
->        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> 
-> -> #2 (&q->elevator_lock){+.+.}-{4:4}:
->        __mutex_lock_common kernel/locking/mutex.c:614 [inline]
->        __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
->        queue_requests_store+0x38b/0x660 block/blk-sysfs.c:117
->        queue_attr_store+0x25f/0x2f0 block/blk-sysfs.c:866
->        sysfs_kf_write+0xf2/0x150 fs/sysfs/file.c:142
->        kernfs_fop_write_iter+0x3e0/0x5f0 fs/kernfs/file.c:352
->        new_sync_write fs/read_write.c:595 [inline]
->        vfs_write+0x6ac/0x1070 fs/read_write.c:688
->        ksys_pwrite64 fs/read_write.c:795 [inline]
->        __do_sys_pwrite64 fs/read_write.c:803 [inline]
->        __se_sys_pwrite64 fs/read_write.c:800 [inline]
->        __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:800
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> -> #1 (&q->q_usage_counter(io)#26){++++}-{0:0}:
->        blk_alloc_queue+0x610/0x790 block/blk-core.c:461
->        blk_mq_alloc_queue+0x174/0x290 block/blk-mq.c:4429
->        __blk_mq_alloc_disk+0x29/0x120 block/blk-mq.c:4476
->        loop_add+0x498/0xb60 drivers/block/loop.c:2049
->        loop_init+0x1d3/0x200 drivers/block/loop.c:2288
->        do_one_initcall+0x11d/0x760 init/main.c:1382
->        do_initcall_level init/main.c:1444 [inline]
->        do_initcalls init/main.c:1460 [inline]
->        do_basic_setup init/main.c:1479 [inline]
->        kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
->        kernel_init+0x1f/0x1e0 init/main.c:1582
->        ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
->        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-> 
-> -> #0 (fs_reclaim){+.+.}-{0:0}:
->        check_prev_add kernel/locking/lockdep.c:3165 [inline]
->        check_prevs_add kernel/locking/lockdep.c:3284 [inline]
->        validate_chain kernel/locking/lockdep.c:3908 [inline]
->        __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
->        lock_acquire kernel/locking/lockdep.c:5868 [inline]
->        lock_acquire+0x1cf/0x380 kernel/locking/lockdep.c:5825
->        __fs_reclaim_acquire mm/page_alloc.c:4348 [inline]
->        fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4362
->        might_alloc include/linux/sched/mm.h:317 [inline]
->        prepare_alloc_pages+0x166/0x5f0 mm/page_alloc.c:5018
->        __alloc_frozen_pages_noprof+0x19a/0x2ba0 mm/page_alloc.c:5239
->        alloc_pages_mpol+0x1fb/0x550 mm/mempolicy.c:2484
->        alloc_frozen_pages_noprof mm/mempolicy.c:2555 [inline]
->        alloc_pages_noprof+0x131/0x390 mm/mempolicy.c:2575
->        pagetable_alloc_noprof include/linux/mm.h:3404 [inline]
->        pmd_alloc_one_noprof include/asm-generic/pgalloc.h:143 [inline]
->        __pmd_alloc+0x3b/0x9c0 mm/memory.c:6709
->        pmd_alloc include/linux/mm.h:3320 [inline]
->        __handle_mm_fault+0xa99/0x2b60 mm/memory.c:6406
->        handle_mm_fault+0x36d/0xa20 mm/memory.c:6623
->        do_user_addr_fault+0x74c/0x12f0 arch/x86/mm/fault.c:1385
->        handle_page_fault arch/x86/mm/fault.c:1474 [inline]
->        exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
->        asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
->        rep_movs_alternative+0x30/0x90 arch/x86/lib/copy_user_64.S:53
->        copy_user_generic arch/x86/include/asm/uaccess_64.h:126 [inline]
->        raw_copy_from_user arch/x86/include/asm/uaccess_64.h:141 [inline]
->        _inline_copy_from_user include/linux/uaccess.h:185 [inline]
->        _copy_from_user+0x98/0xd0 lib/usercopy.c:18
->        copy_from_user include/linux/uaccess.h:223 [inline]
->        get_user_ifreq+0x77/0x1c0 net/socket.c:3350
->        br_ioctl_stub+0x23d/0x4d0 net/bridge/br_ioctl.c:409
->        br_ioctl_call+0x53/0xa0 net/socket.c:1227
->        sock_ioctl+0x616/0x6b0 net/socket.c:1329
->        vfs_ioctl fs/ioctl.c:51 [inline]
->        __do_sys_ioctl fs/ioctl.c:597 [inline]
->        __se_sys_ioctl fs/ioctl.c:583 [inline]
->        __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> other info that might help us debug this:
-> 
-> Chain exists of:
->   fs_reclaim --> k-sk_lock-AF_INET6 --> &mm->mmap_lock
-> 
->  Possible unsafe locking scenario:
-> 
->        CPU0                    CPU1
->        ----                    ----
->   rlock(&mm->mmap_lock);
->                                lock(k-sk_lock-AF_INET6);
->                                lock(&mm->mmap_lock);
->   lock(fs_reclaim);
-> 
->  *** DEADLOCK ***
-> 
-> 2 locks held by syz.3.3387/17804:
->  #0: ffffffff905e2228 (br_ioctl_mutex){+.+.}-{4:4}, at: br_ioctl_call+0x34/0xa0 net/socket.c:1225
->  #1: ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
->  #1: ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: get_mmap_lock_carefully mm/mmap_lock.c:441 [inline]
->  #1: ffff88807ad4b440 (&mm->mmap_lock){++++}-{4:4}, at: lock_mm_and_find_vma+0x35/0x6f0 mm/mmap_lock.c:501
->
+Some nits below, but lgtm.
 
-It looks to me like the issue is:
- setsockopt(nbd_sock) -> takes sk_lock -> copy_from_user -> page fault ->
-   mmap_lock -> allocation needs reclaim -> fs_reclaim -> fs does IO -> nbd
-   grabs sk_lock -> deadlock
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-Looks longstanding. No idea why it's finding it only now.
+> ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
+>  mm/khugepaged.c                    |  5 +-
+>  mm/madvise.c                       |  4 +-
+>  mm/memory.c                        |  2 +
+>  mm/mempolicy.c                     |  8 ++-
+>  mm/mlock.c                         | 21 +++++--
+>  mm/mprotect.c                      |  4 +-
+>  mm/mremap.c                        |  4 +-
+>  mm/vma.c                           | 93 +++++++++++++++++++++---------
+>  mm/vma_exec.c                      |  6 +-
+>  10 files changed, 109 insertions(+), 43 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 5fbb95d90e99..0a28b48a46b8 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+>  			ret = H_STATE;
+>  			break;
+>  		}
+> -		vma_start_write(vma);
+> +		if (vma_start_write_killable(vma)) {
+> +			ret = H_STATE;
+> +			break;
+> +		}
+>  		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
+>  		vm_flags = vma->vm_flags;
+>  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 1dd3cfca610d..6c92e31ee5fb 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1141,7 +1141,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>  	if (result != SCAN_SUCCEED)
+>  		goto out_up_write;
+>  	/* check if the pmd is still valid */
+> -	vma_start_write(vma);
+> +	if (vma_start_write_killable(vma)) {
+> +		result = SCAN_FAIL;
+> +		goto out_up_write;
+> +	}
+>  	result = check_pmd_still_valid(mm, address, pmd);
+>  	if (result != SCAN_SUCCEED)
+>  		goto out_up_write;
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index c0370d9b4e23..ccdaea6b3b15 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -173,7 +173,9 @@ static int madvise_update_vma(vm_flags_t new_flags,
+>  	madv_behavior->vma = vma;
+>  
+>  	/* vm_flags is protected by the mmap_lock held in write mode. */
+> -	vma_start_write(vma);
+> +	if (vma_start_write_killable(vma))
+> +		return -EINTR;
+> +
+>  	vm_flags_reset(vma, new_flags);
+>  	if (set_new_anon_name)
+>  		return replace_anon_vma_name(vma, anon_name);
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 07778814b4a8..691062154cf5 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -379,6 +379,8 @@ void free_pgd_range(struct mmu_gather *tlb,
+>   * page tables that should be removed.  This can differ from the vma mappings on
+>   * some archs that may have mappings that need to be removed outside the vmas.
+>   * Note that the prev->vm_end and next->vm_start are often used.
+> + * We don't use vma_start_write_killable() because page tables should be freed
+> + * even if the task is being killed.
+>   *
+>   * The vma_end differs from the pg_end when a dup_mmap() failed and the tree has
+>   * unrelated data to the mm_struct being torn down.
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 0e5175f1c767..90939f5bde02 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -1784,7 +1784,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
+>  		return -EINVAL;
+>  	if (end == start)
+>  		return 0;
+> -	mmap_write_lock(mm);
+> +	if (mmap_write_lock_killable(mm))
+> +		return -EINTR;
+>  	prev = vma_prev(&vmi);
+>  	for_each_vma_range(vmi, vma, end) {
+>  		/*
+> @@ -1801,13 +1802,16 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
+>  			err = -EOPNOTSUPP;
+>  			break;
+>  		}
+> +		if (vma_start_write_killable(vma)) {
+> +			err = -EINTR;
+> +			break;
+> +		}
+>  		new = mpol_dup(old);
+>  		if (IS_ERR(new)) {
+>  			err = PTR_ERR(new);
+>  			break;
+>  		}
+>  
+> -		vma_start_write(vma);
+>  		new->home_node = home_node;
+>  		err = mbind_range(&vmi, vma, &prev, start, end, new);
+>  		mpol_put(new);
+> diff --git a/mm/mlock.c b/mm/mlock.c
+> index 2f699c3497a5..c562c77c3ee0 100644
+> --- a/mm/mlock.c
+> +++ b/mm/mlock.c
+> @@ -420,7 +420,7 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+>   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
+>   * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
+>   */
+> -static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> +static int mlock_vma_pages_range(struct vm_area_struct *vma,
+>  	unsigned long start, unsigned long end, vm_flags_t newflags)
+>  {
+>  	static const struct mm_walk_ops mlock_walk_ops = {
+> @@ -441,7 +441,9 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+>  	 */
+>  	if (newflags & VM_LOCKED)
+>  		newflags |= VM_IO;
+> -	vma_start_write(vma);
+> +	if (vma_start_write_killable(vma))
+> +		return -EINTR;
+> +
+>  	vm_flags_reset_once(vma, newflags);
+>  
+>  	lru_add_drain();
+> @@ -452,6 +454,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+>  		newflags &= ~VM_IO;
+>  		vm_flags_reset_once(vma, newflags);
+>  	}
+> +	return 0;
+>  }
+>  
+>  /*
+> @@ -501,10 +504,12 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	 */
+>  	if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+>  		/* No work to do, and mlocking twice would be wrong */
+> -		vma_start_write(vma);
+> +		ret = vma_start_write_killable(vma);
+> +		if (ret)
+> +			goto out;
+>  		vm_flags_reset(vma, newflags);
+>  	} else {
+> -		mlock_vma_pages_range(vma, start, end, newflags);
+> +		ret = mlock_vma_pages_range(vma, start, end, newflags);
+>  	}
+>  out:
+>  	*prev = vma;
+> @@ -733,9 +738,13 @@ static int apply_mlockall_flags(int flags)
+>  
+>  		error = mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
+>  				    newflags);
+> -		/* Ignore errors, but prev needs fixing up. */
+> -		if (error)
+> +		/* Ignore errors except EINTR, but prev needs fixing up. */
+> +		if (error) {
+> +			if (error == -EINTR)
+> +				return error;
+> +
+>  			prev = vma;
+> +		}
+>  		cond_resched();
+>  	}
+>  out:
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index c0571445bef7..49dbb7156936 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -765,7 +765,9 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>  	 * vm_flags and vm_page_prot are protected by the mmap_lock
+>  	 * held in write mode.
+>  	 */
+> -	vma_start_write(vma);
+> +	error = vma_start_write_killable(vma);
+> +	if (error < 0)
+> +		goto fail;
+>  	vm_flags_reset_once(vma, newflags);
+>  	if (vma_wants_manual_pte_write_upgrade(vma))
+>  		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index 2be876a70cc0..aef1e5f373c7 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1286,7 +1286,9 @@ static unsigned long move_vma(struct vma_remap_struct *vrm)
+>  		return -ENOMEM;
+>  
+>  	/* We don't want racing faults. */
+> -	vma_start_write(vrm->vma);
+> +	err = vma_start_write_killable(vrm->vma);
+> +	if (err)
+> +		return err;
+>  
+>  	/* Perform copy step. */
+>  	err = copy_vma_and_data(vrm, &new_vma);
+> diff --git a/mm/vma.c b/mm/vma.c
+> index bb4d0326fecb..9f2664f1d078 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -530,6 +530,13 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	if (err)
+>  		goto out_free_vmi;
+>  
+> +	err = vma_start_write_killable(vma);
+> +	if (err)
+> +		goto out_free_mpol;
+> +	err = vma_start_write_killable(new);
+> +	if (err)
+> +		goto out_free_mpol;
+> +
+>  	err = anon_vma_clone(new, vma, VMA_OP_SPLIT);
+>  	if (err)
+>  		goto out_free_mpol;
+> @@ -540,9 +547,6 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	if (new->vm_ops && new->vm_ops->open)
+>  		new->vm_ops->open(new);
+>  
+> -	vma_start_write(vma);
+> -	vma_start_write(new);
+> -
+>  	init_vma_prep(&vp, vma);
+>  	vp.insert = new;
+>  	vma_prepare(&vp);
+> @@ -895,16 +899,22 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+>  	}
+>  
+>  	/* No matter what happens, we will be adjusting middle. */
+> -	vma_start_write(middle);
+> +	err = vma_start_write_killable(middle);
+> +	if (err)
+> +		goto abort;
+>  
+>  	if (merge_right) {
+> -		vma_start_write(next);
+> +		err = vma_start_write_killable(next);
+> +		if (err)
+> +			goto abort;
+>  		vmg->target = next;
+>  		sticky_flags |= (next->vm_flags & VM_STICKY);
+>  	}
+>  
+>  	if (merge_left) {
+> -		vma_start_write(prev);
+> +		err = vma_start_write_killable(prev);
+> +		if (err)
+> +			goto abort;
+>  		vmg->target = prev;
+>  		sticky_flags |= (prev->vm_flags & VM_STICKY);
+>  	}
+> @@ -1155,10 +1165,12 @@ int vma_expand(struct vma_merge_struct *vmg)
+>  	struct vm_area_struct *next = vmg->next;
+>  	bool remove_next = false;
+>  	vm_flags_t sticky_flags;
+> -	int ret = 0;
+> +	int ret;
+>  
+>  	mmap_assert_write_locked(vmg->mm);
+> -	vma_start_write(target);
+> +	ret = vma_start_write_killable(target);
+> +	if (ret)
+> +		return ret;
+>  
+>  	if (next && target != next && vmg->end == next->vm_end)
+>  		remove_next = true;
+> @@ -1187,6 +1199,9 @@ int vma_expand(struct vma_merge_struct *vmg)
+>  	 * we don't need to account for vmg->give_up_on_mm here.
+>  	 */
+>  	if (remove_next) {
+> +		ret = vma_start_write_killable(next);
+> +		if (ret)
+> +			return ret;
+>  		ret = dup_anon_vma(target, next, &anon_dup);
+>  		if (ret)
+>  			return ret;
+> @@ -1197,10 +1212,8 @@ int vma_expand(struct vma_merge_struct *vmg)
+>  			return ret;
+>  	}
+>  
+> -	if (remove_next) {
+> -		vma_start_write(next);
+> +	if (remove_next)
+>  		vmg->__remove_next = true;
+> -	}
+>  	if (commit_merge(vmg))
+>  		goto nomem;
+>  
+> @@ -1233,6 +1246,7 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	       unsigned long start, unsigned long end, pgoff_t pgoff)
+>  {
+>  	struct vma_prepare vp;
+> +	int err;
+>  
+>  	WARN_ON((vma->vm_start != start) && (vma->vm_end != end));
+>  
+> @@ -1244,7 +1258,11 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	if (vma_iter_prealloc(vmi, NULL))
+>  		return -ENOMEM;
+>  
+> -	vma_start_write(vma);
+> +	err = vma_start_write_killable(vma);
+> +	if (err) {
+> +		vma_iter_free(vmi);
+> +		return err;
+> +	}
 
-I would suggest something like this, if the diagnosis is correct
-(plus adapting all callers):
+Could avoid allocating here by reordering the lock, but this is fine.
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 5976100a9d55..8a100c404c8e 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1140,8 +1140,10 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- }
- #endif
- 
--void sockopt_lock_sock(struct sock *sk)
-+__must_check unsigned int sockopt_lock_sock(struct sock *sk)
- {
-+       unsigned int flags = 0;
-+
-        /* When current->bpf_ctx is set, the setsockopt is called from
-         * a bpf prog.  bpf has ensured the sk lock has been
-         * acquired before calling setsockopt().
-@@ -1149,15 +1151,27 @@ void sockopt_lock_sock(struct sock *sk)
-        if (has_current_bpf_ctx())
-                return;
- 
-+       if (!(sk->sk_allocation & __GFP_IO)) {
-+               /* If the socket cannot tolerate IO for its own allocations,
-+                * it's almost certain it will not be able to tolerate IO under
-+                * lock_sock(). However, sockopt code likes to possibly trigger
-+                * reclaim (due to page faults) under lock_sock(), and that can
-+                * uncontrollably do IO.
-+                */
-+               flags = memalloc_noio_save();
-+       }
-+
-        lock_sock(sk);
-+       return flags;
- }
- EXPORT_SYMBOL(sockopt_lock_sock);
- 
--void sockopt_release_sock(struct sock *sk)
-+void sockopt_release_sock(struct sock *sk, unsigned int memalloc_flags)
- {
-        if (has_current_bpf_ctx())
-                return;
- 
-+       memalloc_noio_restore(memalloc_flags);
-        release_sock(sk);
- }
- EXPORT_SYMBOL(sockopt_release_sock);
+>  
+>  	init_vma_prep(&vp, vma);
+>  	vma_prepare(&vp);
+> @@ -1434,7 +1452,9 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
+>  			if (error)
+>  				goto end_split_failed;
+>  		}
+> -		vma_start_write(next);
+> +		error = vma_start_write_killable(next);
+> +		if (error)
+> +			goto munmap_gather_failed;
+>  		mas_set(mas_detach, vms->vma_count++);
+>  		error = mas_store_gfp(mas_detach, next, GFP_KERNEL);
+>  		if (error)
+> @@ -1828,12 +1848,17 @@ static void vma_link_file(struct vm_area_struct *vma, bool hold_rmap_lock)
+>  static int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
+>  {
+>  	VMA_ITERATOR(vmi, mm, 0);
+> +	int err;
+>  
+>  	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
+>  	if (vma_iter_prealloc(&vmi, vma))
+>  		return -ENOMEM;
+>  
+> -	vma_start_write(vma);
+> +	err = vma_start_write_killable(vma);
+> +	if (err) {
+> +		vma_iter_free(&vmi);
+> +		return err;
+> +	}
 
+Ditto here, ordering would mean no freeing.
 
+>  	vma_iter_store_new(&vmi, vma);
+>  	vma_link_file(vma, /* hold_rmap_lock= */false);
+>  	mm->map_count++;
+> @@ -2215,9 +2240,8 @@ int mm_take_all_locks(struct mm_struct *mm)
+>  	 * is reached.
+>  	 */
+>  	for_each_vma(vmi, vma) {
+> -		if (signal_pending(current))
+> +		if (signal_pending(current) || vma_start_write_killable(vma))
+>  			goto out_unlock;
+> -		vma_start_write(vma);
+>  	}
+>  
+>  	vma_iter_init(&vmi, mm, 0);
+> @@ -2522,6 +2546,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
+>  	if (!vma)
+>  		return -ENOMEM;
+>  
+> +	/* Lock the VMA since it is modified after insertion into VMA tree */
+> +	error = vma_start_write_killable(vma);
+> +	if (error)
+> +		goto free_vma;
+> +
 
-I would send it, but I would like to get some sort of repro first, at least
-on my end.
+There's no way this is going to fail, right?
 
--- 
-Pedro
+>  	vma_iter_config(vmi, map->addr, map->end);
+>  	vma_set_range(vma, map->addr, map->end, map->pgoff);
+>  	vm_flags_init(vma, map->vm_flags);
+> @@ -2552,8 +2581,6 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
+>  	WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
+>  #endif
+>  
+> -	/* Lock the VMA since it is modified after insertion into VMA tree */
+> -	vma_start_write(vma);
+>  	vma_iter_store_new(vmi, vma);
+>  	map->mm->map_count++;
+>  	vma_link_file(vma, map->hold_file_rmap_lock);
+> @@ -2864,6 +2891,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  		 unsigned long addr, unsigned long len, vm_flags_t vm_flags)
+>  {
+>  	struct mm_struct *mm = current->mm;
+> +	int err = -ENOMEM;
+>  
+>  	/*
+>  	 * Check against address space limits by the changed size
+> @@ -2908,7 +2936,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
+>  	vm_flags_init(vma, vm_flags);
+>  	vma->vm_page_prot = vm_get_page_prot(vm_flags);
+> -	vma_start_write(vma);
+> +	if (vma_start_write_killable(vma)) {
+> +		err = -EINTR;
+> +		goto mas_store_fail;
+> +	}
+
+I'd rather have another label saying write lock failed.  Really, this
+will never fail though (besides syzbot..)
+
+>  	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
+>  		goto mas_store_fail;
+>  
+> @@ -2928,7 +2959,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	vm_area_free(vma);
+>  unacct_fail:
+>  	vm_unacct_memory(len >> PAGE_SHIFT);
+> -	return -ENOMEM;
+> +	return err;
+>  }
+>  
+>  /**
+> @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	struct vm_area_struct *next;
+>  	unsigned long gap_addr;
+> -	int error = 0;
+> +	int error;
+>  	VMA_ITERATOR(vmi, mm, vma->vm_start);
+>  
+>  	if (!(vma->vm_flags & VM_GROWSUP))
+> @@ -3126,12 +3157,14 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+>  
+>  	/* We must make sure the anon_vma is allocated. */
+>  	if (unlikely(anon_vma_prepare(vma))) {
+> -		vma_iter_free(&vmi);
+> -		return -ENOMEM;
+> +		error = -ENOMEM;
+> +		goto free;
+>  	}
+>  
+>  	/* Lock the VMA before expanding to prevent concurrent page faults */
+> -	vma_start_write(vma);
+> +	error = vma_start_write_killable(vma);
+> +	if (error)
+> +		goto free;
+>  	/* We update the anon VMA tree. */
+>  	anon_vma_lock_write(vma->anon_vma);
+>  
+> @@ -3160,6 +3193,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+>  		}
+>  	}
+>  	anon_vma_unlock_write(vma->anon_vma);
+> +free:
+>  	vma_iter_free(&vmi);
+>  	validate_mm(mm);
+>  	return error;
+> @@ -3174,7 +3208,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	struct vm_area_struct *prev;
+> -	int error = 0;
+> +	int error;
+>  	VMA_ITERATOR(vmi, mm, vma->vm_start);
+>  
+>  	if (!(vma->vm_flags & VM_GROWSDOWN))
+> @@ -3205,12 +3239,14 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+>  
+>  	/* We must make sure the anon_vma is allocated. */
+>  	if (unlikely(anon_vma_prepare(vma))) {
+> -		vma_iter_free(&vmi);
+> -		return -ENOMEM;
+> +		error = -ENOMEM;
+> +		goto free;
+>  	}
+>  
+>  	/* Lock the VMA before expanding to prevent concurrent page faults */
+> -	vma_start_write(vma);
+> +	error = vma_start_write_killable(vma);
+> +	if (error)
+> +		goto free;
+>  	/* We update the anon VMA tree. */
+>  	anon_vma_lock_write(vma->anon_vma);
+>  
+> @@ -3240,6 +3276,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+>  		}
+>  	}
+>  	anon_vma_unlock_write(vma->anon_vma);
+> +free:
+>  	vma_iter_free(&vmi);
+>  	validate_mm(mm);
+>  	return error;
+> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+> index 8134e1afca68..a4addc2a8480 100644
+> --- a/mm/vma_exec.c
+> +++ b/mm/vma_exec.c
+> @@ -40,6 +40,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+>  	struct vm_area_struct *next;
+>  	struct mmu_gather tlb;
+>  	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
+> +	int err;
+>  
+>  	BUG_ON(new_start > new_end);
+>  
+> @@ -55,8 +56,9 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+>  	 * cover the whole range: [new_start, old_end)
+>  	 */
+>  	vmg.target = vma;
+> -	if (vma_expand(&vmg))
+> -		return -ENOMEM;
+> +	err = vma_expand(&vmg);
+> +	if (err)
+> +		return err;
+>  
+>  	/*
+>  	 * move the page tables downwards, on failure we rely on
+> -- 
+> 2.53.0.414.gf7e9f6c205-goog
+> 
+> 
 
