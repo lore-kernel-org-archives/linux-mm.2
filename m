@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06274FC5910
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:07:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A978FC5910
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 672426B0093; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
+	id 79D356B0095; Thu, 26 Feb 2026 05:07:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63F7D6B0095; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
+	id 76B0F6B0098; Thu, 26 Feb 2026 05:07:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56C346B0096; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
+	id 69DAF6B0095; Thu, 26 Feb 2026 05:07:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 44AAA6B0093
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D1D61CB8E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:59 +0000 (UTC)
-X-FDA: 84486179358.07.D0E0A4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 45D3C180004
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r27eNEsg;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 57A7B6B0095
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:07:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1D96BCA3F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:07:01 +0000 (UTC)
+X-FDA: 84486179442.17.349B194
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 47E0B4000E
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:07:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=spAa9+qt;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772100417;
+	s=arc-20220608; t=1772100420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8uZ+FcrHvnBOldWUaBXXS/DwJYw9zNqN0B3LIJw8H+U=;
-	b=hPTIxkP771kmYGoPfFSIyY3giv5oTK0fUSqGPiFNAEYMqbAV/W4Z8b/NWp7+pK8GYgzNwT
-	0VxxtBvOqraLB6A+74zhAvqDHXb4ohb8GUfX1xu1iMuewJtSzNfR1SFJCiheK6DmUwRps5
-	OFXJFGPklB6FtQyPf+F+Qzs2VbL5nkM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100417; a=rsa-sha256;
-	cv=none;
-	b=qnh5UbIJe/jdO02XRbb8rg8KyzIB+/GDJ6AH//KMXG+2NEdO/oTmTtOZkR3v+ubLFPXd7I
-	c0d0ShbQbgN8wKUZmlrQ+jtKgjjskaoMCgN0aQOcR51voilOpcHocuHK/fURLjmkAf1ANx
-	z8xZ8lkvshiQU/GNEsJnoU8BM1Yaws8=
+	bh=B/GWJ82VvO1qeET31w39wM5Zf8TlGxaRc7NLJ/M/Ufc=;
+	b=vrqt56XtdECWcXxmglt1jr4myD8bbUe/HWpCWizgF7fJLLUv+5eyruJhSwsWkTqQuSj+op
+	HNgsDDu0D7tM8IKF8mPjNvlaKSWBg600C3g8l/ToykHNlFTbs5ennaY2ARNEB77iNFNPs4
+	qA/WjM6WWk4eBBAfr4oGqak6jfuI/SM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r27eNEsg;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=spAa9+qt;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100420; a=rsa-sha256;
+	cv=none;
+	b=DajOFea+Sg9UiaMKJeydlA71cCSvK28ZOEqkVvtr+iYmfgK9ZrKw/3bVCBDAWSFvPskuTv
+	3aMdOVa01zkOviowN0/4WcfQ+Cum7Au1zDUHOqj+LWGnnM2htXK3n/yHAWo0TW4/oqjsrf
+	7IwVysmbKnWBRqwqZRO0TBQMFSeSHOw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A57F660054;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7055F43F25;
+	Thu, 26 Feb 2026 10:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85A7C19423;
 	Thu, 26 Feb 2026 10:06:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99115C19422;
-	Thu, 26 Feb 2026 10:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772100416;
-	bh=354C65bvPjF3i1kcqCpygsKJwJ/HUCRMp6MPAidxgoI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r27eNEsgfjntCCajF+dXVdQZUWZFbywXhb0U9gcJrpEDAEjA8bXUKv2YfiTlfaL+n
-	 r5IwOr6WD5aa9wuxvxdKiBnAfYa7Jo1MgICGPG/QjpjQQgSyEg6k6eAwbsQhdC03pt
-	 TZb/1IlBr/l6YRrz8+0IQCqBqg2H/VIWs6zDY8bw8Sonc/bMy0oV2k83ZsgMy57zU5
-	 lJXB5GKnXD5T0lUSQE2PuJVgki8mwEAST0aH/B7h9FNXXa10t01NON9Cb6L70gDAD4
-	 nIvDihMB1suMPRXjbaf/nxMCG3VNWrGBcRC+HuaID1ozdqPMcrK+rLA3tr3g1CT+Hc
-	 sQsNvkrmLQLEg==
-Message-ID: <05d4df12-f9df-44e4-8df6-04518bb679cf@kernel.org>
-Date: Thu, 26 Feb 2026 11:06:52 +0100
+	s=k20201202; t=1772100419;
+	bh=BGxo6wslGgE39oGiudc0QhTkqydCp/qUfxUngCgbEc0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=spAa9+qtNZCLBRsGVZjT8d31yd1XkdyZVdCJ5pQldkfOeRd2GQfQ0RduDih8RO816
+	 H6bYFXlUPORm4J42h5PGUOeHItZCNdOPBIwDM7MrJNtmKlWLyaUTNj2gDjUd9iSY2H
+	 DhAfb5tvJ8fiH/ZcVLyXPeoReskyhDs3RJGmOnNreeIr1AYc/eNgwA6NLdqQxPLmgR
+	 gNkpy/EMggnTU5/Y8ss/F8UsPCDK3Ev9l+490cweaUvO/9qMxU/VPeHz/eybyZrLIy
+	 9PLTbyuINxYLVu4LWmlGC8vg/FWPq2dERBNKm6YWmBHwrsHCp3P0exfVMW35Rhq52H
+	 g2XggYmcKTofw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org,  akpm@linux-foundation.org,  david@redhat.com,
+  lorenzo.stoakes@oracle.com,  Liam.Howlett@oracle.com,  vbabka@kernel.org,
+  rppt@kernel.org,  graf@amazon.com,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  surenb@google.com,  mhocko@suse.com,
+  urezki@gmail.com
+Subject: Re: [PATCH v1 2/2] kho: fix KASAN support for restored vmalloc regions
+In-Reply-To: <20260225223857.1714801-3-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Wed, 25 Feb 2026 17:38:57 -0500")
+References: <20260225223857.1714801-1-pasha.tatashin@soleen.com>
+	<20260225223857.1714801-3-pasha.tatashin@soleen.com>
+Date: Thu, 26 Feb 2026 11:06:55 +0100
+Message-ID: <2vxz7brzddj4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slub: drop duplicate kernel-doc for ksize()
-Content-Language: en-US
-To: Sanjay Chitroda <sanjayembeddedse@gmail.com>,
- Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260226054712.3610744-1-sanjayembedded@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260226054712.3610744-1-sanjayembedded@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 533qwp4siddfottftz4e98uaxsjnj4ce
-X-Rspamd-Queue-Id: 45D3C180004
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1772100417-713025
-X-HE-Meta: U2FsdGVkX19J9QmsgFYqyd5YG0IeFvn9oVMnzQ25ci6gVMx0USmrxKc7C0SQW6VdNUKr93wei/zKYPgwAlvdyQSig0s/mnAOhAwwg4E7NcOla4Si/sqwk5DFcZWsxV6DqqD/ToXAM0/BIP0WjHrEXLNO+KyECwZbU/jFfAgiccWgfVrSzjmuSpjEyfeZdo6UNLjqtrsKY5uYoI1iydu0OD9AFYfzkcpW7mkzwaUK6q61f+RRPEP7N7iiwJBzoNoJcQsW1zeaAnbVB2GonAqin8bctZGma0QusDMJZU4ybqcQmbwCnrHCN/3pmeS/BbGTlWIhkvW3yY5gw71kEFYkRLM34sxG6xzjjgnVtfC/9xw21elbJjzhwG+3+do+DUhPxqVeLx2+CzTKjrwQm80kwnv6Fv9gbk9u/B7SH24/BqInieXMlb4AeVEaAPZSN6LZMrkEh2xnlvmpNz0eYVwjlLbVdH0wI5VlXl/6FyJk63tHPl9l4qv9G3TKKQ6asKwIQGG7fbQlhIoPw/rkRvwkAwKVLGsIQQ/VYWBt5pOJIuv+6PUKMP+KxNwMM/d+qcEvrwrZpql+eGdrTttPnHdzD13jjXNBptKksKNDj+gXgmffXC7dmzdbhHz9shx0E+KQwx+wH1m8l1RB0FY7xxZith52Y7UwmCzGLoq0SI20LhfW5AqDjpMdlh5xo8q/vUU9pd65+e8FYO6r1vaxCXmtu6+yPKz8PtQHavoxY6NBYX9AFW2W00j4x2yw945Y3u/E+4ciKNj9t3YCZ/dAQCu44/vcoC7lcynXRTY/8T4HF8qy75r4jpljgl1N3EErw39tH+kJRLRPDZVhpVTUV1ok6BSIKyiQG2aDkedecsJua9tgxGHJchY6bGeTnaIbouMRSfhB1wXw0vwdQ3cg9mozXaBj0fjOsg5WFA8cY+97SQq2y11aEU7Jc3MIxvE5GRYejGfH8dWfJWR38lHWK/z
- G4qdRjvz
- 0+skg4OiUjL/ZZHWyZbWMJR84GxtqLm0VIy5RKjSH8OvDi8lwv4T9ZWVnuj7RFaa5zvjB9J+cF/54/3zZdRc4uyZSqhmHKjX2siLMcMzOQhZ7dPS3iEaeVuKwqOeSM8g7qMP9hEXxY+g1WFH/CAPoSih/zm0rPvA8/XKdLeYuP3WhaqBiT+ymqulR2JtIZ8b8S4MGt3l/ds7JtNn0vdqoi4CcUCOKoLdnuYYnUPOas3v8Ae+AGHXh1UEm7+ySwWumoR7dCsYJzZH1MFtk0+xetGxOH9s8wdaYuLmu9+Z3gIbQ2rU=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 47E0B4000E
+X-Stat-Signature: jhdh4j51asqy9je7ox38ge7t8fn5587n
+X-HE-Tag: 1772100420-351038
+X-HE-Meta: U2FsdGVkX186ZuJuDphGfsnPbt2/IgGsXtV9aNGWU7X/NbyOc7afoO/GkP0QglLsS5vuuppVHMv3C5THHW7bn1uTn2adqnt6o8vzSQxDGAg3tz2Dbp5Rcm+2l7Ny/LT6PjWW8lS4zLTH5EZwu8aw3YYyo+SLHf4YYtVeMxsOfNdCUza47eJYsK5j/E+CjediuZPjC9YfbjIG7nZ2XazQ065r4msLvCss+GcD/b4eqCnsSnvLUJC9+7It7ysSobcWSJXIqUVmiNefTrBFzpQ3rrFAPfTxOoMFCD4XzgS0XAP+o1X2oOMTxfaSx3okFrtdFIJBE5QY7xS18PgMOgl2ARLwwjrYJ0DNBJNYBzKVxGLaCRux9rYp1B8awrgMiT+SFf8jyjcVCAu4XOSUQyhXP8tUAZ3yqJyym0eMGjmIc0HcW/nrvIRDBEKKwMYxNwuSgjFZRPh43Aorf+eQg7jEuV8/ljMOdYbfRYXuJLxgdkT3ET1kS+S4yVTmE+Om0XrO/8ttXauFc7xmZWQ1DG67eJBuxqBh5qimzruy6t33V6D2hu0V7NrURPhVVZWmD3u3fcGWPoxTv+lggzIl81YWSVAa0bt6veEvngWOt1XaY1Hepr9y+/a2OFZrMQ0DukKL8jpK5MHlmMM9+oze61wXz6gfT6LRCS/DOTgDVsAk7FdDL3hUU1s1wkY16x/ZEC3WQQ2XmW4lO+2NhDwAjFOExBAzldhasO8cnJrycX7qQKtZ5ziqZebYyVJFKWjWffRtFNvvymXR/ae6KkG5MjnoJ/6MjSo4IFFoEtgOhrtP8fqMo/hYEBS1gpsjgxi6naCEa0FOi2BYb5VpJDEDXYjXE/3P3wH5+ZTq2+gAJRuOcn5ByQhPqDogNdJlREM/b2/mWJPrDYv7gH0CSq/x0MNCOrPhb4nh7kDaJNCiYld00QcCqVeYzwFu516kUNd7kJhsJZK75FGK1nKeYLF2CUe
+ 3b36eDX0
+ XCmBGWS0v/8kMYh7tYk532eaw0dlvj4gBS2RYpcT2q5XHH33+idXvdwHQQrseTemp+Afaxrevc/jZAuoPGlLtcqEZsK5XmsLWE3JwxiZn/fJ8/kAbjOESgsA3w/BWvgU4V2rZXmho2B8vjq0JGB4gd0zp6BmzfTkQrc/BxGXwyKQQkWDYDOVPlT/vLRweyfzud/jr8TpGKilY4rDurFj6H+lPig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,66 +95,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/26/26 06:47, Sanjay Chitroda wrote:
-> From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
-> 
-> The implementation of ksize() was updated with kernel-doc by commit
-> fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
-> However, the public header still contains a kernel-doc comment
-> attached to the ksize() prototype.
-> 
-> Having documentation both in the header and next to the implementation
-> causes Sphinx to treat the function as being documented twice,
-> resulting in the warning:
-> 
->   WARNING: Duplicate C declaration, also defined at core-api/mm-api:521
->   Declaration is '.. c:function:: size_t ksize(const void *objp)'
-> 
-> Kernel-doc guidelines recommend keeping the documentation with the
-> function implementation. Therefore remove the redundant kernel-doc
-> block from include/linux/slab.h so that the implementation in slub.c
-> remains the canonical source for documentation.
-> 
-> No functional change.
-> 
-> Fixes: fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
-> Signed-off-by: Sanjay Chitroda <sanjayembeddedse@gmail.com>
+Hi Pasha,
 
-Thanks, added to slab/for-next-fixes
+On Wed, Feb 25 2026, Pasha Tatashin wrote:
 
+> Restored vmalloc regions are currently not properly marked for KASAN,
+> causing KASAN to treat accesses to these regions as out-of-bounds.
+>
+> Fix this by properly unpoisoning the restored vmalloc area using
+> kasan_unpoison_vmalloc(). This requires setting the VM_UNINITIALIZED
+> flag during the initial area allocation and clearing it after the pages
+> have been mapped and unpoisoned, using the clear_vm_uninitialized_flag()
+> helper.
+>
+> Reported-by: Pratyush Yadav <pratyush@kernel.org>
+> Fixes: a667300bd53f ("kho: add support for preserving vmalloc allocations")
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
-> Changes in v2:
->  - Instead of removing the doc comment from slub.c, remove it from the
->    public header as suggested by reviewers.
->  - Follow the guideline that kernel-doc should stay with the implementation.
->  - Updated commit message accordingly.
->  - Link to v1 https://lore.kernel.org/all/20260220124243.3264133-1-sanjayembedded@gmail.com/
-> ---
->  include/linux/slab.h | 12 ------------
->  1 file changed, 12 deletions(-)
-> 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index c5fde8740281..1c8c53b068b6 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -517,18 +517,6 @@ void kfree_sensitive(const void *objp);
->  DEFINE_FREE(kfree, void *, if (!IS_ERR_OR_NULL(_T)) kfree(_T))
->  DEFINE_FREE(kfree_sensitive, void *, if (_T) kfree_sensitive(_T))
+>  kernel/liveupdate/kexec_handover.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 410098bae0bf..747a35107c84 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/cma.h>
+>  #include <linux/kmemleak.h>
+>  #include <linux/count_zeros.h>
+> +#include <linux/kasan.h>
+>  #include <linux/kexec.h>
+>  #include <linux/kexec_handover.h>
+>  #include <linux/kho_radix_tree.h>
+> @@ -1077,6 +1078,7 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
+>  void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+>  {
+>  	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+> +	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_PROT_NORMAL;
+>  	unsigned int align, order, shift, vm_flags;
+>  	unsigned long total_pages, contig_pages;
+>  	unsigned long addr, size;
+> @@ -1128,7 +1130,8 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+>  		goto err_free_pages_array;
 >  
-> -/**
-> - * ksize - Report actual allocation size of associated object
-> - *
-> - * @objp: Pointer returned from a prior kmalloc()-family allocation.
-> - *
-> - * This should not be used for writing beyond the originally requested
-> - * allocation size. Either use krealloc() or round up the allocation size
-> - * with kmalloc_size_roundup() prior to allocation. If this is used to
-> - * access beyond the originally requested allocation size, UBSAN_BOUNDS
-> - * and/or FORTIFY_SOURCE may trip, since they only know about the
-> - * originally allocated size via the __alloc_size attribute.
-> - */
->  size_t ksize(const void *objp);
+>  	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+> -				  vm_flags, VMALLOC_START, VMALLOC_END,
+> +				  vm_flags | VM_UNINITIALIZED,
+> +				  VMALLOC_START, VMALLOC_END,
+>  				  NUMA_NO_NODE, GFP_KERNEL,
+>  				  __builtin_return_address(0));
+>  	if (!area)
+> @@ -1143,6 +1146,13 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+>  	area->nr_pages = total_pages;
+>  	area->pages = pages;
 >  
->  #ifdef CONFIG_PRINTK
+> +	if (vm_flags & VM_ALLOC)
+> +		kasan_flags |= KASAN_VMALLOC_VM_ALLOC;
+> +
+> +	area->addr = kasan_unpoison_vmalloc(area->addr, total_pages * PAGE_SIZE,
+> +					    kasan_flags);
 
+Ugh, this is tricky. Say I do vmalloc(sizeof(unsigned long)). After KHO,
+this would unpoison the whole page, effectively missing all
+out-of-bounds access within that page.
+
+We need to either store the buffer size in struct kho_vmalloc, or only
+allow preserving PAGE_SIZE aligned allocations, or just live with this
+missed coverage. I kind of prefer the second option, but no strong
+opinions.
+
+Anyway, I think this is a clear improvement regardless of this problem.
+So,
+
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Tested-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+Thanks for fixing it.
+
+> +	clear_vm_uninitialized_flag(area);
+> +
+>  	return area->addr;
+>  
+>  err_free_vm_area:
+
+-- 
+Regards,
+Pratyush Yadav
 
