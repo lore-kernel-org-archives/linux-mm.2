@@ -4,74 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981C3FD8FE1
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:31:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A257FD8FDA
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:34:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBCC86B0103; Thu, 26 Feb 2026 12:31:16 -0500 (EST)
+	id 55A7B6B018D; Thu, 26 Feb 2026 12:34:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87696B0106; Thu, 26 Feb 2026 12:31:16 -0500 (EST)
+	id 5329C6B018E; Thu, 26 Feb 2026 12:34:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B86B96B0107; Thu, 26 Feb 2026 12:31:16 -0500 (EST)
+	id 43E776B018F; Thu, 26 Feb 2026 12:34:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2FCE6B0103
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:31:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6122713A865
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:31:15 +0000 (UTC)
-X-FDA: 84487298910.28.D9260A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A6D9614000A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:31:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YOj5+TQ1;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1836B018D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:34:36 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9592160284
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:34:35 +0000 (UTC)
+X-FDA: 84487307310.10.079D079
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C6A112000D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:34:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lEz4PawU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772127273; a=rsa-sha256;
+	cv=none;
+	b=ktXC5izdxC6V4PAxNvhdilnW108I++yHMO2IAhNV/9yIGTD6dI+0GGG7HYpNe0Q8fbbMPB
+	Ydk2SL0vTuPK4Oe+Nc2QWK9umtYlUv9IKTmZEQf0AKmh+qVBByeBI3LesOT3dWRQciZpRj
+	kXIlhm2yRkMMziaCZ3tIZSrqZGc/imA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lEz4PawU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772127073;
+	s=arc-20220608; t=1772127273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=utEdHbxPCCHaXA/Mdgqz42eN18S8ss1UIKvBZg1Em5I=;
-	b=h+qCH/5Lg46518Vf6JsD7eqYGHe5V6NrfMZltgoIA4OPNNnS1sO8kyx9A9cgn7y98D8ztZ
-	7xTsy4SYUAe2KbmhqTIq57gMLP3f3Urz7cln7fMuH7OxDI1nQgwNT8iV0QhqlQl0GGT7kf
-	N+okboK7fwK/jPyFo4G4VotOITnocL8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YOj5+TQ1;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772127073; a=rsa-sha256;
-	cv=none;
-	b=02kh8T5JmlC/VRgYJGtZw8F6RWspox9snV0D2iPDTm7ARSmN1ia/sIy3R479uKo0UVLEhX
-	BllXfZd4jLeu94fDCDqZqybhm2lcaupOdKhl6tcEJ1Nb5xcIvxFvIrHoPMi1h9lGZZNVZH
-	C27JBQWcuehn4Dn7PPqTJ1Cl1FP9z4g=
+	bh=f/qGGIoPfXbCHQkn2P99vURgmqdfIEGkOwYRdpTeE60=;
+	b=tOTzWBgreoTONIDZmxQLDyLV9zZMh5uLCK4Cd/GCdupO8d8XbgLM5zec9OkCWVMiWQam+p
+	7VtVeP9bSWpjMRcMSVTs+u5HF6gw7YeEOL7xUxIAQAQOiZAOsqB8b6B3OLI5Hrk5dE0fey
+	6QJxg1M0GZmZ3rcmOosOkrJ9YecKu5Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 059F460126;
-	Thu, 26 Feb 2026 17:31:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D5AC116C6;
-	Thu, 26 Feb 2026 17:31:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CF3E043755;
+	Thu, 26 Feb 2026 17:34:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853D4C116C6;
+	Thu, 26 Feb 2026 17:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772127072;
-	bh=/BNSe6YUqBvhE9PqCJP2oE6RP6zCNW4JLfTvSuprzdA=;
+	s=k20201202; t=1772127272;
+	bh=7ckD0akXKp5yLmXPxmzZt9zqQrhBl/9sTG74HrNfedw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YOj5+TQ1nw5L7LbdrMhyCKdR2kBzdkG0zPDmKCx57/2Gb8IwxEXGjdCY9xlE6yBgO
-	 Git2iNHM9k3pPFZ+3HQs8pQg8C0PnNbQkeoZ9RU2XenRXhYUHZU6QpzfGnS+mDg5+T
-	 2lnzWz+qyqjwQ3+GoM/JCXkBycFK2ytNLZNhndJwknKnqLQUJzaoK0PtdBLgkXienz
-	 KhimjQGZ4hLxLHuPLTvBf8CEFzZXLF+j5Jfbk2PsWt38uo1WOPFmQMchn9T0hQSZVk
-	 2TmlVOmNqUW8Mu11C4Ew6pG6/FInX/yFHfRcPdnCrFLTnOaKRzhG0vFNxga99HXVot
-	 B/tJTMGm4EQQA==
-Message-ID: <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
-Date: Thu, 26 Feb 2026 18:31:09 +0100
+	b=lEz4PawUesO+34+SHQ759Xpjio4FLMXg7qsEvPAXt0ZKKZO4I2kQ4PaZLARMQwY70
+	 JBoK73NyWHncOGYZ3P5a+JchaTsq+1o+F2nmWq5n/qkXET0OEvENaTorD+3bKRxj4J
+	 W2cCZ+JQ6QuDmIaBB7mjSZuybtAsvMYYfL6T3HKRnsFe3L4t97d+NhK22On8HhnKI2
+	 xAZ9VnipVJ0oVMnjy5SoQpUwtB/d5YUqm5ZqCyzhCldmx6Tek7RbEu0WgT3nj7utjh
+	 xgyFFPgywESchdOad4i81oO7pQWx6DpteJKQ9Bdk3l6dMrQjApdOtHkTbWO9tKVzf/
+	 K7EUEwl/iLaBw==
+Message-ID: <baca70a2-53cc-445b-a14e-ed926e615952@kernel.org>
+Date: Thu, 26 Feb 2026 18:34:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] smaps: Report correct page sizes with THP
-To: Andi Kleen <ak@linux.intel.com>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org
-References: <20260225232708.87833-1-ak@linux.intel.com>
+Subject: Re: [PATCH 2/3] hv_balloon: Change default page reporting order
+To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>,
+ akpm@linux-foundation.org, mst@redhat.com
+Cc: vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ virtualization@lists.linux.dev, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260226070125.3732265-1-yuvraj.sakshith@oss.qualcomm.com>
+ <20260226070125.3732265-3-yuvraj.sakshith@oss.qualcomm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -118,15 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260225232708.87833-1-ak@linux.intel.com>
+In-Reply-To: <20260226070125.3732265-3-yuvraj.sakshith@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A6D9614000A
-X-Stat-Signature: enbrpccit3tj6z1gqu4n7kxfg4a8ycck
+X-Rspamd-Queue-Id: C6A112000D
+X-Stat-Signature: zwtpugrqcq81w65pyraumwwfnte7wq84
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1772127073-763257
-X-HE-Meta: U2FsdGVkX1/rsLCM+E9VdY/sTklC6P/YDLgfUcKNm1o2KCvEy+8VDuoFdlE66sSasBpwMjKH+Aa9s52wwRiaNA2jdpPgPjMcM0as6zQYy8HQPOEkxd07hpwL93Aoikyk2u7Ie6rvEaUdDr7TYh4y50peTc2WyyLzRWzAmNMTXGfG2flO6oq4JFUWcBBtqUxtvTHXoVXSnpY/m8WN7bHckMQk0eGZ0tf0rZs+iz7WiAGJUi1/LgBCHfCHDGduoOegRkNGFplVZjy5/YtSziJ8Z9+OmPehToyYtiT8NM2UwAZ1p5E5uPU5o2Le9NyDs6RbXDarDdNlEg6jT0gCbHVWTxmsFggwJnR82j7fVIwLWD0ZDtfBiwT0SWtuAO86Cf4tLpJv4KVpVjKYGK/rBP1SaLE32TBa1PURhbBdrEGSfnXBd7n0dg60MRC6yRPOSpjCLCFVDFtEYKt4Kh2tQ9D8tyglgymVZ3RifOTsH2QP91CJLngxrkjKqTJXpBoAbYs52Kge+lJ8aaXq3v8TSUzInmH2NBU9PJ8Lq+VEantSwfqkz7smBuQ9c82yX6xIRXWNn+4RjUMhZo11aOcq49eIBAlLd36LvWPZLyRRNJ2ia3Cz5y6Yda+i2crZjCQ6Oo0WYjlUX0xG9UbLqyJ7pSQq9MMSLFcRnYRZEMJ11ylzej2M+RGQ8m/4b5zD3gBnqZ49tD5lKiNt0zZk6y7NpoqehxLDpYFQoECByYeabgLJIqV49mxzdep166r4/od81swUsBo5YROJCff64wapflGZHRYNlsIgkpzjUP9WqXJz46saFl0CDvQa62aOmhXOKF9mztwVNamjT71MgcpXf7d7oFmiAlETtaR1JjGhEF84uOeGpvSazKiuP8MsxN427S3dM8s1xi+z7Y+BNO75YphxPuYe9M5c1+SDWlBFGxrE+hwKw8OnUSDBuw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1772127273-815626
+X-HE-Meta: U2FsdGVkX19rKuMZATk++O5Nu96m1cO92wgbbcaKzkFC5mVaDe9JN8RC9g6+W/AoQPZvTPDieEBe4tuLMiyAoDZNnZ9NgTaD2S+5wUUi3Ozji3uOeCuB1pvWqzge/qFdGNrhaYGhm5E4b++rT0SzfKpyQILmnJ5PQe6hBWtzBI0x9UZlQ4IvovI1wQ8JLH+2ACgpXO3KhZBEYkAhcetJaFsLZLsrI6OP/iew4xeKhCpaR6IGFk6FGCRobMl7GudpkvLlKs/DUFvgJlKghJT6uyl2o5Gy1UFB6nL1pmOh3655yT7qPtOc0Y1VtDZg2v4/mKF8deCgiyEdkWG06EzG5mtB1GuIrMuFmJdVUOgAGn5LNNneAO3XKUTvDzAb7OsBYttYxpW/a82gvPEXjiXz+HylZi4XFNDY7nE2XE6FCSYQm0+v0EF9PpM2k6GeOYriSzMcdM9CWcqvCEtPzQLDpeTmZn6G5pTdZWVK5ciD5xPG8tOMprEADMZluvPmpk1wAJ21uQ9wt3fCkiyMlCNYPKIWXSKkn47ki8SrQBup5nIm2UZu3aF07VdfdwdsjryWceHQ+eT4saPkySHXe45lRuCXL6kfZjazANP0DwhmbaKj8jdLDC80YG41l7lMYcn5PCH2RATkvtjPgewnOLdxvzAY8sysQETeSiIlm1oa4lo904s88+NhePSpAbdrQ7o0yMgU3DeejwWd6/EEab2ufSzlBHwpw8iKRd+16th+3ORHuZ12DzWaH/4ALGHWQ2XRmdmt7xrdD9R8K1IaphUD5IabV9uEsPChmQkPxwgzg2XFmkcKVpg0EhMWZ6oA+mIIT8ujg48rsWKcPOXOnWuDHpEgeUYCoT2TuEkx2i8bDrKYbrY5MnuJufuKySXaoa7Yp5OXbINJ/0uyImQtEbYGUdvmnT3peRgFb5bPsaWSAfMegY1UjJrsD8k7unK9E8fT09p0Ez8yHENwlU8THmM
+ NTJBm5so
+ dy3THDLpoaWdNHCFZ2VQPSGuiN826ZiaBeGHD7gg7bEDIUlRmFimZIoooS52ag50lY95fO7mtyula34gruIXaXIe/sJ0IEuxSq92uZ50e1w6WWoxaGmVoX4Gl24iAgb00cSbR7du973ZbXjOHAaIw0qOkahMRad9UjlLz19vkCTs72zYwH+8/ue1AZWJMR57CDAmc23uDUxIXfZjdiv5D33aQxUmuTAoVjat5PYzp0YlBe3tBWsF4caTx7QCGJZe2QNmrnb1vL41LyXJ3jLk4CbWZUEmT2KkcDcB8uVU/uOzxhk7KZe7eCZ8Fsomjd9Kd1ChOzzYMlD9W+GG8PA8aVBvl6UXIlmICTfI3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,86 +143,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/26/26 00:27, Andi Kleen wrote:
-> The earlier version of this patch kit wasn't that well received,
-> with the main objection being non support for mTHP. This variant
-> tracks any mTHP sizes in a VMA and reports them with MMUPageSizeN in smaps,
-> with increasing N.  The base page size is still reported w/o a
-> number postfix to stay compatible.
+On 2/26/26 08:01, Yuvraj Sakshith wrote:
+> page_reporting_order used to fall back to default
+> value (passed as parameter or MAX_PAGE_ORDER) if
+> the driver wishes to not provide it.
 > 
-> The nice thing is that the patch is actually simpler and more
-> straight forward than the THP only variant. Also improved the
-> documentation.
+> The way the driver used to do this was by passing
+> the order as zero.
 > 
-> Recently I wasted quite some time debugging why THP didn't work, when it
-> was just smaps always reporting the base page size. It has separate
-> counts for (non m) THP, but using them is not always obvious.
-> I left KernelPageSize alone.
+> Now that zero is a valid order that can be passed by
+> a driver to page reporting, we use -1 to signal
+> default value to be used.
 > 
-> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
 > ---
+>  drivers/hv/hv_balloon.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
+> index 2b4080e51..e33d6e3b2 100644
+> --- a/drivers/hv/hv_balloon.c
+> +++ b/drivers/hv/hv_balloon.c
+> @@ -1663,7 +1663,7 @@ static void enable_page_reporting(void)
+>  	 * We let the page_reporting_order parameter decide the order
+>  	 * in the page_reporting code
+>  	 */
+> -	dm_device.pr_dev_info.order = 0;
+> +	dm_device.pr_dev_info.order = -1;
+>  	ret = page_reporting_register(&dm_device.pr_dev_info);
+>  	if (ret < 0) {
+>  		dm_device.pr_dev_info.report = NULL;
 
-You should CC people that were commented on earlier versions.
+Logically, that patch must come before #1. And the patch description
+should be rephrased to clarify that we want to change that behavior.
 
-I still don't like this.
-
-
-a) Just because a folio has a certain order does not imply that hw actually
-coalesces anything. MMUPageSize is otherwise misleading.
-
-b) Simply because you find a folio of a certain order does not imply that
-it is even fully mapped in there.
-
-c) PTE coalescing on AMD can even span folios
-
-But more importantly
-
-d) MMUPageSize is independent of the actual page mappings, and I don't
-   think we should change these semantics.
-
-
-Let's see why MMUPageSize was added in the first place:
-
-commit 3340289ddf29ca75c3acfb3a6b72f234b2f74d5c
-Author: Mel Gorman <mel@csn.ul.ie>
-Date:   Tue Jan 6 14:38:54 2009 -0800
-
-    mm: report the MMU pagesize in /proc/pid/smaps
-    
-    The KernelPageSize entry in /proc/pid/smaps is the pagesize used by the
-    kernel to back a VMA.  This matches the size used by the MMU in the
-    majority of cases.  However, one counter-example occurs on PPC64 kernels
-    whereby a kernel using 64K as a base pagesize may still use 4K pages for
-    the MMU on older processor.  To distinguish, this patch reports
-    MMUPageSize as the pagesize used by the MMU in /proc/pid/smaps.
-
-
-So instead of 64K (PAGE_SIZE), they reported 4K. Always. Even if nothing is mapped.
-
-So you could indicate all MMUPageSize that hardware possibly supports in here.
-I don't think it's that helpful.
-
-We once discussed exporting more stats here (similar to AnonHugePages/ShmemPmdMapped, ...)
-but we were concerned about creating a mess with mTHP stats.
-
-For this reason, Ryan developed a tool (tools/mm/thpmaps) to introspect the
-actual mappings.
-
-See
-
-commit 2444172cfde45a3d6e655f50c620727c76bab4a2
-Author: Ryan Roberts <ryan.roberts@arm.com>
-Date:   Tue Jan 16 14:12:35 2024 +0000
-
-    tools/mm: add thpmaps script to dump THP usage info
-    
-    With the proliferation of large folios for file-backed memory, and more
-    recently the introduction of multi-size THP for anonymous memory, it is
-    becoming useful to be able to see exactly how large folios are mapped into
-    processes.  For some architectures (e.g.  arm64), if most memory is mapped
-    using contpte-sized and -aligned blocks, TLB usage can be optimized so
-    it's useful to see where these requirements are and are not being met.
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
