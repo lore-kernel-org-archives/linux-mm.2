@@ -4,146 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4AF7FD8FF6
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:25:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C930FD8FF8
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:27:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 255176B01F4; Thu, 26 Feb 2026 13:25:05 -0500 (EST)
+	id 965D36B0169; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F83C6B01F5; Thu, 26 Feb 2026 13:25:05 -0500 (EST)
+	id 95D116B016C; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ADA36B01F6; Thu, 26 Feb 2026 13:25:05 -0500 (EST)
+	id 80AE36B016A; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E88A56B01F4
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:25:04 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9AC9DC1904
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:25:04 +0000 (UTC)
-X-FDA: 84487434528.05.846DF57
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A6164A000A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:25:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dAnDdDmr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772130302; a=rsa-sha256;
-	cv=pass;
-	b=26VLbLN/LKAlG0HWRDBdVSeAo6mcVMAwQEKwDIkNPsXdHYNxfN0xqJ214+quMS9FYRWy2u
-	5msEYa0qihCFkb3z1KeSsguF1OdO6rnUuwAFUP7IuzGGzDp2oZewHAjaeZvYzcKhBIRQuL
-	DYJ/Y1lE1t+ndnIYO6SvD1MrBMSK2jY=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dAnDdDmr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772130302;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F3E96B0168
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E7941B7146
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:26:59 +0000 (UTC)
+X-FDA: 84487439358.17.E00E5F5
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 67DD1120005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:26:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=vBLYGgPj;
+	spf=pass (imf29.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772130417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/PYRcOeI7C9TjyeqdENicil+1+DTaWkY4tVXR58gDo0=;
-	b=WwnVamA3WmWdGI/xU0MCyradb4b2EMHVFDHMEULrsEF9wJ69R2RSiTSqC3dqXclOOzQfD0
-	WmKoiVxnBirPjRlaR5fo2qZlsXaLKjpcqP+lGqh3p3H8kCG9drc6vB/gaSZ2RshIdVXNRR
-	xN7fQkkEWRB2Nkptl/omtJoomKgxdvk=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-505d3baf1a7so30001cf.1
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:25:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772130302; cv=none;
-        d=google.com; s=arc-20240605;
-        b=H0r7/KKyt4zBq2iyD5WI1jtUmKSvl2X3Tl8nakyNVa79ZSMbRyTlbPSgtfaFeoaMOU
-         82fpRAKJv8pQK/40RdT9zT91Jr0HQttA49B9Q6bvaqxnKNyZKihc1ZQGXSNBr9M4XkGI
-         kNwR190RqtVImuydAPox/ENdCeDtAeMZibyE980u/2dUVbVLBMXSR3dhLn3qY1iLzhoT
-         6Uv6GQ0/JlYZCPEy1czRy1bfR23V5yY20ceyvQVIYILDXyyIsa9KWOoU2b4zUQN/LqeU
-         2vO3xU4hW0MG8J2VC74388F5YmNXhyaqwfwpFJrnngJ19iTo4KBkx4oPO0VbCOu9Jjd9
-         UfPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/PYRcOeI7C9TjyeqdENicil+1+DTaWkY4tVXR58gDo0=;
-        fh=5arHNjxBgq1EzuohHk7ZP9+/wQR+VV6IDnQh/iQvmjM=;
-        b=FJFY+IA6ZvwasAgQ5rV4LHJbXRBgT/WlsSmwUhMoaa+FsxSZPA7AUAOMNbyIalj+4I
-         qHIu/2YtO0a+w9orNeG1SWWuRxLMur02QuWM+jc/u64GsKpqv4Uo88ep8Nd28MWEfttL
-         ZUb2/qexzaR/CQbTGWayvaAEksMnwwMUjTTbGq0/2tgFTcehJMExLA4Qkl4aM+gjYS9r
-         K45wCX8CRqyDWuvoUzUIcgP4nWNmfK6FJuIU0/ZOV7/G51YuBQGkcOMn7f6oq0Qb5Sl8
-         bE5zdz/dYT3Oxbsa3oiwSMRWlL+pjgmE9q+ntELpKnuj1z9G+Pk+HfeP24rRJB3v0XB7
-         UloQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772130302; x=1772735102; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/PYRcOeI7C9TjyeqdENicil+1+DTaWkY4tVXR58gDo0=;
-        b=dAnDdDmromXM4ygYuAv5JS1Tju8eYabk4r+AKw0/KX5HvhUB2fgzB3fQR/h1A9WJcd
-         CxX7jF8uR5eRKrtMAKsKxHcX3Y4vVojCE9wDI6ANKHhfan3Kq91UuU7eV7TQ5nmNs7SM
-         iqhhZ07QAYFnjErDnOajxjj6no4fu48Nhr0n/9CD1DtjLdcf0kwkQdA5dRdi5Q1eBWMV
-         NtUAnL66q9XOhgCQ1mkVZl0TGgqjJEJpnJllwv4CFcpvRTKJLfmzoPGkBuqymLVbl9Ql
-         EqWTt2nieZDhRzZyc557hJ3f1kfUEXbcR59RGH8uqYbN4jiIi4g2f4+Gd7i4jVxlBdFo
-         ksIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772130302; x=1772735102;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/PYRcOeI7C9TjyeqdENicil+1+DTaWkY4tVXR58gDo0=;
-        b=T+vyAja43gMI5F5sAMlcBL5oDoqlNjszN7VHWw2K3bx42JJRpFat/hnop6zJ3keP0f
-         BPqbTBj2X0pj2/jUt3PvFztVRAkcB+7w+7w/oy7Qg7HcWV8Z8NNLbrOM+AlBECW6MqW+
-         mqJtMasi91soWCrbE9cr6D+C8GQmFZZcKJfHmrOQI3qZ8+XIoy1bHcxL3oP8p+FNueru
-         lU3i368F8NG4dp6msXXVLYEWVtd9qVQ8XQNAOHhyiWgEt++G7fXGVmXmhEWmcn4mJrko
-         MX7O5fP3kCN374CJnX37docU9xU0Dc/A6o1+ZSEacbwvvTSsuOc4fm+Sat1LPqxpOUlM
-         KaXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSbg8Ivh7gLVeMNNps37jjJe7Tc/YwRJT/CY8T+tpaC2RuAPx+p4gfCDdOobG3e41ZwR5islHqDA==@kvack.org
-X-Gm-Message-State: AOJu0YwacJL1tpTtE4AebbU+BQEpKNeSAOAVx1lw1SkhGRyuZYpT2PSY
-	j0vLKXpojdNFXJz82OlHGRfFpOZl/5iiOhUf1Va8SiJWhT+1OdRi5BaKZUM9PIvo6ocfsvgDXrY
-	yOVjKcSBWd3dTyWnPMzhplJ4PWNfbK2kfQ6HRJHNv
-X-Gm-Gg: ATEYQzy+i9Ckb9CCIjS6WLBsu1X0rNnva9rx47l/01qMEFpmIfaBxLjOvIPMQ6bjqZm
-	MtuhD8BV7BdWwOp+eA1l5wf2MiOmpQGSBPUK8+Mh9ZzsQCgBLkvvAde70rH/+UHhkiCegcZlMYN
-	zWFthhxqPOFin8kjT0MqboW1sEZHQqLFY16cxhm/uOnlAfoeRQ4QHabBMSx55jm53XoeMOhkJBY
-	XyEkUqV79HZ9lqdzebUoUgXJ/bfdwqOdXy3j2PxwTfTEzJ4ezANnCyc1ZfmHoCglYDSUsgMHXuW
-	ikJCX4FA8vVLzebir3blao5hVWYMqOeOqx0rTa3od4nqTUH0
-X-Received: by 2002:a05:622a:15d1:b0:501:4eae:dbfc with SMTP id
- d75a77b69052e-507454fc6c1mr12936811cf.5.1772130300634; Thu, 26 Feb 2026
- 10:25:00 -0800 (PST)
+	bh=VnarcZL6OFxxZW+5dIiPmeVy2i+4K3SDVOOUTXPmso0=;
+	b=iW+L1ydvc5aLed4VzrB9AA/7iTNHKKuT8BmLGuDgsYFL5cwSoWUC5R0s/rotTJjwCA+6zm
+	0o5Wz/iwQkoQFVrvjHswp7kyoU3G3UXM0CV5jcGBlWi6IcIXHJW9+VxTMr63W/xaR81R5A
+	RjcLnX5pacgYj+e2dbxvTHzYJi5FK1s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772130417; a=rsa-sha256;
+	cv=none;
+	b=xWtnWdU5vXCrSMyrTb+C9MrG6CzPyvFJCY+h2FEINDSQKWTG8uOd/ZMJzLnIvm1zUUq0z5
+	w6jGdFK/+M/Foo9TuYGcJPx17F2aqBxyacPyWAyTTZQnKy/j2eXmxBi5kLTVCFLHEtsaWG
+	dvTzePWrYiVIegAIwnLU/MB53Qsn1oM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=vBLYGgPj;
+	spf=pass (imf29.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id B544EB2CE6;
+	Thu, 26 Feb 2026 18:26:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1772130416;
+	bh=VnarcZL6OFxxZW+5dIiPmeVy2i+4K3SDVOOUTXPmso0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=vBLYGgPjjaEaDcu21JHBT8fT25PuBvt7zgHb5AY+vWJpqFAonFxYDXRxA6goWwsmO
+	 7CB4emaBe/hJsbx3wCSzCOeOotv3DKRunsC9uMVKTBHFcvk3Bch9O4bqmGoD1D0Cmf
+	 W4pdTWUJksc/DgtdmIuMXuhYH5rZEsNI7SVoykSM=
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	kernel-team@meta.com,
+	Benjamin Cheatham <benjamin.cheatham@amd.com>,
+	Dmitry Ilvokhin <d@ilvokhin.com>
+Subject: [PATCH v3 4/5] mm: rename zone->lock to zone->_lock
+Date: Thu, 26 Feb 2026 18:26:21 +0000
+Message-ID: <1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d@ilvokhin.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1772129168.git.d@ilvokhin.com>
+References: <cover.1772129168.git.d@ilvokhin.com>
 MIME-Version: 1.0
-References: <20260226070609.3072570-1-surenb@google.com> <20260226070609.3072570-4-surenb@google.com>
- <20260226191007.409a7a21@p-imbrenda>
-In-Reply-To: <20260226191007.409a7a21@p-imbrenda>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 26 Feb 2026 10:24:49 -0800
-X-Gm-Features: AaiRm52wFdTJC6YvOb26vvaOOFR294VpLCUuG2iciIW7CwkMabryiSXuJJdbEug
-Message-ID: <CAJuCfpEk_VPqwpqtAiCJSR5bkvHuzvC8ooXrB4jKTYnQB2D4YA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] mm: use vma_start_write_killable() in process_vma_walk_lock()
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A6164A000A
-X-Stat-Signature: huwrsg4ufdf16d14iou1g89apmrbioab
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 67DD1120005
+X-Stat-Signature: dtjsyqjeihb9pqe1hxe7596s4wwno86h
 X-Rspam-User: 
-X-HE-Tag: 1772130302-454783
-X-HE-Meta: U2FsdGVkX1+Edjkpu3E3JOM2GPRKCNXKxWTiznkxLgMSLwgN8M1MiWvJpRowMA+m2L93b4wiyKtKyXQ81bTS2lTAxUQjGz+G2kRGo8sX7lkC+xCKZP6bi6sct5dW3EFeqC16EmIgOAsYVENPV2vnAwC9kHuJ8wtKqBcMFpQD/jZWUXWCw1JE47H6adw/nD8tgF99p8JmJDuOfiDgxJSDksOry54Os1SqzLeO38KC7BfscUvgCikjfIV9MecNb0aXqxr5fMpgPSrICCtnEzyZ5xk2cwz4cdcoWIvwwwXOTrMIwh1DfuEs5p9ev7zRungawsAuojlUq3U59ETsrAcfZibNLowSJvS6iT3QbIp2HCHoO6oMC3c3MEePgkLej2qRNwltlJLTn7kD7RUg2+RPGEZ+MRXeJCUwQ1uQcVMdvukGXKggHEUs+zrmMHQAVacuqE+h+fj665xFz6TK/7HDBhum0TUt5QAcUDdq1Efrn6NEz4xxIh+5VSIVDw8XVVYBVtY4pHrLyMhKXLM+sh6SUwRvXSX5eiACDTQqFmjFmp5+Dv0dORRAD2hkp4YSC2dwF5Yzif6cCcCJaWYzIT7nWnqcDCDyhIlE9XhHGHkbhhmG1ZF86M0w/GyvSyoRZkpkzP5oxmCLmLEK+HvZMN3l1Hr2eCQlKR9eZyn6eSf2O+oBiTAYv+1u5Zhr+EDtMFGLpIw2YOBgPSJjiNz+5w0yORh2+SAlqtqd363QJaQX4dEb+egoXQ4gDHECQytdLcVHV9VBlYb20Z9gavJuM0CDJ5b97hHseOqRe+h0D2u2rh3GQ38IcPzcGXB260ZLwpeery+Dzx2fYjEmn/FRGQhcD30rAPz4kgaC9HXA8mAAjDHobN/arcgyg15IAPNp33gDuAfOyiIFULmvmumzP05lQdBXjpToZ2IGbIEOVKUSJQ1u5NDuYklnrWIt+zGjRf3MdJfg+vgpFpSG6X19HRA
- kvCfI3NT
- gjSFT/D61B+g4rN8qpw0YuS/Z2iegLII9Brg9X2SGvBmNcpfKNx3APxj8d8rJeXEOFO2WpOQ/+gkorAe/JOFVXrQnRfpQ2K/TW+CfM/3beqPm3+eUsdwEXbQdl0VLWmNun31IPFLMq3gaXanHp559dIKRxQyF87kXEgvvnd4O0DkG8aMfy4ntjRzgHrpSj7fCiDOoXR7f7dRj5cjJcztEkdKEsxFWqPvNAY66DIyZc17EsZrTY1VzcRoDsGifRguLfTpV1eJIYe3lDEPTsfVG20tFEBXUuHDcF6xwXkVD2akpGjuLiav4YAFCpURbYEkVP5cliVCTo3ktJc1cqlGXdikGMZluLTqWzgES9SKxZ4Y8dxwK5QdxDrQYC8SeyQ7H78cEmrvnczh6PQi41CFBSqmG2A==
+X-HE-Tag: 1772130417-802518
+X-HE-Meta: U2FsdGVkX19pWVBH/oFl/gRLveBpZRmvNSS5FvF45n3O0VvbuAdsgGYWhokKh3U7TWdumgaQQZPTie5GMrTYtUGbiPjtK+PzOfghM6tazGvCF0mcD1+JCcc97VtmXeUy2uZS1AVu1KiSGoXD2a+ewAnlhU1kTwOYOyJzXAh0QhT6W+DVo2Irg6Qhx7xTM07zuhbTFKnr7Ap6uppj7Lo+bRqkpMC7Avs+G28P6Nee9/9Q3pU5eZdgSWhd/eEynwgAgYRuDPqa4cTGnTFIjOiKfYbt6vrq5xOXpenLd4o0dcC/Fg76r+KmTRkgBXjpFK93MJ/Uh8UTbiZm1dO+tDx0zGxv6uEq7yDaF59Yv/lP8XBiNybqrff395JW8QdhXQqUh8rIwJwae2SLAVZks8Ps6S8wpaviVTsBWd/W0Nyz6t9V6SlyFQMofQJFsPI5a61RMDe88bDWfW+9y34upr0PSFWnrHZEbnfhmg2ynDL31nXW4jYTvPTzlh9A33dBD+K81f1+f/3S72VpqxB1eAGJTNKEyB92DVkhMnkq+23OJNHOAYtFbGWpEHX0YRgfJmbSaf2yAq+R8peFbjAhABcvErpw0Rjwiy8K8V4MIQsj6L3qyJiXSJA05JpFu+ujmM7zMryJUGqOmOMfN8RfcjQl6N6ar/C1kgPxpqCdJhuQ24iATz2TUXbML/gsIcx4y5isODmR0vM7464uoGKGERzgdXm2x/E3Kp2Ddo0asViikvAO/TATOzdDrFQxxNoiJ+yCkGA4IzVXzHU/uzx68jyeRxaTIAsjKwymMeji1kHHjzYIbTPuWwVoXCS4+JfFfIk2G7k4A+eAkSC4Y02svals7A7HiY74seJ83X3SaQdGPlAV5uVd+NNpmi5msEnNi5T3jib9pzgClXw7bfgQLChhHPgdNroSw/XxNTsQi5d4rplTQTekXvY4QceaKj83ozHmtqxfGHVwN5JOmV3cIKp
+ tFk8EqfS
+ SYgLB3xaAot48SW9It7nSWMt+hzm8VP3NtPglWJol4AIJ8u5flS3+nDh1m6OwjsiyCRSISlts6ROK/b0MOQWgqvJyeLu/IfaZviKA0+rpbKgvf6J6SDOStS543H5f3GjvXTNhkzJK0ldRnygqMXpQ8OzKXE3ZyMNGZfZXjnuXDb32dBnKOUEbUBPLon16VR790JMvJzP6ngf6vGnctC7QpBNO844NVnJhLqSn5MRdMTbZA59hlh/5h0pLknEk91vHQAB0DwJsnKSHefzB95oyhIVOwtOl+rxwEsxg5bgnkvBtuhFg56RE/eVARxvNKBh42OSdLfaWJah2jQdkLfrpJlkqWhd/3nmYLwb+C9PLlMP3KrSeRegdn5PLJG4JxRiOcb/7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,52 +110,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 10:10=E2=80=AFAM Claudio Imbrenda
-<imbrenda@linux.ibm.com> wrote:
->
-> On Wed, 25 Feb 2026 23:06:09 -0800
-> Suren Baghdasaryan <surenb@google.com> wrote:
->
-> > Replace vma_start_write() with vma_start_write_killable() when
-> > process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-> > Adjust its direct and indirect users to check for a possible error
-> > and handle it. Ensure users handle EINTR correctly and do not ignore
-> > it.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  arch/s390/kvm/kvm-s390.c |  2 +-
-> >  fs/proc/task_mmu.c       |  5 ++++-
-> >  mm/mempolicy.c           | 14 +++++++++++---
-> >  mm/pagewalk.c            | 20 ++++++++++++++------
-> >  mm/vma.c                 | 22 ++++++++++++++--------
-> >  mm/vma.h                 |  6 ++++++
-> >  6 files changed, 50 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> > index 7a175d86cef0..337e4f7db63a 100644
-> > --- a/arch/s390/kvm/kvm-s390.c
-> > +++ b/arch/s390/kvm/kvm-s390.c
-> > @@ -2948,7 +2948,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned=
- int ioctl, unsigned long arg)
-> >               }
-> >               /* must be called without kvm->lock */
-> >               r =3D kvm_s390_handle_pv(kvm, &args);
-> > -             if (copy_to_user(argp, &args, sizeof(args))) {
-> > +             if (r !=3D -EINTR && copy_to_user(argp, &args, sizeof(arg=
-s))) {
-> >                       r =3D -EFAULT;
-> >                       break;
-> >               }
->
-> can you very briefly explain how we can end up with -EINTR here?
->
-> do I understand correctly that -EINTR is possible here only if the
-> process is being killed?
+This intentionally breaks direct users of zone->lock at compile time so
+all call sites are converted to the zone lock wrappers. Without the
+rename, present and future out-of-tree code could continue using
+spin_lock(&zone->lock) and bypass the wrappers and tracing
+infrastructure.
 
-Correct, it would happen if the process has a pending fatal signal
-(like SIGKILL) in its signal queue.
+No functional change intended.
 
->
-> [...]
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+---
+ include/linux/mmzone.h    |  7 +++++--
+ include/linux/zone_lock.h | 12 ++++++------
+ mm/compaction.c           |  4 ++--
+ mm/internal.h             |  2 +-
+ mm/page_alloc.c           | 16 ++++++++--------
+ mm/page_isolation.c       |  4 ++--
+ mm/page_owner.c           |  2 +-
+ 7 files changed, 25 insertions(+), 22 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 3e51190a55e4..32bca655fce5 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1009,8 +1009,11 @@ struct zone {
+ 	/* zone flags, see below */
+ 	unsigned long		flags;
+ 
+-	/* Primarily protects free_area */
+-	spinlock_t		lock;
++	/*
++	 * Primarily protects free_area. Should be accessed via zone_lock_*
++	 * helpers.
++	 */
++	spinlock_t		_lock;
+ 
+ 	/* Pages to be freed when next trylock succeeds */
+ 	struct llist_head	trylock_free_pages;
+diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
+index c531e26280e6..5ce1aa38d500 100644
+--- a/include/linux/zone_lock.h
++++ b/include/linux/zone_lock.h
+@@ -7,32 +7,32 @@
+ 
+ static inline void zone_lock_init(struct zone *zone)
+ {
+-	spin_lock_init(&zone->lock);
++	spin_lock_init(&zone->_lock);
+ }
+ 
+ #define zone_lock_irqsave(zone, flags)				\
+ do {								\
+-	spin_lock_irqsave(&(zone)->lock, flags);		\
++	spin_lock_irqsave(&(zone)->_lock, flags);		\
+ } while (0)
+ 
+ #define zone_trylock_irqsave(zone, flags)			\
+ ({								\
+-	spin_trylock_irqsave(&(zone)->lock, flags);		\
++	spin_trylock_irqsave(&(zone)->_lock, flags);		\
+ })
+ 
+ static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
+ {
+-	spin_unlock_irqrestore(&zone->lock, flags);
++	spin_unlock_irqrestore(&zone->_lock, flags);
+ }
+ 
+ static inline void zone_lock_irq(struct zone *zone)
+ {
+-	spin_lock_irq(&zone->lock);
++	spin_lock_irq(&zone->_lock);
+ }
+ 
+ static inline void zone_unlock_irq(struct zone *zone)
+ {
+-	spin_unlock_irq(&zone->lock);
++	spin_unlock_irq(&zone->_lock);
+ }
+ 
+ #endif /* _LINUX_ZONE_LOCK_H */
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 9f7997e827bd..aed5bf468fd3 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -506,7 +506,7 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
+ static bool compact_zone_lock_irqsave(struct zone *zone,
+ 				      unsigned long *flags,
+ 				      struct compact_control *cc)
+-__acquires(&zone->lock)
++__acquires(&zone->_lock)
+ {
+ 	/* Track if the lock is contended in async mode */
+ 	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
+@@ -1402,7 +1402,7 @@ static bool suitable_migration_target(struct compact_control *cc,
+ 		int order = cc->order > 0 ? cc->order : pageblock_order;
+ 
+ 		/*
+-		 * We are checking page_order without zone->lock taken. But
++		 * We are checking page_order without zone->_lock taken. But
+ 		 * the only small danger is that we skip a potentially suitable
+ 		 * pageblock, so it's not worth to check order for valid range.
+ 		 */
+diff --git a/mm/internal.h b/mm/internal.h
+index cb0af847d7d9..6cb06e21ce15 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -710,7 +710,7 @@ static inline unsigned int buddy_order(struct page *page)
+  * (d) a page and its buddy are in the same zone.
+  *
+  * For recording whether a page is in the buddy system, we set PageBuddy.
+- * Setting, clearing, and testing PageBuddy is serialized by zone->lock.
++ * Setting, clearing, and testing PageBuddy is serialized by zone->_lock.
+  *
+  * For recording page's order, we use page_private(page).
+  */
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c5d13fe9b79f..56ca27a07a62 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -815,7 +815,7 @@ compaction_capture(struct capture_control *capc, struct page *page,
+ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 				     int migratetype)
+ {
+-	lockdep_assert_held(&zone->lock);
++	lockdep_assert_held(&zone->_lock);
+ 
+ 	if (is_migrate_isolate(migratetype))
+ 		return;
+@@ -2473,7 +2473,7 @@ enum rmqueue_mode {
+ 
+ /*
+  * Do the hard work of removing an element from the buddy allocator.
+- * Call me with the zone->lock already held.
++ * Call me with the zone->_lock already held.
+  */
+ static __always_inline struct page *
+ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+@@ -2501,7 +2501,7 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+ 	 * fallbacks modes with increasing levels of fragmentation risk.
+ 	 *
+ 	 * The fallback logic is expensive and rmqueue_bulk() calls in
+-	 * a loop with the zone->lock held, meaning the freelists are
++	 * a loop with the zone->_lock held, meaning the freelists are
+ 	 * not subject to any outside changes. Remember in *mode where
+ 	 * we found pay dirt, to save us the search on the next call.
+ 	 */
+@@ -3203,7 +3203,7 @@ void __putback_isolated_page(struct page *page, unsigned int order, int mt)
+ 	struct zone *zone = page_zone(page);
+ 
+ 	/* zone lock should be held when this function is called */
+-	lockdep_assert_held(&zone->lock);
++	lockdep_assert_held(&zone->_lock);
+ 
+ 	/* Return isolated page to tail of freelist. */
+ 	__free_one_page(page, page_to_pfn(page), zone, order, mt,
+@@ -7086,7 +7086,7 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+ 	 * pages.  Because of this, we reserve the bigger range and
+ 	 * once this is done free the pages we are not interested in.
+ 	 *
+-	 * We don't have to hold zone->lock here because the pages are
++	 * We don't have to hold zone->_lock here because the pages are
+ 	 * isolated thus they won't get removed from buddy.
+ 	 */
+ 	outer_start = find_large_buddy(start);
+@@ -7655,7 +7655,7 @@ void accept_page(struct page *page)
+ 		return;
+ 	}
+ 
+-	/* Unlocks zone->lock */
++	/* Unlocks zone->_lock */
+ 	__accept_page(zone, &flags, page);
+ }
+ 
+@@ -7672,7 +7672,7 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 		return false;
+ 	}
+ 
+-	/* Unlocks zone->lock */
++	/* Unlocks zone->_lock */
+ 	__accept_page(zone, &flags, page);
+ 
+ 	return true;
+@@ -7813,7 +7813,7 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
+ 
+ 	/*
+ 	 * Best effort allocation from percpu free list.
+-	 * If it's empty attempt to spin_trylock zone->lock.
++	 * If it's empty attempt to spin_trylock zone->_lock.
+ 	 */
+ 	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
+ 
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index 56a272f38b66..78b58dae2015 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -212,7 +212,7 @@ static int set_migratetype_isolate(struct page *page, enum pb_isolate_mode mode,
+ 	zone_unlock_irqrestore(zone, flags);
+ 	if (mode == PB_ISOLATE_MODE_MEM_OFFLINE) {
+ 		/*
+-		 * printk() with zone->lock held will likely trigger a
++		 * printk() with zone->_lock held will likely trigger a
+ 		 * lockdep splat, so defer it here.
+ 		 */
+ 		dump_page(unmovable, "unmovable page");
+@@ -553,7 +553,7 @@ void undo_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn)
+ /*
+  * Test all pages in the range is free(means isolated) or not.
+  * all pages in [start_pfn...end_pfn) must be in the same zone.
+- * zone->lock must be held before call this.
++ * zone->_lock must be held before call this.
+  *
+  * Returns the last tested pfn.
+  */
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 8178e0be557f..54a4ba63b14f 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -799,7 +799,7 @@ static void init_pages_in_zone(struct zone *zone)
+ 				continue;
+ 
+ 			/*
+-			 * To avoid having to grab zone->lock, be a little
++			 * To avoid having to grab zone->_lock, be a little
+ 			 * careful when reading buddy page order. The only
+ 			 * danger is that we skip too much and potentially miss
+ 			 * some early allocated pages, which is better than
+-- 
+2.47.3
+
 
