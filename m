@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE687FD8FD4
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:28:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7097FD8FCF
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:28:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AB246B0130; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
+	id 625A76B015A; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37E2E6B015A; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
+	id 5F3E46B015C; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 232676B015D; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
+	id 452416B015E; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 095846B0130
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FACC6B015C
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFB921A02D2
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFFB21402DC
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:28:06 +0000 (UTC)
-X-FDA: 84487139772.13.62AC6B3
+X-FDA: 84487139772.09.9935DE5
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6A04140006
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5A60D1C000A
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:28:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com;
-	spf=pass (imf27.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772123284; a=rsa-sha256;
-	cv=none;
-	b=J/phE6CUaBQr6UwGuBR8CAqGs+BlJvfcljzFexw6lfIbkslNffGPQXOT295F5UMlr0t8mh
-	kOx68ym76h9PEAXvCXFKOwjMWt0s7yNATmQ7A6teeCnnS6Ss/bAaa7Ix5fNevv5/OvHAOM
-	Xw3XnWFwPT/jk0WTg/xOuySnTAK6F80=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com;
-	spf=pass (imf27.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com
+	spf=pass (imf21.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772123284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=YwBcdQwUm/F8pLL5pdBTTW2WasGrtqPn+U7g8kxOV6U=;
-	b=cMOWYmkDTotyYQZxOY54sv8VhU8vRA8oBgju0d7hCrZRxn4VvzMbkMAIygFHAejJtrqUK4
-	ZHnj7m40jyjslqL+8QAcMZgKp/FVVX1UMgNfAeDQsU4cE1bmyamy9F6wKxC5UtaGsoryB3
-	IwCc5hYQSxrmyguAKspDhtE9/gKESso=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OTHNJJvHPvQjN2xeyejeP82xCwvLUcEn/ox/O4XGLWA=;
+	b=7iwaKbt+l9vjfUg5OBoFh7jSH/YIXz1c9FiykHtQazhI56dDq+e70SdwZZVM56rESsmSpA
+	LIbPBhmL9YDl7IV3sDuxxXlSFpxig6FSsX68HtNL4sK4ZAte60DI4jaeQM2vvy/Apy85+h
+	qxgPc8HErYfzXpIVP95YKubx9JLiBiI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772123284; a=rsa-sha256;
+	cv=none;
+	b=Jf7ntFCEGVMAl1rZf2Tz8zEZIU55Hb/SzeDhgQxyptoCGCWIN54Rtdl8IDMelelEC2a3vj
+	gmwTvv+0Tk0dRMn7ztZG3f+lVbGtMw/aMSk+BPoVaz/16eaTupuujSpG2sCoeWSgiD3XiJ
+	rFb5k/DaS1Jw1qga1Ya28zLH9RAVwGo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fMH1M3lhVzJ467t;
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fMH1M4PN9zJ46CD;
 	Fri, 27 Feb 2026 00:27:35 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9AC1140585;
+	by mail.maildlp.com (Postfix) with ESMTPS id B163D40587;
 	Fri, 27 Feb 2026 00:28:00 +0800 (CST)
 Received: from mscphis00972.huawei.com (10.123.68.107) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 26 Feb 2026 19:27:59 +0300
+ 15.2.1544.11; Thu, 26 Feb 2026 19:28:00 +0300
 From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
 To: Ilya Gladyshev <gladyshev.ilya1@h-partners.com>
 CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
@@ -70,24 +71,26 @@ CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
  Popple <apopple@nvidia.com>, Gorbunov Ivan <gorbunov.ivan@h-partners.com>,
 	Muchun Song <muchun.song@linux.dev>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>
-Subject: [PATCH 0/1] mm: improve folio refcount scalability
-Date: Thu, 26 Feb 2026 16:27:22 +0000
-Message-ID: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
+Subject: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
+Date: Thu, 26 Feb 2026 16:27:23 +0000
+Message-ID: <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
+References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.123.68.107]
 X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
  mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: od8x1onayq6wib4mgno8r1uuzqq5zhx8
+X-Rspamd-Queue-Id: 5A60D1C000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6A04140006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ngwap5bzn8y3tumyzkc1xt1n86f3yrwu
-X-HE-Tag: 1772123284-644980
-X-HE-Meta: U2FsdGVkX18edMVJZlWy1f1pXsIQUvWpSswiesjOvTlvnDtUkVd6xDHIqI0g3xC5CoxmJ7Ae6g62FhT4+kY9NwmvV/WNFLe4IIrAtNuPHsRYXQylW8PhMI3JJ0xGN7U223MRB4zyRiv/q0XBKQaaty7Nu8ZLVx2M8uWUuIF6bXwujhcvkgBQAnn9oYB7M5ttlP7J/1hJFWpN9NFFsx0tQVIaOhhQFpOUCUIJTvZA8ywGimb/aOoRwI51aNT+/iNrXnmcHeu7m+3TE+uctbtF3PhCT+RN+/JQUHYYHLCq9fud5xjVR7kwB/IQ85FXdXUY9IVJHTzH9HqHbFxnIGlncOW6Fm6LGKFFHoBPDRdsDh0otB5EBkHNn9MJWLogp0jZFJbSTB57GvsYYDM+GQrntVJo5apO7MMDfeb0M9Yk8c3OyZnZXEseXXSAkT/Hq0aXgTpvYbfz7aGQaQGFunkCtHAh6+FYvGlX5ebNKTHB1oivQJQY4sBD0wXltxGjTkKb72ogbjRkpTie04zaFDcSI1jzck6kijuY6dluDOdYm+4eN6KbSIx6S/tRwfCGL28aObEmyniNmprLwPnuZ3FPmSzxwNKlOu453/a6l7qM8jGrVgCePtgaUbF4/Scp+kHvymBVqNtwwx5nD7r/4WzNDOw8pJ85Aq7U5q84aLijgag9pilPjvs7iSHRrFq34eHebUr0nNHre6VaM84QZeM7iOFUHGCTVuLBbTLdazzbfx4G3yfpA4+45qknQiZSC3G1TUo+RhRQSdPTz1HBOqK22rxPHjyFBSWCSvBTlfOaaRQ1vBmwfByNo0k1fS68ERx2fUqqHLXNH3J8jZBo4q9J7bAqa4ZBn8QR9aaD3JAN0WbgMIdcGDKEJ5LuMT2jZkQDo9hoML21P/TpeIpVR0SZN5hNTxfTi3thJEIDoQhOyiknmpT2KTIhTqNxQ5oT+dgbg14r/VAs4AygHV+7roD
- ZP5RePtf
- aHN0O/EkJntf2YZMIPm1dlOaY/I4S7sOxIOSzhhyaelN8F9paJThYpOhYFnSp53ioSY91tfCe+toLlTkBoh4L6t3CmetNOz+pYm04v8faIoiDNsD3DBCM92MtC705J3FXcq+SJ2jPQmfXBGxuzsGQ+CeXjYX87vy5UcND8YYAAKfJzc8F5A8SH3ZTzMUpQ3fkFziPnegJ7YU7sqUpn84g14j5526A2LZpOYlfwqmxS+b2qJ6wuBLqypmNlX7Csh9OX1GivWcGpP2b/JshXW1aLlHdhuli9eSIDuWeRCovH5f0YPGPOpNQ3zl9fLqPinbZKzRriIUOzFWy+EU2qSwClkMqG/vXLYioobOb
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1772123284-482056
+X-HE-Meta: U2FsdGVkX1/XBdwCTgSg41XT5SPSIfuuh87pQQn1pLPgyXOz+/Xg02+moHeqAsaPZVJXmqs+XVxvbXL9qTmcAjdQJNdC3/RFRTvDkhXryMpoLc2IjJLS5jByoK89f/i8675aQfs8zubdkue4nqJYFHvCAj0y67u1SpvshXQRiZkF2KajX5+IyqDvwCA5PXFVR4SHQeBvGAYYmIJW3cqsiy4aBM/9gW2xcRZw40VYJC3kFMpgNx107bKshTkPHAEnC7tEGHFzx6fULJIlvrbQ5X8r8AHtiJPhTB1DAPDRfwZ4vo80cU62WkFigxU5infL7dzs2gQdHw8JdkA3ooUjG9aI92ld/IvbwfHfilXLpylX+DSwuh2wy15QaXmk5YcWTxll5eTJ1XfDxtfSkcLGjPo/cyo/EeSN17wrkse+WmHBoYyRmFknZSam36cSyfzOhwYHKQNKRVs0oJIae48DAbxlutqdpUV3yGlLkSUm11L/sRWlFL4I9zsizKYtl73WJsvom+kjb6xuSXwhDDvnxQEnTp090QxUsC0C3ojFZwqwTOBsoASdR+B9CPN00UFgny8iKjq7vczOnqV0WPcAX+XJ9Vux0rCKI3D7SZq8uRuk1nD3UFRvMgV4WtwJeh+XzuZR3O3BLOiIb8u8UX49CQeWVCNw66Mj0ppU4+knvN19S/ysUeXCxS5JZyiHFjkMaryXpsjLudUzRs4x+G79U1bIcfIsgXvRezGW6F0DwFF1lutjYBhU/ksDy1drxCE3iejQs/RqRPl5G8fR9t7Ok4KhNREuN3H+xBhyUHwez3kefuGKjRqySvKC755Z6oJfIbZypfYrrgxN1Ye/Dk7r+cjX1GxZKijKfOZyrimIJg8QYinlTE0brOTAGrV8gGJ00yTdSlsxeA3rAdbA/nCadpmD15oDLseFA8WZj3UIImqpjvnR5BS9ow7V0vhZTE1KWOQsunKsCEtbF6YVY+j
+ tnLyzTz0
+ jiIiQQ3P6/XYSkWk2H20VSAFiYde9wmI/EpoLhvtkRg/RdNSTd4jtFYWtt5WSOYTRXgdNLadWUT6tFy4PM5mq5kzY7nnUiUoWvllmIctDwgkE1jJx/B+nE1CAq7zaFU84sot4+Bp2uIR4a6bp7mqQLqLgjc/r7se3NXI1Kh5sJHQ8ihLu8NihLBtG3cCyEfc7kQJefhaP9f/idEM9WzhjMknt9gVYcRsVqwE30LBxEH8/yuGaw5FlFzlhCa4dHQc8LbNg+WW/MW5ZYcQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,112 +98,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch was previously posted as an RFC and received positive, but
-little, feedback. So I decided to fix remaining drawbacks and repost it
-as non-RFC patch. Overall logic, as well as performance, remained the
-same.
+The current atomic-based page refcount implementation treats zero
+counter as dead and requires a compare-and-swap loop in folio_try_get()
+to prevent incrementing a dead refcount. This CAS loop acts as a
+serialization point and can become a significant bottleneck during
+high-frequency file read operations.
 
-Intro
-=====
-This patch optimizes small file read performance and overall folio refcount
-scalability by refactoring page_ref_add_unless [core of folio_try_get].
-This is alternative approach to previous attempts to fix small read
-performance by avoiding refcount bumps [1][2].
+This patch introduces FOLIO_LOCKED_BIT to distinguish between a
+(temporary) zero refcount and a locked (dead/frozen) state. Because now
+incrementing counter doesn't affect it's locked/unlocked state, it is
+possible to use an optimistic atomic_add_return() in
+page_ref_add_unless_zero() that operates independently of the locked bit.
+The locked state is handled after the increment attempt, eliminating the
+need for the CAS loop.
 
-Overview
-========
-Current refcount implementation is using zero counter as locked (dead/frozen)
-state, which required CAS loop for increments to avoid temporary unlocks in
-try_get functions. These CAS loops became a serialization point for otherwise
-scalable and fast read side.
+If locked state is detected after atomic_add(), pageref counter will be
+reset using CAS loop, eliminating theoretical possibility of overflow.
 
-Proposed implementation separates "locked" logic from the counting, allowing
-the use of optimistic fetch_add() instead of CAS. For more details, please
-refer to the commit message of the patch itself.
-
-Proposed logic maintains the same public API as before, including all existing
-memory barrier guarantees.
-
-Performance
-===========
-Performance was measured using a simple custom benchmark based on
-will-it-scale[3]. This benchmark spawns N pinned threads/processes that
-execute the following loop:
-``
-char buf[]
-fd = open(/* same file in tmpfs */);
-
-while (true) {
-    pread(fd, buf, /* read size = */ 64, /* offset = */0)
-}
-``
-While this is a synthetic load, it does highlight existing issue and
-doesn't differ a lot from benchmarking in [2] patch.
-
-This benchmark measures operations per second in the inner loop and the
-results across all workers. Performance was tested on top of v6.15 kernel[4]
-on two platforms. Since threads and processes showed similar performance on
-both systems, only the thread results are provided below. The performance
-improvement scales linearly between the CPU counts shown.
-
-Platform 1: 2 x E5-2690 v3, 12C/12T each [disabled SMT]
-
-#threads | vanilla | patched | boost (%)
-       1 | 1343381 | 1344401 |  +0.1
-       2 | 2186160 | 2455837 | +12.3
-       5 | 5277092 | 6108030 | +15.7
-      10 | 5858123 | 7506328 | +28.1
-      12 | 6484445 | 8137706 | +25.5
-         /* Cross socket NUMA */
-      14 | 3145860 | 4247391 | +35.0
-      16 | 2350840 | 4262707 | +81.3
-      18 | 2378825 | 4121415 | +73.2
-      20 | 2438475 | 4683548 | +92.1
-      24 | 2325998 | 4529737 | +94.7
-
-Platform 2: 2 x AMD EPYC 9654, 96C/192T each [enabled SMT]
-
-#threads | vanilla | patched | boost (%)
-       1 | 1077276 | 1081653 |  +0.4
-       5 | 4286838 | 4682513 |  +9.2
-      10 | 1698095 | 1902753 | +12.1
-      20 | 1662266 | 1921603 | +15.6
-      49 | 1486745 | 1828926 | +23.0
-      97 | 1617365 | 2052635 | +26.9
-         /* Cross socket NUMA */
-     105 | 1368319 | 1798862 | +31.5
-     136 | 1008071 | 1393055 | +38.2
-     168 |  879332 | 1245210 | +41.6
-               /* SMT */
-     193 |  905432 | 1294833 | +43.0
-     289 |  851988 | 1313110 | +54.1
-     353 |  771288 | 1347165 | +74.7
-
-[1] https://lore.kernel.org/linux-mm/CAHk-=wj00-nGmXEkxY=-=Z_qP6kiGUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
-[2] https://lore.kernel.org/linux-mm/20251017141536.577466-1-kirill@shutemov.name/
-[3] https://github.com/antonblanchard/will-it-scale
-[4] There were no changes to page_ref.h between v6.15 and v6.18 or any
-    significant performance changes on the read side in mm/filemap.c
-
+Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
 ---
-Changes since RFC:
-- Drop refactoring patch (sent separately)
-- Replace single CAS with CAS loop in failure path to improve
-  robustness
-
-Based on quick re-evaluation, this didn't affect performance because only cold
-code was changed, so I kept RFC results.
-
-Link to RFC: https://lore.foxido.dev/linux-mm/cover.1766145604.git.gladyshev.ilya1@h-partners.com
-
----
-Gladyshev Ilya (1):
-  mm: implement page refcount locking via dedicated bit
-
  include/linux/page-flags.h |  5 ++++-
  include/linux/page_ref.h   | 28 ++++++++++++++++++++++++----
  2 files changed, 28 insertions(+), 5 deletions(-)
 
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 7c2195baf4c1..f2a9302104eb 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -196,6 +196,9 @@ enum pageflags {
+ 
+ #define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
+ 
++/* Most significant bit in page refcount */
++#define PAGEREF_LOCKED_BIT	(1 << 31)
++
+ #ifndef __GENERATING_BOUNDS_H
+ 
+ #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+@@ -257,7 +260,7 @@ static __always_inline bool page_count_writable(const struct page *page)
+ 	 * The refcount check also prevents modification attempts to other (r/o)
+ 	 * tail pages that are not fake heads.
+ 	 */
+-	if (!atomic_read_acquire(&page->_refcount))
++	if (atomic_read_acquire(&page->_refcount) & PAGEREF_LOCKED_BIT)
+ 		return false;
+ 
+ 	return page_fixed_fake_head(page) == page;
+diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+index b0e3f4a4b4b8..f2f2775af4bb 100644
+--- a/include/linux/page_ref.h
++++ b/include/linux/page_ref.h
+@@ -64,7 +64,12 @@ static inline void __page_ref_unfreeze(struct page *page, int v)
+ 
+ static inline int page_ref_count(const struct page *page)
+ {
+-	return atomic_read(&page->_refcount);
++	int val = atomic_read(&page->_refcount);
++
++	if (unlikely(val & PAGEREF_LOCKED_BIT))
++		return 0;
++
++	return val;
+ }
+ 
+ /**
+@@ -176,6 +181,9 @@ static inline int page_ref_sub_and_test(struct page *page, int nr)
+ {
+ 	int ret = atomic_sub_and_test(nr, &page->_refcount);
+ 
++	if (ret)
++		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_LOCKED_BIT);
++
+ 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+ 		__page_ref_mod_and_test(page, -nr, ret);
+ 	return ret;
+@@ -204,6 +212,9 @@ static inline int page_ref_dec_and_test(struct page *page)
+ {
+ 	int ret = atomic_dec_and_test(&page->_refcount);
+ 
++	if (ret)
++		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_LOCKED_BIT);
++
+ 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+ 		__page_ref_mod_and_test(page, -1, ret);
+ 	return ret;
+@@ -228,14 +239,23 @@ static inline int folio_ref_dec_return(struct folio *folio)
+ 	return page_ref_dec_return(&folio->page);
+ }
+ 
++#define _PAGEREF_LOCKED_LIMIT	((1 << 30) | PAGEREF_LOCKED_BIT)
++
+ static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+ {
+ 	bool ret = false;
++	int val;
+ 
+ 	rcu_read_lock();
+ 	/* avoid writing to the vmemmap area being remapped */
+-	if (page_count_writable(page))
+-		ret = atomic_add_unless(&page->_refcount, nr, 0);
++	if (page_count_writable(page)) {
++		val = atomic_add_return(nr, &page->_refcount);
++		ret = !(val & PAGEREF_LOCKED_BIT);
++
++		/* Undo atomic_add() if counter is locked and scary big */
++		while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
++			val = atomic_cmpxchg_relaxed(&page->_refcount, val, PAGEREF_LOCKED_BIT);
++	}
+ 	rcu_read_unlock();
+ 
+ 	if (page_ref_tracepoint_active(page_ref_mod_unless))
+@@ -271,7 +291,7 @@ static inline bool folio_ref_try_add(struct folio *folio, int count)
+ 
+ static inline int page_ref_freeze(struct page *page, int count)
+ {
+-	int ret = likely(atomic_cmpxchg(&page->_refcount, count, 0) == count);
++	int ret = likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_LOCKED_BIT) == count);
+ 
+ 	if (page_ref_tracepoint_active(page_ref_freeze))
+ 		__page_ref_freeze(page, count, ret);
 -- 
 2.43.0
 
