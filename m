@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B4CFC591C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06274FC5910
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:07:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC22B6B0092; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
+	id 672426B0093; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C62B86B0093; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
+	id 63F7D6B0095; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B86056B0095; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
+	id 56C346B0096; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A4A296B0092
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:06:29 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36A8F8CACF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:29 +0000 (UTC)
-X-FDA: 84486178098.24.7D5CEE0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5ECC9100002
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RVfx1aLC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100387; a=rsa-sha256;
-	cv=none;
-	b=hiLgCVS89o9JJc5QZu2TN4mwJhZyKfm1WEK5StPxZU9qci4YfInNhg0XYAD8mCWteYY50h
-	HocJEgkhkB7WC7Wh1oeLwpWUyB3ipPxqZRBj1sRJeV/3EsGyuIrwcmnQZ6lVgRdAuwatvk
-	LGPsadeQTcxhTX/RxsOm3vCJRX7Kz5E=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RVfx1aLC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 44AAA6B0093
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:06:59 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D1D61CB8E
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:59 +0000 (UTC)
+X-FDA: 84486179358.07.D0E0A4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 45D3C180004
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r27eNEsg;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772100387;
+	s=arc-20220608; t=1772100417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JtrtUSgCQeh3Rw2Fn/JXA71Qvme4jG+l3UE8ddeJyxE=;
-	b=nMYcN+6Ftvx4Ete1F7KID7BPrb9lsbYLqvTkvDZBlUxrxmUBIP1v9At4Pj4fADb9qkLtbA
-	Q8y2QiFsW3V6GKGzjbCHkqCw2M1R/hS97KZSm4Z9K9SwK0Kql7a/iAKaFvsbKaAm4wQ1G7
-	TLtcfQPKgSYryaXOetykIyA8GFxlKTY=
+	bh=8uZ+FcrHvnBOldWUaBXXS/DwJYw9zNqN0B3LIJw8H+U=;
+	b=hPTIxkP771kmYGoPfFSIyY3giv5oTK0fUSqGPiFNAEYMqbAV/W4Z8b/NWp7+pK8GYgzNwT
+	0VxxtBvOqraLB6A+74zhAvqDHXb4ohb8GUfX1xu1iMuewJtSzNfR1SFJCiheK6DmUwRps5
+	OFXJFGPklB6FtQyPf+F+Qzs2VbL5nkM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772100417; a=rsa-sha256;
+	cv=none;
+	b=qnh5UbIJe/jdO02XRbb8rg8KyzIB+/GDJ6AH//KMXG+2NEdO/oTmTtOZkR3v+ubLFPXd7I
+	c0d0ShbQbgN8wKUZmlrQ+jtKgjjskaoMCgN0aQOcR51voilOpcHocuHK/fURLjmkAf1ANx
+	z8xZ8lkvshiQU/GNEsJnoU8BM1Yaws8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r27eNEsg;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20D3043EE7;
-	Thu, 26 Feb 2026 10:06:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED8FC19422;
-	Thu, 26 Feb 2026 10:06:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A57F660054;
+	Thu, 26 Feb 2026 10:06:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99115C19422;
+	Thu, 26 Feb 2026 10:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772100386;
-	bh=45Zns+iP/oDv+AJi9pnKB/hFBYoQKB7TJG74cHZZyrc=;
+	s=k20201202; t=1772100416;
+	bh=354C65bvPjF3i1kcqCpygsKJwJ/HUCRMp6MPAidxgoI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RVfx1aLC/rgzPLjR+YcRHQ9QbMkTt7VfNKPsmzbBDUyihBicyXDn+/CeSp0q5fh/F
-	 kjKWSDb2zclM9wXTPMaYjY7TuXRdjo3wVHYkEPQHl5TO3YrcmhTI8ElSfoLYFDjLno
-	 Tnpicv8R/PgEavrSqwmG9XtEDSkeupZDbiLG8GqGN4c3SVz6DRQDzMYlmr38dgumMv
-	 4bGZ6u2W69bswr2nr6Vsj063bCaR5yAK150vHGgOtsLE9QwvWy6yRGXCivwyIyoFqk
-	 bv/Ix9i6Xr2zxWM0B04MCptDQmEspkcDA811RyRki4QGP+naiU+Jj+62wb86gvZBMx
-	 PceWJ5vHKtGJQ==
-Message-ID: <ece450e0-8e19-42bd-9a7a-fdfc7ab785e6@kernel.org>
-Date: Thu, 26 Feb 2026 11:06:21 +0100
+	b=r27eNEsgfjntCCajF+dXVdQZUWZFbywXhb0U9gcJrpEDAEjA8bXUKv2YfiTlfaL+n
+	 r5IwOr6WD5aa9wuxvxdKiBnAfYa7Jo1MgICGPG/QjpjQQgSyEg6k6eAwbsQhdC03pt
+	 TZb/1IlBr/l6YRrz8+0IQCqBqg2H/VIWs6zDY8bw8Sonc/bMy0oV2k83ZsgMy57zU5
+	 lJXB5GKnXD5T0lUSQE2PuJVgki8mwEAST0aH/B7h9FNXXa10t01NON9Cb6L70gDAD4
+	 nIvDihMB1suMPRXjbaf/nxMCG3VNWrGBcRC+HuaID1ozdqPMcrK+rLA3tr3g1CT+Hc
+	 sQsNvkrmLQLEg==
+Message-ID: <05d4df12-f9df-44e4-8df6-04518bb679cf@kernel.org>
+Date: Thu, 26 Feb 2026 11:06:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree
- folios
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
- dev.jain@arm.com, harry.yoo@oracle.com, jannh@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, riel@surriel.com, stable@kernel.org,
- vbabka@kernel.org
-References: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
- <20260226070940.96226-1-lance.yang@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2] mm/slub: drop duplicate kernel-doc for ksize()
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260226070940.96226-1-lance.yang@linux.dev>
+To: Sanjay Chitroda <sanjayembeddedse@gmail.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260226054712.3610744-1-sanjayembedded@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260226054712.3610744-1-sanjayembedded@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: okkp19m54oz1xm81kj4k81kkshwjuz46
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 533qwp4siddfottftz4e98uaxsjnj4ce
+X-Rspamd-Queue-Id: 45D3C180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5ECC9100002
-X-HE-Tag: 1772100387-441561
-X-HE-Meta: U2FsdGVkX18hx0m+qOUdoZ/mfwWb0AqXXtuCdq2bdYKx3yWYf0eWEqZLxQgtn9IhqxOVMTsC5KeA0wMIFQW/Ulst3hUTvDzhb0R3EpVd7bjFPvATy20IL4grOasadlSMAIMtFlVGA0xSjgH02MQKhCfzFtinNTTuyWWQhWpTdzZiUq5mHiQVXfwXRVId5PzWXy1WO7v77KHpTgMuRwBfw9cuDBYimhbSF79IdYaw/PVLuMMuekCK4lmWLVkmzCewSEZURtTNgExtDHTiQdsELYjmML8ek6CquU1UmJ2crLr7nZnQiseYlJmlf4oJyV7/9Qle9MEBRLsuvaTlDF1dGgtfqOOtRVvVlQi6LcjAG4SsOcanB4JgSVuD73R3JYzHCS2K4nULRj+yM6BfGIS3QqvtrfRTLB9wQukGzG18Q+QdpAoBQPSjb8oxJa2gnAKQnf1iUiGBTsXPuaxCash7qp0GSmJtLZ47wAy4K0x+ZsbQJ+928FiJgSKg2scJ2I1JHErXXqPpG7mSKBczAoUsLL4ediKdvjxx6eOTtAcY9U1NJNXLSmXZpU7tiYgQk4ECXmsNrrD+WwWIg7PUQuuc30pmoE3wB1WIg+xd7ATipA8di6C7spTTRU9BRPMrm7GlPgby9jxtDxO3QBV68ozk6fjFWoE26siU1CsNVIDtbvhHbtmTnXrrlhM6Yema9GjWQM9/E5rZPnulE7TmHxc4MUp2kYYmeAUfyYQvjBd37ls8BPDzg+NXpUGfcJJfjM3HH/antOvoG6d5xmYsBdS3ZWFU2juK2uthdqaZMEgOdLupeEGOPKL8HAG52qjM3Zc7j37gZVpwQduhWSZaGmXmZi0n7t2q5MuIYfEl/8DDe8pHh2Veij4wkGfUQKfenpisoJViyLb/X3ZZzCfy2b2uAooAaw8GF6gpBgb7GjyXkM+4E5MfDrn72JL2BgiClWuamaO2D3JgVGqM02MeXhH
- uDk+IZ3b
- XJrrHxrcs8M2I+wUffHA5fQlYYXjLUTHCcIVqTVRhvETegm0KfORZFCpNnNOhQpzYrWzdKuYPe/jNfoKe7lb2PDPHLMn/UDw6eiPYut374MWtFBmLIP3CFrw6L3Zei8GOKQ4yl/TzzdU6t/o7mK57fFZ9eS6RURvt4YsocZYQVEXTi9Zzy9YGJF9ZhQJnAu2GJa/G1AUwe00aW8+ufY0Umn3HFF707DKxgATwYq5WGbLdS3GgxSsUR4d4mp4GYtZ59PXl
+X-HE-Tag: 1772100417-713025
+X-HE-Meta: U2FsdGVkX19J9QmsgFYqyd5YG0IeFvn9oVMnzQ25ci6gVMx0USmrxKc7C0SQW6VdNUKr93wei/zKYPgwAlvdyQSig0s/mnAOhAwwg4E7NcOla4Si/sqwk5DFcZWsxV6DqqD/ToXAM0/BIP0WjHrEXLNO+KyECwZbU/jFfAgiccWgfVrSzjmuSpjEyfeZdo6UNLjqtrsKY5uYoI1iydu0OD9AFYfzkcpW7mkzwaUK6q61f+RRPEP7N7iiwJBzoNoJcQsW1zeaAnbVB2GonAqin8bctZGma0QusDMJZU4ybqcQmbwCnrHCN/3pmeS/BbGTlWIhkvW3yY5gw71kEFYkRLM34sxG6xzjjgnVtfC/9xw21elbJjzhwG+3+do+DUhPxqVeLx2+CzTKjrwQm80kwnv6Fv9gbk9u/B7SH24/BqInieXMlb4AeVEaAPZSN6LZMrkEh2xnlvmpNz0eYVwjlLbVdH0wI5VlXl/6FyJk63tHPl9l4qv9G3TKKQ6asKwIQGG7fbQlhIoPw/rkRvwkAwKVLGsIQQ/VYWBt5pOJIuv+6PUKMP+KxNwMM/d+qcEvrwrZpql+eGdrTttPnHdzD13jjXNBptKksKNDj+gXgmffXC7dmzdbhHz9shx0E+KQwx+wH1m8l1RB0FY7xxZith52Y7UwmCzGLoq0SI20LhfW5AqDjpMdlh5xo8q/vUU9pd65+e8FYO6r1vaxCXmtu6+yPKz8PtQHavoxY6NBYX9AFW2W00j4x2yw945Y3u/E+4ciKNj9t3YCZ/dAQCu44/vcoC7lcynXRTY/8T4HF8qy75r4jpljgl1N3EErw39tH+kJRLRPDZVhpVTUV1ok6BSIKyiQG2aDkedecsJua9tgxGHJchY6bGeTnaIbouMRSfhB1wXw0vwdQ3cg9mozXaBj0fjOsg5WFA8cY+97SQq2y11aEU7Jc3MIxvE5GRYejGfH8dWfJWR38lHWK/z
+ G4qdRjvz
+ 0+skg4OiUjL/ZZHWyZbWMJR84GxtqLm0VIy5RKjSH8OvDi8lwv4T9ZWVnuj7RFaa5zvjB9J+cF/54/3zZdRc4uyZSqhmHKjX2siLMcMzOQhZ7dPS3iEaeVuKwqOeSM8g7qMP9hEXxY+g1WFH/CAPoSih/zm0rPvA8/XKdLeYuP3WhaqBiT+ymqulR2JtIZ8b8S4MGt3l/ds7JtNn0vdqoi4CcUCOKoLdnuYYnUPOas3v8Ae+AGHXh1UEm7+ySwWumoR7dCsYJzZH1MFtk0+xetGxOH9s8wdaYuLmu9+Z3gIbQ2rU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,108 +95,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/26/26 08:09, Lance Yang wrote:
+On 2/26/26 06:47, Sanjay Chitroda wrote:
+> From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
 > 
-> On Tue, Feb 24, 2026 at 05:01:50PM +0100, David Hildenbrand (Arm) wrote:
->> On 2/24/26 12:43, Lorenzo Stoakes wrote:
->>>
->>> Sorry I misread the original mail rushing through this is old... so this is less
->>> pressing than I thought (for some reason I thought it was merged last cycle...!)
->>> but it's a good example of how stuff can go unnoticed for a while.
->>>
->>> In that case maybe a revert is a bit much and we just want the simplest possible
->>> fix for backporting.
->>
->> Dev volunteered to un-messify some of the stuff here. In particular, to
->> extend batching to all cases, not just some hand-selected ones.
->>
->> Support for file folios is on the way.
->>
->>>
->>> But is the proposed 'just assume wrprotect' sensible? David?
->>
->> In general, I think so. If PTEs were writable, they certainly have
->> PAE set. The write-fault handler can fully recover from that (as PAE is
->> set). If it's ever a performance problem (doubt), we can revisit.
->>
->> I'm wondering whether we should just perform the wrprotect earlier:
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 0f00570d1b9e..19b875ee3fad 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2150,6 +2150,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>
->>                        /* Nuke the page table entry. */
->>                        pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
->> +
->> +                       /*
->> +                        * Our batch might include writable and read-only
->> +                        * PTEs. When we have to restore the mapping, just
->> +                        * assume read-only to not accidentally upgrade
->> +                        * write permissions for PTEs that must not be
->> +                        * writable.
->> +                        */
->> +                       pteval = pte_wrprotect(pteval);
->> +
->>                        /*
->>                         * We clear the PTE but do not flush so potentially
->>                         * a remote CPU could still be writing to the folio
->>
->>
->> Given that nobody asks for writability (pte_write()) later.
->>
->> Or does someone care?
->>
->> Staring at set_tlb_ubc_flush_pending()->pte_accessible() I am
->> not 100% sure. Could pte_wrprotect() turn a PTE inaccessible on some
->> architecture (write-only)? I don't think so.
->>
->>
->> We have the following options:
->>
->> 1) pte_wrprotect(): fake that all was read-only.
->>
->> Either we do it like Dev suggests, or we do it as above early.
->>
->> The downside is that any code that might later want to know "was
->> this possibly writable" would get that information. Well, it wouldn't
->> get that information reliably *today* already (and that sounds a bit shaky).
+> The implementation of ksize() was updated with kernel-doc by commit
+> fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
+> However, the public header still contains a kernel-doc comment
+> attached to the ksize() prototype.
 > 
-> Makes sense to me :)
+> Having documentation both in the header and next to the implementation
+> causes Sphinx to treat the function as being documented twice,
+> resulting in the warning:
 > 
->> 2) Tell batching logic to honor pte_write()
->>
->> Sounds suboptimal for some cases that really don't care in the future.
->>
->> 3) Tell batching logic to tell us if any pte was writable: FPB_MERGE_WRITE
->>
->> ... then we know for sure whether any PTE was writable and we could
->>
->> (a) Pass it as we did before around to all checks, like pte_accessible().
->>
->> (b) Have an explicit restore PTE where we play save.
->>
->>
->> I raised to Dev in private that softdirty handling is also shaky, as we
->> batch over that. Meaning that we could lose or gain softdirty PTE bits in
->> a batch.
+>   WARNING: Duplicate C declaration, also defined at core-api/mm-api:521
+>   Declaration is '.. c:function:: size_t ksize(const void *objp)'
 > 
-> I guess we won't lose soft_dirty bits - only gain them (false positive):
+> Kernel-doc guidelines recommend keeping the documentation with the
+> function implementation. Therefore remove the redundant kernel-doc
+> block from include/linux/slab.h so that the implementation in slub.c
+> remains the canonical source for documentation.
 > 
-> 1) get_and_clear_ptes() merges dirty bits from all PTEs via pte_mkdirty()
-> 2) pte_mkdirty() atomically sets both _PAGE_DIRTY and _PAGE_SOFT_DIRTY on
-> all architectures that support soft_dirty (x86, s390, powerpc, riscv)
-> 3) set_ptes() uses pte_advance_pfn() which keeps all flags intact
+> No functional change.
 > 
-> So if any PTE in the batch was dirty, all PTEs become soft_dirty after
-> restore.
+> Fixes: fab0694646d7 ("mm/slab: move [__]ksize and slab_ksize() to mm/slub.c")
+> Signed-off-by: Sanjay Chitroda <sanjayembeddedse@gmail.com>
 
-PTEs can be softdirty without being dirty. That over-complicates the
-situation.
+Thanks, added to slab/for-next-fixes
 
--- 
-Cheers,
+> ---
+> Changes in v2:
+>  - Instead of removing the doc comment from slub.c, remove it from the
+>    public header as suggested by reviewers.
+>  - Follow the guideline that kernel-doc should stay with the implementation.
+>  - Updated commit message accordingly.
+>  - Link to v1 https://lore.kernel.org/all/20260220124243.3264133-1-sanjayembedded@gmail.com/
+> ---
+>  include/linux/slab.h | 12 ------------
+>  1 file changed, 12 deletions(-)
+> 
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index c5fde8740281..1c8c53b068b6 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -517,18 +517,6 @@ void kfree_sensitive(const void *objp);
+>  DEFINE_FREE(kfree, void *, if (!IS_ERR_OR_NULL(_T)) kfree(_T))
+>  DEFINE_FREE(kfree_sensitive, void *, if (_T) kfree_sensitive(_T))
+>  
+> -/**
+> - * ksize - Report actual allocation size of associated object
+> - *
+> - * @objp: Pointer returned from a prior kmalloc()-family allocation.
+> - *
+> - * This should not be used for writing beyond the originally requested
+> - * allocation size. Either use krealloc() or round up the allocation size
+> - * with kmalloc_size_roundup() prior to allocation. If this is used to
+> - * access beyond the originally requested allocation size, UBSAN_BOUNDS
+> - * and/or FORTIFY_SOURCE may trip, since they only know about the
+> - * originally allocated size via the __alloc_size attribute.
+> - */
+>  size_t ksize(const void *objp);
+>  
+>  #ifdef CONFIG_PRINTK
 
-David
 
