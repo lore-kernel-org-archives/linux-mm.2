@@ -4,122 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12A1BFCE076
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 19:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7715FC5921
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 19:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08FA36B01FE; Thu, 26 Feb 2026 14:29:43 -0500 (EST)
+	id 1495E6B0205; Thu, 26 Feb 2026 14:29:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 068586B01FF; Thu, 26 Feb 2026 14:29:43 -0500 (EST)
+	id 0D7A86B0207; Thu, 26 Feb 2026 14:29:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB54C6B0200; Thu, 26 Feb 2026 14:29:42 -0500 (EST)
+	id EF09C6B0208; Thu, 26 Feb 2026 14:29:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D2EE76B01FE
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 14:29:42 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A4C413865E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D65C16B0205
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 14:29:44 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98E091B3EA2
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:29:44 +0000 (UTC)
+X-FDA: 84487597488.12.62000AC
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CB4A140008
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:29:42 +0000 (UTC)
-X-FDA: 84487597404.03.FC87D97
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 98CBFC0002
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:29:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TrD0w8q4;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GTFTfHGj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772134182; a=rsa-sha256;
+	cv=none;
+	b=AbekGkiI0CUi9R+FkJOwsn1pick39Mtkt9Wh+2Yh8u9TqwIgczCLl40b9Z0ntCFwpqR1OM
+	3qVDPPQEs6j0VR1IA0UQ2CV0nsIBnEX7COl8cvjAw6leYgPWrhrZjQ16PmoLaZnq5G8gin
+	mQ3+/9A3s+sSDAxK/Ok0cQE9UWcSXbg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GTFTfHGj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772134180;
+	s=arc-20220608; t=1772134182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=AADVg9qc0LmRgS4Sxkhna0+iWY0MK1VRsyPEGxGIkaA=;
-	b=ynBhIKU+WQw3PQ4zABdLpPV/KKhjn7wxztNHT4Q5H8UO3K3/9xpGxS1Ye4K/kXO2DqiBYB
-	ZLEGp2oAdBXK1J6YWcxFrUaJPsRQKfg6yayKzjGjMZRovg4pS71iAeIdt+OYMLY05PRWO8
-	4TzxpckGHQ7ugn10fvm1t5s0QoXlbY0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772134180; a=rsa-sha256;
-	cv=none;
-	b=ta519h6nMmJ/d5Wd9BOg9Hwk0L6dZL/AAEYRqFvXmTCD1YqLm1totnlTNRB9WpbR/o6cQG
-	NcICunDuHKQvFAFdxVE/kQ+DlwkiFbvW31Bd9+kw6YYE7X5fZH+WndwUe3JD4qBVLa0xcl
-	1KT67zP+hZxRKlWNlfIWjpn8gY+hd2A=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TrD0w8q4;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-464ba2bb3aeso348663b6e.1
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:29:40 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GxU9M0uqLwBLhcOAnkTTmqCLiEjdRi64cRGLMJGuVY4=;
+	b=i4nnZxj8fTxz7quTXzIF5Qlb+HuuLTRXg1VXkhO8noivDB+NnlRtjdZdp3gFc6t6rUQF+Q
+	N+Kl7cBojU0+J6pFqIMxxoQPeUTBPf8gpcrbWicXAgcVRShSS4slASPk2g2q9HTi3O+auw
+	zpSwLCEM+dv9QcWgWZAHoLdqRi9KZcU=
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d1959ba05cso555432a34.2
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:29:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772134179; x=1772738979; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AADVg9qc0LmRgS4Sxkhna0+iWY0MK1VRsyPEGxGIkaA=;
-        b=TrD0w8q4eNeWSykx8KuJTNxxWLBsbnK2WOysjXL8kGOb+4gDqYOkvCxdITDxzfsQ1m
-         0WJ22urchXXMJzNkBgSWT0t+u1FCQfLzfcv9ru6K2ChMveAzkvo4PfeVuDqiCqTZZtlv
-         EE7dAD8CfdDQWLWUuLvk99YJjnhJ+TN0zerLKTWQUZinHezbeNwag0AxS/EscmJKtYVH
-         G4bu4jSr9rx2+jqtZLWz3LfLgtYJqeaTx0v7/+VzWZmMCYgmUZoNrFXdZVb+7JIf2m6M
-         ya/HErnfuWHaeIcclAJyZ/w0P00o4MM+yUGR+po47QaydmX/+AG/EaVAJluYMsSTk19v
-         qxuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772134179; x=1772738979;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772134182; x=1772738982; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AADVg9qc0LmRgS4Sxkhna0+iWY0MK1VRsyPEGxGIkaA=;
-        b=CW1R9YFiwjT1kT/V1G5anYcdBduwbQ+b1HTDqLdpXHjF1JebP9F+0wfULEtBz4zNhc
-         FpTMCqMS5T++vH4sj77HQ7A2xArSWTuRLjI9IEy5FfY2T6xugafu/QKT3OZ/WulFIk/o
-         b8zLoFvjPdVhhZK1FjDTSC10uUVTiAV8ZxfyS5YddkHJo4yDMKTsidmEGnnYFGJmhl9j
-         mCL+9fs4gD9QUhNfkive1/NfiG4jr2Cm657o0wgWaFEKanpPUIRHvAa9nS9gWTjX5VGM
-         dbrBMge5to1ZOxBUmy5Ld3QQ+sZtNN05VX1KUEZRJnK9hmR1YmZX6/opaK9cBXBtwZiC
-         2OaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUijj5ENVZU3RoOrFZlHe19hy49//tToN+Horkxb7H6OEwMPIreHD93/6VY76nxn1kIQW18J2ByqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yws+yFN7aXLbPyfFPDgxr7wcB+3UDcdFDuqILTp7gbBMpckp76m
-	iBEVcaOQ8kFh3qSrEdMxYcOU+F+jrdxKyv4K8zKOHehPhUoQmoUoveRC
-X-Gm-Gg: ATEYQzykEwAeG4XQTEuyBaDaLNa8O2cnTaAtkb5rpgJWkQQTgA/ayHCeqj5aZIW/nBU
-	GYfwW6JgHMWJBRdunIK2izbSWp/rcGI+GSar2Maet3+SrFYs/Zi4aIjefznxLdS/1Ad7rAKGczk
-	JeD0tN5y4aHhZ5ujtd2mYxNhgwm8gPV6Hfmb9O/LFzsZW7i4RL7+SzT67onh3bG/0Qube+pCuCG
-	7O/fg+kTsNzqHMFDbuRKLX+ga/R4jo1jTt9kbiNEfOevDa/huGfHxeesgRfjFr64xQqdh3L0If7
-	XaB/T7flW68XJn1XI+TgOXgVn3C1ICW6lxrFpN7h1OJJ8toB9l8s7FVZzrks8n8IbHWCp2y2B+O
-	dd821t1+cDCbu4w4xep8QV2E8sWigsW58kqrxCxMT8znMwwgtFFcdElvvLrrk9G0lmQX1/GXnFF
-	JEDWem1sOOn/rt/CQ7HrM7kA==
-X-Received: by 2002:a05:6808:5143:b0:45f:ea8:4184 with SMTP id 5614622812f47-464bed8fce7mr134294b6e.13.1772134179339;
-        Thu, 26 Feb 2026 11:29:39 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:43::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb5e417fsm450688b6e.16.2026.02.26.11.29.37
+        bh=GxU9M0uqLwBLhcOAnkTTmqCLiEjdRi64cRGLMJGuVY4=;
+        b=GTFTfHGj362BhKERx67IvN/a7cGA/YjXezGrKvri/zND0pdlX1a/DVC2uy5wsgpLlk
+         oKV0i14ATSEk9+4oqWE4tko8cIUd0/iWTbPc7WChCFVsFSKcNWnmgH6VfPRm9G+TGGU7
+         2Pne+oztd3E0sQMo4gRyhkXsm+vr+yGoPsXRfyOJYeh9Qoc/D7mR/1qfbLPSTA2jW4SB
+         VEE+wF6GuGN4qDEgSOaOGzC4mAcQU6tQu2UirNapVOBbhj8/YEFMt7NzdGNDgGyMZcqo
+         xWii1UBwFH9Layp9QpsB2melfKjwV6H671Fg59a10d5q7Vc/jJjwVf6zN638XmCPvvbt
+         tZrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772134182; x=1772738982;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GxU9M0uqLwBLhcOAnkTTmqCLiEjdRi64cRGLMJGuVY4=;
+        b=guEp6OMDispOy+sEtlBHKZaQOSIZ2AB7Ul1vTbsi4A3axcPN6k54154cxhNdXAQ9Zb
+         862KRAS4UlJfw668omgcxoTIpANWQSDl2/zTu5KbGeG+juo0FaI4EoW8HNuuyo9lsYY0
+         vGvdARFYQd+hw12XzYkv/f92O66q5Siksw9h0zzOfXT0SSMc6FSsmgpXQ5Tmv8jIcLYO
+         GKEtpRWuZksyvFLrKmtJYISbcKDe2PuvI/NTBFSO4idECU+vXGE26rNdAltxHCR+Rv8f
+         TjMwywWwSwtg3lj5r3XFLi80aedfOXri+Fu4b5QZAaOq20WIoRS8he45naMOHqLPDIzi
+         PPLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdP5RTD+TniQZSnJCjBq1dIP3bkN4fzF03EhrN0rKbV9RPq8lWmPxyFFNphMJpZe/hmQurimu2zQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz9tc3sdtUOcXmL4XT7p8Ih0sni7D9IUeGCsKwiNZgWuAs6Jo4d
+	ajLRE1BqFRWnhBQ54sRKJkMQd8cHawi+JsqyFJAAA19j2rCj3ueqqpyF
+X-Gm-Gg: ATEYQzyKxt+P3WcsgUhncCvcozP/GFhHVb7XYVptEDbmSK4S9iCVZ1N7QCqCU/XOS2N
+	o41wTw8SVW2pajuzPLmiKEOvr5scDtj8Cmid8THYO8CkVj2aJhA9Fc6DY+f2NTSMogIeDe7sEEa
+	u4y4LECkR29ZS81XzZmRR6Rpj9nJSnJPtoVC2HDV94DEaD1FllyPk0HEcl5nf1O7gyE+3guhotr
+	qQGB49EkUBDboU1Tq2vfZjig1y6rzpZGaCuQhg7MGANFqPAlIkayiqZFYkVOnCSlZbJT/KwDEpj
+	exT0sKaH0efXImr/cZ/T+5tHToZIJi6x7CjipCviJ/ouFzEQxubVw/bfDrewluGp1d58f2No1J/
+	TG4+HW0bxV+ix3hRb3o7BgDlVA2SJcBzk4QhNX9mgF7qiMgO35HPjXymM8fISWEayvnW5PsL5oM
+	U2wLZvavHsLLZqTQiFrnSG
+X-Received: by 2002:a05:6830:81ce:b0:7cf:ddb7:8823 with SMTP id 46e09a7af769-7d591b34e79mr366803a34.11.1772134181770;
+        Thu, 26 Feb 2026 11:29:41 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:3::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d586625e4esm2415605a34.15.2026.02.26.11.29.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 11:29:37 -0800 (PST)
+        Thu, 26 Feb 2026 11:29:41 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Minchan Kim <minchan@kernel.org>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 0/8] mm/zswap, zsmalloc: Per-memcg-lruvec zswap accounting
-Date: Thu, 26 Feb 2026 11:29:23 -0800
-Message-ID: <20260226192936.3190275-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH 1/8] mm/zsmalloc: Rename zs_object_copy to zs_obj_copy
+Date: Thu, 26 Feb 2026 11:29:24 -0800
+Message-ID: <20260226192936.3190275-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260226192936.3190275-1-joshua.hahnjy@gmail.com>
+References: <20260226192936.3190275-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 98CBFC0002
-X-Stat-Signature: da4o8eh6turhxiqyi7f39xi8ubnuo1wn
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CB4A140008
+X-Stat-Signature: yexacbxmtuqpzg384qk9ypekktn7tr5m
 X-Rspam-User: 
-X-HE-Tag: 1772134180-319995
-X-HE-Meta: U2FsdGVkX1+fa7pczdLJsp7Rgblkxp08tSZBN6rA2bsWxStgVf8t2ejgLPMMfdqJWuwSGbWaiZI/zu7fyPwkrs6V8EtybuaFaBowoY/FQ5qIzP192w8h5y9XimePwI36qTxNliFayx24GjkCWlTnmcIYVmN89NQeOJsUM3v5u4Ntib/MdWXnVvZIIeI0VhgtMzkIPHeNz1/EnrEJzlUDzmL0B7h1ukkE3bKHk4jfkhpD7ar56E7ECG6d4ZOh2Odr/y79yN91vBM8Qrbvjcx2hyMaIlxetAwX478d8hLvPCp2NZrFVHQIiZHf/2nKFrqPV/vsLVRuPkSmXukCRujzwQe3T3ibe/DA42F8EwknHj+40XwmI9XVGxfmAmmapr9W3HouU1wx6XBrJIRJfUQ3lcwS56yjPeVvCekChyofVbfPsMhi04ndzk3g8busg299USry/EDQHSVIaUz0vqe44bxZbSf8vo4V4d/uynrCP7Zpej1PIP+cMIIYHBC11uf1a+zrUDIBhEfbt9IY2mImIItJycvYoCd6QVT/r4Nfiedvv9OXOpP7+e/dpVgIcnIO45oSdhGtP/Ex+PEcZLpUfLauoJqpBaEeAVcsuw0J4ZkYLFSMU7xEp3xYhl1Srvykt1QPWV3eywplsnSRRpAPRvao21vANXpgPCTrfW6Vq9h14VKjGB6ZeG6zDEyKuLWMxdlXjdPWb08ThC/ZGk6IVpbvEW89C003HjWT+/G6x6DfPWrpdlBRANVQC+QF5CqVpK/FBo0kf/9VWoWBnvKYvzdjPsqjGoJ2uWkw2Oqlp0RSc0KmbBiaG25zGdJsogTzYcTrWpLBXLFukYFwIZujftNjYFkW3mVyZ/mKBPHN4jNASvpU8tCV/+RHYUNEw1ydQ2zpGZF3Gl1yMUfrjlO6y9t3vavDqvek3XkzVrB6r0Zx+cZrq/EgNWrnVn2lNjW3oNHnUalUzMywUjLQmQK
- W0WCeSmQ
- /dUb7KpKWMAifMDwJiXmD86skBD6cKHop3rx+AGtfqyga26jjOFWBn5R+0FFX0VNAwGFhihtiAqRu4MN2VRqOW679Lna+wh8a1KVYW2xZVaBaJY631d+yORahuiog4sUtQOyD9YW6HrF2fHfc2gW71K8XNKx3ZnXk5SggrCELx4yalxtuO6HPOOwPw2y6kuqEsbKy7bIb4UlM0jHMVPyklfLfSucfd71VPYh09lQq6JFwCRVV8dtxuqCRiWECvd9nR5ic3h/KdT7chMwNOVuRTIWtxzryN7+dsarS/hTAtKj93SZyM+Eb2YN/eLyqxI2ptVi4w790meQJm87DYBDIZCWfDmKFqTz8Sl9gbADwJUtxmrcPRTTajCF+ueqFg3GChrxX/lToj1jm8mxto+rKaxHpVVU5HQ+41HzjyJ2/JA0cGDhv+kSK17NsElAtg+Mb0MP6qpIGfn+h8GI9b8Yg6qyN89l0lwMeOJutiy8eBOCJO3aaCqtXb7IeD6i8fRphHdZmoSBCeh3tmrYue3qc0t/o+9wO0OD7qO/McID8MYfOgDUFiLEOy+wPqyf01ibBAgYx
+X-HE-Tag: 1772134182-348202
+X-HE-Meta: U2FsdGVkX19L4LLB6kV9dVZxsZ4b2N4WekmjwIbO7+af3tKbjPr4zLVLXJSODaOiZgCqlhHuQqwaeVKxXJuaI6qDgZoKDlq8rytufZoEZ1rKR6FZHl0xSQQcPU6d2o1iKzqxJvPLqLSyX3GS2ABvMLuOz2VdkGmAiorYAT4szTyB5bXdLbSGAFIKqp0z2j1DWe7Z85alwUvZEaKY5wK9TAH3z5AcPt/EbETW2hOMbKxMyA0hpGmK4PeKWPDO5oIB5l/SpQzdYM5TkMCJep0XZKxTYF4ALLcxijAyFoMmdkIen2JYrpapqLMd2C5lpGxoQuxvBaNs4PzR7mXcNpODm/VviBC8GCXRoXvGU2pxSMLtj3AyQrfYOKWQ8HZCYS0rdtxNCPs4DZs0hqndoIurVyNQ+ZZTNm+dxWFCpcQRXZzOXCQOxU9qdTPRXhvYHjO2RqqNH57mZOOwmgmnF3gdCA+XCI1ZEtDLTvPiYGp1iES4TfcdOu5wB8Tg4kaz+YOPSQxBZcdvyPP8yTvy8v6UC77y/IqWGpCcq/hi6asweWzmgE0l2OwkMUsbW1wKQUwaxRw/Sz3B2i+qfHAsFPPNj0KmtqRlVMWPoGLfQ7mZxBipe4fjyfndyt546XpVziTGe5ryPoX2NtnCQN+Mcn0pz9+vG4/EvsWtiUUsWhGrji8p6cp2ZELTMb7vNM/m/YpwLlygU/ZZmU/94/sIKs9LVT6Af1JVSTeEdXFAsGJq702D0pXz/VCdJSjij6W5vkNHKSNv4X3Huscsv45I0FiP0YufBYOjVpovvkuER3sg80w69xAsxIWKdFTO56uVWbwTX8qfx7MqsxjXs/W9yPnjP2CiSSthdoGCv2pDIqdQReFioxUgyfM7YIV5GQUaSOG6+3uwpULXYUEKCeMjoVcUGAbDK4QjRxmziE/OhNtaNwrZcX7GBGsOZdv+bHK9LQAkqKwMiHiW64SDvkgo3fM
+ H/c337sz
+ 2vT728QHj+7hTTRdT7mp861CbJK/yZNT6BVPuDSuoxuQvz71fWmgazW8RMLCXDzsnCXgobEiiH6qeLTl61igPYi2j6XMk3+5V+QG+F5s+nF0tSEAQjH/VNa2cQZokfcSYs6JI+eE2xZOMqWygqKGxTlLNGMtPhOReS1WIcOfLtnTCq5A39TLuGgI5aUL2fed7O6RxgtnReYrOd2htD5zn4c9l+TsCK09S1daQiOuaFairmCJYShPpmhSFyb0jpVouArTBOmdq4Ief75LInNOvvyOjlx0KqcRWXoehbM3/yhi9KX5lHGp9XOnGWHPG6OvsTbmytX1C+7V+OQcXVStFjt7ilacJkNCwrYWTr5+7AT4B0Pi7yaWu3MsWTnoWGxTdpPxZqlHFiZeDdzb5jIRrMhL1VWfg4t/tj54RdGX/z3SfWoH18pwDKhkSjBeuRd8hNoOzGFmIrdRG3mMXu7NsvULkF6CPKmAYSYKW3Rf8ZLNY3hUTNRdyJ7lqJNSk5yfp+1WlmasPK3/QHew12exh/eq8qSNBhc6CVZSs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,102 +121,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-INTRODUCTION
-============
-The current design for zswap and zsmalloc leaves a clean divide between
-layers of the memory stack. At the higher level, we have zswap, which
-interacts directly with memory consumers, compression algorithms, and
-handles memory usage accounting via memcg limits. At the lower level,
-we have zsmalloc, which handles the page allocation and migration of
-physical pages.
+All the zsmalloc functions that operate on a zsmalloc object (encoded
+location values) are named "zs_obj_xxx", except for zs_object_copy.
 
-While this logical separation simplifies the codebase, it leaves
-problems for accounting that requires both memory cgroup awareness and
-physical memory location. To name a few:
+Rename zs_object_copy to zs_obj_copy to conform to the pattern.
+No functional changes intended.
 
- - On tiered systems, it is impossible to understand how much toptier
-   memory a cgroup is using, since zswap has no understanding of where
-   the compressed memory is physically stored.
-   + With SeongJae Park's work to store incompressible pages as-is in
-     zswap [1], the size of compressed memory can become non-trivial,
-     and easily consume a meaningful portion of memory.
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ mm/zsmalloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- - cgroups that restrict memory nodes have no control over which nodes
-   their zswapped objects live on. This can lead to unexpectedly high
-   fault times for workloads, who must eat the remote access latency
-   cost of retrieving the compressed object from a remote node.
-   + Nhat Pham addressed this issue via a best-effort attempt to place
-     compressed objects in the same page as the original page, but this
-     cannot guarantee complete isolation [2].
-
- - On the flip side, zsmalloc's ignorance of cgroup also makes its
-   shrinker memcg-unaware, which can lead to ineffective reclaim when
-   pressure is localized to a single cgroup.
-
-Until recently, zpool acted as another layer of indirection between
-zswap and zsmalloc, which made bridging memcg and physical location
-difficult. Now that zsmalloc is the only allocator backend for zswap and
-zram [3], it is possible to move memory-cgroup accounting to the
-zsmalloc layer.
-
-Introduce a new per-zpdesc array of objcg pointers to track
-per-memcg-lruvec memory usage by zswap, while leaving zram users
-unaffected.
-
-This creates one source of truth for NR_ZSWAP, and more accurate
-accounting for NR_ZSWAPPED.
-
-This brings sizeof(struct zpdesc) from 56 bytes to 64 bytes, but this
-increase in size is unseen by the rest of the system because zpdesc
-overlays struct page. Implementation details and care taken to handle
-the page->memcg_data field can be found in patch 3.
-
-In addition, move the accounting of memcg charges to the zsmalloc layer,
-whose only user is zswap at the moment.
-
-PATCH OUTLINE
-=============
-Patches 1 and 2 are small cleanups that make the codebase consistent and
-easier to digest.
-
-Patches 3, 4, and 5 allocate and populate the new zpdesc->objcgs field
-with compressed objects' obj_cgroups. zswap_entry->objcgs is removed,
-and redirected to look at the zspage for memcg information.
-
-Patch 6 moves the charging and lifetime management of obj_cgroups to
-the zsmalloc layer, which leaves zswap only as a plumbing layer to hand
-cgroup information to zsmalloc.
-
-Patches 7 and 8 introduce node counters and memcg-lruvec counters for
-zswap. Special care is taken for compressed objects that span multiple
-nodes.
-
-[1] https://lore.kernel.org/linux-mm/20250822190817.49287-1-sj@kernel.org/
-[2] https://lore.kernel.org/linux-mm/20250402204416.3435994-1-nphamcs@gmail.com/#t3
-[3] https://lore.kernel.org/linux-mm/20250829162212.208258-1-hannes@cmpxchg.org/
-[4] https://lore.kernel.org/linux-mm/c8bc2dce-d4ec-c16e-8df4-2624c48cfc06@google.com/
-
-Joshua Hahn (8):
-  mm/zsmalloc: Rename zs_object_copy to zs_obj_copy
-  mm/zsmalloc: Make all obj_idx unsigned ints
-  mm/zsmalloc: Introduce objcgs pointer in struct zpdesc
-  mm/zsmalloc: Store obj_cgroup pointer in zpdesc
-  mm/zsmalloc,zswap: Redirect zswap_entry->obcg to zpdesc
-  mm/zsmalloc, zswap: Handle objcg charging and lifetime in zsmalloc
-  mm/memcontrol: Track MEMCG_ZSWAPPED in bytes
-  mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B per-memcg-lruvec
-
- drivers/block/zram/zram_drv.c |  17 +-
- include/linux/memcontrol.h    |  15 +-
- include/linux/mmzone.h        |   2 +
- include/linux/zsmalloc.h      |   6 +-
- mm/memcontrol.c               |  68 ++------
- mm/vmstat.c                   |   2 +
- mm/zpdesc.h                   |  25 ++-
- mm/zsmalloc.c                 | 282 ++++++++++++++++++++++++++++++++--
- mm/zswap.c                    |  67 ++++----
- 9 files changed, 345 insertions(+), 139 deletions(-)
-
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index d5d1c27b3852..0ca2e94af5ad 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1416,7 +1416,7 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
+ }
+ EXPORT_SYMBOL_GPL(zs_free);
+ 
+-static void zs_object_copy(struct size_class *class, unsigned long dst,
++static void zs_obj_copy(struct size_class *class, unsigned long dst,
+ 				unsigned long src)
+ {
+ 	struct zpdesc *s_zpdesc, *d_zpdesc;
+@@ -1537,7 +1537,7 @@ static void migrate_zspage(struct zs_pool *pool, struct zspage *src_zspage,
+ 
+ 		used_obj = handle_to_obj(handle);
+ 		free_obj = obj_malloc(pool, dst_zspage, handle);
+-		zs_object_copy(class, free_obj, used_obj);
++		zs_obj_copy(class, free_obj, used_obj);
+ 		obj_idx++;
+ 		obj_free(class->size, used_obj);
+ 
 -- 
 2.47.3
 
