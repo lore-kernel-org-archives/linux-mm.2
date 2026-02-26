@@ -4,138 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC6AFCE064
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BE88FCE068
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:35:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BEFD6B0098; Thu, 26 Feb 2026 07:31:49 -0500 (EST)
+	id 2FA096B0099; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 896CD6B0099; Thu, 26 Feb 2026 07:31:49 -0500 (EST)
+	id 2D1336B009D; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7983B6B009D; Thu, 26 Feb 2026 07:31:49 -0500 (EST)
+	id 1DD546B009F; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 622D06B0098
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:31:49 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0635213C0AC
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:31:49 +0000 (UTC)
-X-FDA: 84486544338.11.AC32C33
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A7FDB1C0011
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:31:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vSIQtv1E;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5N5MjjgV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vSIQtv1E;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5N5MjjgV;
-	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772109107; a=rsa-sha256;
-	cv=none;
-	b=ijOlmvk/x35ucwHEZnj390ebA+MkbTzEItfaAJTqbjWjNbYCjYYPb0DNu2hFjoBxs1PyJ6
-	kxjXORHrIzSPkoTzEadnddW0NW3MRrztYC+QIAVB9xEu1fDpH6uiPU/WXjZNW/N//D4Sqn
-	9bTfW8YmcRt2pKMKWbzr5uZFWIw9mzI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vSIQtv1E;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5N5MjjgV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vSIQtv1E;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5N5MjjgV;
-	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0974D6B0099
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3B9C160BBE
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:35:00 +0000 (UTC)
+X-FDA: 84486552360.27.AA501CD
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CDDB04000D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:34:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=REmHYhHJ;
+	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772109107;
+	s=arc-20220608; t=1772109299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=piYT3kqwgWJt1TkDFNiYEcMWLVyAyVVnqvA2cZUEJi4QLlr4jHHkGce30vHoIKOxGGfWrX
-	S1DIjaJYrDG0RTHqNSHR31Dnj7izLZIRvnqiCavr8//AkyuSnrCeQtGyM+fs9ZBZaJV3vK
-	Hx64DGcVNaBCx2EVFylPBMilu6jB+cE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 76C801FA8E;
-	Thu, 26 Feb 2026 12:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772109104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=toSZr/wk0D+ZLB4X3GL8tdvy8Pfuhw55RvV5q/azapM=;
+	b=Z8CsLMMrSjJbx2E3oscIbHspYV7ZbWNBwt1gHElSl0Yp1G/QJvpUOD7DxjCEW636aAOZRv
+	1Q5BRsjvT88dxUDaNix5kH0LUSej8KCTO1FEuO3+gja1KE0Mu8nns4Xcn61rIMWF/benI+
+	Axn08PV43+8ANBFI0nFZCXCuXBuT84M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772109299; a=rsa-sha256;
+	cv=none;
+	b=iWE/SiwOjXp7eU+JybtX0DZ2endV1XK4nUC6CrLjE0Vvu9SWNXTsyzMHuUYVZibhOZlGSn
+	wxyu7HGPRm1HZ0aQ7V1lO28pG//uwAs0mF8kwn0WsINOcenhjd+i8dmSGG7bB9QMpWWi48
+	3yJqhR1xr4nxJRtyYXMYwcEPxd7Syes=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=REmHYhHJ;
+	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772109296;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=vSIQtv1E7WnqPn0ENIfIOEmaSpvOt9Q0fMqP2kUhYl09j9A20zwA4LTFWE8UHxDzOkQuxs
-	5B2qs3tj1TPz7CPUGMBtl06RQNtZ92ZkC6lFLSfnUuiYnk4ZSzLIOa3jWTasYwcfhJW6/b
-	w4lg49Z+os+DhYIqbt6kXcOHCIGau80=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772109104;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=5N5MjjgVLaDn8W3omolC50q8cwfMNo9NPN0KBHCWuKhhRO4JrhUZVuXf1uFNS1Jr0BgPqz
-	c5zrlc4TlDcKfIAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772109104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=vSIQtv1E7WnqPn0ENIfIOEmaSpvOt9Q0fMqP2kUhYl09j9A20zwA4LTFWE8UHxDzOkQuxs
-	5B2qs3tj1TPz7CPUGMBtl06RQNtZ92ZkC6lFLSfnUuiYnk4ZSzLIOa3jWTasYwcfhJW6/b
-	w4lg49Z+os+DhYIqbt6kXcOHCIGau80=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772109104;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f5WEnpROlC9fgWu+KGiqZFKe3oMMY1tyFav7WdEwLBc=;
-	b=5N5MjjgVLaDn8W3omolC50q8cwfMNo9NPN0KBHCWuKhhRO4JrhUZVuXf1uFNS1Jr0BgPqz
-	c5zrlc4TlDcKfIAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6912F3EA62;
-	Thu, 26 Feb 2026 12:31:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /mugGTA9oGlzHQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Feb 2026 12:31:44 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2B3A0A0A27; Thu, 26 Feb 2026 13:31:40 +0100 (CET)
-Date: Thu, 26 Feb 2026 13:31:40 +0100
-From: Jan Kara <jack@suse.cz>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	seanjc@google.com, rientjes@google.com, rick.p.edgecombe@intel.com, 
-	yan.y.zhao@intel.com, fvdl@google.com, jthoughton@google.com, vannapurve@google.com, 
-	shivankg@amd.com, michael.roth@amd.com, pratyush@kernel.org, 
-	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 3/6] fs: Add .unaccount_folio callback
-Message-ID: <2s33j7wg6ehizvdoz5fggc6kfa5byrs4yg2hk4fvwvfjp7nigo@se7fhyaknqqm>
-References: <20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com>
- <20260225-gmem-st-blocks-v2-3-87d7098119a9@google.com>
+	bh=toSZr/wk0D+ZLB4X3GL8tdvy8Pfuhw55RvV5q/azapM=;
+	b=REmHYhHJH8JbL1SxuExvYSceF4yEaGJbivS6xDSQE9K5ymP6CJpeL9wvMbAGx4KwMpl8dy
+	MWnJSF//2NEorFNH5fXDdJKyHs3HYayyJfEAYar4KO3O74WyeZCZPvZW7JPNOeZezeXh/z
+	XzDcaAvgPUfvzAW3HYyp9mg/OUKgolU=
+From: Usama Arif <usama.arif@linux.dev>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC V1 01/16] mm: Abstract printing of pxd_val()
+Date: Thu, 26 Feb 2026 04:34:39 -0800
+Message-ID: <20260226123442.759447-1-usama.arif@linux.dev>
+In-Reply-To: <20260224051153.3150613-2-anshuman.khandual@arm.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225-gmem-st-blocks-v2-3-87d7098119a9@google.com>
-X-Rspamd-Queue-Id: A7FDB1C0011
-X-Stat-Signature: w646azx9yiszka8dsthgphpo5obwuntf
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Stat-Signature: yd9wtx9uzefu3pccodjpozejgfpg1q9i
+X-Rspamd-Queue-Id: CDDB04000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772109106-118059
-X-HE-Meta: U2FsdGVkX18bq96XBCJ8UWbdF0Dlf0RfVpyjP99r2G+iUGuXiAlzkhOc4bB0Ok4myTVIugrxP67D/Ba4TTdp6Uosib1Ws3sUhiGrrFfqq4Mfsg6PmJj4kIX3M6Ed06iaox1KqdGb2AjPOjy/mF4sI8RKOHPTuIbRIZ7m10N+B4ohz4iAfx+8SmIwQyopXDx8dS1yrmNXGKX/8h67a5uk1x+ZNiyftNZfwHIzn3QuX+T05Koi/nT6MOcTSn83zjmH0jL6fquaanU4zPbsrhuyDZtEiHSJKb5R9MtkOWH51LPe06HJ0lk2F684bDt7F11Mppg64Kt9u9ApFowuQ5uKF3X0TpOQAMePurYfp/l8SMHlNt82wsD5omJQcnD+kQS16CrEBqgGzucczOjWGwZCRJaajao8fJ3ZsRyh3ztPJ9y905Vgnw4Puo4TI8nGQJvDgDC/ovnI5deSfxmvw5Yf+r7h5nPWrdz5q9940pu+WTNWmmBTu4wDZRrimIB+pZGCcLAfU1ziF79pmG12Pm61GR6UZkDEUHPMmC60YqbaxLqPUXtPeXREkhUSAYdxkvur5BmLUBuKiNabeOGXsRCB2iAM6X0p2M86NPClam5SZxoLdHTFb/Bj20UN/7I3jwZ95WNdojoURWukJe5O64iwYCQdlvt21knHolKhE5pS7p+n2LJrqMJVE9T+W0cenaeg/AkojK/o73iJYF98ZUfqTKAvVgNsGDwfqm6Eutjh84OlpsbXCExAmO1YIy2mwGg0cfIZH7XVgrrEJneuQxlQ8KitnQ2s1zy7UZBNjLvMUzbjbEAL1IedwXYRac3toNbtB1ecmIhaEARs2MxWum6Y4HRUbx8EqIbrUWuarSlew3ggYS6FZ9oI57QaYbRinZSVuZhcenXGY0ShcDvNJ3Oghznslce+/pnaMnVAWwKJeQFx1CKN/JJGyRwkxus5HRK3Z53v7AJdS+zqT+5QxZJ
- XyCcDuaN
- 77N2BKPH8UcDnDgmnDeLYbZose3up6AT3nAUD6AOm25aG4Xj+gUtsQFBlJZykhGSVBcRflOlcNYOnBHod5lcHVCrUBTmVhn8a6zAqVfytEsB+lwQAfR2DGpqemKtICmMklVvEyrMGbPXAsJD6fYiaflGFmjlCgFK1RdqrqSTyZr3FnSltPy4AlpFZxmbNQfwyQ/V8pBstqgf/clbm1vM0bhcTmqmPlnIX21Gi1Na0EMWh1l/2Hzr8ywi2z0VAu+ApXJfLAutHi2wU7OPditGsmUw13HH2O0JlJCjv05wBbciEsCBpEAdeQKH8iu8PivwD62P+dqEMftlRZGdB21QX98D77+ggEjnSxyZLcdfx0HGfvGwYm8rbfPkyzYTMVj8po3F1hAyye8HjbAk=
+X-HE-Tag: 1772109298-311390
+X-HE-Meta: U2FsdGVkX18xx4cf34I0Ac8+v/pkWXX9pOIVwe+Sjvm0qPweFtgPrZNvf+/Oe/xp/aIlTDuHX8aef7deYyxC9uG2TJ6D9Oq8Tgx/f15Aa+KpIl6rVcIB1WShnSIuOljQGEWBctAF37zo8fXGPRRBlIfoxDCrgLg0AaO5zfxVK816utu/eSc6+VwPy6W5u+IbpjaZ8xRsWrv+zLJCHuDiX7eWFg4kv3excRU9mb/qspKU+hpEojlLwKk8kAVh30umT8x7I01Q2dtMrCJz9cscf5Cz9PFgarQOcJP1jkO7cpwiQVfUqkGWeapLE0sFDkzyhaVR+b6PEb61qPYs49+FSCFMzVdb7mEGu5pUWS4AulZOvK7EJJSGuVoOikOxuk8vlG7iX9mf9fprc8ETkfmloEil0PHfMMfFzi8FAbZLxFYgCEdkO3erY6LtBC/aUyxTb/ncNCdixEL07nspIBfj8KNyyFPEkGbe5xXHOo378RPIFY0KybEclLFtQLx87nFyMBkRyTzonjth2FlkcSG2+u6m4B9piWcnOfFBNbmVHtqTo6rOgV+j317zm3cIhIz4mFpOwVyrDX8pfoL/EMy6ho+K+DVJXd7vf+fgroVc5Wc0w/wqTFyKEqscQEs1pQpTqdT6tV+pP36ezK19uvP66LQEjfvPB6NE50VVX8HHHk7DzYXuUlTu0tFsiyQ5Lt57aX0WZ5BxhfBAbFGaGnebzFPh4oxTpRxTVVbou5m2CDKdOfEzAbBbsgWPByHW1xVV8Id7i5SXY1yIy9HgDPH5Z+BBuL39aDdePc4F4yhLR9ySooee//viiTmfi2TcA/ML1gB6jHUw9TrRK67q2hfhSLAYfpV7ZMG9mZgWv/OmmtQ4Zni6abpn57G54/0TCDWd3UsbBnYXwe6lCYYrYxu7AMI1xCKqnuncPZGw9hUm7ZpLeXYPE1/AYWLOdgsKPvpdK5RNkLLV5sff863Tpjk
+ DlTllSI3
+ SZpxXiPKVOtFd5KI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,29 +97,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 25-02-26 07:20:38, Ackerley Tng wrote:
-> Add .unaccount_folio callback to allow filesystems to do accounting-related
-> updates to the inode or struct address_space mapping, when the folio is
-> about to be removed from the filemap/page_cache.
+On Tue, 24 Feb 2026 10:41:38 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+
+> Ahead of adding support for D128 pgtables, refactor places that print
+> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
+> macro to prepare the argument(s). When using D128 pgtables in future,
+> we can simply redefine __PRIpte and __PTIpte_args().
 > 
-> .free_folio cannot be used since .free_folio cannot assume that struct
-> address_space mapping still exists.
+> Besides there is also an assumption about pxd_val() being always capped
+> at 'unsigned long long' size but that will not work for D128 pgtables.
+> Just increase its size to u128 if the compiler supports via a separate
+> data type pxdval_t which also defaults to existing 'unsigned long long'.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  include/linux/pgtable.h |  5 +++++
+>  mm/memory.c             | 29 +++++++++++++++++++----------
+>  2 files changed, 24 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index a50df42a893f..da17139a1279 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -17,6 +17,11 @@
+>  #include <asm-generic/pgtable_uffd.h>
+>  #include <linux/page_table_check.h>
+>  
+> +#ifndef __PRIpte
+> +#define __PRIpte		"016llx"
+> +#define __PRIpte_args(val)	((u64)val)
+> +#endif
+> +
+>  #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
+>  	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
+>  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 07778814b4a8..cfc3077fc52f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -532,9 +532,15 @@ static bool is_bad_page_map_ratelimited(void)
+>  	return false;
+>  }
+>  
+> +#ifdef __SIZEOF_INT128__
+> +	typedef u128 pxdval_t;
+> +#else
+> +	typedef unsigned long long pxdval_t;
+> +#endif
+> +
+>  static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+>  {
+> -	unsigned long long pgdv, p4dv, pudv, pmdv;
+> +	pxdval_t pgdv, p4dv, pudv, pmdv;
+>  	p4d_t p4d, *p4dp;
+>  	pud_t pud, *pudp;
+>  	pmd_t pmd, *pmdp;
+> @@ -548,7 +554,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>  	pgdv = pgd_val(*pgdp);
+>  
+>  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+> -		pr_alert("pgd:%08llx\n", pgdv);
+> +		pr_alert("pgd:%" __PRIpte "\n", __PRIpte_args(pgdv));
+>  		return;
+>  	}
+>  
+> @@ -557,7 +563,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>  	p4dv = p4d_val(p4d);
+>  
+>  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
+> -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
+> +		pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "\n",
 
-I agree .free_folio isn't the right place.
+Hi Anshuman,
 
-> From the name, .invalidate_folio and .release_folio seem suitable, but
-> those are meant only to handle freeing of a folio's private
-> data. .release_folio is also not called in the truncation path.
- 
-But this I don't quite understand. .invalidate_folio is called when
-the file is truncated (or when the whole inode is being evicted from
-memory). Filesystem can do whatever it wishes there, not just free folio
-private data. Are you pointing at folio_needs_release() check? But you can
-mark your mappings with mapping_release_always() - it's there exactly for
-such usecases... Am I missing something?
+The original format had a space between values ("pgd:%08llx p4d:%08llx").
+The replacement loses the space separator producing output like
+"pgd:123p4d:456" instead of "pgd:123 p4d:456". The same issue exists
+in other places in this commit.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> +			 __PRIpte_args(pgdv), __PRIpte_args(p4dv));
+>  		return;
+>  	}
+>  
+> @@ -566,7 +573,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>  	pudv = pud_val(pud);
+>  
+>  	if (!pud_present(pud) || pud_leaf(pud)) {
+> -		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
+> +		pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "pud:%" __PRIpte "\n",
+> +			 __PRIpte_args(pgdv), __PRIpte_args(p4dv), __PRIpte_args(pudv));
+>  		return;
+>  	}
+>  
+> @@ -580,8 +588,9 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>  	 * doing another map would be bad. print_bad_page_map() should
+>  	 * already take care of printing the PTE.
+>  	 */
+> -	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
+> -		 p4dv, pudv, pmdv);
+> +	pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "pud:%" __PRIpte "pmd:%" __PRIpte "\n",
+> +		 __PRIpte_args(pgdv), __PRIpte_args(p4dv),
+> +		 __PRIpte_args(pudv), __PRIpte_args(pmdv));
+>  }
+>  
+>  /*
+> @@ -597,7 +606,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>   * page table lock.
+>   */
+>  static void print_bad_page_map(struct vm_area_struct *vma,
+> -		unsigned long addr, unsigned long long entry, struct page *page,
+> +		unsigned long addr, pxdval_t entry, struct page *page,
+>  		enum pgtable_level level)
+>  {
+>  	struct address_space *mapping;
+> @@ -609,8 +618,8 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+>  	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+>  	index = linear_page_index(vma, addr);
+>  
+> -	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+> -		 pgtable_level_to_str(level), entry);
+> +	pr_alert("BUG: Bad page map in process %s  %s:%" __PRIpte, current->comm,
+> +		 pgtable_level_to_str(level), __PRIpte_args(entry));
+>  	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+>  	if (page)
+>  		dump_page(page, "bad page map");
+> @@ -695,7 +704,7 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+>   */
+>  static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+>  		unsigned long addr, unsigned long pfn, bool special,
+> -		unsigned long long entry, enum pgtable_level level)
+> +		pxdval_t entry, enum pgtable_level level)
+>  {
+>  	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+>  		if (unlikely(special)) {
+> -- 
+> 2.43.0
+> 
+> 
 
