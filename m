@@ -4,135 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71D80FD8FE4
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 17:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 140CAFD8FEC
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:02:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D226C6B00CB; Thu, 26 Feb 2026 12:56:50 -0500 (EST)
+	id 4A8936B00F2; Thu, 26 Feb 2026 13:02:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEC2F6B00D3; Thu, 26 Feb 2026 12:56:50 -0500 (EST)
+	id 481386B00F4; Thu, 26 Feb 2026 13:02:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C18F86B0191; Thu, 26 Feb 2026 12:56:50 -0500 (EST)
+	id 3AD436B00F7; Thu, 26 Feb 2026 13:02:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8B006B00CB
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:56:50 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 741481601A3
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:56:50 +0000 (UTC)
-X-FDA: 84487363380.03.088240A
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A49BB120010
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:56:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="IbUj/59b";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772128608; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 244706B00F2
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:02:19 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B943A140294
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:02:18 +0000 (UTC)
+X-FDA: 84487377156.13.2C1CB34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DC53FA000F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:02:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rCmASTZT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772128937; a=rsa-sha256;
 	cv=none;
-	b=G3yW/QSHRE/mbKXvKxW+AqcxPgate6ok/1OY+wu7lZxdlLKEPgYh4WO8ydrWUEx09LHbbR
-	agfKR9CHLrv0zlLG9dMMidNfRQj0JnmB3BCz4DEybeQaWXNweENTJq4GOUw/UznZsiO8Ke
-	CqhsMQs1ZQOyxJkjIUr+LwWAvVzF5ic=
+	b=QhWyn1kKSTbdhldT/tuPG9Hzaa3m7aVeJnj2Mvk60VJwRWzsm6jEgHyfAC6+pa0sG4lr5l
+	O1o73IYYrsX8HkkJwyN6U8wDTWVrpiE3vD6sfvPkhvLRN09/e3Vt1td+A+pzo4akUMqf48
+	pU5LMIfIYTHKzp8fHmWi/5uAc78by+g=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="IbUj/59b";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rCmASTZT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772128608;
+	s=arc-20220608; t=1772128937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u9YpbVK1L35uP8WZppOKKGwEMIRFy1q54VTAL1bze0I=;
-	b=12CgHjtRdKw6BzkW3bgMT72OUWkA0BE/c6i/WlZwsJ4zjm/XRo2kgXEz8RWTSfuxaRNRie
-	G7wTvcPEuQM689Ie5M453sFXKEArdWTZOtbFtD8vnfgBLkJxqNdtkGJ5zhLqU8c6CVYyRX
-	rIoYOjVlL/fFffF5DHrfEM67+R2FMRU=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-896f82e5961so16653766d6.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 09:56:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772128608; x=1772733408; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u9YpbVK1L35uP8WZppOKKGwEMIRFy1q54VTAL1bze0I=;
-        b=IbUj/59bLYmR7JDvpwch1fIZi8fR/dkBPWcMMaYyXOFJanCZqenEdeRgaGzYX/16o8
-         BZEYOk7oW3JQfEWbT1O5B1acE05dG0PJEStxy0k5CyjgGPC4685c6RNlzMLm71Yh5N8Q
-         XLVf0DBTRo7xICT6NkLPUp0BE4xFyV2Eb5EfaxEccCq5e7jOA4J0qCtGLcMPxqLCVXG8
-         KQP/b1mHRvMxhNGlImkFbsJOsHpcmwgQ9PYPai6GgdGWgkKGP7c7v5FvHNc2RFxBPIf9
-         HZ2BuBtvglV6LreO+wqPXi/jq1PLb+4yT6XhXSAoDHg72RDL/R5swQHvQ9lShTg23Vo6
-         cB1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772128608; x=1772733408;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=u9YpbVK1L35uP8WZppOKKGwEMIRFy1q54VTAL1bze0I=;
-        b=baFkB3h9o99prZ6Y27of1RZe8m4X1l1j7vO2NELmTWdxGmT+yQoQ5jbREd4nlPMPiA
-         wDjWJqjv70dOVYxB2eU2GGr2jiZHkZFX4UZgd0TlFT5RJz3vjT/F0VzJn+JkfHTtQSJ8
-         rQWVOueRB+c2ah5AlM3bbnFS7m6B528AYOdmjIUnE4fFZZQLZZ+aePYMntNXAkOWVp2O
-         O2U4iucqPyyzmHOMyFfWak1JWO2/eK/vsTJCs37FoUB8sMZAk6cOfGuLpMek8pffxiSz
-         zuHOaQ+x0Soqm0orWtbY9jRpvy6yfCDGzrmRP7w4IrEIAjrkZSnq16UF0hMYbdE3DuuQ
-         snmw==
-X-Forwarded-Encrypted: i=1; AJvYcCXP83rpdF70VkFnVrdPPjhFTQfF9P3/wRyq54PWYXJKUo2VK8gNvYl9aCVZKma2I31F1BpOADGInQ==@kvack.org
-X-Gm-Message-State: AOJu0YwiBvhwEdqEKEj+pOTxLq3VLl66NhM6j44f/LCXBTNAWa9FS48U
-	ksnavQzqo79nQ/VKk5ItjCwVfroRzDAyW6IPe6s/7xMbnuO/2MhIG7ujDg3FIA==
-X-Gm-Gg: ATEYQzzNfVSpVyCYp2QGbWpPiRB64vCc48zUv27T/dzvQ+xFxFEg/ByMCQmQIdjmNDv
-	xXhr12+JLEUz7WOG6zY10vfVrUsmO701mfgViiDMZzu6DDr66rqfnDoNHnTXVhFpyK6lZKzgAu5
-	9WLp8ZK6R028juuF4KU+/csnwr/mFlkN0jt77kA12XV4I2S36dLVtmBoUP4tHKXwMjVOREk9a7Y
-	nxWeAAtrfujn0sBez3MOsA+61AUUsDbo4TgNye1yyZ/gEZ+C02B5DTfVSg8Ie/8leKyNPPkhrZZ
-	Eb+krIHF0rzo1Fj9xKeQ5SLahaJ6+VWMt7GqrLGO4rfThJZgX5DpJmxdvmhWUL9Oh4h4deD63K9
-	S0xeAIjPiN1sq9x06YLx7uaiyiKjFrwqwiIIs2tPSicFwSnrRGvc7monlh1CTck0g4H7+ytGukx
-	EpWGGUP5iCWo+sZOQQtKds8w==
-X-Received: by 2002:a05:6808:d50:b0:464:5aa:32cf with SMTP id 5614622812f47-4649f01f7fbmr2640192b6e.46.1772122122920;
-        Thu, 26 Feb 2026 08:08:42 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:55::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb35290fsm135998b6e.4.2026.02.26.08.08.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 08:08:42 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Gregory Price <gourry@gourry.net>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Waiman Long <longman@redhat.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 0/6] mm/memcontrol: Make memcg limits tier-aware
-Date: Thu, 26 Feb 2026 08:08:40 -0800
-Message-ID: <20260226160840.1220006-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aZ_-m7vSUPrzDj4n@tiehlicka>
-References: 
+	bh=0FF7kEFzCxl1h5KQevuhOLd1e1rZSfCN+0J2UKVd/gA=;
+	b=fkUwVKAqDHowcP5/EE3mnZGDGi09bnIEk3zLItQ8TW5kBF3613DH7le31kDBNsrptn4Z2n
+	vuEZrsXu72j3KWlBynFFM9GsiYExeEw2pO4Iw6y0vx4RUzeIU739Cr4hRoDpxtaLY6oedK
+	qjiYoNBpUyZnpkelinL60yDB4WjhJV0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 98F4C40AC7;
+	Thu, 26 Feb 2026 18:02:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D544C116C6;
+	Thu, 26 Feb 2026 18:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772128935;
+	bh=zQHqTkrow2e/qB8SQ2FiRt3OzJM5ES1xW6nnz1Mp58A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rCmASTZTAEGlHobwizKE7wFmQaZpy1abiwHYQqU0sOHQkSTHw6J+hdY3VdzVYnuP6
+	 yhQDN2ia1OKsV6ulo5NsxvYXQUH5x0WLPZ5J2YSvTunCF56rd/OBjgCtdOrnFBf921
+	 QVRWHmFMD6jX2DjsYqtPHl1tPfg2uflvoiexCo+rBnS35nD6EvyZ0waJbn93xk0r51
+	 bCTTiiyyvryigMAKQoPA4O/PxFApi7r4PqQLfPI1PM0Wv4Xj8UySpwCCOETD0UlazY
+	 WFf7UjLnKwaQl/h2VNmGkhNNIVMnNWrABysHm9cSfiZf2bo0p4LXCVMh19VEjmpNmr
+	 tXg0B7sViv01w==
+Message-ID: <c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org>
+Date: Thu, 26 Feb 2026 19:02:11 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wq99ogctw4g8fafja8d835cqknfu6oci
-X-Rspamd-Queue-Id: A49BB120010
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Content-Language: en-US
+To: Ming Lei <ming.lei@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+ Christoph Hellwig <hch@infradead.org>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
+ <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org> <aZ7BbosIr2FvZFAe@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <aZ7BbosIr2FvZFAe@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oibuq5ufehz5nn6bh8f6yo4h5fqjum1n
+X-Rspamd-Queue-Id: DC53FA000F
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1772128608-723318
-X-HE-Meta: U2FsdGVkX19vrJtVtlkIjSmV0HrdrlpnpxjwoZ3MVVp7MIzBhIch8i0KCs42KJh6im36kOXpIL856Pew6ZelyPsayNSYPobwlVzirlJF9IIVr63lezLCkqq4YH9dvaunf334W32KqUZQhxXW+Wty5SDJn6LJbeVQLh92eFfQ50BMuAu2KvDtGq7alFH7hW0DLZuDTMALEsZV9P6ZrPU75MeGHGhEstBvX/yM69jd7mQ+kCrdpRx6RyqDVFF83ZNP8Ek6dnl+YX/Io6+FDRmUoaJ273sSv9zdVaPNlRyNEC/11mv5NQ+FVdjRAsK0i8yC1dOd+++osnqeI/IRLCVOEpL6OweLCQg/nsrPTRvzN44JXRGkcaltsvHdV41y1MOqwvgykXy9UIAmFZNvTin4lo3v+prRuJ7DdspkYFMxpscKZIgutGDWe7U+fAKsrsFub/9Db9FumrWQU2MoeYOoraSgNhVg3n9s9++1zhYA9aIQzQmt+76n/in+yi+jIU2MDKhNfNGeOmYYf10BPvevcmGBYMXNs4lyvoib6dw1PE2TIc1dsfyXxfpvJpLUE2+Hl+7tS6jI2VukQnT6Zd4ggdULnHfCweA2CxcuntRZN0Z6tjef6zTRk9TgfoLhZcirPqJphpnyQtu9A2KBRaw4GKSc0jyLNduWirr83nG4PKolrrRyvTNsUEXAKe7ziMewd7xrn9cd2Wh1nlF7a7aJVWv/33nw06aHGGTRIZ5eE6ZWjLExOLcbMwn2TTpUTFyjgkkhQb3U3GJYC/SvRprgKL6oV0xblqAfyq30MFBokNIv6Z5sHLXVk3VX+xChrtEk0SpK3Vc/DmvVgcUJp+ICt5R71V6qyogxk9cfnfnDTylOcs3RHIKEE1BxCheC6Gejz7SGoo18tkBgRqZuhm/wKQyQYItqJyCMlDZUcRY/pZ1m/OuAzAffm5xp2mbyDbgKon/dUlx54N/RABjl7ul
- 9QQGwtfN
- zgbjUXnCdZZdt7ffwYxAXm0+OLhPO3ZXZ1kyJYr/7QVDl+HN9ZK60mpFQsu5nGHJASfgnmHxnEAvYgzQObSeOhJEePLHTN2EpicMyaONy/bTZ5xablrlrOZ/vcnQLp01foqWmjCsH/blbKjJyk3sYx1O5vpgGAlziBBqg/BPC+m19mgWFxris7wHt1eCfYTsh+MX61VlRLl68lqjMLrhsFCvJJpYifH5YVki7H1nhsY5yVdndqgc+ivFPtl6JIgBt+B3uTwkXHDI+kEDuDbMyQaxEg0Ck7SVl0u8AQjzqh1QkV2iVJ+V3ujEdE7U0wkhW4am6D4L3rd/XNvluCe6DPZ07ecWED+B+1MU0bjvAQcO6QwVuInVdQCQuWExxozsrl8zn1oNYp8vAiI3HUYfrtJP0xD43hBoSdxjQOd/N0nJFeZPzTP33i2MFNHkhn7N6K9miCnSNYS2Dk4xpHT53HFmkW0qTm8Uhn1Alx3uQ14t5AWloj2V//3octzhFwXiJSGThmKuW5GZfUHr9i4e6VC2rByIGNjOEcfRJP5sQ2Dtq5wqCxZEgM3qEylhhy5YkgqAKkeD/Re/BBT4=
+X-HE-Tag: 1772128936-116234
+X-HE-Meta: U2FsdGVkX1+qZljxgrsvvd+u5wapZG9xNIRPfSQ+S3M70CsWRiWw+bG2MeTL+7URf5iGVJZ7HCUFgY10CWgUgYj1NRfRQtkeOMxETXCkXfvRcIOQQ6pR3CmACkF/UdaM1YaxjRhuJ4NdrqAnHf+NiGZAjOc40zk/otfWEcP3jpVGRZeOmIF/Gp1Mwbrab4DE9B4sPJpVzKwAlV6pHtNnC0Fke5tlNmJxAKiamWLrGF6c8Of6iLYDvMhuSo9wjLdF+2/e+gHIcJyGcXqiBAoHOgYOW1hd9VbSUUKJ5dqWK2ZPIoxz3OWtsXBnw5nh1qgS2mMk9ul0/bRROkzP4oRFCYGvZSFD5vKBNa7VNYT73nNgcoMAwJvYLswvegRLy3gUyEmqFNzTXHK5ErjyZSvCvTT+NaOuxdNkyBwbBju2Le+oj5fnoJNhy+tf6JpM7Iec9wBjfL2+VbfAHGYYeOsPh4ubCSpoc9gMWSGfwwRQkJZXtJ99i8HSLA19AvXnYUmzaTgVjN3rZkE2HIgZhctVSQ6FQPWS9AfXeJP8CvhpX9Qr9sfzRSFivp/3NeMAGD+PoqYeG101ZbFDj6srJQyTSdUlvX/JChenWJ15TiXtBOTFwSS7weQu5A9YkdLuTrdYrb18kv1IrjjlMl+J6yMdujUQ/Drba0clzZKX5QH4RjdnwxC3sZWwWXBcj490G5V6+OGjTJM5xM3jZB4jqoiNFidPKZlkY2ousBgF+hKrFubXkDrmupek872Y3FzgEBS7h/hfAvMUyw8rje0KnjldG5NZpnPPBkxp3Z7kQt2p48pHNCa2j9oMDc0sJBdGZ5t4Sh2ocmXZHcUPC2JqMgIdPODxrt/pBDSmtwTPfZ9akQMN6yeZNu5feBldBvWvuTfAxttfqf3qv+4qKs0PYdE1l4LVmhwkxKtumjBwZJfiDw4JKfWFr0jvhbKJWqha9hPhJIon7GBz98EtTrRI54I
+ FWlzkMTS
+ 6xn9Q0nCL354UYdMVFc4dsg0Gpa0x7HeruDzi+zCIP9/G0Mp+Q12H+x0b4o/2rG7dgNz0RtZf4ZdC5y2/IJ3CV5J7yeP6Xzup+L2Y2tmz/znKkfwdnM/t40I9h3tpPMjA45ab6Lf4toGUv3+G/Cp4g0/NNhXs1oxrvSlzUFj5DHEOSGkNKZz8w5IeS2l6Mt3uN2HjzxLgq1Kh+v0rZAGiVobyBKakiuDl9jPJTlal3yNEhx8NTE6vMr5fZ44nU337b32u3ZafyTHm1F9sWT9rMKr/eA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,195 +99,405 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Feb 2026 09:04:43 +0100 Michal Hocko <mhocko@suse.com> wrote:
-
-> On Tue 24-02-26 08:13:56, Joshua Hahn wrote:
-> > Hello Michal,
-> > 
-> > I hope that you are doing well! Thank you for taking the time to review my
-> > work and leaving your thoughts.
-> > 
-> > I wanted to note that I hope to bring this discussion to LSFMMBPF as well,
-> > to discuss what the scope of the project should be, what usecases there
-> > are (as I will note below), how to make this scalable and sustainable
-> > for the future, etc. I'll send out a topic proposal later today. I had
-> > separated the series from the proposal because I imagined that this
-> > series would go through many versions, so it would be helpful to have
-> > the topic as a unified place for pre-conference discussions.
+On 2/25/26 10:31, Ming Lei wrote:
+> Hi Vlastimil,
 > 
-> yes, this is a really good topic to bring to LSFMMBPF. I will not be
-> attending this year unfortunately but I will keep watching progress on
-> the this. I am really sure there will be people in the room that can
-> help with the discussion.
-
-Hello Michal, thank you for the encouraging words : -)
-Yes, I am sure that the audience will have valuable ideas to share
-as well. Hopefully I can catch you at another conference!
-
-And by the way, I've sent out the proposal here [1] if you are interested!
-
-[...snip...]
-
-> > > This assumes that the active workingset size of all workloads doesn't
-> > > fit into the top tier right?
-> > 
-> > Yes, for the scenario above, a workload that is violating its fair share
-> > of toptier memory mostly hurts other workloads if the aggregate working
-> > set size of all workloads exceeds the size of toptier memory.
+> On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUSE) wrote:
+>> On 2/24/26 21:27, Vlastimil Babka wrote:
+>> > 
+>> > It made sense to me not to refill sheaves when we can't reclaim, but I
+>> > didn't anticipate this interaction with mempools. We could change them
+>> > but there might be others using a similar pattern. Maybe it would be for
+>> > the best to just drop that heuristic from __pcs_replace_empty_main()
+>> > (but carefully as some deadlock avoidance depends on it, we might need
+>> > to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
+>> > tomorrow to test this theory, unless someone beats me to it (feel free to).
+>> Could you try this then, please? Thanks!
 > 
-> I think it would be good to provide some more insight into how this is
-> supposed to work exactly. If the real working set size doesn't fit into
-> the top tier then I suspect we can expect quite a lot of disruption by
-> constant promotions and demotions, right. I guess what you would like to
-> achieve is to stop those from happening right? If that is the case then
-> how exactly do you envision to configure the workload. Do you cap the
-> each workload with max/high limits? Or do you want to rely on the
-> low/min limits to protect workloads you care about. Or both? How does
-> that play with promotion side of things.
-
-Yes, thrashing is probably the biggest concern with the actual performance
-if deployed to a real machine. I would like to add that this is
-(arguably an even bigger) problem without this setup as well.
-
-Once again on multi-tenant hosts, if we have three hot cgroups whose
-workingset size consumes all of DRAM, and one cgroup whose memory is
-colder than the other three cgroups, then it will constantly face
-thrashing as it has to compete with the other cgroups for hotness.
-
-So the question is whether the thrashing happens to a well-behaving
-victim cgroup, or if it happens to the ones whose workingset sizes are
-too big.
-
-I also have two qualifying points to add here:
-First is that the effective toptier memory limits is not visible to the
-users. So when they are designing their workloads, specifically on how
-big the workingset size can be, they have no idea how to tune it. So
-cgroups that appear to be well-behaved and whose total footprint is
-within its memory.high threshold would still see reclaim activity.
-Maybe the solution is as simple as exposing the toptier memory limits
-as a new sysfs file? But I'm hoping that there is a more clever way to
-do this that doesn't add more sysfs entries to the cgroup interface ; -)
-
-Second is that there are scenarios where on a relatively idle machine
-with just one cgroup where memory.high, memory.max << toptier capacity,
-we would still see reclaim activity. I would argue that this is not
-so different from having a cgroup go into reclaim on an empty host, 
-even when there is memory avaialble.
-
-But I could also see the argument that those two scenarios are different.
-What do you think?
-
-[...snip...]
-
-> > In the original cover letter I offered an example of VM hosting services
-> > that care less about maximizing host-wide throughput, but more on ensuring
-> > a bottomline performance guarantee for all workloads running on the system.
-> > For the users on these services, they don't care that the host their VM is
-> > running on is maximizing throughput; rather, they care that their VM meets
-> > the performance guarantees that their provider promised. If there is no
-> > way to know or enforce which tier of memory their workload lands on, either
-> > the bottomline guarantee becomes very underestimated, or users must deal
-> > with a high variance in performance.
-> > 
-> > Here's another example: Let's say there is a host with multiple workloads,
-> > each serving queries for a database. The host would like to guarantee the
-> > lowest maximum latency possible, while maximizing the total throughput
-> > of the system. Once again in this situation, without tier-aware memcg
-> > limits the host can maximize throughput, but can only make severely
-> > underestimated promises on the bottom line.
+> Thanks for working on this issue!
 > 
-> Thanks useful examples. And it would be really great to provide an
-> example of intended configuration (no specific numbers but something to
-> demonstrate the intention). Because this will not be just about limits,
-> right. It would require more tweaks to the system - at least numa
-> balancing (promotions) to be controlled in some way AFAICS.
+> Unfortunately the patch doesn't make a difference on IOPS in the perf test,
+> follows the collected perf profile on linus tree(basically 7.0-rc1 with your patch):
 
-Definitely. Two components that make sense here would be to throttle
-promotions when toptier is facing cgroup-local pressure (reaching the
-limit), and to also have some background balancing between the two nodes,
-maybe by kswapd. I'll be sure to include some of these along with
-performance numbers in the next version. 
+what about this patch in addition to the previous one? Thanks.
 
-[...snip...]
+----8<----
+From d3e8118c078996d1372a9f89285179d93971fdb2 Mon Sep 17 00:00:00 2001
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Thu, 26 Feb 2026 18:59:56 +0100
+Subject: [PATCH] mm/slab: put barn on every online node
 
-> > Fixed mode is what we have here -- start limiting toptier usage whenever
-> > a workload goes above its fair slice of toptier.
-> > Opportunistic mode would allow workloads to use more toptier memory than
-> > its fair share, but only be restricted when toptier is pressured.
-> > 
-> > What do you think about these two options? For the stated goal of this
-> > series, which is to help maximize the bottom line for workloads, fair
-> > share seemed to make sense. Implementing opportunistic mode changes
-> > on top of this work would most likely just be another sysctl.
-> 
-> To me it would sounds like the distinction between max/high vs. low/min
-> reclaim.
+Including memoryless nodes.
 
-Ack. Makes sense to me.
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+ mm/slab.h |   7 ++-
+ mm/slub.c | 146 ++++++++++++++++++++++++++++++++----------------------
+ 2 files changed, 94 insertions(+), 59 deletions(-)
 
-[...snip...]
+diff --git a/mm/slab.h b/mm/slab.h
+index 71c7261bf822..5b5e3ed6adae 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -191,6 +191,11 @@ struct kmem_cache_order_objects {
+ 	unsigned int x;
+ };
+ 
++struct kmem_cache_per_node_ptrs {
++	struct node_barn *barn;
++	struct kmem_cache_node *node;
++};
++
+ /*
+  * Slab cache management.
+  */
+@@ -247,7 +252,7 @@ struct kmem_cache {
+ 	struct kmem_cache_stats __percpu *cpu_stats;
+ #endif
+ 
+-	struct kmem_cache_node *node[MAX_NUMNODES];
++	struct kmem_cache_per_node_ptrs per_node[MAX_NUMNODES];
+ };
+ 
+ /*
+diff --git a/mm/slub.c b/mm/slub.c
+index 258307270442..24f1f12d6a37 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -59,7 +59,7 @@
+  *   0.  cpu_hotplug_lock
+  *   1.  slab_mutex (Global Mutex)
+  *   2a. kmem_cache->cpu_sheaves->lock (Local trylock)
+- *   2b. node->barn->lock (Spinlock)
++ *   2b. barn->lock (Spinlock)
+  *   2c. node->list_lock (Spinlock)
+  *   3.  slab_lock(slab) (Only on some arches)
+  *   4.  object_map_lock (Only for debugging)
+@@ -136,7 +136,7 @@
+  *   or spare sheaf can handle the allocation or free, there is no other
+  *   overhead.
+  *
+- *   node->barn->lock (spinlock)
++ *   barn->lock (spinlock)
+  *
+  *   This lock protects the operations on per-NUMA-node barn. It can quickly
+  *   serve an empty or full sheaf if available, and avoid more expensive refill
+@@ -436,26 +436,24 @@ struct kmem_cache_node {
+ 	atomic_long_t total_objects;
+ 	struct list_head full;
+ #endif
+-	struct node_barn *barn;
+ };
+ 
+ static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
+ {
+-	return s->node[node];
++	return s->per_node[node].node;
++}
++
++static inline struct node_barn *get_barn_node(struct kmem_cache *s, int node)
++{
++	return s->per_node[node].barn;
+ }
+ 
+ /*
+- * Get the barn of the current cpu's closest memory node. It may not exist on
+- * systems with memoryless nodes but without CONFIG_HAVE_MEMORYLESS_NODES
++ * Get the barn of the current cpu's memory node. It may be a memoryless node.
+  */
+ static inline struct node_barn *get_barn(struct kmem_cache *s)
+ {
+-	struct kmem_cache_node *n = get_node(s, numa_mem_id());
+-
+-	if (!n)
+-		return NULL;
+-
+-	return n->barn;
++	return get_barn_node(s, numa_node_id());
+ }
+ 
+ /*
+@@ -474,6 +472,12 @@ static inline struct node_barn *get_barn(struct kmem_cache *s)
+  */
+ static nodemask_t slab_nodes;
+ 
++/*
++ * Similar to slab_nodes but for where we have node_barn allocated.
++ * Corresponds to N_ONLINE nodes.
++ */
++static nodemask_t slab_barn_nodes;
++
+ /*
+  * Workqueue used for flushing cpu and kfree_rcu sheaves.
+  */
+@@ -5744,7 +5748,6 @@ bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
+ 
+ static void rcu_free_sheaf(struct rcu_head *head)
+ {
+-	struct kmem_cache_node *n;
+ 	struct slab_sheaf *sheaf;
+ 	struct node_barn *barn = NULL;
+ 	struct kmem_cache *s;
+@@ -5767,12 +5770,10 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 	if (__rcu_free_sheaf_prepare(s, sheaf))
+ 		goto flush;
+ 
+-	n = get_node(s, sheaf->node);
+-	if (!n)
++	barn = get_barn_node(s, sheaf->node);
++	if (!barn)
+ 		goto flush;
+ 
+-	barn = n->barn;
+-
+ 	/* due to slab_free_hook() */
+ 	if (unlikely(sheaf->size == 0))
+ 		goto empty;
+@@ -5894,7 +5895,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+ 		rcu_sheaf = NULL;
+ 	} else {
+ 		pcs->rcu_free = NULL;
+-		rcu_sheaf->node = numa_mem_id();
++		rcu_sheaf->node = numa_node_id();
+ 	}
+ 
+ 	/*
+@@ -6121,7 +6122,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ 	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+ 		return;
+ 
+-	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
++	if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) == numa_mem_id())
++			|| !node_isset(slab_nid(slab), slab_nodes))
+ 	    && likely(!slab_test_pfmemalloc(slab))) {
+ 		if (likely(free_to_pcs(s, object, true)))
+ 			return;
+@@ -7383,7 +7385,7 @@ static inline int calculate_order(unsigned int size)
+ }
+ 
+ static void
+-init_kmem_cache_node(struct kmem_cache_node *n, struct node_barn *barn)
++init_kmem_cache_node(struct kmem_cache_node *n)
+ {
+ 	n->nr_partial = 0;
+ 	spin_lock_init(&n->list_lock);
+@@ -7393,9 +7395,6 @@ init_kmem_cache_node(struct kmem_cache_node *n, struct node_barn *barn)
+ 	atomic_long_set(&n->total_objects, 0);
+ 	INIT_LIST_HEAD(&n->full);
+ #endif
+-	n->barn = barn;
+-	if (barn)
+-		barn_init(barn);
+ }
+ 
+ #ifdef CONFIG_SLUB_STATS
+@@ -7490,8 +7489,8 @@ static void early_kmem_cache_node_alloc(int node)
+ 	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
+ 	slab->freelist = get_freepointer(kmem_cache_node, n);
+ 	slab->inuse = 1;
+-	kmem_cache_node->node[node] = n;
+-	init_kmem_cache_node(n, NULL);
++	kmem_cache_node->per_node[node].node = n;
++	init_kmem_cache_node(n);
+ 	inc_slabs_node(kmem_cache_node, node, slab->objects);
+ 
+ 	/*
+@@ -7506,15 +7505,20 @@ static void free_kmem_cache_nodes(struct kmem_cache *s)
+ 	int node;
+ 	struct kmem_cache_node *n;
+ 
+-	for_each_kmem_cache_node(s, node, n) {
+-		if (n->barn) {
+-			WARN_ON(n->barn->nr_full);
+-			WARN_ON(n->barn->nr_empty);
+-			kfree(n->barn);
+-			n->barn = NULL;
+-		}
++	for_each_node(node) {
++		struct node_barn *barn = get_barn_node(s, node);
++
++		if (!barn)
++			continue;
+ 
+-		s->node[node] = NULL;
++		WARN_ON(barn->nr_full);
++		WARN_ON(barn->nr_empty);
++		kfree(barn);
++		s->per_node[node].barn = NULL;
++	}
++
++	for_each_kmem_cache_node(s, node, n) {
++		s->per_node[node].node = NULL;
+ 		kmem_cache_free(kmem_cache_node, n);
+ 	}
+ }
+@@ -7535,31 +7539,36 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
+ 
+ 	for_each_node_mask(node, slab_nodes) {
+ 		struct kmem_cache_node *n;
+-		struct node_barn *barn = NULL;
+ 
+ 		if (slab_state == DOWN) {
+ 			early_kmem_cache_node_alloc(node);
+ 			continue;
+ 		}
+ 
+-		if (cache_has_sheaves(s)) {
+-			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
+-
+-			if (!barn)
+-				return 0;
+-		}
+-
+ 		n = kmem_cache_alloc_node(kmem_cache_node,
+ 						GFP_KERNEL, node);
+-		if (!n) {
+-			kfree(barn);
++		if (!n)
+ 			return 0;
+-		}
+ 
+-		init_kmem_cache_node(n, barn);
++		init_kmem_cache_node(n);
++		s->per_node[node].node = n;
++	}
++
++	if (slab_state == DOWN || !cache_has_sheaves(s))
++		return 1;
++
++	for_each_node_mask(node, slab_barn_nodes) {
++		struct node_barn *barn;
++
++		barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
++
++		if (!barn)
++			return 0;
+ 
+-		s->node[node] = n;
++		barn_init(barn);
++		s->per_node[node].barn = barn;
+ 	}
++
+ 	return 1;
+ }
+ 
+@@ -7848,10 +7857,15 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
+ 	if (cache_has_sheaves(s))
+ 		rcu_barrier();
+ 
++	for_each_node(node) {
++		struct node_barn *barn = get_barn_node(s, node);
++
++		if (barn)
++			barn_shrink(s, barn);
++	}
++
+ 	/* Attempt to free all objects */
+ 	for_each_kmem_cache_node(s, node, n) {
+-		if (n->barn)
+-			barn_shrink(s, n->barn);
+ 		free_partial(s, n);
+ 		if (n->nr_partial || node_nr_slabs(n))
+ 			return 1;
+@@ -8061,14 +8075,18 @@ static int __kmem_cache_do_shrink(struct kmem_cache *s)
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
++	for_each_node(node) {
++		struct node_barn *barn = get_barn_node(s, node);
++
++		if (barn)
++			barn_shrink(s, barn);
++	}
++
+ 	for_each_kmem_cache_node(s, node, n) {
+ 		INIT_LIST_HEAD(&discard);
+ 		for (i = 0; i < SHRINK_PROMOTE_MAX; i++)
+ 			INIT_LIST_HEAD(promote + i);
+ 
+-		if (n->barn)
+-			barn_shrink(s, n->barn);
+-
+ 		spin_lock_irqsave(&n->list_lock, flags);
+ 
+ 		/*
+@@ -8157,7 +8175,11 @@ static int slab_mem_going_online_callback(int nid)
+ 		if (get_node(s, nid))
+ 			continue;
+ 
+-		if (cache_has_sheaves(s)) {
++		/*
++		 * barn might already exist if the node was online but
++		 * memoryless
++		 */
++		if (cache_has_sheaves(s) && !node_isset(nid, slab_barn_nodes)) {
+ 			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, nid);
+ 
+ 			if (!barn) {
+@@ -8178,15 +8200,20 @@ static int slab_mem_going_online_callback(int nid)
+ 			goto out;
+ 		}
+ 
+-		init_kmem_cache_node(n, barn);
++		init_kmem_cache_node(n);
++		s->per_node[nid].node = n;
+ 
+-		s->node[nid] = n;
++		if (barn) {
++			barn_init(barn);
++			s->per_node[nid].barn = barn;
++		}
+ 	}
+ 	/*
+ 	 * Any cache created after this point will also have kmem_cache_node
+ 	 * initialized for the new node.
+ 	 */
+ 	node_set(nid, slab_nodes);
++	node_set(nid, slab_barn_nodes);
+ out:
+ 	mutex_unlock(&slab_mutex);
+ 	return ret;
+@@ -8265,7 +8292,7 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
+ 	if (!capacity)
+ 		return;
+ 
+-	for_each_node_mask(node, slab_nodes) {
++	for_each_node_mask(node, slab_barn_nodes) {
+ 		struct node_barn *barn;
+ 
+ 		barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
+@@ -8276,7 +8303,7 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
+ 		}
+ 
+ 		barn_init(barn);
+-		get_node(s, node)->barn = barn;
++		s->per_node[node].barn = barn;
+ 	}
+ 
+ 	for_each_possible_cpu(cpu) {
+@@ -8337,6 +8364,9 @@ void __init kmem_cache_init(void)
+ 	for_each_node_state(node, N_MEMORY)
+ 		node_set(node, slab_nodes);
+ 
++	for_each_online_node(node)
++		node_set(node, slab_barn_nodes);
++
+ 	create_boot_cache(kmem_cache_node, "kmem_cache_node",
+ 			sizeof(struct kmem_cache_node),
+ 			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
+@@ -8347,8 +8377,8 @@ void __init kmem_cache_init(void)
+ 	slab_state = PARTIAL;
+ 
+ 	create_boot_cache(kmem_cache, "kmem_cache",
+-			offsetof(struct kmem_cache, node) +
+-				nr_node_ids * sizeof(struct kmem_cache_node *),
++			offsetof(struct kmem_cache, per_node) +
++				nr_node_ids * sizeof(struct kmem_cache_per_node_ptrs),
+ 			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
+ 
+ 	kmem_cache = bootstrap(&boot_kmem_cache);
+-- 
+2.53.0
 
-> > > You seem to be focusing only on the top tier with this interface, right?
-> > > Is this really the right way to go long term? What makes you believe that
-> > > we do not really hit the same issue with other tiers as well?
-> > 
-> > Yes, that's right. I'm not sure if this is the right way to go long-term
-> > (say, past the next 5 years). My thinking was that I can stick with doing
-> > this for toptier vs. non-toptier memory for now, and deal with having
-> > 3+ tiers in the future, when we start to have systems with that many tiers.
-> > AFAICT two-tiered systems are still ~relatively new, and I don't think
-> > there are a lot of genuine usecases for enforcing mid-tier memory limits
-> > as of now. Of course, I would be excited to learn about these usecases
-> > and work this patchset to support them as well if anybody has them.
-> 
-> I guess a more fundamental question is whether this need to replicate
-> all limits for tiers or whether we can get an extension that would
-> control tier behavior for existing ones. In other words can we define
-> which proportion of the max/high resp. low/min limits are reserved for
-> each tier? Is that feasible? I do not have answer to that myself at this
-> stage TBH.
 
-In terms of feasibility, I think the easiest would be to enforce limits
-based on capacity, since this would let us get by without defining
-per-tier per-cgroup limits. So for a 4-tier system with capacity of 200G
-and at each tier,  100G : 60G : 20G : 20G, and a cgroup with a 50G memory.high:
-
-tier0.ratio: 100 / 200 = 0.5		tier0.toptier_high = 50G * 0.5 = 25G
-tier1.ratio: 60 / 200  = 0.3		tier1.toptier_high = 50G * 0.3 = 15G
-tier2.ratio: 20 / 200  = 0.1		tier2.toptier_high = 50G * 0.1 = 5G
-tier3.ratio: 20 / 200  = 0.1		tier3.toptier_high = 50G * 0.1 = 5G
-
-The alternative would be to have 4 sysctls here to set limits which...
-doesn't sound too fun ; -) And I'm not entirely sure if we want limits
-per-tier anyways. For most scenarios I think it should be enough to limit
-how much to protect or limit toptier usage.
-
-> [...]
-> > > What is the reasoning for the switch to be runtime sysctl rather than
-> > > boot-time or cgroup mount option?
-> > 
-> > Good point : -) I don't think cgroup mount options are a good idea,
-> > since this would mean that we can have a set of cgroups self-policing
-> > their toptier usage, while another cgroup allocates memory unrestricted.
-> > This would punish the self-policing cgroup and we would lose the benefit
-> > of having a bottomline performance guarantee.
-> 
-> I do not follow. cgroup mount option would apply to all cgroups. In
-> sense whatever is achievable by sysctl should apply to kernel cmdline or
-> mount option. The question is what is the best fit AFAICS.
-
-Yup, you're right. I mixed it up in my head and got confused, in terms
-of functionality I think kernel cmdline and mount option are same.
-
-Actually everything except for runtime toggle makes sense, since this
-requires the system to do the additioanl per-tier accounting even when
-it is disabled. With kernel cmdline we can tell the system to completely
-ignore the per-tier accounting and enforcement and the user faces no
-effects at all (except well, the additional cacheline in struct page_coutner?)
-
-Anyways, thank you very much for your thoughs and encouraging words.
-I hope you have a great day, Michal!
-Joshua
-
-[1] https://lore.kernel.org/all/CAN+CAwNwpjRf9QhgAEhBQZD7r7sXCzLXqAKbNrPeMEq=7bX8Jg@mail.gmail.com/
 
