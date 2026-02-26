@@ -4,62 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08779FC5933
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 11:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDD1CFC5935
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 11:34:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 678596B00AF; Thu, 26 Feb 2026 06:34:33 -0500 (EST)
+	id 3DD7C6B00B1; Thu, 26 Feb 2026 06:34:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66A776B00B1; Thu, 26 Feb 2026 06:34:33 -0500 (EST)
+	id 3A5056B00B3; Thu, 26 Feb 2026 06:34:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 577916B00B2; Thu, 26 Feb 2026 06:34:33 -0500 (EST)
+	id 2A7836B00B4; Thu, 26 Feb 2026 06:34:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6E56B00AF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:34:33 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 011E2160A9B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:32 +0000 (UTC)
-X-FDA: 84486400026.02.5B71B85
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2F60E1C0008
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=byTP5zi+;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 12A846B00B1
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:34:42 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B45011CFE9
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:41 +0000 (UTC)
+X-FDA: 84486400362.26.9430785
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EDAD22000D
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:34:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iwH65pKx;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772105671;
+	s=arc-20220608; t=1772105679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kw0FkaDkBXRrAmCqa28gOWGbpSgQF5u4LIYi77o4M0Y=;
-	b=b/acIFel9J96+KnFsVulFyWWBCmSm4z7UKBT4yEA0/BlKr3A4I6jS6ww6csSNtPsuyLtJ0
-	AX1dtQSegyJTHOYn+JTpFlHjcLWw2i46PzWPWhRZovlFHJCOyRibLVLRPgPPRxIWPl99rk
-	8lsAH/+fcJ2zPBZW6B/FAwawcVeVC+0=
+	bh=caCWzkT51kBA+1b/gVecuRpXYDomBajxDOrSXa3U1jc=;
+	b=e9Rn/H/aLjjJGxKHsCyzTjtNicASPbzJQu9VobPssf80a/44UE0iBAroHmmpFc0Yqmp1ig
+	sB1oX2Lgxlqk3mUI0Ms3DDbS8aBoiLdrUxF+l8jwR5gGSeBQTky1vsJB/eXDmBJfYSCxKn
+	IzxQXeAsT5Ie/76ur/lDKmmKUka1XNQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=byTP5zi+;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iwH65pKx;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772105671; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772105679; a=rsa-sha256;
 	cv=none;
-	b=Qd0K/i1xHwRHZAX1io5mJsDGY3BlelB8WsyIzQAc3xm+rD9lLtOgZ8gekMv98+s8xoI0Mz
-	zCIZaRswKBWOhC7QdTc6s323JYKiWfkIKkM3G/egA38TAUPvGlBPn0sn7BrE32iYO8XJNW
-	AR9BfQ2GLDzPC0MyYX97TLOJeJfXxoA=
+	b=WR0J3KFhUFeQLFDgvEHHLXzprwiNuOewscw91kXfX+/09UW2GSFDyWlLe3d0uIjCVAW9lT
+	4SC/zz23bxbXZMPjaOhH1SYfBP6rX9aH6V+kxsg11W/8GKWMnMBZpamCFo1JSo2x1MiCJ+
+	0g3iPAUs/P+2ep3DGz7AismF1OiqsG8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105669;
+	t=1772105677;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Kw0FkaDkBXRrAmCqa28gOWGbpSgQF5u4LIYi77o4M0Y=;
-	b=byTP5zi+rMnf5ueyMseSsuV5urx405u6MEyAZD6f8qMe7qARBvVczkX0DBMgZ9FxywC1s1
-	f/HgYnmcI8KTtJauFTRe0BMxIBsYo8FyjtV9IBpN4+OZnuXMaiRXsLlMAD07fvPVQMIjUw
-	s1lyltqh8GtQlX8opeJts0i7uKhvr2s=
+	bh=caCWzkT51kBA+1b/gVecuRpXYDomBajxDOrSXa3U1jc=;
+	b=iwH65pKxu5LpRPMNZ/vYDs9XIVBcTv1gPT58U+Rxwn3FgEXyxD998b65LSZo9fPSJ031aw
+	nazqs8ps6h716yU5RmiIIzP9wPotaYiK6YjK6+WTiQmE9LiXwan6xsQU7f7pDuYB3FqmkI
+	VFDnikYUT2941qf0s6DCUaGOhTZ0k/M=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -91,23 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 15/21] mm: thp: remove pgtable_trans_huge_{deposit/withdraw} when not needed
-Date: Thu, 26 Feb 2026 03:23:44 -0800
-Message-ID: <20260226113233.3987674-16-usama.arif@linux.dev>
+Subject: [RFC v2 16/21] mm: thp: add THP_SPLIT_PMD_FAILED counter
+Date: Thu, 26 Feb 2026 03:23:45 -0800
+Message-ID: <20260226113233.3987674-17-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2F60E1C0008
-X-Stat-Signature: 7nhoyjrpkyt1fuwwosy6eqz36dmf4xrm
-X-HE-Tag: 1772105670-995952
-X-HE-Meta: U2FsdGVkX18JjLz+x/qImM1Dfm6MisOGY3hF+ShoQbfuz3NxHit2ZoTUWQwvyDSDOzw1YxeJcnM6gomqBcpLJMzdWuXdr6IWlPMw/bxNIpZriv9IVlAs70k8+HnvnsomGgunuPmigwE0YkpoTH2qZox5R6lTVp68EGNedIHJgy1gqfKQqTK8XIWQ+Ks5V8+o8j+HlG1VppPWT53t1X/gkovachsw8D1w2dqc7+8VjiPP9+obfEIICImxxUp7xzH53Q9xkXQaaUfYxCoA5+R8LKFRGEvISIcEaCHK2d3RAMk8qSfx7fqKl/4rYjaXRycRFw3Erzc92QGGrF6OC0v3ThKn6qSw2MdWdmqUgD3y6+eZV+WXzn0sgYCiCEXU+JTnJrVcip7xaHQOesE2EM7w090wPdHXWP8IgZnzppBaO0fcKq7fGEyA8pTYFrQTuPZRkinCTm4Jo+20elZAFdA4LWVq6PajN08lmQY05M9KenD8QSxEg9kA+d0aDU33VuENUDpcqArxvg/M+XiU2/LBOETQgj0IldLLOR+9TB5VebUj+wQZ0CqaP3q/XuHZT03+34k1pUEj2ItO/CI9J7wEQqrHV9SBPrLvW4HtdZOO99QKCV/Phspq0P4H3DNatyFcN2tQF6jZqi2+i9sS1huVr0sJm7I8rSjOkxr5jF2F0T7MP6UYw4RpCVkIU1knhAbI0ls1RDy5cs6v/QZisef20im1mWb/XnylaMdrb8+ss5UchS1A3HHsMFHMb4Zwl2XeT7hEBkFJwlMm3IxXlFoGO+uCZiXCbgbwjeFA4asfjiORM8+YvScpCAgCGQ4rw5K/XOY8POD5IaZ3m82m15aJ/Qg3aVfOPfkv3h0XLB/ssmkvSfGaVnaWjsfaaWHY4DvYDUcJs4ivRo2LPke0EfkjCxQJB+tE+uyrfy27acgFWcPKbU0M4ULQKBmHrJlbarLiJO3g6NfRbsMugrsx+0p
- 725A+uxH
- u3US3/UrtnzlS2aZ4SwHaY4/EIU1uWQJbJiFaB982qmYCmls1oiGPiJ2st8mIJu7PgrVZfT1VWS+cMQevc9PxV8YXYV7j0EEowqYbmjFn0ukxp7UNu9T/NRVTnCNSUOGkp7oMJIrinqB0MTDxcDzMc0xFbLiWiz/JRvPED2VJ2SQA9BJIFAYVc8lZPU/oMhRr3pzSvvOF32h2YFFrP3Kg+dlsjvTI7hgKTdnA/x5/d84SOfQ3q9Fabs42Z3LS2a7ED42B11rIH/6TqpNPpUO2SYKfx4oEuOu5ViQRWrfQwAm4dMniy5J3qEy32w==
+X-Rspamd-Queue-Id: EDAD22000D
+X-Rspamd-Server: rspam02
+X-Stat-Signature: x1qcfzfjergx7u6n3cb6xx3jgq54usy4
+X-HE-Tag: 1772105678-695717
+X-HE-Meta: U2FsdGVkX18a75lcy0YScioUpMo1UXsnJ0idtlcwWQmF8rPuslYvxUNICotAzhfav1z4aTPlV/CfJBaAXvpPgTP/nqyzDP+/7d3bOIq1zERRN8ugDutpjtzOqUSvBn+MGsGB/t4M7j8UD3/v6RI68HzWs0yIpL5DfrYMDqwJKyPZ1SNasl9ZS65mtzO3N4YpPIf8h3ebiWzx3nocCQF4zw9m6D8B4oPBx81ROCUE6lvUYeC4lfSDvSnv+Qrbtj2QGrJughGHjEWrkgjRXNWqfbGpSxjRiN7ONY/HAImHYXxqU4HThMPTxC2noEtZGkhKatUQvSUrWiZZGuQYbl89fj9yTJ7v9uK1YR64NZ2NrC5LXlYAeBgsi9D1Ij3iQm27v6bMrvJ+dbyZDq2ub1+bW8TQdQHwo0fBmIV15XRX/TTTIRbQCCr4aCrg9rQc+c8b8pgKXfGeCMQpvdL/s4cCDqqQf03MtL9exHihVZ3e+2ZiX5exW+d2Ng71KDZKI77xbydOWP6PaCv1lspraLxNIcB7ywjZ8NqeFa6A/sRtr2ws7//4cP5VEjW7fjOLngoaTtjB2Bvl0NeIZy6JjLQTXTYNvpZNGUtD+YpKw0WLz5CLc8mpL2NTnROuUXsjNZtr+ZqXpUmzCOhNs7uhPLrUMnp+n5ujkfGuCPdxWp+xYIT7VJU3JNa+ifFV+IqRRi0JA6FpBDpu/0S9DKBtJYv8lNVrvIoqgmGafOEKyIEamAdxv3tDBGbI7tmO0/mZl80uHbDzgZ7zPRZQzx/fHJ7IGJkMpC5J1drhAt7Y/FwGKpJkkUp5sFJY9yvEclCUK7tlZO0Gcc9RGJKCjlAcXjqf1C/oG4l6+Jcuy5S8juRbgE1BCtnZuS4f8SL5PvSvdsZVyGmDFPpzLlJRr50maRwkoK9drm6h1/7AGj7KLc3IoCLObWTrAYDIdHNMmaJy1swbqXCyX1a8ZB6IOxj9Ksz
+ YignRapS
+ 9CTb7PEtU9ruA3nG+Zm3rOLpnlitN+36a/rjC0DZfAaM71AMEL13+UILFZKYW1waVWhDaaDbqQUMjSHUwv71q+iosGsXjwOySsx/MO+chMNjMdDuglQHzBW2xGwgICPkUyoUpoaiBWa+PDtfQE8gaGA2GfJsNbQzitBXGs+WjEcS7infOPOkdhhdPRf5NBA1GI4AjnoKY36jSZ8aIJ67bSodGFTOVnRYfOyVOdjXvkJf9yKKI2aOnd779Z2kUl3nxfoP/pz1J9OdEz5udxkdq5IM5qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,430 +113,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since the previous commit made deposit/withdraw only needed for
-architectures where arch_needs_pgtable_deposit() returns true (currently
-only powerpc hash MMU), the generic implementation in pgtable-generic.c
-and the s390/sparc overrides are now dead code — all call sites are
-guarded by arch_needs_pgtable_deposit() which is compile-time false on
-those architectures. Remove them entirely and replace the extern
-declarations with static inline no-op stubs for the default case.
+Add a vmstat counter to track PTE allocation failures during PMD split.
+This enables monitoring of split failures due to memory pressure after
+the lazy PTE page table allocation change.
 
-pgtable_trans_huge_{deposit,withdraw}() are renamed to
-arch_pgtable_trans_huge_{deposit,withdraw}().
+The counter is incremented in three places:
+- __split_huge_pmd(): Main entry point for splitting a PMD
+- try_to_unmap_one(): When reclaim needs to split a PMD-mapped THP
+- try_to_migrate_one(): When migration needs to split a PMD-mapped THP
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 12 +++---
- arch/s390/include/asm/pgtable.h              |  6 ---
- arch/s390/mm/pgtable.c                       | 41 --------------------
- arch/sparc/include/asm/pgtable_64.h          |  6 ---
- arch/sparc/mm/tlb.c                          | 36 -----------------
- include/linux/pgtable.h                      | 16 +++++---
- mm/debug_vm_pgtable.c                        |  4 +-
- mm/huge_memory.c                             | 26 ++++++-------
- mm/khugepaged.c                              |  2 +-
- mm/memory.c                                  |  2 +-
- mm/migrate_device.c                          |  2 +-
- mm/pgtable-generic.c                         | 32 ---------------
- 12 files changed, 35 insertions(+), 150 deletions(-)
+ include/linux/vm_event_item.h | 1 +
+ mm/huge_memory.c              | 1 +
+ mm/rmap.c                     | 3 +++
+ mm/vmstat.c                   | 1 +
+ 4 files changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 1a91762b455d9..e0dd2a83b9e05 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1360,18 +1360,18 @@ pud_t pudp_huge_get_and_clear_full(struct vm_area_struct *vma,
- 				   unsigned long addr,
- 				   pud_t *pudp, int full);
- 
--#define __HAVE_ARCH_PGTABLE_DEPOSIT
--static inline void pgtable_trans_huge_deposit(struct mm_struct *mm,
--					      pmd_t *pmdp, pgtable_t pgtable)
-+#define arch_pgtable_trans_huge_deposit arch_pgtable_trans_huge_deposit
-+static inline void arch_pgtable_trans_huge_deposit(struct mm_struct *mm,
-+						   pmd_t *pmdp, pgtable_t pgtable)
- {
- 	if (radix_enabled())
- 		return radix__pgtable_trans_huge_deposit(mm, pmdp, pgtable);
- 	return hash__pgtable_trans_huge_deposit(mm, pmdp, pgtable);
- }
- 
--#define __HAVE_ARCH_PGTABLE_WITHDRAW
--static inline pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm,
--						    pmd_t *pmdp)
-+#define arch_pgtable_trans_huge_withdraw arch_pgtable_trans_huge_withdraw
-+static inline pgtable_t arch_pgtable_trans_huge_withdraw(struct mm_struct *mm,
-+							 pmd_t *pmdp)
- {
- 	if (radix_enabled())
- 		return radix__pgtable_trans_huge_withdraw(mm, pmdp);
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 1c3c3be93be9c..6bffe88b297b8 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1659,12 +1659,6 @@ pud_t pudp_xchg_direct(struct mm_struct *, unsigned long, pud_t *, pud_t);
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 
--#define __HAVE_ARCH_PGTABLE_DEPOSIT
--void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
--				pgtable_t pgtable);
--
--#define __HAVE_ARCH_PGTABLE_WITHDRAW
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
- 
- #define  __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
- static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
-diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
-index 4acd8b140c4bd..c9a9ab2c7d937 100644
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -312,44 +312,3 @@ pud_t pudp_xchg_direct(struct mm_struct *mm, unsigned long addr,
- 	return old;
- }
- EXPORT_SYMBOL(pudp_xchg_direct);
--
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
--				pgtable_t pgtable)
--{
--	struct list_head *lh = (struct list_head *) pgtable;
--
--	assert_spin_locked(pmd_lockptr(mm, pmdp));
--
--	/* FIFO */
--	if (!pmd_huge_pte(mm, pmdp))
--		INIT_LIST_HEAD(lh);
--	else
--		list_add(lh, (struct list_head *) pmd_huge_pte(mm, pmdp));
--	pmd_huge_pte(mm, pmdp) = pgtable;
--}
--
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
--{
--	struct list_head *lh;
--	pgtable_t pgtable;
--	pte_t *ptep;
--
--	assert_spin_locked(pmd_lockptr(mm, pmdp));
--
--	/* FIFO */
--	pgtable = pmd_huge_pte(mm, pmdp);
--	lh = (struct list_head *) pgtable;
--	if (list_empty(lh))
--		pmd_huge_pte(mm, pmdp) = NULL;
--	else {
--		pmd_huge_pte(mm, pmdp) = (pgtable_t) lh->next;
--		list_del(lh);
--	}
--	ptep = (pte_t *) pgtable;
--	set_pte(ptep, __pte(_PAGE_INVALID));
--	ptep++;
--	set_pte(ptep, __pte(_PAGE_INVALID));
--	return pgtable;
--}
--#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 74ede706fb325..60861560f8c40 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -987,12 +987,6 @@ void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr,
- extern pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 			    pmd_t *pmdp);
- 
--#define __HAVE_ARCH_PGTABLE_DEPOSIT
--void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
--				pgtable_t pgtable);
--
--#define __HAVE_ARCH_PGTABLE_WITHDRAW
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
- #endif
- 
- /*
-diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-index 6d9dd5eb13287..9049d54e6e2cb 100644
---- a/arch/sparc/mm/tlb.c
-+++ b/arch/sparc/mm/tlb.c
-@@ -275,40 +275,4 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 	return old;
- }
- 
--void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
--				pgtable_t pgtable)
--{
--	struct list_head *lh = (struct list_head *) pgtable;
--
--	assert_spin_locked(&mm->page_table_lock);
--
--	/* FIFO */
--	if (!pmd_huge_pte(mm, pmdp))
--		INIT_LIST_HEAD(lh);
--	else
--		list_add(lh, (struct list_head *) pmd_huge_pte(mm, pmdp));
--	pmd_huge_pte(mm, pmdp) = pgtable;
--}
--
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
--{
--	struct list_head *lh;
--	pgtable_t pgtable;
--
--	assert_spin_locked(&mm->page_table_lock);
--
--	/* FIFO */
--	pgtable = pmd_huge_pte(mm, pmdp);
--	lh = (struct list_head *) pgtable;
--	if (list_empty(lh))
--		pmd_huge_pte(mm, pmdp) = NULL;
--	else {
--		pmd_huge_pte(mm, pmdp) = (pgtable_t) lh->next;
--		list_del(lh);
--	}
--	pte_val(pgtable[0]) = 0;
--	pte_val(pgtable[1]) = 0;
--
--	return pgtable;
--}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 776993d4567b4..6e3b66d17ccf0 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1171,13 +1171,19 @@ static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- #endif
- 
--#ifndef __HAVE_ARCH_PGTABLE_DEPOSIT
--extern void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
--				       pgtable_t pgtable);
-+#ifndef arch_pgtable_trans_huge_deposit
-+static inline void arch_pgtable_trans_huge_deposit(struct mm_struct *mm,
-+						   pmd_t *pmdp, pgtable_t pgtable)
-+{
-+}
- #endif
- 
--#ifndef __HAVE_ARCH_PGTABLE_WITHDRAW
--extern pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
-+#ifndef arch_pgtable_trans_huge_withdraw
-+static inline pgtable_t arch_pgtable_trans_huge_withdraw(struct mm_struct *mm,
-+							 pmd_t *pmdp)
-+{
-+	return NULL;
-+}
- #endif
- 
- #ifndef arch_needs_pgtable_deposit
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 83cf07269f134..2f811c5a083ce 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -240,7 +240,7 @@ static void __init pmd_advanced_tests(struct pgtable_debug_args *args)
- 	/* Align the address wrt HPAGE_PMD_SIZE */
- 	vaddr &= HPAGE_PMD_MASK;
- 
--	pgtable_trans_huge_deposit(args->mm, args->pmdp, args->start_ptep);
-+	arch_pgtable_trans_huge_deposit(args->mm, args->pmdp, args->start_ptep);
- 
- 	pmd = pfn_pmd(args->pmd_pfn, args->page_prot);
- 	set_pmd_at(args->mm, vaddr, args->pmdp, pmd);
-@@ -276,7 +276,7 @@ static void __init pmd_advanced_tests(struct pgtable_debug_args *args)
- 
- 	/*  Clear the pte entries  */
- 	pmdp_huge_get_and_clear(args->mm, vaddr, args->pmdp);
--	pgtable_trans_huge_withdraw(args->mm, args->pmdp);
-+	arch_pgtable_trans_huge_withdraw(args->mm, args->pmdp);
- }
- 
- static void __init pmd_leaf_tests(struct pgtable_debug_args *args)
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 03fe95f5a0201..ce696cf7d6321 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -98,6 +98,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		THP_DEFERRED_SPLIT_PAGE,
+ 		THP_UNDERUSED_SPLIT_PAGE,
+ 		THP_SPLIT_PMD,
++		THP_SPLIT_PMD_FAILED,
+ 		THP_SCAN_EXCEED_NONE_PTE,
+ 		THP_SCAN_EXCEED_SWAP_PTE,
+ 		THP_SCAN_EXCEED_SHARED_PTE,
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index a10cb136000d1..55b14ba244b1b 100644
+index 55b14ba244b1b..fc0a5e91b4d40 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -1359,7 +1359,7 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
- 			return ret;
+@@ -3347,6 +3347,7 @@ int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 	if (vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()) {
+ 		pgtable = pte_alloc_one(vma->vm_mm);
+ 		if (!pgtable) {
++			count_vm_event(THP_SPLIT_PMD_FAILED);
+ 			mmu_notifier_invalidate_range_end(&range);
+ 			return -ENOMEM;
  		}
- 		if (pgtable) {
--			pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd,
-+			arch_pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd,
- 						   pgtable);
- 			mm_inc_nr_ptes(vma->vm_mm);
- 		}
-@@ -1460,7 +1460,7 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
- 	entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
- 	entry = pmd_mkspecial(entry);
- 	if (pgtable) {
--		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-+		arch_pgtable_trans_huge_deposit(mm, pmd, pgtable);
- 		mm_inc_nr_ptes(mm);
- 	}
- 	set_pmd_at(mm, haddr, pmd, entry);
-@@ -1593,7 +1593,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	}
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 2519d579bc1d8..2dae46fff08ae 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2067,8 +2067,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 				pgtable_t pgtable = prealloc_pte;
  
- 	if (pgtable) {
--		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-+		arch_pgtable_trans_huge_deposit(mm, pmd, pgtable);
- 		mm_inc_nr_ptes(mm);
- 		pgtable = NULL;
- 	}
-@@ -1855,7 +1855,7 @@ static void copy_huge_non_present_pmd(
- 	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 	if (pgtable) {
- 		mm_inc_nr_ptes(dst_mm);
--		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+		arch_pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
- 	}
- 	if (!userfaultfd_wp(dst_vma))
- 		pmd = pmd_swp_clear_uffd_wp(pmd);
-@@ -1962,7 +1962,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- out_zero_page:
- 	if (pgtable) {
- 		mm_inc_nr_ptes(dst_mm);
--		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+		arch_pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
- 	}
- 	pmdp_set_wrprotect(src_mm, addr, src_pmd);
- 	if (!userfaultfd_wp(dst_vma))
-@@ -2370,7 +2370,7 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
- {
- 	pgtable_t pgtable;
- 
--	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+	pgtable = arch_pgtable_trans_huge_withdraw(mm, pmd);
- 	pte_free(mm, pgtable);
- 	mm_dec_nr_ptes(mm);
- }
-@@ -2389,7 +2389,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	/*
- 	 * For architectures like ppc64 we look at deposited pgtable
- 	 * when calling pmdp_huge_get_and_clear. So do the
--	 * pgtable_trans_huge_withdraw after finishing pmdp related
-+	 * arch_pgtable_trans_huge_withdraw after finishing pmdp related
- 	 * operations.
- 	 */
- 	orig_pmd = pmdp_huge_get_and_clear_full(vma, addr, pmd,
-@@ -2531,8 +2531,8 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
- 		if (pmd_move_must_withdraw(new_ptl, old_ptl, vma) &&
- 		    arch_needs_pgtable_deposit()) {
- 			pgtable_t pgtable;
--			pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
--			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
-+			pgtable = arch_pgtable_trans_huge_withdraw(mm, old_pmd);
-+			arch_pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
- 		}
- 		pmd = move_soft_dirty_pmd(pmd);
- 		if (vma_has_uffd_without_event_remap(vma))
-@@ -2838,8 +2838,8 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
- 
- 	if (arch_needs_pgtable_deposit()) {
--		src_pgtable = pgtable_trans_huge_withdraw(mm, src_pmd);
--		pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
-+		src_pgtable = arch_pgtable_trans_huge_withdraw(mm, src_pmd);
-+		arch_pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
- 	}
- unlock_ptls:
- 	double_pt_unlock(src_ptl, dst_ptl);
-@@ -3001,7 +3001,7 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
- 	old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
- 
- 	if (arch_needs_pgtable_deposit()) {
--		pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+		pgtable = arch_pgtable_trans_huge_withdraw(mm, pmd);
- 	} else {
- 		VM_BUG_ON(!pgtable);
- 		/*
-@@ -3218,7 +3218,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 	 * This's critical for some architectures (Power).
- 	 */
- 	if (arch_needs_pgtable_deposit()) {
--		pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+		pgtable = arch_pgtable_trans_huge_withdraw(mm, pmd);
- 	} else {
- 		VM_BUG_ON(!pgtable);
- 		/*
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 735d7ee5bbab2..2b426bcd16977 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1225,7 +1225,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 	spin_lock(pmd_ptl);
- 	BUG_ON(!pmd_none(*pmd));
- 	if (arch_needs_pgtable_deposit()) {
--		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-+		arch_pgtable_trans_huge_deposit(mm, pmd, pgtable);
- 	} else {
- 		mm_dec_nr_ptes(mm);
- 		pte_free(mm, pgtable);
-diff --git a/mm/memory.c b/mm/memory.c
-index 51d2717e3f1b4..4ec1ae909baf4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5384,7 +5384,7 @@ static void deposit_prealloc_pte(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 
--	pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, vmf->prealloc_pte);
-+	arch_pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, vmf->prealloc_pte);
- 	/*
- 	 * We are going to consume the prealloc table,
- 	 * count that as nr_ptes.
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 1adb5abccfb70..be84ace37b88f 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -882,7 +882,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
- 		flush_cache_page(vma, addr, addr + HPAGE_PMD_SIZE);
- 		pmdp_invalidate(vma, addr, pmdp);
- 	} else if (pgtable) {
--		pgtable_trans_huge_deposit(vma->vm_mm, pmdp, pgtable);
-+		arch_pgtable_trans_huge_deposit(vma->vm_mm, pmdp, pgtable);
- 		mm_inc_nr_ptes(vma->vm_mm);
- 	}
- 	set_pmd_at(vma->vm_mm, addr, pmdp, entry);
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index af7966169d695..d8d5875d66fed 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -162,38 +162,6 @@ pud_t pudp_huge_clear_flush(struct vm_area_struct *vma, unsigned long address,
- #endif
- #endif
- 
--#ifndef __HAVE_ARCH_PGTABLE_DEPOSIT
--void pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
--				pgtable_t pgtable)
--{
--	assert_spin_locked(pmd_lockptr(mm, pmdp));
--
--	/* FIFO */
--	if (!pmd_huge_pte(mm, pmdp))
--		INIT_LIST_HEAD(&pgtable->lru);
--	else
--		list_add(&pgtable->lru, &pmd_huge_pte(mm, pmdp)->lru);
--	pmd_huge_pte(mm, pmdp) = pgtable;
--}
--#endif
--
--#ifndef __HAVE_ARCH_PGTABLE_WITHDRAW
--/* no "address" argument so destroys page coloring of some arch */
--pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
--{
--	pgtable_t pgtable;
--
--	assert_spin_locked(pmd_lockptr(mm, pmdp));
--
--	/* FIFO */
--	pgtable = pmd_huge_pte(mm, pmdp);
--	pmd_huge_pte(mm, pmdp) = list_first_entry_or_null(&pgtable->lru,
--							  struct page, lru);
--	if (pmd_huge_pte(mm, pmdp))
--		list_del(&pgtable->lru);
--	return pgtable;
--}
--#endif
- 
- #ifndef __HAVE_ARCH_PMDP_INVALIDATE
- pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 				prealloc_pte = NULL;
++
+ 				if (!arch_needs_pgtable_deposit() && !pgtable &&
+ 				    vma_is_anonymous(vma)) {
++					count_vm_event(THP_SPLIT_PMD_FAILED);
+ 					page_vma_mapped_walk_done(&pvmw);
+ 					ret = false;
+ 					break;
+@@ -2471,6 +2473,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 				prealloc_pte = NULL;
+ 				if (!arch_needs_pgtable_deposit() && !pgtable &&
+ 				    vma_is_anonymous(vma)) {
++					count_vm_event(THP_SPLIT_PMD_FAILED);
+ 					page_vma_mapped_walk_done(&pvmw);
+ 					ret = false;
+ 					break;
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 667474773dbc7..da276ef0072ed 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1408,6 +1408,7 @@ const char * const vmstat_text[] = {
+ 	[I(THP_DEFERRED_SPLIT_PAGE)]		= "thp_deferred_split_page",
+ 	[I(THP_UNDERUSED_SPLIT_PAGE)]		= "thp_underused_split_page",
+ 	[I(THP_SPLIT_PMD)]			= "thp_split_pmd",
++	[I(THP_SPLIT_PMD_FAILED)]		= "thp_split_pmd_failed",
+ 	[I(THP_SCAN_EXCEED_NONE_PTE)]		= "thp_scan_exceed_none_pte",
+ 	[I(THP_SCAN_EXCEED_SWAP_PTE)]		= "thp_scan_exceed_swap_pte",
+ 	[I(THP_SCAN_EXCEED_SHARED_PTE)]		= "thp_scan_exceed_share_pte",
 -- 
 2.47.3
 
