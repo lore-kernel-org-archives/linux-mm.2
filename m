@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B0B7FD8FCA
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78476FD8FCE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:05:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D95EE6B0128; Thu, 26 Feb 2026 11:05:19 -0500 (EST)
+	id D16A56B0129; Thu, 26 Feb 2026 11:05:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2C386B0129; Thu, 26 Feb 2026 11:05:19 -0500 (EST)
+	id CD1346B012B; Thu, 26 Feb 2026 11:05:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C18586B012A; Thu, 26 Feb 2026 11:05:19 -0500 (EST)
+	id B37296B012C; Thu, 26 Feb 2026 11:05:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ABD2F6B0128
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:05:19 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7815C1A030F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:05:19 +0000 (UTC)
-X-FDA: 84487082358.22.07EDF05
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 82895C0014
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:05:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XWjYSLSM;
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C7986B0129
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:05:32 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B80C81602AE
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:05:31 +0000 (UTC)
+X-FDA: 84487082862.19.F88CF23
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0DDBF40005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:05:29 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZFzN5/gW";
+	spf=pass (imf07.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772121917;
+	s=arc-20220608; t=1772121930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/bqZUT3Ncs5WVtCc8ZbAvwfk/TLrJoWKqmzHS/YujHw=;
-	b=xPpGAskHY7bLMXRjLcTuACM8qkKRdZk8Ideunpz+jprXYW5hfC1bkaekpa7h93EGsfajmX
-	EavjDMg79oN8sSfkluFqZS/eT6Qn1cv4G22ilLYHWXmcPUh3GNybcF4u/i39vBw0aUe4XN
-	FHfIOWnU8f40Dfv/dPwJezN4FexTKBk=
+	bh=8w7EvgUuMSaZE9Qyg0MHPKNkMuZRawwbCzxzxIoORKw=;
+	b=LXyFWebPGr6618URrasHkzTzMDh8p+1K3dHmw1y+kQv3RGjaEPqyCcpBH3L8qNGlQr1Qhd
+	hQe/oibVw+Kgh0ViWJWWEYnWLkhWVnN+RkeESgHKDRP2sFICW/kf+QMld2Qd/eLxyaffaj
+	ySPzM9NF9sFjTpJlcZue92koJwPhEOQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XWjYSLSM;
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZFzN5/gW";
+	spf=pass (imf07.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772121917; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772121930; a=rsa-sha256;
 	cv=none;
-	b=eQLH/vfbhkp3Q5KxiAktBDzhIHsm9uVFxfBf5AnFjCZ152EN9i5LacbNY4uO0y+a2OLFwe
-	7XJAMnGziJQ3aoN6hx23tP89ly+GRA2vQdXNfKr+WPUq5r7EjPRzRw3fC78Myj0G1B5nra
-	OeVEMhthvAHh+fkG/RQIFXQC4DFbSNQ=
+	b=ohPsZWbOdDMmVdy20za+sZDtntr9XS8NeNeJkGJNt6Zlj7ssq4rQrkcMX1Ef6nKeSsnpsf
+	y5XgMMPNI6UcFYSxPyGtnq/7+KLoEuqAZs1DzaFXcr85hTmcMjXNAnRxOpRz3F3v2HQo2w
+	j83wv9OQm9cSO1IpRiOQ2n/gngUa8HY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9480A4016D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3B4536184E;
+	Thu, 26 Feb 2026 16:05:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAD6C116C6;
 	Thu, 26 Feb 2026 16:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D351C19424;
-	Thu, 26 Feb 2026 16:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772121916;
-	bh=+pnQ8La3nnL9HS2EVrCQAp5yF4hT3O2Rul83Y/lIgNA=;
+	s=k20201202; t=1772121928;
+	bh=6UN3al2tzYcVr4bhkYBjIiJcg7kY6ll3XiJLa1oVlfY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=XWjYSLSM8MNgl2VhR7assRMUrmqUb67e41ZpF/HEp+Zl76IEXGuo46t/ehib5cQBv
-	 uRggDYTAjpxRBx11gOz/2fJIuuvPmvuWkGTu4obykRoSb55b521uUBDBAJswshCq4W
-	 FfDbrXkqiC/VTfVNiOOtM2Qk9HmR17AeneKUXOsujG21SDPDltVV3jXMryG8Dqq0S3
-	 CNLLXVe9zBwekQT5q9/s84LHJKckbhBy3ow41/xdmP7c4idOzDAmUTPdcE3RIx3GeP
-	 e7Meln1rBS/c0NKNAiubURo9NOegQGPt0lDuRM1xPOAwg6pJoIOg3LVj5p1GWs7TqI
-	 mo+zGjUGJSrTg==
+	b=ZFzN5/gWqI9gVceO21c3BlE3ZOAJdQoQM8i9DH0/agwltGQfJBEj2IZiSMGobNPVQ
+	 qBR6afkadV23GWyE9polaKgasPkxRt9pVcNxjkkCRuv75exdLsba1i4bjFk30U4fFD
+	 UX9ijQ9hwUqkVl3r/XBmRg0F7V8PSUA2ZpThgY+oEqEpq0zqD4e/ryCk4JajBRvsAv
+	 lVCjmimZLSzAFRgQh9TG2Gwr5k+xiKNxvFGnRUWmrCTyM3Gc0rXm3YT9wEYE6kitvS
+	 EI2JXuKLyYi2twKciyQHWfESTvgYf9be/q35EEgBc1xBLbg4ilPdK1D8vnIy3OWz0g
+	 FHhaJQ7ROg3VQ==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 26 Feb 2026 10:55:45 -0500
-Subject: [PATCH 43/61] orangefs: update format strings for u64 i_ino
+Date: Thu, 26 Feb 2026 10:55:46 -0500
+Subject: [PATCH 44/61] overlayfs: update format strings for u64 i_ino
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-iino-u64-v1-43-ccceff366db9@kernel.org>
+Message-Id: <20260226-iino-u64-v1-44-ccceff366db9@kernel.org>
 References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
 In-Reply-To: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -165,36 +165,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
  linux-x25@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=790; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=+pnQ8La3nnL9HS2EVrCQAp5yF4hT3O2Rul83Y/lIgNA=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpoG0PbsKa4p2zwoBYu+jpKVGBywcC4wbxn3Fv5
- QY8YgoZQSCJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaBtDwAKCRAADmhBGVaC
- FSAnD/0e97/yCaqr7LNCmzcAr94/eBgG3Od2/vIhcgrO6Zln1dxic8+5A7hSqtBdq4KBmKHPaIK
- pSBT53zlzsY2pX1f4afF8oL6VmFbimSF+WRZCol8xpgAeupsdciq/ixwa+AIh4Rgh29o435mRiU
- b/KwWh8/b4A1jZNF1tx01xtGz9WhcpFzM6Z5NN43rsmkQYoEk2uznZNsFgN9u4eQ2JbFnUAhX/8
- hfwulzL0D44QxG3vVr+9qsNnBQAvFMZV08Ll/ouL24zfpvmhYU/rfF2Y02YvUsho6fDu5OhyRa8
- nR2Ffu8KMbSXuPWda5b1asEmlVFPpNoWCl+uIflVF4u+PKmpZwkUtOMN0vCJoGq8YPmtd1rNBlk
- zxU1iNqHblPpTDeGveFLkrJ2cWNCp3pTZ41DuCcsaSaFK+Ynke1MerNc6eCOkKiMbXTpNUiK4oy
- hv+0NIr/Gw59YsdFgdQvGDqsqIQCxbZDGYg10dRlDMJB664nqgHAFTQrXLUXvseIvgu4MX88LL6
- 94xFysFTeAHGFompkZj7dRrr48abb8itvzdfgqgsfXGpb5zhn1AnYtekOJ5gLNQz1KW9uLk7jCt
- D5Cs2FcilYhaHSUO/iap3WkBQD1K3hmMvKhUJ6JDw9qsBmj6DtT445IAMGtTNn9rTeDwVCI+B9q
- y/+cbUENvzLt/Rg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2573; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=6UN3al2tzYcVr4bhkYBjIiJcg7kY6ll3XiJLa1oVlfY=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpoG0PmAX6po+Me1LtXOxELbE3YbRF+E3FwKFhW
+ iRe4MINX9GJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaBtDwAKCRAADmhBGVaC
+ FfUvD/9jNP3wjvadvWrklZqzkFB0cB/NqSi8mDICkvziy9OFAtTNtEYvzW+khlIKBucHQ54yIOM
+ zY/xF5a7/YoFhl9C5394YJjBShWBN6KvHBfe8MnxqXAiRGCDX2AF9XRxZTwbl40wcxMQ837uA2X
+ 9StKcjWI012KgN3nMFJ4wJUCCBvHGlzZODxlnzPYuc73B8I6LzYkjL7b1Hrdol24+O7nOyUipAr
+ fFldocux2lUhdNtFG7o51ByNpYPvZR9ikm4Eq+M7CUk7NFbHViPsh0ZazAsodIfS4KWawW3EuCh
+ BbPcItOXDx4PD/GtKrZchiaeBTGQs56DFgH27H2I1skP7wG7/tU4qWkZOYGp1ynUj8nWjdM5jzJ
+ lz8WUSw4nXKgGxltV/z//r1obNY8QYL6RMPvILX5WCmvazbWL3p7fENvjKNzlbOI8RWZQkgUrt+
+ 09RTMnokkTxKg+zs77OKTRBHDu8x58IdE3xaecJG5TmrObPp1lXiMnCpU5baPwXt/FHuI+x+La1
+ eH5/LL/aIOL1lk1vt3yWAnQrzMgtRXV5VlqxeT4lS5U0iaQEDcWRikUd5yoBXNOM+8loEjduUTw
+ 7eoLOS0VNr9gAabi/VS2wquojz/TBJKG0K054mFYwl5ABhYOoge/H7vCbLV87Kq5cRYyVIoYdM0
+ DEiwZhMl+TVsm4g==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+X-Stat-Signature: 7kqtbew3z9qt5bqo46juwsfq8sxyngr9
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 82895C0014
-X-Stat-Signature: 7479a6qjttkk7k46cqghu9k4h6q79pfw
-X-HE-Tag: 1772121917-373259
-X-HE-Meta: U2FsdGVkX1/9a+h9laYxf0TdVYA8idxd7OFUwS2jd/C/OSVOsKuZfSymxaY+8kYhMPOdw8WSoDsA4QQSW+JKO9wxhFcxqkQyb+lBOX9oJkjJgV/3Jds9eNxhQHYAOZaKVx7fsSpebmRSnw2aW2fndS9EOhMfRWyrUMbIbU+31oOVB2zyPFVb1SvbK7ziY9qtwht4nLS+m5r9aopEaWniwgguI5Pfc+UhCBjzLeJoTKe0kIL2YfCd5nRWLll+/lHoMoRbxi6zb/BZ8WSTfN1QM+yExUw89QUPtNXMgYLJ3/7DjqLofL9L0LyUkjEoXBLLLdvGoW37trXlvyoE4NdrdFt/3BG0srfgvcrKEKK0JnkhUOKzJUBeqeOWujYBSUkYGx5ZLlVkxkLVFiobDCdQMMn84eu356quRwmx81S2PwlKlRDLXXjPiGR6Zb54Rg1iV0BA+U+2W0KdzUNKxggwPxl+dCmiMYjLNhBWqf4VJHl/cpbNluMe71/MtftgixR2fGh64dzH+QzO3Kqt/dyVPAboEidNmGtLyMwzs4+rE3bOfsoB8XKoZOaaBeVmLb2L7Q+7RscGDWOdhk9VL8+GmkFISpb+QJ4duIsBl4ApxtkMe6xYKHBPp2RWY7H670xirYgm939n6zVFwcuzKQHPd7WJEQgbioiEUROCTcxL1FC61g4oMUs7ktJtpo2Y6mdzzU5x54X1OBUOVSELiTY/4dJOMawyEJnqJGjuGvOavtP7XzSVB9E+dICL+2e9PRgu0T3sRinoNfCUQDF/tBuFPLQBxijFrUF2QGMhNCcVrCE8AUjUqpwNLYRkwsL/dQjAjVZu6B4irmWqsP8d9ACwam69dT3ZTr2iEr5f+/5usi3wPbvz3UxhuOijxKtCwNF5fVEHgbdLo1aS/46Ov7UnyHPx9EZmfWe0K596SJSLJ5z2jGeJbbg6FR6pzHK/P3GOFe9/TLnHNQiTnw0oBbx
- E0gZfWSx
- c342l1y8RZ7PtD/l3WmULTWebJYq8BJnnsGEQNivYBOwxaA9nizP6f60ApgbHkTkexcCTsNvQMOmFhHjcqsgRYk+iVR0QJdDGjCeIB1wnAi+YAIqWt7Au8NZhQnO9mjfinemNG43RAE0m7tLqlCyvPB3+5qNn9t1lwkKBS0+A3eBwEtRnTBiRdHi7T29qgZTtF/BMUeHAHN1AZiVXzVlP4z1/h+ImhTd/YZdfoQjJOhloCs+bBJfwtxrxoqaQFFn2cnwDI5dzcTKbvy6DiULyRbLrg6CNHvhlqdjJrlq9AUG2jdXkulBgS2XGAAWZ+YoDDI/xqQGR/vVCK/rQIpm32+cZADPeZ5UqR1pYaqP3IriczWmEAIG9OWsCqp3dP91Qa/+N3Te5+U8kqAsm7SI5JT1Tl6SP6WNti63TYHW6xkRYr9rqsDggrd73c01zVAWfdEmtVzanSW48ItErCMcaf857CqA/8T2YvNnAmPWKf/j0NfgpBHH3qku6yo2z2gQQre6QkcRRzQJclTlZGuQmRnh3R7DNpljem+cWTw5f5nX0bdW+r7lBE8pvdYthw8HaGGBHvXXMfwR2aJyzyXYOWjfIrXEDh5VHEFHKTUr6PxG9zddhrpMIsKSRhiaCG6oDdAt17bVkSvDLZf5YGNE2bKejcHPLGewUKpDBguxPkY787g/XhnIxh9FyZj+wg7CQbRfdWg84Po6RVLlxGonqcz8gT2BccTjcuhsaV+CvA9Jj6Yt/FcW0v9CKE314UoPD/KdvYNudjivdmQrI+W2rfR2sH6w1iOtbV4XOHkXnYG+0thvvp1PjhL2zk3p/LFcOMv9A1konhZpFCholwELyJ+VB4SkOYdnL9Fb21GaQ1UikIwpz2QvswS2l3DIGnz+oa7ZxIYbZN8wGZOEgI3V1/Yer9wqz+WPpexhPDIWBVfJEk2b61nL7QRvF1Kj08qyr0VU4MwNzF6c0t/f7N7TPhHEQ5o2Z
- uJBLoX4c
- dCK/VAFaETY8teDAGk0V/vs5iqg7wlKHuMo30l233pTWciOQZmssydOhbM4JcuBnbEm5d4WMC9FVJnSP90UDi85bmZzxI+04N3jB9dgeyzWz/O31gj8MIdz35c2UPhqd1fWLHoIfwqHwkreq7cR0uni59+3c6qYMMzZEEqylzAwbIbd9p7BJ3zFQKomEqIPl9LU3apJUc82LmqOzFkxJxRimQcXACALVcd3Elrlql50tfz0VFha9G+cFL0Q5MQ7YRIsiVt227HoQI7oM9a2b3YpgjZRGH9UNdwfX4XTWNTUF092Nz8BcabDKAtXDBMhrCqmQ+eVCw5Sqkp3qjWMbRxzyOKpvnAmCLJ11FaldIS3aEvmQ1J6VIyhZjm7Bd5DWk1L3Q1ygZFXve1wGAsGZcyhVmGspOLGfaEIPH7IdKp3wI0Arz1xDnlLhk2y7dRI6aG77N9Me8r7jB9hSuGvxTkKIv3utuMVgOkQYluBOFgdQgbxkAjAIEf5fiWFiKnqUIi4/UekNx+liYp8C2zWfu1vnV8AsJ5GzDswNs68d/MEu5ApmWpVaUqy9cY1C1TVYf1RBzn2reLjEb/B5ubMWxZ4DftExRJMIjvBdEQ+qOHsYGAKcQ0cKFIfubZB4XCH881Nh2iukR73WgnqjPot+mmmqvrtampP3WViKCzwZaxjM+pjOz1ape03+vjz3faejJnzIku3iUmrozz4x2tFz9p3ed82S0sChsQ/fFp9P+2oDWrEgLYupk18NrhwwKl6mAhTzePVIHAsUUGDlRQKdz+d3tTz/Y0xvKAF77MTKw/XlmyEfwYpTN0lenwPcO922Yd+ybotctBxanaL0Gluln4qmChBuRH5xgm4WuG/HzFadTgrRycYWSrEW9g+VeE6BdDPeSA1FXiT8PqpwzsA9MjNcnI9zHseBF+s3tuPLFCdhjIOLCbJWZwCWV0c4gyZ+CVtRtuhjd2pOtLojEfN1tmN1IPe9C
- 5KE6u3Z1
- RtJI3C+wtQP/59hXU0UU3xxRdfeR6wCIuT6vap7MicGfx9LH7cMbVRw+OEhD1hp3l/meAepIBXQ4VleHnvLJIIGRQDLFGD3wP1UYFrKh//vvryqeatrmLwwkYHVp1zd7Zg5VaR2Uust5oueYPqN8HlR4zxDERHnaohod6VBYosAkSwZD4fBiJrWlicN+blnI3cIuxjRKX6VsKvKljKYHmPW4UZ8qB2ZSw8iL49KeWxPq34Z3zakRHax8Pl6haiqfJwf+r8gsacd0sRMwcMVIS3YVvG/0N9iEsa/oONvHhuZ5YEzBHwQ7UNr9ageQJ3W2qt8+r6JFjHMPGfRkOOn3xNIpBl5G/i7hUEW6+clyANt8x1cbDNmoWbMDpLtffA6nHfHAbjcpnER84dgpFejWBpzw+Orf2/r2by00VI0jsr6I4DtivPq7Q3k1tkFwfxdjYEDdvtN6Sxl2Dww5zZ3P6pnIo3IfS5CbgPpndz95VrqNXCzifjNyO9gtHUDhvr1Zea9UlVbCYn9kzARWdeDIVKKQVKDD8ZlsNttxQPHcugZaA4NhCxxg7twldcsW/9laRwZ0ghD3E3QUfGnL2xzC6PDbVAr0/0JxIjxM7UFNhknh+DN91V8M9eTVnGxoRCTsAD/vHOlJ3BOlge8hWimaxjyOe831BLNNO80S+OIlEiLc55CcC6xKwj7T3fe/mxN33HwvwYNA8HG+06V2Taj0EQJWGHNusMbNQHvILSzzLdhvXmRXpEIq8jRP9GKytP8har4AoMMEXZrZLxhYKrVp7ueP6jsJrtc3RsiimZXc/cQyXiY9ZvJ7ZpbAIqF5e7YqTSsTPIi61B2gQ8ChMUl2X1BPS6oyjxdOODcHOHPQY1PnShlX7enoxoP8jWC68HLzwp3Zo6tzsxbTorwnejvAshoOhk1/JqEzEhf22/nK0CPb9eN9lIW+TRvIStsyNaAAwKNDJRonv95jj+TLflnD+BbygbXbD
- rtdZXEDV
- /F0SrNu5eE4ygIt7f/QqdhXZRVnqhZd68axhxsfDx9xnbvLXjN/pcBvwr8UaNaNn5m4qQf1fxwOEZwXQVBVOREmYwPIUn2hRPUBDQjwSzYtCUG7x3kEAu1SsOqqfSsfgUlAJYj9KeUKTEDbSjEDndx/kSPH+R7+/zKqxyKMCKke9P79dASDlPKLZcH5bkwBnWfK+RUHOxbNKFZfyFmQaovPiPZumxTLkdOUaMa+IhtsMnrSmsA8xqGUSxHgS1m9tXF/ayGLEPnc5WULYt0kqG2T96DUCrNXupjTknT3AEPQrBk9fJZUa/gIJLzjJIhlKiPfpvmXeKxyClKHAYuVbI5ORWeSwc5Dj3i3WJhSI/NiXzl46t+xKRqtdPl293I1bsXr7izYUj9bQ==
+X-Rspamd-Queue-Id: 0DDBF40005
+X-HE-Tag: 1772121929-564869
+X-HE-Meta: U2FsdGVkX1+nMxRK57HuTOO33OIh/eFSFDHe2IuowK/56102z10o4MVP4hjEi7TCmo7eWiccj1S/y+b7s4X2nP7J8XBHmLmWdSY25eys4IRgJuBSQfA8f4J2lrT4x/RD+XcA5Qr2+eaJ+26STb2xLHYM5veqdp+JLrVHA9cvYfcPPpxKS/hLkTOVUDzTzfG94AeecXKEWqJo67IvTonXg1Rsjdlld7WMwVVOzDB6nMnY2om9+1OKui68aiSF+jklPrkcnaQ5/lXuQU9fY2cDehLCfGIWOFZ26mcRtaKe+JMEiOTZj4kZtu5hpCQ+BV+daWCodof3gcfmWcQrnIolD9U4l4f5TELEgSP78nPyv9/QaRhj2mR7iNyOnLMRM1ntt1Ww/h1ZZ+xgDHbo/QZLtW7WYx6ZcMdn/cfZEpXfIYUDPdLbzWGZ60ee5K+b5JHRTaatYn4a4Nnn4YOCMg+WklZh5tTFN/CMj068BAY/ZEskC3I5chbvbpN1UWUFEoYjHpJwJHa1W4wtG26fXeLbl9KMN2cN8rCsJ4oHkdxS1whzF948diL7MULrdImv5vPC9yhTQ2+t3yZhb/DqJK9ZHo7D0m1phKLcsXB/PbE11c6wfprf/MV4kuq3aRVtdTNfe6JZ7v535BIjphiLUQXP6NNC2+VwbYkTCMUQtXYP6YucHF5l+eH5cigBFBMdNinbcugImBKZscLE3y/04IZQEeAkr7PjqJpFUQviOzrZlgUzCjR6tRbxG8WqqdoeHa4+q48m7Fs3sIsCM+eIBGvq/NGrVzgfMNz4TGwT7f66pDzqg9hOBAlVGE4WCVN8pYCLtigmV02DDFy9P/k+VfGjZ2rK+hgV9IauUql+a7DNbOs3gylCW/vSGKYI3FGgLdWn76pkiJZ4qnntU3WNard8w8uYwwgNH1WgDO6HGDqtfcgBNcAxrbIgi5XTBe8thz4tLswiMKTKXnpdic4UDbZ
+ Dh2jHpTh
+ sB0sndi8LSLQcunwr0IbZ3V1Qtg/OmHVzkB4nfnpNNk8qYQB4RnOVfN1jxXa8xAEMefAqrh4AJXG0mfZe/bixu81/xbj7X0N96Eul1q4WPfwtwl6MfQt8WyCfAN87kDbmvmKZZ7eIihH70nsz4XjVFpd2waNR1uL0jb7Pbe8tkJ0ihcbGShpw1ZHlKn41/iDp7Msx1S6Lo7r+4fZd/kJq23rPu4D/2UKPl1xzVgtieH1Wnd9nyzTto0Yao3o3VQRELYJed5esjE9WretlGyvJtUHsM3HMSUDx0TLquU4ssVrD94Av1ZyYTVn+Yy0joPLKW3dGDVpKsym/e4QcxL2COp04LfCsuJ9R29N4zei1j6eOuEOrPCeHQviNZhvh7pLrtLsFLTv9ImZoqsfmdeVUc2E2POn11KhMFfUx7GH2GcUmPVYjgNGyuort7qOw0jYcT/U0Au+8gvVixlhHVCqZd5H6zWlSjb4uX29Pcuw2m67adr9/GkNzHVL+uJpXez6J7EkFmTb6FkVyfp7jp55Aguhm7T2PHPmZS6j4AYueQ1r0eXPV2SsUA2UjEnwxmeXLt6TRELmedzqqrmzOXlO44nKBGTAtoj+Seoz1TWB9Hvnr92vkUaOxKR6tQoOb5O13po2XKRdqlvYyBnRCwuMtSkOIWliE6DCpu01a2TG/23km1Qa5FNXMR6TdarWBEYpD+22XF8fIVfY4wXb0uUbxDTgOzrQSUuL3gWyldCfbqmSEBSGCmvczeW7c/YMODguljzc1unZEGPiuXRt0k92YXvBOl0i54N6soVhd6vK3EX8BmFxPMxucw4DpuVOuVv/+0zVs2DHKPGnm37E4iGWtNCvgjFk28I37vkMzH1lO1gErjESfTVMa6LXj3tXn3/NGEZPdXr8uUNtHSp4OZ+ceTrQHNjaAm9lontWhS3MDdoQZvsuS5Pedp9oqip88QPBnkaT30qb/fmBQVgzB7Qe8o/J4pGbi
+ T1bDAwP9
+ CGv3CEDy1K7B0Kh1mLalfUG+EfPyXT7VM/fzNOBzUEyX6+fNAdW1bl+jOAwyt4pt7DYKEqG0cOKzA2v2UojQosj6y4f6DOhOT26SewO4YNL3O0ol890w4I6jy8GBwx+Nxj0a3flJczy7xiqopQ58quIt03XPaCDE1WxlxPaeLQxOdXfYS2f9cWHgJa98QpSLdpuIG+3Qo+IcrIgxozkQwu/Wej4La62lt5z8MgHn+skjX+wmgCM/cF+fVDpM4OPKAPUxJZ7XTJyxcGzmFUyty3SkvPaiyNmS4KwbRddZzY2GqwoEGNayV1srMiqA4X0uwN/a4q9Z7EWeoxnYy6vwwMLZU1PvMu2CgMTQQwxjVdygubTqULT7026e97OJEDcicj6J0gVlmDp77/Z/Q4El2aWUowydzAMxAhHyTdw13HSphNzBP5LBwaNWr9HssosEVjwvfYhRetVmoKWuvh7VsfAb0JO6yTT325UXxUrchSFVUXnBq/bPPx55NrTQ8+cLkKXGBYbZNA6sYAtLD8amQUlUgT4LulqKIF3S9UJdy07UuXdAzkwexQc/uKAitzc23a7tfGBjJ0AknbjCJg/yPCNDEAUU7hv3Kt4uCzh8AgIINR7fKL1fC5roQd6MqXDm/QztgNwYCGvWw8JR47KAgrRz8LHJ+nGv1GoIsrQkSNR74bwUf4PscLY7WM4/EeFgrY8zI1e/smKDF7ppCy6CuL/3opc1c709R1S3x0MB0IllRid2RJWcHY45CcfWpIexjtw6CL6ACC/6WgI5P1+Uk0odSla/FrU8ozRBT4laFMKbePo/sAiseS5PmtCanSJNl5nr/lGRt2P9R8ao0NhB+8AntrtWQMD+k+n4DR/zsYhY7i5QUbiuLgZV1B9czKfjlULlLh28Fw7La8Nl4+WKuuNe1sdYBgd9vpk3A/Lz0bwDSO7TlryOpqn9vipLa0prI74xUS6Y2f0hQdhZahDfJSLr6e9ae
+ Gz1YpY/6
+ Sy/5yg7Y75XimHeFx4urZMn+D3Zvb5M4SwAlfWuWm4VpIO3TmDZuFqjSvvMQDtG9p+KoVkF1jImbCs5B4S36pyJbKbFeBItY+VJ8gXqI9bK/JAGxvHt8k3Qmc7C4NAWJYX7beaY9Q60+yVNQwwgxZjA/5PcjS7lKcbC5ZSj21SN8QNB/DbqaPV/6/wqSE35+NFEf3nf1lnTnFe3VuWlSUJFgKcOcmrySPJT8U/JkQ6EQwLg7XR2lwSyH9XWkCytj8Y3zHzBmU/WJlvoPGLZHEys+FyNl+SnlXRMSSlLPOVFFp3Y0SrfZSeDZcrlztIafogBXS0t1weyDIudPfuBqAJOwiF3rgNG/0Sp52EtA3yAUnIHFr+uz4PF7bG4ovEZG1gdMbfdQ9y0Gmnk1ifqe+d44HHKO5nhDX3HQfH+0NDnQNOtGNjoY8QbaHD+DbDY5EA41VB+RNVbbuge4dqEants1AMx/v+/zNvbzidfdGW75y5o5pHV8903ebqURsoLNERRa4m6yrnKZlE6F7/MK7W8im+PLPUukHhks1OxFAUP4gkalBjM5aI8nDSg2B1MVkHg1Aa0j4EYo24LoP2IFrWZ7x9MpKs34AHMsXtYtAVW3H4txm5oiAg/oasAdSm9TemCE4dz+K9TzgPTVODBDq+krcCpOM2u9Y1O8NNr4b7M0hQFbqr1wRH9gGck8c9Bme40zj6dzz1dPl0vjfT8ZwsrQ4i56dWVg+YU7tJuBaYG6YZS3/I2wHxuPPRunO7f5mpU/IK2GX0NLkcWNGtse9iLYk2FNLl5zpv3OWvHHdx8q29QbqaxasPvDhdCF3UFtZSAir3AWKWWNS9yoSxuMBnQ1a8LlQEGSosF1JzpVuGCNDPSE5aIGHZrheSsNopYNPdUkb2GDJbz/wxWWGfF0haUGS1mm8eQS9D9xklPUNgMdcoX+LlRcIM1PgrKU8QWsX2uYaXOggDVnZZahu5GT+yQIRYiGd
+ l+Xd5S/J
+ i8w0427N1e4yxhDSWBjc0w88xNwAJONccPF+XVd29b20CWItAtDxZuWuiFKS76RwNRzfLan7VXCpzeuF2436FO6E5yiX9jUqFw62pBk9B+li/QkHwYzF1WcJCuczi81gpbHqnScorrrJ0AIXRrUUVZOnL9RugPXRJnYgDQZDlY4s5Yha2mZYV+3N74x0LaG7mfsWzpWFL8PZ82bJ0JN18k3ya7F2LE4QsL/xajG4TiuvIn+TarzmFi25U6IgyfAq6EgS2Or0sQXYHzBqxG+ncsq0ZrvuI5+Z/YBI45rCzXBpWDMZin15TnMAEWsyCpGXSQBrxw/Mq42w3Wh7IIcY1BQ+mj9PAJaMskoDhnRK99zSOW2ukTqzJnpEQQiX5pU1k5Nrhw+3CX1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,27 +202,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update format strings and local variable types in orangefs for the
+Update format strings and local variable types in overlayfs for the
 i_ino type change from unsigned long to u64.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/orangefs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/export.c | 2 +-
+ fs/overlayfs/namei.c  | 4 ++--
+ fs/overlayfs/util.c   | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index 2d4710d0e05e195855186c6bedd211bc419abc36..9e8a2a9e5229861a4976d67483a0f6452048f86b 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -1062,7 +1062,7 @@ struct inode *orangefs_iget(struct super_block *sb,
- 	unlock_new_inode(inode);
+diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+index 83f80fdb156749e65a4ea0ab708cbff338dacdad..0a35d1a20f13fbab5bbee5f271d41f52334a9a6a 100644
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -262,7 +262,7 @@ static int ovl_dentry_to_fid(struct ovl_fs *ofs, struct inode *inode,
+ 	return err;
  
- 	gossip_debug(GOSSIP_INODE_DEBUG,
--		     "iget handle %pU, fsid %d hash %ld i_ino %lu\n",
-+		     "iget handle %pU, fsid %d hash %ld i_ino %llu\n",
- 		     &ref->khandle,
- 		     ref->fs_id,
- 		     hash,
+ fail:
+-	pr_warn_ratelimited("failed to encode file handle (ino=%lu, err=%i)\n",
++	pr_warn_ratelimited("failed to encode file handle (ino=%llu, err=%i)\n",
+ 			    inode->i_ino, err);
+ 	goto out;
+ }
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index d8dd4b0529843bc20e4efc1924c2be3b5712b343..ca899fdfaafd21f4bb31807e73883b4978116732 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -591,7 +591,7 @@ int ovl_verify_origin_xattr(struct ovl_fs *ofs, struct dentry *dentry,
+ 
+ fail:
+ 	inode = d_inode(real);
+-	pr_warn_ratelimited("failed to verify %s (%pd2, ino=%lu, err=%i)\n",
++	pr_warn_ratelimited("failed to verify %s (%pd2, ino=%llu, err=%i)\n",
+ 			    is_upper ? "upper" : "origin", real,
+ 			    inode ? inode->i_ino : 0, err);
+ 	goto out;
+@@ -831,7 +831,7 @@ struct dentry *ovl_lookup_index(struct ovl_fs *ofs, struct dentry *upper,
+ 			index = NULL;
+ 			goto out;
+ 		}
+-		pr_warn_ratelimited("failed inode index lookup (ino=%lu, key=%.*s, err=%i);\n"
++		pr_warn_ratelimited("failed inode index lookup (ino=%llu, key=%.*s, err=%i);\n"
+ 				    "overlayfs: mount with '-o index=off' to disable inodes index.\n",
+ 				    d_inode(origin)->i_ino, name.len, name.name,
+ 				    err);
+diff --git a/fs/overlayfs/util.c b/fs/overlayfs/util.c
+index 3f1b763a8bb4cb842e5d5cebffbee6b8dbe01de9..2edad9a146486bda5edf47dc60e1645d49af6539 100644
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -1092,7 +1092,7 @@ static void ovl_cleanup_index(struct dentry *dentry)
+ 	got_write = true;
+ 	inode = d_inode(upperdentry);
+ 	if (!S_ISDIR(inode->i_mode) && inode->i_nlink != 1) {
+-		pr_warn_ratelimited("cleanup linked index (%pd2, ino=%lu, nlink=%u)\n",
++		pr_warn_ratelimited("cleanup linked index (%pd2, ino=%llu, nlink=%u)\n",
+ 				    upperdentry, inode->i_ino, inode->i_nlink);
+ 		/*
+ 		 * We either have a bug with persistent union nlink or a lower
 
 -- 
 2.53.0
