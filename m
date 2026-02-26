@@ -4,161 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08645FC5901
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:01:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23394FC5905
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:06:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694106B0092; Thu, 26 Feb 2026 02:01:45 -0500 (EST)
+	id 1B2906B008A; Thu, 26 Feb 2026 02:06:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 651C66B0093; Thu, 26 Feb 2026 02:01:45 -0500 (EST)
+	id 160426B008C; Thu, 26 Feb 2026 02:06:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52A516B0095; Thu, 26 Feb 2026 02:01:45 -0500 (EST)
+	id 041956B0095; Thu, 26 Feb 2026 02:06:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B44D6B0092
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:01:45 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5CF21B7626
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:44 +0000 (UTC)
-X-FDA: 84485712528.30.56FF6AF
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1F1DD180004
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=T9ooljO9;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=aEW7TQmQ;
-	spf=pass (imf24.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+	by kanga.kvack.org (Postfix) with ESMTP id E4AD56B008A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:06:16 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9838FBC430
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:06:16 +0000 (UTC)
+X-FDA: 84485723952.01.57345A5
+Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E1FDDC000E
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:06:14 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=E8385kAw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 35fCfaQYKCJoMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=35fCfaQYKCJoMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772089575; a=rsa-sha256;
+	cv=none;
+	b=s9iguOvcnbvBiVLJaGqwa0d4u3z9AEtp3djq2TvcrhniO0meFiRhah8etC15UOqCLKmRPb
+	nl98GvfpNHijuHvhnINdCS4agSJxd3OmXlxazvOBh3t+1H24ySXx/sRFdRrsWI7e7/yc90
+	2S1xIWHe9zlsmk+G/IlKWJmPtobC6Jw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=E8385kAw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 35fCfaQYKCJoMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=35fCfaQYKCJoMOL8H5AIIAF8.6IGFCHOR-GGEP46E.ILA@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772089302;
+	s=arc-20220608; t=1772089575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6H0aClJ1xZtNoAwOJV81SP1JJ5tvKzYZ+QjZdAOzHLY=;
-	b=Nookea6qIXHVBl1jriHjeuxdNgeYdTiBuVG9btCkN1edxqyDauurtdtALyDFlro2PUY8/b
-	QMwxfPrs9hyC8V2I1Bm7mj6KJ0Ydjp7kUIAHrPZYn7ygxztQUHInpWKs693etCBT0F2BXO
-	ZdZpP44VUjFxHt4RpIVL9vhxsH3Q0H4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=T9ooljO9;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=aEW7TQmQ;
-	spf=pass (imf24.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772089302; a=rsa-sha256;
-	cv=none;
-	b=6mz2s/ZGBtRez1aB0H2VmlxSBENo/0ACl80BdqG7jxqerSRGgLHJl7MeB2AMoJxKFZzlw9
-	+1Ek4Q5vvKd7R+SXEXYl5Z7ftBk7lHWpWnhU9z0m0z18MW3Y+fm4HDipIvXhSEimWGcENp
-	wlX32Fl3x8Cu+K6dn62l0Bif3SIc8OU=
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q4V7Kg350077
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=6H0aClJ1xZt
-	NoAwOJV81SP1JJ5tvKzYZ+QjZdAOzHLY=; b=T9ooljO9Kk1qnZracN1UJbAAvMq
-	VxO74DKciFOW6Sg/H/ULiE5D2SQ0Y3bDZANp42lDFtUq9pYWcIBz8fgDcSidCyuT
-	Rgq2k3zjKiPD+4bxX6U+UbuSlfJxXfXbIy7pjhJaMIf9+XW0PJ5+pyAQdch2Dxth
-	rZXJkLHOT8cSMXQjD5EaRVm+gpsWv6hshSkdudyuju7DQQntNHNU7FISHbSv8IMX
-	T3c1qI9rqzPfNbolx4GtJ47AGeayRFXFhQQPXEjtHYpn8ZFT+GQY0bd+NU4B4vY4
-	oEA6l8CO1gwZ/VL4gg5FftQ58yikFq0hCKHqUvKUNAUKVmMiUETTBdaWFTg==
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj54pa5wf-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:41 +0000 (GMT)
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67999892f00so13653557eaf.3
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:01:41 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vucVmOFSxssu4W4+hD04IB0isnzzlwVXoGbpC2l+3Iw=;
+	b=H7qxH4HuC2sTNjHLIEk0xSa81lo+Fh0MptHVti45xM4pUq3ejgjkr4bJ7XdfpKvqkESYxi
+	RJ/a7C5SwfeLjKRdDaNMcfVIDBTH3JjjWklD84bpeRZVpuDcwi/16YmlclrI9KieAWtW0L
+	nCOgiivUn22igjAdLvmMrlqFh6QKKwI=
+Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1276e71652fso920490c88.0
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:06:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772089300; x=1772694100; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6H0aClJ1xZtNoAwOJV81SP1JJ5tvKzYZ+QjZdAOzHLY=;
-        b=aEW7TQmQL/k+cAjmwqAUsaupWKMjna6/2zYBMAfmL/CPPwxpX3At+VJeeA0w12cUcl
-         dCMrojEDGdkGhymxyTVGbVRQf8rEt1tWG2RdUzIrQDfowZ2qOleNCX2HPZCRMmz2+2Vg
-         YKmcTyWh6MPe3c2eqQY0A4BNc8TIb20oa6vUdnMqMsoR+OWJ7yGhjkd4HSIFS1uipKfH
-         tHW5bReLkd3dd53GvfuwPSXx+VDXlIPgKLvEXDg2M4oh1HJjXKoct03KStbLFm9itXxn
-         /Y2D+PTwBWZVS4q6JPqcNCGHejDEgq240CIkfuJ7fDHCRZ7EtRmLEZ3TiTL5gpj+rJtY
-         2gwA==
+        d=google.com; s=20230601; t=1772089573; x=1772694373; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vucVmOFSxssu4W4+hD04IB0isnzzlwVXoGbpC2l+3Iw=;
+        b=E8385kAwoB3++msPxMV8+3sFbW+GpqfohR3ThV8TR/WNkglifU0LTBBemcGwDKYF8v
+         kdCzPsIz5fl5MHtcWZEmPY1kgbISDSnqlqJ89y4lOmj2PMRsVUDp+BaOPYE4rqJJMvOk
+         HD3woIZeUdDj2gerZffdmJiTlrwikGjZdU1L1wG0UwqHrL1UxHz0agxiF5DeGf6X18o7
+         E+N1AghNi1oL4WAtSzaIwiml5we+io/8WOMamARKlngkFR/5HRqy+FKBDlB3ygen+vFI
+         +prMMksKZpfU3oqeUJNjgYmp/UySxDUZd6KKZuwlr3LPRfxLZX+VEx2KijOfhaPaPJEw
+         q6LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772089300; x=1772694100;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6H0aClJ1xZtNoAwOJV81SP1JJ5tvKzYZ+QjZdAOzHLY=;
-        b=v3SD7/WVZjjx92VLoPFusE470KmGHxIdsQitVQB3eETb6PxYT8WspHmfWCY8SWew9U
-         zkRsx/akLFnDtcYpV33kgSIV4Kh0CJwvg7mWlYHGfRkOwlUdIzPakBglb5Bs2ZQ8RjTq
-         aj/3rSZ65vgVwQGDf3KkZ0/PYA4lSGd+k0+//vd+cFG/2+WuWyAFyJ7LUZZZlEuH3zxK
-         Hcz8kzoC8KreA5UCWwFQ0VBPSXe0KMe5d1iqOTN8eDVepNtwRQyo98UC9ByQvB6ylcs1
-         GNtLTh6ele+ENrcsTv8+tIA7VxxEbjd5bJS69tXkKUSQsh7E4N/C7a/svzsnqHDQ9qVB
-         0IPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVeFyukHEEPj4FElz8HOSxDsjRtY02zXWt79r1kQgqHKsnVOMMNf+TwvPH8EqobveVs0+dRHxoK1w==@kvack.org
-X-Gm-Message-State: AOJu0Yx/I3AUSGde2Ekex1wRZW/89JqR+km1GPQYm21k9X0HywqQc6lj
-	JSYGilsVwkDoson8ty3o/WSJBbs/b88aV6U2i4m0FrZM86ZXdcSHZ/BLvEOTvyqaCm3vrLkGFht
-	2k8XTNxLbjIRwk0/mUFrIA78hQ5Ch8WhHQ9VTHPKCC6bz/EHMNp0R5A==
-X-Gm-Gg: ATEYQzxGSNbeiNI/KAml7sbu7Th42pzqr4y2ORN+mCcHSwqnZ4IfmJmaSoHzY8WJfRp
-	UmnNv5Hzk+ia/AnMF0Xr+4OvKzuVDTEfQTIbZPeZ1P9zC5Uw9+MLvE3dnch1YXjEvMlwgS1QO8L
-	wU54IR1X2dA0RVta/eP5JEDRUwqJb1Dd2NuskrT+pj5EvGOgFNOKdzfHV59kQxHxiyjPYOIc/Ng
-	cop28GKakHg/TcZuM6RmpTlOGyhGXdDqbIwJJk6HVMyGpc20V0BZwUEQBpsxQZZLw5m5Qxbd/9A
-	GWjOedz6KwVxIR5XkC2qxh+5wryKUTuw8nWJZLMcn7dX4QOIVB7D429q1x58wa2ekFrVBkHlxbV
-	5XGDzHCpxYPTvuXW2ih8GqNgycuTVb+ISFuqSlQkX3MFB+z/UCC67lWR9nYUJmep6L8euhO8rVz
-	45IRaz
-X-Received: by 2002:a4a:e842:0:b0:679:7d2b:4362 with SMTP id 006d021491bc7-679ef9653d4mr1803455eaf.48.1772089300517;
-        Wed, 25 Feb 2026 23:01:40 -0800 (PST)
-X-Received: by 2002:a4a:e842:0:b0:679:7d2b:4362 with SMTP id 006d021491bc7-679ef9653d4mr1803232eaf.48.1772089291548;
-        Wed, 25 Feb 2026 23:01:31 -0800 (PST)
-Received: from hu-ysakshit-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679f2bfee3csm1013246eaf.7.2026.02.25.23.01.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 23:01:31 -0800 (PST)
-From: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
-To: akpm@linux-foundation.org, mst@redhat.com, david@kernel.org
-Cc: vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-        hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
-        jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
-        virtualization@lists.linux.dev, kys@microsoft.com,
-        haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-        longli@microsoft.com, linux-hyperv@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] hv_balloon: Change default page reporting order
-Date: Wed, 25 Feb 2026 23:01:24 -0800
-Message-Id: <20260226070125.3732265-3-yuvraj.sakshith@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260226070125.3732265-1-yuvraj.sakshith@oss.qualcomm.com>
-References: <20260226070125.3732265-1-yuvraj.sakshith@oss.qualcomm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA2MSBTYWx0ZWRfXyF++ArrblabG
- v/WXmTJnIbXyijr7UOh2eET+VH0cDPHjMaFINLLgg9ILCStEYWaYuR4hFVn8g4LWyirTqhR5A4E
- /sUkZp3tbyjnjh/zYZGChNOEspjS7TsZoCH/Vc027a27AscWTxSu856geQbhtRsSmRl4EO8vM2s
- vTgAf0/vMr14uKc7PRKL0re0bk0RRpwQDawZYna3ABMk9KTKgdEa5Uuyi8g8q/hY0I/Or4m+YUH
- S1lLxkoV+nHHVM4UortEh4wQuIvmQdiPrsvmsVSnIkuMU6i5Z4D4l8XTUi7bHj0D5xEuQzb9WuT
- JvAuGP2Sc9ekfNR655ybyp1+4rKYUJBKLHbDEKUYPLogxVGamq9I+oWUAcbRHT2y18miUk4Wt6m
- Rvg+YUIXEI4y24+NfF6hmaCisHKv4RCsNOZyVdCZjGuBbwUIzNhZq/V3bLNI6hKyS7EaENUAhQ8
- ZYLUCCjwMcDUMAue14Q==
-X-Proofpoint-GUID: mwC1UEQRxlpWcuprm4lZxAB9LhKdLHXu
-X-Authority-Analysis: v=2.4 cv=I5Bohdgg c=1 sm=1 tr=0 ts=699fefd5 cx=c_pps
- a=lVi5GcDxkcJcfCmEjVJoaw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8
- a=IMYoWy77fT7TwZj6-SAA:9 a=rBiNkAWo9uy_4UTK5NWh:22
-X-Proofpoint-ORIG-GUID: mwC1UEQRxlpWcuprm4lZxAB9LhKdLHXu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 malwarescore=0 impostorscore=0 phishscore=0
- spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260061
+        d=1e100.net; s=20230601; t=1772089573; x=1772694373;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vucVmOFSxssu4W4+hD04IB0isnzzlwVXoGbpC2l+3Iw=;
+        b=st5ljviJSlf4WD8iAhr0Mpl0RxyGM/zoPFRlsq2VzqXxpDcny2OhovT5xUfvvuJuKL
+         gapVjM1ViRIqAuggV/aeensUpfaWzm/DXo0mZz7LNQpH8J5lrUZGsbzLTI16J3n6vG15
+         zPzTm7+ya/t/ABvm8GbRqAiEYNBYnhVNBC8Kn2PRJxXecuJIoiqLKTXzqGv3sKLqHK3k
+         7S/4TCwtauamPwHSk3EJFj3KsYr5RK37uZUBnrIj4894yEWJWTDdMiN8ggnfX9oGsRSD
+         03Ikrh6cVdpMk8ZG6hhUDqld4fmE/EaNN1/Hqx4Lnrty9jx9DXBFhuD5KWwowk43lKzF
+         VOow==
+X-Forwarded-Encrypted: i=1; AJvYcCVRkhHUHKeiFpx4SH+VQwdez65GIs0FgopWskGBLrmaceBAVm+hdwFV/7M5MFqXP3uWhyf6TzRATw==@kvack.org
+X-Gm-Message-State: AOJu0YzXyqebU5oK4Kwqi8rpyrNOT0PrgrVL4ne/L6fRExl4VCMM6sG9
+	SdQletIKgr2zK9Ahpp9OEoGIFwklHIMN34ltrUh6KyWz7DiHGzsoaFUgk3sxfTr5ypc9X2YJgko
+	kG5mWig==
+X-Received: from dlam21-n1.prod.google.com ([2002:a05:701b:2095:10b0:127:89b6:8d2a])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:60aa:b0:127:3b16:bf4f
+ with SMTP id a92af1059eb24-127869c9ac6mr1332481c88.40.1772089573227; Wed, 25
+ Feb 2026 23:06:13 -0800 (PST)
+Date: Wed, 25 Feb 2026 23:06:06 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+Message-ID: <20260226070609.3072570-1-surenb@google.com>
+Subject: [PATCH v3 0/3] Use killable vma write locking in most places
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F1DD180004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: wxfxbmji1b5k4jbmtnoznctonjqetx4h
-X-HE-Tag: 1772089301-615356
-X-HE-Meta: U2FsdGVkX1+vnn0waqlzlxEaZSRa4D+mtcQLpDXCvjsOzBilXwob5KUir+Zcb5yO2hHD8/GkiiVEdhWIO9fQvt218QP7P4/wT4mqBJSCKne3BOvCPWtyue3aoHb3C1Ra4IhiwBd00f5UNqd2oEwcTEwBJ2y4k6vi9TULgrfGD+jxBioqsaDFrYM3dV/s97FPivYTX14szH32eau/Z4RQDH+MetKHgx4uH3epERT1eN6xc4MJMCVpAORVpeJ/87BeIOjxLhRKWuj3d29g70o9ivJI25iGwu6i+edEMdIgVKs16xqS0lCbvErriEFBcMiGF4VHRgDB7tp5Xw7476bH/DmufYj6vjKlg/wd9b7QNVWPALH5sfUy+vw8qkaE0/CoXzOeaEqDjsU2oknGP4ZkDGA2FcYg/eZIFcIjUlLxlj8UsG93tBuXZbKU5Aq90T5EuVX5y0T61mMdIDMrEAm9iHh2ulxFAfVu7Vi+e9Emdr12azIBhK+lgdVXaUtTTvcluHl9U62WULO8H5gKt+2OcB2Ay9H2okGP04RrkDmP+l4pDFnBIfEvxWS9EWkSfcqfaUy+HKbZ0RGVf/dayxNXVjs5arX17yHg8d7m9P7Vh5RlKBpvKqHwS1EY7G4YRtUvdoVz6dYUTP/DVvT9UPw4N6ohkOIQySn8OZPYckOB5NTGJOfmC+LchhMsyg0M76+W5Dxde/3G5q7i71lA1z+CTIrzZIaYHDRBGB2upk7xThqf6SUwB8qGmTpJbkcaqE3onMbRZPNnzk41DukeCgnpW30e1MuXgKwOn6ccwg8V5xbQnwv9mFBBUXxH8bbBNGkqjmVWvfhKBByeUc/JB8qDgpGUnyGYp/PRlsnJSCG1WjivEu+y/HwxQ5SOZVof+vEF9ORE51bEfmfh0siPdTgdaFAxpZbdOjkE+C9ChGtkO2gFOnTAjrtiFZ226sgPqC70mVNyqknzV8fO7I1LfM1
- s8B9YN8h
- 6Y0sN98kl9KezuDGyb5esjM+MSgQuG1WqI0daa04jGo7mzZxNEhbspvGDzygClsv7e0+cmKxy+P1v2NME1xoHRYkxwi9IdnS5vBZxyJRMHjtbbwjSsJ0Oamz5i4kwhLWNgzClFw5E8UE9mRRgstfrPh9rhXTlVN8Vf7tDrxvxpCht8pOxQO0qx8EXnk7qn2uJYNkno9363AbvBybAr2NRQP8H9PtPz49IUUuLiq+/hdepUvROmNOK41qmACb4XHSosBcHXVUJbkk6XcZjhjca9G3q7765icCWQyoxyq7RNQeBzlZJgbs4vIMZlBv6hKpQrtEFyi9ZhhOtsA7edydJsiAokDUB5ZEN2u/Cw531H6l5xZUJ+xoeUPjZaEcmTjRd4zMejjs5IGNk+4+SC8Tp8B20iU7XRNpgzKNAmkH5rmQqHlodQq3ZNB4B3Rwz2Xc5zh9qUHnSqJvgqGRcX2+51mdZvGy/3osJa9BBhBqVOh/JqKKsLT5LdAtwuUSFGR5ODGtn/eC4mEbgn/9K5AUydNzFpynvsGZUwAPvNNF5Z0aCL86R6Fd645gmRg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E1FDDC000E
+X-Stat-Signature: i5wbtakdfigx55k54arq5sju7fdq68we
+X-HE-Tag: 1772089574-351928
+X-HE-Meta: U2FsdGVkX19lr9E95FB7PXrx0/3bFbwF8m5iBY/1Ok9aGZNfBYEB6AYHQk/kiObHD7hTKOn0F3eh8nWyta5jWaQyUkpEbcnUvdaZzf1ZoxCp8kdGcMMKgWm7lVbkcOqIUQp1lo//TLQSvuhdqRc97TzpBv4RfM3/0tP9dy3afJz+KL8SGYvlI+JkcBU/WCfU62GIYNRzVcQ2Bjv9JI4cTfLvIGYFhITo7uMW73q1H9pkh7kxNLSXb/G6hD0cFR4kUZvvukzFOx5vLlOshVFMMTme2e9ZnEXR0cgy9mMwQ+010FQRcF3x0xjnAGj9iRlV/sUnR/Xz0ATVDgbHDJYeAR/G3W+ll56scqRd8pKVQWRizAhlkcDd2kgoVZO3PqsLbh5OK6oDsz8EJxdjvClQB1GZIRQ6s5t42SlLSNblZgG3oB2JDEcuuD52ZjhebGi/nZwjDcXpAPhx2dpGDoZizas/szeShlsdq0476RTaNG7YaKDugGBh/nTt7KDfzvlFBvIUoAuU1Pga3oQDCwAF0kUgLztUfWv9o3LaYmw2hUVwXgDLpN9UUZqHMS1XRLpohrSgKeuzWY8TbvcLaSRNavAXKfqejShsAPwhKt1ZSbrJRZeKGZZqvdDIIfpymnvKk+pwDupLDjpMpg+Y/uPqvUCvG4KlwmoydkUE2X48COqL8y8hKYRgr+aAqB0BrnH7ewVOE8+fsYg7aKTM84BXhDlW2Q3zJQubCIm1yV+uEAa0qHrCgKbu6RYRClCqGK0PCZHmnRLbBoSB3meOrd3sY7KqghL5xcRhwh9LtikNbD5D7687VSQmj33uulRKr0NUMQiVCyYD0hwFlkhem3xi7BgabEkyvWqooEv3AyBzSKgP4auR5EG1/DkcrTfv+fHU2bIOvg0oYoWDTd8OIeT6+sdZB9RAeV3URdWnyZ6lhAc6FzyN7BorSa9gCgBFkeQrrLl3L9F7uhdO15FG9Nm
+ +7SOfK8L
+ C3CxJ1bpRoePKBoW+Uk3/rdkwssqt+qMPJpkqY5d4I+oJqbvQyJMizcz/Yg4pFB1y2RQ1GdGYde9bfHb9uAZTq84NqJ17yhHo0RLYQI0w1H/V1idz7d1UijoboBpRUsp31FlCnWwG6pW8uXewi2sQ1G/3Q+CLyHdi2kAWZ/ld/w9u6NpDTnJCJWQWPELqiGMtl0EVihJzukBr7zO7TWWkG2NFyCwaiu9vZLKiqDWAUnBOgt+t8sEBDcgKDhj/qx1HP5I7DPbo4L0SHjTy7sigEi+JoTk23PVhGFuXluhUNOMjbJLa6Sb3JdnJtZKdGONDstvE2i5t1/IeHOXKk1jelGxU4oG41Ou2Y4+k1VMd5si3rEyYSJghrDP8XrXrIdH1sK57JacdkuawcDRcS4IAOq0ED9YAIWBd7oojyx/thDbTOb/hBG6dBRRv0tNV5lwy60bE8m4Es+4VsrzLN4hR5BlOVuHvil6A/hOwwqWbZl42fPMcz03BFr8zsyD+4XA2uES/AayX1LEcIi3x246ViMA4PyOTJfQwPXpGhQX6kdhHapjm1p1YSSOGMr65XF+4RxbWnxsoOwEUl0jT1ok+pPpvtJxBxiu201Q2+2oLG+b2sr0PA6nx8ru9jDSbGvk/744dx5cc/jsN+3rnAKJQAhq3WOMgjCbjycGa9E6Ra1FXLsXvEhFZufmnX6nHRWnPlGD1mbSUGyFcK4I3QodbdwRiAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,36 +115,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-page_reporting_order used to fall back to default
-value (passed as parameter or MAX_PAGE_ORDER) if
-the driver wishes to not provide it.
+Now that we have vma_start_write_killable() we can replace most of the
+vma_start_write() calls with it, improving reaction time to the kill
+signal.
 
-The way the driver used to do this was by passing
-the order as zero.
+There are several places which are left untouched by this patchset:
 
-Now that zero is a valid order that can be passed by
-a driver to page reporting, we use -1 to signal
-default value to be used.
+1. free_pgtables() because function should free page tables even if a
+fatal signal is pending.
 
-Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
----
- drivers/hv/hv_balloon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+2. userfaultd code, where some paths calling vma_start_write() can
+handle EINTR and some can't without a deeper code refactoring.
 
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 2b4080e51..e33d6e3b2 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -1663,7 +1663,7 @@ static void enable_page_reporting(void)
- 	 * We let the page_reporting_order parameter decide the order
- 	 * in the page_reporting code
- 	 */
--	dm_device.pr_dev_info.order = 0;
-+	dm_device.pr_dev_info.order = -1;
- 	ret = page_reporting_register(&dm_device.pr_dev_info);
- 	if (ret < 0) {
- 		dm_device.pr_dev_info.report = NULL;
+3. mpol_rebind_mm() which is used by cpusset controller for migrations
+and operates on a remote mm. Incomplete operations here would result
+in an inconsistent cgroup state.
+
+4. vm_flags_{set|mod|clear} require refactoring that involves moving
+vma_start_write() out of these functions and replacing it with
+vma_assert_write_locked(), then callers of these functions should
+lock the vma themselves using vma_start_write_killable() whenever
+possible.
+
+A cleanup patch is added in the beginning to make later changes more
+readable. The second patch contains most of the changes and the last
+patch contains the changes associated with process_vma_walk_lock()
+error handling.
+
+Changes since v2 [1]:
+- rebased over mm-unstable, per Matthew Wilcox;
+- removed mpol_rebind_mm() changes since the function operates on a
+remote mm and incomplete operation can leave unrelated process in an
+inconsistent state;
+- moved vma_start_write_killable() inside set_mempolicy_home_node() to
+avoid locking extra vmas, per Liam R. Howlett
+- moved vma_start_write_killable() inside __mmap_new_vma() to lock the
+vma right after it's allocation, per Liam R. Howlett
+- introduced VMA_MERGE_ERROR_INTR to add EINTR handling for vma_modify()
+- changed do_mbind() error handling for avoid EINTR overrides;
+- changed migrate_to_node() error handling for avoid EINTR overrides;
+- added EINTR handling in queue_pages_range();
+- fixed clear_refs_write() error handling which previous verstion broke
+by skipping some of the cleanup logic;
+
+[1] https://lore.kernel.org/all/20260217163250.2326001-1-surenb@google.com/
+
+Suren Baghdasaryan (3):
+  mm/vma: cleanup error handling path in vma_expand()
+  mm: replace vma_start_write() with vma_start_write_killable()
+  mm: use vma_start_write_killable() in process_vma_walk_lock()
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+ arch/s390/kvm/kvm-s390.c           |   2 +-
+ fs/proc/task_mmu.c                 |   5 +-
+ mm/khugepaged.c                    |   5 +-
+ mm/madvise.c                       |   4 +-
+ mm/memory.c                        |   2 +
+ mm/mempolicy.c                     |  22 +++--
+ mm/mlock.c                         |  21 +++--
+ mm/mprotect.c                      |   4 +-
+ mm/mremap.c                        |   4 +-
+ mm/pagewalk.c                      |  20 +++--
+ mm/vma.c                           | 127 ++++++++++++++++++++---------
+ mm/vma.h                           |   6 ++
+ mm/vma_exec.c                      |   6 +-
+ 14 files changed, 167 insertions(+), 66 deletions(-)
+
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
 -- 
-2.34.1
+2.53.0.414.gf7e9f6c205-goog
 
 
