@@ -4,122 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CF06FD9E21
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 23:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83477FD9E1F
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 23:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 714FC6B025D; Thu, 26 Feb 2026 18:15:35 -0500 (EST)
+	id B04FF6B0266; Thu, 26 Feb 2026 18:27:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BE826B0269; Thu, 26 Feb 2026 18:15:35 -0500 (EST)
+	id AAC6A6B0271; Thu, 26 Feb 2026 18:27:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EC2D6B0278; Thu, 26 Feb 2026 18:15:35 -0500 (EST)
+	id 980346B0279; Thu, 26 Feb 2026 18:27:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4586F6B025D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:15:35 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F1C8F13AA77
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:15:34 +0000 (UTC)
-X-FDA: 84488166588.05.E3CA209
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C0610C000B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:15:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZCAFbS5Z;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5B66B0266
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:27:56 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31133B8A15
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:27:56 +0000 (UTC)
+X-FDA: 84488197752.25.1A877C0
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5A5F2180009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:27:54 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PkmvWdGF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772148474; a=rsa-sha256;
+	cv=none;
+	b=4BT+2SdouwQOuZutpdwXSoEHqLXZ4H/YL8lFqWFxFyJrzxmhDTU3alCSJmv0SBzrpv6s+/
+	XvKfU8NH4C9dzuss4RkSlKAMGjMKn/DdzAYITx+1Bnd3TOXWpsjUmjqZ6dvR3q92R1HKVR
+	ZawgL6T/B0P2f6Jgik69HYWzDKEWcws=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PkmvWdGF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772147733;
+	s=arc-20220608; t=1772148474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=He2gO7FeCtzL/4vV2XSVVirU0Z1WzkdCShcV5vmV814=;
-	b=QJqZujo3wDc6B/jZVHP+cR/KmOK/tOsKVu0/+jYlEWk+mM5SXdZfuy65egsakAenT7o/ya
-	TVMUJAUvIc6W0XcC802/wHwHOKQJjcJjcXuDhvrc2x2Uzpn5LceJqpEO9kymRZj382+0In
-	2qXK5bzXFWTXvQIX95/Pirkljt+kIL4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZCAFbS5Z;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772147733; a=rsa-sha256;
-	cv=none;
-	b=BQwh563ToX8+WUfuoyturL+KDsSrrLlupbs+zWaItjZEXDXlM4yhVw4sXiboF11hwQT33T
-	5phJDO8O9furF0ZlY5xNCQNST0kyP7xBtxh1vw7GTCLR7hAa7kWh8834IrAyMS6YcmhDQF
-	wumEaZnd3uZ4ZQQqQQOfB0Zo1Bm+Rjg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772147733; x=1803683733;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6ND260s9WILQRHkwfeaLvd30FFZogrwqcdbhvPGrCLU=;
-  b=ZCAFbS5ZjTxZi3GRT3szwNn349ZkBMJ2cvLE8hfVsJJtVovXzmin9Tm/
-   K/YyGQN83RvT5OeTApLP6zXe4dPxBZfJC03dM/ZMl+PHPP3yT7YFeuJp1
-   V9dEUTee0XUkaLr5NQw2WTIQUfxUK7XhAVyMnNPe6u+G2EIlLI0wMcgBD
-   rXrBUpPJeph6qR65SZ9/o1VDECnv3kBUIzK5SD4gJDJoBowmNO7WQ1Q61
-   vbK0b0I7TGrXltK7FJxk5mnhMXaBM3vhm6Bh6y/PSywLk9/uWtFP5utOg
-   rmIUHtDsuu/y9+4isQNBwKh1EvL7Eo/REFBXAFO5ZslaG5RcpF7oJLwPU
-   A==;
-X-CSE-ConnectionGUID: aYMIhTnqRKmPRfObcWtNMg==
-X-CSE-MsgGUID: 6Tj/FrlvRCKnixKh+H6Z4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73331465"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="73331465"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 15:15:31 -0800
-X-CSE-ConnectionGUID: 2nd7JkiIRv+7XVyRSDhPeA==
-X-CSE-MsgGUID: +DW9LNsSQ6mZAAtCLcDJCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="220856206"
-Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 26 Feb 2026 15:15:25 -0800
-Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vvkZJ-000000009zN-0205;
-	Thu, 26 Feb 2026 23:15:07 +0000
-Date: Fri, 27 Feb 2026 07:13:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dmitry Ilvokhin <d@ilvokhin.com>,
+	bh=uUrZ9rZ9RlW3x07tCEk7xJ4J4Vz88lZHdKC8XE8Cxsc=;
+	b=yoPpoKeyF7qe8y0pFWyUzOVEm9qzt3BubwTul0DvuzNIEVhfd3wWPRYj/JZkxYR1ZtMEfY
+	ZKlE9nzOvVk0kLxgP+8yAr/A+bx8aaXb97HrO6be2W3f/iQYx5ErPpMWY83+VBbxKErhcu
+	WAXcG7IdTDAXukEQrAHtKIol1wo0vZU=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82746ed8cb1so477490b3a.3
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:27:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772148473; x=1772753273; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uUrZ9rZ9RlW3x07tCEk7xJ4J4Vz88lZHdKC8XE8Cxsc=;
+        b=PkmvWdGFvwN85iua9zmVMRhDh/WCX7lUn0oVRgP09adaJkF6VHuJlENp0+SODCKlIY
+         ix/6EHl6Hh6V9aFwbkIQTsCYpWpjrn19UXbr3yo//kCORqno6xi3qM2lA7j0hwLJNhVB
+         1h1hF9SluWt8pgIPXUX1pUu3eBG2D5Fzm5DkAsLSQncZlQCLHcwuGEbArpPRr/zKw/j4
+         fnsLMKToZ4hyPP8NigCe2SgPUoBLpKhRxhBE5azNu2jtjvHrZhZuf0Phs2tJRG7nSoM5
+         5aMHUhz8fgL+LstZatj0+H/zZgC9TxIph4oMaAjNTUrxuAfPQT+qQ9CoZInIVpo6bukO
+         Z79A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772148473; x=1772753273;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uUrZ9rZ9RlW3x07tCEk7xJ4J4Vz88lZHdKC8XE8Cxsc=;
+        b=ILH76kzvT5vGgbzmZamRyF5GBR/6zTsiFvAuzds+IeL7zjiCmyVEAPQ1WrAvd1DDJV
+         4cZIqlBz/RXfnGL1CrXzkwX4YBao16S+CWFKynCB8vk+Z/93K8rBELNeY88CaIJmkZhv
+         qgjDoA/dX3zvY/KfXwAnXD72E6gt/M2Qx0C33KZhBXaX5f3ogT3m677XWnkT9sA2syxP
+         IrUmsnuzvEX1CU/IR5ylwafSSxDNCSAFlpApzmdB2X1DWwAYyJ1tMx1INXy6nCMBXmsg
+         LlSuywT76l1HkljZg4IAr7NQUYjXw2m6KY27vfJ+V+OD1a0R7tcvzR3tFWfjQrDIf3MU
+         dADg==
+X-Forwarded-Encrypted: i=1; AJvYcCXS9hs/7sr0rsjevOYUeZ4orhmAPaAsS7acrkGfx00LPyQkjqO8k1bJKpSq5oA+xa6+mXcoRWXt6Q==@kvack.org
+X-Gm-Message-State: AOJu0YxzyQTydxJdCEqaV1QQpkcb8bkXFN6jpwa/AdJowoWRjUY/Kdsw
+	2VK+wj2JMCNbR+No4h4rHdlorKfc3qPlcxqplOecDGSjt7JzSwYijv8wRIdRS93lSA==
+X-Gm-Gg: ATEYQzzBLEz4IXQdkCc6QjQGPzM/pfg/d85ahC3ZyS2+8ebvY27pBMyqrW+BQEbu36o
+	L8gRhCQRs/Ap92OJis1pYDDNrZHvpImnXILQGUZQ31SFKqsqPPGt/VD/tqrq8jeQbtWnoL0CV8P
+	4/8KiZ1ACqSyACMgI4m92W9UnYz45J862Y36AqrIvp63fNxpfjI84HKUGyA8VvHbhSWXM1gxjsB
+	YuFZkiaoHYZrsYuzBwGgjVz6fwhyasfxsxSWDP1jmoeAlgh5lwRu2nk2jI+8BAPQbxZtBcqXVIh
+	ZlJ86UTVq18axwtcpEAT5XOumZaJ8/RzEUy8zYZK6mbRkYNFudhLoUBL+btRVqcbrKd/CuJ9gns
+	W8DFEFDvgGWJiuaC3zFiA2S8EnHjzybrBBmjms+lGhB1vcP4DY1bD0HybKcGFo0i34Ph77yUAyj
+	vHoUr8BThIa8oOgJpa1ipNySwMfCd1t/HEuJsIxOvezHFF827AwRM9BkDH0DVjz3eDnc9yJNdE
+X-Received: by 2002:a05:6a20:1585:b0:38b:e9eb:b12b with SMTP id adf61e73a8af0-395c3ae6d18mr701611637.41.1772148472659;
+        Thu, 26 Feb 2026 15:27:52 -0800 (PST)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6a03fbsm48080705ad.43.2026.02.26.15.27.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 15:27:51 -0800 (PST)
+Date: Thu, 26 Feb 2026 23:27:47 +0000
+From: David Matlack <dmatlack@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com,
-	Benjamin Cheatham <benjamin.cheatham@amd.com>,
-	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: Re: [PATCH v3 4/5] mm: rename zone->lock to zone->_lock
-Message-ID: <202602270740.0RL1uwsV-lkp@intel.com>
-References: <1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d@ilvokhin.com>
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 08/22] vfio: Enforce preserved devices are retrieved
+ via LIVEUPDATE_SESSION_RETRIEVE_FD
+Message-ID: <aaDW86eWuQLZ3cfP@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-9-dmatlack@google.com>
+ <20260226161512.532609ec@shazbot.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d@ilvokhin.com>
-X-Stat-Signature: tkw6fbyyuw3wfi3gcaqr9ggy9qf4fm7m
-X-Rspamd-Queue-Id: C0610C000B
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260226161512.532609ec@shazbot.org>
 X-Rspam-User: 
-X-HE-Tag: 1772147732-545673
-X-HE-Meta: U2FsdGVkX19/mlV4mIIdSkeQhy4CorRQ/JDkkQCcCh6IQWPgdf6OkXUX1+InfOuNJWrPuakmRqqLDa5QnJkyQOW5RCV7kCfD8KnshrvxnUZQZJq7utVkv2nuEWCQujY2FSjmwFh1ud8yVh24cOYfycH7wXluht183aAxgaOPdx9yqGEAvuQCLLDZqaz7bvI3TjXyMvAlZPdLqGsBc+Tn2EdQ/jo7f6J9kitnLneGevMIR1lZVdKmWDGpPc6IcFYzHgiRlsYaXTZ3/OeBzMcKdd60py1PwC0UUvA5jH+Rsw+HF7LcAsicjNQJU0PEr3Xwb9cfmSX5WXV7U5JRODW2g+IpRs9Pp2blHsFdzKqCAcqxY8/o3ITWqDV8k+6cstr3pOSN/AZd5HdINW/QfpPhpID0v3Sipg1WDDN55bACZXjGlrAsMxC/1D0M0M1R0nBd/4WnNgUl+TDXOmFhCQnbIzvMmRGUu1JM1in46A6fWtpbvgZcxd5HM27VoACFyQtdcTftTAOGk5A4IT2Bx07NuoGOs+xMn+2fxDFos2U1MUsnDjt2W1n2+Y85Nx3Vx2VpDh6WQikWocOIW25nEaG9BuiID8YQ1G9kbW+ypBcKScwC1iCJXhOWqdc1KE9xoSsGGFbOjkx+saG3lH/kYWA9oQLMVBU1Czr9EQYUbnjeEq8IRDA5kLeTVt9EgPSBTXx44k5YbnyBCmRGn/mRrBe5BbKtYQmeucJJtF52kTjTaoH6ZwrcgqodEMTwHOGaEdlhVIEqxqycHjz0Jro2qeun1N580bQS+/dEqcQEyCOP0dirrrh+Fls5FlsGwuiaE8woQpTfnyJTI2CQog0+6P2UZ61S0oQhGpQt5zO+hUDiFDj+XoJZOYyq/Rk6klL4nGKzENRqL4bUO1RMl1dZ9V1u0wSxArmyFNnIo7Fmgqr8grzISP8c3KhgL4CWod95y2V/KrJ512R/y+kXvcR7oJk
- 5V1DZHtC
- 2DYO0I9X6AohAoa6+6+kpFv//hDksFH9rRzi9BfLL7E9WBjV/znUxrZr/ztzQYJnxQ1UNod+17GYIr5CTMVDBZQQtkPlDDWN2YyRepTvWFqIcAoSYR0PcseWoEbGyJTTH9tNqzMq7R9zfYma8fScsrS+2iTMHpwA+7+9eb5fc8b2o3xrOJ+DECWpmFFwBckIGQ3QHIA22dQrSgPdZB1akl9e0YJyHm5pXJlBAyZgqdTlOhOcEEQ74IVE3Ii7kxUPitkFxlPj3qiRNBCjfbUrLx2P02OaT0kJzp/MmT2zg2UATL8C8WVcVmwwl7faccJk53CD5Qb4rJ23ON0vB8IhL5lqODNqQkkt/UE1R7fs51zB7T9HvaqCPQWRmTSls/y0dO6xgrUrvbhVfA2YjxhOO36wxCSn1eUWVMsFx0TueEpf2GjH2omJD5rTIPxAHW3m6Mai9rGlxBu0T0fg=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5A5F2180009
+X-Stat-Signature: h9ha14db45f1g5c78yz3imzoxc6t4wuz
+X-HE-Tag: 1772148474-237353
+X-HE-Meta: U2FsdGVkX1/UVJYeWoBVdvbmkcuWbK7p0Xh2w7F79dKJErhA23/bp3il99WQq1s+qKfS3pBI49TBupNLfIdyPHSyBr5ctKfRcFuNFnQO5P14nmXhTClpiHbEvv0uzayAUJbHJvUqzlVAT57mTnsQlaQSkA0vnovbzHYmv/rTw+x7c1PEiQMgowCjWkpghAgIAEmnkAlIHkZ0Tm/iWeDmEo54paJxBm33h5NUiStWOLWVYnx0TdnesK6FGynRb2QF5jAjLSC5zH1ToQR9WzZ5AU/F15f+IT18FLiotK+gp+Bc/B8923h474tdgAmvrq6BaDkYh3w6cqJa2omFiMKYoXI6RQtsYgqmDeHWIMb6CJwpAXt3lVaNScT1FK0kdhxrEj4GuBsoDrsVyqZ0KB9EgPKbC64pbQ7oCPgzCFsKh2Z8Kpah34yhltZuqaI+aozYCBWuTjNgaERgpX88x96Kp99ypFNpGuVEqnEtYg+3Yd9GTJ8aQWbV3yuX9O4S/8tceo9NcOq9exu7uwgZDJUe7psJ7bqaxxwyDj1Y+GQqMGnxiTXntF8foEFT2GNZ2CPN34DPbb7T2ZVASXrUX7iWtUG4VV/0A/EAcK4L1fMLjkKeRGdWH14GsPyDnZZaSTOUmDbTwLpducGZzHDJsoqn9R/tptmwGbWdQo5gFgk8+QoF5CEM4S0d2huJWPpuI3z6zhSRnzadKk5lRnlSd9K8T/Pob+zvhqObNP3hrsy9yxeGEnN/wQKVcR4SpZZyiEAeYxVliRZ6FHre7jFfC9wpaVKjpYr3Du/yEJ12b0gqJqikLORgFI+RqKlc8C3M2sCSD3iqwOyjRhgKWUW8kVl8TZxa5vjq4jlE+57BH66PMHcwodyoa2JD3//wESWsS1Lm/4WdBwHoz26goQQKsKcHB/wdU2WbQvL1dhZcZ6IWS/5Kw0zLfE2atHf6hFD6Fl7o5exvd3o0b+5rqWqYrqJ
+ nsXAnSXQ
+ 4JaSIpauA+/mx81XkLFETx23jDvHYnIyRk+A0+P4ehG6kNAHCcOBtUj0zZhcCsenvqqsLGQNs8FFfCCCbaeZBTnXzsSE/5SS+jvxyXK3+Zwihpf4cZOsloLfFM3E6s80gSEWeyohZCv5nh+8AeEB7rJKQwXukF78yA0y4XUvH+t09kcDL6ML1eSbbTMTJOsZ6WSjP+dLwaCBjDyWJ9npzhuMdIQdMVyvKguM4oGXzG1C4+kdchqiAV6dgZd+COyYWlO23hoKZD48rkpthZ9KWl+TWAyb0jjGA7S+nTo7yHTOMCSdLaJwIF+B7TfcIKmEBVRZKixAdw3osh4/u3E9ym8kQgDrr8MqUoauzpb4Pb3hhWzrt8L1XFN5TM9WWP6t+URMu6/h/cDlRnmV4RhLuOphcxCnfYkt8wfuq8mNf25dgCgre2HgADk1bN8/brFVR5vEUhWUoMp+tMVF5zbl+wgQm1nVzz//uMjGYE7cHzOM03XA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,110 +149,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dmitry,
+On 2026-02-26 04:15 PM, Alex Williamson wrote:
+> On Thu, 29 Jan 2026 21:24:55 +0000 David Matlack <dmatlack@google.com> wrote:
 
-kernel test robot noticed the following build errors:
+> > +	/*
+> > +	 * This device was preserved across a Live Update. Accessing it via
+> > +	 * VFIO_GROUP_GET_DEVICE_FD is not allowed.
+> > +	 */
+> > +	if (vfio_liveupdate_incoming_is_preserved(device)) {
+> > +		vfio_device_put_registration(device);
+> > +		return -EBUSY;
+> 
+> Is this an EPERM issue then?
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v7.0-rc1 next-20260226]
-[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next rppt-memblock/fixes]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I was thinking EBUSY in the sense that the device is only temporarily
+inaccesible through this interface due it being in a preserved state as
+part of a Live Update. Once the preserved device file is retreived and
+closed, the device can be accessed again through
+VFIO_GROUP_GET_DEVICE_FD.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dmitry-Ilvokhin/mm-introduce-zone-lock-wrappers/20260227-022914
-base:   linus/master
-patch link:    https://lore.kernel.org/r/1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d%40ilvokhin.com
-patch subject: [PATCH v3 4/5] mm: rename zone->lock to zone->_lock
-config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20260227/202602270740.0RL1uwsV-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602270740.0RL1uwsV-lkp@intel.com/reproduce)
+EPERM might lead to confusion that there is a filesystem permission
+issue?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602270740.0RL1uwsV-lkp@intel.com/
+> > +#ifdef CONFIG_LIVEUPDATE
+> > +static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_device *device)
+> > +{
+> > +	struct device *d = device->dev;
+> > +
+> > +	if (dev_is_pci(d))
+> > +		return to_pci_dev(d)->liveupdate_incoming;
+> > +
+> > +	return false;
+> > +}
+> > +#else
+> > +static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_device *device)
+> > +{
+> > +	return false;
+> > +}
+> > +#endif
+> 
+> Why does this need to be in the public header versus
+> drivers/vfio/vfio.h?
 
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/sched.h:37,
-                    from include/linux/percpu.h:12,
-                    from arch/x86/include/asm/msr.h:16,
-                    from arch/x86/include/asm/tsc.h:11,
-                    from arch/x86/include/asm/timex.h:6,
-                    from include/linux/timex.h:67,
-                    from include/linux/time32.h:13,
-                    from include/linux/time.h:60,
-                    from include/linux/stat.h:19,
-                    from include/linux/module.h:13,
-                    from kernel/power/snapshot.c:14:
-   kernel/power/snapshot.c: In function 'mark_free_pages':
->> kernel/power/snapshot.c:1254:34: error: 'struct zone' has no member named 'lock'; did you mean '_lock'?
-    1254 |         spin_lock_irqsave(&zone->lock, flags);
-         |                                  ^~~~
-   include/linux/spinlock.h:244:48: note: in definition of macro 'raw_spin_lock_irqsave'
-     244 |                 flags = _raw_spin_lock_irqsave(lock);   \
-         |                                                ^~~~
-   kernel/power/snapshot.c:1254:9: note: in expansion of macro 'spin_lock_irqsave'
-    1254 |         spin_lock_irqsave(&zone->lock, flags);
-         |         ^~~~~~~~~~~~~~~~~
-   kernel/power/snapshot.c:1287:39: error: 'struct zone' has no member named 'lock'; did you mean '_lock'?
-    1287 |         spin_unlock_irqrestore(&zone->lock, flags);
-         |                                       ^~~~
-         |                                       _lock
-
-
-vim +1254 kernel/power/snapshot.c
-
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1243  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1244  static void mark_free_pages(struct zone *zone)
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1245  {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1246  	unsigned long pfn, max_zone_pfn, page_count = WD_PAGE_COUNT;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1247  	unsigned long flags;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1248  	unsigned int order, t;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1249  	struct page *page;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1250  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1251  	if (zone_is_empty(zone))
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1252  		return;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1253  
-31a1b9d7fe768d Kefeng Wang     2023-05-16 @1254  	spin_lock_irqsave(&zone->lock, flags);
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1255  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1256  	max_zone_pfn = zone_end_pfn(zone);
-312eca8a14c5f5 David Woodhouse 2025-04-23  1257  	for_each_valid_pfn(pfn, zone->zone_start_pfn, max_zone_pfn) {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1258  		page = pfn_to_page(pfn);
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1259  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1260  		if (!--page_count) {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1261  			touch_nmi_watchdog();
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1262  			page_count = WD_PAGE_COUNT;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1263  		}
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1264  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1265  		if (page_zone(page) != zone)
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1266  			continue;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1267  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1268  		if (!swsusp_page_is_forbidden(page))
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1269  			swsusp_unset_page_free(page);
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1270  	}
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1271  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1272  	for_each_migratetype_order(order, t) {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1273  		list_for_each_entry(page,
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1274  				&zone->free_area[order].free_list[t], buddy_list) {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1275  			unsigned long i;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1276  
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1277  			pfn = page_to_pfn(page);
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1278  			for (i = 0; i < (1UL << order); i++) {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1279  				if (!--page_count) {
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1280  					touch_nmi_watchdog();
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1281  					page_count = WD_PAGE_COUNT;
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1282  				}
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1283  				swsusp_set_page_free(pfn_to_page(pfn + i));
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1284  			}
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1285  		}
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1286  	}
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1287  	spin_unlock_irqrestore(&zone->lock, flags);
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1288  }
-31a1b9d7fe768d Kefeng Wang     2023-05-16  1289  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+No good reason. I'll make it private.
 
