@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0210AFD460E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 03:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2BFCFD461E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 05:22:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 202016B0089; Wed, 25 Feb 2026 22:42:21 -0500 (EST)
+	id 9CD3C6B0088; Thu, 26 Feb 2026 00:22:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AF946B008A; Wed, 25 Feb 2026 22:42:21 -0500 (EST)
+	id 950076B0089; Thu, 26 Feb 2026 00:22:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0914A6B009F; Wed, 25 Feb 2026 22:42:21 -0500 (EST)
+	id 8318F6B008A; Thu, 26 Feb 2026 00:22:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EAF986B0089
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 22:42:20 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A08121A0808
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:42:20 +0000 (UTC)
-X-FDA: 84485210040.07.82AD953
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C36ACC0009
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:42:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JdEHd4cJ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772077339; a=rsa-sha256;
-	cv=none;
-	b=49GAvvVq4agCv8jrifkElxTk13n6Lsi/6+LN9fWPowMKrq2wIDVGL42LPI5m06cO8dqH12
-	C7qG8ROfEu5BQq16+nC8UJKt21sjp+EQnmvzfBaktd7Yt5Dee0hh77WInQjdv7fcTTT4Lq
-	ljgwRjwbnkRBQTtyDKhRloTMjbxj5p4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JdEHd4cJ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772077339;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BD316B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:22:41 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18D33C2E3C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:22:41 +0000 (UTC)
+X-FDA: 84485462922.25.54BF226
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 12B81180005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:22:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gfsZadyW;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772083359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s/4WtA3QVEwzHgjUpBzvEPaT6QgOS9tebXTKZPMA8IU=;
-	b=eqTa1qf1qDTGgKvZNstPQO8xn27n8/aunHqjTNykhYOPdT5dQQQZ9xhydxeRtsRxiUxaou
-	npgEcEq2fUWrjAUFg0jS7S71d+MOVvhwwBSU4uJ6Vry0N8fEVMqD3exZkJ3Pz1SqQb3CK5
-	uqG893a3lMjC651ssg2eyiDCi2NgYCU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1772077334; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=s/4WtA3QVEwzHgjUpBzvEPaT6QgOS9tebXTKZPMA8IU=;
-	b=JdEHd4cJCST84ttivofN2a4NAbQM/03HCtk53GTdnfGRwX8A2wJYrEVm/dpYvXSfHiDepIw190ZW/tA9TCFwSculrsx1LDyh6lWiLF/3csswD+Q38LPb4sfP8nz0PRgUOcaL79XXyGdjI933LtVcEiqNbqq2ZnFrgYN9m+jx6gc=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzpnIJH_1772077332 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Feb 2026 11:42:13 +0800
-Message-ID: <32c538ce-6af8-48a8-86fc-d26ee253af54@linux.alibaba.com>
-Date: Thu, 26 Feb 2026 11:42:12 +0800
+	bh=J3Xn/gWW36p48ewqFSbbJlWXO8yGfqmwyJ3x8B1Ls2U=;
+	b=ss05MyVGS9cncbUqj6SkMKnWLyrzY3ZzX6jk+c+l8u7BGrV6nc14q1WM+DlCsdlB2DM5lo
+	N1LcyuwhS83Xupd3F6MvfEYOe345rXVYYed9XjRXoHcM3ROGvH9XT73op5aMsjInHsjHu+
+	zE/jUu0nQDSuBacshp+BqGcEngEqDcM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772083359; a=rsa-sha256;
+	cv=pass;
+	b=XDeSOgJv44DfA1ZwAEJIk8X9hM4mIfwwwKXFbE7Ge7Ms8J93Ola3PuhDwySdi/XOCaWVPv
+	5czqTzHeOYvKbNpnGp952dRWTaecAlMjQL6vEB+nlja6UdSg8wTvcB5mtktc8K8WawDDk2
+	uwj5MgsFDwo1u6qCvKbhfyYg6ODHi8g=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gfsZadyW;
+	spf=pass (imf06.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5069b3e0c66so22708661cf.1
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 21:22:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772083358; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dfTbTcLDO+ka+2/sRFq4W6Jtxz4GkIPvpT8cIZEGa8HuQtj6CIo+ygaA/zfNyMQNbK
+         EpuF5PwMrDmCODdeQPt2q2nksI+H8BN5OpbnPojI7Yi8RLJPaP0dG+HJBEYNuGeVo2le
+         vXl2ExS4l0t1uzLfuFJaOkKc+KMpYKzwlWYSeehEYubvhaP2E0GM+Xyq3PtfVegLl1e8
+         /uCoiyfnh+ehqgD1IFwjCKmfKb89Ha0AiZGWie/L0znDXlUq3mpvHhjoERaL0MXPkJUQ
+         hFirh8ZX+vqnVihj+6RH1mAnMmqqRD0wsSYfb+8Ifcz4XNjymjmd3uAuIwdlPBY2j3Jm
+         0LTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=J3Xn/gWW36p48ewqFSbbJlWXO8yGfqmwyJ3x8B1Ls2U=;
+        fh=CBJA9oTZQ+TFU77I1pk/rKC+1y8817C4vZBSgGfI480=;
+        b=eDoaWxWMfJPq4O3JfMsErEN4bdnGmER81wxhvJRG97M5WU2l8NRqGL+MmYeSFjXSnS
+         cAISxjxBqOWW+RFOjepo9XEpaFrzxFZZZlRp1RwfnIs6VPn67Aw0RzBftxOKduFPOjzf
+         oT8zAIraNBJ3ATwxGqLN4npPR6AgfW4vbdHLekXuemUoeCeZO13ignUbC9KrBxYQD0Yt
+         6oK2pWB9zyvmT+zNy0fPThFCmA9NJIjTA+ncqTS8Y9Fz+hq8UT35hrwgsC8NRTDrHNfJ
+         bh1nqC91iu3/mIEuTRtrBxpwZwb9/PensJMbLEKvMihZ4dNEfPU3CYqEE04lOXDIMJSA
+         l42g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772083358; x=1772688158; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J3Xn/gWW36p48ewqFSbbJlWXO8yGfqmwyJ3x8B1Ls2U=;
+        b=gfsZadyWyjQ6xZb5PNvykSge09J/JiRCqew4dBV1WDDiXdiC8wB3YGvvFcSagNSxIs
+         UR0j9wScUXchUl9WWbk2b2VgqfTdgcgOhenplB+sh+7Umpyd7i7lLiq7dL7k8Pqa17wA
+         89PzI7YBngkTxqsdYiEADyVK9wiDNf79M/9148qWzuWbZrkpG9Iwetd/vrlHfPCNrrh/
+         UISMZF+hBxEitbGOxXS6NvIeRDESAdq9gzynPyag/XsDqGf7d2c4ahXDueRKilqwVlde
+         vFagHDcxybDbRfbKVal/3ZfOiNtNFCn+E6miVoNNeHwiTM9knzM7C8a+WLAHr3G7PyE3
+         9cqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772083358; x=1772688158;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=J3Xn/gWW36p48ewqFSbbJlWXO8yGfqmwyJ3x8B1Ls2U=;
+        b=c+VGmjQPJFeHxBe3Q5ZSn5GSsZbqiYaZwWup351MgE7ye7SkYcopBZwT1KarUBR7GN
+         OOatHhalVG92f/mHQ5qVdWJqjbY+b/7Nw5pdDTwb/sPfP/LjF6YP5S2wKdah/0SnvtOz
+         CvqV7IIK8ylqr+KEE/frVApXfZPqUwBTLEFCLI8LkoBKoOuAp+4W0IxnwxJ+RwGPYTTQ
+         vYodUVPbnqz/rjpj9UuOVPGyDtHeaoh6CQuFfTo2xEkghlLtfoSmliHdEtStNd3A/FMs
+         2gcHZ9EOI61QQi/eu5EIlA2Zz7S9P3glIq87MlND47mbZxzLPPWUojhrOpLrBQZN4jaa
+         NQeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSF/b1lQd/+NptjrMTccsZcHfwZSsAkPNJL9hhVpPAFH7Y57obUisTEv7lrdNhcrbfmkCRz5ZDHg==@kvack.org
+X-Gm-Message-State: AOJu0YwOvvvUVbxAkJ2yTqDA24avOV19Y8+Z/6UNnD6oBYn4ROpz53kB
+	PjwNvK4Jk2PIeOPSFz//SHRSYLNFbGdrxf3I5Kvy0tyVtR4z4Ozy+HQSYvHCXHDOLx02Lf/+m22
+	VRZcPFB+3Mqm4W2Xv3R+3CWRKrU0VdX4=
+X-Gm-Gg: ATEYQzwdUlfA9E+XsPniSJbVmh/9noUfyOCyJK/lylv74FbqZ3GYfPLNlJh7QTwOYAI
+	WicUnE+kYQhKkm2FyS1xjcsZOuGJXAzl6PDvWsdMfV4mDhVArKaewe8wcSrIsz8O5HUN0LYppG6
+	FpavvXwOf5/ESs1JpF/770j0SxQVuovlUhnpGHLBEj3hIN+tVe4UFvDn4MneRsrsVhCQmgGPbB2
+	/IORYcEQvCmjTehCgwiqGDO5aR/6NXW3M30gZgkGYPnSKqWM3zRaehb1nOGajQJK5QXZZcViYBo
+	o11/Mg==
+X-Received: by 2002:ac8:57c1:0:b0:4f1:c601:3ca4 with SMTP id
+ d75a77b69052e-50744430078mr20149961cf.32.1772083357864; Wed, 25 Feb 2026
+ 21:22:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] mm: add a batched helper to clear the young flag for
- large folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
- zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1771897150.git.baolin.wang@linux.alibaba.com>
- <bfbe28e381b02452b455498e7ea82662e83a3865.1771897150.git.baolin.wang@linux.alibaba.com>
- <d172d6bf-c60c-4cf5-9da9-f30de38cdfed@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <d172d6bf-c60c-4cf5-9da9-f30de38cdfed@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260226010739.3773838-1-youngjun.park@lge.com>
+In-Reply-To: <20260226010739.3773838-1-youngjun.park@lge.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Thu, 26 Feb 2026 13:22:26 +0800
+X-Gm-Features: AaiRm51ZAuX05JRJ9EY-dZAx9ziDiaJ0X1DP5CVBf3Ia-vqwqnJ7yhQL52xV7mw
+Message-ID: <CAGsJ_4zEWVYtyj2TR_Rc56gjpz6BDP2rjrcGLva6kgNCxs9tuA@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Add myself as reviewer for SWAP
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 12B81180005
+X-Stat-Signature: 3somrc7wujm3i1ah9dbkb4hf8gxwjbu6
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C36ACC0009
-X-Stat-Signature: 14j359h51wnq7pn7sxi18az9kerhzwyr
-X-HE-Tag: 1772077337-226091
-X-HE-Meta: U2FsdGVkX1/5tNjuVu1Os3cN5/uxMiDAbhhXLhC4+nzXxaT0TLUbh78Q4evYOkuoMujhx0qGW8K0CCqw6lbGgliUuLi2y3wbc5hpQ1FyqPtaA7Y7mc3wWlu0gRpa58EK235Yn+dNqYHFz3q6f56VKuLLb1uiXRNMP4PdIuZbASMD0AM9AZDnlgkSlQTx5vvci3Bld0JhewVkYQRMmi8FZeZomm2lZu5LtX7V1OJ7cKXuTsuIWJjuubRNTF8inYAFZehFuXk5pp6Owm0dot+cxQIKX2hez67LQ3yLR0ZRfuzmvQ50u50CGVGvkVohbIV4mrTUBY1lh6NbhOqND9sNBFUlkPTBkJoHniGfeuqBGbBQ+PfUEdX2uBPOyWKqW3DZZNU/LAefWkysAS25Lb1JatU8DhwpEoEwh/2QLa7mrUPRuiAIaIP9ZP8qA1H8VBMtDLxvWUxKJgyToyaEHSuMF4Ad5sUck9Qr4nRX0kDgrfAd+vSChwttLelETGh+lIuTVd9FCwgcZkmOcXbgQ4YEQYZZfqfTtadQhoSEOZm0cI95TDxa/+VlVUgcgQGut5SXgflXeB+5ZYxBr/tLE6zRwGmd9uN+q0ne9edY7rXfY41ZuvT4ABvQRKpS4MPez1WRi5vZdkOAwTvdsPM8g5bTWvTjvXSb9aORS5Dmfbq9n+4Dqbdpc6RE6flsnUZ8y+oRCfiqhXyplbUGgX8An3pK5yRd7GT8K4aZkPSfLlao/+Fzu4TUZpwb5nBLRrFYnbZ9UHe1WmgynVtsgZhQUZu6UCIldEZ+wo4gSPZxtTfrdFdeR7T2UiCZZ8OksQzfqOdw2pyt6eCIZExT0CITP972dP1XFxN9JGmwbErcccJ7ert513vgrOkQLNBWZGfB+tBQ1T3oDXzLmTsiI7BrY6BdMgAJmqsxCehN0CLLx5+aLH445sMOMtO2+mwzrwCVS4LzbE721huXPfHKTTHkvcB
- NZHVASeG
- aoMrM9vyDnPE48miFGImmM7kE2fujKKztdNS1Ja22j/ai6W5odEiUFA8TGm1IDrsUVARmEIb0oLfDKnZcfPDwXgzTCTsKhWaCPzKswrWOWdbX5XjAERAbdtzF7vrRIf1YLt3cN+S8dBW+6VWxGRVKINCsCkBYMgXWPCHcwaFgb62lK4YIauXhYvEFnStrdGqU/yWkPcOm7NVEXf9Ab0nscvRRynqvNkIOpVaV1c0KVqQLS61UaLpVuxxiVde8pszfcauP0WukF9tOxsxft0KF+41WPz6jeOukl5BJ0PO/XrdyOXQ=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772083358-45758
+X-HE-Meta: U2FsdGVkX19GL50GUN4zSU/O/Y4saKFKQ7E3fOey1RhDnVAQc/tPpgSuiSO3VajAUKn+X4tnpMQcd0BtOmhx7PyDwC9bH5CmQ3Gd99tQxXyb4z5l0jEiXL7p7de7fHu50wA252MQHOX7h1Ud5ojgozxfR51oWAYLdfThe+8CFy2qpzsmjCUt74JGz/fsYB2xdzAu+Qv/39+hBhH18FhmJDskyA5Jgfjx0t1HxzQOzzs9TFlUCySaYf3P21bevl0x4Z5MTm5wLhDSvAUf+44xBC/LW9QDyxj1CU2nAJvH4of0C9owZ+D//AaSILZi+WP4/TlKPVkTwrdRVxyh3AvFUGxLkRbhurZIZY85YbusUKw850Y8Reflqr2LbYl/x6YrP52xCgm6IePBsHxqj9DgxBHNKa1F9Zye6fstPFHuV6p3gK/BxsnlZ6Eb6sdLlm8OdAKX5FlT4N+WmpuRkeJUhYdbxXQObvwotNRVDiFLevuCX1RwXIWj1dIJ0anV61zG70LpOAPKCkvRsntfai4GOJ/qkWdCTpuZ0D9nt/nbIUmvYI89/nVTLsyJ/d8KwhEK3trdhGKKL9Tx8gShb3sReVRzcHR62rK4bsIP+2Q4+eBzEDLwpbLK+g9gxvk7YEcLvYPnEre4GhL/Z88gRSURihdNcVwbcAx1SHEuGUpH1tJbSvB3WNVwHAjuUSJW6nkneTqa/dwRUrnrpikstemIMQp5mxNUpH7vUSIH4/2kP7jqnE0vniQR2fNh7CB93izgzX+ffDN6dPcObPFm0eSrvMbN0qaMwAPOTstqu8haVFvEz9EVzbnNDFJkWvrUnI1JDS0CyK8FBDSJmHyKv4oWULVjhEpOjF0j844tjEOTgTMsTeEMoV9GtucU4GjOL4LN/iDR5w26IS2BMN0CWzITyOVomnRkkvGPc9QhSXB4IGJrWwhDWg+9NMZwtk4MEcE76s6kJxVXU+RGYUZZtYs
+ 3R+psjR+
+ vGTMFacVBYhlUVrw12EpoArfYxEbhE6+K+RGuyeWLdAfE2qqk6NRB0yXAL82QJSmUKTDCFdYyLSH9EtgxNr5Q5ojoswNV9NE49VZEOERdEdw9N7mFg2H/5ahU22qgJM47VVjyDU3YNX3ES6gaVlba27kApKKXcfsYU5wFy+OUoFoWRrH2ny7dHuS7/D8TpjEZaOI2dXcjv2f1wrWXtwaFmi1YkmTWTnvM2No8AVfmg/nx+czZi7ko3v8OHcedEIyWiBf14kycuZ6fXP85NlUEXbWv5rPGRsBOFbbFjebNwtRjqP0MrB82u20RyAiEFo9OQ3YWZ52XkExfoAtlni5ZyBM9YUAEJdXvg5ZpNe3lrAN1106ycG9RwpC2TSu5G4SdpNjf3e5Oh7tW8m93+aU1zU0tjBN6mqKO0ke3bwZCqwVMLV4B/FYTZOXBK7GxrzjsBcx1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,159 +140,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Feb 26, 2026 at 9:08=E2=80=AFAM Youngjun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> Recently, I have been actively contributing to the swap subsystem through
+> works such as swap-tier patches and flash friendly swap proposal. During =
+this
+> process, I have consistently reviewed swap table code, some other patches=
+ and fixed several
+> bugs.
+>
+> As I am already CC'd on many patches and maintaining active interest in
+> ongoing developments, I would like to officially add myself as a reviewer=
+.
+> I am committed to contributing to the kernel community with greater
+> responsibility.
+>
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 
+This is very welcome.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-On 2/25/26 10:04 PM, David Hildenbrand (Arm) wrote:
-> On 2/24/26 02:56, Baolin Wang wrote:
->> Currently, MGLRU will call ptep_clear_young_notify() to check and clear the
->> young flag for each PTE sequentially, which is inefficient for large folios
->> reclamation.
->>
->> Moreover, on Arm64 architecture, which supports contiguous PTEs, the Arm64-
->> specific ptep_test_and_clear_young() already implements an optimization to
->> clear the young flags for PTEs within a contiguous range. However, this is not
->> sufficient. Similar to the Arm64 specific clear_flush_young_ptes(), we can
->> extend this to perform batched operations for the entire large folio (which
->> might exceed the contiguous range: CONT_PTE_SIZE).
->>
->> Thus, we can introduce a new batched helper: test_and_clear_young_ptes() and
->> its wrapper clear_young_ptes_notify(), to perform batched checking of the young
->> flags for large folios, which can help improve performance during large folio
->> reclamation when MGLRU is enabled. And it will be overridden by the architecture
->> that implements a more efficient batch operation in the following patches.
->>
-> 
-> Maybe mention that the implementation follows the other existing functions.
-
-Ack.
-
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   include/linux/pgtable.h | 36 ++++++++++++++++++++++++++++++++++++
->>   mm/internal.h           | 23 ++++++++++++++++++-----
->>   2 files changed, 54 insertions(+), 5 deletions(-)
->>
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index 776993d4567b..0bcd3be524d3 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -1103,6 +1103,42 @@ static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
->>   }
->>   #endif
->>   
->> +#ifndef test_and_clear_young_ptes
->> +/**
->> + * test_and_clear_young_ptes - Mark PTEs that map consecutive pages of the same
->> + *			       folio as old
->> + * @vma: The virtual memory area the pages are mapped into.
->> + * @addr: Address the first page is mapped at.
->> + * @ptep: Page table pointer for the first entry.
->> + * @nr: Number of entries to clear access bit.
->> + *
->> + * May be overridden by the architecture; otherwise, implemented as a simple
->> + * loop over ptep_test_and_clear_young().
->> + *
->> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
->> + * some PTEs might be write-protected.
-> 
-> Document the return value?
-> 
-> Returns: whether any PTE was young.
-
-Ack.
-
-> 
-> Or sth like that.
-> 
->> + *
->> + * Context: The caller holds the page table lock.  The PTEs map consecutive
->> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
->> + */
->> +static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
->> +					    unsigned long addr, pte_t *ptep,
->> +					    unsigned int nr)
-> 
-> Two tabs ...
-
-Ack.
-
-> 
->> +{
->> +	int young = 0;
->> +
->> +	for (;;) {
->> +		young |= ptep_test_and_clear_young(vma, addr, ptep);
->> +		if (--nr == 0)
->> +			break;
->> +		ptep++;
->> +		addr += PAGE_SIZE;
->> +	}
->> +
->> +	return young;
-> 
-> BTW: can this function simply return (and use) a bool instead?
-> 
-> Likely we should do the same for the other functions, but that can be
-> done separately.
-
-Yes, add this to my TODO list to convert all related functions.
-
->>   /*
->>    * On some architectures hardware does not set page access bit when accessing
->>    * memory page, it is responsibility of software setting this bit. It brings
->> diff --git a/mm/internal.h b/mm/internal.h
->> index 1ba175b8d4f1..1b59be99dc3f 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -1813,16 +1813,23 @@ static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
->>   	return young;
->>   }
->>   
->> -static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
->> -					  unsigned long addr, pte_t *ptep)
->> +static inline int clear_young_ptes_notify(struct vm_area_struct *vma,
->> +					  unsigned long addr, pte_t *ptep,
->> +					  unsigned int nr)
->>   {
->>   	int young;
->>   
->> -	young = ptep_test_and_clear_young(vma, addr, ptep);
->> -	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
->> +	young = test_and_clear_young_ptes(vma, addr, ptep, nr);
->> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + nr * PAGE_SIZE);
->>   	return young;
->>   }
->>   
->> +static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
->> +					  unsigned long addr, pte_t *ptep)
->> +{
->> +	return clear_young_ptes_notify(vma, addr, ptep, 1);
->> +}
->> +
->>   static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
->>   					  unsigned long addr, pmd_t *pmdp)
->>   {
->> @@ -1837,9 +1844,15 @@ static inline int pmdp_clear_young_notify(struct vm_area_struct *vma,
->>   
->>   #define clear_flush_young_ptes_notify	clear_flush_young_ptes
->>   #define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
->> -#define ptep_clear_young_notify	ptep_test_and_clear_young
->> +#define clear_young_ptes_notify	test_and_clear_young_ptes
->>   #define pmdp_clear_young_notify	pmdp_test_and_clear_young
->>   
->> +static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
->> +					  unsigned long addr, pte_t *ptep)
->> +{
->> +	return test_and_clear_young_ptes(vma, addr, ptep, 1);
->> +}
-> 
-> Why not outside of the ifdef a single generic
-> 
-> static inline int ptep_clear_young_notify(struct vm_area_struct *vma,
-> 		 unsigned long addr, pte_t *ptep)
-> {
-> 	return clear_young_ptes_notify(vma, addr, ptep, 1);
-> }
-
-Yes, will do. And this function will be removed in the following patch.
+Best Regards
+Barry
 
