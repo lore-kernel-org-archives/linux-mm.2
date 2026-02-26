@@ -4,142 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FDE3FD8FEC
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:08:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD408FD8FDA
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93F3A6B0196; Thu, 26 Feb 2026 13:08:51 -0500 (EST)
+	id 363806B012A; Thu, 26 Feb 2026 13:10:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EC356B0197; Thu, 26 Feb 2026 13:08:51 -0500 (EST)
+	id 33AC46B0131; Thu, 26 Feb 2026 13:10:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB606B0198; Thu, 26 Feb 2026 13:08:51 -0500 (EST)
+	id 210216B0136; Thu, 26 Feb 2026 13:10:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 66D176B0196
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:08:51 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19133B895C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:08:51 +0000 (UTC)
-X-FDA: 84487393662.10.0F15E3A
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0B29580016
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:08:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Mgk2aqaI;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jstultz@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=jstultz@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772129329;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A6B26B012A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:10:40 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF171B89E8
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:10:39 +0000 (UTC)
+X-FDA: 84487398198.01.3AF110B
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3A3C440007
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:10:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A9XozN7y;
+	spf=pass (imf12.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772129437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Qnm2oa0MVzHK3SlIdevV2oCNgF9I6YsjdLLXN+h7bs=;
-	b=GlO/sp2OOs/pSFawRQHEOEcjKgcwacNeDAhnQKNrGpNZSaf7oA+RyfSJkm6dBF8CWVbyBc
-	B7Z5jSriUZXgx7tJa5AAQ4fmrePx8njaa7UGdWMx2lsEzBrwsxJMQWi0DkiWaxZ4H7dGBp
-	MIy7fiF2x9G0AN2HJVQqhBady6lRnng=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Mgk2aqaI;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jstultz@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=jstultz@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772129329; a=rsa-sha256;
-	cv=pass;
-	b=oZ4x3bcnHw99AyGZ9C5O/W9K2aDFjv22K9BHeHkDdC095IAuwTo3GiYNTTgICA7ELZ2Atx
-	SMln0EKF5DNZZ3C4lHwPHyEeqXAqsXrsHM83OQ9OpYrneUFzNf0EsXu9+ro+JBaFZul95X
-	e9vadpG8xuqJXwHlAlsFzevuVorUVp8=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59e5eaa491cso1443486e87.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:08:48 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772129327; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kfwP8RPwTaLIJZK7W/Ai2phBUwspHc8vL5hkrBYliCWWdiumBEtEF8Kf1ewQu3KM9P
-         Wgt0lo0wcX+jefacfqaAFgvqI4Byh216Rj+8+G+DoWnwayI5nL/OzV7GhjEROBf2s6J4
-         0h8jV7iC6Hc6zx85/cVwy8QsYIY6eOeqbFO4ppyDetYWu3gyoMXMpJbmPs79mozS9QS4
-         o4erofSm3ySLCIGX2Sr6btPI7/puAbf8b7fkjo3kxx7srnjwldUJaHYFelZzyJjrLQ2v
-         f+QJV18HfH+mw3eDniuM9L5RZXq4lzrsLtPZgFnmxpJOUgCkK46rezGd6ot5WObBU3si
-         nG6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9Qnm2oa0MVzHK3SlIdevV2oCNgF9I6YsjdLLXN+h7bs=;
-        fh=BqoBWclTyhMy9wk1roKm7ce5jezJoKTgstCVgF6wLFs=;
-        b=SdN3uFreE4MH5g3JpCa8mcNN4Fpjo+Tw8jljEpJn6fH7VAX2yujPqgd7sk5tt3G58U
-         jsfrID6ZHJ40NXSyelG/BVxQZ5a3d6pE57TtWvXrn1d0z0qG9C+fLwbkhZEn3kxgc1j7
-         61T3qSaxYY8ZftbHSIC8DpdOHADxiOjOZWQO1/SpSHsE3J+ZPxM+EdcS2/9xCkEKlucZ
-         em8FDvOsEzcF4joTvY+uqQSbbZDQgGktYrIpB+Ws1qSARkObkIvjakY4cM/HlPDew1Ev
-         EKZTxgrQhnJVjAwI0h/4TCQemw7xk8KjuyzzodLUJe09wQYnEm6sJNxePp+Oa+Sb1Bp7
-         0wQg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772129327; x=1772734127; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Qnm2oa0MVzHK3SlIdevV2oCNgF9I6YsjdLLXN+h7bs=;
-        b=Mgk2aqaI82iktxGczwBDU58IqFo4feaRsYXopGkNJzWeE2I+SFhYth/hjzLvs/Y2kz
-         rm1ku0A8TdUDXFqQeQpFObUvy7aepOXlDGdGWlxVEUS2+8AN5ODJYHFTazO6Oy0LT/wD
-         UJeQgofO6GIQhU1kAECnmkqUn8iN3K9W64duMfJOaxySpHZFee6vPvSYR692gYlmp5Zn
-         8maxaqmOpTJA5TuJUdLFqGVlSW9XD8GNIo20HSD8JyupvxWMEgzk9He2aCtJ8gneyT7H
-         t3Yq5su8kC/f+UCBopmgrjov5ElGSj0WQz6BUAhcDGgDD/AkHUd6z6rvzxgm/n9P2nJH
-         fjng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772129327; x=1772734127;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9Qnm2oa0MVzHK3SlIdevV2oCNgF9I6YsjdLLXN+h7bs=;
-        b=AbTCg29w6+6ugdgO+mv+nd4z963PpSGr1331sJGKZj33nZCpEUzdDqTf/UtS4xDaRi
-         UWlVinhvD9P9kirN9DzDvDnJ13oJfPWeiklY+CYcfn4o7szR66YsYrsiAOXrT5A72bOh
-         r45LqMkD819GynALi3LB7YoyPs5f8wOGHZq6NAQ+rlY+xgY0RIXowJXbkoTeuZNZmZWn
-         xCvquSq6ASCsI/ZVEcaAUMGrGwMRRB4GaPmJmkyMyL8T5uiBminGLnfHs94yG3/kIGrq
-         OxSqdxOh7XFOYkTrY9Fhy9OaNA473/cVVrJC5hanQl06a/d1OQF52x8Wg+vY/ojIqNAH
-         DdFA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnk+HB36r9mHrnFywMiH4NKfkw+opmBwhxx92AHL+elWCbA+6jEwwveuLOO/VyhYL1oAb1NesLAg==@kvack.org
-X-Gm-Message-State: AOJu0YxCEsfzRxhh4zO55bYHO8V+Y93dZMTm1m7hh83Oh8gxIILviMQL
-	c2FU4Jdn1yQvnoqukdcbK43KoJiTnr4qTm2vnKp0DWZMftqybusYOO5t/uvn1Z3TZAjV7bno5O7
-	BpBpZV975zxmi7yiaGAgIqjxwWRzVY74R3hSf5vAk3fW6Ai/EivO4/FUULA==
-X-Gm-Gg: ATEYQzxMa2Oi+RyvSqQQ8uJALVrvcIA1DKD+LEDmYaLU5QS+Rgi/m9OO49uYIP330y5
-	8IGhhSrhnMp9hyzfCTb5zgGyYlHl2DfjQXuCRjDDkSqAmGAY7wk+0tRj6pZdatMzexnDcRZH26l
-	6RHBoso7ZhlZAA7vLw/yJsFopYeQJ5xO3yfa+up4OPCPzMSlIRwZ2nGlUKjmUd3Ecdea8kvPBeS
-	QLGWN0jgAL7XYMPCfUVxybjofGHF8grz3kEv9SfMsx2hf+4pKF6f+MV4z9LjIbneWk9zBDEjg6W
-	BZHTbca1jTxe74DyQAYGnayLcvDkJo9Yq6WM
-X-Received: by 2002:a17:906:eec7:b0:b87:d255:39ff with SMTP id
- a640c23a62f3a-b9081b37fe6mr1411724466b.32.1772129014224; Thu, 26 Feb 2026
- 10:03:34 -0800 (PST)
+	bh=EiFUwGlKvPHJc9AsU/Wqf2qX4SDWzVFk7B399xUfI9M=;
+	b=xO9NPq7KnxivIJ6Y0YYAk7X7uAiPOHW+1kZoBOyIGV8LMGBLk2wRbPoX5vYrNx04mSazFX
+	aYntfhKX62+GeTqO8DIgK1IcjWYUFU3JJAovfkF1pEis4sytN4iNoGA/wW2r2pJVXPfdMQ
+	DAf1LIDL8WTEDABp+DUSDpXYm0173o8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772129437; a=rsa-sha256;
+	cv=none;
+	b=oVPIrBh3uBON6msp/Ksrl1xoJSn+vRCxn7JWifyUpBK3eVbtyq4mbGhRzg5K7WbS1wi/0u
+	2gPacvFNLN5/u3mKs7ngRGFFHplz4e6rTFyUNYLLvgX4Lr06zVy0d6nFnQqZtsuukqqoyC
+	ei1gkVsxoYs/41P4JlNOQMlHv+6m1Rw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A9XozN7y;
+	spf=pass (imf12.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QD6Faq2725309;
+	Thu, 26 Feb 2026 18:10:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EiFUwG
+	lKvPHJc9AsU/Wqf2qX4SDWzVFk7B399xUfI9M=; b=A9XozN7yADv+w734KoqjJu
+	cmY5URUgJGXV1lciduLFTJDjuvpGVRXqNodjYvdRm6srQYfX+JKkyTzLJ6oO3lid
+	lt1246JIMpLXN60GlHCw78QYjEclm7RCJaIOga82zWCfa4xr6Hw2ZXeO4gOdxI2k
+	6cGeTcMHVR8xSwxLTb7kJhPH4UdNUh4NAQwmwLEeArGnHOukzh7fA7eMLi41cgrf
+	zls2ufrfHcFIcmaY9B7hUC5cvbachdn+mq5Qjb9CRIeULa45GKXoDkd7b6ZzEVRj
+	LMwmN48tEzzMzCMerpEr7STe88AIe245K5+3VGYVEOWTNTkEXCfDNPyeMNBSCygA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4bs7aa8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Feb 2026 18:10:15 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QI2mNq001607;
+	Thu, 26 Feb 2026 18:10:14 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1nd82t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Feb 2026 18:10:14 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QIAAwk42991898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Feb 2026 18:10:10 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C5B620043;
+	Thu, 26 Feb 2026 18:10:10 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A613320040;
+	Thu, 26 Feb 2026 18:10:09 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.52.223.175])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu, 26 Feb 2026 18:10:09 +0000 (GMT)
+Date: Thu, 26 Feb 2026 19:10:07 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org,
+        ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+        rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+        ying.huang@linux.alibaba.com, apopple@nvidia.com,
+        lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+        Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+        dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+        vbabka@suse.cz, jannh@google.com, rppt@kernel.org, mhocko@suse.com,
+        pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
+        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+        borntraeger@linux.ibm.com, frankja@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] mm: use vma_start_write_killable() in
+ process_vma_walk_lock()
+Message-ID: <20260226191007.409a7a21@p-imbrenda>
+In-Reply-To: <20260226070609.3072570-4-surenb@google.com>
+References: <20260226070609.3072570-1-surenb@google.com>
+	<20260226070609.3072570-4-surenb@google.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
- <CANDhNCqk9Uk4aXHhUsL4hR1GHNmWZnH3C9Np-A02wdi+J3D7tA@mail.gmail.com> <20260226-adaptable-vermilion-nautilus-0aa6f0@penduick>
-In-Reply-To: <20260226-adaptable-vermilion-nautilus-0aa6f0@penduick>
-From: John Stultz <jstultz@google.com>
-Date: Thu, 26 Feb 2026 10:03:21 -0800
-X-Gm-Features: AaiRm538ftOfa1UyUjDoV9Yd7b0SRwtnSHBghCEM_shajRcZSxbK21W611Pqdkc
-Message-ID: <CANDhNCrpNU7QJgu+0CZRvdxLwKp8VNxZoG_zDo7qqxaE0mjoTw@mail.gmail.com>
-Subject: Re: [PATCH 0/7] dma-buf: heaps: Turn heaps into modules
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: CtrnfnLFeGbNILvMxH4zz7_6vXcy1bo2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE2NSBTYWx0ZWRfX92/iJsyzGWX+
+ U7gNleqecboFJWTHpna/+exChG3YePLWbT7HIINpkqg0RRcbAghOgu83/JdENcOYjyMxHXyYS2J
+ vxq09Edt50L8rapeL1iGqQfXep6UdFtEScs6PLrjliHJTfK4HkCtLV1f5gYqnr4+oR+P/TmrBrJ
+ WHUPRr898gbzAFY0BpdSk4/GWwqKBJ07z/9d2A3JTukzTerEs7+5ySYw7XMrM/MTFa6foacNTwu
+ ZzwE1fe97JUOUH3DNbY21+30YHBz0ECn7fkHHJ4mRtDcI9n0YT/WOppk/oEf16FvL4+a4QS/5xY
+ UAk4/2ujObMmGbT5ewiKuYjsEYSWdCs29SxYLJCCj4/1z0zdDKNhZ7ATf/bTOCeEEIGocCE7sZy
+ PwQ4UxojBvq7LC4FCsLrkANEzgg4tXzL50hIzKkCGgm65w87ImnGgtlyXd+XZXRjtxPBhS5EBYQ
+ NQ7T/7hz36hqMdZ4aaw==
+X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=69a08c87 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=1XWaLZrsAAAA:8
+ a=8MrrMA2wyEC7cuUn5CwA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: 5vfp8VXyeBQAaEvJC7GasClW74sWeMkd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-26_02,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260165
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3A3C440007
+X-Stat-Signature: muwoxqkacgedn4ii384uq7h6wob9mxgd
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0B29580016
-X-Stat-Signature: 7ryqumkjneaacoejboqxu36wy1u595d5
-X-HE-Tag: 1772129328-798019
-X-HE-Meta: U2FsdGVkX19Hv6NqB+i21HuPVRZyxLLAyBMlFa3NpWKXGeUUcSQ0PFvRteK48mB49bqKWFmoQrPmj38UUrP2lY9U5lR6YYw5jTUKTwJ5ZMdHYHBBm4D7SsDlMqz+f2AvC5e7p/JxeNeCgW+899Bloc2geS4pxRbdpLNoVq8VoHZJKlJ/Tc12YPrlC1HpEkln1bhvRrb0I65RkhE7pvxZkX70BizTGtrqUB94P88R4kUh6vWsMnf08GEQdM80cbGg2F8vsSS1Too+lLmpM1mpwbiinck/eNY1NnCr0P04ywP2nmti1VY5xRSz0MR3P3O2pfDjgWAu7orvWCsNMxcT1qSMGxdnIukeuDHbR2TxLDmxm8XQfmc3YFnhQki2N7Ie0fcOvyrl7ltEX5yDnOQgMwWyquLQjChENGTfCM9B1lqIEsiE61yQV+u8+3IoRlG1KGupP4qh1TIV6GySdS5FXAGIObDYuJhytzDCy9Q8rsJcFAMwG4SxfTgrYzp//HdIpGoJBtXJmpBfbXHraDbamT7dn60Los9ATe51sBCcVMJC5gR3xIufZyU7oD0UbbYB2/jaYzLuZwG9g8zZxWfOh4kzH4fZpvOXzYSBDUBXXX3+eohBLGPOIZo9VtlSrATsD3l0KxwswNsYAOf+K+CdeSe0QCedp3Srf4OaeSC+ecBSRWtUDsLGhXTvpKAACmn8Zfz+Dj15+d4UKfumGFcHRMmXznp0MOOy0xYmW0jovyEM4kyICkZGBCa/4PVST0mJ7unaLLjlvH6uKe+azPQ3szPxJnM4vN6A/MF65tK+QR3zdWupQMLj1eQJCmyQEM9HbL8PzJ6/fJWZgjhFuwMqrK5dEK3oxyanAa5uQNMQGXi3LaYphcm8uVEqIZIWkBhGfjXBx7MR/jPa847xg6L7oTzmdXCF9DraqqGHh5UXOGtc3YCl0xAdYPZmUbEN5GIFgH9/q4d13TooAOmh0lh
- 1J/J1mbr
- atTxJ4EKbkGQjLO46D1Hxxt7S4j/kBYpkUX2jxHdqJPJbbaNmR1GNfHENpru0DWA8QOrZOBumdR3bKiaM7paVsLkYwb7BVIzwnwpH/f3LFbmG+ZFipM0WAXbek0Vy2fnEtrsX8PdnyUFxDiIZjWvRzGAugytUJWdjdIzxwuNuho0oEqyVCOVAD9Hw2E3bW7Ep+W9M7Ng4maG91s8hUbyre7fMrEqqVq+BsZi+69jO97yrjlv/FUFge9qCgdgq50SnJSzJvc9XBjIm/l2PcrgGGT8W/K9B7m62vxHCOFedhmKKMxiLFzntYftQuAq2PviN0YQOKueun10MmA6Y8V93bddwvGL3HAZFFwGJdmJmyuAAzEbsehkNFiScJWEUqpWR/GOv81nvx00hfyQAA2NxPSw4R/W4sHy5GGLWxSdk4wZIGoj+UFcfs9ttUus5G0y7suLRKPS+Dz03CFCIwqTKieaRXkfrdkQ+4ZE1iIKqREMrYR1MWYokzZye+znyZtowjqJv
+X-HE-Tag: 1772129437-129857
+X-HE-Meta: U2FsdGVkX1+t5r3TJgCGMP2Gh55fLFAafnNb125hQbd5V/kqLl27XY4wm0+rK7aBLZRiEQgNRgQ0DXZ+4ZlINDuR1pECfQiCZ3pUNT257CQy2/TEL3LqI/daourqPuKPMIQOtffV80DxZFyx3xnEV7PopwoQkFlk+R8n6Ark+b6cbcptk/L7M1ZzG7lQHbWVrM/2R/sHP6UjSfzSGEVZZytp/MUK3LOfcs/wVAPMYMJo9pX/4719Zr1zTGv0oEOwzQezB3fLd7YVin66yzvfekTsaF47IUxcrTywaoXGf2zlWNN7u8eg8DXUBmDZOOP3ZZq50vK+Da8xkcU3kN+eKH/bX+7+HYuol1I5XA/igMv1CmTMBJD02BcdxG2RFc7Y36rICsb1moRkcKJ+weKwGULAEQD7r3H1IZMFuHVjbf65H9zHfTPOXBL6GNFAHTRSBEoXaebgLk4A38z6pqI9xnGbl456QizRRG3KQ7IyHyo7b0PRnchXVdTLPk19gs4cCJ1mZQ2I3Mz2JPApFWmOJrLPi0lZKP7cg5x4GADzy3gN+EzNMtByPQRmYbDqCYVY28Py97VMJdV78Ib0AB2Nwc1KTG1h8DdjA/XM/Lc2L/LigjPeiz8tOzQKVYXq+1x+YFOcIiktN+8i6hd3NyC+6RNF035uivjKmyPc+sYWgyVR8EQyUtAcYhmpMdURaZalqB/ZfQXNBmf13JSgiZKxaH8C3T+afCGvk/Mp1dgKmy5dLNjXrJRYf9EzxnOksuJQON+4T8MsBpq7LHeDMoxYTI1tBdxxS7vHXcthFwC5+ypT8x+6edX2GmOCkmXZjHFCEv6/LT3Zof64YSkDEAQCo1XG4GHrI2AilS/sPXmSlRsEgycQqcFSbkf8FhfHp2fUOnTE0WWv5VBU5GPam6HGIs0lb/p4O0aE3oXhnwm5v4215USlC5SeQxM8ggxYzPzg2X+sVaNsVRJwTguEQfw
+ +12WOeO3
+ thp70oU6SvxHSa6Ism/9ydJAiElrzbZDPl4V9mxjUPVJiGUKFKvPL/8GPbPEm/Y5zeAazNi+ahMBJpSF9Ip0C6yy+j0td5zs47T3W2aztB39CGvg++e5R3CLG1F69pzppJ3OkOA8g3i5XpZOhyFhCSeKap8TJtn8UnuElWUuRlmumL1cdzn9tYCU0WmceGYckfI5olMIGb9BmAKO/7w5Vevzl4P7zI8zb7i0aSOVtqILbKP68dx8Wal7RXVsBjiLEBbL6UQjaNYG09Jl71/dXw//eZTRhYHHXCp6b4FrceKZJQO9gR3iPlNp53MumQDe3VDGD0aYt+g8TPLhJeKity2zCYBtmimTgHBpSehEQS0j3InA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,50 +155,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 2:18=E2=80=AFAM Maxime Ripard <mripard@kernel.org> =
-wrote:
-> On Wed, Feb 25, 2026 at 10:51:30AM -0800, John Stultz wrote:
-> > So heaps-as-modules is common in the Android kernels, and was
-> > attempted to be upstreamed long ago:
-> >   https://lore.kernel.org/lkml/20191025234834.28214-1-john.stultz@linar=
-o.org/
-> >
-> > And it got a fairly chilly reception, but maybe having the additional
-> > optee heap (as well as other proposed heaps) might sway folks on this
-> > now.
->
-> I didn't know that Android was using heap as modules only, but I'd say
-> that it's even more of a reason to upstream it then.
->
-> > There is also the kref bits you might need (which Android still carries=
-):
-> >   https://lore.kernel.org/lkml/20200725032633.125006-1-john.stultz@lina=
-ro.org/
->
-> I'm curious about this one though. It looks like you add refcounting,
-> but never really get the references anywhere. What was your intent, that
-> on every allocation the buffer would get a reference to the heap so we
-> avoid removing a heap with allocated buffers?
+On Wed, 25 Feb 2026 23:06:09 -0800
+Suren Baghdasaryan <surenb@google.com> wrote:
 
-Oh, apologies I mixed this up. You can ignore that suggestion.
+> Replace vma_start_write() with vma_start_write_killable() when
+> process_vma_walk_lock() is used with PGWALK_WRLOCK option.
+> Adjust its direct and indirect users to check for a possible error
+> and handle it. Ensure users handle EINTR correctly and do not ignore
+> it.
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  arch/s390/kvm/kvm-s390.c |  2 +-
+>  fs/proc/task_mmu.c       |  5 ++++-
+>  mm/mempolicy.c           | 14 +++++++++++---
+>  mm/pagewalk.c            | 20 ++++++++++++++------
+>  mm/vma.c                 | 22 ++++++++++++++--------
+>  mm/vma.h                 |  6 ++++++
+>  6 files changed, 50 insertions(+), 19 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 7a175d86cef0..337e4f7db63a 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -2948,7 +2948,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+>  		}
+>  		/* must be called without kvm->lock */
+>  		r = kvm_s390_handle_pv(kvm, &args);
+> -		if (copy_to_user(argp, &args, sizeof(args))) {
+> +		if (r != -EINTR && copy_to_user(argp, &args, sizeof(args))) {
+>  			r = -EFAULT;
+>  			break;
+>  		}
 
-In Android, once folks were familiar with thinking about dma-buf
-heaps, some (out of tree) drivers wanted to be able to internally
-allocate from a given heap (somewhat of a hold-over from the old ION
-drivers). So we have a convenience patch to provide that:
-   https://android.googlesource.com/kernel/common/+/8e1ec97355ef9927e82ec18=
-c98312bdcd80bf289%5E%21/
+can you very briefly explain how we can end up with -EINTR here?
 
-And since we return a dma_heap to the driver to allocate against:
-  https://android.googlesource.com/kernel/common/+/fc1310ebf8fe25ea7b983400=
-e6fa41f5a6d11966%5E%21/
+do I understand correctly that -EINTR is possible here only if the
+process is being killed?
 
-The kref bit is to make sure we're doing proper reference counting on
-that shared pointer.
-
-This ended up getting bundled together along with the heaps-as-modules
-changes in our out-of-tree changes, and I just confused its use here.
-
-thanks
--john
+[...]
 
