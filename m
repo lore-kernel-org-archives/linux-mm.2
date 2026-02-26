@@ -4,129 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC7EDFD9E0A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 20:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C65D9FD9E10
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 20:41:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFDB36B0206; Thu, 26 Feb 2026 15:34:57 -0500 (EST)
+	id D58936B0110; Thu, 26 Feb 2026 15:41:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAB556B0209; Thu, 26 Feb 2026 15:34:57 -0500 (EST)
+	id D06666B0114; Thu, 26 Feb 2026 15:41:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8CC26B020A; Thu, 26 Feb 2026 15:34:57 -0500 (EST)
+	id C08D56B024D; Thu, 26 Feb 2026 15:41:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B76D46B0206
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:34:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 520DF1B6B80
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:34:57 +0000 (UTC)
-X-FDA: 84487761834.25.4313028
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 49B2B4000D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:34:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=dfinity.org header.s=google header.b=JxSk7O3H;
-	dmarc=pass (policy=reject) header.from=dfinity.org;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of bas@dfinity.org designates 209.85.218.49 as permitted sender) smtp.mailfrom=bas@dfinity.org
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772138095; a=rsa-sha256;
-	cv=pass;
-	b=xbj/n3flds+iml/m0m/ZIwdwjZ7/norXXzm9cl1YnkDupzBAuqpBELbsqLVlMw9K+B06eO
-	DleK+0X/Hx7XY6ja4DfrJFqu4KjaDA86AItlZ92sGM6O7CURm9TvaPjMOi4hGDuunr/Bni
-	YRImNENV7gfY+GCw/Ml0r4sbNEWOPKw=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=dfinity.org header.s=google header.b=JxSk7O3H;
-	dmarc=pass (policy=reject) header.from=dfinity.org;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of bas@dfinity.org designates 209.85.218.49 as permitted sender) smtp.mailfrom=bas@dfinity.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772138095;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA0DE6B0110
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:41:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 370AA1BC1B
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:41:05 +0000 (UTC)
+X-FDA: 84487777290.29.A24F355
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 542C8A0011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:41:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rgvm5leb;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772138463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=U/LDD1z2TKe5h3d2wNAHdQcijfYso2V5ER73f9IGGqI=;
-	b=4ZoFzaYIhF/0vnrbiycBqZZNW5RyYkVD2bz2a3FM1UHro0SAoPOwpooGIixdXo9Ngv8zjK
-	yIbEyeaaNnGStiNkVaHPJ6yXNYXLxzYbg+wiAO6soDdNczL2ZpOcOlQZoENVDUHUCDiHGY
-	eUNtp/9b93/UuDRxfwjlwwY8pdUNKqY=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b886fc047d5so218029866b.3
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:34:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772138093; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jWBkzTM2z0R1tew6riZjpSfIUllITnlY8eTL0pyu0Xh35CzbsQkFwcYYsr1sAWCIgt
-         Hzs1x8ww+3aB0uc6HGT1Gf051s38YgYysbE/Mhr2EcHmp0BeG12vSc9cedB3No/retgM
-         8KA73tkxmEJ8DyZzsrFAQnx+Jdp+CGgT54KjIrlMfmo+m2cogdgAizklHQIFSXOG5/NA
-         piHtqTdoj4jkOofbQIRFGh6DVXIazsyrSbcg809CjNY/ja5CdhV/oYg7DJPGDbpe7eEL
-         JicErHGk+xVW3epJokiwds4HcxuyKxVWdPvV9D5oFBglBufXFMcdhRw+VRR5RIpPJUOm
-         DdBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=U/LDD1z2TKe5h3d2wNAHdQcijfYso2V5ER73f9IGGqI=;
-        fh=7yMZDoPB+9hNOWc9Kn18Tej3joNHccg9aQ0DwjXjEdc=;
-        b=AbhkZO1hQN1h+zosHIh3iynyBTbs5H90CaC/jMWYsR3I0+dYfc+EhwcXPtdElL3uL2
-         HJGXTM3Xib1gUpTFfZIiYfIrN5F0WvzjgXSObPJP+bBzmhL7KQRIGFQxC2DQvEe72wF+
-         /VqknPmmuB+c1VMip7rgzlTCwXLdyWBP7yh9mspq4ZxDA2M5x/IdlbZsk+p45OF9ROa/
-         6NsddHpkJNG7I4O8hUqrP6aXulJ8ldKR3kF4sTWm5/38VkNdUJmxF/V6ALrzhtJLbfrX
-         Y6rZrXDHgELhw1m4Pf0wQIAsGKn3cY8o10KLKA4WReZClvBRVApGVVU9KEXxHg/cOAEr
-         lIJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NguBUFNmUMF9el0MqWxRk1yX+e6cF7VtARIl6RrUMW8=;
+	b=OKRu/DLMGvzOtPdVi2G1K/g1f6y/jNHyWrEhzqJg0UKyHO4BO02NiJygoxrSWpZHYnHePE
+	/VvOhhYSALutJtLHWwfRCFOA6G+MggU0+6fGDUJzIizZE3LwZ81CQuok3nLWFlOy1AJO/d
+	/32nKPCk/Sy/tvGVJ9MvpY55FkFNXuo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772138463; a=rsa-sha256;
+	cv=none;
+	b=xafcgaKAG8LnrxLdC0oC7JrAphctMY4/nTmUpPqtKYY0ePHDXM5tGQFWo9oJ/KssCo6Nrj
+	80vWfFPKH4GKZAOzQSid8NlmOk1s+gDOhuMKJvV91Mbd+EK1dx0+VCzRFAXe9vkWNb6w65
+	nBtsiVDvU2keRuYp4XRfBWzG5e3hNEg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rgvm5leb;
+	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d513bc15c7so1580400a34.1
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:41:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dfinity.org; s=google; t=1772138093; x=1772742893; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=U/LDD1z2TKe5h3d2wNAHdQcijfYso2V5ER73f9IGGqI=;
-        b=JxSk7O3HoRCekwCGLeqUJFAj1r18RCbhNH1j8u4ZPLDeMehNSh0OFtE/CaZ+lzAuDX
-         2P5Z5NGW+ltzsXHGSsOMl8Gm/jSdFBIp8SN6IcNvoYo+8hY4fSUzekmlU/KTMD5MtP+3
-         ZANDnIHjyx//Ijtb/Z9R44ou/6DzNTShpz91VmgeyTfT1Hc6fDdi9x5zyvqAQqjFB13r
-         DrGh0wjQqjY30/7HgFp0sx0Q/b2GsRV+sE+fLI/kqGwWKMX0d/48ESA1wfL+fNRZU1pD
-         9G9EssXKW1K9x8D5KQqMHJQIpH4Gy1WePphAhd/TXbY8+JpHhrvre7f9cL+Fji74VZNm
-         fpPg==
+        d=gmail.com; s=20230601; t=1772138462; x=1772743262; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NguBUFNmUMF9el0MqWxRk1yX+e6cF7VtARIl6RrUMW8=;
+        b=Rgvm5lebgjAZPTlvDimO7H9C1cXqoPAG8/+ClgkXYaHhQd3mMFONp7AFYWRTpH9LII
+         DRDB6fDe/zgmAPaSdA0StnrOrbLVZyVEkZ3arMYgZLjRNy1LtV1QBjjQumwxIlsVCSuf
+         VE4KTV9S0LOF85TZ5+OXA5iz3RsJK4TD6T2P7dqslJEWwWr6yABzJVx8X+Zy0cnAwqpA
+         sIlNTtddSWmVxFIKwV31FIJbhhxAc+OZw+HoWiUcP3uN/6M8/9wYsaGFndSzf1nhlHjT
+         bFPGrCGQjpyLfBmbLIxk8uMPgUNA7G4ZAsv/hdqUFE+i9bvj04GFl7x1or+Z8/gWLFiZ
+         uZYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772138093; x=1772742893;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U/LDD1z2TKe5h3d2wNAHdQcijfYso2V5ER73f9IGGqI=;
-        b=CpkTiFT863CbD98NDlAv8S13wWaY03BytxG0YhW9+Raj1HQEN1FNi8ki1lLDV/rkF3
-         bcEExdc1J0AsUeUG3NAn5ICgY8BlYO/YwO24c2Tp/GFOOL3dTHtCwFG6/VotPl1oUXh+
-         uyM1VYJE9sGlcOsdrtCAsRRjDvE1dSa8egW6RmgukhuwdmQLA4kte+1+esPzLIcHrJRs
-         xiclp+NQTrJmQSIZbLLbc7HsJQe83hygeRYoCnBUTcs16ZGHbVozcAkIlpBRri1pqcCd
-         TBF1RuatRpz0yFvZp2lcQ6iMuSfV7TSqAUFHKPZ8I8gMSsWaEO0tAC/EyGm3j4daeG8z
-         oIFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHjKwMHB8Z4IU2mPc5IvVUGbDkIxBGlkxTSkHaq2be3aijwt/dQ7iKq/TFBpRwAOslb6YJ/kh1eA==@kvack.org
-X-Gm-Message-State: AOJu0YwgH+Oja/sGYjmlzZ1Axhsnjy42G9q9kOM/XSbtfFrresRKXY7u
-	wiu2s47oJVqCI7jj8HWXAB1l9IX8+GS5qyFEdT0NvxSiEGG4+vvkzN3fC4xQSqaL1OAztmpjYr6
-	bCjGr8RNDpHhNOEFp9QnSrKNUotJEhs7EIbNmNUPtkw==
-X-Gm-Gg: ATEYQzxMlNgLZOPcRxgbEC2um2aaBxdpHQNZKemXYaEL0EPFmJgWKSri9aZg4Ln2MK5
-	UKsE6i/z/Qsg8ttQy8jZvQCuCK5UR3px1HDNTjLsJDwozwRQ1B8l/I2kai0wFv497wnJFwZs9y2
-	KPBv7Gb+Vf0hJUSsiO0/bCXUaNEjPdrw76NtneBrMsb41RmREl2guPpbNcDTaAg5hDUiRa136Z/
-	0gkPVplPHZKMdmHq+qQGbBSpI8ASeYW7eHd7dZ+uj/AULuTaGDbrvU4yGySs49YUFoOhkKvggDn
-	9tS/9xm/EV94Ap8wXA==
-X-Received: by 2002:a17:906:fe01:b0:b87:965:9079 with SMTP id
- a640c23a62f3a-b937637a66amr15028466b.3.1772138093346; Thu, 26 Feb 2026
- 12:34:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772138462; x=1772743262;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NguBUFNmUMF9el0MqWxRk1yX+e6cF7VtARIl6RrUMW8=;
+        b=MPOMqBZWQwXAboMUTyJtYKxwWkRNhEMnUAGX0dlXDJPXc16YKd6mvX+eUbEXIIOpMv
+         NnHgwKQ6wPLSDe4DSb86GRL/WUNYPeQLWWmQ6CyGLixedvSg4aq0gtE4Ri5jE2lUjD02
+         aReLSec3Zq6MTyMD6NziaO1hgwWtT79d5wOsX6mVLovYUz3kUXTlfWE4X6KA8Gf9T8uB
+         h88FeCEf6i/hU9DBp91fxrkCn9WWDLkPcbhYyPJRpNmBtcQuVk2s7uY0UOCslvHzOYfE
+         9eyGPhTKGo1t8A6krodt5nTyQhLeSvHPdYKQO7ltlUI293Ht1uFNja7FFVAp5WkvglHR
+         UZrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXMqUu8ZVxpZ1kxD0GsvHFsrFdOFYzXjuL0YNsL4/PPwe53hIwLOk/MGQt3WQqQjVUxd+fjbKT7Tg==@kvack.org
+X-Gm-Message-State: AOJu0Yxh7g9iRG/DnXqvyooUHSLdZBokfKAhzIj/pgHNn321VY+HDpGi
+	CSmaxRj4Or5tHUlYjugTKOhqc/yYkp5oHCPO0XEo4ZKzrMqc8xo5sKhm
+X-Gm-Gg: ATEYQzyqdV78DhsapzmKjIW77cMFBVcXkkaRbEz9nWcmy3T4u6RWLd8ZNrpDAtcR1Lq
+	oRW3WMbB5EQQMunh3L/lS7Wh9vkZvSaPRLoa5Py1+vZnECVsDiX6u5Tmbd175BQlCoHyXx+68Kz
+	cPT9Qf9f85FbQUNRxftvELDu2/uYxxYlyH2o5LnIQCoKmBDtZLZv99nLA2xaFkl3D6YzQh4ip0v
+	py+uEPwFGOurHLxjwGkrXm3Z8eW3h0K/5gOoBZu8nTxj3tPj466py++9UlZ6WPpMG3m7KdsPIur
+	qIlb3TW4wFglMPX4aOsXyhQMslj5ks8xzICwERZ/sQ4x8mwgX5/xz2BJNCUtVTi1mWkLiWgoY6q
+	I8hz1G1gfeZhMUmjqbJuh0qwVD+SRo4b7puHnj6xxcyXL06qa8axymLYPlp37Q+i2MQzSOuvDF+
+	kfE7JYKzSqacfadf28DvSWcw==
+X-Received: by 2002:a05:6870:70a0:b0:409:5241:8abc with SMTP id 586e51a60fabf-41626ddf8bfmr404506fac.20.1772138462037;
+        Thu, 26 Feb 2026 12:41:02 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:73::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4160cf239e0sm2967025fac.1.2026.02.26.12.41.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 12:41:01 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com,
+	dave.hansen@intel.com,
+	gourry@gourry.net,
+	mgorman@techsingularity.net,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	raghavendra.kt@amd.com,
+	riel@surriel.com,
+	rientjes@google.com,
+	sj@kernel.org,
+	weixugc@google.com,
+	willy@infradead.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	dave@stgolabs.net,
+	nifan.cxl@gmail.com,
+	xuezhengchu@huawei.com,
+	yiannis@zptcorp.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	byungchul@sk.com,
+	kinseyho@google.com,
+	joshua.hahnjy@gmail.com,
+	yuanchu@google.com,
+	balbirs@nvidia.com,
+	alok.rathore@samsung.com,
+	shivankg@amd.com
+Subject: Re: [RFC PATCH v5 02/10] migrate: Add migrate_misplaced_folios_batch()
+Date: Thu, 26 Feb 2026 12:40:59 -0800
+Message-ID: <20260226204059.481964-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260129144043.231636-3-bharata@amd.com>
+References: 
 MIME-Version: 1.0
-From: Bas van Dijk <bas@dfinity.org>
-Date: Thu, 26 Feb 2026 21:34:39 +0100
-X-Gm-Features: AaiRm51ixtaZsR4nC4lb5tpa0OKMp7XhiWCl2cAUjP6Ip_URV0YMaEwCqQ0hxgM
-Message-ID: <CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com>
-Subject: [REGRESSION] madvise(MADV_REMOVE) corrupts pages in THP-backed
- MAP_SHARED memfd (bisected to 7460b470a131)
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: regressions@lists.linux.dev, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, Eero Kelly <eero.kelly@dfinity.org>, 
-	Andrew Battat <andrew.battat@dfinity.org>, 
-	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
-Content-Type: multipart/alternative; boundary="0000000000008c1373064bc00d41"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 49B2B4000D
-X-Stat-Signature: e8zje75c1ik7tc6ayb318b8cnm9515ut
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 542C8A0011
+X-Stat-Signature: 6otkuhqik4b8zi9x8gxh3okk4jbkg7mt
 X-Rspam-User: 
-X-HE-Tag: 1772138095-753375
-X-HE-Meta: U2FsdGVkX1/Sz8AZZ9uWXzQuXnrFo0aEtIBeK5va6ba8fXrvLT3iEWt7xLknYLjPwe2yxsut1oP8h9EEUsyaPOJEjTjI4M0EXNQR3M3730Syo+UhOXgEY/l7hLwVZLMovgE9/QZ5FVcyNHrujgiXWQxhANrh+yNbPIUvkmA4h74WIEk0Mxff0R8oAQsFMFLGNUJ7NhylIutGr8787LZ+pcXLAEoVifw6qphtrzf8DNf7dW4xiCHl9Jc0JYG8k62VNBGB7tKlMYBalpqvAZrdQHgJ4sQC1YLVeKpmUb5CtkVIuthhFUikJxbzF+MPABVAlstItZUHacm3PnG1jzbcLkXgBDqMZRo2htCbQx0GhUfGXHlhP85T+gn9eKEhbDRYDC7EfMhvHL8mBJ0zZRQM74Nlxztp+RaNf7keFuvUCzVlTOa4FY7xpow1b8VkDYl3743f7EmXKVGlh/8j8ujnGC+jlIGkXH4DXbd6CzBcg7xsoXm9ZGerKkj5iXQS+Al24dvmslBvZgsWpApYGpCj70zhGxp8GeCtDVeyqIcIsu7nhxLl+WfDw2gMVLr3yNswTw0RxI8iugdodjMMOrdbSdA4JBq9/VD+p1op5MSjAYtP6/zt6zLI3luSd7l5Zoe/C144ZLQgA0BBYOodqzhW/zpm1Oz9DSC2D8HdNaqYOvQl6eNQzGti2Ki16j/1rigI3NWEP70hdaO7Qfaf0mRUarHXEfaxfLmQpCWK7ki8ix+YEZlHfjEY01rbzWdWAcmZGhqKKz/O+w/mc5jDzlsNfItZSHY7p3R/Vvs25q3EIzRAfAcLev0299BxsqRMB+b68Fldjl/zsrz7Tp19W0KGe7QySBaRd7Wn1VHpQLArb9CtrN+U+nGbQww4jFNWFpQb1LOCB1bWEMiwlkZWgLGlu0H04j1JNLqciUz4n7sP2y84ZkRvspIZBFRU+E5LnYEB7aSkkMk/r4BcazDYTpA
- BWHlzlN9
- uuHUmgtzqGRKVf+qZHQ+w39Cui4VVTXoafC6uhn0eMRdpi8/uZUjCU5W/GKw6zw2iUN7EW2KeDWvd75Z83Z1XdNGx9lMHd0eO60nFKPGYW3b5Wg+7N2Z0267YvpA94RsWc9CS/WchwvygSYfngaJFOzVLWVMyxgaevxbdXqfUJhxwsHisTY+gTcpCnv+a6u3ovIQANJdJoawrPy1R8d9h6GEfxUxLRb3SEw90Ajm7l6N11nz1O7ZmQJ204Hzy5gVdWDkDvoA61pc0LzhwogbjFSo8OC+jQUNBAyVC5NbkDvnXuw4d5ET4UdxAB0zB6jEp3ftrbJzZ2rgxxx5fZZn0N9AnxuICsGgeKHCnTqTBcwmGDpBD8A9Nh0LXSEC/vLRrgMLoRCVIaJMYXaG4yqJlvsbe2S5hu25HwOeZQSl7lHUiC/dgHu1QDF40cA==
+X-HE-Tag: 1772138463-615151
+X-HE-Meta: U2FsdGVkX1+yvUgnm5sELynLVsFvLEid7PpdFkgQtHtsa2tjXqOQWgmi0/c2uPoGND2g94PxzSKphFW8FDc5lOSPVg3R+4WB+ZJ0j4EP3duwcdHumr5DiS64hTLEyzKa8kZeSfEyJPulBzbRYBBAK/HRhUjn8czpwX7zoV5IfNrWWQp9UI+UD0HWA5cfiu3t22pmnM64n4cXg4I2xlwYBSJqsB8uY0Dv7RHYO0HmDOCOFV9et3rdLH/F3nj9EeU6hp+seVwDDtCB0AVaNlkRTCJMteQD+jmFs0KHwlEqFOhLXpM+jz2lqv/PXwb073lzG24OKgSCMd5YvR6ynvIFdhjF7IIyDA0abZZtpKxKPGOEykzTLNlOIangbEnCFbuiOMaq030BFoVHwDt98Cu4ob7Xnt2siOUboI/Thi61Scqjb1Non0X0mCdENZ4M5Lmv1Sd6Q4ZDEddLuWw3lRDSOo8qXEqm9M0pOWxR85ajrXdermY52laHe+T+4dK6Dzy7K6CPitWJ6K7D1jyPM6PCyyp41HL1+I2CSCTHs71/+xnXyIQvlZANu3KZ0BLzAL4AQ1+XUtFLy+3iE/RLCYFRxNIksfkX8m3ApfKt/b3z8pn3ARFOhpC3mO16dGE/JRjZNAv6hrW0+C5FTUGWxGFwy6CaMyGkQgV/CMEEHF2PuIhg9B5jLyUcWde4flpQyJrIvGjtwLPYosh+ovVJCUPjzXncN675B4prk9yS+7ZGt4FxgsBQ8wLhWN1sNqjiT8AbTRG+qctpkv7/BwW9C2QLUi9AOqKdTYVPxsZa12BbNtSiRU/z8sbeAR5x9xV1sHCu4im/vHx6x16bKxvfOX9yGou/3WKz5X0sxIabou+pPvQxFxS4DWwItgtRZsQozWWXTzjknsl/38RVZzmpGD3nG1rggI1gA4DGK19zgji4ECisj3rZzCJ85/NYKQflorJCAJTNmRJnvc3IFgXpdqz
+ N3u0t1M2
+ O4TJ7P6bgA9OgdYEoLz4lozm4vgAXoO9eC9eknn889qvbGGwrsUxYmBx210g+wzNGODSQR9iz+PigNeyIc8mV5/tCjYa9aEvaUriJliuICrZNxX8S3ei5dyhWcdZv7bad2lhS13DF/LAt3pQanjNf/6Ao4yDm1k5wDzd6d9FoL16UwoBJW1dWK4A++BXsd41PU+CPb+65UADz1X9Yvj5pfS/l5LOeqUZXLz69EpOWulcEYir9JrD6S8sUHLFWuPVWYI+kpjHyd1y1xaEltvUQIVqGYs1xhBgpgpDh62yGtrOC23WEklaFCCcGJfMmKTeHrNH4IB+F5iwdjN9wij/uTOy+fv4ZZImEZupEYQ0d6uENvu3kUkLqghW+uFECnwmYTLpmV0lid/IUUYtbmmWLQtcBj7ehsxOHZWCLu0o5mrIxF7IK3e9pE30hauC4IR/gf9RzFFvF1nn0GhsZcytEjF3NhAGz2Ar6FLrK7NgIpPy8CxKGOgWZbUysDE3/+pkl/E1x0I4qi8S03iAH0haWKR5qdoobb29lFSmgSnmcZZlW3h5IUZaCeylaiDwheWM0rV57UrWYi/ws0Qu9E9goWVeDvgn0HMpEou6O/REOBS+66QFvfSSbZvaUwMMWVMklnTnu/zbpIEpSq+S3vRO4s6HL1CmvGLii2hsI2cNrXX0BFeVXedzrXvm3vEHqtWdcU08/jglBD0uHIpQB5lNe67VMjSMYU/JY7/4fXm74i0ZZnME=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,57 +144,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000008c1373064bc00d41
-Content-Type: text/plain; charset="UTF-8"
+On Thu, 29 Jan 2026 20:10:35 +0530 Bharata B Rao <bharata@amd.com> wrote:
 
-#regzbot introduced: 7460b470a131f985a70302a322617121efdd7caa
+> From: Gregory Price <gourry@gourry.net>
+> 
+> Tiered memory systems often require migrating multiple folios at once.
+> Currently, migrate_misplaced_folio() handles only one folio per call,
+> which is inefficient for batch operations. This patch introduces
+> migrate_misplaced_folios_batch(), a batch variant that leverages
+> migrate_pages() internally for improved performance.
+> 
+> The caller must isolate folios beforehand using
+> migrate_misplaced_folio_prepare(). On return, the folio list will be
+> empty regardless of success or failure.
+> 
+> This function will be used by pghot kmigrated thread.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> [Rewrote commit description]
+> Signed-off-by: Bharata B Rao <bharata@amd.com>
+> ---
 
-Hey folks,
+[...snip...]
 
-We discovered madvise(MADV_REMOVE) on a 4KiB range within a
-huge-page-backed MAP_SHARED memfd region corrupts nearby pages.
+> +	if (nr_remaining)
+> +		putback_movable_pages(folio_list);
 
-Using the reproducible test in
-https://github.com/dfinity/thp-madv-remove-test this was bisected to the
-first bad commit:
+Hello Bharata, I hope you are doing well! Thank you for the series.
+I saw the numbers and they look great. I'm hoping to do some more testing
+myself as well : -) I'm also going through the series as well!!
 
-commit 7460b470a131f985a70302a322617121efdd7caa
-Author: Zi Yan <ziy@nvidia.com>
-Date:   Fri Mar 7 12:40:00 2025 -0500
+> +	if (nr_succeeded) {
 
-    mm/truncate: use folio_split() in truncate operation
+The single-folio case, migrate_misplaced_folio, has a guard here to
+check that the function performs more than just a migration, but a promotion.
+Specifically, it checks that the folio's node is not toptier, and the
+destination node is toptier. Should that also be included here?
 
-v7.0-rc1 still has the regression.
+When this is called in kmigrated_walk_zone in the next patch, there is no
+check to make sure that the folios are actually on a lower tier, and the
+destination is on a higher tier. Maybe I'm missing something? But it
+wasn't entirely obvious to me that the migration is always a promotion.
 
-The repo mentioned above explains how to reproduce the regression and
-contains the necessary logs of failed runs on 7460b470a131 and v7.0-rc1, as
-well as a successful run on its parent 4b94c18d1519.
+I want to note that we're also skipping the count_memcg_events, which
+I understand is much harder to do here becuase each folio might belong
+to a different memcg. Ying also noted this in his reply from v1 [1]
+but I don't think it ever got addressed.
 
-Best regards,
+Anyways, thank you! I hope you have a great day!
+Joshua
 
-Bas van Dijk
-DFINITY Foundation
+> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+> +		mod_node_page_state(pgdat, PGPROMOTE_SUCCESS, nr_succeeded);
+> +	}
+> +	WARN_ON(!list_empty(folio_list));
+> +	return nr_remaining ? -EAGAIN : 0;
+> +}
+>  #endif /* CONFIG_NUMA_BALANCING */
+>  #endif /* CONFIG_NUMA */
+> -- 
+> 2.34.1
+> 
 
---0000000000008c1373064bc00d41
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>#regzbot introduced: 7460b470a131f985a70302a322617121=
-efdd7caa</div><div><br></div><div>Hey folks,</div><div><br></div><div>We di=
-scovered madvise(MADV_REMOVE) on a 4KiB range within a huge-page-backed MAP=
-_SHARED memfd region corrupts nearby pages.</div><div><br></div><div><div>U=
-sing the reproducible test in <a href=3D"https://github.com/dfinity/thp-mad=
-v-remove-test">https://github.com/dfinity/thp-madv-remove-test</a> this was=
- bisected to the first bad commit:</div><div><br></div><div>commit 7460b470=
-a131f985a70302a322617121efdd7caa<br>Author: Zi Yan &lt;<a href=3D"mailto:zi=
-y@nvidia.com">ziy@nvidia.com</a>&gt;<br>Date: =C2=A0 Fri Mar 7 12:40:00 202=
-5 -0500<br><br>=C2=A0 =C2=A0 mm/truncate: use folio_split() in truncate ope=
-ration</div></div><div><br></div><div>v7.0-rc1 still has the regression.</d=
-iv><div><br></div><div>The=C2=A0repo mentioned above explains how to reprod=
-uce the regression and contains the necessary logs of failed runs on=C2=A07=
-460b470a131 and v7.0-rc1, as well as a successful run on its parent=C2=A04b=
-94c18d1519.</div><div><br></div><div>Best regards,</div><div><br></div><div=
->Bas van Dijk</div><div>DFINITY Foundation</div></div>
-
---0000000000008c1373064bc00d41--
+[1] https://lore.kernel.org/linux-mm/87a541e51s.fsf@DESKTOP-5N7EMDA/
 
