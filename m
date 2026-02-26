@@ -4,83 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2257BFD45F9
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DFEBFD45FC
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 00:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 488D26B0088; Wed, 25 Feb 2026 19:00:08 -0500 (EST)
+	id 936BA6B0088; Wed, 25 Feb 2026 19:21:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 472DB6B0089; Wed, 25 Feb 2026 19:00:08 -0500 (EST)
+	id 8BAB06B0089; Wed, 25 Feb 2026 19:21:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A1066B008A; Wed, 25 Feb 2026 19:00:08 -0500 (EST)
+	id 7C6A26B008A; Wed, 25 Feb 2026 19:21:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 294746B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:00:08 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 64D816B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 19:21:41 -0500 (EST)
 Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF4751B730F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:00:07 +0000 (UTC)
-X-FDA: 84484650054.02.943C7CE
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1C5111A0011
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:00:05 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AGlwvQuQ;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE1DB58AC2
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:21:40 +0000 (UTC)
+X-FDA: 84484704360.02.358F9BB
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3055040003
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 00:21:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772064006;
+	s=arc-20220608; t=1772065299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wawHLyOTJp2IXUoV4PemjW87N7htBQucAPkl0+HuDtA=;
-	b=ixmk1AEVaDBbZKzQJ74JDaMa7LcTFCreIPkJKYL0rxWJpK2R4aq7d6tLoTdaWI8cVswTEW
-	YGFlOSQ96Hpaf5UTc2jx0qbKs8DOFGvIynOleclEfOcMJIMPxBnmdOxGI4hojIhIm6HT6D
-	31BLojQw/5tl0DguOaW60V9pR76bpYo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AGlwvQuQ;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772064006; a=rsa-sha256;
-	cv=none;
-	b=kM0V5H2NqW4r7TooVAC7RN+Q33+xxhzD51En+gh0r9lLhidRk6XyacyLpILxZJe6J3f48B
-	PD5stLfRqDUzZ3oeFcrlxMo4M58jU1DndPz14kOR2rQMFpHh2NLtefvcUbcdJBD/Ui91PC
-	MCfsKsFQeo0lpCzMrXt4DyHu7eF9+M4=
-Date: Wed, 25 Feb 2026 16:00:00 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772064004;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wawHLyOTJp2IXUoV4PemjW87N7htBQucAPkl0+HuDtA=;
-	b=AGlwvQuQN+0uaJ8qH6Ehe4SZQoqfoPvzfxZUrv6EIeE/o3WNCyvlzFuer5C/vTA6AgaKZ0
-	PuynYss88Gi3ryI5Pyf/F0CDNjP1kRYJXCa498rcUE3Akd9vRJF7u3uSJLc2hAyQkRsCeY
-	IVNZnkFwZxooMU9CqbvAUuui1X6shK0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	Axel Rasmussen <axelrasmussen@google.com>
-Subject: Re: [PATCH 3/3] ptdesc: Account page tables to memcgs again
-Message-ID: <aZ-Innu9a3ND6Pdq@linux.dev>
-References: <20260225162319.315281-1-willy@infradead.org>
- <20260225162319.315281-4-willy@infradead.org>
- <aZ8oT-n4a8VDY2AH@linux.dev>
- <aZ9jHvd-kpnQzMgC@casper.infradead.org>
+	bh=iimsRCLqPtyXWAfARmFf/E+WmPcoD6sEBT8y0MvLELs=;
+	b=dSvGmkLan72Z4fgMUchZgi9lNaTSB288C+EzYowVrUw14moGGvcHG14DMLxv0kA2ScGafU
+	jEB0d2xLzAeHMCGN2+n3H9yvJR8zBGO6CPkIIFrmdkaFQmk9inaJztLFSvyHQrIwxiOrNk
+	qW2cmTqoN2FDob6++/ABsvK64WBJX+s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772065299; a=rsa-sha256;
+	cv=none;
+	b=OpoXc1p3s+Ug8xg2jrm403xHsaresv7bUw+LQek32xbxuTyn9TOgvi6FOgJddUArOSY+C5
+	PFu0m2U8DgWsZWJuXZKC9fg4nYWrTgGpaY4IkAfU2GPbuAxsRY8GKkGkir1ZDtMVjHXupJ
+	AuUHufVgehUSUf3R6dspa8mx6CL7Nnk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+X-AuditID: a67dfc5b-c45ff70000001609-5a-699f920d0ae2
+Date: Thu, 26 Feb 2026 09:21:27 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+	hawk@kernel.org, andrew+netdev@lunn.ch, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	ziy@nvidia.com, willy@infradead.org, toke@redhat.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, asml.silence@gmail.com,
+	axboe@kernel.dk, ncardwell@google.com, kuniyu@google.com,
+	dsahern@kernel.org, sdf@fomichev.me, dw@davidwei.uk,
+	ap420073@gmail.com, dtatulea@nvidia.com, shivajikant@google.com,
+	io-uring@vger.kernel.org
+Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
+Message-ID: <20260226002127.GA71611@system.software.com>
+References: <20260224061424.11219-1-byungchul@sk.com>
+ <CAHS8izPjfrKFNtvkyODY7HXSsAuQuPhzy3+fMyYTFuWKQJZ0Fg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aZ9jHvd-kpnQzMgC@casper.infradead.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izPjfrKFNtvkyODY7HXSsAuQuPhzy3+fMyYTFuWKQJZ0Fg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRzGeXfOzs6Gw9NSe9WwXERoaBZ+eJFuBsEhQiz9EBrYykOOtmmb
+	Lo0Cw7xmToXQTbNV3jYv2cwrpnnXTDPHzGrqkkyItLzmrcumSH57eJ6H5/f/8CcxQTrbhRTL
+	ohm5TCQREjycN233xIuf/UjsY/wNUdlyLCqx1LPRSvkUC+XrawEqG1URKP/tXRxN1awCVNmY
+	yEINjVMAfcutINBk1wQHjRd/xVFTch2GJlQ9BJpJHMDRYG0GGw206whUF2/hIGNjPoHGyv+y
+	Ua9Gh6MU80scdWmd0FLfd4BM6kYWemwOQ0PtEzjKu5MB0NqytZ/XOcY56Ua/0H1g0cO5WTg9
+	0vyaRTdoRjm01hBDV5d60sb+GNqgTyVow1w2h26on2fR9xNmCHp28iNO/2g2EfQbbQeHnje4
+	BdqH8I6GMxKxkpEfOn6JF1Fd0gmi+txi10wmIh5kOqUBLgkpX1ij6WFv6RWVGU8DJIlT+6G6
+	wt9mE9QBODKygtm0A+UBC5uzrHUeiVFJbPi+Z4mwBTupAFjV0L2xw6cQNFYVbuwIqFswp1q6
+	ae+AveovuE1j1s31giHMVsEoV1jyh9y098CEmrwNFJc6BysX1cCmHal98FVtN8uGhVQRCRfS
+	VZzNk51ha+kIngl2aLYhNNsQmv8IzTaEFuB6IBDLlFKRWOLrHREnE8d6X4mUGoD1R4pvr4fW
+	g7nBoDZAkUBox7+wUiAWsEVKRZy0DUASEzrwzT+tFj9cFHeTkUeGyWMkjKINuJK4cBf/yNKN
+	cAF1VRTNXGOYKEa+lbJIrks8cB9WEmSqhftUl8K72F8l8+vNdR0P7pC9a/mc4O64YEzzeOYU
+	fDpGWejX4m8p5znDvathQ3Xc6wETXpz1pFSPxYP6VkWCTnNs9GGylLg32xQWUoudGF66HDTd
+	UW0+e+p5T9EDaU5WauBa0PzuX/OG4E/noTaHDpUQ9k4KnzOxQlwRITrsickVon84w9RmHwMA
+	AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMIsWRmVeSWpSXmKPExsXC5WfdrMs7aX6mQd9/VovVPyoslj/YwWrx
+	c81zJos5q7YxWqy+289mMed8C4vF862/GC3W7Wplsti56zmjxasZa9ksnh57xG5xf9kzFos9
+	7duZLR71n2CzeNd6jsXi8NyTrBYXtvWxWpw7vJLNYnvDA3aLy7vmsFncWwO05+SslSwWHXf2
+	slgcWyBm8e30G0aLqzN3MVksvBNvcenwIxaL2Y19jBa/fwDVzz56j91B3mPLyptMHtdmTGTx
+	uLHvFJPHzll32T0WbCr12LxCy+Py2VKPTas62Tw2fZrE7rFzx2cmj97md2weH5/eYvF4v+8q
+	m8fiFx+YPM4sOMLu8XmTXIBAFJdNSmpOZllqkb5dAlfG5uVHGQtOy1X8vnqVrYFxglgXIyeH
+	hICJxM/+OyxdjBwcLAKqEjPXOoKE2QTUJW7c+MkMYosIaEos2TeRtYuRi4NZoI1V4vqJb2wg
+	CWEBP4kNO4+zgti8AhYSlzcsAZsjJFAjMX1zLkRYUOLkzCcsIDYz0Mw/8y4xg5QwC0hLLP/H
+	ARGWl2jeOhtsFadAoMS6rzMZQWxRAWWJA9uOM01g5JuFZNIsJJNmIUyahWTSAkaWVYwimXll
+	uYmZOaZ6xdkZlXmZFXrJ+bmbGIFJYVntn4k7GL9cdj/EKMDBqMTDG/FzXqYQa2JZcWXuIUYJ
+	DmYlEd47H4BCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeb3CUxOEBNITS1KzU1MLUotgskwcnFIN
+	jHKvJ99ZKOqarjrn96e3Hn0nzjb5FM9rXrx3ymM1F4Y/xp2/0i7sagsuuBgU2KVv1Lud6x1L
+	BPfBV89ij/c9OaZQHPhpvXzKQaXzKkn2PZvnCv+dGcsrs3Rzm0lQt6a1RFLKhHVr2DxaG86V
+	a13g5vqS42y39mf1npAnoev1eOuP3i8rmpZarcRSnJFoqMVcVJwIAB3HkTgGAwAA
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1C5111A0011
-X-Stat-Signature: 9akrogbag9cfdkhshp6cnkdxadegc8h5
-X-HE-Tag: 1772064005-815068
-X-HE-Meta: U2FsdGVkX18ISizcI2ta/lnQ444bA2AlYqtsyTRNFrVwMGHh3W+rVzq+XpUdnGSpMXb9ImpNB1o4GhzQC3dVuzyVd3muJDXOn6Zp4E8o0GegS67TLKY6d9H3Xybx6gsjjSv4PgFS/bjJVrKJTGrOY6U6w0p4L+OAWlS7lculnPU2SPDs9qtw9byM7EjPXRzxAkUv21lHxQvyYD4Ko6S4kRHqpAb/lHw5Yl2JYv7NtU7HFqYyF19cd1h3luVa/c+B9OKtqN1LDXNsP2p7K8wDG9r7f1Tb5EJY41bZ1NZW4bxoitNQAjV3otLZQdW/mDzVPW0cu1q3zMcv47lycQlC3b+OODTEq9qMXEzUP5c6e1NNUclsckANDfa7U91K8cNyBYYQRZ1sXMcbn95esa8HHZma2rWA8Ewdzo16MKoxqEeSnHvs81NY63qcI4OCG1gqoKjvRmGxrSMlo5IW06YoPMI0xXB+2DPTIpULEMYGvHH6nN7saYj24LUP5PQo0qXcHvYG8Vtwk/Unk2PQXrfX+u1lRN+VEBG33QV5eQQ+pbpnRUA/Smf79z6e47OUsB+FKb/5XcFRxpqTvRyxXRx0oiWzut+cRB80PUZE8pyuGpQTVofR3FWnCBf7SydqnH4L4RpgMbkcfVGN8TG5ctaiyAR4/+Fn2WLJlO6IH3ekfORc+ElOyenAWGUKyr6oftcfqXSFv5sMYef9Sntr50co0nk5/8UCW2ucAWvnu4i8KNQsCK1iZ1oV2SPLNeXCjVAlEW5Q85zDkLjbLYoI4CAqch88Vzk03j1FfrV7delSaul7DluSpdirsCJOWnc3JKfYDtFIcVvyBCI7kQhSq7L3RDcYUpLrE0JuvSr+7FlfSnyR4zG7UsJDeg==
+X-Stat-Signature: hw9g3e7e47rqj1aqdoim1izghh68g77a
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3055040003
+X-HE-Tag: 1772065295-870244
+X-HE-Meta: U2FsdGVkX18cH/+p1UYFRzB1dOyqnM2/b+TF2Tz4XffGj4K3CbsS4D5Hn1jxmXR6HYh2Xbc/EIXUiHYTBO2jyUTJzLxTyHTeHAW12fCs47LVFjYv7eeyVigmm0zO4TBtbTcST13teXLX/l7hjPYBMrYSN0FeIFGJqdegWhr9DleTSjjupR4bOnaBATTn3QDGoqJFH3gY1f9UnAqQLX33+OhGMMmUuKMHM5qIPWKUV3Z0AV3zhgi5P9lOs1iNu05CZmDC56FRh3hiihaLXjLtWfud63NKxB5//eSI8al31o8goYlyss15Bg/iPZ9jojUYONM6lgGZ9LA39NJfM0CSD3hf0aaApaRgpq4BM17hNZF7M7BaWA//qBgj6O/LlA2a3CpODD6CKkIczNNRwkEFbRpPUhQ9lXvmDbMOLb1lJqshdVbIcyb+ArjJDOmtlQpgNlmAwZs6ru4hCmWiFVxj/rDLOG84eC2duZ9nVbaMHtia5xp7zxSPOPSflpuvV7zPguaYDEeUWQiyynn2OAoJ348yRPL2w/q0m/t8SeE6XQSmnglbaHsmWz83Qh3KH5J0+4zbby4d2cH+wBmk3E79vn2uOScPJAe5dYtp5c/uIZTU+XgDdkN2adcJl3lYVlf9c9Z02bl+3ePJusmOCKjqYOW0VMmaOegQNvlQs4N94NPpZTzt7o1yePcm5VdnQ5uPLGX4vOt/rLJfs3gte6Ew80Ogao4wsP/AENGp/CSKSwqkCGvCFXWUDY9A3MCsctcqpOvfqbSuLV3zEST/L+HoZR1rudTkYYzDTp1laNLUXDCo/4KjVdp0J7Gdd0TvMLADklbQo0fPTIWKrAzGshKxwaIHutHamNtpLfKZfGcd8u1FRtSKxLFmj+MqHtWsyJ10p9xOohc1PcXtMZxkGhEZGP9u9rbO3uFcp7URhvXednLKkywT3cZJw5j385M3xfqKYbmvQiAp2y6iiW4a9Ju
+ B123ubS4
+ NwD0KmWuIWv0Wl/xV0UrcOKrl+syHam+DpY9lx93we/GTZC3qX/wqYb6/65ENUCyR0SBuE/skMvoT5zGtc0veM2Nn+qdDSUJsWPXF3Z/BlEjEmBWtl84Dmkj+grHmTl0k3cR3zxoxYmROfTfqZLbZ8Mu8+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,51 +117,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 09:01:18PM +0000, Matthew Wilcox wrote:
-> On Wed, Feb 25, 2026 at 08:55:54AM -0800, Shakeel Butt wrote:
-> > >  #ifdef CONFIG_MEMCG
-> > > -	unsigned long pt_memcg_data;
-> > > +	struct mem_cgroup *pt_memcg;
-> > 
-> > This is kernel memory, so this would be struct obj_cgroup * instead of struct
-> > mem_cgroup pointer. We will need something similar to __folio_objcg(), maybe
-> > __ptdesc_objcg() and then call obj_cgroup_memcg() on it. Basically how
-> > folio_memcg() handles the kernel memory.
+On Wed, Feb 25, 2026 at 09:57:17AM -0800, Mina Almasry wrote:
+> On Mon, Feb 23, 2026 at 10:14 PM Byungchul Park <byungchul@sk.com> wrote:
+> >
+> > Now that the pp fields in net_iov have no users, remove them from
+> > net_iov and clean up.
+> >
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> > The original post was:
+> >
+> >   https://lore.kernel.org/all/20251121040047.71921-1-byungchul@sk.com/
+> >
+> > 1/3 was covered by Pavel's patch:
+> >
+> >   commit f0243d2b86b97 ("io_uring/zcrx: convert to use netmem_desc").
+> >
+> > 2/3 was taken by Jakub and merged:
+> >
+> >   commit df59bb5b9af3f ("netmem, devmem, tcp: access pp fields through
+> >   @desc in net_iov")
+> >
+> > Now that io-uring and net core changes converge in one tree, I'm
+> > resending the 3/3, which is what Jakub asked:
+> >
+> >   https://lore.kernel.org/all/20251124184729.7e365941@kernel.org/
+> > ---
+> >  include/net/netmem.h | 38 +-------------------------------------
+> >  1 file changed, 1 insertion(+), 37 deletions(-)
+> >
+> > diff --git a/include/net/netmem.h b/include/net/netmem.h
+> > index a96b3e5e5574..a6d65ced5231 100644
+> > --- a/include/net/netmem.h
+> > +++ b/include/net/netmem.h
+> > @@ -93,23 +93,7 @@ enum net_iov_type {
+> >   *             supported.
+> >   */
+> >  struct net_iov {
+> > -       union {
+> > -               struct netmem_desc desc;
+> > -
+> > -               /* XXX: The following part should be removed once all
+> > -                * the references to them are converted so as to be
+> > -                * accessed via netmem_desc e.g. niov->desc.pp instead
+> > -                * of niov->pp.
+> > -                */
+> > -               struct {
+> > -                       unsigned long _flags;
+> > -                       unsigned long pp_magic;
+> > -                       struct page_pool *pp;
+> > -                       unsigned long _pp_mapping_pad;
+> > -                       unsigned long dma_addr;
+> > -                       atomic_long_t pp_ref_count;
+> > -               };
+> > -       };
+> > +       struct netmem_desc desc;
+> >         struct net_iov_area *owner;
+> >         enum net_iov_type type;
+> >  };
+> > @@ -123,26 +107,6 @@ struct net_iov_area {
+> >         unsigned long base_virtual;
+> >  };
+> >
+> > -/* net_iov is union'ed with struct netmem_desc mirroring struct page, so
+> > - * the page_pool can access these fields without worrying whether the
+> > - * underlying fields are accessed via netmem_desc or directly via
+> > - * net_iov, until all the references to them are converted so as to be
+> > - * accessed via netmem_desc e.g. niov->desc.pp instead of niov->pp.
+> > - *
+> > - * The non-net stack fields of struct page are private to the mm stack
+> > - * and must never be mirrored to net_iov.
+> > - */
+> > -#define NET_IOV_ASSERT_OFFSET(desc, iov)                    \
+> > -       static_assert(offsetof(struct netmem_desc, desc) == \
+> > -                     offsetof(struct net_iov, iov))
+> > -NET_IOV_ASSERT_OFFSET(_flags, _flags);
+> > -NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
+> > -NET_IOV_ASSERT_OFFSET(pp, pp);
+> > -NET_IOV_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
+> > -NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
+> > -NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+> > -#undef NET_IOV_ASSERT_OFFSET
+> > -
 > 
-> Why would we want to do that instead of just stashing a pointer to the
-> memcg in the ptdesc?
+> Probably better to retain an assert that netmem_desc is the first
+> field in struct net_iov, no?
 
-Not the memcg pointer but the objcg pointer, a bit background first though.
+What is the assert for?  Can you give an example that might lead wrong
+without the assert?
 
-Underlying we are using alloc_pages_noprof(__GFP_ACCOUNT) and __free_pages() for
-ptdesc, so allocation path looks like the following:
+	Byungchul
 
-	alloc_pages_noprof(__GFP_ACCOUNT)
-	...
-		-> __alloc_frozen_pages_noprof(__GFP_ACCOUNT)
-			-> __memcg_kmem_charge_page()
-				-> page_set_objcg(page, objcg)
-
-and page_set_objcg() is defined as 
-
-static void page_set_objcg(struct page *page, const struct obj_cgroup *objcg)
-{
-	page->memcg_data = (unsigned long)objcg | MEMCG_DATA_KMEM;
-}
-
-page->memcg_data overlaps with ptdesc->pt_memcg_data, so we need remove
-MEMCG_DATA_KMEM to get the objcg pointer.
-
-If we want to store a pointer in struct ptdesc then we can't use the raw page
-allocator/free functions. We have to allocate without __GFP_ACCOUNT and then do
-the charging in __pagetable_ctor and uncharging in pagetable_dtor explicitly.
-
-BTW we are trying to migrate from memcg pointers to objcg pointers in most of
-the places due to zombie issue.
-
-> I feel very stupid about the differences between
-> all of these things and would dearly love to read some documentation to
-> learn.
-
-Unfortunetely we don't have a good documentation, just code.
+> There technically is no assert that netmem_desc is the first field of
+> struct page, but it's generally well understood that the memory
+> descriptor types should be the first field of struct page. It's not
+> well understand that the netmem_desc type should be the first field in
+> struct net_iov though.
+> 
+> --
+> Thanks,
+> Mina
 
