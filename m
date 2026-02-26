@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BE88FCE068
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0174BFCE069
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 12:37:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FA096B0099; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
+	id 27B356B0095; Thu, 26 Feb 2026 07:37:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D1336B009D; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
+	id 2280E6B0098; Thu, 26 Feb 2026 07:37:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DD546B009F; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
+	id 154F26B009E; Thu, 26 Feb 2026 07:37:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0974D6B0099
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:35:01 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3B9C160BBE
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:35:00 +0000 (UTC)
-X-FDA: 84486552360.27.AA501CD
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CDDB04000D
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:34:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=REmHYhHJ;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 04DAE6B0095
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:37:57 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C389DC3AAE
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:37:56 +0000 (UTC)
+X-FDA: 84486559752.16.344495A
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E50844000A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 12:37:54 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DGpr3FmI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772109475; a=rsa-sha256;
+	cv=none;
+	b=OUes7e4tMrhX80bOHvjcOpW0K2nNgHoYe3vRReu0ozbsi0USdQM1RGF34qHjz61zUVosGl
+	+p8w56g7VYsyqPBXY/j3todomZDg1+SUt4Ityye1SCo61+ySrH8FYBL7gkjTD+/lGDpfmZ
+	tlRmdnYuwHWnWXdSvhW6POWbFGP6fig=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DGpr3FmI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772109299;
+	s=arc-20220608; t=1772109475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=toSZr/wk0D+ZLB4X3GL8tdvy8Pfuhw55RvV5q/azapM=;
-	b=Z8CsLMMrSjJbx2E3oscIbHspYV7ZbWNBwt1gHElSl0Yp1G/QJvpUOD7DxjCEW636aAOZRv
-	1Q5BRsjvT88dxUDaNix5kH0LUSej8KCTO1FEuO3+gja1KE0Mu8nns4Xcn61rIMWF/benI+
-	Axn08PV43+8ANBFI0nFZCXCuXBuT84M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772109299; a=rsa-sha256;
-	cv=none;
-	b=iWE/SiwOjXp7eU+JybtX0DZ2endV1XK4nUC6CrLjE0Vvu9SWNXTsyzMHuUYVZibhOZlGSn
-	wxyu7HGPRm1HZ0aQ7V1lO28pG//uwAs0mF8kwn0WsINOcenhjd+i8dmSGG7bB9QMpWWi48
-	3yJqhR1xr4nxJRtyYXMYwcEPxd7Syes=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=REmHYhHJ;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=SPNsJJopwXeIQajTPzQOqmwoq99q8dZhkvlRtgNDvjs=;
+	b=1etzxRnV3gQL2qJU8odmmUADX9PnsA7h1JLlTv4btAb44VQy1Uf69MM3Q9AOqTqibyGdis
+	HptE6ReIJQmMxWWK169Krwr08ijtNz5lnLXjfAZwedCrWTUfGtTilDhXz34S6ztZcbTqpS
+	huLmJ4OkdZ3ux8rW2DMz26FaaXlUxiw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772109296;
+	t=1772109473;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=toSZr/wk0D+ZLB4X3GL8tdvy8Pfuhw55RvV5q/azapM=;
-	b=REmHYhHJH8JbL1SxuExvYSceF4yEaGJbivS6xDSQE9K5ymP6CJpeL9wvMbAGx4KwMpl8dy
-	MWnJSF//2NEorFNH5fXDdJKyHs3HYayyJfEAYar4KO3O74WyeZCZPvZW7JPNOeZezeXh/z
-	XzDcaAvgPUfvzAW3HYyp9mg/OUKgolU=
+	bh=SPNsJJopwXeIQajTPzQOqmwoq99q8dZhkvlRtgNDvjs=;
+	b=DGpr3FmInTfsEa7ak4gaWrS03UTVFfbW9HJv0UQy+RlyTfuJR6/UpOsr9dyf+aH2kO7T66
+	+YmOMY44vxffMh/T02Q+dbb3ocIUW7Avb2n+bBA1V0DkTzFeB5kQot0jlV8roM9f/AtXFx
+	b2MxQG9FNaKVyeDXagSTpEApubu7kf4=
 From: Usama Arif <usama.arif@linux.dev>
 To: Anshuman Khandual <anshuman.khandual@arm.com>
 Cc: Usama Arif <usama.arif@linux.dev>,
@@ -74,22 +74,22 @@ Cc: Usama Arif <usama.arif@linux.dev>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC V1 01/16] mm: Abstract printing of pxd_val()
-Date: Thu, 26 Feb 2026 04:34:39 -0800
-Message-ID: <20260226123442.759447-1-usama.arif@linux.dev>
-In-Reply-To: <20260224051153.3150613-2-anshuman.khandual@arm.com>
+Subject: Re: [RFC V1 10/16] arm64/mm: Route all pgtable writes via ptdesc_set()
+Date: Thu, 26 Feb 2026 04:37:45 -0800
+Message-ID: <20260226123747.801496-1-usama.arif@linux.dev>
+In-Reply-To: <20260224051153.3150613-11-anshuman.khandual@arm.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Stat-Signature: yd9wtx9uzefu3pccodjpozejgfpg1q9i
-X-Rspamd-Queue-Id: CDDB04000D
+X-Stat-Signature: 6p86ekwbm961nf95tk9h4fxiw4yo1nqm
 X-Rspam-User: 
-X-HE-Tag: 1772109298-311390
-X-HE-Meta: U2FsdGVkX18xx4cf34I0Ac8+v/pkWXX9pOIVwe+Sjvm0qPweFtgPrZNvf+/Oe/xp/aIlTDuHX8aef7deYyxC9uG2TJ6D9Oq8Tgx/f15Aa+KpIl6rVcIB1WShnSIuOljQGEWBctAF37zo8fXGPRRBlIfoxDCrgLg0AaO5zfxVK816utu/eSc6+VwPy6W5u+IbpjaZ8xRsWrv+zLJCHuDiX7eWFg4kv3excRU9mb/qspKU+hpEojlLwKk8kAVh30umT8x7I01Q2dtMrCJz9cscf5Cz9PFgarQOcJP1jkO7cpwiQVfUqkGWeapLE0sFDkzyhaVR+b6PEb61qPYs49+FSCFMzVdb7mEGu5pUWS4AulZOvK7EJJSGuVoOikOxuk8vlG7iX9mf9fprc8ETkfmloEil0PHfMMfFzi8FAbZLxFYgCEdkO3erY6LtBC/aUyxTb/ncNCdixEL07nspIBfj8KNyyFPEkGbe5xXHOo378RPIFY0KybEclLFtQLx87nFyMBkRyTzonjth2FlkcSG2+u6m4B9piWcnOfFBNbmVHtqTo6rOgV+j317zm3cIhIz4mFpOwVyrDX8pfoL/EMy6ho+K+DVJXd7vf+fgroVc5Wc0w/wqTFyKEqscQEs1pQpTqdT6tV+pP36ezK19uvP66LQEjfvPB6NE50VVX8HHHk7DzYXuUlTu0tFsiyQ5Lt57aX0WZ5BxhfBAbFGaGnebzFPh4oxTpRxTVVbou5m2CDKdOfEzAbBbsgWPByHW1xVV8Id7i5SXY1yIy9HgDPH5Z+BBuL39aDdePc4F4yhLR9ySooee//viiTmfi2TcA/ML1gB6jHUw9TrRK67q2hfhSLAYfpV7ZMG9mZgWv/OmmtQ4Zni6abpn57G54/0TCDWd3UsbBnYXwe6lCYYrYxu7AMI1xCKqnuncPZGw9hUm7ZpLeXYPE1/AYWLOdgsKPvpdK5RNkLLV5sff863Tpjk
- DlTllSI3
- SZpxXiPKVOtFd5KI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E50844000A
+X-HE-Tag: 1772109474-408928
+X-HE-Meta: U2FsdGVkX1+4XAVa9P5eiAYM0wBQzOx0N/LCPZW5ledeM9FIiENpwv47HFIv1UcJv8KD2I7fRQJC8JooDX2RB7wdfmShJZSy/xbhJw3C9yvNpWbV9NyGmFEyt6SR4yhK39LSbmE/O5tXmBPTNcbeeXhGKGhfXdDK3ZEHDDA3nQxoLe3vg0GmwfpvD+J818Ifu55bz5bL3XjvLvUT74RNpWHGExCPc8q9YTc+QpMAmjyBBuHqOXjPD84oUz3Gx3cNRqZz5RBiU5Y/L7H/NlRifjEl6M996b7xbMDm+okcAJHUhZC0kH984Yk8LdI6ZOFubXvDRXep6Mw0tfti3vWyDAW5VX9ptGT1RMYO2VSzsrTkO9SxJzT5fFs2qYOeLtB/2R80pQNEorCTwmt7m6L5fMrJ5P8DCE2etHFMYezmeaIrthq4GD1rFAx2qboQCXc0GvI3X4yPp9f6e+JV6uorx1Sd6Uy/TyFiIcDMOgyApvv9DE140Z3e3zL6n813WkMjlRWY9K7HthSEYqCss5d3mypxQ4sC9aYdWptlo1Hu/mEcun3UdPztjpjz1v9jg0tjY79t4U7Igu3mPPOadPqjCq2ll2GHabZ4gLxi9F5AR+n3rgtaiocnsN4HM2f7F4ppnEZT45VipMiDg0X8rQ8A7SkZGOumlIqMoWQKYIHQXSBzNiYQBXppkQfTMGSAfgByDC14vj5DSvxMmPT5cY//jBqDpjlDcM/L6pUJNzdGfHo686/oFQ3qGaMWrlAw2mI9dIGUagqY1pillbsDmFMx1F7a41+/vAC2xOPyeJAjOegFLCrtYtxjvelA6XwsasToCYAls2vIdCMM3cd4pIgsIxcRMiON4W/GNZTg7lE+4qrMkMM0s3aPmqs3glQNsKLxb1hTm6H8jlX7HZJ5HP76G+Gf+ipFUubeE9uJzt0n5b8z88rCggWn5Dfy2DfkPzIE/jHKfH6ORIZpAaFGd4J
+ ++8dAFrq
+ MXY9i3mewEFuSwcYXWz8/FiQ5s2zxkxoJgnzvRAjmvIsuONBTh7Lvn6TVtFDVOAXmFnPyHSfEpSgre8xQzrcjm9oCZWC69F7KutFpvDWDQsexfO49usywZIWELwJDWngjNpLeXkowOs1bHZYZDrTg5gBh7+RZE6zh52h31JJTVmngYG7nMJ6rM9eAm2WQX7aascGJGhlnJXSAKEPp7X+ff9WBL2XK3oZDVKlB3Eq2bADfPjJPdEJzejfBH/L04lv4+9bCXmea1V+03XvGuYkSSeMXCcygKg3out0zQLK2ivy8CQfu3PoGfl0O4Ub0DSA0KYvMXyLOcoB0/XyEMrP2OLd43NqUh6D1GlYUErwXGJERTVMNDIb0Ur/VRqFRDMJPm3mG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,145 +97,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 24 Feb 2026 10:41:38 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Tue, 24 Feb 2026 10:41:47 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-> Ahead of adding support for D128 pgtables, refactor places that print
-> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
-> macro to prepare the argument(s). When using D128 pgtables in future,
-> we can simply redefine __PRIpte and __PTIpte_args().
+> Currently ptdesc_set() is defined as WRITE_ONCE() but this will change for
+> D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
+> copy atomicity.
 > 
-> Besides there is also an assumption about pxd_val() being always capped
-> at 'unsigned long long' size but that will not work for D128 pgtables.
-> Just increase its size to u128 if the compiler supports via a separate
-> data type pxdval_t which also defaults to existing 'unsigned long long'.
+> In future this infrastructure can be used for D128 to maintain single copy
+> atomicity semantics with inline asm blocks.
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: linux-mm@kvack.org
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  include/linux/pgtable.h |  5 +++++
->  mm/memory.c             | 29 +++++++++++++++++++----------
->  2 files changed, 24 insertions(+), 10 deletions(-)
+>  arch/arm64/include/asm/pgtable.h | 11 ++++++-----
+>  arch/arm64/mm/mmu.c              |  4 ++--
+>  mm/debug_vm_pgtable.c            |  4 ++--
+>  3 files changed, 10 insertions(+), 9 deletions(-)
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index a50df42a893f..da17139a1279 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -17,6 +17,11 @@
->  #include <asm-generic/pgtable_uffd.h>
->  #include <linux/page_table_check.h>
->  
-> +#ifndef __PRIpte
-> +#define __PRIpte		"016llx"
-> +#define __PRIpte_args(val)	((u64)val)
-> +#endif
-> +
->  #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
->  	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
->  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 07778814b4a8..cfc3077fc52f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -532,9 +532,15 @@ static bool is_bad_page_map_ratelimited(void)
->  	return false;
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 804ef49aea88..42124d2f323d 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
 >  }
 >  
-> +#ifdef __SIZEOF_INT128__
-> +	typedef u128 pxdval_t;
-> +#else
-> +	typedef unsigned long long pxdval_t;
-> +#endif
-> +
->  static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+>  #define ptdesc_get(x)		READ_ONCE(x)
+> +#define ptdesc_set(x, val)	WRITE_ONCE(x, val)
+>  
+>  #define pmdp_get pmdp_get
+>  static inline pmd_t pmdp_get(pmd_t *pmdp)
+> @@ -389,7 +390,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
+>  
+>  static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
 >  {
-> -	unsigned long long pgdv, p4dv, pudv, pmdv;
-> +	pxdval_t pgdv, p4dv, pudv, pmdv;
->  	p4d_t p4d, *p4dp;
->  	pud_t pud, *pudp;
->  	pmd_t pmd, *pmdp;
-> @@ -548,7 +554,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	pgdv = pgd_val(*pgdp);
+> -	WRITE_ONCE(*ptep, pte);
+> +	ptdesc_set(*ptep, pte);
+>  }
 >  
->  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
-> -		pr_alert("pgd:%08llx\n", pgdv);
-> +		pr_alert("pgd:%" __PRIpte "\n", __PRIpte_args(pgdv));
+>  static inline void __set_pte_complete(pte_t pte)
+> @@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+>  	}
+>  #endif /* __PAGETABLE_PMD_FOLDED */
+>  
+> -	WRITE_ONCE(*pmdp, pmd);
+> +	ptdesc_set(*pmdp, pmd);
+>  
+>  	if (pmd_valid(pmd))
+>  		queue_pte_barriers();
+> @@ -917,7 +918,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
 >  		return;
 >  	}
 >  
-> @@ -557,7 +563,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	p4dv = p4d_val(p4d);
+> -	WRITE_ONCE(*pudp, pud);
+> +	ptdesc_set(*pudp, pud);
 >  
->  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
-> -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
-> +		pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "\n",
-
-Hi Anshuman,
-
-The original format had a space between values ("pgd:%08llx p4d:%08llx").
-The replacement loses the space separator producing output like
-"pgd:123p4d:456" instead of "pgd:123 p4d:456". The same issue exists
-in other places in this commit.
-
-> +			 __PRIpte_args(pgdv), __PRIpte_args(p4dv));
+>  	if (pud_valid(pud))
+>  		queue_pte_barriers();
+> @@ -999,7 +1000,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
 >  		return;
 >  	}
 >  
-> @@ -566,7 +573,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	pudv = pud_val(pud);
+> -	WRITE_ONCE(*p4dp, p4d);
+> +	ptdesc_set(*p4dp, p4d);
+>  	queue_pte_barriers();
+>  }
 >  
->  	if (!pud_present(pud) || pud_leaf(pud)) {
-> -		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
-> +		pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "pud:%" __PRIpte "\n",
-> +			 __PRIpte_args(pgdv), __PRIpte_args(p4dv), __PRIpte_args(pudv));
+> @@ -1120,7 +1121,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
 >  		return;
 >  	}
 >  
-> @@ -580,8 +588,9 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	 * doing another map would be bad. print_bad_page_map() should
->  	 * already take care of printing the PTE.
+> -	WRITE_ONCE(*pgdp, pgd);
+> +	ptdesc_set(*pgdp, pgd);
+>  	queue_pte_barriers();
+>  }
+>  
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index bcf32d1a92de..ffd307c546f5 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -83,7 +83,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
+>  	 * writable in the kernel mapping.
 >  	 */
-> -	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
-> -		 p4dv, pudv, pmdv);
-> +	pr_alert("pgd:%" __PRIpte "p4d:%" __PRIpte "pud:%" __PRIpte "pmd:%" __PRIpte "\n",
-> +		 __PRIpte_args(pgdv), __PRIpte_args(p4dv),
-> +		 __PRIpte_args(pudv), __PRIpte_args(pmdv));
->  }
+>  	if (rodata_is_rw) {
+> -		WRITE_ONCE(*pgdp, pgd);
+> +		ptdesc_set(*pgdp, pgd);
+>  		dsb(ishst);
+>  		isb();
+>  		return;
+> @@ -91,7 +91,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
 >  
->  /*
-> @@ -597,7 +606,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->   * page table lock.
->   */
->  static void print_bad_page_map(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long long entry, struct page *page,
-> +		unsigned long addr, pxdval_t entry, struct page *page,
->  		enum pgtable_level level)
->  {
->  	struct address_space *mapping;
-> @@ -609,8 +618,8 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->  	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
->  	index = linear_page_index(vma, addr);
->  
-> -	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
-> -		 pgtable_level_to_str(level), entry);
-> +	pr_alert("BUG: Bad page map in process %s  %s:%" __PRIpte, current->comm,
-> +		 pgtable_level_to_str(level), __PRIpte_args(entry));
->  	__print_bad_page_map_pgtable(vma->vm_mm, addr);
->  	if (page)
->  		dump_page(page, "bad page map");
-> @@ -695,7 +704,7 @@ static void print_bad_page_map(struct vm_area_struct *vma,
->   */
->  static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
->  		unsigned long addr, unsigned long pfn, bool special,
-> -		unsigned long long entry, enum pgtable_level level)
-> +		pxdval_t entry, enum pgtable_level level)
->  {
->  	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
->  		if (unlikely(special)) {
+>  	spin_lock(&swapper_pgdir_lock);
+>  	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
+> -	WRITE_ONCE(*fixmap_pgdp, pgd);
+> +	ptdesc_set(*fixmap_pgdp, pgd);
+>  	/*
+>  	 * We need dsb(ishst) here to ensure the page-table-walker sees
+>  	 * our new entry before set_p?d() returns. The fixmap's
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 83cf07269f13..faf6a19a89a1 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -445,7 +445,7 @@ static void __init pmd_huge_tests(struct pgtable_debug_args *args)
+>  	 * X86 defined pmd_set_huge() verifies that the given
+>  	 * PMD is not a populated non-leaf entry.
+>  	 */
+> -	WRITE_ONCE(*args->pmdp, __pmd(0));
+> +	ptdesc_set(*args->pmdp, __pmd(0));
+
+The ptdesc_set() and ptdesc_get() macros are defined in
+arch/arm64/include/asm/pgtable.h and are arm64-specific. This change is
+in mm/debug_vm_pgtable.c which is generic code compiled for all
+architectures. Other architectures do not define ptdesc_set(), so this
+will would cause a build failure on other architectures..
+
+>  	WARN_ON(!pmd_set_huge(args->pmdp, __pfn_to_phys(args->fixed_pmd_pfn), args->page_prot));
+>  	WARN_ON(!pmd_clear_huge(args->pmdp));
+>  	pmd = pmdp_get(args->pmdp);
+> @@ -465,7 +465,7 @@ static void __init pud_huge_tests(struct pgtable_debug_args *args)
+>  	 * X86 defined pud_set_huge() verifies that the given
+>  	 * PUD is not a populated non-leaf entry.
+>  	 */
+> -	WRITE_ONCE(*args->pudp, __pud(0));
+> +	ptdesc_set(*args->pudp, __pud(0));
+>  	WARN_ON(!pud_set_huge(args->pudp, __pfn_to_phys(args->fixed_pud_pfn), args->page_prot));
+>  	WARN_ON(!pud_clear_huge(args->pudp));
+>  	pud = pudp_get(args->pudp);
 > -- 
 > 2.43.0
 > 
