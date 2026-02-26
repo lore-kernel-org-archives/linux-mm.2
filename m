@@ -4,99 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08203FD9E0A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 19:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B780EFD9E0E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 20:06:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 431B36B0148; Thu, 26 Feb 2026 14:57:32 -0500 (EST)
+	id DCD216B0138; Thu, 26 Feb 2026 15:06:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 409936B018B; Thu, 26 Feb 2026 14:57:32 -0500 (EST)
+	id DA3F26B0163; Thu, 26 Feb 2026 15:06:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33FCD6B018C; Thu, 26 Feb 2026 14:57:32 -0500 (EST)
+	id CD0456B0165; Thu, 26 Feb 2026 15:06:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 201F16B0148
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 14:57:32 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1CDDC074B
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:57:31 +0000 (UTC)
-X-FDA: 84487667502.21.488FA79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CCA2810000A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:57:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t0l4sx+p;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772135849;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B77A86B0138
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:06:23 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 776DB140113
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:06:23 +0000 (UTC)
+X-FDA: 84487689846.30.B7E90DF
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AAE03180005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:06:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772136381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UD34O6+tCfVLfAuTIWen2G50WZkNfV1Tpx2VC9ZUXK4=;
-	b=P6i01FxANpmJBrV1Kb62/7YemrxnRqLuqH9ralb/vZsaQNsu8/enVOuZ9PtnpUYQQYFx0f
-	6JvGEWztSkKFby607BGPcc/xLDRVZQL17YL8Q1K0FUJ4bKs9wVzPAqaWKEgnz67zPsPVzG
-	tU/o070fsYjGe+ipSgyFTBFp8FQZ89c=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t0l4sx+p;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772135849; a=rsa-sha256;
+	bh=Rs9phl7CZvkpvyuP0IIhlSI4jujqBSi/WWAKbzIQYsk=;
+	b=DCaMuwt5y1KOzQ0LXqvgHjCsgZy+gEEZva8XrzuwlH8Mm6wB7MQmwMKn5IqY+ddhFktu7G
+	FuizJZYrsWM+s5iS4Ea8916Fv/SLtH/zSRT/YL6/Tqr78ygeYP7jxo1mLGn6ppqc2/FJqL
+	a/FK/PIKfxnFIr2clLmxwJbJgi1riIg=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772136381; a=rsa-sha256;
+	cv=pass;
+	b=E//SUYCMH8uRxXUH676DO1ml+IIn+p7hy5cn8Zwgc24L8rx8v0s8UuimU2sEz4HpixxbMw
+	md8ZGPif3DbRghyHt2rVu8Bp7Qh6F50nNMFTWep65uHM7cefOD3/1KNo1ncLf5/8laemHY
+	kveuT5/MmUVv0j2UasXo/QtkgdO6ZCE=
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3460D88415
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:06:21 +0000 (UTC)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 11915160186
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:06:21 +0000 (UTC)
+X-FDA: 84487689762.15.D41FED3
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 619F8140009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:06:19 +0000 (UTC)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772136379; a=rsa-sha256;
 	cv=none;
-	b=SRKIA9edzEQRG8Y+t5Tjh9xz454B7sbTVy4JdhXZsu1EhHY548Iq/n5NyaI1BPpJV+2DrM
-	MsfE6MspQqt+3jC5fsQnHzZTh75ENt2qwvAhRYJyP8j9awYdHDQGt29/BxnWhD7iGgW2GL
-	TENiVi/us8ZExIvTzSuyGQ5xnPhb3Cc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 287F860054
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:57:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28A2C19425
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772135848;
-	bh=UD34O6+tCfVLfAuTIWen2G50WZkNfV1Tpx2VC9ZUXK4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=t0l4sx+pnjuj2urO6rGXuZStjHlCvNGLa2H9PQLLpY8glywiPFrJB2t6imEL7yEM4
-	 7/OW1Y4ggZYV/l0JcCVfNf51rBija1+UMAoHrOXf0Gv3uXVyD9l4MOfkJT1WoEsYCR
-	 4W5Ww4SppGUSAn0HgLOHn7omeDdcyHY0aBYdbeGAvyxx7L4IxjgzyxNXD6/J3L2H1R
-	 6ebLZziuuKyLMnGSRQyr1V7o+pS8ZpdQ7lIQpbXyBNLbAEZkHqQUy56/XjFUkksz25
-	 p1/192sEAyyI9Rv0Xp4Ry3h3CwKLPHUD5goe4aR/RJbD78+yu9gXLHrXmplCOb4aeN
-	 F24p8fWEaA9/A==
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-79863ab8478so13071217b3.3
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:57:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVljU06uT+27wRz0/D55YQ8w8/5qFHewkZUaU6yEFmjisLZCK54kMpZ5e5koSi9tWec5ea4/deprA==@kvack.org
-X-Gm-Message-State: AOJu0Yz+Ik5HuU+5rucZQ0cLZYJqtvmOlZhklae+QfMlgExh4PR8tqCp
-	L1ypr7jjYA2WW6e+x6ks2yWHQJh1p5lrqvIr98i1bKVMDkJHu/3F6pvfrDD0/QMSjCsEUuKxyoY
-	bBv5bt1L8CeayT20hCHft9nj6LBkP6L3iVXlZjZJi8w==
-X-Received: by 2002:a05:690c:1a:b0:798:6042:12d6 with SMTP id
- 00721157ae682-7988561037fmr4493367b3.60.1772135848157; Thu, 26 Feb 2026
- 11:57:28 -0800 (PST)
+	b=20TJHUhad5H3uOTktI8kqqRc96J+IqvlWMk+K/cmeRaY1kcM/Gr5GIP+ANUeieP3eaCaPW
+	YRJZTW7AL7PAcbZz1fWtGcm3wiFcip4PB2YQmpmtXqkVuUnf04PkGSuPqDI2OwXOsApXF2
+	zx2I4yBfMFd4S0KuO1PV+YwbWcbeY/U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=orHl8mid;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772136379;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Rs9phl7CZvkpvyuP0IIhlSI4jujqBSi/WWAKbzIQYsk=;
+	b=nnQGwwhi/27pAnV2uPf+upGZuP17zisjkvEhdvxP3QozyBEDUvk7dz8Jd7V/rO/w4z/yzO
+	GYL2WC8BCmTXCpH0N+isul964O0KBAq7X6Zi4wnopjCMmAaedwEX7VPxJyTl5c8ZmNAtrW
+	Uv/Kpn95Zy3RgtRiGx+hOhcxpKnknA8=
+Date: Thu, 26 Feb 2026 12:05:51 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772136375;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rs9phl7CZvkpvyuP0IIhlSI4jujqBSi/WWAKbzIQYsk=;
+	b=orHl8midT2uBXGfRsOr2njRHvvNwaJQOJxd6xzi+HlP7ns9d24jSabNuhSMVsgF/5A8eAD
+	edn6NcjIBNt+DuaQK91WZ1tfqHMII5n1FfROxXnXhPSsmmZx9Ixfi1DVOI2d9mtCPRreRy
+	G6h/hIlv0jKp6ctwaa3sZXskEjI+8zI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v5 update 30/32] mm: memcontrol: convert objcg to be
+ per-memcg per-node type
+Message-ID: <aaCmpSNRZU1wIYxq@linux.dev>
+References: <0f915487ffc653cf6ea19335c21c01aa06004641.1772005110.git.zhengqi.arch@bytedance.com>
+ <20260225094456.74145-1-qi.zheng@linux.dev>
 MIME-Version: 1.0
-References: <20260226010739.3773838-1-youngjun.park@lge.com>
-In-Reply-To: <20260226010739.3773838-1-youngjun.park@lge.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 26 Feb 2026 11:57:16 -0800
-X-Gmail-Original-Message-ID: <CACePvbWKg7dT=sP0fqs+So8BnE3BKHgLRaaL9Rqgj9JJ1mp-Uw@mail.gmail.com>
-X-Gm-Features: AaiRm50MeOyea2-Fgki-KvZuznNpIXRYPJXIU5ywr2Vmh7qwLR4K8lrUYx64hUA
-Message-ID: <CACePvbWKg7dT=sP0fqs+So8BnE3BKHgLRaaL9Rqgj9JJ1mp-Uw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Add myself as reviewer for SWAP
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 61rnzp3yupbm8wrddd5fo9graxghxgj9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225094456.74145-1-qi.zheng@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-HE-Meta: U2FsdGVkX1/Y0zhKEZtGPtfgEizEvcnG1WYBmVTPEeQr1jSbXcfH2ML9TZsejCRGy27XE4/4Z8OYLd561rETnPoqN6rjmeJXg/f2vx6MalzFpPze1ThP2p3OAlns3yQLuhg/VAv+nod2muP6Co+Xa3t42gSjBVRMOI0+wc5DVXqXvyhclxNT8IWilg+aj+6QTN0GrH6uzpSdxeLuBmGH/O3d+bd+jmIPf5y3/t1MBvhc67RkB3Oh48PZS0oUyfOTdl87KiD5qlf/6BoyzLd5nL6tj3BzvA2ORc9RzdUWSdlhfyEM/PQ93lMLqy5Yo3BbRYv7Y9ZKHh/bb1ebOXE5LgDgLYYFZiIthTSqnkoVTFjVcfhTHGt5KCfjGhxse3Fx1usMXP3nb2u/NuMN3tqIEIVEccXPResH1z/k3zUcfz93jlIzs2r/zVyyblXA1eaazt2VgXu51h7FjN/zzgDIBg2DoyAS4+fRgeCdsbNMP5MOOgh/nFJMf0XzQh8b7SFWDINJU/r+ZtpfJXDc+6tCXE4RFQXHYkdOl2GEzC4aRbzGNK3SQykWOr6jFt798KseC8M0y4Du70vz7x7q1eRU6yc68V2hW52c3cBM+VMbO/pnY4yY25MhAEl7wAa8t1YkjJ+LEcQ+ISlWKUUWEA5WMhYjm9vKo9uPHlwGNkoMUvoqyMSD9yZma8+BQTin6gWeXWmHWWSKswcAHjVSwKPKA3znrRoN4djQuFBuzY+N1b+Vjo2JL3kGZMUEpyopVvgvEI5hOI2fBgPNrEbNuBGwAcnAvnAtkNLxUC9+hFJqIiE1kTvJSjjXhlIA2OqZWbvNQk5VWJqHvAQt23b7hsKyG7KIuiSwf1PY2ZkHTKXFFf2rsdstf1TgBQ==
+X-HE-Tag-Orig: 1772136379-465799
+X-Rspamd-Queue-Id: AAE03180005
+X-Rspamd-Server: rspam02
+X-Stat-Signature: inhxyfxugkhirkqnqmyq6uqwi9qcth3f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CCA2810000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772135849-54756
-X-HE-Meta: U2FsdGVkX18C5Im2nfTJ1A+cGGoBlnN3cJemouGXbyssHdY9rpSTelpvyvf33rZVa8RBr2RN8y4u5T3DeG6mD7NOAODeic0NW1wDsc2YG444HjZ3e1V54JvbkC1Zh+o05ktneIyJAPecYyOtuHBU87/bm4nxOseBOIGugDgY0pGKQGnnNVnTZSR+RO0OlO9hlo59AI5cBMM2qy5w8i8mf6ujLYAqdcBSKSGF12dHvxUKgs1bcij9Dp4IL1PGQtjGHVs4n/s84FkPkwpp1VdbrlPmaNYjbB0Azpxlr3PrxLqY05Ipfyldfc7n8+KfroX2FkTtmhj7OGu0OUg2vMI2N8CcTCTLfI0pRlQPAKyzjslm3/cTIrj8FdFu94mKfcm5OEUpDWlbm7w4Hyds4K6ldNCa6p1x/d1QKNeRo5tw+7g9bZ3SN5kp9/2xPAdgiWkZ93bQpqyb3W75UEHrXmGS280OG0Wo19qomoSLnSqF1+TJzZvUa0QedY/rrtts90uf12ZcjUbt2NMjGkGoAoEMKGJ7qlKvl0RvAWZULs5Abc31txQsyprETbGts1SeYOK5Ebe/mXufWLSQrbSfA6EZIowINflqOOuPsaB5NDQ1ze/wB8ggFPAhBJY/ggEK4xeqCmLSLHC6Q5UaJvoWsYFQlgZSO97CPIdW/4IPOnmCdcEIdMdsCF0P9yuxsiov7gAUop0m4Lwch+/HZqpJ1FG6XEBwmPtyWV82ua1bAcNHb45fombYLMPaTEP/7qLScumJT28VMGmna1ZCEtrqZcLsoojjsIp6EVBQ/woxcNdgaw+42FnoiO8Z74X7byZpunvqmKSO41XBwv4Y905TzqnNd3t11mtxWqp6a+O+dYCg1m+syFZV71GcPcl+JXLQG+tXbtiNkXhV04BmXQFk6vf2G5K/g8vzO19iLkXZM0VU5WXeulXNeb7d3HCiPEkU9EeIJWh6/N4Uw10w7ssCdaT
- zl+xL261
- lyHG9qcRdNYx18ASzlwG6Zbztk6h81Kepn6D9IOglDXweta07OGJnAQX0r09BPSNr6wJUhfZkA31MRzifWnF6Ug33KMw4n9Wbab0Z177xoFbOkkmgX1vbIUnAOortG42DMheb9CGfowZIUWyIIziCIKWDsFAV4Q+bLjpNAof0cB7mPlteWB0RAlwcwyDlSpxGlZu7dFdzPXOMAviheNSbQfXt6dZmj35UNNeZUE4GM3aNFzebaU8Mn5OpkbhDuUnr1IXr51aevfQlTCrnSHMdhunMwGzl7C9LMaak7DWg0BJ2OjnS7Wmn+MF3d+nYKOIjcMscOWhf/CUMBlY=
+X-HE-Tag: 1772136381-462042
+X-HE-Meta: U2FsdGVkX1/U6ze2D1b0kp70nRVpcJFucjNvB59q4ahtmBYwrvv+EjBaj5lm4obdH1zUmtugx7fxtPD7mxP5Adj5WqOyXYZ/Z2INFhLj0AnSNkptIeNsHKyGjsiuqCZ00jnTGPudvkgtbDVcwIOYUvLJzz23Jn5ouKTyxYzACMr713QnAHkpOWqhrQqixxce7twGXN2NIcer4ydZL8V8Lw4lI0JbZksPMMSnaZM+j4B/xadOrvA+2plcwaYdUL7DiGCfaTUrPkCfKOXLrJZJrylSXDxYTF+8WfCI1zsQRWl3nzcJjfdcnGijqOl14I6WUepQuX4Na4Y4sfpVcyUKnsxlEooUmnCSA+UGjoCnTWbprdAFH+roG5OsG8PdZlFKPcDS+zhomMdBSBvLrIUxQsij9u2duVfY1+wmBFYQeaH1LDotk4Kz/j/m6LH++MnTkapidVO6aowiLPtcTU7uq3f3yF/rSunA8GpwHURhk4/ZtxNVp8upqFNvFoHlzhhf2/tXen9zEpLXrN99nFJi/iJHG+6vTkKgbkJqQrcR4T2VahFGhGrXPcMEhWTZGPi56S7dsoBKD7GHjIqc/L8IAnDK6XQymmY8SePtQ4inpUjmqvu4e58Zx7ofJOCxu0iUcSenOcR3NxnTnRfKQ8ctdHKfzzEveu7Fw3Y0Un9JDHsJZftx4XQDSjnQVrisQ8kwkwerL+nti9PZ+l/0PYSHcy/fS0wN+LluhJL+WpT2oUaUaKp9MpUGZrHS7jSpriPzxw69s9BE8bVUls3q90zG7jFO1nF6tgOkvZ25o1DHlf12C0suuvr1EookX5pJ5qNDgv3OH6aMigU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,30 +120,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youngjun,
+On Wed, Feb 25, 2026 at 05:44:56PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Convert objcg to be per-memcg per-node type, so that when reparent LRU
+> folios later, we can hold the lru lock at the node level, thus avoiding
+> holding too many lru locks at once.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> changlog:
+>  - fix a missing root_obj_cgroup conversion and completely delete
+>    root_obj_cgroup.
+> 
 
-Welcome and thanks for your contributions. Looking forward to more
-collaboration with you.
+After this patch, do we care that page/folio/slab points to the objcg of the
+same node as them for a given memcg?
 
-On Wed, Feb 25, 2026 at 5:08=E2=80=AFPM Youngjun Park <youngjun.park@lge.co=
-m> wrote:
->
-> Recently, I have been actively contributing to the swap subsystem through
-> works such as swap-tier patches and flash friendly swap proposal. During =
-this
-> process, I have consistently reviewed swap table code, some other patches=
- and fixed several
-> bugs.
->
-> As I am already CC'd on many patches and maintaining active interest in
-> ongoing developments, I would like to officially add myself as a reviewer=
-.
-> I am committed to contributing to the kernel community with greater
-> responsibility.
->
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 
-Acked-by: Chris Li <chrisl@kernel.org>
-
-Chris
 
