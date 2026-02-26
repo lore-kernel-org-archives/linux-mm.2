@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06C91FC5937
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 11:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A09FC5933
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 11:33:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B80F6B0098; Thu, 26 Feb 2026 06:33:39 -0500 (EST)
+	id 9EF8E6B00A1; Thu, 26 Feb 2026 06:33:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66EF86B0099; Thu, 26 Feb 2026 06:33:39 -0500 (EST)
+	id 9A6436B00A2; Thu, 26 Feb 2026 06:33:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 592336B009B; Thu, 26 Feb 2026 06:33:39 -0500 (EST)
+	id 8C9696B00A3; Thu, 26 Feb 2026 06:33:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CCD26B0098
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:33:39 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B26F1B7B82
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:33:39 +0000 (UTC)
-X-FDA: 84486397758.01.634E01B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7706C6B00A1
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 06:33:44 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 163C013C0B4
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:33:44 +0000 (UTC)
+X-FDA: 84486397968.08.EECC28B
 Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3F836100005
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:33:36 +0000 (UTC)
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4005C100003
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:33:41 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qqWTnMAd;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RzdiMKp1;
 	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772105617;
+	s=arc-20220608; t=1772105622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sEWb6ULyOrXRVye+x+KftZvBAQkL33Q0arTZiVRMt8I=;
-	b=7xKR1p+DE3ZZzMGav1/qIqqur+aR9W1dk505WV9XbjinuSQKrjErRQPtKxCpg3bU25DWbu
-	P3Bz4Xu2Sy2kaDgpfrwrLUskzx67AQDW+03P87tBkHPZF8HuaP5gBW+Zp7/4LFTytavMUw
-	YCwqzaWDZm0c4zKLBce3EdohsLfa188=
+	bh=HW5NR2wuAB2pCKpIclCqiHUIfVFdsbldp3G0DhmGrt0=;
+	b=vJkUjekkT0mlDQRC8gnxE9XYCAh1GzM+eiqEPrmTnmDKdqHE54LUbAAqB4Puwd9EMfzl0S
+	vpj0jLZ9XjipWMY5rGGnnae1FjtfoFIk8YuP4bG+pHypyFXJfy/LcsfM0UG0GjvsKaO9Ei
+	UDgRaCmk16i4QOGrI1osXP49fkGRSlA=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qqWTnMAd;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RzdiMKp1;
 	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772105617; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772105622; a=rsa-sha256;
 	cv=none;
-	b=NrqTddgScjqJRffJiXLSUVcgH9LNe8F/zI211uMsocpRCiT1G7iwxe1LRk3grrjAjjeJvT
-	4Wdq8IBGvj4uIhTcVtqqS6hhpqTFY9YD0EdGIv5o3IJalvfIJIQb8i8pWkSMOAwc1/iMnJ
-	JNucj1XhdgYX7SCLTh7im5O+E8xQ8Ho=
+	b=pIrMsloPEcCxNEijlMRycfL+8IFLiwpvYnmF/BOlwN4d9BBnun1u5RlhZIAICVis8q9r8T
+	9ptQRGUGtgMI2EOwcL44zATK3mGsABnyYzQa18QOioppZ92ayD5nrpSnGO5yzJNpXdNb/k
+	rcuxp0PMrvYLQCNxKEnDENY0rgrKaas=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772105615;
+	t=1772105620;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sEWb6ULyOrXRVye+x+KftZvBAQkL33Q0arTZiVRMt8I=;
-	b=qqWTnMAdq5dg5CvpyeLbGUPbMz61dA9xpNIaerVTAxRFPXhdC6tgbMB8GUGdaSb1pEj7AQ
-	+ksDSA5ARHrYo0OCNpPhXKcjyhuY8ZIczmUrM/O9mt6vELpp8Kp9v5Y2Nt8i4eNS5HVweF
-	CbjSJodzFuIWJHz06nT0yacW4sZIjPs=
+	bh=HW5NR2wuAB2pCKpIclCqiHUIfVFdsbldp3G0DhmGrt0=;
+	b=RzdiMKp1lP+byHUz7l0eKCj1eX9Ut37lQaDPNj8KBcBVLlesiFHpqHK5Ah8iyhlMOrVaW8
+	bKBZ75Ay6+l6RYyt5Y/uNJyEGcxJ4zFpSZ6y9Ko1EHA6ZJ6Q6nV1TPDvRsz7Z/op/nwRKq
+	NXqpxWMbKJY4XmDlR6gubAl3bFel52M=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -90,22 +91,23 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RFC v2 06/21] mm: thp: handle split failure in wp_huge_pmd()
-Date: Thu, 26 Feb 2026 03:23:35 -0800
-Message-ID: <20260226113233.3987674-7-usama.arif@linux.dev>
+Subject: [RFC v2 07/21] mm: thp: retry on split failure in change_pmd_range()
+Date: Thu, 26 Feb 2026 03:23:36 -0800
+Message-ID: <20260226113233.3987674-8-usama.arif@linux.dev>
 In-Reply-To: <20260226113233.3987674-1-usama.arif@linux.dev>
 References: <20260226113233.3987674-1-usama.arif@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 75jrquqyx7a5d1jr5xbcgpb1nyu1emyh
+X-Rspamd-Server: rspam05
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F836100005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1772105616-846943
-X-HE-Meta: U2FsdGVkX1/H9rType6ocLkBdlsT9P1XRqbd0392Sh3h81nUY/fsfPfgp1w8RwNbbAFvzI1xEYAmzY7OiUx4BzObDnNCJVfo2mGSZCjb60H2r3vGq3RQdtspUAdxvPaFoKUEGb4yPaWxqAtgIdkyhAwLnJr7gHCpKgkIZTNHXgxD1/rUi2eJMw/nx4hz64PFcy9+FqEwdLQOUql+lEUdayfYeAdyh6Lf5NZYSTs4Kk09c+0ZXx7wk54LRQzaJEhWQRNmexd8nUL3xWQDZNzxV1G0KNVqBzf7A9/Qx9iN0bCVcwWvlXLjA8CrgzGo6g5isx1BdS49YQ/uOAo5NElVYYc5VJt9VF7/saZB+xuQAxeOripmbgm7py0SXpKEQ9mWuagW6gyxlfeTgdycQy/PCe8GDia+OEemLrLAqwoh+AmNYO1pZu7CCw83v6UO7eMbkxEcZa6SD2TKK2+lTm+iySIccoKdcAheZA/e0o5+ReH+N5LQ6XJscydxohVYHa1dAYk5Lw6lCnnIHRI7gtibhGJ6lsM/hd1V2l/owLO3mWk7KKapyDdv4NUG2yAtrnVWDdLHVT5MllLJIXKKQLvkFvQ1CSEaYXvr/TYgvwashSj+y/XfARJsXbIcP1qHMn3RfZrs9VufaUteLlUlfJg+Z4daM0BVjz6JLYHXAUOPLvvSTgnoS5h0Clc8Dg6kfVD1lzomvUC2CdJzCem6bcOa4ra0ybpzVnPxgK9ZqHWyxC9H0zkk64z6lPjXl/jZwLHInx62mplEvqkXtx6qo/eXipnhddourm27ux9hgBIumRRwMGPWoiTlgGMAJwyKhUXRcn6focKWqw7VxC6yHxHCDkQ/h2L3rYBt00C+O0hhska13K4N9O+Qge9VAV0jUccmSxzPcTdmppBFjQrxcIxVVjGHUIVEWDJ6U5z/1JKxDY5EpK2VPt4g93OEZdA3gfnyInEVIJRyD2AwrXn+4OL
- VikBuS2L
- D7TEWVIVOeuJ0G+Kb/h9zfExuDskPfdSHze9iNbiwUpBlhVxajYPxcogdnBR07lmhE77pL8r0+PxAByc2pzWhG1GIIo2mOUd3uBlTON9CoF14OrcfTH/w24e5ZgiRpO2aNk2kyY3QzcI1VnQUTv8w5nzB1YgWNGzJzG5G15FJO2iIJGLkkdELSEUbUYATIiq2egMSymVV/o8s4QPqvBoyb3iszLBIO0TVyHg9El1shZ2b758nrR6YgzOuFbFMWrvrFDlvS04YbuLFcXeVbuwZdbJNfg==
+X-Rspamd-Queue-Id: 4005C100003
+X-Stat-Signature: 35eo1baqu35eih516pbopx4fowxnper7
+X-HE-Tag: 1772105621-322454
+X-HE-Meta: U2FsdGVkX1/ddCQ8Jr456v9QrEZNJ2DG+vUuCD4U0dmi2iuAYRdiaMcRCe6bKMFAG/szM1I95xYkVOed9Y2sSdeH+u9n4N+/B7cqAXuftUNNq9WviTu/jZPeimnuFpzk8cqlCbgKML3Pjoelt5XvSVUnOxfIBMx0acNf3POCd48lVJYOJGGC7d91U3J39CfwRcCQZI5Bnh8OuwMtBgeiV/HoTN8m1cwOqE2wsM/1LqwbJS9YkDBnhRCKpZbSJEAyiAh6pHV0C+z46f/sjzJkei58tFwM8M54KpsNs8hUntot31qmqY7Be7C8Xs8RN1OgC+xVDpqvsLYK2dTp9Cu4+ALhf862kAOlrXtGxUGNbV0sdC2Djb1lbAuahPe1Wd4oxMsHVqJmvHFnsQWcB5NMdHm9LoxgbI1F4VltgV008M/oDJoyb0LPXM3j38/yw0rqwpVbmo2FqNsAXrSgjkd8xSUYmdy6z8ay+fpX9QLFqPKHoMRu3Pm8yIaxuskYeGrktsbZLwM1emrgkLCylrK0/3MH0NYSYBAzRP+B2p98YzY/UUkIR91WiqtlYMQbQhv50qfC+rSd6sfKeW28ZEtZtiHYZfpw+fgf7mMrdwl+yIGt4PsVvWdVJrTKLc5xGBEiChlo8pBV7m4lzjyNKANaFztosRtIpBCkR/QuRsPcncZ3K74J383tSRqBktO2XXzNXUOoCWDpZGI11bIh5sn3C31pn9SJy8V1ziJIJg3vgyGXEAc/LK8T0EFiwGalCveLsskxw2BQ2AdicQ5nL3jH0fWfmTmre7wsbbR9xCA3FRQgocVvjaWdRHmWNBq4qDz7BXy6FHdarVPzPjVUcvarxhKmW5ThT84CbspsP2KIuhw/STHwjVOL3Xc6Ymanhcliqntd5LhesesXFBJ5IXLJCyt9+R8c8+ZkrgnAk0Ls5KnIomHG9LKantVXZFSiNWVOY4ENfXh9puBE3ffgKDZ
+ pFXTc08a
+ 1+Q3yG9VJXwxvekTvZbLqWbG+7lNe/uDRun64Jlt3DxaRrKA3MUQqWnw8OcTve6WCNmSeFIWkIR9ZuKoicjupiIMjMVnPLx6PSlu5p0DYmCzPVhFrjUkIwmZB3FflYCVmWrHmiDy7tc0ok7nndyHpWAnirD11jytbOQgBjO1/YLzCQHSwmyl4PfF/hzppvjyIRBg+vvLaFgZQrm0tzx9Z4xcxKmaHCkhxRrHOUwSp75JoD1qpgDVWVu76a9O5QlO5iPHEdAJ64aP3ji4gefWYVFJ9bA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,40 +115,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-wp_huge_pmd() splits the PMD when COW or write-notify must be handled at
-PTE level (e.g., shared/file VMAs, userfaultfd).  It then returns
-VM_FAULT_FALLBACK so the fault handler retries at PTE granularity.
-If the split fails, the PMD is still huge.  The PTE fault path cannot
-handle a huge PMD entry.
-Return VM_FAULT_OOM on split failure, which signals the fault handler to
-invoke the OOM killer or return -ENOMEM to userspace. This is similar to
-what __handle_mm_fault would do if p4d_alloc or pud_alloc fails.
+change_pmd_range() splits a huge PMD when mprotect() targets a sub-PMD
+range or when VMA flags require per-PTE protection bits that can't be
+represented at PMD granularity.
+
+If pte_alloc_one() fails inside __split_huge_pmd(), the huge PMD remains
+intact. Without this change, change_pte_range() would return -EAGAIN
+because pte_offset_map_lock() returns NULL for a huge PMD, sending the
+code back to the 'again' label to retry the split—without ever calling
+cond_resched().
+
+Now that __split_huge_pmd() returns an error code, handle it explicitly:
+yield the CPU with cond_resched() and retry via goto again, giving other
+tasks a chance to free memory.
+
+Trying to return an error all the way to change_protection_range would
+not work as it would leave a memory range with new protections, and
+others unchanged, with no easy way to roll back the already modified
+entries (and previous splits). __split_huge_pmd only requires an
+order-0 allocation and is extremely unlikely to fail.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/memory.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ mm/mprotect.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 7ba1221c63792..51d2717e3f1b4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6161,8 +6161,13 @@ static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf)
- 	}
- 
- split:
--	/* COW or write-notify handled on pte level: split pmd. */
--	__split_huge_pmd(vma, vmf->pmd, vmf->address, false);
-+	/*
-+	 * COW or write-notify handled on pte level: split pmd.
-+	 * If split fails, the PMD is still huge so falling back
-+	 * to PTE handling would be incorrect.
-+	 */
-+	if (__split_huge_pmd(vma, vmf->pmd, vmf->address, false))
-+		return VM_FAULT_OOM;
- 
- 	return VM_FAULT_FALLBACK;
- }
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 9681f055b9fca..599d80a7d6969 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -477,7 +477,16 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
+ 		if (pmd_is_huge(_pmd)) {
+ 			if ((next - addr != HPAGE_PMD_SIZE) ||
+ 			    pgtable_split_needed(vma, cp_flags)) {
+-				__split_huge_pmd(vma, pmd, addr, false);
++				ret = __split_huge_pmd(vma, pmd, addr, false);
++				if (ret) {
++					/*
++					 * Yield and retry. Other tasks
++					 * may free memory while we
++					 * reschedule.
++					 */
++					cond_resched();
++					goto again;
++				}
+ 				/*
+ 				 * For file-backed, the pmd could have been
+ 				 * cleared; make sure pmd populated if
 -- 
 2.47.3
 
