@@ -4,137 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D24CFD8FDA
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:06:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF542FD8FEC
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70B186B00B1; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
+	id 037986B00A3; Thu, 26 Feb 2026 13:08:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DF086B0136; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
+	id 00C266B0138; Thu, 26 Feb 2026 13:08:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AD806B0131; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
+	id E53196B0182; Thu, 26 Feb 2026 13:08:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 446EB6B00AD
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:06:58 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E9841602DF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:06:58 +0000 (UTC)
-X-FDA: 84487388916.02.1F28F1F
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 24EA34001C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:06:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=TNeRh3oM;
-	spf=pass (imf27.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.49 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CB7FF6B00A3
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:08:26 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9230F14025E
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:08:26 +0000 (UTC)
+X-FDA: 84487392612.15.7EFBD8E
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	by imf02.hostedemail.com (Postfix) with ESMTP id AC4D280009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:08:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TlptwlK8;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772129216;
+	s=arc-20220608; t=1772129304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4UbRn1/Zoh4IIbiAkpXZr+7zJlNAh6IGPdvB7q6Yi9o=;
-	b=GQrLkx9T6cc0Cklse9gJanYAAHbPP+YA99Z99lbWBYaqeeDrwfcEjuSTDjdE7n1Kfxl6HB
-	37hLjId3p7qutzXMlN+paidRs6np/QGc89K5MFvscSTlPX5Xar2ZFPVxfd8UV2z/BFnIIo
-	yXS+wnrU3/VCjYNVOeScbQ5T3hnUr5c=
+	bh=wcq9MDR3n757j4ORZwFr28h6INReHt+LZDRBVW4SzF0=;
+	b=VOjL6rTMqIy0gfJ0bLpIbzuppPv+VzW5c8D2X3DoVMq+TDS+GQjtr7+u/EatKZn2Kw+/d9
+	c0cnwZ3LqwpxlHuz0lPeorv4IxqTCBWm+D/XIOFjupuwebpT7Vdf7bnIW9ahp1ypQuFS8W
+	MDzoighjY/1JrgJ7PPCmcI4tdMP6lW8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=TNeRh3oM;
-	spf=pass (imf27.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.49 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772129216; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TlptwlK8;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772129304; a=rsa-sha256;
 	cv=none;
-	b=iLkmUyXfsfbeQrJa/RNz7o4QGzWvyfZTCabFu8BXZ4ALJ60KeZWC/OrmC9wa24pFU3XJII
-	RKHXr/N3pDYAqOdDZXKWwURGUPH3O0bBK/dpLECf2r3EIwnDRYWZGM5rqBtaeTIjW9w2EX
-	p8UxVUqsoFCsBAVp2fdbuxPsNz1PbFs=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8972a14e27bso14282546d6.2
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:06:55 -0800 (PST)
+	b=ToI3Lbs7tFaTCgsyaHUWLsgVGLKyqUETbE2Ja/q2mZoEUVJkLChyMH/svjolEbNvlCArKP
+	RIcKZsmmBLBnJ0DzZ/PrY13U9k6EXxjnivJemdxuRgaWcLueZp4UTynIN4F3jrWbkDPdet
+	pkYCMre2Sl1Lw5wuAkLaYv2qEn8fJDs=
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7d4c383f2fcso1037678a34.0
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:08:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1772129215; x=1772734015; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4UbRn1/Zoh4IIbiAkpXZr+7zJlNAh6IGPdvB7q6Yi9o=;
-        b=TNeRh3oMvpj62u85jJ3JZ0mBYBjzS11dOiAUA6S6ccQ86qiw7B7a7eSQk/eWJ1MhSd
-         o/1JFoeGaWHsLRKXoSgurk8Wg6kVYrBHl6Fo2eeolTQNyj2LMcIkliQ/Q2stTu9cgEJ2
-         phJAC5VljsAvD5x6tgPbFyFsJjEq3IGeiW6bWVmORvhXZ7Gi43tVFxXW4eE2PrfYUEjU
-         d2vocv/UurU/bhzGsS6TDrLB6nSDbI28RvU9ziPNJbRsqyyxMxff/BAldUQTBip4qENm
-         7tgN67cdcj78hBF8xZN1ivyT4JHiSalqyvHSwkVb51UwHcGmNeQ6eS/jfVKFSoIkHAe8
-         Bcug==
+        d=gmail.com; s=20230601; t=1772129303; x=1772734103; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wcq9MDR3n757j4ORZwFr28h6INReHt+LZDRBVW4SzF0=;
+        b=TlptwlK89zTDNGxlH0F2TjWzU5qSTUd08ngPChQnlbT4RK8aveIsPv51hMiVRcLMFN
+         uM8+s3llzpUk5vgjLdZEcBukzFS/THrc396TOgvpEjev4HtB1jypraMQ2GaPZ1kx7xvu
+         Hee1WPJjeeHzt/C7BFBxgOg4AGxPNw8euy5q4d0NIXTX7gf61NVCLPrXQNpkvPLvtaZu
+         WSC21YijZGdelpT6Wd5Q9i2+aYx6Ix0vU4RCejZJ+jTxqBBwi7tkKLVO79MQ398Y4QOx
+         hkBnvC1Bv67Y5XQCLWkrfdCnV1yfVO2US6IBW09JhyzNURQil94tF6H3p3GGHsPTVk8P
+         xgkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772129215; x=1772734015;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4UbRn1/Zoh4IIbiAkpXZr+7zJlNAh6IGPdvB7q6Yi9o=;
-        b=OTXuZXmJBH4Z+rpEDzz6KbsjMnp+zPCSNuqiG6aFWdk9Cti3n5/A0RObMj7RHJwrSw
-         ivH4OdMihZWR0O1VmSorxvqY7TQDdMt15vyqvFuYANDEYJRVx6YDMfcS89Ggk6kYghNt
-         lGoqyHKQ8pUvdpZar0PYr1r4rTnT6RHMV6+OSPN1Blejc2g0wzjkyUZdZc29/XkjF2dV
-         RJRzu56XfvIRqRpsjEM49PH3l9s49cxCvgBLYgQI/Vzm+6sWrVO1FHAenFyNPnq4Y7L+
-         cIHvghsjudueInqw5nOgBEQCKkPdjur5BRnt59yPDHZHjgxRs45EJ231a3f653pAd2XT
-         lMjQ==
-X-Gm-Message-State: AOJu0YyqLGxQB+13ydt3fjxEAgn4VdFpFrV8jCpuAKLwy1FV7IyQanKl
-	Y01L0ZzDNbLnnWSdGIXbZ85xCQpxLws0PQpOE8T/e2ZDsUdkgHIrN9he7h16JC77CQ==
-X-Gm-Gg: ATEYQzwtMS1eRyy+sAptIS5xjtsbJXcq/uCalaBd0V47qTKCLVBX5q/NgUbyT69WELw
-	8Wt0sTlv/OpT9oSNQTOnfmA7HAOwD6OPdSTr14+89M286toVvDrOfKyVhpTHwi+7eD2nMznQv7u
-	YDIho7ZxwjgRBTPzyX6oFaZvDwcEqqwwJpzZvvy65ebfDbC4wT4rFPgM0xCpmaSSWj27Z4N+uUz
-	xt11nNMz51uv8HA6yJNKDUfnqJ9qAp68chYJ+MFSrcoHlvMMw9bypbzzIIw5yP9aeB3nAJB6TVk
-	ZQmBpvUynfrGiWyYtVqgnil9teOqmVJ1HmDGvZKRfaAIlNVtqO/btIZNRXqTWmC7fo2NPjJI8lZ
-	kqPkN7W/vejcaeBu0EXmanGt975dsNR1yYdIGDzoNb8FVMRc2IlsKMunwFUlkroycb4btiAxshz
-	8F+/opUSYsGkjzoJHbUpxFgyCOtkxHWuejDwfmh/XCB6XLap21mN2Tu+jxlJ4QywphYsoonTGan
-	6hPiaw829HNtC8FUu+J
-X-Received: by 2002:a05:6214:c2e:b0:895:4b79:83a5 with SMTP id 6a1803df08f44-89979e1bb72mr293888636d6.5.1772129215103;
-        Thu, 26 Feb 2026 10:06:55 -0800 (PST)
-Received: from rowland.harvard.edu (nat-65-112-8-51.harvard-secure.wrls.harvard.edu. [65.112.8.51])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c6fe55cesm23138596d6.0.2026.02.26.10.06.53
+        d=1e100.net; s=20230601; t=1772129303; x=1772734103;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wcq9MDR3n757j4ORZwFr28h6INReHt+LZDRBVW4SzF0=;
+        b=wLQ+/hSHkwMmR6iavEqdsxP29Y1ny/96qk4dLafYlAQReNESO5AxdG2LSuo7LhRmRb
+         CNy9tQKDmSFYT9Os94LVeTJXkYXM09eIiqwZti1MJ1cVaFl/wlD5Oe3h1UI8fAZu6OCC
+         X2at/yLREU7aEeD+o+bjMp3/tf9/kolL4pTLpVvwxTvE0JbMi4N25tISHCw8NUQjpx/k
+         ENAnK7uJfH+S0HVoWyUI5FeE5TigilH8aUhJ7UXv4NDip21fr4rW6Znh6tn75c0J6N4D
+         FKjFkcQYoR/oJ4/rVi1ebBLwJYzgMtm+Q/1wOJ5NDpbNi9FU8aIB37X2nHk0HNAGnHqf
+         Jkdg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2Egu3BGLphBtgX/WNyXeUlw/ovrfY2Ys/e8jGJ7fxtT5/gKCHKRlxS8TcLb3wsx66XioN5n7aCw==@kvack.org
+X-Gm-Message-State: AOJu0YydJvDpV+iaYtElpAKf0ysB7CYgFpNejrhfrBfKp1+uBcPY/ig/
+	hy+Cu/9NHCezBW4ZbojK5IirQ8FV7tRzmLePOwSdDQMbUHN+PTlKFuhi
+X-Gm-Gg: ATEYQzwtd0RdwGaOolzhHo3GXlo6i5CybEr6j88Txc5elk/cZBCitCSvpcpfBt6kQos
+	vR79y5P2Q4H1/yEEJgkGufNeBvN6eLgV1UdG4J+X5cbxcdIvTiR8UdyOaPzKM6b0o7jE10isMIL
+	Wkf3OvPvNxmnjww8Q62U/tDVpSPAtyqPpLANtrYTktwLUPGKk1E12mBrm4gIRCw5Frc6ft+2+LT
+	kFgSgtGmfPXSFetj8RRfQlLhoUGd8ZsO9easKYoO8e/bFlDlXNq9ksh3nRfE/M7pOz6O9bKc1fg
+	ZZ3ABEd7B+UInJamhHabADq++0AzQo6h7kcYRRwgiDOvDH24fUvg2ivvDIUIHWswE0hZ7T1XcJU
+	V2qUewmgMkaLJrR4x7kQ9hF+8p0NPJGcVEmXLyaZySlIS+0innYI20PpezHDC/j1bjsOtncjzI0
+	LdyexhaYF+KFJO5RNmco4vTxtmMUrTDI4U
+X-Received: by 2002:a05:6830:6201:b0:7d4:96c3:3f97 with SMTP id 46e09a7af769-7d591b0f5acmr73197a34.2.1772129303538;
+        Thu, 26 Feb 2026 10:08:23 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:70::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d58666ed17sm2433431a34.27.2026.02.26.10.08.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 10:06:54 -0800 (PST)
-Date: Thu, 26 Feb 2026 13:06:51 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-mm@kvack.org, Dmitry Vyukov <dvyukov@google.com>,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+        Thu, 26 Feb 2026 10:08:23 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: akpm@linux-foundation.org,
+	dan.j.williams@intel.com,
+	david@kernel.org,
+	fvdl@google.com,
+	hannes@cmpxchg.org,
+	jgg@nvidia.com,
+	jiaqiyan@google.com,
+	jthoughton@google.com,
+	kalyazin@amazon.com,
+	mhocko@kernel.org,
+	michael.roth@amd.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	pasha.tatashin@soleen.com,
+	pbonzini@redhat.com,
+	peterx@redhat.com,
+	pratyush@kernel.org,
+	rick.p.edgecombe@intel.com,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	seanjc@google.com,
+	shakeel.butt@linux.dev,
+	shivankg@amd.com,
+	vannapurve@google.com,
+	yan.y.zhao@intel.com,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	David Howells <dhowells@redhat.com>,
-	Nicholas Piggin <npiggin@gmail.com>, Boqun Feng <boqun@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Will Deacon <will@kernel.org>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Marco Elver <elver@google.com>
-Subject: Re: [BUG] Memory ordering between kmalloc() and kfree()? it's
- confusing!
-Message-ID: <9240040d-598e-48bd-b802-bf91cce92d0c@rowland.harvard.edu>
-References: <aZ_lJAqxh_hNGr_v@hyeyoo>
- <9dcd02b9-42da-455d-aa08-165e6ff0b921@rowland.harvard.edu>
- <aaByMLSAIJM8HdbO@hyeyoo>
- <d8308828-ed28-4650-8c8f-22a7e5cfd1a0@rowland.harvard.edu>
- <aaB-1e1LoxkcYl2f@hyeyoo>
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more generic use
+Date: Thu, 26 Feb 2026 10:08:21 -0800
+Message-ID: <20260226180821.2218448-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAEvNRgGaJXbOGPQSgvo3rVDfis22DC4hYy=2Rczas0Vm3o66kQ@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaB-1e1LoxkcYl2f@hyeyoo>
-X-Stat-Signature: xt7on1h8pcbu7kjixcd85hfkfuk36k6r
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 93jthc9j7gbphr17k38gt1691cmnxms8
+X-Rspamd-Queue-Id: AC4D280009
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 24EA34001C
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772129216-853337
-X-HE-Meta: U2FsdGVkX19zniw1X3FR5uL0I8qzBkDZHpPWk736wOz15JO00xFI7zlCIH0y5Pg5hzAChp0vc86kR6+ktlWmRV3EC8O5pnoToE6yDEHI9LgL6da5L1/TPRBMnEq9IOLb5HE8OWRWQmiZx1IxmypwSBYMakHx3cBBUwO7PyDLRrZIkvICbonvOzHMAOZTGaDL74KCV7ra5EPkfxpdhFRl9ZSUFKy31Ut5uPfSwBVJuLlp0Iv+W18DkdHcKuQSB/v39RuSA6QWiL4kMHjDjYRTA6qY9F4kfb2XtjaubZwO1DN9DT2TdN2vr+KFQWJfhwbpCwK3I0Rt+tW+q6F5CJqMu+BXILL6j/PsfMlal3MNJyBEa0kJ4HthD7jxLhxrdvTdTFvH3MahvXIWbwaGtcCPoA7zYrrzwZu3deRRHNEpW3v33NThvLZqbvr8EJweLwjjRa5+XSZQPXxHAE2LK6VtGNIIUGwPwY62nvje3qaU1EH08Xvr4zn7XvCfBzoRpGrhQnDrYXr5kPomX6E8GhoJ2mfuxopY3yk19llRz5z9oAFnGj5gaP5i7nsFQ6pH13OH3eK4fyDP8/n24KRO18Q/D/GTPV8R3GzF/wcD4dD9d8dAatEQ9Ew8TbpCk9ernfVzYViFtcvxQ0D3vU+IZbsx5FzYirmn68m0tU/rdOsMjoE+/xb/iYK3ZoPJVj8sIdv3gF/F4hitF/w8cLQi2LHnu7J76sQwKwoPUIRBixKBgHjSZIzUAH8IlXm2um6C53rMULDdqNhXUCKzgRbGxve2txYO7kkXJanDqqP6cmCswF1PtLb6JhwQyl1fqAMgXtML1kerb1LXPpNpVpOfccNt3C7avD2v/gi9LxZTE6VkK6U/Z8xcxG+TTYsu0IslazNdqmu6bffAY/wJNXg3z4XHhtFkw1rAt8zzAKjO76PzzNO5dyzl89DX5+yq2Sc/b4PXjNil8zyfeJfCs0kZpn/
- bm5bgWxs
- 27KtbQ497F4uP5Gswcw1iGhAyyAKS53qGg2n1MX6nBGC2qAB/X85Hk+3fziwQS/qPpBOOFANX0OUvqKdvi5072BKuUioZ7aS2xPZzNsLkMbcUE1EHeSPivtzWbADqbxshmF4nUA/Zv9uFBkMNR/ttI+LMimOgVd5znYGwYbTKt7eaxUg1A6/XM9kQYiZq4mlJvId8u8M4B7fgtpFRp8jGSS+FRyJ0BA8mf14zcuZ5Qr5RX+pD9NeTOijCXG0BKYg1pl135ayehZ/8leTcKsabPZ1YtgUmmsB/0vgzkgdCaXKQMD9auCPRL1TYQmqTs2jj4U/eDDXr8gAhcDW/mBq21Ci6ciSLRPi16DkJ4y34uTKk8aUKb14glpyYjd9caMt5zUULHmNkeJLd4ORbF5pHE2iLIiaYVczy9oVNJVQcdtEgZFDGIiQGFnWFNyICBptp49bemDyBo34WyxohpCEztmCgbe8BshYP+nkmygfJj4TRc+gnmYiStk9NBDuR0p6yWFt9Lo9J+dFAPfTnBFCzK3kvpOFM1ugf/gzwG9Gnz0Uf4vfwx2Zq/ocDVzGjKHVdT698NF69fAg7om+tfsvUfBq68ebfYJX/DNAUvbgjvzjAU1M27QS5U/jhycJ3wDzjI4Eu7XAXk1fsTxovCZvFePLZhQ==
+X-HE-Tag: 1772129304-993536
+X-HE-Meta: U2FsdGVkX1+UzsGLLSosz8MCPaI3rPwdbWqSfd+K4nb75WAMPdxWseKdbKxqdmgVz9y/SemMcMYipcV3fMBNlfXQ4nN35pp4JetI5dXCRWeIyRb0FcIEzrAwKgEkkeAC6AeI6Tjgc1Lg4rBBEED9XKRBxtbzOaAM5B9zOfz9rtBjMXb94n4zz8/K7bXoM+YEk3fLmxjuzvyMWjrElr2LuTCqOsaP+qlfuPyVRNuypNyzQqd33kFnyaqQoiQLyOqULVrBRti8EenAeGzlcoe6aL/PqEMJZv3DG9Y/r6QyHJS5iZ/CPYhC0R5IBzjWsgJD+yQ2cosQd616pY8kObAI14loyNmWICzJpMl7Ncwmq2J4l7U4pGK/zMoe/0tScMyczS9ZpQbNo5luQvsx+I4ymdN7VGeJ7+kxrCvihSZrsNmCqmaDBCDuSoMbIQvcJ7aL0bhA9UA2xNT/aA14NS+903n87Bcg2BvQ3avA63BNwAZAnUnK/eMpF3GPF9YFqdjzeWk96OZr3AcvcZgBu894pYclf47vgzqnX/+dC5rg1C4bex5OkKbZbHUUI4mnwWlsWk7Odfnb5fLp0lkuR6BZ4px6rQKLtwrXZKcn50OAjwqwg2zdQuox2IdGREp69fX3AGKJEtN+FT+zk3JdpK97AOB8Dj6jmC2Xm+72vdoWQAR8sHFvti4QdlZEOAjKnCloqgUKgldQsYqwqfd7QtgBON/jRtU190b8CnV9EKJlD4JSJ6uihFHry694+xov9ygBk+uWpKQl8std1TvZOSp03dSFslsZ/Q4Ylbg9S3fUftCqEj5i6vChFmDrxPxFXrh9skZymH0Rf3TpYrK1CCsLZWuJgObAUONSNTz6LMbrFBQZsM9NV7MgXTOsH9zSzeZxtBOVMUDGrISbA9ckaYkMOmEEjeLBaXRwekWYIYe39Z084MwmyhkcbIcX5VQeM9K07XI2QqjQ6uFNRlO3Z3q
+ P5rozHsh
+ gvNJycaR3NedNB9OfRqjw9WYgW5gTlmyOVM+UWDjpit2eqFgEIp+JcSYZoVZw7nW5/oRAss+tNltVAA2oTO+FXquyCV+zbBBJsP4FGTc8vfdvdO/F4lmMh1O9sTXHzSCMYeh5cpENTQCOSVTzkp1XbQ4AZKOzDtvA+yB1mfUQwCIA+58J6M7i2Fjh5z6M4t6YAJkanUmGbGPhGMn0qbbGG86imGrrSDQAIec3QOGNESfX9yE66m2CEMHPBPEc8EnacCmJBNyTWmO7pz+9Vt3sKP/ihBYb5vADhIhnjhCG40gChTIjMvNPA+f8UjQad5oWeQfP5oTjlbcQNNRL5fNHZG3KTQCmPjbSGqYbWp3M+ThZfI7mWG2g51jkpyoFuFvkUIIvyXJjJpDqDjwQVCkX8liNWE2p9RfGB1qYE8D4E3HMTDaGX84ho/rj0nxdIIQaAsvNkmYZSBWxVoDuTAiKakMkoxR4OF8I6TaiJQm9qgzDBMTt6bBP6JSRXvdb1eHZNy8KAWeXqxaMJQsXa1Q+I+EJUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,79 +143,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 02:11:49AM +0900, Harry Yoo wrote:
-> On Thu, Feb 26, 2026 at 11:42:02AM -0500, Alan Stern wrote:
-> > On Fri, Feb 27, 2026 at 01:17:52AM +0900, Harry Yoo wrote:
-> > > On Thu, Feb 26, 2026 at 10:45:55AM -0500, Alan Stern wrote:
-> > > > On Thu, Feb 26, 2026 at 03:35:08PM +0900, Harry Yoo wrote:
-> > > > > Because the slab allocator itself doesn't guarantee that such
-> > > > > barriers are invoked within the allocator, it relies on users to
-> > > > > do this when needed.
-> > > > 
-> > > > It doesn't?  Then how does the slab allocator guarantee that two 
-> > > > different CPUs won't try to perform allocations or deallocations from 
-> > > > the same slab at the same time, messing everything up?
-> > > 
-> > > Ah, alloc/free slowpaths do use cmpxchg128 or spinlock and
-> > > don't mess things up.
-> > > 
-> > > But fastpath allocs/frees are served from percpu array that is protected
-> > > by a local_lock. local_lock has a compiler barrier in it, but that's
-> > > not enough.
-> > 
-> > If those things rely on a percpu array, how can one CPU possibly 
-> > manipulate a resource (slab or something else) that was changed by a 
-> > different CPU?
-> 
-> AFAICT that shouldn't happen within the slab allocator.
-> 
-> > The whole point of percpu data structures is that each 
-> > CPU gets its own copy.
-> 
-> Exactly.
-> 
-> But I'm not talking about what happens within the allocator,
-> but rather, about what slab expects to happen outside the allocator.
+On Wed, 25 Feb 2026 19:37:04 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
 
-I understand.
-
-> Something like this:
+> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 > 
-> CPU X				CPU Y
-> ptr = kmalloc();
-> WRITE_ONCE(gp, ptr);
-> 				if (p = READ_ONCE(gp))
-> 					kfree(p);
+> > On Wed, 11 Feb 2026 16:37:11 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
+> >
+> > Hi Ackerly, I hope you're donig well!
+> >
+> > [...snip...]
+> >
+> >> I would like to get feedback on:
+> >>
+> >> 1. Opening up HugeTLB's allocation for more generic use
+> >
+> > I'm not entirely familiar with guest_memfd, so pleae excuse my ignorance
+> > if I'm missing anything obvious.
 > 
-> Yes, it's a crazy thing to do. CPU Y isn't guaranteed to see
-> up-to-date version of object content or metadata.
+> Happy to take questions! Thank you for your thoughts and reviews!
+
+Of course, thank you for your work, Ackerley!
+
+> > But I'm wondering what hugeTLB offers
+> > that other hugepage solutions cannot offer for guest_memfd, if the
+> > goal of this series is to decouple it from hugeTLBfs.
+> >
 > 
-> Instead, the code should do:
+> The one other huge page source that we've explored is THP pages from the
+> buddy allocator. Compared to HugeTLB, huge pages from the buddy
+> allocator
 > 
-> CPU X				CPU Y
-> ptr = kmalloc();
-> gp = smp_store_release(&gp, ptr);
+> + Has a maximum size of 2M
+> + Does not guarantee huge pages the way HugeTLB does - HugeTLB pages are
+>   allocated at boot, and guest_memfd can reserve pages at guest_memfd
+>   creation time.
+> + Allocation of HugeTLB pages is also really fast, it's just dequeuing
+>   from a preallocated pool
+
+All of these make sense. Just wanted to know if guest_memfd had any
+unique usecases for hugeTLB that normal hugetlbfs didn't have.
+
+> The last reason to use HugeTLB is not because of any inherent advantage
+> of using HugeTLB over other sources of huge pages, but for
+> administrative/scheduling purposes:
 > 
-> 				if (p = smp_load_acquire(&gp))
-> 					kfree(p);
+>   Given that existing non-guest_memfd workloads are already using
+>   HugeTLB, for optimal scheduling, machine memory is already carved up
+>   in HugeTLB pages for these workloads. Workloads that require using
+>   guest_memfd (like Confidential VMs) must also use HugeTLB to
+>   participate in optimial workload scheduling across machines.
 > 
-> One reason that I started this discussion was to argue that we should
-> have a well-defined a contract between the slab allocator and its users.
+> >> 2. Reverting and re-adopting the try-commit-cancel protocol for memory
+> >>    charging
+> >
+> > On the second point, I am wondering if reintroducing the try-commit-cancel
+> > protocol is tied to factoring out hugetlb_alloc_folio. When I removed
+> > the protocol a while back, the justification was that for the most part,
+> > grabbing a hugetlb folio was a relatively cheap & fast operation, since
+> > hugetlb mostly operates out of a preallocated pool.
+> >
+> > So the cost of being wrong, going above the limit, and having to return
+> > the hugetlb folio was also relatively low.
+> >
+> 
+> Thanks for this! I saw your patch to just optimistically grab a HugeTLB
+> page :) For that patch, the primary reason was to simplify the logic,
+> and the simplification was justifiable because grabbing a folio is
+> cheap, right? (And so grabbing a folio being cheap wasn't a reason in
+> itself?)
 
-Yes, you have made that quite clear.  But you're missing _my_ point.
+Yes, exactly!
 
-Which is: The same mechanism that the slab allocator uses to ensure that 
-CPU X and CPU Y won't step on each other's toes if they both run 
-kmalloc/kfree at the same time should also be able to guarantee that the 
-metadata changes made by CPU X will be visible to CPU Y if Y manipulates 
-a slab that X just finished with.
+> > It seems like this patch series introduces some new paths for hugetlb
+> > pages to be consumed (specifically, without a reservation or vma).
+> > I imagine that these new paths make the slowpath for hugetlb more frequent,
+> > which makes the cost of assuming that the memcg limit is OK higher?
+> > I think explicitly spelling this out in the justification for reintroducing
+> > the charging protocol could be helpful.
+> >
+> 
+> Yes, I should have done that. Will copy the following to the next
+> revision.
 
-To put it another way, ensuring non-interference during simultaneous 
-accesses isn't all that different from ensuring coherence during 
-sequential accesses.  Doing the first should easily allow doing the 
-second.
+Thank you for considering!
 
-And if it doesn't then something questionable is going on.
+> The main reason is that reintroducing the charging protocol is the
+> clearest way (for me) to cleanly refactor out hugetlb_alloc_folio()
+> without worrying about the edge cases around HugeTLB reservations and
+> charging.
+> 
+> If I didn't reintroduce the charging protocol, I would have to depend on
+> freeing the new hugetlb folio on memcg charging failure, and the freeing
+> in turn depends on the subpool correctly being set in the folio, and the
+> presence of the subpool influences (in free_huge_folio()) whether the
+> reservation was returned to the global hstate. Aaannnd... there's also a
+> hugetlb_restore_reserve flag that controls whether to return the folio
+> to the subpool (and the hstate). I find folio_clear_hugetlb_restore_reserve()
+> on certain code paths kind of magical/unexplained too.
 
-Alan Stern
+I see, if it makes the code simpler to introduce the protocol again, I see
+no reason why we shouldn't revert the patch : -)
+
+> I would rather iron out those charging and reservation details
+> separately from this series (with more testing support).
+> 
+> On the other hand, reintroducing the charging protocol has the benefit
+> of avoiding allocations (not just dequeuing, if surplus HugeTLB pages
+> are required) if the memcg limit is hit. Also, if the original reason
+> for removing the protocol was to simplify the code, refactoring out
+> hugetlb_alloc_folio() also simplifies the code, and I think it's
+> actually nice that memcg charging is done the same way as the other two
+> (h_cg and h_cg_rsvd charging). After hugetlb_alloc_folio() is refactored
+> out, the gotos make all three charging systems consistent and symmetric,
+> which I think is nice to have :)
+> 
+> I hope the consistent/symmetric charging among all 3 systems is welcome,
+> what do you think?
+
+For the hugetlbfs case, the path to allocate a hugeTLB page on demand
+makes sense, so I definitely see the argument for avoiding allocations.
+Does guest_memfd also have a path to allocate a hugeTLB page outside of
+the boottime reservations? In that case I think it would be nice to
+clarify that the allocation failure case optimization is also for
+guest_memfd, not only for hugetlbfs.
+
+Symmetric charging is definitely welcome : -) All of your reasons make
+sense to me, I just wanted to ask and make sure.
+
+Thanks for your thoughts! I hope you have a great day!!
+Joshua
 
