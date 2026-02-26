@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EA6FCE077
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 13:19:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FEEEFCE07D
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 13:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D021B6B008A; Thu, 26 Feb 2026 08:19:25 -0500 (EST)
+	id 9CE756B008C; Thu, 26 Feb 2026 08:20:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA5A76B0092; Thu, 26 Feb 2026 08:19:25 -0500 (EST)
+	id 98DE06B0093; Thu, 26 Feb 2026 08:20:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7DC16B0093; Thu, 26 Feb 2026 08:19:25 -0500 (EST)
+	id 870926B0095; Thu, 26 Feb 2026 08:20:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A18B86B008A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:19:25 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48CD0878BB
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:19:25 +0000 (UTC)
-X-FDA: 84486664290.26.5453B07
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4B86B008C
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:20:51 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 157B81BCB2
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:20:51 +0000 (UTC)
+X-FDA: 84486667902.30.19B3926
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 86247140013
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:19:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jMmZos5d;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 33A1AC000A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:20:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4DCZVGH;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772111963;
+	s=arc-20220608; t=1772112049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WD6XTRarfy5RNjSLuokAzaZext5Dun04xofWaYrk1rs=;
-	b=BnF8Xf0easFyb93SIKQsC88WTGGuqeABnT4rqMDo0W3VREa1spZGmLB0HcO5Pf/c50nYXJ
-	x++d3ZCKA5agyi6gWiYdcez12odbKFQW71xmeLE2orJjr7ULoghWSDVXgHwWqMgRy1DsI9
-	9J7BHQrZuZDoqhQFROl6EVfAeCI+nhc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jMmZos5d;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772111963; a=rsa-sha256;
+	bh=2dYUHTgHZPcS8LtYadR76DcINWvPYrQDrJqg3xx3k/I=;
+	b=OmUlX3m1F1JRppGjOFwuVUud4RlCM9L7cjOYE012BGhHxDh3MwxJiogKnSEB93cbqjpKHz
+	VD5VNdNxgdL1bLT6yuyi4nFZOXAyKm13EHSPCKbzYbO2364Ys9fzV5CzIteg/8NRi5giZU
+	DreCrdXkNIMV/P+bZGW5kN0zHAvFFoA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772112049; a=rsa-sha256;
 	cv=none;
-	b=EqpjBUkbwXPzUtx5CA/Kt9QqutLPnpvX7JUY/CugI7GZvEKyA/e+dWriXQG74s9izZAv8+
-	/koX5iQsqQbDG4WW+jvXRM9m+YumaiZ+htiY6y1GlPOaX3hmY3u3oiLODommhSABJgFJKO
-	aAP4S0yiPCY60s+80dS2kh/lK+POXes=
+	b=jC0YCrawjaaTPw1u6N6NBKQT0TX73yvLDFtGsRXCAFwcVzpBK/7XVdW+NlLx1Oy+AVZ4Rw
+	OxbsweCv1Yn8rUV0QXnVTXUAUserFXsQMmhJBm4jpdbBcuYjegMqTA7pDSRLzCJNjUC/10
+	AJ1zZYHRtjcpk59f1AVqzWSAMUCWP1I=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4DCZVGH;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E4CE74439F;
-	Thu, 26 Feb 2026 13:19:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC336C116C6;
-	Thu, 26 Feb 2026 13:19:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F3D040DA4;
+	Thu, 26 Feb 2026 13:20:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDABC19422;
+	Thu, 26 Feb 2026 13:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772111961;
-	bh=Pf04Z7iE3GM1u8EKRphHFGn52yUYGcn6vqYD0z/gPbY=;
+	s=k20201202; t=1772112048;
+	bh=kX30qZnPYCqfXb/76euKMO+o8GK+nW5VkIoRhP2qqC8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jMmZos5dus2Vdwkn4H474ZgHVP2copjj/B3Awars5H3ImcL7EgOM+GnMA5CvpMRm3
-	 uZjje4pqYf4U/nYL+xRxiEDH//aWM0rBwtjD95CAOoRC2yuXMGbL5XtrrMmgfnS2rW
-	 SKRnp4xNZwZG4CbEKAWHfIsR255vlBA65beKvnqEE9eQWoG97Ra/KUkEcxKju0Wfvo
-	 sjYcPaRs41hJ/9ffBGb+rQMm97rSXg5Yl5sDLfCmjj7fxTZulWhSZ1k9V9zsma5KQh
-	 vO/EnlqBQWN2nRtvXne5k66C0o9AUqoILyum0ho9cOZ5L+B4QwkKlPj3fsUzF/4C8F
-	 ObzEmPlSut8+g==
-Message-ID: <e2b9ef35-48af-4580-86b4-8640d353028c@kernel.org>
-Date: Thu, 26 Feb 2026 14:18:58 +0100
+	b=N4DCZVGHLhr0eBVQJieC3pRRNOvI49z81D2VdJU7sBWh4T/dHMdDAX5hzZ4PpRBNW
+	 BRAq078+anBNSSCiijh5OkpiqIYJfpx4294YGpYpgaRQbbP8SGLtoBU6rh9a1FWmwg
+	 SMHRRRvB40cIlPOpE5aMdYx0zO6bkUuB7JQPjuU0GcV+U39Xp9CP5szIB0aKctpq2g
+	 d+u7N0JiuNZ5PHI+yjzmsfgj+ZfpuRK4a85OFXXDp51NNqss2+suPBeMMB8LBAYrbd
+	 ueLNudkPWiaIkRW48GLkCxgdEUdzQySHZm0VcoWcIPqzcKgaOeXkBDt5p+PnSlggiO
+	 a+Pn9fTs5JkzA==
+Message-ID: <d8d35cd9-464d-46e5-8da6-cb0e45b1e582@kernel.org>
+Date: Thu, 26 Feb 2026 14:20:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] folio_batch: Rename pagevec.h to folio_batch.h
+Subject: Re: [PATCH v2 4/4] folio_batch: Rename PAGEVEC_SIZE to
+ FOLIO_BATCH_SIZE
 To: Tal Zussman <tz2294@columbia.edu>, David Howells <dhowells@redhat.com>,
  Marc Dionne <marc.dionne@auristor.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
  Chao Yu <chao@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
@@ -125,7 +126,7 @@ Cc: Andreas Dilger <adilger.kernel@dilger.ca>,
  gfs2@lists.linux.dev, linux-nilfs@vger.kernel.org,
  linux-xfs@vger.kernel.org, cgroups@vger.kernel.org
 References: <20260225-pagevec_cleanup-v2-0-716868cc2d11@columbia.edu>
- <20260225-pagevec_cleanup-v2-3-716868cc2d11@columbia.edu>
+ <20260225-pagevec_cleanup-v2-4-716868cc2d11@columbia.edu>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -172,17 +173,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260225-pagevec_cleanup-v2-3-716868cc2d11@columbia.edu>
+In-Reply-To: <20260225-pagevec_cleanup-v2-4-716868cc2d11@columbia.edu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 33A1AC000A
+X-Stat-Signature: mabtw4so361gwkdxeyzh8k7mn76njjde
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 86247140013
-X-Stat-Signature: 4oyynd7uxgyn793uc9ij6437ksyuisq3
-X-HE-Tag: 1772111963-137790
-X-HE-Meta: U2FsdGVkX1/t8458KiEIVFK8+gmA5xIATGsSj9x/IKGeGNFrVyaK8qnrJ9DxjK/5kWzlf+nPeACZl8zIzBIy/lr2dWRv7XGbRVbB4qt9uP1xb3D1kbU9+XIGE37ZrsC0f3PK7GqSIop6JmxUVHgnXkehmTGXZJBw5RTIuDhiJ+1LlV4yeSE0KayeX2PYojzF6oJ2XpVpCHzKx4UmRcg5g+JZH+njFhRiEK6M6ocalCJlBnL+q5C+YKNqMPqxuGWNcTpWptLGIZjEPiVOfK6PKAlt8Pq+3M+jtCqcNMk8t/laLIPqPl4Gnz25flcWfc0+XrTrExePFDBU7Wu6oKcsCVdjffJuPaIwWLSjGWnJ9IoNY+MQaevs/GHHifR614ok3qANiTeop+U5hecCzTJJ6BUJuAzt8gMG1PnjXpkE+zZSxIH09gPWk6DfnRYXfIZZ4cLaTXaS/CwBptQS8oM2coQS+wpMFz6P99ceS18R9U1TQj7lxtU3f60WkpNzjiSSB6PETvJjnPVsnFLh3hGljdpkWLRoMgSUgBeQYvKVbpu6JqUqstoGYShDNcGhuBf4DW1uBKcLtaF9b7+de7l/ozw6M2nYEc+Qk8owHm/8CCYrJrC8vD3NYPh8OyEq2VF5D3tbSAHkGgoM/94i5tq7am8KpgnOuhyMKqarYZ9YzeiMldiYE8NLhtzrvpgXU3wP4IqWhOz8j0QPoZVABlyFyhXxYruSt7BLwdbSIpxK2//XytM+DwnxbdStH0lsJlL4r2Itofr6DOBte5wP5XdqJJlLJ+H1noZhxPAispIUJztdQ5pNjtQmNJpFQL1UmoFERPev4IjSXSxQOeQyBBa0VgZN1fJqE4QMp3abD5gv8YJ21+eRFYwoFgIrufR1/Xsz3vjxFt/un1CnxotRWynl9pecHKJ7M75cEc808fJjm6ib6eufM5DlWVQnBNAjhLGmvJdUH8c/TjJZzIxpQ0s
- hPptNi3h
- Taw40fjjE3hmV8KG+svRQbBfX+GaloaEe3wlTIt/onPkbrXTTafh/UEJXROJvscyqeAV7XgWGnWbC4T0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772112049-560324
+X-HE-Meta: U2FsdGVkX186y3x4rxUzlbOD/8z6tpFt3v/FTI5367QxUh3mn6fjV1/GAwmEm84Au0vQxHHUP7l9NrYtd1thyGAS4giTTnEt5T6tWAl+jY5frZmRkkWeKeEjFoq2YvOL61rdzmKssQrUoKp+2IpYzvYe4Aks3YbgCHGJi2t6tRdQCVZr8EwGcY0vXqhxJdWTsBy6VszktuV+Aow/J4y1RLsGhuwsQJ4hlF5ODwOLSTF3Gb6N/lBUoo0J+7XrvqckSou9GCGqDS2W+x9UJ9leP72kZ4haJZgJ7+zB8bYXUlA6AcK4UCKPpvyb/yjKmHSvzxVcNKZB+flrnU34ZBhfu2oqW0ENdgetzMxOpjlcz9JaBwX2XbuToHbEXrA3bzetIa0p3F8k82gmRYcjdiRew0TSevWNkTkshKBESluXhEg/DrgzU/Q71g2NGtiOXs3X8/ZGt/pI7OqzfPAeUujaEI5Cf0xr/sJuWwnJV5WlnEzJJQnMcdmbf3pEVZ/ksw9xwD2uu3Xk3lKugZ9mnsn1lHxNxK5dgsYxm1dxj0L4S7vXtWTF9gS2oMN0oN9RcBqz3+DLSwpKc42lM4DzPajEGqFmREq5i5eftq7uL+xQrip4f7XPi8n3EZ/ZvqAODwoiwd7+UJVWx8f3hKmLQt4p68r5poL6lHw8xhALD70SBvvUw/AY/+xD9+NuvKMMpk8Q/Kb3PKBk6mRsiYLcbBdKBVuBXIuNDS7UhpFpPEbu6dmwsrAdhslVcPzTBNYmrdBr+AYJwH20RaDrdeL1wRVwZ8sp2dJVVl6nuKlN4aejkPBw4pFQfadfW+EVK97QJRPU2v9E6aRi9jNoIODprs4FNVmRbShsjwjtDfSXLWCXMKusxkPTh77hSAgkycCmpDhcq4xHHXPwz5Y9/zYI0jttLCaLciKBoPawYqStehjbSJ39eJ0y+0ydmcMR8OYuRARB+paLertoxvU0bBHa/J7
+ CJsmPIW/
+ khHzy0tkx50XNbRJfuXh+54++n5Yjtx60QRyRIxyMtNLIVH87BLlrnOxRAOVfCon5iNo+tzFz6VVI/gtwd1kbje+KZ4AIIpHB4bHPKuOeE/6D7r9y7k/ex48phv+W1mcqGBsjpQtmEO3iPlFKadOEMx4WhNcnb6eqWuK3ZQpIlXnd6Y0K4pUlHu50DHohwACCQWKw5tMO2iL+ZgucXcpcqiSmWCDAs37i6xOn1QPke5ZT86H2uoRxbXhF39XLKJ5fCABL3VgVQlRUY6s9s8WoEJROvvDMkz6+ptHBTIPTDQQ1TvEj4qIDOzYtbOiGULGw1rb6b/h6ouYbjbzcYhyqGK4M882f4d6kBcNAESqiPIJi6/yG9dGrs/30QPuA7AD2+etiU+bvXSwubnSgzQfBqW5fOldmjw3BRsD/xBKT8ITO9a4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,11 +192,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/26/26 00:44, Tal Zussman wrote:
-> struct pagevec was removed in commit 1e0877d58b1e ("mm: remove struct
-> pagevec"). Rename include/linux/pagevec.h to reflect reality and update
-> includes tree-wide. Add the new filename to MAINTAINERS explicitly, as
-> it no longer matches the "include/linux/page[-_]*" pattern in MEMORY
-> MANAGEMENT - CORE.
+> struct pagevec no longer exists. Rename the macro appropriately.
 > 
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 > ---
